@@ -17,6 +17,7 @@ class SuspendableThread (GourmetThreads.SuspendableThread):
         self.pre_hooks=pre_hooks
         self.post_hooks=post_hooks
         self.name = name
+        self.completed = False
 
     def start (self):
         if de.getBoolean(
