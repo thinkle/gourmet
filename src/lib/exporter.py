@@ -1,4 +1,4 @@
-import convert, re, Image, os.path, os, xml.sax.saxutils, time, shutil, urllib
+import convert, re, Image, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
 import gglobals
 from gdebug import *
 from gettext import gettext as _
@@ -33,14 +33,15 @@ class exporter:
             elif task=='text': self._write_text()
             elif task=='ings': self._write_ings()
         self.write_foot()
-
+        
     def _write_attrs (self):
         if self.grab_attr(self.r,'image'):
             self.write_image(self.r.image)
         self.write_attr_head()
         for a in self.attr_order:
+            gglobals.gt.gtk_update()
             txt=self.grab_attr(self.r,a)
-            if txt.strip():
+            if txt and txt.strip():
                 if a=='preptime' and a.find("0 ")==0: pass
                 else: self.write_attr(REC_ATTR_DIC[a],txt)
         self.write_attr_foot()
@@ -48,20 +49,22 @@ class exporter:
     def _write_text (self):
         for a in ['instructions','modifications']:
             txt=self.grab_attr(self.r,a)
-            if txt.strip():
+            if txt and txt.strip():
                 self.write_text(a.capitalize(),txt)
 
     def _write_ings (self):
         ingredients = self.rd.get_ings(self.r)
         if not ingredients:
             return
+        gglobals.gt.gtk_update()
         self.write_inghead()
         for g,ings in self.rd.order_ings(ingredients):
+            gglobals.gt.gtk_update()
             if g:
                 self.write_grouphead(g)            
             for i in ings:
                 amount=self.grab_attr(i,'amount')
-                amount=convert.float_to_frac(amount)
+                if amount: amount=convert.float_to_frac(amount)
                 if self.grab_attr(i,'refid'):
                     self.write_ingref(amount=amount,
                                       unit=self.grab_attr(i,'unit'),
@@ -73,7 +76,7 @@ class exporter:
                     self.write_ing(amount=amount,
                                    unit=self.grab_attr(i,'unit'),
                                    item=self.grab_attr(i,'item'),
-                                   key=self.grab_attr(i,'key'),
+                                   key=self.grab_attr(i,'ingkey'),
                                    optional=self.grab_attr(i,'optional')
                                    )
             if g:
@@ -112,7 +115,12 @@ class exporter:
         self.out.write("%s: %s\n"%(label, text.strip()))
 
     def write_text (self, label, text):
-        self.out.write("\n---\n%s\n---\n\n%s\n\n"%(label,text.strip()))
+        self.out.write("\n---\n%s\n---\n"%label)
+        ll=text.split("\n")
+        for l in ll:
+            for wrapped_line in textwrap.wrap(l):
+                self.out.write("\n%s"%wrapped_line)
+        self.out.write('\n\n')
 
     def write_grouphead (self, text):
         """The start of group of ingredients named TEXT"""
@@ -215,7 +223,6 @@ class mealmaster_exporter (exporter):
 	#Mealmaster pukes at the preptime line so this removes it    
 	elif label=='preparation time' or label=='rating' or label=='source':
 	    pass
-
 	else:
             if label and text:
                 if self.recattrs.has_key(label):
@@ -236,8 +243,11 @@ class mealmaster_exporter (exporter):
         return "%s%s"%(" "*fill,text)
     
     def write_text (self, label, text):
-        self.out.write("\n%s"%text)
-
+        ll=text.split("\n")
+        for l in ll:
+            for wrapped_line in textwrap.wrap(l):
+                self.out.write("\n%s"%wrapped_line)
+            
     def write_inghead (self):
         self.master_ings=[] # our big list
         # self.ings is what we add to
@@ -264,7 +274,7 @@ class mealmaster_exporter (exporter):
   	    amount = convert.float_to_frac(amount)
   	if not amount: amount = ""        
         if self.conv.unit_dict.has_key(unit) and self.uc.has_key(self.conv.unit_dict[unit]):
-            unit=self.uc[self.conv.unit_dict[unit]]
+            unit=self.uc[self.conv.unit_dict[unit]] or ""
         elif unit:
             # if we don't recognize the unit, we add it to
             # the item
@@ -426,13 +436,18 @@ class ExporterMultirec:
             return filename
 
     def check_for_sleep (self):
+        gglobals.gt.gtk_update()
         if self.terminated:
             raise "Exporter Terminated!"
         while self.suspended:
+            gglobals.gt.gtk_update()
             if self.terminated:
                 debug('Thread Terminated!',0)
                 raise "Exporter Terminated!"
-            time.sleep(1)
+            if gglobals.use_threads:
+                time.sleep(1)
+            else:
+                time.sleep(0.1)
 
     def terminate (self):
         self.terminated = True
