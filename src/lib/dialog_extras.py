@@ -112,6 +112,9 @@ class mDialog (gtk.Dialog):
         if self.modal: gtk.main_quit()
 
 class messageDialog (gtk.MessageDialog, mDialog):
+
+    """A simple class for displaying messages to our users."""
+    
     def __init__ (self, title="", default=None, okay=True, cancel=True, label=False, sublabel=False,
                   expander=None, message_type=gtk.MESSAGE_INFO, parent=None):
         self.message_type=message_type
@@ -134,6 +137,9 @@ class messageDialog (gtk.MessageDialog, mDialog):
         self.label.set_text(xml.sax.saxutils.escape(curtext))
                   
 class numberDialog (mDialog):
+
+    """A dialog to get a number from our user."""
+
     def __init__(self,default=None,label=False,sublabel=False,step_incr=1,page_incr=10,digits=0,
                  min=0,max=10000, parent=None):
         mDialog.__init__(self,default=default, parent=parent)
@@ -168,6 +174,9 @@ class numberDialog (mDialog):
         self.ret=self.spinButton.get_value()
 
 class entryDialog (mDialog):
+
+    """A dialog to get some text from an Entry from our user."""
+    
     def __init__ (self, default=None, label=None, sublabel=None, entryLabel=False, parent=None, visibility=True,
                   default_value=None):
         mDialog.__init__(self,default=default,parent=parent, label=label, sublabel=sublabel)
@@ -195,6 +204,9 @@ class entryDialog (mDialog):
         self.ret = self.entry.get_text()
 
 class radioDialog (mDialog):
+
+    """A dialog to offer our user a choice between a few options."""
+
     def __init__ (self, default=None, label="Select Option", sublabel=None, options=[],
                   parent=None,expander=None,cancel=True):
         mDialog.__init__(self, okay=True, label=label, sublabel=sublabel, parent=parent, expander=expander, cancel=cancel)
@@ -218,10 +230,12 @@ class radioDialog (mDialog):
 
     def toggle_cb (self, widget, value):
         if widget.get_active():
-            print 'setting value ',value
             self.ret = value
 
 class optionDialog (mDialog):
+
+    """A dialog to offer our user a choice between options using an option menu"""
+    
     def __init__ (self, default=None, label="Select Option", sublabel=None, options=[], parent=None, expander=None, cancel=True):
         """Options can be a simple option or can be a tuple or a list
         where the first item is the label and the second the value"""
@@ -246,11 +260,10 @@ class optionDialog (mDialog):
             self.optdic[i]=v
             self.menu.append(i)
         self.optionMenu=gtk.OptionMenu()
-        self.vbox.add(self.optionMenu)
+        self.vbox.pack_start(self.optionMenu,expand=False,fill=False)
         self.optionMenu.set_menu(self.menu)
         self.optionMenu.show()
         self.menu.show()
-
 
     def get_option (self, widget):
         self.ret=self.optdic[widget]
@@ -260,6 +273,9 @@ class optionDialog (mDialog):
         self.ret=value
 
 class progressDialog (mDialog):
+
+    """A dialog to show a progress bar"""
+    
     def __init__ (self, title="", okay=True, label="", sublabel=False, parent=None,
                   cancel=False, stop=True, pause=True,modal=False):
         """stop,cancel,and pause will be given as callbacks to their prospective buttons."""
@@ -295,6 +311,9 @@ class progressDialog (mDialog):
     
         
 class preferences_dialog (mDialog):
+
+    """A dialog to get preferences from a user and return user preferences as a list."""
+    
     def __init__ (self, options=([None,None]), option_label="Option",
                   value_label="Value", default=True, label=None,
                   apply_func=None, parent=None, dont_ask_cb=None,
@@ -810,7 +829,7 @@ if __name__ == '__main__':
           ["Float Option",float(3)])
     pd=preferences_dialog(options=opts)
     def run_prefs (*args):
-        print pd.run()
+         pd.run()
     b.connect('clicked',run_prefs)
     def show_options (options):
         print options
