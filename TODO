@@ -1,5 +1,9 @@
 TODO
-
+* Create auto-detection on imports so that import doesn't needlessly
+  fail if the wrong type is selected and so that the user doesn't
+  have to know the difference between file types.
+* Fix annoying crash that happens when trying to import after a
+  failed import.
 * Create faster and more elegant ingredient input interface
 * Fix threading with MySQL
 * Add support for nutritional information
