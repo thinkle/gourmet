@@ -178,7 +178,7 @@ class RecData (rdatabase.RecData):
         resultvw = resultvw.unique()
         return resultvw
 
-    def get_ings (self, rec):
+    def get_ings_old (self, rec):
         """rec can be almost anything and we'll return a view of the
         ingredients in that thing.  We accept: a single string
         containing a rec id, a row reference to a recipe, a list of
@@ -194,7 +194,7 @@ class RecData (rdatabase.RecData):
                 rec = rec.id
 #            retview = self.search(self.iview, 'id', rec, 1)
 #            retview = retview.unique()
-            retview = self.iview.select(id=rec)
+            retview = self.iview.select(id=rec,deleted=False)
             return retview
 
     def remove_unicode (self, mydict):

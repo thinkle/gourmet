@@ -28,7 +28,7 @@ try:
     from version import version
 except:
     #print 'Version info may be out of date.'
-    version = "0.7.1"
+    version = "0.7.2"
 
 name= 'gourmet'
 
@@ -42,11 +42,17 @@ def modules_check():
     try:
         import pygtk
         pygtk.require('2.0')
-        import gtk
-        v1,v2,v3 = gtk.pygtk_version
-        if v1 < 2 or v2 < 3 or (v2 < 4 and v3 < 93):
-            print 'Error: PyGTK-2.3.93 or newer is required.'
-    except:
+        try:
+            import gtk
+        except RuntimeError:
+            print 'Error importing GTK - is there no windowing environment available?'
+            print "We're going to ignore this error and live dangerously. Please make"
+            print 'sure you have pygtk > 2.3.93 available!'
+        else:
+            v1,v2,v3 = gtk.pygtk_version
+            if v1 < 2 or v2 < 3 or (v2 < 4 and v3 < 93):
+                print 'Error: PyGTK-2.3.93 or newer is required.'
+    except ImportError:
         sys.exit('Error: PyGTK-2.3.93 or newer is required.')
         raise
     mod_list = ['metakit','Image','gtk.glade']

@@ -2,6 +2,12 @@
 from gdebug import *
 import gtk
 
+def get_unique_iter_from_value (mod, col, val):
+    for r in mod:
+        if r[col]==val: return r.iter
+        for rc in r.iterchildren():
+            if rc[col]==val: return rc.iter
+
 def move_iter (mod, iter, sibling=None, parent=None, direction="before"):
     """move_iter will move iter relative to sibling or
     parent. Direction (before or after) tells us whether to

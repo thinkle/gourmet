@@ -75,7 +75,10 @@ class WidgetPrefs:
         if type(w)==type(""): w = [w]
         for wn in w:
             widg = self.glade.get_widget(wn)
-            getattr(widg,method)()
+            if widg:
+                getattr(widg,method)()
+            else:
+                debug('There is no widget %s'%wn,1)
 
     def apply_widget_prefs (self):
         for w,desc in self.hideable_widgets:

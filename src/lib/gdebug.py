@@ -1,6 +1,6 @@
 #!/usr/bin/python2.3
 from OptionParser import *
-import time
+import time,traceback
 
 debug_level=options.debug
 
@@ -10,7 +10,10 @@ def debug (message, level=10):
     if timestamp:
         message += " (%s)"%time.time()
     if level <= debug_level:
-        print "DEBUG: ",message
+        caller=traceback.extract_stack()[-2]
+        finame=caller[0]
+        line = caller[1]
+        print "DEBUG: ","%s: %s"%(finame,line),message
 
 timers = {}
 
@@ -36,3 +39,9 @@ def print_timer_info ():
         for t in times: print "%.02e"%t,",",
         print ""
     
+if __name__ == '__main__':
+    t=TimeAction('this is a test',0)
+    debug('This is a test',0)
+    debug('This is another test',0)
+    t.end()
+    print_timer_info()

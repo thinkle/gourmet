@@ -40,6 +40,7 @@ class RecData:
                                        ('category',"text"),
                                        ('source',"text"),
                                        ('preptime',"char(50)"),
+                                       ('cooktime',"char(50)"),                                       
                                        ('servings',"char(50)"),
                                        ('image',"binary"),
                                        ('thumb','binary'),
@@ -112,16 +113,16 @@ class RecData:
             debug('running hook %s with args %s'%(h,args),3)
             h(*args)
 
-    def get_dict_for_rec (self, rec, keys):
+    def get_dict_for_obj (self, obj, keys):
         orig_dic = {}
         for k in keys:
-            v=getattr(rec,k)
+            v=getattr(obj,k)
             orig_dic[k]=v
         return orig_dic
 
     def undoable_modify_rec (self, rec, dic, history=[], get_current_rec_method=None,
                              select_change_method=None):
-        orig_dic = self.get_dict_for_rec(rec,dic.keys())
+        orig_dic = self.get_dict_for_obj(rec,dic.keys())
         reundo_name = "Re_apply"
         reapply_name = "Re_apply "
         reundo_name += string.join(["%s <i>%s</i>"%(k,v) for k,v in orig_dic.items()])
@@ -185,7 +186,9 @@ class RecData:
             id=rec.id
         else:
             id=rec
-        return self.iview.select(id=id)
+        ings=self.iview.select(id=id,deleted=False)
+        for i in ings: print 'get_ings returns: ',i.item,i.deleted
+        return ings
 
     def order_ings (self, iview):
         """Handed a view of ingredients, we return an alist:
@@ -224,7 +227,7 @@ class RecData:
             else: return -1
         for g,lst in alist:
             lst.sort(sort_ings)
-        debug('alist: %s'%alist,5)
+        #debug('alist: %s'%alist,5)
         return alist
 
     def ingview_to_lst (self, view):
@@ -281,10 +284,10 @@ class RecData:
         def do_delete ():
             for rec in recs: rec.deleted = True
             if make_visible: make_visible(recs)
-        def undo ():
+        def undo_delete ():
             for rec in recs: rec.deleted = False
             if make_visible: make_visible(recs)
-        obj = Undo.UndoableObject(do_delete,undo,history)
+        obj = Undo.UndoableObject(do_delete,undo_delete,history)
         obj.perform()
 
     def new_rec (self):
@@ -338,6 +341,12 @@ class RecData:
         debug('done with ing hooks',3)
         return self.iview[-1]
 
+    def undoable_modify_ing (self, ing, dic, history):
+        orig_dic = self.get_dict_for_obj(ing,dic.keys())
+        def do_action (): modify_ing(ing,dic)
+        def undo_action (): modify_ing(ing,orig_dic)
+        obj = Undo.UndoableObject(do_action,undo_action,history)
+        
     def modify_ing (self, ing, ingdict):
         #self.delete_ing(ing)
         #return self.add_ing(ingdict)
@@ -360,6 +369,22 @@ class RecData:
             self.delete_ing(i)
         for ingd in ingdicts:
             self.add_ing(ingd)
+
+    def undoable_delete_ings (self, ings, history, make_visible=None):
+        for i in ings: print i.item,i.deleted
+        def do_delete():
+            for i in ings:
+                i.deleted=True
+                print i.deleted
+            if make_visible:
+                print 'making visible!'
+                make_visible(ings)
+        def undo_delete ():
+            for i in ings: i.deleted=False
+            if make_visible: make_visible(ings)
+        obj = Undo.UndoableObject(do_delete,undo_delete,history)
+        obj.perform()
+        for i in ings: print i.item,i.deleted
 
     def delete_ing (self, ing):
         raise NotImplementedError
