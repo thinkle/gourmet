@@ -1056,9 +1056,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         key=ing.ingkey
         old_unit=ing.unit
         old_amt=ing.amount
-        print 'old_unit=',old_unit,' new_unit=',new_unit
         density=None
-        print 'converting ',old_unit,' to ',new_unit, ' item=',key
         conversion = self.rg.conv.converter(old_unit,new_unit,key)
         if conversion and conversion != 1:
             new_amt = old_amt*conversion
@@ -1077,10 +1075,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                                           (opt2,DONT_CONVERT),]
                                  )
             if not choice:
-                print 'de.getRadio returns ',choice
                 raise "User cancelled"
             if choice==CONVERT:
-                print 'User converting - new_amt=',new_amt
                 return (new_amt,
                         _("Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"%{
                     'old_amt':old_amt,
@@ -1089,7 +1085,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                     'new_unit':new_unit,})
                         )
             else:
-                print 'User not converting!'
                 return (None,
                         None)
         if conversion:

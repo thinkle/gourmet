@@ -11,10 +11,8 @@ class RecData:
     def __init__ (self):
         timer = TimeAction('initialize_connection + setup_tables',0)
         self.initialize_connection()
-        debug('setting up tables',1)
-        self.setup_tables()
-        debug('done setting up tables',1)
-        timer.end()        
+        self.setup_tables()        
+        timer.end()
         self.top_id = {'r': 1}
         # hooks run after adding, modifying or deleting a recipe.
         # Each hook is handed the recipe, except for delete_hooks,
@@ -31,8 +29,6 @@ class RecData:
         pass
 
     def setup_tables (self):
-        debug('rview',2)
-        debug('rview',2)
         self.rview = self.setup_table('recipe',
                                       [('id',"char(75)"),
                                        ('title',"text"),
@@ -50,7 +46,6 @@ class RecData:
                                        ('thumb','binary'),
                                        ('deleted','bool')                                       
                                        ])
-        debug('iview',2)
         self.iview = self.setup_table('ingredients',
                                       [('id','char(75)'),
                                        ('refid','char(75)'),
@@ -67,42 +62,34 @@ class RecData:
                                       )
         self.iview_not_deleted = self.iview.select(deleted=False)
         self.iview_deleted = self.iview.select(deleted=True)
-        debug('sview',2)
         self.sview = self.setup_table('shopcats',
                                       [('shopkey','char(50)'),
                                        ('category','char(200)'),
                                        ('position','int')],
                                       key='shopkey')
-        debug('scview',2)
         self.scview = self.setup_table('shopcatsorder',
                                        [('category','char(50)'),
                                         ('position','int'),
                                         ],
                                        key='category')
-        debug('pview',2)
         self.pview = self.setup_table('pantry',
                                       [('itm','char(200)'),
                                        ('pantry','char(10)')],
                                       key='itm')
-        debug('metaview',2)
         self.metaview = self.setup_table("categories",
                                          [('id','char(200)'),
                                           ('type','char(100)'),
                                           ('description','text')], key='id')
         # converter items
-        debug('cdview',2)
         self.cdview = self.setup_table("density",
                                        [('dkey','char(150)'),
                                         ('value','char(150)')],key='dkey')
-        debug('cview',2)
         self.cview = self.setup_table("convtable",
                                       [('ckey','char(150)'),
                                        ('value','char(150)')],key='ckey')
-        debug('cuview',2)
         self.cuview = self.setup_table("crossunitdict",
                                        [('cukey','char(150)'),
                                         ('value','char(150)')],key='cukey')
-        debug('uview',2)
         self.uview = self.setup_table("unitdict",
                                       [('ukey','char(150)'),
                                        ('value','char(150)')],key='ukey')
@@ -227,7 +214,6 @@ class RecData:
             else: return -1
         for g,lst in alist:
             lst.sort(sort_ings)
-        #debug('alist: %s'%alist,5)
         return alist
 
     def ingview_to_lst (self, view):
@@ -324,11 +310,11 @@ class RecData:
         debug('add_ing ingdict=%s'%ingdict,5)
         self.changed=True        
         debug('adding to iview %s'%ingdict,3)
-        timer = TimeAction('rdatabase.add_ing 2',0)
+        timer = TimeAction('rdatabase.add_ing 2',5)
         self.iview.append(ingdict)
         timer.end()
         debug('running ing hooks %s'%self.add_ing_hooks,3)
-        timer = TimeAction('rdatabase.add_ing 3',0)
+        timer = TimeAction('rdatabase.add_ing 3',5)
         if self.add_ing_hooks: self.run_hooks(self.add_ing_hooks, self.iview[-1])
         timer.end()
         debug('done with ing hooks',3)
@@ -336,8 +322,6 @@ class RecData:
 
     def undoable_modify_ing (self, ing, dic, history, make_visible=None):
         orig_dic = self.get_dict_for_obj(ing,dic.keys())
-        print 'orig_dic=',orig_dic
-        print 'new_dic=',dic
         def do_action ():
             debug('undoable_modify_ing modifying %s'%dic,2)
             self.modify_ing(ing,dic)
@@ -523,7 +507,7 @@ class dbDic:
         if self.just_got.has_key(k): return self.just_got[k]
         if self.pickle_key:
             k=pickle.dumps(k)
-        t=TimeAction('dbdict getting from db',0)
+        t=TimeAction('dbdict getting from db',5)
         v = getattr(self.vw.select(**{self.kp:k})[0],self.vp)        
         t.end()
         if v:

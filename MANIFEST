@@ -41,7 +41,6 @@ src/lib/GourmetThreads.py
 src/lib/__init__.py
 src/lib/keyEditor.py
 src/lib/keymanager.py
-src/lib/exporters/MarkupString.py
 src/lib/OptionParser.py
 src/lib/optionTable.py
 src/lib/PngImagePluginUpToDate.py
@@ -78,10 +77,14 @@ src/lib/importers/mastercook_importer.py
 src/lib/importers/mastercook_plaintext_importer.py
 src/lib/importers/mealmaster_importer.py
 src/lib/exporters/exporter.py
+src/lib/exporters/gnomeprinter_obsolete.py
 src/lib/exporters/gnomeprinter.py
 src/lib/exporters/gxml_exporter.py
+src/lib/exporters/html_exporter.py
 src/lib/exporters/__init__.py
 src/lib/exporters/lprprinter.py
+src/lib/exporters/MarkupString.py
+src/lib/exporters/mealmaster_exporter.py
 src/lib/exporters/pdf_exporter.py
 src/lib/exporters/printer.py
 src/lib/exporters/recipe_emailer.py

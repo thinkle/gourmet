@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-03 17:21-0500\n"
+"POT-Creation-Date: 2005-03-05 16:13-0500\n"
 "PO-Revision-Date: 2004-10-10 00:03-0400\n"
 "Last-Translator: Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -16,86 +16,87 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: glade/app.glade.h:1 glade/recCard.glade.h:4 glade/recSelector.glade.h:1
-#: glade/rec_ref_window.glade.h:1 glade/shopList.glade.h:1
-#: glade/converter.glade.h:1
+#: ../glade/app.glade.h:1 ../glade/recCard.glade.h:4
+#: ../glade/recSelector.glade.h:1 ../glade/rec_ref_window.glade.h:1
+#: ../glade/shopList.glade.h:1 ../glade/converter.glade.h:1
 msgid "*"
 msgstr "*"
 
-#: glade/app.glade.h:2
+#: ../glade/app.glade.h:2
 msgid "Add recipe to shopping list"
 msgstr "Añadir la receta a la lista de compras."
 
-#: glade/app.glade.h:3
+#: ../glade/app.glade.h:3
 msgid "Add selected recipe to a shopping list."
 msgstr "Añadir la receta seleccionada a la lista de compras."
 
-#: glade/app.glade.h:4 glade/shopList.glade.h:3
+#: ../glade/app.glade.h:4 ../glade/shopList.glade.h:3
 msgid "Add to _Pantry"
 msgstr "Añadir a la _despensa"
 
-#: glade/app.glade.h:5 glade/recCard.glade.h:27 glade/shopList.glade.h:4
+#: ../glade/app.glade.h:5 ../glade/recCard.glade.h:27
+#: ../glade/shopList.glade.h:4
 msgid "Add to _Shopping List"
 msgstr "Añadir a la _lista de compras"
 
-#: glade/app.glade.h:6
+#: ../glade/app.glade.h:6
 msgid "Add to _shopping list"
 msgstr "Añadir a la _lista de compras"
 
-#: glade/app.glade.h:7
+#: ../glade/app.glade.h:7
 msgid "Adva_nced Search"
 msgstr "Busqueda ava_nzada"
 
-#: glade/app.glade.h:8
+#: ../glade/app.glade.h:8
 msgid "Create a new recipe"
 msgstr "Crear una receta nueva"
 
-#: glade/app.glade.h:9
+#: ../glade/app.glade.h:9
 msgid "Delete selected recipe"
 msgstr "Borrar receta seleccionada"
 
-#: glade/app.glade.h:10
+#: ../glade/app.glade.h:10
 msgid "E-_mail preferences"
 msgstr "Preferencias de E-_Mail"
 
-#: glade/app.glade.h:11
+#: ../glade/app.glade.h:11
 msgid "E-_mail recipes"
 msgstr "Mandar recetas por e-_mail"
 
-#: glade/app.glade.h:12
+#: ../glade/app.glade.h:12
 msgid "E-mail selected recipe"
 msgstr "Mandar receta seleccionada por e-_mail"
 
-#: glade/app.glade.h:13
+#: ../glade/app.glade.h:13
 msgid "E-mail selected recipes"
 msgstr "Mandar recetas seleccionadas por e-mail"
 
-#: glade/app.glade.h:14
+#: ../glade/app.glade.h:14
 msgid "Edit Ingredient Keys"
 msgstr "Editar las claves de ingredientes"
 
-#: glade/app.glade.h:15
+#: ../glade/app.glade.h:15
 msgid "Edit preferences for e-mailing recipes"
 msgstr "Editar preferencias para mandar recetas por e-mail"
 
-#: glade/app.glade.h:16
+#: ../glade/app.glade.h:16
 msgid "Index View _Preferences"
 msgstr "Preferencias de la vista de índice"
 
-#: glade/app.glade.h:17
+#: ../glade/app.glade.h:17
 msgid "Jump to recipe in Recipe Card vew"
 msgstr "Saltar a la vista de receta"
 
-#: glade/app.glade.h:18 glade/recSelector.glade.h:4
+#: ../glade/app.glade.h:18 ../glade/recSelector.glade.h:4
 msgid "Limit search by this term"
 msgstr "Limitar la búsqueda por este término"
 
-#: glade/app.glade.h:19 glade/recSelector.glade.h:5
-#: glade/rec_ref_window.glade.h:2
+#: ../glade/app.glade.h:19 ../glade/recSelector.glade.h:5
+#: ../glade/rec_ref_window.glade.h:2
 msgid "Limiting Search to: "
 msgstr "Busqueda limitada a: "
 
-#: glade/app.glade.h:20
+#: ../glade/app.glade.h:20
 msgid ""
 "Never buy this item. When called for in a recipe, it will show up in a "
 "\"pantry\" section of the list as a reminder that you need it, but it won't "
@@ -105,141 +106,144 @@ msgstr ""
 "Nunca comprar este artículo. Cuando una receta lo necesita, aparecerá en la "
 "\"despensa\" como un recuerdo."
 
-#: glade/app.glade.h:21
+#: ../glade/app.glade.h:21
 #, fuzzy
 msgid "Print selected recipe"
 msgstr "Ver receta seleccionada"
 
-#: glade/app.glade.h:22
+#: ../glade/app.glade.h:22
 msgid "Re_apply changes"
 msgstr "Re_aplicar los cambios"
 
-#: glade/app.glade.h:23
+#: ../glade/app.glade.h:23
 msgid "Recipe Index"
 msgstr "Indice de recetas"
 
-#: glade/app.glade.h:24 glade/recCard.glade.h:53 glade/shopList.glade.h:9
+#: ../glade/app.glade.h:24 ../glade/recCard.glade.h:53
+#: ../glade/shopList.glade.h:9
 msgid "Recipe _Card"
 msgstr "Re_ceita"
 
-#: glade/app.glade.h:25 glade/recCard.glade.h:54 glade/shopList.glade.h:10
+#: ../glade/app.glade.h:25 ../glade/recCard.glade.h:54
+#: ../glade/shopList.glade.h:10
 msgid "Recipe _List"
 msgstr "Indice de recetas"
 
-#: glade/app.glade.h:26 glade/recSelector.glade.h:6
+#: ../glade/app.glade.h:26 ../glade/recSelector.glade.h:6
 msgid "Search _by"
 msgstr "Buscar _por"
 
-#: glade/app.glade.h:27
+#: ../glade/app.glade.h:27
 msgid "Search as you _type"
 msgstr "Buscar mientras _escribe"
 
-#: glade/app.glade.h:28 glade/recSelector.glade.h:8
-#: glade/rec_ref_window.glade.h:4
+#: ../glade/app.glade.h:28 ../glade/recSelector.glade.h:8
+#: ../glade/rec_ref_window.glade.h:4
 msgid "Search for recipes as you type"
 msgstr "Buscar mientras escribe"
 
-#: glade/app.glade.h:29
+#: ../glade/app.glade.h:29
 msgid "Use regular expressions"
 msgstr "Usar expresiones regulares"
 
-#: glade/app.glade.h:30
+#: ../glade/app.glade.h:30
 msgid "View Re_cipe"
 msgstr "Ver Re_ceita"
 
-#: glade/app.glade.h:31
+#: ../glade/app.glade.h:31
 msgid "View Recipe _Card"
 msgstr "Ver receta"
 
-#: glade/app.glade.h:32
+#: ../glade/app.glade.h:32
 msgid "View selected recipe"
 msgstr "Ver receta seleccionada"
 
-#: glade/app.glade.h:33
+#: ../glade/app.glade.h:33
 msgid "_About"
 msgstr "A_cerca de"
 
-#: glade/app.glade.h:34
+#: ../glade/app.glade.h:34
 msgid "_Actions"
 msgstr "_Acciones"
 
-#: glade/app.glade.h:35
+#: ../glade/app.glade.h:35
 msgid "_Delete Recipe"
 msgstr "_Borrar receta"
 
-#: glade/app.glade.h:36
+#: ../glade/app.glade.h:36
 msgid "_E-Mail recipe"
 msgstr "_Mandar receta por e-mail"
 
-#: glade/app.glade.h:37 glade/recCard.glade.h:71
+#: ../glade/app.glade.h:37 ../glade/recCard.glade.h:71
 msgid "_Edit"
 msgstr "_Editar"
 
-#: glade/app.glade.h:38
+#: ../glade/app.glade.h:38
 msgid "_Empty trash"
 msgstr "Vaciar la basura"
 
-#: glade/app.glade.h:39
+#: ../glade/app.glade.h:39
 msgid "_Export"
 msgstr "_Exportar"
 
-#: glade/app.glade.h:40 glade/recCard.glade.h:72
+#: ../glade/app.glade.h:40 ../glade/recCard.glade.h:72
 msgid "_File"
 msgstr "_Archivo"
 
-#: glade/app.glade.h:41
+#: ../glade/app.glade.h:41
 msgid "_Help"
 msgstr "A_yuda"
 
-#: glade/app.glade.h:42
+#: ../glade/app.glade.h:42
 msgid "_Import"
 msgstr "_Importar"
 
-#: glade/app.glade.h:43
+#: ../glade/app.glade.h:43
 msgid "_Ingredient Key Editor"
 msgstr "Editar las _claves de ingredientes"
 
-#: glade/app.glade.h:44
+#: ../glade/app.glade.h:44
 msgid "_Limit Search"
 msgstr "_Limitar la Busqueda"
 
-#: glade/app.glade.h:45 glade/recCard.glade.h:80
+#: ../glade/app.glade.h:45 ../glade/recCard.glade.h:80
 msgid "_New Recipe"
 msgstr "_Nueva receta"
 
-#: glade/app.glade.h:46
+#: ../glade/app.glade.h:46
 msgid "_Print recipe"
 msgstr "Imprimir receta"
 
-#: glade/app.glade.h:47 glade/recCard.glade.h:82
+#: ../glade/app.glade.h:47 ../glade/recCard.glade.h:82
 msgid "_Redo"
 msgstr "_Rehacer"
 
-#: glade/app.glade.h:48 glade/recCard.glade.h:86 glade/shopList.glade.h:17
+#: ../glade/app.glade.h:48 ../glade/recCard.glade.h:86
+#: ../glade/shopList.glade.h:17
 msgid "_Shopping List"
 msgstr "_Lista de compras"
 
-#: glade/app.glade.h:49
+#: ../glade/app.glade.h:49
 msgid "_Show deleted recipes"
 msgstr "Enseñar recetas borradas"
 
-#: glade/app.glade.h:50 glade/recCard.glade.h:88
+#: ../glade/app.glade.h:50 ../glade/recCard.glade.h:88
 msgid "_Tools"
 msgstr "_Herramientas"
 
-#: glade/app.glade.h:51 glade/recCard.glade.h:90
+#: ../glade/app.glade.h:51 ../glade/recCard.glade.h:90
 msgid "_Undo"
 msgstr "_Deshacer"
 
-#: glade/app.glade.h:52 glade/recCard.glade.h:91
+#: ../glade/app.glade.h:52 ../glade/recCard.glade.h:91
 msgid "_Unit Converter"
 msgstr "_Convertir unidades"
 
-#: glade/app.glade.h:53 glade/recCard.glade.h:93
+#: ../glade/app.glade.h:53 ../glade/recCard.glade.h:93
 msgid "_View"
 msgstr "_Ver"
 
-#: glade/recCard.glade.h:1
+#: ../glade/recCard.glade.h:1
 msgid ""
 "\n"
 "\n"
@@ -247,434 +251,440 @@ msgstr ""
 "\n"
 "\n"
 
-#: glade/recCard.glade.h:5
+#: ../glade/recCard.glade.h:5
 msgid "<b>Category:</b>"
 msgstr "<b>Categoría:</b>"
 
-#: glade/recCard.glade.h:6
+#: ../glade/recCard.glade.h:6
 msgid "<b>Cooking Time:</b>"
 msgstr "<b>Tiempo para cocinar:</b>"
 
-#: glade/recCard.glade.h:7
+#: ../glade/recCard.glade.h:7
 msgid "<b>Cuisine:</b>"
 msgstr "<b>C_ocina:</b>"
 
-#: glade/recCard.glade.h:8
+#: ../glade/recCard.glade.h:8
 msgid "<b>Ingredients</b>"
 msgstr "<b>Ingredientes</b>"
 
-#: glade/recCard.glade.h:9
+#: ../glade/recCard.glade.h:9
 msgid "<b>Instructions:</b>"
 msgstr "<b>Instrucciones</b>"
 
-#: glade/recCard.glade.h:10
+#: ../glade/recCard.glade.h:10
 msgid "<b>Instructions</b>"
 msgstr "<b>Instrucciones</b>"
 
-#: glade/recCard.glade.h:11
+#: ../glade/recCard.glade.h:11
 msgid "<b>Multiply by:</b>"
 msgstr "<b>Multiplicar por:</b>"
 
-#: glade/recCard.glade.h:12
+#: ../glade/recCard.glade.h:12
 msgid "<b>Notes:</b>"
 msgstr "<b>Notas:</b>"
 
-#: glade/recCard.glade.h:13
+#: ../glade/recCard.glade.h:13
 msgid "<b>Notes</b>"
 msgstr "<b>Notes</b>"
 
-#: glade/recCard.glade.h:14
+#: ../glade/recCard.glade.h:14
 #, fuzzy
 msgid "<b>Preparation Time:</b>"
 msgstr "<b>Tiempo para preparar</b>"
 
-#: glade/recCard.glade.h:15
+#: ../glade/recCard.glade.h:15
 #, fuzzy
 msgid "<b>Rating:</b>"
 msgstr "_Valoración"
 
-#: glade/recCard.glade.h:16
+#: ../glade/recCard.glade.h:16
 #, fuzzy
 msgid "<b>Servings:</b>"
 msgstr "Raciones"
 
-#: glade/recCard.glade.h:17
+#: ../glade/recCard.glade.h:17
 #, fuzzy
 msgid "<b>Source:</b>"
 msgstr "_Fuente"
 
-#: glade/recCard.glade.h:18
+#: ../glade/recCard.glade.h:18
 msgid "<b>Title</b>"
 msgstr ""
 
-#: glade/recCard.glade.h:19
+#: ../glade/recCard.glade.h:19
 msgid "Add _Group"
 msgstr "Añadir _grupo"
 
-#: glade/recCard.glade.h:20
+#: ../glade/recCard.glade.h:20
 msgid ""
 "Add _Recipe\n"
 "as Ingredient"
 msgstr "Añadir _receta como ingrediente"
 
-#: glade/recCard.glade.h:22
+#: ../glade/recCard.glade.h:22
 msgid "Add _recipe as ingredient"
 msgstr "Añadir _receta como ingrediente"
 
-#: glade/recCard.glade.h:23
+#: ../glade/recCard.glade.h:23
 msgid "Add another recipe as an ingredient."
 msgstr "Añadir _receta como ingrediente"
 
-#: glade/recCard.glade.h:24
+#: ../glade/recCard.glade.h:24
 msgid "Add group for ingredients (such as \"Sauce\" or \"Crust\")"
 msgstr "Añadir grupo para ingredientes"
 
-#: glade/recCard.glade.h:25
+#: ../glade/recCard.glade.h:25
 msgid "Add ingredient _group"
 msgstr "Añadir _grupo de ingredientes"
 
-#: glade/recCard.glade.h:26
+#: ../glade/recCard.glade.h:26
 msgid "Add this recipe to a shopping list"
 msgstr "Añadir esta receta a la lista de compras"
 
-#: glade/recCard.glade.h:28
+#: ../glade/recCard.glade.h:28
 msgid "C_uisine:"
 msgstr "C_ocina"
 
-#: glade/recCard.glade.h:29
+#: ../glade/recCard.glade.h:29
 msgid "Coo_king Time:"
 msgstr "Tiempo para cocinar"
 
-#: glade/recCard.glade.h:30
+#: ../glade/recCard.glade.h:30
 #, fuzzy
 msgid "Create new ingredient"
 msgstr "Crear una receta nueva"
 
-#: glade/recCard.glade.h:31 src/lib/reccard.py:288
+#: ../glade/recCard.glade.h:31 ../src/lib/reccard.py:287
 msgid "Delete selected ingredient"
 msgstr "Borrar ingrediente seleccionado"
 
-#: glade/recCard.glade.h:32
+#: ../glade/recCard.glade.h:32
 msgid "Delete selected ingredients."
 msgstr "Borrar ingredientes seleccionados"
 
-#: glade/recCard.glade.h:33
+#: ../glade/recCard.glade.h:33
 msgid "Delete this recipe from the database."
 msgstr "Borrar esta receta"
 
-#: glade/recCard.glade.h:34
+#: ../glade/recCard.glade.h:34
 msgid "Delete this recipe permanently."
 msgstr "Borrar esta receta permanentamente"
 
-#: glade/recCard.glade.h:35
+#: ../glade/recCard.glade.h:35
 msgid "Descriptions"
 msgstr "Descripciones"
 
-#: glade/recCard.glade.h:36
+#: ../glade/recCard.glade.h:36
 msgid "E_xport Recipe"
 msgstr "E_xportar receta"
 
-#: glade/recCard.glade.h:37
+#: ../glade/recCard.glade.h:37
 msgid "Export this recipe as a text file."
 msgstr "Exportar la receta como un archivo de texto"
 
-#: glade/recCard.glade.h:38
+#: ../glade/recCard.glade.h:38
 msgid "Import ingredients from a plain text file."
 msgstr "Importar ingredientes de un archivo de texto"
 
-#: glade/recCard.glade.h:39
+#: ../glade/recCard.glade.h:39
 msgid "Ingredient (_key):"
 msgstr "Ingredientes (_clave)"
 
-#: glade/recCard.glade.h:40
+#: ../glade/recCard.glade.h:40
 msgid "Ingredient Key _Editor"
 msgstr "Editar claves de ingrediente"
 
-#: glade/recCard.glade.h:41 src/lib/exporters/exporter.py:119
-#: src/lib/exporters/exporter.py:598 src/lib/exporters/gnomeprinter.py:320
+#: ../glade/recCard.glade.h:41 ../src/lib/exporters/exporter.py:119
+#: ../src/lib/exporters/exporter.py:598
+#: ../src/lib/exporters/gnomeprinter.py:321
+#: ../src/lib/exporters/html_exporter.py:95
 msgid "Ingredients"
 msgstr "Ingredientes"
 
-#: glade/recCard.glade.h:42 src/lib/gglobals.py:146
+#: ../glade/recCard.glade.h:42 ../src/lib/gglobals.py:148
 msgid "Instructions"
 msgstr "Instrucciones"
 
-#: glade/recCard.glade.h:43 src/lib/gglobals.py:148
+#: ../glade/recCard.glade.h:43 ../src/lib/gglobals.py:150
 msgid "Modifications"
 msgstr "Modificaciones"
 
-#: glade/recCard.glade.h:44
+#: ../glade/recCard.glade.h:44
 #, fuzzy
 msgid "Move ingredient _up"
 msgstr "Mover ingrediente _arriba"
 
-#: glade/recCard.glade.h:45
+#: ../glade/recCard.glade.h:45
 msgid "Move ingredient do_wn"
 msgstr "Mover ingrediente a_bajo"
 
-#: glade/recCard.glade.h:46
+#: ../glade/recCard.glade.h:46
 msgid "Move selected ingredients down"
 msgstr "Mover ingredientes seleccionados abajo"
 
-#: glade/recCard.glade.h:47
+#: ../glade/recCard.glade.h:47
 msgid "Move selected ingredients up"
 msgstr "Mover ingredientes seleccionados arriba"
 
-#: glade/recCard.glade.h:48 src/lib/gglobals.py:147
+#: ../glade/recCard.glade.h:48 ../src/lib/gglobals.py:149
 msgid "Notes"
 msgstr "Notas"
 
-#: glade/recCard.glade.h:49 src/lib/reccard.py:802 src/lib/reccard.py:941
+#: ../glade/recCard.glade.h:49 ../src/lib/reccard.py:813
+#: ../src/lib/reccard.py:969
 msgid "Optional"
 msgstr "Opcional"
 
-#: glade/recCard.glade.h:50
+#: ../glade/recCard.glade.h:50
 msgid "Paste ingredient list from the clipboard."
 msgstr ""
 
-#: glade/recCard.glade.h:51
+#: ../glade/recCard.glade.h:51
 #, fuzzy
 msgid "Pre_paration Time: "
 msgstr "Tiempo para preparar"
 
-#: glade/recCard.glade.h:52
+#: ../glade/recCard.glade.h:52
 msgid "Recipe Card"
 msgstr "Re_ceita"
 
-#: glade/recCard.glade.h:55
+#: ../glade/recCard.glade.h:55
 msgid "S_hopping Category: "
 msgstr "Categoría de compras"
 
-#: glade/recCard.glade.h:56
+#: ../glade/recCard.glade.h:56
 msgid "S_ource:"
 msgstr "_Fuente"
 
-#: glade/recCard.glade.h:57
+#: ../glade/recCard.glade.h:57
 msgid "Save changes"
 msgstr "Guardar los cambios"
 
-#: glade/recCard.glade.h:58
+#: ../glade/recCard.glade.h:58
 msgid "Standardized name for ingredient (to be used in shopping lists)."
 msgstr ""
 
-#: glade/recCard.glade.h:59
+#: ../glade/recCard.glade.h:59
 msgid ""
 "When multiplying recipe, automatically change units to keep amounts as "
 "useable as possible."
 msgstr ""
 
-#: glade/recCard.glade.h:60
+#: ../glade/recCard.glade.h:60
 msgid "_Add Image"
 msgstr "Añadir i_mágen"
 
-#: glade/recCard.glade.h:61
+#: ../glade/recCard.glade.h:61
 #, fuzzy
 msgid "_Add ingredient"
 msgstr "Aña_dir ingrediente"
 
-#: glade/recCard.glade.h:62
+#: ../glade/recCard.glade.h:62
 msgid "_Allow units to change when multiplying"
 msgstr ""
 
-#: glade/recCard.glade.h:63
+#: ../glade/recCard.glade.h:63
 msgid "_Amount: "
 msgstr "C_antidad"
 
-#: glade/recCard.glade.h:64
+#: ../glade/recCard.glade.h:64
 msgid "_Bold"
 msgstr ""
 
-#: glade/recCard.glade.h:65
+#: ../glade/recCard.glade.h:65
 msgid "_Category:"
 msgstr "_Categoría"
 
-#: glade/recCard.glade.h:66
+#: ../glade/recCard.glade.h:66
 msgid "_Close"
 msgstr "_Cerrar"
 
-#: glade/recCard.glade.h:67
+#: ../glade/recCard.glade.h:67
 msgid "_Delete Ingredient"
 msgstr "_Borrar ingrediente"
 
-#: glade/recCard.glade.h:68
+#: ../glade/recCard.glade.h:68
 #, fuzzy
 msgid "_Delete ingredient"
 msgstr "_Borrar ingrediente"
 
-#: glade/recCard.glade.h:69
+#: ../glade/recCard.glade.h:69
 msgid "_Delete this Recipe"
 msgstr "_Borrar la receta"
 
-#: glade/recCard.glade.h:70
+#: ../glade/recCard.glade.h:70
 msgid "_E-mail recipe"
 msgstr "_Mandar receta por e-mail"
 
-#: glade/recCard.glade.h:73
+#: ../glade/recCard.glade.h:73
 msgid "_Image: "
 msgstr ""
 
-#: glade/recCard.glade.h:74
+#: ../glade/recCard.glade.h:74
 #, fuzzy
 msgid "_Import Ingredients"
 msgstr "Importar lista de ingredientes"
 
-#: glade/recCard.glade.h:75
+#: ../glade/recCard.glade.h:75
 #, fuzzy
 msgid "_Import ingredient list"
 msgstr "Importar lista de ingredientes"
 
-#: glade/recCard.glade.h:76
+#: ../glade/recCard.glade.h:76
 msgid "_Ingredient Editor"
 msgstr "Editar ingredientes"
 
-#: glade/recCard.glade.h:77
+#: ../glade/recCard.glade.h:77
 msgid "_Ingredient:"
 msgstr "_Ingrediente"
 
-#: glade/recCard.glade.h:78
+#: ../glade/recCard.glade.h:78
 msgid "_Italic"
 msgstr ""
 
-#: glade/recCard.glade.h:79
+#: ../glade/recCard.glade.h:79
 msgid "_New Ingredient"
 msgstr "_Nuevo ingrediente"
 
-#: glade/recCard.glade.h:81
+#: ../glade/recCard.glade.h:81
 msgid "_Rating:"
 msgstr "_Valoración"
 
-#: glade/recCard.glade.h:83
+#: ../glade/recCard.glade.h:83
 #, fuzzy
 msgid "_Remove Image"
 msgstr "Quitar Imágen"
 
-#: glade/recCard.glade.h:84
+#: ../glade/recCard.glade.h:84
 #, fuzzy
 msgid "_Save"
 msgstr "!Guardado!"
 
-#: glade/recCard.glade.h:85
+#: ../glade/recCard.glade.h:85
 msgid "_Servings: "
 msgstr "_Ración"
 
-#: glade/recCard.glade.h:87
+#: ../glade/recCard.glade.h:87
 msgid "_Title: "
 msgstr "_Título"
 
-#: glade/recCard.glade.h:89
+#: ../glade/recCard.glade.h:89
 msgid "_Underline"
 msgstr ""
 
-#: glade/recCard.glade.h:92
+#: ../glade/recCard.glade.h:92
 msgid "_Unit: "
 msgstr "_Unidad"
 
-#: glade/recCard.glade.h:94 glade/rec_ref_window.glade.h:10
-#: src/lib/recindex.py:34 src/lib/recindex.py:37 src/lib/recindex.py:43
+#: ../glade/recCard.glade.h:94 ../glade/rec_ref_window.glade.h:10
+#: ../src/lib/recindex.py:36 ../src/lib/recindex.py:39
+#: ../src/lib/recindex.py:45
 msgid "rating"
 msgstr "valoración"
 
-#: glade/recCard.glade.h:95 glade/rec_ref_window.glade.h:12
-#: src/lib/recindex.py:35 src/lib/recindex.py:37 src/lib/recindex.py:44
+#: ../glade/recCard.glade.h:95 ../glade/rec_ref_window.glade.h:12
+#: ../src/lib/recindex.py:37 ../src/lib/recindex.py:39
+#: ../src/lib/recindex.py:46
 msgid "source"
 msgstr "fuente"
 
-#: glade/recSelector.glade.h:2
+#: ../glade/recSelector.glade.h:2
 msgid "Advanced"
 msgstr "_Avanzada"
 
-#: glade/recSelector.glade.h:3
+#: ../glade/recSelector.glade.h:3
 msgid "Advanced Search"
 msgstr "Busqueda avanzada"
 
-#: glade/recSelector.glade.h:7
+#: ../glade/recSelector.glade.h:7
 msgid "Search as you type"
 msgstr "Buscar mientras escribe"
 
-#: glade/recSelector.glade.h:9
+#: ../glade/recSelector.glade.h:9
 msgid "Select Recipe"
 msgstr "Seleccionar receta"
 
-#: glade/recSelector.glade.h:10
+#: ../glade/recSelector.glade.h:10
 msgid "Use regular expressions (an advanced method of searching)"
 msgstr "Usar expresiones regulares (búsqueda experta)"
 
-#: glade/recSelector.glade.h:11
+#: ../glade/recSelector.glade.h:11
 msgid "Use regular expressions to search"
 msgstr "Usar expresiones regulares"
 
-#: glade/recSelector.glade.h:12
+#: ../glade/recSelector.glade.h:12
 #, fuzzy
 msgid "_Delete"
 msgstr "_Borrar receta"
 
-#: glade/recSelector.glade.h:13
+#: ../glade/recSelector.glade.h:13
 msgid "_Undelete"
 msgstr ""
 
-#: glade/rec_ref_window.glade.h:3
+#: ../glade/rec_ref_window.glade.h:3
 msgid "Search by"
 msgstr "Buscar por"
 
-#: glade/rec_ref_window.glade.h:5
+#: ../glade/rec_ref_window.glade.h:5
 msgid "Select Recipe to include in Ingredient List"
 msgstr "Seleccionar receta para incluir en la lista de ingredientes"
 
-#: glade/rec_ref_window.glade.h:6 src/lib/recindex.py:32
-#: src/lib/recindex.py:37 src/lib/recindex.py:41
+#: ../glade/rec_ref_window.glade.h:6 ../src/lib/recindex.py:34
+#: ../src/lib/recindex.py:39 ../src/lib/recindex.py:43
 msgid "category"
 msgstr "categoría"
 
-#: glade/rec_ref_window.glade.h:7 src/lib/recindex.py:33
-#: src/lib/recindex.py:37 src/lib/recindex.py:42
+#: ../glade/rec_ref_window.glade.h:7 ../src/lib/recindex.py:35
+#: ../src/lib/recindex.py:39 ../src/lib/recindex.py:44
 msgid "cuisine"
 msgstr "cocina"
 
-#: glade/rec_ref_window.glade.h:8 src/lib/recindex.py:31
-#: src/lib/recindex.py:37 src/lib/recindex.py:40
+#: ../glade/rec_ref_window.glade.h:8 ../src/lib/recindex.py:33
+#: ../src/lib/recindex.py:39 ../src/lib/recindex.py:42
 msgid "ingredient"
 msgstr "ingrediente"
 
-#: glade/rec_ref_window.glade.h:9
+#: ../glade/rec_ref_window.glade.h:9
 msgid "instructions"
 msgstr "instrucciones"
 
-#: glade/rec_ref_window.glade.h:11
+#: ../glade/rec_ref_window.glade.h:11
 msgid "servings"
 msgstr "raciones"
 
-#: glade/rec_ref_window.glade.h:13 src/lib/recindex.py:30
-#: src/lib/recindex.py:37 src/lib/recindex.py:39
+#: ../glade/rec_ref_window.glade.h:13 ../src/lib/recindex.py:32
+#: ../src/lib/recindex.py:39 ../src/lib/recindex.py:41
 msgid "title"
 msgstr "título"
 
-#: glade/shopList.glade.h:2
+#: ../glade/shopList.glade.h:2
 msgid "Add Items to Shopping List"
 msgstr "Añadir artículos a la lista de compras"
 
-#: glade/shopList.glade.h:5
+#: ../glade/shopList.glade.h:5
 msgid "Already Have (Pantry Items)"
 msgstr "No comprar (en la despensa)"
 
-#: glade/shopList.glade.h:6 src/lib/reccard.py:1831
+#: ../glade/shopList.glade.h:6 ../src/lib/reccard.py:1936
 msgid "Amount"
 msgstr "Cantidad"
 
-#: glade/shopList.glade.h:7
+#: ../glade/shopList.glade.h:7
 msgid "Include this item on your shopping list."
 msgstr "Incluir el artículo en la lista de compras"
 
-#: glade/shopList.glade.h:8 src/lib/keyEditor.py:83 src/lib/reccard.py:801
-#: src/lib/reccard.py:961 src/lib/reccard.py:1831
+#: ../glade/shopList.glade.h:8 ../src/lib/keyEditor.py:83
+#: ../src/lib/reccard.py:802 ../src/lib/reccard.py:812
+#: ../src/lib/reccard.py:1936
 msgid "Item"
 msgstr "Artículo"
 
-#: glade/shopList.glade.h:11 src/lib/keyEditor.py:85
-#: src/lib/exporters/recipe_emailer.py:54
+#: ../glade/shopList.glade.h:11 ../src/lib/keyEditor.py:85
+#: ../src/lib/exporters/recipe_emailer.py:54
 msgid "Recipes"
 msgstr "recetas"
 
-#: glade/shopList.glade.h:12
+#: ../glade/shopList.glade.h:12
 msgid ""
 "Remove this item from the shopping list. It will show up in the \"pantry\" "
 "list as a reminder that you need it, but it won't be included when you save "
@@ -683,84 +693,84 @@ msgstr ""
 "Quitar el artículo de la lista de compras. Estará en \"la despensa\"como un "
 "recuerdo, pero no será incluido en la lista de compras."
 
-#: glade/shopList.glade.h:13 src/lib/reccard.py:804 src/lib/reccard.py:879
-#: src/lib/reccard.py:955
+#: ../glade/shopList.glade.h:13 ../src/lib/reccard.py:815
+#: ../src/lib/reccard.py:906 ../src/lib/reccard.py:999
 msgid "Shopping Category"
 msgstr "Categoría de compras"
 
-#: glade/shopList.glade.h:14 src/lib/shopgui.py:92
-#: src/lib/exporters/pdf_exporter.py:11
+#: ../glade/shopList.glade.h:14 ../src/lib/shopgui.py:93
+#: ../src/lib/exporters/pdf_exporter.py:11
 msgid "Shopping List"
 msgstr "Lista de compras"
 
-#: glade/shopList.glade.h:15 src/lib/reccard.py:800 src/lib/reccard.py:960
-#: src/lib/reccard.py:1831
+#: ../glade/shopList.glade.h:15 ../src/lib/reccard.py:801
+#: ../src/lib/reccard.py:811 ../src/lib/reccard.py:1936
 msgid "Unit"
 msgstr "Unidad"
 
-#: glade/shopList.glade.h:16
+#: ../glade/shopList.glade.h:16
 msgid "_Add Items to Shopping List"
 msgstr "Añadir artículos a la lista de compras"
 
-#: glade/converter.glade.h:2
+#: ../glade/converter.glade.h:2
 msgid "1"
 msgstr ""
 
-#: glade/converter.glade.h:3
+#: ../glade/converter.glade.h:3
 msgid "<b>From</b>"
 msgstr ""
 
-#: glade/converter.glade.h:4
+#: ../glade/converter.glade.h:4
 msgid "<b>To</b>"
 msgstr ""
 
-#: glade/converter.glade.h:5
+#: ../glade/converter.glade.h:5
 msgid "?"
 msgstr "?"
 
-#: glade/converter.glade.h:6
+#: ../glade/converter.glade.h:6
 #, fuzzy
 msgid "Density _Information"
 msgstr "Usar _información de densidad"
 
-#: glade/converter.glade.h:7
+#: ../glade/converter.glade.h:7
 #, fuzzy
 msgid "I_tem:"
 msgstr "Artículo"
 
-#: glade/converter.glade.h:8 src/lib/convertGui.py:152
+#: ../glade/converter.glade.h:8 ../src/lib/convertGui.py:152
 msgid "None"
 msgstr "Ningún"
 
-#: glade/converter.glade.h:9
+#: ../glade/converter.glade.h:9
 msgid "Unit Converter"
 msgstr "Convertidora de Unidades"
 
-#: glade/converter.glade.h:10
+#: ../glade/converter.glade.h:10
 #, fuzzy
 msgid "_Amount:"
 msgstr "C_antidad"
 
-#: glade/converter.glade.h:11
+#: ../glade/converter.glade.h:11
 #, fuzzy
 msgid "_Density:"
 msgstr "_Densidad"
 
-#: glade/converter.glade.h:12
+#: ../glade/converter.glade.h:12
 msgid "_Result:"
 msgstr ""
 
-#: glade/converter.glade.h:13
+#: ../glade/converter.glade.h:13
 #, fuzzy
 msgid "_Unit:"
 msgstr "_Unidad"
 
-#: src/lib/check_encodings.py:69
+#: ../src/lib/check_encodings.py:69
 #, fuzzy
 msgid "Select encoding"
 msgstr "Seleccionar receta"
 
-#: src/lib/check_encodings.py:70
+#: ../src/lib/check_encodings.py:70
 msgid ""
 "Cannot determine proper encoding. Please select the correct encoding from "
 "the following list."
@@ -768,127 +778,127 @@ msgstr ""
 "No se puede determinar la codificación correcta. Seleccionar la codificación "
 "correcta de la lista."
 
-#: src/lib/check_encodings.py:71
+#: ../src/lib/check_encodings.py:71
 msgid "See _file with encoding"
 msgstr "Ver _archivo con la codificación."
 
-#: src/lib/convertGui.py:106
+#: ../src/lib/convertGui.py:106
 #, fuzzy, python-format
 msgid "Cannot convert %s to %s"
 msgstr "No se puede convertir"
 
-#: src/lib/convertGui.py:108
+#: ../src/lib/convertGui.py:108
 #, fuzzy
 msgid "Need density information."
 msgstr "Usar _información de densidad"
 
-#: src/lib/dialog_extras.py:256
+#: ../src/lib/dialog_extras.py:284
 msgid "_Pause"
 msgstr "_Pausar"
 
-#: src/lib/dialog_extras.py:260
+#: ../src/lib/dialog_extras.py:288
 msgid "_Stop"
 msgstr ""
 
-#: src/lib/dialog_extras.py:296 src/lib/dialog_extras.py:387
+#: ../src/lib/dialog_extras.py:324 ../src/lib/dialog_extras.py:415
 msgid "Don't ask me this again."
 msgstr "No preguntar otra vez."
 
-#: src/lib/dialog_extras.py:353
+#: ../src/lib/dialog_extras.py:381
 msgid "Do you really want to do this"
 msgstr "¿Desea hacerlo?"
 
-#: src/lib/dialog_extras.py:598 src/lib/FileChooserSaveAs.py:153
+#: ../src/lib/dialog_extras.py:626 ../src/lib/FileChooserSaveAs.py:153
 msgid "Select File_type"
 msgstr "Seleccionar _tipo de archivo"
 
-#: src/lib/dialog_extras.py:669
+#: ../src/lib/dialog_extras.py:697
 #, fuzzy
 msgid "No file selected"
 msgstr "Ver receta seleccionada"
 
-#: src/lib/dialog_extras.py:670
+#: ../src/lib/dialog_extras.py:698
 msgid "No file was selected, so the action has been cancelled"
 msgstr ""
 
-#: src/lib/dialog_extras.py:683 src/lib/FileChooserSaveAs.py:224
+#: ../src/lib/dialog_extras.py:711 ../src/lib/FileChooserSaveAs.py:224
 #, python-format
 msgid "A file named %s already exists."
 msgstr "Un archivo llamado %s ya existe."
 
-#: src/lib/dialog_extras.py:684 src/lib/FileChooserSaveAs.py:225
+#: ../src/lib/dialog_extras.py:712 ../src/lib/FileChooserSaveAs.py:225
 msgid "Do you want to replace it with the one you are saving?"
 msgstr "¿Desea reemplazarlo con el que está guardando ahora?"
 
-#. renderer.set_property('editable',gtk.TRUE)
+#. renderer.set_property('editable',True)
 #. renderer.connect('edited',tst)
-#: src/lib/gglobals.py:136 src/lib/shopgui.py:64
+#: ../src/lib/gglobals.py:138 ../src/lib/shopgui.py:65
 msgid "Title"
 msgstr "Título"
 
-#: src/lib/gglobals.py:137
+#: ../src/lib/gglobals.py:139
 msgid "Category"
 msgstr "Categoría"
 
-#: src/lib/gglobals.py:138
+#: ../src/lib/gglobals.py:140
 msgid "Cuisine"
 msgstr "C_ocina"
 
-#: src/lib/gglobals.py:139
+#: ../src/lib/gglobals.py:141
 msgid "Rating"
 msgstr "_Valoración"
 
-#: src/lib/gglobals.py:140
+#: ../src/lib/gglobals.py:142
 msgid "Source"
 msgstr "_Fuente"
 
-#: src/lib/gglobals.py:141
+#: ../src/lib/gglobals.py:143
 msgid "Servings"
 msgstr "Raciones"
 
-#: src/lib/gglobals.py:142
+#: ../src/lib/gglobals.py:144
 msgid "Preparation Time"
 msgstr "Tiempo para preparar"
 
-#: src/lib/gglobals.py:143
+#: ../src/lib/gglobals.py:145
 msgid "Cooking Time"
 msgstr ""
 
-#: src/lib/gglobals.py:198
+#: ../src/lib/gglobals.py:200
 #, fuzzy
 msgid "Unable to open URL"
 msgstr "No se puede guardar %s"
 
-#: src/lib/gglobals.py:199
+#: ../src/lib/gglobals.py:201
 msgid "Unable to launch mail reader."
 msgstr "No se puede lanzar el programa de e-mail."
 
-#: src/lib/gglobals.py:200
+#: ../src/lib/gglobals.py:202
 #, fuzzy
 msgid "Unable to open website."
 msgstr "No se puede guardar %s"
 
-#: src/lib/gglobals.py:201
+#: ../src/lib/gglobals.py:203
 #, fuzzy
 msgid "Unable to open file."
 msgstr "No se puede guardar %s"
 
-#: src/lib/gglobals.py:206 src/lib/GourmetRecipeManager.py:363
-#: src/lib/GourmetThreads.py:44 src/lib/reccard.py:1302
+#: ../src/lib/gglobals.py:208 ../src/lib/GourmetRecipeManager.py:371
+#: ../src/lib/GourmetThreads.py:44 ../src/lib/reccard.py:1408
 #, fuzzy
 msgid "_Details"
 msgstr "Detalles"
 
-#: src/lib/gglobals.py:207
+#: ../src/lib/gglobals.py:209
 #, fuzzy, python-format
 msgid "There was an error launching the url: %s"
 msgstr "Hubo un error que impidió la importación de %s"
 
-#: src/lib/GourmetFauxThreads.py:23
+#: ../src/lib/GourmetFauxThreads.py:23
 msgid "Gourmet will be busy for a while."
 msgstr "Gourmet estará ocupado un rato."
 
-#: src/lib/GourmetFauxThreads.py:24
+#: ../src/lib/GourmetFauxThreads.py:24
 msgid ""
 "This may take a long time. Gourmet will be unresponsive while it works. "
 "Proceed anyway?"
@@ -896,363 +906,370 @@ msgstr ""
 "Esto puede durar mucho tiempo. Gourmet no estará responsivo mientras trabaja."
 "¿Continuar?"
 
-#: src/lib/GourmetFauxThreads.py:26
+#: ../src/lib/GourmetFauxThreads.py:26
 msgid "Proceed"
 msgstr "Continuar"
 
-#: src/lib/GourmetRecipeManager.py:59
+#: ../src/lib/GourmetRecipeManager.py:59
 msgid "Loading window preferences..."
 msgstr "Cargando preferencias de ventana..."
 
-#: src/lib/GourmetRecipeManager.py:61
+#: ../src/lib/GourmetRecipeManager.py:61
 msgid "Loading graphical interface..."
 msgstr "Cargando interfase..."
 
-#: src/lib/GourmetRecipeManager.py:104
+#: ../src/lib/GourmetRecipeManager.py:106
 msgid "Loading recipe database..."
 msgstr "Cargando base de datos..."
 
-#: src/lib/GourmetRecipeManager.py:106
+#: ../src/lib/GourmetRecipeManager.py:108
 msgid "Setting up recipe index..."
 msgstr "Creando índice de recetas"
 
-#: src/lib/GourmetRecipeManager.py:141 src/lib/GourmetRecipeManager.py:918
+#: ../src/lib/GourmetRecipeManager.py:148
+#: ../src/lib/GourmetRecipeManager.py:926
 msgid "Done!"
 msgstr "¡Fin!"
 
-#: src/lib/GourmetRecipeManager.py:161
+#: ../src/lib/GourmetRecipeManager.py:168
 msgid "Recipe _Index"
 msgstr "Ãndice de recetas"
 
-#: src/lib/GourmetRecipeManager.py:162
+#: ../src/lib/GourmetRecipeManager.py:169
 msgid "Shopping _List"
 msgstr "Lista de compras"
 
-#: src/lib/GourmetRecipeManager.py:198
+#: ../src/lib/GourmetRecipeManager.py:206
 msgid "Roland Duhaime (Windows porting assistance)"
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:199
+#: ../src/lib/GourmetRecipeManager.py:207
 msgid "Richard Ferguson (improvements to Unit Converter interface)"
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:200
+#: ../src/lib/GourmetRecipeManager.py:208
 msgid "R.S. Born (improvements to Mealmaster export)"
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:203
+#: ../src/lib/GourmetRecipeManager.py:211
 msgid "translator-credits"
 msgstr ""
 "Traducción a español: Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>"
 
-#: src/lib/GourmetRecipeManager.py:231 src/lib/GourmetRecipeManager.py:242
+#: ../src/lib/GourmetRecipeManager.py:239
+#: ../src/lib/GourmetRecipeManager.py:250
 #, python-format
 msgid ""
 "\n"
 "Website: %s"
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:240
+#: ../src/lib/GourmetRecipeManager.py:248
 #, python-format
 msgid ""
 "\n"
 "Translated by: %s"
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:246
+#: ../src/lib/GourmetRecipeManager.py:254
 msgid "Import paused"
 msgstr "Importación pausada"
 
-#: src/lib/GourmetRecipeManager.py:247
+#: ../src/lib/GourmetRecipeManager.py:255
 msgid "Stop import"
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:277
+#: ../src/lib/GourmetRecipeManager.py:285
 #, python-format
 msgid "Save your edits to %s"
 msgstr "Guardar cambios a %s"
 
-#: src/lib/GourmetRecipeManager.py:287
+#: ../src/lib/GourmetRecipeManager.py:295
 msgid "An import is in progress."
 msgstr "Está importando."
 
-#: src/lib/GourmetRecipeManager.py:288
+#: ../src/lib/GourmetRecipeManager.py:296
 msgid "An export is in progress."
 msgstr "Está exportando"
 
-#: src/lib/GourmetRecipeManager.py:289
+#: ../src/lib/GourmetRecipeManager.py:297
 msgid "A delete is in progress."
 msgstr "Está exportando"
 
-#: src/lib/GourmetRecipeManager.py:291
+#: ../src/lib/GourmetRecipeManager.py:299
 msgid "Exit program anyway?"
 msgstr "¿Salir del programa sin embargo?"
 
-#: src/lib/GourmetRecipeManager.py:293
+#: ../src/lib/GourmetRecipeManager.py:301
 msgid "Don't exit!"
 msgstr "¡No Salir!"
 
-#: src/lib/GourmetRecipeManager.py:348
+#: ../src/lib/GourmetRecipeManager.py:356
 #, python-format
 msgid "I can't determine the type of file %s"
 msgstr "No se puede averiguar el tipo del archivo %s"
 
-#: src/lib/GourmetRecipeManager.py:499
+#: ../src/lib/GourmetRecipeManager.py:507
 #, fuzzy
 msgid "Deleted "
 msgstr "Borrarlos"
 
-#: src/lib/GourmetRecipeManager.py:503 src/lib/GourmetRecipeManager.py:565
-#: src/lib/GourmetRecipeManager.py:716 src/lib/GourmetRecipeManager.py:757
-#: src/lib/GourmetRecipeManager.py:780 src/lib/GourmetRecipeManager.py:840
-#: src/lib/GourmetRecipeManager.py:1007
+#: ../src/lib/GourmetRecipeManager.py:511
+#: ../src/lib/GourmetRecipeManager.py:573
+#: ../src/lib/GourmetRecipeManager.py:724
+#: ../src/lib/GourmetRecipeManager.py:765
+#: ../src/lib/GourmetRecipeManager.py:788
+#: ../src/lib/GourmetRecipeManager.py:848
+#: ../src/lib/GourmetRecipeManager.py:1015
 msgid "An import, export or deletion is running"
 msgstr "Un importación, exportación o tachadura está en proceso."
 
-#: src/lib/GourmetRecipeManager.py:504 src/lib/GourmetRecipeManager.py:1008
+#: ../src/lib/GourmetRecipeManager.py:512
+#: ../src/lib/GourmetRecipeManager.py:1016
 msgid "Please wait until it is finished to delete recipes."
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:509
+#: ../src/lib/GourmetRecipeManager.py:517
 #, fuzzy
 msgid "Permanently delete recipes?"
 msgstr "Ver receta seleccionada"
 
-#: src/lib/GourmetRecipeManager.py:511
+#: ../src/lib/GourmetRecipeManager.py:519
 #, fuzzy
 msgid "Permanently delete recipe?"
 msgstr "Ver receta seleccionada"
 
-#: src/lib/GourmetRecipeManager.py:512
+#: ../src/lib/GourmetRecipeManager.py:520
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
 msgstr "¿Desea borrar la receta <i>%s</i>?"
 
-#: src/lib/GourmetRecipeManager.py:514
+#: ../src/lib/GourmetRecipeManager.py:522
 msgid "Are you sure you want to delete the following recipes?"
 msgstr "¿Desea borrar las siguientes recetas?"
 
-#: src/lib/GourmetRecipeManager.py:518
+#: ../src/lib/GourmetRecipeManager.py:526
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
 msgstr "¿Desea borrar las %s recetas seleccionadas?"
 
-#: src/lib/GourmetRecipeManager.py:520
+#: ../src/lib/GourmetRecipeManager.py:528
 msgid "See recipes"
 msgstr "Ver recetas"
 
-#: src/lib/GourmetRecipeManager.py:545
+#: ../src/lib/GourmetRecipeManager.py:553
 msgid "Deletion paused"
 msgstr "Tachadura pausado."
 
-#: src/lib/GourmetRecipeManager.py:545
+#: ../src/lib/GourmetRecipeManager.py:553
 msgid "Stop deletion"
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:566
+#: ../src/lib/GourmetRecipeManager.py:574
 msgid "The recipes will be deleted once the other process is finished."
 msgstr "Las recetas serán borrados cuando el otro proceso termine."
 
-#: src/lib/GourmetRecipeManager.py:592
+#: ../src/lib/GourmetRecipeManager.py:600
 #, python-format
 msgid "Deleted recipe %s"
 msgstr "Se borró la receta %s"
 
-#: src/lib/GourmetRecipeManager.py:626
+#: ../src/lib/GourmetRecipeManager.py:634
 #, fuzzy, python-format
 msgid "Print %s Recipes"
 msgstr "Imprimir recetas"
 
-#: src/lib/GourmetRecipeManager.py:665
+#: ../src/lib/GourmetRecipeManager.py:673
 #, python-format
 msgid "Number of servings of %s to shop for"
 msgstr "Comprar para cuántas raciones de %s: "
 
-#: src/lib/GourmetRecipeManager.py:673
+#: ../src/lib/GourmetRecipeManager.py:681
 #, python-format
 msgid "Multiply %s by: "
 msgstr "Multiplicar %s por"
 
-#: src/lib/GourmetRecipeManager.py:702 src/lib/shopgui.py:97
+#: ../src/lib/GourmetRecipeManager.py:710 ../src/lib/shopgui.py:98
 msgid "Saved!"
 msgstr "!Guardado!"
 
-#: src/lib/GourmetRecipeManager.py:717
+#: ../src/lib/GourmetRecipeManager.py:725
 msgid "Please wait until it is finished to start your export."
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:723
+#: ../src/lib/GourmetRecipeManager.py:731
 msgid "Export recipes"
 msgstr "Exportar recetas"
 
-#: src/lib/GourmetRecipeManager.py:724
+#: ../src/lib/GourmetRecipeManager.py:732
 msgid "recipes"
 msgstr "recetas"
 
-#: src/lib/GourmetRecipeManager.py:745
+#: ../src/lib/GourmetRecipeManager.py:753
 msgid "Export Paused"
 msgstr "Exportar pausado"
 
-#: src/lib/GourmetRecipeManager.py:745
+#: ../src/lib/GourmetRecipeManager.py:753
 msgid "Stop export"
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:758
+#: ../src/lib/GourmetRecipeManager.py:766
 msgid "Your export will start once the other process is finished."
 msgstr "La exportación empezará cuando termine el otro proceso."
 
-#: src/lib/GourmetRecipeManager.py:766 src/lib/reccard.py:1282
+#: ../src/lib/GourmetRecipeManager.py:774 ../src/lib/reccard.py:1388
 #, python-format
 msgid "Gourmet cannot export file of type \"%s\""
 msgstr "Gourmet no puede exportar un archivo de tipo \"%s\""
 
-#: src/lib/GourmetRecipeManager.py:781
+#: ../src/lib/GourmetRecipeManager.py:789
 msgid "Please wait until it is finished to start your import."
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:787
+#: ../src/lib/GourmetRecipeManager.py:795
 msgid "Import Recipes"
 msgstr "Importar recetas"
 
-#: src/lib/GourmetRecipeManager.py:809
+#: ../src/lib/GourmetRecipeManager.py:817
 #, python-format
 msgid "Default source for recipes imported from %s"
 msgstr "Fuente para recetas importadas de %s"
 
-#: src/lib/GourmetRecipeManager.py:810
+#: ../src/lib/GourmetRecipeManager.py:818
 #, fuzzy
 msgid "Source: "
 msgstr "_Fuente"
 
-#: src/lib/GourmetRecipeManager.py:831
+#: ../src/lib/GourmetRecipeManager.py:839
 #, fuzzy
 msgid "Importing Recipes"
 msgstr "Importar recetas"
 
-#: src/lib/GourmetRecipeManager.py:832
+#: ../src/lib/GourmetRecipeManager.py:840
 #, fuzzy, python-format
 msgid "Importing recipes from %s"
 msgstr "Importar recetas"
 
-#: src/lib/GourmetRecipeManager.py:841
+#: ../src/lib/GourmetRecipeManager.py:849
 msgid "Your import will start once the other process is finished."
 msgstr "La importación empezará cuando termine el otro proceso."
 
-#: src/lib/GourmetRecipeManager.py:863
+#: ../src/lib/GourmetRecipeManager.py:871
 #, fuzzy
 msgid "Export succeeded"
 msgstr "Exportar pausado"
 
-#: src/lib/GourmetRecipeManager.py:866
+#: ../src/lib/GourmetRecipeManager.py:874
 msgid "webpage"
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:867
+#: ../src/lib/GourmetRecipeManager.py:875
 #, python-format
 msgid "Exported %s to %s"
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:926
+#: ../src/lib/GourmetRecipeManager.py:934
 #, fuzzy
 msgid "Importing..."
 msgstr "_Importar"
 
-#: src/lib/GourmetRecipeManager.py:943
+#: ../src/lib/GourmetRecipeManager.py:951
 msgid "Show in Index View"
 msgstr "Ver en la vista índice"
 
-#: src/lib/GourmetRecipeManager.py:1003
+#: ../src/lib/GourmetRecipeManager.py:1011
 #, fuzzy
 msgid "Undeleted recipes "
 msgstr "Se borró la receta %s"
 
-#: src/lib/GourmetRecipeManager.py:1056
+#: ../src/lib/GourmetRecipeManager.py:1064
 msgid "Gourmet Recipe Manager starting up..."
 msgstr "Gourmet está cargando..."
 
-#: src/lib/GourmetRecipeManager.py:1065
+#: ../src/lib/GourmetRecipeManager.py:1073
 msgid "Starting gourmet..."
 msgstr "Gourmet está cargando"
 
-#: src/lib/GourmetThreads.py:37
+#: ../src/lib/GourmetThreads.py:37
 #, python-format
 msgid "%s stopped."
 msgstr "%s terminado."
 
-#: src/lib/GourmetThreads.py:38
+#: ../src/lib/GourmetThreads.py:38
 #, python-format
 msgid "%s was interrupted by user request."
 msgstr "Se interrumpió %s."
 
-#: src/lib/GourmetThreads.py:42
+#: ../src/lib/GourmetThreads.py:42
 #, python-format
 msgid "%s interrupted"
 msgstr "Se interrumpió %s"
 
-#: src/lib/GourmetThreads.py:43
+#: ../src/lib/GourmetThreads.py:43
 #, fuzzy, python-format
 msgid "There was an error during %s."
 msgstr "Hubo un error que impidió la importación de %s"
 
-#: src/lib/GourmetThreads.py:104
+#: ../src/lib/GourmetThreads.py:104
 #, fuzzy, python-format
 msgid "Deleting recipes from database... (%s of %s deleted)"
 msgstr "Número de recetas (Borrando recetas del base de datos)"
 
-#: src/lib/GourmetThreads.py:108
+#: ../src/lib/GourmetThreads.py:108
 #, fuzzy
 msgid "Deleted 1 recipe."
 msgstr "%s recetas borradas."
 
-#: src/lib/GourmetThreads.py:109
+#: ../src/lib/GourmetThreads.py:109
 #, fuzzy, python-format
 msgid "Deleted %s recipes"
 msgstr "%s recetas borradas."
 
-#: src/lib/keyEditor.py:82 src/lib/reccard.py:803 src/lib/reccard.py:962
+#: ../src/lib/keyEditor.py:82 ../src/lib/reccard.py:803
+#: ../src/lib/reccard.py:814 ../src/lib/reccard.py:833
 msgid "Key"
 msgstr "Clave"
 
-#: src/lib/keyEditor.py:84
+#: ../src/lib/keyEditor.py:84
 msgid "Count"
 msgstr "Cantidad"
 
-#: src/lib/keyEditor.py:106
+#: ../src/lib/keyEditor.py:106
 msgid "Are you sure you want to change the "
 msgstr "¿Desea cambiar "
 
-#: src/lib/keyEditor.py:107
+#: ../src/lib/keyEditor.py:107
 msgid "key"
 msgstr "la clave"
 
-#: src/lib/keyEditor.py:108
+#: ../src/lib/keyEditor.py:108
 msgid "item"
 msgstr "el artículo"
 
-#: src/lib/keyEditor.py:110
+#: ../src/lib/keyEditor.py:110
 #, python-format
 msgid "for \"%s from \"%s\""
 msgstr "para \"%s\" desde \"%s\""
 
-#: src/lib/keyEditor.py:112
+#: ../src/lib/keyEditor.py:112
 #, python-format
 msgid " from \"%s\" "
 msgstr " desde \"%s\" "
 
-#: src/lib/keyEditor.py:113
+#: ../src/lib/keyEditor.py:113
 #, python-format
 msgid " to \"%s\""
 msgstr " a \"%s\""
 
-#: src/lib/keyEditor.py:116
+#: ../src/lib/keyEditor.py:116
 msgid "Don't ask me before changing keys and items."
 msgstr "No preguntar antes de cambiar claves y artículos"
 
-#: src/lib/keyEditor.py:221
+#: ../src/lib/keyEditor.py:221
 msgid "You haven't entered a key!"
 msgstr "¡No ha entrado una clave!"
 
-#: src/lib/keyEditor.py:223
+#: ../src/lib/keyEditor.py:223
 #, python-format
 msgid ""
 "Are you sure you want the keys\n"
@@ -1263,150 +1280,192 @@ msgstr ""
 " a \"%s\""
 
 #. self.serves = float(self.serveW.get_text())
-#: src/lib/reccard.py:209
+#: ../src/lib/reccard.py:208
 msgid "Recipe Card: "
 msgstr "receta"
 
 #. action groups
-#: src/lib/reccard.py:271
+#: ../src/lib/reccard.py:270
 #, fuzzy
 msgid "Add new ingredient to the list."
 msgstr "¡Un ingrediente tiene que incluir un artículo!"
 
-#: src/lib/reccard.py:274
+#: ../src/lib/reccard.py:273
 #, fuzzy
 msgid "Create new subgroup of ingredients."
 msgstr "Seleccionar ingredientes opcionales"
 
-#: src/lib/reccard.py:276
+#: ../src/lib/reccard.py:275
 #, fuzzy
 msgid "Import list of ingredients from text file."
 msgstr "Exportar la receta como un archivo de texto"
 
-#: src/lib/reccard.py:279
+#: ../src/lib/reccard.py:278
 msgid "Paste list of ingredients from clipboard."
 msgstr ""
 
-#: src/lib/reccard.py:282
+#: ../src/lib/reccard.py:281
 msgid "Add another recipe as an \"ingredient\" in the current recipe."
 msgstr ""
 
-#: src/lib/reccard.py:290
+#: ../src/lib/reccard.py:289
 #, fuzzy
 msgid "Move selected ingredient up."
 msgstr "_Borrar ingrediente"
 
-#: src/lib/reccard.py:293
+#: ../src/lib/reccard.py:292
 #, fuzzy
 msgid "Move selected ingredient down."
 msgstr "_Borrar ingrediente"
 
-#: src/lib/reccard.py:413
+#: ../src/lib/reccard.py:412
 msgid "Choose an image to insert in instructions... "
 msgstr "Escoger una imágen para añadir a las instrucciones."
 
-#: src/lib/reccard.py:524 src/lib/reccard.py:799 src/lib/reccard.py:959
+#: ../src/lib/reccard.py:523 ../src/lib/reccard.py:800
+#: ../src/lib/reccard.py:810
 msgid "Amt"
 msgstr "Cantidad"
 
-#: src/lib/reccard.py:594
+#: ../src/lib/reccard.py:593
 #, fuzzy
 msgid "Adding Ingredient Group"
 msgstr "Editar las claves de ingredientes"
 
-#: src/lib/reccard.py:595
+#: ../src/lib/reccard.py:594
 msgid "Enter a name for new subgroup of ingredients"
 msgstr ""
 
-#: src/lib/reccard.py:596
+#: ../src/lib/reccard.py:595
 msgid "Name of group: "
 msgstr ""
 
-#: src/lib/reccard.py:614
+#: ../src/lib/reccard.py:613
 #, python-format
 msgid "Abandon your edits to %s?"
 msgstr "Abandonar sus cambios a %s"
 
-#: src/lib/reccard.py:621
+#: ../src/lib/reccard.py:620
 msgid "Are you sure you want to abandon your changes?"
 msgstr "¿Desea abandonar sus cambios?"
 
-#: src/lib/reccard.py:636
+#: ../src/lib/reccard.py:635
 #, python-format
 msgid "Couldn't make sense of %s as number of servings"
 msgstr "No pude interpretar %s como un número de raciones."
 
-#: src/lib/reccard.py:779
+#: ../src/lib/reccard.py:781
 #, fuzzy
 msgid "(Optional)"
 msgstr "Opcional"
 
-#: src/lib/reccard.py:888
+#: ../src/lib/reccard.py:916
 msgid "New Category"
 msgstr "Nueva categoría"
 
-#: src/lib/reccard.py:910 src/lib/shopgui.py:349
+#: ../src/lib/reccard.py:938 ../src/lib/shopgui.py:350
 #, python-format
 msgid "Category to add %s to"
 msgstr "Categoría para %s"
 
-#: src/lib/reccard.py:1154
+#: ../src/lib/reccard.py:1063
+#, python-format
+msgid "Converted: %(amt)s %(unit)s"
+msgstr ""
+
+#: ../src/lib/reccard.py:1065
+#, python-format
+msgid "Not Converted: %(amt)s %(unit)s"
+msgstr ""
+
+#: ../src/lib/reccard.py:1069
+msgid "Changed unit."
+msgstr ""
+
+#: ../src/lib/reccard.py:1070
+#, python-format
+msgid ""
+"You have changed the unit for %(item)s from %(old)s to %(new)s. Would you "
+"like the amount converted or not?"
+msgstr ""
+
+#: ../src/lib/reccard.py:1081
+#, python-format
+msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
+msgstr ""
+
+#: ../src/lib/reccard.py:1082
+msgid "old_amt"
+msgstr ""
+
+#: ../src/lib/reccard.py:1093
+#, python-format
+msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
+msgstr ""
+
+#: ../src/lib/reccard.py:1093
+#, fuzzy
+msgid "old_unit"
+msgstr "Cantidad"
+
+#: ../src/lib/reccard.py:1258
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
 msgstr "La receta %s (ID %s) no está en el base de datos."
 
 #. FIXME
-#: src/lib/reccard.py:1255
+#: ../src/lib/reccard.py:1361
 msgid "Choose a file containing your ingredient list."
 msgstr "Escoger el archivo que contiene su lista de ingredientes."
 
-#: src/lib/reccard.py:1277
+#: ../src/lib/reccard.py:1383
 msgid "Save recipe as..."
 msgstr "Guardar recetas como..."
 
-#: src/lib/reccard.py:1300
+#: ../src/lib/reccard.py:1406
 #, python-format
 msgid "Unable to save %s"
 msgstr "No se puede guardar %s"
 
-#: src/lib/reccard.py:1301
+#: ../src/lib/reccard.py:1407
 #, fuzzy
 msgid "There was an error during export."
 msgstr "Hubo un error que impidió la importación de %s"
 
-#: src/lib/reccard.py:1320 src/lib/reccard.py:1354 src/lib/reccard.py:1367
+#: ../src/lib/reccard.py:1426 ../src/lib/reccard.py:1460
+#: ../src/lib/reccard.py:1473
 msgid "You have unsaved changes."
 msgstr "Tiene cambios que no se han guardado."
 
-#: src/lib/reccard.py:1324
+#: ../src/lib/reccard.py:1430
 msgid "There are no unsaved changes."
 msgstr "Todos los cambios son guardados."
 
-#: src/lib/reccard.py:1329
+#: ../src/lib/reccard.py:1435
 #, python-format
 msgid "Save edits to %s before closing?"
 msgstr "¿Guardar cambios a %s antes de cerrar?"
 
-#: src/lib/reccard.py:1355
+#: ../src/lib/reccard.py:1461
 #, fuzzy
 msgid "Apply changes before e-mailing?"
 msgstr "¿Aplicar cambios antes de imprimir?"
 
-#: src/lib/reccard.py:1368
+#: ../src/lib/reccard.py:1474
 msgid "Apply changes before printing?"
 msgstr "¿Aplicar cambios antes de imprimir?"
 
-#: src/lib/reccard.py:1371
+#: ../src/lib/reccard.py:1477
 #, python-format
 msgid "Print Recipe %s"
 msgstr "Imprimir receta %s"
 
-#: src/lib/reccard.py:1747
+#: ../src/lib/reccard.py:1852
 #, python-format
 msgid "Assuming you wanted item equal to key %s"
 msgstr "Supongo que quería el artículo que corresponde al clave %s"
 
-#: src/lib/reccard.py:1754
+#: ../src/lib/reccard.py:1859
 #, python-format
 msgid ""
 "You forgot an item. Assuming you meant \"%s\" as an item and not a unit."
@@ -1414,47 +1473,47 @@ msgstr ""
 "Se le olvidó el artículo. Supongo que \"%s\" se refiere a un artículo y no a "
 "la unidad."
 
-#: src/lib/reccard.py:1756
+#: ../src/lib/reccard.py:1861
 msgid "An ingredient must have an item!"
 msgstr "¡Un ingrediente tiene que incluir un artículo!"
 
 #. otherwise, we'll need to be more thorough...
-#: src/lib/reccard.py:1819
+#: ../src/lib/reccard.py:1924
 #, python-format
 msgid "Are you sure you want to delete %s"
 msgstr "¿Desea borrar \"%s\"?"
 
-#: src/lib/reccard.py:1830
+#: ../src/lib/reccard.py:1935
 #, python-format
 msgid ""
 "Shall I delete the items contained in %s or just move them out of the group?"
 msgstr "¿Borrar los artículos contenido en %s, o moverlos fuera del grupo?"
 
-#: src/lib/reccard.py:1836
+#: ../src/lib/reccard.py:1941
 msgid "Delete them."
 msgstr "Borrarlos"
 
-#: src/lib/reccard.py:1837
+#: ../src/lib/reccard.py:1942
 msgid "Move them."
 msgstr "Moverlos"
 
-#: src/lib/reccard.py:1838
+#: ../src/lib/reccard.py:1943
 msgid "See ingredients"
 msgstr "Ver ingredientes"
 
-#: src/lib/reccard.py:1981
+#: ../src/lib/reccard.py:2086
 msgid "Recipe cannot call itself as an ingredient!"
 msgstr ""
 
-#: src/lib/reccard.py:1982 src/lib/shopgui.py:502
+#: ../src/lib/reccard.py:2087 ../src/lib/shopgui.py:503
 msgid "Infinite recursion is not allowed in recipes!"
 msgstr ""
 
-#: src/lib/reccard.py:2001
+#: ../src/lib/reccard.py:2106
 msgid "You haven't selected any recipes!"
 msgstr "¡No ha seleccionado ninguna receta!"
 
-#: src/lib/reccard.py:2006
+#: ../src/lib/reccard.py:2111
 #, python-format
 msgid ""
 "I'm sorry, I can't understand\n"
@@ -1463,15 +1522,15 @@ msgstr ""
 "Disculpe. No entiendo\n"
 "la cantidad \"%s\"."
 
-#: src/lib/reccard.py:2008
+#: ../src/lib/reccard.py:2113
 msgid "Amounts must be numbers (fractions or decimals) or blank."
 msgstr "Cantidades tienen que ser números o vacíos."
 
-#: src/lib/reccard.py:2009
+#: ../src/lib/reccard.py:2114
 msgid "Details"
 msgstr "Detalles"
 
-#: src/lib/reccard.py:2010
+#: ../src/lib/reccard.py:2115
 msgid ""
 "\n"
 "The \"unit\" must be in the \"unit\" field by itself.\n"
@@ -1485,85 +1544,85 @@ msgstr ""
 "\"1.5 kg\", se puede poner o \"1.5\" o \"1 1/2\" en \"cantidad\". \"kg.\"\n"
 "tiene que estar bajo \"unidad\".\n"
 
-#: src/lib/recindex.py:146
+#: ../src/lib/recindex.py:148
 #, python-format
 msgid "%s Recipes"
 msgstr "%s recetas"
 
-#: src/lib/recindex.py:244
+#: ../src/lib/recindex.py:258
 #, python-format
 msgid " %s contains %s"
 msgstr " %s contiene %s"
 
-#: src/lib/recindex.py:246
+#: ../src/lib/recindex.py:260
 #, python-format
 msgid ", %s contains %s"
 msgstr ", %s contiene %s"
 
-#: src/lib/recipeManager.py:14
+#: ../src/lib/recipeManager.py:14
 msgid "Enter Password"
 msgstr ""
 
-#: src/lib/recipeManager.py:15
+#: ../src/lib/recipeManager.py:15
 #, python-format
 msgid "Please enter your password for user %s of the MySQL database at host %s"
 msgstr ""
 
-#: src/lib/recipeManager.py:18
+#: ../src/lib/recipeManager.py:18
 msgid "Password: "
 msgstr ""
 
-#: src/lib/shopgui.py:65
+#: ../src/lib/shopgui.py:66
 msgid "x"
 msgstr "x"
 
-#: src/lib/shopgui.py:90
+#: ../src/lib/shopgui.py:91
 msgid "Save Shopping List As..."
 msgstr "Guardar lista de compras como..."
 
-#: src/lib/shopgui.py:115
+#: ../src/lib/shopgui.py:116
 #, python-format
 msgid "Shopping list for %s"
 msgstr "Lista de compras para %s"
 
-#: src/lib/shopgui.py:116
+#: ../src/lib/shopgui.py:117
 msgid "For the following recipes:"
 msgstr "Para las siguientes recetas:"
 
-#: src/lib/shopgui.py:120
+#: ../src/lib/shopgui.py:121
 #, python-format
 msgid " x%s"
 msgstr " x%s"
 
-#: src/lib/shopgui.py:149
+#: ../src/lib/shopgui.py:150
 msgid "No recipes selected. Do you want to clear the entire list?"
 msgstr "Ninguna receta está seleccionada. ¿Quiere limpiar la lista entera?"
 
-#: src/lib/shopgui.py:348
+#: ../src/lib/shopgui.py:349
 #, fuzzy
 msgid "Enter Category"
 msgstr "Nueva categoría"
 
-#: src/lib/shopgui.py:350
+#: ../src/lib/shopgui.py:351
 #, fuzzy
 msgid "Category: "
 msgstr "_Categoría"
 
-#: src/lib/shopgui.py:501
+#: ../src/lib/shopgui.py:502
 msgid "Recipe calls for itself as an ingredient."
 msgstr ""
 
-#: src/lib/shopgui.py:502
+#: ../src/lib/shopgui.py:503
 #, fuzzy, python-format
 msgid "Ingredient %s will be ignored."
 msgstr "Editar las _claves de ingredientes"
 
 #. gtk.Dialog.__init__(self)
-#: src/lib/shopgui.py:557
+#: ../src/lib/shopgui.py:558
 msgid "Select optional ingredients."
 msgstr "Seleccionar ingredientes opcionales"
 
-#: src/lib/shopgui.py:557
+#: ../src/lib/shopgui.py:558
 msgid ""
 "Please specify which of the following optional ingredients you'd like to "
 "include on your shopping list."
@@ -1571,77 +1630,78 @@ msgstr ""
 "Indique cuales de los siguientes ingredientes opcionales quiere incluir en "
 "la lista de compras."
 
-#: src/lib/shopping.py:12
+#: ../src/lib/shopping.py:12
 msgid "flour, all purpose"
 msgstr "harina"
 
-#: src/lib/shopping.py:12
+#: ../src/lib/shopping.py:12
 msgid "sugar"
 msgstr "azucar"
 
-#: src/lib/shopping.py:12
+#: ../src/lib/shopping.py:12
 msgid "salt"
 msgstr "sal"
 
-#: src/lib/shopping.py:13
+#: ../src/lib/shopping.py:13
 msgid "black pepper, ground"
 msgstr "pimienta"
 
-#: src/lib/shopping.py:14
+#: ../src/lib/shopping.py:14
 msgid "ice"
 msgstr "hielo"
 
-#: src/lib/shopping.py:14
+#: ../src/lib/shopping.py:14
 msgid "water"
 msgstr "agua"
 
-#: src/lib/shopping.py:15
+#: ../src/lib/shopping.py:15
 msgid "oil, vegetable"
 msgstr "aceite"
 
-#: src/lib/shopping.py:16
+#: ../src/lib/shopping.py:16
 msgid "oil, olive"
 msgstr "aceite de oliva"
 
-#: src/lib/shopping.py:111
+#: ../src/lib/shopping.py:111
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: src/lib/timeEntry.py:13
+#: ../src/lib/timeEntry.py:13
 msgid "seconds"
 msgstr "segundos"
 
 #. self.combo.entry.set_text(_('minutes'))
-#: src/lib/timeEntry.py:13 src/lib/timeEntry.py:22 src/lib/timeEntry.py:29
+#: ../src/lib/timeEntry.py:13 ../src/lib/timeEntry.py:22
+#: ../src/lib/timeEntry.py:29
 msgid "minutes"
 msgstr "minutos"
 
-#: src/lib/timeEntry.py:13
+#: ../src/lib/timeEntry.py:13
 msgid "hours"
 msgstr "horas"
 
-#: src/lib/timeEntry.py:13
+#: ../src/lib/timeEntry.py:13
 msgid "days"
 msgstr "días"
 
-#: src/lib/timeEntry.py:13
+#: ../src/lib/timeEntry.py:13
 msgid "weeks"
 msgstr "semanas"
 
-#: src/lib/timeEntry.py:13
+#: ../src/lib/timeEntry.py:13
 msgid "months"
 msgstr "meses"
 
-#: src/lib/version.py:3
+#: ../src/lib/version.py:3
 msgid "Gourmet Recipe Manager"
 msgstr "Organizarecetas Gourmet"
 
-#: src/lib/version.py:4
+#: ../src/lib/version.py:4
 msgid "Copyright (c) 2004, Thomas M. Hinkle. GNU GPL"
 msgstr "Copyright (c) 2004, Thomas M. Hinkle. GNU GPL"
 
 #. repeated in setup.cfg
-#: src/lib/version.py:7
+#: ../src/lib/version.py:7
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
@@ -1651,44 +1711,44 @@ msgid ""
 "recipes."
 msgstr ""
 
-#: src/lib/backends/DatabaseChooser.py:105
+#: ../src/lib/backends/DatabaseChooser.py:105
 msgid "Choose Database File"
 msgstr ""
 
-#: src/lib/backends/rmetakit.py:229
+#: ../src/lib/backends/rmetakit.py:229
 msgid "New Recipe"
 msgstr "Nueva receta"
 
-#: src/lib/importers/importer.py:107
+#: ../src/lib/importers/importer.py:107
 #, fuzzy, python-format
 msgid "Imported %s of %s recipes."
 msgstr "%s recetas borradas."
 
-#: src/lib/importers/importer.py:237
+#: ../src/lib/importers/importer.py:237
 #, python-format
 msgid "<i>Importing %s</i>"
 msgstr ""
 
-#: src/lib/importers/importer.py:263
+#: ../src/lib/importers/importer.py:263
 #, python-format
 msgid "Imported %(number)s recipes from %(file)s (%(total)s total)"
 msgstr ""
 
-#: src/lib/importers/__init__.py:6
+#: ../src/lib/importers/__init__.py:6
 #, fuzzy
 msgid "MasterCook file"
 msgstr "Archivo de Mealmaster"
 
-#: src/lib/importers/__init__.py:7
+#: ../src/lib/importers/__init__.py:7
 #, fuzzy
 msgid "MasterCook XML file"
 msgstr "Archivo de Mealmaster"
 
-#: src/lib/importers/__init__.py:59
+#: ../src/lib/importers/__init__.py:59
 msgid "All importable files"
 msgstr "Archivos importables."
 
-#: src/lib/importers/mastercook_importer.py:118
+#: ../src/lib/importers/mastercook_importer.py:118
 msgid "Mastercook import finished."
 msgstr ""
 
@@ -1699,216 +1759,219 @@ msgstr ""
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
 #. files, even though some of them may not be fubared :)
-#: src/lib/importers/mastercook_importer.py:246
+#: ../src/lib/importers/mastercook_importer.py:246
 msgid "Tidying up XML"
 msgstr ""
 
-#: src/lib/importers/mastercook_importer.py:254
+#: ../src/lib/importers/mastercook_importer.py:254
 msgid "Beginning import"
 msgstr ""
 
-#: src/lib/importers/mastercook_plaintext_importer.py:37
-#: src/lib/importers/mealmaster_importer.py:85
+#: ../src/lib/importers/mastercook_plaintext_importer.py:37
+#: ../src/lib/importers/mealmaster_importer.py:85
 #, fuzzy, python-format
 msgid "Imported %s recipes."
 msgstr "%s recetas borradas."
 
-#: src/lib/importers/mealmaster_importer.py:91
+#: ../src/lib/importers/mealmaster_importer.py:91
 #, fuzzy
 msgid "Mealmaster import completed."
 msgstr "Se canceló la exporta del archivo Mealmaster"
 
-#: src/lib/exporters/exporter.py:194 src/lib/exporters/exporter.py:232
-#: src/lib/exporters/exporter.py:643 src/lib/exporters/gnomeprinter.py:338
+#: ../src/lib/exporters/exporter.py:194 ../src/lib/exporters/exporter.py:232
+#: ../src/lib/exporters/exporter.py:643
+#: ../src/lib/exporters/gnomeprinter.py:339
+#: ../src/lib/exporters/html_exporter.py:140
 msgid "optional"
 msgstr "Opcional"
 
-#: src/lib/exporters/exporter.py:417
+#: ../src/lib/exporters/exporter.py:417
 #, python-format
 msgid "Exported %(number)s of %(total)s recipes"
 msgstr ""
 
-#: src/lib/exporters/exporter.py:436
+#: ../src/lib/exporters/exporter.py:436
 #, fuzzy
 msgid "Export complete."
 msgstr "Exportar archivo de texto"
 
-#: src/lib/exporters/exporter.py:462 src/lib/exporters/exporter.py:562
+#: ../src/lib/exporters/exporter.py:462 ../src/lib/exporters/exporter.py:562
+#: ../src/lib/exporters/html_exporter.py:59
 msgid "Recipe"
 msgstr "receta"
 
-#: src/lib/exporters/gnomeprinter.py:233
+#: ../src/lib/exporters/gnomeprinter.py:234
 msgid "Print"
 msgstr "Imprimir"
 
-#: src/lib/exporters/gnomeprinter.py:260
+#: ../src/lib/exporters/gnomeprinter.py:261
 #, fuzzy
 msgid "_Current"
 msgstr "_Actual"
 
-#: src/lib/exporters/gnomeprinter.py:260
+#: ../src/lib/exporters/gnomeprinter.py:261
 #, fuzzy
 msgid "_Range"
 msgstr "_Valoración"
 
-#: src/lib/exporters/gnomeprinter.py:266 src/lib/exporters/lprprinter.py:7
-#: src/lib/exporters/winprinter.py:7
+#: ../src/lib/exporters/gnomeprinter.py:267
+#: ../src/lib/exporters/lprprinter.py:7 ../src/lib/exporters/winprinter.py:7
 #, fuzzy
 msgid "Print Recipes"
 msgstr "Imprimir recetas"
 
 #. WEBPAGE = _('HTML Web Page (Creates a new Folder)')
-#: src/lib/exporters/__init__.py:15
+#: ../src/lib/exporters/__init__.py:15
 msgid "HTML Web Page"
 msgstr "Página Web (HTML)"
 
-#: src/lib/exporters/__init__.py:16
+#: ../src/lib/exporters/__init__.py:16
 msgid "Mealmaster file"
 msgstr "Archivo de Mealmaster"
 
-#: src/lib/exporters/__init__.py:17
+#: ../src/lib/exporters/__init__.py:17
 msgid "Plain Text"
 msgstr "Archivos de texto"
 
-#: src/lib/exporters/__init__.py:18
+#: ../src/lib/exporters/__init__.py:18
 msgid "RTF"
 msgstr "RTF"
 
-#: src/lib/exporters/__init__.py:19
+#: ../src/lib/exporters/__init__.py:19
 msgid "Gourmet XML File"
 msgstr "Archivo de XML Gourmet"
 
-#: src/lib/exporters/__init__.py:44
+#: ../src/lib/exporters/__init__.py:44
 #, fuzzy
 msgid "Exporting Webpage"
 msgstr "Exportar página web"
 
-#: src/lib/exporters/__init__.py:45
+#: ../src/lib/exporters/__init__.py:45
 #, python-format
 msgid "Exporting recipes to HTML files in directory %(file)s"
 msgstr ""
 
-#: src/lib/exporters/__init__.py:46
+#: ../src/lib/exporters/__init__.py:46
 #, fuzzy, python-format
 msgid "Recipe saved as HTML file %(file)s"
 msgstr "receta guardado en el archivo de texto %s"
 
-#: src/lib/exporters/__init__.py:60
+#: ../src/lib/exporters/__init__.py:60
 #, fuzzy
 msgid "Mealmaster Export"
 msgstr "Archivos de Mealmaster"
 
-#: src/lib/exporters/__init__.py:61
+#: ../src/lib/exporters/__init__.py:61
 #, fuzzy, python-format
 msgid "Exporting recipes to MealMaster(tm) file %(file)s."
 msgstr "Exportar archivo Mealmaster (tm)"
 
-#: src/lib/exporters/__init__.py:62
+#: ../src/lib/exporters/__init__.py:62
 #, fuzzy, python-format
 msgid "Recipe saved as Mealmaster file %(file)s"
 msgstr "receta guardada en el archivo Mealmaster %s"
 
-#: src/lib/exporters/__init__.py:70
+#: ../src/lib/exporters/__init__.py:70
 #, fuzzy
 msgid "Text Export"
 msgstr "_Exportar"
 
-#: src/lib/exporters/__init__.py:71
+#: ../src/lib/exporters/__init__.py:71
 #, fuzzy, python-format
 msgid "Exporting recipes to Plain Text file %(file)s."
 msgstr "Exportar la receta como un archivo de texto"
 
-#: src/lib/exporters/__init__.py:72
+#: ../src/lib/exporters/__init__.py:72
 #, fuzzy, python-format
 msgid "Recipe saved as Plain Text file %(file)s"
 msgstr "receta guardado en el archivo de texto %s"
 
-#: src/lib/exporters/__init__.py:82
+#: ../src/lib/exporters/__init__.py:82
 #, fuzzy
 msgid "XML Export"
 msgstr "_Exportar"
 
-#: src/lib/exporters/__init__.py:83
+#: ../src/lib/exporters/__init__.py:83
 #, fuzzy, python-format
 msgid "Exporting recipes to Gourmet XML file %(file)s."
 msgstr "Importar XML de Gourmet"
 
-#: src/lib/exporters/__init__.py:84
+#: ../src/lib/exporters/__init__.py:84
 #, fuzzy, python-format
 msgid "Recipe saved in Gourmet XML file %(file)s."
 msgstr "receta guardado en el archivo de texto %s"
 
-#: src/lib/exporters/lprprinter.py:15 src/lib/exporters/lprprinter.py:18
+#: ../src/lib/exporters/lprprinter.py:15 ../src/lib/exporters/lprprinter.py:18
 msgid "Enter print command"
 msgstr ""
 
-#: src/lib/exporters/lprprinter.py:16
+#: ../src/lib/exporters/lprprinter.py:16
 #, fuzzy, python-format
 msgid "Unable to find command \"%s\"."
 msgstr "No se puede guardar %s"
 
-#: src/lib/exporters/lprprinter.py:17
+#: ../src/lib/exporters/lprprinter.py:17
 msgid "Please enter the command you would like to use to print."
 msgstr ""
 
-#: src/lib/exporters/lprprinter.py:22
+#: ../src/lib/exporters/lprprinter.py:22
 #, fuzzy, python-format
 msgid "Printing via %s"
 msgstr "Imprimiendo (por lpr)..."
 
-#: src/lib/exporters/lprprinter.py:23
+#: ../src/lib/exporters/lprprinter.py:23
 msgid ""
 "If you install python-gnome, you will be able to print with a much more "
 "attractive interface."
 msgstr ""
 
-#: src/lib/exporters/lprprinter.py:31
+#: ../src/lib/exporters/lprprinter.py:31
 msgid "Command: "
 msgstr ""
 
-#: src/lib/exporters/pdf_exporter.py:23
+#: ../src/lib/exporters/pdf_exporter.py:23
 #, fuzzy
 msgid "Shopping list for: "
 msgstr "Lista de compras para %s"
 
-#: src/lib/exporters/recipe_emailer.py:100
+#: ../src/lib/exporters/recipe_emailer.py:100
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
 msgstr ""
 
-#: src/lib/exporters/recipe_emailer.py:101
+#: ../src/lib/exporters/recipe_emailer.py:101
 msgid "E-mail Recipe as HTML Attachment"
 msgstr ""
 
-#: src/lib/exporters/recipe_emailer.py:119
+#: ../src/lib/exporters/recipe_emailer.py:119
 msgid "Email Options"
 msgstr ""
 
-#: src/lib/exporters/recipe_emailer.py:122
+#: ../src/lib/exporters/recipe_emailer.py:122
 #, fuzzy
 msgid "Don't ask before sending e-mail."
 msgstr "No preguntar antes de cambiar claves y artículos"
 
-#: src/lib/exporters/recipe_emailer.py:138
+#: ../src/lib/exporters/recipe_emailer.py:138
 msgid "E-mail not sent"
 msgstr ""
 
-#: src/lib/exporters/recipe_emailer.py:139
+#: ../src/lib/exporters/recipe_emailer.py:139
 msgid ""
 "You have not chosen to include the recipe in the body of the message or as "
 "an attachment."
 msgstr ""
 
-#: src/lib/exporters/winprinter.py:10 src/lib/exporters/winprinter.py:20
+#: ../src/lib/exporters/winprinter.py:10 ../src/lib/exporters/winprinter.py:20
 msgid "Printing not supported"
 msgstr ""
 
-#: src/lib/exporters/winprinter.py:11
+#: ../src/lib/exporters/winprinter.py:11
 msgid ""
 "Sorry, printing is not yet supported on Windows. To print recipes, first "
 "export them, then print from another program."
 msgstr ""
 
-#: src/lib/exporters/winprinter.py:21
+#: ../src/lib/exporters/winprinter.py:21
 msgid ""
 "Sorry, printing is not yet supported on Windows. To print your shopping "
 "list, try saving and printing from another program."
