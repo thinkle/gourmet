@@ -29,7 +29,7 @@ class RecData (rdatabase.RecData):
         self.db.commit()
 
     def setup_tables (self):
-        # first, we check for old, incompatible table names
+        # we check for old, incompatible table names
         # and fix them
         self._move_row(table='ingredients',old=('group','text'),new=('inggroup','text'))
         self._move_row(table='ingredients',old=('key','char(200)'),new=('ingkey','char(200)'))
@@ -88,6 +88,8 @@ class RecData (rdatabase.RecData):
             return 's'
         if typ.find('text') >= 0:
             return 's'
+        if typ.find('bool') >= 0:
+            return 'I'
         if typ == 'unicode': return 's'
         if typ == 'float': return "F"
         if typ == 'int': return "I"
@@ -164,12 +166,14 @@ class RecData (rdatabase.RecData):
 
     def search (self, table, colname, regexp, exact=0, use_regexp=True):
         """Handed a table, a column name, and a regular expression, search
-        for an item"""
+        for an item. Alternatively, the regular expression can just be a value."""
+        if type(regexp)==type(""):
+            regexp=str(regexp)
         if not use_regexp: regexp = re.escape(regexp)
         if exact:
-            indexvw = table.filter(lambda r: re.match(regexp, getattr(r,colname)))
+            indexvw = table.filter(lambda r: re.match(regexp, "%s"%getattr(r,colname)))
         else:
-            indexvw = table.filter(lambda r: re.search(regexp,getattr(r,colname),re.I))
+            indexvw = table.filter(lambda r: re.search(regexp,"%s"%getattr(r,colname),re.I))
         resultvw = table.remapwith(indexvw)
         resultvw = resultvw.unique()
         return resultvw
@@ -206,29 +210,11 @@ class RecData (rdatabase.RecData):
         self.changed=True
         self.remove_unicode(metadict)
         self.metaview.append(metadict)
-        
-    def add_rec (self, rdict):
-        self.changed=True
-        self.remove_unicode(rdict)
-        if not rdict.has_key('id'):
-            rdict['id']=self.new_id()
-        old_r=self.get_rec(rdict['id'])
-#        ## if we already have a recipe with this ID, delete it, change the ID
-        if old_r:
-            #debug("WARNING: DELETING OLD RECIPE %s id %s"%(old_r.title,old_r.id),0)
-            #self.delete_rec(old_r)
-            debug("ID %s taken. Generating new ID."%rdict['id'])
-            rdict['id']=self.new_id()        
-        try:
-            debug('Adding recipe %s'%rdict, 4)
-            self.rview.append(rdict)
-            debug('Running add hooks %s'%self.add_hooks,2)
-            self.run_hooks(self.add_hooks,self.rview[-1])
-            return self.rview[-1]
-        except:
-            debug("There was a problem adding recipe%s"%rdict,-1)
-            raise
 
+    def add_rec (self, rdict):
+        self.remove_unicode(rdict)
+        rdatabase.RecData.add_rec(self,rdict)
+    
     def delete_rec (self, rec):
         self.changed=True
         debug("delete_rec called",5)
@@ -288,40 +274,4 @@ class RecipeManager (RecData,rdatabase.RecipeManager):
         RecData.__init__(self,file)
         rdatabase.RecipeManager.__init__(self)
 
-class dbDic (rdatabase.dbDic):
-    def __init__ (self, keyprop, valprop, view, db, pickle_key=False):
-        rdatabase.dbDic.__init__(self,keyprop, valprop, view, db, pickle_key=False)
-
-    def __setitem__ (self, k, v):
-        if self.pickle_key:
-            k=pickle.dumps(k)
-        row = self.vw.select(**{self.kp:k})
-        if len(row)>0:
-            setattr(row[0],self.vp,pickle.dumps(v))
-        else:
-            self.vw.append({self.kp:k,self.vp:pickle.dumps(v)})
-        self.db.changed=True
-        return v
-
-    def __getitem__ (self, k):
-        if self.pickle_key:
-            k=pickle.dumps(k)
-        return pickle.loads(getattr(self.vw.select(**{self.kp:k})[0],self.vp))
-
-    def keys (self):
-        ret = []
-        for i in self.vw:
-            ret.append(getattr(i,self.kp))
-        return ret
-
-    def values (self):
-        ret = []
-        for i in self.vw:
-            ret.append(pickle.loads(getattr(i,self.vp)))
-        return ret
-
-    def items (self):
-        ret = []
-        for i in self.vw:
-            ret.append((getattr(i,self.kp),pickle.loads(getattr(i,self.vp))))
-        return ret
+dbDic = rdatabase.dbDic
