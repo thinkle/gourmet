@@ -480,19 +480,24 @@ class mkConverter(convert.converter):
                 
 class dbDic:
     def __init__ (self, keyprop, valprop, view, db, pickle_key=False):
-        """Create a dictionary interface to a metakit table"""
+        """Create a dictionary interface to a database table."""
         self.pickle_key = pickle_key
         self.vw = view
         self.kp = keyprop
         self.vp = valprop
         self.db = db
+        self.just_got = {}
 
     def has_key (self, k):
         try:
             self.just_got = {k:self.__getitem__(k)}
             return True
         except:
-            return False
+            try:
+                self.__getitem__(k)
+                return True
+            except:
+                return False
         
     def __setitem__ (self, k, v):
         if self.pickle_key:
