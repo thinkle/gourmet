@@ -41,17 +41,23 @@ class converter:
 
     def build_converter_dictionary (self, table=None, density=False):
         # first, make a list of all units in our dictionaries
+        print 'build converter dictionary!'
         if not density:
             convert = self.convert_simple
         else:
             def convert (u1,u2):
                 return self.convert_w_density(u1,u2,density=1)
         units = []
-        if not table: table=self.conv_table
-        for u1,u2 in table.keys():
+        if not table:
+            table=self.conv_table
+        else:
+            print "We were handed a table: ",table
+        for u1,u2 in filter(lambda x: len(x)==2, table.keys()):
             if u1 not in units: units.append(u1)
-            if u2 not in units: units.append(u2)            
+            if u2 not in units: units.append(u2)
+        print 'done looping through list'
         for u in units:
+            print 'grabbing possible conversions for ',u
             debug('unit=%s'%u)
             d=self.possible_conversions(u,dict=table)
             to_expand = d.keys()

@@ -2,7 +2,7 @@
 import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
 import xml.sax.saxutils
 import exporters
-import convert, shopgui, GourmetRecipeManager, TextBufferMarkup
+import convert, GourmetRecipeManager, TextBufferMarkup
 from recindex import RecIndex
 import prefs, WidgetSaver, timeEntry, Undo
 import keymanager
@@ -454,6 +454,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def addToShopL (self, *args):
         debug("addToShopL (self, *args):",5)
+        import shopgui
         d = shopgui.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),self.mult)
         self.rg.sl.addRec(self.current_rec,self.mult,d)
         self.rg.sl.show()

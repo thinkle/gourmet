@@ -35,6 +35,7 @@ class RecData:
                                       )
         self.naliases = self.setup_table('nutritionaliases',
                                          [('ingkey','char(200)'),
+                                          ('density','float'),
                                           ('desc','char(100)'),],
                                          'ingkey')
         self.rview = self.setup_table('recipe',
@@ -450,6 +451,7 @@ class mkConverter(convert.converter):
     ## calls to rmetakit.mkConverter
 
     def create_conv_table (self):
+        print 'setting up conv table'
         self.conv_table = dbDic('ckey','value',self.db.cview, self.db,
                                 pickle_key=True)
         for k,v in defaults.CONVERTER_TABLE.items():
@@ -543,7 +545,10 @@ class dbDic:
     def keys (self):
         ret = []
         for i in self.vw:
-            ret.append(getattr(i,self.kp))
+            if self.pickle_key:
+                ret.append(pickle.loads(getattr(i,self.kp)))
+            else:
+                ret.append(getattr(i,self.kp))
         return ret
 
     def values (self):

@@ -3,7 +3,7 @@ from gourmet import gglobals
 import pythonic_sqlite as psl
 import rdatabase
 #import rmetakit
-from gdebug import debug
+from gourmet.gdebug import debug
 
 class RecData (rdatabase.RecData,psl.PythonicSQLite):
     def __init__ (self, filename=os.path.join(gglobals.gourmetdir,'recipes.db')):

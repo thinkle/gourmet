@@ -2,6 +2,11 @@ import threading, gtk
 from gdebug import *
 import traceback
 
+class Terminated (Exception):
+    def __init__ (self, value):
+        self.value=value
+    def __str__(self):
+        return repr(self.value)
 
 class SuspendableThread (threading.Thread):
     """A SuspendableThread. We take a runnerClass which must have a
@@ -24,6 +29,11 @@ class SuspendableThread (threading.Thread):
         try:
             debug('SuspendableThread Running %s'%self.c,3)
             self.c.run()
+        except Terminated:
+            dialog_extras.show_message(
+                    label=_("%s stopped."%self.name),
+                    sublabel=_("%s was interrupted by user request."%self.name)
+                    )
         except:
             from StringIO import StringIO
             f = StringIO()
@@ -32,19 +42,13 @@ class SuspendableThread (threading.Thread):
             debug('Thread cancelled or failed: running post_hooks',1)
             import gtk,dialog_extras
             self._threads_enter()
-            if error_mess.find("Terminated!") > 0:
-                dialog_extras.show_message(
-                    label=_("%s stopped."%self.name),
-                    sublabel=_("%s was interrupted by user request."%self.name)
-                    )
-            else:
-                dialog_extras.show_message(
-                    label=_("%s interrupted"%self.name),
-                    sublabel=_("There was an error during %s."%self.name),
-                    expander=(_("_Details"),
-                              error_mess),
-                    message_type=gtk.MESSAGE_ERROR
-                    )
+            dialog_extras.show_message(
+                label=_("%s interrupted"%self.name),
+                sublabel=_("There was an error during %s."%self.name),
+                expander=(_("_Details"),
+                          error_mess),
+                message_type=gtk.MESSAGE_ERROR
+                )
             self._threads_leave()
             self.run_hooks(self.post_hooks)
             raise
@@ -86,7 +90,7 @@ class SuspendableDeletions:
         
     def check_for_sleep (self):
         if self.terminated:
-            raise "Deletion Terminated!"
+            raise Terminated("Deletion Terminated!")
         while self.suspended:
             if self.terminated:
                 raise "Deletion Terminated!"
