@@ -98,13 +98,20 @@ class RecGui (RecIndex):
         else:
             self.file=file
         self.rtcolsdic={}
+        self.rtwidgdic={}
         for a,l,w in REC_ATTRS:
             self.rtcolsdic[a]=l
+            self.rtwidgdic[a]=w
         self.rtcols=map(lambda r: r[0], REC_ATTRS)
         self.update_splash(_("Loading recipe database..."))
         self.init_recipes(**self.file)
         self.update_splash(_("Setting up recipe index..."))
-        RecIndex.__init__(self, model=self.rmodel, glade=self.glade, rd=self.rd, rg=self)
+        RecIndex.__init__(self,
+                          model=self.rmodel,
+                          glade=self.glade,
+                          rd=self.rd,
+                          rg=self,
+                          editable=True)
         self.pauseid = self.stat.get_context_id('pause')
         self.rectree.connect("popup-menu",self.popup_rmenu)#self.recTreeSelectRec)
         self.rectree.connect("button-press-event",self.rectree_click_cb)

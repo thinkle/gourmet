@@ -202,7 +202,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         # hackish, but focus was acting funny        
         #self.rw['title'].grab_focus()
 
-
     def setup_defaults (self):
         self.mult = 1
         #self.serves = float(self.serveW.get_text())
@@ -766,10 +765,13 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         else:
             self.servingsMultiplyByLabel.set_label("")
 
+    def create_ing_alist (self):
+        ings=self.rg.rd.get_ings(self.current_rec)
+        self.ing_alist = self.rg.rd.order_ings( ings )
+    
     def updateIngredientsDisplay (self):
         if not self.ing_alist:
-            ings=self.rg.rd.get_ings(self.current_rec)
-            self.ing_alist = self.rg.rd.order_ings( ings )
+            self.create_ing_alist()
         label = ""
         for g,ings in self.ing_alist:
             if g: label += "\n<u>%s</u>\n"%xml.sax.saxutils.escape(g)
@@ -795,15 +797,21 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.ingTree = self.glade.get_widget('ingTree')
         self.ingTree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.ingTree.expand_all()
+        self.head_to_att = {_('Amt'):'amount',
+                            _('Unit'):'unit',
+                            _('Item'):'item',
+                            _('Key'):'ingkey'}
         self.ingColsByName = {}
+        self.ingColsByAttr = {}
         self.shopmodel = gtk.ListStore(str)
         for c in self.ie.shopcats:
             self.shopmodel.append([c])
+        self.ing_rows={}
         for n,head,tog,model,style in [[1,_('Amt'),False,None,None],
                                  [2,_('Unit'),False,self.rg.umodel,None],
                                  [3,_('Item'),False,None,None],
                                  [4,_('Optional'),True,None,None],
-                                 [5,_('Key'),False,self.rg.inginfo.key_model.filter_new(),pango.STYLE_ITALIC],
+                                 [5,_('Key'),False,self.rg.inginfo.key_model,pango.STYLE_ITALIC],
                                  [6,_('Shopping Category'),False,self.shopmodel,pango.STYLE_ITALIC],
                                  ]:
             if tog:
@@ -812,19 +820,28 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 renderer.connect('toggled',self.ingtree_toggled_cb,4,'Optional')
                 col=gtk.TreeViewColumn(head, renderer, active=n)
             else:
-                if hasattr(gtk,'CellRendererCombo') and model:
+                if CRC_AVAILABLE and model:
                     debug('Using CellRendererCombo, n=%s'%n,0)
                     renderer = gtk.CellRendererCombo()
                     renderer.set_property('model',model)
+                    renderer.set_property('text-column',0)
                 else:
                     debug('Using CellRendererText, n=%s'%n,0)
                     renderer = gtk.CellRendererText()
                 renderer.set_property('editable',True)
                 renderer.connect('edited',self.ingtree_edited_cb,n,head)
+                if head==_('Key'):
+                    try:
+                        renderer.connect('editing-started',
+                                         self.ingtree_start_keyedit_cb)
+                    except:
+                        debug('Editing-started connect failed. Upgrade GTK for this functionality.',0)
                 if style:
                     renderer.set_property('style',style)
                 col=gtk.TreeViewColumn(head, renderer, text=n)
             self.ingColsByName[head]=col
+            if self.head_to_att.has_key(head):
+                self.ingColsByAttr[self.head_to_att[head]]=n
             col.set_reorderable(True)
             col.set_resizable(True)
             self.ingTree.append_column(col)
@@ -874,6 +891,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         
     def ingtree_click_cb (self, tv, event):
         debug("ingtree_click_cb",5)
+        if CRC_AVAILABLE: return False # in this case, popups are handled already!
         x = int(event.x)
         y = int(event.y)
         time = event.time
@@ -893,6 +911,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             return True
 
     def setupShopPopupMenu (self):
+        if CRC_AVAILABLE: return #if we have the new cellrenderercombo, we don't need this
         self.shoppop = gtk.Menu()
         new = gtk.MenuItem(_('New Category'))
         self.shoppop.append(new)
@@ -953,7 +972,23 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             else:
                 self.rg.rd.undoable_modify_ing(ing, {'optional':'no'},self.history)
         
-            
+    #def ingtree_start_keyedit_cb (self, renderer, path_string, text, colnum, head):
+    def ingtree_start_keyedit_cb (self, renderer, cbe, path_string):
+        for a in args: print 'ingtree_start_keyedit_cb given arg: ',a
+        debug('ingtree_start',0)
+        indices = path_string.split(':')
+        path = tuple( map(int, indices))
+        store = self.ingTree.get_model()
+        iter = store.get_iter(path)
+        itm=store.get_value(iter,self.ingColsByAttr['item'])
+        mod = renderer.get_property('model')
+        myfilter=mod.filter_new()
+        cbe.set_model(myfilter)
+        myKeys = self.rg.rd.key_search(itm)
+        vis = lambda m, iter: m.get_value(iter,0) and (m.get_value(iter,0) in myKeys or m.get_value(iter,0).find(itm) > -1)
+        myfilter.set_visible_func(vis)
+        myfilter.refilter()
+        
     def ingtree_edited_cb (self, renderer, path_string, text, colnum, head):
         debug("ingtree_edited_cb (self, renderer, path_string, text, colnum, head):",5)
         indices = path_string.split(':')
@@ -962,14 +997,15 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         iter = store.get_iter(path)
         ing=self.selectedIng()
         if head==_('Shopping Category'):
-            self.rg.sl.orgdic[ing.key]=text
-            store.set_value(iter, colnum, text)            
+            self.rg.sl.orgdic[ing.ingkey]=text
+            store.set_value(iter, colnum, text)
+        if type(ing) == str:                
+            self.change_group(iter, text)
+            self.create_ing_alist()
+            self.updateIngredientsDisplay()
+            return            
         else:
-            head_to_att = {_('Amt'):'amount',
-                           _('Unit'):'unit',
-                           _('Item'):'item',
-                           _('Key'):'ingkey'}
-            attr=head_to_att[head]
+            attr=self.head_to_att[head]
             if attr=='amount':
                 if type(store.get_value(iter,0)) != type(""):
                     # if we're not a group
@@ -979,25 +1015,89 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                         raise "Amount is not a number!"
                     text = ntext
             d={attr:text}
+            if attr=='unit':
+                amt,msg=self.changeUnit(d['unit'],ing)
+                if amt:
+                    d['amount']=amt
+                if msg: 
+                    self.message(msg)
             if attr=='item':
-                d['ingkey']=self.rg.rd.km.get_key(text)
-                store.set_value(iter,5,d['ingkey'])
-            if type(ing) == str:                
-                self.change_group(iter, text)
-                return
-            self.rg.rd.undoable_modify_ing(ing,d,self.history)
-            if d.has_key('ingkey'):
-                ## if the key has been changed and the shopping category is not set...
-                ## COLUMN NUMBER FOR Shopping Category==6
-                shopval=store.get_value(iter, 6)
-                debug('Shopping Category value was %s'%shopval,4)
-                if shopval:
-                    self.rg.sl.orgdic[d['ingkey']]=shopval
-                else:
-                    if self.rg.sl.orgdic.has_key(text):
-                        debug('Setting new shopping category!',2)
-                        store.set_value(iter, 6, self.rg.sl.orgdic[text])
-            store.set_value(iter, colnum, text)
+                d['ingkey']=self.rg.rd.km.get_key(d['item'])
+            debug('undoable_modify_ing %s'%d,0)
+            self.rg.rd.undoable_modify_ing(
+                ing,d,self.history,
+                make_visible = lambda ing,dic: self.showIngredientChange(iter,dic)
+                )
+
+    def showIngredientChange (self, iter, d):
+        d=d.copy()
+        if d.has_key('amount'):
+            d['amount']=convert.float_to_frac(d['amount'])
+        self.create_ing_alist()
+        self.updateIngredientsDisplay()
+        if d.has_key('ingkey'):
+            ## if the key has been changed and the shopping category is not set...
+            ## COLUMN NUMBER FOR Shopping Category==6
+            shopval=self.imodel.get_value(iter, 6)
+            debug('Shopping Category value was %s'%shopval,4)
+            if shopval:
+                self.rg.sl.orgdic[d['ingkey']]=shopval
+            else:
+                if self.rg.sl.orgdic.has_key(d['ingkey']):
+                    debug('Setting new shopping category!',2)
+                    self.imodel.set_value(iter, 6, self.rg.sl.orgdic[d['ingkey']])
+        for attr,v in d.items():            
+            self.imodel.set_value(iter,self.ingColsByAttr[attr],v)
+
+    def changeUnit (self, new_unit, ing):
+        """Handed a new unit and an ingredient, we decide whether to convert and return:
+        None (don't convert) or Amount (new amount)
+        Message (message for our user) or None (no message for our user)"""
+        key=ing.ingkey
+        old_unit=ing.unit
+        old_amt=ing.amount
+        print 'old_unit=',old_unit,' new_unit=',new_unit
+        density=None
+        print 'converting ',old_unit,' to ',new_unit, ' item=',key
+        conversion = self.rg.conv.converter(old_unit,new_unit,key)
+        if conversion and conversion != 1:
+            new_amt = old_amt*conversion
+            opt1 = _("Converted: %(amt)s %(unit)s")%{'amt':convert.float_to_frac(new_amt),
+                                                     'unit':new_unit}
+            opt2 = _("Not Converted: %(amt)s %(unit)s")%{'amt':convert.float_to_frac(old_amt),
+                                                         'unit':new_unit}
+            CONVERT = 1
+            DONT_CONVERT = 2
+            choice = de.getRadio(label=_('Changed unit.'),
+                                 sublabel=_('You have changed the unit for %(item)s from %(old)s to %(new)s. Would you like the amount converted or not?')%{
+                'item':ing.item,
+                'old':old_unit,
+                'new':new_unit},
+                                 options=[(opt1,CONVERT),
+                                          (opt2,DONT_CONVERT),]
+                                 )
+            if not choice:
+                print 'de.getRadio returns ',choice
+                raise "User cancelled"
+            if choice==CONVERT:
+                print 'User converting - new_amt=',new_amt
+                return (new_amt,
+                        _("Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"%{
+                    'old_amt':old_amt,
+                    'old_unit':old_unit,
+                    'new_amt':new_amt,
+                    'new_unit':new_unit,})
+                        )
+            else:
+                print 'User not converting!'
+                return (None,
+                        None)
+        if conversion:
+            return (None,None)
+        return (None,
+                _("Unable to convert from %(old_unit)s to %(new_unit)s"%{'old_unit':old_unit,
+                                                                         'new_unit':new_unit}
+                  ))
                     
     def dragIngsRecCB (self, widget, context, x, y, selection, targetType,
                          time):
@@ -1151,7 +1251,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 itera=None
         if itera: return self.ingTree.get_model().get_value(itera,0)
         else: return None
-    
+
     def ingTreeClickCB (self, tv, path, col, p=None):
         debug("ingTreeClickCB (self, tv, path, col, p=None):",5)
         i=self.selectedIng()
@@ -1227,7 +1327,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 debug("Adding after iter",5)            
         else:
             iter = model.insert_before(None, None, None)
-        amt,unit = self.make_readable_amt_unit(i)
+        #amt,unit = self.make_readable_amt_unit(i)
+        amt = convert.float_to_frac(float(i.amount))
+        unit = i.unit
         model.set_value(iter, 0, i)
         model.set_value(iter, 1, amt)
         model.set_value(iter, 2, unit)
@@ -1774,7 +1876,7 @@ class IngredientEditor:
         if sh:
             self.rg.sl.sh.add_org_itm(d['ingkey'],sh)
         if self.ing:
-            i=self.rg.rd.undoable_modify_ing(self.ing,d,self.history)
+            i=self.rg.rd.undoable_modify_ing(self.ing,d,self.rc.history)
             self.rc.resetIngList()
         else:
             i=self.rg.rd.add_ing(d)

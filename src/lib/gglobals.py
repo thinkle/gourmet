@@ -6,6 +6,8 @@ from OptionParser import options
 
 tmpdir = tempfile.gettempdir()
 
+CRC_AVAILABLE = hasattr(gtk,'CellRendererCombo') # is this wonderful feature available?
+
 if options.gourmetdir:
     gourmetdir = options.gourmetdir
     debug("User specified gourmetdir %s"%gourmetdir,0)

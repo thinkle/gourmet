@@ -334,11 +334,20 @@ class RecData:
         debug('done with ing hooks',3)
         return self.iview[-1]
 
-    def undoable_modify_ing (self, ing, dic, history):
+    def undoable_modify_ing (self, ing, dic, history, make_visible=None):
         orig_dic = self.get_dict_for_obj(ing,dic.keys())
-        def do_action (): modify_ing(ing,dic)
-        def undo_action (): modify_ing(ing,orig_dic)
+        print 'orig_dic=',orig_dic
+        print 'new_dic=',dic
+        def do_action ():
+            debug('undoable_modify_ing modifying %s'%dic,2)
+            self.modify_ing(ing,dic)
+            if make_visible: make_visible(ing,dic)
+        def undo_action ():
+            debug('undoable_modify_ing unmodifying %s'%orig_dic,2)
+            self.modify_ing(ing,orig_dic)
+            if make_visible: make_visible(ing,orig_dic)
         obj = Undo.UndoableObject(do_action,undo_action,history)
+        obj.perform()
         
     def modify_ing (self, ing, ingdict):
         #self.delete_ing(ing)

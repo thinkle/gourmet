@@ -4,6 +4,7 @@ from MarkupString import MarkupString
 from gourmet import get_pixbuf_from_file,gglobals,convert
 from gourmet.gdebug import *
 from gettext import gettext as _
+import xml.sax.saxutils
 
 def do_print(dialog, job):
     debug('do_print',7)
@@ -299,7 +300,7 @@ class RecWriter (exporter.exporter_mult):
         debug('write_attr ',0)
         attr=gglobals.NAME_TO_ATTR[label]
         if attr=='title':
-            self.print_writer.write_heading(text)
+            self.print_writer.write_heading(xml.sax.saxutils.escape(text))
             return
         if attr=='servings':
             num = convert.frac_to_float(text)
@@ -321,7 +322,7 @@ class RecWriter (exporter.exporter_mult):
 
     def write_grouphead (self, name):
         debug('write_grouphead ',0)
-        self.print_writer.write_heading(name,
+        self.print_writer.write_heading(xml.sax.saxutils.escape(name),
                                         size=self.print_writer.default_head_size-2,
                                         style='normal',
                                         indent=0,
@@ -336,7 +337,7 @@ class RecWriter (exporter.exporter_mult):
         if unit: line += "%s "%unit
         if item: line += "%s"%item
         if optional=='yes': line += " (%s)"%_("optional")
-        self.print_writer.write_paragraph(line)
+        self.print_writer.write_paragraph(xml.sax.saxutils.escape(line))
 
 class SimpleWriter (print_writer):
     def __init__ (self, file=None, dialog_parent=None, show_dialog=True):
@@ -345,11 +346,11 @@ class SimpleWriter (print_writer):
 
     def write_header (self, text):
         debug('write_header ',0)
-        self.write_heading(text, size=14, space_before=0.5, space_after=0)
+        self.write_heading(xml.sax.saxutils.escape(text), size=14, space_before=0.5, space_after=0)
 
     def write_subheader (self, text):
         debug('write_subheader ',0)
-        self.write_heading(text, size=12, style="normal", space_after=0, space_before=0.5)
+        self.write_heading(xml.sax.saxutils.escape(text), size=12, style="normal", space_after=0, space_before=0.5)
 
 if __name__ == '__main__':
     #dialog = show_print_dialog()

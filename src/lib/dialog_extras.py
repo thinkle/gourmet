@@ -98,17 +98,18 @@ class mDialog (gtk.Dialog):
             
     def run (self):
         self.show()
-        if self.modal: gtk.mainloop()
+        if self.modal: gtk.main()
+        print self.ret
         return self.ret
 
     def okcb (self, *args):
         self.hide()
-        if self.modal: gtk.mainquit()
+        if self.modal: gtk.main_quit()
 
     def cancelcb (self, *args):
         self.hide()
         self.ret=None
-        if self.modal: gtk.mainquit()
+        if self.modal: gtk.main_quit()
 
 class messageDialog (gtk.MessageDialog, mDialog):
     def __init__ (self, title="", default=None, okay=True, cancel=True, label=False, sublabel=False,
@@ -192,6 +193,33 @@ class entryDialog (mDialog):
 
     def update_value (self, *args):
         self.ret = self.entry.get_text()
+
+class radioDialog (mDialog):
+    def __init__ (self, default=None, label="Select Option", sublabel=None, options=[],
+                  parent=None,expander=None,cancel=True):
+        mDialog.__init__(self, okay=True, label=label, sublabel=sublabel, parent=parent, expander=expander, cancel=cancel)
+        # defaults value is first value...
+        if options:
+            self.ret = options[0][1]
+        self.setup_radio_buttons(options)
+
+    def setup_radio_buttons (self,options):
+        previous_radio = None
+        self.buttons = []
+        for label,value in options:
+            rb = gtk.RadioButton(group=previous_radio, label=label, use_underline=True)
+            self.vbox.add(rb)
+            rb.show()
+            rb.connect('toggled',self.toggle_cb,value)
+            self.buttons.append(rb)
+            previous_radio=rb
+        self.buttons[0].set_active(True)
+
+
+    def toggle_cb (self, widget, value):
+        if widget.get_active():
+            print 'setting value ',value
+            self.ret = value
 
 class optionDialog (mDialog):
     def __init__ (self, default=None, label="Select Option", sublabel=None, options=[], parent=None, expander=None, cancel=True):
@@ -328,7 +356,7 @@ class preferences_dialog (mDialog):
         if self.apply_func:
             return
         else:
-            gtk.mainloop()
+            gtk.main()
             return self.ret
         
     def okcb (self, *args):
@@ -768,6 +796,10 @@ def getOption (*args,**kwargs):
     d=optionDialog(*args,**kwargs)
     return d.run()
 
+def getRadio (*args,**kwargs):
+    d=radioDialog(*args,**kwargs)
+    return d.run()
+
 if __name__ == '__main__':
     w=gtk.Window()
     w.connect('delete_event',gtk.main_quit)
@@ -793,6 +825,11 @@ if __name__ == '__main__':
         ['show message',lambda *args: show_message('howdy',label='Hello there. This is a very long label for the top of a dialog.', sublabel='And this is a sub message.',message_type=gtk.MESSAGE_WARNING)],
         ['get entry', lambda *args: getEntry(label='Main label',sublabel='sublabel',entryLabel='Entry Label: ')],
         ['show boolean', lambda *args: getBoolean()],
+        ['show radio dialog', lambda *args: getRadio(label='Main label',
+                                                     sublabel='sublabel'*10,
+                                                     options=[('First',1),
+                                                              ('Second',2),
+                                                              ('Third',3)])],
         ['get image dialog',lambda *args: msg(select_image('Select Image'))],
         ['get file dialog',lambda *args: msg(select_file('Select File',
                                                      filters=[['Plain Text',['text/plain'],['*.txt','*.TXT']],

@@ -13,10 +13,12 @@ class RecIndex:
     and sorted. We're a separate class from the main recipe
     program so that we can be created again (e.g. in the recSelector
     dialog called from a recipe card."""
-    def __init__ (self, model, glade, rd, rg):
+    def __init__ (self, model, glade, rd, rg, editable=False):
         #self.visible = 1 # can equal 1 or 2
+        self.editable=editable
         self.rtcols=rg.rtcols
         self.rtcolsdic=rg.rtcolsdic
+        self.rtwidgdic=rg.rtwidgdic
         self.prefs=rg.prefs
         self.glade = glade
         self.rmodel = model
@@ -152,9 +154,21 @@ class RecIndex:
         col = gtk.TreeViewColumn("",renderer,pixbuf=1)
         self.rectree.append_column(col)
         n = 2
+        crc = True
+        if not hasattr(gtk,'CellRendererCombo'):
+            print 'CellRendererCombo not yet supported'
+            print 'Update pygtk/gtk for more comboboxes'
+            print 'in your treemodels!'
         for c in self.rtcols:
-            renderer = gtk.CellRendererText()
-            renderer.set_property('editable',True)
+            if self.editable and CRC_AVAILABLE and self.rtwidgdic[c]=='Combo':
+                renderer = gtk.CellRendererCombo()
+                model = gtk.ListStore(str)
+                map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c))
+                renderer.set_property('model',model)
+                renderer.set_property('text-column',0)
+            else:
+                renderer = gtk.CellRendererText()
+            renderer.set_property('editable',self.editable)
             renderer.connect('edited',self.rtree_edited_cb,n, c)
             titl = self.rtcolsdic[c]
             col = gtk.TreeViewColumn(titl,renderer, text=n)

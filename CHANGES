@@ -1,21 +1,31 @@
 ==== Version 0.8.0 Changes from 0.7.1 ===
-* Support for pasting ingredients
-* Support for formatting text in instructions and notes
-* New tabbed interface for recipe card
-* Experimental support for sqlite and mysql backends
-* Improved mealmaster(tm) export
-* Substantially improved speed of mealmaster(tm) import
-* Added support for multiple columns of ingredients in mealmaster.
-* Added new "Cooking Time" attribute.
-* Multiple imports allowed at a time by selecting multiple imports
-  (and elegantly displayed in new dialog).
-* Automatic committing of DB (user no longer has to "save DB" to save
-  changes).
+Miscellaneous
 * Undo introduced across the board.
 * Recipe's thrown in trash rather than deleted by default (allowing for
   undoing and rescue of trashed recipes).
 * Always ask for print command when gnomeprint isn't functional (don't assume
   lpr, but do give it as the default).
+
+Recipe Card
+* New tabbed interface for recipe card
+* Support for formatting text in instructions and notes
+* Support for pasting ingredients
+* Ask if you want to convert when you change a unit in the ingredient list view.
+* Added new "Cooking Time" attribute.
+
+Backends
+* Experimental support for sqlite and mysql backends
+* Automatic committing of DB (user no longer has to "save DB" to save
+  changes).
+
+Import/Export
+* Improved mealmaster(tm) export
+* Substantially improved speed of mealmaster(tm) import
+* Multiple imports allowed at a time by selecting multiple imports
+  (and elegantly displayed in new dialog).
+* Added support for multiple columns of ingredients in mealmaster.
+
+
 ==== Version 0.7.1 Changes from 0.7.0 ====
 
 * RPM spec file fixed so dependencies should be properly worked out now.
