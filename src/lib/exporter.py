@@ -250,6 +250,9 @@ class mealmaster_exporter (exporter):
         self.ings = self.master_ings # back to master level
 
     def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):        
+        if type(amount)==type(1.0) or type(amount)==type(1):
+            amount = convert.float_to_frac(amount)
+        if not amount: amount = ""
         if self.conv.unit_dict.has_key(unit) and self.uc.has_key(self.conv.unit_dict[unit]):
             unit= self.uc[self.conv.unit_dict[unit]] or ""
         elif unit:
