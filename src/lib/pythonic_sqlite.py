@@ -30,3 +30,33 @@ class PythonicSQLite (PythonicSQL.PythonicSQL):
         retval = [x.split()[0] for x in statements]
         debug("get_fields_for_table returning: %s"%retval,0)
         return retval
+
+if __name__ == '__main__':
+    import tempfile
+    fi = tempfile.mktemp()
+    #fi = '/tmp/tmpKIE0WM'
+    psl = PythonicSQLite(fi)
+    tt=psl.get_table('names',{'First':'char(50)',
+                           'Last':'char(50)',
+                           'Birth_Month':'int',
+                           'Birth_Day':'int',
+                           'Birth_Year':'int',})
+    if len(tt) == 0:
+        tt.append({'Birth_Day':21,'First':'Thomas','Last':'Hinkle'})               
+        tt.extend([{'First':'John'},
+                   {'First':'Susan'},
+                   {'First':'David'},]
+                  )
+    import random
+    for n in range(100):
+        tt.append({'Birth_Day':random.randint(1,28),
+                   'Birth_Month':random.randint(1,12),
+                   'First':random.choice(['John','Harry','Bob','Lucy','Genevieve','Katharine','Susan']),
+                   'Last':random.choice(['Hinkle','Sayre','Wilkins','Wright','Wilson']),
+                   })
+    for t in tt:
+        print 'row:'
+        for m in dir(t):
+            print getattr(t,m)
+    #psl.c.commit()
+

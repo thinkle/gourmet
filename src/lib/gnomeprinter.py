@@ -63,7 +63,6 @@ class renderer:
                        style=None,
                        weight=None,
                        indent=None, space_before=1, space_after=1):
-        print 'writing heading'
         if not size: size=self.default_head_size
         if type(size)==int:
             if size < 5000: size = size * 1000
@@ -84,7 +83,6 @@ class renderer:
             space_after = int(space_after+0.9)
             l = l + "\n"*space_after
         #self.write_paragraph('<big><b>%s</b></big>'%line,indent=indent)
-        print 'writing header: ',l
         self.write_paragraph(l,indent=indent)
 
     def write_paragraph (self, markup, indent=0, space=False, first_indent=0, force=False):

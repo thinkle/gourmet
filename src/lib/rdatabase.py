@@ -256,8 +256,9 @@ class RecData:
         t = TimeAction('rdatabase.add_rec - checking keys',3)
         if not rdict.has_key('deleted'):
             rdict['deleted']=0
-        if not rdict.has_key('id'):
-            rdict['id']=self.new_id()
+        #if not rdict.has_key('id'):
+        # always create a new ID
+        rdict['id']=self.new_id()
         t.end()
         try:
             debug('Adding recipe %s'%rdict, 4)
@@ -295,10 +296,10 @@ class RecData:
             n = start + 1
         else:
             n = 0
-            while self.rview.find(id=self.format_id(n, base)) > -1 or self.iview.find(id=self.format_id(n, base)) > -1:
-                # if the ID exists, we keep incrementing
-                # until we find a unique ID
-                n += 1 
+        while self.rview.find(id=self.format_id(n, base)) > -1 or self.iview.find(id=self.format_id(n, base)) > -1:
+            # if the ID exists, we keep incrementing
+            # until we find a unique ID
+            n += 1 
         # every time we're called, we increment out record.
         # This way, if party A asks for an ID and still hasn't
         # committed a recipe by the time party B asks for an ID,

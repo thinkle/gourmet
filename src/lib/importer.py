@@ -235,7 +235,7 @@ class MultipleImporter:
             self.terminate = self.iclass.terminate
             self.resume = self.iclass.resume
             self.iclass.run()
-            print self.current_prog, '+', self.current_percentage
+            #print self.current_prog, '+', self.current_percentage
             self.current_prog += self.current_percentage
         self.grm.set_progress_thr(1,'Import complete!')
     

@@ -34,7 +34,6 @@ class RecIndex:
             _('rating'):'rating',
             _('source'):'source',
             }
-        print self.searchByDic
         self.searchByList = [_('title'),_('ingredient'),_('category'),_('cuisine'),_('rating'),_('source')]
         self.SEARCH_KEY_DICT = {
             "t":_("title"),

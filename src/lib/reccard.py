@@ -55,7 +55,7 @@ class ActionGroupWithSeparators (gtk.ActionGroup):
         gtk.ActionGroup.set_visible(self,visible)
         for s in self.separators:
             try: s.set_property('visible',visible)
-            except: print 'no widget %s'%s
+            except: debug('no widget %s'%s,5)
 
 class ActionManager:
     def __init__ (self, gladeobj, groups, callbacks):
@@ -82,18 +82,14 @@ class ActionManager:
                 if not params.has_key('tooltip'):
                     params['tooltip']=''
                 widg = self.gladeobj.get_widget(widgets[0])
-                print "WIDGET=",widg
                 try:
                     temp_connection=widg.connect('toggled',lambda *args: False)
                     widg.disconnect(temp_connection)                    
                 except TypeError: #unknown signal name (i.e. not a toggle)
-                    print 'RegularAction2'
                     act = ActionWithSeparators(n,params['label'],params['tooltip'],params['stock-id'])
                 else:
-                    print 'ToggleAction2'
                     act = ToggleActionWithSeparators(n,params['label'],params['tooltip'],params['stock-id'])
                 if params.has_key('separators'):
-                    print 'params[separators]=',params['separators']
                     if type(params['separators']==str): params['separators']=[params['separators']]
                     act.separators=[self.gladeobj.get_widget(w) for w in params['separators']]
                     getattr(self,name).separators.extend(act.separators)
@@ -701,7 +697,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                                       text=txt)
         def change_cb (*args):
             newtxt=get_text_cb()
-            print 'change_cb: newtxt=',newtxt
             utc.add_text(newtxt)
         widget.connect(signal,change_cb)
 
@@ -772,7 +767,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def updateIngredientsDisplay (self):
         if not self.ing_alist:
-            print 'getting ings...'
             ings=self.rg.rd.get_ings(self.current_rec)
             self.ing_alist = self.rg.rd.order_ings( ings )
         label = ""

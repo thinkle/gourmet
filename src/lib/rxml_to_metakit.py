@@ -30,7 +30,6 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
                 self.rec[att]=unquoteattr(attrs.get(att,""))
             for att in ['cuisine','source','category']:
                 raw = unquoteattr(attrs.get(att,''))
-#                print "DEBUG:",att,raw
                 if raw:
                     if self.meta[att].has_key(raw):
                         self.rec[att]=self.meta[att][raw]
@@ -63,7 +62,6 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
                 self.mixed += " %s='%s'" % (n,v)
             self.mixed += ">"
         if name=='instructions' or name=='modifications':
-#            print "Begin adding to mixed!"
             self.in_mixed = 1
             self.mixed = ""
             
@@ -92,7 +90,6 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
         if name=='instructions' or name=='modifications':
             self.in_mixed = 0
             self.mixed += self.elbuf
-            #print "%s: %s" %(name, self.mixed)
             # special unescaping of our grand little tags
             for (eop,op,ecl,cl) in [('&lt;%s&gt;'%t,'<%s>'%t,'&lt;/%s&gt;'%t,'</%s>'%t)
                                     for t in 'b','i','u']:
@@ -100,7 +97,6 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
                 self.mixed=self.mixed.replace(ecl,cl)
             self.rec[name]=self.mixed
         if self.in_mixed:
-            #print "Adding to mixed...", self.mixed
             self.mixed += self.elbuf
             self.mixed += "</%s>" % name
 

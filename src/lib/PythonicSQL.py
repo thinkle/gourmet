@@ -16,11 +16,9 @@ class PythonicSQL:
         self._cursors = {}
         self._module = module
         print 'module=',self._module
-        self._threadsafety = self._module.threadsafety        
+        self._threadsafety = self._module.threadsafety
         self._connection[threading.currentThread()] = self.connect()
         self._cursors[threading.currentThread()] = self.get_connection().cursor()
-
-        
 
     def get_connection (self):
         """Return our connection object for the current thread. We open
@@ -98,8 +96,13 @@ class PythonicSQL:
             if type(typ) != type(""):
                 typ = self.pytype_to_sqltype(typ)
             typ = self.hone_type(typ)
-            add_string += "%s %s,"%(rowname,typ)
+            add_string +=  "%s %s"%(rowname,typ)
+            if rowname==key:
+                if typ.upper()=='INTEGER' or typ.upper()=='INT': add_string += " AUTOINCREMENT"
+                add_string += " PRIMARY KEY"
+            add_string += ","
         add_string = add_string[0:-1] + ")"
+        print 'add_string = ',add_string, 'sql_params=',sql_params
         self.execute([add_string,sql_params])
         if key: self.execute(['CREATE INDEX %s%sIndex ON %s (%s)'%(name,key,name,key)])
         self.changed=True
@@ -395,8 +398,8 @@ class TableObject (list):
 
     def __getitem__ (self, index):
         debug('__getitem__ called for %s'%self,0)
-        if index == -1 and self._last:
-            return RowObject(self.__tablename__,self.__db__,self._last.values(),self._last.keys())
+        if index == -1 and self._last: 
+            return self.select(**self._last)[-1]
         generator = self.__iter__()
         n = 0
         if index < 0:
@@ -557,33 +560,4 @@ class RowObjectPivot (RowObject):
                             )
                 )
         self.__instantiated__ = True        
-
-if __name__ == '__main__' and True:
-    import tempfile
-    fi = tempfile.mktemp()
-    #fi = '/tmp/tmpKIE0WM'
-    psl = PythonicSQL(fi)
-    tt=psl.get_table('names',{'First':'char(50)',
-                           'Last':'char(50)',
-                           'Birth_Month':'int',
-                           'Birth_Day':'int',
-                           'Birth_Year':'int',},'Last')
-    if len(tt) == 0:
-        tt.append({'Birth_Day':21,'First':'Thomas','Last':'Hinkle'})               
-        tt.extend([{'First':'John'},
-                   {'First':'Susan'},
-                   {'First':'David'},]
-                  )
-    import random
-    for n in range(100):
-        tt.append({'Birth_Day':random.randint(1,28),
-                   'Birth_Month':random.randint(1,12),
-                   'First':random.choice(['John','Harry','Bob','Lucy','Genevieve','Katharine','Susan']),
-                   'Last':random.choice(['Hinkle','Sayre','Wilkins','Wright','Wilson']),
-                   })
-    for t in tt:
-        print 'row:'
-        for m in dir(t):
-            print getattr(t,m)
-    psl.c.commit()
 

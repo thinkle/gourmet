@@ -1,9 +1,10 @@
 import xml.sax
 
 class simpleHandler (xml.sax.ContentHandler):
-    def __init__ (self):
-        self.elements = []
-        self.open_elements = []
+    """A simple handler that provides us with indices of marked up content."""
+    def __init__ (self):        
+        self.elements = [] #this will contain a list of elements and their start/end indices
+        self.open_elements = [] #this holds info on open elements while we wait for their close
         self.content = ""
 
     def startElement (self,name,attrs):
@@ -19,8 +20,8 @@ class simpleHandler (xml.sax.ContentHandler):
             e = self.open_elements[i]
             if e['name']==name:
                 # append a  (start,end), name, attrs
-                self.elements.append(((e['start'], #position
-                                       len(self.content)),
+                self.elements.append(((e['start'], #start position
+                                       len(self.content)),# current (end) position
                                       e['name'],e['attrs'])
                                      )
                 del self.open_elements[i]
@@ -30,8 +31,8 @@ class simpleHandler (xml.sax.ContentHandler):
         self.content += chunk
 
 class MarkupString (str):
-    """A simple, strange class for dealing with strings markup. We handle things
-    like splitting strings properly to produce valid substrings."""
+    """A simple class for dealing with marked up strings. When we are sliced, we return
+    valid marked up strings, preserving markup."""
     def __init__ (self, string):        
         str.__init__(self,string)
         self.handler = simpleHandler()
@@ -51,28 +52,31 @@ class MarkupString (str):
         ends = {}
         starts = {}
         for el in elements:
+            # cycle through elements that effect our slice and keep track of
+            # where their start and end tags should go.
             pos = el[0]
             name = el[1]
             attrs = el[2]
+            # write our start tag <stag att="val"...>
             stag = "<%s"%name
             for k,v in attrs.items(): stag += " %s=%s"%(k,xml.sax.saxutils.quoteattr(v))
             stag += ">"
-            etag = "</%s>"%name
+            etag = "</%s>"%name # simple end tag
             spos = pos[0]
             epos = pos[1]
             if spos < s: spos=s
             if epos > e: epos=e
-            if epos != spos: #we don't care about tags that don't markup any text
+            if epos != spos: # we don't care about tags that don't markup any text
                 if not starts.has_key(spos): starts[spos]=[]
                 starts[spos].append(stag)
                 if not ends.has_key(epos): ends[epos]=[]
                 ends[epos].append(etag)
-        outbuf = ""
-        for pos in range(s,e):
+        outbuf = "" # our actual output string
+        for pos in range(s,e): # we move through positions
             char = self.raw[pos]
-            if ends.has_key(pos):                
+            if ends.has_key(pos):  # if there are endtags to insert...
                 for et in ends[pos]: outbuf += et
-            if starts.has_key(pos):
+            if starts.has_key(pos): # if there are start tags to insert
                 mystarts = starts[pos]
                 # reverse these so the order works out,e.g. <i><b><u></u></b></i>
                 mystarts.reverse()
@@ -80,4 +84,4 @@ class MarkupString (str):
             outbuf += char
         if ends.has_key(e):
             for et in ends[e]: outbuf+= et
-        return str(outbuf)
+        return MarkupString(str(outbuf)) # the str call is necessary to avoid unicode messiness
