@@ -49,7 +49,7 @@
 		      <accelerator key="r" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image316">
+			<widget class="GtkImage" id="image323">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -120,7 +120,7 @@
 		      <signal name="activate" handler="rcDelete" last_modification_time="Sun, 13 Jun 2004 22:57:16 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image317">
+			<widget class="GtkImage" id="image324">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -150,7 +150,7 @@
 		      <signal name="activate" handler="saveEdits" last_modification_time="Thu, 10 Feb 2005 23:35:28 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image318">
+			<widget class="GtkImage" id="image325">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-save</property>
 			  <property name="icon_size">1</property>
@@ -201,7 +201,7 @@
 		      <accelerator key="z" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image319">
+			<widget class="GtkImage" id="image326">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-undo</property>
 			  <property name="icon_size">1</property>
@@ -223,7 +223,7 @@
 		      <accelerator key="z" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image320">
+			<widget class="GtkImage" id="image327">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-redo</property>
 			  <property name="icon_size">1</property>
@@ -317,7 +317,7 @@
 		      <signal name="activate" handler="ieDel" last_modification_time="Thu, 10 Feb 2005 23:43:14 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image321">
+			<widget class="GtkImage" id="image328">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -341,6 +341,15 @@
 		  </child>
 
 		  <child>
+		    <widget class="GtkImageMenuItem" id="pasteIngredientMenu">
+		      <property name="visible">True</property>
+		      <property name="label">gtk-paste</property>
+		      <property name="use_stock">True</property>
+		      <signal name="activate" handler="on_pasteIngredientMenu_activate" last_modification_time="Tue, 22 Feb 2005 21:15:59 GMT"/>
+		    </widget>
+		  </child>
+
+		  <child>
 		    <widget class="GtkSeparatorMenuItem" id="ingSeparator">
 		      <property name="visible">True</property>
 		    </widget>
@@ -355,7 +364,7 @@
 		      <signal name="activate" handler="ieUp" last_modification_time="Thu, 10 Feb 2005 23:43:14 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image322">
+			<widget class="GtkImage" id="image329">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-go-up</property>
 			  <property name="icon_size">1</property>
@@ -377,7 +386,7 @@
 		      <signal name="activate" handler="ieDown" last_modification_time="Thu, 10 Feb 2005 23:43:14 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image323">
+			<widget class="GtkImage" id="image330">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-go-down</property>
 			  <property name="icon_size">1</property>
@@ -1409,7 +1418,7 @@
 	  <child>
 	    <widget class="GtkLabel" id="label61">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">_Recipe Card</property>
+	      <property name="label" translatable="yes">Recipe Card</property>
 	      <property name="use_underline">True</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1719,7 +1728,7 @@
 			      </child>
 
 			      <child>
-				<widget class="Custom" id="cookTimeBox">
+				<widget class="Custom" id="cooktimeBox">
 				  <property name="visible">True</property>
 				  <property name="creation_function">makeTimeEntry</property>
 				  <property name="int1">0</property>
@@ -1764,6 +1773,7 @@
 				      <property name="can_focus">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
 				      <property name="focus_on_click">True</property>
+				      <signal name="clicked" handler="setRecImage" last_modification_time="Tue, 22 Feb 2005 21:57:47 GMT"/>
 
 				      <child>
 					<widget class="GtkAlignment" id="alignment17">
@@ -2021,6 +2031,7 @@
 				      <property name="can_focus">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
 				      <property name="focus_on_click">True</property>
+				      <signal name="clicked" handler="delRecImage" last_modification_time="Tue, 22 Feb 2005 21:57:55 GMT"/>
 
 				      <child>
 					<widget class="GtkAlignment" id="alignment18">
@@ -2121,7 +2132,7 @@
 	  <child>
 	    <widget class="GtkLabel" id="label62">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">_Descriptions</property>
+	      <property name="label" translatable="yes">Descriptions</property>
 	      <property name="use_underline">True</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -2300,9 +2311,26 @@ as Ingredient</property>
 		      <property name="visible">True</property>
 		      <property name="tooltip" translatable="yes">Import ingredients from a plain text file.</property>
 		      <property name="can_focus">True</property>
-		      <property name="label" translatable="yes">_Import Ingredient List</property>
+		      <property name="label" translatable="yes">_Import Ingredients</property>
 		      <property name="use_underline">True</property>
 		      <property name="stock_id">gtk-open</property>
+		      <property name="visible_horizontal">True</property>
+		      <property name="visible_vertical">True</property>
+		      <property name="is_important">False</property>
+		      <signal name="clicked" handler="importIngs" last_modification_time="Thu, 10 Feb 2005 23:29:06 GMT"/>
+		    </widget>
+		    <packing>
+		      <property name="expand">False</property>
+		      <property name="homogeneous">True</property>
+		    </packing>
+		  </child>
+
+		  <child>
+		    <widget class="GtkToolButton" id="pasteIngredientButton">
+		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Paste ingredient list from the clipboard.</property>
+		      <property name="can_focus">True</property>
+		      <property name="stock_id">gtk-paste</property>
 		      <property name="visible_horizontal">True</property>
 		      <property name="visible_vertical">True</property>
 		      <property name="is_important">False</property>
@@ -2375,7 +2403,7 @@ as Ingredient</property>
 		    <widget class="GtkExpander" id="ieExpander">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
-		      <property name="expanded">False</property>
+		      <property name="expanded">True</property>
 		      <property name="spacing">0</property>
 
 		      <child>
@@ -2537,6 +2565,7 @@ as Ingredient</property>
 					  <child internal-child="entry">
 					    <widget class="GtkEntry" id="keyentry">
 					      <property name="visible">True</property>
+					      <property name="tooltip" translatable="yes">Standardized name for ingredient (to be used in shopping lists).</property>
 					      <property name="can_focus">True</property>
 					      <property name="editable">True</property>
 					      <property name="visibility">True</property>
@@ -2777,7 +2806,7 @@ as Ingredient</property>
 	  <child>
 	    <widget class="GtkLabel" id="label63">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">_Ingredients</property>
+	      <property name="label" translatable="yes">Ingredients</property>
 	      <property name="use_underline">True</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
