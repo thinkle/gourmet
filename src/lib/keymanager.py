@@ -72,8 +72,10 @@ class KeyManager:
 
 
     def get_key_fast (self, str):
-        if self.kd.has_key(str):
-            return self.kd[str][0]
+        #if self.kd.has_key(str):
+        #    return self.kd[str][0]
+        if defaults.keydic.has_key(str):
+            return defaults.kd[str][0]
         else:
             return self.generate_key(str)
 
