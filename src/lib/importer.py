@@ -6,8 +6,11 @@ from gglobals import gt, use_threads
 import os,stat,re
 
 class importer:
-    def __init__ (self, rd, threaded=False):
+    def __init__ (self, rd, threaded=False, total=0, prog=None):
         timeaction = TimeAction('importer.__init__',10)
+        self.total = total
+        self.prog = prog
+        self.count = 0
         self.rd=rd
         self.rd_orig_ing_hooks = self.rd.add_ing_hooks
         self.added_recs=[]
@@ -41,7 +44,7 @@ class importer:
         for i in self.added_ings:
             for h in self.rd_orig_ing_hooks:
                 h(i)
-        #debug('Running rec hooks',0)                
+        #debug('Running rec hooks',0)  
         #for r in self._added_recs:
         #    for h in self.rd_orig_hooks:
         #        h(r)
@@ -98,6 +101,11 @@ class importer:
         self.check_for_sleep()
         timeaction.end()
         self.rec_timer.end()
+        self.count += 1
+        if self.prog and self.total:
+            self.prog(float(self.count)/self.total,
+                      _("Imported %s of %s recipes."%(self.count,self.total))
+                      )
 
     def convert_servings (self, str):
         timeaction = TimeAction('importer.convert_servings',10)
