@@ -132,11 +132,11 @@ class RecData:
         if get_current_rec_method:
             def redo (*args):
                 r=get_current_rec_method()
-                odic = self.get_dict_for_rec(r,dic.keys())
+                odic = self.get_dict_for_obj(r,dic.keys())
                 return ([r,dic],[r,odic])
             def reundo (*args):
                 r = get_current_rec_method()
-                odic = self.get_dict_for_rec(r,orig_dic.keys())
+                odic = self.get_dict_for_obj(r,orig_dic.keys())
                 return ([r,orig_dic],[r,odic])
 
         def action (*args,**kwargs):
