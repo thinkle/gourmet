@@ -127,8 +127,8 @@ class mmf_importer (importer.importer):
         self.unwrap_matcher = re.compile('\n\W*\n')
         self.find_header_breaks_matcher = re.compile('\s+(?=[A-Z][A-Z][A-Z]+:.*)')
         # a crude ingredient matcher -- we look for two numbers, intermingled with spaces
-        # followed by a space or more, followed by a two digit unit (or spaces)
-        self.ing_num_matcher = re.compile("^\s*[0-9]+[0-9/ -]+\s+[A-Za-z ][A-Za-z ] .*")
+        # followed by a space or more, followed by a one or two digit unit (or spaces)
+        self.ing_num_matcher = re.compile("^\s*[0-9]+[0-9/ -]+\s+[A-Za-z ][A-Za-z ]? .*")
         self.amt_field_matcher = re.compile("^[0-9- /]+$")
         # we build a regexp to match anything that looks like
         # this: ^\s*ATTRIBUTE: Some entry of some kind...$
