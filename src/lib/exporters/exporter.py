@@ -207,9 +207,7 @@ class exporter_mult (exporter):
         if attr=='servings':
             num = convert.frac_to_float(text) * self.mult
             if num:
-                text = convert.float_to_frac()
-            else:
-                return
+                text = convert.float_to_frac(num)
         self.out.write("%s: %s\n"%(label, text))
 
     def multiply_amount (self, amount, unit):

@@ -8,7 +8,7 @@ class RecRenderer:
                   dialog_parent=None):
         de.show_message(
             label=_('Printing not supported'),
-            sublabel=_('Sorry, printing is not yet supported on Windows. To print recipes, try exporting and printing from another program.'))
+            sublabel=_('Sorry, printing is not yet supported on Windows. To print recipes, first export them, then print from another program.'))
         debug('printing not supported; showed dialog',0)
 
 class SimpleWriter (lprprinter.SimpleWriter):
