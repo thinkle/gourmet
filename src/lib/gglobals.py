@@ -10,7 +10,10 @@ if options.gourmetdir:
     gourmetdir = options.gourmetdir
     debug("User specified gourmetdir %s"%gourmetdir,0)
 else:
-    gourmetdir = os.path.join(os.path.expanduser('~'),'.gourmet')
+    if os.name =='nt':
+        gourmetdir = os.path.join(os.path.expanduser('~'),'Application Data','gourmet')
+    else:
+        gourmetdir = os.path.join(os.path.expanduser('~'),'.gourmet')
 try:
     if not os.path.exists(gourmetdir):
         debug('Creating %s'%gourmetdir,0)
