@@ -4,6 +4,9 @@ import dialog_extras as de
 from gettext import gettext as _
 
 class CheckEncoding:
+
+    """A class to read a file and guess the correct text encoding."""
+    
     def __init__ (self, file, encodings=None):
         if encodings: self.encodings = encodings
         else:
@@ -26,6 +29,8 @@ class CheckEncoding:
         f.close()
 
     def test_encodings (self):
+        """Move through self.encodings one at a time and return the first
+        encoding that decodes our text cleanly. We return a tuple (encoding,decoded_text)"""
         for e in self.encodings:
             try:
                 t=self.txt.decode(e)
@@ -34,6 +39,7 @@ class CheckEncoding:
                 pass
 
     def test_all_encodings (self):
+        """Test all encodings and return a dictionary of possible encodings."""
         self.possible_encodings = {}
         for e in self.all_encodings:
             try:
@@ -46,7 +52,6 @@ class CheckEncoding:
 class GetFile (CheckEncoding):
     """Handed a filename, return a list of lines."""
     def __init__ (self,file,encodings=None):
-
         CheckEncoding.__init__(self,file,encodings)
         enc=self.test_encodings()
         if enc:
