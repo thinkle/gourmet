@@ -5,6 +5,7 @@
 * Experimental support for sqlite and mysql backends
 * Improved mealmaster(tm) export
 * Substantially improved speed of mealmaster(tm) import
+* Added support for multiple columns of ingredients in mealmaster.
 * Added new "Cooking Time" attribute.
 * Multiple imports allowed at a time by selecting multiple imports
   (and elegantly displayed in new dialog).
