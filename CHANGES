@@ -1,3 +1,14 @@
+==== Version 0.8.0 Changes from 0.7.1 ===
+* Support for pasting ingredients
+* Support for formatting text in instructions and notes
+* New tabbed interface for recipe card
+* Experimental support for sqlite and mysql backends
+* Improved mealmaster(tm) export
+* Substantially improved speed of mealmaster(tm) import
+* Added new "Cooking Time" attribute.
+* Multiple imports allowed at a time by selecting multiple imports
+  (and elegantly displayed in new dialog).
+
 ==== Version 0.7.1 Changes from 0.7.0 ====
 
 * RPM spec file fixed so dependencies should be properly worked out now.
