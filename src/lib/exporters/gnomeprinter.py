@@ -217,7 +217,7 @@ def render_to_job (job):
     r = renderer(job)
     for f in ['Sans','Serif','Monospace','Arial']:
         for s in [12,14,16,18,24]:
-            for sty in ['Regular','Bold','Italic']:
+            for sty in ['normal','oblique','italic']:
                 r.set_font(f,s,sty)
                 r.write_paragraph( "This is a paragraph in %s %s %s. "%(f,sty,s) * 5)
     for i in xrange(10):
@@ -323,7 +323,7 @@ class RecWriter (exporter.exporter_mult):
         debug('write_grouphead ',0)
         self.print_writer.write_heading(name,
                                         size=self.print_writer.default_head_size-2,
-                                        style='Regular',
+                                        style='normal',
                                         indent=0,
                                         space_before=0.5,
                                         space_after=0)
@@ -349,7 +349,7 @@ class SimpleWriter (print_writer):
 
     def write_subheader (self, text):
         debug('write_subheader ',0)
-        self.write_heading(text, size=12, style="Regular", space_after=0, space_before=0.5)
+        self.write_heading(text, size=12, style="normal", space_after=0, space_before=0.5)
 
 if __name__ == '__main__':
     #dialog = show_print_dialog()
