@@ -1,6 +1,6 @@
 import os.path
 from gdebug import debug, TimeAction
-import re, pickle, keymanager, string, shopping, convert, os.path
+import re, pickle, keymanager, string, shopping, convert, os.path, string
 from gettext import gettext as _
 import gglobals, Undo
 from defaults import lang as defaults
@@ -42,7 +42,11 @@ class RecData:
                                        ('preptime',"char(50)"),
                                        ('servings',"char(50)"),
                                        ('image',"binary"),
-                                       ('thumb','binary')])
+                                       ('thumb','binary'),
+                                       ('deleted','bool')                                       
+                                       ])
+        self.rview_not_deleted = self.rview.select(deleted=False)
+        self.rview_deleted = self.rview.select(deleted=True)
         debug('iview',2)
         self.iview = self.setup_table('ingredients',
                                       [('id','char(75)'),
@@ -53,9 +57,13 @@ class RecData:
                                        ('ingkey','char(200)'),
                                        ('optional','char(10)'),
                                        ('inggroup','char(200)'),
-                                       ('position','int')],
+                                       ('position','int'),
+                                       ('deleted','bool'),
+                                       ],
                                       key='id'
                                       )
+        self.iview_not_deleted = self.iview.select(deleted=False)
+        self.iview_deleted = self.iview.select(deleted=True)
         debug('sview',2)
         self.sview = self.setup_table('shopcats',
                                       [('shopkey','char(50)'),
@@ -104,18 +112,44 @@ class RecData:
             debug('running hook %s with args %s'%(h,args),3)
             h(*args)
 
-    def undoable_modify_rec (self, rec, dic, history=[], get_current_rec_method=None):
+    def get_dict_for_rec (self, rec, keys):
         orig_dic = {}
-        for k in dic.keys():
-            orig_dic[k]=getattr(rec,k)
+        for k in keys:
+            v=getattr(rec,k)
+            orig_dic[k]=v
+        return orig_dic
+
+    def undoable_modify_rec (self, rec, dic, history=[], get_current_rec_method=None,
+                             select_change_method=None):
+        orig_dic = self.get_dict_for_rec(rec,dic.keys())
+        reundo_name = "Re_apply"
+        reapply_name = "Re_apply "
+        reundo_name += string.join(["%s <i>%s</i>"%(k,v) for k,v in orig_dic.items()])
+        reapply_name += string.join(["%s <i>%s</i>"%(k,v) for k,v in dic.items()])
         redo,reundo=None,None
         if get_current_rec_method:
-            redo=lambda *args: [get_current_rec_method(),dic]
-            reundo = lambda *args: [get_current_rec_method(),orig_dic]
-        obj = Undo.UndoableObject(self.modify_rec,self.modify_rec,history,
+            def redo (*args):
+                r=get_current_rec_method()
+                odic = self.get_dict_for_rec(r,dic.keys())
+                return ([r,dic],[r,odic])
+            def reundo (*args):
+                r = get_current_rec_method()
+                odic = self.get_dict_for_rec(r,orig_dic.keys())
+                return ([r,orig_dic],[r,odic])
+
+        def action (*args,**kwargs):
+            """Our actual action allows for selecting changes after modifying"""
+            print 'modify_recs: ',args,kwargs
+            self.modify_rec(*args,**kwargs)
+            if select_change_method:
+                select_change_method(*args,**kwargs)
+                
+        obj = Undo.UndoableObject(action,action,history,
                                   action_args=[rec,dic],undo_action_args=[rec,orig_dic],
                                   get_reapply_action_args=redo,
-                                  get_reundo_action_args=reundo)
+                                  get_reundo_action_args=reundo,
+                                  reapply_name=reapply_name,
+                                  reundo_name=reundo_name,)
         obj.perform()
 
     def modify_rec (self, rec, dict):
@@ -209,8 +243,41 @@ class RecData:
         else:
             return None
 
+    def add_rec (self, rdict):
+        self.changed=True
+        if not rdict.has_key('deleted'):
+            rdict['deleted']=False
+        if not rdict.has_key('id'):
+            rdict['id']=self.new_id()
+        old_r=self.get_rec(rdict['id'])
+#        ## if we already have a recipe with this ID, delete it, change the ID
+        if old_r:
+            #debug("WARNING: DELETING OLD RECIPE %s id %s"%(old_r.title,old_r.id),0)
+            #self.delete_rec(old_r)
+            debug("ID %s taken. Generating new ID."%rdict['id'])
+            rdict['id']=self.new_id()        
+        try:
+            debug('Adding recipe %s'%rdict, 4)
+            self.rview.append(rdict)
+            debug('Running add hooks %s'%self.add_hooks,2)
+            self.run_hooks(self.add_hooks,self.rview[-1])
+            return self.rview[-1]
+        except:
+            debug("There was a problem adding recipe%s"%rdict,-1)
+            raise
+
     def delete_rec (self, rec):
         raise NotImplementedError
+
+    def undoable_delete_recs (self, recs, history, make_visible=None):
+        def do_delete ():
+            for rec in recs: rec.deleted = True
+            if make_visible: make_visible(recs)
+        def undo ():
+            for rec in recs: rec.deleted = False
+            if make_visible: make_visible(recs)
+        obj = Undo.UndoableObject(do_delete,undo,history)
+        obj.perform()
 
     def new_rec (self):
         raise NotImplementedError
@@ -391,11 +458,29 @@ class dbDic:
             return False
         
     def __setitem__ (self, k, v):
-        raise NotImplementedError
+        if self.pickle_key:
+            k=pickle.dumps(k)
+        row = self.vw.select(**{self.kp:k})
+        if len(row)>0:
+            setattr(row[0],self.vp,pickle.dumps(v))
+        else:
+            self.vw.append({self.kp:k,self.vp:pickle.dumps(v)})
+        self.db.changed=True
+        return v
     
     def __getitem__ (self, k):
-        raise NotImplementedError
-
+        if self.pickle_key:
+            k=pickle.dumps(k)
+        v = getattr(self.vw.select(**{self.kp:k})[0],self.vp)
+        if v:
+            try:
+                return pickle.loads(v)
+            except:
+                print "Problem unpickling ",v
+                raise
+        else:
+            return None
+    
     def __repr__ (self):
         str = "<dbDic> {"
         for i in self.vw:
@@ -410,13 +495,38 @@ class dbDic:
         return str
 
     def keys (self):
-        raise NotImplementedError
+        ret = []
+        for i in self.vw:
+            ret.append(getattr(i,self.kp))
+        return ret
 
     def values (self):
-        raise NotImplementedError
+        ret = []
+        for i in self.vw:
+            val = getattr(i,self.vp)
+            if val: val = pickle.loads(val)
+            ret.append(val)
+        return ret
 
     def items (self):
-        raise NotImplementedError        
+        ret = []
+        for i in self.vw:
+            key = getattr(i,self.kp)
+            val = getattr(i,self.vp)
+            if key and self.pickle_key:
+                try:
+                    key = pickle.loads(key)
+                except:
+                    print 'Problem unpickling key ',key
+                    raise
+            if val:
+                try:
+                    val = pickle.loads(val)
+                except:
+                    print 'Problem unpickling value ',val, ' for key ',key
+                    raise 
+            ret.append((key,val))
+        return ret
         
 #if __name__ == '__main__':
 #    rd = recData()
