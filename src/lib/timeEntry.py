@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-import gtk
+import gtk, cb_extras
+from gettext import gettext as _
 
 class TimeEntry (gtk.HBox):
     def __init__ (self, *args, **kwargs):
@@ -9,14 +10,16 @@ class TimeEntry (gtk.HBox):
         self.spin = gtk.SpinButton(adjustment=self.adj, digits=1)
         self.spin.set_numeric(gtk.TRUE)
         self.spin.set_update_policy(gtk.UPDATE_IF_VALID)
-        self.combo = gtk.Combo()
         self.units = [_('seconds'),_('minutes'),_('hours'),_('days'),_('weeks'),_('months')]
-        self.combo.set_popdown_strings(self.units)
+        self.combo = gtk.ComboBoxEntry()
+        cb_extras.set_model_from_list(self.combo,self.units)
+        #self.combo.set_popdown_strings(self.units)
         self.pack_start(self.spin, gtk.TRUE, gtk.TRUE, 6)
         self.spin.show()
         self.pack_start(self.combo, gtk.TRUE, gtk.TRUE, 6)
         self.combo.show()
-        self.combo.entry.set_text(_('minutes'))
+        #self.combo.entry.set_text(_('minutes'))
+        cb_extras.cb_set_active_text(self.combo,_('minutes'))
         
     def set_text (self, text):
         """We only accept text of the form '# unit'"""
@@ -26,6 +29,7 @@ class TimeEntry (gtk.HBox):
             num,unit = 0,_("minutes") #defaults
         self.spin.set_value(float(num))
         self.combo.entry.set_text(str(unit))
+        
         
     def get_text (self):
         """We return text in the form of '# unit'"""
