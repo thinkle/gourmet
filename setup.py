@@ -21,7 +21,7 @@ try:
     from version import version
 except:
     #print 'Version info may be out of date.'
-    version = "0.8.1"
+    version = "0.9.0"
 
 name= 'gourmet'
 
