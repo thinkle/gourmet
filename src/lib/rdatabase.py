@@ -292,17 +292,17 @@ class RecData:
         a base"""
         if self.top_id.has_key(base):
             start = self.top_id[base]
+            n = start + 1
         else:
-            start = 0
+            n = 0
+            while self.rview.find(id=self.format_id(n, base)) > -1 or self.iview.find(id=self.format_id(n, base)) > -1:
+                # if the ID exists, we keep incrementing
+                # until we find a unique ID
+                n += 1 
         # every time we're called, we increment out record.
         # This way, if party A asks for an ID and still hasn't
         # committed a recipe by the time party B asks for an ID,
         # they'll still get unique IDs.
-        n = start + 1
-        while self.rview.find(id=self.format_id(n, base)) > -1 or self.iview.find(id=self.format_id(n, base)) > -1:
-            # if the ID exists, we keep incrementing
-            # until we find a unique ID
-            n += 1
         self.top_id[base]=n
         return self.format_id(n, base)
 
@@ -494,7 +494,7 @@ class dbDic:
 
     def has_key (self, k):
         try:
-            self.__getitem__(k)
+            self.just_got = {k:self.__getitem__(k)}
             return True
         except:
             return False
@@ -511,14 +511,17 @@ class dbDic:
         return v
     
     def __getitem__ (self, k):
+        if self.just_got.has_key(k): return self.just_got[k]
         if self.pickle_key:
             k=pickle.dumps(k)
-        v = getattr(self.vw.select(**{self.kp:k})[0],self.vp)
+        t=TimeAction('dbdict getting from db',0)
+        v = getattr(self.vw.select(**{self.kp:k})[0],self.vp)        
+        t.end()
         if v:
             try:
                 return pickle.loads(v)
             except:
-                print "Problem unpickling ",v
+                print "Problem unpickling ",v                
                 raise
         else:
             return None

@@ -12,11 +12,11 @@ dbargs = {}
 if OptionParser.options.db=='metakit': db = 'metakit'
 if OptionParser.options.db=='sqlite': db = 'sqlite'
 
-if not OptionParser.options.db:
+if not OptionParser.options.db or OptionParser.options.choosedb:
     import prefs
     p = prefs.Prefs()
     db = p.get('db_backend',None)
-    if not db or OptionParser.options.choosedb:
+    if (not db) or OptionParser.options.choosedb:
         import DatabaseChooser
         d=DatabaseChooser.DatabaseChooser(modal=True)
         dbdict = d.run()

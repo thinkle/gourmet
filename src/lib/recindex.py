@@ -271,11 +271,14 @@ class RecIndex:
         store = self.rectree.get_model()
         iter = store.get_iter(path)
         self.rmodel.set_value(iter, colnum, text)
-        rec=self.get_rec_from_iter(iter)
-        #self.rd.modify_rec(rec,{attribute:text})
-        self.rd.undoable_modify_rec(rec,{attribute:text},self.history,
-                                 get_current_rec_method=lambda *args: self.recTreeSelectedRecs()[0],
-                                 )
+        rec=self.get_rec_from_iter(iter)        
+        if "%s"%getattr(rec,attribute)!=text:
+            # only bother with this if the value has actually changed!
+            self.rd.undoable_modify_rec(rec,
+                                        {attribute:text},
+                                        self.history,
+                                        get_current_rec_method=lambda *args: self.recTreeSelectedRecs()[0],
+                                        )
         # for metakit, which isn't automitting very nicely...
         self.rd.save()
 

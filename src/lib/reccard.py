@@ -111,6 +111,7 @@ class ActionManager:
 
     def make_connections (self):
         for a,cb in self.callbacks:
+            debug('connecting %s activate to %s'%(a,cb))
             getattr(self,a).connect('activate',cb)
     
 class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
@@ -163,6 +164,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             #if self.multCheckB.get_active():
                 #self.multCheckB.set_active(False)
             self.updateRecipe(r)
+            # and set our page to the details page
+            self.notebook.set_current_page(1)
         t.end()
         t=TimeAction('RecCard.__init__ 4',0)
         self.pref_id = 'rc%s'%self.current_rec.id
@@ -187,7 +190,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             #'ieDown' : self.ingDownCB,
             #'ieNewGroup' : self.ingNewGroupCB,
             'recRef':lambda *args: RecSelector(self.rg,self),
-            'importIngs': self.importIngredientsCB,
+            #'importIngs': self.importIngredientsCB,
             'unitConverter': self.rg.showConverter,
             'ingKeyEditor': self.rg.showKeyEditor,
             'print': self.print_rec,
@@ -255,7 +258,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.widget = self.glade.get_widget('recCard')
         self.stat = self.glade.get_widget('statusbar1')
         self.contid = self.stat.get_context_id('main')
-        self.delButton = self.glade.get_widget('ingDelButton')
         self.toggleReadableMenu = self.glade.get_widget('toggle_readable_units_menuitem')
         self.toggleReadableMenu.set_active(self.prefs.get('readableUnits',True))
         self.toggleReadableMenu.connect('toggled',self.readableUnitsCB)
@@ -273,6 +275,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                                              ['ingNewGroupButton','ingNewGroupMenu']]},
                                 {'ingImport':[{'tooltip':_('Import list of ingredients from text file.')},
                                               ['ingImportListButton','ingImportListMenu']]
+                                 },
+                                {'ingPaste':[{'tooltip':_('Paste list of ingredients from clipboard.')},
+                                             ['pasteIngredientButton','pasteIngredientMenu']]
                                  },
                                 {'ingRecRef':[{'tooltip':_('Add another recipe as an "ingredient" in the current recipe.'),
                                                'separators':'ingSeparator3'
@@ -303,7 +308,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
              ('ingAdd',self.ie.new),
              ('ingDel',self.ie.delete_cb),
              ('ingGroup',self.ingNewGroupCB),
-             #('ingImport',self.importIngs),
+             ('ingImport',self.importIngredientsCB),
+             ('ingPaste',self.pasteIngsCB),
              ]
             )
         self.notebook_page_actions = {'ingredients':['ingredientGroup','selectedIngredientGroup'],
@@ -490,6 +496,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug("newRecipeCB (self, *args):",5)
         self.rg.newRecCard()
 
+    def getSelectedIters (self):
+        if len(self.imodel)==0:
+            return None
+        ts,paths = self.ingTree.get_selection().get_selected_rows()
+        return [ts.get_iter(p) for p in paths]
+
     def getSelectedIter (self):
         debug("getSelectedIter",4)
         if len(self.imodel)==0:
@@ -582,13 +594,18 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         return next
 
     def ingNewGroupCB (self, *args):
-        self.add_group(_('New Group'),self.imodel,prev_iter=self.getSelectedIter())
+        self.add_group(de.getEntry(label=_('Adding Ingredient Group'),
+                                   sublabel=_('Enter a name for new subgroup of ingredients'),
+                                   entryLabel=_('Name of group: '),
+                                   ),
+                       self.imodel,
+                       prev_iter=self.getSelectedIter(),
+                       children_iters=self.getSelectedIters())
 
-    def resetIngList (self, rec=None):
+    def resetIngList (self):
         debug("resetIngList (self, rec=None):",0)
-        if not rec:
-            rec=self.current_rec
-        self.imodel = self.create_imodel(rec,mult=self.mult)
+        self.ing_alist = None
+        self.imodel = self.create_imodel(self.current_rec,mult=self.mult)
         self.ingTree.set_model(self.imodel)        
         self.selection_changed()
         self.ingTree.expand_all()
@@ -624,7 +641,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 debug(_("Couldn't make sense of %s as number of servings")%self.current_rec.servings,0)        
         self.serves = self.serves_orig
         #self.servingsChange()
-        self.resetIngList(rec)
+        self.resetIngList()
         self.updateRecDisplay()
         for c in self.reccom:
             debug("Widget for %s"%c,5)
@@ -767,9 +784,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                     opt = _('(Optional)')
                 else: opt=None
                 return string.join(filter(lambda x: x,[amt,unit,i.item,opt]),' ')
-            label=string.join(map(ing_string,ings),"\n")
+            label+=string.join(map(ing_string,ings),"\n")
+            if g: label += "\n"
         if label:
             self.ingredientsDisplay.set_text(label)
+            self.ingredientsDisplay.set_use_markup(True)
             self.ingredientsDisplay.show()
             self.ingredientsDisplayLabel.show()
         else:
@@ -914,9 +933,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         if selected != self.selected:
             if selected: self.selected=gtk.TRUE
             else: self.selected=gtk.FALSE
-            if self.delButton:
-                self.delButton.set_sensitive(self.selected)
-            else: debug("No delButton!",2)
+            self.selectedIngredientGroup.set_sensitive(self.selected)
 
     def ingtree_toggled_cb (self, cellrenderer, path, colnum, head):
         debug("ingtree_toggled_cb (self, cellrenderer, path, colnum, head):",5)
@@ -961,7 +978,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             if attr=='item':
                 d['ingkey']=self.rg.rd.km.get_key(text)
                 store.set_value(iter,5,d['ingkey'])
-            if type(ing) != str: self.rg.rd.undoable_modify_ing(ing,d,self.history)
+            if type(ing) == str:                
+                self.change_group(iter, text)
+                return
+            self.rg.rd.undoable_modify_ing(ing,d,self.history)
             if d.has_key('ingkey'):
                 ## if the key has been changed and the shopping category is not set...
                 ## COLUMN NUMBER FOR Shopping Category==6
@@ -1012,7 +1032,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                    self.pre_modify_tree()
                    for i in self.selected_iter:
                        te.move_iter(mod,i,sibling=diter,direction="before")
-                   self.post_modify_tree()                       
+                   self.post_modify_tree()
                else:
                    self.pre_modify_tree()
                    for i in self.selected_iter:
@@ -1160,7 +1180,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 self.add_ingredient(model, i, mult, g)
         return model
 
-    def add_group (self, name, model, prev_iter=None):
+    def add_group (self, name, model, prev_iter=None, children_iters=[]):
         debug('add_group',5)
         if not prev_iter:
             groupiter = model.append(None)
@@ -1168,8 +1188,25 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             groupiter = model.insert_after(None,prev_iter,None)
         model.set_value(groupiter, 0, "GROUP %s"%name)
         model.set_value(groupiter, 1, name)
+        for c in children_iters:            
+            te.move_iter(model,c,None,parent=groupiter,direction='after')
         debug('add_group returning %s'%groupiter,5)
         return groupiter
+
+    def change_group (self, iter, text):
+        model = self.ingTree.get_model()
+        oldgroup0 = model.get_value(iter,0)
+        oldgroup1 = model.get_value(iter,1)
+        def change_my_group ():
+            model.set_value(iter,0,"GROUP %s"%name)
+            model.set_value(iter,1,name)
+            self.commit_positions()
+        def unchange_my_group ():
+            model.set_value(iter,0,oldgroup0)
+            model.set_value(iter,1,oldgroup0)
+            self.commit_positions()
+        obj = Undo.UndoableObject(change_my_group,unchange_my_group,self.history)
+        obj.perform()
 
     def add_ingredient (self, model, ing, mult, group_iter=None):
         """group_iter is an iter to put our ingredient inside of.
@@ -1212,8 +1249,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         elif i.amount:
             amt,unit = float(i.amount)*mult,i.unit
         else:
-            amt,unit = 1,i.unit
-        amt = convert.float_to_frac(amt)
+            amt,unit = None,i.unit
+        if amt: amt = convert.float_to_frac(amt)
         if unit != i.unit:
             debug('Automagically adjusting unit: %s->%s'%(i.unit,unit),0)
         return amt,unit
@@ -1222,7 +1259,16 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug('importIngredientsCB',0) #FIXME
         f=de.select_file(_("Choose a file containing your ingredient list."),action=gtk.FILE_CHOOSER_ACTION_OPEN)
         self.importIngredients(f)
-        
+
+    def pasteIngsCB (self, *args):
+        debug('paste ings cb')
+        if not hasattr(self,'cb'):
+            self.cb = gtk.clipboard_get(gtk.gdk.SELECTION_PRIMARY)
+        def add_ings_from_clippy (cb,txt,data):
+            for l in txt.split('\n'):
+                if l.strip(): self.add_ingredient_from_line(l)
+        self.cb.request_text(add_ings_from_clippy)
+    
     def importIngredients (self, file):
         ifi=open(file,'r')
         for line in ifi:

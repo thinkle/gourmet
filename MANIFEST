@@ -3,7 +3,6 @@ setup.cfg
 MANIFEST
 CHANGES
 README
-Release_Notes_0.5
 TODO
 copyright
 gourmet.desktop
@@ -14,6 +13,7 @@ images/splash.png
 images/gourmet_logo.png
 glade/app.glade
 glade/recCard.glade
+glade/databaseChooser.glade
 glade/recSelector.glade
 glade/rec_ref_window.glade
 glade/shopList.glade
@@ -25,6 +25,9 @@ src/gourmet
 src/lib/GourmetRecipeManager.py
 src/lib/WidgetSaver.py
 src/lib/__init__.py
+src/lib/MarkupString.py
+src/lib/TextBufferMarkup.py
+src/lib/Undo.py
 src/lib/cb_extras.py
 src/lib/check_encodings.py
 src/lib/convert.py
@@ -55,6 +58,7 @@ src/lib/prefs.py
 src/lib/reccard.py
 src/lib/recipe_emailer.py
 src/lib/recindex.py
+src/lib/recipeManager.py
 src/lib/rdatabase.py
 src/lib/rmetakit.py
 src/lib/rsqlite.py

@@ -1,0 +1,6 @@
+TODO
+
+* Create faster and more elegant ingredient input interface
+* Fix threading with MySQL
+* Add support for nutritional information
+* Support copy/paste menu/toolbar buttons

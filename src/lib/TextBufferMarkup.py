@@ -56,12 +56,11 @@ class PangoBuffer (gtk.TextBuffer):
     def set_text (self, txt):
         gtk.TextBuffer.set_text(self,"")
         try:
-            self.parsed,self.txt,self.separator = pango.parse_markup(txt,u'0')
+            self.parsed,self.txt,self.separator = pango.parse_markup(txt,u'\x00')
         except:
             debug('Escaping text, we seem to have a problem here!')
-
             txt=xml.sax.saxutils.escape(txt)
-            self.parsed,self.txt,self.separator = pango.parse_markup(txt,u'0')
+            self.parsed,self.txt,self.separator = pango.parse_markup(txt,u'\x00')
         self.attrIter = self.parsed.get_iterator()
         self.add_iter_to_buffer()        
         while self.attrIter.next():
@@ -70,8 +69,9 @@ class PangoBuffer (gtk.TextBuffer):
     def add_iter_to_buffer (self):
         range=self.attrIter.range()
         font,lang,attrs = self.attrIter.get_font()
-        tags = self.get_tags_from_attrs(font,lang,attrs)
+        tags = self.get_tags_from_attrs(font,lang,attrs)        
         text = self.txt[range[0]:range[1]]
+        print 'tags for text %s:'%text,[self.tag_to_markup(t) for t in tags]
         if tags: self.insert_with_tags(self.get_end_iter(),text,*tags)
         else: self.insert_with_tags(self.get_end_iter(),text)
         
@@ -124,9 +124,11 @@ class PangoBuffer (gtk.TextBuffer):
                     #tag.set_property(prop,val)
                     mval = val
                     if self.attval_to_markup.has_key(prop):
-                        #print 'converting ',prop,' in ',val
+                        print 'converting ',prop,' in ',val
                         if self.attval_to_markup[prop].has_key(val):
                             mval = self.attval_to_markup[prop][val]
+                        else:
+                            print "hmmm, didn't know what to do with value ",val
                     key="%s%s"%(prop,val)
                     if not self.tags.has_key(key):
                         self.tags[key]=self.create_tag()
@@ -150,6 +152,7 @@ class PangoBuffer (gtk.TextBuffer):
                         tagdict[tag].append((pos,pos))
                 else:
                     tagdict[tag]=[(pos,pos)]
+        print tagdict
         return tagdict
 
     def get_text (self, start=None, end=None, include_hidden_chars=True):
@@ -177,7 +180,7 @@ class PangoBuffer (gtk.TextBuffer):
             if not last_pos==c:
                 outbuff += xml.sax.saxutils.escape(txt[last_pos:c])
                 last_pos = c
-            for tag in cuts[c]:                
+            for tag in cuts[c]:
                 outbuff += tag
             #print 'outbuff: ',outbuff
         outbuff += xml.sax.saxutils.escape(txt[last_pos:])
@@ -188,6 +191,7 @@ class PangoBuffer (gtk.TextBuffer):
         for k,v in self.tagdict[tag].items():
             stag += ' %s="%s"'%(k,v)
         stag += ">"
+        #print 'converted tag %s to '%tag,stag
         return stag,"</span>"
 
     def fontdesc_to_attrs (self,font):
@@ -283,7 +287,7 @@ class InteractivePangoBuffer (PangoBuffer):
     def setup_widget_from_pango (self, widg, markupstring):
         """setup widget from a pango markup string"""
         #font = pango.FontDescription(fontstring)
-        a,t,s = pango.parse_markup(markupstring,u'0')
+        a,t,s = pango.parse_markup(markupstring,u'\x00')
         ai=a.get_iterator()
         font,lang,attrs=ai.get_font()
         return self.setup_widget(widg,font,attrs)
@@ -331,9 +335,13 @@ class SimpleEditor:
         self.sw.add(self.tv)
         self.ipb = InteractivePangoBuffer(
             normal_button=self.nb)
-        self.ipb.set_text("""<b>This is bold</b>. <i>This is italic</i>
-            <b><i>This is bold, italic, and <u>underlined!</u></i></b>
-            This is <span color="blue">blue</span>, <span color="red">red</span> and <span color="green">green</span>""")
+        #self.ipb.set_text("""<b>This is bold</b>. <i>This is italic</i>
+        #    <b><i>This is bold, italic, and <u>underlined!</u></i></b>
+        #    This is a numerical range (three hundred and fifty to four hundred) 350-400 which may get messed up.
+        #    Here are some more: 1-2, 2-3, 3-4, 10-20, 30-40, 50-60
+        #    This is <span color="blue">blue</span>, <span color="red">red</span> and <span color="green">green</span>""")
+        self.ipb.set_text("""This is a numerical range (three hundred and fifty to four hundred) 350-400 which may get messed up.
+        Here are some more: 1-2, 2-3, 3-4, 10-20, 30-40, 50-60""")
         self.tv.set_buffer(self.ipb)
         for lab,stock,font in [('gtk-italic',True,'<i>italic</i>'),
                                ('gtk-bold',True,'<b>bold</b>'),

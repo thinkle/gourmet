@@ -78,6 +78,19 @@ else:
     import sys
     sys.exit()
 
+
+# GRAB EXPLICITLY STATED GLADE/IMAGE/DATA DIRECTORIES FROM OPTIONS
+if options.datad:
+    datad=options.datad
+    gladebase=datad
+    imagedir=datad
+
+if options.imaged:
+    imagedir=options.imaged
+
+if options.gladed:
+    gladebase=options.gladed
+
 # UNCOMMENT BELOW TO TEST
 #use_threads=False
 import recipeManager
@@ -96,18 +109,6 @@ else:
     import GourmetFauxThreads as gt
 
 
-# GRAB EXPLICITLY STATED GLADE/IMAGE/DATA DIRECTORIES FROM OPTIONS
-if options.datad:
-    datad=options.datad
-    gladebase=datad
-    imagedir=datad
-
-if options.imaged:
-    imagedir=options.imaged
-
-if options.gladed:
-    gladebase=options.gladed
-
 
 REC_ATTRS = [('title',_('Title'),'Entry'),
              ('category',_('Category'),'Combo'),
@@ -115,10 +116,12 @@ REC_ATTRS = [('title',_('Title'),'Entry'),
              ('rating',_('Rating'),'Combo'),
              ('source',_('Source'),'Combo'),
              ('servings',_('Servings'),'Entry'),
-             ('preptime',_('Preparation Time'),'Entry'),]
+             ('preptime',_('Preparation Time'),'Entry'),
+             ('cooktime',_('Cooking Time'),'Entry'),
+             ]
 
 NAME_TO_ATTR = {_('Instructions'):'instructions',
-                _('Modifications'):'modifications'
+                _('Notes'):'modifications'
                 }
 
 for attr, name, widget in REC_ATTRS:

@@ -169,7 +169,9 @@ class importer:
 
     def add_item (self, item):
         timeaction = TimeAction('importer.add_item',10)        
-        self.ing['item']=str(item.strip())
+        itm=str(item.strip())
+        itm=itm.replace("\n"," ")
+        self.ing['item']=itm
         timeaction.end()
         
     def add_unit (self, unit):
@@ -231,6 +233,7 @@ class MultipleImporter:
             self.iclass = ic(*args,**kwargs)
             self.suspend = self.iclass.suspend
             self.terminate = self.iclass.terminate
+            self.resume = self.iclass.resume
             self.iclass.run()
             print self.current_prog, '+', self.current_percentage
             self.current_prog += self.current_percentage

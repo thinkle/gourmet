@@ -185,6 +185,7 @@ class entryDialog (mDialog):
         if default:
             self.entry.set_text(default)
         self.entry.connect("changed",self.update_value)
+        self.entry.show_all()
         self.entry.show()
 
     def update_value (self, *args):
@@ -788,6 +789,7 @@ if __name__ == '__main__':
         ['show dialog (modal)',run_prefs],
         ['show dialog (not modal)',lambda *args: preferences_dialog(options=opts,apply_func=show_options).show()],
         ['show message',lambda *args: show_message('howdy',label='Hello there. This is a very long label for the top of a dialog.', sublabel='And this is a sub message.',message_type=gtk.MESSAGE_WARNING)],
+        ['get entry', lambda *args: getEntry(label='Main label',sublabel='sublabel',entryLabel='Entry Label: ')],
         ['show boolean', lambda *args: getBoolean()],
         ['get image dialog',lambda *args: msg(select_image('Select Image'))],
         ['get file dialog',lambda *args: msg(select_file('Select File',

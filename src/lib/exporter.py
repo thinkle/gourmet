@@ -360,7 +360,7 @@ class mealmaster_exporter (exporter):
                         
     def _write_ingredient (self, ing):
         a,u,i = ing
-        self.out.write("   %s %s %s\n"%(self.pad(a,self.amtlen),
+        self.out.write("%s %s %s\n"%(self.pad(a,self.amtlen),
                                      self.pad(u,self.ulen),
                                      i))
 
