@@ -42,9 +42,10 @@ class NutritionModel (gtk.TreeStore):
         
         
 class SimpleNutritionalDisplay:
-    def __init__ (self,nvw):
+    def __init__ (self,nutrition_data):
         self.w = gtk.Window()
-        self.nm = NutritionModel(nvw)
+        self.nd = nutrition_data
+        self.nm = NutritionModel(ndObj.db.nview)
         self.sw = gtk.ScrolledWindow()
         self.tv = gtk.TreeView()
         rend = gtk.CellRendererText()
@@ -62,9 +63,20 @@ class SimpleNutritionalDisplay:
 class SimpleIngredientCalculator (de.mDialog):
     """This will be a simple prototype -- type in an ingredient,
     select the USDA equivalent, type in an amount and we're off!"""
-    def __init__ (self, db, umodel):
+    def __init__ (self, nd, umodel,
+                  fields = ['kcal',
+                            'protein',
+                            'carb',
+                            'fiber',
+                            'sugar',
+                            'famono',
+                            'fapoly',
+                            'fasat',
+                            'cholestrl',]):
         de.mDialog.__init__(self)
-        self.db = db
+        self.fields = fields
+        self.nd = nd
+        self.db = self.nd.db
         self.umodel = umodel
         self.setup_boxes()
 
@@ -72,6 +84,9 @@ class SimpleIngredientCalculator (de.mDialog):
         self.hbb = gtk.HBox()
         self.vbox.add(self.hbb)
         self.amtBox = gtk.SpinButton()
+        self.amtBox.set_range(0.075,5000)
+        self.amtBox.set_sensitive(True)
+        self.amtBox.set_value(1)
         self.unitBox = gtk.ComboBox()
         self.unitBox.set_model(self.umodel)
         cell = gtk.CellRendererText()
@@ -83,22 +98,35 @@ class SimpleIngredientCalculator (de.mDialog):
         self.nutBox.pack_start(cell, True)
         self.nutBox.add_attribute(cell,'text',0)        
         self.nutBox.connect('changed',self.nutBoxCB)
+        self.unitBox.connect('changed',self.nutBoxCB)        
         self.refreshButton = gtk.Button('Update Nutritional Items')
         self.refreshButton.connect('clicked',self.updateCombo)
         self.hbb.add(self.amtBox)
         self.hbb.add(self.unitBox)
         self.hbb.add(self.itmBox)
         self.hbb.add(self.refreshButton)
-        self.hbb.add(self.nutBox)
+        self.vbox.add(self.nutBox)
         self.nutLabel=gtk.Label()
         self.vbox.add(self.nutLabel)
         self.vbox.show_all()
 
     def nutBoxCB (self, *args):
         txt=cb.cb_get_active_text(self.nutBox)
-        row=self.db.nview[self.db.nview.find({'desc':txt})]
-        self.nutLabel.set_text('%s kcal / 100g'%row.kcal)
-
+        row=self.db.nview[self.db.nview.find({'desc':txt})]        
+        conversion =  self.nd.get_conversion_for_amt(
+            float(self.amtBox.get_value()),
+            cb.cb_get_active_text(self.unitBox),
+            self.itmBox.get_text(),
+            row)
+        lab = ""
+        if conversion:
+            for f in self.fields:
+                lab += "\n%s %s"%(getattr(row,f)*conversion,f)
+        else:
+            for f in self.fields:
+                lab += "\n%s %s / 100g"%(getattr(row,f),f)
+        self.nutLabel.set_text(lab)
+        
     def updateCombo (self, *args):
         self.txt = self.itmBox.get_text()
         indexvw = self.db.nview.filter(self.search_func)
@@ -117,15 +145,10 @@ class SimpleIngredientCalculator (de.mDialog):
             if word:
                 ret = desc.find(word)>=0
         return ret
-                
-                
-        
-        
-    
-    
 
 if __name__ == '__main__':
     from gourmet.recipeManager import RecipeManager,dbargs
+    dbargs['file']='/tmp/fdsa/recipes.mk'
     db=RecipeManager(**dbargs)
     import gourmet.convertGui, gourmet.convert
     #inginfo = gourmet.reccard.IngInfo(db)
@@ -141,6 +164,8 @@ if __name__ == '__main__':
         gtk.mainquit()
     #snd=SimpleNutritionalDisplay(db.nview)
     #snd.w.connect('delete-event',quit)
-    sic = SimpleIngredientCalculator(db,umod)
+    import nutrition
+    nd=nutrition.nutritionData(db,conv)
+    sic = SimpleIngredientCalculator(nd,umod)
     sic.run()
     gtk.main()

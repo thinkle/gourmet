@@ -138,7 +138,7 @@ class converter:
                 ret[k] = conv * mult
         return ret
 
-    def converter (self, u1, u2, item=None):
+    def converter (self, u1, u2, item=None, density=None):
         ## Just a front end to convert_fancy that looks up units
         if self.unit_dict.has_key(u1):
             unit1 = self.unit_dict[u1]
@@ -149,7 +149,7 @@ class converter:
         else:
             unit2 = u2
         ## provide some kind of item lookup?
-        return self.convert_fancy(unit1, unit2, item=item)
+        return self.convert_fancy(unit1, unit2, item=item, density=density)
 
     def convert_fancy (self, u1, u2, item=None, density=None):
         simple = self.convert_simple(u1,u2,self.conv_table)

@@ -41,6 +41,8 @@ src/lib/GourmetThreads.py
 src/lib/__init__.py
 src/lib/keyEditor.py
 src/lib/keymanager.py
+src/lib/nutrition/databaseGrabber.py
+src/lib/nutrition/parser_data.py
 src/lib/OptionParser.py
 src/lib/optionTable.py
 src/lib/PngImagePluginUpToDate.py

@@ -117,7 +117,7 @@ setup(
     license = 'GPL',
     data_files = data_files(),
     modules_check = modules_check,
-    packages = ['gourmet','gourmet.backends','gourmet.importers','gourmet.exporters'],
+    packages = ['gourmet','gourmet.backends','gourmet.importers','gourmet.exporters','gourmet.nutrition'],
     package_dir = {'gourmet' : os.path.join('src','lib')},
     scripts = [os.path.join('src','gourmet')],
     cmdclass={'install_data' : my_install_data},

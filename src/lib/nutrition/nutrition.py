@@ -1,3 +1,5 @@
+import re
+
 class nutritionData:
     def __init__ (self, db, conv):
         self.db = db
@@ -9,6 +11,19 @@ class nutritionData:
         density=self.get_density(key,row)
         srch = self.naliases.append({'nbdno':row.nbdno,
                                      'ingkey':key})
+
+    def get_conversion_for_amt (self, amt, unit, key, row):
+        # our default is 100g
+        cnv=self.conv.converter('g.',unit)
+        if not cnv:
+            cnv = self.conv.converter('g.',unit,
+                                      density=self.get_density(key,row)
+                                      )
+        if cnv:
+            print 'returning conversion factory ',cnv
+            return 0.01/float(cnv)
+        else:
+            return None
 
     def get_density (self,key,row):
         if self.conv.density_table.has_key(key):
@@ -41,8 +56,6 @@ class nutritionData:
         # this will eventually query the user...
         print "Choosing an arbitrary density..."
         return densdic.values()[0]
-                
-                    
 
     def parse_gramweight_measure (self, txt):
         m=self.gramwght_regexp.match(txt)

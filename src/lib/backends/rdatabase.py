@@ -35,8 +35,7 @@ class RecData:
                                       )
         self.naliases = self.setup_table('nutritionaliases',
                                          [('ingkey','char(200)'),
-                                          ('density','float'),
-                                          ('desc','char(100)'),],
+                                          ('nbdno','char(100)'),],
                                          'ingkey')
         self.rview = self.setup_table('recipe',
                                       [('id',"char(75)"),

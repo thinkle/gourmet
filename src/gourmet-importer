@@ -16,7 +16,7 @@ gourmet.gdebug.debug_level=options.debug
 import gourmet.recipeManager
 
 
-rd=gourmet.recipeManager.RecipeManager()
+rd=recipeManager.RecipeManager(**recipeManager.dbargs)
 import gourmet.importers
 
 
