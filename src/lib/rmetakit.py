@@ -24,8 +24,9 @@ class RecData (rdatabase.RecData):
         if not os.path.exists(mydir):
             os.mkdir(mydir)
         self.db = metakit.storage(self.file,1)
-        self.load()
+        #self.load()
         self.db.autocommit()
+        self.db.commit()
 
     def setup_tables (self):
         # first, we check for old, incompatible table names
@@ -46,15 +47,21 @@ class RecData (rdatabase.RecData):
         vw = tmpview.filter(lambda x: getattr(x,old[0]))
         to_move_vw = tmpview.remapwith(vw)
         to_move = len(to_move_vw)
-        print '%s rows to move'%to_move
         if to_move > 0 and not self.backed_up:
             backupfile = self.file + '.OLD'
             import shutil
             shutil.copy(self.file, backupfile)
             print """Moving old attributes -> group attributes.
-            If you save, your database will not work with older
+            Your database will not work with older
             versions of GOURMET.
             A backup has been saved in %s"""%backupfile
+            import dialog_extras, version
+            dialog_extras.show_message(
+                label='Database format has changed',
+                sublabel='%(progname)s %(version)s has changed the format of its database. Your database will no longer work with older versions of %(progname)s.  A backup has been saved in %(backupfile)s'%{'version':version.version,
+                                                                                                                                                                                                               'progname':version.appname,
+                                                                                                                                                                                                               'backupfile':backupfile}
+                )
             self.backed_up = True
         for r in to_move_vw:
             setattr(r,new[0],getattr(r,old[0]))
@@ -97,32 +104,11 @@ class RecData (rdatabase.RecData):
     def load (self, file=None):
         if file:
             self.file = file
-        debug('loading database from file %s'%self.file,0)        
+        debug('loading database from file %s'%self.file,0)
         fo  = open(self.file,'r')
         self.db.load(fo)
+        self.db.autocommit()
         fo.close()
-
-    def get_default_values (self, colname):
-        try:
-            return defaults.fields[colname]
-        except:
-            return []
-
-    def get_unique_values (self, colname,table=None):
-        if not table: table=self.rview
-        dct = {}
-        if defaults.fields.has_key(colname):
-            for v in defaults.fields[colname]:
-                dct[v]=1
-        def add_to_dic (row):
-            a=getattr(row,colname)
-            if type(a)==type(""):
-                for i in a.split(","):
-                    dct[i.strip()]=1
-            else:
-                dct[a]=1
-        table.filter(add_to_dic)
-        return dct.keys()
 
     def modify_rec (self, rec, dic):
         for k,v in dic.items():
@@ -207,67 +193,6 @@ class RecData (rdatabase.RecData):
             retview = self.iview.select(id=rec)
             return retview
 
-    def order_ings (self, iview):
-        """Handed a view of ingredients, we return an alist:
-        [['group'|None ['ingredient1', 'ingredient2', ...]], ... ]
-        """
-        defaultn = 0
-        groups = {}
-        group_order = {}
-        for i in iview:
-            # defaults
-            if not hasattr(i,'group'):
-                group=None
-            else:
-                group=i.inggroup
-            if not hasattr(i,'position'):
-                i.position=defaultn
-                defaultn += 1
-            if groups.has_key(group): 
-                groups[group].append(i)
-                # the position of the group is the smallest position of its members
-                # in other words, positions pay no attention to groups really.
-                if i.position < group_order[group]: group_order[group]=i.position
-            else:
-                groups[group]=[i]
-                group_order[group]=i.position
-        # now we just have to sort an i-listify
-        def sort_groups (x,y):
-            if group_order[x[0]] > group_order[y[0]]: return 1
-            elif group_order[x[0]] == group_order[y[0]]: return 0
-            else: return -1
-        alist=groups.items()
-        alist.sort(sort_groups)
-        def sort_ings (x,y):
-            if x.position > y.position: return 1
-            elif x.position == y.position: return 0
-            else: return -1
-        for g,lst in alist:
-            lst.sort(sort_ings)
-        debug('alist: %s'%alist,5)
-        return alist
-
-    def ingview_to_lst (self, view):
-        """Handed a view of ingredient data, we output a useful list.
-        The data we hand out consists of a list of tuples. Each tuple contains
-        amt, unit, key, alternative?"""
-        for i in view:
-            ret.append([i.amount, i.unit, i.ingkey,])
-        return ret
-
-    def ing_shopper (self, view):
-        s = mkShopper(self.ingview_to_lst(view))
-        return s
-
-    def get_rec (self, id, rview=None):
-        if not rview:
-            rview=self.rview
-        s = rview.select(id=id)
-        if len(s)>0:
-            return rview.select(id=id)[0]
-        else:
-            return None
-
     def remove_unicode (self, mydict):
         for k,v in mydict.items():
             if v.__class__ == u'hello'.__class__:
@@ -283,16 +208,11 @@ class RecData (rdatabase.RecData):
         self.metaview.append(metadict)
         
     def add_rec (self, rdict):
-        timeaction = TimeAction('rmetakit.add_rec 1',0)
         self.changed=True
         self.remove_unicode(rdict)
         if not rdict.has_key('id'):
             rdict['id']=self.new_id()
-        timeaction.end()
-        timeaction = TimeAction('rmetakit.add_rec 2',0)
         old_r=self.get_rec(rdict['id'])
-        timeaction.end()
-        timeaction = TimeAction('rmetakit.add_rec 3',0)
 #        ## if we already have a recipe with this ID, delete it, change the ID
         if old_r:
             #debug("WARNING: DELETING OLD RECIPE %s id %s"%(old_r.title,old_r.id),0)
@@ -303,10 +223,7 @@ class RecData (rdatabase.RecData):
             debug('Adding recipe %s'%rdict, 4)
             self.rview.append(rdict)
             debug('Running add hooks %s'%self.add_hooks,2)
-            timeaction.end()
-            timeaction = TimeAction('rmetakit.add_rec 4 hooks',0)
             self.run_hooks(self.add_hooks,self.rview[-1])
-            timeaction.end()            
             return self.rview[-1]
         except:
             debug("There was a problem adding recipe%s"%rdict,-1)
@@ -361,85 +278,10 @@ class RecData (rdatabase.RecData):
                      'title':_('New Recipe'),
                      'servings':'4'}
         return self.add_rec(blankdict)
-    
-    def add_ing (self, ingdict):
-        """Add ingredient to iview based on ingdict and return
-        ingredient object. Ingdict contains:
-        id: recipe_id
-        unit: unit
-        item: description
-        key: keyed descriptor
-        alternative: not yet implemented (alternative)
-        optional: yes|no
-        position: INTEGER [position in list]
-        refid: id of reference recipe. If ref is provided, everything
-               else is irrelevant except for amount.
-        """
-        debug('add_ing ingdict=%s'%ingdict,5)
-        self.changed=True
-        debug('removing unicode',3)
-        timer = TimeAction('rmetakit.add_ing 1',0)
-        self.remove_unicode(ingdict)
-        timer.end()
-        debug('adding to iview %s'%ingdict,3)
-        timer = TimeAction('rmetakit.add_ing 2',0)
-        self.iview.append(ingdict)
-        timer.end()
-        debug('running ing hooks %s'%self.add_ing_hooks,3)
-        timer = TimeAction('rmetakit.add_ing 3',0)
-        self.run_hooks(self.add_ing_hooks, self.iview[-1])
-        timer.end()
-        debug('done with ing hooks',3)
-        return self.iview[-1]
-
-    def modify_ing (self, ing, ingdict):
-        #self.delete_ing(ing)
-        #return self.add_ing(ingdict)
-        for k,v in ingdict.items():
-            if hasattr(ing,k):
-                self.changed=True
-                setattr(ing,k,v)
-            else:
-                debug("Warning: ing has no attribute %s (attempted to set value to %s" %(k,v),0)
-        return ing
-
-    def replace_ings (self, ingdicts):
-        """Add a new ingredients and remove old ingredient list."""
-        ## we assume (hope!) all ingdicts are for the same ID
-        id=ingdicts[0]['id']
-        debug("Deleting ingredients for recipe with ID %s"%id,1)
-        ings = self.get_ings(id)
-        for i in ings:
-            debug("Deleting ingredient: %s"%i.ingredient,5)
-            self.delete_ing(i)
-        for ingd in ingdicts:
-            self.add_ing(ingd)
 
     def delete_ing (self, ing):
         self.iview.delete(ing.__index__)
         self.changed=True        
-
-    def save_dic (self, name, dict):
-        """Save a dictionary in a metakit table. Names must be unique.
-        The metakit table will be cleared before new data is saved."""
-        vw = self.db.getas("%s[k:s,v:s]")
-        ## clear the table in case there's anything in it!
-        for r in vw:
-            vw.delete(r.__index__)
-        for k,v in dict.items():
-            vw.append(k=pickle.dumps(k),v=pickle.dumps(v))
-        self.changed=True
-            
-    def load_dic (self, name):
-        vw = self.db.getas("%s[k:s,v:s]")
-        d = {}
-        for r in vw:
-            d[pickle.loads(r.k)]=pickle.loads(r.v)
-        return d
-
-    def delete_table (self, table):
-        while len(table)>0:
-            table.delete(0)
 
 class RecipeManager (RecData,rdatabase.RecipeManager):
     def __init__ (self, file=os.path.join(gglobals.gourmetdir,'recipes.mk')):
