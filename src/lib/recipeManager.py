@@ -48,7 +48,6 @@ class mkShopper (shopping.shopper):
         self.cnv = conv
         shopping.shopper.__init__(self,lst)
 
-
     def init_converter (self):
         #self.cnv = mkConverter(self.db)
         if not self.cnv:
