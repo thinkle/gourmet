@@ -8,6 +8,11 @@ for attr,titl,widget in gglobals.REC_ATTRS:
     REC_ATTR_DIC[attr]=titl
 
 class exporter:
+
+    """Base class for all exporters.  Subclasses must implement basic write methods,
+    which are handed attributes, text blobs, images, etc. and then expected to write
+    them appropriately."""
+
 #new variable contained here called attr_order
 #This is so we can control the order the attributes are in
 #Some exporter subclasses might care (like mealmaster)
@@ -20,7 +25,16 @@ class exporter:
                   use_ml=False,
                   ):
         """A base exporter class to be subclassed (or to be
-        called for plain text export)."""
+        called for plain text export).
+
+        do_markup: if True, we handle markup parsing internally, using
+        the functions handle_italic, handle_bold and
+        handle_underline. If not, marked up pango text (with <u>, <b>,
+        and <i> is written to our exported directly.
+
+        If use_ml is True, we leave pango-ified text properly escaped.
+        if use_ml is False, we unescape pango text &amp;->&, etc.
+        """
         tt = TimeAction('exporter.__init__()',0)
 	self.attr_order=attr_order
         self.out = out
@@ -195,6 +209,7 @@ class exporter:
         self.out.write("\n")
 
 class exporter_mult (exporter):
+    """An exporter subclass that allows multiplying of the exported recipe."""
     def __init__ (self, rd, r, out, conv=None,
                   mult=1, imgcount=1, order=['attr','text','ings'],
                   change_units=True, use_ml=False, do_markup=True):        
