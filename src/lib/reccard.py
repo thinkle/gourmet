@@ -1260,8 +1260,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         if not hasattr(self,'cb'):
             self.cb = gtk.clipboard_get(gtk.gdk.SELECTION_PRIMARY)
         def add_ings_from_clippy (cb,txt,data):
-            for l in txt.split('\n'):
-                if l.strip(): self.add_ingredient_from_line(l)
+            if txt:
+                for l in txt.split('\n'):
+                    if l.strip(): self.add_ingredient_from_line(l)
         self.cb.request_text(add_ings_from_clippy)
     
     def importIngredients (self, file):

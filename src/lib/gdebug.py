@@ -3,8 +3,12 @@ from OptionParser import *
 import time,traceback
 
 debug_level=options.debug
-
+debug_file=options.debug_file
 timestamp = options.time
+
+if debug_file:
+    import re
+    debug_file = re.compile(debug_file)
 
 def debug (message, level=10):
     if timestamp:
@@ -13,7 +17,11 @@ def debug (message, level=10):
         caller=traceback.extract_stack()[-2]
         finame=caller[0]
         line = caller[1]
-        print "DEBUG: ","%s: %s"%(finame,line),message
+        if options.debug_file:
+            if debug_file.search(finame):
+                print "DEBUG: ","%s: %s"%(finame,line),message
+        else:
+            print "DEBUG: ","%s: %s"%(finame,line),message
 
 timers = {}
 
