@@ -248,10 +248,7 @@ class progressDialog (mDialog):
         self.vbox.show_all()
         if okay: self.ok.set_sensitive(False) # we're false by default!
         
-    def setup_buttons (self, cancel, okay):        
-        mDialog.setup_buttons(self,cancel,okay)
-        if self.custom_cancelcb:
-            self.cancel.connect('clicked',self.custom_cancelcb)
+    def setup_buttons (self, cancel, okay):                
         if self.custom_pausecb:
             self.pause = gtk.ToggleButton(_('_Pause'),True)
             self.pause.connect('toggled',self.custom_pausecb)
@@ -261,6 +258,9 @@ class progressDialog (mDialog):
             self.stop.connect('clicked',self.custom_stopcb)
             self.stop.connect('clicked',self.cancelcb)
             self.action_area.pack_end(self.stop)
+        mDialog.setup_buttons(self,cancel,okay)
+        if self.custom_cancelcb:
+            self.cancel.connect('clicked',self.custom_cancelcb)            
     
         
 class preferences_dialog (mDialog):

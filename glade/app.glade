@@ -175,7 +175,7 @@
 		      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image238">
+			<widget class="GtkImage" id="image262">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -269,7 +269,7 @@
 		      <accelerator key="z" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image239">
+			<widget class="GtkImage" id="image263">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-undo</property>
 			  <property name="icon_size">1</property>
@@ -291,7 +291,7 @@
 		      <accelerator key="z" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image240">
+			<widget class="GtkImage" id="image264">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-redo</property>
 			  <property name="icon_size">1</property>
@@ -377,7 +377,7 @@
 		      <accelerator key="c" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image241">
+			<widget class="GtkImage" id="image265">
 			  <property name="visible">True</property>
 			  <property name="pixbuf">recbox.png</property>
 			  <property name="xalign">0.5</property>
@@ -399,7 +399,7 @@
 		      <accelerator key="l" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image242">
+			<widget class="GtkImage" id="image266">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-add</property>
 			  <property name="icon_size">1</property>
@@ -428,12 +428,11 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkCheckMenuItem" id="show_deleted_recipes">
+		    <widget class="GtkMenuItem" id="show_deleted_recipes">
 		      <property name="visible">True</property>
 		      <property name="label" translatable="yes">_Show deleted recipes</property>
 		      <property name="use_underline">True</property>
-		      <property name="active">False</property>
-		      <signal name="activate" handler="on_show_deleted_recipes1_activate" last_modification_time="Tue, 08 Feb 2005 22:15:59 GMT"/>
+		      <signal name="activate" handler="showDeletedRecipes" last_modification_time="Wed, 16 Feb 2005 03:29:55 GMT"/>
 		    </widget>
 		  </child>
 
@@ -442,7 +441,7 @@
 		      <property name="visible">True</property>
 		      <property name="label" translatable="yes">_Empty trash</property>
 		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_empty_trash1_activate" last_modification_time="Tue, 08 Feb 2005 22:15:59 GMT"/>
+		      <signal name="activate" handler="emptyTrash" last_modification_time="Fri, 18 Feb 2005 02:08:57 GMT"/>
 		    </widget>
 		  </child>
 		</widget>
@@ -467,7 +466,7 @@
 		      <signal name="activate" handler="colPrefs" last_modification_time="Wed, 01 Dec 2004 01:33:07 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image243">
+			<widget class="GtkImage" id="image267">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-preferences</property>
 			  <property name="icon_size">1</property>
@@ -536,7 +535,7 @@
 		      <signal name="activate" handler="about" last_modification_time="Mon, 26 Apr 2004 01:23:41 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image244">
+			<widget class="GtkImage" id="image268">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-dialog-info</property>
 			  <property name="icon_size">1</property>

@@ -77,7 +77,7 @@ class importer:
             self.rec = {}
         if not self.rec.has_key('id'):
             self.rec['id']=self.rd.new_id(base)
-        debug('New Import\'s ID=%s'%self.rec['id'])
+        debug('New Import\'s ID=%s'%self.rec['id'],0)
         timeaction.end()
 
     def commit_rec (self):
@@ -90,6 +90,7 @@ class importer:
             except:
                 pass
         tt=TimeAction('importer.commit_rec - rd.add_rec',5)
+        debug('commiting recipe %s'%self.rec,0)
         r = self.rd.add_rec(self.rec)
         tt.end()
         self.added_recs.append(r)
@@ -125,6 +126,7 @@ class importer:
         gt.gtk_update()
         self.ing=kwargs
         self.ing['id']=self.rec['id']
+        debug('ing ID %s, recipe ID %s'%(self.ing['id'],self.rec['id']),0)
         timeaction.end()
                  
     def commit_ing (self):

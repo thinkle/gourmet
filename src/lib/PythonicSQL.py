@@ -400,7 +400,7 @@ class TableObject (list):
         generator = self.__iter__()
         n = 0
         if index < 0:
-            index = len(self) + index            
+            index = len(self) + index
         if index < 0:
             raise IndexError
         debug('index=%s'%index)

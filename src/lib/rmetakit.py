@@ -26,7 +26,7 @@ class RecData (rdatabase.RecData):
         self.db = metakit.storage(self.file,1)
         #self.load()
         self.db.autocommit()
-        self.db.commit()
+        #self.db.commit()
 
     def setup_tables (self):
         # we check for old, incompatible table names
@@ -120,6 +120,7 @@ class RecData (rdatabase.RecData):
             else:
                 debug("Warning: rec has no attribute %s (tried to set to %s)" %(k,v),1)
         self.run_hooks(self.modify_hooks,rec)
+        self.db.commit()
 
     def ings_search (self, ings, keyed=None, rview=None, use_regexp=True, exact=False):
         """Handed a list of regexps, return a list of recipes containing all
@@ -178,25 +179,6 @@ class RecData (rdatabase.RecData):
         resultvw = resultvw.unique()
         return resultvw
 
-    def get_ings_old (self, rec):
-        """rec can be almost anything and we'll return a view of the
-        ingredients in that thing.  We accept: a single string
-        containing a rec id, a row reference to a recipe, a list of
-        strings or row references OR a view."""
-        if type(rec) == type([]) or type(rec)==type(self.rview) or type(rec) == type(self.rview[0:-1]):
-            vw = self.get_ings(rec[0])
-            for r in rec[1:]:
-                vw2 = self.get_ings(r)
-                vw = vw.union(vw2)
-            return vw
-        else:
-            if hasattr(rec,"id"):
-                rec = rec.id
-#            retview = self.search(self.iview, 'id', rec, 1)
-#            retview = retview.unique()
-            retview = self.iview.select(id=rec,deleted=False)
-            return retview
-
     def remove_unicode (self, mydict):
         for k,v in mydict.items():
             if v.__class__ == u'hello'.__class__:
@@ -213,7 +195,9 @@ class RecData (rdatabase.RecData):
 
     def add_rec (self, rdict):
         self.remove_unicode(rdict)
+        debug('adding recipe: %s'%rdict,0)
         rdatabase.RecData.add_rec(self,rdict)
+        self.db.commit()
     
     def delete_rec (self, rec):
         self.changed=True
@@ -236,6 +220,7 @@ class RecData (rdatabase.RecData):
             debug("DEBUG: Deleting ingredient %s"%i.item)
             self.iview.delete(i.__index__)
         debug('delete_rec finished.')
+        self.db.commit()
     
     def new_rec (self):
         blankdict = {'id':self.new_id(),
@@ -245,14 +230,17 @@ class RecData (rdatabase.RecData):
 
     def delete_ing (self, ing):
         self.iview.delete(ing.__index__)
-        self.changed=True        
+        self.changed=True
+        self.db.commit()
 
     def add_ing (self, ingdic):
         debug('removing unicode',3)
         timer = TimeAction('rmetakit.add_ing 1',0)
         self.remove_unicode(ingdic)
         timer.end()
+        debug('adding ingredient: %s'%ingdic,0)
         rdatabase.RecData.add_ing(self,ingdic)
+        self.db.commit()
 
 class RecipeManager (RecData,rdatabase.RecipeManager):
     def __init__ (self, file=os.path.join(gglobals.gourmetdir,'recipes.mk')):

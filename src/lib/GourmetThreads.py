@@ -93,16 +93,21 @@ class SuspendableDeletions:
             time.sleep(1)
     
     def run (self):
+        debug('running GourmetThreads.py',0)
         rtot = len(self.recs)
         n = 0
+        dlen = len(self.ids)
         for i in self.ids:
             self.check_for_sleep()
             r = self.rg.rd.get_rec(i)
             self.rg.set_progress_thr(float(n)/float(rtot),
-                                     _("Total Recipes (Deleting recipes from database...)"))
+                                     _("Deleting recipes from database... (%s of %s deleted)"%(n,dlen))
+                                       )
             self.rg.delete_rec(r)
             n += 1
-        self.rg.reset_prog_thr()
+        if dlen==1: msg = _('Deleted 1 recipe.')
+        else: msg = _('Deleted %s recipes')%len(self.ids)
+        self.rg.reset_prog_thr(message=msg)
         self.rg.doing_multiple_deletions=False
 
     def suspend (self): self.suspended = True

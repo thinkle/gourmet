@@ -132,6 +132,8 @@ class RecGui (RecIndex):
             'print':self.print_recs,
             'email':self.email_recs,
             'email_prefs':self.email_prefs,
+            'showDeletedRecipes':self.show_deleted_recs,
+            'emptyTrash':self.empty_trash
 #            'shopCatEditor': self.showShopEditor,            
             })
         self.rc={}
@@ -193,7 +195,6 @@ class RecGui (RecIndex):
     def show_about (self, *args):
         """Show information about ourselves, using GNOME's
         nice interface if available."""
-	
         debug("show_about (self, *args):",5)
         description=version.description
         copyright=version.copyright
@@ -423,22 +424,23 @@ class RecGui (RecIndex):
         # is to simply make deleted item invisible.
         #self.visible.remove(rec.id)
         if self.doing_multiple_deletions: return
-        for row in self.rmodel:
-            if row[0].id==rec.id:
-                debug("delete_rec_iter found the row to delete",5)
-                dbg = ""
-                for r in row:
-                    dbg += str(r)
-                    dbg += " | "
-                debug("delete_rec_iter acting on: %s"%dbg,5)
-                # this seems to be necessary to prevent
-                # a segfault on removing the last iter
-                self.rectree.set_model(empty_model)
-                row.model.remove(row.iter)
-                self.rectree.set_model(self.rmodel_sortable)
-                debug('delete_rec_iter removed recipe with ID %s'%rec.id,2)
-
-        debug('delete_rec_iter couldn\'t find recipe with ID %s'%rec.id,1)
+        else: self.rmodel_filter.refilter()
+        #for row in self.rmodel:
+        #    if row[0].id==rec.id:
+        #        debug("delete_rec_iter found the row to delete",5)
+        #        dbg = ""
+        #        for r in row:
+        #            dbg += str(r)
+        #            dbg += " | "
+        #        debug("delete_rec_iter acting on: %s"%dbg,5)
+        #        # this seems to be necessary to prevent
+        #        # a segfault on removing the last iter
+        #        self.rectree.set_model(empty_model)
+        #        row.model.remove(row.iter)
+        #        self.rectree.set_model(self.rmodel_sortable)
+        #        debug('delete_rec_iter removed recipe with ID %s'%rec.id,2)
+        #
+        #debug('delete_rec_iter couldn\'t find recipe with ID %s'%rec.id,1)
 
     def update_rec_iter (self, rec):
         # if r is already in our treeModel, we update values.
@@ -492,41 +494,27 @@ class RecGui (RecIndex):
         #gtk.idle_add(self.recTreeDeleteRec)
         # this seems broken
         self.recTreeDeleteRec()
-        
+
     def recTreeDeleteRec (self, *args):
         mod,rr=self.rectree.get_selection().get_selected_rows()
-        recs = map(lambda path: mod[path][0],rr)
+        recs = [mod[path][0] for path in rr]
         self.rd.undoable_delete_recs(
             recs,
             self.history,
-            make_visible=lambda *args: self.rmodel_filter.refilter())
-        self.iters_to_remove=[]
-        for p in rr:
-            # we remove by hand...
-            iter = self.rmodel_sortable.get_iter(p)
-            child = self.rmodel_sortable.convert_iter_to_child_iter(None, iter)
-            grandchild = self.rmodel_filter.convert_iter_to_child_iter(child)
-            self.iters_to_remove.append(grandchild)
-        self.iters_to_remove.sort()
-        self.iters_to_remove.reverse()
-        self.rectree.set_model(empty_model)
-        for i in self.iters_to_remove:
-            self.rmodel.remove(i)
-        self.rectree.set_model(self.rmodel_sortable)
+            make_visible=lambda *args: self.rmodel_filter.refilter())        
+        self.message(_("Deleted ") + string.join([r.title for r in recs],', '))
 
-    def recTreeDeleteRecOld (self, *args):
+    def recTreePurge (self, recs, paths=None, model=None):
         if not use_threads and self.lock.locked_lock():
             de.show_message(label=_('An import, export or deletion is running'),
                             sublabel=_('Please wait until it is finished to delete recipes.')
                             )
             return
-        debug("recTreeDeleteRec (self, *args):",5)
-        mod,rr=self.rectree.get_selection().get_selected_rows()
-        recs = map(lambda path: mod[path][0],rr)
+        if not paths: paths=[]
         expander=None
-        bigmsg = _("Delete recipes?")
+        bigmsg = _("Permanently delete recipes?")
         if len(recs) == 1:
-            bigmsg = _("Delete recipe?")
+            bigmsg = _("Permanently delete recipe?")
             msg = _("Are you sure you want to delete the recipe <i>%s</i>")%recs[0].title
         elif len(recs) < 5:
             msg = _("Are you sure you want to delete the following recipes?")
@@ -537,23 +525,27 @@ class RecGui (RecIndex):
             tree = te.QuickTree(map(lambda r: r.title, recs))
             expander = [_("See recipes"),tree]
         if de.getBoolean(parent=self.app,label=bigmsg,sublabel=msg,expander=expander):
+            debug('deleting iters... ',0)
+            print 'deleting iters...'
             self.doing_multiple_deletions=True
             self.iters_to_remove=[]
-            for p in rr:
+            for p in paths:
                 # we remove by hand...
-                iter = self.rmodel_sortable.get_iter(p)
-                child = self.rmodel_sortable.convert_iter_to_child_iter(None, iter)
-                grandchild = self.rmodel_filter.convert_iter_to_child_iter(child)
+                iter = model.get_iter(p)
+                child = model.convert_iter_to_child_iter(None, iter)
+                grandchild = self.recTrash.rmodel_filter.convert_iter_to_child_iter(child)
                 self.iters_to_remove.append(grandchild)
             self.iters_to_remove.sort()
             self.iters_to_remove.reverse()
-            self.rectree.set_model(empty_model)
+            #tree.set_model(empty_model)
             for i in self.iters_to_remove:
-                self.rmodel.remove(i)
-            self.rectree.set_model(self.rmodel_sortable)
-            def show_pause (t):
+                self.recTrash.rmodel.remove(i)
+            #tree.set_model(model)
+            def show_progress (t):
                 gt.gtk_enter()
-                self.show_progress_dialog(t,message=_('Deletion paused'), stop_message=_("Stop deletion"))
+                self.show_progress_dialog(t,
+                                          prog_dialog_kwargs={'label':'Deleting recipes'},
+                                          message=_('Deletion paused'), stop_message=_("Stop deletion"))
                 gt.gtk_leave()
             def save_delete_hooks (t):
                 self.saved_delete_hooks = self.rd.delete_hooks[0:]
@@ -563,7 +555,7 @@ class RecGui (RecIndex):
             pre_hooks = [
                 lambda *args: self.lock.acquire(),
                 save_delete_hooks,
-                show_pause,
+                show_progress,
                 ]
             post_hooks = [
                 restore_delete_hooks,
@@ -582,7 +574,9 @@ class RecGui (RecIndex):
             gt.gtk_leave()
             t.start()
             gt.gtk_enter()
-            
+        else:
+            return True
+
     def delete_rec (self, rec):
         debug("delete_rec (self, rec): %s"%rec,5)
         debug("does %s have %s"%(self.rc,rec.id),5)
@@ -616,6 +610,18 @@ class RecGui (RecIndex):
     def email_prefs (self, *args):
         d = recipe_emailer.EmailerDialog([],None,self.prefs,self.conv)
         d.setup_dialog(force=True)
+
+    def show_deleted_recs (self, *args):
+        if not hasattr(self,'recTrash'):
+            self.recTrash = RecTrash(self.rd,self.rg)
+        else:
+            self.recTrash.window.show()
+
+    def empty_trash (self, *args):
+        recs = self.rd.rview.select(deleted=True)
+        self.rg.recTreePurge(recs)
+        if hasattr(self,'recTrash'):
+            self.recTrash.rmodel_filter.refilter()
 
     def print_recs (self, *args):
         recs = self.recTreeSelectedRecs()
@@ -764,14 +770,14 @@ class RecGui (RecIndex):
                          'sublabel':_('Exporting recipes to Gourmet XML file %s.')%file}
             if expClass:
                 self.threads += 1
-                def show_pause (t):
+                def show_progress (t):
                     debug('showing pause button',1)
                     gt.gtk_enter()
                     self.show_progress_dialog(t,message=_('Export Paused'),stop_message=_("Stop export"),
                                               prog_dialog_kwargs=pd_args,
                                               )
                     gt.gtk_leave()
-                pre_hooks = [show_pause]
+                pre_hooks = [show_progress]
                 pre_hooks.insert(0, lambda *args: self.lock.acquire())
                 #post_hooks.append(lambda *args: self.reset_prog_thr())
                 post_hooks.append(lambda *args: self.lock.release())
@@ -883,7 +889,7 @@ class RecGui (RecIndex):
                     debug('showing pause button',5)
                     gt.gtk_enter()
                     fn = string.join([os.path.split(f)[1] for f in ifiles],", ")
-                    self.show_progress_dialog(t,{'label':_('Importing Recipes'),
+                    self.rg.show_progress_dialog(t,{'label':_('Importing Recipes'),
                                                  'sublabel':_('Importing recipes from %s')%fn
                                                  })
                     gt.gtk_leave()
@@ -970,14 +976,16 @@ class RecGui (RecIndex):
             self.thread.resume()
             return True
 
-    def reset_prog_thr (self):
+    def reset_prog_thr (self,message=_("Done!")):
+        debug('reset_prog_thr',0)
+        #self.prog.set_fraction(1)
+        self.set_progress_thr(1,message)
         gt.gtk_enter()
-        self.prog.set_fraction(1)
         self.set_reccount()
         gt.gtk_leave()
         
     def set_progress_thr (self, prog, message=_("Importing...")):
-        debug("set_progress_thr (self, prog,msg): %s"%prog,5)
+        debug("set_progress_thr (self, prog,msg): %s"%prog,0)
         gt.gtk_enter()
         self.prog.set_fraction(prog)
         #self.stat.push(self.contid,"%s %s"%(len(self.rd.rview),message))
@@ -1009,6 +1017,62 @@ class RecGui (RecIndex):
 
     def showKeyEditor (self, *args):
         ke=keyEditor.KeyEditor(rd=self.rd, rg=self)
+
+
+class RecTrash (RecIndex):
+    def __init__ (self, rd, rg):
+        self.rg = rg
+        self.rmodel = self.rg.rmodel
+        self.glade = gtk.glade.XML(os.path.join(gladebase,'recSelector.glade'))
+        self.glade.get_widget('selectActionBox').set_child_visible(False)
+        tab=self.glade.get_widget('trashActionBox')
+        tab.set_property('visible',True)
+        #try:
+        #    tab.set_visible(True)
+        #except:
+        #    print "Can't set trashActionBox visible"
+        #    for c in tab.get_children(): c.set_visible(True)
+        self.window = self.glade.get_widget('recDialog')
+        self.window.connect('delete-event',self.dismiss)
+        self.window.set_title('Wastebasket (Deleted Recipes)')
+        self.glade.signal_autoconnect({
+            'purgeRecs':self.recTreeDeleteRec,
+            'undeleteRecs':self.recTreeUndeleteRec,
+            'ok':self.dismiss,
+            })
+        RecIndex.__init__(self, self.rg.rmodel, self.glade, self.rg.rd, self.rg)
+        self.rmodel_filter.refilter()
+
+    def dismiss (self, *args):
+        self.window.hide()
+    
+    def visibility_fun (self, model, iter):
+        if (model.get_value(iter,0) and
+            model.get_value(iter,0).deleted and
+            model.get_value(iter, 0).id in self.visible):
+            return True
+        else:
+            return False
+
+    def recTreeUndeleteRec (self, *args):
+        mod,rr = self.rectree.get_selection().get_selected_rows()
+        recs = [mod[path][0] for path in rr]
+        for r in recs:
+            r.deleted = False
+        self.rmodel_filter.refilter()
+        self.rg.rmodel_filter.refilter()
+        self.rg.message(_('Undeleted recipes ') + string.join([r.title for r in recs],", "))
+
+    def recTreeDeleteRec (self, *args):
+        if not use_threads and self.rg.lock.locked_lock():
+            de.show_message(label=_('An import, export or deletion is running'),
+                            sublabel=_('Please wait until it is finished to delete recipes.')
+                            )
+            return
+        debug("recTreeDeleteRec (self, *args):",5)
+        mod,rr=self.rectree.get_selection().get_selected_rows()
+        recs = map(lambda path: mod[path][0],rr)
+        self.rg.recTreePurge(recs,rr,mod)
 
 #    def showShopEditor (self, *args):
 #        se=shopEditor.ShopEditor(rd=self.rd,rg=self)

@@ -13,6 +13,35 @@ from gdebug import *
 from gglobals import *
 from gettext import gettext as _
 
+class ActionWithSeparators (gtk.Action):
+    def __init__ (self, *args, **kwargs):
+        self.separators = []
+        gtk.Action.__init__(self,*args,**kwargs)
+
+    def add_separator (self, separator_widget):
+        self.separators.append(separator_widget)
+
+    def set_visible (self, *args, **kwargs):
+        gtk.Action.set_visible(self,*args,**kwargs)
+        if self.is_visible():
+            for s in self.separators: s.set_visible(True)
+        else:
+            for s in self.separators: s.set_visible(False)
+
+class ActionGroupWithSeparators (gtk.ActionGroup):
+    def __init__ (self, *args, **kwargs):
+        self.separators = []
+        gtk.ActionGroup.__init__(self,*args,**kwargs)
+
+    def add_separator (self, separator_widget):
+        self.separators.append(separator_widget)
+
+    def set_visible (self, visible):
+        gtk.ActionGroup.set_visible(self,visible)
+        for s in self.separators:
+            try: s.set_visible(visible)
+            except: print 'no widget %s'%s
+
 class ActionManager:
     def __init__ (self, gladeobj, groups, callbacks):
         self.gladeobj = gladeobj
@@ -22,7 +51,7 @@ class ActionManager:
         self.make_connections()
 
     def init_group (self, name, actions):
-        setattr(self,name,gtk.ActionGroup(name))
+        setattr(self,name,ActionGroupWithSeparators(name))
         for a in actions:
             for n,ainfo in a.items():
                 params,widgets = ainfo
@@ -37,7 +66,12 @@ class ActionManager:
                     params['stock-id']=stockid
                 if not params.has_key('tooltip'):
                     params['tooltip']=''
-                act = gtk.Action(n,params['label'],params['tooltip'],params['stock-id'])
+                act = ActionWithSeparators(n,params['label'],params['tooltip'],params['stock-id'])
+                if params.has_key('separators'):
+                    print 'params[separators]=',params['separators']
+                    if type(params['separators']==str): params['separators']=[params['separators']]
+                    act.separators=[self.gladeobj.get_widget(w) for w in params['separators']]
+                    getattr(self,name).separators.extend(act.separators)
                 for w in widgets:
                     ww = self.gladeobj.get_widget(w)
                     if ww:
@@ -54,7 +88,7 @@ class ActionManager:
         for a,cb in self.callbacks:
             getattr(self,a).connect('activate',cb)
     
-class RecCard (WidgetSaver.WidgetPrefs, ActionManager):
+class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def __init__ (self, RecGui, recipe=None):
         debug("RecCard.__init__ (self, RecGui):",5)
         t=TimeAction('RecCard.__init__ 1',0)
@@ -156,7 +190,7 @@ class RecCard (WidgetSaver.WidgetPrefs, ActionManager):
         self.servingsDisplaySpin.connect('changed',self.servingsChangeCB)
         self.servingsMultiplyByLabel = self.glade.get_widget('multiplyByLabel')
         self.multiplyDisplaySpin = self.glade.get_widget('multiplyByDisplaySpin')
-        self.multiplyDisplaySpin.connect('changed',self.servingsChangeCB)
+        self.multiplyDisplaySpin.connect('changed',self.multChangeCB)
         self.multiplyDisplayLabel = self.glade.get_widget('multiplyByDisplayLabel')
         self.special_display_functions = {'servings':self.updateServingsDisplay,
                                           'ingredients':self.updateIngredientsDisplay,
@@ -205,27 +239,32 @@ class RecCard (WidgetSaver.WidgetPrefs, ActionManager):
         ActionManager.__init__(
             self,self.glade,
             # action groups
-            {'ingredientGroup':[{'ingAdd':[{'tooltip':_('Add new ingredient to the list.')},
+            {'ingredientGroup':[{'ingAdd':[{'tooltip':_('Add new ingredient to the list.'),
+                                            'separators':'ingSeparator'},
                                            ['addIngButton','ingAddMenu']]},
-                                {'ingGroup':[{'tooltip':_('Create new subgroup of ingredients.')},
+                                {'ingGroup':[{'tooltip':_('Create new subgroup of ingredients.'),},
                                              ['ingNewGroupButton','ingNewGroupMenu']]},
                                 {'ingImport':[{'tooltip':_('Import list of ingredients from text file.')},
                                               ['ingImportListButton','ingImportListMenu']]
                                  },
-                                {'ingRecRef':[{'tooltip':_('Add another recipe as an "ingredient" in the current recipe.')},
+                                {'ingRecRef':[{'tooltip':_('Add another recipe as an "ingredient" in the current recipe.'),
+                                               'separators':'ingSeparator3'
+                                               },
                                               ['ingRecRefButton','ingRecRefMenu']]},
                                 #{'ingSeparators':[{'label':None,'stock-id':None,'tooltip':None},['ingSeparator','ingSeparator2']]}
                                 ],
              'selectedIngredientGroup':[{'ingDel':[{'tooltip':_('Delete selected ingredient')},
                                                    ['ingDelButton','ingDelMenu']]},
-                                        {'ingUp':[{'tooltip':_('Move selected ingredient up.')},
+                                        {'ingUp':[{'tooltip':_('Move selected ingredient up.'),
+                                                   'separators':'ingSeparator2'},
                                                   ['ingUpButton','ingUpMenu']]},
                                         {'ingDown':[{'tooltip':_('Move selected ingredient down.')},
                                                     ['ingDownButton','ingDownMenu']]},
                                         ],
-             'editTextItems':[{p: [{},['%sButton'%p,'%sButton2'%p,'%sMenu'%p]]} for p in 'bold','italic','underline'],
+             'editTextItems':[{p: [{'separators':'textSeparator'},
+                                   ['%sButton'%p,'%sButton2'%p,'%sMenu'%p]]} for p in 'bold','italic','underline'],
              'genericEdit':[{'copy':[{},['copyButton','copyButton2','copyMenu']]},
-                            {'paste':[{},['pasteButton','pasteButton2','pasteMenu']]},
+                            {'paste':[{'separators':'copySeparator'},['pasteButton','pasteButton2','pasteMenu',]]},
                             ],
              'undoButtons':[{'undo':[{},['undoButton','undoMenu']]},
                             {'redo':[{},['redoButton','redoMenu']]},
@@ -353,6 +392,7 @@ class RecCard (WidgetSaver.WidgetPrefs, ActionManager):
         # save DB for metakit
         self.rg.rd.save()
         ## if our title has changed, we need to update menus
+        self.updateRecDisplay()
         if newdict.has_key('title'):
             self.widget.set_title("%s %s"%(self.default_title,self.current_rec.title))
             self.rg.updateViewMenu()
@@ -612,7 +652,25 @@ class RecCard (WidgetSaver.WidgetPrefs, ActionManager):
             utc.add_text(newtxt)
         widget.connect(signal,change_cb)
 
+    def setup_layout (self):
+        self.da = self.glade.get_widget('drawingarea')
+        self.da.realize()
+        self.da.connect('configure_event',self.draw_layout)
+        self.da.connect('expose_event',self.draw_layout)
+        self.gc = self.da.window.new_gc()
+        print 'DELETEME: DRAWINGAREA=',self.da
+        self.context = self.da.create_pango_context()
+        self.layout = self.da.create_pango_layout("Recipe")
+        self.pango_fontdesc = pango.FontDescription('Times 14')
+        
+    def draw_layout (self,*args):
+        self.layout.set_markup('<b>This</b> <i>is</i> <span size="100">a test</span>')
+        self.layout.set_font_description(self.pango_fontdesc)
+        self.da.window.draw_layout(self.gc,x=100,y=200,layout=self.layout)
+
     def updateRecDisplay (self):
+        self.setup_layout()
+        self.draw_layout ()
         for attr in self.display_info:
             if  self.special_display_functions.has_key(attr):
                 debug('calling special_display_function for %s'%attr,0)
@@ -663,7 +721,7 @@ class RecCard (WidgetSaver.WidgetPrefs, ActionManager):
             self.servingsDisplay.hide()
             self.servingsDisplayLabel.hide()
             self.multiplyDisplayLabel.show()
-            self.multiplyDisplay.show()
+            self.multiplyDisplaySpin.show()
 
     def updateServingMultiplierLabel (self,*args):
         serves = self.servingsDisplaySpin.get_value()
@@ -1853,7 +1911,7 @@ class RecSelector (RecIndex):
         self.rc=RecCard
         self.dialog = self.glade.get_widget('recDialog')
         RecIndex.__init__(self, self.rg.rmodel, self.glade, self.rg.rd,
-                          self.rg, visible=2)
+                          self.rg)
 
     def quit (self):
         self.dialog.destroy()

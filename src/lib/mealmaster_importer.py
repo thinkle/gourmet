@@ -212,7 +212,8 @@ class mmf_importer (importer.importer):
             # has ended... 
             self.commit_rec()
         self.committed=False
-        self.start_rec(base=self.base)
+        #self.start_rec(base=self.base)
+        self.start_rec()
         debug('resetting instructions',5)
         self.instr=""
         self.mod = ""
@@ -224,11 +225,11 @@ class mmf_importer (importer.importer):
         testtimer = TimeAction('mealmaster_importer.commit_rec',10)
         if self.committed: return
         debug("start _commit_rec",5)
-        # unwrap lines
-        #ll=re.split('\n\s*\n',self.instr)
-        #self.instr=string.join(ll,'GOURMETS_UGLY_HACK')
-        #self.instr.replace('\n',' ')
-        #self.instr.replace('GOURMETS_UGLY_HACK','\n')
+        #unwrap lines
+        ll=re.split('\n\s*\n',self.instr)
+        self.instr=string.join(ll,'GOURMETS_UGLY_HACK')
+        self.instr=self.instr.replace('\n',' ')
+        self.instr=self.instr.replace('GOURMETS_UGLY_HACK','\n')
         self.rec['instructions']=self.instr
         if self.mod:
             self.rec['modifications']=self.mod

@@ -287,20 +287,27 @@ class UndoHistoryList (list):
             # 2.6 will give gtk.Action a set_sensitive property, but for now...
             if type(w)==gtk.Action:
                 for p in w.get_proxies():
+                    debug('setting %s sensitivity to %s'%(w,val),0)
                     p.set_sensitive(val)
 
     def gui_update (self):
+        debug('gui_update',0)
         if len(self) >= 1:
             undoables = [x.is_undo for x in self]
             if False in undoables:
                 self.set_sensitive(self.undo_widget,True)
+                debug('Sensitizing undo_widget',0)
             else:
                 self.set_sensitive(self.undo_widget,False)
+                debug('Desensizing undo_widget',0)
             if True in undoables:
+                debug('Sensitizing redo_widget',0)
                 self.set_sensitive(self.redo_widget,True)
             else:
+                debug('Desensitizing redo widget',0)
                 self.set_sensitive(self.redo_widget,False)
             if self[-1].reapplyable:
+                debug('Sensitizing "reapply" widgets',0)
                 self.set_sensitive(self.reapply_widget,True)
                 if self[-1].reapply_name:
                     if type(self.reapply_widget)==gtk.MenuItem:
@@ -308,6 +315,7 @@ class UndoHistoryList (list):
                         alabel.set_text_with_mnemonic(self[-1].reapply_name)
                         alabel.set_use_markup(True)
         else:
+            debug('Nothing to undo, desensitizing widgets',0)
             self.set_sensitive(self.redo_widget,False)
             self.set_sensitive(self.undo_widget,False)
             self.set_sensitive(self.reapply_widget,False)

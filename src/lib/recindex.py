@@ -13,8 +13,8 @@ class RecIndex:
     and sorted. We're a separate class from the main recipe
     program so that we can be created again (e.g. in the recSelector
     dialog called from a recipe card."""
-    def __init__ (self, model, glade, rd, rg, visible=1):
-        self.visible = 1 # can equal 1 or 2
+    def __init__ (self, model, glade, rd, rg):
+        #self.visible = 1 # can equal 1 or 2
         self.rtcols=rg.rtcols
         self.rtcolsdic=rg.rtcolsdic
         self.prefs=rg.prefs
@@ -64,8 +64,8 @@ class RecIndex:
         self.stat = self.glade.get_widget('statusbar')
         self.contid = self.stat.get_context_id('main')
         self.lsrch = ["",""]
-        self.lsrchvw = self.rd.rview
-        self.searchvw = self.rd.rview
+        self.lsrchvw = self.rd.rview.select(deleted=False)
+        self.searchvw = self.rd.rview.select(deleted=False)
         self.setup_rectree()
         self.glade.signal_autoconnect({
             'rlistSearch': self.search_as_you_type,
@@ -120,7 +120,7 @@ class RecIndex:
         self.rmodel_filter = self.rmodel.filter_new()
         #self.rmodel_filter.set_modify_func(types, self.add_recipe_attr)
         # we allow filtering for searches...
-        self.visible = map(lambda x: x.id, self.rd.rview)
+        self.visible = [x.id for x in self.rd.rview]
         # visibility_fun checks to see if the Rec ID is in self.visible
         self.rmodel_filter.set_visible_func(self.visibility_fun)
         # make sortable...
@@ -312,11 +312,15 @@ class RecIndex:
         pass
 
     def visibility_fun (self, model, iter):
-        if (model.get_value(iter,0) and
-            not model.get_value(iter,0).deleted and
-            model.get_value(iter, 0).id in self.visible):
-            return True
-        else: return False
+        try:
+            if (model.get_value(iter,0) and
+                not model.get_value(iter,0).deleted and
+                model.get_value(iter, 0).id in self.visible):
+                return True
+            else: return False
+        except:
+            debug('something bizaare just happened in visibility_fun',0)
+            return False
  
     def update_rmodel (self, rview):
         debug('update_rmodel... changing filtering criteria',0)

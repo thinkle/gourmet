@@ -61,7 +61,7 @@ class RecData:
                                        ('position','int'),
                                        ('deleted','bool'),
                                        ],
-                                      key='id'
+                                      #key='id'
                                       )
         self.iview_not_deleted = self.iview.select(deleted=False)
         self.iview_deleted = self.iview.select(deleted=True)
@@ -255,15 +255,8 @@ class RecData:
         t = TimeAction('rdatabase.add_rec - checking keys',3)
         if not rdict.has_key('deleted'):
             rdict['deleted']=0
-        #if not rdict.has_key('id'):
-        rdict['id']=self.new_id()
-        #old_r=self.get_rec(rdict['id'])
-#        ## if we already have a recipe with this ID, delete it, change the ID
-        #if old_r:
-        #    debug("WARNING: DELETING OLD RECIPE %s id %s"%(old_r.title,old_r.id),0)
-        #    #self.delete_rec(old_r)
-        #    debug("ID %s taken. Generating new ID."%rdict['id'])
-        #    rdict['id']=self.new_id()
+        if not rdict.has_key('id'):
+            rdict['id']=self.new_id()
         t.end()
         try:
             debug('Adding recipe %s'%rdict, 4)
