@@ -154,13 +154,13 @@ class RecIndex:
         n = 2
         for c in self.rtcols:
             renderer = gtk.CellRendererText()
-            renderer.set_property('editable',gtk.TRUE)
+            renderer.set_property('editable',True)
             renderer.connect('edited',self.rtree_edited_cb,n, c)
             titl = self.rtcolsdic[c]
             col = gtk.TreeViewColumn(titl,renderer, text=n)
-            col.set_reorderable(gtk.TRUE)
-            col.set_resizable(gtk.TRUE)
-            #col.set_clickable(gtk.TRUE)
+            col.set_reorderable(True)
+            col.set_resizable(True)
+            #col.set_clickable(True)
             #col.connect('clicked', self.column_sort)
             self.rectree.append_column(col)
             col.set_sort_column_id(n)
@@ -305,8 +305,8 @@ class RecIndex:
         to say whether there is a selection or not."""
         debug("selection_changed (self, *args):",5)
         v=self.rectree.get_selection().get_selected_rows()[1]
-        if v: selected=gtk.TRUE
-        else: selected=gtk.FALSE
+        if v: selected=True
+        else: selected=False
         self.selection_changed(v)
 
     def selection_changed (self, selected=False):

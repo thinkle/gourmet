@@ -119,10 +119,10 @@ class ShopEditor:
                        [self.KEY_COL,'Key'],
                        ]:
             renderer = gtk.CellRendererText()
-            renderer.set_property('editable',gtk.TRUE)
+            renderer.set_property('editable',True)
             renderer.connect('edited',self.tree_edited,n,head)
             col = gtk.TreeViewColumn(head, renderer, text=n)
-            col.set_resizable(gtk.TRUE)
+            col.set_resizable(True)
             self.treeview.append_column(col)
             self.treeview.connect('row-expanded',self.populateChild)
 

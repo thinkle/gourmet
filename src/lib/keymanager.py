@@ -114,7 +114,7 @@ class KeyManager:
         straightforward answer. Otherwise, we return a list of
         probabilities which looks like this [key, probablity] where
         key is the key and probability is a number between 0 and 1"""
-        
+        timer = TimeAction('look_for_key start',0)
         debug("Start look_for_key for %s"%str,10)
         retvals={}
         
@@ -143,6 +143,7 @@ class KeyManager:
         ## If we're not directly on the list, we'll have to get
         ## a bit fancier -- let's see if our auto-generated key
         ## matches an existing key
+        t2 = TimeAction('look_for_key generate key and so on...',0)
         gkey = self.generate_key(str)
         if self.keys.__contains__(gkey):
             debug("look_for_key auto-generated result!",10)
@@ -150,6 +151,8 @@ class KeyManager:
             debug("retvals=%s"%retvals,10)
         ## If that fails, we'll have to look and see if we look
         ## like any of the existing items
+        t2.end()
+        t3 = TimeAction('Look for key, regexpify and search')
         regexp,wcount=self.regexp_for_all_words(gkey)
         if wcount > 0: #only do this if we have some words!
             for itm in self.kd.keys():
@@ -165,6 +168,7 @@ class KeyManager:
                         eqval = eqval * (float(wcount)/float(kwcnt))
                         append_to_retvals(itm,eqval)
             ## Now lets make an ordered list of potential keys...
+        t3.end()
         retranked = retvals.items()
         retranked.sort()
         retranked.reverse()
@@ -174,6 +178,7 @@ class KeyManager:
             for i in itm[1]:
                 ret.append([i, itm[0]])
         debug("End look_for_key (complex result)",10)
+        timer.end()
         return ret
             
     def generate_key(self, ingr):
@@ -272,19 +277,23 @@ class KeyManager:
         """Handed a list of words, we remove anything from the
         list that matches a regexp in self.ignored"""
         debug("Start remove_verbs",10)
+        t=TimeAction('remove_verbs',0)
         stringp=True
         if type(words)==type([]):
             stringp=False
             words = string.join(words," ")
         words = words.split(';')[0] #we ignore everything after semicolon
+        words = words.split("--")[0] # we ignore everything after double dashes too!
         m = self.ignored_regexp.match(words)
         while m:
             words = words[0:m.start()] + words[m.end():]
             m = self.ignored_regexp.match(words)            
+        t.end()
         if stringp:
             return words
         else:
             return words.split()
+        
 
 class KeyDictionary:
     def __init__ (self, rm):

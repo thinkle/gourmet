@@ -59,18 +59,19 @@ class ShopGui:
         self.glade.signal_connect('panmen_remove',self.rem_selection_from_pantry)        
         self.rectree.set_model(self.rmodel)
         renderer = gtk.CellRendererText()
-        #renderer.set_property('editable',gtk.TRUE)
+
+        #renderer.set_property('editable',True)
         #renderer.connect('edited',tst)
         titl = gtk.TreeViewColumn(_("Title"),renderer,text=1)
         mult = gtk.TreeViewColumn(_("x"),renderer,text=2)
         self.rectree.append_column(titl)
         self.rectree.append_column(mult)
-        titl.set_resizable(gtk.TRUE)
-        titl.set_clickable(gtk.TRUE)
-        titl.set_reorderable(gtk.TRUE)
-        mult.set_resizable(gtk.TRUE)
-        mult.set_clickable(gtk.TRUE)
-        mult.set_reorderable(gtk.TRUE)
+        titl.set_resizable(True)
+        titl.set_clickable(True)
+        titl.set_reorderable(True)
+        mult.set_resizable(True)
+        mult.set_clickable(True)
+        mult.set_reorderable(True)
         self.rectree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.rectree.show()
         
@@ -205,7 +206,7 @@ class ShopGui:
             debug("slTree_popup_cb (tv, event):",5)
             if event.button==3:
                 self.popup_ing_menu(tv)
-                return gtk.TRUE
+                return True
         self.slTree.connect('button-press-event',slTree_popup_cb)
 
     def create_pTree (self, data):
@@ -219,7 +220,7 @@ class ShopGui:
             debug("pTree_popup_cb (tv, event):",5)
             if event.button==3:
                 self.popup_pan_menu(tv)
-                return gtk.TRUE
+                return True
         self.pTree.connect('button-press-event',pTree_popup_cb)
         
     def create_ingTree (self, widget, model):
@@ -249,7 +250,7 @@ class ShopGui:
         renderer = gtk.CellRendererText()
         for n,t in [[0,'Item'],[1,'Amount']]:
             col = gtk.TreeViewColumn(t,renderer,text=n)
-            col.set_resizable(gtk.TRUE)
+            col.set_resizable(True)
             tree.append_column(col)
         tree.expand_all()
         tree.show()
@@ -435,7 +436,7 @@ class ShopGui:
                 self.resetSL()
             except TypeError, e:
                 self.message("Out of range! %s")
-        return gtk.FALSE
+        return False
 
     def createIngModel (self, data):
         debug("createIngModel (self, data):",5)
@@ -586,12 +587,12 @@ class OptionalIngDialog (de.mDialog):
         self.tree = gtk.TreeView(self.mod)
         txtr = gtk.CellRendererText()
         togr = gtk.CellRendererToggle()
-        togr.set_property('activatable',gtk.TRUE)
+        togr.set_property('activatable',True)
         togr.connect('toggled',self.toggle_ing_cb)
         #togr.start_editing()
         for n,t in [[1,'Amount'],[2,'Unit'],[3,'Item']]:
             col = gtk.TreeViewColumn(t,txtr,text=n)
-            col.set_resizable(gtk.TRUE)
+            col.set_resizable(True)
             self.tree.append_column(col)
         bcol = gtk.TreeViewColumn('Add to Shopping List',
                                   togr, active=4)

@@ -77,7 +77,7 @@ class RecGui (RecIndex):
                                                                 {}),
                                                  show=False))
         self.prog = self.glade.get_widget('progressbar')
-        self.selected = gtk.TRUE
+        self.selected = True
         self.act_on_row_widgets = [self.glade.get_widget('rlViewRecButton'),
                                    self.glade.get_widget('rlViewRecMenu'),
                                    self.glade.get_widget('rlShopRecButton'),
@@ -184,7 +184,8 @@ class RecGui (RecIndex):
         for glade in glades:
             menu=self.viewMenu()
             vmi=glade.get_widget('view_menu_item')
-            vmi.set_submenu(menu)
+            if vmi:
+                vmi.set_submenu(menu)
     
     def show_about (self, *args):
         """Show information about ourselves, using GNOME's
@@ -382,10 +383,10 @@ class RecGui (RecIndex):
         self.sl = shopgui.ShopGui(self, conv=self.conv)
         self.sl.hide()
 
-    def selection_changed (self, selected=gtk.FALSE):
+    def selection_changed (self, selected=False):
         if selected != self.selected:
-            if selected: self.selected=gtk.TRUE
-            else: self.selected=gtk.FALSE
+            if selected: self.selected=True
+            else: self.selected=False
             for w in self.act_on_row_widgets:
                 w.set_sensitive(self.selected)
 
@@ -393,7 +394,7 @@ class RecGui (RecIndex):
         debug("rectree_click_cb (self, tv, event):",5)
         if event.button==3:
             self.popup_rmenu()
-            return gtk.TRUE
+            return True
         if event.button==1 and event.type ==gtk.gdk._2BUTTON_PRESS:
             self.recTreeSelectRec()
 
@@ -456,7 +457,7 @@ class RecGui (RecIndex):
                 return
         else: self.new_rec_iter(rec)
     
-    def set_iter_from_rec (self, r, iter, visible=gtk.TRUE):
+    def set_iter_from_rec (self, r, iter, visible=True):
         """Handed a rec and an iter, set the row values appropriately."""
         self.rmodel.set_value(iter, 0, r)
         if r.thumb:
@@ -1049,8 +1050,8 @@ def startGUI ():
     gt.gtk_threads_init()
     #gtk.threads_init()
     splash = gtk.Window()
-    #splash.window_set_auto_startup_notification(gtk.FALSE)
-    splash.set_property('decorated',gtk.FALSE)
+    #splash.window_set_auto_startup_notification(False)
+    splash.set_property('decorated',False)
     splash.set_position(gtk.WIN_POS_CENTER)
     splash.set_icon_from_file(os.path.join(imagedir,'recbox.png'))
     splash.set_title(_('Gourmet Recipe Manager starting up...'))
@@ -1058,10 +1059,10 @@ def startGUI ():
     pixmap, mask = pixbuf.render_pixmap_and_mask()
     width, height = pixmap.get_size()
     del pixbuf
-    splash.set_app_paintable(gtk.TRUE)
+    splash.set_app_paintable(True)
     splash.resize(width, height)
     splash.realize()
-    splash.window.set_back_pixmap(pixmap, gtk.FALSE)
+    splash.window.set_back_pixmap(pixmap, False)
     splash.label = gtk.Label(_("Starting gourmet..."))
     splash.label.set_alignment(0.5,1)
     splash.label.set_justify(gtk.JUSTIFY_CENTER)

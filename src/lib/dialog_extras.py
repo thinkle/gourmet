@@ -19,7 +19,7 @@ class mDialog (gtk.Dialog):
         self.set_border_width(15)
         self.default = default
         self.ret = default
-        if modal: self.set_modal(gtk.TRUE)
+        if modal: self.set_modal(True)
         if label:
             self.setup_label(label)
         if sublabel:
@@ -305,14 +305,14 @@ class preferences_dialog (mDialog):
             self.revert.connect('clicked',self.revertcb)
             self.action_area.add(self.revert)
             self.apply = gtk.Button(stock=gtk.STOCK_APPLY)
-            self.apply.set_sensitive(gtk.FALSE)
+            self.apply.set_sensitive(False)
             self.apply.connect('clicked',self.applycb)
             self.action_area.add(self.apply)
             self.apply.show()
-            self.changedcb = lambda *args: self.apply.set_sensitive(gtk.TRUE)
+            self.changedcb = lambda *args: self.apply.set_sensitive(True)
         else:
             self.changedcb=None
-            self.set_modal(gtk.FALSE)
+            self.set_modal(False)
         mDialog.setup_buttons(self, cancel, okay)
 
     def revertcb (self, *args):
@@ -321,7 +321,7 @@ class preferences_dialog (mDialog):
     def applycb (self, *args):
         self.table.apply()
         self.apply_func(self.table.options)
-        self.apply.set_sensitive(gtk.FALSE)
+        self.apply.set_sensitive(False)
 
     def run (self):
         self.show()

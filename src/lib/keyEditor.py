@@ -85,10 +85,10 @@ class KeyEditor:
                        [self.REC_COL, _('Recipes')]]:
             renderer = gtk.CellRendererText()
             if n==self.KEY_COL or n==self.ITEM_COL:
-                renderer.set_property('editable',gtk.TRUE)
+                renderer.set_property('editable',True)
                 renderer.connect('edited',self.tree_edited,n,head)
             col = gtk.TreeViewColumn(head, renderer, text=n)
-            col.set_resizable(gtk.TRUE)
+            col.set_resizable(True)
             self.treeview.append_column(col)
             self.treeview.connect('row-expanded',self.populateChild)
 

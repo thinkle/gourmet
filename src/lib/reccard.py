@@ -149,7 +149,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.page_specific_handlers = []
         self.notebookChangeCB()
         self.create_ingTree()
-        self.selection=gtk.TRUE
+        self.selection=True
         self.selection_changed()
         self.initRecipeWidgets()
         self.setEdited(False)
@@ -249,7 +249,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         t=TimeAction('RecCard.get_widgets 3',0)
         self.ImageBox = ImageBox(self)
         self.rg.sl.sh.init_orgdic()
-        self.selected=gtk.TRUE
+        self.selected=True
         #self.serveW = self.glade.get_widget('servingsBox')
         #self.multCheckB = self.glade.get_widget('rcMultCheck')
         self.multLabel = self.glade.get_widget('multLabel')
@@ -729,7 +729,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         titl = "<b>" + xml.sax.saxutils.escape(titl) + "</b>"
         #self.titleDisplay.set_use_markup(True)
         self.titleDisplay.set_text(titl)
-        self.titleDisplay.set_use_markup(gtk.TRUE)
+        self.titleDisplay.set_use_markup(True)
 
     def updateServingsDisplay (self, serves=None):
         self.serves_orig=self.current_rec.servings
@@ -796,28 +796,37 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.ingTree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.ingTree.expand_all()
         self.ingColsByName = {}
-        for n,head,tog,style in [[1,_('Amt'),False,None],
-                                 [2,_('Unit'),False,None],
-                                 [3,_('Item'),False,None],
-                                 [4,_('Optional'),True,None],
-                                 [5,_('Key'),False,pango.STYLE_ITALIC],
-                                 [6,_('Shopping Category'),False,pango.STYLE_ITALIC],
+        self.shopmodel = gtk.ListStore(str)
+        for c in self.ie.shopcats:
+            self.shopmodel.append([c])
+        for n,head,tog,model,style in [[1,_('Amt'),False,None,None],
+                                 [2,_('Unit'),False,self.rg.umodel,None],
+                                 [3,_('Item'),False,None,None],
+                                 [4,_('Optional'),True,None,None],
+                                 [5,_('Key'),False,self.rg.inginfo.key_model.filter_new(),pango.STYLE_ITALIC],
+                                 [6,_('Shopping Category'),False,self.shopmodel,pango.STYLE_ITALIC],
                                  ]:
             if tog:
                 renderer = gtk.CellRendererToggle()
-                renderer.set_property('activatable',gtk.TRUE)
+                renderer.set_property('activatable',True)
                 renderer.connect('toggled',self.ingtree_toggled_cb,4,'Optional')
                 col=gtk.TreeViewColumn(head, renderer, active=n)
             else:
-                renderer = gtk.CellRendererText()
-                renderer.set_property('editable',gtk.TRUE)
+                if hasattr(gtk,'CellRendererCombo') and model:
+                    debug('Using CellRendererCombo, n=%s'%n,0)
+                    renderer = gtk.CellRendererCombo()
+                    renderer.set_property('model',model)
+                else:
+                    debug('Using CellRendererText, n=%s'%n,0)
+                    renderer = gtk.CellRendererText()
+                renderer.set_property('editable',True)
                 renderer.connect('edited',self.ingtree_edited_cb,n,head)
                 if style:
                     renderer.set_property('style',style)
                 col=gtk.TreeViewColumn(head, renderer, text=n)
             self.ingColsByName[head]=col
-            col.set_reorderable(gtk.TRUE)
-            col.set_resizable(gtk.TRUE)
+            col.set_reorderable(True)
+            col.set_resizable(True)
             self.ingTree.append_column(col)
         self.setupShopPopupMenu()
         self.ingTree.connect("row-activated",self.ingTreeClickCB)
@@ -919,15 +928,15 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def selection_changedCB (self, *args):
         v=self.ingTree.get_selection().get_selected_rows()[1]
-        if v: selected=gtk.TRUE
-        else: selected=gtk.FALSE
+        if v: selected=True
+        else: selected=False
         self.selection_changed(v)
-        return gtk.TRUE
+        return True
     
-    def selection_changed (self, selected=gtk.FALSE):
+    def selection_changed (self, selected=False):
         if selected != self.selected:
-            if selected: self.selected=gtk.TRUE
-            else: self.selected=gtk.FALSE
+            if selected: self.selected=True
+            else: self.selected=False
             self.selectedIngredientGroup.set_sensitive(self.selected)
 
     def ingtree_toggled_cb (self, cellrenderer, path, colnum, head):
@@ -1224,9 +1233,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         model.set_value(iter, 2, unit)
         model.set_value(iter, 3, i.item)
         if i.optional=='yes':
-            opt=gtk.TRUE
+            opt=True
         else:
-            opt=gtk.FALSE
+            opt=False
         model.set_value(iter, 4, opt)
         model.set_value(iter, 5, i.ingkey)
         if self.rg.sl.orgdic.has_key(i.ingkey):
@@ -1315,12 +1324,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug("setEdited (self, boolean=True):",5)
         self.edited=boolean
         if boolean:
-            self.applyB.set_sensitive(gtk.TRUE)
-            self.revertB.set_sensitive(gtk.TRUE)
+            self.applyB.set_sensitive(True)
+            self.revertB.set_sensitive(True)
             self.message(_("You have unsaved changes."))
         else:
-            self.applyB.set_sensitive(gtk.FALSE)
-            self.revertB.set_sensitive(gtk.FALSE)
+            self.applyB.set_sensitive(False)
+            self.revertB.set_sensitive(False)
             self.message(_("There are no unsaved changes."))
 
     def hide (self, *args):
@@ -1516,7 +1525,6 @@ class IngredientEditor:
 
     def init_dics (self):
         self.orgdic = self.rg.sl.sh.orgdic
-        # setup shopbox
         self.shopcats = self.rg.sl.sh.get_orgcats()        
         
     def setup_comboboxen (self):
@@ -1629,7 +1637,7 @@ class IngredientEditor:
             return kk
         else:
             #return self.myKeys[0]
-            ""
+            return ""
         
     def getKeyList (self, ing=None):
         debug("getKeyList (self):",5)
@@ -1704,9 +1712,9 @@ class IngredientEditor:
         if hasattr(ing,'unit'):
             self.unitBox.entry.set_text(ing.unit)
         if hasattr(ing,'optional') and ing.optional=='yes':
-            self.optCheck.set_active(gtk.TRUE)
+            self.optCheck.set_active(True)
         else:
-            self.optCheck.set_active(gtk.FALSE)
+            self.optCheck.set_active(False)
         self.user_set_shopper=False
         self.getShopper()
 
@@ -1722,7 +1730,7 @@ class IngredientEditor:
         self.user_set_key=False
         self.user_set_shopper=False
         if hasattr(self,'optCheck') and self.optCheck:
-            self.optCheck.set_active(gtk.FALSE)
+            self.optCheck.set_active(False)
         self.amountBox.grab_focus()
 
     def add (self, *args):

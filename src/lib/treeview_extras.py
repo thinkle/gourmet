@@ -269,7 +269,7 @@ class QuickTree (gtk.ScrolledWindow):
         for n in range(self.cols):
             debug('Adding column: %s'%self.titles[n],0)
             col = gtk.TreeViewColumn(self.titles[n],rend,text=n)
-            col.set_resizable(gtk.TRUE)
+            col.set_resizable(True)
             col.set_reorderable(n)
             col.set_sort_column_id(n)
             self.tv.append_column(col)
