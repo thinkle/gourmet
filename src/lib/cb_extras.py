@@ -101,7 +101,7 @@ def make_completion (entry, model, col=0):
             return True
     entry.connect('activate',on_activate)
 
-def set_model_from_list (cb, list):
+def set_model_from_list (cb, list, expand=True):
     """Setup a ComboBox based on a list of strings."""
     model = gtk.ListStore(str)
     for l in list:
@@ -111,8 +111,9 @@ def set_model_from_list (cb, list):
         cb.set_text_column(0)        
         setup_completion(cb)
     elif type(cb) == gtk.ComboBox:
+        cb.clear()
         cell = gtk.CellRendererText()
-        cb.pack_start(cell, True)
+        cb.pack_start(cell, expand=expand)
         cb.add_attribute(cell, 'text',0)
         setup_typeahead(cb, 0)
 
@@ -153,4 +154,5 @@ if __name__ == '__main__':
     w.show_all()
     w.connect('destroy',lambda *args: gtk.main_quit())
     gtk.mainloop()
+    
     

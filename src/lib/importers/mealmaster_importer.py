@@ -39,6 +39,7 @@ class mmf_constants:
             self.unit_convr[v]=k
 
 mmf=mmf_constants()
+mm_start_pattern=r"^(?i)([m-][m-][m-][m-][m-])-*\s*(recipe|meal-?master).*"
 
 class mmf_importer (plaintext_importer.TextImporter):
 
@@ -87,7 +88,7 @@ class mmf_importer (plaintext_importer.TextImporter):
         testtimer = TimeAction('mealmaster_importer.compile_regexps',10)
         debug("start compile_regexps",5)
         plaintext_importer.TextImporter.compile_regexps(self)
-        self.start_matcher = re.compile(r"^(?i)([m-][m-][m-][m-][m-])-*\s*(recipe|meal-?master).*")
+        self.start_matcher = re.compile(mm_start_pattern)
         self.end_matcher = re.compile("^[M-][M-][M-][M-][M-]\s*$")
         self.group_matcher = re.compile("^([M-][M-][M-][M-][M-])-*\s*([^-]+)\s*-*")
         self.ing_cont_matcher = re.compile("^\s*[-;]")

@@ -62,6 +62,7 @@ AMBIGUOUS = {}
 
 
 # triplicates ITEM, KEY, SHOPPING CATEGORY
+#
 # These will be defaults. They should include whatever foods might be
 # standard for your locale, with whatever sensible default categories
 # you can think of (again, thinking of your locale, not simply translating
@@ -593,6 +594,10 @@ UNITS = [["bucket" , ["bucket", "buckets", "bckt."]],
          ["kg.", ["kilogram","kg.", "kg",  "kilograms"]]
          ]
 
+WEIGHTS = ['grains','lb','oz.','g.','mg.','kg.']
+VOLUMES = ['bucket','peck','bushel','tsp.','tbs.','qt.','pt.','gallon','ml.','cl.','dl.','l.',
+           'dram','drop',]
+
 # The following sets up unit groups. Users will be able to turn
 # these on or off (American users, for example, would likely turn
 # off metric units, since we don't use them).
@@ -622,6 +627,8 @@ UNIT_GROUPS = {
                        ('bucket',(1,2)),
                        ('bushel',(1,None))]
     }
+
+
 
 # The units here need to correspond to the standard unit names defined
 # above in UNITS

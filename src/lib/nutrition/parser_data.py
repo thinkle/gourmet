@@ -6,12 +6,12 @@ NUTRITION_FIELDS = [
     #[description abbrev type]
     ["Nutrient Databank Number","ndbno","char(100)"],
     ["Short Description","desc","char(100)"],
-    [_("Water"),"water","float"],
+    [_("Water"),"water","float"],    
     [_("Kilocalories"),"kcal","float"],
     [_("g protein"),"protein","float"],
     [_("g lipid"),"lipid","float"],
     [_("g ash"),"ash","float"],
-    [_("g carb"),"carb","float"],
+    [_("g carbohydrates"),"carb","float"],
     [_("g fiber"),"fiber","float"],
     [_("g sugar"),"sugar","float"],
     [_("mg calcium"),"calcium","float"],
@@ -55,6 +55,12 @@ NUTRITION_FIELDS = [
     ["Gram Weight Description 2","gramdsc2","char(100)"],
     [_("Percent refuse"),"refusepct","float"],
     ]
+
+# a convenient dictionary to move from shortname to longname,
+# for user interface.
+NUT_FIELDNAME_DICT = {}
+for longname,sname,field in NUTRITION_FIELDS:
+    NUT_FIELDNAME_DICT[sname]=longname
 
 ABBREVS = {'ALLPURP':'All Purpose',
            'AL':'Aluminum',
