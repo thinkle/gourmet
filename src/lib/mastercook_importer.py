@@ -113,7 +113,7 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
 
     def endDocument (self):
         if self.progress:
-            self.progress(0)
+            self.progress(1,_("Mastercook import finished."))
     
     def _get_handler (self, name):
         return getattr(self,'%s_handler'%name)
@@ -144,7 +144,9 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
             debug('commiting: %s'%self.rec,0)
             if self.progress and self.reccount:
                 self.recs_done += 1
-                self.progress(float(self.recs_done)/self.reccount)
+                self.progress("Imported %(number)s of %(total)s recipes."%({'number':self.recs_done,
+                                                                            'total':self.reccount},),
+                              float(self.recs_done)/self.reccount)
             self.commit_rec()
         
     def RTxt_handler (self, start=False, end=False, attrs=None):

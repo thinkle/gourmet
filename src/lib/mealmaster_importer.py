@@ -1,9 +1,9 @@
 #!/usr/bin/python
-
-import importer, re, convert, os.path
+import importer, re, convert, os.path, string
 import rmetakit, check_encodings, array
 from gdebug import debug,TimeAction
 from gglobals import gt
+from gettext import gettext as _
 
 class mmf_constants:
     def __init__ (self):
@@ -80,11 +80,13 @@ class mmf_importer (importer.importer):
             if n % 15 == 0:
                 prog= float(n)/float(tot)
                 if self.progress:
-                    self.progress(prog)
+                    msg = _("Imported %s recipes.")%(len(self.added_recs))
+                    self.progress(prog,msg)
             self.handle_line(l)
         # commit the last recipe if need be
         if self.rec:
-            self._commit_rec()
+            self.commit_rec()
+        self.progress(1,_("Mealmaster import completed."))
         importer.importer.run(self)
         testtimer.end()
         
@@ -132,7 +134,7 @@ class mmf_importer (importer.importer):
             return
         if self.end_matcher.match(l):
             debug("recipe end %s"%l,4)            
-            self._commit_rec()
+            self.commit_rec()
             self.last_line_was = 'end_rec'
             return
         groupm = self.group_matcher.match(l)
@@ -182,6 +184,7 @@ class mmf_importer (importer.importer):
             else:
                 debug('Adding to instructions: %s'%l,4)
                 self.last_line_was = 'instr'
+                self.instr = self.instr.strip()+"\n"
                 self.instr += l
                 testtimer.end()
                 
@@ -207,7 +210,7 @@ class mmf_importer (importer.importer):
             # this shouldn't happen if recipes are ended properly
             # but we'll be graceful if a recipe starts before another
             # has ended... 
-            self._commit_rec()
+            self.commit_rec()
         self.committed=False
         self.start_rec(base=self.base)
         debug('resetting instructions',5)
@@ -217,17 +220,22 @@ class mmf_importer (importer.importer):
         self.header=False
         testtimer.end()
         
-    def _commit_rec (self):
-        testtimer = TimeAction('mealmaster_importer._commit_rec',10)
+    def commit_rec (self):
+        testtimer = TimeAction('mealmaster_importer.commit_rec',10)
         if self.committed: return
         debug("start _commit_rec",5)
+        # unwrap lines
+        #ll=re.split('\n\s*\n',self.instr)
+        #self.instr=string.join(ll,'GOURMETS_UGLY_HACK')
+        #self.instr.replace('\n',' ')
+        #self.instr.replace('GOURMETS_UGLY_HACK','\n')
         self.rec['instructions']=self.instr
         if self.mod:
             self.rec['modifications']=self.mod
         self.parse_inglist()
         if self.source:
             self.rec['source']=self.source
-        self.commit_rec()
+        importer.importer.commit_rec(self)
         # blank rec
         self.committed = True
         testtimer.end()
@@ -503,8 +511,3 @@ if __name__ == '__main__':
     if not args: args = ['/home/tom/Projects/recipe/Data/200_Recipes.mmf']
     for a in args:
         profile.run("mmf_importer(rd,a,progress=lambda *args: sys.stdout.write('|'),threaded=False)")
-        
-        
-                     
-    
-    

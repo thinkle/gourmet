@@ -236,29 +236,7 @@ class RecData (rdatabase.RecData):
             debug("DEBUG: Deleting ingredient %s"%i.item)
             self.iview.delete(i.__index__)
         debug('delete_rec finished.')
-
-    def new_id (self, base="r"):
-        """Return a new unique ID. Possibly, we can have
-        a base"""
-        if self.top_id.has_key(base):
-            start = self.top_id[base]
-        else:
-            start = 0
-        # every time we're called, we increment out record.
-        # This way, if party A asks for an ID and still hasn't
-        # committed a recipe by the time party B asks for an ID,
-        # they'll still get unique IDs.
-        n = start + 1
-        while self.rview.find(id=self.format_id(n, base)) > -1 or self.iview.find(id=self.format_id(n, base)) > -1:
-            # if the ID exists, we keep incrementing
-            # until we find a unique ID
-            n += 1
-        self.top_id[base]=n
-        return self.format_id(n, base)
-
-    def format_id (self, n, base="r"):
-        return base+str(n)
-
+    
     def new_rec (self):
         blankdict = {'id':self.new_id(),
                      'title':_('New Recipe'),
@@ -268,6 +246,13 @@ class RecData (rdatabase.RecData):
     def delete_ing (self, ing):
         self.iview.delete(ing.__index__)
         self.changed=True        
+
+    def add_ing (self, ingdic):
+        debug('removing unicode',3)
+        timer = TimeAction('rmetakit.add_ing 1',0)
+        self.remove_unicode(ingdic)
+        timer.end()
+        rdatabase.RecData.add_ing(self,ingdic)
 
 class RecipeManager (RecData,rdatabase.RecipeManager):
     def __init__ (self, file=os.path.join(gglobals.gourmetdir,'recipes.mk')):

@@ -227,6 +227,41 @@ class optionDialog (mDialog):
 
     def set_value (self, value):
         self.ret=value
+
+class progressDialog (mDialog):
+    def __init__ (self, title="", okay=True, label=False, sublabel=False, parent=None,
+                  cancel=False, stop=True, pause=True,modal=False):
+        """stop,cancel,and pause will be given as callbacks to their prospective buttons."""
+        self.custom_pausecb=pause
+        self.custom_cancelcb=cancel
+        self.custom_stopcb=stop
+        mDialog.__init__(self, title, okay=okay, label=label, sublabel=sublabel, parent=parent,
+                         cancel=cancel,modal=modal)
+        self.set_title(label)
+        self.progress_bar = gtk.ProgressBar()
+        self.vbox.add(self.progress_bar)
+        self.detail_label = gtk.Label()
+        self.vbox.add(self.detail_label)
+        self.detail_label.set_use_markup(True)
+        self.detail_label.set_padding(H_PADDING,Y_PADDING)
+        self.detail_label.set_line_wrap(True)
+        self.vbox.show_all()
+        if okay: self.ok.set_sensitive(False) # we're false by default!
+        
+    def setup_buttons (self, cancel, okay):        
+        mDialog.setup_buttons(self,cancel,okay)
+        if self.custom_cancelcb:
+            self.cancel.connect('clicked',self.custom_cancelcb)
+        if self.custom_pausecb:
+            self.pause = gtk.ToggleButton(_('_Pause'),True)
+            self.pause.connect('toggled',self.custom_pausecb)
+            self.action_area.pack_end(self.pause)
+        if self.custom_stopcb:
+            self.stop = gtk.ToggleButton(_('_Stop'),True)
+            self.stop.connect('clicked',self.custom_stopcb)
+            self.stop.connect('clicked',self.cancelcb)
+            self.action_area.pack_end(self.stop)
+    
         
 class preferences_dialog (mDialog):
     def __init__ (self, options=([None,None]), option_label="Option",
@@ -383,15 +418,16 @@ def show_message (*args, **kwargs):
 
 
 def select_file (title,
-                  filename=None,
-                  filters=[],
-                  # filters are lists of a name, a list of mime types and a list of
-                  # patterns ['Plain Text', ['text/plain'], '*txt']
-                  action=gtk.FILE_CHOOSER_ACTION_OPEN,
-                  set_filter=True,
-                  buttons=None
-                  ):
-    sfd=select_file_dialog(title,filename=filename,filters=filters,
+                 filename=None,
+                 filters=[],
+                 # filters are lists of a name, a list of mime types and a list of
+                 # patterns ['Plain Text', ['text/plain'], '*txt']
+                 action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                 set_filter=True,
+                 select_multiple=False,
+                 buttons=None
+                 ):
+    sfd=select_file_dialog(title,filename=filename,filters=filters,select_multiple=select_multiple,
                            action=action,set_filter=set_filter,buttons=buttons)
     return sfd.run()
 
@@ -438,10 +474,12 @@ class select_file_dialog:
                   set_filter=True,
                   buttons=None,
                   show_filetype=True,
-                  parent=None
+                  parent=None,
+                  select_multiple=False
                   ):
         self.parent=parent
         self.buttons=buttons
+        self.multiple=select_multiple
         self.set_filter=set_filter
         self.action=action
         self.filename=filename
@@ -460,6 +498,7 @@ class select_file_dialog:
         self.setup_buttons()
         self.fsd = gtk.FileChooserDialog(self.title,action=self.action,parent=self.parent,buttons=self.buttons)
         self.fsd.set_default_response(gtk.RESPONSE_OK)
+        self.fsd.set_select_multiple(self.multiple)
         if self.filename:
             path,name=os.path.split(os.path.expanduser(self.filename))
             if path: self.fsd.set_current_folder(path)
@@ -619,7 +658,10 @@ class select_file_dialog:
         """Run our dialog and return the filename or None"""
         response = self.fsd.run()
         if response == gtk.RESPONSE_OK:
-            fn = self.fsd.get_filename()
+            if self.multiple:
+                fn = self.fsd.get_filenames()
+            else:
+                fn = self.fsd.get_filename()
             if not fn:
                 show_message(label=_('No file selected'),
                              sublabel=_('No file was selected, so the action has been cancelled')
@@ -632,6 +674,7 @@ class select_file_dialog:
                         add_ext = self.n_to_ext[self.saveas.get_active()]
                         if add_ext: fn += add_ext
                 # if we're saving, we warn the user before letting them save over something.
+                # Note: we don't have to worry about multiple filenames since we're looking at ACTION_SAVE
                 if os.path.exists(fn) and not getBoolean(
                     default=False,
                     label=_("A file named %s already exists.")%os.path.split(fn)[1],
@@ -746,15 +789,15 @@ if __name__ == '__main__':
         ['show dialog (not modal)',lambda *args: preferences_dialog(options=opts,apply_func=show_options).show()],
         ['show message',lambda *args: show_message('howdy',label='Hello there. This is a very long label for the top of a dialog.', sublabel='And this is a sub message.',message_type=gtk.MESSAGE_WARNING)],
         ['show boolean', lambda *args: getBoolean()],
-        ['get image dialog',lambda *args: select_image('Select Image')],
-        ['get file dialog',lambda *args: select_file('Select File',
+        ['get image dialog',lambda *args: msg(select_image('Select Image'))],
+        ['get file dialog',lambda *args: msg(select_file('Select File',
                                                      filters=[['Plain Text',['text/plain'],['*.txt','*.TXT']],
                                             ['PDF',['application/pdf'],['*.pdf','*.PDF']],
                                             ['Postscript',['application/postscript'],['*.ps','*.PS']],
                                             ['Web Page (HTML)',['text/html'],['*.htm','*.HTM','*.html','*.HTML']],
-                                            ['Mealmaster File',['text/mmf'],['*.mmf','*.MMF']]]
-                                                     ),
-
+                                            ['Mealmaster File',['text/mmf'],['*.mmf','*.MMF']]],
+                                                     select_multiple=True
+                                                     )),
          ],
         ['save file with types',
          lambda *args: msg(saveas_file('export',filename='/tmp/test.mmf',
@@ -772,3 +815,4 @@ if __name__ == '__main__':
     w.show_all()
     gtk.main()
     
+

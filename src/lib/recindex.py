@@ -274,8 +274,10 @@ class RecIndex:
         rec=self.get_rec_from_iter(iter)
         #self.rd.modify_rec(rec,{attribute:text})
         self.rd.undoable_modify_rec(rec,{attribute:text},self.history,
-                                 get_current_rec_method=lambda *args: self.recTreeSelectedRecs()[0]
+                                 get_current_rec_method=lambda *args: self.recTreeSelectedRecs()[0],
                                  )
+        # for metakit, which isn't automitting very nicely...
+        self.rd.save()
 
     def update_reccards (self, rec):
         if self.rc.has_key(rec.id):
@@ -311,6 +313,7 @@ class RecIndex:
 
     def visibility_fun (self, model, iter):
         if (model.get_value(iter,0) and
+            not model.get_value(iter,0).deleted and
             model.get_value(iter, 0).id in self.visible):
             return True
         else: return False

@@ -29,7 +29,7 @@ class PythonicMySQL (PythonicSQL.PythonicSQL):
     def _check_for_table (self, name):
         return name in [x[0] for x in self.execute(['show tables;'])]
 
-    def get_fields_for_table (self,name):
+    def fetch_table_fields (self,name):
         return [x[0] for x in self.execute(['SHOW COLUMNS IN %s'%name])]
 
     def hone_type (self,typstring):

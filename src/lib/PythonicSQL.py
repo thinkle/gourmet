@@ -1,7 +1,7 @@
 import threading
 import __builtin__
 from types import DictionaryType
-from gdebug import debug
+from gdebug import debug,TimeAction
 
 threading_debug_level = 1
 lock_change_debug_level = 1
@@ -11,6 +11,7 @@ class PythonicSQL:
     def __init__ (self,module=None):
         #print file
         self.changed = False
+        self._table_fields = {}        
         self._connection = {}
         self._cursors = {}
         self._module = module
@@ -18,6 +19,7 @@ class PythonicSQL:
         self._threadsafety = self._module.threadsafety        
         self._connection[threading.currentThread()] = self.connect()
         self._cursors[threading.currentThread()] = self.get_connection().cursor()
+
         
 
     def get_connection (self):
@@ -99,7 +101,7 @@ class PythonicSQL:
             add_string += "%s %s,"%(rowname,typ)
         add_string = add_string[0:-1] + ")"
         self.execute([add_string,sql_params])
-        if key: self.execute(['CREATE INDEX %sIndex ON %s (%s)'%(key,name,key)])
+        if key: self.execute(['CREATE INDEX %s%sIndex ON %s (%s)'%(name,key,name,key)])
         self.changed=True
         return TableObject(self, name, key)
 
@@ -131,6 +133,7 @@ class PythonicSQL:
 
     def insert (self, name, data):
         """Use this method to insert data into a table. Data comes in dictionaries. Table names come in strings."""
+        t = TimeAction('PythonicSQL.insert()',3)
         if type(data) != DictionaryType:
             raise TypeError, 'expected dictionary type argument'
         ins_string = "INSERT INTO %s"%name
@@ -144,8 +147,11 @@ class PythonicSQL:
             ins_string += "%s, "
             sql_params += [v]
         ins_string = ins_string[0:-2] + ")"
+        tt=TimeAction('PythonicSQL.insert() - self.execute()',4)
         self.execute([ins_string,sql_params])
+        tt.end()
         self.changed = True
+        t.end()
         
     def delete (self, name, criteria={}, logic="and"):
         """Delete rows from table NAME where criteria CRITERIA are met."""
@@ -259,8 +265,19 @@ class PythonicSQL:
             sel_string = sel_string[0:-len(logic)]
         return sel_string,sql_params
 
-    def get_fields_for_table (self,name):
+    def fetch_table_fields (self, name):
         raise NotImplementedError
+        
+    def get_fields_for_table (self,name):
+        if not self._table_fields.has_key(name):
+            fields = self.fetch_table_fields(name)
+            self._table_fields[name]=fields
+            debug('fields for %s: %s'%(name,fields),8)
+            return fields
+        else:
+            return self._table_fields[name]
+        
+        
 
     def count (self, table, column, criteria=None):
         if not column: column = '*'
@@ -366,6 +383,7 @@ class FetcherPivot (Fetcher):
 
 class TableObject (list):
     def __init__ (self, db, table, key=None, criteria=None, filters=[]):
+        self._last = None
         self.__db__ = db
         self.__tablename__ = table
         self.__key__ = key
@@ -377,6 +395,8 @@ class TableObject (list):
 
     def __getitem__ (self, index):
         debug('__getitem__ called for %s'%self,0)
+        if index == -1 and self._last:
+            return RowObject(self.__tablename__,self.__db__,self._last.values(),self._last.keys())
         generator = self.__iter__()
         n = 0
         if index < 0:
@@ -399,6 +419,7 @@ class TableObject (list):
 
     def append (self, item):
         self.__db__.insert(self.__tablename__,item)
+        self._last = item
 
     def extend (self, lst):
         for i in lst: self.append(i)
@@ -481,10 +502,13 @@ class RowObject :
         self.__db__ = db
         self.__table__ = name
         self.__fields__ = {}
-        if len(fields) != len(results): print 'fields: ',fields, '\nresults: ',results
+        #if len(fields) != len(results): print 'fields: ',fields, '\nresults: ',results
         for i,f in enumerate(fields):
             setattr(self,f,results[i])
             #self.dic[f]=results[i]
+        for f in self.__db__.get_fields_for_table(self.__table__):
+            if not hasattr(self,f):
+                setattr(self,f,None)
         self.__instantiated__ = True
 
     def __nonzero__ (self):

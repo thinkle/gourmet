@@ -196,10 +196,13 @@ class RecCard (WidgetSaver.WidgetPrefs):
         ## then, we remove the duplicate item
         #self.rg.rd.rview.remove(self.rg.rd.rview.filter(lambda row: self.are_equal(self.current_rec,row)))
         self.setEdited(False)
+        # save DB for metakit
+        self.rg.rd.save()
         ## if our title has changed, we need to update menus
         if newdict.has_key('title'):
             self.widget.set_title("%s %s"%(self.default_title,self.current_rec.title))
             self.rg.updateViewMenu()
+        
             
     def delete (self, *args):
         debug("delete (self, *args):",2)
@@ -267,12 +270,12 @@ class RecCard (WidgetSaver.WidgetPrefs):
         self.rectexts = ['instructions', 'modifications']
         for a in self.reccom:
             self.rw[a]=self.glade.get_widget("%sBox"%a)
-            self.rw[a].get_children()[0].connect('changed',self.setEdited)
+            self.rw[a].get_children()[0].connect('changed',self.changedCB)
         for a in self.recent:
             self.rw[a]=self.glade.get_widget("%sBox"%a)            
         for t in self.rectexts:
             self.rw[t]=self.glade.get_widget("%sText"%t)
-            self.rw[t].get_buffer().connect('changed',self.setEdited)
+            self.rw[t].get_buffer().connect('changed',self.changedCB)
 
     def newRecipeCB (self, *args):
         debug("newRecipeCB (self, *args):",5)
@@ -933,6 +936,10 @@ class RecCard (WidgetSaver.WidgetPrefs):
         ext=os.path.splitext(fn)[1]
         self.prefs['save_recipe_as']=ext
 
+    def changedCB (self, widget):
+        ## This needs to keep track of undo history...
+        self.setEdited()
+
     def setEdited (self, boolean=True):
         debug("setEdited (self, boolean=True):",5)
         self.edited=boolean
@@ -1486,7 +1493,7 @@ class IngInfo:
         self.rd.add_ing_hooks.append(self.add_ing)
 
     def make_item_model(self):
-        unique_item_vw = self.rd.iview.counts(self.rd.iview.item, 'count')
+        unique_item_vw = self.rd.iview_not_deleted.counts(self.rd.iview_not_deleted.item, 'count')
         self.item_model = gtk.ListStore(str)
         for i in unique_item_vw:
             self.item_model.append([i.item])
@@ -1496,7 +1503,7 @@ class IngInfo:
                 self.item_model.append([i])
         
     def make_key_model (self):
-        unique_key_vw = self.rd.iview.counts(self.rd.iview.ingkey, 'groupvw')
+        unique_key_vw = self.rd.iview_not_deleted.counts(self.rd.iview_not_deleted.ingkey, 'groupvw')
         # the key model by default stores a string and a list.
         self.key_model = gtk.ListStore(str)
         for k in unique_key_vw:

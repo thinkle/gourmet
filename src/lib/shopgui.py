@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import gtk.glade, gtk, gobject, pango, sys, os.path, time, os
+import gtk.glade, gtk, gobject, pango, sys, os.path, time, os, string
 import recipeManager, convert, WidgetSaver, reccard
 import dialog_extras as de
 import treeview_extras as te
@@ -344,12 +344,9 @@ class ShopGui:
     def add_sel_to_newcat (self, menuitem, *args):
         debug("add_sel_to_newcat (self, menuitem, *args):",5)
         kk=self.ingSelection()
-        str=kk[0]
-        if len(kk) > 1:
-            for k in kk[1:]:
-                str="%s, %s"%str,k
+        sublab = str.join(kk,', ')
         cat = de.getEntry(label=_('Enter Category'),
-                          sublabel=_("Category to add %s to") %str,
+                          sublabel=_("Category to add %s to") %sublab,
                           entryLabel=_('Category: '),
                           parent=self.widget)
         if cat:

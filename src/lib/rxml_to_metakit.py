@@ -22,7 +22,7 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
         if name=='category' or name=='cuisine' or name=='source':
             self.metaid=unquoteattr(attrs.get('id',""))
         if name=='recipe':
-            self.start_rec()            
+            self.start_rec()
             for att in ['date','audience','cuisine','servings',
                         'rating','description','category','source']:
                 self.rec[att]=unquoteattr(attrs.get(att,""))
@@ -94,7 +94,7 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
             self.mixed += "</%s>" % name
 
 class converter:
-    def __init__ (self, filename, rd=None, threaded=False):
+    def __init__ (self, filename, rd=None, threaded=False, progress=None):
         if rd:
             self.rh = RecHandler(recData=rd)
         else:

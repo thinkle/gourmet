@@ -3,6 +3,7 @@ import gtk # only needed for threading voodoo
 import rmetakit, keymanager, convert, time
 from gdebug import debug, TimeAction, print_timer_info
 from gglobals import gt, use_threads
+import os,stat,re
 
 class importer:
     def __init__ (self, rd, threaded=False):
@@ -88,7 +89,10 @@ class importer:
                 self.rec[k]=v.strip()
             except:
                 pass
-        self.added_recs.append(self.rd.add_rec(self.rec))
+        tt=TimeAction('importer.commit_rec - rd.add_rec',5)
+        r = self.rd.add_rec(self.rec)
+        tt.end()
+        self.added_recs.append(r)
         self.check_for_sleep()
         timeaction.end()
         self.rec_timer.end()
@@ -162,9 +166,9 @@ class importer:
         timeaction.end()
 
     def add_item (self, item):
-        timeaction = TimeAction('importer.add_item',10)
-        timeaction.end()
+        timeaction = TimeAction('importer.add_item',10)        
         self.ing['item']=str(item.strip())
+        timeaction.end()
         
     def add_unit (self, unit):
         timeaction = TimeAction('importer.add_unit',10)
@@ -192,3 +196,64 @@ class importer:
     def resume (self):
         debug('Resume!',0)
         self.suspended = False
+
+class MultipleImporter:
+    def __init__ (self,grm,imports):
+        """GRM is a GourmetRecipeManager instance.
+        Imports is a list of classes to run and filenames."""
+        self.imports = imports
+        self.grm = grm
+        self.total_size = 0
+        self.current_prog = 0
+        self.sizes = {}
+        self.completed_imports = 0
+        self.current_imports = 0
+        self.completed_imports_last_fn = ""
+        self.num_matcher = re.compile('([0-9]+)')
+        for c,fn in imports:
+            size = os.stat(fn)[stat.ST_SIZE]
+            self.total_size += size
+            self.sizes[fn]=size
+
+    def run (self):
+        for importer,fn in self.imports:
+            ic,args,kwargs = importer
+            self.fn = fn
+            self.current_percentage = float(self.sizes[fn])/self.total_size
+            gt.gtk_enter()
+            self.grm.prog_dialog.detail_label.set_text(_('<i>Importing %s</i>')%fn)
+            self.grm.prog_dialog.detail_label.set_use_markup(True)
+            #self.grm.prog_dialog.label.set_text(_('<i>Importing %s</i>')%fn)
+            gt.gtk_leave()
+            kwargs['progress']=self.show_progress
+            self.iclass = ic(*args,**kwargs)
+            self.suspend = self.iclass.suspend
+            self.terminate = self.iclass.terminate
+            self.iclass.run()
+            print self.current_prog, '+', self.current_percentage
+            self.current_prog += self.current_percentage
+        self.grm.set_progress_thr(1,'Import complete!')
+    
+    def show_progress (self, prog, msg):
+        if len(self.imports)>1:
+            # we muck about with the messages if we have more than one...            
+            m=self.num_matcher.search(msg)
+            if not m: msg=""
+            else:
+                if self.fn != self.completed_imports_last_fn:
+                    self.completed_imports_last_fn = self.fn
+                    self.completed_imports += self.current_imports
+                self.current_imports=int(m.groups()[0])
+                total = self.current_imports + self.completed_imports
+                if self.completed_imports:
+                    msg = _("Imported %(number)s recipes from %(file)s (%(total)s total)")%{'number':self.current_imports,
+                                                                                            'total':total,
+                                                                                            'file':os.path.split(self.fn)[1]
+                                                                                            }
+        self.grm.set_progress_thr(self.current_prog + (prog * self.current_percentage),
+                                  msg)
+        
+        
+    
+            
+    

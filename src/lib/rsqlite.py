@@ -2,10 +2,10 @@ import os, pickle,re
 import gglobals
 import pythonic_sqlite as psl
 import rdatabase
-import rmetakit
+#import rmetakit
 from gdebug import debug
 
-class RecData (rmetakit.RecData,psl.PythonicSQLite):
+class RecData (rdatabase.RecData,psl.PythonicSQLite):
     def __init__ (self, filename=os.path.join(gglobals.gourmetdir,'recipes.db')):
         self.filename = filename
         rdatabase.RecData.__init__(self)
@@ -30,7 +30,8 @@ class RecData (rmetakit.RecData,psl.PythonicSQLite):
         self.iview.delete({'id':myid})
 
     def save (self):
-        self.get_connection().commit()
+        #self.get_connection().commit()
+        pass # autocommit is on. We do nothing.
 
     def load (self, filename=None):
         if filename:
@@ -55,6 +56,8 @@ class RecData (rmetakit.RecData,psl.PythonicSQLite):
         """Handed a table, a column name, and a regular expression, search
         for an item"""
         debug('search handed: table:%s, colname:%s, regexp:%s, exact:%s'%(table,colname,regexp,exact),0)
+        if type(regexp) != "":
+            return table.select(**{colname:regexp})
         if use_regexp:
             # we still convert to sql if we can afford to, given the speed advantage
             if exact: sql = sqlify_regexp(regexp)
@@ -66,7 +69,7 @@ class RecData (rmetakit.RecData,psl.PythonicSQLite):
         else:
             debug('adding filter re.search(%s,getattr(row,%s))'%(regexp,colname),0)
             def fun (row):
-                print 'comparing %s and %s'%(getattr(row,colname),regexp)
+                #print 'comparing %s and %s'%(getattr(row,colname),regexp)
                 return re.search(regexp,getattr(row,colname),re.IGNORECASE)
             return table.filter(fun)
 

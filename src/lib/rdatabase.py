@@ -181,7 +181,11 @@ class RecData:
         return dct.keys()
 
     def get_ings (self, rec):
-        raise NotImplementedError
+        if hasattr(rec,'id'):
+            id=rec.id
+        else:
+            id=rec
+        return self.iview.select(id=id)
 
     def order_ings (self, iview):
         """Handed a view of ingredients, we return an alist:
@@ -245,22 +249,26 @@ class RecData:
 
     def add_rec (self, rdict):
         self.changed=True
+        t = TimeAction('rdatabase.add_rec - checking keys',3)
         if not rdict.has_key('deleted'):
-            rdict['deleted']=False
-        if not rdict.has_key('id'):
-            rdict['id']=self.new_id()
-        old_r=self.get_rec(rdict['id'])
+            rdict['deleted']=0
+        #if not rdict.has_key('id'):
+        rdict['id']=self.new_id()
+        #old_r=self.get_rec(rdict['id'])
 #        ## if we already have a recipe with this ID, delete it, change the ID
-        if old_r:
-            #debug("WARNING: DELETING OLD RECIPE %s id %s"%(old_r.title,old_r.id),0)
-            #self.delete_rec(old_r)
-            debug("ID %s taken. Generating new ID."%rdict['id'])
-            rdict['id']=self.new_id()        
+        #if old_r:
+        #    debug("WARNING: DELETING OLD RECIPE %s id %s"%(old_r.title,old_r.id),0)
+        #    #self.delete_rec(old_r)
+        #    debug("ID %s taken. Generating new ID."%rdict['id'])
+        #    rdict['id']=self.new_id()
+        t.end()
         try:
             debug('Adding recipe %s'%rdict, 4)
+            t = TimeAction('rdatabase.add_rec - rview.append(rdict)',3)
             self.rview.append(rdict)
+            t.end()
             debug('Running add hooks %s'%self.add_hooks,2)
-            self.run_hooks(self.add_hooks,self.rview[-1])
+            if self.add_hooks: self.run_hooks(self.add_hooks,self.rview[-1])
             return self.rview[-1]
         except:
             debug("There was a problem adding recipe%s"%rdict,-1)
@@ -282,6 +290,28 @@ class RecData:
     def new_rec (self):
         raise NotImplementedError
 
+    def new_id (self, base="r"):
+        """Return a new unique ID. Possibly, we can have
+        a base"""
+        if self.top_id.has_key(base):
+            start = self.top_id[base]
+        else:
+            start = 0
+        # every time we're called, we increment out record.
+        # This way, if party A asks for an ID and still hasn't
+        # committed a recipe by the time party B asks for an ID,
+        # they'll still get unique IDs.
+        n = start + 1
+        while self.rview.find(id=self.format_id(n, base)) > -1 or self.iview.find(id=self.format_id(n, base)) > -1:
+            # if the ID exists, we keep incrementing
+            # until we find a unique ID
+            n += 1
+        self.top_id[base]=n
+        return self.format_id(n, base)
+
+    def format_id (self, n, base="r"):
+        return base+str(n)
+
     def add_ing (self, ingdict):
         """Add ingredient to iview based on ingdict and return
         ingredient object. Ingdict contains:
@@ -296,18 +326,14 @@ class RecData:
                else is irrelevant except for amount.
         """
         debug('add_ing ingdict=%s'%ingdict,5)
-        self.changed=True
-        debug('removing unicode',3)
-        timer = TimeAction('rmetakit.add_ing 1',0)
-        self.remove_unicode(ingdict)
-        timer.end()
+        self.changed=True        
         debug('adding to iview %s'%ingdict,3)
         timer = TimeAction('rmetakit.add_ing 2',0)
         self.iview.append(ingdict)
         timer.end()
         debug('running ing hooks %s'%self.add_ing_hooks,3)
         timer = TimeAction('rmetakit.add_ing 3',0)
-        self.run_hooks(self.add_ing_hooks, self.iview[-1])
+        if self.add_ing_hooks: self.run_hooks(self.add_ing_hooks, self.iview[-1])
         timer.end()
         debug('done with ing hooks',3)
         return self.iview[-1]
@@ -337,9 +363,6 @@ class RecData:
 
     def delete_ing (self, ing):
         raise NotImplementedError
-
-    
-
     
 class RecipeManager (RecData):
     def __init__ (self):

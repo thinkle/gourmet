@@ -19,6 +19,7 @@ class exporter:
                   ):
         """A base exporter class to be subclassed (or to be
         called for plain text export)."""
+        tt = TimeAction('exporter.__init__()',0)
 	self.attr_order=attr_order
         self.out = out
         self.r = r
@@ -29,10 +30,19 @@ class exporter:
         self.write_head()
         self.images = []
         for task in order:
-            if task=='attr': self._write_attrs()
-            elif task=='text': self._write_text()
+            t=TimeAction('exporter._write_attrs()',4)
+            if task=='attr':
+                self._write_attrs()
+                t.end()
+                t=TimeAction('exporter._write_text()',4)
+            elif task=='text':
+                self._write_text()
+                t.end()
+                t=TimeAction('exporter._write_ings()',4)            
             elif task=='ings': self._write_ings()
+            t.end()
         self.write_foot()
+        tt.end()
         
     def _write_attrs (self):
         if self.grab_attr(self.r,'image'):
@@ -246,7 +256,7 @@ class mealmaster_exporter (exporter):
         ll=text.split("\n")
         for l in ll:
             for wrapped_line in textwrap.wrap(l):
-                self.out.write("\n%s"%wrapped_line)
+                self.out.write("\n  %s"%wrapped_line)
             
     def write_inghead (self):
         self.master_ings=[] # our big list
@@ -337,7 +347,8 @@ class ExporterMultirec:
         """Output all recipes in rview into a document or multiple
         documents. if one_file, then everything is in one
         file. Otherwise, we treat 'out' as a directory and put
-        individual recipe files within it."""
+        individual recipe files within it."""        
+        self.timer=TimeAction('exporterMultirec.__init__()')
         self.rd = rd
         self.rview = rview
         self.out = out
@@ -364,12 +375,14 @@ class ExporterMultirec:
         self.one_file = one_file
         self.rd = rd
         
+        
     def run (self):
         first = True
         for r in self.rview:
             self.check_for_sleep()
             if self.pf:
-                self.pf(float(self.rcount)/float(self.rlen))
+                msg = _("Exported %(number)s of %(total)s recipes")%{'number':self.rcount,'total':self.rlen}
+                self.pf(float(self.rcount)/float(self.rlen), msg)
             fn=None
             if not self.one_file:
                 fn=self.generate_filename(r,self.ext)
@@ -386,6 +399,9 @@ class ExporterMultirec:
         self.write_footer()
         if self.one_file:
             self.ofi.close()
+        self.timer.end()
+        self.pf(1,_("Export complete."))
+        print_timer_info()
 
     def write_header (self):
         pass

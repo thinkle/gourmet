@@ -71,12 +71,6 @@ class RecGui (RecIndex):
         #self.settings.set_property('gtk-can-change-accels',True)
         self.pop = self.glade.get_widget('rlmen')
         self.app = self.glade.get_widget('app')
-        self.pauseButton = self.glade.get_widget('pauseButton')
-        self.stopButton = self.glade.get_widget('stopButton')
-        # this dictionary will let us keep track of what we connect o
-        # the pause button so we can later disconnect it.
-        self.pauseButton.connect('clicked',self.pause_cb)
-        self.stopButton.connect('clicked',self.stop_cb)
         # a thread lock for import/export threads
         self.lock = gt.get_lock()
         # configuration stuff
@@ -251,13 +245,25 @@ class RecGui (RecIndex):
             de.show_message(label='%s %s'%(appname,myversion),
                             sublabel=sublabel)
             
-    def show_pause_button (self, thread, message=_("Import paused"),
+    def show_progress_dialog (self, thread, prog_dialog_kwargs={},message=_("Import paused"),
                            stop_message=_("Stop import")):
+        for k,v in [('okay',True),
+                    ('label',thread.name),
+                    ('parent',self.app),
+                    ('pause',self.pause_cb),
+                    ('stop',self.stop_cb),
+                    ('modal',False),]:
+            if not prog_dialog_kwargs.has_key(k):
+                prog_dialog_kwargs[k]=v
+        self.prog_dialog = de.progressDialog(**prog_dialog_kwargs)
+        self.prog = self.prog_dialog.progress_bar
         self.pause_message = message
         self.stop_message = stop_message
-        self.thread = thread
-        self.pauseButton.show()
-        self.stopButton.show()
+        self.thread = thread        
+        self.prog_dialog.show()
+        #self.pauseButton.show()
+        #self.stopButton.show()
+        
 
     def quit (self, *args):
         """Close down shop, giving user option of saving changes and
@@ -547,7 +553,7 @@ class RecGui (RecIndex):
             self.rectree.set_model(self.rmodel_sortable)
             def show_pause (t):
                 gt.gtk_enter()
-                self.show_pause_button(t,message=_('Deletion paused'), stop_message=_("Stop deletion"))
+                self.show_progress_dialog(t,message=_('Deletion paused'), stop_message=_("Stop deletion"))
                 gt.gtk_leave()
             def save_delete_hooks (t):
                 self.saved_delete_hooks = self.rd.delete_hooks[0:]
@@ -561,7 +567,6 @@ class RecGui (RecIndex):
                 ]
             post_hooks = [
                 restore_delete_hooks,
-                self.cleanup_pause,
                 lambda *args: self.lock.release()]
             t=gt.SuspendableThread(gt.SuspendableDeletions(self, recs),
                                 name='delete',
@@ -728,45 +733,47 @@ class RecGui (RecIndex):
             expClass=None            
             post_hooks = [self.after_dialog_offer_url(exp_type,file)]
             if exp_type==HTM:
-                prog = lambda prog: self.set_progress_thr(
-                    prog,
-                    _("total recipes. %i%% done creating web page.")%(prog*100)
-                    )
-                expClass = exporter.website_exporter(self.rd, self.rd.rview,
+                #prog = lambda prog: self.set_progress_thr(
+                #    prog,
+                #    _("total recipes. %i%% done creating web page.")%(prog*100)
+                #    )
+                expClass = exporter.website_exporter(self.rd, self.rd.rview_not_deleted,
                                                      file, self.conv,
-                                                     progress_func=prog)
-                
+                                                     progress_func=self.set_progress_thr)
+                pd_args={'label':_('Exporting Webpage'),
+                         'sublabel':_('Exporting recipes to HTML files in directory %s')%file}
             elif exp_type==MMF:
-                prog = lambda prog: self.set_progress_thr(prog, _("total recipes. %i%% done exporting mealmaster file.")%(prog*100))
-                expClass = exporter.ExporterMultirec(self.rd, self.rd.rview,
+                #prog = lambda prog: self.set_progress_thr(prog, _("total recipes. %i%% done exporting mealmaster file.")%(prog*100))
+                expClass = exporter.ExporterMultirec(self.rd, self.rd.rview_not_deleted,
                                                      file, one_file=True, ext='mmf',
-                                                     conv=self.conv, progress_func=prog,
+                                                     conv=self.conv, progress_func=self.set_progress_thr,
                                                      exporter=exporter.mealmaster_exporter)
+                pd_args={'label':_('Mealmaster Export'),
+                         'sublabel':_('Exporting recipes to MealMaster(tm) file %s.')%file}
             elif exp_type==TXT:
-                prog=lambda prog: self.set_progress_thr(
-                    prog,
-                    _("total recipes. %i%% done exporting text.")%(prog*100)
-                    )
-                expClass = exporter.ExporterMultirec(self.rd,self.rd.rview,file,
-                                                     conv=self.conv, progress_func=prog)
+                expClass = exporter.ExporterMultirec(self.rd,self.rd.rview_not_deleted,file,
+                                                     conv=self.conv, progress_func=self.set_progress_thr)
+                pd_args={'label':_('Text Export'),'sublabel':_('Exporting recipes to Plain Text file.')}
             elif exp_type == RTF:
-                prog = lambda prog: self.set_progress_thr(prog, _("total recipes. %i%% done creating RTF Document.")%(prog*100))
-                expClass = rtf_exporter.rtf_exporter_multidoc(self.rd, self.rd.rview, out=file,
-                                                              progress_func=prog)
+                expClass = rtf_exporter.rtf_exporter_multidoc(self.rd, self.rd.rview_not_deleted, out=file,
+                                                              progress_func=self.set_progress_thr)
+                pd_args={'label':_('RTF Export'),'sublabel':_('Exporting recipes to RTF file %s.')%file}
             elif exp_type == GXML:
-                prog = lambda prog: self.set_progress_thr(prog, _("total recipes. %i%% done exporting XML file.")%(prog*100))
-                expClass = rxml_to_metakit.rview_to_xml(self.rd, self.rd.rview, file, progress_func=prog)
+                expClass = rxml_to_metakit.rview_to_xml(self.rd, self.rd.rview, file, progress_func=self.set_progress_thr)
+                pd_args={'label':_('XML Export'),
+                         'sublabel':_('Exporting recipes to Gourmet XML file %s.')%file}
             if expClass:
                 self.threads += 1
                 def show_pause (t):
                     debug('showing pause button',1)
                     gt.gtk_enter()
-                    self.show_pause_button(t,message=_('Export Paused'),stop_message=_("Stop export"))
+                    self.show_progress_dialog(t,message=_('Export Paused'),stop_message=_("Stop export"),
+                                              prog_dialog_kwargs=pd_args,
+                                              )
                     gt.gtk_leave()
                 pre_hooks = [show_pause]
                 pre_hooks.insert(0, lambda *args: self.lock.acquire())
-                post_hooks.append(lambda *args: self.reset_prog_thr())
-                post_hooks.append(self.cleanup_pause)
+                #post_hooks.append(lambda *args: self.reset_prog_thr())
                 post_hooks.append(lambda *args: self.lock.release())
                 t=gt.SuspendableThread(expClass, name='export',
                                     pre_hooks=pre_hooks,
@@ -807,7 +814,7 @@ class RecGui (RecIndex):
         BOTH_MATCH.extend(XML_MATCH)
         BOTH_MATCH.extend(MMF_MATCH)
         debug('show import dialog',0)
-        file=de.select_file(
+        ifiles=de.select_file(
             _("Import Recipes"),
             filename=import_directory,
             filters=[
@@ -827,37 +834,42 @@ class RecGui (RecIndex):
              MX2_MATCH
              ],
             ],
-            action=gtk.FILE_CHOOSER_ACTION_OPEN)
-        if file:
-            self.prefs['rec_import_directory']=os.path.split(file)[0]
+            action=gtk.FILE_CHOOSER_ACTION_OPEN,
+            select_multiple=True)
+        if ifiles:
+            self.prefs['rec_import_directory']=os.path.split(ifiles[0])[0]
             impClass = None
             pre_hooks = [lambda *args: self.inginfo.disconnect_manually()]
             post_hooks = [lambda *args: self.inginfo.reconnect_manually()]
             def test_patterns (patterns):
-                if True in map(lambda p: fnmatch.fnmatch(file.lower(),p.lower()), patterns):
+                if True in map(lambda p: fnmatch.fnmatch(ifiles[0].lower(),p.lower()), patterns):
                     return True
-            # if any of our XML patterns match...
-            if test_patterns(XML_MATCH):
-                impClass = rxml_to_metakit.converter(file,self.rd,threaded=True)
-            elif test_patterns(MX2_MATCH):
-                source=de.getEntry(label=_("Default source for recipes imported from %s")%file,
-                                   entryLabel=_('Source: '),
-                                   default=os.path.split(file)[1], parent=self.app)
-                impClass = mastercook_importer.converter(file,self.rd,
-                                                         threaded=True,
-                                                         progress=self.set_progress_thr)
-            elif test_patterns(MMF_MATCH):
-                source=de.getEntry(label=_("Default source for recipes imported from %s")%file,
-                                   entryLabel=_('Source: '),
-                                   default=os.path.split(file)[1],
-                                   parent=self.app)
-                impClass = mealmaster_importer.mmf_importer(filename=file,
-                                                       rd=self.rd,
-                                                       progress=self.set_progress_thr,
-                                                       source=source,
-                                                       threaded=True)
-                post_hooks.append(lambda *args: debug('reset progress thread') or self.reset_prog_thr())            
-            if impClass:                
+            importerClasses = []
+            for file in ifiles:
+                # if any of our XML patterns match...
+                if test_patterns(XML_MATCH):
+                    impClass = [rxml_to_metakit.converter,[file,self.rd],{'threaded':True}]
+                elif test_patterns(MX2_MATCH):
+                    source=de.getEntry(label=_("Default source for recipes imported from %s")%file,
+                                       entryLabel=_('Source: '),
+                                       default=os.path.split(file)[1], parent=self.app)
+                    impClass = [mastercook_importer.converter,
+                                [file,self.rd],
+                                {'threaded':True}]
+                elif test_patterns(MMF_MATCH):
+                    source=de.getEntry(label=_("Default source for recipes imported from %s")%file,
+                                       entryLabel=_('Source: '),
+                                       default=os.path.split(file)[1],
+                                       parent=self.app)
+                    impClass = [mealmaster_importer.mmf_importer,[],
+                                {'filename':file,
+                                 'rd':self.rd,
+                                 'source':source,
+                                 'threaded':True}]
+                    post_hooks.append(lambda *args: debug('reset progress thread') or self.reset_prog_thr())
+                if impClass: importerClasses.append((impClass,file))
+            if importerClasses:
+                impClass = importer.MultipleImporter(self,importerClasses)
                 # we have to make sure we don't filter while we go (to avoid
                 # slowing down the process too much).
                 self.wait_to_filter=True
@@ -866,14 +878,16 @@ class RecGui (RecIndex):
                 self.threads += 1
                 release = lambda *args: self.lock.release()
                 post_hooks.extend([self.import_cleanup,
-                                   self.cleanup_pause,
                                    release])
-                def show_pause (t):
+                def show_progress_dialog (t):
                     debug('showing pause button',5)
                     gt.gtk_enter()
-                    self.show_pause_button(t)
+                    fn = string.join([os.path.split(f)[1] for f in ifiles],", ")
+                    self.show_progress_dialog(t,{'label':_('Importing Recipes'),
+                                                 'sublabel':_('Importing recipes from %s')%fn
+                                                 })
                     gt.gtk_leave()
-                pre_hooks.insert(0,show_pause)
+                pre_hooks.insert(0,show_progress_dialog)
                 pre_hooks.insert(0, lambda *args: self.lock.acquire())
                 t=gt.SuspendableThread(impClass,name="import",
                                        pre_hooks=pre_hooks, post_hooks=post_hooks)
@@ -882,7 +896,7 @@ class RecGui (RecIndex):
                                     sublabel=_('Your import will start once the other process is finished.'))
                 debug('starting thread',2)
                 debug('PRE_HOOKS=%s'%t.pre_hooks,1)
-                debug('POST_HOOKS=%s'%t.post_hooks,1)                
+                debug('POST_HOOKS=%s'%t.post_hooks,1)
                 t.start()
             else:
                 debug('GOURMET cannot import file %s'%file)
@@ -921,6 +935,7 @@ class RecGui (RecIndex):
     def offer_url (self, label, sublabel, url, from_thread=False):
         if from_thread:
             gt.gtk_enter()
+        self.prog_dialog.okcb() #get rid of progress
         d=de.messageDialog(label=label,
                            sublabel=sublabel,
                            cancel=False
@@ -932,14 +947,6 @@ class RecGui (RecIndex):
         d.run()
         if from_thread:
             gt.gtk_leave()
-
-    def cleanup_pause (self, thread):
-        debug('start: cleanup_pause',5)
-        gt.gtk_enter()
-        self.stopButton.hide()
-        self.pauseButton.set_active(False)
-        self.pauseButton.hide()
-        gt.gtk_leave()
 
     def pause_cb (self, button, *args):
         if button.get_active():
@@ -961,18 +968,22 @@ class RecGui (RecIndex):
         else:
             debug('Resuming thread: stop_cb cancelled',0)
             self.thread.resume()
+            return True
 
     def reset_prog_thr (self):
         gt.gtk_enter()
-        self.prog.set_fraction(0)
+        self.prog.set_fraction(1)
         self.set_reccount()
         gt.gtk_leave()
         
-    def set_progress_thr (self, prog, message=_("Total Recipes (Importing...)")):
+    def set_progress_thr (self, prog, message=_("Importing...")):
         debug("set_progress_thr (self, prog,msg): %s"%prog,5)
         gt.gtk_enter()
         self.prog.set_fraction(prog)
-        self.stat.push(self.contid,"%s %s"%(len(self.rd.rview),message))
+        #self.stat.push(self.contid,"%s %s"%(len(self.rd.rview),message))
+        self.prog.set_text(message)
+        if prog==1:
+            self.prog_dialog.ok.set_sensitive(True)
         gt.gtk_leave()
 
     def configureColDialog (self, *args):
