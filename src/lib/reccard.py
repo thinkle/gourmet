@@ -652,7 +652,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 # we have to implement undo for regular old comboBoxen!
                 1
         for e in self.recent:
-            print 'setting initial value of ',e,'(',self.rw[e],') to ',getattr(rec,e)            
             if isinstance(self.rw[e],gtk.SpinButton):
                 try:
                     self.rw[e].set_value(float(getattr(rec,e)))
