@@ -142,9 +142,9 @@ class exporter:
         import pango
         outtxt = ""
         try:
-            al,txt,sep = pango.parse_markup(txt,u'0')
+            al,txt,sep = pango.parse_markup(txt,u'\x00')
         except:
-            al,txt,sep = pango.parse_markup(xml.sax.saxutils.escape(txt),u'0')
+            al,txt,sep = pango.parse_markup(xml.sax.saxutils.escape(txt),u'\x00')
         ai = al.get_iterator()
         more = True
         while more:
