@@ -17,7 +17,6 @@ class DatabaseChooser:
         self.default_files = {'metakit': 'recipes.mk',
                               'sqlite':'recipes.db'
                               }
-        gglobals.gladebase = '/home/tom/Projects/gourmet/glade/'
         gladefile = os.path.join(gglobals.gladebase,'databaseChooser.glade')
         self.glade = gtk.glade.XML(gladefile)
         self.connection_widgets = ['hostEntry','userEntry','pwEntry','dbEntry',
