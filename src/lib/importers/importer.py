@@ -6,6 +6,12 @@ from gourmet.gglobals import gt, use_threads
 
 
 class importer:
+
+    """Base class for all importers. We provide an interface to the recipe database
+    for importers to use. Basically, the importer builds up a dictionary of properties inside of
+    self.rec and then commits that dictionary with commit_rec(). Similarly, ingredients are built
+    as self.ing and then committed with commit_ing()."""
+    
     def __init__ (self, rd, threaded=False, total=0, prog=None):
         timeaction = TimeAction('importer.__init__',10)
         self.total = total
@@ -87,7 +93,14 @@ class importer:
     def commit_rec (self):
         timeaction = TimeAction('importer.commit_rec',10)
         if self.rec.has_key('servings'):
-            self.rec['servings']=str(self.convert_servings(self.rec['servings']))
+            servs=self.convert_servings(self.rec['servings'])
+            if servs: self.rec['servings']=str(servs)
+            else:
+                if not self.rec.has_key('instructions'):
+                    self.rec['instructions']=self.rec['servings']
+                else:
+                    self.rec['instructions']=self.rec['servings']+"\n"+self.rec['instructions']
+                self.rec['servings']=None
         for k,v in self.rec.items():
             try:
                 self.rec[k]=v.strip()
@@ -108,26 +121,21 @@ class importer:
                       )
 
     def convert_servings (self, str):
+        """Return a numerical servings value"""
         timeaction = TimeAction('importer.convert_servings',10)
         debug('converting servings for %s'%str,5)
         try:
             return float(str)
         except:
-            try:
-                return convert.frac_to_float(str)
-            except:
-                m=re.match("([0-9/. ]+)",str)
-                if m:
-                    num=m.groups()[0]
-                    try:
-                        return float(num)
-                    except:
-                        try:
-                            return convert.frac_to_float(num)
-                        except:
-                            return ""
-                else:
-                    return ""
+            conv = convert.frac_to_float(str)
+            if conv: return conv
+            m=re.match("([0-9/. ]+)",str)
+            if m:
+                num=m.groups()[0]
+                try:
+                    return float(num)
+                except:
+                    return convert.frac_to_float(num)
         timeaction.end()
             
     def start_ing (self, **kwargs):
@@ -277,12 +285,12 @@ class Tester:
             # only compile our regexp when necessary
             self.matcher = re.compile(self.regexp)
         self.ofi = open(filename,'r')
-        print 'testing file %s for pattern %s'%(filename,self.regexp)
+        #print 'testing file %s for pattern %s'%(filename,self.regexp)
         l = self.ofi.readline()
         while l:
             if self.matcher.match(l):
                 self.ofi.close()
-                print 'match! returning True'
+                #print 'match! returning True'
                 return True
             l = self.ofi.readline()
         self.ofi.close()
