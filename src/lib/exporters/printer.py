@@ -18,7 +18,6 @@ except ImportError:
     # UNCOMMENT TO TEST WINDOWS PRINTING
     #if 1:
     if os.name == 'nt':
-
         from winprinter import *
     else:
         from lprprinter import *
