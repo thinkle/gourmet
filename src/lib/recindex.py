@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-import gtk.glade, gtk, time, re, gtk.gdk  
-import WidgetSaver
+import gtk.glade, gtk, time, re, gtk.gdk 
+import WidgetSaver, Undo
 import dialog_extras as de
 import treeview_extras as te
 import cb_extras as cb
@@ -96,6 +96,12 @@ class RecIndex:
         self.rd.add_hooks.append(self.set_reccount)
         # and we update our count with each deletion.
         self.rd.delete_hooks.append(self.set_reccount)
+        self.rd.modify_hooks.append(self.update_reccards)
+        # setup a history
+        self.uim=self.glade.get_widget('undo_menu_item')
+        self.rim=self.glade.get_widget('redo_menu_item')
+        self.raim=self.glade.get_widget('reapply_menu_item')
+        self.history = Undo.UndoHistoryList(self.uim,self.rim,self.raim)
 
     def srchentry_keypressCB (self, widget, event):
         if event.state==gtk.gdk.MOD1_MASK:
@@ -266,7 +272,12 @@ class RecIndex:
         iter = store.get_iter(path)
         self.rmodel.set_value(iter, colnum, text)
         rec=self.get_rec_from_iter(iter)
-        self.rd.modify_rec(rec,{attribute:text})
+        #self.rd.modify_rec(rec,{attribute:text})
+        self.rd.undoable_modify_rec(rec,{attribute:text},self.history,
+                                 get_current_rec_method=lambda *args: self.recTreeSelectedRecs()[0]
+                                 )
+
+    def update_reccards (self, rec):
         if self.rc.has_key(rec.id):
             rc=self.rc[rec.id]
             rc.updateRecipe(rec,show=False)
