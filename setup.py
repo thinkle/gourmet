@@ -8,13 +8,6 @@ import imp
 import sys
 import glob
 import os.path
-try:
-    import py2exe
-    print 'py2exe available!'
-    py2e = True
-except:
-    print 'no py2exe available'
-    py2e = False
 
 #from distutils.core import setup
 from tools.gourmet_distutils import setup
@@ -112,22 +105,6 @@ class my_install_data(install_data):
         install_data.finalize_options(self)
         print 'install_data has: ',dir(install_data)
         
-if py2e:
-    py2exe_kwargs = {
-        'console':['src/gourmet'],
-        'options':{"py2exe": {"includes": "pango,atk,gobject",
-                              "dll_excludes": ["iconv.dll","intl.dll","libatk-1.0-0.dll",
-                                               "libgdk_pixbuf-2.0-0.dll","libgdk-win32-2.0-0.dll",
-                                               "libglib-2.0-0.dll","libgmodule-2.0-0.dll",
-                                               "libgobject-2.0-0.dll","libgthread-2.0-0.dll",
-                                               "libgtk-win32-2.0-0.dll","libpango-1.0-0.dll",
-                                               "libpangowin32-1.0-0.dll"],
-                              }
-                   }
-        }
-else:
-    py2exe_kwargs = {}
-
 setup(
     name = name,
     version = version,
@@ -140,9 +117,8 @@ setup(
     license = 'GPL',
     data_files = data_files(),
     modules_check = modules_check,
-    packages = ['gourmet'],
+    packages = ['gourmet','gourmet.backends','gourmet.importers','gourmet.exporters'],
     package_dir = {'gourmet' : os.path.join('src','lib')},
     scripts = [os.path.join('src','gourmet')],
     cmdclass={'install_data' : my_install_data},
-    **py2exe_kwargs
     )
