@@ -55,8 +55,10 @@ class ActionGroupWithSeparators (gtk.ActionGroup):
     def set_visible (self, visible):
         gtk.ActionGroup.set_visible(self,visible)
         for s in self.separators:
-            try: s.set_property('visible',visible)
-            except: debug('no widget %s'%s,5)
+            try:
+                s.set_property('visible',visible)
+            except:
+                debug('no widget %s'%s,5)
 
 class ActionManager:
     def __init__ (self, gladeobj, groups, callbacks):
@@ -418,10 +420,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         for c in self.reccom:
             newdict[c]=self.rw[c].entry.get_text()
         for e in self.recent:
-            if e=='servings':
-                newdict[e]=self.serves_orig
-            else:
-                newdict[e]=self.rw[e].get_text()
+            newdict[e]=self.rw[e].get_text()
         for t in self.rectexts:
             buf = self.rw[t].get_buffer()
             newdict[t]=buf.get_text(buf.get_start_iter(),buf.get_end_iter())
@@ -710,7 +709,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 widg=getattr(self,'%sDisplay'%attr)
                 widgLab=getattr(self,'%sDisplayLabel'%attr)
                 if not widg or not widgLab:
-                    raise 'WTF: there is no widget or label for  %s=%s, %s=%s'%(attr,widg,'label',widgLab)
+                    raise 'There is no widget or label for  %s=%s, %s=%s'%(attr,widg,'label',widgLab)
                 attval = getattr(self.current_rec,attr)
                 if attval:
                     debug('showing attribute %s = %s'%(attr,attval),0)
