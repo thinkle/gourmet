@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string, keyEditor, traceback
-import recipeManager, rdatabase
-import printer
+import recipeManager
+import exporters.printer as printer
 
 # UNCOMMENT THE FOLLOWING IMPORT STATEMENTS FOR CX_FREEZE
 # stuff that shouldn't be necessary but may be:
@@ -13,15 +13,16 @@ import printer
 #import defaults_en,defaults_en,defaults_en_GM,defaults_es #stuff imported with __import__
 
 import prefs, shopgui, reccard, convertGui, fnmatch
-import rxml_to_metakit, convert, exporter, importer, mealmaster_importer, WidgetSaver, version
-import mastercook_importer
+import exporters, importers
+import convert, WidgetSaver, version
+import importers.mastercook_importer as mastercook_importer
 import dialog_extras as de
 import treeview_extras as te
 from get_pixbuf_from_file import get_pixbuf_from_jpg
 from gdebug import *
 from gglobals import *
 from recindex import RecIndex
-import recipe_emailer
+import exporters.recipe_emailer as recipe_emailer
 import locale, gettext
 _ = gettext.gettext
 # UNCOMMENT FOLLOWING FOR TESTING ON LINUX
@@ -32,13 +33,6 @@ gettext.bindtextdomain('gourmet',DIR)
 gettext.textdomain('gourmet')
 gettext.install('gourmet',DIR,unicode=1)
 
-
-HTM = _('HTML Web Page (Creates a new Folder)')
-MMF = _('Mealmaster file')
-TXT = _('Plain Text')
-RTF = _('RTF')
-GXML = _('Gourmet XML File')
-MX2 = _('Mastercook XML File')
 
 try:
     import rtf_exporter
@@ -723,13 +717,7 @@ class RecGui (RecIndex):
                             sublabel=_('Please wait until it is finished to start your export.')
                             )
             return
-        saveas_filters = [
-                          [HTM,['text/html'],['']],
-                          [MMF,['text/mmf'],['*.mmf','*.MMF']],
-                          [TXT,['text/plain'],['*.txt','*.TXT']],      
-                          [GXML,['text/xml'],['*.xml','*.XML']]
-                          ]
-        if rtf: saveas_filters.append([RTF,['application/rtf','text/rtf'],['*.rtf','*.RTF']]),
+        saveas_filters = exporters.saveas_filters
         ext = self.prefs.get('save_recipes_as','%sxml'%os.path.extsep)
         exp_directory = self.prefs.get('rec_exp_directory','~')
         file,exp_type=de.saveas_file(_("Export recipes"),
@@ -739,34 +727,16 @@ class RecGui (RecIndex):
         if file:
             self.prefs['rec_exp_directory']=os.path.split(file)[0]
             self.prefs['save_recipes_as']=os.path.splitext(file)[1]
-            expClass=None            
+            expClass=None
             post_hooks = [self.after_dialog_offer_url(exp_type,file)]
-            if exp_type==HTM:
-                expClass = exporter.website_exporter(self.rd, self.rd.rview.select(deleted=False),
-                                                     file, self.conv,
-                                                     progress_func=self.set_progress_thr)
-                pd_args={'label':_('Exporting Webpage'),
-                         'sublabel':_('Exporting recipes to HTML files in directory %s')%file}
-            elif exp_type==MMF:
-                #prog = lambda prog: self.set_progress_thr(prog, _("total recipes. %i%% done exporting mealmaster file.")%(prog*100))
-                expClass = exporter.ExporterMultirec(self.rd, self.rd.rview.select(deleted=False),
-                                                     file, one_file=True, ext='mmf',
-                                                     conv=self.conv, progress_func=self.set_progress_thr,
-                                                     exporter=exporter.mealmaster_exporter)
-                pd_args={'label':_('Mealmaster Export'),
-                         'sublabel':_('Exporting recipes to MealMaster(tm) file %s.')%file}
-            elif exp_type==TXT:
-                expClass = exporter.ExporterMultirec(self.rd,self.rd.rview.select(deleted=False),file,
-                                                     conv=self.conv, progress_func=self.set_progress_thr)
-                pd_args={'label':_('Text Export'),'sublabel':_('Exporting recipes to Plain Text file.')}
-            elif exp_type == RTF:
-                expClass = rtf_exporter.rtf_exporter_multidoc(self.rd, self.rd.rview.select(deleted=False), out=file,
-                                                              progress_func=self.set_progress_thr)
-                pd_args={'label':_('RTF Export'),'sublabel':_('Exporting recipes to RTF file %s.')%file}
-            elif exp_type == GXML:
-                expClass = rxml_to_metakit.rview_to_xml(self.rd, self.rd.rview.select(deleted=False), file, progress_func=self.set_progress_thr)
-                pd_args={'label':_('XML Export'),
-                         'sublabel':_('Exporting recipes to Gourmet XML file %s.')%file}
+            if exporters.exporter_dict.has_key(exp_type):
+                myexp = exporters.exporter_dict[exp_type]
+                pd_args={'label':myexp['label'],'sublabel':myexp['sublabel']%{'file':file}}
+                expClass = myexp['mult_exporter']({'rd':self.rd,
+                                                   'rv':self.rd.rview.select(deleted=False),
+                                                   'conv':self.conv,
+                                                   'prog':self.set_progress_thr,
+                                                   'file':file})
             if expClass:
                 self.threads += 1
                 def show_progress (t):
@@ -812,69 +782,39 @@ class RecGui (RecIndex):
                             )
             return
         import_directory = "%s/"%self.prefs.get('rec_import_directory',None)
-        XML_MATCH=['*.xml','*.gourmet']
-        MMF_MATCH=['*.mmf','*.txt']
-        MX2_MATCH=['*.mx2','*.xml','mxp']
-        BOTH_MATCH = []
-        BOTH_MATCH.extend(XML_MATCH)
-        BOTH_MATCH.extend(MMF_MATCH)
         debug('show import dialog',0)
         ifiles=de.select_file(
             _("Import Recipes"),
             filename=import_directory,
-            filters=[
-            [_('All importable files'),
-             ['text/xml','application/xml','text/mealmaster','text/plain'],
-             BOTH_MATCH],
-            [GXML,
-             ['text/xml','application/xml','text/plain'],
-             XML_MATCH
-             ],
-            [MMF,
-             ['text/mealmaster','text/plain'],
-             MMF_MATCH
-             ],
-            [MX2,
-             ['xml/mastercook','application/xml','text/xml','text/plain'],
-             MX2_MATCH
-             ],
-            ],
+            filters=importers.FILTERS,
             action=gtk.FILE_CHOOSER_ACTION_OPEN,
             select_multiple=True)
         if ifiles:
             self.prefs['rec_import_directory']=os.path.split(ifiles[0])[0]
             impClass = None
             pre_hooks = [lambda *args: self.inginfo.disconnect_manually()]
-            post_hooks = [lambda *args: self.inginfo.reconnect_manually()]
-            def test_patterns (patterns):
-                if True in map(lambda p: fnmatch.fnmatch(ifiles[0].lower(),p.lower()), patterns):
-                    return True
+            post_hooks = [lambda *args: self.inginfo.reconnect_manually()]            
             importerClasses = []
-            for file in ifiles:
-                # if any of our XML patterns match...
-                if test_patterns(XML_MATCH):
-                    impClass = [rxml_to_metakit.converter,[file,self.rd],{'threaded':True}]
-                elif test_patterns(MX2_MATCH):
-                    source=de.getEntry(label=_("Default source for recipes imported from %s")%file,
+            for fn in ifiles:
+                impfilt = importers.FILTER_INFO[importers.select_import_filter(fn)]
+                if not impfilt:
+                    de.show_message("Can't import file %s"%fn)
+                    return
+                impClass = impfilt['import']({'file':fn,
+                                              'rd':self.rd,
+                                              'threaded':True,
+                                              })
+                print 'impClass=',impClass
+                if impfilt['get_source']:                    
+                    source=de.getEntry(label=_("Default source for recipes imported from %s")%fn,
                                        entryLabel=_('Source: '),
-                                       default=os.path.split(file)[1], parent=self.app)
-                    impClass = [mastercook_importer.converter,
-                                [file,self.rd],
-                                {'threaded':True}]
-                elif test_patterns(MMF_MATCH):
-                    source=de.getEntry(label=_("Default source for recipes imported from %s")%file,
-                                       entryLabel=_('Source: '),
-                                       default=os.path.split(file)[1],
-                                       parent=self.app)
-                    impClass = [mealmaster_importer.mmf_importer,[],
-                                {'filename':file,
-                                 'rd':self.rd,
-                                 'source':source,
-                                 'threaded':True}]
-                    post_hooks.append(lambda *args: debug('reset progress thread') or self.reset_prog_thr())
-                if impClass: importerClasses.append((impClass,file))
+                                       default=os.path.split(fn)[1], parent=self.app)
+                    # the 'get_source' dict is the kwarg that gets
+                    # set to the source
+                    impClass[2][impfilt['get_source']]=source
+                if impClass: importerClasses.append((impClass,fn))
             if importerClasses:
-                impClass = importer.MultipleImporter(self,importerClasses)
+                impClass = importers.importer.MultipleImporter(self,importerClasses)
                 # we have to make sure we don't filter while we go (to avoid
                 # slowing down the process too much).
                 self.wait_to_filter=True
@@ -904,7 +844,7 @@ class RecGui (RecIndex):
                 debug('POST_HOOKS=%s'%t.post_hooks,1)
                 t.start()
             else:
-                debug('GOURMET cannot import file %s'%file)
+                debug('GOURMET cannot import file %s'%fn)
 
     def import_cleanup (self, *args):
         """Remove our threading hooks"""
@@ -921,7 +861,7 @@ class RecGui (RecIndex):
     def after_dialog_offer_url (self, linktype, file):
         url = "file:///%s"%file
         label = _("Export succeeded")
-        if linktype == HTM:
+        if linktype == exporters.WEBPAGE:
             url += '/index.htm'
             linktype = _("webpage")
         sublabel = _("Exported %s to %s"%(linktype,file))

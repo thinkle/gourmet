@@ -20,12 +20,10 @@ if not OptionParser.options.db or OptionParser.options.choosedb:
         import DatabaseChooser
         d=DatabaseChooser.DatabaseChooser(modal=True)
         dbdict = d.run()
-        print 'dbdict: ',dbdict
         p['db_backend']=dbdict['db_backend']
         if dbdict.has_key('pw'): pw = dbdict['pw']
         # if we're not supposed to store the password, we'd better not!
         if dbdict.has_key('store_pw') and not dbdict['store_pw']:
-            print "Don't store password"
             del dbdict['pw']
             p['store_pw']=dbdict['store_pw']
         for arg in ['store_pw','db_backend']:
@@ -35,7 +33,6 @@ if not OptionParser.options.db or OptionParser.options.choosedb:
     db = p.get('db_backend')
     dbargs = p.get('dbargs')
     if pw:
-        print 'adding password'
         dbargs['pw']=pw
 
 if db=='mysql' and not dbargs.has_key('pw'):
@@ -48,7 +45,6 @@ if db=='mysql' and not dbargs.has_key('pw'):
                              )
     
 
-print "DATABASE BACKEND = ",db
 # otherwise, default to metakit; fallback to sqlite
 
 #db = 'mysql'
@@ -60,15 +56,15 @@ elif db == 'metakit' and not dbargs.has_key('file'):
 
 if not db:
     try:
-        from rmetakit import *
+        from backends.rmetakit import *
     except ImportError:
-        from rsqlite import *
+        from backends.rsqlite import *
 elif db=='metakit':
-    from rmetakit import *
+    from backends.rmetakit import *
 elif db=='sqlite':
-    from rsqlite import *
+    from backends.rsqlite import *
 elif db=='mysql':
-    from rmysql import *
+    from backends.rmysql import *
     
 class mkShopper (shopping.shopper):
     """We are a shopper class that conveniently saves our key dictionaries

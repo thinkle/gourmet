@@ -121,7 +121,8 @@ REC_ATTRS = [('title',_('Title'),'Entry'),
              ]
 
 NAME_TO_ATTR = {_('Instructions'):'instructions',
-                _('Notes'):'modifications'
+                _('Notes'):'modifications',
+                _('Modifications'):'modifications'
                 }
 
 for attr, name, widget in REC_ATTRS:

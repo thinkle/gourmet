@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
 import xml.sax.saxutils
-import rxml_to_metakit, rmetakit, convert, exporter, shopgui, GourmetRecipeManager, TextBufferMarkup
+import exporters
+import convert, shopgui, GourmetRecipeManager, TextBufferMarkup
 from recindex import RecIndex
 import prefs, WidgetSaver, timeEntry, Undo
 import keymanager
@@ -9,7 +10,7 @@ import dialog_extras as de
 import treeview_extras as te
 import cb_extras as cb
 from get_pixbuf_from_file import get_pixbuf_from_jpg
-import printer
+import exporters.printer as printer
 from gdebug import *
 from gglobals import *
 from gettext import gettext as _
@@ -772,17 +773,17 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.ing_alist = self.rg.rd.order_ings( ings )
         label = ""
         for g,ings in self.ing_alist:
-            if g: label += "\n<u>%s</u>\n"%g
+            if g: label += "\n<u>%s</u>\n"%xml.sax.saxutils.escape(g)
             def ing_string (i):
                 amt,unit = self.make_readable_amt_unit(i)
                 if (type(i.optional)!=str and i.optional) or i.optional=='yes': 
                     opt = _('(Optional)')
                 else: opt=None
                 return string.join(filter(lambda x: x,[amt,unit,i.item,opt]),' ')
-            label+=string.join(map(ing_string,ings),"\n")
+            label+=xml.sax.saxutils.escape(string.join(map(ing_string,ings),"\n"))
             if g: label += "\n"
         if label:
-            self.ingredientsDisplay.set_text(xml.sax.saxutils.escape(label))
+            self.ingredientsDisplay.set_text(label)
             self.ingredientsDisplay.set_use_markup(True)
             self.ingredientsDisplay.show()
             self.ingredientsDisplayLabel.show()
@@ -1273,46 +1274,36 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug("saveAs (self, *args):",5)
         #opt = de.getOption(label=_("Export recipe as..."),options=[[_("Mealmaster"),"mmf"],[_("HTML"),"htm"],[_("Plain Text"),"txt"],[_("Rich Text Format"),"rtf"]])
         opt = self.prefs.get('save_recipe_as','html')
-        saveas_filters = [[_('RTF'),['application/rtf'],['*.rtf','*.RTF']],
-                                   [_('Plain Text'),['text/plain'],['*.txt','*.TXT']],
-                                   [_('HTML Web Page'),['text/html'],['*.html','*.htm','*.HTM','*.HTML']],
-                                   [_('Mealmaster file'),['text/mmf'],['*.mmf','*.MMF']],
-                                   ]
         fn,exp_type=de.saveas_file(_("Save recipe as..."),
-                          filename="~/%s.%s"%(self.current_rec.title,opt),
-                          filters=saveas_filters)
+                                   filename="~/%s.%s"%(self.current_rec.title,opt),
+                                   filters=exporters.saveas_single_filters)
         if not fn: return
-        if not exp_type:
-            de.show_message(_('Gourmet cannot export file of type "%s"')%ext)
+        if not exp_type or not exporters.exporter_dict.has_key(exp_type):
+            de.show_message(_('Gourmet cannot export file of type "%s"')%os.path.splitext(fn)[1])
             return
         out=open(fn,'w')
-        if exp_type==_('HTML Web Page'):
-            exporter.html_exporter(self.rg.rd,self.current_rec,out,conv=self.rg.conv)
-        elif exp_type==_('Plain Text'):
-            try:
-                exporter.exporter(self.rg.rd,self.current_rec,out,conv=self.rg.conv)
-                self.message(_('Recipe saved as Plain Text file %s')%fn)
-            except:
-                de.show_message(_('Unable to save %s')%fn)
-                raise
-        elif exp_type==_('Mealmaster file'):
-            try:
-                exporter.mealmaster_exporter(self.rg.rd,self.current_rec,out,conv=self.rg.conv)
-                self.message(_('Recipe saved as Mealmaster file %s')%fn)
-            except:
-                self.message(_('Unable to save %s')%fn)
-                raise
-        elif exp_type==_('RTF'):
-            try:
-                import rtf_exporter
-                rtf_exporter.rtf_exporter(self.rg.rd,self.current_rec,out,conv=self.rg.conv)
-            except ImportError:
-                de.show_message(message=_('Gourmet is currently unable to export RTF'), submessage=_('You need to install PyRTF to export RTF.\nGo to http://pyrtf.sourceforge.net if you wish to download it.'))
-            except:
-                de.show_message(_('Unable to save %s'%fn))
-                raise
-        out.close()
+        myexp = exporters.exporter_dict[exp_type]
+        try:
+            myexp['exporter']({
+                'rd':self.rg.rd,
+                'rec':self.current_rec,
+                'out':out,
+                'conv':self.rg.conv,
+                })
+            self.message(myexp['single_completed']%{'file':fn})
+        except:
+            from StringIO import StringIO
+            f = StringIO()
+            traceback.print_exc(file=f)
+            error_mess = f.getvalue()
+            de.show_message(
+                label=_('Unable to save %s')%fn,
+                sublabel=_('There was an error during export.'),
+                expander=(_('_Details'),error_mess),
+                message_type=gtk.MESSAGE_ERROR
+                )
         # set prefs for next time
+        out.close()
         ext=os.path.splitext(fn)[1]
         self.prefs['save_recipe_as']=ext
 

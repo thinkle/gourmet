@@ -3,7 +3,7 @@ import gtk.glade, gtk, gobject, pango, sys, os.path, time, os, string
 import recipeManager, convert, WidgetSaver, reccard
 import dialog_extras as de
 import treeview_extras as te
-import printer
+import exporters.printer as printer
 from gdebug import *
 from gglobals import *
 from gettext import gettext as _

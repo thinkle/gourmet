@@ -1,0 +1,126 @@
+import metakit, xml.sax, re, sys, xml.sax.saxutils
+import importer
+from gdebug import *
+from gglobals import *
+
+class RecHandler (xml.sax.ContentHandler, importer.importer):
+    def __init__ (self, recData, total=None, prog=None):
+        xml.sax.ContentHandler.__init__(self)
+        importer.importer.__init__(self,rd=recData,total=total,prog=prog,threaded=True)
+        self.meta={}
+        self.in_mixed = 0
+        self.meta['cuisine']={}
+        self.meta['source']={}        
+        self.meta['category']={}
+        #self.start_rec()
+    
+    def startElement(self, name, attrs):
+        gt.gtk_update()
+        self.elbuf = ""        
+        if name=='category' or name=='cuisine' or name=='source':
+            self.in_mixed=0
+            self.metaid=unquoteattr(attrs.get('id',""))
+        if name=='recipe':
+            self.in_mixed=0
+            self.start_rec()
+            for att in ['date','audience','cuisine','servings',
+                        'rating','description','category','source']:
+                self.rec[att]=unquoteattr(attrs.get(att,""))
+            for att in ['cuisine','source','category']:
+                raw = unquoteattr(attrs.get(att,''))
+                if raw:
+                    if self.meta[att].has_key(raw):
+                        self.rec[att]=self.meta[att][raw]
+                    else:
+                        self.rec[att]=raw
+                        print "Warning: can't translate ",raw
+        if name=='inggroup':
+            self.in_mixed=0
+            self.group=unquoteattr(attrs.get('name'))
+        if name=='ingredient':
+            self.in_mixed=0
+            self.start_ing(id=self.rec['id'])
+            self.ing['optional']=attrs.get('optional','no')            
+        if name=='ingref':
+            self.in_mixed=0
+            self.start_ing(id=self.rec['id'])
+            self.add_ref(unquoteattr(attrs.get('refid')))
+            self.add_amt(unquoteattr(attrs.get('amount')))
+        if name=='amount':
+            self.in_mixed=0
+            for att in ['unit','norm']:
+                self.ing[att]=unquoteattr(attrs.get(att,""))
+        if name=='item':
+            self.in_mixed=0
+            for att in ['ingkey','alternative']:
+                self.ing[att]=unquoteattr(attrs.get(att,""))
+        if self.in_mixed:
+            self.mixed += "<%s" % name
+            for (n,v) in attrs.items():
+                self.mixed += " %s='%s'" % (n,v)
+            self.mixed += ">"
+        if name=='instructions' or name=='modifications':
+            self.in_mixed = 1
+            self.mixed = ""
+            
+    def characters (self, ch):
+        self.elbuf += ch
+            
+    def endElement (self, name):
+        if name=='category' or name=='cuisine' or name=='source':
+            self.meta[name][self.metaid]=xml.sax.saxutils.unescape(self.elbuf)
+        if name=='title':
+            self.rec['title']=xml.sax.saxutils.unescape(self.elbuf)
+        if name=='recipe':
+            #self.rd.add_rec(self.rec)
+            self.commit_rec()
+        if name=='inggroup':
+            self.group=None
+        if name=='ingref':
+            self.add_item(xml.sax.saxutils.unescape(self.elbuf))
+            self.commit_ing()
+        if name=='ingredient':
+            self.commit_ing()
+        if name=='item':
+            self.add_item(xml.sax.saxutils.unescape(self.elbuf))
+        if name=='amount':
+            self.add_amt(self.elbuf)
+        if name=='instructions' or name=='modifications':
+            self.in_mixed = 0
+            self.mixed += self.elbuf
+            # special unescaping of our grand little tags
+            for (eop,op,ecl,cl) in [('&lt;%s&gt;'%t,'<%s>'%t,'&lt;/%s&gt;'%t,'</%s>'%t)
+                                    for t in 'b','i','u']:
+                self.mixed=self.mixed.replace(eop,op)
+                self.mixed=self.mixed.replace(ecl,cl)
+            self.rec[name]=self.mixed
+        if self.in_mixed:
+            self.mixed += self.elbuf
+            self.mixed += "</%s>" % name
+
+class converter:
+    def __init__ (self, filename, rd, threaded=False, progress=None):
+        self.rd = rd
+        self.fn = filename
+        self.threaded = threaded
+        self.progress = progress
+        self.rh = RecHandler(recData=self.rd,prog=self.progress)
+        self.terminate = self.rh.terminate
+        self.suspend = self.rh.suspend
+        self.resume = self.rh.resume
+        if not self.threaded: self.run()
+
+    def run (self):
+        # count the recipes in the file        
+        t = TimeAction("rxml_to_metakit.run counting lines",0)
+        f=open(self.fn)
+        recs = 0
+        for l in f.readlines():
+            if l.find("</recipe>") >= 0: recs += 1
+        f.close()
+        t.end()
+        self.rh.total=recs
+        self.parse = xml.sax.parse(self.fn, self.rh)
+
+def unquoteattr (str):
+    return xml.sax.saxutils.unescape(str).replace("_"," ")
