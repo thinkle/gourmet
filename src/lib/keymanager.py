@@ -178,23 +178,23 @@ class KeyManager:
             
     def generate_key(self, ingr):
         """Generate a generic-looking key from a string."""
-        timer = TimeAction('keymanager.generate_key 1',0)
+        timer = TimeAction('keymanager.generate_key 1',3)
         debug("Start generate_key(self,%s)"%ingr,10)
         ingr = string.strip(ingr)
         ingr = string.lower(ingr)
         timer.end()
-        timer = TimeAction('keymanager.generate_key 2',0)
+        timer = TimeAction('keymanager.generate_key 2',3)
         ingr = self.remove_verbs(ingr)
         debug("verbless string=%s"%ingr,10)
         # we remove final s
         timer.end()
-        timer = TimeAction('keymanager.generate_key 3',0)
+        timer = TimeAction('keymanager.generate_key 3',3)
         ingr=self.remove_final_s(ingr)
         timer.end()
-        timer = TimeAction('keymanager.generate_key 4',0)
+        timer = TimeAction('keymanager.generate_key 4',3)
         ingr = self.remove_verbs(ingr)
         timer.end()
-        timer = TimeAction('keymanager.generate_key 5',0)
+        timer = TimeAction('keymanager.generate_key 5',3)
         if string.find(ingr,',') == -1:
             # if there are no commas, we see if it makes sense
             # to turn, e.g. whole-wheat bread into bread, whole-wheat
