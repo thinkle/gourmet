@@ -3,12 +3,10 @@ import importer, exporter, rmetakit
 from gdebug import *
 from gglobals import *
 
-
-
 class RecHandler (xml.sax.ContentHandler, importer.importer):
-    def __init__ (self, recData):
+    def __init__ (self, recData, total=None, prog=None):
         xml.sax.ContentHandler.__init__(self)
-        importer.importer.__init__(self,rd=recData)
+        importer.importer.__init__(self,rd=recData,total=total,prog=prog,threaded=True)
         self.meta={}
         self.in_mixed = 0
         self.meta['cuisine']={}
@@ -101,24 +99,27 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
             self.mixed += "</%s>" % name
 
 class converter:
-    def __init__ (self, filename, rd=None, threaded=False, progress=None):
-        if rd:
-            self.rh = RecHandler(recData=rd)
-        else:
-            self.rh = RecHandler()
-        ## Note to self: change this nomenclature to self.rd -- it's confusing
-        self.db = self.rh.rd
-        ## first, we clear out the old recipes
-        #self.db.delete_table(self.db.rview)
-        #self.db.delete_table(self.db.iview)
+    def __init__ (self, filename, rd, threaded=False, progress=None):
+        self.rd = rd
         self.fn = filename
         self.threaded = threaded
+        self.progress = progress
+        self.rh = RecHandler(recData=self.rd,prog=self.progress)
         self.terminate = self.rh.terminate
         self.suspend = self.rh.suspend
         self.resume = self.rh.resume
         if not self.threaded: self.run()
 
     def run (self):
+        # count the recipes in the file        
+        t = TimeAction("rxml_to_metakit.run counting lines",0)
+        f=open(self.fn)
+        recs = 0
+        for l in f.readlines():
+            if l.find("</recipe>") >= 0: recs += 1
+        f.close()
+        t.end()
+        self.rh.total=recs
         self.parse = xml.sax.parse(self.fn, self.rh)
 
 
