@@ -8,15 +8,18 @@ for attr,titl,widget in gglobals.REC_ATTRS:
     REC_ATTR_DIC[attr]=titl
 
 class exporter:
+#new variable contained here called attr_order
+#This is so we can control the order the attributes are in
+#Some exporter subclasses might care (like mealmaster)
     def __init__ (self, rd, r, out,
                   conv=None,
                   imgcount=1,
-                  order=['attr','ings','text'],
- 		  attr_order=['title','category','cuisine','servings','source','rating','preptime'],
+                  order=['attr','text','ings'],
+		  attr_order=['title','category','cuisine','servings','source','rating','preptime']
                   ):
         """A base exporter class to be subclassed (or to be
         called for plain text export)."""
-        self.attr_order=attr_order
+	self.attr_order=attr_order
         self.out = out
         self.r = r
         self.rd=rd
@@ -36,9 +39,8 @@ class exporter:
             self.write_image(self.r.image)
         self.write_attr_head()
         for a in self.attr_order:
-            gglobals.gt.gtk_update()
             txt=self.grab_attr(self.r,a)
-            if txt and txt.strip():
+            if txt.strip():
                 if a=='preptime' and a.find("0 ")==0: pass
                 else: self.write_attr(REC_ATTR_DIC[a],txt)
         self.write_attr_foot()
@@ -46,22 +48,20 @@ class exporter:
     def _write_text (self):
         for a in ['instructions','modifications']:
             txt=self.grab_attr(self.r,a)
-            if txt and txt.strip():
+            if txt.strip():
                 self.write_text(a.capitalize(),txt)
 
     def _write_ings (self):
         ingredients = self.rd.get_ings(self.r)
         if not ingredients:
             return
-        gglobals.gt.gtk_update()
         self.write_inghead()
         for g,ings in self.rd.order_ings(ingredients):
-            gglobals.gt.gtk_update()
             if g:
                 self.write_grouphead(g)            
             for i in ings:
                 amount=self.grab_attr(i,'amount')
-                if amount: amount=convert.float_to_frac(amount)
+                amount=convert.float_to_frac(amount)
                 if self.grab_attr(i,'refid'):
                     self.write_ingref(amount=amount,
                                       unit=self.grab_attr(i,'unit'),
@@ -73,7 +73,7 @@ class exporter:
                     self.write_ing(amount=amount,
                                    unit=self.grab_attr(i,'unit'),
                                    item=self.grab_attr(i,'item'),
-                                   key=self.grab_attr(i,'ingkey'),
+                                   key=self.grab_attr(i,'key'),
                                    optional=self.grab_attr(i,'optional')
                                    )
             if g:
@@ -203,23 +203,33 @@ class mealmaster_exporter (exporter):
         self.out.write("MMMMM----- Recipe via Meal-Master (tm)\n\n")
 
     def write_attr (self, label, text):
-        if label=='Category' or label=='Cuisine':
+        #We must be getting the label already capitalized from an the exporter class
+	#this line is just to correct that without making a mess of the exporter class
+	label=label.lower()
+	if label=='category' or label=='cuisine':
             if self.categories:
                 self.categories="%s, %s"%(self.categories,text)
             else:
                 self.categories=text
-        else:
+            self.out.write("%s: %s\n"%(self.pad("Categories",12),self.categories))
+	#Mealmaster pukes at the preptime line so this removes it    
+	elif label=='preparation time' or label=='rating' or label=='source':
+	    pass
+
+	else:
             if label and text:
                 if self.recattrs.has_key(label):
                     label=self.recattrs[label]
                 else:
                     label=label.capitalize()
                 label=self.pad(label,12)
-                self.out.write("%s: %s\n"%(label, text))
+		self.out.write("%s: %s\n"%(label, text))
 
     def write_attr_foot (self):
-        self.out.write("%s: %s\n\n"%(self.pad("Categories",12),self.categories))
-    
+        #Removed by rsborn as part of the MM export fix
+	#self.out.write("%s: %s\n\n"%(self.pad("Categories",12),self.categories))
+	pass
+
     def pad (self, text, chars):
         text=text.strip()
         fill = chars - len(text)
@@ -249,12 +259,12 @@ class mealmaster_exporter (exporter):
     def write_groupfoot (self):
         self.ings = self.master_ings # back to master level
 
-    def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):        
+    def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):
         if type(amount)==type(1.0) or type(amount)==type(1):
-            amount = convert.float_to_frac(amount)
-        if not amount: amount = ""
+  	    amount = convert.float_to_frac(amount)
+  	if not amount: amount = ""        
         if self.conv.unit_dict.has_key(unit) and self.uc.has_key(self.conv.unit_dict[unit]):
-            unit= self.uc[self.conv.unit_dict[unit]] or ""
+            unit=self.uc[self.conv.unit_dict[unit]]
         elif unit:
             # if we don't recognize the unit, we add it to
             # the item
@@ -301,8 +311,8 @@ class mealmaster_exporter (exporter):
 
     def write_foot (self):
         self.out.write("\n\n")
-        self.out.write("MMMMM")
-        self.out.write("\n\n")
+	self.out.write("MMMMM")
+	self.out.write("\n\n")
     
 
 class ExporterMultirec:
@@ -416,18 +426,13 @@ class ExporterMultirec:
             return filename
 
     def check_for_sleep (self):
-        gglobals.gt.gtk_update()
         if self.terminated:
             raise "Exporter Terminated!"
         while self.suspended:
-            gglobals.gt.gtk_update()
             if self.terminated:
                 debug('Thread Terminated!',0)
                 raise "Exporter Terminated!"
-            if gglobals.use_threads:
-                time.sleep(1)
-            else:
-                time.sleep(0.1)
+            time.sleep(1)
 
     def terminate (self):
         self.terminated = True
