@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Gourmet Recipe Manager\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2005-01-07 04:08:39.829640\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-03-03 17:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -470,15 +470,15 @@ msgid "Ingredient Key _Editor"
 msgstr ""
 
 #: glade/recCard.glade.h:41 src/lib/exporters/exporter.py:119
-#: src/lib/exporters/exporter.py:600 src/lib/exporters/gnomeprinter.py:319
+#: src/lib/exporters/exporter.py:598 src/lib/exporters/gnomeprinter.py:320
 msgid "Ingredients"
 msgstr ""
 
-#: glade/recCard.glade.h:42 src/lib/gglobals.py:123
+#: glade/recCard.glade.h:42 src/lib/gglobals.py:146
 msgid "Instructions"
 msgstr ""
 
-#: glade/recCard.glade.h:43 src/lib/gglobals.py:125
+#: glade/recCard.glade.h:43 src/lib/gglobals.py:148
 msgid "Modifications"
 msgstr ""
 
@@ -498,11 +498,11 @@ msgstr ""
 msgid "Move selected ingredients up"
 msgstr ""
 
-#: glade/recCard.glade.h:48 src/lib/gglobals.py:124
+#: glade/recCard.glade.h:48 src/lib/gglobals.py:147
 msgid "Notes"
 msgstr ""
 
-#: glade/recCard.glade.h:49 src/lib/reccard.py:803 src/lib/reccard.py:942
+#: glade/recCard.glade.h:49 src/lib/reccard.py:802 src/lib/reccard.py:941
 msgid "Optional"
 msgstr ""
 
@@ -734,8 +734,8 @@ msgstr ""
 msgid "Include this item on your shopping list."
 msgstr ""
 
-#: glade/shopList.glade.h:8 src/lib/keyEditor.py:83 src/lib/reccard.py:802
-#: src/lib/reccard.py:962 src/lib/reccard.py:1831
+#: glade/shopList.glade.h:8 src/lib/keyEditor.py:83 src/lib/reccard.py:801
+#: src/lib/reccard.py:961 src/lib/reccard.py:1831
 msgid "Item"
 msgstr ""
 
@@ -751,8 +751,8 @@ msgid ""
 "or print your shopping list."
 msgstr ""
 
-#: glade/shopList.glade.h:13 src/lib/reccard.py:805 src/lib/reccard.py:880
-#: src/lib/reccard.py:956
+#: glade/shopList.glade.h:13 src/lib/reccard.py:804 src/lib/reccard.py:879
+#: src/lib/reccard.py:955
 msgid "Shopping Category"
 msgstr ""
 
@@ -761,7 +761,7 @@ msgstr ""
 msgid "Shopping List"
 msgstr ""
 
-#: glade/shopList.glade.h:15 src/lib/reccard.py:801 src/lib/reccard.py:961
+#: glade/shopList.glade.h:15 src/lib/reccard.py:800 src/lib/reccard.py:960
 #: src/lib/reccard.py:1831
 msgid "Unit"
 msgstr ""
@@ -841,99 +841,99 @@ msgstr ""
 msgid "Need density information."
 msgstr ""
 
-#: src/lib/dialog_extras.py:254
+#: src/lib/dialog_extras.py:256
 msgid "_Pause"
 msgstr "_Pause"
 
-#: src/lib/dialog_extras.py:258
+#: src/lib/dialog_extras.py:260
 msgid "_Stop"
 msgstr ""
 
-#: src/lib/dialog_extras.py:294 src/lib/dialog_extras.py:385
+#: src/lib/dialog_extras.py:296 src/lib/dialog_extras.py:387
 msgid "Don't ask me this again."
 msgstr ""
 
-#: src/lib/dialog_extras.py:351
+#: src/lib/dialog_extras.py:353
 msgid "Do you really want to do this"
 msgstr ""
 
-#: src/lib/dialog_extras.py:596 src/lib/FileChooserSaveAs.py:153
+#: src/lib/dialog_extras.py:598 src/lib/FileChooserSaveAs.py:153
 msgid "Select File_type"
 msgstr ""
 
-#: src/lib/dialog_extras.py:667
+#: src/lib/dialog_extras.py:669
 msgid "No file selected"
 msgstr ""
 
-#: src/lib/dialog_extras.py:668
+#: src/lib/dialog_extras.py:670
 msgid "No file was selected, so the action has been cancelled"
 msgstr ""
 
-#: src/lib/dialog_extras.py:681 src/lib/FileChooserSaveAs.py:224
+#: src/lib/dialog_extras.py:683 src/lib/FileChooserSaveAs.py:224
 #, python-format
 msgid "A file named %s already exists."
 msgstr ""
 
-#: src/lib/dialog_extras.py:682 src/lib/FileChooserSaveAs.py:225
+#: src/lib/dialog_extras.py:684 src/lib/FileChooserSaveAs.py:225
 msgid "Do you want to replace it with the one you are saving?"
 msgstr ""
 
 #. renderer.set_property('editable',gtk.TRUE)
 #. renderer.connect('edited',tst)
-#: src/lib/gglobals.py:113 src/lib/shopgui.py:64
+#: src/lib/gglobals.py:136 src/lib/shopgui.py:64
 msgid "Title"
 msgstr ""
 
-#: src/lib/gglobals.py:114
+#: src/lib/gglobals.py:137
 msgid "Category"
 msgstr ""
 
-#: src/lib/gglobals.py:115
+#: src/lib/gglobals.py:138
 msgid "Cuisine"
 msgstr ""
 
-#: src/lib/gglobals.py:116
+#: src/lib/gglobals.py:139
 msgid "Rating"
 msgstr ""
 
-#: src/lib/gglobals.py:117
+#: src/lib/gglobals.py:140
 msgid "Source"
 msgstr ""
 
-#: src/lib/gglobals.py:118
+#: src/lib/gglobals.py:141
 msgid "Servings"
 msgstr ""
 
-#: src/lib/gglobals.py:119
+#: src/lib/gglobals.py:142
 msgid "Preparation Time"
 msgstr ""
 
-#: src/lib/gglobals.py:120
+#: src/lib/gglobals.py:143
 msgid "Cooking Time"
 msgstr ""
 
-#: src/lib/gglobals.py:175
+#: src/lib/gglobals.py:198
 msgid "Unable to open URL"
 msgstr ""
 
-#: src/lib/gglobals.py:176
+#: src/lib/gglobals.py:199
 msgid "Unable to launch mail reader."
 msgstr ""
 
-#: src/lib/gglobals.py:177
+#: src/lib/gglobals.py:200
 msgid "Unable to open website."
 msgstr ""
 
-#: src/lib/gglobals.py:178
+#: src/lib/gglobals.py:201
 msgid "Unable to open file."
 msgstr ""
 
-#: src/lib/gglobals.py:183 src/lib/GourmetRecipeManager.py:363
+#: src/lib/gglobals.py:206 src/lib/GourmetRecipeManager.py:363
 #: src/lib/GourmetThreads.py:44 src/lib/reccard.py:1302
 msgid "_Details"
 msgstr ""
 
-#: src/lib/gglobals.py:184
+#: src/lib/gglobals.py:207
 #, python-format
 msgid "There was an error launching the url: %s"
 msgstr ""
@@ -952,23 +952,23 @@ msgstr ""
 msgid "Proceed"
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:56
+#: src/lib/GourmetRecipeManager.py:59
 msgid "Loading window preferences..."
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:58
+#: src/lib/GourmetRecipeManager.py:61
 msgid "Loading graphical interface..."
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:101
+#: src/lib/GourmetRecipeManager.py:104
 msgid "Loading recipe database..."
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:103
+#: src/lib/GourmetRecipeManager.py:106
 msgid "Setting up recipe index..."
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:138 src/lib/GourmetRecipeManager.py:918
+#: src/lib/GourmetRecipeManager.py:141 src/lib/GourmetRecipeManager.py:918
 msgid "Done!"
 msgstr ""
 
@@ -1251,7 +1251,7 @@ msgstr ""
 msgid "Deleted %s recipes"
 msgstr ""
 
-#: src/lib/keyEditor.py:82 src/lib/reccard.py:804 src/lib/reccard.py:963
+#: src/lib/keyEditor.py:82 src/lib/reccard.py:803 src/lib/reccard.py:962
 msgid "Key"
 msgstr "Clef"
 
@@ -1341,7 +1341,7 @@ msgstr ""
 msgid "Choose an image to insert in instructions... "
 msgstr ""
 
-#: src/lib/reccard.py:524 src/lib/reccard.py:800 src/lib/reccard.py:960
+#: src/lib/reccard.py:524 src/lib/reccard.py:799 src/lib/reccard.py:959
 msgid "Amt"
 msgstr ""
 
@@ -1371,26 +1371,26 @@ msgstr ""
 msgid "Couldn't make sense of %s as number of servings"
 msgstr ""
 
-#: src/lib/reccard.py:780
+#: src/lib/reccard.py:779
 msgid "(Optional)"
 msgstr "(Falcutatif)"
 
-#: src/lib/reccard.py:889
+#: src/lib/reccard.py:888
 msgid "New Category"
 msgstr "Nouvelle catégorie"
 
-#: src/lib/reccard.py:911 src/lib/shopgui.py:349
+#: src/lib/reccard.py:910 src/lib/shopgui.py:349
 #, python-format
 msgid "Category to add %s to"
 msgstr ""
 
-#: src/lib/reccard.py:1155
+#: src/lib/reccard.py:1154
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
 msgstr ""
 
 #. FIXME
-#: src/lib/reccard.py:1256
+#: src/lib/reccard.py:1255
 msgid "Choose a file containing your ingredient list."
 msgstr ""
 
@@ -1523,19 +1523,18 @@ msgstr ""
 msgid ", %s contains %s"
 msgstr ""
 
-#: src/lib/recipeManager.py:39
+#: src/lib/recipeManager.py:14
 msgid "Enter Password"
 msgstr "Entrer le mot de passe"
 
-#: src/lib/recipeManager.py:40
+#: src/lib/recipeManager.py:15
 #, python-format
-msgid ""
-"Please enter your password for user %s of the MySQL database at host %s"
+msgid "Please enter your password for user %s of the MySQL database at host %s"
 msgstr ""
 "Entrer s'il vous plait votre mot de passe pour l'utilisateur %s de la base "
 "de données MySQL sur l'hôte %s"
 
-#: src/lib/recipeManager.py:43
+#: src/lib/recipeManager.py:18
 msgid "Password: "
 msgstr "Mot de passe : "
 
@@ -1677,7 +1676,7 @@ msgstr ""
 msgid "Choose Database File"
 msgstr ""
 
-#: src/lib/backends/rmetakit.py:228
+#: src/lib/backends/rmetakit.py:229
 msgid "New Recipe"
 msgstr ""
 
@@ -1700,11 +1699,15 @@ msgstr ""
 msgid "MasterCook file"
 msgstr ""
 
-#: src/lib/importers/__init__.py:49
+#: src/lib/importers/__init__.py:7
+msgid "MasterCook XML file"
+msgstr ""
+
+#: src/lib/importers/__init__.py:59
 msgid "All importable files"
 msgstr ""
 
-#: src/lib/importers/mastercook_importer.py:116
+#: src/lib/importers/mastercook_importer.py:118
 msgid "Mastercook import finished."
 msgstr ""
 
@@ -1715,54 +1718,55 @@ msgstr ""
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
 #. files, even though some of them may not be fubared :)
-#: src/lib/importers/mastercook_importer.py:244
+#: src/lib/importers/mastercook_importer.py:246
 msgid "Tidying up XML"
 msgstr "Nettoyage XML"
 
-#: src/lib/importers/mastercook_importer.py:252
+#: src/lib/importers/mastercook_importer.py:254
 msgid "Beginning import"
 msgstr "Démarrage de l'importation"
 
-#: src/lib/importers/mealmaster_importer.py:84
+#: src/lib/importers/mastercook_plaintext_importer.py:37
+#: src/lib/importers/mealmaster_importer.py:85
 #, python-format
 msgid "Imported %s recipes."
 msgstr ""
 
-#: src/lib/importers/mealmaster_importer.py:90
+#: src/lib/importers/mealmaster_importer.py:91
 msgid "Mealmaster import completed."
 msgstr ""
 
-#: src/lib/exporters/exporter.py:194 src/lib/exporters/exporter.py:234
-#: src/lib/exporters/exporter.py:645 src/lib/exporters/gnomeprinter.py:337
+#: src/lib/exporters/exporter.py:194 src/lib/exporters/exporter.py:232
+#: src/lib/exporters/exporter.py:643 src/lib/exporters/gnomeprinter.py:338
 msgid "optional"
 msgstr "optionelle"
 
-#: src/lib/exporters/exporter.py:419
+#: src/lib/exporters/exporter.py:417
 #, python-format
 msgid "Exported %(number)s of %(total)s recipes"
 msgstr ""
 
-#: src/lib/exporters/exporter.py:438
+#: src/lib/exporters/exporter.py:436
 msgid "Export complete."
 msgstr "Exportation complète"
 
-#: src/lib/exporters/exporter.py:464 src/lib/exporters/exporter.py:564
+#: src/lib/exporters/exporter.py:462 src/lib/exporters/exporter.py:562
 msgid "Recipe"
 msgstr ""
 
-#: src/lib/exporters/gnomeprinter.py:232
+#: src/lib/exporters/gnomeprinter.py:233
 msgid "Print"
 msgstr ""
 
-#: src/lib/exporters/gnomeprinter.py:259
+#: src/lib/exporters/gnomeprinter.py:260
 msgid "_Current"
 msgstr ""
 
-#: src/lib/exporters/gnomeprinter.py:259
+#: src/lib/exporters/gnomeprinter.py:260
 msgid "_Range"
 msgstr ""
 
-#: src/lib/exporters/gnomeprinter.py:265 src/lib/exporters/lprprinter.py:7
+#: src/lib/exporters/gnomeprinter.py:266 src/lib/exporters/lprprinter.py:7
 #: src/lib/exporters/winprinter.py:7
 msgid "Print Recipes"
 msgstr ""
@@ -1844,33 +1848,34 @@ msgstr ""
 msgid "Recipe saved in Gourmet XML file %(file)s."
 msgstr ""
 
-#: src/lib/exporters/lprprinter.py:13
-#, python-format
-msgid "Unable to find command %s.  "
-msgstr "Impossible de trouver la commande %s.  "
-
-#: src/lib/exporters/lprprinter.py:14
-msgid "Enter a print command"
-msgstr ""
-
-#: src/lib/exporters/lprprinter.py:15
+#: src/lib/exporters/lprprinter.py:15 src/lib/exporters/lprprinter.py:18
 msgid "Enter print command"
 msgstr ""
 
-#: src/lib/exporters/lprprinter.py:17
-msgid "Command"
-msgstr "Commande"
+#: src/lib/exporters/lprprinter.py:16
+#, fuzzy, python-format
+msgid "Unable to find command \"%s\"."
+msgstr "Impossible de trouver la commande %s.  "
 
-#: src/lib/exporters/lprprinter.py:21
+#: src/lib/exporters/lprprinter.py:17
+msgid "Please enter the command you would like to use to print."
+msgstr ""
+
+#: src/lib/exporters/lprprinter.py:22
 #, python-format
 msgid "Printing via %s"
 msgstr "Impression via %s"
 
-#: src/lib/exporters/lprprinter.py:22
+#: src/lib/exporters/lprprinter.py:23
 msgid ""
 "If you install python-gnome, you will be able to print with a much more "
 "attractive interface."
 msgstr ""
+
+#: src/lib/exporters/lprprinter.py:31
+#, fuzzy
+msgid "Command: "
+msgstr "Commande"
 
 #: src/lib/exporters/pdf_exporter.py:23
 msgid "Shopping list for: "
@@ -1908,8 +1913,8 @@ msgstr ""
 
 #: src/lib/exporters/winprinter.py:11
 msgid ""
-"Sorry, printing is not yet supported on Windows. To print recipes, try "
-"exporting and printing from another program."
+"Sorry, printing is not yet supported on Windows. To print recipes, first "
+"export them, then print from another program."
 msgstr ""
 
 #: src/lib/exporters/winprinter.py:21

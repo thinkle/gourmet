@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gourmet 0.6.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-24 22:37-0500\n"
+"POT-Creation-Date: 2005-03-03 17:21-0500\n"
 "PO-Revision-Date: 2005-01-04 10:32+0100\n"
 "Last-Translator: Zbynek Mrkvicka <zbynek@oachot.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -416,15 +416,15 @@ msgid "Ingredient Key _Editor"
 msgstr ""
 
 #: glade/recCard.glade.h:41 src/lib/exporters/exporter.py:119
-#: src/lib/exporters/exporter.py:600 src/lib/exporters/gnomeprinter.py:319
+#: src/lib/exporters/exporter.py:598 src/lib/exporters/gnomeprinter.py:320
 msgid "Ingredients"
 msgstr "Ingredience"
 
-#: glade/recCard.glade.h:42 src/lib/gglobals.py:123
+#: glade/recCard.glade.h:42 src/lib/gglobals.py:146
 msgid "Instructions"
 msgstr "Instrukce"
 
-#: glade/recCard.glade.h:43 src/lib/gglobals.py:125
+#: glade/recCard.glade.h:43 src/lib/gglobals.py:148
 msgid "Modifications"
 msgstr "Úpravy"
 
@@ -448,12 +448,12 @@ msgstr "_Smazat ingredienci"
 msgid "Move selected ingredients up"
 msgstr "_Smazat ingredienci"
 
-#: glade/recCard.glade.h:48 src/lib/gglobals.py:124
+#: glade/recCard.glade.h:48 src/lib/gglobals.py:147
 #, fuzzy
 msgid "Notes"
 msgstr "Žádný"
 
-#: glade/recCard.glade.h:49 src/lib/reccard.py:803 src/lib/reccard.py:942
+#: glade/recCard.glade.h:49 src/lib/reccard.py:802 src/lib/reccard.py:941
 msgid "Optional"
 msgstr "Nepovinné"
 
@@ -694,8 +694,8 @@ msgstr "Množství"
 msgid "Include this item on your shopping list."
 msgstr "Zahrnout tuto položku v seznamu nákupu."
 
-#: glade/shopList.glade.h:8 src/lib/keyEditor.py:83 src/lib/reccard.py:802
-#: src/lib/reccard.py:962 src/lib/reccard.py:1831
+#: glade/shopList.glade.h:8 src/lib/keyEditor.py:83 src/lib/reccard.py:801
+#: src/lib/reccard.py:961 src/lib/reccard.py:1831
 msgid "Item"
 msgstr "Položka"
 
@@ -711,8 +711,8 @@ msgid ""
 "or print your shopping list."
 msgstr ""
 
-#: glade/shopList.glade.h:13 src/lib/reccard.py:805 src/lib/reccard.py:880
-#: src/lib/reccard.py:956
+#: glade/shopList.glade.h:13 src/lib/reccard.py:804 src/lib/reccard.py:879
+#: src/lib/reccard.py:955
 msgid "Shopping Category"
 msgstr "Nákupní kategorie"
 
@@ -721,7 +721,7 @@ msgstr "Nákupní kategorie"
 msgid "Shopping List"
 msgstr "Seznam nákupu"
 
-#: glade/shopList.glade.h:15 src/lib/reccard.py:801 src/lib/reccard.py:961
+#: glade/shopList.glade.h:15 src/lib/reccard.py:800 src/lib/reccard.py:960
 #: src/lib/reccard.py:1831
 msgid "Unit"
 msgstr "Jednotka"
@@ -808,104 +808,104 @@ msgstr "Nemohu převést"
 msgid "Need density information."
 msgstr "Použít _informaci o hustotě"
 
-#: src/lib/dialog_extras.py:254
+#: src/lib/dialog_extras.py:256
 msgid "_Pause"
 msgstr "_Pauza"
 
-#: src/lib/dialog_extras.py:258
+#: src/lib/dialog_extras.py:260
 msgid "_Stop"
 msgstr ""
 
-#: src/lib/dialog_extras.py:294 src/lib/dialog_extras.py:385
+#: src/lib/dialog_extras.py:296 src/lib/dialog_extras.py:387
 msgid "Don't ask me this again."
 msgstr ""
 
-#: src/lib/dialog_extras.py:351
+#: src/lib/dialog_extras.py:353
 msgid "Do you really want to do this"
 msgstr "Opravdu chcete provést"
 
-#: src/lib/dialog_extras.py:596 src/lib/FileChooserSaveAs.py:153
+#: src/lib/dialog_extras.py:598 src/lib/FileChooserSaveAs.py:153
 msgid "Select File_type"
 msgstr "Vybrat _typ souboru"
 
-#: src/lib/dialog_extras.py:667
+#: src/lib/dialog_extras.py:669
 #, fuzzy
 msgid "No file selected"
 msgstr "Zobrazit vybraný recept"
 
-#: src/lib/dialog_extras.py:668
+#: src/lib/dialog_extras.py:670
 msgid "No file was selected, so the action has been cancelled"
 msgstr ""
 
-#: src/lib/dialog_extras.py:681 src/lib/FileChooserSaveAs.py:224
+#: src/lib/dialog_extras.py:683 src/lib/FileChooserSaveAs.py:224
 #, python-format
 msgid "A file named %s already exists."
 msgstr "Soubor s názvem %s již existuje."
 
-#: src/lib/dialog_extras.py:682 src/lib/FileChooserSaveAs.py:225
+#: src/lib/dialog_extras.py:684 src/lib/FileChooserSaveAs.py:225
 msgid "Do you want to replace it with the one you are saving?"
 msgstr "Chcete ho nahradit souborem, který ukládáte?"
 
 #. renderer.set_property('editable',gtk.TRUE)
 #. renderer.connect('edited',tst)
-#: src/lib/gglobals.py:113 src/lib/shopgui.py:64
+#: src/lib/gglobals.py:136 src/lib/shopgui.py:64
 msgid "Title"
 msgstr "Název"
 
-#: src/lib/gglobals.py:114
+#: src/lib/gglobals.py:137
 msgid "Category"
 msgstr "Kategorie"
 
-#: src/lib/gglobals.py:115
+#: src/lib/gglobals.py:138
 msgid "Cuisine"
 msgstr "Kuchyně"
 
-#: src/lib/gglobals.py:116
+#: src/lib/gglobals.py:139
 msgid "Rating"
 msgstr "Hodnocení"
 
-#: src/lib/gglobals.py:117
+#: src/lib/gglobals.py:140
 msgid "Source"
 msgstr "Zdroj"
 
-#: src/lib/gglobals.py:118
+#: src/lib/gglobals.py:141
 msgid "Servings"
 msgstr "Porce"
 
-#: src/lib/gglobals.py:119
+#: src/lib/gglobals.py:142
 msgid "Preparation Time"
 msgstr "Čas přípravy"
 
-#: src/lib/gglobals.py:120
+#: src/lib/gglobals.py:143
 msgid "Cooking Time"
 msgstr ""
 
-#: src/lib/gglobals.py:175
+#: src/lib/gglobals.py:198
 #, fuzzy
 msgid "Unable to open URL"
 msgstr "Nemohu uložit %s"
 
-#: src/lib/gglobals.py:176
+#: src/lib/gglobals.py:199
 msgid "Unable to launch mail reader."
 msgstr ""
 
-#: src/lib/gglobals.py:177
+#: src/lib/gglobals.py:200
 #, fuzzy
 msgid "Unable to open website."
 msgstr "Nemohu uložit %s"
 
-#: src/lib/gglobals.py:178
+#: src/lib/gglobals.py:201
 #, fuzzy
 msgid "Unable to open file."
 msgstr "Nemohu uložit %s"
 
-#: src/lib/gglobals.py:183 src/lib/GourmetRecipeManager.py:363
+#: src/lib/gglobals.py:206 src/lib/GourmetRecipeManager.py:363
 #: src/lib/GourmetThreads.py:44 src/lib/reccard.py:1302
 #, fuzzy
 msgid "_Details"
 msgstr "Detaily"
 
-#: src/lib/gglobals.py:184
+#: src/lib/gglobals.py:207
 #, python-format
 msgid "There was an error launching the url: %s"
 msgstr ""
@@ -924,23 +924,23 @@ msgstr ""
 msgid "Proceed"
 msgstr ""
 
-#: src/lib/GourmetRecipeManager.py:56
+#: src/lib/GourmetRecipeManager.py:59
 msgid "Loading window preferences..."
 msgstr "Nahrávám nastavení okna..."
 
-#: src/lib/GourmetRecipeManager.py:58
+#: src/lib/GourmetRecipeManager.py:61
 msgid "Loading graphical interface..."
 msgstr "Nahrávám grafické rozhraní..."
 
-#: src/lib/GourmetRecipeManager.py:101
+#: src/lib/GourmetRecipeManager.py:104
 msgid "Loading recipe database..."
 msgstr "Nahrávám databázi receptů..."
 
-#: src/lib/GourmetRecipeManager.py:103
+#: src/lib/GourmetRecipeManager.py:106
 msgid "Setting up recipe index..."
 msgstr "Nastavuji seznam receptů..."
 
-#: src/lib/GourmetRecipeManager.py:138 src/lib/GourmetRecipeManager.py:918
+#: src/lib/GourmetRecipeManager.py:141 src/lib/GourmetRecipeManager.py:918
 msgid "Done!"
 msgstr "Hotovo!"
 
@@ -1233,7 +1233,7 @@ msgstr "Smazat recept?"
 msgid "Deleted %s recipes"
 msgstr "Smazaný recept %s"
 
-#: src/lib/keyEditor.py:82 src/lib/reccard.py:804 src/lib/reccard.py:963
+#: src/lib/keyEditor.py:82 src/lib/reccard.py:803 src/lib/reccard.py:962
 msgid "Key"
 msgstr ""
 
@@ -1327,7 +1327,7 @@ msgstr "_Smazat ingredienci"
 msgid "Choose an image to insert in instructions... "
 msgstr "Vyberte obrázek, který chcete vložit do instrukcí..."
 
-#: src/lib/reccard.py:524 src/lib/reccard.py:800 src/lib/reccard.py:960
+#: src/lib/reccard.py:524 src/lib/reccard.py:799 src/lib/reccard.py:959
 msgid "Amt"
 msgstr "Množ."
 
@@ -1360,27 +1360,27 @@ msgstr "Opravdu chcete opustit vaše změny?"
 msgid "Couldn't make sense of %s as number of servings"
 msgstr "Počet porcí %s nedává smysl"
 
-#: src/lib/reccard.py:780
+#: src/lib/reccard.py:779
 #, fuzzy
 msgid "(Optional)"
 msgstr "Nepovinné"
 
-#: src/lib/reccard.py:889
+#: src/lib/reccard.py:888
 msgid "New Category"
 msgstr "Nová kategorie"
 
-#: src/lib/reccard.py:911 src/lib/shopgui.py:349
+#: src/lib/reccard.py:910 src/lib/shopgui.py:349
 #, python-format
 msgid "Category to add %s to"
 msgstr "Kategorie, do které vložit %s"
 
-#: src/lib/reccard.py:1155
+#: src/lib/reccard.py:1154
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
 msgstr "V databázi není recept %s (ID %s)."
 
 #. FIXME
-#: src/lib/reccard.py:1256
+#: src/lib/reccard.py:1255
 msgid "Choose a file containing your ingredient list."
 msgstr "Vyberte soubor obsahující seznam ingrediencí."
 
@@ -1516,16 +1516,16 @@ msgstr "%s obsahuje %s"
 msgid ", %s contains %s"
 msgstr ", %s obsahuje %đ"
 
-#: src/lib/recipeManager.py:39
+#: src/lib/recipeManager.py:14
 msgid "Enter Password"
 msgstr ""
 
-#: src/lib/recipeManager.py:40
+#: src/lib/recipeManager.py:15
 #, python-format
 msgid "Please enter your password for user %s of the MySQL database at host %s"
 msgstr ""
 
-#: src/lib/recipeManager.py:43
+#: src/lib/recipeManager.py:18
 msgid "Password: "
 msgstr ""
 
@@ -1671,7 +1671,7 @@ msgstr ""
 msgid "Choose Database File"
 msgstr ""
 
-#: src/lib/backends/rmetakit.py:228
+#: src/lib/backends/rmetakit.py:229
 msgid "New Recipe"
 msgstr "Nový recept"
 
@@ -1695,11 +1695,16 @@ msgstr ""
 msgid "MasterCook file"
 msgstr "Soubor Mealmaster"
 
-#: src/lib/importers/__init__.py:49
+#: src/lib/importers/__init__.py:7
+#, fuzzy
+msgid "MasterCook XML file"
+msgstr "Soubor Mealmaster"
+
+#: src/lib/importers/__init__.py:59
 msgid "All importable files"
 msgstr "Všechny importovatelné soubory"
 
-#: src/lib/importers/mastercook_importer.py:116
+#: src/lib/importers/mastercook_importer.py:118
 msgid "Mastercook import finished."
 msgstr ""
 
@@ -1710,58 +1715,59 @@ msgstr ""
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
 #. files, even though some of them may not be fubared :)
-#: src/lib/importers/mastercook_importer.py:244
+#: src/lib/importers/mastercook_importer.py:246
 msgid "Tidying up XML"
 msgstr ""
 
-#: src/lib/importers/mastercook_importer.py:252
+#: src/lib/importers/mastercook_importer.py:254
 msgid "Beginning import"
 msgstr ""
 
-#: src/lib/importers/mealmaster_importer.py:84
+#: src/lib/importers/mastercook_plaintext_importer.py:37
+#: src/lib/importers/mealmaster_importer.py:85
 #, fuzzy, python-format
 msgid "Imported %s recipes."
 msgstr "Importovat recepty"
 
-#: src/lib/importers/mealmaster_importer.py:90
+#: src/lib/importers/mealmaster_importer.py:91
 #, fuzzy
 msgid "Mealmaster import completed."
 msgstr "Soubor Mealmaster"
 
-#: src/lib/exporters/exporter.py:194 src/lib/exporters/exporter.py:234
-#: src/lib/exporters/exporter.py:645 src/lib/exporters/gnomeprinter.py:337
+#: src/lib/exporters/exporter.py:194 src/lib/exporters/exporter.py:232
+#: src/lib/exporters/exporter.py:643 src/lib/exporters/gnomeprinter.py:338
 msgid "optional"
 msgstr "doplňkový"
 
-#: src/lib/exporters/exporter.py:419
+#: src/lib/exporters/exporter.py:417
 #, python-format
 msgid "Exported %(number)s of %(total)s recipes"
 msgstr ""
 
-#: src/lib/exporters/exporter.py:438
+#: src/lib/exporters/exporter.py:436
 #, fuzzy
 msgid "Export complete."
 msgstr "Exportovat recepty"
 
-#: src/lib/exporters/exporter.py:464 src/lib/exporters/exporter.py:564
+#: src/lib/exporters/exporter.py:462 src/lib/exporters/exporter.py:562
 msgid "Recipe"
 msgstr "Recept"
 
-#: src/lib/exporters/gnomeprinter.py:232
+#: src/lib/exporters/gnomeprinter.py:233
 msgid "Print"
 msgstr ""
 
-#: src/lib/exporters/gnomeprinter.py:259
+#: src/lib/exporters/gnomeprinter.py:260
 #, fuzzy
 msgid "_Current"
 msgstr "Počet"
 
-#: src/lib/exporters/gnomeprinter.py:259
+#: src/lib/exporters/gnomeprinter.py:260
 #, fuzzy
 msgid "_Range"
 msgstr "_Hodnocení:"
 
-#: src/lib/exporters/gnomeprinter.py:265 src/lib/exporters/lprprinter.py:7
+#: src/lib/exporters/gnomeprinter.py:266 src/lib/exporters/lprprinter.py:7
 #: src/lib/exporters/winprinter.py:7
 #, fuzzy
 msgid "Print Recipes"
@@ -1848,32 +1854,32 @@ msgstr "Exportovat recept jako textový soubor"
 msgid "Recipe saved in Gourmet XML file %(file)s."
 msgstr "Recept byl uložen jako prostý textový soubor %s"
 
-#: src/lib/exporters/lprprinter.py:13
-#, fuzzy, python-format
-msgid "Unable to find command %s.  "
-msgstr "Nemohu uložit %s"
-
-#: src/lib/exporters/lprprinter.py:14
-msgid "Enter a print command"
-msgstr ""
-
-#: src/lib/exporters/lprprinter.py:15
+#: src/lib/exporters/lprprinter.py:15 src/lib/exporters/lprprinter.py:18
 msgid "Enter print command"
 msgstr ""
 
+#: src/lib/exporters/lprprinter.py:16
+#, fuzzy, python-format
+msgid "Unable to find command \"%s\"."
+msgstr "Nemohu uložit %s"
+
 #: src/lib/exporters/lprprinter.py:17
-msgid "Command"
+msgid "Please enter the command you would like to use to print."
 msgstr ""
 
-#: src/lib/exporters/lprprinter.py:21
+#: src/lib/exporters/lprprinter.py:22
 #, fuzzy, python-format
 msgid "Printing via %s"
 msgstr "Tisknu (přes lpr)..."
 
-#: src/lib/exporters/lprprinter.py:22
+#: src/lib/exporters/lprprinter.py:23
 msgid ""
 "If you install python-gnome, you will be able to print with a much more "
 "attractive interface."
+msgstr ""
+
+#: src/lib/exporters/lprprinter.py:31
+msgid "Command: "
 msgstr ""
 
 #: src/lib/exporters/pdf_exporter.py:23
@@ -1914,8 +1920,8 @@ msgstr ""
 
 #: src/lib/exporters/winprinter.py:11
 msgid ""
-"Sorry, printing is not yet supported on Windows. To print recipes, try "
-"exporting and printing from another program."
+"Sorry, printing is not yet supported on Windows. To print recipes, first "
+"export them, then print from another program."
 msgstr ""
 
 #: src/lib/exporters/winprinter.py:21
