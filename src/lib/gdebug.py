@@ -14,7 +14,6 @@ def debug (message, level=10):
         finame=caller[0]
         line = caller[1]
         print "DEBUG: ","%s: %s"%(finame,line),message
-        #print 'THE WHOLE STACK=',traceback.extract_stack()
 
 timers = {}
 

@@ -187,9 +187,7 @@ class RecData:
             id=rec.id
         else:
             id=rec
-        ings=self.iview.select(id=id,deleted=False)
-        for i in ings: print 'get_ings returns: ',i.item,i.deleted
-        return ings
+        return self.iview.select(id=id,deleted=False)
 
     def order_ings (self, iview):
         """Handed a view of ingredients, we return an alist:
