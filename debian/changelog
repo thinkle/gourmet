@@ -1,0 +1,78 @@
+gourmet (0.7.1-3) unstable; urgency=low
+
+  * Fixed bug in HTML export. Made all dialog text selectable.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 20 Jan 2005 22:30:00 -0500
+
+gourmet (0.7.1-2) unstable; urgency=low
+
+  * Fixed bug that caused database to be loaded twice on startup.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 17 Jan 2005 10:50:00 -0500
+	
+gourmet (0.7.1-1) unstable; urgency=low
+
+  * Improved converter interface. Also made add-item-to-shopping-list dialog properly register shopping categories. Finally, fixed bug that made the recipe card view ask to save changes on imported recipes w/o serving information.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Sunday, 16 Jan 2005 16:00:00 -0500
+
+gourmet (0.7.0-2) unstable; urgency=low
+
+  * Slight changes to dialogs for Windows.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Sunday, 13 Jan 2005 10:40:00 -0500
+
+gourmet (0.7.0-1) unstable; urgency=low
+
+  * mastercook import added; some UI bugs fixed in shopgui; windows support added.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 02 Jan 2005 07:45:48 -0500
+
+ gourmet (0.6.7-2) unstable; urgency=low
+
+  * Mealmaster import improved; workaround around pygtk 2.5 bug and properly handle encoding. -2 fixes a number of stupid problems that should never have made the previous release.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 02 Dec 2004 07:45:48 -0500
+
+
+gourmet (0.6.7-1) unstable; urgency=low
+
+  * Mealmaster import improved; workaround around pygtk 2.5 bug and properly handle encoding.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 02 Dec 2004 07:45:48 -0500
+
+gourmet (0.6.6-2) unstable; urgency=low
+
+  * E-mail recipe feature added. Can now print selected recipes from the index window. Fixed bug in import code.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 02 Dec 2004 07:45:48 -0500
+
+gourmet (0.6.6-1) unstable; urgency=low
+
+  * E-mail recipe feature added. Can now print selected recipes from the index window.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 02 Dec 2004 07:45:48 -0500
+
+gourmet (0.6.5-1) unstable; urgency=low
+
+  * Threading improvements.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Sunday, 07 Nov 2004 17:45:26 -0500
+
+gourmet (0.6.4-1) unstable; urgency=low
+
+  * Minor UI improvements; Spanish translation fix; bugfixes (0.6.3 went out without gnomeprinter.py)
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Friday, 05 Nov 2004 18:07:43 -0500
+
+gourmet (0.6.3-1) unstable; urgency=low
+
+  * UI improvements; major threading improvements; new printing implementation.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Sat, 23 Oct 2004 20:33:11 -0400
+
+gourmet (0.6.2-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Sat, 21 Aug 2004 10:33:11 -0400

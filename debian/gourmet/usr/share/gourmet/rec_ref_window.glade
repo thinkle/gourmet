@@ -1,0 +1,306 @@
+<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
+<!DOCTYPE glade-interface SYSTEM "http://glade.gnome.org/glade-2.0.dtd">
+
+<glade-interface>
+<requires lib="gnome"/>
+<requires lib="bonobo"/>
+<widget class="GtkDialog" id="RefRefWindow">
+  <property name="visible">True</property>
+  <property name="title" translatable="yes">Select Recipe to include in Ingredient List</property>
+  <property name="type">GTK_WINDOW_TOPLEVEL</property>
+  <property name="window_position">GTK_WIN_POS_NONE</property>
+  <property name="modal">False</property>
+  <property name="resizable">True</property>
+  <property name="destroy_with_parent">False</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="has_separator">True</property>
+
+  <child>
+    <widget class="GtkVBox" id="vbox20">
+      <property name="visible">True</property>
+      <property name="homogeneous">False</property>
+      <property name="spacing">0</property>
+
+      <child>
+	<widget class="GtkToolbar" id="toolbar2">
+	  <property name="visible">True</property>
+	  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
+	  <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
+	  <property name="tooltips">True</property>
+	  <property name="show_arrow">True</property>
+
+	  <child>
+	    <widget class="GtkToolItem" id="toolitem17">
+	      <property name="visible">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
+
+	      <child>
+		<widget class="GtkLabel" id="rlLimitLabel">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">Search by</property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		</widget>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToolItem" id="toolitem18">
+	      <property name="visible">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
+
+	      <child>
+		<widget class="GtkOptionMenu" id="rlistSearchByMenu">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="history">0</property>
+
+		  <child>
+		    <widget class="GtkMenu" id="menu1">
+
+		      <child>
+			<widget class="GtkMenuItem" id="title1">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">title</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_title1_activate" last_modification_time="Sat, 03 Apr 2004 22:51:01 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="cuisine1">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">cuisine</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_cuisine1_activate" last_modification_time="Sat, 03 Apr 2004 22:51:01 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="ingredient">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">ingredient</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_ingredient_activate" last_modification_time="Fri, 23 Apr 2004 21:26:52 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="category1">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">category</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_category1_activate" last_modification_time="Sat, 03 Apr 2004 23:02:07 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="source1">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">source</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_source1_activate" last_modification_time="Sat, 03 Apr 2004 22:51:01 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="instructions1">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">instructions</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_instructions1_activate" last_modification_time="Sat, 03 Apr 2004 22:51:01 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="rating1">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">rating</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_rating1_activate" last_modification_time="Sat, 03 Apr 2004 22:51:01 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="servings1">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">servings</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_servings1_activate" last_modification_time="Sat, 03 Apr 2004 22:51:01 GMT"/>
+			</widget>
+		      </child>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToolItem" id="toolitem19">
+	      <property name="visible">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
+
+	      <child>
+		<widget class="GtkEntry" id="rlistSearchbox">
+		  <property name="visible">True</property>
+		  <property name="tooltip" translatable="yes">Search for recipes as you type</property>
+		  <property name="can_default">True</property>
+		  <property name="has_default">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="has_focus">True</property>
+		  <property name="editable">True</property>
+		  <property name="visibility">True</property>
+		  <property name="max_length">0</property>
+		  <property name="text" translatable="yes"></property>
+		  <property name="has_frame">True</property>
+		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="activates_default">False</property>
+		  <signal name="changed" handler="rlistSearch" last_modification_time="Sat, 03 Apr 2004 22:26:58 GMT"/>
+		  <signal name="editing_done" handler="rlistSearch" last_modification_time="Sat, 03 Apr 2004 22:28:38 GMT"/>
+		  <signal name="button_press_event" handler="rlistSearch" last_modification_time="Sat, 03 Apr 2004 22:29:04 GMT"/>
+		</widget>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToolItem" id="toolitem20">
+	      <property name="visible">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
+
+	      <child>
+		<widget class="GtkButton" id="button12">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="label">gtk-add</property>
+		  <property name="use_stock">True</property>
+		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
+		  <signal name="clicked" handler="rlistLimit" last_modification_time="Wed, 21 Apr 2004 20:39:15 GMT"/>
+		</widget>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">False</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkToolbar" id="srchLimitBar">
+	  <property name="border_width">2</property>
+	  <property name="visible">True</property>
+	  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
+	  <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
+	  <property name="tooltips">True</property>
+	  <property name="show_arrow">True</property>
+
+	  <child>
+	    <widget class="GtkToolItem" id="toolitem21">
+	      <property name="visible">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
+
+	      <child>
+		<widget class="GtkLabel" id="srchLimitLabel">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">Limiting Search to: </property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">True</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.48</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		</widget>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToolItem" id="toolitem22">
+	      <property name="visible">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
+
+	      <child>
+		<widget class="GtkButton" id="button12">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="label">gtk-clear</property>
+		  <property name="use_stock">True</property>
+		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
+		  <signal name="clicked" handler="rlistReset" last_modification_time="Wed, 21 Apr 2004 20:39:15 GMT"/>
+		</widget>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">False</property>
+	</packing>
+      </child>
+
+      <child>
+	<placeholder/>
+      </child>
+    </widget>
+  </child>
+</widget>
+
+</glade-interface>

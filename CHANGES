@@ -1,0 +1,252 @@
+==== Version 0.7.1 Changes from 0.7.0 ====
+
+* RPM spec file fixed so dependencies should be properly worked out now.
+* Debian files included in source tarball.
+* Unit Converter improvements with help from Richard Ferguson (more UI improvements soon to come!)
+* Printing is now properly reported as non-existent across the board on Windows
+* Non-GNOME printing is now improved -- if LPR doesn't exist, user is prompted for another print command.
+* Fixed bug in recipe-card making it believe it is modified when a recipe has no servings information.
+* Fixed bug in shopping list that prevented category info entered in "Add Item To Shopping List" dialog not
+  get saved.
+* Moved around some files: printing has now been split into lprprinter, winprinter and gnomeprinter;
+  defaults_en_US has been eliminated (defaults_en is now the norm).
+
+==== Version 0.7.0 Changes from 0.6.7 ====
+
+* Gourmet now builds on Windows! Fixed various path-related problems
+  to make this work cleanly.
+* Fixed bug in saveas dialog for shopping lists.
+* Fixed bug that meant recipes called as in ingredients broke when they
+  included optional ingredients.
+* Added unit magic to change to the most readable unit when changing
+  number of servings etc.
+* Added preference dialog to Recipe Card view to allow selective removal
+  of UI elements the user doesn't want.
+
+
+==== Version 0.6.7 Changes from 0.6.6 ====
+
+* Added script to properly handle file encodings on Mealmaster import.
+* Fixed check for import/exports when quitting
+* Added work around for strange pygtk 2.5 bug that was slowing down
+  mealmaster imports.
+
+==== Version 0.6.6 Changes from 0.6.5 ====
+
+* Added support for printing multiple recipes and interface in main index view
+  for printing selected recipes.
+* Added e-mail support for e-mailing recipe from card or from index view.
+
+==== Version 0.6.4 Changes from 0.6.3 ====
+
+* Improvements in Mealmaster(tm) import
+* Improvements in threading code.
+
+==== Version 0.6.3 Changes from 0.6.2 ====
+
+* Made dialog's wrap text rather than getting longer.
+* Made message dialogs have pretty icons, using gtk.MessageDialog
+* Made menus only include one "Import" and "Export" option rather than having submenus.
+* Added filetype selection to fileSelector dialogs
+* Added gnomeprint interface to printing for printing shopping lists.
+* Added gnomeprint interface for printing recipes (which allows you to print your
+  multiplications/divisions of recipes)
+* Fixed threading code. Now imports and exports are pause-able and cancellable on quit.
+* You can now type to select the searchBy menu.
+* Changed searchbar in index view to allow proper tabbing between widgets.
+* Added preview to image selection dialog.
+
+==== Version 0.6.2 Changes from 0.6.1 ====
+* Fixed up setup.py to not require gconf stuff (which
+  we weren't using anyway)
+* Setup gettext before and took a first crack at Spanish translations
+* Fixed a few minor bugs, including one in Converter interface and
+  one in quit confirmation.
+* Added debian package.
+
+==== Version 0.6.1 Changes from 0.6.0 ====
+* Made sure HTML validates (fixed a number of small HTML bugs)
+* Added <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  tag to specify correct encoding on HTML, following advice from 
+  Fábio Mendes <niels_bohr@uol.com.br>
+* Fixed dialog_extras.py to properly give an "Okay" button
+  when creating a file or folder and an "Open" button when
+  selecting (before we always gave the "Open" button.
+* We now make sure we create our .gourmet directory if it doesn't exist.
+* We now include recipe.dtd in the distribution.
+
+==== Version 0.6.0 Changes from 0.5.0 ====
+
+* Added RTF Export
+* Added mnemonics for entries as per GNOME HIG
+* Added KeyEditor to allow editing ingredient keys en masse
+* Fixed key guessing routine so it is less likely to put
+  together a wildly inaccurate guess
+* Fixed Add-to-shopping-list dialog to use new ComboBoxEntry
+  widgets and to share code with Ingredient Editor.
+* Added UnitConverter interface for user's convenience.
+* Fixed flow of widgets (tabbing)
+
+==== Version 0.5.3 Changes from 0.5.1 ====
+
+* Added Key Manager interface to facilitate fixing keys en masse
+  and pave road for possibly adding a nutritional information
+  database.
+  
+* Simplified main App interface by removing import/export buttons
+  (these still 
+
+==== Version 0.5.2 Changes from 0.5.1 ====
+
+* Added support for re-ordering shopping lists.
+* Added a button to recipe cards for importing text ingredient lists.
+
+
+==GourmetRecipeManager.py==
+
+revision 1.68
+date: 2004/09/12 23:59:00;  author: tom;  state: Exp;  lines: +18 -6
+Fixed ABOUT information & added new logo.
+----------------------------
+revision 1.67
+date: 2004/09/12 20:36:37;  author: tom;  state: Exp;  lines: +5 -1
+Added new menu-items to list of items to be dimmed when no recipes are
+selected.
+----------------------------
+
+==reccard.py==
+
+revision 1.10
+date: 2004/09/12 20:36:03;  author: tom;  state: Exp;  lines: +24 -9
+Added support for importing ingredients from plain text files.
+
+==rmetakit.py==
+
+revision 1.17
+date: 2004/09/13 00:11:53;  author: tom;  state: Exp;  lines: +26 -7
+Added support for storing the order of shopping list ingredients and
+categories.
+
+==shopping.py==
+
+revision 1.12
+date: 2004/09/11 16:44:04;  author: tom;  state: Exp;  lines: +69 -8
+Created the mechanism for sorting our shopping list. Defaults to an
+alphabetical sort, but will allow users to save custom orders.
+
+==shopgui.py==
+
+revision 1.5
+date: 2004/09/12 23:59:42;  author: tom;  state: Exp;  lines: +48 -4
+Added code to commit order of shopping categories to
+memory. (Currently, you can reorganize categories but not individual
+items).
+----------------------------
+revision 1.4
+date: 2004/09/11 16:44:57;  author: tom;  state: Exp;  lines: +3 -12
+Simplified list display, thanks to improved interface with shopping.py
+
+==== Version 0.5.1 Changes from 0.5 ====
+
+==setup.py==
+
+Got rid of hard-coding of /usr/share/ and setup a MANIFEST file. Made
+necessary changes in globals.py to make this work
+
+==GourmetRecipeManager.py==
+
+revision 1.66
+date: 2004/08/20 01:16:44;  author: tom;  state: Exp;  lines: +3 -4
+Got rid of old hard-coded default XML file.
+
+date: 2004/08/19 23:42:50;  author: tom;  state: Exp;  lines: +45 -22
+Some changes in threading code as well as superficial changes to
+debugging code, etc.
+
+==reccard.py==
+revision 1.9
+date: 2004/08/12 15:25:36;  author: tom;  state: Exp;  lines: +1 -1
+If an empty shopping category is entered, we don't set it to "None",
+we simply ignore.
+----------------------------
+revision 1.8
+date: 2004/08/12 15:24:12;  author: tom;  state: Exp;  lines: +81 -37
+Added functions to be called before and after modifying the tree to
+avoid bizarre segfaults (pre_modify_tree and post_modify_tree).
+
+==recindex.py==
+
+revision 1.2
+date: 2004/08/20 00:01:27;  author: tom;  state: Exp;  lines: +39 -7
+Added support for toggle-able use of regular expressions.
+
+==rmetakit.py==
+revision 1.16
+date: 2004/08/20 00:04:43;  author: tom;  state: Exp;  lines: +71 -22
+Cleaned up system for generating new recipe IDs to avoid potential
+confusion & problems when recipes are being added from multiple
+points. Also made some changes to currently hard-coded location of
+database file and default categories.
+
+==rxml_to_metakit.py==
+
+revision 1.8
+date: 2004/08/20 00:07:47;  author: tom;  state: Exp;  lines: +29 -15
+Made sure we used proper escaping in more spots for writing XML. Also
+created nicer code for dealing with recipe references as ingredients.
+
+==shopping.py==
+
+date: 2004/08/12 15:26:56;  author: tom;  state: Exp;  lines: +16 -158
+Moved defaults to another file.  Added patch provided by Brett Smith
+to fix a but when a shopping category is None.
+
+==== Version 0.4 Changes ====
+
+Set up "spatial" feel for application. More than one recipe card are now allowed. Editing
+works nicely in the ingredient TreeView now.
+
+GourmetRecipeManager.py
+----------------------------
+revision 1.51
+date: 2004/06/14 13:15:08;  author: tom;  state: Exp;  lines: +10 -2
+Added support for multiple dnd types, making ingredient list accept
+drags from Mozilla Firefox or from TreeView widgets (e.g. gedit).
+----------------------------
+revision 1.50
+date: 2004/06/14 04:54:44;  author: tom;  state: Exp;  lines: +291 -164
+* View menus that update depending on what recipe cards are open.
+* Behaving properly if users cancel dialogs
+* Capitalize names of classes
+* Create Revert-changes button for RecCard view
+* Add Shopping Category to ingredient list view
+* Set up editing in ingredient list view to auto-complete keys and shopping categories
+* Set up popup menu for ingredient list view shopping category
+* Fix bug that made you lose your image when applying other changes.
+* Got rid of code for toggle buttons that toggled views. I've replaced
+  this with the new expander widgets.
+----------------------------
+revision 1.49
+date: 2004/06/12 07:16:59;  author: tom;  state: Exp;  lines: +176 -121
+Redesigned code to create truly object oriented user interface. Glade
+files have no been separated for ease of maintenance and to make it
+easier to create multiple recipe card windows.
+----------------------------
+revision 1.48
+date: 2004/06/12 04:14:02;  author: tom;  state: Exp;  lines: +26 -5
+laid basic groundwork for referring to recipe within ingredient list.
+----------------------------
+
+rmetakit.py
+revision 1.13
+date: 2004/06/14 04:58:24;  author: tom;  state: Exp;  lines: +23 -18
+* Neatened up code in various places.
+* Fixed but in ingredient parser that made it break when ingredients didn't have amounts.
+----------------------------
+revision 1.3
+date: 2004/06/14 05:01:07;  author: tom;  state: Exp;  lines: +31 -15
+* Added padding to labels
+* Made FileSelector dialog return None on cancel
+* Made cancelling return None in most/all places, fixing some
+  buggy dialogs that wouldn't die.
+----------------------------
