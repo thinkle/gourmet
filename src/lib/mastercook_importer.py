@@ -65,7 +65,7 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
         debug('MastercookXMLHandler starting',0)
         self.source = source
         self.progress = progress
-        self.reccount = 0
+        self.total = 0
         self.recs_done = 0
         self.elements = {
             'mx2':['source','date'],
@@ -86,7 +86,7 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
         self.current_elements = []
         self.bufs = []
         xml.sax.ContentHandler.__init__(self)
-        importer.importer.__init__(self,rd=recData)
+        importer.importer.__init__(self,rd=recData,prog=self.progress)
 
     def grabattr (self, attrs, name, default=''):
         return unquoteattr(attrs.get(name,default))
@@ -131,7 +131,7 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
         if start:
             # we simply count recipes so that we can
             # indicate progress.
-            self.reccount += 1
+            self.total += 1
     
     def RcpE_handler (self, start=False, end=False, attrs=None):
         if start:
@@ -141,12 +141,6 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
             if attrs:
                 self.rec['title']=self.grabattr(attrs,'name')
         if end:
-            debug('commiting: %s'%self.rec,0)
-            if self.progress and self.reccount:
-                self.recs_done += 1
-                self.progress("Imported %(number)s of %(total)s recipes."%({'number':self.recs_done,
-                                                                            'total':self.reccount},),
-                              float(self.recs_done)/self.reccount)
             self.commit_rec()
         
     def RTxt_handler (self, start=False, end=False, attrs=None):
@@ -231,6 +225,7 @@ class converter:
             filename, rd, source, threaded),
               0)
         self.fn = filename
+        self.progress = progress
         self.rh = MastercookXMLHandler(rd, source=source, progress=progress)
         self.threaded=threaded
         self.terminate=self.rh.terminate
@@ -246,6 +241,7 @@ class converter:
         # since encoding type errors show up only after we've started
         # importing, we're going to go ahead and clean up all mastercook
         # files, even though some of them may not be fubared :)
+        self.progress(0.03, _("Tidying up XML"))
         cleaner = Mx2Cleaner()
         base,ext=os.path.splitext(self.fn)
         cleanfn = base + ".gourmetcleaned" + ext
@@ -253,6 +249,7 @@ class converter:
         debug('Cleaned up file saved to %s'%cleanfn,1)
         self.orig_fn = self.fn
         self.fn = cleanfn
+        self.progress(0.06, _("Beginning import"))
         self.parse = xml.sax.parse(self.fn,self.rh)
         # call import.import's cleanup functions
         self.rh.run()
