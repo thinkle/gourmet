@@ -782,7 +782,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             label+=string.join(map(ing_string,ings),"\n")
             if g: label += "\n"
         if label:
-            self.ingredientsDisplay.set_text(label)
+            self.ingredientsDisplay.set_text(xml.sax.saxutils.escape(label))
             self.ingredientsDisplay.set_use_markup(True)
             self.ingredientsDisplay.show()
             self.ingredientsDisplayLabel.show()
