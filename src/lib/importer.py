@@ -75,8 +75,9 @@ class importer:
             self.rec=dict
         else:
             self.rec = {}
-        if not self.rec.has_key('id'):
-            self.rec['id']=self.rd.new_id(base)
+        #if not self.rec.has_key('id'):
+        # always create a new ID
+        self.rec['id']=self.rd.new_id(base)
         debug('New Import\'s ID=%s'%self.rec['id'],0)
         timeaction.end()
 

@@ -71,7 +71,7 @@ class PangoBuffer (gtk.TextBuffer):
         font,lang,attrs = self.attrIter.get_font()
         tags = self.get_tags_from_attrs(font,lang,attrs)        
         text = self.txt[range[0]:range[1]]
-        print 'tags for text %s:'%text,[self.tag_to_markup(t) for t in tags]
+        #print 'tags for text %s:'%text,[self.tag_to_markup(t) for t in tags]
         if tags: self.insert_with_tags(self.get_end_iter(),text,*tags)
         else: self.insert_with_tags(self.get_end_iter(),text)
         
@@ -124,11 +124,11 @@ class PangoBuffer (gtk.TextBuffer):
                     #tag.set_property(prop,val)
                     mval = val
                     if self.attval_to_markup.has_key(prop):
-                        print 'converting ',prop,' in ',val
+                        #print 'converting ',prop,' in ',val
                         if self.attval_to_markup[prop].has_key(val):
                             mval = self.attval_to_markup[prop][val]
                         else:
-                            print "hmmm, didn't know what to do with value ",val
+                            debug("hmmm, didn't know what to do with value %s"%val,0)
                     key="%s%s"%(prop,val)
                     if not self.tags.has_key(key):
                         self.tags[key]=self.create_tag()
@@ -137,7 +137,7 @@ class PangoBuffer (gtk.TextBuffer):
                         self.tagdict[self.tags[key]][prop]=mval
                     tags.append(self.tags[key])
                 else:
-                    print "Don't know what to do with attr %s"%a        
+                    debug("Don't know what to do with attr %s"%a,1)
         return tags
     
     def get_tags (self):
@@ -152,7 +152,6 @@ class PangoBuffer (gtk.TextBuffer):
                         tagdict[tag].append((pos,pos))
                 else:
                     tagdict[tag]=[(pos,pos)]
-        print tagdict
         return tagdict
 
     def get_text (self, start=None, end=None, include_hidden_chars=True):
@@ -176,13 +175,11 @@ class PangoBuffer (gtk.TextBuffer):
         eoffset = end.get_offset()
         cut_indices = filter(lambda i: eoffset >= i >= soffset, cut_indices)
         for c in cut_indices:
-            #print 'cut',c
             if not last_pos==c:
                 outbuff += xml.sax.saxutils.escape(txt[last_pos:c])
                 last_pos = c
             for tag in cuts[c]:
                 outbuff += tag
-            #print 'outbuff: ',outbuff
         outbuff += xml.sax.saxutils.escape(txt[last_pos:])
         return outbuff
 
@@ -191,7 +188,6 @@ class PangoBuffer (gtk.TextBuffer):
         for k,v in self.tagdict[tag].items():
             stag += ' %s="%s"'%(k,v)
         stag += ">"
-        #print 'converted tag %s to '%tag,stag
         return stag,"</span>"
 
     def fontdesc_to_attrs (self,font):
@@ -199,7 +195,6 @@ class PangoBuffer (gtk.TextBuffer):
         attrs = []
         for n in nicks:
             if self.desc_to_attr_table.has_key(n):
-                #print 'attributeifying %s'%n
                 Attr,norm = self.desc_to_attr_table[n]
                 # create an attribute with our current value
                 attrs.append(Attr(getattr(font,'get_%s'%n)()))
@@ -216,7 +211,6 @@ class PangoBuffer (gtk.TextBuffer):
             hexfrag = hex(getattr(color,col)/(16*16)).split("x")[1]
             if len(hexfrag)<2: hexfrag = "0" + hexfrag
             hexstring += hexfrag
-        #print 'returning hexstring: ',hexstring            
         return hexstring
         
     def apply_font_and_attrs (self, font, attrs):
@@ -298,26 +292,18 @@ class InteractivePangoBuffer (PangoBuffer):
         return widg.connect('toggled',self._toggle,tags)
 
     def _toggle (self, widget, tags):
-        #print '_toggle called'
         if self.internal_toggle: return
-        #print 'not internal'
         if widget.get_active():
-            #print 'applying'
             for t in tags: self.apply_tag_to_selection(t)
         else:
-            #print 'removing'
             for t in tags: self.remove_tag_from_selection(t)
 
     def _mark_set_cb (self, buffer, iter, mark, *params):
-        #print '_mark_set_cb'
         if mark==self.insert:
-            #print 'insert moved!', self.tag_widgets
             for tags,widg in self.tag_widgets.items():
                 active = True
                 for t in tags:
-                    #print 'testing tag',t
                     if not iter.has_tag(t):
-                        #print "iter doesn't have tag %s!"%t
                         active=False
                 self.internal_toggle=True
                 widg.set_active(active)

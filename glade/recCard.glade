@@ -2006,7 +2006,7 @@
 				  <property name="snap_to_ticks">False</property>
 				  <property name="wrap">False</property>
 				  <property name="adjustment">1 1 100 1 10 10</property>
-				  <signal name="changed" handler="servingsChange" after="yes" last_modification_time="Sat, 10 Apr 2004 22:09:38 GMT"/>
+				  <signal name="changed" handler="rcEdited" last_modification_time="Thu, 24 Feb 2005 04:26:52 GMT"/>
 				</widget>
 				<packing>
 				  <property name="left_attach">1</property>

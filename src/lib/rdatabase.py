@@ -256,9 +256,8 @@ class RecData:
         t = TimeAction('rdatabase.add_rec - checking keys',3)
         if not rdict.has_key('deleted'):
             rdict['deleted']=0
-        #if not rdict.has_key('id'):
-        # always create a new ID
-        rdict['id']=self.new_id()
+        if not rdict.has_key('id'):
+            rdict['id']=self.new_id()
         t.end()
         try:
             debug('Adding recipe %s'%rdict, 4)
@@ -326,11 +325,11 @@ class RecData:
         debug('add_ing ingdict=%s'%ingdict,5)
         self.changed=True        
         debug('adding to iview %s'%ingdict,3)
-        timer = TimeAction('rmetakit.add_ing 2',0)
+        timer = TimeAction('rdatabase.add_ing 2',0)
         self.iview.append(ingdict)
         timer.end()
         debug('running ing hooks %s'%self.add_ing_hooks,3)
-        timer = TimeAction('rmetakit.add_ing 3',0)
+        timer = TimeAction('rdatabase.add_ing 3',0)
         if self.add_ing_hooks: self.run_hooks(self.add_ing_hooks, self.iview[-1])
         timer.end()
         debug('done with ing hooks',3)
@@ -366,20 +365,16 @@ class RecData:
             self.add_ing(ingd)
 
     def undoable_delete_ings (self, ings, history, make_visible=None):
-        for i in ings: print i.item,i.deleted
         def do_delete():
             for i in ings:
                 i.deleted=True
-                print i.deleted
             if make_visible:
-                print 'making visible!'
                 make_visible(ings)
         def undo_delete ():
             for i in ings: i.deleted=False
             if make_visible: make_visible(ings)
         obj = Undo.UndoableObject(do_delete,undo_delete,history)
         obj.perform()
-        for i in ings: print i.item,i.deleted
 
     def delete_ing (self, ing):
         raise NotImplementedError
