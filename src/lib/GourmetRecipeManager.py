@@ -1088,9 +1088,12 @@ def startGUI ():
     gt.gtk_leave()
               
 if __name__ == '__main__':
-    import profile, tempfile,os.path
-    profi = os.path.join(tempfile.tempdir,'GOURMET_PROFILE')
-    profile.run('startGUI()',profi)
-    import pstats
-    p=pstats.Stats(profi)
-    p.strip_dirs().sort_stats('cumulative').print_stats()
+    if os.name!='nt':
+        import profile, tempfile,os.path
+        profi = os.path.join(tempfile.tempdir,'GOURMET_PROFILE')
+        profile.run('startGUI()',profi)
+        import pstats
+        p=pstats.Stats(profi)
+        p.strip_dirs().sort_stats('cumulative').print_stats()
+    else:
+        startGui()
