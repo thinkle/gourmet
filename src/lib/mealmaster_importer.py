@@ -101,6 +101,11 @@ class mmf_importer (importer.importer):
         self.ing_opt_matcher = re.compile("(.+?)\s*\(?\s*[Oo]ptional\)?\s*$")
         self.ing_or_matcher = re.compile("^[- ]*[Oo][Rr][- ]*$")
         self.variation_matcher = re.compile("^\s*([Vv][Aa][Rr][Ii][Aa][Tt][Ii][Oo][Nn]|[Hh][Ii][Nn][Tt]|[Nn][Oo][Tt][Ee])[Ss]?:.*")
+        # out unwrap regexp looks for a line with no meaningful characters, or a line that starts in
+        # ALLCAPS or a line that is only space. (we use this with .split() to break text up into
+        # paragraph breaks.
+        self.unwrap_matcher = re.compile('\n\W*\n')
+        self.find_header_breaks_matcher = re.compile('\s(?=[A-Z][A-Z][A-Z]+:.*)')
         # a crude ingredient matcher -- we look for two numbers, intermingled with spaces
         # followed by a space or more, followed by a two digit unit (or spaces)
         self.ing_num_matcher = re.compile("^\s*[0-9]+[0-9/ -]+\s+[A-Za-z ][A-Za-z ] .*")
@@ -201,7 +206,6 @@ class mmf_importer (importer.importer):
         if len(l) >= 7 and self.blank_matcher.match(l[0:5]):
             testtimer.end()
             return True
-
         
     def new_rec (self):
         testtimer = TimeAction('mealmaster_importer.new_rec',10)
@@ -220,16 +224,13 @@ class mmf_importer (importer.importer):
         self.ingrs=[]
         self.header=False
         testtimer.end()
-        
+
     def commit_rec (self):
         testtimer = TimeAction('mealmaster_importer.commit_rec',10)
         if self.committed: return
         debug("start _commit_rec",5)
-        #unwrap lines
-        ll=re.split('\n\s*\n',self.instr)
-        self.instr=string.join(ll,'GOURMETS_UGLY_HACK')
-        self.instr=self.instr.replace('\n',' ')
-        self.instr=self.instr.replace('GOURMETS_UGLY_HACK','\n')
+        self.instr = self.unwrap_lines(self.instr)
+        self.mod = self.unwrap_lines(self.mod)
         self.rec['instructions']=self.instr
         if self.mod:
             self.rec['modifications']=self.mod
@@ -241,6 +242,26 @@ class mmf_importer (importer.importer):
         self.committed = True
         testtimer.end()
         
+    def unwrap_lines (self, blob):
+        if not blob or not blob.strip(): return ""
+        #unwrap lines
+        blob += "\n" # add a newline to make our regexp happy
+        blob = string.join(self.find_header_breaks_matcher.split(blob),'GOURMETS_UGLY_HACK')
+        ll=self.unwrap_matcher.split(blob)
+        if ll:
+            # somehow re.split can return None in the midst of a list...
+            # so we'd better filter out any Nones before calling string.join
+            ll=filter(lambda x: type(x)==str, ll) 
+            blob=string.join(ll,'GOURMETS_UGLY_HACK')
+            blob=blob.replace('\n',' ')
+            while blob.find("  ") >= 0:
+                blob=blob.replace('  ',' ') #get rid of extra spaces we created
+            blob=blob.replace('GOURMETS_UGLY_HACK','\n\n')
+        else:
+            blob = blob.replace('\n',' ')
+            blob = blob[0:-1] # remove that extra newline we added
+        return blob
+
     def handle_group (self, groupm):
         testtimer = TimeAction('mealmaster_importer.handle_group',10)
         debug("start handle_group",10)
@@ -266,11 +287,14 @@ class mmf_importer (importer.importer):
         if aindex != None:
             fields = fields[aindex+1:]
             fields_is_numfield = fields_is_numfield[aindex+1:]
-        ufield = self.find_unit_field(fields,fields_is_numfield)
+        ufield = fields and self.find_unit_field(fields,fields_is_numfield)
         if ufield:
             fields = fields[1:]
             fields_is_numfield = fields_is_numfield[1:]
-        ifield = [fields[0][0],None]
+        if fields:
+            ifield = [fields[0][0],None]
+        else:
+            ifield = 0,None
         retval = [[afield,ufield,ifield]]
         sec_col_fields = filter(lambda x: x[0]>self.two_col_minimum,fields)        
         if sec_col_fields:
@@ -329,7 +353,7 @@ class mmf_importer (importer.importer):
         testtimer = TimeAction('mealmaster_importer.find_ing_fields_old',10)
         debug("start find_ing_fields",7)
         all_ings = [i[0] for i in self.ingrs]
-        fields = find_fields(all_ings) 
+        fields = find_fields(all_ings)
         a = []
         while fields and field_match(all_ings,fields[0],
                                      self.amt_field_matcher):
@@ -387,7 +411,7 @@ class mmf_importer (importer.importer):
                     self.add_item(item)
                     debug("committing ing: %s"%self.ing,6)
                     self.commit_ing()
-                    testtimer.end()
+        testtimer.end()
                     
     def add_unit (self, unit):
         testtimer = TimeAction('mealmaster_importer.add_unit',10)
@@ -461,6 +485,7 @@ def field_width (tuple):
 def find_fields (strings, char=" "):
     testtimer = TimeAction('mealmaster_importer.find_fields',10)
     cols = find_columns(strings, char)
+    if not cols: return []
     cols.reverse()
     fields = []
     lens = map(len,strings)
