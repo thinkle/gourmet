@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
-import rxml_to_metakit, rmetakit, convert, exporter, shopgui, GourmetRecipeManager
+import rxml_to_metakit, rmetakit, convert, exporter, shopgui, GourmetRecipeManager, TextBufferMarkup
 from recindex import RecIndex
 import prefs, WidgetSaver, timeEntry, Undo
 import keymanager
@@ -13,6 +13,21 @@ from gdebug import *
 from gglobals import *
 from gettext import gettext as _
 
+class ToggleActionWithSeparators (gtk.ToggleAction):
+    def __init__ (self, *args, **kwargs):
+        self.separators = []
+        gtk.ToggleAction.__init__(self,*args,**kwargs)
+
+    def add_separator (self, separator_widget):
+        self.separators.append(separator_widget)
+
+    def set_visible (self, *args, **kwargs):
+        gtk.ToggleAction.set_visible(self,*args,**kwargs)
+        if self.is_visible():
+            for s in self.separators: s.set_visible(True)
+        else:
+            for s in self.separators: s.set_visible(False)
+            
 class ActionWithSeparators (gtk.Action):
     def __init__ (self, *args, **kwargs):
         self.separators = []
@@ -66,7 +81,17 @@ class ActionManager:
                     params['stock-id']=stockid
                 if not params.has_key('tooltip'):
                     params['tooltip']=''
-                act = ActionWithSeparators(n,params['label'],params['tooltip'],params['stock-id'])
+                widg = self.gladeobj.get_widget(widgets[0])
+                print "WIDGET=",widg
+                try:
+                    temp_connection=widg.connect('toggled',lambda *args: False)
+                    widg.disconnect(temp_connection)                    
+                except TypeError: #unknown signal name (i.e. not a toggle)
+                    print 'RegularAction2'
+                    act = ActionWithSeparators(n,params['label'],params['tooltip'],params['stock-id'])
+                else:
+                    print 'ToggleAction2'
+                    act = ToggleActionWithSeparators(n,params['label'],params['tooltip'],params['stock-id'])
                 if params.has_key('separators'):
                     print 'params[separators]=',params['separators']
                     if type(params['separators']==str): params['separators']=[params['separators']]
@@ -91,6 +116,7 @@ class ActionManager:
 class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def __init__ (self, RecGui, recipe=None):
         debug("RecCard.__init__ (self, RecGui):",5)
+        self.setup_defaults()
         t=TimeAction('RecCard.__init__ 1',0)
         self.mult=1
         #gtk.glade.set_custom_widget_callbacks(locals())
@@ -119,7 +145,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             gtk.idle_add(self.notebookChangeCB)
         self.notebook.connect('switch-page',hackish_notebook_switcher_handler)
         self.notebook.set_current_page(0)
-        self.notebookChangeCB()        
+        self.page_specific_handlers = []
+        self.notebookChangeCB()
         self.create_ingTree()
         self.selection=gtk.TRUE
         self.selection_changed()
@@ -175,7 +202,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def setup_defaults (self):
         self.mult = 1
-        self.serves = float(self.serveW.get_text())
+        #self.serves = float(self.serveW.get_text())
         self.default_title = _("Recipe Card: ")
 
     def get_widgets (self):
@@ -211,8 +238,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             (['preptimeLabel','preptimeBox'],'Preperation Time'),
             (['ratingLabel','ratingBox'],'Rating'),
             (['sourceLabel','sourceBox'],'Source'),
-            (['instrExp'],'Instructions'),
-            (['modExp'],'Modifications'),
+            #(['instrExp'],'Instructions'),
+            #(['modExp'],'Modifications'),
             ],
             basename='rc_hide_')
         t.end()
@@ -286,7 +313,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         # for editText stuff is not yet implemented!
         # it appears it will be quite a pain to implement as well, alas!
         # see bug 59390: http://bugzilla.gnome.org/show_bug.cgi?id=59390
-        self.editTextItems.set_visible(False)
+        #self.editTextItems.set_visible(False)
         self.genericEdit.set_visible(False)
         import sets
         self.notebook_changeable_actions = sets.Set()
@@ -297,6 +324,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def notebookChangeCB (self, *args):
         page=self.notebook.get_current_page()
         self.history.switch_context(page)
+        while self.page_specific_handlers:
+            w,s = self.page_specific_handlers.pop()
+            w.disconnect(s)
         debug('notebook changed to page: %s'%page,0)
         if self.notebook_pages.has_key(page):
             page=self.notebook_pages[page]
@@ -310,7 +340,19 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 if actionGroup in self.notebook_page_actions[page]: debug('showing actionGroup %s'%actionGroup,0)
             else:
                 getattr(self,actionGroup).set_visible(False)
-                
+        if 'instructions'==page:
+            buf = self.rw['instructions'].get_buffer()
+            c1=buf.setup_widget_from_pango(self.bold, '<b>bold</b>')
+            c2=buf.setup_widget_from_pango(self.italic, '<i>ital</i>')
+            c3=buf.setup_widget_from_pango(self.underline, '<u>underline</u>')
+            self.page_specific_handlers = [(buf,c1),(buf,c2),(buf,c3)]
+        if 'modifications'==page:
+            buf = self.rw['modifications'].get_buffer()
+            c1=buf.setup_widget_from_pango(self.bold, '<b>bold</b>')
+            c2=buf.setup_widget_from_pango(self.italic, '<i>ital</i>')
+            c3=buf.setup_widget_from_pango(self.underline, '<u>underline</u>')
+            self.page_specific_handlers = [(buf,c1),(buf,c2),(buf,c3)]
+
     def multTogCB (self, w, *args):
         debug("multTogCB (self, w, *args):",5)
         return
@@ -367,7 +409,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def saveEditsCB (self, click=None, click2=None, click3=None):
         debug("saveEditsCB (self, click=None, click2=None, click3=None):",5)
-        self.rg.message("Committing edits! (You still need to save changes to make these changes permanent)")
+        self.rg.message("Committing edits!")
         newdict = {'id': self.current_rec.id}
         for c in self.reccom:
             newdict[c]=self.rw[c].entry.get_text()
@@ -397,7 +439,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.widget.set_title("%s %s"%(self.default_title,self.current_rec.title))
             self.rg.updateViewMenu()
         
-            
     def delete (self, *args):
         debug("delete (self, *args):",2)
         self.rg.delete_rec(self.current_rec)
@@ -428,14 +469,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         
     def initRecipeWidgets (self):
         debug("initRecipeWidgets (self):",5)
-        #self.expanders = {'instructions':self.glade.get_widget('instrExp'),
-        #                   'modifications':self.glade.get_widget('modExp'),
-        #                  'attributes':self.glade.get_widget('detExp'),
-        #                  'ingredients':self.glade.get_widget('ingExp'),
-        #                  'ieExpander':self.glade.get_widget('ieExpander')}
         self.rw = {}
         self.recent = []
-        self.reccom = []
+        self.reccom = []        
         for a,l,w in REC_ATTRS:
             if w=='Entry': self.recent.append(a)
             elif w=='Combo': self.reccom.append(a)
@@ -448,7 +484,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.rw[a]=self.glade.get_widget("%sBox"%a)            
         for t in self.rectexts:
             self.rw[t]=self.glade.get_widget("%sText"%t)
-            self.rw[t].get_buffer().connect('changed',self.changedCB)
+            buf = TextBufferMarkup.InteractivePangoBuffer()
+            self.rw[t].set_buffer(buf)
+            buf.connect('changed',self.changedCB)        
 
     def newRecipeCB (self, *args):
         debug("newRecipeCB (self, *args):",5)
@@ -684,6 +722,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 if attval:
                     debug('showing attribute %s = %s'%(attr,attval),0)
                     widg.set_text("%s"%attval)
+                    widg.set_use_markup(True)
                     widg.show()
                     widgLab.show()
                 else:
