@@ -13,7 +13,8 @@ if options.gourmetdir:
     debug("User specified gourmetdir %s"%gourmetdir,0)
 else:
     if os.name =='nt':
-        gourmetdir = os.path.join(os.path.expanduser('~'),'Application Data','gourmet')
+        # default to APPDATA, if available. If not, use ~/Application Data/gourmet/
+        gourmetdir = os.path.join(os.environ.get('APPDATA', os.path.join(os.path.expanduser('~'),'Application Data')), 'gourmet')
     else:
         gourmetdir = os.path.join(os.path.expanduser('~'),'.gourmet')
 try:

@@ -42,14 +42,32 @@ class mmf_constants:
 
 mmf=mmf_constants()
 class mmf_importer (importer.importer):
+
+    """Mealmaster(tm) importer class. We read in a text file a line at a time
+    and parse attributes/ingredients/instructions as best we can.
+
+    We're following, more or less, the specs laid out here
+    <http://phprecipebook.sourceforge.net/docs/MM_SPEC.DOC>
+
+    The problem with Mealmaster(tm) files is that they rarely conform
+    to the above spec.  So, we are a bit more flexible -- we can
+    handle one or two columns of ingredients for example. However,
+    it's hard to handle all cases. Also, mealmaster (as described in
+    the above spec) allows for essentially a continuous flow of text
+    with ingredient and text blocks interspersed. Gourmet separates
+    out the ingredients from the instructions, which means that we
+    have to change the presentation of mealmaster files when they
+    intersperse instructions and ingredients.
+    """
+    
     def __init__ (self,rd,filename='Data/mealmaster.mmf',
                   progress=None, source=None,threaded=True,
                   two_col_minimum=38):
-        testtimer = TimeAction('mealmaster_importer.__init__',10)
-        debug("mmf_importer start  __init__ ",5)
         """filename is the file to parse. rd is the recData instance
         to start with.  progress is a function we tell about our
         progress to (we hand it a single arg)."""
+        testtimer = TimeAction('mealmaster_importer.__init__',10)
+        debug("mmf_importer start  __init__ ",5)
         self.rec={}
         self.source=source
         self.header=False
@@ -107,7 +125,7 @@ class mmf_importer (importer.importer):
         # ALLCAPS or a line that is only space. (we use this with .split() to break text up into
         # paragraph breaks.
         self.unwrap_matcher = re.compile('\n\W*\n')
-        self.find_header_breaks_matcher = re.compile('\s(?=[A-Z][A-Z][A-Z]+:.*)')
+        self.find_header_breaks_matcher = re.compile('\s+(?=[A-Z][A-Z][A-Z]+:.*)')
         # a crude ingredient matcher -- we look for two numbers, intermingled with spaces
         # followed by a space or more, followed by a two digit unit (or spaces)
         self.ing_num_matcher = re.compile("^\s*[0-9]+[0-9/ -]+\s+[A-Za-z ][A-Za-z ] .*")
@@ -122,15 +140,19 @@ class mmf_importer (importer.importer):
         testtimer.end()
         
     def handle_line (self,l):
-        testtimer = TimeAction('mealmaster_importer.handle_line',10)
+
         """We're quite loose at handling mealmaster files. We look at
-        each line and determine what it is most likely to be: ingredients
-        and instructions can be intermingled: instructions will simply be
-        added to the instructions and ingredients to the ingredient list.
-        This may result in loss of information (for instructions that specifically
-        follow ingredients) or in mis-parsing (for instructions that look like
-        ingredients). But we're following, more or less, the specs laid out
-        here <http://phprecipebook.sourceforge.net/docs/MM_SPEC.DOC>"""
+        each line and determine what it is most likely to be:
+        ingredients and instructions can be intermingled: instructions
+        will simply be added to the instructions and ingredients to
+        the ingredient list.  This may result in loss of information
+        (for instructions that specifically follow ingredients) or in
+        mis-parsing (for instructions that look like ingredients). But
+        we're following, more or less, the specs laid out here
+        <http://phprecipebook.sourceforge.net/docs/MM_SPEC.DOC>"""
+        
+        debug('yes, we\'re running my code... DELETE ME %s'%l,0)
+        testtimer =TimeAction('mealmaster_importer.handle_line',10)
         debug("start handle_line",10)
         gt.gtk_update()
         if self.start_matcher.match(l):
@@ -140,26 +162,24 @@ class mmf_importer (importer.importer):
             self.in_variation = False
             return
         if self.end_matcher.match(l):
-            debug("recipe end %s"%l,4)            
+            debug("recipe end %s"%l,4)
             self.commit_rec()
-            self.last_line_was = 'end_rec'            
+            self.last_line_was = 'end_rec'
             return
         groupm = self.group_matcher.match(l)
         if groupm:
-            debug("new group %s"%l,4)            
+            debug("new group %s"%l,4)
             self.handle_group(groupm)
             self.last_line_was = 'group'
             return
         attrm = self.attr_matcher.match(l)
-        if attrm:        
-            # a match for an attribute has two groups,
-            # (ATTRIBUTE): (VALUE)
+        if attrm:
+            debug('Found attribute in %s'%l,4)
             attr,val = attrm.groups()
-            debug("attribute %s (%s:%s)"%(l,attr,val),4)
+            debug("Writing attribute, %s=%s"%(attr,val),4)
             self.rec[mmf.recattrs[attr]]=val.strip()
             self.last_line_was = 'attr'
             return
-
         if not self.instr and self.blank_matcher.match(l):
             debug('ignoring blank line before instructions',4)
             self.last_line_was = 'blank'
@@ -168,6 +188,7 @@ class mmf_importer (importer.importer):
             debug('in variation',4)
             self.in_variation = True
         if self.is_ingredient(l) and not self.in_variation:
+            debug('in ingredient',4)
             contm = self.ing_cont_matcher.match(l)
             if contm:
                 # only continuations after ingredients are ingredients
@@ -196,12 +217,12 @@ class mmf_importer (importer.importer):
                 testtimer.end()
                 
     def is_ingredient (self, l):
-        testtimer = TimeAction('mealmaster_importer.is_ingredient',10)
         """We're going to go with a somewhat hackish approach
         here. Once we have the ingredient list, we can determine
         columns more appropriately.  For now, we'll assume that a
         field that starts with at least 5 blanks (the specs suggest 7)
         or a field that begins with a numeric value is an ingredient"""
+        testtimer = TimeAction('mealmaster_importer.is_ingredient',10)
         if self.ing_num_matcher.match(l):
             testtimer.end()
             return True
@@ -246,25 +267,37 @@ class mmf_importer (importer.importer):
         testtimer.end()
         
     def unwrap_lines (self, blob):
-        if not blob or not blob.strip(): return ""
-        #unwrap lines
-        blob += "\n" # add a newline to make our regexp happy
-        blob = string.join(self.find_header_breaks_matcher.split(blob),'GOURMETS_UGLY_HACK')
-        ll=self.unwrap_matcher.split(blob)
-        if ll:
-            # somehow re.split can return None in the midst of a list...
-            # so we'd better filter out any Nones before calling string.join
-            ll=filter(lambda x: type(x)==str, ll) 
-            blob=string.join(ll,'GOURMETS_UGLY_HACK')
-            blob=blob.replace('\n',' ')
-            while blob.find("  ") >= 0:
-                blob=blob.replace('  ',' ') #get rid of extra spaces we created
-            blob=blob.replace('GOURMETS_UGLY_HACK','\n\n')
-        else:
-            blob = blob.replace('\n',' ')
-            blob = blob[0:-1] # remove that extra newline we added
-        return blob
-
+        outblob = ""
+        newline = True
+        for l in blob.split('\n'):
+            # if we have a non-word character at the start of the line,
+            # we assume we need to keep the newline.
+            if len(l)>=3 and re.match('(\W|[0-9])',l[3]):
+                outblob += "\n"
+                outblob += l
+                newline = False
+                continue
+            # if we are continuing an old line, we add a space
+            # (because we're generally stripping all spaces when
+            # we write)
+            if not newline: outblob += " "            
+            hmatch = self.find_header_breaks_matcher.search(l)
+            if hmatch:
+                # if there's a header in the middle, we go ahead
+                # and start a new line
+                outblob += l[:hmatch.start()]
+                outblob += "\n"
+                outblob += l[hmatch.start():]
+                continue
+            #else...
+            outblob += l.strip()
+            if len(l) < 60: #60 is our hard-coded end-o-paragraph length
+                outblob += "\n"
+                newline = True
+            else:
+                newline = False
+        return outblob
+            
     def handle_group (self, groupm):
         testtimer = TimeAction('mealmaster_importer.handle_group',10)
         debug("start handle_group",10)
@@ -278,7 +311,6 @@ class mmf_importer (importer.importer):
         # a blank line before a group could fool us into thinking
         # we were in instructions. If we see a group heading,
         # we know that's not the case!
-
 
     def find_ing_fields (self):
         testtimer = TimeAction('mealmaster_importer.find_ing_fields',10)
@@ -332,7 +364,6 @@ class mmf_importer (importer.importer):
             testtimer.end()
             return fields[0]
         testtimer.end()
-
         
     def find_amt_field (self, fields, fields_is_numfield):
         testtimer = TimeAction('mealmaster_importer.find_amt_field',10)
@@ -351,7 +382,6 @@ class mmf_importer (importer.importer):
         testtimer.end()
         return aindex, afield
 
-    
     def find_ing_fields_old (self):
         testtimer = TimeAction('mealmaster_importer.find_ing_fields_old',10)
         debug("start find_ing_fields",7)
@@ -379,7 +409,6 @@ class mmf_importer (importer.importer):
         testtimer.end()
         return a,u,i
 
-    
     def add_item (self, item):
         testtimer = TimeAction('mealmaster_importer.add_item',10)
         self.ing['item']=item.strip()
@@ -537,7 +566,8 @@ if __name__ == '__main__':
     print 'Testing mealmaster import'
     tmpfile = tempfile.mktemp()
     import backends.rmetakit
-    rd = rmetakit.RecipeManager(tmpfile)
+    rd = recipeManager.RecipeManager(tmpfile)
     if not args: args = ['/home/tom/Projects/recipe/Data/200_Recipes.mmf']
     for a in args:
         profile.run("mmf_importer(rd,a,progress=lambda *args: sys.stdout.write('|'),threaded=False)")
+    

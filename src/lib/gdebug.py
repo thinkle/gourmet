@@ -32,13 +32,18 @@ class TimeAction:
             self.name = name            
             self.start = time.time()
 
-    def end (self):        
-        if self.level <= debug_level:            
+    def end (self):   
+        if self.level <= debug_level:
             end = time.time()
             t=end-self.start
-            print "DEBUG: %s TOOK %s SECONDS"%(self.name,t)
-            if not timers.has_key(self.name): timers[self.name]=[t]
-            else: timers[self.name].append(t)
+            # grab our location
+            caller=traceback.extract_stack()[-2]
+            finame=caller[0]
+            line = caller[1]
+            if not options.debug_file or debug_file.search(finame):
+                print "DEBUG: %s TOOK %s SECONDS"%(self.name,t)
+                if not timers.has_key(self.name): timers[self.name]=[t]
+                else: timers[self.name].append(t)
 
 
 def print_timer_info ():

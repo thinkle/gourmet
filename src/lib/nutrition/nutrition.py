@@ -20,8 +20,8 @@ class nutritionData:
                                       density=self.get_density(key,row)
                                       )
         if cnv:
-            print 'returning conversion factory ',cnv
-            return 0.01/float(cnv)
+            print 'returning conversion factory ',(.01*amt)/cnv
+            return (0.01*amt)/cnv
         else:
             return None
 

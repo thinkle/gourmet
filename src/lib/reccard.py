@@ -2065,7 +2065,7 @@ class RecSelector (RecIndex):
         self.glade.signal_connect('cancel',self.cancel)
         self.glade.signal_connect('ok',self.ok)        
         self.rg=RecGui
-        self.rc=RecCard
+        self.reccard=RecCard
         self.dialog = self.glade.get_widget('recDialog')
         RecIndex.__init__(self, self.rg.rmodel, self.glade, self.rg.rd,
                           self.rg)
@@ -2079,11 +2079,11 @@ class RecSelector (RecIndex):
 
     def ok (self,*args):
         debug('ok',0)
-        pre_iter=self.rc.getSelectedIter()
+        pre_iter=self.reccard.getSelectedIter()
         try:
-            self.rc.pre_modify_tree()
+            self.reccard.pre_modify_tree()
             for rec in self.recTreeSelectedRecs():
-                if rec.id == self.rc.current_rec.id:
+                if rec.id == self.reccard.current_rec.id:
                     de.show_message(label=_("Recipe cannot call itself as an ingredient!"),
                                     sublabel=_('Infinite recursion is not allowed in recipes!')
                                     )
@@ -2092,16 +2092,16 @@ class RecSelector (RecIndex):
                         'unit':'recipe',
                         'item':rec.title,
                         'refid':rec.id,
-                        'id':self.rc.current_rec.id,}
+                        'id':self.reccard.current_rec.id,}
                 debug('adding ing: %s'%ingdic,5)
                 i=self.rg.rd.add_ing(ingdic)
-                iter=self.rc.add_ingredient(self.rc.imodel,i,
-                                            mult=self.rc.mult,
+                iter=self.reccard.add_ingredient(self.reccard.imodel,i,
+                                            mult=self.reccard.mult,
                                             group_iter=pre_iter)
-                path=self.rc.imodel.get_path(iter)
-                self.rc.ss.add_selection(iter)
-            self.rc.post_modify_tree()
-            self.rc.commit_positions()
+                path=self.reccard.imodel.get_path(iter)
+                self.reccard.ss.add_selection(iter)
+            self.reccard.post_modify_tree()
+            self.reccard.commit_positions()
             self.quit()
         except:
             de.show_message(label=_("You haven't selected any recipes!"))

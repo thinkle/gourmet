@@ -4,6 +4,7 @@ import gtk, re
 import parser_data
 import gourmet.cb_extras as cb
 import gourmet.dialog_extras as de
+from gettext import gettext as _
 from gourmet.gdebug import *
 
 class NutritionModel (gtk.TreeStore):
@@ -85,8 +86,10 @@ class SimpleIngredientCalculator (de.mDialog):
         self.vbox.add(self.hbb)
         self.amtBox = gtk.SpinButton()
         self.amtBox.set_range(0.075,5000)
+        self.amtBox.set_increments(0.5,5)
         self.amtBox.set_sensitive(True)
         self.amtBox.set_value(1)
+        self.amtBox.connect('changed',self.nutBoxCB)
         self.unitBox = gtk.ComboBox()
         self.unitBox.set_model(self.umodel)
         cell = gtk.CellRendererText()
@@ -117,14 +120,17 @@ class SimpleIngredientCalculator (de.mDialog):
             float(self.amtBox.get_value()),
             cb.cb_get_active_text(self.unitBox),
             self.itmBox.get_text(),
-            row)
+            row)        
+        myfields = filter(lambda x: x[1] in self.fields, parser_data.NUTRITION_FIELDS)
         lab = ""
-        if conversion:
-            for f in self.fields:
-                lab += "\n%s %s"%(getattr(row,f)*conversion,f)
-        else:
-            for f in self.fields:
-                lab += "\n%s %s / 100g"%(getattr(row,f),f)
+        for ln,f,typ in myfields:
+            amt = getattr(row,f)
+            if f in parser_data.PER_100_GRAMS:
+                if conversion:
+                    amt = "%s"%(amt * conversion)
+                else:
+                    amt = "%s/%s"%(amt,_('100 grams'))
+            lab += "\n%s: %s"%(ln,amt)
         self.nutLabel.set_text(lab)
         
     def updateCombo (self, *args):

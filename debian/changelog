@@ -1,3 +1,9 @@
+gourmet (0.8.1-1) unstable; urgency=low
+
+  * Fix minor mealmaster import glitches.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 9 March 2005 21:50:00 -0500
+
 gourmet (0.8.0-4) unstable; urgency=low
 
   * Fix broken shopping window. This is the first stable 0.8.0 release.

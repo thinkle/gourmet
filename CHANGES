@@ -1,3 +1,8 @@
+==== Version 0.8.1 Changes from 0.8.0 ===
+* Fixed Windows Application Directory
+* Fixed import of "servings" in Mealmaster import
+* Fixed line-unwrapping code in Mealmaster import
+
 ==== Version 0.8.0 Changes from 0.7.1 ===
 Miscellaneous
 * Undo introduced across the board.

@@ -160,6 +160,12 @@ class RecGui (RecIndex):
         if self.rc.has_key(id):
             del self.rc[id]
         self.updateViewMenu()
+
+    def update_reccards (self, rec):
+        if self.rc.has_key(rec.id):
+            rc=self.rc[rec.id]
+            rc.updateRecipe(rec,show=False)
+            self.updateViewMenu()
         
     def viewMenu (self):
         """Build a _View menu based on recipes currently
@@ -498,7 +504,9 @@ class RecGui (RecIndex):
         self.recTreeDeleteRec()
 
     def recTreeDeleteRec (self, *args):
-        mod,rr=self.rectree.get_selection().get_selected_rows()
+        sel=self.rectree.get_selection()
+        if not sel: return
+        mod,rr=sel.get_selected_rows()
         recs = [mod[path][0] for path in rr]
         self.rd.undoable_delete_recs(
             recs,
@@ -1017,7 +1025,9 @@ class RecTrash (RecIndex):
                             )
             return
         debug("recTreeDeleteRec (self, *args):",5)
-        mod,rr=self.rectree.get_selection().get_selected_rows()
+        sel = self.rectree.get_selection()
+        if not sel: return
+        mod,rr=sel.get_selected_rows()
         recs = map(lambda path: mod[path][0],rr)
         self.rg.recTreePurge(recs,rr,mod)
 

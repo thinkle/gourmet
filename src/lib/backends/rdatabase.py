@@ -68,8 +68,8 @@ class RecData:
                                        ],
                                       #key='id'
                                       )
-        #self.iview_not_deleted = self.iview.select(deleted=False)
-        #self.iview_deleted = self.iview.select(deleted=True)
+        self.iview_not_deleted = self.iview.select(deleted=False)
+        self.iview_deleted = self.iview.select(deleted=True)
         self.sview = self.setup_table('shopcats',
                                       [('shopkey','char(50)'),
                                        ('category','char(200)'),

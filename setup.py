@@ -16,12 +16,12 @@ from distutils.command.install_data import install_data
 # grab the version from our new "version" module
 # first we have to extend our path to include src/lib/
 sys.path.append(os.path.join(os.path.split(__file__)[0],'src','lib'))
-print sys.path
+#print sys.path
 try:
     from version import version
 except:
     #print 'Version info may be out of date.'
-    version = "0.8.0"
+    version = "0.8.1"
 
 name= 'gourmet'
 
@@ -95,7 +95,7 @@ def data_files():
         #print pth,fn
         pth = os.path.join(base,pth)
         files.append((pth,[f]))
-    print files
+    #print files
     return files
 
 class my_install_data(install_data):
