@@ -1,4 +1,5 @@
-import rsqlite, rdatabase, os.path, gglobals
+import rsqlite, rdatabase, os.path
+from gourmet import gglobals
 from rsqlite import dbDic
 import pythonic_mysql
 

@@ -1,9 +1,9 @@
 #!/usr/bin/python
-import gtk # only needed for threading voodoo
-import keymanager, convert, time
-from gdebug import debug, TimeAction, print_timer_info
-from gglobals import gt, use_threads
-import os,stat,re
+import os,stat,re,time
+from gourmet import keymanager, convert
+from gourmet.gdebug import debug, TimeAction, print_timer_info
+from gourmet.gglobals import gt, use_threads
+
 
 class importer:
     def __init__ (self, rd, threaded=False, total=0, prog=None):

@@ -92,14 +92,37 @@ if options.gladed:
     gladebase=options.gladed
 
 # UNCOMMENT BELOW TO TEST
-#use_threads=False
-import recipeManager
-#myprefs=prefs.Prefs()
-if recipeManager.db != 'metakit':
-    print 'Not using metakit; threads disabled to avoid bugginess.'
-    use_threads = False
-else:
-    print 'Using metakit'
+use_threads=False
+import OptionParser
+if OptionParser.options.db=='metakit': db = 'metakit'
+if OptionParser.options.db=='sqlite': db = 'sqlite'
+dbargs = {}
+if not OptionParser.options.db or OptionParser.options.choosedb:
+    import prefs
+    p = prefs.Prefs()
+    db = p.get('db_backend',None)
+    if (not db) or OptionParser.options.choosedb:
+        import DatabaseChooser
+        d=DatabaseChooser.DatabaseChooser(modal=True)
+        dbdict = d.run()
+        p['db_backend']=dbdict['db_backend']
+        if dbdict.has_key('pw'): pw = dbdict['pw']
+        # if we're not supposed to store the password, we'd better not!
+        if dbdict.has_key('store_pw') and not dbdict['store_pw']:
+            del dbdict['pw']
+            p['store_pw']=dbdict['store_pw']
+        for arg in ['store_pw','db_backend']:
+            if dbdict.has_key(arg): del dbdict[arg]
+        p['dbargs'] = dbdict
+        p.save()
+    db = p.get('db_backend')
+    dbargs = p.get('dbargs')
+    if pw:
+        dbargs['pw']=pw
+
+if db != 'metakit':
+    print 'SQL database in use. Disabling threads.'
+    use_threads=False
     
 if use_threads:
     debug('using GourmetThreads',0)

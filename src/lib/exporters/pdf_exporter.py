@@ -6,7 +6,7 @@ import reportlab.lib.fonts as fonts
 import reportlab.lib.units as units
 import reportlab.lib.styles as styles
 from gettext import gettext as _
-import convert
+from gourmet import convert
 
 def write_shopping_list (shopper, recs, file, head=_('Shopping List')):
     # setup document

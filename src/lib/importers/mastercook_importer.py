@@ -1,8 +1,10 @@
 #!/usr/bin/python
-import importer, xml.sax, re, os.path
-from gdebug import debug
+import importer
+import xml.sax, re, os.path
+from gourmet.gdebug import debug
+from gourmet.gglobals import gt
 from gxml_importer import unquoteattr
-from gglobals import gt
+
 
 class Mx2Cleaner:
     def __init__ (self):

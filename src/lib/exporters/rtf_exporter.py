@@ -1,4 +1,5 @@
-import exporter, PyRTF, convert
+import exporter, PyRTF
+from gourmet import convert
 from gdebug import *
 
 class rtf_exporter_multidoc (exporter.ExporterMultirec):

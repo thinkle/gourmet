@@ -1,5 +1,5 @@
-import dialog_extras as de
-from gdebug import debug
+import gourmet.dialog_extras as de
+from gourmet.gdebug import debug
 from gettext import gettext as _
 import lprprinter
 

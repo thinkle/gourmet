@@ -1,7 +1,7 @@
-import convert, re, Image, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
-import gglobals
+import re, Image, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
+from gourmet import gglobals,  convert
 from exporter import *
-from gdebug import *
+from gourmet.gdebug import *
 from gettext import gettext as _
 
 class mealmaster_exporter (exporter):

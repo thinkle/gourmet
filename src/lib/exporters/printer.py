@@ -1,4 +1,4 @@
-from gdebug import debug
+from gourmet.gdebug import debug
 import os
 
 try:

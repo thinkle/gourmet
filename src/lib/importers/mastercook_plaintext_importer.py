@@ -1,5 +1,6 @@
-import importer, re, string, check_encodings
-from gdebug import *
+import importer, re, string
+from gourmet import check_encodings
+from gourmet.gdebug import *
 from gettext import gettext as _
 
 class mastercook_importer (importer.importer):

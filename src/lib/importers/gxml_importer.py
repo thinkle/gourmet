@@ -1,7 +1,7 @@
-import metakit, xml.sax, re, sys, xml.sax.saxutils
+import xml.sax, re, sys, xml.sax.saxutils
 import importer
-from gdebug import *
-from gglobals import *
+from gourmet.gdebug import *
+from gourmet.gglobals import *
 
 class RecHandler (xml.sax.ContentHandler, importer.importer):
     def __init__ (self, recData, total=None, prog=None):

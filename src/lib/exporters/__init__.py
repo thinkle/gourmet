@@ -2,7 +2,7 @@ import exporter, gxml_exporter, html_exporter, mealmaster_exporter
 import recipe_emailer
 import printer
 from gettext import gettext as _
-from gdebug import *
+from gourmet.gdebug import *
 
 try:
     import rtf_exporter

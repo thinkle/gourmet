@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import gtk.glade, urllib, StringIO, os.path
 import exporter
-import gglobals
+from gourmet import gglobals
 from gettext import gettext as _
-import dialog_extras as de
-from gdebug import debug
+import gourmet.dialog_extras as de
+from gourmet.gdebug import debug
 
 class StringIOfaker (StringIO.StringIO):
     def __init__ (self, *args, **kwargs):

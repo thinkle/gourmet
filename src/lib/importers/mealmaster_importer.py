@@ -1,8 +1,9 @@
 #!/usr/bin/python
-import importer, re, convert, os.path, string
-import check_encodings, array
-from gdebug import debug,TimeAction
-from gglobals import gt
+import importer
+import re, os.path, string, array
+from gourmet import convert, check_encodings
+from gourmet.gdebug import debug,TimeAction
+from gourmet.gglobals import gt
 from gettext import gettext as _
 
 class mmf_constants:

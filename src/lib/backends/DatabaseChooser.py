@@ -1,8 +1,8 @@
 import gtk, gtk.glade, os.path
-import gglobals
-from gdebug import *
-import cb_extras as cb
-import dialog_extras as de
+from gourmet import gglobals
+from gourmet import cb_extras as cb
+from gourmet import dialog_extras as de
+from gourmet.gdebug import *
 from gettext import gettext as _
 
 class DatabaseChooser:

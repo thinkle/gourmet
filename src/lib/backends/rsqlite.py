@@ -1,5 +1,5 @@
 import os, pickle,re
-import gglobals
+from gourmet import gglobals
 import pythonic_sqlite as psl
 import rdatabase
 #import rmetakit

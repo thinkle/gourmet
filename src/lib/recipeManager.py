@@ -4,55 +4,29 @@ import OptionParser
 import gglobals
 import dialog_extras as de
 
-db=None
-pw=None
-dbargs = {}
+db=gglobals.db
+dbargs = gglobals.dbargs
 
 # Follow commandline db specification if given
-if OptionParser.options.db=='metakit': db = 'metakit'
-if OptionParser.options.db=='sqlite': db = 'sqlite'
-
-if not OptionParser.options.db or OptionParser.options.choosedb:
-    import prefs
-    p = prefs.Prefs()
-    db = p.get('db_backend',None)
-    if (not db) or OptionParser.options.choosedb:
-        import DatabaseChooser
-        d=DatabaseChooser.DatabaseChooser(modal=True)
-        dbdict = d.run()
-        p['db_backend']=dbdict['db_backend']
-        if dbdict.has_key('pw'): pw = dbdict['pw']
-        # if we're not supposed to store the password, we'd better not!
-        if dbdict.has_key('store_pw') and not dbdict['store_pw']:
-            del dbdict['pw']
-            p['store_pw']=dbdict['store_pw']
-        for arg in ['store_pw','db_backend']:
-            if dbdict.has_key(arg): del dbdict[arg]
-        p['dbargs'] = dbdict
-        p.save()
-    db = p.get('db_backend')
-    dbargs = p.get('dbargs')
-    if pw:
-        dbargs['pw']=pw
 
 if db=='mysql' and not dbargs.has_key('pw'):
-    dbargs['pw']=de.getEntry(label=_('Enter Password'),
-                             sublabel=_('Please enter your password for user %s of the MySQL database at host %s'%(dbargs['user'],
-                                                                                                                   dbargs['host'])
-                                        ),
-                             entryLabel=_('Password: '),
-                             visibility=False,
-                             )
+    dbargs['pw']=de.getEntry(
+        label=_('Enter Password'),
+        sublabel=_('Please enter your password for user %s of the MySQL database at host %s'%(dbargs['user'],
+                                                                                              dbargs['host'])
+                   ),
+        entryLabel=_('Password: '),
+        visibility=False,
+        )
     
-
 # otherwise, default to metakit; fallback to sqlite
 
 #db = 'mysql'
 #db='sqlite'
 if db == 'sqlite' and not dbargs.has_key('file'):
-    dbargs['file']=os.path.join(gglobals.gourmetdir,'recipe.db')
+    dbargs['file']=os.path.join(gglobals.gourmetdir,'recipes.db')
 elif db == 'metakit' and not dbargs.has_key('file'):
-    dbargs['file']=os.path.join(gglobals.gourmetdir,'recipe.mk')
+    dbargs['file']=os.path.join(gglobals.gourmetdir,'recipes.mk')
 
 if not db:
     try:

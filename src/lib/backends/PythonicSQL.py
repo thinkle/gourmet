@@ -1,7 +1,7 @@
 import threading
 import __builtin__
 from types import DictionaryType
-from gdebug import debug,TimeAction
+from gourmet.gdebug import debug,TimeAction
 
 threading_debug_level = 1
 lock_change_debug_level = 1

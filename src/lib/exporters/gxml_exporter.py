@@ -1,7 +1,7 @@
 import exporter
 import sys, xml.sax.saxutils
-from gdebug import *
-from gglobals import *
+from gourmet.gdebug import *
+from gourmet.gglobals import *
 
 class rec_to_xml (exporter.exporter):
     def __init__ (self, rd, r, out,attdics={}):

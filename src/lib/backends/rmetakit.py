@@ -1,9 +1,10 @@
-import metakit, re, pickle, keymanager, string, shopping, convert, os.path
-from defaults import lang as defaults
-from gdebug import *
-from gettext import gettext as _
-import gglobals
+import metakit, re, pickle, string, os.path
 import rdatabase
+import gourmet.gglobals as gglobals
+from gourmet import keymanager,shopping,convert
+from gourmet.defaults import lang as defaults
+from gourmet.gdebug import *
+from gettext import gettext as _
 
 class RecData (rdatabase.RecData):
     """A class to keep recipe data in. This class basically is a wrapper for interactions

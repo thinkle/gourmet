@@ -1,6 +1,6 @@
-import convert, re, Image, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
-import gglobals
-from gdebug import *
+import re, Image, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
+from gourmet import gglobals, convert
+from gourmet.gdebug import *
 from gettext import gettext as _
 
 REC_ATTR_DIC={}

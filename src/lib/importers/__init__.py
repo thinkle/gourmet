@@ -2,7 +2,7 @@ import gxml_importer, importer, mastercook_importer, mealmaster_importer, master
 import fnmatch
 from gettext import gettext as _
 #import mastercook_plaintext_importer
-from exporters import MMF,GXML
+from gourmet.exporters import MMF,GXML
 MC = _('MasterCook file')
 MX2 = _('MasterCook XML file')
 

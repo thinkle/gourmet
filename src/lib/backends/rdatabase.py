@@ -1,9 +1,10 @@
 import os.path
-from gdebug import debug, TimeAction
-import re, pickle, keymanager, string, shopping, convert, os.path, string
+from gourmet.gdebug import debug, TimeAction
+import re, pickle, string, os.path, string
 from gettext import gettext as _
-import gglobals, Undo
-from defaults import lang as defaults
+import gourmet.gglobals
+from gourmet import Undo, keymanager, convert, shopping
+from gourmet.defaults import lang as defaults
 
 
 class RecData:

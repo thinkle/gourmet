@@ -1,8 +1,8 @@
-import convert, re, Image, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
-from exporter import *
-import gglobals
-from gdebug import *
+import re, Image, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
 from gettext import gettext as _
+from gourmet import convert,gglobals
+from gourmet.gdebug import *
+from exporter import *
 
 HTML_HEADER_START = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
