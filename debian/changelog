@@ -1,3 +1,9 @@
+gourmet (0.8.0-4) unstable; urgency=low
+
+  * Fix broken shopping window. This is the first stable 0.8.0 release.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 24 Feb 2005 13:00:00 -0500
+
 gourmet (0.8.0-3) unstable; urgency=low
 
   * Fix mastercook import and add progress bar to our own xml import.

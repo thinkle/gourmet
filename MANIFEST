@@ -41,7 +41,7 @@ src/lib/GourmetThreads.py
 src/lib/__init__.py
 src/lib/keyEditor.py
 src/lib/keymanager.py
-src/lib/MarkupString.py
+src/lib/exporters/MarkupString.py
 src/lib/OptionParser.py
 src/lib/optionTable.py
 src/lib/PngImagePluginUpToDate.py
