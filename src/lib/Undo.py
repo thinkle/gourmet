@@ -200,6 +200,29 @@ class UndoableEntry (UndoableTextContainer):
         self.entry.grab_focus()
         self.entry.set_position(index + length)
         
+class UndoableGenericWidget:
+    def __init__ (self, widget, history, set_method='set_value',get_method='get_value'):
+        self.w = widget
+        self.set_method = set_method
+        self.get_method = get_method
+        self.set = getattr(self.w,self.set_method)
+        self.get = getattr(self.w,self.get_method)
+        self.history = history
+        self.last_value = self.get()
+        self.w.connect('changed',self.changecb)
+
+    def changecb (self,*args):
+        old_val = self.last_value
+        new_val = self.get()
+        if new_val != old_val:
+            # We don't perform because we're being called after the action has happened.
+            # We simply append ourselves to the history list.
+            self.history.append(UndoableObject(lambda *args: self.set(new_val),
+                                               lambda *args: self.set(old_val),
+                                               self.history)
+                                )
+            self.last_value=new_val
+        
 class UndoableTextView (UndoableTextContainer):
     def __init__ (self, textview, history):
         self.tv = textview
