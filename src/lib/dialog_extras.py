@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import gtk, os.path, optionTable, thumbnail, cb_extras, fnmatch
 import gglobals
+import xml.sax.saxutils
 from gettext import gettext as _
 from gdebug import debug
 H_PADDING=12
@@ -99,7 +100,6 @@ class mDialog (gtk.Dialog):
     def run (self):
         self.show()
         if self.modal: gtk.main()
-        print self.ret
         return self.ret
 
     def okcb (self, *args):
@@ -124,14 +124,14 @@ class messageDialog (gtk.MessageDialog, mDialog):
         gtk.MessageDialog.__init__(self, *args, **kwargs)
 
     def setup_label (self, label):
-        label = '<span weight="bold" size="larger">%s</span>'%label
+        label = '<span weight="bold" size="larger">%s</span>'%xml.sax.saxutils.escape(label)
         self.label.set_text(label)
         self.label.set_use_markup(True)
 
     def setup_sublabl (self, sublabel):
         curtext = self.label.get_text()
         curtext += "\n%s"%sublabel
-        self.label.set_text(curtext)
+        self.label.set_text(xml.sax.saxutils.escape(curtext))
                   
 class numberDialog (mDialog):
     def __init__(self,default=None,label=False,sublabel=False,step_incr=1,page_incr=10,digits=0,
