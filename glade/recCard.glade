@@ -726,17 +726,6 @@
 		      <property name="spacing">6</property>
 
 		      <child>
-			<widget class="GtkDrawingArea" id="drawingarea">
-			  <property name="visible">True</property>
-			</widget>
-			<packing>
-			  <property name="padding">0</property>
-			  <property name="expand">True</property>
-			  <property name="fill">True</property>
-			</packing>
-		      </child>
-
-		      <child>
 			<widget class="GtkLabel" id="titleDisplay">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
@@ -2970,6 +2959,7 @@ as Ingredient</property>
 
 		      <child>
 			<widget class="GtkAlignment" id="alignment20">
+			  <property name="border_width">12</property>
 			  <property name="visible">True</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>
@@ -2977,7 +2967,7 @@ as Ingredient</property>
 			  <property name="yscale">1</property>
 			  <property name="top_padding">0</property>
 			  <property name="bottom_padding">0</property>
-			  <property name="left_padding">12</property>
+			  <property name="left_padding">24</property>
 			  <property name="right_padding">12</property>
 
 			  <child>
@@ -2990,39 +2980,25 @@ as Ingredient</property>
 			      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 			      <child>
-				<widget class="GtkAlignment" id="alignment22">
+				<widget class="GtkTextView" id="instructionsText">
 				  <property name="visible">True</property>
-				  <property name="xalign">0.5</property>
-				  <property name="yalign">0.5</property>
-				  <property name="xscale">1</property>
-				  <property name="yscale">1</property>
-				  <property name="top_padding">0</property>
-				  <property name="bottom_padding">0</property>
-				  <property name="left_padding">20</property>
-				  <property name="right_padding">0</property>
-
-				  <child>
-				    <widget class="GtkTextView" id="instructionsText">
-				      <property name="visible">True</property>
-				      <property name="can_focus">True</property>
-				      <property name="editable">True</property>
-				      <property name="overwrite">False</property>
-				      <property name="accepts_tab">False</property>
-				      <property name="justification">GTK_JUSTIFY_LEFT</property>
-				      <property name="wrap_mode">GTK_WRAP_WORD</property>
-				      <property name="cursor_visible">True</property>
-				      <property name="pixels_above_lines">3</property>
-				      <property name="pixels_below_lines">3</property>
-				      <property name="pixels_inside_wrap">0</property>
-				      <property name="left_margin">3</property>
-				      <property name="right_margin">3</property>
-				      <property name="indent">0</property>
-				      <property name="text" translatable="yes">
+				  <property name="can_focus">True</property>
+				  <property name="editable">True</property>
+				  <property name="overwrite">False</property>
+				  <property name="accepts_tab">False</property>
+				  <property name="justification">GTK_JUSTIFY_LEFT</property>
+				  <property name="wrap_mode">GTK_WRAP_WORD</property>
+				  <property name="cursor_visible">True</property>
+				  <property name="pixels_above_lines">3</property>
+				  <property name="pixels_below_lines">3</property>
+				  <property name="pixels_inside_wrap">0</property>
+				  <property name="left_margin">3</property>
+				  <property name="right_margin">3</property>
+				  <property name="indent">0</property>
+				  <property name="text" translatable="yes">
 
 </property>
-				      <signal name="state_changed" handler="rcEdited" last_modification_time="Mon, 17 May 2004 21:26:47 GMT"/>
-				    </widget>
-				  </child>
+				  <signal name="state_changed" handler="rcEdited" last_modification_time="Mon, 17 May 2004 21:26:47 GMT"/>
 				</widget>
 			      </child>
 			    </widget>
@@ -3217,6 +3193,7 @@ as Ingredient</property>
 
 		      <child>
 			<widget class="GtkAlignment" id="alignment26">
+			  <property name="border_width">12</property>
 			  <property name="visible">True</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>
@@ -3224,7 +3201,7 @@ as Ingredient</property>
 			  <property name="yscale">1</property>
 			  <property name="top_padding">0</property>
 			  <property name="bottom_padding">0</property>
-			  <property name="left_padding">12</property>
+			  <property name="left_padding">24</property>
 			  <property name="right_padding">12</property>
 
 			  <child>
@@ -3237,37 +3214,23 @@ as Ingredient</property>
 			      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 			      <child>
-				<widget class="GtkAlignment" id="alignment27">
+				<widget class="GtkTextView" id="modificationsText">
 				  <property name="visible">True</property>
-				  <property name="xalign">0.5</property>
-				  <property name="yalign">0.5</property>
-				  <property name="xscale">1</property>
-				  <property name="yscale">1</property>
-				  <property name="top_padding">0</property>
-				  <property name="bottom_padding">0</property>
-				  <property name="left_padding">20</property>
-				  <property name="right_padding">0</property>
-
-				  <child>
-				    <widget class="GtkTextView" id="modificationsText">
-				      <property name="visible">True</property>
-				      <property name="can_focus">True</property>
-				      <property name="editable">True</property>
-				      <property name="overwrite">False</property>
-				      <property name="accepts_tab">False</property>
-				      <property name="justification">GTK_JUSTIFY_LEFT</property>
-				      <property name="wrap_mode">GTK_WRAP_WORD</property>
-				      <property name="cursor_visible">True</property>
-				      <property name="pixels_above_lines">3</property>
-				      <property name="pixels_below_lines">3</property>
-				      <property name="pixels_inside_wrap">0</property>
-				      <property name="left_margin">3</property>
-				      <property name="right_margin">3</property>
-				      <property name="indent">0</property>
-				      <property name="text" translatable="yes"></property>
-				      <signal name="state_changed" handler="rcEdited" last_modification_time="Mon, 17 May 2004 21:26:47 GMT"/>
-				    </widget>
-				  </child>
+				  <property name="can_focus">True</property>
+				  <property name="editable">True</property>
+				  <property name="overwrite">False</property>
+				  <property name="accepts_tab">False</property>
+				  <property name="justification">GTK_JUSTIFY_LEFT</property>
+				  <property name="wrap_mode">GTK_WRAP_WORD</property>
+				  <property name="cursor_visible">True</property>
+				  <property name="pixels_above_lines">3</property>
+				  <property name="pixels_below_lines">3</property>
+				  <property name="pixels_inside_wrap">0</property>
+				  <property name="left_margin">3</property>
+				  <property name="right_margin">3</property>
+				  <property name="indent">0</property>
+				  <property name="text" translatable="yes"></property>
+				  <signal name="state_changed" handler="rcEdited" last_modification_time="Mon, 17 May 2004 21:26:47 GMT"/>
 				</widget>
 			      </child>
 			    </widget>
