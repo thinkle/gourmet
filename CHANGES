@@ -8,7 +8,12 @@
 * Added new "Cooking Time" attribute.
 * Multiple imports allowed at a time by selecting multiple imports
   (and elegantly displayed in new dialog).
-
+* Automatic committing of DB (user no longer has to "save DB" to save
+  changes).
+* Undo introduced across the board.
+* Recipe's thrown in trash rather than deleted by default (allowing for
+  undoing and rescue of trashed recipes).
+  
 ==== Version 0.7.1 Changes from 0.7.0 ====
 
 * RPM spec file fixed so dependencies should be properly worked out now.
