@@ -147,7 +147,8 @@ class RecIndex:
         self.count = len(self.lsrchvw)
         self.stat.push(self.contid,_("%s Recipes")%self.count)
         if self.count == 1:
-            self.rectree.get_selection().select_path((0,))
+            sel = self.rectree.get_selection()
+            if sel: sel.select_path((0,))
 
     def setup_reccolumns (self):
         renderer = gtk.CellRendererPixbuf()
@@ -295,12 +296,6 @@ class RecIndex:
         # for metakit, which isn't automitting very nicely...
         self.rd.save()
 
-    def update_reccards (self, rec):
-        if self.rc.has_key(rec.id):
-            rc=self.rc[rec.id]
-            rc.updateRecipe(rec,show=False)
-            self.updateViewMenu()
-
     def recTreeSelectedRecs (self):
         debug("recTreeSelectedRecs (self):",5)
         def foreach(model,path,iter,recs):
@@ -311,8 +306,12 @@ class RecIndex:
             except:
                 debug("DEBUG: There was a problem with iter: %s path: %s"%(iter,path),1)
         recs=[]
-        self.rectree.get_selection().selected_foreach(foreach,recs)
-        return recs
+        sel = self.rectree.get_selection()
+        if sel:
+            sel.selected_foreach(foreach,recs)
+            return recs
+        else:
+            return []
 
     def selection_changedCB (self, *args):
         """We pass along true or false to selection_changed
