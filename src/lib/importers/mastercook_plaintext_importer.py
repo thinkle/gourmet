@@ -1,19 +1,17 @@
-import importer, re, string
+import importer, plaintext_importer, re, string
 from gourmet import check_encodings
 from gourmet.gdebug import *
 from gettext import gettext as _
 
-class mastercook_importer (importer.importer):
+MASTERCOOK_START_REGEXP='\s*\*\s*Exported\s*from\s*MasterCook.*\*\s*'
+
+class mastercook_importer (plaintext_importer.TextImporter):
     ATTR_DICT = {'Recipe By':'source',
                  'Serving Size':'servings',
                  'Preparation Time':'preptime',
                  'Categories':'category',
                  }
-    def __init__ (self, file, rd, progress=None, threaded=False):
-        print 'rd=',rd,' file=',file
-        self.fn = file
-        self.rec = {}
-        self.ing = {}
+    def __init__ (self, filename, rd, progress=None, threaded=False):
         self.progress = progress
         self.compile_regexps()
         self.instr = ""
@@ -24,26 +22,11 @@ class mastercook_importer (importer.importer):
         self.last_attr = ""
         self.in_attrs=False
         self.in_mods=False
-        importer.importer.__init__(self,rd,threaded=threaded)
+        plaintext_importer.TextImporter.__init__(self,filename,rd,progress=progress,threaded=threaded)
         
-    def run (self):
-        ll = check_encodings.get_file(self.fn)
-        tot=len(ll)
-        for n in range(tot):
-            l=ll[n]
-            if self.progress:
-                if n % 15 == 0:
-                    prog = float(n)/float(tot)
-                    msg = _("Imported %s recipes.")%(len(self.added_recs))
-                    self.progress(prog,msg)
-            self.handle_line(l)
-        # commit the last rec if need be
-        if self.rec:
-            self.commit_rec()
-        importer.importer.run(self)
-
     def compile_regexps (self):
-        self.rec_start_matcher = re.compile("^\s*\*\s*Exported\s*from\s*MasterCook\s*\*\s*$")
+        plaintext_importer.TextImporter.compile_regexps(self)
+        self.rec_start_matcher = re.compile(MASTERCOOK_START_REGEXP)
         self.blank_matcher = re.compile("^\s*$")
         self.rec_col_matcher = re.compile("(\s*Amount\s*)(Measure\s*)(Ingredient.*)")
         # match a string enclosed in a possibly repeated non-word character
@@ -202,13 +185,14 @@ class mastercook_importer (importer.importer):
         self.ing = {}
 
     def commit_rec (self):
-        self.rec['instructions']=self.instr
-        self.rec['modifications']=self.mods
+        ll=self.instr.split('\n')        
+        self.rec['instructions']=self.unwrap_lines(self.instr)
+        self.rec['modifications']=self.unwrap_lines(self.mods)
         importer.importer.commit_rec(self)
         
 class Tester (importer.Tester):
     def __init__ (self):
-        importer.Tester.__init__(self,regexp='\s*\*\s*Exported\s*from\s*MasterCook\s*\*\s*')
+        importer.Tester.__init__(self,regexp=MASTERCOOK_START_REGEXP)
         self.not_me = "<[?]?(xml|mx2|RcpE|RTxt)[^>]*>"
 
     def test (self, filename):

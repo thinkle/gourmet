@@ -3,7 +3,7 @@ import os,stat,re,time
 from gourmet import keymanager, convert
 from gourmet.gdebug import debug, TimeAction, print_timer_info
 from gourmet.gglobals import gt, use_threads
-
+import xml.sax.saxutils
 
 class importer:
 
@@ -12,10 +12,15 @@ class importer:
     self.rec and then commits that dictionary with commit_rec(). Similarly, ingredients are built
     as self.ing and then committed with commit_ing()."""
     
-    def __init__ (self, rd, threaded=False, total=0, prog=None):
+    def __init__ (self, rd, threaded=False, total=0, prog=None, do_markup=True):
+        """rd is our recipeData instance. Total is used to keep track of progress
+        with function progress. do_markup should be True if instructions and modifications
+        come to us unmarked up (i.e. if we need to escape < and &, etc."""
+
         timeaction = TimeAction('importer.__init__',10)
         self.total = total
         self.prog = prog
+        self.do_markup=do_markup
         self.count = 0
         self.rd=rd
         self.rd_orig_ing_hooks = self.rd.add_ing_hooks
@@ -93,7 +98,6 @@ class importer:
     def commit_rec (self):
         timeaction = TimeAction('importer.commit_rec',10)
         if self.rec.has_key('servings'):
-            servs=self.convert_servings(self.rec['servings'])
             if servs: self.rec['servings']=str(servs)
             else:
                 if not self.rec.has_key('instructions'):
@@ -101,6 +105,9 @@ class importer:
                 else:
                     self.rec['instructions']=self.rec['servings']+"\n"+self.rec['instructions']
                 self.rec['servings']=None
+        if self.do_markup:
+            for k in ['instructions','modifications']:
+                if self.rec.has_key(k): self.rec[k] = xml.sax.saxutils.escape(self.rec[k])
         for k,v in self.rec.items():
             try:
                 self.rec[k]=v.strip()

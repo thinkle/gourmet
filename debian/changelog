@@ -1,6 +1,8 @@
 gourmet (0.8.1-1) unstable; urgency=low
 
   * Fix minor mealmaster import glitches.
+  * Fix Windows APPLICATION DATA directory path.
+  * A few other minor bugfixes.
 
  -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 9 March 2005 21:50:00 -0500
 

@@ -99,11 +99,6 @@ class ShopGui:
         
     def doSave (self, filename):
         debug("doSave (self, filename):",5)
-        #of = open(filename,'w')
-        #self.writeHeader(of,)
-        #self.sh.pretty_print(of)
-        #self.doTextPrint(of)
-        #of.close()
         import lprprinter
         self._printList(lprprinter.SimpleWriter,file=filename,show_dialog=False)
     def printList (self, *args):
@@ -111,7 +106,6 @@ class ShopGui:
         self._printList(printer.SimpleWriter,dialog_parent=self.widget)
         
     def _printList (self, printer, *args, **kwargs):
-        #w=printer.SimpleWriter(*args,**kwargs)
         w = printer(*args,**kwargs)
         w.write_header(_("Shopping list for %s")%time.strftime("%x"))
         w.write_subheader(_("For the following recipes:"))
@@ -124,7 +118,6 @@ class ShopGui:
         self.sh.list_writer(w.write_subheader,write_itm)
         w.close()
 
-        
     def getSelectedRecs (self):
         """Return each recipe in list"""
         def foreach(model,path,iter,recs):

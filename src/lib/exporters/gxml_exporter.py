@@ -6,7 +6,9 @@ from gourmet.gglobals import *
 class rec_to_xml (exporter.exporter):
     def __init__ (self, rd, r, out,attdics={}):
         self.attdics = attdics
-        exporter.exporter.__init__(self, rd,r,out, use_ml=True, do_markup=True)
+        exporter.exporter.__init__(self, rd,r,out, use_ml=True,
+                                   order=['attr','text','ings'],
+                                   do_markup=True)
 
     def write_head (self):
         self.out.write("\n<recipe")

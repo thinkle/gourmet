@@ -45,7 +45,8 @@ debug('gourmetdir=%s'%gourmetdir,2)
 # note: this os specific stuff is rather hackish and must be kept in sync with
 # changes in setup.py
 
-use_threads = True
+use_threads = options.threads
+# Uncomment the below to test FauxThreads
 #use_threads = False
 
 if os.name == 'posix':
@@ -95,7 +96,7 @@ if options.gladed:
     gladebase=options.gladed
 
 # UNCOMMENT BELOW TO TEST
-use_threads=False
+
 import OptionParser
 if OptionParser.options.db=='metakit': db = 'metakit'
 if OptionParser.options.db=='sqlite': db = 'sqlite'
@@ -123,10 +124,12 @@ if not OptionParser.options.db or OptionParser.options.choosedb:
     if pw:
         dbargs['pw']=pw
 
+if not db: db = 'metakit'
+
 if db != 'metakit':
     print 'SQL database in use. Disabling threads.'
     use_threads=False
-    
+
 if use_threads:
     debug('using GourmetThreads',0)
     import GourmetThreads as gt

@@ -714,8 +714,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 attval = getattr(self.current_rec,attr)
                 if attval:
                     debug('showing attribute %s = %s'%(attr,attval),0)
-                    widg.set_text("%s"%attval)
-                    widg.set_use_markup(True)
+                    widg.set_text(attval)
+                    if attr in ['modifications','instructions']:
+                        widg.set_use_markup(True)
                     widg.show()
                     widgLab.show()
                 else:
@@ -727,7 +728,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         titl = self.current_rec.title
         if not titl: titl="<b>Unitled</b>"
         titl = "<b>" + xml.sax.saxutils.escape(titl) + "</b>"
-        #self.titleDisplay.set_use_markup(True)
         self.titleDisplay.set_text(titl)
         self.titleDisplay.set_use_markup(True)
 
@@ -1381,6 +1381,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug("saveAs (self, *args):",5)
         #opt = de.getOption(label=_("Export recipe as..."),options=[[_("Mealmaster"),"mmf"],[_("HTML"),"htm"],[_("Plain Text"),"txt"],[_("Rich Text Format"),"rtf"]])
         opt = self.prefs.get('save_recipe_as','html')
+        if opt and opt[0]=='.': opt = opt[1:] #strip off extra "." if necessary
         fn,exp_type=de.saveas_file(_("Save recipe as..."),
                                    filename="~/%s.%s"%(self.current_rec.title,opt),
                                    filters=exporters.saveas_single_filters)
@@ -1461,7 +1462,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             if de.getBoolean(label=_("You have unsaved changes."),
                              sublabel=_("Apply changes before e-mailing?")):
                 self.saveEditsCB()
-        import recipe_emailer
+        from exporters import recipe_emailer
         d=recipe_emailer.EmailerDialog([self.current_rec],
                                        self.rg.rd, self.prefs, self.rg.conv)
         d.setup_dialog()

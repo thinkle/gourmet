@@ -6,14 +6,15 @@ from gourmet.gglobals import *
 class RecHandler (xml.sax.ContentHandler, importer.importer):
     def __init__ (self, recData, total=None, prog=None):
         xml.sax.ContentHandler.__init__(self)
-        importer.importer.__init__(self,rd=recData,total=total,prog=prog,threaded=True)
+        importer.importer.__init__(self,rd=recData,total=total,prog=prog,threaded=True,
+                                   do_markup=False)
         self.meta={}
         self.in_mixed = 0
         self.meta['cuisine']={}
-        self.meta['source']={}        
+        self.meta['source']={}
         self.meta['category']={}
         #self.start_rec()
-    
+        
     def startElement(self, name, attrs):
         gt.gtk_update()
         self.elbuf = ""        

@@ -20,13 +20,15 @@ class SuspendableThread (GourmetThreads.SuspendableThread):
         self.completed = False
 
     def start (self):
-        if de.getBoolean(
-            label=_('Gourmet will be busy for a while.'),
-            sublabel=_('This may take a long time. Gourmet will be unresponsive while it works. Proceed anyway?'),
+        # I don't think we want this dialog anymore.
+        if True:
+           #de.getBoolean(
+           # label=_('Gourmet will be busy for a while.'),
+           # sublabel=_('This may take a long time. Gourmet will be unresponsive while it works. Proceed anyway?'),
 
-            custom_yes=_('Proceed'),
-            custom_no={'stock':gtk.STOCK_CANCEL},
-            cancel=False):
+           # custom_yes=_('Proceed'),
+           # custom_no={'stock':gtk.STOCK_CANCEL},
+           # cancel=False):
             self.target_func()
         else:
             raise "Action cancelled by user"

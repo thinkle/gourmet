@@ -78,6 +78,7 @@ src/lib/importers/__init__.py
 src/lib/importers/mastercook_importer.py
 src/lib/importers/mastercook_plaintext_importer.py
 src/lib/importers/mealmaster_importer.py
+src/lib/importers/plaintext_importer.py
 src/lib/exporters/exporter.py
 src/lib/exporters/gnomeprinter_obsolete.py
 src/lib/exporters/gnomeprinter.py

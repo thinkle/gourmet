@@ -22,8 +22,22 @@ class renderer:
         self.setup_defaults()
         self.setup_page()
         self.move_down_hooks = []
+        self.simple_escaper = re.compile("&(?=[^ ;]*($| ))")
+
+    def escape (self, text):
+        pos = 0
+        out = ""
+        for m in self.simple_escaper.finditer(text):
+            s=m.start()
+            e=m.end()
+            out += text[pos:s]
+            out += "&amp;"
+            pos = e
+        out += text[pos:]
+        return out
 
     def end (self):
+        self.gpc.showpage()
         self.job.close()
 
     def setup_defaults (self):
@@ -89,14 +103,19 @@ class renderer:
 
     def write_paragraph (self, markup, indent=0, space=False, first_indent=0, force=False):
         "Print some markup to the supplied context"
+        # first, we do a simple escape routine, just in case we're
+        # not actually being handed valid markup. Not fail-safe by
+        # any means, but should save us from the common "&"s that slip
+        # through
+        markup=self.escape(markup)
         #need to use pango.Layout to format paragraphs
         #for each block of text
         paraContext = gnomeprint.pango_create_context(gnomeprint.pango_get_default_font_map())
         para = pango.Layout(paraContext)
         para.set_wrap(pango.WRAP_WORD)
-        if first_indent: para.set_indent(first_indent*pango.SCALE)
+        if first_indent: para.set_indent(int(first_indent)*pango.SCALE)
         para.set_justify(True)
-        para.set_width((self.right-self.left)*pango.SCALE)
+        para.set_width(int(self.right-self.left)*pango.SCALE)
         para.set_markup(markup)
         x,y=para.get_size()
         x = x/pango.SCALE
@@ -139,7 +158,7 @@ class renderer:
         self.gpc.moveto(*self.pos)
 
     def write_pixbuf (self, pixbuf, inline=True, align='left', border=10):
-        debug('write_pixbuf ',0)
+        debug('write_pixbuf ',3)
         """Align can take "left", "right", or "center".
         "center" implies not inline."""
         raw_image = pixbuf.get_pixels()
@@ -180,7 +199,7 @@ class renderer:
             # we set up a hook to reset margins once we're beyond the image.
             image_end_pos = self.pos[1]
             def reset_margins (yposition):
-                debug('reset_margins ',0)
+                debug('reset_margins ',3)
                 if yposition <= image_end_pos - (height + border):
                     self.left = self.default_left
                     self.right = self.default_right
@@ -204,7 +223,7 @@ def show_preview(dialog,job):
     w.present()
 
 def print_dialog_response(dialog, resp, job):
-    debug('print_dialog_response',0)
+    debug('print_dialog_response',3)
     if resp == gnomeprint.ui.DIALOG_RESPONSE_PREVIEW:
 	show_preview(dialog,job)
     elif resp == gnomeprint.ui.DIALOG_RESPONSE_CANCEL:
@@ -214,7 +233,7 @@ def print_dialog_response(dialog, resp, job):
 	dialog.destroy()
 
 def render_to_job (job):
-    debug('render_to_job ',0)
+    debug('render_to_job ',3)
     r = renderer(job)
     for f in ['Sans','Serif','Monospace','Arial']:
         for s in [12,14,16,18,24]:
@@ -233,40 +252,38 @@ def render_to_job (job):
 class print_writer (renderer):
     def __init__ (self, show_dialog=True, dialog_title=_("Print"), dialog_kwargs={},                  
                   dialog_parent=None):
-        debug('print_writer.__init__ ',0)        
+        debug('print_writer.__init__ ',3)        
         renderer.__init__(self)
         self.show_dialog = show_dialog
         self.dialog_parent = dialog_parent
         self.dialog_title = dialog_title
         self.dialog_kwargs = dialog_kwargs
 
-    def write (self, text):
-        debug('write ',0)
-        lines = text.split("\n")
-        if lines[-1]=='':
-            lines = lines[0:-1]
-        for l in lines: self.write_line(l)
-
     def close (self):
-        debug('close ',0)
+        debug('close ',1)
         self.end()
         if self.show_dialog:
+            debug('preparing dialog',1)
             dialog = gnomeprint.ui.Dialog(self.job, self.dialog_title,
                                           gnomeprint.ui.DIALOG_RANGE | gnomeprint.ui.DIALOG_COPIES,
                                           **self.dialog_kwargs)
+            debug('preparing dialog 2',1)
             flags = (gnomeprint.ui.RANGE_CURRENT
                      |gnomeprint.ui.RANGE_ALL
                      |gnomeprint.ui.RANGE_RANGE
-                     |gnomeprint.ui.RANGE_SELECTION)            
+                     |gnomeprint.ui.RANGE_SELECTION)
+            debug('preparing dialog 3',1)
             dialog.construct_range_page(flags, 1, 1, _("_Current"), _("_Range"))
             dialog.connect('response', print_dialog_response, self.job)
             if self.dialog_parent: dialog.set_transient_for(self.dialog_parent)
+            debug('showing dialog',1)
             dialog.show()
+            debug('showed dialog',1)
         
 class RecRenderer (print_writer):
     def __init__ (self, rd, recs, mult=1, dialog_title=_("Print Recipes"),
                   dialog_parent=None, change_units=True):
-        debug('RecRenderer.__init__ ',0)        
+        debug('RecRenderer.__init__ ',3)        
         print_writer.__init__(self, show_dialog=True, dialog_title=dialog_title,
                               dialog_parent=dialog_parent)
         do_new_page = False
@@ -280,7 +297,7 @@ class RecRenderer (print_writer):
 
 class RecWriter (exporter.exporter_mult):
     def __init__ (self, rd, r, printwriter, mult=1, change_units=True):
-        debug('__init__ ',0)
+        debug('__init__ ',3)
         self.print_writer = printwriter
         self.r = r
         exporter.exporter_mult.__init__(self, rd, r, out=None, mult=mult,
@@ -288,16 +305,16 @@ class RecWriter (exporter.exporter_mult):
                                         use_ml=True)
 
     def write_head (self):
-        debug('write_head ',0)
+        debug('write_head ',3)
         pass
 
     def write_image (self, image):
-        debug('write_image ',0)
+        debug('write_image ',3)
         pb = get_pixbuf_from_file.get_pixbuf_from_jpg(image)
         self.print_writer.write_pixbuf(pb, align='right')
 
     def write_attr (self, label, text):
-        debug('write_attr ',0)
+        debug('write_attr ',3)
         attr=gglobals.NAME_TO_ATTR[label]
         if attr=='title':
             self.print_writer.write_heading(xml.sax.saxutils.escape(text))
@@ -308,20 +325,20 @@ class RecWriter (exporter.exporter_mult):
                 text = convert.float_to_frac(num * self.mult)
             else:
                 return
-        self.print_writer.write_paragraph("%s: %s"%(label, text))
+        self.print_writer.write_paragraph(xml.sax.saxutils.escape("%s: %s"%(label, text)))
 
     def write_text (self, label, text):
-        debug('write_text ',0)
+        debug('write_text ',3)
         self.print_writer.write_heading(label, space_after=0, space_before=0.5)
         pars = re.split("\n+", text)
         for p in pars: self.print_writer.write_paragraph(p, space=True)
         
     def write_inghead (self):
-        debug('write_inghead ',0)
-        self.print_writer.write_heading(_('Ingredients'), space_before=0.5, space_after=0)
+        debug('write_inghead ',3)
+        self.print_writer.write_heading(xml.sax.saxutils.escape(_('Ingredients')), space_before=0.5, space_after=0)
 
     def write_grouphead (self, name):
-        debug('write_grouphead ',0)
+        debug('write_grouphead ',3)
         self.print_writer.write_heading(xml.sax.saxutils.escape(name),
                                         size=self.print_writer.default_head_size-2,
                                         style='normal',
@@ -330,7 +347,7 @@ class RecWriter (exporter.exporter_mult):
                                         space_after=0)
 
     def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):
-        debug('write_ing ',0)
+        debug('write_ing ',3)
         amt,unit=self.multiply_amount(amount,unit)
         if amount: line = amt + " "
         else: line = ""
@@ -341,16 +358,28 @@ class RecWriter (exporter.exporter_mult):
 
 class SimpleWriter (print_writer):
     def __init__ (self, file=None, dialog_parent=None, show_dialog=True):
-        debug('__init__ ',0)
+        debug('__init__ ',3)
         print_writer.__init__(self,dialog_parent=dialog_parent,show_dialog=show_dialog)
 
     def write_header (self, text):
-        debug('write_header ',0)
+        debug('write_header ',3)
+        self.dont_escape=True
         self.write_heading(xml.sax.saxutils.escape(text), size=14, space_before=0.5, space_after=0)
+        self.dont_escape=False
 
     def write_subheader (self, text):
-        debug('write_subheader ',0)
-        self.write_heading(xml.sax.saxutils.escape(text), size=12, style="normal", space_after=0, space_before=0.5)
+        debug('write_subheader ',3)
+        self.dont_escape=True
+        self.write_heading(xml.sax.saxutils.escape(text),
+                           size=12,
+                           style="normal",
+                           space_after=0,
+                           space_before=0.5)
+        self.dont_escape=False
+
+    def write_paragraph (self, text, *args, **kwargs):
+        if not self.dont_escape: text=xml.sax.saxutils.escape(text)
+        print_writer.write_paragraph(self,text,*args,**kwargs)
 
 if __name__ == '__main__':
     #dialog = show_print_dialog()
@@ -369,4 +398,5 @@ if __name__ == '__main__':
             for n in range(15):
                 o.write_paragraph('This is job number %s. The is paragraph number %s.  '%(do_this,n) * 10, first_indent=25)
         o.close()
+    gtk.threads_init()
     gtk.main()

@@ -2,6 +2,10 @@
 * Fixed Windows Application Directory
 * Fixed import of "servings" in Mealmaster import
 * Fixed line-unwrapping code in Mealmaster import
+* Fixed typo prevening mealmaster export from working in 0.8.0
+* Fixed a number of problems where &s screwed up
+  pango -- including layout and printing.
+* Fixed search in recipe Wastebasket view.
 
 ==== Version 0.8.0 Changes from 0.7.1 ===
 Miscellaneous

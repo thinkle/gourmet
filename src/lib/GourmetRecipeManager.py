@@ -42,8 +42,10 @@ except ImportError:
     rtf=False
 
 class RecGui (RecIndex):
-    """This is the main application."""
-    def __init__ (self,file=None,splash_label=gtk.Label()):
+    """This is the main application. We subclass RecIndex, which handles displaying a list of
+    recipes and searching them (a functionality we need in a few other places, such as when
+    calling a recipe as an ingredient or when looking through the "trash". """
+    def __init__ (self,splash_label=None):
         # used on imports to make filtering wait until
         # we are all done.
         self.wait_to_filter=False
@@ -54,7 +56,8 @@ class RecGui (RecIndex):
             pass
         if debug_level > 0:
             debug("Debug level: %s"%debug_level, debug_level)
-        self.splash_label = splash_label
+        # just make sure we were given a splash label to update
+        self.splash_label = splash_label        
         debug("__init__ (self,file=None):",5)
         self.update_splash(_("Loading window preferences..."))
         self.prefs = prefs.Prefs()
@@ -68,16 +71,19 @@ class RecGui (RecIndex):
         #self.settings.set_property('gtk-can-change-accels',True)
         self.pop = self.glade.get_widget('rlmen')
         self.app = self.glade.get_widget('app')
-        # a thread lock for import/export threads
-        self.lock = gt.get_lock()
+        self.prog = self.glade.get_widget('progressbar')
         # configuration stuff
+        # WidgetSaver is our way of remembering the state and position of
+        # windows and widgets for the future.
         self.conf = []
         self.conf.append(WidgetSaver.WindowSaver(self.app,
                                                  self.prefs.get('app_window',
                                                                 {}),
-                                                 show=False))
-        self.prog = self.glade.get_widget('progressbar')
+                                                 show=False))        
+        # a thread lock for import/export threads
+        self.lock = gt.get_lock()
         self.selected = True
+        # widgets that should be sensitive only when a row is selected
         self.act_on_row_widgets = [self.glade.get_widget('rlViewRecButton'),
                                    self.glade.get_widget('rlViewRecMenu'),
                                    self.glade.get_widget('rlShopRecButton'),
@@ -87,16 +93,7 @@ class RecGui (RecIndex):
                                    self.glade.get_widget('email_menu_item'),
                                    self.glade.get_widget('print_menu_item'),
                                    ]
-
-        #self.file = {'db':'recs.db'}
-        #self.file = {'xml':'recs.xml'}
-        #self.file = {'mmf' : 'mealmaster.mmf'}
-        if not file:
-            self.file={'db':os.path.join(gourmetdir,'recipes.mk')}
-        elif type(file)==type(""):
-            self.file={self.guess_type(file):file}
-        else:
-            self.file=file
+        
         self.rtcolsdic={}
         self.rtwidgdic={}
         for a,l,w in REC_ATTRS:
@@ -104,7 +101,7 @@ class RecGui (RecIndex):
             self.rtwidgdic[a]=w
         self.rtcols=map(lambda r: r[0], REC_ATTRS)
         self.update_splash(_("Loading recipe database..."))
-        self.init_recipes(**self.file)
+        self.init_recipes()
         self.update_splash(_("Setting up recipe index..."))
         RecIndex.__init__(self,
                           model=self.rmodel,
@@ -112,16 +109,25 @@ class RecGui (RecIndex):
                           rd=self.rd,
                           rg=self,
                           editable=True)
+        # lastly, this seems to be necessary to get updates
+        # to show up accurately...
+        self.rd.add_hooks.append(self.make_rec_visible)
+        # and we update our count with each new recipe!
+        self.rd.add_hooks.append(self.set_reccount)
+        # update cards when we modify something about a recipe
+        self.rd.modify_hooks.append(self.update_reccards)
+        # we need an "ID" to add/remove messages to/from the status bar
         self.pauseid = self.stat.get_context_id('pause')
+        # setup call backs for e.g. right-clicking on the recipe tree to get a popup menu
         self.rectree.connect("popup-menu",self.popup_rmenu)#self.recTreeSelectRec)
         self.rectree.connect("button-press-event",self.rectree_click_cb)
+        # connect the rest of our handlers
         self.glade.signal_autoconnect({
             'newRec' : self.newRecCard,
             'shopHide' : self.sl.hide,
             'showShop' : self.sl.show,
             'showList' : lambda *args: self.app.present(),            
             'new' : self.new,
-            'open': self.open,
             'defaultsave': self.save_default,
             'export' : self.exportg,
             'import' : self.importg,
@@ -140,7 +146,9 @@ class RecGui (RecIndex):
             'emptyTrash':self.empty_trash
 #            'shopCatEditor': self.showShopEditor,            
             })
+        # self.rc will be a list of open recipe cards.
         self.rc={}
+        # updateViewMenu creates our view menu based on which cards are open
         self.updateViewMenu()
         ## make sure the focus is where it ought to be...
         self.app.present()
@@ -151,6 +159,7 @@ class RecGui (RecIndex):
     def update_splash (self, text):
         """Update splash screen on startup."""
         debug("Setting splash text: %s"%text,3)
+        if not self.splash_label: return
         self.splash_label.set_text(text)
         while gtk.events_pending():
             gtk.main_iteration()
@@ -311,7 +320,7 @@ class RecGui (RecIndex):
                         try:
                             t.terminate()
                         except:
-                            debug("Unable to terminate thread %s"%t,5)
+                            debug("Unable to terminate thread %s"%t,0)
                             return True
                 if not use_threads:
                     for t in self._threads:
@@ -332,37 +341,10 @@ class RecGui (RecIndex):
         debug("new (self, *args):",5)
         self.init_recipes()
 
-    def guess_type (self, filestr):
-        """Handed a file representing recipes,
-        guess which type it is."""
-        debug("guess_type (self, filestr):",5)
-        if re.search("\.(db|mk)$",filestr):
-            return "db"
-        elif re.search("\.xml$",filestr):
-            return "xml"
-        elif re.search("\.mm.$",filestr):
-            return "mmf"
-        else: return "db"
-        
-    def open (self, *args):
-        debug("open (self, *args):",5)
-        f = de.select_file()
-        debug("opening %s"%f, 1)
-        if f:
-            t = self.guess_type(f)
-            ## we should probably do better than looking at extensions
-            ## eventually **FIX ME**
-            if t=="db":
-                self.init_recipes(db=f)
-            elif t=="xml":
-                self.init_recipes(xml=f)
-            elif t=="mmf":
-                self.init_recipes(mmf=f)
-            else:
-                self.message(_("I can't determine the type of file %s")%f)
-
-    def init_recipes (self, xml=None, db=None, mmf=None, defaultxml='recs.xml'):
-        debug("init_recipes (self, xml=None, db=None, mmf=None, defaultxml='recs.xml'):",1)
+    def init_recipes (self):
+        """We load our recipe database from recipeManager. If there's any problem,
+        we display the traceback to the user so they can send it out for debugging
+        (or possibly make sense of it themselves!)."""
         try:
             self.rd = recipeManager.RecipeManager(**recipeManager.dbargs)
         except:
@@ -637,10 +619,13 @@ class RecGui (RecIndex):
             self.recTrash.rmodel_filter.refilter()
 
     def print_recs (self, *args):
+        debug('printing recipes',3)
         recs = self.recTreeSelectedRecs()
         printer.RecRenderer(self.rd, recs,
                             dialog_title=_("Print %s Recipes"%len(recs)),
-                            dialog_parent = self.app)
+                            dialog_parent = self.app,
+                            change_units = self.prefs.get('readableUnits',True)
+                            )
 
     def popup_rmenu (self, *args):
         debug("popup_rmenu (self, *args):",5)
@@ -701,11 +686,11 @@ class RecGui (RecIndex):
 
     def save_default (self, *args):
         debug("save_default (self, *args):",5)
-        self.save(**self.file)
+        self.save()
 
     def save (self, file=None, db=None, xml=None):
         debug("save (self, file=None, db=None, xml=None):",5)
-        if not xml and not db:
+        if file and not xml and not db:
             if re.search(".xml$",file):
                 xml=file
             else:
@@ -812,15 +797,19 @@ class RecGui (RecIndex):
             post_hooks = [lambda *args: self.inginfo.reconnect_manually()]            
             importerClasses = []
             for fn in ifiles:
-                impfilt = importers.FILTER_INFO[importers.select_import_filter(fn)]
-                if not impfilt:
-                    de.show_message("Can't import file %s"%fn)
+                try:
+                    impfilt = importers.FILTER_INFO[importers.select_import_filter(fn)]
+                except:
+                    URL="http://sourceforge.net/tracker/?group_id=108118&atid=649652"
+                    self.offer_url(
+                        label=_("Cannot import file %s")%fn,
+                        sublabel=_("It looks like Gourmet cannot import this file. If you believe this file is in one of the formats Gourmet supports, please submit a bug report at %s and attach the file."%URL),
+                        url=URL)
                     return
                 impClass = impfilt['import']({'file':fn,
                                               'rd':self.rd,
                                               'threaded':True,
                                               })
-                print 'impClass=',impClass
                 if impfilt['get_source']:                    
                     source=de.getEntry(label=_("Default source for recipes imported from %s")%fn,
                                        entryLabel=_('Source: '),
@@ -892,11 +881,12 @@ class RecGui (RecIndex):
         gtk.idle_add(lambda *args: self.offer_url(label,sublabl,url,True))
         if from_thread:
             gt.gtk_leave()
-            
+
     def offer_url (self, label, sublabel, url, from_thread=False):
         if from_thread:
             gt.gtk_enter()
-        self.prog_dialog.okcb() #get rid of progress
+        if hasattr(self,'prog_dialog'):
+            self.prog_dialog.okcb() #get rid of progress
         d=de.messageDialog(label=label,
                            sublabel=sublabel,
                            cancel=False
@@ -995,12 +985,23 @@ class RecTrash (RecIndex):
             'undeleteRecs':self.recTreeUndeleteRec,
             'ok':self.dismiss,
             })
-        RecIndex.__init__(self, self.rg.rmodel, self.glade, self.rg.rd, self.rg)
+        RecIndex.__init__(self, self.rg.rmodel, self.glade, self.rg.rd, self.rg)        
         self.rmodel_filter.refilter()
+
+    def setup_search_views (self):
+        print 'DELETE ME: RECTRASH SEARCH VIEWS!'
+        self.lsrch = ["",""]
+        self.lsrchvw = self.rd.rview.select(deleted=True)
+        self.searchvw = self.rd.rview.select(deleted=True)
 
     def dismiss (self, *args):
         self.window.hide()
     
+    def setup_search_views (self):
+        self.lsrch = ["",""]
+        self.lsrchvw = self.rd.rview.select(deleted=True)
+        self.searchvw = self.rd.rview.select(deleted=True)
+
     def visibility_fun (self, model, iter):
         if (model.get_value(iter,0) and
             model.get_value(iter,0).deleted and

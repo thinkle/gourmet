@@ -64,9 +64,7 @@ class RecIndex:
         self.rectree.connect('start-interactive-search',lambda *args: self.srchentry.grab_focus())
         self.stat = self.glade.get_widget('statusbar')
         self.contid = self.stat.get_context_id('main')
-        self.lsrch = ["",""]
-        self.lsrchvw = self.rd.rview.select(deleted=False)
-        self.searchvw = self.rd.rview.select(deleted=False)
+        self.setup_search_views()
         self.setup_rectree()
         self.glade.signal_autoconnect({
             'rlistSearch': self.search_as_you_type,
@@ -89,20 +87,19 @@ class RecIndex:
             self.regexpTog,
             self.prefs.get('regexpTog',
                            {'active':self.regexpTog.get_active()}),
-            ['toggled']))
-        # lastly, this seems to be necessary to get updates
-        # to show up accurately...
-        self.rd.add_hooks.append(self.make_rec_visible)
-        # and we update our count with each new recipe!
-        self.rd.add_hooks.append(self.set_reccount)
+            ['toggled']))        
         # and we update our count with each deletion.
         self.rd.delete_hooks.append(self.set_reccount)
-        self.rd.modify_hooks.append(self.update_reccards)
         # setup a history
         self.uim=self.glade.get_widget('undo_menu_item')
         self.rim=self.glade.get_widget('redo_menu_item')
         self.raim=self.glade.get_widget('reapply_menu_item')
         self.history = Undo.UndoHistoryList(self.uim,self.rim,self.raim)
+
+    def setup_search_views (self):
+        self.lsrch = ["",""]
+        self.lsrchvw = self.rd.rview.select(deleted=False)
+        self.searchvw = self.rd.rview.select(deleted=False)
 
     def srchentry_keypressCB (self, widget, event):
         if event.state==gtk.gdk.MOD1_MASK:

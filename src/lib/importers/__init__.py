@@ -74,4 +74,6 @@ def select_import_filter (fn):
     for f in other_filters:
         if FILTER_INFO[f]['tester'].test(fn):
             return f
-    
+    else:
+        # if we can't find a filter, raise an error.
+        raise "Unable to find import filter for file %s."%fn

@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import importer
+import importer, plaintext_importer
 import re, os.path, string, array
 from gourmet import convert, check_encodings
 from gourmet.gdebug import debug,TimeAction
@@ -38,10 +38,9 @@ class mmf_constants:
         for k,v in self.unit_conv.items():
             self.unit_convr[v]=k
 
-        
-
 mmf=mmf_constants()
-class mmf_importer (importer.importer):
+
+class mmf_importer (plaintext_importer.TextImporter):
 
     """Mealmaster(tm) importer class. We read in a text file a line at a time
     and parse attributes/ingredients/instructions as best we can.
@@ -66,6 +65,7 @@ class mmf_importer (importer.importer):
         """filename is the file to parse. rd is the recData instance
         to start with.  progress is a function we tell about our
         progress to (we hand it a single arg)."""
+
         testtimer = TimeAction('mealmaster_importer.__init__',10)
         debug("mmf_importer start  __init__ ",5)
         self.rec={}
@@ -75,58 +75,25 @@ class mmf_importer (importer.importer):
         self.ingrs=[]
         self.ing_added=False
         self.in_variation=False
-        self.compile_regexps()
         self.fn = filename
         self.progress = progress
         self.unit_length = 2
         self.two_col_minimum = two_col_minimum
         self.last_line_was = None
-        importer.importer.__init__(self,rd=rd,threaded=threaded)        
-        testtimer.end()
-        
-    def run (self):
-        testtimer = TimeAction('mealmaster_importer.run',10)
-        #self.file=open(self.fn,'r')
-        self.base=os.path.split(self.fn)[1]
-        #ll=self.file.readlines() #slurp
-        ll = check_encodings.get_file(self.fn)
-        tot=len(ll)
-        for n in range(tot):
-            # we do the loop this way so we can
-            # conveniently report our progress to
-            # the outside world :)
-            l=ll[n]
-            # we update our progress bar every 15 lines
-            if n % 15 == 0:
-                prog= float(n)/float(tot)
-                if self.progress:
-                    msg = _("Imported %s recipes.")%(len(self.added_recs))
-                    self.progress(prog,msg)
-            self.handle_line(l)
-        # commit the last recipe if need be
-        if self.rec:
-            self.commit_rec()
-        self.progress(1,_("Mealmaster import completed."))
-        importer.importer.run(self)
+        plaintext_importer.TextImporter.__init__(self,filename,rd,progress=progress,threaded=threaded)        
         testtimer.end()
         
     def compile_regexps (self):
         testtimer = TimeAction('mealmaster_importer.compile_regexps',10)
         debug("start compile_regexps",5)
+        plaintext_importer.TextImporter.compile_regexps(self)
         self.start_matcher = re.compile("^([M-][M-][M-][M-][M-])-*\s*(Recipe|[Mm]eal-?[Mm]aster).*")
         self.end_matcher = re.compile("^[M-][M-][M-][M-][M-]\s*$")
         self.group_matcher = re.compile("^([M-][M-][M-][M-][M-])-*\s*([^-]+)\s*-*")
-        self.blank_matcher = re.compile("^\s*$")
         self.ing_cont_matcher = re.compile("^\s*[-;]")
         self.ing_opt_matcher = re.compile("(.+?)\s*\(?\s*[Oo]ptional\)?\s*$")
         self.ing_or_matcher = re.compile("^[- ]*[Oo][Rr][- ]*$")
         self.variation_matcher = re.compile("^\s*([Vv][Aa][Rr][Ii][Aa][Tt][Ii][Oo][Nn]|[Hh][Ii][Nn][Tt]|[Nn][Oo][Tt][Ee])[Ss]?:.*")
-        # out unwrap regexp looks for a line with no meaningful characters, or a line that starts in
-        # ALLCAPS or a line that is only space. (we use this with .split() to break text up into
-        # paragraph breaks.
-        self.unwrap_matcher = re.compile('\n\W*\n')
-        self.find_header_breaks_matcher = re.compile('\s+(?=[A-Z][A-Z][A-Z]+:.*)')
-        # a crude ingredient matcher -- we look for two numbers, intermingled with spaces
         # followed by a space or more, followed by a one or two digit unit (or spaces)
         self.ing_num_matcher = re.compile("^\s*[0-9]+[0-9/ -]+\s+[A-Za-z ][A-Za-z ]? .*")
         self.amt_field_matcher = re.compile("^[0-9- /]+$")
@@ -266,38 +233,6 @@ class mmf_importer (importer.importer):
         self.in_variation=False
         testtimer.end()
         
-    def unwrap_lines (self, blob):
-        outblob = ""
-        newline = True
-        for l in blob.split('\n'):
-            # if we have a non-word character at the start of the line,
-            # we assume we need to keep the newline.
-            if len(l)>=3 and re.match('(\W|[0-9])',l[3]):
-                outblob += "\n"
-                outblob += l
-                newline = False
-                continue
-            # if we are continuing an old line, we add a space
-            # (because we're generally stripping all spaces when
-            # we write)
-            if not newline: outblob += " "            
-            hmatch = self.find_header_breaks_matcher.search(l)
-            if hmatch:
-                # if there's a header in the middle, we go ahead
-                # and start a new line
-                outblob += l[:hmatch.start()]
-                outblob += "\n"
-                outblob += l[hmatch.start():]
-                continue
-            #else...
-            outblob += l.strip()
-            if len(l) < 60: #60 is our hard-coded end-o-paragraph length
-                outblob += "\n"
-                newline = True
-            else:
-                newline = False
-        return outblob
-            
     def handle_group (self, groupm):
         testtimer = TimeAction('mealmaster_importer.handle_group',10)
         debug("start handle_group",10)

@@ -6,10 +6,10 @@ from gettext import gettext as _
 
 class mealmaster_exporter (exporter):
     def __init__ (self, rd, r, out, conv=None):
-        import importers.mealmaster_importer as mealmaster_importer
+        import gourmet.importers.mealmaster_importer as mealmaster_importer
         self.add_to_instructions=""
         self.conv = conv
-        mmf2mk =mealmaster_importer.mmf_constants()
+        mmf2mk = mealmaster_importer.mmf_constants()
         uc_orig=mmf2mk.unit_conv
         self.uc={}
         for k,v in uc_orig.items():
@@ -40,7 +40,7 @@ class mealmaster_exporter (exporter):
             self.write_categories()
 	#Mealmaster pukes at the preptime line so this removes it    
 	elif label=='preparation time' or label=='rating' or label=='source':
-	    self.add_to_instructions += "\n  %s: %s"%(label,text)
+	    self.add_to_instructions += "\n\n%s: %s"%(label,text)
 	else:
             if label and text:
                 if self.recattrs.has_key(label):
@@ -64,7 +64,7 @@ class mealmaster_exporter (exporter):
     
     def write_text (self, label, text):
         if label=='Instructions' and self.add_to_instructions:
-            text = self.add_to_instructions + text
+            text = text + self.add_to_instructions
             self.add_to_instructions = ""
         ll=text.split("\n")
         for l in ll:

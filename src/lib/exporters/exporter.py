@@ -14,7 +14,7 @@ class exporter:
     def __init__ (self, rd, r, out,
                   conv=None,
                   imgcount=1,
-                  order=['attr','text','ings'],
+                  order=['attr','ings','text'],
 		  attr_order=['title','category','cuisine','servings','source','rating','preptime'],
                   do_markup=True,
                   use_ml=False,
@@ -433,7 +433,7 @@ class ExporterMultirec:
         if self.one_file:
             self.ofi.close()
         self.timer.end()
-        self.pf(1,_("Export complete."))
+        if self.pf: self.pf(1,_("Export complete."))
         print_timer_info()
 
     def write_header (self):
