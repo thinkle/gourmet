@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
+import xml.sax.saxutils
 import rxml_to_metakit, rmetakit, convert, exporter, shopgui, GourmetRecipeManager, TextBufferMarkup
 from recindex import RecIndex
 import prefs, WidgetSaver, timeEntry, Undo
@@ -725,7 +726,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def updateTitleDisplay (self):
         titl = self.current_rec.title
         if not titl: titl="<b>Unitled</b>"
-        titl = "<b>" + titl + "</b>"
+        titl = "<b>" + xml.sax.saxutils.escape(titl) + "</b>"
         #self.titleDisplay.set_use_markup(True)
         self.titleDisplay.set_text(titl)
         self.titleDisplay.set_use_markup(gtk.TRUE)
