@@ -79,7 +79,6 @@ class mmf_importer (importer.importer):
             # we update our progress bar every 15 lines
             if n % 15 == 0:
                 prog= float(n)/float(tot)
-                #print "DEBUG: progress=",prog
                 if self.progress:
                     self.progress(prog)
             self.handle_line(l)
@@ -126,7 +125,6 @@ class mmf_importer (importer.importer):
         debug("start handle_line",10)
         gt.gtk_update()
         if self.start_matcher.match(l):
-            #print "DEBUG: New recipe"
             debug("recipe start %s"%l,4)
             self.new_rec()
             self.last_line_was = 'new_rec'
@@ -254,16 +252,11 @@ class mmf_importer (importer.importer):
         all_ings = [i[0] for i in self.ingrs]
         fields = find_fields(all_ings)
         fields_is_numfield = fields_match(all_ings,fields,self.amt_field_matcher)
-        print 'fields: ',fields,'is_numfield: ',fields_is_numfield
-        for i in all_ings:
-            print "Ing: ",[i[f[0]:f[1]] for f in fields]
         #fields = [[r,field_match(all_ings,r,self.amt_field_matcher)] for r in find_fields(all_ings)]
         aindex,afield = self.find_amt_field(fields,fields_is_numfield)
-        print 'aindex: ',aindex,' afield: ',afield
         if aindex != None:
             fields = fields[aindex+1:]
             fields_is_numfield = fields_is_numfield[aindex+1:]
-        print 'fields: ',fields,'is_numfield: ',fields_is_numfield
         ufield = self.find_unit_field(fields,fields_is_numfield)
         if ufield:
             fields = fields[1:]
@@ -280,10 +273,8 @@ class mmf_importer (importer.importer):
         if sec_col_fields and len(sec_col_fields) > 2:            
             fields_is_numfield = fields_is_numfield[ibase:]
             aindex2,afield2 = self.find_amt_field(sec_col_fields,fields_is_numfield)
-            print 'aindex2: ',aindex2,' afield2 ',afield2, '2nd_col_ff: ',sec_col_fields
             if aindex2 != None and len(sec_col_fields[aindex2+1:]) >= 1:
                 # then it's a go! Shift our first ifield
-                print '2 columns!'
                 retval[0][2]=[ifield[0],fields[ibase-1][1]]
                 sec_col_fields = sec_col_fields[aindex2 + 1:]
                 fields_is_numfield = fields_is_numfield[aindex2+1:]
@@ -393,9 +384,7 @@ class mmf_importer (importer.importer):
         testtimer = TimeAction('mealmaster_importer.add_unit',10)
         unit = unit.strip()
         if mmf.unit_conv.has_key(unit):
-            print 'converting unit!',unit,' to ',
             unit = mmf.unit_conv[unit]
-            print unit
         importer.importer.add_unit(self,unit)
         testtimer.end()
         
@@ -415,9 +404,7 @@ def fields_match (strings, fields, matcher):
     # cycle through each string broken into our fields
     for ff in [[s[f[0]:f[1]] for f in fields] for s in strings]:
         for i,fld in enumerate(ff):
-            print 'checking fld: ',fld
             if fld and retarray[i] and not matcher.match(fld):
-                print 'not a match!'
                 retarray[i]=False
                 if not True in retarray: return retarray
     testtimer.end()
@@ -508,10 +495,16 @@ def find_columns (strings, char=" "):
 
         
 if __name__ == '__main__':
-    def printprog (prog):
-        testtimer = TimeAction('mealmaster_importer.printprog',10)
-        print "%i percent done"%(prog * 100)
-        testtimer.end()
-        mmf_importer(rmetakit.recipeManager(),'/home/tom/Projects/MM132501',
-                 progress=printprog, source="MM132501")
-        testimer.end()
+    import recipeManager, tempfile, sys, profile
+    from OptionParser import *
+    print 'Testing mealmaster import'
+    tmpfile = tempfile.mktemp()
+    rd = rmetakit.RecipeManager(tmpfile)
+    if not args: args = ['/home/tom/Projects/recipe/Data/200_Recipes.mmf']
+    for a in args:
+        profile.run("mmf_importer(rd,a,progress=lambda *args: sys.stdout.write('|'),threaded=False)")
+        
+        
+                     
+    
+    
