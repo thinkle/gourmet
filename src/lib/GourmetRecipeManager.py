@@ -742,10 +742,6 @@ class RecGui (RecIndex):
             expClass=None            
             post_hooks = [self.after_dialog_offer_url(exp_type,file)]
             if exp_type==HTM:
-                #prog = lambda prog: self.set_progress_thr(
-                #    prog,
-                #    _("total recipes. %i%% done creating web page.")%(prog*100)
-                #    )
                 expClass = exporter.website_exporter(self.rd, self.rd.rview.select(deleted=False),
                                                      file, self.conv,
                                                      progress_func=self.set_progress_thr)
@@ -818,7 +814,7 @@ class RecGui (RecIndex):
         import_directory = "%s/"%self.prefs.get('rec_import_directory',None)
         XML_MATCH=['*.xml','*.gourmet']
         MMF_MATCH=['*.mmf','*.txt']
-        MX2_MATCH=['*.mx2','*.xml']
+        MX2_MATCH=['*.mx2','*.xml','mxp']
         BOTH_MATCH = []
         BOTH_MATCH.extend(XML_MATCH)
         BOTH_MATCH.extend(MMF_MATCH)
