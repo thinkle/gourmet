@@ -30,6 +30,7 @@ src/lib/check_encodings.py
 src/lib/convert.py
 src/lib/convertGui.py
 src/lib/gdebug.py
+src/lib/DatabaseChooser.py
 src/lib/defaults.py
 src/lib/defaults_en.py
 src/lib/defaults_en_GB.py
@@ -56,6 +57,8 @@ src/lib/recipe_emailer.py
 src/lib/recindex.py
 src/lib/rdatabase.py
 src/lib/rmetakit.py
+src/lib/rsqlite.py
+src/lib/rmysql.py
 src/lib/mastercook_importer.py
 src/lib/mealmaster_importer.py
 src/lib/pdf_exporter.py
