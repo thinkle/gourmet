@@ -249,7 +249,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.ImageBox = ImageBox(self)
         self.rg.sl.sh.init_orgdic()
         self.selected=gtk.TRUE
-        self.serveW = self.glade.get_widget('servingsBox')
+        #self.serveW = self.glade.get_widget('servingsBox')
         #self.multCheckB = self.glade.get_widget('rcMultCheck')
         self.multLabel = self.glade.get_widget('multLabel')
         self.applyB = self.glade.get_widget('saveButton')
@@ -629,10 +629,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.current_rec = rec
         try:
             self.serves_orig = float(self.current_rec.servings)
-            self.serveW.set_value(float(self.serves_orig))
         except:
             self.serves_orig = None
-            #self.multCheckB.set_active(False)
             if hasattr(self.current_rec,'servings'):
                 debug(_("Couldn't make sense of %s as number of servings")%self.current_rec.servings,0)        
         self.serves = self.serves_orig
@@ -648,14 +646,22 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             cb.setup_completion(self.rw[c])
             self.rw[c].entry.set_text(getattr(rec,c) or "")
             if type(self.rw[c])==type(gtk.ComboBoxEntry):
-                self.undoableWidget(self.rw[c].get_child())
+                Undo.UndoableEntry(self.rw[c].get_child(),self.history)
             else:
                 # we have to implement undo for regular old comboBoxen!
                 1
         for e in self.recent:
-            self.rw[e].set_text(getattr(rec,e) or "")
-            Undo.UndoableEntry(self.rw[e],self.history)
-            #self.undoableWidget(self.rw[e])
+            print 'setting initial value of ',e,'(',self.rw[e],') to ',getattr(rec,e)            
+            if isinstance(self.rw[e],gtk.SpinButton):
+                try:
+                    self.rw[e].set_value(float(getattr(rec,e)))
+                except:
+                    debug('%s Value %s is not floatable!'%(e,getattr(rec,e)))
+                    self.rw[e].set_text("")
+                Undo.UndoableGenericWidget(self.rw[e],self.history)
+            else:
+                self.rw[e].set_text(getattr(rec,e) or "")
+                Undo.UndoableEntry(self.rw[e],self.history)    
         for t in self.rectexts:
             w=self.rw[t]
             b=w.get_buffer()
@@ -675,11 +681,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 raise
             b.set_text(txt)
             Undo.UndoableTextView(w,self.history)
-            #self.undoableWidget(b,signal='modified-changed',
-            #                    get_text_cb=lambda *args: b.get_text(b.get_start_iter(),
-            #                                                         b.get_end_iter()),
-            #                    )
-
                                 
         #self.servingsChange()
         self.ImageBox.get_image()
