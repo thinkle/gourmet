@@ -44,6 +44,9 @@ except ImportError:
 class RecGui (RecIndex):
     """This is the main application."""
     def __init__ (self,file=None,splash_label=gtk.Label()):
+        # used on imports to make filtering wait until
+        # we are all done.
+        self.wait_to_filter=False
         try:
             import gnome
             gnome.program_init(version.appname,version.version)
@@ -136,9 +139,6 @@ class RecGui (RecIndex):
         self.app.present()
         self.srchentry.grab_focus()
         self.update_splash(_("Done!"))
-        # used on imports to make filtering wait until
-        # we are all done.
-        self.wait_to_filter=False
         self.threads = 0
         
     def update_splash (self, text):
@@ -1096,4 +1096,4 @@ if __name__ == '__main__':
         p=pstats.Stats(profi)
         p.strip_dirs().sort_stats('cumulative').print_stats()
     else:
-        startGui()
+        startGUI()
