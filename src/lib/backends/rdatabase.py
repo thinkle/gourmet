@@ -5,7 +5,7 @@ from gettext import gettext as _
 import gourmet.gglobals
 from gourmet import Undo, keymanager, convert, shopping
 from gourmet.defaults import lang as defaults
-
+import gourmet.nutrition.parser_data
 
 class RecData:
     def __init__ (self):
@@ -29,6 +29,14 @@ class RecData:
         pass
 
     def setup_tables (self):
+        self.nview = self.setup_table('nutrition',
+                                      [(name,typ) for lname,name,typ in
+                                       gourmet.nutrition.parser_data.NUTRITION_FIELDS]
+                                      )
+        self.naliases = self.setup_table('nutritionaliases',
+                                         [('ingkey','char(200)'),
+                                          ('desc','char(100)'),],
+                                         'ingkey')
         self.rview = self.setup_table('recipe',
                                       [('id',"char(75)"),
                                        ('title',"text"),
@@ -60,8 +68,8 @@ class RecData:
                                        ],
                                       #key='id'
                                       )
-        self.iview_not_deleted = self.iview.select(deleted=False)
-        self.iview_deleted = self.iview.select(deleted=True)
+        #self.iview_not_deleted = self.iview.select(deleted=False)
+        #self.iview_deleted = self.iview.select(deleted=True)
         self.sview = self.setup_table('shopcats',
                                       [('shopkey','char(50)'),
                                        ('category','char(200)'),

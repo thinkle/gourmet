@@ -260,7 +260,7 @@ class optionDialog (mDialog):
         self.ret=value
 
 class progressDialog (mDialog):
-    def __init__ (self, title="", okay=True, label=False, sublabel=False, parent=None,
+    def __init__ (self, title="", okay=True, label="", sublabel=False, parent=None,
                   cancel=False, stop=True, pause=True,modal=False):
         """stop,cancel,and pause will be given as callbacks to their prospective buttons."""
         self.custom_pausecb=pause
