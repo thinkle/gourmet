@@ -55,6 +55,7 @@ class mmf_importer (importer.importer):
         self.instr=""
         self.ingrs=[]
         self.ing_added=False
+        self.in_variation=False
         self.compile_regexps()
         self.fn = filename
         self.progress = progress
@@ -140,7 +141,7 @@ class mmf_importer (importer.importer):
         if self.end_matcher.match(l):
             debug("recipe end %s"%l,4)            
             self.commit_rec()
-            self.last_line_was = 'end_rec'
+            self.last_line_was = 'end_rec'            
             return
         groupm = self.group_matcher.match(l)
         if groupm:
@@ -240,6 +241,7 @@ class mmf_importer (importer.importer):
         importer.importer.commit_rec(self)
         # blank rec
         self.committed = True
+        self.in_variation=False
         testtimer.end()
         
     def unwrap_lines (self, blob):
