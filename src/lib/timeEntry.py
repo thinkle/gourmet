@@ -33,8 +33,10 @@ class TimeEntry (gtk.HBox):
     def get_text (self):
         """We return text in the form of '# unit'"""
         num,unit=self.get_value()
-        if int(num)==num: num=int(num)
-        return "%s %s"%(num,unit)
+        if num:
+            if int(num)==num: num=int(num)
+            return "%s %s"%(num,unit)
+        else: return ""
 
     def get_value (self):
         """We return a tuple #,unit"""
