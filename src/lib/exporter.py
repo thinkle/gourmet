@@ -12,9 +12,11 @@ class exporter:
                   conv=None,
                   imgcount=1,
                   order=['attr','ings','text'],
+ 		  attr_order=['title','category','cuisine','servings','source','rating','preptime'],
                   ):
         """A base exporter class to be subclassed (or to be
         called for plain text export)."""
+        self.attr_order=attr_order
         self.out = out
         self.r = r
         self.rd=rd
@@ -33,7 +35,7 @@ class exporter:
         if self.grab_attr(self.r,'image'):
             self.write_image(self.r.image)
         self.write_attr_head()
-        for a in ['title','servings','cuisine','category','source','rating','preptime']:
+        for a in self.attr_order:
             gglobals.gt.gtk_update()
             txt=self.grab_attr(self.r,a)
             if txt and txt.strip():
@@ -295,6 +297,8 @@ class mealmaster_exporter (exporter):
                                      i))
 
     def write_foot (self):
+        self.out.write("\n\n")
+        self.out.write("MMMMM")
         self.out.write("\n\n")
     
 
