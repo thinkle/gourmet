@@ -200,7 +200,10 @@ class RecGui (RecIndex):
         copyright=version.copyright
         appname=version.appname
         myversion=version.version
-        authors=["Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>", _("Roland Duhaime (Windows porting assistance)"), _("Richard Ferguson (improvements to Unit Converter interface)")]
+        authors=["Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>",
+                 _("Roland Duhaime (Windows porting assistance)"),
+                 _("Richard Ferguson (improvements to Unit Converter interface)"),
+                 _("R.S. Born (improvements to Mealmaster export)"),]
         website="http://grecipe-manager.sourceforge.net"
         documenters=None
         translator=_("translator-credits")
@@ -420,9 +423,6 @@ class RecGui (RecIndex):
         self.set_iter_from_rec(rec,iter)
 
     def delete_rec_iter (self, rec):
-        # a simpler, but less correct solution
-        # is to simply make deleted item invisible.
-        #self.visible.remove(rec.id)
         if self.doing_multiple_deletions: return
         else: self.rmodel_filter.refilter()
         #for row in self.rmodel:
@@ -526,7 +526,7 @@ class RecGui (RecIndex):
             expander = [_("See recipes"),tree]
         if de.getBoolean(parent=self.app,label=bigmsg,sublabel=msg,expander=expander):
             debug('deleting iters... ',0)
-            print 'deleting iters...'
+            #print 'deleting iters...'
             self.doing_multiple_deletions=True
             self.iters_to_remove=[]
             for p in paths:
@@ -537,10 +537,13 @@ class RecGui (RecIndex):
                 self.iters_to_remove.append(grandchild)
             self.iters_to_remove.sort()
             self.iters_to_remove.reverse()
-            #tree.set_model(empty_model)
+            trees = [(self.rectree,self.rectree.get_model())]
+            if hasattr(self,'recTrash'): trees.append((self.recTrash.rectree,self.recTrash.rectree.get_model()))
+            for tree,mod in trees:
+                tree.set_model(empty_model)
             for i in self.iters_to_remove:
                 self.recTrash.rmodel.remove(i)
-            #tree.set_model(model)
+            for tree,mod in trees: tree.set_model(mod)
             def show_progress (t):
                 gt.gtk_enter()
                 self.show_progress_dialog(t,
