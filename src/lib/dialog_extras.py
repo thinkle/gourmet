@@ -167,7 +167,8 @@ class numberDialog (mDialog):
         self.ret=self.spinButton.get_value()
 
 class entryDialog (mDialog):
-    def __init__ (self, default=None, label=None, sublabel=None, entryLabel=False, parent=None, visibility=True):
+    def __init__ (self, default=None, label=None, sublabel=None, entryLabel=False, parent=None, visibility=True,
+                  default_value=None):
         mDialog.__init__(self,default=default,parent=parent, label=label, sublabel=sublabel)
         self.hbox=gtk.HBox()
         self.vbox.add(self.hbox)        
@@ -180,6 +181,7 @@ class entryDialog (mDialog):
             self.label.set_padding(H_PADDING,Y_PADDING)
         self.entry = gtk.Entry()
         self.entry.set_visibility(visibility)
+        if default_value: self.entry.set_text(default_value)
         self.hbox.add(self.entry)
         self.hbox.show()
         if default:
