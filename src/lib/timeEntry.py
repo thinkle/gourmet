@@ -19,7 +19,7 @@ class TimeEntry (gtk.HBox):
         self.pack_start(self.combo, gtk.TRUE, gtk.TRUE, 6)
         self.combo.show()
         #self.combo.entry.set_text(_('minutes'))
-        cb_extras.cb_set_active_text(self.combo,_('minutes'))
+        cb_extras.cb_set_active_text(self.combo,_('minutes'))        
         
     def set_text (self, text):
         """We only accept text of the form '# unit'"""
@@ -29,7 +29,6 @@ class TimeEntry (gtk.HBox):
             num,unit = 0,_("minutes") #defaults
         self.spin.set_value(float(num))
         self.combo.entry.set_text(str(unit))
-        
         
     def get_text (self):
         """We return text in the form of '# unit'"""
@@ -48,6 +47,12 @@ class TimeEntry (gtk.HBox):
     def connect (self, signal, handler):
         self.spin.connect(signal, handler)
         self.combo.entry.connect(signal, handler)
+
+    def mnemonic_activate (self, group_cycling):
+        print 'activate!'
+        self.combo.grab_focus()
+        return group_cycling
+        
         
 def makeTimeEntry ():
     te=TimeEntry()
