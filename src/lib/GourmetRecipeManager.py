@@ -266,16 +266,12 @@ class RecGui (RecIndex):
         for c in self.conf:
             c.save_properties()
         a=self.glade.get_widget('app')
-        # WE NOW ASSUME ALL DATABASE BACKENDS AUTOCOMMIT (EXCEPT BROKEN METAKIT)!
-        #saved = not self.rd.changed and self.rd.name=='metakit'
-        #saveMe=False
         for r in self.rc.values():
             for c in r.conf:
                 c.save_properties()
             if r.edited and de.getBoolean(parent=self.app,
                                              label=_("Save your edits to %s")%r.current_rec.title):
                 r.saveEditsCB()
-                #saveMe=True
             else: r.edited=False # in case someone else checks this (e.g. reccard on close)
         for conf in self.sl.conf:
             conf.save_properties()
@@ -305,13 +301,7 @@ class RecGui (RecIndex):
                         except: return True
             else:
                 return True
-        #if saveMe:
-        # just in case we really need saving...
         self.save_default()
-        #elif not saved:
-        #    check=de.getBoolean(label=_("Save database before quitting?"), parent=self.app.get_toplevel(),cancel_returns="CANCEL")
-        #    if check=='CANCEL': return True
-        #    elif check: self.save_default()
         for r in self.rc.values():
             r.widget.destroy()
         self.sl.widget.destroy()
@@ -384,7 +374,7 @@ class RecGui (RecIndex):
         # that want a list of units.
         self.umodel = convertGui.UnitModel(self.conv)
         self.inginfo = reccard.IngInfo(self.rd)
-        self.create_rmodel(self.rd.rview_not_deleted)
+        self.create_rmodel(self.rd.rview)
         self.sl = shopgui.ShopGui(self, conv=self.conv)
         self.sl.hide()
 
@@ -503,7 +493,7 @@ class RecGui (RecIndex):
         self.rd.undoable_delete_recs(
             recs,
             self.history,
-            make_visible=lambda *args: self.create_rmodel(self.rd.rview_not_deleted) or self.setup_rectree())
+            make_visible=lambda *args: self.rmodel_filter.refilter())
         self.iters_to_remove=[]
         for p in rr:
             # we remove by hand...
