@@ -10,7 +10,7 @@ class CheckEncoding:
     def __init__ (self, file, encodings=None):
         if encodings: self.encodings = encodings
         else:
-            self.encodings = ['utf-8','ascii','cp850','latin_1','cp1252']
+            self.encodings = ['iso8859','ascii','latin_1','cp850','cp1252','utf-8',]
         self.all_encodings= ['ascii','cp037','cp424',
                         'cp437','cp500','cp737','cp775','cp850','cp852',
                         'cp855','cp856','cp857','cp860','cp861','cp862',
@@ -38,13 +38,23 @@ class CheckEncoding:
             except UnicodeDecodeError:
                 pass
 
-    def test_all_encodings (self):
+    def get_encodings (self):
+        encs = self.test_all_encodings(self.encodings)
+        if encs:
+            return encs
+        else:
+            return self.test_all_encodings(self.all_encodings)
+            
+    def test_all_encodings (self,encodings=None):
         """Test all encodings and return a dictionary of possible encodings."""
+        if not encodings: encodings=self.all_encodings
         self.possible_encodings = {}
-        for e in self.all_encodings:
+        for e in encodings:
             try:
                 d=self.txt.decode(e)
-                self.possible_encodings[e]=d.encode('utf8')
+                if not d in self.possible_encodings.values():
+                    # if we don't already have this possibility, add 
+                    self.possible_encodings[e]=d.encode('utf8')
             except UnicodeDecodeError:
                 pass
         return self.possible_encodings
@@ -53,18 +63,19 @@ class GetFile (CheckEncoding):
     """Handed a filename, return a list of lines."""
     def __init__ (self,file,encodings=None):
         CheckEncoding.__init__(self,file,encodings)
-        enc=self.test_encodings()
-        if enc:
-            self.enc,txt = enc
-            self.lines = txt.split('\n')
-        else:
-            encodings=self.test_all_encodings()
-            encoding = self.getEncoding(encodings=encodings)
+        encs=self.get_encodings()
+        if encs:
+            if len(encs.keys()) > 1:
+                encoding = getEncoding(encodings=encs)
+            else:
+                encoding = encs.keys()[0]
             self.enc = encoding
-            self.lines = encodings[encoding].split('\n')
-        debug('reading file %s as encoding %s'%(file, self.enc))
-        self.lines = map(lambda l: l.encode(),self.lines)
-                                        
+            self.lines = encs[self.enc].split('\n')            
+            debug('reading file %s as encoding %s'%(file, self.enc))
+            self.lines = map(lambda l: l.encode(),self.lines)
+        else:
+            raise "Cannot decode file %s"%file
+
 def get_file (file, encodings=None):
     gf = GetFile(file, encodings)
     debug('returning lines %s,%s,%s'%(gf.lines[0],gf.lines[1],gf.lines[2]),0)
@@ -83,6 +94,7 @@ class EncodingDialog (de.optionDialog):
         de.optionDialog.__init__(self, default=default,label=label, sublabel=sublabel,
                                  options=options, expander=expander)
         self.optionMenu.connect('activate',self.change_encoding)
+        self.change_encoding()
 
     def get_option (self,widget):
         de.optionDialog.get_option(self,widget)
@@ -94,6 +106,7 @@ class EncodingDialog (de.optionDialog):
     def create_expander (self):
         self.sw = gtk.ScrolledWindow()
         self.tv = gtk.TextView()
+        self.tv.set_editable(False)
         self.buffer = self.tv.get_buffer()
         self.sw.add(self.tv)
         self.sw.show_all()
@@ -106,3 +119,11 @@ class EncodingDialog (de.optionDialog):
 def getEncoding (*args,**kwargs):
     d=EncodingDialog(*args,**kwargs)
     return d.run()
+
+if __name__ == '__main__':
+    print 'grabbing dialog extras'
+    import dialog_extras as de
+    print 'selecting file'
+    fn=de.select_file('Select file to decode',filters=[['Plain Text',['text/plain'],'*txt']],)
+    print 'fn = ',fn
+    print "Got file ", get_file(fn)
