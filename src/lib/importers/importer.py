@@ -98,6 +98,7 @@ class importer:
     def commit_rec (self):
         timeaction = TimeAction('importer.commit_rec',10)
         if self.rec.has_key('servings'):
+            servs=self.convert_servings(self.rec['servings'])
             if servs: self.rec['servings']=str(servs)
             else:
                 if not self.rec.has_key('instructions'):
