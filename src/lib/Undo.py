@@ -38,7 +38,6 @@ class UndoableObject:
         self.action_args = action_args
 
     def perform (self):
-        #print 'performing %s(*%s)'%(self.action,self.action_args)
         self.action(*self.action_args)
         self.history.append(self)
 
@@ -55,14 +54,11 @@ class UndoableObject:
     def reapply (self):
         if self.get_reapply_action_args:
             args,undoargs = self.get_reapply_action_args()
-            #print 'reapply args = ',args
-            #print 'reundo args = ',undoargs
             u = UndoableObject(self.action,self.inverse_action,self.history,
                                action_args=args,
                                undo_action_args=undoargs,
                                get_reapply_action_args=self.get_reapply_action_args,
                                reapply_name=self.reundo_name, reundo_name=self.reapply_name)
-            #print 'performing'
             u.perform()
 
 class UndoableTextChange (UndoableObject):
@@ -74,7 +70,10 @@ class UndoableTextChange (UndoableObject):
         self._set_text = set_text_action
         UndoableObject.__init__(self,lambda *args: self._set_text(self.text),lambda *args: self._set_text(self.initial_text),history)
         self.mode=self.determine_mode()
-        self.cindex,self.clen = self.find_change(self.text)
+        try:
+            self.cindex,self.clen = self.find_change(self.text)
+        except TooManyChanges:
+            self.cindex,self.clen = 0,0
 
     def determine_mode (self,text=None,initial_text=None):
         if not text: text=self.text
@@ -93,27 +92,21 @@ class UndoableTextChange (UndoableObject):
             self.sm = difflib.SequenceMatcher(None,self.initial_text,text2)
         else:
             self.sm.set_seq2(text2)
-        #print 'sm.a=',self.sm.a,' sm.b=',self.sm.b
         blocks=self.sm.get_matching_blocks()
-        #print 'blocks=',blocks
         # we only are interested in similar blocks at different positions
         # (which tell us where the changes happened).
         ch_blocks = filter(lambda x: x[0] != x[1] and x[2] != 0, blocks)
-        #print 'ch_blocks=',ch_blocks
         if ch_blocks and len(ch_blocks)>1:
             raise TooManyChanges("More than one block changed: %s in %s"%(ch_blocks,text2))
         if ch_blocks:
             i,j,n = ch_blocks[0]
             change_length = j-i
             change_index = i
-            #print [change_index,change_length]
             return [change_index,change_length]
         else:
             if self.mode=='delete':
-                #print [len(self.initial_text),len(self.initial_text)-len(text2)]
                 return [len(self.initial_text),len(self.initial_text)-len(text2)]
             else: #self.mode=='add', we presume
-                #print [len(self.initial_text),len(text2)-len(self.initial_text)]
                 return [len(self.initial_text),len(text2)-len(self.initial_text)]
 
     def add_text (self, new_text):
@@ -133,8 +126,6 @@ class UndoableTextChange (UndoableObject):
                         self.text = new_text
                         self.cindex,self.clen = cindex,clen
                         return
-                    #else:
-                        #print 'new blob! ',changed_text
         self.new_action(new_text)
 
     def new_action (self, new_text):
@@ -143,12 +134,10 @@ class UndoableTextChange (UndoableObject):
                             )
 
     def inverse (self):
-        #print 'performing...'
         self._set_text(self.initial_text)
         u=UndoableTextChange(self._set_text,self.history,initial_text=self.text,
                              text=self.initial_text)
         u.is_undo=not self.is_undo
-        #print 'removing self!'
         self.history.remove(self)
         u.perform()
 
@@ -166,26 +155,21 @@ class UndoableTextContainer:
     def change_event_cb (self,*args):
         # if the last change is the same as us...
         if self._setting:
-            #print 'change event internal...'
             return
-        #print 'change_event external ',args
+        debug('change_event external',4)
         txt = self.get_text()
         if txt == self.txt: pass
         if len(self.history)>1 and hasattr(self.history[-1],'txt_id') and self.history[-1].txt_id==self.container:
-            #print 'adding text!'
+            debug('adding text to previous change',0)
             self.change = self.history[-1]
             self.history[-1].add_text(txt)
         else:
-            #if len(self.history)>1:
-                #print self.history[-1]
-                #if hasattr(self.history[-1],'txt_id'): print self.history[-1].txt_id
-            #print 'new change object!'
             self.change=UndoableTextChange(self._set_text,
                                            self.history,
                                            initial_text=self.txt,
                                            text=txt,
                                            txt_id=self.container)
-            #print 'appending!'
+            debug('appending new change to history',0)
             self.history.append(self.change)
         self.txt = txt
         
@@ -225,6 +209,8 @@ class UndoableTextView (UndoableTextContainer):
         self.buffer = self.tv.get_buffer()
         self.buffer.connect('changed',
                             self.change_event_cb)
+        self.buffer.connect('apply-tag',self.change_event_cb)
+        self.buffer.connect('remove-tag',self.change_event_cb)
         
     def set_text (self, text):        
         self.buffer.set_text(text)
@@ -261,7 +247,6 @@ class UndoHistoryList (list):
         except:
             debug('All %s available action are .is_undo=True'%len(self),0)
             raise
-        #print 'Undoing action at index: ',index
         self[index].inverse()
 
     def redo (self, *args):
@@ -280,15 +265,18 @@ class UndoHistoryList (list):
         self[-1].reapply()
 
     def set_sensitive (self,w,val):
+        debug('set_sensitive',0)
         if not w: return
         try:
             w.set_sensitive(val)
+            debug('%s.set_sensitive succeeded'%w,0)
         except AttributeError:
             # 2.6 will give gtk.Action a set_sensitive property, but for now...
-            if type(w)==gtk.Action:
-                for p in w.get_proxies():
-                    debug('setting %s sensitivity to %s'%(w,val),0)
-                    p.set_sensitive(val)
+            #if type(w)==gtk.Action:
+            for p in w.get_proxies():
+                debug('setting %s sensitivity to %s'%(w,val),0)
+                #p.set_sensitive(val)
+                p.set_property('sensitive',val)
 
     def gui_update (self):
         debug('gui_update',0)
@@ -416,7 +404,6 @@ if __name__ == '__main__':
     #while txt:
     #    txt = raw_input('Text: ')
     #    history[-1].add_text(txt)
-    #    print 'History List: ',history
     import gtk
     w = gtk.Window()
     e = gtk.Entry()

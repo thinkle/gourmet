@@ -49,7 +49,7 @@
 		      <accelerator key="r" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image268">
+			<widget class="GtkImage" id="image316">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -120,7 +120,7 @@
 		      <signal name="activate" handler="rcDelete" last_modification_time="Sun, 13 Jun 2004 22:57:16 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image269">
+			<widget class="GtkImage" id="image317">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -150,7 +150,7 @@
 		      <signal name="activate" handler="saveEdits" last_modification_time="Thu, 10 Feb 2005 23:35:28 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image270">
+			<widget class="GtkImage" id="image318">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-save</property>
 			  <property name="icon_size">1</property>
@@ -201,7 +201,7 @@
 		      <accelerator key="z" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image271">
+			<widget class="GtkImage" id="image319">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-undo</property>
 			  <property name="icon_size">1</property>
@@ -223,7 +223,7 @@
 		      <accelerator key="z" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image272">
+			<widget class="GtkImage" id="image320">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-redo</property>
 			  <property name="icon_size">1</property>
@@ -267,29 +267,35 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkImageMenuItem" id="underlineMenu">
+		    <widget class="GtkCheckMenuItem" id="underlineMenu">
 		      <property name="visible">True</property>
-		      <property name="label">gtk-underline</property>
-		      <property name="use_stock">True</property>
-		      <signal name="activate" handler="on_underline_activate" last_modification_time="Thu, 10 Feb 2005 23:48:14 GMT"/>
+		      <property name="label" translatable="yes">_Underline</property>
+		      <property name="use_underline">True</property>
+		      <property name="active">False</property>
+		      <signal name="activate" handler="on_underlineMenu_activate" last_modification_time="Thu, 10 Feb 2005 23:48:14 GMT"/>
+		      <accelerator key="u" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 		    </widget>
 		  </child>
 
 		  <child>
-		    <widget class="GtkImageMenuItem" id="boldMenu">
+		    <widget class="GtkCheckMenuItem" id="boldMenu">
 		      <property name="visible">True</property>
-		      <property name="label">gtk-bold</property>
-		      <property name="use_stock">True</property>
-		      <signal name="activate" handler="on_bold1_activate" last_modification_time="Thu, 10 Feb 2005 23:48:14 GMT"/>
+		      <property name="label" translatable="yes">_Bold</property>
+		      <property name="use_underline">True</property>
+		      <property name="active">False</property>
+		      <signal name="activate" handler="boldMenu" last_modification_time="Sun, 20 Feb 2005 21:37:09 GMT"/>
+		      <accelerator key="b" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 		    </widget>
 		  </child>
 
 		  <child>
-		    <widget class="GtkImageMenuItem" id="italicMenu">
+		    <widget class="GtkCheckMenuItem" id="italicMenu">
 		      <property name="visible">True</property>
-		      <property name="label">gtk-italic</property>
-		      <property name="use_stock">True</property>
-		      <signal name="activate" handler="on_underline2_activate" last_modification_time="Thu, 10 Feb 2005 23:48:14 GMT"/>
+		      <property name="label" translatable="yes">_Italic</property>
+		      <property name="use_underline">True</property>
+		      <property name="active">False</property>
+		      <signal name="activate" handler="on_italicMenu_activate" last_modification_time="Thu, 10 Feb 2005 23:48:14 GMT"/>
+		      <accelerator key="i" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 		    </widget>
 		  </child>
 
@@ -311,7 +317,7 @@
 		      <signal name="activate" handler="ieDel" last_modification_time="Thu, 10 Feb 2005 23:43:14 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image273">
+			<widget class="GtkImage" id="image321">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -349,7 +355,7 @@
 		      <signal name="activate" handler="ieUp" last_modification_time="Thu, 10 Feb 2005 23:43:14 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image274">
+			<widget class="GtkImage" id="image322">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-go-up</property>
 			  <property name="icon_size">1</property>
@@ -371,7 +377,7 @@
 		      <signal name="activate" handler="ieDown" last_modification_time="Thu, 10 Feb 2005 23:43:14 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image275">
+			<widget class="GtkImage" id="image323">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-go-down</property>
 			  <property name="icon_size">1</property>
@@ -2813,6 +2819,7 @@ as Ingredient</property>
 
 		      <child>
 			<widget class="GtkToolbar" id="toolbar9">
+			  <property name="visible">True</property>
 			  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
 			  <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
 			  <property name="tooltips">True</property>
@@ -2877,13 +2884,12 @@ as Ingredient</property>
 			  </child>
 
 			  <child>
-			    <widget class="GtkToggleToolButton" id="copyButton">
+			    <widget class="GtkToolButton" id="copyButton">
 			      <property name="visible">True</property>
 			      <property name="stock_id">gtk-copy</property>
 			      <property name="visible_horizontal">True</property>
 			      <property name="visible_vertical">True</property>
 			      <property name="is_important">False</property>
-			      <property name="active">False</property>
 			    </widget>
 			    <packing>
 			      <property name="expand">False</property>
@@ -2892,13 +2898,12 @@ as Ingredient</property>
 			  </child>
 
 			  <child>
-			    <widget class="GtkToggleToolButton" id="pasteButton">
+			    <widget class="GtkToolButton" id="pasteButton">
 			      <property name="visible">True</property>
 			      <property name="stock_id">gtk-paste</property>
 			      <property name="visible_horizontal">True</property>
 			      <property name="visible_vertical">True</property>
 			      <property name="is_important">False</property>
-			      <property name="active">False</property>
 			    </widget>
 			    <packing>
 			      <property name="expand">False</property>
@@ -3061,6 +3066,7 @@ as Ingredient</property>
 
 		      <child>
 			<widget class="GtkToolbar" id="toolbar10">
+			  <property name="visible">True</property>
 			  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
 			  <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
 			  <property name="tooltips">True</property>

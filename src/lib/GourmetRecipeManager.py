@@ -743,29 +743,29 @@ class RecGui (RecIndex):
                 #    prog,
                 #    _("total recipes. %i%% done creating web page.")%(prog*100)
                 #    )
-                expClass = exporter.website_exporter(self.rd, self.rd.rview_not_deleted,
+                expClass = exporter.website_exporter(self.rd, self.rd.rview.select(deleted=False),
                                                      file, self.conv,
                                                      progress_func=self.set_progress_thr)
                 pd_args={'label':_('Exporting Webpage'),
                          'sublabel':_('Exporting recipes to HTML files in directory %s')%file}
             elif exp_type==MMF:
                 #prog = lambda prog: self.set_progress_thr(prog, _("total recipes. %i%% done exporting mealmaster file.")%(prog*100))
-                expClass = exporter.ExporterMultirec(self.rd, self.rd.rview_not_deleted,
+                expClass = exporter.ExporterMultirec(self.rd, self.rd.rview.select(deleted=False),
                                                      file, one_file=True, ext='mmf',
                                                      conv=self.conv, progress_func=self.set_progress_thr,
                                                      exporter=exporter.mealmaster_exporter)
                 pd_args={'label':_('Mealmaster Export'),
                          'sublabel':_('Exporting recipes to MealMaster(tm) file %s.')%file}
             elif exp_type==TXT:
-                expClass = exporter.ExporterMultirec(self.rd,self.rd.rview_not_deleted,file,
+                expClass = exporter.ExporterMultirec(self.rd,self.rd.rview.select(deleted=False),file,
                                                      conv=self.conv, progress_func=self.set_progress_thr)
                 pd_args={'label':_('Text Export'),'sublabel':_('Exporting recipes to Plain Text file.')}
             elif exp_type == RTF:
-                expClass = rtf_exporter.rtf_exporter_multidoc(self.rd, self.rd.rview_not_deleted, out=file,
+                expClass = rtf_exporter.rtf_exporter_multidoc(self.rd, self.rd.rview.select(deleted=False), out=file,
                                                               progress_func=self.set_progress_thr)
                 pd_args={'label':_('RTF Export'),'sublabel':_('Exporting recipes to RTF file %s.')%file}
             elif exp_type == GXML:
-                expClass = rxml_to_metakit.rview_to_xml(self.rd, self.rd.rview, file, progress_func=self.set_progress_thr)
+                expClass = rxml_to_metakit.rview_to_xml(self.rd, self.rd.rview.select(deleted=False), file, progress_func=self.set_progress_thr)
                 pd_args={'label':_('XML Export'),
                          'sublabel':_('Exporting recipes to Gourmet XML file %s.')%file}
             if expClass:

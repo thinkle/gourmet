@@ -196,8 +196,9 @@ class RecData (rdatabase.RecData):
     def add_rec (self, rdict):
         self.remove_unicode(rdict)
         debug('adding recipe: %s'%rdict,0)
-        rdatabase.RecData.add_rec(self,rdict)
+        r=rdatabase.RecData.add_rec(self,rdict)
         self.db.commit()
+        return r
     
     def delete_rec (self, rec):
         self.changed=True
@@ -239,8 +240,9 @@ class RecData (rdatabase.RecData):
         self.remove_unicode(ingdic)
         timer.end()
         debug('adding ingredient: %s'%ingdic,0)
-        rdatabase.RecData.add_ing(self,ingdic)
+        i=rdatabase.RecData.add_ing(self,ingdic)
         self.db.commit()
+        return i
 
 class RecipeManager (RecData,rdatabase.RecipeManager):
     def __init__ (self, file=os.path.join(gglobals.gourmetdir,'recipes.mk')):

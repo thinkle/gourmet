@@ -26,6 +26,9 @@ class RecData:
     def initialize_connection (self):
         raise NotImplementedError
 
+    def save (self):
+        pass
+
     def setup_tables (self):
         debug('rview',2)
         debug('rview',2)
@@ -46,8 +49,6 @@ class RecData:
                                        ('thumb','binary'),
                                        ('deleted','bool')                                       
                                        ])
-        self.rview_not_deleted = self.rview.select(deleted=False)
-        self.rview_deleted = self.rview.select(deleted=True)
         debug('iview',2)
         self.iview = self.setup_table('ingredients',
                                       [('id','char(75)'),

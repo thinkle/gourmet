@@ -10,6 +10,7 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
         xml.sax.ContentHandler.__init__(self)
         importer.importer.__init__(self,rd=recData)
         self.meta={}
+        self.in_mixed = 0
         self.meta['cuisine']={}
         self.meta['source']={}        
         self.meta['category']={}
@@ -17,11 +18,12 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
     
     def startElement(self, name, attrs):
         gt.gtk_update()
-        self.elbuf = ""
-        self.in_mixed=0
+        self.elbuf = ""        
         if name=='category' or name=='cuisine' or name=='source':
+            self.in_mixed=0
             self.metaid=unquoteattr(attrs.get('id',""))
         if name=='recipe':
+            self.in_mixed=0
             self.start_rec()
             for att in ['date','audience','cuisine','servings',
                         'rating','description','category','source']:
@@ -36,18 +38,23 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
                         self.rec[att]=raw
                         print "Warning: can't translate ",raw
         if name=='inggroup':
+            self.in_mixed=0
             self.group=unquoteattr(attrs.get('name'))
         if name=='ingredient':
+            self.in_mixed=0
             self.start_ing(id=self.rec['id'])
             self.ing['optional']=attrs.get('optional','no')            
         if name=='ingref':
+            self.in_mixed=0
             self.start_ing(id=self.rec['id'])
             self.add_ref(unquoteattr(attrs.get('refid')))
             self.add_amt(unquoteattr(attrs.get('amount')))
         if name=='amount':
+            self.in_mixed=0
             for att in ['unit','norm']:
                 self.ing[att]=unquoteattr(attrs.get(att,""))
         if name=='item':
+            self.in_mixed=0
             for att in ['ingkey','alternative']:
                 self.ing[att]=unquoteattr(attrs.get(att,""))
         if self.in_mixed:
@@ -71,7 +78,6 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
         if name=='recipe':
             #self.rd.add_rec(self.rec)
             self.commit_rec()
-
         if name=='inggroup':
             self.group=None
         if name=='ingref':
@@ -85,12 +91,17 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
             self.add_amt(self.elbuf)
         if name=='instructions' or name=='modifications':
             self.in_mixed = 0
-            self.mixed += xml.sax.saxutils.unescape(self.elbuf)
-#            print "%s: %s" %(name, self.mixed)
-            self.rec[name]=xml.sax.saxutils.unescape(self.mixed)
+            self.mixed += self.elbuf
+            #print "%s: %s" %(name, self.mixed)
+            # special unescaping of our grand little tags
+            for (eop,op,ecl,cl) in [('&lt;%s&gt;'%t,'<%s>'%t,'&lt;/%s&gt;'%t,'</%s>'%t)
+                                    for t in 'b','i','u']:
+                self.mixed=self.mixed.replace(eop,op)
+                self.mixed=self.mixed.replace(ecl,cl)
+            self.rec[name]=self.mixed
         if self.in_mixed:
-#            print "Adding to mixed..."
-            self.mixed += xml.sax.saxutils.unescape(self.elbuf)
+            #print "Adding to mixed...", self.mixed
+            self.mixed += self.elbuf
             self.mixed += "</%s>" % name
 
 class converter:
@@ -118,7 +129,7 @@ class converter:
 class rec_to_xml (exporter.exporter):
     def __init__ (self, rd, r, out,attdics={}):
         self.attdics = attdics
-        exporter.exporter.__init__(self, rd,r,out)
+        exporter.exporter.__init__(self, rd,r,out, use_ml=True, do_markup=True)
 
     def write_head (self):
         self.out.write("\n<recipe")
@@ -140,7 +151,11 @@ class rec_to_xml (exporter.exporter):
             self.out.write("\n<title>%s</title>"%self.my_title)
         
     def write_text (self, label, text):
-        self.out.write("\n<%s>%s</%s>\n"%(NAME_TO_ATTR[label],xml.sax.saxutils.escape(text),NAME_TO_ATTR[label]))
+        self.out.write("\n<%s>%s</%s>\n"%(NAME_TO_ATTR[label],text,NAME_TO_ATTR[label]))
+
+    def handle_italic (self, chunk): return '&lt;i&gt;'+chunk+'&lt;/i&gt;'
+    def handle_bold (self, chunk): return '&lt;b&gt;'+chunk+'&lt;/b&gt;'    
+    def handle_underline (self, chunk): return '&lt;u&gt;'+chunk+'&lt;/u&gt;'    
         
     def write_foot (self):
         self.out.write("</recipe>\n")
@@ -186,12 +201,12 @@ class rview_to_xml (exporter.ExporterMultirec):
             self, rd, rview, out, one_file=True, ext='xml', exporter=rec_to_xml,
             exporter_kwargs={'attdics':{'cuisine':self.cuiDic,
                                         'category':self.catDic,
-                                        'source':self.srcDic}
+                                        'source':self.srcDic,},
                              },
             progress_func=progress_func)
 
     def write_header (self):        
-        self.ofi.write('<!DOCTYPE recipeDoc PUBLIC "-//GOURMET//GOURMET RECIPE MANAGER XML//EN" "%s/recipe.dtd">'%datad)
+        #self.ofi.write('<!DOCTYPE recipeDoc PUBLIC "-//GOURMET//GOURMET RECIPE MANAGER XML//EN" "%s/recipe.dtd">'%datad)
         self.ofi.write("<recipeDoc>\n")
         self.ofi.write( "<recipeHead>\n")
         self.dic2decl("category",self.catDic,self.ofi)

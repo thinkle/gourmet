@@ -54,7 +54,7 @@ class ActionGroupWithSeparators (gtk.ActionGroup):
     def set_visible (self, visible):
         gtk.ActionGroup.set_visible(self,visible)
         for s in self.separators:
-            try: s.set_visible(visible)
+            try: s.set_property('visible',visible)
             except: print 'no widget %s'%s
 
 class ActionManager:
@@ -307,8 +307,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
              ]
             )
         self.notebook_page_actions = {'ingredients':['ingredientGroup','selectedIngredientGroup'],
-                                      #'instructions':['editTextItems'],
-                                      #'modifications':['editTextItems'],
+                                      'instructions':['editTextItems'],
+                                      'modifications':['editTextItems'],
                                       }
         # for editText stuff is not yet implemented!
         # it appears it will be quite a pain to implement as well, alas!
@@ -410,6 +410,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def saveEditsCB (self, click=None, click2=None, click3=None):
         debug("saveEditsCB (self, click=None, click2=None, click3=None):",5)
         self.rg.message("Committing edits!")
+        self.setEdited(False)
         newdict = {'id': self.current_rec.id}
         for c in self.reccom:
             newdict[c]=self.rw[c].entry.get_text()
@@ -428,9 +429,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             newdict['image']=self.current_rec.image
         debug("modify_rec, newdict=%s"%newdict,5)            
         self.rg.rd.modify_rec(self.current_rec,newdict)
-        ## then, we remove the duplicate item
-        #self.rg.rd.rview.remove(self.rg.rd.rview.filter(lambda row: self.are_equal(self.current_rec,row)))
-        self.setEdited(False)
         # save DB for metakit
         self.rg.rd.save()
         ## if our title has changed, we need to update menus
@@ -597,7 +595,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.updateIngredientsDisplay()
 
     def updateRecipe (self, rec, show=True):
-        debug("updateRecipe (self, rec):",5)
+        debug("updateRecipe (self, rec):",-5)
         if not self.edited or de.getBoolean(parent=self.widget,
                                          label=_("Abandon your edits to %s?")%self.current_rec.title):
             self.updateRec(rec)
@@ -690,25 +688,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             utc.add_text(newtxt)
         widget.connect(signal,change_cb)
 
-    def setup_layout (self):
-        self.da = self.glade.get_widget('drawingarea')
-        self.da.realize()
-        self.da.connect('configure_event',self.draw_layout)
-        self.da.connect('expose_event',self.draw_layout)
-        self.gc = self.da.window.new_gc()
-        print 'DELETEME: DRAWINGAREA=',self.da
-        self.context = self.da.create_pango_context()
-        self.layout = self.da.create_pango_layout("Recipe")
-        self.pango_fontdesc = pango.FontDescription('Times 14')
-        
-    def draw_layout (self,*args):
-        self.layout.set_markup('<b>This</b> <i>is</i> <span size="100">a test</span>')
-        self.layout.set_font_description(self.pango_fontdesc)
-        self.da.window.draw_layout(self.gc,x=100,y=200,layout=self.layout)
-
     def updateRecDisplay (self):
-        self.setup_layout()
-        self.draw_layout ()
         for attr in self.display_info:
             if  self.special_display_functions.has_key(attr):
                 debug('calling special_display_function for %s'%attr,0)
@@ -981,7 +961,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             if attr=='item':
                 d['ingkey']=self.rg.rd.km.get_key(text)
                 store.set_value(iter,5,d['ingkey'])
-            self.rg.rd.undoable_modify_ing(ing,d,self.history)
+            if type(ing) != str: self.rg.rd.undoable_modify_ing(ing,d,self.history)
             if d.has_key('ingkey'):
                 ## if the key has been changed and the shopping category is not set...
                 ## COLUMN NUMBER FOR Shopping Category==6

@@ -15,7 +15,9 @@ class exporter:
                   conv=None,
                   imgcount=1,
                   order=['attr','text','ings'],
-		  attr_order=['title','category','cuisine','servings','source','rating','preptime']
+		  attr_order=['title','category','cuisine','servings','source','rating','preptime'],
+                  do_markup=True,
+                  use_ml=False,
                   ):
         """A base exporter class to be subclassed (or to be
         called for plain text export)."""
@@ -24,6 +26,8 @@ class exporter:
         self.out = out
         self.r = r
         self.rd=rd
+        self.do_markup=do_markup
+        self.use_ml=use_ml
         if not conv: conv=convert.converter()
         self.conv=conv
         self.imgcount=imgcount
@@ -60,6 +64,8 @@ class exporter:
         for a in ['instructions','modifications']:
             txt=self.grab_attr(self.r,a)
             if txt and txt.strip():
+                if self.do_markup: txt=self.handle_markup(txt)
+                if not self.use_ml: txt = xml.sax.saxutils.unescape(txt)
                 self.write_text(a.capitalize(),txt)
 
     def _write_ings (self):
@@ -132,6 +138,35 @@ class exporter:
                 self.out.write("\n%s"%wrapped_line)
         self.out.write('\n\n')
 
+    def handle_markup (self, txt):
+        import pango
+        outtxt = ""
+        try:
+            al,txt,sep = pango.parse_markup(txt,u'0')
+        except:
+            al,txt,sep = pango.parse_markup(xml.sax.saxutils.escape(txt),u'0')
+        ai = al.get_iterator()
+        more = True
+        while more:
+            fd,lang,atts=ai.get_font()
+            chunk = xml.sax.saxutils.escape(txt.__getslice__(*ai.range()))
+            fields=fd.get_set_fields()
+            if fields != 0: #if there are fields
+                if 'style' in fields.value_nicks and fd.get_style()==pango.STYLE_ITALIC:
+                    chunk=self.handle_italic(chunk)
+                if 'weight' in fields.value_nicks and fd.get_weight()==pango.WEIGHT_BOLD:
+                    chunk=self.handle_bold(chunk)
+            for att in atts:
+                if att.type==pango.ATTR_UNDERLINE and att.value==pango.UNDERLINE_SINGLE:
+                    chunk=self.handle_underline(chunk)
+            outtxt += chunk
+            more=ai.next()
+        return outtxt
+
+    def handle_italic (self,chunk): return "*"+chunk+"*"
+    def handle_bold (self,chunk): return chunk.upper()
+    def handle_underline (self,chunk): return "_" + chunk + "_"
+
     def write_grouphead (self, text):
         """The start of group of ingredients named TEXT"""
         self.out.write("\n%s:\n"%text.strip())
@@ -162,10 +197,10 @@ class exporter:
 class exporter_mult (exporter):
     def __init__ (self, rd, r, out, conv=None,
                   mult=1, imgcount=1, order=['attr','text','ings'],
-                  change_units=True):        
+                  change_units=True, use_ml=False, do_markup=True):        
         self.mult = mult
         self.change_units = change_units
-        exporter.__init__(self, rd, r, out, conv, imgcount, order)
+        exporter.__init__(self, rd, r, out, conv, imgcount, order, use_ml=use_ml, do_markup=do_markup)
 
     def write_attr (self, label, text):
         attr = gglobals.NAME_TO_ATTR[label]
@@ -490,7 +525,7 @@ class html_exporter (exporter_mult):
                   link_generator=None,
                   # exporter_mult args
                   mult=1,
-                  change_units=True
+                  change_units=True,
                   ):
         """We export web pages. We have a number of possible options
         here. css is a css file which will be embedded if embed_css is
@@ -511,11 +546,12 @@ class html_exporter (exporter_mult):
         if not imagedir: imagedir = "" #make sure it's a string
         self.imagedir_absolute = os.path.join(os.path.split(out.name)[0],imagedir)
         self.imagedir = imagedir
-        exporter_mult.__init__(self, rd, r, out, conv=conv,imgcount=imgcount,mult=mult,change_units=change_units)
+        exporter_mult.__init__(self, rd, r, out, conv=conv,imgcount=imgcount,mult=mult,change_units=change_units,
+                               do_markup=True, use_ml=True)
         
     def htmlify (self, text):
         t=text.strip()
-        t=xml.sax.saxutils.escape(t)        
+        #t=xml.sax.saxutils.escape(t)
         t="<p>%s</p>"%t
         t=re.sub('\n\n+','</p><p>',t)
         t=re.sub('\n','<br>',t)
@@ -565,6 +601,10 @@ class html_exporter (exporter_mult):
 
     def write_text (self, label, text):
         self.out.write("<div class='%s'><h3 class='%s'>%s</h3>%s</div>"%(label,label,label,self.htmlify(text)))
+
+    def handle_italic (self, chunk): return "<em>" + chunk + "</em>"
+    def handle_bold (self, chunk): return "<strong>" + chunk + "</strong>"
+    def handle_underline (self, chunk): return "<u>" + chunk + "</u>"
 
     def write_attr_head (self):
         self.out.write("<div class='header'>")
