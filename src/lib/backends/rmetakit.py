@@ -121,7 +121,7 @@ class RecData (rdatabase.RecData):
             else:
                 debug("Warning: rec has no attribute %s (tried to set to %s)" %(k,v),1)
         self.run_hooks(self.modify_hooks,rec)
-        self.db.commit()
+        #self.db.commit()
 
     def ings_search (self, ings, keyed=None, rview=None, use_regexp=True, exact=False):
         """Handed a list of regexps, return a list of recipes containing all
@@ -198,7 +198,7 @@ class RecData (rdatabase.RecData):
         self.remove_unicode(rdict)
         debug('adding recipe: %s'%rdict,0)
         r=rdatabase.RecData.add_rec(self,rdict)
-        self.db.commit()
+        #self.db.commit()
         return r
     
     def delete_rec (self, rec):
@@ -222,7 +222,7 @@ class RecData (rdatabase.RecData):
             debug("DEBUG: Deleting ingredient %s"%i.item)
             self.iview.delete(i.__index__)
         debug('delete_rec finished.')
-        self.db.commit()
+        #self.db.commit()
     
     def new_rec (self):
         blankdict = {'id':self.new_id(),
@@ -233,7 +233,7 @@ class RecData (rdatabase.RecData):
     def delete_ing (self, ing):
         self.iview.delete(ing.__index__)
         self.changed=True
-        self.db.commit()
+        #self.db.commit()
 
     def add_ing (self, ingdic):
         debug('removing unicode',3)
@@ -242,7 +242,7 @@ class RecData (rdatabase.RecData):
         timer.end()
         debug('adding ingredient: %s'%ingdic,0)
         i=rdatabase.RecData.add_ing(self,ingdic)
-        self.db.commit()
+        #self.db.commit()
         return i
 
 class RecipeManager (RecData,rdatabase.RecipeManager):
