@@ -1,9 +1,10 @@
-import gxml_importer, importer, mastercook_importer, mealmaster_importer
+import gxml_importer, importer, mastercook_importer, mealmaster_importer, mastercook_plaintext_importer
 import fnmatch
 from gettext import gettext as _
 #import mastercook_plaintext_importer
 from exporters import MMF,GXML
-MX2 = _('MasterCook file')
+MC = _('MasterCook file')
+MX2 = _('MasterCook XML file')
 
 FILTER_INFO = {
     'mealmaster': {'import': lambda args: [mealmaster_importer.mmf_importer,[],
@@ -15,10 +16,19 @@ FILTER_INFO = {
                    'patterns':['*.mmf','*.txt'],
                    'mimetypes':['text/mealmaster','text/plain'],
                    'tester':importer.Tester("^([M-][M-][M-][M-][M-])-*\s*(Recipe|[Mm]eal-?[Mm]aster).*")},
+    'mastercookplain': {'import': lambda args: [mastercook_plaintext_importer.mastercook_importer,
+                                               [args['file'],args['rd']],
+                                               {'threaded':args['threaded']}],
+                        'name': MC,
+                        'patterns': ['*.mxp','*.txt','*.mxp'],
+                        'mimetypes': ['text/plain'],
+                        'tester':mastercook_plaintext_importer.Tester(),
+                        'get_source':False,
+                        },
     'mastercook': {'import': lambda args: [mastercook_importer.converter,
-                                            [args['file'],args['rd']],
+                                           [args['file'],args['rd']],
                                            {'threaded':args['threaded']}
-                                            ],
+                                           ],
                    'name':MX2,
                    'patterns': ['*.mx2','*.xml','*.mxp'],
                    'mimetypes': ['application/xml','text/xml','text/plain'],
