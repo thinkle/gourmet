@@ -8,8 +8,14 @@ lock_change_debug_level = 1
 sql_debug_level = -1
 
 class PythonicSQL:
+
+    """PythonicSQL allows us to treat SQL queries in a more object-oriented/pythonic
+    fashion. Really, this class allows SQL to look more like metakit and should be able
+    to drop in easily into the codebase I have built around the metakit interfaces, preventing
+    me from having to write SQL throughout an app. Subclasses will implement specific SQL dialects,
+    such as a MySQL interface or a SQLite interface."""
+
     def __init__ (self,module=None):
-        #print file
         self.changed = False
         self._table_fields = {}        
         self._connection = {}
@@ -76,6 +82,7 @@ class PythonicSQL:
         return retval
 
     def execute_and_fetch (self, sql, *fetcher_args,**fetcher_kwargs):
+        """Execute our SQL and return a Fetcher object to let us access the query."""
         debug('excute_and_fetch: %s'%sql,sql_debug_level)
         # handle strings or tuples of strings,params
         c = self.new_cursor()
@@ -300,6 +307,10 @@ def fetcher (cursor, name, db, fields):
         fetched = cursor.fetchone()
 
 class Fetcher (list):
+
+    """A Fetcher lets us look at a database query as a list of results.
+    Each item in the list is a RowObject"""
+    
     def __init__ (self,cursor, name, db, fields, filters=[]):
         self.cursor = cursor
         self.name = name
@@ -385,6 +396,14 @@ class FetcherPivot (Fetcher):
                   criteria=self.criteria,filters=self.filters)
 
 class TableObject (list):
+
+    """A TableObject makes SQL look similar to a metakit view.
+
+    It is a list, which allows us to access rows in a table with an
+    index or to loop through rows easily. TableObject also provides
+    the ability to filter based on criteria, returning new
+    TableObjects representing "filtered" tables (essentially, saved queries)."""
+    
     def __init__ (self, db, table, key=None, criteria=None, filters=[]):
         self._last = None
         self.__db__ = db
@@ -500,6 +519,8 @@ class TableObject (list):
                                          filters=self.__filters__))
 
 class RowObject :
+    """Return an object based on a SQL query. Our object has attributes
+    for each field in our result set."""
     def __init__ (self, name, db, results, fields):
         self.__instantiated__=False
         self.__db__ = db
