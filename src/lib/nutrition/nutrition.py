@@ -52,7 +52,8 @@ class NutritionData:
     def convert_amount (self, amount, unit, density=None):
         cnv = self.conv.converter('g.',unit)
         if not cnv:
-            cnv = self.conv.converter('g.',unit,density)
+            print 'using density ',density
+            cnv = self.conv.converter('g.',unit,density=density)
         if cnv:
             return (0.01*amount)/cnv
         
