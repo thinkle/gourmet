@@ -7,6 +7,12 @@ def check_for_thumbnail (uri, type="large"):
         m = md5.md5(uri)
         name= os.path.join("~",".thumbnails",type,m.hexdigest() + ".png")
         name = os.path.expanduser(name)
+	targetdir = os.path.split(name)[0]
+	if not os.path.exists(targetdir):
+	    os.makedirs(targetdir)
+	if not os.path.isdir(targetdir):
+	    import tempfile
+	    name = tempfile.mktemp()
         try:
             fn,headers = urllib.urlretrieve(uri)
         except IOError:
