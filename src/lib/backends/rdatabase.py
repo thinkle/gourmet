@@ -8,6 +8,10 @@ from gourmet.defaults import lang as defaults
 import gourmet.nutrition.parser_data
 
 class RecData:
+
+    """Our basic class for keeping recipe data. This is intended to be subclassed
+    by various backends which implement the interface between Gourmet and a database."""
+    
     def __init__ (self):
         timer = TimeAction('initialize_connection + setup_tables',0)
         self.initialize_connection()
@@ -29,6 +33,10 @@ class RecData:
         pass
 
     def setup_tables (self):
+        """Setup our database tables.  This is where we define all tables using
+        generic field names and field types. These names should not cause any
+        namespace collisions in any imaginable databases (so we avoid e.g. "key" as
+        a name"""
         self.nview = self.setup_table('nutrition',
                                       [(name,typ) for lname,name,typ in
                                        gourmet.nutrition.parser_data.NUTRITION_FIELDS]
@@ -106,11 +114,18 @@ class RecData:
         raise NotImplementedError
 
     def run_hooks (self, hooks, *args):
+        """A basic hook-running function. We use hooks to allow parts of the application
+        to tag onto data-modifying events and e.g. update the display"""
         for h in hooks:
             debug('running hook %s with args %s'%(h,args),3)
             h(*args)
 
     def get_dict_for_obj (self, obj, keys):
+        """Generally, we expect our database backends to be metakit-like and provide us
+        with objects whose attributes let us access our data. get_dict_for_obj takes a list
+        of attribute names (keys) and return a dictionary with those names as keys and the
+        named attributes as keys. If our list is [key1,key2,key3], our returned dictionary is
+        {key1:obj.key1,key2:obj.key2,...}"""
         orig_dic = {}
         for k in keys:
             v=getattr(obj,k)
@@ -119,6 +134,7 @@ class RecData:
 
     def undoable_modify_rec (self, rec, dic, history=[], get_current_rec_method=None,
                              select_change_method=None):
+        """Modify a recipe and remember what we did so that we can undo it."""
         orig_dic = self.get_dict_for_obj(rec,dic.keys())
         reundo_name = "Re_apply"
         reapply_name = "Re_apply "
@@ -151,9 +167,12 @@ class RecData:
         obj.perform()
 
     def modify_rec (self, rec, dict):
+        """Handed a recipe object and a dictionary with new properties and values,
+        this function should modify the recipe."""
         raise NotImplementedError
 
     def search (self, table, colname, text, exact=0, use_regexp=True):
+        """Implement a search for TEXT in COLNAME of TABLE"""
         raise NotImplementedError
 
     def get_default_values (self, colname):
@@ -179,6 +198,7 @@ class RecData:
         return dct.keys()
 
     def get_ings (self, rec):
+        """Return a list of ingredient objects."""
         if hasattr(rec,'id'):
             id=rec.id
         else:
@@ -245,6 +265,8 @@ class RecData:
             return None
 
     def add_rec (self, rdict):
+        """Add a new recipe to our database based on a dictionary, where our dictionary
+        includes fieldnames as keys and values as values {'title':'My Recipe',...}"""
         self.changed=True
         t = TimeAction('rdatabase.add_rec - checking keys',3)
         if not rdict.has_key('deleted'):
@@ -282,7 +304,7 @@ class RecData:
 
     def new_id (self, base="r"):
         """Return a new unique ID. Possibly, we can have
-        a base"""
+        a base (although, frankly, there's no need for this)."""
         if self.top_id.has_key(base):
             start = self.top_id[base]
             n = start + 1
@@ -380,11 +402,13 @@ class RecData:
         raise NotImplementedError
     
 class RecipeManager (RecData):
+    """We add a few more ingredient-specific functionalities to our RecData class,
+    including our keymanager (which keeps track of ingredient keys), a key_search,
+    and a very simple ingredient_parser."""
     def __init__ (self):
         debug('recipeManager.__init__()',3)
         RecData.__init__(self)
         self.km = keymanager.KeyManager(rm=self)
-
         
     def key_search (self, ing):
         """Handed a string, we search for keys that could match
@@ -437,9 +461,6 @@ class RecipeManager (RecData):
 
     def ings_search (self, ings, keyed=None, rview=None, use_regexp=True, exact=False):
         raise NotImplementedError
-
-    
-
 
 class mkConverter(convert.converter):
     def __init__ (self, db):
