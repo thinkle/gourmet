@@ -170,8 +170,8 @@ if __name__ == '__main__':
         gtk.mainquit()
     #snd=SimpleNutritionalDisplay(db.nview)
     #snd.w.connect('delete-event',quit)
-    import nutrition
-    nd=nutrition.nutritionData(db,conv)
+    import nutrition.nutrition
+    nd=nutrition.nutrition.NutritionData(db,conv)
     sic = SimpleIngredientCalculator(nd,umod)
     sic.run()
     gtk.main()

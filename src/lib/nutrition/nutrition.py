@@ -1,6 +1,7 @@
 import re
+import sys
 
-class nutritionData:
+class NutritionData:
     def __init__ (self, db, conv):
         self.db = db
         self.conv = conv
@@ -9,8 +10,21 @@ class nutritionData:
 
     def set_key (self, key, row):
         density=self.get_density(key,row)
-        srch = self.naliases.append({'nbdno':row.nbdno,
-                                     'ingkey':key})
+        row = self.get_key(key)
+        if row: self.row.nbdno=row.nbdno
+        else:
+            self.db.naliases.append({'nbdno':row.nbdno,
+                                  'ingkey':key})
+
+    def set_key_from_nbdno (self, key, nbdno):
+        self.db.naliases.append({'nbdno':nbdno,
+                                 'ingkey':key})
+
+    def get_key (self, key):
+        print 'key=',key
+        rows=self.db.naliases.select({'ingkey':str(key)})
+        if rows: return rows[0]
+        else: return None
 
     def get_conversion_for_amt (self, amt, unit, key, row):
         # our default is 100g
@@ -25,7 +39,9 @@ class nutritionData:
         else:
             return None
 
-    def get_density (self,key,row):
+    def get_density (self,key,row=None):
+        if not row: row = self.get_key(key)
+        if not row: return None
         if self.conv.density_table.has_key(key):
             return self.conv.density_table[key]
         else:
@@ -73,7 +89,9 @@ if __name__ == '__main__':
     db=rm.RecipeManager(**rm.dbargs)
     import gourmet.convert
     conv = gourmet.convert.converter()
-    nd=nutritionData(db,conv)
+    import nutritionGrabberGui
+    nutritionGrabberGui.check_for_db(db)
+    nd=NutritionData(db,conv)
     import random
     fake_key = "0"
     while raw_input('Get another density?'):

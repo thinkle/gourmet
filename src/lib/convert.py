@@ -50,7 +50,7 @@ class converter:
         units = []
         if not table:
             table=self.conv_table
-        else:
+        #else:
             #print "We were handed a table: ",table
         for u1,u2 in filter(lambda x: len(x)==2, table.keys()):
             if u1 not in units: units.append(u1)

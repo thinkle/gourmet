@@ -30,11 +30,13 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
                 'Find ABBREV.txt file',
                 filters=[['Plain Text',['text/plain'],['*txt']]]
                 )            
-        self.progdialog = de.progressDialog(label='Loading Nutritional Data',
+        self.progdialog = de.progressDialog(label=_('Loading Nutritional Data'),
                                             pause=self.pausecb,
                                             stop=self.stopcb)
         self.progdialog.show()
         self.get_abbrev(filename)
+        self.show_progress(1,_('Nutritonal database import complete!'))
+        self.progdialog.ok.set_sensitive(True)
 
     def show_progress (self,fract,msg):
         self.progdialog.progress_bar.set_fraction(fract)

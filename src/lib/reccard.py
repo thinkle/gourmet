@@ -13,6 +13,7 @@ from get_pixbuf_from_file import get_pixbuf_from_jpg
 import exporters.printer as printer
 from gdebug import *
 from gglobals import *
+import nutrition.nutritionView
 from gettext import gettext as _
 
 class ToggleActionWithSeparators (gtk.ToggleAction):
@@ -196,7 +197,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'print': self.print_rec,
             'email': self.email_rec,
             'preferences':self.show_pref_dialog,
-            })        
+            })
+        self.ncv = nutrition.nutritionView.NutritionCardView(self)
         self.show()
         t.end()
         # hackish, but focus was acting funny        
@@ -767,8 +769,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.servingsMultiplyByLabel.set_label("")
 
     def create_ing_alist (self):
-        ings=self.rg.rd.get_ings(self.current_rec)
-        self.ing_alist = self.rg.rd.order_ings( ings )
+        self.ings=self.rg.rd.get_ings(self.current_rec)
+        self.ing_alist = self.rg.rd.order_ings( self.ings )
     
     def updateIngredientsDisplay (self):
         if not self.ing_alist:

@@ -3598,7 +3598,7 @@ as Ingredient</property>
 		      </child>
 
 		      <child>
-			<widget class="GtkToolButton" id="toolbutton2">
+			<widget class="GtkToolButton" id="nutritionCustomizeButton">
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">Select nutritional information to display</property>
 			  <property name="use_underline">True</property>
@@ -3650,7 +3650,7 @@ as Ingredient</property>
 				  <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 				  <child>
-				    <widget class="GtkTreeView" id="treeview1">
+				    <widget class="GtkTreeView" id="nutritionTreeView">
 				      <property name="visible">True</property>
 				      <property name="can_focus">True</property>
 				      <property name="headers_visible">True</property>
@@ -3683,10 +3683,10 @@ as Ingredient</property>
 				  <property name="right_padding">12</property>
 
 				  <child>
-				    <widget class="GtkExpander" id="expander1">
+				    <widget class="GtkExpander" id="nutritionExpander">
 				      <property name="visible">True</property>
 				      <property name="can_focus">True</property>
-				      <property name="expanded">False</property>
+				      <property name="expanded">True</property>
 				      <property name="spacing">0</property>
 
 				      <child>
@@ -3774,7 +3774,7 @@ as Ingredient</property>
 						  <property name="spacing">0</property>
 
 						  <child>
-						    <widget class="GtkButton" id="button46">
+						    <widget class="GtkButton" id="nutritionEdit">
 						      <property name="visible">True</property>
 						      <property name="can_default">True</property>
 						      <property name="can_focus">True</property>
@@ -3848,7 +3848,7 @@ as Ingredient</property>
 						  </child>
 
 						  <child>
-						    <widget class="GtkButton" id="button47">
+						    <widget class="GtkButton" id="nutritionApplyButton">
 						      <property name="visible">True</property>
 						      <property name="can_default">True</property>
 						      <property name="can_focus">True</property>
@@ -3869,7 +3869,7 @@ as Ingredient</property>
 					      </child>
 
 					      <child>
-						<widget class="GtkComboBox" id="combobox1">
+						<widget class="GtkComboBox" id="nutritionUSDACombo">
 						  <property name="visible">True</property>
 						  <property name="add_tearoffs">False</property>
 						  <property name="focus_on_click">True</property>
@@ -3885,7 +3885,7 @@ as Ingredient</property>
 					      </child>
 
 					      <child>
-						<widget class="GtkComboBoxEntry" id="comboboxentry1">
+						<widget class="GtkComboBoxEntry" id="nutritionKeyBox">
 						  <property name="visible">True</property>
 						  <property name="add_tearoffs">False</property>
 						  <property name="has_frame">True</property>

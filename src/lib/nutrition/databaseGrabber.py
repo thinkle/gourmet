@@ -76,8 +76,8 @@ class DatabaseGrabber:
             t.end()
             d = {}
             t=TimeAction('enumerate fields',0)
-            for n,fl in enumerate(fields):            
-                lname,sname,typ = NUTRITION_FIELDS[n]
+            for nn,fl in enumerate(fields):            
+                lname,sname,typ = NUTRITION_FIELDS[nn]
                 if fl and fl[0]=="~" and fl[-1]=="~":
                     d[sname]=fl[1:-1]
                 if typ=='float':
@@ -87,13 +87,12 @@ class DatabaseGrabber:
                         d[sname]=None
             t.end()
             if self.show_progress and n % 20 == 0:
-                tsp = TimeAction('show progress',0)
-                self.show_progress(float(n)/tot,_('Parsing nutritional data: %s of %s lines.')%(n,tot))
-                tsp.end()
+                self.show_progress(float(n)/tot,_('Reading nutritional data: imported %s of %s entries.')%(n,tot))
             t = TimeAction('append to db',0)
             self.db.nview.append(d)
             t.end()                                
             tline.end()
+        
 
 
 if __name__ == '__main__':
