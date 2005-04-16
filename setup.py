@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/bin/env python
 #
 # setup.py for Gourmet
 #
@@ -37,10 +37,11 @@ def modules_check():
         pygtk.require('2.0')
         try:
             import gtk
+            import gtk.glade
         except RuntimeError:
             print 'Error importing GTK - is there no windowing environment available?'
             print "We're going to ignore this error and live dangerously. Please make"
-            print 'sure you have pygtk > 2.3.93 available!'
+            print 'sure you have pygtk > 2.3.93 and gtk.glade available!'
         else:
             v1,v2,v3 = gtk.pygtk_version
             if v1 < 2 or v2 < 3 or (v2 < 4 and v3 < 93):
@@ -48,7 +49,7 @@ def modules_check():
     except ImportError:
         sys.exit('Error: PyGTK-2.3.93 or newer is required.')
         raise
-    mod_list = ['metakit','Image','gtk.glade']
+    mod_list = ['metakit','Image']
     ok = 1
     for m in mod_list:
         try:
@@ -104,12 +105,17 @@ class my_install_data(install_data):
                                    ('install_lib', 'install_dir'))
         install_data.finalize_options(self)
         print 'install_data has: ',dir(install_data)
+
+if os.name == 'nt':
+    script = os.path.join('windows','Gourmet.pyw')
+else:
+    script = os.path.join('src','gourmet')
         
 setup(
     name = name,
     version = version,
-    windows = [ {'script':os.path.join('src','gourmet'),
-                 }],
+    #windows = [ {'script':os.path.join('src','gourmet'),
+    #             }],
     description = 'Recipe Organizer and Shopping List Generator for Gnome',
     author = 'Thomas Mills Hinkle',
     author_email = 'Thomas_Hinkle@alumni.brown.edu',
@@ -119,6 +125,6 @@ setup(
     modules_check = modules_check,
     packages = ['gourmet','gourmet.backends','gourmet.importers','gourmet.exporters','gourmet.nutrition'],
     package_dir = {'gourmet' : os.path.join('src','lib')},
-    scripts = [os.path.join('src','gourmet')],
+    scripts = [script],
     cmdclass={'install_data' : my_install_data},
     )
