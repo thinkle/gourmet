@@ -136,7 +136,7 @@ class html_exporter (exporter_mult):
         amount, unit = self.multiply_amount(amount,unit)
         for o in [amount, unit, item]:
             if o: self.out.write(xml.sax.saxutils.escape("%s "%o))
-        if optional=='yes':
+        if optional:
             self.out.write("(%s)"%_('optional'))
         self.out.write("</li>\n")
     

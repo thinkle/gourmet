@@ -1,7 +1,7 @@
 # we keep this around because not all gnomeprints support the PANGO LAYOUT stuff we've moved to.
 import gtk, gnomeprint, gnomeprint.ui,  re
 import exporter
-from gourmet import get_pixbuf_from_file,gglobals,convert
+from gourmet import ImageExtras,gglobals,convert
 from gourmet.gdebug import *
 from gettext import gettext as _
 
@@ -266,7 +266,7 @@ class RecWriter (exporter.exporter_mult):
         pass
 
     def write_image (self, image):
-        pb = get_pixbuf_from_file.get_pixbuf_from_jpg(image)
+        pb = ImageExtras.get_pixbuf_from_jpg(image)
         self.print_writer.write_pixbuf(pb, align='right')
 
     def write_attr (self, label, text):
@@ -304,7 +304,7 @@ class RecWriter (exporter.exporter_mult):
         else: line = ""
         if unit: line += "%s "%unit
         if item: line += "%s"%item
-        if optional=='yes': line += " (%s)"%_("optional")
+        if optional: line += " (%s)"%_("optional")
         self.print_writer.write_paragraph(line)
 
 class SimpleWriter (print_writer):

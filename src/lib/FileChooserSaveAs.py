@@ -1,4 +1,4 @@
-import gtk, os.path, fnmatch
+import gtk, gobject, os.path, fnmatch
 
 from gettext import gettext as _
 
@@ -163,7 +163,7 @@ class select_file_dialog:
         # and now for a hack -- since we can't connect to the Entry widget,
         # we're going to simply check to see if the filename has changed with
         # an idle call.
-        self.timeout = gtk.timeout_add(100, self.update_filetype_widget)
+        self.timeout = gobject.timeout_add(100, self.update_filetype_widget)
         
     def update_filetype_widget (self, *args):
         """Update the filetype widget based on the contents
@@ -238,7 +238,7 @@ class select_file_dialog:
     def quit (self, *args):
         print 'removing timeout'
         if hasattr(self,'timeout'):
-            gtk.timeout_remove(self.timeout)
+            gobject.source_remove(self.timeout)
         self.fsd.destroy()
 
 def saveas_file (title,

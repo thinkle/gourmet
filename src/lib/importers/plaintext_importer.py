@@ -46,6 +46,12 @@ class TextImporter (importer.importer):
         self.find_header_breaks_matcher = re.compile('\s+(?=[A-Z][A-Z][A-Z]+:.*)')
         
     def unwrap_lines (self, blob):
+        if blob.find(""):
+            # then we have paragraph markers in the text already
+            outblob = string.join(blob.split("\n")," ") # get rid of line breaks
+            lines = outblob.split("") # split text up into paragraphs
+            outblob = string.join(lines,"\n") # insert linebreaks where paragraphs where
+            return outblob
         outblob = ""
         newline = True
         for l in blob.split('\n'):
@@ -55,7 +61,7 @@ class TextImporter (importer.importer):
                 continue
             # if we have a non-word character at the start of the line,
             # we assume we need to keep the newline.
-            if len(l)>=3 and re.match('(\W|[0-9])',l[3]):
+            if len(l)>=3 and re.match('(\W|[0-9])',l[2]):
                 outblob += "\n"
                 outblob += l
                 newline = False

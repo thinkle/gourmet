@@ -1,7 +1,7 @@
 import gtk, gnomeprint, gnomeprint.ui,  re, pango
 import exporter
 from MarkupString import MarkupString
-from gourmet import get_pixbuf_from_file,gglobals,convert
+from gourmet import ImageExtras,gglobals,convert
 from gourmet.gdebug import *
 from gettext import gettext as _
 import xml.sax.saxutils
@@ -310,7 +310,7 @@ class RecWriter (exporter.exporter_mult):
 
     def write_image (self, image):
         debug('write_image ',3)
-        pb = get_pixbuf_from_file.get_pixbuf_from_jpg(image)
+        pb = ImageExtras.get_pixbuf_from_jpg(image)
         self.print_writer.write_pixbuf(pb, align='right')
 
     def write_attr (self, label, text):
@@ -353,7 +353,7 @@ class RecWriter (exporter.exporter_mult):
         else: line = ""
         if unit: line += "%s "%unit
         if item: line += "%s"%item
-        if optional=='yes': line += " (%s)"%_("optional")
+        if optional: line += " (%s)"%_("optional")
         self.print_writer.write_paragraph(xml.sax.saxutils.escape(line))
 
 class SimpleWriter (print_writer):

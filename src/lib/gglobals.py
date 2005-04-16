@@ -42,12 +42,12 @@ if not os.access(gourmetdir,os.W_OK):
     
 debug('gourmetdir=%s'%gourmetdir,2)
 
-# note: this os specific stuff is rather hackish and must be kept in sync with
-# changes in setup.py
-
 use_threads = options.threads
 # Uncomment the below to test FauxThreads
 #use_threads = False
+
+# note: this os specific stuff is rather hackish and must be kept in sync with
+# changes in setup.py
 
 if os.name == 'posix':
     # grab the proper subdirectory, assuming we're in
@@ -67,21 +67,48 @@ if os.name == 'posix':
     gladebase=datad
     imagedir=datad
 
-
-elif os.name == 'nt':
+# Windows setup
+elif os.name == 'nt': 
     #datad = os.path.join('Program Files','Gourmet Recipe Manager','data')
-    # assume we are in Python\Lib\site-packages\gourmet\
-    pybase = os.path.split(os.path.split(os.path.split(os.path.split(__file__)[0])[0])[0])[0]
-    # back up four direcotires and add gourmet\data\
-    datad = os.path.join(pybase,'gourmet','data')
+    # We're going to look in a number of places, starting with our current location
+    if os.path.exists('app.glade'):
+        print "we're in the data directory"
+        datad = ''
+    elif os.path.exists(os.path.join('data','app.glade')):
+        print "data directory = data"
+        datad = 'data'
+    elif os.path.exists(os.path.join('..','data','app.glade')):
+        print 'data directory = ..\data\  '
+        datad = os.path.join('..','data')
+    else:
+        pybase = os.path.split(__file__)[0]
+        if os.path.exists(os.path.join(pybase,'app.glade')):
+            print 'found data in ',pybase
+            datad = pybase
+        elif os.path.exists(os.path.join(pybase,'data','app.glade')):
+            # look in a "data" directory directly above the directory we are in
+            print 'found data in ',pybase,'/data'
+            datad = os.path.join(pybase,'data')
+        else: # otherwise, backup a directory and look there...
+            pybase = os.path.split(pybase)[0]
+            if os.path.exists(os.path.join(pybase,'data','app.glade')):
+                print 'found data in ',pybase,'\data'
+                datad = os.path.join(pybase,'data')
+            else:
+                # assume we are in Python\Lib\site-packages\gourmet\
+                # back up four direcotires and add gourmet\data\
+                print "Couldn't find data... I hope it's in ../../../../gourmet/data/"
+                pybase = os.path.split(os.path.split(os.path.split(os.path.split(__file__)[0])[0])[0])[0]
+                datad = os.path.join(pybase,'gourmet','data')
+    # at this point, we'd better have a data directory...
     gladebase = datad
     imagedir = datad
     use_threads = False
+    print "DATAD = ",datad
 else:
     print "Gourmet isn't ready for operating system %s"%os.name
     import sys
     sys.exit()
-
 
 # GRAB EXPLICITLY STATED GLADE/IMAGE/DATA DIRECTORIES FROM OPTIONS
 if options.datad:
@@ -95,8 +122,6 @@ if options.imaged:
 if options.gladed:
     gladebase=options.gladed
 
-# UNCOMMENT BELOW TO TEST
-
 import OptionParser
 if OptionParser.options.db=='metakit': db = 'metakit'
 if OptionParser.options.db=='sqlite': db = 'sqlite'
@@ -106,8 +131,8 @@ if not OptionParser.options.db or OptionParser.options.choosedb:
     p = prefs.Prefs()
     db = p.get('db_backend',None)
     if (not db) or OptionParser.options.choosedb:
-        import DatabaseChooser
-        d=DatabaseChooser.DatabaseChooser(modal=True)
+        import backends.DatabaseChooser
+        d=backends.DatabaseChooser.DatabaseChooser(modal=True)
         dbdict = d.run()
         p['db_backend']=dbdict['db_backend']
         if dbdict.has_key('pw'): pw = dbdict['pw']
@@ -136,8 +161,6 @@ if use_threads:
 else:
     debug('using GourmetFauxThreads',0)    
     import GourmetFauxThreads as gt
-
-
 
 REC_ATTRS = [('title',_('Title'),'Entry'),
              ('category',_('Category'),'Combo'),

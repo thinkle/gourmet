@@ -417,11 +417,11 @@ def float_to_frac (n, d=[2,3,4,5,6,8,10,16],approx=0.01):
 def frac_to_float (s):
     """We assume fractions look like this (I )?N/D"""
     if s.find("/"):
-        m=re.match("([0-9]+\s+)?([0-9]+)/([1-9]+)",s)
+        m=re.match("([0-9]+\s+)?([0-9]+)/([0-9]+)",s)
         if m:
             i,n,d=m.groups()
-            if not i: i=0
-            return float(i)+(float(n)/float(d))
+            if not i: i=0 # in other words, 1/2 = 0 + 1/2
+            return float(i)+(float(n)/float(d)) # this will throw an error if d=0 (x/0)
         else:
             try:
                 return float(s)

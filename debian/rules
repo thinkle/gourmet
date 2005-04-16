@@ -7,8 +7,6 @@
 #export DH_VERBOSE=1
 
 
-
-
 CFLAGS = -Wall -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
@@ -63,13 +61,14 @@ install: build
 binary-indep: build install
 # We have nothing to do by default.
 
+
 # Build architecture-dependent files here.
 binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs CHANGES
-	dh_installdocs
-	dh_installexamples
+#	dh_installdocs
+#	dh_installexamples
 #	dh_install
 #	dh_installmenu
 #	dh_installdebconf

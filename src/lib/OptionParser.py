@@ -1,5 +1,10 @@
 import optparse
 import version
+try:
+    import optcomplete
+    has_optcomplete = True
+except ImportError:
+    has_optcomplete = False
 
 parser = optparse.OptionParser(
     version=version.version,
@@ -59,8 +64,15 @@ parser = optparse.OptionParser(
                          dest="gladed",
                          help="Directory for Gourmet glade files.",
                          action="store",
-                         default=""),    
+                         default=""),
+    optparse.make_option("--disable-psyco",
+                         dest="psyco",
+                         action="store_false",
+                         help="Do not use psyco if it is installed.",
+                         default=True),
     ]
     )
+if has_optcomplete:
+    optcomplete.autocomplete(parser)
 
 (options, args) = parser.parse_args()

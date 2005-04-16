@@ -9,13 +9,19 @@ import keymanager
 import dialog_extras as de
 import treeview_extras as te
 import cb_extras as cb
-from get_pixbuf_from_file import get_pixbuf_from_jpg
 import exporters.printer as printer
 from gdebug import *
 from gglobals import *
 import nutrition.nutritionView
 from gettext import gettext as _
+import ImageExtras as ie
 
+# This file contains our interface for controlling individual recipe cards.
+
+# Up top, we have some classes that implement ActionGroups. This is somewhat ugly,
+# but we're designing our interface in glade (which doesn't understand ActionGroups)
+# and we still want to use this feature -- which lets us automatically associate multiple
+# widgets with an action and have things like toggles just work.
 class ToggleActionWithSeparators (gtk.ToggleAction):
     def __init__ (self, *args, **kwargs):
         self.separators = []
@@ -116,6 +122,7 @@ class ActionManager:
             getattr(self,a).connect('activate',cb)
     
 class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
+    """Our basic recipe card."""
     def __init__ (self, RecGui, recipe=None):
         debug("RecCard.__init__ (self, RecGui):",5)
         self.setup_defaults()
@@ -144,7 +151,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                                4:'modifications'}
         def hackish_notebook_switcher_handler (*args):
             # because the switch page signal happens before switching...
-            gtk.idle_add(self.notebookChangeCB)
+            # we'll need to look for the switch with an idle call
+            gobject.idle_add(self.notebookChangeCB)
         self.notebook.connect('switch-page',hackish_notebook_switcher_handler)
         self.notebook.set_current_page(0)
         self.page_specific_handlers = []
@@ -572,7 +580,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 self.ingTree.get_selection().unselect_path(path)
                 self.ingTree.get_selection().select_path(self.path_next(next_path,1))
         self.pre_modify_tree()
-        paths.reverse()        
+        paths.reverse()
         for p in paths:
             itera = ts.get_iter(p)
             movedown(ts,p,itera)
@@ -971,9 +979,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         ing=store.get_value(iter,0)
         if head==_('Optional'):
             if newval:
-                self.rg.rd.undoable_modify_ing(ing, {'optional':'yes'},self.history)
+                self.rg.rd.undoable_modify_ing(ing, {'optional':True},self.history)
             else:
-                self.rg.rd.undoable_modify_ing(ing, {'optional':'no'},self.history)
+                self.rg.rd.undoable_modify_ing(ing, {'optional':False},self.history)
         
     #def ingtree_start_keyedit_cb (self, renderer, path_string, text, colnum, head):
     def ingtree_start_keyedit_cb (self, renderer, cbe, path_string):
@@ -1002,10 +1010,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         if head==_('Shopping Category'):
             self.rg.sl.orgdic[ing.ingkey]=text
             store.set_value(iter, colnum, text)
-        if type(ing) == str:                
+        if type(ing) == str:
+            debug('Changing group to %s'%text,2)
             self.change_group(iter, text)
-            self.create_ing_alist()
-            self.updateIngredientsDisplay()
+            #self.create_ing_alist()
+            #self.updateIngredientsDisplay()
             return            
         else:
             attr=self.head_to_att[head]
@@ -1184,14 +1193,14 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug('restoring selections')                
         self.ss.restore_selections()
         debug('post_modify_tree done')
-        
+
     def commit_positions (self):
         debug("Committing positions",4)
         iter=self.imodel.get_iter_first()
         self.edited=True
         n=0
         def commit_iter(iter,pos,group=None):
-            debug("iter=%s,pos=%s,group=%s"%(iter,pos,group),5)
+            debug("iter=%s,pos=%s,group=%s"%(iter,pos,group),-1)
             ing=self.imodel.get_value(iter,0)
             if type(ing)==type(""):
                 group=self.imodel.get_value(iter,1)
@@ -1200,14 +1209,27 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                     pos=commit_iter(i,pos,group)
                     i=self.imodel.iter_next(i)
             else:
-                ing.position=pos
-                if group: ing.inggroup=group
+                #ing.position=pos
+                #if group:
+                #    debug('adding ingredient to group %s'%group,-1)
+                #    #self.rg.rd.modify_ing(ing,{'inggroup':group})
+                #    #ing.inggroup=group
+                #    print 'inggroup is now: ',ing.inggroup                
+                #print 'modifying ing: %s %s'%(pos,group)
+                self.rg.rd.modify_ing(ing,
+                                      {'position':pos,
+                                       'inggroup':group,}
+                                       )
+                #print "ING IS NOW: ",ing.item,ing.position,ing.inggroup
                 pos+=1
             return pos
         while iter:
             n=commit_iter(iter,n)
             iter=self.imodel.iter_next(iter)
             debug("Next iter = %s"%iter)
+        self.create_ing_alist()
+        self.updateIngredientsDisplay()
+        self.message(_('Changes to ingredients saved automatically.'))
         debug("Done committing positions",4)
 
     def dragIngsGetCB (self, tv, context, selection, info, timestamp):
@@ -1290,22 +1312,27 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             groupiter = model.insert_after(None,prev_iter,None)
         model.set_value(groupiter, 0, "GROUP %s"%name)
         model.set_value(groupiter, 1, name)
-        for c in children_iters:            
+        for c in children_iters: 
             te.move_iter(model,c,None,parent=groupiter,direction='after')
+            #self.rg.rd.undoable_modify_ing(model.get_value(c,0),
+            #                               {'inggroup':name},
+            #                               self.history)
+        self.commit_positions()
         debug('add_group returning %s'%groupiter,5)
         return groupiter
 
     def change_group (self, iter, text):
+        debug('Undoable group change: %s %s'%(iter,text),3)
         model = self.ingTree.get_model()
         oldgroup0 = model.get_value(iter,0)
         oldgroup1 = model.get_value(iter,1)
         def change_my_group ():
-            model.set_value(iter,0,"GROUP %s"%name)
-            model.set_value(iter,1,name)
+            model.set_value(iter,0,"GROUP %s"%text)
+            model.set_value(iter,1,text)
             self.commit_positions()
         def unchange_my_group ():
             model.set_value(iter,0,oldgroup0)
-            model.set_value(iter,1,oldgroup0)
+            model.set_value(iter,1,oldgroup1)
             self.commit_positions()
         obj = Undo.UndoableObject(change_my_group,unchange_my_group,self.history)
         obj.perform()
@@ -1332,7 +1359,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         model.set_value(iter, 1, amt)
         model.set_value(iter, 2, unit)
         model.set_value(iter, 3, i.item)
-        if i.optional=='yes':
+        if i.optional:
             opt=True
         else:
             opt=False
@@ -1386,7 +1413,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         if opt and opt[0]=='.': opt = opt[1:] #strip off extra "." if necessary
         fn,exp_type=de.saveas_file(_("Save recipe as..."),
                                    filename="~/%s.%s"%(self.current_rec.title,opt),
-                                   filters=exporters.saveas_single_filters)
+                                   filters=exporters.saveas_single_filters[0:])
         if not fn: return
         if not exp_type or not exporters.exporter_dict.has_key(exp_type):
             de.show_message(_('Gourmet cannot export file of type "%s"')%os.path.splitext(fn)[1])
@@ -1521,37 +1548,18 @@ class ImageBox:
         debug("commit (self):",5)
         """Put current image in database"""
         if self.image:
-            file = StringIO.StringIO()
-            self.image.save(file,"JPEG")
-            self.rc.current_rec.image=file.getvalue()
-            file = StringIO.StringIO()
-            self.thumb.save(file,"JPEG")
-            self.rc.current_rec.thumb=file.getvalue()
-            
+            ofi = StringIO.StringIO()
+            self.image.save(ofi,"JPEG")
+            self.rc.current_rec.image=ofi.getvalue()
+            ofi.close()
+            ofi = StringIO.StringIO()
+            self.thumb.save(ofi,"JPEG")
+            self.rc.current_rec.thumb=ofi.getvalue()
+            ofi.close()
         else:
             self.rc.current_rec.image=""
             self.rc.current_rec.thumb=""
-
-    def resize_image (self, image, width=None, height=None):
-        debug("resize_image (self, image, width=None, height=None):",5)
-        """Resize an image to have a maximum width=width or height=height.
-        We only shrink, we don't grow."""
-        iwidth,iheight=image.size
-        resized=False
-        if width and iwidth > width:
-            newheight=int((float(width)/float(iwidth)) * iheight)
-            if not height or newheight < height:
-                retimage=image.resize((width, newheight))
-                resised=True
-        if not resized and height and iheight > height:
-            newwidth = int((float(height)/float(iheight)) * iwidth)
-            retimage = image.resize((newwidth,height))
-            resized=True
-        if resized:
-            return retimage
-        else:
-            return image
-
+    
     def draw_image (self):
         debug("draw_image (self):",5)
         """Put image onto widget"""
@@ -1563,8 +1571,8 @@ class ImageBox:
                 wheight=int(float(wheight)/3)
             else:
                 wwidth,wheight=100,100
-            self.image=self.resize_image(self.image,wwidth,wheight)
-            self.thumb=self.resize_image(self.image,40,40)
+            self.image=ie.resize_image(self.image,wwidth,wheight)
+            self.thumb=ie.resize_image(self.image,40,40)
             file = StringIO.StringIO()            
             self.image.save(file,'JPEG')
             self.set_from_string(file.getvalue())
@@ -1581,7 +1589,7 @@ class ImageBox:
 
     def set_from_string (self, string):
         debug("set_from_string (self, string):",5)
-        pb=get_pixbuf_from_jpg(string)
+        pb=ie.get_pixbuf_from_jpg(string)
         self.imageW.set_from_pixbuf(pb)
         self.imageD.set_from_pixbuf(pb)
         self.show_image()
@@ -1812,7 +1820,7 @@ class IngredientEditor:
             self.amountBox.set_text(convert.float_to_frac(float(ing.amount) * self.rc.mult))
         if hasattr(ing,'unit'):
             self.unitBox.entry.set_text(ing.unit)
-        if hasattr(ing,'optional') and ing.optional=='yes':
+        if hasattr(ing,'optional') and ing.optional:
             self.optCheck.set_active(True)
         else:
             self.optCheck.set_active(False)
@@ -1864,9 +1872,9 @@ class IngredientEditor:
             else:
                 self.rc.message(_('An ingredient must have an item!'))
                 return
-        if self.optCheck.get_active(): d['optional']='yes'
+        if self.optCheck.get_active(): d['optional']=True
         else:
-            d['optional']='no'
+            d['optional']=False
         if d['ingkey']:
             self.addKey(d['ingkey'],d['item'])
         else:

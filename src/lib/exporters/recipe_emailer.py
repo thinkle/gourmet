@@ -72,7 +72,7 @@ class RecipeEmailer (Emailer):
         for r in self.recipes:
             fi = os.path.join(gglobals.tmpdir,"%s.htm"%r.title)
             ofi = open(fi,'w')
-            e=exporter.html_exporter(self.rd,r,ofi,conv=self.conv,embed_css=True,
+            e=html_exporter.html_exporter(self.rd,r,ofi,conv=self.conv,embed_css=True,
                                      imagedir="")
             ofi.close()
             self.attachments.append(fi)

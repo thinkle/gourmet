@@ -1,13 +1,12 @@
 import xml.sax, re, sys, xml.sax.saxutils
-import importer
+import xml_importer
 from gourmet.gdebug import *
 from gourmet.gglobals import *
+import base64
 
-class RecHandler (xml.sax.ContentHandler, importer.importer):
+class RecHandler (xml_importer.RecHandler):
     def __init__ (self, recData, total=None, prog=None):
-        xml.sax.ContentHandler.__init__(self)
-        importer.importer.__init__(self,rd=recData,total=total,prog=prog,threaded=True,
-                                   do_markup=False)
+        xml_importer.RecHandler.__init__(self,recData,total,prog)
         self.meta={}
         self.in_mixed = 0
         self.meta['cuisine']={}
@@ -35,13 +34,17 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
                     else:
                         self.rec[att]=raw
                         print "Warning: can't translate ",raw
+        if name=='image':
+            self.in_mixed=0            
         if name=='inggroup':
             self.in_mixed=0
             self.group=unquoteattr(attrs.get('name'))
         if name=='ingredient':
             self.in_mixed=0
             self.start_ing(id=self.rec['id'])
-            self.ing['optional']=attrs.get('optional','no')            
+            if attrs.get('optional',False):
+                if attrs.get('optional',False) not in ['no','false','False','No','None']: #support for obsolete values
+                    self.ing['optional']=True
         if name=='ingref':
             self.in_mixed=0
             self.start_ing(id=self.rec['id'])
@@ -64,14 +67,13 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
             self.in_mixed = 1
             self.mixed = ""
             
-    def characters (self, ch):
-        self.elbuf += ch
-            
     def endElement (self, name):
         if name=='category' or name=='cuisine' or name=='source':
             self.meta[name][self.metaid]=xml.sax.saxutils.unescape(self.elbuf)
         if name=='title':
             self.rec['title']=xml.sax.saxutils.unescape(self.elbuf)
+        if name=='image':
+            self.rec['image']=base64.b64decode(self.elbuf)
         if name=='recipe':
             #self.rd.add_rec(self.rec)
             self.commit_rec()
@@ -99,29 +101,11 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
             self.mixed += self.elbuf
             self.mixed += "</%s>" % name
 
-class converter:
+class converter (xml_importer.converter):
     def __init__ (self, filename, rd, threaded=False, progress=None):
-        self.rd = rd
-        self.fn = filename
-        self.threaded = threaded
-        self.progress = progress
-        self.rh = RecHandler(recData=self.rd,prog=self.progress)
-        self.terminate = self.rh.terminate
-        self.suspend = self.rh.suspend
-        self.resume = self.rh.resume
-        if not self.threaded: self.run()
-
-    def run (self):
-        # count the recipes in the file        
-        t = TimeAction("rxml_to_metakit.run counting lines",0)
-        f=open(self.fn)
-        recs = 0
-        for l in f.readlines():
-            if l.find("</recipe>") >= 0: recs += 1
-        f.close()
-        t.end()
-        self.rh.total=recs
-        self.parse = xml.sax.parse(self.fn, self.rh)
+        xml_importer.converter.__init__(self,filename,rd,RecHandler,
+                                        recMarker="</recipe>",threaded=threaded,
+                                        progress=progress)
 
 def unquoteattr (str):
     return xml.sax.saxutils.unescape(str).replace("_"," ")

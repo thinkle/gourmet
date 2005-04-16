@@ -221,7 +221,7 @@ class RecIndex:
             debug("Same search!",0)
             return
         if self.srchentry.window: self.srchentry.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-        gtk.idle_add(lambda *args: self.do_search(txt, searchBy))
+        gobject.idle_add(lambda *args: self.do_search(txt, searchBy))
         
     def do_search (self, txt, searchBy):
         ## first -- are we a continuation of the previous search of not?

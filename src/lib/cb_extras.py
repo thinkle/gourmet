@@ -1,4 +1,4 @@
-import gtk
+import gtk, gobject
 from gdebug import debug
 
 def cb_get_active_text (combobox):
@@ -56,8 +56,8 @@ class setup_typeahead:
                 self.cb.set_active(match)
                 self.string = newstr
         if type(match)==type(0): 
-            if self.last_timeout: gtk.timeout_remove(self.last_timeout)
-            self.last_timeout=gtk.timeout_add(self.typeahead_timeout, self.reset_str)
+            if self.last_timeout: gobject.source_remove(self.last_timeout)
+            self.last_timeout=gobject.timeout_add(self.typeahead_timeout, self.reset_str)
 
     def reset_str (self, *args):
         self.string = ""
@@ -153,6 +153,6 @@ if __name__ == '__main__':
     w.add(vb)
     w.show_all()
     w.connect('destroy',lambda *args: gtk.main_quit())
-    gtk.mainloop()
+    gtk.main()
     
     

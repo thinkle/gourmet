@@ -5,7 +5,7 @@ from gourmet.gdebug import debug,TimeAction
 
 threading_debug_level = 1
 lock_change_debug_level = 1
-sql_debug_level = -1
+sql_debug_level = 0
 
 class PythonicSQL:
 
@@ -21,7 +21,7 @@ class PythonicSQL:
         self._connection = {}
         self._cursors = {}
         self._module = module
-        print 'module=',self._module
+        debug('PythonicSQL Initializing: module=%s'%self._module,1)
         self._threadsafety = self._module.threadsafety
         self._connection[threading.currentThread()] = self.connect()
         self._cursors[threading.currentThread()] = self.get_connection().cursor()
@@ -63,10 +63,23 @@ class PythonicSQL:
     def new_cursor (self):
         return self.get_connection().cursor()
 
+    def __eliminate_booleans (self, lst):
+        if type(lst) == str: return lst
+        retlst = []
+        for i in lst:
+            if type(i) == bool: retlst.append(int(i))
+            else: retlst.append(i)
+        return retlst
+
     def _execute (self, c, sql):
         """Just do the execution and wrap it with a nice error message if it fails."""
         if type(sql)==type(""): sql = [sql]
-        try:
+        debug('executing SQL : %s'%sql,1)
+        if len(sql) > 1:
+            # if we have arguments, we have to get rid of booleans
+            # which seem to be throwing errors
+            sql[1] = self.__eliminate_booleans(sql[1])
+        try:            
             c.execute(*sql)
         except:
             print "There was an error executing the following SQL:"
@@ -78,7 +91,7 @@ class PythonicSQL:
         # handle strings or tuples of strings,params        
         c = self.get_cursor()
         self._execute(c,sql)
-        retval = c.fetchall()        
+        retval = c.fetchall()
         return retval
 
     def execute_and_fetch (self, sql, *fetcher_args,**fetcher_kwargs):
@@ -267,12 +280,13 @@ class PythonicSQL:
                 if type(v)==tuple or type(v)==list:
                     operator,crit = v
                 else:
-                    operator = "="
+                    operator = "=="
                     crit = v
-                if v:
-                    sel_string = sel_string + " %s %s "%(k,operator) + " %s" + " %s"%logic
-                    sql_params += [crit]
+                sel_string = sel_string + " %s %s "%(k,operator) + " %s" + " %s"%logic
+                sql_params += [crit]
             sel_string = sel_string[0:-len(logic)]
+        debug("Made where statement from %s: %s"%(criteria,sel_string),0)
+        print 'sel_string:',sel_string
         return sel_string,sql_params
 
     def fetch_table_fields (self, name):
@@ -417,7 +431,8 @@ class TableObject (list):
 
     def __getitem__ (self, index):
         debug('__getitem__ called for %s'%self,0)
-        if index == -1 and self._last: 
+        if index == -1 and self._last:
+            print 'selecting ',self._last
             return self.select(**self._last)[-1]
         generator = self.__iter__()
         n = 0
@@ -471,6 +486,7 @@ class TableObject (list):
         return self.__db__.retrieve_unique(self.__tablename__,column,criteria=crit,filters=self.__filters__)
 
     def select (self,**dictionary):
+        print 'select called!'
         debug('select called with %s'%dictionary,0)
         if self.__criteria__: criteria = self.__criteria__.copy()
         else: criteria = {}

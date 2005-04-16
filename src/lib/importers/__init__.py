@@ -1,10 +1,13 @@
 import gxml_importer, importer, mastercook_importer, mealmaster_importer, mastercook_plaintext_importer
+import gxml2_importer
+import krecipe_importer
 import fnmatch
 from gettext import gettext as _
 #import mastercook_plaintext_importer
-from gourmet.exporters import MMF,GXML
+from gourmet.exporters import MMF,GXML,GXML2
 MC = _('MasterCook file')
 MX2 = _('MasterCook XML file')
+KXML = _('KRecipes file')
 
 FILTER_INFO = {
     'mealmaster': {'import': lambda args: [mealmaster_importer.mmf_importer,[],
@@ -15,7 +18,7 @@ FILTER_INFO = {
                    'name':MMF,
                    'patterns':['*.mmf','*.txt'],
                    'mimetypes':['text/mealmaster','text/plain'],
-                   'tester':importer.Tester("^([M-][M-][M-][M-][M-])-*\s*(Recipe|[Mm]eal-?[Mm]aster).*")},
+                   'tester':importer.Tester(mealmaster_importer.mm_start_pattern)},
     'mastercookplain': {'import': lambda args: [mastercook_plaintext_importer.mastercook_importer,
                                                [args['file'],args['rd']],
                                                {'threaded':args['threaded']}],
@@ -35,6 +38,17 @@ FILTER_INFO = {
                    'tester': importer.Tester('.*<mx2[> ]'),
                    'get_source':False,
                    },
+    'gxml2': {'import': lambda args: [gxml2_importer.converter,
+                                      [args['file'],args['rd']],
+                                      {'threaded':args['threaded']},
+                                      ],
+              'name':GXML2,
+              'get_source':False,
+              'patterns':['*.xml','*.grmt','*.gourmet'],
+              'mimetypes':['text/xml','application/xml','text/plain'],
+              'get_source':False,
+              'tester': importer.Tester('.*<gourmetDoc[> ]'),
+              },
     'gxml': {'import': lambda args: [gxml_importer.converter,
                                             [args['file'],args['rd']],
                                             {'threaded':args['threaded']}
@@ -46,6 +60,17 @@ FILTER_INFO = {
              'tester': importer.Tester('.*<recipeDoc[> ]'),
              'get_source':False,
              },
+    'krecipe':{'import':lambda args: [krecipe_importer.converter,
+                                      [args['file'],args['rd']],
+                                      {'threaded':args['threaded']}
+                                      ],
+               'name':KXML,
+               'get_source':False,
+               'patterns':['*.xml','*.kreml'],
+               'mimetypes':['text/xml','application/xml','text/plain'],
+               # NOTE: This will need to be updated to deal with gzipped files
+               'tester':importer.Tester('.*<krecipes'),
+               }
     }
 
 FILTERS = []

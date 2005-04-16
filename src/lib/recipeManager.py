@@ -111,3 +111,40 @@ class mkConverter(convert.converter):
             for v in variations:
                 self.unit_dict[v] = key
                 
+# A simple CLI for mucking about our DB without firing up gourmet proper
+class SimpleCLI:
+    def __init__  (self, rmclass=None, rmargs=None):
+        if not rmclass: self.rmclass=RecipeManager
+        else: self.rmclass = rmclass
+        if not rmargs: self.args=dbargs
+        else: self.args=rmargs
+        self.rm = self.rmclass(**self.args)
+
+    def __call__ (self):
+        print """Welcome to GRM's handy debugging interface straight to our database.
+        You are now in the midst of our caller class. You can access your recipeManager
+        class through self.rm.
+
+        One major limitation: You can only execute a single expression
+        at a time (i.e. what you you could put in a lambda expression).
+
+        For example:
+            len(self.rm.iview) -> number of ingredients in the ingredients table
+            len(self.rm.rview) -> number of recipes in the recipe table
+            [r.title for r in self.rm.rview] -> titles of all recipes
+            [r.title for r in self.rm.search(self.rm.rview, 'title','chocolate')] # list recipes with 'chocolate' in the title
+        """
+        while True:
+            inp = raw_input('GRM>')
+            if inp == 'quit' or inp == '' or inp == '':
+                break
+            else:                    
+                try:
+                    print 'result: %s'%eval(inp)
+                except:
+                    print 'invalid input.'
+
+if __name__ == '__main__':
+    s=SimpleCLI()
+    s()
+    

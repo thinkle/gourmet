@@ -596,7 +596,7 @@ UNITS = [["bucket" , ["bucket", "buckets", "bckt."]],
 
 WEIGHTS = ['grains','lb','oz.','g.','mg.','kg.']
 VOLUMES = ['bucket','peck','bushel','tsp.','tbs.','qt.','pt.','gallon','ml.','cl.','dl.','l.',
-           'dram','drop',]
+           'dram','drop','c.']
 
 # The following sets up unit groups. Users will be able to turn
 # these on or off (American users, for example, would likely turn

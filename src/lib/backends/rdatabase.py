@@ -7,10 +7,92 @@ from gourmet import Undo, keymanager, convert, shopping
 from gourmet.defaults import lang as defaults
 import gourmet.nutrition.parser_data
 
+
 class RecData:
 
-    """Our basic class for keeping recipe data. This is intended to be subclassed
-    by various backends which implement the interface between Gourmet and a database."""
+    """RecData is our base class for handling database connections.
+
+    Subclasses implement specific backends, such as metakit, sqlite, etc."""
+
+    # This is our base class for rdatabase.  All functions needed by
+    # Gourmet to access the database should be defined here and
+    # implemented by subclasses.  This was designed around metakit, so
+    # Gourmet requires an object-attribute style syntax for accessing
+    # database information.  For the time being, this is built in
+    # throughout Gourmet. Non-metakit backends, such as sql, have to
+    # implement this syntax themselves (which is fine by me because that
+    # means I have abstracted ways to handle e.g. SQLite in the future). See
+    # PythonicSQL.py and other files for the glue between SQL and the object/attribute
+    # style required by Gourmet.
+
+    RECIPE_TABLE_DESC = ('recipe',
+                  [('id',"char(75)"),
+                   ('title',"text"),
+                   ('instructions',"text"),
+                   ('modifications',"text"),
+                   ('cuisine',"text"),
+                   ('rating',"text"),
+                   ('description',"text"),
+                   ('category',"text"),
+                   ('source',"text"),
+                   ('preptime',"char(50)"),
+                   ('cooktime',"char(50)"),                                       
+                   ('servings',"char(50)"),
+                   ('image',"binary"),
+                   ('thumb','binary'),
+                   ('deleted','bool')                                       
+                   ])
+    INGREDIENTS_TABLE_DESC=('ingredients',
+                [('id','char(75)'),
+                 ('refid','char(75)'),
+                 ('unit','text'),
+                 ('amount','float'),
+                 ('item','text'),
+                 ('ingkey','char(200)'),
+                 ('optional','bool'),
+                 ('inggroup','char(200)'),
+                 ('position','int'),
+                 ('deleted','bool'),
+                 ],
+                )
+    SHOPCATS_TABLE_DESC = ('shopcats',
+                  [('shopkey','char(50)'),
+                   ('category','char(200)'),
+                   ('position','int')],
+                  'shopkey' #key
+                  )
+    SHOPCATSORDER_TABLE_DESC = ('shopcatsorder',
+                   [('category','char(50)'),
+                    ('position','int'),
+                    ],
+                   'category' #key
+                   )
+    PANTRY_TABLE_DESC = ('pantry',
+                  [('itm','char(200)'),
+                   ('pantry','char(10)')],
+                  'itm' #key
+                  )
+    CATEGORIES_TABLE_DESC = ("categories",
+                     [('id','char(200)'),
+                      ('type','char(100)'),
+                      ('description','text')], 'id' #key
+                     )
+    DENSITY_TABLE_DESC = ("density",
+                   [('dkey','char(150)'),
+                    ('value','char(150)')],'dkey' #key
+                   )
+    CROSSUNITDICT_TABLE_DESC = ("crossunitdict",
+                   [('cukey','char(150)'),
+                    ('value','char(150)')],'cukey' #key
+                   )
+    UNITDICT_TABLE_DESC = ("unitdict",
+                  [('ukey','char(150)'),
+                   ('value','char(150)')],'ukey' #key
+                  )
+    CONVTABLE_TABLE_DESC = ("convtable",
+                  [('ckey','char(150)'),
+                   ('value','char(150)')],'ckey' #key
+                  )
     
     def __init__ (self):
         timer = TimeAction('initialize_connection + setup_tables',0)
@@ -27,90 +109,39 @@ class RecData:
         self.add_ing_hooks = []
 
     def initialize_connection (self):
+        """Initialize our database connection."""
         raise NotImplementedError
 
     def save (self):
+        """Save our database (if we have a separate 'save' concept)"""
         pass
 
     def setup_tables (self):
-        """Setup our database tables.  This is where we define all tables using
-        generic field names and field types. These names should not cause any
-        namespace collisions in any imaginable databases (so we avoid e.g. "key" as
-        a name"""
-        self.nview = self.setup_table('nutrition',
-                                      [(name,typ) for lname,name,typ in
-                                       gourmet.nutrition.parser_data.NUTRITION_FIELDS]
-                                      )
-        self.naliases = self.setup_table('nutritionaliases',
-                                         [('ingkey','char(200)'),
-                                          ('ndbno','char(100)'),],
-                                         'ingkey')
-        self.rview = self.setup_table('recipe',
-                                      [('id',"char(75)"),
-                                       ('title',"text"),
-                                       ('instructions',"text"),
-                                       ('modifications',"text"),
-                                       ('cuisine',"text"),
-                                       ('rating',"text"),
-                                       ('description',"text"),
-                                       ('category',"text"),
-                                       ('source',"text"),
-                                       ('preptime',"char(50)"),
-                                       ('cooktime',"char(50)"),                                       
-                                       ('servings',"char(50)"),
-                                       ('image',"binary"),
-                                       ('thumb','binary'),
-                                       ('deleted','bool')                                       
-                                       ])
-        self.iview = self.setup_table('ingredients',
-                                      [('id','char(75)'),
-                                       ('refid','char(75)'),
-                                       ('unit','text'),
-                                       ('amount','float'),
-                                       ('item','text'),
-                                       ('ingkey','char(200)'),
-                                       ('optional','char(10)'),
-                                       ('inggroup','char(200)'),
-                                       ('position','int'),
-                                       ('deleted','bool'),
-                                       ],
-                                      #key='id'
-                                      )
+        """Setup all of our tables by calling setup_table for each one.
+
+        Subclasses should do any necessary adjustments/tweaking before calling
+        this function."""
+        self.rview = self.setup_table(*self.RECIPE_TABLE_DESC)
+        self.iview = self.setup_table(*self.INGREDIENTS_TABLE_DESC)
         self.iview_not_deleted = self.iview.select(deleted=False)
         self.iview_deleted = self.iview.select(deleted=True)
-        self.sview = self.setup_table('shopcats',
-                                      [('shopkey','char(50)'),
-                                       ('category','char(200)'),
-                                       ('position','int')],
-                                      key='shopkey')
-        self.scview = self.setup_table('shopcatsorder',
-                                       [('category','char(50)'),
-                                        ('position','int'),
-                                        ],
-                                       key='category')
-        self.pview = self.setup_table('pantry',
-                                      [('itm','char(200)'),
-                                       ('pantry','char(10)')],
-                                      key='itm')
-        self.metaview = self.setup_table("categories",
-                                         [('id','char(200)'),
-                                          ('type','char(100)'),
-                                          ('description','text')], key='id')
+        self.sview = self.setup_table(*self.SHOPCATS_TABLE_DESC)
+        self.scview = self.setup_table(*self.SHOPCATSORDER_TABLE_DESC)
+        self.pview = self.setup_table(*self.PANTRY_TABLE_DESC)
+        self.metaview = self.setup_table(*self.CATEGORIES_TABLE_DESC)
         # converter items
-        self.cdview = self.setup_table("density",
-                                       [('dkey','char(150)'),
-                                        ('value','char(150)')],key='dkey')
-        self.cview = self.setup_table("convtable",
-                                      [('ckey','char(150)'),
-                                       ('value','char(150)')],key='ckey')
-        self.cuview = self.setup_table("crossunitdict",
-                                       [('cukey','char(150)'),
-                                        ('value','char(150)')],key='cukey')
-        self.uview = self.setup_table("unitdict",
-                                      [('ukey','char(150)'),
-                                       ('value','char(150)')],key='ukey')
+        self.cdview = self.setup_table(*self.DENSITY_TABLE_DESC)
+        self.cview = self.setup_table(*self.CONVTABLE_TABLE_DESC)
+        self.cuview = self.setup_table(*self.CROSSUNITDICT_TABLE_DESC)
+        self.uview = self.setup_table(*self.UNITDICT_TABLE_DESC)
+        
     def setup_table (self, name, data, key):
-        """Name is the name of our table. Data is a list of tuples of column names and data types."""
+        """Create and return an object representing a table/view of our database.
+
+        Name is the name of our table.
+        Data is a list of tuples of column names and data types.
+        Key is the column of the table that should be indexed.
+        """
         raise NotImplementedError
 
     def run_hooks (self, hooks, *args):
@@ -134,7 +165,7 @@ class RecData:
 
     def undoable_modify_rec (self, rec, dic, history=[], get_current_rec_method=None,
                              select_change_method=None):
-        """Modify a recipe and remember what we did so that we can undo it."""
+        """Modify our recipe and remember how to undo our modification using history."""
         orig_dic = self.get_dict_for_obj(rec,dic.keys())
         reundo_name = "Re_apply"
         reapply_name = "Re_apply "
@@ -167,12 +198,11 @@ class RecData:
         obj.perform()
 
     def modify_rec (self, rec, dict):
-        """Handed a recipe object and a dictionary with new properties and values,
-        this function should modify the recipe."""
+        """Modify recipe 'rec' based on a dictionary of properties and new values."""
         raise NotImplementedError
 
     def search (self, table, colname, text, exact=0, use_regexp=True):
-        """Implement a search for TEXT in COLNAME of TABLE"""
+        """Search COLNAME for in TABLE"""
         raise NotImplementedError
 
     def get_default_values (self, colname):
@@ -198,7 +228,7 @@ class RecData:
         return dct.keys()
 
     def get_ings (self, rec):
-        """Return a list of ingredient objects."""
+        """Return a list of ingredient objects for a given recipe (ID or object)"""
         if hasattr(rec,'id'):
             id=rec.id
         else:
@@ -214,7 +244,7 @@ class RecData:
         group_order = {}
         for i in iview:
             # defaults
-            if not hasattr(i,'group'):
+            if not hasattr(i,'inggroup'):
                 group=None
             else:
                 group=i.inggroup
@@ -256,6 +286,7 @@ class RecData:
         return mkShopper(self.ingview_to_lst(view))
         
     def get_rec (self, id, rview=None):
+        """Handed an ID, return a recipe object."""
         if not rview:
             rview=self.rview
         s = rview.select(id=id)
@@ -265,8 +296,9 @@ class RecData:
             return None
 
     def add_rec (self, rdict):
-        """Add a new recipe to our database based on a dictionary, where our dictionary
-        includes fieldnames as keys and values as values {'title':'My Recipe',...}"""
+        """Add a new recipe to our database based on a dictionary rdict.
+
+        rdict includes fieldnames as keys and values as values {'title':'My Recipe',...}"""
         self.changed=True
         t = TimeAction('rdatabase.add_rec - checking keys',3)
         if not rdict.has_key('deleted'):
@@ -287,9 +319,11 @@ class RecData:
             raise
 
     def delete_rec (self, rec):
+        """Delete recipe object rec from our database."""
         raise NotImplementedError
 
     def undoable_delete_recs (self, recs, history, make_visible=None):
+        """Delete recipes by setting their 'deleted' flag to True and add to UNDO history."""
         def do_delete ():
             for rec in recs: rec.deleted = True
             if make_visible: make_visible(recs)
@@ -300,11 +334,12 @@ class RecData:
         obj.perform()
 
     def new_rec (self):
+        """Create and return a new, empty recipe"""
         raise NotImplementedError
 
     def new_id (self, base="r"):
-        """Return a new unique ID. Possibly, we can have
-        a base (although, frankly, there's no need for this)."""
+        """Return a new unique ID. Possibly, we can have a base"""
+        # this base business is rather stupid and should probably be eliminated soon
         if self.top_id.has_key(base):
             start = self.top_id[base]
             n = start + 1
@@ -332,7 +367,7 @@ class RecData:
         item: description
         key: keyed descriptor
         alternative: not yet implemented (alternative)
-        optional: yes|no
+        optional: True|False (boolean)
         position: INTEGER [position in list]
         refid: id of reference recipe. If ref is provided, everything
                else is irrelevant except for amount.
@@ -351,6 +386,11 @@ class RecData:
         return self.iview[-1]
 
     def undoable_modify_ing (self, ing, dic, history, make_visible=None):
+        """modify ingredient object ing based on a dictionary of properties and new values.
+
+        history is our undo history to be handed to Undo.UndoableObject
+        make_visible is a function that will make our change (or the undo or our change) visible.
+        """
         orig_dic = self.get_dict_for_obj(ing,dic.keys())
         def do_action ():
             debug('undoable_modify_ing modifying %s'%dic,2)
@@ -364,6 +404,7 @@ class RecData:
         obj.perform()
         
     def modify_ing (self, ing, ingdict):
+        """modify ing based on dictionary of properties and new values."""
         #self.delete_ing(ing)
         #return self.add_ing(ingdict)
         for k,v in ingdict.items():
@@ -387,6 +428,7 @@ class RecData:
             self.add_ing(ingd)
 
     def undoable_delete_ings (self, ings, history, make_visible=None):
+        """Delete ingredients in list ings and add to our undo history."""
         def do_delete():
             for i in ings:
                 i.deleted=True
@@ -399,6 +441,7 @@ class RecData:
         obj.perform()
 
     def delete_ing (self, ing):
+        """Delete ingredient permanently."""
         raise NotImplementedError
     
 class RecipeManager (RecData):
@@ -444,9 +487,9 @@ class RecipeManager (RecData):
                 else:
                     d['unit']=u.strip()
             if i:
-                if re.match('[Oo]ptional',i):
-                    d['optional']='yes'
-                m=re.match('(^.*)\(?\s+\(?[Oo]ptional\)?\s*$',i)
+                if re.match('optional',i,re.IGNORECASE):
+                    d['optional']=True
+                m=re.match('(^.*)\(?\s+\(?optional\)?\s*$',i,re.IGNORECASE)
                 if m:
                     i=i[0:m.start()]         
                 d['item']=i.strip()
@@ -598,8 +641,3 @@ class dbDic:
                     raise 
             ret.append((key,val))
         return ret
-        
-#if __name__ == '__main__':
-#    rd = recData()
-#    count = 0
-#    print len(rd.rview), "recipes"

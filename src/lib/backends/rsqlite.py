@@ -1,3 +1,4 @@
+4
 import os, pickle,re
 from gourmet import gglobals
 import pythonic_sqlite as psl
@@ -6,8 +7,9 @@ import rdatabase
 from gourmet.gdebug import debug
 
 class RecData (rdatabase.RecData,psl.PythonicSQLite):
-    def __init__ (self, filename=os.path.join(gglobals.gourmetdir,'recipes.db')):
+    def __init__ (self, filename=os.path.join(gglobals.gourmetdir,'recipes.db'), db="sqlite"):
         self.filename = filename
+        self.db = db
         rdatabase.RecData.__init__(self)
 
     def initialize_connection (self):

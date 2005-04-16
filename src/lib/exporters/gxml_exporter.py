@@ -2,6 +2,7 @@ import exporter
 import sys, xml.sax.saxutils
 from gourmet.gdebug import *
 from gourmet.gglobals import *
+import base64
 
 class rec_to_xml (exporter.exporter):
     def __init__ (self, rd, r, out,attdics={}):
@@ -53,7 +54,7 @@ class rec_to_xml (exporter.exporter):
         
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
         self.out.write("<ingredient")
-        if optional=='yes': self.out.write(" optional='yes'>")
+        if optional: self.out.write(" optional='yes'>")
         else: self.out.write(">")
         if amount:
             self.out.write("<amount")
@@ -68,7 +69,11 @@ class rec_to_xml (exporter.exporter):
         
     def write_groupfoot (self):
         self.out.write('</inggroup>\n')
-    
+
+    def write_image (self, image):
+        self.out.write('<image format="jpeg"><![CDATA[')
+        self.out.write(base64.b64encode(image))
+        self.out.write(']]></image>')
 
 class rview_to_xml (exporter.ExporterMultirec):
     def __init__ (self, rd, rview, out, one_file=True, progress_func=None):

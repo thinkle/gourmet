@@ -119,7 +119,6 @@ class mmf_importer (plaintext_importer.TextImporter):
         we're following, more or less, the specs laid out here
         <http://phprecipebook.sourceforge.net/docs/MM_SPEC.DOC>"""
         
-        debug('yes, we\'re running my code... DELETE ME %s'%l,0)
         testtimer =TimeAction('mealmaster_importer.handle_line',10)
         debug("start handle_line",10)
         gt.gtk_update()
@@ -373,7 +372,7 @@ class mmf_importer (plaintext_importer.TextImporter):
                     optm=self.ing_opt_matcher.match(i)
                     if optm:
                         item=optm.groups()[0]
-                        self.ing['optional']='yes'
+                        self.ing['optional']=True
                     else:
                         item = i
                     self.add_item(item)

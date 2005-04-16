@@ -1,3 +1,45 @@
+==== Version 0.8.3.3 Changes from 0.8.3.2
+* Fixed bug that broke renaming of ingredient groups.
+* Fixed windows directory nonsense
+* Use psyco if available to speed things up.
+* Twiddled with sqlite to no end (still needs fix).
+
+==== Version 0.8.3.2 Changes from 0.8.3.1
+* Fixed bug that failed on fresh install.
+
+==== Version 0.8.3.1 Changes from 0.8.3
+* Fixed nasty nasty  bug in DB database for users coming from <0.8.3.
+* Fixed bug preventing images from saving.
+* Fixed bug preventing ingredient groups from working properly.
+
+==== Version 0.8.3 Changes from 0.8.2
+* Added windows printing support using wx
+* Fixed bug in which cooking time wasn't exported in Gourmet format
+* Fixed bug which made gourmet not recognize it's own .grmt extension
+* Fixed a bug preventing HTML E-mail from working.
+
+==== Version 0.8.2.1 Changes from 0.8.2
+* Fixed bug preventing saving of shopping list.
+* Fixed bug preventing proper saving of ingredient orders.
+
+==== Version 0.8.2 Changes from 0.8.1.2
+* Added krecipe import
+* Added image import/export
+* Changed Gourmet XML file format to be vastly simplified and to support images.
+* Fixed bug that made filetype choices disappear on multiple exports
+
+==== Version 0.8.1.2 Changes from 0.8.1.1
+* Fixed alignment of "Add to shopping list" button (patch from Mikey Cooper)
+* Applied patch from calvin@users.sourceforge.net to make mealmaster import more flexible.
+* Fixed "print" on Windows to show dialog explaining we don't have printing on Windows.
+* Fixed encoding-detecting code on imports: we query the user when two encodings might work.
+* Fixed bug that made filetype options disappear from menu on multiple imports/exports.
+
+==== Version 0.8.1.1 Changes from 0.8.1
+* Fix handling of "^T" characters in mealmaster/mastercook import.
+* Fix misaligned icon.
+* Get rid of "save" calls in metakit, opting for autosave on a timer instead.
+
 ==== Version 0.8.1 Changes from 0.8.0 ===
 * Fixed Windows Application Directory
 * Fixed import of "servings" in Mealmaster import

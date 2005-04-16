@@ -19,8 +19,15 @@ class exporter:
     def __init__ (self, rd, r, out,
                   conv=None,
                   imgcount=1,
-                  order=['attr','ings','text'],
-		  attr_order=['title','category','cuisine','servings','source','rating','preptime'],
+                  order=['image','attr','text','ings'],
+		  attr_order=['title',
+                              'category',
+                              'cuisine',
+                              'servings',
+                              'source',
+                              'rating',
+                              'preptime',
+                              'cooktime'],
                   do_markup=True,
                   use_ml=False,
                   ):
@@ -49,6 +56,9 @@ class exporter:
         self.images = []
         for task in order:
             t=TimeAction('exporter._write_attrs()',4)
+            if task=='image':
+                if self.grab_attr(self.r,'image'):
+                    self.write_image(self.r.image)
             if task=='attr':
                 self._write_attrs()
                 t.end()
@@ -62,15 +72,13 @@ class exporter:
         self.write_foot()
         tt.end()
         
-    def _write_attrs (self):
-        if self.grab_attr(self.r,'image'):
-            self.write_image(self.r.image)
+    def _write_attrs (self):        
         self.write_attr_head()
         for a in self.attr_order:
             gglobals.gt.gtk_update()
             txt=self.grab_attr(self.r,a)
             if txt and txt.strip():
-                if a=='preptime' and a.find("0 ")==0: pass
+                if (a=='preptime' or a=='cooktime') and a.find("0 ")==0: pass
                 else: self.write_attr(REC_ATTR_DIC[a],txt)
         self.write_attr_foot()
 
@@ -204,7 +212,7 @@ class exporter:
             self.out.write(" %s"%unit)
         if item:
             self.out.write(" %s"%item)
-        if optional=='yes':
+        if optional:
             self.out.write(" (%s)"%_("optional"))
         self.out.write("\n")
 
@@ -243,7 +251,7 @@ class exporter_mult (exporter):
             self.out.write(" %s"%unit)
         if item:
             self.out.write(" %s"%item)
-        if optional=='yes':
+        if optional:
             self.out.write(" (%s)"%_("optional"))
         self.out.write("\n")        
             
@@ -435,7 +443,6 @@ class ExporterMultirec:
                 fn=self.generate_filename(r,self.ext)
                 self.ofi=open(fn,'w')
             if self.padding and not first:
-                print 'adding padding'
                 self.ofi.write(self.padding)
             e=self.exporter(out=self.ofi, r=r, rd=self.rd, **self.exporter_kwargs)
             self.recipe_hook(r,fn,e)

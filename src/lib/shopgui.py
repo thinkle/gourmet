@@ -99,8 +99,14 @@ class ShopGui:
         
     def doSave (self, filename):
         debug("doSave (self, filename):",5)
-        import lprprinter
-        self._printList(lprprinter.SimpleWriter,file=filename,show_dialog=False)
+        #of = open(filename,'w')
+        #self.writeHeader(of,)
+        #self.sh.pretty_print(of)
+        #self.doTextPrint(of)
+        #of.close()
+        import exporters.lprprinter
+        self._printList(exporters.lprprinter.SimpleWriter,file=filename,show_dialog=False)
+
     def printList (self, *args):
         debug("printList (self, *args):",0)
         self._printList(printer.SimpleWriter,dialog_parent=self.widget)
@@ -475,7 +481,7 @@ class ShopGui:
             except:
                 refid=None
             debug("adding ing %s, %s"%(i.item,refid),4)
-            if i.optional=='yes':
+            if i.optional:
                 if (self.includes.has_key(rec.id) and
                     (not self.includes[rec.id].has_key(i.ingkey) or not self.includes[rec.id][i.ingkey])
                     ):
@@ -676,7 +682,7 @@ class shopIngredientEditor (reccard.IngredientEditor):
         
 def getOptionalIngDic (ivw, mult):
     debug("getOptionalIngDic (ivw):",5)
-    vw = ivw.select(optional='yes')
+    vw = ivw.select(optional=True)
     if len(vw) > 0:
         oid=OptionalIngDialog(vw, mult)
         return oid.run()

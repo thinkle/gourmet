@@ -1,6 +1,9 @@
 from gourmet.gdebug import debug
 import os
 
+# We grab the printer of choice and import methods from it. Each printer
+# should provide a RecRenderer class which will do the actual printing.
+
 try:
     # UNCOMMENT TO TEST NON-GNOME PRINTING
     #import asdf
@@ -18,6 +21,10 @@ except ImportError:
     # UNCOMMENT TO TEST WINDOWS PRINTING
     #if 1:
     if os.name == 'nt':
-        from winprinter import *
+        try:
+            from wxprinter import *
+        except ImportError:
+            print 'Install wxWindows to print on Windows'
+            from winprinter import *
     else:
         from lprprinter import *

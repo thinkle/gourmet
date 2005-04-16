@@ -22,6 +22,12 @@ def thread_debug ():
 if options.thread_debug:
     import threading
     thread_debug()
-
+elif options.psyco:
+    try:
+        import psyco
+        psyco.full()
+    except ImportError:
+        # ignore
+        pass
 import gourmet.GourmetRecipeManager
 gourmet.GourmetRecipeManager.startGUI()

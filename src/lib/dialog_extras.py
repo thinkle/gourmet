@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import gtk, os.path, optionTable, thumbnail, cb_extras, fnmatch
+import gtk, gobject, os.path, optionTable, thumbnail, cb_extras, fnmatch
 import gglobals
 import xml.sax.saxutils
 from gettext import gettext as _
@@ -193,6 +193,8 @@ class entryDialog (mDialog):
         self.entry.set_visibility(visibility)
         if default_value: self.entry.set_text(default_value)
         self.hbox.add(self.entry)
+        self.entry.set_flags(gtk.CAN_DEFAULT)
+        self.entry.grab_default()
         self.hbox.show()
         if default:
             self.entry.set_text(default)
@@ -514,6 +516,9 @@ def select_image (title,
     return sfd.run()
 
 class select_file_dialog:
+    """A dialog to ask the user for a file. We provide a few custom additions to the
+    standard file dialog, including a special choose-filetype menu and including dynamic update
+    of the filetype based on user input of an extension"""
     def __init__ (self,
                   title,
                   filename=None,
@@ -546,7 +551,10 @@ class select_file_dialog:
     def setup_dialog (self):
         """Create our dialog"""
         self.setup_buttons()
-        self.fsd = gtk.FileChooserDialog(self.title,action=self.action,parent=self.parent,buttons=self.buttons)
+        self.fsd = gtk.FileChooserDialog(self.title,
+                                         action=self.action,
+                                         parent=self.parent,
+                                         buttons=self.buttons)
         self.fsd.set_default_response(gtk.RESPONSE_OK)
         self.fsd.set_select_multiple(self.multiple)
         if self.filename:
@@ -608,6 +616,7 @@ class select_file_dialog:
             # we're going to turn this list around and pop off one
             # item at a time in order and see if we have a corresponding
             # icon.
+            mimetypes = mimetypes[0:] # copy the list so we don't mutilate it
             mimetypes.reverse()
             while mimetypes and not image:
                 mt = mimetypes.pop()
@@ -655,7 +664,7 @@ class select_file_dialog:
         # and now for a hack -- since we can't connect to the Entry widget,
         # we're going to simply check to see if the filename has changed with
         # an idle call.
-        self.timeout = gtk.timeout_add(100, self.update_filetype_widget)
+        self.timeout = gobject.timeout_add(100, self.update_filetype_widget)
         
     def update_filetype_widget (self, *args):
         fn=self.fsd.get_filename()
@@ -743,7 +752,7 @@ class select_file_dialog:
 
     def quit (self, *args):
         if hasattr(self,'timeout'):
-            gtk.timeout_remove(self.timeout)
+            gobject.source_remove(self.timeout)
         self.fsd.destroy()
         
     
@@ -781,8 +790,7 @@ class select_image_dialog (select_file_dialog):
     def update_preview (self, *args):
         uri = self.fsd.get_uri()
         # first, let's look for a large thumbnail
-        thumbpath = thumbnail.check_for_thumbnail(uri)
-        # next we try for a normal sized thumbnail
+        thumbpath = thumbnail.check_for_thumbnail(uri) #default size is large
         if thumbpath:
             self.preview.set_from_file(thumbpath)
             self.preview.show()

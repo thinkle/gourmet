@@ -1,6 +1,6 @@
 #!/usr/bin/python
-import os,stat,re,time
-from gourmet import keymanager, convert
+import os,stat,re,time,StringIO
+from gourmet import keymanager, convert, ImageExtras
 from gourmet.gdebug import debug, TimeAction, print_timer_info
 from gourmet.gglobals import gt, use_threads
 import xml.sax.saxutils
@@ -106,6 +106,14 @@ class importer:
                 else:
                     self.rec['instructions']=self.rec['servings']+"\n"+self.rec['instructions']
                 self.rec['servings']=None
+        if self.rec.has_key('image') and not self.rec.has_key('thumb'):
+            # if we have an image but no thumbnail, we want to create the thumbnail.
+            img = ImageExtras.get_image_from_string(self.rec['image'])
+            thumb = ImageExtras.resize_image(img,40,40)
+            ofi = StringIO.StringIO()
+            thumb.save(ofi,'JPEG')
+            self.rec['thumb']=ofi.getvalue()
+            ofi.close()
         if self.do_markup:
             for k in ['instructions','modifications']:
                 if self.rec.has_key(k): self.rec[k] = xml.sax.saxutils.escape(self.rec[k])
@@ -158,8 +166,17 @@ class importer:
         timeaction = TimeAction('importer.commit_ing 1',10)
         if not ((self.ing.has_key('refid') and self.ing['refid']) or (self.ing.has_key('ingkey') and self.ing['ingkey'])):
             #self.ing['ingkey']=self.km.get_key(self.ing['item'],0.9)
-            self.ing['ingkey']=self.km.get_key_fast(self.ing['item'])
+            if self.ing.has_key('item'):
+                self.ing['ingkey']=self.km.get_key_fast(self.ing['item'])
+            else:
+                debug('Ingredient has no item! %s'%self.ing,-1)
         timeaction.end()
+        # if we have an amount (and it's not None), let's convert it to a number
+        if self.ing.has_key('amount') and self.ing['amount']:
+            try:
+                self.ing['amount']=float(self.ing['amount'])
+            except:
+                self.ing['amount']=convert.frac_to_float(self.ing['amount'])
         timeaction = TimeAction('importer.commit_ing 2',10)
         if not (self.ing.has_key('position') and self.ing['position']):
             self.ing['position']=self.position

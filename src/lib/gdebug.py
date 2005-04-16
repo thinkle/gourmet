@@ -14,9 +14,14 @@ def debug (message, level=10):
     if timestamp:
         message += " (%s)"%time.time()
     if level <= debug_level:
-        caller=traceback.extract_stack()[-2]
-        finame=caller[0]
-        line = caller[1]
+        stack = traceback.extract_stack()
+        if len(stack) > 2:
+            caller=stack[-2]
+            finame=caller[0]
+            line = caller[1]
+        else:
+            finame = " ".join(stack)
+            line = ""
         if options.debug_file:
             if debug_file.search(finame):
                 print "DEBUG: ","%s: %s"%(finame,line),message
@@ -37,9 +42,14 @@ class TimeAction:
             end = time.time()
             t=end-self.start
             # grab our location
-            caller=traceback.extract_stack()[-2]
-            finame=caller[0]
-            line = caller[1]
+            stack=traceback.extract_stack()
+            if len(stack)>2:
+                caller=stack[-2]
+                finame=caller[0]
+                line = caller[1]
+            else:
+                finame = " ".join(stack)
+                line = ""
             if not options.debug_file or debug_file.search(finame):
                 print "DEBUG: %s TOOK %s SECONDS"%(self.name,t)
                 if not timers.has_key(self.name): timers[self.name]=[t]

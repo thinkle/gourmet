@@ -54,7 +54,7 @@ class rtf_exporter (exporter.exporter):
         pass
 
     def write_attr (self, label, text):
-        if label=='Title':
+        if label==_('Title'):
             self.add_paragraph(text,style=self.ss.ParagraphStyles.Heading1)
         else:
             self.add_paragraph("%s: %s"%(label,text))
@@ -86,7 +86,7 @@ class rtf_exporter (exporter.exporter):
         txt = ""
         for p in amount, unit, item:
             if p: txt += "%s "%p
-        if optional=='yes': txt += "(optional) "
+        if optional: txt += "(optional) "
         txt = txt[0:-1] #strip trailing space
         self.add_paragraph(txt)
 

@@ -1,10 +1,9 @@
 TODO
-* Create auto-detection on imports so that import doesn't needlessly
-  fail if the wrong type is selected and so that the user doesn't
-  have to know the difference between file types.
+* Check into bizaare ordering bugs & such reported by HaJo
+* Merge 0.8.3.1 changes into HEAD (once 0.8.3.1 stabilizes a bit).
 * Fix annoying crash that happens when trying to import after a
   failed import.
 * Create faster and more elegant ingredient input interface
-* Fix threading with MySQL
+* Fix threading with MySQL -- actually fix threading everywhere.
 * Add support for nutritional information
-* Support copy/paste menu/toolbar buttons
+* Highlight differences in encoding view.

@@ -156,11 +156,11 @@ class mastercook_importer (plaintext_importer.TextImporter):
             self.group = gm.groups()[1]
             return
         if amt or unit:
-            if self.in_or: self.ing['optional']='yes'
+            if self.in_or: self.ing['optional']=True
             if self.ing: self.commit_ing()
             self.start_ing()
             if self.in_or:
-                self.ing['optional']='yes'
+                self.ing['optional']=True
                 self.in_or = False
             self.add_amt(amt)
             self.add_unit(unit)
@@ -171,7 +171,7 @@ class mastercook_importer (plaintext_importer.TextImporter):
             # add onto the previous item
             self.ing['item']=self.ing['item']+' '+itm.strip()
         else:
-            print '"%s" in the midst of ingredients looks like instructions!'%itm.strip()
+            debug('"%s" in the midst of ingredients looks like instructions!'%itm.strip(),2)
             self.instr += "\n"+itm.strip()
 
     def commit_ing (self):

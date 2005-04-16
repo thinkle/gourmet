@@ -18,7 +18,7 @@ import convert, WidgetSaver, version
 import importers.mastercook_importer as mastercook_importer
 import dialog_extras as de
 import treeview_extras as te
-from get_pixbuf_from_file import get_pixbuf_from_jpg
+from ImageExtras import get_pixbuf_from_jpg
 from gdebug import *
 from gglobals import *
 from recindex import RecIndex
@@ -263,8 +263,9 @@ class RecGui (RecIndex):
                 sublabel += _('\nTranslated by: %s')%translator
             if website:
                 sublabel += _('\nWebsite: %s')%website
-            de.show_message(label='%s %s'%(appname,myversion),
-                            sublabel=sublabel)
+            import xml.sax.saxutils
+            de.show_message(label=xml.sax.saxutils.escape('%s %s'%(appname,myversion)),
+                            sublabel=xml.sax.saxutils.escape(sublabel))
             
     def show_progress_dialog (self, thread, prog_dialog_kwargs={},message=_("Import paused"),
                            stop_message=_("Stop import")):
@@ -347,6 +348,10 @@ class RecGui (RecIndex):
         (or possibly make sense of it themselves!)."""
         try:
             self.rd = recipeManager.RecipeManager(**recipeManager.dbargs)
+            # if we are using metakit, initiate autosave stuff
+            if self.rd.db=='metakit':
+                # autosave every 3 minutes (milliseconds * 1000 milliseconds/second * 60 seconds/minute)
+                gobject.idle_add(self.rd.save,1000*60*3)
         except:
             self.prefs['db_backend'] = None
             self.prefs.save()
@@ -481,7 +486,7 @@ class RecGui (RecIndex):
         """Make a watch show up (this can be slow
         if lots of recs are selected!"""
         #gtk.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-        #gtk.idle_add(self.recTreeDeleteRec)
+        #gobject.idle_add(self.recTreeDeleteRec)
         # this seems broken
         self.recTreeDeleteRec()
 
@@ -637,7 +642,7 @@ class RecGui (RecIndex):
             rc=reccard.RecCard(self)
             self.rc[rc.current_rec.id]=rc
             self.app.window.set_cursor(None)
-        gtk.idle_add(show)
+        gobject.idle_add(show)
 
     def openRecCard (self, rec):
         if self.rc.has_key(rec.id):
@@ -649,7 +654,7 @@ class RecGui (RecIndex):
                 self.updateViewMenu()
                 self.app.window.set_cursor(None)
             self.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-            gtk.idle_add(show)
+            gobject.idle_add(show)
     def recTreeSelectRec (self, *args):
         debug("recTreeSelectRec (self, *args):",5)
         for rec in self.recTreeSelectedRecs():
@@ -705,7 +710,7 @@ class RecGui (RecIndex):
     def message (self, msg):
         debug("message (self, msg): %s"%msg,5)
         self.stat.push(self.contid,msg)
-        gtk.timeout_add(1500,self.flush_messages)
+        gobject.timeout_add(1500,self.flush_messages)
 
     def flush_messages (self, ret=False):
         debug("flush_messages (self):",5)
@@ -718,7 +723,7 @@ class RecGui (RecIndex):
                             sublabel=_('Please wait until it is finished to start your export.')
                             )
             return
-        saveas_filters = exporters.saveas_filters
+        saveas_filters = exporters.saveas_filters[0:]
         ext = self.prefs.get('save_recipes_as','%sxml'%os.path.extsep)
         exp_directory = self.prefs.get('rec_exp_directory','~')
         file,exp_type=de.saveas_file(_("Export recipes"),
@@ -878,7 +883,7 @@ class RecGui (RecIndex):
     def idle_offer_url (self, label, sublabl, url, from_thread):
         if from_thread:
             gt.gtk_enter()
-        gtk.idle_add(lambda *args: self.offer_url(label,sublabl,url,True))
+        gobject.idle_add(lambda *args: self.offer_url(label,sublabl,url,True))
         if from_thread:
             gt.gtk_leave()
 
@@ -904,10 +909,10 @@ class RecGui (RecIndex):
             debug('Suspending thread from pause_cb',0)
             self.thread.suspend()
             self.stat.push(self.pauseid, self.pause_message)
-            self.flusher = gtk.timeout_add(1000,lambda *args: self.flush_messages(True))
+            self.flusher = gobject.timeout_add(1000,lambda *args: self.flush_messages(True))
         else:
             self.stat.pop(self.pauseid)            
-            gtk.timeout_remove(self.flusher)
+            gobject.source_remove(self.flusher)
             self.thread.resume()
             
     def stop_cb (self, *args):
