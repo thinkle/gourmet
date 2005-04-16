@@ -89,10 +89,20 @@ class RecData:
                   [('ukey','char(150)'),
                    ('value','char(150)')],'ukey' #key
                   )
-    CONVTABLE_TABLE_DESC = ("convtable",
-                  [('ckey','char(150)'),
-                   ('value','char(150)')],'ckey' #key
-                  )
+    CONVTABLE_TABLE_DESC = (
+        "convtable",
+        [('ckey','char(150)'),
+         ('value','char(150)')],'ckey' #key
+        )
+    NUTRITION_TABLE_DESC = (
+        "nutrition",
+        [(name,typ) for lname,name,typ in gourmet.nutrition.parser_data.NUTRITION_FIELDS]
+        )
+    NUTRITION_ALIASES_TABLE_DESC = (
+        'nutritionaliases',
+        [('ingkey','char(200)'),
+         ('nbdno','char(100)'),],
+        'ingkey')
     
     def __init__ (self):
         timer = TimeAction('initialize_connection + setup_tables',0)
@@ -121,6 +131,8 @@ class RecData:
 
         Subclasses should do any necessary adjustments/tweaking before calling
         this function."""
+        self.nview = self.setup_table(*self.NUTRITION_TABLE_DESC)
+        self.naliases = self.setup_table(*self.NUTRITION_ALIASES_TABLE_DESC)
         self.rview = self.setup_table(*self.RECIPE_TABLE_DESC)
         self.iview = self.setup_table(*self.INGREDIENTS_TABLE_DESC)
         self.iview_not_deleted = self.iview.select(deleted=False)
