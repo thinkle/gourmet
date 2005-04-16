@@ -106,7 +106,7 @@ class ShopGui:
         #of.close()
         import exporters.lprprinter
         self._printList(exporters.lprprinter.SimpleWriter,file=filename,show_dialog=False)
-
+>>>>>>> 1.4.2.2
     def printList (self, *args):
         debug("printList (self, *args):",0)
         self._printList(printer.SimpleWriter,dialog_parent=self.widget)
