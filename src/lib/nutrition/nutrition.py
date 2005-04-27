@@ -1,7 +1,16 @@
 import re
 import sys
 
+# Our basic module for interaction with our nutritional information DB
+
 class NutritionData:
+
+    """Handle all interactions with our nutrition database.
+
+    We provide methods to set up equivalences between our
+    ingredient-keys and our nutritional data.
+    """
+    
     def __init__ (self, db, conv):
         self.db = db
         self.conv = conv
@@ -9,18 +18,24 @@ class NutritionData:
         self.gramwght_regexp = re.compile("([0-9.]+)?( ?([^,]+))?(, (.*))?")
 
     def set_key (self, key, row):
+        """Create an automatic equivalence for ingredient key 'key' and nutritional DB row ROW
+        """
         density=self.get_density(key,row)
         row = self.get_key(key)
-        if row: self.row.nbdno=row.nbdno
+        #if row: self.row.nbdno=row.nbdno
         else:
             self.db.naliases.append({'nbdno':row.nbdno,
                                   'ingkey':key})
 
     def set_key_from_ndbno (self, key, nbdno):
+        """Create an automatic equivalence between ingredient key 'key' and ndbno
+        ndbno is our nutritional database number."""
         self.db.naliases.append({'nbdno':nbdno,
                                  'ingkey':key})
 
     def get_key (self, key):
+        """Handed an ingredient key, get our nutritional Database equivalent
+        if one exists."""
         #print 'key=',key
         rows=self.db.naliases.select({'ingkey':str(key)})
         if rows:
@@ -28,6 +43,10 @@ class NutritionData:
         else: return None
 
     def get_nut_from_key (self, key):
+        """Get our nutritional information for ingredient key 'key'
+        We return an object interfacing with our DB whose attributes
+        will be nutritional values.
+        """
         aliasrow = self.get_key(key)
         if aliasrow:
             nvrows=self.db.nview.select({'ndbno':aliasrow.ndbno})
