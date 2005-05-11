@@ -14,7 +14,9 @@ from gdebug import *
 from gglobals import *
 import nutrition.nutritionView
 from gettext import gettext as _
+from gettext import ngettext
 import ImageExtras as ie
+from importers.importer import parse_range
 
 # This file contains our interface for controlling individual recipe cards.
 
@@ -118,7 +120,7 @@ class ActionManager:
 
     def make_connections (self):
         for a,cb in self.callbacks:
-            debug('connecting %s activate to %s'%(a,cb))
+            debug('connecting %s activate to %s'%(a,cb),5)
             getattr(self,a).connect('activate',cb)
     
 class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
@@ -141,6 +143,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         t=TimeAction('RecCard.__init__ 3',0)        
         self.prefs = self.rg.prefs
         self.get_widgets()
+        self.register_pref_dialog()
         self.history = Undo.MultipleUndoLists(self.undo,self.redo,
                                               get_current_id=self.notebook.get_current_page
                                               )
@@ -179,7 +182,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         t=TimeAction('RecCard.__init__ 4',0)
         self.pref_id = 'rc%s'%self.current_rec.id
         self.conf = []
-        self.conf.append(WidgetSaver.WindowSaver(self.widget, self.prefs.get(self.pref_id,{})))
+        self.conf.append(WidgetSaver.WindowSaver(self.widget, self.prefs.get(self.pref_id,{})))        
         self.glade.signal_autoconnect({
             'rc2shop' : self.addToShopL,
             'rcDelete' : self.delete,
@@ -205,6 +208,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'print': self.print_rec,
             'email': self.email_rec,
             'preferences':self.show_pref_dialog,
+            'forget_remembered_optionals':self.forget_remembered_optional_ingredients,
             })
         self.ncv = nutrition.nutritionView.NutritionCardView(self)
         self.show()
@@ -248,6 +252,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             (['cuisineLabel','cuisineBox'],'Cuisine'),
             (['categoryLabel','categoryBox'],'Category'),
             (['preptimeLabel','preptimeBox'],'Preperation Time'),
+            (['cooktimeLabel','cooktimeBox'],'Cooking Time'),
             (['ratingLabel','ratingBox'],'Rating'),
             (['sourceLabel','sourceBox'],'Source'),
             #(['instrExp'],'Instructions'),
@@ -270,6 +275,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.toggleReadableMenu = self.glade.get_widget('toggle_readable_units_menuitem')
         self.toggleReadableMenu.set_active(self.prefs.get('readableUnits',True))
         self.toggleReadableMenu.connect('toggled',self.readableUnitsCB)
+        # this hook won't spark an infinite loop since the 'toggled' signal is only emitted
+        # for a *change*
+        def toggle_readable_hook (p,v):
+            if p=='readableUnits': self.toggleReadableMenu.set_active(v)
+        self.rg.prefs.set_hooks.append(toggle_readable_hook)
         self.notebook=self.glade.get_widget('notebook1')        
         t.end()
         
@@ -282,8 +292,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                                            ['addIngButton','ingAddMenu']]},
                                 {'ingGroup':[{'tooltip':_('Create new subgroup of ingredients.'),},
                                              ['ingNewGroupButton','ingNewGroupMenu']]},
-                                {'ingImport':[{'tooltip':_('Import list of ingredients from text file.')},
-                                              ['ingImportListButton','ingImportListMenu']]
+                                {'ingImport':[{'tooltip':_('Import list of ingredients from text file.'),
+                                               'separators':'ingSeparator3'
+                                               },
+                                              ['ingImportListButton','ingImportListMenu'],
+                                              ]
                                  },
                                 {'ingPaste':[{'tooltip':_('Paste list of ingredients from clipboard.')},
                                              ['pasteIngredientButton','pasteIngredientMenu']]
@@ -302,7 +315,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                                         {'ingDown':[{'tooltip':_('Move selected ingredient down.')},
                                                     ['ingDownButton','ingDownMenu']]},
                                         ],
-             'editTextItems':[{p: [{'separators':'textSeparator'},
+             'editTextItems':[{p: [{'separators':'formatSeparator'},
                                    ['%sButton'%p,'%sButton2'%p,'%sMenu'%p]]} for p in 'bold','italic','underline'],
              'genericEdit':[{'copy':[{},['copyButton','copyButton2','copyMenu']]},
                             {'paste':[{'separators':'copySeparator'},['pasteButton','pasteButton2','pasteMenu',]]},
@@ -335,24 +348,36 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         for aa in self.notebook_page_actions.values():
             for a in aa:
                 self.notebook_changeable_actions.add(a)
+
+    def register_pref_dialog (self, *args):
+        """Add our GUI prefs to the preference dialog."""
+        options = self.make_option_list()
+        self.rg.prefsGui.add_pref_table(options,
+                                        'cardViewVBox',
+                                        self.apply_option
+                                        )
         
+    def show_pref_dialog (self, *args):
+        """Show our preference dialog for the recipe card."""
+        self.rg.prefsGui.show_dialog(page=self.rg.prefsGui.CARD_PAGE)
+
     def notebookChangeCB (self, *args):
         page=self.notebook.get_current_page()
         self.history.switch_context(page)
         while self.page_specific_handlers:
             w,s = self.page_specific_handlers.pop()
             w.disconnect(s)
-        debug('notebook changed to page: %s'%page,0)
+        debug('notebook changed to page: %s'%page,3)
         if self.notebook_pages.has_key(page):
             page=self.notebook_pages[page]
         else:
-            debug('WTF, %s not in %s'%(page,self.notebook_pages),0)
-        debug('notebook on page: %s'%page,0)
+            debug('WTF, %s not in %s'%(page,self.notebook_pages),1)
+        debug('notebook on page: %s'%page,3)
         for actionGroup in self.notebook_changeable_actions:
             if self.notebook_page_actions.has_key(page):
                 getattr(self,actionGroup).set_visible(actionGroup in self.notebook_page_actions[page])
-                if not actionGroup in self.notebook_page_actions[page]: debug('hiding actionGroup %s'%actionGroup,0)
-                if actionGroup in self.notebook_page_actions[page]: debug('showing actionGroup %s'%actionGroup,0)
+                if not actionGroup in self.notebook_page_actions[page]: debug('hiding actionGroup %s'%actionGroup,3)
+                if actionGroup in self.notebook_page_actions[page]: debug('showing actionGroup %s'%actionGroup,3)
             else:
                 getattr(self,actionGroup).set_visible(False)
         if 'instructions'==page:
@@ -465,7 +490,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def addToShopL (self, *args):
         debug("addToShopL (self, *args):",5)
         import shopgui
-        d = shopgui.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),self.mult)
+        d = shopgui.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
+                                      self.mult,
+                                      self.prefs,
+                                      self.rg)
         self.rg.sl.addRec(self.current_rec,self.mult,d)
         self.rg.sl.show()
 
@@ -608,6 +636,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                        self.imodel,
                        prev_iter=self.getSelectedIter(),
                        children_iters=self.getSelectedIters())
+        self.commit_positions()
 
     def resetIngList (self):
         debug("resetIngList (self, rec=None):",0)
@@ -619,7 +648,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.updateIngredientsDisplay()
 
     def updateRecipe (self, rec, show=True):
-        debug("updateRecipe (self, rec):",-5)
+        debug("updateRecipe (self, rec):",0)
         if not self.edited or de.getBoolean(parent=self.widget,
                                          label=_("Abandon your edits to %s?")%self.current_rec.title):
             self.updateRec(rec)
@@ -777,10 +806,28 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.servingsMultiplyByLabel.set_label("")
 
     def create_ing_alist (self):
-        self.ings=self.rg.rd.get_ings(self.current_rec)
-        self.ing_alist = self.rg.rd.order_ings( self.ings )
-    
+        """Create alist ing_alist based on ingredients in DB for current_rec"""
+        ings=self.rg.rd.get_ings(self.current_rec)
+        self.ing_alist = self.rg.rd.order_ings( ings )        
+        debug('self.ing_alist updated: %s'%self.ing_alist,1)
+
+    def forget_remembered_optional_ingredients (self, *args):
+        if de.getBoolean(parent=self.widget,
+                         label=_('Forget which optional ingredients to shop for?'),
+                         sublabel=_('Forget previously saved choices for which optional ingredients to shop for. This action is not reversable.'),
+                         custom_yes={'stock':gtk.STOCK_OK},
+                         custom_no={'stock':gtk.STOCK_CANCEL},
+                         cancel=False):
+            debug('Clearing remembered optional ingredients.',0)
+            self.rg.rd.clear_remembered_optional_ings(self.current_rec)
+
+    def resetIngredients (self):
+        """Reset our display of ingredients based on what's in our database at present."""
+        self.create_ing_alist()
+        self.updateIngredientsDisplay()
+        
     def updateIngredientsDisplay (self):
+        """Update our display of ingredients, only reloading from DB if this is our first time."""
         if not self.ing_alist:
             self.create_ing_alist()
         label = ""
@@ -1021,20 +1068,20 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             if attr=='amount':
                 if type(store.get_value(iter,0)) != type(""):
                     # if we're not a group
-                    ntext=convert.frac_to_float(text)
-                    if not ntext:
+                    d={}
+                    try:
+                        d['amount'],d['rangeamount']=parse_range(text)
+                    except:
                         show_amount_error(text)
-                        raise "Amount is not a number!"
-                    text = ntext
-            d={attr:text}
-            if attr=='unit':
-                amt,msg=self.changeUnit(d['unit'],ing)
-                if amt:
-                    d['amount']=amt
-                if msg: 
-                    self.message(msg)
-            if attr=='item':
-                d['ingkey']=self.rg.rd.km.get_key(d['item'])
+            else:
+                d={attr:text}
+                if attr=='unit':
+                    amt,msg=self.changeUnit(d['unit'],ing)
+                    if amt:
+                        d['amount']=amt
+                    if msg: self.message(msg)
+                elif attr=='item':
+                    d['ingkey']=self.rg.rd.km.get_key(d['item'])
             debug('undoable_modify_ing %s'%d,0)
             self.rg.rd.undoable_modify_ing(
                 ing,d,self.history,
@@ -1043,8 +1090,14 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def showIngredientChange (self, iter, d):
         d=d.copy()
+        # we hackishly muck up the dictionary so that the 'amount' field
+        # becomes the proper display amount.
         if d.has_key('amount'):
             d['amount']=convert.float_to_frac(d['amount'])
+        if d.has_key('rangeamount'):
+            if d['rangeamount']:
+                d['amount']=d['amount']+'-'+convert.float_to_frac(d['rangeamount'])
+            del d['rangeamount']
         self.create_ing_alist()
         self.updateIngredientsDisplay()
         if d.has_key('ingkey'):
@@ -1067,7 +1120,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         Message (message for our user) or None (no message for our user)"""
         key=ing.ingkey
         old_unit=ing.unit
-        old_amt=ing.amount
+        old_amt=ing.amount        
         density=None
         conversion = self.rg.conv.converter(old_unit,new_unit,key)
         if conversion and conversion != 1:
@@ -1287,6 +1340,16 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def create_imodel (self, rec, mult=1):
         debug("create_imodel (self, rec, mult=1):",5)
         ings=self.rg.rd.get_ings(rec)
+        # as long as we have the list here, this is a good place to update
+        # the activity of our menuitem for forgetting remembered optionals        
+        remembered=False
+        for i in ings:
+            if i.shopoptional==1 or i.shopoptional==2:
+                remembered=True
+                break
+        self.forget_remembered_optionals_menuitem = self.glade.get_widget('forget_remembered_optionals_menuitem')
+        self.forget_remembered_optionals_menuitem.set_sensitive(remembered)
+        ## now we continue with our regular business...
         debug("%s ings"%len(ings),3)
         self.ing_alist=self.rg.rd.order_ings(ings)
         model = gtk.TreeStore(gobject.TYPE_PYOBJECT,
@@ -1317,7 +1380,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             #self.rg.rd.undoable_modify_ing(model.get_value(c,0),
             #                               {'inggroup':name},
             #                               self.history)
-        self.commit_positions()
         debug('add_group returning %s'%groupiter,5)
         return groupiter
 
@@ -1353,7 +1415,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         else:
             iter = model.insert_before(None, None, None)
         #amt,unit = self.make_readable_amt_unit(i)
-        amt = convert.float_to_frac(float(i.amount))
+        amt = self.rg.rd.get_amount_as_string(i)
         unit = i.unit
         model.set_value(iter, 0, i)
         model.set_value(iter, 1, amt)
@@ -1373,21 +1435,14 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         return iter
 
     def make_readable_amt_unit (self, i):
-        mult = self.mult
-        conv = self.rg.conv
-        if i.amount and self.prefs.get('readableUnits',True):
-            amt,unit = conv.adjust_unit(float(i.amount)*mult,i.unit)
-        elif i.amount:
-            amt,unit = float(i.amount)*mult,i.unit
-        else:
-            amt,unit = None,i.unit
-        if amt: amt = convert.float_to_frac(amt)
-        if unit != i.unit:
-            debug('Automagically adjusting unit: %s->%s'%(i.unit,unit),0)
-        return amt,unit
-
+        """Handed an ingredient, return a readbale amount and unit."""
+        return self.rg.rd.get_amount_and_unit(i,
+                                              mult=self.mult,
+                                              conv=self.rg.conv
+                                              )
+        
     def importIngredientsCB (self, *args):
-        debug('importIngredientsCB',0) #FIXME
+        debug('importIngredientsCB',5) #FIXME
         f=de.select_file(_("Choose a file containing your ingredient list."),action=gtk.FILE_CHOOSER_ACTION_OPEN)
         self.importIngredients(f)
 
@@ -1426,6 +1481,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 'rec':self.current_rec,
                 'out':out,
                 'conv':self.rg.conv,
+                'change_units':self.prefs.get('readableUnits',True),
+                'mult':self.mult,
                 })
             self.message(myexp['single_completed']%{'file':fn})
         except:
@@ -1496,8 +1553,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                                        self.rg.rd, self.prefs, self.rg.conv)
         d.setup_dialog()
         d.email()
-
-
 
     def print_rec (self, *args):
         if self.edited:
@@ -1817,7 +1872,9 @@ class IngredientEditor:
         else:
             self.user_set_key=False            
         if hasattr(ing,'amount'):
-            self.amountBox.set_text(convert.float_to_frac(float(ing.amount) * self.rc.mult))
+            self.amountBox.set_text(
+                self.rg.rd.get_amount_as_string(ing)
+                )
         if hasattr(ing,'unit'):
             self.unitBox.entry.set_text(ing.unit)
         if hasattr(ing,'optional') and ing.optional:
@@ -1852,7 +1909,7 @@ class IngredientEditor:
         amt=self.amountBox.get_text()
         if amt:
             try:
-                d['amount']= convert.frac_to_float(amt)/self.rc.mult
+                d['amount'],d['rangeamount']= parse_range(amt)
             except:
                 show_amount_error(amt)
                 raise
@@ -1943,17 +2000,21 @@ class IngredientEditor:
                 i=self.rc.imodel.get_value(child,0)
                 ings.append([i.amount,i.unit,i.item])
             if children:
-                children.reverse()
-                question=_("Shall I delete the items contained in %s or just move them out of the group?")%group
+                num_of_children = len(children)
+                question=ngettext(
+                    "Shall I delete the item contained in %s or move it out of the group?",
+                    "Shall I delete the items contained in %s or just move them out of the group?",
+                    num_of_children
+                    )%group
                 tree = te.QuickTree(ings, [_("Amount"),_("Unit"),_("Item")])
                 debug("de.getBoolean called with:")
                 debug("label=%s"%question)
                 debug("expander=['See ingredients',%s]"%tree)
                 delete=de.getBoolean(label=question,
-                                     custom_yes=_("Delete them."),
-                                     custom_no=_("Move them."),
+                                     custom_yes=ngettext("Delete it.","Delete them.",num_of_children),
+                                     custom_no=ngettext("Move it.","Move them.",num_of_children),
                                      expander=[_("See ingredients"),tree])
-                    # then we're deleting them, this is easy!
+                # then we're deleting them, this is easy!
                 children.reverse()
                 self.rc.pre_modify_tree()
                 ings_to_delete = []
@@ -1964,7 +2025,6 @@ class IngredientEditor:
                         self.rc.imodel.remove(c)
                         #self.rg.rd.delete_ing(ing)
                         ings_to_delete.append(ing)
-                        ings_to_delete.append
                     else:
                         #ing.inggroup = None
                         ings_to_modify.append(ing)
@@ -1975,15 +2035,21 @@ class IngredientEditor:
                                                     make_visible=lambda *args: self.rc.resetIngList())
                 if ings_to_modify:
                     def ungroup(*args):
-                        for i in ings_to_modify: i.inggroup=None
+                        debug('ungroup ingredients!',3)
+                        for i in ings_to_modify:
+                            self.rg.rd.modify_ing(i,{'inggroup':''})
+                        self.rc.resetIngredients()
                     def regroup(*args):
-                        for i in ings_to_modify: i.inggroup=group
-                    um=Undo.UndoableObject(ungroup,regroup,self.rc.history)
-                    um.perform()
+                        debug('Unmodifying ingredients',3)
+                        for i in ings_to_modify:
+                            self.rg.rd.modify_ing(i,{'inggroup':group})
+                        self.rc.resetIngredients()
+                    debug('Modifying ingredients',0)
+                    um=Undo.UndoableObject(ungroup,regroup,self.rc.history)                    
+                    um.perform()                    
             else: self.rc.pre_modify_tree()
             self.rc.imodel.remove(iter)
             self.rc.post_modify_tree()
-
 
 class IngInfo:
     """Keep models for autocompletion, comboboxes, and other
@@ -2122,13 +2188,16 @@ def show_amount_error (txt):
     """Show an error that explains how numeric amounts work."""
     de.show_message(label=_("""I'm sorry, I can't understand
 the amount "%s".""")%txt,
-                    sublabel=_("Amounts must be numbers (fractions or decimals) or blank."),
+                    sublabel=_("Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."),
                     expander=[_("Details"),
                               _("""
 The "unit" must be in the "unit" field by itself.
 For example, if you want to enter one and a half cups,
 the amount field could contain "1.5" or "1 1/2". "cups"
 should go in the separate "unit" field.
+
+To enter a range of numbers, use a "-" to separate them.
+For example, you could enter 2-4 or 1 1/2 - 3 1/2.
 """)])
 
 if __name__ == '__main__':
