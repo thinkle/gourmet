@@ -25,6 +25,11 @@ class RecData:
     # PythonicSQL.py and other files for the glue between SQL and the object/attribute
     # style required by Gourmet.
 
+    # constants for determining how to get amounts when there are ranges.
+    AMT_MODE_LOW = 0
+    AMT_MODE_AVERAGE = 1
+    AMT_MODE_HIGH = 2
+    
     RECIPE_TABLE_DESC = ('recipe',
                   [('id',"char(75)"),
                    ('title',"text"),
@@ -47,9 +52,11 @@ class RecData:
                  ('refid','char(75)'),
                  ('unit','text'),
                  ('amount','float'),
+                 ('rangeamount','float'),
                  ('item','text'),
                  ('ingkey','char(200)'),
                  ('optional','bool'),
+                 ('shopoptional','int'), #Integer so we can distinguish unset from False
                  ('inggroup','char(200)'),
                  ('position','int'),
                  ('deleted','bool'),
@@ -196,7 +203,6 @@ class RecData:
 
         def action (*args,**kwargs):
             """Our actual action allows for selecting changes after modifying"""
-            print 'modify_recs: ',args,kwargs
             self.modify_rec(*args,**kwargs)
             if select_change_method:
                 select_change_method(*args,**kwargs)
@@ -240,7 +246,9 @@ class RecData:
         return dct.keys()
 
     def get_ings (self, rec):
-        """Return a list of ingredient objects for a given recipe (ID or object)"""
+        """Return a list of ingredient objects for a given recipe (ID or object)
+        rec should be an ID or an object with an attribute ID)"""
+
         if hasattr(rec,'id'):
             id=rec.id
         else:
@@ -291,12 +299,90 @@ class RecData:
         The data we hand out consists of a list of tuples. Each tuple contains
         amt, unit, key, alternative?"""
         for i in view:
-            ret.append([i.amount, i.unit, i.ingkey,])
+            ret.append([self.get_amount(i), i.unit, i.ingkey,])
         return ret
     
     def ing_shopper (self, view):
         return mkShopper(self.ingview_to_lst(view))
+
+    def get_amount (self, ing):
+        """Given an ingredient object, return the amount for it.
+
+        Amount may be a tuple if the amount is a range, a float if
+        there is a single amount, or None"""
+        amt=getattr(ing,'amount')
+        ramt = getattr(ing,'rangeamount')
+        if ramt:
+            return (amt,ramt)
+        else:
+            return amt
+
+    def get_amount_and_unit (self, ing, mult=1, conv=None):
+        """Return a tuple of strings representing our amount and unit.
         
+        If we are handed a converter interface, we will adjust the
+        units to make them readable.
+        """
+        amt=self.get_amount(ing)
+        unit=ing.unit
+        ramount = None
+        if type(amt)==tuple: amt,ramount = amt
+        amt = amt * mult
+        if ramount: ramount = ramount * mult
+        if conv:
+            amt,unit = conv.adjust_unit(amt,unit)
+            if ramount and unit != ing.unit:
+                # if we're changing units... convert the upper range too
+                ramount = ramount * conv.converter(ing.unit, unit)
+        if ramount: amt = (amt,ramount)
+        return (self._format_amount_string_from_amount(amt),unit)
+        
+    def get_amount_as_string (self,
+                              ing,
+                              mult=1,
+                              ):
+        """Return a string representing our amount.
+        If we have a multiplier, multiply the amount before returning it.        
+        """
+        amt = self.get_amount(ing)
+        return self._format_amount_string_from_amount(amt)
+
+    def _format_amount_string_from_amount (self, amt):
+        """Format our amount string given an amount tuple.
+
+        If you're thinking of using this function from outside, you
+        should probably just use a convenience function like
+        get_amount_as_string or get_amount_and_unit
+        """
+        if type(amt)==tuple:
+            return "%s-%s"%(convert.float_to_frac(amt[0]).strip(),convert.float_to_frac(amt[1]).strip())
+        elif type(amt)==float:
+            return convert.float_to_frac(amt)
+        else: return ""
+
+    def get_amount_as_float (self, ing, mode=1): #1 == self.AMT_MODE_AVERAGE
+        """Return a float representing our amount.
+
+        If we have a range for amount, this function will ignore the range and simply
+        return a number.  'mode' specifies how we deal with the mode:
+        self.AMT_MODE_AVERAGE means we average the mode (our default behavior)
+        self.AMT_MODE_LOW means we use the low number.
+        self.AMT_MODE_HIGH means we take the high number.
+        """
+        amt = self.get_amount(ing)
+        if type(amt) in [float, type(None)]:
+            return amt
+        else:
+            # otherwise we do our magic
+            amt=list(amt)
+            amt.sort() # make sure these are in order
+            low,high=amt
+            if mode==self.AMT_MODE_AVERAGE: return (low+high)/2.0
+            elif mode==self.AMT_MODE_LOW: return low
+            elif mode==self.AMT_MODE_HIGH: return high # mode==self.AMT_MODE_HIGH
+            else:
+                raise ValueError("%s is an invalid value for mode"%mode)
+    
     def get_rec (self, id, rview=None):
         """Handed an ID, return a recipe object."""
         if not rview:
@@ -512,10 +598,30 @@ class RecipeManager (RecData):
             return None
 
     def ing_search (self, ing, keyed=None, rview=None, use_regexp=True, exact=False):
+        """Search for an ingredient."""
         raise NotImplementedError
 
     def ings_search (self, ings, keyed=None, rview=None, use_regexp=True, exact=False):
+        """Search for multiple ingredients."""
         raise NotImplementedError
+
+    def clear_remembered_optional_ings (self, recipe=None):
+        """Clear our memories of optional ingredient defaults.
+
+        If handed a recipe, we clear only for the recipe we've been
+        given.
+
+        Otherwise, we clear *all* recipes.
+        """
+        if recipe:
+            vw = self.get_ings(recipe)
+        else:
+            vw = self.iview
+        # this is ugly...
+        vw1 = vw.select(shopoptional=1)
+        vw2 = vw.select(shopoptional=2)
+        for v in vw1,vw2:
+            for i in v: self.modify_ing(i,{'shopoptional':0})
 
 class mkConverter(convert.converter):
     def __init__ (self, db):
