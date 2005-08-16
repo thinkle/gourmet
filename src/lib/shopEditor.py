@@ -147,8 +147,8 @@ class ShopEditor:
                 msg += " from \"%s\" "%key
             msg += " to \"%s\""%text
             if not de.getBoolean(label=msg,
-                            dont_ask_cb=self.dont_ask_cb,
-                            dont_ask_custom_text="Don't ask me before changing keys and items."):
+                                 dont_ask_cb=self.dont_ask_cb,
+                                 dont_ask_custom_text="Don't ask me before changing keys and items."):
                 return
         if children and n==self.KEY_COL:
             self.change_children(key, text, iter)

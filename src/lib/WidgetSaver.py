@@ -47,11 +47,12 @@ class WindowSaver (WidgetSaver):
                 apply(f,self.dictionary[p])
         
     def save_properties (self, *args):
-        self.dictionary['window_size']=self.w.get_size()
-        self.dictionary['position']=self.w.get_position()
-        debug('Saved properties: %s'%self.dictionary,4)
+        if self.w.window and not self.w.window.get_state()&gtk.gdk.WINDOW_STATE_MAXIMIZED:
+            # ignore the maximized window when we save sizes
+            self.dictionary['window_size']=self.w.get_size()
+            self.dictionary['position']=self.w.get_position()
+            debug('Saved properties: %s'%self.dictionary,4)
         return False
-    
     
 class WidgetPrefs:
     def __init__ (self, prefs, glade=None, hideable_widgets=[], basename='hide_'):
@@ -70,6 +71,7 @@ class WidgetPrefs:
         self.apply_widget_prefs()
 
     def toggle_widget (self, w, val):
+        """Toggle the visibility of widget 'w'"""
         if val: method = 'hide'
         else: method = 'show'
         if type(w)==type(""): w = [w]
@@ -81,6 +83,7 @@ class WidgetPrefs:
                 debug('There is no widget %s'%wn,1)
 
     def apply_widget_prefs (self):
+        """Apply our widget preferences."""
         for w,desc in self.hideable_widgets:
             if self.get_widget_pref(w):
                 self.toggle_widget(w,True)
@@ -88,6 +91,7 @@ class WidgetPrefs:
                 self.toggle_widget(w,False)
 
     def get_widget_pref (self,w):
+        """Get our widget preferences."""
         return self.prefs.get(self.keyname(w),False)
 
     def keyname (self, w):
@@ -119,5 +123,3 @@ class WidgetPrefs:
             options=self.make_option_list(),
             apply_func=self.apply_option)
         pd.run()        
-            
-    

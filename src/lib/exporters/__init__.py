@@ -7,13 +7,13 @@ from gourmet.gdebug import *
 try:
     import rtf_exporter
     rtf = True
-except:
+except ImportError:
     debug('No RTF support',0)
     rtf = False
 
 # Filetypes as presented to user
 WEBPAGE = _('HTML Web Page')
-MMF = _('Mealmaster file')
+MMF = _('MealMaster file')
 TXT = _('Plain Text')
 RTF = _('RTF')
 GXML2 = _('Gourmet XML File')
@@ -49,9 +49,15 @@ if rtf:
 #  'prog':progress_displaying_function,'rec':individual_recipe_to_export,...}
 exporter_dict = {
     WEBPAGE : {'mult_exporter': lambda args : html_exporter.website_exporter(args['rd'], args['rv'],
-                                                                             args['file'], args['conv'],
+                                                                             args['file'],
+                                                                             args['conv'],
                                                                              progress_func=args['prog']),
-               'exporter': lambda args : html_exporter.html_exporter(args['rd'],args['rec'],args['out'],conv=args['conv']),
+               'exporter': lambda args : html_exporter.html_exporter(args['rd'],
+                                                                     args['rec'],
+                                                                     args['out'],
+                                                                     change_units=args['change_units'],
+                                                                     mult=args['mult'],
+                                                                     conv=args['conv']),
                'label':_('Exporting Webpage'),
                'sublabel':_('Exporting recipes to HTML files in directory %(file)s'),
                'single_completed':_('Recipe saved as HTML file %(file)s'),
@@ -65,30 +71,37 @@ exporter_dict = {
                                                                    progress_func=args['prog'],
                                                                    exporter=mealmaster_exporter.mealmaster_exporter),
            'exporter': lambda args: mealmaster_exporter.mealmaster_exporter(args['rd'],
-                                                                 args['rec'],
-                                                                 args['out'],
-                                                                 conv=args['conv']),
-           'label':_('Mealmaster Export'),
-           'sublabel':_('Exporting recipes to MealMaster(tm) file %(file)s.'),
-           'single_completed':_('Recipe saved as Mealmaster file %(file)s'),
+                                                                            args['rec'],
+                                                                            args['out'],
+                                                                            mult=args['mult'],
+                                                                            change_units=args['change_units'],
+                                                                            conv=args['conv']),
+           'label':_('MealMaster Export'),
+           'sublabel':_('Exporting recipes to MealMaster file %(file)s.'),
+           'single_completed':_('Recipe saved as MealMaster file %(file)s'),
            },
     TXT : {'mult_exporter':lambda args: exporter.ExporterMultirec(args['rd'],args['rv'],args['file'],
-                                                              conv=args['conv'], progress_func=args['prog']),
-           'exporter':lambda args: exporter.exporter(args['rd'],
-                                                 args['rec'],
-                                                 args['out'],
-                                                 conv=args['conv']),
+                                                                  conv=args['conv'],
+                                                                  progress_func=args['prog']),
+           'exporter':lambda args: exporter.exporter_mult(args['rd'],
+                                                          args['rec'],
+                                                          args['out'],
+                                                          mult=args['mult'],
+                                                          change_units=args['change_units'],
+                                                          conv=args['conv']),
            'label':_('Text Export'),
            'sublabel':_('Exporting recipes to Plain Text file %(file)s.'),
            'single_completed':_('Recipe saved as Plain Text file %(file)s'),
            },
     GXML2 : {'mult_exporter':lambda args: gxml2_exporter.rview_to_xml(args['rd'],
-                                                                    args['rv'],
-                                                                    args['file'],
-                                                                    progress_func=args['prog']),
+                                                                      args['rv'],
+                                                                      args['file'],
+                                                                      progress_func=args['prog']),
              'exporter': lambda args: gxml2_exporter.rview_to_xml(args['rd'],
                                                                   [args['rec']],
                                                                   args['out'],
+                                                                  change_units=args['change_units'],
+                                                                  mult=args['mult']
                                                                   ).run(),
              'label':_('Gourmet XML Export'),
              'sublabel':_('Exporting recipes to Gourmet XML file %(file)s.'),
@@ -106,4 +119,81 @@ exporter_dict = {
 #             'sublabel':_('Exporting recipes to Gourmet XML (<0.8.2) file %(file)s.'),
 #             'single_completed':_('Recipe saved in Gourmet XML (<0.8.2) file %(file)s.'),
 #             },
+    RTF : {'mult_exporter':lambda args : rtf_exporter.rtf_exporter_multidoc(args['rd'],
+                                                                            args['rv'],
+                                                                            args['file'],
+                                                                            progress_func=args['prog']),
+           'exporter': lambda args: rtf_exporter.rtf_exporter(args['rd'],
+                                                              args['rec'],
+                                                              args['out'],
+                                                              change_units=args['change_units'],
+                                                              mult=args['mult']),
+           'label':_('RTF Export'),
+           'sublabel':_('Exporting recipes to Rich Text file %(file)s.'),
+           'single_completed':_('Recipe saved as Rich Text file %(file)s'),
+           },
     }
+
+class Tester:
+    def __init__ (self):
+        import gourmet.recipeManager, gourmet.convert
+        self.rm = gourmet.recipeManager.RecipeManager(**gourmet.recipeManager.dbargs)
+        self.conv = gourmet.convert.converter()
+
+    def interactive_test (self):
+        self.run_export(**self.get_choice())
+
+    def get_choice (self):
+        print 'We can export: '
+        for n,f in enumerate(saveas_filters):
+            print n,'. ',f
+        n = raw_input('Choose format: ')
+        while type(n)==str or n < 0 or n > len(saveas_filters):
+            try:
+                n=int(n)
+            except:
+                n = raw_input('Choose format (enter number of a choice please!): ')
+        format=saveas_filters[n][0]
+        fn = raw_input('Export %s to file: '%format)
+        if raw_input('Multiple recipes? y or n [n]: ')=='y':
+            mode='mult_exporter'
+            out=None
+        else:
+            mode='exporter'
+            out = open(fn,'wb')
+        return {'file':fn,
+                'format':format,
+                'out':out,
+                'mode':mode,
+                }
+
+    def run_export (self, **args):
+        defaults = {'rd':self.rm,
+                    'mult':1,
+                    'rec':self.rm.rview.select(deleted=False)[0],
+                    'rv':self.rm.rview.select(deleted=False),
+                    'change_units':True,
+                    'conv':self.conv,
+                    'format': TXT,
+                    'mode':'exporter',
+                    'out':None
+                    }
+        for k,v in args.items(): defaults[k]=v
+        exporter = exporter_dict[defaults['format']][defaults['mode']]
+        print 'Running exporter ',exporter, defaults['format'], defaults['mode'], defaults['rec'].title, 
+        e=exporter(defaults)
+        if hasattr(e,'run'): e.run()
+        if defaults['out']:
+            defaults['out'].close()
+            print 'Closed file'
+
+if __name__ == '__main__':
+    t=Tester()
+    t.interactive_test()
+
+            
+            
+            
+            
+            
+                

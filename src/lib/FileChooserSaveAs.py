@@ -226,7 +226,7 @@ class select_file_dialog:
                     parent=self.fsd,
                     cancel=False, # cancel==No in this case
                     custom_yes='_Replace',
-                    custom_no={'stock':gtk.STOCK_CANCEL},
+                    custom_no=gtk.STOCK_CANCEL,
                     ):
                     return self.run()
             self.quit()

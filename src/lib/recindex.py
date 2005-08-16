@@ -1,11 +1,13 @@
 #!/usr/bin/env python
-import gtk.glade, gtk, time, re, gtk.gdk 
-import WidgetSaver, Undo
+import gtk.glade, gtk, time, re, gtk.gdk, gobject
+import WidgetSaver, Undo, ratingWidget
 import dialog_extras as de
 import treeview_extras as te
 import cb_extras as cb
+import convert
 from gglobals import *
 from gdebug import debug
+import mnemonic_manager
 
 class RecIndex:
     """We handle the 'index view' of recipes, which puts
@@ -26,25 +28,35 @@ class RecIndex:
         self.rg = rg
         self.srchentry=self.glade.get_widget('rlistSearchbox')
 	self.limitButton = self.glade.get_widget('rlAddButton')
-        # allow for special keybindings
-        self.srchentry.connect('key_press_event',self.srchentry_keypressCB)
+        # Don't # allow for special keybindings
+        #self.srchentry.connect('key_press_event',self.srchentry_keypressCB)
         self.searchByDic = {
             _('title'):'title',
             _('ingredient'):'ingredient',
+            _('instructions'):'instructions',
+            _('notes'):'modifications',
             _('category'):'category',
             _('cuisine'):'cuisine',
-            _('rating'):'rating',
+            #_('rating'):'rating',
             _('source'):'source',
             }
-        self.searchByList = [_('title'),_('ingredient'),_('category'),_('cuisine'),_('rating'),_('source')]
-        self.SEARCH_KEY_DICT = {
-            "t":_("title"),
-            "i":_("ingredient"),
-            "c":_("category"),
-            "u":_("cuisine"),
-            "r":_("rating"),
-            's':_("source"),
-            }
+        self.searchByList = [_('title'),
+                             _('ingredient'),
+                             _('category'),
+                             _('cuisine'),
+                             #_('rating'),
+                             _('source'),
+                             _('instructions'),
+                             _('notes'),
+                             ]
+        # ACK, this breaks internationalization!
+        #self.SEARCH_KEY_DICT = {
+        #    "t":_("title"),
+        #    "i":_("ingredient"),
+        #    "c":_("category"),
+        #    "u":_("cuisine"),
+        #    's':_("source"),
+        #    }
         self.SEARCH_MENU_KEY = "b"
         self.srchLimitBar=self.glade.get_widget('srchLimitBar')
         self.srchLimitBar.hide()
@@ -57,6 +69,7 @@ class RecIndex:
         cb.set_model_from_list(self.rSearchByMenu, self.searchByList)
         cb.setup_typeahead(self.rSearchByMenu)
         self.rSearchByMenu.set_active(0)
+        self.rSearchByMenu.connect('changed',self.search_as_you_type)
         self.sautTog = self.glade.get_widget('searchAsYouTypeToggle')
         self.sautTog.connect('toggled',self.toggleTypeSearchCB)
         self.regexpTog = self.glade.get_widget('regexpTog')
@@ -95,26 +108,39 @@ class RecIndex:
         self.rim=self.glade.get_widget('redo_menu_item')
         self.raim=self.glade.get_widget('reapply_menu_item')
         self.history = Undo.UndoHistoryList(self.uim,self.rim,self.raim)
+        # Fix up our mnemonics with some heavenly magic
+        self.mm = mnemonic_manager.MnemonicManager()
+        self.mm.sacred_cows.append("search for") # Don't touch _Search for
+        self.mm.add_glade(self.glade)
+        self.mm.add_treeview(self.rectree)
+        self.mm.fix_conflicts_peacefully()
 
     def setup_search_views (self):
+        """Setup our views of the database."""
         self.lsrch = ["",""]
         self.lsrchvw = self.rd.rview.select(deleted=False)
         self.searchvw = self.rd.rview.select(deleted=False)
 
-    def srchentry_keypressCB (self, widget, event):
-        if event.state==gtk.gdk.MOD1_MASK:
-            if self.SEARCH_KEY_DICT.has_key(event.string):
-                self.set_search_by(self.SEARCH_KEY_DICT[event.string])
-            elif self.SEARCH_MENU_KEY == event.string:
-                self.rSearchByMenu.popup()
+    #def srchentry_keypressCB (self, widget, event):
+    #    """Handle keypress in search entry
+    #
+    #    We allow Alt- combinations to change what we're searching by.
+    #    """
+    #    if event.state==gtk.gdk.MOD1_MASK:
+    #        if self.SEARCH_KEY_DICT.has_key(event.string):
+    #            self.set_search_by(self.SEARCH_KEY_DICT[event.string])
+    #        elif self.SEARCH_MENU_KEY == event.string:
+    #            self.rSearchByMenu.popup()
 
     def make_rec_visible (self, rec):
+        """Make sure recipe REC shows up in our index."""
         debug('make_rec_visible',0)
         self.visible.append(rec.id)
         if not self.rg.wait_to_filter:
             self.rmodel_filter.refilter()
     
     def setup_rectree (self):
+        """Create our recipe treemodel."""
         self.rmodel_filter = self.rmodel.filter_new()
         #self.rmodel_filter.set_modify_func(types, self.add_recipe_attr)
         # we allow filtering for searches...
@@ -140,6 +166,7 @@ class RecIndex:
         self.rectree.show()
 
     def set_reccount (self, *args):
+        """Display the count of currently visible recipes."""
         debug("set_reccount (self, *args):",5)
         self.count = len(self.lsrchvw)
         self.stat.push(self.contid,_("%s Recipes")%self.count)
@@ -148,17 +175,61 @@ class RecIndex:
             if sel: sel.select_path((0,))
 
     def setup_reccolumns (self):
+        """Setup the columns of our recipe index TreeView"""
         renderer = gtk.CellRendererPixbuf()
         col = gtk.TreeViewColumn("",renderer,pixbuf=1)
+        col.set_min_width(-1)
         self.rectree.append_column(col)
         n = 2
         crc = True
         if not hasattr(gtk,'CellRendererCombo'):
             print 'CellRendererCombo not yet supported'
-            print 'Update pygtk/gtk for more comboboxes'
+            print 'Update pygtk/gtk for lovely comboboxes'
             print 'in your treemodels!'
+            print '(but don\'t worry, Gourmet will still work'
+            print 'fine with what you have)'
+        _title_to_num_ = {}
         for c in self.rtcols:
-            if self.editable and CRC_AVAILABLE and self.rtwidgdic[c]=='Combo':
+            if c=='rating':
+                # special case -- for ratings we set up our lovely
+                # star widget
+                ratingWidget.TreeWithStarMaker(
+                    self.rectree,
+                    self.rg.star_generator,
+                    data_col=n,
+                    col_title='_%s'%self.rtcolsdic[c],
+                    handlers=[self.star_change_cb],
+                    properties={'reorderable':True,
+                                'resizable':True},
+                    )
+                n += 1                
+                continue
+            # And we also special case our time column
+            elif c in ['preptime','cooktime']:
+                _title_to_num_[self.rtcolsdic[c]]=n
+                renderer=gtk.CellRendererText()
+                renderer.set_property('editable',True)
+                renderer.connect('edited',self.rtree_time_edited_cb,n,c)
+                ncols = self.rectree.insert_column_with_data_func(
+                    -1,
+                    '_%s'%self.rtcolsdic[c],
+                    renderer,
+                    lambda tc,cell,mod,titr: \
+                    cell.set_property(
+                    'text',
+                    convert.seconds_to_timestring(mod.get_value(
+                    titr,
+                    _title_to_num_[tc.get_title().replace('_','')],
+                    ))
+                    )
+                    )
+                col=self.rectree.get_column(ncols-1)
+                col.set_sort_column_id(n)
+                col.set_property('reorderable',True)
+                col.set_property('resizable',True)
+                n+=1
+                continue
+            elif self.editable and CRC_AVAILABLE and self.rtwidgdic[c]=='Combo':
                 renderer = gtk.CellRendererCombo()
                 model = gtk.ListStore(str)
                 map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c))
@@ -169,7 +240,7 @@ class RecIndex:
             renderer.set_property('editable',self.editable)
             renderer.connect('edited',self.rtree_edited_cb,n, c)
             titl = self.rtcolsdic[c]
-            col = gtk.TreeViewColumn(titl,renderer, text=n)
+            col = gtk.TreeViewColumn('_%s'%titl,renderer, text=n)
             col.set_reorderable(True)
             col.set_resizable(True)
             #col.set_clickable(True)
@@ -180,6 +251,7 @@ class RecIndex:
             n += 1
 
     def toggleTypeSearchCB (self, widget):
+        """Toggle search-as-you-type option."""
         if widget.get_active():
             self.search_as_you_type=True
             self.searchButton.hide()
@@ -188,18 +260,21 @@ class RecIndex:
             self.searchButton.show()
 
     def toggleRegexpCB (self, widget):
+        """Toggle search-with-regexp option."""
         if widget.get_active():
             self.message('Advanced searching (regular expressions) turned on')
         else:
             self.message('Advanced searching off')
 
     def regexpp (self):
+        """Return True if we're using regexps"""
         if self.regexpTog.get_active():
             return True
         else:
             return False
 
     def search_as_you_type (self, *args):
+        """If we're searching-as-we-type, search."""
         if self.search_as_you_type:
             self.search()
 
@@ -238,8 +313,11 @@ class RecIndex:
                 #self.lsrchvw=self.rd.ings_search(txt.split(),rview=self.lsrchvw)
                 # less counterintuitive (exact search)
                 self.lsrchvw=self.rd.ing_search(txt,rview=self.lsrchvw,use_regexp=self.regexpp())
+            elif searchBy == 'category':
+                self.lsrchvw=self.rd.joined_search(self.lsrchvw,self.rd.catview,'category',txt,
+                                                   use_regexp=self.regexpp())
             else:
-                self.lsrchvw=self.rd.search(self.lsrchvw,searchBy,txt,use_regexp=self.regexpp())
+                self.lsrchvw=self.rd.search(self.lsrchvw,searchBy,txt,use_regexp=self.regexpp())            
         else:
             self.lsrchvw = self.searchvw
         self.lsrch = [txt, searchBy]
@@ -275,23 +353,72 @@ class RecIndex:
         retval=self.rd.get_rec(obj.id)
         return retval
 
+    def rtree_time_edited_cb (self, renderer, path_string, text, colnum, attribute):
+        if not text: secs = 0
+        else:
+            secs = self.rg.conv.timestring_to_seconds(text)
+            if not secs:
+                self.message(_("Unable to recognize %s as a time."%text))
+                return
+        indices = path_string.split(':')
+        path = tuple( map(int, indices))
+        store = self.rectree.get_model()
+        iter = store.get_iter(path)
+        self.rmodel.set_value(iter,colnum,secs)
+        rec = self.get_rec_from_iter(iter)
+        if convert.seconds_to_timestring(getattr(rec,attribute))!=text:
+            self.rd.undoable_modify_rec(rec,
+                                        {attribute:secs},
+                                        self.history,
+                                        get_current_rec_method=lambda *args: self.recTreeSelectedRecs()[0],
+                                        )
+            self.update_modified_recipe(rec,attribute,secs)
+        # Is this really stupid? I don't know, but I did it before so
+        # perhaps I had a reason.
+        self.rd.save()
+
     def rtree_edited_cb (self, renderer, path_string, text, colnum, attribute):
         debug("rtree_edited_cb (self, renderer, path_string, text, colnum, attribute):",5)
         indices = path_string.split(':')
         path = tuple( map(int, indices))
         store = self.rectree.get_model()
         iter = store.get_iter(path)
+        if not iter: return
         self.rmodel.set_value(iter, colnum, text)
-        rec=self.get_rec_from_iter(iter)        
-        if "%s"%getattr(rec,attribute)!=text:
+        rec=self.get_rec_from_iter(iter)
+        if attribute=='category':
+            val = ", ".join(self.rd.get_cats(rec))
+        else:
+            val = "%s"%getattr(rec,attribute)
+        if val!=text:
             # only bother with this if the value has actually changed!
             self.rd.undoable_modify_rec(rec,
                                         {attribute:text},
                                         self.history,
                                         get_current_rec_method=lambda *args: self.recTreeSelectedRecs()[0],
                                         )
-        # for metakit, which isn't automitting very nicely...
+            self.update_modified_recipe(rec,attribute,text)
+        # for metakit, which isn't autocomitting very nicely...
         self.rd.save()
+
+    def star_change_cb (self, value, model, treeiter, column_number):
+        #itr = model.convert_iter_to_child_iter(None,treeiter)
+        self.rmodel.set_value(treeiter,column_number,value)
+        rec = self.get_rec_from_iter(treeiter)
+        if getattr(rec,'rating')!=value:
+            self.rd.undoable_modify_rec(
+                rec,
+                {'rating':value},
+                self.history,
+                get_current_rec_method = lambda *args: self.recTreeSelectedRecs()[0],
+                )
+
+    def update_modified_recipe(self,rec,attribute,text):
+        """Update a modified recipe.
+
+        Subclasses can use this to update other widgets duplicating
+        the information in the index view."""
+        pass
 
     def recTreeSelectedRecs (self):
         debug("recTreeSelectedRecs (self):",5)

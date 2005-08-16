@@ -7,7 +7,7 @@ from gettext import gettext as _
 import xml.sax.saxutils
 
 def do_print(dialog, job):
-    debug('do_print',7)
+    debug('do_print',0)
     pc = gnomeprint.Context(dialog.get_config())
     job.render(pc)
     pc.close()
@@ -290,18 +290,18 @@ class RecRenderer (print_writer):
         for r in recs:
             if do_new_page:
                 self.new_page()
-            r=RecWriter(rd, r, self, mult, change_units)
+            r=RecWriter(rd, r, self, change_units=change_units, mult=mult)
             do_new_page = True # put pagebreaks between recipes...
         self.close()
         
 
 class RecWriter (exporter.exporter_mult):
-    def __init__ (self, rd, r, printwriter, mult=1, change_units=True):
+    def __init__ (self, rd, r, printwriter, change_units=True, mult=1):
         debug('__init__ ',3)
         self.print_writer = printwriter
         self.r = r
-        exporter.exporter_mult.__init__(self, rd, r, out=None, mult=mult,
-                                        change_units=True, do_markup=False,
+        exporter.exporter_mult.__init__(self, rd, r, out=None, change_units=change_units, mult=mult,
+                                        do_markup=False,
                                         use_ml=True)
 
     def write_head (self):
@@ -319,12 +319,6 @@ class RecWriter (exporter.exporter_mult):
         if attr=='title':
             self.print_writer.write_heading(xml.sax.saxutils.escape(text))
             return
-        if attr=='servings':
-            num = convert.frac_to_float(text)
-            if num:
-                text = convert.float_to_frac(num * self.mult)
-            else:
-                return
         self.print_writer.write_paragraph(xml.sax.saxutils.escape("%s: %s"%(label, text)))
 
     def write_text (self, label, text):
@@ -348,8 +342,7 @@ class RecWriter (exporter.exporter_mult):
 
     def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):
         debug('write_ing ',3)
-        amt,unit=self.multiply_amount(amount,unit)
-        if amount: line = amt + " "
+        if amount: line = amount + " "
         else: line = ""
         if unit: line += "%s "%unit
         if item: line += "%s"%item

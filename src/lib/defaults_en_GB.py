@@ -647,9 +647,35 @@ for amb,lst in AMBIGUOUS.items():
     else:
         keydic[amb] = lst
 
-
 for row in INGREDIENT_DATA:
     name,key,shop=row
     add_itm(keydic,name,key)
     shopdic[name]=shop
 
+
+irregular_plurals={
+    "geese":"goose",
+    }
+import re
+two_digit_plural_matcher = re.compile('[szxo]es$')
+one_digit_plural_matcher = re.compile("[^s]s$")
+v_plural_matcher = re.compile('ves')
+
+def guess_singulars (s):
+    if len(s)<3: return []
+    rets = []
+    if irregular_plurals.has_key(s):
+        rets.append(irregular_plurals[s])
+    if two_digit_plural_matcher.search(s):
+        wrd=s[0:-2]
+        if not wrd in rets: rets.append(wrd)
+    if v_plural_matcher.search(s):
+        if not wrd in rets: rets.append(wrd)
+        rets.append(s[0:-3]+'f')
+    if one_digit_plural_matcher.search(s): rets.append(s[0:-1])
+    return rets
+
+def guess_plurals (s):
+    ret = [s+'s',s+'es']
+    if s[-1]=='f': ret.append(s[0:-1]+'ves')
+    return ret

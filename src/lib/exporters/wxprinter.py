@@ -6,6 +6,7 @@ import html_exporter, xml.sax.saxutils
 import StringIO
 import wx
 from wx.html import HtmlEasyPrinting
+from wxPython.wx import wxPySimpleApp
 
 class RecRenderer:
     """We use wx.html.HtmlEasyPrinting in order to print out our file on platforms without
@@ -15,7 +16,7 @@ class RecRenderer:
     def __init__ (self, rd, recs, mult=1, dialog_title=_("Print Recipes"),
                   change_units=True,
                   dialog_parent=None):
-        self.app=wx.App()
+        self.app=wx.wxPySimpleApp()
         # we use StringIO so we can call our standard HTML exporters (which write
         # to a file)
         self.html_out = StringIO.StringIO()
@@ -29,6 +30,7 @@ class RecRenderer:
                    change_units=change_units,
                    )
         # grab the value from our StringIO
+        self.app.MainLoop()
         self.html=self.html_out.getvalue()
         # now we actually print outselves...
         self.hep = HtmlEasyPrinting()
@@ -38,6 +40,8 @@ class RecRenderer:
         # preview option (too ugly for me to do right now)
         #self.do_preview()        
         self.do_print()
+        print 'Done!'
+        self.app.ExitMainLoop()
 
     def do_preview (self):
         """Show a print preview window"""
@@ -48,6 +52,7 @@ class RecRenderer:
         """Print our recipe (actually, offer the user configuration options, then print)"""
         #self.hep.SetHeader(_('Recipe'))
         self.hep.PrintText(self.html)
+        
 
 class SimpleWriter:
     def __init__ (self, file=None, dialog_parent=None, show_dialog=True):
@@ -87,7 +92,6 @@ class SimpleHTML (html_exporter.html_exporter):
     def write_ing (self, amount=1, unit=None,
                    item=None, key=None, optional=False):
         self.out.write("\n<br>")
-        amount, unit = self.multiply_amount(amount,unit)
         for o in [amount, unit, item]:
             if o: self.out.write(xml.sax.saxutils.escape("%s "%o))
         if optional:

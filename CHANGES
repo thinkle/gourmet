@@ -1,3 +1,162 @@
+==== Version 0.8.6.1 Changes since 0.8.6.0 ====
+* Database normalized; hopefully this will mean performance improvements
+* Oodles of magic added to aid normalization of DB
+* Key lookup improved / interface on recipe card should be less sluggish.
+* ComboBoxEntry's changed so that one TAB moves focus out of them -- this
+  should improve e.g. recipe entry though it does break consistency with
+  other GTK apps.
+
+==== Version 0.8.6.0 Changes since 0.8.5.x ====
+* Changed database format for greater efficiency/speed.
+* Times (cook/prep) are now stored internally as numbers of seconds,
+  which means sorting just works
+* Ratings are now done one a star-system, which means sorting just
+  works.
+* since ratings are done on a star system, we've introduced a dialog
+  to let the user select how they'd like to translate textual ratings
+  into stars
+
+==== Version 0.8.5.9 Changes since 0.8.5.8 ====
+* Fixed nasty segfault when deleting unedited recipe 
+* Fixed problem with markup showing up in some dialogs.
+
+==== Version 0.8.5.8 Changes since 0.8.5.7 ====
+* Fixed bug in deletion of new recipe and improved interface for
+  deleting recipes that are already open
+* Made search interface in select-recipe-as-ingredient dialog and
+  recipe-wastebasket dialog consistent with new main search interface
+* Removed default serving size of 4 from new recipes.
+* Fixed mnemonic-activation of preptime and cooktime entries in recipe
+  card view.
+* Added shortcuts for deletion and printing.
+* Added extra Control-O shortcut to open recipes, since it's pretty
+  intuitive for a user to hit Control-O
+* Fixed search-as-you-type in ingredient view of recipe card so that
+  it properly finds group names as well as ingredients
+* Got rid of some of the many gtk error messages spouted from time to
+  time.
+* Fixed bug that made recipe trash disappear forever if you closed it
+  by closing the window
+
+==== Version 0.8.5.7 Changes since 0.8.5.6 ====
+* Improved automatic mnemonic conflict-resolution.
+* Fixed hang in import from recipezaar website.
+* Accept URLs without HTTP:// in webpage import.
+* Cleaned up error messages for problems with webpage import.
+
+==== Version 0.8.5.6 Changes since 0.8.5.5 ====
+* Fixed bug in MM import that was causing instructions to be read as
+  ingredients
+* Changed look/feel of search interface on index page
+* Split out HTML import stuff into separate "plugin" files and set up
+  plugin interface for local user plugins.
+* Added programmatic assignment of mnemonics to reduce mnemonic
+  conflicts w/o increasing translator burden :)
+* Set minimum width of image column to 0 so that it doesn't take up
+  lots of space when there are no images
+* Fixed bug in converter that caused conversion errors/inconsistency
+  with mass-to-volume conversions.
+* Fixed unit conversion in shopping so that we don't display things
+  like 21 tbs. butter (even if all butter units we're combining were
+  originally in tbs.)
+
+==== Version 0.8.5.5 Changes since 0.8.5.4 ====
+* Changed search interface to make clearer.
+
+==== Version 0.8.5.4 Changes since 0.8.5.3 ====
+* Fixed some recently introduced bugs that broke
+  export
+* Made updating search-by button automatically update search in
+  search-as-you-type mode.
+* Fixed i18n bug that broke numbers.
+
+
+==== Version 0.8.5.3 Changes since 0.8.5.2 ====
+* Fixed bug in MealMaster import
+* Import instructions from krecipes!
+* Improved handling of recipe references.
+* If recipes-as-ingredient references fail for whatever reason,
+  fall-back on a title-search before screwing the user.
+
+==== Version 0.8.5.2 Changes since 0.8.5.1 ====
+* Fixed RTF Export
+* Added support for exporting images in RTF export
+* Added recognition and production of unicode fraction characters
+* Made export from index view export selected recipes rather than all recipes.
+
+==== Version 0.8.5.1 Changes since 0.8.5.0 ====
+* Fixed compatability issue with pygtk 2.4
+* Fixed problem in mastercook import for some
+  malformed ingredient-lists.
+* Correctly included zip_importer in MANIFEST
+
+==== Version 0.8.5.0 Changes since 0.8.4.4 ====
+* New web-page-importing architecture with support for three
+  basic html templates as well as support for importing already
+  supported formats directly from URLs.
+* Added support for rezkonv import (German mealmaster clone)
+* Fixed line-wrapping code in mealmaster/rezkonv import
+* Improved UI of shopping list -- added explicit buttons for
+  moving items between shopping and pantry list.
+* Added support for importing gzipped, zipped, and tarred files
+  from "Import file" or from "Import Webpage"
+* Fixed defaults focus on dialogs (e.g. dialogs with Entry's put
+  default focus on the Entry now).
+* Made mealmaster import do a better job when handling malformed
+  ingredient lists
+* Added FAQ-style help from menus
+* Fixed bug in Gourmet XML import
+
+==== Version 0.8.4.4 Changes since 0.8.4.3 ====
+* Made new recipes appear immediately again in index view.
+* Fixed undo for combobox entries is recipe card view.
+* Made changes in recipe index instantly reflected in reccard.
+* Fixed alignment of widgets in recipe card "Details" view.
+
+==== Version 0.8.4.3 Changes since 0.8.4.2 ====
+* Fixed typo in gglobals in tarball
+* Fixed bug that broke multiplication in shopping list.
+
+==== Version 0.8.4.2 Changes since 0.8.4.1 ====
+* Fixed bug that prevented adding nested recipes to
+  shopping lists.
+* Fixed export bug that failed on unusual servings values.
+
+==== Version 0.8.4.1 Changes since 0.8.4.0 ====
+* Fixed bug that broke on fresh install.
+* Removed extraneous "print" statements left from testing.
+
+==== Version 0.8.4.0 Changes since 0.8.3.5 ====
+* Fixed export from recipe card to properly handle multiplying
+  ingredients and following user preferences for changing unit.
+* Consolidated preferences dialogs in one dialog with multiple tabs.
+* Allow user to save choices about optional ingredients (and to forget
+  saved settings).
+* Added preference to allow user to always include (or always ignore)
+  ingredients.
+* Change order on exports so ingredients precede instructions.
+* Properly handle ranges of ingredients throughout Gourmet!
+* Moved "Preferences" to "Edit" menu where they are in most applications.
+* Fixed window-position-saving so we don't remember size of maximized
+  position as if they were the window-size coordinates.
+
+==== Version 0.8.3.5 Changes since 0.8.3.4 ====
+* Fixed typo in rtfexporter.
+* Fixed linewrapping of splash screen for i18n'd versions of gourmet w/
+  longer lines.
+* Changed to building RPMs with specfiles based on those provided by
+  Michael Peters (who is packaging gourmet for fedora)
+* Included new Dutch defaults translations.
+
+==== Version 0.8.3.4 Changes from 0.8.3.3
+* Made mealmaster import slightly more flexible in recognition of groups.
+* Fixed bug in mastercook import of recipes with optional ingredients.
+* Fixed bug that broke on opening a recipe card.
+* Improved handling of international numbers
+* Fix mealmaster export to resist i18n of standardized field names.
+* Fixed mealmaster import to properly recognize numbers with ,s as
+  decimal points (as in German, Spanish, etc.)
+
 ==== Version 0.8.3.3 Changes from 0.8.3.2
 * Fixed bug that broke renaming of ingredient groups.
 * Fixed windows directory nonsense

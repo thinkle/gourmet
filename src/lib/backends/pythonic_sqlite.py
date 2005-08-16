@@ -8,6 +8,10 @@ class PythonicSQLite (PythonicSQL.PythonicSQL):
         self.file = file
         PythonicSQL.PythonicSQL.__init__(self,sqlite)
 
+    def hone_type (self, typestring):
+        if typestring=='int': return 'integer'
+        else: return typestring
+
     def connect (self):
         # debugging code...
         import sys

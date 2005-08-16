@@ -2,23 +2,20 @@ import urllib, zipfile, tempfile, os.path, re, string
 from gettext import gettext as _
 from parser_data import *
 from gourmet.gdebug import *
-
-global expander_regexp
 expander_regexp = None
 
 def compile_expander_regexp ():    
     regexp = "(?<!\w)("
     regexp += string.join(ABBREVS.keys(),"|")
     regexp += ")(?!\w)"
-    print 'one badass regexp ',regexp
     return re.compile(regexp)
 
 def expand_abbrevs ( line ):
     """Expand standard abbreviations."""
+    global expander_regexp
     for k,v in ABBREVS_STRT.items():
         line = line.replace(k,v)
     if not expander_regexp:
-        global expander_regexp
         expander_regexp=compile_expander_regexp()
     ematch = expander_regexp.search(line)
     while ematch:
@@ -76,15 +73,21 @@ class DatabaseGrabber:
             t.end()
             d = {}
             t=TimeAction('enumerate fields',0)
-            for nn,fl in enumerate(fields):            
+            for nn,fl in enumerate(fields):
                 lname,sname,typ = NUTRITION_FIELDS[nn]
                 if fl and fl[0]=="~" and fl[-1]=="~":
                     d[sname]=fl[1:-1]
                 if typ=='float':
                     try:
-                        d[sname]=float(fl)
+                        d[sname]=float(d.get(sname,fl))
                     except:
                         d[sname]=None
+                if typ=='int':
+                    try:
+                        d[sname]=int(d.get(sname,fl))
+                    except:
+                        d[sname]=fl
+                        raise
             t.end()
             if self.show_progress and n % 20 == 0:
                 self.show_progress(float(n)/tot,_('Reading nutritional data: imported %s of %s entries.')%(n,tot))

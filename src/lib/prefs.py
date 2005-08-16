@@ -3,20 +3,35 @@ import os, os.path, pickle, gglobals
 
 class Prefs:
     def __init__ (self, file=os.path.join(gglobals.gourmetdir,'guiprefs')):
+        """A basic class for handling preferences.
+
+        subclasses could save our preferences in any number of
+        ways. We use a rather primitive solution here and simply use
+        pickle.
+
+        set_hooks allow us to watch our settings from elsewhere --
+        they will be called each time a preference is changed and
+        handed the key and value as arguments: hook(key,value).
+        """
         self.file=file
         self.config = {}
         self.load()
+        self.set_hooks = []
 
     def get (self, key, default=None):
-        if not self.config.has_key(key):
-            self.config[key]=default
-        return self.config[key]
+        """Return a key's value, or default if the key isn't set.
+        """
+        # note: we no longer set the key to the default value as a side effect,
+        # since this behavior was, well, stupid. 5/7/05
+        if not self.config.has_key(key): return default
+        else: return self.config[key]
 
     def has_key (self, k):
         return self.config.has_key(k)
 
     def __setitem__ (self, k, v):
         self.config[k]=v
+        for hook in self.set_hooks: hook(k,v)
 
     def __getitem__ (self, k):
         return self.config[k]

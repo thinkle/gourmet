@@ -1,10 +1,9 @@
-4
 import os, pickle,re
 from gourmet import gglobals
 import pythonic_sqlite as psl
 import rdatabase
 #import rmetakit
-from gourmet.gdebug import debug
+from gourmet.gdebug import debug, TimeAction
 
 class RecData (rdatabase.RecData,psl.PythonicSQLite):
     def __init__ (self, filename=os.path.join(gglobals.gourmetdir,'recipes.db'), db="sqlite"):
@@ -31,6 +30,37 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
         rec.__delete__()
         self.iview.delete({'id':myid})
 
+    def modify_rec (self, rec, dic):
+        """Update recipe based on dictionary DIC"""
+        self.update('recipe',{'id':rec.id},dic)
+
+    def new_rec (self):
+        return self.add_rec({})
+
+    def new_id (self):
+        """We reserve a new ID.
+
+        Since we use autoincrement in SQLite, we actually create a new
+        database row and return the ID of that object.
+
+        This is of course inefficient, so new_id should only be called
+        when we need to reserve a recipe ID before the recipe shows up
+        (in other words, when we have a reference to a recipe in an
+        import before that recipe has been created).
+        """
+        r=self.new_rec()
+        return r.id
+    
+    def add_rec (self,rdict):
+        t = TimeAction('rsqlite.add_rec',3)
+        if rdict.has_key('id'):
+            self.update('recipe',{'id':rdict['id']},rdict)
+            return self.get_rec(rdict['id'])
+        else:
+            self.rview.append(rdict)
+            return self.rview[-1]
+        t.end()
+
     def save (self):
         #self.get_connection().commit()
         pass # autocommit is on. We do nothing.
@@ -38,17 +68,6 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
     def load (self, filename=None):
         if filename:
             psl.PythonicSQLite.__init__(self,self.filename)
-
-    def new_id (self, base="r"):
-        """Return a new unique ID. Possibly, we can have a base."""
-        if self.top_id.has_key(base):
-            start = self.top_id[base]
-        else:
-            start = 0
-        n = start + 1
-        while self.rview.select(id="%s%s"%(base,n)): n += 1
-        self.top_id[base]=n
-        return self.format_id(n,base)
 
     def get_unique_values (self, colname, table=None):
         if not table: table=self.rview

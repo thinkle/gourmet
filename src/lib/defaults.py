@@ -29,7 +29,7 @@ lang.shopdic = {}
 for lst in lang.SYNONYMS:
     k = lst[0]
     for i in lst:
-        add_itm(lang.keydic,i,k)
+        add_itm(lang.keydic,k,i)
 
 for amb,lst in lang.AMBIGUOUS.items():
     if lang.keydic.has_key(amb):
@@ -39,7 +39,7 @@ for amb,lst in lang.AMBIGUOUS.items():
 
 for row in lang.INGREDIENT_DATA:
     name,key,shop=row
-    add_itm(lang.keydic,name,key)
+    add_itm(lang.keydic,key,name)
     lang.shopdic[name]=shop
 
 lang.unit_group_lookup = {}

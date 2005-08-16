@@ -1,6 +1,8 @@
 import threading, gtk
 from gdebug import *
 import traceback
+from gettext import gettext as _
+from gettext import ngettext
 
 class Terminated (Exception):
     def __init__ (self, value):
@@ -15,13 +17,18 @@ class SuspendableThread (threading.Thread):
     Before running the run() method, we call pre_hooks. Afterward we call any
     post_hooks. (Pre and post hooks get called with this instance as their only
     argument."""
-    def __init__ (self, runnerClass, name=None, pre_hooks=[], post_hooks=[]):
+    def __init__ (self, runnerClass, name=None, pre_hooks=[], post_hooks=[],
+                  display_errors=True):
+        self.display_errors=display_errors
         self.c = runnerClass
         self.pre_hooks=pre_hooks
         self.post_hooks=post_hooks
         self.name = name
         self.completed = False
         debug("SuspendableThread starting thread.",2)
+        self.initialize_thread()
+
+    def initialize_thread (self):
         threading.Thread.__init__(self, target=self.target_func, name=name)
 
     def target_func (self):
@@ -30,26 +37,20 @@ class SuspendableThread (threading.Thread):
             debug('SuspendableThread Running %s'%self.c,3)
             self.c.run()
         except Terminated:
+            import dialog_extras
             dialog_extras.show_message(
-                    label=_("%s stopped."%self.name),
-                    sublabel=_("%s was interrupted by user request."%self.name)
+                    label=_("%s stopped."%self.name.title()),
+                    sublabel=_("%s was interrupted by user request."%self.name.title())
                     )
-        except:
-            from StringIO import StringIO
-            f = StringIO()
-            traceback.print_exc(file=f)
-            error_mess = f.getvalue()
-            debug('Thread cancelled or failed: running post_hooks',1)
-            import gtk,dialog_extras
-            self._threads_enter()
-            dialog_extras.show_message(
-                label=_("%s interrupted"%self.name),
-                sublabel=_("There was an error during %s."%self.name),
-                expander=(_("_Details"),
-                          error_mess),
-                message_type=gtk.MESSAGE_ERROR
-                )
-            self._threads_leave()
+        except:            
+            if self.display_errors:
+                self._threads_enter()
+                import dialog_extras
+                dialog_extras.show_traceback(
+                    label=_("%s interrupted")%self.name.title(),
+                    sublabel=_("There was an error during %s.")%self.name,
+                    )
+                self._threads_leave()
             self.run_hooks(self.post_hooks)
             raise
         else:
@@ -85,7 +86,7 @@ class SuspendableDeletions:
         self.suspended = False
         self.terminated = False
         self.recs = recs
-        self.ids = map(lambda r: r.id, self.recs)
+        print 'SuspendableDeletions handed ',recs
         self.rg = rg
         
     def check_for_sleep (self):
@@ -99,18 +100,17 @@ class SuspendableDeletions:
     def run (self):
         debug('running GourmetThreads.py',0)
         rtot = len(self.recs)
-        n = 0
-        dlen = len(self.ids)
-        for i in self.ids:
+        n = 0        
+        for r in self.recs:
             self.check_for_sleep()
-            r = self.rg.rd.get_rec(i)
+            #r = self.rg.rd.get_rec(i)
             self.rg.set_progress_thr(float(n)/float(rtot),
-                                     _("Deleting recipes from database... (%s of %s deleted)"%(n,dlen))
+                                     _("Deleting recipes from database... (%s of %s deleted)"%(n,rtot))
                                        )
             self.rg.delete_rec(r)
             n += 1
-        if dlen==1: msg = _('Deleted 1 recipe.')
-        else: msg = _('Deleted %s recipes')%len(self.ids)
+        msg = ngettext('Deleted %s recipe','Deleted %s recipes',
+                       rtot)%rtot
         self.rg.reset_prog_thr(message=msg)
         self.rg.doing_multiple_deletions=False
 
@@ -124,12 +124,15 @@ def get_lock ():
     return threading.Lock()
 
 def gtk_enter ():
+    print 'threads_enter'
     gtk.threads_enter()
 
 def gtk_leave ():
+    print 'threads_leave'
     gtk.threads_leave()
 
 def gtk_threads_init ():
+    print 'threads_init'
     gtk.threads_init()
 
 def gtk_update ():

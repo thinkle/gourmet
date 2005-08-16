@@ -1,3 +1,164 @@
+gourmet (0.8.5.9-1) unstable; urgency=low
+  * Fixed segfault when closing and not saving new recipe.
+  * Stopped markup from showing up in dialogs
+  * Changed button order in recipe wastebasket.
+   
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 01 August 2005 11:34:00 -0400
+	
+gourmet (0.8.5.8-1) unstable; urgency=low
+  * Fixed bug in deletion of new recipe and improved interface for
+  deleting recipes that are already open
+  * Made search interface in select-recipe-as-ingredient dialog and
+  recipe-wastebasket dialog consistent with new main search interface
+  * Removed default serving size of 4 from new recipes.
+  * Fixed mnemonic-activation of preptime and cooktime entries in recipe
+    card view.
+  * Added shortcuts for deletion and printing.
+  * Added extra Control-O shortcut to open recipes, since it's pretty
+  intuitive for a user to hit Control-O
+  * Fixed search-as-you-type in ingredient view of recipe card so that
+  it properly finds group names as well as ingredients
+  * Got rid of some of the many gtk error messages spouted from time to
+  time.
+  * Fixed bug that made recipe trash disappear forever if you closed it
+  by closing the window
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Sunday, 31 July 2005 11:00:00 -0400
+	
+gourmet (0.8.5.7-1) unstable; urgency=low
+	
+  * Improved automatic mnemonic conflict-resolution.
+  * Fixed hang in import from recipezaar website.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Saturday, 30 July 2005 03:30:00 -0400
+
+gourmet (0.8.5.6-1) unstable; urgency=low
+	
+  * Fixed bug in MM import that was causing instructions to be read as ingredients
+  * Changed look/feel of search interface on index page
+  * Split out HTML import stuff into separate "plugin" files and set up plugin interface for local user plugins.
+  * Added programmatic assignment of mnemonics to reduce mnemonic conflicts w/o increasing translator burden :)
+  * Set minimum width of image column to 0 so that it doesn't take up lots of space when there are no images
+  * Fixed bug in converter that caused conversion errors/inconsistency with mass-to-volume conversions.
+  * Fixed unit conversion in shopping so that we don't display things like 21 tbs. butter (even if all butter units we're combining were originally in tbs.)
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 28 July 2005 00:30:00 -0400
+	
+gourmet (0.8.5.5-1) unstable; urgency=low
+======= end
+
+  * Use integers for indices in databases (this should be faster)
+	
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Friday, 17 June 2005 22:00:00 -0400
+	
+gourmet (0.8.5.3-1) unstable; urgency=low
+
+  * Fix typo in MealMaster import
+  * Fix krecipes import (import instructions!)
+  * Improved handling of recipe references.
+	
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Wednesday, 22 June 2005 08:00:00 -0400
+	
+
+gourmet (0.8.5.2-1) unstable; urgency=low
+
+  * Fixed RTF export
+  * Added image support to RTF export
+  * Added support for unicode fraction characters
+  * Made export from index view export selected recipes rather than all recipes.
+	
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Sunday, 12 June 2005 21:00:00 -0400
+	
+gourmet (0.8.5.1-1) unstable; urgency=low
+
+  * Fixed compatability problem with pygtk2.4
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Sunday, 6 June 2005 12:58:00 -0400
+
+gourmet (0.8.5.0-1) unstable; urgency=low
+
+  * New web-page-importing architecture with support for three basic html templates as well as support for importing already
+  supported formats directly from URLs.
+  * Added support for rezkonv import (German mealmaster clone)
+  * Fixed line-wrapping code in mealmaster/rezkonv import
+  * Improved UI of shopping list -- added explicit buttons for moving items between shopping and pantry list.
+  * Added support for importing gzipped, zipped, and tarred files from "Import file" or from "Import Webpage"
+  * Fixed defaults focus on dialogs (e.g. dialogs with Entry's put default focus on the Entry now).
+  * Made mealmaster import do a better job when handling malformed ingredient lists
+  * Added FAQ-style help from menus
+  * Fixed bug in Gourmet XML import.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 3 June 2005 20:40:00 -0400
+
+gourmet (0.8.4.4-1) unstable; urgency=low
+
+  * Made new recipes appear immediately again in index view.
+  * Fixed undo for combobox entries is recipe card view.
+  * Made changes in recipe index instantly reflected in reccard.
+  * Fixed alignment of widgets in recipe card "Details" view.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 12 May 2005 20:45:00 -0400
+
+gourmet (0.8.4.3-1) unstable; urgency=low
+
+  * Fixed typo in gglobals in tarball
+  * Fixed bug that broke multiplication in shopping list.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 12 May 2005 20:45:00 -0400
+
+gourmet (0.8.4.2-1) unstable; urgency=low
+
+  * Fixed bug that prevented adding nested recipes to shopping list.
+  * Fixed export bug that failed on unusual servings values.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 12 May 2005 20:45:00 -0400
+
+gourmet (0.8.4.1-1) unstable; urgency=low
+
+  * Fixed silly bug that broke on fresh install
+  * Fixed extraneous print calls.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Tuesday, 10 May 2005 07:10:00 -0400
+
+
+gourmet (0.8.4.0-1) unstable; urgency=low
+
+  * Fixed export from recipe card to properly handle multiplying
+  ingredients and following user preferences for changing unit.
+  * Consolidated preferences dialogs in one dialog with multiple tabs.
+  * Allow user to save choices about optional ingredients (and to forget
+    saved settings).
+  * Added preference to allow user to always include (or always ignore)
+    ingredients.
+  * Change order on exports so ingredients precede instructions.
+  * Properly handle ranges of ingredients throughout Gourmet!
+  * Moved "Preferences" to "Edit" menu where they are in most applications.
+  * Fixed window-position-saving so we don't remember size of maximized
+    position as if they were the window-size coordinates.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 09 May 2005 22:02:00 -0400
+
+	
+gourmet (0.8.3.5-1) unstable; urgency=low
+
+  * Fixed typo in rtfexporter.
+  * Fixed line-wrapping for splash screen.
+  * Added translation of defaults for Dutch.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 28 April 2005 22:56:00 -0400
+
+	
+gourmet (0.8.3.4-1) unstable; urgency=low
+
+  * Fixed bug that threw an error when opening recipe card.
+  * Made mealmaster import slighlty more flexible in recognition of groups
+  * Fix bug in mastercook import of recipes with optional ingredients
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Wednesday, 22 April 2005 12:45:00 -0400
+
+
+
+>>>>>>> 1.5.2.26
 gourmet (0.8.3.3-1) unstable; urgency=low
 
   * Fixed bug that broke renaming of ingredient groups.

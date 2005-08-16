@@ -4,7 +4,7 @@ import xml.sax.saxutils
 import exporters
 import convert, GourmetRecipeManager, TextBufferMarkup
 from recindex import RecIndex
-import prefs, WidgetSaver, timeEntry, Undo
+import prefs, WidgetSaver, timeEntry, Undo, ratingWidget
 import keymanager
 import dialog_extras as de
 import treeview_extras as te
@@ -17,130 +17,52 @@ from gettext import gettext as _
 from gettext import ngettext
 import ImageExtras as ie
 from importers.importer import parse_range
+from FauxActionGroups import ActionManager
+import mnemonic_manager
 
-# This file contains our interface for controlling individual recipe cards.
-
-# Up top, we have some classes that implement ActionGroups. This is somewhat ugly,
-# but we're designing our interface in glade (which doesn't understand ActionGroups)
-# and we still want to use this feature -- which lets us automatically associate multiple
-# widgets with an action and have things like toggles just work.
-class ToggleActionWithSeparators (gtk.ToggleAction):
-    def __init__ (self, *args, **kwargs):
-        self.separators = []
-        gtk.ToggleAction.__init__(self,*args,**kwargs)
-
-    def add_separator (self, separator_widget):
-        self.separators.append(separator_widget)
-
-    def set_visible (self, *args, **kwargs):
-        gtk.ToggleAction.set_visible(self,*args,**kwargs)
-        if self.is_visible():
-            for s in self.separators: s.set_visible(True)
-        else:
-            for s in self.separators: s.set_visible(False)
-            
-class ActionWithSeparators (gtk.Action):
-    def __init__ (self, *args, **kwargs):
-        self.separators = []
-        gtk.Action.__init__(self,*args,**kwargs)
-
-    def add_separator (self, separator_widget):
-        self.separators.append(separator_widget)
-
-    def set_visible (self, *args, **kwargs):
-        gtk.Action.set_visible(self,*args,**kwargs)
-        if self.is_visible():
-            for s in self.separators: s.set_visible(True)
-        else:
-            for s in self.separators: s.set_visible(False)
-
-class ActionGroupWithSeparators (gtk.ActionGroup):
-    def __init__ (self, *args, **kwargs):
-        self.separators = []
-        gtk.ActionGroup.__init__(self,*args,**kwargs)
-
-    def add_separator (self, separator_widget):
-        self.separators.append(separator_widget)
-
-    def set_visible (self, visible):
-        gtk.ActionGroup.set_visible(self,visible)
-        for s in self.separators:
-            try:
-                s.set_property('visible',visible)
-            except:
-                debug('no widget %s'%s,5)
-
-class ActionManager:
-    def __init__ (self, gladeobj, groups, callbacks):
-        self.gladeobj = gladeobj
-        self.groups = groups
-        self.callbacks = callbacks
-        self.action_groups = [self.init_group(gname, actions) for gname,actions in self.groups.items()]
-        self.make_connections()
-
-    def init_group (self, name, actions):
-        setattr(self,name,ActionGroupWithSeparators(name))
-        for a in actions:
-            for n,ainfo in a.items():
-                params,widgets = ainfo
-                widg=None
-                if not params.has_key('label'):
-                    if not widg: widg = self.gladeobj.get_widget(widgets[0])
-                    label = widg.get_label()
-                    params['label']=label
-                if not params.has_key('stock-id'):
-                    if not widg: widg = self.gladeobj.get_widget(widgets[0])
-                    stockid = widg.get_stock_id()
-                    params['stock-id']=stockid
-                if not params.has_key('tooltip'):
-                    params['tooltip']=''
-                widg = self.gladeobj.get_widget(widgets[0])
-                try:
-                    temp_connection=widg.connect('toggled',lambda *args: False)
-                    widg.disconnect(temp_connection)                    
-                except TypeError: #unknown signal name (i.e. not a toggle)
-                    act = ActionWithSeparators(n,params['label'],params['tooltip'],params['stock-id'])
-                else:
-                    act = ToggleActionWithSeparators(n,params['label'],params['tooltip'],params['stock-id'])
-                if params.has_key('separators'):
-                    if type(params['separators']==str): params['separators']=[params['separators']]
-                    act.separators=[self.gladeobj.get_widget(w) for w in params['separators']]
-                    getattr(self,name).separators.extend(act.separators)
-                for w in widgets:
-                    ww = self.gladeobj.get_widget(w)
-                    if ww:
-                        act.connect_proxy(ww)
-                    else:
-                        debug('Widget %s does not exist!'%w,0)
-                # create action as an attribute
-                setattr(self,n,act)
-                # attach to our ActionGroup                
-                getattr(self,name).add_action(act)
-        return getattr(self,name)
-
-    def make_connections (self):
-        for a,cb in self.callbacks:
-            debug('connecting %s activate to %s'%(a,cb),5)
-            getattr(self,a).connect('activate',cb)
-    
 class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     """Our basic recipe card."""
+
+    HIDEABLE_WIDGETS = [
+        ('handlebox','Toolbar'),
+        ('imageFrame','Image'),
+        ('ieHandlebox','Ingredient Editor'),
+        (['servingsLabel','servingsBox','rcMultCheck'],'Servings'),
+        (['cuisineLabel','cuisineBox'],'Cuisine'),
+        (['categoryLabel','categoryBox'],'Category'),
+        (['preptimeLabel','preptimeBox'],'Preparation Time'),
+        (['cooktimeLabel','cooktimeBox'],'Cooking Time'),
+        (['ratingLabel','ratingBox'],'Rating'),
+        (['sourceLabel','sourceBox'],'Source'),
+        #(['instrExp'],'Instructions'),
+        #(['modExp'],'Modifications'),
+        ]
+
     def __init__ (self, RecGui, recipe=None):
         debug("RecCard.__init__ (self, RecGui):",5)
         self.setup_defaults()
         t=TimeAction('RecCard.__init__ 1',0)
         self.mult=1
-        #gtk.glade.set_custom_widget_callbacks(locals())
-        makeTimeEntry = lambda *args: timeEntry.makeTimeEntry()
-        gtk.glade.set_custom_handler(makeTimeEntry,None)
+        self.rg = RecGui
+        self.makeTimeEntry = lambda *args: timeEntry.makeTimeEntry()
+        self.makeStarButton = lambda *args: ratingWidget.make_star_button(self.rg.star_generator)
+        self.makeStarImage = lambda *args: ratingWidget.make_star_image(self.rg.star_generator)
+        def custom_handler (glade,func_name,
+                            widg, s1,s2,i1,i2):
+            f=getattr(self,func_name)
+            w= f(s1,s2,i1,i2)
+            #print 'custom_handler ',func_name,'->',w
+            return w
+        gtk.glade.set_custom_handler(custom_handler)
         self.glade = gtk.glade.XML(os.path.join(gladebase,'recCard.glade'))
+        self.mm = mnemonic_manager.MnemonicManager()
+        self.mm.add_glade(self.glade)
+        self.mm.fix_conflicts_peacefully()
         t.end()
         t=TimeAction('RecCard.__init__ 2',0)
         self.rg = RecGui
         self.ie = IngredientEditor(self.rg, self)
         self.setup_action_manager()
-        t.end()
-        t=TimeAction('RecCard.__init__ 3',0)        
         self.prefs = self.rg.prefs
         self.get_widgets()
         self.register_pref_dialog()
@@ -166,15 +88,13 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.initRecipeWidgets()
         self.setEdited(False)
         self.images = []
+        self.new = True
         if recipe:
             self.updateRecipe(recipe)
+            self.new = False
         else:
             r=self.rg.rd.new_rec()
-            #if not self.ie.visible:
-            #    self.ie.visible=True
-            #    self.ie.toggleVisible()
-            #if self.multCheckB.get_active():
-                #self.multCheckB.set_active(False)
+            self.new = True
             self.updateRecipe(r)
             # and set our page to the details page
             self.notebook.set_current_page(1)
@@ -209,8 +129,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'email': self.email_rec,
             'preferences':self.show_pref_dialog,
             'forget_remembered_optionals':self.forget_remembered_optional_ingredients,
+            'show_help': lambda *args: de.show_faq(HELP_FILE,jump_to='Entering and Editing recipes')
             })
-        self.ncv = nutrition.nutritionView.NutritionCardView(self)
         self.show()
         t.end()
         # hackish, but focus was acting funny        
@@ -235,29 +155,18 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.multiplyDisplaySpin = self.glade.get_widget('multiplyByDisplaySpin')
         self.multiplyDisplaySpin.connect('changed',self.multChangeCB)
         self.multiplyDisplayLabel = self.glade.get_widget('multiplyByDisplayLabel')
-        self.special_display_functions = {'servings':self.updateServingsDisplay,
-                                          'ingredients':self.updateIngredientsDisplay,
-                                          'title':self.updateTitleDisplay}
+        self.special_display_functions = {
+            'servings':self.updateServingsDisplay,
+            'ingredients':self.updateIngredientsDisplay,
+            'title':self.updateTitleDisplay,
+            }
         t.end()
         t=TimeAction('RecCard.get_widgets 2',0)
         WidgetSaver.WidgetPrefs.__init__(
             self,
             self.prefs,
             glade=self.glade,
-            hideable_widgets=[
-            ('handlebox','Toolbar'),
-            ('imageFrame','Image'),
-            ('ieHandlebox','Ingredient Editor'),
-            (['servingsLabel','servingsBox','rcMultCheck'],'Servings'),
-            (['cuisineLabel','cuisineBox'],'Cuisine'),
-            (['categoryLabel','categoryBox'],'Category'),
-            (['preptimeLabel','preptimeBox'],'Preperation Time'),
-            (['cooktimeLabel','cooktimeBox'],'Cooking Time'),
-            (['ratingLabel','ratingBox'],'Rating'),
-            (['sourceLabel','sourceBox'],'Source'),
-            #(['instrExp'],'Instructions'),
-            #(['modExp'],'Modifications'),
-            ],
+            hideable_widgets=self.HIDEABLE_WIDGETS,
             basename='rc_hide_')
         t.end()
         t=TimeAction('RecCard.get_widgets 3',0)
@@ -352,10 +261,17 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def register_pref_dialog (self, *args):
         """Add our GUI prefs to the preference dialog."""
         options = self.make_option_list()
-        self.rg.prefsGui.add_pref_table(options,
-                                        'cardViewVBox',
-                                        self.apply_option
-                                        )
+        if hasattr(self.rg,'rec_apply_list'):
+            self.rg.rec_apply_list.append(self.apply_option)
+        else:
+            # make a list of open reccard's "apply" functions
+            self.rg.rec_apply_list = [self.apply_option]
+            # make a function to call these apply functions for each open item
+            self.rg.apply_rec_options = lambda *args: [cb(*args) for cb in self.rg.rec_apply_list]
+            self.rg.prefsGui.add_pref_table(options,
+                                            'cardViewVBox',
+                                            self.rg.apply_rec_options
+                                            )
         
     def show_pref_dialog (self, *args):
         """Show our preference dialog for the recipe card."""
@@ -366,7 +282,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.history.switch_context(page)
         while self.page_specific_handlers:
             w,s = self.page_specific_handlers.pop()
-            w.disconnect(s)
+            if w.handler_is_connected(s):
+                w.disconnect(s)
         debug('notebook changed to page: %s'%page,3)
         if self.notebook_pages.has_key(page):
             page=self.notebook_pages[page]
@@ -451,11 +368,13 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug("saveEditsCB (self, click=None, click2=None, click3=None):",5)
         self.rg.message("Committing edits!")
         self.setEdited(False)
+        self.new = False
         newdict = {'id': self.current_rec.id}
         for c in self.reccom:
             newdict[c]=self.rw[c].entry.get_text()
         for e in self.recent:
-            newdict[e]=self.rw[e].get_text()
+            if e in INT_REC_ATTRS: newdict[e]=self.rw[e].get_value()
+            else: newdict[e]=self.rw[e].get_text()
         for t in self.rectexts:
             buf = self.rw[t].get_buffer()
             newdict[t]=buf.get_text(buf.get_start_iter(),buf.get_end_iter())
@@ -473,10 +392,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         if newdict.has_key('title'):
             self.widget.set_title("%s %s"%(self.default_title,self.current_rec.title))
             self.rg.updateViewMenu()
+        self.setEdited(False)
+        
         
     def delete (self, *args):
         debug("delete (self, *args):",2)
-        self.rg.delete_rec(self.current_rec)
+        self.rg.recTreeDeleteRecs([self.current_rec])
         debug("delete finished",2)
     
     def are_equal (self, obj1, obj2):
@@ -489,7 +410,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def addToShopL (self, *args):
         debug("addToShopL (self, *args):",5)
-        import shopgui
         d = shopgui.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
                                       self.mult,
                                       self.prefs,
@@ -520,7 +440,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.rw[a]=self.glade.get_widget("%sBox"%a)
             self.rw[a].get_children()[0].connect('changed',self.changedCB)
         for a in self.recent:
-            self.rw[a]=self.glade.get_widget("%sBox"%a)            
+            self.rw[a]=self.glade.get_widget("%sBox"%a)
+            self.rw[a].connect('changed',self.changedCB)
         for t in self.rectexts:
             self.rw[t]=self.glade.get_widget("%sText"%t)
             buf = TextBufferMarkup.InteractivePangoBuffer()
@@ -559,9 +480,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         path=self.imodel.get_path(iter)
         # open up (in case we're in a group)
         self.ingTree.expand_to_path(path)
-        self.ingTree.set_cursor(path,self.ingColsByName[_('Amt')])
+        self.ingTree.set_cursor(path,self.ingColsByName[ING_ATTRS['amount']])
         #self.ingTree.get_selection().select_iter(iter)
         self.ingTree.grab_focus()
+        self.message(_('Changes to ingredients saved automatically.'))
 
     def ingUpCB (self, *args):
         ts,paths = self.ingTree.get_selection().get_selected_rows()
@@ -647,17 +569,32 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.ingTree.expand_all()
         self.updateIngredientsDisplay()
 
+    def updateAttribute (self, attr, value):
+        """Update our recipe card to reflect attribute:value.
+
+        We assume the attribute has already been set for the recipe.
+        This function is meant to make us properly reflect external
+        changes."""
+        if self.rw.has_key(attr):
+            if attr in self.reccom: self.rw[attr].entry.set_text(value)
+            elif attr in INT_REC_ATTRS: self.rw[attr].entry.set_value(value)
+            elif attr in self.recent: self.rw[attr].set_text(value)
+            elif attr in self.rectexts: self.rw[attr].get_buffer().set_text(value)
+            # update title if necessary
+            if attr=='title': self.widget.set_title(value)
+        self.updateRecDisplay()
+            
     def updateRecipe (self, rec, show=True):
         debug("updateRecipe (self, rec):",0)
         if not self.edited or de.getBoolean(parent=self.widget,
-                                         label=_("Abandon your edits to %s?")%self.current_rec.title):
+                                            label=_("Abandon your edits to %s?")%self.current_rec.title):
             self.updateRec(rec)
             if show:
                 self.show()
 
     def revertCB (self, *args):
         if de.getBoolean(parent=self.widget,
-                      label=_("Are you sure you want to abandon your changes?"),
+                         label=_("Are you sure you want to abandon your changes?"),
                          cancel=False):
             self.updateRec(self.current_rec)
 
@@ -684,11 +621,16 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 self.rg.rd.get_default_values(c)
             cb.set_model_from_list(self.rw[c],slist)
             cb.setup_completion(self.rw[c])
-            self.rw[c].entry.set_text(getattr(rec,c) or "")
-            if type(self.rw[c])==type(gtk.ComboBoxEntry):
-                Undo.UndoableEntry(self.rw[c].get_child(),self.history)
+            if c=='category':
+                val = ', '.join(self.rg.rd.get_cats(rec))
             else:
-                # we have to implement undo for regular old comboBoxen!
+                val = getattr(rec,c)
+            self.rw[c].entry.set_text(val or "")
+            if isinstance(self.rw[c],gtk.ComboBoxEntry):
+                Undo.UndoableEntry(self.rw[c].get_child(),self.history)
+                cb.FocusFixer(self.rw[c])
+            else:
+                # we still have to implement undo for regular old comboBoxen!
                 1
         for e in self.recent:
             if isinstance(self.rw[e],gtk.SpinButton):
@@ -698,6 +640,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                     debug('%s Value %s is not floatable!'%(e,getattr(rec,e)))
                     self.rw[e].set_text("")
                 Undo.UndoableGenericWidget(self.rw[e],self.history)
+            elif e in INT_REC_ATTRS:
+                self.rw[e].set_value(int(getattr(rec,e)))
+                Undo.UndoableGenericWidget(self.rw[e],
+                                           self.history)
             else:
                 self.rw[e].set_text(getattr(rec,e) or "")
                 Undo.UndoableEntry(self.rw[e],self.history)    
@@ -720,8 +666,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 raise
             b.set_text(txt)
             Undo.UndoableTextView(w,self.history)
-                                
-        #self.servingsChange()
         self.ImageBox.get_image()
         self.ImageBox.edited=False
         self.setEdited(False)
@@ -741,6 +685,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         widget.connect(signal,change_cb)
 
     def updateRecDisplay (self):
+        """Update the 'display' portion of the recipe card."""
         for attr in self.display_info:
             if  self.special_display_functions.has_key(attr):
                 debug('calling special_display_function for %s'%attr,0)
@@ -750,12 +695,20 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 widgLab=getattr(self,'%sDisplayLabel'%attr)
                 if not widg or not widgLab:
                     raise 'There is no widget or label for  %s=%s, %s=%s'%(attr,widg,'label',widgLab)
-                attval = getattr(self.current_rec,attr)
+                if attr=='category':
+                    attval = ', '.join(self.rg.rd.get_cats(self.current_rec))
+                else:
+                    attval = getattr(self.current_rec,attr)
                 if attval:
                     debug('showing attribute %s = %s'%(attr,attval),0)
-                    widg.set_text(attval)
-                    if attr in ['modifications','instructions']:
-                        widg.set_use_markup(True)
+                    if attr in INT_REC_ATTRS:
+                        if attr=='rating': widg.set_value(attval)
+                        elif attr in ['preptime','cooktime']:
+                            widg.set_text(convert.seconds_to_timestring(attval))
+                    else:
+                        widg.set_text(attval)
+                        if attr in ['modifications','instructions']:
+                            widg.set_use_markup(True)
                     widg.show()
                     widgLab.show()
                 else:
@@ -801,7 +754,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         else:
             self.mult = 1
         if self.mult != 1:
-            self.servingsMultiplyByLabel.set_text("x%s"%convert.float_to_frac(self.mult))
+            self.servingsMultiplyByLabel.set_text("x %s"%convert.float_to_frac(self.mult))
         else:
             self.servingsMultiplyByLabel.set_label("")
 
@@ -815,8 +768,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         if de.getBoolean(parent=self.widget,
                          label=_('Forget which optional ingredients to shop for?'),
                          sublabel=_('Forget previously saved choices for which optional ingredients to shop for. This action is not reversable.'),
-                         custom_yes={'stock':gtk.STOCK_OK},
-                         custom_no={'stock':gtk.STOCK_CANCEL},
+                         custom_yes=gtk.STOCK_OK,
+                         custom_no=gtk.STOCK_CANCEL,
                          cancel=False):
             debug('Clearing remembered optional ingredients.',0)
             self.rg.rd.clear_remembered_optional_ings(self.current_rec)
@@ -858,18 +811,19 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.head_to_att = {_('Amt'):'amount',
                             _('Unit'):'unit',
                             _('Item'):'item',
-                            _('Key'):'ingkey'}
+                            _('Key'):'ingkey',
+                            _('Optional'):'optional',}
         self.ingColsByName = {}
         self.ingColsByAttr = {}
         self.shopmodel = gtk.ListStore(str)
         for c in self.ie.shopcats:
             self.shopmodel.append([c])
         self.ing_rows={}
-        for n,head,tog,model,style in [[1,_('Amt'),False,None,None],
-                                 [2,_('Unit'),False,self.rg.umodel,None],
-                                 [3,_('Item'),False,None,None],
-                                 [4,_('Optional'),True,None,None],
-                                 [5,_('Key'),False,self.rg.inginfo.key_model,pango.STYLE_ITALIC],
+        for n,head,tog,model,style in [[1,ING_ATTRS['amount'],False,None,None],
+                                 [2,ING_ATTRS['unit'],False,self.rg.umodel,None],
+                                 [3,ING_ATTRS['item'],False,None,None],
+                                 [4,ING_ATTRS['optional'],True,None,None],
+                                 [5,ING_ATTRS['ingkey'],False,self.rg.inginfo.key_model,pango.STYLE_ITALIC],
                                  [6,_('Shopping Category'),False,self.shopmodel,pango.STYLE_ITALIC],
                                  ]:
             if tog:
@@ -888,7 +842,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                     renderer = gtk.CellRendererText()
                 renderer.set_property('editable',True)
                 renderer.connect('edited',self.ingtree_edited_cb,n,head)
-                if head==_('Key'):
+                if head==ING_ATTRS['ingkey']:
                     try:
                         renderer.connect('editing-started',
                                          self.ingtree_start_keyedit_cb)
@@ -941,11 +895,18 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         # we ignore column info and search by item
         val = mod.get_value(iter,3)
         # and by key
-        val += mod.get_value(iter,5)
-        if val.lower().find(key.lower()) != -1:
-            return False
+        if val:
+            val += mod.get_value(iter,5)
+            if val.lower().find(key.lower()) != -1:
+                return False
+            else:
+                return True
         else:
-            return True
+            val = mod.get_value(iter,1)
+            if val and val.lower().find(key.lower())!=-1:
+                return False
+            else:
+                return True
         
     def ingtree_click_cb (self, tv, event):
         debug("ingtree_click_cb",5)
@@ -1025,14 +986,14 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         store.set_value(iter,colnum,newval)
         ing=store.get_value(iter,0)
         if head==_('Optional'):
-            if newval:
-                self.rg.rd.undoable_modify_ing(ing, {'optional':True},self.history)
-            else:
-                self.rg.rd.undoable_modify_ing(ing, {'optional':False},self.history)
+            if newval: newval=True
+            else: newval=False
+            self.rg.rd.undoable_modify_ing(
+                ing,
+                {'optional':newval},self.history,
+                make_visible= lambda ing,dic: self.showIngredientChange(iter,dic))
         
-    #def ingtree_start_keyedit_cb (self, renderer, path_string, text, colnum, head):
     def ingtree_start_keyedit_cb (self, renderer, cbe, path_string):
-        for a in args: print 'ingtree_start_keyedit_cb given arg: ',a
         debug('ingtree_start',0)
         indices = path_string.split(':')
         path = tuple( map(int, indices))
@@ -1057,7 +1018,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         if head==_('Shopping Category'):
             self.rg.sl.orgdic[ing.ingkey]=text
             store.set_value(iter, colnum, text)
-        if type(ing) == str:
+        elif type(ing) == str:
             debug('Changing group to %s'%text,2)
             self.change_group(iter, text)
             #self.create_ing_alist()
@@ -1267,13 +1228,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 #    debug('adding ingredient to group %s'%group,-1)
                 #    #self.rg.rd.modify_ing(ing,{'inggroup':group})
                 #    #ing.inggroup=group
-                #    print 'inggroup is now: ',ing.inggroup                
-                #print 'modifying ing: %s %s'%(pos,group)
                 self.rg.rd.modify_ing(ing,
                                       {'position':pos,
                                        'inggroup':group,}
                                        )
-                #print "ING IS NOW: ",ing.item,ing.position,ing.inggroup
                 pos+=1
             return pos
         while iter:
@@ -1281,7 +1239,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             iter=self.imodel.iter_next(iter)
             debug("Next iter = %s"%iter)
         self.create_ing_alist()
-        self.updateIngredientsDisplay()
+        self.rc.updateIngredientsDisplay()
         self.message(_('Changes to ingredients saved automatically.'))
         debug("Done committing positions",4)
 
@@ -1329,10 +1287,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug("ingTreeClickCB (self, tv, path, col, p=None):",5)
         i=self.selectedIng()
         if hasattr(i,'refid') and i.refid:
-            rec=self.rg.rd.get_rec(i.refid)
+            rec=self.rg.rd.get_referenced_rec(i)
             if rec:
                 self.rg.openRecCard(rec)
             else:
+                
                 de.show_message(parent=self.widget, label=_("The recipe %s (ID %s) is not in our database.")%(i.item,
                                                                                                            i.refid))
         else: self.ie.show(self.selectedIng())
@@ -1435,7 +1394,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         return iter
 
     def make_readable_amt_unit (self, i):
-        """Handed an ingredient, return a readbale amount and unit."""
+        """Handed an ingredient, return a readable amount and unit."""
         return self.rg.rd.get_amount_and_unit(i,
                                               mult=self.mult,
                                               conv=self.rg.conv
@@ -1457,13 +1416,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.cb.request_text(add_ings_from_clippy)
     
     def importIngredients (self, file):
-        ifi=open(file,'r')
+        ifi=file(file,'r')
         for line in ifi:
             self.add_ingredient_from_line(line)
 
     def saveAs (self, *args):
         debug("saveAs (self, *args):",5)
-        #opt = de.getOption(label=_("Export recipe as..."),options=[[_("Mealmaster"),"mmf"],[_("HTML"),"htm"],[_("Plain Text"),"txt"],[_("Rich Text Format"),"rtf"]])
         opt = self.prefs.get('save_recipe_as','html')
         if opt and opt[0]=='.': opt = opt[1:] #strip off extra "." if necessary
         fn,exp_type=de.saveas_file(_("Save recipe as..."),
@@ -1520,11 +1478,18 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def hide (self, *args):
         debug("hide (self, *args):",5)
         if self.edited:
-            test=de.getBoolean(label=_("Save edits to %s before closing?")%self.current_rec.title,cancel_returns='CANCEL')
-            if test=='CANCEL': return True
+            test=de.getBoolean(label=_("Save edits to %s before closing?")%self.current_rec.title,
+                               cancel_returns='CANCEL')
+            if test=='CANCEL':
+                
+                return True
             elif test:
                 self.saveEditsCB()
-            else: self.edited=False #to avoid multiple dialogs if this gets called twice somehow
+            else:
+                self.edited=False #to avoid multiple dialogs if this gets called twice somehow
+                if self.new:
+                    self.delete()
+                    return
         # save our position
         for c in self.conf:
             c.save_properties()
@@ -1665,14 +1630,54 @@ class ImageBox:
     def removeCB (self, *args):
         debug("removeCB (self, *args):",5)
         if de.getBoolean(label="Are you sure you want to remove this image?",
-                      parent=self.rc.widget):
+                         parent=self.rc.widget):
             self.rc.current_rec.image=''
             self.image=None
             self.draw_image()
             self.edited=True
             self.rc.setEdited(True)
+
+# Our ingredient editor has some focus trickiness... here's some
+# convenience functions to mess with that.
+# (NOT WORKING YET!)
+# def adjust_focus (widget,
+#                   before=None,
+#                   after=None):
+#     widget.before = before
+#     widget.after = after
+    
+#     def key_press_cb (w,event):
+#         name = gtk.gdk.keyval_name(event.keyval)
+#         w.keyname = name
+        
+#     def focus_out_cb (w,event):
+#         if hasattr(w,'keyname'):
+#             name = w.keyname
+#         if name in ['Tab','tab']:
+#             if widget.after:
+#                 print 'grabbing focus for ',widget.after                
+#                 #if isinstance(widget.after,gtk.Entry): widget.after.insert_text('Hello')
+#                 #widget.emit_stop_by_name('focus-out-event')
+#                 def grab_next_focus ():
+#                     print 'really grabbing focus for ',widget.after
+#                     widget.after.grab_focus()
+#                 gobject.timeout_add(1,grab_next_focus)
+#                 #return True
+#             #elif name in ['blarg']:
+#             else:
+#                 if widget.before:
+#                     print 'grabbing focus for ',widget.before
+#                     #if isinstance(widget,gtk.Entry): widget.before.insert_text('Hello')
+#                     widget.before.grab_focus()
+#                     #widget.emit_stop_by_name('focus-out-event')
+#                     #return True
+#     widget.connect('key-press-event',key_press_cb)
+#     #widget.connect('focus-out-event',focus_out_cb)
+#     widget.connect('key-press-event',focus_out_cb)
             
 class IngredientEditor:
+    """The ingredient editing interface of the recipe card."""
+    
     def __init__ (self, RecGui, rc):
         debug("IngredientEditor.__init__ (self, RecGui):",5)
         self.ing = None
@@ -1688,6 +1693,7 @@ class IngredientEditor:
         self.last_ing = ""
 
     def init_dics (self):
+        """Set up our shopping/organization dictionaries."""
         self.orgdic = self.rg.sl.sh.orgdic
         self.shopcats = self.rg.sl.sh.get_orgcats()        
         
@@ -1700,9 +1706,13 @@ class IngredientEditor:
             if len(self.rg.umodel) > 10:
                 self.unitBox.set_wrap_width(3)
         self.unitBox.set_text_column(0)
-        cb.setup_completion(self.unitBox) # add autocompletion
-        # setup combo box for keybox
+        cb.FocusFixer(self.unitBox)
+        # remove this temporarily because of annoying gtk bug
+        # http://bugzilla.gnome.org/show_bug.cgi?id=312528
+        self.unitBox.entry = self.unitBox.get_children()[0]
+        #cb.setup_completion(self.unitBox) # add autocompletion
 
+        # setup combo box for keybox
         def setup_keybox (model):
             self.keyBox.set_model(model.filter_new())        
             self.keyBox.set_text_column(0)
@@ -1713,6 +1723,7 @@ class IngredientEditor:
         self.rg.inginfo.disconnect_calls.append(lambda *args: self.keyBox.set_model(empty_model))
         self.rg.inginfo.key_connect_calls.append(setup_keybox)
         cb.setup_completion(self.keyBox) #add autocompletion
+        cb.FocusFixer(self.keyBox)
         # add autocompletion for items
         if hasattr(self,'ingBox'):
             cb.make_completion(self.ingBox, self.rg.inginfo.item_model)
@@ -1720,6 +1731,7 @@ class IngredientEditor:
             self.rg.inginfo.item_connect_calls.append(lambda m: self.ingBox.get_completion().set_model(m))
         cb.set_model_from_list(self.shopBox,self.shopcats)
         cb.setup_completion(self.shopBox)
+        cb.FocusFixer(self.shopBox)
         if len(self.shopBox.get_model()) > 5:
             self.shopBox.set_wrap_width(2)
             if len (self.shopBox.get_model()) > 10:
@@ -1741,7 +1753,7 @@ class IngredientEditor:
         self.shopBox = self.glade.get_widget('ieShopCat')
         self.optCheck = self.glade.get_widget('ieOptional')
         self.togWidget = self.glade.get_widget('ieTogButton')
-
+        
     def setup_signals (self):
         self.glade.signal_connect('ieAdd', self.add)
         self.glade.signal_connect('ieNew', self.new)
@@ -1766,6 +1778,7 @@ class IngredientEditor:
                     widg.connect('activate',self.add)
 
     def keySet (self, *args):
+        """Set our key from user input and possibly set shopping category in resposne."""
         debug("keySet (self, *args):",0)
         if not re.match("^\s*$",self.keyBox.entry.get_text()):
             debug('user set key',0)
@@ -1777,39 +1790,32 @@ class IngredientEditor:
             self.user_set_key=False 
 
     def shopSet (self, *args):
-        if not re.match("^\s*$",self.shopBox.entry.get_text()):
+        """Mark whether user has set shopping category or not."""
+        if self.shopBox.entry.get_text().strip():
             self.user_set_shopper=True
         else:
             #if user blanks key, we do our automagic again
             self.user_set_key=False
 
-    def addKey (self,key,item):
-        debug("addKey (self,key,item):",5)
-        pass
-        # this stuff is no longer necessary
-        # with our new key dictionary class
-        #
-        #if self.keydic.has_key(item):
-        #    self.keydic[item].append(key)
-        #else:
-        #    self.keydic[item]=[key]
-    
     def getKey (self):
+        """Grab a user set key if there is one."""
         debug("getKey (self):        ",5)
         kk=self.keyBox.entry.get_text()
-        if kk:
+        if kk.strip():
             return kk
         else:
             #return self.myKeys[0]
             return ""
         
     def getKeyList (self, ing=None):
+        """Grab a keylist based on what is typed in item"""
         debug("getKeyList (self):",5)
         if not ing:
             ing = self.ingBox.get_text()
         return self.rg.rd.key_search(ing)
 
     def setKey (self, *args):
+        """Set key based on contents of shopping list."""
         debug("setKeyList (self, *args):        ",5)
         ing =  self.ingBox.get_text()
         if ing == self.last_ing:
@@ -1824,20 +1830,18 @@ class IngredientEditor:
         self.last_ing = ing
 
     def setKeyList (self, *args):
+        """Set our keylist based on keys returned by getKeyList"""
         debug('setKeyList called!',0)
+        t=TimeAction('getKeyList()',0)
         self.myKeys = self.getKeyList()
+        t.end()
         self.itxt = self.ingBox.get_text()
-        if self.myKeys and self.myKeys != self.myLastKeys:
-            def vis (m, iter):
-                x = m.get_value(iter,0)
-                if x and (x in self.myKeys or x.find(self.itxt) > -1):
-                    return True
-                else: return False
-            debug('set visibility func to look for %s'%self.myKeys,0)
-            self.keyBox.get_model().set_visible_func(vis)
-        else:
-            self.keyBox.get_model().set_visible_func(lambda *args: True)
-        self.keyBox.get_model().refilter()
+        t=TimeAction('keybox - rebuild model',0)
+        model = gtk.ListStore(str)
+        for k in self.myKeys: model.append([k])
+        self.keyBox.set_model(model)
+        #self.keyBox.get_model().refilter()
+        t.end()
         if len(self.keyBox.get_model()) > 6:
             self.keyBox.set_wrap_width(2)
             if len(self.keyBox.get_model()) > 10:
@@ -1846,6 +1850,7 @@ class IngredientEditor:
         self.myLastKeys=self.myKeys
 
     def setShopper (self):
+        """Automatically set shopping category if user hasn't set it"""
         debug("setShopper (self):",5)
         if not self.user_set_shopper:
             sh = self.getShopper()
@@ -1922,7 +1927,6 @@ class IngredientEditor:
             # if there's not an item or a key, we check if our user
             # made a typing error and meant the unit as an item
             elif d['unit'] and not d['unit'] in self.rg.conv.units:
-                itm = d['unit']
                 d['item']=d['unit']
                 d['unit']=""
                 self.rc.message(_('You forgot an item. Assuming you meant "%s" as an item and not a unit.')%itm)
@@ -1930,27 +1934,36 @@ class IngredientEditor:
                 self.rc.message(_('An ingredient must have an item!'))
                 return
         if self.optCheck.get_active(): d['optional']=True
-        else:
-            d['optional']=False
-        if d['ingkey']:
-            self.addKey(d['ingkey'],d['item'])
-        else:
-            d['ingkey']=self.rg.rd.key_search(d['item'])[0]
+        else: d['optional']=False
+        if not d['ingkey']:
+            #print 'grabbing key...'
+            d['ingkey']=self.rg.rd.km.get_key(d['item'])
         sh = self.shopBox.entry.get_text()
         if sh:
             self.rg.sl.sh.add_org_itm(d['ingkey'],sh)
         if self.ing:
+            debug('Do modify ing',5)
             i=self.rg.rd.undoable_modify_ing(self.ing,d,self.rc.history)
+            debug('modified ing',5)
+            debug('resetting inglist',5)
             self.rc.resetIngList()
+            debug('reset inglist',5)
         else:
+            debug('Do rg.rd.add_ing',5)
             i=self.rg.rd.add_ing(d)
+            debug('add ingredient to view',5)
             iter=self.rc.add_ingredient(self.rc.imodel,i,self.rc.mult,
-                                   group_iter=self.rc.getSelectedIter())
+                                        group_iter=self.rc.getSelectedIter())
+            debug('added ing to view',5)
+            debug('select iter',5)
             path=self.rc.imodel.get_path(iter)
             self.rc.ingTree.expand_to_path(path)
             self.rc.ingTree.get_selection().select_iter(iter)
+            debug('selected iter',5)
+        debug('blank selves/new',5)
         self.new()
-        #self.rc.resetIngList()
+        debug('done!',5)
+        self.rc.resetIngList()
         #self.new()
 
     def delete_cb (self, *args):
@@ -2071,26 +2084,21 @@ class IngInfo:
         self.rd.add_ing_hooks.append(self.add_ing)
 
     def make_item_model(self):
-        unique_item_vw = self.rd.iview_not_deleted.counts(self.rd.iview_not_deleted.item, 'count')
+        #unique_item_vw = self.rd.iview_not_deleted.counts(self.rd.iview_not_deleted.item, 'count')
         self.item_model = gtk.ListStore(str)
-        for i in unique_item_vw:
+        for i in self.rd.normalizations['item']:
             self.item_model.append([i.item])
-        if not unique_item_vw:
+        if not self.rd.normalizations['item']:
             import defaults
             for i,k,c in defaults.lang.INGREDIENT_DATA:
                 self.item_model.append([i])
         
     def make_key_model (self):
-        unique_key_vw = self.rd.iview_not_deleted.counts(self.rd.iview_not_deleted.ingkey, 'groupvw')
+        #unique_key_vw = self.rd.iview_not_deleted.counts(self.rd.iview_not_deleted.ingkey, 'groupvw')
         # the key model by default stores a string and a list.
         self.key_model = gtk.ListStore(str)
-        for k in unique_key_vw:
-            lst = []
+        for k in self.rd.normalizations['ingkey']:
             self.key_model.append([k.ingkey])
-        if not unique_key_vw:
-            import defaults
-            for i,k,v in defaults.lang.INGREDIENT_DATA:
-                self.key_model.append([k])
 
     def change_key (self, old_key, new_key):
         """One of our keys has changed."""
@@ -2101,6 +2109,9 @@ class IngInfo:
                 del self.key_model[index]
             else:
                 self.key_model[index]=[new_key]
+        modindx = self.rd.normalizations['ingkey'].find(old_key)
+        if modindx>=0:
+            self.rd.normalizations['ingkey'][modindx].ingkey=new_key
 
     def disconnect_models (self):
         for c in self.disconnect_calls:
@@ -2119,7 +2130,7 @@ class IngInfo:
         self.connect_models()
 
     def add_ing (self, ing):
-        if not self.manually: self.disconnect_models()
+        #if not self.manually: self.disconnect_models()
         if hasattr(ing,'item'):
             debug('checking for item',3)
             if not [ing.item] in self.item_model:
@@ -2133,7 +2144,7 @@ class IngInfo:
                 self.key_model.append([ing.ingkey])
                 debug('appended %s to key model'%ing.ingkey,3)
         debug('add ing completed',3)
-        if not self.manually: self.connect_models()
+        #if not self.manually: self.connect_models()
 
 class RecSelector (RecIndex):
     """Select a recipe and add it to RecCard's ingredient list"""
@@ -2189,7 +2200,7 @@ def show_amount_error (txt):
     de.show_message(label=_("""I'm sorry, I can't understand
 the amount "%s".""")%txt,
                     sublabel=_("Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."),
-                    expander=[_("Details"),
+                    expander=[_("_Details"),
                               _("""
 The "unit" must be in the "unit" field by itself.
 For example, if you want to enter one and a half cups,

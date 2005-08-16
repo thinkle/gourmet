@@ -4,6 +4,7 @@ from nutritionModel import NutritionModel
 import parser_data
 import gourmet.cb_extras as cb
 import gourmet.dialog_extras as de
+import gourmet.gglobals as gglobals
 import gourmet.convert as convert
 from gourmet.defaults import lang as defaults
 
@@ -175,58 +176,19 @@ class NutritionItemView:
 
     def setup_usda_choices (self, ing):
         self.ingkey=ing
-        nutrow = self.nd.get_nut_from_key(self.ingkey)
+        nutrow = self.nd.get_nutinfo(self.ingkey)
         if nutrow:
             self.choices[self.usdaChoiceWidget]=[nutrow]
             self.setup_choices([nutrow],self.usdaChoiceWidget)
             self.set_choice(self.usdaChoiceWidget,nutrow)
             print 'nutrow already chosen!'
             return
-        words=re.split("\W",ing)
-        words = filter(lambda w: w and not w in ['in','or','and','with'], words)
-        if words:
-            # match any of the words in our key
-            regexp = "("+string.join(words,"|")+")"
-            print 'Filtering nview -- %s items'%len(self.nd.db.nview)
-            nvw = self.nd.db.search(self.nd.db.nview,'desc',regexp)
-            print 'to %s items'%len(nvw)
-            # create a list of rows and sort it, putting the most likely match first
-            lst = [[r.desc,r.ndbno] for r in nvw]
-            def sort_func (row1,row2):
-                dsc1=row1[0].lower()
-                dsc2=row2[0].lower()
-                sc1=0
-                sc2=0
-                # we presume recipe keys start with important words and proceed to less
-                # important ones -- so we give each word a descending value.
-                # in i.e. milk, low fat, we get the points: milk (3), low (2), fat (1)
-                score = len(words)
-                for w in words:
-                    w=w.lower()
-                    if dsc1.find(w)>=0: sc1+=score
-                    if dsc2.find(w)>=0: sc2+=score
-                    score = score - 1
-                if sc1<sc2:
-                    return 1
-                elif sc2<sc1:
-                    return -1
-                # otherwise, we assume a longer string is a worse match
-                elif len(dsc1)>len(dsc2): return 1
-                elif len(dsc2)>len(dsc1): return -1
-                else: return 0
-            print 'sorting list'
-            lst.sort(sort_func)
-            if len(lst) > 50:
-                # we cut down the list if it's too long
-                # (so we hope our sorting algorhythm is doing
-                # a good job!)
-                lst = lst[0:50]
-            print 'sorted list and trimmed it to 50 items or fewer'
-            self.usdaDict={}
-            for l in lst: self.usdaDict[l[0]]=l[1]
-            self.choices[self.usdaChoiceWidget]=[x[0] for x in lst]
-            #print 'choices are: ',self.choices[self.usdaChoiceWidget]
-            self.setup_choices(self.choices[self.usdaChoiceWidget],self.usdaChoiceWidget)
+        lst = self.nd.get_usda_list_for_string(ing)
+        self.usdaDict={}
+        for l in lst: self.usdaDict[l[0]]=l[1]
+        self.choices[self.usdaChoiceWidget]=[x[0] for x in lst]
+        #print 'choices are: ',self.choices[self.usdaChoiceWidget]
+        self.setup_choices(self.choices[self.usdaChoiceWidget],self.usdaChoiceWidget)
         
     def get_active_usda (self):
         return cb.cb_get_active_text(self.usdaChoiceWidget)
@@ -323,6 +285,31 @@ class NutritionItemView:
 
 
 class NutritionCardView:
+    def __init__ (self, recCard):
+        self.rc = recCard
+        import nutritionGrabberGui        
+        nutritionGrabberGui.check_for_db(self.rc.rg.rd)
+        self.nmodel = NutritionTreeModel(
+            self.get_nd(),
+            nutrition_fields=self.rc.prefs.get('nutritionFields',
+                                               # default nutritional fields
+                                               ['kcal','protein','carb','fiber',
+                                                'calcium','iron','sodium',
+                                                'fasat','famono','fapoly','cholestrl'])
+            )
+        self.nmodel.attach_treeview(self.rc.glade.get_widget('nutTreeView'))
+        self.ings = self.rc.rg.rd.get_ings(self.rc.current_rec)
+        for i in self.ings: self.nmodel.add_ingredient(i)
+        NutritionCardViewOld(recCard) # initialize our old interface as well...
+        
+    def get_nd (self):
+        if hasattr(self.rc.rg,'nutritionData'): return self.rc.rg.nutritionData
+        else:
+            import nutrition
+            self.rc.rg.nutritionData = nutrition.NutritionData(self.rc.rg.rd,self.rc.rg.conv)
+            return self.rc.rg.nutritionData
+
+class NutritionCardViewOld:
 
     """We handle the nutritional portion of our recipe card interface."""
 
@@ -333,6 +320,7 @@ class NutritionCardView:
     def __init__ (self, recCard):
         import nutritionGrabberGui        
         self.rc = recCard
+        self.ings = self.rc.rg.rd.get_ings(self.rc.current_rec)
         nutritionGrabberGui.check_for_db(self.rc.rg.rd)
         # grab our widgets
         self.treeview = self.rc.glade.get_widget('nutritionTreeView')
@@ -492,4 +480,144 @@ class NutritionCardView:
         nmod.set_value(itr,self.NUT_COL,row)
         #nmod.set_value(itr,self.STR_COL,key)
 
+class NutritionTreeModel (gtk.TreeStore):
+    """Display our nutritional information in a simple tree model.
+
+    > Ingredient-Name | Ingredient-Key | USDA-NAME | AMT | UNIT | Grams |
+       > NUTINFO | VALUE
+       > NUTINFO | VALUE
+       > ...
+
+       """
+
+    ING_OBJECT_COLUMN = 0
+
+    def __init__ (self,
+                  nutritionData,
+                  ingredient_info=['ingkey','amount','unit'],
+                  nutrition_fields=['kcal','protein','carb','fasat','famono','fapoly','cholestrl'],
+                  ):
+        self.nd = nutritionData
+        self.columns = ingredient_info + ['USDA','grams']
+        self.numerics = ['amount','grams']
+        self.build_store()
+        self.nutrition_fields = nutrition_fields
         
+    def build_store (self):
+        n = self.ING_OBJECT_COLUMN
+        self.ts_col_dic = {}
+        self.coltypes = [gobject.TYPE_PYOBJECT] # for our ingobject
+        for c in self.columns:
+            n += 1
+            if c in self.numerics: self.coltypes += [str] # everything's a string
+            else: self.coltypes += [str]
+            self.ts_col_dic[c]=n
+        self.ts = gtk.TreeStore.__init__(self,*self.coltypes)
+
+    def attach_treeview (self, treeview):
+        self.tv = treeview
+        self.tv.set_model(self)
+        text_renderer = gtk.CellRendererText()
+        text_renderer.set_property('editable',True)
+        for col in self.columns:
+            # not yet i18n'd
+            if col=='USDA':                
+                if gglobals.CRC_AVAILABLE:
+                    print 'CellRendererCombo!'
+                    rend = gtk.CellRendererCombo()
+                    self.usda_model = gtk.ListStore(str,str)
+                    rend.set_property('model',self.usda_model)
+                    rend.set_property('text-column',0)
+                else: rend = text_renderer
+                rend.set_property('editable',True)
+                rend.connect('editing-started',self.usda_editing_started_cb)
+                rend.connect('edited',self.usda_edited_cb)
+                col=gtk.TreeViewColumn(col,rend,text=self.ts_col_dic[col])
+            else:
+                col=gtk.TreeViewColumn(col,text_renderer,text=self.ts_col_dic[col])
+            col.set_reorderable(True)
+            col.set_resizable(True)
+            self.tv.append_column(col)
+        self.tv.connect('row-expanded',self.populateChild)
+        
+    def add_ingredient (self, ing):
+        base_list = [self.grab_attr(ing,name) for name in self.columns]
+        itr=self.append(None,[ing]+base_list)
+        self.append(itr)
+
+    def populateChild (self, tv, iter, path):
+        child = self.iter_children(iter)
+        if self.get_value(child, 0)==None:
+            self.remove(child) # remove the blank...
+            self.append_nutritional_info(iter)
+
+    def append_nutritional_info (self,iter):
+        """Handed an treestore iter, append nutritional information."""
+        ing = self.get_value(iter,self.ING_OBJECT_COLUMN)
+        nut = self.nd.get_nutinfo(ing.ingkey)
+        for fld in self.nutrition_fields:
+            append_vals = [None] * (len(self.columns) + 1)
+            append_vals[1]=fld
+            if nut: append_vals[2]=getattr(nut,fld)
+            self.append(iter,append_vals)
+
+    def grab_attr (self, ing, name):
+        if name in gglobals.ING_ATTRS.keys():
+            attval =  getattr(ing,name)
+            if name in self.numerics:
+                return convert.float_to_frac(attval)
+            else:
+                return attval
+        elif name=='USDA':
+            nutrow=self.nd.get_nutinfo(ing.ingkey)
+            if nutrow: return nutrow.desc
+            else: return None
+        elif name=='grams':
+            #nutrow=self.nd.get_nutinfo(ing.ingkey)
+            #densities,extra_units=self.nd.get_conversions(nutrow)
+            amt = self.nd.get_conversion_for_amt(ing.amount,
+                                                 ing.unit,
+                                                 ing.ingkey
+                                                 
+                                                 )
+            if amt: return 100 * amt
+            else:
+                print 'returning amt 0'
+                return 0
+
+    def usda_editing_started_cb (self,renderer,editable,path_string):
+        indices = path_string.split(':')
+        path = tuple( map(int, indices))
+        itr = self.get_iter(path)
+        ing = self.get_value(itr,self.ING_OBJECT_COLUMN)        
+        if isinstance(editable,gtk.ComboBoxEntry):            
+            while len(self.usda_model)>0: del self.usda_model[0] # empty our liststore...
+            usda_list=self.nd.get_usda_list_for_string(ing.ingkey)
+            print len(usda_list),' potential USDA items'
+            self.usdaDict={}
+            for l in usda_list:
+                self.usdaDict[l[0]]=l[1]
+                self.usda_model.append(l)
+
+    def usda_edited_cb (self,renderer,path_string,text):
+        indices = path_string.split(':')
+        path = tuple( map(int, indices))
+        itr = self.get_iter(path)
+        ing = self.get_value(itr,self.ING_OBJECT_COLUMN)
+        self.nd.set_key_from_ndbno(ing.ingkey,self.usdaDict[text])
+        self.set_value(itr,self.ts_col_dic['USDA'],text)
+
+
+
+if __name__ == '__main__':
+    w = gtk.Window()
+    f = gtk.Entry()
+    b = gtk.Button(stock=gtk.STOCK_ADD)
+    hb = gtk.HBox()
+    hb.add(f)
+    hb.add(b)
+    vb = gtk.VBox()
+    vb.add(hb)
+    t = gtk.Table()
+    nt = gtk.NutritionTable(t, {}, True)
+    

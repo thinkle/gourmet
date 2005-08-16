@@ -47,9 +47,11 @@ class rec_to_xml (exporter.exporter):
         self.out.write("\n</ingredient-list>")
 
     def write_ingref (self, amount=1, unit=None, item=None, refid=None, optional=False):
-        self.out.write("<ingref refid=%s amount=%s>%s</ingref>\n"%(quoteattr(refid),
-                                                                   quoteattr(amount.strip()),
-                                                                   xml.sax.saxutils.escape(item))
+        self.out.write("<ingref %srefid=%s amount=%s>%s</ingref>\n"%(
+            (optional and " optional='yes'>" or ""),
+            quoteattr(str(refid)),
+            quoteattr(amount.strip()),
+            xml.sax.saxutils.escape(item))
                        )
         
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):

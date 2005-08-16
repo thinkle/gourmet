@@ -1,9 +1,8 @@
 TODO
+* Create some basic documentation
 * Check into bizaare ordering bugs & such reported by HaJo
-* Merge 0.8.3.1 changes into HEAD (once 0.8.3.1 stabilizes a bit).
-* Fix annoying crash that happens when trying to import after a
-  failed import.
 * Create faster and more elegant ingredient input interface
-* Fix threading with MySQL -- actually fix threading everywhere.
-* Add support for nutritional information
-* Highlight differences in encoding view.
+* Fix MySQL/SQLite support
+* Add support for nutritional information (underway in HEAD)
+* Provide more convenient way to see differences in text-encoding
+  dialog.

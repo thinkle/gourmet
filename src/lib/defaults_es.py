@@ -1,5 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+#
+# we set up default information for our locale (Spanish)
+# Translators should use this file as the basis of their translation.
+# Copy this file and rename it for you locale.
+#
+# Language: Spanish
+# Translator: Thomas M. Hinkle
+# Last-updated: 4/27/05
+CREDITS="Thomas M. Hinkle"
 
 ## first, easy to maintain lists which can eventually be moved to
 ## files.
@@ -16,6 +25,8 @@ fields={'cuisine': ['Español','Mejicano','Cubano','Argentino','Brazileño','Ita
 SYNONYMS=[
     # the first item of each list is the most common
     # word, the others are synonyms
+    ['durazno','melocotón'],
+    ['camarón','gambas'],
     ]
 
 # a dictionary key=ambiguous word, value=list of terms
@@ -403,3 +414,29 @@ VOL_TO_MASS_TABLE = {
     ("dl.", "kg.") : 0.1,
     ("dl.", "g.") : 100,    
     ("l.", "kg.") : 1}
+
+TIME_ABBREVIATIOSN = {
+    'hrs' : 'horas',
+    'hra' : 'horas',
+    'mntas' : 'minutas',
+    'mnta' : 'minutas',
+    }
+
+# These functions are rather important! Our goal is simply to
+# facilitate look ups -- if the user types in "tomatoes", we want to
+# find "tomato." Note that the strings these functions produce will
+# _never_ be shown to the user, so it's fine to generate nonsense
+# words as well as correct answers -- our goal is to generate a list
+# of possible hits rather than to get the plural/singular form "right".
+    
+def guess_singulars (s):
+    if len(s)<3: return []
+    rets = []
+    if s[-1]=='s':
+        rets.append(s[0:-1])
+        if s[-2]=='e':
+            rets.append(s[0:-2])
+    return rets
+
+def guess_plurals (s):
+    return [s+'s',s+'es']

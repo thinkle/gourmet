@@ -209,7 +209,13 @@ class TreeViewConf:
         for c in self.tv.get_columns():
             t=c.get_title()
             if t in self.hidden: c.set_visible(False)
-            else: c.set_visible(True)
+            else:
+                # and try with "_" removed
+                l=list(t)
+                if '_' in l: l.remove('_')
+                t="".join(l)
+                if t in self.hidden: c.set_visible(False)
+                else: c.set_visible(True)
 
     def apply_column_order (self):
         coldic = {}

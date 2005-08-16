@@ -1,10 +1,15 @@
 import convert, sys
 from gettext import gettext as _
+from gdebug import debug
 
 class shopper:
     def __init__ (self, inglist):
         """We expect a list of tuples/lists, each of which contains
-        amount, unit, key [[amt,un,key],[amt,un,key],...]"""
+        amount, unit, key [[amt,un,key],[amt,un,key],...]
+
+        amount can be either a single number or a tuple
+        2,3, etc., in which case it is a range.
+        """
         ## First, we create a dictionary from our list (keyed by ingredient)
         ## each value in the dict. is a list of values. We'll try to add these
         ## as best as we can.
@@ -25,7 +30,9 @@ class shopper:
             try:
                 a = float(a)
             except:
-                a = None
+                if type(a) != tuple:
+                    debug("Warning, can't make sense of amount %s; reading as None"%a,0)
+                    a = None
             if dic.has_key(k):
                 dic[k].append([a,u])
             else:
@@ -55,10 +62,36 @@ class shopper:
                 flag = 0
                 ind = 0
                 while not flag and len(itms) > ind:
-                    i = itms[ind]
-                    add= self.cnv.add_reasonably(i[0],i[1],a,u,ing)
-                    ## add_reasonably returns a nice a,u pair if successful
-                    if add:
+                    amt,unit = itms[ind]
+                    if type(amt) == tuple or type(a)== tuple :
+                        # we're adding ranges -- we'll force both
+                        # our amounts to look like ranges to simplify the addition
+                        if type(amt)==float: amt=(amt,amt) 
+                        if type(a)==float: a=(a,a)
+                        add_low = self.cnv.adjust_unit(
+                            *self.cnv.add_reasonably(amt[0],unit,a[0],u,ing),#lowest+lowest
+                            **{'favor_current_unit':False}
+                            )
+                        add_high = self.cnv.adjust_unit(
+                            *self.cnv.add_reasonably(amt[1],unit,a[1],u,ing), # highest+highest
+                            **{'favor_current_unit':False}
+                            )
+                        if add_low[1]==add_high[1]: #same unit...
+                            add=((add_low[0],add_high[0]),add_low[1])
+                        else:
+                            # otherwise, let's use our unit for add_high...
+                            u1_to_u2=conv(add_low[1],add_high[1])
+                            add=( (add_low[0]*u1_to_u2,add_high[0]), #amount tuple
+                                  add_high[1] #unit from add_high
+                                  )
+                    else:
+                        add = self.cnv.add_reasonably(amt,unit,a,u,ing)
+                        if add:
+                            # adjust unit to make readable
+                            self.cnv.adjust_unit(*add,**{'favor_current_unit':False})
+                    # add_reasonably returns a nice a,u pair if successful
+                    # Otherwise, it return False/None
+                    if add: 
                         itms.pop(ind) # out with the old...
                         itms.append(add) # in with the new
                         flag = 1
@@ -89,7 +122,7 @@ class shopper:
                       write_item,):
         org = self.organize(self.dic)
         for c,d in org:
-            write_category(c)
+            write_category(c.title())
             for i,a in d:
                 write_item(a,i)
 

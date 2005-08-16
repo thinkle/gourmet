@@ -1,8 +1,6 @@
 #!/bin/env python
 #
 # setup.py for Gourmet
-#
-# 
 
 import imp
 import sys
@@ -71,32 +69,43 @@ def modules_check():
 def data_files():
     '''Build list of data files to be installed'''
     images = glob.glob(os.path.join('images','*.png'))
+    icons = glob.glob(os.path.join('images','*.ico'))
     style = glob.glob(os.path.join('style','*.css'))
     glade = glob.glob(os.path.join('glade','*.glade'))
     i18n = glob.glob(os.path.join('i18n','*/*/*.mo'))
+    images.extend(icons)
     images.extend(style)
     images.extend(glade)
     #print "data_files: ",images,style
     # Note that this os specific stuff must be kept in sync with gglobals.py
     if os.name == 'nt' or os.name == 'dos':
         base = 'gourmet'
+        i18n_base = os.path.join(base,'i18n')
         files = [(os.path.join(base),[os.path.join('src','gourmet')])]
         base = os.path.join(base,'data')
     else:
         # elif os.name == posix
-        base = os.path.join('share')
-        files = [(os.path.join(base,'pixmaps'), [os.path.join('images','recbox.png')]),
-                 (os.path.join(base,'applications'),['gourmet.desktop']),]
+        base = 'share'
+        i18n_base = os.path.join('share','locale')
+        # files in /usr/share/X/ (not gourmet)
+        files = [
+            (os.path.join(base,'pixmaps'),
+             [os.path.join('images','recbox.png')]
+             ),
+            (os.path.join(base,'applications'),
+             ['gourmet.desktop']
+             ),]
         base = os.path.join(base,'gourmet')
-    files.extend([(os.path.join(base), images + [os.path.join('data','recipe.dtd'),]),
-                  (os.path.join(base,'i18n'), i18n),
-                  ])
+    files.extend([(os.path.join(base), images + ['FAQ'] +[os.path.join('data','recipe.dtd'),]),])
     for f in i18n:
         pth,fn=os.path.split(f)
+        pthfiles = pth.split(os.path.sep)
+        pthfiles=pthfiles[1:] # strip off i18n
+        pth = os.path.sep.join(pthfiles)
         #print pth,fn
-        pth = os.path.join(base,pth)
+        pth = os.path.join(i18n_base,pth)
         files.append((pth,[f]))
-    #print files
+    print files
     return files
 
 class my_install_data(install_data):
@@ -123,7 +132,13 @@ setup(
     license = 'GPL',
     data_files = data_files(),
     modules_check = modules_check,
-    packages = ['gourmet','gourmet.backends','gourmet.importers','gourmet.exporters','gourmet.nutrition'],
+    packages = ['gourmet',
+                'gourmet.backends',
+                'gourmet.importers',
+                'gourmet.importers.html_plugins',
+                'gourmet.exporters',
+                'gourmet.nutrition',
+                ],
     package_dir = {'gourmet' : os.path.join('src','lib')},
     scripts = [script],
     cmdclass={'install_data' : my_install_data},

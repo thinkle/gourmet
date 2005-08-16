@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import gtk.glade, urllib, StringIO, os.path
-import exporter
+import exporter, html_exporter
 from gourmet import gglobals
 from gettext import gettext as _
 import gourmet.dialog_extras as de
@@ -45,11 +45,12 @@ class Emailer:
         return retval
 
 class RecipeEmailer (Emailer):
-    def __init__ (self, recipes, rd, conv=None):
+    def __init__ (self, recipes, rd, conv=None, change_units=True):
         Emailer.__init__(self)
         self.recipes = recipes
         self.rd = rd
         self.conv = conv
+        self.change_units=change_units
         if len(recipes) > 1:
             self.subject = _("Recipes")
         elif recipes:
@@ -72,8 +73,12 @@ class RecipeEmailer (Emailer):
         for r in self.recipes:
             fi = os.path.join(gglobals.tmpdir,"%s.htm"%r.title)
             ofi = open(fi,'w')
-            e=html_exporter.html_exporter(self.rd,r,ofi,conv=self.conv,embed_css=True,
-                                     imagedir="")
+            e=html_exporter.html_exporter(self.rd,
+                                          r,
+                                          ofi,
+                                          conv=self.conv,
+                                          embed_css=True,
+                                          imagedir="")
             ofi.close()
             self.attachments.append(fi)
             for i in e.images:
@@ -93,7 +98,7 @@ class RecipeEmailer (Emailer):
             
 class EmailerDialog (RecipeEmailer):
     def __init__ (self, recipes, rd, prefs, conv=None):
-        RecipeEmailer.__init__(self, recipes, rd, conv)
+        RecipeEmailer.__init__(self, recipes, rd, conv=conv, change_units=prefs.get('readableUnits',True))
         self.prefs = prefs
         self.option_list = {'':''}
         self.options = {
@@ -121,12 +126,13 @@ class EmailerDialog (RecipeEmailer):
                                     dont_ask_cb=self.dont_ask_cb,
                                     dont_ask_custom_text=_("Don't ask before sending e-mail."))
             retlist = d.run()
-            for o in retlist:
-                k = o[0]
-                v = o[1]
-                pref = self.options[k][0]
-                self.email_options[pref]=v
-                self.prefs[pref]=v
+            if retlist:
+                for o in retlist:
+                    k = o[0]
+                    v = o[1]
+                    pref = self.options[k][0]
+                    self.email_options[pref]=v
+                    self.prefs[pref]=v
 
     def email (self, address=None):
         if address: self.emailaddress=address

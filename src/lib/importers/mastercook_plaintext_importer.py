@@ -11,7 +11,7 @@ class mastercook_importer (plaintext_importer.TextImporter):
                  'Preparation Time':'preptime',
                  'Categories':'category',
                  }
-    def __init__ (self, filename, rd, progress=None, threaded=False):
+    def __init__ (self, filename, rd, progress=None, threaded=False, conv=None):
         self.progress = progress
         self.compile_regexps()
         self.instr = ""
@@ -22,13 +22,22 @@ class mastercook_importer (plaintext_importer.TextImporter):
         self.last_attr = ""
         self.in_attrs=False
         self.in_mods=False
-        plaintext_importer.TextImporter.__init__(self,filename,rd,progress=progress,threaded=threaded)
+        self.reccol_headers = False
+        plaintext_importer.TextImporter.__init__(self,filename,rd,progress=progress,threaded=threaded,
+                                                 conv=conv)
         
     def compile_regexps (self):
         plaintext_importer.TextImporter.compile_regexps(self)
         self.rec_start_matcher = re.compile(MASTERCOOK_START_REGEXP)
         self.blank_matcher = re.compile("^\s*$")
+        # strange thing has happened -- some archives have the column
+        # off by exactly 1 character, resulting in some fubar'ing of
+        # our parsing.  to solve our problem, we first recognize
+        # rec_col_matcher, then parse fields using the ------
+        # underlining, which appears to line up even in fubared
+        # archives.
         self.rec_col_matcher = re.compile("(\s*Amount\s*)(Measure\s*)(Ingredient.*)")
+        self.rec_col_underline_matcher = re.compile("(\s*-+)(\s*-+)(\s*-+.*)")
         # match a string enclosed in a possibly repeated non-word character
         # such as *Group* or ---group--- or =======GROUP======
         # grabbing groups()[1] will get you the enclosed string
@@ -53,14 +62,22 @@ class mastercook_importer (plaintext_importer.TextImporter):
             self.in_attrs = False
             self.start_rec()
             return
+        if self.reccol_headers:
+            # we try to parse underlining after our standard ing headers.
+            rcm = self.rec_col_underline_matcher.match(line)
+            # if there is no underlining, use our headers themselves for fields
+            if not rcm: rcm = self.reccol_headers
+            debug('Found ing columns',0)            
+            self.get_ing_cols(rcm)
+            self.in_ings = True
+            self.reccol_headers=False
+            return
         rcm=self.rec_col_matcher.match(line)
         if rcm:
-            debug('Found ing columns',0)
+            self.reccol_headers = rcm
             self.looking_for_title=False
             self.in_attrs=False
             self.last_attr = ""
-            self.get_ing_cols(rcm)
-            self.in_ings = True
             return
         if self.blank_matcher.match(line):            
             # blank line ends ingredients
@@ -73,19 +90,21 @@ class mastercook_importer (plaintext_importer.TextImporter):
                 debug('blank line added to instructions: %s'%line,0)
                 if self.in_mods: self.mods += "\n"
                 else: self.instr+="\n"
-        elif self.looking_for_title:
+            return
+        if self.looking_for_title:
             debug('found my title! %s'%line.strip(),0)
             self.rec['title']=line.strip()
             self.looking_for_title = False
             self.in_attrs=True
             return
-        elif self.in_ings:
+        if self.in_ings:
             debug('handling ingredient line %s'%line,0)
             self.handle_ingline (line)
-            return
-        elif self.in_attrs:
+            return        
+        if self.in_attrs:
             debug('handing attrline %s'%line,0)
             self.handle_attribute(line)
+            return
         else:
             self.in_instructions = True
             if self.mods_matcher.match(line):
@@ -154,6 +173,8 @@ class mastercook_importer (plaintext_importer.TextImporter):
         if gm:
             if self.ing: self.commit_ing()
             self.group = gm.groups()[1]
+            # undo grouping if it has no letters...
+            if re.match('^[^A-Za-z]*$',self.group): self.group=None
             return
         if amt or unit:
             if self.in_or: self.ing['optional']=True
@@ -176,8 +197,6 @@ class mastercook_importer (plaintext_importer.TextImporter):
 
     def commit_ing (self):
         if not self.ing.has_key('item'):
-            print 'wtf, ingredient has no item!'
-            print 'self.ing=',self.ing
             return
         key_base = self.ing['item'].split('--')[0]
         self.ing['ingkey']=self.km.get_key_fast(key_base)
@@ -199,7 +218,12 @@ class Tester (importer.Tester):
         if not hasattr(self,'matcher'):
             self.matcher=re.compile(self.regexp)
             self.not_matcher = re.compile(self.not_me)
-        self.ofi = open(filename,'r')
+        if type(filename)==str:
+            self.ofi = open(filename,'r')
+            CLOSE = True
+        else:
+            self.ofi = filename
+            CLOSE = False
         l = self.ofi.readline()
         while l:
             if self.not_matcher.match(l):
@@ -209,4 +233,5 @@ class Tester (importer.Tester):
                 self.ofi.close()
                 return True
             l = self.ofi.readline()
-        self.ofi.close()
+        if CLOSE: self.ofi.close()
+        else: self.ofi.seek(0)

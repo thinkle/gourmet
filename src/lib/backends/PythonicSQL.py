@@ -118,7 +118,7 @@ class PythonicSQL:
             typ = self.hone_type(typ)
             add_string +=  "%s %s"%(rowname,typ)
             if rowname==key:
-                if typ.upper()=='INTEGER' or typ.upper()=='INT': add_string += " AUTOINCREMENT"
+                #if typ.upper()=='INTEGER' or typ.upper()=='INT': add_string += " AUTOINCREMENT"
                 add_string += " PRIMARY KEY"
             add_string += ","
         add_string = add_string[0:-1] + ")"
@@ -161,15 +161,19 @@ class PythonicSQL:
             raise TypeError, 'expected dictionary type argument'
         ins_string = "INSERT INTO %s"%name
         sql_params = []
-        ins_string += "("
-        for k in data.keys():
-            ins_string += "%s, "%k
-        ins_string = ins_string[0:-2] + ")"
-        ins_string += " values ("
-        for v in data.values():
-            ins_string += "%s, "
-            sql_params += [v]
-        ins_string = ins_string[0:-2] + ")"
+        if data:
+            ins_string += "("
+            for k in data.keys():
+                ins_string += "%s, "%k
+            ins_string = ins_string[0:-2] + ")"
+            ins_string += " values ("
+            for v in data.values():
+                ins_string += "%s, "
+                sql_params += [v]
+            ins_string = ins_string[0:-2] + ")"
+        else:
+            fields=self.get_fields_for_table(name)
+            ins_string = ins_string + " VALUES (" + ", ".join(["?"] * len(fields)) + ")"
         tt=TimeAction('PythonicSQL.insert() - self.execute()',4)
         self.execute([ins_string,sql_params])
         tt.end()
@@ -194,10 +198,13 @@ class PythonicSQL:
         up_string = "UPDATE %s"%name
         sql_params = []
         up_string += " SET "
+        updates = []
         for k,v in updated_fields.items():
-            up_string += "%s="%k
-            up_string += "%s"
+            update = "%s="%k
+            update += "%s"
+            updates.append(update)
             sql_params += [v]
+        up_string += ", ".join(updates)
         up_string += " "
         wherestring,whereparams = self.make_where_statement(criteria, "and")
         up_string += wherestring
@@ -286,7 +293,6 @@ class PythonicSQL:
                 sql_params += [crit]
             sel_string = sel_string[0:-len(logic)]
         debug("Made where statement from %s: %s"%(criteria,sel_string),0)
-        print 'sel_string:',sel_string
         return sel_string,sql_params
 
     def fetch_table_fields (self, name):
@@ -486,7 +492,9 @@ class TableObject (list):
         return self.__db__.retrieve_unique(self.__tablename__,column,criteria=crit,filters=self.__filters__)
 
     def select (self,**dictionary):
-        print 'select called!'
+        """Return a TableObject with a subview of ourselves based on criteria.
+
+        Critieria are handed to us in a dictionary."""
         debug('select called with %s'%dictionary,0)
         if self.__criteria__: criteria = self.__criteria__.copy()
         else: criteria = {}

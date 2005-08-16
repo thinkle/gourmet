@@ -4,7 +4,7 @@ PER_100_GRAMS = ["kcal","protein","lipid","ash","carb","fiber","sugar","calcium"
 
 NUTRITION_FIELDS = [
     #[description abbrev type]
-    ["Nutrient Databank Number","ndbno","char(100)"],
+    ["Nutrient Databank Number","ndbno","int"],
     ["Short Description","desc","char(100)"],
     [_("Water"),"water","float"],    
     [_("Kilocalories"),"kcal","float"],
@@ -55,6 +55,14 @@ NUTRITION_FIELDS = [
     ["Gram Weight Description 2","gramdsc2","char(100)"],
     [_("Percent refuse"),"refusepct","float"],
     ]
+
+# List of fields that can be sensibly added, multiplied, etc.
+SUMMABLE_FIELDS = ['kcal','protein','lipid','carb',
+                   'fiber','calcium','magnesium','potassium',
+                   'sodium','copper','vitaminc','riboflavin','pantoacid',
+                   'vitaminb6','folateacid','folatedfe','vitaiu',
+                   'vitarae','vite','alphac','betacrypt','lutzea','famono',
+                   'fapoly',]
 
 # a convenient dictionary to move from shortname to longname,
 # for user interface.

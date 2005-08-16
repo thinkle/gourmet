@@ -1,10 +1,13 @@
 import os, os.path, gobject, re, gtk
-from gettext import gettext as _
 import tempfile
 from gdebug import debug
 from OptionParser import options
 
+import gettext_setup
+from gettext import gettext as _
+
 tmpdir = tempfile.gettempdir()
+BUG_URL = "http://sourceforge.net/tracker/?group_id=108118&atid=649652"
 
 CRC_AVAILABLE = hasattr(gtk,'CellRendererCombo') # is this wonderful feature available?
 
@@ -14,7 +17,45 @@ if options.gourmetdir:
 else:
     if os.name =='nt':
         # default to APPDATA, if available. If not, use ~/Application Data/gourmet/
-        gourmetdir = os.path.join(os.environ.get('APPDATA', os.path.join(os.path.expanduser('~'),'Application Data')), 'gourmet')
+        # Try APPDATA environmental variable, falling back to whatever python does with ~
+        APPDATA = os.environ.get('APPDATA',None)
+        if not APPDATA:
+            # On win98, reading the registry should give us the proper dir...
+            # (this code is from Dan F.)
+            import _winreg
+            try:
+                x=_winreg.ConnectRegistry(None,_winreg.HKEY_CURRENT_USER)
+                y= _winreg.OpenKey(
+                    x,
+                    r"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders"
+                    )
+                #we dont need to use datatype, but it returns it
+                APPDATA,datatype=_winreg.QueryValueEx(y,
+                                                      'Personal')
+                _winreg.CloseKey(y)
+            except EnvironmentError:
+                # maybe key doesn't exist... anyway, we have other fallback...
+                pass
+        # If we still haven't found where to put things, we'll try
+        # some more environmental variables and fallback to C:\My
+        # Documents\ if necessary... don't you love windows?
+        if not APPDATA:
+            # More attempts to figure out where to put things if our
+            # previous efforts have failed us
+            VARS_TO_TRY = ['USERPROFILE',
+                           'HOMEPATH',]            
+            for v in VARS_TO_TRY:
+                if os.environ.has_key(v):
+                    APPDATA = os.environ[v]
+                    break
+            if not APPDATA:
+                WINDIR = os.environ.get('windir',None)
+                if WINDIR:
+                    FALLBACK_DRIVE = os.path.split(WINDIR)[0]
+                else:
+                    FALLBACK_DRIVE = "C:"
+                APPDATA = os.path.join(FALLBACK_DRIVE,'My Documents')
+        gourmetdir = os.path.join(APPDATA,'gourmet')
     else:
         gourmetdir = os.path.join(os.path.expanduser('~'),'.gourmet')
 try:
@@ -38,7 +79,7 @@ except OSError:
 if not os.access(gourmetdir,os.W_OK):
     debug('Cannot write to configuration directory, %s'%gourmetdir,-1)
     import sys
-    sys.exit()
+    sys.exit()        
     
 debug('gourmetdir=%s'%gourmetdir,2)
 
@@ -67,7 +108,7 @@ if os.name == 'posix':
     gladebase=datad
     imagedir=datad
 
-# Windows setup
+# Windows setup (NOTE: this code is foolishly repeated in gettext_setup.py
 elif os.name == 'nt': 
     #datad = os.path.join('Program Files','Gourmet Recipe Manager','data')
     # We're going to look in a number of places, starting with our current location
@@ -122,6 +163,22 @@ if options.imaged:
 if options.gladed:
     gladebase=options.gladed
 
+HELP_FILE = os.path.join(datad,'FAQ')
+
+# GRAB PLUGIN DIR FOR HTML IMPORT
+if options.html_plugin_dir:
+    html_plugin_dir = options.html_plugin_dir
+else:
+    html_plugin_dir = os.path.join(gourmetdir,'html_plugins')
+    if not os.path.exists(html_plugin_dir):
+        os.makedirs(html_plugin_dir)
+        template_file = os.path.join(datad,'RULES_TEMPLATE')
+        if os.path.exists(template_file):
+            import shutil
+            shutil.copy(template_file,
+                        os.path.join(html_plugin_dir,'RULES_TEMPLATE')
+                        )
+
 import OptionParser
 if OptionParser.options.db=='metakit': db = 'metakit'
 if OptionParser.options.db=='sqlite': db = 'sqlite'
@@ -165,21 +222,37 @@ else:
 REC_ATTRS = [('title',_('Title'),'Entry'),
              ('category',_('Category'),'Combo'),
              ('cuisine',_('Cuisine'),'Combo'),
-             ('rating',_('Rating'),'Combo'),
+             ('rating',_('Rating'),'Entry'),
              ('source',_('Source'),'Combo'),
              ('servings',_('Servings'),'Entry'),
              ('preptime',_('Preparation Time'),'Entry'),
              ('cooktime',_('Cooking Time'),'Entry'),
              ]
+INT_REC_ATTRS = ['rating','preptime','cooktime']
+
+
+TEXT_ATTR_DIC = {'instructions':_('Instructions'),
+                 'modifications':_('Notes'),
+                 }
+
+REC_ATTR_DIC = {}
+for att,titl,widg in REC_ATTRS: REC_ATTR_DIC[att]=titl
+
+TEXT_ATTR_DIC = {'instructions':_('Instructions'),
+                 'modifications':_('Notes'),
+                 }
 
 NAME_TO_ATTR = {_('Instructions'):'instructions',
                 _('Notes'):'modifications',
-                _('Modifications'):'modifications'
+                _('Modifications'):'modifications',
                 }
 
+REC_ATTR_DIC={}
+
 for attr, name, widget in REC_ATTRS:
+    REC_ATTR_DIC[attr]=name
     NAME_TO_ATTR[name]=attr
-    
+
 try:
     import gnomeprint.ui, gnomeprint
     gnome_printing = True
@@ -223,7 +296,7 @@ def launch_url (url, ext=""):
             except ImportError:
                 dialog_extras.show_message("Unable to open",sublabel="Failed to launch URL: %s"%url)
         except gobject.GError, err:
-            print dir(err)
+            #print dir(err)
             label = _('Unable to open URL')
             for reg, msg in [('mailto:',_('Unable to launch mail reader.')),
                              ('http:',_('Unable to open website.')),

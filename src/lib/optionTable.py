@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import gtk
 
 class OptionTable (gtk.Table):
@@ -18,7 +17,7 @@ class OptionTable (gtk.Table):
         rows = len(self.options)
         if self.option_label or self.value_label:
             rows += 1
-        gtk.Table.__init__(self, rows=rows, columns=cols)
+        gtk.Table.__init__(self, rows=rows, columns=cols,homogeneous=True)
         self.widgets = []
         self.createOptionWidgets()
         
@@ -29,18 +28,20 @@ class OptionTable (gtk.Table):
             lab=gtk.Label()
             lab.set_text('<span weight="bold"><u>%s</u></span>'%self.option_label)
             lab.set_use_markup(True)
-            lab.set_alignment(0.5,0.5)
-            lab.set_justify(gtk.JUSTIFY_CENTER)            
-            self.attach(lab, 0, 1, 0, 1, xpadding=self.xpadding, ypadding=self.ypadding)
+            lab.set_alignment(0.0,0.5)
+            lab.set_justify(gtk.JUSTIFY_LEFT)            
+            self.attach(lab, 0, 1, 0, 1, xpadding=self.xpadding, ypadding=self.ypadding,
+                        xoptions=gtk.SHRINK, yoptions=gtk.SHRINK)
             lab.show()
         if self.value_label:
             n=1
             lab=gtk.Label()
             lab.set_text('<span weight="bold"><u>%s</u></span>'%self.value_label)
             lab.set_use_markup(True)
-            lab.set_alignment(0.5,0.5)
+            lab.set_alignment(0,0.5)
             lab.set_justify(gtk.JUSTIFY_CENTER)
-            self.attach(lab, 1, 2, 0, 1, xpadding=self.xpadding, ypadding=self.ypadding)
+            self.attach(lab, 1, 2, 0, 1, xpadding=self.xpadding, ypadding=self.ypadding,
+                        xoptions=gtk.SHRINK, yoptions=gtk.SHRINK)
             lab.show()
         for l,v in self.options:
             if type(v)==type(True):
@@ -74,9 +75,11 @@ class OptionTable (gtk.Table):
             lab = gtk.Label(l)
             lab.set_justify(gtk.JUSTIFY_LEFT)
             lab.set_alignment(0,0)
-            self.attach(lab, 0, 1, n, n+1, xpadding=self.xpadding, ypadding=self.ypadding)
+            self.attach(lab, 0, 1, n, n+1, xpadding=self.xpadding, ypadding=self.ypadding,
+                        xoptions=gtk.FILL,yoptions=gtk.SHRINK)
             lab.show()
-            self.attach(w, 1, 2, n, n+1, xpadding=self.xpadding, ypadding=self.ypadding)
+            self.attach(w, 1, 2, n, n+1, xpadding=self.xpadding, ypadding=self.ypadding,
+                        xoptions=gtk.FILL,yoptions=gtk.SHRINK)
             w.show()
             n += 1
             

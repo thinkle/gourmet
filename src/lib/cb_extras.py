@@ -1,6 +1,29 @@
 import gtk, gobject
 from gdebug import debug
 
+class FocusFixer:
+    key = None
+    def __init__ (self,cbe):
+        self.e=cbe.get_children()[0]
+        self.e.connect('key-press-event',self.keypress_event_cb)
+        self.e.connect('focus-out-event',self.focus_out_cb)
+        self.e.connect('focus-in-event',self.focus_in_cb)
+        cbe.connect('focus-in-event',self.focus_in_cb)
+
+    def focus_in_cb (self, widget, event):
+        self.e.grab_focus()
+
+    def focus_out_cb (self, widget, event):
+        if not event.in_ and self.key in ['Tab']:
+            parent = widget.get_parent()
+            while parent and not isinstance(parent,gtk.Window) :
+                parent = parent.get_parent()
+            for n in range(2): parent.emit('move-focus',gtk.DIRECTION_LEFT)
+            #parent.emit('move-focus',gtk.DIRECTION_LEFT)
+
+    def keypress_event_cb (self, w, event):
+        self.key = gtk.gdk.keyval_name(event.keyval)
+
 def cb_get_active_text (combobox):
     """Get the selected/active text of combobox"""
     model = combobox.get_model()
@@ -86,6 +109,7 @@ def make_completion (entry, model, col=0):
     completion.set_model(model)
     completion.set_text_column(col)
     entry.set_completion(completion)
+
     def on_activate (*args):
         txt = entry.get_text().lower()
         completion = False
@@ -119,11 +143,14 @@ def set_model_from_list (cb, list, expand=True):
 
 if __name__ == '__main__':
     w = gtk.Window()
-    vb = gtk.VBox()    
+    vb = gtk.VBox()
+    vb.add(gtk.Button('Blank button'))
+    for n in range(10): vb.add(gtk.Button('Other blank'))
     hbox = gtk.HBox()
     label = gtk.Label()
     label.set_text_with_mnemonic('Enter a _fruit: ')
     cbe = gtk.ComboBoxEntry()
+    FocusFixer(cbe)
     label.set_mnemonic_widget(cbe)
     set_model_from_list(cbe, ['Apples','Oranges','Grapes','Mango',
                               'Papaya','Plantain','Kiwi','Cherry',
@@ -133,7 +160,6 @@ if __name__ == '__main__':
     label2 = gtk.Label()
     label2.set_text_with_mnemonic('Mode of _Transportation')
     cb = gtk.ComboBox()
-    
     label2.set_mnemonic_widget(cb)
     set_model_from_list(cb, ['Planes','Trains','Automobiles','Spacecraft','Bicycles'])
     setup_typeahead(cb)

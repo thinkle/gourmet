@@ -1,5 +1,5 @@
 import gxml_importer, importer, mastercook_importer, mealmaster_importer, mastercook_plaintext_importer
-import gxml2_importer
+import gxml2_importer, rezkonv_importer
 import krecipe_importer
 import fnmatch
 from gettext import gettext as _
@@ -19,6 +19,15 @@ FILTER_INFO = {
                    'patterns':['*.mmf','*.txt'],
                    'mimetypes':['text/mealmaster','text/plain'],
                    'tester':importer.Tester(mealmaster_importer.mm_start_pattern)},
+    'rezkonv': {'import': lambda args: [rezkonv_importer.rezkonv_importer,[],
+                                           {'filename':args['file'],
+                                            'rd':args['rd'],
+                                            'threaded':args['threaded']}],
+                   'get_source':'source',
+                   'name':MMF,
+                   'patterns':['*.mmf','*.txt'],
+                   'mimetypes':['text/rezkonv','text/plain'],
+                   'tester':importer.Tester(rezkonv_importer.rzc_start_pattern)},
     'mastercookplain': {'import': lambda args: [mastercook_plaintext_importer.mastercook_importer,
                                                [args['file'],args['rd']],
                                                {'threaded':args['threaded']}],
@@ -73,7 +82,11 @@ FILTER_INFO = {
                }
     }
 
-FILTERS = []
+ARCHIVE_FILTERS = [['zip archive',['application/zip'],['*.zip']],
+           ['tar archive',['application/tar'],['*.tar','*.tgz','*.tar.gz',
+                                               '*.tar.bz2']],
+           ['gzipped file',['application/gzip'],['*.gzip','*.gz']]]
+FILTERS = ARCHIVE_FILTERS
 ALL_PATTERNS = []
 ALL_MIMES = []
 for d in FILTER_INFO.values():
@@ -91,14 +104,26 @@ def get_filters_by_extension (fn):
     return ret
 
 def select_import_filter (fn):
-    start_filters = get_filters_by_extension(fn)
-    for f in start_filters:
-        if FILTER_INFO[f]['tester'].test(fn):
-            return f
-    other_filters = filter(lambda n: n not in start_filters,FILTER_INFO.keys())
+    if type(fn)==str:
+        start_filters = get_filters_by_extension(fn)
+        for f in start_filters:
+            if FILTER_INFO[f]['tester'].test(fn):
+                return f
+        other_filters = filter(lambda n: n not in start_filters,FILTER_INFO.keys())
+    else:
+        other_filters = FILTER_INFO.keys()
     for f in other_filters:
         if FILTER_INFO[f]['tester'].test(fn):
             return f
     else:
         # if we can't find a filter, raise an error.
-        raise "Unable to find import filter for file %s."%fn
+        if type(fn) != str:
+            import os.path
+            tf='/tmp/test'
+            while os.path.exists(tf): tf += "t"
+            ofi=open(tf,'w')
+            ofi.write(fn.read())
+            ofi.close()
+        raise NotImplementedError("Unable to find import filter for file %s."%fn)
+        
+    

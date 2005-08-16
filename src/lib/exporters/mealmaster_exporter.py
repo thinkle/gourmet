@@ -4,8 +4,8 @@ from exporter import *
 from gourmet.gdebug import *
 from gettext import gettext as _
 
-class mealmaster_exporter (exporter):
-    def __init__ (self, rd, r, out, conv=None):
+class mealmaster_exporter (exporter_mult):
+    def __init__ (self, rd, r, out, conv=None, change_units=True, mult=1):
         import gourmet.importers.mealmaster_importer as mealmaster_importer
         self.add_to_instructions=""
         self.conv = conv
@@ -19,8 +19,12 @@ class mealmaster_exporter (exporter):
         for k,v in recattrs_orig.items():
             self.recattrs[v]=k
         self.categories = ""
-        exporter.__init__(self, rd, r, out, conv,
-                          order=['attr','ings','text'])
+        exporter_mult.__init__(self, rd, r, out,
+                               conv=conv,
+                               order=['attr','ings','text'],
+                               convert_attnames=False,
+                               change_units=change_units,
+                               mult=mult)
 
     def write_head (self):
         self.out.write("MMMMM----- Recipe via Meal-Master (tm)\n\n")
@@ -28,7 +32,6 @@ class mealmaster_exporter (exporter):
     def write_attr (self, label, text):
         #We must be getting the label already capitalized from an the exporter class
 	#this line is just to correct that without making a mess of the exporter class
-	label=label.lower()
 	if label=='category' or label=='cuisine':
             if self.categories:
                 self.categories="%s, %s"%(self.categories,text)
@@ -40,7 +43,7 @@ class mealmaster_exporter (exporter):
             self.write_categories()
 	#Mealmaster pukes at the preptime line so this removes it    
 	elif label=='preparation time' or label=='rating' or label=='source':
-	    self.add_to_instructions += "\n\n%s: %s"%(label,text)
+	    self.add_to_instructions += "\n\n%s: %s"%(REC_ATTR_DIC[label],text)
 	else:
             if label and text:
                 if self.recattrs.has_key(label):

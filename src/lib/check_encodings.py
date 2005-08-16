@@ -24,9 +24,10 @@ class CheckEncoding:
                         'mac_cyrillic','mac_greek','mac_iceland','mac_latin2',
                         'mac_roman','mac_turkish','utf_16','utf_16_be',
                         'utf_16_le','utf_7','utf_8']
-        f = open(file,'r')
-        self.txt = f.read()
-        f.close()
+        if type(file)==str:
+            file = open(file,'r')
+        self.txt = file.read()
+        file.close()
 
     def test_encodings (self):
         """Move through self.encodings one at a time and return the first
@@ -78,10 +79,9 @@ class GetFile (CheckEncoding):
 
 def get_file (file, encodings=None):
     gf = GetFile(file, encodings)
-    debug('returning lines %s,%s,%s'%(gf.lines[0],gf.lines[1],gf.lines[2]),0)
     return gf.lines
 
-class EncodingDialog (de.optionDialog):
+class EncodingDialog (de.OptionDialog):
     def __init__ (self, default=None, label=_("Select encoding"),
                   sublabel=_("Cannot determine proper encoding. Please select the correct encoding from the following list."),
                   expander_label=_("See _file with encoding"),
@@ -96,7 +96,7 @@ class EncodingDialog (de.optionDialog):
         options = self.create_options()
         expander=self.create_expander()
         self.setup_buffers()
-        de.optionDialog.__init__(self, default=default,label=label, sublabel=sublabel,
+        de.OptionDialog.__init__(self, default=default,label=label, sublabel=sublabel,
                                  options=options, expander=expander)
         self.optionMenu.connect('activate',self.change_encoding)
         self.change_encoding()
@@ -114,7 +114,7 @@ class EncodingDialog (de.optionDialog):
         self.hbb.show_all()
 
     def get_option (self,widget):
-        de.optionDialog.get_option(self,widget)
+        de.OptionDialog.get_option(self,widget)
         self.change_encoding()
 
     def create_options (self):

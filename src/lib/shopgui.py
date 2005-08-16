@@ -7,12 +7,18 @@ import exporters.printer as printer
 from gdebug import *
 from gglobals import *
 from gettext import gettext as _
+from FauxActionGroups import ActionManager
+import mnemonic_manager
 
-class ShopGui:
+class ShopGui (ActionManager):
     """A class to manage our shopping window."""
     def __init__ (self, RecGui, conv=None):
         debug("__init__ (self, RecGui):",5)
         self.glade = gtk.glade.XML(os.path.join(gladebase,'shopList.glade'))
+        self.init_action_manager()
+        self.mm = mnemonic_manager.MnemonicManager()
+        self.mm.add_glade(self.glade)
+        self.mm.fix_conflicts_peacefully()
         self.conv=conv
         self.rg = RecGui
         self.recs = {}
@@ -47,8 +53,35 @@ class ShopGui:
             'shopHide' : self.hide,
             'shopSave' : self.save,
             'shopPrint' : self.printList,
-            'shopClear' : self.clear,            
+            'shopClear' : self.clear,
+            'move_to_shopping' : self.rem_selection_from_pantry,
+            'move_to_pantry' : self.add_selection_to_pantry,
+            'show_help': lambda *args: de.show_faq(HELP_FILE,jump_to='Shopping')
             })
+
+    def init_action_manager (self):
+        ActionManager.__init__(
+            self,self.glade,
+            {'shopGroup':[{'shopRemove':[{'tooltip':_('Move selected items from shopping list to "pantry" list. You can also move items by dragging and dropping.')},
+                                         # widgets
+                                         ['moveToPantryButton',
+                                          'remove_from_shopping_list_menuitem',
+                                          'add_to_pantry_popup_menuitem',
+                                          ],
+                                         ]},
+                          {'pantryRemove':[{'tooltip':_('Move selected items back to the shopping list. You can also move items by dragging and dropping.')},
+                                           # widgets
+                                           ['moveToShoppingListButton',
+                                            'add_to_sl_popup_menuitem',
+                                            'return_to_shopping_menuitem',
+                                            ]],
+                           }                 
+                          ],
+             },
+            # callbacks
+            [('pantryRemove',self.rem_selection_from_pantry),
+             ('shopRemove',self.add_selection_to_pantry),
+             ])
 
     def create_rtree (self):
         debug("create_rtree (self):",5)
@@ -106,7 +139,7 @@ class ShopGui:
         #of.close()
         import exporters.lprprinter
         self._printList(exporters.lprprinter.SimpleWriter,file=filename,show_dialog=False)
->>>>>>> 1.4.2.2
+
     def printList (self, *args):
         debug("printList (self, *args):",0)
         self._printList(printer.SimpleWriter,dialog_parent=self.widget)
@@ -193,6 +226,8 @@ class ShopGui:
         self.rectree.set_model(self.create_rmodel())
         self.slTree.expand_all()
         self.pTree.expand_all()
+        self.pTree_sel_changed_cb(self.pTree.get_selection())
+        self.slTree_sel_changed_cb(self.slTree.get_selection())
 
     def create_slTree (self, data):
         debug("create_slTree (self, data):",5)
@@ -207,6 +242,9 @@ class ShopGui:
                 self.popup_ing_menu(tv)
                 return True
         self.slTree.connect('button-press-event',slTree_popup_cb)
+        self.slTree.get_selection().connect('changed',self.slTree_sel_changed_cb)
+        # reset the first time
+        self.slTree_sel_changed_cb(self.slTree.get_selection())
 
     def create_pTree (self, data):
         debug("create_pTree (self, data):",5)
@@ -215,6 +253,9 @@ class ShopGui:
                                     self.pMod)
         self.pTree.connect('row-activated',self.popup_pan_menu)
         self.pTree.connect('popup-menu',self.popup_pan_menu)
+        self.pTree.get_selection().connect('changed',self.pTree_sel_changed_cb)
+        # reset the first time...
+        self.pTree_sel_changed_cb(self.pTree.get_selection())
         def pTree_popup_cb (tv, event):
             debug("pTree_popup_cb (tv, event):",5)
             if event.button==3:
@@ -255,6 +296,28 @@ class ShopGui:
         tree.show()
         return tree
 
+    def slTree_sel_changed_cb (self, selection):
+        """Callback handler for selection change on shopping treeview."""
+        if selection.count_selected_rows()>0:
+            self.shopRemove.set_sensitive(True)
+            # if we have items selected, the pantry tree should not
+            # this makes these feel more like one control/list divided
+            # into two sections.            
+            self.pTree.get_selection().unselect_all()
+        else:
+            self.shopRemove.set_sensitive(False)
+
+    def pTree_sel_changed_cb (self, selection):
+        """Callback handler for selection change on pantry treeview"""
+        if selection.count_selected_rows()>0:
+            self.pantryRemove.set_sensitive(True)
+            # if we have items selected, the shopping tree should not.
+            # this makes these feel more like one control/list divided
+            # into two sections.
+            self.slTree.get_selection().unselect_all()
+        else:
+            self.pantryRemove.set_sensitive(False)
+
     def on_drag_begin(self, tv, context):
         debug("on_drag_begin(self, tv, context):",5)
         self.tv=tv
@@ -269,7 +332,10 @@ class ShopGui:
         debug("on_drag_data_get (self, tv, context, selection, info, time):",5)
         debug('on_drag_data_get %s %s %s %s %s'%(tv,context,selection,info,time),5)
         self.drag_selection=selection
-        debug("Selection data: %s %s %s %s"%(self.dragged, self.drag_selection.data, dir(self.drag_selection), self.drag_selection.get_text()),5)
+        debug("Selection data: %s %s %s %s"%(self.dragged,
+                                             self.drag_selection.data,
+                                             dir(self.drag_selection),
+                                             self.drag_selection.get_text()),5)
 
     def ingSelection (self,return_iters=False):
         """A way to find out what's selected. By default, we simply return
@@ -344,7 +410,7 @@ class ShopGui:
     def add_sel_to_newcat (self, menuitem, *args):
         debug("add_sel_to_newcat (self, menuitem, *args):",5)
         kk=self.ingSelection()
-        sublab = str.join(kk,', ')
+        sublab = ', '.join(kk)
         cat = de.getEntry(label=_('Enter Category'),
                           sublabel=_("Category to add %s to") %sublab,
                           entryLabel=_('Category: '),
@@ -361,9 +427,12 @@ class ShopGui:
             ssave.restore_selections(tv=self.slTree)
             pssave.restore_selections(tv=self.slTree)        
 
-
     def add_selection_to_pantry (self, *args):
+        """Add selected items to pantry."""
         debug("add_selection_to_pantry (self, *args):",5)
+        self.tv = self.slTree
+        self.ssave=te.selectionSaver(self.slTree,1)
+        self.pssave=te.selectionSaver(self.pTree,1)
         kk = self.ingSelection()
         for k in kk:
             self.sh.add_to_pantry(k)
@@ -371,7 +440,11 @@ class ShopGui:
         self.ssave.restore_selections(tv=self.pTree)
         
     def rem_selection_from_pantry (self, *args):
+        """Add selected items to shopping list."""
         debug("rem_selection_from_pantry (self, *args):",5)
+        self.tv = self.pTree
+        self.ssave=te.selectionSaver(self.slTree,1)
+        self.pssave=te.selectionSaver(self.pTree,1)
         for k in self.ingSelection():
             self.sh.remove_from_pantry(k)
         self.resetSL()
@@ -469,49 +542,60 @@ class ShopGui:
         return data,pantry
             
     def grabIngFromRec (self, rec, mult=1):
+        """Get an ingredient from a recipe and return a list with our amt,unit,key"""
         debug("grabIngFromRec (self, rec=%s(%s), mult=%s):"%(rec.title,rec.id,mult),5)
         """We will need [[amt,un,key],[amt,un,key]]"""
-        if type(rec) == type(""):
+        if type(rec) == type(""): #if we have an ID (type str), grab the recipe from it
             rec = self.rg.rd.get_rec(rec)
-        ings = self.rg.rd.get_ings(rec)
+        ings = self.rg.rd.get_ings(rec) # grab all of our ingredients
         lst = []
+        # this constant should be 'ask',or rdatabase.RecData.AMT_MODE_LOW|AMT_MODE_AVERAGE|AMT_MODE_HIGH
+        # this is handled in preferences (see prefsGui.py)
+        #RESOLVE_RANGE_METHOD=self.rg.prefs.get('shop_handle_ranges','ask')
+        include_dic = self.includes.get(rec.id) or {}
         for i in ings:
-            try:
-                refid=i.refid
-            except:
-                refid=None
+            if hasattr(i,'refid'): refid=i.refid
+            else: refid=None
             debug("adding ing %s, %s"%(i.item,refid),4)
             if i.optional:
-                if (self.includes.has_key(rec.id) and
-                    (not self.includes[rec.id].has_key(i.ingkey) or not self.includes[rec.id][i.ingkey])
-                    ):
+                # handle boolean includes value which applies to ALL ingredients
+                if not include_dic or (include_dic != True and 
+                                       (not include_dic.has_key(i.ingkey)
+                                        or not include_dic[i.ingkey])
+                                       ):
+                    # we ignore our ingredient (don't add it)
                     continue
-            if i.amount:
-                amount=float(i.amount)*mult
+            if self.rg.rd.get_amount(i):
+                amount=self.rg.rd.get_amount(i,mult=mult)                
             else: amount=None            
             if refid:
-                ## a reference tells us to get another recipe entirely.
-                ## it has two parts:
-                ## i.item (regular name), i.refid, i.refmult (amount we multiply recipe by)
-                ## if we don't have the reference (i.refid), we just output the recipe name
+                ## a reference tells us to get another recipe
+                ## entirely.  it has two parts: i.item (regular name),
+                ## i.refid, i.refmult (amount we multiply recipe by)
+                ## if we don't have the reference (i.refid), we just
+                ## output the recipe name
                 debug("Grabbing recipe as ingredient!",2)
                 # disallow recursion
-                if refid == rec.id:
+                subrec = self.rg.rd.get_referenced_rec(i)
+                if subrec.id == rec.id:
                     de.show_message(
                         label=_('Recipe calls for itself as an ingredient.'),
                         sublabel=_('Ingredient %s will be ignored.')%rec.title + _('Infinite recursion is not allowed in recipes!'))
                     continue
-
-                subrec = self.rg.rd.get_rec(i.refid)
                 if subrec:
                     # recipe refs need an amount. We'll
                     # assume if need be.
-                    if not i.amount: i.amount=1
-                    refmult=mult*i.amount
-                    if not self.includes.has_key(subrec.id):
-                        d = getOptionalIngDic(self.rg.rd.get_ings(subrec),refmult)
-                        self.includes[subrec.id]=d
-                    nested_list=self.grabIngFromRec(subrec,refmult)
+                    amt = self.rg.rd.get_amount_as_float(i)
+                    if not amt: amount=amt
+                    refmult=mult*amt
+                    if not include_dic.has_key(subrec.id):
+                        d = getOptionalIngDic(self.rg.rd.get_ings(subrec),
+                                              refmult,
+                                              self.rg.prefs,
+                                              self.rg)
+                        include_dic[subrec.id]=d
+                    nested_list=self.grabIngFromRec(subrec,
+                                                    refmult)
                     lst.extend(nested_list)
                     continue
                 else:
@@ -550,18 +634,30 @@ class ShopGui:
         self.stat.push(self.contid,txt)
         self.rg.message(txt)
     
-class OptionalIngDialog (de.mDialog):
-    def __init__ (self,vw,mult=1,default=False):
+class OptionalIngDialog (de.ModalDialog):
+    """A dialog to query the user about whether to use optional ingredients."""
+    def __init__ (self,vw,prefs,rg,mult=1,default=False):
         debug("__init__ (self,vw,default=False):",5)
-        #gtk.Dialog.__init__(self)
-        de.mDialog.__init__(self, default, label=_("Select optional ingredients."), sublabel=_("Please specify which of the following optional ingredients you'd like to include on your shopping list."))
+        self.rg=rg
+        de.ModalDialog.__init__(
+            self, default,
+            label=_("Select optional ingredients."),
+            sublabel=_("Please specify which of the following optional ingredients you'd like to include on your shopping list."))
         self.mult = mult
         self.vw=vw
         self.ret = {}
-        #self.default = default #whether we default to adding ingredients
         self.create_tree()
+        self.cb = gtk.CheckButton("Always use these settings")
+        self.cb.set_active(prefs.get('remember_optionals_by_default',False))
+        alignment = gtk.Alignment()
+        alignment.set_property('xalign',1.0)
+        alignment.add(self.cb)
+        self.vbox.add(alignment)
+        alignment.show()
+        self.cb.show()
         
     def create_model (self):
+        """Create the TreeModel to show optional ingredients."""
         debug("create_model (self):",5)
         self.mod = gtk.TreeStore(gobject.TYPE_PYOBJECT, #the ingredient obj
                                  gobject.TYPE_STRING, #amount
@@ -572,15 +668,20 @@ class OptionalIngDialog (de.mDialog):
             iter=self.mod.append(None)
             self.mod.set_value(iter,0,i)
             if self.mult==1:
-                self.mod.set_value(iter,1,i.amount)
+                self.mod.set_value(iter,1,
+                                   self.rg.rd.get_amount_as_string(i)
+                                   )
             else:
-                self.mod.set_value(iter,1,float(i.amount)*float(self.mult))
+                self.mod.set_value(iter,1,
+                                   self.rg.rd.get_amount_as_string(i,float(self.mult))
+                                   )
             self.mod.set_value(iter,2,i.unit)
             self.mod.set_value(iter,3,i.item)
             self.mod.set_value(iter,4,self.default)
             self.ret[i.ingkey]=self.default
 
     def create_tree (self):
+        """Create our TreeView and populate it with columns."""
         debug("create_tree (self):",5)
         self.create_model()
         self.tree = gtk.TreeView(self.mod)
@@ -607,6 +708,19 @@ class OptionalIngDialog (de.mDialog):
         newval = not val
         self.ret[self.mod.get_value(iter,0).ingkey]=newval
         self.mod.set_value(iter,4,newval)
+
+    def run (self):
+        self.show()
+        if self.modal: gtk.main()
+        if self.cb.get_active() and self.ret:
+            # if we are saving our settings permanently...
+            # we add ourselves to the shopoptional attribute
+            for row in self.mod:
+                ing = row[0]
+                ing_include = row[4]
+                if ing_include: ing.shopoptional=2
+                else: ing.shopoptional=1
+        return self.ret
 
 class shopIngredientEditor (reccard.IngredientEditor):
     def __init__ (self, RecGui, ShopGui):
@@ -679,13 +793,37 @@ class shopIngredientEditor (reccard.IngredientEditor):
         self.sdW.hide()
         self.sdToggle=False
         return True
-        
-def getOptionalIngDic (ivw, mult):
+
+
+def getOptionalIngDic (ivw, mult, prefs, rg):
+    """Return a dictionary of optional ingredients with a TRUE|FALSE value
+
+    Alternatively, we return a boolean value, in which case that is
+    the value for all ingredients.
+
+    The dictionary will tell us which ingredients to add to our shopping list.
+    We look at prefs to see if 'shop_always_add_optional' is set, in which case
+    we don't ask our user."""    
     debug("getOptionalIngDic (ivw):",5)
     vw = ivw.select(optional=True)
-    if len(vw) > 0:
-        oid=OptionalIngDialog(vw, mult)
-        return oid.run()
-        #return {} #until we write this, we'll exclude ingredients
-    else:
-        return {}
+    # optional_mode: 0==ask, 1==add, -1==dont add
+    optional_mode=prefs.get('shop_handle_optional',0)
+    if optional_mode:
+        if optional_mode==1: return True
+        elif optional_mode==-1: return False
+    elif len(vw) > 0:
+        if not 0 in [i.shopoptional for i in vw]:
+            # in this case, we have a simple job -- load our saved
+            # defaults
+            dic = {}
+            for i in vw:
+                if i.shopoptional==2: dic[i.ingkey]=True
+                else: dic[i.ingkey]=False
+            return dic
+        # otherwise, we ask our user
+        oid=OptionalIngDialog(vw, prefs, rg,mult )
+        retval = oid.run()
+        if retval:
+            return
+        else:
+            raise "Option Dialog cancelled!"

@@ -3,7 +3,7 @@ import sys, xml.sax.saxutils, base64
 from gourmet.gdebug import *
 from gourmet.gglobals import *
 
-class rec_to_xml (exporter.exporter):
+class rec_to_xml (exporter.exporter_mult):
 
     """A vastly simplified XML exporter. The previous XML format was
     written as a format designed for itself (its design predated
@@ -12,14 +12,16 @@ class rec_to_xml (exporter.exporter):
     simpler, and the format should be quicker to write and more
     convenient for exchanging single recipes."""
     
-    def __init__ (self, rd, r, out,attdics={}):
+    def __init__ (self, rd, r, out,attdics={},change_units=False,mult=1):
         self.attdics = attdics
-        exporter.exporter.__init__(self, rd,r,out, use_ml=True,
-                                   order=['attr','image','text','ings'],
-                                   do_markup=True)
+        exporter.exporter_mult.__init__(self, rd,r,out, use_ml=True,
+                                        order=['attr','image','ings','text'],
+                                        do_markup=True,
+                                        change_units=change_units,
+                                        mult=mult)
 
     def write_head (self):
-        self.out.write("\n<recipe>")
+        self.out.write("\n<recipe id='%s'>"%self.r.id)
 
     def write_attr (self, label, text):
         attr = NAME_TO_ATTR[label]
@@ -51,9 +53,11 @@ class rec_to_xml (exporter.exporter):
         self.out.write("\n</ingredient-list>")
 
     def write_ingref (self, amount=1, unit=None, item=None, refid=None, optional=False):
-        self.out.write("<ingref refid=%s amount=%s>%s</ingref>\n"%(quoteattr(refid),
-                                                                   quoteattr(amount.strip()),
-                                                                   xml.sax.saxutils.escape(item))
+        self.out.write("<ingref %srefid=%s amount=%s>%s</ingref>\n"%(
+            (optional and " optional='yes' " or ""),
+            quoteattr(str(refid)),
+            quoteattr(amount.strip()),
+            xml.sax.saxutils.escape(item))
                        )
         
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
@@ -78,11 +82,16 @@ class rec_to_xml (exporter.exporter):
     
 
 class rview_to_xml (exporter.ExporterMultirec):
-    def __init__ (self, rd, rview, out, one_file=True, progress_func=None):
+    def __init__ (self, rd, rview, out, one_file=True, progress_func=None, change_units=False,
+                  mult=1):
         self.rd=rd
         exporter.ExporterMultirec.__init__(
             self, rd, rview, out, one_file=True, ext='xml', exporter=rec_to_xml,
-            progress_func=progress_func)
+            progress_func=progress_func,
+            exporter_kwargs={'change_units':change_units,
+                             'mult':mult,
+                             }
+            )
         
     def write_header (self):        
         self.ofi.write('<?xml version="1.0" encoding="UTF-8" ?>\n')

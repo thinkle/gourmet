@@ -256,11 +256,12 @@ class RecRenderer (print_writer):
         
 
 class RecWriter (exporter.exporter_mult):
-    def __init__ (self, rd, r, printwriter, mult=1, change_units=True):
+    def __init__ (self, rd, r, printwriter, change_units=True, mult=1):
         self.print_writer = printwriter
         self.r = r
-        exporter.exporter_mult.__init__(self, rd, r, out=None, mult=mult,
-                                        change_units=True)
+        exporter.exporter_mult.__init__(self, rd, r, None,
+                                        change_units=change_units,
+                                        mult=mult)
 
     def write_head (self):
         pass
@@ -274,12 +275,6 @@ class RecWriter (exporter.exporter_mult):
         if attr=='title':
             self.print_writer.write_heading(text)
             return
-        if attr=='servings':
-            num = convert.frac_to_float(text)
-            if num:
-                text = convert.float_to_frac(num * self.mult)
-            else:
-                return
         self.print_writer.write_paragraph("%s: %s"%(label, text))
 
     def write_text (self, label, text):
@@ -299,7 +294,6 @@ class RecWriter (exporter.exporter_mult):
                                         space_after=0)
 
     def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):
-        amt,unit=self.multiply_amount(amount,unit)
         if amount: line = amt + " "
         else: line = ""
         if unit: line += "%s "%unit

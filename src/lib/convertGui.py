@@ -175,7 +175,13 @@ class UnitModel (gtk.ListStore):
         self.conv = converter
         gtk.ListStore.__init__(self, str, str)
         # the first item of each conv.units
-        lst = map(lambda a: (a[1][0],a[0]), self.conv.units)
+        lst = map(lambda a: (a[1][0],a[0]), filter(lambda x: not (converter.unit_to_seconds.has_key(x[1][0])
+                                                                  or
+                                                                  converter.unit_to_seconds.has_key(x[0])
+                                                                  )
+                                                   ,
+                                                   self.conv.units)
+                  )
         lst.sort()
         for ulong,ushort in lst:
             iter=self.append()

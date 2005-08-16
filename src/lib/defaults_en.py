@@ -1,12 +1,35 @@
-## we set up default information.
-## first, easy to maintain lists which can eventually be moved to
-## files.
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# we set up default information for our locale.
+# Translators should use this file as the basis of their translation.
+# Copy this file and rename it for you locale.
+#
+# For example, Spanish uses:
+# defaults_es.py
+#
+# British English uses:
+# defaults_en_GB.py
+#
+# Please fill in the below fields:
+
+# Language: English
+# Translator: None (English is our default language).
+# Last-updated: 4/27/05
 
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!
 
-# only translate the items in the list [..] (and feel free to create categories
-# that make sense for your locale -- no need to translate these ones). DO NOT
-# translate 'cuisine','rating','source' or 'category'
+# only translate the items in the list [..] (and feel free to create
+# categories that make sense for your locale -- no need to translate
+# these ones). DO NOT translate 'cuisine','rating','source' or
+# 'category'
+
+# The below are Gourmet's standard fields and the default categories for them.
+# Do not translate the field names ('cuisine','rating','source,'category').
+# Instead, fill in the list with categories that make sense for your locale.
+# Feel free to change the number or content of categories to be consistent
+# with what users in your locale are likely to be familiar with.
+
 fields={'cuisine': ['American','Italian','Mexican',
                     'Southwestern','Asian/Thai','Asian/Vietnamese',
                     'Asian/Chinese','Asian/Japanese',],
@@ -32,7 +55,7 @@ SYNONYMS=[
     ["chilli pepper","capsicum"],
     ["corn","sweetcorn","maise","sweet corn"],
     ["red bell pepper","red pepper"],
-    ["green pepper", "bell pepper","green bell pepper", "pepper"],
+    ["bell pepper, green", "green pepper", "bell pepper","green bell pepper", "pepper"],
     ["beet","beetroot"],
     ["collard greens","spring greens"],
     ["cilantro","coriander"],
@@ -54,25 +77,52 @@ SYNONYMS=[
     ["sapodilla", "chiku", "sapadilla", "snake fruit", "sawo"],
     ["soursop", "guanabana"],
     ['black cod','sablefish'],
-    ['patagonian toothfish','chilean sea bass'],
+    ['chilean sea bass','patagonian toothfish'],
+    ['flour, all purpose','flour, all-purpose','flour','white flour'],
+    ['sugar, white','sugar'],    
     ]
 
-# a dictionary key=ambiguous word, value=list of possible non-ambiguous terms
+# a dictionary for ambiguous words.
+# key=ambiguous word, value=list of possible non-ambiguous terms
+#
+# Translators: if you have a word that has more than one food meaning
+# in your language, you can add an entry as follow
+
+# AMBIGUOUS = {
+#              'word':['meaning1','meaning2','meaning3'],
+#             }
+
 AMBIGUOUS = {}
 
 
 # triplicates ITEM, KEY, SHOPPING CATEGORY
-#
-# These will be defaults. They should include whatever foods might be
-# standard for your locale, with whatever sensible default categories
-# you can think of (again, thinking of your locale, not simply translating
-# what I've done).
+# These will be defaults.
+
+# They should include whatever foods might be standard for your
+# locale, with whatever sensible default categories you can think of
+# (again, thinking of your locale, not simply translating what I've
+# done).
+
+# Items provided here will automatically be recognized and go onto the
+# given category in a user's shopping list by default.
+
+# Don't feel obligated to translate every item -- especially since not
+# all items will be common for all locales. However, the more items
+# you can put here, the more the user will get the sense that gourmet
+# "knows" about foods that they enter.
+
+# I generated the below list using the wikipedia entry on foods as my
+# starting point. You may want to do something similar for your
+# locale.  Also, if the syntax of the below is too complicated, you
+# can send me a list of category headings and ingredients for your
+# locale and I'll do the necessary formatting <Thomas_Hinkle@alumni.brown.edu>
+
 INGREDIENT_DATA = [["alfalfa sprouts","alfalfa sprouts","produce"],
                    ["anise","anise","produce"],
                    ["artichoke","artichoke","produce"],
                    ["arugula","arugula","produce"],
                    ["asparagus","asparagus","produce"],
-                   ["aubergine","aubergine","produce"],
+                   ["eggplant","eggplant","produce"],
                    ["avocado","avocado","produce"],
                    ["green beans","green beans","produce"],
                    ["azuki beans","azuki beans","produce"],
@@ -85,7 +135,7 @@ INGREDIENT_DATA = [["alfalfa sprouts","alfalfa sprouts","produce"],
                    ["green beans","green beans","produce"],
                    ["kidney beans","kidney beans","produce"],
                    ["lentils","lentils","produce"],
-                   ["lima bean or butter bean","lima bean or butter bean","produce"],
+                   ["lima bean","butter bean","produce"],
                    ["mung beans","mung beans","produce"],
                    ["navy beans","navy beans","produce"],
                    ["runner beans","runner beans","produce"],
@@ -127,8 +177,8 @@ INGREDIENT_DATA = [["alfalfa sprouts","alfalfa sprouts","produce"],
                    ["shallot","shallot","produce"],
                    ["scallion","scallion","produce"],
                    ["parsley","parsley","produce"],
-                   ["pepper","pepper","produce"],
-                   ["red bell pepper","red bell pepper","produce"],
+                   ["green pepper","bell pepper, green","produce"],
+                   ["red bell pepper","bell pepper, red","produce"],
                    ["chilli pepper","chilli pepper","produce"],
                    ["jalapeño pepper","pepper, jalapeño","produce"],
                    ["habanero pepper","pepper, habanero","produce"],
@@ -481,7 +531,8 @@ INGREDIENT_DATA = [["alfalfa sprouts","alfalfa sprouts","produce"],
                    ['eggs','eggs', 'dairy',],
                    ['salmon','salmon', 'seafood',],
                    ['lasagna pasta noodles','pasta, lasagna noodles', 'pastas',],
-                   ['all flour purpose','flour, all purpose', 'baking',],
+                   ['all purpose flour','flour, all purpose', 'baking',],
+                   ['flour','flour, all purpose','backing',],
                    ['ground cumin','cumin, ground', 'spices',],
                    ['cucumber','cucumber', 'produce',],
                    ['salsa','salsa', 'international',],
@@ -510,6 +561,9 @@ INGREDIENT_DATA = [["alfalfa sprouts","alfalfa sprouts","produce"],
 # THESE ARE STANDARD UNIT CONVERSIONS. You can simply translate unit names where
 # you know them. Eliminate entries that are untranslatable or don't exist in your
 # locale. And please add any additional units that you know of.
+# Each unit is of the following format:
+# ("unit1","unit2"):conversion_factor, where unit1 contains conversion_factor X unit2
+# For example: 1 cup has 16 tablespoons.
 CONVERTER_TABLE = {
     ("c.", "tbs."):16,
     ("lb.", "oz."):16,
@@ -533,6 +587,8 @@ CONVERTER_TABLE = {
     ("lb.", "grains"):7000}
 
 # DENSITIES of common foods. This allows us to convert between mass and volume.
+# Translators: You may be best off translating the food names below, since lists
+# of food densities can be hard to come by!
 DENSITY_TABLE={
     "water":1,
     "juice, grape":1.03,
@@ -564,21 +620,25 @@ DENSITY_TABLE={
     "sugar, confectioners": 0.6
             }
 
-# Stand unit names and alternate unit names that might appear.
-# For example: "c." is our standard for cup. "cup","c." or "cups" might appear
-# in a recipe we are importing.
-# Each item of this list looks like this:
+# Standard unit names and alternate unit names that might appear.  For
+# example: "c." is our standard abbreviation for cup.  "cup","c." or
+# "cups" might appear in a recipe we are importing.  Each item of this
+# list looks like this:
 #
 # ["standard", ["alternate1","alternate2","alternate3",...]]
-
+#
+# The first item should be the preferred abbreviation
+# The second item should be the full name of the unit
+# e.g. ["c.", ["cup",...]]
+#
 UNITS = [["bucket" , ["bucket", "buckets", "bckt."]],
          ["peck", ["peck", "pecks"]],
          ["bushel", ["bushel", "bushels", "bsh.", "bu.", "bu", "bsh", "bshl", "bshl."]],
          ["grains", ["grain", "grains"]],
          ["dram", ["dram", "drams"]],
          ["drop",["drop"]],
-         ["tsp.", ["teaspoon","tsp", "tsp.","tea spoon", "tsps.", "teaspoons", "tea spoons", "Teaspoon", "t"]],
-         ["tbs.", ["tablespoon","tbs", "tbsp", "tbs.", "tbsp.", "table spoon", "tbsps.", "tablespoons", "Tablespoon", "T"]],
+         ["tsp.", ["teaspoon","tsp", "tsp.","tea spoon", "tsps.", "teaspoons", "tea spoons", "Teaspoon", "Teaspoons","t","Ts.","Tsp.","Tsp"]],
+         ["tbs.", ["tablespoon","tbs", "tbsp", "tbs.", "tbsp.", "table spoon", "tbsps.", "tablespoons", "Tablespoon", "T", "Tbs.", "Tbsp", "Tbsp."]],
          ["lb.", [ "pound", "lb","lb.", "lbs.", "pounds"]],
          ["oz.", [ "ounce", "oz","ounces", "oz."]],
          ["c.", ["cup", "c.", "cups"]],
@@ -594,15 +654,12 @@ UNITS = [["bucket" , ["bucket", "buckets", "bckt."]],
          ["kg.", ["kilogram","kg.", "kg",  "kilograms"]]
          ]
 
-WEIGHTS = ['grains','lb','oz.','g.','mg.','kg.']
-VOLUMES = ['bucket','peck','bushel','tsp.','tbs.','qt.','pt.','gallon','ml.','cl.','dl.','l.',
-           'dram','drop','c.']
+METRIC_RANGE = (1,999)
 
 # The following sets up unit groups. Users will be able to turn
 # these on or off (American users, for example, would likely turn
 # off metric units, since we don't use them).
-METRIC_RANGE = (1,999)
-
+# (User choice not implemented yet)
 UNIT_GROUPS = {
     'metric mass':[('mg.',METRIC_RANGE),
                    ('g.',METRIC_RANGE),
@@ -647,7 +704,8 @@ CROSS_UNIT_TABLE = {
     ("ml.", "g."):['density',1]}
 
 # The units here need to correspond to the standard unit names defined
-# in UNITS
+# in UNITS.  These are some core conversions from mass-to-volume,
+# assuming a density of 1 (i.e. the density of water).
 VOL_TO_MASS_TABLE = {
     ("pt.", "lb.") : 1,
     ("tbs.", "oz.") : 0.5,
@@ -661,5 +719,46 @@ VOL_TO_MASS_TABLE = {
     ("dl.", "kg.") : 0.1,
     ("dl.", "g.") : 100,    
     ("l.", "kg.") : 1}
-    
 
+# TIME ABBREVIATIONS (this is new!)
+TIME_ABBREVIATIONS = {
+    'sec':'seconds',
+    'min':'minutes',
+    'hr':'hours'
+    }
+
+# These functions are rather important! Our goal is simply to
+# facilitate look ups -- if the user types in "tomatoes", we want to
+# find "tomato." Note that the strings these functions produce will
+# _never_ be shown to the user, so it's fine to generate nonsense
+# words as well as correct answers -- our goal is to generate a list
+# of possible hits rather than to get the plural/singular form "right".
+
+irregular_plurals={
+    "geese":"goose",
+    }
+import re
+two_digit_plural_matcher = re.compile('[szxo]es$')
+one_digit_plural_matcher = re.compile("[^s]s$")
+v_plural_matcher = re.compile('ves')
+
+def guess_singulars (s):
+    if len(s)<3: return []
+    rets = []
+    if irregular_plurals.has_key(s):
+        rets.append(irregular_plurals[s])
+    if two_digit_plural_matcher.search(s):
+        wrd=s[0:-2]
+        if not wrd in rets: rets.append(wrd)
+    if v_plural_matcher.search(s):
+        if not wrd in rets: rets.append(wrd)
+        rets.append(s[0:-3]+'f')
+    if one_digit_plural_matcher.search(s): rets.append(s[0:-1])
+    return rets
+
+def guess_plurals (s):
+    if not s: return []
+    ret = [s+'s',s+'es']
+    if s[-1]=='f': ret.append(s[0:-1]+'ves')
+    return ret
+    

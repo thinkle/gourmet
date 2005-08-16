@@ -3,23 +3,22 @@ from gourmet import gglobals, convert
 from gourmet.gdebug import *
 from gettext import gettext as _
 
-REC_ATTR_DIC={}
-for attr,titl,widget in gglobals.REC_ATTRS:
-    REC_ATTR_DIC[attr]=titl
+REC_ATTR_DIC = gglobals.REC_ATTR_DIC
 
 class exporter:
+    """A base exporter class.
 
-    """Base class for all exporters.  Subclasses must implement basic write methods,
-    which are handed attributes, text blobs, images, etc. and then expected to write
-    them appropriately."""
+    All Gourmet exporters should subclass this class or one of its
+    derivatives.
 
-#new variable contained here called attr_order
-#This is so we can control the order the attributes are in
-#Some exporter subclasses might care (like mealmaster)
+    This class can also be used directly for plain text export.
+    """
+    DEFAULT_ENCODING = 'utf-8'
+
     def __init__ (self, rd, r, out,
                   conv=None,
                   imgcount=1,
-                  order=['image','attr','text','ings'],
+                  order=['image','attr','ings','text'],
 		  attr_order=['title',
                               'category',
                               'cuisine',
@@ -30,17 +29,24 @@ class exporter:
                               'cooktime'],
                   do_markup=True,
                   use_ml=False,
+                  convert_attnames=True,
+                  fractions=convert.FRACTIONS_ASCII
                   ):
-        """A base exporter class to be subclassed (or to be
-        called for plain text export).
+        """Instantiate our exporter.
 
-        do_markup: if True, we handle markup parsing internally, using
-        the functions handle_italic, handle_bold and
-        handle_underline. If not, marked up pango text (with <u>, <b>,
-        and <i> is written to our exported directly.
-
-        If use_ml is True, we leave pango-ified text properly escaped.
-        if use_ml is False, we unescape pango text &amp;->&, etc.
+        conv is a preexisting convert.converter() class
+        imgcount is a number we use to start counting our exported images.
+        order is a list of our core elements in order: 'image','attr','text' and 'ings'
+        attr_order is a list of our attributes in the order we should export them:
+                   title, category, cuisine, servings, source, rating, preptime, cooktime
+        do_markup is a flag; if true, we interpret tags in text blocks by calling
+                  self.handle_markup to e.g. to simple plaintext renderings of tags.
+        use_ml is a flag; if true, we escape strings we output to be valid *ml
+        convert_attnames is a flag; if true, we hand write_attr a translated attribute name
+                         suitable for printing or display. If not, we just hand it the standard
+                         attribute name (this is a good idea if a subclass needs to rely on the
+                         attribute name staying consistent for processing, since converting attnames
+                         will produce locale specific strings.
         """
         tt = TimeAction('exporter.__init__()',0)
 	self.attr_order=attr_order
@@ -48,7 +54,9 @@ class exporter:
         self.r = r
         self.rd=rd
         self.do_markup=do_markup
+        self.fractions=fractions
         self.use_ml=use_ml
+        self.convert_attnames = convert_attnames
         if not conv: conv=convert.converter()
         self.conv=conv
         self.imgcount=imgcount
@@ -79,7 +87,11 @@ class exporter:
             txt=self.grab_attr(self.r,a)
             if txt and txt.strip():
                 if (a=='preptime' or a=='cooktime') and a.find("0 ")==0: pass
-                else: self.write_attr(REC_ATTR_DIC[a],txt)
+                else:
+                    if self.convert_attnames:
+                        self.write_attr(REC_ATTR_DIC[a],txt)
+                    else:
+                        self.write_attr(a,txt)
         self.write_attr_foot()
 
     def _write_text (self):
@@ -88,7 +100,10 @@ class exporter:
             if txt and txt.strip():
                 if self.do_markup: txt=self.handle_markup(txt)
                 if not self.use_ml: txt = xml.sax.saxutils.unescape(txt)
-                self.write_text(a.capitalize(),txt)
+                if self.convert_attnames:
+                    self.write_text(gglobals.TEXT_ATTR_DIC[a],txt)
+                else:
+                    self.write_text(a,txt)
 
     def _write_ings (self):
         ingredients = self.rd.get_ings(self.r)
@@ -101,18 +116,17 @@ class exporter:
             if g:
                 self.write_grouphead(g)            
             for i in ings:
-                amount=self.grab_attr(i,'amount')
-                if amount: amount=convert.float_to_frac(amount)
+                amount,unit = self.get_amount_and_unit(i)
                 if self.grab_attr(i,'refid'):
                     self.write_ingref(amount=amount,
-                                      unit=self.grab_attr(i,'unit'),
+                                      unit=unit,
                                       item=self.grab_attr(i,'item'),
                                       refid=self.grab_attr(i,'refid'),
                                       optional=self.grab_attr(i,'optional')
                                       )
                 else:
                     self.write_ing(amount=amount,
-                                   unit=self.grab_attr(i,'unit'),
+                                   unit=unit,
                                    item=self.grab_attr(i,'item'),
                                    key=self.grab_attr(i,'ingkey'),
                                    optional=self.grab_attr(i,'optional')
@@ -124,12 +138,34 @@ class exporter:
 
     def write_image (self, image):
         pass
-    
+
+    def get_amount_and_unit (self, ing):
+        return self.rd.get_amount_and_unit(ing,fractions=self.fractions)
+
     def grab_attr (self, obj, attr):
         try:
-            return getattr(obj,attr)
+            ret = getattr(obj,attr)
         except:
             return None
+        else:
+            if attr in ['preptime','cooktime']:
+                # this 'if' ought to be unnecessary, but is kept around
+                # for db converting purposes -- e.g. so we can properly
+                # export an old DB
+                if ret and type(ret)!=str: 
+                    ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
+            elif attr=='rating' and ret and type(ret)!=str:
+                if ret/2==ret/2.0:
+                    ret = "%s/5 %s"%(ret/2,_('stars'))
+                else:
+                    ret = "%s/5 %s"%(ret/2.0,_('stars'))
+            if type(ret) in [str,unicode] and attr not in ['thumb','image']:
+                try:
+                    ret = ret.encode(self.DEFAULT_ENCODING)
+                except:
+                    print "wtf:",ret,"doesn't look like unicode."
+                    raise
+            return ret
 
     def write_head (self):
         pass
@@ -217,34 +253,69 @@ class exporter:
         self.out.write("\n")
 
 class exporter_mult (exporter):
-    """An exporter subclass that allows multiplying of the exported recipe."""
-    def __init__ (self, rd, r, out, conv=None,
-                  mult=1, imgcount=1, order=['attr','text','ings'],
-                  change_units=True, use_ml=False, do_markup=True):        
+    def __init__ (self, rd, r, out,
+                  conv=None, 
+                  change_units=True,
+                  mult=1,
+                  imgcount=1,
+                  order=['image','attr','ings','text'],
+                  attr_order=['title',
+                              'category',
+                              'cuisine',
+                              'servings',
+                              'source',
+                              'rating',
+                              'preptime',
+                              'cooktime'],
+                  do_markup=True,
+                  use_ml=False,
+                  convert_attnames=True,
+                  fractions=convert.FRACTIONS_ASCII,
+                    ):
+        """Initiate an exporter class capable of multiplying the recipe.
+
+        We allow the same arguments as the base exporter class plus
+        the following
+
+        mult = number (multiply by this number)
+
+        change_units = True|False (whether to change units to keep
+        them readable when multiplying).
+        """
         self.mult = mult
         self.change_units = change_units
-        exporter.__init__(self, rd, r, out, conv, imgcount, order, use_ml=use_ml, do_markup=do_markup)
+        exporter.__init__(self, rd, r, out, conv, imgcount, order, use_ml=use_ml, do_markup=do_markup,
+                          fractions=fractions)
 
     def write_attr (self, label, text):
-        attr = gglobals.NAME_TO_ATTR[label]
-        if attr=='servings':
-            num = convert.frac_to_float(text) * self.mult
-            if num:
-                text = convert.float_to_frac(num)
+        #attr = gglobals.NAME_TO_ATTR[label]
         self.out.write("%s: %s\n"%(label, text))
 
-    def multiply_amount (self, amount, unit):
-        if self.mult==1 or not amount:
-            return amount,unit
-        amt = convert.frac_to_float(amount) * self.mult
-        if self.change_units:
-            amt,unit = self.conv.adjust_unit(amt,unit)
-            return convert.float_to_frac(amt),unit
+    def grab_attr (self, obj, attr):
+        """Grab attribute attr of obj obj.
+
+        Possibly manipulate the attribute we get to hand out export
+        something readable.
+        """
+        ret = getattr(obj,attr)
+        if attr=='servings' and self.mult:
+            fl_ret = convert.frac_to_float(ret)
+            if fl_ret:
+                return convert.float_to_frac(fl_ret * self.mult,
+                                             fractions=self.fractions)
         else:
-            return convert.float_to_frac(amt),unit
+            return exporter.grab_attr(self,obj,attr)
+
+    def get_amount_and_unit (self, ing):
+        if self.mult != 1 and self.change_units:
+            return self.rd.get_amount_and_unit(ing,mult=self.mult,conv=self.conv,
+                                               fractions=self.fractions)
+        else:
+            return self.rd.get_amount_and_unit(ing,mult=self.mult,
+                                               fractions=self.fractions)
         
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
-        amount,unit = self.multiply_amount(amount,unit)
+        
         if amount:
             self.out.write("%s"%amount)
         if unit:
@@ -254,142 +325,6 @@ class exporter_mult (exporter):
         if optional:
             self.out.write(" (%s)"%_("optional"))
         self.out.write("\n")        
-            
-
-class mealmaster_exporter (exporter):
-    def __init__ (self, rd, r, out, conv=None):
-        import mealmaster_importer
-        self.conv = conv
-        mmf2mk =mealmaster_importer.mmf_constants()
-        uc_orig=mmf2mk.unit_conv
-        self.uc={}
-        for k,v in uc_orig.items():
-            self.uc[v]=k
-        recattrs_orig=mmf2mk.recattrs
-        self.recattrs={}
-        for k,v in recattrs_orig.items():
-            self.recattrs[v]=k
-        self.categories = ""
-        exporter.__init__(self, rd, r, out, conv,
-                          order=['attr','ings','text'])
-
-    def write_head (self):
-        self.out.write("MMMMM----- Recipe via Meal-Master (tm)\n\n")
-
-    def write_attr (self, label, text):
-        #We must be getting the label already capitalized from an the exporter class
-	#this line is just to correct that without making a mess of the exporter class
-	label=label.lower()
-	if label=='category' or label=='cuisine':
-            if self.categories:
-                self.categories="%s, %s"%(self.categories,text)
-            else:
-                self.categories=text
-            self.out.write("%s: %s\n"%(self.pad("Categories",12),self.categories))
-	#Mealmaster pukes at the preptime line so this removes it    
-	elif label=='preparation time' or label=='rating' or label=='source':
-	    pass
-	else:
-            if label and text:
-                if self.recattrs.has_key(label):
-                    label=self.recattrs[label]
-                else:
-                    label=label.capitalize()
-                label=self.pad(label,12)
-		self.out.write("%s: %s\n"%(label, text))
-
-    def write_attr_foot (self):
-        #Removed by rsborn as part of the MM export fix
-	#self.out.write("%s: %s\n\n"%(self.pad("Categories",12),self.categories))
-	pass
-
-    def pad (self, text, chars):
-        text=text.strip()
-        fill = chars - len(text)
-        return "%s%s"%(" "*fill,text)
-    
-    def write_text (self, label, text):
-        ll=text.split("\n")
-        for l in ll:
-            for wrapped_line in textwrap.wrap(l):
-                self.out.write("\n  %s"%wrapped_line)
-            
-    def write_inghead (self):
-        self.master_ings=[] # our big list
-        # self.ings is what we add to
-        # this can change when we add groups
-        self.ings = self.master_ings
-        self.ulen=1
-        # since the specs we found suggest it takes 7 blanks
-        # to define an ingredient, our amtlen needs to be at
-        # least 6 (there will be an extra space added
-        self.amtlen=6
-        self.out.write("\n")
-
-    def write_grouphead (self, name):
-        debug('write_grouphead called with %s'%name,0)
-        group = (name, [])
-        self.ings.append(group) # add to our master
-        self.ings = group[1] # change current list to group list
-
-    def write_groupfoot (self):
-        self.ings = self.master_ings # back to master level
-
-    def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):
-        if type(amount)==type(1.0) or type(amount)==type(1):
-  	    amount = convert.float_to_frac(amount)
-  	if not amount: amount = ""        
-        if self.conv.unit_dict.has_key(unit) and self.uc.has_key(self.conv.unit_dict[unit]):
-            unit=self.uc[self.conv.unit_dict[unit]] or ""
-        elif unit:
-            # if we don't recognize the unit, we add it to
-            # the item
-            item="%s %s"%(unit,item)
-            unit=""
-        if len(unit)>self.ulen:
-            self.ulen=len(unit)
-        if len(amount)>self.amtlen:
-            self.amtlen=len(amount)
-            #print "DEBUG: %s length %s"%(amount,self.amtlen)
-        # we hold off writing ings until we know the lengths
-        # of strings since we need to write out neat columns
-        if optional: item="%s (optional)"%item
-        self.ings.append([amount,unit,item])
-
-    def write_ingfoot (self):
-        """Write all of the ingredients"""
-        ## where we actually write the ingredients...
-        for i in self.master_ings:
-            # if we're a tuple, this is a group...
-            if type(i)==type(()):
-                # write the group title first...
-                group = i[0]
-                width = 70
-                dashes = width - len(group)
-                left_side = dashes/2 - 5
-                right_side = dashes/2
-                self.out.write("-----%s%s%s\n"%(left_side * "-",
-                                           group.upper(),
-                                           right_side * "-")
-                          )
-                map(self._write_ingredient,i[1])
-                self.out.write("\n") # extra newline at end of groups
-            else:
-                self._write_ingredient(i)
-        # we finish with an extra newline
-        self.out.write("\n")
-                        
-    def _write_ingredient (self, ing):
-        a,u,i = ing
-        self.out.write("%s %s %s\n"%(self.pad(a,self.amtlen),
-                                     self.pad(u,self.ulen),
-                                     i))
-
-    def write_foot (self):
-        self.out.write("\n\n")
-	self.out.write("MMMMM")
-	self.out.write("\n\n")
-    
 
 class ExporterMultirec:
     def __init__ (self, rd, rview, out, one_file=True,
@@ -417,7 +352,7 @@ class ExporterMultirec:
                     os.makedirs(self.outdir)
             else: os.makedirs(self.outdir)
         if one_file and type(out)==str:
-            self.ofi=open(out,'w')
+            self.ofi=open(out,'wb')
         else: self.ofi = out
         self.write_header()
         self.rcount = 0
@@ -441,7 +376,7 @@ class ExporterMultirec:
             fn=None
             if not self.one_file:
                 fn=self.generate_filename(r,self.ext)
-                self.ofi=open(fn,'w')
+                self.ofi=open(fn,'wb')
             if self.padding and not first:
                 self.ofi.write(self.padding)
             e=self.exporter(out=self.ofi, r=r, rd=self.rd, **self.exporter_kwargs)

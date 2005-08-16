@@ -41,8 +41,13 @@ class html_exporter (exporter_mult):
         if not imagedir: imagedir = "" #make sure it's a string
         self.imagedir_absolute = os.path.join(os.path.split(out.name)[0],imagedir)
         self.imagedir = imagedir
-        exporter_mult.__init__(self, rd, r, out, conv=conv,imgcount=imgcount,mult=mult,change_units=change_units,
-                               do_markup=True, use_ml=True)
+        exporter_mult.__init__(self, rd, r, out,
+                               conv=conv,
+                               imgcount=imgcount,
+                               mult=mult,
+                               change_units=change_units,
+                               do_markup=True,
+                               use_ml=True)
         
     def htmlify (self, text):
         t=text.strip()
@@ -81,7 +86,7 @@ class html_exporter (exporter_mult):
             imgout = os.path.join(self.imagedir_absolute,"%s.jpg"%self.imgcount)
         if not os.path.isdir(self.imagedir_absolute):
             os.mkdir(self.imagedir_absolute)
-        o = open(imgout,'w')
+        o = open(imgout,'wb')
         o.write(image)
         o.close()
         # we use urllib here because os.path may fsck up slashes for urls.
@@ -133,7 +138,6 @@ class html_exporter (exporter_mult):
     def write_ing (self, amount=1, unit=None,
                    item=None, key=None, optional=False):
         self.out.write("<li class='ing'>")
-        amount, unit = self.multiply_amount(amount,unit)
         for o in [amount, unit, item]:
             if o: self.out.write(xml.sax.saxutils.escape("%s "%o))
         if optional:
@@ -162,7 +166,9 @@ class website_exporter (ExporterMultirec):
                   css=os.path.join(gglobals.datad,'default.css'),
                   imagedir='pics' + os.path.sep,
                   index_rows=['title','category','cuisine','rating','servings'],
-                  progress_func=None):
+                  progress_func=None,
+                  change_units=False,
+                  mult=1):
         self.ext=ext
         self.css=css
         self.embed_css = False
@@ -180,7 +186,9 @@ class website_exporter (ExporterMultirec):
                           'css': self.css,
                           'imgcount': self.imgcount,
                          'imagedir':self.imagedir,
-                         'link_generator': self.generate_link}
+                         'link_generator': self.generate_link,
+                         'change_units':change_units,
+                         'mult':mult}
         if conv:
             self.exportargs['conv']=conv
         ExporterMultirec.__init__(self, rd, rview, out,
@@ -237,7 +245,7 @@ class website_exporter (ExporterMultirec):
         if self.added_dict.has_key(id):
             return self.added_dict[id]
         else:
-            rec = self.rd.get_rec(id,self.rview)
+            rec = self.rd.get_rec(id)
             if rec:
                 return self.generate_filename(rec,self.ext)
             else:

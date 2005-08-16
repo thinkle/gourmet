@@ -10,14 +10,20 @@ from gdebug import *
 from gettext import gettext as _
 debug('Using GourmetFauxThreads',0)
 
+Terminated = GourmetThreads.Terminated
+
 class SuspendableThread (GourmetThreads.SuspendableThread):
-    """A SuspendableThread. We take a runnerClass which must have a"""
-    def __init__ (self, runnerClass, name=None, pre_hooks=[], post_hooks=[]):
-        self.c = runnerClass
-        self.pre_hooks=pre_hooks
-        self.post_hooks=post_hooks
-        self.name = name
-        self.completed = False
+    """A SuspendableThread.
+
+    We take a runnerClass which must have a run, suspend, terminate,
+    and resume method. We then launch our thread and provide methods
+    by the same name that interface with our runnerClass.  Before
+    running the run() method, we call pre_hooks. Afterward we call any
+    post_hooks. (Pre and post hooks get called with this instance as
+    their only argument).
+    """
+
+    def initialize_thread (self): pass
 
     def start (self):
         # I don't think we want this dialog anymore.
@@ -27,7 +33,7 @@ class SuspendableThread (GourmetThreads.SuspendableThread):
            # sublabel=_('This may take a long time. Gourmet will be unresponsive while it works. Proceed anyway?'),
 
            # custom_yes=_('Proceed'),
-           # custom_no={'stock':gtk.STOCK_CANCEL},
+           # custom_no=gtk.STOCK_CANCEL,
            # cancel=False):
             self.target_func()
         else:

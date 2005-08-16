@@ -5,8 +5,8 @@ from gourmet.gglobals import *
 import base64
 
 class RecHandler (xml_importer.RecHandler):
-    def __init__ (self, recData, total=None, prog=None):
-        xml_importer.RecHandler.__init__(self,recData,total,prog)
+    def __init__ (self, recData, total=None, prog=None,conv=None):
+        xml_importer.RecHandler.__init__(self,recData,total,prog,conv=conv)
         self.meta={}
         self.in_mixed = 0
         self.meta['cuisine']={}
@@ -102,10 +102,10 @@ class RecHandler (xml_importer.RecHandler):
             self.mixed += "</%s>" % name
 
 class converter (xml_importer.converter):
-    def __init__ (self, filename, rd, threaded=False, progress=None):
+    def __init__ (self, filename, rd, threaded=False, progress=None,conv=None):
         xml_importer.converter.__init__(self,filename,rd,RecHandler,
                                         recMarker="</recipe>",threaded=threaded,
-                                        progress=progress)
+                                        progress=progress,conv=conv)
 
 def unquoteattr (str):
     return xml.sax.saxutils.unescape(str).replace("_"," ")

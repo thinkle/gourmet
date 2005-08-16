@@ -1,10 +1,17 @@
 [Desktop Entry]
 Name=Gourmet Recipe Manager
 Comment=Manage recipes and create shopping lists.
+Name[es]=Gourmet Organizarecetas
+Comment[es]=Organizar recetas y crear listas de compras.
+Name[sk]=Správca receptov Gourmet
+Name[de]=Gourmet Rezept-Manager
+Name[tr]=Gourmet Tarif Yöneticisi
+Name[fr]=Le Gestionnaire de Recettes Gourmet
+Name[nl]=Gourmet Receptenbeheerder
 Exec=gourmet
 Terminal=false
 Type=Application
 Categories=GNOME;Application;Other;
-StartupNotify=True
+StartupNotify=true
 Icon=recbox.png
 Encoding=UTF-8

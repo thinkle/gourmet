@@ -1,5 +1,5 @@
-from gdebug import debug
 import gtk, difflib,re
+from gourmet.gdebug import debug
 
 class TooManyChanges (Exception):
     def __init__ (self, value):
@@ -156,11 +156,9 @@ class UndoableTextContainer:
         # if the last change is the same as us...
         if self._setting:
             return
-        debug('change_event external',4)
         txt = self.get_text()
         if txt == self.txt: pass
         if len(self.history)>1 and hasattr(self.history[-1],'txt_id') and self.history[-1].txt_id==self.container:
-            debug('adding text to previous change',0)
             self.change = self.history[-1]
             self.history[-1].add_text(txt)
         else:
@@ -169,7 +167,6 @@ class UndoableTextContainer:
                                            initial_text=self.txt,
                                            text=txt,
                                            txt_id=self.container)
-            debug('appending new change to history',0)
             self.history.append(self.change)
         self.txt = txt
         
@@ -201,7 +198,7 @@ class UndoableEntry (UndoableTextContainer):
         self.entry.set_position(index + length)
         
 class UndoableGenericWidget:
-    def __init__ (self, widget, history, set_method='set_value',get_method='get_value'):
+    def __init__ (self, widget, history, set_method='set_value',get_method='get_value', signal='changed'):
         self.w = widget
         self.set_method = set_method
         self.get_method = get_method
@@ -209,7 +206,7 @@ class UndoableGenericWidget:
         self.get = getattr(self.w,self.get_method)
         self.history = history
         self.last_value = self.get()
-        self.w.connect('changed',self.changecb)
+        self.w.connect(signal,self.changecb)
 
     def changecb (self,*args):
         old_val = self.last_value
@@ -242,7 +239,7 @@ class UndoableTextView (UndoableTextContainer):
             index,length = self.change.find_change(text)
             self.buffer.place_cursor(self.buffer.get_iter_at_offset(index + length))
         except TooManyChanges:
-            debug('WARNING: THAT SHOULDNT HAVE HAPPENED! Too many changes!',0)
+            print 'WARNING: THAT SHOULDNT HAVE HAPPENED! Too many changes!'
 
     def get_text (self):
         return self.buffer.get_text(self.buffer.get_start_iter(),

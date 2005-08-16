@@ -63,7 +63,7 @@ class Mx2Cleaner:
         
 class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
     """We handle MasterCook XML Files"""
-    def __init__ (self, recData, source=None, progress=None):
+    def __init__ (self, recData, source=None, progress=None, conv=None):
         debug('MastercookXMLHandler starting',0)
         self.source = source
         self.progress = progress
@@ -88,7 +88,7 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
         self.current_elements = []
         self.bufs = []
         xml.sax.ContentHandler.__init__(self)
-        importer.importer.__init__(self,rd=recData,prog=self.progress)
+        importer.importer.__init__(self,rd=recData,prog=self.progress,conv=conv)
 
     def grabattr (self, attrs, name, default=''):
         return unquoteattr(attrs.get(name,default))
@@ -222,13 +222,13 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
     
 
 class converter:
-    def __init__ (self, filename, rd=None, source=None, threaded=False, progress=None):
+    def __init__ (self, filename, rd=None, source=None, threaded=False, progress=None, conv=None):
         debug('mastercook_importer.converter starting: fn=%s, rd=%s, src=%s, threaded=%s'%(
             filename, rd, source, threaded),
               0)
         self.fn = filename
         self.progress = progress
-        self.rh = MastercookXMLHandler(rd, source=source, progress=progress)
+        self.rh = MastercookXMLHandler(rd, source=source, progress=progress, conv=None)
         self.threaded=threaded
         self.terminate=self.rh.terminate
         self.suspend = self.rh.suspend

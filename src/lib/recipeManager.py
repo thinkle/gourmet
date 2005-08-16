@@ -54,20 +54,29 @@ class mkShopper (shopping.shopper):
             self.cnv = convert.converter()
     
     def init_orgdic (self):
-        self.orgdic = dbDic('shopkey','category',self.db.sview,db=self.db)
+        self.orgdic = dbDic('ingkey','shopcategory',self.db.sview,db=self.db,pickle_key=False,
+                            pickle_val=False)
         if len(self.orgdic.items())==0:
             dic = shopping.setup_default_orgdic()
             for k,v in dic.items():
                 self.orgdic[k]=v
 
     def init_ingorder_dic (self):
-        self.ingorder_dic = dbDic('shopkey','position',self.db.sview,db=self.db)
+        self.ingorder_dic = dbDic('ingkey','position',self.db.sview,db=self.db,
+                                  pickle_key=False,pickle_val=False)
 
     def init_catorder_dic (self):
-        self.catorder_dic = dbDic('category','position',self.db.scview,db=self.db)
+        self.catorder_dic = dbDic('shopcategory',
+                                  'position',
+                                  self.db.scview,
+                                  db=self.db,
+                                  pickle_key=False,
+                                  pickle_val=False)
 
     def init_pantry (self):
-        self.pantry = dbDic('itm','pantry',self.db.pview,db=self.db)
+        self.pantry = dbDic('ingkey','pantry',self.db.pview,db=self.db,
+                            pickle_key=False,
+                            pickle_val=False)
         if len(self.pantry.items())==0:
             for i in self.default_pantry:
                 self.pantry[i]=True
@@ -145,6 +154,7 @@ class SimpleCLI:
                     print 'invalid input.'
 
 if __name__ == '__main__':
-    s=SimpleCLI()
-    s()
-    
+    rm = RecipeManager(**dbargs)
+    #s=SimpleCLI()
+    #s()
+

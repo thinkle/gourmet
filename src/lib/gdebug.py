@@ -10,12 +10,14 @@ if debug_file:
     import re
     debug_file = re.compile(debug_file)
 
+if debug_level > 0: print 'DEBUG_LEVEL=',debug_level
+if debug_file: print 'DEBUG_FILE=',debug_file
 def debug (message, level=10):
-    if timestamp:
-        message += " (%s)"%time.time()
+    if timestamp: ts= '%s:'%time.time()
+    else: ts = ''
     if level <= debug_level:
         stack = traceback.extract_stack()
-        if len(stack) > 2:
+        if len(stack) >= 2:
             caller=stack[-2]
             finame=caller[0]
             line = caller[1]
@@ -24,9 +26,9 @@ def debug (message, level=10):
             line = ""
         if options.debug_file:
             if debug_file.search(finame):
-                print "DEBUG: ","%s: %s"%(finame,line),message
+                print "DEBUG: ",ts,"%s: %s"%(finame,line),message
         else:
-            print "DEBUG: ","%s: %s"%(finame,line),message
+            print "DEBUG: ",ts,"%s: %s"%(finame,line),message
 
 timers = {}
 
