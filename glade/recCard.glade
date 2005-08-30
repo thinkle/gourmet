@@ -1,4 +1,4 @@
-j<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
+<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
 <!DOCTYPE glade-interface SYSTEM "http://glade.gnome.org/glade-2.0.dtd">
 
 <glade-interface>
@@ -1508,23 +1508,12 @@ j<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
 				      </child>
 
 				      <child>
-					<widget class="GtkLabel" id="ratingDisplay">
-					  <property name="visible">True</property>
-					  <property name="can_focus">True</property>
-					  <property name="label" translatable="yes">rating</property>
-					  <property name="use_underline">False</property>
-					  <property name="use_markup">False</property>
-					  <property name="justify">GTK_JUSTIFY_LEFT</property>
-					  <property name="wrap">True</property>
-					  <property name="selectable">True</property>
-					  <property name="xalign">0</property>
-					  <property name="yalign">0.5</property>
-					  <property name="xpad">0</property>
-					  <property name="ypad">0</property>
-					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-					  <property name="width_chars">-1</property>
-					  <property name="single_line_mode">False</property>
-					  <property name="angle">0</property>
+					<widget class="Custom" id="ratingDisplay">
+					<property name="visible">True</property>
+    				      <property name="creation_function">makeStarImage</property>
+				      <property name="int1">0</property>
+				      <property name="int2">0</property>
+				      <property name="last_modification_time">Sun, 26 Jun 2005 11:13:08 GMT</property>
 					</widget>
 					<packing>
 					  <property name="left_attach">1</property>
@@ -2385,26 +2374,12 @@ j<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
 				  </child>
 
 				  <child>
-				    <widget class="GtkComboBoxEntry" id="ratingBox">
-				      <property name="visible">True</property>
-				      <property name="add_tearoffs">False</property>
-				      <property name="has_frame">True</property>
-				      <property name="focus_on_click">True</property>
-
-				      <child internal-child="entry">
-					<widget class="GtkEntry" id="combo-entry4">
-					  <property name="visible">True</property>
-					  <property name="can_focus">True</property>
-					  <property name="editable">True</property>
-					  <property name="visibility">True</property>
-					  <property name="max_length">0</property>
-					  <property name="text" translatable="yes"></property>
-					  <property name="has_frame">True</property>
-					  <property name="invisible_char">*</property>
-					  <property name="activates_default">False</property>
-					  <signal name="changed" handler="rcEdited" last_modification_time="Mon, 17 May 2004 21:18:03 GMT"/>
-					</widget>
-				      </child>
+				    <widget class="Custom" id="ratingBox">
+<property name="visible">True</property>
+					  <property name="creation_function">makeStarButton</property>
+					  <property name="int1">0</property>
+					  <property name="int2">0</property>
+					  <property name="last_modification_time">Sun, 26 Jun 2005 11:13:08 GMT</property>
 				    </widget>
 				    <packing>
 				      <property name="left_attach">1</property>
@@ -4086,52 +4061,12 @@ as Ingredient</property>
 				      <child>
 					<widget class="GtkVBox" id="vbox38">
 					  <property name="visible">True</property>
-<<<<<<< variant A
 					  <property name="homogeneous">False</property>
 					  <property name="spacing">0</property>
->>>>>>> variant B
-					  <property name="label" translatable="yes">_Unit: </property>
-					  <property name="use_underline">True</property>
-					  <property name="use_markup">False</property>
-					  <property name="justify">GTK_JUSTIFY_LEFT</property>
-					  <property name="wrap">False</property>
-					  <property name="selectable">False</property>
-					  <property name="xalign">0</property>
-					  <property name="yalign">0.5</property>
-					  <property name="xpad">6</property>
-					  <property name="ypad">0</property>
-					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-					  <property name="width_chars">-1</property>
-					  <property name="single_line_mode">False</property>
-					  <property name="angle">0</property>
-					</widget>
-					<packing>
-					  <property name="left_attach">2</property>
-					  <property name="right_attach">3</property>
-					  <property name="top_attach">0</property>
-					  <property name="bottom_attach">1</property>
-					  <property name="x_options">fill</property>
-					  <property name="y_options"></property>
-					</packing>
-				      </child>
-
-				      <child>
-					<widget class="GtkHBox" id="hbox32">
-					  <property name="visible">True</property>
-					  <property name="add_tearoffs">False</property>
-					  <property name="has_frame">True</property>
-					  <property name="focus_on_click">True</property>
-======= end
-
 					  <child>
-<<<<<<< variant A
 					    <widget class="GtkRadioButton" id="nutMethod">
->>>>>>> variant B
-					    <widget class="GtkTable" id="table6">
-======= end
 					      <property name="visible">True</property>
 					      <property name="can_focus">True</property>
-<<<<<<< variant A
 					      <property name="label" translatable="yes">_Enter nutritional information manually</property>
 					      <property name="use_underline">True</property>
 					      <property name="relief">GTK_RELIEF_NORMAL</property>
@@ -4139,27 +4074,13 @@ as Ingredient</property>
 					      <property name="active">False</property>
 					      <property name="inconsistent">False</property>
 					      <property name="draw_indicator">True</property>
->>>>>>> variant B
-					      <property name="editable">True</property>
-					      <property name="visibility">True</property>
-					      <property name="max_length">0</property>
-					      <property name="text" translatable="yes"></property>
-					      <property name="has_frame">True</property>
-					      <property name="invisible_char">*</property>
-					      <property name="activates_default">False</property>
-======= end
 					    </widget>
-<<<<<<< variant A
 					    <packing>
 					      <property name="padding">0</property>
 					      <property name="expand">False</property>
 					      <property name="fill">False</property>
 					    </packing>
->>>>>>> variant B
-======= end
 					  </child>
-<<<<<<< variant A
->>>>>>> variant B
 					</widget>
 					<packing>
 					  <property name="left_attach">3</property>
@@ -4169,12 +4090,7 @@ as Ingredient</property>
 					  <property name="y_options"></property>
 					</packing>
 				      </child>
-======= end
 
-<<<<<<< variant A
-					  <child>
-					    <widget class="GtkRadioButton" id="nutMethodCalcButton">
->>>>>>> variant B
 				      <child>
 					<widget class="GtkEntry" id="ieIng">
 					  <property name="visible">True</property>
@@ -4237,18 +4153,7 @@ as Ingredient</property>
 					    <widget class="GtkEntry" id="keyentry">
 					      <property name="visible">True</property>
 					      <property name="tooltip" translatable="yes">Standardized name for ingredient (to be used in shopping lists).</property>
-======= end
 					      <property name="can_focus">True</property>
-<<<<<<< variant A
-					      <property name="label" translatable="yes">Calculate nutritional information.</property>
-					      <property name="use_underline">True</property>
-					      <property name="relief">GTK_RELIEF_NORMAL</property>
-					      <property name="focus_on_click">True</property>
-					      <property name="active">False</property>
-					      <property name="inconsistent">False</property>
-					      <property name="draw_indicator">True</property>
-					      <property name="group">nutMethod</property>
->>>>>>> variant B
 					      <property name="editable">True</property>
 					      <property name="visibility">True</property>
 					      <property name="max_length">0</property>
@@ -4259,7 +4164,6 @@ as Ingredient</property>
 					      <signal name="changed" handler="ieKeySet" last_modification_time="Mon, 03 May 2004 10:35:40 GMT"/>
 					      <signal name="activate" handler="ieAdd" last_modification_time="Sun, 11 Jul 2004 18:27:34 GMT"/>
 					      <accelerator key="Return" modifiers="GDK_CONTROL_MASK" signal="activate"/>
-======= end
 					    </widget>
 					    <packing>
 					      <property name="padding">0</property>
@@ -4267,8 +4171,6 @@ as Ingredient</property>
 					      <property name="fill">False</property>
 					    </packing>
 					  </child>
-<<<<<<< variant A
->>>>>>> variant B
 					</widget>
 					<packing>
 					  <property name="left_attach">3</property>
@@ -4315,17 +4217,11 @@ as Ingredient</property>
 					  <property name="has_frame">True</property>
 					  <property name="focus_on_click">True</property>
 					  <signal name="changed" handler="ieShopSet" last_modification_time="Mon, 20 Sep 2004 02:05:02 GMT"/>
-======= end
 
 					  <child>
-<<<<<<< variant A
-					    <widget class="GtkRadioButton" id="nutMethodLookupButton">
->>>>>>> variant B
 					    <widget class="GtkRadioButton" id="nutMethod">
-======= end
 					      <property name="visible">True</property>
 					      <property name="can_focus">True</property>
-<<<<<<< variant A
 					      <property name="label" translatable="yes">Lookup ingredient in USDA nutritional database.</property>
 					      <property name="use_underline">True</property>
 					      <property name="relief">GTK_RELIEF_NORMAL</property>
@@ -4334,15 +4230,6 @@ as Ingredient</property>
 					      <property name="inconsistent">False</property>
 					      <property name="draw_indicator">True</property>
 					      <property name="group">nutMethod</property>
->>>>>>> variant B
-					      <property name="editable">True</property>
-					      <property name="visibility">True</property>
-					      <property name="max_length">0</property>
-					      <property name="text" translatable="yes"></property>
-					      <property name="has_frame">True</property>
-					      <property name="invisible_char">*</property>
-					      <property name="activates_default">False</property>
-======= end
 					    </widget>
 					    <packing>
 					      <property name="padding">0</property>
@@ -4350,8 +4237,6 @@ as Ingredient</property>
 					      <property name="fill">False</property>
 					    </packing>
 					  </child>
-<<<<<<< variant A
->>>>>>> variant B
 
 				      <child>
 					<widget class="GtkLabel" id="label35">
@@ -4375,6 +4260,41 @@ as Ingredient</property>
 					  <property name="padding">0</property>
 					  <property name="expand">True</property>
 					  <property name="fill">True</property>
+					  <property name="left_attach">1</property>
+					  <property name="right_attach">2</property>
+					  <property name="top_attach">2</property>
+					  <property name="bottom_attach">3</property>
+					  <property name="y_options"></property>
+					</packing>
+				      </child>
+
+				      <child>
+					<widget class="GtkLabel" id="label35">
+					  <property name="visible">True</property>
+					  <property name="label" translatable="yes">S_hopping Category: </property>
+					  <property name="use_underline">True</property>
+					  <property name="use_markup">False</property>
+					  <property name="justify">GTK_JUSTIFY_LEFT</property>
+					  <property name="wrap">False</property>
+					  <property name="selectable">False</property>
+					  <property name="xalign">0.5</property>
+					  <property name="yalign">0.5</property>
+					  <property name="xpad">0</property>
+					  <property name="ypad">0</property>
+					  <property name="mnemonic_widget">ieShopCatBox</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
+					</widget>
+					<packing>
+					  <property name="left_attach">0</property>
+					  <property name="right_attach">1</property>
+					  <property name="top_attach">2</property>
+					  <property name="bottom_attach">3</property>
+					  <property name="x_options">fill</property>
+					  <property name="y_options"></property>
+>>>>>>> 1.8.2.11
 					</packing>
 				      </child>
 
@@ -4403,25 +4323,44 @@ as Ingredient</property>
 					  <property name="width_chars">-1</property>
 					  <property name="single_line_mode">False</property>
 					  <property name="angle">0</property>
-======= end
 					</widget>
 					<packing>
-<<<<<<< variant A
-					  <property name="padding">0</property>
-					  <property name="expand">True</property>
-					  <property name="fill">True</property>
->>>>>>> variant B
 					  <property name="left_attach">0</property>
 					  <property name="right_attach">1</property>
 					  <property name="top_attach">0</property>
 					  <property name="bottom_attach">1</property>
 					  <property name="x_options">fill</property>
 					  <property name="y_options"></property>
-======= end
 					</packing>
 				      </child>
-<<<<<<< variant A
 
+				      <child>
+					<widget class="GtkLabel" id="label56">
+					  <property name="visible">True</property>
+					  <property name="label" translatable="yes">_Amount: </property>
+					  <property name="use_underline">True</property>
+					  <property name="use_markup">False</property>
+					  <property name="justify">GTK_JUSTIFY_LEFT</property>
+					  <property name="wrap">False</property>
+					  <property name="selectable">False</property>
+					  <property name="xalign">0</property>
+					  <property name="yalign">0.5</property>
+					  <property name="xpad">0</property>
+					  <property name="ypad">0</property>
+					  <property name="mnemonic_widget">ieAmount</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
+					</widget>
+					<packing>
+					  <property name="left_attach">0</property>
+					  <property name="right_attach">1</property>
+					  <property name="top_attach">0</property>
+					  <property name="bottom_attach">1</property>
+
+					</packing>
+				      </child>
 				      <child>
 					<widget class="GtkExpander" id="usdaExpander">
 					  <property name="visible">True</property>
@@ -4437,22 +4376,6 @@ as Ingredient</property>
 					      <property name="homogeneous">False</property>
 					      <property name="row_spacing">6</property>
 					      <property name="column_spacing">12</property>
->>>>>>> variant B
-				    </widget>
-				    <packing>
-				      <property name="padding">6</property>
-				      <property name="expand">True</property>
-				      <property name="fill">True</property>
-				    </packing>
-				  </child>
-				</widget>
-				<packing>
-				  <property name="padding">0</property>
-				  <property name="expand">True</property>
-				  <property name="fill">True</property>
-				</packing>
-			      </child>
-======= end
 
 					      <child>
 						<widget class="GtkLabel" id="label79">
@@ -4528,46 +4451,7 @@ as Ingredient</property>
 						</packing>
 					      </child>
 >>>>>>> variant B
-		      <child>
-			<widget class="GtkLabel" id="label56">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Ingredient Editor</property>
-			  <property name="use_underline">True</property>
-			  <property name="use_markup">False</property>
-			  <property name="justify">GTK_JUSTIFY_LEFT</property>
-			  <property name="wrap">False</property>
-			  <property name="selectable">False</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">0</property>
-			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-			  <property name="width_chars">-1</property>
-			  <property name="single_line_mode">False</property>
-			  <property name="angle">0</property>
-			</widget>
-			<packing>
-			  <property name="type">label_item</property>
-			</packing>
-		      </child>
-		    </widget>
-		  </child>
-		</widget>
-		<packing>
-		  <property name="padding">0</property>
-		  <property name="expand">False</property>
-		  <property name="fill">True</property>
-		</packing>
-	      </child>
-	    </widget>
-	    <packing>
-	      <property name="tab_expand">False</property>
-	      <property name="tab_fill">True</property>
-	    </packing>
-	  </child>
-======= end
 
-<<<<<<< variant A
 					      <child>
 						<widget class="GtkLabel" id="nutCurrentUnitLabel">
 						  <property name="visible">True</property>
@@ -4595,30 +4479,7 @@ as Ingredient</property>
 						  <property name="y_options"></property>
 						</packing>
 					      </child>
->>>>>>> variant B
-	  <child>
-	    <widget class="GtkLabel" id="label63">
-	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Ingredients</property>
-	      <property name="use_underline">True</property>
-	      <property name="use_markup">False</property>
-	      <property name="justify">GTK_JUSTIFY_LEFT</property>
-	      <property name="wrap">False</property>
-	      <property name="selectable">False</property>
-	      <property name="xalign">0.5</property>
-	      <property name="yalign">0.5</property>
-	      <property name="xpad">0</property>
-	      <property name="ypad">0</property>
-	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-	      <property name="width_chars">-1</property>
-	      <property name="single_line_mode">False</property>
-	      <property name="angle">0</property>
-	    </widget>
-	    <packing>
-	      <property name="type">tab</property>
-	    </packing>
-	  </child>
-======= end
+
 
 					      <child>
 						<widget class="GtkLabel" id="label87">
@@ -4926,7 +4787,6 @@ as Ingredient</property>
 	      <property name="visible">True</property>
 	      <property name="homogeneous">False</property>
 	      <property name="spacing">0</property>
-======= end
 
 	      <child>
 		<widget class="GtkLabel" id="nutritionLabel">
@@ -4963,16 +4823,7 @@ as Ingredient</property>
 		  <child>
 		    <widget class="GtkTreeView" id="nutTreeView">
 		      <property name="visible">True</property>
-<<<<<<< variant A
-		      <property name="can_focus">True</property>
-		      <property name="headers_visible">True</property>
-		      <property name="rules_hint">False</property>
-		      <property name="reorderable">False</property>
-		      <property name="enable_search">True</property>
-		      <property name="fixed_height_mode">False</property>
-		      <property name="hover_selection">False</property>
-		      <property name="hover_expand">False</property>
->>>>>>> variant B
+
 		      <property name="homogeneous">False</property>
 		      <property name="spacing">0</property>
 
@@ -5153,7 +5004,6 @@ as Ingredient</property>
 			  <property name="fill">True</property>
 			</packing>
 		      </child>
-======= end
 		    </widget>
 		  </child>
 		</widget>
@@ -5163,30 +5013,7 @@ as Ingredient</property>
 		</packing>
 	      </child>
 
-<<<<<<< variant A
-	      <child>
-		<widget class="GtkLabel" id="label88">
-		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">label88</property>
-		  <property name="use_underline">False</property>
-		  <property name="use_markup">False</property>
-		  <property name="justify">GTK_JUSTIFY_LEFT</property>
-		  <property name="wrap">False</property>
-		  <property name="selectable">False</property>
-		  <property name="xalign">0.5</property>
-		  <property name="yalign">0.5</property>
-		  <property name="xpad">0</property>
-		  <property name="ypad">0</property>
-		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-		  <property name="width_chars">-1</property>
-		  <property name="single_line_mode">False</property>
-		  <property name="angle">0</property>
-		</widget>
-		<packing>
-		  <property name="type">tab</property>
-		</packing>
-	      </child>
->>>>>>> variant B
+
 	  <child>
 	    <widget class="GtkLabel" id="label65">
 	      <property name="visible">True</property>
@@ -5204,7 +5031,6 @@ as Ingredient</property>
 	      <property name="width_chars">-1</property>
 	      <property name="single_line_mode">False</property>
 	      <property name="angle">0</property>
-======= end
 	    </widget>
 	  </child>
 	</widget>
