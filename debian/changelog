@@ -1,3 +1,34 @@
+gourmet (0.8.6.2-1) unstable; urgency=low
+  * Display recipe in pages (first 25, next 25, so on) to speed up
+  Gourmet. This makes just about everything "feel" faster -- startup,
+  search, etc.
+  * Continue optimization of database.
+  * Properly handle multiple categories.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 22 August 2005 07:23:00 -0400
+
+gourmet (0.8.6.1-1) unstable; urgency=low
+  * Database normalized; hopefully this will mean performance improvements
+  * Oodles of magic added to aid normalization of DB
+  * Key lookup improved / interface on recipe card should be less sluggish.
+  * ComboBoxEntry's changed so that one TAB moves focus out of them -- this
+    should improve e.g. recipe entry though it does break consistency with
+    other GTK apps.
+  * DB self-updater tinkered with to support new DB changes.	
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 01 August 2005 17:00:00 -0400
+
+gourmet (0.8.6.0-1) unstable; urgency=low
+  * Use integers for indices in databases (this should be faster)
+  * Times (cook/prep) are now stored internally as numbers of seconds,
+  which means sorting just works
+  * Ratings are now done one a star-system, which means sorting just
+  works.
+  * since ratings are done on a star system, we've introduced a dialog
+  to let the user select how they'd like to translate textual ratings
+  into stars
+	
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 01 August 2005 17:00:00 -0400
+
 gourmet (0.8.5.9-1) unstable; urgency=low
   * Fixed segfault when closing and not saving new recipe.
   * Stopped markup from showing up in dialogs
@@ -5,6 +36,14 @@ gourmet (0.8.5.9-1) unstable; urgency=low
    
  -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 01 August 2005 11:34:00 -0400
 	
+gourmet (0.8.5.9-1) unstable; urgency=low
+  * Fixed segfault when closing and not saving new recipe.
+  * Stopped markup from showing up in dialogs
+  * Changed button order in recipe wastebasket.
+   
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 01 August 2005 11:34:00 -0400
+	
+>>>>>>> 1.5.2.22.2.6
 gourmet (0.8.5.8-1) unstable; urgency=low
   * Fixed bug in deletion of new recipe and improved interface for
   deleting recipes that are already open
