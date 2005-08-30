@@ -235,13 +235,6 @@ TEXT_ATTR_DIC = {'instructions':_('Instructions'),
                  'modifications':_('Notes'),
                  }
 
-REC_ATTR_DIC = {}
-for att,titl,widg in REC_ATTRS: REC_ATTR_DIC[att]=titl
-
-TEXT_ATTR_DIC = {'instructions':_('Instructions'),
-                 'modifications':_('Notes'),
-                 }
-
 NAME_TO_ATTR = {_('Instructions'):'instructions',
                 _('Notes'):'modifications',
                 _('Modifications'):'modifications',

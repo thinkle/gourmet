@@ -1168,10 +1168,6 @@ def get_ratings_conversion (*args,**kwargs):
     d=RatingsConversionDialog(*args,**kwargs)
     return d.run()
 
-def show_faq (*args,**kwargs):
-    d=SimpleFaqDialog(*args,**kwargs)
-    return d.run()
-
 if __name__ == '__main__':
     w=gtk.Window()
     w.connect('delete_event',gtk.main_quit)

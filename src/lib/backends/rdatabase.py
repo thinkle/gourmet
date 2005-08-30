@@ -225,8 +225,19 @@ class RecData:
         # objects with fetch_one methods, which we'll use here.
         return table.fetch_one(*args,**kwargs)
 
-    def search (self, table, colname, text, exact=0, use_regexp=True):
-        """Search COLNAME for in TABLE"""
+
+    # Metakit has no AUTOINCREMENT, so it has to do special magic here
+    def increment_field (self, table, field):
+        """Increment field in table, or return None if the DB will do
+        this automatically.
+        """
+        return None
+
+    # convenience DB access functions for working with ingredients,
+    # recipes, etc.
+
+    def delete_ing (self, ing):
+        """Delete ingredient permanently."""
         raise NotImplementedError
 
     def get_unique_values (self, colname,table=None):

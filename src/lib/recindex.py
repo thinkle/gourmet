@@ -8,6 +8,7 @@ import convert
 from gglobals import *
 from gdebug import debug
 import mnemonic_manager
+import pageable_model
 
 class RecIndex:
     """We handle the 'index view' of recipes, which puts
@@ -15,7 +16,8 @@ class RecIndex:
     and sorted. We're a separate class from the main recipe
     program so that we can be created again (e.g. in the recSelector
     dialog called from a recipe card."""
-    def __init__ (self, model, glade, rd, rg, editable=False):
+    #def __init__ (self, model, glade, rd, rg, editable=False):
+    def __init__ (self, glade, rd, rg, editable=False):
         #self.visible = 1 # can equal 1 or 2
         self.editable=editable
         self.rtcols=rg.rtcols
@@ -23,7 +25,8 @@ class RecIndex:
         self.rtwidgdic=rg.rtwidgdic
         self.prefs=rg.prefs
         self.glade = glade
-        self.rmodel = model
+        #self.rmodel = model
+        
         self.rd = rd
         self.rg = rg
         self.srchentry=self.glade.get_widget('rlistSearchbox')
@@ -141,15 +144,16 @@ class RecIndex:
     
     def setup_rectree (self):
         """Create our recipe treemodel."""
-        self.rmodel_filter = self.rmodel.filter_new()
+        #self.rmodel_filter = self.rmodel.filter_new()
         #self.rmodel_filter.set_modify_func(types, self.add_recipe_attr)
         # we allow filtering for searches...
-        self.visible = [x.id for x in self.rd.rview]
+        #self.visible = [x.id for x in self.rd.rview]
         # visibility_fun checks to see if the Rec ID is in self.visible
-        self.rmodel_filter.set_visible_func(self.visibility_fun)
+        #self.rmodel_filter.set_visible_func(self.visibility_fun)
         # make sortable...
-        self.rmodel_sortable = gtk.TreeModelSort(self.rmodel_filter)
-        self.rectree.set_model(self.rmodel_sortable)
+        #self.rmodel_sortable = gtk.TreeModelSort(self.rmodel_filter)
+        self.rmodel = RecipeModel(self.lsrchvw)
+        self.rectree.set_model(self.rmodel)
         self.rectree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.selection_changed()
         self.set_reccount()
@@ -462,11 +466,32 @@ class RecIndex:
             return False
  
     def update_rmodel (self, rview):
-        debug('update_rmodel... changing filtering criteria',0)
-        self.visible = map(lambda r: r.id, rview)
-        debug('visible=%s'%self.visible,0)
-        debug('refiltering')
-        self.rmodel_filter.refilter()
-        debug('update_rmodel finished')
+        #debug('update_rmodel... changing filtering criteria',0)
+        #self.visible = map(lambda r: r.id, rview)
+        #debug('visible=%s'%self.visible,0)
+        #debug('refiltering')
+        #self.rmodel_filter.refilter()
+        #debug('update_rmodel finished')
+        self.rmodel.change_view(rview)
 
 
+class RecipeModel (pageable_model.PageableViewTreeModel):
+    per_page = 25
+    page = 0
+
+    columns_and_types = [('id',gobject.TYPE_PYOBJECT,),
+                         ('thumb',gtk.gdk.Pixbuf),
+                         ]
+    for n in self.rtcols:
+        if n in INT_REC_ATTRS: columns_and_types.append(n,int)
+        else: columns_and_types.append(n,str)
+    
+    columns = [c[0] for c in columns_and_types]
+    column_types = [c[1] for c in columns_and_types]
+
+    def change_view (self, vw):
+        self.view = vw
+        self.update_all()
+
+    #def on_get_value (self, rowref, column):
+    #    page
