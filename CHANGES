@@ -1,3 +1,21 @@
+==== Version 0.8.6.4 Changes since 0.8.6.3 ====
+* Improved encoding dialog.
+* Fixed handling of webpages with screwy encoding.
+
+==== Version 0.8.6.3 Changes since 0.8.6.2 ====
+* Added fast add-ingredient box
+* Fixed some broken stuff
+* Changed code underlying pageable model so it is much more stable
+  (got rid of nasty error messages and many of the segfaults)
+* Updated key editor to work with updates to backend/pageable model.
+
+==== Version 0.8.6.2 Changes since 0.8.6.1 ====
+* Display recipe in pages (first 25, next 25, so on) to speed up
+  Gourmet. This makes just about everything "feel" faster -- startup,
+  search, etc.
+* Continue optimization of database.
+* Properly handle multiple categories.
+
 ==== Version 0.8.6.1 Changes since 0.8.6.0 ====
 * Database normalized; hopefully this will mean performance improvements
 * Oodles of magic added to aid normalization of DB
@@ -15,6 +33,23 @@
 * since ratings are done on a star system, we've introduced a dialog
   to let the user select how they'd like to translate textual ratings
   into stars
+
+==== Version 0.8.5.12 Changes since 0.8.5.11 ====
+* Added quick ingredient editor interface.
+* Improved encoding dialog.
+* Fixed handling of webpages with screwy encoding.
+* Added foodnetwork.com import (preliminary).
+======= end
+
+==== Version 0.8.5.11 Changes since 0.8.5.10 ====
+* Fixed menus in shopping list so they work without GNOME libraries.
+* Fixed unit conversion (typo that resulted in e.g. "23 TBS flour"
+  showing up.
+* Behave better when locales are behaving badly.
+
+==== Version 0.8.5.10 Changes since 0.8.5.9 ====
+* Improved/Fixed lag when adding ingredients with the ingredient
+  editor
 
 ==== Version 0.8.5.9 Changes since 0.8.5.8 ====
 * Fixed nasty segfault when deleting unedited recipe 
@@ -75,14 +110,11 @@
 * Fixed bug in MealMaster import
 * Import instructions from krecipes!
 * Improved handling of recipe references.
-* If recipes-as-ingredient references fail for whatever reason,
-  fall-back on a title-search before screwing the user.
 
 ==== Version 0.8.5.2 Changes since 0.8.5.1 ====
 * Fixed RTF Export
 * Added support for exporting images in RTF export
 * Added recognition and production of unicode fraction characters
-* Made export from index view export selected recipes rather than all recipes.
 
 ==== Version 0.8.5.1 Changes since 0.8.5.0 ====
 * Fixed compatability issue with pygtk 2.4

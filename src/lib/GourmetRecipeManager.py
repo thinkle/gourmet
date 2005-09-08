@@ -30,7 +30,6 @@ else:
 
 import gettext_setup
 
-
 try:
     import rtf_exporter
     rtf=True
@@ -68,6 +67,8 @@ class RecGui (RecIndex):
             self.prefs,
             buttons={'clear_remembered_optional_button':lambda *args: self.forget_remembered_optional_ingredients()}
             )
+        self.prefsGui.apply_prefs_dic['recipes_per_page']= lambda p,v: getattr(getattr(self,'rmodel'),
+                                                                               'change_items_per_page')(v)
         self.update_splash(_("Loading graphical interface..."))        
         gtk.glade.bindtextdomain('gourmet',DIR)
         gtk.glade.textdomain('gourmet')
@@ -87,6 +88,7 @@ class RecGui (RecIndex):
         # a thread lock for import/export threads
         self.lock = gt.get_lock()
         self._threads = []
+        self.threads = 0
         self.selected = True
         # widgets that should be sensitive only when a row is selected
         self.act_on_row_widgets = [self.glade.get_widget('rlViewRecButton'),
@@ -105,12 +107,12 @@ class RecGui (RecIndex):
         for a,l,w in REC_ATTRS:
             self.rtcolsdic[a]=l
             self.rtwidgdic[a]=w
-        self.rtcols=[r[0] for r in REC_ATTRS]
+        self.rtcols = [r[0] for r in REC_ATTRS]
         self.update_splash(_("Loading recipe database..."))
         self.init_recipes()
         self.update_splash(_("Setting up recipe index..."))
         RecIndex.__init__(self,
-                          model=self.rmodel,
+                          #model=self.rmodel,
                           glade=self.glade,
                           rd=self.rd,
                           rg=self,
@@ -271,7 +273,6 @@ class RecGui (RecIndex):
                 sublabel += _('\nWebsite: %s')%website
             import xml.sax.saxutils
             de.show_message(label=xml.sax.saxutils.escape('%s %s'%(appname,myversion)),
-                            #sublabel=xml.sax.saxutils.escape(sublabel)) #old line that messed with our about dialog
                             sublabel=sublabel) #new line that leaves strings as they are.
             
     def show_help (self, *args):
@@ -280,7 +281,7 @@ class RecGui (RecIndex):
     def show_progress_dialog (self, thread, progress_dialog_kwargs={},message=_("Import paused"),
                            stop_message=_("Stop import")):
         """Show a progress dialog"""
-        print 'showing progress dialog'
+        #print 'showing progress dialog'
         if hasattr(thread,'name'): name=thread.name
         else: name = ''
         for k,v in [('okay',True),
@@ -292,12 +293,12 @@ class RecGui (RecIndex):
             if not progress_dialog_kwargs.has_key(k):
                 progress_dialog_kwargs[k]=v
         if not hasattr(self,'progress_dialog') or not self.progress_dialog:
-            print 'making progress_dialog'
+            #print 'making progress_dialog'
             self.progress_dialog = de.ProgressDialog(**progress_dialog_kwargs)
             self.prog = self.progress_dialog.progress_bar
-            print 'Our prog dialog is here: ',self.progress_dialog
+            #print 'Our prog dialog is here: ',self.progress_dialog
         else:
-            print 'prog dialog already exists ->',self.progress_dialog
+            #print 'prog dialog already exists ->',self.progress_dialog
             self.progress_dialog.reassign_buttons(pausecb=progress_dialog_kwargs['pause'],
                                               stopcb=progress_dialog_kwargs['stop'])
             self.progress_dialog.reset_label(progress_dialog_kwargs['label'])
@@ -311,7 +312,7 @@ class RecGui (RecIndex):
         
     def hide_progress_dialog (self):
         """Make the progress dialog go away."""
-        print 'Called hide_progress_dialog!'
+        #print 'Called hide_progress_dialog!'
         if hasattr(self,'progress_dialog') and self.progress_dialog:
             self.progress_dialog.hide()
             self.progress_dialog.destroy()
@@ -403,7 +404,7 @@ class RecGui (RecIndex):
         # connect hooks to modify our view whenever and
         # whenceever our recipes are updated...
         self.rd.modify_hooks.append(self.update_rec_iter)
-        self.rd.add_hooks.append(self.new_rec_iter)
+        #self.rd.add_hooks.append(self.new_rec_iter)
         self.rd.delete_hooks.append(self.delete_rec_iter)
         # a flag to make deleting multiple recs
         # more efficient...
@@ -415,7 +416,7 @@ class RecGui (RecIndex):
         # that want a list of units.
         self.umodel = convertGui.UnitModel(self.conv)
         self.inginfo = reccard.IngInfo(self.rd)
-        self.create_rmodel(self.rd.rview)
+        #self.create_rmodel(self.rd.rview)
         self.sl = shopgui.ShopGui(self, conv=self.conv)
         self.sl.hide()
 
@@ -438,11 +439,17 @@ class RecGui (RecIndex):
     def reset_rtree (self):
         """Re-create our recipe model."""
         debug("reset_rtree (self):",5)
-        #self.rmodel=self.create_rmodel(self.rd.rview)
+        self.setup_search_views()
+        #self.create_rmodel(self.lsrchvw)
         #self.rectree.set_model(self.rmodel)
-        self.update_rmodel(self.rd.rview)
-        self.search()
-        self.selection_changed()
+        #self.update_rmodel(self.rd.rview)
+        #self.search()
+        #self.selection_changed()
+        self.rmodel.change_view(self.lsrchvw)
+        #self.rectree.set_model()
+        #print 'self.rectree.set_model(self.rmodel)'
+        #self.rectree.set_model(gtk.ListStore(str))
+        self.rectree.set_model(self.rmodel)
         self.set_reccount()
         #for r in rview:
         #    if not r.id in ids:
@@ -451,13 +458,18 @@ class RecGui (RecIndex):
         #        self.set_iter_from_rec(r,iter)
 
     def new_rec_iter (self, rec):
-        debug("new_rec_iter called",5)
-        iter = self.rmodel.append(None)
-        self.set_iter_from_rec(rec,iter)
+        #debug("new_rec_iter called",5)
+        #self.rmodel.update_all()
+        #debug('new_rec_iter done',5)
+        #iter = self.rmodel.append(None)
+        #if len(self.rmodel)<self.rmodel
+        #self.set_iter_from_rec(rec,iter)
+        self.reset_rtree()
 
     def delete_rec_iter (self, rec):
         if self.doing_multiple_deletions: return
-        else: self.rmodel_filter.refilter()
+        self.rmodel.update_all()
+        #else: self.rmodel_filter.refilter()
         #for row in self.rmodel:
         #    if row[0].id==rec.id:
         #        debug("delete_rec_iter found the row to delete",5)
@@ -476,57 +488,63 @@ class RecGui (RecIndex):
         #debug('delete_rec_iter couldn\'t find recipe with ID %s'%rec.id,1)
 
     def update_rec_iter (self, rec):
-        # if r is already in our treeModel, we update values.
-        # otherwise, we add it.
-        debug("update_rec_iter called",5)
+        if not rec: return
         for row in self.rmodel:
-            recobj = row[0]
-            if recobj.id == rec.id:
-                row[0]=rec
-                if rec.thumb:
-                    row[1]=get_pixbuf_from_jpg(rec.thumb)
-                else:
-                    row[1]=None                
-                n = 2
-                for c in self.rtcols:
-                    if c in INT_REC_ATTRS: row[n]=getattr(rec,c)
-                    elif c=='category':
-                        row[n]=", ".join(self.rd.get_cats(rec))
-                    else:
-                        row[n]=str(getattr(rec,c))
-                    n+=1
-                debug("update_rec_iter done!, id=%s"%rec.id,)
-                return
-        else: self.new_rec_iter(rec)
+            rrec = row[0]
+            if rrec.id == rec.id:
+                self.rmodel.row_changed(row.path,row.iter)
+                break
+    #    # if r is already in our treeModel, we update values.
+    #    # otherwise, we add it.
+    #    debug("update_rec_iter called",5)
+    #    for row in self.rmodel:
+    #        recobj = row[0]
+    #        if recobj.id == rec.id:
+    #            row[0]=rec
+    #            if rec.thumb:
+    #                row[1]=get_pixbuf_from_jpg(rec.thumb)
+    #            else:
+    #                row[1]=None                
+    #            n = 2
+    #            for c in self.rtcols:
+    #                if c in INT_REC_ATTRS: row[n]=getattr(rec,c)
+    #                elif c=='category':
+    #                    row[n]=", ".join(self.rd.get_cats(rec))
+    #                else:
+    #                    row[n]=str(getattr(rec,c))
+    #                n+=1
+    #            debug("update_rec_iter done!, id=%s"%rec.id,)
+    #            return
+    #    else: self.new_rec_iter(rec)
     
-    def set_iter_from_rec (self, r, iter, visible=True):
-        """Handed a rec and an iter, set the row values appropriately."""
-        self.rmodel.set_value(iter, 0, r)
-        if r.thumb:
-            self.rmodel.set_value(iter, 1, get_pixbuf_from_jpg(r.thumb))
-        else:
-            self.rmodel.set_value(iter, 1, None)
-        n = 2
-        for c in self.rtcols:
-            debug("setting column %s (n=%s)"%(c,n),5)
-            if c in INT_REC_ATTRS: self.rmodel.set_value(iter,n,getattr(r,c))
-            elif c=='category':
-                self.rmodel.set_value(iter,n,", ".join(self.rd.get_cats(r)))
-            else: self.rmodel.set_value(iter, n, str(getattr(r,c)))
-            n += 1
+    #def set_iter_from_rec (self, r, iter, visible=True):
+    #    """Handed a rec and an iter, set the row values appropriately."""
+    #    self.rmodel.set_value(iter, 0, r)
+    #    if r.thumb:
+    #        self.rmodel.set_value(iter, 1, get_pixbuf_from_jpg(r.thumb))
+    #    else:
+    #        self.rmodel.set_value(iter, 1, None)
+    #    n = 2
+    #    for c in self.rtcols:
+    #        debug("setting column %s (n=%s)"%(c,n),5)
+    #        if c in INT_REC_ATTRS: self.rmodel.set_value(iter,n,getattr(r,c))
+    #        elif c=='category':
+    #            self.rmodel.set_value(iter,n,", ".join(self.rd.get_cats(r)))
+    #        else: self.rmodel.set_value(iter, n, str(getattr(r,c)))
+    #        n += 1
 
-    def create_rmodel (self, rview):
-        debug("create_rmodel (self, rview):",5)
-        # we start with our recipe object and our image
-        mod = [gobject.TYPE_PYOBJECT,gtk.gdk.Pixbuf]
-        # we add columns for all attributes...
-        for n in self.rtcols:
-            if n in INT_REC_ATTRS: mod.append(gobject.TYPE_INT)
-            else: mod.append(gobject.TYPE_STRING)
-        self.rmodel = apply(gtk.TreeStore,mod)
-        # now we add our recipes
-        for r in rview:
-            self.new_rec_iter(r)
+    #def create_rmodel (self, rview):
+    #    debug("create_rmodel (self, rview):",5)
+    #    # we start with our recipe object and our image
+    #    mod = [gobject.TYPE_PYOBJECT,gtk.gdk.Pixbuf]
+    #    # we add columns for all attributes...
+    #    for n in self.rtcols:
+    #        if n in INT_REC_ATTRS: mod.append(gobject.TYPE_INT)
+    #        else: mod.append(gobject.TYPE_STRING)
+    #    self.rmodel = apply(gtk.TreeStore,mod)
+    #    # now we add our recipes
+    #    for r in rview:
+    #        self.new_rec_iter(r)
 
     def recTreeDeleteRecCB (self, *args):
         """Make a watch show up (this can be slow
@@ -550,8 +568,8 @@ class RecGui (RecIndex):
             if rc.edited:
                 rc.widget.present()
                 if not de.getBoolean(
-                    label=_('Delete %s?')%rec.title,
-                    sublabel=_('You have unsaved changes to %s. Are you sure you want to delete?')%rec.title,
+                    label=_('Delete %s?'),
+                    sublabel=_('You have unsaved changes to %s. Are you sure you want to delete?'),
                     custom_yes=gtk.STOCK_DELETE,
                     custom_no=gtk.STOCK_CANCEL,
                     cancel=False):
@@ -567,9 +585,9 @@ class RecGui (RecIndex):
         if cancelled:
             for c in cancelled: recs.remove(c)
         self.rd.undoable_delete_recs(
-            recs,
+            [self.rd.get_rec(r.id) for r in recs],
             self.history,
-            make_visible=lambda *args: self.rmodel_filter.refilter())
+            make_visible=lambda *args: self.rmodel.change_view(self.rmodel.view))
         self.set_reccount()
         self.message(_("Deleted ") + string.join([r.title for r in recs],', '))
 
@@ -594,25 +612,25 @@ class RecGui (RecIndex):
             tree = te.QuickTree([r.title for r in recs])
             expander = [_("See recipes"),tree]
         if de.getBoolean(parent=self.app,label=bigmsg,sublabel=msg,expander=expander):
-            debug('deleting iters... ',0)
-            #print 'deleting iters...'
-            self.doing_multiple_deletions=True
-            self.iters_to_remove=[]
-            for p in paths:
-                # we remove by hand...
-                iter = model.get_iter(p)
-                child = model.convert_iter_to_child_iter(None, iter)
-                grandchild = self.recTrash.rmodel_filter.convert_iter_to_child_iter(child)
-                self.iters_to_remove.append(grandchild)
-            self.iters_to_remove.sort()
-            self.iters_to_remove.reverse()
-            trees = [(self.rectree,self.rectree.get_model())]
-            if hasattr(self,'recTrash'): trees.append((self.recTrash.rectree,self.recTrash.rectree.get_model()))
-            for tree,mod in trees:
-                tree.set_model(empty_model)
-            for i in self.iters_to_remove:
-                self.recTrash.rmodel.remove(i)
-            for tree,mod in trees: tree.set_model(mod)
+            self.rmodel.update_all()
+            #debug('deleting iters... ',0)
+            #self.doing_multiple_deletions=True
+            #self.iters_to_remove=[]
+            #for p in paths:
+            #    # we remove by hand...
+            #    iter = model.get_iter(p)
+            #    child = model.convert_iter_to_child_iter(None, iter)
+            #    grandchild = self.recTrash.rmodel_filter.convert_iter_to_child_iter(child)
+            #    self.iters_to_remove.append(grandchild)
+            #self.iters_to_remove.sort()
+            #self.iters_to_remove.reverse()
+            #trees = [(self.rectree,self.rectree.get_model())]
+            #if hasattr(self,'recTrash'): trees.append((self.recTrash.rectree,self.recTrash.rectree.get_model()))
+            #for tree,mod in trees:
+            #    tree.set_model(empty_model)
+            #for i in self.iters_to_remove:
+            #    self.recTrash.model.remove(i)
+            #for tree,mod in trees: tree.set_model(mod)
             def show_progress (t):
                 gt.gtk_enter()
                 self.show_progress_dialog(t,
@@ -703,10 +721,10 @@ class RecGui (RecIndex):
             self.recTrash.rmodel_filter.refilter()
 
     def print_recs (self, *args):
-        print 'printing'
+        #print 'printing'
         debug('printing recipes',3)
         recs = self.recTreeSelectedRecs()
-        print 'initialize printer'
+        #print 'initialize printer'
         gt.gtk_leave()
         printer.RecRenderer(self.rd, recs,
                             dialog_title=gettext.ngettext('Print %s recipe',
@@ -729,6 +747,7 @@ class RecGui (RecIndex):
             self.rc[rc.current_rec.id]=rc
             self.make_rec_visible(rc.current_rec)
             self.app.window.set_cursor(None)
+            
         gobject.idle_add(show)
 
     def update_modified_recipe (self, rec, attribute, value):
@@ -1134,7 +1153,11 @@ class RecGui (RecIndex):
         gt.gtk_enter()
         print 'refiltering'
         self.lsrch=['','']
+        #print 'view has ',len(self.rmodel.view)
+        #print 'rview has ',self.rd.rview,len(self.rd.rview)
         self.search()
+        self.reset_rtree()
+        self.set_reccount()
         gt.gtk_leave()
 
     def after_dialog_offer_url (self, linktype, file):
@@ -1277,7 +1300,7 @@ class RecTrash (RecIndex):
             'undeleteRecs':self.recTreeUndeleteSelectedRecs,
             'ok':self.dismiss,
             })
-        RecIndex.__init__(self, self.rg.rmodel, self.glade, self.rg.rd, self.rg)        
+        RecIndex.__init__(self, self.glade, self.rg.rd, self.rg)
         self.rmodel_filter.refilter()
 
     def setup_search_views (self):

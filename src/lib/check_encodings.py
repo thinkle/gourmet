@@ -82,6 +82,10 @@ def get_file (file, encodings=None):
     return gf.lines
 
 class EncodingDialog (de.OptionDialog):
+    """Create a dialog to allow user to select correct encoding for an input file."""
+
+    context_lines = 2
+
     def __init__ (self, default=None, label=_("Select encoding"),
                   sublabel=_("Cannot determine proper encoding. Please select the correct encoding from the following list."),
                   expander_label=_("See _file with encoding"),
@@ -98,9 +102,11 @@ class EncodingDialog (de.OptionDialog):
         self.setup_buffers()
         de.OptionDialog.__init__(self, default=default,label=label, sublabel=sublabel,
                                  options=options, expander=expander)
+        self.set_default_size(700,500)
         self.optionMenu.connect('activate',self.change_encoding)
         self.change_encoding()
         self.created = False
+        self.expander.set_expanded(True)
 
     def setup_motion_buttons (self):
         self.hbb = gtk.HButtonBox()
@@ -123,6 +129,7 @@ class EncodingDialog (de.OptionDialog):
     def create_expander (self):
         self.evb = gtk.VBox()
         self.sw = gtk.ScrolledWindow()
+        self.sw.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
         self.tv = gtk.TextView()
         self.tv.set_editable(False)
         self.buffer = self.tv.get_buffer()
@@ -142,8 +149,6 @@ class EncodingDialog (de.OptionDialog):
             self.set_buffer_text(self.encoding_buffers[k],t)
 
     def change_encoding (self):
-        #self.buffer.set_text(self.encodings[self.ret])
-        #self.set_buffer_text(self.encodings[self.ret])
         if self.cursor_already_set:
             im=self.buffer.get_insert()
             ti=self.buffer.get_iter_at_mark(im)
@@ -170,20 +175,41 @@ class EncodingDialog (de.OptionDialog):
         print 'moving to %s'%dkeys[self.current_error]
         self.tv.scroll_to_mark(mark,0)
 
-        
-        
     def set_buffer_text (self, buffer, text):
-        for n,l in enumerate(text.split('\n')):
-            if n in self.diff_lines.keys():
-                start = 0
-                diffs = self.diff_lines[n]
-                for sdiff,ediff in diffs:
-                    buffer.insert_with_tags(buffer.get_end_iter(),l[start:sdiff],*self.line_highlight_tags)
-                    buffer.insert_with_tags(buffer.get_end_iter(),l[sdiff:ediff],*self.highlight_tags)
-                    start = ediff
-                buffer.insert_with_tags(buffer.get_end_iter(),l[start:]+'\n',*self.line_highlight_tags)
-            else:
-                buffer.insert_with_tags(buffer.get_end_iter(),l+'\n')
+        """Set buffer text to show encoding differences."""
+        lines = text.split('\n')
+        totl = len(lines)
+        shown = []
+        for line,diffs in self.diff_lines.items():
+            if line in shown: continue
+            start_at = line - self.context_lines
+            if start_at < 0: start_at = 0
+            end_at = line + self.context_lines
+            if end_at >= totl: end_at = totl-1
+            if start_at != 0:
+                buffer.insert_with_tags(buffer.get_end_iter(),
+                                        '\n...\n',
+                                        )
+            for n in range(start_at,end_at):
+                if n in shown:
+                    continue
+                shown.append(n)
+                l = lines[n]
+                if n==line:
+                    start = 0
+                    for sdiff,ediff in diffs:
+                        buffer.insert_with_tags(buffer.get_end_iter(),
+                                                l[start:sdiff],
+                                                *self.line_highlight_tags)
+                        buffer.insert_with_tags(buffer.get_end_iter(),
+                                                l[sdiff:ediff],
+                                                *self.highlight_tags)
+                        start = ediff
+                    buffer.insert_with_tags(buffer.get_end_iter(),
+                                            l[start:],
+                                            *self.line_highlight_tags)
+                else:
+                    buffer.insert_with_tags(buffer.get_end_iter(),l)
 
     def diff_texts (self):
         """Look at our differently encoded buffers for characters where they differ."""

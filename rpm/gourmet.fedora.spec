@@ -1,14 +1,14 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:		gourmet
-Version:	0.8.6.1
+Version:	0.8.6.4
 Release:	1
 Summary:	PyGTK Recipe Manager
 
 Group:		Applications/Productivity
 License:	GPL
 URL:		http://grecipe-manager.sourceforge.net
-Source0:	http://easynews.dl.sourceforge.net/sourceforge/grecipe-manager/gourmet-0.8.6.1.tar.gz
+Source0:	http://easynews.dl.sourceforge.net/sourceforge/grecipe-manager/gourmet-0.8.6.4.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:	noarch

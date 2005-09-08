@@ -1,3 +1,18 @@
+gourmet (0.8.6.4-1) unstable; urgency=low
+
+  * Improved encoding dialog.
+  * Fixed handling of webpages with screwy encoding.
+	
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Tuesday, 07 September 2005 07:01:00 -0400
+	
+gourmet (0.8.6.3-1) unstable; urgency=low
+  * Added fast add-ingredient box
+  * Fixed some broken stuff
+  * Changed code underlying pageable model so it is much more stable
+  (got rid of nasty error messages and many of the segfaults)
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Tuesday, 06 September 2005 07:23:00 -0400
+
 gourmet (0.8.6.2-1) unstable; urgency=low
   * Display recipe in pages (first 25, next 25, so on) to speed up
   Gourmet. This makes just about everything "feel" faster -- startup,
@@ -33,6 +48,16 @@ gourmet (0.8.5.9-1) unstable; urgency=low
   * Fixed segfault when closing and not saving new recipe.
   * Stopped markup from showing up in dialogs
   * Changed button order in recipe wastebasket.
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Tuesday, 06 August 2005 22:20:00 -0400
+======= end
+
+gourmet (0.8.5.11-1) unstable; urgency=low
+  * Fixed menus in shopping list so they work without GNOME libraries.
+  * Fixed unit conversion (typo that resulted in e.g. "23 TBS flour"
+  showing up.
+  * Behave better when locales are behaving badly.
+    editor
+>>>>>>> 1.5.2.32
    
  -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 01 August 2005 11:34:00 -0400
 	

@@ -60,6 +60,7 @@ src/lib/nutrition/parser_data.py
 src/lib/OptionParser.py
 src/lib/optionTable.py
 src/lib/PngImagePluginUpToDate.py
+src/lib/pageable_store.py
 src/lib/prefs.py
 src/lib/prefsGui.py
 src/lib/ratingWidget.py
@@ -95,6 +96,7 @@ src/lib/importers/html_plugins/
 src/lib/importers/html_plugins/allrecipes.py
 src/lib/importers/html_plugins/eating_well.py
 src/lib/importers/html_plugins/epicurious.py
+src/lib/importers/html_plugins/foodnetwork.py
 src/lib/importers/html_plugins/html_helpers.py
 src/lib/importers/html_plugins/recipebookonine.py
 src/lib/importers/html_plugins/recipezaar.py

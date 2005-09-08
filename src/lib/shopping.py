@@ -163,6 +163,9 @@ class shopper:
         """Put two categories in order"""
         cata = cata[0]
         catb = catb[0]
+        if not cata and not catb: return 0
+        elif not cata: return 1
+        else: return -1
         if self.catorder_dic.has_key(cata) and self.catorder_dic.has_key(catb):
             # if both categories have known positions, we use them to compare
             cata = self.catorder_dic[cata]

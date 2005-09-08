@@ -751,7 +751,6 @@ def guess_singulars (s):
         wrd=s[0:-2]
         if not wrd in rets: rets.append(wrd)
     if v_plural_matcher.search(s):
-        if not wrd in rets: rets.append(wrd)
         rets.append(s[0:-3]+'f')
     if one_digit_plural_matcher.search(s): rets.append(s[0:-1])
     return rets

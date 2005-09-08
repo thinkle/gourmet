@@ -58,6 +58,9 @@ class PythonicSQL:
         return self._cursors[thread]
     
     def connect (self):
+        """Connect to our database
+
+        Subclasses have to implement this."""
         raise NotImplementedError 
         
     def new_cursor (self):
@@ -102,23 +105,23 @@ class PythonicSQL:
         self._execute(c,sql)
         return Fetcher(c,*fetcher_args,**fetcher_kwargs)
 
-    def create (self, name, table, key=None):
+    def create (self, name, table, key=None, flags=[]): # USE FLAGS!!!
         """Use this method to create a table in this database object. Expected
-        arguments are a table name and a dictionary { name: type , ... } with the column names
+        arguments are a table name and a list [(name, type, [flags])] } with the column names
         as strings and type being type objects representing the data type
         used in that column."""
         #if type(table) != DictionaryType:
         #    raise TypeError, 'expected dictionary type argument'
         add_string = "CREATE TABLE %s ("%name
         sql_params = []
-        if type(table)==type({}): table = table.items()
-        for rowname,typ in table:
+        for rowname,typ,flags in table:
             if type(typ) != type(""):
                 typ = self.pytype_to_sqltype(typ)
             typ = self.hone_type(typ)
             add_string +=  "%s %s"%(rowname,typ)
             if rowname==key:
                 #if typ.upper()=='INTEGER' or typ.upper()=='INT': add_string += " AUTOINCREMENT"
+                if 'AUTOINCREMENT' in flags: add_string += ' AUTOINCREMENT'
                 add_string += " PRIMARY KEY"
             add_string += ","
         add_string = add_string[0:-1] + ")"
@@ -143,7 +146,7 @@ class PythonicSQL:
                (int, "int"),
                (float,"float"),
                (unicode,"unicode"),
-               (None, "binary")]
+               (bool, "binary")]
         for t in types:
             if t[0] == typ:
                 return t[1]
@@ -490,6 +493,10 @@ class TableObject (list):
         crit = self.__criteria__.copy()
         for k,v in criteria.items(): crit[k]=v
         return self.__db__.retrieve_unique(self.__tablename__,column,criteria=crit,filters=self.__filters__)
+
+    def fetch_one (self,**dictionary):
+        table = self.select(**dictionary)
+        if table: return table[0]
 
     def select (self,**dictionary):
         """Return a TableObject with a subview of ourselves based on criteria.

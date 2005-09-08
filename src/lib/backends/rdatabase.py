@@ -9,7 +9,6 @@ import gourmet.nutrition.parser_data
 import StringIO
 from gourmet import ImageExtras
 
-
 # This is our base class for rdatabase.  All functions needed by
 # Gourmet to access the database should be defined here and
 # implemented by subclasses.  This was designed around metakit, so
@@ -44,7 +43,6 @@ class RecData:
                         'unit',
                         'item',
                         'inggroup',
-                        'category',
                         'word',
                         'shopcategory'
                         ]
@@ -66,19 +64,15 @@ class RecData:
                    ('cuisine',"int",[]),
                    ('rating',"int",[]),
                    ('description',"text",[]),
-                   #('category',"int",[]), # ALLOW MULTIPLE CATEGORIES!
                    ('source',"int",[]),
-                   #('preptime',"char(50)",[]),
-                   #('cooktime',"char(50)",[]),                                       
                    ('preptime','int',[]),
                    ('cooktime','int',[]),
-                   #('yield','int',[]), # to be implemented soon enough...
-                   #('yieldunit','char(50)' # to be implemented soon enough...
                    ('servings',"char(50)",[]),
                    ('image',"binary",[]),
                    ('thumb','binary',[]),
                    ('deleted','bool',[]),
-                   ],                   #'id' # key
+                   ],
+                         'id' # key
                          ) 
     CATEGORY_TABLE_DESC = ('categories',
                       [('id','int',[]),
@@ -153,7 +147,7 @@ class RecData:
         self.modify_hooks = []
         self.delete_hooks = []
         self.add_ing_hooks = []
-        timer = TimeAction('initialize_connection + setup_tables',0)
+        timer = TimeAction('initialize_connection + setup_tables',2)
         self.initialize_connection()
         self.setup_tables()        
         timer.end()
@@ -173,7 +167,6 @@ class RecData:
 
         Subclasses should do any necessary adjustments/tweaking before calling
         this function."""
-
         self.normalizations={}
         for desc in self.NORMALIZED_TABLES:
             self.normalizations[desc[0]]=self.setup_table(*desc)
@@ -181,8 +174,6 @@ class RecData:
         self.rview = self._setup_table(*self.RECIPE_TABLE_DESC)
         self.iview = self._setup_table(*self.INGREDIENTS_TABLE_DESC)
         self.catview = self._setup_table(*self.CATEGORY_TABLE_DESC)
-        self.nview = self.setup_table(*self.NUTRITION_TABLE_DESC)
-        self.naliases = self.setup_table(*self.NUTRITION_ALIASES_TABLE_DESC)
         self.iview_not_deleted = self.iview.select(deleted=False)
         self.iview_deleted = self.iview.select(deleted=True)
         self.ikview = self._setup_table(*self.INGKEY_LOOKUP_TABLE_DESC)
@@ -196,7 +187,6 @@ class RecData:
         self.uview = self._setup_table(*self.UNITDICT_TABLE_DESC)
 
     def _setup_table (self, *args,**kwargs):
-        #print 'NormalizedView of ',args,kwargs
         return NormalizedView(self.setup_table(*args,**kwargs),self,self.normalizations)
         
     def setup_table (self, name, data, key=None):
@@ -212,8 +202,9 @@ class RecData:
         """A basic hook-running function. We use hooks to allow parts of the application
         to tag onto data-modifying events and e.g. update the display"""
         for h in hooks:
-            debug('running hook %s with args %s'%(h,args),3)
+            t = TimeAction('running hook %s with args %s'%(h,args),3)
             h(*args)
+            t.end()
 
     # basic DB access functions
 
@@ -224,7 +215,6 @@ class RecData:
         # hand here. Our PythonicSQL derivatives should have table
         # objects with fetch_one methods, which we'll use here.
         return table.fetch_one(*args,**kwargs)
-
 
     # Metakit has no AUTOINCREMENT, so it has to do special magic here
     def increment_field (self, table, field):
@@ -238,6 +228,13 @@ class RecData:
 
     def delete_ing (self, ing):
         """Delete ingredient permanently."""
+        raise NotImplementedError
+
+    def filter (self, table, func):
+        """Return a table representing filtered with func.
+
+        func is called with each row of the table.
+        """
         raise NotImplementedError
 
     def get_unique_values (self, colname,table=None):
@@ -259,7 +256,7 @@ class RecData:
             new_lst = []
             for i in lst:
                 if i.find(',')>0:
-                    new_lst.extend(ii.strip() for ii in i.split(','))
+                    new_lst.extend([ii.strip() for ii in i.split(',')])
                 else:
                     new_lst.append(i)
             lst = new_lst
@@ -283,25 +280,40 @@ class RecData:
         raise NotImplementedError
 
     def modify_rec (self, rec, dic):
+        """Modify recipe based on attributes/values in dictionary.
+
+        Return modified recipe.
+        """
         self.validate_recdic(dic)
+        debug('validating dictionary',3)
         if dic.has_key('category'):
             cats = dic['category'].split(', ')
             self.delete_by_criteria(self.catview,{'id':rec.id})
             for c in cats:
                 self.catview.append({'id':rec.id,'category':c})
             del dic['category']
+        debug('do modify rec',3)
         return self.do_modify_rec(rec,dic)
 
     def validate_recdic (self, recdic):
         if recdic.has_key('image') and not recdic.has_key('thumb'):
             # if we have an image but no thumbnail, we want to create the thumbnail.
-            img = ImageExtras.get_image_from_string(recdic['image'])
-            thumb = ImageExtras.resize_image(img,40,40)
-            ofi = StringIO.StringIO()
-            thumb.save(ofi,'JPEG')
-            recdic['thumb']=ofi.getvalue()
-            ofi.close()
-        
+            try:
+                img = ImageExtras.get_image_from_string(recdic['image'])
+                thumb = ImageExtras.resize_image(img,40,40)
+                ofi = StringIO.StringIO()
+                thumb.save(ofi,'JPEG')
+                recdic['thumb']=ofi.getvalue()
+                ofi.close()
+            except:
+                del recdic['image']
+                print """Warning: gourmet couldn't recognize the image.
+
+                Proceding anyway, but here's the traceback should you
+                wish to investigate.
+                """
+                import traceback
+                traceback.print_stack()
         for k,v in recdic.items():
             try:
                 recdic[k]=v.strip()
@@ -311,7 +323,8 @@ class RecData:
     def modify_ing (self, ing, ingdict):
         self.validate_ingdic(ingdict)
         if ing.item!=ingdict.get('item',ing.item) or ing.ingkey!=ingdict.get('ingkey',ing.ingkey):
-            self.remove_ing_from_keydic(ing.item,ing.ingkey)
+            if ing.item and ing.ingkey:
+                self.remove_ing_from_keydic(ing.item,ing.ingkey)
             self.add_ing_to_keydic(ingdict.get('item',ing.item),
                                    ingdict.get('ingkey',ing.ingkey))
         return self.do_modify_ing(ing,ingdict)
@@ -338,7 +351,7 @@ class RecData:
 
     def add_ing (self, dic):
         self.validate_ingdic(dic)
-        try:
+        try:            
             if dic.has_key('item') and dic.has_key('ingkey'):
                 self.add_ing_to_keydic(dic['item'],dic['ingkey'])
             return self.do_add_ing(dic)
@@ -380,7 +393,13 @@ class RecData:
         return self.iview.select(id=id,deleted=False)
 
     def get_cats (self, rec):
-        return [c.category for c in self.catview.select(id=rec.id)]
+        svw = self.catview.select(id=rec.id)
+        cats =  [c.category or '' for c in svw]
+        # hackery...
+        while '' in cats:
+            #print "wtf - there's an empty category for recipe ",rec.id
+            cats.remove('')
+        return cats
 
     def get_referenced_rec (self, ing):
         """Get recipe referenced by ingredient object."""
@@ -418,17 +437,13 @@ class RecData:
     def do_add_rec (self, rdict):
         """Add a recipe based on a dictionary of properties and values."""
         self.changed=True
-        t = TimeAction('rdatabase.add_rec - checking keys',3)
         if not rdict.has_key('deleted'):
             rdict['deleted']=0
         if not rdict.has_key('id'):
             rdict['id']=self.new_id()
-        t.end()
         try:
             debug('Adding recipe %s'%rdict, 4)
-            t = TimeAction('rdatabase.add_rec - rview.append(rdict)',3)
             self.rview.append(rdict)
-            t.end()
             debug('Running add hooks %s'%self.add_hooks,2)
             if self.add_hooks: self.run_hooks(self.add_hooks,self.rview[-1])
             return self.rview[-1]
@@ -438,10 +453,13 @@ class RecData:
 
     def delete_rec (self, rec):
         """Delete recipe object rec from our database."""
-        self.delete_by_criteria(self.rview,{'id':rec.id})
-        self.delete_by_criteria(self.catview,{'id':rec.id})
-        self.delete_by_criteria(self.iview,{'id':rec.id})
-        raise NotImplementedError
+        if type(rec)!=int: rec=rec.id
+        debug('deleting recipe ID %s'%rec,0)
+        self.delete_by_criteria(self.rview,{'id':rec})
+        self.delete_by_criteria(self.catview,{'id':rec})
+        self.delete_by_criteria(self.iview,{'id':rec})
+        debug('deleted recipe ID %s'%rec,0)
+        #raise NotImplementedError
 
     def new_rec (self):
         """Create and return a new, empty recipe"""
@@ -523,7 +541,12 @@ class RecData:
         Amount may be a tuple if the amount is a range, a float if
         there is a single amount, or None"""
         amt=getattr(ing,'amount')
-        ramt = getattr(ing,'rangeamount')
+        try:
+            ramt = getattr(ing,'rangeamount')
+        except:
+            # this blanket exception is here for our lovely upgrade
+            # which requires a working export with a out-of-date DB
+            ramt = None
         if mult != 1:
             if amt: amt = amt * mult
             if ramt: ramt = ramt * mult
@@ -599,23 +622,19 @@ class RecData:
                 raise ValueError("%s is an invalid value for mode"%mode)
     
     def add_ing_to_keydic (self, item, key):
-        #print 'adding ',item,key
+        if not item or not key: return
         row = self.fetch_one(self.ikview, item=item, ingkey=key)
         if row:
-            #print 'itm ',item,'->',key
             row.count+=1
         else:
-            #print 'itm ',item,'->',key,'+1'
             self.ikview.append({'item':item,'ingkey':key,'count':1})
         # and add words...
         for w in re.split('\W+',item):
             w=w.lower().strip()
             row = self.fetch_one(self.ikview,word=w,ingkey=key)
             if row:
-                #print w,'->',key,'count +1'
                 row.count+=1
             else:
-                #print w,'->',key,'count=1'
                 self.ikview.append({'word':w,'ingkey':key,'count':1})
 
     def remove_ing_from_keydic (self, item, key):
@@ -753,7 +772,7 @@ class RecipeManager (RecData):
             return None
             
     def ingredient_parser (self, s, conv=None, get_key=True):
-        """Handed a string, we hand back a dictionary (sans recipe ID)"""
+        """Handed a string, we hand back a dictionary representing a parsed ingredient (sans recipe ID)"""
         debug('ingredient_parser handed: %s'%s,0)
         s = unicode(s) # convert to unicode so our ING MATCHER works properly
         s=s.strip("\n\t #*+-")
@@ -775,9 +794,17 @@ class RecipeManager (RecData):
                     d['amount']=convert.frac_to_float(a.strip())
             if u:
                 if conv and conv.unit_dict.has_key(u.strip()):
-                    d['unit']=conv.unit_dict[u.strip()]
-                else:
+                    # Don't convert units to our units!
                     d['unit']=u.strip()
+                else:
+                    # has this unit been used
+                    prev_uses = self.normalizations['unit'].select(
+                        unit=str(u.strip()))
+                    if len(prev_uses)>0:
+                        d['unit']=u
+                    else:
+                        # otherwise, unit is not a unit
+                        i = u + i
             if i:
                 optmatch = re.search('\s+\(?[Oo]ptional\)?',i)
                 if optmatch:
@@ -904,9 +931,7 @@ class dbDic:
         if self.just_got.has_key(k): return self.just_got[k]
         if self.pickle_key:
             k=pickle.dumps(k)
-        t=TimeAction('dbdict getting from db',5)
         v = getattr(self.vw.select(**{self.kp:k})[0],self.vp)        
-        t.end()
         if v and self.pickle_val:
             try:
                 return pickle.loads(v)
@@ -977,12 +1002,12 @@ class Normalizer:
         self.__normdic__ = normdic
 
     def str_to_int (self, k, v):
+        if not v: return None
         k=str(k)
         v=str(v)
         normtable = self.__normdic__[k]
         row = self.__rd__.fetch_one(normtable,**{k:v})
         if row:
-            #print 'Key already exists'
             return row.id
         else:
             n=self.__rd__.increment_field(normtable,'id')
@@ -995,11 +1020,13 @@ class Normalizer:
             return r.id
         
     def int_to_str (self, k, v):
+        if 0: return ""
         normtable = self.__normdic__[k]
         if type(v)!=int:
             print "int_to_str says: WTF are you handing me ",v,"for?"
         row = self.__rd__.fetch_one(normtable,id=v)
         if row:
+            #print 'Magic ',v,'->',getattr(row,k)
             return getattr(row,k)
         elif v==0:
             return None
@@ -1020,20 +1047,50 @@ class NormalizedView (Normalizer):
         Normalizer.__init__(self, rd, normdic)
         self.__normdic__ = normdic
 
+    def __iter__ (self):
+        for i in self.__view__:
+            yield NormalizedRow(i,self.__rd__,self.__normdic__)
+
+    def __nonzero__ (self): return not not self.__view__
+
+    def __str__ (self): return repr(self)
+    
     def __getattr__ (self, attname):
         if attname == '__view__': return self.__view__
         if attname == '__normdic__': return self.__normdic__
         if attname == '__rd__': return self.__rd__
-        if attname == '__repr__': return self.__repr__        
+        if attname == '__repr__': return self.__repr__
+        if attname == '__join_normed_prop__': return self.__join_normed_prop__
         if attname == '__normalize_dictionary__': return self.__normalize_dictionary__
-        base_att = getattr(self.__view__,attname)
+        if attname == 'sort': return self.sort
+        if attname == 'sortrev': return self.sortrev
+        if attname == '__iter__': return self.__iter__
+        try:
+            base_att = getattr(self.__view__,attname)
+        except AttributeError:
+            print 'Odd ',self.__view__,'has no attribute',attname
+            print 'We were called from: '
+            import traceback
+            traceback.print_exc()
+            raise
         if callable(base_att):
             return self.wrap_callable(base_att)
         return base_att
         
     def __setattr__ (self, attname, val):
-        if attname in ['__view__','__normdic__','__rd__']: self.__dict__[attname] = val
-        else: setattr(self.__view__,val)
+        if attname in ['__view__',
+                       '__normdic__',
+                       '__rd__',
+                       '__repr__',
+                       '__join_normed_prop__',
+                       '__normalize_dictionary__',
+                       'sort',
+                       'sortrev',
+                       '__iter__',
+                       ]:
+            self.__dict__[attname] = val
+        else:
+            setattr(self.__view__,val)
 
     def __normalize_dictionary__ (self, d):
         for k,v in d.items():
@@ -1070,7 +1127,57 @@ class NormalizedView (Normalizer):
                 return ret
         return _
 
-    def __repr__ (self): return '<Normalized %s>'%self.__view__    
+    def __repr__ (self): return '<Normalized %s>'%self.__view__
+
+    def __join_normed_prop__ (self, prop, subvw=None):
+        """Join in a normalized version of our property.
+
+        Return the new property name.
+        This is useful for e.g. sorting.
+
+        The reason we can't simply use joins this way for everything
+        is that these new joined props are read-only.
+        """
+        if not subvw: subvw=self.__view__
+        normedprop = prop+'lookup'
+        if not hasattr(subvw,normedprop):
+            normtable = self.__normdic__[prop]
+            normtable = normtable.rename(prop,normedprop)
+            normtable = normtable.rename('id',prop)
+            # do our join -- now we can search by our normedprop
+            subvw = subvw.join(normtable,getattr(normtable,
+                                                 prop),
+                               outer=True)
+        return subvw,normedprop
+    
+    def sort (self, prop):
+        # we do some magic sorting...
+        #if self.__normdic__.has_key(prop):
+        #    prop = self.__join_normed_prop__(prop)
+        #sorter = self.wrap_callable(self.__view__.sort)
+        #return sorter(prop)
+        # Regular sorting is failing for reasons I don't understand
+        # So we're just going to use this as a shorthand for sortrev
+        return self.sortrev([getattr(self.__view__,prop)],[])
+
+    def sortrev (self, fprops, rprops):
+        new_fprops = []
+        subvw = self.__view__
+        for prop in [p.name for p in fprops]:
+            if self.__normdic__.has_key(prop):
+                subvw,newprop = self.__join_normed_prop__(prop,subvw)
+                new_fprops.append(getattr(subvw,newprop))
+            else:
+                new_fprops.append(getattr(subvw,prop))
+        new_rprops = []
+        for prop in [p.name for p in rprops]:
+            if self.__normdic__.has_key(prop):
+                subvw,newprop = self.__join_normed_prop__(prop,subvw)
+                new_rprops.append(getattr(subvw,newprop))
+            else:
+                new_rprops.append(getattr(subvw,prop))
+        sorter = self.wrap_callable(subvw.sortrev)
+        return sorter(new_fprops,new_rprops)
 
 class NormalizedRow (Normalizer):
     """Some magic to allow normalizing our tables."""
@@ -1086,18 +1193,28 @@ class NormalizedRow (Normalizer):
         base_attr = getattr(self.__row__,attname)
         if self.__normdic__.has_key(attname):
             return Normalizer.int_to_str(self,attname,base_attr)
+        elif type(base_attr) in [metakit.ViewType, metakit.ViewerType, metakit.ROViewerType]:
+            return NormalizedView(base_attr,self.__rd__,self.__normdic__)
+        elif type(base_attr)==metakit.RowRefType:
+            return NormalizedRow(base_attr,self.__rd__,self.__normdic__)
         else:
             return base_attr
 
     def __setattr__ (self, attname, val):
         if attname in ['__normdic__','__row__','__rd__']:
+            #print 'setting',attname,'->',val
             self.__dict__[attname]=val
             return
         if self.__normdic__.has_key(attname):
+            #print 'norming'
+            nval = Normalizer.str_to_int(self,attname,val)
+            #print 'normed ',val,'->',nval
+            #print 'setting ',self.__row__,attname,'->',nval
             setattr(self.__row__,
                     attname,
-                    Normalizer.str_to_int(self,attname,val)
+                    nval
                     )
+            #print 'set!'
         else:
             setattr(self.__row__,attname,val)
 

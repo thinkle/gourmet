@@ -14,12 +14,12 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
     def initialize_connection (self):
         psl.PythonicSQLite.__init__(self,self.filename)
 
-    def setup_tables (self):
-        # We don't want to use metakit's version of this!
-        rdatabase.RecData.setup_tables(self)
+    #def setup_tables (self):
+    #    # We don't want to use metakit's version of this!
+    #    rdatabase.RecData.setup_tables(self)
 
     def setup_table (self, name, data, key=None):
-        return self.get_table(name,data,key)
+        return self.get_table(name,data,key) #PythonicSQL's method
 
     def delete_rec (self, rec):
         if type(rec)==type(""):

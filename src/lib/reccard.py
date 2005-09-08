@@ -383,17 +383,18 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.ImageBox.edited=False
             newdict['thumb']=self.current_rec.thumb
             newdict['image']=self.current_rec.image
-        debug("modify_rec, newdict=%s"%newdict,5)            
-        self.rg.rd.modify_rec(self.current_rec,newdict)
+        debug("modify_rec, newdict=%s"%newdict,1)
+        self.current_rec = self.rg.rd.modify_rec(self.current_rec,newdict)
         # save DB for metakit
         self.rg.rd.save()
+        #print 'saved','\nupdating...'
         ## if our title has changed, we need to update menus
         self.updateRecDisplay()
+        self.rg.rmodel.update_recipe(self.current_rec)
+        #print 'udpated'
         if newdict.has_key('title'):
             self.widget.set_title("%s %s"%(self.default_title,self.current_rec.title))
             self.rg.updateViewMenu()
-        self.setEdited(False)
-        
         
     def delete (self, *args):
         debug("delete (self, *args):",2)
@@ -666,8 +667,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 raise
             b.set_text(txt)
             Undo.UndoableTextView(w,self.history)
+        #self.servingsChange()
         self.ImageBox.get_image()
         self.ImageBox.edited=False
+        
         self.setEdited(False)
                 
     def undoableWidget (self, widget, signal='changed',
@@ -738,7 +741,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             if serves:
                 self.mult = float(serves)/float(self.serves_orig)
             else:
-                serves=float(self.serves_orig)*self.mult
+                self.mult = 1
+                serves=float(self.serves_orig)
             self.servingsDisplaySpin.set_value(serves)
         else:
             #otherwise, display multiplier label and checkbutton
@@ -1414,7 +1418,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 for l in txt.split('\n'):
                     if l.strip(): self.add_ingredient_from_line(l)
         self.cb.request_text(add_ings_from_clippy)
-    
+
     def importIngredients (self, file):
         ifi=file(file,'r')
         for line in ifi:
@@ -1489,7 +1493,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 self.edited=False #to avoid multiple dialogs if this gets called twice somehow
                 if self.new:
                     self.delete()
-                    return
+                    #self.rg.rd.delete_rec(self.current_rec.id)
         # save our position
         for c in self.conf:
             c.save_properties()
@@ -1676,8 +1680,6 @@ class ImageBox:
 #     widget.connect('key-press-event',focus_out_cb)
             
 class IngredientEditor:
-    """The ingredient editing interface of the recipe card."""
-    
     def __init__ (self, RecGui, rc):
         debug("IngredientEditor.__init__ (self, RecGui):",5)
         self.ing = None
@@ -1693,7 +1695,6 @@ class IngredientEditor:
         self.last_ing = ""
 
     def init_dics (self):
-        """Set up our shopping/organization dictionaries."""
         self.orgdic = self.rg.sl.sh.orgdic
         self.shopcats = self.rg.sl.sh.get_orgcats()        
         
@@ -1753,10 +1754,12 @@ class IngredientEditor:
         self.shopBox = self.glade.get_widget('ieShopCat')
         self.optCheck = self.glade.get_widget('ieOptional')
         self.togWidget = self.glade.get_widget('ieTogButton')
+        self.quickEntry = self.glade.get_widget('quickIngredientEntry')
         
     def setup_signals (self):
         self.glade.signal_connect('ieAdd', self.add)
         self.glade.signal_connect('ieNew', self.new)
+        self.glade.signal_connect('addQuickIngredient',self.quick_add)
         #self.glade.signal_connect('ieDel', self.delete_cb)        
         if hasattr(self,'ingBox') and self.ingBox:
             self.ingBox.connect('focus_out_event',self.setKey)
@@ -1778,7 +1781,6 @@ class IngredientEditor:
                     widg.connect('activate',self.add)
 
     def keySet (self, *args):
-        """Set our key from user input and possibly set shopping category in resposne."""
         debug("keySet (self, *args):",0)
         if not re.match("^\s*$",self.keyBox.entry.get_text()):
             debug('user set key',0)
@@ -1790,32 +1792,39 @@ class IngredientEditor:
             self.user_set_key=False 
 
     def shopSet (self, *args):
-        """Mark whether user has set shopping category or not."""
-        if self.shopBox.entry.get_text().strip():
+        if not re.match("^\s*$",self.shopBox.entry.get_text()):
             self.user_set_shopper=True
         else:
             #if user blanks key, we do our automagic again
             self.user_set_key=False
 
+    def addKey (self,key,item):
+        debug("addKey (self,key,item):",5)
+        pass
+        # this stuff is no longer necessary
+        # with our new key dictionary class
+        #
+        #if self.keydic.has_key(item):
+        #    self.keydic[item].append(key)
+        #else:
+        #    self.keydic[item]=[key]
+    
     def getKey (self):
-        """Grab a user set key if there is one."""
         debug("getKey (self):        ",5)
         kk=self.keyBox.entry.get_text()
-        if kk.strip():
+        if kk:
             return kk
         else:
             #return self.myKeys[0]
             return ""
         
     def getKeyList (self, ing=None):
-        """Grab a keylist based on what is typed in item"""
         debug("getKeyList (self):",5)
         if not ing:
             ing = self.ingBox.get_text()
         return self.rg.rd.key_search(ing)
 
     def setKey (self, *args):
-        """Set key based on contents of shopping list."""
         debug("setKeyList (self, *args):        ",5)
         ing =  self.ingBox.get_text()
         if ing == self.last_ing:
@@ -1830,7 +1839,6 @@ class IngredientEditor:
         self.last_ing = ing
 
     def setKeyList (self, *args):
-        """Set our keylist based on keys returned by getKeyList"""
         debug('setKeyList called!',0)
         t=TimeAction('getKeyList()',0)
         self.myKeys = self.getKeyList()
@@ -1850,7 +1858,6 @@ class IngredientEditor:
         self.myLastKeys=self.myKeys
 
     def setShopper (self):
-        """Automatically set shopping category if user hasn't set it"""
         debug("setShopper (self):",5)
         if not self.user_set_shopper:
             sh = self.getShopper()
@@ -1904,6 +1911,11 @@ class IngredientEditor:
             self.optCheck.set_active(False)
         self.amountBox.grab_focus()
 
+    def quick_add (self, *args):
+        txt = self.quickEntry.get_text()
+        self.rc.add_ingredient_from_line(txt)
+        self.quickEntry.set_text('')
+
     def add (self, *args):
         debug("add (self, *args):",5)
         d = {}
@@ -1927,6 +1939,7 @@ class IngredientEditor:
             # if there's not an item or a key, we check if our user
             # made a typing error and meant the unit as an item
             elif d['unit'] and not d['unit'] in self.rg.conv.units:
+                itm = d['unit']
                 d['item']=d['unit']
                 d['unit']=""
                 self.rc.message(_('You forgot an item. Assuming you meant "%s" as an item and not a unit.')%itm)
@@ -2130,21 +2143,23 @@ class IngInfo:
         self.connect_models()
 
     def add_ing (self, ing):
-        #if not self.manually: self.disconnect_models()
-        if hasattr(ing,'item'):
-            debug('checking for item',3)
-            if not [ing.item] in self.item_model:
-                debug('adding item',3)                
-                self.item_model.append([ing.item])
-                debug('appended %s to item model'%ing.item,3)
-        if hasattr(ing,'ingkey'):
-            debug('checking for key',3)
-            if not [ing.ingkey] in self.key_model:
-                debug('adding key',3)
-                self.key_model.append([ing.ingkey])
-                debug('appended %s to key model'%ing.ingkey,3)
-        debug('add ing completed',3)
-        #if not self.manually: self.connect_models()
+        # This is really inefficient... we're going to disable temporarily
+        pass
+        # if not self.manually: self.disconnect_models()
+#         if hasattr(ing,'item'):
+#             debug('checking for item',3)
+#             if not [ing.item] in self.item_model:
+#                 debug('adding item',3)                
+#                 self.item_model.append([ing.item])
+#                 debug('appended %s to item model'%ing.item,3)
+#         if hasattr(ing,'ingkey'):
+#             debug('checking for key',3)
+#             if not [ing.ingkey] in self.key_model:
+#                 debug('adding key',3)
+#                 self.key_model.append([ing.ingkey])
+#                 debug('appended %s to key model'%ing.ingkey,3)
+#         debug('add ing completed',3)
+#         if not self.manually: self.connect_models()
 
 class RecSelector (RecIndex):
     """Select a recipe and add it to RecCard's ingredient list"""
@@ -2155,8 +2170,12 @@ class RecSelector (RecIndex):
         self.rg=RecGui
         self.reccard=RecCard
         self.dialog = self.glade.get_widget('recDialog')
-        RecIndex.__init__(self, self.rg.rmodel, self.glade, self.rg.rd,
-                          self.rg)
+        RecIndex.__init__(self,
+                          self.glade,
+                          self.rg.rd,
+                          self.rg,
+                          editable=False
+                          )
 
     def quit (self):
         self.dialog.destroy()

@@ -2,7 +2,13 @@ import gtk, gtk.glade, os.path
 import backends.rdatabase, gglobals, optionTable
 
 class PreferencesGui:
-    """The glue between our glade preferences dialog and our prefs modules."""
+    """The glue between our glade preferences dialog and our prefs modules.
+
+    Instead of "connecting", as would be normal with pygtk objects, we set up handlers in the
+    apply_prefs_dic which contains preference-handlers for each preference we wish.
+
+    {'preference_name':lambda foo (name,val): bar(name,val)}
+    """
     
     INDEX_PAGE = 0
     CARD_PAGE = 1
@@ -24,6 +30,9 @@ class PreferencesGui:
                         'email_include_html':'email_html_checkbutton',
                         'emailer_dont_ask':'remember_email_checkbutton',
                         },
+
+        number_options = {'recipes_per_page':'recipesPerPageSpinButton'},
+        
         buttons = {}
         #buttons = {'clear_remembered_optional_button':
         ):
@@ -63,6 +72,8 @@ class PreferencesGui:
         self.connect_toggle_buttons()
         self.buttons=buttons
         self.connect_buttons()
+        self.number_options = number_options
+        self.connect_number_options()
         self.build_pref_dictionary()
         self.set_widgets_from_prefs()
         self.prefs.set_hooks.append(self.update_pref)
@@ -147,6 +158,26 @@ class PreferencesGui:
         """Call back for radio button: if we are on, we set the pref to true_val."""
         if button.get_active():
             self.set_pref(pref_name,true_val)
+
+    def connect_number_options (self):
+        for pref_name,widgetname in self.number_options.items():
+            widget = self.glade.get_widget(widgetname)
+            if hasattr(widget,'get_value'):
+                get_method='get_value'
+            elif hasattr(widget,'get_text'):
+                get_method=lambda *args: float(widget.get_text())
+            else:
+                print 'widget',widget,'is not very numberlike!'
+            curval = self.prefs.get(pref_name,None)
+            if curval:
+                try:
+                    widget.set_value(curval)
+                except:
+                    widget.set_text(str(curval))
+            widget.connect('changed',self.number_callback,pref_name,get_method)
+
+    def number_callback (self, widget, pref_name, get_method='get_value'):
+        self.set_pref(pref_name,getattr(widget,get_method)())
 
     def set_pref (self, name, value):
         """Set preference 'name' to value 'value'

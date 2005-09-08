@@ -79,9 +79,15 @@ class KeyManager:
         return nwlst
 
     def get_key_fast (self, s):
-        srch = self.rm.search(self.rm.ikview,'item',s,exact=True,use_regexp=False)
-        if srch: return srch.sort(srch.count)[-1].ingkey
-        else: return self.generate_key(s)
+        try:
+            if s: srch = self.rm.ikview.select(item=s)
+            else: srch = None
+        except:
+            print 'error seeking key for ',s
+            raise
+        else:
+            if srch: return srch.sort('count')[-1].ingkey
+            else: return self.generate_key(s)
 
     def get_key (self,txt, certainty=0.75):
         """Grab a single key. This is simply a best guess at the
@@ -136,10 +142,9 @@ class KeyManager:
                         extra_words.append(p)
         words.extend(extra_words)
         for w in words:
+            if not w:
+                continue
             srch = self.rm.ikview.select(word=w)
-            #if len(searched[w]) > self.MAX_MATCHES:
-            #    print 'ignoring'
-            #    continue
             for m in srch:
                 ik = m.ingkey
                 if not retvals.has_key(ik):

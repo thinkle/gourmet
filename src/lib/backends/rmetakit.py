@@ -56,18 +56,9 @@ class RecData (rdatabase.RecData):
         self.increment_dict = {}
         #self.top_id_vw.append({'id':1})
         #self.top_id_row = self.top_id_vw[0]
-        #print 'tir.id',self.top_id_row.id
         rdatabase.RecData.setup_tables(self)
         # If we've dumped our data, we want to re-import it!
         if self.import_when_done:            
-            #print "We are going to import now!"
-            #print 'Database now looks like'
-            #print self.db.description()
-            #print "Out db currently has "
-            #print len(self.rview),'recipes'
-            #print 'and '
-            #print len(self.iview),'ingredients'
-            #print 'Importing recipes from ',self.import_when_done
             old_db,ifi = self.import_when_done
             from gourmet.importers.gxml2_importer import converter 
             converter(
@@ -89,10 +80,6 @@ class RecData (rdatabase.RecData):
                 n+=1
             self.pd.set_progress(1.0,'Database successfully converted!')
             del old_db
-            #print 'and now has'
-            #print len(self.rview),'recipes'
-            #print 'and '
-            #print len(self.iview),'ingredients'
 
     def setup_table (self, name, data, key=None):
         """Setup a metakit view (table) for generic table description (see superclass rdatabase)."""
@@ -112,9 +99,10 @@ class RecData (rdatabase.RecData):
                     row = self.increment_vw[-1]
                 if not self.increment_dict.has_key(name):
                     self.increment_dict[name]={}
-                #print 'setting increment_dict->',name,'->',col,'=',row
                 self.increment_dict[name][col]=row
             getstring += "%s:%s,"%(col,self.type_to_metakit_type(typ))
+        if name=='recipe':
+            getstring = getstring+'categoryname:S,'
         getstring = getstring[0:-1] + "]"
         debug('Metakit: getting view: %s'%getstring,5)
         vw = self.db.getas(getstring)
@@ -124,17 +112,18 @@ class RecData (rdatabase.RecData):
             vw = vw.hash(rhsh,1)
         # Make sure our increment fields are right...
         if self.increment_dict.has_key(name):
-            #print 'check out increment dict ',name
             self.vw_to_name[vw]=name
             for field,row in self.increment_dict[name].items():
-                #print 'looking at ',field,row
                 try:
-                    svw=vw.sort(field)
-                    #print 'Top ',name,field,' is ',svw[-1].id
-                    #print 'Bottom is ',svw[0].id
+                    svw=vw.sort(vw.id)
+                    if len(svw)>svw[-1].id:
+                        print """WTF: increment dicts are foobared. If you see this message, please
+                        submit a bug report with the terminal output included.
+                        """
+                        metakit.dump(svw)
                     self.increment_dict[name][field].n = svw[-1].id
                 except IndexError:
-                    pass
+                    pass        
         return vw
 
     def type_to_metakit_type (self, typ):
@@ -175,7 +164,12 @@ class RecData (rdatabase.RecData):
         """Handed a table, a column name, and a regular expression, search
         for an item. Alternatively, the regular expression can just be a value."""
         debug('search %(table)s, %(colname)s, %(regexp)s, %(exact)s, %(use_regexp)s, %(recurse)s'%locals(),5)
-        if recurse and self.normalizations.has_key(colname):
+        if (recurse
+            and
+            self.normalizations.has_key(colname)
+            and
+            isinstance(table,rdatabase.NormalizedView)
+            ):
             nsrch = self.search(self.normalizations[colname],colname,regexp,exact,use_regexp,recurse=False)
             if not nsrch: return []
             nsrch = nsrch.rename(colname,'text')
@@ -203,58 +197,25 @@ class RecData (rdatabase.RecData):
             rview = self.ing_search(i,keyed=keyed,rview=rview,exact=exact,use_regexp=use_regexp)
         return rview
 
-    def ing_search_DELETE_ME (self, ing, keyed=None, rview=None, use_regexp=True, exact=False):
-        """Handed an ingredient (or, rather, a regexp for an
-        ingredient), return a list of recipes. By default
-        (keyed=None), we search through keys or item descriptions. If
-        'keyed', we search only in keys."""
-        if not rview: rview = self.rview
-        vw = self.joined_search(rview,self.iview,'ingkey',ing,use_regexp=use_regexp,exact=exact)
-        if not keyed:
-            vw2 = self.joined_search(rview,self.iview,'item',ing,use_regexp=use_regexp,exact=exact)
-            if vw2 and vw: vw = vw.union(vw2)
-            else: vw = vw2
-        return vw
-        # old...
-        if rview:
-            iview = self.iview.join(rview,self.iview.id)
-        else:
-            rview=self.rview
-            iview=self.iview
-        vw = self.search(iview, 'ingkey', ing, use_regexp=use_regexp, exact=exact)
-        if not vw: return []
-        if not keyed:
-            vw2 = self.search(iview, 'item', ing)
-            if vw2:
-                if vw:
-                    vw = vw.union(vw2)
-                else:
-                    vw = vw2
-        u_ids = vw.counts(vw.id,'idcount')
-        j=rview.join(u_ids,u_ids.id)
-        return j
-
     def joined_search (self, table1, table2, search_by, search_str,
                        use_regexp=True, exact=False, join_on='id'):
-        print 'joined_search',
-        print 'table1',table1
-        print 'table2',table2
-        print 'search_by',search_by
-        print 'search_str',search_str
-        table2 = table2.join(table1,getattr(table1,'id'))
+        table2 = table2.join(table1,getattr(table1,join_on))
         vw = self.search(table2, search_by, search_str, use_regexp=use_regexp, exact=exact)
         if not vw: return []
         result_ids = vw.counts(getattr(vw,join_on),
                                'joinedcount')
         return table1.join(result_ids,getattr(result_ids,join_on))
 
+    def filter (self, table, func):
+        ivw = table.filter(func)
+        return table.remapwith(ivw)
+    
     # convenience function
     def delete_by_criteria (self, table, criteria):
         """Delete table by criteria"""
-        print 'deleting ',table,'by',criteria
-        print 'We had ',[row.category for row in table.select(**criteria)]
-        table.remove(table.indices(table.select(**criteria)))
-        print 'That leaves',[row.category for row in table.select(**criteria)]
+        cur = table.select(**criteria)
+        if cur:
+            table.remove(table.indices(cur))
 
     # Our versions of convenience functions for adding/modifying
     # recipe stuff
@@ -267,14 +228,28 @@ class RecData (rdatabase.RecData):
         return r
 
     def do_modify_rec (self, rec, dic):
+        # If we're read only... get an assignable version of ourselves
+        if (type(rec)==metakit.RORowRefType
+            or 
+            (hasattr(rec,'__row__')
+             and
+             type(rec.__row__)==metakit.RORowRefType
+             )):
+            rec = self.get_rec(rec.id)
         for k,v in dic.items():
             if hasattr(rec,k):
                 self.changed=True
+                debug('do_modify_rec: setattr %s %s->%s'%(rec,k,v),1)
                 setattr(rec,k,v)
             else:
                 debug("Warning: rec has no attribute %s (tried to set to %s)" %(k,v),1)
+        debug('running hooks',3)
         self.run_hooks(self.modify_hooks,rec)
         self.changed=True
+        ## delete this code when we've figured out wtf is going on with this not sticking
+        #for attr in dic.keys():
+        #    debug('modified recipe %s->%s'%(attr,getattr(rec,attr)),1)
+        return rec
     
     def do_add_ing (self, ingdic):
         """Add ingredient to iview based on ingdict and return
@@ -290,18 +265,10 @@ class RecData (rdatabase.RecData):
         refid: id of reference recipe. If ref is provided, everything
                else is irrelevant except for amount.
         """
-        
         self.remove_unicode(ingdic)
-        debug('adding to iview %s'%ingdic,3)
-        timer = TimeAction('rdatabase.add_ing 2',5)
         if ingdic.has_key('amount') and not ingdic['amount']: del ingdic['amount']
         self.iview.append(ingdic)
-        timer.end()
-        debug('running ing hooks %s'%self.add_ing_hooks,3)
-        timer = TimeAction('rdatabase.add_ing 3',5)
         if self.add_ing_hooks: self.run_hooks(self.add_ing_hooks, self.iview[-1])
-        timer.end()
-        debug('done with ing hooks',3)
         self.changed=True
         return self.iview[-1]
     
@@ -330,11 +297,7 @@ class RecData (rdatabase.RecData):
     def increment_field (self, table, field):
         if type(table)!=str:
             table = self.vw_to_name[table]
-        #print 'inc_dict = ',self.increment_dict
-        #print 'inc->',table,'->',field,'=',self.increment_dict[table][field]
-        #print 'was ',self.increment_dict[table][field].n
         self.increment_dict[table][field].n += 1
-        #print 'is ',self.increment_dict[table][field].n
         return self.increment_dict[table][field].n
 
 

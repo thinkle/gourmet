@@ -161,8 +161,8 @@ if __name__ == '__main__':
         print 'here we go...'
         d=html_importer.scrape_url(url)
         print d, 'type: ',type(d)
-        print '---------------'
-        if (not d) or (not isinstance(d,dic)):
+        print '---------------' 
+        if (not d) or (not isinstance(d,dict)):
             print 'Failed to import'
             print 'd=',d,'(',type(d),')'
             keep_going=raw_input('import another website? (y or n)')
@@ -171,7 +171,7 @@ if __name__ == '__main__':
             break
         for k,v in d.items():
             if k=='image' and v:
-                display_image = raw_input('Display image? (yes or no):').lower()
+                display_image = raw_input('Display image %s? (yes or no):'%v).lower()
                 if display_image=='y' or display_image=='yes':
                     ofi = open('/tmp/gourmet_image_test','w')
                     ofi.write(html_importer.get_image_from_tag(v,url))

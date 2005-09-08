@@ -54,8 +54,6 @@ class ModalDialog (gtk.Dialog):
     def setup_label (self, label):
         # we're going to add pango markup to our
         # label to make it bigger as per GNOME HIG
-        if not is_markup(label):
-            label = xml.sax.saxutils.escape(label)
         self.set_title(label)
         label = '<span weight="bold" size="larger">%s</span>'%label
         self.label = gtk.Label(label)
@@ -69,7 +67,6 @@ class ModalDialog (gtk.Dialog):
         self.label.show()
         
     def setup_sublabel (self,sublabel):
-        if not is_markup(sublabel): sublabel=xml.sax.saxutils.escape(sublabel)
         self.sublabel = gtk.Label(sublabel)
         self.sublabel.set_selectable(True)
         self.vbox.pack_start(self.sublabel, expand=False)
@@ -157,10 +154,10 @@ class MessageDialog (gtk.MessageDialog, ModalDialog):
         self.set_markup(label)
 
     def setup_sublabel (self, sublabel):
-        if is_markup(sublabel):
-            self.format_secondary_markup(sublabel)
-        else:
-            self.format_secondary_text(sublabel)
+        #curtext = self.label.get_text()
+        #curtext += "\n%s"%sublabel
+        #self.label.set_text(xml.sax.saxutils.escape(curtext))
+        self.format_secondary_text(sublabel)
                   
 class NumberDialog (ModalDialog):
 
@@ -353,7 +350,6 @@ class ProgressDialog (ModalDialog):
         if not pause: self.pause.hide()
 
     def reset_label (self, label):
-        if not is_markup(label): label=xml.sax.saxutils.escape(label)
         self.set_title(label)
         self.label.set_text('<span weight="bold" size="larger">%s</span>'%label)
         self.label.set_use_markup(True)
@@ -701,7 +697,7 @@ class SimpleFaqDialog (ModalDialog):
         if not itr:
             itr = self.textbuf.get_iter_at_offset(0)
         match_start,match_end=itr.forward_search(txt,gtk.TEXT_SEARCH_VISIBLE_ONLY)
-        print 'match_start = ',match_start
+        #print 'match_start = ',match_start
         self.textview.scroll_to_iter(match_start,False,use_align=True,yalign=0.1)
         
 class RatingsConversionDialog (ModalDialog):
@@ -715,11 +711,11 @@ class RatingsConversionDialog (ModalDialog):
     def __init__ (self,
                   strings,
                   star_generator,
-                  defaults={_("Excellent"):10,
-                            _("Great"):8,
-                            _("Good"):6,
-                            _("Fair"):4,
-                            _("Poor"):2,},
+                  defaults={_("excellent"):10,
+                            _("great"):8,
+                            _("good"):6,
+                            _("fair"):4,
+                            _("poor"):2,},
                   parent=None,
                   modal=True):
         """strings is a list of strings that are currently used for ratings.
@@ -765,7 +761,7 @@ class RatingsConversionDialog (ModalDialog):
     def setup_model (self):
         self.tm = gtk.ListStore(str,int)
         for s in self.strings:
-            val=self.defaults.get(s,0)
+            val=self.defaults.get(s.lower(),0)
             self.tm.append([s,val])
             self.ret[s]=val
 
@@ -1198,8 +1194,7 @@ if __name__ == '__main__':
                                                                     )],
         ['show dialog (not modal)',lambda *args: PreferencesDialog(options=opts,apply_func=show_options).show()],
         ['show FAQ',lambda *args: show_faq(jump_to='shopping')],
-        ['show message',lambda *args: show_message('howdy',label='Hello there. This is a very long label for the top of a dialog & it has invalid XML.', sublabel='And this is a sub message & it has < lots > of invalid >>> xml.',message_type=gtk.MESSAGE_WARNING)],
-        ['show marked up message',lambda *args: show_message('howdy',label='Hello <i>there</i>. This is a very long label for the top of a dialog &amp; it has valid XML.', sublabel='And this <u>is</u> a sub message.',message_type=gtk.MESSAGE_WARNING)],
+        ['show message',lambda *args: show_message('howdy',label='Hello there. This is a very long label for the top of a dialog.', sublabel='And this is a sub message.',message_type=gtk.MESSAGE_WARNING)],
         ['get entry', lambda *args: getEntry(label='Main label',sublabel='sublabel',entryLabel='Entry Label: ')],
         ['get long entry', lambda *args: getEntry(label='Main label', sublabel=char_measure, entryLabel='Entry Label: ',default_character_width=75,entryTip='Enter something long here.')],
         ['show boolean', lambda *args: getBoolean()],

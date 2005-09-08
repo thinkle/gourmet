@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import gtk.glade, gtk, time, re, gtk.gdk, gobject
 import WidgetSaver, Undo, ratingWidget
+from ImageExtras import get_pixbuf_from_jpg
 import dialog_extras as de
 import treeview_extras as te
 import cb_extras as cb
@@ -8,7 +9,10 @@ import convert
 from gglobals import *
 from gdebug import debug
 import mnemonic_manager
-import pageable_model
+#import pageable_model
+import pageable_store
+from gettext import gettext as _
+from gettext import ngettext
 
 class RecIndex:
     """We handle the 'index view' of recipes, which puts
@@ -25,8 +29,6 @@ class RecIndex:
         self.rtwidgdic=rg.rtwidgdic
         self.prefs=rg.prefs
         self.glade = glade
-        #self.rmodel = model
-        
         self.rd = rd
         self.rg = rg
         self.srchentry=self.glade.get_widget('rlistSearchbox')
@@ -78,6 +80,15 @@ class RecIndex:
         self.regexpTog = self.glade.get_widget('regexpTog')
         self.rectree = self.glade.get_widget('recTree')
         self.rectree.connect('start-interactive-search',lambda *args: self.srchentry.grab_focus())
+        self.prev_button = self.glade.get_widget('prevButton')
+        self.next_button = self.glade.get_widget('nextButton')
+        self.first_button = self.glade.get_widget('firstButton')
+        self.last_button = self.glade.get_widget('lastButton')
+        self.prev_button.connect('clicked',lambda *args: self.rmodel.prev_page())
+        self.next_button.connect('clicked',lambda *args: self.rmodel.next_page())
+        self.first_button.connect('clicked',lambda *args: self.rmodel.goto_first_page())
+        self.last_button.connect('clicked',lambda *args: self.rmodel.goto_last_page())
+        self.showing_label = self.glade.get_widget('showingLabel')
         self.stat = self.glade.get_widget('statusbar')
         self.contid = self.stat.get_context_id('main')
         self.setup_search_views()
@@ -109,7 +120,7 @@ class RecIndex:
         # setup a history
         self.uim=self.glade.get_widget('undo_menu_item')
         self.rim=self.glade.get_widget('redo_menu_item')
-        self.raim=self.glade.get_widget('reapply_menu_item')
+        self.raim=self.glade.get_widget('reapply_menu_item')        
         self.history = Undo.UndoHistoryList(self.uim,self.rim,self.raim)
         # Fix up our mnemonics with some heavenly magic
         self.mm = mnemonic_manager.MnemonicManager()
@@ -124,35 +135,42 @@ class RecIndex:
         self.lsrchvw = self.rd.rview.select(deleted=False)
         self.searchvw = self.rd.rview.select(deleted=False)
 
-    #def srchentry_keypressCB (self, widget, event):
-    #    """Handle keypress in search entry
-    #
-    #    We allow Alt- combinations to change what we're searching by.
-    #    """
-    #    if event.state==gtk.gdk.MOD1_MASK:
-    #        if self.SEARCH_KEY_DICT.has_key(event.string):
-    #            self.set_search_by(self.SEARCH_KEY_DICT[event.string])
-    #        elif self.SEARCH_MENU_KEY == event.string:
-    #            self.rSearchByMenu.popup()
-
     def make_rec_visible (self, rec):
         """Make sure recipe REC shows up in our index."""
-        debug('make_rec_visible',0)
-        self.visible.append(rec.id)
-        if not self.rg.wait_to_filter:
-            self.rmodel_filter.refilter()
+        #if not self.rg.wait_to_filter:
+        self.setup_search_views()
+        self.reset_search()
+        #debug('make_rec_visible',0)
+        #self.visible.append(rec.id)
+        #if not self.rg.wait_to_filter:
+        #    self.rmodel_filter.refilter()
+    
+    def rmodel_page_changed_cb (self, rmodel):
+        if rmodel.page==0:
+            self.prev_button.set_sensitive(False)
+            self.first_button.set_sensitive(False)
+        else:
+            self.prev_button.set_sensitive(True)
+            self.first_button.set_sensitive(True)
+        if rmodel.get_last_page()==rmodel.page:
+            self.next_button.set_sensitive(False)
+            self.last_button.set_sensitive(False)
+        else:
+            self.next_button.set_sensitive(True)
+            self.last_button.set_sensitive(True)
+        self.set_reccount()
+
+    def create_rmodel (self, vw):
+        self.rmodel = RecipeModel(vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
     
     def setup_rectree (self):
         """Create our recipe treemodel."""
-        #self.rmodel_filter = self.rmodel.filter_new()
-        #self.rmodel_filter.set_modify_func(types, self.add_recipe_attr)
-        # we allow filtering for searches...
-        #self.visible = [x.id for x in self.rd.rview]
-        # visibility_fun checks to see if the Rec ID is in self.visible
-        #self.rmodel_filter.set_visible_func(self.visibility_fun)
-        # make sortable...
-        #self.rmodel_sortable = gtk.TreeModelSort(self.rmodel_filter)
-        self.rmodel = RecipeModel(self.lsrchvw)
+        self.create_rmodel(self.lsrchvw)
+        self.rmodel.connect('page-changed',self.rmodel_page_changed_cb)
+        self.rmodel.connect('view-changed',self.rmodel_page_changed_cb)
+        # and call our handler once to update our prev/next buttons + label
+        self.rmodel_page_changed_cb(self.rmodel)
+        # and hook up our model
         self.rectree.set_model(self.rmodel)
         self.rectree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.selection_changed()
@@ -173,7 +191,15 @@ class RecIndex:
         """Display the count of currently visible recipes."""
         debug("set_reccount (self, *args):",5)
         self.count = len(self.lsrchvw)
-        self.stat.push(self.contid,_("%s Recipes")%self.count)
+        #self.stat.push(self.contid,_("%s Recipes")%self.count)
+        bottom,top,total = self.rmodel.showing()
+        if top >= total and bottom==1:
+            lab = ngettext('%s recipe','%s recipes',top)%top
+        else:
+            # Do not translate bottom, top and total -- I use these fancy formatting
+            # strings in case your language needs the order changed!
+            lab = _('Showing recipes %(bottom)s to %(top)s of %(total)s'%locals())
+        self.showing_label.set_markup('<i>' + lab + '</i>')
         if self.count == 1:
             sel = self.rectree.get_selection()
             if sel: sel.select_path((0,))
@@ -181,6 +207,7 @@ class RecIndex:
     def setup_reccolumns (self):
         """Setup the columns of our recipe index TreeView"""
         renderer = gtk.CellRendererPixbuf()
+        cssu=pageable_store.ColumnSortSetterUpper(self.rmodel)
         col = gtk.TreeViewColumn("",renderer,pixbuf=1)
         col.set_min_width(-1)
         self.rectree.append_column(col)
@@ -197,7 +224,7 @@ class RecIndex:
             if c=='rating':
                 # special case -- for ratings we set up our lovely
                 # star widget
-                ratingWidget.TreeWithStarMaker(
+                twsm = ratingWidget.TreeWithStarMaker(
                     self.rectree,
                     self.rg.star_generator,
                     data_col=n,
@@ -206,6 +233,7 @@ class RecIndex:
                     properties={'reorderable':True,
                                 'resizable':True},
                     )
+                cssu.set_sort_column_id(twsm.col,twsm.data_col)
                 n += 1                
                 continue
             # And we also special case our time column
@@ -214,6 +242,18 @@ class RecIndex:
                 renderer=gtk.CellRendererText()
                 renderer.set_property('editable',True)
                 renderer.connect('edited',self.rtree_time_edited_cb,n,c)
+                def get_colnum (tc):
+                    try:
+                        t = tc.get_title()
+                        if t:
+                            return _title_to_num_[t.replace('_','')]
+                        else:
+                            print 'wtf, no title for ',tc
+                            return -1
+                    except:
+                        print 'problem with ',tc
+                        raise
+                    
                 ncols = self.rectree.insert_column_with_data_func(
                     -1,
                     '_%s'%self.rtcolsdic[c],
@@ -223,12 +263,13 @@ class RecIndex:
                     'text',
                     convert.seconds_to_timestring(mod.get_value(
                     titr,
-                    _title_to_num_[tc.get_title().replace('_','')],
+                    get_colnum(tc),
+                    #_title_to_num_[tc.get_title().replace('_','')],
                     ))
                     )
                     )
                 col=self.rectree.get_column(ncols-1)
-                col.set_sort_column_id(n)
+                cssu.set_sort_column_id(col,n)
                 col.set_property('reorderable',True)
                 col.set_property('resizable',True)
                 n+=1
@@ -250,7 +291,7 @@ class RecIndex:
             #col.set_clickable(True)
             #col.connect('clicked', self.column_sort)
             self.rectree.append_column(col)
-            col.set_sort_column_id(n)
+            cssu.set_sort_column_id(col,n)
             debug("Column %s is %s->%s"%(n,c,self.rtcolsdic[c]),5)
             n += 1
 
@@ -368,7 +409,7 @@ class RecIndex:
         path = tuple( map(int, indices))
         store = self.rectree.get_model()
         iter = store.get_iter(path)
-        self.rmodel.set_value(iter,colnum,secs)
+        #self.rmodel.set_value(iter,colnum,secs)
         rec = self.get_rec_from_iter(iter)
         if convert.seconds_to_timestring(getattr(rec,attribute))!=text:
             self.rd.undoable_modify_rec(rec,
@@ -379,6 +420,8 @@ class RecIndex:
             self.update_modified_recipe(rec,attribute,secs)
         # Is this really stupid? I don't know, but I did it before so
         # perhaps I had a reason.
+        #self.rmodel.row_changed(path,iter)
+        self.rmodel.update_iter(iter)
         self.rd.save()
 
     def rtree_edited_cb (self, renderer, path_string, text, colnum, attribute):
@@ -388,7 +431,7 @@ class RecIndex:
         store = self.rectree.get_model()
         iter = store.get_iter(path)
         if not iter: return
-        self.rmodel.set_value(iter, colnum, text)
+        #self.rmodel.set_value(iter, colnum, text)
         rec=self.get_rec_from_iter(iter)
         if attribute=='category':
             val = ", ".join(self.rd.get_cats(rec))
@@ -402,12 +445,14 @@ class RecIndex:
                                         get_current_rec_method=lambda *args: self.recTreeSelectedRecs()[0],
                                         )
             self.update_modified_recipe(rec,attribute,text)
-        # for metakit, which isn't autocomitting very nicely...
+        # for metakit, which isn't autocomitting very nicely...        
+        #self.rmodel.row_changed(path,iter)
+        self.rmodel.update_iter(iter)
         self.rd.save()
 
     def star_change_cb (self, value, model, treeiter, column_number):
         #itr = model.convert_iter_to_child_iter(None,treeiter)
-        self.rmodel.set_value(treeiter,column_number,value)
+        #self.rmodel.set_value(treeiter,column_number,value)
         rec = self.get_rec_from_iter(treeiter)
         if getattr(rec,'rating')!=value:
             self.rd.undoable_modify_rec(
@@ -416,6 +461,8 @@ class RecIndex:
                 self.history,
                 get_current_rec_method = lambda *args: self.recTreeSelectedRecs()[0],
                 )
+            #self.rmodel.row_changed(self.rmodel.get_path(treeiter),treeiter)
+            self.rmodel.update_iter(treeiter)
 
     def update_modified_recipe(self,rec,attribute,text):
         """Update a modified recipe.
@@ -466,32 +513,104 @@ class RecIndex:
             return False
  
     def update_rmodel (self, rview):
-        #debug('update_rmodel... changing filtering criteria',0)
-        #self.visible = map(lambda r: r.id, rview)
-        #debug('visible=%s'%self.visible,0)
-        #debug('refiltering')
-        #self.rmodel_filter.refilter()
-        #debug('update_rmodel finished')
         self.rmodel.change_view(rview)
+        #self.rmodel = RecipeModel(rview,self.rd,per_page=self.prefs.get('recipes_per_page',
+        #                                                             25)
+        #                          )
+        #self.rectree.set_model(self.rmodel)
+        #self.rmodel.connect('page-changed',self.rmodel_page_changed_cb)
+        #self.rmodel.connect('view-changed',self.rmodel_page_changed_cb)
+        # and call our handler once to update our prev/next buttons + label
+        #self.rmodel_page_changed_cb(self.rmodel)
 
 
-class RecipeModel (pageable_model.PageableViewTreeModel):
-    per_page = 25
+class RecipeModel (pageable_store.PageableViewStore):
+    """A ListStore to hold our recipes in 'pages' so we don't load our
+    whole database at a time.
+    """
+    per_page = 12
     page = 0
 
-    columns_and_types = [('id',gobject.TYPE_PYOBJECT,),
+    columns_and_types = [('rec',gobject.TYPE_PYOBJECT,),
                          ('thumb',gtk.gdk.Pixbuf),
                          ]
-    for n in self.rtcols:
-        if n in INT_REC_ATTRS: columns_and_types.append(n,int)
-        else: columns_and_types.append(n,str)
+    for n in [r[0] for r in REC_ATTRS]:
+        if n in INT_REC_ATTRS: columns_and_types.append((n,int))
+        else: columns_and_types.append((n,str))
     
     columns = [c[0] for c in columns_and_types]
     column_types = [c[1] for c in columns_and_types]
 
-    def change_view (self, vw):
-        self.view = vw
-        self.update_all()
+    def __init__ (self, vw, rd, per_page=None):
+        self.rd = rd
+        pageable_store.PageableViewStore.__init__(self,
+                                                  vw,
+                                                  columns=self.columns,
+                                                  column_types=self.column_types,
+                                                  per_page=per_page)
+        self.made_categories = False
 
-    #def on_get_value (self, rowref, column):
-    #    page
+    def _get_slice_ (self,bottom,top):
+        return [[self._get_value_(r,col) for col in self.columns] for r in self.view[bottom:top]]        
+
+    def _get_value_ (self, row, attr):
+        if attr=='category':
+            cats = self.rd.get_cats(row)
+            if cats: return ", ".join(cats)
+            else: return ""
+        elif attr=='rec':
+            return row
+        elif attr=='thumb':
+            if row.thumb: return get_pixbuf_from_jpg(row.thumb)
+            else: return None
+        elif attr in INT_REC_ATTRS:
+            return getattr(row,attr)
+        else:
+            return str(getattr(row,attr))
+
+    def sort (self,*args,**kwargs):
+        if not self.made_categories:
+            self.make_categories()
+        return pageable_store.PageableViewStore.sort(self,*args,**kwargs)
+
+    def _do_sort_ (self):
+        if 'category' in self.__all_sorts__:
+            indx = self.__all_sorts__.index('category')
+            self.__all_sorts__ = self.__all_sorts__[0:indx] + \
+                                 ['categoryname'] + \
+                                 self.__all_sorts__[indx+1:]
+        if 'category' in self.__reverse_sorts__:
+            indx = self.__reverse_sorts__.index('category')
+            self.__reverse_sorts__ = self.__reverse_sorts__[0:indx] + \
+                                 ['categoryname'] + \
+                                 self.__reverse_sorts__[indx+1:]
+        pageable_store.PageableViewStore._do_sort_(self)
+
+    def update_recipe (self, recipe):
+        """Handed a recipe (or a recipe ID), we update its display if visible."""
+        if type(recipe)!=int: recipe=recipe.id # make recipe == id
+        #print 'updating ',recipe
+        for row in self:
+            #print 'row=',row
+            if row[0].id==recipe:
+                #print 'update!'
+                self.update_iter(row.iter)
+                break
+
+    def make_categories (self):
+        # This is ugly, terrible, no good code. Among other things,
+        # this is rather specifically metakit hackery which will have
+        # to be reworked should another backend ever be implemented.
+        sorted_catview = self.rd.catview.sort('category')
+        for r in sorted_catview:
+            #print r,r.id,r.category
+            #print 'selecting recipe'
+            #rec = self.rd.get_rec(r.id)
+            #print 'rec becomes->',rec
+            if r and r.category:
+                #print 'setting categoryname'
+                self.rd.modify_rec(self.rd.get_rec(r.id),
+                                   {'categoryname':r.category})
+                #rec[0].categoryname=r.category
+        #print 'done making categories!'
+        self.made_categories=True
