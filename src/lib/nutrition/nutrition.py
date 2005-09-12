@@ -25,14 +25,23 @@ class NutritionData:
         #density=self.get_density(key,row)
         if row: self.row.ndbno=row.ndbno
         else:
-            self.db.naliases.append({'ndbno':row.ndbno,
-                                  'ingkey':key})
+            self.db.naliasesview.append({'ndbno':row.ndbno,
+                                         'ingkey':key})
 
     def set_key_from_ndbno (self, key, ndbno):
         """Create an automatic equivalence between ingredient key 'key' and ndbno
         ndbno is our nutritional database number."""
-        self.db.naliases.append({'ndbno':ndbno,
+        self.db.naliasesview.append({'ndbno':ndbno,
                                  'ingkey':key})
+
+    def set_conversion (self, key, unit, factor):
+        """Set conversion for ingredient key.
+
+        factor is the amount we multiply by to get from unit to grams.
+        """
+        if self.conv.unit_dict.has_key(unit):
+            unit = self.conv.unit_dict[unit]
+        self.db.nconversions.append(ingkey=key,unit=unit,factor=factor)
 
     def get_matches (self, key, max=50):
         """Handed a string, get a list of likley USDA database matches.
@@ -88,23 +97,43 @@ class NutritionData:
         """Handed an ingredient key, get our nutritional Database equivalent
         if one exists."""
         #print 'key=',key
-        rows=self.db.naliases.select({'ingkey':str(key)})
+        rows=self.db.naliasesview.select({'ingkey':str(key)})
         if rows:
             return rows[0]
         else: return None
-    
+
+    def get_nutinfo_for_ing (self, ing):
+        """A convenience function that grabs the requisite items from
+        an ingredient."""
+        print 'get info for ',ing.ingkey,ing.item,ing.unit,ing.amount
+        if hasattr(ing,'rangeamount') and ing.rangeamount:
+            # just average our amounts
+            amount = (ing.rangeamount + ing.amount)/2
+        else:
+            amount = ing.amount
+        if not amount: amount=1
+        return self.get_nutinfo_for_item(ing.ingkey,amount,ing.unit)
+
+    def get_nutinfo_for_inglist (self, inglist):
+        """A convenience function to get NutritionInfoList for a list of
+        ingredients.
+        """
+        return NutritionInfoList([self.get_nutinfo_for_ing(i) for i in inglist])
+
     def get_nutinfo_for_item (self, key, amt, unit):
         """Handed a key, amount and unit, get out nutritional Database object.
         """
-        ni=self.get_nutinfo(key)
-        c=self.get_conversion_for_amt(amt,unit,key)
-        if c:
-            return NutritionInfo(ni,mult=c)
-        else:
-            return NutritionVapor(nd,key,
-                                  rowref=ni,
-                                  amount=amt,
-                                  unit=unit)
+        ni=self.get_nutinfo(key)        
+        if ni:
+            c=self.get_conversion_for_amt(amt,unit,key)
+            if c:
+                print 'returning info',ni,c
+                return NutritionInfo(ni,mult=c)
+        print 'returning vapor'
+        return NutritionVapor(self,key,
+                              rowref=ni,
+                              amount=amt,
+                              unit=unit)
 
     def get_nutinfo (self, key):
         """Get our nutritional information for ingredient key 'key'
@@ -118,10 +147,11 @@ class NutritionData:
                 return NutritionInfo(nvrows[0])
             elif len(nvrows)>1:
                 raise "Too many rowd returned for ndbno %s"%aliasrow.ndbno
-        # if we don't have a nutritional db row, return a potential NutritionVapor
-        # class, which remembers our query and allows us to redo it.
-        # The idea here is that our callers will get an object that can guarantee
-        # them the latest nutritional information for a given item.
+        # if we don't have a nutritional db row, return a
+        # NutritionVapor instance which remembers our query and allows
+        # us to redo it.  The idea here is that our callers will get
+        # an object that can guarantee them the latest nutritional
+        # information for a given item.
         return NutritionVapor(self,key)
 
     def get_conversion_for_amt (self, amt, unit, key, row=None):
@@ -133,7 +163,6 @@ class NutritionData:
         get_conversion_for_amt(amt,unit,key) * 100 will give us the
         number of grams this AMOUNT converts to.
         """
-        
         # our default is 100g
         cnv=self.conv.converter('g.',unit)
         if not row: row=self.get_nutinfo(key)
@@ -141,18 +170,18 @@ class NutritionData:
             cnv = self.conv.converter('g.',unit,
                                       density=self.get_density(key,row)
                                       )
+        if not cnv:
+            # lookup in our custom nutrition-related conversion table
+            if self.conv.unit_dict.has_key(unit):
+                unit = self.conv.unit_dict[unit]
+            lookup = self.db.nconversions.select(ingkey=key,unit=unit)
+            if lookup:
+                print amt,unit,'cnv found in nconversions!'
+                cnv = lookup[0].factor
         if cnv:
             #print 'returning conversion factory ',(.01*amt)/cnv
             return (0.01*amt)/cnv
 
-    def convert_amount (self, amount, unit, density=None):
-        cnv = self.conv.converter('g.',unit)
-        if not cnv:
-            print 'using density ',density
-            cnv = self.conv.converter('g.',unit,density=density)
-        if cnv:
-            return (0.01*amount)/cnv
-        
     def get_conversions (self, key=None, row=None):
         """Handed an ingredient key or a row of the nutrition database,
         we return two dictionaries, one with Unit Conversions and the other
@@ -191,7 +220,7 @@ class NutritionData:
         if not row: row = self._get_key(key)
         if not row: return None
         if self.conv.density_table.has_key(key):
-            return self.conv.density_table[key]
+            return {'':self.conv.density_table[key]}
         else:
             #print 'Calculating density'
             densities = {}            
@@ -221,6 +250,7 @@ class NutritionData:
     
     def get_density (self,key=None,row=None):
         densities = self.get_densities(key,row)
+        print 'densities are ',densities
         if densities:
             if densities.has_key(None):
                 self.conv.density_table[key]=densities[None]
@@ -278,6 +308,7 @@ class NutritionInfo:
     def __init__ (self,rowref, mult=1):
         self.__rowref__ = rowref
         self.__mult__ = mult
+        print 'NutritionInfo created->',self.desc,self.kcal
 
     def __getattr__ (self, attr):
         if attr[0]!='_':
@@ -376,6 +407,8 @@ class NutritionInfoList (list, NutritionInfo):
     """
     def __init__ (self,nutinfos, mult=1):
         self.__nutinfos__ = nutinfos
+        self.__len__ = self.__nutinfos__.__len__
+        self.__getitem__ = self.__nutinfos__.__len__
         self.__mult__ = 1
 
     def __getattr__ (self, attr):
@@ -420,6 +453,9 @@ class NutritionInfoList (list, NutritionInfo):
         copy.remove(obj)
         return NutritionInfoList(copy)
 
+    def __getslice__ (self, a, b):
+        return NutritionInfoList(self.__nutinfos__[a:b])
+
     def __repr__ (self):
         return '<NutritionInfoList>'
             
@@ -427,13 +463,16 @@ if __name__ == '__main__':
     import sys
     sys.path.append('/usr/share/')
     import gourmet.recipeManager as rm
-    rm.dbargs['file']='/tmp/recipes.mk'
+    #rm.dbargs['file']='/tmp/recipes.mk'
     db=rm.RecipeManager(**rm.dbargs)
+    print db,rm.dbargs
     import gourmet.convert
     conv = gourmet.convert.converter()
     import nutritionGrabberGui
     nutritionGrabberGui.check_for_db(db)
     nd=NutritionData(db,conv)
+
+def foo ():
     from gourmet import convert
     class SimpleInterface:
         

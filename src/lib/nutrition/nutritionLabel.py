@@ -47,8 +47,9 @@ class NutritionLabel (gtk.Table):
     calories_per_day = 2000
 
     def __init__ (self, *args):
-        start_at = 3
+        start_at = 4
         gtk.Table.__init__(self,2,len(self.nutdata)+start_at)
+        self.show()
         self.tt = gtk.Tooltips()
         self.servingLabel = gtk.Label()
         self.set_servings(0)
@@ -57,14 +58,15 @@ class NutritionLabel (gtk.Table):
                     0,2,0,1)
         self.servingLabel.show()
         self.servingLabel.set_alignment(0,0.5)
+        self.missingLabel = self.make_missing_label()
+        self.attach(self.missingLabel,0,2,1,2)
         # setup daily value button to display calories/day assumption
         # and to allow changing it via a nifty little button
         dvb,eb = self.make_dv_boxes()
         dvb.show()
-        self.attach(dvb,1,2,1,2)
-        self.attach(eb,0,2,2,3,ypadding=12)
+        self.attach(dvb,1,2,2,3)
+        self.attach(eb,0,2,3,4,ypadding=12)
         self.tt.enable()
-
         for n,nutstuff in enumerate(self.nutdata):
             if nutstuff == self.SEP:
                 hs = gtk.HSeparator()
@@ -102,6 +104,21 @@ class NutritionLabel (gtk.Table):
                                     self.recommended_intake[name])
                 })
 
+    def make_missing_label (self):
+        hb = gtk.HBox()
+        l=gtk.Label()
+        l.set_markup(
+            '<span color="red" style="italic">' +\
+            _('Missing nutritional information for some ingredients.')+\
+            '</span>')
+        l.set_alignment(0,0.5)
+        b = gtk.Button(stock=gtk.STOCK_EDIT)
+        hb.pack_start(l)
+        hb.pack_start(b)
+        b.connect('clicked',self.solidify_vapor_cb)
+        b.show(),l.show(),hb.show()
+        return hb
+
     def make_dv_boxes (self):
         dvLabel = gtk.Label()
         dvLabel.set_markup('<span weight="bold" size="small">' + \
@@ -111,15 +128,16 @@ class NutritionLabel (gtk.Table):
         dvLabel.set_alignment(1,0.5)
         vb = gtk.VBox()
         hb = gtk.HBox()
-        hb.add(dvLabel)
         self.edit_button = gtk.ToggleButton()
         dvLabel.set_mnemonic_widget(self.edit_button)
         i = gtk.Image()
         i.set_from_stock(gtk.STOCK_EDIT,gtk.ICON_SIZE_MENU)
         self.edit_button.add(i)
+        hb.pack_end(dvLabel,fill=False,expand=False)
+        self.edit_button.set_alignment(1,0.5)
+        hb.pack_end(self.edit_button,fill=False,expand=False,padding=6)
         self.edit_button.show_all()
-        self.set_edit_tip()
-        hb.pack_end(self.edit_button,fill=False,expand=False)
+        self.set_edit_tip()        
         self.edit_button.connect('clicked',self.toggle_edit_calories_per_day)
         hb.show_all()
         self.cpd_editor = gtk.HBox()
@@ -171,6 +189,7 @@ class NutritionLabel (gtk.Table):
     def set_servings (self, n):
         self.servings = n
         self.setup_serving_label()
+        #self.update_display()
 
     def set_nutinfo (self, nutinfo):
         """Set nutrition info from a nutrition info object.
@@ -179,6 +198,10 @@ class NutritionLabel (gtk.Table):
         """
         self.nutinfo = nutinfo
         self.update_display()
+        if self.nutinfo._get_vapor():
+            self.missingLabel.show()
+        else:
+            self.missingLabel.hide()
 
     def update_display (self):
         """Update the display of labels based on values in nutinfo,
@@ -186,13 +209,21 @@ class NutritionLabel (gtk.Table):
         """
         for itm in self.nutrition_display_info:
             props = itm['props']
+            print 'rawval - ',itm['props']
             if type(props)==str:
-                rawval = getattr(self.nutinfo,props)
+                print 'grab single prop'
+                rawval = getattr(self.nutinfo,props) or 0
             else:
                 # sum a list of properties
-                rawval = sum([getattr(self.nutinfo,p) for p in props])
+                print 'sum a list'
+                rawval = sum([getattr(self.nutinfo,p) or 0 for p in props])
             if self.servings:
+                print 'dividing ',rawval,'by',self.servings,
                 rawval = float(rawval) / self.servings
+                print '->',rawval
+            else:
+                print 'no serving info :('
+            print 'rawval = ',rawval
             if itm['unit_label']:
                 itm['unit_label'].set_text('%i%s'%(rawval,itm['unit']))
             if itm['usda_rec_per_cal'] and itm['percent_label']:
@@ -208,7 +239,32 @@ class NutritionLabel (gtk.Table):
         
     def set_nutritional_info (self, info):
         """Set nutrition from a NutritionInfo or NutritionInfoList object."""
+        self.nutinfo = info
+        self.update_display()
         
+    def solidify_vapor_cb (self,*args):
+        vapor = self.nutinfo._get_vapor()
+        import nutritionDruid
+        if vapor:
+            self.ndruid = nutritionDruid.NutritionInfoDruid(vapor[0].__nd__)
+            ings = [(v.__key__,[(v.__amt__,
+                                 v.__unit__)]
+                     ) for v in vapor]
+            print 'druidify ',ings
+            self.ndruid.add_ingredients(
+                ings
+                )
+            self.ndruid.connect('finish',
+                                self.update_nutinfo)
+        
+    def update_nutinfo (self,*args):
+        self.nutinfo._reset()
+        self.update_display()
+        if self.nutinfo._get_vapor():
+            self.missingLabel.show()
+        else:
+            self.missingLabel.hide()
+
 
 if __name__ == '__main__':
     class fakenut:
@@ -224,6 +280,10 @@ if __name__ == '__main__':
     ni.sugar = 43
     ni.kcal = ni.carb*4+ni.sugar*4+ni.protein*4+ni.famono*9+ni.fasat*9
     ni.sodium = 120
+    ni.has_vapor = lambda *args: True
+    ni._get_vapor  = lambda *args: [('black pepper',[(1,'tsp.')]),
+                                    ('red pepper',[(1,''),
+                                                   (2,'c.')])]
     w = gtk.Window()
     nl = NutritionLabel()
     vb=gtk.VBox()

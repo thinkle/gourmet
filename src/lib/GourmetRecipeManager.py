@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string, keyEditor, traceback
 import recipeManager
+import nutrition.nutrition, nutrition.nutritionGrabberGui
 import exporters.printer as printer
 import prefs, prefsGui, shopgui, reccard, convertGui, fnmatch, tempfile
 import exporters, importers
@@ -383,7 +384,7 @@ class RecGui (RecIndex):
         we display the traceback to the user so they can send it out for debugging
         (or possibly make sense of it themselves!)."""
         try:
-            self.rd = recipeManager.RecipeManager(**recipeManager.dbargs)
+            self.rd = recipeManager.RecipeManager(**recipeManager.dbargs)                        
             # if we are using metakit, initiate autosave stuff
             if self.rd.db=='metakit':
                 # autosave every 3 minutes (milliseconds * 1000 milliseconds/second * 60 seconds/minute)
@@ -411,6 +412,10 @@ class RecGui (RecIndex):
         self.doing_multiple_deletions=False
         #self.conv = rmetakit.mkConverter(self.rd)
         self.conv = convert.converter()
+        # initialize our nutritional database
+        nutrition.nutritionGrabberGui.check_for_db(self.rd)
+        self.nd = nutrition.nutrition.NutritionData(self.rd,self.conv)
+        # initialize star-generator for use elsewhere
         self.star_generator = ratingWidget.StarGenerator()
         # we'll need to hand these to various other places
         # that want a list of units.

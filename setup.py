@@ -96,7 +96,9 @@ def data_files():
              ['gourmet.desktop']
              ),]
         base = os.path.join(base,'gourmet')
-    files.extend([(os.path.join(base), images + ['FAQ'] +[os.path.join('data','recipe.dtd'),]),])
+    files.extend([(os.path.join(base), images + ['FAQ'] +[os.path.join('data','recipe.dtd'),
+                                                          os.path.join('data','ABBREV.txt'),
+                                                          ]),])
     for f in i18n:
         pth,fn=os.path.split(f)
         pthfiles = pth.split(os.path.sep)

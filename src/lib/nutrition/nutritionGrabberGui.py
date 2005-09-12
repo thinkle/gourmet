@@ -1,7 +1,9 @@
 import gtk
 import databaseGrabber
+import os, os.path
 import gourmet.dialog_extras as de
 from gourmet.GourmetThreads import Terminated
+from gourmet.gglobals import datad
 from gettext import gettext as _
 
 class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
@@ -20,23 +22,24 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
         self.terminated=True
         
     def load_db (self):
-        filename=None
-        if de.getBoolean(
-            label=_('Load nutritional database.'),
-            sublabel=_("It looks like you haven\'t yet initialized your nutritional database. To do so, you'll need to download the USDA nutritional database for use with your program. If you are not currently online, but have already downloaded the USDA sr17 database, you can point Gourmet to the ABBREV.txt file now. If you are online, Gourmet can download the file automatically."),
-            custom_yes=_('Browse for ABBREV.txt file'),
-            custom_no=_('Download file automatically')):
-            filename=de.select_file(
-                'Find ABBREV.txt file',
-                filters=[['Plain Text',['text/plain'],['*txt']]]
-                )            
-        self.progdialog = de.progressDialog(label=_('Loading Nutritional Data'),
+        #filename=None
+        #if de.getBoolean(
+        #    label=_('Load nutritional database.'),
+        #    sublabel=_("It looks like you haven\'t yet initialized your nutritional database. To do so, you'll need to download the USDA nutritional database for use with your program. If you are not currently online, but have already downloaded the USDA sr17 database, you can point Gourmet to the ABBREV.txt file now. If you are online, Gourmet can download the file automatically."),
+        #    custom_yes=_('Browse for ABBREV.txt file'),
+        #    custom_no=_('Download file automatically')):
+        #    filename=de.select_file(
+        #        'Find ABBREV.txt file',
+        #        filters=[['Plain Text',['text/plain'],['*txt']]]
+        #        )
+        filename = os.path.join(datad,'ABBREV.txt')
+        self.progdialog = de.ProgressDialog(label=_('Loading Nutritional Data'),
                                             pause=self.pausecb,
                                             stop=self.stopcb)
         self.progdialog.show()
         self.get_abbrev(filename)
         self.show_progress(1,_('Nutritonal database import complete!'))
-        self.progdialog.ok.set_sensitive(True)
+        self.progdialog.set_response_sensitive(gtk.RESPONSE_OK,True)
 
     def show_progress (self,fract,msg):
         self.progdialog.progress_bar.set_fraction(fract)

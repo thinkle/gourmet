@@ -55,7 +55,7 @@ class SpecialAction:
             w.show()
         print 'grabbing focus for ',self.highlight_widgets[0]
         self.highlight_widgets[0].grab_focus()
-    
+
     def dehighlight_action (self,*args):
         for n,c in enumerate(self.all_controls):
             c.set_sensitive(self.prev_states[n])
@@ -66,7 +66,7 @@ class SpecialAction:
         for c in self.hide_on_highlight:
             c.show()
     
-class NutritionInfoDruid:
+class NutritionInfoDruid (gobject.GObject):
 
     """A druid (or wizard) to guide a user through helping Gourmet
     calculate nutritional information for an ingredient.
@@ -77,6 +77,10 @@ class NutritionInfoDruid:
 
     NUT_PAGE = 0
     UNIT_PAGE = 1
+
+    __gsignals__ = {
+        'finish':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,())
+        }
 
     def __init__ (self, nd):
         # FIX PATH BEFORE COMMITTING
@@ -95,6 +99,7 @@ class NutritionInfoDruid:
         self._setup_nuttree_()
         self.__last_search__ = ''
         self.__override_search__ = False
+        gobject.GObject.__init__(self)
 
     # Setup functions
     def _setup_widgets_ (self):
@@ -108,6 +113,7 @@ class NutritionInfoDruid:
                             'fromAmountEntry','toUnitCombo',
                             'toAmountEntry',
                             'prevDruidButton',
+                            'ignoreButton',
                             'applyButton']:
             setattr(self,widget_name,self.glade.get_widget(widget_name))
             # make a list of all core control widgets
@@ -115,6 +121,7 @@ class NutritionInfoDruid:
         self.glade.signal_autoconnect({
             'previousPage':self.previous_page_cb,
             'applyPage':self.apply_cb,
+            'ignorePage':self.ignore_cb,
             }
                                       )
         # hide our tabs...
@@ -185,10 +192,12 @@ class NutritionInfoDruid:
         if txt:
             self.fromUnitLabel.set_text(txt)
             self.fromUnitComboBoxEntry.get_children()[0].set_text(txt)
+            self.fromUnit = txt
+            curamt = ' '.join([convert.float_to_frac(self.amount),self.fromUnit,self.ingkey])
         else:
             self.fromUnitLabel.set_text(self.ingkey+' (no unit)')
-        self.fromUnit = txt
-        curamt = ' '.join([convert.float_to_frac(self.amount),self.fromUnit,self.ingkey])
+            self.fromUnit = ''
+            curamt = convert.float_to_frac(self.amount)+' '+self.ingkey
         self.convertUnitLabel.set_markup('<span weight="bold" size="larger">' + \
                                          _('Convert unit for %s')%self.ingkey + \
                                          '</span>' + \
@@ -204,16 +213,16 @@ class NutritionInfoDruid:
         masses = [i[0] for i in defaults.UNIT_GROUPS['metric mass'] + defaults.UNIT_GROUPS['imperial weight']]
         volumes = [i[0] for i in  defaults.UNIT_GROUPS['metric volume'] + defaults.UNIT_GROUPS['imperial volume']]
         to_units = masses
-        densities,units = self.nd.get_conversions(self.ingkey)
-        for d in densities.keys():
+        self.to_to_grams = {}
+        self.densities,self.extra_units = self.nd.get_conversions(self.ingkey)
+        for d in self.densities.keys():
             if d:
                 to_units.extend(["%s (%s)"%(u,d) for u in volumes])
             else:
                 to_units.extend(volumes)
         to_units.sort()
-        for u in units:
+        for u in self.extra_units:
             to_units = [u]+to_units
-        self.extra_units = units
         print 'setting up to_units with ',to_units
         cb.set_model_from_list(self.toUnitCombo,
                                to_units)
@@ -324,6 +333,7 @@ class NutritionInfoDruid:
         """
         # to start, we take our first ing
         self.inglist = inglist
+        print 'handed',self.inglist
         self.ing_index = 0
         self.setup_next_ing()
 
@@ -343,8 +353,11 @@ class NutritionInfoDruid:
         self.amounts = amounts
         self.amount_index = 0
         self.set_ingkey(ingkey)
-        self.autosearch_ingkey()
-        self.goto_page_key_to_nut()        
+        if not self.nd.get_nutinfo(ingkey):
+            self.autosearch_ingkey()
+            self.goto_page_key_to_nut()
+        else:
+            self.check_next_amount()
         #self.from_unit = unit
         #self.from_amount = amount
 
@@ -359,14 +372,15 @@ class NutritionInfoDruid:
             self.setup_next_ing()
             return
         amount,unit = self.amounts[self.amount_index]
-        self.amount_index += 1
-        self.amount = amount
         if not amount: amount=1
-        existing_conversion = nd.get_conversion_for_amt(amount,unit,self.ingkey)
+        self.amount = amount
+        self.amount_index += 1
+        existing_conversion = self.nd.get_conversion_for_amt(amount,unit,self.ingkey)
         if existing_conversion:
             print 'We already can convert to ',amount,unit,'(',existing_conversion,')'
             self.check_next_amount()
         else:
+            print 'amount ',self.amount
             self.set_from_unit(unit)
             self.fromAmountEntry.set_text(convert.float_to_frac(amount))
             self.toAmountEntry.set_text(convert.float_to_frac(amount))
@@ -375,6 +389,8 @@ class NutritionInfoDruid:
     def finish (self):
         print 'All done!'
         print 'We better do something...'
+        self.glade.get_widget('window1').hide()
+        self.emit('finish')
 
     def goto_page_key_to_nut (self): self.notebook.set_current_page(self.NUT_PAGE)
 
@@ -392,10 +408,30 @@ class NutritionInfoDruid:
 
     def apply_amt_convert (self,*args):
         to_unit = cb.cb_get_active_text(self.toUnitCombo)
+        base_convert = self.nd.conv.converter('g.',to_unit)
+        if not base_convert:
+            if self.extra_units.has_key(to_unit):
+                base_convert = 1/self.extra_units[to_unit]
+            else:
+                # this is a density, we hope...
+                if to_unit.find(' (')>0:
+                    to_unit,describer = to_unit.split(' (')
+                    describer = describer[0:-1]
+                    density = self.densities[describer]
+                else:
+                    density = self.densities[None]
+                base_convert = self.nd.conv.converter('g.',to_unit,density=density)
+        print 'base: ','there are',base_convert,to_unit,'in a gram'
+        print 'base: ','there are',1/base_convert,'grams in a',to_unit
         to_amount = convert.frac_to_float(self.toAmountEntry.get_text())
-        from_unit = self.fromUnit
         from_amount = convert.frac_to_float(self.fromAmountEntry.get_text())
-        print to_unit,to_amount,'=',from_unit,from_amount
+        ratio = from_amount / to_amount
+        factor = base_convert * ratio
+        from_unit = self.fromUnit
+        print 'end: ','there are',factor,from_unit,'in a gram'
+        print 'end: ','there are ',1/factor,'grams in a ',from_unit
+        print to_unit,to_amount,'=',from_unit,from_amount,'factor=',factor,'\n','ratio=',ratio
+        self.nd.set_conversion(self.ingkey,from_unit,factor)
     
     def previous_page_cb (self, *args):
         #self.notebook.set_current_page(self.notebook.get_current_page()-1)
@@ -431,14 +467,23 @@ class NutritionInfoDruid:
             self.check_next_amount()
         self.path.append((page,self.ingkey,self.amount_index))
         self.curpage += 1
-        print 'path:',self.path,'curpage:',self.curpage
+        #print 'path:',self.path,'curpage:',self.curpage
         #self.notebook.set_current_page(page + 1)
         self.backButton.set_sensitive(True)
+
+    def ignore_cb (self, *args):
+        page = self.notebook.get_current_page()
+        self.path.append((page,self.ingkey,self.amount_index))
+        self.curpage += 1
+        self.backButton.set_sensitive(True)
+        if page == self.NUT_PAGE:
+            self.setup_next_ing()
+        else:
+            self.check_next_amount()
 
     #def notebook_page_changed_cb (self, *args):
     #    if self.notebook.get_current_page()==0: self.prevDruidButton.set_sensitive(False)
     
-                    
 class PageableNutritionStore (PageableViewStore):
     def __init__ (self, view, columns=['ndbno','desc',],column_types=[int,str]):
         PageableViewStore.__init__(self,view,columns,column_types)
@@ -473,4 +518,5 @@ if __name__ == '__main__':
         nid.glade.get_widget('window1').hide()
         gtk.main_quit()
     nid.glade.get_widget('window1').connect('delete-event',quit)
+    nid.connect('finish',quit)
     gtk.main()

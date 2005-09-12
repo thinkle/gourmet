@@ -8,6 +8,9 @@ from gdebug import debug
 H_PADDING=12
 Y_PADDING=12
 
+class UserCancelledError (Exception):
+    pass
+
 def is_markup (s):
     try:
         pango.parse_markup(s,u'0')
@@ -1144,7 +1147,7 @@ def getBoolean (*args,**kwargs):
     d = BooleanDialog(*args,**kwargs)
     retval = d.run()
     if retval==None:
-        raise "getBoolean dialog cancelled!"
+        raise UserCancelledError("getBoolean dialog cancelled!")
     else:
         return retval
 

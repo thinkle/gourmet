@@ -134,10 +134,16 @@ class RecData:
         )
     NUTRITION_ALIASES_TABLE_DESC = (
         'nutritionaliases',
-        [('ingkey','char(200)',[]),
+        [('ingkey','int',[]),
          ('ndbno','int',[]),],
         'ingkey')
 
+    NUTRITION_CONVERSIONS = (
+        'nutritionconversions',
+        [('ingkey','int',[]),
+         ('unit','int',[]), 
+         ('factor','float',[]),],
+        'ingkey')
     
     def __init__ (self):
         # hooks run after adding, modifying or deleting a recipe.
@@ -185,6 +191,9 @@ class RecData:
         self.cview = self._setup_table(*self.CONVTABLE_TABLE_DESC)
         self.cuview = self._setup_table(*self.CROSSUNITDICT_TABLE_DESC)
         self.uview = self._setup_table(*self.UNITDICT_TABLE_DESC)
+        self.nview = self._setup_table(*self.NUTRITION_TABLE_DESC)
+        self.naliasesview = self._setup_table(*self.NUTRITION_ALIASES_TABLE_DESC)
+        self.nconversions = self._setup_table(*self.NUTRITION_CONVERSIONS)
 
     def _setup_table (self, *args,**kwargs):
         return NormalizedView(self.setup_table(*args,**kwargs),self,self.normalizations)
@@ -216,19 +225,13 @@ class RecData:
         # objects with fetch_one methods, which we'll use here.
         return table.fetch_one(*args,**kwargs)
 
-    # Metakit has no AUTOINCREMENT, so it has to do special magic here
-    def increment_field (self, table, field):
-        """Increment field in table, or return None if the DB will do
-        this automatically.
-        """
-        return None
+    def search (self, table, colname, text, exact=0, use_regexp=True):
 
-    # convenience DB access functions for working with ingredients,
-    # recipes, etc.
+        """Search colname of table for text, optionally using regular
+        expressions and/or requiring an exact match."""
 
-    def delete_ing (self, ing):
-        """Delete ingredient permanently."""
         raise NotImplementedError
+    
 
     def filter (self, table, func):
         """Return a table representing filtered with func.
@@ -261,6 +264,20 @@ class RecData:
                     new_lst.append(i)
             lst = new_lst
         return lst
+
+    # Metakit has no AUTOINCREMENT, so it has to do special magic here
+    def increment_field (self, table, field):
+        """Increment field in table, or return None if the DB will do
+        this automatically.
+        """
+        return None
+
+    # convenience DB access functions for working with ingredients,
+    # recipes, etc.
+
+    def delete_ing (self, ing):
+        """Delete ingredient permanently."""
+        raise NotImplementedError
 
     def delete_by_criteria (self, table, criteria):
         raise NotImplementedError
@@ -862,7 +879,6 @@ class mkConverter(convert.converter):
     ## calls to rmetakit.mkConverter
 
     def create_conv_table (self):
-        print 'setting up conv table'
         self.conv_table = dbDic('ckey','value',self.db.cview, self.db,
                                 pickle_key=True)
         for k,v in defaults.CONVERTER_TABLE.items():
@@ -960,10 +976,7 @@ class dbDic:
     def keys (self):
         ret = []
         for i in self.vw:
-            if self.pickle_key:
-                ret.append(pickle.loads(getattr(i,self.kp)))
-            else:
-                ret.append(getattr(i,self.kp))
+            ret.append(getattr(i,self.kp))
         return ret
 
     def values (self):

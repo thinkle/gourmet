@@ -462,4 +462,4 @@ class RatingConverter:
     def do_conversions (self, db):
         if not self.got_conversions: self.get_conversions()
         for id,rating in self.to_convert.items():
-            db.modify_rec(db.get_rec(id),{'rating':self.conversions[rating]})
+            db.modify_rec(db.get_rec(id),{'rating':self.conversions[str(rating)]})

@@ -12,13 +12,14 @@ import cb_extras as cb
 import exporters.printer as printer
 from gdebug import *
 from gglobals import *
-import nutrition.nutritionView
+from nutrition.nutritionLabel import NutritionLabel
 from gettext import gettext as _
 from gettext import ngettext
 import ImageExtras as ie
 from importers.importer import parse_range
 from FauxActionGroups import ActionManager
 import mnemonic_manager
+import shopgui
 
 class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     """Our basic recipe card."""
@@ -44,9 +45,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         t=TimeAction('RecCard.__init__ 1',0)
         self.mult=1
         self.rg = RecGui
+        self.rd = self.rg.rd
+        self.nd = self.rg.nd
         self.makeTimeEntry = lambda *args: timeEntry.makeTimeEntry()
         self.makeStarButton = lambda *args: ratingWidget.make_star_button(self.rg.star_generator)
         self.makeStarImage = lambda *args: ratingWidget.make_star_image(self.rg.star_generator)
+        self.makeNutritionLabel = lambda *args: NutritionLabel()
         def custom_handler (glade,func_name,
                             widg, s1,s2,i1,i2):
             f=getattr(self,func_name)
@@ -145,7 +149,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         t=TimeAction('RecCard.get_widgets 1',0)
         self.timeB = self.glade.get_widget('preptimeBox')
         self.timeB.connect('changed',self.setEdited)
-        self.display_info = ['title','rating','preptime','servings','cooktime','source','cuisine','category','instructions','modifications','ingredients']
+        self.nutritionLabel = self.glade.get_widget('nutritionLabel')
+        self.display_info = ['title','rating','preptime',
+                             'servings','cooktime','source',
+                             'cuisine','category','instructions',
+                             'modifications','ingredients']
         for attr in self.display_info:
             setattr(self,'%sDisplay'%attr,self.glade.get_widget('%sDisplay'%attr))
             setattr(self,'%sDisplayLabel'%attr,self.glade.get_widget('%sDisplayLabel'%attr))
@@ -481,7 +489,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         path=self.imodel.get_path(iter)
         # open up (in case we're in a group)
         self.ingTree.expand_to_path(path)
-        self.ingTree.set_cursor(path,self.ingColsByName[ING_ATTRS['amount']])
+        self.ingTree.set_cursor(path,self.ingColsByName[_('Amt')])
         #self.ingTree.get_selection().select_iter(iter)
         self.ingTree.grab_focus()
         self.message(_('Changes to ingredients saved automatically.'))
@@ -689,6 +697,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def updateRecDisplay (self):
         """Update the 'display' portion of the recipe card."""
+        self.update_nutrition_info()
         for attr in self.display_info:
             if  self.special_display_functions.has_key(attr):
                 debug('calling special_display_function for %s'%attr,0)
@@ -718,6 +727,40 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                     debug('hiding attribute %s'%attr,0)
                     widg.hide()
                     widgLab.hide()
+
+    def list_all_ings (self, rec):
+        """Return a list of ingredients suitable for nutritional
+        lookup, including all optional items and ingredients contained
+        in recipe-as-ingredient items.
+        """
+        ings = self.rd.get_ings(rec)
+        print 'looking at ings from',rec.id,ings
+        ret = []
+        for i in ings:
+            if hasattr(i,'refid') and i.refid:
+                subrec = self.rd.get_rec(i.refid)
+                print 'lookup ',subrec
+                if subrec:
+                    ret.extend(self.list_all_ings(subrec))
+                continue
+            else:
+                print 'append ',i
+                ret.append(i)
+        return ret
+
+    def update_nutrition_info (self):
+        """Update nutritional information for ingredient list."""
+        print 'setting up nutinfo'
+        if self.current_rec.servings:
+            print 'set servings',self.current_rec.servings
+            self.nutritionLabel.set_servings(
+                convert.frac_to_float(self.current_rec.servings)
+                )
+        ings = self.list_all_ings(self.current_rec)
+        self.nutinfo = self.rg.nd.get_nutinfo_for_inglist(ings)
+        print 'nutrition info=',self.nutinfo        
+        self.nutritionLabel.set_nutinfo(self.nutinfo)        
+        print 'yippee!'
 
     def updateTitleDisplay (self):
         titl = self.current_rec.title
@@ -823,13 +866,13 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         for c in self.ie.shopcats:
             self.shopmodel.append([c])
         self.ing_rows={}
-        for n,head,tog,model,style in [[1,ING_ATTRS['amount'],False,None,None],
-                                 [2,ING_ATTRS['unit'],False,self.rg.umodel,None],
-                                 [3,ING_ATTRS['item'],False,None,None],
-                                 [4,ING_ATTRS['optional'],True,None,None],
-                                 [5,ING_ATTRS['ingkey'],False,self.rg.inginfo.key_model,pango.STYLE_ITALIC],
+        for n,head,tog,model,style in [[1,_('Amt'),False,None,None],
+                                 [2,_('Unit'),False,self.rg.umodel,None],
+                                 [3,_('Item'),False,None,None],
+                                 [4,_('Optional'),True,None,None],
+                                 [5,_('Key'),False,self.rg.inginfo.key_model,pango.STYLE_ITALIC],
                                  [6,_('Shopping Category'),False,self.shopmodel,pango.STYLE_ITALIC],
-                                 ]:
+                                 ]:        
             if tog:
                 renderer = gtk.CellRendererToggle()
                 renderer.set_property('activatable',True)
@@ -846,7 +889,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                     renderer = gtk.CellRendererText()
                 renderer.set_property('editable',True)
                 renderer.connect('edited',self.ingtree_edited_cb,n,head)
-                if head==ING_ATTRS['ingkey']:
+                if head==_('Key'):
                     try:
                         renderer.connect('editing-started',
                                          self.ingtree_start_keyedit_cb)
@@ -1302,6 +1345,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def create_imodel (self, rec, mult=1):
         debug("create_imodel (self, rec, mult=1):",5)
+        self.current_rec=rec
         ings=self.rg.rd.get_ings(rec)
         # as long as we have the list here, this is a good place to update
         # the activity of our menuitem for forgetting remembered optionals        

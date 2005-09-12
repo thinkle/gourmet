@@ -57,12 +57,12 @@ NUTRITION_FIELDS = [
     ]
 
 # List of fields that can be sensibly added, multiplied, etc.
-SUMMABLE_FIELDS = ['kcal','protein','lipid','carb',
+SUMMABLE_FIELDS = ['kcal','protein','lipid','carb','cholestrl',
                    'fiber','calcium','magnesium','potassium',
                    'sodium','copper','vitaminc','riboflavin','pantoacid',
                    'vitaminb6','folateacid','folatedfe','vitaiu',
                    'vitarae','vite','alphac','betacrypt','lutzea','famono',
-                   'fapoly',]
+                   'fapoly','fasat','sugar']
 
 # a convenient dictionary to move from shortname to longname,
 # for user interface.

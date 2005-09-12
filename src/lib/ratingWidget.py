@@ -354,6 +354,7 @@ class TreeWithStarMaker:
         col.set_sort_column_id(self.data_col)
         for p,v in self.properties.items():
             col.set_property(p,v)
+        self.col = col        
 
     def setup_callbacks (self):
         self.tree.connect('button-press-event',self.tree_click_callback)
