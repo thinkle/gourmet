@@ -35,6 +35,14 @@ RULES = [
        'attributes':{'class':'recipehed'},}],
      'text',
      lambda s,t: s.capitalize()],
+    # we add one more title rule...
+    ['title',
+     [{'tag':'title',
+       },],
+     'text',
+     # strip off the epicurious chunk at the end
+     ('(.*)\s*Recipe at Epicurious.com',False)
+      ],
     # we add a new title element -- the previous markup seems outdated
     # but I'll keep it around in case it's used on some of their old
     # pages or comes back (7/25/05)

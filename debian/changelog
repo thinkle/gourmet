@@ -1,3 +1,14 @@
+gourmet (0.8.6.5-1) breezy; urgency=low
+
+  * Fixed bug in recipe card editing that caused changes made in card
+    view not to save properly.
+  * Fix epicurious import.
+  * Fix trash / deletion.
+  * Fix Forward button (desensitize when there are no more pages).
+  * Properly register newly added ingredients in display tab of recipe card.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Sunday, 18 Sep 2005 10:30:17 -0400
+
 gourmet (0.8.6.4-1) unstable; urgency=low
 
   * Improved encoding dialog.
@@ -44,20 +55,12 @@ gourmet (0.8.6.0-1) unstable; urgency=low
 	
  -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 01 August 2005 17:00:00 -0400
 
-gourmet (0.8.5.9-1) unstable; urgency=low
-  * Fixed segfault when closing and not saving new recipe.
-  * Stopped markup from showing up in dialogs
-  * Changed button order in recipe wastebasket.
- -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Tuesday, 06 August 2005 22:20:00 -0400
-======= end
-
 gourmet (0.8.5.11-1) unstable; urgency=low
   * Fixed menus in shopping list so they work without GNOME libraries.
   * Fixed unit conversion (typo that resulted in e.g. "23 TBS flour"
   showing up.
   * Behave better when locales are behaving badly.
     editor
->>>>>>> 1.5.2.32
    
  -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 01 August 2005 11:34:00 -0400
 	

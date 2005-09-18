@@ -150,6 +150,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.timeB = self.glade.get_widget('preptimeBox')
         self.timeB.connect('changed',self.setEdited)
         self.nutritionLabel = self.glade.get_widget('nutritionLabel')
+        self.nutritionLabel.connect('ingredients-changed',
+                                    lambda *args: (self.create_ing_alist()
+                                                   or
+                                                   self.updateIngredientsDisplay()
+                                                   )
+                                    )
         self.display_info = ['title','rating','preptime',
                              'servings','cooktime','source',
                              'cuisine','category','instructions',
@@ -492,6 +498,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.ingTree.set_cursor(path,self.ingColsByName[_('Amt')])
         #self.ingTree.get_selection().select_iter(iter)
         self.ingTree.grab_focus()
+        self.updateIngredientsDisplay()
         self.message(_('Changes to ingredients saved automatically.'))
 
     def ingUpCB (self, *args):
@@ -738,10 +745,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         ret = []
         for i in ings:
             if hasattr(i,'refid') and i.refid:
-                subrec = self.rd.get_rec(i.refid)
-                print 'lookup ',subrec
-                if subrec:
-                    ret.extend(self.list_all_ings(subrec))
+                subrec = self.rd.get_referenced_rec(i)
+                print 'lookup ',i.refid,'->',subrec
+                if not subrec:
+                    raise "WTF! Can't find ",i.refid
+                ret.extend(self.list_all_ings(subrec))
                 continue
             else:
                 print 'append ',i
@@ -825,7 +833,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         """Reset our display of ingredients based on what's in our database at present."""
         self.create_ing_alist()
         self.updateIngredientsDisplay()
-        
+
     def updateIngredientsDisplay (self):
         """Update our display of ingredients, only reloading from DB if this is our first time."""
         if not self.ing_alist:
@@ -1068,8 +1076,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         elif type(ing) == str:
             debug('Changing group to %s'%text,2)
             self.change_group(iter, text)
-            #self.create_ing_alist()
-            #self.updateIngredientsDisplay()
             return            
         else:
             attr=self.head_to_att[head]
@@ -1106,8 +1112,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             if d['rangeamount']:
                 d['amount']=d['amount']+'-'+convert.float_to_frac(d['rangeamount'])
             del d['rangeamount']
-        self.create_ing_alist()
-        self.updateIngredientsDisplay()
+        self.resetIngredients()
         if d.has_key('ingkey'):
             ## if the key has been changed and the shopping category is not set...
             ## COLUMN NUMBER FOR Shopping Category==6
@@ -1285,8 +1290,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             n=commit_iter(iter,n)
             iter=self.imodel.iter_next(iter)
             debug("Next iter = %s"%iter)
-        self.create_ing_alist()
-        self.rc.updateIngredientsDisplay()
+        self.resetIngredients()
         self.message(_('Changes to ingredients saved automatically.'))
         debug("Done committing positions",4)
 
@@ -1461,12 +1465,16 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             if txt:
                 for l in txt.split('\n'):
                     if l.strip(): self.add_ingredient_from_line(l)
+            self.resetIngredients()
+            self.message(_('Changes to ingredients saved automatically.'))
         self.cb.request_text(add_ings_from_clippy)
 
     def importIngredients (self, file):
         ifi=file(file,'r')
         for line in ifi:
             self.add_ingredient_from_line(line)
+        self.resetIngredients()
+        self.message(_('Changes to ingredients saved automatically.'))
 
     def saveAs (self, *args):
         debug("saveAs (self, *args):",5)
@@ -1959,6 +1967,8 @@ class IngredientEditor:
         txt = self.quickEntry.get_text()
         self.rc.add_ingredient_from_line(txt)
         self.quickEntry.set_text('')
+        self.rc.resetIngredients()
+        self.rc.message(_('Changes to ingredients saved automatically.'))
 
     def add (self, *args):
         debug("add (self, *args):",5)
@@ -2003,7 +2013,7 @@ class IngredientEditor:
             i=self.rg.rd.undoable_modify_ing(self.ing,d,self.rc.history)
             debug('modified ing',5)
             debug('resetting inglist',5)
-            self.rc.resetIngList()
+            self.rc.resetIngredients()
             debug('reset inglist',5)
         else:
             debug('Do rg.rd.add_ing',5)
@@ -2021,6 +2031,7 @@ class IngredientEditor:
         self.new()
         debug('done!',5)
         self.rc.resetIngList()
+        self.rc.message(_('Changes to ingredients saved automatically.'))            
         #self.new()
 
     def delete_cb (self, *args):
@@ -2109,11 +2120,13 @@ class IngredientEditor:
                         for i in ings_to_modify:
                             self.rg.rd.modify_ing(i,{'inggroup':''})
                         self.rc.resetIngredients()
+                        self.rc.resetIngList()
                     def regroup(*args):
                         debug('Unmodifying ingredients',3)
                         for i in ings_to_modify:
                             self.rg.rd.modify_ing(i,{'inggroup':group})
                         self.rc.resetIngredients()
+                        self.rc.resetIngList()
                     debug('Modifying ingredients',0)
                     um=Undo.UndoableObject(ungroup,regroup,self.rc.history)                    
                     um.perform()                    

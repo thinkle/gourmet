@@ -5,6 +5,7 @@ from gourmet.mnemonic_manager import MnemonicManager
 from gourmet.defaults import lang as defaults
 from gourmet.pageable_store import PageableViewStore
 import gourmet.cb_extras as cb
+import re
 
 class SpecialAction:
 
@@ -255,7 +256,7 @@ class NutritionInfoDruid (gobject.GObject):
         else:
             repeat = False
             search_in = self.rd.nview
-        words = txt.split()
+        words = re.split('\W+',txt)
         last_words = self.__last_search__.split()
         # Not exactly an efficient search algorithm...
         for w in words:
@@ -281,8 +282,7 @@ class NutritionInfoDruid (gobject.GObject):
         search that doesn't have results.
         """
         txt = self.ingkey
-        txt.split()
-        words = txt.split()
+        words = re.split('\W+',txt)
         search_terms = []
         search_in = self.rd.nview
         for w in words:
@@ -301,11 +301,24 @@ class NutritionInfoDruid (gobject.GObject):
 
     # callbacks for quick-changes
     def apply_ingkey (self,*args):
-        self.set_ingkey(self.ingKeyEntry.get_text())        
+        key = self.ingKeyEntry.get_text()
+        ings = self.nd.db.iview.select(ingkey=self.ingkey)
+        print 'modifying DB for ',len(ings),'ingredients key: ',self.ingkey,'->',key
+        self.nd.db.modify_ings(ings,{'ingkey':key})
+        self.set_ingkey(key)
+        self.autosearch_ingkey()
         self.changeIngKeyAction.dehighlight_action()
+        if self.nd.get_nutinfo(key):
+            print 'we already have this guy!'
+            self.setup_to_units()
+            self.check_next_amount()
 
     def save_unit_cb (self,*args):
-        self.set_from_unit(self.fromUnitComboBoxEntry.get_children()[0].get_text())
+        from_unit = self.fromUnitComboBoxEntry.get_children()[0].get_text()
+        ings = self.nd.db.iview.select(ingkey=self.ingkey,unit=self.fromUnit)
+        print 'modifying DB for ',len(ings),'ingredients unit: ',self.fromUnit,'->',from_unit
+        self.nd.db.modify_ings(ings,{'unit':from_unit})
+        self.set_from_unit() 
         self.changeUnitAction.dehighlight_action()
         
     # Callbacks to handle our druid-like walking-through of actions.
@@ -338,16 +351,17 @@ class NutritionInfoDruid (gobject.GObject):
         self.setup_next_ing()
 
     def setup_next_ing (self):
+        print 'setup_next_ing ',self.ing_index
         if self.ing_index >= len(self.inglist):
-            print 'done!'
+            print 'done!'            
             self.finish()
             return
         print 'grab ing index ',self.ing_index,
         ing = self.inglist[self.ing_index]
-        print ing
-        self.ing_index+=1
+        #print ing
+        self.ing_index+=1    
         if not ing:
-            print 'Done!'
+            print 'WTF? Done!'
             return
         ingkey,amounts = ing
         self.amounts = amounts
@@ -357,6 +371,7 @@ class NutritionInfoDruid (gobject.GObject):
             self.autosearch_ingkey()
             self.goto_page_key_to_nut()
         else:
+            self.setup_to_units()
             self.check_next_amount()
         #self.from_unit = unit
         #self.from_amount = amount
@@ -403,7 +418,7 @@ class NutritionInfoDruid (gobject.GObject):
             mod,itr = self.treeview.get_selection().get_selected()
             nut = mod.get_value(itr,0)
         self.nd.set_key_from_ndbno(self.ingkey,nut)
-        self.setup_to_units()        
+        self.setup_to_units()
         # Now see if we need to do any conversion or not
 
     def apply_amt_convert (self,*args):

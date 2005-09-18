@@ -329,6 +329,10 @@ class RecIndex:
         #self.rSearchByMenu.get_children()[0].set_text(str)
         cb.cb_set_active_text(self.rSearchByMenu, str)
         self.search()
+
+    def redo_search (self, *args):
+        self.lsrch = ['','']
+        self.search()
     
     def search (self, *args):
         debug("search (self, *args):",5)
@@ -609,7 +613,7 @@ class RecipeModel (pageable_store.PageableViewStore):
             #print 'rec becomes->',rec
             if r and r.category:
                 #print 'setting categoryname'
-                self.rd.modify_rec(self.rd.get_rec(r.id),
+                self.rd.modify_rec(r,
                                    {'categoryname':r.category})
                 #rec[0].categoryname=r.category
         #print 'done making categories!'

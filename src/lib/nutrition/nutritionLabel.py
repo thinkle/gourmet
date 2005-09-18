@@ -1,7 +1,7 @@
-import gtk, pango
+import gtk, pango, gobject
 from gettext import gettext as _
 
-class NutritionLabel (gtk.Table):
+class NutritionLabel (gtk.Table, gobject.GObject):
     """Provide a nutritional label that looks like standard FDA
     labels."""
 
@@ -46,8 +46,14 @@ class NutritionLabel (gtk.Table):
 
     calories_per_day = 2000
 
+    __gsignals__ = {
+        'calories-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,()),
+        'ingredients-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,())
+        }    
+
     def __init__ (self, *args):
         start_at = 4
+        gobject.GObject.__init__(self)
         gtk.Table.__init__(self,2,len(self.nutdata)+start_at)
         self.show()
         self.tt = gtk.Tooltips()
@@ -107,10 +113,7 @@ class NutritionLabel (gtk.Table):
     def make_missing_label (self):
         hb = gtk.HBox()
         l=gtk.Label()
-        l.set_markup(
-            '<span color="red" style="italic">' +\
-            _('Missing nutritional information for some ingredients.')+\
-            '</span>')
+        self.missingLabelLabel = l        
         l.set_alignment(0,0.5)
         b = gtk.Button(stock=gtk.STOCK_EDIT)
         hb.pack_start(l)
@@ -118,6 +121,12 @@ class NutritionLabel (gtk.Table):
         b.connect('clicked',self.solidify_vapor_cb)
         b.show(),l.show(),hb.show()
         return hb
+
+    def set_missing_label_text (self,missing,total):
+        self.missingLabelLabel.set_markup(
+            '<span color="red" style="italic">' +\
+            _('Missing nutritional information for %(missing)s of %(total)s ingredients.')%locals()+\
+            '</span>')
 
     def make_dv_boxes (self):
         dvLabel = gtk.Label()
@@ -165,7 +174,10 @@ class NutritionLabel (gtk.Table):
         return hb,self.cpd_editor
 
     def set_edit_tip (self):
-        self.tt.set_tip(self.edit_button,_("Percentage of recommended daily value based on %i calories per day. Click to edit number of calories per day.")%self.calories_per_day)
+        self.tt.set_tip(
+            self.edit_button,
+            _("Percentage of recommended daily value based on %i calories per day. Click to edit number of calories per day.")%self.calories_per_day
+            )
 
     def toggle_edit_calories_per_day (self, b):        
         if b.get_active():
@@ -176,15 +188,12 @@ class NutritionLabel (gtk.Table):
             self.edit_calories_per_day()
             self.cpd_editor.hide()
 
-    #def finish_edit_calories_per_day (self, *args):
-    #    self.edit_calories_per_day()
-    #    self.cpd_editor.hide()
-        
     def edit_calories_per_day (self, *args):
         self.cpd_sb.update()
         self.calories_per_day = self.cpd_sb.get_value()        
         self.update_display()
         self.set_edit_tip()
+        self.emit('calories-changed')
 
     def set_servings (self, n):
         self.servings = n
@@ -198,7 +207,9 @@ class NutritionLabel (gtk.Table):
         """
         self.nutinfo = nutinfo
         self.update_display()
-        if self.nutinfo._get_vapor():
+        vapor = self.nutinfo._get_vapor()
+        if vapor:
+            self.set_missing_label_text(len(vapor),len(self.nutinfo))
             self.missingLabel.show()
         else:
             self.missingLabel.hide()
@@ -260,10 +271,16 @@ class NutritionLabel (gtk.Table):
     def update_nutinfo (self,*args):
         self.nutinfo._reset()
         self.update_display()
-        if self.nutinfo._get_vapor():
+        vapor = self.nutinfo._get_vapor()
+        if vapor:
+            self.set_missing_label_text(len(vapor),len(self.nutinfo))
             self.missingLabel.show()
         else:
             self.missingLabel.hide()
+        self.emit('ingredients-changed')
+
+if gtk.pygtk_version[1]<8:
+    gobject.type_register(NutritionLabel)
 
 
 if __name__ == '__main__':

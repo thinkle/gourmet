@@ -3,7 +3,6 @@ from gglobals import *
 import WidgetSaver
 import cb_extras as cb
 import dialog_extras as de
-gladebase='/home/tom/Projects/gourmet/glade/'
 
 class ShopEditor:
 

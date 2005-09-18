@@ -1,3 +1,11 @@
+==== Version 0.8.6.5 Changes since 0.8.6.4 ====
+* Fixed bug in recipe card editing that caused changes made in card
+  view not to save properly.
+* Fix epicurious import.
+* Fix trash / deletion.
+* Fix Forward button (desensitize when there are no more pages).
+* Properly register newly added ingredients in display tab of recipe card.
+
 ==== Version 0.8.6.4 Changes since 0.8.6.3 ====
 * Improved encoding dialog.
 * Fixed handling of webpages with screwy encoding.

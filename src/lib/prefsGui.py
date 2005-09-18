@@ -167,7 +167,8 @@ class PreferencesGui:
             elif hasattr(widget,'get_text'):
                 get_method=lambda *args: float(widget.get_text())
             else:
-                print 'widget',widget,'is not very numberlike!'
+                print 'widget',widgetname,widget,'is not very numberlike!'
+                return
             curval = self.prefs.get(pref_name,None)
             if curval:
                 try:

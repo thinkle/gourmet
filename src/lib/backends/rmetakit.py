@@ -228,18 +228,16 @@ class RecData (rdatabase.RecData):
         return r
 
     def do_modify_rec (self, rec, dic):
-        # If we're read only... get an assignable version of ourselves
-        if (type(rec)==metakit.RORowRefType
-            or 
-            (hasattr(rec,'__row__')
-             and
-             type(rec.__row__)==metakit.RORowRefType
-             )):
-            rec = self.get_rec(rec.id)
+        # This is a bit ugly, but we need to grab the rec object
+        # afresh for changes to "stick".
+        rec = self.get_rec(rec.id)
+        if not rec:
+            print 'Odd: we find no recipe for ID ',rec.id
+            return
         for k,v in dic.items():
             if hasattr(rec,k):
                 self.changed=True
-                debug('do_modify_rec: setattr %s %s->%s'%(rec,k,v),1)
+                debug('do_modify_rec: setattr %s %s->%s'%(rec,k,v),10)
                 setattr(rec,k,v)
             else:
                 debug("Warning: rec has no attribute %s (tried to set to %s)" %(k,v),1)

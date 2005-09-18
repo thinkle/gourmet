@@ -337,6 +337,11 @@ class RecData:
             except:
                 pass
 
+    def modify_ings (self, ings, ingdict):
+        # allow for the possibility of doing a smarter job changing
+        # something for a whole bunch of ingredients...
+        for i in ings: self.modify_ing(i,ingdict)
+
     def modify_ing (self, ing, ingdict):
         self.validate_ingdic(ingdict)
         if ing.item!=ingdict.get('item',ing.item) or ing.ingkey!=ingdict.get('ingkey',ing.ingkey):
@@ -715,10 +720,14 @@ class RecData:
     def undoable_delete_recs (self, recs, history, make_visible=None):
         """Delete recipes by setting their 'deleted' flag to True and add to UNDO history."""
         def do_delete ():
-            for rec in recs: rec.deleted = True
+            for rec in recs:
+                debug('rec %s deleted=True'%rec.id,1)
+                self.modify_rec(rec,{'deleted':True})
             if make_visible: make_visible(recs)
         def undo_delete ():
-            for rec in recs: rec.deleted = False
+            for rec in recs:
+                debug('rec %s deleted=False'%rec.id,1)
+                self.modify_rec(rec,{'deleted':False})
             if make_visible: make_visible(recs)
         obj = Undo.UndoableObject(do_delete,undo_delete,history)
         obj.perform()

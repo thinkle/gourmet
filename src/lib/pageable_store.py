@@ -105,10 +105,11 @@ class PageableListStore (gtk.ListStore):
 
     def get_last_page (self):
         """Return the number of our last page."""
-        nrecs = self._get_length_()
+        nrecs = int(self._get_length_())
+        self.per_page = int(self.per_page)#just in case
         pages = (nrecs / self.per_page) - 1
         if nrecs % self.per_page: pages+=1
-        return pages - 1 # count from 0
+        return pages
 
     def change_items_per_page (self, n):
         current_indx = self.per_page * self.page

@@ -456,6 +456,8 @@ class NutritionInfoList (list, NutritionInfo):
     def __getslice__ (self, a, b):
         return NutritionInfoList(self.__nutinfos__[a:b])
 
+    def __len__ (self): return len(self.__nutinfos__)
+
     def __repr__ (self):
         return '<NutritionInfoList>'
             
