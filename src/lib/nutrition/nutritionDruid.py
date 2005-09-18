@@ -318,7 +318,7 @@ class NutritionInfoDruid (gobject.GObject):
         ings = self.nd.db.iview.select(ingkey=self.ingkey,unit=self.fromUnit)
         print 'modifying DB for ',len(ings),'ingredients unit: ',self.fromUnit,'->',from_unit
         self.nd.db.modify_ings(ings,{'unit':from_unit})
-        self.set_from_unit() 
+        self.set_from_unit(self.fromUnitComboBoxEntry.get_children()[0].get_text())
         self.changeUnitAction.dehighlight_action()
         
     # Callbacks to handle our druid-like walking-through of actions.
