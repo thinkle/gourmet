@@ -20,7 +20,7 @@ msgstr ""
 
 #: ../glade/app.glade.h:1
 msgid "A_dd Search Criteria"
-msgstr ""
+msgstr "ה_וסף קריטריון חיפוש"
 
 #: ../glade/app.glade.h:2
 msgid "Add recipe to shopping list"
@@ -32,8 +32,9 @@ msgid "Add selected recipe to a shopping list."
 msgstr "הוסף את המתכון שנבחר לרשימת קניות"
 
 #: ../glade/app.glade.h:4
+#, fuzzy
 msgid "Add to _Pantry"
-msgstr ""
+msgstr "הוסף למזווה"
 
 #: ../glade/app.glade.h:5 ../glade/recCard.glade.h:26
 msgid "Add to _Shopping List"
@@ -77,7 +78,7 @@ msgstr "ערוך מפתח רכיבים"
 
 #: ../glade/app.glade.h:14
 msgid "Export selected recipes"
-msgstr "הדפס מתכון נבחר"
+msgstr "ייצא מתכונים שנבחרו"
 
 #: ../glade/app.glade.h:15
 msgid "Import _Webpage"
@@ -92,15 +93,18 @@ msgstr "עבור למתכון במצג כרטיס מתכון"
 #: ../glade/rec_ref_window.glade.h:2
 #, fuzzy
 msgid "Limiting Search to: "
-msgstr "מגביל חיפוש ל:"
+msgstr "מגביל חיפוש ל: "
 
 #: ../glade/app.glade.h:18
+#, fuzzy
 msgid ""
 "Never buy this item. When called for in a recipe, it will show up in a "
 "\"pantry\" section of the list as a reminder that you need it, but it won't "
 "be included when you save or print the list unless you tell me you need to "
 "buy it."
 msgstr ""
+"אל תקנה את מוצר זה, כאשר מתכון ידרוש אותו, הוא יוצג בסעיף הכלים, כתזכורת אבל "
+"הוא לא יכלל כאשר תשמור או תדפיס את הרשימה, אלא אם כן תרצה לרוכשו"
 
 #: ../glade/app.glade.h:19
 #, fuzzy
@@ -109,7 +113,7 @@ msgstr "הדפס מתכון נבחר"
 
 #: ../glade/app.glade.h:20
 msgid "Re_apply changes"
-msgstr ""
+msgstr "ה_חל מחדש שינויים"
 
 #: ../glade/app.glade.h:21
 msgid "Recipe Index"
@@ -127,7 +131,7 @@ msgstr "_רשימת מתכונים"
 
 #: ../glade/app.glade.h:24
 msgid "Search _Results"
-msgstr "_חפש לפי"
+msgstr "_תוצאות חיפוש"
 
 #: ../glade/app.glade.h:25
 msgid "Search as _you type"
@@ -135,7 +139,7 @@ msgstr "חפש בזמן _הקלדה"
 
 #: ../glade/app.glade.h:26
 msgid "Search by other critera within the current search results."
-msgstr ""
+msgstr "חפש לפי קריטריון נוסף בתוצאות החיפוש"
 
 #: ../glade/app.glade.h:27 ../glade/recSelector.glade.h:8
 #: ../glade/rec_ref_window.glade.h:4 ../glade/keyeditor.glade.h:9
@@ -144,7 +148,7 @@ msgstr "חפש מתכונים בזמן שאתה מקליד"
 
 #: ../glade/app.glade.h:28 ../glade/keyeditor.glade.h:10
 msgid "Use regular expressions"
-msgstr ""
+msgstr "השתמש בביטויים רגולריים"
 
 #: ../glade/app.glade.h:29
 msgid "View Re_cipe"
@@ -160,11 +164,11 @@ msgstr "הצג מתכון נבחר"
 
 #: ../glade/app.glade.h:32
 msgid "_About"
-msgstr ""
+msgstr "_אודות"
 
 #: ../glade/app.glade.h:33
 msgid "_Actions"
-msgstr ""
+msgstr "_פעולות"
 
 #: ../glade/app.glade.h:34
 msgid "_Delete Recipe"
@@ -172,7 +176,7 @@ msgstr "_מחק מתכון"
 
 #: ../glade/app.glade.h:35
 msgid "_E-Mail recipe"
-msgstr ""
+msgstr "_שלח מתכון"
 
 #: ../glade/app.glade.h:36 ../glade/recCard.glade.h:71
 msgid "_Edit"
@@ -180,11 +184,11 @@ msgstr "_ערוך"
 
 #: ../glade/app.glade.h:37
 msgid "_Empty trash"
-msgstr ""
+msgstr "_רוקן פח מחזור"
 
 #: ../glade/app.glade.h:38
 msgid "_Export"
-msgstr ""
+msgstr "_יצא"
 
 #: ../glade/app.glade.h:39 ../glade/databaseChooser.glade.h:16
 #: ../glade/recCard.glade.h:72
@@ -198,14 +202,13 @@ msgstr "_עזרה"
 
 #: ../glade/app.glade.h:41
 msgid "_Import File"
-msgstr ""
+msgstr "_ייבא קובץ"
 
 #: ../glade/app.glade.h:42
 msgid "_Ingredient Key Editor"
-msgstr ""
+msgstr "עורך קודי _רכיבים"
 
 #: ../glade/app.glade.h:43 ../glade/recCard.glade.h:82
-#, fuzzy
 msgid "_New Recipe"
 msgstr "מתכון _חדש"
 
@@ -219,16 +222,14 @@ msgstr "_חזור"
 
 #: ../glade/app.glade.h:46
 msgid "_Search for"
-msgstr "חפש לפי"
+msgstr "_חפש לפי"
 
 #: ../glade/app.glade.h:47 ../glade/recCard.glade.h:90
 #: ../glade/shopList.glade.h:27
-#, fuzzy
 msgid "_Shopping List"
-msgstr "_רשימת קניות"
+msgstr "רשימת _קניות"
 
 #: ../glade/app.glade.h:48
-#, fuzzy
 msgid "_Show deleted recipes"
 msgstr "_הצג מתכונים שנמחקו"
 
@@ -241,9 +242,8 @@ msgid "_Undo"
 msgstr "_בטל"
 
 #: ../glade/app.glade.h:51 ../glade/recCard.glade.h:95
-#, fuzzy
 msgid "_Unit Converter"
-msgstr "_המרת יחידות"
+msgstr "המרת _יחידות"
 
 #: ../glade/app.glade.h:52 ../glade/recCard.glade.h:97
 msgid "_View"
@@ -251,7 +251,7 @@ msgstr "_הצג"
 
 #: ../glade/app.glade.h:53
 msgid "_in"
-msgstr ""
+msgstr "_בתוך"
 
 #: ../glade/databaseChooser.glade.h:1 ../glade/recSelector.glade.h:1
 #: ../glade/rec_ref_window.glade.h:1 ../glade/converter.glade.h:1
@@ -292,17 +292,18 @@ msgstr ""
 
 #: ../glade/databaseChooser.glade.h:10
 msgid "Password for your username on the database."
-msgstr ""
+msgstr "הסיסמא למאגר הנתונים."
 
 #: ../glade/databaseChooser.glade.h:11
 msgid ""
 "Save the password for next time. This means the password will be stored "
 "insecurely in your configuration file."
 msgstr ""
+"זכור את הסיסמא לפעם הבאה. הסיסמא תישמר לא מוצפנת בקובץ הקונפיגורציה של התוכנה."
 
 #: ../glade/databaseChooser.glade.h:12
 msgid "Your username on the database."
-msgstr ""
+msgstr "שם המשתמש למאגר הנתונים."
 
 #: ../glade/databaseChooser.glade.h:13
 msgid "_Browse"
@@ -320,17 +321,15 @@ msgstr "_פרטים"
 
 #: ../glade/databaseChooser.glade.h:17
 msgid "_Host:"
-msgstr ""
+msgstr "_מארח:"
 
 #: ../glade/databaseChooser.glade.h:18
-#, fuzzy
 msgid "_Password:"
-msgstr "_סיסמה:"
+msgstr "_סיסמא:"
 
 #: ../glade/databaseChooser.glade.h:19
-#, fuzzy
 msgid "_Save Password"
-msgstr "_שמור סיסמה"
+msgstr "_שמור סיסמא"
 
 #: ../glade/databaseChooser.glade.h:20
 msgid "_Username:"
@@ -346,61 +345,62 @@ msgstr "מתכון"
 
 #: ../glade/preferenceDialog.glade.h:1
 msgid "<b>Card View Preferences</b>"
-msgstr ""
+msgstr "<b>העדפות צפייה בכרטיסייה</b>"
 
 #: ../glade/preferenceDialog.glade.h:2
 msgid "<b>Email Preferences</b>"
-msgstr ""
+msgstr "<b>העדפות דואל</b>"
 
 #: ../glade/preferenceDialog.glade.h:3
 msgid "<b>Index View Preferences</b>"
-msgstr ""
+msgstr "<b>העדפות צפייה באינדקס</b>"
 
 #: ../glade/preferenceDialog.glade.h:4
 msgid "<b>Shopping List Preferences</b>"
-msgstr ""
+msgstr "<b>העדפות רשימת קניות</b>"
 
 #: ../glade/preferenceDialog.glade.h:5
 msgid "<i>Configure which columns are included in the recipe index view.</i>"
-msgstr ""
+msgstr "<i>הגדר אילו עמודות יופיעו באינדקס הצפיה במתכונים</i>"
 
 #: ../glade/preferenceDialog.glade.h:6
 msgid "<i>Preferences for use when sending a recipe in an email.</i>"
-msgstr ""
+msgstr "<i>העדפות משתמש בשליחת מתכון בדואל.</i>"
 
 #: ../glade/preferenceDialog.glade.h:7
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
-msgstr ""
+msgstr "<i>הסר פריטים שאינך רוצה להשתמש בהם בכרטיס המתכון.</i>"
 
 #: ../glade/preferenceDialog.glade.h:8
 msgid ""
 "<i>What should Gourmet do with Optional Ingredients when adding recipes to "
 "the shopping list?</i>"
 msgstr ""
+"<i>איך המערכת צריכה להתייחס לרכיבי מתכון שאינם חובה בהוספה לרשימת קניות?</i>"
 
 #: ../glade/preferenceDialog.glade.h:9
 msgid "As_k whether to include optional ingredients"
-msgstr ""
+msgstr "_בקש אישור להוספת מרכיבים שאינם חובה"
 
 #: ../glade/preferenceDialog.glade.h:10
 msgid "Card View"
-msgstr ""
+msgstr "תצוגת כרטיס"
 
 #: ../glade/preferenceDialog.glade.h:11
 msgid "Email Preferences"
-msgstr ""
+msgstr "העדפות דואל"
 
 #: ../glade/preferenceDialog.glade.h:12
 msgid "Gourmet Recipe Manager Preferences"
-msgstr ""
+msgstr "העדפות תוכנת גורמה"
 
 #: ../glade/preferenceDialog.glade.h:13
 msgid "Include Recipe as an _HTML Attachment to the E-mail"
-msgstr ""
+msgstr "צרף מתכון במתכונת _HTML לדואל"
 
 #: ../glade/preferenceDialog.glade.h:14
 msgid "Include Recipe in _Body of E-mail (A good idea no matter what)"
-msgstr ""
+msgstr "כלול מתכון _בגוף הדואל (מומלץ בחום)"
 
 #: ../glade/preferenceDialog.glade.h:15
 msgid "Index View"
@@ -412,17 +412,16 @@ msgid "Shopping List"
 msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:17 ../glade/recCard.glade.h:61
-#, fuzzy
 msgid "_Allow units to change when multiplying"
 msgstr "_אפשר ליחידות להשתנות בהכפלה"
 
 #: ../glade/preferenceDialog.glade.h:18
 msgid "_Always add optional ingredients"
-msgstr ""
+msgstr "_תמיד הוסף רכיבים אופציונליים"
 
 #: ../glade/preferenceDialog.glade.h:19
 msgid "_Always use these settings"
-msgstr ""
+msgstr "השתמש _תמיד בהגדרות אלו"
 
 #: ../glade/preferenceDialog.glade.h:20
 msgid "_Clear remembered optional ingredients"
@@ -434,57 +433,59 @@ msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:22
 msgid "_Remember user selections by default"
-msgstr ""
+msgstr "_זכור העדפות משתמש כברירת מחדל"
 
 #: ../glade/recCard.glade.h:1
 msgid ""
 "\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
 
 #: ../glade/recCard.glade.h:4
 msgid "<b>Category:</b>"
-msgstr ""
+msgstr "<b>קטגוריה:</b>"
 
 #: ../glade/recCard.glade.h:5
 msgid "<b>Cooking Time:</b>"
-msgstr ""
+msgstr "<b>זמן בישול:</b>"
 
 #: ../glade/recCard.glade.h:6
 msgid "<b>Cuisine:</b>"
-msgstr ""
+msgstr "<b>מטבח:</b>"
 
 #: ../glade/recCard.glade.h:7
 msgid "<b>Ingredients</b>"
-msgstr ""
+msgstr "<b>רכיבים</b>"
 
 #: ../glade/recCard.glade.h:8
 msgid "<b>Instructions</b>"
-msgstr ""
+msgstr "<b>אופן הכנה</b>"
 
 #: ../glade/recCard.glade.h:9
 msgid "<b>Notes</b>"
-msgstr ""
+msgstr "<b>רשימות</b>"
 
 #: ../glade/recCard.glade.h:10
 msgid "<b>Preparation Time:</b>"
-msgstr ""
+msgstr "<b>זמן הכנה:</b>"
 
 #: ../glade/recCard.glade.h:11
 msgid "<b>Rating:</b>"
-msgstr ""
+msgstr "<b>דירוג:</b>"
 
 #: ../glade/recCard.glade.h:12
 msgid "<b>Source:</b>"
-msgstr ""
+msgstr "<b>מקור:</b>"
 
 #: ../glade/recCard.glade.h:13
 msgid "<b>Title</b>"
-msgstr ""
+msgstr "<b>כותרת</b>"
 
 #: ../glade/recCard.glade.h:14
 msgid "<b>_Instructions:</b>"
-msgstr "הוראות"
+msgstr "<b>_הוראות:</b>"
 
 #: ../glade/recCard.glade.h:15
 msgid "<b>_Multiply by:</b>"
@@ -492,11 +493,11 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:16
 msgid "<b>_Notes:</b>"
-msgstr ""
+msgstr "<b>_רשימות:</b>"
 
 #: ../glade/recCard.glade.h:17
 msgid "<b>_Servings:</b>"
-msgstr ""
+msgstr "<b>_מנות:</b>"
 
 #: ../glade/recCard.glade.h:18
 msgid "Add _Group"
@@ -519,7 +520,7 @@ msgstr "הוסף עוד מתכון כמרכיב"
 #: ../glade/recCard.glade.h:23
 #, fuzzy
 msgid "Add group for ingredients (such as \"Sauce\" or \"Crust\")"
-msgstr "הוסף קבוצה למרכיבים (למשל \"רוטב\" או \"Crust\"("
+msgstr "הוסף קבוצה למרכיבים (למשל \"רוטב\" או \"Crust\")"
 
 #: ../glade/recCard.glade.h:24
 msgid "Add ingredient _group"
@@ -536,9 +537,8 @@ msgid ""
 msgstr ""
 
 #: ../glade/recCard.glade.h:28
-#, fuzzy
 msgid "C_uisine:"
-msgstr "_מטבח:"
+msgstr "מ_טבח:"
 
 #: ../glade/recCard.glade.h:29
 msgid "Coo_king Time:"
@@ -546,39 +546,39 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:30
 msgid "Create new ingredient"
-msgstr ""
+msgstr "צור קטוגריה חדשה"
 
 #: ../glade/recCard.glade.h:31 ../src/lib/reccard.py:212
 msgid "Delete selected ingredient"
-msgstr ""
+msgstr "מחק רכיבים שנבחרו"
 
 #: ../glade/recCard.glade.h:32
 msgid "Delete selected ingredients."
-msgstr ""
+msgstr "מחק רכיבים שנבחרו."
 
 #: ../glade/recCard.glade.h:33
 msgid "Delete this recipe from the database."
-msgstr ""
+msgstr "מחק את המתכון ממאגר הנתונים."
 
 #: ../glade/recCard.glade.h:34
 msgid "Delete this recipe permanently."
-msgstr ""
+msgstr "מחק מתכון זה לצמיתות."
 
 #: ../glade/recCard.glade.h:35
 msgid "E_xport Recipe"
-msgstr ""
+msgstr "_ייצא מתכון"
 
 #: ../glade/recCard.glade.h:36
 msgid "Export this recipe as a text file."
-msgstr ""
+msgstr "ייצא מתכון זה כקובץ טקסט."
 
 #: ../glade/recCard.glade.h:37
 msgid "Image: "
-msgstr ""
+msgstr "תמונה: "
 
 #: ../glade/recCard.glade.h:38
 msgid "Import ingredients from a plain text file."
-msgstr ""
+msgstr "מייבא רכיבים מקובץ טקסט."
 
 #: ../glade/recCard.glade.h:39
 msgid "Ingredient (_key):"
@@ -586,7 +586,7 @@ msgstr "מרכיב (_מפתח):"
 
 #: ../glade/recCard.glade.h:40
 msgid "Ingredient Key _Editor"
-msgstr ""
+msgstr "_עורך מפתח רכיבים"
 
 #: ../glade/recCard.glade.h:41 ../src/lib/exporters/exporter.py:157
 #: ../src/lib/exporters/gnomeprinter.py:332
@@ -614,15 +614,15 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:46
 msgid "Move ingredient do_wn"
-msgstr ""
+msgstr "הזז רכיב למ_טה"
 
 #: ../glade/recCard.glade.h:47
 msgid "Move selected ingredients down"
-msgstr ""
+msgstr "הזז רכיבים מסומנים למטה"
 
 #: ../glade/recCard.glade.h:48
 msgid "Move selected ingredients up"
-msgstr ""
+msgstr "הזז רכיבים מסומנים למעלה"
 
 #: ../glade/recCard.glade.h:49
 msgid "Paste ingredient list from the clipboard."
@@ -630,27 +630,27 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:50
 msgid "Pre_paration Time: "
-msgstr ""
+msgstr "זמן הכ_נה: "
 
 #: ../glade/recCard.glade.h:51
 msgid "Recipe Card"
-msgstr ""
+msgstr "כרטיס מתכון"
 
 #: ../glade/recCard.glade.h:54
 msgid "S_hopping Category: "
-msgstr ""
+msgstr "קטגוריית ק_נייה: "
 
 #: ../glade/recCard.glade.h:55
 msgid "S_ource:"
-msgstr ""
+msgstr "מ_קור:"
 
 #: ../glade/recCard.glade.h:56
 msgid "Save changes"
-msgstr ""
+msgstr "שמור שינויים"
 
 #: ../glade/recCard.glade.h:57
 msgid "Standardized name for ingredient (to be used in shopping lists)."
-msgstr ""
+msgstr "שם אחיד לרכיב (לשימוש ברשימת קניות)"
 
 #: ../glade/recCard.glade.h:58
 msgid ""
@@ -660,7 +660,7 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:59
 msgid "_Add Image"
-msgstr ""
+msgstr "_הוסף תמונה"
 
 #: ../glade/recCard.glade.h:60
 msgid "_Add ingredient"
@@ -668,7 +668,7 @@ msgstr "_הוסף מרכיב"
 
 #: ../glade/recCard.glade.h:62
 msgid "_Amount: "
-msgstr ""
+msgstr " "
 
 #: ../glade/recCard.glade.h:63
 msgid "_Bold"
@@ -720,35 +720,35 @@ msgstr "_עורך מרכיבים"
 
 #: ../glade/recCard.glade.h:78
 msgid "_Ingredient:"
-msgstr ""
+msgstr "_מרכיב:"
 
 #: ../glade/recCard.glade.h:79
 msgid "_Ingredients"
-msgstr "מרכיבים"
+msgstr "_מרכיבים"
 
 #: ../glade/recCard.glade.h:80
 msgid "_Italic"
-msgstr ""
+msgstr "_נטוי"
 
 #: ../glade/recCard.glade.h:81
 msgid "_New Ingredient"
-msgstr ""
+msgstr "מרכיב _חדש"
 
 #: ../glade/recCard.glade.h:83
 msgid "_Notes"
-msgstr ""
+msgstr "_רשימות"
 
 #: ../glade/recCard.glade.h:84
 msgid "_Optional"
-msgstr ""
+msgstr "_אופציונלי"
 
 #: ../glade/recCard.glade.h:85
 msgid "_Rating:"
-msgstr ""
+msgstr "_דירוג:"
 
 #: ../glade/recCard.glade.h:87
 msgid "_Remove Image"
-msgstr ""
+msgstr "_הסר תמונה"
 
 #: ../glade/recCard.glade.h:88
 msgid "_Save"
@@ -756,11 +756,11 @@ msgstr "_שמור"
 
 #: ../glade/recCard.glade.h:89
 msgid "_Servings: "
-msgstr "_מנות: •"
+msgstr "_מנות: • "
 
 #: ../glade/recCard.glade.h:91
 msgid "_Title: "
-msgstr ""
+msgstr "_כותרת: "
 
 #: ../glade/recCard.glade.h:93
 msgid "_Underline"
@@ -768,7 +768,7 @@ msgstr "_קו תחתון"
 
 #: ../glade/recCard.glade.h:96
 msgid "_Unit: "
-msgstr "_יחידה: •"
+msgstr "_יחידה: • "
 
 #: ../glade/recCard.glade.h:98 ../glade/rec_ref_window.glade.h:10
 #: ../src/lib/recindex.py:38 ../src/lib/recindex.py:45
@@ -786,12 +786,11 @@ msgstr "מתקדם"
 
 #: ../glade/recSelector.glade.h:3 ../glade/keyeditor.glade.h:2
 msgid "Advanced Search"
-msgstr ""
+msgstr "חיפוש מתקדם"
 
 #: ../glade/recSelector.glade.h:4
-#, fuzzy
 msgid "Limit search by this term"
-msgstr "הגבל חיפוש למושג"
+msgstr "הגבל חיפוש למונח"
 
 #: ../glade/recSelector.glade.h:6
 msgid "Search _by"
@@ -799,11 +798,11 @@ msgstr "_חפש לפי"
 
 #: ../glade/recSelector.glade.h:7 ../glade/keyeditor.glade.h:7
 msgid "Search as you type"
-msgstr ""
+msgstr "חפש בזמן הקלדה"
 
 #: ../glade/recSelector.glade.h:9
 msgid "Select Recipe"
-msgstr ""
+msgstr "בחר מתכון"
 
 #: ../glade/recSelector.glade.h:10
 msgid "Use regular expressions (an advanced method of searching)"
@@ -811,15 +810,15 @@ msgstr ""
 
 #: ../glade/recSelector.glade.h:11
 msgid "Use regular expressions to search"
-msgstr ""
+msgstr "השתמש בביטויים רגולריים לחיפוש"
 
 #: ../glade/recSelector.glade.h:12
 msgid "_Delete"
-msgstr ""
+msgstr "_מחק"
 
 #: ../glade/recSelector.glade.h:13
 msgid "_Undelete"
-msgstr ""
+msgstr "_שחזר"
 
 #: ../glade/rec_ref_window.glade.h:3 ../glade/keyeditor.glade.h:8
 msgid "Search by"
@@ -836,7 +835,6 @@ msgstr "קטגוריה"
 
 #: ../glade/rec_ref_window.glade.h:7 ../src/lib/recindex.py:37
 #: ../src/lib/recindex.py:44
-#, fuzzy
 msgid "cuisine"
 msgstr "מטבח"
 
@@ -857,7 +855,7 @@ msgstr "מנות"
 #: ../glade/rec_ref_window.glade.h:13 ../src/lib/recindex.py:32
 #: ../src/lib/recindex.py:41
 msgid "title"
-msgstr ""
+msgstr "כותרת"
 
 #: ../glade/shopList.glade.h:1
 msgid "Add Items to Shopping List"
@@ -865,41 +863,45 @@ msgstr "הוסף לרשימת קניות"
 
 #: ../glade/shopList.glade.h:2
 msgid "Add additional items to your shopping list."
-msgstr ""
+msgstr "הוסף פריטים נוספים לרשימת הקניות."
 
 #: ../glade/shopList.glade.h:3
 msgid "Already Have (_Pantry Items)"
-msgstr ""
+msgstr "קיים בבית (פריט _מהמזווה)"
 
 #: ../glade/shopList.glade.h:4 ../src/lib/reccard.py:1939
 msgid "Amount"
-msgstr ""
+msgstr "כמות"
 
 #: ../glade/shopList.glade.h:5 ../src/lib/keyEditor.py:83
 #: ../src/lib/reccard.py:787 ../src/lib/reccard.py:798
 #: ../src/lib/reccard.py:1939
 msgid "Item"
-msgstr ""
+msgstr "פריט"
 
 #: ../glade/shopList.glade.h:6
 msgid "Move selected items from pantry list to shopping list"
-msgstr ""
+msgstr "העבר פריטים נבחרים מרשימת המזווה לרשימת הקניות"
 
 #: ../glade/shopList.glade.h:7
 msgid "Move selected items from shopping list to pantry list."
-msgstr ""
+msgstr "העבר פריטים נבחרים מרשימת הקניות לרשימת המזווה."
 
 #: ../glade/shopList.glade.h:8
 msgid ""
 "Move selected items from shopping list to pantry list. (You can also move "
 "items by dragging them.)"
 msgstr ""
+"העבר פריטים נבחרים מרשימת הקניות לרשימת המזווה. (ניתן להעביר את הפריטים גם "
+"על ידי גרירה.)"
 
 #: ../glade/shopList.glade.h:9
 msgid ""
 "Move selected items from your pantry list back to your shopping list (you "
 "can also move items by dragging them.)"
 msgstr ""
+"העבר פריטים נבחרים מרשימת המזווה לרשימת הקניות. (ניתן להעביר את הפריטים גם "
+"על ידי גרירה.)"
 
 #: ../glade/shopList.glade.h:10
 msgid "Move to _Shopping List"
@@ -933,12 +935,12 @@ msgstr ""
 #: ../glade/shopList.glade.h:18 ../src/lib/reccard.py:801
 #: ../src/lib/reccard.py:892 ../src/lib/reccard.py:987
 msgid "Shopping Category"
-msgstr ""
+msgstr "קטגוריית קניות"
 
 #: ../glade/shopList.glade.h:20 ../src/lib/reccard.py:786
 #: ../src/lib/reccard.py:797 ../src/lib/reccard.py:1939
 msgid "Unit"
-msgstr ""
+msgstr "יחידה"
 
 #: ../glade/shopList.glade.h:21
 msgid "_Add Items to Shopping List"
@@ -946,19 +948,19 @@ msgstr ""
 
 #: ../glade/shopList.glade.h:22
 msgid "_Add New Items to Shopping List"
-msgstr ""
+msgstr "_הוסף פריט חדש לרשימת הקניות"
 
 #: ../glade/shopList.glade.h:24
 msgid "_Recipes"
-msgstr ""
+msgstr "_מתכונים"
 
 #: ../glade/shopList.glade.h:25
 msgid "_Remove from Shopping List"
-msgstr ""
+msgstr "_הסר מרשימת הקניות"
 
 #: ../glade/shopList.glade.h:26
 msgid "_Remove from shopping list (move to pantry)"
-msgstr ""
+msgstr "_הסר מרשימת הקניות (החזר למזווה)"
 
 #: ../glade/converter.glade.h:2
 msgid "1"
@@ -966,27 +968,27 @@ msgstr "1"
 
 #: ../glade/converter.glade.h:3
 msgid "<b>From</b>"
-msgstr ""
+msgstr "<b>מאת</b>"
 
 #: ../glade/converter.glade.h:4
 msgid "<b>To</b>"
-msgstr ""
+msgstr "<b>אל</b>"
 
 #: ../glade/converter.glade.h:5
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: ../glade/converter.glade.h:6
 msgid "Density _Information"
-msgstr ""
+msgstr "_מידע על צפיפות"
 
 #: ../glade/converter.glade.h:7
 msgid "I_tem:"
-msgstr ""
+msgstr "פ_ריט:"
 
 #: ../glade/converter.glade.h:8 ../src/lib/convertGui.py:152
 msgid "None"
-msgstr ""
+msgstr "כלום"
 
 #: ../glade/converter.glade.h:9
 msgid "Unit Converter"
@@ -998,29 +1000,31 @@ msgstr "_כמות:"
 
 #: ../glade/converter.glade.h:11
 msgid "_Density:"
-msgstr ""
+msgstr "_צפיפות:"
 
 #: ../glade/converter.glade.h:12
 msgid "_Result:"
-msgstr ""
+msgstr "_תוצאה:"
 
 #: ../glade/converter.glade.h:13
 msgid "_Unit:"
-msgstr ""
+msgstr "_יחידה:"
 
 #: ../glade/keyeditor.glade.h:3
 msgid "Change key for selected items to: "
-msgstr ""
+msgstr "שנה מפתח לפריטים שנבחרו: "
 
 #: ../glade/keyeditor.glade.h:4
 msgid ""
 "Key\n"
 "Item"
 msgstr ""
+"מפתח\n"
+"פריט"
 
 #: ../glade/keyeditor.glade.h:6
 msgid "Key Editor"
-msgstr ""
+msgstr "עורך מפתחות"
 
 #: ../src/lib/check_encodings.py:85
 msgid "Select encoding"
@@ -1049,19 +1053,19 @@ msgstr ""
 #. for it to properly split things like 1 - to - 3, which really do
 #: ../src/lib/convert.py:502
 msgid "to"
-msgstr ""
+msgstr "אל"
 
 #: ../src/lib/dialog_extras.py:369
 msgid "_Pause"
-msgstr ""
+msgstr "_הפסק"
 
 #: ../src/lib/dialog_extras.py:378
 msgid "_Stop"
-msgstr ""
+msgstr "_עצור"
 
 #: ../src/lib/dialog_extras.py:422 ../src/lib/dialog_extras.py:512
 msgid "Don't ask me this again."
-msgstr ""
+msgstr "אל תשאל שוב בעתיד."
 
 #: ../src/lib/dialog_extras.py:478
 msgid "Do you really want to do this"
@@ -1069,11 +1073,11 @@ msgstr ""
 
 #: ../src/lib/dialog_extras.py:889 ../src/lib/FileChooserSaveAs.py:153
 msgid "Select File_type"
-msgstr ""
+msgstr "בחר סוג_קובץ"
 
 #: ../src/lib/dialog_extras.py:960
 msgid "No file selected"
-msgstr ""
+msgstr "לא נבחר קובץ"
 
 #: ../src/lib/dialog_extras.py:961
 msgid "No file was selected, so the action has been cancelled"
@@ -1093,39 +1097,39 @@ msgstr ""
 #: ../src/lib/exporters/rtf_exporter.py:76
 #: ../src/lib/exporters/wxprinter.py:88
 msgid "Title"
-msgstr ""
+msgstr "כותרת"
 
 #: ../src/lib/gglobals.py:223
 msgid "Category"
-msgstr ""
+msgstr "קטגוריה"
 
 #: ../src/lib/gglobals.py:224
 msgid "Cuisine"
-msgstr ""
+msgstr "מטבח"
 
 #: ../src/lib/gglobals.py:225
 msgid "Rating"
-msgstr ""
+msgstr "דירוג"
 
 #: ../src/lib/gglobals.py:226
 msgid "Source"
-msgstr ""
+msgstr "מקור"
 
 #: ../src/lib/gglobals.py:227
 msgid "Servings"
-msgstr ""
+msgstr "מנות"
 
 #: ../src/lib/gglobals.py:228
 msgid "Preparation Time"
-msgstr ""
+msgstr "זמן הכנה"
 
 #: ../src/lib/gglobals.py:229
 msgid "Cooking Time"
-msgstr ""
+msgstr "זמן בישול"
 
 #: ../src/lib/gglobals.py:233 ../src/lib/gglobals.py:237
 msgid "Notes"
-msgstr ""
+msgstr "רשימות"
 
 #: ../src/lib/gglobals.py:291
 msgid "Unable to open URL"
@@ -1171,11 +1175,11 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:194
 msgid "Recipe _Index"
-msgstr ""
+msgstr "_אינדקס מתכונים"
 
 #: ../src/lib/GourmetRecipeManager.py:195
 msgid "Shopping _List"
-msgstr ""
+msgstr "רשימת_קניות"
 
 #: ../src/lib/GourmetRecipeManager.py:234
 msgid "translator-credits"
@@ -1188,6 +1192,8 @@ msgid ""
 "\n"
 "Website: %s"
 msgstr ""
+"\n"
+"אתר: %s"
 
 #: ../src/lib/GourmetRecipeManager.py:277
 #, python-format
@@ -1195,14 +1201,16 @@ msgid ""
 "\n"
 "Translated by: %s"
 msgstr ""
+"\n"
+"תורגם על ידי: %s"
 
 #: ../src/lib/GourmetRecipeManager.py:287
 msgid "Import paused"
-msgstr ""
+msgstr "ייבוא הופסק"
 
 #: ../src/lib/GourmetRecipeManager.py:288
 msgid "Stop import"
-msgstr ""
+msgstr "עצור ייבוא"
 
 #: ../src/lib/GourmetRecipeManager.py:335
 #, python-format
@@ -1211,11 +1219,11 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:345
 msgid "An import is in progress."
-msgstr ""
+msgstr "תהליך ייבוא בביצוע."
 
 #: ../src/lib/GourmetRecipeManager.py:346
 msgid "An export is in progress."
-msgstr ""
+msgstr "תהליך ייצוא בביצוע."
 
 #: ../src/lib/GourmetRecipeManager.py:347
 msgid "A delete is in progress."
@@ -2207,7 +2215,7 @@ msgstr ""
 
 #: ../src/lib/exporters/__init__.py:106
 msgid "Gourmet XML Export"
-msgstr ""
+msgstr "גורמה ייצוא XML"
 
 #: ../src/lib/exporters/__init__.py:107
 #, python-format
@@ -2221,7 +2229,7 @@ msgstr ""
 
 #: ../src/lib/exporters/__init__.py:131
 msgid "RTF Export"
-msgstr ""
+msgstr "ייצוא קובץ RTF"
 
 #: ../src/lib/exporters/__init__.py:132
 #, python-format
@@ -2231,25 +2239,25 @@ msgstr ""
 #: ../src/lib/exporters/__init__.py:133
 #, python-format
 msgid "Recipe saved as Rich Text file %(file)s"
-msgstr ""
+msgstr "המתקון נשמר כקובץ RTF %(file)s"
 
 #: ../src/lib/exporters/lprprinter.py:15 ../src/lib/exporters/lprprinter.py:18
 msgid "Enter print command"
-msgstr ""
+msgstr "הכנס פקודת הדפסה"
 
 #: ../src/lib/exporters/lprprinter.py:16
 #, python-format
 msgid "Unable to find command \"%s\"."
-msgstr ""
+msgstr "לא ניתן למצוא את הפקודה \"%s\""
 
 #: ../src/lib/exporters/lprprinter.py:17
 msgid "Please enter the command you would like to use to print."
-msgstr ""
+msgstr "אנא הגדר את פקודת ההדפסה."
 
 #: ../src/lib/exporters/lprprinter.py:22
 #, python-format
 msgid "Printing via %s"
-msgstr ""
+msgstr "הדפס דרך %s"
 
 #: ../src/lib/exporters/lprprinter.py:23
 msgid ""
@@ -2259,22 +2267,21 @@ msgstr ""
 
 #: ../src/lib/exporters/lprprinter.py:31
 msgid "Command: "
-msgstr ""
+msgstr "פקודה: "
 
 #: ../src/lib/exporters/pdf_exporter.py:23
 msgid "Shopping list for: "
-msgstr ""
+msgstr "רשימת קניות ל: "
 
 #: ../src/lib/exporters/recipe_emailer.py:105
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
-msgstr ""
+msgstr "כלול מתכון בגוף הדואל (מומלץ בחום)"
 
 #: ../src/lib/exporters/recipe_emailer.py:106
 msgid "E-mail Recipe as HTML Attachment"
-msgstr ""
+msgstr "שלח מתכון כקובץ HTML"
 
 #: ../src/lib/exporters/recipe_emailer.py:124
-#, fuzzy
 msgid "Email Options"
 msgstr "אפשרויות דואל"
 
@@ -2287,27 +2294,29 @@ msgid "E-mail not sent"
 msgstr "דואל לא נשלח"
 
 #: ../src/lib/exporters/recipe_emailer.py:145
-#, fuzzy
 msgid ""
 "You have not chosen to include the recipe in the body of the message or as "
 "an attachment."
-msgstr "לא בחרת לצרף את המתכון בגוף ההודעה או כתוספת להודעה."
+msgstr "לא בחרת לצרף את המתכון בגוף ההודעה או כקובץ נילווה להודעה."
 
 #: ../src/lib/exporters/winprinter.py:9
-#, fuzzy
 msgid "Printing not supported"
 msgstr "הדפסה לא נתמכת"
 
 #: ../src/lib/exporters/winprinter.py:10
-#, fuzzy
 msgid ""
 "To print recipes, first export them, then print from another program. If you "
 "install wxWindows, you can print directly from Gourmet."
 msgstr ""
-"להדפיס מתכונים, קודם יצא אותם ואז הדפס אותם מתוכנית אחרת. אם תתקין את "
+"כדי להדפיס מתכונים, יש ליצא אותם ואז להדפיס אותם מתוכנית אחרת. במידה ותתקין "
 "wxWindows תוכל להדפיס ישירות מגורמה."
 
 #: ../src/lib/exporters/__init__.py:81
 #, python-format
 #~ msgid "Recipe saved as Mealmaster file %(file)s"
-#~ msgstr ""
+#~ msgstr ""=======
+
+#: ../src/lib/reccard.py:1945
+#, python-format
+#~ msgid "Delete them."
+#~ msgstr "">>>>>>> 1.1.2.8

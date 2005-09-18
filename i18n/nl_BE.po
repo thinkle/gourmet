@@ -21,27 +21,27 @@ msgstr ""
 
 #: ../glade/app.glade.h:1
 msgid "A_dd Search Criteria"
-msgstr ""
+msgstr "Zoekcriteria _toevoegen"
 
 #: ../glade/app.glade.h:2
 msgid "Add recipe to shopping list"
-msgstr "Voeg recept toe aan boodschappenlijstje"
+msgstr "Recept aan boodschappenlijstje toevoegen"
 
 #: ../glade/app.glade.h:3
 msgid "Add selected recipe to a shopping list."
-msgstr "Voeg geselecteerd recept toe aan boodschappenlijstje."
+msgstr "Geselecteerd recept aan boodschappenlijstje toevoegen."
 
 #: ../glade/app.glade.h:4
 msgid "Add to _Pantry"
-msgstr "Voeg toe aan _provisiekast"
+msgstr "Aan _provisiekast toevoegen"
 
 #: ../glade/app.glade.h:5 ../glade/recCard.glade.h:26
 msgid "Add to _Shopping List"
-msgstr "Voeg toe aan _boodschappenlijstje"
+msgstr "Aan _boodschappenlijstje toevoegen"
 
 #: ../glade/app.glade.h:6
 msgid "Add to _shopping list"
-msgstr "Voeg toe aan _boodschappenlijstje"
+msgstr "Aan _boodschappenlijstje toevoegen"
 
 #: ../glade/app.glade.h:7
 msgid "Adva_nced Search"
@@ -49,11 +49,11 @@ msgstr "Geava_nceerd zoeken"
 
 #: ../glade/app.glade.h:8
 msgid "Create a new recipe"
-msgstr "Maak een nieuw recept"
+msgstr "Een nieuw recept aanmaken"
 
 #: ../glade/app.glade.h:9
 msgid "Delete selected recipe"
-msgstr "Verwijder geselecteerd recept"
+msgstr "Geselecteerd recept verwijderen"
 
 #: ../glade/app.glade.h:10
 msgid "E-_mail recipes"
@@ -69,15 +69,15 @@ msgstr "E-mail geselecteerde recepten"
 
 #: ../glade/app.glade.h:13
 msgid "Edit Ingredient Keys"
-msgstr "Bewerk ingrediëntensleutels"
+msgstr "Ingrediëntensleutels bewerken"
 
 #: ../glade/app.glade.h:14
 msgid "Export selected recipes"
-msgstr ""
+msgstr "Geselecteerde recepten exporteren"
 
 #: ../glade/app.glade.h:15
 msgid "Import _Webpage"
-msgstr ""
+msgstr "Webpagina importeren"
 
 #: ../glade/app.glade.h:16
 msgid "Jump to recipe in Recipe Card vew"
@@ -102,7 +102,7 @@ msgstr ""
 
 #: ../glade/app.glade.h:19
 msgid "Print selected recipe"
-msgstr "Druk geselecteerd recept af"
+msgstr "Geselecteerd recept afdrukken"
 
 #: ../glade/app.glade.h:20
 msgid "Re_apply changes"
@@ -124,36 +124,36 @@ msgstr "Recepten_lijst"
 
 #: ../glade/app.glade.h:24
 msgid "Search _Results"
-msgstr ""
+msgstr "_Zoekresultaten"
 
 #: ../glade/app.glade.h:25
 msgid "Search as _you type"
-msgstr ""
+msgstr "Zoek terwijl _je tikt"
 
 #: ../glade/app.glade.h:26
 msgid "Search by other critera within the current search results."
-msgstr ""
+msgstr "Zoek op andere criteria binnen de huidige zoekresultaten."
 
 #: ../glade/app.glade.h:27 ../glade/recSelector.glade.h:8
 #: ../glade/rec_ref_window.glade.h:4 ../glade/keyeditor.glade.h:9
 msgid "Search for recipes as you type"
-msgstr "Zoek naar recepten terwijl je typet"
+msgstr "Zoek naar recepten terwijl je tikt"
 
 #: ../glade/app.glade.h:28 ../glade/keyeditor.glade.h:10
 msgid "Use regular expressions"
-msgstr "Gebruik vaste exptressies"
+msgstr "Reguliere expressies gebruiken"
 
 #: ../glade/app.glade.h:29
 msgid "View Re_cipe"
-msgstr "Toon re_cept"
+msgstr "Re_cept tonen"
 
 #: ../glade/app.glade.h:30
 msgid "View Recipe _Card"
-msgstr "Toon recepten_kaart"
+msgstr "Recepten_kaart tonen"
 
 #: ../glade/app.glade.h:31
 msgid "View selected recipe"
-msgstr "Toon geselecteerd recept"
+msgstr "Geselecteerd recept tonen"
 
 #: ../glade/app.glade.h:32
 msgid "_About"
@@ -165,7 +165,7 @@ msgstr "_Acties"
 
 #: ../glade/app.glade.h:34
 msgid "_Delete Recipe"
-msgstr "_Verwijder recept"
+msgstr "_Recept verwijderen"
 
 #: ../glade/app.glade.h:35
 msgid "_E-Mail recipe"
@@ -177,11 +177,11 @@ msgstr "_Bewerk"
 
 #: ../glade/app.glade.h:37
 msgid "_Empty trash"
-msgstr "_prullenbak leegmaken"
+msgstr "_Prullenbak leegmaken"
 
 #: ../glade/app.glade.h:38
 msgid "_Export"
-msgstr "_Exporteer"
+msgstr "_Exporteren"
 
 #: ../glade/app.glade.h:39 ../glade/databaseChooser.glade.h:16
 #: ../glade/recCard.glade.h:72
@@ -195,7 +195,7 @@ msgstr "_Hulp"
 
 #: ../glade/app.glade.h:41
 msgid "_Import File"
-msgstr ""
+msgstr "Bestand _importeren"
 
 #: ../glade/app.glade.h:42
 msgid "_Ingredient Key Editor"
@@ -207,7 +207,7 @@ msgstr "_Nieuw recept"
 
 #: ../glade/app.glade.h:44
 msgid "_Print recipe"
-msgstr "_Druk recept af"
+msgstr "Recept _afdrukken"
 
 #: ../glade/app.glade.h:45 ../glade/recCard.glade.h:86
 msgid "_Redo"
@@ -215,7 +215,7 @@ msgstr "_Herhalen"
 
 #: ../glade/app.glade.h:46
 msgid "_Search for"
-msgstr ""
+msgstr "_Zoeken naar"
 
 #: ../glade/app.glade.h:47 ../glade/recCard.glade.h:90
 #: ../glade/shopList.glade.h:27
@@ -240,11 +240,11 @@ msgstr "_Eenhedenomzetter"
 
 #: ../glade/app.glade.h:52 ../glade/recCard.glade.h:97
 msgid "_View"
-msgstr "_Toon"
+msgstr "_Beeld"
 
 #: ../glade/app.glade.h:53
 msgid "_in"
-msgstr ""
+msgstr "_in"
 
 #: ../glade/databaseChooser.glade.h:1 ../glade/recSelector.glade.h:1
 #: ../glade/rec_ref_window.glade.h:1 ../glade/converter.glade.h:1
@@ -258,7 +258,7 @@ msgstr "<b>Kies databanksysteem voor Gourmet</b>"
 
 #: ../glade/databaseChooser.glade.h:3
 msgid "Choose Database"
-msgstr "Kies databank"
+msgstr "Databank kiezen"
 
 #: ../glade/databaseChooser.glade.h:4
 msgid "Database _Name:"
@@ -292,14 +292,14 @@ msgstr ""
 
 #: ../glade/databaseChooser.glade.h:10
 msgid "Password for your username on the database."
-msgstr "Paswoord voor uw gebruikersnaam van de databank."
+msgstr "Wachtwoord voor uw gebruikersnaam van de databank."
 
 #: ../glade/databaseChooser.glade.h:11
 msgid ""
 "Save the password for next time. This means the password will be stored "
 "insecurely in your configuration file."
 msgstr ""
-"Sla het paswoord op voor volgende keer. Dit betekend dat uw paswoord "
+"Sla het wachtwoord op voor volgende keer. Dit betekend dat uw paswoord "
 "onveilig zal opgeslagen worden in uw configuratiebestand."
 
 #: ../glade/databaseChooser.glade.h:12
@@ -326,11 +326,11 @@ msgstr "_Computer:"
 
 #: ../glade/databaseChooser.glade.h:18
 msgid "_Password:"
-msgstr "_Paswoord:"
+msgstr "_Wachtwoord:"
 
 #: ../glade/databaseChooser.glade.h:19
 msgid "_Save Password"
-msgstr "_Sla paswoord op"
+msgstr "_Wachtwoord opslaan"
 
 #: ../glade/databaseChooser.glade.h:20
 msgid "_Username:"
@@ -443,6 +443,8 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
 "\n"
 "\n"
 
@@ -2307,7 +2309,7 @@ msgstr "Plaats recept in de kern van de e-mail (een goed idee)"
 
 #: ../src/lib/exporters/recipe_emailer.py:106
 msgid "E-mail Recipe as HTML Attachment"
-msgstr "E-mail recept als HTML bijlage."
+msgstr "E-mail recept als HTML bijlage"
 
 #: ../src/lib/exporters/recipe_emailer.py:124
 msgid "Email Options"
@@ -2342,9 +2344,9 @@ msgstr ""
 "ander programma. Als u wxWindows installeert, dan kan je rechtstreeks vanuit "
 "Gourmet afdrukken."
 
-#: src/lib/exporters/winprinter.py:11
+#: ../src/lib/reccard.py:1945
 #, python-format
-#~ msgid "Gourmet will be busy for a while."
+#~ msgid "Delete them."
 #~ msgstr ""
 
 #: ../glade/app.glade.h:9
@@ -2437,6 +2439,7 @@ msgstr ""
 #~ "the amount field could contain \"1.5\" or \"1 1/2\". \"cups\"\n"
 #~ "should go in the separate \"unit\" field.\n"
 #~ msgstr ""
+#~ "\n"
 #~ "De \"eenheid\" mag zich enkel in het veld \"eenheid\" bevinden.\n"
 #~ "Bijvoorbeeld, als u anderhalve kopjes wilt ingeven\n"
 #~ "het veld aantal kan dan \"1.5\" bevatten of \"1 1/2\". \"kopjes\"\n"

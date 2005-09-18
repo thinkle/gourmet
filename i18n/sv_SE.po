@@ -25,23 +25,23 @@ msgstr ""
 
 #: ../glade/app.glade.h:2
 msgid "Add recipe to shopping list"
-msgstr "Lägg till receptet till en inköpslista"
+msgstr "Addera receptet till en inköpslista"
 
 #: ../glade/app.glade.h:3
 msgid "Add selected recipe to a shopping list."
-msgstr "Lägg till valda recept i en inköpslista"
+msgstr "Addera valda recept till en inköpslista"
 
 #: ../glade/app.glade.h:4
 msgid "Add to _Pantry"
-msgstr "_Lägg till i Skafferiet"
+msgstr "_Addera till Skafferiet"
 
 #: ../glade/app.glade.h:5 ../glade/recCard.glade.h:26
 msgid "Add to _Shopping List"
-msgstr "_Lägg till i Inköpslista"
+msgstr "_Addera till inköpslista"
 
 #: ../glade/app.glade.h:6
 msgid "Add to _shopping list"
-msgstr "_Lägg till i inköpslista"
+msgstr "_Addera till inköpslista"
 
 #: ../glade/app.glade.h:7
 msgid "Adva_nced Search"
@@ -73,11 +73,11 @@ msgstr "Ändra ingredienser"
 
 #: ../glade/app.glade.h:14
 msgid "Export selected recipes"
-msgstr ""
+msgstr "Exportera valda recept"
 
 #: ../glade/app.glade.h:15
 msgid "Import _Webpage"
-msgstr ""
+msgstr "Importera _Webbsida"
 
 #: ../glade/app.glade.h:16
 msgid "Jump to recipe in Recipe Card vew"
@@ -86,7 +86,7 @@ msgstr "Gå till receptet i Recept Korts vyn"
 #: ../glade/app.glade.h:17 ../glade/recSelector.glade.h:5
 #: ../glade/rec_ref_window.glade.h:2
 msgid "Limiting Search to: "
-msgstr "Begränsar Sökning till:"
+msgstr "Begränsar Sökning till: "
 
 #: ../glade/app.glade.h:18
 msgid ""
@@ -124,15 +124,15 @@ msgstr "Recept _Lista"
 
 #: ../glade/app.glade.h:24
 msgid "Search _Results"
-msgstr ""
+msgstr "Sökresultat"
 
 #: ../glade/app.glade.h:25
 msgid "Search as _you type"
-msgstr ""
+msgstr "Sök medan du skriver"
 
 #: ../glade/app.glade.h:26
 msgid "Search by other critera within the current search results."
-msgstr ""
+msgstr "Sök med annat kriterium bland nuvarande sökresultat"
 
 #: ../glade/app.glade.h:27 ../glade/recSelector.glade.h:8
 #: ../glade/rec_ref_window.glade.h:4 ../glade/keyeditor.glade.h:9
@@ -141,7 +141,7 @@ msgstr "Sök efter recept medan du skriver"
 
 #: ../glade/app.glade.h:28 ../glade/keyeditor.glade.h:10
 msgid "Use regular expressions"
-msgstr "Använd regular expressions"
+msgstr "Använd reguljära uttryck"
 
 #: ../glade/app.glade.h:29
 msgid "View Re_cipe"
@@ -195,7 +195,7 @@ msgstr "_Hjälp"
 
 #: ../glade/app.glade.h:41
 msgid "_Import File"
-msgstr ""
+msgstr "_Importera fil"
 
 #: ../glade/app.glade.h:42
 msgid "_Ingredient Key Editor"
@@ -215,7 +215,7 @@ msgstr "_Gör om"
 
 #: ../glade/app.glade.h:46
 msgid "_Search for"
-msgstr ""
+msgstr "_Sök efter"
 
 #: ../glade/app.glade.h:47 ../glade/recCard.glade.h:90
 #: ../glade/shopList.glade.h:27
@@ -244,7 +244,7 @@ msgstr "_Visa"
 
 #: ../glade/app.glade.h:53
 msgid "_in"
-msgstr ""
+msgstr "_i"
 
 #: ../glade/databaseChooser.glade.h:1 ../glade/recSelector.glade.h:1
 #: ../glade/rec_ref_window.glade.h:1 ../glade/converter.glade.h:1
@@ -350,33 +350,35 @@ msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:2
 msgid "<b>Email Preferences</b>"
-msgstr ""
+msgstr "<b>Inställningar för e-post</b>"
 
 #: ../glade/preferenceDialog.glade.h:3
 msgid "<b>Index View Preferences</b>"
-msgstr ""
+msgstr "<b>Inställningar för indexvy</b>"
 
 #: ../glade/preferenceDialog.glade.h:4
 msgid "<b>Shopping List Preferences</b>"
-msgstr ""
+msgstr "<b>Inställningar för inköpslistor</b>"
 
 #: ../glade/preferenceDialog.glade.h:5
 msgid "<i>Configure which columns are included in the recipe index view.</i>"
-msgstr ""
+msgstr "<i>Ställ in vilka kolumner som skall synas i indexvyn.</i>"
 
 #: ../glade/preferenceDialog.glade.h:6
 msgid "<i>Preferences for use when sending a recipe in an email.</i>"
-msgstr ""
+msgstr "<i>Inställningar för att skicka recept med e-post.</i>"
 
 #: ../glade/preferenceDialog.glade.h:7
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
-msgstr ""
+msgstr "<i>Ta bort detaljer du inte använder från Receptkort interfacet.</i>"
 
 #: ../glade/preferenceDialog.glade.h:8
 msgid ""
 "<i>What should Gourmet do with Optional Ingredients when adding recipes to "
 "the shopping list?</i>"
 msgstr ""
+"<i>Vad skall Gourmet göra med valfria ingredienser vid addering till "
+"inköpslista?</i>"
 
 #: ../glade/preferenceDialog.glade.h:9
 msgid "As_k whether to include optional ingredients"
@@ -429,17 +431,19 @@ msgstr "_Rensa ihågkomna extra ingredienser"
 
 #: ../glade/preferenceDialog.glade.h:21
 msgid "_Never add optional ingredients"
-msgstr ""
+msgstr "Sätt aldrig till valfria ingredienser"
 
 #: ../glade/preferenceDialog.glade.h:22
 msgid "_Remember user selections by default"
-msgstr ""
+msgstr "_Kom ihåg användarval"
 
 #: ../glade/recCard.glade.h:1
 msgid ""
 "\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
 "\n"
 "\n"
 
@@ -485,11 +489,11 @@ msgstr "<b>Titel</b>"
 
 #: ../glade/recCard.glade.h:14
 msgid "<b>_Instructions:</b>"
-msgstr ""
+msgstr "<b>_Instruktioner:</b>"
 
 #: ../glade/recCard.glade.h:15
 msgid "<b>_Multiply by:</b>"
-msgstr ""
+msgstr "<b>_Multiplicera med:</b>"
 
 #: ../glade/recCard.glade.h:16
 msgid "<b>_Notes:</b>"
@@ -631,7 +635,7 @@ msgstr "Klistra in ingredienslista från utklipp"
 
 #: ../glade/recCard.glade.h:50
 msgid "Pre_paration Time: "
-msgstr "Tid för förberedelser:"
+msgstr "Tid för förberedelser: "
 
 #: ../glade/recCard.glade.h:51
 msgid "Recipe Card"
@@ -739,11 +743,11 @@ msgstr "Ny Ingrediens"
 
 #: ../glade/recCard.glade.h:83
 msgid "_Notes"
-msgstr ""
+msgstr "_Anteckningar"
 
 #: ../glade/recCard.glade.h:84
 msgid "_Optional"
-msgstr ""
+msgstr "_Valfri"
 
 #: ../glade/recCard.glade.h:85
 msgid "_Rating:"
@@ -866,11 +870,11 @@ msgstr "Lägg till i inköpslista"
 
 #: ../glade/shopList.glade.h:2
 msgid "Add additional items to your shopping list."
-msgstr ""
+msgstr "Lägg till flera saker till din köplista"
 
 #: ../glade/shopList.glade.h:3
 msgid "Already Have (_Pantry Items)"
-msgstr ""
+msgstr "Har redan (_Skafferi ingredienser)"
 
 #: ../glade/shopList.glade.h:4 ../src/lib/reccard.py:1939
 msgid "Amount"
@@ -884,37 +888,43 @@ msgstr "Ingrediens"
 
 #: ../glade/shopList.glade.h:6
 msgid "Move selected items from pantry list to shopping list"
-msgstr ""
+msgstr "Flytta valda alternativ från skafferilista till inköpslista."
 
 #: ../glade/shopList.glade.h:7
 msgid "Move selected items from shopping list to pantry list."
-msgstr ""
+msgstr "Flytta valda alternativ från inköpslista till skafferilista."
 
 #: ../glade/shopList.glade.h:8
 msgid ""
 "Move selected items from shopping list to pantry list. (You can also move "
 "items by dragging them.)"
 msgstr ""
+"Flytta valda alternativ från inköpslista till skafferilista. (Du kan också "
+"flytta alternativ genom att dra dem med musen.)"
 
 #: ../glade/shopList.glade.h:9
 msgid ""
 "Move selected items from your pantry list back to your shopping list (you "
 "can also move items by dragging them.)"
 msgstr ""
+"Flytta valda ingredienser från ditt skafferi tillbaka till inköpslistan (du "
+"kan också flytta ingredienser genom att dra dem.)"
 
 #: ../glade/shopList.glade.h:10
 msgid "Move to _Shopping List"
-msgstr ""
+msgstr "Flytta till _Inköpslistan"
 
 #: ../glade/shopList.glade.h:11
 msgid "Re_turn to Shopping List"
-msgstr ""
+msgstr "Återgå till Inköpslistan"
 
 #: ../glade/shopList.glade.h:14
 msgid ""
 "Remove the selected recipe from your shopping list (or remove all items if "
 "no recipe is selected)"
 msgstr ""
+"Ta bort valt recept från inköpslistan (eller ta bort allt om inget recept är "
+"valt)"
 
 #: ../glade/shopList.glade.h:15
 msgid ""
@@ -928,11 +938,11 @@ msgstr ""
 
 #: ../glade/shopList.glade.h:16
 msgid "Return Item to Shopping List"
-msgstr ""
+msgstr "Återför alternativ till inköpslistan"
 
 #: ../glade/shopList.glade.h:17
 msgid "Return selected items to your shopping list"
-msgstr ""
+msgstr "Återför valda alternativ till inköpslistan"
 
 #: ../glade/shopList.glade.h:18 ../src/lib/reccard.py:801
 #: ../src/lib/reccard.py:892 ../src/lib/reccard.py:987
@@ -950,15 +960,15 @@ msgstr "_Lägg till dessa på inköplistan"
 
 #: ../glade/shopList.glade.h:22
 msgid "_Add New Items to Shopping List"
-msgstr ""
+msgstr "Sätt till nya ingredienser till inköpslistan"
 
 #: ../glade/shopList.glade.h:24
 msgid "_Recipes"
-msgstr ""
+msgstr "_Recept"
 
 #: ../glade/shopList.glade.h:25
 msgid "_Remove from Shopping List"
-msgstr ""
+msgstr "_Ta bort från inköpslistan"
 
 #: ../glade/shopList.glade.h:26
 msgid "_Remove from shopping list (move to pantry)"
@@ -1057,7 +1067,7 @@ msgstr "Behöver densitest information"
 #. for it to properly split things like 1 - to - 3, which really do
 #: ../src/lib/convert.py:502
 msgid "to"
-msgstr ""
+msgstr "till"
 
 #: ../src/lib/dialog_extras.py:369
 msgid "_Pause"
@@ -1301,7 +1311,7 @@ msgid "Deleted recipe %s"
 msgstr "Borttaget recept %s"
 
 #: ../src/lib/GourmetRecipeManager.py:669
-#, fuzzy
+#, python-format
 msgid "Print %s recipe"
 msgid_plural "Print %s recipes"
 msgstr[0] "Skriv ut %s recept"
@@ -1326,6 +1336,8 @@ msgid ""
 "Forget previously saved choices for which optional ingredients to shop for. "
 "This action is not reversable."
 msgstr ""
+"Glöm tidigare sparade alternativ gällande inköpsval för valfria "
+"ingredienser. Denna ändring går inte att ångra."
 
 #: ../src/lib/GourmetRecipeManager.py:769
 msgid ""
@@ -1408,20 +1420,20 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:888
 #, python-format
 msgid "Gourmet does not know how to import site %s"
-msgstr ""
+msgstr "Gourmet klarar inte av att importera sidan %s"
 
 #: ../src/lib/GourmetRecipeManager.py:892
 msgid "Unable to unzip"
-msgstr ""
+msgstr "Kan inte zippa upp"
 
 #: ../src/lib/GourmetRecipeManager.py:893
 #, python-format
 msgid "Gourmet is unable to unzip the file %s"
-msgstr ""
+msgstr "Gourmet klarar inte att zippa upp filen %s"
 
 #: ../src/lib/GourmetRecipeManager.py:897
 msgid "Unable to retrieve URL"
-msgstr ""
+msgstr "Kan inte hämta URL:en"
 
 #: ../src/lib/GourmetRecipeManager.py:898
 #, python-format
@@ -1430,6 +1442,9 @@ msgid ""
 "connection is working?  If you can retrieve the site with a webbrowser but "
 "continue to get this error, please submit a bug report at %s."
 msgstr ""
+"Gourmet kunde inte hämta sidan %s. Är du säker att din internetanslutning "
+"fungerar? Ifall du kan hämta sidan med en webbläsare men fortfarande får "
+"detta felmeddelande, gör en felanmälan på %s."
 
 #: ../src/lib/GourmetRecipeManager.py:921
 msgid "Import Recipes"
@@ -1448,8 +1463,8 @@ msgstr "Källa: "
 #, python-format
 msgid "Gourmet could not import the file %s"
 msgid_plural "Gourmet could not import the following files: %s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Gourmet kunde inte importera filen %s"
+msgstr[1] "Gourmet kunde inte importera filerna %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1025
 #, python-format
@@ -1460,13 +1475,17 @@ msgid_plural ""
 "If you believe these files are in a format Gourmet supports, please submit a "
 "bug report at %s and attach the file."
 msgstr[0] ""
+"Om du anser att denna fil är i ett format som Gourmet stöder, gör en "
+"felanmälan på %s och bifoga filen."
 msgstr[1] ""
+"Om du anser att dessa filer är i ett format som Gourmet stöder, gör en "
+"felanmälan på &s och bifoga filerna."
 
 #: ../src/lib/GourmetRecipeManager.py:1029
 msgid "Cannot import file."
 msgid_plural "Cannot import files."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Kan inte importera filen."
+msgstr[1] "Kan inte importera filerna."
 
 #: ../src/lib/GourmetRecipeManager.py:1053
 #, python-format
@@ -1601,7 +1620,7 @@ msgid ""
 msgstr ""
 "Är du säker på att du vill att nycklarna\n"
 " för alla valda %s ska ändras till\n"
-" \"%s\" "
+" \"%s\""
 
 #: ../src/lib/reccard.py:137
 msgid "Recipe Card: "
@@ -1696,7 +1715,7 @@ msgstr "Kategori för att lägga till %s i"
 #: ../src/lib/reccard.py:1058
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
-msgstr "Omvandlat: %(amt)s %(unit)s "
+msgstr "Omvandlat: %(amt)s %(unit)s"
 
 #: ../src/lib/reccard.py:1060
 #, python-format
@@ -1854,6 +1873,7 @@ msgstr "Tyvärr jag kan inte förstå mängden \"%s\"."
 msgid ""
 "Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
 msgstr ""
+"Mängder måste vara siffror (bråk eller decimaltal), intervaller eller tomt."
 
 #: ../src/lib/reccard.py:2123
 msgid ""
@@ -1866,6 +1886,8 @@ msgid ""
 "To enter a range of numbers, use a \"-\" to separate them.\n"
 "For example, you could enter 2-4 or 1 1/2 - 3 1/2.\n"
 msgstr ""
+"\n"
+"\n"
 
 #: ../src/lib/recindex.py:35 ../src/lib/recindex.py:48
 msgid "notes"
@@ -2242,17 +2264,17 @@ msgstr "Recept sparat i Gourmet XML fil %(file)s."
 
 #: ../src/lib/exporters/__init__.py:131
 msgid "RTF Export"
-msgstr ""
+msgstr "RTF Export"
 
 #: ../src/lib/exporters/__init__.py:132
 #, python-format
 msgid "Exporting recipes to Rich Text file %(file)s."
-msgstr ""
+msgstr "Exporterar recept till RTF-fil %(file)s."
 
 #: ../src/lib/exporters/__init__.py:133
 #, python-format
 msgid "Recipe saved as Rich Text file %(file)s"
-msgstr ""
+msgstr "Recept sparat som RTF-fil %(file)s"
 
 #: ../src/lib/exporters/lprprinter.py:15 ../src/lib/exporters/lprprinter.py:18
 msgid "Enter print command"
@@ -2290,11 +2312,11 @@ msgstr "Inköpslista för: "
 
 #: ../src/lib/exporters/recipe_emailer.py:105
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
-msgstr "Inkludera Receptet i E-post meddelandet (En bara ide oavsett vad)"
+msgstr "Inkludera Receptet i E-post meddelandet (En bra ide oavsett vad)"
 
 #: ../src/lib/exporters/recipe_emailer.py:106
 msgid "E-mail Recipe as HTML Attachment"
-msgstr "E-posta Recept som en bifogad HTML-fil "
+msgstr "E-posta Recept som en bifogad HTML-fil"
 
 #: ../src/lib/exporters/recipe_emailer.py:124
 msgid "Email Options"
@@ -2329,9 +2351,11 @@ msgstr ""
 "annat program. Om du installerar wxWindows, kan du skriva ut direkt från "
 "Gourmet."
 
-#: src/lib/exporters/winprinter.py:11
+#: ../src/lib/reccard.py:1935
 #, python-format
-#~ msgid "Gourmet will be busy for a while."
+#~ msgid ""
+#~ "Shall I delete the item contained in %s or move it out of the group?Shall I "
+#~ "delete the items contained in %s or just move them out of the group?"
 #~ msgstr ""
 
 #: ../glade/app.glade.h:9

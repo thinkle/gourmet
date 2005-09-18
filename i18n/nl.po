@@ -129,7 +129,7 @@ msgstr "Zoek_resultaten"
 #: ../glade/app.glade.h:25
 #, fuzzy
 msgid "Search as _you type"
-msgstr "Zoek terwijl_je tikt"
+msgstr "Zoek terwijl _je tikt"
 
 #: ../glade/app.glade.h:26
 msgid "Search by other critera within the current search results."
@@ -441,6 +441,8 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
 "\n"
 "\n"
 
@@ -2340,9 +2342,9 @@ msgstr ""
 "vanuit een ander programma. Als je wxWidgets installeert kan je rechtstreeks "
 "vanuit Gourmet afdrukken."
 
-#: src/lib/exporters/winprinter.py:11
+#: ../src/lib/reccard.py:1945
 #, python-format
-#~ msgid "Gourmet will be busy for a while."
+#~ msgid "Delete them."
 #~ msgstr ""
 
 #: ../glade/app.glade.h:9
@@ -2366,7 +2368,7 @@ msgstr ""
 #~ msgstr "_Importeren"
 
 #~ msgid "_Limit Search"
-#~ msgstr "Zoeken _limiteren "
+#~ msgstr "Zoeken _limiteren"
 
 #: ../glade/recCard.glade.h:8
 #~ msgid "<b>Instructions:</b>"

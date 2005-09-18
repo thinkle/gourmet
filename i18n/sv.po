@@ -2286,4 +2286,9 @@ msgstr ""
 #: ../glade/shopList.glade.h:4
 #, python-format
 #~ msgid "Already Have (Pantry Items)"
-#~ msgstr ""
+#~ msgstr ""=======
+
+#: ../src/lib/reccard.py:1945
+#, python-format
+#~ msgid "Delete them."
+#~ msgstr "">>>>>>> 1.1.2.7

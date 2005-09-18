@@ -19,8 +19,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1\n"
 
 #: ../glade/app.glade.h:1
+#, fuzzy
 msgid "A_dd Search Criteria"
-msgstr ""
+msgstr "Tilføj søge kriterie"
 
 #: ../glade/app.glade.h:2
 msgid "Add recipe to shopping list"
@@ -32,7 +33,7 @@ msgstr "Tilføj den valgte opskrift til en indkøbsliste"
 
 #: ../glade/app.glade.h:4
 msgid "Add to _Pantry"
-msgstr "Tilføj til \"_Fadebur\""
+msgstr "Tilføj til basisvarer"
 
 #: ../glade/app.glade.h:5 ../glade/recCard.glade.h:26
 msgid "Add to _Shopping List"
@@ -40,11 +41,11 @@ msgstr "Tilføj til Indkøbsliste"
 
 #: ../glade/app.glade.h:6
 msgid "Add to _shopping list"
-msgstr "Tilføj til _Indkøbsliste"
+msgstr "Tilføj til indkøbsliste"
 
 #: ../glade/app.glade.h:7
 msgid "Adva_nced Search"
-msgstr "Ava_nceret søgning"
+msgstr "Avanceret søgning"
 
 #: ../glade/app.glade.h:8
 msgid "Create a new recipe"
@@ -56,7 +57,7 @@ msgstr "Slet den valgte opskrift"
 
 #: ../glade/app.glade.h:10
 msgid "E-_mail recipes"
-msgstr "E-_mail opskrifter"
+msgstr "E-mail opskrifter"
 
 #: ../glade/app.glade.h:11
 msgid "E-mail selected recipe"
@@ -76,7 +77,7 @@ msgstr "Print valgte opskrift"
 
 #: ../glade/app.glade.h:15
 msgid "Import _Webpage"
-msgstr ""
+msgstr "Importer fra webside"
 
 #: ../glade/app.glade.h:16
 msgid "Jump to recipe in Recipe Card vew"
@@ -85,9 +86,10 @@ msgstr "Gå til opskrift i Opskriftskortvisning"
 #: ../glade/app.glade.h:17 ../glade/recSelector.glade.h:5
 #: ../glade/rec_ref_window.glade.h:2
 msgid "Limiting Search to: "
-msgstr "Begræns søg til:"
+msgstr "Begræns søg til: "
 
 #: ../glade/app.glade.h:18
+#, fuzzy
 msgid ""
 "Never buy this item. When called for in a recipe, it will show up in a "
 "\"pantry\" section of the list as a reminder that you need it, but it won't "
@@ -104,7 +106,7 @@ msgstr "Print valgte opskrift"
 
 #: ../glade/app.glade.h:20
 msgid "Re_apply changes"
-msgstr "Gen_tag ændringer"
+msgstr "Gentag ændringer"
 
 #: ../glade/app.glade.h:21
 msgid "Recipe Index"
@@ -113,41 +115,43 @@ msgstr "Opskriftindex"
 #: ../glade/app.glade.h:22 ../glade/recCard.glade.h:52
 #: ../glade/shopList.glade.h:12
 msgid "Recipe _Card"
-msgstr "Opskrift_kort"
+msgstr "Opskriftkort"
 
 #: ../glade/app.glade.h:23 ../glade/recCard.glade.h:53
 #: ../glade/shopList.glade.h:13
 msgid "Recipe _List"
-msgstr "Opskrift_liste"
+msgstr "Opskriftliste"
 
 #: ../glade/app.glade.h:24
 msgid "Search _Results"
-msgstr "Søg _efter"
+msgstr "Søgeresultater"
 
 #: ../glade/app.glade.h:25
 msgid "Search as _you type"
-msgstr "Søg mens du taster"
+msgstr "Søg mens du skriver"
 
 #: ../glade/app.glade.h:26
 msgid "Search by other critera within the current search results."
-msgstr ""
+msgstr "Søg med ændrede kriterier i den aktuelle søgning"
 
 #: ../glade/app.glade.h:27 ../glade/recSelector.glade.h:8
 #: ../glade/rec_ref_window.glade.h:4 ../glade/keyeditor.glade.h:9
+#, fuzzy
 msgid "Search for recipes as you type"
-msgstr "Søg efter opskrifter mens du taster"
+msgstr "Søg efter opskrifter mens du skriver"
 
 #: ../glade/app.glade.h:28 ../glade/keyeditor.glade.h:10
+#, fuzzy
 msgid "Use regular expressions"
-msgstr "Brug regulære udtryk"
+msgstr "Brug almindelige udtryk"
 
 #: ../glade/app.glade.h:29
 msgid "View Re_cipe"
-msgstr "Vis _opskrift"
+msgstr "Vis opskrift"
 
 #: ../glade/app.glade.h:30
 msgid "View Recipe _Card"
-msgstr "Vis opskrift_kort"
+msgstr "Vis opskriftkort"
 
 #: ../glade/app.glade.h:31
 msgid "View selected recipe"
@@ -155,41 +159,41 @@ msgstr "Vis valgt opskrift"
 
 #: ../glade/app.glade.h:32
 msgid "_About"
-msgstr "Om _Gourmet"
+msgstr "Om Gourmet"
 
 #: ../glade/app.glade.h:33
 msgid "_Actions"
-msgstr "_Funktioner"
+msgstr "Handlinger"
 
 #: ../glade/app.glade.h:34
 msgid "_Delete Recipe"
-msgstr "_Slet opskrift"
+msgstr "Slet opskrift"
 
 #: ../glade/app.glade.h:35
 msgid "_E-Mail recipe"
-msgstr "_E-mail opskrift"
+msgstr "E-mail opskrift"
 
 #: ../glade/app.glade.h:36 ../glade/recCard.glade.h:71
 msgid "_Edit"
-msgstr "_Rediger"
+msgstr "Rediger"
 
 #: ../glade/app.glade.h:37
 msgid "_Empty trash"
-msgstr "F_jern slettede"
+msgstr "Tøm papirkurv"
 
 #: ../glade/app.glade.h:38
 msgid "_Export"
-msgstr "E_ksportér"
+msgstr "Eksporter"
 
 #: ../glade/app.glade.h:39 ../glade/databaseChooser.glade.h:16
 #: ../glade/recCard.glade.h:72
 msgid "_File"
-msgstr "_Filer"
+msgstr "Fil"
 
 #: ../glade/app.glade.h:40 ../glade/recCard.glade.h:74
 #: ../glade/shopList.glade.h:23
 msgid "_Help"
-msgstr "_Hjælp"
+msgstr "Hjælp"
 
 #: ../glade/app.glade.h:41
 msgid "_Import File"
@@ -759,7 +763,7 @@ msgstr "_Gem"
 
 #: ../glade/recCard.glade.h:89
 msgid "_Servings: "
-msgstr "_Portioner"
+msgstr "_Portioner "
 
 #: ../glade/recCard.glade.h:91
 msgid "_Title: "
@@ -1014,7 +1018,7 @@ msgstr "_Enhed"
 
 #: ../glade/keyeditor.glade.h:3
 msgid "Change key for selected items to: "
-msgstr "Ændr tast for valgte varer til:"
+msgstr "Ændr tast for valgte varer til: "
 
 #: ../glade/keyeditor.glade.h:4
 msgid ""
@@ -1318,7 +1322,7 @@ msgstr "Antal portioner af %s der skal handles ind til"
 #: ../src/lib/GourmetRecipeManager.py:725
 #, python-format
 msgid "Multiply %s by: "
-msgstr "Multiplicer %s med:"
+msgstr "Multiplicer %s med: "
 
 #: ../src/lib/GourmetRecipeManager.py:754 ../src/lib/shopgui.py:131
 msgid "Saved!"
@@ -1446,7 +1450,7 @@ msgstr "Importér Opskrifter"
 #: ../src/lib/GourmetRecipeManager.py:990
 #, python-format
 msgid "Default source for recipes imported from %s"
-msgstr "Default kilde for opskrifter importeret fra %s "
+msgstr "Default kilde for opskrifter importeret fra %s"
 
 #: ../src/lib/GourmetRecipeManager.py:991
 msgid "Source: "
@@ -1508,7 +1512,7 @@ msgstr "Importerer..."
 
 #: ../src/lib/GourmetRecipeManager.py:1248
 msgid "Undeleted recipes "
-msgstr "Gendannede opskrifter"
+msgstr "Gendannede opskrifter "
 
 #: ../src/lib/GourmetRecipeManager.py:1303
 msgid "Gourmet Recipe Manager starting up..."
@@ -1567,7 +1571,7 @@ msgstr "Opskrifter"
 
 #: ../src/lib/keyEditor.py:106
 msgid "Are you sure you want to change the "
-msgstr "Er du sikker på du vil ændre"
+msgstr "Er du sikker på du vil ændre "
 
 #: ../src/lib/keyEditor.py:107
 msgid "key"
@@ -1585,12 +1589,12 @@ msgstr "for \"%s fra \"%s\""
 #: ../src/lib/keyEditor.py:112
 #, python-format
 msgid " from \"%s\" "
-msgstr "fra \"%s\""
+msgstr " fra \"%s\" "
 
 #: ../src/lib/keyEditor.py:113
 #, python-format
 msgid " to \"%s\""
-msgstr "til \"%s\""
+msgstr " til \"%s\""
 
 #: ../src/lib/keyEditor.py:116
 msgid "Don't ask me before changing keys and items."
@@ -1612,7 +1616,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:137
 msgid "Recipe Card: "
-msgstr "Opskriftskort:"
+msgstr "Opskriftskort: "
 
 #: ../src/lib/reccard.py:192
 msgid "Add new ingredient to the list."
@@ -1644,7 +1648,7 @@ msgstr "Flyt valgt ingrediens ned."
 
 #: ../src/lib/reccard.py:358
 msgid "Choose an image to insert in instructions... "
-msgstr "Vælg et billde at indsætte i instruktioner"
+msgstr "Vælg et billde at indsætte i instruktioner "
 
 #: ../src/lib/reccard.py:473 ../src/lib/reccard.py:785
 #: ../src/lib/reccard.py:796
@@ -1665,7 +1669,7 @@ msgstr "Skriv navn for ny undergruppe af ingredienser"
 
 #: ../src/lib/reccard.py:546
 msgid "Name of group: "
-msgstr "Navn på gruppe:"
+msgstr "Navn på gruppe: "
 
 #: ../src/lib/reccard.py:579
 #, python-format
@@ -1891,7 +1895,7 @@ msgstr "%s opskrifter"
 #: ../src/lib/recindex.py:281
 #, python-format
 msgid " %s contains %s"
-msgstr "%s indeholder %s"
+msgstr " %s indeholder %s"
 
 #: ../src/lib/recindex.py:283
 #, python-format
@@ -1944,7 +1948,7 @@ msgstr "For følgende opskrifter:"
 #: ../src/lib/shopgui.py:154
 #, python-format
 msgid " x%s"
-msgstr "x%s"
+msgstr " x%s"
 
 #: ../src/lib/shopgui.py:183
 msgid "No recipes selected. Do you want to clear the entire list?"

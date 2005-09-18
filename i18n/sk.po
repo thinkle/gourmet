@@ -447,6 +447,7 @@ msgstr ""
 "\n"
 "\n"
 "\n"
+"\n"
 
 #: ../glade/recCard.glade.h:4
 msgid "<b>Category:</b>"
@@ -458,7 +459,7 @@ msgstr "<b>Čas varenia:</b>"
 
 #: ../glade/recCard.glade.h:6
 msgid "<b>Cuisine:</b>"
-msgstr " <b>Kuchyňa:</b>"
+msgstr "<b>Kuchyňa:</b>"
 
 #: ../glade/recCard.glade.h:7
 msgid "<b>Ingredients</b>"
@@ -638,7 +639,7 @@ msgstr "Vložiť prísady zo schránky."
 
 #: ../glade/recCard.glade.h:50
 msgid "Pre_paration Time: "
-msgstr "Doba _prípravy:  "
+msgstr "Doba _prípravy: "
 
 #: ../glade/recCard.glade.h:51
 msgid "Recipe Card"
@@ -2113,7 +2114,7 @@ msgstr "Importovaných %s z %s receptov."
 #: ../src/lib/importers/importer.py:291
 #, python-format
 msgid "<i>Importing %s</i>"
-msgstr " <i>Importuje sa %s</i>"
+msgstr "<i>Importuje sa %s</i>"
 
 #: ../src/lib/importers/importer.py:321
 #, python-format
@@ -2363,4 +2364,10 @@ msgstr ""
 #: src/lib/exporters/winprinter.py:11
 #, python-format
 #~ msgid "Gourmet will be busy for a while."
-#~ msgstr ""
+#~ msgstr ""=======
+#: ../src/lib/reccard.py:1935
+#, python-format
+#~ msgid ""
+#~ "Shall I delete the item contained in %s or move it out of the group?Shall I "
+#~ "delete the items contained in %s or just move them out of the group?"
+#~ msgstr "">>>>>>> 1.1.2.11

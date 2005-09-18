@@ -444,6 +444,8 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
+"\n"
+"\n"
 
 #: ../glade/recCard.glade.h:4
 msgid "<b>Category:</b>"
@@ -641,7 +643,7 @@ msgstr "Rezeptkarte"
 
 #: ../glade/recCard.glade.h:54
 msgid "S_hopping Category: "
-msgstr "E_inkaufskategorie"
+msgstr "E_inkaufskategorie "
 
 #: ../glade/recCard.glade.h:55
 msgid "S_ource:"
@@ -1644,7 +1646,7 @@ msgstr "Ausgewählte Zutat nach unten verschieben."
 
 #: ../src/lib/reccard.py:358
 msgid "Choose an image to insert in instructions... "
-msgstr "Wähle ein Bild zum Einfügen in die Anweisungen...."
+msgstr "Wähle ein Bild zum Einfügen in die Anweisungen.... "
 
 #: ../src/lib/reccard.py:473 ../src/lib/reccard.py:785
 #: ../src/lib/reccard.py:796
@@ -2340,7 +2342,9 @@ msgstr ""
 
 #: src/lib/exporters/winprinter.py:11
 #, python-format
-#~ msgid "Gourmet will be busy for a while."
+#~ msgid ""
+#~ "Shall I delete the item contained in %s or move it out of the group?Shall I "
+#~ "delete the items contained in %s or just move them out of the group?"
 #~ msgstr ""
 
 #: ../glade/app.glade.h:9
@@ -2436,7 +2440,7 @@ msgstr ""
 #~ "Die \"Einheit\" muß sich im \"Einheiten\"-Feld befinden.\n"
 #~ "Zum Beispiel: wenn sie eine und halbe Tasse wollen,\n"
 #~ "kann der Wert \"1.5\" oder \"1 1/2\" enthalten.\n"
-#~ "\"Tassen\" muß in das \"Einheiten\"-Feld."
+#~ "\"Tassen\" muß in das \"Einheiten\"-Feld.\n"
 
 #: ../src/lib/version.py:4
 #~ msgid "Copyright (c) 2004, Thomas M. Hinkle. GNU GPL"

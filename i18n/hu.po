@@ -123,7 +123,7 @@ msgstr "Recept _lista"
 
 #: ../glade/app.glade.h:24
 msgid "Search _Results"
-msgstr "Keresési er_edménye"
+msgstr "Keresés er_edménye"
 
 #: ../glade/app.glade.h:25
 msgid "Search as _you type"
@@ -131,7 +131,7 @@ msgstr "Keresés gépelés közben"
 
 #: ../glade/app.glade.h:26
 msgid "Search by other critera within the current search results."
-msgstr "Találati lista további keresése más feltételek szerint"
+msgstr "További keresés a találati listában"
 
 #: ../glade/app.glade.h:27 ../glade/recSelector.glade.h:8
 #: ../glade/rec_ref_window.glade.h:4 ../glade/keyeditor.glade.h:9
@@ -144,11 +144,11 @@ msgstr "Reguláris kifejezések használata"
 
 #: ../glade/app.glade.h:29
 msgid "View Re_cipe"
-msgstr "Recept _megnézése"
+msgstr "Recept _megjelenítése"
 
 #: ../glade/app.glade.h:30
 msgid "View Recipe _Card"
-msgstr "Recept _kártya megnézése"
+msgstr "Recept _kártya megjelenítése"
 
 #: ../glade/app.glade.h:31
 msgid "View selected recipe"
@@ -180,7 +180,7 @@ msgstr "_Szemeteskosár kiürítése"
 
 #: ../glade/app.glade.h:38
 msgid "_Export"
-msgstr "Export"
+msgstr "Exportálás"
 
 #: ../glade/app.glade.h:39 ../glade/databaseChooser.glade.h:16
 #: ../glade/recCard.glade.h:72
@@ -190,7 +190,7 @@ msgstr "Fájl"
 #: ../glade/app.glade.h:40 ../glade/recCard.glade.h:74
 #: ../glade/shopList.glade.h:23
 msgid "_Help"
-msgstr "Segítség"
+msgstr "Súgó"
 
 #: ../glade/app.glade.h:41
 msgid "_Import File"
@@ -210,7 +210,7 @@ msgstr "Recept _nyomtatása"
 
 #: ../glade/app.glade.h:45 ../glade/recCard.glade.h:86
 msgid "_Redo"
-msgstr "Ú_jra"
+msgstr "Művelet ismétlése"
 
 #: ../glade/app.glade.h:46
 msgid "_Search for"
@@ -235,7 +235,7 @@ msgstr "_Visszavon"
 
 #: ../glade/app.glade.h:51 ../glade/recCard.glade.h:95
 msgid "_Unit Converter"
-msgstr "Mértékegység _váltó"
+msgstr "Mértékegység konverter"
 
 #: ../glade/app.glade.h:52 ../glade/recCard.glade.h:97
 msgid "_View"
@@ -243,7 +243,7 @@ msgstr "_Nézet"
 
 #: ../glade/app.glade.h:53
 msgid "_in"
-msgstr ""
+msgstr "forrás:"
 
 #: ../glade/databaseChooser.glade.h:1 ../glade/recSelector.glade.h:1
 #: ../glade/rec_ref_window.glade.h:1 ../glade/converter.glade.h:1
@@ -257,19 +257,19 @@ msgstr "<b>Válassza ki a Gourmet által használandó adatbázist</b>"
 
 #: ../glade/databaseChooser.glade.h:3
 msgid "Choose Database"
-msgstr "Adatbázis választása"
+msgstr "Recepttár kiválasztása"
 
 #: ../glade/databaseChooser.glade.h:4
 msgid "Database _Name:"
-msgstr "Adatbázis _neve"
+msgstr "Recepttár _neve"
 
 #: ../glade/databaseChooser.glade.h:5
 msgid ""
 "Hostname of the system where your database server is running. If your "
 "database server is running on your local system, use localhost."
 msgstr ""
-"Az adatbázis szerver hosztneve. Ha az adatbázis szerver a helyi rendszeren "
-"fut, használja a localhost-ot."
+"Az adatbázis-szerver hosztneve. Ha az adatbázis szerver a saját gépen fut, a "
+"'localhost' nevet adja meg!"
 
 #: ../glade/databaseChooser.glade.h:6
 msgid ""
@@ -277,9 +277,9 @@ msgid ""
 "SQLite (stored in a local file)\n"
 "MySQL (requires connection to a database)"
 msgstr ""
-"Metakit (alapértelmezett, egy helyi fájl)\n"
-"SQLite (egy helyi fájl)\n"
-"MySQL (adatbázis kapcsolatot igényel)"
+"Metakit (alapértelmezett, helyi fájl)\n"
+"SQLite (helyi fájl)\n"
+"MySQL (adatbázishoz kapcsolódást igényel)"
 
 #: ../glade/databaseChooser.glade.h:9
 msgid ""
@@ -291,19 +291,19 @@ msgstr ""
 
 #: ../glade/databaseChooser.glade.h:10
 msgid "Password for your username on the database."
-msgstr "Az adatbázis felhasználónévhez tartozó jelszó"
+msgstr "Jelszó a felhasználó névhez"
 
 #: ../glade/databaseChooser.glade.h:11
 msgid ""
 "Save the password for next time. This means the password will be stored "
 "insecurely in your configuration file."
 msgstr ""
-"Jelszó mentése a következő alkalomra - a jelszó a konfigurációs fájlodban "
-"kerül tárolásra, nem biztonságosan."
+"Jelszó mentése. Ebben az esetben a jelszó a konfigurációs állományban nem "
+"biztonságos módon kerül tárolásra."
 
 #: ../glade/databaseChooser.glade.h:12
 msgid "Your username on the database."
-msgstr "Adatbázis jelszava."
+msgstr "Felhasznlói neve"
 
 #: ../glade/databaseChooser.glade.h:13
 msgid "_Browse"
@@ -361,24 +361,22 @@ msgstr "<b>Bevásárlólista beállítások</b>"
 
 #: ../glade/preferenceDialog.glade.h:5
 msgid "<i>Configure which columns are included in the recipe index view.</i>"
-msgstr ""
-"<i>Megadhatja, hogy mely oszlopok látszódjanak a receptjegyzékben.</i>"
+msgstr "<i>A receptlistában megjelenő adatok meghatározása.</i>"
 
 #: ../glade/preferenceDialog.glade.h:6
 msgid "<i>Preferences for use when sending a recipe in an email.</i>"
-msgstr "<i>Recept Email-ben történő küldésénél használt beállítások.</i>"
+msgstr "<i>Receptküldés formájának meghatározása.</i>"
 
 #: ../glade/preferenceDialog.glade.h:7
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
-msgstr "<i>Használaton kívüli elemek törlése a Receptkártya felületről</i>"
+msgstr "<i>Szükségtelen elemek törlése a Receptkártya használatánál</i>"
 
 #: ../glade/preferenceDialog.glade.h:8
 msgid ""
 "<i>What should Gourmet do with Optional Ingredients when adding recipes to "
 "the shopping list?</i>"
 msgstr ""
-"<i>Mi történjen az opcionális hozzávalókkal, amikor egy receptet a "
-"bevásárlólistához ad?</i>"
+"<i>Bevásárlólista készítésekor mi történjen az opcionális hozzávalókkal?</i>"
 
 #: ../glade/preferenceDialog.glade.h:9
 msgid "As_k whether to include optional ingredients"
@@ -394,19 +392,19 @@ msgstr "Email beállítások"
 
 #: ../glade/preferenceDialog.glade.h:12
 msgid "Gourmet Recipe Manager Preferences"
-msgstr "Gourmet Recipe Manager beállítások"
+msgstr "A Gourmet Recept Menedzser beállításai"
 
 #: ../glade/preferenceDialog.glade.h:13
 msgid "Include Recipe as an _HTML Attachment to the E-mail"
-msgstr "Recept csatolása E-mailhez HTML-ként."
+msgstr "Recept csatolása a levélhez HTML formában."
 
 #: ../glade/preferenceDialog.glade.h:14
 msgid "Include Recipe in _Body of E-mail (A good idea no matter what)"
-msgstr "Recept beillesztése az E-mailhez törzsébe."
+msgstr "A recept beillesztése magába a levélbe."
 
 #: ../glade/preferenceDialog.glade.h:15
 msgid "Index View"
-msgstr "Index nézet"
+msgstr "Receptlista"
 
 #: ../glade/preferenceDialog.glade.h:16 ../glade/shopList.glade.h:19
 #: ../src/lib/shopgui.py:126 ../src/lib/exporters/pdf_exporter.py:11
@@ -415,7 +413,7 @@ msgstr "Bevásárlólista"
 
 #: ../glade/preferenceDialog.glade.h:17 ../glade/recCard.glade.h:61
 msgid "_Allow units to change when multiplying"
-msgstr "Többszörözéskor a mértékegység _változhat"
+msgstr "Adagtöbbszörözéskor a mértékegység megváltozhat"
 
 #: ../glade/preferenceDialog.glade.h:18
 msgid "_Always add optional ingredients"
@@ -423,7 +421,7 @@ msgstr "_Mindig ajda hozzá az opcionális hozzávalókat"
 
 #: ../glade/preferenceDialog.glade.h:19
 msgid "_Always use these settings"
-msgstr "_Mindig használja ezeket a beállításokat"
+msgstr "_Mindig ezeket a beállításokat használja"
 
 #: ../glade/preferenceDialog.glade.h:20
 msgid "_Clear remembered optional ingredients"
@@ -443,6 +441,9 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
+"\n"
+"↵\n"
+"↵\n"
 "\n"
 
 #: ../glade/recCard.glade.h:4
@@ -487,19 +488,19 @@ msgstr "<b>Cím</b>"
 
 #: ../glade/recCard.glade.h:14
 msgid "<b>_Instructions:</b>"
-msgstr ""
+msgstr "Elkészítés módja:"
 
 #: ../glade/recCard.glade.h:15
 msgid "<b>_Multiply by:</b>"
-msgstr ""
+msgstr "Adagszám:"
 
 #: ../glade/recCard.glade.h:16
 msgid "<b>_Notes:</b>"
-msgstr ""
+msgstr "Megjegyzés:"
 
 #: ../glade/recCard.glade.h:17
 msgid "<b>_Servings:</b>"
-msgstr ""
+msgstr "Tálalás:"
 
 #: ../glade/recCard.glade.h:18
 msgid "Add _Group"
@@ -509,17 +510,15 @@ msgstr "_Csoport hozzáadása"
 msgid ""
 "Add _Recipe\n"
 "as Ingredient"
-msgstr ""
-"_Recept hozzáadása\n"
-"mint hozzávaló"
+msgstr "Beépülő recept hozzáadása"
 
 #: ../glade/recCard.glade.h:21
 msgid "Add _recipe as ingredient"
-msgstr "_Recept hozzáadása hozzávalóként"
+msgstr "Beépülő recept hozzáadása"
 
 #: ../glade/recCard.glade.h:22
 msgid "Add another recipe as an ingredient."
-msgstr "Újabb recept hozzáadása mint hozzávaló."
+msgstr "Újabb beépülő recept hozzáadása"
 
 #: ../glade/recCard.glade.h:23
 msgid "Add group for ingredients (such as \"Sauce\" or \"Crust\")"
@@ -527,19 +526,18 @@ msgstr "Csoport hozzáadása a hozzávalókhoz (pl. \"Szósz\" vagy \"Köret\")"
 
 #: ../glade/recCard.glade.h:24
 msgid "Add ingredient _group"
-msgstr "Hozzávalók _csoport hozzáadása"
+msgstr "Csoport hozzáadása a belevalókhoz"
 
 #: ../glade/recCard.glade.h:25
 msgid "Add this recipe to a shopping list"
-msgstr "Add hozzá a receptet a bevásárlólistához"
+msgstr "Recept hozzáadása a bevásárlólistához"
 
 #: ../glade/recCard.glade.h:27
 msgid ""
 "Ask user which items to add to the shopping list rather than using saved "
 "settings."
 msgstr ""
-"A mentett beállítások használata helyett a felhasználó megkérdezése, hogy "
-"mely tételek kerüljenek a bevásárlólistára."
+"Kéredezzen rá, hogy mely hozzávalók kerüljenek fel a bevásárlólistára."
 
 #: ../glade/recCard.glade.h:28
 msgid "C_uisine:"
@@ -563,11 +561,11 @@ msgstr "A kijelölt hozzávaló törlése."
 
 #: ../glade/recCard.glade.h:33
 msgid "Delete this recipe from the database."
-msgstr "Töröld a receptet az adatbázisból."
+msgstr "Recept törlése az adatbázisból"
 
 #: ../glade/recCard.glade.h:34
 msgid "Delete this recipe permanently."
-msgstr "Töröld a receptet véglegesen."
+msgstr "A recept végleges törlése"
 
 #: ../glade/recCard.glade.h:35
 msgid "E_xport Recipe"
@@ -575,7 +573,11 @@ msgstr "Recept e_xportálása"
 
 #: ../glade/recCard.glade.h:36
 msgid "Export this recipe as a text file."
-msgstr "Exportáld a receptet szövegfájlba."
+msgstr "Recept exportálása szövegállományba"
+
+#: ../glade/recCard.glade.h:37
+msgid "Image: "
+msgstr "Kép: "
 
 #: ../glade/recCard.glade.h:37
 msgid "Image: "
@@ -591,7 +593,7 @@ msgstr "Hozzávaló (_kulcs):"
 
 #: ../glade/recCard.glade.h:40
 msgid "Ingredient Key _Editor"
-msgstr "Hozzávalók _Szerkesztő"
+msgstr "Hozzávaló _Szerkesztő"
 
 #: ../glade/recCard.glade.h:41 ../src/lib/exporters/exporter.py:157
 #: ../src/lib/exporters/gnomeprinter.py:332
@@ -602,7 +604,7 @@ msgstr "Hozzávalók"
 
 #: ../glade/recCard.glade.h:42
 msgid "Ins_tructions"
-msgstr ""
+msgstr "U_tasítások"
 
 #: ../glade/recCard.glade.h:43 ../src/lib/gglobals.py:232
 #: ../src/lib/gglobals.py:236
@@ -615,11 +617,11 @@ msgstr "Módosítások"
 
 #: ../glade/recCard.glade.h:45
 msgid "Move ingredient _up"
-msgstr "Hozzávaló _felfelé"
+msgstr "_felfelé mozgat"
 
 #: ../glade/recCard.glade.h:46
 msgid "Move ingredient do_wn"
-msgstr "Hozzávaló _lefelé"
+msgstr "_lefelé mozgat"
 
 #: ../glade/recCard.glade.h:47
 msgid "Move selected ingredients down"
@@ -635,15 +637,15 @@ msgstr "Hozzávalók lista másolása a vágólapról."
 
 #: ../glade/recCard.glade.h:50
 msgid "Pre_paration Time: "
-msgstr "_Előkészítési idő:"
+msgstr "_Előkészítési idő: "
 
 #: ../glade/recCard.glade.h:51
 msgid "Recipe Card"
-msgstr "Recept kártya"
+msgstr "Receptkártya"
 
 #: ../glade/recCard.glade.h:54
 msgid "S_hopping Category: "
-msgstr "Bevásárló _kategória:"
+msgstr "Bevásárlási _kategória: "
 
 #: ../glade/recCard.glade.h:55
 msgid "S_ource:"
@@ -671,7 +673,7 @@ msgstr "_Kép hozzáadása"
 
 #: ../glade/recCard.glade.h:60
 msgid "_Add ingredient"
-msgstr "_Hozzávaló hozzáadása"
+msgstr "_Belevaló hozzáadása"
 
 #: ../glade/recCard.glade.h:62
 msgid "_Amount: "
@@ -699,7 +701,11 @@ msgstr "Hozzávaló _törlése"
 
 #: ../glade/recCard.glade.h:68
 msgid "_Delete this Recipe"
-msgstr "_Töröld a receptet"
+msgstr "Recept _törlése"
+
+#: ../glade/recCard.glade.h:69
+msgid "_Descriptions"
+msgstr "Leírás"
 
 #: ../glade/recCard.glade.h:69
 msgid "_Descriptions"
@@ -707,11 +713,11 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:70
 msgid "_E-mail recipe"
-msgstr "Recept küldése _e-mailben"
+msgstr "Recept postázása"
 
 #: ../glade/recCard.glade.h:73
 msgid "_Forget remembered optional ingredients"
-msgstr "_Megjegyzett hozzávalók \"elfelejtése\""
+msgstr "_Opcionális hozzávalók mellőzése"
 
 #: ../glade/recCard.glade.h:75
 msgid "_Import Ingredients"
@@ -731,7 +737,7 @@ msgstr "_Hozzávaló:"
 
 #: ../glade/recCard.glade.h:79
 msgid "_Ingredients"
-msgstr ""
+msgstr "_Belevalók"
 
 #: ../glade/recCard.glade.h:80
 msgid "_Italic"
@@ -743,15 +749,15 @@ msgstr "Ú_j hozzávaló"
 
 #: ../glade/recCard.glade.h:83
 msgid "_Notes"
-msgstr ""
+msgstr "Megjegyzések"
 
 #: ../glade/recCard.glade.h:84
 msgid "_Optional"
-msgstr ""
+msgstr "Feltételes"
 
 #: ../glade/recCard.glade.h:85
 msgid "_Rating:"
-msgstr "_Osztályozás"
+msgstr "Osztályzat:"
 
 #: ../glade/recCard.glade.h:87
 msgid "_Remove Image"
@@ -763,7 +769,7 @@ msgstr "_Mentés"
 
 #: ../glade/recCard.glade.h:89
 msgid "_Servings: "
-msgstr "_Tálalás:"
+msgstr "_Tálalás: "
 
 #: ../glade/recCard.glade.h:91
 msgid "_Title: "
@@ -775,7 +781,7 @@ msgstr "_Aláhúzás"
 
 #: ../glade/recCard.glade.h:96
 msgid "_Unit: "
-msgstr "_Mértékegység:"
+msgstr "_Mértékegység: "
 
 #: ../glade/recCard.glade.h:98 ../glade/rec_ref_window.glade.h:10
 #: ../src/lib/recindex.py:38 ../src/lib/recindex.py:45
@@ -801,7 +807,7 @@ msgstr "Keresés korlátozása ezzel a kifejezéssel"
 
 #: ../glade/recSelector.glade.h:6
 msgid "Search _by"
-msgstr "Keresés ... _alapján"
+msgstr "Keresendő:"
 
 #: ../glade/recSelector.glade.h:7 ../glade/keyeditor.glade.h:7
 msgid "Search as you type"
@@ -829,11 +835,11 @@ msgstr "_Visszaállítás"
 
 #: ../glade/rec_ref_window.glade.h:3 ../glade/keyeditor.glade.h:8
 msgid "Search by"
-msgstr "Keresés..."
+msgstr "Keresendő:"
 
 #: ../glade/rec_ref_window.glade.h:5
 msgid "Select Recipe to include in Ingredient List"
-msgstr "Recept kiválasztása a hozzávalókhoz"
+msgstr "Recept kiválasztása mint hozzávaló"
 
 #: ../glade/rec_ref_window.glade.h:6 ../src/lib/recindex.py:36
 #: ../src/lib/recindex.py:43
@@ -857,7 +863,7 @@ msgstr "elkészítés"
 
 #: ../glade/rec_ref_window.glade.h:11
 msgid "servings"
-msgstr ""
+msgstr "tálalás"
 
 #: ../glade/rec_ref_window.glade.h:13 ../src/lib/recindex.py:32
 #: ../src/lib/recindex.py:41
@@ -870,11 +876,11 @@ msgstr "Tétel hozzáadása a bevásárlólistához"
 
 #: ../glade/shopList.glade.h:2
 msgid "Add additional items to your shopping list."
-msgstr ""
+msgstr "További tétel hozzáadása a bevásárló listához"
 
 #: ../glade/shopList.glade.h:3
 msgid "Already Have (_Pantry Items)"
-msgstr ""
+msgstr "Már van az éléskamrában"
 
 #: ../glade/shopList.glade.h:4 ../src/lib/reccard.py:1939
 msgid "Amount"
@@ -888,37 +894,43 @@ msgstr "Tétel"
 
 #: ../glade/shopList.glade.h:6
 msgid "Move selected items from pantry list to shopping list"
-msgstr ""
+msgstr "A kiválasztott éléskamra-tétel felvétele a bevásárló listára"
 
 #: ../glade/shopList.glade.h:7
 msgid "Move selected items from shopping list to pantry list."
-msgstr ""
+msgstr "A kiválasztott bevásárlólista-tétel áthelyezése az éléskamra listába"
 
 #: ../glade/shopList.glade.h:8
 msgid ""
 "Move selected items from shopping list to pantry list. (You can also move "
 "items by dragging them.)"
 msgstr ""
+"A kiválasztott bevásárlólista-tétel áthelyezése az éléskamra listába "
+"(használható fogd és vidd módszerrel is)"
 
 #: ../glade/shopList.glade.h:9
 msgid ""
 "Move selected items from your pantry list back to your shopping list (you "
 "can also move items by dragging them.)"
 msgstr ""
+"A kiválasztott éléskamra-tételt helyezd vissza a bevásárlólistára "
+"(használható fogd és vidd módszerrel is)"
 
 #: ../glade/shopList.glade.h:10
 msgid "Move to _Shopping List"
-msgstr ""
+msgstr "Add a bevásárló listához"
 
 #: ../glade/shopList.glade.h:11
 msgid "Re_turn to Shopping List"
-msgstr ""
+msgstr "Tedd vissza a bevásárló listára"
 
 #: ../glade/shopList.glade.h:14
 msgid ""
 "Remove the selected recipe from your shopping list (or remove all items if "
 "no recipe is selected)"
 msgstr ""
+"A kiválasztott recept törlése a bevásárló listáról (tételek törlése, melyhez "
+"nincs kiválasztva recept)"
 
 #: ../glade/shopList.glade.h:15
 msgid ""
@@ -932,11 +944,11 @@ msgstr ""
 
 #: ../glade/shopList.glade.h:16
 msgid "Return Item to Shopping List"
-msgstr ""
+msgstr "Tétel visszatétele a bevásárló listára"
 
 #: ../glade/shopList.glade.h:17
 msgid "Return selected items to your shopping list"
-msgstr ""
+msgstr "Kiválasztott tétel visszatétele a bevásárló listára"
 
 #: ../glade/shopList.glade.h:18 ../src/lib/reccard.py:801
 #: ../src/lib/reccard.py:892 ../src/lib/reccard.py:987
@@ -958,11 +970,11 @@ msgstr ""
 
 #: ../glade/shopList.glade.h:24
 msgid "_Recipes"
-msgstr ""
+msgstr "_Receptek"
 
 #: ../glade/shopList.glade.h:25
 msgid "_Remove from Shopping List"
-msgstr ""
+msgstr "Tö_rlés a bevásárló listáról"
 
 #: ../glade/shopList.glade.h:26
 msgid "_Remove from shopping list (move to pantry)"
@@ -1015,7 +1027,7 @@ msgstr "_Eredmény:"
 
 #: ../glade/converter.glade.h:13
 msgid "_Unit:"
-msgstr "_Mértékegység:"
+msgstr "_Mértékegység: "
 
 #: ../glade/keyeditor.glade.h:3
 msgid "Change key for selected items to: "
@@ -1099,8 +1111,9 @@ msgid "A file named %s already exists."
 msgstr "%s névvel már létezik fájl."
 
 #: ../src/lib/dialog_extras.py:975 ../src/lib/FileChooserSaveAs.py:225
+#, fuzzy
 msgid "Do you want to replace it with the one you are saving?"
-msgstr ""
+msgstr "Felül kívánja írni a jelenleg mentés alatt állóval?"
 
 #. renderer.set_property('editable',True)
 #: ../src/lib/gglobals.py:222 ../src/lib/shopgui.py:98
@@ -1114,7 +1127,6 @@ msgid "Category"
 msgstr "Kategória"
 
 #: ../src/lib/gglobals.py:224
-#, fuzzy
 msgid "Cuisine"
 msgstr "Konyha"
 
@@ -1359,6 +1371,8 @@ msgstr "Opcionális hozzávalók törlése a bevásárlólistából?"
 #: ../src/lib/GourmetRecipeManager.py:784
 msgid "Please wait until it is finished to start your export."
 msgstr ""
+"Kérem, várjon, amíg a jelenlegi művelet befejeződik, mielőtt elkezdődhet az "
+"export."
 
 #: ../src/lib/GourmetRecipeManager.py:790
 msgid "Export recipes"
@@ -1378,7 +1392,7 @@ msgstr "Export leállítása"
 
 #: ../src/lib/GourmetRecipeManager.py:826
 msgid "Your export will start once the other process is finished."
-msgstr ""
+msgstr "Az exportálás azonnal elindul, amint a másik művelet befejeződött."
 
 #: ../src/lib/GourmetRecipeManager.py:834 ../src/lib/reccard.py:1403
 #, python-format
@@ -1389,10 +1403,12 @@ msgstr "Gourmet nem tud a \"%s\" fájlformátumba exportálni"
 #: ../src/lib/GourmetRecipeManager.py:915
 msgid "Please wait until it is finished to start your import."
 msgstr ""
+"Kérem, várjon, amíg a jelenlegi művelet befejeződik, mielőtt elkezdődhet az "
+"import."
 
 #: ../src/lib/GourmetRecipeManager.py:853
 msgid "Enter the URL of a recipe archive or recipe website."
-msgstr ""
+msgstr "Kérem, adja meg a recept-archívum, vagy weboldal címét."
 
 #: ../src/lib/GourmetRecipeManager.py:855
 msgid ""
@@ -1402,11 +1418,11 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:857
 msgid "Enter website address."
-msgstr ""
+msgstr "Adja meg a weboldal címét."
 
 #: ../src/lib/GourmetRecipeManager.py:859
 msgid "Enter URL: "
-msgstr ""
+msgstr " "
 
 #: ../src/lib/GourmetRecipeManager.py:860
 msgid ""
@@ -1478,13 +1494,11 @@ msgid_plural ""
 "If you believe these files are in a format Gourmet supports, please submit a "
 "bug report at %s and attach the file."
 msgstr[0] ""
-msgstr[1] ""
 
 #: ../src/lib/GourmetRecipeManager.py:1029
 msgid "Cannot import file."
 msgid_plural "Cannot import files."
 msgstr[0] "Nem importálható a fájl."
-msgstr[1] "Nem importálható a fájl."
 
 #: ../src/lib/GourmetRecipeManager.py:1053
 #, python-format
@@ -1640,7 +1654,7 @@ msgstr "Hozzávalók beillesztése a vágólapról."
 
 #: ../src/lib/reccard.py:206
 msgid "Add another recipe as an \"ingredient\" in the current recipe."
-msgstr "Másik recept felvétele \"hozzávalóként\" a jelenlegi recepthez. "
+msgstr "Másik recept felvétele \"hozzávalóként\" a jelenlegi recepthez."
 
 #: ../src/lib/reccard.py:214
 msgid "Move selected ingredient up."
@@ -1653,7 +1667,7 @@ msgstr "Kijelölt hozzávaló lefelé mozgatása."
 #: ../src/lib/reccard.py:358
 #, fuzzy
 msgid "Choose an image to insert in instructions... "
-msgstr "Válasszon képet az étel elkészítéséhez..."
+msgstr "Válasszon képet az étel elkészítéséhez... "
 
 #: ../src/lib/reccard.py:473 ../src/lib/reccard.py:785
 #: ../src/lib/reccard.py:796
@@ -1828,8 +1842,8 @@ msgstr "Biztosan törli a %s elemet?"
 msgid "Shall I delete the item contained in %s or move it out of the group?"
 msgid_plural ""
 "Shall I delete the items contained in %s or just move them out of the group?"
-msgstr[0] "Törölhetem a %s-ben levő elemet(ket) vagy vegyem ki a csoportból? "
-msgstr[1] "Törölhetem a %s-ben levő elemet(ket) vagy vegyem ki a csoportból? "
+msgstr[0] "Törölhetem a %s-ben levő elemet(ket) vagy vegyem ki a csoportból?"
+msgstr[1] "Törölhetem a %s-ben levő elemet(ket) vagy vegyem ki a csoportból?"
 
 #: ../src/lib/reccard.py:1944
 msgid "Delete it."
@@ -1896,7 +1910,7 @@ msgstr ""
 
 #: ../src/lib/recindex.py:35 ../src/lib/recindex.py:48
 msgid "notes"
-msgstr ""
+msgstr "jegyzetek"
 
 #: ../src/lib/recindex.py:164
 #, python-format
@@ -1934,10 +1948,11 @@ msgid ""
 msgstr ""
 
 #: ../src/lib/shopgui.py:72
+#, fuzzy
 msgid ""
 "Move selected items back to the shopping list. You can also move items by "
 "dragging and dropping."
-msgstr ""
+msgstr "A kivállasztott hozzávalokat visszarakni a bevásárlolistába."
 
 #: ../src/lib/shopgui.py:99
 msgid "x"
@@ -2063,10 +2078,12 @@ msgid "Gourmet Recipe Manager"
 msgstr "Gourmet Recipe Manager"
 
 #: ../src/lib/version.py:4
+#, fuzzy
 msgid "Copyright (c) 2004,2005 Thomas M. Hinkle. GNU GPL"
-msgstr ""
+msgstr "Copyright (c) 2004,2005 Thomas M. Hinkle GNU GPL"
 
 #: ../src/lib/version.py:7
+#, fuzzy
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
@@ -2076,6 +2093,31 @@ msgid ""
 "excahnge with other Gourmet users. Gourmet supports linking images with "
 "recipes."
 msgstr ""
+"Gourmet Recipe Manager egy recept keresö, organizalo es elmentöprogram. "
+"Gourmetvel továbbá könyen lehet bevásárlolistákat késziteni a receptekböl. "
+"Gourmet importálni tudja a MealMaster, MasterCook és különbözö weboldalakrol "
+"származo recepteket. Gourmetval a recepteket exportálni lehet sima text, "
+"MealMaster, sajátos XML fájlformatumokba es weboldalakba, igy könnyitve a "
+"receptek cserélését a felhasználok között. Képek is csatlakoztathatók a "
+"receptekhez."
+
+#: ../src/lib/version.py:9
+#, fuzzy
+msgid "Roland Duhaime (Windows porting assistance)"
+msgstr "Roland Duhaime (Windows implementációs segítség)"
+
+#: ../src/lib/version.py:10
+#, fuzzy
+msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
+msgstr "Daniel Folkinshteyn <nanotube@gmail.com> (Windows telepitö)"
+
+#: ../src/lib/version.py:11
+msgid "Richard Ferguson (improvements to Unit Converter interface)"
+msgstr "Richard Ferguson (mértékegység átváltó felület javítása)"
+
+#: ../src/lib/version.py:12
+msgid "R.S. Born (improvements to Mealmaster export)"
+msgstr "R.S. Born (Mealmaster exportálás)"
 
 #: ../src/lib/version.py:9
 #, fuzzy
@@ -2100,7 +2142,7 @@ msgstr "Válassza ki az adatbázis fájlt"
 
 #: ../src/lib/backends/rmetakit.py:323
 msgid "New Recipe"
-msgstr "új recept "
+msgstr "új recept"
 
 #: ../src/lib/importers/importer.py:136
 #, python-format
@@ -2200,7 +2242,7 @@ msgstr "HTML weboldal"
 
 #: ../src/lib/exporters/__init__.py:16
 msgid "MealMaster file"
-msgstr ""
+msgstr "MealMaster fájl"
 
 #: ../src/lib/exporters/__init__.py:17
 msgid "Plain Text"
@@ -2221,7 +2263,7 @@ msgstr "Gourmet XML fájl (elavult, < v.0.8.2)"
 #: ../src/lib/exporters/__init__.py:61
 #, fuzzy
 msgid "Exporting Webpage"
-msgstr "Exportálás weboldalként "
+msgstr "Exportálás weboldalként"
 
 #: ../src/lib/exporters/__init__.py:62
 #, fuzzy
@@ -2235,17 +2277,17 @@ msgstr "Recept elmentve HTML %(file)s fájlként."
 
 #: ../src/lib/exporters/__init__.py:79
 msgid "MealMaster Export"
-msgstr ""
+msgstr "MealMaster export"
 
 #: ../src/lib/exporters/__init__.py:80
 #, python-format
 msgid "Exporting recipes to MealMaster file %(file)s."
-msgstr ""
+msgstr "Receptek exportálása MealMaster %(file)s fájlként."
 
 #: ../src/lib/exporters/__init__.py:81
 #, python-format
 msgid "Recipe saved as MealMaster file %(file)s"
-msgstr ""
+msgstr "Recept elmentve MealMaster %(file)s fájlba."
 
 #: ../src/lib/exporters/__init__.py:92
 msgid "Text Export"
@@ -2273,7 +2315,22 @@ msgstr "Receptek exportálása Gourmet XML %(file)s fájlként."
 #: ../src/lib/exporters/__init__.py:108
 #, python-format
 msgid "Recipe saved in Gourmet XML file %(file)s."
-msgstr "Receptek elmentve Gourmet XML %(file)s fájlba."
+msgstr "Recept elmentve Gourmet XML %(file)s fájlba."
+
+#: ../src/lib/exporters/__init__.py:131
+#, fuzzy
+msgid "RTF Export"
+msgstr "RTF Export"
+
+#: ../src/lib/exporters/__init__.py:132
+#, fuzzy
+msgid "Exporting recipes to Rich Text file %(file)s."
+msgstr "Receptek exportálása Rich Text %(file)s fájlként."
+
+#: ../src/lib/exporters/__init__.py:133
+#, python-format
+msgid "Recipe saved as Rich Text file %(file)s"
+msgstr "Recept elmentve Rich Text %(file)s fájlba."
 
 #: ../src/lib/exporters/__init__.py:131
 msgid "RTF Export"
@@ -2371,11 +2428,9 @@ msgstr ""
 "kinyomtatni. Ha telepíti a wxWindows(wxWidget)-t, akkor közvetlenül innen is "
 "tud nyomtatni."
 
-#: ../src/lib/reccard.py:1935
+#: ../src/lib/reccard.py:1945
 #, python-format
-#~ msgid ""
-#~ "Shall I delete the item contained in %s or move it out of the group?Shall I "
-#~ "delete the items contained in %s or just move them out of the group?"
+#~ msgid "Delete them."
 #~ msgstr ""
 
 #~ msgid "Search as you _type"

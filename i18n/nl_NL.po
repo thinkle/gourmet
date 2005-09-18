@@ -28,7 +28,7 @@ msgstr "Voeg recept toe aan boodschappenlijst"
 
 #: ../glade/app.glade.h:3
 msgid "Add selected recipe to a shopping list."
-msgstr "Voeg geselecteerde recept toe aan boodschappenlijst."
+msgstr "Voeg geselecteerd recept toe aan boodschappenlijst."
 
 #: ../glade/app.glade.h:4
 msgid "Add to _Pantry"
@@ -68,24 +68,24 @@ msgstr "E-mail geselecteerde recepten"
 
 #: ../glade/app.glade.h:13
 msgid "Edit Ingredient Keys"
-msgstr ""
+msgstr "Ingrediëntensleutels bewerken"
 
 #: ../glade/app.glade.h:14
 msgid "Export selected recipes"
-msgstr "E-mail geselecteerde recepten"
+msgstr "Exporteer geselecteerde recepten"
 
 #: ../glade/app.glade.h:15
 msgid "Import _Webpage"
-msgstr ""
+msgstr "Importeer _Webpagina"
 
 #: ../glade/app.glade.h:16
 msgid "Jump to recipe in Recipe Card vew"
-msgstr ""
+msgstr "Ga naar recept in Receptenkaart mode"
 
 #: ../glade/app.glade.h:17 ../glade/recSelector.glade.h:5
 #: ../glade/rec_ref_window.glade.h:2
 msgid "Limiting Search to: "
-msgstr "Beperk zoeken tot:•"
+msgstr "Beperk zoeken tot:• "
 
 #: ../glade/app.glade.h:18
 msgid ""
@@ -132,65 +132,65 @@ msgstr ""
 #: ../glade/app.glade.h:27 ../glade/recSelector.glade.h:8
 #: ../glade/rec_ref_window.glade.h:4 ../glade/keyeditor.glade.h:9
 msgid "Search for recipes as you type"
-msgstr ""
+msgstr "Recepten zoeken terwijl u _tikt"
 
 #: ../glade/app.glade.h:28 ../glade/keyeditor.glade.h:10
 msgid "Use regular expressions"
-msgstr ""
+msgstr "Reguliere expressies gebruiken"
 
 #: ../glade/app.glade.h:29
 msgid "View Re_cipe"
-msgstr ""
+msgstr "Re_cept tonen"
 
 #: ../glade/app.glade.h:30
 msgid "View Recipe _Card"
-msgstr ""
+msgstr "Receptenkaart tonen"
 
 #: ../glade/app.glade.h:31
 msgid "View selected recipe"
-msgstr ""
+msgstr "Het geselecteerde recept bekijken"
 
 #: ../glade/app.glade.h:32
 msgid "_About"
-msgstr ""
+msgstr "O_ver"
 
 #: ../glade/app.glade.h:33
 msgid "_Actions"
-msgstr ""
+msgstr "_Actie's"
 
 #: ../glade/app.glade.h:34
 msgid "_Delete Recipe"
-msgstr ""
+msgstr "_Verwijder recept"
 
 #: ../glade/app.glade.h:35
 msgid "_E-Mail recipe"
-msgstr ""
+msgstr "Recept _e-mailen"
 
 #: ../glade/app.glade.h:36 ../glade/recCard.glade.h:71
 msgid "_Edit"
-msgstr ""
+msgstr "Be_werken"
 
 #: ../glade/app.glade.h:37
 msgid "_Empty trash"
-msgstr ""
+msgstr "Prullenbak _leegmaken"
 
 #: ../glade/app.glade.h:38
 msgid "_Export"
-msgstr ""
+msgstr "_Exporteren"
 
 #: ../glade/app.glade.h:39 ../glade/databaseChooser.glade.h:16
 #: ../glade/recCard.glade.h:72
 msgid "_File"
-msgstr ""
+msgstr "_Bestand"
 
 #: ../glade/app.glade.h:40 ../glade/recCard.glade.h:74
 #: ../glade/shopList.glade.h:23
 msgid "_Help"
-msgstr ""
+msgstr "_Help"
 
 #: ../glade/app.glade.h:41
 msgid "_Import File"
-msgstr ""
+msgstr "Bestand _Importeren"
 
 #: ../glade/app.glade.h:42
 msgid "_Ingredient Key Editor"
@@ -198,19 +198,19 @@ msgstr ""
 
 #: ../glade/app.glade.h:43 ../glade/recCard.glade.h:82
 msgid "_New Recipe"
-msgstr ""
+msgstr "_Nieuw recept"
 
 #: ../glade/app.glade.h:44
 msgid "_Print recipe"
-msgstr ""
+msgstr "_Druk recept af"
 
 #: ../glade/app.glade.h:45 ../glade/recCard.glade.h:86
 msgid "_Redo"
-msgstr ""
+msgstr "_Opnieuw"
 
 #: ../glade/app.glade.h:46
 msgid "_Search for"
-msgstr ""
+msgstr "_Zoek naar"
 
 #: ../glade/app.glade.h:47 ../glade/recCard.glade.h:90
 #: ../glade/shopList.glade.h:27
@@ -2285,4 +2285,9 @@ msgstr ""
 #: ../glade/shopList.glade.h:4
 #, python-format
 #~ msgid "Already Have (Pantry Items)"
-#~ msgstr ""
+#~ msgstr ""=======
+
+#: ../src/lib/reccard.py:1945
+#, python-format
+#~ msgid "Delete them."
+#~ msgstr "">>>>>>> 1.1.2.7

@@ -1219,7 +1219,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:541
 msgid "Deleted "
-msgstr "Изтрито"
+msgstr "Изтрито "
 
 #: ../src/lib/GourmetRecipeManager.py:545
 #: ../src/lib/GourmetRecipeManager.py:607
@@ -1429,7 +1429,6 @@ msgstr "Източник: "
 msgid "Gourmet could not import the file %s"
 msgid_plural "Gourmet could not import the following files: %s"
 msgstr[0] ""
-msgstr[1] ""
 
 #: ../src/lib/GourmetRecipeManager.py:1025
 #, python-format
@@ -1557,7 +1556,7 @@ msgstr "за \"%s\" от \"%s\""
 #: ../src/lib/keyEditor.py:112
 #, python-format
 msgid " from \"%s\" "
-msgstr " от \"%s\""
+msgstr " от \"%s\" "
 
 #: ../src/lib/keyEditor.py:113
 #, python-format
@@ -1783,7 +1782,6 @@ msgid "Shall I delete the item contained in %s or move it out of the group?"
 msgid_plural ""
 "Shall I delete the items contained in %s or just move them out of the group?"
 msgstr[0] ""
-msgstr[1] ""
 
 #: ../src/lib/reccard.py:1944
 msgid "Delete it."
@@ -2289,9 +2287,9 @@ msgid ""
 "install wxWindows, you can print directly from Gourmet."
 msgstr ""
 
-#: ../glade/recCard.glade.h:10
+#: ../src/lib/reccard.py:1945
 #, python-format
-#~ msgid "<b>Multiply by:</b>"
+#~ msgid "Delete them."
 #~ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1025

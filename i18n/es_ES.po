@@ -20,7 +20,7 @@ msgstr ""
 
 #: ../glade/app.glade.h:1
 msgid "A_dd Search Criteria"
-msgstr ""
+msgstr "Aña_dir criterio de búsqueda"
 
 #: ../glade/app.glade.h:2
 msgid "Add recipe to shopping list"
@@ -68,19 +68,19 @@ msgstr "Mandar por e-mail las recetas seleccionadas"
 
 #: ../glade/app.glade.h:13
 msgid "Edit Ingredient Keys"
-msgstr ""
+msgstr "Editar claves de ingredientes"
 
 #: ../glade/app.glade.h:14
 msgid "Export selected recipes"
-msgstr "Imprimir la receta seleccionada"
+msgstr "Exportar recetas seleccionadas"
 
 #: ../glade/app.glade.h:15
 msgid "Import _Webpage"
-msgstr ""
+msgstr "Importar página _Web"
 
 #: ../glade/app.glade.h:16
 msgid "Jump to recipe in Recipe Card vew"
-msgstr ""
+msgstr "Ir a la receta en Tarjetas de Recetas"
 
 #: ../glade/app.glade.h:17 ../glade/recSelector.glade.h:5
 #: ../glade/rec_ref_window.glade.h:2
@@ -2296,9 +2296,9 @@ msgid ""
 "install wxWindows, you can print directly from Gourmet."
 msgstr ""
 
-#: ../glade/shopList.glade.h:4
+#: ../src/lib/reccard.py:1945
 #, python-format
-#~ msgid "Already Have (Pantry Items)"
+#~ msgid "Delete them."
 #~ msgstr ""
 
 #~ msgid "_Limit Search"

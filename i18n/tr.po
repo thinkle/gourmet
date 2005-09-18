@@ -86,7 +86,7 @@ msgstr "Tarif kartı görünümündeki tarife git"
 #: ../glade/app.glade.h:17 ../glade/recSelector.glade.h:5
 #: ../glade/rec_ref_window.glade.h:2
 msgid "Limiting Search to: "
-msgstr "Aramayı ... ile sınırla"
+msgstr "Aramayı ... ile sınırla "
 
 #: ../glade/app.glade.h:18
 msgid ""
@@ -441,6 +441,8 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
+"\n"
+"\n"
 
 #: ../glade/recCard.glade.h:4
 msgid "<b>Category:</b>"
@@ -520,7 +522,7 @@ msgstr "Başka tarife malzeme olarak ekle"
 
 #: ../glade/recCard.glade.h:23
 msgid "Add group for ingredients (such as \"Sauce\" or \"Crust\")"
-msgstr "Malzemeler için grup ekle (\"Sos\" veya \"kabuk\" gibi) "
+msgstr "Malzemeler için grup ekle (\"Sos\" veya \"kabuk\" gibi)"
 
 #: ../glade/recCard.glade.h:24
 msgid "Add ingredient _group"
@@ -630,7 +632,7 @@ msgstr "İç malzeme listesini bellekten yapıştır"
 
 #: ../glade/recCard.glade.h:50
 msgid "Pre_paration Time: "
-msgstr "Hazır_lık Süresi:"
+msgstr "Hazır_lık Süresi: "
 
 #: ../glade/recCard.glade.h:51
 msgid "Recipe Card"
@@ -670,7 +672,7 @@ msgstr "_Malzeme ekle"
 
 #: ../glade/recCard.glade.h:62
 msgid "_Amount: "
-msgstr "Mi_ktar"
+msgstr "Mi_ktar "
 
 #: ../glade/recCard.glade.h:63
 msgid "_Bold"
@@ -758,7 +760,7 @@ msgstr "_Kaydet"
 
 #: ../glade/recCard.glade.h:89
 msgid "_Servings: "
-msgstr "_Porsiyon:"
+msgstr "_Porsiyon: "
 
 #: ../glade/recCard.glade.h:91
 msgid "_Title: "
@@ -1306,7 +1308,6 @@ msgstr "Silinmiş tarif %s"
 msgid "Print %s recipe"
 msgid_plural "Print %s recipes"
 msgstr[0] "%s tarifi bas"
-msgstr[1] "%s tarifi bas"
 
 #: ../src/lib/GourmetRecipeManager.py:717
 #, python-format
@@ -1316,7 +1317,7 @@ msgstr "Alış veriş edilecek porsiyon sayısı %s"
 #: ../src/lib/GourmetRecipeManager.py:725
 #, python-format
 msgid "Multiply %s by: "
-msgstr "%s'yi şununla çarp:"
+msgstr "%s'yi şununla çarp: "
 
 #: ../src/lib/GourmetRecipeManager.py:754 ../src/lib/shopgui.py:131
 msgid "Saved!"
@@ -1450,7 +1451,6 @@ msgstr "Kaynak:"
 msgid "Gourmet could not import the file %s"
 msgid_plural "Gourmet could not import the following files: %s"
 msgstr[0] ""
-msgstr[1] ""
 
 #: ../src/lib/GourmetRecipeManager.py:1025
 #, python-format
@@ -1461,13 +1461,11 @@ msgid_plural ""
 "If you believe these files are in a format Gourmet supports, please submit a "
 "bug report at %s and attach the file."
 msgstr[0] ""
-msgstr[1] ""
 
 #: ../src/lib/GourmetRecipeManager.py:1029
 msgid "Cannot import file."
 msgid_plural "Cannot import files."
 msgstr[0] ""
-msgstr[1] ""
 
 #: ../src/lib/GourmetRecipeManager.py:1053
 #, python-format
@@ -1501,7 +1499,7 @@ msgstr "İçeriye aktarılıyor..."
 
 #: ../src/lib/GourmetRecipeManager.py:1248
 msgid "Undeleted recipes "
-msgstr "Silinmemiş tarifler"
+msgstr "Silinmemiş tarifler "
 
 #: ../src/lib/GourmetRecipeManager.py:1303
 msgid "Gourmet Recipe Manager starting up..."
@@ -1560,7 +1558,7 @@ msgstr "Tarifler"
 
 #: ../src/lib/keyEditor.py:106
 msgid "Are you sure you want to change the "
-msgstr "...'yi değiştirmek istediğinizden emin misiniz?"
+msgstr "...'yi değiştirmek istediğinizden emin misiniz? "
 
 #: ../src/lib/keyEditor.py:107
 msgid "key"
@@ -1578,7 +1576,7 @@ msgstr "\"%s için \"%s\" den itibaren"
 #: ../src/lib/keyEditor.py:112
 #, python-format
 msgid " from \"%s\" "
-msgstr " \"%s\" den"
+msgstr " \"%s\" den "
 
 #: ../src/lib/keyEditor.py:113
 #, python-format
@@ -1600,10 +1598,10 @@ msgid ""
 " for all %s selections set to\n"
 " \"%s\""
 msgstr ""
-" Anahtarların\n"
+"Anahtarların\n"
 " bütün %s seçimleri için\n"
 " \"%s% ye ayarlanmasını\n"
-"istediğinizden emin misiniz? "
+"istediğinizden emin misiniz?"
 
 #: ../src/lib/reccard.py:137
 msgid "Recipe Card: "
@@ -1660,7 +1658,7 @@ msgstr "Malzemenin yeni alt grubu için bir isim giriniz"
 
 #: ../src/lib/reccard.py:546
 msgid "Name of group: "
-msgstr "Grubun ismi:"
+msgstr "Grubun ismi: "
 
 #: ../src/lib/reccard.py:579
 #, python-format
@@ -1813,19 +1811,16 @@ msgid "Shall I delete the item contained in %s or move it out of the group?"
 msgid_plural ""
 "Shall I delete the items contained in %s or just move them out of the group?"
 msgstr[0] "%s içindeki malzeme silinsin mi, veya grup dışına taşınsın mı?"
-msgstr[1] "%s içindeki malzeme silinsin mi, veya grup dışına taşınsın mı?"
 
 #: ../src/lib/reccard.py:1944
 msgid "Delete it."
 msgid_plural "Delete them."
 msgstr[0] "Onu sil."
-msgstr[1] "Onu sil."
 
 #: ../src/lib/reccard.py:1945
 msgid "Move it."
 msgid_plural "Move them."
 msgstr[0] "Onu taşı."
-msgstr[1] "Onu taşı."
 
 #: ../src/lib/reccard.py:1946
 msgid "See ingredients"
@@ -2272,7 +2267,7 @@ msgstr "Lütfen yazdırmada kullanacağınız komutu giriniz."
 #: ../src/lib/exporters/lprprinter.py:22
 #, python-format
 msgid "Printing via %s"
-msgstr "%s ile basılıyor "
+msgstr "%s ile basılıyor"
 
 #: ../src/lib/exporters/lprprinter.py:23
 msgid ""
@@ -2288,7 +2283,7 @@ msgstr "Komut:"
 
 #: ../src/lib/exporters/pdf_exporter.py:23
 msgid "Shopping list for: "
-msgstr "... için alış veriş listesi"
+msgstr "... için alış veriş listesi "
 
 #: ../src/lib/exporters/recipe_emailer.py:105
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
@@ -2330,9 +2325,11 @@ msgstr ""
 "program aracılığı ile yazdırınız. Eğer wxWindows yüklerseniz, Gourmet "
 "programından doğrudan yazdırabilirsiniz."
 
-#: src/lib/exporters/winprinter.py:11
+#: ../src/lib/reccard.py:1935
 #, python-format
-#~ msgid "Gourmet will be busy for a while."
+#~ msgid ""
+#~ "Shall I delete the item contained in %s or move it out of the group?Shall I "
+#~ "delete the items contained in %s or just move them out of the group?"
 #~ msgstr ""
 
 #: ../glade/app.glade.h:9

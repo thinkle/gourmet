@@ -26,7 +26,7 @@ msgstr "Suchkriterium h_inzufügen"
 
 #: ../glade/app.glade.h:2
 msgid "Add recipe to shopping list"
-msgstr "Rezepte zur Einkaufsliste hinzufügen"
+msgstr "Rezept zur Einkaufsliste hinzufügen"
 
 #: ../glade/app.glade.h:3
 msgid "Add selected recipe to a shopping list."
@@ -46,7 +46,7 @@ msgstr "Zu _Einkaufsliste hinzufügen"
 
 #: ../glade/app.glade.h:7
 msgid "Adva_nced Search"
-msgstr "_Erweiterte Suche"
+msgstr "E_rweiterte Suche"
 
 #: ../glade/app.glade.h:8
 msgid "Create a new recipe"
@@ -73,7 +73,6 @@ msgid "Edit Ingredient Keys"
 msgstr "Zutatenstichwörter bearbeiten"
 
 #: ../glade/app.glade.h:14
-#, fuzzy
 msgid "Export selected recipes"
 msgstr "Ausgewählte Rezepte exportieren"
 
@@ -97,10 +96,10 @@ msgid ""
 "be included when you save or print the list unless you tell me you need to "
 "buy it."
 msgstr ""
-"Diese Zutat niemals kaufen. Wenn sie in einem Rezept benötigt wird, "
-"erscheint sie im Abschnitt \"Speisekammer\" der Liste als Erinnerung daran, "
-"dass Sie sie brauchen, aber sie wird nicht aufgeführt, wenn Sie die Liste "
-"speichern oder drucken, außer wenn Sie angeben, dass Sie sie kaufen müssen."
+"Diese Zutat niemals kaufen. Wenn es in einem Rezept benötigt wird, erscheint "
+"es im Abschnitt \"Speisekammer\" der Liste als Erinnerung daran, dass Sie es "
+"brauchen, aber es wird nicht aufgeführt, wenn Sie die Liste speichern oder "
+"drucken, außer wenn Sie angeben, dass Sie es kaufen müssen."
 
 #: ../glade/app.glade.h:19
 msgid "Print selected recipe"
@@ -238,7 +237,7 @@ msgstr "_Rückgängig"
 
 #: ../glade/app.glade.h:51 ../glade/recCard.glade.h:95
 msgid "_Unit Converter"
-msgstr "_Einheitenkonverter"
+msgstr "_Einheitenkonvertierer"
 
 #: ../glade/app.glade.h:52 ../glade/recCard.glade.h:97
 msgid "_View"
@@ -324,11 +323,11 @@ msgstr "_Details"
 
 #: ../glade/databaseChooser.glade.h:17
 msgid "_Host:"
-msgstr "_Rechner"
+msgstr "_Rechner:"
 
 #: ../glade/databaseChooser.glade.h:18
 msgid "_Password:"
-msgstr "_Passwort"
+msgstr "_Passwort:"
 
 #: ../glade/databaseChooser.glade.h:19
 msgid "_Save Password"
@@ -375,18 +374,24 @@ msgid "<i>Preferences for use when sending a recipe in an email.</i>"
 msgstr "<i>Präferenzen für den E-Mailversand eines Rezeptes.</i>"
 
 #: ../glade/preferenceDialog.glade.h:7
+#, fuzzy
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
 msgstr ""
+"<i>Entferne nicht benutzte Einträge von der Rezept-Karten-Schnittstelle</i>"
 
 #: ../glade/preferenceDialog.glade.h:8
+#, fuzzy
 msgid ""
 "<i>What should Gourmet do with Optional Ingredients when adding recipes to "
 "the shopping list?</i>"
 msgstr ""
+"<i>Was soll Gourmet mit optionalen Zutaten tun, wenn Rezepte zur "
+"Einkaufsliste hinzugefügt werden?</i>"
 
 #: ../glade/preferenceDialog.glade.h:9
+#, fuzzy
 msgid "As_k whether to include optional ingredients"
-msgstr ""
+msgstr "Fragen, ob optionale Zutaten hinzugefügt werden sollen"
 
 #: ../glade/preferenceDialog.glade.h:10
 msgid "Card View"
@@ -405,8 +410,9 @@ msgid "Include Recipe as an _HTML Attachment to the E-mail"
 msgstr "Füge Rezept als _HTML Anhang an Email"
 
 #: ../glade/preferenceDialog.glade.h:14
+#, fuzzy
 msgid "Include Recipe in _Body of E-mail (A good idea no matter what)"
-msgstr ""
+msgstr "Füge das Rezept in den Rumpf der E-Mail ein (immer eine gute Idee)."
 
 #: ../glade/preferenceDialog.glade.h:15
 msgid "Index View"
@@ -430,8 +436,9 @@ msgid "_Always use these settings"
 msgstr "_Immer diese Einstellungen verwenden"
 
 #: ../glade/preferenceDialog.glade.h:20
+#, fuzzy
 msgid "_Clear remembered optional ingredients"
-msgstr ""
+msgstr "_Lösche die gemerkten optionalen Zutaten"
 
 #: ../glade/preferenceDialog.glade.h:21
 msgid "_Never add optional ingredients"
@@ -447,6 +454,8 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
 "\n"
 "\n"
 
@@ -539,10 +548,13 @@ msgid "Add this recipe to a shopping list"
 msgstr "Hinzufügen dieses Rezeptes zu einer Einkaufsliste"
 
 #: ../glade/recCard.glade.h:27
+#, fuzzy
 msgid ""
 "Ask user which items to add to the shopping list rather than using saved "
 "settings."
 msgstr ""
+"Frage den Benutzer welche Einträge anstelle der gespeicherten Einstellungen "
+"zur Einkaufsliste hinzugefügt werden sollen."
 
 #: ../glade/recCard.glade.h:28
 msgid "C_uisine:"
@@ -714,7 +726,7 @@ msgstr "Rezept per E-Mail verschicken"
 
 #: ../glade/recCard.glade.h:73
 msgid "_Forget remembered optional ingredients"
-msgstr ""
+msgstr "_verwerfe die gemerkten optionalen Zutaten"
 
 #: ../glade/recCard.glade.h:75
 msgid "_Import Ingredients"
@@ -876,8 +888,9 @@ msgid "Add additional items to your shopping list."
 msgstr "Füge zusätzliche Artikel zur Einkaufsliste hinzu"
 
 #: ../glade/shopList.glade.h:3
+#, fuzzy
 msgid "Already Have (_Pantry Items)"
-msgstr ""
+msgstr "Schon vorhanden (_Speisekammer Einträge)"
 
 #: ../glade/shopList.glade.h:4 ../src/lib/reccard.py:1939
 msgid "Amount"
@@ -944,11 +957,11 @@ msgstr ""
 
 #: ../glade/shopList.glade.h:16
 msgid "Return Item to Shopping List"
-msgstr ""
+msgstr "Gegenstand zurück zur Einkaufsliste fügen"
 
 #: ../glade/shopList.glade.h:17
 msgid "Return selected items to your shopping list"
-msgstr ""
+msgstr "Ausgewählte Gegenstände zur Einkaufsliste hinzufügen"
 
 #: ../glade/shopList.glade.h:18 ../src/lib/reccard.py:801
 #: ../src/lib/reccard.py:892 ../src/lib/reccard.py:987
@@ -1218,7 +1231,9 @@ msgstr "\nWebsite: %s"
 msgid ""
 "\n"
 "Translated by: %s"
-msgstr "\nÜbersetzt von: %s"
+msgstr ""
+"\n"
+"Übersetzt von: %s"
 
 #: ../src/lib/GourmetRecipeManager.py:287
 msgid "Import paused"
@@ -1338,21 +1353,28 @@ msgid "Saved!"
 msgstr "Gespeichert!"
 
 #: ../src/lib/GourmetRecipeManager.py:767 ../src/lib/reccard.py:744
+#, fuzzy
 msgid ""
 "Forget previously saved choices for which optional ingredients to shop for. "
 "This action is not reversable."
 msgstr ""
+"Verwerfe bereits gespeicherte Entscheidungen, welche optionalen Zutaten "
+"eingekauft werden sollen. Diese Aktion ist nicht rücknehmbar (irreversibel)."
 
 #: ../src/lib/GourmetRecipeManager.py:769
+#, fuzzy
 msgid ""
 "This will affect all recipes. If you want to forget the settings for an "
 "individual recipe, you can do so from the <b>Tools</b> menu of an individual "
 "recipe card."
 msgstr ""
+"Dies wird alle Rezepte betreffen. Wenn die Einstellungen für ein bestimmtes "
+"Rezept verworfen werden sollen, so kann das über das <b>Werkzeug</b>-Menü "
+"der entsprechenden Rezeptkarte erfolgen."
 
 #: ../src/lib/GourmetRecipeManager.py:772 ../src/lib/reccard.py:743
 msgid "Forget which optional ingredients to shop for?"
-msgstr ""
+msgstr "Vergessen, welche optionalen Zutaten gekauft werden müssen?"
 
 #: ../src/lib/GourmetRecipeManager.py:784
 msgid "Please wait until it is finished to start your export."
@@ -1396,59 +1418,69 @@ msgstr ""
 "Rezeptes ein"
 
 #: ../src/lib/GourmetRecipeManager.py:855
+#, fuzzy
 msgid ""
 "Gourmet can download a recipe in any supported recipe archive format or can "
 "import recipes from the following websites:"
 msgstr ""
+"Gourmet kann ein Rezept in jedem unterstütztem Format für Rezeptarchive "
+"herunterladen oder Rezepte der folgenden Webseiten importieren"
 
 #: ../src/lib/GourmetRecipeManager.py:857
 msgid "Enter website address."
-msgstr ""
+msgstr "Adresse der Webseite eingeben."
 
 #: ../src/lib/GourmetRecipeManager.py:859
 msgid "Enter URL: "
-msgstr ""
+msgstr " "
 
 #: ../src/lib/GourmetRecipeManager.py:860
+#, fuzzy
 msgid ""
 "Enter the address of a website or recipe archive. The address should begin "
 "with http://"
 msgstr ""
+"Bitte die Adresse der Webseite oder des Rezeptarchives eingeben. Die Adresse "
+"muß mit http:// beginnen."
 
 #: ../src/lib/GourmetRecipeManager.py:865
 #, python-format
 msgid "Importing recipe from %s"
-msgstr ""
+msgstr "Importiere Rezept von %s"
 
 #: ../src/lib/GourmetRecipeManager.py:887
 msgid "Unable to import"
-msgstr ""
+msgstr "Nicht in der LAge zu importieren"
 
 #: ../src/lib/GourmetRecipeManager.py:888
 #, python-format
 msgid "Gourmet does not know how to import site %s"
-msgstr ""
+msgstr "Gourmet kann die Seite %s nicht importieren"
 
 #: ../src/lib/GourmetRecipeManager.py:892
 msgid "Unable to unzip"
-msgstr ""
+msgstr "Entpacken nicht möglich"
 
 #: ../src/lib/GourmetRecipeManager.py:893
 #, python-format
 msgid "Gourmet is unable to unzip the file %s"
-msgstr ""
+msgstr "Gourmet kann die ZIP Datei %s nicht entpacken"
 
 #: ../src/lib/GourmetRecipeManager.py:897
 msgid "Unable to retrieve URL"
-msgstr ""
+msgstr "Abfragen der URL nicht möglich"
 
 #: ../src/lib/GourmetRecipeManager.py:898
-#, python-format
+#, fuzzy
 msgid ""
 "Gourmet was unable to retrieve the site %s. Are you sure your internet "
 "connection is working?  If you can retrieve the site with a webbrowser but "
 "continue to get this error, please submit a bug report at %s."
 msgstr ""
+"Gourmet konnte die Seite %s nicht abfragen. Arbeitet Ihre Internet- "
+"Verbindung korrekt? Wenn Sie die Seite mit einem Web-Browser abfragen "
+"können, aber diesen Fehler weiterhin bekommen, so senden Sie bitte einen "
+"Fehlerbericht an %s."
 
 #: ../src/lib/GourmetRecipeManager.py:921
 msgid "Import Recipes"
@@ -1467,11 +1499,11 @@ msgstr "Quelle: "
 #, python-format
 msgid "Gourmet could not import the file %s"
 msgid_plural "Gourmet could not import the following files: %s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Gourmet konnte die Datei %s nicht importieren"
+msgstr[1] "Gourmet konnte die folgenden Dateien nicht importieren: %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1025
-#, python-format
+#, fuzzy
 msgid ""
 "If you believe this file is in one of the formats Gourmet supports, please "
 "submit a bug report at %s and attach the file."
@@ -1479,7 +1511,12 @@ msgid_plural ""
 "If you believe these files are in a format Gourmet supports, please submit a "
 "bug report at %s and attach the file."
 msgstr[0] ""
+"Wenn sie glauben, die Datei ist in einem von Gourmet unterstütztem Format, "
+"so senden Sie bitte einen Fehlerbericht mit angehängter Datei an %s."
 msgstr[1] ""
+"Wenn sie glauben, die Dateien sind in einem von Gourmet unterstütztem "
+"Format, so senden Sie bitte einen Fehlerbericht mit angehängten Dateien an "
+"%s."
 
 #: ../src/lib/GourmetRecipeManager.py:1029
 #, fuzzy
@@ -1872,9 +1909,12 @@ msgstr ""
 "Menge %s nicht."
 
 #: ../src/lib/reccard.py:2121
+#, fuzzy
 msgid ""
 "Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
 msgstr ""
+"Mengenangaben müssen aus Zahlen (Bruch oder Dezimal), Zahlenbereichen, oder "
+"keinem Zeichen bestehen."
 
 #: ../src/lib/reccard.py:2123
 msgid ""
@@ -1887,6 +1927,8 @@ msgid ""
 "To enter a range of numbers, use a \"-\" to separate them.\n"
 "For example, you could enter 2-4 or 1 1/2 - 3 1/2.\n"
 msgstr ""
+"\n"
+"\n"
 
 #: ../src/lib/recindex.py:35 ../src/lib/recindex.py:48
 msgid "notes"
@@ -1924,16 +1966,23 @@ msgid "Password: "
 msgstr "Passwort: "
 
 #: ../src/lib/shopgui.py:65
+#, fuzzy
 msgid ""
 "Move selected items from shopping list to \"pantry\" list. You can also move "
 "items by dragging and dropping."
 msgstr ""
+"Verschiebe die ausgewählten Elemente von der Einkaufsliste zur "
+"\"Speisekammer\"-Liste. Elemente können auch durch Ziehen und Fallen-Lassen "
+"verschoben werden (drag'n drop)."
 
 #: ../src/lib/shopgui.py:72
+#, fuzzy
 msgid ""
 "Move selected items back to the shopping list. You can also move items by "
 "dragging and dropping."
 msgstr ""
+"Verschiebe die ausgewählten Elemente zurück zur Einkaufsliste. Elemente "
+"können auch durch Ziehen und Fallen-Lassen verschoben werden (drag'n drop)."
 
 #: ../src/lib/shopgui.py:99
 msgid "x"
@@ -2057,9 +2106,10 @@ msgstr "Gourmet Rezeptmanager"
 
 #: ../src/lib/version.py:4
 msgid "Copyright (c) 2004,2005 Thomas M. Hinkle. GNU GPL"
-msgstr ""
+msgstr "Copyright (c) 2004,2005 Thomas M. Hinkle. GNU GPL"
 
 #: ../src/lib/version.py:7
+#, fuzzy
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
@@ -2069,6 +2119,14 @@ msgid ""
 "excahnge with other Gourmet users. Gourmet supports linking images with "
 "recipes."
 msgstr ""
+"Gourmet Recipe Manager ist ein Programm zum Speichern, Organisieren und "
+"Suchen von Rezepten. Gourmet vereinfacht auch das Erstellen von "
+"Einkaufslisten für Rezepte. Gourmet kann Rezepte einer Vielzahl von Quellen "
+"importieren, unter anderem von MealMaster- und MasterCook-Archiven und "
+"verschiedenen, beliebten Internet-Seiten. Gourmet kann Rezepte exportieren "
+"als Text, MealMaster-Dateien, HTML Internet-Seiten, und einem eigenem XML- "
+"Format zum Austausch mit anderen Gourmet-Nutzern. Gourmet erlaubt das "
+"Zuordnen von Bildern zu Rezepten."
 
 #: ../src/lib/version.py:9
 msgid "Roland Duhaime (Windows porting assistance)"
@@ -2076,7 +2134,7 @@ msgstr "Roland Duhaime (Unterstützung bei Portierung auf Windows)"
 
 #: ../src/lib/version.py:10
 msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
-msgstr ""
+msgstr "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
 
 #: ../src/lib/version.py:11
 msgid "Richard Ferguson (improvements to Unit Converter interface)"
@@ -2223,17 +2281,17 @@ msgstr "Rezept gespeichert als HTML-Datei %(file)s"
 
 #: ../src/lib/exporters/__init__.py:79
 msgid "MealMaster Export"
-msgstr ""
+msgstr "MealMaster Export"
 
 #: ../src/lib/exporters/__init__.py:80
 #, python-format
 msgid "Exporting recipes to MealMaster file %(file)s."
-msgstr ""
+msgstr "Exportiere Rezepte in MealMaster Datei %(file)s."
 
 #: ../src/lib/exporters/__init__.py:81
 #, python-format
 msgid "Recipe saved as MealMaster file %(file)s"
-msgstr ""
+msgstr "Rezept als MealMaster Datei %(file)s gespeichert."
 
 #: ../src/lib/exporters/__init__.py:92
 msgid "Text Export"
@@ -2265,17 +2323,17 @@ msgstr "Rezept gespeichert in Gourmet XML-Datei %(file)s."
 
 #: ../src/lib/exporters/__init__.py:131
 msgid "RTF Export"
-msgstr ""
+msgstr "RTF Export"
 
 #: ../src/lib/exporters/__init__.py:132
-#, python-format
+#, fuzzy
 msgid "Exporting recipes to Rich Text file %(file)s."
-msgstr ""
+msgstr "Exportiere Rezepte in Rich Text Datei %(file)s."
 
 #: ../src/lib/exporters/__init__.py:133
 #, python-format
 msgid "Recipe saved as Rich Text file %(file)s"
-msgstr ""
+msgstr "Rezept als Rich Text Datei %(file)s gespeichert."
 
 #: ../src/lib/exporters/lprprinter.py:15 ../src/lib/exporters/lprprinter.py:18
 msgid "Enter print command"

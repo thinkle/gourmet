@@ -73,7 +73,7 @@ msgstr "Edytuj klucze składników"
 
 #: ../glade/app.glade.h:14
 msgid "Export selected recipes"
-msgstr "Wydrukuj wybrany przepis"
+msgstr "Eksportuj wybrane przepisy"
 
 #: ../glade/app.glade.h:15
 msgid "Import _Webpage"
@@ -124,7 +124,7 @@ msgstr "_Lista Przepisów"
 
 #: ../glade/app.glade.h:24
 msgid "Search _Results"
-msgstr "Wyszukuj przez"
+msgstr "Wyniki Szukania"
 
 #: ../glade/app.glade.h:25
 msgid "Search as _you type"
@@ -215,7 +215,7 @@ msgstr "P_rzywróć"
 
 #: ../glade/app.glade.h:46
 msgid "_Search for"
-msgstr "Szukaj"
+msgstr "_Szukaj"
 
 #: ../glade/app.glade.h:47 ../glade/recCard.glade.h:90
 #: ../glade/shopList.glade.h:27
@@ -446,6 +446,8 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
+"\n"
+"\n"
 
 #: ../glade/recCard.glade.h:4
 msgid "<b>Category:</b>"
@@ -489,7 +491,7 @@ msgstr "<b>Tytuł</b>"
 
 #: ../glade/recCard.glade.h:14
 msgid "<b>_Instructions:</b>"
-msgstr "<b>Instrukcje:</b>"
+msgstr "<b>_Instrukcje:</b>"
 
 #: ../glade/recCard.glade.h:15
 msgid "<b>_Multiply by:</b>"
@@ -581,7 +583,7 @@ msgstr "Eksportuj ten przepis jako plik tekstowy."
 
 #: ../glade/recCard.glade.h:37
 msgid "Image: "
-msgstr "_Rysunek: "
+msgstr "Rysunek: "
 
 #: ../glade/recCard.glade.h:38
 msgid "Import ingredients from a plain text file."
@@ -604,7 +606,7 @@ msgstr "Składniki"
 
 #: ../glade/recCard.glade.h:42
 msgid "Ins_tructions"
-msgstr "Instrukcje"
+msgstr "Ins_trukcje"
 
 #: ../glade/recCard.glade.h:43 ../src/lib/gglobals.py:232
 #: ../src/lib/gglobals.py:236
@@ -745,11 +747,11 @@ msgstr "_Nowy Składnik"
 
 #: ../glade/recCard.glade.h:83
 msgid "_Notes"
-msgstr "Notatki"
+msgstr "_Notatki"
 
 #: ../glade/recCard.glade.h:84
 msgid "_Optional"
-msgstr "Opcjonalne"
+msgstr "_Opcjonalne"
 
 #: ../glade/recCard.glade.h:85
 msgid "_Rating:"
@@ -868,7 +870,7 @@ msgstr "tytuł"
 
 #: ../glade/shopList.glade.h:1
 msgid "Add Items to Shopping List"
-msgstr "Dodaj pozycje do "
+msgstr "Dodaj pozycje do"
 
 #: ../glade/shopList.glade.h:2
 msgid "Add additional items to your shopping list."
@@ -1027,7 +1029,7 @@ msgstr "_Jednostka:"
 
 #: ../glade/keyeditor.glade.h:3
 msgid "Change key for selected items to: "
-msgstr "Zmień klucz wybranych pozycji na:"
+msgstr "Zmień klucz wybranych pozycji na: "
 
 #: ../glade/keyeditor.glade.h:4
 msgid ""
@@ -1414,7 +1416,7 @@ msgstr "Wprowadź adres strony."
 
 #: ../src/lib/GourmetRecipeManager.py:859
 msgid "Enter URL: "
-msgstr "Wprowadź URL:"
+msgstr "Wprowadź URL: "
 
 #: ../src/lib/GourmetRecipeManager.py:860
 msgid ""
@@ -1647,7 +1649,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:137
 msgid "Recipe Card: "
-msgstr "Karta Przepisu"
+msgstr "Karta Przepisu "
 
 #: ../src/lib/reccard.py:192
 msgid "Add new ingredient to the list."
@@ -1921,7 +1923,7 @@ msgstr ""
 
 #: ../src/lib/recindex.py:35 ../src/lib/recindex.py:48
 msgid "notes"
-msgstr "Notatki"
+msgstr "notatki"
 
 #: ../src/lib/recindex.py:164
 #, python-format
@@ -2091,7 +2093,7 @@ msgstr "Gourmet Recipe Manager"
 
 #: ../src/lib/version.py:4
 msgid "Copyright (c) 2004,2005 Thomas M. Hinkle. GNU GPL"
-msgstr "Copyright (c) 2004, Thomas M. Hinkle. GNU GPL"
+msgstr "Copyright (c) 2004,2005 Thomas M. Hinkle. GNU GPL"
 
 #: ../src/lib/version.py:7
 msgid ""
@@ -2231,7 +2233,7 @@ msgstr "Strona HTML"
 
 #: ../src/lib/exporters/__init__.py:16
 msgid "MealMaster file"
-msgstr "Plik Mealmaster"
+msgstr "Plik MealMaster"
 
 #: ../src/lib/exporters/__init__.py:17
 msgid "Plain Text"
@@ -2265,7 +2267,7 @@ msgstr "Przepis zapisany jako plik HTML %(file)s"
 
 #: ../src/lib/exporters/__init__.py:79
 msgid "MealMaster Export"
-msgstr "Eksport Mealmaster"
+msgstr "Eksport MealMaster"
 
 #: ../src/lib/exporters/__init__.py:80
 #, python-format
@@ -2275,7 +2277,7 @@ msgstr "Eksportowanie przepisów do pliku MealMaster (tm) %(file)s"
 #: ../src/lib/exporters/__init__.py:81
 #, python-format
 msgid "Recipe saved as MealMaster file %(file)s"
-msgstr "Przepis zapisany jako plik Mealmaster %(file)s"
+msgstr "Przepis zapisany jako plik MealMaster %(file)s"
 
 #: ../src/lib/exporters/__init__.py:92
 msgid "Text Export"
@@ -2394,9 +2396,9 @@ msgstr ""
 "innym programie. Jesli zainstalowałeś wxWindows, możesz drukować "
 "bezpośrednio z Gourmet."
 
-#: src/lib/exporters/winprinter.py:11
+#: ../src/lib/reccard.py:1945
 #, python-format
-#~ msgid "Gourmet will be busy for a while."
+#~ msgid "Delete them."
 #~ msgstr ""
 
 #~ msgid "Search as you _type"

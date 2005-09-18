@@ -87,7 +87,7 @@ msgstr "Přejít na recept do karty receptu"
 #: ../glade/app.glade.h:17 ../glade/recSelector.glade.h:5
 #: ../glade/rec_ref_window.glade.h:2
 msgid "Limiting Search to: "
-msgstr "Omezuji hledání na:•"
+msgstr "Omezuji hledání na:• "
 
 #: ../glade/app.glade.h:18
 msgid ""
@@ -121,7 +121,7 @@ msgstr "_Seznam receptů"
 
 #: ../glade/app.glade.h:24
 msgid "Search _Results"
-msgstr ""
+msgstr "_Výsledky hledání"
 
 #: ../glade/app.glade.h:25
 msgid "Search as _you type"
@@ -439,6 +439,8 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
+"\n"
+"\n"
 
 #: ../glade/recCard.glade.h:4
 msgid "<b>Category:</b>"
@@ -628,7 +630,7 @@ msgstr "Vložit seznam ingrediencí ze schránky."
 
 #: ../glade/recCard.glade.h:50
 msgid "Pre_paration Time: "
-msgstr "Čas _přípravy:"
+msgstr "Čas _přípravy: "
 
 #: ../glade/recCard.glade.h:51
 msgid "Recipe Card"
@@ -636,7 +638,7 @@ msgstr "Karta receptu"
 
 #: ../glade/recCard.glade.h:54
 msgid "S_hopping Category: "
-msgstr "Nák_upní kategorie:"
+msgstr "Nák_upní kategorie: "
 
 #: ../glade/recCard.glade.h:55
 msgid "S_ource:"
@@ -1186,6 +1188,7 @@ msgid ""
 "Website: %s"
 msgstr ""
 "\n"
+"↵\n"
 "Webstránka: %s"
 
 #: ../src/lib/GourmetRecipeManager.py:277
@@ -1195,6 +1198,7 @@ msgid ""
 "Translated by: %s"
 msgstr ""
 "\n"
+"↵\n"
 "Přeložil: %s"
 
 #: ../src/lib/GourmetRecipeManager.py:287
@@ -1232,7 +1236,7 @@ msgstr "Neukončovat!"
 
 #: ../src/lib/GourmetRecipeManager.py:541
 msgid "Deleted "
-msgstr "Smaznáno"
+msgstr "Smaznáno "
 
 #: ../src/lib/GourmetRecipeManager.py:545
 #: ../src/lib/GourmetRecipeManager.py:607
@@ -1309,7 +1313,7 @@ msgstr "Počet porcí %s pro nákup"
 #: ../src/lib/GourmetRecipeManager.py:725
 #, python-format
 msgid "Multiply %s by: "
-msgstr "Násobit %s počtem: "
+msgstr "Násobit %s počtem:"
 
 #: ../src/lib/GourmetRecipeManager.py:754 ../src/lib/shopgui.py:131
 msgid "Saved!"
@@ -1497,7 +1501,7 @@ msgstr "Importuji..."
 
 #: ../src/lib/GourmetRecipeManager.py:1248
 msgid "Undeleted recipes "
-msgstr "Obnovené recepty"
+msgstr "Obnovené recepty "
 
 #: ../src/lib/GourmetRecipeManager.py:1303
 msgid "Gourmet Recipe Manager starting up..."
@@ -1631,7 +1635,7 @@ msgstr "Přesunout vybranou ingredienci dolů."
 
 #: ../src/lib/reccard.py:358
 msgid "Choose an image to insert in instructions... "
-msgstr "Vyberte obrázek, který chcete vložit do instrukcí..."
+msgstr "Vyberte obrázek, který chcete vložit do instrukcí... "
 
 #: ../src/lib/reccard.py:473 ../src/lib/reccard.py:785
 #: ../src/lib/reccard.py:796
@@ -1652,7 +1656,7 @@ msgstr "Vložit název podskupiny ingrediencí"
 
 #: ../src/lib/reccard.py:546
 msgid "Name of group: "
-msgstr "Název skupiny:"
+msgstr "Název skupiny: "
 
 #: ../src/lib/reccard.py:579
 #, python-format
@@ -1873,7 +1877,7 @@ msgstr "%s receptů"
 #: ../src/lib/recindex.py:281
 #, python-format
 msgid " %s contains %s"
-msgstr "%s obsahuje %s"
+msgstr " %s obsahuje %s"
 
 #: ../src/lib/recindex.py:283
 #, python-format
@@ -1892,7 +1896,7 @@ msgstr "Vložte heslo pro uživatele %s MySQL databáze na serveru %s"
 
 #: ../src/lib/recipeManager.py:18
 msgid "Password: "
-msgstr "Heslo:•"
+msgstr "Heslo:• "
 
 #: ../src/lib/shopgui.py:65
 msgid ""
@@ -2279,7 +2283,7 @@ msgstr "Příkaz: "
 
 #: ../src/lib/exporters/pdf_exporter.py:23
 msgid "Shopping list for: "
-msgstr "Seznam nákupu pro:"
+msgstr "Seznam nákupu pro: "
 
 #: ../src/lib/exporters/recipe_emailer.py:105
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
@@ -2371,7 +2375,7 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:75
 #~ msgid "_Image: "
-#~ msgstr "_Obrázek:•"
+#~ msgstr "_Obrázek:• "
 
 #: ../glade/shopList.glade.h:4
 #~ msgid "Already Have (Pantry Items)"
@@ -2468,7 +2472,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:1945
 #~ msgid "Delete them."
-#~ msgstr "Smazat je."
+#~ msgstr "Smazat je. "
 
 #: ../src/lib/reccard.py:1946
 #~ msgid "Move them."
