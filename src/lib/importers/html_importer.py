@@ -4,6 +4,7 @@ import BeautifulSoup
 import socket
 from html_plugins import *
 from gourmet.gdebug import *
+from gettext import gettext as _
 
 DEFAULT_SOCKET_TIMEOUT=45.0
 URLOPEN_SOCKET_TIMEOUT=15.0
@@ -223,6 +224,38 @@ class BeautifulSoupScraper:
         else:
             self.dic[name]=val
 
+class GenericScraper (BeautifulSoupScraper):
+    """A very simple scraper.
+
+    We grab a list of images and all the text.
+    """
+    def __init__ (self):
+        BeautifulSoupScraper.__init__(self,
+            [['text',
+              [{'tag':'body'}],
+              'text',
+              ],
+             ['images',
+              [{'tag':'img',
+                'index':(0,None)}],
+              'src',
+              lambda s,v: [s]],
+             ['title',
+              [{'tag':'title'}],
+              'text',],
+             ]
+            )
+
+    def scrape (self):
+        dic = BeautifulSoupScraper.scrape(self)
+        print 'scraped...',dic
+        text = dic['title']+'\n'+dic['text']
+        images = dic['images']
+        print images
+        #images = [(isinstance(i,str) and i or
+        #           i[0]) for i in dic['images']]
+        return text,images
+        
 def get_text (tag, strip=True):
     """Get text from tag.
 
@@ -294,7 +327,7 @@ def import_url (url, rd, progress=None, add_webpage_source=True, threaded=False)
     sock=urllib.urlopen(url)
     header=sock.headers.get('content-type','text/html')
     if progress: progress(0.02, 'Reading headers')
-    if header=='text/html':
+    if header.find('html')>=0:
         #return scrape_url(url,progress)
         return WebPageImporter(rd,
                                url,
@@ -345,9 +378,15 @@ class WebPageImporter (importer.importer):
         self.d = scrape_url(self.url, progress=self.prog)
         debug('Scraping url returned %s'%self.d,0)
         if not self.d:
-            raise NotImplementedError("Can't import URL %s, we only support recipes from %s"%(
-                self.url,
-                SUPPORTED_URLS.keys()))
+            # Interactive we go...
+            gs = GenericScraper()
+            text,images = gs.scrape_url(self.url, progress=self.prog)
+            import interactive_importer
+            ii = interactive_importer.InteractiveImporter()
+            ii.set_text(text)
+            ii.run()
+            return
+
         self.start_rec()
         # Add webpage as source
         if self.add_webpage_source:
