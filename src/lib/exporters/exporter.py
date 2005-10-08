@@ -27,6 +27,8 @@ class exporter:
                               'rating',
                               'preptime',
                               'cooktime'],
+                  text_attr_order = ['instructions',
+                                     'modifications'],
                   do_markup=True,
                   use_ml=False,
                   convert_attnames=True,
@@ -39,6 +41,7 @@ class exporter:
         order is a list of our core elements in order: 'image','attr','text' and 'ings'
         attr_order is a list of our attributes in the order we should export them:
                    title, category, cuisine, servings, source, rating, preptime, cooktime
+        text_attr_order is a list of our text attributes.
         do_markup is a flag; if true, we interpret tags in text blocks by calling
                   self.handle_markup to e.g. to simple plaintext renderings of tags.
         use_ml is a flag; if true, we escape strings we output to be valid *ml
@@ -50,6 +53,7 @@ class exporter:
         """
         tt = TimeAction('exporter.__init__()',0)
 	self.attr_order=attr_order
+        self.text_attr_order = text_attr_order
         self.out = out
         self.r = r
         self.rd=rd
@@ -63,28 +67,31 @@ class exporter:
         self.write_head()
         self.images = []
         for task in order:
-            t=TimeAction('exporter._write_attrs()',4)
+            t=TimeAction('exporter._write_attrs_()',4)
             if task=='image':
-                if self.grab_attr(self.r,'image'):
+                if self._grab_attr_(self.r,'image'):
                     self.write_image(self.r.image)
             if task=='attr':
-                self._write_attrs()
+                self._write_attrs_()
                 t.end()
-                t=TimeAction('exporter._write_text()',4)
+                t=TimeAction('exporter._write_text_()',4)
             elif task=='text':
-                self._write_text()
+                self._write_text_()
                 t.end()
-                t=TimeAction('exporter._write_ings()',4)            
-            elif task=='ings': self._write_ings()
+                t=TimeAction('exporter._write_ings_()',4)            
+            elif task=='ings': self._write_ings_()
             t.end()
         self.write_foot()
         tt.end()
+
+    # Internal methods -- ideally, subclasses should have no reason to
+    # override any of these methods.
         
-    def _write_attrs (self):        
+    def _write_attrs_ (self):        
         self.write_attr_head()
         for a in self.attr_order:
             gglobals.gt.gtk_update()
-            txt=self.grab_attr(self.r,a)
+            txt=self._grab_attr_(self.r,a)
             if txt and txt.strip():
                 if (a=='preptime' or a=='cooktime') and a.find("0 ")==0: pass
                 else:
@@ -94,9 +101,9 @@ class exporter:
                         self.write_attr(a,txt)
         self.write_attr_foot()
 
-    def _write_text (self):
-        for a in ['instructions','modifications']:
-            txt=self.grab_attr(self.r,a)
+    def _write_text_ (self):
+        for a in self.text_attr_order:
+            txt=self._grab_attr_(self.r,a)
             if txt and txt.strip():
                 if self.do_markup: txt=self.handle_markup(txt)
                 if not self.use_ml: txt = xml.sax.saxutils.unescape(txt)
@@ -105,7 +112,9 @@ class exporter:
                 else:
                     self.write_text(a,txt)
 
-    def _write_ings (self):
+    def _write_ings_ (self):
+        """Write all of our ingredients.
+        """
         ingredients = self.rd.get_ings(self.r)
         if not ingredients:
             return
@@ -116,33 +125,26 @@ class exporter:
             if g:
                 self.write_grouphead(g)            
             for i in ings:
-                amount,unit = self.get_amount_and_unit(i)
-                if self.grab_attr(i,'refid'):
+                amount,unit = self._get_amount_and_unit_(i)
+                if self._grab_attr_(i,'refid'):
                     self.write_ingref(amount=amount,
                                       unit=unit,
-                                      item=self.grab_attr(i,'item'),
-                                      refid=self.grab_attr(i,'refid'),
-                                      optional=self.grab_attr(i,'optional')
+                                      item=self._grab_attr_(i,'item'),
+                                      refid=self._grab_attr_(i,'refid'),
+                                      optional=self._grab_attr_(i,'optional')
                                       )
                 else:
                     self.write_ing(amount=amount,
                                    unit=unit,
-                                   item=self.grab_attr(i,'item'),
-                                   key=self.grab_attr(i,'ingkey'),
-                                   optional=self.grab_attr(i,'optional')
+                                   item=self._grab_attr_(i,'item'),
+                                   key=self._grab_attr_(i,'ingkey'),
+                                   optional=self._grab_attr_(i,'optional')
                                    )
             if g:
                 self.write_groupfoot()
         self.write_ingfoot()
 
-
-    def write_image (self, image):
-        pass
-
-    def get_amount_and_unit (self, ing):
-        return self.rd.get_amount_and_unit(ing,fractions=self.fractions)
-
-    def grab_attr (self, obj, attr):
+    def _grab_attr_ (self, obj, attr):
         try:
             ret = getattr(obj,attr)
         except:
@@ -167,28 +169,62 @@ class exporter:
                     raise
             return ret
 
+    def _get_amount_and_unit_ (self, ing):
+        return self.rd.get_amount_and_unit(ing,fractions=self.fractions)
+
+    # Below are the images inherited exporters should subclass.
+
+    def write_image (self, image):
+        """Write image based on binary data for an image file (jpeg format)."""
+        pass
+
+
     def write_head (self):
+        """Write any necessary header material at recipe start."""
         pass
 
     def write_foot (self):
+        """Write any necessary footer material at recipe end."""
         pass
 
     def write_inghead(self):
+        """Write any necessary markup before ingredients."""
         self.out.write("\n---\n%s\n---\n"%_("Ingredients"))
 
     def write_ingfoot(self):
+        """Write any necessary markup after ingredients."""
         pass
 
     def write_attr_head (self):
+        """Write any necessary markup before attributes."""
         pass
     
     def write_attr_foot (self):
+        """Write any necessary markup after attributes."""
         pass
 
     def write_attr (self, label, text):
+        """Write an attribute with label and text.
+
+        If we've been initialized with convert_attnames=True, the
+        label will already be translated to our current
+        locale. Otherwise, the label will be the same as it used
+        internally in our database.
+
+        So if your method needs to do something special based on the
+        attribute name, we need to set convert_attnames to False (and
+        do any necessary i18n of the label name ourselves.
+        """
         self.out.write("%s: %s\n"%(label, text.strip()))
 
     def write_text (self, label, text):
+        """Write a text chunk.
+
+        This could include markup if we've been initialized with
+        do_markup=False.  Otherwise, markup will be handled by the
+        handle_markup methods (handle_italic, handle_bold,
+        handle_underline).
+        """
         self.out.write("\n---\n%s\n---\n"%label)
         ll=text.split("\n")
         for l in ll:
@@ -197,6 +233,7 @@ class exporter:
         self.out.write('\n\n')
 
     def handle_markup (self, txt):
+        """Handle markup inside of txt."""
         import pango
         outtxt = ""
         try:
@@ -221,15 +258,25 @@ class exporter:
             more=ai.next()
         return outtxt
 
-    def handle_italic (self,chunk): return "*"+chunk+"*"
-    def handle_bold (self,chunk): return chunk.upper()
-    def handle_underline (self,chunk): return "_" + chunk + "_"
+    def handle_italic (self,chunk):
+        """Make chunk italic, or the equivalent."""
+        return "*"+chunk+"*"
+    
+    def handle_bold (self,chunk):
+        """Make chunk bold, or the equivalent."""
+        return chunk.upper()
+    
+    def handle_underline (self,chunk):
+        """Make chunk underlined, or the equivalent of"""
+        return "_" + chunk + "_"
 
     def write_grouphead (self, text):
         """The start of group of ingredients named TEXT"""
         self.out.write("\n%s:\n"%text.strip())
 
     def write_groupfoot (self):
+        """Mark the end of a group of ingredients.
+        """
         pass
     
     def write_ingref (self, amount=1, unit=None,
@@ -242,6 +289,7 @@ class exporter:
                        key=None, optional=optional)
 
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
+        """Write ingredient."""
         if amount:
             self.out.write("%s"%amount)
         if unit:
@@ -253,6 +301,7 @@ class exporter:
         self.out.write("\n")
 
 class exporter_mult (exporter):
+    """A basic exporter class that can handle a multiplied recipe."""
     def __init__ (self, rd, r, out,
                   conv=None, 
                   change_units=True,
@@ -291,7 +340,7 @@ class exporter_mult (exporter):
         #attr = gglobals.NAME_TO_ATTR[label]
         self.out.write("%s: %s\n"%(label, text))
 
-    def grab_attr (self, obj, attr):
+    def _grab_attr_ (self, obj, attr):
         """Grab attribute attr of obj obj.
 
         Possibly manipulate the attribute we get to hand out export
@@ -304,18 +353,17 @@ class exporter_mult (exporter):
                 return convert.float_to_frac(fl_ret * self.mult,
                                              fractions=self.fractions)
         else:
-            return exporter.grab_attr(self,obj,attr)
+            return exporter._grab_attr_(self,obj,attr)
 
     def get_amount_and_unit (self, ing):
-        if self.mult != 1 and self.change_units:
-            return self.rd.get_amount_and_unit(ing,mult=self.mult,conv=self.conv,
-                                               fractions=self.fractions)
-        else:
-            return self.rd.get_amount_and_unit(ing,mult=self.mult,
-                                               fractions=self.fractions)
-        
+         if self.mult != 1 and self.change_units:
+             return self.rd.get_amount_and_unit(ing,mult=self.mult,conv=self.conv,
+                                                fractions=self.fractions)
+         else:
+             return self.rd.get_amount_and_unit(ing,mult=self.mult,
+
+
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
-        
         if amount:
             self.out.write("%s"%amount)
         if unit:
