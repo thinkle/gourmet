@@ -58,10 +58,9 @@ class html_exporter (exporter_mult):
         return t
 
     def write_head (self):
-        if hasattr(self.r,'title'):
-            title=xml.sax.saxutils.escape(self.r.title)
-        else:
-            title=_("Recipe")
+        title self._grab_attr_(self.r,'title')
+        if not title: title = _('Recipe')
+        title=xml.sax.saxutils.escape()
         if self.start_html:
             self.out.write(HTML_HEADER_START)
             self.out.write("<title>%s</title>"%title)
