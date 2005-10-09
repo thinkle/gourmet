@@ -382,7 +382,7 @@ class WebPageImporter (importer.importer):
             gs = GenericScraper()
             text,images = gs.scrape_url(self.url, progress=self.prog)
             import interactive_importer
-            ii = interactive_importer.InteractiveImporter()
+            ii = interactive_importer.InteractiveImporter(self.rd)
             ii.set_text(text)
             ii.run()
             return

@@ -9,6 +9,8 @@ import re, os.path
 from gourmet import convert
 from gourmet import gglobals
 import importer
+from generic_recipe_parser import RecipeParser
+
 
 # Copied from """
 # SimpleGladeApp.py
@@ -305,78 +307,87 @@ class SimpleGladeApp:
 
 # End copied material
 
-class RecipeParser:
 
-    LONG_LINE = 80
-    SHORT_LINE = 40
+class ConvenientImporter (importer.importer):
+    """Add some convenience methods to our standard importer.
+    """
+    started=False
 
-    INGREDIENT = 'ING'
-    INSTRUCTIONS = 'INSTRUCTIONS'
-    ATTRIBUTE = 'ATT'
-    TITLE = 'TIT'
-    IGNORE = 'IGN'
+    def autostart_rec (f):
+        """A decorator to make sure our recipe has been started before
+        we add something to it.
+        """
+        def _ (self,*args,**kwargs):
+            self.set_added_to(True)
+            return f(self,*args,**kwargs)
+        return _
 
-    ing_matcher = re.compile("%s\s*\w+.*"%convert.NUMBER_REGEXP)
-    attribute_matcher = re.compile('\s*\w+(\W+\w+)?:\s+\w+')
-
-    def break_into_paras (self):
-        self.long_lines = False
-        for l in self.txt.split('\n'):
-            if len(l)>self.LONG_LINE:
-                self.long_lines = True
-                break
-        if self.long_lines:
-            self.paras = self.txt.split('\n')
+    @autostart_rec
+    def add_attribute (self, attname, txt):
+        print 'add_attribute',attname,'"%s"'%txt
+        if self.rec.has_key(attname):
+            self.rec[attname] = self.rec[attname] + ', ' + txt
         else:
-            # Try to deal with wrapped lines reasonably...
-            self.paras = []
-            start_new_para = True
-            for l in self.txt.split('\n'):                
-                if start_new_para or self.ing_matcher.match(l):
-                    self.paras.append(l)
-                    start_new_para = False
-                else:
-                    self.paras[-1] = self.paras[-1]+' '+l
-                    start_new_para = (len(l) < self.SHORT_LINE)
+            self.rec[attname] = txt
 
-    def parse (self, txt):
-        self.txt = txt
-        self.parsed = []
-        self.break_into_paras()
-        title_parsed = False
-        for p in self.paras:
-            if not title_parsed and p:
-                self.parsed.append((p,self.TITLE))
-                title_parsed = True
-            elif not p.strip():
-                self.parsed.append((p,self.IGNORE))
-            elif self.ing_matcher.match(p.strip()):
-                self.parsed.append((p,self.INGREDIENT))
-            elif self.attribute_matcher.match(p.strip()):
-                self.parsed.append((p,self.ATTRIBUTE))
-            else:
-                self.parsed.append((p,self.INSTRUCTIONS))
-        return self.parsed
+    @autostart_rec
+    def add_text (self, attname, txt):
+        print 'add text',attname,'"%s"'%txt
+        if self.rec.has_key(attname):
+            self.rec[attname] = self.rec[attname] + '\n' + txt
+        else:
+            self.rec[attname] = txt
+
+    @autostart_rec
+    def add_ing_group (self, txt):
+        self.group = txt
+
+    @autostart_rec
+    def add_ing_from_text (self, txt):
+        print 'add ing "%s"'%txt
+        if not txt: return        
+        mm = convert.ING_MATCHER.match(txt)
+        if not mm: raise "Unable to parse text"
+        self.start_ing()
+        groups = mm.groups()
+        amount = groups[convert.ING_MATCHER_AMT_GROUP]
+        unit = groups[convert.ING_MATCHER_UNIT_GROUP]
+        item = groups[convert.ING_MATCHER_ITEM_GROUP]
+        if amount: self.add_amt(amount)
+        if unit: self.add_unit(unit)
+        if item: self.add_item(item)
+        print 'commit ing!',self.ing
+        self.commit_ing()
+
+    def add_ings_from_text (self, txt, break_at='\n'):
+        """Add list of ingredients from block of text.
+
+        By default, there is one ingredient per line of text."""        
+        for i in txt.split(break_at): self.add_ing_from_text(i)
+
 
 # Material copied from our generic recipe importer...
 
-class InteractiveImporter (SimpleGladeApp, importer.importer):
+class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
     def __init__(self, rd):
         self.parser = RecipeParser()
         self.parser_to_choice = {
-            self.parser.INGREDIENT:'Ingredient',
-            self.parser.INSTRUCTIONS:'Instructions',
-            self.parser.IGNORE:'Ignore',
-            self.parser.TITLE:'Title',
-            self.parser.ATTRIBUTE:'Attribute',
+            'ingredient':'Ingredient',
+            'ingredients':'Ingredients',
+            'instructions':'Instructions',
+            'None':'Ignore',
+            'title':'Title',
             }
         self.added_to = False
+        self.attdic = gglobals.REC_ATTR_DIC 
+        self.textattdic = gglobals.TEXT_ATTR_DIC
         SimpleGladeApp.__init__(self,
                                 path=os.path.join(gglobals.gladebase,
                                                   "generic_importer.glade"),
                                 root="window1",
                                 domain="gourmet")
+        ConvenientImporter.__init__(self,rd,threaded=True)
 
     #-- InteractiveImporter.new {
     def new(self):
@@ -386,7 +397,7 @@ class InteractiveImporter (SimpleGladeApp, importer.importer):
         self.textview = self.glade.get_widget('textview')
         self.textbuffer = self.textview.get_buffer()
         self.textbuffer.connect('mark-set',self.on_cursor_moved)
-        self.display = RecipeDisplay(self.glade)
+        #self.display = RecipeDisplay(self.glade)
         self.glade.get_widget('window1').show()
         self.populate_action_box()
     #-- InteractiveImporter.new }
@@ -396,23 +407,20 @@ class InteractiveImporter (SimpleGladeApp, importer.importer):
     def populate_action_box (self):
         """Set up our choices of actions."""
         self.action_box = self.glade.get_widget('treeview1')
+        self.action_to_label = {}
         self.actions = {
-            'Instructions':self.display.add_instructions,
-            'Notes':self.display.add_notes,
-            'Ingredient':self.display.add_ing_from_text,
-            'Ingredients': self.display.add_ings_from_text,
-            'Ingredient Supgroup':self.display.add_ing_group,
-            #'Ignore':lambda *args: None,
-            #'Attribute':lambda txt: \
-            #self.display.add_attribute(*[t.strip() for t in txt.split(':')]),
-            'Servings':lambda txt: self.display.add_attribute('servings',txt),
-            'Cooking Time:':lambda txt: self.display.add_attribute('cooktime',txt),
-            'Preparation Time:':lambda txt: self.display.add_attribute('preptime',txt),
-            'Cuisine':lambda txt: self.display.add_attribute('cuisine',txt),
-            'Category':lambda txt: self.display.add_attribute('category',txt),                        
-            'Title':lambda txt: self.display.add_attribute('title',txt),
+            #'Instructions':self.display.add_instructions,
+            #'Notes':self.display.add_notes,
+            'Ingredient':lambda lab,txt: self.add_ing_from_text(txt),
+            'Ingredients': lambda lab,txt: self.add_ings_from_text(txt),
+            'Ingredient Supgroup':lambda lab,txt: self.add_ing_group(txt),
             }
-        
+        for attname,display_name in self.attdic.items():
+            self.actions[display_name] = self.add_attribute
+            self.action_to_label[display_name]=attname
+        for attname,display_name in self.textattdic.items():
+            self.actions[display_name] = self.add_text
+            self.action_to_label[display_name]=attname
         keys = self.actions.keys()
         keys.sort()
         # set up model
@@ -443,6 +451,7 @@ class InteractiveImporter (SimpleGladeApp, importer.importer):
         
     def set_text (self, txt):
         """Set raw text."""
+        print 'setting text',txt
         self.textbuffer = gtk.TextBuffer()
         self.textview.set_buffer(self.textbuffer)
         parsed = self.parser.parse(txt)
@@ -451,18 +460,19 @@ class InteractiveImporter (SimpleGladeApp, importer.importer):
         self.sections = []
         self.section_pos = 0
         for line,tag in parsed:
-            if not tagtable.lookup(tag):
-                tagtable.add(gtk.TextTag(tag))
-            if tag==self.parser.IGNORE:
+            print 'Inserting %s: "%s"'%(tag,line)
+            if tag==None:
                 self.textbuffer.insert(self.textbuffer.get_end_iter(),
-                                       line+'\n')
+                                       line)            
             else:
+                if not tagtable.lookup(tag):
+                    tagtable.add(gtk.TextTag(tag))
                 smark = self.textbuffer.create_mark(None,
                                                     self.textbuffer.get_end_iter(),
                                                     True)
                 self.textbuffer.insert_with_tags_by_name(
                     self.textbuffer.get_end_iter(),
-                    line+'\n',
+                    line,
                     tag
                     )
                 emark = self.textbuffer.create_mark(None,
@@ -470,6 +480,7 @@ class InteractiveImporter (SimpleGladeApp, importer.importer):
                                                     True)
                 self.sections.append((smark,emark))
         self.goto_section(0)
+        self.on_new_recipe()
 
     def goto_next_section (self):
         """Goto our next section"""
@@ -549,16 +560,14 @@ class InteractiveImporter (SimpleGladeApp, importer.importer):
     #-- InteractiveImporter.on_save {
     def on_save(self, widget, *args):
         print "on_save called with self.%s" % widget.get_name()
-        import eatdrinkfeelgood
-        ofi = sys.stdout
-        writer = eatdrinkfeelgood.RecipeWriter(ofi)
-        print 'Writing'
-        writer(self.display)
-        writer.finish()
-    #-- InteractiveImporter.on_save }
+        print 'commit rec!',self.rec
+        self.commit_rec()
 
     #-- InteractiveImporter.on_quit {
     def on_quit(self, widget, *args):
+        print 'on_quit!'
+        print 'commit!',self.rec
+        self.commit_rec()
         print "on_quit called with self.%s" % widget.get_name()
         self.glade.get_widget('window1').hide()
         gtk.main_quit()
@@ -572,12 +581,10 @@ class InteractiveImporter (SimpleGladeApp, importer.importer):
     def on_new_recipe (self, *args):
         # If we already have a recipe
         if self.added_to:
+            print 'committing!'
             self.commit_rec()
         self.start_rec()
         self.set_added_to(False)
-
-    def on_add_attribute (self, attname, attval):
-        self.rec[attname]=attval
 
     #-- InteractiveImporter.on_cursor_moved {
     def on_cursor_moved (self, widget, *args):
@@ -589,6 +596,8 @@ class InteractiveImporter (SimpleGladeApp, importer.importer):
         for t in tags:
             if self.parser_to_choice.has_key(t.props.name):
                 action = self.parser_to_choice[t.props.name]
+            elif self.attdic.has_key(t.props.name):
+                action = self.attdic[t.props.name]
         print 'setting action->',action
         self.set_current_action(action)
         
@@ -638,6 +647,9 @@ class InteractiveImporter (SimpleGladeApp, importer.importer):
         st,end = self.textbuffer.get_selection_bounds()
         self.textbuffer.insert_with_tags(st,'['+active_txt+':',self.markup_tag)
         st,end = self.textbuffer.get_selection_bounds()
+        print st,end,dir(end)
+        while end.starts_line() and end.backward_char():
+            end = self.textbuffer.get_iter_at_offset(end.get_offset()-1)
         self.textbuffer.insert_with_tags(end,']',self.markup_tag)
         # We'll do something real soon...
         #self.resultbuffer.insert(
@@ -645,36 +657,17 @@ class InteractiveImporter (SimpleGladeApp, importer.importer):
         #    "%s: %s\n"%(active_txt,selection)
         #    )
         action = self.actions[active_txt]
-        print 'Calling ',action
-        action(selection)
+        print 'Calling ',active_txt,'->',action
+        if self.action_to_label.has_key(active_txt):
+            active_txt = self.action_to_label[active_txt]
+        action(active_txt,selection)
         self.on_forward(None)
     #-- InteractiveImporter.on_apply }
 
-class RecipeDisplay:
-    def __init__ (self, glade):
-        self.parent_glade = glade
-        #self.rc_glade = ...
-
-    def add_instructions (self, txt):
-        print 'instr:',txt
-
-    def add_notes (self, txt):
-        print 'instr:',txt
-
-    def add_ing_group (self, txt):
-        print 'group:',txt
-
-    def add_ing_from_text (self, txt):
-        print 'ing:',txt
-
-    def add_ings_from_text (self, txt):
-        print 'ings:',txt
-
-    def add_attribute (self, n, v):
-        print n,':',v
-
 def main():
-    window1 = InteractiveImporter('foo')
+    from gourmet import recipeManager
+    rd = recipeManager.RecipeManager(**recipeManager.dbargs)
+    window1 = InteractiveImporter(rd)
     window1.set_text(
         """
 Quick Pesto Dinner
