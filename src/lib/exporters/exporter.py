@@ -145,6 +145,11 @@ class exporter:
         self.write_ingfoot()
 
     def _grab_attr_ (self, obj, attr):
+        # This is a bit ugly -- we allow exporting categories as if
+        # they were a single attribute even though we in fact allow
+        # multiple categories.
+        if attr=='category':
+            return ', '.join(self.rd.get_cats(obj))
         try:
             ret = getattr(obj,attr)
         except:
@@ -345,9 +350,9 @@ class exporter_mult (exporter):
 
         Possibly manipulate the attribute we get to hand out export
         something readable.
-        """
-        ret = getattr(obj,attr)
+        """        
         if attr=='servings' and self.mult:
+            ret = getattr(obj,attr)
             fl_ret = convert.frac_to_float(ret)
             if fl_ret:
                 return convert.float_to_frac(fl_ret * self.mult,
@@ -356,12 +361,12 @@ class exporter_mult (exporter):
             return exporter._grab_attr_(self,obj,attr)
 
     def get_amount_and_unit (self, ing):
-         if self.mult != 1 and self.change_units:
-             return self.rd.get_amount_and_unit(ing,mult=self.mult,conv=self.conv,
-                                                fractions=self.fractions)
-         else:
-             return self.rd.get_amount_and_unit(ing,mult=self.mult,
-
+        if self.mult != 1 and self.change_units:
+            return self.rd.get_amount_and_unit(ing,mult=self.mult,conv=self.conv,
+                                               fractions=self.fractions)
+        else:
+            return self.rd.get_amount_and_unit(ing,mult=self.mult,conv=self.conv,
+                                               fractions=self.fractions)
 
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
         if amount:
