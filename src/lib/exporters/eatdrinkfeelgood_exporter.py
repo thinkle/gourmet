@@ -32,8 +32,27 @@ class EdfgXml(exporter.exporter_mult):
     
     def __init__ (self, rd, r, out,attdics={},change_units=False,mult=1):
         impl = xml.dom.getDOMImplementation()
-        self.xmldoc = impl.createDocument(None, "eatdrinkfeelgood", None)
+        doctype = impl.createDocumentType("eatdrinkfeelgood", 
+            "-//Aaron Straup Cope//DTD Eatdrinkfeelgood 1.2//EN//XML",
+            "./eatdrinkfeelgood.dtd")
+        self.xmldoc = impl.createDocument(None, "eatdrinkfeelgood", doctype)
         self.top_element = self.xmldoc.documentElement
+        a = self.xmldoc.createAttribute('xmlns')
+        self.top_element.setAttributeNode(a) 
+        self.top_element.setAttribute('xmlns',
+            'http://www.eatdrinkfeelgood.org/1.1/ns') 
+        a = self.xmldoc.createAttribute('xmlns:dc')
+        self.top_element.setAttributeNode(a) 
+        self.top_element.setAttribute('xmlns:dc', 
+            'http://purl.org/dc/elements/1.1') 
+        a = self.xmldoc.createAttribute('xmlns:xlink')
+        self.top_element.setAttributeNode(a) 
+        self.top_element.setAttribute('xmlns:xlink', 
+            'http://www.w3.org/1999/xlink') 
+        a = self.xmldoc.createAttribute('xmlns:xi')
+        self.top_element.setAttributeNode(a) 
+        self.top_element.setAttribute('xmlns:xi', 
+            'http://www.w3.org/2001/XInclude')
         self.attdics = attdics
         exporter.exporter_mult.__init__(self, rd,r,out, use_ml=True,
                                         order=['attr','image','ings','text'],
@@ -42,19 +61,27 @@ class EdfgXml(exporter.exporter_mult):
                                         mult=mult)
 
     def write_head (self):
-        pass
+        e = self.xmldoc.createElement('recipe')
+        self.xmldoc.documentElement.appendChild(e)
+        self.e_recipe = e
 
     def write_attr (self, label, text):
         attr = NAME_TO_ATTR[label]
+        top_element = self.e_recipe
+        if attr == 'title':
+            e = self.xmldoc.createElement('name') 
+            top_element.appendChild(e)
+            top_element = e
+            attr = 'common'
         e = self.xmldoc.createElement(attr)
         t = self.xmldoc.createTextNode(xml.sax.saxutils.escape(text))
         e.appendChild(t)
-        self.top_element.appendChild(e)
+        top_element.appendChild(e)
         
     def write_text (self, label, text):
         t = self.xmldoc.createTextNode(xml.sax.saxutils.escape(text))
         e.appendChild(t)
-        self.top_element.appendChild(e)
+        self.e_recipe.appendChild(e)
 
     def write_image (self, image):
         e = self.xmldoc.createElement('image')
@@ -69,14 +96,15 @@ class EdfgXml(exporter.exporter_mult):
         t = self.xmldoc.createTextNode(base64.b64encode(image))
         e_bin64b.appendChild(t)
         e.appendChild(e_bin64b)
-        self.top_element.appendChild(e)
+        self.e_recipe.appendChild(e)
     
     def handle_italic (self, chunk): return '&lt;i&gt;'+chunk+'&lt;/i&gt;'
     def handle_bold (self, chunk): return '&lt;b&gt;'+chunk+'&lt;/b&gt;'    
     def handle_underline (self, chunk): return '&lt;u&gt;'+chunk+'&lt;/u&gt;'    
     def write_foot (self):
-        # this should be called last.  Time to write our file.
-        self.xmldoc.writexml(self.out, newl = '\n', addindent = "\t")
+        # Called last, time to write file. 
+        self.xmldoc.writexml(self.out, newl = '\n', addindent = "\t", 
+                encoding = "UTF-8")
 
     def write_inghead (self):
         print 'write_inghead not implemented yet'
@@ -88,7 +116,17 @@ class EdfgXml(exporter.exporter_mult):
         print 'write_ingref not implemented yet'
         
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
-        print 'write_ing not implemented yet'
+        top_element = self.e_recipe
+        e = self.xmldoc.createElement('ing')
+        top_element.appendChild(e)
+        top_element = e
+        e = self.xmldoc.createElement('amount')
+        top_element.appendChild(e)
+        top_element = e
+        e = self.xmldoc.createElement('quantity')
+        top_element.appendChild(e)
+        #e = self.xmldoc.createElement('n')
+        #top_element.appendChild(e)
 
     def write_grouphead (self, name):
         print 'write_grouphead not implemented yet'
@@ -113,6 +151,7 @@ if __name__ == '__main__':
     class Recipe:
         attr = 'foo'
         servings = 4
+        title = 'Test Dumplings'
 
     class FakeRecDb:
         def get_cats(self, rec):
