@@ -272,6 +272,9 @@ class RecData (rdatabase.RecData):
         if self.add_ing_hooks: self.run_hooks(self.add_ing_hooks, self.iview[-1])
         self.changed=True
         return self.iview[-1]
+
+    def do_add_cat (self, dic):
+        self.catview.append(dic)
     
     def delete_ing (self, ing):
         self.iview.delete(ing.__index__)

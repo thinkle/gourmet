@@ -276,14 +276,10 @@ class RecData:
         """
         return None
 
-    # convenience DB access functions for working with ingredients,
-    # recipes, etc.
-
-    def delete_ing (self, ing):
-        """Delete ingredient permanently."""
-        raise NotImplementedError
-
     def delete_by_criteria (self, table, criteria):
+        """Table is our table.
+        Criteria is a dictionary of critiera to delete by.
+        """
         raise NotImplementedError
 
     # Metakit has no AUTOINCREMENT, so it has to do special magic here
@@ -311,11 +307,11 @@ class RecData:
             cats = dic['category'].split(', ')
             self.delete_by_criteria(self.catview,{'id':rec.id})
             for c in cats:
-                self.catview.append({'id':rec.id,'category':c})
+                self.do_add_cat({'id':rec.id,'category':c})
             del dic['category']
         debug('do modify rec',3)
         return self.do_modify_rec(rec,dic)
-
+    
     def validate_recdic (self, recdic):
         if recdic.has_key('image') and not recdic.has_key('thumb'):
             # if we have an image but no thumbnail, we want to create the thumbnail.
@@ -372,7 +368,7 @@ class RecData:
         else:
             ID = ret.id
             for c in cats:
-                self.catview.append({'id':ID,'category':c})
+                self.do_add_cat({'id':ID,'category':c})
             return ret
 
     def add_ing (self, dic):
@@ -386,6 +382,9 @@ class RecData:
             raise
 
     def do_add_ing (self,dic):
+        raise NotImplementedError
+
+    def do_add_cat (self, dic):
         raise NotImplementedError
 
     def validate_ingdic (self,dic):
