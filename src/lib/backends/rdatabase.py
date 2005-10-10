@@ -37,15 +37,16 @@ class RecData:
     # purposes, it will look like a string, thanks to some very dark
     # magic.
     NORMALIZED_COLS = ['ingkey',
-                        'source',
-                        'category',
-                        'cuisine',
-                        'unit',
-                        'item',
-                        'inggroup',
-                        'word',
-                        'shopcategory'
-                        ]
+                       'source',
+                       'category',
+                       'cuisine',
+                       'unit',
+                       'item',
+                       'inggroup',
+                       'foodgroup',
+                       'word',
+                       'shopcategory'
+                       ]
 
     NORMALIZED_TABLES = [(k,[('id','int',['AUTOINCREMENT']),(k,'text',[])],k) for k in NORMALIZED_COLS]
 
@@ -130,7 +131,8 @@ class RecData:
     
     NUTRITION_TABLE_DESC = (
         "nutrition",
-        [(name,typ,[]) for lname,name,typ in gourmet.nutrition.parser_data.NUTRITION_FIELDS]
+        [(name,typ,[]) for lname,name,typ in gourmet.nutrition.parser_data.NUTRITION_FIELDS] + \
+        [('foodgroup','int',[])]
         )
     NUTRITION_ALIASES_TABLE_DESC = (
         'nutritionaliases',
@@ -144,6 +146,8 @@ class RecData:
          ('unit','int',[]), 
          ('factor','float',[]),],
         'ingkey')
+
+    
     
     def __init__ (self):
         # hooks run after adding, modifying or deleting a recipe.
