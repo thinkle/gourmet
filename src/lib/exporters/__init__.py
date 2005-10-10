@@ -1,4 +1,4 @@
-import exporter, gxml_exporter, gxml2_exporter, html_exporter, mealmaster_exporter, recipe_emailer
+import exporter, gxml_exporter, gxml2_exporter, html_exporter, mealmaster_exporter, recipe_emailer, eatdrinkfeelgood_exporter
 import recipe_emailer
 import printer
 from gettext import gettext as _
@@ -18,6 +18,7 @@ TXT = _('Plain Text')
 RTF = _('RTF')
 GXML2 = _('Gourmet XML File')
 GXML = _('Gourmet XML File (Obsolete, < v.0.8.2)')
+EDFG = _('Eat Drink Feel Good XML File')
 
 # Our list of filename (for user), mimetype, extensions
 # for each file we can save
@@ -26,6 +27,7 @@ saveas_filters = [
     [MMF,['text/mmf'],['*.mmf','*.MMF']],
     [TXT,['text/plain'],['*.txt','*.TXT']],      
     [GXML2,['text/xml'],['*.grmt','*.xml','*.XML']],
+    [EDFG,['text/xml'],['*.xml','*.XML']],
     #[GXML,['text/xml'],['*.xml','*.XML']],
     ]
 
@@ -35,6 +37,7 @@ saveas_single_filters = [
     [TXT,['text/plain'],['*.txt','*.TXT']],      
     #[GXML,['text/xml'],['*.xml','*.XML']],
     [GXML2,['text/xml'],['*.grmt','*.xml','*.XML']],
+    [EDFG,['text/xml'],['*.xml','*.XML']],
     ]
 
 # Add RTF to our files if it's supported
@@ -48,20 +51,23 @@ if rtf:
 # {'rd':recipe_database,'rv':recipe_view,'file':outfile,'conv':converter_instance,
 #  'prog':progress_displaying_function,'rec':individual_recipe_to_export,...}
 exporter_dict = {
-    WEBPAGE : {'mult_exporter': lambda args : html_exporter.website_exporter(args['rd'], args['rv'],
-                                                                             args['file'],
-                                                                             args['conv'],
-                                                                             progress_func=args['prog']),
-               'exporter': lambda args : html_exporter.html_exporter(args['rd'],
-                                                                     args['rec'],
-                                                                     args['out'],
-                                                                     change_units=args['change_units'],
-                                                                     mult=args['mult'],
-                                                                     conv=args['conv']),
-               'label':_('Exporting Webpage'),
-               'sublabel':_('Exporting recipes to HTML files in directory %(file)s'),
-               'single_completed':_('Recipe saved as HTML file %(file)s'),
-               },
+    WEBPAGE : {'mult_exporter': lambda args : html_exporter.website_exporter(
+        args['rd'], 
+        args['rv'],
+        args['file'],
+        args['conv'],
+        progress_func=args['prog']),
+        'exporter': lambda args : html_exporter.html_exporter(
+        args['rd'],
+        args['rec'],
+        args['out'],
+        change_units=args['change_units'],
+        mult=args['mult'],
+        conv=args['conv']),
+        'label':_('Exporting Webpage'),
+        'sublabel':_('Exporting recipes to HTML files in directory %(file)s'),
+        'single_completed':_('Recipe saved as HTML file %(file)s'),
+        },
     MMF : {'mult_exporter':lambda args : exporter.ExporterMultirec(args['rd'],
                                                                    args['rv'],
                                                                    args['file'],
@@ -132,6 +138,23 @@ exporter_dict = {
            'sublabel':_('Exporting recipes to Rich Text file %(file)s.'),
            'single_completed':_('Recipe saved as Rich Text file %(file)s'),
            },
+    EDFG : {'mult_exporter': lambda args : eatdrinkfeelgood_exporter.EdfgXml(
+        args['rd'], 
+        args['rv'],
+        args['file'],
+        args['conv'],
+        progress_func=args['prog']),
+        'exporter': lambda args : eatdrinkfeelgood_exporter.EdfgXml(
+        args['rd'],
+        args['rec'],
+        args['out'],
+        change_units=args['change_units'],
+        mult=args['mult'],
+        conv=args['conv']),
+        'label':_('Exporting Eat Drink Feel Good Format'),
+        'sublabel':_('Exporting recipes to EDFG in directory %(file)s'),
+        'single_completed':_('Recipe saved as EDFG file %(file)s'),
+        },
     }
 
 class Tester:

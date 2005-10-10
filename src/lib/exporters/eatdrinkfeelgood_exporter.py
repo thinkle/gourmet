@@ -30,7 +30,8 @@ class EdfgXml(exporter.exporter_mult):
 
     """ An XML exported for the eatdrinkfeelgood dtd """
     
-    def __init__ (self, rd, r, out,attdics={},change_units=False,mult=1):
+    def __init__ (self, rd, r, out, conv = None, attdics={}, 
+            change_units=False, mult=1):
         impl = xml.dom.getDOMImplementation()
         doctype = impl.createDocumentType("eatdrinkfeelgood", 
             "-//Aaron Straup Cope//DTD Eatdrinkfeelgood 1.2//EN//XML",
@@ -80,8 +81,7 @@ class EdfgXml(exporter.exporter_mult):
         
     def write_text (self, label, text):
         t = self.xmldoc.createTextNode(xml.sax.saxutils.escape(text))
-        e.appendChild(t)
-        self.e_recipe.appendChild(e)
+        self.e_recipe.appendChild(t)
 
     def write_image (self, image):
         e = self.xmldoc.createElement('image')
@@ -133,6 +133,16 @@ class EdfgXml(exporter.exporter_mult):
         
     def write_groupfoot (self):
         print 'write_groupfoot not implemented yet'
+
+class EdfgXmlMulti(exporter.ExporterMultirec):
+    def __init__ (self, rd, rview, out, conv=None, ext='xml', copy_css=True,
+                  css=os.path.join(datad,'default.css'),
+                  imagedir='pics' + os.path.sep,
+                  index_rows=['title','category','cuisine','rating','servings'],
+                  progress_func=None,
+                  change_units=False,
+                  mult=1):
+        self.single_exp = EdfgXml()
 
 #
 # Everything below this comment is just a minimal unit test for the exporter.
