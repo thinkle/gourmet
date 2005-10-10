@@ -415,14 +415,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.rg.recTreeDeleteRecs([self.current_rec])
         debug("delete finished",2)
     
-    def are_equal (self, obj1, obj2):
-        debug("are_equal (self, obj1, obj2):",5)
-        """A lambda-syntax-necessitated hack"""
-        if obj1 == obj2:
-            return True
-        else:
-            return False
-
     def addToShopL (self, *args):
         debug("addToShopL (self, *args):",5)
         d = shopgui.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
