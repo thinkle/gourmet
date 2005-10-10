@@ -145,6 +145,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_CENTER</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <signal name="delete_event" handler="quit" last_modification_time="Tue, 29 Jun 2004 20:02:43 GMT"/>
 
   <child>
@@ -180,6 +181,8 @@
 	      <child>
 		<widget class="GtkMenuBar" id="menubar3">
 		  <property name="visible">True</property>
+		  <property name="pack_direction">GTK_PACK_DIRECTION_LTR</property>
+		  <property name="child_pack_direction">GTK_PACK_DIRECTION_LTR</property>
 
 		  <child>
 		    <widget class="GtkMenuItem" id="file3">
@@ -200,7 +203,7 @@
 			      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image320">
+				<widget class="GtkImage" id="image341">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-new</property>
 				  <property name="icon_size">1</property>
@@ -238,10 +241,19 @@
 			  </child>
 
 			  <child>
+			    <widget class="GtkMenuItem" id="export_all_recipes1">
+			      <property name="visible">True</property>
+			      <property name="label" translatable="yes">Export A_ll Recipes</property>
+			      <property name="use_underline">True</property>
+			      <signal name="activate" handler="export_all" last_modification_time="Sat, 08 Oct 2005 21:56:16 GMT"/>
+			    </widget>
+			  </child>
+
+			  <child>
 			    <widget class="GtkMenuItem" id="export_menu_item">
 			      <property name="visible">True</property>
 			      <property name="tooltip" translatable="yes">Export selected recipes</property>
-			      <property name="label" translatable="yes">_Export</property>
+			      <property name="label" translatable="yes">_Export selected recipes</property>
 			      <property name="use_underline">True</property>
 			      <signal name="activate" handler="export" last_modification_time="Sat, 16 Oct 2004 22:21:22 GMT"/>
 			    </widget>
@@ -251,7 +263,7 @@
 			    <widget class="GtkMenuItem" id="email_menu_item">
 			      <property name="visible">True</property>
 			      <property name="tooltip" translatable="yes">E-mail selected recipes</property>
-			      <property name="label" translatable="yes">E-_mail recipes</property>
+			      <property name="label" translatable="yes">E-_mail selected recipes</property>
 			      <property name="use_underline">True</property>
 			      <signal name="activate" handler="email" last_modification_time="Tue, 30 Nov 2004 22:42:44 GMT"/>
 			    </widget>
@@ -267,7 +279,7 @@
 			      <accelerator key="p" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image321">
+				<widget class="GtkImage" id="image342">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-print</property>
 				  <property name="icon_size">1</property>
@@ -318,7 +330,7 @@
 			      <accelerator key="z" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image322">
+				<widget class="GtkImage" id="image343">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-undo</property>
 				  <property name="icon_size">1</property>
@@ -340,7 +352,7 @@
 			      <accelerator key="z" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image323">
+				<widget class="GtkImage" id="image344">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-redo</property>
 				  <property name="icon_size">1</property>
@@ -438,11 +450,11 @@
 			      <property name="label" translatable="yes">View Recipe _Card</property>
 			      <property name="use_underline">True</property>
 			      <signal name="activate" handler="rl_viewrec" last_modification_time="Sun, 12 Sep 2004 19:57:17 GMT"/>
-			      <accelerator key="c" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 			      <accelerator key="o" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+			      <accelerator key="c" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image324">
+				<widget class="GtkImage" id="image345">
 				  <property name="visible">True</property>
 				  <property name="pixbuf">recbox.png</property>
 				  <property name="xalign">0.5</property>
@@ -464,7 +476,7 @@
 			      <accelerator key="l" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image325">
+				<widget class="GtkImage" id="image346">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-add</property>
 				  <property name="icon_size">1</property>
@@ -487,7 +499,7 @@
 			      <accelerator key="d" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image326">
+				<widget class="GtkImage" id="image347">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-delete</property>
 				  <property name="icon_size">1</property>
@@ -577,7 +589,7 @@
 			      <signal name="activate" handler="about" last_modification_time="Mon, 26 Apr 2004 01:23:41 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image327">
+				<widget class="GtkImage" id="image348">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-dialog-info</property>
 				  <property name="icon_size">1</property>
@@ -613,101 +625,125 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkHBox" id="handlebox3">
+	    <widget class="GtkToolbar" id="toolbar1">
 	      <property name="visible">True</property>
-	      <property name="homogeneous">False</property>
-	      <property name="spacing">0</property>
+	      <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
+	      <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
+	      <property name="tooltips">True</property>
+	      <property name="show_arrow">True</property>
 
 	      <child>
-		<widget class="GtkToolbar" id="hbox16">
+		<widget class="GtkToolButton" id="button44">
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
-		  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
-		  <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
-		  <property name="tooltips">True</property>
-		  <property name="show_arrow">True</property>
+		  <property name="label" translatable="yes">_New Recipe</property>
+		  <property name="use_underline">True</property>
+		  <property name="stock_id">gtk-new</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+		  <signal name="clicked" handler="newRec" last_modification_time="Thu, 27 May 2004 22:03:15 GMT"/>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkToolItem" id="toolitem23">
+		  <property name="visible">True</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
 
 		  <child>
-		    <widget class="GtkToolButton" id="rlViewRecButton">
+		    <widget class="GtkVSeparator" id="vseparator1">
 		      <property name="visible">True</property>
-		      <property name="can_focus">True</property>
-		      <property name="label" translatable="yes">View Re_cipe</property>
-		      <property name="use_underline">True</property>
-		      <property name="icon">recbox.png</property>
-		      <property name="visible_horizontal">True</property>
-		      <property name="visible_vertical">True</property>
-		      <property name="is_important">False</property>
-		      <signal name="clicked" handler="rl_viewrec" last_modification_time="Wed, 21 Apr 2004 20:39:15 GMT"/>
 		    </widget>
-		    <packing>
-		      <property name="expand">False</property>
-		      <property name="homogeneous">False</property>
-		    </packing>
-		  </child>
-
-		  <child>
-		    <widget class="GtkToolButton" id="rlShopRecButton">
-		      <property name="visible">True</property>
-		      <property name="can_focus">True</property>
-		      <property name="label" translatable="yes">Add to _Shopping List</property>
-		      <property name="use_underline">True</property>
-		      <property name="stock_id">gtk-add</property>
-		      <property name="visible_horizontal">True</property>
-		      <property name="visible_vertical">True</property>
-		      <property name="is_important">False</property>
-		      <signal name="clicked" handler="rl_shoprec" last_modification_time="Wed, 21 Apr 2004 20:39:15 GMT"/>
-		    </widget>
-		    <packing>
-		      <property name="expand">False</property>
-		      <property name="homogeneous">False</property>
-		    </packing>
-		  </child>
-
-		  <child>
-		    <widget class="GtkToolButton" id="rlDelRecButton">
-		      <property name="visible">True</property>
-		      <property name="can_focus">True</property>
-		      <property name="stock_id">gtk-delete</property>
-		      <property name="visible_horizontal">True</property>
-		      <property name="visible_vertical">True</property>
-		      <property name="is_important">False</property>
-		      <signal name="clicked" handler="rl_delrec" last_modification_time="Wed, 21 Apr 2004 20:39:15 GMT"/>
-		    </widget>
-		    <packing>
-		      <property name="expand">False</property>
-		      <property name="homogeneous">False</property>
-		    </packing>
-		  </child>
-
-		  <child>
-		    <widget class="GtkToolButton" id="button44">
-		      <property name="visible">True</property>
-		      <property name="can_focus">True</property>
-		      <property name="label" translatable="yes">_New Recipe</property>
-		      <property name="use_underline">True</property>
-		      <property name="stock_id">gtk-new</property>
-		      <property name="visible_horizontal">True</property>
-		      <property name="visible_vertical">True</property>
-		      <property name="is_important">False</property>
-		      <signal name="clicked" handler="newRec" last_modification_time="Thu, 27 May 2004 22:03:15 GMT"/>
-		    </widget>
-		    <packing>
-		      <property name="expand">False</property>
-		      <property name="homogeneous">True</property>
-		    </packing>
 		  </child>
 		</widget>
 		<packing>
-		  <property name="padding">0</property>
-		  <property name="expand">True</property>
-		  <property name="fill">True</property>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkToolButton" id="rlDelRecButton">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="stock_id">gtk-delete</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+		  <signal name="clicked" handler="rl_delrec" last_modification_time="Wed, 21 Apr 2004 20:39:15 GMT"/>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkToolItem" id="toolitem24">
+		  <property name="visible">True</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+
+		  <child>
+		    <widget class="GtkVSeparator" id="vseparator2">
+		      <property name="visible">True</property>
+		    </widget>
+		  </child>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkToolButton" id="rlShopRecButton">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="label" translatable="yes">Add to _Shopping List</property>
+		  <property name="use_underline">True</property>
+		  <property name="stock_id">gtk-add</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+		  <signal name="clicked" handler="rl_shoprec" last_modification_time="Wed, 21 Apr 2004 20:39:15 GMT"/>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkToolButton" id="rlViewRecButton">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="label" translatable="yes">View Re_cipe</property>
+		  <property name="use_underline">True</property>
+		  <property name="icon">recbox.png</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+		  <signal name="clicked" handler="rl_viewrec" last_modification_time="Wed, 21 Apr 2004 20:39:15 GMT"/>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
 		</packing>
 	      </child>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
 	      <property name="expand">False</property>
-	      <property name="fill">True</property>
+	      <property name="fill">False</property>
 	    </packing>
 	  </child>
 
