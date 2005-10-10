@@ -70,6 +70,7 @@ class RecData (rdatabase.RecData):
             for tabl,desc in [('sview',self.SHOPCATS_TABLE_DESC),
                               ('scview',self.SHOPCATSORDER_TABLE_DESC),
                               ('pview',self.PANTRY_TABLE_DESC)]:
+                #print old_db,tabl,table_cols=[i[0] for i in desc[1]],prog=lambda p,m: self.pd.set_progress(p/tot+(n*p/tot),m),convert_pickles=True
                 self.copy_table(
                     old_db,
                     tabl,
@@ -228,11 +229,13 @@ class RecData (rdatabase.RecData):
         return r
 
     def do_modify_rec (self, rec, dic):
+        if not rec or not dic: return
         # This is a bit ugly, but we need to grab the rec object
         # afresh for changes to "stick".
-        rec = self.get_rec(rec.id)
+        rid = rec.id
+        rec = self.get_rec(rid)
         if not rec:
-            print 'Odd: we find no recipe for ID ',rec.id
+            print 'Odd: we find no recipe for ID ',rid
             return
         for k,v in dic.items():
             if hasattr(rec,k):
