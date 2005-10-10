@@ -252,9 +252,7 @@ class GenericScraper (BeautifulSoupScraper):
         print 'scraped...',dic
         text = dic['title']+'\n'+dic['text']
         images = dic['images']
-        print images
-        #images = [(isinstance(i,str) and i or
-        #           i[0]) for i in dic['images']]
+        if type(images)!=list: images = [images]
         images = [urllib.basejoin(self.url,i) for i in images]
         return text,images
         
@@ -265,18 +263,21 @@ def get_text (tag, strip=True):
     We will get rid of white space and prevent <BR> tags with newlines.
     """
     if tag.string:
-        if strip:
-            ret=tag.string
-            ret = re.sub('\s+',' ',ret)
-            ret = ret.strip()
-            return unicode(ret)
-        else: return unicode(tag.string)
+        ret = tag.string
     else:
-        stuff = tag.prettify()
-        stuff = re.sub('\s+',' ',stuff)
-        stuff = re.sub('<[bB][rR]\s*/?>','\n',stuff)
-        stuff = re.sub('<[^>]+>','',stuff)
-        return unicode(stuff.strip())
+        ret = ''.join([get_text(o) for o in tag.contents])
+    if strip:
+        #ret = re.sub('\s+',' ',ret)
+        #ret = ret.strip()
+        ret = re.sub('\s*\n\s*','\n',ret)
+        ret = re.sub('\xa0',' ',ret)
+        ret = re.sub('[\t ]+',' ',ret)
+        #ret.strip()
+    try:
+        return unicode(ret,errors='ignore')
+    except:
+        print 'wtf... screwy encodingness with ',ret
+        return ret
 
 img_src_regexp = re.compile('<img[^>]+src=[\'\"]([^\'"]+)')
 
