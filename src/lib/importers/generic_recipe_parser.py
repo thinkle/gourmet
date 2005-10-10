@@ -168,11 +168,7 @@ class RecipeParser:
                                 break
                         else:
                             self.parsed.append((p,attr))
-        print 'first parse:'
-        for c,t in self.parsed: print c,
         self.join_the_joinable()
-        print 'second parse:'
-        for c,t in self.parsed: print c,
         return self.parsed
 
     def join_the_joinable (self):
@@ -181,27 +177,21 @@ class RecipeParser:
         This means: produce fewer elements to jump through for the
         user if possible.
         """
-        print 'start with ',self.parsed
         parsed = self.parsed[0:]
         self.parsed = []
         for chunk,tag in parsed:
-            print 'looking at ',chunk,tag
             if len(self.parsed)==0:
-                print 'first one!'
                 self.parsed.append([chunk,tag])
                 continue
             if self.change_on_join.has_key(tag):
                 look_for = [tag,self.change_on_join[tag]]
             else:
                 look_for = [tag]
-            print 'looking for tags ',look_for
             add_on = ''
             added = False
             for n in range(1,len(self.parsed)+1):
-                print 'looking at -%s'%n,self.parsed[-n][1]
                 oldchunk,oldtag = self.parsed[-n]
                 if oldtag in look_for:
-                    print 'Add!'
                     self.parsed[-n][0] = oldchunk+add_on+chunk
                     added = True
                     if self.change_on_join.has_key(oldtag):
@@ -211,14 +201,11 @@ class RecipeParser:
                         self.parsed = self.parsed[0:-(n-1)]
                     break
                 if oldtag == None:
-                    print 'Ignore',oldchunk
                     add_on += oldchunk
                 else:
-                    print 'Stop',
                     break
             if not added:
                 self.parsed.append([chunk,tag])
-        print 'end with:',self.parsed
 
 class RecipeTestCase (unittest.TestCase):
     def setUp (self):
