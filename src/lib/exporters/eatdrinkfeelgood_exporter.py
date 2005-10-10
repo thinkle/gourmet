@@ -30,36 +30,15 @@ class EdfgXml(exporter.exporter_mult):
 
     """ An XML exported for the eatdrinkfeelgood dtd """
     
-    def __init__ (self, rd, r, out, conv = None, attdics={}, 
+    def __init__ (self, rd, r, out, xmldoc, conv = None, attdics={}, 
             change_units=False, mult=1):
-        impl = xml.dom.getDOMImplementation()
-        doctype = impl.createDocumentType("eatdrinkfeelgood", 
-            "-//Aaron Straup Cope//DTD Eatdrinkfeelgood 1.2//EN//XML",
-            "./eatdrinkfeelgood.dtd")
-        self.xmldoc = impl.createDocument(None, "eatdrinkfeelgood", doctype)
-        self.top_element = self.xmldoc.documentElement
-        a = self.xmldoc.createAttribute('xmlns')
-        self.top_element.setAttributeNode(a) 
-        self.top_element.setAttribute('xmlns',
-            'http://www.eatdrinkfeelgood.org/1.1/ns') 
-        a = self.xmldoc.createAttribute('xmlns:dc')
-        self.top_element.setAttributeNode(a) 
-        self.top_element.setAttribute('xmlns:dc', 
-            'http://purl.org/dc/elements/1.1') 
-        a = self.xmldoc.createAttribute('xmlns:xlink')
-        self.top_element.setAttributeNode(a) 
-        self.top_element.setAttribute('xmlns:xlink', 
-            'http://www.w3.org/1999/xlink') 
-        a = self.xmldoc.createAttribute('xmlns:xi')
-        self.top_element.setAttributeNode(a) 
-        self.top_element.setAttribute('xmlns:xi', 
-            'http://www.w3.org/2001/XInclude')
-        self.attdics = attdics
+        self.xmldoc = xmldoc
         exporter.exporter_mult.__init__(self, rd,r,out, use_ml=True,
                                         order=['attr','image','ings','text'],
                                         do_markup=True,
                                         change_units=change_units,
                                         mult=mult)
+
 
     def write_head (self):
         e = self.xmldoc.createElement('recipe')
@@ -102,9 +81,7 @@ class EdfgXml(exporter.exporter_mult):
     def handle_bold (self, chunk): return '&lt;b&gt;'+chunk+'&lt;/b&gt;'    
     def handle_underline (self, chunk): return '&lt;u&gt;'+chunk+'&lt;/u&gt;'    
     def write_foot (self):
-        # Called last, time to write file. 
-        self.xmldoc.writexml(self.out, newl = '\n', addindent = "\t", 
-                encoding = "UTF-8")
+        print 'write_foot not implemented yet'
 
     def write_inghead (self):
         print 'write_inghead not implemented yet'
@@ -134,49 +111,43 @@ class EdfgXml(exporter.exporter_mult):
     def write_groupfoot (self):
         print 'write_groupfoot not implemented yet'
 
-class EdfgXmlMulti(exporter.ExporterMultirec):
-    def __init__ (self, rd, rview, out, conv=None, ext='xml', copy_css=True,
-                  css=os.path.join(datad,'default.css'),
-                  imagedir='pics' + os.path.sep,
-                  index_rows=['title','category','cuisine','rating','servings'],
-                  progress_func=None,
-                  change_units=False,
-                  mult=1):
-        self.single_exp = EdfgXml()
+class EdfgXmlM(exporter.ExporterMultirec):
+    def __init__ (self, rd, rview, out, one_file=True, progress_func=None,
+        change_units=False, mult=1):
+        self.rd=rd
+        impl = xml.dom.getDOMImplementation()
+        doctype = impl.createDocumentType("eatdrinkfeelgood", 
+            "-//Aaron Straup Cope//DTD Eatdrinkfeelgood 1.2//EN//XML",
+            "./eatdrinkfeelgood.dtd")
+        self.xmldoc = impl.createDocument(None, "eatdrinkfeelgood", doctype)
+        self.top_element = self.xmldoc.documentElement
+        exporter.ExporterMultirec.__init__(
+            self, rd, rview, out, one_file=True, ext='xml', exporter=EdfgXml,
+            progress_func=progress_func,
+            exporter_kwargs={'change_units':change_units,
+                             'mult':mult,
+                             'xmldoc':self.xmldoc
+                             }
+            )
 
-#
-# Everything below this comment is just a minimal unit test for the exporter.
-# I could not find an easy way to create a test backend to for this test, so I
-# wrote an ugly very limited one.
-#
-# When this module is run standalone, it will produce a bogus edfg-out.xml
-# file
-#
+    def write_header (self):
+        a = self.xmldoc.createAttribute('xmlns')
+        self.top_element.setAttributeNode(a) 
+        self.top_element.setAttribute('xmlns',
+            'http://www.eatdrinkfeelgood.org/1.1/ns') 
+        a = self.xmldoc.createAttribute('xmlns:dc')
+        self.top_element.setAttributeNode(a) 
+        self.top_element.setAttribute('xmlns:dc', 
+            'http://purl.org/dc/elements/1.1') 
+        a = self.xmldoc.createAttribute('xmlns:xlink')
+        self.top_element.setAttributeNode(a) 
+        self.top_element.setAttribute('xmlns:xlink', 
+            'http://www.w3.org/1999/xlink') 
+        a = self.xmldoc.createAttribute('xmlns:xi')
+        self.top_element.setAttributeNode(a) 
+        self.top_element.setAttribute('xmlns:xi', 
+            'http://www.w3.org/2001/XInclude')
 
-if __name__ == '__main__':
-
-    class Ingredient:
-        foo = 0
-
-    class Recipe:
-        attr = 'foo'
-        servings = 4
-        title = 'Test Dumplings'
-
-    class FakeRecDb:
-        def get_cats(self, rec):
-            return ['food', 'poison']
-
-        def get_ings(self, rec):
-            return Ingredient() 
-
-        def order_ings(self, iview):
-            return [[None,['mucus']]] 
-
-        def get_amount_and_unit (self, ing, mult=1,
-            conv=None,fractions = None):
-            return (1, 'gigaspoon')  
-
-    f = file('edfg-out.xml', 'w')
-    exporter = EdfgXml(FakeRecDb(),Recipe(),f)
-
+    def write_footer (self):
+        self.xmldoc.writexml(self.ofi, newl = '\n', addindent = "\t", 
+                encoding = "UTF-8")
