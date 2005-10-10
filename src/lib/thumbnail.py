@@ -3,8 +3,12 @@ from gdebug import debug
 
 MAX_THUMBSIZE=10000000
 
-def check_for_thumbnail (uri, type="large"):
-    """Given a URI, return a thumbnail of the image, or None if no thumbnail can be made."""
+# Keep track of uris we fetch...
+fetched_uris = {}
+
+def check_for_thumbnail (uri, type="large",reporthook=None):
+    """Given a URI, return a file with a thumbnail of the image, or
+    None if no thumbnail can be made."""
     if not uri:
         return ""
     m = md5.md5(uri)
@@ -16,10 +20,14 @@ def check_for_thumbnail (uri, type="large"):
     if not os.path.isdir(targetdir):
         import tempfile
         name = tempfile.mktemp()
-    try:
-        fn,headers = urllib.urlretrieve(uri)
-    except IOError:
-        return None
+    if fetched_uris.has_key(uri) and os.path.exists(fetched_uris[uri]):
+        fn = fetched_uris[uri]
+    else:
+        try:
+            fn,headers = urllib.urlretrieve(uri,reporthook=reporthook)
+            fetched_uris[uri]=fn
+        except IOError:
+            return None
     if not os.path.exists(name):
         return create_thumbnail(fn,name,uri,type)
     try:
