@@ -135,11 +135,12 @@ class RecIndex:
         self.lsrchvw = self.rd.rview.select(deleted=False)
         self.searchvw = self.rd.rview.select(deleted=False)
 
-    def make_rec_visible (self, rec):
+    def make_rec_visible (self, *args):
         """Make sure recipe REC shows up in our index."""
         #if not self.rg.wait_to_filter:
         self.setup_search_views()
-        self.reset_search()
+        #self.reset_search()
+        self.redo_search()
         #debug('make_rec_visible',0)
         #self.visible.append(rec.id)
         #if not self.rg.wait_to_filter:
