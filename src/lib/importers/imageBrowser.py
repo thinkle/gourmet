@@ -88,9 +88,11 @@ class ImageBrowser (gtk.IconView):
 
 class ImageBrowserDialog (ModalDialog):
     def __init__ (self, default=None, title="Select Image",okay=True,
-                  label=False, parent=None, cancel=True, modal=True, expander=None):
-        ModalDialog.__init__(self, default=None, title="Select Image",okay=True,
-                  label=False, parent=None, cancel=True, modal=True, expander=None)
+                  label="Select an image", sublabel=None,parent=None, cancel=True, modal=True, expander=None):
+        ModalDialog.__init__(self,default=default, title=title,
+                             okay=okay,label=label,sublabel=sublabel,
+                             parent=parent, cancel=cancel, modal=modal,
+                             expander=expander)
         self.set_default_size(600,600)
 
     def setup_dialog (self, *args, **kwargs):
@@ -100,10 +102,9 @@ class ImageBrowserDialog (ModalDialog):
         self.ib.connect('item-activated',self.okcb)
         self.sw = gtk.ScrolledWindow()
         self.pb = gtk.ProgressBar()
-        self.vbox.pack_start
-        self.vbox.pack_start(self.pb,expand=False)
+        self.vbox.pack_end(self.sw)
+        self.vbox.pack_end(self.pb,expand=False)
         self.ib.progressbar = self.pb
-        self.vbox.pack_start(self.sw)
         self.sw.add(self.ib)
         self.sw.show_all()
         self.sw.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
