@@ -4,6 +4,8 @@ from gourmet.gdebug import *
 from gettext import gettext as _
 
 REC_ATTR_DIC = gglobals.REC_ATTR_DIC
+DEFAULT_ATTR_ORDER = gglobals.DEFAULT_ATTR_ORDER
+DEFAULT_TEXT_ATTR_ORDER = gglobals.DEFAULT_TEXT_ATTR_ORDER
 
 class exporter:
     """A base exporter class.
@@ -19,16 +21,8 @@ class exporter:
                   conv=None,
                   imgcount=1,
                   order=['image','attr','ings','text'],
-		  attr_order=['title',
-                              'category',
-                              'cuisine',
-                              'servings',
-                              'source',
-                              'rating',
-                              'preptime',
-                              'cooktime'],
-                  text_attr_order = ['instructions',
-                                     'modifications'],
+		  attr_order=DEFAULT_ATTR_ORDER,
+                  text_attr_order = DEFAULT_TEXT_ATTR_ORDER,
                   do_markup=True,
                   use_ml=False,
                   convert_attnames=True,
@@ -103,6 +97,20 @@ class exporter:
 
     def _write_text_ (self):
         for a in self.text_attr_order:
+            # This code will never be called for Gourmet
+            # proper... here for convenience of symbiotic project...
+            if a=='step':
+                steps = self._grab_attr_(self.r,a)
+                if not steps: continue
+                for s in steps:
+                    if self.do_markup: txt=self.handle_markup(s)
+                    if not self.use_ml: txt = xml.sax.saxutils.unescape(s)
+                    if self.convert_attnames:
+                        self.write_text(gglobals.TEXT_ATTR_DIC[a],s)
+                    else:
+                        self.write_text(a,s)
+                continue
+            # End of non-Gourmet code
             txt=self._grab_attr_(self.r,a)
             if txt and txt.strip():
                 if self.do_markup: txt=self.handle_markup(txt)
@@ -313,14 +321,8 @@ class exporter_mult (exporter):
                   mult=1,
                   imgcount=1,
                   order=['image','attr','ings','text'],
-                  attr_order=['title',
-                              'category',
-                              'cuisine',
-                              'servings',
-                              'source',
-                              'rating',
-                              'preptime',
-                              'cooktime'],
+                  attr_order=DEFAULT_ATTR_ORDER,
+                  text_attr_order=DEFAULT_TEXT_ATTR_ORDER,
                   do_markup=True,
                   use_ml=False,
                   convert_attnames=True,
@@ -338,7 +340,10 @@ class exporter_mult (exporter):
         """
         self.mult = mult
         self.change_units = change_units
-        exporter.__init__(self, rd, r, out, conv, imgcount, order, use_ml=use_ml, do_markup=do_markup,
+        exporter.__init__(self, rd, r, out, conv, imgcount, order,
+                          attr_order=attr_order,
+                          text_attr_order=text_attr_order,
+                          use_ml=use_ml, do_markup=do_markup,
                           fractions=fractions)
 
     def write_attr (self, label, text):
