@@ -45,12 +45,14 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         t=TimeAction('RecCard.__init__ 1',0)
         self.mult=1
         self.rg = RecGui
+        self.rg = RecGui
+        self.prefs = self.rg.prefs
         self.rd = self.rg.rd
         self.nd = self.rg.nd
         self.makeTimeEntry = lambda *args: timeEntry.makeTimeEntry()
         self.makeStarButton = lambda *args: ratingWidget.make_star_button(self.rg.star_generator)
         self.makeStarImage = lambda *args: ratingWidget.make_star_image(self.rg.star_generator)
-        self.makeNutritionLabel = lambda *args: NutritionLabel()
+        self.makeNutritionLabel = lambda *args: NutritionLabel(self.prefs)
         def custom_handler (glade,func_name,
                             widg, s1,s2,i1,i2):
             f=getattr(self,func_name)
@@ -59,15 +61,13 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             return w
         gtk.glade.set_custom_handler(custom_handler)
         self.glade = gtk.glade.XML(os.path.join(gladebase,'recCard.glade'))
+        self.ie = IngredientEditor(self.rg, self)        
         self.mm = mnemonic_manager.MnemonicManager()
         self.mm.add_glade(self.glade)
         self.mm.fix_conflicts_peacefully()
         t.end()
-        t=TimeAction('RecCard.__init__ 2',0)
-        self.rg = RecGui
-        self.ie = IngredientEditor(self.rg, self)
+        t=TimeAction('RecCard.__init__ 2',0)        
         self.setup_action_manager()
-        self.prefs = self.rg.prefs
         self.get_widgets()
         self.register_pref_dialog()
         self.history = Undo.MultipleUndoLists(self.undo,self.redo,
