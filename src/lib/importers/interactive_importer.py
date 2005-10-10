@@ -11,6 +11,7 @@ from gourmet import gglobals
 import importer
 from generic_recipe_parser import RecipeParser
 import imageBrowser
+from gettext import gettext as _
 
 # Copied from """
 # SimpleGladeApp.py
@@ -324,6 +325,7 @@ class ConvenientImporter (importer.importer):
 
     @autostart_rec
     def add_attribute (self, attname, txt):
+        txt=txt.strip()
         print 'add_attribute',attname,'"%s"'%txt
         if self.rec.has_key(attname):
             self.rec[attname] = self.rec[attname] + ', ' + txt
@@ -340,10 +342,11 @@ class ConvenientImporter (importer.importer):
 
     @autostart_rec
     def add_ing_group (self, txt):
-        self.group = txt
+        self.group = txt.strip()
 
     @autostart_rec
     def add_ing_from_text (self, txt):
+        txt=txt.strip()
         print 'add ing "%s"'%txt
         if not txt: return        
         mm = convert.ING_MATCHER.match(txt)
@@ -362,7 +365,8 @@ class ConvenientImporter (importer.importer):
     def add_ings_from_text (self, txt, break_at='\n'):
         """Add list of ingredients from block of text.
 
-        By default, there is one ingredient per line of text."""        
+        By default, there is one ingredient per line of text."""
+        txt=txt.strip()
         for i in txt.split(break_at): self.add_ing_from_text(i)
 
 
@@ -422,8 +426,13 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         for attname,display_name in self.textattdic.items():
             self.actions[display_name] = self.add_text
             self.action_to_label[display_name]=attname
-        keys = self.actions.keys()
-        keys.sort()
+        keys = [self.attdic['title']]
+        other_attrs = self.attdic.values()
+        other_attrs.remove(self.attdic['title'])
+        other_attrs.sort()
+        keys += other_attrs
+        keys += ['Ingredient Subgroup','Ingredient','Ingredients' ]
+        keys += ['Instructions', 'Notes']
         # set up model
         mod = gtk.ListStore(str)
         for k in keys: mod.append([k])
@@ -455,20 +464,20 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         
 
     def commit_rec (self, *args, **kwargs):
-        print 'Commit'
         if hasattr(self,'images'):
             if self.progress: self.progress(-1,_('Getting images...'))
-            print 'Launch our image browser!'
-            self.ibd=imageBrowser.ImageBrowserDialog()
+            self.ibd=imageBrowser.ImageBrowserDialog(
+                title=_("Select recipe image"),
+                label=_("Select recipe image."),
+                sublabel=_("Below are all the images found for the page you are importing. Select any images that are of the recipe, or don't select anything if you don't want any of these images."),
+                )
             for i in self.images: self.ibd.add_image_from_uri(i)
             self.ibd.run()
             image = self.ibd.ret
             if image:
-                print 'Setting image!',image
                 fi=file(imageBrowser.get_image_file(image),'r')
                 self.rec['image']=fi.read()
                 fi.close()
-        print 'Now commit for real...'
         ConvenientImporter.commit_rec(self,*args,**kwargs)        
     
     def set_text (self, txt):
