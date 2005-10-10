@@ -229,22 +229,34 @@ REC_ATTRS = [('title',_('Title'),'Entry'),
              ('cooktime',_('Cooking Time'),'Entry'),
              ]
 INT_REC_ATTRS = ['rating','preptime','cooktime']
-
-
 TEXT_ATTR_DIC = {'instructions':_('Instructions'),
                  'modifications':_('Notes'),
                  }
 
+REC_ATTR_DIC={}
 NAME_TO_ATTR = {_('Instructions'):'instructions',
                 _('Notes'):'modifications',
                 _('Modifications'):'modifications',
                 }
 
-REC_ATTR_DIC={}
+DEFAULT_ATTR_ORDER = ['title',
+                      'category',
+                      'cuisine',
+                      'servings',
+                      'source',
+                      'rating',
+                      'preptime',
+                      'cooktime'],
 
-for attr, name, widget in REC_ATTRS:
-    REC_ATTR_DIC[attr]=name
-    NAME_TO_ATTR[name]=attr
+DEFAULT_TEXT_ATTR_ORDER = ['instructions',
+                           'modifications']
+
+def build_rec_attr_dic ():
+    for attr, name, widget in REC_ATTRS:
+        REC_ATTR_DIC[attr]=name
+        NAME_TO_ATTR[name]=attr
+
+build_rec_attr_dic()
 
 try:
     import gnomeprint.ui, gnomeprint
