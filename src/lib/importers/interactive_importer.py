@@ -418,7 +418,7 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
             #'Notes':self.display.add_notes,
             'Ingredient':lambda lab,txt: self.add_ing_from_text(txt),
             'Ingredients': lambda lab,txt: self.add_ings_from_text(txt),
-            'Ingredient Supgroup':lambda lab,txt: self.add_ing_group(txt),
+            'Ingredient Subgroup':lambda lab,txt: self.add_ing_group(txt),
             }
         for attname,display_name in self.attdic.items():
             self.actions[display_name] = self.add_attribute
@@ -432,7 +432,9 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         other_attrs.sort()
         keys += other_attrs
         keys += ['Ingredient Subgroup','Ingredient','Ingredients' ]
-        keys += ['Instructions', 'Notes']
+        tkeys = list(self.textattdic.values())
+        tkeys.sort()
+        keys.extend(tkeys)
         # set up model
         mod = gtk.ListStore(str)
         for k in keys: mod.append([k])
