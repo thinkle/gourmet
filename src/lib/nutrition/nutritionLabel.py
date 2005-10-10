@@ -7,6 +7,8 @@ class NutritionLabel (gtk.Table, gobject.GObject):
 
     bold_font = pango.FontDescription()
     bold_font.set_weight(pango.WEIGHT_BOLD)
+    tiny_font = pango.FontDescription()
+    tiny_font.set_size(pango.SCALE*9)
     background = gtk.gdk.Color(255,0,0)
     foreground = gtk.gdk.Color(255,255,255)
     
@@ -23,18 +25,84 @@ class NutritionLabel (gtk.Table, gobject.GObject):
                 ['fasat','famono','fapoly'],SHOW_PERCENT,'g'),
                (_('Saturated Fat'),MINOR,'satfat',
                 'fasat',SHOW_PERCENT,'g'),
-               (_('Cholesterol'),MAJOR,'chol',
-                'cholestrl',DONT_SHOW_PERCENT,'g'),
+               (_('Cholesterol'),MAJOR,'cholestrl',
+                'cholestrl',SHOW_PERCENT,'g'),
                (_('Sodium'),MAJOR,'sodium',
-                'sodium',DONT_SHOW_PERCENT,'mg'),
+                'sodium',SHOW_PERCENT,'mg'),
                (_('Total Carbohydrate'),MAJOR,'carb',
                 'carb',SHOW_PERCENT,'g'),
                (_('Dietary Fiber'),MINOR,
                 'fiber','fiber',SHOW_PERCENT,'g'),
                (_('Sugars'),MINOR,'sugar',
-                'sugar',DONT_SHOW_PERCENT,'g'),
+                'sugar',SHOW_PERCENT,'g'),
                (_('Protein'),MAJOR,'protein',
-                'protein',SHOW_PERCENT,'g'),]
+                'protein',SHOW_PERCENT,'g'),
+               SEP,
+               (_('Alpha-carotene'),TINY,'alphac',
+                'alphac',DONT_SHOW_PERCENT,u'\u00B5g'),
+               (_('Ash'),TINY,'ash',
+                'ash',DONT_SHOW_PERCENT,'g'),
+               (_('Beta-carotene'),TINY,'betac',
+                'betac',DONT_SHOW_PERCENT,u'\u00B5g'),
+               (_('Beta Cryptoxanthin'),TINY,'betacrypt',
+                'betacrypt',DONT_SHOW_PERCENT,u'\u00B5g'),               
+               (_('Calcium'),TINY,'calcium',
+                'calcium',SHOW_PERCENT,'mg'),
+               (_('Copper'),TINY,'copper',
+                'copper',SHOW_PERCENT,'mg'),
+               (_('Folate Total'),TINY,'folatetotal',
+                'folatetotal',SHOW_PERCENT,u'\u00B5g'),
+               (_('Folic acid'),TINY,'folateacid',
+                'folateacid',DONT_SHOW_PERCENT,u'\u00B5g'),
+               (_('Food Folate'),TINY,'foodfolate',
+                'foodfolate',DONT_SHOW_PERCENT,u'\u00B5g'),
+               (_('Dietary folate equivalents'),TINY,'folatedfe',
+                'folatedfe',DONT_SHOW_PERCENT,u'\u00B5g'),               
+               (_('Iron'),TINY,'iron',
+                'iron',SHOW_PERCENT,'mg'),
+               (_('Lycopene'),TINY,'lypocene',
+                'lypocene',DONT_SHOW_PERCENT,u'\u00B5g'),
+               (_('Lutein+Zeazanthin'),TINY,'lutzea',
+                'lutzea',DONT_SHOW_PERCENT,u'\u00B5g'),
+               (_('Magnesium'),TINY,'magnesium',
+                'magnesium',SHOW_PERCENT,'mg'),
+               (_('Manganese'),TINY,'manganese',
+                'manganese',SHOW_PERCENT,'mg'),
+               (_('Niacin'),TINY,'niacin',
+                'niacin',SHOW_PERCENT,'mg'),
+               (_('Pantothenic Acid'),TINY,'pantoacid',
+                'pantoacid',SHOW_PERCENT,'mg'),               
+               (_('Phosphorus'),TINY,'phosphorus',
+                'phosphorus',SHOW_PERCENT,'mg'),
+               (_('Potassium'),TINY,'potassium',
+                'potassium',SHOW_PERCENT,'mg'),
+               (_('Vitamin A'),TINY,'vitarae',
+                'vitarae',SHOW_PERCENT,'mg'),
+               (_('Retinol'),TINY,'retinol',
+                'retinol',SHOW_PERCENT,u'\u00B5g'),
+               (_('Riboflavin'),TINY,'riboflavin',
+                'riboflavin',SHOW_PERCENT,'mg'),
+               (_('Selenium'),TINY,'selenium',
+                'selenium',SHOW_PERCENT,u'\u00B5g'),
+               (_('Thiamin'),TINY,'thiamin',
+                'thiamin',SHOW_PERCENT,'mg'),
+               (_('Vitamin A (IU)'),TINY,'vitaiu',
+                'vitaiu',SHOW_PERCENT,'IU'),
+               (_('Vitamin A (RAE)'),TINY,'vitarae',
+                'vitarae',DONT_SHOW_PERCENT,u'\u00B5g'),
+               (_('Vitamin B6'),TINY,'vitaminb6',
+                'vitaminb6',SHOW_PERCENT,'mg'),
+               (_('Vitamin B12'),TINY,'vitb12',
+                'vitb12',SHOW_PERCENT,u'\u00B5g'),
+               (_('Vitamin C'),TINY,'vitaminc',
+                'vitaminc',SHOW_PERCENT,'mg'),               
+               (_('Vitamin E'),TINY,'vite',
+                'vite',SHOW_PERCENT,'mg'),
+               (_('Vitamin K'),TINY,'vitk',
+                'vitk',SHOW_PERCENT,'mg'),
+               (_('Zinc'),TINY,'zinc',
+                'zinc',SHOW_PERCENT,'mg'),
+               ]
 
     recommended_intake = {
         'fat':0.30 / 9, # 30% of calories * 9 cal / g.
@@ -42,6 +110,33 @@ class NutritionLabel (gtk.Table, gobject.GObject):
         'carb':0.6 / 4, #60% of calories * 4 cal / g.
         'protein':0.10 / 4, #10% of calories * 4 cal/g.
         'fiber':11.5/1000, #11.5 grams / 1000calories
+        'sodium':2400.0/2000, # 2400 mg per typical 2000 c diet
+        'potassium':3500.0/2000,
+        'iron':18.0/2000,
+        'calcium':1000.0/2000,
+        'cholestrl':300.0/2000,
+        'vitarae':900.0/2000,
+        'magnesium':420.0/2000,
+        'vitaminc':60.0/2000,
+        'vitaiu':5000.0/2000,
+        'vite':30.0/2000,
+        'vitk':80.0/2000,
+        'thiamin':1.5/2000,
+        'riboflavin':1.7/2000,
+        'niacin':20.0/2000,
+        'vitaminb6':2.0/2000,
+        'folatetotal':400.0/2000,
+        'vitb12':6.0/2000,
+        'pantoacid':10.0/2000,
+        'phosphorus':1000.0/2000,
+        'magnesium':400.0/2000,
+        'zinc':15.0/2000,
+        'selenium':70.0/2000,
+        'copper':2.0/2000,
+        'manganese':2.0/2000,
+        'chromium':120.0/2000,
+        'molybdenum':75.0/2000,
+        'chloride':3400.0/2000,
         }
 
     calories_per_day = 2000
@@ -87,6 +182,8 @@ class NutritionLabel (gtk.Table, gobject.GObject):
                 permanentl.set_markup('<b>'+label+'</b>')
             elif typ==self.MINOR:
                 permanentl.set_markup('  '+label)
+            elif typ==self.TINY:
+                permanentl.set_markup('  <span size="smaller">'+label+'</span>')
             hb.pack_start(permanentl)
             unit_label = gtk.Label()
             unit_label.set_alignment(0,0.5)
@@ -220,21 +317,13 @@ class NutritionLabel (gtk.Table, gobject.GObject):
         """
         for itm in self.nutrition_display_info:
             props = itm['props']
-            print 'rawval - ',itm['props']
             if type(props)==str:
-                print 'grab single prop'
                 rawval = getattr(self.nutinfo,props) or 0
             else:
                 # sum a list of properties
-                print 'sum a list'
                 rawval = sum([getattr(self.nutinfo,p) or 0 for p in props])
             if self.servings:
-                print 'dividing ',rawval,'by',self.servings,
                 rawval = float(rawval) / self.servings
-                print '->',rawval
-            else:
-                print 'no serving info :('
-            print 'rawval = ',rawval
             if itm['unit_label']:
                 itm['unit_label'].set_text('%i%s'%(rawval,itm['unit']))
             if itm['usda_rec_per_cal'] and itm['percent_label']:
@@ -261,7 +350,6 @@ class NutritionLabel (gtk.Table, gobject.GObject):
             ings = [(v.__key__,[(v.__amt__,
                                  v.__unit__)]
                      ) for v in vapor]
-            print 'druidify ',ings
             self.ndruid.add_ingredients(
                 ings
                 )
@@ -285,7 +373,9 @@ if gtk.pygtk_version[1]<8:
 
 if __name__ == '__main__':
     class fakenut:
-        pass
+
+        def __len__ (self): return 2
+    
     ni = fakenut()
     ni.fasat = 2
     ni.cholestrl = 10

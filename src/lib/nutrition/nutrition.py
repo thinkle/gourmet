@@ -173,13 +173,29 @@ class NutritionData:
         if not cnv:
             # lookup in our custom nutrition-related conversion table
             if self.conv.unit_dict.has_key(unit):
+                print 'standardizing',unit
                 unit = self.conv.unit_dict[unit]
+                print 'to ',unit
             lookup = self.db.nconversions.select(ingkey=key,unit=unit)
             if lookup:
                 print amt,unit,'cnv found in nconversions!'
                 cnv = lookup[0].factor
+            else:
+                # otherwise, cycle through any units we have and see
+                # if we can get a conversion via those units...
+                for conv in self.db.nconversions.select(ingkey=key):
+                    print 'try to convert',unit,'to',conv.unit
+                    factor = self.conv.converter(unit,conv.unit)
+                    if factor:
+                        print 'Cool!'
+                        print unit,'->',conv.unit,'(',factor,')'
+                        print conv.unit,'->','g.','(',conv.factor,')'
+                        print 'we not use ',cnv
+                        cnv = conv.factor*factor
         if cnv:
-            #print 'returning conversion factory ',(.01*amt)/cnv
+            print 'returning conversion ',
+            print amt,unit,'=',
+            print (.01*amt)/cnv,'*100g.'
             return (0.01*amt)/cnv
 
     def get_conversions (self, key=None, row=None):

@@ -83,6 +83,12 @@ class NutritionInfoDruid (gobject.GObject):
         'finish':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,())
         }
 
+    PACKAGED_FOODS = ['Soups, Sauces, and Gravies',
+                      'Baked Products',
+                      'Meals, Entrees, and Sidedishes',
+                      'Fast Foods',
+                      'Baby Foods']
+
     def __init__ (self, nd):
         # FIX PATH BEFORE COMMITTING
         #self.glade = gtk.glade.XML(os.path.join(gglobals.datad,'nutritionDruid.glade'))
@@ -246,6 +252,7 @@ class NutritionInfoDruid (gobject.GObject):
         gobject.idle_add(self.search)
 
     def search (self):
+        
         txt = self.searchEntry.get_text()
         if self.__last_search__ == txt:
             return
@@ -295,6 +302,24 @@ class NutritionInfoDruid (gobject.GObject):
         search_text = ' '.join(search_terms)
         self.searchEntry.set_text(search_text)
         self.searchvw = search_in
+        print len(self.searchvw),'results overall'
+        # Some metakit specific hackery which should not be reproduced...
+        tbl = self.rd.normalizations['foodgroup']
+        import metakit
+        print metakit.dump(tbl)
+        PACKAGED_FOOD_IDS = []
+        for n in self.PACKAGED_FOODS:
+            id = tbl.find(foodgroup=n)
+            if id < 0: print "Funny, I don't know about ",n
+            else:
+                print 'yippee',n,'->',id
+                PACKAGED_FOOD_IDS.append(tbl[id].id)
+        print 'Packaged foods = ',PACKAGED_FOOD_IDS
+        filteredvw = self.searchvw = self.rd.filter(self.searchvw,
+                                                    lambda r: r.foodgroup not in PACKAGED_FOOD_IDS)
+        if filteredvw:
+            self.searchvw = filteredvw
+            print len(self.searchvw),'results sans junkfood'
         self.nutrition_store.change_view(self.searchvw)
         self.__last_search__ = search_text
         self.__override_search__ = False # turn back on search handling!

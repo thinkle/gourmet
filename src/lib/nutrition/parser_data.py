@@ -1,3 +1,4 @@
+
 from gettext import gettext as _
 
 PER_100_GRAMS = ["kcal","protein","lipid","ash","carb","fiber","sugar","calcium","iron","magnesium","phosphorus","potassium","sodium","zinc","copper","manganese","selenium","vitaminc","thiamin","riboflavin","niacin","pantoacid","vitaminb6","folatetotal","folateacid","foodfolate","folatedfe","vitb12","vitaiu","vitarae","retinol","vite","vitk","alphac","betac","betacrypt","lypocene","famono","fapoly","lutzea","fasat","cholestrl"]
@@ -57,10 +58,29 @@ NUTRITION_FIELDS = [
     ]
 
 # List of fields that can be sensibly added, multiplied, etc.
-SUMMABLE_FIELDS = ['kcal','protein','lipid','carb','cholestrl',
-                   'fiber','calcium','magnesium','potassium',
-                   'sodium','copper','vitaminc','riboflavin','pantoacid',
-                   'vitaminb6','folateacid','folatedfe','vitaiu',
+SUMMABLE_FIELDS = ['kcal',
+                   'protein',
+                   'lipid',
+                   'ash',
+                   'carb',
+                   'cholestrl',
+                   'fiber',
+                   'calcium',
+                   'iron',
+                   'magnesium',
+                   'phosphorus',
+                   'potassium',
+                   'sodium',
+                   'zinc',
+                   'manganese',
+                   'selenium',
+                   'copper',
+                   'vitaminc',
+                   'thiamin',
+                   'riboflavin','pantoacid','niacin','folatetotal','foodfolate',
+                   'vitb12',
+                   'vitaminb6','folateacid','folatedfe','vitaiu','vitk','retinol',
+                   'betac','lypocene',
                    'vitarae','vite','alphac','betacrypt','lutzea','famono',
                    'fapoly','fasat','sugar']
 
@@ -304,3 +324,54 @@ ABBREVS_STRT = {'W/':'with ',
                 'WO/':'without ',
                 '&':' and ',
                 }
+
+FOOD_GROUPS = {
+    # the DB Food Group Numbers seem to be inline with the group IDs
+    # (numbers > 1000 are in group 100, etc.)
+    # Since that's true, we can use the following table to properly add groups.
+    1000:'Dairy and Egg Products',
+    2000:'Spices and Herbs',
+    3000:'Baby Foods',
+    4000:'Fats and Oils',
+    5000:'Poultry Products',
+    6000:'Soups, Sauces, and Gravies',
+    7000:'Sausages and Luncheon Meats',
+    8000:'Breakfast Cereals',
+    9000:'Fruits and Fruit Juices',
+    10000:'Pork Products',
+    11000:'Vegetables and Vegetable Products',
+    12000:'Nut and Seed Products',
+    13000:'Beef Products',
+    14000:'Beverages',
+    15000:'Finfish and Shellfish Products',
+    16000:'Legumes and Legume Products',
+    17000:'Lamb, Veal, and Game Products',
+    18000:'Baked Products',
+    19000:'Sweets',
+    20000:'Cereal Grains and Pasta',
+    21000:'Fast Foods',
+    22000:'Meals, Entrees, and Sidedishes',
+    25000:'Snacks',
+    35000:'Ethnic Foods',
+    }
+
+# A ranking of groups for use in sorting out categories...
+RANKED_GROUPS = [
+    'Dairy and Egg Products',
+    'Spices and Herbs',
+    'Fats and Oils',
+    'Vegetables and Vegetable Products',
+    'Legumes and Legume Products',
+    'Nut and Seed Products',
+    'Poultry Products',
+    'Finfish and Shellfish Products',
+    'Sausages and Luncheon Meats',
+    'Fruits and Fruit Juices',
+    'Pork Products',
+    'Beef Products',
+    'Soups, Sauces, and Gravies'
+    'Beverages',
+    'Baked Products',    
+    'Meals, Entrees, and Sidedishes',
+    'Fast Foods',
+    'Baby Foods',]

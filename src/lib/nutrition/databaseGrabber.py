@@ -88,6 +88,11 @@ class DatabaseGrabber:
                     except:
                         d[sname]=fl
                         raise
+            # Figure out the food group from the ndbno
+            for i in FOOD_GROUPS:
+                if 1000+i > d['ndbno'] >= i:
+                    d['foodgroup']=FOOD_GROUPS[i]
+                    break
             t.end()
             if self.show_progress and n % 20 == 0:
                 self.show_progress(float(n)/tot,_('Reading nutritional data: imported %s of %s entries.')%(n,tot))
