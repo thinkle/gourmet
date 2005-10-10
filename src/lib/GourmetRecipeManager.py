@@ -132,7 +132,8 @@ class RecGui (RecIndex):
             'showList' : lambda *args: self.app.present(),            
             'new' : self.new,
             'defaultsave': self.save_default,
-            'export' : self.exportg,
+            'export' : self.export_selected_recs,
+            'export_all': self.export_all_recs,
             'import' : self.importg,
             'import_webpage': self.import_webpageg,
             'quit' : self.quit,
@@ -643,7 +644,6 @@ class RecGui (RecIndex):
             self.rc[rc.current_rec.id]=rc
             self.make_rec_visible(rc.current_rec)
             self.app.window.set_cursor(None)
-            
         gobject.idle_add(show)
 
     def update_modified_recipe (self, rec, attribute, value):
@@ -736,7 +736,14 @@ class RecGui (RecIndex):
             cancel=False):
             self.rg.rd.clear_remembered_optional_ings() #without an arg, this clears all.
 
-    def exportg (self, *args):        
+    def export_selected_recs (self, *args): self.exportg(export_all=False)
+    def export_all_recs (self, *args): self.exportg(export_all=True)
+
+    def exportg (self, export_all=False):
+        """If all is false, export only selected recipes.
+
+        If all is True, export all recipes.
+        """
         if not use_threads and self.lock.locked_lock():
             de.show_message(
                 parent=self.app.get_toplevel(),
@@ -759,9 +766,10 @@ class RecGui (RecIndex):
             if exporters.exporter_dict.has_key(exp_type):
                 myexp = exporters.exporter_dict[exp_type]
                 pd_args={'label':myexp['label'],'sublabel':myexp['sublabel']%{'file':file}}
+                if export_all: recs = self.rd.rview.select(deleted=False)
+                else: recs = self.recTreeSelectedRecs()
                 expClass = myexp['mult_exporter']({'rd':self.rd,
-                                                   #'rv':self.rd.rview.select(deleted=False),
-                                                   'rv':self.recTreeSelectedRecs(),
+                                                   'rv': recs,
                                                    'conv':self.conv,
                                                    'prog':self.set_progress_thr,
                                                    'file':file})
@@ -873,7 +881,7 @@ class RecGui (RecIndex):
                 sublabel=_('Are you sure %(url)s points to a page with a recipe on it?')%locals()
                 )
             raise
-        self.redo_search()
+        self.make_rec_visible()
         
     def importg (self, *args):
         if not use_threads and self.lock.locked_lock():
@@ -892,6 +900,7 @@ class RecGui (RecIndex):
         if ifiles:
             self.prefs['rec_import_directory']=os.path.split(ifiles[0])[0]
             self.import_multiple_files(ifiles)
+        self.make_rec_visible()
             
     def prepare_import_classes (self, files):
         """Handed multiple import files, prepare to import.
