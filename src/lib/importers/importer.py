@@ -339,6 +339,7 @@ class MultipleImporter:
                 self.grm.progress_dialog.detail_label.set_use_markup(True)
             #self.grm.progress_dialog.label.set_text(_('<i>Importing %s</i>')%fn)
             gt.gtk_leave()
+            print 'Using import class ',ic
             kwargs['progress']=self.show_progress
             self.iclass = ic(*args,**kwargs)
             self.suspend = self.iclass.suspend

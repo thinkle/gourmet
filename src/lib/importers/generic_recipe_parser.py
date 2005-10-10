@@ -131,12 +131,18 @@ class RecipeParser:
                     self.paras[-1] = self.paras[-1]+' '+l
                     start_new_para = (len(l) < self.SHORT_LINE)
 
-    def parse (self, txt):
+    def parse (self, txt, progress=None):
         self.txt = txt
         self.parsed = []
         self.break_into_paras()
         title_parsed = False
+        tot=len(self.paras)
+        n = 1
         for p in self.paras:
+            # update a progress bar if necessary...
+            if progress:
+                progress(float(n)/tot,'Parsing unformatted recipe')
+                n+=1
             self.parsed.append(('\n',None))
             # genericly guess that the title is the first line!
             if not title_parsed and p:

@@ -370,7 +370,8 @@ class ConvenientImporter (importer.importer):
 
 class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
-    def __init__(self, rd):
+    def __init__(self, rd, progress=None):
+        self.progress = progress
         self.parser = RecipeParser()
         self.parser_to_choice = {
             'ingredient':'Ingredient',
@@ -456,6 +457,7 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
     def commit_rec (self, *args, **kwargs):
         print 'Commit'
         if hasattr(self,'images'):
+            if self.progress: self.progress(-1,_('Getting images...'))
             print 'Launch our image browser!'
             self.ibd=imageBrowser.ImageBrowserDialog()
             for i in self.images: self.ibd.add_image_from_uri(i)
@@ -467,20 +469,25 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
                 self.rec['image']=fi.read()
                 fi.close()
         print 'Now commit for real...'
-        ConvenientImporter.commit_rec(self,*args,**kwargs)
+        ConvenientImporter.commit_rec(self,*args,**kwargs)        
     
     def set_text (self, txt):
         """Set raw text."""
         print 'setting text',txt
         self.textbuffer = gtk.TextBuffer()
         self.textview.set_buffer(self.textbuffer)
-        parsed = self.parser.parse(txt)
+        parsed = self.parser.parse(txt,progress=self.progress)
         tagtable = self.textbuffer.get_tag_table()
         # a list of marks...
         self.sections = []
         self.section_pos = 0
+        tot=len(parsed); n=0
         for line,tag in parsed:
-            print 'Inserting %s: "%s"'%(tag,line)
+            if self.progress:
+                self.progress(float(n)/tot,
+                              _('Setting up interactive importer')
+                              )
+                n+=1
             if tag==None:
                 self.textbuffer.insert(self.textbuffer.get_end_iter(),
                                        line)            
@@ -590,7 +597,9 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         self.commit_rec()
         print "on_quit called with self.%s" % widget.get_name()
         self.glade.get_widget('window1').hide()
+        if self.progress: self.progress(1,_('Import complete!'))
         gtk.main_quit()
+        
     #-- InteractiveImporter.on_quit }
 
     def set_added_to (self, bool):
@@ -685,8 +694,8 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
     #-- InteractiveImporter.on_apply }
 
 class InteractiveTextImporter (InteractiveImporter):
-    def __init__ (self, filename, rd):
-        InteractiveImporter.__init__(rd)
+    def __init__ (self, filename, rd, progress=None, source=None, threaded=False):
+        InteractiveImporter.__init__(self,rd,progress=progress)
         ofi = file(filename,'r')
         self.set_text(ofi.read())
         ofi.close()
