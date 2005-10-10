@@ -49,6 +49,7 @@ class TimeEntry (gtk.VBox, gobject.GObject):
 
     def connect (self, *args,**kwargs):
         """Hackish override"""
+        print 'Hackishly overriding connection!'
         return self.entry.connect(*args,**kwargs)
 
     def set_warning_text (self,text):
