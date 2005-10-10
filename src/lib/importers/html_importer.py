@@ -75,6 +75,7 @@ class BeautifulSoupScraper:
 
         URL can be a string or an already open socket.
         """
+        self.url = url
         self.feed_data(get_url(url,progress))
 
     def feed_data (self, data):
@@ -237,9 +238,9 @@ class GenericScraper (BeautifulSoupScraper):
               ],
              ['images',
               [{'tag':'img',
-                'index':(0,None)}],
+                'index':[0,None]}],
               'src',
-              lambda s,v: [s]],
+              ],
              ['title',
               [{'tag':'title'}],
               'text',],
@@ -254,6 +255,7 @@ class GenericScraper (BeautifulSoupScraper):
         print images
         #images = [(isinstance(i,str) and i or
         #           i[0]) for i in dic['images']]
+        images = [urllib.basejoin(self.url,i) for i in images]
         return text,images
         
 def get_text (tag, strip=True):
@@ -384,9 +386,10 @@ class WebPageImporter (importer.importer):
             import interactive_importer
             ii = interactive_importer.InteractiveImporter(self.rd)
             ii.set_text(text)
+            ii.set_images(images)
             ii.run()
+            if self.prog: self.prog(1,_('Import complete.'))
             return
-
         self.start_rec()
         # Add webpage as source
         if self.add_webpage_source:

@@ -10,7 +10,7 @@ from gourmet import convert
 from gourmet import gglobals
 import importer
 from generic_recipe_parser import RecipeParser
-
+import imageBrowser
 
 # Copied from """
 # SimpleGladeApp.py
@@ -448,7 +448,27 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         print action,'not found!'
         # if we haven't returned by now, we have no action
         sel.unselect_all()
+
+    def set_images (self, image_urls):
+        self.images = image_urls
         
+
+    def commit_rec (self, *args, **kwargs):
+        print 'Commit'
+        if hasattr(self,'images'):
+            print 'Launch our image browser!'
+            self.ibd=imageBrowser.ImageBrowserDialog()
+            for i in self.images: self.ibd.add_image_from_uri(i)
+            self.ibd.run()
+            image = self.ibd.ret
+            if image:
+                print 'Setting image!',image
+                fi=file(imageBrowser.get_image_file(image),'r')
+                self.rec['image']=fi.read()
+                fi.close()
+        print 'Now commit for real...'
+        ConvenientImporter.commit_rec(self,*args,**kwargs)
+    
     def set_text (self, txt):
         """Set raw text."""
         print 'setting text',txt
@@ -663,6 +683,15 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         action(active_txt,selection)
         self.on_forward(None)
     #-- InteractiveImporter.on_apply }
+
+class InteractiveTextImporter (InteractiveImporter):
+    def __init__ (self, filename, rd):
+        InteractiveImporter.__init__(rd)
+        ofi = file(filename,'r')
+        self.set_text(ofi.read())
+        ofi.close()
+
+
 
 def main():
     from gourmet import recipeManager

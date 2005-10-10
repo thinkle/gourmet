@@ -1,4 +1,5 @@
 import gxml_importer, importer, mastercook_importer, mealmaster_importer, mastercook_plaintext_importer
+import interactive_importer
 import gxml2_importer, rezkonv_importer
 import krecipe_importer
 import fnmatch
@@ -79,7 +80,17 @@ FILTER_INFO = {
                'mimetypes':['text/xml','application/xml','text/plain'],
                # NOTE: This will need to be updated to deal with gzipped files
                'tester':importer.Tester('.*<krecipes'),
-               }
+               },
+    'interactive':{'import':lambda args: [interactive_importer.InteractiveTextImporter,
+                                          [args['file'],args['rd']],
+                                          {}
+                                          ],
+                   'name':_('Unformatted text'),
+                   'get_source':False,
+                   'tester':importer.Tester('.*'),
+                   'mimetypes':['text/plain'],
+                   'patterns':['*.txt','*.text','*'],
+                   },
     }
 
 ARCHIVE_FILTERS = [['zip archive',['application/zip'],['*.zip']],
@@ -106,10 +117,12 @@ def get_filters_by_extension (fn):
 def select_import_filter (fn):
     if type(fn)==str:
         start_filters = get_filters_by_extension(fn)
+        start_filters.remove('interactive')
         for f in start_filters:
             if FILTER_INFO[f]['tester'].test(fn):
                 return f
         other_filters = filter(lambda n: n not in start_filters,FILTER_INFO.keys())
+        other_filters.remove('interactive')
     else:
         other_filters = FILTER_INFO.keys()
     for f in other_filters:
@@ -124,6 +137,5 @@ def select_import_filter (fn):
             ofi=open(tf,'w')
             ofi.write(fn.read())
             ofi.close()
-        raise NotImplementedError("Unable to find import filter for file %s."%fn)
-        
-    
+        #raise NotImplementedError("Unable to find import filter for file %s."%fn)
+        return 'interactive'
