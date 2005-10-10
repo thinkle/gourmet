@@ -5,7 +5,9 @@ from gourmet.mnemonic_manager import MnemonicManager
 from gourmet.defaults import lang as defaults
 from gourmet.pageable_store import PageableViewStore
 import gourmet.cb_extras as cb
+import gourmet.WidgetSaver as WidgetSaver
 import re
+import os,os.path
 
 class SpecialAction:
 
@@ -89,13 +91,14 @@ class NutritionInfoDruid (gobject.GObject):
                       'Fast Foods',
                       'Baby Foods']
 
-    def __init__ (self, nd):
+    def __init__ (self, nd, prefs):
         # FIX PATH BEFORE COMMITTING
-        #self.glade = gtk.glade.XML(os.path.join(gglobals.datad,'nutritionDruid.glade'))
-        self.glade = gtk.glade.XML('/home/tom/Projects/grm/glade/nutritionDruid.glade')
+        self.glade = gtk.glade.XML(os.path.join(gglobals.datad,'nutritionDruid.glade'))
+        #self.glade = gtk.glade.XML('/home/tom/Projects/grm/glade/nutritionDruid.glade')
         self.mm = MnemonicManager()
         self.mm.add_glade(self.glade)
         self.mm.fix_conflicts_peacefully()
+        self.prefs = prefs
         self.nd = nd
         self.rd = self.nd.db
         self._setup_widgets_()
@@ -107,6 +110,17 @@ class NutritionInfoDruid (gobject.GObject):
         self.__last_search__ = ''
         self.__override_search__ = False
         gobject.GObject.__init__(self)
+        # Save our position with our widget saver...
+        WidgetSaver.WindowSaver(self.glade.get_widget('window1'),
+                                self.prefs.get('nutritionDruid',{})
+                                )
+        print 'prefs=',self.prefs,"self.prefs.get('sautTog')->",self.prefs.get('sautTog',True)
+        WidgetSaver.WidgetSaver(
+            self.searchAsYouTypeToggle,
+            self.prefs.get('sautTog',
+                           {'active':True}),
+            ['toggled'])
+        
 
     # Setup functions
     def _setup_widgets_ (self):
