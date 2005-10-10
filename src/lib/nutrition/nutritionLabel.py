@@ -146,7 +146,8 @@ class NutritionLabel (gtk.Table, gobject.GObject):
         'ingredients-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,())
         }    
 
-    def __init__ (self, *args):
+    def __init__ (self, prefs):
+        self.prefs = prefs
         start_at = 4
         gobject.GObject.__init__(self)
         gtk.Table.__init__(self,2,len(self.nutdata)+start_at)
@@ -346,7 +347,8 @@ class NutritionLabel (gtk.Table, gobject.GObject):
         vapor = self.nutinfo._get_vapor()
         import nutritionDruid
         if vapor:
-            self.ndruid = nutritionDruid.NutritionInfoDruid(vapor[0].__nd__)
+            self.ndruid = nutritionDruid.NutritionInfoDruid(vapor[0].__nd__,
+                                                            prefs=self.prefs)
             ings = [(v.__key__,[(v.__amt__,
                                  v.__unit__)]
                      ) for v in vapor]
@@ -368,8 +370,10 @@ class NutritionLabel (gtk.Table, gobject.GObject):
         self.emit('ingredients-changed')
 
 if gtk.pygtk_version[1]<8:
+    print 'Javier -- look at this: We are registering NutritionLabel!'
     gobject.type_register(NutritionLabel)
-
+else:
+    print 'Javier -- look at this: We have the new PyGTK!'
 
 if __name__ == '__main__':
     class fakenut:
