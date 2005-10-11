@@ -308,7 +308,6 @@ class SimpleGladeApp:
 
 # End copied material
 
-
 class ConvenientImporter (importer.importer):
     """Add some convenience methods to our standard importer.
     """
@@ -455,7 +454,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
     def set_images (self, image_urls):
         self.images = image_urls
-        
 
     def commit_rec (self, *args, **kwargs):
         if hasattr(self,'images'):
@@ -513,13 +511,52 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
     def goto_next_section (self):
         """Goto our next section"""
-        self.goto_section(self.get_current_mark_pos()+1)
-        
+        cur_sec = self.get_section_containing_mark()
+        end_bound =self.textbuffer.get_iter_at_mark(
+            self.sections[cur_sec][1]
+            ).get_offset()
+        cur_pos = self.textbuffer.get_iter_at_mark(
+            self.textbuffer.get_insert()
+            ).get_offset()
+        if cur_pos < end_bound:
+            self.goto_section(cur_sec,direction=1)
+        else:
+            self.goto_section(cur_sec+1,direction=1)
+
     def goto_prev_section (self):
         """Goto our previous section"""
-        self.goto_section(self.get_current_mark_pos()-1)
+        cur_sec = self.get_section_containing_mark()
+        start_bound =self.textbuffer.get_iter_at_mark(
+            self.sections[cur_sec][0]
+            ).get_offset()
+        cur_sel = self.textbuffer.get_selection_bounds()
+        if cur_sel:
+            print 'use selection...'
+            cur_pos = (cur_sel[0].get_offset()<cur_sel[1].get_offset() and 
+                       cur_sel[0].get_offset() or
+                       cur_sel[1].get_offset()
+                       )
+        else:
+            print 'use cursor...'
+            cur_pos = self.textbuffer.get_iter_at_mark(
+                self.textbuffer.get_insert()
+                ).get_offset()
+        if cur_pos > start_bound:
+            print 'cur_pos=',cur_pos,'start_bound=',start_bound,"move inside ourselves..."
+            self.goto_section(cur_sec,direction=-1)
+        else:
+            self.goto_section(cur_sec-1,direction=-1)
 
-    def get_current_mark_pos (self):
+    def section_contains_mark (self, section, mark=None):
+        if not mark: mark = self.textbuffer.get_insert()
+        if type(section)==int: section = self.sections[section]
+        st,end = section
+        siter = self.textbuffer.get_iter_at_mark(st)
+        eiter = self.textbuffer.get_iter_at_mark(end)
+        citer = self.textbuffer.get_iter_at_mark(mark)
+        return siter.get_offset() < citer.get_offset() < eiter.get_offset()
+
+    def get_section_containing_mark (self):
         """Get the current position of our cursor relative to our marks"""
         itr = self.textbuffer.get_iter_at_mark(self.textbuffer.get_insert())
         cur_offset = itr.get_offset()
@@ -530,17 +567,46 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
                 return n
             elif cur_offset < start.get_offset():
                 return n - 1
-        else:
-            return len(self.sections)+1
+        return len(self.sections)-1
 
-    def goto_section (self, n):
+    def goto_section (self, n, direction=1):
+        """Move to section numbered n
+
+        If direction is positive, adjust forward if necessary.
+        If direction is negative, adjust backward if necessary.
+        """
         if n >= len(self.sections): n = len(self.sections)-1
         elif n < 0: n = 0
         self.curmark = n
         s,e=self.sections[n]
         start_itr=self.textbuffer.get_iter_at_mark(s)
-        self.textbuffer.select_range(start_itr,
-                                     self.textbuffer.get_iter_at_mark(e)
+        end_itr = self.textbuffer.get_iter_at_mark(e)
+        # Check where our current section is
+        cur_sel = self.textbuffer.get_selection_bounds()
+        if cur_sel:
+            soffset,eoffset = start_itr.get_offset(),end_itr.get_offset()
+            print 'target:',soffset,eoffset
+            cur_start,cur_end = cur_sel
+            print 'current:',cur_start.get_offset(),cur_end.get_offset()
+            if cur_start.get_offset() < soffset and cur_end.get_offset() > eoffset:
+                print 'we contain the target -- move along!'
+                if direction>0: self.goto_section(n+1)
+                else: self.goto_section(n-1)
+            if direction > 0 and soffset < cur_end.get_offset() < eoffset:
+                print 'adjusting start forward!'
+                start_itr = cur_end
+                import sys
+                if re.match('\s',start_itr.get_char()):
+                    start_itr.forward_find_char(lambda c,user_data: re.match('\S',c) and True,
+                                                limit=end_itr)
+            elif direction < 0 and soffset < cur_start.get_offset() < eoffset:
+                print 'adjusting end backward'
+                end_itr = cur_start
+                if re.match('\s',start_itr.get_char()):
+                    start_itr.backward_find_char(lambda c,user_data: re.match('\S',c) and True,
+                                                 limit=end_itr)
+        self.textbuffer.select_range(end_itr,
+                                     start_itr
                                      )
         self.textview.scroll_to_iter(start_itr,0.3)
         self.on_cursor_moved(self.textview)
