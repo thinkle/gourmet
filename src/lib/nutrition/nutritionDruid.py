@@ -203,7 +203,7 @@ class NutritionInfoDruid (gobject.GObject):
             self.lastButton.set_sensitive(True)
             self.forwardButton.set_sensitive(True)
 
-    # methods to set out core values
+    # methods to set our core values
     def set_ingkey (self, txt):
         self.ingKeyEntry.set_text(txt)
         self.ingKeyLabel.set_markup('<i><b>'+txt+'</b></i>')
