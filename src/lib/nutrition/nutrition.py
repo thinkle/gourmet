@@ -154,6 +154,11 @@ class NutritionData:
         # information for a given item.
         return NutritionVapor(self,key)
 
+    def get_ndbno (self, key):
+        aliasrow = self._get_key(key)
+        if aliasrow: return aliasrow.ndbno
+        else: return None
+
     def get_conversion_for_amt (self, amt, unit, key, row=None):
         """Get a conversion for amount amt of unit 'unit' to USDA standard.
 
