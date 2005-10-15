@@ -246,10 +246,10 @@ DEFAULT_ATTR_ORDER = ['title',
                       'source',
                       'rating',
                       'preptime',
-                      'cooktime'],
+                      'cooktime',]
 
 DEFAULT_TEXT_ATTR_ORDER = ['instructions',
-                           'modifications']
+                           'modifications',]
 
 def build_rec_attr_dic ():
     for attr, name, widget in REC_ATTRS:
