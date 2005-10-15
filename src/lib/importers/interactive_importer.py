@@ -437,8 +437,12 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
     def get_current_action (self, *args):
         """Get the current default actions for our section of text."""
-        mod,itr = self.action_box.get_selection().get_selected()
-        return mod.get_value(itr,0)
+        sel = self.action_box.get_selection().get_selected()
+        if sel:
+            mod,itr = sel
+            return mod.get_value(itr,0)
+        else:
+            return None
 
     def set_current_action (self, action):
         """Set the current default action for our section of text."""
@@ -483,6 +487,7 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         self.section_pos = 0
         tot=len(parsed); n=0
         for line,tag in parsed:
+            print 'adding line',line,'with tag',tag
             if self.progress:
                 self.progress(float(n)/tot,
                               _('Setting up interactive importer')
@@ -506,6 +511,7 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
                                                     self.textbuffer.get_end_iter(),
                                                     True)
                 self.sections.append((smark,emark))
+        print 'We have ',len(self.sections),'sections.'
         self.goto_section(0)
         self.on_new_recipe()
 
@@ -519,8 +525,10 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
             self.textbuffer.get_insert()
             ).get_offset()
         if cur_pos < end_bound:
+            print 'Moving forward within our section',cur_sec
             self.goto_section(cur_sec,direction=1)
         else:
+            print 'Moving forward',cur_sec,'->',cur_sec+1
             self.goto_section(cur_sec+1,direction=1)
 
     def goto_prev_section (self):
@@ -542,9 +550,10 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
                 self.textbuffer.get_insert()
                 ).get_offset()
         if cur_pos > start_bound:
-            print 'cur_pos=',cur_pos,'start_bound=',start_bound,"move inside ourselves..."
+            print 'Moving backward within our section',cur_sec
             self.goto_section(cur_sec,direction=-1)
         else:
+            print 'Moving backward',cur_sec,'->',cur_sec-1
             self.goto_section(cur_sec-1,direction=-1)
 
     def section_contains_mark (self, section, mark=None):
@@ -578,9 +587,11 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         if n >= len(self.sections): n = len(self.sections)-1
         elif n < 0: n = 0
         self.curmark = n
-        s,e=self.sections[n]
+        s,e=self.sections[n]        
         start_itr=self.textbuffer.get_iter_at_mark(s)
         end_itr = self.textbuffer.get_iter_at_mark(e)
+        print 'Selecting selection ',n,start_itr.get_offset(),\
+              '->',end_itr.get_offset()
         # Check where our current section is
         cur_sel = self.textbuffer.get_selection_bounds()
         if cur_sel:
@@ -605,6 +616,8 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
                 if re.match('\s',start_itr.get_char()):
                     start_itr.backward_find_char(lambda c,user_data: re.match('\S',c) and True,
                                                  limit=end_itr)
+        print 'selecting ',end_itr.get_offset(),'-',start_itr.get_offset()
+        if end_itr.get_offset()==start_itr.get_offset(): print 'Funny, end == start'
         self.textbuffer.select_range(end_itr,
                                      start_itr
                                      )
@@ -681,19 +694,27 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
     #-- InteractiveImporter.on_cursor_moved {
     def on_cursor_moved (self, widget, *args):
-        #print 'cursor moved!'
+        print 'cursor moved!'
         cursor = self.textbuffer.get_insert()
         itr = self.textbuffer.get_iter_at_mark(cursor)
         tags = itr.get_tags()
+        while not tags:
+            itr = self.textbuffer.get_iter_at_offset(
+                itr.get_offset()-1
+                )
+            tags = itr.get_tags()
+            print 'back up a character...'
         action = None
+        print 'we have ',len(tags),'tags'
         for t in tags:
+            print 'look at ',t.props.name
             if self.parser_to_choice.has_key(t.props.name):
                 action = self.parser_to_choice[t.props.name]
             elif self.attdic.has_key(t.props.name):
                 action = self.attdic[t.props.name]
             elif self.textattdic.has_key(t.props.name):
                 action = self.textattdic[t.props.name]
-        #print 'setting action->',action
+        print 'setting action->',action
         self.set_current_action(action)
         
     #-- InteractiveImporter.on_cursor_moved }
@@ -793,6 +814,11 @@ Some sausages
 3-6 cloves garlic
 1/2 lb. whole-wheat spaghetti
 1-2 fresh tomatoes
+
+To accompany dish:
+1 loaf bread
+1 head garlic
+1/4 c. olive oil
 
 In a food processor, mix together the basil, oil and nuts and garlic, altering as you like to make the pesto nuttier, more garlicky, or more oily.
 
