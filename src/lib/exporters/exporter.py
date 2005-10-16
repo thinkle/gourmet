@@ -104,8 +104,9 @@ class exporter:
                 if not steps: continue
                 for s in steps:
                     if isinstance(s,dict):
-                        s = dict.get('text','')
-                        img = dict.get('image','')
+                        dct = s
+                        s = dct.get('text','')
+                        img = dct.get('image','')
                     else:
                         img = ''
                     if self.do_markup: txt=self.handle_markup(s)
