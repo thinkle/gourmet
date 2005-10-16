@@ -168,6 +168,7 @@ class RecipeParser:
                                 break
                         else:
                             self.parsed.append((p,attr))
+                            break
         self.join_the_joinable()
         return self.parsed
 
@@ -180,7 +181,7 @@ class RecipeParser:
         parsed = self.parsed[0:]
         self.parsed = []
         for chunk,tag in parsed:
-            if len(self.parsed)==0:
+            if tag not in self.joinable_tags or len(self.parsed)==0:
                 self.parsed.append([chunk,tag])
                 continue
             if self.change_on_join.has_key(tag):
