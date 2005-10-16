@@ -103,12 +103,19 @@ class exporter:
                 steps = self._grab_attr_(self.r,a)
                 if not steps: continue
                 for s in steps:
+                    if isinstance(s,dict):
+                        s = dict.get('text','')
+                        img = dict.get('image','')
+                    else:
+                        img = ''
                     if self.do_markup: txt=self.handle_markup(s)
                     if not self.use_ml: txt = xml.sax.saxutils.unescape(s)
                     if self.convert_attnames:
                         self.write_text(gglobals.TEXT_ATTR_DIC[a],s)
                     else:
                         self.write_text(a,s)
+                    if img:
+                        self.write_image(img)
                 continue
             # End of non-Gourmet code
             txt=self._grab_attr_(self.r,a)
