@@ -98,6 +98,7 @@ def data_files():
         base = os.path.join(base,'gourmet')
     files.extend([(os.path.join(base), images + ['FAQ'] +[os.path.join('data','recipe.dtd'),
                                                           os.path.join('data','ABBREV.txt'),
+                                                          os.path.join('data','WEIGHT.txt'),
                                                           ]),])
     for f in i18n:
         pth,fn=os.path.split(f)

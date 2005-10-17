@@ -92,9 +92,8 @@ class NutritionInfoDruid (gobject.GObject):
                       'Baby Foods']
 
     def __init__ (self, nd, prefs):
-        # FIX PATH BEFORE COMMITTING
+        print "DELETE ME: __init__ (self, nd, prefs):",self, nd, prefs
         self.glade = gtk.glade.XML(os.path.join(gglobals.datad,'nutritionDruid.glade'))
-        #self.glade = gtk.glade.XML('/home/tom/Projects/grm/glade/nutritionDruid.glade')
         self.mm = MnemonicManager()
         self.mm.add_glade(self.glade)
         self.mm.fix_conflicts_peacefully()
@@ -120,10 +119,10 @@ class NutritionInfoDruid (gobject.GObject):
             self.prefs.get('sautTog',
                            {'active':True}),
             ['toggled'])
-        
 
     # Setup functions
     def _setup_widgets_ (self):
+        print "DELETE ME: _setup_widgets_ (self):",self
         self.controls = []
         for widget_name in ['notebook','ingKeyLabel','ingKeyEntry','changeKeyButton','applyKeyButton',
                             'searchEntry','searchAsYouTypeToggle','findButton',
@@ -169,6 +168,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.searchAsYouTypeToggle.connect('toggled',self.toggle_saut)
 
     def _setup_nuttree_ (self):
+        print "DELETE ME: _setup_nuttree_ (self):",self
         """Set up our treeview with USDA nutritional equivalents"""
         try: self.nutrition_store = PageableNutritionStore(self.rd.nview)
         except: print 'rd=',self.rd
@@ -186,6 +186,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.treeview.append_column(col)
 
     def update_nuttree_showing (self,*args):
+        print "DELETE ME: update_nuttree_showing (self,*args):",self,args
         self.showingLabel.set_text('Showing results %s to %s of %s'%self.nutrition_store.showing())
         # update buttons too
         cp = self.nutrition_store.page
@@ -205,11 +206,13 @@ class NutritionInfoDruid (gobject.GObject):
 
     # methods to set our core values
     def set_ingkey (self, txt):
+        print "DELETE ME: set_ingkey (self, txt):",self, txt
         self.ingKeyEntry.set_text(txt)
         self.ingKeyLabel.set_markup('<i><b>'+txt+'</b></i>')
         self.ingkey = txt
 
     def set_from_unit (self, txt):
+        print "DELETE ME: set_from_unit (self, txt):",self, txt
         if txt:
             self.fromUnitLabel.set_text(txt)
             self.fromUnitComboBoxEntry.get_children()[0].set_text(txt)
@@ -227,6 +230,7 @@ class NutritionInfoDruid (gobject.GObject):
                                          '</i>')
 
     def setup_to_units (self):
+        print "DELETE ME: setup_to_units (self):",self
         """Setup list of units we need to convert to.
 
         Usually, this will be a list of mass units.
@@ -251,22 +255,24 @@ class NutritionInfoDruid (gobject.GObject):
         self.toUnitCombo.set_wrap_width(3)
 
     # search callbacks &c.
-    
     def toggle_saut (self, *args):
+        print "DELETE ME: toggle_saut (self, *args):",self, args
         if self.searchAsYouTypeToggle.get_active():
             self.findButton.hide()
         else:
             self.findButton.show()
 
     def search_type_cb (self, *args):
+        print "DELETE ME: search_type_cb (self, *args):",self, args
         if self.searchAsYouTypeToggle.get_active(): self.search_cb()
 
     def search_cb (self, *args):
+        print "DELETE ME: search_cb (self, *args):",self, args
         if self.__override_search__: return
         gobject.idle_add(self.search)
 
     def search (self):
-        
+        print "DELETE ME: search (self):",self
         txt = self.searchEntry.get_text()
         if self.__last_search__ == txt:
             return
@@ -297,6 +303,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.nutrition_store.set_page(self.NUT_PAGE)
 
     def autosearch_ingkey (self):
+        print "DELETE ME: autosearch_ingkey (self):",self
         """Automatically do a search for our current ingkey.
 
         We're pretty smart about this: in other words, we won't do a
@@ -319,27 +326,26 @@ class NutritionInfoDruid (gobject.GObject):
         print len(self.searchvw),'results overall'
         # Some metakit specific hackery which should not be reproduced...
         tbl = self.rd.normalizations['foodgroup']
-        import metakit
-        print metakit.dump(tbl)
         PACKAGED_FOOD_IDS = []
-        for n in self.PACKAGED_FOODS:
-            id = tbl.find(foodgroup=n)
-            if id < 0: print "Funny, I don't know about ",n
-            else:
-                print 'yippee',n,'->',id
-                PACKAGED_FOOD_IDS.append(tbl[id].id)
-        print 'Packaged foods = ',PACKAGED_FOOD_IDS
-        filteredvw = self.searchvw = self.rd.filter(self.searchvw,
-                                                    lambda r: r.foodgroup not in PACKAGED_FOOD_IDS)
-        if filteredvw:
-            self.searchvw = filteredvw
-            print len(self.searchvw),'results sans junkfood'
+        #for n in self.PACKAGED_FOODS:
+        #    id = tbl.find(foodgroup=n)
+        #    if id < 0: print "Funny, I don't know about ",n
+        #    else:
+        #        print 'yippee',n,'->',id
+        #        PACKAGED_FOOD_IDS.append(tbl[id].id)
+        #print 'Packaged foods = ',PACKAGED_FOOD_IDS
+        #filteredvw = self.searchvw = self.rd.filter(self.searchvw,
+        #                                            lambda r: r.foodgroup not in PACKAGED_FOOD_IDS)
+        #if filteredvw:
+        #    self.searchvw = filteredvw
+        #    print len(self.searchvw),'results sans junkfood'
         self.nutrition_store.change_view(self.searchvw)
         self.__last_search__ = search_text
         self.__override_search__ = False # turn back on search handling!
 
     # callbacks for quick-changes
     def apply_ingkey (self,*args):
+        print "DELETE ME: apply_ingkey (self,*args):",self,args
         key = self.ingKeyEntry.get_text()
         ings = self.nd.db.iview.select(ingkey=self.ingkey)
         print 'modifying DB for ',len(ings),'ingredients key: ',self.ingkey,'->',key
@@ -351,8 +357,9 @@ class NutritionInfoDruid (gobject.GObject):
             print 'we already have this guy!'
             self.setup_to_units()
             self.check_next_amount()
-
+    
     def save_unit_cb (self,*args):
+        print "DELETE ME: save_unit_cb (self,*args):",self,args
         from_unit = self.fromUnitComboBoxEntry.get_children()[0].get_text()
         ings = self.nd.db.iview.select(ingkey=self.ingkey,unit=self.fromUnit)
         print 'modifying DB for ',len(ings),'ingredients unit: ',self.fromUnit,'->',from_unit
@@ -363,6 +370,7 @@ class NutritionInfoDruid (gobject.GObject):
     # Callbacks to handle our druid-like walking-through of actions.
 
     def add_ingredients (self, inglist):
+        print "DELETE ME: add_ingredients (self, inglist):",self, inglist
         """Add a list of ingredients for our druid to guide the user through.
 
         Our ingredient list is in the following form for, believe it
@@ -390,14 +398,15 @@ class NutritionInfoDruid (gobject.GObject):
         self.setup_next_ing()
 
     def setup_next_ing (self):
+        print "DELETE ME: setup_next_ing (self):",self
         print 'setup_next_ing ',self.ing_index
         if self.ing_index >= len(self.inglist):
             print 'done!'            
             self.finish()
             return
-        print 'grab ing index ',self.ing_index,
+        print 'grab ing index ',self.ing_index
         ing = self.inglist[self.ing_index]
-        #print ing
+        print ing
         self.ing_index+=1    
         if not ing:
             print 'WTF? Done!'
@@ -407,22 +416,25 @@ class NutritionInfoDruid (gobject.GObject):
         self.amount_index = 0
         self.set_ingkey(ingkey)
         if not self.nd.get_nutinfo(ingkey):
+            print "We don't know about ",ingkey
             self.autosearch_ingkey()
             self.goto_page_key_to_nut()
         else:
+            print 'Already have ing info for ',ingkey
             self.setup_to_units()
             self.check_next_amount()
         #self.from_unit = unit
         #self.from_amount = amount
 
     def check_next_amount (self):
+        print "DELETE ME: check_next_amount (self):",self
         """Check the next amount on our amounts list.
 
         If the amount is already convertible, we don't do anything.
         If the amount is not convertible, we ask our user for help!
         """
         if self.amount_index >= len(self.amounts):
-            # then we go to the next ingredient...
+            print 'No more amounts. Move to next ingredient'
             self.setup_next_ing()
             return
         amount,unit = self.amounts[self.amount_index]
@@ -441,26 +453,34 @@ class NutritionInfoDruid (gobject.GObject):
             self.goto_page_unit_convert()
 
     def finish (self):
+        print "DELETE ME: finish (self):",self
         print 'All done!'
         print 'We better do something...'
         self.glade.get_widget('window1').hide()
         self.emit('finish')
 
-    def goto_page_key_to_nut (self): self.notebook.set_current_page(self.NUT_PAGE)
+    def goto_page_key_to_nut (self):
+        print "DELETE ME: goto_page_key_to_nut (self):",self
+        self.notebook.set_current_page(self.NUT_PAGE)
 
-    def goto_page_unit_convert(self): self.notebook.set_current_page(1)
+    def goto_page_unit_convert(self):
+        print "DELETE ME: goto_page_unit_convert(self):",self
+        self.notebook.set_current_page(1)
 
     def apply_nut_equivalent (self,*args):
+        print "DELETE ME: apply_nut_equivalent (self,*args):",self,args
         if len(self.searchvw)==1:
             nut = self.searchvw[0].ndbno
         else:
             mod,itr = self.treeview.get_selection().get_selected()
             nut = mod.get_value(itr,0)
+        print 'Apply nutrition ',self.ingkey,'->',nut
         self.nd.set_key_from_ndbno(self.ingkey,nut)
         self.setup_to_units()
         # Now see if we need to do any conversion or not
 
     def apply_amt_convert (self,*args):
+        print "DELETE ME: apply_amt_convert (self,*args):",self,args
         to_unit = cb.cb_get_active_text(self.toUnitCombo)
         base_convert = self.nd.conv.converter('g.',to_unit)
         if not base_convert:
@@ -488,6 +508,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.nd.set_conversion(self.ingkey,from_unit,factor)
     
     def previous_page_cb (self, *args):
+        print "DELETE ME: previous_page_cb (self, *args):",self, args
         #self.notebook.set_current_page(self.notebook.get_current_page()-1)
         indx = self.curpage - 1
         print 'grabbing ',indx,'from',self.path
@@ -511,6 +532,7 @@ class NutritionInfoDruid (gobject.GObject):
             self.backButton.set_sensitive(False)
 
     def apply_cb (self, *args):
+        print "DELETE ME: apply_cb (self, *args):",self, args
         page = self.notebook.get_current_page()
         if page == self.NUT_PAGE: # 0 is nut equiv
             self.apply_nut_equivalent()
@@ -526,6 +548,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.backButton.set_sensitive(True)
 
     def ignore_cb (self, *args):
+        print "DELETE ME: ignore_cb (self, *args):",self, args
         page = self.notebook.get_current_page()
         self.path.append((page,self.ingkey,self.amount_index))
         self.curpage += 1

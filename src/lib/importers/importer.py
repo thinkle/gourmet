@@ -449,6 +449,7 @@ class RatingConverter:
         self.to_convert[id]=rating
 
     def get_conversions (self, star_generator=None):
+        print 'Getting conversion!'
         self.got_conversions=True
         if not star_generator:
             from gourmet.ratingWidget import star_generator
@@ -461,6 +462,11 @@ class RatingConverter:
             self.conversions = de.get_ratings_conversion(ratings,star_generator)
 
     def do_conversions (self, db):
-        if not self.got_conversions: self.get_conversions()
+        if not self.got_conversions:
+            print 'Get conversion!'
+            self.get_conversions()
         for id,rating in self.to_convert.items():
-            db.modify_rec(db.get_rec(id),{'rating':self.conversions[str(rating)]})
+            try:
+                db.modify_rec(db.get_rec(id),{'rating':self.conversions[str(rating)]})
+            except:
+                print 'wtf... problem with rating ',rating,'for recipe',id 

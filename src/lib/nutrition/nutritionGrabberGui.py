@@ -32,12 +32,11 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
         #        'Find ABBREV.txt file',
         #        filters=[['Plain Text',['text/plain'],['*txt']]]
         #        )
-        filename = os.path.join(datad,'ABBREV.txt')
         self.progdialog = de.ProgressDialog(label=_('Loading Nutritional Data'),
                                             pause=self.pausecb,
                                             stop=self.stopcb)
         self.progdialog.show()
-        self.get_abbrev(filename)
+        self.grab_data(datad)
         self.show_progress(1,_('Nutritonal database import complete!'))
         self.progdialog.set_response_sensitive(gtk.RESPONSE_OK,True)
 

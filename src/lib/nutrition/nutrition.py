@@ -17,6 +17,7 @@ class NutritionData:
         self.conv = conv
         self.conv.density_table
         self.gramwght_regexp = re.compile("([0-9.]+)?( ?([^,]+))?(, (.*))?")
+        self.wght_breaker = re.compile('([^ ,]+)([, ]+\(?(.*)\)?)?$')
 
     def set_key (self, key, row):
         """Create an automatic equivalence for ingredient key 'key' and nutritional DB row ROW
@@ -31,6 +32,8 @@ class NutritionData:
     def set_key_from_ndbno (self, key, ndbno):
         """Create an automatic equivalence between ingredient key 'key' and ndbno
         ndbno is our nutritional database number."""
+        if type(ndbno)!=int:
+            ndbno = int(ndbno)
         self.db.naliasesview.append({'ndbno':ndbno,
                                  'ingkey':key})
 
@@ -97,10 +100,11 @@ class NutritionData:
         """Handed an ingredient key, get our nutritional Database equivalent
         if one exists."""
         #print 'key=',key
-        rows=self.db.naliasesview.select({'ingkey':str(key)})
+        rows=self.db.naliasesview.select(**{'ingkey':str(key)})
         if rows:
             return rows[0]
-        else: return None
+        else:
+            return None
 
     def get_nutinfo_for_ing (self, ing):
         """A convenience function that grabs the requisite items from
@@ -158,6 +162,9 @@ class NutritionData:
         aliasrow = self._get_key(key)
         if aliasrow: return aliasrow.ndbno
         else: return None
+
+    def convert_to_grams (self, amt, unit, key, row=None):
+        return self.get_conversion_for_amount(amt,unit,key,row)*100
 
     def get_conversion_for_amt (self, amt, unit, key, row=None):
         """Get a conversion for amount amt of unit 'unit' to USDA standard.
@@ -260,13 +267,25 @@ class NutritionData:
             return densities
 
     def get_gramweights (self,row):
-        grm1 = self.parse_gramweight_measure(row.gramdsc1)
-        grm2 = self.parse_gramweight_measure(row.gramdsc2)
         ret = {}
-        if grm1:
-            ret[grm1]=row.gramwt1
-        if grm2:
-            ret[grm2]=row.gramwt2
+        #grm1 = self.parse_gramweight_measure(row.gramdsc1)
+        #grm2 = self.parse_gramweight_measure(row.gramdsc2)
+        #if grm1:
+        #    ret[grm1]=row.gramwt1
+        #if grm2:
+        #    ret[grm2]=row.gramwt2
+        # But wait, there's more...            
+        nutweights = self.db.nwview.select(**{'ndbno':row.ndbno})
+        for nw in nutweights:
+            mtch = self.wght_breaker.match(nw.unit)
+            if not mtch:
+                unit = nw.unit
+                extra = None
+            else:
+                unit = mtch.groups()[0]
+                extra = mtch.groups()[2]
+            ret[(nw.amount,unit,extra)]=nw.gramwt
+        print 'Got ',len(ret),'gramweights!'
         return ret
     
     def get_density (self,key=None,row=None):

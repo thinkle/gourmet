@@ -3,6 +3,8 @@ from gettext import gettext as _
 
 PER_100_GRAMS = ["kcal","protein","lipid","ash","carb","fiber","sugar","calcium","iron","magnesium","phosphorus","potassium","sodium","zinc","copper","manganese","selenium","vitaminc","thiamin","riboflavin","niacin","pantoacid","vitaminb6","folatetotal","folateacid","foodfolate","folatedfe","vitb12","vitaiu","vitarae","retinol","vite","vitk","alphac","betac","betacrypt","lypocene","famono","fapoly","lutzea","fasat","cholestrl"]
 
+# For the ABBREV FILE
+
 NUTRITION_FIELDS = [
     #[description abbrev type]
     ["Nutrient Databank Number","ndbno","int"],
@@ -375,3 +377,31 @@ RANKED_GROUPS = [
     'Meals, Entrees, and Sidedishes',
     'Fast Foods',
     'Baby Foods',]
+
+# We're going to have to ditch the ABBREV file -- it's not as useful
+# as we could be... we actually need to parse all the data files...
+
+FOOD_DESC_FIELDS = [["Nutrient Databank Number","ndbno","int"],
+                    ['Food Group Number','groupno','int'],
+                    ['Long Description','long_description','char(200)'],
+                    ['Short Description','short_description','char(60)'],
+                    ['Common Name','common_name','char(100)'],
+                    ['Manufacturer Name','manufacturer_name','char(50)'],
+                    ['Survey','survey','bool'],
+                    ['Refuse Description','ref_desc','char(60)'],
+                    ['Percent refuse','refusepct','float'],
+                    ['N_Factor','nfactor','float'],
+                    ['Pro_Factor','pfactor','float'],
+                    ['Fat_Factor','ffactor','float'],
+                    ['CHO_Factor','cfactor','float']
+                    ]
+
+WEIGHT_FIELDS = [
+    ["Nutrient Databank Number","ndbno","int"],
+    ["Sequence Number",'seq','float'],
+    ["Amount",'amount','float'],
+    ['Measure Description','unit','char(80)'],
+    ['Gram Weight','gramwt','float'],
+    ['Data points','ndata','int'],
+    ['Standard Deviation','stdev','float'],
+    ]

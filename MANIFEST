@@ -26,6 +26,7 @@ glade/recSelector.glade
 glade/rec_ref_window.glade
 glade/shopList.glade
 data/ABBREV.txt
+data/WEIGHT.txt
 data/recipe.dtd
 data/RULES_TEMPLATE
 style/default.css

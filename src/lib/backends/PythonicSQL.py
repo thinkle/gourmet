@@ -114,6 +114,7 @@ class PythonicSQL:
         #    raise TypeError, 'expected dictionary type argument'
         add_string = "CREATE TABLE %s ("%name
         sql_params = []
+        print 'working with table',table
         for rowname,typ,flags in table:
             if type(typ) != type(""):
                 typ = self.pytype_to_sqltype(typ)
@@ -127,7 +128,9 @@ class PythonicSQL:
         add_string = add_string[0:-1] + ")"
         print 'add_string = ',add_string, 'sql_params=',sql_params
         self.execute([add_string,sql_params])
-        if key: self.execute(['CREATE INDEX %s%sIndex ON %s (%s)'%(name,key,name,key)])
+        print 'successful!'
+        if key:
+            self.execute(['CREATE INDEX %s%sIndex'%(name,key) +' ON %s (%s)',[name,key]])
         self.changed=True
         return TableObject(self, name, key)
 
@@ -213,7 +216,7 @@ class PythonicSQL:
         up_string += wherestring
         sql_params += whereparams
         self.changed=True
-        return self.execute([up_string,sql_params])
+        self.execute([up_string,sql_params])
 
     def retrieve (self, name, fields=None, criteria={}, logic="and", filters=[]):
         """Retrieve FIELDS from table NAME where CRITERIA are met, possibly filtering

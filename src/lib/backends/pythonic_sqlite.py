@@ -1,5 +1,6 @@
 import PythonicSQL
-import sqlite
+#import sqlite
+from pysqlite2 import dbapi2 as sqlite
 from gourmet.gdebug import debug
 
 class PythonicSQLite (PythonicSQL.PythonicSQL):
@@ -12,6 +13,32 @@ class PythonicSQLite (PythonicSQL.PythonicSQL):
         if typestring=='int': return 'integer'
         else: return typestring
 
+    def _execute (self, c, sql):
+        """For some reason, our parameters aren't working properly."""
+        statement = sql[0]
+        params = (len(sql)>1 and sql[1]) or []
+        if not isinstance(params,list) and not isinstance(params,tuple):
+            params = [params]
+        if len(sql)>2:
+            print 'WTF execute got',sql,'as an argument'
+            print 'We should be getting (SQL, params)'
+            print 'Bad Tom, Bad!'
+            raise
+        #params = [(hasattr(p,'replace') and '"%s"'%p.replace('"','\"')
+        params = [(hasattr(p,'replace') and '"%s"'%p.replace('"','inch')
+                   or
+                   p) for p in params]
+        try:
+            sql = [statement%tuple(params)]
+        except TypeError:
+            print """There appears to be a problem
+            with executing the statment %(statement)s
+            with the params %(params)s
+            """%locals()
+            raise
+        # We have to do the escaping ourselves, which kind of sucks
+        return PythonicSQL.PythonicSQL._execute(self,c,sql)
+
     def connect (self):
         # debugging code...
         import sys
@@ -21,7 +48,9 @@ class PythonicSQLite (PythonicSQL.PythonicSQL):
         #    num = logfile.split('.')[-1]
         # logfile = "%s.%s"%(logbase,int(num)+1)
         #logfi = open(logfile,'w')
-        return sqlite.Connection(self.file, encoding='utf8',timeout=5000,autocommit=True,)#command_logfile=sys.stderr)
+        return sqlite.Connection(self.file,timeout=5000,)
+                                 #encoding='utf8',
+                                 #autocommit=True,)#command_logfile=sys.stderr)
 
     def _check_for_table (self, name):
         return self.execute(['SELECT name FROM sqlite_master WHERE NAME=%s',name])
@@ -64,3 +93,4 @@ if __name__ == '__main__':
             print getattr(t,m)
     #psl.c.commit()
 
+    

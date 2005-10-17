@@ -8,6 +8,7 @@ from gourmet.defaults import lang as defaults
 import gourmet.nutrition.parser_data
 import StringIO
 from gourmet import ImageExtras
+import unittest
 
 # This is our base class for rdatabase.  All functions needed by
 # Gourmet to access the database should be defined here and
@@ -134,6 +135,12 @@ class RecData:
         [(name,typ,[]) for lname,name,typ in gourmet.nutrition.parser_data.NUTRITION_FIELDS] + \
         [('foodgroup','int',[])]
         )
+
+    NUTRITION_WEIGHT_TABLE_DESC = (
+        'usda_weights',
+        [(name,typ,[]) for lanme,name,typ in gourmet.nutrition.parser_data.WEIGHT_FIELDS]
+        )
+    
     NUTRITION_ALIASES_TABLE_DESC = (
         'nutritionaliases',
         [('ingkey','int',[]),
@@ -196,6 +203,8 @@ class RecData:
         self.cuview = self._setup_table(*self.CROSSUNITDICT_TABLE_DESC)
         self.uview = self._setup_table(*self.UNITDICT_TABLE_DESC)
         self.nview = self._setup_table(*self.NUTRITION_TABLE_DESC)
+        # Don't normalize this one!
+        self.nwview = self.setup_table(*self.NUTRITION_WEIGHT_TABLE_DESC)
         self.naliasesview = self._setup_table(*self.NUTRITION_ALIASES_TABLE_DESC)
         self.nconversions = self._setup_table(*self.NUTRITION_CONVERSIONS)
 
@@ -1245,4 +1254,61 @@ class NormalizedRow (Normalizer):
 
     def __repr__ (self): return '<Normalized %s>'%self.__row__
                     
-                         
+def test_db (db):
+    print 'Test new rec!'
+    rec = db.new_rec()
+    print 'Modify rec!'
+    rec = db.modify_rec(rec,{'title':'Foo','cuisine':'Bar'})
+    assert(rec.title=='Foo')
+    assert(rec.cuisine=='Bar')
+    db.delete_rec(rec)
+    print 'Test ingredients'
+    ing = db.add_ing({'amount':1,
+                      'unit':'c.',
+                      'item':'Carrot juice',
+                      'key':'juice, carrot',
+                      'id':db.new_rec().id,
+                      })
+    ing = db.modify_ing(ing,{'amount':2})
+    assert(ing.amount==2)
+    ing = db.modify_ing(ing,{'unit':'cup'})
+    assert(ing.unit=='cup')
+    db.delete_ing(ing)
+    print 'Success!'
+    
+# Not working -- I don't understand why -- for now I use the above
+# simple test function
+class DatabaseUnitTest (unittest.TestCase):
+    """Unit test for any subclass to pass."""
+    # subclass must provide these arguments for us to work!
+    db_class = None
+    db_args = []
+    db_kwargs = {}
+
+    def setUp (self):
+        print 'Set up!',self.db_class,'(*',self.db_args,',**',self.db_kwargs,')'
+        self.rd = self.db_class(*self.db_args,**self.db_kwargs)
+        self.rd.initialize_connection()
+        print 'Set up done.'
+
+    def testRecs (self):
+        rec = self.rd.new_rec()
+        rec = self.rd.modify_rec(rec,
+                                 {'title':'Foo',
+                                  'cuisine':'Bar',})
+        assert(rec.title=='Foo')
+        assert(rec.cuisine=='Bar')
+        self.rd.delete_rec(rec)
+
+    def testIngs (self):
+        ing = self.rd.add_ing({'amount':1,
+                               'unit':'c.',
+                               'item':'Carrot juice',
+                               'key':'juice, carrot',
+                               'id':self.rd.new_rec().id,
+                               })
+        ing = self.rd.modify_ing(ing,{'amount':2})
+        assert(ing.amount==2)
+        ing = self.rd.modify_ing(ing,{'unit':'cup'})
+        assert(ing.unit=='cup')
+        self.rd.delete_ing(ing)

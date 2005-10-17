@@ -21,7 +21,7 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
     def setup_table (self, name, data, key=None):
         return self.get_table(name,data,key) #PythonicSQL's method
 
-    def delete_rec (self, rec):
+    def do_delete_rec (self, rec):
         if type(rec)==type(""):
             debug("grabbing rec from id",5)
             rec=self.get_rec(rec)
@@ -30,13 +30,9 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
         rec.__delete__()
         self.iview.delete({'id':myid})
 
-    def modify_rec (self, rec, dic):
-        """Update recipe based on dictionary DIC"""
-        self.update('recipe',{'id':rec.id},dic)
-
     def new_rec (self):
-        return self.add_rec({})
-
+        return self.add_rec({'title':_('New Recipe')})
+    
     def new_id (self):
         """We reserve a new ID.
 
@@ -51,19 +47,23 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
         r=self.new_rec()
         return r.id
     
-    def add_rec (self,rdict):
-        t = TimeAction('rsqlite.add_rec',3)
+    def do_add_rec (self,rdict):
         if rdict.has_key('id'):
             self.update('recipe',{'id':rdict['id']},rdict)
             return self.get_rec(rdict['id'])
         else:
             self.rview.append(rdict)
             return self.rview[-1]
-        t.end()
+
+    def do_modify_rec (self, rec, dic):
+        if not rec or not dic: return
+        self.update('recipe',
+                    {'id':rec.id},
+                    dic)
+        return self.get_rec(rec.id)
 
     def save (self):
-        #self.get_connection().commit()
-        pass # autocommit is on. We do nothing.
+        self.get_connection().commit()
 
     def load (self, filename=None):
         if filename:
@@ -77,8 +77,12 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
         """Handed a table, a column name, and a regular expression, search
         for an item"""
         debug('search handed: table:%s, colname:%s, regexp:%s, exact:%s'%(table,colname,regexp,exact),0)
-        if type(regexp) != "":
-            return table.select(**{colname:regexp})
+        print 'Doing search...'
+        if type(regexp) != str:
+            print 'This is funny...',table,colname,regexp
+            tbl = table.select(**{colname:regexp})
+            print 'we got ',tbl
+            return tbl
         if use_regexp:
             # we still convert to sql if we can afford to, given the speed advantage
             if exact: sql = sqlify_regexp(regexp)
@@ -86,13 +90,17 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
         else:
             if not exact: sql = regexp + "%"
         if sql:
-            return table.select(**{colname:(" LIKE ",sql)})
+            tbl=table.select(**{colname:(" LIKE ",sql)})
+            print 'returning tbl',tbl
+            return tbl
         else:
             debug('adding filter re.search(%s,getattr(row,%s))'%(regexp,colname),0)
             def fun (row):
                 #print 'comparing %s and %s'%(getattr(row,colname),regexp)
                 return re.search(regexp,getattr(row,colname),re.IGNORECASE)
-            return table.filter(fun)
+            tbl = table.filter(fun)
+            print '(filter) returning tbl',tbl
+            return tbl
 
 def regexp_to_sql (regexp):
     debug('regexp_to_sql: base regexp=%s'%regexp,0)
@@ -160,3 +168,14 @@ class dbDic (rdatabase.dbDic):
         for i in self.vw:
             ret.append((getattr(i,self.kp),pickle.loads(getattr(i,self.vp))))
         return ret
+
+#class SQLiteUnitTest (rdatabase.DatabaseUnitTest):
+    db_class = RecData
+    db_kwargs = {'filename':'/tmp/foo.db'}
+
+if __name__ == '__main__':
+    db = RecipeManager(file='/tmp/foo.db')
+    rdatabase.test_db(db)
+#    import unittest
+#    unittest.main()
+

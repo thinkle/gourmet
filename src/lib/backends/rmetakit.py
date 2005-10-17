@@ -44,21 +44,24 @@ class RecData (rdatabase.RecData):
         self.db.autocommit()
 
     def setup_tables (self):
-        # we check for old, incompatible table names
-        # and fix them before calling our regular setup stuff
-        debug('setup_tables called!',1)        
-        self.move_old_tables()
         # set up our top id
         # This is unique to metakit and not part of the normal setup_tables routine
         # since other DBs will presumably have auto-increment built into them.
         self.increment_vw  = self.db.getas('incrementer[view:S,field:S,n:I]')
         self.vw_to_name = {}
-        self.increment_dict = {}
+        #self.increment_dict = {}
         #self.top_id_vw.append({'id':1})
         #self.top_id_row = self.top_id_vw[0]
+        
+        # we check for old, incompatible table names
+        # and fix them before calling our regular setup stuff
+        debug('setup_tables called!',3)        
+        self.move_old_tables()
+        debug('Setup tables',3)
         rdatabase.RecData.setup_tables(self)
         # If we've dumped our data, we want to re-import it!
-        if self.import_when_done:            
+        if self.import_when_done:
+            debug('Do import of old recipes',3)
             old_db,ifi = self.import_when_done
             from gourmet.importers.gxml2_importer import converter 
             converter(
@@ -70,7 +73,6 @@ class RecData (rdatabase.RecData):
             for tabl,desc in [('sview',self.SHOPCATS_TABLE_DESC),
                               ('scview',self.SHOPCATSORDER_TABLE_DESC),
                               ('pview',self.PANTRY_TABLE_DESC)]:
-                #print old_db,tabl,table_cols=[i[0] for i in desc[1]],prog=lambda p,m: self.pd.set_progress(p/tot+(n*p/tot),m),convert_pickles=True
                 self.copy_table(
                     old_db,
                     tabl,
@@ -80,7 +82,9 @@ class RecData (rdatabase.RecData):
                     )
                 n+=1
             self.pd.set_progress(1.0,'Database successfully converted!')
+            debug('Delete reference to old database',3)
             del old_db
+        
 
     def setup_table (self, name, data, key=None):
         """Setup a metakit view (table) for generic table description (see superclass rdatabase)."""
@@ -92,40 +96,52 @@ class RecData (rdatabase.RecData):
             data = [data[key_index]] + data[0:key_index] + data[key_index+1:]
         for col,typ,flags in data:
             if 'AUTOINCREMENT' in flags:
+                debug('Setup autoincrement',3)
                 row = self.fetch_one(self.increment_vw,**{'view':name,
-                                                     'field':col}
-                                  )
+                                                          'field':col}
+                                     )
+                debug('Looked up autoincrement row',3)
                 if not row:
+                    debug('Add new autoincrement row',3)
                     self.increment_vw.append(view=name,field=col,n=1)
-                    row = self.increment_vw[-1]
-                if not self.increment_dict.has_key(name):
-                    self.increment_dict[name]={}
-                self.increment_dict[name][col]=row
+            debug('Building metakit getstring %s'%getstring,3)
             getstring += "%s:%s,"%(col,self.type_to_metakit_type(typ))
         if name=='recipe':
+            # Hack to allow sorting to work...
             getstring = getstring+'categoryname:S,'
         getstring = getstring[0:-1] + "]"
         debug('Metakit: getting view: %s'%getstring,5)
         vw = self.db.getas(getstring)
-        debug('Got metakit database',5)
+        debug('Got view!',5)
         if key:
+            debug('Make hash',3)
             rhsh = self.db.getas("__%s_hash__[_H:I,_R:I]"%name)
             vw = vw.hash(rhsh,1)
+            debug('Made hash!',3)
         # Make sure our increment fields are right...
-        if self.increment_dict.has_key(name):
-            self.vw_to_name[vw]=name
-            for field,row in self.increment_dict[name].items():
-                try:
-                    svw=vw.sort(vw.id)
-                    if len(svw)>svw[-1].id:
+        self.vw_to_name[vw]=name
+        debug('Investigate increment rows',3)
+        increment_rows = self.increment_vw.select(view=name)
+        if increment_rows:
+            #for field,row in self.increment_dict[name].items():
+            for dbrow in self.increment_vw.select(view=name):                
+                field = dbrow.field
+                debug("look at row for field:%s"%field,3)
+                svw=vw.sort(getattr(vw,field))
+                tot = len(svw)
+                if tot>1:
+                    if tot>getattr(svw[-1],field):
                         print """WTF: increment dicts are foobared. If you see this message, please
                         submit a bug report with the terminal output included.
                         """
                         metakit.dump(svw)
-                    self.increment_dict[name][field].n = svw[-1].id
-                except IndexError:
-                    pass        
+                    else:
+                        self.fetch_one(self.increment_vw,
+                                       view=name,
+                                       field=field).n = getattr(svw[-1],field)
+        debug('setup_table done!',2)
         return vw
+    
 
     def type_to_metakit_type (self, typ):
         """Convert a generic database type to a metakit property description."""
@@ -281,13 +297,17 @@ class RecData (rdatabase.RecData):
         self.changed=True
 
     # Convenience functions
-
     def fetch_one (self, table, *args, **kwargs):
-        indx=table.find(*args,**kwargs)
-        if indx >= 0:
-            return table[indx]
-        else:
-            return None
+        try:
+            indx=table.find(*args,**kwargs)
+            if indx >= 0:
+                return table[indx]
+            else:
+                return None
+        except:
+            print 'WTF!'
+            metakit.dump(table)
+            raise
 
     def remove_unicode (self, mydict):
         for k,v in mydict.items():
@@ -301,9 +321,11 @@ class RecData (rdatabase.RecData):
     def increment_field (self, table, field):
         if type(table)!=str:
             table = self.vw_to_name[table]
-        self.increment_dict[table][field].n += 1
-        return self.increment_dict[table][field].n
-
+        row = self.fetch_one(self.increment_vw,
+                             **{'view':table,
+                                'field':field})
+        row.n += 1
+        return row.n
 
     # Backup / Restructuring methods -- these are special methods to
     # help us with our restructuring of the database - updating from
@@ -343,6 +365,7 @@ class RecData (rdatabase.RecData):
               )
              )
             ):
+            debug('cleaning rec table and dumping data',1)
             self.clean_recs_table_and_dump_data()
 
     def copy_table (self, old_db, table_name, table_cols,
@@ -621,14 +644,27 @@ class RecipeManager (RecData,rdatabase.RecipeManager):
 
 dbDic = rdatabase.dbDic
 
+class MetakitUnitTest (rdatabase.DatabaseUnitTest):
+    db_class = RecipeManager
+    db_kwargs = {'file':'/tmp/test3.mk'}
+
 if __name__ == '__main__':
-    import time
-    def timef (f):
-        t = time.time()
-        f()
-        print time.time()-t
+    import unittest
+    import tempfile
+    fi = '/tmp/fooeybooey'
+    n = 1
+    #while os.path.exists(fi+str(n)+'.mk'):
+    #    n+=1
+    #MetakitUnitTest.db_kwargs['file']=fi+str(n)+'.mk'
+    #try:
+    #    if __file__:
+    #        unittest.main()
+    ##    else:
+    #         raise
+    #except:
+    db = RecipeManager(MetakitUnitTest.db_kwargs['file'])
+    rdatabase.test_db(db)
     
-    db = RecipeManager('/tmp/addeabc/recipes.mk')
     
     
     
