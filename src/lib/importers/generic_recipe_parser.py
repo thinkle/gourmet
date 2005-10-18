@@ -87,7 +87,7 @@ class RecipeParser:
              self.ing_matcher,
              1],
             ['servings',
-             re.compile("serv(ing|e)s?: %(num)s|%(num)s servings?"%{
+             re.compile("serv(ing|e)s?:?\s*%(num)s|%(num)s\s*servings?"%{
             'num':convert.NUMBER_REGEXP},re.IGNORECASE),
              lambda m,txt,attr: (parse_group(m,txt,2,attr)
                                  or
