@@ -213,6 +213,9 @@ class NutritionInfoDruid (gobject.GObject):
 
     def set_from_unit (self, txt):
         print "DELETE ME: set_from_unit (self, txt):",self, txt
+        if not self.ingkey:
+            print 'Funny: no ingkey...'
+            return
         if txt:
             self.fromUnitLabel.set_text(txt)
             self.fromUnitComboBoxEntry.get_children()[0].set_text(txt)
@@ -557,6 +560,9 @@ class NutritionInfoDruid (gobject.GObject):
             self.setup_next_ing()
         else:
             self.check_next_amount()
+
+    def show (self):
+        self.glade.get_widget('window1').show()
 
     #def notebook_page_changed_cb (self, *args):
     #    if self.notebook.get_current_page()==0: self.prevDruidButton.set_sensitive(False)

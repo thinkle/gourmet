@@ -357,6 +357,7 @@ class NutritionLabel (gtk.Table, gobject.GObject):
                 )
             self.ndruid.connect('finish',
                                 self.update_nutinfo)
+            self.ndruid.show()
         
     def update_nutinfo (self,*args):
         self.nutinfo._reset()

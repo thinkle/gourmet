@@ -164,7 +164,11 @@ class NutritionData:
         else: return None
 
     def convert_to_grams (self, amt, unit, key, row=None):
-        return self.get_conversion_for_amount(amt,unit,key,row)*100
+        conv = self.get_conversion_for_amt(amt,unit,key,row)
+        if conv: return conv*100
+        else:
+            print "Couldn't convert ",amt,unit,key,row,"to grams"
+            return None
 
     def get_conversion_for_amt (self, amt, unit, key, row=None):
         """Get a conversion for amount amt of unit 'unit' to USDA standard.
@@ -205,9 +209,9 @@ class NutritionData:
                         print 'we not use ',cnv
                         cnv = conv.factor*factor
         if cnv:
-            print 'returning conversion ',
+            print 'returning conversion based on',cnv
             print amt,unit,'=',
-            print (.01*amt)/cnv,'*100g.'
+            print (0.01*amt)/cnv,'*100g.'
             return (0.01*amt)/cnv
 
     def get_conversions (self, key=None, row=None):
