@@ -1,24 +1,13 @@
 import gtk, pango, gobject
 from gettext import gettext as _
 
-class NutritionLabel (gtk.Table, gobject.GObject):
-    """Provide a nutritional label that looks like standard FDA
-    labels."""
-
-    bold_font = pango.FontDescription()
-    bold_font.set_weight(pango.WEIGHT_BOLD)
-    tiny_font = pango.FontDescription()
-    tiny_font.set_size(pango.SCALE*9)
-    background = gtk.gdk.Color(255,0,0)
-    foreground = gtk.gdk.Color(255,255,255)
-    
-    MAJOR = 0
-    MINOR = 1
-    TINY = 2
-    SEP = 3
-    SHOW_PERCENT = True
-    DONT_SHOW_PERCENT = False
-    nutdata = [(_('Calories'),MAJOR,'calorie',
+MAJOR = 0
+MINOR = 1
+TINY = 2
+SEP = 3
+SHOW_PERCENT = True
+DONT_SHOW_PERCENT = False    
+NUT_LAYOUT = nutdata = [(_('Calories'),MAJOR,'calorie',
                 'kcal',DONT_SHOW_PERCENT,''),
                SEP,
                (_('Total Fat'),MAJOR,'fat',
@@ -104,7 +93,7 @@ class NutritionLabel (gtk.Table, gobject.GObject):
                 'zinc',SHOW_PERCENT,'mg'),
                ]
 
-    recommended_intake = {
+RECOMMENDED_INTAKE = {
         'fat':0.30 / 9, # 30% of calories * 9 cal / g.
         'satfat':0.10 / 9, #10% of calories * 9 cal /g.
         'carb':0.6 / 4, #60% of calories * 4 cal / g.
@@ -139,6 +128,19 @@ class NutritionLabel (gtk.Table, gobject.GObject):
         'chloride':3400.0/2000,
         }
 
+
+class NutritionLabel (gtk.Table, gobject.GObject):
+    """Provide a nutritional label that looks like standard FDA
+    labels."""
+
+    bold_font = pango.FontDescription()
+    bold_font.set_weight(pango.WEIGHT_BOLD)
+    tiny_font = pango.FontDescription()
+    tiny_font.set_size(pango.SCALE*9)
+    background = gtk.gdk.Color(255,0,0)
+    foreground = gtk.gdk.Color(255,255,255)    
+
+
     calories_per_day = 2000
 
     __gsignals__ = {
@@ -150,7 +152,7 @@ class NutritionLabel (gtk.Table, gobject.GObject):
         self.prefs = prefs
         start_at = 4
         gobject.GObject.__init__(self)
-        gtk.Table.__init__(self,2,len(self.nutdata)+start_at)
+        gtk.Table.__init__(self,2,len(NUT_LAYOUT)+start_at)
         self.show()
         self.tt = gtk.Tooltips()
         self.servingLabel = gtk.Label()
@@ -169,8 +171,8 @@ class NutritionLabel (gtk.Table, gobject.GObject):
         self.attach(dvb,1,2,2,3)
         self.attach(eb,0,2,3,4,ypadding=12)
         self.tt.enable()
-        for n,nutstuff in enumerate(self.nutdata):
-            if nutstuff == self.SEP:
+        for n,nutstuff in enumerate(NUT_LAYOUT):
+            if nutstuff == SEP:
                 hs = gtk.HSeparator()
                 self.attach(hs,0,2,n+start_at,n+start_at+1,xoptions=gtk.FILL)
                 hs.show()
@@ -179,11 +181,11 @@ class NutritionLabel (gtk.Table, gobject.GObject):
             hb = gtk.HBox()
             permanentl = gtk.Label()
             permanentl.set_alignment(0,0.5)
-            if typ==self.MAJOR:
+            if typ==MAJOR:
                 permanentl.set_markup('<b>'+label+'</b>')
-            elif typ==self.MINOR:
+            elif typ==MINOR:
                 permanentl.set_markup('  '+label)
-            elif typ==self.TINY:
+            elif typ==TINY:
                 permanentl.set_markup('  <span size="smaller">'+label+'</span>')
             hb.pack_start(permanentl)
             unit_label = gtk.Label()
@@ -204,8 +206,8 @@ class NutritionLabel (gtk.Table, gobject.GObject):
                                  percent_label),
                 'unit_label': unit_label,
                 'unit':unit,
-                'usda_rec_per_cal':(self.recommended_intake.has_key(name) and
-                                    self.recommended_intake[name])
+                'usda_rec_per_cal':(RECOMMENDED_INTAKE.has_key(name) and
+                                    RECOMMENDED_INTAKE[name])
                 })
 
     def make_missing_label (self):

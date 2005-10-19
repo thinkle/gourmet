@@ -344,14 +344,20 @@ class ConvenientImporter (importer.importer):
     @autostart_rec
     def add_ing_from_text (self, txt):
         txt=txt.strip()
+        txt = re.sub('\s+',' ',txt)
         if not txt: return        
         mm = convert.ING_MATCHER.match(txt)
-        if not mm: raise "Unable to parse text"
+        if mm:
+            groups = mm.groups()
+            amount = groups[convert.ING_MATCHER_AMT_GROUP]
+            unit = groups[convert.ING_MATCHER_UNIT_GROUP]
+            item = groups[convert.ING_MATCHER_ITEM_GROUP]
+        else:
+            print 'Unable to parse ingredient from text "%s"'%txt
+            print 'Setting amount and unit to None'
+            amount = None; unit = None;
+            item = txt
         self.start_ing()
-        groups = mm.groups()
-        amount = groups[convert.ING_MATCHER_AMT_GROUP]
-        unit = groups[convert.ING_MATCHER_UNIT_GROUP]
-        item = groups[convert.ING_MATCHER_ITEM_GROUP]
         if amount: self.add_amt(amount)
         if unit: self.add_unit(unit)
         if item: self.add_item(item)

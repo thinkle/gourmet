@@ -80,6 +80,7 @@ class NutritionInfoDruid (gobject.GObject):
 
     NUT_PAGE = 0
     UNIT_PAGE = 1
+    CUSTOM_PAGE = 2
 
     __gsignals__ = {
         'finish':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,())
@@ -127,7 +128,7 @@ class NutritionInfoDruid (gobject.GObject):
         for widget_name in ['notebook','ingKeyLabel','ingKeyEntry','changeKeyButton','applyKeyButton',
                             'searchEntry','searchAsYouTypeToggle','findButton',
                             'firstButton','backButton','forwardButton','lastButton','showingLabel',
-                            'treeview',
+                            'treeview','customBox',
                             'convertUnitLabel','fromUnitComboBoxEntry','fromUnitLabel',
                             'changeUnitButton','cancelUnitButton','saveUnitButton',
                             'fromAmountEntry','toUnitCombo',
@@ -142,6 +143,7 @@ class NutritionInfoDruid (gobject.GObject):
             'previousPage':self.previous_page_cb,
             'applyPage':self.apply_cb,
             'ignorePage':self.ignore_cb,
+            'customPage':self.custom_cb,
             }
                                       )
         # hide our tabs...
@@ -330,18 +332,18 @@ class NutritionInfoDruid (gobject.GObject):
         # Some metakit specific hackery which should not be reproduced...
         tbl = self.rd.normalizations['foodgroup']
         PACKAGED_FOOD_IDS = []
-        #for n in self.PACKAGED_FOODS:
-        #    id = tbl.find(foodgroup=n)
-        #    if id < 0: print "Funny, I don't know about ",n
-        #    else:
-        #        print 'yippee',n,'->',id
-        #        PACKAGED_FOOD_IDS.append(tbl[id].id)
-        #print 'Packaged foods = ',PACKAGED_FOOD_IDS
-        #filteredvw = self.searchvw = self.rd.filter(self.searchvw,
-        #                                            lambda r: r.foodgroup not in PACKAGED_FOOD_IDS)
-        #if filteredvw:
-        #    self.searchvw = filteredvw
-        #    print len(self.searchvw),'results sans junkfood'
+        for n in self.PACKAGED_FOODS:
+            id = tbl.find(foodgroup=n)
+            if id < 0: print "Funny, I don't know about ",n
+            else:
+                print 'yippee',n,'->',id
+                PACKAGED_FOOD_IDS.append(tbl[id].id)
+        print 'Packaged foods = ',PACKAGED_FOOD_IDS
+        filteredvw = self.searchvw = self.rd.filter(self.searchvw,
+                                                    lambda r: r.foodgroup not in PACKAGED_FOOD_IDS)
+        if filteredvw:
+            self.searchvw = filteredvw
+            print len(self.searchvw),'results sans junkfood'
         self.nutrition_store.change_view(self.searchvw)
         self.__last_search__ = search_text
         self.__override_search__ = False # turn back on search handling!
@@ -468,7 +470,11 @@ class NutritionInfoDruid (gobject.GObject):
 
     def goto_page_unit_convert(self):
         print "DELETE ME: goto_page_unit_convert(self):",self
-        self.notebook.set_current_page(1)
+        self.notebook.set_current_page(self.UNIT_PAGE)
+
+    def goto_page_custom (self):
+        print "DELETE ME: goto_page_custom(self):",self        
+        self.notebook.set_current_page(self.CUSTOM_PAGE)
 
     def apply_nut_equivalent (self,*args):
         print "DELETE ME: apply_nut_equivalent (self,*args):",self,args
@@ -561,6 +567,9 @@ class NutritionInfoDruid (gobject.GObject):
         else:
             self.check_next_amount()
 
+    def custom_cb (self, *args):
+        self.goto_page_custom()
+        
     def show (self):
         self.glade.get_widget('window1').show()
 
