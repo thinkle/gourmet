@@ -4,6 +4,8 @@ import gourmet.gglobals as gglobals
 from gourmet.mnemonic_manager import MnemonicManager
 from gourmet.defaults import lang as defaults
 from gourmet.pageable_store import PageableViewStore
+from nutritionLabel import NUT_LAYOUT, SEP
+from gourmet.numberEntry import NumberEntry
 import gourmet.cb_extras as cb
 import gourmet.WidgetSaver as WidgetSaver
 import re
@@ -43,6 +45,60 @@ class SpecialAction:
                 for w in self.initially_hidden: w.hide()
             else:
                 for w in self.highlight_widgets: w.hide()
+        self.setup_custom_box()
+
+    def setup_custom_box (self):
+        t = gtk.Table()
+        self.changing_percent_internally = False
+        self.changing_number_internally = False
+        for n,nutstuff in enumerate(NUT_LAYOUT):
+            if nutstuff == SEP:
+                hs = gtk.HSeparator()
+                t.attach(hs,0,2,n,n+1,xoptions=gtk.FILL)
+                hs.show()
+                continue
+            label_txt,typ,name,properties,show_percent,unit = nutstuff
+            if unit: label_txt += " (" + label_txt + ")"
+            label = gtk.Label(label_txt); label.show()
+            t.attach(label,0,1,n,n+1,xoptions=gtk.FILL)
+            entry = NumberEntry(); entry.show()
+            t.attach(entry,1,2,n,n+1,xoptions=gtk.FILL)
+            if show_percent:
+                percent_entry = NumberEntry(); percent_entry.show()
+                percent_label = gtk.Label('%'); percent_label.show()
+                t.attach(percent_entry,2,3,n,n+1,xoptions=gtk.FILL)
+                t.attach(percent_label,3,4,n,n+1,xoptions=gtk.SHRINK)
+                percent_entry.connect('changed',self.percent_changed_cb,name,entry)
+            else: percent_entry = None
+            entry.connect('changed',self.number_changed_cb,name,percent_entry)
+            
+
+    def number_changed_cb (self, widget, name, percent_widget):
+        if self.changing_number_internally: return
+        print 'CHANGING VALUE FOR ',name        
+        v = widget.get_value()
+        if not v: return
+        if percent_widget:
+            rda = RECOMMENDED_INTAKE.get(name,None)
+            if rda:
+                self.changing_percent_internally = True
+                percent_widget.set_value((float(v)/rda)*100)
+                self.changing_percent_internally = False
+            
+        
+    def percent_changed_cb (self, widget, name, number_widget):
+        if self.changing_percent: return
+        print 'CHANGING PERCENTAGE FOR ',name
+        v = widget.get_value()
+        if not v: return
+        if number_widget:
+            rda = RECOMMENDED_INTAKE.get(name,None)
+            if rda:
+                self.changing_number_internally = True
+                number_widget.set_value(
+                    v*0.01*rda
+                    )
+                self.changing_number_internally = False
 
     def highlight_action (self,*args):
         self.prev_states = []
@@ -591,13 +647,14 @@ if __name__ == '__main__':
         nutritionGrabberGui.check_for_db(rd)
     except nutritionGrabberGui.Terminated:
         print 'Nutrition import was cut short a bit'
+    rd.save()
     print 'saving...'
     #rd.save()
     print 'saved'
     import gourmet.convert
     c=gourmet.convert.converter()
     nd=nutrition.NutritionData(rd,c)
-    nid = NutritionInfoDruid(nd)
+    nid = NutritionInfoDruid(nd,{})
     #nid.set_ingkey('black pepper')
     #nid.autosearch_ingkey()
     #nid.set_from_unit('tsp.')
