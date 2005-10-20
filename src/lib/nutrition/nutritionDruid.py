@@ -4,9 +4,10 @@ import gourmet.gglobals as gglobals
 from gourmet.mnemonic_manager import MnemonicManager
 from gourmet.defaults import lang as defaults
 from gourmet.pageable_store import PageableViewStore
-from nutritionLabel import NUT_LAYOUT, SEP
+from nutritionLabel import NUT_LAYOUT, SEP, RECOMMENDED_INTAKE
 from gourmet.numberEntry import NumberEntry
 import gourmet.cb_extras as cb
+import gourmet.dialog_extras as de
 import gourmet.WidgetSaver as WidgetSaver
 import re
 import os,os.path
@@ -45,60 +46,6 @@ class SpecialAction:
                 for w in self.initially_hidden: w.hide()
             else:
                 for w in self.highlight_widgets: w.hide()
-        self.setup_custom_box()
-
-    def setup_custom_box (self):
-        t = gtk.Table()
-        self.changing_percent_internally = False
-        self.changing_number_internally = False
-        for n,nutstuff in enumerate(NUT_LAYOUT):
-            if nutstuff == SEP:
-                hs = gtk.HSeparator()
-                t.attach(hs,0,2,n,n+1,xoptions=gtk.FILL)
-                hs.show()
-                continue
-            label_txt,typ,name,properties,show_percent,unit = nutstuff
-            if unit: label_txt += " (" + label_txt + ")"
-            label = gtk.Label(label_txt); label.show()
-            t.attach(label,0,1,n,n+1,xoptions=gtk.FILL)
-            entry = NumberEntry(); entry.show()
-            t.attach(entry,1,2,n,n+1,xoptions=gtk.FILL)
-            if show_percent:
-                percent_entry = NumberEntry(); percent_entry.show()
-                percent_label = gtk.Label('%'); percent_label.show()
-                t.attach(percent_entry,2,3,n,n+1,xoptions=gtk.FILL)
-                t.attach(percent_label,3,4,n,n+1,xoptions=gtk.SHRINK)
-                percent_entry.connect('changed',self.percent_changed_cb,name,entry)
-            else: percent_entry = None
-            entry.connect('changed',self.number_changed_cb,name,percent_entry)
-            
-
-    def number_changed_cb (self, widget, name, percent_widget):
-        if self.changing_number_internally: return
-        print 'CHANGING VALUE FOR ',name        
-        v = widget.get_value()
-        if not v: return
-        if percent_widget:
-            rda = RECOMMENDED_INTAKE.get(name,None)
-            if rda:
-                self.changing_percent_internally = True
-                percent_widget.set_value((float(v)/rda)*100)
-                self.changing_percent_internally = False
-            
-        
-    def percent_changed_cb (self, widget, name, number_widget):
-        if self.changing_percent: return
-        print 'CHANGING PERCENTAGE FOR ',name
-        v = widget.get_value()
-        if not v: return
-        if number_widget:
-            rda = RECOMMENDED_INTAKE.get(name,None)
-            if rda:
-                self.changing_number_internally = True
-                number_widget.set_value(
-                    v*0.01*rda
-                    )
-                self.changing_number_internally = False
 
     def highlight_action (self,*args):
         self.prev_states = []
@@ -150,6 +97,11 @@ class NutritionInfoDruid (gobject.GObject):
 
     def __init__ (self, nd, prefs):
         print "DELETE ME: __init__ (self, nd, prefs):",self, nd, prefs
+        # Very primitive custom handler here -- we just return a
+        # NumberEntry no matter what glade says. Obviously if glade
+        # gets updated we'd better fix this (see reccard.py for a more
+        # sophisticated example).
+        gtk.glade.set_custom_handler(lambda *args: NumberEntry())
         self.glade = gtk.glade.XML(os.path.join(gglobals.datad,'nutritionDruid.glade'))
         self.mm = MnemonicManager()
         self.mm.add_glade(self.glade)
@@ -179,9 +131,11 @@ class NutritionInfoDruid (gobject.GObject):
 
     # Setup functions
     def _setup_widgets_ (self):
-        print "DELETE ME: _setup_widgets_ (self):",self
         self.controls = []
-        for widget_name in ['notebook','ingKeyLabel','ingKeyEntry','changeKeyButton','applyKeyButton',
+        for widget_name in ['notebook',
+                            'ingKeyLabel','ingKeyEntry','changeKeyButton','applyKeyButton',
+                            'ingKeyLabel2',
+                            'customNutritionAmountEntry',
                             'searchEntry','searchAsYouTypeToggle','findButton',
                             'firstButton','backButton','forwardButton','lastButton','showingLabel',
                             'treeview','customBox',
@@ -191,8 +145,12 @@ class NutritionInfoDruid (gobject.GObject):
                             'toAmountEntry',
                             'prevDruidButton',
                             'ignoreButton',
-                            'applyButton']:
+                            'applyButton',
+                            'massUnitComboBox',
+                            'customNutritionAmountEntry',
+                            ]:
             setattr(self,widget_name,self.glade.get_widget(widget_name))
+            if not getattr(self,widget_name): print "WIDGET: ",widget_name,"NOT FOUND."
             # make a list of all core control widgets
             if widget_name!='notebook': self.controls.append(getattr(self,widget_name))
         self.glade.signal_autoconnect({
@@ -200,14 +158,17 @@ class NutritionInfoDruid (gobject.GObject):
             'applyPage':self.apply_cb,
             'ignorePage':self.ignore_cb,
             'customPage':self.custom_cb,
+            'usdaPage':self.usda_cb,
             }
                                       )
         # hide our tabs...
         self.notebook.set_show_tabs(False)
         # custom widgety stuff
-        self.changeIngKeyAction = SpecialAction(highlight_widgets=[self.ingKeyEntry,self.applyKeyButton],
+        self.changeIngKeyAction = SpecialAction(highlight_widgets=[self.ingKeyEntry,self.applyKeyButton,
+                                                                   ],
                                                 initially_hidden=True,
-                                                hide_on_highlight=[self.ingKeyLabel,self.changeKeyButton],
+                                                hide_on_highlight=[self.ingKeyLabel,self.changeKeyButton,
+                                                                   ],
                                                 all_controls=self.controls)
         self.changeKeyButton.connect('clicked',self.changeIngKeyAction.highlight_action)
         self.applyKeyButton.connect('clicked',self.apply_ingkey)
@@ -224,9 +185,90 @@ class NutritionInfoDruid (gobject.GObject):
         self.searchEntry.connect('changed',self.search_type_cb)
         self.findButton.connect('clicked',self.search_cb)
         self.searchAsYouTypeToggle.connect('toggled',self.toggle_saut)
+        # Nutrition box...
+        self.custom_box=self.glade.get_widget('customBox')
+        self.customNutritionAmountEntry.connect('changed',self.custom_unit_changed)
+        self.massUnitComboBox.connect('changed',self.custom_unit_changed)
+        self._setup_custom_box()
+
+    def _setup_custom_box (self):
+        print 'Setting up custom box'
+        t = gtk.Table()
+        masses = [i[0] for i in defaults.UNIT_GROUPS['metric mass'] + defaults.UNIT_GROUPS['imperial weight']]
+        cb.set_model_from_list(
+            self.massUnitComboBox,
+            masses)
+        cb.cb_set_active_text(self.massUnitComboBox,'g.')
+        self.customNutritionAmountEntry.set_value(100)
+        self.nutrition_info = {}
+        self.custom_box.add(t)
+        self.changing_percent_internally = False
+        self.changing_number_internally = False
+        l=gtk.Label('%RDA'); l.show()
+        t.attach(l,2,3,0,1)
+        for n,nutstuff in enumerate(NUT_LAYOUT):
+            if nutstuff == SEP:
+                hs = gtk.HSeparator()
+                t.attach(hs,0,2,n+1,n+2,xoptions=gtk.FILL)
+                hs.show()
+                continue
+            label_txt,typ,name,properties,show_percent,unit = nutstuff
+            if unit: label_txt += " (" + unit + ")"
+            label = gtk.Label(label_txt); label.show()
+            label.set_alignment(0,0.5)
+            t.attach(label,0,1,n+1,n+2,xoptions=gtk.FILL)
+            entry = NumberEntry(); entry.show()
+            t.attach(entry,1,2,n+1,n+2,xoptions=gtk.FILL)
+            if show_percent:
+                percent_entry = NumberEntry(); percent_entry.show()
+                percent_label = gtk.Label('%'); percent_label.show()
+                t.attach(percent_entry,2,3,n+1,n+2)
+                t.attach(percent_label,3,4,n+1,n+2)
+                percent_label.set_alignment(0,0.5)
+                percent_entry.connect('changed',self.percent_changed_cb,name,entry)
+                percent_entry.entry.set_width_chars(5)
+            else: percent_entry = None
+            entry.connect('changed',self.number_changed_cb,name,percent_entry)
+        t.set_row_spacings(6)
+        t.set_col_spacings(12)
+        t.show()
+
+    def number_changed_cb (self, widget, name, percent_widget):
+        v = widget.get_value()
+        self.nutrition_info[name]=v
+        if not v: return
+        if self.changing_number_internally: return
+        print 'CHANGING VALUE FOR ',name        
+        if percent_widget:
+            rda = RECOMMENDED_INTAKE.get(name,None)*2000
+            if rda:
+                self.changing_percent_internally = True
+                percent_widget.set_value((float(v)/rda)*100)
+                self.changing_percent_internally = False
+        
+    def percent_changed_cb (self, widget, name, number_widget):
+        if self.changing_percent_internally: return
+        v = widget.get_value()
+        if not v: return
+        if number_widget:
+            rda = RECOMMENDED_INTAKE.get(name,None)*2000
+            if rda:
+                self.changing_number_internally = True
+                number_widget.set_value(
+                    v*0.01*rda
+                    )
+                self.changing_number_internally = False
+
+    def custom_unit_changed (self, *args):
+        amount = self.customNutritionAmountEntry.get_value()
+        unit = cb.cb_get_active_text(self.massUnitComboBox)
+        print 'custom_unit_changed',amount,unit
+        if amount and unit:
+            base_convert = self.nd.conv.converter(unit,'g.')/float(100)
+            self.custom_factor = base_convert * amount
+            print 'custom_factor=',self.custom_factor
 
     def _setup_nuttree_ (self):
-        print "DELETE ME: _setup_nuttree_ (self):",self
         """Set up our treeview with USDA nutritional equivalents"""
         try: self.nutrition_store = PageableNutritionStore(self.rd.nview)
         except: print 'rd=',self.rd
@@ -244,7 +286,6 @@ class NutritionInfoDruid (gobject.GObject):
         self.treeview.append_column(col)
 
     def update_nuttree_showing (self,*args):
-        print "DELETE ME: update_nuttree_showing (self,*args):",self,args
         self.showingLabel.set_text('Showing results %s to %s of %s'%self.nutrition_store.showing())
         # update buttons too
         cp = self.nutrition_store.page
@@ -264,25 +305,28 @@ class NutritionInfoDruid (gobject.GObject):
 
     # methods to set our core values
     def set_ingkey (self, txt):
-        print "DELETE ME: set_ingkey (self, txt):",self, txt
         self.ingKeyEntry.set_text(txt)
         self.ingKeyLabel.set_markup('<i><b>'+txt+'</b></i>')
+        self.ingKeyLabel2.set_markup('<i><b>'+txt+'</b></i>')
+        self.nutrition_info['desc']=txt
         self.ingkey = txt
 
     def set_from_unit (self, txt):
-        print "DELETE ME: set_from_unit (self, txt):",self, txt
         if not self.ingkey:
-            print 'Funny: no ingkey...'
             return
         if txt:
             self.fromUnitLabel.set_text(txt)
             self.fromUnitComboBoxEntry.get_children()[0].set_text(txt)
             self.fromUnit = txt
-            curamt = ' '.join([convert.float_to_frac(self.amount),self.fromUnit,self.ingkey])
+            curamt = ' '.join([convert.float_to_frac(self.amount,
+                                                     fractions=convert.FRACTIONS_ASCII),
+                               self.fromUnit,self.ingkey])
         else:
             self.fromUnitLabel.set_text(self.ingkey+' (no unit)')
             self.fromUnit = ''
-            curamt = convert.float_to_frac(self.amount)+' '+self.ingkey
+            curamt = convert.float_to_frac(
+                self.amount,
+                fractions=convert.FRACTIONS_ASCII)+' '+self.ingkey
         self.convertUnitLabel.set_markup('<span weight="bold" size="larger">' + \
                                          _('Convert unit for %s')%self.ingkey + \
                                          '</span>' + \
@@ -291,7 +335,6 @@ class NutritionInfoDruid (gobject.GObject):
                                          '</i>')
 
     def setup_to_units (self):
-        print "DELETE ME: setup_to_units (self):",self
         """Setup list of units we need to convert to.
 
         Usually, this will be a list of mass units.
@@ -309,7 +352,6 @@ class NutritionInfoDruid (gobject.GObject):
         to_units.sort()
         for u in self.extra_units:
             to_units = [u]+to_units
-        print 'setting up to_units with ',to_units
         cb.set_model_from_list(self.toUnitCombo,
                                to_units)
         self.toUnitCombo.set_active(0)
@@ -317,28 +359,23 @@ class NutritionInfoDruid (gobject.GObject):
 
     # search callbacks &c.
     def toggle_saut (self, *args):
-        print "DELETE ME: toggle_saut (self, *args):",self, args
         if self.searchAsYouTypeToggle.get_active():
             self.findButton.hide()
         else:
             self.findButton.show()
 
     def search_type_cb (self, *args):
-        print "DELETE ME: search_type_cb (self, *args):",self, args
         if self.searchAsYouTypeToggle.get_active(): self.search_cb()
 
     def search_cb (self, *args):
-        print "DELETE ME: search_cb (self, *args):",self, args
         if self.__override_search__: return
         gobject.idle_add(self.search)
 
     def search (self):
-        print "DELETE ME: search (self):",self
         txt = self.searchEntry.get_text()
         if self.__last_search__ == txt:
             return
         if txt.find(self.__last_search__)==0:
-            print 'Repeat search',self.__last_search__,'is in ',txt
             repeat = True
             search_in = self.searchvw
         else:
@@ -350,10 +387,8 @@ class NutritionInfoDruid (gobject.GObject):
         for w in words:
             if not w or w==' ': continue
             if w in last_words and repeat:
-                print 'skipping ',w
                 continue
             if search_in:
-                print 'searching ',w
                 search_in = self.rd.search(search_in,
                                            'desc',
                                            w,
@@ -364,7 +399,6 @@ class NutritionInfoDruid (gobject.GObject):
         self.nutrition_store.set_page(self.NUT_PAGE)
 
     def autosearch_ingkey (self):
-        print "DELETE ME: autosearch_ingkey (self):",self
         """Automatically do a search for our current ingkey.
 
         We're pretty smart about this: in other words, we won't do a
@@ -384,46 +418,38 @@ class NutritionInfoDruid (gobject.GObject):
         search_text = ' '.join(search_terms)
         self.searchEntry.set_text(search_text)
         self.searchvw = search_in
-        print len(self.searchvw),'results overall'
         # Some metakit specific hackery which should not be reproduced...
         tbl = self.rd.normalizations['foodgroup']
         PACKAGED_FOOD_IDS = []
         for n in self.PACKAGED_FOODS:
             id = tbl.find(foodgroup=n)
-            if id < 0: print "Funny, I don't know about ",n
-            else:
-                print 'yippee',n,'->',id
+            #if id < 0: print "Funny, I don't know about ",n
+            if id >= 0:
+                #print 'yippee',n,'->',id
                 PACKAGED_FOOD_IDS.append(tbl[id].id)
-        print 'Packaged foods = ',PACKAGED_FOOD_IDS
         filteredvw = self.searchvw = self.rd.filter(self.searchvw,
                                                     lambda r: r.foodgroup not in PACKAGED_FOOD_IDS)
         if filteredvw:
             self.searchvw = filteredvw
-            print len(self.searchvw),'results sans junkfood'
         self.nutrition_store.change_view(self.searchvw)
         self.__last_search__ = search_text
         self.__override_search__ = False # turn back on search handling!
 
     # callbacks for quick-changes
     def apply_ingkey (self,*args):
-        print "DELETE ME: apply_ingkey (self,*args):",self,args
         key = self.ingKeyEntry.get_text()
         ings = self.nd.db.iview.select(ingkey=self.ingkey)
-        print 'modifying DB for ',len(ings),'ingredients key: ',self.ingkey,'->',key
         self.nd.db.modify_ings(ings,{'ingkey':key})
         self.set_ingkey(key)
         self.autosearch_ingkey()
         self.changeIngKeyAction.dehighlight_action()
         if self.nd.get_nutinfo(key):
-            print 'we already have this guy!'
             self.setup_to_units()
             self.check_next_amount()
     
     def save_unit_cb (self,*args):
-        print "DELETE ME: save_unit_cb (self,*args):",self,args
         from_unit = self.fromUnitComboBoxEntry.get_children()[0].get_text()
         ings = self.nd.db.iview.select(ingkey=self.ingkey,unit=self.fromUnit)
-        print 'modifying DB for ',len(ings),'ingredients unit: ',self.fromUnit,'->',from_unit
         self.nd.db.modify_ings(ings,{'unit':from_unit})
         self.set_from_unit(self.fromUnitComboBoxEntry.get_children()[0].get_text())
         self.changeUnitAction.dehighlight_action()
@@ -431,7 +457,6 @@ class NutritionInfoDruid (gobject.GObject):
     # Callbacks to handle our druid-like walking-through of actions.
 
     def add_ingredients (self, inglist):
-        print "DELETE ME: add_ingredients (self, inglist):",self, inglist
         """Add a list of ingredients for our druid to guide the user through.
 
         Our ingredient list is in the following form for, believe it
@@ -454,48 +479,37 @@ class NutritionInfoDruid (gobject.GObject):
         """
         # to start, we take our first ing
         self.inglist = inglist
-        print 'handed',self.inglist
         self.ing_index = 0
         self.setup_next_ing()
 
     def setup_next_ing (self):
-        print "DELETE ME: setup_next_ing (self):",self
-        print 'setup_next_ing ',self.ing_index
         if self.ing_index >= len(self.inglist):
-            print 'done!'            
             self.finish()
             return
-        print 'grab ing index ',self.ing_index
         ing = self.inglist[self.ing_index]
-        print ing
         self.ing_index+=1    
         if not ing:
-            print 'WTF? Done!'
             return
         ingkey,amounts = ing
         self.amounts = amounts
         self.amount_index = 0
         self.set_ingkey(ingkey)
         if not self.nd.get_nutinfo(ingkey):
-            print "We don't know about ",ingkey
             self.autosearch_ingkey()
             self.goto_page_key_to_nut()
         else:
-            print 'Already have ing info for ',ingkey
             self.setup_to_units()
             self.check_next_amount()
         #self.from_unit = unit
         #self.from_amount = amount
 
     def check_next_amount (self):
-        print "DELETE ME: check_next_amount (self):",self
         """Check the next amount on our amounts list.
 
         If the amount is already convertible, we don't do anything.
         If the amount is not convertible, we ask our user for help!
         """
         if self.amount_index >= len(self.amounts):
-            print 'No more amounts. Move to next ingredient'
             self.setup_next_ing()
             return
         amount,unit = self.amounts[self.amount_index]
@@ -504,48 +518,49 @@ class NutritionInfoDruid (gobject.GObject):
         self.amount_index += 1
         existing_conversion = self.nd.get_conversion_for_amt(amount,unit,self.ingkey)
         if existing_conversion:
-            print 'We already can convert to ',amount,unit,'(',existing_conversion,')'
             self.check_next_amount()
         else:
-            print 'amount ',self.amount
             self.set_from_unit(unit)
-            self.fromAmountEntry.set_text(convert.float_to_frac(amount))
-            self.toAmountEntry.set_text(convert.float_to_frac(amount))
+            self.fromAmountEntry.set_text(convert.float_to_frac(amount,
+                                                                fractions=convert.FRACTIONS_ASCII)
+                                          )
+            self.toAmountEntry.set_text(convert.float_to_frac(amount,
+                                                              fractions=convert.FRACTIONS_ASCII)
+                                        )
             self.goto_page_unit_convert()
 
     def finish (self):
-        print "DELETE ME: finish (self):",self
-        print 'All done!'
-        print 'We better do something...'
         self.glade.get_widget('window1').hide()
         self.emit('finish')
 
     def goto_page_key_to_nut (self):
-        print "DELETE ME: goto_page_key_to_nut (self):",self
         self.notebook.set_current_page(self.NUT_PAGE)
 
     def goto_page_unit_convert(self):
-        print "DELETE ME: goto_page_unit_convert(self):",self
         self.notebook.set_current_page(self.UNIT_PAGE)
 
     def goto_page_custom (self):
-        print "DELETE ME: goto_page_custom(self):",self        
         self.notebook.set_current_page(self.CUSTOM_PAGE)
 
+    def apply_custom (self, *args):
+        nutinfo = self.nutrition_info.copy()
+        print 'custom factor:',self.custom_factor
+        for k,v in nutinfo.items():
+            if type(v)==int or type(v)==float: nutinfo[k]=v*self.custom_factor
+        ndbno = self.nd.add_custom_nutrition_info(self.nutrition_info)
+        print 'new ndbno=',ndbno
+
     def apply_nut_equivalent (self,*args):
-        print "DELETE ME: apply_nut_equivalent (self,*args):",self,args
         if len(self.searchvw)==1:
             nut = self.searchvw[0].ndbno
         else:
             mod,itr = self.treeview.get_selection().get_selected()
             nut = mod.get_value(itr,0)
-        print 'Apply nutrition ',self.ingkey,'->',nut
         self.nd.set_key_from_ndbno(self.ingkey,nut)
         self.setup_to_units()
         # Now see if we need to do any conversion or not
 
     def apply_amt_convert (self,*args):
-        print "DELETE ME: apply_amt_convert (self,*args):",self,args
         to_unit = cb.cb_get_active_text(self.toUnitCombo)
         base_convert = self.nd.conv.converter('g.',to_unit)
         if not base_convert:
@@ -560,25 +575,18 @@ class NutritionInfoDruid (gobject.GObject):
                 else:
                     density = self.densities[None]
                 base_convert = self.nd.conv.converter('g.',to_unit,density=density)
-        print 'base: ','there are',base_convert,to_unit,'in a gram'
-        print 'base: ','there are',1/base_convert,'grams in a',to_unit
         to_amount = convert.frac_to_float(self.toAmountEntry.get_text())
         from_amount = convert.frac_to_float(self.fromAmountEntry.get_text())
         ratio = from_amount / to_amount
         factor = base_convert * ratio
         from_unit = self.fromUnit
-        print 'end: ','there are',factor,from_unit,'in a gram'
-        print 'end: ','there are ',1/factor,'grams in a ',from_unit
         print to_unit,to_amount,'=',from_unit,from_amount,'factor=',factor,'\n','ratio=',ratio
         self.nd.set_conversion(self.ingkey,from_unit,factor)
     
     def previous_page_cb (self, *args):
-        print "DELETE ME: previous_page_cb (self, *args):",self, args
         #self.notebook.set_current_page(self.notebook.get_current_page()-1)
         indx = self.curpage - 1
-        print 'grabbing ',indx,'from',self.path
         typ,ingkey,amount_index = self.path[indx]
-        print 'moving back to ',typ,ingkey,amount_index
         if ingkey!=self.ingkey:
             self.ing_index -= 2
             self.setup_next_ing()
@@ -592,28 +600,30 @@ class NutritionInfoDruid (gobject.GObject):
             self.ing_index -= 1
             self.setup_next_ing()
         self.curpage = indx
-        print 'moving back'
         if self.curpage == 0:
             self.backButton.set_sensitive(False)
 
     def apply_cb (self, *args):
-        print "DELETE ME: apply_cb (self, *args):",self, args
         page = self.notebook.get_current_page()
-        if page == self.NUT_PAGE: # 0 is nut equiv
+        if page == self.NUT_PAGE:
             self.apply_nut_equivalent()
             self.check_next_amount()
-        if page == 1: # 1 is unit convert
+        elif page == self.UNIT_PAGE:
             self.apply_amt_convert()
             # if out of amounts, this will move to the next ingredient
             self.check_next_amount()
+        elif page == self.CUSTOM_PAGE:
+            if not self.custom_factor:
+                de.show_message(_("To apply nutritional information, Gourmet needs a valid amount and unit."))
+                return
+            self.apply_custom()
+            self.check_next_amount()
         self.path.append((page,self.ingkey,self.amount_index))
         self.curpage += 1
-        #print 'path:',self.path,'curpage:',self.curpage
         #self.notebook.set_current_page(page + 1)
         self.backButton.set_sensitive(True)
 
     def ignore_cb (self, *args):
-        print "DELETE ME: ignore_cb (self, *args):",self, args
         page = self.notebook.get_current_page()
         self.path.append((page,self.ingkey,self.amount_index))
         self.curpage += 1
@@ -623,8 +633,9 @@ class NutritionInfoDruid (gobject.GObject):
         else:
             self.check_next_amount()
 
-    def custom_cb (self, *args):
-        self.goto_page_custom()
+    def custom_cb (self, *args): self.goto_page_custom()
+
+    def usda_cb (self, *args): self.goto_page_key_to_nut()
         
     def show (self):
         self.glade.get_widget('window1').show()
@@ -640,17 +651,14 @@ class PageableNutritionStore (PageableViewStore):
 if __name__ == '__main__':
     import nutrition
     from gourmet.recipeManager import RecipeManager,dbargs
-    dbargs['file']='/tmp/fdsa/recipes.mk'
+    dbargs['file']='/tmp/foo/recipes.mk'
     rd=RecipeManager(**dbargs)
     import nutritionGrabberGui
     try:
         nutritionGrabberGui.check_for_db(rd)
     except nutritionGrabberGui.Terminated:
-        print 'Nutrition import was cut short a bit'
+        pass
     rd.save()
-    print 'saving...'
-    #rd.save()
-    print 'saved'
     import gourmet.convert
     c=gourmet.convert.converter()
     nd=nutrition.NutritionData(rd,c)
