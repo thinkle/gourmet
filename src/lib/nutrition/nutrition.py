@@ -316,6 +316,13 @@ class NutritionData:
             unit = groups[2]
             extra = groups[4]
             return amt,unit,extra
+
+    def add_custom_nutrition_info (self, nutrition_dictionary):
+        """Add custom nutritional information."""
+        new_ndbno = self.db.increment_field(self.db.nview,'ndbno')
+        if new_ndbno: nutrition_dictionary['ndbno']=new_ndbno
+        self.db.nview.append(nutrition_dictionary)
+        return self.db.nview[-1].ndbno
                     
 class NutritionInfo:
     """A multipliable way to reference an object.
