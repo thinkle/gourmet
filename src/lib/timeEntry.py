@@ -10,25 +10,10 @@ TIME_TO_READ = 1000
 
 class TimeEntry (validatingEntry.ValidatingEntry):
 
-    __gsignals__ = {
-        #'activate':'override',
-        'mnemonic-activate':'override'
-        }
-        #self.add(self)
-
     def __init__ (self, conv=None):
         if not conv: self.conv = convert.converter()
         else: self.conv = conv
         validatingEntry.ValidatingEntry.__init__(self)
-
-    def set_value (self,seconds):
-        self.entry.set_text(
-            convert.seconds_to_timestring(seconds,
-                                  fractions=convert.FRACTIONS_ASCII)
-            )
-
-    def get_value (self):
-        return self.conv.timestring_to_seconds(self.entry.get_text())
 
     def find_errors_in_progress (self, txt):
         if (not txt) or self.conv.timestring_to_seconds(txt):
@@ -56,7 +41,6 @@ class TimeEntry (validatingEntry.ValidatingEntry):
         #    self.set_warning_text("Invalid or incomplete time")
         #    self._show_warning()
 
-
     def find_completed_errors (self,*args):
         txt = self.entry.get_text()
         if txt and not self.conv.timestring_to_seconds(txt):
@@ -79,9 +63,16 @@ class TimeEntry (validatingEntry.ValidatingEntry):
             self.warn = True
             self.set_warning_text('Invalid input.' + 'Time must be expressed in hours, minutes, seconds, etc.')
             self._show_warning()
-        #else:
-        #    self.set_warning_text("Invalid or incomplete time")
-        #    self._show_warning()
+
+    def set_value (self,seconds):
+        self.entry.set_text(
+            convert.seconds_to_timestring(seconds,
+                                  fractions=convert.FRACTIONS_ASCII)
+            )
+
+    def get_value (self):
+        return self.conv.timestring_to_seconds(self.entry.get_text())
+
 
 if gtk.pygtk_version[1] < 8: gobject.type_register(TimeEntry)
         

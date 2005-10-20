@@ -15,12 +15,12 @@ class NumberEntry (validatingEntry.ValidatingEntry):
         $ # end
         """%convert.__dict__
     
-    def __init__ (self, conv=None):
-        if not conv: self.conv = convert.converter()
-        else: self.conv = conv
+    def __init__ (self):
         self.in_progress_matcher = re.compile(self.in_progress_regexp,
                                               re.VERBOSE|re.UNICODE)
         validatingEntry.ValidatingEntry.__init__(self)
+        self.entry.get_value = self.get_value
+        self.entry.set_value = self.get_value
 
     def find_errors_in_progress (self, txt):
         txt = txt.strip() # we don't care about leading/trailing space
@@ -33,7 +33,7 @@ class NumberEntry (validatingEntry.ValidatingEntry):
             return self.error_message
 
     def set_value (self, n):
-        self.set_text(convert.float_to_frac(n))
+        self.set_text(convert.float_to_frac(n,fractions=convert.FRACTIONS_ASCII))
 
     def get_value (self):
         return convert.frac_to_float(self.get_text())
@@ -68,7 +68,13 @@ class RangeEntry (NumberEntry):
             if len(n)>2:
                 raise ValueError
             else:
-                self.set_text(convert.float_to_frac(n[0])+' - '+convert.float_to_frac(n[1]))
+                self.set_text(
+                    convert.float_to_frac(n[0],
+                                          fractions=convert.FRACTIONS_ASCII)\
+                    +' - '+\
+                    convert.float_to_frac(n[1],
+                                          fractions=convert.FRACTIONS_ASCII)
+                    )
                 return
         NumberEntry.set_value(self,n)
 
@@ -91,6 +97,9 @@ if __name__ == '__main__':
     l.show()
     hb.pack_start(l)
     ne = NumberEntry(); ne.show()
+    def foo (widget):
+        print 'Changed!',widget,widget.get_value()
+    ne.connect('changed',foo)
     hb.pack_start(ne)
     hb.show()
     hb2 = gtk.HBox()
