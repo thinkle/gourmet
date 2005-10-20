@@ -49,10 +49,6 @@ class RecData (rdatabase.RecData):
         # since other DBs will presumably have auto-increment built into them.
         self.increment_vw  = self.db.getas('incrementer[view:S,field:S,n:I]')
         self.vw_to_name = {}
-        #self.increment_dict = {}
-        #self.top_id_vw.append({'id':1})
-        #self.top_id_row = self.top_id_vw[0]
-        
         # we check for old, incompatible table names
         # and fix them before calling our regular setup stuff
         debug('setup_tables called!',3)        
@@ -96,7 +92,7 @@ class RecData (rdatabase.RecData):
             data = [data[key_index]] + data[0:key_index] + data[key_index+1:]
         for col,typ,flags in data:
             if 'AUTOINCREMENT' in flags:
-                debug('Setup autoincrement',3)
+                debug('Setup autoincrement for %s'%name,3)
                 row = self.fetch_one(self.increment_vw,**{'view':name,
                                                           'field':col}
                                      )
@@ -320,7 +316,14 @@ class RecData (rdatabase.RecData):
 
     def increment_field (self, table, field):
         if type(table)!=str:
-            table = self.vw_to_name[table]
+            try:
+                table = self.vw_to_name[table]
+            except:
+                try:
+                    table = self.vw_to_name[table.__view__]
+                except:
+                    print "I don't know about the table ",table,'(',field,')'
+                    raise
         row = self.fetch_one(self.increment_vw,
                              **{'view':table,
                                 'field':field})
