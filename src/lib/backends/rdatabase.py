@@ -132,13 +132,18 @@ class RecData:
     
     NUTRITION_TABLE_DESC = (
         "nutrition",
-        [(name,typ,[]) for lname,name,typ in gourmet.nutrition.parser_data.NUTRITION_FIELDS] + \
+        [(name,
+          typ,
+          (name=='ndbno'
+           and ['AUTOINCREMENT']
+           or [])
+          ) for lname,name,typ in gourmet.nutrition.parser_data.NUTRITION_FIELDS] + \
         [('foodgroup','int',[])]
         )
 
     NUTRITION_WEIGHT_TABLE_DESC = (
         'usda_weights',
-        [(name,typ,[]) for lanme,name,typ in gourmet.nutrition.parser_data.WEIGHT_FIELDS]
+        [(name,typ,[]) for lname,name,typ in gourmet.nutrition.parser_data.WEIGHT_FIELDS]
         )
     
     NUTRITION_ALIASES_TABLE_DESC = (
@@ -153,8 +158,6 @@ class RecData:
          ('unit','int',[]), 
          ('factor','float',[]),],
         'ingkey')
-
-    
     
     def __init__ (self):
         # hooks run after adding, modifying or deleting a recipe.
@@ -244,7 +247,6 @@ class RecData:
         expressions and/or requiring an exact match."""
 
         raise NotImplementedError
-    
 
     def filter (self, table, func):
         """Return a table representing filtered with func.
@@ -1102,11 +1104,7 @@ class NormalizedView (Normalizer):
         try:
             base_att = getattr(self.__view__,attname)
         except AttributeError:
-            print 'Odd ',self.__view__,'has no attribute',attname
-            print 'We were called from: '
-            import traceback
-            traceback.print_exc()
-            raise
+            raise AttributeError
         if callable(base_att):
             return self.wrap_callable(base_att)
         return base_att
