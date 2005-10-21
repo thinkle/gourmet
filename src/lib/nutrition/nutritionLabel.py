@@ -193,7 +193,7 @@ class NutritionLabel (gtk.Table, gobject.GObject):
             hb.pack_start(unit_label)
             hb.show_all()
             self.attach(hb,0,1,n+start_at,n+start_at+1,xoptions=gtk.FILL)
-            if show_percent==self.SHOW_PERCENT:
+            if show_percent==SHOW_PERCENT:
                 percent_label = gtk.Label()
                 percent_label.modify_font(self.bold_font)
                 percent_label.set_alignment(1,0.5)
@@ -201,7 +201,7 @@ class NutritionLabel (gtk.Table, gobject.GObject):
                 self.attach(percent_label,1,2,n+start_at,n+start_at+1,xoptions=gtk.FILL)
             self.nutrition_display_info.append({
                 'props':properties,
-                'percent_label':(show_percent==self.SHOW_PERCENT
+                'percent_label':(show_percent==SHOW_PERCENT
                                  and
                                  percent_label),
                 'unit_label': unit_label,
