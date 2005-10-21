@@ -352,6 +352,10 @@ class ConvenientImporter (importer.importer):
             amount = groups[convert.ING_MATCHER_AMT_GROUP]
             unit = groups[convert.ING_MATCHER_UNIT_GROUP]
             item = groups[convert.ING_MATCHER_ITEM_GROUP]
+            # If our unit isn't familiar, don't add it as a unit!
+            if unit and not self.conv.unit_dict.has_key(unit.strip()):
+                unit = ''
+                item = unit + item
         else:
             print 'Unable to parse ingredient from text "%s"'%txt
             print 'Setting amount and unit to None'
