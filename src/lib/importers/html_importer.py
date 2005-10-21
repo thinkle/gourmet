@@ -5,6 +5,7 @@ import socket
 from html_plugins import *
 from gourmet.gdebug import *
 from gettext import gettext as _
+import traceback
 
 DEFAULT_SOCKET_TIMEOUT=45.0
 URLOPEN_SOCKET_TIMEOUT=15.0
@@ -43,6 +44,12 @@ def get_url (url, progress):
         sock = url
         return read_socket_w_progress(sock,progress,_('Retrieving file'))
 
+class MyBeautifulSoup (BeautifulSoup.ICantBelieveItsBeautifulSoup):
+
+    def handle_comment (self, text): pass
+    def handle_decl (self, data): pass
+    def handle_pi (self, text): pass
+
 class BeautifulSoupScraper:
     """We take a set of rules and create a scraper using BeautifulSoup.
     
@@ -79,7 +86,7 @@ class BeautifulSoupScraper:
         self.feed_data(get_url(url,progress))
 
     def feed_data (self, data):
-        self.soup = BeautifulSoup.BeautifulSoup(data)
+        self.soup = MyBeautifulSoup(data)
 
     def scrape_url (self, url, progress=None):
         self.feed_url(url,progress)
@@ -255,29 +262,57 @@ class GenericScraper (BeautifulSoupScraper):
         if type(images)!=list: images = [images]
         images = [urllib.basejoin(self.url,i) for i in images]
         return text,images
-        
-def get_text (tag, strip=True):
-    """Get text from tag.
 
-    We are willing to look at children and ignore them.
-    We will get rid of white space and prevent <BR> tags with newlines.
+class FancyTextGetter:
+    """Starting with a BeautifulSoup tag, get text in some kind of reasonable w3mish way.
     """
-    if tag.string:
-        ret = tag.string
-    else:
-        ret = ''.join([get_text(o) for o in tag.contents])
-    if strip:
-        #ret = re.sub('\s+',' ',ret)
-        #ret = ret.strip()
-        ret = re.sub('\s*\n\s*','\n',ret)
-        ret = re.sub('\xa0',' ',ret)
-        ret = re.sub('[\t ]+',' ',ret)
-        #ret.strip()
-    try:
-        return unicode(ret,errors='ignore')
-    except:
-        print 'wtf... screwy encodingness with ',ret
-        return ret
+
+    IS_BREAK = ['br']
+    TWO_LB_BEFORE = ['table','p','blockquote']
+    LB_BEFORE = ['tr','li']
+    TAB_BEFORE = ['td']
+    IGNORE = ['script','meta']
+    
+    def __call__ (self, top_tag, strip=True):
+        self.text = ''
+        if hasattr(top_tag,'contents'):
+            self.add_tag(top_tag)
+        else:
+            self.text = top_tag.string
+        if strip:
+            self.text = self.text.strip()
+            # No more than two spaces!
+            self.text = re.sub('\n\t','\n',self.text)
+            self.text = re.sub('\n\s*\n\s+','\n\n',self.text)
+        try:
+            return unicode(self.text,errors='ignore')
+        except:
+            print 'Odd encoding problems with ',self.text
+            return self.text
+            
+    def add_tag (self, t):
+        for item in t.contents: self.get_text_fancy(item)
+
+    def get_text_fancy (self, item):
+        #print 'get_text_fancy looking at:',item
+        if self.text and hasattr(item,'name'):
+            print 'Looking at ',item.name
+            if item.name in self.IGNORE: return
+            if item.name in self.IS_BREAK:
+                self.text += '\n'
+                return
+            elif item.name in self.TWO_LB_BEFORE:
+                self.text += '\n\n'
+            elif item.name in self.LB_BEFORE:
+                self.text += '\n'
+            elif item.name in self.TAB_BEFORE:
+                self.text += '\t'
+        if hasattr(item,'contents'):
+            self.add_tag(item)
+        else:
+            self.text += item.string
+
+get_text = FancyTextGetter()
 
 img_src_regexp = re.compile('<img[^>]+src=[\'\"]([^\'"]+)')
 
@@ -353,9 +388,12 @@ class WebPageImporter (importer.importer):
     """Import a webpage as a recipe
 
     We use our BeautifulSoupScraper class to do the actual scraping.
+
     We use predefined webpages already registered in the global variable
-    SUPPORTED_URLS in this module. If we don't know the web page, we will raise
-    an error.
+    SUPPORTED_URLS in this module.
+
+    If we don't know the web page, we will prompt the user to guide us
+    through a generic import.
 
     To create a new type of web page import, create a new set of
     import rules and register them with SUPPORTED_URLS.
@@ -380,8 +418,33 @@ class WebPageImporter (importer.importer):
         debug('Scraping url %s'%self.url,0)
         self.d = scrape_url(self.url, progress=self.prog)
         debug('Scraping url returned %s'%self.d,0)
-        if not self.d:
+        do_generic = not self.d
+        if not do_generic:
+            try:
+                if self.prog: self.prog(-1,'Parsing webpage based on template.')
+                self.get_url_based_on_template()
+            except:
+                do_generic = True
+                print """Automated HTML Import failed
+                ***Falling back to generic import***
+
+                We were attempting to scrape using the following rules:
+                """
+                print self.d
+                print """The following exception was raised:"""
+                traceback.print_exc()
+                print """If you think automated import should have worked for the webpage you
+                were importing, copy the output starting at "Automated HTML Import failed" into
+                a bug report and submit it at the sourceforge site
+                
+                https://sourceforge.net/tracker/?group_id=108118&atid=649652
+
+                Sorry automated import didn't work. I hope you like
+                the new generic web importer!
+                """
+        if do_generic:
             # Interactive we go...
+            self.prog(-1,_("Don't recognize this webpage. Using generic importer..."))
             gs = GenericScraper()
             text,images = gs.scrape_url(self.url, progress=self.prog)
             import interactive_importer
@@ -391,6 +454,10 @@ class WebPageImporter (importer.importer):
             ii.run()
             if self.prog: self.prog(1,_('Import complete.'))
             return
+        
+    def get_url_based_on_template (self):
+        """Get URL based on template stored in d
+        """
         self.start_rec()
         # Add webpage as source
         if self.add_webpage_source:
@@ -444,3 +511,5 @@ class WebPageImporter (importer.importer):
             else: self.rec[k]=v
         self.commit_rec()
         if self.prog: self.prog(1,_('Import complete.'))
+
+    
