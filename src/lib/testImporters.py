@@ -5,22 +5,23 @@ import os,os.path
 import importers.html_importer
 import tempfile
 import traceback
+import unittest
 
-test_files = ['athenos1.gourmetcleaned.mx2', #mastercook
-              'mealmaster.mmf', # mealmaster
-              '200_Recipes.mmf', #mealmaster
-              'sample.kreml', #krecipes
-              ]
+tests = [
+    
+    {'filename':'200_Recipes.mmf'}, #mealmaster
+    
+    
+    
+             ]
+              
+TEST_FILE_DIRECTORY = '/home/tom/Projects/recipe/Data'
 
-test_files = [os.path.join('/home/tom/Projects/recipe/Data',f) for f in test_files]
-test_urls = [
-    'http://beef.allrecipes.com/az/AsianBeefWithSnowPeas.asp', #allrecipes.com
-    'http://www.eatingwell.com/articles_recipes/recipes/recipes_favorites/chocolate_zucchini_bread.htm', #eatingwell
-    'http://www.foodnetwork.com/food/recipes/recipe/0,1977,FOOD_9936_31916,00.html', #foodnetwork
-    ]
+
 
 times = []
-def time_me (f):
+def time_me (f): return f
+def old_time_me (f):
     def _ (*args,**kwargs):
         print 'Running',f.__name__,args,kwargs
         start = time.time()
@@ -43,24 +44,38 @@ class ImportTest:
     #failures = []
 
     def run (self):
-        self.db = self.setup_db()
-        for f in test_files:
-            try:
-                self.test_import(f)
-            except:
-                print 'Failed to import file: ',f
-                traceback.print_exc()
-        for u in test_urls:
-            try:
-                self.test_web_import(u)
-            except:
-                print 'Failed to import url: ',u
-                traceback.print_exc()
+        for d in tests: self.run_test(d)
 
+    def run_test (self, d):
+        if d.has_key('filename'):
+            d['filename']=os.path.join(TEST_FILE_DIRECTORY,
+                                       d['filename'])
+            self.test_import(d['filename'])
+        elif d.has_key('url'): self.test_web_import(d['url'])
+        else: print 'WTF: no test contained in ',d
+        if d.has_key('test'):
+            self.do_test(d['test'])
+
+    def do_test (self, test):
+        recs = self.db.search(self.db.rview,
+                              'title',
+                              test['title'],
+                              exact=True,
+                              use_regexp=False)
+        rec = recs[0]
+        ings = self.db.get_ings(rec)
+        if test.get('all_ings_have_amounts',False):
+            for i in ings:
+                assert(i.amount)
+        if test.get('all_ings_have_units',False):
+            for i in ings:
+                assert(i.unit)
+                
+    
     @time_me
     def setup_db (self):
         rm.dbargs['file']=tempfile.mktemp('.mk')
-        return rm.RecipeManager(**rm.dbargs)
+        self.db = rm.RecipeManager(**rm.dbargs)
 
     @time_me
     def test_import (self,filename):
@@ -75,13 +90,51 @@ class ImportTest:
 
     @time_me
     def test_web_import (self, url):
-        importers.html_importer.import_url(url,self.db,progress=self.progress)
+        importers.html_importer.import_url(url,self.db,progress=self.progress,
+                                           interactive=False)
 
     def progress (self, bar, msg):
-        print int(10 * bar) * '|'
-        if bar == 1: print msg
+        pass
+        #print int(10 * bar) * '|'
+        #if bar == 1: print msg
         
 
+class ImportTestCase (unittest.TestCase):
+
+    def setUp (self):
+        self.it = ImportTest()
+        self.it.setup_db()
+
+    def testMastercookXML (self):
+        self.it.run_test({'filename':'athenos1.mx2',
+                          'test':{'title':'5 Layer Mediterranean Dip',
+                                  'all_ings_have_amounts':True,
+                                  'all_ings_have_units':True,
+                                  }
+                          })
+
+    def testMealmaster (self):
+        self.it.run_test({'filename':'mealmaster.mmf'}), # mealmaster
+
+    def testKrecipes (self):
+        self.it.run_test({'filename':'sample.kreml'}), #krecipes
+
+    def testAllRecipes (self):
+        self.it.run_test({'url':'http://beef.allrecipes.com/az/AsianBeefWithSnowPeas.asp'}), #allrecipes.com
+
+    def testEatingWell (self):
+        self.it.run_test(
+            {'url':'http://www.eatingwell.com/articles_recipes/recipes/recipes_favorites/chocolate_zucchini_bread.htm'}
+            ) #eatingwell
+
+    def testFoodNetwork (self):
+        self.it.run_test(
+            {'url':'http://www.foodnetwork.com/food/recipes/recipe/0,1977,FOOD_9936_31916,00.html'}
+            )
+
+
 if __name__ == '__main__':
-    it=ImportTest()
-    it.run()
+    #it=ImportTest()
+    #it.run()
+    unittest.main()
+    #pass
