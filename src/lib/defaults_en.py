@@ -82,6 +82,12 @@ SYNONYMS=[
     ['sugar, white','sugar'],    
     ]
 
+# A DICTIONARY CONTAINING INGREDIENT KEYS AND NDBNO for the USDA
+# nutritional database. For these items, we will have nutritional
+# information by default.
+
+NUTRITIONAL_INFO = {}
+
 # a dictionary for ambiguous words.
 # key=ambiguous word, value=list of possible non-ambiguous terms
 #
@@ -648,10 +654,10 @@ UNITS = [["bucket" , ["bucket", "buckets", "bckt."]],
          ["ml.", ["mililiter","ml", "ml.","mililiters"]],
          ["cl.", ["centiliter","cl", "cl.", "centiliters"]],
          ["dl.", ["deciliter","dl", "dl.","deciliters"]],
-         ["l.", ["liter", "l.", "lit.", "liters"]],
-         ["g.", ["grams", "gram", "g."]],
+         ["l.", ["liter", "l.", "lit.", "liters",'l']],
+         ["g.", ["grams", "gram", "g.",'g']],
          ["mg.", ["miligram", "mg.", "mg", "miligrams"]],
-         ["kg.", ["kilogram","kg.", "kg",  "kilograms"]]
+         ["kg.", ["kilogram","kg.", "kg", "kilograms"]]
          ]
 
 METRIC_RANGE = (1,999)
