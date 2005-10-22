@@ -227,6 +227,7 @@ class converter:
             filename, rd, source, threaded),
               0)
         self.fn = filename
+        if not progress: progress = lambda *args: args
         self.progress = progress
         self.rh = MastercookXMLHandler(rd, source=source, progress=progress, conv=None)
         self.threaded=threaded

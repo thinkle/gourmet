@@ -257,8 +257,8 @@ class GenericScraper (BeautifulSoupScraper):
     def scrape (self):
         dic = BeautifulSoupScraper.scrape(self)
         print 'scraped...',dic
-        text = dic['title']+'\n'+dic['text']
-        images = dic['images']
+        text = dic.get('title','')+'\n'+dic.get('text','')
+        images = dic.get('images',[])
         if type(images)!=list: images = [images]
         images = [urllib.basejoin(self.url,i) for i in images]
         return text,images
