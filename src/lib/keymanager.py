@@ -89,11 +89,12 @@ class KeyManager:
             if srch: return srch.sort('count')[-1].ingkey
             else: return self.generate_key(s)
 
-    def get_key (self,txt, certainty=0.75):
+    def get_key (self,txt, certainty=0.61):
         """Grab a single key. This is simply a best guess at the
         right key for an item (we can't be sure -- if we could be,
         we wouldn't need a key system in the first place!"""
         debug("Start get_key %s"%str,10)
+        if not txt: return ''
         txt = str(txt)
         result = self.look_for_key(txt)
         if result and result[0][0] and result[0][1] > certainty:
@@ -118,8 +119,9 @@ class KeyManager:
         if len(main_txts)==1:
             main_txts.extend(defaults.guess_plurals(txt))
         for t in main_txts:
-            is_key = self.rm.normalizations['ingkey'].find(ingkey=t)
-            if is_key>=0: retvals[t]=.9
+            is_key = self.rm.fetch_one(self.rm.normalizations['ingkey'],ingkey=t)
+            if is_key>=0:
+                retvals[t]=.9
             exact = self.rm.ikview.select(item=t)
             if exact:
                 for o in exact:
@@ -145,6 +147,7 @@ class KeyManager:
             if not w:
                 continue
             srch = self.rm.ikview.select(word=w)
+            total_count = sum(m.count for m in srch)
             for m in srch:
                 ik = m.ingkey
                 if not retvals.has_key(ik):
@@ -153,13 +156,13 @@ class KeyManager:
                 #
                 # count      1
                 # _____   x ___ 
-                # matches   words
+                # total_count   words
                 #
                 # Where count is the number of times this word has
                 # resulted in this key, matches is the number of keys
                 # that match this word in all, and words is the number
                 # of words we're dealing with.
-                retvals[ik]+=(float(m.count)/len(srch))*(float(1)/nwords)
+                retvals[ik]+=(float(m.count)/total_count)*(float(1)/nwords)
                 # Add some probability if our word shows up in the key
                 if ik.find(w)>=0: retvals[ik]+=0.1
         retv = retvals.items()
@@ -537,8 +540,9 @@ if __name__ == '__main__':
         t = time.time()
         f()
         print time.time()-t
-
-    from backends.rmetakit import RecData
-    rd = RecData(file='/tmp/aug3350pm/recipes.mk')
-    km = KeyManager(rm=rd)
+    import tempfile
+    import recipeManager
+    km = KeyManager(rm=recipeManager.RecipeManager(**recipeManager.dbargs))
+    recipeManager.dbargs['file']=tempfile.mktemp('.mk')
+    fkm = KeyManager(rm=recipeManager.RecipeManager(**recipeManager.dbargs))
     
