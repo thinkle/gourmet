@@ -271,7 +271,7 @@ class FancyTextGetter:
     TWO_LB_BEFORE = ['table','p','blockquote']
     LB_BEFORE = ['tr','li']
     TAB_BEFORE = ['td']
-    IGNORE = ['script','meta']
+    IGNORE = ['script','meta','select']
     
     def __call__ (self, top_tag, strip=True):
         self.text = ''
@@ -352,7 +352,8 @@ def add_to_fn (fn):
     except:
         return f + "%s1"%os.path.extsep + e
     
-def import_url (url, rd, progress=None, add_webpage_source=True, threaded=False):
+def import_url (url, rd, progress=None, add_webpage_source=True, threaded=False,
+                interactive=True):
     """Import information from URL.
     We handle HTML with scrape_url.
 
@@ -371,7 +372,8 @@ def import_url (url, rd, progress=None, add_webpage_source=True, threaded=False)
                                url,
                                prog=progress,
                                add_webpage_source=add_webpage_source,
-                               threaded=threaded)
+                               threaded=threaded,
+                               interactive=interactive)
     elif header=='application/zip':
         import zip_importer
         return zip_importer.zipfile_to_filelist(sock,progress,os.path.splitext(url.split('/')[-1])[0])
@@ -402,10 +404,12 @@ class WebPageImporter (importer.importer):
     JOIN_AS_PARAGRAPHS = ['instructions','modifications','ingredient_block']
 
     def __init__ (self, rd, url, add_webpage_source=True,
-                  threaded=False, total=0, prog=None,conv=None):
+                  threaded=False, total=0, prog=None,conv=None,
+                  interactive=True):
         self.add_webpage_source=add_webpage_source
         self.url = url
         self.prog = prog
+        self.interactive = interactive
         importer.importer.__init__(self,rd,threaded=threaded,total=total,prog=prog,do_markup=False,
                                    conv=conv)
 
@@ -424,6 +428,7 @@ class WebPageImporter (importer.importer):
                 if self.prog: self.prog(-1,'Parsing webpage based on template.')
                 self.get_url_based_on_template()
             except:
+                if not self.interactive: raise
                 do_generic = True
                 print """Automated HTML Import failed
                 ***Falling back to generic import***
@@ -443,6 +448,7 @@ class WebPageImporter (importer.importer):
                 the new generic web importer!
                 """
         if do_generic:
+            if not self.interactive: raise "Unable to find importer for %s"%self.url
             # Interactive we go...
             self.prog(-1,_("Don't recognize this webpage. Using generic importer..."))
             gs = GenericScraper()
