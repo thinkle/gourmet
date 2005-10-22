@@ -658,13 +658,20 @@ class RecData:
                 raise ValueError("%s is an invalid value for mode"%mode)
     
     def add_ing_to_keydic (self, item, key):
-        if not item or not key: return
+        if not item or not key: return        
         row = self.fetch_one(self.ikview, item=item, ingkey=key)
         if row:
             row.count+=1
         else:
             self.ikview.append({'item':item,'ingkey':key,'count':1})
-        # and add words...
+        if type(item)==int:
+            # already normalized...
+            item = self.fetch_one(self.normalizations['item'],id=item).item
+            print 'Normalized-item>',item
+        if type(key)==int:
+            # already normalized...
+            key = self.fetch_one(self.normalizations['ingkey'],id=key).ingkey
+            print 'Normalized-key>',item
         for w in re.split('\W+',item):
             w=w.lower().strip()
             row = self.fetch_one(self.ikview,word=w,ingkey=key)
@@ -672,6 +679,7 @@ class RecData:
                 row.count+=1
             else:
                 self.ikview.append({'word':w,'ingkey':key,'count':1})
+
 
     def remove_ing_from_keydic (self, item, key):
         row = self.fetch_one(self.ikview,item=item,ingkey=key)
