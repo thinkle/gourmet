@@ -8,23 +8,16 @@ import threading, Queue
 
 def grab_thumbnail (uri, type, iqueue, pqueue):
     def reporthook (block, blocksize, total):
-        print 'report ',block,blocksize,total
         try:
             perc = (float(total)/(block*blocksize))
         except:
             perc = -1
-        print 'put progress to queue'
         pqueue.put(('Getting %s'%uri,perc))
-        print 'done'
     pqueue.put_nowait(('Getting %s'%uri,0))
     import time
     t=time.time()
-    print 'fetching...'
     fi = check_for_thumbnail(uri,type,reporthook)
     #fi = check_for_thumbnail(uri,type)
-    print 'fetching took ',time.time()-t,'seconds!'
-    print 'Found thumbnail!'
-    print 'add ',fi,'to image queue!'
     iqueue.put((fi,uri))
     
 class ImageBrowser (gtk.IconView):
@@ -42,7 +35,6 @@ class ImageBrowser (gtk.IconView):
         gobject.timeout_add(100,self.add_image_from_queue)
         
     def add_image_from_uri (self, u):
-        print 'start image adder',u
         self.adding.append(u)
         t=threading.Thread(target=lambda *args: grab_thumbnail(
             u,
@@ -53,17 +45,13 @@ class ImageBrowser (gtk.IconView):
         t.run()
 
     def add_image_from_queue (self):
-        #print 'look for images, we have',threading.activeCount(),'threads'
         try:
             fi,u = self.image_queue.get_nowait()
-            print 'Adding image ',fi,':',u
             if fi:
                 pb = gtk.gdk.pixbuf_new_from_file(fi)
                 self.model.append([pb,u])
                 self.adding.remove(u)
-                print 'finished',u
         except Queue.Empty:
-            #print 'no image...'
             pass
         return True
 
@@ -72,7 +60,6 @@ class ImageBrowser (gtk.IconView):
             progress,text = self.progress_queue.get_nowait()
             self.set_progress(progress,text)            
         except:
-            #print 'update progress got nothing...'
             if not self.adding and hasattr(self,'progressbar'):
                 self.progressbar.hide()
             else:
@@ -81,7 +68,6 @@ class ImageBrowser (gtk.IconView):
 
     def set_progress (self, progress, text):
         if hasattr(self,'progressbar'):
-            print 'show progressbar'
             self.progressbar.show()
             self.progressbar.set_percentage(prog)
             self.progressbar.set_text(text)
@@ -110,7 +96,6 @@ class ImageBrowserDialog (ModalDialog):
         self.sw.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
 
     def okcb (self, *args,**kwargs):
-        print 'ok!'
         ModalDialog.okcb(self,*args,**kwargs)
 
     def selection_changed_cb (self, iv):
@@ -118,7 +103,6 @@ class ImageBrowserDialog (ModalDialog):
         if selected_paths:
             itr = self.ib.model.get_iter(selected_paths[0])
             val = self.ib.model.get_value(itr,1)
-            print 'val:',val
             self.ret = val
         else:
             self.ret = None
@@ -155,7 +139,6 @@ class ImageBrowserTest (unittest.TestCase):
         for image in ['Caneel beach.JPG','Cinnamon beach.JPG','dsc00258.jpg']:
             self.ibd.add_image_from_uri('file:///home/tom/pictures/'+image)        
         self.ibd.run()
-        print 'Result: ',self.ibd.ret
 
 def get_image_file (uri):
     return fetched_uris[uri]
