@@ -107,14 +107,28 @@ class exporter:
                         dct = s
                         s = dct.get('text','')
                         img = dct.get('image','')
+                        time = dct.get('time',0)
+                        print 'Exporter sees step AS:'
+                        print '  text:',s
+                        print '  image:',img
+                        print '  time:',time
                     else:
                         img = ''
                     if self.do_markup: txt=self.handle_markup(s)
                     if not self.use_ml: txt = xml.sax.saxutils.unescape(s)
                     if self.convert_attnames:
-                        self.write_text(gglobals.TEXT_ATTR_DIC[a],s)
+                        out_a = gglobals.TEXT_ATTR_DIC[a]
                     else:
+                        out_a = a
+                    # Goodness this is an ugly way to pass the
+                    # time as a parameter... we use try/except to
+                    # allow all gourmet exporters to ignore this
+                    # attribute.
+                    try: self.write_text(a,s,time=time)
+                    except:
                         self.write_text(a,s)
+                        print 'Failed to export time=',time
+                        raise
                     if img:
                         self.write_image(img)
                 continue
