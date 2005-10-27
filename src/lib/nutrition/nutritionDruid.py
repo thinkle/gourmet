@@ -419,18 +419,22 @@ class NutritionInfoDruid (gobject.GObject):
         self.searchEntry.set_text(search_text)
         self.searchvw = search_in
         # Some metakit specific hackery which should not be reproduced...
-        tbl = self.rd.normalizations['foodgroup']
-        PACKAGED_FOOD_IDS = []
-        for n in self.PACKAGED_FOODS:
-            id = tbl.find(foodgroup=n)
-            #if id < 0: print "Funny, I don't know about ",n
-            if id >= 0:
-                #print 'yippee',n,'->',id
-                PACKAGED_FOOD_IDS.append(tbl[id].id)
-        filteredvw = self.searchvw = self.rd.filter(self.searchvw,
-                                                    lambda r: r.foodgroup not in PACKAGED_FOOD_IDS)
-        if filteredvw:
-            self.searchvw = filteredvw
+        try:
+            tbl = self.rd.normalizations['foodgroup']
+            PACKAGED_FOOD_IDS = []
+            for n in self.PACKAGED_FOODS:
+                id = tbl.find(foodgroup=n)
+                #if id < 0: print "Funny, I don't know about ",n
+                if id >= 0:
+                    #print 'yippee',n,'->',id
+                    PACKAGED_FOOD_IDS.append(tbl[id].id)
+                filteredvw = self.searchvw = self.rd.filter(self.searchvw,
+                                                            lambda r: r.foodgroup not in PACKAGED_FOOD_IDS)
+            if filteredvw:
+                self.searchvw = filteredvw
+        except NotImplementedError:
+            print "No metakit present, so I'm not doing any funky filtering."
+            pass
         self.nutrition_store.change_view(self.searchvw)
         self.__last_search__ = search_text
         self.__override_search__ = False # turn back on search handling!
