@@ -102,7 +102,7 @@ class NutritionInfoDruid (gobject.GObject):
         # gets updated we'd better fix this (see reccard.py for a more
         # sophisticated example).
         gtk.glade.set_custom_handler(lambda *args: NumberEntry())
-        self.glade = gtk.glade.XML(os.path.join(gglobals.datad,'nutritionDruid.glade'))
+        self.glade = gtk.glade.XML(os.path.join(gglobals.gladebase,'nutritionDruid.glade'))
         self.mm = MnemonicManager()
         self.mm.add_glade(self.glade)
         self.mm.fix_conflicts_peacefully()
