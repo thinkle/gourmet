@@ -1,8 +1,8 @@
 TODO
-* Create some basic documentation
+* Fix range parsing in quick ingredient add so adding 1 tomato works.
+
+* Stop random segfaults.
+
 * Check into bizaare ordering bugs & such reported by HaJo
-* Create faster and more elegant ingredient input interface
 * Fix MySQL/SQLite support
-* Add support for nutritional information (underway in HEAD)
-* Provide more convenient way to see differences in text-encoding
-  dialog.
+
