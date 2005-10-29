@@ -5,8 +5,18 @@ import os,os.path
 import tempfile
 import traceback
 import unittest
+import tempfile
 
-OUTPUT_DIRECTORY = '/tmp/export_tests/'
+OUTPUT_DIRECTORY = os.path.join(
+    '/tmp',
+    'export_tests')
+OUTPUT_DIRECTORY = os.path.join(OUTPUT_DIRECTORY,
+                                time.strftime('%d.%m.%y'))
+if os.path.exists(OUTPUT_DIRECTORY):
+    n = 1
+    while os.path.exists(OUTPUT_DIRECTORY + '-' + str(n)): n+=1
+    OUTPUT_DIRECTORY += '-%s'%n
+
 if not os.path.exists(OUTPUT_DIRECTORY): os.makedirs(OUTPUT_DIRECTORY)
 TEST_FILE_DIRECTORY = 'exporters/reference_setup/recipes.mk'
 
