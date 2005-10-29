@@ -7,17 +7,7 @@ import tempfile
 import traceback
 import unittest
 
-tests = [
-    
-    {'filename':'200_Recipes.mmf'}, #mealmaster
-    
-    
-    
-             ]
-              
 TEST_FILE_DIRECTORY = '/home/tom/Projects/recipe/Data'
-
-
 
 times = []
 def time_me (f): return f
@@ -102,8 +92,17 @@ class ImportTest:
 class ImportTestCase (unittest.TestCase):
 
     def setUp (self):
+        print 'setUp'
         self.it = ImportTest()
         self.it.setup_db()
+
+    def tearDown (self):
+        print 'tearDown'
+        from exporters.gxml2_exporter import rview_to_xml as gxml_exporter
+        n = 1
+        while os.path.exists('/tmp/gourmet_import_test_%s.grmt'%n): n+=1
+        ge=gxml_exporter(self.it.db,self.it.db.rview,'/tmp/gourmet_import_test_%s.grmt'%n)
+        ge.run()
 
     def testMastercookXML (self):
         self.it.run_test({'filename':'athenos1.mx2',
@@ -137,4 +136,5 @@ if __name__ == '__main__':
     #it=ImportTest()
     #it.run()
     unittest.main()
+    
     #pass
