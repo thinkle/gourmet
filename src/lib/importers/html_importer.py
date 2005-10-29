@@ -256,7 +256,6 @@ class GenericScraper (BeautifulSoupScraper):
 
     def scrape (self):
         dic = BeautifulSoupScraper.scrape(self)
-        print 'scraped...',dic
         text = dic.get('title','')+'\n'+dic.get('text','')
         images = dic.get('images',[])
         if type(images)!=list: images = [images]
@@ -491,7 +490,7 @@ class WebPageImporter (importer.importer):
                     # we take a special keyword, "text", which gets
                     # parsed
                     if ingdic.has_key('text'):
-                        d = self.rd.ingredient_parser(ingdic['text'])
+                        d = self.rd.ingredient_parser(ingdic['text'],conv=self.conv)
                         if d:
                             for dk,dv in d.items(): ingdic[dk]=dv
                         del ingdic['text']
@@ -503,7 +502,7 @@ class WebPageImporter (importer.importer):
             if k == 'ingredient_block':
                 for l in v.split('\n'):
                     if self.prog: self.prog(-1,_('Processing ingredients.'))
-                    dic=self.rd.ingredient_parser(l)
+                    dic=self.rd.ingredient_parser(l,conv=self.conv)
                     if dic:
                         self.start_ing(**dic)
                     self.commit_ing()
