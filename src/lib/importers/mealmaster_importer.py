@@ -35,6 +35,7 @@ class mmf_constants:
                           't' : 'tsp.',
                           'pt' : 'pt.',
                           'qt' : 'qt.',
+                          'oz' : 'oz.'
                           }
         self.unit_convr = {}
         for k,v in self.unit_conv.items():
