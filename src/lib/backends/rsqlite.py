@@ -2,6 +2,7 @@ import os, pickle,re
 from gourmet import gglobals
 import pythonic_sqlite as psl
 import rdatabase
+import traceback
 #import rmetakit
 from gourmet.gdebug import debug, TimeAction
 
@@ -19,7 +20,21 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
     #    rdatabase.RecData.setup_tables(self)
 
     def setup_table (self, name, data, key=None):
+        #print 'CREATING: ',name,data        
         return self.get_table(name,data,key) #PythonicSQL's method
+
+    def _setup_table (self, name, data, key=None):
+        # Do our normalizing...
+        # We'll set up our regular table
+        ret = self.setup_table(name,data,key=key)
+        # Then we'll set up a view with proper joins
+        # to access it via "normalized" columns.
+        #return
+        columns = [d[0] for d in data]
+        if True in [self.normalizations.has_key(d[0]) for d in data]:
+            return self.get_view(name,data)
+        else:
+            return ret
 
     def do_delete_rec (self, rec):
         if type(rec)==type(""):
@@ -57,10 +72,15 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
 
     def do_modify_rec (self, rec, dic):
         if not rec or not dic: return
-        self.update('recipe',
+        self.update(self.rview.__tablename__,
                     {'id':rec.id},
                     dic)
         return self.get_rec(rec.id)
+
+    def do_modify_ing (self, ing, ingdict):
+        self.update(self.iview.__tablename__,
+                    ing.__fields__,
+                    ingdict)
 
     def save (self):
         self.get_connection().commit()
@@ -70,14 +90,19 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
             psl.PythonicSQLite.__init__(self,self.filename)
 
     def get_unique_values (self, colname, table=None):
-        if not table: table=self.rview
+        if table==None: table=self.rview
+        if colname=='category' and table.__tablename__==self.rview.__tablename__:
+            print "WARNING: you're calling get_unique_values on rview instead of on catview!"
+            print "Correcting your mistake, but you should fix this -- here's the traceback:"
+            traceback.print_stack()
+            table=self.catview
         return table.get_unique(colname)
 
     def search (self, table, colname, regexp, exact=False, use_regexp=True):
         """Handed a table, a column name, and a regular expression, search
         for an item"""
         debug('search handed: table:%s, colname:%s, regexp:%s, exact:%s'%(table,colname,regexp,exact),0)
-        print 'Doing search...'
+        #print 'Doing search...'
         if type(regexp) != str:
             print 'This is funny...',table,colname,regexp
             tbl = table.select(**{colname:regexp})
@@ -101,6 +126,9 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
             tbl = table.filter(fun)
             print '(filter) returning tbl',tbl
             return tbl
+
+    def delete_by_criteria (self, table, criteria):
+        table.delete(criteria)
 
 def regexp_to_sql (regexp):
     debug('regexp_to_sql: base regexp=%s'%regexp,0)
@@ -132,46 +160,32 @@ class RecipeManager (RecData,rdatabase.RecipeManager):
         rdatabase.RecipeManager.__init__(self)
 
 class dbDic (rdatabase.dbDic):
-    def __init__ (self, keyprop, valprop, view, db, pickle_key=False):
-        rdatabase.dbDic.__init__(self, keyprop, valprop, view, db, pickle_key=False)
+    pass
 
-    def __setitem__ (self, k, v):
-        if self.pickle_key:
-            k=pickle.dumps(k)
-        row = self.vw.select(**{self.kp:k})
-        if len(row)>0:
-            setattr(row[0],self.vp,pickle.dumps(v))
-        else:
-            self.vw.append({self.kp:k,self.vp:pickle.dumps(v)})
-        self.db.changed=True
-        return v
 
-    def __getitem__ (self, k):
-        if self.pickle_key:
-            k=pickle.dumps(k)
-        return pickle.loads(getattr(self.vw.select(**{self.kp:k})[0],self.vp))
+# The table can basically be the same -- it just needs to refer to a
+# view of the proper join. What needs to be subclassed is the
+# RowObject, whose setitem method will need to be tweaked to do the
+# right thing.
+# This should be moved to PythonicSQL really...
 
-    def keys (self):
-        ret = []
-        for i in self.vw:
-            ret.append(getattr(i,self.kp))
-        return ret
-
-    def values (self):
-        ret = []
-        for i in self.vw:
-            ret.append(pickle.loads(getattr(i,self.vp)))
-        return ret
-
-    def items (self):
-        ret = []
-        for i in self.vw:
-            ret.append((getattr(i,self.kp),pickle.loads(getattr(i,self.vp))))
-        return ret
+#class SqlNormalizedTableObject (TableObject):
+#    """Provide smooth access to normalized columns.
+#
+#    In other words, if we store e.g. cuisines as a numeric ID, this
+#    class allows us to pretend we are just setting a string when we
+#    set a cuisine, and it will automagically convert to an ID.
+#    """
+#    #def __init__ (self,view,rd,normdic):
+#
+#    # Methods that call DB functions that return something we'll need
+#    # to care about are
+    
+        
 
 #class SQLiteUnitTest (rdatabase.DatabaseUnitTest):
-    db_class = RecData
-    db_kwargs = {'filename':'/tmp/foo.db'}
+#D    db_class = RecData
+#  #  db_kwargs = {'filename':'/tmp/foo.db'}
 
 if __name__ == '__main__':
     db = RecipeManager(file='/tmp/foo.db')
