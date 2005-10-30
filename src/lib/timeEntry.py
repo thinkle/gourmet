@@ -14,12 +14,14 @@ class TimeEntry (validatingEntry.ValidatingEntry):
         if not conv: self.conv = convert.converter()
         else: self.conv = conv
         validatingEntry.ValidatingEntry.__init__(self)
+        self.entry.get_value = self.get_value
+        self.entry.set_value = self.set_value        
 
     def find_errors_in_progress (self, txt):
         if (not txt) or self.conv.timestring_to_seconds(txt):
             return None
         elif not convert.NUMBER_MATCHER.match(txt.split()[0]):
-            return _('Time must begin with a number or fraction.')
+            return _('Time must begin with a number or fraction followed by a unit (minutes, hours, etc.).')
         else:
             words = txt.split()
             #if len(words) == 1:
@@ -90,6 +92,8 @@ if __name__ == '__main__':
     l.set_alignment(0,0.5)
     hb.pack_start(l)
     te=TimeEntry()
+    import sys
+    te.connect('changed',lambda w: sys.stderr.write('Time value: %s'%w.get_value()))
     l.set_mnemonic_widget(te)
     hb.pack_start(te,expand=False,fill=False)
     vb.add(hb)
