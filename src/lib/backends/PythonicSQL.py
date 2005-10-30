@@ -71,6 +71,7 @@ class PythonicSQL:
         retlst = []
         for i in lst:
             if type(i) == bool: retlst.append(int(i))
+            if i==None: retlst.append('NULL')
             else: retlst.append(i)
         return retlst
 
@@ -90,7 +91,7 @@ class PythonicSQL:
             raise
         
     def execute (self, sql):
-        debug('execute: %s'%sql,sql_debug_level)
+        #debug('execute: %s'%sql,sql_debug_level)
         # handle strings or tuples of strings,params        
         c = self.get_cursor()
         self._execute(c,sql)
@@ -114,25 +115,51 @@ class PythonicSQL:
         #    raise TypeError, 'expected dictionary type argument'
         add_string = "CREATE TABLE %s ("%name
         sql_params = []
-        print 'working with table',table
         for rowname,typ,flags in table:
             if type(typ) != type(""):
                 typ = self.pytype_to_sqltype(typ)
             typ = self.hone_type(typ)
             add_string +=  "%s %s"%(rowname,typ)
+            if 'AUTOINCREMENT' in flags and rowname != key:
+                if key:
+                    key = rowname
             if rowname==key:
-                #if typ.upper()=='INTEGER' or typ.upper()=='INT': add_string += " AUTOINCREMENT"
-                if 'AUTOINCREMENT' in flags: add_string += ' AUTOINCREMENT'
                 add_string += " PRIMARY KEY"
             add_string += ","
         add_string = add_string[0:-1] + ")"
-        print 'add_string = ',add_string, 'sql_params=',sql_params
         self.execute([add_string,sql_params])
-        print 'successful!'
         if key:
             self.execute(['CREATE INDEX %s%sIndex'%(name,key) +' ON %s (%s)',[name,key]])
         self.changed=True
         return TableObject(self, name, key)
+
+    def create_normed_view (self, name, data):
+        """Create denormed view working from table named name with
+        columns described in data.
+
+        We return a view named name + _view.
+
+        Our view will have all the same column names as our original
+        table, but will have proper JOINs to handle normalizing all of
+        attributes stored as IDs (and contained in self.normalizations).
+        """
+        joins = []
+        columns = []
+        for col,typ,flags in data:
+            if self.normalizations.has_key(col):
+                normtable = self.normalizations[col].__tablename__
+                joins.append('LEFT JOIN %(normtable)s ON %(name)s.%(col)s=%(normtable)s.id'%locals())
+                columns.append('%(normtable)s.%(normtable)s AS %(col)s'%locals())
+            else:
+                columns.append('%(name)s.%(col)s AS %(col)s'%locals())
+        view_name = name + '_view'
+        join_statement = ' '.join(joins)
+        columns = ','.join(columns)
+        statement = """CREATE VIEW %(view_name)s AS SELECT %(columns)s
+        FROM %(name)s %(join_statement)s"""%locals()
+        #print 'Making view',statement
+        self.execute((statement,()))
+        return self.get_table(view_name,data,None)        
 
     def _check_for_table (self, name):
         raise NotImplementedError
@@ -143,6 +170,13 @@ class PythonicSQL:
             return TableObject(self,name,key)
         else:
             return self.create(name,data,key)
+
+    def get_view (self, name, data, key=None):
+        if self._check_for_table(name+'_view'):
+            return self.get_table(name+'_view',data)
+        else:
+            #print 'Creating normalized view for ',name
+            return self.create_normed_view(name,data)
 
     def pytype_to_sqltype (self, typ):
         types=[(str,"text"),
@@ -161,10 +195,19 @@ class PythonicSQL:
         return typstring
 
     def insert (self, name, data):
-        """Use this method to insert data into a table. Data comes in dictionaries. Table names come in strings."""
+        """Use this method to insert data into a table.
+
+        Data is a dictionary with column names as keys and values as values.
+
+        Table name is a string.
+        """
         t = TimeAction('PythonicSQL.insert()',3)
         if type(data) != DictionaryType:
             raise TypeError, 'expected dictionary type argument'
+        # Magic to handle read-only views bandying about...
+        if len(name)>5 and name[-5:] == '_view':
+            self._denormalize_values_(data) #modifies in place
+            name = name[0:-5]
         ins_string = "INSERT INTO %s"%name
         sql_params = []
         if data:
@@ -188,6 +231,9 @@ class PythonicSQL:
         
     def delete (self, name, criteria={}, logic="and"):
         """Delete rows from table NAME where criteria CRITERIA are met."""
+        if len(name)>5 and name[-5:] == '_view':
+            self._denormalize_values_(criteria)
+            name = name[0:-5]
         if criteria:
             del_string = "DELETE FROM %s"%name
             wstr,wpar = self.make_where_statement(criteria,logic)
@@ -197,10 +243,33 @@ class PythonicSQL:
             debug('WARNING: CLEARING OUT TABLE %s!'%name,0)
             del_string = "DELETE * FROM %s"%name
             self.execute(del_string)
-        
+
+    def _denormalize_values_ (self, fields):
+        """Modify values in fields to de-normalize.
+
+        Replace strings with IDs for all columns referenced in
+        self.normalizations.
+        """
+        for col,val in fields.items():
+            if self.normalizations.has_key(col):
+                already_there = self.normalizations[col].fetch_one(
+                    **{col:val}
+                    )
+                if already_there:
+                    fields[col]=already_there.id
+                else:
+                    self.normalizations[col].append({col:val})
+                    row = self.normalizations[col][-1]
+                    fields[col]=row.id
+
     def update (self, name, criteria, updated_fields):
         """Update table NAME where CRITERIA are met.  UPDATED_FIELDS
         is a dictionary of {COLUMNS:NEW_VALUES...}."""
+        if len(name)>5 and name[-5:] == '_view':
+            # In this case, we're dealing with a view.
+            # It's time we do some fancy ass magic...
+            self._denormalize_values_(updated_fields)
+            name = name[0:-5]
         up_string = "UPDATE %s"%name
         sql_params = []
         up_string += " SET "
@@ -252,16 +321,14 @@ class PythonicSQL:
 
     def retrieve_unique (self, name, field, criteria={}, logic="and",
                          filters=[]):
-        sel_string,sql_params=self.make_select_statement(name,[field])
+        #sel_string,sql_params=self.make_select_statement(name,[field])
+        sel_string,sql_params = 'SELECT DISTINCT %(field)s FROM %(name)s '%locals(),[]
         if criteria:
             wstr,wpar = self.make_where_statement(criteria,logic)
             sel_string += wstr
             sql_params += wpar
-        sel_string += " GROUP BY %s"%field
-        return map(lambda x: getattr(x,field),
-                   self.execute_and_fetch([sel_string,sql_params],
-                                          name,self,[field],filters=filters)
-                   )
+        return [x[0] for x in self.execute([sel_string,sql_params])]
+                   
 
     def retrieve_counted (self, name, field, criteria={}, logic="and", count_property="count",
                           filters=[]):
@@ -274,14 +341,14 @@ class PythonicSQL:
         return self.execute_and_fetch([sel_string,sql_params],name,self,[field,count_property],filters=filters)
 
     def make_select_statement (self, name, fields):
-        sel_string = "select "
+        sel_string = "SELECT "
         if fields:
             for f in fields:
                 sel_string += "%s, "%f
             sel_string = sel_string[0:-2]
         else:
             sel_string += "*"
-        sel_string += " from %s"%name
+        sel_string += " FROM %s"%name
         return sel_string,[]
 
     def make_where_statement (self, criteria, logic="AND"):
@@ -357,9 +424,7 @@ class Fetcher (list):
             use_row = True
             if self.filters:
                 for f in self.filters:
-                    #print 'filtering with',f
                     if not f(row):
-                        #print 'filtered out row: ',row
                         use_row = False
                         break
             if use_row:
@@ -421,6 +486,69 @@ class FetcherPivot (Fetcher):
                   pivot_attr=self.pivot_attr,pivot_on=self.pivot_on,
                   criteria=self.criteria,filters=self.filters)
 
+class RowObject :
+    """Return an object based on a SQL query. Our object has attributes
+    for each field in our result set."""
+    def __init__ (self, name, db, results, fields):
+        self.__instantiated__=False
+        self.__db__ = db
+        self.__table__ = name
+        self.__fields__ = {}
+        #if len(fields) != len(results): print 'fields: ',fields, '\nresults: ',results
+        for i,f in enumerate(fields):
+            setattr(self,f,results[i])
+            #self.dic[f]=results[i]
+        for f in self.__db__.get_fields_for_table(self.__table__):            
+            if not hasattr(self,f):
+                setattr(self,f,None)
+        self.__instantiated__ = True
+
+    def __nonzero__ (self):
+        if self.__fields__: return True
+        else: return False
+
+    def __setattr__ (self, name, val):
+        self.__dict__[name]=val
+        if name.find('__') != 0:
+            if self.__instantiated__==True:
+                self.__db__.update(self.__table__, self.__fields__, {name:val})
+            self.__fields__[name]=val
+
+    def __delete__ (self):
+        self.__db__.delete(self.__table__,criteria=self.__fields__)
+
+    def __repr__ (self):
+        return '<row object (%s)>'%self.__table__
+
+    def __str__ (self):
+        return '<row object> (%s)>'%self.__table__
+    
+class RowObjectPivot (RowObject):
+    def __init__ (self, name, db, results, fields, pivot_on, pivot_attr, criteria={}, filters=[]):
+        """We are imitating metakit's groupby functionality here. pivot_on becomes
+        a key who we group by and provide a table for.  pivot_attr is the name
+        of our own attribute to be set to a view of those items we've grouped on.
+        This is very similar to getting a "count", only different."""
+        RowObject.__init__(self,name,db,results,fields)
+        self.__instantiated__ = False
+        self.__pivot_on__ = pivot_on
+        self.__pivot_attr__ = pivot_attr
+        self.__criteria__ = criteria
+        if type(self.__criteria__) != type({}):
+            self.__criteria__={}
+        self.__filters__ = filters
+        crit = self.__criteria__.copy()
+        crit[self.__pivot_on__]=getattr(self,self.__pivot_on__)
+        setattr(self,
+                self.__pivot_attr__,
+                TableObject(db,
+                            self.__table__,
+                            criteria=crit,
+                            filters=self.__filters__,
+                            )
+                )
+        self.__instantiated__ = True
+
 class TableObject (list):
 
     """A TableObject makes SQL look similar to a metakit view.
@@ -429,7 +557,7 @@ class TableObject (list):
     index or to loop through rows easily. TableObject also provides
     the ability to filter based on criteria, returning new
     TableObjects representing "filtered" tables (essentially, saved queries)."""
-    
+
     def __init__ (self, db, table, key=None, criteria=None, filters=[]):
         self._last = None
         self.__db__ = db
@@ -444,8 +572,14 @@ class TableObject (list):
     def __getitem__ (self, index):
         debug('__getitem__ called for %s'%self,0)
         if index == -1 and self._last:
-            print 'selecting ',self._last
-            return self.select(**self._last)[-1]
+            try:
+                return self.select(**self._last)[-1]
+            except:
+                print 'WTF, selecting our last member failed.'
+                print 'We were trying to call'
+                print '%s.select'%self,'(%s)',self._last,'[-1]'
+                print 'We have ',len(self),'items'
+                raise
         generator = self.__iter__()
         n = 0
         if index < 0:
@@ -467,8 +601,9 @@ class TableObject (list):
         return ret
 
     def append (self, item):
+        self._last = item.copy()
         self.__db__.insert(self.__tablename__,item)
-        self._last = item
+        
 
     def extend (self, lst):
         for i in lst: self.append(i)
@@ -499,7 +634,8 @@ class TableObject (list):
 
     def fetch_one (self,**dictionary):
         table = self.select(**dictionary)
-        if table: return table[0]
+        if table:
+            return table[0]
 
     def select (self,**dictionary):
         """Return a TableObject with a subview of ourselves based on criteria.
@@ -552,67 +688,4 @@ class TableObject (list):
                                          criteria=self.__criteria__,
                                          filters=self.__filters__))
 
-class RowObject :
-    """Return an object based on a SQL query. Our object has attributes
-    for each field in our result set."""
-    def __init__ (self, name, db, results, fields):
-        self.__instantiated__=False
-        self.__db__ = db
-        self.__table__ = name
-        self.__fields__ = {}
-        #if len(fields) != len(results): print 'fields: ',fields, '\nresults: ',results
-        for i,f in enumerate(fields):
-            setattr(self,f,results[i])
-            #self.dic[f]=results[i]
-        for f in self.__db__.get_fields_for_table(self.__table__):
-            if not hasattr(self,f):
-                setattr(self,f,None)
-        self.__instantiated__ = True
-
-    def __nonzero__ (self):
-        if self.__fields__: return True
-        else: return False
-
-    def __setattr__ (self, name, val):
-        self.__dict__[name]=val
-        if name.find('__') != 0:
-            if self.__instantiated__==True:
-                self.__db__.update(self.__table__, self.__fields__, {name:val})
-            self.__fields__[name]=val
-
-    def __delete__ (self):
-        self.__db__.delete(self.__table__,criteria=self.__fields__)
-
-    def __repr__ (self):
-        return '<row object (%s)>'%self.__table__
-
-    def __str__ (self):
-        return '<row object> (%s)>'%self.__table__
-    
-class RowObjectPivot (RowObject):
-    def __init__ (self, name, db, results, fields, pivot_on, pivot_attr, criteria={}, filters=[]):
-        """We are imitating metakit's groupby functionality here. pivot_on becomes
-        a key who we group by and provide a table for.  pivot_attr is the name
-        of our own attribute to be set to a view of those items we've grouped on.
-        This is very similar to getting a "count", only different."""
-        RowObject.__init__(self,name,db,results,fields)
-        self.__instantiated__ = False
-        self.__pivot_on__ = pivot_on
-        self.__pivot_attr__ = pivot_attr
-        self.__criteria__ = criteria
-        if type(self.__criteria__) != type({}):
-            print 'wtf is this: ',self.__criteria__
-            self.__criteria__={}
-        self.__filters__ = filters
-        crit = self.__criteria__.copy()
-        crit[self.__pivot_on__]=getattr(self,self.__pivot_on__)
-        setattr(self,
-                self.__pivot_attr__,
-                TableObject(db,
-                            self.__table__,
-                            criteria=crit,
-                            filters=self.__filters__,
-                            )
-                )
-        self.__instantiated__ = True        
 
