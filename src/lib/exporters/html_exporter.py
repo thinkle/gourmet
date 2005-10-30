@@ -60,7 +60,7 @@ class html_exporter (exporter_mult):
     def write_head (self):
         title = self._grab_attr_(self.r,'title')
         if not title: title = _('Recipe')
-        title=xml.sax.saxutils.escape()
+        title=xml.sax.saxutils.escape(title)
         if self.start_html:
             self.out.write(HTML_HEADER_START)
             self.out.write("<title>%s</title>"%title)
@@ -228,10 +228,10 @@ class website_exporter (ExporterMultirec):
                    </td>"""%(self.index_rows[0],
                              #xml.sax.saxutils.escape(filename).replace(" ","%20"),
                              self.make_relative_link(filename),
-                             xml.sax.saxutils.escape(getattr(rec,self.index_rows[0]))
+                             xml.sax.saxutils.escape(self._grab_attr_(rec,self.index_rows[0]))
                              ))
         for r in self.index_rows[1:]:
-            self.indexf.write('<td class="%s">%s</td>'%(r,getattr(rec,r)))
+            self.indexf.write('<td class="%s">%s</td>'%(r,self._grab_attr_(rec,r)))
         self.indexf.write('</tr>')
         self.imgcount=exporter.imgcount
         self.added_dict[rec.id]=filename
