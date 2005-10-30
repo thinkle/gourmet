@@ -131,7 +131,7 @@ class PageableListStore (gtk.ListStore):
             itr=self.get_iter(path)
         else:
             path = self.get_path(itr)
-        indx = path[0]
+        indx = path[0] + (self.page * self.per_page)
         # set takes column number, column value, column number, column value, etc.
         args = []
         for num_and_col in enumerate(self._get_item_(indx)): args.extend(num_and_col)
