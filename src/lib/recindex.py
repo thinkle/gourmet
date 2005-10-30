@@ -83,16 +83,16 @@ class RecIndex:
         self.prev_button = self.glade.get_widget('prevButton')
         self.next_button = self.glade.get_widget('nextButton')
         self.first_button = self.glade.get_widget('firstButton')
-        self.last_button = self.glade.get_widget('lastButton')
-        self.prev_button.connect('clicked',lambda *args: self.rmodel.prev_page())
-        self.next_button.connect('clicked',lambda *args: self.rmodel.next_page())
-        self.first_button.connect('clicked',lambda *args: self.rmodel.goto_first_page())
-        self.last_button.connect('clicked',lambda *args: self.rmodel.goto_last_page())
+        self.last_button = self.glade.get_widget('lastButton')        
         self.showing_label = self.glade.get_widget('showingLabel')
         self.stat = self.glade.get_widget('statusbar')
         self.contid = self.stat.get_context_id('main')
         self.setup_search_views()
         self.setup_rectree()
+        self.prev_button.connect('clicked',lambda *args: self.rmodel.prev_page())
+        self.next_button.connect('clicked',lambda *args: self.rmodel.next_page())
+        self.first_button.connect('clicked',lambda *args: self.rmodel.goto_first_page())
+        self.last_button.connect('clicked',lambda *args: self.rmodel.goto_last_page())
         self.glade.signal_autoconnect({
             'rlistSearch': self.search_as_you_type,
             'ingredientSearch' : lambda *args: self.set_search_by('ingredient'),
@@ -278,7 +278,11 @@ class RecIndex:
             elif self.editable and CRC_AVAILABLE and self.rtwidgdic[c]=='Combo':
                 renderer = gtk.CellRendererCombo()
                 model = gtk.ListStore(str)
-                map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c))
+                if c=='category':
+                    map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c,self.rg.rd.catview)
+                        )
+                else:
+                    map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c))
                 renderer.set_property('model',model)
                 renderer.set_property('text-column',0)
             else:
@@ -519,14 +523,6 @@ class RecIndex:
  
     def update_rmodel (self, rview):
         self.rmodel.change_view(rview)
-        #self.rmodel = RecipeModel(rview,self.rd,per_page=self.prefs.get('recipes_per_page',
-        #                                                             25)
-        #                          )
-        #self.rectree.set_model(self.rmodel)
-        #self.rmodel.connect('page-changed',self.rmodel_page_changed_cb)
-        #self.rmodel.connect('view-changed',self.rmodel_page_changed_cb)
-        # and call our handler once to update our prev/next buttons + label
-        #self.rmodel_page_changed_cb(self.rmodel)
 
 
 class RecipeModel (pageable_store.PageableViewStore):
