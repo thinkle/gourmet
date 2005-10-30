@@ -624,7 +624,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.updateRecDisplay()
         for c in self.reccom:
             debug("Widget for %s"%c,5)
-            slist = self.rg.rd.get_unique_values(c)
+            if c=='category':
+                slist = self.rg.rd.get_unique_values(c,self.rg.rd.catview)
+            else:
+                slist = self.rg.rd.get_unique_values(c)
             if not slist:
                 self.rg.rd.get_default_values(c)
             cb.set_model_from_list(self.rw[c],slist)
@@ -649,7 +652,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                     self.rw[e].set_text("")
                 Undo.UndoableGenericWidget(self.rw[e],self.history)
             elif e in INT_REC_ATTRS:
-                self.rw[e].set_value(int(getattr(rec,e)))
+                self.rw[e].set_value(int(getattr(rec,e) or 0))
                 Undo.UndoableGenericWidget(self.rw[e],
                                            self.history)
             else:
