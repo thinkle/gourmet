@@ -407,6 +407,7 @@ class exporter_mult (exporter):
         self.out.write("\n")        
 
 class ExporterMultirec:
+
     def __init__ (self, rd, rview, out, one_file=True,
                   ext='txt',
                   conv=None,
@@ -443,8 +444,38 @@ class ExporterMultirec:
         self.ext = ext
         self.exporter = exporter
         self.exporter_kwargs = exporter_kwargs
+        self.fractions = self.exporter_kwargs.get('fractions',
+                                                  convert.FRACTIONS_ASCII)
+        self.DEFAULT_ENCODING = self.exporter.DEFAULT_ENCODING
         self.one_file = one_file
         self.rd = rd
+
+    def _grab_attr_ (self, obj, attr):
+        if attr=='category':
+            return ', '.join(self.rd.get_cats(obj))
+        try:
+            ret = getattr(obj,attr)
+        except:
+            return None
+        else:
+            if attr in ['preptime','cooktime']:
+                # this 'if' ought to be unnecessary, but is kept around
+                # for db converting purposes -- e.g. so we can properly
+                # export an old DB
+                if ret and type(ret)!=str: 
+                    ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
+            elif attr=='rating' and ret and type(ret)!=str:
+                if ret/2==ret/2.0:
+                    ret = "%s/5 %s"%(ret/2,_('stars'))
+                else:
+                    ret = "%s/5 %s"%(ret/2.0,_('stars'))
+            if type(ret) in [str,unicode] and attr not in ['thumb','image']:
+                try:
+                    ret = ret.encode(self.DEFAULT_ENCODING)
+                except:
+                    print "wtf:",ret,"doesn't look like unicode."
+                    raise
+            return ret
         
     def run (self):
         first = True
