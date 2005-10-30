@@ -102,10 +102,10 @@ class mealmaster_exporter (exporter_mult):
   	if not amount: amount = ""        
         if self.conv.unit_dict.has_key(unit) and self.uc.has_key(self.conv.unit_dict[unit]):
             unit=self.uc[self.conv.unit_dict[unit]] or ""
-        elif unit:
+        else:
             # if we don't recognize the unit, we add it to
             # the item
-            item="%s %s"%(unit,item)
+            if unit: item="%s %s"%(unit,item)
             unit=""
         if len(unit)>self.ulen:
             self.ulen=len(unit)
