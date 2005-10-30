@@ -49,7 +49,7 @@ class RecData:
                        'shopcategory'
                        ]
 
-    NORMALIZED_TABLES = [(k,[('id','int',['AUTOINCREMENT']),(k,'text',[])],k) for k in NORMALIZED_COLS]
+    NORMALIZED_TABLES = [(k,[('id','int',['AUTOINCREMENT']),(k,'text',[])],'id') for k in NORMALIZED_COLS]
 
     INGKEY_LOOKUP_TABLE_DESC = ('keylookup',
                                 [('word','int',[]),
@@ -258,6 +258,8 @@ class RecData:
     def get_unique_values (self, colname,table=None):
         """Get list of unique values for column in table."""
         if not table: table=self.rview
+        if colname=='category' and table==self.rview:
+            table=self.catview
         if self.normalizations.has_key(colname):
             lst = [getattr(o,colname) for o in self.normalizations[colname]]
         else:
@@ -270,14 +272,14 @@ class RecData:
             for v in defaults.fields[colname]:
                 if not v in lst: lst.append(v)
         # Hideous hackery ahead... ack!
-        if colname=='category':
-            new_lst = []
-            for i in lst:
-                if i.find(',')>0:
-                    new_lst.extend([ii.strip() for ii in i.split(',')])
-                else:
-                    new_lst.append(i)
-            lst = new_lst
+        #if colname=='category':
+        #D    new_lst = []
+        #  #  for i in lst:
+        #        if i.find(',')>0:
+        #            new_lst.extend([ii.strip() for ii in i.split(',')])
+        #        else:
+        #            new_lst.append(i)
+        #    lst = new_lst
         return lst
 
     # Metakit has no AUTOINCREMENT, so it has to do special magic here
@@ -393,10 +395,14 @@ class RecData:
             raise
 
     def do_add_ing (self,dic):
-        raise NotImplementedError
+        self.iview.append(dic)
+        return self.iview[-1]
 
     def do_add_cat (self, dic):
-        raise NotImplementedError
+        #print 'Adding cat',dic
+        self.catview.append(dic)
+        #return 'catview has ',len(self.catview),'items'
+        return self.catview[-1]
 
     def validate_ingdic (self,dic):
         """Do any necessary validation and modification of ingredient dictionaries."""
@@ -658,7 +664,7 @@ class RecData:
                 raise ValueError("%s is an invalid value for mode"%mode)
     
     def add_ing_to_keydic (self, item, key):
-        if not item or not key: return        
+        if not item or not key: return
         row = self.fetch_one(self.ikview, item=item, ingkey=key)
         if row:
             row.count+=1
@@ -667,11 +673,11 @@ class RecData:
         if type(item)==int:
             # already normalized...
             item = self.fetch_one(self.normalizations['item'],id=item).item
-            print 'Normalized-item>',item
+            #print 'Normalized-item>',item
         if type(key)==int:
             # already normalized...
             key = self.fetch_one(self.normalizations['ingkey'],id=key).ingkey
-            print 'Normalized-key>',item
+            #print 'Normalized-key>',item
         for w in re.split('\W+',item):
             w=w.lower().strip()
             row = self.fetch_one(self.ikview,word=w,ingkey=key)
@@ -852,6 +858,7 @@ class RecipeManager (RecData):
                         d['unit']=u
                     else:
                         # otherwise, unit is not a unit
+                        print 'rdatabase.ingredient_parser says: NOT A UNIT:',u
                         i = u + i
             if i:
                 optmatch = re.search('\s+\(?[Oo]ptional\)?',i)
