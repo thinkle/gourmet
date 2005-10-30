@@ -24,10 +24,15 @@ class PythonicSQLite (PythonicSQL.PythonicSQL):
             print 'We should be getting (SQL, params)'
             print 'Bad Tom, Bad!'
             raise
-        #params = [(hasattr(p,'replace') and '"%s"'%p.replace('"','\"')
+        # We do some pretty lame quoting by hand here.
         params = [(hasattr(p,'replace') and '"%s"'%p.replace('"','inch')
                    or
-                   p) for p in params]
+                   p==None and 'NULL'
+                   or
+                   type(p)!=bool and p
+                   or 
+                   int(p) 
+                   ) for p in params]
         try:
             sql = [statement%tuple(params)]
         except TypeError:
@@ -56,11 +61,18 @@ class PythonicSQLite (PythonicSQL.PythonicSQL):
         return self.execute(['SELECT name FROM sqlite_master WHERE NAME=%s',name])
 
     def fetch_table_fields (self,name):
+        # Some ugly code to get a list of fields from the SQL CREATE
+        # statement stored in sqlite_master
         allrows = self.execute(['SELECT sql FROM sqlite_master WHERE name=%s',name])
         statement = allrows[0][0]
         debug('get_fields_for_table, statement=%s'%statement,0)
-        statements = statement[statement.find('(')+1:statement.rfind(')')].split(',')
-        retval = [x.split()[0] for x in statements]
+        if statement.find('CREATE VIEW')==0:
+            colpart = statement[statement.find('SELECT '):statement.find('FROM')][7:]
+            statements = [s.strip() for s in colpart.split(',')]
+            retval = [state.split(' AS ')[-1] for state in statements]
+        else:
+            statements = statement[statement.find('(')+1:statement.rfind(')')].split(',')
+            retval = [x.split()[0] for x in statements]
         debug("get_fields_for_table returning: %s"%retval,0)
         return retval
 
@@ -69,25 +81,36 @@ if __name__ == '__main__':
     fi = tempfile.mktemp()
     #fi = '/tmp/tmpKIE0WM'
     psl = PythonicSQLite(fi)
-    tt=psl.get_table('names',{'First':'char(50)',
-                           'Last':'char(50)',
-                           'Birth_Month':'int',
-                           'Birth_Day':'int',
-                           'Birth_Year':'int',})
-    if len(tt) == 0:
-        tt.append({'Birth_Day':21,'First':'Thomas','Last':'Hinkle'})               
-        tt.extend([{'First':'John'},
+    psl.normalizations = {}
+    psl.normalizations['First']=psl.get_table('First',[('id','int',['AUTOINCREMENT']),
+                                                       ('First','text',[])],
+                                              'id')
+    psl.normalizations['Last']=psl.get_table('Last',[('id','int',['AUTOINCREMENT']),
+                                                      ('Last','text',[])],
+                                              'id')
+    table_desc = [('First','int',[]),
+                  ('Last','int',[]),
+                  ('Birth_Month','int',[]),
+                  ('Birth_Day','int',[]),
+                  ('Birth_Year','int',[]),
+                  ('myid','int',['AUTOINCREMENT']),
+                  ]
+    table=psl.get_table('names',table_desc,'myid')
+    view = psl.get_view('names',table_desc)
+    if len(view) == 0:
+        view.append({'Birth_Day':21,'First':'Thomas','Last':'Hinkle'})               
+        view.extend([{'First':'John'},
                    {'First':'Susan'},
                    {'First':'David'},]
                   )
     import random
     for n in range(100):
-        tt.append({'Birth_Day':random.randint(1,28),
+        view.append({'Birth_Day':random.randint(1,28),
                    'Birth_Month':random.randint(1,12),
                    'First':random.choice(['John','Harry','Bob','Lucy','Genevieve','Katharine','Susan']),
                    'Last':random.choice(['Hinkle','Sayre','Wilkins','Wright','Wilson']),
                    })
-    for t in tt:
+    for t in view:
         print 'row:'
         for m in dir(t):
             print getattr(t,m)
