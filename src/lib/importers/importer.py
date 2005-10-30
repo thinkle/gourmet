@@ -6,6 +6,7 @@ from gourmet.gglobals import gt, use_threads
 import xml.sax.saxutils
 from gettext import gettext as _
 import gourmet.dialog_extras as de
+import re
 
 class importer:
 
@@ -164,14 +165,17 @@ class importer:
         # with importing.              
         remembered_rating = None
         if self.rec.has_key('rating') and type(self.rec['rating']) not in [int,float]:
-            remembered_rating = self.rec['rating']
-            del self.rec['rating']
+            if string_to_rating(self.rec['rating']):
+                self.rec['rating']=string_to_rating(self.rec['rating'])
+            else:
+                remembered_rating = self.rec['rating']
+                del self.rec['rating']
         tt=TimeAction('importer.commit_rec - rd.add_rec',5)
         debug('commiting recipe %s'%self.rec,0)
         r = self.rd.add_rec(self.rec)
         tt.end()
         self.added_recs.append(r)
-        if remembered_rating: self.rating_converter.add(r.id,remembered_rating)        
+        if remembered_rating: self.rating_converter.add(r.id,remembered_rating)
         self.check_for_sleep()
         timeaction.end()
         self.rec_timer.end()
@@ -300,6 +304,25 @@ class importer:
     def resume (self):
         debug('Resume!',0)
         self.suspended = False
+
+NUMBER_REGEXP = convert.NUMBER_REGEXP
+simple_matcher = re.compile(
+    '(%(NUMBER_REGEXP)s+)\s*/\s*([\d]+)'%locals()
+    )
+
+def string_to_rating (s):
+    m = simple_matcher.match(s)
+    if m:
+        top=float(convert.frac_to_float(m.groups()[0]))
+        bottom = float(convert.frac_to_float(m.groups()[2]))
+        return int(top/bottom * 10)
+
+            
+        
+        
+        
+        
+    
 
 
 class MultipleImporter:
@@ -434,12 +457,16 @@ class RatingConverter:
                    'great':4,
                    'good':3,
                    'fair':2,
+                   'okay':2,
                    'poor':1,
                    _('Excellent').lower():5,
                    _('Great').lower():4,
                    _('Good').lower():3,
                    _('Fair').lower():2,
-                   _('Poor').lower():1}
+                   _('Poor').lower():1,
+                   _('Okay').lower():2,
+                   }
+    
 
     def __init__ (self):
         self.to_convert = {}
@@ -449,17 +476,21 @@ class RatingConverter:
         self.to_convert[id]=rating
 
     def get_conversions (self, star_generator=None):
-        print 'Getting conversion!'
+        """Get our conversions.
+
+        If necessary, ask user to convert for us.
+        """
         self.got_conversions=True
         if not star_generator:
             from gourmet.ratingWidget import star_generator
         ratings = []
         need_conversions = False
         for v in self.to_convert.values():
-            need_conversions = self.conversions.has_key(v.lower())
+            if not need_conversions and not self.conversions.has_key(v.lower()):
+                need_conversions = True
             if not v in ratings: ratings.append(v)
         if need_conversions:
-            self.conversions = de.get_ratings_conversion(ratings,star_generator)
+            self.conversions = de.get_ratings_conversion(ratings,star_generator,defaults=self.conversions)
 
     def do_conversions (self, db):
         if not self.got_conversions:
@@ -467,6 +498,57 @@ class RatingConverter:
             self.get_conversions()
         for id,rating in self.to_convert.items():
             try:
-                db.modify_rec(db.get_rec(id),{'rating':self.conversions[str(rating)]})
+                db.modify_rec(db.get_rec(id),{'rating':self.conversions[str(rating).lower()]})
             except:
-                print 'wtf... problem with rating ',rating,'for recipe',id 
+                print 'wtf... problem with rating ',rating,'for recipe',id
+                raise
+
+import unittest
+
+class RatingConverterTest (unittest.TestCase):
+
+    def setUp (self):
+
+        class FakeDB:
+
+            recs = dict([(n,{}) for n in range(20)])
+            
+            def get_rec (self, n): return n
+            def modify_rec (self, n, d):
+                for attr,val in d.items(): self.recs[n][attr]=val
+
+        self.db = FakeDB()
+
+    def testAutomaticConverter (self):
+        rc = RatingConverter()
+        tests = ['good','Great','Excellent','poor','okay']
+        for n,rating in enumerate(tests):
+            rc.add(n,rating)
+            self.db.recs[n]['rating']=rating
+        total = n
+        rc.do_conversions(self.db)
+        print 'Conversions: '
+        for n,rating in enumerate(tests):
+            print 'Converted',rating,'->',self.db.recs[n]['rating']
+
+    def testInteractiveConverter (self):
+        rc = RatingConverter()
+        tests = ['alright','pretty good','funny tasting',
+                 'okeydokey','not bad','damn good.']
+        for n,rating in enumerate(tests):
+            rc.add(n,rating)
+            self.db.recs[n]['rating']=rating
+        total = n
+        rc.do_conversions(self.db)
+        #print 'Conversions: '
+        #for n,rating in enumerate(tests):
+        #    print 'Converted',rating,'->',self.db.recs[n]['rating']
+
+    def testStringToRatingConverter (self):
+        assert(string_to_rating('4/5 stars')==8)
+        assert(string_to_rating('3 1/2 / 5 stars')==7)
+        assert(string_to_rating('4/10 stars')==4)
+
+
+if __name__ == '__main__':
+    unittest.main()
