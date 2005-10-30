@@ -285,9 +285,6 @@ class RecData (rdatabase.RecData):
         self.changed=True
         return self.iview[-1]
 
-    def do_add_cat (self, dic):
-        self.catview.append(dic)
-    
     def delete_ing (self, ing):
         self.iview.delete(ing.__index__)
         self.changed=True
