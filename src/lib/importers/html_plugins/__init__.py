@@ -123,7 +123,8 @@ from gourmet.gglobals import html_plugin_dir
 from gourmet.gdebug import debug
 
 my_dir = os.path.split(__file__)[0]
-plugin_directories = [my_dir,html_plugin_dir]
+current_dir = os.path.join(os.getcwdu(), "html_plugins")
+plugin_directories = [my_dir,html_plugin_dir,current_dir]
 
 SUPPORTED_URLS = {}
 SUPPORTED_URLS_REGEXPS = {}
