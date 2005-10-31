@@ -428,13 +428,20 @@ class NutritionInfoDruid (gobject.GObject):
                 if id >= 0:
                     #print 'yippee',n,'->',id
                     PACKAGED_FOOD_IDS.append(tbl[id].id)
-                filteredvw = self.searchvw = self.rd.filter(self.searchvw,
-                                                            lambda r: r.foodgroup not in PACKAGED_FOOD_IDS)
+                if self.searchvw:
+                    try:
+                        filteredvw = self.rd.filter(self.searchvw,
+                                                                lambda r: r.foodgroup not in PACKAGED_FOOD_IDS)
+                    except:
+                        print 'What was wrong with filtering this?'
+                        print 'searchvw=',self.searchvw
+                        raise
             if filteredvw:
                 self.searchvw = filteredvw
         except NotImplementedError:
             print "No metakit present, so I'm not doing any funky filtering."
             pass
+        
         self.nutrition_store.change_view(self.searchvw)
         self.__last_search__ = search_text
         self.__override_search__ = False # turn back on search handling!
