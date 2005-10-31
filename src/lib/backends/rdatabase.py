@@ -858,7 +858,6 @@ class RecipeManager (RecData):
                         d['unit']=u
                     else:
                         # otherwise, unit is not a unit
-                        print 'rdatabase.ingredient_parser says: NOT A UNIT:',u
                         i = u + i
             if i:
                 optmatch = re.search('\s+\(?[Oo]ptional\)?',i)
@@ -1071,11 +1070,10 @@ class Normalizer:
             return r.id
         
     def int_to_str (self, k, v):
-        if 0: return ""
         normtable = self.__normdic__[k]
         if type(v)!=int:
             print "int_to_str says: WTF are you handing me ",v,"for?"
-        row = self.__rd__.fetch_one(normtable,id=v)
+        row = self.__rd__.fetch_one(normtable,id=v)        
         if row:
             #print 'Magic ',v,'->',getattr(row,k)
             return getattr(row,k)
@@ -1083,6 +1081,8 @@ class Normalizer:
             return None
         else:
             print "That's odd, I couldn't find ",k,v,type(v)
+            print 'Using normtable',normtable,'for k',k
+            print 'Fetched row',row
             #metakit.dump(normtable)
             raise KeyError('%s %s does not exist!'%(k,v))
         

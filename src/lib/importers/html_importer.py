@@ -191,7 +191,7 @@ class BeautifulSoupScraper:
             # also work for previousSibling, nextSibling, etc.
             if step.has_key('moveto'):
                 ret = [getattr(o,step['moveto']) for o in ret]
-            if type(ind)==list:                
+            if type(ind)==list or type(ind)==tuple:                 
                 return ret[ind[0]:ind[1]]
             else: #ind is an integer
                 if ind < len(ret):
@@ -295,7 +295,6 @@ class FancyTextGetter:
     def get_text_fancy (self, item):
         #print 'get_text_fancy looking at:',item
         if self.text and hasattr(item,'name'):
-            print 'Looking at ',item.name
             if item.name in self.IGNORE: return
             if item.name in self.IS_BREAK:
                 self.text += '\n'
