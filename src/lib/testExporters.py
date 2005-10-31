@@ -109,7 +109,7 @@ class ExportTestCase (unittest.TestCase):
     #    self.it.test_all_exports()
 
 if __name__ == '__main__':
-    #it=ImportTest()
-    #it.run()
+    #et=ExportTest()
+    #et.setup_db()
     unittest.main()
     #pass
