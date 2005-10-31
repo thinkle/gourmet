@@ -110,10 +110,13 @@ class RecData (rdatabase.RecData):
         vw = self.db.getas(getstring)
         debug('Got view!',5)
         if key:
-            debug('Make hash',3)
-            rhsh = self.db.getas("__%s_hash__[_H:I,_R:I]"%name)
-            vw = vw.hash(rhsh,1)
-            debug('Made hash!',3)
+            if 'AUTOINCREMENT' in data[key_index][2]:
+                vw = vw.ordered()
+            else:
+                debug('Make hash',3)
+                rhsh = self.db.getas("__%s_hash__[_H:I,_R:I]"%name)
+                vw = vw.hash(rhsh,1)
+                debug('Made hash!',3)
         # Make sure our increment fields are right...
         self.vw_to_name[vw]=name
         debug('Investigate increment rows',3)
