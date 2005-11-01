@@ -29,7 +29,7 @@ class NumberEntry (validatingEntry.ValidatingEntry):
             return self.error_message
 
     def find_completed_errors (self, txt):
-        if txt and not convert.frac_to_float(txt):
+        if txt and convert.frac_to_float(txt)==None:
             return self.error_message
 
     def set_value (self, n):
