@@ -257,7 +257,7 @@ class NutritionInfoDruid (gobject.GObject):
         unit = cb.cb_get_active_text(self.massUnitComboBox)
         if amount and unit:
             base_convert = self.nd.conv.converter(unit,'g.')/float(100)
-            self.custom_factor = base_convert * amount
+            self.custom_factor = 1/(base_convert * amount)
 
     def _setup_nuttree_ (self):
         """Set up our treeview with USDA nutritional equivalents"""
@@ -545,6 +545,7 @@ class NutritionInfoDruid (gobject.GObject):
         nutinfo = self.nutrition_info.copy()
         for k,v in nutinfo.items():
             if type(v)==int or type(v)==float: nutinfo[k]=v*self.custom_factor
+        print 'committed',nutinfo
         ndbno = self.nd.add_custom_nutrition_info(self.nutrition_info)
 
     def apply_nut_equivalent (self,*args):
