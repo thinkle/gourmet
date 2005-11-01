@@ -77,8 +77,8 @@ class RecData:
                          'id' # key
                          ) 
     CATEGORY_TABLE_DESC = ('categories',
-                      [('id','int',[]),
-                       ('category','int',[])]
+                      [('id','int',[]), #recipe ID
+                       ('category','int',[])] # Category ID
                       )
 
     INGREDIENTS_TABLE_DESC=('ingredients',
@@ -102,11 +102,11 @@ class RecData:
                    ('position','int',[])],
                   'ingkey' #key
                   )
-    SHOPCATSORDER_TABLE_DESC = ('shopcatsorder',
-                   [('shopcategory','int',[]),
-                    ('position','int',[]),
-                    ],
-                   'shopcategory' #key
+    SHOPCATSORDER_TABLE_DESC = (
+        'shopcatsorder',[('shopcategory','int',[]),
+                         ('position','int',[]),
+                         ],
+        'shopcategory' #key
                    )
     PANTRY_TABLE_DESC = ('pantry',
                   [('ingkey','int',[]),
@@ -157,7 +157,8 @@ class RecData:
         [('ingkey','int',[]),
          ('unit','int',[]), 
          ('factor','float',[]),],
-        'ingkey')
+        )
+        
     
     def __init__ (self):
         # hooks run after adding, modifying or deleting a recipe.
