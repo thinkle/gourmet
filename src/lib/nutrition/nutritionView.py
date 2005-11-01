@@ -49,7 +49,6 @@ class NutritionTable:
 
     def pack_table (self):        
         for n,f in enumerate(self.fields):
-            print 'adding field ',n,f
             lname = parser_data.NUT_FIELDNAME_DICT[f]
             label = gtk.Label()
             # we somewhat hackishly attempt to create a mnemonic
@@ -154,7 +153,6 @@ class NutritionItemView:
 
     def setup_unit_boxes (self, ing=None, nutrow=None):
         self.densities,self.extra_units = self.nd.get_conversions(row=nutrow,key=ing)
-        print 'looking up %s/%s'%(ing,nutrow),' : got densities=',self.densities,' units=',self.extra_units
         self.setup_choices(self.densities.keys(),self.descChoiceWidget)
         units = defaults.WEIGHTS[0:]
         if self.densities: units += defaults.VOLUMES[0:]
@@ -181,13 +179,11 @@ class NutritionItemView:
             self.choices[self.usdaChoiceWidget]=[nutrow]
             self.setup_choices([nutrow],self.usdaChoiceWidget)
             self.set_choice(self.usdaChoiceWidget,nutrow)
-            print 'nutrow already chosen!'
             return
         lst = self.nd.get_usda_list_for_string(ing)
         self.usdaDict={}
         for l in lst: self.usdaDict[l[0]]=l[1]
         self.choices[self.usdaChoiceWidget]=[x[0] for x in lst]
-        #print 'choices are: ',self.choices[self.usdaChoiceWidget]
         self.setup_choices(self.choices[self.usdaChoiceWidget],self.usdaChoiceWidget)
         
     def get_active_usda (self):
@@ -212,16 +208,13 @@ class NutritionItemView:
                 amt = convert.frac_to_float(self.amountWidget.get_text())
             except:
                 # if there's not a number in Amt, we want to grab it
-                print 'no usable amount'
                 self.amountWidget.grab_focus()
                 return
             else:
                 unit = self.get_choice(self.unitChoiceWidget)
                 if self.extra_units.has_key(unit):
-                    print 'using special unit %s'%unit
                     return self.nd.convert_amount(amt*self.extra_units[unit],'g.')
                 else:
-                    print 'trying to convert for %s %s %s'%(amt,unit,d)
                     return self.nd.convert_amount(amt,unit,d)
 
     def usdaChangedCB (self, *args):
@@ -239,10 +232,8 @@ class NutritionItemView:
         if not multiplier:
             #self.unitLabel="%s %s = "%(self.amount,self.unit)
             #self.unitEntry="?"
-            print 'we need a unit!'
             self.currentAmountWidget.set_text("%s %s (? grams)"%(self.amount,self.unit))
         else:
-            print 'we can convert!'
             self.currentAmountWidget.set_text("%s %s (%s grams)"%(self.amount,self.unit,
                                                                   multiplier*100))            
         self.infoTable.set_nutrition_object(self.nut,multiplier)
@@ -267,7 +258,6 @@ class NutritionItemView:
 
         This function can also be handed None instead of choices, in which
         case there is no meaningful choice for the user to make"""
-        print 'setting up choices: choices=',choices,' widget=',choiceWidget
         # make sure there's no current model
         self.choices[choiceWidget]=choices
         choiceWidget.set_model(None)
@@ -425,7 +415,6 @@ class NutritionCardViewOld:
         self.keyBox.entry.set_text(self.ing.ingkey)        
             
     def setup_usda_box (self):          
-        print 'chaging amount and unit: ',self.ing.amount,self.ing.unit        
         self.niv.amount=self.ing.amount
         self.niv.unit=self.ing.unit
         self.niv.set_ingredient(self.ing.ingkey)
@@ -523,7 +512,6 @@ class NutritionTreeModel (gtk.TreeStore):
             # not yet i18n'd
             if col=='USDA':                
                 if gglobals.CRC_AVAILABLE:
-                    print 'CellRendererCombo!'
                     rend = gtk.CellRendererCombo()
                     self.usda_model = gtk.ListStore(str,str)
                     rend.set_property('model',self.usda_model)
@@ -582,7 +570,6 @@ class NutritionTreeModel (gtk.TreeStore):
                                                  )
             if amt: return 100 * amt
             else:
-                print 'returning amt 0'
                 return 0
 
     def usda_editing_started_cb (self,renderer,editable,path_string):
@@ -593,7 +580,6 @@ class NutritionTreeModel (gtk.TreeStore):
         if isinstance(editable,gtk.ComboBoxEntry):            
             while len(self.usda_model)>0: del self.usda_model[0] # empty our liststore...
             usda_list=self.nd.get_usda_list_for_string(ing.ingkey)
-            print len(usda_list),' potential USDA items'
             self.usdaDict={}
             for l in usda_list:
                 self.usdaDict[l[0]]=l[1]

@@ -55,11 +55,8 @@ class SpecialAction:
         for c in self.hide_on_highlight:
             c.hide()
         for w in self.highlight_widgets:
-            print 'setting sensitive'
             w.set_sensitive(True)
-            print 'showing'
             w.show()
-        print 'grabbing focus for ',self.highlight_widgets[0]
         self.highlight_widgets[0].grab_focus()
 
     def dehighlight_action (self,*args):
@@ -96,7 +93,6 @@ class NutritionInfoDruid (gobject.GObject):
                       'Baby Foods']
 
     def __init__ (self, nd, prefs):
-        print "DELETE ME: __init__ (self, nd, prefs):",self, nd, prefs
         # Very primitive custom handler here -- we just return a
         # NumberEntry no matter what glade says. Obviously if glade
         # gets updated we'd better fix this (see reccard.py for a more
@@ -122,7 +118,6 @@ class NutritionInfoDruid (gobject.GObject):
         WidgetSaver.WindowSaver(self.glade.get_widget('window1'),
                                 self.prefs.get('nutritionDruid',{})
                                 )
-        print 'prefs=',self.prefs,"self.prefs.get('sautTog')->",self.prefs.get('sautTog',True)
         WidgetSaver.WidgetSaver(
             self.searchAsYouTypeToggle,
             self.prefs.get('sautTog',
@@ -192,7 +187,6 @@ class NutritionInfoDruid (gobject.GObject):
         self._setup_custom_box()
 
     def _setup_custom_box (self):
-        print 'Setting up custom box'
         t = gtk.Table()
         masses = [i[0] for i in defaults.UNIT_GROUPS['metric mass'] + defaults.UNIT_GROUPS['imperial weight']]
         cb.set_model_from_list(
@@ -238,7 +232,6 @@ class NutritionInfoDruid (gobject.GObject):
         self.nutrition_info[name]=v
         if not v: return
         if self.changing_number_internally: return
-        print 'CHANGING VALUE FOR ',name        
         if percent_widget:
             rda = RECOMMENDED_INTAKE.get(name,None)*2000
             if rda:
@@ -262,16 +255,13 @@ class NutritionInfoDruid (gobject.GObject):
     def custom_unit_changed (self, *args):
         amount = self.customNutritionAmountEntry.get_value()
         unit = cb.cb_get_active_text(self.massUnitComboBox)
-        print 'custom_unit_changed',amount,unit
         if amount and unit:
             base_convert = self.nd.conv.converter(unit,'g.')/float(100)
             self.custom_factor = base_convert * amount
-            print 'custom_factor=',self.custom_factor
 
     def _setup_nuttree_ (self):
         """Set up our treeview with USDA nutritional equivalents"""
-        try: self.nutrition_store = PageableNutritionStore(self.rd.nview)
-        except: print 'rd=',self.rd
+        self.nutrition_store = PageableNutritionStore(self.rd.nview)
         self.firstButton.connect('clicked', lambda *args: self.nutrition_store.goto_first_page())
         self.lastButton.connect('clicked', lambda *args: self.nutrition_store.goto_last_page())
         self.forwardButton.connect('clicked', lambda *args: self.nutrition_store.next_page())
@@ -424,9 +414,7 @@ class NutritionInfoDruid (gobject.GObject):
             PACKAGED_FOOD_IDS = []
             for n in self.PACKAGED_FOODS:
                 id = tbl.find(foodgroup=n)
-                #if id < 0: print "Funny, I don't know about ",n
                 if id >= 0:
-                    #print 'yippee',n,'->',id
                     PACKAGED_FOOD_IDS.append(tbl[id].id)
                 if self.searchvw:
                     try:
@@ -555,11 +543,9 @@ class NutritionInfoDruid (gobject.GObject):
 
     def apply_custom (self, *args):
         nutinfo = self.nutrition_info.copy()
-        print 'custom factor:',self.custom_factor
         for k,v in nutinfo.items():
             if type(v)==int or type(v)==float: nutinfo[k]=v*self.custom_factor
         ndbno = self.nd.add_custom_nutrition_info(self.nutrition_info)
-        print 'new ndbno=',ndbno
 
     def apply_nut_equivalent (self,*args):
         if len(self.searchvw)==1:
@@ -591,7 +577,6 @@ class NutritionInfoDruid (gobject.GObject):
         ratio = from_amount / to_amount
         factor = base_convert * ratio
         from_unit = self.fromUnit
-        print to_unit,to_amount,'=',from_unit,from_amount,'factor=',factor,'\n','ratio=',ratio
         self.nd.set_conversion(self.ingkey,from_unit,factor)
     
     def previous_page_cb (self, *args):

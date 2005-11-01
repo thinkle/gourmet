@@ -60,9 +60,7 @@ class NutritionData:
         if words:
             # match any of the words in our key
             regexp = "("+string.join(words,"|")+")" # match any of our words
-            print 'Filtering nview -- %s items'%len(self.db.nview)
             nvw = self.db.search(self.db.nview,'desc',regexp)
-            print 'Narrowed to %s items'%len(nvw)
             # create a list of rows and sort it, putting the most likely match first
             lst = [[r.desc,r.ndbno] for r in nvw]
             def sort_func (row1,row2):
@@ -87,7 +85,6 @@ class NutritionData:
                 elif len(dsc1)>len(dsc2): return 1
                 elif len(dsc2)>len(dsc1): return -1
                 else: return 0
-            print 'sorting list'
             lst.sort(sort_func)
             if max and len(lst) > max:
                 # we cut down the list if it's too long
@@ -99,7 +96,6 @@ class NutritionData:
     def _get_key (self, key):
         """Handed an ingredient key, get our nutritional Database equivalent
         if one exists."""
-        #print 'key=',key
         rows=self.db.naliasesview.select(**{'ingkey':str(key)})
         if rows:
             return rows[0]
@@ -109,7 +105,6 @@ class NutritionData:
     def get_nutinfo_for_ing (self, ing):
         """A convenience function that grabs the requisite items from
         an ingredient."""
-        print 'get info for ',ing.ingkey,ing.item,ing.unit,ing.amount
         if hasattr(ing,'rangeamount') and ing.rangeamount:
             # just average our amounts
             amount = (ing.rangeamount + ing.amount)/2
@@ -131,9 +126,7 @@ class NutritionData:
         if ni:
             c=self.get_conversion_for_amt(amt,unit,key)
             if c:
-                print 'returning info',ni,c
                 return NutritionInfo(ni,mult=c)
-        print 'returning vapor'
         return NutritionVapor(self,key,
                               rowref=ni,
                               amount=amt,
@@ -167,7 +160,6 @@ class NutritionData:
         conv = self.get_conversion_for_amt(amt,unit,key,row)
         if conv: return conv*100
         else:
-            print "Couldn't convert ",amt,unit,key,row,"to grams"
             return None
 
     def get_conversion_for_amt (self, amt, unit, key, row=None):
@@ -189,29 +181,18 @@ class NutritionData:
         if not cnv:
             # lookup in our custom nutrition-related conversion table
             if self.conv.unit_dict.has_key(unit):
-                print 'standardizing',unit
                 unit = self.conv.unit_dict[unit]
-                print 'to ',unit
             lookup = self.db.nconversions.select(ingkey=key,unit=unit)
             if lookup:
-                print amt,unit,'cnv found in nconversions!'
                 cnv = lookup[0].factor
             else:
                 # otherwise, cycle through any units we have and see
                 # if we can get a conversion via those units...
                 for conv in self.db.nconversions.select(ingkey=key):
-                    print 'try to convert',unit,'to',conv.unit
                     factor = self.conv.converter(unit,conv.unit)
                     if factor:
-                        print 'Cool!'
-                        print unit,'->',conv.unit,'(',factor,')'
-                        print conv.unit,'->','g.','(',conv.factor,')'
-                        print 'we not use ',cnv
                         cnv = conv.factor*factor
         if cnv:
-            print 'returning conversion based on',cnv
-            print amt,unit,'=',
-            print (0.01*amt)/cnv,'*100g.'
             return (0.01*amt)/cnv
 
     def get_conversions (self, key=None, row=None):
@@ -225,7 +206,6 @@ class NutritionData:
           )"""
         if not row: row=self.get_nutinfo(key)
         if not row: return {},{}
-        print 'working on row',row
         units = {}
         densities = {}
         for gd,gw in self.get_gramweights(row).items():
@@ -248,13 +228,11 @@ class NutritionData:
             
     def get_densities (self,key=None,row=None):
         """Handed key or nutrow, return dictionary with densities."""
-        print 'get_densities handed :',key,',',row
         if not row: row = self._get_key(key)
         if not row: return None
         if self.conv.density_table.has_key(key):
             return {'':self.conv.density_table[key]}
         else:
-            #print 'Calculating density'
             densities = {}            
             for gd,gw in self.get_gramweights(row).items():
                 a,u,e = gd
@@ -264,9 +242,7 @@ class NutritionData:
                 if convfactor: # if we are a volume
                     # divide mass by volume converted to milileters
                     # (gramwts are in grams)
-                    #print gw,'/','(',a,'*',convfactor,')'
                     density = float(gw) / (a * convfactor)
-                    #if e: print '(for ',e,')'
                     densities[e]=density
             return densities
 
@@ -289,12 +265,10 @@ class NutritionData:
                 unit = mtch.groups()[0]
                 extra = mtch.groups()[2]
             ret[(nw.amount,unit,extra)]=nw.gramwt
-        print 'Got ',len(ret),'gramweights!'
         return ret
     
     def get_density (self,key=None,row=None):
         densities = self.get_densities(key,row)
-        print 'densities are ',densities
         if densities:
             if densities.has_key(None):
                 self.conv.density_table[key]=densities[None]
@@ -304,7 +278,6 @@ class NutritionData:
 
     def choose_density (self, densdic):
         # this will eventually query the user...
-        #print "Choosing an arbitrary density..."
         return densdic.values()[0]
 
     def parse_gramweight_measure (self, txt):
@@ -359,7 +332,6 @@ class NutritionInfo:
     def __init__ (self,rowref, mult=1):
         self.__rowref__ = rowref
         self.__mult__ = mult
-        print 'NutritionInfo created->',self.desc,self.kcal
 
     def __getattr__ (self, attr):
         if attr[0]!='_':
@@ -518,7 +490,6 @@ if __name__ == '__main__':
     import gourmet.recipeManager as rm
     #rm.dbargs['file']='/tmp/recipes.mk'
     db=rm.RecipeManager(**rm.dbargs)
-    print db,rm.dbargs
     import gourmet.convert
     conv = gourmet.convert.converter()
     import nutritionGrabberGui
@@ -537,22 +508,20 @@ def foo ():
                        }
             self.nd = nd
             self.ings = []
-            
+
         def run (self):
             choices = self.ACTIONS.keys()
             for n,a in enumerate(choices):
-                print n,'. ',a
+                print n,a
             choice = None
             while not choice:
                 choice = raw_input('Enter number of choice: ')
                 choice = int(choice)
                 if choice < len(choices): choice = self.ACTIONS[choices[choice]]
                 else: choice = None
-            print 'Okay, here we go...'
             try:
                 choice()
             except:
-                print 'oops!'
                 raise
             else:
                 self.run()
@@ -566,12 +535,10 @@ def foo ():
                 self.ings = NutritionInfoList([self.nd.get_nutinfo_for_item(key,amt,unit)])
             else:
                 self.ings = self.ings + self.nd.get_nutinfo_for_item(key,amt,unit)
-            print 'Ingredients: ',self.ings
 
         def add_key (self):
             key=raw_input('Enter key for which we add info: ')
             matches = self.nd.get_matches(key,10)
-            print "Choose an equivalent for ",key
             for n,m in enumerate(matches):
                 print n,'. ',m[0]
             choice = None

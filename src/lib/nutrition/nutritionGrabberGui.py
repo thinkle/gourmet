@@ -63,10 +63,8 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
         return databaseGrabber.DatabaseGrabber.get_abbrev_from_url(self)
     
 def check_for_db (db):
-    if len(db.nview) > 10:
-        print 'Nutrition database appears to be loaded.'
-    else:
-        print 'Grabbing database!'
+    if len(db.nview) < 10:
+        print 'Grabbing nutrition database!'
         dgg = DatabaseGrabberGui(db)        
         dgg.load_db()        
 
