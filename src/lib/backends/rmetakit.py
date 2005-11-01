@@ -48,6 +48,7 @@ class RecData (rdatabase.RecData):
         # This is unique to metakit and not part of the normal setup_tables routine
         # since other DBs will presumably have auto-increment built into them.
         self.increment_vw  = self.db.getas('incrementer[view:S,field:S,n:I]')
+        self.increment_vw = self.increment_vw.ordered() #ordered vw
         self.vw_to_name = {}
         # we check for old, incompatible table names
         # and fix them before calling our regular setup stuff
@@ -107,16 +108,22 @@ class RecData (rdatabase.RecData):
             getstring = getstring+'categoryname:S,'
         getstring = getstring[0:-1] + "]"
         debug('Metakit: getting view: %s'%getstring,5)
+        print 'getas',getstring
         vw = self.db.getas(getstring)
         debug('Got view!',5)
         if key:
-            if 'AUTOINCREMENT' in data[key_index][2]:
+            if data[key_index][1]=='int': #if typ of key is int
+                print 'order'
+                debug('Make ordered',3)
                 vw = vw.ordered()
+                debug('Made ordered',3)
             else:
-                debug('Make hash',3)
+                #debug('Make hash',3)
+                #print 'Making hash for ',key
                 rhsh = self.db.getas("__%s_hash__[_H:I,_R:I]"%name)
                 vw = vw.hash(rhsh,1)
-                debug('Made hash!',3)
+                #debug('Made hash!',3)
+                print 'hash!'
         # Make sure our increment fields are right...
         self.vw_to_name[vw]=name
         debug('Investigate increment rows',3)
@@ -135,9 +142,8 @@ class RecData (rdatabase.RecData):
                         """
                         metakit.dump(svw)
                     else:
-                        self.fetch_one(self.increment_vw,
-                                       view=name,
-                                       field=field).n = getattr(svw[-1],field)
+                        # Setting increment row's n to the highest number in our DB
+                        dbrow.n = getattr(svw[-1],field)
         debug('setup_table done!',2)
         return vw
     
@@ -224,7 +230,10 @@ class RecData (rdatabase.RecData):
 
     def filter (self, table, func):
         ivw = table.filter(func)
-        return table.remapwith(ivw)
+        if ivw:
+            return table.remapwith(ivw)
+        else:
+            return []
     
     # convenience function
     def delete_by_criteria (self, table, criteria):
@@ -294,16 +303,27 @@ class RecData (rdatabase.RecData):
 
     # Convenience functions
     def fetch_one (self, table, *args, **kwargs):
-        try:
-            indx=table.find(*args,**kwargs)
-            if indx >= 0:
-                return table[indx]
-            else:
-                return None
-        except:
-            print 'WTF!'
-            metakit.dump(table)
-            raise
+        # Method 1: locate
+        #print 'fetch_one:',table.structure(),args,kwargs
+        indx,cnt=table.locate(*args,**kwargs)
+        if cnt:
+            #print 'Locate works!'
+            return table[indx]
+        else:
+            # method 2: find
+            new_indx = table.find(*args,**kwargs)
+            if new_indx>-1:
+                #print 'Locate missed me, but find worked'
+                return table[new_indx]
+            # method 3: select
+            rows = table.select(*args,**kwargs)
+            if rows:
+                #print "Find and locate missed me, but select worked."
+                #print "Find -> -1, Locate ->",indx,cnt
+                metakit.dump(table)
+                return rows[0]
+        #print 'Return None'
+        # returns None if all else fails.
 
     def remove_unicode (self, mydict):
         for k,v in mydict.items():
@@ -327,6 +347,10 @@ class RecData (rdatabase.RecData):
         row = self.fetch_one(self.increment_vw,
                              **{'view':table,
                                 'field':field})
+        if not row:
+            print 'Here are the guts of increment_vw:'
+            metakit.dump(self.increment_vw)
+            raise 'Very odd: we find no row for table: %s, field: %s'%(table,field)
         row.n += 1
         return row.n
 
@@ -632,7 +656,7 @@ class RecDataOldDB (RecData):
             desc = self.db.description(name)
         except KeyError:
             return None
-        getstring = name+'['+desc+']'
+        getstring = name+'['+desc+']'        
         db = self.db.getas(getstring)
         if key:
             rhsh = self.db.getas("__%s_hash__[_H:I,_R:I]"%name)
