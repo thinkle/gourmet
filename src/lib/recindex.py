@@ -552,7 +552,11 @@ class RecipeModel (pageable_store.PageableViewStore):
         self.made_categories = False
 
     def _get_slice_ (self,bottom,top):
-        return [[self._get_value_(r,col) for col in self.columns] for r in self.view[bottom:top]]        
+        try:
+            return [[self._get_value_(r,col) for col in self.columns] for r in self.view[bottom:top]]
+        except:
+            print '_get_slice_ failed with',bottom,top
+            raise
 
     def _get_value_ (self, row, attr):
         if attr=='category':
