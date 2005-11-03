@@ -97,7 +97,7 @@ class NutritionInfoDruid (gobject.GObject):
         # NumberEntry no matter what glade says. Obviously if glade
         # gets updated we'd better fix this (see reccard.py for a more
         # sophisticated example).
-        gtk.glade.set_custom_handler(lambda *args: NumberEntry())
+        gtk.glade.set_custom_handler(lambda *args: NumberEntry(default_to_fractions=False))
         self.glade = gtk.glade.XML(os.path.join(gglobals.gladebase,'nutritionDruid.glade'))
         self.mm = MnemonicManager()
         self.mm.add_glade(self.glade)
@@ -211,10 +211,14 @@ class NutritionInfoDruid (gobject.GObject):
             label = gtk.Label(label_txt); label.show()
             label.set_alignment(0,0.5)
             t.attach(label,0,1,n+1,n+2,xoptions=gtk.FILL)
-            entry = NumberEntry(); entry.show()
+            entry = NumberEntry(default_to_fractions=False)
+            entry.show()
             t.attach(entry,1,2,n+1,n+2,xoptions=gtk.FILL)
             if show_percent:
-                percent_entry = NumberEntry(); percent_entry.show()
+                percent_entry = NumberEntry(default_to_fractions=False,
+                                            decimals=0)
+                percent_entry.entry.set_width_chars(4)
+                percent_entry.show()
                 percent_label = gtk.Label('%'); percent_label.show()
                 t.attach(percent_entry,2,3,n+1,n+2)
                 t.attach(percent_label,3,4,n+1,n+2)
@@ -247,6 +251,7 @@ class NutritionInfoDruid (gobject.GObject):
             rda = RECOMMENDED_INTAKE.get(name,None)*2000
             if rda:
                 self.changing_number_internally = True
+                print 'Setting to ',v,'percent of RDA (',rda,')'
                 number_widget.set_value(
                     v*0.01*rda
                     )
@@ -562,6 +567,7 @@ class NutritionInfoDruid (gobject.GObject):
         to_unit = cb.cb_get_active_text(self.toUnitCombo)
         base_convert = self.nd.conv.converter('g.',to_unit)
         if not base_convert:
+            self.densities,self.extra_units = self.nd.get_conversions(self.ingkey)
             if self.extra_units.has_key(to_unit):
                 base_convert = 1/self.extra_units[to_unit]
             else:
