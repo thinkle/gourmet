@@ -1,3 +1,21 @@
+### Copyright (C) 2005 Thomas M. Hinkle
+###
+### This library is free software; you can redistribute it and/or
+### modify it under the terms of the GNU General Public License as
+### published by the Free Software Foundation; either version 2 of the
+### License, or (at your option) any later version.
+###
+### This library is distributed in the hope that it will be useful,
+### but WITHOUT ANY WARRANTY; without even the implied warranty of
+### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+### General Public License for more details.
+###
+### You should have received a copy of the GNU General Public License
+### along with this library; if not, write to the Free Software
+### Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+### 02111-1307, USA.
+
+
 import validatingEntry
 import gtk, gobject
 import convert
@@ -14,8 +32,14 @@ class NumberEntry (validatingEntry.ValidatingEntry):
         %(NUMBER_END_NO_RANGE_REGEXP)s*
         $ # end
         """%convert.__dict__
-    
-    def __init__ (self):
+
+    def __init__ (self, default_to_fractions=True, decimals=2):
+        """Decimals is the number of decimal places we set.
+
+        Set decimals to -1 for as many as we have.
+        """
+        self.default_to_fractions = default_to_fractions
+        self.decimals = decimals
         self.in_progress_matcher = re.compile(self.in_progress_regexp,
                                               re.VERBOSE|re.UNICODE)
         validatingEntry.ValidatingEntry.__init__(self)
@@ -33,7 +57,16 @@ class NumberEntry (validatingEntry.ValidatingEntry):
             return self.error_message
 
     def set_value (self, n):
-        self.set_text(convert.float_to_frac(n,fractions=convert.FRACTIONS_ASCII))
+        if self.default_to_fractions:
+            self.set_text(convert.float_to_frac(n,fractions=convert.FRACTIONS_ASCII))
+        else:
+            if self.decimals >= 0:
+                decimals = self.decimals
+                while n < 10**-decimals: decimals += 1
+                format_string = "%" +"." + "%i"%decimals + "f"
+                self.set_text(format_string%n)
+            else:
+                self.set_text("%s"%n)
 
     def get_value (self):
         return convert.frac_to_float(self.get_text())
