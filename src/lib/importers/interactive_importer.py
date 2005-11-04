@@ -5,7 +5,7 @@ This is handed generic text. We then guide the user through the text
 """
 
 import gtk, gtk.glade, gtk.gdk, pango
-import re, os.path
+import re, os.path, sys
 from gourmet import convert
 from gourmet import gglobals
 import importer
