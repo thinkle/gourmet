@@ -697,7 +697,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
     def on_new_recipe (self, *args):
         # If we already have a recipe
         if self.added_to:
-            #print 'committing!'
             self.commit_rec()
         self.start_rec()
         self.set_added_to(False)
