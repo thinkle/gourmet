@@ -354,8 +354,8 @@ class ConvenientImporter (importer.importer):
             item = groups[convert.ING_MATCHER_ITEM_GROUP]
             # If our unit isn't familiar, don't add it as a unit!
             if unit and not self.conv.unit_dict.has_key(unit.strip()):
-                unit = ''
                 item = unit + item
+                unit = ''                
         else:
             print 'Unable to parse ingredient from text "%s"'%txt
             print 'Setting amount and unit to None'
@@ -497,7 +497,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         self.section_pos = 0
         tot=len(parsed); n=0
         for line,tag in parsed:
-            print 'adding line',line,'with tag',tag
             if self.progress:
                 self.progress(float(n)/tot,
                               _('Setting up interactive importer')
@@ -521,7 +520,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
                                                     self.textbuffer.get_end_iter(),
                                                     True)
                 self.sections.append((smark,emark))
-        print 'We have ',len(self.sections),'sections.'
         self.goto_section(0)
         self.on_new_recipe()
 
@@ -535,10 +533,8 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
             self.textbuffer.get_insert()
             ).get_offset()
         if cur_pos < end_bound:
-            print 'Moving forward within our section',cur_sec
             self.goto_section(cur_sec,direction=1)
         else:
-            print 'Moving forward',cur_sec,'->',cur_sec+1
             self.goto_section(cur_sec+1,direction=1)
 
     def goto_prev_section (self):
@@ -549,21 +545,17 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
             ).get_offset()
         cur_sel = self.textbuffer.get_selection_bounds()
         if cur_sel:
-            print 'use selection...'
             cur_pos = (cur_sel[0].get_offset()<cur_sel[1].get_offset() and 
                        cur_sel[0].get_offset() or
                        cur_sel[1].get_offset()
                        )
         else:
-            print 'use cursor...'
             cur_pos = self.textbuffer.get_iter_at_mark(
                 self.textbuffer.get_insert()
                 ).get_offset()
         if cur_pos > start_bound:
-            print 'Moving backward within our section',cur_sec
             self.goto_section(cur_sec,direction=-1)
         else:
-            print 'Moving backward',cur_sec,'->',cur_sec-1
             self.goto_section(cur_sec-1,direction=-1)
 
     def section_contains_mark (self, section, mark=None):
@@ -600,34 +592,25 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         s,e=self.sections[n]        
         start_itr=self.textbuffer.get_iter_at_mark(s)
         end_itr = self.textbuffer.get_iter_at_mark(e)
-        print 'Selecting selection ',n,start_itr.get_offset(),\
-              '->',end_itr.get_offset()
         # Check where our current section is
         cur_sel = self.textbuffer.get_selection_bounds()
         if cur_sel:
             soffset,eoffset = start_itr.get_offset(),end_itr.get_offset()
-            print 'target:',soffset,eoffset
             cur_start,cur_end = cur_sel
-            print 'current:',cur_start.get_offset(),cur_end.get_offset()
             if cur_start.get_offset() < soffset and cur_end.get_offset() > eoffset:
-                print 'we contain the target -- move along!'
                 if direction>0: self.goto_section(n+1)
                 else: self.goto_section(n-1)
             if direction > 0 and soffset < cur_end.get_offset() < eoffset:
-                print 'adjusting start forward!'
                 start_itr = cur_end
                 import sys
                 if re.match('\s',start_itr.get_char()):
                     start_itr.forward_find_char(lambda c,user_data: re.match('\S',c) and True,
                                                 limit=end_itr)
             elif direction < 0 and soffset < cur_start.get_offset() < eoffset:
-                print 'adjusting end backward'
                 end_itr = cur_start
                 if re.match('\s',start_itr.get_char()):
                     start_itr.backward_find_char(lambda c,user_data: re.match('\S',c) and True,
                                                  limit=end_itr)
-        print 'selecting ',end_itr.get_offset(),'-',start_itr.get_offset()
-        if end_itr.get_offset()==start_itr.get_offset(): print 'Funny, end == start'
         self.textbuffer.select_range(end_itr,
                                      start_itr
                                      )
@@ -639,20 +622,30 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
     #-- InteractiveImporter.on_open {
     def on_open(self, widget, *args):
-        #print "on_open called with self.%s" % widget.get_name()
-        #fsd = gtk.FileChooserDialog(buttons=(gtk.STOCK_CANCEL,
-        #                                     gtk.RESPONSE_CANCEL,
-        #                                     gtk.STOCK_OK,
-        #                                     gtk.RESPONSE_OK))
-        #response = fsd.run()
-        #fsd.hide()
-        #if response==gtk.RESPONSE_OK:
-        #    # Warning, we don't check to make sure the filesize is
-        #    # reasonable...
-        fname = dialog_extras.select_file('Open recipe',
+        filename = dialog_extras.select_file('Open recipe',
                                          filters=[['Plain Text',['text/plain'],'*.txt']])
-        if fname:
-            ofi = file(fname,'r')
+        fsize = os.path.getsize(filename)
+        if  fsize > 100 * 1024:
+            if fsize > (1024*1024*1024):
+                filesize = "%.2fG"%(float(fsize) / (1024*1024*1024))
+            elif fsize > (1024*1024):
+                filesize = "%.2fM"%(float(fsize) / (1024*1024))
+            else:
+                filesize = "%sk"%(float(fsize) / 1024)
+            if not dialog_extras.getBoolean(
+                label=_('Large file'),
+                sublabel=_("""The file %(filename)s is very large for a text file (%(filesize)s).
+                This will be imported as a plain text file. If this is file is not plain text,
+                you need to convert it to text using the program that created it.
+
+                Go ahead and try to import anyway?
+                """)%locals(),
+                custom_no=gtk.STOCK_CANCEL,
+                cancel=False):
+                print "Import cancelled"
+                return
+        if filename:
+            ofi = file(filename,'r')
             self.set_text(ofi.read())
             ofi.close()            
     #-- InteractiveImporter.on_open }
@@ -827,6 +820,7 @@ Some sausages
 To accompany dish:
 1 loaf bread
 1 head garlic
+3 cloves garlic
 1/4 c. olive oil
 
 In a food processor, mix together the basil, oil and nuts and garlic, altering as you like to make the pesto nuttier, more garlicky, or more oily.
