@@ -5,7 +5,6 @@ import pythonic_mysql
 
 class RecData (pythonic_mysql.PythonicMySQL,rsqlite.RecData):
     def __init__ (self, host="symmys", user="tom", pw="mssnurt89", db="recipe"):
-        print 'rmysql.RecData'
         self.user = user
         self.host = host
         self.passwd = pw

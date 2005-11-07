@@ -5,7 +5,6 @@ from gourmet.gdebug import debug
 
 class PythonicSQLite (PythonicSQL.PythonicSQL):
     def __init__ (self, file):
-        #print file
         self.file = file
         PythonicSQL.PythonicSQL.__init__(self,sqlite)
 

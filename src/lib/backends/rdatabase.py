@@ -400,7 +400,6 @@ class RecData:
         return self.iview[-1]
 
     def do_add_cat (self, dic):
-        #print 'Adding cat',dic
         self.catview.append(dic)
         #return 'catview has ',len(self.catview),'items'
         return self.catview[-1]
@@ -440,7 +439,6 @@ class RecData:
         cats =  [c.category or '' for c in svw]
         # hackery...
         while '' in cats:
-            #print "wtf - there's an empty category for recipe ",rec.id
             cats.remove('')
         return cats
 
@@ -674,11 +672,9 @@ class RecData:
         if type(item)==int:
             # already normalized...
             item = self.fetch_one(self.normalizations['item'],id=item).item
-            #print 'Normalized-item>',item
         if type(key)==int:
             # already normalized...
             key = self.fetch_one(self.normalizations['ingkey'],id=key).ingkey
-            #print 'Normalized-key>',item
         for w in re.split('\W+',item):
             w=w.lower().strip()
             row = self.fetch_one(self.ikview,word=w,ingkey=key)
@@ -1076,7 +1072,6 @@ class Normalizer:
             print "int_to_str says: WTF are you handing me ",v,"for?"
         row = self.__rd__.fetch_one(normtable,id=v)        
         if row:
-            #print 'Magic ',v,'->',getattr(row,k)
             return getattr(row,k)
         elif v==0:
             return None
@@ -1250,19 +1245,14 @@ class NormalizedRow (Normalizer):
 
     def __setattr__ (self, attname, val):
         if attname in ['__normdic__','__row__','__rd__']:
-            #print 'setting',attname,'->',val
             self.__dict__[attname]=val
             return
         if self.__normdic__.has_key(attname):
-            #print 'norming'
             nval = Normalizer.str_to_int(self,attname,val)
-            #print 'normed ',val,'->',nval
-            #print 'setting ',self.__row__,attname,'->',nval
             setattr(self.__row__,
                     attname,
                     nval
                     )
-            #print 'set!'
         else:
             setattr(self.__row__,attname,val)
 

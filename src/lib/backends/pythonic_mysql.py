@@ -4,7 +4,6 @@ import _mysql_exceptions
 
 class PythonicMySQL (PythonicSQL.PythonicSQL):
     def __init__ (self, host="localhost", user="", passwd="", db="recipe"):
-        #print file
         self.host = host
         self.user = user
         self.passwd = passwd

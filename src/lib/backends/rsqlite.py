@@ -20,7 +20,6 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
     #    rdatabase.RecData.setup_tables(self)
 
     def setup_table (self, name, data, key=None):
-        #print 'CREATING: ',name,data        
         return self.get_table(name,data,key) #PythonicSQL's method
 
     def _setup_table (self, name, data, key=None):
@@ -102,11 +101,8 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
         """Handed a table, a column name, and a regular expression, search
         for an item"""
         debug('search handed: table:%s, colname:%s, regexp:%s, exact:%s'%(table,colname,regexp,exact),0)
-        #print 'Doing search...'
         if type(regexp) != str:
-            print 'This is funny...',table,colname,regexp
             tbl = table.select(**{colname:regexp})
-            print 'we got ',tbl
             return tbl
         if use_regexp:
             # we still convert to sql if we can afford to, given the speed advantage
@@ -116,15 +112,12 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
             if not exact: sql = regexp + "%"
         if sql:
             tbl=table.select(**{colname:(" LIKE ",sql)})
-            print 'returning tbl',tbl
             return tbl
         else:
             debug('adding filter re.search(%s,getattr(row,%s))'%(regexp,colname),0)
             def fun (row):
-                #print 'comparing %s and %s'%(getattr(row,colname),regexp)
                 return re.search(regexp,getattr(row,colname),re.IGNORECASE)
             tbl = table.filter(fun)
-            print '(filter) returning tbl',tbl
             return tbl
 
     def delete_by_criteria (self, table, criteria):

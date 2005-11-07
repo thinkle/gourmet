@@ -157,7 +157,6 @@ class PythonicSQL:
         columns = ','.join(columns)
         statement = """CREATE VIEW %(view_name)s AS SELECT %(columns)s
         FROM %(name)s %(join_statement)s"""%locals()
-        #print 'Making view',statement
         self.execute((statement,()))
         return self.get_table(view_name,data,None)        
 
@@ -175,7 +174,6 @@ class PythonicSQL:
         if self._check_for_table(name+'_view'):
             return self.get_table(name+'_view',data)
         else:
-            #print 'Creating normalized view for ',name
             return self.create_normed_view(name,data)
 
     def pytype_to_sqltype (self, typ):
@@ -494,7 +492,6 @@ class RowObject :
         self.__db__ = db
         self.__table__ = name
         self.__fields__ = {}
-        #if len(fields) != len(results): print 'fields: ',fields, '\nresults: ',results
         for i,f in enumerate(fields):
             setattr(self,f,results[i])
             #self.dic[f]=results[i]

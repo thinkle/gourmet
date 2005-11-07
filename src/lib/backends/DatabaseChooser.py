@@ -101,7 +101,6 @@ class DatabaseChooser:
             self.fileEntry.set_text(self.default_files[self.current_db])
 
     def browse_cb (self,*args):
-        print 'browse_cb'
         fi = de.select_file(_("Choose Database File"),
                             filename=self.default_file_directory,
                             action=gtk.FILE_CHOOSER_ACTION_OPEN)
