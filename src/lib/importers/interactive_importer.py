@@ -8,6 +8,7 @@ import gtk, gtk.glade, gtk.gdk, pango
 import re, os.path, sys
 from gourmet import convert
 from gourmet import gglobals
+from gourmet import dialog_extras as de
 import importer
 from generic_recipe_parser import RecipeParser
 import imageBrowser
@@ -488,6 +489,7 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
     
     def set_text (self, txt):
         """Set raw text."""
+        self.internal_change = True
         self.textbuffer = gtk.TextBuffer()
         self.textview.set_buffer(self.textbuffer)
         parsed = self.parser.parse(txt,progress=self.progress)
@@ -522,6 +524,34 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
                 self.sections.append((smark,emark))
         self.goto_section(0)
         self.on_new_recipe()
+        self.internal_change = False
+
+    def set_file (self, filename):
+        fsize = os.path.getsize(filename)
+        print 'setting file ',filename,'(size',fsize,')'
+        if  fsize > 100 * 1024:
+            if fsize > (1024*1024*1024):
+                filesize = "%.2fG"%(float(fsize) / (1024*1024*1024))
+            elif fsize > (1024*1024):
+                filesize = "%.2fM"%(float(fsize) / (1024*1024))
+            else:
+                filesize = "%sk"%(float(fsize) / 1024)
+            if not de.getBoolean(
+                label=_('Large file'),
+                sublabel=_("""The file %(filename)s is very large for a text file (%(filesize)s).
+                This will be imported as a plain text file. If this is file is not plain text,
+                you need to convert it to text using the program that created it.
+
+                Go ahead and try to import anyway?
+                """)%locals(),
+                custom_no=gtk.STOCK_CANCEL,
+                cancel=False):
+                print "Import cancelled"
+                self.on_quit()
+        if filename:
+            ofi = file(filename,'r')
+            self.set_text(ofi.read())
+            ofi.close()
 
     def goto_next_section (self):
         """Goto our next section"""
@@ -622,32 +652,10 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
     #-- InteractiveImporter.on_open {
     def on_open(self, widget, *args):
-        filename = dialog_extras.select_file('Open recipe',
+        filename = de.select_file('Open recipe',
                                          filters=[['Plain Text',['text/plain'],'*.txt']])
-        fsize = os.path.getsize(filename)
-        if  fsize > 100 * 1024:
-            if fsize > (1024*1024*1024):
-                filesize = "%.2fG"%(float(fsize) / (1024*1024*1024))
-            elif fsize > (1024*1024):
-                filesize = "%.2fM"%(float(fsize) / (1024*1024))
-            else:
-                filesize = "%sk"%(float(fsize) / 1024)
-            if not dialog_extras.getBoolean(
-                label=_('Large file'),
-                sublabel=_("""The file %(filename)s is very large for a text file (%(filesize)s).
-                This will be imported as a plain text file. If this is file is not plain text,
-                you need to convert it to text using the program that created it.
-
-                Go ahead and try to import anyway?
-                """)%locals(),
-                custom_no=gtk.STOCK_CANCEL,
-                cancel=False):
-                print "Import cancelled"
-                return
-        if filename:
-            ofi = file(filename,'r')
-            self.set_text(ofi.read())
-            ofi.close()            
+        
+        self.set_file(filename)
     #-- InteractiveImporter.on_open }
 
     #-- InteractiveImporter.on_open_url {
@@ -656,7 +664,7 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         # use urllib to do something crossplatform and reasonable if
         # we want this (and of course we can just borrow code from
         # Gourmet which already does this right)
-        url = dialog_extras.getEntry(label='Enter address of webpage with a recipe on it.',
+        url = de.getEntry(label='Enter address of webpage with a recipe on it.',
                                      entryLabel='URL:',
                                      entryTip="""URLs start with http://""")
         if url.find('//')<0: url = 'http://'+url
@@ -696,13 +704,16 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
     #-- InteractiveImporter.on_cursor_moved {
     def on_cursor_moved (self, widget, *args):
+        if self.internal_change: return
         print 'cursor moved!'
         cursor = self.textbuffer.get_insert()
         itr = self.textbuffer.get_iter_at_mark(cursor)
         tags = itr.get_tags()
         while not tags:
+            offset = itr.get_offset()
+            if offset == 0: break
             itr = self.textbuffer.get_iter_at_offset(
-                itr.get_offset()-1
+                offset-1
                 )
             tags = itr.get_tags()
             print 'back up a character...'
@@ -786,10 +797,18 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 class InteractiveTextImporter (InteractiveImporter):
     def __init__ (self, filename, rd, progress=None, source=None, threaded=False,custom_parser=None):
         #print 'iti: file:',filename,'rd:',rd
-        InteractiveImporter.__init__(self,rd,progress=progress,custom_parser=custom_parser)
-        ofi = file(filename,'r')
-        self.set_text(ofi.read())
-        ofi.close()
+        self.rd = rd
+        self.progress = progress
+        self.source = source
+        self.threaded = threaded
+        self.custom_parser = custom_parser
+        self.filename = filename
+
+    def run (self):
+        InteractiveImporter.__init__(self,self.rd,
+                                     progress=self.progress,
+                                     custom_parser=self.custom_parser)
+        self.set_file(self.filename)
 
     def __repr__ (self): return "<InteractiveTextImporter>"
 
