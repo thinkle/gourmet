@@ -108,22 +108,18 @@ class RecData (rdatabase.RecData):
             getstring = getstring+'categoryname:S,'
         getstring = getstring[0:-1] + "]"
         debug('Metakit: getting view: %s'%getstring,5)
-        print 'getas',getstring
         vw = self.db.getas(getstring)
         debug('Got view!',5)
         if key:
             if data[key_index][1]=='int': #if typ of key is int
-                print 'order'
                 debug('Make ordered',3)
                 vw = vw.ordered()
                 debug('Made ordered',3)
             else:
                 #debug('Make hash',3)
-                #print 'Making hash for ',key
                 rhsh = self.db.getas("__%s_hash__[_H:I,_R:I]"%name)
                 vw = vw.hash(rhsh,1)
                 #debug('Made hash!',3)
-                print 'hash!'
         # Make sure our increment fields are right...
         self.vw_to_name[vw]=name
         debug('Investigate increment rows',3)
@@ -260,6 +256,7 @@ class RecData (rdatabase.RecData):
         rec = self.get_rec(rid)
         if not rec:
             print 'Odd: we find no recipe for ID ',rid
+            print 'We cannot modify it with: ',dic
             return
         for k,v in dic.items():
             if hasattr(rec,k):
@@ -304,26 +301,18 @@ class RecData (rdatabase.RecData):
     # Convenience functions
     def fetch_one (self, table, *args, **kwargs):
         # Method 1: locate
-        #print 'fetch_one:',table.structure(),args,kwargs
         indx,cnt=table.locate(*args,**kwargs)
         if cnt:
-            #print 'Locate works!'
             return table[indx]
         else:
             # method 2: find
             new_indx = table.find(*args,**kwargs)
             if new_indx>-1:
-                #print 'Locate missed me, but find worked'
                 return table[new_indx]
             # method 3: select
             rows = table.select(*args,**kwargs)
             if rows:
-                #print "Find and locate missed me, but select worked."
-                #print "Find -> -1, Locate ->",indx,cnt
-                metakit.dump(table)
                 return rows[0]
-        #print 'Return None'
-        # returns None if all else fails.
 
     def remove_unicode (self, mydict):
         for k,v in mydict.items():
@@ -429,12 +418,6 @@ class RecData (rdatabase.RecData):
         # Get ourselves out of memory
         subrm = RecDataOldDB(self.backupfile)
         from gourmet.exporters import gxml2_exporter
-        #print 'Our old DB looked like this: '
-        #print subrm.db.description()
-        #print 'And had'
-        #print len(subrm.rview),'recipes'
-        #print 'and '
-        #print len(subrm.iview),'ingredients'
         # dump our recipe db to a backup file
         dumpfile = os.path.join(
             os.path.split(self.file)[0],
