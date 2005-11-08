@@ -283,7 +283,6 @@ class RecGui (RecIndex):
     def show_progress_dialog (self, thread, progress_dialog_kwargs={},message=_("Import paused"),
                            stop_message=_("Stop import")):
         """Show a progress dialog"""
-        #print 'showing progress dialog'
         if hasattr(thread,'name'): name=thread.name
         else: name = ''
         for k,v in [('okay',True),
@@ -295,12 +294,9 @@ class RecGui (RecIndex):
             if not progress_dialog_kwargs.has_key(k):
                 progress_dialog_kwargs[k]=v
         if not hasattr(self,'progress_dialog') or not self.progress_dialog:
-            #print 'making progress_dialog'
             self.progress_dialog = de.ProgressDialog(**progress_dialog_kwargs)
             self.prog = self.progress_dialog.progress_bar
-            #print 'Our prog dialog is here: ',self.progress_dialog
         else:
-            #print 'prog dialog already exists ->',self.progress_dialog
             self.progress_dialog.reassign_buttons(pausecb=progress_dialog_kwargs['pause'],
                                               stopcb=progress_dialog_kwargs['stop'])
             self.progress_dialog.reset_label(progress_dialog_kwargs['label'])
@@ -314,7 +310,6 @@ class RecGui (RecIndex):
         
     def hide_progress_dialog (self):
         """Make the progress dialog go away."""
-        #print 'Called hide_progress_dialog!'
         if hasattr(self,'progress_dialog') and self.progress_dialog:
             self.progress_dialog.hide()
             self.progress_dialog.destroy()
@@ -618,10 +613,8 @@ class RecGui (RecIndex):
             self.recTrash.rmodel.update_tree()
 
     def print_recs (self, *args):
-        #print 'printing'
         debug('printing recipes',3)
         recs = self.recTreeSelectedRecs()
-        #print 'initialize printer'
         gt.gtk_leave()
         printer.RecRenderer(self.rd, recs,
                             dialog_title=gettext.ngettext('Print %s recipe',
@@ -1200,7 +1193,6 @@ class RecTrash (RecIndex):
         RecIndex.__init__(self, self.glade, self.rg.rd, self.rg)
 
     def setup_search_views (self):
-        print 'DELETE ME: RECTRASH SEARCH VIEWS!'
         self.lsrch = ["",""]
         self.lsrchvw = self.rd.rview.select(deleted=True)
         self.searchvw = self.rd.rview.select(deleted=True)
@@ -1221,11 +1213,14 @@ class RecTrash (RecIndex):
     def recTreeUndeleteSelectedRecs (self, *args):
         mod,rr = self.rectree.get_selection().get_selected_rows()
         recs = [mod[path][0] for path in rr]
+        msg = ''
         for r in recs:
+            msg += r.title + ', '
             self.rg.rd.modify_rec(r,{'deleted':False})
+        if msg: msg = msg[0:-2] # cut off the last comma
         self.rmodel.update_tree()
         self.rg.redo_search()
-        self.rg.message(_('Undeleted recipes ') + string.join([r.title for r in recs],", "))
+        self.rg.message(_('Undeleted recipes ') + msg)
 
     def recTreePurgeSelectedRecs (self, *args):
         if not use_threads and self.rg.lock.locked_lock():
@@ -1258,7 +1253,6 @@ def set_path_for_menuitem (mi, base='<main>'):
         accelLab = mi.get_children()[0]
         l=accelLab.get_label().replace('_','')
         path = base + '/' + l
-        #print 'setting path ',path
         mi.set_accel_path(path)
     sm = mi.get_submenu()
     if sm:

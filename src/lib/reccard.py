@@ -57,7 +57,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                             widg, s1,s2,i1,i2):
             f=getattr(self,func_name)
             w= f(s1,s2,i1,i2)
-            #print 'custom_handler ',func_name,'->',w
             return w
         gtk.glade.set_custom_handler(custom_handler)
         self.glade = gtk.glade.XML(os.path.join(gladebase,'recCard.glade'))
@@ -736,34 +735,27 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         in recipe-as-ingredient items.
         """
         ings = self.rd.get_ings(rec)
-        print 'looking at ings from',rec.id,ings
         ret = []
         for i in ings:
             if hasattr(i,'refid') and i.refid:
                 subrec = self.rd.get_referenced_rec(i)
-                print 'lookup ',i.refid,'->',subrec
                 if not subrec:
                     raise "WTF! Can't find ",i.refid
                 ret.extend(self.list_all_ings(subrec))
                 continue
             else:
-                print 'append ',i
                 ret.append(i)
         return ret
 
     def update_nutrition_info (self):
         """Update nutritional information for ingredient list."""
-        print 'setting up nutinfo'
         if self.current_rec.servings:
-            print 'set servings',self.current_rec.servings
             self.nutritionLabel.set_servings(
                 convert.frac_to_float(self.current_rec.servings)
                 )
         ings = self.list_all_ings(self.current_rec)
         self.nutinfo = self.rg.nd.get_nutinfo_for_inglist(ings)
-        print 'nutrition info=',self.nutinfo        
         self.nutritionLabel.set_nutinfo(self.nutinfo)        
-        print 'yippee!'
 
     def updateTitleDisplay (self):
         titl = self.current_rec.title

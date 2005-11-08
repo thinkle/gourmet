@@ -222,6 +222,9 @@ class RecData (rdatabase.RecData):
         if not vw: return []
         result_ids = vw.counts(getattr(vw,join_on),
                                'joinedcount')
+        props = result_ids.properties()
+        #del props['joinedcount']
+        result_ids = result_ids.project(props[join_on])
         return table1.join(result_ids,getattr(result_ids,join_on))
 
     def filter (self, table, func):

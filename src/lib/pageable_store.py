@@ -181,18 +181,13 @@ class PageableListStore (gtk.ListStore):
         to be able to update the UI without having to know beforehand
         which direction the sort will end up in).
         """
-        #print 'toggling'
         current = self.sort_dict.get(column,self.OFF)
         if current==self.OFF:
-            #print 'OFF->FORWARD'
             toggle_to = self.FORWARD
         elif current==self.FORWARD:
-            #print 'FORWARD->REVERSE'
             toggle_to = self.REVERSE
         else:
-            #print '->OFF'
             toggle_to = self.OFF
-        #print 'calling sort'
         self.sort(column,toggle_to)
         return toggle_to
 
@@ -317,7 +312,6 @@ class PageableViewStore (PageableListStore):
     def sort (self, col, direction):
         attr = self.columns[col]
         self.sort_dict[col]=direction
-        #print 'sorting ',attr,direction
         if direction==self.OFF:
             if attr in self.__all_sorts__: self.__all_sorts__.remove(attr)
             if attr in self.__reverse_sorts__: self.__reverse_sorts__.remove(attr)            
@@ -329,12 +323,10 @@ class PageableViewStore (PageableListStore):
 
     def _do_sort_ (self):
         if self.__all_sorts__:
-            #print 'sorting'
             self.do_change_view(self.view.sortrev([getattr(self.view,a) for a in self.__all_sorts__],
                                                   [getattr(self.view,a) for a in self.__reverse_sorts__])
                                 )
         else:
-            #print 'unsorting'
             self.do_change_view(self.unsorted_view)
 
     def do_change_view (self, vw):
@@ -385,10 +377,8 @@ if __name__ == '__main__':
         #tv.set_model(None)
         pts.next_page()
         #tv.set_model(pts)
-        #print "%s-%s of %s"%pts.showing()
     def prv ():
         pts.prev_page()
-        #print "%s-%s of %s"%pts.showing()
     b.connect('clicked',lambda *args: nxt())
     vb.pack_start(b,False)
     pb = gtk.Button('prev')

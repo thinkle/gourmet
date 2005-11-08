@@ -875,7 +875,8 @@ class RecipeManager (RecData):
         vw = self.joined_search(rview,self.iview,'ingkey',ing,use_regexp=use_regexp,exact=exact)
         if not keyed:
             vw2 = self.joined_search(rview,self.iview,'item',ing,use_regexp=use_regexp,exact=exact)
-            if vw2 and vw: vw = vw.union(vw2)
+            if vw2 and vw:
+                vw = vw.union(vw2)
             else: vw = vw2
         return vw
 

@@ -348,7 +348,7 @@ class RecIndex:
         elif self.limitButton: self.limitButton.set_sensitive(False)
         if [txt, searchBy] == self.lsrch:
             debug("Same search!",0)
-            return
+            return        
         if self.srchentry.window: self.srchentry.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
         gobject.idle_add(lambda *args: self.do_search(txt, searchBy))
         
@@ -593,13 +593,13 @@ class RecipeModel (pageable_store.PageableViewStore):
 
     def update_recipe (self, recipe):
         """Handed a recipe (or a recipe ID), we update its display if visible."""
+        debug('Updating recipe %s'%recipe.title,3)
         if type(recipe)!=int: recipe=recipe.id # make recipe == id
-        #print 'updating ',recipe
         for row in self:
-            #print 'row=',row
+            debug('Looking at row',3)
             if row[0].id==recipe:
-                #print 'update!'
                 self.update_iter(row.iter)
+                debug('updated row -- breaking',3)
                 break
 
     def make_categories (self):
@@ -608,14 +608,8 @@ class RecipeModel (pageable_store.PageableViewStore):
         # to be reworked should another backend ever be implemented.
         sorted_catview = self.rd.catview.sort('category')
         for r in sorted_catview:
-            #print r,r.id,r.category
-            #print 'selecting recipe'
-            #rec = self.rd.get_rec(r.id)
-            #print 'rec becomes->',rec
             if r and r.category:
-                #print 'setting categoryname'
                 self.rd.modify_rec(r,
                                    {'categoryname':r.category})
                 #rec[0].categoryname=r.category
-        #print 'done making categories!'
         self.made_categories=True
