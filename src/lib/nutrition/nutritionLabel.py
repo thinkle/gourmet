@@ -373,10 +373,7 @@ class NutritionLabel (gtk.Table, gobject.GObject):
         self.emit('ingredients-changed')
 
 if gtk.pygtk_version[1]<8:
-    print 'Javier -- look at this: We are registering NutritionLabel!'
     gobject.type_register(NutritionLabel)
-else:
-    print 'Javier -- look at this: We have the new PyGTK!'
 
 if __name__ == '__main__':
     class fakenut:
