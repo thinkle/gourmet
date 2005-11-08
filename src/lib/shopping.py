@@ -1,6 +1,7 @@
 import convert, sys
 from gettext import gettext as _
 from gdebug import debug
+import unittest
 
 class shopper:
     def __init__ (self, inglist):
@@ -68,19 +69,26 @@ class shopper:
                         # our amounts to look like ranges to simplify the addition
                         if type(amt)==float: amt=(amt,amt) 
                         if type(a)==float: a=(a,a)
+                        #print 'amt:',amt,' unit:',unit,'a:',a,'u:',u
                         add_low = self.cnv.adjust_unit(
-                            *self.cnv.add_reasonably(amt[0],unit,a[0],u,ing),#lowest+lowest
+                            *self.cnv.add_reasonably(amt[0],unit,a[0],u,ing), #lowest+lowest
                             **{'favor_current_unit':False}
                             )
                         add_high = self.cnv.adjust_unit(
                             *self.cnv.add_reasonably(amt[1],unit,a[1],u,ing), # highest+highest
                             **{'favor_current_unit':False}
                             )
+                        # Adjust our units to make them readable (so
+                        # that e.g. 3 tbs. + 3 tbs. = 1/2 c.)
+                        if add_low:
+                            add_low = self.cnv.adjust_unit(*add_low,**{'favor_current_unit':False})
+                        if add_high:
+                            add_high = self.cnv.adjust_unit(*add_high,**{'favor_current_unit':False})
                         if add_low[1]==add_high[1]: #same unit...
                             add=((add_low[0],add_high[0]),add_low[1])
                         else:
                             # otherwise, let's use our unit for add_high...
-                            u1_to_u2=conv(add_low[1],add_high[1])
+                            u1_to_u2=self.cnv.converter(add_low[1],add_high[1])
                             add=( (add_low[0]*u1_to_u2,add_high[0]), #amount tuple
                                   add_high[1] #unit from add_high
                                   )
@@ -88,7 +96,7 @@ class shopper:
                         add = self.cnv.add_reasonably(amt,unit,a,u,ing)
                         if add:
                             # adjust unit to make readable
-                            self.cnv.adjust_unit(*add,**{'favor_current_unit':False})
+                            add=self.cnv.adjust_unit(*add,**{'favor_current_unit':False})
                     # add_reasonably returns a nice a,u pair if successful
                     # Otherwise, it return False/None
                     if add: 
@@ -165,7 +173,7 @@ class shopper:
         catb = catb[0]
         if not cata and not catb: return 0
         elif not cata: return 1
-        else: return -1
+        elif not catb: return -1
         if self.catorder_dic.has_key(cata) and self.catorder_dic.has_key(catb):
             # if both categories have known positions, we use them to compare
             cata = self.catorder_dic[cata]
@@ -242,3 +250,32 @@ class shopper:
 def setup_default_orgdic ():
     from defaults import lang as defaults
     return defaults.shopdic
+
+class shopperTestCase (unittest.TestCase):
+    def testAddition (self):
+        sh = shopper([('1','tsp.','pepper'),
+                      ('1','tsp.','pepper')])
+        assert(
+            sh.dic['pepper'][0][0] == 2
+            )
+
+    def testUnitConversion (self):
+        sh = shopper([('1','tsp.','pepper'),
+                      ('1','tsp.','pepper'),
+                      ('1','tsp.','pepper'),])
+        assert(
+            sh.dic['pepper'][0][0] == 1
+            )
+        assert(
+            sh.dic['pepper'][0][1] == 'tbs.'
+            )
+
+    def testRangeAddition (self):
+        sh = shopper([
+            ((1,2),'c.','milk'),
+            (1,'c.','milk')]
+                     )
+        assert(sh.dic['milk'][0][0]==(2,3))
+        
+if __name__ == '__main__':
+    unittest.main()
