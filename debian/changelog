@@ -1,3 +1,10 @@
+gourmet (0.9.0.1-1) breezy; urgency=low
+
+  * Fixed shopping list handling of ranges.
+  * Fixed up MANIFEST to include all necessary files in our release.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Tuesday, 8 Nov 2005 22:24:17 -0400	
+
 gourmet (0.9.0-1) breezy; urgency=low
 
   * Implemented nutritional information database.

@@ -1,4 +1,4 @@
-import exporter, gxml_exporter, gxml2_exporter, html_exporter, mealmaster_exporter, recipe_emailer, eatdrinkfeelgood_exporter
+import exporter, gxml_exporter, gxml2_exporter, html_exporter, mealmaster_exporter, recipe_emailer
 import recipe_emailer
 import printer
 from gettext import gettext as _

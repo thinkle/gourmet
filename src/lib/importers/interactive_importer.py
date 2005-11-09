@@ -404,7 +404,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
     #-- InteractiveImporter.new {
     def new(self):
-        print "A new %s has been created" % self.__class__.__name__
         self.get_widget('window1').show_all()
         self.get_widget('window1').connect('delete-event',lambda *args: gtk.main_quit())
         self.textview = self.glade.get_widget('textview')
@@ -463,7 +462,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
             if r[0]==action:
                 sel.select_iter(r.iter)
                 return
-        print action,'not found!'
         # if we haven't returned by now, we have no action
         sel.unselect_all()
 
@@ -528,7 +526,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
     def set_file (self, filename):
         fsize = os.path.getsize(filename)
-        print 'setting file ',filename,'(size',fsize,')'
         if  fsize > 100 * 1024:
             if fsize > (1024*1024*1024):
                 filesize = "%.2fG"%(float(fsize) / (1024*1024*1024))
@@ -546,7 +543,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
                 """)%locals(),
                 custom_no=gtk.STOCK_CANCEL,
                 cancel=False):
-                print "Import cancelled"
                 self.on_quit()
         if filename:
             ofi = file(filename,'r')
@@ -674,16 +670,11 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
     #-- InteractiveImporter.on_save {
     def on_save(self, widget, *args):
-        #print "on_save called with self.%s" % widget.get_name()
-        #print 'commit rec!',self.rec
         self.commit_rec()
 
     #-- InteractiveImporter.on_quit {
     def on_quit(self, widget, *args):
-        #print 'on_quit!'
-        #print 'commit!',self.rec
         self.commit_rec()
-        #print "on_quit called with self.%s" % widget.get_name()
         self.glade.get_widget('window1').hide()
         if self.progress: self.progress(1,_('Import complete!'))
         gtk.main_quit()
@@ -705,7 +696,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
     #-- InteractiveImporter.on_cursor_moved {
     def on_cursor_moved (self, widget, *args):
         if self.internal_change: return
-        print 'cursor moved!'
         cursor = self.textbuffer.get_insert()
         itr = self.textbuffer.get_iter_at_mark(cursor)
         tags = itr.get_tags()
@@ -716,31 +706,25 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
                 offset-1
                 )
             tags = itr.get_tags()
-            print 'back up a character...'
         action = None
-        print 'we have ',len(tags),'tags'
         for t in tags:
-            print 'look at ',t.props.name
             if self.parser_to_choice.has_key(t.props.name):
                 action = self.parser_to_choice[t.props.name]
             elif self.attdic.has_key(t.props.name):
                 action = self.attdic[t.props.name]
             elif self.textattdic.has_key(t.props.name):
                 action = self.textattdic[t.props.name]
-        print 'setting action->',action
         self.set_current_action(action)
         
     #-- InteractiveImporter.on_cursor_moved }
 
     #-- InteractiveImporter.on_ingredientEventBox_drag_drop {
     def on_ingredientEventBox_drag_drop(self, widget, *args):
-        #print "on_ingredientEventBox_drag_drop called with self.%s" % widget.get_name()
         pass
     #-- InteractiveImporter.on_ingredientEventBox_drag_drop }
 
     #-- InteractiveImporter.on_back {
     def on_back(self, widget, *args):
-        #print "on_back called with self.%s" % widget.get_name()
         self.goto_prev_section()
     #-- InteractiveImporter.on_back }
 
@@ -755,8 +739,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
             *self.textbuffer.get_selection_bounds()
             )
         active_txt = self.get_current_action()
-        #print 'Action:',active_txt
-        #print 'Selection:',selection
         if not hasattr(self,'inserted_tag'):
             self.inserted_tag = gtk.TextTag('inserted')
             self.inserted_tag.set_property('editable',False)
@@ -777,7 +759,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         st,end = self.textbuffer.get_selection_bounds()
         self.textbuffer.insert_with_tags(st,'['+active_txt+':',self.markup_tag)
         st,end = self.textbuffer.get_selection_bounds()
-        #print st,end,dir(end)
         while end.starts_line() and end.backward_char():
             end = self.textbuffer.get_iter_at_offset(end.get_offset()-1)
         self.textbuffer.insert_with_tags(end,']',self.markup_tag)
@@ -787,7 +768,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         #    "%s: %s\n"%(active_txt,selection)
         #    )
         action = self.actions[active_txt]
-        #print 'Calling ',active_txt,'->',action
         if self.action_to_label.has_key(active_txt):
             active_txt = self.action_to_label[active_txt]
         action(active_txt,selection)
@@ -796,7 +776,6 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
 
 class InteractiveTextImporter (InteractiveImporter):
     def __init__ (self, filename, rd, progress=None, source=None, threaded=False,custom_parser=None):
-        #print 'iti: file:',filename,'rd:',rd
         self.rd = rd
         self.progress = progress
         self.source = source
@@ -809,6 +788,7 @@ class InteractiveTextImporter (InteractiveImporter):
                                      progress=self.progress,
                                      custom_parser=self.custom_parser)
         self.set_file(self.filename)
+        InteractiveImporter.run(self)
 
     def __repr__ (self): return "<InteractiveTextImporter>"
 
