@@ -1,3 +1,14 @@
+==== Version 0.9.0.1 changes since 0.9.0 ====
+* Fixed shopping list handling of ranges.
+* Fixed up MANIFEST to include all necessary files in our release.
+
+==== Version 0.9.0 Changes since 0.8.x ====
+* Implemented nutritional information database.
+* Fixed a number of bugs causing crashing with the pageable-list view / metakit
+* Cleaned up SQL code to an almost usable (but not quite usable) state.
+* Generic HTML import as fallback when we have no filter for a given page
+* Generic text import.
+
 ==== Version 0.8.6.5 Changes since 0.8.6.4 ====
 * Fixed bug in recipe card editing that caused changes made in card
   view not to save properly.
