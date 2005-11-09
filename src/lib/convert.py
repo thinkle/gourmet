@@ -480,7 +480,7 @@ time_formatters = {
     'seconds':lambda seconds: ngettext("second","seconds",seconds),
     }    
 
-def seconds_to_timestring (time, round_at=None, fractions=FRACTIONS_ALL):
+def seconds_to_timestring (time, round_at=None, fractions=FRACTIONS_NORMAL):
     time = int(time)
     time_strings = []
     units = converter.unit_to_seconds.items()
@@ -670,7 +670,7 @@ def convert_fractions_to_ascii (s):
     s=re.sub(SLASH,'/',s)
     return s
 
-def fractify (decimal, divisor, approx=0.01, fractions=FRACTIONS_ALL):
+def fractify (decimal, divisor, approx=0.01, fractions=FRACTIONS_NORMAL):
     """Return fraction equivalent of decimal using divisor
 
     If we don't have a fit within our approximation, return the
@@ -695,7 +695,7 @@ def fractify (decimal, divisor, approx=0.01, fractions=FRACTIONS_ALL):
             else:
                 return "%s/%s"%(dividend,divisor)
             
-def float_to_frac (n, d=[2,3,4,5,6,8,10,16],approx=0.01,fractions=FRACTIONS_ALL):
+def float_to_frac (n, d=[2,3,4,5,6,8,10,16],approx=0.01,fractions=FRACTIONS_NORMAL):
     """Take a number -- or anything that can become a float --
     and attempt to return a fraction with a denominator in the list `d'. We
     approximate fractions to within approx. i.e. if approx=0.01, then 0.331=1/3"""
