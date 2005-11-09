@@ -20,6 +20,7 @@ glade/app.glade
 glade/converter.glade
 glade/databaseChooser.glade
 glade/keyeditor.glade
+glade/generic_importer.glade
 glade/preferenceDialog.glade
 glade/recCard.glade
 glade/recSelector.glade
@@ -103,7 +104,9 @@ src/lib/importers/html_plugins/html_helpers.py
 src/lib/importers/html_plugins/recipebookonine.py
 src/lib/importers/html_plugins/recipezaar.py
 src/lib/importers/html_plugins/__init__.py
+src/lib/importers/imageBrowser.py
 src/lib/importers/importer.py
+src/lib/importers/interactive_importer.py
 src/lib/importers/__init__.py
 src/lib/importers/mastercook_importer.py
 src/lib/importers/mastercook_plaintext_importer.py
@@ -128,6 +131,7 @@ src/lib/exporters/recipe_emailer.py
 src/lib/exporters/rtf_exporter.py
 src/lib/exporters/winprinter.py
 src/lib/exporters/wxprinter.py
+src/lib/exporters/xml_exporter.py
 documentation/ABOUT_DOCUMENTATION
 documentation/documentation.xml
 documentation/legal.xml
