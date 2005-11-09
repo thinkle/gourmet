@@ -1,3 +1,20 @@
+gourmet (0.9.0-1) breezy; urgency=low
+
+  * Implemented nutritional information database.
+  * Fixed a number of bugs causing crashing with the pageable-list view / metakit
+  * Cleaned up SQL code to an almost usable (but not quite usable) state.
+  * Generic HTML import as fallback when we have no filter for a given page
+  * Generic text import.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 7 Nov 2005 20:50:17 -0400
+
+gourmet (0.8.6.5.1-1) breezy; urgency=low
+
+  * Fixed bug that caused newly imported recipes not to display
+    immediately.
+
+ -- Thomas Mill Hinkle <Thomas_Hinkle@alumni.brown.edu>  Sun, 18 Sep 2005 15:19:52 -0400
+
 gourmet (0.8.6.5-1) breezy; urgency=low
 
   * Fixed bug in recipe card editing that caused changes made in card
@@ -8,7 +25,7 @@ gourmet (0.8.6.5-1) breezy; urgency=low
   * Properly register newly added ingredients in display tab of recipe card.
 
  -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Sunday, 18 Sep 2005 10:30:17 -0400
-
+	
 gourmet (0.8.6.4-1) unstable; urgency=low
 
   * Improved encoding dialog.
