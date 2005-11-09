@@ -58,7 +58,17 @@ src/lib/__init__.py
 src/lib/keyEditor.py
 src/lib/keymanager.py
 src/lib/mnemonic_manager.py
+src/lib/numberEntry.py
+src/lib/nutrition/__init__.py
 src/lib/nutrition/databaseGrabber.py
+src/lib/nutrition/enter_nutritional_defaults.py
+src/lib/nutrition/nutritionDisplay.py
+src/lib/nutrition/nutritionDruid.py
+src/lib/nutrition/nutritionGrabberGui.py
+src/lib/nutrition/nutritionLabel.py
+src/lib/nutrition/nutritionModel.py
+src/lib/nutrition/nutrition.py
+src/lib/nutrition/nutritionView.py
 src/lib/nutrition/parser_data.py
 src/lib/OptionParser.py
 src/lib/optionTable.py
@@ -79,6 +89,7 @@ src/lib/thumbnail.py
 src/lib/timeEntry.py
 src/lib/treeview_extras.py
 src/lib/Undo.py
+src/lib/validatingEntry.py
 src/lib/version.py
 src/lib/WidgetSaver.py
 src/lib/backends/DatabaseChooser.py
@@ -91,6 +102,7 @@ src/lib/backends/rmetakit.py
 src/lib/backends/rmysql.py
 src/lib/backends/rsqlite.py
 src/lib/importers/BeautifulSoup.py
+src/lib/importers/generic_recipe_parser.py
 src/lib/importers/gxml_importer.py
 src/lib/importers/gxml2_importer.py
 src/lib/importers/zip_importer.py
