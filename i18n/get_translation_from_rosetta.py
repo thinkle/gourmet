@@ -8,8 +8,11 @@ PRODUCT = 'grecipe-manager'
 MODULE = 'gourmet'
 CREDITS = 'translator-credits'
 BASE_URL='https://launchpad.ubuntu.com/rosetta/products/%(product)s/%(module)s/%(locale)s'
-PO_URL='https://launchpad.ubuntu.com/rosetta/products/%(product)s/%(module)s/%(locale)s/po'
+#       https://launchpad.ubuntu.com/products/grecipe-manager/unknown/+pots/gourmet/de_DE/+po
+PO_URL='https://launchpad.ubuntu.com/products/%(product)s/unknown/+pots/%(module)s/%(locale)s/+po'
+#PO_URL='https://launchpad.ubuntu.com/rosetta/products/%(product)s/%(module)s/%(locale)s/po'
 LANG_LIST_URL="https://launchpad.ubuntu.com/rosetta/products/%(product)s/%(module)s"
+MAX_TODO_THAT_WE_FETCH = 400
 
 class TableParser (HTMLParser.HTMLParser):
     """A base scraper for grabbing HTML tables"""
@@ -102,7 +105,11 @@ class LangTableParser (TableParser):
                 try:
                     r['date']=time.mktime(time.strptime(le,'%Y-%m-%d %Z'))
                 except ValueError:
-                    print 'Unable to parse time: ',le
+		    try:
+                        r['date']=time.mktime(time.strptime(le,'%Y-%m-%d'))
+                    except ValueError:
+                        print 'Unable to parse time: ',le
+                        raise
         self.lang_table = {}
         for row in self.lang_base_table:
             self.lang_table[row['lang']]=row
@@ -114,9 +121,13 @@ class LangTableParser (TableParser):
             if hrefs:
                 href=hrefs[0][1]
                 # we rely on URLs like this: "+translate?languages=bg"
-                lang=href.split('=')[-1]
+                #lang=href.split('=')[-1]
+                #
+                # language URLs have changed (6/4/05)
+                # we now rely on URLs looking like this
+                # .../bg/+translate
+                lang = href.split('/')[-2]
                 self.row['lang']=lang
-
     def collect_endtag (self,tag):
         pass
     
@@ -157,6 +168,13 @@ def get_contriblist (wholepage):
 
 def get_po (locale):
     """Return a file object with our PO file"""
+    print 'PO_URL:',PO_URL
+    print 'locale:',locale
+    print 'product:',PRODUCT
+    print 'module:',MODULE
+    print 'Attempting to fetch %s'%PO_URL%{'locale':locale,
+                                  'product':PRODUCT,
+                                  'module':MODULE}
     return urllib.urlopen(PO_URL%{'locale':locale,
                                   'product':PRODUCT,
                                   'module':MODULE})
@@ -211,6 +229,7 @@ def get_translations (locales, do_credits=True):
     do_credits is a flag telling us whether to bother trying to rewrite
     translator-credits with proper credits
     """
+    retval = []
     for l in locales:
         if l.strip().find('#')==0:
             # ignore comments
@@ -232,8 +251,10 @@ def get_translations (locales, do_credits=True):
             write_po_with_contribs (get_po(locale),
                                     outfile,
                                     credits)
+            retval.append(l)
         except IOError:
             print 'unable to fetch PO file for %s'%locale
+    return retval
 
 def pad (string,n,cut=True):
     if len(string) < n:
@@ -294,7 +315,7 @@ if __name__ == '__main__':
         else:
             ll=get_langlist().items()
             print 'Rosetta knows about %s possible translations'%len(ll)
-            ll=filter(lambda x: int(x[1]['Done'])>0,ll) #only include translations that have been completed
+            ll=filter(lambda x: int(x[1].get('Todo','1000'))<MAX_TODO_THAT_WE_FETCH,ll) #only include translations that have been completed
             print 'There are at least some translations in %s languages'%len(ll)
             if os.path.exists('.rosetta_last_date_grabbed'):
                 ifi=open('.rosetta_last_date_grabbed','r')
@@ -305,18 +326,23 @@ if __name__ == '__main__':
             locales=[x[0] for x in ll]
             print 'There are %s new translations since last update.'%len(ll)
             record_time=True
-        get_translations(locales,do_credits=options.do_credits)
+        translated_locales = get_translations(locales,do_credits=options.do_credits)
+        print 'Successfully grabbed translations for: ',
+        for l in translated_locales: print l,
+        print ''
         if record_time:
-            dates = [x[1]['date'] for x in ll]
+            # only record time for translated locales
+            dates = [x[1]['date'] for x in filter(lambda x: x[0] in translated_locales,
+                                                  ll)]
             dates.sort()
             if dates:
+                print 'Recording timestamp of this grab.'
                 ofi=open('.rosetta_last_date_grabbed','w')
                 ofi.write("%s"%dates[-1]) # take our most recent file as our date
                 ofi.close()
-        
     elif options.action=='show_info':
         print pad('Language',12),pad('Last-Edited',15),pad('Done',6),pad('Todo',6)
         ll = get_langlist().items()
         ll.sort()
         for lang,d in ll:
-            print pad(lang,12),pad(d['Last Edited'],15),pad(d['Done'],6),pad(d['Todo'],6)
+            print pad(lang,12),pad(d.get('Last Edited',''),15),pad(d.get('Done',''),6),pad(d.get('Todo',''),6)
