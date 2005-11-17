@@ -64,6 +64,22 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.mm = mnemonic_manager.MnemonicManager()
         self.mm.add_glade(self.glade)
         self.mm.fix_conflicts_peacefully()
+        # Do some funky style modifications...
+        display_toplevel_widget = self.glade.get_widget('displayPanes')
+        new_style = display_toplevel_widget.get_style().copy()
+        cmap = display_toplevel_widget.get_colormap()
+        new_style.bg[gtk.STATE_NORMAL]= cmap.alloc_color('white')
+        new_style.bg[gtk.STATE_INSENSITIVE] = cmap.alloc_color('white')
+        new_style.fg[gtk.STATE_NORMAL]= cmap.alloc_color('black')
+        new_style.fg[gtk.STATE_INSENSITIVE] = cmap.alloc_color('black')
+        def set_style (widg, styl):
+            if (not isinstance(widg,gtk.Button) and
+                not isinstance(widg,gtk.Entry) and
+                not isinstance(widg,gtk.Separator)
+                ): widg.set_style(styl)
+            if hasattr(widg,'get_children'):
+                for c in widg.get_children(): set_style(c,styl)
+        set_style(display_toplevel_widget,new_style)
         t.end()
         t=TimeAction('RecCard.__init__ 2',0)        
         self.setup_action_manager()

@@ -1,51 +1,33 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# GNU copyright 1997 to 1999 by Joey Hess.
 
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
-
-
-CFLAGS = -Wall -g
-
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
-ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
-	INSTALL_PROGRAM += -s
-endif
+DT:=debian/gourmet
+DTUS:=${DT}/usr/share
+DTUSL:=${DTUS}/locale
+DTUSG:=${DTUS}/gourmet
 
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	# Add here commands to configure the package.
-
 	touch configure-stamp
 
-
 build: build-stamp
-
 build-stamp: configure-stamp 
 	dh_testdir
-
-	# Add here commands to compile the package.
-	python setup.py build
-	#/usr/bin/docbook-to-man debian/gourmet.sgml > gourmet.1
-
 	touch build-stamp
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-
-	# Add here commands to clean up after the build process.
-	python setup.py clean
-
 	dh_clean 
+
+patch: patch-stamp
+patch-stamp:
+	dpatch apply-all
+
+unpatch:
+	dpatch deapply-all
+	rm -rf patch-stamp debian/patched
 
 install: build
 	dh_testdir
@@ -54,32 +36,30 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/gourmet.
-	python setup.py install --root=$(CURDIR)/debian/gourmet --install-lib /usr/share
+	python setup.py install --no-compile --root=$(CURDIR)/debian/gourmet --install-lib /usr/share
 
 
 # Build architecture-independent files here.
 binary-indep: build install
 # We have nothing to do by default.
 
-
 # Build architecture-dependent files here.
 binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs CHANGES
-#	dh_installdocs
+	dh_installdocs
 #	dh_installexamples
 #	dh_install
-#	dh_installmenu
+	dh_installmenu
 #	dh_installdebconf
 #	dh_installlogrotate
 #	dh_installemacsen
-#	dh_installpam
 #	dh_installmime
 #	dh_installinit
 #	dh_installcron
 #	dh_installinfo
-	dh_installman
+	dh_installman debian/gourmet.1
 	dh_link
 	dh_strip
 	dh_compress
