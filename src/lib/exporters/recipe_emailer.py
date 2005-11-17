@@ -120,11 +120,11 @@ class EmailerDialog (RecipeEmailer):
 
     def setup_dialog (self, force = False):
         if force or not self.prefs.get('emailer_dont_ask',False):
-            d=de.preferences_dialog(options=self.option_list,
-                                    option_label=_("Email Options"),
-                                    value_label="",
-                                    dont_ask_cb=self.dont_ask_cb,
-                                    dont_ask_custom_text=_("Don't ask before sending e-mail."))
+            d=de.PreferencesDialog(options=self.option_list,
+                                   option_label=_("Email Options"),
+                                   value_label="",
+                                   dont_ask_cb=self.dont_ask_cb,
+                                   dont_ask_custom_text=_("Don't ask before sending e-mail."))
             retlist = d.run()
             if retlist:
                 for o in retlist:
