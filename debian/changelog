@@ -1,3 +1,17 @@
+gourmet (0.9.0.2-1) breezy; urgency=low
+
+  * Make compatible with python2.3
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Tuesday, 8 Nov 2005 22:24:17 -0400	
+
+
+gourmet (0.9.0.1-2) breezy; urgency=low
+
+  * Architecture fix in debian package thanks to Sean and Roberto.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Tuesday, 8 Nov 2005 22:24:17 -0400	
+
+
 gourmet (0.9.0.1-1) breezy; urgency=low
 
   * Fixed shopping list handling of ranges.
