@@ -322,27 +322,27 @@ class ConvenientImporter (importer.importer):
             return f(self,*args,**kwargs)
         return _
 
-    @autostart_rec
     def add_attribute (self, attname, txt):
+        self.set_added_to(True)
         txt=txt.strip()
         if self.rec.has_key(attname):
             self.rec[attname] = self.rec[attname] + ', ' + txt
         else:
             self.rec[attname] = txt
 
-    @autostart_rec
     def add_text (self, attname, txt):
+        self.set_added_to(True)
         if self.rec.has_key(attname):
             self.rec[attname] = self.rec[attname] + '\n' + txt
         else:
             self.rec[attname] = txt
 
-    @autostart_rec
     def add_ing_group (self, txt):
+        self.set_added_to(True)
         self.group = txt.strip()
 
-    @autostart_rec
     def add_ing_from_text (self, txt):
+        self.set_added_to(True)
         txt=txt.strip()
         txt = re.sub('\s+',' ',txt)
         if not txt: return        
