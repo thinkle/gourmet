@@ -88,17 +88,20 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.history = Undo.MultipleUndoLists(self.undo,self.redo,
                                               get_current_id=self.notebook.get_current_page
                                               )
-        self.notebook_pages = {0:'display',
-                               1:'attributes',
+        self.NOTEBOOK_DISPLAY_PAGE = 0
+        self.NOTEBOOK_ATTR_PAGE = 1
+        self.notebook_pages = {self.NOTEBOOK_DISPLAY_PAGE:'display',
+                               self.NOTEBOOK_ATTR_PAGE:'attributes',
                                2:'ingredients',
                                3:'instructions',
                                4:'modifications'}
+        
         def hackish_notebook_switcher_handler (*args):
             # because the switch page signal happens before switching...
             # we'll need to look for the switch with an idle call
             gobject.idle_add(self.notebookChangeCB)
         self.notebook.connect('switch-page',hackish_notebook_switcher_handler)
-        self.notebook.set_current_page(0)
+        #self.notebook.set_current_page(0)        
         self.page_specific_handlers = []
         self.notebookChangeCB()
         self.create_ingTree()
@@ -117,6 +120,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.updateRecipe(r)
             # and set our page to the details page
             self.notebook.set_current_page(1)
+        self.setEditMode(self.new)
         t.end()
         t=TimeAction('RecCard.__init__ 4',0)
         self.pref_id = 'rc%s'%self.current_rec.id
@@ -260,7 +264,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                             ],
              'undoButtons':[{'undo':[{},['undoButton','undoMenu']]},
                             {'redo':[{},['redoButton','redoMenu']]},
-                            ]
+                            ],
+             'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
+                                     ['editButton','editMenu']]},
+                            ],
+             'saveButtons':[{'save':[{},['saveButton','saveMenu']]},
+                            {'revert':[{},['revertButton','revertMenu'],]},]
              },
             # callbacks
             [('ingUp',self.ingUpCB),
@@ -270,6 +279,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
              ('ingGroup',self.ingNewGroupCB),
              ('ingImport',self.importIngredientsCB),
              ('ingPaste',self.pasteIngsCB),
+             ('edit',self.editCB),
              ]
             )
         self.notebook_page_actions = {'ingredients':['ingredientGroup','selectedIngredientGroup'],
@@ -1471,6 +1481,23 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.resetIngredients()
             self.message(_('Changes to ingredients saved automatically.'))
         self.cb.request_text(add_ings_from_clippy)
+
+    def editCB (self, button):
+        #for k,v in self.notebook_pages.items():
+        #    if v=='attributes':
+        self.setEditMode(button.get_active())
+            
+    def setEditMode (self, edit_on):
+        if edit_on:
+            self.notebook.set_show_tabs(True)
+            self.undoButtons.set_visible(True)
+            self.saveButtons.set_visible(True)
+            self.notebook.set_current_page(self.NOTEBOOK_ATTR_PAGE)
+        else:
+            self.notebook.set_show_tabs(False)
+            self.undoButtons.set_visible(False)
+            self.saveButtons.set_visible(False)            
+            self.notebook.set_current_page(self.NOTEBOOK_DISPLAY_PAGE)
 
     def importIngredients (self, file):
         ifi=file(file,'r')
