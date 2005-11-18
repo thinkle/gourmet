@@ -147,7 +147,7 @@ class KeyManager:
             if not w:
                 continue
             srch = self.rm.ikview.select(word=w)
-            total_count = sum(m.count for m in srch)
+            total_count = sum([m.count for m in srch])
             for m in srch:
                 ik = m.ingkey
                 if not retvals.has_key(ik):
