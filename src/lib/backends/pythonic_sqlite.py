@@ -24,16 +24,17 @@ class PythonicSQLite (PythonicSQL.PythonicSQL):
             print 'Bad Tom, Bad!'
             raise
         # We do some pretty lame quoting by hand here.
-        params = [(hasattr(p,'replace') and '"%s"'%p.replace('"','inch')
-                   or
-                   p==None and 'NULL'
-                   or
-                   type(p)!=bool and p
-                   or 
-                   int(p) 
-                   ) for p in params]
+        #params = [(hasattr(p,'replace') and '"%s"'%p.replace('"','\"')
+        #           or
+        #           p==None and 'NULL'
+        #           or
+        #           type(p)!=bool and p
+        #           or 
+        #           int(p) 
+        #           ) for p in params]
         try:
-            sql = [statement%tuple(params)]
+            statement = statement.replace('%s','?')
+            sql = [statement,params]
         except TypeError:
             print """There appears to be a problem
             with executing the statment %(statement)s
@@ -78,7 +79,6 @@ class PythonicSQLite (PythonicSQL.PythonicSQL):
 if __name__ == '__main__':
     import tempfile
     fi = tempfile.mktemp()
-    #fi = '/tmp/tmpKIE0WM'
     psl = PythonicSQLite(fi)
     psl.normalizations = {}
     psl.normalizations['First']=psl.get_table('First',[('id','int',['AUTOINCREMENT']),

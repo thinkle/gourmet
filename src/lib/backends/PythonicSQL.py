@@ -7,6 +7,13 @@ threading_debug_level = 1
 lock_change_debug_level = 1
 sql_debug_level = 0
 
+def needs_buffer (itm):
+    try:
+        unicode(itm)
+        return False
+    except:
+        return True
+
 class PythonicSQL:
 
     """PythonicSQL allows us to treat SQL queries in a more object-oriented/pythonic
@@ -66,12 +73,14 @@ class PythonicSQL:
     def new_cursor (self):
         return self.get_connection().cursor()
 
-    def __eliminate_booleans (self, lst):
+    def __cleanup_params (self, lst):
         if type(lst) == str: return lst
         retlst = []
         for i in lst:
             if type(i) == bool: retlst.append(int(i))
             elif i==None: retlst.append('NULL')
+            elif hasattr(i,'replace') and needs_buffer(i):
+                retlst.append(buffer(i))
             else: retlst.append(i)
         return retlst
 
@@ -82,7 +91,7 @@ class PythonicSQL:
         if len(sql) > 1:
             # if we have arguments, we have to get rid of booleans
             # which seem to be throwing errors
-            sql[1] = self.__eliminate_booleans(sql[1])
+            sql[1] = self.__cleanup_params(sql[1])
         try:            
             c.execute(*sql)
         except:
