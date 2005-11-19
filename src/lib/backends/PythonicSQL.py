@@ -44,7 +44,7 @@ class PythonicSQL:
                 print 'Opening new connection for thread %s'%thread
                 self._connection[thread]=self.connect()
         return self._connection[thread]
-
+    
     def get_cursor (self):
         """Return our persistent cursor for the current thread."""
         if self._threadsafety == 3:
@@ -71,7 +71,7 @@ class PythonicSQL:
         retlst = []
         for i in lst:
             if type(i) == bool: retlst.append(int(i))
-            if i==None: retlst.append('NULL')
+            elif i==None: retlst.append('NULL')
             else: retlst.append(i)
         return retlst
 
@@ -129,7 +129,7 @@ class PythonicSQL:
         add_string = add_string[0:-1] + ")"
         self.execute([add_string,sql_params])
         if key:
-            self.execute(['CREATE INDEX %s%sIndex'%(name,key) +' ON %s (%s)',[name,key]])
+            self.execute(['CREATE INDEX %s%sIndex'%(name,key) +' ON %s (%s)'%(name,key),])
         self.changed=True
         return TableObject(self, name, key)
 
