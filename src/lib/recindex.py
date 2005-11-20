@@ -607,9 +607,9 @@ class RecipeModel (pageable_store.PageableViewStore):
         # this is rather specifically metakit hackery which will have
         # to be reworked should another backend ever be implemented.
         sorted_catview = self.rd.catview.sort('category')
-        for r in sorted_catview:
-            if r and r.category:
-                self.rd.modify_rec(r,
-                                   {'categoryname':r.category})
-                #rec[0].categoryname=r.category
+        if self.rd.__class__.__module__.find('rmetakit')>=0:
+            for r in sorted_catview:
+                if r and r.category:
+                    self.rd.modify_rec(r,
+                                       {'categoryname':r.category})
         self.made_categories=True
