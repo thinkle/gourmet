@@ -148,7 +148,7 @@ class KeyEditor:
         else:
             row = normtable.select(ingkey=key)[0]
             row.ingkey = new_key
-            rows = normtable.select(ingkey=new_key)
+            #rows = normtable.select(ingkey=new_key)
         self.reset_tree()
         
     def changeItem (self, key, item=None, new_key=None, new_item=None):
