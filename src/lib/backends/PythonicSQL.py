@@ -294,7 +294,8 @@ class PythonicSQL:
         self.changed=True
         self.execute([up_string,sql_params])
 
-    def retrieve (self, name, fields=None, criteria={}, logic="and", filters=[]):
+    def retrieve (self, name, fields=None, criteria={}, logic="and",
+                  filters=[],sortby=[]):
         """Retrieve FIELDS from table NAME where CRITERIA are met, possibly filtering
         with functions in list FILTERS. Filters will be handed a RowObject and expected
         to return TRUE to keep the row.  If FIELDS is None, we select all fields in the table.
@@ -306,7 +307,10 @@ class PythonicSQL:
             sql_params += wpar
         if not fields:
             fields = self.get_fields_for_table(name)
-        return self.execute_and_fetch([sel_string,sql_params],name,self,fields,filters=filters)
+        if sortby:
+            sel_string = sel_string +' ORDER BY '+', '.join(sortby)
+        return self.execute_and_fetch([sel_string,sql_params],name,self,fields,
+                                      filters=filters)
 
     def retrieve_group (self, name, field, criteria={}, logic='and',
                         filters=[],groupattr='groupvw'):
@@ -324,7 +328,7 @@ class PythonicSQL:
         c.execute(sel_string,sql_params)
         fields = self.get_fields_for_table(name)
         return FetcherPivot(c,name,self,fields,filters,pivot_on=field,pivot_attr=groupattr,
-                            criteria=criteria)
+                            criteria=criteria,)
 
     def retrieve_unique (self, name, field, criteria={}, logic="and",
                          filters=[]):
@@ -387,8 +391,6 @@ class PythonicSQL:
         else:
             return self._table_fields[name]
         
-        
-
     def count (self, table, column, criteria=None):
         if not column: column = '*'
         cnt_string = "SELECT COUNT(%s) FROM %s"%(column,table)
@@ -562,15 +564,21 @@ class TableObject (list):
     It is a list, which allows us to access rows in a table with an
     index or to loop through rows easily. TableObject also provides
     the ability to filter based on criteria, returning new
-    TableObjects representing "filtered" tables (essentially, saved queries)."""
+    TableObjects representing "filtered" tables (essentially, saved queries).
+    """
 
-    def __init__ (self, db, table, key=None, criteria=None, filters=[]):
+    def __init__ (self, db, table,
+                  key=None,
+                  criteria=None,
+                  filters=[],
+                  sortby=[]):
         self._last = None
         self.__db__ = db
         self.__tablename__ = table
         self.__key__ = key
         self.__criteria__ = criteria
         self.__filters__ = filters
+        self.__sortby__ = sortby
         for f in self.__db__.get_fields_for_table(self.__tablename__):
             setattr(self,f,f)
         debug('Created TableObject %s, filters=%s'%(self,self.__filters__),0)
@@ -610,7 +618,6 @@ class TableObject (list):
         self._last = item.copy()
         self.__db__.insert(self.__tablename__,item)
         
-
     def extend (self, lst):
         for i in lst: self.append(i)
 
@@ -656,7 +663,8 @@ class TableObject (list):
                            self.__tablename__,
                            key=self.__key__,
                            criteria=criteria,
-                           filters=self.__filters__)
+                           filters=self.__filters__,
+                           sortby=self.__sortby__)
 
     def filter (self, *filters):
         debug('Table Filtering',0)
@@ -666,7 +674,28 @@ class TableObject (list):
                            self.__tablename__,
                            key=self.__key__,
                            criteria=self.__criteria__,
-                           filters=myfilters)
+                           filters=myfilters,
+                           sortby=self.__sortby__)
+
+    def sortrev (self, allprops=[], revprops=[]):
+        """Sort our table.
+
+        We borrow metakit's very strange syntax here.
+        allprops is a list of all properties we are sorting on, in order.
+
+        revprops is a list of the subset of allprops for which we sort
+        in reverse order.
+        """
+        sortby = []
+        for p in allprops:
+            if p in revprops: sortby.append(p+' DESC')
+            else: sortby.append(p+' ASC')
+        return TableObject(self.__db__,
+                           self.__tablename__,
+                           key=self.__key__,
+                           criteria=self.__criteria__,
+                           filters=self.__filters__,
+                           sortby=sortby)
     
     def __getslice__ (self, i, j):
         generator = self.__iter__()
@@ -692,6 +721,6 @@ class TableObject (list):
     def __iter__ (self):
         return iter(self.__db__.retrieve(self.__tablename__,
                                          criteria=self.__criteria__,
-                                         filters=self.__filters__))
-
-
+                                         filters=self.__filters__,
+                                         sortby=self.__sortby__,
+                                         ))

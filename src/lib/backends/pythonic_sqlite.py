@@ -2,6 +2,7 @@ import PythonicSQL
 #import sqlite
 from pysqlite2 import dbapi2 as sqlite
 from gourmet.gdebug import debug
+import unittest
 
 class PythonicSQLite (PythonicSQL.PythonicSQL):
     def __init__ (self, file):
@@ -76,43 +77,59 @@ class PythonicSQLite (PythonicSQL.PythonicSQL):
         debug("get_fields_for_table returning: %s"%retval,0)
         return retval
 
-if __name__ == '__main__':
-    import tempfile
-    fi = tempfile.mktemp()
-    psl = PythonicSQLite(fi)
-    psl.normalizations = {}
-    psl.normalizations['First']=psl.get_table('First',[('id','int',['AUTOINCREMENT']),
-                                                       ('First','text',[])],
-                                              'id')
-    psl.normalizations['Last']=psl.get_table('Last',[('id','int',['AUTOINCREMENT']),
-                                                      ('Last','text',[])],
-                                              'id')
-    table_desc = [('First','int',[]),
-                  ('Last','int',[]),
-                  ('Birth_Month','int',[]),
-                  ('Birth_Day','int',[]),
-                  ('Birth_Year','int',[]),
-                  ('myid','int',['AUTOINCREMENT']),
-                  ]
-    table=psl.get_table('names',table_desc,'myid')
-    view = psl.get_view('names',table_desc)
-    if len(view) == 0:
-        view.append({'Birth_Day':21,'First':'Thomas','Last':'Hinkle'})               
-        view.extend([{'First':'John'},
-                   {'First':'Susan'},
-                   {'First':'David'},]
-                  )
-    import random
-    for n in range(100):
-        view.append({'Birth_Day':random.randint(1,28),
-                   'Birth_Month':random.randint(1,12),
-                   'First':random.choice(['John','Harry','Bob','Lucy','Genevieve','Katharine','Susan']),
-                   'Last':random.choice(['Hinkle','Sayre','Wilkins','Wright','Wilson']),
-                   })
-    for t in view:
-        print 'row:'
-        for m in dir(t):
-            print getattr(t,m)
-    #psl.c.commit()
 
+class PythonicSQLiteTestCase (unittest.TestCase):
+
+    def setUp (self):
+        import tempfile
+        fi = tempfile.mktemp()
+        psl = PythonicSQLite(fi)
+        psl.normalizations = {}
+        psl.normalizations['First']=psl.get_table('First',[('id','int',['AUTOINCREMENT']),
+                                                           ('First','text',[])],
+                                                  'id')
+        psl.normalizations['Last']=psl.get_table('Last',[('id','int',['AUTOINCREMENT']),
+                                                         ('Last','text',[])],
+                                                 'id')
+        table_desc = [('First','int',[]),
+                      ('Last','int',[]),
+                      ('Birth_Month','int',[]),
+                      ('Birth_Day','int',[]),
+                      ('Birth_Year','int',[]),
+                      ('myid','int',['AUTOINCREMENT']),
+                      ]
+        table=psl.get_table('names',table_desc,'myid')
+        view = psl.get_view('names',table_desc)
+        self.view = view
+
+    def testDB (self):
+        # Test append
+        view = self.view
+        view.append({'Birth_Day':21,'First':'Thomas','Last':'Hinkle'})
+        assert(view[-1].Birth_Day==21)
+        assert(view[-1].First=='Thomas')
+        # Test extend
+        view.extend([{'First':'John','Last':'Farfenugen'},
+                     {'First':'Susan','Last':'Foo'},
+                     {'First':'David','Last':'McCamant'},
+                     {'First':'David','Last':'Hinkle'},
+                     ]
+                    )
+        assert(view.fetch_one(First='John').Last=='Farfenugen')
+        assert(len(view.select(First='David'))==2)
+        # Test sorting
+        view.append({'First':'Aaron','Last':'Zocodover'})
+        assert(view.sortrev([view.First])[0].First=='Aaron')
+        assert(view.sortrev([view.Last])[-1].First=='Aaron')
+        # Reverse sort
+        assert(view.sortrev([view.First],[view.First])[-1].First=='Aaron')
+        assert(view.sortrev([view.Last],[view.Last])[0].First=='Aaron')
     
+if __name__ == '__main__':
+    unittest.main()
+    #class FakeTest (PythonicSQLiteTestCase):
+    #    def __init__ (self): pass
+    #
+    #ft=FakeTest()
+    #ft.setUp()
+    #view = ft.view
