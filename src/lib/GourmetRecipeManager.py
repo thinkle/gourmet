@@ -1314,10 +1314,17 @@ def startGUI ():
 if __name__ == '__main__':
     if os.name!='nt':
         import profile, tempfile,os.path
-        profi = os.path.join(tempfile.tempdir,'GOURMET_PROFILE')
-        profile.run('startGUI()',profi)
-        import pstats
-        p=pstats.Stats(profi)
-        p.strip_dirs().sort_stats('cumulative').print_stats()
+        import hotshot, hotshot.stats
+        #profi = os.path.join(tempfile.tempdir,'GOURMET_PROFILE')
+        prof = hotshot.Profile(os.path.join(tempfile.tempdir,'GOURMET_HOTSHOT_PROFILE'))
+        prof.runcall(startGUI)
+        stats = hotshot.stats.load(os.path.join(tempfile.tempdir,'GOURMET_HOTSHOT_PROFILE'))
+        stats.strip_dirs()
+        stats.sort_stats('time','calls')
+        stats.print_stats()
+        #profile.run('startGUI()',profi)
+        #import pstats
+        #p=pstats.Stats(profi)
+        #p.strip_dirs().sort_stats('cumulative').print_stats()
     else:
         startGUI()
