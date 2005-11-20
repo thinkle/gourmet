@@ -222,7 +222,7 @@ class importer:
             ):
             #self.ing['ingkey']=self.km.get_key(self.ing['item'],0.9)
             if self.ing.has_key('item'):
-                self.ing['ingkey']=self.km.get_key(self.ing['item'])
+                self.ing['ingkey']=self.km.get_key_fast(self.ing['item'])
             else:
                 debug('Ingredient has no item! %s'%self.ing,-1)
         timeaction.end()
