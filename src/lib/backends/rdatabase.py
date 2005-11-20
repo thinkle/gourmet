@@ -1044,6 +1044,10 @@ class dbDic:
 
 # This Normalizer stuff is really metakit only for now...
 import metakit
+
+quick_norms = {}
+quick_rnorms = {}
+
 class Normalizer:
     def __init__ (self, rd, normdic):
         self.__rd__ = rd
@@ -1053,9 +1057,16 @@ class Normalizer:
         if not v: return None
         k=str(k)
         v=str(v)
+        if quick_norms.has_key(k):
+            if quick_norms[k].has_key(v):
+                return quick_norms[k][v]
+        else:
+            quick_norms[k]={}
+            quick_rnorms[k]={}
         normtable = self.__normdic__[k]
         row = self.__rd__.fetch_one(normtable,**{k:v})
         if row:
+            quick_norms[k][v]=row.id; quick_rnorms[k][row.id]=v
             return row.id
         else:
             n=self.__rd__.increment_field(normtable,'id')
@@ -1065,14 +1076,23 @@ class Normalizer:
             else:
                 normtable.append({k:v})
                 r = normtable[-1]
+            quick_norms[k][v]=r.id; quick_rnorms[k][r.id]=v
             return r.id
         
     def int_to_str (self, k, v):
+        if quick_rnorms.has_key(k):
+            if quick_rnorms[k].has_key(v):
+                return quick_rnorms[k][v]
+        else:
+            quick_rnorms[k]={}
+            quick_norms[k]={}
         normtable = self.__normdic__[k]
         if type(v)!=int:
             print "int_to_str says: WTF are you handing me ",v,"for?"
         row = self.__rd__.fetch_one(normtable,id=v)        
         if row:
+            sval = getattr(row,k)
+            quick_rnorms[k][v]=sval; quick_norms[k][sval]=v
             return getattr(row,k)
         elif v==0:
             return None
