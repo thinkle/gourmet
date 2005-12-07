@@ -1058,7 +1058,7 @@ def test_db (db):
     ing = db.add_ing({'amount':1,
                       'unit':'c.',
                       'item':'Carrot juice',
-                      'key':'juice, carrot',
+                      'ingkey':'juice, carrot',
                       'id':db.new_rec().id,
                       })
     ing = db.modify_ing(ing,{'amount':2})
