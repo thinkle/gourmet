@@ -3,6 +3,7 @@ from gourmet import gglobals
 import pythonic_sqlite as psl
 import rdatabase
 import traceback
+from gettext import gettext as _
 #import rmetakit
 from gourmet.gdebug import debug, TimeAction
 
@@ -69,6 +70,10 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
             self.rview.append(rdict)
             return self.rview[-1]
 
+    def validate_ingdic (self, dic):
+        if not dic.get('deleted',False):
+            dic['deleted']=False
+
     def do_modify_rec (self, rec, dic):
         if not rec or not dic: return
         self.update(self.rview.__tablename__,
@@ -80,6 +85,8 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
         self.update(self.iview.__tablename__,
                     ing.__fields__,
                     ingdict)
+        ing.__fields__.update(ingdict)
+        return self.iview.select(**ing.__fields__)
 
     def save (self):
         self.get_connection().commit()
@@ -181,7 +188,11 @@ class dbDic (rdatabase.dbDic):
 #  #  db_kwargs = {'filename':'/tmp/foo.db'}
 
 if __name__ == '__main__':
-    db = RecipeManager(file='/tmp/foo.db')
+    import tempfile
+    fi = tempfile.mktemp('.db')
+    print 'initialize DB',fi
+    db = RecipeManager(file=fi)
+    print 'Begin testing.'
     rdatabase.test_db(db)
 #    import unittest
 #    unittest.main()
