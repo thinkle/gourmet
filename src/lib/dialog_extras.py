@@ -220,7 +220,7 @@ class EntryDialog (ModalDialog):
             self.elabel.set_line_wrap(True)
             self.elabel.set_selectable(True)
             self.elabel.set_alignment(0,0)
-            self.hbox.add(self.label)
+            self.hbox.add(self.elabel)
             self.elabel.show()
             self.elabel.set_padding(H_PADDING,Y_PADDING)
         self.entry = gtk.Entry()
