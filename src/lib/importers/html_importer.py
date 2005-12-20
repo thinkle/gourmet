@@ -408,7 +408,7 @@ class WebPageImporter (importer.importer):
         self.url = url
         self.prog = prog
         self.interactive = interactive
-        importer.importer.__init__(self,rd,threaded=threaded,total=total,prog=prog,do_markup=False,
+        importer.importer.__init__(self,rd,threaded=threaded,total=total,prog=prog,do_markup=True,
                                    conv=conv)
 
     def run (self):
