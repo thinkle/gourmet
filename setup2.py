@@ -10,14 +10,19 @@
 from distutils.core import setup
 import py2exe
 
+#do the following imports to get the version number
+import sys, os
+sys.path.append(os.path.join('.', 'src', 'lib'))
+import version
+
 includes = ["atk", 
         #    "gourmet.importers.html_plugins.allrecipes", 
             "gourmet.importers.html_plugins.html_helpers", 
         #    "gourmet.importers.html_plugins.eating_well",
-            "gourmet.importers.html_plugins.epicurious",
+        #    "gourmet.importers.html_plugins.epicurious",
         #    "gourmet.importers.html_plugins.recipebookonline",
         #    "gourmet.importers.html_plugins.recipezaar",
-        #    "gourmet.importers.html_importer",
+            "gourmet.importers.html_importer"
         #    "gtk._gtk" 
             ]
 
@@ -42,7 +47,7 @@ setup(
     # The first three parameters are not required, if at least a
     # 'version' is given, then a versioninfo resource is built from
     # them and added to the executables.
-    version = "0.8.5.12",
+    version = version.version,
     description = "Gourmet Recipe Manager",
     name = "Gourmet Recipe Manager",
     author = "Thomas Mills Hinkle",
@@ -51,8 +56,10 @@ setup(
 
     options = {"py2exe": {
                           # create a compressed zip archive
-                          "compressed": 0,
+                          "compressed": 1,
                           "optimize": 2,
+                          "bundle_files": 1,
+                          "dist_dir": "C:\Python24\dist",           #choose another target for the dist dir instead of ./dist.
                           "includes": includes,
                           "dll_excludes": dll_excludes
                         }
