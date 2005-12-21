@@ -43,6 +43,8 @@ dll_excludes = ["libpangowin32-1.0-0.dll",
                 "libpango-1.0-0.dll"
                 ]
 
+packages = ["xml.dom"]
+
 setup(
     # The first three parameters are not required, if at least a
     # 'version' is given, then a versioninfo resource is built from
@@ -61,7 +63,8 @@ setup(
                           "bundle_files": 1,
                           "dist_dir": "C:\Python24\dist",           #choose another target for the dist dir instead of ./dist.
                           "includes": includes,
-                          "dll_excludes": dll_excludes
+                          "dll_excludes": dll_excludes,
+                          "packages" : packages
                         }
                 },
 
