@@ -22,7 +22,7 @@
 ;Defines
 
     !define GOURMET_NAME "Gourmet Recipe Manager"
-    !define GOURMET_VERSION "0.8.6.4"
+    !define GOURMET_VERSION "0.9.1"
     !define GOURMET_PUBLISHER "Thomas M. Hinkle"
     !define GOURMET_WEB_SITE "http://grecipe-manager.sourceforge.net"
     !define GOURMET_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Gourmet.exe"
@@ -40,11 +40,11 @@
     !define GAIM_UNINST_EXE				"gourmet-uninst.exe"
     !define GAIM_REG_LANG				"Installer Language"
     
-    !define GTK_VERSION				"2.6.10"
+    !define GTK_VERSION				"2.8.8"
     !define GTK_REG_KEY				"SOFTWARE\GTK\2.0"
     !define GTK_DEFAULT_INSTALL_PATH		"$COMMONFILES\GTK\2.0"
-    !define GTK_RUNTIME_INSTALLER		"gtk-win32-2.6.10-rc1.exe"  ;"gtk-runtime*.exe"
-    
+    !define GTK_RUNTIME_INSTALLER		"gtk-win32-2.8.8-rc2.exe"  ;"gtk-runtime*.exe"
+
     !define GAIM_VERSION                        "${GOURMET_VERSION}"
     
     !define GTK_DEFAULT_THEME_GTKRC_DIR		"share\themes\Default\gtk-2.0"
@@ -311,6 +311,11 @@ Section $(GAIM_SECTION_TITLE) SecGaim
     SetOutPath "$INSTDIR\data\"
     File /r "C:\Python24\gourmet\data\*.*"
     
+    ; We include the plugin scripts separately into the install directory, because the gourmet executable
+    ; freeze process is not able to incorporate them into the exe due to some funky way they are being
+    ; imported.
+    SetOutPath "$INSTDIR\html_plugins\"
+    File /x "__init__.py" /x "html_helpers.py" /x "recipezaar.py" "C:\Python24\Lib\site-packages\gourmet\importers\html_plugins\*.py"
     
     ; the following are taken care of by the /r flag to File, which recursively takes everything
     ;SetOutPath "$INSTDIR\data\i18n"
@@ -510,13 +515,13 @@ Section $(GTK_SECTION_TITLE) SecGtk
     ;ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE $ISSILENT /D=$GTK_FOLDER'
     ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER' ;removed silent flag
     
-    ;lets install the theme
-    SetOutPath "$GTK_FOLDER\share\themes\AquaX\"
-    File /r ".\AquaX\*.*"
-    ;and lets set it as default - first rename original, then place the one with AquaX in it.
-    Rename "$GTK_FOLDER\etc\gtk-2.0\gtkrc" "$GTK_FOLDER\etc\gtk-2.0\gtkrc.old"
-    SetOutPath "$GTK_FOLDER\etc\gtk-2.0\"
-    File ".\gtkrc"
+    ;;lets install the theme
+    ;SetOutPath "$GTK_FOLDER\share\themes\AquaX\"
+    ;File /r ".\AquaX\*.*"
+    ;;and lets set it as default - first rename original, then place the one with AquaX in it.
+    ;Rename "$GTK_FOLDER\etc\gtk-2.0\gtkrc" "$GTK_FOLDER\etc\gtk-2.0\gtkrc.old"
+    ;SetOutPath "$GTK_FOLDER\etc\gtk-2.0\"
+    ;File ".\gtkrc"
     
     SetRebootFlag true
     
@@ -538,13 +543,13 @@ Section $(GTK_SECTION_TITLE) SecGtk
     ;ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE $ISSILENT'
     ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER' ;removed silent flag
     
-    ;lets install the theme
-    SetOutPath "$GTK_FOLDER\share\themes\AquaX\"
-    File /r ".\AquaX\*.*"
-    ;and lets set it as default - first rename original, then place the one with AquaX in it.
-    Rename /REBOOTOK "$GTK_FOLDER\etc\gtk-2.0\gtkrc" "$GTK_FOLDER\etc\gtk-2.0\gtkrc.old"
-    SetOutPath "$GTK_FOLDER\etc\gtk-2.0\"
-    File ".\gtkrc"
+    ;;lets install the theme
+    ;SetOutPath "$GTK_FOLDER\share\themes\AquaX\"
+    ;File /r ".\AquaX\*.*"
+    ;;and lets set it as default - first rename original, then place the one with AquaX in it.
+    ;Rename /REBOOTOK "$GTK_FOLDER\etc\gtk-2.0\gtkrc" "$GTK_FOLDER\etc\gtk-2.0\gtkrc.old"
+    ;SetOutPath "$GTK_FOLDER\etc\gtk-2.0\"
+    ;File ".\gtkrc"
     
     Goto gtk_install_cont
 
@@ -572,13 +577,13 @@ Section $(GTK_SECTION_TITLE) SecGtk
     ;ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE $ISSILENT'
     ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER' ;removed /S flag... silent mode places icons root of start menu.
     
-    ;lets install the theme
-    SetOutPath "$GTK_FOLDER\share\themes\AquaX\"
-    File /r ".\AquaX\*.*"
-    ;and lets set it as default - first rename original, then place the one with AquaX in it.
-    Rename /REBOOTOK "$GTK_FOLDER\etc\gtk-2.0\gtkrc" "$GTK_FOLDER\etc\gtk-2.0\gtkrc.old"
-    SetOutPath "$GTK_FOLDER\etc\gtk-2.0\"
-    File ".\gtkrc"
+    ;;lets install the theme
+    ;SetOutPath "$GTK_FOLDER\share\themes\AquaX\"
+    ;File /r ".\AquaX\*.*"
+    ;;and lets set it as default - first rename original, then place the one with AquaX in it.
+    ;Rename /REBOOTOK "$GTK_FOLDER\etc\gtk-2.0\gtkrc" "$GTK_FOLDER\etc\gtk-2.0\gtkrc.old"
+    ;SetOutPath "$GTK_FOLDER\etc\gtk-2.0\"
+    ;File ".\gtkrc"
     
     IfErrors gtk_install_error
     Goto done
@@ -608,13 +613,13 @@ Section $(GTK_SECTION_TITLE) SecGtk
 
     IfErrors gtk_install_error
 
-    ;lets install the theme
-      SetOutPath "$GTK_FOLDER\share\themes\AquaX\"
-      File /r ".\AquaX\*.*"
-    ;and lets set it as default - first rename original, then place the one with AquaX in it.
-      Rename /REBOOTOK "$GTK_FOLDER\etc\gtk-2.0\gtkrc" "$GTK_FOLDER\etc\gtk-2.0\gtkrc.old"
-      SetOutPath "$GTK_FOLDER\etc\gtk-2.0\"
-      File ".\gtkrc"
+    ;;lets install the theme
+    ;  SetOutPath "$GTK_FOLDER\share\themes\AquaX\"
+    ;  File /r ".\AquaX\*.*"
+    ;;and lets set it as default - first rename original, then place the one with AquaX in it.
+    ;  Rename /REBOOTOK "$GTK_FOLDER\etc\gtk-2.0\gtkrc" "$GTK_FOLDER\etc\gtk-2.0\gtkrc.old"
+    ;  SetOutPath "$GTK_FOLDER\etc\gtk-2.0\"
+    ;  File ".\gtkrc"
 
     Delete "$GTK_FOLDER\bin\*.dll"
     
@@ -749,6 +754,7 @@ Section Uninstall
     ;Delete "$SMPROGRAMS\$ICONS_GROUP\Gourmet Recipe Manager.lnk"
 
     RMDir /r "$SMPROGRAMS\$ICONS_GROUP"
+    Delete "$DESKTOP\Gourmet Recipe Manager.lnk"
     
     ; Directories
     RMDir /r "$INSTDIR\documentation\"
@@ -760,7 +766,7 @@ Section Uninstall
     ; TODO (done, already taken care of above): work on unhardcoding this, since it can be in hklm and hkcu
     DeleteRegKey ${GOURMET_UNINST_ROOT_KEY} "${GOURMET_UNINST_KEY}"
     DeleteRegKey HKLM "${GOURMET_DIR_REGKEY}"
-    SetAutoClose true
+    SetAutoClose false ;see if that lets us look at the uninstall log
 
     Goto done
 
