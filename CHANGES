@@ -1,3 +1,10 @@
+==== Version 0.9.0.3 changes since 0.9.0.1 ====
+* Fix email export
+* Improve recipe card interface.
+
+==== Version 0.9.0.2 changes since 0.9.0.1 ====
+* Support python2.3
+
 ==== Version 0.9.0.1 changes since 0.9.0 ====
 * Fixed shopping list handling of ranges.
 * Fixed up MANIFEST to include all necessary files in our release.
