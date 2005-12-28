@@ -158,7 +158,6 @@ class RecData:
          ('unit','int',[]), 
          ('factor','float',[]),],
         )
-        
     
     def __init__ (self):
         # hooks run after adding, modifying or deleting a recipe.
@@ -217,7 +216,6 @@ class RecData:
         """
         # See rmetakit.py and rsqlite.py for examples of normalizing magic.
         return self.setup_table(*args,**kwargs)
-
         
     def setup_table (self, name, data, key=None):
         """Create and return an object representing a table/view of our database.
@@ -1054,13 +1052,22 @@ def test_db (db):
     assert(rec.title=='Foo')
     assert(rec.cuisine=='Bar')
     db.delete_rec(rec)
+    irec = db.new_rec()
     print 'Test ingredients'
+    rid = db.new_rec().id
     ing = db.add_ing({'amount':1,
                       'unit':'c.',
                       'item':'Carrot juice',
                       'ingkey':'juice, carrot',
-                      'id':db.new_rec().id,
+                      'id':rid
                       })
+    ing2 = db.add_ing({'amount':2,
+                       'unit':'c.',
+                      'item':'Tomato juice',
+                      'ingkey':'juice, tomato',
+                      'id':rid
+                      })
+    assert(len(db.get_ings(rid))==2)
     ing = db.modify_ing(ing,{'amount':2})
     assert(ing.amount==2)
     ing = db.modify_ing(ing,{'unit':'cup'})
