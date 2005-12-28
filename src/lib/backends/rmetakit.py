@@ -188,7 +188,7 @@ class RecData (rdatabase.RecData):
             and
             self.normalizations.has_key(colname)
             and
-            isinstance(table,rdatabase.NormalizedView)
+            isinstance(table,NormalizedView)
             ):
             nsrch = self.search(self.normalizations[colname],colname,regexp,exact,use_regexp,recurse=False)
             if not nsrch: return []
