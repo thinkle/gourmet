@@ -1,9 +1,15 @@
 ; Installer script for win32 Gourmet
+; First author: Thomas Hinkle (thomas_hinkle@users.sourceforge.net)
+; Second author: Daniel Folkinshteyn (nanotube@users.sourceforge.net
+;
 ; Heavily borrowed from Installer script for win32 Gaim
 ; Herman Bloggs <hermanator12002@yahoo.com>
-
+;
 ; NOTE: this .NSI script is intended for NSIS 2.0 (final release).
 ;
+; NOTE: there is probably quite a bit of gaim-related stuff still left
+; in this script that can be safely removed... but it works perfectly
+; as it is. ~~d.f.
 
 ;--------------------------------
 ;Global Variables
@@ -17,6 +23,7 @@
     ;Var GOURMET_UNINST_ROOT_KEY
     Var GTK_VERSION_INSTALLED
     Var GTK_UPGRADE_MESSAGE_CONTENT
+    Var GTK_INSTALL_ERROR_HELPFUL
     
 ;--------------------------------
 ;Defines
@@ -54,15 +61,14 @@
     !define WITH_GTK
     
     ;TODO (done, answer is no) do we need these?
-    !define GTK_THEME_DIR				"..\gtk_installer\gtk_themes"
-    !define GAIM_INSTALLER_DEPS			"..\win32-dev\gaim-inst-deps"
+    ;!define GTK_THEME_DIR				"..\gtk_installer\gtk_themes"
+    ;!define GAIM_INSTALLER_DEPS			"..\win32-dev\gaim-inst-deps"
 
-    ;TODO (done) figure out where GAIM_VERSION comes from, and change that to gourmet-version, at any rate.
 
 ;--------------------------------
 ;Configuration
 
-    ;The name var is set in .onInit
+    ;The $name var is set in .onInit
     Name $name
 
     !ifdef WITH_GTK
@@ -162,13 +168,6 @@
         !insertmacro MUI_UNPAGE_FINISH
 
 
-
-;TODO (done) :these are probably taken care of in .onInit, at least installdir is.
-
-;InstallDir "$PROGRAMFILES\Gourmet Recipe Manager"
-;InstallDirRegKey HKLM "${GOURMET_DIR_REGKEY}" ""
-
-
 ;--------------------------------
 ;Languages
  
@@ -262,11 +261,8 @@
 Section $(GAIM_SECTION_TITLE) SecGaim
   SectionIn 1 RO
 
-  ; Check install rights..
   Call CheckUserInstallRights
   Pop $R0
-
-  ; Get GTK+ lib dir if we have it..
 
   StrCmp $R0 "NONE" gaim_none
   StrCmp $R0 "HKLM" gaim_hklm gaim_hkcu
@@ -299,14 +295,12 @@ Section $(GAIM_SECTION_TITLE) SecGaim
 
   gaim_install_files:
     SetOutPath "$INSTDIR"
-    ; Gaim files
-    SetOverwrite try   ;gaim setting: on
+    SetOverwrite try
     
-    ; fancy stuff here - recursively get everything from this dir,
-    ; instead of listing every file like we used to. thank you gaim.
-    ; TODO (done): put all the other files in here, too.
+    ; fancy stuff here - recursively get everything from this dir with /r flag,
+    ; instead of listing every file like we used to. thank you, gaim.
     File /r "C:\Python24\dist\*.*"
-    ;File "C:\Python24\msvcr71.dll" ;already included by py2exe
+    ;File "C:\Python24\msvcr71.dll" ;dont need this, since already included by py2exe
 
     SetOutPath "$INSTDIR\data\"
     File /r "C:\Python24\gourmet\data\*.*"
@@ -317,13 +311,6 @@ Section $(GAIM_SECTION_TITLE) SecGaim
     SetOutPath "$INSTDIR\html_plugins\"
     File /x "__init__.py" /x "html_helpers.py" /x "recipezaar.py" "C:\Python24\Lib\site-packages\gourmet\importers\html_plugins\*.py"
     
-    ; the following are taken care of by the /r flag to File, which recursively takes everything
-    ;SetOutPath "$INSTDIR\data\i18n"
-    ;File /r "C:\Python24\gourmet\data\i18n\*.*"
-    
-    ;SetOutPath "$INSTDIR\data\i18n\de_DE\LC_MESSAGES"
-    ;File "C:\Python24\gourmet\data\i18n\de_DE\LC_MESSAGES\gourmet.mo"
-
 
     SetOutPath "$INSTDIR\documentation\"
     SetOverwrite ifnewer
@@ -346,31 +333,11 @@ Section $(GAIM_SECTION_TITLE) SecGaim
     WriteUninstaller "$INSTDIR\${GAIM_UNINST_EXE}"
     SetOverwrite off
 
-    ; If we previously had gaim setup to run on startup, make it do so again
-    ; ----- gourmet doesnt run on startup, so we dont need this.
-    ;;StrCmp $STARTUP_RUN_KEY "HKCU" +1 +2
-    ;;WriteRegStr HKCU "${GAIM_STARTUP_RUN_KEY}" "Gaim" "$INSTDIR\gaim.exe"
-    ;;StrCmp $STARTUP_RUN_KEY "HKLM" +1 +2
-    ;;WriteRegStr HKLM "${GAIM_STARTUP_RUN_KEY}" "Gaim" "$INSTDIR\gaim.exe"
-
   done:
 SectionEnd ; end of default Gourmet section
 
-;Section -Post
-;  WriteUninstaller "$INSTDIR\uninst.exe"
-;  WriteRegStr HKLM "${GOURMET_DIR_REGKEY}" "" "$INSTDIR\Gourmet.exe"
-;  WriteRegStr ${GOURMET_UNINST_ROOT_KEY} "${GOURMET_UNINST_KEY}" "DisplayName" "$(^Name)"
-;  WriteRegStr ${GOURMET_UNINST_ROOT_KEY} "${GOURMET_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-;  WriteRegStr ${GOURMET_UNINST_ROOT_KEY} "${GOURMET_UNINST_KEY}" "DisplayIcon" "$INSTDIR\Gourmet.exe"
-;  WriteRegStr ${GOURMET_UNINST_ROOT_KEY} "${GOURMET_UNINST_KEY}" "DisplayVersion" "${GOURMET_VERSION}"
-;  WriteRegStr ${GOURMET_UNINST_ROOT_KEY} "${GOURMET_UNINST_KEY}" "URLInfoAbout" "${GOURMET_WEB_SITE}"
-;  WriteRegStr ${GOURMET_UNINST_ROOT_KEY} "${GOURMET_UNINST_KEY}" "Publisher" "${GOURMET_PUBLISHER}"
-;SectionEnd
-
-
 ;--------------------------------
 ;Shortcuts
-; TODO: check if that startmenu_write begin/end macros are necessary here...
 
 SubSection /e $(GAIM_SHORTCUTS_SECTION_TITLE) SecShortcuts
   Section /o $(GAIM_DESKTOP_SHORTCUT_SECTION_TITLE) SecDesktopShortcut
@@ -390,16 +357,6 @@ SubSection /e $(GAIM_SHORTCUTS_SECTION_TITLE) SecShortcuts
     SetOverwrite off
   SectionEnd
 SubSectionEnd
-
-;old stuff that we integrated
-;Section -AdditionalIcons
-;  SetOutPath $INSTDIR
-;  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-;  WriteIniStr "$INSTDIR\${GOURMET_NAME}.url" "InternetShortcut" "URL" "${GOURMET_WEB_SITE}"
-;  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Website.lnk" "$INSTDIR\${GOURMET_NAME}.url"
-;  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk" "$INSTDIR\uninst.exe"
-;  !insertmacro MUI_STARTMENU_WRITE_END
-;SectionEnd
 
 ;--------------------------------
 ;GTK+ Themes
@@ -487,13 +444,14 @@ Section $(GTK_SECTION_TITLE) SecGtk
   Pop $R0
   Pop $R6
 
-  ;concatenate the string from language files with instaleed version
+  ;concatenate the string from language files with installed version
   StrCpy $GTK_UPGRADE_MESSAGE_CONTENT $(GTK_UPGRADE_PROMPT)
   StrCpy $GTK_UPGRADE_MESSAGE_CONTENT "$GTK_UPGRADE_MESSAGE_CONTENT $\rCurrently installed GTK+ version is $GTK_VERSION_INSTALLED."
 
-  ; try making the gtk installer use silent mode. will reset to original value at the end of gtk section.
-  ;StrCpy $ISSILENT_STATE $ISSILENT
-  ;StrCpy $ISSILENT "/S"
+  ; Make a more helpful GTK install failed message
+  StrCpy $GTK_INSTALL_ERROR_HELPFUL $(GTK_INSTALL_ERROR)
+  StrCpy $GTK_INSTALL_ERROR_HELPFUL "$GTK_INSTALL_ERROR_HELPFUL $\r \
+                                    Please manually run $TEMP\gtk-runtime.exe after installation finishes to make sure GTK+ is installed."
 
   StrCmp $R0 "0" have_gtk
   StrCmp $R0 "1" upgrade_gtk
@@ -504,24 +462,13 @@ Section $(GTK_SECTION_TITLE) SecGtk
     ClearErrors
     MessageBox MB_YESNO "The installer has detected that you have no GTK+ on your machine. $\r \
                         It is required for Gourmet to run. Do you want to install GTK+ now (recommended)?" /SD IDYES IDNO done
-    ;MessageBox MB_OK "Please make sure NOT to select 'Reboot Now' at the end of GTK+ installation. $\rSince this is your first time installing GTK+ on this computer, $\r \
-                     you DO want to reboot after the entire installation process is finished." /SD IDOK
                      
     MessageBox MB_OK "We are now going to install GTK+ ${GTK_VERSION}. $\r Follow along with the installer, but \
                      please make sure NOT to select 'Reboot Now' at the end of GTK+ installation, if prompted. $\r \
                      Since this is your first time installing GTK+ on this computer, you might want to reboot \
                      after the entire installation process is finished, though." /SD IDOK
 
-    ;ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE $ISSILENT /D=$GTK_FOLDER'
     ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER' ;removed silent flag
-    
-    ;;lets install the theme
-    ;SetOutPath "$GTK_FOLDER\share\themes\AquaX\"
-    ;File /r ".\AquaX\*.*"
-    ;;and lets set it as default - first rename original, then place the one with AquaX in it.
-    ;Rename "$GTK_FOLDER\etc\gtk-2.0\gtkrc" "$GTK_FOLDER\etc\gtk-2.0\gtkrc.old"
-    ;SetOutPath "$GTK_FOLDER\etc\gtk-2.0\"
-    ;File ".\gtkrc"
     
     SetRebootFlag true
     
@@ -529,27 +476,18 @@ Section $(GTK_SECTION_TITLE) SecGtk
 
   upgrade_gtk:
     StrCpy $GTK_FOLDER $R6
-    ;IfSilent skip_mb ; not needed with /sd flag for mbox.
     MessageBox MB_YESNO "$GTK_UPGRADE_MESSAGE_CONTENT" /SD IDYES IDNO done
-    ;MessageBox MB_OK "Please make sure NOT to select 'Reboot Now' at the end of GTK+ installation. $\rSince you are upgrading GTK+, $\r \
-                     you do NOT have to reboot after installation finishes."
-    ;skip_mb:
-    MessageBox MB_OK "We are now going to install GTK+ ${GTK_VERSION}. $\r Follow along with the installer, but \
+
+    MessageBox MB_OK "First, we will uninstall the old version of GTK+. \
+                     Then, we are going to install GTK+ ${GTK_VERSION}. $\r Follow along with the installer, but \
                      please make sure NOT to select 'Reboot Now' at the end of GTK+ installation, if prompted. $\r \
                      Since you are upgrading GTK+, you do not have to reboot after installation finishes." /SD IDOK
 
-    
+    ; We need to uninstall old version of GTK first. 
+    Call UninstallGtk
+
     ClearErrors
-    ;ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE $ISSILENT'
-    ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER' ;removed silent flag
-    
-    ;;lets install the theme
-    ;SetOutPath "$GTK_FOLDER\share\themes\AquaX\"
-    ;File /r ".\AquaX\*.*"
-    ;;and lets set it as default - first rename original, then place the one with AquaX in it.
-    ;Rename /REBOOTOK "$GTK_FOLDER\etc\gtk-2.0\gtkrc" "$GTK_FOLDER\etc\gtk-2.0\gtkrc.old"
-    ;SetOutPath "$GTK_FOLDER\etc\gtk-2.0\"
-    ;File ".\gtkrc"
+    ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER' 
     
     Goto gtk_install_cont
 
@@ -559,35 +497,28 @@ Section $(GTK_SECTION_TITLE) SecGtk
       Goto done
 
     gtk_install_error:
-      Delete "$TEMP\gtk-runtime.exe"
-      ;IfSilent skip_mb1
-      MessageBox MB_OK $(GTK_INSTALL_ERROR) /SD IDOK
-      ;skip_mb1:
-      Quit
+      MessageBox MB_OK "$GTK_INSTALL_ERROR_HELPFUL" /SD IDOK
+      StrCpy $R5 "2"   ; marker saying that there were errors in gtk install
+      Goto done        ; instead of quitting install, we want to finish it properly, but indicate that gtk has to be installed manually.
 
-  have_gtk:
+  have_gtk:      ; Even if we have a sufficient version of GTK+, we give user choice to re-install.
     StrCpy $GTK_FOLDER $R6
     StrCmp $R1 "NONE" done ; If we have no rights.. can't re-install..
-    ; Even if we have a sufficient version of GTK+, we give user choice to re-install.
+    
     ClearErrors
     MessageBox MB_YESNO "$GTK_UPGRADE_MESSAGE_CONTENT" /SD IDYES IDNO done
-    MessageBox MB_OK "We are now going to install GTK+ ${GTK_VERSION}. $\r Follow along with the installer, but \
+    MessageBox MB_OK "First, we will uninstall the old version of GTK+. \
+                     Then, we are going to install GTK+ ${GTK_VERSION}. $\r Follow along with the installer, but \
                      please make sure NOT to select 'Reboot Now' at the end of GTK+ installation, if prompted. $\r \
                      Since you are upgrading GTK+, you do not have to reboot after installation finishes." /SD IDOK
-    ;ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE $ISSILENT'
-    ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER' ;removed /S flag... silent mode places icons root of start menu.
-    
-    ;;lets install the theme
-    ;SetOutPath "$GTK_FOLDER\share\themes\AquaX\"
-    ;File /r ".\AquaX\*.*"
-    ;;and lets set it as default - first rename original, then place the one with AquaX in it.
-    ;Rename /REBOOTOK "$GTK_FOLDER\etc\gtk-2.0\gtkrc" "$GTK_FOLDER\etc\gtk-2.0\gtkrc.old"
-    ;SetOutPath "$GTK_FOLDER\etc\gtk-2.0\"
-    ;File ".\gtkrc"
-    
-    IfErrors gtk_install_error
-    Goto done
 
+    ; We need to uninstall old version of GTK first.
+    Call UninstallGtk
+
+    ClearErrors
+    ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER' ;do not want /S flag, because silent mode places icons in root of start menu.
+    Goto gtk_install_cont
+    
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ; end got_install rights
 
@@ -602,8 +533,8 @@ Section $(GTK_SECTION_TITLE) SecGtk
                      please make sure NOT to select 'Reboot Now' at the end of GTK+ installation, if prompted. $\r \
                      Since this is your first time installing GTK+ on this computer, you might want to reboot \
                      after the entire installation process is finished, though." /SD IDOK
-    ;ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE $ISSILENT /D=$GTK_FOLDER'
-    ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER'  ;removed silent flag.
+
+    ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER'  ;do not want /S flag, because silent mode places icons in root of start menu.
     IfErrors gtk_install_error
     
     SetOverwrite on
@@ -612,14 +543,6 @@ Section $(GTK_SECTION_TITLE) SecGtk
     SetOverwrite off
 
     IfErrors gtk_install_error
-
-    ;;lets install the theme
-    ;  SetOutPath "$GTK_FOLDER\share\themes\AquaX\"
-    ;  File /r ".\AquaX\*.*"
-    ;;and lets set it as default - first rename original, then place the one with AquaX in it.
-    ;  Rename /REBOOTOK "$GTK_FOLDER\etc\gtk-2.0\gtkrc" "$GTK_FOLDER\etc\gtk-2.0\gtkrc.old"
-    ;  SetOutPath "$GTK_FOLDER\etc\gtk-2.0\"
-    ;  File ".\gtkrc"
 
     Delete "$GTK_FOLDER\bin\*.dll"
     
@@ -630,10 +553,11 @@ Section $(GTK_SECTION_TITLE) SecGtk
   ; end gtk_no_install_rights
 
   done:
-    ;restore ISSILENT variable
-    ;StrCpy $ISSILENT $ISSILENT_STATE
-    
-    Delete "$TEMP\gtk-runtime.exe"
+    StrCmp $R5 "2" gtk_errors gtk_no_errors
+    gtk_no_errors:
+      Delete "$TEMP\gtk-runtime.exe"
+    gtk_errors:
+      ; leave the runtime in temp so the user can run it manually.
 SectionEnd ; end of GTK+ section
 !endif
 
@@ -666,120 +590,32 @@ Section Uninstall
       SetShellVarContext "all"
 
   cont_uninstall:
-    ; The WinPrefs plugin may have left this behind..
-    ; but not with gourmet...
-    ;;DeleteRegValue HKCU "${GAIM_STARTUP_RUN_KEY}" "Gaim"
-    ;;DeleteRegValue HKLM "${GAIM_STARTUP_RUN_KEY}" "Gaim"
-    ; Remove Language preference info
-    ; TODO: do we need this?
-    ;DeleteRegKey HKCU ${GAIM_REG_KEY} ;${MUI_LANGDLL_REGISTRY_ROOT} ${MUI_LANGDLL_REGISTRY_KEY}
 
     !insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP ;get the name of our start menu folder
-    ;Delete "$INSTDIR\${GOURMET_NAME}.url"
-    ;Delete "$INSTDIR\${GAIM_UNINST_EXE}"
-    ;Delete "$INSTDIR\uninst.exe"
-    ;Delete "$INSTDIR\documentation\CHANGES"
-    ;Delete "$INSTDIR\documentation\LICENSE"
-    ;Delete "$INSTDIR\documentation\README.txt"
-    ;Delete "$INSTDIR\documentation\TODO"
-    ;Delete "$INSTDIR\data\i18n\de_DE\LC_MESSAGES\gourmet.mo"
-    ;Delete "$INSTDIR\data\i18n\gourmet.mo"
-    ;Delete "$INSTDIR\data\recipe.dtd"
-    ;Delete "$INSTDIR\data\shopList.glade"
-    ;Delete "$INSTDIR\data\shopCatEditor.glade"
-    ;Delete "$INSTDIR\data\rec_ref_window.glade"
-    ;Delete "$INSTDIR\data\recSelector.glade"
-    ;Delete "$INSTDIR\data\recCard_backup9-25.glade"
-    ;Delete "$INSTDIR\data\recCard_backup9-19.glade"
-    ;Delete "$INSTDIR\data\recCard.glade"
-    ;Delete "$INSTDIR\data\keyeditor.glade"
-    ;Delete "$INSTDIR\data\databaseChooser.glade"
-    ;Delete "$INSTDIR\data\preferenceDialog.glade"
-    ;Delete "$INSTDIR\data\converter_old.glade"
-    ;Delete "$INSTDIR\data\converter_new.glade"
-    ;Delete "$INSTDIR\data\converter.glade"
-    ;Delete "$INSTDIR\data\app_backup.glade"
-    ;Delete "$INSTDIR\data\app.glade"
-    ;Delete "$INSTDIR\data\default.css"
-    ;Delete "$INSTDIR\data\splash.png"
-    ;Delete "$INSTDIR\data\recbox_icon.png"
-    ;Delete "$INSTDIR\data\recbox_biggish.png"
-    ;Delete "$INSTDIR\data\recbox_biggish.ico"
-    ;Delete "$INSTDIR\data\FAQ"
-    ;Delete "$INSTDIR\data\gold_star.png"
-    ;Delete "$INSTDIR\data\no_star.png"
-    ;Delete "$INSTDIR\data\recbox.png"
-    ;Delete "$INSTDIR\data\gourmet_logo.png"
-;    Delete "$INSTDIR\README.txt"
-    ;Delete "$INSTDIR\LICENSE"
-    ;Delete "$INSTDIR\zlib.pyd"
-    ;Delete "$INSTDIR\bz2.pyd"
-    ;Delete "$INSTDIR\wx._core_.pyd"
-    ;Delete "$INSTDIR\mmap.pyd"
-    ;Delete "$INSTDIR\pango.pyd"
-    ;Delete "$INSTDIR\wxmsw254uh_gizmos_vc.dll"
-    ;Delete "$INSTDIR\_imagingtk.pyd"
-    ;Delete "$INSTDIR\atk.pyd"
-    ;Delete "$INSTDIR\tcl84.dll"
-    ;Delete "$INSTDIR\msvcr71.dll"
-    ;Delete "$INSTDIR\wx._html.pyd"
-    ;Delete "$INSTDIR\tk84.dll"
-    ;Delete "$INSTDIR\wxmsw254uh_stc_vc.dll"
-    ;Delete "$INSTDIR\wxmsw254uh_vc.dll"
-    ;Delete "$INSTDIR\_socket.pyd"
-    ;Delete "$INSTDIR\wx._gdi_.pyd"
-    ;Delete "$INSTDIR\gtk._gtk.pyd"
-    ;Delete "$INSTDIR\wx._misc_.pyd"
-    ;Delete "$INSTDIR\_ssl.pyd"
-    ;Delete "$INSTDIR\wx._controls_.pyd"
-    ;Delete "$INSTDIR\gobject.pyd"
-    ;Delete "$INSTDIR\python24.dll"
-    ;Delete "$INSTDIR\_tkinter.pyd"
-    ;Delete "$INSTDIR\gtk.glade.pyd"
-    ;Delete "$INSTDIR\_imaging.pyd"
-    ;Delete "$INSTDIR\wxmsw254uh_gl_vc.dll"
-    ;Delete "$INSTDIR\Mk4py.dll"
-    ;Delete "$INSTDIR\_winreg.pyd"
-    ;Delete "$INSTDIR\unicodedata.pyd"
-    ;Delete "$INSTDIR\pyexpat.pyd"
-    ;Delete "$INSTDIR\wx._windows_.pyd"
-    ;Delete "$INSTDIR\_sre.pyd"
-    ;Delete "$INSTDIR\Gourmet.exe"
-
 
     ; Shortcuts
-    ;Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall Gourmet.lnk"
-    ;Delete "$SMPROGRAMS\$ICONS_GROUP\Website.lnk"
-    ;Delete "$DESKTOP\Gourmet Recipe Manager.lnk"
-    ;Delete "$SMPROGRAMS\$ICONS_GROUP\Gourmet Recipe Manager.lnk"
-
     RMDir /r "$SMPROGRAMS\$ICONS_GROUP"
     Delete "$DESKTOP\Gourmet Recipe Manager.lnk"
     
-    ; Directories
+    ; Main Install Directories
     RMDir /r "$INSTDIR\documentation\"
     RMDir /r "$INSTDIR\data\i18n\"
     RMDir /r "$INSTDIR\data\"
     RMDir /r "$INSTDIR"
     
     ; Registry
-    ; TODO (done, already taken care of above): work on unhardcoding this, since it can be in hklm and hkcu
     DeleteRegKey ${GOURMET_UNINST_ROOT_KEY} "${GOURMET_UNINST_KEY}"
     DeleteRegKey HKLM "${GOURMET_DIR_REGKEY}"
-    SetAutoClose false ;see if that lets us look at the uninstall log
+    SetAutoClose false ; this lets us look at the uninstall log
 
     Goto done
 
   cant_uninstall:
-    IfSilent skip_mb
-    MessageBox MB_OK $(un.GAIM_UNINSTALL_ERROR_1) IDOK
-    skip_mb:
+    MessageBox MB_OK $(un.GAIM_UNINSTALL_ERROR_1) /SD IDOK
     Quit
 
   no_rights:
-    IfSilent skip_mb1
-    MessageBox MB_OK $(un.GAIM_UNINSTALL_ERROR_2) IDOK
-    skip_mb1:
+    MessageBox MB_OK $(un.GAIM_UNINSTALL_ERROR_2) /SD IDOK
     Quit
 
   done:
@@ -1549,3 +1385,28 @@ Function GetWindowsVersion
   Exch $R0
 FunctionEnd
 
+Function UninstallGtk
+; First, we find the uninstaller, by looking at the gtk registry key to find the gtk directory
+; Then we execute it, if found.
+
+  check_hkcu:
+    ReadRegStr $0 HKCU ${GTK_REG_KEY} "Path"
+    ;StrCpy $5 "HKCU"
+    StrCmp $0 "" check_hklm found_gtk_path
+
+  check_hklm:
+    ReadRegStr $0 HKLM ${GTK_REG_KEY} "Path"
+    ;StrCpy $5 "HKLM"
+    StrCmp $0 "" no_gtk found_gtk_path
+
+    found_gtk_path:
+    ; We do this copyfiles thing cuz if we dont, it will do it for us, and execwait wont wait properly.
+    ; See also http://nsis.sourceforge.net/Docs/AppendixD.html (section D.1) for detailed explanation.
+    CopyFiles $0\uninst.exe $TEMP
+    ExecWait '"$TEMP\uninst.exe" _?=$0'
+    Delete "$TEMP\uninst.exe"
+
+    no_gtk:
+    ;do nothing
+
+FunctionEnd
