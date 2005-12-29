@@ -366,7 +366,10 @@ class exporter_mult (exporter):
                           attr_order=attr_order,
                           text_attr_order=text_attr_order,
                           use_ml=use_ml, do_markup=do_markup,
-                          fractions=fractions)
+                          convert_attnames=convert_attnames,
+                          fractions=fractions,
+                          
+                          )
 
     def write_attr (self, label, text):
         #attr = gglobals.NAME_TO_ATTR[label]
