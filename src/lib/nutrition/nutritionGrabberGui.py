@@ -1,6 +1,6 @@
 import gtk
 import databaseGrabber
-import os, os.path
+import os, os.path, time
 import gourmet.dialog_extras as de
 from gourmet.GourmetThreads import Terminated
 from gourmet.gglobals import datad
@@ -44,7 +44,7 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
         self.progdialog.progress_bar.set_fraction(fract)
         self.progdialog.progress_bar.set_text(msg)
         while self.paused:
-            sleep(0.1)
+            time.sleep(0.1)
             self.gui_update()
         self.gui_update()
         
