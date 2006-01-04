@@ -16,7 +16,7 @@ class RecRenderer:
     def __init__ (self, rd, recs, mult=1, dialog_title=_("Print Recipes"),
                   change_units=True,
                   dialog_parent=None):
-        self.app=wx.wxPySimpleApp()
+        self.app=wxPySimpleApp()
         # we use StringIO so we can call our standard HTML exporters (which write
         # to a file)
         self.html_out = StringIO.StringIO()
@@ -108,3 +108,4 @@ class SimpleHTML (html_exporter.html_exporter):
 
     def write_groupfoot (self):
         self.out.write("\n<br>\n")
+
