@@ -66,18 +66,18 @@ class SuspendableThread (GourmetThreads.SuspendableThread):
 SuspendableDeletions = GourmetThreads.SuspendableDeletions
 get_lock = GourmetThreads.get_lock
 
-# class get_lock:
-#     def __init__ (self):
-#         pass
+class get_lock:
+    def __init__ (self):
+        pass
 
-#     def acquire (self):
-#         return True
+    def acquire (self):
+        return True
 
-#     def release (self):
-#         return True
+    def release (self):
+        return True
 
-#     def locked_lock (self):
-#         return False
+    def locked_lock (self):
+        return False
 
 def gtk_update ():
     """Update the GUI"""

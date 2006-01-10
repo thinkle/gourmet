@@ -131,9 +131,9 @@ class RecIndex:
 
     def setup_search_views (self):
         """Setup our views of the database."""
-        self.lsrch = ["",""]
-        self.lsrchvw = self.rd.rview.select(deleted=False)
-        self.searchvw = self.rd.rview.select(deleted=False)
+        self.last_search = ["",""]
+        self.rvw = self.rd.fetch_all(self.rd.rview,deleted=False)
+        self.searches = [{'column':'deleted','operator':'=','search':False}]
 
     def make_rec_visible (self, *args):
         """Make sure recipe REC shows up in our index."""
@@ -166,7 +166,7 @@ class RecIndex:
     
     def setup_rectree (self):
         """Create our recipe treemodel."""
-        self.create_rmodel(self.lsrchvw)
+        self.create_rmodel(self.rvw)
         self.rmodel.connect('page-changed',self.rmodel_page_changed_cb)
         self.rmodel.connect('view-changed',self.rmodel_page_changed_cb)
         # and call our handler once to update our prev/next buttons + label
@@ -191,7 +191,7 @@ class RecIndex:
     def set_reccount (self, *args):
         """Display the count of currently visible recipes."""
         debug("set_reccount (self, *args):",5)
-        self.count = len(self.lsrchvw)
+        self.count = len(self.rvw)
         #self.stat.push(self.contid,_("%s Recipes")%self.count)
         bottom,top,total = self.rmodel.showing()
         if top >= total and bottom==1:
@@ -336,7 +336,8 @@ class RecIndex:
         self.search()
 
     def redo_search (self, *args):
-        self.lsrch = ['','']
+        self.last_search = ['','']
+        #self.searches = []
         self.search()
     
     def search (self, *args):
@@ -346,18 +347,35 @@ class RecIndex:
         searchBy = self.searchByDic[unicode(searchBy)]
 	if txt and self.limitButton: self.limitButton.set_sensitive(True)
         elif self.limitButton: self.limitButton.set_sensitive(False)
-        if [txt, searchBy] == self.lsrch:
+        if [txt, searchBy] == self.last_search:
             debug("Same search!",0)
             return        
         if self.srchentry.window: self.srchentry.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
         gobject.idle_add(lambda *args: self.do_search(txt, searchBy))
-        
+
     def do_search (self, txt, searchBy):
+        if txt:
+            srch = {}
+            if self.regexpp():
+                srch['operator'] = 'REGEXP'
+                srch['search'] = txt
+            else:
+                srch['operator']='LIKE'
+                srch['search'] = txt.replace('%','%%')+'%'
+            srch['column']=searchBy
+            self.last_search = txt,searchBy
+            self.update_rmodel(self.rd.search_recipes(self.searches + [srch]))
+        elif self.searches:
+            self.update_rmodel(self.rd.search_recipes(self.searches))
+        else:
+            self.update_rmodel(self.rd.fetch_all(self.rview,deleted=False))
+    
+    def do_search_old (self, txt, searchBy):
         ## first -- are we a continuation of the previous search of not?
         debug('do_search called with txt=%s, searchBy=%s'%(txt,searchBy),5)
-        # if we're not using regular expressions, we escape our text.        
-        addedtextp = re.match("^%s"%re.escape(txt),self.lsrch[0]) and len(txt) > len(self.lsrch[0])
-        samesearchp = self.lsrch and searchBy == self.lsrch[1]
+        # if we're not using regular expressions, we escape our text.
+        addedtextp = re.match("^%s"%re.escape(txt),self.last_search[0]) and len(txt) > len(self.last_search[0])
+        samesearchp = self.last_search and searchBy == self.last_search[1]
         if not addedtextp or not samesearchp:
             # if we're not, we reset our lsrchvw (our searchvw)
             self.lsrchvw = self.searchvw
@@ -374,20 +392,21 @@ class RecIndex:
                 self.lsrchvw=self.rd.search(self.lsrchvw,searchBy,txt,use_regexp=self.regexpp())            
         else:
             self.lsrchvw = self.searchvw
-        self.lsrch = [txt, searchBy]
+        self.last_search = [txt, searchBy]
         self.update_rmodel(self.lsrchvw)
         self.set_reccount()
         self.srchentry.window.set_cursor(None)
-
+    
     def limit_search (self, *args):
         debug("limit_search (self, *args):",5)
         self.search() # make sure we've done the search...
-        self.searchvw=self.lsrchvw
+        #self.searchvw=self.lsrchvw
+        self.searches.append(self.last_search)
         self.srchLimitBar.show()
         if self.srchLimitDefaultText==self.srchLimitText:
-            newtext=_(" %s contains %s")%(self.lsrch[1],self.lsrch[0])
+            newtext=_(" %s contains %s")%(self.last_search[1],self.last_search[0])
         else:
-            newtext=_(", %s contains %s")%(self.lsrch[1],self.lsrch[0])
+            newtext=_(", %s contains %s")%(self.last_search[1],self.last_search[0])
         self.srchLimitText="%s%s"%(self.srchLimitLabel.get_text(),newtext)
         self.srchLimitLabel.set_markup("<i>%s</i>"%self.srchLimitText)
         self.srchentry.set_text("")
@@ -398,7 +417,7 @@ class RecIndex:
         self.srchLimitText=self.srchLimitDefaultText
         self.srchLimitBar.hide()
         self.searchvw=self.rd.rview
-        self.lsrch=["",""] # reset search so we redo it
+        self.last_search=["",""] # reset search so we redo it
         self.search()
 
     def get_rec_from_iter (self, iter):
@@ -567,15 +586,20 @@ class RecipeModel (pageable_store.PageableViewStore):
             return row
         elif attr=='thumb':
             if row.thumb: return get_pixbuf_from_jpg(row.thumb)
-            else: return None
+            else: return None        
         elif attr in INT_REC_ATTRS:
-            return getattr(row,attr)
+            return getattr(row,attr) or 0
         else:
-            return str(getattr(row,attr))
+            val = getattr(row,attr)
+            if val: return str(val)
+            else: return None
+        #else:
+        #    
+        #    return str(getattr(row,attr))
 
     def sort (self,*args,**kwargs):
-        if not self.made_categories:
-            self.make_categories()
+        #if not self.made_categories:
+        #    self.make_categories()
         return pageable_store.PageableViewStore.sort(self,*args,**kwargs)
 
     def _do_sort_ (self):
@@ -602,14 +626,14 @@ class RecipeModel (pageable_store.PageableViewStore):
                 debug('updated row -- breaking',3)
                 break
 
-    def make_categories (self):
-        # This is ugly, terrible, no good code. Among other things,
-        # this is rather specifically metakit hackery which will have
-        # to be reworked should another backend ever be implemented.
-        sorted_catview = self.rd.catview.sort('category')
-        if self.rd.__class__.__module__.find('rmetakit')>=0:
-            for r in sorted_catview:
-                if r and r.category:
-                    self.rd.modify_rec(r,
-                                       {'categoryname':r.category})
-        self.made_categories=True
+    #def make_categories (self):
+    #    # This is ugly, terrible, no good code. Among other things,
+    #    # this is rather specifically metakit hackery which will have
+    #    # to be reworked should another backend ever be implemented.
+    #    #sorted_catview = self.rd.catview.sort('category')
+    #    #if self.rd.__class__.__module__.find('rmetakit')>=0:
+    #    #    for r in sorted_catview:
+    #    #        if r and r.category:
+    #    #            self.rd.modify_rec(r,
+    #    #                               {'categoryname':r.category})
+    #    #self.made_categories=True

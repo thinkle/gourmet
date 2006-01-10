@@ -1,6 +1,6 @@
 import PythonicSQL
-#import sqlite
 from pysqlite2 import dbapi2 as sqlite
+#import sqlite
 from gourmet.gdebug import debug
 import unittest
 

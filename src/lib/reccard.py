@@ -619,6 +619,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             
     def updateRecipe (self, rec, show=True):
         debug("updateRecipe (self, rec):",0)
+        if type(rec) == int:
+            rec=self.rg.rd.fetch_one(self.rg.rd.rview,id=rec)
         if not self.edited or de.getBoolean(parent=self.widget,
                                             label=_("Abandon your edits to %s?")%self.current_rec.title):
             self.updateRec(rec)
@@ -652,7 +654,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             if c=='category':
                 slist = self.rg.rd.get_unique_values(c,self.rg.rd.catview)
             else:
-                slist = self.rg.rd.get_unique_values(c)
+                slist = self.rg.rd.get_unique_values(c,deleted=False)
             if not slist:
                 self.rg.rd.get_default_values(c)
             cb.set_model_from_list(self.rw[c],slist)
@@ -949,7 +951,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                                             gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE)
         self.ingTree.connect("drag_data_received",self.dragIngsRecCB)
         self.ingTree.connect("drag_data_get",self.dragIngsGetCB)
-        if len(self.rg.rd.rview) > 1:
+        if self.rg.rd.fetch_len(self.rg.rd.rview) > 1:
             if not rec:
                 rec = self.rg.rd.rview[1]
             self.imodel = self.create_imodel(rec, mult=1)
@@ -2186,9 +2188,9 @@ class IngInfo:
     def make_item_model(self):
         #unique_item_vw = self.rd.iview_not_deleted.counts(self.rd.iview_not_deleted.item, 'count')
         self.item_model = gtk.ListStore(str)
-        for i in self.rd.normalizations['item']:
-            self.item_model.append([i.item])
-        if not self.rd.normalizations['item']:
+        for i in self.rd.get_unique_values('item',table=self.rd.iview,deleted=False):
+            self.item_model.append([i])
+        if len(self.item_model)==0:
             import defaults
             for i,k,c in defaults.lang.INGREDIENT_DATA:
                 self.item_model.append([i])
@@ -2197,8 +2199,8 @@ class IngInfo:
         #unique_key_vw = self.rd.iview_not_deleted.counts(self.rd.iview_not_deleted.ingkey, 'groupvw')
         # the key model by default stores a string and a list.
         self.key_model = gtk.ListStore(str)
-        for k in self.rd.normalizations['ingkey']:
-            self.key_model.append([k.ingkey])
+        for k in self.rd.get_unique_values('ingkey',table=self.rd.iview,deleted=False):
+            self.key_model.append([k])
 
     def change_key (self, old_key, new_key):
         """One of our keys has changed."""

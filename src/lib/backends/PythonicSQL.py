@@ -78,7 +78,7 @@ class PythonicSQL:
         retlst = []
         for i in lst:
             if type(i) == bool: retlst.append(int(i))
-            elif i==None: retlst.append('NULL')
+            elif i==None: retlst.append(None)
             elif hasattr(i,'replace') and needs_buffer(i):
                 retlst.append(buffer(i))
             else: retlst.append(i)
@@ -92,7 +92,7 @@ class PythonicSQL:
             # if we have arguments, we have to get rid of booleans
             # which seem to be throwing errors
             sql[1] = self.__cleanup_params(sql[1])
-        try:            
+        try:
             c.execute(*sql)
         except:
             print "There was an error executing the following SQL:"
@@ -303,12 +303,14 @@ class PythonicSQL:
         sel_string,sql_params=self.make_select_statement(name,fields)
         if criteria:
             wstr,wpar=self.make_where_statement(criteria,logic)
+            if sortby:
+                sel_string = sel_string +' ORDER BY '+', '.join(sortby)
+                
             sel_string += " %s"%wstr
             sql_params += wpar
         if not fields:
             fields = self.get_fields_for_table(name)
-        if sortby:
-            sel_string = sel_string +' ORDER BY '+', '.join(sortby)
+        
         return self.execute_and_fetch([sel_string,sql_params],name,self,fields,
                                       filters=filters)
 
@@ -597,9 +599,12 @@ class TableObject (list):
         generator = self.__iter__()
         n = 0
         if index < 0:
+            print 'index < 0'
             index = len(self) + index
-        if index < 0:
-            raise IndexError
+            print 'index ->',index
+            if index < 0:
+                print "Strange -- index still < 0, forcing index->0"
+                index = 0
         debug('index=%s'%index)
         while n <= index:
             try:

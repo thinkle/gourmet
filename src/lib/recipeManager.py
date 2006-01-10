@@ -36,7 +36,8 @@ if not db:
 elif db=='metakit':
     from backends.rmetakit import *
 elif db=='sqlite':
-    from backends.rsqlite import *
+    #from backends.rsqlite import *
+    from backends.simple_sqlite_backend import *
 elif db=='mysql':
     from backends.rmysql import *
     

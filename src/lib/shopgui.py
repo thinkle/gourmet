@@ -805,7 +805,8 @@ def getOptionalIngDic (ivw, mult, prefs, rg):
     We look at prefs to see if 'shop_always_add_optional' is set, in which case
     we don't ask our user."""    
     debug("getOptionalIngDic (ivw):",5)
-    vw = ivw.select(optional=True)
+    #vw = ivw.select(optional=True)
+    vw = filter(lambda r: r.optional==True, ivw)
     # optional_mode: 0==ask, 1==add, -1==dont add
     optional_mode=prefs.get('shop_handle_optional',0)
     if optional_mode:

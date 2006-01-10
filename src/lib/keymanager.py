@@ -52,7 +52,7 @@ class KeyManager:
         should be flour, barley"""
         debug("Start initialize_categories",10)
         self.cats = []
-        for k in [o.ingkey for o in self.rm.normalizations['ingkey']]:
+        for k in self.rm.get_unique_values('ingkey',self.rm.iview,deleted=False):
             fnd=string.find(k,',')
             if fnd != -1:
                 self.cats.append(k[0:fnd])
@@ -80,13 +80,16 @@ class KeyManager:
 
     def get_key_fast (self, s):
         try:
-            if s: srch = self.rm.ikview.select(item=s)
+            if s: srch = self.rm.fetch_all(self.rm.ikview,
+                                           item=s,
+                                           sort_by=[('count',1)]
+                                           )
             else: srch = None
         except:
             print 'error seeking key for ',s
             raise
         else:
-            if srch: return srch.sort('count')[-1].ingkey
+            if srch: return srch[-1].ingkey
             else: return self.generate_key(s)
 
     def get_key (self,txt, certainty=0.61):
@@ -119,10 +122,11 @@ class KeyManager:
         if len(main_txts)==1:
             main_txts.extend(defaults.guess_plurals(txt))
         for t in main_txts:
-            is_key = self.rm.fetch_one(self.rm.normalizations['ingkey'],ingkey=t)
+            is_key = self.rm.fetch_one(self.rm.iview,ingkey=t)
             if is_key>=0:
                 retvals[t]=.9
-            exact = self.rm.ikview.select(item=t)
+            exact = self.rm.fetch_all(self.rm.ikview,
+                                      item=t)
             if exact:
                 for o in exact:
                     k = o.ingkey
@@ -146,7 +150,7 @@ class KeyManager:
         for w in words:
             if not w:
                 continue
-            srch = self.rm.ikview.select(word=w)
+            srch = self.rm.fetch_all(self.rm.ikview,word=w)
             total_count = sum([m.count for m in srch])
             for m in srch:
                 ik = m.ingkey
@@ -474,7 +478,7 @@ class KeyDictionary:
 
     def has_key (self, k):
         debug('has_key testing for %s'%k,1)
-        if self.iview.select(item=k): return True
+        if self.rm.fetch_one(self.rm.iview,item=k): return True
         elif self.default.has_key(k): return True
         else: return False
 
@@ -488,29 +492,20 @@ class KeyDictionary:
         else: return 0
 
     def __getitem__ (self, k):
-        ivw = self.iview.select(item=k)
-        kvw = ivw.counts(ivw.ingkey, 'count')
-        v = {}
-        for k in kvw:
-            v[k.ingkey] = k.count
-        # we want to sort by the frequency of the
-        # key -- with the most frequent key coming
-        # first in the list we return.
-        lst = v.items()
-        lst.sort(self.srt_by_2nd)
-        if not lst:
-            return self.default[k]
-        return map(lambda x: x[0], lst)
+        kvw = self.rm.fetch_count(
+            self.rm.iview,
+            'ingkey',
+            sort_by=('count',-1),
+            item=k
+            )
 
     def keys (self):
-        #ivw = self.iview.counts(self.iview.item,'count')
-        #ll = [i.item for i in ivw]
+        ll = self.rm.get_unique_values('item',self.rm.iview,deleted=False)
         ll.extend(self.default.keys())
         return ll
 
     def values (self):
-        kvw = self.iview.counts(self.iview.ingkey,'count')
-        ll = map(lambda k: [k.ingkey], kvw)
+        ll = self.rm.get_unique_values('ingkey',self.rm.iview,deleted=False)
         ll.extend(self.default.values())
         return ll
 

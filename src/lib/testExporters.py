@@ -58,8 +58,7 @@ class ExportTest:
         rm.dbargs['file']=os.path.abspath(TEST_FILE_DIRECTORY)
         print 'rm.dbargs[file]=',rm.dbargs['file']
         self.db = rm.RecipeManager(**rm.dbargs)
-        print len(self.db.rview),'recipes total'
-        if len(self.db.rview)==0: raise "No recipes in database."
+        if self.db.fetch_len(self.db.rview)==0: raise "No recipes in database."
         self.mult_export_args = {'rd':self.db,
                                  'rv':self.db.rview,
                                  'conv':None,

@@ -325,7 +325,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                 row.ingkey,
                 None,
                 # avoidable slowdown (look here if code seems sluggish)
-                len(self.rd.iview.select(ingkey=row.ingkey)),
+                self.rd.fetch_len(self.rd.iview,ingkey=row.ingkey),
                 None,
                 ]
 
@@ -338,7 +338,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                         ingkey,
                         item,
                         # avoidable slowdown (look here if code seems sluggish)                        
-                        len(self.rd.iview.select(ingkey=ingkey,item=item)),
+                        self.rd.fetch_len(self.rd.iview,ingkey=ingkey,item=item),
                         self.get_recs(ingkey,item)])
         return ret
         #row = row[0]
@@ -364,5 +364,6 @@ if gtk.pygtk_version[1]<8:
     gobject.type_register(KeyStore)    
 
 if __name__ == '__main__':
+    profile.run("""it.run_test({'filename':'/home/tom/Projects/recipe/Data/mealmaster.mmf'})""",profi)
     ke=KeyEditor()
     gtk.main()

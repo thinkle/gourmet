@@ -4,7 +4,6 @@ import pythonic_sqlite as psl
 import rdatabase
 import traceback
 from gettext import gettext as _
-#import rmetakit
 from gourmet.gdebug import debug, TimeAction
 
 class RecData (rdatabase.RecData,psl.PythonicSQLite):
@@ -31,10 +30,10 @@ class RecData (rdatabase.RecData,psl.PythonicSQLite):
         # to access it via "normalized" columns.
         #return
         columns = [d[0] for d in data]
-        if True in [self.normalizations.has_key(d[0]) for d in data]:
-            return self.get_view(name,data)
-        else:
-            return ret
+        #if True in [self.normalizations.has_key(d[0]) for d in data]:
+        #    return self.get_view(name,data)
+        #else:
+        return ret
 
     def do_delete_rec (self, rec):
         if type(rec)==type(""):

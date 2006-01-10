@@ -26,16 +26,18 @@ class NutritionData:
         #density=self.get_density(key,row)
         if row: self.row.ndbno=row.ndbno
         else:
-            self.db.naliasesview.append({'ndbno':row.ndbno,
-                                         'ingkey':key})
+            self.db.do_add(self.db.naliasesview,
+                           {'ndbno':row.ndbno,
+                            'ingkey':key})
 
     def set_key_from_ndbno (self, key, ndbno):
         """Create an automatic equivalence between ingredient key 'key' and ndbno
         ndbno is our nutritional database number."""
         if type(ndbno)!=int:
             ndbno = int(ndbno)
-        self.db.naliasesview.append({'ndbno':ndbno,
-                                 'ingkey':key})
+        self.db.do_add(self.db.naliasesview,{'ndbno':ndbno,
+                                             'ingkey':key}
+                       )
 
     def set_conversion (self, key, unit, factor):
         """Set conversion for ingredient key.
@@ -44,7 +46,7 @@ class NutritionData:
         """
         if self.conv.unit_dict.has_key(unit):
             unit = self.conv.unit_dict[unit]
-        self.db.nconversions.append(ingkey=key,unit=unit,factor=factor)
+        self.db.do_add(self.db.nconversions,{ingkey:key,unit:unit,factor:factor})
 
     def get_matches (self, key, max=50):
         """Handed a string, get a list of likley USDA database matches.
@@ -96,11 +98,8 @@ class NutritionData:
     def _get_key (self, key):
         """Handed an ingredient key, get our nutritional Database equivalent
         if one exists."""
-        rows=self.db.naliasesview.select(**{'ingkey':str(key)})
-        if rows:
-            return rows[0]
-        else:
-            return None
+        row=self.db.fetch_one(self.db.naliasesview,**{'ingkey':str(key)})
+        return row
 
     def get_nutinfo_for_ing (self, ing):
         """A convenience function that grabs the requisite items from
@@ -139,11 +138,8 @@ class NutritionData:
         """
         aliasrow = self._get_key(key)
         if aliasrow:
-            nvrows=self.db.nview.select({'ndbno':aliasrow.ndbno})
-            if len(nvrows)==1:
-                return NutritionInfo(nvrows[0])
-            elif len(nvrows)>1:
-                raise "Too many rowd returned for ndbno %s"%aliasrow.ndbno
+            nvrow=self.db.fetch_one(self.db.nview,{'ndbno':aliasrow.ndbno})
+            if nvrow: return NutritionInfo(nvrow)
         # if we don't have a nutritional db row, return a
         # NutritionVapor instance which remembers our query and allows
         # us to redo it.  The idea here is that our callers will get
@@ -182,13 +178,13 @@ class NutritionData:
             # lookup in our custom nutrition-related conversion table
             if self.conv.unit_dict.has_key(unit):
                 unit = self.conv.unit_dict[unit]
-            lookup = self.db.nconversions.select(ingkey=key,unit=unit)
+            lookup = self.db.fetch_one(self.db.nconversions,ingkey=key,unit=unit)
             if lookup:
-                cnv = lookup[0].factor
+                cnv = lookup.factor
             else:
                 # otherwise, cycle through any units we have and see
                 # if we can get a conversion via those units...
-                for conv in self.db.nconversions.select(ingkey=key):
+                for conv in self.db.fetch_all(self.db.nconversions,ingkey=key):
                     factor = self.conv.converter(unit,conv.unit)
                     if factor:
                         cnv = conv.factor*factor
@@ -255,7 +251,7 @@ class NutritionData:
         #if grm2:
         #    ret[grm2]=row.gramwt2
         # But wait, there's more...            
-        nutweights = self.db.nwview.select(**{'ndbno':row.ndbno})
+        nutweights = self.db.fetch_all(self.db.nwview,**{'ndbno':row.ndbno})
         for nw in nutweights:
             mtch = self.wght_breaker.match(nw.unit)
             if not mtch:
@@ -294,7 +290,7 @@ class NutritionData:
         """Add custom nutritional information."""
         new_ndbno = self.db.increment_field(self.db.nview,'ndbno')
         if new_ndbno: nutrition_dictionary['ndbno']=new_ndbno
-        self.db.nview.append(nutrition_dictionary)
+        self.db.do_add(self.db.nview,nutrition_dictionary)
         return self.db.nview[-1].ndbno
                     
 class NutritionInfo:

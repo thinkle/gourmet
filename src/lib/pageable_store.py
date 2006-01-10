@@ -150,8 +150,13 @@ class PageableListStore (gtk.ListStore):
         if start_at > length: return # we're empty then...
         if end_at > length: end_at = length
         for row in self._get_slice_(int(start_at),int(end_at)):
-            self.append(row)
-
+            try: self.append(row)
+            except TypeError:
+                print 'Fooey!'
+                print 'columns          : ',self.columns
+                print 'columns_and_types: ',self.columns_and_types
+                print 'problem adding row ',row
+                raise
     # Sorting functions
 
     def sort (self, column, direction=FORWARD):

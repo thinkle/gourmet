@@ -30,46 +30,26 @@ class RecData:
     AMT_MODE_LOW = 0
     AMT_MODE_AVERAGE = 1
     AMT_MODE_HIGH = 2
-    
-    # MAGIC COLUMNS
-    #
-    # Each column in this list will be normalized. In the table defs,
-    # it should be defined as an integer, but for all intents and
-    # purposes, it will look like a string, thanks to some very dark
-    # magic.
-    NORMALIZED_COLS = ['ingkey',
-                       'source',
-                       'category',
-                       'cuisine',
-                       'unit',
-                       'item',
-                       'inggroup',
-                       'foodgroup',
-                       'word',
-                       'shopcategory'
-                       ]
-
-    NORMALIZED_TABLES = [(k,[('id','int',['AUTOINCREMENT']),(k,'text',[])],'id') for k in NORMALIZED_COLS]
 
     INGKEY_LOOKUP_TABLE_DESC = ('keylookup',
-                                [('word','int',[]),
-                                 ('item','int',[]),
-                                 ('ingkey','int',[]),
-                                 ('count','int',[])]
-                                )
-
+                                 [('word','text',[]),
+                                  ('item','text',[]),
+                                  ('ingkey','text',[]),
+                                  ('count','int',[])]
+                                 )
+    
     RECIPE_TABLE_DESC = ('recipe',
                   [('id',"int",['AUTOINCREMENT']),
                    ('title',"text",[]),
                    ('instructions',"text",[]),
                    ('modifications',"text",[]),
-                   ('cuisine',"int",[]),
-                   ('rating',"int",[]),
+                   ('cuisine',"text",[]),
+                   ('rating','int',[]),
                    ('description',"text",[]),
-                   ('source',"int",[]),
+                   ('source',"text",[]),
                    ('preptime','int',[]),
                    ('cooktime','int',[]),
-                   ('servings',"char(50)",[]),
+                   ('servings','float',[]),
                    ('image',"binary",[]),
                    ('thumb','binary',[]),
                    ('deleted','bool',[]),
@@ -78,41 +58,43 @@ class RecData:
                          ) 
     CATEGORY_TABLE_DESC = ('categories',
                       [('id','int',[]), #recipe ID
-                       ('category','int',[])] # Category ID
+                       ('category','text',[])] # Category ID
                       )
 
     INGREDIENTS_TABLE_DESC=('ingredients',
                 [('id','int',[]),
                  ('refid','int',[]),
-                 ('unit','int',[]),
+                 ('unit','text',[]),
                  ('amount','float',[]),
                  ('rangeamount','float',[]),
-                 ('item','int',[]),
-                 ('ingkey','int',[]),
+                 ('item','text',[]),
+                 ('ingkey','text',[]),
                  ('optional','bool',[]),
                  ('shopoptional','int',[]), #Integer so we can distinguish unset from False
-                 ('inggroup','int',[]),
+                 ('inggroup','text',[]),
                  ('position','int',[]),
                  ('deleted','bool',[]),
                  ],
                 )
+
     SHOPCATS_TABLE_DESC = ('shopcats',
-                  [('ingkey','int',[]),
-                   ('shopcategory','int',[]),
+                  [('ingkey','text',[]),
+                   ('shopcategory','text',[]),
                    ('position','int',[])],
                   'ingkey' #key
                   )
     SHOPCATSORDER_TABLE_DESC = (
-        'shopcatsorder',[('shopcategory','int',[]),
+        'shopcatsorder',[('shopcategory','text',[]),
                          ('position','int',[]),
                          ],
         'shopcategory' #key
                    )
     PANTRY_TABLE_DESC = ('pantry',
-                  [('ingkey','int',[]),
+                  [('ingkey','text',[]),
                    ('pantry','bool',[])],
                   'ingkey' #key
                   )
+
     DENSITY_TABLE_DESC = ("density",
                    [('dkey','char(150)',[]),
                     ('value','char(150)',[])],'dkey' #key
@@ -138,7 +120,7 @@ class RecData:
            and ['AUTOINCREMENT']
            or [])
           ) for lname,name,typ in gourmet.nutrition.parser_data.NUTRITION_FIELDS] + \
-        [('foodgroup','int',[])]
+        [('foodgroup','text',[])]
         )
 
     NUTRITION_WEIGHT_TABLE_DESC = (
@@ -148,14 +130,14 @@ class RecData:
     
     NUTRITION_ALIASES_TABLE_DESC = (
         'nutritionaliases',
-        [('ingkey','int',[]),
+        [('ingkey','text',[]),
          ('ndbno','int',[]),],
         'ingkey')
 
     NUTRITION_CONVERSIONS = (
         'nutritionconversions',
-        [('ingkey','int',[]),
-         ('unit','int',[]), 
+        [('ingkey','text',[]),
+         ('unit','text',[]), 
          ('factor','float',[]),],
         )
     
@@ -187,19 +169,15 @@ class RecData:
 
         Subclasses should do any necessary adjustments/tweaking before calling
         this function."""
-        self.normalizations={}
-        for desc in self.NORMALIZED_TABLES:
-            self.normalizations[desc[0]]=self.setup_table(*desc)
-            
         self.rview = self._setup_table(*self.RECIPE_TABLE_DESC)
         self.iview = self._setup_table(*self.INGREDIENTS_TABLE_DESC)
         self.catview = self._setup_table(*self.CATEGORY_TABLE_DESC)
-        self.iview_not_deleted = self.iview.select(deleted=False)
-        self.iview_deleted = self.iview.select(deleted=True)
+        #self.iview_not_deleted = self.iview.select(deleted=False)
+        #self.iview_deleted = self.iview.select(deleted=True)
         self.ikview = self._setup_table(*self.INGKEY_LOOKUP_TABLE_DESC)
-        self.sview = self._setup_table(*self.SHOPCATS_TABLE_DESC)
-        self.scview = self._setup_table(*self.SHOPCATSORDER_TABLE_DESC)
-        self.pview = self._setup_table(*self.PANTRY_TABLE_DESC)
+        self.sview = self.setup_table(*self.SHOPCATS_TABLE_DESC)
+        self.scview = self.setup_table(*self.SHOPCATSORDER_TABLE_DESC)
+        self.pview = self.setup_table(*self.PANTRY_TABLE_DESC)
         # converter items
         self.cdview = self._setup_table(*self.DENSITY_TABLE_DESC)
         self.cview = self._setup_table(*self.CONVTABLE_TABLE_DESC)
@@ -234,7 +212,35 @@ class RecData:
             h(*args)
             t.end()
 
+    # Metakit-convenience method (this is here and not in rmetakit
+    # because we've reimplemented metakit badness in many of our SQL
+    # modules
+    def sort_by (self, table, sort_by):
+        """Take a list of sorting directives in a normal form and do
+        metakit's weird-ass thing with them.
+
+        Normal form is
+
+        (column_name,1) - ascending
+        (column_name,-1) - descening
+        """
+        all = []
+        rev = []
+        for s in sort_by:
+            prop = getattr(table,s[0])
+            all.append(prop)
+            if s[1]<0: rev.append(prop)
+        return table.sortrev(all,rev)
+            
     # basic DB access functions
+
+    def fetch_all (self, table, sort_by=[], **criteria):
+        if criteria:
+            ret =  table.select(**criteria)
+        if sort_by:
+            return self.sort_by(ret,sort_by)
+        else:
+            return ret
 
     def fetch_one (self, table, *args, **kwargs):
         """Fetch one item from table and arguments"""
@@ -244,11 +250,20 @@ class RecData:
         # objects with fetch_one methods, which we'll use here.
         return table.fetch_one(*args,**kwargs)
 
-    def search (self, table, colname, text, exact=0, use_regexp=True):
+    def fetch_count (self, table, column, sort_by=[],**criteria):
+        """Return a counted view of the table, with the count stored in the property 'count'"""
+        ret =  table.counts(getattr(table,column),'count')
+        if sort_by: return self.sort_by(ret,sort_by)
+        else: return ret
 
+    def fetch_len (self, table, **criteria):
+        """Return the number of rows in table that match criteria
+        """
+        return len(self.fetch_all(table,**criteria))
+
+    def search (self, table, colname, text, exact=0, use_regexp=True):
         """Search colname of table for text, optionally using regular
         expressions and/or requiring an exact match."""
-
         raise NotImplementedError
 
     def filter (self, table, func):
@@ -258,19 +273,17 @@ class RecData:
         """
         raise NotImplementedError
 
-    def get_unique_values (self, colname,table=None):
+    def get_unique_values (self, colname,table=None,**criteria):
         """Get list of unique values for column in table."""
         if not table: table=self.rview
+        if criteria: table = table.select(**criteria)
         if colname=='category' and table==self.rview:
             table=self.catview
-        if self.normalizations.has_key(colname):
-            lst = [getattr(o,colname) for o in self.normalizations[colname]]
-        else:
-            lst = []
-            def add_to_dic (row):
-                a=getattr(row,colname)
-                if not a in lst: lst.append(a)
-            table.filter(add_to_dic)
+        lst = []
+        def add_to_dic (row):
+            a=getattr(row,colname)
+            if not a in lst: lst.append(a)
+        table.filter(add_to_dic)
         if defaults.fields.has_key(colname):
             for v in defaults.fields[colname]:
                 if not v in lst: lst.append(v)
@@ -320,10 +333,14 @@ class RecData:
         self.validate_recdic(dic)
         debug('validating dictionary',3)
         if dic.has_key('category'):
-            cats = dic['category'].split(', ')
-            self.delete_by_criteria(self.catview,{'id':rec.id})
-            for c in cats:
-                self.do_add_cat({'id':rec.id,'category':c})
+            newcats = dic['category'].split(', ')
+            curcats = self.get_cats(rec)
+            for c in curcats:
+                if c not in newcats:
+                    self.delete_by_criteria(self.catview,{'id':rec.id,'category':c})
+            for c in newcats:
+                if c not in curcats:
+                    self.do_add_cat({'id':rec.id,'category':c})
             del dic['category']
         debug('do modify rec',3)
         return self.do_modify_rec(rec,dic)
@@ -360,11 +377,11 @@ class RecData:
 
     def modify_ing (self, ing, ingdict):
         self.validate_ingdic(ingdict)
-        if ing.item!=ingdict.get('item',ing.item) or ing.ingkey!=ingdict.get('ingkey',ing.ingkey):
-            if ing.item and ing.ingkey:
-                self.remove_ing_from_keydic(ing.item,ing.ingkey)
-            self.add_ing_to_keydic(ingdict.get('item',ing.item),
-                                   ingdict.get('ingkey',ing.ingkey))
+        #if ing.item!=ingdict.get('item',ing.item) or ing.ingkey!=ingdict.get('ingkey',ing.ingkey):
+        #    if ing.item and ing.ingkey:
+        #      self.remove_ing_from_keydic(ing.item,ing.ingkey)
+        #    self.add_ing_to_keydic(ingdict.get('item',ing.item),
+        #                           ingdict.get('ingkey',ing.ingkey))
         return self.do_modify_ing(ing,ingdict)
 
     # Lower level DB access functions -- hopefully subclasses can
@@ -375,6 +392,9 @@ class RecData:
         if dic.has_key('category'):
             cats = dic['category'].split(', ')
             del dic['category']
+        if dic.has_key('servings'):
+            dic['servings'] = float(dic['servings'])
+        if not dic.has_key('deleted'): dic['deleted']=False
         self.validate_recdic(dic)
         try:
             ret = self.do_add_rec(dic)
@@ -382,14 +402,17 @@ class RecData:
             print 'Problem adding ',dic
             raise
         else:
-            ID = ret.id
+            if type(ret)==int:
+                ID = ret
+            else:
+                ID = ret.id
             for c in cats:
                 self.do_add_cat({'id':ID,'category':c})
             return ret
 
     def add_ing (self, dic):
         self.validate_ingdic(dic)
-        try:            
+        try:          
             if dic.has_key('item') and dic.has_key('ingkey'):
                 self.add_ing_to_keydic(dic['item'],dic['ingkey'])
             return self.do_add_ing(dic)
@@ -397,18 +420,20 @@ class RecData:
             print 'Problem adding',dic
             raise
 
+    def do_add (self, table, dic):
+        table.append(dic)
+
     def do_add_ing (self,dic):
-        self.iview.append(dic)
+        self.do_add(self.iview,dic)
         return self.iview[-1]
 
     def do_add_cat (self, dic):
-        self.catview.append(dic)
-        #return 'catview has ',len(self.catview),'items'
+        self.do_add(self.catview,dic)
         return self.catview[-1]
 
     def validate_ingdic (self,dic):
         """Do any necessary validation and modification of ingredient dictionaries."""
-        pass
+        if not dic.has_key('deleted'): dic['deleted']=False
 
     def do_modify_rec (self, rec, dic):
         """This is what other DBs should subclass."""
@@ -426,6 +451,10 @@ class RecData:
                 debug("Warning: ing has no attribute %s (attempted to set value to %s" %(k,v),0)
         return ing
 
+    def do_modify (self, table, row, d):
+        for k,v in d.items():
+            setattr(row,k,v)
+
     def get_ings (self, rec):
         """Handed rec, return a list of ingredients.
 
@@ -434,10 +463,10 @@ class RecData:
             id=rec.id
         else:
             id=rec
-        return self.iview.select(id=id,deleted=False)
+        return self.fetch_all(self.iview,id=id,deleted=False)
 
     def get_cats (self, rec):
-        svw = self.catview.select(id=rec.id)
+        svw = self.fetch_all(self.catview,id=rec.id)
         cats =  [c.category or '' for c in svw]
         # hackery...
         while '' in cats:
@@ -455,7 +484,7 @@ class RecData:
         # name (the name of the ingredient *should* be the title of
         # the recipe, though the user could change this)
         if hasattr(ing,'item'):
-            recs=self.search(self.rview,'title',ing.item,exact=True,use_regexp=False)
+            recs=self.search_recipes([{'title':ing.item,'operator':'='}])
             if len(recs)==0:
                 self.modify_ing(ing,{'idref':recs[0].id})
                 return recs[0]
@@ -514,8 +543,8 @@ class RecData:
 
 
     def new_id (self):
-        return self.increment_field('recipe','id')
-
+        rid = self.increment_field('recipe','id')
+        return rid 
     # Convenience functions for dealing with ingredients
 
     def order_ings (self, iview):
@@ -668,23 +697,16 @@ class RecData:
         if not item or not key: return
         row = self.fetch_one(self.ikview, item=item, ingkey=key)
         if row:
-            row.count+=1
+            self.do_modify(self.ikview,row,{'count':row.count+1})
         else:
-            self.ikview.append({'item':item,'ingkey':key,'count':1})
-        if type(item)==int:
-            # already normalized...
-            item = self.fetch_one(self.normalizations['item'],id=item).item
-        if type(key)==int:
-            # already normalized...
-            key = self.fetch_one(self.normalizations['ingkey'],id=key).ingkey
+            self.do_add(self.ikview,{'item':item,'ingkey':key,'count':1})
         for w in re.split('\W+',item):
             w=w.lower().strip()
             row = self.fetch_one(self.ikview,word=w,ingkey=key)
             if row:
-                row.count+=1
+                self.do_modify(self.ikview,row,{'count':row.count+1})
             else:
-                self.ikview.append({'word':w,'ingkey':key,'count':1})
-
+                self.do_add(self.ikview,{'word':w,'ingkey':key,'count':1})
 
     def remove_ing_from_keydic (self, item, key):
         row = self.fetch_one(self.ikview,item=item,ingkey=key)
@@ -851,9 +873,8 @@ class RecipeManager (RecData):
                     d['unit']=u.strip()
                 else:
                     # has this unit been used
-                    prev_uses = self.normalizations['unit'].select(
-                        unit=str(u.strip()))
-                    if len(prev_uses)>0:
+                    prev_uses = self.fetch_all(self.iview,unit=u.strip())
+                    if prev_uses:
                         d['unit']=u
                     else:
                         # otherwise, unit is not a unit
@@ -884,7 +905,7 @@ class RecipeManager (RecData):
 
     def joined_search (self, table1, table2, search_by, search_str, use_regexp=True, exact=False, join_on='id'):
         raise NotImplementedError
-
+    
     def ings_search (self, ings, keyed=None, rview=None, use_regexp=True, exact=False):
         """Search for multiple ingredients."""
         raise NotImplementedError
@@ -972,53 +993,53 @@ class dbDic:
             k=pickle.dumps(k)
         if self.pickle_val: store_v=pickle.dumps(v)
         else: store_v = v
-        row = self.vw.select(**{self.kp:k})
-        if len(row)>0:
-            setattr(row[0],self.vp,store_v)
+        row = self.db.fetch_one(self.vw,**{self.kp:k})
+        if row:
+            self.db.do_modify(self.vw, row, {self.vp:store_v})
         else:
-            self.vw.append({self.kp:k,self.vp:store_v})
+            self.db.do_add(self.vw,{self.kp:k,self.vp:store_v})
         self.db.changed=True
         return v
-    
+
     def __getitem__ (self, k):
         if self.just_got.has_key(k): return self.just_got[k]
         if self.pickle_key:
             k=pickle.dumps(k)
-        v = getattr(self.vw.select(**{self.kp:k})[0],self.vp)        
+        v = getattr(self.db.fetch_one(self.vw,**{self.kp:k}),self.vp)
         if v and self.pickle_val:
             try:
                 return pickle.loads(v)
             except:
-                print "Problem unpickling ",v                
+                print "Problem unpickling ",v
                 raise
         else:
             return v
     
     def __repr__ (self):
-        str = "<dbDic> {"
-        for i in self.vw:
-            if self.pickle_key:
-                str += "%s"%pickle.loads(getattr(i,self.kp))
-            else:
-                str += getattr(i,self.kp)
-            str += ":"
-            if self.pickle_val:
-                str += "%s"%pickle.loads(getattr(i,self.vp))
-            else:
-                str += "%s"%getattr(i,self.vp)
-            str += ", "
-        str += "}"
-        return str
+        retstr = "<dbDic> {"
+        #for i in self.vw:
+        #    if self.pickle_key:
+        #        retstr += "%s"%pickle.loads(getattr(i,self.kp))
+        #    else:
+        #        retstr += getattr(i,self.kp)
+        #    retstr += ":"
+        #    if self.pickle_val:
+        #        retstr += "%s"%pickle.loads(getattr(i,self.vp))
+        #    else:
+        #        retstr += "%s"%getattr(i,self.vp)
+        #    retstr += ", "
+        retstr += "}"
+        return retstr
 
     def keys (self):
         ret = []
-        for i in self.vw:
+        for i in self.db.fetch_all(self.vw):
             ret.append(getattr(i,self.kp))
         return ret
 
     def values (self):
         ret = []
-        for i in self.vw:
+        for i in self.db.fetch_all(self.vw):
             val = getattr(i,self.vp)
             if val and self.pickle_val: val = pickle.loads(val)
             ret.append(val)
@@ -1026,7 +1047,7 @@ class dbDic:
 
     def items (self):
         ret = []
-        for i in self.vw:
+        for i in self.db.fetch_all(self.vw):
             key = getattr(i,self.kp)
             val = getattr(i,self.vp)
             if key and self.pickle_key:
@@ -1044,16 +1065,17 @@ class dbDic:
             ret.append((key,val))
         return ret
                     
-def test_db (db):
-    print 'Test new rec!'
-    rec = db.new_rec()
-    print 'Modify rec!'
-    rec = db.modify_rec(rec,{'title':'Foo','cuisine':'Bar'})
-    assert(rec.title=='Foo')
-    assert(rec.cuisine=='Bar')
+def test_rec_basics (db):
+    rec = db.add_rec({'title':'Fooboo'})
+    assert(rec.title=='Fooboo')
+    rec2 = db.new_rec()
+    rec2 = db.modify_rec(rec,{'title':'Foo','cuisine':'Bar'})
+    assert(rec2.title=='Foo')
+    assert(rec2.cuisine=='Bar')
     db.delete_rec(rec)
-    irec = db.new_rec()
-    print 'Test ingredients'
+    db.delete_rec(rec2)    
+
+def test_ing_basics (db):
     rid = db.new_rec().id
     ing = db.add_ing({'amount':1,
                       'unit':'c.',
@@ -1066,14 +1088,94 @@ def test_db (db):
                       'item':'Tomato juice',
                       'ingkey':'juice, tomato',
                       'id':rid
-                      })
+                       })
     assert(len(db.get_ings(rid))==2)
     ing = db.modify_ing(ing,{'amount':2})
     assert(ing.amount==2)
-    ing = db.modify_ing(ing,{'unit':'cup'})
+    ing = db.modify_ing(ing,{'unit':'cup'})    
     assert(ing.unit=='cup')
     db.delete_ing(ing)
-    print 'Success!'
+    db.delete_ing(ing2)
+
+def test_unique (db):
+    for i in ['juice, tomato',
+              'broccoli',
+              'spinach',
+              'spinach',
+              'spinach',]:
+        db.add_ing({'amount':1,'unit':'c.','item':i,'ingkey':i})
+    vv=db.get_unique_values('ingkey',db.iview)
+    assert(len(vv)==3)
+    cvw = db.fetch_count(db.iview,'ingkey',ingkey='spinach',sort_by=[('count',-1)])
+    assert(cvw[0].count==3)    
+    assert(cvw[0].ingkey=='spinach')
+
+def test_search (db):
+    db.add_rec({'title':'Foo','cuisine':'Bar'})
+    db.add_rec({'title':'Fooey','cuisine':'Bar'})
+    db.add_rec({'title':'Fooey','cuisine':'Foo'})
+    db.add_rec({'title':'Foo','cuisine':'Foo'})
+    db.add_rec({'title':'Boe','cuisine':'Fa'})
+    result = db.search_recipes([{'column':'deleted','search':False,'operator':'='},
+                                {'column':'cuisine','search':'Foo','operator':'='}])
+    assert(len(result)==2)
+    result = db.search_recipes([{'column':'deleted','search':False,'operator':'='},
+                                {'column':'cuisine','search':'F.*','operator':'REGEXP'}])
+
+    assert(len(result)==3)
+    result = db.search_recipes([{'column':'deleted','search':False,'operator':'='},
+                                {'column':'cuisine','search':'Foo'},
+                                {'column':'title','search':'Foo','operator':'='},])
+    assert(len(result)==1)
+
+def test_unicode (db):
+    rec = db.add_rec({'title':u'Comida de \xc1guila',
+                'source':u'C\xc6SAR',})
+    assert(rec.title == u'Comida de \xc1guila')
+    assert(rec.source == u'C\xc6SAR')
+
+def test_id_reservation (db):
+    rid = db.new_id()
+    rid2 = db.new_id()
+    r1 = db.add_rec({'title':'intermittent'})
+    r1i = db.add_rec({'title':'intermittent2'})
+    r12 = db.add_rec({'title':'intermittent3'})    
+    r2 = db.add_rec({'title':'reserved','id':rid})
+    r3 = db.add_rec({'title':'reserved2','id':rid2})
+    try: assert(r2.id==rid)
+    except:
+        print 'reserved ID',rid
+        print 'fetched ID',r2.id
+        print 'intermittent ID',r1.id
+        raise
+    for r in [r1,r1i,r12,r2,r3]: db.delete_rec(r)
+
+img='\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00\xff\xdb\x00C\x00\x08\x06\x06\x07\x06\x05\x08\x07\x07\x07\t\t\x08\n\x0c\x14\r\x0c\x0b\x0b\x0c\x19\x12\x13\x0f\x14\x1d\x1a\x1f\x1e\x1d\x1a\x1c\x1c $.\' ",#\x1c\x1c(7),01444\x1f\'9=82<.342\xff\xdb\x00C\x01\t\t\t\x0c\x0b\x0c\x18\r\r\x182!\x1c!22222222222222222222222222222222222222222222222222\xff\xc0\x00\x11\x08\x00(\x00#\x03\x01"\x00\x02\x11\x01\x03\x11\x01\xff\xc4\x00\x1f\x00\x00\x01\x05\x01\x01\x01\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\xff\xc4\x00\xb5\x10\x00\x02\x01\x03\x03\x02\x04\x03\x05\x05\x04\x04\x00\x00\x01}\x01\x02\x03\x00\x04\x11\x05\x12!1A\x06\x13Qa\x07"q\x142\x81\x91\xa1\x08#B\xb1\xc1\x15R\xd1\xf0$3br\x82\t\n\x16\x17\x18\x19\x1a%&\'()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz\x83\x84\x85\x86\x87\x88\x89\x8a\x92\x93\x94\x95\x96\x97\x98\x99\x9a\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xff\xc4\x00\x1f\x01\x00\x03\x01\x01\x01\x01\x01\x01\x01\x01\x01\x00\x00\x00\x00\x00\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\xff\xc4\x00\xb5\x11\x00\x02\x01\x02\x04\x04\x03\x04\x07\x05\x04\x04\x00\x01\x02w\x00\x01\x02\x03\x11\x04\x05!1\x06\x12AQ\x07aq\x13"2\x81\x08\x14B\x91\xa1\xb1\xc1\t#3R\xf0\x15br\xd1\n\x16$4\xe1%\xf1\x17\x18\x19\x1a&\'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x92\x93\x94\x95\x96\x97\x98\x99\x9a\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xff\xda\x00\x0c\x03\x01\x00\x02\x11\x03\x11\x00?\x00\xf5\x01#r\xc0\x1c\x01\x92q\xd0S\x9a\xea+x\x1a{\xa9\x92(\x82\x16R\xc7n\xefl\x9e+\x07\xc6z\xf0\xd3$\x16p\xa4A\xf2\xb2d\xb1S\x8eq\xfc\'=\xff\x00:\xcf\x9a\xf7Q\xf1O\x85\x9eDB\xa9\x14\xdbJ\xc7\xceO\xe4\x0f\x7f\xd6\xaeUU\xb4*4\x9bj\xfb\x1d5\x9e\xadk}m\xba\x19\xe3\x92U8a\x1b\x02\x05`k\xfe\'m1\x84\x0bl\x1d\x87F.F>\xb8\xebShKi\xa0\xe9-4\xf8I\xe7E\r\xba,\x98\xd8\x03\x81\x8c\xe4\xf5\xcf^A\x14\x96\x97:>\xb5rl\xae\x00\xbd\x91\x8b"\xbbB\xcaz\xfd\xe1\xe9\xeb\xc1\x1c}1I\xc9\xc9+n5\x15\x17\xaa\xba,\xe9\xda\xb5\xd6\xa3a\r\xdb\xa2\xabH2F\x07c\x8f\xe9Etp\xd9\xc1o\x04p\xc5\x10\x11\xc6\xa1T{\n+U-52v\xbe\x86\x0f\x8c\xbc2\xfa\xcc\x90\xdc@3 \xc4dd\x0f\xa7\xf3\xadm\x13H\x87C\xd2\xa2\xb2\x1f31\xdc\xe4\x0e\x0b\x1cg\xf9\x01Z\x8e\xe7#\x18\x1e\xe6\xa2\xbb\xbb\x8a\xd9Y\x9d\x86\xc03\x9a\xc9E\'r\xdc\xdb\x8f)\xc6\xfcF\xd3e\xb9\xb3\x82\xea0\xc7h*v\xfey\xff\x00>\x95\x93\xf0\xfbIxo\x1e\xfex\xdbj\x02\xa8I\xfe#\xd7\xf4\xcf\xe7]\xcc\x97\xd1\xdd\xda\xc8\x8a\x98S\xf2\xe5\xfe\\\xfd;\xf1\x8c\xfe\x1d\xba\xd3\x86AX\xc4,\x15F7\xed\x00\x13\xdf\x8c\xf1\xcei{?{\x98~\xd3\xdc\xe5,1%\x89\x07\x03\xd0QF(\xadL\xc9\xd9\xc6*\xa5\xec"x\n\xed\xdcr\x1b\x1e\xb84QR\x80\xa0\xc8\xb3C\xf6i"|0\xc6\x0eG\x1f^\xb9\xabS\\}\x968`p\xca\xa3\x01X\xe4\x8f\xc4\xff\x00\x8d\x14U\x89\n\xf7r+m\x8ebT\x01\x8c-\x14QH\x0f\xff\xd9'
+
+def test_data (db):
+    r = db.add_rec({'image':img})
+    assert(r.img == img)
+    
+def test_db (db):
+    tests = [test_rec_basics,
+             test_ing_basics,
+             test_unique,
+             test_search,
+             test_unicode,
+             test_id_reservation,
+             ]
+    success = 0
+    for t in tests:
+        print t.__name__
+        try:
+            t(db)
+            print 'Passed'
+            success += 1
+        except:
+            print 'Failed'
+            import traceback; traceback.print_exc()
+    print 'Completed ',len(tests),'tests'
+    print 'Passed',"%s/%s"%(success,len(tests)),'tests'
     
 # Not working -- I don't understand why -- for now I use the above
 # simple test function

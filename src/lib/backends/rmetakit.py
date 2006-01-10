@@ -83,7 +83,7 @@ class RecData (rdatabase.RecData):
             del old_db
         
     def _setup_table (self, *args, **kwargs):
-        return NormalizedView(self.setup_table(*args,**kwargs),self,self.normalizations)
+        return self.setup_table(*args,**kwargs)
 
     def setup_table (self, name, data, key=None):
         """Setup a metakit view (table) for generic table description (see superclass rdatabase)."""
@@ -180,22 +180,40 @@ class RecData (rdatabase.RecData):
 
     # Search functions
 
+    def search_recipes (self, searches):
+        """Search recipes for columns of values.
+
+        "category" and "ingredient" are handled magically
+        """
+        rvw = self.rview
+        for s in searches:
+            print 'on search',s,'using',rvw
+            if (s.get('operator','LIKE')=='LIKE'):
+                exact = False
+                use_regexp = False
+            elif s['operator'] in ['=','==']:
+                exact = True
+                use_regexp = False
+            elif s['operator'] == 'REGEXP':
+                exact = True
+                use_regexp = True
+            col = s['column']
+            if col=='ingredient':
+                nvw = self.ing_search(s['search'],rview=rvw,use_regexp=use_regexp,exact=exact)
+            elif col=='category':
+                nvw = self.joined_search(rvw, self.catview, 'category', s['search'],
+                                         use_regexp=use_regexp, exact=exact)
+            else:
+                nvw = self.search(rvw,col,s['search'],exact=exact,use_regexp=use_regexp)
+            if s.get('logic','AND')=='OR': print "METAKIT DOESN'T YET HANDLE OR"
+            rvw = nvw
+            if not rvw: return rvw
+        return rvw
+
     def search (self, table, colname, regexp, exact=0, use_regexp=True, recurse=True):
         """Handed a table, a column name, and a regular expression, search
         for an item. Alternatively, the regular expression can just be a value."""
         debug('search %(table)s, %(colname)s, %(regexp)s, %(exact)s, %(use_regexp)s, %(recurse)s'%locals(),5)
-        if (recurse
-            and
-            self.normalizations.has_key(colname)
-            and
-            isinstance(table,NormalizedView)
-            ):
-            nsrch = self.search(self.normalizations[colname],colname,regexp,exact,use_regexp,recurse=False)
-            if not nsrch: return []
-            nsrch = nsrch.rename(colname,'text')
-            nsrch = nsrch.rename('id',colname)
-            rvw = table.join(nsrch,getattr(table.__view__,colname))
-            return rvw
         if type(regexp)==type(""):
             regexp=str(regexp)
         if exact and not use_regexp: return table.select(**{colname:regexp})
@@ -253,6 +271,10 @@ class RecData (rdatabase.RecData):
         self.changed=True
         return r
 
+    def do_add_cat (self, catdict):
+        self.remove_unicode(catdict)
+        return rdatabase.RecData.do_add_cat(self,catdict)
+
     def do_modify_rec (self, rec, dic):
         if not rec or not dic: return
         # This is a bit ugly, but we need to grab the rec object
@@ -277,6 +299,10 @@ class RecData (rdatabase.RecData):
         #for attr in dic.keys():
         #    debug('modified recipe %s->%s'%(attr,getattr(rec,attr)),1)
         return rec
+
+    def validate_ingdic (self,ingdic):
+        """Unicode seems to cause us trouble!"""
+        self.remove_unicode(ingdic)
     
     def do_add_ing (self, ingdic):
         """Add ingredient to iview based on ingdict and return
@@ -292,7 +318,7 @@ class RecData (rdatabase.RecData):
         refid: id of reference recipe. If ref is provided, everything
                else is irrelevant except for amount.
         """
-        self.remove_unicode(ingdic)
+        #print 'removing unicode'
         if ingdic.has_key('amount') and not ingdic['amount']: del ingdic['amount']
         self.iview.append(ingdic)
         if self.add_ing_hooks: self.run_hooks(self.add_ing_hooks, self.iview[-1])
@@ -327,6 +353,7 @@ class RecData (rdatabase.RecData):
                 v = mydict[k]
                 mydict.__delitem__(k)
                 mydict[k.encode('utf8','replace')] = v
+        #print 'mydict = ',mydict
 
     def increment_field (self, table, field):
         if type(table)!=str:
@@ -388,7 +415,7 @@ class RecData (rdatabase.RecData):
             ):
             debug('cleaning rec table and dumping data',1)
             self.clean_recs_table_and_dump_data()
-
+            
     def copy_table (self, old_db, table_name, table_cols,
                     prog=None,convert_pickles=False):
         """Copy columns of table from old database to ourselves.
@@ -898,15 +925,10 @@ class NormalizedRow (Normalizer):
 
 dbDic = rdatabase.dbDic
 
-class MetakitUnitTest (rdatabase.DatabaseUnitTest):
-    db_class = RecipeManager
-    db_kwargs = {'file':'/tmp/test3.mk'}
 
 if __name__ == '__main__':
     import unittest
     import tempfile
-    fi = '/tmp/fooeybooey'
-    n = 1
     #while os.path.exists(fi+str(n)+'.mk'):
     #    n+=1
     #MetakitUnitTest.db_kwargs['file']=fi+str(n)+'.mk'
@@ -916,7 +938,7 @@ if __name__ == '__main__':
     ##    else:
     #         raise
     #except:
-    db = RecipeManager(MetakitUnitTest.db_kwargs['file'])
+    db = RecipeManager(tempfile.mktemp('.mk'))
     rdatabase.test_db(db)
     
     

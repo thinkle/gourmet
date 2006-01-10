@@ -40,20 +40,20 @@ class RecHandler (xml_importer.RecHandler):
         if name=='recipe':
             self.commit_rec()
         elif name=='groupname':
-            self.group=xml.sax.saxutils.unescape(self.elbuf)
+            self.group=xml.sax.saxutils.unescape(self.elbuf.strip())
         elif name=='inggroup':
             self.group=None
         elif name=='ingref':
-            self.add_item(xml.sax.saxutils.unescape(self.elbuf))
+            self.add_item(xml.sax.saxutils.unescape(self.elbuf.strip()))
             self.commit_ing()
         elif name=='ingredient':
             self.commit_ing()
         elif name=='image':
-            self.rec['image']=base64.b64decode(self.elbuf)
+            self.rec['image']=base64.b64decode(self.elbuf.strip())
         elif name in self.REC_ATTRS:
-            self.rec[name]=xml.sax.saxutils.unescape(self.elbuf)
+            self.rec[name]=xml.sax.saxutils.unescape(self.elbuf.strip())
         elif name in self.ING_ATTRS.keys():
-            self.ing[self.ING_ATTRS[name]]=xml.sax.saxutils.unescape(self.elbuf)
+            self.ing[self.ING_ATTRS[name]]=xml.sax.saxutils.unescape(self.elbuf.strip())
 
 
 class converter (xml_importer.converter):

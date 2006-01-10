@@ -409,7 +409,7 @@ class RecGui (RecIndex):
         #self.conv = rmetakit.mkConverter(self.rd)
         self.conv = convert.converter()
         # initialize our nutritional database
-        nutrition.nutritionGrabberGui.check_for_db(self.rd)
+        #nutrition.nutritionGrabberGui.check_for_db(self.rd)
         self.nd = nutrition.nutrition.NutritionData(self.rd,self.conv)
         # initialize star-generator for use elsewhere
         self.star_generator = ratingWidget.StarGenerator()
@@ -1192,11 +1192,6 @@ class RecTrash (RecIndex):
             })
         RecIndex.__init__(self, self.glade, self.rg.rd, self.rg)
 
-    def setup_search_views (self):
-        self.lsrch = ["",""]
-        self.lsrchvw = self.rd.rview.select(deleted=True)
-        self.searchvw = self.rd.rview.select(deleted=True)
-
     def dismiss (self, *args):
         self.window.hide()
         return True
@@ -1206,9 +1201,9 @@ class RecTrash (RecIndex):
         self.window.show(*args,**kwargs)
 
     def setup_search_views (self):
-        self.lsrch = ["",""]
-        self.lsrchvw = self.rd.rview.select(deleted=True)
-        self.searchvw = self.rd.rview.select(deleted=True)
+        self.last_search = ["",""]
+        self.rvw = self.rd.fetch_all(self.rd.rview,deleted=True)
+        self.searches = [{'column':'deleted','operator':'=','search':True}]
 
     def recTreeUndeleteSelectedRecs (self, *args):
         mod,rr = self.rectree.get_selection().get_selected_rows()

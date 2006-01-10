@@ -112,7 +112,7 @@ class importer:
         else:
             self.rec = {}
         #if not self.rec.has_key('id'):
-        # always create a new ID        
+        # always create a new ID     
         if self.rec.has_key('id'):
             if self.id_converter.has_key(self.rec['id']):
                 self.rec['id']=self.id_converter[self.rec['id']]
