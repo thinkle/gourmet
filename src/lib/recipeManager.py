@@ -37,7 +37,7 @@ elif db=='metakit':
     from backends.rmetakit import *
 elif db=='sqlite':
     #from backends.rsqlite import *
-    from backends.simple_sqlite_backend import *
+    from backends.sqlite_db import *
 elif db=='mysql':
     from backends.rmysql import *
     
@@ -137,12 +137,6 @@ class SimpleCLI:
 
         One major limitation: You can only execute a single expression
         at a time (i.e. what you you could put in a lambda expression).
-
-        For example:
-            len(self.rm.iview) -> number of ingredients in the ingredients table
-            len(self.rm.rview) -> number of recipes in the recipe table
-            [r.title for r in self.rm.rview] -> titles of all recipes
-            [r.title for r in self.rm.search(self.rm.rview, 'title','chocolate')] # list recipes with 'chocolate' in the title
         """
         while True:
             inp = raw_input('GRM>')
