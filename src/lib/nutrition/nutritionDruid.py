@@ -266,7 +266,7 @@ class NutritionInfoDruid (gobject.GObject):
 
     def _setup_nuttree_ (self):
         """Set up our treeview with USDA nutritional equivalents"""
-        self.nutrition_store = PageableNutritionStore(self.rd.nview)
+        self.nutrition_store = PageableNutritionStore(self.rd.fetch_all(self.rd.nview))
         self.firstButton.connect('clicked', lambda *args: self.nutrition_store.goto_first_page())
         self.lastButton.connect('clicked', lambda *args: self.nutrition_store.goto_last_page())
         self.forwardButton.connect('clicked', lambda *args: self.nutrition_store.next_page())

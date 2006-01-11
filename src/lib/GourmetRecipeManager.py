@@ -409,7 +409,7 @@ class RecGui (RecIndex):
         #self.conv = rmetakit.mkConverter(self.rd)
         self.conv = convert.converter()
         # initialize our nutritional database
-        #nutrition.nutritionGrabberGui.check_for_db(self.rd)
+        nutrition.nutritionGrabberGui.check_for_db(self.rd)
         self.nd = nutrition.nutrition.NutritionData(self.rd,self.conv)
         # initialize star-generator for use elsewhere
         self.star_generator = ratingWidget.StarGenerator()
