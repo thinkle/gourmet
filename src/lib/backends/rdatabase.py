@@ -1205,7 +1205,7 @@ class DatabaseUnitTest (unittest.TestCase):
         ing = self.rd.add_ing({'amount':1,
                                'unit':'c.',
                                'item':'Carrot juice',
-                               'key':'juice, carrot',
+                               'ingkey':'juice, carrot',
                                'id':self.rd.new_rec().id,
                                })
         ing = self.rd.modify_ing(ing,{'amount':2})
