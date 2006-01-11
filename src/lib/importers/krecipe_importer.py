@@ -18,7 +18,7 @@ class KrecHandler (xml_importer.RecHandler):
              'preparation-time':('preptime',IS),
              'krecipes-instructions':('instructions',ADD)
              }
-    INGTAGS={'name':(('item','key'),AND),
+    INGTAGS={'name':(('item','ingkey'),AND),
              'amount':('amount',IS),
              'unit':('unit',IS),
              'prep':('item',ADD),
