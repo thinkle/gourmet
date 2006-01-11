@@ -47,11 +47,12 @@ class ImportTest:
             self.do_test(d['test'])
 
     def do_test (self, test):
-        recs = self.db.search(self.db.rview,
-                              'title',
-                              test['title'],
-                              exact=True,
-                              use_regexp=False)
+        recs = self.db.search_recipes(
+            [{'column':'title',
+             'search':test['title'],
+             'operator':'=',
+             }]
+            )
         rec = recs[0]
         ings = self.db.get_ings(rec)
         if test.get('all_ings_have_amounts',False):
@@ -101,7 +102,7 @@ class ImportTestCase (unittest.TestCase):
         from exporters.gxml2_exporter import rview_to_xml as gxml_exporter
         n = 1
         while os.path.exists('/tmp/gourmet_import_test_%s.grmt'%n): n+=1
-        ge=gxml_exporter(self.it.db,self.it.db.rview,'/tmp/gourmet_import_test_%s.grmt'%n)
+        ge=gxml_exporter(self.it.db,self.it.db.fetch_all(self.it.db.rview),'/tmp/gourmet_import_test_%s.grmt'%n)
         ge.run()
 
     def testMastercookXML (self):

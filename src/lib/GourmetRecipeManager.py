@@ -759,7 +759,7 @@ class RecGui (RecIndex):
             if exporters.exporter_dict.has_key(exp_type):
                 myexp = exporters.exporter_dict[exp_type]
                 pd_args={'label':myexp['label'],'sublabel':myexp['sublabel']%{'file':file}}
-                if export_all: recs = self.rd.rview.select(deleted=False)
+                if export_all: recs = self.rd.fetch_all(self.rd.rview,deleted=False)
                 else: recs = self.recTreeSelectedRecs()
                 expClass = myexp['mult_exporter']({'rd':self.rd,
                                                    'rv': recs,
