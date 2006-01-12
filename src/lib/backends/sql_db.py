@@ -149,23 +149,12 @@ class RecData (rdatabase.RecData):
         crit = ''
         joins = []
         params = []
-        if 'ingredient' in [s.get('column','') for s in searches]:
-            searches.append({'column':self.iview+'.'+'deleted',
-                             'logic':'AND',
-                             'operator':'=',
-                             'search':False})
         for s in searches:
             col = s['column']
             if col=='ingredient':
                 col=self.iview+'.ingkey'
-                join_string = 'JOIN '+self.iview+' ON '\
-                              + self.iview+'.id='+self.rview+'.id'
-                if join_string not in joins: joins.append(join_string)
             elif col=='category':
                 col=self.catview+'.category'
-                join_string = ('JOIN '+self.catview+' ON ' 
-                               + self.catview + '.id='+self.rview+'.id')
-                if join_string not in joins: joins.append(join_string)
             elif '.' not in col:
                 col = self.rview + '.' + col
             if crit:
@@ -173,9 +162,17 @@ class RecData (rdatabase.RecData):
             op = s.get('operator','LIKE')
             crit += col + ' ' + op + ' ' + '?'
             params.append(s['search'])
+        if crit.find(self.iview)>=0:
+            table = self.iview + ' INNER JOIN ' + self.rview + ' ON %s.id=%s.id'%(self.iview,
+                                                                                  self.rview)
+        else:
+            table = self.rview
+        if crit.find(self.catview)>=0:
+            table += ' INNER JOIN ' + self.catview + ' ON %s.id=%s.id'%(self.catview,
+                                                                        self.rview)
         cursor = self.connection.cursor()
         self.execute(cursor,
-                     "SELECT recipe.id FROM recipe " + " ".join(joins) + " WHERE " + crit,
+                     "SELECT DISTINCT %s.id FROM "%self.rview + table + " WHERE " + crit,
                      params
                      )
         return SearchFetcher(cursor,self,self.rview)
@@ -190,7 +187,8 @@ class RecData (rdatabase.RecData):
                      'SELECT DISTINCT %s FROM %s '%(colname,table)+where,
                      params)
         ret = []
-        for row in self.cursor.fetchall(): ret.append(row[0])
+        for row in self.cursor.fetchall():
+            if row[0]: ret.append(row[0])
         return ret
 
     # Adding recipes...
@@ -315,7 +313,7 @@ class DelayedRowObject (RowObject):
         if not self.__retrieved__ and not att.find('__')==0 and not att==self.__idprop__:
             return self.__retrieve__(att)
         raise AttributeError
-        
+
     def __retrieve__ (self,att):
         ret = None
         self.__db__.execute(
@@ -341,10 +339,8 @@ class Fetcher (list):
 
     def __iter__ (self):
         if self.generated:
-            #print 'Plain old __iter__'
-            list.__iter__(self)
+            for r in list.__iter__(self): yield r
         else:
-            #print 'Magic __iter__'
             result = self.get_row(self.cursor.fetchone())
             while result:
                 self.append(result)
@@ -390,13 +386,15 @@ class Fetcher (list):
         
     def __getslice__ (self, i, j):
         try:
-            return list.__getslice__(self,i,j)
+            list.__getitem__(self,i) and list.__getitem__(self,j)
         except IndexError:
             ret = []
             for n in range(i,j):
-                if n > len(self): break
+                if n >= len(self): break
                 ret.append(self[n])
             return ret
+        else:
+            return list.__getslice__(self,i,j)
 
 class SearchFetcher (Fetcher):
     def __init__ (self, cursor, db, table, id_prop='id'):
@@ -410,7 +408,9 @@ class SearchFetcher (Fetcher):
         if not result: return
         else: idval = result[0]
         #idval = getattr(result,self.id_prop)
-        return self.db.fetch_one(
+        return DelayedRowObject(
+            idval,
+            self.id_prop,
             self.table,
-            **{self.id_prop:idval}
+            self.db
             )
