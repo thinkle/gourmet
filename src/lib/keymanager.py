@@ -53,7 +53,6 @@ class KeyManager:
         debug("Start initialize_categories",10)
         self.cats = []
         for k in self.rm.get_unique_values('ingkey',self.rm.iview,deleted=False):
-            print 'k',k
             fnd=k.find(',')
             if fnd != -1:
                 self.cats.append(k[0:fnd])
