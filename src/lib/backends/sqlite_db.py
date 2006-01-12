@@ -11,7 +11,7 @@ class RecData (sql_db.RecData):
     Gourmet's interface to the database.
     """
     
-    def __init__ (self, filename=os.path.join(gglobals.gourmetdir,'simple_recs.db'),db='sqlite'):
+    def __init__ (self, filename=os.path.join(gglobals.gourmetdir,'recipes.db'),db='sqlite'):
         self.filename = filename
         self.db = db
         self.columns = {}
