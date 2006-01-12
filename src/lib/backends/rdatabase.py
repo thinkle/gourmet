@@ -484,16 +484,16 @@ class RecData:
         # name (the name of the ingredient *should* be the title of
         # the recipe, though the user could change this)
         if hasattr(ing,'item'):
-            recs=self.search_recipes([{'title':ing.item,'operator':'='}])
+            recs=self.search_recipes([{'column':title,'search':ing.item,'operator':'='}])
             if len(recs)==0:
-                self.modify_ing(ing,{'idref':recs[0].id})
+                self.modify_ing(ing,{'refid':recs[0].id})
                 return recs[0]
             else:
                 debug("""Warning: there is more than one recipe titled"%(title)s"
-                and our id reference to %(idref)s failed to match any
+                and our id reference to %(refid)s failed to match any
                 recipes.  We are going to assume recipe ID %(id)s is
                 the correct one."""%{'title':ing.item,
-                                     'idref':ing.refid,
+                                     'refid':ing.refid,
                                      'id':recs[0].id},
                       0)
                 return recs[0]
