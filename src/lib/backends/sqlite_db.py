@@ -20,10 +20,8 @@ class RecData (sql_db.RecData):
     def validate_recdic (self, recdic):
         rdatabase.RecData.validate_recdic(self,recdic)
         if recdic.has_key('image'):
-            print 'buffering image'
             recdic['image']=buffer(recdic['image'])
         if recdic.has_key('thumb'):
-            print 'buffering thumb'            
             recdic['thumb']=buffer(recdic['thumb'])
 
     # Main methods we implement
