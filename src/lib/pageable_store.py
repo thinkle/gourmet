@@ -45,8 +45,6 @@ class PageableListStore (gtk.ListStore):
         #self.grab_items()
         # a dictionary for tracking our sorting
         self.sort_dict = {}
-        self.__all_sorts__ = []
-        self.__reverse_sorts__ = []
         self.update_tree()
 
     def _setup_parent_ (self, *args, **kwargs):
@@ -164,6 +162,7 @@ class PageableListStore (gtk.ListStore):
 
         Note -- to remove term we use direction=OFF
         """
+
         self.sort_dict[column]=direction
         if direction==self.OFF:
             self.parent_list = self.unsorted_parent
@@ -239,10 +238,8 @@ class PageableTreeStore (gtk.TreeStore, PageableListStore):
         gtk.TreeStore.__init__(self, *types)        
         self.per_page = per_page
         self._setup_parent_(*parent_args,**parent_kwargs)
-        self.sort_dict = {}
-        self.__all_sorts__ = []
-        self.__reverse_sorts__ = []
         self.update_tree()
+        self.sort_dict = {}
 
     def update_tree (self):
         """Update our tree based on current page, etc."""
@@ -299,10 +296,15 @@ class PageableViewStore (PageableListStore):
         'view-changed':(gobject.SIGNAL_RUN_LAST,
                          gobject.TYPE_NONE,
                          ()
-                         ),        
+                         ),
+        'view-sort':(gobject.SIGNAL_RUN_LAST,
+                     gobject.TYPE_PYOBJECT,
+                     (gobject.TYPE_PYOBJECT,)
+                     ),
         }
 
     def __init__ (self, view, columns=['foo','bar'],column_types=[int,str],per_page=15):
+        self.__sorts__ = []
         PageableListStore.__init__(self,column_types, parent_args=[view],parent_kwargs={'columns':columns},
                                    per_page=per_page)
 
@@ -317,22 +319,22 @@ class PageableViewStore (PageableListStore):
     def sort (self, col, direction):
         attr = self.columns[col]
         self.sort_dict[col]=direction
-        if direction==self.OFF:
-            if attr in self.__all_sorts__: self.__all_sorts__.remove(attr)
-            if attr in self.__reverse_sorts__: self.__reverse_sorts__.remove(attr)            
-        else:
-            self.__all_sorts__ = [attr]+self.__all_sorts__
-        if direction == self.REVERSE:
-            self.__reverse_sorts__.append(attr)
-        self._do_sort_()
+        # Remove previous sorts by this attribute
+        if (attr,-1) in self.__sorts__: self.__sorts__.remove((attr,-1))
+        elif (attr, 1) in self.__sorts__: self.__sorts__.remove((attr,1))
+        if direction==self.FORWARD:
+            self.__sorts__ = [(attr,1)] + self.__sorts__
+        elif direction==self.REVERSE:
+            self.__sorts__ = [(attr,-1)] + self.__sorts__
+        self.emit('view-sort',self.__sorts__)
 
-    def _do_sort_ (self):
-        if self.__all_sorts__:
-            self.do_change_view(self.view.sortrev([getattr(self.view,a) for a in self.__all_sorts__],
-                                                  [getattr(self.view,a) for a in self.__reverse_sorts__])
-                                )
-        else:
-            self.do_change_view(self.unsorted_view)
+    #def _do_sort_ (self):
+    #    if self.__all_sorts__:
+    #        self.do_change_view(self.view.sortrev([getattr(self.view,a) for a in self.__all_sorts__],
+    #                                              [getattr(self.view,a) for a in self.__reverse_sorts__])
+    #                            )
+    #    else:
+    #        self.do_change_view(self.unsorted_view)
 
     def do_change_view (self, vw):
         self.parent_list = self.view = vw
