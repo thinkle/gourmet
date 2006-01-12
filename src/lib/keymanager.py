@@ -14,7 +14,7 @@ class KeyManager:
         # This needs to be made sane i18n-wise
         self.ignored = ["and","with","of","for","cold","warm","finely","thinly","roughly","coarsely"]
         self.ignored.extend(self.cooking_verbs)
-        self.ignored_regexp = re.compile("[,; ]?(" + string.join(self.ignored,"|") + ")[,; ]?")
+        self.ignored_regexp = re.compile("[,; ]?(" + '|'.join(self.ignored) + ")[,; ]?")
         if not(self.rm.ikview):
             self.initialize_from_defaults()
         self.initialize_categories()
@@ -53,7 +53,8 @@ class KeyManager:
         debug("Start initialize_categories",10)
         self.cats = []
         for k in self.rm.get_unique_values('ingkey',self.rm.iview,deleted=False):
-            fnd=string.find(k,',')
+            print 'k',k
+            fnd=k.find(',')
             if fnd != -1:
                 self.cats.append(k[0:fnd])
         debug("End initialize_categories",10)
@@ -177,16 +178,15 @@ class KeyManager:
         """Generate a generic-looking key from a string."""
         timer = TimeAction('keymanager.generate_key 1',3)
         debug("Start generate_key(self,%s)"%ingr,10)
-        ingr = string.strip(ingr)
-        ingr = string.lower(ingr)
+        ingr = ingr.strip().lower()
         timer.end()
         timer = TimeAction('keymanager.generate_key 2',3)
         debug("verbless string=%s"%ingr,10)
         # we remove final s
-        if string.find(ingr,',') == -1:
+        if ingr.find(',') == -1:
             # if there are no commas, we see if it makes sense
             # to turn, e.g. whole-wheat bread into bread, whole-wheat
-            words = string.split(ingr)
+            words = ingr.split()
             if len(words) >= 2:
                 if self.cats.__contains__(words[-1]):
                     ingr = "%s, %s" %(words[-1],string.join(words[0:-1]))
@@ -259,10 +259,6 @@ class KeyManager:
         else:
             return words.split()
     
-        
-
-    
-        
 class KeyManagerOldSchool:
     def __init__ (self,kd={}, rm=None):
         """We have a dictionary {item:[key1,key2],item:[key1]} which includes
@@ -396,7 +392,7 @@ class KeyManagerOldSchool:
                     retvals[score]=[itm]
 
         ## First we look ourselves up in the items list
-        txt = string.lower(txt)
+        txt = txt.lower()
         if self.kd.has_key(txt):
             keys = self.kd[txt][0:]
             for key in keys:
@@ -447,8 +443,7 @@ class KeyManagerOldSchool:
         """Generate a generic-looking key from a string."""
         timer = TimeAction('keymanager.generate_key 1',3)
         debug("Start generate_key(self,%s)"%ingr,10)
-        ingr = string.strip(ingr)
-        ingr = string.lower(ingr)
+        ingr = ingr.strip().lower()
         timer.end()
         timer = TimeAction('keymanager.generate_key 2',3)
         ingr = self.remove_verbs(ingr)
@@ -456,13 +451,13 @@ class KeyManagerOldSchool:
         ingr = self.remove_verbs(ingr)
         timer.end()
         timer = TimeAction('keymanager.generate_key 5',3)
-        if string.find(ingr,',') == -1:
+        if ingr.find(',') == -1:
             # if there are no commas, we see if it makes sense
             # to turn, e.g. whole-wheat bread into bread, whole-wheat
-            words = string.split(ingr)
+            words = ingr.split()
             if len(words) >= 2:
                 if words[-1] in self.cats:
-                    ingr = "%s, %s" %(words[-1],string.join(words[0:-1]))
+                    ingr = "%s, %s" %(words[-1],' '.join(words[0:-1]))
         debug("End generate_key",10)
         timer.end()
         return ingr
