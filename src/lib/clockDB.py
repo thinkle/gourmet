@@ -28,7 +28,7 @@ class StressTester:
         self.db = rm.RecipeManager(**rm.dbargs)
 
     def run_tests (self):
-        for n in range(5):
+        for n in range(3):
             print 'Start',(n+1),'*1000','recipes'
             self.add_1000_recipes()
             print 'fetching'
@@ -37,6 +37,8 @@ class StressTester:
             self.test_exact_search()
             print 'regexp searches'
             self.test_regexp_search()
+            print 'ing search'
+            self.test_ing_search()
             #print 'like searches'            
             #self.test_like_search()            
             print 'committing...'
@@ -98,6 +100,18 @@ class StressTester:
                                         {'column':'cuisine','search':cuisine,'operator':operator},
                                         {'column':'source','search':cuisine,'operator':operator},
                                         ])
+
+    @time_method
+    def test_ing_search (self):
+        for ing in random.sample(self.INGS,2):
+            srch = ''
+            for ltr in ing[0:4]:
+                srch += ltr
+                self.db.search_recipes([{'column':'deleted','search':False,'operator':'='},
+                                        {'column':'ingredient',
+                                         'search':srch+'%',
+                                         'operator':'LIKE'}]
+                                       )
 
     @time_method
     def test_exact_search (self): self.search('=')
