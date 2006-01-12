@@ -484,7 +484,7 @@ class RecData:
         # name (the name of the ingredient *should* be the title of
         # the recipe, though the user could change this)
         if hasattr(ing,'item'):
-            recs=self.search_recipes([{'column':title,'search':ing.item,'operator':'='}])
+            recs=self.search_recipes([{'column':'title','search':ing.item,'operator':'='}])
             if len(recs)==0:
                 self.modify_ing(ing,{'refid':recs[0].id})
                 return recs[0]
