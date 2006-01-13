@@ -266,6 +266,15 @@ class RecData:
         expressions and/or requiring an exact match."""
         raise NotImplementedError
 
+    def search_recipes (self, searches, sort_by=[]):
+        """Search recipes for columns of values.
+
+        "category" and "ingredient" are handled magically
+
+        sort_by is a list of tuples (column,1) [ASCENDING] or (column,-1) [DESCENDING]
+        """
+        pass
+
     def filter (self, table, func):
         """Return a table representing filtered with func.
 
@@ -1111,10 +1120,10 @@ def test_unique (db):
     assert(cvw[0].ingkey=='spinach')
 
 def test_search (db):
-    db.add_rec({'title':'Foo','cuisine':'Bar'})
-    db.add_rec({'title':'Fooey','cuisine':'Bar'})
-    db.add_rec({'title':'Fooey','cuisine':'Foo'})
-    db.add_rec({'title':'Foo','cuisine':'Foo'})
+    db.add_rec({'title':'Foo','cuisine':'Bar','source':'Z'})
+    db.add_rec({'title':'Fooey','cuisine':'Bar','source':'Y'})
+    db.add_rec({'title':'Fooey','cuisine':'Foo','source':'X'})
+    db.add_rec({'title':'Foo','cuisine':'Foo','source':'A'})
     db.add_rec({'title':'Boe','cuisine':'Fa'})
     result = db.search_recipes([{'column':'deleted','search':False,'operator':'='},
                                 {'column':'cuisine','search':'Foo','operator':'='}])
@@ -1127,6 +1136,9 @@ def test_search (db):
                                 {'column':'cuisine','search':'Foo'},
                                 {'column':'title','search':'Foo','operator':'='},])
     assert(len(result)==1)
+    result = db.search_recipes([{'column':'title','search':'Fo.*','operator':'REGEXP'}],
+                               [('source',1)])
+    assert(result[0].title=='Foo' and result[0].source=='A')
 
 def test_unicode (db):
     rec = db.add_rec({'title':u'Comida de \xc1guila',

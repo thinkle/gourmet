@@ -117,7 +117,7 @@ class RecGui (RecIndex):
                           glade=self.glade,
                           rd=self.rd,
                           rg=self,
-                          editable=True)
+                          editable=False)
 
         # we need an "ID" to add/remove messages to/from the status bar
         self.pauseid = self.stat.get_context_id('pause')

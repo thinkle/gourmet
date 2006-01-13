@@ -58,6 +58,7 @@ class RecData (rdatabase.RecData):
         """Sorts is a list of tuples (column,1) (ASC) or (column,-1) (DESC)"""
         sql = " ORDER BY "
         sql += ", ".join([c+' '+(d<0 and 'DESC' or 'ASC') for c,d in sorts])
+        #sql += ", ".join([c+' '+(d<0 and 'DESC' or '') for c,d in sorts])
         return sql
 
     def execute (self, cursor, sql, params=[]):
@@ -141,7 +142,7 @@ class RecData (rdatabase.RecData):
                      params)
         return Fetcher(cursor,[column,'count'])
 
-    def search_recipes (self, searches):
+    def search_recipes (self, searches, sort_by=[]):
         """Search recipes for columns of values.
 
         "category" and "ingredient" are handled magically
@@ -167,12 +168,28 @@ class RecData (rdatabase.RecData):
                                                                                   self.rview)
         else:
             table = self.rview
-        if crit.find(self.catview)>=0:
+        if (crit.find(self.catview)>=0
+            or
+            'category' in [s[0] for s in sort_by]
+            ):
             table += ' INNER JOIN ' + self.catview + ' ON %s.id=%s.id'%(self.catview,
                                                                         self.rview)
+            sort_by_new = []
+            for col,direction in sort_by:
+                if col=='category': sort_by_new.append((self.catview+'.'+'category',direction))
+                else: sort_by_new.append((self.rview + '.' + col,direction))
+            sort_by = sort_by_new
         cursor = self.connection.cursor()
+        print (cursor,
+               "SELECT DISTINCT %s.id FROM "%self.rview \
+               + table + (crit and (" WHERE " + crit) or '') \
+               + (sort_by and self.make_order_by_statement(sort_by) or ''),
+               params
+               )
         self.execute(cursor,
-                     "SELECT DISTINCT %s.id FROM "%self.rview + table + " WHERE " + crit,
+                     "SELECT DISTINCT %s.id FROM "%self.rview \
+                     + table + (crit and (" WHERE " + crit) or '') \
+                     + (sort_by and self.make_order_by_statement(sort_by) or ''),
                      params
                      )
         return SearchFetcher(cursor,self,self.rview)

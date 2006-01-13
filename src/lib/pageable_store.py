@@ -279,16 +279,20 @@ class ColumnSortSetterUpper:
 
     def set_sort_column_id (self, tree_column, model_column):
         """Replace the built-in tree_column method with magic."""
-        tree_column.set_sort_column_id(model_column)
+        #tree_column.set_sort_column_id(model_column)
         tree_column.connect('clicked',self.sort_by_column_callback,model_column)
                                  
-    def sort_by_column_callback (self,tree_column,model_column):
-        tog = self.mod.toggle_sort(model_column)
-        if tog==None:
+    def sort_by_column_callback (self,tree_column,model_column):        
+        print 'sort!'
+        toggle_to = self.mod.toggle_sort(model_column)
+        print 'done sorting'
+        if toggle_to==None:
             tree_column.set_sort_indicator(False)
         else:
             tree_column.set_sort_indicator(True)
-            tree_column.set_sort_order(tog)
+            tree_column.set_sort_order(toggle_to)
+        # stop propagation... (?)
+        return True
 
 class PageableViewStore (PageableListStore):
 
@@ -342,12 +346,6 @@ class PageableViewStore (PageableListStore):
         self.emit('view-changed')
 
     def change_view (self, vw):
-        self.unsorted_view = self.unsorted_parent = vw
-        if self.__reverse_sorts__ or self.__all_sorts__ and vw:
-            vw = vw.sortrev(
-                [getattr(self.view,a) for a in self.__all_sorts__],
-                [getattr(self.view,a) for a in self.__reverse_sorts__]
-                )
         self.do_change_view(vw)
         if self.page != 0:
             self.page = 0

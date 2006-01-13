@@ -134,6 +134,7 @@ class RecIndex:
         self.last_search = ["",""]
         self.rvw = self.rd.fetch_all(self.rd.rview,deleted=False)
         self.searches = [{'column':'deleted','operator':'=','search':False}]
+        self.sort_by = []
 
     def make_rec_visible (self, *args):
         """Make sure recipe REC shows up in our index."""
@@ -161,6 +162,11 @@ class RecIndex:
             self.last_button.set_sensitive(True)
         self.set_reccount()
 
+    def rmodel_sort_cb (self, rmodel, sorts):
+        self.sort_by = sorts
+        print 'Sorting by ',sorts
+        self.do_search(None,None)
+
     def create_rmodel (self, vw):
         self.rmodel = RecipeModel(vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
     
@@ -169,6 +175,7 @@ class RecIndex:
         self.create_rmodel(self.rvw)
         self.rmodel.connect('page-changed',self.rmodel_page_changed_cb)
         self.rmodel.connect('view-changed',self.rmodel_page_changed_cb)
+        self.rmodel.connect('view-sort',self.rmodel_sort_cb)
         # and call our handler once to update our prev/next buttons + label
         self.rmodel_page_changed_cb(self.rmodel)
         # and hook up our model
@@ -364,11 +371,11 @@ class RecIndex:
                 srch['search'] = txt.replace('%','%%')+'%'
             srch['column']=searchBy
             self.last_search = txt,searchBy
-            self.update_rmodel(self.rd.search_recipes(self.searches + [srch]))
+            self.update_rmodel(self.rd.search_recipes(self.searches + [srch],sort_by=self.sort_by))
         elif self.searches:
-            self.update_rmodel(self.rd.search_recipes(self.searches))
+            self.update_rmodel(self.rd.search_recipes(self.searches,sort_by=self.sort_by))
         else:
-            self.update_rmodel(self.rd.fetch_all(self.rview,deleted=False))
+            self.update_rmodel(self.rd.fetch_all(self.rview,deleted=False,sort_by=self.sort_by))
     
     def do_search_old (self, txt, searchBy):
         ## first -- are we a continuation of the previous search of not?
@@ -596,24 +603,6 @@ class RecipeModel (pageable_store.PageableViewStore):
         #else:
         #    
         #    return str(getattr(row,attr))
-
-    def sort (self,*args,**kwargs):
-        #if not self.made_categories:
-        #    self.make_categories()
-        return pageable_store.PageableViewStore.sort(self,*args,**kwargs)
-
-    def _do_sort_ (self):
-        if 'category' in self.__all_sorts__:
-            indx = self.__all_sorts__.index('category')
-            self.__all_sorts__ = self.__all_sorts__[0:indx] + \
-                                 ['categoryname'] + \
-                                 self.__all_sorts__[indx+1:]
-        if 'category' in self.__reverse_sorts__:
-            indx = self.__reverse_sorts__.index('category')
-            self.__reverse_sorts__ = self.__reverse_sorts__[0:indx] + \
-                                 ['categoryname'] + \
-                                 self.__reverse_sorts__[indx+1:]
-        pageable_store.PageableViewStore._do_sort_(self)
 
     def update_recipe (self, recipe):
         """Handed a recipe (or a recipe ID), we update its display if visible."""

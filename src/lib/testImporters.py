@@ -135,6 +135,23 @@ class ImportTestCase (unittest.TestCase):
 
 if __name__ == '__main__':
     #it=ImportTest()
-    #it.run()
+    #it.setup_db()
+    #it.run_test({'filename':'athenos1.mx2',
+    #                      'test':{'title':'5 Layer Mediterranean Dip',
+    #                              'all_ings_have_amounts':True,
+    #                              'all_ings_have_units':True,
+    #                              }
+    #                      })
+    #it.run_test({'filename':'mealmaster.mmf'}), # mealmaster
+    #it.run_test({'filename':'sample.kreml'}), #krecipes
+    #it.run_test({'url':'http://beef.allrecipes.com/az/AsianBeefWithSnowPeas.asp'}), #allrecipes.com
+    #it.run_test(
+    #        {'url':'http://www.eatingwell.com/articles_recipes/recipes/recipes_favorites/chocolate_zucchini_bread.htm'}
+    #        ) #eatingwell
+    #from exporters.gxml2_exporter import rview_to_xml as gxml_exporter
+    #n = 1
+    #while os.path.exists('/tmp/gourmet_import_test_%s.grmt'%n): n+=1
+    #ge=gxml_exporter(it.db,it.db.fetch_all(it.db.rview),'/tmp/gourmet_import_test_%s.grmt'%n)
+    #ge.run()
     unittest.main()
     #pass
