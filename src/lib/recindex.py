@@ -300,7 +300,7 @@ class RecIndex:
             col = gtk.TreeViewColumn('_%s'%titl,renderer, text=n)
             col.set_reorderable(True)
             col.set_resizable(True)
-            #col.set_clickable(True)
+            col.set_clickable(True)
             #col.connect('clicked', self.column_sort)
             self.rectree.append_column(col)
             cssu.set_sort_column_id(col,n)

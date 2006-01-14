@@ -180,12 +180,12 @@ class RecData (rdatabase.RecData):
                 else: sort_by_new.append((self.rview + '.' + col,direction))
             sort_by = sort_by_new
         cursor = self.connection.cursor()
-        print (cursor,
-               "SELECT DISTINCT %s.id FROM "%self.rview \
-               + table + (crit and (" WHERE " + crit) or '') \
-               + (sort_by and self.make_order_by_statement(sort_by) or ''),
-               params
-               )
+        #print (cursor,
+        #       "SELECT DISTINCT %s.id FROM "%self.rview \
+        #       + table + (crit and (" WHERE " + crit) or '') \
+        #       + (sort_by and self.make_order_by_statement(sort_by) or ''),
+        #       params
+        #       )
         self.execute(cursor,
                      "SELECT DISTINCT %s.id FROM "%self.rview \
                      + table + (crit and (" WHERE " + crit) or '') \

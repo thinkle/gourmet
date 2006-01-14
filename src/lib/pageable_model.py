@@ -341,7 +341,8 @@ class ColumnSortSetterUpper:
 
     def set_sort_column_id (self, tree_column, model_column):
         """Replace the built-in tree_column method with magic."""
-        tree_column.set_sort_column_id(model_column)
+        #tree_column.set_sort_column_id(model_column)
+        tree_column.set_clickable(True)
         tree_column.connect('clicked',self.sort_by_column_callback,model_column)
                                  
     def sort_by_column_callback (self,tree_column,model_column):

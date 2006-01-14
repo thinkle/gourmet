@@ -86,9 +86,8 @@ class PangoBuffer (gtk.TextBuffer):
     def add_iter_to_buffer (self):
         range=self.attrIter.range()
         font,lang,attrs = self.attrIter.get_font()
-        tags = self.get_tags_from_attrs(font,lang,attrs)        
-        text = self.txt[range[0]:range[1]]
-        #print 'tags for text %s:'%text,[self.tag_to_markup(t) for t in tags]
+        tags = self.get_tags_from_attrs(font,lang,attrs)
+        text = self.txt[range[0]:range[1]]        
         if tags: self.insert_with_tags(self.get_end_iter(),text,*tags)
         else: self.insert_with_tags(self.get_end_iter(),text)
         
@@ -255,7 +254,9 @@ class PangoBuffer (gtk.TextBuffer):
                 word_start = iter.get_offset()
                 iter.set_offset(start_pos)
                 bounds = (self.get_iter_at_offset(word_start),
-                          self.get_iter_at_offset(word_end))
+                          self.get_iter_at_offset(word_end+1))
+            else:
+                bounds = (iter,self.get_iter_at_offset(iter.get_offset()+1))
         return bounds
 
     def apply_tag_to_selection (self, tag):

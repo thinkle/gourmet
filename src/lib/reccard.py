@@ -20,6 +20,7 @@ from importers.importer import parse_range
 from FauxActionGroups import ActionManager
 import mnemonic_manager
 import shopgui
+import LinkedTextView
 
 class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     """Our basic recipe card."""
@@ -52,6 +53,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.makeTimeEntry = lambda *args: timeEntry.makeTimeEntry()
         self.makeStarButton = lambda *args: ratingWidget.make_star_button(self.rg.star_generator)
         self.makeStarImage = lambda *args: ratingWidget.make_star_image(self.rg.star_generator)
+        self.makeLinkedTextView = lambda *args: LinkedTextView.LinkedTextView()
         self.makeNutritionLabel = lambda *args: NutritionLabel(self.prefs)
         def custom_handler (glade,func_name,
                             widg, s1,s2,i1,i2):
@@ -188,6 +190,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.multiplyDisplaySpin = self.glade.get_widget('multiplyByDisplaySpin')
         self.multiplyDisplaySpin.connect('changed',self.multChangeCB)
         self.multiplyDisplayLabel = self.glade.get_widget('multiplyByDisplayLabel')
+        self.ingredientsDisplay.connect('link-activated',
+                                        self.show_recipe_link_cb)
         self.special_display_functions = {
             'servings':self.updateServingsDisplay,
             'ingredients':self.updateIngredientsDisplay,
@@ -370,6 +374,21 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         else:
             self.rw['modifications'].hide()
 
+    def show_recipe_link_cb (self, widg, link):
+        rid,rname = link.split(':')
+        rec = self.rg.rd.get_rec(int(rid))
+        if not rec:
+            rec = self.rg.rd.fetch_one(
+                self.rg.rd.rview,
+                title=rname
+                )
+        if rec:
+            self.rg.openRecCard(rec)
+        else:
+            de.show_message(parent=self.widget,
+                            label=_('Unable to find recipe %s in database.')%rname
+                            )
+            
     def instrTogCB (self, w, *args):
         debug("instrTogCB (self, w, *args):",5)
         if w.get_active():
@@ -857,16 +876,26 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         for g,ings in self.ing_alist:
             if g: label += "\n<u>%s</u>\n"%xml.sax.saxutils.escape(g)
             def ing_string (i):
+                ing_strs = []
                 amt,unit = self.make_readable_amt_unit(i)
+                if amt: ing_strs.append(amt)
+                if unit: ing_strs.append(unit)
+                if i.item: ing_strs.append(i.item)
                 if (type(i.optional)!=str and i.optional) or i.optional=='yes': 
-                    opt = _('(Optional)')
-                else: opt=None
-                return string.join(filter(lambda x: x,[amt,unit,i.item,opt]),' ')
-            label+=xml.sax.saxutils.escape(string.join(map(ing_string,ings),"\n"))
+                    ing_strs.append(_('(Optional)'))
+                istr = xml.sax.saxutils.escape(' '.join(ing_strs))
+                if i.refid:
+                    return '<a href="%s:%s">'%(i.refid,
+                                               xml.sax.saxutils.escape(i.item)
+                                               )\
+                           +istr+'</a>'
+                else:
+                    return xml.sax.saxutils.escape(istr)
+            label+='\n'.join([ing_string(i) for i in ings])
             if g: label += "\n"
         if label:
             self.ingredientsDisplay.set_text(label)
-            self.ingredientsDisplay.set_use_markup(True)
+            #self.ingredientsDisplay.set_use_markup(True)
             self.ingredientsDisplay.show()
             self.ingredientsDisplayLabel.show()
         else:
