@@ -7,7 +7,7 @@ TINY = 2
 SEP = 3
 SHOW_PERCENT = True
 DONT_SHOW_PERCENT = False    
-NUT_LAYOUT = nutdata = [(_('Calories'),MAJOR,'calorie',
+MAIN_NUT_LAYOUT = [(_('Calories'),MAJOR,'calorie',
                 'kcal',DONT_SHOW_PERCENT,''),
                SEP,
                (_('Total Fat'),MAJOR,'fat',
@@ -26,7 +26,9 @@ NUT_LAYOUT = nutdata = [(_('Calories'),MAJOR,'calorie',
                 'sugar',DONT_SHOW_PERCENT,'g'),
                (_('Protein'),MAJOR,'protein',
                 'protein',SHOW_PERCENT,'g'),
-               SEP,
+                   ]
+
+DETAIL_NUT_LAYOUT = [
                (_('Alpha-carotene'),TINY,'alphac',
                 'alphac',DONT_SHOW_PERCENT,u'\u00B5g'),
                (_('Ash'),TINY,'ash',
@@ -93,6 +95,8 @@ NUT_LAYOUT = nutdata = [(_('Calories'),MAJOR,'calorie',
                 'zinc',SHOW_PERCENT,'mg'),
                ]
 
+NUT_LAYOUT = MAIN_NUT_LAYOUT + DETAIL_NUT_LAYOUT
+
 RECOMMENDED_INTAKE = {
         'fat':0.30 / 9, # 30% of calories * 9 cal / g.
         'satfat':0.10 / 9, #10% of calories * 9 cal /g.
@@ -129,7 +133,7 @@ RECOMMENDED_INTAKE = {
         }
 
 
-class NutritionLabel (gtk.Table, gobject.GObject):
+class NutritionLabel (gtk.VBox, gobject.GObject):
     """Provide a nutritional label that looks like standard FDA
     labels."""
 
@@ -139,7 +143,6 @@ class NutritionLabel (gtk.Table, gobject.GObject):
     tiny_font.set_size(pango.SCALE*9)
     background = gtk.gdk.Color(255,0,0)
     foreground = gtk.gdk.Color(255,255,255)    
-
 
     calories_per_day = 2000
 
@@ -152,63 +155,81 @@ class NutritionLabel (gtk.Table, gobject.GObject):
         self.prefs = prefs
         start_at = 4
         gobject.GObject.__init__(self)
-        gtk.Table.__init__(self,2,len(NUT_LAYOUT)+start_at)
+        gtk.VBox.__init__(self)
+        #,2,len(NUT_LAYOUT)+start_at)
         self.show()
         self.tt = gtk.Tooltips()
         self.servingLabel = gtk.Label()
         self.set_servings(0)
         self.nutrition_display_info = []
-        self.attach(self.servingLabel,
-                    0,2,0,1)
+        #self.attach(self.servingLabel,
+        #            0,2,0,1)
         self.servingLabel.show()
         self.servingLabel.set_alignment(0,0.5)
         self.missingLabel = self.make_missing_label()
-        self.attach(self.missingLabel,0,2,1,2)
+        #self.attach(self.missingLabel,0,2,1,2)
+        self.pack_start(self.missingLabel)
+        self.pack_start(self.servingLabel)
         # setup daily value button to display calories/day assumption
         # and to allow changing it via a nifty little button
         dvb,eb = self.make_dv_boxes()
         dvb.show()
-        self.attach(dvb,1,2,2,3)
-        self.attach(eb,0,2,3,4,ypadding=12)
+        self.cal_per_day_box = gtk.HBox();
+        self.cal_per_day_box.show()
+        vb = gtk.VBox(); vb.show()
+        vb.pack_start(dvb)
+        vb.pack_start(eb)
+        self.cal_per_day_box.pack_end(vb)
+        self.pack_start(self.cal_per_day_box)
         self.tt.enable()
-        for n,nutstuff in enumerate(NUT_LAYOUT):
-            if nutstuff == SEP:
-                hs = gtk.HSeparator()
-                self.attach(hs,0,2,n+start_at,n+start_at+1,xoptions=gtk.FILL)
-                hs.show()
-                continue
-            label,typ,name,properties,show_percent,unit = nutstuff
-            hb = gtk.HBox()
-            permanentl = gtk.Label()
-            permanentl.set_alignment(0,0.5)
-            if typ==MAJOR:
-                permanentl.set_markup('<b>'+label+'</b>')
-            elif typ==MINOR:
-                permanentl.set_markup('  '+label)
-            elif typ==TINY:
-                permanentl.set_markup('  <span size="smaller">'+label+'</span>')
-            hb.pack_start(permanentl)
-            unit_label = gtk.Label()
-            unit_label.set_alignment(0,0.5)
-            hb.pack_start(unit_label)
-            hb.show_all()
-            self.attach(hb,0,1,n+start_at,n+start_at+1,xoptions=gtk.FILL)
-            if show_percent==SHOW_PERCENT:
-                percent_label = gtk.Label()
-                percent_label.modify_font(self.bold_font)
-                percent_label.set_alignment(1,0.5)
-                percent_label.show()
-                self.attach(percent_label,1,2,n+start_at,n+start_at+1,xoptions=gtk.FILL)
-            self.nutrition_display_info.append({
-                'props':properties,
-                'percent_label':(show_percent==SHOW_PERCENT
-                                 and
-                                 percent_label),
-                'unit_label': unit_label,
-                'unit':unit,
-                'usda_rec_per_cal':(RECOMMENDED_INTAKE.has_key(name) and
-                                    RECOMMENDED_INTAKE[name])
-                })
+        self.main_table = gtk.Table(); self.main_table.show()
+        self.pack_start(self.main_table)
+        self.sub_table = gtk.Table(); self.sub_table.show()
+        self.nutexpander = gtk.Expander(_('Vitamins and minerals'))
+        self.nutexpander.show()
+        self.nutexpander.add(self.sub_table)
+        self.pack_start(self.nutexpander)
+        for table,layout in [(self.main_table,MAIN_NUT_LAYOUT),
+                             (self.sub_table,DETAIL_NUT_LAYOUT),
+                             ]:
+            for n,nutstuff in enumerate(layout):
+                if nutstuff == SEP:
+                    hs = gtk.HSeparator()
+                    table.attach(hs,0,2,n+start_at,n+start_at+1,xoptions=gtk.FILL)
+                    hs.show()
+                    continue
+                label,typ,name,properties,show_percent,unit = nutstuff
+                hb = gtk.HBox()
+                permanentl = gtk.Label()
+                permanentl.set_alignment(0,0.5)
+                if typ==MAJOR:
+                    permanentl.set_markup('<b>'+label+'</b>')
+                elif typ==MINOR:
+                    permanentl.set_markup('  '+label)
+                elif typ==TINY:
+                    permanentl.set_markup('  <span size="smaller">'+label+'</span>')
+                hb.pack_start(permanentl)
+                unit_label = gtk.Label()
+                unit_label.set_alignment(0,0.5)
+                hb.pack_start(unit_label)
+                hb.show_all()
+                table.attach(hb,0,1,n+start_at,n+start_at+1,xoptions=gtk.FILL)
+                if show_percent==SHOW_PERCENT:
+                    percent_label = gtk.Label()
+                    percent_label.modify_font(self.bold_font)
+                    percent_label.set_alignment(1,0.5)
+                    percent_label.show()
+                    table.attach(percent_label,1,2,n+start_at,n+start_at+1,xoptions=gtk.FILL)
+                self.nutrition_display_info.append({
+                    'props':properties,
+                    'percent_label':(show_percent==SHOW_PERCENT
+                                     and
+                                     percent_label),
+                    'unit_label': unit_label,
+                    'unit':unit,
+                    'usda_rec_per_cal':(RECOMMENDED_INTAKE.has_key(name) and
+                                        RECOMMENDED_INTAKE[name])
+                    })
 
     def make_missing_label (self):
         hb = gtk.HBox()
@@ -225,9 +246,21 @@ class NutritionLabel (gtk.Table, gobject.GObject):
     def set_missing_label_text (self,missing,total):
         self.missingLabelLabel.set_markup(
             '<span color="red" style="italic">' +\
-            _('Missing nutritional information for %(missing)s of %(total)s ingredients.')%locals()+\
+            _('''Missing nutritional information\nfor %(missing)s of %(total)s ingredients.''')%locals()+\
             '</span>')
+        if missing==0:
+            self.missingLabelLabel.hide()
+        else:
+            self.missingLabelLabel.show()
+        if missing==total: method = 'hide'
+        else: method = 'show'
+        getattr(self.main_table,method)()
+        getattr(self.nutexpander,method)()        
+        getattr(self.servingLabel,method)()
+        getattr(self.cal_per_day_box,method)()                
 
+            
+            
     def make_dv_boxes (self):
         dvLabel = gtk.Label()
         dvLabel.set_markup('<span weight="bold" size="small">' + \
@@ -376,27 +409,38 @@ if gtk.pygtk_version[1]<8:
     gobject.type_register(NutritionLabel)
 
 if __name__ == '__main__':
+    import random
     class fakenut:
 
-        def __len__ (self): return 2
+        __attdict__ = {}
+        
+        def __len__ (self): return 7
+        
+        def __getattr__ (self,n):
+            if n=='has_vapor':
+                return self.has_vapor
+            if n=='_get_vapor':
+                return self._get_vapor_
+            if self.__attdict__.has_key(n):
+                return self.__attdict__[n]
+            elif n=='kcal':
+                self.__attdict__[n]=self.carb*4+self.sugar*4+self.protein*4+self.famono*9+self.fasat*9
+                return self.__attdict__[n]
+            else:
+                #n = random.randint(0,100)
+                self.__attdict__[n]=random.randint(0,100)
+                return self.__attdict__[n]
+
+        def has_vapor (self): True
+        def _get_vapor_ (self):
+            return [('black pepper',[(1,'tsp.')]),
+                    ('red pepper',[(1,''),
+                                   (2,'c.')])]
+        
     
     ni = fakenut()
-    ni.fasat = 2
-    ni.cholestrl = 10
-    ni.famono = 23
-    ni.fapoly = 6
-    ni.protein = 3
-    ni.carb = 12
-    ni.fiber = 1.5
-    ni.sugar = 43
-    ni.kcal = ni.carb*4+ni.sugar*4+ni.protein*4+ni.famono*9+ni.fasat*9
-    ni.sodium = 120
-    ni.has_vapor = lambda *args: True
-    ni._get_vapor  = lambda *args: [('black pepper',[(1,'tsp.')]),
-                                    ('red pepper',[(1,''),
-                                                   (2,'c.')])]
     w = gtk.Window()
-    nl = NutritionLabel()
+    nl = NutritionLabel({})
     vb=gtk.VBox()
     w.add(vb)
     hb = gtk.HBox()
