@@ -9,7 +9,6 @@ import convert
 from gglobals import *
 from gdebug import debug
 import mnemonic_manager
-#import pageable_model
 import pageable_store
 from gettext import gettext as _
 from gettext import ngettext
@@ -131,7 +130,7 @@ class RecIndex:
 
     def setup_search_views (self):
         """Setup our views of the database."""
-        self.last_search = ["",""]
+        self.last_search = {}
         self.rvw = self.rd.fetch_all(self.rd.rview,deleted=False)
         self.searches = [{'column':'deleted','operator':'=','search':False}]
         self.sort_by = []
@@ -165,7 +164,9 @@ class RecIndex:
     def rmodel_sort_cb (self, rmodel, sorts):
         self.sort_by = sorts
         print 'Sorting by ',sorts
-        self.do_search(None,None)
+        self.last_search = {}
+        self.search()
+        #self.do_search(None,None)
 
     def create_rmodel (self, vw):
         self.rmodel = RecipeModel(vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
@@ -343,7 +344,7 @@ class RecIndex:
         self.search()
 
     def redo_search (self, *args):
-        self.last_search = ['','']
+        self.last_search = {}
         #self.searches = []
         self.search()
     
@@ -360,49 +361,33 @@ class RecIndex:
         if self.srchentry.window: self.srchentry.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
         gobject.idle_add(lambda *args: self.do_search(txt, searchBy))
 
+    def make_search_dic (self, txt, searchBy):
+        srch = {'column':searchBy}
+        if self.regexpp():
+            srch['operator'] = 'REGEXP'
+            srch['search'] = txt
+        else:
+            srch['operator']='LIKE'
+            srch['search'] = txt.replace('%','%%')+'%'
+        return srch
+
     def do_search (self, txt, searchBy):
-        if txt:
-            srch = {}
-            if self.regexpp():
-                srch['operator'] = 'REGEXP'
-                srch['search'] = txt
-            else:
-                srch['operator']='LIKE'
-                srch['search'] = txt.replace('%','%%')+'%'
+        print 'do_search',self.searches,txt,searchBy
+        if txt and searchBy:
+            srch = self.make_search_dic(txt,searchBy)
             srch['column']=searchBy
-            self.last_search = txt,searchBy
-            self.update_rmodel(self.rd.search_recipes(self.searches + [srch],sort_by=self.sort_by))
+            self.last_search = srch.copy()
+            self.update_rmodel(self.rd.search_recipes(
+                self.searches + [srch],
+                sort_by=self.sort_by)
+                               )
         elif self.searches:
-            self.update_rmodel(self.rd.search_recipes(self.searches,sort_by=self.sort_by))
+            self.update_rmodel(self.rd.search_recipes(
+                self.searches,
+                sort_by=self.sort_by)
+                               )
         else:
             self.update_rmodel(self.rd.fetch_all(self.rview,deleted=False,sort_by=self.sort_by))
-    
-    def do_search_old (self, txt, searchBy):
-        ## first -- are we a continuation of the previous search of not?
-        debug('do_search called with txt=%s, searchBy=%s'%(txt,searchBy),5)
-        # if we're not using regular expressions, we escape our text.
-        addedtextp = re.match("^%s"%re.escape(txt),self.last_search[0]) and len(txt) > len(self.last_search[0])
-        samesearchp = self.last_search and searchBy == self.last_search[1]
-        if not addedtextp or not samesearchp:
-            # if we're not, we reset our lsrchvw (our searchvw)
-            self.lsrchvw = self.searchvw
-        if txt:
-            if searchBy == "ingredient":
-                # somewhat counterintuitive behavior (google-like search)
-                #self.lsrchvw=self.rd.ings_search(txt.split(),rview=self.lsrchvw)
-                # less counterintuitive (exact search)
-                self.lsrchvw=self.rd.ing_search(txt,rview=self.lsrchvw,use_regexp=self.regexpp())
-            elif searchBy == 'category':
-                self.lsrchvw=self.rd.joined_search(self.lsrchvw,self.rd.catview,'category',txt,
-                                                   use_regexp=self.regexpp())
-            else:
-                self.lsrchvw=self.rd.search(self.lsrchvw,searchBy,txt,use_regexp=self.regexpp())            
-        else:
-            self.lsrchvw = self.searchvw
-        self.last_search = [txt, searchBy]
-        self.update_rmodel(self.lsrchvw)
-        self.set_reccount()
-        self.srchentry.window.set_cursor(None)
     
     def limit_search (self, *args):
         debug("limit_search (self, *args):",5)
@@ -411,9 +396,9 @@ class RecIndex:
         self.searches.append(self.last_search)
         self.srchLimitBar.show()
         if self.srchLimitDefaultText==self.srchLimitText:
-            newtext=_(" %s contains %s")%(self.last_search[1],self.last_search[0])
+            newtext=_(" %s in %s")%(self.last_search['search'],self.last_search['column'])
         else:
-            newtext=_(", %s contains %s")%(self.last_search[1],self.last_search[0])
+            newtext=_(", %s in %s")%(self.last_search['search'],self.last_search['column'])
         self.srchLimitText="%s%s"%(self.srchLimitLabel.get_text(),newtext)
         self.srchLimitLabel.set_markup("<i>%s</i>"%self.srchLimitText)
         self.srchentry.set_text("")
@@ -424,7 +409,7 @@ class RecIndex:
         self.srchLimitText=self.srchLimitDefaultText
         self.srchLimitBar.hide()
         self.searchvw=self.rd.rview
-        self.last_search=["",""] # reset search so we redo it
+        self.last_search={} # reset search so we redo it
         self.search()
 
     def get_rec_from_iter (self, iter):
