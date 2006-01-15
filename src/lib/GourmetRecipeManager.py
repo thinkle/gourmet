@@ -42,6 +42,7 @@ class RecGui (RecIndex):
     """This is the main application. We subclass RecIndex, which handles displaying a list of
     recipes and searching them (a functionality we need in a few other places, such as when
     calling a recipe as an ingredient or when looking through the "trash". """
+
     def __init__ (self,splash_label=None):
         # used on imports to make filtering wait until
         # we are all done.
@@ -160,9 +161,16 @@ class RecGui (RecIndex):
         ## make sure the focus is where it ought to be...
         self.app.present()
         self.srchentry.grab_focus()
+        self.srchentry.connect('activate',self.search_entry_activate_cb)
         self.update_splash(_("Done!"))
         self.threads = 0
-        
+
+    def search_entry_activate_cb (self, *args):
+        if self.rmodel._get_length_()==1:
+            self.recTreeSelectRec()
+        else:
+            self.limit_search()
+            
     def update_splash (self, text):
         """Update splash screen on startup."""
         debug("Setting splash text: %s"%text,3)
@@ -654,6 +662,7 @@ class RecGui (RecIndex):
                 self.app.window.set_cursor(None)
             self.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
             gobject.idle_add(show)
+
     def recTreeSelectRec (self, *args):
         debug("recTreeSelectRec (self, *args):",5)
         for rec in self.recTreeSelectedRecs():
@@ -1170,6 +1179,9 @@ class RecGui (RecIndex):
 
 
 class RecTrash (RecIndex):
+
+    default_searches = [{'column':'deleted','operator':'=','search':True}]
+    
     def __init__ (self, rd, rg):
         self.rg = rg
         self.rmodel = self.rg.rmodel
@@ -1203,7 +1215,7 @@ class RecTrash (RecIndex):
     def setup_search_views (self):
         self.last_search = ["",""]
         self.rvw = self.rd.fetch_all(self.rd.rview,deleted=True)
-        self.searches = [{'column':'deleted','operator':'=','search':True}]
+        self.searches = self.default_searches
 
     def recTreeUndeleteSelectedRecs (self, *args):
         mod,rr = self.rectree.get_selection().get_selected_rows()
