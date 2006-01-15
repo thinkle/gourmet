@@ -305,8 +305,11 @@ class PageableViewStore (PageableListStore):
                      ),
         }
 
-    def __init__ (self, view, columns=['foo','bar'],column_types=[int,str],per_page=15):
+    def __init__ (self, view, columns=['foo','bar'],column_types=[int,str],per_page=15,
+                  length=None
+                  ):
         self.__sorts__ = []
+        self.__length__ = length
         PageableListStore.__init__(self,column_types, parent_args=[view],parent_kwargs={'columns':columns},
                                    per_page=per_page)
 
@@ -317,6 +320,10 @@ class PageableViewStore (PageableListStore):
 
     def _get_slice_ (self,bottom,top):
         return [[getattr(r,col) for col in self.columns] for r in self.view[bottom:top]]
+
+    def _get_length_ (self):
+        if self.__length__: return self.__length__
+        else: return PageableListStore._get_length_(self)
 
     def sort (self, col, direction):
         attr = self.columns[col]
@@ -338,13 +345,14 @@ class PageableViewStore (PageableListStore):
     #    else:
     #        self.do_change_view(self.unsorted_view)
 
-    def do_change_view (self, vw):
+    def do_change_view (self, vw, length=None):
         self.parent_list = self.view = vw
+        self.__length__ = None
         self.update_tree()
         self.emit('view-changed')
 
-    def change_view (self, vw):
-        self.do_change_view(vw)
+    def change_view (self, vw, length=None):
+        self.do_change_view(vw,length=length)
         if self.page != 0:
             self.page = 0
             self.emit('page-changed')                
