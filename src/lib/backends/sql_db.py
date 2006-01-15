@@ -148,48 +148,59 @@ class RecData (rdatabase.RecData):
         "category" and "ingredient" are handled magically
         """
         crit = ''
-        joins = []
+        nested_selects = []
         params = []
         for s in searches:
             col = s['column']
             if col=='ingredient':
-                col=self.iview+'.ingkey'
+                sql = '''
+                SELECT DISTINCT id FROM %(view)s
+                WHERE ingkey %(operator)s ?'''%{
+                    'view':self.iview,
+                    'operator':s.get('operator','LIKE')
+                    }
+                prms = [s['search']]
+                nested_selects.append((sql,prms))
             elif col=='category':
-                col=self.catview+'.category'
-            elif '.' not in col:
-                col = self.rview + '.' + col
-            if crit:
-                crit += ' ' + s.get('logic','AND') + ' '
-            op = s.get('operator','LIKE')
-            crit += col + ' ' + op + ' ' + '?'
-            params.append(s['search'])
-        if crit.find(self.iview)>=0:
-            table = self.iview + ' INNER JOIN ' + self.rview + ' ON %s.id=%s.id'%(self.iview,
-                                                                                  self.rview)
-        else:
-            table = self.rview
-        if (crit.find(self.catview)>=0
-            or
-            'category' in [s[0] for s in sort_by]
-            ):
-            table += ' INNER JOIN ' + self.catview + ' ON %s.id=%s.id'%(self.catview,
-                                                                        self.rview)
-            sort_by_new = []
-            for col,direction in sort_by:
-                if col=='category': sort_by_new.append((self.catview+'.'+'category',direction))
-                else: sort_by_new.append((self.rview + '.' + col,direction))
-            sort_by = sort_by_new
+                sql = '''
+                SELECT DISTINCT id FROM %(view)s
+                WHERE category %(operator)s ?'''%{
+                    'view':self.catview,
+                    'operator':s['operator']
+                    }
+                prms = [s['search']]
+                nested_selects.append((sql,prms))
+            else:
+                if '.' not in col:
+                    col = self.rview + '.' + col
+                if crit:
+                    crit += ' ' + s.get('logic','AND') + ' '
+                op = s.get('operator','LIKE')
+                crit += col + ' ' + op + ' ' + '?'                
+                params.append(s['search'])
         cursor = self.connection.cursor()
-        #print (cursor,
-        #       "SELECT DISTINCT %s.id FROM "%self.rview \
-        #       + table + (crit and (" WHERE " + crit) or '') \
-        #       + (sort_by and self.make_order_by_statement(sort_by) or ''),
-        #       params
-        #       )
+        if crit:
+            if 'category' in [s[0] for s in sort_by]:
+                join='JOIN %(catview)s on %(catview)s.id=%(view)s.id'%{
+                    'catview':self.catview,
+                    'view':self.rview}
+            else:
+                join = ''
+            base_search = """SELECT DISTINCT %(view)s.id FROM %(view)s %(join)s
+            WHERE %(crit)s""" %{'view':self.rview,
+                                'join':join,
+                                'crit':crit}
+        elif nested_selects:
+            base_search,params = nested_selects[0]
+            nested_selects = nested_selects[1:]
+        for sql,prms in nested_selects:
+            base_search += ' AND id IN ( ' + sql + ')'
+            params += prms
+        if sort_by: base_search += '\n'+self.make_order_by_statement(sort_by)
+        print base_search,params
+        print base_search,params
         self.execute(cursor,
-                     "SELECT DISTINCT %s.id FROM "%self.rview \
-                     + table + (crit and (" WHERE " + crit) or '') \
-                     + (sort_by and self.make_order_by_statement(sort_by) or ''),
+                     base_search,
                      params
                      )
         return SearchFetcher(cursor,self,self.rview)
@@ -274,7 +285,6 @@ class RecData (rdatabase.RecData):
 
     def do_modify (self, table, rowid, d, unique_id_col='rowid'):
         if isinstance(rowid,RowObject):
-            #print 'rowid == RowObject'
             new = {}
             for k in rowid.__column_names__:
                 v=getattr(rowid,k)
@@ -361,7 +371,6 @@ class Fetcher (list):
             result = self.get_row(self.cursor.fetchone())
             while result:
                 self.append(result)
-                #print 'Result=',result
                 yield result
                 result = self.get_row(self.cursor.fetchone())
             self.generated = True
