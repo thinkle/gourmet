@@ -19,7 +19,9 @@ class RecIndex:
     and sorted. We're a separate class from the main recipe
     program so that we can be created again (e.g. in the recSelector
     dialog called from a recipe card."""
-    #def __init__ (self, model, glade, rd, rg, editable=False):
+
+    default_searches = [{'column':'deleted','operator':'=','search':False}]
+    
     def __init__ (self, glade, rd, rg, editable=False):
         #self.visible = 1 # can equal 1 or 2
         self.editable=editable
@@ -132,7 +134,7 @@ class RecIndex:
         """Setup our views of the database."""
         self.last_search = {}
         self.rvw = self.rd.fetch_all(self.rd.rview,deleted=False)
-        self.searches = [{'column':'deleted','operator':'=','search':False}]
+        self.searches = self.default_searches[0:]
         self.sort_by = []
 
     def make_rec_visible (self, *args):
@@ -159,7 +161,8 @@ class RecIndex:
         else:
             self.next_button.set_sensitive(True)
             self.last_button.set_sensitive(True)
-        self.set_reccount()
+        #self.set_reccount()
+
 
     def rmodel_sort_cb (self, rmodel, sorts):
         self.sort_by = sorts
@@ -170,6 +173,7 @@ class RecIndex:
 
     def create_rmodel (self, vw):
         self.rmodel = RecipeModel(vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
+        self.set_reccount()
     
     def setup_rectree (self):
         """Create our recipe treemodel."""
@@ -183,7 +187,6 @@ class RecIndex:
         self.rectree.set_model(self.rmodel)
         self.rectree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.selection_changed()
-        self.set_reccount()
         self.setup_reccolumns()
         # this has to come after columns are added or else adding columns resets out column order!
         self.rectree_conf=te.TreeViewConf(self.rectree,
@@ -199,7 +202,7 @@ class RecIndex:
     def set_reccount (self, *args):
         """Display the count of currently visible recipes."""
         debug("set_reccount (self, *args):",5)
-        self.count = len(self.rvw)
+        self.count = self.rmodel._get_length_()
         #self.stat.push(self.contid,_("%s Recipes")%self.count)
         bottom,top,total = self.rmodel.showing()
         if top >= total and bottom==1:
@@ -392,7 +395,6 @@ class RecIndex:
     def limit_search (self, *args):
         debug("limit_search (self, *args):",5)
         self.search() # make sure we've done the search...
-        #self.searchvw=self.lsrchvw
         self.searches.append(self.last_search)
         self.srchLimitBar.show()
         if self.srchLimitDefaultText==self.srchLimitText:
@@ -408,7 +410,7 @@ class RecIndex:
         self.srchLimitLabel.set_text(self.srchLimitDefaultText)
         self.srchLimitText=self.srchLimitDefaultText
         self.srchLimitBar.hide()
-        self.searchvw=self.rd.rview
+        self.searches = self.default_searches[0:]
         self.last_search={} # reset search so we redo it
         self.search()
 
@@ -534,6 +536,8 @@ class RecIndex:
  
     def update_rmodel (self, rview):
         self.rmodel.change_view(rview)
+        self.set_reccount()
+
 
 
 class RecipeModel (pageable_store.PageableViewStore):
