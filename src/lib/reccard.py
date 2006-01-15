@@ -895,7 +895,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             if g: label += "\n"
         if label:
             self.ingredientsDisplay.set_text(label)
-            #self.ingredientsDisplay.set_use_markup(True)
+            self.ingredientsDisplay.set_editable(False)
             self.ingredientsDisplay.show()
             self.ingredientsDisplayLabel.show()
         else:
