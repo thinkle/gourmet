@@ -1168,8 +1168,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 if self.rg.sl.orgdic.has_key(d['ingkey']):
                     debug('Setting new shopping category!',2)
                     self.imodel.set_value(iter, 6, self.rg.sl.orgdic[d['ingkey']])
-        for attr,v in d.items():            
-            self.imodel.set_value(iter,self.ingColsByAttr[attr],v)
+        for attr,v in d.items():
+            if self.ingColsByAttr.has_key(attr):
+                self.imodel.set_value(iter,self.ingColsByAttr[attr],v)
 
     def changeUnit (self, new_unit, ing):
         """Handed a new unit and an ingredient, we decide whether to convert and return:
