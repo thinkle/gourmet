@@ -493,9 +493,10 @@ class RecData:
         # name (the name of the ingredient *should* be the title of
         # the recipe, though the user could change this)
         if hasattr(ing,'item'):
-            recs=self.search_recipes([{'column':'title','search':ing.item,'operator':'='}])
-            if len(recs)==0:
-                self.modify_ing(ing,{'refid':recs[0].id})
+            #recs=self.search_recipes([{'column':'title','search':ing.item,'operator':'='}])
+            rec = self.fetch_one(self.rview,{'title':ing.item})
+            if rec:
+                self.modify_ing(ing,{'refid':rec.id})
                 return recs[0]
             else:
                 debug("""Warning: there is more than one recipe titled"%(title)s"
@@ -1139,7 +1140,41 @@ def test_search (db):
     result = db.search_recipes([{'column':'title','search':'Fo.*','operator':'REGEXP'}],
                                [('source',1)])
     assert(result[0].title=='Foo' and result[0].source=='A')
-
+    # Advanced searching
+    db.add_rec({'title':'Spaghetti','category':'Entree'})
+    db.add_rec({'title':'Quiche','category':'Entree, Low-Fat, High-Carb'})
+    assert(len(db.search_recipes([
+        {'column':'deleted','search':False,'operator':'='},
+        {'column':'category','search':'Entree','operator':'='}]))==2)
+    # Test fancy multi-category searches...
+    assert(len(db.search_recipes([{'column':'category','search':'Entree','operator':'='},
+                                  {'column':'category','search':'Low-Fat','operator':'='}])
+               )==1)
+    # Test ingredient search
+    recs = db.fetch_all(db.rview)
+    r = recs[0]
+    db.add_ing({'id':r.id,'ingkey':'apple'})
+    db.add_ing({'id':r.id,'ingkey':'cinnamon'})
+    db.add_ing({'id':r.id,'ingkey':'sugar, brown'})
+    r2 = recs[1]
+    db.add_ing({'id':r2.id,'ingkey':'sugar, brown'})
+    db.add_ing({'id':r2.id,'ingkey':'flour, all-purpose'})
+    db.add_ing({'id':r2.id,'ingkey':'sugar, white'})
+    db.add_ing({'id':r2.id,'ingkey':'vanilla extract'})
+    r3 = recs[2]
+    db.add_ing({'id':r3.id,'ingkey':'sugar, brown'})
+    db.add_ing({'id':r3.id,'ingkey':'sugar, brown','unit':3,'unit':'c.'} )
+    assert(len(db.search_recipes([{'column':'ingredient',
+                                   'search':'sugar%',
+                                   'operator':'LIKE',
+                                  }])
+               )==3)
+    assert(len(db.search_recipes([{'column':'ingredient',
+                                  'search':'sugar, brown'},
+                                 {'column':'ingredient',
+                                  'search':'apple'}])
+               )==1)
+    
 def test_unicode (db):
     rec = db.add_rec({'title':u'Comida de \xc1guila',
                 'source':u'C\xc6SAR',})
