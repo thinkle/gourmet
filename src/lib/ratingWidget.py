@@ -243,7 +243,6 @@ class StarButton (gtk.Button):
         return True
 
     def buttonpress_cb (self, widget, event):
-        
         x,y = event.get_coords()
         wx,wy = self.image.translate_coordinates(self.image,x,y)
         self.star_width =  self.image.get_pixbuf().get_width() / self.image.upper
@@ -273,8 +272,8 @@ class StarButton (gtk.Button):
             return True
         elif name in ACTIVATE_KEYS:
             return True
-        elif name in [str(x) for x in range(self.image.upper + 1)]:
-            self.set_value(int(name))
+        elif name in [str(x) for x in range(self.image.upper/2 + 1)]:
+            self.set_value(int(name)*2)
             return True
 
 
