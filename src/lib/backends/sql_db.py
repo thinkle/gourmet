@@ -436,6 +436,7 @@ class Fetcher (list):
         if self.generated:
             for r in list.__iter__(self): yield r
         else:
+            for r in list.__iter__(self): yield r
             result = self.get_row(self.cursor.fetchone())
             while result:
                 self.append(result)
