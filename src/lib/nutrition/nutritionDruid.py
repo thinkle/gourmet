@@ -82,6 +82,9 @@ class NutritionInfoDruid (gobject.GObject):
     UNIT_PAGE = 1
     CUSTOM_PAGE = 2
 
+    __last_group__ = None
+    group = None
+
     __gsignals__ = {
         'finish':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,())
         }
@@ -91,6 +94,8 @@ class NutritionInfoDruid (gobject.GObject):
                       'Meals, Entrees, and Sidedishes',
                       'Fast Foods',
                       'Baby Foods']
+
+    ALL_GROUPS = _('Any food group')
 
     def __init__ (self, nd, prefs):
         # Very primitive custom handler here -- we just return a
@@ -113,7 +118,12 @@ class NutritionInfoDruid (gobject.GObject):
         self._setup_nuttree_()
         self.__last_search__ = ''
         self.__override_search__ = False
-        gobject.GObject.__init__(self)
+        gobject.GObject.__init__(self)        
+        self.foodGroupComboBox = self.glade.get_widget('foodGroupComboBox')
+        cb.set_model_from_list(self.foodGroupComboBox,
+                               [self.ALL_GROUPS]+self.rd.get_unique_values('foodgroup',self.rd.nview)
+                               )
+        cb.cb_set_active_text(self.foodGroupComboBox,self.ALL_GROUPS)
         # Save our position with our widget saver...
         WidgetSaver.WindowSaver(self.glade.get_widget('window1'),
                                 self.prefs.get('nutritionDruid',{})
@@ -154,6 +164,7 @@ class NutritionInfoDruid (gobject.GObject):
             'ignorePage':self.ignore_cb,
             'customPage':self.custom_cb,
             'usdaPage':self.usda_cb,
+            'on_foodGroupComboBox_changed':self.food_group_filter_changed_cb,
             }
                                       )
         # hide our tabs...
@@ -368,28 +379,20 @@ class NutritionInfoDruid (gobject.GObject):
 
     def search (self):
         txt = self.searchEntry.get_text()
-        if self.__last_search__ == txt:
+        if self.__last_search__ == txt and self.group == self.__last_group__:
             return
-        if txt.find(self.__last_search__)==0:
-            repeat = True
-            search_in = self.searchvw
-        else:
-            repeat = False
-            search_in = self.rd.nview
         words = re.split('\W+',txt)
-        last_words = self.__last_search__.split()
-        # Not exactly an efficient search algorithm...
-        for w in words:
-            if not w or w==' ': continue
-            if w in last_words and repeat:
-                continue
-            if search_in:
-                search_in = self.rd.search(search_in,
-                                           'desc',
-                                           w,
-                                           use_regexp=False)
-        self.searchvw = search_in
+        print 'searching',words
+        groups = self.rd.fetch_food_groups_for_search(words)
+        cur_active = cb.cb_get_active_text(self.foodGroupComboBox)
+        groups = [self.ALL_GROUPS] + groups
+        if cur_active not in groups:
+            groups += [cur_active]
+        cb.set_model_from_list(self.foodGroupComboBox,groups)
+        cb.cb_set_active_text(self.foodGroupComboBox,cur_active)        
+        self.searchvw = self.rd.search_nutrition(words,group=self.group)
         self.__last_search__ = txt
+        self.__last_group__ = self.group
         self.nutrition_store.change_view(self.searchvw)
         self.nutrition_store.set_page(self.NUT_PAGE)
 
@@ -401,40 +404,26 @@ class NutritionInfoDruid (gobject.GObject):
         """
         txt = self.ingkey
         words = re.split('\W+',txt)
+        words += ['raw'] # always search raw if possible...
         search_terms = []
         search_in = self.rd.nview
+        srch = []
+        searchvw = None
         for w in words:
             if w in [',',' ',';','.']: continue
-            result = self.rd.search(search_in,'desc',w,use_regexp=False)
+            result = self.rd.search_nutrition(srch+[w])
             if result:
-                search_terms.append(w)
-                search_in = result
+                srch += [w]
+                searchvw = result
+        groups = self.rd.fetch_food_groups_for_search(srch)
+        cur_active = cb.cb_get_active_text(self.foodGroupComboBox)
+        groups = [self.ALL_GROUPS] + groups
+        cb.set_model_from_list(self.foodGroupComboBox,groups)
+        cb.cb_set_active_text(self.foodGroupComboBox,cur_active)
         self.__override_search__ = True # turn off any handling of text insertion
-        search_text = ' '.join(search_terms)
+        search_text = ' '.join(srch)
         self.searchEntry.set_text(search_text)
-        self.searchvw = search_in
-        # Some metakit specific hackery which should not be reproduced...
-        try:
-            tbl = self.rd.normalizations['foodgroup']
-            PACKAGED_FOOD_IDS = []
-            for n in self.PACKAGED_FOODS:
-                id = tbl.find(foodgroup=n)
-                if id >= 0:
-                    PACKAGED_FOOD_IDS.append(tbl[id].id)
-                if self.searchvw:
-                    try:
-                        filteredvw = self.rd.filter(self.searchvw,
-                                                                lambda r: r.foodgroup not in PACKAGED_FOOD_IDS)
-                    except:
-                        print 'What was wrong with filtering this?'
-                        print 'searchvw=',self.searchvw
-                        raise
-            if filteredvw:
-                self.searchvw = filteredvw
-        except NotImplementedError:
-            print "No metakit present, so I'm not doing any funky filtering."
-            pass
-        
+        self.searchvw = searchvw or self.rd.fetch_all(self.rd.nview)        
         self.nutrition_store.change_view(self.searchvw)
         self.__last_search__ = search_text
         self.__override_search__ = False # turn back on search handling!
@@ -639,7 +628,16 @@ class NutritionInfoDruid (gobject.GObject):
     def custom_cb (self, *args): self.goto_page_custom()
 
     def usda_cb (self, *args): self.goto_page_key_to_nut()
-        
+
+    def food_group_filter_changed_cb (self, fgcb):
+        food_group = cb.cb_get_active_text(fgcb)
+        print 'fg->',food_group
+        if food_group==self.ALL_GROUPS:
+            self.group = None
+        else:
+            self.group = food_group
+        gobject.idle_add(self.search)
+    
     def show (self):
         self.glade.get_widget('window1').show()
 
@@ -654,7 +652,7 @@ class PageableNutritionStore (PageableViewStore):
 if __name__ == '__main__':
     import nutrition
     from gourmet.recipeManager import RecipeManager,dbargs
-    dbargs['file']='/tmp/foo/recipes.mk'
+    dbargs['file']='/tmp/fooeyb/recipes.db'
     rd=RecipeManager(**dbargs)
     import nutritionGrabberGui
     try:

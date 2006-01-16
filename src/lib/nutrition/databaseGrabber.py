@@ -28,6 +28,7 @@ def expand_abbrevs ( line ):
 class DatabaseGrabber:
     USDA_ZIP_URL = "http://www.nal.usda.gov/fnic/foodcomp/Data/SR17/dnload/sr17abbr.zip"
     ABBREV_FILE_NAME = "ABBREV.txt"
+    DESC_FILE_NAME = "FOOD_DES.txt"
     WEIGHT_FILE_NAME = "WEIGHT.txt"
 
     def __init__ (self,
@@ -61,6 +62,21 @@ class DatabaseGrabber:
             afi = self.get_file_from_url(self.ABBREV_FILE_NAME)
         self.parse_abbrevfile(afi)
         afi.close()
+        del self.foodgroups_by_ndbno
+
+    def get_groups (self, filename=None):
+        self.group_dict = {}
+        if filename:
+            afi = open(filename,'r')
+        else:
+            afi = self.get_file_from_url(self.DESC_FILE_NAME)
+        self.foodgroups_by_ndbno = {}
+        for l in afi.readlines():
+            flds = l.split('^')
+            ndbno = int(flds[0].strip('~'))
+            grpno = int(flds[1].strip('~'))
+            self.foodgroups_by_ndbno[ndbno] = grpno
+        
 
     def get_weight (self, filename=None):
         if filename:
@@ -72,6 +88,9 @@ class DatabaseGrabber:
 
     def grab_data (self, directory=None):
         self.db.changed = True
+        self.get_groups((isinstance(directory,str)
+                         and
+                         os.path.join(directory,self.DESC_FILE_NAME)))
         self.get_abbrev((isinstance(directory,str)
                          and
                          os.path.join(directory,self.ABBREV_FILE_NAME)))
@@ -124,15 +143,15 @@ class DatabaseGrabber:
         tot=len(ll)
         n = 0
         for n,l in enumerate(ll):
+            l = unicode(l.decode('latin_1'))
             tline=TimeAction('1 line iteration',0)            
             t=TimeAction('split fields',0)
             d = self.parse_line(l,NUTRITION_FIELDS)
             fields = l.split("^")
             d['desc']=expand_abbrevs(d['desc'])
-            for i in FOOD_GROUPS:
-                if 1000+i > d['ndbno'] >= i:
-                    d['foodgroup']=FOOD_GROUPS[i]
-                    break
+            d['foodgroup']=FOOD_GROUPS[
+                self.foodgroups_by_ndbno[d['ndbno']]
+                ]
             t.end()
             if self.show_progress and n % 50 == 0:
                 self.show_progress(float(n)/tot,_('Reading nutritional data: imported %s of %s entries.')%(n,tot))
@@ -152,6 +171,7 @@ class DatabaseGrabber:
         tot=len(ll)
         n=0
         for n,l in enumerate(ll):
+            l = unicode(l.decode('latin_1'))
             if self.show_progress and n % 50 == 0:
                 self.show_progress(
                     float(n)/tot,

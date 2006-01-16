@@ -46,7 +46,7 @@ class NutritionData:
         """
         if self.conv.unit_dict.has_key(unit):
             unit = self.conv.unit_dict[unit]
-        self.db.do_add(self.db.nconversions,{ingkey:key,unit:unit,factor:factor})
+        self.db.do_add(self.db.nconversions,{'ingkey':key,'unit':unit,'factor':factor})
 
     def get_matches (self, key, max=50):
         """Handed a string, get a list of likley USDA database matches.
@@ -138,7 +138,7 @@ class NutritionData:
         """
         aliasrow = self._get_key(key)
         if aliasrow:
-            nvrow=self.db.fetch_one(self.db.nview,{'ndbno':aliasrow.ndbno})
+            nvrow=self.db.fetch_one(self.db.nview,**{'ndbno':aliasrow.ndbno})
             if nvrow: return NutritionInfo(nvrow)
         # if we don't have a nutritional db row, return a
         # NutritionVapor instance which remembers our query and allows
@@ -332,10 +332,14 @@ class NutritionInfo:
     def __getattr__ (self, attr):
         if attr[0]!='_':
             ret = getattr(self.__rowref__, attr)
-            if attr in SUMMABLE_FIELDS:
-                return ret * self.__mult__
-            else:
-                return ret
+            try:
+                if attr in SUMMABLE_FIELDS:
+                    return (ret or 0) * self.__mult__
+                else:
+                    return ret
+            except:
+                print 'Failed with',attr,ret
+                raise
         else:
             # somehow this magically gets us standard
             # attribute handling...

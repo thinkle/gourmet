@@ -1,4 +1,3 @@
-
 from gettext import gettext as _
 
 PER_100_GRAMS = ["kcal","protein","lipid","ash","carb","fiber","sugar","calcium","iron","magnesium","phosphorus","potassium","sodium","zinc","copper","manganese","selenium","vitaminc","thiamin","riboflavin","niacin","pantoacid","vitaminb6","folatetotal","folateacid","foodfolate","folatedfe","vitb12","vitaiu","vitarae","retinol","vite","vitk","alphac","betac","betacrypt","lypocene","famono","fapoly","lutzea","fasat","cholestrl"]
@@ -331,30 +330,30 @@ FOOD_GROUPS = {
     # the DB Food Group Numbers seem to be inline with the group IDs
     # (numbers > 1000 are in group 100, etc.)
     # Since that's true, we can use the following table to properly add groups.
-    1000:'Dairy and Egg Products',
-    2000:'Spices and Herbs',
-    3000:'Baby Foods',
-    4000:'Fats and Oils',
-    5000:'Poultry Products',
-    6000:'Soups, Sauces, and Gravies',
-    7000:'Sausages and Luncheon Meats',
-    8000:'Breakfast Cereals',
-    9000:'Fruits and Fruit Juices',
-    10000:'Pork Products',
-    11000:'Vegetables and Vegetable Products',
-    12000:'Nut and Seed Products',
-    13000:'Beef Products',
-    14000:'Beverages',
-    15000:'Finfish and Shellfish Products',
-    16000:'Legumes and Legume Products',
-    17000:'Lamb, Veal, and Game Products',
-    18000:'Baked Products',
-    19000:'Sweets',
-    20000:'Cereal Grains and Pasta',
-    21000:'Fast Foods',
-    22000:'Meals, Entrees, and Sidedishes',
-    25000:'Snacks',
-    35000:'Ethnic Foods',
+    100:_('Dairy & Egg Products'),
+    200:_('Spices & Herbs'),
+    300:_('Baby Foods'),
+    400:_('Fats and Oils'),
+    500:_('Poultry'),
+    600:_('Soups & Sauces'),
+    700:_('Sausages & Lunch Meats'),
+    800:_('Breakfast Cereals'),
+    900:_('Fruits & Fruit Juices'),
+    1000:_('Pork'),
+    1100:_('Vegetables'),
+    1200:_('Nuts & Seeds'),
+    1300:_('Beef'),
+    1400:_('Beverages'),
+    1500:_('Fish & Shellfish'),
+    1600:_('Legumes'),
+    1700:_('Lamb, Veal & Game'),
+    1800:_('Baked Products'),
+    1900:_('Sweets'),
+    2000:_('Grains and Pasta'),
+    2100:_('Fast Foods'),
+    2200:_('Meals, Entrees, and Sidedishes'),
+    2500:_('Snacks'),
+    3500:_('Ethnic Foods'),
     }
 
 # A ranking of groups for use in sorting out categories...
