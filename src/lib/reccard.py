@@ -65,7 +65,13 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.ie = IngredientEditor(self.rg, self)        
         self.mm = mnemonic_manager.MnemonicManager()
         self.mm.add_glade(self.glade)
+        nlb=self.glade.get_widget('nutritionLabel').edit_missing_button.get_child().get_child().get_children()[1]
+        self.mm.add_widget_mnemonic(nlb)
         self.mm.fix_conflicts_peacefully()
+        # Manually fixing this particular mnemonic for English...
+        if nlb.get_text()=='Edit':
+            print 'manual fixup...'
+            nlb.set_markup_with_mnemonic('Ed_it')
         # Do some funky style modifications...
         display_toplevel_widget = self.glade.get_widget('displayPanes')
         new_style = display_toplevel_widget.get_style().copy()
