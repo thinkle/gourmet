@@ -151,16 +151,16 @@ class mastercook_importer (plaintext_importer.TextImporter):
         else:            
             if self.last_attr:
                 # attribute values can run over one line...
-                self.rec[self.last_attr]=string.join([self.rec[self.last_attr],
-                                                      self.join_multiple_attvals(line.strip())
-                                                      ], ", ")
+                self.rec[self.last_attr]=', '.join([self.rec[self.last_attr],
+                                                    self.join_multiple_attvals(line.strip())
+                                                    ])
             else:
                 # otherwise, we add this to instructions, like we do with all junk
                 self.instr += line
 
     def join_multiple_attvals (self, txt):
         """We take replace more than one space with a comma."""
-        return string.join(filter(lambda x: x, txt.split("  ")),", ")
+        return ', '.join(re.split('  +',txt))
 
     def handle_ingline (self,line):
         if self.ing_or_matcher.match(line):
