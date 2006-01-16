@@ -564,14 +564,14 @@ class RecData:
         return rid 
     # Convenience functions for dealing with ingredients
 
-    def order_ings (self, iview):
+    def order_ings (self, ings):
         """Handed a view of ingredients, we return an alist:
         [['group'|None ['ingredient1', 'ingredient2', ...]], ... ]
         """
         defaultn = 0
         groups = {}
         group_order = {}
-        for i in iview:
+        for i in ings:
             # defaults
             if not hasattr(i,'inggroup'):
                 group=None
