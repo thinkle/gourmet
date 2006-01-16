@@ -101,7 +101,13 @@ class RecData (rdatabase.RecData):
         return self.cursor.fetchone()[0]
 
     # Fetching and such...
-    def fetch_all (self, table, sort_by=[], **criteria):
+    def fetch_all (self, table, sort_by=[], limit=None, **criteria):
+        """Table is our table object (in our case, just a string)
+        sort_by is a list of sort criteria, as tuples ('column',1) or ('column',-1)
+
+        limit is None or a tuple which tells us how many rows we want
+        and where we start fetching (start,nrows)
+        """
         if criteria:
             where,params = self.make_where_statement(criteria)
         else:
@@ -110,6 +116,8 @@ class RecData (rdatabase.RecData):
         sql = 'SELECT * FROM '+table+' '+where
         if sort_by:
             sql += ' '+self.make_order_by_statement(sort_by)+' '
+        if limit:
+            sql += ' '+'LIMIT '+', '.join([str(n) for n in limit])
         self.execute(cursor,sql,params)
         column_names = self.columns[table]
         return Fetcher(cursor, column_names)
@@ -167,7 +175,7 @@ class RecData (rdatabase.RecData):
         print '->',cats
         return cats
 
-    def search_nutrition (self, words, group=None):
+    def search_nutrition (self, words, group=None, limit=None):
         params = []
         order_params = []
         where_statements = []
@@ -188,6 +196,8 @@ class RecData (rdatabase.RecData):
                             )
                        or '') \
                        + ' ORDER BY ' + ', '.join(order_statements)
+        if limit:
+            statement += ' '+'LIMIT '+', '.join([str(n) for n in limit])
         print 'execute',statement,params
         cursor = self.connection.cursor()
         self.execute(cursor,
@@ -198,7 +208,7 @@ class RecData (rdatabase.RecData):
             self.columns[self.nview]
             )
 
-    def search_recipes (self, searches, sort_by=[]):
+    def search_recipes (self, searches, sort_by=[], limit=None):
         """Search recipes for columns of values.
 
         "category" and "ingredient" are handled magically
@@ -253,8 +263,8 @@ class RecData (rdatabase.RecData):
             base_search += ' AND id IN ( ' + sql + ')'
             params += prms
         if sort_by: base_search += '\n'+self.make_order_by_statement(sort_by)
-        print base_search,params
-        print base_search,params
+        if limit:
+            base_search += ' '+'LIMIT '+', '.join([str(n) for n in limit])
         self.execute(cursor,
                      base_search,
                      params
@@ -428,6 +438,8 @@ class Fetcher (list):
         self.column_names = column_names
         self.cursor = cursor        
         self.generated = False
+        # Generate ourselves right away...
+        for n in self: n
 
     def get_row (self, result):
         if result: return RowObject(self.column_names,result)
@@ -498,6 +510,8 @@ class SearchFetcher (Fetcher):
         self.id_prop = id_prop
         self.generated = False
         self.table = table
+        # Generate ourselves right away
+        for n in self: n
 
     def get_row (self, result):
         if not result: return
