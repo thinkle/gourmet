@@ -631,7 +631,6 @@ class NutritionInfoDruid (gobject.GObject):
 
     def food_group_filter_changed_cb (self, fgcb):
         food_group = cb.cb_get_active_text(fgcb)
-        print 'fg->',food_group
         if food_group==self.ALL_GROUPS:
             self.group = None
         else:

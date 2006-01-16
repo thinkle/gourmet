@@ -241,6 +241,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         hb.pack_start(b)
         b.connect('clicked',self.solidify_vapor_cb)
         b.show(),l.show(),hb.show()
+        self.edit_missing_button = b
         return hb
 
     def set_missing_label_text (self,missing,total):
