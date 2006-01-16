@@ -266,6 +266,13 @@ class RecData:
         expressions and/or requiring an exact match."""
         raise NotImplementedError
 
+    def fetch_food_groups_for_search (self, words):
+        raise NotImplementedError
+
+    def search_nutrition (self, words, group=None):
+        """Search nutritional information for ingredient keys."""
+        raise NotImplementedError
+
     def search_recipes (self, searches, sort_by=[]):
         """Search recipes for columns of values.
 
@@ -494,10 +501,10 @@ class RecData:
         # the recipe, though the user could change this)
         if hasattr(ing,'item'):
             #recs=self.search_recipes([{'column':'title','search':ing.item,'operator':'='}])
-            rec = self.fetch_one(self.rview,{'title':ing.item})
+            rec = self.fetch_one(self.rview,**{'title':ing.item})
             if rec:
                 self.modify_ing(ing,{'refid':rec.id})
-                return recs[0]
+                return rec
             else:
                 debug("""Warning: there is more than one recipe titled"%(title)s"
                 and our id reference to %(refid)s failed to match any

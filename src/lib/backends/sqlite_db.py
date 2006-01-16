@@ -26,13 +26,17 @@ class RecData (sql_db.RecData):
 
     # Main methods we implement
     def initialize_connection (self):
+        if not os.path.exists(os.path.split(self.filename)[0]):
+            os.makedirs(os.path.split(self.filename)[0])
         self.connection = sqlite.connect(self.filename)#,isolation_level="IMMEDIATE")
         self.connection.commit()
         self.cursor = self.connection.cursor()
         # Create regexp function, based on example at
         # http://lists.initd.org/pipermail/pysqlite/2005-November/000253.html
         def regexp(expr, item): return re.search(expr,item,re.IGNORECASE) is not None
+        def instr(s,subs): return s.lower().find(subs.lower())+1
         self.connection.create_function('regexp',2,regexp)
+        self.connection.create_function('instr',2,instr)        
 
     def save (self):
         self.connection.commit()
@@ -70,6 +74,7 @@ class dbDic (rdatabase.dbDic):
 if __name__ == '__main__':
     import tempfile
     rd = RecData(filename=tempfile.mktemp(".db"))
+    #rd = RecData()
     rdatabase.test_db(rd)
     #rd.add_rec({'title':'Spaghetti','cuisine':'Italian','rating':5})
     #rec = rd.add_rec({'title':'Grilled Cheese','cuisine':'American','rating':8})

@@ -107,12 +107,10 @@ class RecData (rdatabase.RecData):
         else:
             where,params = '',[]
         cursor = self.connection.cursor()
-        #print self.cursor,'SELECT * FROM '+table+' '+where,params
         sql = 'SELECT * FROM '+table+' '+where
         if sort_by:
             sql += ' '+self.make_order_by_statement(sort_by)+' '
         self.execute(cursor,sql,params)
-        #result = self.cursor.fetchone()
         column_names = self.columns[table]
         return Fetcher(cursor, column_names)
         
@@ -141,6 +139,64 @@ class RecData (rdatabase.RecData):
                  ),
                      params)
         return Fetcher(cursor,[column,'count'])
+
+    def fetch_food_groups_for_search (self,
+                                      words):
+        params = []
+        order_params = []
+        where_statements = []
+        order_statements = []
+        for w in words:
+            where_statements.append('desc LIKE ?')
+            params.append('%'+w+'%')
+            order_statements.append('InStr(desc,?)')
+            order_params.append(w)
+        statement = 'SELECT DISTINCT foodgroup FROM %s'%self.nview \
+                    + (where_statements
+                       and (' WHERE '
+                            + ' AND '.join(where_statements)
+                            )
+                       or '') \
+                       + ' ORDER BY foodgroup'
+        print 'execute',statement,params
+        self.execute(self.cursor,
+                     statement,
+                     params)
+        cats = []
+        for r in self.cursor.fetchall(): cats.append(r[0])
+        print '->',cats
+        return cats
+
+    def search_nutrition (self, words, group=None):
+        params = []
+        order_params = []
+        where_statements = []
+        order_statements = []
+        for w in words:
+            where_statements.append('desc LIKE ?')
+            params.append('%'+w+'%')
+            order_statements.append('InStr(desc,?)')
+            order_params.append(w)
+        if group:
+            where_statements.append('foodgroup = ?')
+            params.append(group)
+        order_statements.append('desc')
+        statement = 'SELECT * FROM %s'%self.nview \
+                    + (where_statements
+                       and (' WHERE '
+                            + ' AND '.join(where_statements)
+                            )
+                       or '') \
+                       + ' ORDER BY ' + ', '.join(order_statements)
+        print 'execute',statement,params
+        cursor = self.connection.cursor()
+        self.execute(cursor,
+                     statement,
+                     params+order_params),
+        return Fetcher(
+            cursor,
+            self.columns[self.nview]
+            )
 
     def search_recipes (self, searches, sort_by=[]):
         """Search recipes for columns of values.
@@ -269,7 +325,19 @@ class RecData (rdatabase.RecData):
             print "Damn, can't delete",ing
 
     def do_modify_ing (self, ing, ingdict):
-        if type(ing)!=int: ing=ing.rowid
+        if type(ing)!=int:
+            if hasattr(ing,'rowid'):
+                ing=ing.rowid
+            else:
+                curdic = {}
+                for p in ing.__columns__:
+                    curdic[p]=getattr(ing,p)
+                sql,params = self.make_where_statement(curdic)
+                self.cursor.execute(
+                    "SELECT rowid FROM "+self.iview+' '+sql,
+                    params
+                    )
+                ing = self.cursor.fetchone()[0]
         self.do_modify(self.iview,ing,ingdict)
         return DelayedRowObject(ing,'rowid',self.iview,self)
 
