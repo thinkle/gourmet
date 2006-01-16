@@ -161,8 +161,7 @@ class RecIndex:
         else:
             self.next_button.set_sensitive(True)
             self.last_button.set_sensitive(True)
-        #self.set_reccount()
-
+        self.set_reccount()
 
     def rmodel_sort_cb (self, rmodel, sorts):
         self.sort_by = sorts
