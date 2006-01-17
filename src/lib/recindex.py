@@ -140,8 +140,7 @@ class RecIndex:
     def make_rec_visible (self, *args):
         """Make sure recipe REC shows up in our index."""
         #if not self.rg.wait_to_filter:
-        self.setup_search_views()
-        #self.reset_search()
+        #self.setup_search_views()
         self.redo_search()
         #debug('make_rec_visible',0)
         #self.visible.append(rec.id)
@@ -347,7 +346,6 @@ class RecIndex:
 
     def redo_search (self, *args):
         self.last_search = {}
-        #self.searches = []
         self.search()
     
     def search (self, *args):
@@ -357,7 +355,7 @@ class RecIndex:
         searchBy = self.searchByDic[unicode(searchBy)]
 	if txt and self.limitButton: self.limitButton.set_sensitive(True)
         elif self.limitButton: self.limitButton.set_sensitive(False)
-        if [txt, searchBy] == self.last_search:
+        if self.make_search_dic(txt,searchBy) == self.last_search:
             debug("Same search!",0)
             return        
         if self.srchentry.window: self.srchentry.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
@@ -537,8 +535,6 @@ class RecIndex:
         self.rmodel.change_view(rview)
         self.set_reccount()
 
-
-
 class RecipeModel (pageable_store.PageableViewStore):
     """A ListStore to hold our recipes in 'pages' so we don't load our
     whole database at a time.
@@ -596,9 +592,14 @@ class RecipeModel (pageable_store.PageableViewStore):
         """Handed a recipe (or a recipe ID), we update its display if visible."""
         debug('Updating recipe %s'%recipe.title,3)
         if type(recipe)!=int: recipe=recipe.id # make recipe == id
-        for row in self:
+        for n,row in enumerate(self):
             debug('Looking at row',3)
             if row[0].id==recipe:
+                indx = n + (self.page * self.per_page)
+                # update parent
+                self.parent_list[indx] = self.rd.fetch_one(self.rd.rview,
+                                                           id=recipe)
+                # update self
                 self.update_iter(row.iter)
                 debug('updated row -- breaking',3)
                 break
