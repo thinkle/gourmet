@@ -172,7 +172,6 @@ class RecData (rdatabase.RecData):
                      params)
         cats = []
         for r in self.cursor.fetchall(): cats.append(r[0])
-        print '->',cats
         return cats
 
     def search_nutrition (self, words, group=None, limit=None):
@@ -335,53 +334,45 @@ class RecData (rdatabase.RecData):
             print "Damn, can't delete",ing
 
     def do_modify_ing (self, ing, ingdict):
-        if type(ing)!=int:
-            if hasattr(ing,'rowid'):
-                ing=ing.rowid
-            else:
-                curdic = {}
-                for p in ing.__columns__:
-                    curdic[p]=getattr(ing,p)
-                sql,params = self.make_where_statement(curdic)
-                self.cursor.execute(
-                    "SELECT rowid FROM "+self.iview+' '+sql,
-                    params
-                    )
-                ing = self.cursor.fetchone()[0]
-        self.do_modify(self.iview,ing,ingdict)
+        ing = self.do_modify(self.iview,ing,ingdict)
         return DelayedRowObject(ing,'rowid',self.iview,self)
 
     def do_modify_rec (self, rec, recdict):
         if type(rec)!=int: rec=rec.id
-        self.do_modify(self.rview,rec,recdict,unique_id_col='id')
+        rec = self.do_modify(self.rview,rec,recdict,unique_id_col='id')
         return DelayedRowObject(rec,'id',self.rview,self)
 
     def do_modify_cat (self, cat, catdict):
         if type(cat)!=int: cat=cat.rowid
-        self.do_modify(self.catview,cat,catdict)
+        cat = self.do_modify(self.catview,cat,catdict)
         return DelayedRowObject(cat,'rowid',self.catview,self)
 
     def do_modify (self, table, rowid, d, unique_id_col='rowid'):
         if isinstance(rowid,RowObject):
+            
             new = {}
             for k in rowid.__column_names__:
                 v=getattr(rowid,k)
-                if v: new[k]=getattr(rowid,k)
+                if v:
+                    new[k]=getattr(rowid,k)
             rowid = new
         if type(rowid)==dict:
             where,params = self.make_where_statement(rowid)
             self.execute(
                 self.cursor,
-                "SELECT rowid FROM " + table + " " + where,
+                "SELECT " + unique_id_col + "  FROM " + table + " " + where,
                 params
                 )
             try:
                 rowid = self.cursor.fetchone()[0]
+                if not rowid:
+                    raise "Couldn't find row for %s %s,%s"%(table,where,params)
             except (IndexError, TypeError):
                 print 'Strange.'
                 print 'Tried to select rowid FROM ',table,where,params
                 raise "Modifying nonexistent row" + table + "%s"%rowid
-            
+        if type(rowid)!=int:
+            raise "%s is not a ROWID"%rowid
         self.execute(self.cursor,
                      ("UPDATE "+table
                       +
@@ -395,6 +386,7 @@ class RecData (rdatabase.RecData):
                       ),
                      d.values()
                      )
+        return rowid
 
 class RowObject:
     def __init__ (self, column_names, columns):
@@ -412,6 +404,7 @@ class DelayedRowObject (RowObject):
         self.__retrieved__ = False
         self.__db__ = db
         self.__table__ = table
+        self.__column_names__ = self.__db__.columns[self.__table__]
         setattr(self,idprop,id)
 
     def __getattr__ (self, att):
@@ -427,7 +420,7 @@ class DelayedRowObject (RowObject):
              + " WHERE " + self.__idprop__ + "=" + str(getattr(self,self.__idprop__))
              ))
         row = self.__db__.cursor.fetchone()
-        for n,cn in enumerate(self.__db__.columns[self.__table__]):
+        for n,cn in enumerate(self.__column_names__):
             setattr(self,cn,row[n])
             if cn==att: ret = row[n]
         self.__retrieved__ = True
