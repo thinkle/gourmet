@@ -47,7 +47,10 @@ def modules_check():
     except ImportError:
         sys.exit('Error: PyGTK-2.3.93 or newer is required.')
         raise
-    mod_list = ['metakit','Image']
+    mod_list = [#'metakit',
+        'Image',
+        'pysqlite2',
+        ]
     ok = 1
     for m in mod_list:
         try:
@@ -99,6 +102,7 @@ def data_files():
     files.extend([(os.path.join(base), images + ['FAQ'] +[os.path.join('data','recipe.dtd'),
                                                           os.path.join('data','ABBREV.txt'),
                                                           os.path.join('data','WEIGHT.txt'),
+                                                          os.path.join('data','FOOD_DES.txt'),                                                          
                                                           ]),])
     for f in i18n:
         pth,fn=os.path.split(f)
