@@ -1256,14 +1256,17 @@ class DatabaseUnitTest (unittest.TestCase):
         self.rd.delete_rec(rec)
 
     def testIngs (self):
+        rid = self.rd.new_rec().id
         ing = self.rd.add_ing({'amount':1,
                                'unit':'c.',
                                'item':'Carrot juice',
                                'ingkey':'juice, carrot',
-                               'id':self.rd.new_rec().id,
+                               'id':rid,
                                })
         ing = self.rd.modify_ing(ing,{'amount':2})
         assert(ing.amount==2)
         ing = self.rd.modify_ing(ing,{'unit':'cup'})
+        for i in self.rd.get_ings(rid):
+            self.rd.modify_ing(i,{'optional':True})
         assert(ing.unit=='cup')
         self.rd.delete_ing(ing)
