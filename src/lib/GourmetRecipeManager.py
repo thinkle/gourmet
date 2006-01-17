@@ -458,7 +458,7 @@ class RecGui (RecIndex):
 
     def delete_rec_iter (self, rec):
         if self.doing_multiple_deletions: return
-        self.rmodel.update_all()
+        self.redo_search()
 
     def update_rec_iter (self, rec): self.rmodel.update_recipe(rec)
 
@@ -529,7 +529,7 @@ class RecGui (RecIndex):
             tree = te.QuickTree([r.title for r in recs])
             expander = [_("See recipes"),tree]
         if de.getBoolean(parent=self.app,label=bigmsg,sublabel=msg,expander=expander):
-            self.rmodel.update_all()
+            self.redo_search() # update all
 
             def show_progress (t):
                 gt.gtk_enter()
