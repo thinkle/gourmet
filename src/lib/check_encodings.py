@@ -71,9 +71,9 @@ class GetFile (CheckEncoding):
             else:
                 encoding = encs.keys()[0]
             self.enc = encoding
-            self.lines = encs[self.enc].split('\n')            
+            self.lines = encs[self.enc].split('\n')      
             debug('reading file %s as encoding %s'%(file, self.enc))
-            self.lines = map(lambda l: l.encode(),self.lines)
+            self.lines = [l.encode() for l in self.lines]
         else:
             raise "Cannot decode file %s"%file
 
