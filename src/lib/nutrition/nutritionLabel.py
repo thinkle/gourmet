@@ -259,8 +259,6 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         getattr(self.nutexpander,method)()        
         getattr(self.servingLabel,method)()
         getattr(self.cal_per_day_box,method)()                
-
-            
             
     def make_dv_boxes (self):
         dvLabel = gtk.Label()
@@ -340,13 +338,26 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         A nutinfo object has attributes with our relevant data.
         """
         self.nutinfo = nutinfo
-        self.update_display()
-        vapor = self.nutinfo._get_vapor()
-        if vapor:
-            self.set_missing_label_text(len(vapor),len(self.nutinfo))
-            self.missingLabel.show()
-        else:
+        if len(self.nutinfo)==0:
+            self.main_table.hide()
+            self.nutexpander.hide()
+            self.servingLabel.hide()
+            self.cal_per_day_box.hide()
             self.missingLabel.hide()
+        else:
+            self.update_display()
+            vapor = self.nutinfo._get_vapor()
+            if vapor:
+                self.set_missing_label_text(len(vapor),len(self.nutinfo))
+                self.missingLabel.show()
+            else:
+                self.main_table.show()
+                self.nutexpander.show()
+                self.servingLabel.show()
+                self.cal_per_day_box.show()
+                self.missingLabel.hide()
+
+                
 
     def update_display (self):
         """Update the display of labels based on values in nutinfo,

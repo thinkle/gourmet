@@ -431,7 +431,7 @@ class NutritionInfoDruid (gobject.GObject):
     # callbacks for quick-changes
     def apply_ingkey (self,*args):
         key = self.ingKeyEntry.get_text()
-        ings = self.nd.db.iview.select(ingkey=self.ingkey)
+        ings = self.nd.db.fetch_all(self.nd.db.iview,ingkey=self.ingkey)
         self.nd.db.modify_ings(ings,{'ingkey':key})
         self.set_ingkey(key)
         self.autosearch_ingkey()
@@ -442,7 +442,7 @@ class NutritionInfoDruid (gobject.GObject):
     
     def save_unit_cb (self,*args):
         from_unit = self.fromUnitComboBoxEntry.get_children()[0].get_text()
-        ings = self.nd.db.iview.select(ingkey=self.ingkey,unit=self.fromUnit)
+        ings = self.nd.db.fetch_all(self.nd.db.iview,ingkey=self.ingkey,unit=self.fromUnit)
         self.nd.db.modify_ings(ings,{'unit':from_unit})
         self.set_from_unit(self.fromUnitComboBoxEntry.get_children()[0].get_text())
         self.changeUnitAction.dehighlight_action()
