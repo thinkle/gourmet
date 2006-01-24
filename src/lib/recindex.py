@@ -365,14 +365,14 @@ class RecIndex:
         srch = {'column':searchBy}
         if self.regexpp():
             srch['operator'] = 'REGEXP'
-            srch['search'] = txt
+            srch['search'] = txt.replace(' %s '%_('or'), # or operator for searches
+                                         '|')
         else:
             srch['operator']='LIKE'
             srch['search'] = txt.replace('%','%%')+'%'
         return srch
 
     def do_search (self, txt, searchBy):
-        print 'do_search',self.searches,txt,searchBy
         if txt and searchBy:
             srch = self.make_search_dic(txt,searchBy)
             srch['column']=searchBy
