@@ -5,6 +5,9 @@ from gettext import gettext as _
 
 class RecData (rdatabase.RecData):
 
+    # If we search for REGEXP('f.*','foo') instead of 'foo REGEXP f.*'
+    USE_PAREN_STYLE_REGEXP = False
+
     def __init__ (self, *args): raise NotImplementedError
 
     # SQL Convenience stuff
@@ -113,18 +116,18 @@ class RecData (rdatabase.RecData):
         else:
             where,params = '',[]
         cursor = self.connection.cursor()
-        sql = 'SELECT * FROM '+table+' '+where
+        column_names = self.columns[table]
+        sql = 'SELECT ' + ', '.join(column_names) + ' FROM '+table+' '+where
         if sort_by:
             sql += ' '+self.make_order_by_statement(sort_by)+' '
         if limit:
             sql += ' '+'LIMIT '+', '.join([str(n) for n in limit])
         self.execute(cursor,sql,params)
-        column_names = self.columns[table]
         return Fetcher(cursor, column_names)
         
     def fetch_one (self, table, **criteria):
         where,params = self.make_where_statement(criteria)
-        self.execute(self.cursor,'SELECT * FROM %s '%table + where,params)
+        self.execute(self.cursor,'SELECT '+', '.join(self.columns[table])+' FROM %s '%table + where,params)
         result = self.cursor.fetchone()
         if not result: return None
         else: return RowObject(self.columns[table],result)
@@ -188,7 +191,7 @@ class RecData (rdatabase.RecData):
             where_statements.append('foodgroup = ?')
             params.append(group)
         order_statements.append('desc')
-        statement = 'SELECT * FROM %s'%self.nview \
+        statement = 'SELECT ' + ', '.join(self.columns[self.nview]) + ' FROM %s'%self.nview \
                     + (where_statements
                        and (' WHERE '
                             + ' AND '.join(where_statements)
@@ -264,6 +267,10 @@ class RecData (rdatabase.RecData):
         if sort_by: base_search += '\n'+self.make_order_by_statement(sort_by)
         if limit:
             base_search += ' '+'LIMIT '+', '.join([str(n) for n in limit])
+        if self.USE_PAREN_STYLE_REGEXP:
+            base_search = re.sub('\s*([A-Za-z0-9_?.]*)\s*REGEXP\s*([A-Za-z0-9_?.]*)\s*',
+                                 ' REGEXP(\\2,\\1) ',
+                                 base_search)
         self.execute(cursor,
                      base_search,
                      params
@@ -349,13 +356,15 @@ class RecData (rdatabase.RecData):
 
     def do_modify (self, table, rowid, d, unique_id_col='rowid'):
         if isinstance(rowid,RowObject):
-            
-            new = {}
-            for k in rowid.__column_names__:
-                v=getattr(rowid,k)
-                if v:
-                    new[k]=getattr(rowid,k)
-            rowid = new
+            if hasattr(rowid,'rowid'):
+                rowid = rowid.rowid
+            else:
+                new = {}
+                for k in rowid.__column_names__:
+                    v=getattr(rowid,k)
+                    if v:
+                        new[k]=getattr(rowid,k)
+                rowid = new
         if type(rowid)==dict:
             where,params = self.make_where_statement(rowid)
             self.execute(
@@ -416,7 +425,7 @@ class DelayedRowObject (RowObject):
         ret = None
         self.__db__.execute(
             self.__db__.cursor,
-            ("SELECT * FROM " + self.__table__
+            ("SELECT " + ", ".join(self.__column_names__) + "  FROM " + self.__table__
              + " WHERE " + self.__idprop__ + "=" + str(getattr(self,self.__idprop__))
              ))
         row = self.__db__.cursor.fetchone()

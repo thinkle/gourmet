@@ -2,6 +2,7 @@ import sql_db, rdatabase
 from pysqlite2 import dbapi2 as sqlite
 import os, os.path, re
 import gourmet.gglobals as gglobals
+from gourmet import keymanager
 from gettext import gettext as _
 
 
@@ -10,12 +11,20 @@ class RecData (sql_db.RecData):
     """SQLite implementation of RecData class, which provides
     Gourmet's interface to the database.
     """
+
+    USE_PAREN_STYLE_REGEXP = True
     
     def __init__ (self, filename=os.path.join(gglobals.gourmetdir,'recipes.db'),db='sqlite'):
         self.filename = filename
         self.db = db
         self.columns = {}
-        rdatabase.RecData.__init__(self)        
+        rdatabase.RecData.__init__(self)
+
+    def setup_table (self, *args,**kwargs):
+        name = sql_db.RecData.setup_table(self,*args,**kwargs)
+        # Always grab the rowid!
+        self.columns[name] = ['rowid']+self.columns[name]
+        return name
 
     def validate_recdic (self, recdic):
         rdatabase.RecData.validate_recdic(self,recdic)
@@ -29,7 +38,6 @@ class RecData (sql_db.RecData):
         if not os.path.exists(os.path.split(self.filename)[0]):
             os.makedirs(os.path.split(self.filename)[0])
         self.connection = sqlite.connect(self.filename)#,isolation_level="IMMEDIATE")
-        self.connection.commit()
         self.cursor = self.connection.cursor()
         # Create regexp function, based on example at
         # http://lists.initd.org/pipermail/pysqlite/2005-November/000253.html
@@ -66,7 +74,7 @@ class RecData (sql_db.RecData):
 class RecipeManager (RecData,rdatabase.RecipeManager):
     def __init__ (self, file=os.path.join(gglobals.gourmetdir,'recipes.db')):
         RecData.__init__(self,filename=file)
-        rdatabase.RecipeManager.__init__(self)
+        self.km = keymanager.KeyManager(rm=self)
 
 class dbDic (rdatabase.dbDic):
     pass
