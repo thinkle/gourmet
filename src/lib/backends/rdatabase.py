@@ -429,8 +429,6 @@ class RecData:
     def add_ing (self, dic):
         self.validate_ingdic(dic)
         try:          
-            if dic.has_key('item') and dic.has_key('ingkey'):
-                self.add_ing_to_keydic(dic['item'],dic['ingkey'])
             return self.do_add_ing(dic)
         except:
             print 'Problem adding',dic
@@ -805,13 +803,18 @@ class RecData:
         make_visible is a function that will make our change (or the undo or our change) visible.
         """
         orig_dic = self.get_dict_for_obj(ing,dic.keys())
+        key = dic.get('ingkey',None)
+        item = key and dic.get('item',ing.item)
         def do_action ():
             debug('undoable_modify_ing modifying %s'%dic,2)
             self.modify_ing(ing,dic)
+            if key:
+                self.add_ing_to_keydic(item,key)
             if make_visible: make_visible(ing,dic)
         def undo_action ():
             debug('undoable_modify_ing unmodifying %s'%orig_dic,2)
             self.modify_ing(ing,orig_dic)
+            self.remove_ing_from_keydic(item,key)
             if make_visible: make_visible(ing,orig_dic)
         obj = Undo.UndoableObject(do_action,undo_action,history)
         obj.perform()
