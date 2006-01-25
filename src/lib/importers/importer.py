@@ -141,6 +141,9 @@ class importer:
         timeaction = TimeAction('importer.commit_rec',10)
         # if servings can't be recognized as a number, add them to the
         # instructions.
+        for key in ['cuisine','category','title']:
+            if self.rec.has_key(key):
+                self.rec[key]=re.sub('\s+',' ',self.rec[key]).strip()
         if self.rec.has_key('servings'):
             servs=self.convert_servings(self.rec['servings'])
             if servs:
@@ -213,6 +216,10 @@ class importer:
                  
     def commit_ing (self):
         timeaction = TimeAction('importer.commit_ing 1',10)
+        # Strip whitespace...
+        for key in ['item','ingkey','unit']:
+            if self.ing.has_key(key):
+                self.ing[key]=re.sub('\s+',' ',self.ing[key]).strip()
         if not (
             (self.ing.has_key('refid') and
              self.ing['refid'])
