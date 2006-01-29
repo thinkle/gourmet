@@ -2,7 +2,7 @@
 import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
 import xml.sax.saxutils
 import exporters
-import convert, GourmetRecipeManager, TextBufferMarkup
+import convert, TextBufferMarkup
 from recindex import RecIndex
 import prefs, WidgetSaver, timeEntry, Undo, ratingWidget
 import keymanager
@@ -19,7 +19,7 @@ import ImageExtras as ie
 from importers.importer import parse_range
 from FauxActionGroups import ActionManager
 import mnemonic_manager
-import shopgui
+
 import LinkedTextView
 
 class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
@@ -467,6 +467,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     
     def addToShopL (self, *args):
         debug("addToShopL (self, *args):",5)
+        import shopgui
         d = shopgui.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
                                       self.mult,
                                       self.prefs,
