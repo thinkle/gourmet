@@ -8,6 +8,8 @@ class RecData (rdatabase.RecData):
     # If we search for REGEXP('f.*','foo') instead of 'foo REGEXP f.*'
     USE_PAREN_STYLE_REGEXP = False
 
+    REGEXP_FIXER_REGEXP = re.compile('\s*([A-Za-z0-9_?.]*)\s*REGEXP\s*([A-Za-z0-9_?.]*)\s*')
+
     def __init__ (self, *args): raise NotImplementedError
 
     # SQL Convenience stuff
@@ -104,7 +106,7 @@ class RecData (rdatabase.RecData):
         return self.cursor.fetchone()[0]
 
     # Fetching and such...
-    def fetch_all (self, table, sort_by=[], limit=None, **criteria):
+    def fetch_all (self, table, sort_by=[], distinct=False, limit=None, **criteria):
         """Table is our table object (in our case, just a string)
         sort_by is a list of sort criteria, as tuples ('column',1) or ('column',-1)
 
@@ -117,7 +119,7 @@ class RecData (rdatabase.RecData):
             where,params = '',[]
         cursor = self.connection.cursor()
         column_names = self.columns[table]
-        sql = 'SELECT ' + ', '.join(column_names) + ' FROM '+table+' '+where
+        sql = 'SELECT ' + (distinct and 'DISTINCT ' or '') + ', '.join(column_names) + ' FROM '+table+' '+where
         if sort_by:
             sql += ' '+self.make_order_by_statement(sort_by)+' '
         if limit:
@@ -268,9 +270,8 @@ class RecData (rdatabase.RecData):
         if limit:
             base_search += ' '+'LIMIT '+', '.join([str(n) for n in limit])
         if self.USE_PAREN_STYLE_REGEXP:
-            base_search = re.sub('\s*([A-Za-z0-9_?.]*)\s*REGEXP\s*([A-Za-z0-9_?.]*)\s*',
-                                 ' REGEXP(\\2,\\1) ',
-                                 base_search)
+            base_search = self.REGEXP_FIXER_REGEXP.sub(' REGEXP(\\2,\\1) ',
+                                                       base_search)
         self.execute(cursor,
                      base_search,
                      params
@@ -290,6 +291,21 @@ class RecData (rdatabase.RecData):
         for row in self.cursor.fetchall():
             if row[0]: ret.append(row[0])
         return ret
+
+    def get_ingkeys_with_count (self, search={}):
+        """Get unique list of ingredient keys and counts for number of times they appear in the database.
+        """
+        c = self.connection.cursor()
+        SQL = 'SELECT ingkey,COUNT(*) FROM '+self.iview
+        params = []
+        if search:
+            SQL += ' WHERE ' + search.get('column','ingkey') + ' ' + search.get('operator','LIKE') + ' ?'
+            params += [search['search']]
+            if self.USE_PAREN_STYLE_REGEXP:
+                SQL = self.REGEXP_FIXER_REGEXP.sub(' REGEXP(\\2,\\1) ',SQL)
+        SQL += ' GROUP BY ingkey'
+        self.execute(c,SQL,params)
+        return Fetcher(c,['ingkey','count'])
 
     # Adding recipes...
     def do_add (self, table, d):
@@ -330,6 +346,15 @@ class RecData (rdatabase.RecData):
                      "DELETE FROM "+table+" "+where,
                      params
                      )
+
+    def update (self, table, criteria, new_values_dic):
+        where,params = self.make_where_statement(criteria)
+        params = new_values_dic.values() + params
+        self.execute(self.cursor,
+                     "UPDATE " + table + " SET " +\
+                     ", ".join(["%s = ?"%k for k in new_values_dic.keys()]) +\
+                     " " + where,
+                     params)
 
     def delete_ing (self, ing):
         if hasattr(ing,'rowid'): ing = ing.rowid

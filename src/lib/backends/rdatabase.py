@@ -327,6 +327,9 @@ class RecData:
         """
         raise NotImplementedError
 
+    def update_by_criteria (self, table, update_criteria, new_values_dic):
+        raise NotImplementedError
+
     # Metakit has no AUTOINCREMENT, so it has to do special magic here
     def increment_field (self, table, field):
         """Increment field in table, or return None if the DB will do
@@ -726,12 +729,20 @@ class RecData:
     def remove_ing_from_keydic (self, item, key):
         row = self.fetch_one(self.ikview,item=item,ingkey=key)
         if row:
-            row.count -= 1
+            new_count = row.count - 1
+            if new_count:
+                self.do_modify(self.ikview,row,{'count':new_count})
+            else:
+                self.delete_by_criteria(self.ikview,{'item':item,'ingkey':ingkey})
         for w in re.split('\W+',item):
             w=w.lower()
             row = self.fetch_one(self.ikview,item=item,ingkey=key)
             if row:
-                row.count -= 1
+                new_count = row.count - 1
+                if new_count:
+                    self.do_modify(self.ikview,row,{'count':new_count})
+                else:
+                    self.delete_by_criteria(self.ikview,{'word':w,'ingkey':ingkey})
 
     def ing_shopper (self, view):
         return mkShopper(self.ingview_to_lst(view))
@@ -1212,6 +1223,11 @@ img='\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00\xff\xd
 def test_data (db):
     r = db.add_rec({'image':img})
     assert(r.img == img)
+
+def test_update (db):
+    r = db.add_rec({'title':'Foo','cuisine':'Bar','source':'Z'})
+    db.update(db.rview,{'title':'Foo'},{'title':'Boo'})
+    assert(db.get_rec(r.id).title == 'Boo')
     
 def test_db (db):
     tests = [test_rec_basics,
@@ -1220,6 +1236,7 @@ def test_db (db):
              test_search,
              test_unicode,
              test_id_reservation,
+             test_update,
              ]
     success = 0
     for t in tests:
