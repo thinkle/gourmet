@@ -254,11 +254,15 @@ class PageableTreeStore (gtk.TreeStore, PageableListStore):
         if end_at > length: end_at = length
         for row in self._get_slice_(int(start_at),int(end_at)):
             itr=self.append(None,row)
-            for child in self._get_children_(row):
-                self.append(itr,child)
+            self.append_descendants(itr)
         self.emit('page-changed')
 
-    def _get_children_ (self, row):
+    def append_descendants (self, itr):
+        for child in self._get_children_(itr):
+            child_itr=self.append(itr,child)
+            self.append_descendants(child_itr)
+
+    def _get_children_ (self, itr):
         return []
     
 class ColumnSortSetterUpper:
