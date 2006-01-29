@@ -20,12 +20,25 @@ class KeyEditor:
         self.rd = rd
         self.rg = rg
         self.widget_names = ['treeview', 'searchByBox', 'searchEntry', 'searchButton', 'window',
-                             'searchAsYouTypeToggle', 'regexpTog', 'changeKeyEntry', 'changeKeyButton' ]
+                             'searchAsYouTypeToggle', 'regexpTog',
+                             'changeKeyEntry',
+                             'changeItemEntry',
+                             'changeUnitEntry',
+                             'changeAmountEntry',
+                             'applyEntriesButton',
+                             'clearEntriesButton']
         for w in self.widget_names:
             setattr(self,w,self.glade.get_widget(w))
+        self.entries = {'ingkey':self.changeKeyEntry,
+                        'item':self.changeItemEntry,
+                        'unit':self.changeUnitEntry,
+                        'amount':self.changeAmountEntry,
+                        }
         # setup entry callback to sensitize/desensitize apply
-        self.changeKeyButton.set_sensitive(False)
-        self.changeKeyEntry.connect('changed',self.changeKeyEntryChangedCB)
+        self.applyEntriesButton.set_sensitive(False)
+        self.clearEntriesButton.set_sensitive(False)
+        for e in self.entries.values():
+            e.connect('changed',self.entryChangedCB)
         # Make our lovely model
         self.makeTreeModel()
         # setup completion in entry
@@ -52,7 +65,8 @@ class KeyEditor:
             'iSearch':self.isearchCB,
             'search':self.searchCB,
             'search_as_you_type_toggle':self.search_as_you_typeCB,
-            'changeKey':self.change_keyCB,
+            'applyEntries':self.applyEntriesCB,
+            'clearEntries':self.clearEntriesCB,
             'close_window': lambda *args: self.window.hide() and self.window.destroy()
             })
         # setup mnemonic manager
@@ -62,6 +76,7 @@ class KeyEditor:
         self.mm.add_treeview(self.treeview)
         self.mm.fix_conflicts_peacefully()
         # to set our regexp_toggled variable
+        cb.set_model_from_list(self.searchByBox, [_('key'),_('item'),_('unit')])
         self.searchByBox.set_active(0)
         self.dont_ask = self.rg.prefs.get('dontAskDeleteKey',False)
         # setup WidgetSavers
@@ -103,56 +118,39 @@ class KeyEditor:
     def tree_edited (self, renderer, path_string, text, n, head):
         indices = path_string.split(':')
         path = tuple( map(int, indices))
-        iter = self.treeModel.get_iter(path)
-        field = self.treeModel.get_value(iter, self.FIELD_COL)
-        value = self.treeModel.get_value(iter, self.VALUE_COL)
+        itr = self.treeModel.get_iter(path)
+        curdic,field = self.get_dic_describing_iter(itr)
+        value = curdic[field]
         if value == text: return
-        print 'CHANGE!'
-        print 'change: "%s"'%field
-        if field==self.treeModel.KEY:
-            print '>KEY:',
-            key = value
-            print 'key "%s"'%key
+        if field=='ingkey':
+            key = curdic['ingkey']
             if de.getBoolean(label=_('Change all keys "%s" to "%s"?')%(key,text),
                              sublabel=_("You won't be able to undo this action. If there are already ingredients with the key \"%s\", you won't be able to distinguish between those items and the items you are changing now."%text)
                              ):
                 self.rd.update(
                     self.rd.iview,
-                    {'ingkey':key},
+                    curdic,
                     {'ingkey':text}
                     )
                 self.rd.delete_by_criteria(
                     self.rd.ikview,
                     {'ingkey':key}
                     )
-        elif field==self.treeModel.ITEM:
-            print '>ITEM:'
-            key = self.treeModel.get_value(
-                self.treeModel.iter_parent(iter),
-                self.VALUE_COL
-                )
-            item = value
-            print 'key "%s"'%key,'item "%s"'%item
-            if de.getBoolean(label=_('Change all items "%s" to "%s"?')%(item,text),
+        elif field=='item':
+            if de.getBoolean(label=_('Change all items "%s" to "%s"?')%(curdic['item'],text),
                              sublabel=_("You won't be able to undo this action. If there are already ingredients with the item \"%s\", you won't be able to distinguish between those items and the items you are changing now.")%text
                              ):
                 self.rd.update(
                     self.rd.iview,
-                    {'item':item},
+                    curdic,
                     {'item':text}
-                    )                
-        elif field==self.treeModel.UNIT:
-            print '>UNIT:'
-            item_itr = self.treeModel.iter_parent(iter)
-            key_itr = self.treeModel.iter_parent(item_itr)
-            item = self.treeModel.get_value(item_itr,self.VALUE_COL)
-            key = self.treeModel.get_value(key_itr,self.VALUE_COL)
-            unit = value
-            print 'key "%s"'%key,'item "%s"'%item,'unit "%s"'%unit
+                    ) 
+        elif field=='unit':
+            unit = curdic['unit']; key = curdic['ingkey']; item = curdic['item']
             val = de.getRadio(label='Change unit',
                                 options=[
                 [_('Change _all instances of "%(unit)s" to "%(text)s"')%locals(),1],
-                [_('Change "%(unit)s" to "%(text)s" only for _ingredients "%(key)s"')%locals(),2],
+                [_('Change "%(unit)s" to "%(text)s" only for _ingredients "%(item)s" with key "%(key)s"')%locals(),2],
                 ],
                               default = 2,
                               )
@@ -165,19 +163,16 @@ class KeyEditor:
             elif val==2:
                 self.rd.update(
                     self.rd.iview,
-                    {'unit':unit,'ingkey':key},
+                    curdic,
                     {'unit':text}
                     )
-        elif field==self.treeModel.AMOUNT:
-            print '>AMOUNT:'
-            unit_itr = self.treeModel.iter_parent(iter)
-            item_itr = self.treeModel.iter_parent(unit_itr)
-            key_itr = self.treeModel.iter_parent(item_itr)
-            unit = self.treeModel.get_value(unit_itr,self.VALUE_COL)
-            item = self.treeModel.get_value(item_itr,self.VALUE_COL)
-            key = self.treeModel.get_value(key_itr,self.VALUE_COL)
-            amount = value
-            print 'AMOUNT:','key "%s"'%key,'item "%s"'%item,'unit "%s"'%unit,'amount "%s"'%amount
+        elif field=='amount':
+            amount = curdic['amount']; unit = curdic['unit']; key = curdic['ingkey']; item = curdic['item']
+            try:
+                new_amount = convert.frac_to_float(text)
+            except:
+                de.show_amount_error(text)
+                return
             val = de.getRadio(label='Change amount',
                         options=[
                 [_('Change _all instances of "%(amount)s" %(unit)s to %(text)s %(unit)s')%locals(),1],
@@ -191,60 +186,17 @@ class KeyEditor:
             elif val == 2:
                 cond = {'unit':unit,'amount':amount,'ingkey':key}
             elif val == 3:
-                cond = {'unit':unit,'amount':amount,'ingkey':key,'item':item}
+                cond = curdic
             self.rd.update(
                 self.rd.iview,
-                {'unit':unit,'amount':amount},
-                {'unit':unit,'amount':convert.frac_to_float(amount)}
+                {'unit':unit,'amount':convert.frac_to_float(amount)},
+                {'unit':unit,'amount':new_amount}
                 )
         else:
-            print 'NO FIELD MATCH'
             return
-        print 'new val:',text
-        self.treeModel.set_value(iter, n, text)
+        self.treeModel.set_value(itr, n, text)
         return
-        if not self.dont_ask:
-            msg = _("Are you sure you want to change the ")
-            if n==self.KEY_COL: msg += _('key')
-            if n==self.ITEM_COL: msg += _('item')
-            if item:
-                msg += _("for \"%s from \"%s\"")%(item,key)
-            else:
-                msg += _(" from \"%s\" ")%key
-            msg += _(" to \"%s\"")%text
-            if not de.getBoolean(label=msg,
-                                 dont_ask_cb=self.dont_ask_cb,
-                                 dont_ask_custom_text=_("Don't ask me before changing keys and items.")
-                                 ):
-                return
-        if children and n==self.KEY_COL:
-            self.change_children(key, text, iter)
-        else:
-            if n==self.KEY_COL:
-                self.changeItem(key, item, new_key=text)
-            elif n==self.ITEM_COL:
-                self.changeItem(key, item, new_item=text)
-        #self.treeModel.set_value(iter, n, text)
-        self.treeModel.update_tree()
 
-    def change_children (self, key, new_key, iter):
-        # if it's children, it means we're changing a key for
-        # all cases... and then we just have to change the model
-        # so our user knows it worked
-        normtable = self.rd.normalizations['ingkey']
-        new_keys = normtable.select(ingkey=new_key)
-        if new_keys:
-            # then we just have to change all occurrences in ingview...
-            self.changeItem(key,new_key=new_key)
-            #self.rd.delete_by_criteria(normtable,{'ingkey':key}) # nuke the old key
-        # If the new key doesn't exist yet, we just change the key reference in the
-        # normalization table (i.e. key ID 462 now points to "sugar")
-        else:
-            row = normtable.select(ingkey=key)[0]
-            row.ingkey = new_key
-            #rows = normtable.select(ingkey=new_key)
-        self.reset_tree()
-        
     def makeTreeModel (self):
         self.treeModel = KeyStore(self.rd,per_page=self.rg.prefs.get('recipes_per_page',12))
         #self.orig_view = self.treeModel.view
@@ -269,13 +221,18 @@ class KeyEditor:
             self.search_by != last_by or
             self.use_regexp != last_regexp):
             self.treeModel.reset_views()
-        if self.search_by == _('Key'):
+        if self.search_by == _('item'):
             self.treeModel.limit_on_ingkey(self.search_string,
                                            search_options={'use_regexp':self.use_regexp,}
                                            )
-        else:
+        elif self.search_by == _('key'):
             self.treeModel.limit_on_item(self.search_string,
                                          search_options={'use_regexp':self.use_regexp})
+        else: # self.search_by == _('unit'):
+            self.treeModel.limit(self.search_string,
+                                 'unit',
+                                 search_options={'use_regexp':self.use_regexp}
+                                 )
 
     def isearchCB (self, *args):
         if self.searchAsYouTypeToggle.get_active():
@@ -289,37 +246,144 @@ class KeyEditor:
             self.searchButton.hide()
         else: self.searchButton.show()
 
-    def change_keyCB (self, *args):
-        new_key = self.changeKeyEntry.get_text()
-        mod,rows = self.treeview.get_selection().get_selected_rows()
-        print 'change ->',new_key,rows
-        if not new_key:
-            de.show_message(_("You haven't entered a key!"))
-            return
-        if not de.getBoolean(label=_("Are you sure you want the keys\n for all %s selections set to\n \"%s\"")%(len(rows),new_key)):
-            return
-        for path in rows:
-            iter=self.treeModel.get_iter(path)
-            field = self.treeModel.get_value(iter, self.FIELD_COL)
-            if field!=self.treeModel.KEY:
-                continue
-            curkey = self.treeModel.get_value(iter,self.VALUE_COL)
-            print 'update',curkey,'->',new_key
-            self.rd.update(
-                self.rd.iview,
-                {'ingkey':curkey},
-                {'ingkey':new_key}
+    
+    def clearEntriesCB (self, *args):
+        for e in self.entries.values(): e.set_text('')
+
+    def get_dic_describing_iter (self, itr):
+        """Handed an itr in our tree, return a dictionary describing
+        that row and the field described.
+
+        For example, if we get the row
+
+        KEY: Foo
+
+        We return {'ingkey':'Foo'},'ingkey'
+
+        If we get the row
+
+        KEY: Foo
+         |=> ITEM: Bar
+
+        We return {'ingkey':'Foo','item':'Bar'},'item'
+        """
+        field = self.treeModel.get_value(itr, self.FIELD_COL)
+        value = self.treeModel.get_value(itr, self.VALUE_COL)
+        if field==self.treeModel.KEY:
+            return {'ingkey':value},'ingkey'
+        elif field==self.treeModel.ITEM:
+            key = self.treeModel.get_value(
+                self.treeModel.iter_parent(itr),
+                self.VALUE_COL
                 )
-            self.rd.delete_by_criteria(
-                self.rd.ikview,
-                {'ingkey':curkey}
-                )
-            self.treeModel.set_value(iter, self.VALUE_COL, new_key)        
+            return {'ingkey':key,'item':value},'item'
+        elif field==self.treeModel.UNIT:
+            item_itr = self.treeModel.iter_parent(itr)
+            key_itr = self.treeModel.iter_parent(item_itr)
+            item = self.treeModel.get_value(item_itr,self.VALUE_COL)
+            key = self.treeModel.get_value(key_itr,self.VALUE_COL)
+            unit = value
+            return {'ingkey':key,'item':item,'unit':unit},'unit'
+        elif field==self.treeModel.AMOUNT:
+            unit_itr = self.treeModel.iter_parent(itr)
+            item_itr = self.treeModel.iter_parent(unit_itr)
+            key_itr = self.treeModel.iter_parent(item_itr)
+            unit = self.treeModel.get_value(unit_itr,self.VALUE_COL)
+            item = self.treeModel.get_value(item_itr,self.VALUE_COL)
+            key = self.treeModel.get_value(key_itr,self.VALUE_COL)
+            amount = value
+            return {'ingkey':key,'item':item,'unit':unit,'amount':amount},'amount'
+        else:
+            print 'WTF! WE SHOULD NEVER LAND HERE!',field,value
+            raise 'WTF ERROR'
             
-    def changeKeyEntryChangedCB (self, *args):
-        if self.changeKeyEntry.get_text():
-            self.changeKeyButton.set_sensitive(True)
-        else: self.changeKeyButton.set_sensitive(False)
+    def applyEntriesCB (self, *args):
+        newdic = {}
+        for k,e in self.entries.items():
+            txt = e.get_text()
+            if txt:
+                if k=='amount':
+                    try:
+                        newdic[k]=convert.frac_to_float(txt)
+                    except:
+                        de.show_amount_error(txt)
+                        return
+                else:
+                    newdic[k]=txt
+        if not newdic:
+            print 'We called applyEntriesCB with no text -- that shouldn\'t be possible'
+            return
+        mod,rows = self.treeview.get_selection().get_selected_rows()
+        if not de.getBoolean(
+        label=_("Change all selected rows?"),
+        sublabel=(_('This action will not be undoable. Are you that for all %s selected rows, you want to set the following values:')%len(rows)
+        + (newdic.has_key('ingkey') and _('\nKey to %s')%newdic['ingkey'] or '')
+        + (newdic.has_key('item') and _('\nItem to %s')%newdic['item'] or '')
+        + (newdic.has_key('unit') and _('\nUnit to %s')%newdic['unit'] or '')
+        + (newdic.has_key('amount') and _('\nAmount to %s')%newdic['amount'] or ''))):
+            return
+        # Now actually apply our lovely new logic...
+        changed_iters = True
+        updated_iters = []
+        for path in rows:
+            itr=self.treeModel.get_iter(path)
+            # We check to see if we've updated the parent of our iter,
+            # in which case the changes would already be inherited by
+            # the current row (i.e. if the tree has been expanded and
+            # all rows have been selected).
+            parent = mod.iter_parent(itr); already_updated = False
+            while parent:
+                if parent in updated_iters:
+                    already_updated = True
+                else:
+                    parent = mod.iter_parent(parent)
+            if already_updated: continue
+            # Now that we're sure we really need to update...
+            curdic,field = self.get_dic_describing_iter(itr)
+            curkey = self.treeModel.get_value(itr,self.VALUE_COL)
+            if not already_updated:
+                self.rd.update(
+                    self.rd.iview,
+                    curdic,
+                    newdic,
+                    )
+                if curdic.has_key('ingkey') and newdic.has_key('ingkey'):
+                    self.rd.delete_by_criteria(
+                        self.rd.ikview,
+                        {'ingkey':curdic['ingkey']}
+                        )
+            self.update_iter(itr,newdic) # A recursive method that
+                                         # will set values for us and
+                                         # our children as necessary
+            updated_iters.append(itr) 
+
+    def update_iter (self, itr, newdic):
+        """Update iter and its children based on values in newdic"""
+        field = self.treeModel.get_value(itr,self.FIELD_COL)
+        if newdic.has_key('item') and field==self.treeModel.ITEM:
+            self.treeModel.set_value(itr,self.VALUE_COL,newdic['item'])
+        elif newdic.has_key('ingkey') and field==self.treeModel.KEY:
+            self.treeModel.set_value(itr,self.VALUE_COL,newdic['ingkey'])
+        elif newdic.has_key('unit') and field==self.treeModel.UNIT:
+            self.treeModel.set_value(itr,self.VALUE_COL,newdic['unit'])
+        elif newdic.has_key('amount') and field==self.treeModel.AMOUNT:
+            self.treeModel.set_value(itr,self.VALUE_COL,newdic['amount'])
+        c = self.treeModel.iter_children(itr)
+        while c:
+            self.update_iter(c,newdic)
+            c = self.treeModel.iter_next(c)
+        
+    def entryChangedCB (self, *args):
+        """Set sensitivity of apply and clear buttons.
+
+        We are sensitive if we have text to apply or clear"""
+        for e in self.entries.values():
+            if e.get_text():
+                self.applyEntriesButton.set_sensitive(True)
+                self.clearEntriesButton.set_sensitive(True)
+                return
+        self.applyEntriesButton.set_sensitive(False)
+        self.clearEntriesButton.set_sensitive(False)
 
     def reset_tree (self):
         self.treeModel.reset_views()
