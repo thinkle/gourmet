@@ -264,9 +264,10 @@ class RadioDialog (ModalDialog):
                   parent=None,expander=None,cancel=True):
         ModalDialog.__init__(self, okay=True, label=label, sublabel=sublabel, parent=parent, expander=expander, cancel=cancel)
         # defaults value is first value...
-        if options:
-            self.ret = options[0][1]
+        self.default = default
         self.setup_radio_buttons(options)
+        if options and default==None:
+            self.ret = options[0][1]
 
     def setup_radio_buttons (self,options):
         previous_radio = None
@@ -278,8 +279,12 @@ class RadioDialog (ModalDialog):
             rb.connect('toggled',self.toggle_cb,value)
             self.buttons.append(rb)
             previous_radio=rb
-        self.buttons[0].set_active(True)
-        self.widget_that_grabs_focus = self.buttons[0]
+            if self.default==value:
+                rb.set_active(True)
+                self.widget_that_grabs_focus = rb
+        if self.default==None:
+            self.buttons[0].set_active(True)
+            self.widget_that_grabs_focus = self.buttons[0]
 
     def toggle_cb (self, widget, value):
         if widget.get_active():
@@ -1168,6 +1173,7 @@ def get_ratings_conversion (*args,**kwargs):
     return d.run()
 
 if __name__ == '__main__':
+    import testExtras
     w=gtk.Window()
     w.connect('delete_event',gtk.main_quit)
     b=gtk.Button("show dialog (modal)")
@@ -1206,10 +1212,10 @@ if __name__ == '__main__':
                                                          cancel=False
                                                          )],
         ['show radio dialog', lambda *args: getRadio(label='Main label',
-                                                     sublabel='sublabel'*10,
+                                                     sublabel='sublabel'*10,default=2,
                                                      options=[('First',1),
                                                               ('Second',2),
-                                                              ('Third',3)])],
+                                                              ('Third',3)]),],
         ['get image dialog',lambda *args: msg(select_image('Select Image'))],
         ['get file dialog',lambda *args: msg(select_file('Select File',
                                                      filters=[['Plain Text',['text/plain'],['*.txt','*.TXT']],
