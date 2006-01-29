@@ -395,9 +395,9 @@ class RecIndex:
         self.searches.append(self.last_search)
         self.srchLimitBar.show()
         if self.srchLimitDefaultText==self.srchLimitText:
-            newtext=_(" %s in %s")%(self.last_search['search'],self.last_search['column'])
+            newtext=_(" %s in %s")%(self.srchentry.get_text(),self.last_search['column'])
         else:
-            newtext=_(", %s in %s")%(self.last_search['search'],self.last_search['column'])
+            newtext=_(", %s in %s")%(self.srchentry.get_text(),self.last_search['column'])
         self.srchLimitText="%s%s"%(self.srchLimitLabel.get_text(),newtext)
         self.srchLimitLabel.set_markup("<i>%s</i>"%self.srchLimitText)
         self.srchentry.set_text("")
