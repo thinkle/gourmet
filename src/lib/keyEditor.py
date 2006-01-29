@@ -1,5 +1,5 @@
-import gtk, gtk.glade, gobject, re
-from gglobals import *
+import gtk, gtk.glade, gobject, re, os, os.path
+import gglobals, convert
 import WidgetSaver
 import cb_extras as cb
 import dialog_extras as de
@@ -8,6 +8,7 @@ from gettext import ngettext
 import mnemonic_manager
 import pageable_store
 
+
 class KeyEditor:
 
     """KeyEditor sets up a GUI to allow editing which keys correspond to which items throughout
@@ -15,7 +16,7 @@ class KeyEditor:
     """
     
     def __init__ (self, rd=None, rg=None):
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'keyeditor.glade'))        
+        self.glade = gtk.glade.XML(os.path.join(gglobals.gladebase,'keyeditor.glade'))        
         self.rd = rd
         self.rg = rg
         self.widget_names = ['treeview', 'searchByBox', 'searchEntry', 'searchButton', 'window',
@@ -80,18 +81,18 @@ class KeyEditor:
         self.rg.prefs['dontAskDeleteKey']=self.dont_ask
     
     def setupTreeView (self):
-        self.KEY_COL = 1
-        self.ITEM_COL = 2
+        self.FIELD_COL = 1
+        self.VALUE_COL = 2
         self.COUNT_COL = 3
         self.REC_COL = 4
         cssu = pageable_store.ColumnSortSetterUpper(self.treeModel)
-        sortable = [self.KEY_COL]
-        for n,head in [[self.KEY_COL,_('_Key')],
-                       [self.ITEM_COL,_('Item')],
+        sortable = [self.VALUE_COL,self.COUNT_COL]
+        for n,head in [[self.FIELD_COL,_('Field')],
+                       [self.VALUE_COL,_('Value')],
                        [self.COUNT_COL,_('Count')],
                        [self.REC_COL, _('Recipes')]]:
             renderer = gtk.CellRendererText()
-            if n==self.KEY_COL or n==self.ITEM_COL:
+            if n==self.VALUE_COL:
                 renderer.set_property('editable',True)
                 renderer.connect('edited',self.tree_edited,n,head)
             col = gtk.TreeViewColumn(head, renderer, text=n)
@@ -103,12 +104,105 @@ class KeyEditor:
         indices = path_string.split(':')
         path = tuple( map(int, indices))
         iter = self.treeModel.get_iter(path)
-        key = self.treeModel.get_value(iter, self.KEY_COL)
-        item = self.treeModel.get_value(iter, self.ITEM_COL)
-        children = self.treeModel.iter_children(iter)
-        if n==self.KEY_COL and key==text: return
-        if n==self.ITEM_COL and item==text: return
-        ## make sure they want to make this change
+        field = self.treeModel.get_value(iter, self.FIELD_COL)
+        value = self.treeModel.get_value(iter, self.VALUE_COL)
+        if value == text: return
+        print 'CHANGE!'
+        print 'change: "%s"'%field
+        if field==self.treeModel.KEY:
+            print '>KEY:',
+            key = value
+            print 'key "%s"'%key
+            if de.getBoolean(label=_('Change all keys "%s" to "%s"?')%(key,text),
+                             sublabel=_("You won't be able to undo this action. If there are already ingredients with the key \"%s\", you won't be able to distinguish between those items and the items you are changing now."%text)
+                             ):
+                self.rd.update(
+                    self.rd.iview,
+                    {'ingkey':key},
+                    {'ingkey':text}
+                    )
+                self.rd.delete_by_criteria(
+                    self.rd.ikview,
+                    {'ingkey':key}
+                    )
+        elif field==self.treeModel.ITEM:
+            print '>ITEM:'
+            key = self.treeModel.get_value(
+                self.treeModel.iter_parent(iter),
+                self.VALUE_COL
+                )
+            item = value
+            print 'key "%s"'%key,'item "%s"'%item
+            if de.getBoolean(label=_('Change all items "%s" to "%s"?')%(item,text),
+                             sublabel=_("You won't be able to undo this action. If there are already ingredients with the item \"%s\", you won't be able to distinguish between those items and the items you are changing now.")%text
+                             ):
+                self.rd.update(
+                    self.rd.iview,
+                    {'item':item},
+                    {'item':text}
+                    )                
+        elif field==self.treeModel.UNIT:
+            print '>UNIT:'
+            item_itr = self.treeModel.iter_parent(iter)
+            key_itr = self.treeModel.iter_parent(item_itr)
+            item = self.treeModel.get_value(item_itr,self.VALUE_COL)
+            key = self.treeModel.get_value(key_itr,self.VALUE_COL)
+            unit = value
+            print 'key "%s"'%key,'item "%s"'%item,'unit "%s"'%unit
+            val = de.getRadio(label='Change unit',
+                                options=[
+                [_('Change _all instances of "%(unit)s" to "%(text)s"')%locals(),1],
+                [_('Change "%(unit)s" to "%(text)s" only for _ingredients "%(key)s"')%locals(),2],
+                ],
+                              default = 2,
+                              )
+            if val==1:
+                self.rd.update(
+                    self.rd.iview,
+                    {'unit':unit},
+                    {'unit':text},
+                    )
+            elif val==2:
+                self.rd.update(
+                    self.rd.iview,
+                    {'unit':unit,'ingkey':key},
+                    {'unit':text}
+                    )
+        elif field==self.treeModel.AMOUNT:
+            print '>AMOUNT:'
+            unit_itr = self.treeModel.iter_parent(iter)
+            item_itr = self.treeModel.iter_parent(unit_itr)
+            key_itr = self.treeModel.iter_parent(item_itr)
+            unit = self.treeModel.get_value(unit_itr,self.VALUE_COL)
+            item = self.treeModel.get_value(item_itr,self.VALUE_COL)
+            key = self.treeModel.get_value(key_itr,self.VALUE_COL)
+            amount = value
+            print 'AMOUNT:','key "%s"'%key,'item "%s"'%item,'unit "%s"'%unit,'amount "%s"'%amount
+            val = de.getRadio(label='Change amount',
+                        options=[
+                [_('Change _all instances of "%(amount)s" %(unit)s to %(text)s %(unit)s')%locals(),1],
+                [_('Change "%(amount)s" %(unit)s to "%(text)s" %(unit)s only _where the ingredient key is %(key)s')%locals(),2],
+                [_('Change "%(amount)s" %(unit)s to "%(text)s" %(unit)s only where the ingredient key is %(key)s _and where the item is %(item)s')%locals(),3],
+                ],
+                default=3,
+                              )
+            if val == 1:
+                cond = {'unit':unit,'amount':amount}
+            elif val == 2:
+                cond = {'unit':unit,'amount':amount,'ingkey':key}
+            elif val == 3:
+                cond = {'unit':unit,'amount':amount,'ingkey':key,'item':item}
+            self.rd.update(
+                self.rd.iview,
+                {'unit':unit,'amount':amount},
+                {'unit':unit,'amount':convert.frac_to_float(amount)}
+                )
+        else:
+            print 'NO FIELD MATCH'
+            return
+        print 'new val:',text
+        self.treeModel.set_value(iter, n, text)
+        return
         if not self.dont_ask:
             msg = _("Are you sure you want to change the ")
             if n==self.KEY_COL: msg += _('key')
@@ -149,22 +243,6 @@ class KeyEditor:
             row = normtable.select(ingkey=key)[0]
             row.ingkey = new_key
             #rows = normtable.select(ingkey=new_key)
-        self.reset_tree()
-        
-    def changeItem (self, key, item=None, new_key=None, new_item=None):
-        if item:
-            vw=self.rd.iview.select(ingkey=key,item=item)
-        else:
-            vw=self.rd.iview.select(ingkey=key)
-        for i in vw:
-            if new_key:
-                self.rd.modify_ing(i,{'ingkey':new_key})
-                #i.ingkey=new_key
-                self.rd.changed=True
-            if new_item:
-                self.rd.modify_ing(i,{'item':new_item})
-                #i.item=new_item
-                self.rd.changed=True
         self.reset_tree()
         
     def makeTreeModel (self):
@@ -214,6 +292,7 @@ class KeyEditor:
     def change_keyCB (self, *args):
         new_key = self.changeKeyEntry.get_text()
         mod,rows = self.treeview.get_selection().get_selected_rows()
+        print 'change ->',new_key,rows
         if not new_key:
             de.show_message(_("You haven't entered a key!"))
             return
@@ -221,11 +300,21 @@ class KeyEditor:
             return
         for path in rows:
             iter=self.treeModel.get_iter(path)
-            key = self.treeModel.get_value(iter, self.KEY_COL)
-            item = self.treeModel.get_value(iter, self.ITEM_COL)
-            self.changeItem(key,item,new_key=new_key)
-            self.change_children(key, new_key, iter)
-            self.treeModel.set_value(iter, self.KEY_COL, new_key)        
+            field = self.treeModel.get_value(iter, self.FIELD_COL)
+            if field!=self.treeModel.KEY:
+                continue
+            curkey = self.treeModel.get_value(iter,self.VALUE_COL)
+            print 'update',curkey,'->',new_key
+            self.rd.update(
+                self.rd.iview,
+                {'ingkey':curkey},
+                {'ingkey':new_key}
+                )
+            self.rd.delete_by_criteria(
+                self.rd.ikview,
+                {'ingkey':curkey}
+                )
+            self.treeModel.set_value(iter, self.VALUE_COL, new_key)        
             
     def changeKeyEntryChangedCB (self, *args):
         if self.changeKeyEntry.get_text():
@@ -273,42 +362,50 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                         gobject.TYPE_NONE,
                         ()),
         }
+
+    KEY = _('Key')+':'
+    ITEM = _('Item')+':'
+    UNIT = _('Unit')+':'
+    AMOUNT = _('Amount')+':'    
+    
     columns = ['obj','ingkey','item','count','recipe']
     def __init__ (self, rd, per_page=15):
         self.rd = rd
         pageable_store.PageableTreeStore.__init__(self,
                                                   [gobject.TYPE_PYOBJECT, # row ref
-                                                   str, # key
-                                                   str, # item
+                                                   str, # column
+                                                   str, # value
                                                    int, # count
                                                    str, # recipe
                                                    ],
                                                   per_page=per_page)
 
     def reset_views (self):
-        self.ikview = self.rd.filter(self.rd.ikview,lambda row: row.item)
+        self.view = self.rd.get_ingkeys_with_count()
+        #self.ikview = self.rd.filter(self.rd.ikview,lambda row: row.item)
         # Limit iview to ingkeys only, then select the unique values of that, then
         # filter ourselves to values that have keys
-        self.view = self.rd.filter(self.rd.iview.project(self.rd.iview.ingkey).unique(),
-                                   lambda foo: foo.ingkey)
-        
+        #self.view = self.rd.filter(self.rd.iview.project(self.rd.iview.ingkey).unique(),
+        #                           lambda foo: foo.ingkey)
 
     def _setup_parent_ (self, *args, **kwargs):
         self.reset_views()
 
     def limit_on_ingkey (self, txt, search_options={}):
-        if not txt: self.reset_views()
-        self.change_view(self.rd.search(self.view,'ingkey',txt,**search_options))
+        self.limit(txt,'ingkey',search_options)
 
     def limit_on_item (self, txt, search_options={}):
-        if not txt: self.reset_views()
-        results = self.rd.search(self.rd.ikview,'item',txt,**search_options)
-        self.change_view(
-            # this should probably be done with some kind of funky join...
-            self.rd.filter(self.view,
-                           lambda foo: results.select(ingkey=foo.ingkey) and True or False)
-            )
+        self.limit(txt,'item',search_options)
 
+    def limit (self, txt, column='ingkey', search_options={}):
+        if not txt: self.reset_views()
+        if search_options['use_regexp']:
+            s = {'search':txt,'operator':'REGEXP'}
+        else:
+            s = {'search':'%'+txt.replace('%','%%')+'%','operator':'LIKE'}
+        s['column']=column
+        self.change_view(self.rd.get_ingkeys_with_count(s))
+      
     def _get_length_ (self):
         return len(self.view)
 
@@ -322,24 +419,70 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
         
     def get_row (self, row):
         return [row,
+                self.KEY,
                 row.ingkey,
-                None,
                 # avoidable slowdown (look here if code seems sluggish)
-                self.rd.fetch_len(self.rd.iview,ingkey=row.ingkey),
+                row.count,
                 None,
                 ]
 
-    def _get_children_ (self, row):
-        ingkey =row[1]
+    def _get_children_ (self,itr):
         ret = []
-        for child in self.ikview.select(ingkey=ingkey):
-            item = child.item
-            ret.append([child,
-                        ingkey,
-                        item,
-                        # avoidable slowdown (look here if code seems sluggish)                        
-                        self.rd.fetch_len(self.rd.iview,ingkey=ingkey,item=item),
-                        self.get_recs(ingkey,item)])
+        field = self.get_value(itr,1)
+        value = self.get_value(itr,2)
+        if field==self.KEY:
+            ingkey = value
+            for item in self.rd.get_unique_values('item',self.rd.iview,ingkey=ingkey):
+                ret.append([None,
+                            self.ITEM,
+                            item,
+                            self.rd.fetch_len(self.rd.iview,ingkey=ingkey,item=item),
+                            self.get_recs(ingkey,item)])
+        elif field==self.ITEM:
+            ingkey = self.get_value(self.iter_parent(itr),2)
+            item = value
+            for unit in self.rd.get_unique_values('unit',self.rd.iview,ingkey=ingkey,item=item):
+                ret.append([None,
+                            self.UNIT,
+                            unit,
+                            self.rd.fetch_len(self.rd.iview,ingkey=ingkey,item=item,unit=unit),
+                            None])
+            if not ret:
+                ret.append([None,
+                            self.UNIT,
+                            '',
+                            self.get_value(self.iter_parent(itr),3),
+                            None])                
+        elif field==self.UNIT:
+            item = self.get_value(self.iter_parent(itr),2)
+            ingkey = self.get_value(self.iter_parent(
+                self.iter_parent(itr)),2)
+            unit = self.get_value(itr,2)
+            amounts = []
+            for i in self.rd.fetch_all(self.rd.iview,ingkey=ingkey,item=item,unit=unit):
+                astring = self.rd.get_amount_as_string(i)
+                if astring in amounts: continue
+                ret.append([None,
+                            self.AMOUNT,
+                            astring,
+                            (i.rangeamount
+                             and self.rd.fetch_len(self.rd.iview,
+                                                   ingkey=ingkey,item=item,
+                                                   unit=unit,
+                                                   amount=i.amount,rangeamount=i.rangeamount)
+                             or  self.rd.fetch_len(self.rd.iview,
+                                                   ingkey=ingkey,item=item,
+                                                   unit=unit,
+                                                   amount=i.amount)),
+                            None])
+                amounts.append(astring)
+            if not ret:
+                ret.append([None,
+                            self.AMOUNT,
+                            '',
+                            self.get_value(self.iter_parent(itr),3),
+                            None])
+            
         return ret
         #row = row[0]
         #return [[subrow,
@@ -348,9 +491,10 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
         #         subrow.count,
         #         self.get_recs(row.ingkey,subrow.item)] for subrow in row.grouped]
 
+
     def get_recs (self, key, item):
         """Return a string with a list of recipes containing an ingredient with key and item"""
-        recs = [i.id for i in self.rd.iview.select(ingkey=key,item=item)]
+        recs = [i.id for i in self.rd.fetch_all(self.rd.iview,ingkey=key,item=item)]
         titles = []
         looked_at = []
         for r_id in recs:
@@ -364,6 +508,9 @@ if gtk.pygtk_version[1]<8:
     gobject.type_register(KeyStore)    
 
 if __name__ == '__main__':
-    profile.run("""it.run_test({'filename':'/home/tom/Projects/recipe/Data/mealmaster.mmf'})""",profi)
-    ke=KeyEditor()
+    import recipeManager
+    rm = recipeManager.default_rec_manager()
+    import testExtras
+    rg = testExtras.FakeRecGui(rm)
+    ke=KeyEditor(rm,rg)
     gtk.main()
