@@ -7,7 +7,7 @@ import tempfile
 import traceback
 import unittest
 
-TEST_FILE_DIRECTORY = '/home/tom/Projects/recipe/Data'
+TEST_FILE_DIRECTORY = '/home/tom/Projects/Data'
 
 times = []
 def time_me (f): return f
@@ -134,7 +134,47 @@ class ImportTestCase (unittest.TestCase):
 
 
 if __name__ == '__main__':
-    #it=ImportTest()
+    import tempfile,os.path
+    import hotshot, hotshot.stats    
+
+    import gtk
+    class ImportProfiler:
+
+        def __init__ (self):
+            
+            self.w = gtk.Window()
+            self.vb = gtk.VBox(); self.vb.show()
+            pb = gtk.Button('Profile'); pb.show()
+            pb.connect('clicked',self.run_profile)
+            qb = gtk.Button(stock=gtk.STOCK_QUIT); qb.show()
+            qb.connect('clicked',self.quit)
+            self.vb.pack_start(pb)
+            self.vb.pack_start(qb)
+            self.w.connect('delete-event',self.quit)
+            self.w.add(self.vb)
+            self.w.show()
+
+        def start (self):
+            gtk.main()
+
+        def quit (self, *args): gtk.main_quit()
+
+        def run_profile (self, *args):
+            it=ImportTest()
+            it.setup_db()
+            prof = hotshot.Profile(os.path.join(tempfile.tempdir,'GOURMET_IMPORTER_HOTSHOT_PROFILE'))
+            prof.runcall(
+                lambda *args: it.run_test({'filename':'/home/tom/Desktop/big_rec_archive/b1q97.txt'})
+                )
+            stats = hotshot.stats.load(os.path.join(tempfile.tempdir,'GOURMET_IMPORTER_HOTSHOT_PROFILE'))
+            stats.strip_dirs()
+            stats.sort_stats('time','calls')
+            stats.print_stats()
+            self.quit()
+
+    ip = ImportProfiler()
+    ip.start()
+    #it.run_test({'filename':'mealmaster.mmf'}), # mealmaster
     #it.setup_db()
     #it.run_test({'filename':'athenos1.mx2',
     #                      'test':{'title':'5 Layer Mediterranean Dip',
@@ -153,5 +193,5 @@ if __name__ == '__main__':
     #while os.path.exists('/tmp/gourmet_import_test_%s.grmt'%n): n+=1
     #ge=gxml_exporter(it.db,it.db.fetch_all(it.db.rview),'/tmp/gourmet_import_test_%s.grmt'%n)
     #ge.run()
-    unittest.main()
+    #unittest.main()
     #pass

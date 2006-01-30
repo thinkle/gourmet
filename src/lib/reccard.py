@@ -7,6 +7,7 @@ from recindex import RecIndex
 import prefs, WidgetSaver, timeEntry, Undo, ratingWidget
 import keymanager
 import dialog_extras as de
+from dialog_extras import show_amount_error
 import treeview_extras as te
 import cb_extras as cb
 import exporters.printer as printer
@@ -2116,15 +2117,11 @@ class IngredientEditor:
                 self.remove_group(i)
             #elif de.getBoolean(label=_("Are you sure you want to delete %s?")%ing.item):
             else:
-                #self.rc.pre_modify_tree()
-                #mod.remove(i)
-                #self.rc.post_modify_tree()                
-                #debug('deleting ingredient')
-                #self.rg.rd.delete_ing(ing)
                 ings_to_delete.append(ing)
+        print 'undoable_delete_ings(',ings_to_delete
         self.rg.rd.undoable_delete_ings(ings_to_delete, self.rc.history,
                                         make_visible=lambda *args: self.rc.resetIngList())
-        self.new()
+        #self.new()
                                       
     def remove_group (self, iter):
         nchildren = self.rc.imodel.iter_n_children(iter)
@@ -2340,25 +2337,11 @@ class RecSelector (RecIndex):
             de.show_message(label=_("You haven't selected any recipes!"))
             raise
         
-def show_amount_error (txt):
-    """Show an error that explains how numeric amounts work."""
-    de.show_message(label=_("""I'm sorry, I can't understand
-the amount "%s".""")%txt,
-                    sublabel=_("Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."),
-                    expander=[_("_Details"),
-                              _("""
-The "unit" must be in the "unit" field by itself.
-For example, if you want to enter one and a half cups,
-the amount field could contain "1.5" or "1 1/2". "cups"
-should go in the separate "unit" field.
-
-To enter a range of numbers, use a "-" to separate them.
-For example, you could enter 2-4 or 1 1/2 - 3 1/2.
-""")])
-
 if __name__ == '__main__':
     import GourmetRecipeManager
-    r=GourmetRecipeManager.RecGui()
-    RecCard(r)
+    import testExtras
+    rg = GourmetRecipeManager.RecGui()
+    RecCard(rg,rg.rd.fetch_one(rm.rview))
+    gtk.main()
     
     

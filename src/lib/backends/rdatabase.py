@@ -61,7 +61,7 @@ class RecData:
                        ('category','text',[])] # Category ID
                       )
 
-    INGREDIENTS_TABLE_DESC=('ingredients',
+    INGREDIENTS_TABLE_DESC = ('ingredients',
                 [('id','int',[]),
                  ('refid','int',[]),
                  ('unit','text',[]),
@@ -303,15 +303,6 @@ class RecData:
         if defaults.fields.has_key(colname):
             for v in defaults.fields[colname]:
                 if not v in lst: lst.append(v)
-        # Hideous hackery ahead... ack!
-        #if colname=='category':
-        #D    new_lst = []
-        #  #  for i in lst:
-        #        if i.find(',')>0:
-        #            new_lst.extend([ii.strip() for ii in i.split(',')])
-        #        else:
-        #            new_lst.append(i)
-        #    lst = new_lst
         return lst
 
     # Metakit has no AUTOINCREMENT, so it has to do special magic here
@@ -501,7 +492,6 @@ class RecData:
         # name (the name of the ingredient *should* be the title of
         # the recipe, though the user could change this)
         if hasattr(ing,'item'):
-            #recs=self.search_recipes([{'column':'title','search':ing.item,'operator':'='}])
             rec = self.fetch_one(self.rview,**{'title':ing.item})
             if rec:
                 self.modify_ing(ing,{'refid':rec.id})
@@ -523,6 +513,10 @@ class RecData:
             print 'Ignoring rview handed to get_rec'
         rview=self.rview
         return self.fetch_one(self.rview, id=id)
+
+    def do_add (self, table, d):
+        """Generic method to add items."""
+        raise NotImplementedError
 
     def do_add_rec (self, rdict):
         """Add a recipe based on a dictionary of properties and values."""
@@ -579,6 +573,7 @@ class RecData:
             else:
                 group=i.inggroup
             if not hasattr(i,'position'):
+                print 'Bad: ingredient without position',i
                 i.position=defaultn
                 defaultn += 1
             if groups.has_key(group): 
@@ -609,10 +604,6 @@ class RecData:
         ## we assume (hope!) all ingdicts are for the same ID
         id=ingdicts[0]['id']
         debug("Deleting ingredients for recipe with ID %s"%id,1)
-        #ings = self.get_ings(id)
-        #for i in ings:
-        #    debug("Deleting ingredient: %s"%i.ingredient,5)
-        #    self.delete_ing(i)
         self.delete_by_criteria(self.iview,{'id':id})
         for ingd in ingdicts:
             self.add_ing(ingd)
@@ -833,13 +824,12 @@ class RecData:
     def undoable_delete_ings (self, ings, history, make_visible=None):
         """Delete ingredients in list ings and add to our undo history."""
         def do_delete():
-            for i in ings:
-                i.deleted=True
+            modded_ings = [self.modify_ing(i,{'deleted':True}) for i in ings]
             if make_visible:
-                make_visible(ings)
+                make_visible(modded_ings)
         def undo_delete ():
-            for i in ings: i.deleted=False
-            if make_visible: make_visible(ings)
+            modded_ings = [self.modify_ing(i,{'deleted':False}) for i in ings]
+            if make_visible: make_visible(modded_ings)
         obj = Undo.UndoableObject(do_delete,undo_delete,history)
         obj.perform()
     

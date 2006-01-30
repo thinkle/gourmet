@@ -38,6 +38,15 @@ except ImportError:
     debug('No RTF support',0)
     rtf=False
 
+def check_for_data_to_import (rm):
+    backup_file = os.path.join(gourmet.gglobals.gourmetdir,'GOURMET_DATA_DUMP')
+    if os.path.exists(backup_file) and rm.fetch_len(rm.rview)==0:
+        import upgradeHandler
+        upgradeHandler.import_backup_file(
+            rm,backup_file
+            )
+        os.rename(backup_file,backup_file+'.ALREADY_LOADED')
+        
 class RecGui (RecIndex):
     """This is the main application. We subclass RecIndex, which handles displaying a list of
     recipes and searching them (a functionality we need in a few other places, such as when
@@ -388,11 +397,11 @@ class RecGui (RecIndex):
         we display the traceback to the user so they can send it out for debugging
         (or possibly make sense of it themselves!)."""
         try:
-            self.rd = recipeManager.RecipeManager(**recipeManager.dbargs)                        
-            # if we are using metakit, initiate autosave stuff
-            if self.rd.db=='metakit':
-                # autosave every 3 minutes (milliseconds * 1000 milliseconds/second * 60 seconds/minute)
-                gobject.timeout_add(1000*60*3,lambda *args: self.rd.save() or True)
+            self.rd = recipeManager.RecipeManager(**recipeManager.dbargs)
+            check_for_data_to_import(rd)
+            # initiate autosave stuff
+            # autosave every 3 minutes (milliseconds * 1000 milliseconds/second * 60 seconds/minute)
+            gobject.timeout_add(1000*60*3,lambda *args: self.rd.save() or True)
         except:
             self.prefs['db_backend'] = None
             self.prefs.save()

@@ -1172,6 +1172,23 @@ def get_ratings_conversion (*args,**kwargs):
     d=RatingsConversionDialog(*args,**kwargs)
     return d.run()
 
+def show_amount_error (txt):
+    """Show an error that explains how numeric amounts work."""
+    de.show_message(label=_("""I'm sorry, I can't understand
+the amount "%s".""")%txt,
+                    sublabel=_("Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."),
+                    expander=[_("_Details"),
+                              _("""
+The "unit" must be in the "unit" field by itself.
+For example, if you want to enter one and a half cups,
+the amount field could contain "1.5" or "1 1/2". "cups"
+should go in the separate "unit" field.
+
+To enter a range of numbers, use a "-" to separate them.
+For example, you could enter 2-4 or 1 1/2 - 3 1/2.
+""")])
+
+
 if __name__ == '__main__':
     import testExtras
     w=gtk.Window()

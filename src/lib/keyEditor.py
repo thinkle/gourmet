@@ -67,7 +67,7 @@ class KeyEditor:
             'search_as_you_type_toggle':self.search_as_you_typeCB,
             'applyEntries':self.applyEntriesCB,
             'clearEntries':self.clearEntriesCB,
-            'close_window': lambda *args: self.window.hide() and self.window.destroy()
+            'close_window': lambda *args: self.window.hide(),
             })
         # setup mnemonic manager
         self.mm = mnemonic_manager.MnemonicManager()
@@ -577,4 +577,5 @@ if __name__ == '__main__':
     import testExtras
     rg = testExtras.FakeRecGui(rm)
     ke=KeyEditor(rm,rg)
+    ke.window.connect('delete-event',gtk.main_quit)
     gtk.main()
