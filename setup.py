@@ -126,6 +126,9 @@ if os.name == 'nt':
     script = os.path.join('windows','Gourmet.pyw')
 else:
     script = os.path.join('src','gourmet')
+    # Run upgrade pre script
+    # Importing runs the actual script...
+    import tools.upgrade_pre_script
         
 setup(
     name = name,
