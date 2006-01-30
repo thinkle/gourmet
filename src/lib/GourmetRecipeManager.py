@@ -39,7 +39,7 @@ except ImportError:
     rtf=False
 
 def check_for_data_to_import (rm):
-    backup_file = os.path.join(gourmet.gglobals.gourmetdir,'GOURMET_DATA_DUMP')
+    backup_file = os.path.join(gourmetdir,'GOURMET_DATA_DUMP')
     if os.path.exists(backup_file) and rm.fetch_len(rm.rview)==0:
         import upgradeHandler
         upgradeHandler.import_backup_file(
@@ -398,7 +398,7 @@ class RecGui (RecIndex):
         (or possibly make sense of it themselves!)."""
         try:
             self.rd = recipeManager.RecipeManager(**recipeManager.dbargs)
-            check_for_data_to_import(rd)
+            check_for_data_to_import(self.rd)
             # initiate autosave stuff
             # autosave every 3 minutes (milliseconds * 1000 milliseconds/second * 60 seconds/minute)
             gobject.timeout_add(1000*60*3,lambda *args: self.rd.save() or True)

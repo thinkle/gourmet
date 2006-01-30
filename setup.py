@@ -31,8 +31,6 @@ def modules_check():
     '''Check if necessary modules is installed.
     The function is executed by distutils (by the install command).'''
     try:
-        import pygtk
-        pygtk.require('2.0')
         try:
             import gtk
             import gtk.glade

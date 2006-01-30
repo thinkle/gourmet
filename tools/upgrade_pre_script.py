@@ -16,7 +16,7 @@ sys.path.append(os.path.join(gourmet_base_path,
                              'lib')
                 )
 
-import glob.glob
+import glob
 import recipeManager
 import upgradeHandler
 
