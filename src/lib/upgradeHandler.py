@@ -17,7 +17,10 @@ def get_tables (rm):
     tables = []
     for desc in descs:
         d = getattr(rm,desc)
-        table_object = setter_upper(*d)
+        if d[0] in ['usda_weights']:
+            table_object = rm.setup_table(*d)
+        else:
+            table_object = setter_upper(*d)
         columns = [(c[0],c[1]) for c in d[1]]
         tables.append((d[0],table_object,columns))
     return tables
@@ -43,9 +46,13 @@ class SimpleExporter:
                 self.outfi.write(
                     '\n'+marker+'START_FIELD: '+c+'\n'
                     )                
-                self.outfi.write(
-                    pickle.dumps(getattr(row,c))
-                    )
+                try:
+                    self.outfi.write(
+                        pickle.dumps(getattr(row,c))
+                        )
+                except:
+                    print "Problem with %(name)s %(table_object)s %(row)s %(c)s"%locals()
+                    raise
                 self.outfi.write(
                     '\n'+marker+'END_FIELD: '+c+'\n'
                     )
@@ -126,7 +133,7 @@ class DatabaseAdapter:
                            'category':c.strip()}
                     retval.append(('categories',crow))
             del row['category']
-        if row.has_key('rating') and row['rating'] and type(row['rating']!=int):
+        if row.has_key('rating') and row['rating'] and type(row['rating'])!=int:
             self.rc.add(row['id'],row['rating'])
             del row['rating']
         for c in ['preptime','cooktime']:

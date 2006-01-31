@@ -41,11 +41,23 @@ except ImportError:
 def check_for_data_to_import (rm):
     backup_file = os.path.join(gourmetdir,'GOURMET_DATA_DUMP')
     if os.path.exists(backup_file) and rm.fetch_len(rm.rview)==0:
-        import upgradeHandler
+        import upgradeHandler        
+        pd = de.ProgressDialog(label=_('Importing old recipe data'),
+                          sublabel=_('Importing recipe data from a previous version of Gourmet into new database.'),
+                          )
+        def set_prog (p):
+            #print 'Prog->',p
+            pd.set_progress(p)
+            while gtk.events_pending():
+                gtk.main_iteration()
+            #print 'Done'
+        pd.show()
         upgradeHandler.import_backup_file(
-            rm,backup_file
+            rm,backup_file,set_prog
             )
         os.rename(backup_file,backup_file+'.ALREADY_LOADED')
+        pd.hide()
+        pd.destroy()
         
 class RecGui (RecIndex):
     """This is the main application. We subclass RecIndex, which handles displaying a list of
