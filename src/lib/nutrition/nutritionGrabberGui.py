@@ -38,7 +38,8 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
         self.progdialog.show()
         self.grab_data(datad)
         self.show_progress(1,_('Nutritonal database import complete!'))
-        self.progdialog.set_response_sensitive(gtk.RESPONSE_OK,True)
+        #self.progdialog.set_response_sensitive(gtk.RESPONSE_OK,True)
+        self.progdialog.hide()
 
     def show_progress (self,fract,msg):
         self.progdialog.progress_bar.set_fraction(fract)
