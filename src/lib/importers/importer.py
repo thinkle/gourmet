@@ -480,6 +480,8 @@ class RatingConverter:
         self.got_conversions = False
 
     def add (self, id, rating):
+        if type(rating)==int:
+            raise "Why do you need me? id: %(id)s rating: %(rating)s"%locals()
         self.to_convert[id]=rating
 
     def get_conversions (self, star_generator=None):
