@@ -70,11 +70,11 @@ class RecData (rdatabase.RecData):
         try:
             #print 'Executing:',cursor,sql,params
             cursor.execute(sql,params)
-        except UnicodeDecodeError:
-            print 'Stupid Unicode Decode Error!'
-            import traceback; traceback.print_exc()
-            print 'Fearlessly continue without raising an error...'
-            print "(now that can't be a good idea, can it)"
+        #except UnicodeDecodeError:
+        #    print 'Stupid Unicode Decode Error!'
+        #    import traceback; traceback.print_exc()
+        #    print 'Fearlessly continue without raising an error...'
+        #    print "(now that can't be a good idea, can it)"
         except:
             print "Failed to execute:"
             print "sql   : ",sql
