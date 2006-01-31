@@ -497,14 +497,7 @@ class RecData:
                 self.modify_ing(ing,{'refid':rec.id})
                 return rec
             else:
-                debug("""Warning: there is more than one recipe titled"%(title)s"
-                and our id reference to %(refid)s failed to match any
-                recipes.  We are going to assume recipe ID %(id)s is
-                the correct one."""%{'title':ing.item,
-                                     'refid':ing.refid,
-                                     'id':recs[0].id},
-                      0)
-                return recs[0]
+                print 'Very odd: no match for',ing,'refid:',ing.refid
 
     def get_rec (self, id, rview=None):
         """Handed an ID, return a recipe object."""
