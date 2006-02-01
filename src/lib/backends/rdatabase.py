@@ -131,7 +131,9 @@ class RecData:
     NUTRITION_ALIASES_TABLE_DESC = (
         'nutritionaliases',
         [('ingkey','text',[]),
-         ('ndbno','int',[]),],
+         ('ndbno','int',[]),
+         ('density_equivalent','char(20)',[]),
+         ],
         'ingkey')
 
     NUTRITION_CONVERSIONS = (

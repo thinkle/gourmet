@@ -171,7 +171,7 @@ class RecData (rdatabase.RecData):
                             )
                        or '') \
                        + ' ORDER BY foodgroup'
-        print 'execute',statement,params
+        #print 'execute',statement,params
         self.execute(self.cursor,
                      statement,
                      params)
@@ -189,6 +189,8 @@ class RecData (rdatabase.RecData):
             params.append('%'+w+'%')
             order_statements.append('InStr(desc,?)')
             order_params.append(w)
+        order_statements.append('length(desc)')
+        order_params.append(
         if group:
             where_statements.append('foodgroup = ?')
             params.append(group)
