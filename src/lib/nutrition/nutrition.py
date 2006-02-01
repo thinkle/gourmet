@@ -30,6 +30,13 @@ class NutritionData:
                            {'ndbno':row.ndbno,
                             'ingkey':key})
 
+    def set_density_for_key (self, key, density_equivalent):
+        self.db.update(
+            self.db.naliasesview,
+            {'ingkey':key},
+            {'density_equivalent':density_equivalent}
+            )
+
     def set_key_from_ndbno (self, key, ndbno):
         """Create an automatic equivalence between ingredient key 'key' and ndbno
         ndbno is our nutritional database number."""
@@ -49,7 +56,7 @@ class NutritionData:
         self.db.do_add(self.db.nconversions,{'ingkey':key,'unit':unit,'factor':factor})
 
     def get_matches (self, key, max=50):
-        """Handed a string, get a list of likley USDA database matches.
+        """Handed a string, get a list of likely USDA database matches.
 
         We return a list of lists:
         [[description, nutritional-database-number],...]
@@ -59,42 +66,16 @@ class NutritionData:
         """
         words=re.split("\W",key)
         words = filter(lambda w: w and not w in ['in','or','and','with'], words)
-        if words:
-            # match any of the words in our key
-            regexp = "("+string.join(words,"|")+")" # match any of our words
-            nvw = self.db.search(self.db.nview,'desc',regexp)
-            # create a list of rows and sort it, putting the most likely match first
-            lst = [[r.desc,r.ndbno] for r in nvw]
-            def sort_func (row1,row2):
-                dsc1=row1[0].lower()
-                dsc2=row2[0].lower()
-                sc1=0
-                sc2=0
-                # we presume recipe keys start with important words and proceed to less
-                # important ones -- so we give each word a descending value.
-                # in i.e. milk, low fat, we get the points: milk (3), low (2), fat (1)
-                score = len(words)
-                for w in words:
-                    w=w.lower()
-                    if dsc1.find(w)>=0: sc1+=score
-                    if dsc2.find(w)>=0: sc2+=score
-                    score = score - 1
-                if sc1<sc2:
-                    return 1
-                elif sc2<sc1:
-                    return -1
-                # otherwise, we assume a longer string is a worse match
-                elif len(dsc1)>len(dsc2): return 1
-                elif len(dsc2)>len(dsc1): return -1
-                else: return 0
-            lst.sort(sort_func)
-            if max and len(lst) > max:
-                # we cut down the list if it's too long
-                # (so we hope our sorting algorhythm is doing
-                # a good job!)
-                lst = lst[0:max]
-            return lst
-
+        #words += ['raw']
+        result =  self.db.search_nutrition(words)
+        while not result and len(words)>1:
+            words = words[:-1]
+            result = self.db.search_nutrition(words)
+        if result:
+            return [(r.desc,r.ndbno) for r in result]
+        else:
+            return None
+            
     def _get_key (self, key):
         """Handed an ingredient key, get our nutritional Database equivalent
         if one exists."""
@@ -158,7 +139,7 @@ class NutritionData:
         else:
             return None
 
-    def get_conversion_for_amt (self, amt, unit, key, row=None):
+    def get_conversion_for_amt (self, amt, unit, key, row=None, fudge=True):
         """Get a conversion for amount amt of unit 'unit' to USDA standard.
 
         Multiplying our standard numbers (/100g) will get us the appropriate
@@ -172,8 +153,15 @@ class NutritionData:
         if not row: row=self.get_nutinfo(key)
         if not cnv:
             cnv = self.conv.converter('g.',unit,
-                                      density=self.get_density(key,row)
+                                      density=self.get_density(key,row,fudge=fudge)
                                       )
+        if not cnv:
+            # Check our weights tables...
+            extra_conversions = self.get_conversions(key,row)[1]
+            if extra_conversions.has_key(unit):
+                cnv = extra_conversions[unit]
+            elif extra_conversions.has_key(unit.lower()):
+                cnv = extra_conversions[unit.lower()]
         if not cnv:
             # lookup in our custom nutrition-related conversion table
             if self.conv.unit_dict.has_key(unit):
@@ -229,7 +217,7 @@ class NutritionData:
         if self.conv.density_table.has_key(key):
             return {'':self.conv.density_table[key]}
         else:
-            densities = {}            
+            densities = {}       
             for gd,gw in self.get_gramweights(row).items():
                 a,u,e = gd
                 if not a:
@@ -243,14 +231,9 @@ class NutritionData:
             return densities
 
     def get_gramweights (self,row):
+        """Return a dictionary with gram weights.
+        """
         ret = {}
-        #grm1 = self.parse_gramweight_measure(row.gramdsc1)
-        #grm2 = self.parse_gramweight_measure(row.gramdsc2)
-        #if grm1:
-        #    ret[grm1]=row.gramwt1
-        #if grm2:
-        #    ret[grm2]=row.gramwt2
-        # But wait, there's more...            
         nutweights = self.db.fetch_all(self.db.nwview,**{'ndbno':row.ndbno})
         for nw in nutweights:
             mtch = self.wght_breaker.match(nw.unit)
@@ -263,18 +246,22 @@ class NutritionData:
             ret[(nw.amount,unit,extra)]=nw.gramwt
         return ret
     
-    def get_density (self,key=None,row=None):
+    def get_density (self,key=None,row=None, fudge=True):
         densities = self.get_densities(key,row)
+        if densities.has_key(''): densities[None]=densities['']
+        if key: keyrow=self._get_key(key)        
         if densities:
-            if densities.has_key(None):
+            if key and keyrow.density_equivalent and densities.has_key(keyrow.density_equivalent):
+                return densities[keyrow.density_equivalent]
+            elif densities.has_key(None):
                 self.conv.density_table[key]=densities[None]
                 return densities[None]
+            elif len(densities)==1:
+                return densities.values()[0]
+            elif fudge:
+                return sum(densities.values())/len(densities)
             else:
-                return self.choose_density(densities)
-
-    def choose_density (self, densdic):
-        # this will eventually query the user...
-        return densdic.values()[0]
+                return None
 
     def parse_gramweight_measure (self, txt):
         m=self.gramwght_regexp.match(txt)
@@ -325,9 +312,10 @@ class NutritionInfo:
     
     (Carrot + Eggplant).desc => 'CARROTS,RAW, EGGPLANT,RAW'
     """
-    def __init__ (self,rowref, mult=1):
+    def __init__ (self,rowref, mult=1, fudged=False):
         self.__rowref__ = rowref
         self.__mult__ = mult
+        self.__fudged__ = fudged
 
     def __getattr__ (self, attr):
         if attr[0]!='_':
@@ -338,7 +326,6 @@ class NutritionInfo:
                 else:
                     return ret
             except:
-                print 'Failed with',attr,ret
                 raise
         else:
             # somehow this magically gets us standard
@@ -394,13 +381,19 @@ class NutritionVapor (NutritionInfo):
                                                         self.__amt__,
                                                         self.__unit__)
         elif self.__amt__:
-            c=self.__nd__.get_conversion_for_amt(self.__amt__,self.__unit__,self.__key__)
+            c=self.__nd__.get_conversion_for_amt(self.__amt__,self.__unit__,self.__key__,fudge=False)
             if c:
                 self.__mult__ = c
                 return NutritionInfo(self.__rowref__,
-                                     self.mult)
+                                     self.__mult__)
             else:
-                return self
+                c=self.__nd__.get_conversion_for_amt(self.__amt__,self.__unit__,self.__key__,fudge=True)
+                if c:
+                    self.__mult__ = c
+                    return NutritionInfo(self.__rowref__,
+                                         self.__mult__)
+                else:
+                    return self
         else: return self.__nd__.get_nutinfo_for_item(self.__key__,self.__amt__,self.__unit__)
 
     def __getattr__ (self,attr):
@@ -464,6 +457,15 @@ class NutritionInfoList (list, NutritionInfo):
         for i in self.__nutinfos__:
             if isinstance(i,NutritionVapor): ret.append(i)
         return ret
+
+    def _get_fudge (self):
+        """Return a list of fudged items
+        """
+        ret = []
+        for i in self.__nutinfos__:
+            if hasattr(i,'__fudged__') and i.__fudged__:
+                ret.append(i)
+        return ret
         
     def __add__ (self, obj):
         if isinstance(obj,NutritionInfo):
@@ -488,7 +490,6 @@ if __name__ == '__main__':
     import sys
     sys.path.append('/usr/share/')
     import gourmet.recipeManager as rm
-    #rm.dbargs['file']='/tmp/recipes.mk'
     db=rm.RecipeManager(**rm.dbargs)
     import gourmet.convert
     conv = gourmet.convert.converter()

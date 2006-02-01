@@ -356,9 +356,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                 self.servingLabel.show()
                 self.cal_per_day_box.show()
                 self.missingLabel.hide()
-
                 
-
     def update_display (self):
         """Update the display of labels based on values in nutinfo,
         adjusted by servings and calories_per_day.

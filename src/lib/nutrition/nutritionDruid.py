@@ -11,6 +11,7 @@ import gourmet.dialog_extras as de
 import gourmet.WidgetSaver as WidgetSaver
 import re
 import os,os.path
+from gettext import gettext as _
 
 class SpecialAction:
 
@@ -81,6 +82,7 @@ class NutritionInfoDruid (gobject.GObject):
     NUT_PAGE = 0
     UNIT_PAGE = 1
     CUSTOM_PAGE = 2
+    DENSITY_PAGE = 3
 
     __last_group__ = None
     group = None
@@ -153,6 +155,8 @@ class NutritionInfoDruid (gobject.GObject):
                             'applyButton',
                             'massUnitComboBox',
                             'customNutritionAmountEntry',
+                            'densityLabel',
+                            'densityBox',
                             ]:
             setattr(self,widget_name,self.glade.get_widget(widget_name))
             if not getattr(self,widget_name): print "WIDGET: ",widget_name,"NOT FOUND."
@@ -404,7 +408,10 @@ class NutritionInfoDruid (gobject.GObject):
         """
         txt = self.ingkey
         words = re.split('\W+',txt)
-        words += ['raw'] # always search raw if possible...
+        # always search raw if possible... (it gets us the real thing
+        # vs. canned/frozen/soup/babyfood, etc.)
+        if 'raw' not in words:
+            words += ['raw'] 
         search_terms = []
         search_in = self.rd.nview
         srch = []
@@ -496,6 +503,30 @@ class NutritionInfoDruid (gobject.GObject):
         #self.from_unit = unit
         #self.from_amount = amount
 
+    def get_density (self,amount,unit):
+        print 'Pick from',self.densities
+        self.densityLabel.set_text(
+            _("""In order to calculate nutritional information for "%(amount)s %(unit)s %(ingkey)s", Gourmet needs to know its density. Our nutritional database has several descriptions of this food with different densities. Please select the correct one below.""")%({'amount':amount,'unit':unit,'ingkey':self.ingkey})
+            )
+        group = None
+        def density_callback (rb, name):
+            self.custom_density = name
+        for d in self.densities.keys():
+            group = gtk.RadioButton(group,str(d)+' '+'(%.2f)'%self.densities[d])
+            group.connect('toggled',density_callback,d)
+            self.densityBox.pack_start(group,expand=False,fill=False)
+            group.show()
+        group.set_active(True)
+        self.custom_density = d
+        self.goto_page_density()
+
+    def apply_density (self):
+        self.nd.set_density_for_key(
+            self.ingkey,
+            self.custom_density
+            )
+        for c in self.densityBox.get_children(): c.hide()
+
     def check_next_amount (self):
         """Check the next amount on our amounts list.
 
@@ -509,8 +540,15 @@ class NutritionInfoDruid (gobject.GObject):
         if not amount: amount=1
         self.amount = amount
         self.amount_index += 1
-        existing_conversion = self.nd.get_conversion_for_amt(amount,unit,self.ingkey)
-        if existing_conversion:
+        existing_conversion = self.nd.get_conversion_for_amt(amount,unit,self.ingkey,fudge=True)
+        existing_conversion_fudged = (existing_conversion
+                                      and
+                                      (not self.nd.get_conversion_for_amt(amount,unit,self.ingkey,fudge=False)
+                                       ))
+        if existing_conversion_fudged:
+            print 'We have',existing_conversion,'for',amount,unit,'but it was fudged.'
+            self.get_density(amount,unit)
+        elif existing_conversion:
             self.check_next_amount()
         else:
             self.set_from_unit(unit)
@@ -534,6 +572,9 @@ class NutritionInfoDruid (gobject.GObject):
 
     def goto_page_custom (self):
         self.notebook.set_current_page(self.CUSTOM_PAGE)
+
+    def goto_page_density (self):
+        self.notebook.set_current_page(self.DENSITY_PAGE)
 
     def apply_custom (self, *args):
         nutinfo = self.nutrition_info.copy()
@@ -610,6 +651,9 @@ class NutritionInfoDruid (gobject.GObject):
                 return
             self.apply_custom()
             self.check_next_amount()
+        elif page == self.DENSITY_PAGE:
+            self.apply_density()
+            self.check_next_amount()
         self.path.append((page,self.ingkey,self.amount_index))
         self.curpage += 1
         #self.notebook.set_current_page(page + 1)
@@ -651,7 +695,7 @@ class PageableNutritionStore (PageableViewStore):
 if __name__ == '__main__':
     import nutrition
     from gourmet.recipeManager import RecipeManager,dbargs
-    dbargs['file']='/tmp/fooeyb/recipes.db'
+    dbargs['file']='/tmp/fooeyb/and_yet_even_still_more_recipes.db'
     rd=RecipeManager(**dbargs)
     import nutritionGrabberGui
     try:
@@ -668,7 +712,12 @@ if __name__ == '__main__':
     #nid.set_from_unit('tsp.')
     nid.add_ingredients([('black pepper',[(1,'tsp.'),(2,'pinch')]),
                          ('tomato',[(1,''),(2,'cups'),(0.5,'lb.')]),
-                         ('kiwi',[(1,''),(0.5,'c.')]),])
+                         ('kiwi',[(1,''),(0.5,'c.')]),
+                         ('raw onion',[(1,'c.')]),
+                         ('sugar, powdered',[(1,'c.')]),
+                         ('garlic',[(1,'clove')]),
+                         ('cauliflower',[(1,'head')]),                                                                           
+                         ])
                          
     def quit (*args):
         rd.save()
