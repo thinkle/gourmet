@@ -155,7 +155,7 @@ class NutritionData:
             cnv = self.conv.converter('g.',unit,
                                       density=self.get_density(key,row,fudge=fudge)
                                       )
-        if not cnv:
+        if not cnv and unit:
             # Check our weights tables...
             extra_conversions = self.get_conversions(key,row)[1]
             if extra_conversions.has_key(unit):

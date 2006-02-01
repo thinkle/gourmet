@@ -190,7 +190,6 @@ class RecData (rdatabase.RecData):
             order_statements.append('InStr(desc,?)')
             order_params.append(w)
         order_statements.append('length(desc)')
-        order_params.append(
         if group:
             where_statements.append('foodgroup = ?')
             params.append(group)
