@@ -802,15 +802,13 @@
 			  </child>
 
 			  <child>
-			    <widget class="GtkEntry" id="fromAmountEntry">
-			      <property name="visible">True</property>
-			      <property name="editable">True</property>
-			      <property name="visibility">True</property>
-			      <property name="max_length">0</property>
-			      <property name="text" translatable="yes"></property>
-			      <property name="has_frame">True</property>
-			      <property name="invisible_char">*</property>
-			      <property name="activates_default">False</property>
+			    <widget class="Custom" id="fromAmountEntry">
+			  <property name="visible">True</property>
+			  <property name="editable">True</property>
+			  <property name="creation_function">number_entry</property>
+			  <property name="int1">0</property>
+			  <property name="int2">0</property>
+			  <property name="last_modification_time">Wed, 19 Oct 2005 23:46:08 GMT</property>
 			    </widget>
 			    <packing>
 			      <property name="left_attach">1</property>
@@ -1031,15 +1029,13 @@
 			  </child>
 
 			  <child>
-			    <widget class="GtkEntry" id="toAmountEntry">
-			      <property name="visible">True</property>
-			      <property name="editable">True</property>
-			      <property name="visibility">True</property>
-			      <property name="max_length">0</property>
-			      <property name="text" translatable="yes"></property>
-			      <property name="has_frame">True</property>
-			      <property name="invisible_char">*</property>
-			      <property name="activates_default">False</property>
+			    <widget class="Custom" id="toAmountEntry">
+			  <property name="visible">True</property>
+			  <property name="editable">True</property>
+			  <property name="creation_function">number_entry</property>
+			  <property name="int1">0</property>
+			  <property name="int2">0</property>
+			  <property name="last_modification_time">Wed, 19 Oct 2005 23:46:08 GMT</property>
 			    </widget>
 			    <packing>
 			      <property name="left_attach">1</property>
@@ -1143,6 +1139,7 @@
 		      <child>
 			<widget class="Custom" id="customNutritionAmountEntry">
 			  <property name="visible">True</property>
+			  <property name="editable">True</property>
 			  <property name="creation_function">number_entry</property>
 			  <property name="int1">0</property>
 			  <property name="int2">0</property>
