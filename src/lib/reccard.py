@@ -179,10 +179,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.timeB.connect('changed',self.setEdited)
         self.nutritionLabel = self.glade.get_widget('nutritionLabel')
         self.nutritionLabel.connect('ingredients-changed',
-                                    lambda *args: (self.create_ing_alist()
-                                                   or
-                                                   self.updateIngredientsDisplay()
-                                                   )
+                                    lambda *args: self.resetIngredients()
                                     )
         self.display_info = ['title','rating','preptime',
                              'servings','cooktime','source',
@@ -875,6 +872,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         """Reset our display of ingredients based on what's in our database at present."""
         self.create_ing_alist()
         self.updateIngredientsDisplay()
+        self.resetIngList()
 
     def updateIngredientsDisplay (self):
         """Update our display of ingredients, only reloading from DB if this is our first time."""

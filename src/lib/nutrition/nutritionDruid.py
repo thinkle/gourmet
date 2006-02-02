@@ -142,7 +142,6 @@ class NutritionInfoDruid (gobject.GObject):
         for widget_name in ['notebook',
                             'ingKeyLabel','ingKeyEntry','changeKeyButton','applyKeyButton',
                             'ingKeyLabel2',
-                            'customNutritionAmountEntry',
                             'searchEntry','searchAsYouTypeToggle','findButton',
                             'firstButton','backButton','forwardButton','lastButton','showingLabel',
                             'treeview','customBox',
@@ -352,7 +351,6 @@ class NutritionInfoDruid (gobject.GObject):
         masses = [i[0] for i in defaults.UNIT_GROUPS['metric mass'] + defaults.UNIT_GROUPS['imperial weight']]
         volumes = [i[0] for i in  defaults.UNIT_GROUPS['metric volume'] + defaults.UNIT_GROUPS['imperial volume']]
         to_units = masses
-        self.to_to_grams = {}
         self.densities,self.extra_units = self.nd.get_conversions(self.ingkey)
         for d in self.densities.keys():
             if d:
@@ -580,8 +578,17 @@ class NutritionInfoDruid (gobject.GObject):
         nutinfo = self.nutrition_info.copy()
         for k,v in nutinfo.items():
             if type(v)==int or type(v)==float: nutinfo[k]=v*self.custom_factor
+            # Special case fat, which is listed as one item but is in
+            # fact a combination of 3. We'll have to fudge the info
+            # about mono- v. poly- unsaturated fats.
+            if k=='fat':
+                totfat = v
+                unsatfat = totfat - nutinfo.get('fasat',0)
+                del nutinfo['fat']
+                nutinfo['fapoly']=unsatfat # Fudge
+        nutinfo['desc']=self.ingkey
         print 'committed',nutinfo
-        ndbno = self.nd.add_custom_nutrition_info(self.nutrition_info)
+        ndbno = self.nd.add_custom_nutrition_info(nutinfo)
 
     def apply_nut_equivalent (self,*args):
         if len(self.searchvw)==1:
@@ -710,14 +717,17 @@ if __name__ == '__main__':
     #nid.set_ingkey('black pepper')
     #nid.autosearch_ingkey()
     #nid.set_from_unit('tsp.')
-    nid.add_ingredients([('black pepper',[(1,'tsp.'),(2,'pinch')]),
-                         ('tomato',[(1,''),(2,'cups'),(0.5,'lb.')]),
-                         ('kiwi',[(1,''),(0.5,'c.')]),
-                         ('raw onion',[(1,'c.')]),
-                         ('sugar, powdered',[(1,'c.')]),
-                         ('garlic',[(1,'clove')]),
-                         ('cauliflower',[(1,'head')]),                                                                           
-                         ])
+    nid.add_ingredients([
+        ('brown sugar',[(1,'c.')]),
+        ('black pepper',[(1,'tsp.'),(2,'pinch')]),
+        ('tomato',[(1,''),(2,'cups'),(0.5,'lb.')]),
+        ('kiwi',[(1,''),(0.5,'c.')]),
+        ('raw onion',[(1,'c.')]),
+        ('sugar, powdered',[(1,'c.')]),
+        ('garlic',[(1,'clove')]),
+        ('cauliflower',[(1,'head')]),
+        ('skim milk',[(1,'c.')])
+        ])
                          
     def quit (*args):
         rd.save()

@@ -213,7 +213,7 @@ class NutritionData:
     def get_densities (self,key=None,row=None):
         """Handed key or nutrow, return dictionary with densities."""
         if not row: row = self._get_key(key)
-        if not row: return None
+        if not row: return {}
         if self.conv.density_table.has_key(key):
             return {'':self.conv.density_table[key]}
         else:
@@ -275,10 +275,10 @@ class NutritionData:
 
     def add_custom_nutrition_info (self, nutrition_dictionary):
         """Add custom nutritional information."""
-        new_ndbno = self.db.increment_field(self.db.nview,'ndbno')
-        if new_ndbno: nutrition_dictionary['ndbno']=new_ndbno
-        self.db.do_add(self.db.nview,nutrition_dictionary)
-        return self.db.nview[-1].ndbno
+        #new_ndbno = self.db.increment_field(self.db.nview,'ndbno')
+        #if new_ndbno: nutrition_dictionary['ndbno']=new_ndbno
+        return self.db.do_add_nutrition(nutrition_dictionary).ndbno
+        
                     
 class NutritionInfo:
     """A multipliable way to reference an object.

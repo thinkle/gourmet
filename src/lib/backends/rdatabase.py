@@ -120,7 +120,8 @@ class RecData:
            and ['AUTOINCREMENT']
            or [])
           ) for lname,name,typ in gourmet.nutrition.parser_data.NUTRITION_FIELDS] + \
-        [('foodgroup','text',[])]
+        [('foodgroup','text',[])],
+        'ndbno'
         )
 
     NUTRITION_WEIGHT_TABLE_DESC = (

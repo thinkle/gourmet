@@ -314,6 +314,15 @@ class RecData (rdatabase.RecData):
         SQL += ' VALUES (' +  ", ".join(["?"]*len(d)) + ')'
         self.execute(self.cursor,SQL,d.values())
 
+    def do_add_nutrition (self, d):
+        self.do_add(self.nview,d)
+        self.execute(
+            self.cursor,
+            'SELECT ndbno FROM '+self.nview+' WHERE rowid=last_insert_rowid()'
+            )
+        return DelayedRowObject(self.cursor.fetchone()[0],
+                                'ndbno',self.nview,self)
+
     def do_add_rec (self, rdict):
         self.do_add(self.rview,rdict)
         self.execute(self.cursor,

@@ -7,12 +7,12 @@ TINY = 2
 SEP = 3
 SHOW_PERCENT = True
 DONT_SHOW_PERCENT = False    
-MAIN_NUT_LAYOUT = [(_('Calories'),MAJOR,'calorie',
+MAIN_NUT_LAYOUT = [(_('Calories'),MAJOR,'kcal',
                 'kcal',DONT_SHOW_PERCENT,''),
                SEP,
                (_('Total Fat'),MAJOR,'fat',
                 ['fasat','famono','fapoly'],SHOW_PERCENT,'g'),
-               (_('Saturated Fat'),MINOR,'satfat',
+               (_('Saturated Fat'),MINOR,'fasat',
                 'fasat',SHOW_PERCENT,'g'),
                (_('Cholesterol'),MAJOR,'cholestrl',
                 'cholestrl',SHOW_PERCENT,'mg'),
@@ -99,7 +99,7 @@ NUT_LAYOUT = MAIN_NUT_LAYOUT + DETAIL_NUT_LAYOUT
 
 RECOMMENDED_INTAKE = {
         'fat':0.30 / 9, # 30% of calories * 9 cal / g.
-        'satfat':0.10 / 9, #10% of calories * 9 cal /g.
+        'fasat':0.10 / 9, #10% of calories * 9 cal /g.
         'carb':0.6 / 4, #60% of calories * 4 cal / g.
         'protein':0.10 / 4, #10% of calories * 4 cal/g.
         'fiber':11.5/1000, #11.5 grams / 1000calories
