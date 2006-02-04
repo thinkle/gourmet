@@ -196,6 +196,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.multiplyDisplayLabel = self.glade.get_widget('multiplyByDisplayLabel')
         self.ingredientsDisplay.connect('link-activated',
                                         self.show_recipe_link_cb)
+        self.ingredientsDisplay.set_wrap_mode(gtk.WRAP_WORD)
         self.special_display_functions = {
             'servings':self.updateServingsDisplay,
             'ingredients':self.updateIngredientsDisplay,
@@ -808,6 +809,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         ings = self.list_all_ings(self.current_rec)
         self.nutinfo = self.rg.nd.get_nutinfo_for_inglist(ings)
         self.nutritionLabel.set_nutinfo(self.nutinfo)
+        self.nutritionLabel.rec = self.current_rec
 
     def updateTitleDisplay (self):
         titl = self.current_rec.title
