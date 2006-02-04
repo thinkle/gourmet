@@ -168,6 +168,16 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         # hackish, but focus was acting funny        
         #self.rw['title'].grab_focus()
 
+    def flow_my_text_on_allocate (self,sw,allocation):
+        hadj = sw.get_hadjustment()
+        xsize = hadj.page_size
+        width = allocation.width
+        widg_width = int(xsize * 0.85)
+        for widget in self.reflow_on_resize:
+            widget.set_size_request(widg_width,-1)
+            t = widget.get_text()
+            widget.set_text(t)
+
     def setup_defaults (self):
         self.mult = 1
         #self.serves = float(self.serveW.get_text())
@@ -188,6 +198,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         for attr in self.display_info:
             setattr(self,'%sDisplay'%attr,self.glade.get_widget('%sDisplay'%attr))
             setattr(self,'%sDisplayLabel'%attr,self.glade.get_widget('%sDisplayLabel'%attr))
+        # Set up wrapping callbacks...
+        self.reflow_on_resize = [getattr(self,'%sDisplay'%s) for s in ['modifications','instructions']]
+        self.glade.get_widget(
+            'recipeDetailsWindow'
+            ).connect('size-allocate',self.flow_my_text_on_allocate)
         self.servingsDisplaySpin = self.glade.get_widget('servingsDisplaySpin')
         self.servingsDisplaySpin.connect('changed',self.servingsChangeCB)
         self.servingsMultiplyByLabel = self.glade.get_widget('multiplyByLabel')
@@ -775,6 +790,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                         widg.set_text(attval)
                         if attr in ['modifications','instructions']:
                             widg.set_use_markup(True)
+                            widg.set_size_request(600,-1)
                     widg.show()
                     widgLab.show()
                 else:
@@ -2342,7 +2358,7 @@ if __name__ == '__main__':
     import GourmetRecipeManager
     import testExtras
     rg = GourmetRecipeManager.RecGui()
-    RecCard(rg,rg.rd.fetch_one(rm.rview))
+    rc = RecCard(rg,rg.rd.fetch_one(rg.rd.rview))
     gtk.main()
     
     
