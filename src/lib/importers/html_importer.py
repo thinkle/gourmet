@@ -308,8 +308,16 @@ class FancyTextGetter:
         if hasattr(item,'contents'):
             self.add_tag(item)
         else:
-            self.text += item.string
-
+            try:
+                s = item.string.encode('utf8','replace')
+                self.text += s
+            except UnicodeDecodeError:
+                print 'UNICODE DECODING ERROR IN TAG',
+                if hasattr(item,'name'):
+                    print item.name
+                if hasattr(item,'fetchParents'):
+                    print 'CHILD OF: ','<'.join([p.name for p in item.fetchParents()])
+                
 get_text = FancyTextGetter()
 
 img_src_regexp = re.compile('<img[^>]+src=[\'\"]([^\'"]+)')

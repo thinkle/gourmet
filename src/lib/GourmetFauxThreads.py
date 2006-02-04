@@ -91,4 +91,8 @@ def gtk_enter ():
     pass
 
 def gtk_threads_init ():
-    pass
+    # Initialize threads anyways -- there's some things (like fetching
+    # images from web pages) that really only work in threads but
+    # won't risk any GTK badness (anything that's risky will use our
+    # FauxThreads anyway)
+    gtk.threads_init()

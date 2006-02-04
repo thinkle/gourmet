@@ -4,21 +4,33 @@ from gourmet.thumbnail import check_for_thumbnail,fetched_uris
 from gourmet.dialog_extras import ModalDialog
 import unittest
 from gourmet.gdebug import debug,TimeAction
-import threading, Queue
+import threading, Queue, time
 
-def grab_thumbnail (uri, type, iqueue, pqueue):
+def grab_thumbnail (uri, type, iqueue, pqueue, progress_portion=1, progress_start_at=0):
+    #print 'GRAB THUMBNAIL',uri,type,progress_portion,progress_start_at
     def reporthook (block, blocksize, total):
+        #print 'REPORT HOOK',block,blocksize,total
         try:
-            perc = (float(total)/(block*blocksize))
+            perc = progress_start_at + ((block*blocksize)/(float(total)) * progress_portion)
         except:
-            perc = -1
-        pqueue.put(('Getting %s'%uri,perc))
-    pqueue.put_nowait(('Getting %s'%uri,0))
+            #print 'problem getting percent from'
+            #print "progress_start_at: %(progress_start_at)s, block: %(block)s, blocksize: %(blocksize)s, %(progress_portion)s progress_portion, %(total)s: total"%locals()
+            raise
+        #except:
+        #    perc = -1
+        #print "REPORT:",uri,perc
+        #pqueue.put_nowait(('Getting %s'%uri,perc))
+        pqueue.append(('Getting %s'%uri,perc))
+    #print 'ADD Fetch starter to QUEUE'
+    #pqueue.put_nowait(('Getting %s'%uri,0))
+    pqueue.append(('Getting %s'%uri,0))
     import time
-    t=time.time()
+    #print 'Fetching ',uri
     fi = check_for_thumbnail(uri,type,reporthook)
-    #fi = check_for_thumbnail(uri,type)
-    iqueue.put((fi,uri))
+    #print 'Fetched'
+    #print 'Adding result to Queue'
+    iqueue.append((fi,uri))
+    #print 'Done'
     
 class ImageBrowser (gtk.IconView):
     def __init__ (self,*args,**kwargs):
@@ -27,49 +39,96 @@ class ImageBrowser (gtk.IconView):
         self.set_selection_mode(gtk.SELECTION_SINGLE)
         self.set_model(self.model)
         self.set_pixbuf_column(0)
-        self.image_queue = Queue.Queue()
-        self.progress_queue = Queue.Queue()
+        #self.image_queue = Queue.Queue()
+        #self.progress_queue = Queue.Queue()
+        self.image_queue = []
+        self.progress_queue = []
+        self.to_add_lock = threading.Lock()
         self.updating = False
         self.adding = []
+        self.alive = False
         gobject.timeout_add(100,self.update_progress)
         gobject.timeout_add(100,self.add_image_from_queue)
-        
-    def add_image_from_uri (self, u):
-        self.adding.append(u)
-        t=threading.Thread(target=lambda *args: grab_thumbnail(
-            u,
-            'small',
-            self.image_queue,
-            self.progress_queue)
+        #self.run_thread()
+
+    def add_image_from_uri (self, u, progress_portion=1, progress_start_at=0):
+        #print 'ADD_IMAGE_FROM_URI',u,progress_portion,progress_start_at
+        self.to_add_lock.acquire()
+        self.adding.append({'url':u,
+                            'progress_portion':progress_portion,
+                            'progress_start_at':progress_start_at,
+                            }
                            )
-        t.run()
+        self.to_add_lock.release()
+        if not self.alive:
+            #print 'RUN THREAD!'
+            self.run_thread()
+
+    def quit (self):
+        self.alive = False
+
+    def run_thread (self):
+        self.alive = True
+        t=threading.Thread(target=self.fetch_images)
+        t.start()
+
+    def fetch_images (self):
+        while self.alive:
+            #print 'FETCH_IMAGES',time.time()
+            if self.adding:
+                self.to_add_lock.acquire()
+                to_add = self.adding[0]; self.adding = self.adding[1:]
+                #print 'TO_ADD',to_add
+                self.to_add_lock.release()
+                #print 'ADDING:',to_add,time.time()
+                grab_thumbnail(
+                    to_add['url'],
+                    'small',
+                    self.image_queue,
+                    self.progress_queue,
+                    progress_portion=to_add['progress_portion'],
+                    progress_start_at=to_add['progress_start_at']
+                    )
+                #print 'ADDED!'
+            else:
+                time.sleep(0.1)
 
     def add_image_from_queue (self):
         try:
-            fi,u = self.image_queue.get_nowait()
+            #fi,u = self.image_queue.get_nowait()
+            fi,u = self.image_queue.pop()
             if fi:
                 pb = gtk.gdk.pixbuf_new_from_file(fi)
                 self.model.append([pb,u])
-                self.adding.remove(u)
-        except Queue.Empty:
+        except IndexError:
             pass
         return True
 
-    def update_progress (self):
+    def update_progress (self):        
         try:
-            progress,text = self.progress_queue.get_nowait()
-            self.set_progress(progress,text)            
-        except:
+            #text,progress = self.progress_queue.get_nowait()
+            text,progress = self.progress_queue.pop()
+            #print 'Set progress',progress,text
+            self.prog = progress,text
+            self.set_progress(float(progress),text)
+            #print 'UPDATE_PROGRESS',time.time(),progress,text
+        #except Queue.Empty:
+        except IndexError:
             if not self.adding and hasattr(self,'progressbar'):
                 self.progressbar.hide()
-            else:
-                self.progressbar.pulse()
+            #elif hasattr(self,'progressbar'):
+            #    self.progressbar.pulse()
+        else:
+            if progress == 1:
+                print 'Done!'
+                self.progressbar.hide()
+                return None
         return True
 
     def set_progress (self, progress, text):
         if hasattr(self,'progressbar'):
             self.progressbar.show()
-            self.progressbar.set_percentage(prog)
+            self.progressbar.set_percentage(progress)
             self.progressbar.set_text(text)
 
 class ImageBrowserDialog (ModalDialog):
@@ -82,6 +141,7 @@ class ImageBrowserDialog (ModalDialog):
         self.set_default_size(600,600)
 
     def setup_dialog (self, *args, **kwargs):
+        gtk.threads_init()
         ModalDialog.setup_dialog(self,*args,**kwargs)
         self.ib = ImageBrowser()
         self.ib.connect('selection-changed',self.selection_changed_cb)
@@ -96,7 +156,9 @@ class ImageBrowserDialog (ModalDialog):
         self.sw.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
 
     def okcb (self, *args,**kwargs):
+        self.ib.quit()
         ModalDialog.okcb(self,*args,**kwargs)
+        
 
     def selection_changed_cb (self, iv):
         selected_paths = iv.get_selected_items()
@@ -108,8 +170,13 @@ class ImageBrowserDialog (ModalDialog):
             self.ret = None
 
     def add_images_from_uris_w_progress (self, uris):
-        self.image_queue = Queue.Queue()
-        self.progress_queue = Queue.Queue()        
+        prog_perc = 1.0 / len(uris)
+        for n,u in enumerate(uris):
+            self.ib.add_image_from_uri(
+                u,
+                progress_portion=prog_perc,
+                progress_start_at=prog_perc*n
+                )
 
     def add_image_from_uri (self, u):
         self.ib.add_image_from_uri(u)
@@ -135,14 +202,24 @@ class ImageBrowserTest (unittest.TestCase):
 
     def testDialog (self):
         self.ibd = ImageBrowserDialog()
-        self.ibd.add_image_from_uri('http://wikipes.com/wikipes-logo.gif')
-        for image in ['Caneel beach.JPG','Cinnamon beach.JPG','dsc00258.jpg']:
-            self.ibd.add_image_from_uri('file:///home/tom/pictures/'+image)        
+        self.ibd.add_images_from_uris_w_progress(
+            ['http://ideasinfood.typepad.com/ideas_in_food/images/katzs_pastrami_reuben.jpg'] \
+            + ['file:///home/tom/pictures/'+image for image in ['Caneel beach.JPG','Cinnamon beach.JPG','dsc00258.jpg']]
+            )
+        #for image in []:
+        #    self.ibd.add_image_from_uri()        
         self.ibd.run()
 
 def get_image_file (uri):
     return fetched_uris[uri]
 
 if __name__ == '__main__':
-    unittest.main()
+    try:
+        # Make unit test not run from emacs C-c C-c into python shell...
+        __file__
+        print 'UNITTEST'
+        unittest.main()
+    except:
+        pass
+    
     
