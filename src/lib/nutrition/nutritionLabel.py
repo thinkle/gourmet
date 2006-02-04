@@ -148,11 +148,14 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
 
     __gsignals__ = {
         'calories-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,()),
-        'ingredients-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,())
-        }    
+        'ingredients-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,()),
+        }
 
-    def __init__ (self, prefs):
+    def __init__ (self, prefs,
+                  rec=None
+                  ):
         self.prefs = prefs
+        self.rec = rec
         start_at = 4
         gobject.GObject.__init__(self)
         gtk.VBox.__init__(self)
@@ -183,8 +186,10 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         self.pack_start(self.cal_per_day_box)
         self.tt.enable()
         self.main_table = gtk.Table(); self.main_table.show()
+        self.main_table.set_col_spacings(18)
         self.pack_start(self.main_table)
         self.sub_table = gtk.Table(); self.sub_table.show()
+        self.sub_table.set_col_spacings(18)
         self.nutexpander = gtk.Expander(_('Vitamins and minerals'))
         self.nutexpander.show()
         self.nutexpander.add(self.sub_table)
@@ -393,7 +398,9 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         import nutritionDruid
         if vapor:
             self.ndruid = nutritionDruid.NutritionInfoDruid(vapor[0].__nd__,
-                                                            prefs=self.prefs)
+                                                            prefs=self.prefs,rec=self.rec)
+            self.ndruid.connect('key-changed',lambda w,tpl: self.emit('ingredients-changed'))
+            self.ndruid.connect('unit-changed',lambda w,tpl: self.emit('ingredients-changed'))
             ings = [(v.__key__,[(v.__amt__,
                                  v.__unit__)]
                      ) for v in vapor]
