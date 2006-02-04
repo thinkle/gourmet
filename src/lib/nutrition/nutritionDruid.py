@@ -88,6 +88,10 @@ class NutritionInfoDruid (gobject.GObject):
     group = None
 
     __gsignals__ = {
+        # The key callback will return a tuple (old_key,new_key)
+        'key-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_PYOBJECT,(gobject.TYPE_PYOBJECT,)),
+        # The unit callback will return a tuple ((old_unit,old_key),(new_unit,new_key))
+        'unit-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_PYOBJECT,(gobject.TYPE_PYOBJECT,)),
         'finish':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,())
         }
 
@@ -99,7 +103,7 @@ class NutritionInfoDruid (gobject.GObject):
 
     ALL_GROUPS = _('Any food group')
 
-    def __init__ (self, nd, prefs):
+    def __init__ (self, nd, prefs, rec=None):
         # Very primitive custom handler here -- we just return a
         # NumberEntry no matter what glade says. Obviously if glade
         # gets updated we'd better fix this (see reccard.py for a more
@@ -111,6 +115,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.mm.fix_conflicts_peacefully()
         self.prefs = prefs
         self.nd = nd
+        self.rec = rec
         self.rd = self.nd.db
         self._setup_widgets_()
         self.backButton.set_sensitive(False)
@@ -436,21 +441,70 @@ class NutritionInfoDruid (gobject.GObject):
     # callbacks for quick-changes
     def apply_ingkey (self,*args):
         key = self.ingKeyEntry.get_text()
-        ings = self.nd.db.fetch_all(self.nd.db.iview,ingkey=self.ingkey)
-        self.nd.db.modify_ings(ings,{'ingkey':key})
+        #ings = self.rd.fetch_all(self.rd.iview,ingkey=self.ingkey)
+        #self.rd.modify_ings(ings,{'ingkey':key})
+        if self.rec and de.getBoolean(
+            label='Change ingredient key',
+            sublabel=_(
+            'Change ingredient key from %(old_key)s to %(new_key)s everywhere or just in the recipe %(title)s?'
+            )%{'old_key':self.ingkey,
+               'new_key':key,
+               'title':self.rec.title
+               },
+            custom_no=_('Change _everywhere'),
+            custom_yes=_('_Just in recipe %s')%self.rec.title
+            ):
+            self.rd.update(self.rd.iview,
+                           {'ingkey':self.ingkey,
+                            'id':self.rec.id},
+                           {'ingkey':key}
+                           )
+        else:
+            self.rd.update(self.rd.iview,
+                          {'ingkey':self.ingkey},
+                          {'ingkey':key}
+                          )
+        old_key = self.ingkey
         self.set_ingkey(key)
         self.autosearch_ingkey()
         self.changeIngKeyAction.dehighlight_action()
         if self.nd.get_nutinfo(key):
             self.setup_to_units()
             self.check_next_amount()
+        self.emit('key-changed',(old_key,key))
     
     def save_unit_cb (self,*args):
         from_unit = self.fromUnitComboBoxEntry.get_children()[0].get_text()
-        ings = self.nd.db.fetch_all(self.nd.db.iview,ingkey=self.ingkey,unit=self.fromUnit)
-        self.nd.db.modify_ings(ings,{'unit':from_unit})
+        old_from_unit = self.fromUnit
+        #ings = self.rd.fetch_all(self.rd.iview,ingkey=self.ingkey,unit=old_from_unit)
+        #self.rd.modify_ings(ings,{'unit':from_unit})
+        if self.rec and de.getBoolean(
+            label=_('Change unit'),
+            sublabel=_(
+            'Change unit from %(old_unit)s to %(new_unit)s for all ingredients %(ingkey)s or just in the recipe %(title)s?'
+            )%{'old_unit':old_from_unit,
+               'new_unit':from_unit,
+               'ingkey':self.ingkey,
+               'title':self.rec.title
+               },
+            custom_no=_('Change _everywhere'),
+            custom_yes=_('_Just in recipe %s')%self.rec.title
+            ):
+            self.rd.update(self.rd.iview,
+                           {'ingkey':self.ingkey,
+                            'unit':old_from_unit,
+                            'id':self.rec.id},
+                           {'unit':from_unit}
+                           )
+        else:
+            self.rd.update(self.rd.iview,
+                          {'ingkey':self.ingkey,
+                           'unit':old_from_unit},
+                          {'unit':from_unit}
+                          )
         self.set_from_unit(self.fromUnitComboBoxEntry.get_children()[0].get_text())
         self.changeUnitAction.dehighlight_action()
+        self.emit('unit-changed',((old_from_unit,self.ingkey),(from_unit,self.ingkey)))
         
     # Callbacks to handle our druid-like walking-through of actions.
 
@@ -560,6 +614,7 @@ class NutritionInfoDruid (gobject.GObject):
 
     def finish (self):
         self.glade.get_widget('window1').hide()
+        print self,'EMIT: finish'
         self.emit('finish')
 
     def goto_page_key_to_nut (self):
@@ -702,7 +757,7 @@ class PageableNutritionStore (PageableViewStore):
 if __name__ == '__main__':
     import nutrition
     from gourmet.recipeManager import RecipeManager,dbargs
-    dbargs['file']='/tmp/fooeyb/and_yet_even_still_more_recipes.db'
+    dbargs['file']='/tmp/foo.db'
     rd=RecipeManager(**dbargs)
     import nutritionGrabberGui
     try:
@@ -714,6 +769,12 @@ if __name__ == '__main__':
     c=gourmet.convert.converter()
     nd=nutrition.NutritionData(rd,c)
     nid = NutritionInfoDruid(nd,{})
+    def unit_handler (*args):
+        print 'CHANGE UNIT CALLBACK:',args
+    def key_handler (*args):
+        print 'CHANGE KEY CALLBACK:',args
+    nid.connect('unit-changed',unit_handler)
+    nid.connect('key-changed',key_handler)
     #nid.set_ingkey('black pepper')
     #nid.autosearch_ingkey()
     #nid.set_from_unit('tsp.')
