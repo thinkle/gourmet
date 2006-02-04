@@ -852,7 +852,7 @@
 	      <property name="spacing">0</property>
 
 	      <child>
-		<widget class="GtkScrolledWindow" id="scrolledwindow15">
+		<widget class="GtkScrolledWindow" id="recipeDetailsWindow">
 		  <property name="width_request">400</property>
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
