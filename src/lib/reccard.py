@@ -807,7 +807,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 )
         ings = self.list_all_ings(self.current_rec)
         self.nutinfo = self.rg.nd.get_nutinfo_for_inglist(ings)
-        self.nutritionLabel.set_nutinfo(self.nutinfo)        
+        self.nutritionLabel.set_nutinfo(self.nutinfo)
 
     def updateTitleDisplay (self):
         titl = self.current_rec.title
@@ -873,6 +873,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.create_ing_alist()
         self.updateIngredientsDisplay()
         self.resetIngList()
+        self.update_nutrition_info()
 
     def updateIngredientsDisplay (self):
         """Update our display of ingredients, only reloading from DB if this is our first time."""
