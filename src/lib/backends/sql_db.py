@@ -408,7 +408,10 @@ class RecData (rdatabase.RecData):
                 print 'Tried to select rowid FROM ',table,where,params
                 raise "Modifying nonexistent row" + table + "%s"%rowid
         if type(rowid)!=int:
-            raise "%s is not a ROWID"%rowid
+            raise str("%s is not a ROWID. We were handed: "%(rowid,
+                                                             table,rowid,d,unique_id_col
+                                                             )
+                      )
         self.execute(self.cursor,
                      ("UPDATE "+table
                       +
