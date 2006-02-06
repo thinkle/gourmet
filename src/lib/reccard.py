@@ -71,7 +71,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.mm.fix_conflicts_peacefully()
         # Manually fixing this particular mnemonic for English...
         if nlb.get_text()=='Edit':
-            print 'manual fixup...'
             nlb.set_markup_with_mnemonic('Ed_it')
         # Do some funky style modifications...
         display_toplevel_widget = self.glade.get_widget('displayPanes')
@@ -676,7 +675,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def updateRec (self, rec):
         debug("updateRec (self, rec):",5)
         """If handed an ID, we'll grab the rec"""
-        if type(rec) == type(""):
+        if not hasattr(rec,'id'):
             rec=self.rg.rd.get_rec(rec)
         self.current_rec = rec
         try:
@@ -873,7 +872,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def create_ing_alist (self):
         """Create alist ing_alist based on ingredients in DB for current_rec"""
         ings=self.rg.rd.get_ings(self.current_rec)
-        self.ing_alist = self.rg.rd.order_ings( ings )        
+        self.ing_alist = self.rg.rd.order_ings(ings)
         debug('self.ing_alist updated: %s'%self.ing_alist,1)
 
     def forget_remembered_optional_ingredients (self, *args):
@@ -1149,7 +1148,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         else:
             attr=self.head_to_att[head]
             if attr=='amount':
-                if type(store.get_value(iter,0)) != type(""):
+                if type(store.get_value(iter,0)) not in [str,unicode]:
                     # if we're not a group
                     d={}
                     try:
@@ -1251,7 +1250,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             path, position = drop_info
             diter = mod.get_iter(path)
             dest_ing=mod.get_value(diter,0)
-            if type(dest_ing)==type(""): group=True
+            if type(dest_ing) in [str,unicode]: group=True
             else: group=False
             debug('drop_info good, GROUP=%s'%group,5)
             #new_iter=mod.append(None)
@@ -1338,18 +1337,13 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         def commit_iter(iter,pos,group=None):
             debug("iter=%s,pos=%s,group=%s"%(iter,pos,group),-1)
             ing=self.imodel.get_value(iter,0)
-            if type(ing)==type(""):
+            if type(ing) in [str,unicode]:
                 group=self.imodel.get_value(iter,1)
                 i=self.imodel.iter_children(iter)
                 while i:
                     pos=commit_iter(i,pos,group)
                     i=self.imodel.iter_next(i)
             else:
-                #ing.position=pos
-                #if group:
-                #    debug('adding ingredient to group %s'%group,-1)
-                #    #self.rg.rd.modify_ing(ing,{'inggroup':group})
-                #    #ing.inggroup=group
                 self.rg.rd.modify_ing(ing,
                                       {'position':pos,
                                        'inggroup':group,}
@@ -1487,7 +1481,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug("add_ingredient (self=%s, model=%s, ing=%s, mult=%s, group_iter=%s):"%(self, model, ing, mult, group_iter),5)
         i = ing
         if group_iter:
-            if type(model.get_value(group_iter, 0))==type(""):
+            if type(model.get_value(group_iter, 0)) in [str,unicode]:
                 debug("Adding to group",4)
                 iter = model.append(group_iter)
             else:
@@ -2129,7 +2123,7 @@ class IngredientEditor:
         for p in rows:
             i=mod.get_iter(p)
             ing = mod.get_value(i,0)
-            if type(ing) == type(""):
+            if type(ing) in [str,unicode]:
                 ## then we're a group
                 self.remove_group(i)
             #elif de.getBoolean(label=_("Are you sure you want to delete %s?")%ing.item):
