@@ -37,7 +37,7 @@ class Emailer:
         gglobals.launch_url(self.url)
 
     def url_append (self, attr, value):
-        self.url += "%s%s=%s"%(self.connector(),attr,urllib.quote(value))
+        self.url += "%s%s=%s"%(self.connector(),attr,urllib.quote(value.encode('utf-8','replace')))
                                                                    
     def connector (self):
         retval = self.connector_string
