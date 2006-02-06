@@ -1089,7 +1089,8 @@ class RecGui (RecIndex):
         sublabel = _("Exported %s to %s"%(linktype,file))
         def offerer (t):
             if t.completed:
-                self.idle_offer_url(label, sublabel, url, True)
+                #self.idle_offer_url(label, sublabel, url, True)
+                self.offer_url(label, sublabel, url, True)
         return offerer
 
     def idle_offer_url (self, label, sublabl, url, from_thread):
@@ -1156,16 +1157,6 @@ class RecGui (RecIndex):
         gt.gtk_enter()
         if hasattr(self,'progress_dialog'):
             self.progress_dialog.set_progress(prog,message)
-        #else:
-        #    print 'Strange: we have no progress dialog: ',prog,message
-        #if prog < 0:
-        #    self.prog.pulse()
-        #else:
-        #    self.prog.set_fraction(prog)
-        #self.stat.push(self.contid,"%s %s"%(len(self.rd.rview),message))
-        #self.prog.set_text(message)
-        #if prog==1:
-        #    self.progress_dialog.set_response_sensitive(gtk.RESPONSE_OK,True)
         gt.gtk_leave()
 
     def register_col_dialog (self, *args):
