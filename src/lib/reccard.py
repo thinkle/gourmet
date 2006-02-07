@@ -112,7 +112,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             # we'll need to look for the switch with an idle call
             gobject.idle_add(self.notebookChangeCB)
         self.notebook.connect('switch-page',hackish_notebook_switcher_handler)
-        #self.notebook.set_current_page(0)        
         self.page_specific_handlers = []
         self.notebookChangeCB()
         self.create_ingTree()
@@ -130,13 +129,14 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.new = True
             self.updateRecipe(r,show=False)
             # and set our page to the details page
-            self.notebook.set_current_page(1)
+            self.notebook.set_current_page(self.NOTEBOOK_ATTR_PAGE)
 
         t.end()
         t=TimeAction('RecCard.__init__ 4',0)
         self.pref_id = 'rc%s'%self.current_rec.id
         self.conf = []
-        self.conf.append(WidgetSaver.WindowSaver(self.edit_window, self.prefs.get(self.pref_id,{})))        
+        self.conf.append(WidgetSaver.WindowSaver(self.edit_window, self.prefs.get(self.pref_id+'_edit',{})))
+        self.conf.append(WidgetSaver.WindowSaver(self.display_window, self.prefs.get(self.pref_id,{})))
         self.glade.signal_autoconnect({
             'rc2shop' : self.addToShopL,
             'rcDelete' : self.delete,
@@ -1633,11 +1633,22 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def hide (self, *args):
         debug("hide (self, *args):",5)
+        for c in self.conf:
+            c.save_properties()
+        if not self.new and self.edit_window.get_property('visible'):
+            self.hide_edit()
+        self.display_window.hide()
+        # delete it from main apps list of open windows
+        self.rg.del_rc(self.current_rec.id)
+        return True
+
+    def hide_edit (self, *args):
+        for c in self.conf:
+            c.save_properties()
         if self.edited:
             test=de.getBoolean(label=_("Save edits to %s before closing?")%self.current_rec.title,
                                cancel_returns='CANCEL')
             if test=='CANCEL':
-                
                 return True
             elif test:
                 self.saveEditsCB()
@@ -1645,27 +1656,16 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 self.edited=False #to avoid multiple dialogs if this gets called twice somehow
                 if self.new:
                     self.delete()
-                    #self.rg.rd.delete_rec(self.current_rec.id)
-        # save our position
-        for c in self.conf:
-            c.save_properties()
         self.edit_window.hide()
-        self.display_window.hide()
-        # delete it from main apps list of open windows
-        self.rg.del_rc(self.current_rec.id)
-        #return True
-        # now we destroy old recipe cards
-
-    def hide_edit (self, *args):
-        if self.display_window.get_property('visible'):
-            self.edit_window.hide()
-        else:
-            self.hide()
+        if not self.display_window.get_property('visible'):
+            self.rg.del_rc(self.current_rec.id)
+        return True
         
     def show (self, *args):
         debug("show (self, *args):",5)
         if self.new:
             self.edit_window.set_title("%s %s"%(self.default_title,self.current_rec.title))
+            self.display_window.hide()
             self.edit_window.present()
         else:
             self.edit_window.set_title("%s %s"%(self.edit_title,self.current_rec.title))
