@@ -96,13 +96,16 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.history = Undo.MultipleUndoLists(self.undo,self.redo,
                                               get_current_id=self.notebook.get_current_page
                                               )
-        self.NOTEBOOK_DISPLAY_PAGE = 0
-        self.NOTEBOOK_ATTR_PAGE = 1
-        self.notebook_pages = {self.NOTEBOOK_DISPLAY_PAGE:'display',
-                               self.NOTEBOOK_ATTR_PAGE:'attributes',
-                               2:'ingredients',
-                               3:'instructions',
-                               4:'modifications'}
+        #self.NOTEBOOK_DISPLAY_PAGE = 0
+        self.NOTEBOOK_ATTR_PAGE = 0
+        self.NOTEBOOK_ING_PAGE = 1
+        self.NOTEBOOK_INST_PAGE = 2
+        self.NOTEBOOK_MOD_PAGE = 3
+        self.notebook_pages = {#self.NOTEBOOK_DISPLAY_PAGE:'display',
+            self.NOTEBOOK_ATTR_PAGE:'attributes',
+            self.NOTEBOOK_ING_PAGE:'ingredients',
+            self.NOTEBOOK_INST_PAGE:'instructions',
+            self.NOTEBOOK_MOD_PAGE:'modifications'}
         
         def hackish_notebook_switcher_handler (*args):
             # because the switch page signal happens before switching...
@@ -120,24 +123,25 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.images = []
         self.new = True
         if recipe:
-            self.updateRecipe(recipe)
+            self.updateRecipe(recipe,show=False)
             self.new = False
         else:
             r=self.rg.rd.new_rec()
             self.new = True
-            self.updateRecipe(r)
+            self.updateRecipe(r,show=False)
             # and set our page to the details page
             self.notebook.set_current_page(1)
-        self.setEditMode(self.new)
+
         t.end()
         t=TimeAction('RecCard.__init__ 4',0)
         self.pref_id = 'rc%s'%self.current_rec.id
         self.conf = []
-        self.conf.append(WidgetSaver.WindowSaver(self.widget, self.prefs.get(self.pref_id,{})))        
+        self.conf.append(WidgetSaver.WindowSaver(self.edit_window, self.prefs.get(self.pref_id,{})))        
         self.glade.signal_autoconnect({
             'rc2shop' : self.addToShopL,
             'rcDelete' : self.delete,
             'rcHide' : self.hide,
+            'rcHideEdit' : self.hide_edit,
             'saveEdits': self.saveEditsCB,
             'addIng' : self.newIngCB,
             'newRec' : self.newRecipeCB,
@@ -160,12 +164,14 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'email': self.email_rec,
             'preferences':self.show_pref_dialog,
             'forget_remembered_optionals':self.forget_remembered_optional_ingredients,
-            'show_help': lambda *args: de.show_faq(HELP_FILE,jump_to='Entering and Editing recipes')
+            'show_help': lambda *args: de.show_faq(HELP_FILE,jump_to='Entering and Editing recipes'),
+            'edit_details': lambda *args: self.show_edit(tab=self.NOTEBOOK_ATTR_PAGE),
+            'edit_ingredients': lambda *args: self.show_edit(tab=self.NOTEBOOK_ING_PAGE),
+            'edit_instructions': lambda *args: self.show_edit(tab=self.NOTEBOOK_INST_PAGE),
+            'edit_modifications': lambda *args: self.show_edit(tab=self.NOTEBOOK_MOD_PAGE),
             })
         self.show()
         t.end()
-        # hackish, but focus was acting funny        
-        #self.rw['title'].grab_focus()
 
     def flow_my_text_on_allocate (self,sw,allocation):
         hadj = sw.get_hadjustment()
@@ -180,7 +186,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def setup_defaults (self):
         self.mult = 1
         #self.serves = float(self.serveW.get_text())
-        self.default_title = _("Recipe Card: ")
+        self.edit_title = _('Edit Recipe: ')
+        self.default_title = _('Recipe Card: ')
 
     def get_widgets (self):
         t=TimeAction('RecCard.get_widgets 1',0)
@@ -234,7 +241,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.multLabel = self.glade.get_widget('multLabel')
         self.applyB = self.glade.get_widget('saveButton')
         self.revertB = self.glade.get_widget('revertButton')
-        self.widget = self.glade.get_widget('recCard')
+        self.edit_window = self.widget = self.glade.get_widget('recCard')
+        self.display_window = self.glade.get_widget('recCardDisplay')
+        self.edit_window.set_transient_for(self.display_window)
         self.stat = self.glade.get_widget('statusbar1')
         self.contid = self.stat.get_context_id('main')
         self.toggleReadableMenu = self.glade.get_widget('toggle_readable_units_menuitem')
@@ -288,9 +297,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
              'undoButtons':[{'undo':[{},['undoButton','undoMenu']]},
                             {'redo':[{},['redoButton','redoMenu']]},
                             ],
-             'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
-                                     ['editButton','editMenu']]},
-                            ],
+             #'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
+             #                        ['editButton','editMenu']]},
+             #               ],
+             'viewRecipeCardButtons':[{'view':[{'tooltip':_('View recipe card for current recipe')},
+                                               ['viewRecipeCardButton','view_recipe_card_menuitem']]},
+                                      ],
              'saveButtons':[{'save':[{},['saveButton','saveMenu']]},
                             {'revert':[{},['revertButton','revertMenu'],]},]
              },
@@ -302,7 +314,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
              ('ingGroup',self.ingNewGroupCB),
              ('ingImport',self.importIngredientsCB),
              ('ingPaste',self.pasteIngsCB),
-             ('edit',self.editCB),
+             ('view',self.viewCB),
+             #('edit',self.editCB),
              ]
             )
         self.notebook_page_actions = {'ingredients':['ingredientGroup','selectedIngredientGroup'],
@@ -404,7 +417,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         if rec:
             self.rg.openRecCard(rec)
         else:
-            de.show_message(parent=self.widget,
+            de.show_message(parent=self.edit_window,
                             label=_('Unable to find recipe %s in database.')%rname
                             )
             
@@ -464,13 +477,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.current_rec = self.rg.rd.modify_rec(self.current_rec,newdict)
         # save DB for metakit
         self.rg.rd.save()
-        #print 'saved','\nupdating...'
         ## if our title has changed, we need to update menus
         self.updateRecDisplay()
         self.rg.rmodel.update_recipe(self.current_rec)
-        #print 'udpated'
         if newdict.has_key('title'):
-            self.widget.set_title("%s %s"%(self.default_title,self.current_rec.title))
+            self.edit_window.set_title("%s %s"%(self.edit_title,self.current_rec.title))
+            self.display_window.set_title("%s %s"%(self.default_title,self.current_rec.title))
             self.rg.updateViewMenu()
         
     def delete (self, *args):
@@ -653,21 +665,23 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             elif attr in self.recent: self.rw[attr].set_text(value)
             elif attr in self.rectexts: self.rw[attr].get_buffer().set_text(value)
             # update title if necessary
-            if attr=='title': self.widget.set_title(value)
+            if attr=='title':
+                self.edit_window.set_title(value)
         self.updateRecDisplay()
             
     def updateRecipe (self, rec, show=True):
         debug("updateRecipe (self, rec):",0)
         if type(rec) == int:
             rec=self.rg.rd.fetch_one(self.rg.rd.rview,id=rec)
-        if not self.edited or de.getBoolean(parent=self.widget,
+        if not self.edited or de.getBoolean(parent=self.edit_window,
                                             label=_("Abandon your edits to %s?")%self.current_rec.title):
             self.updateRec(rec)
             if show:
+                import traceback; traceback.print_exc()
                 self.show()
 
     def revertCB (self, *args):
-        if de.getBoolean(parent=self.widget,
+        if de.getBoolean(parent=self.edit_window,
                          label=_("Are you sure you want to abandon your changes?"),
                          cancel=False):
             self.updateRec(self.current_rec)
@@ -876,7 +890,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug('self.ing_alist updated: %s'%self.ing_alist,1)
 
     def forget_remembered_optional_ingredients (self, *args):
-        if de.getBoolean(parent=self.widget,
+        if de.getBoolean(parent=self.edit_window,
                          label=_('Forget which optional ingredients to shop for?'),
                          sublabel=_('Forget previously saved choices for which optional ingredients to shop for. This action is not reversable.'),
                          custom_yes=gtk.STOCK_OK,
@@ -1078,7 +1092,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug('shop_pop_callback with key %s'%key,5)
         if not i:
             i=de.getEntry(label=_("Category to add %s to")%key,
-                       parent=self.widget)
+                       parent=self.edit_window)
             if not i:
                 return
             regenerate_menu=True
@@ -1407,7 +1421,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 self.rg.openRecCard(rec)
             else:
                 
-                de.show_message(parent=self.widget, label=_("The recipe %s (ID %s) is not in our database.")%(i.item,
+                de.show_message(parent=self.edit_window, label=_("The recipe %s (ID %s) is not in our database.")%(i.item,
                                                                                                            i.refid))
         else: self.ie.show(self.selectedIng())
 
@@ -1533,10 +1547,13 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.message(_('Changes to ingredients saved automatically.'))
         self.cb.request_text(add_ings_from_clippy)
 
-    def editCB (self, button):
-        #for k,v in self.notebook_pages.items():
-        #    if v=='attributes':
-        self.setEditMode(button.get_active())
+    def show_edit (self, tab=None):
+        if not tab: tab = self.NOTEBOOK_ATTR_PAGE
+        self.notebook.set_current_page(tab)
+        self.edit_window.present()
+
+    def viewCB (self, button):
+        self.display_window.present()
             
     def setEditMode (self, edit_on):
         if edit_on:
@@ -1545,10 +1562,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.saveButtons.set_visible(True)
             self.notebook.set_current_page(self.NOTEBOOK_ATTR_PAGE)
         else:
-            self.notebook.set_show_tabs(False)
-            self.undoButtons.set_visible(False)
-            self.saveButtons.set_visible(False)            
-            self.notebook.set_current_page(self.NOTEBOOK_DISPLAY_PAGE)
+            #self.notebook.set_show_tabs(False)
+            self.glade.get_widget('recCard').hide()
+            self.glade.get_widget('recCardDisplay').show()
+            #self.undoButtons.set_visible(False)
+            #self.saveButtons.set_visible(False)            
+            #self.notebook.set_current_page(self.NOTEBOOK_DISPLAY_PAGE)
 
     def importIngredients (self, file):
         ifi=file(file,'r')
@@ -1583,7 +1602,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         except:
             from StringIO import StringIO
             f = StringIO()
-            traceback.print_exc(file=f)
+            import traceback; traceback.print_exc(file=f)
             error_mess = f.getvalue()
             de.show_message(
                 label=_('Unable to save %s')%fn,
@@ -1630,20 +1649,29 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         # save our position
         for c in self.conf:
             c.save_properties()
-        self.widget.hide()
+        self.edit_window.hide()
+        self.display_window.hide()
         # delete it from main apps list of open windows
         self.rg.del_rc(self.current_rec.id)
         #return True
         # now we destroy old recipe cards
+
+    def hide_edit (self, *args):
+        if self.display_window.get_property('visible'):
+            self.edit_window.hide()
+        else:
+            self.hide()
         
     def show (self, *args):
         debug("show (self, *args):",5)
-        self.widget.show()
-        try:
-            self.widget.set_title("%s %s"%(self.default_title,self.current_rec.title))
-            self.widget.present()
-        except:
-            self.widget.grab_focus()
+        if self.new:
+            self.edit_window.set_title("%s %s"%(self.default_title,self.current_rec.title))
+            self.edit_window.present()
+        else:
+            self.edit_window.set_title("%s %s"%(self.edit_title,self.current_rec.title))
+            self.display_window.set_title("%s %s"%(self.default_title,self.current_rec.title))
+            self.display_window.present()
+            self.edit_window.hide()
 
     def email_rec (self, *args):
         if self.edited:
@@ -1663,7 +1691,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 self.saveEditsCB()
         printer.RecRenderer(self.rg.rd, [self.current_rec], mult=self.mult,
                             dialog_title=_("Print Recipe %s"%(self.current_rec.title)),
-                            dialog_parent=self.widget,
+                            dialog_parent=self.edit_window,
                             change_units=self.prefs.get('readableUnits',True)
                             )
 
