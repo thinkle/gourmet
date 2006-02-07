@@ -389,7 +389,6 @@ class NutritionInfoDruid (gobject.GObject):
         if self.__last_search__ == txt and self.group == self.__last_group__:
             return
         words = re.split('\W+',txt)
-        print 'searching',words
         groups = self.rd.fetch_food_groups_for_search(words)
         cur_active = cb.cb_get_active_text(self.foodGroupComboBox)
         groups = [self.ALL_GROUPS] + groups

@@ -408,7 +408,7 @@ class RecData (rdatabase.RecData):
                 print 'Tried to select rowid FROM ',table,where,params
                 raise "Modifying nonexistent row" + table + "%s"%rowid
         if type(rowid)!=int:
-            raise str("%s is not a ROWID. We were handed: "%(rowid,
+            raise str("%s is not a ROWID. We were handed: %s,%s,%s,%s"%(rowid,
                                                              table,rowid,d,unique_id_col
                                                              )
                       )

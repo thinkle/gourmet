@@ -81,12 +81,17 @@ class exporter:
     # Internal methods -- ideally, subclasses should have no reason to
     # override any of these methods.
         
-    def _write_attrs_ (self):        
+    def _write_attrs_ (self):
         self.write_attr_head()
         for a in self.attr_order:
             gglobals.gt.gtk_update()
             txt=self._grab_attr_(self.r,a)
-            if txt and txt.strip():
+            debug('_write_attrs_ writing %s=%s'%(a,txt),1)
+            if txt and (
+                (type(txt) not in [str,unicode])
+                or
+                txt.strip()
+                ):
                 if (a=='preptime' or a=='cooktime') and a.find("0 ")==0: pass
                 else:
                     if self.convert_attnames:
@@ -196,6 +201,9 @@ class exporter:
                     ret = "%s/5 %s"%(ret/2,_('stars'))
                 else:
                     ret = "%s/5 %s"%(ret/2.0,_('stars'))
+            elif attr=='servings' and type(ret)!=str:
+                print 'USING',self.fractions
+                ret = convert.float_to_frac(ret,fractions=self.fractions)
             if type(ret) in [str,unicode] and attr not in ['thumb','image']:
                 try:
                     ret = ret.encode(self.DEFAULT_ENCODING)

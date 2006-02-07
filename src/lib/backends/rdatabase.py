@@ -608,6 +608,7 @@ class RecData:
         """Handed a view of ingredient data, we output a useful list.
         The data we hand out consists of a list of tuples. Each tuple contains
         amt, unit, key, alternative?"""
+        ret = []
         for i in view:
             ret.append([self.get_amount(i), i.unit, i.ingkey,])
         return ret
