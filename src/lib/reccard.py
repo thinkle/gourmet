@@ -1639,6 +1639,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.display_window.hide()
         # delete it from main apps list of open windows
         self.rg.del_rc(self.current_rec.id)
+        if not self.display_window.get_property('visible'):
+            self.rg.del_rc(self.current_rec.id)
         return True
 
     def hide_edit (self, *args):
@@ -1656,8 +1658,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 if self.new:
                     self.delete()
         self.edit_window.hide()
-        if not self.display_window.get_property('visible'):
-            self.rg.del_rc(self.current_rec.id)
         return True
         
     def show (self, *args):
