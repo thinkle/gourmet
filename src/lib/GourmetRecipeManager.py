@@ -664,7 +664,6 @@ class RecGui (RecIndex):
             rc=reccard.RecCard(self)
             self.make_rec_visible(rc.current_rec)
             self.rc[rc.current_rec.id]=rc
-            self.make_rec_visible(rc.current_rec)
             self.app.window.set_cursor(None)
         gobject.idle_add(show)
 
