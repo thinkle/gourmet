@@ -18,27 +18,12 @@ large archives of these files available on the web -- search for the
 kind of recipes you're interested in an "mealmaster" or "mastercook",
 and you should find them.
 
-In addition, Gourmet can import webpages from some websites:
-
-www.allrecipes.com - A large recipe website
-
-www.epicurious.com - An excellent, large recipe site with recipes from many
-                     magazines (Gourmet, Bon Apetite, etc.)
-
-www.eatingwell.com - A limited selection of free recipes from one of
-                     my favorite cooking magazines.
-
-www.recipebookonline.com - Another large database of recipes.
-
-www.recipezaar.com - A large database of recipes that imports well
-                     into Gourmet :)
-
-One warning: Gourmet is mainly intended for you to keep track of the
-hundreds of recipes you actually use, not the hundreds of thousands of
-recipes that are available in massive archives on the web. Although I
-hope to improve Gourmet in the future to support as many recipes as
-possible, users report that the current version gets sluggish with
-more than a few thousand recipes.
+Gourmet can also import recipes from websites. A very few websites
+have support for automated import. In most cases, Gourmet will pop up
+a window asking you to identify the title, source, ingredients,
+etc. from the text of the recipe on the webpage. Then Gourmet will ask
+if you want to choose any images from the webpage to associate with
+the web page.
 
 2.b. What is that funny dialog about "encoding" that comes up when I import?
 
@@ -61,9 +46,15 @@ offers. For example, you can first search for Category "Salad", then
 press "Limit", and then search for Jícama, in order to find all Salads
 with Jícama in them.
 
-Using "Advanced" searching (on by default), you can also harness the
-power of regular expressions in your searches! For example, you could
-search for "(Salad|Appetizer)" to search for Salads OR Appetizers.
+Using "Advanced" searching (on by default), you can also use "or" to
+search for e.g. something with a category that is category or
+appetizer.
+
+Gourmet also supports regular expression searching. If you know what
+that is, you'll find it very useful. If you don't know what it is,
+know that searches with punctuation in them may not work as expected
+(not that there's much reason to search within a recipe for
+punctuation).
 
 4. Shopping lists
 
@@ -111,6 +102,12 @@ The other tabs are for editing different aspects of the recipe:
 "Details" includes the title, image, category, cuisine, preparation
 time, cooking time, etc. The other tabs are self-explanatory.
 
+When you open a previously created recipe, you'll see an attractive
+"Recipe Card" display. If you want to edit any part of this display,
+click on the "Edit" button next to the relevant section. For example,
+next to the "Ingredients" header, there's a "Edit ingredients" button
+which will open the edit window on the ingredients tab.
+
 5.b. There are two many fields; I don't care about X.
 
 If you know that you never want to enter information about "Cuisine"
@@ -146,6 +143,12 @@ and "black pepper" to one key.
 
 You can also see what recipe different keys are used in, so that if
 you see something is obviously wrong, you can go correct it.
+
+Finally, the Key Editor allows you to easily change amounts and units
+as well, either for individual instances or en masse. Using the Key
+Editor, you can easily change all instances of ts. to tsp., or you
+could tell it that for water, you'd like to change all instances of 1
+kg. to 1 liter.
 
 5.e. How do I convert units?
 
