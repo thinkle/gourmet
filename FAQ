@@ -194,12 +194,15 @@ creating a "New Recipe" and then adding as many recipes as
 
 7. Can I calculate nutritional information with Gourmet?
 
-Not yet.
-
-However, there are plans to include a nutritional-information
-calculator in version 0.9 of Gourmet and code has already been written
-toward this end. If you're a programmer, feel free to get in touch and
-help me work on this feature.
+Yes! Gourmet includes a copy of the USDA nutritional database, which
+has thousands of items. For now, Gourmet doesn't know about any
+ingredients by default--unless you tell it about your ingredients,
+Gourmet will always say it is "missing nutritional information" for
+the items in your recipe. If you care about nutritional information,
+click "Edit" and a new window will pop up and ask you to give it the
+information it needs to calculate nutritional information, either
+using the USDA database foods or entering nutritional information by
+hand if necessary.
 
 8. What if I have a good idea for how to improve Gourmet?
 
