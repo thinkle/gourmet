@@ -1,3 +1,23 @@
+==== Version 0.10.0 changes cince 0.9.0.3 ====
+
+* Switch database backend to SQLite. The backend is still abstract, so
+  if in the future someone wants to switch back to metakit or to
+  something else, it should be simple.
+* Add new automated backup script into setup.py. This is less than
+  ideal, but there's no real way to import smoothly from the old system
+  to the new.
+* Make editing of recipe card a separate dialog from viewing recipe
+  card. This allows the recipe card itself to lose the toolbar and look
+  much cleaner.
+* Make text in recipe card reflow properly when resizing.
+* Improve import speed drastically by not inserting auto-generated
+  keys into key table.
+* Only add keys to ingkey table (used for automatic key-guessing) when
+  the user has modified something. This means we actually learn from the
+  user rather than generating our own random noise.
+* Many, many more bugfixes along the way.
+
+ 
 ==== Version 0.9.0.3 changes since 0.9.0.1 ====
 * Fix email export
 * Improve recipe card interface.
