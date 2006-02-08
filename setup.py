@@ -19,7 +19,7 @@ try:
     from version import version
 except:
     #print 'Version info may be out of date.'
-    version = "0.9.0"
+    version = "0.10.0"
 
 name= 'gourmet'
 
@@ -127,6 +127,7 @@ else:
     # Run upgrade pre script
     # Importing runs the actual script...
     import tools.upgrade_pre_script
+    tools.upgrade_pre_script.dump_old_data()
         
 setup(
     name = name,
