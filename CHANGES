@@ -15,6 +15,9 @@
 * Only add keys to ingkey table (used for automatic key-guessing) when
   the user has modified something. This means we actually learn from the
   user rather than generating our own random noise.
+* Add support for typing "or" in a search instead of using the or bar (|).
+* Import sorting of USDA DB searches (in the nutritional info druid)
+  to bring you better results faster.
 * Many, many more bugfixes along the way.
 
  
