@@ -239,8 +239,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         #self.serveW = self.glade.get_widget('servingsBox')
         #self.multCheckB = self.glade.get_widget('rcMultCheck')
         self.multLabel = self.glade.get_widget('multLabel')
-        self.applyB = self.glade.get_widget('saveButton')
-        self.revertB = self.glade.get_widget('revertButton')
         self.edit_window = self.widget = self.glade.get_widget('recCard')
         self.display_window = self.glade.get_widget('recCardDisplay')
         self.edit_window.set_transient_for(self.display_window)
@@ -417,7 +415,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         if rec:
             self.rg.openRecCard(rec)
         else:
-            de.show_message(parent=self.edit_window,
+            de.show_message(parent=self.display_window,
                             label=_('Unable to find recipe %s in database.')%rname
                             )
             
@@ -458,6 +456,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug("saveEditsCB (self, click=None, click2=None, click3=None):",5)
         self.rg.message("Committing edits!")
         self.setEdited(False)
+        self.view.set_sensitive(True)        
         self.new = False
         newdict = {'id': self.current_rec.id}
         for c in self.reccom:
@@ -1623,12 +1622,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug("setEdited (self, boolean=True):",5)
         self.edited=boolean
         if boolean:
-            self.applyB.set_sensitive(True)
-            self.revertB.set_sensitive(True)
+            self.save.set_sensitive(True)
+            self.revert.set_sensitive(True)
             self.message(_("You have unsaved changes."))
         else:
-            self.applyB.set_sensitive(False)
-            self.revertB.set_sensitive(False)
+            self.save.set_sensitive(False)
+            self.revert.set_sensitive(False)
             self.message(_("There are no unsaved changes."))
 
     def hide (self, *args):
@@ -1667,6 +1666,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.edit_window.set_title("%s %s"%(self.default_title,self.current_rec.title))
             self.display_window.hide()
             self.edit_window.present()
+            self.view.set_visible(True)
+            self.view.set_sensitive(False)
         else:
             self.edit_window.set_title("%s %s"%(self.edit_title,self.current_rec.title))
             self.display_window.set_title("%s %s"%(self.default_title,self.current_rec.title))
@@ -2382,5 +2383,3 @@ if __name__ == '__main__':
     rg = GourmetRecipeManager.RecGui()
     rc = RecCard(rg,rg.rd.fetch_one(rg.rd.rview))
     gtk.main()
-    
-    
