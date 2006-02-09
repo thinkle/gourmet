@@ -8,6 +8,7 @@ import gtk, gtk.glade, gtk.gdk, pango
 import re, os.path, sys
 from gourmet import convert
 from gourmet import gglobals
+from gourmet import check_encodings
 import importer
 from generic_recipe_parser import RecipeParser
 import imageBrowser
@@ -750,7 +751,10 @@ class InteractiveTextImporter (InteractiveImporter):
     def __init__ (self, filename, rd, progress=None, source=None, threaded=False,custom_parser=None):
         InteractiveImporter.__init__(self,rd,progress=progress,custom_parser=custom_parser)
         ofi = file(filename,'r')
-        self.set_text(ofi.read())
+        self.set_text(
+            '\n'.join(check_encodings.get_file(ofi)) # this is mildly idiotic
+            )
+        #self.set_text(ofi.read())
         ofi.close()
 
     def __repr__ (self): return "<InteractiveTextImporter>"
