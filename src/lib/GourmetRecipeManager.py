@@ -841,9 +841,6 @@ class RecGui (RecIndex):
             return
         import importers.html_importer
         sublabel = _('Enter the URL of a recipe archive or recipe website.')
-        sublabel += "\n"
-        sublabel += _('Gourmet can download a recipe in any supported recipe archive format or can import recipes from the following websites:')
-        sublabel += " %s"%", ".join(importers.html_importer.SUPPORTED_URLS.keys())
         url = de.getEntry(label=_('Enter website address.'),
                           sublabel=sublabel,
                           entryLabel=_('Enter URL: '),
