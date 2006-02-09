@@ -209,7 +209,7 @@ if not OptionParser.options.db or OptionParser.options.choosedb:
 if not db: db = 'metakit'
 
 if db != 'metakit':
-    print 'SQL database in use. Disabling threads.'
+    debug('SQL database in use. Disabling threads.',0)
     use_threads=False
 
 if use_threads:

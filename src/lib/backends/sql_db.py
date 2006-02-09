@@ -35,7 +35,7 @@ class RecData (rdatabase.RecData):
             if rowname==key:
                 add_string += " PRIMARY KEY"
                 if 'AUTOINCREMENT' in flags:
-                    add_string += " AUTOINCREMENT"; print 'AUTOINCREMENT',rowname,typ,flags
+                    add_string += " AUTOINCREMENT"#; print 'AUTOINCREMENT',rowname,typ,flags
             add_string += ","
         add_string = add_string[0:-1] + ")"
         self.execute(self.cursor,add_string,sql_params)

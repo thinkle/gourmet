@@ -23,6 +23,12 @@ class MnemonicManager:
         if not glade:
             glade=gtk.glade.XML(glade_file)
         widgets=glade.get_widget_prefix('') # get all widgets
+        # Check if there are more than one window, in which case we
+        # each window gets its own sub_handler
+        windows = filter(lambda w: isinstance(w,gtk.Window),widgets)
+        if len(windows)>0:
+            for w in windows:
+                self.sub_managers[w]=MnemonicManager()
         # handle menu items
         menu_items = filter(lambda x: isinstance(x,gtk.MenuItem),widgets)
         for mi in menu_items:
@@ -55,11 +61,17 @@ class MnemonicManager:
             # Are we in a notebook?
             nb = None
             p = w.parent
+            added_to_sub = False
             while p:
                 if isinstance(p.parent,gtk.Notebook):
                     break
+                elif self.sub_managers.has_key(p.parent):
+                    self.sub_managers[p.parent].add_widget_mnemonic(w)
+                    added_to_sub = True
+                    break
                 else:
                     p=p.parent
+            if added_to_sub: continue
             if p and isinstance(p.parent,gtk.Notebook):
                 nb = p.parent
                 page = nb.page_num(p)
