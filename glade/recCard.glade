@@ -21,7 +21,6 @@
   <property name="focus_on_map">True</property>
   <property name="urgency_hint">False</property>
   <signal name="delete_event" handler="rcHideEdit" last_modification_time="Tue, 07 Feb 2006 03:26:27 GMT"/>
-
   <child>
     <widget class="GtkVBox" id="vbox23">
       <property name="visible">True</property>
@@ -2799,8 +2798,7 @@ as Ingredient</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
   <property name="urgency_hint">False</property>
-  <signal name="rcHide" handler="on_recCardDisplay_delete_event" last_modification_time="Tue, 07 Feb 2006 03:26:10 GMT"/>
-
+  <signal name="delete_event" handler="rcHide" last_modification_time="Tue, 07 Feb 2006 03:26:27 GMT"/>
   <child>
     <widget class="GtkVBox" id="vbox34">
       <property name="visible">True</property>
@@ -3137,7 +3135,7 @@ as Ingredient</property>
 	      <property name="width_request">400</property>
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
-	      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+	      <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
 	      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
 	      <property name="shadow_type">GTK_SHADOW_NONE</property>
 	      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
