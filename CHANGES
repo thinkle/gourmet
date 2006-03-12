@@ -1,3 +1,9 @@
+==== Version 0.10.1 changes since 0.10.0 ====
+
+* Fix bug causing recipe cards to be destroyed when closed.
+* Fix bug causing "None" to show up in shopping list when there is no
+  unit.
+
 ==== Version 0.10.0 changes cince 0.9.0.3 ====
 
 * Switch database backend to SQLite. The backend is still abstract, so

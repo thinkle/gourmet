@@ -444,7 +444,10 @@ class converter:
                 nstring += float_to_frac(num[1],approx=approx).strip()
         else:
             nstring = float_to_frac(num,approx=approx)
-        return "%s %s" %(nstring, un)
+        if un:
+            return "%s %s" %(nstring, un)
+        else:
+            return "%s"%nstring
 
     def timestring_to_seconds (self, timestring):
         """Take a timestring and parse it into seconds.
