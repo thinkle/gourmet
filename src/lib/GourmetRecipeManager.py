@@ -459,12 +459,12 @@ class RecGui (RecIndex):
 
     def rectree_click_cb (self, tv, event):
         """Display popup button for right-click on rectree."""
-        debug("rectree_click_cb (self, tv, event):",5)
+        debug("rectree_click_cb (self, event):",5)
         if event.button==3:
-            self.popup_rmenu()
+            self.popup_rmenu(event)
             return True
-        if event.button==1 and event.type ==gtk.gdk._2BUTTON_PRESS:
-            self.recTreeSelectRec()
+        #if event.button==1 and event.type ==gtk.gdk._2BUTTON_PRESS:
+        #    self.recTreeSelectRec()
 
     def reset_rtree (self):
         """Re-create our recipe model."""
@@ -653,10 +653,14 @@ class RecGui (RecIndex):
                             change_units = self.prefs.get('readableUnits',True)
                             )
         gt.gtk_enter()
-    
-    def popup_rmenu (self, *args):
+
+    def popup_rmenu (self, event):
         debug("popup_rmenu (self, *args):",5)
-        self.pop.popup(None,None,None,0,0)
+        if hasattr(event,'button') and hasattr(event,'time'):
+            self.pop.popup(None,None,None,event.button,event.time)
+        else:
+            self.pop.popup(None,None,None,0,0)
+            return True
 
     def newRecCard (self, *args):
         self.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))

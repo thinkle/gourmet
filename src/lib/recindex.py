@@ -192,7 +192,7 @@ class RecIndex:
                                           order=self.prefs.get('rectree_column_order',{}))
         self.rectree_conf.apply_column_order()
         self.rectree_conf.apply_visibility()
-        #self.rectree.connect("row-activated",self.recTreeSelectRec)#self.recTreeSelectRec)
+        self.rectree.connect("row-activated",self.recTreeSelectRec)#self.recTreeSelectRec)
         self.rectree.get_selection().connect("changed",self.selection_changedCB)
         self.rectree.expand_all()
         self.rectree.show()

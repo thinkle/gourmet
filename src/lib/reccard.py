@@ -1062,7 +1062,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             tv.grab_focus()
             tv.set_cursor(path,col,0)
             self.shoppop_iter=tv.get_model().get_iter(path)
-            self.shoppop.popup(None,None,None,0,0)
+            self.shoppop.popup(None,None,None,event.button,event.time)
             return True
 
     def setupShopPopupMenu (self):

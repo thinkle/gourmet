@@ -234,12 +234,11 @@ class ShopGui (ActionManager):
         self.slMod = self.createIngModel(data)
         self.slTree = self.create_ingTree(self.glade.get_widget('shopITree'),
                                      self.slMod)
-        self.slTree.connect('row-activated',self.popup_ing_menu)
         self.slTree.connect('popup-menu',self.popup_ing_menu)
         def slTree_popup_cb (tv, event):
             debug("slTree_popup_cb (tv, event):",5)
-            if event.button==3:
-                self.popup_ing_menu(tv)
+            if event.button==3 or event.type == gtk.gdk._2BUTTON_PRESS:
+                self.popup_ing_menu(tv,event)
                 return True
         self.slTree.connect('button-press-event',slTree_popup_cb)
         self.slTree.get_selection().connect('changed',self.slTree_sel_changed_cb)
@@ -251,16 +250,16 @@ class ShopGui (ActionManager):
         self.pMod = self.createIngModel(data)
         self.pTree = self.create_ingTree(self.glade.get_widget('pantryTree'),
                                     self.pMod)
-        self.pTree.connect('row-activated',self.popup_pan_menu)
         self.pTree.connect('popup-menu',self.popup_pan_menu)
         self.pTree.get_selection().connect('changed',self.pTree_sel_changed_cb)
         # reset the first time...
         self.pTree_sel_changed_cb(self.pTree.get_selection())
         def pTree_popup_cb (tv, event):
             debug("pTree_popup_cb (tv, event):",5)
-            if event.button==3:
-                self.popup_pan_menu(tv)
+            if event.button==3 or event.type == gtk.gdk._2BUTTON_PRESS:
+                self.popup_pan_menu(tv,event)
                 return True
+            
         self.pTree.connect('button-press-event',pTree_popup_cb)
         
     def create_ingTree (self, widget, model):
@@ -359,15 +358,31 @@ class ShopGui (ActionManager):
         debug("ingSelection returns: %s"%selected_keys,3)
         return selected_keys
 
-    def popup_ing_menu (self, tv, *args):
+    def popup_ing_menu (self, tv, event=None, *args):
         debug("popup_ing_menu (self, tv, *args):",5)
         self.tv = tv
-        self.pop.popup(None,None,None,0,0)
+        if not event:
+            event = gtk.get_current_event()
+        t = (event and hasattr(event,'time') and getattr(event,'time')
+                or 0)
+        btn = (event and hasattr(event,'button') and getattr(event,'button')
+               or 0)
+        print 'self.pop.popup(None,None,None,',btn,t,')'        
+        self.pop.popup(None,None,None,btn,t)
+        return True
 
-    def popup_pan_menu (self, tv, *args):
+    def popup_pan_menu (self, tv, event=None, *args):
         debug("popup_pan_menu (self, tv, *args):",5)
         self.tv = tv
-        self.panpop.popup(None,None,None,0,0)
+        if not event:
+            event = gtk.get_current_event()
+        t = (event and hasattr(event,'time') and getattr(event,'time')
+                or 0)
+        btn = (event and hasattr(event,'button') and getattr(event,'button')
+               or 0)
+        print 'self.panpop.popup(None,None,None,',btn,t,')'
+        self.panpop.popup(None,None,None,btn,t)
+        return True
 
     def setup_popup (self):
         debug("setup_popup (self):",5)
