@@ -1178,12 +1178,21 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 elif attr=='item':
                     d['ingkey']=self.rg.rd.km.get_key(d['item'])
             debug('undoable_modify_ing %s'%d,0)
-            self.rg.rd.undoable_modify_ing(
-                ing,d,self.history,
-                make_visible = lambda ing,dic: self.showIngredientChange(iter,dic)
-                )
+            modified = False
+            for k,v in d.items():
+                if v != getattr(ing,k):
+                    modified = True
+                    break
+            if modified:
+                ref = gtk.TreeRowReference(store,store.get_path(iter))
+                self.rg.rd.undoable_modify_ing(
+                    ing,d,self.history,
+                    make_visible = lambda ing,dic: self.showIngredientChange(ref,dic)
+                    )
 
-    def showIngredientChange (self, iter, d):
+    def showIngredientChange (self, ref, d):
+        iter = ref.get_model().get_iter(ref.get_path())
+        ## COLUMN NUMBER FOR Shopping Category==6
         d=d.copy()
         # we hackishly muck up the dictionary so that the 'amount' field
         # becomes the proper display amount.
@@ -1193,11 +1202,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             if d['rangeamount']:
                 d['amount']=d['amount']+'-'+convert.float_to_frac(d['rangeamount'])
             del d['rangeamount']
-        self.resetIngredients()
+        #self.resetIngredients()
         if d.has_key('ingkey'):
             ## if the key has been changed and the shopping category is not set...
-            ## COLUMN NUMBER FOR Shopping Category==6
-            shopval=self.imodel.get_value(iter, 6)
+            shopval = self.imodel.get_value(iter,6)
             debug('Shopping Category value was %s'%shopval,4)
             if shopval:
                 self.rg.sl.orgdic[d['ingkey']]=shopval
@@ -1207,7 +1215,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                     self.imodel.set_value(iter, 6, self.rg.sl.orgdic[d['ingkey']])
         for attr,v in d.items():
             if self.ingColsByAttr.has_key(attr):
-                self.imodel.set_value(iter,self.ingColsByAttr[attr],v)
+                self.imodel.set_value(ref.get_model().get_iter(ref.get_path()),self.ingColsByAttr[attr],v)
 
     def changeUnit (self, new_unit, ing):
         """Handed a new unit and an ingredient, we decide whether to convert and return:
