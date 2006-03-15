@@ -3,6 +3,7 @@
 * Fix bug causing recipe cards to be destroyed when closed.
 * Fix bug causing "None" to show up in shopping list when there is no
   unit.
+* Fix popup menus throughout.
 
 ==== Version 0.10.0 changes cince 0.9.0.3 ====
 
