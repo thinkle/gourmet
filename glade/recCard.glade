@@ -3691,9 +3691,9 @@ as Ingredient</property>
 					<widget class="GtkSpinButton" id="servingsDisplaySpin">
 					  <property name="visible">True</property>
 					  <property name="can_default">True</property>
-					  <property name="has_default">True</property>
+					  <property name="has_default">False</property>
 					  <property name="can_focus">True</property>
-					  <property name="has_focus">True</property>
+					  <property name="has_focus">False</property>
 					  <property name="climb_rate">0.5</property>
 					  <property name="digits">2</property>
 					  <property name="numeric">False</property>
