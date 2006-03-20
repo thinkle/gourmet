@@ -379,8 +379,9 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                 itm['unit_label'].set_text('%i%s'%(rawval,itm['unit']))
             if itm['usda_rec_per_cal'] and itm['percent_label']:
                 totrec = itm['usda_rec_per_cal']*self.calories_per_day
-                percent = 100 * (float(rawval) / totrec)
-                itm['percent_label'].set_text("%i%%"%percent)
+                if totrec:
+                    percent = 100 * (float(rawval) / totrec)
+                    itm['percent_label'].set_text("%i%%"%percent)
 
     def setup_serving_label (self):
         if self.servings:

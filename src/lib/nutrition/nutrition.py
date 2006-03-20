@@ -102,7 +102,9 @@ class NutritionData:
     def get_nutinfo_for_item (self, key, amt, unit):
         """Handed a key, amount and unit, get out nutritional Database object.
         """
-        ni=self.get_nutinfo(key)        
+        ni=self.get_nutinfo(key)
+        if not amt:
+            amt = 1
         if ni:
             c=self.get_conversion_for_amt(amt,unit,key)
             if c:
@@ -155,17 +157,19 @@ class NutritionData:
             cnv = self.conv.converter('g.',unit,
                                       density=self.get_density(key,row,fudge=fudge)
                                       )
-        if not cnv and unit:
+        if not cnv:
             # Check our weights tables...
             extra_conversions = self.get_conversions(key,row)[1]
             if extra_conversions.has_key(unit):
                 cnv = extra_conversions[unit]
-            elif extra_conversions.has_key(unit.lower()):
+            elif unit and extra_conversions.has_key(unit.lower()):
                 cnv = extra_conversions[unit.lower()]
         if not cnv:
             # lookup in our custom nutrition-related conversion table
             if self.conv.unit_dict.has_key(unit):
                 unit = self.conv.unit_dict[unit]
+            elif not unit:
+                unit = ''
             lookup = self.db.fetch_one(self.db.nconversions,ingkey=key,unit=unit)
             if lookup:
                 cnv = lookup.factor
