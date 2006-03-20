@@ -23,7 +23,7 @@ class RecHandler (xml_importer.RecHandler):
         if name=='recipe':
             self.in_mixed=0
             self.start_rec()
-            for att in ['date','audience','cuisine','servings',
+            for att in ['cuisine','servings',
                         'rating','description','category','source']:
                 self.rec[att]=unquoteattr(attrs.get(att,""))
             for att in ['cuisine','source','category']:
@@ -52,11 +52,11 @@ class RecHandler (xml_importer.RecHandler):
             self.add_amt(unquoteattr(attrs.get('amount')))
         if name=='amount':
             self.in_mixed=0
-            for att in ['unit','norm']:
+            for att in ['unit']:
                 self.ing[att]=unquoteattr(attrs.get(att,""))
         if name=='item':
             self.in_mixed=0
-            for att in ['ingkey','alternative']:
+            for att in ['ingkey']:
                 self.ing[att]=unquoteattr(attrs.get(att,""))
         if self.in_mixed:
             self.mixed += "<%s" % name
