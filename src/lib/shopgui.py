@@ -21,6 +21,7 @@ class ShopGui (ActionManager):
         self.mm.fix_conflicts_peacefully()
         self.conv=conv
         self.rg = RecGui
+        self.nd = self.rg.nd # convenient reference to our nutrition
         self.recs = {}
         self.extras = []
         self.data,self.pantry=self.grabIngsFromRecs([])
@@ -117,6 +118,13 @@ class ShopGui (ActionManager):
             mod.set_value(iter,1,r.title)
             mod.set_value(iter,2,convert.float_to_frac(mult))
         return mod
+
+    def show_nutritional_info (self):
+        """Show nutritional information for this shopping list.
+        """
+        nl = NutritionLabel(self.rg.prefs)
+        nutinfo = self.nd.get_nutinfo_for_inglist(self.pantry + self.data)
+        nl.set_nutinfo(nutinfo)
 
     def save (self, *args):
         debug("save (self, *args):",5)
@@ -821,7 +829,9 @@ def getOptionalIngDic (ivw, mult, prefs, rg):
     we don't ask our user."""    
     debug("getOptionalIngDic (ivw):",5)
     #vw = ivw.select(optional=True)
+    print "getOptionalIngDic: We're handed",ivw,len(ivw)
     vw = filter(lambda r: r.optional==True, ivw)
+    print "getOptionalIngDic: We have optional:",vw,len(vw)
     # optional_mode: 0==ask, 1==add, -1==dont add
     optional_mode=prefs.get('shop_handle_optional',0)
     if optional_mode:

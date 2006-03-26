@@ -569,6 +569,19 @@ UNITS = [["bucket" , ["bucket", "buckets", "bckt."]],
          ["g.", ["grams", "gram", "g."]],
          ["mg.", ["miligram", "mg.", "mg", "miligrams"]],
          ["kg.", ["kilogram","kg.", "kg",  "kilograms"]]
+         ['fl. oz.',['fluid ounce','fluid ounces','fl. ounce','fl. ounces',
+                     'fl, oz','fl, oz.','fl. oz.']],
+         # These names aren't really convertible, but we want them to
+         # be recognized as units...
+         ['small',['small','sm','Small','sm.']],         
+         ['medium',['medium','med.','Medium']],
+         ['large',['large','Large','lg','lg.']],
+         ['clove',['clove','cloves','clv.']],
+         ['whole',['whole','wh.','whl']],
+         ['package',['pkg.','pkg','package','Pkg.','Package','pack']],
+         ['box',['Box','box','bx']],
+         ['can',['can','Can','cn','cn.']],
+         ['head',['head','Head','hd','hd.']],
          ]
 
 METRIC_RANGE = (1,999)

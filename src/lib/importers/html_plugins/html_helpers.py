@@ -39,7 +39,9 @@ class IngredientParser:
         return text
     
     def __call__ (self, text, container):
+        print 'CALLED WITH',text,container
         ret = []
+        if not container: return ret
         self.group = None
         items = container.contents
         items.reverse()

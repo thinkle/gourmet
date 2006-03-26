@@ -69,29 +69,33 @@ class shopper:
                         # our amounts to look like ranges to simplify the addition
                         if type(amt)==float: amt=(amt,amt) 
                         if type(a)==float: a=(a,a)
-                        #print 'amt:',amt,' unit:',unit,'a:',a,'u:',u
-                        add_low = self.cnv.adjust_unit(
-                            *self.cnv.add_reasonably(amt[0],unit,a[0],u,ing), #lowest+lowest
-                            **{'favor_current_unit':False}
-                            )
-                        add_high = self.cnv.adjust_unit(
-                            *self.cnv.add_reasonably(amt[1],unit,a[1],u,ing), # highest+highest
-                            **{'favor_current_unit':False}
-                            )
-                        # Adjust our units to make them readable (so
-                        # that e.g. 3 tbs. + 3 tbs. = 1/2 c.)
-                        if add_low:
-                            add_low = self.cnv.adjust_unit(*add_low,**{'favor_current_unit':False})
-                        if add_high:
-                            add_high = self.cnv.adjust_unit(*add_high,**{'favor_current_unit':False})
-                        if add_low[1]==add_high[1]: #same unit...
-                            add=((add_low[0],add_high[0]),add_low[1])
+                        print 'amt:',amt,' unit:',unit,'a:',a,'u:',u
+                        add_low = self.cnv.add_reasonably(amt[0],unit,a[0],u,ing)
+                        add_high = self.cnv.add_reasonably(amt[1],unit,a[1],u,ing)
+                        if (not add_low) or (not add_high):
+                            add = False
                         else:
-                            # otherwise, let's use our unit for add_high...
-                            u1_to_u2=self.cnv.converter(add_low[1],add_high[1])
-                            add=( (add_low[0]*u1_to_u2,add_high[0]), #amount tuple
-                                  add_high[1] #unit from add_high
-                                  )
+                            # Adjust units
+                            add_low = self.cnv.adjust_unit(
+                                *add_low, #lowest+lowest
+                                **{'favor_current_unit':False}
+                                )
+                            add_high = self.cnv.adjust_unit(
+                                *add_high, # highest+highest
+                                **{'favor_current_unit':False}
+                                )
+                            if add_low:
+                                add_low = self.cnv.adjust_unit(*add_low,**{'favor_current_unit':False})
+                            if add_high:
+                                add_high = self.cnv.adjust_unit(*add_high,**{'favor_current_unit':False})
+                            if add_low[1]==add_high[1]: #same unit...
+                                add=((add_low[0],add_high[0]),add_low[1])
+                            else:
+                                # otherwise, let's use our unit for add_high...
+                                u1_to_u2=self.cnv.converter(add_low[1],add_high[1])
+                                add=( (add_low[0]*u1_to_u2,add_high[0]), #amount tuple
+                                      add_high[1] #unit from add_high
+                                      )
                     else:
                         add = self.cnv.add_reasonably(amt,unit,a,u,ing)
                         if add:

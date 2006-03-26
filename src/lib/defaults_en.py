@@ -582,6 +582,7 @@ CONVERTER_TABLE = {
     ("l.", "cl."):100,
     ("l.", "dl."):10,
     ("oz.", "g."):28.35,
+    ("fl. oz.","tbs."):2,
     ("kg.", "g."):1000,
     ("g.", "mg."):1000,
     ("tsp.", "drop"):76,
@@ -657,7 +658,17 @@ UNITS = [["bucket" , ["bucket", "buckets", "bckt."]],
          ["l.", ["liter", "l.", "lit.", "liters",'l']],
          ["g.", ["grams", "gram", "g.",'g']],
          ["mg.", ["miligram", "mg.", "mg", "miligrams"]],
-         ["kg.", ["kilogram","kg.", "kg", "kilograms"]]
+         ["kg.", ["kilogram","kg.", "kg", "kilograms"]],
+         # These names aren't really convertible, but we want them to
+         # be recognized as units...
+         ['small',['small','sm','Small','sm.']],         
+         ['medium',['medium','med.','Medium']],
+         ['large',['large','Large','lg','lg.']],
+         ['clove',['clove','cloves','clv.']],
+         ['whole',['whole','wh.','whl']],
+         ['package',['pkg.','pkg','package','Pkg.','Package','pack']],
+         ['box',['Box','box','bx']],
+         ['can',['can','Can','cn','cn.']],
          ]
 
 METRIC_RANGE = (1,999)
@@ -707,7 +718,9 @@ CROSS_UNIT_TABLE = {
     ("tbs.", "oz."):['density',0.5],
     ("c.", "oz."):['density',8],
     ("pt.", "oz."):['density',16],
-    ("ml.", "g."):['density',1]}
+    ("ml.", "g."):['density',1],
+    ('oz.','fl. oz.'):['density',1],
+    }
 
 # The units here need to correspond to the standard unit names defined
 # in UNITS.  These are some core conversions from mass-to-volume,

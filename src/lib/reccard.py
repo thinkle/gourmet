@@ -1124,10 +1124,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         if head==_('Optional'):
             if newval: newval=True
             else: newval=False
+            ref = gtk.TreeRowReference(store,store.get_path(iter))
             self.rg.rd.undoable_modify_ing(
                 ing,
                 {'optional':newval},self.history,
-                make_visible= lambda ing,dic: self.showIngredientChange(iter,dic))
+                make_visible= lambda ing,dic: self.showIngredientChange(ref,dic))
         
     def ingtree_start_keyedit_cb (self, renderer, cbe, path_string):
         debug('ingtree_start',0)
@@ -1216,6 +1217,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         for attr,v in d.items():
             if self.ingColsByAttr.has_key(attr):
                 self.imodel.set_value(ref.get_model().get_iter(ref.get_path()),self.ingColsByAttr[attr],v)
+        self.resetIngredients()
+        self.resetIngList()        
 
     def changeUnit (self, new_unit, ing):
         """Handed a new unit and an ingredient, we decide whether to convert and return:
@@ -2079,7 +2082,7 @@ class IngredientEditor:
         self.user_set_shopper=False
         if hasattr(self,'optCheck') and self.optCheck:
             self.optCheck.set_active(False)
-        self.amountBox.grab_focus()
+        #self.amountBox.grab_focus()
 
     def quick_add (self, *args):
         txt = self.quickEntry.get_text()

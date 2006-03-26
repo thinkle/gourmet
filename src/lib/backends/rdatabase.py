@@ -813,7 +813,8 @@ class RecData:
         def undo_action ():
             debug('undoable_modify_ing unmodifying %s'%orig_dic,2)
             self.modify_ing(ing,orig_dic)
-            self.remove_ing_from_keydic(item,key)
+            if key:
+                self.remove_ing_from_keydic(item,key)
             if make_visible: make_visible(ing,orig_dic)
         obj = Undo.UndoableObject(do_action,undo_action,history)
         obj.perform()

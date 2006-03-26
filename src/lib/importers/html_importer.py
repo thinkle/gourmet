@@ -191,6 +191,11 @@ class BeautifulSoupScraper:
             # also work for previousSibling, nextSibling, etc.
             if step.has_key('moveto'):
                 ret = [getattr(o,step['moveto']) for o in ret]
+            else:
+                for motion in ['firstNext','firstPrevious','findParent']:
+                    if step.has_key(motion):
+                        ret = [getattr(o,motion)(step[motion]) for o in ret]
+                        break
             if type(ind)==list or type(ind)==tuple:                 
                 return ret[ind[0]:ind[1]]
             else: #ind is an integer
@@ -512,7 +517,7 @@ class WebPageImporter (importer.importer):
                     dic=self.rd.ingredient_parser(l,conv=self.conv)
                     if dic:
                         self.start_ing(**dic)
-                    self.commit_ing()
+                        self.commit_ing()
             elif k == 'image':
                 try:
                     if v: self.rec['image']=get_image_from_tag(v,self.url)
