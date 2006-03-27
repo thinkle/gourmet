@@ -490,6 +490,9 @@ class RecIndex:
         the information in the index view."""
         pass
 
+    def recTreeSelectRec (self, *args):
+        raise NotImplementedError
+
     def recTreeSelectedRecs (self):
         debug("recTreeSelectedRecs (self):",5)
         def foreach(model,path,iter,recs):

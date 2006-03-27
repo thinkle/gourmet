@@ -2358,6 +2358,9 @@ class RecSelector (RecIndex):
         debug('cancel',0)
         self.quit()
 
+    def recTreeSelectRec (self, *args):
+        self.ok()
+
     def ok (self,*args):
         debug('ok',0)
         pre_iter=self.reccard.getSelectedIter()
