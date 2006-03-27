@@ -721,7 +721,7 @@ class RecData:
             if new_count:
                 self.do_modify(self.ikview,row,{'count':new_count})
             else:
-                self.delete_by_criteria(self.ikview,{'item':item,'ingkey':ingkey})
+                self.delete_by_criteria(self.ikview,{'item':item,'ingkey':key})
         for w in re.split('\W+',item):
             w=w.lower()
             row = self.fetch_one(self.ikview,item=item,ingkey=key)
@@ -730,7 +730,7 @@ class RecData:
                 if new_count:
                     self.do_modify(self.ikview,row,{'count':new_count})
                 else:
-                    self.delete_by_criteria(self.ikview,{'word':w,'ingkey':ingkey})
+                    self.delete_by_criteria(self.ikview,{'word':w,'ingkey':key})
 
     def ing_shopper (self, view):
         return mkShopper(self.ingview_to_lst(view))
@@ -1278,3 +1278,4 @@ class DatabaseUnitTest (unittest.TestCase):
             self.rd.modify_ing(i,{'optional':True})
         assert(ing.unit=='cup')
         self.rd.delete_ing(ing)
+        

@@ -829,16 +829,16 @@ def getOptionalIngDic (ivw, mult, prefs, rg):
     we don't ask our user."""    
     debug("getOptionalIngDic (ivw):",5)
     #vw = ivw.select(optional=True)
-    print "getOptionalIngDic: We're handed",ivw,len(ivw)
     vw = filter(lambda r: r.optional==True, ivw)
-    print "getOptionalIngDic: We have optional:",vw,len(vw)
     # optional_mode: 0==ask, 1==add, -1==dont add
     optional_mode=prefs.get('shop_handle_optional',0)
     if optional_mode:
-        if optional_mode==1: return True
-        elif optional_mode==-1: return False
+        if optional_mode==1:
+            return True
+        elif optional_mode==-1:
+            return False
     elif len(vw) > 0:
-        if not 0 in [i.shopoptional for i in vw]:
+        if not None in [i.shopoptional for i in vw]:
             # in this case, we have a simple job -- load our saved
             # defaults
             dic = {}
@@ -847,9 +847,10 @@ def getOptionalIngDic (ivw, mult, prefs, rg):
                 else: dic[i.ingkey]=False
             return dic
         # otherwise, we ask our user
+        print 'Run OID with ',vw,prefs,rg,mult
         oid=OptionalIngDialog(vw, prefs, rg,mult )
         retval = oid.run()
         if retval:
-            return
+            return retval
         else:
             raise "Option Dialog cancelled!"

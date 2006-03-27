@@ -699,7 +699,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 debug(_("Couldn't make sense of %s as number of servings")%self.current_rec.servings,0)        
         self.serves = self.serves_orig
         #self.servingsChange()
-        self.resetIngList()
+        self.resetIngredients()
         self.updateRecDisplay()
         for c in self.reccom:
             debug("Widget for %s"%c,5)
@@ -1192,6 +1192,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                     )
 
     def showIngredientChange (self, ref, d):
+        if not ref.valid():
+            self.resetIngredients()
+            return
         iter = ref.get_model().get_iter(ref.get_path())
         ## COLUMN NUMBER FOR Shopping Category==6
         d=d.copy()
@@ -1217,8 +1220,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         for attr,v in d.items():
             if self.ingColsByAttr.has_key(attr):
                 self.imodel.set_value(ref.get_model().get_iter(ref.get_path()),self.ingColsByAttr[attr],v)
-        self.resetIngredients()
-        self.resetIngList()        
+        # Update everything but our treeview
+        self.create_ing_alist()
+        self.updateIngredientsDisplay()
+        self.update_nutrition_info()
 
     def changeUnit (self, new_unit, ing):
         """Handed a new unit and an ingredient, we decide whether to convert and return:
@@ -2151,7 +2156,7 @@ class IngredientEditor:
         debug('blank selves/new',5)
         self.new()
         debug('done!',5)
-        self.rc.resetIngList()
+        self.rc.resetIngredients()
         self.rc.message(_('Changes to ingredients saved automatically.'))            
         #self.new()
 
@@ -2171,7 +2176,7 @@ class IngredientEditor:
                 ings_to_delete.append(ing)
         print 'undoable_delete_ings(',ings_to_delete
         self.rg.rd.undoable_delete_ings(ings_to_delete, self.rc.history,
-                                        make_visible=lambda *args: self.rc.resetIngList())
+                                        make_visible=lambda *args: self.rc.resetIngredients())
         #self.new()
                                       
     def remove_group (self, iter):
@@ -2187,7 +2192,6 @@ class IngredientEditor:
                                 self.rc.history)
             return
         # otherwise, we'll need to be more thorough...
-
         if de.getBoolean(label=_("Are you sure you want to delete %s")%group):
             # collect our childrenp
             children = []
@@ -2230,20 +2234,18 @@ class IngredientEditor:
                                      sibling=iter, direction="after")
                 if ings_to_delete:
                     self.rg.rd.undoable_delete_ings(ings_to_delete,self.rc.history,
-                                                    make_visible=lambda *args: self.rc.resetIngList())
+                                                    make_visible=lambda *args: self.rc.resetIngredients())
                 if ings_to_modify:
                     def ungroup(*args):
                         debug('ungroup ingredients!',3)
                         for i in ings_to_modify:
                             self.rg.rd.modify_ing(i,{'inggroup':''})
                         self.rc.resetIngredients()
-                        self.rc.resetIngList()
                     def regroup(*args):
                         debug('Unmodifying ingredients',3)
                         for i in ings_to_modify:
                             self.rg.rd.modify_ing(i,{'inggroup':group})
                         self.rc.resetIngredients()
-                        self.rc.resetIngList()
                     debug('Modifying ingredients',0)
                     um=Undo.UndoableObject(ungroup,regroup,self.rc.history)                    
                     um.perform()                    
