@@ -11,6 +11,14 @@ class MnemonicManager:
         self.untouchable_accels = []
         self.untouchable_widgs = []
 
+    def get_submanager (self, w):
+        p = w.parent
+        while p:
+            if self.sub_managers.has_key(p):
+                return self.sub_managers[p]
+            p = p.parent
+        return self
+
     def add_glade (self, glade=None, glade_file=None):
         """Add all mnemonic widgets in glade object.
 
@@ -40,7 +48,7 @@ class MnemonicManager:
                 continue
             if isinstance(mi.parent,gtk.MenuBar):
                 added.append(lab)
-                self.add_widget_mnemonic(lab,untouchable=True)
+                self.get_submanager(mi.parent).add_widget_mnemonic(lab,untouchable=True)
             # otherwise, we create a sub-instance of ourselves to
             # handle submenus, etc.
             else:
@@ -54,7 +62,9 @@ class MnemonicManager:
                                        gtk.gdk.keyval_name(x.get_mnemonic_keyval())!='VoidSymbol'),
                             widgets)
         more_mnemonics = []
-        for w in widgets: more_mnemonics.extend(w.list_mnemonic_labels())
+        for w in widgets:
+            mm = w.list_mnemonic_labels()
+            more_mnemonics.extend(mm)
         for l in more_mnemonics:
             if l not in has_keyval and l not in added: has_keyval.append(l)
         for w in has_keyval:
@@ -80,7 +90,7 @@ class MnemonicManager:
                 if not self.notebook_managers[nb].has_key(page):
                     self.notebook_managers[nb][page]=MnemonicManager()
                 self.notebook_managers[nb][page].add_widget_mnemonic(w)
-            else:                
+            else:
                 if isinstance(w.parent,gtk.Notebook):
                     # make notebook tab labels (should be our only
                     # direct descendant labels) untouchable.
@@ -154,7 +164,7 @@ class MnemonicManager:
     def find_peaceful_alternatives (self, w):
         return filter(lambda l: not self.mnemonics.has_key(l),self.find_alternatives(w))
     
-    def fix_conflicts_peacefully (self, do_submenus=False):
+    def fix_conflicts_peacefully (self, do_submenus=True):
         to_reconcile = []
         changed = []
         for k,v in self.mnemonics.items():
