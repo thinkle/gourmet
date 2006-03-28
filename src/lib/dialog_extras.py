@@ -194,10 +194,14 @@ class NumberDialog (ModalDialog):
         self.hbox.add(self.spinButton)
         self.spinButton.get_adjustment().connect("value_changed",self.update_value)
         self.spinButton.show()
+        self.spinButton.connect('activate',self.entry_activate_cb)
         self.hbox.show()                
         
     def update_value (self, *args):
         self.ret=self.spinButton.get_value()
+
+    def entry_activate_cb (self, *args):
+        self.okcb()
 
 class EntryDialog (ModalDialog):
 
@@ -274,6 +278,7 @@ class RadioDialog (ModalDialog):
         self.buttons = []
         for label,value in options:
             rb = gtk.RadioButton(group=previous_radio, label=label, use_underline=True)
+            rb.connect('activate',self.okcb)
             self.vbox.add(rb)
             rb.show()
             rb.connect('toggled',self.toggle_cb,value)
@@ -1222,6 +1227,7 @@ if __name__ == '__main__':
         ['show FAQ',lambda *args: show_faq(jump_to='shopping')],
         ['show message',lambda *args: show_message('howdy',label='Hello there. This is a very long label for the top of a dialog.', sublabel='And this is a sub message.',message_type=gtk.MESSAGE_WARNING)],
         ['get entry', lambda *args: getEntry(label='Main label',sublabel='sublabel',entryLabel='Entry Label: ')],
+        ['get number', lambda *args: getNumber(label='Main label',sublabel='sublabel')],        
         ['get long entry', lambda *args: getEntry(label='Main label', sublabel=char_measure, entryLabel='Entry Label: ',default_character_width=75,entryTip='Enter something long here.')],
         ['show boolean', lambda *args: getBoolean()],
         ['show custom boolean', lambda *args: getBoolean(custom_yes='_Replace',

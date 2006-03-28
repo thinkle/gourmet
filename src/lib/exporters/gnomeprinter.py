@@ -297,7 +297,7 @@ class RecRenderer (print_writer):
 
 class RecWriter (exporter.exporter_mult):
     def __init__ (self, rd, r, printwriter, change_units=True, mult=1):
-        debug('__init__ ',3)
+        debug('__init__ rd=%s r=%s printwriter=%s change_units=%s mult=%s'%(rd,r,printwriter,change_units,mult),3)
         self.print_writer = printwriter
         self.r = r
         exporter.exporter_mult.__init__(self, rd, r, out=None, change_units=change_units, mult=mult,
