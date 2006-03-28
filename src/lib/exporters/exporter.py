@@ -376,7 +376,6 @@ class exporter_mult (exporter):
                           use_ml=use_ml, do_markup=do_markup,
                           convert_attnames=convert_attnames,
                           fractions=fractions,
-                          
                           )
 
     def write_attr (self, label, text):
@@ -398,7 +397,7 @@ class exporter_mult (exporter):
         else:
             return exporter._grab_attr_(self,obj,attr)
 
-    def get_amount_and_unit (self, ing):
+    def _get_amount_and_unit_ (self, ing):
         if self.mult != 1 and self.change_units:
             return self.rd.get_amount_and_unit(ing,mult=self.mult,conv=self.conv,
                                                fractions=self.fractions)
