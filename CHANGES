@@ -1,12 +1,19 @@
-==== Version 0.10.1 changes since 0.10.0 ====
+==== Version 0.10.2 changes since 0.10.1 ====
 
+* Fix bug causing export from recipe card not to multiply ingredients
+  properly.
+* Fix various problems with ingredient editing (display of updates,
+  undo/redo)
+* Fix dialog responses so hitting return and escape works more consistently.
+* Fix bug in addition of ingredients in shopping list.
+
+==== Version 0.10.1 changes since 0.10.0 ====
 * Fix bug causing recipe cards to be destroyed when closed.
 * Fix bug causing "None" to show up in shopping list when there is no
   unit.
 * Fix popup menus throughout.
 
 ==== Version 0.10.0 changes cince 0.9.0.3 ====
-
 * Switch database backend to SQLite. The backend is still abstract, so
   if in the future someone wants to switch back to metakit or to
   something else, it should be simple.
