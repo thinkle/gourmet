@@ -1,6 +1,7 @@
 import rdatabase
 import os, os.path, re
 import gourmet.gglobals as gglobals
+from gourmet.gdebug import debug
 from gettext import gettext as _
 
 class RecData (rdatabase.RecData):
@@ -68,6 +69,7 @@ class RecData (rdatabase.RecData):
 
     def execute (self, cursor, sql, params=[]):
         try:
+            debug("%s %s"%(sql,params),4)
             cursor.execute(sql,params)
         except:
             print "Failed to execute:"
@@ -244,7 +246,7 @@ class RecData (rdatabase.RecData):
         cursor = self.connection.cursor()
         if crit:
             if 'category' in [s[0] for s in sort_by]:
-                join='JOIN %(catview)s on %(catview)s.id=%(view)s.id'%{
+                join='LEFT JOIN %(catview)s on %(catview)s.id=%(view)s.id'%{
                     'catview':self.catview,
                     'view':self.rview}
             else:
@@ -257,7 +259,7 @@ class RecData (rdatabase.RecData):
             base_search,params = nested_selects[0]
             nested_selects = nested_selects[1:]
         for sql,prms in nested_selects:
-            base_search += ' AND id IN ( ' + sql + ')'
+            base_search += ' AND %(view)s.id IN ( '%{'view':self.rview} + sql + ')'
             params += prms
         if sort_by: base_search += '\n'+self.make_order_by_statement(sort_by)
         if limit:
