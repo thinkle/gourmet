@@ -2,7 +2,6 @@
 <!DOCTYPE glade-interface SYSTEM "http://glade.gnome.org/glade-2.0.dtd">
 
 <glade-interface>
-<requires lib="gnome"/>
 
 <widget class="GtkDialog" id="ShopDialog">
   <property name="width_request">691</property>
@@ -21,6 +20,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
   <signal name="close" handler="sdHide" last_modification_time="Tue, 25 May 2004 02:49:34 GMT"/>
   <signal name="delete_event" handler="sdHide" last_modification_time="Tue, 25 May 2004 02:49:57 GMT"/>
@@ -325,6 +325,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <signal name="delete_event" handler="shopHide" last_modification_time="Tue, 29 Jun 2004 20:06:07 GMT"/>
 
   <child>
@@ -336,11 +337,14 @@
       <child>
 	<widget class="GtkMenuBar" id="menubar5">
 	  <property name="visible">True</property>
+	  <property name="pack_direction">GTK_PACK_DIRECTION_LTR</property>
+	  <property name="child_pack_direction">GTK_PACK_DIRECTION_LTR</property>
 
 	  <child>
 	    <widget class="GtkMenuItem" id="file5">
 	      <property name="visible">True</property>
-	      <property name="stock_item">GNOMEUIINFO_MENU_FILE_TREE</property>
+	      <property name="label" translatable="yes">_File</property>
+	      <property name="use_underline">True</property>
 
 	      <child>
 		<widget class="GtkMenu" id="file5_menu">
@@ -348,7 +352,8 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="save2">
 		      <property name="visible">True</property>
-		      <property name="stock_item">GNOMEUIINFO_MENU_SAVE_ITEM</property>
+		      <property name="label">gtk-save</property>
+		      <property name="use_stock">True</property>
 		      <signal name="activate" handler="shopSave" last_modification_time="Sat, 22 May 2004 16:02:45 GMT"/>
 		    </widget>
 		  </child>
@@ -356,7 +361,8 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="print1">
 		      <property name="visible">True</property>
-		      <property name="stock_item">GNOMEUIINFO_MENU_PRINT_ITEM</property>
+		      <property name="label">gtk-print</property>
+		      <property name="use_stock">True</property>
 		      <signal name="activate" handler="shopPrint" last_modification_time="Sat, 22 May 2004 16:03:17 GMT"/>
 		    </widget>
 		  </child>
@@ -370,7 +376,8 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="quit5">
 		      <property name="visible">True</property>
-		      <property name="stock_item">GNOMEUIINFO_MENU_CLOSE_ITEM</property>
+		      <property name="label">gtk-close</property>
+		      <property name="use_stock">True</property>
 		      <signal name="activate" handler="shopHide" last_modification_time="Sat, 22 May 2004 19:28:38 GMT"/>
 		    </widget>
 		  </child>
@@ -382,7 +389,8 @@
 	  <child>
 	    <widget class="GtkMenuItem" id="edit2">
 	      <property name="visible">True</property>
-	      <property name="stock_item">GNOMEUIINFO_MENU_EDIT_TREE</property>
+	      <property name="label" translatable="yes">_Edit</property>
+	      <property name="use_underline">True</property>
 
 	      <child>
 		<widget class="GtkMenu" id="edit2_menu">
@@ -396,7 +404,7 @@
 		      <accelerator key="N" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image30">
+			<widget class="GtkImage" id="image35">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-add</property>
 			  <property name="icon_size">1</property>
@@ -412,8 +420,21 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="new2">
 		      <property name="visible">True</property>
-		      <property name="stock_item">GNOMEUIINFO_MENU_CLEAR_ITEM</property>
+		      <property name="label" translatable="yes">Clear shopping List</property>
+		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="shopClear" last_modification_time="Sat, 22 May 2004 16:02:14 GMT"/>
+
+		      <child internal-child="image">
+			<widget class="GtkImage" id="image36">
+			  <property name="visible">True</property>
+			  <property name="stock">gtk-clear</property>
+			  <property name="icon_size">1</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			</widget>
+		      </child>
 		    </widget>
 		  </child>
 
@@ -433,7 +454,7 @@
 		      <accelerator key="d" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image31">
+			<widget class="GtkImage" id="image37">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-remove</property>
 			  <property name="icon_size">1</property>
@@ -456,7 +477,7 @@
 		      <accelerator key="b" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image32">
+			<widget class="GtkImage" id="image38">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-undo</property>
 			  <property name="icon_size">1</property>
@@ -476,7 +497,8 @@
 	  <child>
 	    <widget class="GtkMenuItem" id="view_menu_item">
 	      <property name="visible">True</property>
-	      <property name="stock_item">GNOMEUIINFO_MENU_VIEW_TREE</property>
+	      <property name="label" translatable="yes">_View</property>
+	      <property name="use_underline">True</property>
 
 	      <child>
 		<widget class="GtkMenu" id="view_menu_item_menu">
@@ -529,7 +551,6 @@
 		      <property name="label">gtk-help</property>
 		      <property name="use_stock">True</property>
 		      <signal name="activate" handler="show_help" last_modification_time="Sat, 04 Jun 2005 01:19:37 GMT"/>
-
 		    </widget>
 		  </child>
 		</widget>
@@ -585,6 +606,19 @@
 	  </child>
 
 	  <child>
+	    <widget class="GtkSeparatorToolItem" id="separatortoolitem2">
+	      <property name="visible">True</property>
+	      <property name="draw">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
 	    <widget class="GtkToolButton" id="button7">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Remove the selected recipe from your shopping list (or remove all items if no recipe is selected)</property>
@@ -615,17 +649,15 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkToolButton" id="addToShopList">
+	    <widget class="GtkToolButton" id="toolbutton1">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Add additional items to your shopping list.</property>
-	      <property name="can_focus">True</property>
-	      <property name="label" translatable="yes">_Add Items to Shopping List</property>
+	      <property name="label" translatable="yes">Nutritional Info</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_id">gtk-add</property>
+	      <property name="stock_id">gtk-dialog-info</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
-	      <signal name="clicked" handler="shopAdd" last_modification_time="Tue, 25 May 2004 01:58:58 GMT"/>
+	      <signal name="clicked" handler="show_nutritional_info" last_modification_time="Wed, 29 Mar 2006 10:52:24 GMT"/>
 	    </widget>
 	    <packing>
 	      <property name="expand">False</property>
@@ -634,52 +666,7 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkSeparatorToolItem" id="separatortoolitem2">
-	      <property name="visible">True</property>
-	      <property name="draw">True</property>
-	      <property name="visible_horizontal">True</property>
-	      <property name="visible_vertical">True</property>
-	    </widget>
-	    <packing>
-	      <property name="expand">False</property>
-	      <property name="homogeneous">False</property>
-	    </packing>
-	  </child>
-
-	  <child>
-	    <widget class="GtkToolButton" id="moveToPantryButton">
-	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Move selected items from shopping list to pantry list. (You can also move items by dragging them.)</property>
-	      <property name="label" translatable="yes">_Remove from Shopping List</property>
-	      <property name="use_underline">True</property>
-	      <property name="stock_id">gtk-remove</property>
-	      <property name="visible_horizontal">True</property>
-	      <property name="visible_vertical">True</property>
-	      <property name="is_important">False</property>
-	      <signal name="clicked" handler="move_to_pantry" last_modification_time="Sat, 28 May 2005 22:33:39 GMT"/>
-	    </widget>
-	    <packing>
-	      <property name="expand">False</property>
-	      <property name="homogeneous">True</property>
-	    </packing>
-	  </child>
-
-	  <child>
-	    <widget class="GtkToolButton" id="moveToShoppingListButton">
-	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Move selected items from your pantry list back to your shopping list (you can also move items by dragging them.)</property>
-	      <property name="label" translatable="yes">Return Item to Shopping List</property>
-	      <property name="use_underline">True</property>
-	      <property name="stock_id">gtk-redo</property>
-	      <property name="visible_horizontal">True</property>
-	      <property name="visible_vertical">True</property>
-	      <property name="is_important">False</property>
-	      <signal name="clicked" handler="move_to_shopping" last_modification_time="Sat, 28 May 2005 22:33:30 GMT"/>
-	    </widget>
-	    <packing>
-	      <property name="expand">False</property>
-	      <property name="homogeneous">True</property>
-	    </packing>
+	    <placeholder/>
 	  </child>
 	</widget>
 	<packing>
@@ -758,130 +745,213 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkHPaned" id="hpaned1">
+	    <widget class="GtkVBox" id="vbox2">
 	      <property name="visible">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="position">470</property>
+	      <property name="homogeneous">False</property>
+	      <property name="spacing">0</property>
 
 	      <child>
-		<widget class="GtkFrame" id="shopListFrame">
+		<widget class="GtkToolbar" id="toolbar10">
 		  <property name="visible">True</property>
-		  <property name="label_xalign">0</property>
-		  <property name="label_yalign">0.5</property>
-		  <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
+		  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
+		  <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
+		  <property name="tooltips">True</property>
+		  <property name="show_arrow">True</property>
 
 		  <child>
-		    <widget class="GtkScrolledWindow" id="shopListFrame">
+		    <widget class="GtkToolButton" id="addToShopList">
 		      <property name="visible">True</property>
-		      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-		      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-		      <property name="shadow_type">GTK_SHADOW_NONE</property>
-		      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
-
-		      <child>
-			<widget class="GtkTreeView" id="shopITree">
-			  <property name="visible">True</property>
-			  <property name="can_focus">True</property>
-			  <property name="headers_visible">True</property>
-			  <property name="rules_hint">False</property>
-			  <property name="reorderable">False</property>
-			  <property name="enable_search">True</property>
-			  <property name="fixed_height_mode">False</property>
-			  <property name="hover_selection">False</property>
-			  <property name="hover_expand">False</property>
-			</widget>
-		      </child>
+		      <property name="tooltip" translatable="yes">Add additional items to your shopping list.</property>
+		      <property name="can_focus">True</property>
+		      <property name="label" translatable="yes">_Add Items to Shopping List</property>
+		      <property name="use_underline">True</property>
+		      <property name="stock_id">gtk-add</property>
+		      <property name="visible_horizontal">True</property>
+		      <property name="visible_vertical">True</property>
+		      <property name="is_important">False</property>
+		      <signal name="clicked" handler="shopAdd" last_modification_time="Tue, 25 May 2004 01:58:58 GMT"/>
 		    </widget>
+		    <packing>
+		      <property name="expand">True</property>
+		      <property name="homogeneous">True</property>
+		    </packing>
 		  </child>
 
 		  <child>
-		    <widget class="GtkLabel" id="label38">
+		    <widget class="GtkToolButton" id="moveToPantryButton">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">_Shopping List</property>
+		      <property name="tooltip" translatable="yes">Move selected items from shopping list to pantry list. (You can also move items by dragging them.)</property>
+		      <property name="label" translatable="yes">_Remove from Shopping List</property>
 		      <property name="use_underline">True</property>
-		      <property name="use_markup">False</property>
-		      <property name="justify">GTK_JUSTIFY_LEFT</property>
-		      <property name="wrap">False</property>
-		      <property name="selectable">False</property>
-		      <property name="xalign">0.5</property>
-		      <property name="yalign">0.5</property>
-		      <property name="xpad">0</property>
-		      <property name="ypad">0</property>
-		      <property name="mnemonic_widget">shopITree</property>
-		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-		      <property name="width_chars">-1</property>
-		      <property name="single_line_mode">False</property>
-		      <property name="angle">0</property>
+		      <property name="stock_id">gtk-remove</property>
+		      <property name="visible_horizontal">True</property>
+		      <property name="visible_vertical">True</property>
+		      <property name="is_important">False</property>
+		      <signal name="clicked" handler="move_to_pantry" last_modification_time="Sat, 28 May 2005 22:33:39 GMT"/>
 		    </widget>
 		    <packing>
-		      <property name="type">label_item</property>
+		      <property name="expand">True</property>
+		      <property name="homogeneous">True</property>
+		    </packing>
+		  </child>
+
+		  <child>
+		    <widget class="GtkToolButton" id="moveToShoppingListButton">
+		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Move selected items from your pantry list back to your shopping list (you can also move items by dragging them.)</property>
+		      <property name="label" translatable="yes">Return Item to Shopping List</property>
+		      <property name="use_underline">True</property>
+		      <property name="stock_id">gtk-redo</property>
+		      <property name="visible_horizontal">True</property>
+		      <property name="visible_vertical">True</property>
+		      <property name="is_important">False</property>
+		      <signal name="clicked" handler="move_to_shopping" last_modification_time="Sat, 28 May 2005 22:33:30 GMT"/>
+		    </widget>
+		    <packing>
+		      <property name="expand">True</property>
+		      <property name="homogeneous">True</property>
 		    </packing>
 		  </child>
 		</widget>
 		<packing>
-		  <property name="shrink">True</property>
-		  <property name="resize">True</property>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">True</property>
 		</packing>
 	      </child>
 
 	      <child>
-		<widget class="GtkFrame" id="frame17">
+		<widget class="GtkHPaned" id="hpaned1">
 		  <property name="visible">True</property>
-		  <property name="label_xalign">0</property>
-		  <property name="label_yalign">0.5</property>
-		  <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
+		  <property name="can_focus">True</property>
+		  <property name="position">470</property>
 
 		  <child>
-		    <widget class="GtkScrolledWindow" id="scrolledwindow8">
+		    <widget class="GtkFrame" id="shopListFrame">
 		      <property name="visible">True</property>
-		      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-		      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-		      <property name="shadow_type">GTK_SHADOW_NONE</property>
-		      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
+		      <property name="label_xalign">0</property>
+		      <property name="label_yalign">0.5</property>
+		      <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
 
 		      <child>
-			<widget class="GtkTreeView" id="pantryTree">
+			<widget class="GtkScrolledWindow" id="shopListFrame">
 			  <property name="visible">True</property>
-			  <property name="can_focus">True</property>
-			  <property name="headers_visible">True</property>
-			  <property name="rules_hint">False</property>
-			  <property name="reorderable">False</property>
-			  <property name="enable_search">True</property>
-			  <property name="fixed_height_mode">False</property>
-			  <property name="hover_selection">False</property>
-			  <property name="hover_expand">False</property>
+			  <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+			  <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+			  <property name="shadow_type">GTK_SHADOW_NONE</property>
+			  <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
+
+			  <child>
+			    <widget class="GtkTreeView" id="shopITree">
+			      <property name="visible">True</property>
+			      <property name="can_focus">True</property>
+			      <property name="headers_visible">True</property>
+			      <property name="rules_hint">False</property>
+			      <property name="reorderable">False</property>
+			      <property name="enable_search">True</property>
+			      <property name="fixed_height_mode">False</property>
+			      <property name="hover_selection">False</property>
+			      <property name="hover_expand">False</property>
+			    </widget>
+			  </child>
 			</widget>
 		      </child>
+
+		      <child>
+			<widget class="GtkLabel" id="label38">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Shopping List</property>
+			  <property name="use_underline">True</property>
+			  <property name="use_markup">False</property>
+			  <property name="justify">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap">False</property>
+			  <property name="selectable">False</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			  <property name="mnemonic_widget">shopITree</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
+			</widget>
+			<packing>
+			  <property name="type">label_item</property>
+			</packing>
+		      </child>
 		    </widget>
+		    <packing>
+		      <property name="shrink">True</property>
+		      <property name="resize">True</property>
+		    </packing>
 		  </child>
 
 		  <child>
-		    <widget class="GtkLabel" id="label43">
+		    <widget class="GtkFrame" id="frame17">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Already Have (_Pantry Items)</property>
-		      <property name="use_underline">True</property>
-		      <property name="use_markup">False</property>
-		      <property name="justify">GTK_JUSTIFY_LEFT</property>
-		      <property name="wrap">False</property>
-		      <property name="selectable">False</property>
-		      <property name="xalign">0.509999990463</property>
-		      <property name="yalign">0.5</property>
-		      <property name="xpad">0</property>
-		      <property name="ypad">0</property>
-		      <property name="mnemonic_widget">pantryTree</property>
-		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-		      <property name="width_chars">-1</property>
-		      <property name="single_line_mode">False</property>
-		      <property name="angle">0</property>
+		      <property name="label_xalign">0</property>
+		      <property name="label_yalign">0.5</property>
+		      <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
+
+		      <child>
+			<widget class="GtkScrolledWindow" id="scrolledwindow8">
+			  <property name="visible">True</property>
+			  <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+			  <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+			  <property name="shadow_type">GTK_SHADOW_NONE</property>
+			  <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
+
+			  <child>
+			    <widget class="GtkTreeView" id="pantryTree">
+			      <property name="visible">True</property>
+			      <property name="can_focus">True</property>
+			      <property name="headers_visible">True</property>
+			      <property name="rules_hint">False</property>
+			      <property name="reorderable">False</property>
+			      <property name="enable_search">True</property>
+			      <property name="fixed_height_mode">False</property>
+			      <property name="hover_selection">False</property>
+			      <property name="hover_expand">False</property>
+			    </widget>
+			  </child>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkLabel" id="label43">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Already Have (_Pantry Items)</property>
+			  <property name="use_underline">True</property>
+			  <property name="use_markup">False</property>
+			  <property name="justify">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap">False</property>
+			  <property name="selectable">False</property>
+			  <property name="xalign">0.509999990463</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			  <property name="mnemonic_widget">pantryTree</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
+			</widget>
+			<packing>
+			  <property name="type">label_item</property>
+			</packing>
+		      </child>
 		    </widget>
 		    <packing>
-		      <property name="type">label_item</property>
+		      <property name="shrink">True</property>
+		      <property name="resize">True</property>
 		    </packing>
 		  </child>
 		</widget>
 		<packing>
-		  <property name="shrink">True</property>
-		  <property name="resize">True</property>
+		  <property name="padding">0</property>
+		  <property name="expand">True</property>
+		  <property name="fill">True</property>
 		</packing>
 	      </child>
 	    </widget>
