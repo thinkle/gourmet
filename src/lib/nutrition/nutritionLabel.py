@@ -152,8 +152,10 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         }
 
     def __init__ (self, prefs,
-                  rec=None
+                  rec=None,
+                  custom_label=None
                   ):
+        self.custom_label = custom_label
         self.prefs = prefs
         self.rec = rec
         start_at = 4
@@ -384,7 +386,9 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                     itm['percent_label'].set_text("%i%%"%percent)
 
     def setup_serving_label (self):
-        if self.servings:
+        if self.custom_label:
+            self.servingLabel.set_markup('<b>'+self.custom_label+'</b>')
+        elif self.servings:
             self.servingLabel.set_markup('<b>'+_('Amount per Serving')+'</b>')
         else:
             self.servingLabel.set_markup('<b>'+_('Amount per recipe')+'</b>')
