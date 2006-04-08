@@ -2,6 +2,16 @@ import string, re, time, sys
 from defaults import lang as defaults
 from gdebug import *
 
+note_separator_regexp = '(;|\s+-\s+|--)'
+note_separator_matcher = re.compile(note_separator_regexp)
+
+def snip_notes (s):
+    m = note_separator_matcher.search(s)
+    if not m: return s
+    ret = s[:m.start()].strip()
+    if ret: return ret
+    else: return s
+
 class KeyManager:
 
     MAX_MATCHES = 10
@@ -90,7 +100,9 @@ class KeyManager:
             raise
         else:
             if srch: return srch[-1].ingkey
-            else: return self.generate_key(s)
+            else:
+                s = snip_notes(s)
+                return self.generate_key(s)
 
     def get_key (self,txt, certainty=0.61):
         """Grab a single key. This is simply a best guess at the
@@ -98,7 +110,7 @@ class KeyManager:
         we wouldn't need a key system in the first place!"""
         debug("Start get_key %s"%str,10)
         if not txt: return ''
-        txt = str(txt)
+        txt = snip_notes(txt)
         result = self.look_for_key(txt)
         if result and result[0][0] and result[0][1] > certainty:
             k=result[0][0]
@@ -201,41 +213,6 @@ class KeyManager:
         sing_str1 = self.remove_final_s(str1)
         sing_str2 = self.remove_final_s(str2)
         return sing_str1 == sing_str2
-
-
-    def string_equal (self, str1, str2):
-        """This returns negative if the words are not
-        at all the same, 1 if they are exactly the same, and somewhere
-        between if they look similar"""
-        debug("Start string_equal",10)
-        str1s = string.lower(string.strip(str1))
-        str2s = string.lower(string.strip(str2))
-        if str1s == str2s:
-            return 1
-        ## Now just try removing final 's'es from the whole string
-        elif self.sing_equal(str1s, str2s):
-            return 0.9
-        ## Now we're going to have to get fancy.
-        else:
-            words1 = re.split("[ ,.:;]",str1s)
-            words2 = re.split("[ ,.:;]",str2s)
-            ## If there's only one word, then we've done all we can do
-            self.remove_verbs(words1)
-            self.remove_verbs(words2)
-            if len(words1) == 1 and len(words2) == 1:
-                return 0
-            else:
-                retval = 0
-                for word1 in words1:
-                    for word2 in words2:
-                        if word1 == word2:
-                            retval += 1
-                        elif self.sing_equal(word1,word2):
-                            retval += 0.9
-                if retval:
-                    return float(retval) / ((len(words1) + len(words2)) / float(2))
-                else:
-                    return 0
 
     def remove_verbs (self,words):
         """Handed a list of words, we remove anything from the
@@ -442,7 +419,7 @@ class KeyManagerOldSchool:
         """Generate a generic-looking key from a string."""
         timer = TimeAction('keymanager.generate_key 1',3)
         debug("Start generate_key(self,%s)"%ingr,10)
-        ingr = ingr.strip().lower()
+        ingr = snip_notes(ingr).lower()
         timer.end()
         timer = TimeAction('keymanager.generate_key 2',3)
         ingr = self.remove_verbs(ingr)
