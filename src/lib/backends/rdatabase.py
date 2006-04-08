@@ -420,7 +420,7 @@ class RecData:
             else:
                 ID = ret.id
             for c in cats:
-                self.do_add_cat({'id':ID,'category':c})
+                if c: self.do_add_cat({'id':ID,'category':c})
             return ret
 
     def add_ing (self, dic):
