@@ -2,6 +2,18 @@
 from gdebug import *
 import gtk
 
+def path_next (path, inc=1):
+    """Return the path NEXT rows after PATH. Next can be negative, in
+    which case we get previous paths."""
+    next=list(path[0:-1])
+    last=path[-1]
+    last += inc
+    if last < 0:
+        last=0
+    next.append(last)
+    next=tuple(next)
+    return next
+
 def get_unique_iter_from_value (mod, col, val):
     for r in mod:
         if r[col]==val: return r.iter
@@ -135,16 +147,23 @@ class selectionSaver:
         self.uc = unique_column
         self.model=self.tv.get_model()
         self.selection=self.tv.get_selection()
+        self.save_selections()
+        
+    def save_selections (self):
         self.selected = []
+        self.expanded = {}
         self.selection.selected_foreach(self._add_to_selected)
-        #print "saving selections: ", self.selected
+        print "saving selections: ", self.selected
 
     def _add_to_selected (self, model, path, iter):
         self.add_selection(iter)
-
+        
     def add_selection (self, iter):
         """Add iter to list of selected items"""
-        self.selected.append(self.model.get_value(iter,self.uc))
+        print 'adding selection',self.model.get_value(iter,self.uc)
+        v = self.model.get_value(iter,self.uc)
+        self.selected.append(v)
+        self.expanded[v] = self.tv.row_expanded(self.model.get_path(iter))
 
     def rem_selection (self, iter):
         """Remove iter from list of selected items. Silently do nothing if
@@ -159,18 +178,25 @@ class selectionSaver:
         restoring selections to a new treeView. This might come in handy
         w/ dragndrop within an application between treeViews. Otherwise,
         we remember and use the treeView we were initially handed."""
-        #print "restoring selections: ",self.selected
+        print "restoring selections: ",self.selected
         if tv:
             self.tv=tv
             self.model=self.tv.get_model()
             self.selection=self.tv.get_selection()
+        else:
+            self.model = self.tv.get_model()
+            self.selection = self.tv.get_selection()
         self.selection.unselect_all()
         iter = self.model.get_iter_first()
         new_paths=[]
         while iter:
             v = self.model.get_value(iter,self.uc)
+            print 'looking at ',iter,v
             if self.selected.__contains__(v):
+                print 'selecting iter',iter,'with',v
                 self.selection.select_iter(iter)
+                if self.expanded.get(v,None):
+                    self.tv.expand_row(self.model.get_path(iter),True)
                 new_paths.append(self.model.get_path(iter))
             child = self.model.iter_children(iter)            
             if child:
@@ -185,14 +211,14 @@ class selectionSaver:
                         iter = self.model.iter_next(parent)
                     else:
                         iter = None
-            #if iter: print 'walking...',self.model.get_path(iter)
-            
-        if new_paths:
-            self.tv.scroll_to_cell(new_paths[0])
-        if len(new_paths) > 1:
-            # we try to get all cells visible if possible... if not,
-            # we leave the last cell in view
-            self.tv.scroll_to_cell(new_paths[-1])
+        #    #if iter: print 'walking...',self.model.get_path(iter)
+        #    
+        #if new_paths:
+        #    self.tv.scroll_to_cell(new_paths[0])
+        #if len(new_paths) > 1:
+        #    # we try to get all cells visible if possible... if not,
+        #    # we leave the last cell in view
+        #    self.tv.scroll_to_cell(new_paths[-1])
             
 class TreeViewConf:
     """Handed a treeView and two configuration items, this class allows
@@ -292,3 +318,23 @@ class QuickTree (gtk.ScrolledWindow):
         self.tv.set_model(self.model)
             
             
+if __name__ == '__main__':
+    vb = gtk.VBox()
+    sw = QuickTree(
+        ['Foo','Bar'],
+        ['Bar','Foo']
+        )
+    sw.tv.set_reorderable(True)
+    sw.tv.ss = selectionSaver(sw.tv,0)
+    def ss_save (*args):
+        print 'Save!'
+        sw.tv.ss.save_selections()
+    def ss_get (*args):
+        print 'get!'
+        sw.tv.ss.restore_selections()
+    sw.tv.connect('drag-begin',ss_save)
+    sw.tv.connect('drag-end',ss_get)
+    w = gtk.Window()
+    w.add(sw)
+    w.show_all()
+    gtk.main()
