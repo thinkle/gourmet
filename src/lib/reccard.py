@@ -41,6 +41,18 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         #(['modExp'],'Modifications'),
         ]
 
+    NOTEBOOK_ATTR_PAGE = 0
+    NOTEBOOK_ING_PAGE = 1
+    NOTEBOOK_INST_PAGE = 2
+    NOTEBOOK_MOD_PAGE = 3
+
+    notebook_pages = {
+        NOTEBOOK_ATTR_PAGE:'attributes',
+        NOTEBOOK_ING_PAGE:'ingredients',
+        NOTEBOOK_INST_PAGE:'instructions',
+        NOTEBOOK_MOD_PAGE:'modifications',
+        }
+
     def __init__ (self, RecGui, recipe=None):
         debug("RecCard.__init__ (self, RecGui):",5)
         self.setup_defaults()
@@ -51,62 +63,17 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.prefs = self.rg.prefs
         self.rd = self.rg.rd
         self.nd = self.rg.nd
-        self.makeTimeEntry = lambda *args: timeEntry.makeTimeEntry()
-        self.makeStarButton = lambda *args: ratingWidget.make_star_button(self.rg.star_generator)
-        self.makeStarImage = lambda *args: ratingWidget.make_star_image(self.rg.star_generator)
-        self.makeLinkedTextView = lambda *args: LinkedTextView.LinkedTextView()
-        self.makeNutritionLabel = lambda *args: NutritionLabel(self.prefs)
-        def custom_handler (glade,func_name,
-                            widg, s1,s2,i1,i2):
-            f=getattr(self,func_name)
-            w= f(s1,s2,i1,i2)
-            return w
-        gtk.glade.set_custom_handler(custom_handler)
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'recCard.glade'))
-        self.ie = IngredientEditor(self.rg, self)        
-        self.mm = mnemonic_manager.MnemonicManager()
-        self.mm.add_glade(self.glade)
-        nlb=self.glade.get_widget('nutritionLabel').edit_missing_button.get_child().get_child().get_children()[1]
-        self.mm.add_widget_mnemonic(nlb)
-        self.mm.fix_conflicts_peacefully()
-        # Manually fixing this particular mnemonic for English...
-        if nlb.get_text()=='Edit':
-            nlb.set_markup_with_mnemonic('Ed_it')
-        # Do some funky style modifications...
-        display_toplevel_widget = self.glade.get_widget('displayPanes')
-        new_style = display_toplevel_widget.get_style().copy()
-        cmap = display_toplevel_widget.get_colormap()
-        new_style.bg[gtk.STATE_NORMAL]= cmap.alloc_color('white')
-        new_style.bg[gtk.STATE_INSENSITIVE] = cmap.alloc_color('white')
-        new_style.fg[gtk.STATE_NORMAL]= cmap.alloc_color('black')
-        new_style.fg[gtk.STATE_INSENSITIVE] = cmap.alloc_color('black')
-        def set_style (widg, styl):
-            if (not isinstance(widg,gtk.Button) and
-                not isinstance(widg,gtk.Entry) and
-                not isinstance(widg,gtk.Separator)
-                ): widg.set_style(styl)
-            if hasattr(widg,'get_children'):
-                for c in widg.get_children(): set_style(c,styl)
-        set_style(display_toplevel_widget,new_style)
-        t.end()
-        t=TimeAction('RecCard.__init__ 2',0)        
+        self.setup_glade()
+        self.ie = IngredientEditor(self.rg, self)
+        self.ingtree_ui = IngredientTreeUI(self)        
+        self.setup_style()
         self.setup_action_manager()
         self.get_widgets()
         self.register_pref_dialog()
         self.history = Undo.MultipleUndoLists(self.undo,self.redo,
                                               get_current_id=self.notebook.get_current_page
                                               )
-        #self.NOTEBOOK_DISPLAY_PAGE = 0
-        self.NOTEBOOK_ATTR_PAGE = 0
-        self.NOTEBOOK_ING_PAGE = 1
-        self.NOTEBOOK_INST_PAGE = 2
-        self.NOTEBOOK_MOD_PAGE = 3
-        self.notebook_pages = {#self.NOTEBOOK_DISPLAY_PAGE:'display',
-            self.NOTEBOOK_ATTR_PAGE:'attributes',
-            self.NOTEBOOK_ING_PAGE:'ingredients',
-            self.NOTEBOOK_INST_PAGE:'instructions',
-            self.NOTEBOOK_MOD_PAGE:'modifications'}
-        
+        # Setup notebook page switching...
         def hackish_notebook_switcher_handler (*args):
             # because the switch page signal happens before switching...
             # we'll need to look for the switch with an idle call
@@ -114,9 +81,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.notebook.connect('switch-page',hackish_notebook_switcher_handler)
         self.page_specific_handlers = []
         self.notebookChangeCB()
-        self.create_ingTree()
-        self.selection=True
-        self.selection_changed()
         self.initRecipeWidgets()
         self.setEdited(False)
         self.images = []
@@ -137,6 +101,33 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.conf = []
         self.conf.append(WidgetSaver.WindowSaver(self.edit_window, self.prefs.get(self.pref_id+'_edit',{})))
         self.conf.append(WidgetSaver.WindowSaver(self.display_window, self.prefs.get(self.pref_id,{})))
+        self.connect_signals()
+        self.show()
+        t.end()
+
+    def setup_glade (self):
+        self.makeTimeEntry = lambda *args: timeEntry.makeTimeEntry()
+        self.makeStarButton = lambda *args: ratingWidget.make_star_button(self.rg.star_generator)
+        self.makeStarImage = lambda *args: ratingWidget.make_star_image(self.rg.star_generator)
+        self.makeLinkedTextView = lambda *args: LinkedTextView.LinkedTextView()
+        self.makeNutritionLabel = lambda *args: NutritionLabel(self.prefs)
+        def custom_handler (glade,func_name,
+                            widg, s1,s2,i1,i2):
+            f=getattr(self,func_name)
+            w= f(s1,s2,i1,i2)
+            return w
+        gtk.glade.set_custom_handler(custom_handler)
+        self.glade = gtk.glade.XML(os.path.join(gladebase,'recCard.glade'))
+        self.mm = mnemonic_manager.MnemonicManager()
+        self.mm.add_glade(self.glade)
+        nlb=self.glade.get_widget('nutritionLabel').edit_missing_button.get_child().get_child().get_children()[1]
+        self.mm.add_widget_mnemonic(nlb)
+        self.mm.fix_conflicts_peacefully()
+        # Manually fixing this particular mnemonic for English...
+        if nlb.get_text()=='Edit':
+            nlb.set_markup_with_mnemonic('Ed_it')
+
+    def connect_signals (self):
         self.glade.signal_autoconnect({
             'rc2shop' : self.addToShopL,
             'rcDelete' : self.delete,
@@ -153,11 +144,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'delRecImage' : self.ImageBox.removeCB,
             'instrAddImage' : self.addInstrImageCB,
             'rcRevert' : self.revertCB,
-            #'ieUp' : self.ingUpCB,
-            #'ieDown' : self.ingDownCB,
-            #'ieNewGroup' : self.ingNewGroupCB,
             'recRef':lambda *args: RecSelector(self.rg,self),
-            #'importIngs': self.importIngredientsCB,
             'unitConverter': self.rg.showConverter,
             'ingKeyEditor': self.rg.showKeyEditor,
             'print': self.print_rec,
@@ -170,8 +157,24 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'edit_instructions': lambda *args: self.show_edit(tab=self.NOTEBOOK_INST_PAGE),
             'edit_modifications': lambda *args: self.show_edit(tab=self.NOTEBOOK_MOD_PAGE),
             })
-        self.show()
-        t.end()
+
+    def setup_style (self):
+        # Do some funky style modifications...
+        display_toplevel_widget = self.glade.get_widget('displayPanes')
+        new_style = display_toplevel_widget.get_style().copy()
+        cmap = display_toplevel_widget.get_colormap()
+        new_style.bg[gtk.STATE_NORMAL]= cmap.alloc_color('white')
+        new_style.bg[gtk.STATE_INSENSITIVE] = cmap.alloc_color('white')
+        new_style.fg[gtk.STATE_NORMAL]= cmap.alloc_color('black')
+        new_style.fg[gtk.STATE_INSENSITIVE] = cmap.alloc_color('black')
+        def set_style (widg, styl):
+            if (not isinstance(widg,gtk.Button) and
+                not isinstance(widg,gtk.Entry) and
+                not isinstance(widg,gtk.Separator)
+                ): widg.set_style(styl)
+            if hasattr(widg,'get_children'):
+                for c in widg.get_children(): set_style(c,styl)
+        set_style(display_toplevel_widget,new_style)
 
     def flow_my_text_on_allocate (self,sw,allocation):
         hadj = sw.get_hadjustment()
@@ -223,19 +226,14 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'ingredients':self.updateIngredientsDisplay,
             'title':self.updateTitleDisplay,
             }
-        t.end()
-        t=TimeAction('RecCard.get_widgets 2',0)
         WidgetSaver.WidgetPrefs.__init__(
             self,
             self.prefs,
             glade=self.glade,
             hideable_widgets=self.HIDEABLE_WIDGETS,
             basename='rc_hide_')
-        t.end()
-        t=TimeAction('RecCard.get_widgets 3',0)
         self.ImageBox = ImageBox(self)
-        self.rg.sl.sh.init_orgdic()
-        self.selected=True
+        self.rg.sl.sh.init_orgdic()        
         #self.serveW = self.glade.get_widget('servingsBox')
         #self.multCheckB = self.glade.get_widget('rcMultCheck')
         self.multLabel = self.glade.get_widget('multLabel')
@@ -305,11 +303,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                             {'revert':[{},['revertButton','revertMenu'],]},]
              },
             # callbacks
-            [('ingUp',self.ingUpCB),
-             ('ingDown',self.ingDownCB),
+            [('ingUp',self.ingtree_ui.ingUpCB),
+             ('ingDown',self.ingtree_ui.ingDownCB),
              ('ingAdd',self.ie.new),
              ('ingDel',self.ie.delete_cb),
-             ('ingGroup',self.ingNewGroupCB),
+             ('ingGroup',self.ingtree_ui.ingNewGroupCB),
              ('ingImport',self.importIngredientsCB),
              ('ingPaste',self.pasteIngsCB),
              ('view',self.viewCB),
@@ -391,10 +389,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.mult = 1
             self.multLabel.set_text("")
             if old_mult != self.mult:
-                self.imodel = self.create_imodel(self.current_rec,mult=self.mult)
-                self.ingTree.set_model(self.imodel)
-                self.selection_changed()
-                self.ingTree.expand_all()
                 self.serveW.set_value(float(self.serves_orig))
         
     def modTogCB (self, w, *args):
@@ -479,6 +473,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         ## if our title has changed, we need to update menus
         self.updateRecDisplay()
         self.rg.rmodel.update_recipe(self.current_rec)
+        self.ingtree_ui.ingController.commit_ingredients()
+        self.resetIngredients()
         if newdict.has_key('title'):
             self.edit_window.set_title("%s %s"%(self.edit_title,self.current_rec.title))
             self.display_window.set_title("%s %s"%(self.default_title,self.current_rec.title))
@@ -534,31 +530,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug("newRecipeCB (self, *args):",5)
         self.rg.newRecCard()
 
-    def getSelectedIters (self):
-        if len(self.imodel)==0:
-            return None
-        ts,paths = self.ingTree.get_selection().get_selected_rows()
-        return [ts.get_iter(p) for p in paths]
-
-    def getSelectedIter (self):
-        debug("getSelectedIter",4)
-        if len(self.imodel)==0:
-            return None
-        try:
-            ts,paths=self.ingTree.get_selection().get_selected_rows()
-            lpath=paths[-1]
-            group=ts.get_iter(lpath)
-        except:
-            debug("getSelectedIter: there was an exception",0)            
-            group=None
-        return group
-
     def newIngCB (self, *args):
         d={'id':self.current_rec.id}
         ing=self.rg.rd.add_ing(d)
         group=self.getSelectedIter()
         debug("group=%s"%group,5)
-        iter=self.add_ingredient(self.imodel,ing,self.mult,group) #we return iter
+        iter=self.add_ingredient(self.imodel,ing,group) #we return iter
         path=self.imodel.get_path(iter)
         # open up (in case we're in a group)
         self.ingTree.expand_to_path(path)
@@ -568,88 +545,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.updateIngredientsDisplay()
         self.message(_('Changes to ingredients saved automatically.'))
 
-    def ingUpCB (self, *args):
-        ts,paths = self.ingTree.get_selection().get_selected_rows()
-        iters = [ts.get_iter(p) for p in paths]
-        u=Undo.UndoableObject(lambda *args: self.ingUpMover(ts,paths),
-                              lambda *args: self.ingDownMover(ts,[ts.get_path(i) for i in iters]),
-                              self.history)
-        u.perform()
-
-    def ingUpMover (self, ts, paths):
-        def moveup (ts, path, itera):
-            if itera:
-                prev=self.path_next(path,-1)
-                prev_iter=ts.get_iter(prev)
-                te.move_iter(ts,itera,sibling=prev_iter,direction="before")
-                self.ingTree.get_selection().unselect_path(path)
-                self.ingTree.get_selection().select_path(prev)
-        self.pre_modify_tree()
-        paths.reverse()
-        for p in paths:
-            itera = ts.get_iter(p)
-            moveup(ts,p,itera)
-        self.commit_positions()
-        self.post_modify_tree()
-        
-    def ingDownCB (self, *args):
-        ts,paths = self.ingTree.get_selection().get_selected_rows()
-        iters = [ts.get_iter(p) for p in paths]
-        u=Undo.UndoableObject(lambda *args: self.ingDownMover(ts,paths),
-                              lambda *args: self.ingUpMover(ts,[ts.get_path(i) for i in iters]),
-                              self.history)
-        u.perform()
-        
-    def ingDownMover (self, ts, paths):
-        #ts, itera = self.ingTree.get_selection().get_selected()
-        def movedown (ts, path, itera):
-            if itera:
-                next = ts.iter_next(itera)
-                te.move_iter(ts,itera,sibling=next,direction="after")
-                if next:
-                    next_path=ts.get_path(next)
-                else:
-                    next_path=path
-                self.ingTree.get_selection().unselect_path(path)
-                self.ingTree.get_selection().select_path(self.path_next(next_path,1))
-        self.pre_modify_tree()
-        paths.reverse()
-        for p in paths:
-            itera = ts.get_iter(p)
-            movedown(ts,p,itera)
-            #selected_foreach(movedown)
-        self.commit_positions()
-        self.post_modify_tree()
-        
-    def path_next (self, path, inc=1):
-        """Return the path NEXT rows after PATH. Next can be negative, in
-        which case we get previous paths."""
-        next=list(path[0:-1])
-        last=path[-1]
-        last += inc
-        if last < 0:
-            last=0
-        next.append(last)
-        next=tuple(next)
-        return next
-
-    def ingNewGroupCB (self, *args):
-        self.add_group(de.getEntry(label=_('Adding Ingredient Group'),
-                                   sublabel=_('Enter a name for new subgroup of ingredients'),
-                                   entryLabel=_('Name of group: '),
-                                   ),
-                       self.imodel,
-                       prev_iter=self.getSelectedIter(),
-                       children_iters=self.getSelectedIters())
-        self.commit_positions()
-
     def resetIngList (self):
         debug("resetIngList (self, rec=None):",0)
         self.ing_alist = None
-        self.imodel = self.create_imodel(self.current_rec,mult=self.mult)
-        self.ingTree.set_model(self.imodel)        
-        self.selection_changed()
-        self.ingTree.expand_all()
+        self.ingtree_ui.set_tree_for_rec(self.current_rec)
         self.updateIngredientsDisplay()
 
     def updateAttribute (self, attr, value):
@@ -909,10 +808,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         """Update our display of ingredients, only reloading from DB if this is our first time."""
         if not self.ing_alist:
             self.create_ing_alist()
-        label = ""
+        group_strings = []
         for g,ings in self.ing_alist:
-            if g: label += "\n<u>%s</u>\n"%xml.sax.saxutils.escape(g)
-            def ing_string (i):
+            labels = []
+            if g: labels.append("<u>%s</u>"%xml.sax.saxutils.escape(g))
+            for i in ings:
                 ing_strs = []
                 amt,unit = self.make_readable_amt_unit(i)
                 if amt: ing_strs.append(amt)
@@ -922,14 +822,16 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                     ing_strs.append(_('(Optional)'))
                 istr = xml.sax.saxutils.escape(' '.join(ing_strs))
                 if i.refid:
-                    return '<a href="%s:%s">'%(i.refid,
-                                               xml.sax.saxutils.escape(i.item)
-                                               )\
-                           +istr+'</a>'
+                    labels.append('<a href="%s:%s">'%(i.refid,
+                                        xml.sax.saxutils.escape(i.item)
+                                        )\
+                                  +istr+'</a>')
                 else:
-                    return xml.sax.saxutils.escape(istr)
-            label+='\n'.join([ing_string(i) for i in ings])
-            if g: label += "\n"
+                    labels.append(
+                        xml.sax.saxutils.escape(istr)
+                        )
+            group_strings.append('\n'.join(labels))
+        label = '\n\n'.join(group_strings)
         if label:
             self.ingredientsDisplay.set_text(label)
             self.ingredientsDisplay.set_editable(False)
@@ -937,259 +839,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.ingredientsDisplayLabel.show()
         else:
             self.ingredientsDisplay.hide()
-            self.ingredientsDisplayLabel.hide()
-        
-    def create_ingTree (self, rec=None, mult=1):
-        debug("create_ingTree (self, rec=None, mult=1):        ",5)
-        self.ingTree = self.glade.get_widget('ingTree')
-        self.ingTree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
-        self.ingTree.expand_all()
-        self.head_to_att = {_('Amt'):'amount',
-                            _('Unit'):'unit',
-                            _('Item'):'item',
-                            _('Key'):'ingkey',
-                            _('Optional'):'optional',}
-        self.ingColsByName = {}
-        self.ingColsByAttr = {}
-        self.shopmodel = gtk.ListStore(str)
-        for c in self.ie.shopcats:
-            self.shopmodel.append([c])
-        self.ing_rows={}
-        for n,head,tog,model,style in [[1,_('Amt'),False,None,None],
-                                 [2,_('Unit'),False,self.rg.umodel,None],
-                                 [3,_('Item'),False,None,None],
-                                 [4,_('Optional'),True,None,None],
-                                 [5,_('Key'),False,self.rg.inginfo.key_model,pango.STYLE_ITALIC],
-                                 [6,_('Shopping Category'),False,self.shopmodel,pango.STYLE_ITALIC],
-                                 ]:        
-            if tog:
-                renderer = gtk.CellRendererToggle()
-                renderer.set_property('activatable',True)
-                renderer.connect('toggled',self.ingtree_toggled_cb,4,'Optional')
-                col=gtk.TreeViewColumn(head, renderer, active=n)
-            else:
-                if CRC_AVAILABLE and model:
-                    debug('Using CellRendererCombo, n=%s'%n,0)
-                    renderer = gtk.CellRendererCombo()
-                    renderer.set_property('model',model)
-                    renderer.set_property('text-column',0)
-                else:
-                    debug('Using CellRendererText, n=%s'%n,0)
-                    renderer = gtk.CellRendererText()
-                renderer.set_property('editable',True)
-                renderer.connect('edited',self.ingtree_edited_cb,n,head)
-                if head==_('Key'):
-                    try:
-                        renderer.connect('editing-started',
-                                         self.ingtree_start_keyedit_cb)
-                    except:
-                        debug('Editing-started connect failed. Upgrade GTK for this functionality.',0)
-                if style:
-                    renderer.set_property('style',style)
-                col=gtk.TreeViewColumn(head, renderer, text=n)
-            self.ingColsByName[head]=col
-            if self.head_to_att.has_key(head):
-                self.ingColsByAttr[self.head_to_att[head]]=n
-            col.set_reorderable(True)
-            col.set_resizable(True)
-            self.ingTree.append_column(col)
-        self.setupShopPopupMenu()
-        self.ingTree.connect("row-activated",self.ingTreeClickCB)
-        self.ingTree.connect("button-press-event",self.ingtree_click_cb)
-        self.ingTree.get_selection().connect("changed",self.selection_changedCB)
-        self.ingTree.show()
-        ## add drag and drop support
-        #self.ingTree.drag_dest_set(gtk.DEST_DEFAULT_ALL,
-        #                           [("text/plain",0,0)],
-        #                           gtk.gdk.ACTION_COPY)
-        targets=[('GOURMET_INTERNAL', gtk.TARGET_SAME_WIDGET, 0),
-                 ('text/plain',0,1),
-                 ('STRING',0,2),
-                 ('STRING',0,3),
-                 ('COMPOUND_TEXT',0,4),
-                 ('text/unicode',0,5),]
-        self.ingTree.enable_model_drag_source(gtk.gdk.BUTTON1_MASK,
-                                              targets,
-                                              gtk.gdk.ACTION_DEFAULT |
-                                              gtk.gdk.ACTION_COPY |
-                                              gtk.gdk.ACTION_MOVE)
-        self.ingTree.enable_model_drag_dest(targets,
-                                            gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE)
-        self.ingTree.connect("drag_data_received",self.dragIngsRecCB)
-        self.ingTree.connect("drag_data_get",self.dragIngsGetCB)
-        if self.rg.rd.fetch_len(self.rg.rd.rview) > 1:
-            if not rec:
-                rec = self.rg.rd.rview[1]
-            self.imodel = self.create_imodel(rec, mult=1)
-            self.ingTree.set_model(self.imodel)
-            self.selection_changed()
-            self.ingTree.expand_all()
-            #self.ingTree.set_search_column(self.ingTreeSearchColumn)
-            self.ingTree.set_search_equal_func(self.my_isearch)
-
-    def my_isearch (self, mod, col, key, iter, data=None):
-        # we ignore column info and search by item
-        val = mod.get_value(iter,3)
-        # and by key
-        if val:
-            val += mod.get_value(iter,5)
-            if val.lower().find(key.lower()) != -1:
-                return False
-            else:
-                return True
-        else:
-            val = mod.get_value(iter,1)
-            if val and val.lower().find(key.lower())!=-1:
-                return False
-            else:
-                return True
-        
-    def ingtree_click_cb (self, tv, event):
-        debug("ingtree_click_cb",5)
-        if CRC_AVAILABLE: return False # in this case, popups are handled already!
-        x = int(event.x)
-        y = int(event.y)
-        time = event.time
-        try:
-            path, col, cellx, celly = tv.get_path_at_pos(x,y)
-        except: return
-        debug("ingtree_click_cb: path=%s, col=%s, cellx=%s, celly=%s"%(path,
-                                                     col,
-                                                     cellx,
-                                                     celly),
-              5)
-        if col.get_title()==_('Shopping Category'):
-            tv.grab_focus()
-            tv.set_cursor(path,col,0)
-            self.shoppop_iter=tv.get_model().get_iter(path)
-            self.shoppop.popup(None,None,None,event.button,event.time)
-            return True
-
-    def setupShopPopupMenu (self):
-        if CRC_AVAILABLE: return #if we have the new cellrenderercombo, we don't need this
-        self.shoppop = gtk.Menu()
-        new = gtk.MenuItem(_('New Category'))
-        self.shoppop.append(new)
-        new.connect('activate',self.shop_popup_callback,False)
-        new.show()
-        sep = gtk.MenuItem()
-        self.shoppop.append(sep)
-        sep.show()
-        for i in self.rg.sl.sh.get_orgcats():
-            itm = gtk.MenuItem(i)
-            self.shoppop.append(itm)
-            itm.connect('activate',self.shop_popup_callback,i)
-            itm.show()
-
-    def shop_popup_callback (self, menuitem, i):
-        """i is our new category. If i==False, we prompt for
-        a category."""
-        regenerate_menu=False
-        #colnum for key=5
-        mod=self.ingTree.get_model()
-        key=mod.get_value(self.shoppop_iter,5)
-        debug('shop_pop_callback with key %s'%key,5)
-        if not i:
-            i=de.getEntry(label=_("Category to add %s to")%key,
-                       parent=self.edit_window)
-            if not i:
-                return
-            regenerate_menu=True
-        self.rg.sl.orgdic[key]=i
-        mod.set_value(self.shoppop_iter,6,i)
-        if regenerate_menu:
-            self.setupShopPopupMenu()
-
-    def selection_changedCB (self, *args):
-        v=self.ingTree.get_selection().get_selected_rows()[1]
-        if v: selected=True
-        else: selected=False
-        self.selection_changed(v)
-        return True
-    
-    def selection_changed (self, selected=False):
-        if selected != self.selected:
-            if selected: self.selected=True
-            else: self.selected=False
-            self.selectedIngredientGroup.set_sensitive(self.selected)
-
-    def ingtree_toggled_cb (self, cellrenderer, path, colnum, head):
-        debug("ingtree_toggled_cb (self, cellrenderer, path, colnum, head):",5)
-        store=self.ingTree.get_model()
-        iter=store.get_iter(path)
-        val = store.get_value(iter,colnum)
-        newval = not val
-        store.set_value(iter,colnum,newval)
-        ing=store.get_value(iter,0)
-        if head==_('Optional'):
-            if newval: newval=True
-            else: newval=False
-            ref = gtk.TreeRowReference(store,store.get_path(iter))
-            self.rg.rd.undoable_modify_ing(
-                ing,
-                {'optional':newval},self.history,
-                make_visible= lambda ing,dic: self.showIngredientChange(ref,dic))
-        
-    def ingtree_start_keyedit_cb (self, renderer, cbe, path_string):
-        debug('ingtree_start',0)
-        indices = path_string.split(':')
-        path = tuple( map(int, indices))
-        store = self.ingTree.get_model()
-        iter = store.get_iter(path)
-        itm=store.get_value(iter,self.ingColsByAttr['item'])
-        mod = renderer.get_property('model')
-        myfilter=mod.filter_new()
-        cbe.set_model(myfilter)
-        myKeys = self.rg.rd.key_search(itm)
-        vis = lambda m, iter: m.get_value(iter,0) and (m.get_value(iter,0) in myKeys or m.get_value(iter,0).find(itm) > -1)
-        myfilter.set_visible_func(vis)
-        myfilter.refilter()
-        
-    def ingtree_edited_cb (self, renderer, path_string, text, colnum, head):
-        debug("ingtree_edited_cb (self, renderer, path_string, text, colnum, head):",5)
-        indices = path_string.split(':')
-        path = tuple( map(int, indices))
-        store = self.ingTree.get_model()
-        iter = store.get_iter(path)
-        ing=self.selectedIng()
-        if head==_('Shopping Category'):
-            self.rg.sl.orgdic[ing.ingkey]=text
-            store.set_value(iter, colnum, text)
-        elif type(ing) == str:
-            debug('Changing group to %s'%text,2)
-            self.change_group(iter, text)
-            return            
-        else:
-            attr=self.head_to_att[head]
-            if attr=='amount':
-                if type(store.get_value(iter,0)) not in [str,unicode]:
-                    # if we're not a group
-                    d={}
-                    try:
-                        d['amount'],d['rangeamount']=parse_range(text)
-                    except:
-                        show_amount_error(text)
-            else:
-                d={attr:text}
-                if attr=='unit':
-                    amt,msg=self.changeUnit(d['unit'],ing)
-                    if amt:
-                        d['amount']=amt
-                    if msg: self.message(msg)
-                elif attr=='item':
-                    d['ingkey']=self.rg.rd.km.get_key(d['item'])
-            debug('undoable_modify_ing %s'%d,0)
-            modified = False
-            for k,v in d.items():
-                if v != getattr(ing,k):
-                    modified = True
-                    break
-            if modified:
-                ref = gtk.TreeRowReference(store,store.get_path(iter))
-                self.rg.rd.undoable_modify_ing(
-                    ing,d,self.history,
-                    make_visible = lambda ing,dic: self.showIngredientChange(ref,dic)
-                    )
+            self.ingredientsDisplayLabel.hide()        
 
     def showIngredientChange (self, ref, d):
         if not ref.valid():
@@ -1269,274 +919,20 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 _("Unable to convert from %(old_unit)s to %(new_unit)s"%{'old_unit':old_unit,
                                                                          'new_unit':new_unit}
                   ))
-                    
-    def dragIngsRecCB (self, widget, context, x, y, selection, targetType,
-                         time):
-        debug("dragIngsRecCB (self=%s, widget=%s, context=%s, x=%s, y=%s, selection=%s, targetType=%s, time=%s)"%(self, widget, context, x, y, selection, targetType, time),3)
-        drop_info=self.ingTree.get_dest_row_at_pos(x,y)
-        mod=self.ingTree.get_model()
-        if drop_info:
-            path, position = drop_info
-            diter = mod.get_iter(path)
-            dest_ing=mod.get_value(diter,0)
-            if type(dest_ing) in [str,unicode]: group=True
-            else: group=False
-            debug('drop_info good, GROUP=%s'%group,5)
-            #new_iter=mod.append(None)
-            #path=mod.get_path(new_iter)
-        else:
-            diter = None
-            group = False
-            position = None
-        #self.pre_modify_tree()            
-        if str(selection.target) == 'GOURMET_INTERNAL':
-               # if this is ours, we move it
-               self.selected_iter.reverse() # all things must go backwards in treeView land...
-               if (group and
-                   (position==gtk.TREE_VIEW_DROP_INTO_OR_BEFORE
-                    or
-                    position==gtk.TREE_VIEW_DROP_INTO_OR_AFTER)
-                   ):
-                   self.pre_modify_tree()
-                   for i in self.selected_iter:
-                       te.move_iter(mod,i,sibling=diter,direction="before",parent=diter)
-                   self.post_modify_tree()
-               elif (position==gtk.TREE_VIEW_DROP_INTO_OR_BEFORE
-                     or
-                     position==gtk.TREE_VIEW_DROP_BEFORE):
-                   self.pre_modify_tree()
-                   for i in self.selected_iter:
-                       te.move_iter(mod,i,sibling=diter,direction="before")
-                   self.post_modify_tree()
-               else:
-                   self.pre_modify_tree()
-                   for i in self.selected_iter:
-                       te.move_iter(mod,i,sibling=diter,direction="after")
-                   self.post_modify_tree()                       
-               #self.ingTree.get_selection().select_iter(new_iter)
-        else:
-            # if this is external, we copy
-            debug('external drag!',2)
-            for l in selection.data.split("\n"):
-                self.add_ingredient_from_line(l)
-        self.commit_positions()
-        debug("restoring selections.")
-        #self.post_modify_tree()
-        debug("done restoring selections.")        
 
     def add_ingredient_from_line (self, line):
         """Add an ingredient to our list from a line of plain text"""
         d=self.rg.rd.ingredient_parser(line, conv=self.rg.conv)
-        self.pre_modify_tree()
         if d:
-            d['id']=self.current_rec.id
-            i=self.rg.rd.add_ing(d)
-            iter=self.add_ingredient(self.imodel,i,self.mult)
-            self.ss.add_selection(iter)
-        self.post_modify_tree()
-
-    def pre_modify_tree (self):
-        """This shouldn't really be necessary, but I'm getting
-        a lot of bizarre behavior and segfaults from modifying
-        the tree while connected.
-        So, this should be called before adding, deleting or
-        moving rows in our model"""
-        debug('pre_modify_tree called',5)
-        self.ss = te.selectionSaver(self.ingTree)
-        debug('disconnecting tree')
-        self.ingTree.set_model(empty_model)
-        debug('pre_modify_tree done')
-
-    def post_modify_tree (self):
-        """And this must be called after adding, deleting or
-        moving rows in our model."""
-        debug('post_modify_tree called')
-        self.ingTree.set_model(self.imodel)
-        debug('expanding all')        
-        self.ingTree.expand_all()
-        debug('restoring selections')                
-        self.ss.restore_selections()
-        debug('post_modify_tree done')
-
-    def commit_positions (self):
-        debug("Committing positions",4)
-        iter=self.imodel.get_iter_first()
-        self.edited=True
-        n=0
-        def commit_iter(iter,pos,group=None):
-            debug("iter=%s,pos=%s,group=%s"%(iter,pos,group),-1)
-            ing=self.imodel.get_value(iter,0)
-            if type(ing) in [str,unicode]:
-                group=self.imodel.get_value(iter,1)
-                i=self.imodel.iter_children(iter)
-                while i:
-                    pos=commit_iter(i,pos,group)
-                    i=self.imodel.iter_next(i)
-            else:
-                self.rg.rd.modify_ing(ing,
-                                      {'position':pos,
-                                       'inggroup':group,}
-                                       )
-                pos+=1
-            return pos
-        while iter:
-            n=commit_iter(iter,n)
-            iter=self.imodel.iter_next(iter)
-            debug("Next iter = %s"%iter)
-        self.resetIngredients()
-        self.message(_('Changes to ingredients saved automatically.'))
-        debug("Done committing positions",4)
-
-    def dragIngsGetCB (self, tv, context, selection, info, timestamp):
-        def grab_selection (model, path, iter, args):
-            strings, iters = args            
-            str = ""
-            amt = model.get_value(iter,1)
-            if amt:
-                str="%s "%amt
-            unit = model.get_value(iter,2)
-            if unit:
-                str="%s%s "%(str,unit)
-            item = model.get_value(iter,3)
-            if item:
-                str="%s%s"%(str,item)
-            debug("Dragged string: %s, iter: %s"%(str,iter),3)
-            iters.append(iter)
-            strings.append(str)
-        strings=[]
-        iters=[]
-        tv.get_selection().selected_foreach(grab_selection,(strings,iters))
-        str=string.join(strings,"\n")
-        selection.set('text/plain',0,str)
-        selection.set('STRING',0,str)
-        selection.set('GOURMET_INTERNAL',8,'blarg')
-        self.selected_iter=iters
-        
-
-    def selectedIng (self):
-        debug("selectedIng (self):",5)
-        path, col = self.ingTree.get_cursor()
-        if path:
-            itera = self.ingTree.get_model().get_iter(path)
-        else:
-            tv,rows = self.ingTree.get_selection().get_selected_rows()
-            if len(rows) > 0:
-                itera = rows[0]
-            else:
-                itera=None
-        if itera: return self.ingTree.get_model().get_value(itera,0)
-        else: return None
-
-    def ingTreeClickCB (self, tv, path, col, p=None):
-        debug("ingTreeClickCB (self, tv, path, col, p=None):",5)
-        i=self.selectedIng()
-        if hasattr(i,'refid') and i.refid:
-            rec=self.rg.rd.get_referenced_rec(i)
-            if rec:
-                self.rg.openRecCard(rec)
-            else:
-                
-                de.show_message(parent=self.edit_window, label=_("The recipe %s (ID %s) is not in our database.")%(i.item,
-                                                                                                           i.refid))
-        else: self.ie.show(self.selectedIng())
-
-    def create_imodel (self, rec, mult=1):
-        debug("create_imodel (self, rec, mult=1):",5)
-        self.current_rec=rec
-        ings=self.rg.rd.get_ings(rec)
-        # as long as we have the list here, this is a good place to update
-        # the activity of our menuitem for forgetting remembered optionals        
-        remembered=False
-        for i in ings:
-            if i.shopoptional==1 or i.shopoptional==2:
-                remembered=True
-                break
-        self.forget_remembered_optionals_menuitem = self.glade.get_widget('forget_remembered_optionals_menuitem')
-        self.forget_remembered_optionals_menuitem.set_sensitive(remembered)
-        ## now we continue with our regular business...
-        debug("%s ings"%len(ings),3)
-        self.ing_alist=self.rg.rd.order_ings(ings)
-        model = gtk.TreeStore(gobject.TYPE_PYOBJECT,
-                              gobject.TYPE_STRING,
-                              gobject.TYPE_STRING,
-                              gobject.TYPE_STRING,
-                              gobject.TYPE_BOOLEAN,
-                              gobject.TYPE_STRING,
-                              gobject.TYPE_STRING)
-        for g,ings in self.ing_alist:
-            if g:
-                g=self.add_group(g,model)
-            for i in ings:
-                debug('adding ingredient %s'%i.item,0)
-                self.add_ingredient(model, i, mult, g)
-        return model
-
-    def add_group (self, name, model, prev_iter=None, children_iters=[]):
-        debug('add_group',5)
-        if not prev_iter:
-            groupiter = model.append(None)
-        else:
-            groupiter = model.insert_after(None,prev_iter,None)
-        model.set_value(groupiter, 0, "GROUP %s"%name)
-        model.set_value(groupiter, 1, name)
-        for c in children_iters: 
-            te.move_iter(model,c,None,parent=groupiter,direction='after')
-            #self.rg.rd.undoable_modify_ing(model.get_value(c,0),
-            #                               {'inggroup':name},
-            #                               self.history)
-        debug('add_group returning %s'%groupiter,5)
-        return groupiter
-
-    def change_group (self, iter, text):
-        debug('Undoable group change: %s %s'%(iter,text),3)
-        model = self.ingTree.get_model()
-        oldgroup0 = model.get_value(iter,0)
-        oldgroup1 = model.get_value(iter,1)
-        def change_my_group ():
-            model.set_value(iter,0,"GROUP %s"%text)
-            model.set_value(iter,1,text)
-            self.commit_positions()
-        def unchange_my_group ():
-            model.set_value(iter,0,oldgroup0)
-            model.set_value(iter,1,oldgroup1)
-            self.commit_positions()
-        obj = Undo.UndoableObject(change_my_group,unchange_my_group,self.history)
-        obj.perform()
-
-    def add_ingredient (self, model, ing, mult, group_iter=None):
-        """group_iter is an iter to put our ingredient inside of.
-        If group_iter is not a group but an ingredient, we'll insert our
-        ingredient after it"""
-        debug("add_ingredient (self=%s, model=%s, ing=%s, mult=%s, group_iter=%s):"%(self, model, ing, mult, group_iter),5)
-        i = ing
-        if group_iter:
-            if type(model.get_value(group_iter, 0)) in [str,unicode]:
-                debug("Adding to group",4)
-                iter = model.append(group_iter)
-            else:
-                iter = model.insert_after(None, group_iter, None)
-                debug("Adding after iter",5)            
-        else:
-            iter = model.insert_before(None, None, None)
-        #amt,unit = self.make_readable_amt_unit(i)
-        amt = self.rg.rd.get_amount_as_string(i)
-        unit = i.unit
-        model.set_value(iter, 0, i)
-        model.set_value(iter, 1, amt)
-        model.set_value(iter, 2, unit)
-        model.set_value(iter, 3, i.item)
-        if i.optional:
-            opt=True
-        else:
-            opt=False
-        model.set_value(iter, 4, opt)
-        model.set_value(iter, 5, i.ingkey)
-        if self.rg.sl.orgdic.has_key(i.ingkey):
-            debug("Key %s has category %s"%(i.ingkey,self.rg.sl.orgdic[i.ingkey]),5)
-            model.set_value(iter, 6, self.rg.sl.orgdic[i.ingkey])
-        else:
-            model.set_value(iter, 6, None)
-        return iter
+            
+            if d.has_key('rangeamount'):
+                d['amount'] = self.rg.rd._format_amount_string_from_amount(
+                    (d['amount'],d['rangeamount'])
+                    )    
+                del d['rangeamount']
+            elif d.has_key('amount'):
+                d['amount'] = convert.float_to_frac(d['amount'])
+            self.ingtree_ui.ingController.add_new_ingredient(**d)
 
     def make_readable_amt_unit (self, i):
         """Handed an ingredient, return a readable amount and unit."""
@@ -1587,10 +983,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def importIngredients (self, file):
         ifi=file(file,'r')
         for line in ifi:
-            self.add_ingredient_from_line(line)
-        self.resetIngredients()
-        self.message(_('Changes to ingredients saved automatically.'))
-
+            self.ingtree_ui.add_ingredient_from_line(line)
+        
     def saveAs (self, *args):
         debug("saveAs (self, *args):",5)
         opt = self.prefs.get('save_recipe_as','html')
@@ -1856,7 +1250,716 @@ class ImageBox:
 #     widget.connect('key-press-event',key_press_cb)
 #     #widget.connect('focus-out-event',focus_out_cb)
 #     widget.connect('key-press-event',focus_out_cb)
-            
+
+class IngredientController:
+
+    """Handle updates to our ingredient model."""
+
+    def __init__ (self, rc):
+        self.rc = rc; self.rg = self.rc.rg; self.glade = self.rc.glade
+        self.new_item_count = 0
+
+    # Setup methods
+    def create_imodel (self, rec):
+        self.current_rec=rec
+        ings=self.rg.rd.get_ings(rec)
+        # as long as we have the list here, this is a good place to update
+        # the activity of our menuitem for forgetting remembered optionals        
+        remembered=False
+        for i in ings:
+            if i.shopoptional==1 or i.shopoptional==2:
+                remembered=True
+                break
+        self.forget_remembered_optionals_menuitem = self.glade.get_widget('forget_remembered_optionals_menuitem')
+        self.forget_remembered_optionals_menuitem.set_sensitive(remembered)
+        ## now we continue with our regular business...
+        debug("%s ings"%len(ings),3)
+        self.ing_alist=self.rg.rd.order_ings(ings)
+        model = gtk.TreeStore(gobject.TYPE_PYOBJECT,
+                              gobject.TYPE_STRING,
+                              gobject.TYPE_STRING,
+                              gobject.TYPE_STRING,
+                              gobject.TYPE_BOOLEAN,
+                              gobject.TYPE_STRING,
+                              gobject.TYPE_STRING)
+        for g,ings in self.ing_alist:
+            if g:
+                g=self.add_group(g,model)
+            for i in ings:
+                debug('adding ingredient %s'%i.item,0)
+                self.add_ingredient(model, i, g)
+        self.imodel = model
+        return model
+
+    # Add recipe info...
+    def add_new_ingredient (self,                            
+                            group_iter=None,
+                            **ingargs
+                            ):
+        if group_iter:
+            iter = self.imodel.append(group_iter)
+        else:
+            iter = self.imodel.append(None)
+        self.new_item_count+=1
+        self.imodel.set_value(iter,0,self.new_item_count)
+        self.update_ingredient_row(
+            iter,**ingargs
+            )
+
+    def update_ingredient_row (self,iter,
+                               amount=None,
+                               unit=None,
+                               item=None,
+                               optional=False,
+                               ingkey=None,
+                               shopcat=None):
+        if amount: self.imodel.set_value(iter,1,amount)
+        if unit: self.imodel.set_value(iter,2,unit)
+        if item: self.imodel.set_value(iter,3,item)
+        if optional: self.imodel.set_value(iter,4,optional)
+        if ingkey:
+            self.imodel.set_value(iter,5,ingkey)
+            if self.rc.rg.sl.orgdic.has_key(ingkey):
+                self.imodel.set_value(iter,6,self.rc.rg.sl.orgdic[ingkey])
+        self.rc.setEdited(True)
+                
+    def add_ingredient (self, model, ing, group_iter=None):
+        """group_iter is an iter to put our ingredient inside of.
+        If group_iter is not a group but an ingredient, we'll insert our
+        ingredient after it"""
+        
+        debug("add_ingredient (self=%s, model=%s, ing=%s, group_iter=%s):"%(self, model, ing, group_iter),5)
+        i = ing
+        if group_iter:
+            if type(model.get_value(group_iter, 0)) in [str,unicode]:
+                debug("Adding to group",4)
+                iter = model.append(group_iter)
+            else:
+                iter = model.insert_after(None, group_iter, None)
+                debug("Adding after iter",5)            
+        else:
+            iter = model.insert_before(None, None, None)
+        #amt,unit = self.make_readable_amt_unit(i)
+        amt = self.rg.rd.get_amount_as_string(i)
+        unit = i.unit
+        model.set_value(iter, 0, i)
+        model.set_value(iter, 1, amt)
+        model.set_value(iter, 2, unit)
+        model.set_value(iter, 3, i.item)
+        if i.optional:
+            opt=True
+        else:
+            opt=False
+        model.set_value(iter, 4, opt)
+        model.set_value(iter, 5, i.ingkey)
+        if self.rg.sl.orgdic.has_key(i.ingkey):
+            debug("Key %s has category %s"%(i.ingkey,self.rg.sl.orgdic[i.ingkey]),5)
+            model.set_value(iter, 6, self.rg.sl.orgdic[i.ingkey])
+        else:
+            model.set_value(iter, 6, None)
+        return iter
+
+    def add_group (self, name, model, prev_iter=None, children_iters=[]):
+        debug('add_group',5)
+        if not prev_iter:
+            groupiter = model.append(None)
+        else:
+            groupiter = model.insert_after(None,prev_iter,None)
+        model.set_value(groupiter, 0, "GROUP %s"%name)
+        model.set_value(groupiter, 1, name)
+        for c in children_iters: 
+            te.move_iter(model,c,None,parent=groupiter,direction='after')
+            #self.rg.rd.undoable_modify_ing(model.get_value(c,0),
+            #                               {'inggroup':name},
+            #                               self.history)
+        debug('add_group returning %s'%groupiter,5)
+        return groupiter
+
+    # Get a dictionary describing our current row
+    def get_rowdict (self, iter):
+        d = {}
+        for k,n in [('amount',1),
+                    ('unit',2),
+                    ('item',3),
+                    ('optional',4),
+                    ('ingkey',5),
+                    ('shopkey',6)]:
+            d[k] = self.imodel.get_value(iter,n)
+        return d
+
+    # Get persistent references to items easily
+
+    def get_persistent_ref_from_path (self, path):
+        return self.get_persistent_ref_from_iter(
+            self.imodel.get_iter(path)
+            )
+
+    def get_persistent_ref_from_iter (self, iter):
+        uid = self.imodel.get_value(iter,0)
+        return uid
+
+    def get_path_from_persistent_ref (self, ref):
+        return self.imodel.get_path(
+            self.get_iter_from_persistent_ref(ref)
+            )
+
+    def get_iter_from_persistent_ref (self, ref):
+        itr = self.imodel.get_iter_first()
+        while itr:
+            v = self.imodel.get_value(itr,0)
+            if v == ref:
+                return itr
+            child = self.imodel.iter_children(itr)
+            if child:
+                itr = child
+            else:
+                next = self.imodel.iter_next(itr)
+                if next:
+                    itr = next
+                else:
+                    parent = self.imodel.iter_parent(itr)
+                    if parent:
+                        itr = self.imodel.iter_next(parent)
+                    else:
+                        itr = None
+
+    def commit_ingredients (self):
+        """Commit ingredients as they appear in tree to database."""
+        iter = self.imodel.get_iter_first()
+        n = 0
+
+        def commit_iter (iter, pos, group=None):
+            ing = self.imodel.get_value(iter,0)
+            if type(ing) in [str,unicode]:
+                group = self.imodel.get_value(iter,1)
+                i = self.imodel.iter_children(iter)
+                while i:
+                    pos = commit_iter(i,pos,group)
+                    i = self.imodel.iter_next(i)
+                return pos
+            else:
+                d = self.get_rowdict(iter)
+                if d['amount']:
+                    amt,rangeamount = parse_range(d['amount'])
+                    d['amount']=amt
+                    if rangeamount: d['rangeamount']=rangeamount
+                del d['shopkey']
+                d['position']=pos
+                d['inggroup']=group
+                if type(ing) != int:
+                    # Then we're a row reference...
+                    for att in ['amount','unit','item','ingkey','position','inggroup','optional']:
+                        if getattr(ing,att)==d[att]: del d[att]
+                    if d:
+                        self.rc.rg.rd.modify_ing(ing,d)
+                else:
+                    d['id'] = self.rc.current_rec.id
+                    self.rg.rd.add_ing(d)
+                return pos+1
+        # end commit iter
+
+        while iter:
+            n = commit_iter(iter,n)
+            iter = self.imodel.iter_next(iter)
+
+class IngredientTreeUI:
+
+    """Handle our ingredient treeview display, drag-n-drop, etc."""
+
+    head_to_att = {_('Amt'):'amount',
+                   _('Unit'):'unit',
+                   _('Item'):'item',
+                   _('Key'):'ingkey',
+                   _('Optional'):'optional',}
+
+    def __init__ (self, rc):
+        self.rc =rc; self.glade = self.rc.glade; self.rg = self.rc.rg
+        self.ingController = IngredientController(self.rc)
+        self.ingTree = self.glade.get_widget('ingTree')
+        self.ingTree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)                
+        self.setup_columns()
+        self.ingTree.connect("row-activated",self.ingtree_row_activated_cb)
+        self.ingTree.connect("button-press-event",self.ingtree_click_cb)
+        self.selected=True
+        #self.selection_changed()
+        self.ingTree.get_selection().connect("changed",self.selection_changedCB)
+        self.setup_drag_and_drop()
+        self.ingTree.show()
+        
+    # Basic setup methods
+    
+    def setup_columns (self):
+        self.ingColsByName = {}
+        self.ingColsByAttr = {}
+        self.shopmodel = gtk.ListStore(str) # We need a model for
+                                            # shopping-cat dropdown
+        for c in self.rc.ie.shopcats:
+            self.shopmodel.append([c])
+        for n,head,tog,model,style in [[1,_('Amt'),False,None,None],
+                                 [2,_('Unit'),False,self.rg.umodel,None],
+                                 [3,_('Item'),False,None,None],
+                                 [4,_('Optional'),True,None,None],
+                                 [5,_('Key'),False,self.rg.inginfo.key_model,pango.STYLE_ITALIC],
+                                 [6,_('Shopping Category'),False,self.shopmodel,pango.STYLE_ITALIC],
+                                 ]:        
+            # Toggle setup
+            if tog:
+                renderer = gtk.CellRendererToggle()
+                renderer.set_property('activatable',True)
+                renderer.connect('toggled',self.ingtree_toggled_cb,n,'Optional')
+                col=gtk.TreeViewColumn(head, renderer, active=n)
+            # Non-Toggle setup
+            else:
+                # Work around to support older pygtk
+                if CRC_AVAILABLE and model:
+                    debug('Using CellRendererCombo, n=%s'%n,0)
+                    renderer = gtk.CellRendererCombo()
+                    renderer.set_property('model',model)
+                    renderer.set_property('text-column',0)
+                else:
+                    debug('Using CellRendererText, n=%s'%n,0)
+                    renderer = gtk.CellRendererText()
+                renderer.set_property('editable',True)
+                renderer.connect('edited',self.ingtree_edited_cb,n,head)
+                if head==_('Key'):
+                    try:
+                        renderer.connect('editing-started',
+                                         self.ingtree_start_keyedit_cb)
+                    except:
+                        debug('Editing-started connect failed. Upgrade GTK for this functionality.',0)
+                if style:
+                    renderer.set_property('style',style)
+                # Create Column
+                col=gtk.TreeViewColumn(head, renderer, text=n)
+            # Register ourselves...
+            self.ingColsByName[head]=col
+            if self.head_to_att.has_key(head):
+                self.ingColsByAttr[self.head_to_att[head]]=n
+            # All columns are reorderable and resizeable
+            col.set_reorderable(True)
+            col.set_resizable(True)
+            self.ingTree.append_column(col)
+        # Hackish menu for old GTK setups...
+        self.setupShopPopupMenu()
+
+    def setup_drag_and_drop (self):
+        ## add drag and drop support
+        targets=[('GOURMET_INTERNAL', gtk.TARGET_SAME_WIDGET, 0),
+                 ('text/plain',0,1),
+                 ('STRING',0,2),
+                 ('STRING',0,3),
+                 ('COMPOUND_TEXT',0,4),
+                 ('text/unicode',0,5),]
+        self.ingTree.enable_model_drag_source(gtk.gdk.BUTTON1_MASK,
+                                              targets,
+                                              gtk.gdk.ACTION_DEFAULT |
+                                              gtk.gdk.ACTION_COPY |
+                                              gtk.gdk.ACTION_MOVE)
+        self.ingTree.enable_model_drag_dest(targets,
+                                            gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE)
+        self.ingTree.connect("drag_data_received",self.dragIngsRecCB)
+        self.ingTree.connect("drag_data_get",self.dragIngsGetCB)
+        self.ingTree.connect('drag-begin',
+                             lambda *args: setattr(self,'ss',te.selectionSaver(self.ingTree,0))
+                             )
+        self.ingTree.connect('drag-end',
+                             lambda *args: self.ss.restore_selections()
+                             )
+
+    def setupShopPopupMenu (self):
+        if CRC_AVAILABLE: return #if we have the new cellrenderercombo, we don't need this
+        self.shoppop = gtk.Menu()
+        new = gtk.MenuItem(_('New Category'))
+        self.shoppop.append(new)
+        new.connect('activate',self.shop_popup_callback,False)
+        new.show()
+        sep = gtk.MenuItem()
+        self.shoppop.append(sep)
+        sep.show()
+        for i in self.rg.sl.sh.get_orgcats():
+            itm = gtk.MenuItem(i)
+            self.shoppop.append(itm)
+            itm.connect('activate',self.shop_popup_callback,i)
+            itm.show()
+
+    # End of setup methods
+
+    # Callbacks and the like
+
+    def my_isearch (self, mod, col, key, iter, data=None):
+        # we ignore column info and search by item
+        val = mod.get_value(iter,3)
+        # and by key
+        if val:
+            val += mod.get_value(iter,5)
+            if val.lower().find(key.lower()) != -1:
+                return False
+            else:
+                return True
+        else:
+            val = mod.get_value(iter,1)
+            if val and val.lower().find(key.lower())!=-1:
+                return False
+            else:
+                return True
+        
+    def ingtree_click_cb (self, tv, event):
+        debug("ingtree_click_cb",5)
+        if CRC_AVAILABLE: return False # in this case, popups are handled already!
+        x = int(event.x)
+        y = int(event.y)
+        time = event.time
+        try:
+            path, col, cellx, celly = tv.get_path_at_pos(x,y)
+        except: return
+        debug("ingtree_click_cb: path=%s, col=%s, cellx=%s, celly=%s"%(path,
+                                                     col,
+                                                     cellx,
+                                                     celly),
+              5)
+        if col.get_title()==_('Shopping Category'):
+            tv.grab_focus()
+            tv.set_cursor(path,col,0)
+            self.shoppop_iter=tv.get_model().get_iter(path)
+            self.shoppop.popup(None,None,None,event.button,event.time)
+            return True
+        
+    def ingtree_row_activated_cb (self, tv, path, col, p=None):
+        debug("ingtree_row_activated_cb (self, tv, path, col, p=None):",5)
+        i=self.get_selected_ing()
+        if hasattr(i,'refid') and i.refid:
+            rec=self.rg.rd.get_referenced_rec(i)
+            if rec:
+                self.rg.openRecCard(rec)
+            else:
+                de.show_message(parent=self.edit_window,
+                                label=_("The recipe %s (ID %s) is not in our database.")%(i.item,
+                                                                                          i.refid)
+                                )
+        else: self.ie.show(self.get_selected_ing())
+    
+    def shop_popup_callback (self, menuitem, i):
+        """i is our new category. If i==False, we prompt for
+        a category."""
+        regenerate_menu=False
+        #colnum for key=5
+        mod=self.ingTree.get_model()
+        key=mod.get_value(self.shoppop_iter,5)
+        debug('shop_pop_callback with key %s'%key,5)
+        if not i:
+            i=de.getEntry(label=_("Category to add %s to")%key,
+                       parent=self.edit_window)
+            if not i:
+                return
+            regenerate_menu=True
+        self.rg.sl.orgdic[key]=i
+        mod.set_value(self.shoppop_iter,6,i)
+        if regenerate_menu:
+            self.setupShopPopupMenu()
+
+    def selection_changedCB (self, *args):
+        v=self.ingTree.get_selection().get_selected_rows()[1]
+        if v: selected=True
+        else: selected=False
+        self.selection_changed(v)
+        return True
+    
+    def selection_changed (self, selected=False):
+        if selected != self.selected:
+            if selected: self.selected=True
+            else: self.selected=False
+            self.rc.selectedIngredientGroup.set_sensitive(self.selected)
+
+    def ingtree_toggled_cb (self, cellrenderer, path, colnum, head):
+        debug("ingtree_toggled_cb (self, cellrenderer, path, colnum, head):",5)
+        store=self.ingTree.get_model()
+        iter=store.get_iter(path)
+        val = store.get_value(iter,colnum)
+        newval = not val
+        store.set_value(iter,colnum,newval)
+        ing=store.get_value(iter,0)
+        if head==_('Optional'):
+            if newval: newval=True
+            else: newval=False
+            ref = gtk.TreeRowReference(store,store.get_path(iter))
+            self.rg.rd.undoable_modify_ing(
+                ing,
+                {'optional':newval},self.rc.history,
+                make_visible= lambda ing,dic: self.showIngredientChange(ref,dic))
+        
+    def ingtree_start_keyedit_cb (self, renderer, cbe, path_string):
+        debug('ingtree_start',0)
+        indices = path_string.split(':')
+        path = tuple( map(int, indices))
+        store = self.ingTree.get_model()
+        iter = store.get_iter(path)
+        itm=store.get_value(iter,self.ingColsByAttr['item'])
+        mod = renderer.get_property('model')
+        myfilter=mod.filter_new()
+        cbe.set_model(myfilter)
+        myKeys = self.rg.rd.key_search(itm)
+        vis = lambda m, iter: m.get_value(iter,0) and (m.get_value(iter,0) in myKeys or m.get_value(iter,0).find(itm) > -1)
+        myfilter.set_visible_func(vis)
+        myfilter.refilter()
+        
+    def ingtree_edited_cb (self, renderer, path_string, text, colnum, head):
+        debug("ingtree_edited_cb (self, renderer, path_string, text, colnum, head):",5)
+        indices = path_string.split(':')
+        path = tuple( map(int, indices))
+        store = self.ingTree.get_model()
+        iter = store.get_iter(path)
+        ing=self.get_selected_ing()
+        if head==_('Shopping Category'):
+            self.rg.sl.orgdic[ing.ingkey]=text
+            store.set_value(iter, colnum, text)
+        elif type(ing) == str:
+            debug('Changing group to %s'%text,2)
+            self.change_group(iter, text)
+            return            
+        else:
+            attr=self.head_to_att[head]
+            if attr=='amount':
+                if type(store.get_value(iter,0)) not in [str,unicode]:
+                    # if we're not a group
+                    d={}
+                    try:
+                        parse_range(text)
+                    except:
+                        show_amount_error(text)
+            else:
+                d={attr:text}
+                if attr=='unit':
+                    amt,msg=self.changeUnit(d['unit'],ing)
+                    if amt:
+                        d['amount']=amt
+                    if msg: self.message(msg)
+                elif attr=='item':
+                    d['ingkey']=self.rg.rd.km.get_key(d['item'])
+            debug('undoable_modify_ing %s'%d,0)
+            ref = self.ingController.get_persistent_ref_from_iter(iter)
+            orig_dict = self.ingController.get_rowdict(iter)
+            u = Undo.UndoableObject(
+                # Do
+                lambda *args: self.ingController.update_ingredient_row(
+                self.ingController.get_iter_from_persistent_ref(ref),
+                **d),
+                # Undo
+                lambda *args: self.ingController.update_ingredient_row(
+                self.ingController.get_iter_from_persistent_ref(ref),
+                **orig_dict
+                ),
+                self.rc.history
+                )
+            u.perform()
+
+    # Drag-n-Drop Callbacks
+    
+    def dragIngsRecCB (self, widget, context, x, y, selection, targetType,
+                         time):
+        debug("dragIngsRecCB (self=%s, widget=%s, context=%s, x=%s, y=%s, selection=%s, targetType=%s, time=%s)"%(self, widget, context, x, y, selection, targetType, time),3)
+        drop_info=self.ingTree.get_dest_row_at_pos(x,y)
+        mod=self.ingTree.get_model()
+        if drop_info:
+            path, position = drop_info
+            diter = mod.get_iter(path)
+            dest_ing=mod.get_value(diter,0)
+            if type(dest_ing) in [str,unicode]: group=True
+            else: group=False
+            debug('drop_info good, GROUP=%s'%group,5)
+            #new_iter=mod.append(None)
+            #path=mod.get_path(new_iter)
+        else:
+            diter = None
+            group = False
+            position = None
+        if str(selection.target) == 'GOURMET_INTERNAL':
+               # if this is ours, we move it
+               self.selected_iter.reverse() # all things must go backwards in treeView land...
+               if (group and
+                   (position==gtk.TREE_VIEW_DROP_INTO_OR_BEFORE
+                    or
+                    position==gtk.TREE_VIEW_DROP_INTO_OR_AFTER)
+                   ):
+                   for i in self.selected_iter:
+                       te.move_iter(mod,i,sibling=diter,direction="before",parent=diter)
+               elif (position==gtk.TREE_VIEW_DROP_INTO_OR_BEFORE
+                     or
+                     position==gtk.TREE_VIEW_DROP_BEFORE):
+                   for i in self.selected_iter:
+                       te.move_iter(mod,i,sibling=diter,direction="before")
+               else:
+                   for i in self.selected_iter:
+                       te.move_iter(mod,i,sibling=diter,direction="after")
+               #self.ingTree.get_selection().select_iter(new_iter)
+        else:
+            # if this is external, we copy
+            debug('external drag!',2)
+            for l in selection.data.split("\n"):
+                self.add_ingredient_from_line(l)
+        #self.commit_positions()
+        debug("restoring selections.")
+        debug("done restoring selections.")        
+
+    def dragIngsGetCB (self, tv, context, selection, info, timestamp):
+        def grab_selection (model, path, iter, args):
+            strings, iters = args            
+            str = ""
+            amt = model.get_value(iter,1)
+            if amt:
+                str="%s "%amt
+            unit = model.get_value(iter,2)
+            if unit:
+                str="%s%s "%(str,unit)
+            item = model.get_value(iter,3)
+            if item:
+                str="%s%s"%(str,item)
+            debug("Dragged string: %s, iter: %s"%(str,iter),3)
+            iters.append(iter)
+            strings.append(str)
+        strings=[]
+        iters=[]
+        tv.get_selection().selected_foreach(grab_selection,(strings,iters))
+        str=string.join(strings,"\n")
+        selection.set('text/plain',0,str)
+        selection.set('STRING',0,str)
+        selection.set('GOURMET_INTERNAL',8,'blarg')
+        self.selected_iter=iters
+
+    # Move-item callbacks
+
+    def get_selected_refs (self):
+        ts,paths = self.ingTree.get_selection().get_selected_rows()
+        return [self.ingController.get_persistent_ref_from_path(p) for p in paths]
+    
+    def ingUpCB (self, *args):
+        refs = self.get_selected_refs()
+        u=Undo.UndoableObject(lambda *args: self.ingUpMover(
+            [self.ingController.get_path_from_persistent_ref(r) for r in refs]
+            ),
+                              lambda *args: self.ingDownMover(
+            [self.ingController.get_path_from_persistent_ref(r) for r in refs]
+            ),
+                              self.rc.history)
+        u.perform()
+
+    def ingDownCB (self, *args):
+        refs = self.get_selected_refs()
+        u=Undo.UndoableObject(lambda *args: self.ingDownMover(
+            [self.ingController.get_path_from_persistent_ref(r) for r in refs]
+            ),
+                              lambda *args: self.ingUpMover(
+            [self.ingController.get_path_from_persistent_ref(r) for r in refs]
+            ),
+                              self.rc.history)
+        u.perform()
+
+    def ingUpMover (self, paths):
+        ts = self.ingController.imodel
+        def moveup (ts, path, itera):
+            if itera:
+                prev=te.path_next(path,-1)
+                prev_iter=ts.get_iter(prev)
+                te.move_iter(ts,itera,sibling=prev_iter,direction="before")
+                #self.ingTree.get_selection().unselect_path(path)
+                #self.ingTree.get_selection().select_path(prev)
+        paths.reverse()
+        tt = te.selectionSaver(self.ingTree)        
+        for p in paths:
+            itera = ts.get_iter(p)
+            moveup(ts,p,itera)
+        tt.restore_selections()
+        self.rc.setEdited(True)
+        
+    def ingDownMover (self, paths):
+        ts = self.ingController.imodel
+        def movedown (ts, path, itera):
+            if itera:
+                next = ts.iter_next(itera)
+                te.move_iter(ts,itera,sibling=next,direction="after")
+                #if next:
+                #    next_path=ts.get_path(next)
+                #else:
+                #    next_path=path
+        paths.reverse()
+        tt = te.selectionSaver(self.ingTree)
+        for p in paths:
+            itera = ts.get_iter(p)
+            movedown(ts,p,itera)
+        tt.restore_selections()
+        self.rc.setEdited(True)
+
+    # End Callbacks
+
+    # Convenience methods / Access to the Tree
+
+    # Accessing the selection
+
+    def getSelectedIters (self):
+        if len(self.ingController.imodel)==0:
+            return None
+        ts,paths = self.ingTree.get_selection().get_selected_rows()
+        return [ts.get_iter(p) for p in paths]
+
+    def getSelectedIter (self):
+        debug("getSelectedIter",4)
+        if len(self.ingController.imodel)==0:
+            return None
+        try:
+            ts,paths=self.ingTree.get_selection().get_selected_rows()
+            lpath=paths[-1]
+            group=ts.get_iter(lpath)
+        except:
+            debug("getSelectedIter: there was an exception",0)            
+            group=None
+        return group
+
+    def get_selected_ing (self):
+        """get selected ingredient"""
+        debug("get_selected_ing (self):",5)
+        path, col = self.ingTree.get_cursor()
+        if path:
+            itera = self.ingTree.get_model().get_iter(path)
+        else:
+            tv,rows = self.ingTree.get_selection().get_selected_rows()
+            if len(rows) > 0:
+                itera = rows[0]
+            else:
+                itera=None
+        if itera: return self.ingTree.get_model().get_value(itera,0)
+        else: return None
+
+    def set_tree_for_rec (self, rec):        
+        self.ingTree.set_model(
+            self.ingController.create_imodel(rec)
+            )
+        self.selection_changed()
+        self.ingTree.expand_all()
+
+    def ingNewGroupCB (self, *args):
+        self.ingController.add_group(de.getEntry(label=_('Adding Ingredient Group'),
+                                                 sublabel=_('Enter a name for new subgroup of ingredients'),
+                                                 entryLabel=_('Name of group: '),
+                                                 ),
+                                     self.ingController.imodel,
+                                     prev_iter=self.getSelectedIter(),
+                                     children_iters=self.getSelectedIters())
+        self.rc.setEdited(True)
+
+    def change_group (self, iter, text):
+        debug('Undoable group change: %s %s'%(iter,text),3)
+        model = self.ingtree_ui.ingController.imodel
+        oldgroup0 = model.get_value(iter,0)
+        oldgroup1 = model.get_value(iter,1)
+        def change_my_group ():
+            model.set_value(iter,0,"GROUP %s"%text)
+            model.set_value(iter,1,text)
+        def unchange_my_group ():
+            model.set_value(iter,0,oldgroup0)
+            model.set_value(iter,1,oldgroup1)
+        obj = Undo.UndoableObject(change_my_group,unchange_my_group,self.history)
+        obj.perform()
+        self.setEdited(True)
+
 class IngredientEditor:
     def __init__ (self, RecGui, rc):
         debug("IngredientEditor.__init__ (self, RecGui):",5)
@@ -2093,23 +2196,22 @@ class IngredientEditor:
         txt = self.quickEntry.get_text()
         self.rc.add_ingredient_from_line(txt)
         self.quickEntry.set_text('')
-        self.rc.resetIngredients()
-        self.rc.message(_('Changes to ingredients saved automatically.'))
 
     def add (self, *args):
         debug("add (self, *args):",5)
-        d = {}
-        d['id']=self.rc.current_rec.id
+        d = {}        
         d['ingkey']=self.getKey()
         d['item']=self.ingBox.get_text()
         d['unit']=self.unitBox.entry.get_text()
         amt=self.amountBox.get_text()
         if amt:
             try:
-                d['amount'],d['rangeamount']= parse_range(amt)
+                parse_range(amt)
             except:
                 show_amount_error(amt)
                 raise
+            else:
+                d['amount']=amt
         if not d['item'] :
             # if there's no item but there is a key, we assume that the user
             # wanted the item to be the same as the key
@@ -2129,36 +2231,18 @@ class IngredientEditor:
         if self.optCheck.get_active(): d['optional']=True
         else: d['optional']=False
         if not d['ingkey']:
-            #print 'grabbing key...'
             d['ingkey']=self.rg.rd.km.get_key(d['item'])
         sh = self.shopBox.entry.get_text()
         if sh:
             self.rg.sl.sh.add_org_itm(d['ingkey'],sh)
         if self.ing:
-            debug('Do modify ing',5)
-            i=self.rg.rd.undoable_modify_ing(self.ing,d,self.rc.history)
-            debug('modified ing',5)
-            debug('resetting inglist',5)
-            self.rc.resetIngredients()
-            debug('reset inglist',5)
+            itr = self.rc.ingtree_ui.ingController.get_iter_from_persistent_ref(ref)
+            self.rc.ingtree_ui.ingController.update_ingredient_row(itr,**d)
         else:
-            debug('Do rg.rd.add_ing',5)
-            i=self.rg.rd.add_ing(d)
-            debug('add ingredient to view',5)
-            iter=self.rc.add_ingredient(self.rc.imodel,i,self.rc.mult,
-                                        group_iter=self.rc.getSelectedIter())
-            debug('added ing to view',5)
-            debug('select iter',5)
-            path=self.rc.imodel.get_path(iter)
-            self.rc.ingTree.expand_to_path(path)
-            self.rc.ingTree.get_selection().select_iter(iter)
-            debug('selected iter',5)
+            self.rc.ingtree_ui.ingController.add_new_ingredient(**d)
         debug('blank selves/new',5)
         self.new()
         debug('done!',5)
-        self.rc.resetIngredients()
-        self.rc.message(_('Changes to ingredients saved automatically.'))            
-        #self.new()
 
     def delete_cb (self, *args):
         debug("delete_cb (self, *args):",5)
@@ -2174,7 +2258,6 @@ class IngredientEditor:
             #elif de.getBoolean(label=_("Are you sure you want to delete %s?")%ing.item):
             else:
                 ings_to_delete.append(ing)
-        print 'undoable_delete_ings(',ings_to_delete
         self.rg.rd.undoable_delete_ings(ings_to_delete, self.rc.history,
                                         make_visible=lambda *args: self.rc.resetIngredients())
         #self.new()
@@ -2218,7 +2301,6 @@ class IngredientEditor:
                                      expander=[_("See ingredients"),tree])
                 # then we're deleting them, this is easy!
                 children.reverse()
-                self.rc.pre_modify_tree()
                 ings_to_delete = []
                 ings_to_modify = []
                 for c in children:
@@ -2249,9 +2331,7 @@ class IngredientEditor:
                     debug('Modifying ingredients',0)
                     um=Undo.UndoableObject(ungroup,regroup,self.rc.history)                    
                     um.perform()                    
-            else: self.rc.pre_modify_tree()
             self.rc.imodel.remove(iter)
-            self.rc.post_modify_tree()
 
 class IngInfo:
     """Keep models for autocompletion, comboboxes, and other
@@ -2367,7 +2447,6 @@ class RecSelector (RecIndex):
         debug('ok',0)
         pre_iter=self.reccard.getSelectedIter()
         try:
-            self.reccard.pre_modify_tree()
             for rec in self.recTreeSelectedRecs():
                 if rec.id == self.reccard.current_rec.id:
                     de.show_message(label=_("Recipe cannot call itself as an ingredient!"),
@@ -2382,11 +2461,9 @@ class RecSelector (RecIndex):
                 debug('adding ing: %s'%ingdic,5)
                 i=self.rg.rd.add_ing(ingdic)
                 iter=self.reccard.add_ingredient(self.reccard.imodel,i,
-                                            mult=self.reccard.mult,
                                             group_iter=pre_iter)
                 path=self.reccard.imodel.get_path(iter)
                 self.reccard.ss.add_selection(iter)
-            self.reccard.post_modify_tree()
             self.reccard.commit_positions()
             self.quit()
         except:
@@ -2395,7 +2472,14 @@ class RecSelector (RecIndex):
         
 if __name__ == '__main__':
     import GourmetRecipeManager
-    import testExtras
+    #import testExtras, recipeManager
+    #rd = recipeManager.default_rec_manager()
+    #rg = testExtras.FakeRecGui(rd)
     rg = GourmetRecipeManager.RecGui()
-    rc = RecCard(rg,rg.rd.fetch_one(rg.rd.rview))
-    gtk.main()
+    try:
+        rc = RecCard(rg,rg.rd.fetch_one(rg.rd.rview))
+    except:
+        rg.app.hide()
+        raise
+    else:
+        gtk.main()
