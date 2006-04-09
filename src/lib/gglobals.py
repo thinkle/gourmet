@@ -95,18 +95,30 @@ if os.name == 'posix':
     # lib/python/site-packages/gourmet/
     # special case our standard debian install, which puts
     # all the python libraries into /usr/share/gourmet
-    if __file__.find('/usr/share/gourmet')==0:
-        usr='/usr'
+    __file__ = os.path.realpath(__file__)
+    if __file__.find('src/lib/')>-1: # Facilitate testing from src/ dir...
+        base = os.path.split(
+            os.path.split(
+            os.path.split(__file__)[0] #lib/
+            )[0] #src/
+            )[0] #./
+        datad = os.path.join(base,'data')
+        gladebase = os.path.join(base,'glade')
+        imagedir = os.path.join(base,'images')
+        usr = '/usr'
     else:
-        usr=os.path.split(os.path.split(os.path.split(os.path.split(os.path.split(__file__)[0])[0])[0])[0])[0]
-    # add share/gourmet
-    # this assumes the user only specified a general build
-    # prefix. If they specified data and lib prefixes, we're
-    # screwed. See the following email for details:
-    # http://mail.python.org/pipermail/python-list/2004-May/220700.html
-    datad=os.path.join(usr,'share','gourmet')
-    gladebase=datad
-    imagedir=datad
+        if __file__.find('/usr/share/gourmet')==0:
+            usr='/usr'
+        else:
+            usr=os.path.split(os.path.split(os.path.split(os.path.split(os.path.split(__file__)[0])[0])[0])[0])[0]
+        # add share/gourmet
+        # this assumes the user only specified a general build
+        # prefix. If they specified data and lib prefixes, we're
+        # screwed. See the following email for details:
+        # http://mail.python.org/pipermail/python-list/2004-May/220700.html
+        datad=os.path.join(usr,'share','gourmet')
+        gladebase=datad
+        imagedir=datad
 
 # Windows setup (NOTE: this code is foolishly repeated in gettext_setup.py
 elif os.name == 'nt': 
