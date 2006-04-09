@@ -562,12 +562,15 @@ class RecData:
         defaultn = 0
         groups = {}
         group_order = {}
+        n = 0; group = 0
         for i in ings:
             # defaults
             if not hasattr(i,'inggroup'):
-                group=None
+                group = None
             else:
                 group=i.inggroup
+            if group == None:
+                group = n; n+=1
             if not hasattr(i,'position'):
                 print 'Bad: ingredient without position',i
                 i.position=defaultn
@@ -593,7 +596,19 @@ class RecData:
             else: return -1
         for g,lst in alist:
             lst.sort(sort_ings)
-        return alist
+        final_alist = []
+        last_g = -1
+        for g,ii in alist:
+            if type(g)==int:
+                if last_g == None:
+                    final_alist[-1][1].extend(ii)
+                else:
+                    final_alist.append([None,ii])
+                last_g = None
+            else:
+                final_alist.append([g,ii])
+                last_g = g
+        return final_alist
 
     def replace_ings (self, ingdicts):
         """Add a new ingredients and remove old ingredient list."""
