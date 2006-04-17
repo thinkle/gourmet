@@ -46,7 +46,6 @@ def check_for_data_to_import (rm):
                                )
         def set_prog (p,msg=None):
             p=float(p)
-            print 'set_prog',p,msg
             pd.set_progress(p,msg)
             while gtk.events_pending():
                 gtk.main_iteration()
@@ -54,8 +53,6 @@ def check_for_data_to_import (rm):
         backup_file = os.path.join(gourmetdir,'GOURMET_DATA_DUMP')
         if os.path.exists(backup_file):
             import upgradeHandler        
-            
-            #print 'Done'
             pd.show()
             upgradeHandler.import_backup_file(
                 rm,backup_file,set_prog
