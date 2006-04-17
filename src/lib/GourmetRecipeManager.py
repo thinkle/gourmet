@@ -39,25 +39,30 @@ except ImportError:
     rtf=False
 
 def check_for_data_to_import (rm):
-    backup_file = os.path.join(gourmetdir,'GOURMET_DATA_DUMP')
-    if os.path.exists(backup_file) and rm.fetch_len(rm.rview)==0:
-        import upgradeHandler        
+    if rm.fetch_len(rm.rview)==0:
+        import legacy_db
         pd = de.ProgressDialog(label=_('Importing old recipe data'),
-                          sublabel=_('Importing recipe data from a previous version of Gourmet into new database.'),
-                          )
-        def set_prog (p):
-            #print 'Prog->',p
-            pd.set_progress(p)
+                               sublabel=_('Importing recipe data from a previous version of Gourmet into new database.'),
+                               )
+        def set_prog (p,msg=None):
+            p=float(p)
+            print 'set_prog',p,msg
+            pd.set_progress(p,msg)
             while gtk.events_pending():
                 gtk.main_iteration()
+        legacy_db.backup_legacy_data(gourmetdir, pd, set_prog)
+        backup_file = os.path.join(gourmetdir,'GOURMET_DATA_DUMP')
+        if os.path.exists(backup_file):
+            import upgradeHandler        
+            
             #print 'Done'
-        pd.show()
-        upgradeHandler.import_backup_file(
-            rm,backup_file,set_prog
-            )
-        os.rename(backup_file,backup_file+'.ALREADY_LOADED')
-        pd.hide()
-        pd.destroy()
+            pd.show()
+            upgradeHandler.import_backup_file(
+                rm,backup_file,set_prog
+                )
+            os.rename(backup_file,backup_file+'.ALREADY_LOADED')
+            pd.hide()
+            pd.destroy()
         
 class RecGui (RecIndex):
     """This is the main application. We subclass RecIndex, which handles displaying a list of
@@ -440,6 +445,7 @@ class RecGui (RecIndex):
         # initialize our nutritional database
         nutrition.nutritionGrabberGui.check_for_db(self.rd)
         self.nd = nutrition.nutrition.NutritionData(self.rd,self.conv)
+        self.rd.nd = self.nd
         # initialize star-generator for use elsewhere
         self.star_generator = ratingWidget.StarGenerator()
         # we'll need to hand these to various other places
