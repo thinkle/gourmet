@@ -148,7 +148,7 @@ class SimpleCLI:
                 except:
                     print 'invalid input.'
 
-def default_rec_manager ():
+def default_rec_manager ():    
     return RecipeManager(**dbargs)
 
 if __name__ == '__main__':

@@ -1,7 +1,15 @@
+import os,os.path
+DIR = os.path.abspath('exporters/reference_setup/')
+TEST_FILE_DIRECTORY = os.path.join(DIR,'recipes.db')
+import gglobals
+
+gglobals.gourmetdir = DIR
+gglobals.dbargs['file'] = TEST_FILE_DIRECTORY
+
 import recipeManager as rm
 import time
 import exporters
-import os,os.path
+
 import tempfile
 import traceback
 import unittest
@@ -18,7 +26,8 @@ if os.path.exists(OUTPUT_DIRECTORY):
     OUTPUT_DIRECTORY += '-%s'%n
 
 if not os.path.exists(OUTPUT_DIRECTORY): os.makedirs(OUTPUT_DIRECTORY)
-TEST_FILE_DIRECTORY = 'exporters/reference_setup/recipes.mk'
+
+
 
 class ExportTest:
 
@@ -55,7 +64,6 @@ class ExportTest:
                 
     
     def setup_db (self):
-        rm.dbargs['file']=os.path.abspath(TEST_FILE_DIRECTORY)
         print 'rm.dbargs[file]=',rm.dbargs['file']
         self.db = rm.RecipeManager(**rm.dbargs)
         if self.db.fetch_len(self.db.rview)==0: raise "No recipes in database."
