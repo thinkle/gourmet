@@ -122,9 +122,9 @@ class ImportTestCase (unittest.TestCase):
     def testAllRecipes (self):
         self.it.run_test({'url':'http://beef.allrecipes.com/az/AsianBeefWithSnowPeas.asp'}), #allrecipes.com
 
-    def testEatingWell (self):
+    def testEpicurious (self):
         self.it.run_test(
-            {'url':'http://www.eatingwell.com/articles_recipes/recipes/recipes_favorites/chocolate_zucchini_bread.htm'}
+            {'url':'http://www.epicurious.com/recipes/recipe_views/views/106711'}
             ) #eatingwell
 
     def testFoodNetwork (self):
@@ -134,64 +134,71 @@ class ImportTestCase (unittest.TestCase):
 
 
 if __name__ == '__main__':
-    import tempfile,os.path
-    import hotshot, hotshot.stats    
+    PROFILE = False
 
-    import gtk
-    class ImportProfiler:
+    if PROFILE:
 
-        def __init__ (self):
-            
-            self.w = gtk.Window()
-            self.vb = gtk.VBox(); self.vb.show()
-            pb = gtk.Button('Profile'); pb.show()
-            pb.connect('clicked',self.run_profile)
-            qb = gtk.Button(stock=gtk.STOCK_QUIT); qb.show()
-            qb.connect('clicked',self.quit)
-            self.vb.pack_start(pb)
-            self.vb.pack_start(qb)
-            self.w.connect('delete-event',self.quit)
-            self.w.add(self.vb)
-            self.w.show()
+        import tempfile,os.path
+        import hotshot, hotshot.stats    
 
-        def start (self):
-            gtk.main()
+        import gtk
+        class ImportProfiler:
 
-        def quit (self, *args): gtk.main_quit()
+            def __init__ (self):
 
-        def run_profile (self, *args):
-            it=ImportTest()
-            it.setup_db()
-            prof = hotshot.Profile(os.path.join(tempfile.tempdir,'GOURMET_IMPORTER_HOTSHOT_PROFILE'))
-            prof.runcall(
-                lambda *args: it.run_test({'filename':'/home/tom/Desktop/big_rec_archive/b1q97.txt'})
-                )
-            stats = hotshot.stats.load(os.path.join(tempfile.tempdir,'GOURMET_IMPORTER_HOTSHOT_PROFILE'))
-            stats.strip_dirs()
-            stats.sort_stats('time','calls')
-            stats.print_stats()
-            self.quit()
+                self.w = gtk.Window()
+                self.vb = gtk.VBox(); self.vb.show()
+                pb = gtk.Button('Profile'); pb.show()
+                pb.connect('clicked',self.run_profile)
+                qb = gtk.Button(stock=gtk.STOCK_QUIT); qb.show()
+                qb.connect('clicked',self.quit)
+                self.vb.pack_start(pb)
+                self.vb.pack_start(qb)
+                self.w.connect('delete-event',self.quit)
+                self.w.add(self.vb)
+                self.w.show()
 
-    ip = ImportProfiler()
-    ip.start()
-    #it.run_test({'filename':'mealmaster.mmf'}), # mealmaster
-    #it.setup_db()
-    #it.run_test({'filename':'athenos1.mx2',
-    #                      'test':{'title':'5 Layer Mediterranean Dip',
-    #                              'all_ings_have_amounts':True,
-    #                              'all_ings_have_units':True,
-    #                              }
-    #                      })
-    #it.run_test({'filename':'mealmaster.mmf'}), # mealmaster
-    #it.run_test({'filename':'sample.kreml'}), #krecipes
-    #it.run_test({'url':'http://beef.allrecipes.com/az/AsianBeefWithSnowPeas.asp'}), #allrecipes.com
-    #it.run_test(
-    #        {'url':'http://www.eatingwell.com/articles_recipes/recipes/recipes_favorites/chocolate_zucchini_bread.htm'}
-    #        ) #eatingwell
-    #from exporters.gxml2_exporter import rview_to_xml as gxml_exporter
-    #n = 1
-    #while os.path.exists('/tmp/gourmet_import_test_%s.grmt'%n): n+=1
-    #ge=gxml_exporter(it.db,it.db.fetch_all(it.db.rview),'/tmp/gourmet_import_test_%s.grmt'%n)
-    #ge.run()
-    #unittest.main()
+            def start (self):
+                gtk.main()
+
+            def quit (self, *args): gtk.main_quit()
+
+            def run_profile (self, *args):
+                it=ImportTest()
+                it.setup_db()
+                prof = hotshot.Profile(os.path.join(tempfile.tempdir,'GOURMET_IMPORTER_HOTSHOT_PROFILE'))
+                prof.runcall(
+                    lambda *args: it.run_test({'filename':'/home/tom/Desktop/big_rec_archive/b1q97.txt'})
+                    )
+                stats = hotshot.stats.load(os.path.join(tempfile.tempdir,'GOURMET_IMPORTER_HOTSHOT_PROFILE'))
+                stats.strip_dirs()
+                stats.sort_stats('time','calls')
+                stats.print_stats()
+                self.quit()
+
+        ip = ImportProfiler()
+        ip.start()
+    else:
+        it = ImportTest()
+        it.setup_db()
+#         it.run_test({'filename':'mealmaster.mmf'}), # mealmaster
+#         it.run_test({'filename':'athenos1.mx2',
+#                              'test':{'title':'5 Layer Mediterranean Dip',
+#                                      'all_ings_have_amounts':True,
+#                                      'all_ings_have_units':True,
+#                                      }
+#                              })
+#         it.run_test({'filename':'mealmaster.mmf'}), # mealmaster
+#         it.run_test({'filename':'sample.kreml'}), #krecipes
+#         it.run_test({'url':'http://beef.allrecipes.com/az/AsianBeefWithSnowPeas.asp'}), #allrecipes.com
+#         it.run_test(
+#               {'url':'http://www.epicurious.com/recipes/recipe_views/views/106711'}
+#               ) #epicurious
+#         from exporters.gxml2_exporter import rview_to_xml as gxml_exporter
+#         n = 1
+#         while os.path.exists('/tmp/gourmet_import_test_%s.grmt'%n): n+=1
+#         ge=gxml_exporter(it.db,it.db.fetch_all(it.db.rview),'/tmp/gourmet_import_test_%s.grmt'%n)
+#         ge.run()
+        unittest.main()
     #pass
+    
