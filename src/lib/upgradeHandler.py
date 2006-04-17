@@ -29,18 +29,34 @@ marker = "GOURMET_EXPORT_OUTPUT_"
 
 class SimpleExporter:
 
+    def __init__ (self, prog=None):
+        self.prog = prog
+        self.partial = 0
+
     # A flag we sincerely hope none of our data contains!
-    def write_data (self, outfi):
+    def write_data (self, outfi, recmanager = None):
         self.outfi = outfi
-        rm = load_recmanager()
+        if recmanager:
+            rm = recmanager
+        else:
+            rm = load_recmanager()
         tables = get_tables(rm)
-        for name,table,columns in tables:
+        tot_t = len(tables)
+        self.increment = float(1)/tot_t
+        for n,tbl in enumerate(tables):
+            name,table,columns = tbl
+            self.partial = float(n)/tot_t
             self.write_table(rm,name,table,columns)
         self.outfi.close()
 
     def write_table (self, rm, name, table_object, columns):
         self.outfi.write('\n'+marker+'START_TABLE: %s'%name)
-        for row in fetch_all(rm,table_object):
+        for n,row in enumerate(fetch_all(rm,table_object)):
+            if self.prog and n % 10 == 0:
+                self.prog(
+                    -1,
+                    """Moving old data to new format; exporting %s"""%name,
+                    )
             self.outfi.write('\n'+marker+'START_ROW')
             for c,typ in columns:
                 self.outfi.write(
