@@ -126,8 +126,8 @@ else:
     script = os.path.join('src','gourmet')
     # Run upgrade pre script
     # Importing runs the actual script...
-    import tools.upgrade_pre_script
-    tools.upgrade_pre_script.dump_old_data()
+    #import tools.upgrade_pre_script
+    #tools.upgrade_pre_script.dump_old_data()
         
 setup(
     name = name,
@@ -146,6 +146,9 @@ setup(
                 'gourmet.importers',
                 'gourmet.importers.html_plugins',
                 'gourmet.exporters',
+                'gourmet.legacy_db',
+                'gourmet.legacy_db.db_085',
+                'gourmet.legacy_db.db_08',
                 'gourmet.nutrition',
                 ],
     package_dir = {'gourmet' : os.path.join('src','lib')},
