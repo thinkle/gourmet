@@ -875,51 +875,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.updateIngredientsDisplay()
         self.update_nutrition_info()
 
-    def changeUnit (self, new_unit, ing):
-        """Handed a new unit and an ingredient, we decide whether to convert and return:
-        None (don't convert) or Amount (new amount)
-        Message (message for our user) or None (no message for our user)"""
-        key=ing.ingkey
-        old_unit=ing.unit
-        old_amt=ing.amount        
-        density=None
-        conversion = self.rg.conv.converter(old_unit,new_unit,key)
-        if conversion and conversion != 1:
-            new_amt = old_amt*conversion
-            opt1 = _("Converted: %(amt)s %(unit)s")%{'amt':convert.float_to_frac(new_amt),
-                                                     'unit':new_unit}
-            opt2 = _("Not Converted: %(amt)s %(unit)s")%{'amt':convert.float_to_frac(old_amt),
-                                                         'unit':new_unit}
-            CONVERT = 1
-            DONT_CONVERT = 2
-            choice = de.getRadio(label=_('Changed unit.'),
-                                 sublabel=_('You have changed the unit for %(item)s from %(old)s to %(new)s. Would you like the amount converted or not?')%{
-                'item':ing.item,
-                'old':old_unit,
-                'new':new_unit},
-                                 options=[(opt1,CONVERT),
-                                          (opt2,DONT_CONVERT),]
-                                 )
-            if not choice:
-                raise "User cancelled"
-            if choice==CONVERT:
-                return (new_amt,
-                        _("Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"%{
-                    'old_amt':old_amt,
-                    'old_unit':old_unit,
-                    'new_amt':new_amt,
-                    'new_unit':new_unit,})
-                        )
-            else:
-                return (None,
-                        None)
-        if conversion:
-            return (None,None)
-        return (None,
-                _("Unable to convert from %(old_unit)s to %(new_unit)s"%{'old_unit':old_unit,
-                                                                         'new_unit':new_unit}
-                  ))
-
     def add_ingredient_from_line (self, line):
         """Add an ingredient to our list from a line of plain text"""
         d=self.rg.rd.ingredient_parser(line, conv=self.rg.conv)
@@ -1258,6 +1213,7 @@ class IngredientController:
     def __init__ (self, rc):
         self.rc = rc; self.rg = self.rc.rg; self.glade = self.rc.glade
         self.new_item_count = 0
+        self.deleted_items = []
 
     # Setup methods
     def create_imodel (self, rec):
@@ -1292,19 +1248,23 @@ class IngredientController:
         return model
 
     # Add recipe info...
-    def add_new_ingredient (self,                            
-                            group_iter=None,
-                            **ingargs
-                            ):
+    def add_ingredient_from_kwargs (self, group_iter=None, **ingdict):
         if group_iter:
             iter = self.imodel.append(group_iter)
         else:
             iter = self.imodel.append(None)
-        self.new_item_count+=1
         self.imodel.set_value(iter,0,self.new_item_count)
         self.update_ingredient_row(
-            iter,**ingargs
+            iter,**ingdict
             )
+
+    def add_new_ingredient (self,                            
+                            *args,
+                            **kwargs
+                            ):
+        ret = self.add_ingredient_from_kwargs(*args,**kwargs)
+        self.new_item_count+=1
+        return ret
 
     def update_ingredient_row (self,iter,
                                amount=None,
@@ -1375,6 +1335,48 @@ class IngredientController:
         debug('add_group returning %s'%groupiter,5)
         return groupiter
 
+    #def change_group (self, name,
+    def delete_iters (self, *iters):
+        refs = []
+        undo_info = []
+        for iter in iters:
+            deleted_dic = self.get_rowdict(iter)
+            orig_ref = self.get_persistent_ref_from_iter(iter)
+            path = self.imodel.get_path(iter)
+            if path[-1]==0:
+                if len(path)==1:
+                    prev_path = None
+                else:
+                    prev_path = tuple(path[:-1])
+            else:
+                prev_path = tuple(path[:-1])
+            if prev_path:
+                prev_ref = self.get_persistent_ref_from_path(prev_path)
+            else:
+                prev_ref = None
+            refs.append(orig_ref)
+            ing_obj = self.imodel.get_value(iter,0)
+            undo_info.append((deleted_dic,prev_ref,ing_obj))
+        u = Undo.UndoableObject(
+            lambda *args: self.do_delete_iters(refs),
+            lambda *args: self.do_undelete_iters(undo_info),
+            self.rc.history
+            )
+        u.perform()
+
+    def do_delete_iters (self, iters):
+        for i in iters: self.imodel.remove(self.get_iter_from_persistent_ref(i))
+
+    def do_undelete_iters (self, rowdicts_and_iters):
+        for rowdic,prev_iter,ing_obj in rowdicts_and_iters:
+            prev_iter = self.get_iter_from_persistent_ref(prev_iter)
+            if ing_obj and type(ing_obj) not in [str,unicode]:
+                iter = self.add_ingredient(self.imodel,ing_obj,prev_iter)
+                self.update_ingredient_row(rowdic)
+            else:
+                self.add_ingredient_from_kwargs(prev_iter,
+                                                **rowdic)
+
     # Get a dictionary describing our current row
     def get_rowdict (self, iter):
         d = {}
@@ -1383,7 +1385,7 @@ class IngredientController:
                     ('item',3),
                     ('optional',4),
                     ('ingkey',5),
-                    ('shopkey',6)]:
+                    ('shopcat',6)]:
             d[k] = self.imodel.get_value(iter,n)
         return d
 
@@ -1443,7 +1445,7 @@ class IngredientController:
                     amt,rangeamount = parse_range(d['amount'])
                     d['amount']=amt
                     if rangeamount: d['rangeamount']=rangeamount
-                del d['shopkey']
+                del d['shopcat']
                 d['position']=pos
                 d['inggroup']=group
                 if type(ing) != int:
@@ -1701,7 +1703,7 @@ class IngredientTreeUI:
         vis = lambda m, iter: m.get_value(iter,0) and (m.get_value(iter,0) in myKeys or m.get_value(iter,0).find(itm) > -1)
         myfilter.set_visible_func(vis)
         myfilter.refilter()
-        
+
     def ingtree_edited_cb (self, renderer, path_string, text, colnum, head):
         debug("ingtree_edited_cb (self, renderer, path_string, text, colnum, head):",5)
         indices = path_string.split(':')
@@ -1732,7 +1734,7 @@ class IngredientTreeUI:
                     amt,msg=self.changeUnit(d['unit'],ing)
                     if amt:
                         d['amount']=amt
-                    if msg: self.message(msg)
+                    if msg: self.rc.message(msg)
                 elif attr=='item':
                     d['ingkey']=self.rg.rd.km.get_key(d['item'])
             debug('undoable_modify_ing %s'%d,0)
@@ -1887,6 +1889,53 @@ class IngredientTreeUI:
             movedown(ts,p,itera)
         tt.restore_selections()
         self.rc.setEdited(True)
+
+    # Edit Callbacks
+    def changeUnit (self, new_unit, ing):
+        """Handed a new unit and an ingredient, we decide whether to convert and return:
+        None (don't convert) or Amount (new amount)
+        Message (message for our user) or None (no message for our user)"""
+        key=ing.ingkey
+        old_unit=ing.unit
+        old_amt=ing.amount        
+        density=None
+        conversion = self.rg.conv.converter(old_unit,new_unit,key)
+        if conversion and conversion != 1:
+            new_amt = old_amt*conversion
+            opt1 = _("Converted: %(amt)s %(unit)s")%{'amt':convert.float_to_frac(new_amt),
+                                                     'unit':new_unit}
+            opt2 = _("Not Converted: %(amt)s %(unit)s")%{'amt':convert.float_to_frac(old_amt),
+                                                         'unit':new_unit}
+            CONVERT = 1
+            DONT_CONVERT = 2
+            choice = de.getRadio(label=_('Changed unit.'),
+                                 sublabel=_('You have changed the unit for %(item)s from %(old)s to %(new)s. Would you like the amount converted or not?')%{
+                'item':ing.item,
+                'old':old_unit,
+                'new':new_unit},
+                                 options=[(opt1,CONVERT),
+                                          (opt2,DONT_CONVERT),]
+                                 )
+            if not choice:
+                raise "User cancelled"
+            if choice==CONVERT:
+                return (new_amt,
+                        _("Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"%{
+                    'old_amt':old_amt,
+                    'old_unit':old_unit,
+                    'new_amt':new_amt,
+                    'new_unit':new_unit,})
+                        )
+            else:
+                return (None,
+                        None)
+        if conversion:
+            return (None,None)
+        return (None,
+                _("Unable to convert from %(old_unit)s to %(new_unit)s"%{'old_unit':old_unit,
+                                                                         'new_unit':new_unit}
+                  ))
+
 
     # End Callbacks
 
@@ -2246,20 +2295,21 @@ class IngredientEditor:
 
     def delete_cb (self, *args):
         debug("delete_cb (self, *args):",5)
-        mod,rows = self.rc.ingTree.get_selection().get_selected_rows()
+        mod,rows = self.rc.ingtree_ui.ingTree.get_selection().get_selected_rows()
         rows.reverse()
-        ings_to_delete = []
-        for p in rows:
-            i=mod.get_iter(p)
-            ing = mod.get_value(i,0)
-            if type(ing) in [str,unicode]:
-                ## then we're a group
-                self.remove_group(i)
-            #elif de.getBoolean(label=_("Are you sure you want to delete %s?")%ing.item):
-            else:
-                ings_to_delete.append(ing)
-        self.rg.rd.undoable_delete_ings(ings_to_delete, self.rc.history,
-                                        make_visible=lambda *args: self.rc.resetIngredients())
+        self.rc.ingtree_ui.ingController.delete_iters(*[mod.get_iter(p) for p in rows])
+        #ings_to_delete = []
+        #for p in rows:
+        #    i=mod.get_iter(p)
+        #    ing = mod.get_value(i,0)
+        #    if type(ing) in [str,unicode]:
+        #        ## then we're a group
+        #        self.remove_group(i)
+        #    #elif de.getBoolean(label=_("Are you sure you want to delete %s?")%ing.item):
+        #    #else:
+        #    #ings_to_delete.append(ing)
+        #self.rg.rd.undoable_delete_ings(ings_to_delete, self.rc.history,
+        #                                make_visible=lambda *args: self.rc.resetIngredients())
         #self.new()
                                       
     def remove_group (self, iter):
