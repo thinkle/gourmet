@@ -134,7 +134,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'rcHide' : self.hide,
             'rcHideEdit' : self.hide_edit,
             'saveEdits': self.saveEditsCB,
-            'addIng' : self.newIngCB,
             'newRec' : self.newRecipeCB,
             'rcToggleMult' : self.multTogCB,
             'toggleEdit' : self.saveEditsCB,
@@ -257,9 +256,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         ActionManager.__init__(
             self,self.glade,
             # action groups
-            {'ingredientGroup':[{'ingAdd':[{'tooltip':_('Add new ingredient to the list.'),
+            {'ingredientGroup':[{'ingAdd':[{'label':_('Add _ingredient'),
+                                            'stock-id':gtk.STOCK_ADD,
+                                            'tooltip':_('Add new ingredient to the list.'),
                                             'separators':'ingSeparator'},
-                                           ['addIngButton','ingAddMenu']]},
+                                           ['ingAddMenu']]},
                                 {'ingGroup':[{'tooltip':_('Create new subgroup of ingredients.'),},
                                              ['ingNewGroupButton','ingNewGroupMenu']]},
                                 {'ingImport':[{'tooltip':_('Import list of ingredients from text file.'),
@@ -529,21 +530,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def newRecipeCB (self, *args):
         debug("newRecipeCB (self, *args):",5)
         self.rg.newRecCard()
-
-    def newIngCB (self, *args):
-        d={'id':self.current_rec.id}
-        ing=self.rg.rd.add_ing(d)
-        group=self.getSelectedIter()
-        debug("group=%s"%group,5)
-        iter=self.add_ingredient(self.imodel,ing,group) #we return iter
-        path=self.imodel.get_path(iter)
-        # open up (in case we're in a group)
-        self.ingTree.expand_to_path(path)
-        self.ingTree.set_cursor(path,self.ingColsByName[_('Amt')])
-        #self.ingTree.get_selection().select_iter(iter)
-        self.ingTree.grab_focus()
-        self.updateIngredientsDisplay()
-        self.message(_('Changes to ingredients saved automatically.'))
 
     def resetIngList (self):
         debug("resetIngList (self, rec=None):",0)
@@ -1231,7 +1217,7 @@ class IngredientController:
         ## now we continue with our regular business...
         debug("%s ings"%len(ings),3)
         self.ing_alist=self.rg.rd.order_ings(ings)
-        model = gtk.TreeStore(gobject.TYPE_PYOBJECT,
+        self.imodel = gtk.TreeStore(gobject.TYPE_PYOBJECT,
                               gobject.TYPE_STRING,
                               gobject.TYPE_STRING,
                               gobject.TYPE_STRING,
@@ -1240,19 +1226,25 @@ class IngredientController:
                               gobject.TYPE_STRING)
         for g,ings in self.ing_alist:
             if g:
-                g=self.add_group(g,model)
+                g=self.add_group(g)
             for i in ings:
                 debug('adding ingredient %s'%i.item,0)
-                self.add_ingredient(model, i, g)
-        self.imodel = model
-        return model
+                self.add_ingredient(i, group_iter=g)
+        return self.imodel
 
-    # Add recipe info...
-    def add_ingredient_from_kwargs (self, group_iter=None, **ingdict):
+    def _new_iter_ (self, group_iter, fallback_on_append=True):
         if group_iter:
-            iter = self.imodel.append(group_iter)
+            if type(self.imodel.get_value(group_iter, 0)) in [str,unicode]:
+                iter = self.imodel.append(group_iter)
+            else:
+                iter = self.imodel.insert_after(None, group_iter, None)
         else:
-            iter = self.imodel.append(None)
+            if fallback_on_append: iter = self.imodel.append(None)
+            else: iter = self.imodel.prepend(None)
+        return iter
+    # Add recipe info...
+    def add_ingredient_from_kwargs (self, group_iter=None, fallback_on_append=True, **ingdict):
+        iter = self._new_iter_(group_iter,fallback_on_append)
         self.imodel.set_value(iter,0,self.new_item_count)
         self.update_ingredient_row(
             iter,**ingdict
@@ -1283,53 +1275,48 @@ class IngredientController:
                 self.imodel.set_value(iter,6,self.rc.rg.sl.orgdic[ingkey])
         self.rc.setEdited(True)
                 
-    def add_ingredient (self, model, ing, group_iter=None):
+    def add_ingredient (self, ing, group_iter=None, fallback_on_append=True):
         """group_iter is an iter to put our ingredient inside of.
         If group_iter is not a group but an ingredient, we'll insert our
-        ingredient after it"""
+        ingredient after it
+
+        fallback_on_append tells us whether to append or (if False)
+        prepend when we have no group_iter.
+        """
         
-        debug("add_ingredient (self=%s, model=%s, ing=%s, group_iter=%s):"%(self, model, ing, group_iter),5)
         i = ing
-        if group_iter:
-            if type(model.get_value(group_iter, 0)) in [str,unicode]:
-                debug("Adding to group",4)
-                iter = model.append(group_iter)
-            else:
-                iter = model.insert_after(None, group_iter, None)
-                debug("Adding after iter",5)            
-        else:
-            iter = model.insert_before(None, None, None)
+        iter = self._new_iter_(group_iter,fallback_on_append)
         #amt,unit = self.make_readable_amt_unit(i)
         amt = self.rg.rd.get_amount_as_string(i)
         unit = i.unit
-        model.set_value(iter, 0, i)
-        model.set_value(iter, 1, amt)
-        model.set_value(iter, 2, unit)
-        model.set_value(iter, 3, i.item)
+        self.imodel.set_value(iter, 0, i)
+        self.imodel.set_value(iter, 1, amt)
+        self.imodel.set_value(iter, 2, unit)
+        self.imodel.set_value(iter, 3, i.item)
         if i.optional:
             opt=True
         else:
             opt=False
-        model.set_value(iter, 4, opt)
-        model.set_value(iter, 5, i.ingkey)
+        self.imodel.set_value(iter, 4, opt)
+        self.imodel.set_value(iter, 5, i.ingkey)
         if self.rg.sl.orgdic.has_key(i.ingkey):
             debug("Key %s has category %s"%(i.ingkey,self.rg.sl.orgdic[i.ingkey]),5)
-            model.set_value(iter, 6, self.rg.sl.orgdic[i.ingkey])
+            self.imodel.set_value(iter, 6, self.rg.sl.orgdic[i.ingkey])
         else:
-            model.set_value(iter, 6, None)
+            self.imodel.set_value(iter, 6, None)
         return iter
 
-    def add_group (self, name, model, prev_iter=None, children_iters=[]):
-        debug('add_group',5)
+    def add_group (self, name, prev_iter=None, children_iters=[], fallback_on_append=True):
         if not prev_iter:
-            groupiter = model.append(None)
+            if fallback_on_append: groupiter = self.imodel.append(None)
+            else: groupiter = self.imodel.prepend(None)
         else:
-            groupiter = model.insert_after(None,prev_iter,None)
-        model.set_value(groupiter, 0, "GROUP %s"%name)
-        model.set_value(groupiter, 1, name)
-        for c in children_iters: 
-            te.move_iter(model,c,None,parent=groupiter,direction='after')
-            #self.rg.rd.undoable_modify_ing(model.get_value(c,0),
+            groupiter = self.imodel.insert_after(None,prev_iter,None)
+        self.imodel.set_value(groupiter, 0, "GROUP %s"%name)
+        self.imodel.set_value(groupiter, 1, name)
+        for c in children_iters:
+            te.move_iter(self.imodel,c,None,parent=groupiter,direction='after')
+            #self.rg.rd.undoable_modify_ing(self.imodel.get_value(c,0),
             #                               {'inggroup':name},
             #                               self.history)
         debug('add_group returning %s'%groupiter,5)
@@ -1340,23 +1327,21 @@ class IngredientController:
         refs = []
         undo_info = []
         for iter in iters:
-            deleted_dic = self.get_rowdict(iter)
             orig_ref = self.get_persistent_ref_from_iter(iter)
-            path = self.imodel.get_path(iter)
-            if path[-1]==0:
-                if len(path)==1:
-                    prev_path = None
-                else:
-                    prev_path = tuple(path[:-1])
-            else:
-                prev_path = tuple(path[:-1])
-            if prev_path:
-                prev_ref = self.get_persistent_ref_from_path(prev_path)
-            else:
-                prev_ref = None
             refs.append(orig_ref)
-            ing_obj = self.imodel.get_value(iter,0)
-            undo_info.append((deleted_dic,prev_ref,ing_obj))
+            deleted_dic,prev_ref,ing_obj = self._get_undo_info_for_iter_(iter)
+            child = self.imodel.iter_children(iter)
+            children = []
+            if child:
+                expanded = self.rc.ingtree_ui.ingTree.row_expanded(
+                    self.imodel.get_path(iter)
+                    )
+            else:
+                expanded = False
+            while child:
+                children.append(self._get_undo_info_for_iter_(child))
+                child = self.imodel.iter_next(child)
+            undo_info.append((deleted_dic,prev_ref,ing_obj,children,expanded))
         u = Undo.UndoableObject(
             lambda *args: self.do_delete_iters(refs),
             lambda *args: self.do_undelete_iters(undo_info),
@@ -1364,18 +1349,55 @@ class IngredientController:
             )
         u.perform()
 
+    def _get_undo_info_for_iter_ (self, iter):
+        deleted_dic = self.get_rowdict(iter)
+        path = self.imodel.get_path(iter)
+        if path[-1]==0:
+            if len(path)==1:
+                print 'Path = 0, prev_path = None'
+                prev_path = None
+            else:
+                prev_path = tuple(path[:-1])
+                print "We're the first member of a group, prev_path=",prev_path
+        else:
+            prev_path = te.path_next(path,-1)
+            print 'prev_path = ',prev_path
+        if prev_path:
+            prev_ref = self.get_persistent_ref_from_path(prev_path)
+        else:
+            prev_ref = None
+        ing_obj = self.imodel.get_value(iter,0)
+        return deleted_dic,prev_ref,ing_obj
+
     def do_delete_iters (self, iters):
         for i in iters: self.imodel.remove(self.get_iter_from_persistent_ref(i))
 
     def do_undelete_iters (self, rowdicts_and_iters):
-        for rowdic,prev_iter,ing_obj in rowdicts_and_iters:
+        for rowdic,prev_iter,ing_obj,children,expanded in rowdicts_and_iters:
             prev_iter = self.get_iter_from_persistent_ref(prev_iter)
-            if ing_obj and type(ing_obj) not in [str,unicode]:
-                iter = self.add_ingredient(self.imodel,ing_obj,prev_iter)
-                self.update_ingredient_row(rowdic)
+            print 'do_undelete',rowdic,prev_iter,ing_obj,children,expanded
+            if ing_obj and type(ing_obj) in [str,unicode]:
+                itr = self.add_group(rowdic['amount'],prev_iter,fallback_on_append=False)
+            elif ing_obj and type(ing_obj) not in [str,unicode,int]:
+                itr = iter = self.add_ingredient(ing_obj,prev_iter,
+                                                 fallback_on_append=False)
+                self.update_ingredient_row(iter,rowdic)
             else:
-                self.add_ingredient_from_kwargs(prev_iter,
+                itr = self.add_ingredient_from_kwargs(prev_iter,
+                                                fallback_on_append=False,
                                                 **rowdic)
+            if children:
+                for rd,pi,io in children:
+                    pi = self.get_iter_from_persistent_ref(pi)
+                    if io and type(io) not in [str,unicode]:
+                        iter = self.add_ingredient(io,pi,
+                                                   fallback_on_append=False)
+                        self.update_ingredient_row(iter,**rd)
+                    else:
+                        self.add_ingredient_from_kwargs(pi,fallback_on_append=False,
+                                                        **rd)
+            if expanded:
+                self.rc.ingtree_ui.ingTree.expand_row(self.imodel.get_path(itr),True)
 
     # Get a dictionary describing our current row
     def get_rowdict (self, iter):
@@ -1638,8 +1660,10 @@ class IngredientTreeUI:
                                 label=_("The recipe %s (ID %s) is not in our database.")%(i.item,
                                                                                           i.refid)
                                 )
-        else: self.ie.show(self.get_selected_ing())
-    
+        else:
+            self.rc.ie.show(self.get_selected_ing())
+            self.rc.ie.ieExpander.set_expanded(True)
+
     def shop_popup_callback (self, menuitem, i):
         """i is our new category. If i==False, we prompt for
         a category."""
@@ -1712,7 +1736,7 @@ class IngredientTreeUI:
         iter = store.get_iter(path)
         ing=self.get_selected_ing()
         if head==_('Shopping Category'):
-            self.rg.sl.orgdic[ing.ingkey]=text
+            #self.rg.sl.orgdic[ing.ingkey]=text
             store.set_value(iter, colnum, text)
         elif type(ing) == str:
             debug('Changing group to %s'%text,2)
@@ -1985,13 +2009,13 @@ class IngredientTreeUI:
         self.ingTree.expand_all()
 
     def ingNewGroupCB (self, *args):
-        self.ingController.add_group(de.getEntry(label=_('Adding Ingredient Group'),
-                                                 sublabel=_('Enter a name for new subgroup of ingredients'),
-                                                 entryLabel=_('Name of group: '),
-                                                 ),
-                                     self.ingController.imodel,
-                                     prev_iter=self.getSelectedIter(),
-                                     children_iters=self.getSelectedIters())
+        gi = self.ingController.add_group(de.getEntry(label=_('Adding Ingredient Group'),
+                                                      sublabel=_('Enter a name for new subgroup of ingredients'),
+                                                      entryLabel=_('Name of group: '),
+                                                      ),
+                                          prev_iter=self.getSelectedIter(),
+                                          children_iters=self.getSelectedIters())
+        self.ingTree.expand_row(self.ingController.imodel.get_path(gi),True)
         self.rc.setEdited(True)
 
     def change_group (self, iter, text):
@@ -2321,7 +2345,7 @@ class IngredientEditor:
             # heading without asking
             # for confirmation
             Undo.UndoableObject(lambda *args: self.rc.imodel.remove(iter),
-                                lambda *args: self.rc.add_group(group,self.rc.imodel),
+                                lambda *args: self.rc.add_group(group),
                                 self.rc.history)
             return
         # otherwise, we'll need to be more thorough...
@@ -2510,7 +2534,7 @@ class RecSelector (RecIndex):
                         'id':self.reccard.current_rec.id,}
                 debug('adding ing: %s'%ingdic,5)
                 i=self.rg.rd.add_ing(ingdic)
-                iter=self.reccard.add_ingredient(self.reccard.imodel,i,
+                iter=self.reccard.add_ingredient(i,
                                             group_iter=pre_iter)
                 path=self.reccard.imodel.get_path(iter)
                 self.reccard.ss.add_selection(iter)

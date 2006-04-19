@@ -21,6 +21,7 @@
   <property name="focus_on_map">True</property>
   <property name="urgency_hint">False</property>
   <signal name="delete_event" handler="rcHideEdit" last_modification_time="Tue, 07 Feb 2006 03:26:27 GMT"/>
+
   <child>
     <widget class="GtkVBox" id="vbox23">
       <property name="visible">True</property>
@@ -51,7 +52,7 @@
 		      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1216">
+			<widget class="GtkImage" id="image1232">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -89,7 +90,7 @@
 		      <signal name="activate" handler="rcDelete" last_modification_time="Sun, 13 Jun 2004 22:57:16 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1217">
+			<widget class="GtkImage" id="image1233">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -120,7 +121,7 @@
 		      <accelerator key="s" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1218">
+			<widget class="GtkImage" id="image1234">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-save</property>
 			  <property name="icon_size">1</property>
@@ -148,7 +149,7 @@
 		      <accelerator key="w" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1219">
+			<widget class="GtkImage" id="image1235">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-close</property>
 			  <property name="icon_size">1</property>
@@ -183,7 +184,7 @@
 		      <accelerator key="z" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1220">
+			<widget class="GtkImage" id="image1236">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-undo</property>
 			  <property name="icon_size">1</property>
@@ -205,7 +206,7 @@
 		      <accelerator key="z" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1221">
+			<widget class="GtkImage" id="image1237">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-redo</property>
 			  <property name="icon_size">1</property>
@@ -304,9 +305,10 @@
 		      <property name="label" translatable="yes">_Delete ingredient</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="ieDel" last_modification_time="Thu, 10 Feb 2005 23:43:14 GMT"/>
+		      <accelerator key="d" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1222">
+			<widget class="GtkImage" id="image1238">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -326,6 +328,7 @@
 		      <property name="label" translatable="yes">Add ingredient _group</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="ieNewGroup" last_modification_time="Thu, 10 Feb 2005 23:43:14 GMT"/>
+		      <accelerator key="g" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 		    </widget>
 		  </child>
 
@@ -353,7 +356,7 @@
 		      <signal name="activate" handler="ieUp" last_modification_time="Thu, 10 Feb 2005 23:43:14 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1223">
+			<widget class="GtkImage" id="image1239">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-go-up</property>
 			  <property name="icon_size">1</property>
@@ -375,7 +378,7 @@
 		      <signal name="activate" handler="ieDown" last_modification_time="Thu, 10 Feb 2005 23:43:14 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1224">
+			<widget class="GtkImage" id="image1240">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-go-down</property>
 			  <property name="icon_size">1</property>
@@ -1492,74 +1495,6 @@
 		  <property name="show_arrow">True</property>
 
 		  <child>
-		    <widget class="GtkToolButton" id="addIngButton">
-		      <property name="visible">True</property>
-		      <property name="tooltip" translatable="yes">Create new ingredient</property>
-		      <property name="label" translatable="yes">_New Ingredient</property>
-		      <property name="use_underline">True</property>
-		      <property name="stock_id">gtk-new</property>
-		      <property name="visible_horizontal">True</property>
-		      <property name="visible_vertical">True</property>
-		      <property name="is_important">False</property>
-		      <signal name="clicked" handler="addIng" after="yes" last_modification_time="Sun, 13 Jun 2004 18:24:28 GMT"/>
-		    </widget>
-		    <packing>
-		      <property name="expand">False</property>
-		      <property name="homogeneous">True</property>
-		    </packing>
-		  </child>
-
-		  <child>
-		    <widget class="GtkToolButton" id="ingDelButton">
-		      <property name="visible">True</property>
-		      <property name="tooltip" translatable="yes">Delete selected ingredients.</property>
-		      <property name="label" translatable="yes">_Delete Ingredient</property>
-		      <property name="use_underline">True</property>
-		      <property name="stock_id">gtk-delete</property>
-		      <property name="visible_horizontal">True</property>
-		      <property name="visible_vertical">True</property>
-		      <property name="is_important">False</property>
-		      <signal name="clicked" handler="ieDel" last_modification_time="Sun, 13 Jun 2004 18:25:09 GMT"/>
-		    </widget>
-		    <packing>
-		      <property name="expand">False</property>
-		      <property name="homogeneous">True</property>
-		    </packing>
-		  </child>
-
-		  <child>
-		    <widget class="GtkToolButton" id="ingNewGroupButton">
-		      <property name="visible">True</property>
-		      <property name="tooltip" translatable="yes">Add group for ingredients (such as &quot;Sauce&quot; or &quot;Crust&quot;)</property>
-		      <property name="can_focus">True</property>
-		      <property name="label" translatable="yes">Add _Group</property>
-		      <property name="use_underline">True</property>
-		      <property name="stock_id">gtk-add</property>
-		      <property name="visible_horizontal">True</property>
-		      <property name="visible_vertical">True</property>
-		      <property name="is_important">False</property>
-		      <signal name="clicked" handler="ieNewGroup" last_modification_time="Tue, 15 Jun 2004 22:41:21 GMT"/>
-		    </widget>
-		    <packing>
-		      <property name="expand">False</property>
-		      <property name="homogeneous">True</property>
-		    </packing>
-		  </child>
-
-		  <child>
-		    <widget class="GtkSeparatorToolItem" id="separatortoolitem3">
-		      <property name="visible">True</property>
-		      <property name="draw">True</property>
-		      <property name="visible_horizontal">True</property>
-		      <property name="visible_vertical">True</property>
-		    </widget>
-		    <packing>
-		      <property name="expand">False</property>
-		      <property name="homogeneous">False</property>
-		    </packing>
-		  </child>
-
-		  <child>
 		    <widget class="GtkToolButton" id="ingUpButton">
 		      <property name="visible">True</property>
 		      <property name="tooltip" translatable="yes">Move selected ingredients up</property>
@@ -1594,24 +1529,34 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkToolItem" id="toolitem24">
+		    <widget class="GtkSeparatorToolItem" id="separatortoolitem4">
 		      <property name="visible">True</property>
+		      <property name="draw">True</property>
 		      <property name="visible_horizontal">True</property>
 		      <property name="visible_vertical">True</property>
-		      <property name="is_important">False</property>
-
-		      <child>
-			<widget class="GtkSeparatorToolItem" id="separatortoolitem4">
-			  <property name="visible">True</property>
-			  <property name="draw">True</property>
-			  <property name="visible_horizontal">True</property>
-			  <property name="visible_vertical">True</property>
-			</widget>
-		      </child>
 		    </widget>
 		    <packing>
 		      <property name="expand">False</property>
 		      <property name="homogeneous">False</property>
+		    </packing>
+		  </child>
+
+		  <child>
+		    <widget class="GtkToolButton" id="ingNewGroupButton">
+		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Add group for ingredients (such as &quot;Sauce&quot; or &quot;Crust&quot;)</property>
+		      <property name="can_focus">True</property>
+		      <property name="label" translatable="yes">Add _Group</property>
+		      <property name="use_underline">True</property>
+		      <property name="stock_id">gtk-add</property>
+		      <property name="visible_horizontal">True</property>
+		      <property name="visible_vertical">True</property>
+		      <property name="is_important">False</property>
+		      <signal name="clicked" handler="ieNewGroup" last_modification_time="Tue, 15 Jun 2004 22:41:21 GMT"/>
+		    </widget>
+		    <packing>
+		      <property name="expand">False</property>
+		      <property name="homogeneous">True</property>
 		    </packing>
 		  </child>
 
@@ -1623,7 +1568,7 @@
 		      <property name="label" translatable="yes">Add _Recipe
 as Ingredient</property>
 		      <property name="use_underline">True</property>
-		      <property name="stock_id">gtk-add</property>
+		      <property name="stock_id">gtk-jump-to</property>
 		      <property name="visible_horizontal">True</property>
 		      <property name="visible_vertical">True</property>
 		      <property name="is_important">False</property>
@@ -1631,7 +1576,7 @@ as Ingredient</property>
 		    </widget>
 		    <packing>
 		      <property name="expand">False</property>
-		      <property name="homogeneous">False</property>
+		      <property name="homogeneous">True</property>
 		    </packing>
 		  </child>
 
@@ -1664,6 +1609,37 @@ as Ingredient</property>
 		      <property name="visible_vertical">True</property>
 		      <property name="is_important">False</property>
 		      <signal name="clicked" handler="importIngs" last_modification_time="Thu, 10 Feb 2005 23:29:06 GMT"/>
+		    </widget>
+		    <packing>
+		      <property name="expand">False</property>
+		      <property name="homogeneous">True</property>
+		    </packing>
+		  </child>
+
+		  <child>
+		    <widget class="GtkSeparatorToolItem" id="separatortoolitem3">
+		      <property name="visible">True</property>
+		      <property name="draw">True</property>
+		      <property name="visible_horizontal">True</property>
+		      <property name="visible_vertical">True</property>
+		    </widget>
+		    <packing>
+		      <property name="expand">False</property>
+		      <property name="homogeneous">False</property>
+		    </packing>
+		  </child>
+
+		  <child>
+		    <widget class="GtkToolButton" id="ingDelButton">
+		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Delete selected ingredients.</property>
+		      <property name="label" translatable="yes">_Delete Ingredient</property>
+		      <property name="use_underline">True</property>
+		      <property name="stock_id">gtk-delete</property>
+		      <property name="visible_horizontal">True</property>
+		      <property name="visible_vertical">True</property>
+		      <property name="is_important">False</property>
+		      <signal name="clicked" handler="ieDel" last_modification_time="Sun, 13 Jun 2004 18:25:09 GMT"/>
 		    </widget>
 		    <packing>
 		      <property name="expand">False</property>
@@ -1759,6 +1735,7 @@ as Ingredient</property>
 		  <child>
 		    <widget class="GtkEntry" id="quickIngredientEntry">
 		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Type your ingredient here. Numeric amounts and standard units will automatically be recognized. Anything typed after a semicolon will not be included in the ingredient key (i.e. will not be used for shopping lists and nutritional information). For more detailed entry, expand the &quot;Details&quot; section below.</property>
 		      <property name="can_focus">True</property>
 		      <property name="editable">True</property>
 		      <property name="visibility">True</property>
@@ -2183,7 +2160,7 @@ as Ingredient</property>
 				      <property name="visible">True</property>
 				      <property name="can_default">True</property>
 				      <property name="can_focus">True</property>
-				      <property name="label">gtk-clear</property>
+				      <property name="label">gtk-new</property>
 				      <property name="use_stock">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
 				      <property name="focus_on_click">True</property>
@@ -2218,7 +2195,7 @@ as Ingredient</property>
 		      <child>
 			<widget class="GtkLabel" id="label56">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Ingredient Editor</property>
+			  <property name="label" translatable="yes">_Details</property>
 			  <property name="use_underline">True</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -2799,6 +2776,7 @@ as Ingredient</property>
   <property name="focus_on_map">True</property>
   <property name="urgency_hint">False</property>
   <signal name="delete_event" handler="rcHide" last_modification_time="Tue, 07 Feb 2006 03:26:27 GMT"/>
+
   <child>
     <widget class="GtkVBox" id="vbox34">
       <property name="visible">True</property>
@@ -3691,9 +3669,7 @@ as Ingredient</property>
 					<widget class="GtkSpinButton" id="servingsDisplaySpin">
 					  <property name="visible">True</property>
 					  <property name="can_default">True</property>
-					  <property name="has_default">False</property>
 					  <property name="can_focus">True</property>
-					  <property name="has_focus">False</property>
 					  <property name="climb_rate">0.5</property>
 					  <property name="digits">2</property>
 					  <property name="numeric">False</property>
