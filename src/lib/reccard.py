@@ -194,8 +194,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def setup_defaults (self):
         self.mult = 1
         #self.serves = float(self.serveW.get_text())
-        self.edit_title = _('Edit Recipe: ')
-        self.default_title = _('Recipe Card: ')
+        self.edit_title = _('Edit Recipe:')
+        self.default_title = _('Recipe Card:')
 
     def get_widgets (self):
         t=TimeAction('RecCard.get_widgets 1',0)
@@ -470,10 +470,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             buf = self.rw[t].get_buffer()
             newdict[t]=buf.get_text(buf.get_start_iter(),buf.get_end_iter())
         if self.ImageBox.edited:
-            self.ImageBox.commit()
+            newdict['thumb'],newdict['thumb']=self.ImageBox.commit()
             self.ImageBox.edited=False
-            newdict['thumb']=self.current_rec.thumb
-            newdict['image']=self.current_rec.image
         debug("modify_rec, newdict=%s"%newdict,1)
         self.current_rec = self.rg.rd.modify_rec(self.current_rec,newdict)
         # save DB for metakit
@@ -484,8 +482,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.ingtree_ui.ingController.commit_ingredients()
         self.resetIngredients()
         if newdict.has_key('title'):
-            self.edit_window.set_title("%s %s"%(self.edit_title,self.current_rec.title))
-            self.display_window.set_title("%s %s"%(self.default_title,self.current_rec.title))
+            self.edit_window.set_title("%s %s"%(self.edit_title,self.current_rec.title.strip()))
+            self.display_window.set_title("%s %s"%(self.default_title,self.current_rec.title.strip()))
             self.rg.updateViewMenu()
         
     def delete (self, *args):
@@ -600,7 +598,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             else:
                 slist = self.rg.rd.get_unique_values(c,deleted=False)
             if not slist:
-                self.rg.rd.get_default_values(c)
+                print 'populating from default values'
+                slist = self.rg.rd.get_default_values(c)
             cb.set_model_from_list(self.rw[c],slist)
             cb.setup_completion(self.rw[c])
             if c=='category':
@@ -1019,7 +1018,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def show (self, *args):
         debug("show (self, *args):",5)
         if self.new:
-            self.edit_window.set_title("%s %s"%(self.default_title,self.current_rec.title))
+            self.edit_window.set_title("%s %s"%(self.edit_title,self.current_rec.title.strip()))
             self.display_window.hide()
             self.edit_window.present()
             self.view.set_visible(True)
@@ -1088,19 +1087,11 @@ class ImageBox:
         
     def commit (self):
         debug("commit (self):",5)
-        """Put current image in database"""
+        """Return image and thumbnail data suitable for storage in the database"""
         if self.image:
-            ofi = StringIO.StringIO()
-            self.image.save(ofi,"JPEG")
-            self.rc.current_rec.image=ofi.getvalue()
-            ofi.close()
-            ofi = StringIO.StringIO()
-            self.thumb.save(ofi,"JPEG")
-            self.rc.current_rec.thumb=ofi.getvalue()
-            ofi.close()
+            return ie.get_string_from_image(self.image),ie.get_string_from_image(self.thumb)
         else:
-            self.rc.current_rec.image=""
-            self.rc.current_rec.thumb=""
+            return '',''
     
     def draw_image (self):
         debug("draw_image (self):",5)
@@ -1158,44 +1149,6 @@ class ImageBox:
             self.draw_image()
             self.edited=True
             self.rc.setEdited(True)
-
-# Our ingredient editor has some focus trickiness... here's some
-# convenience functions to mess with that.
-# (NOT WORKING YET!)
-# def adjust_focus (widget,
-#                   before=None,
-#                   after=None):
-#     widget.before = before
-#     widget.after = after
-    
-#     def key_press_cb (w,event):
-#         name = gtk.gdk.keyval_name(event.keyval)
-#         w.keyname = name
-        
-#     def focus_out_cb (w,event):
-#         if hasattr(w,'keyname'):
-#             name = w.keyname
-#         if name in ['Tab','tab']:
-#             if widget.after:
-#                 print 'grabbing focus for ',widget.after                
-#                 #if isinstance(widget.after,gtk.Entry): widget.after.insert_text('Hello')
-#                 #widget.emit_stop_by_name('focus-out-event')
-#                 def grab_next_focus ():
-#                     print 'really grabbing focus for ',widget.after
-#                     widget.after.grab_focus()
-#                 gobject.timeout_add(1,grab_next_focus)
-#                 #return True
-#             #elif name in ['blarg']:
-#             else:
-#                 if widget.before:
-#                     print 'grabbing focus for ',widget.before
-#                     #if isinstance(widget,gtk.Entry): widget.before.insert_text('Hello')
-#                     widget.before.grab_focus()
-#                     #widget.emit_stop_by_name('focus-out-event')
-#                     #return True
-#     widget.connect('key-press-event',key_press_cb)
-#     #widget.connect('focus-out-event',focus_out_cb)
-#     widget.connect('key-press-event',focus_out_cb)
 
 def add_with_undo (rc,method):
     uts = UndoableTreeStuff(rc.ingtree_ui.ingController)
@@ -1339,7 +1292,7 @@ class IngredientController:
             lambda *args: self.update_ingredient_row(itr,**d),
             lambda *args: self.update_ingredient_row(itr,**orig),
             self.rc.history
-            )        
+            ).perform()
     
     def update_ingredient_row (self,iter,
                                amount=None,
@@ -1807,10 +1760,11 @@ class IngredientTreeUI:
         self.selection_changed(rows and True)
         if self.rc.ie.ieExpander.get_expanded():
             itr = self.get_selected_ing()
-            i = self.ingController.imodel.get_value(itr,0)
-            d = self.ingController.get_rowdict(itr)
-            if i: self.rc.ie.show(i,d)
-            else: self.rc.ie.new()
+            if itr:
+                i = self.ingController.imodel.get_value(itr,0)
+                d = self.ingController.get_rowdict(itr)
+                if i: self.rc.ie.show(i,d)
+                else: self.rc.ie.new()
         return True
     
     def selection_changed (self, selected=False):
@@ -1857,48 +1811,31 @@ class IngredientTreeUI:
         store = self.ingTree.get_model()
         iter = store.get_iter(path)
         ing=store.get_value(iter,0)
-        if head==_('Shopping Category'):
-            #self.rg.sl.orgdic[ing.ingkey]=text
-            store.set_value(iter, colnum, text)
-        elif type(ing) == str:
+        d = {}
+        if type(ing) in [str,unicode]:
             debug('Changing group to %s'%text,2)
             self.change_group(iter, text)
             return            
-        else:
+        else:            
             attr=self.head_to_att[head]
+            d[attr]=text
             if attr=='amount':
-                if type(store.get_value(iter,0)) not in [str,unicode]:
-                    # if we're not a group
-                    d={}
-                    try:
-                        parse_range(text)
-                    except:
-                        show_amount_error(text)
-            else:
-                d={attr:text}
-                if attr=='unit':
-                    amt,msg=self.changeUnit(d['unit'],ing)
-                    if amt:
-                        d['amount']=amt
-                    if msg: self.rc.message(msg)
-                elif attr=='item':
-                    d['ingkey']=self.rg.rd.km.get_key(d['item'])
-            debug('undoable_modify_ing %s'%d,0)
+                try:
+                    parse_range(text)
+                except:
+                    show_amount_error(text)
+                    raise
+            elif attr=='unit':
+                amt,msg=self.changeUnit(text,ing)
+                if amt:
+                    d['amount']=amt
+                if msg:
+                    self.rc.message(msg)
+            elif attr=='item':
+                d['ingkey']=self.rg.rd.km.get_key(text)
             ref = self.ingController.get_persistent_ref_from_iter(iter)
-            orig_dict = self.ingController.get_rowdict(iter)
-            u = Undo.UndoableObject(
-                # Do
-                lambda *args: self.ingController.update_ingredient_row(
-                self.ingController.get_iter_from_persistent_ref(ref),
-                **d),
-                # Undo
-                lambda *args: self.ingController.update_ingredient_row(
-                self.ingController.get_iter_from_persistent_ref(ref),
-                **orig_dict
-                ),
-                self.rc.history
-                )
-            u.perform()
+            print 'undoable-update',ref,d            
+            self.ingController.undoable_update_ingredient_row(ref,d)
 
     # Drag-n-Drop Callbacks
     
@@ -2510,7 +2447,7 @@ class IngredientEditor:
         sh = self.shopBox.entry.get_text()
         if sh: d['shop_cat']=sh
         if self.ing:
-            self.undoable_update_ingredient_row(self.ing,d)
+            self.rc.ingtree_ui.ingController.undoable_update_ingredient_row(self.ing,d)
         else:
             add_with_undo(lambda *args: self.rc.ingtree_ui.ingController.add_new_ingredient(**d),
                           self.rc)
