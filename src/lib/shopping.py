@@ -134,6 +134,7 @@ class shopper:
                       write_item,):
         org = self.organize(self.dic)
         for c,d in org:
+            if not c: c = _('Unknown')
             write_category(c.title())
             for i,a in d:
                 write_item(a,i)
@@ -150,7 +151,7 @@ class shopper:
         if not dic:
             pass
         for i,a in dic.items():
-            if self.orgdic.has_key(i):
+            if self.orgdic.has_key(i) and self.orgdic[i]:
                 c = self.orgdic[i]
             else:
                 c = _("Unknown")
