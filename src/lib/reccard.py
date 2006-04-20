@@ -256,7 +256,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             if p=='readableUnits': self.toggleReadableMenu.set_active(v)
         self.rg.prefs.set_hooks.append(toggle_readable_hook)
         self.notebook=self.glade.get_widget('notebook1')
-        chooserNotebook.chooserify_notebook(self.notebook)
+        self.tree_control = self.glade.get_widget('ChooserTreeView')
+        cn = chooserNotebook.ChooserNotebook(self.tree_control,self.notebook)
         t.end()
         
     def setup_action_manager(self):
@@ -598,7 +599,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             else:
                 slist = self.rg.rd.get_unique_values(c,deleted=False)
             if not slist:
-                print 'populating from default values'
                 slist = self.rg.rd.get_default_values(c)
             cb.set_model_from_list(self.rw[c],slist)
             cb.setup_completion(self.rw[c])
