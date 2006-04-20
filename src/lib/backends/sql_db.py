@@ -210,7 +210,12 @@ class RecData (rdatabase.RecData):
     def search_recipes (self, searches, sort_by=[], limit=None):
         """Search recipes for columns of values.
 
-        "category" and "ingredient" are handled magically
+        Each search in searches is a dictionary of search terms.
+        {'column' : column_in_database - "category" and "ingredient" are handled magically
+         'logic'  : AND or OR - how we're joined with other searches
+         'operator' : LIKE or = or REGEXP
+         'search' : search terms
+         }
         """
         crit = ''
         nested_selects = []
