@@ -1434,6 +1434,7 @@ class IngredientController:
                 children.append(self._get_undo_info_for_iter_(child))
                 child = self.imodel.iter_next(child)
             undo_info.append((deleted_dic,prev_ref,ing_obj,children,expanded))
+        print 'We are about to delete',refs
         u = Undo.UndoableObject(
             lambda *args: self.do_delete_iters(refs),
             lambda *args: self.do_undelete_iters(undo_info),
@@ -1463,10 +1464,14 @@ class IngredientController:
         else:
             prev_ref = None
         ing_obj = self.imodel.get_value(iter,0)
+        print 'We are set up to undo',[c for c in self.imodel[path]]
         return deleted_dic,prev_ref,ing_obj
 
     def do_delete_iters (self, iters):
-        for i in iters: self.imodel.remove(self.get_iter_from_persistent_ref(i))
+        for i in iters:
+            i = self.get_iter_from_persistent_ref(i)
+            print 'deleting',[c for c in self.imodel[self.imodel.get_path(i)]]
+            self.imodel.remove(i)
 
     def do_undelete_iters (self, rowdicts_and_iters):
         for rowdic,prev_iter,ing_obj,children,expanded in rowdicts_and_iters:
@@ -1501,8 +1506,9 @@ class IngredientController:
                         self.update_ingredient_row(itr,**rd)
                     else:
                         print 'Add ing from kwargs',rd
-                        self.add_ingredient_from_kwargs(pi,fallback_on_append=False,
-                                                        **rd)
+                        itr = self.add_ingredient_from_kwargs(pi,fallback_on_append=False,
+                                                            **rd)
+                        self.imodel.set_value(itr,0,io)
             if expanded:
                 self.rc.ingtree_ui.ingTree.expand_row(self.imodel.get_path(itr),True)
 
@@ -2667,7 +2673,6 @@ if __name__ == '__main__':
             rc.add_ingredient_from_line(l,group_iter=g)
         rc.ingtree_ui.ingController.delete_iters(g)
         rc.undo.emit('activate')
-        
         
     import GourmetRecipeManager
     rg = GourmetRecipeManager.RecGui()
