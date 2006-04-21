@@ -139,11 +139,11 @@ class importer:
 
     def commit_rec (self):
         timeaction = TimeAction('importer.commit_rec',10)
-        # if servings can't be recognized as a number, add them to the
-        # instructions.
         for key in ['cuisine','category','title']:
             if self.rec.has_key(key):
                 self.rec[key]=re.sub('\s+',' ',self.rec[key]).strip()
+        # if servings can't be recognized as a number, add them to the
+        # instructions.
         if self.rec.has_key('servings'):
             servs=self.convert_servings(self.rec['servings'])
             if servs:
@@ -175,6 +175,12 @@ class importer:
                 del self.rec['rating']
         tt=TimeAction('importer.commit_rec - rd.add_rec',5)
         debug('commiting recipe %s'%self.rec,0)
+        # Check for images without thumbnails
+        if self.rec.get('image',None) and not self.rec.get('thumb',None):
+            print 'Adding thumbnail.'
+            img = ImageExtras.get_image_from_string(self.rec['image'])
+            thumb = ImageExtras.resize_image(img,40,40)
+            self.rec['thumb'] = ImageExtras.get_string_from_image(thumb)
         r = self.rd.add_rec(self.rec)
         tt.end()
         self.added_recs.append(r)
