@@ -1,9 +1,35 @@
+gourmet (0.11.0-1) breezy; urgency=low
+
+  * Fix ingredient editing so that changes are no longer automatically
+    committed to the DB. Now the ingredient tab of the recipe edit window
+    works like everything else, with a standard "save" model.
+  * While we're at it, we prevent crashes from happening when reordering
+    ingredients.
+  * Make Undo work more consistently throughout recipe card.
+  * Make database upgrade happen at runtime rather than install-time --
+    this allows us to play nicely with RPM and DEB packages.
+	
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 20 Apr 2006 19:57:17 -0400	
+	
+gourmet (0.10.1-1) breezy; urgency=low
+
+  * Major DB overhaul
+  * Loads of bugfixes
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 17 Nov 2005 20:03:17 -0400	
+
+gourmet (0.9.1.0-1) breezy; urgency=low
+
+  * Implement new recipe card interface with side-by-side ingredients display and separate editing.
+  * Quick fix of e-mail bug.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 17 Nov 2005 20:03:17 -0400	
+
 gourmet (0.9.0.2-1) breezy; urgency=low
 
   * Make compatible with python2.3
 
- -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Tuesday, 8 Nov 2005 22:24:17 -0400	
-
+ -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 17 Nov 2005 07:24:17 -0400	
 
 gourmet (0.9.0.1-2) breezy; urgency=low
 
