@@ -153,14 +153,12 @@ class selectionSaver:
         self.selected = []
         self.expanded = {}
         self.selection.selected_foreach(self._add_to_selected)
-        print "saving selections: ", self.selected
 
     def _add_to_selected (self, model, path, iter):
         self.add_selection(iter)
         
     def add_selection (self, iter):
         """Add iter to list of selected items"""
-        print 'adding selection',self.model.get_value(iter,self.uc)
         v = self.model.get_value(iter,self.uc)
         self.selected.append(v)
         self.expanded[v] = self.tv.row_expanded(self.model.get_path(iter))
@@ -178,7 +176,6 @@ class selectionSaver:
         restoring selections to a new treeView. This might come in handy
         w/ dragndrop within an application between treeViews. Otherwise,
         we remember and use the treeView we were initially handed."""
-        print "restoring selections: ",self.selected
         if tv:
             self.tv=tv
             self.model=self.tv.get_model()
@@ -191,9 +188,7 @@ class selectionSaver:
         new_paths=[]
         while iter:
             v = self.model.get_value(iter,self.uc)
-            print 'looking at ',iter,v
             if self.selected.__contains__(v):
-                print 'selecting iter',iter,'with',v
                 self.selection.select_iter(iter)
                 if self.expanded.get(v,None):
                     self.tv.expand_row(self.model.get_path(iter),True)
@@ -327,10 +322,8 @@ if __name__ == '__main__':
     sw.tv.set_reorderable(True)
     sw.tv.ss = selectionSaver(sw.tv,0)
     def ss_save (*args):
-        print 'Save!'
         sw.tv.ss.save_selections()
     def ss_get (*args):
-        print 'get!'
         sw.tv.ss.restore_selections()
     sw.tv.connect('drag-begin',ss_save)
     sw.tv.connect('drag-end',ss_get)
