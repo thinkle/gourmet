@@ -1178,14 +1178,12 @@ class UndoableTreeStuff:
     def undo_recorded_additions (self):
         for a in self.added:
             itr = self.ic.get_iter_from_persistent_ref(a)
-            print 'remove ',a,'->',itr
             if itr:
                 self.ic.imodel.remove(
                     itr
                     )
 
     def row_inserted_cb (self, tm, path, itr):
-        print 'row inserted',itr
         self.added.append(gtk.TreeRowReference(tm,tm.get_path(itr)))
 
     def record_positions (self, iters):
@@ -1340,14 +1338,11 @@ class IngredientController:
         self.imodel.set_value(iter, 4, opt)
         self.imodel.set_value(iter, 5, i.ingkey)
         if shop_cat:
-            print 'shop_cat->',shop_cat
             self.imodel.set_value(iter, 6, shop_cat)
         elif self.rg.sl.orgdic.has_key(i.ingkey):
             debug("Key %s has category %s"%(i.ingkey,self.rg.sl.orgdic[i.ingkey]),5)
-            print 'look up key->',self.rg.sl.orgdic[i.ingkey]
             self.imodel.set_value(iter, 6, self.rg.sl.orgdic[i.ingkey])
         else:
-            print 'key->',None
             self.imodel.set_value(iter, 6, None)
         return iter
 
@@ -1387,7 +1382,6 @@ class IngredientController:
                 children.append(self._get_undo_info_for_iter_(child))
                 child = self.imodel.iter_next(child)
             undo_info.append((deleted_dic,prev_ref,ing_obj,children,expanded))
-        print 'We are about to delete',refs
         u = Undo.UndoableObject(
             lambda *args: self.do_delete_iters(refs),
             lambda *args: self.do_undelete_iters(undo_info),
@@ -1398,14 +1392,11 @@ class IngredientController:
     def _get_prev_path_ (self, path):
         if path[-1]==0:
             if len(path)==1:
-                print 'Path = 0, prev_path = None'
                 prev_path = None
             else:
                 prev_path = tuple(path[:-1])
-                print "We're the first member of a group, prev_path=",prev_path
         else:
             prev_path = te.path_next(path,-1)
-            print 'prev_path = ',prev_path
         return prev_path
 
     def _get_undo_info_for_iter_ (self, iter):
@@ -1417,48 +1408,37 @@ class IngredientController:
         else:
             prev_ref = None
         ing_obj = self.imodel.get_value(iter,0)
-        print 'We are set up to undo',[c for c in self.imodel[path]]
         return deleted_dic,prev_ref,ing_obj
 
     def do_delete_iters (self, iters):
         for i in iters:
             i = self.get_iter_from_persistent_ref(i)
-            print 'deleting',[c for c in self.imodel[self.imodel.get_path(i)]]
             self.imodel.remove(i)
 
     def do_undelete_iters (self, rowdicts_and_iters):
         for rowdic,prev_iter,ing_obj,children,expanded in rowdicts_and_iters:
             prev_iter = self.get_iter_from_persistent_ref(prev_iter)
-            print 'do_undelete',rowdic,prev_iter,ing_obj,children,expanded
             if ing_obj and type(ing_obj) in [str,unicode]:
-                print 'Object is GROUP',ing_obj
                 itr = self.add_group(rowdic['amount'],prev_iter,fallback_on_append=False)
             elif ing_obj and type(ing_obj) not in [str,unicode,int]:
-                print 'Object is ing_obj',ing_obj
                 itr = iter = self.add_ingredient(ing_obj,prev_iter,
                                                  fallback_on_append=False)
                 self.update_ingredient_row(iter,**rowdic)
             else:
-                print 'Object is dictionary',rowdic
                 itr = self.add_ingredient_from_kwargs(prev_iter,
                                                 fallback_on_append=False,
                                                 **rowdic)
             if children:
-                print 'undelete',len(children),'children'
                 for rd,pi,io in children:
                     pi = self.get_iter_from_persistent_ref(pi)
                     if not pi:
-                        print 'No previter, using parent as we know it'
                         pi = itr
                     else:
-                        print 'previtr = ',pi
                     if io and type(io) not in [str,unicode,int] and not isinstance(io,RecRef):
-                        print 'Add ingobject',io,pi
                         itr = self.add_ingredient(io,pi,
                                                    fallback_on_append=False)
                         self.update_ingredient_row(itr,**rd)
                     else:
-                        print 'Add ing from kwargs',rd
                         itr = self.add_ingredient_from_kwargs(pi,fallback_on_append=False,
                                                             **rd)
                         self.imodel.set_value(itr,0,io)
@@ -1834,7 +1814,6 @@ class IngredientTreeUI:
             elif attr=='item':
                 d['ingkey']=self.rg.rd.km.get_key(text)
             ref = self.ingController.get_persistent_ref_from_iter(iter)
-            print 'undoable-update',ref,d            
             self.ingController.undoable_update_ingredient_row(ref,d)
 
     # Drag-n-Drop Callbacks
@@ -2128,11 +2107,8 @@ class IngredientTreeUI:
             gi = self.ingController.get_persistent_ref_from_iter(itr)
             self.ingTree.expand_row(self.ingController.imodel.get_path(itr),True)
             self.rc.setEdited(True)
-            print 'gi is',gi
         def do_unadd_group ():
             gi = 'GROUP '+group_name  #HACK HACK HACK
-            print 'gi is',gi
-            print 'itr is',self.ingController.get_iter_from_persistent_ref(gi)
             self.ingController.imodel.remove(
                 self.ingController.get_iter_from_persistent_ref(gi)
                 )
@@ -2619,6 +2595,7 @@ if __name__ == '__main__':
         rc.display_window.connect('delete-event',
                                   lambda *args: gtk.main_quit()
                                   )
+        rc.edit_window.connect('delete-event',lambda *args: gtk.main_quit())
         test_ing_editing(rc)
     except:
         rg.app.hide()
