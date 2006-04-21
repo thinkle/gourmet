@@ -124,6 +124,9 @@ class DatabaseAdapter:
                     row[c]=self.adapt_id(row[c])
                 else:
                     del row[c]
+        for c in ['unit','item','ingkey']:
+            if row.get(c,None):
+                row[c]=row[c].strip()
         return table_name,row
 
     def adapt_id (self, id_obj):
@@ -136,6 +139,8 @@ class DatabaseAdapter:
 
     def handle_categories (self, table_name, row):
         if row.has_key('type'): return None
+        if row.get('category',None):
+            row['category']=row['category'].strip()
         else: return table_name,row
 
     def handle_recipe (self, table_name, row):
@@ -146,7 +151,8 @@ class DatabaseAdapter:
             if cats:
                 for c in cats.split(','):
                     crow = {'id':row['id'],
-                           'category':c.strip()}
+                           'category':re.sub('\s+',' ',c).strip(),
+                            }
                     retval.append(('categories',crow))
             del row['category']
         if row.has_key('rating') and row['rating'] and type(row['rating'])!=int:
@@ -168,10 +174,17 @@ class DatabaseAdapter:
         for to_buffer in ['image','thumb']:
             if row.has_key(to_buffer) and row[to_buffer]:
                 row[to_buffer]=buffer(row[to_buffer])
+        if row.has_key('image') and not row.has_key('thumb'):
+            import ImageExtras
+            img = ImageExtras.get_image_from_string(row['image'])
+            thumb = ImageExtras.resize_image(img,40,40)
+            row['thumb'] = buffer(ImageExtras.get_string_from_image(thumb))
+        for c in ['title','cuisine','source']:
+            if row.get(c,None):
+                row[c]=row[c].strip()
         return retval + [(table_name,row)]
 
 def import_backup_file (rm, backup_file, prog=None):
-
     if type(backup_file)==str:
         fname = backup_file
         backup_file = open(backup_file,'r')
