@@ -72,9 +72,11 @@ class RecGui (RecIndex):
         self.wait_to_filter=False
         try:
             import gnome
+            # The following allows accessibility support to work for
+            # some unknown reason
             # apparently some outdated GNOME bindings are
             # missing this.
-            if hasattr(gnome,'program_init'): 
+            if hasattr(gnome,'program_init'):
                 gnome.program_init(version.appname,version.version)
             else:
                 debug(

@@ -1433,7 +1433,6 @@ class IngredientController:
                     pi = self.get_iter_from_persistent_ref(pi)
                     if not pi:
                         pi = itr
-                    else:
                     if io and type(io) not in [str,unicode,int] and not isinstance(io,RecRef):
                         itr = self.add_ingredient(io,pi,
                                                    fallback_on_append=False)

@@ -526,3 +526,5 @@ VOL_TO_MASS_TABLE = {
 
 def guess_singulars (s): return []
 def guess_plurals (s): return []
+
+IGNORE=[]

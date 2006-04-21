@@ -430,3 +430,5 @@ def guess_plurals (s):
     thought it might make an occasional match, so what the hell.
     """
     return [s+"en",s+"s"]
+
+IGNORE = []

@@ -22,7 +22,7 @@ class KeyManager:
         self.rm = rm
         self.cooking_verbs=cooking_verbs
         # This needs to be made sane i18n-wise
-        self.ignored = ["and","with","of","for","cold","warm","finely","thinly","roughly","coarsely"]
+        self.ignored = defaults.IGNORE
         self.ignored.extend(self.cooking_verbs)
         self.ignored_regexp = re.compile("[,; ]?(" + '|'.join(self.ignored) + ")[,; ]?")
         if not(self.rm.ikview):
