@@ -1,5 +1,15 @@
 import gtk.glade, gtk
 
+def collect_children (parent, children=None):
+    if not children: children = []
+    if hasattr(parent,'get_children'):
+        for c in parent.get_children():
+            if c not in children: children.append(c)
+            collect_children(c,children)
+        return children
+    else:
+        return children
+
 class MnemonicManager:
 
     sacred_cows = ['okay','cancel','close']
@@ -19,6 +29,10 @@ class MnemonicManager:
             p = p.parent
         return self
 
+    def add_toplevel_widget (self, w):
+        widgets = collect_children(w)
+        self.add_ui(widgets)
+
     def add_glade (self, glade=None, glade_file=None):
         """Add all mnemonic widgets in glade object.
 
@@ -27,7 +41,6 @@ class MnemonicManager:
         a reference around to use. The file option's really just for
         testing :)
         """
-        added = []
         if not glade:
             glade=gtk.glade.XML(glade_file)
         widgets=glade.get_widget_prefix('') # get all widgets
@@ -37,6 +50,13 @@ class MnemonicManager:
         if len(windows)>0:
             for w in windows:
                 self.sub_managers[w]=MnemonicManager()
+                self.sub_managers[w].add_toplevel_widget(w)
+            return
+        else:
+            self.add_ui(widgets)
+
+    def add_ui (self, widgets):
+        added = []
         # handle menu items
         menu_items = filter(lambda x: isinstance(x,gtk.MenuItem),widgets)
         for mi in menu_items:
@@ -122,11 +142,9 @@ class MnemonicManager:
                     self.change_mnemonic(w,k)
             self.untouchable_accels.append(k)
             self.untouchable_widgs.append(w)
-        if self.mnemonics.has_key(k):
-            if not w in self.mnemonics[k]:
-                self.mnemonics[k].append(w)
-        else:
-            self.mnemonics[k]=[w]
+        if not self.mnemonics.has_key(k): self.mnemonics[k]=[]
+        if not w in self.mnemonics[k]:
+            self.mnemonics[k].append(w)
 
     def generate_new_mnemonic (self, text):
         for c in text:
@@ -197,22 +215,18 @@ class MnemonicManager:
         for nb in self.notebook_managers.values():
             # for each of our pages
             for pagemanager in nb.values():
-                self.merge_notebook(pagemanager).fix_conflicts_peacefully()
+                self.merge_notebook(pagemanager)
+                pagemanager.fix_conflicts_peacefully()
 
-    def merge_notebook (self, mm):
+    def merge_notebook (self, notebook_manager):
         """Add our own items to a notebook page manager as untouchables.
 
         In other words, the notebook's manager will know to avoid
         other widgets in the containing context, but won't touch us.
         """
-        new_mm = mm
         for ww in self.mnemonics.values():
             for w in ww:
-                new_mm.add_widget_mnemonic(w,untouchable=True)
-        for ww in mm.mnemonics.values():
-            for w in ww:
-                new_mm.add_widget_mnemonic(w)
-        return new_mm
+                notebook_manager.add_widget_mnemonic(w,untouchable=True)
 
     def sort_movables (self, moveable1, moveable2):
         widg,alts = moveable1
@@ -264,4 +278,5 @@ if __name__ == '__main__':
     def show ():
         g.get_widget('app').show()
         gtk.main()
+    show()
     
