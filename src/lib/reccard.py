@@ -1296,17 +1296,17 @@ class IngredientController:
                                amount=None,
                                unit=None,
                                item=None,
-                               optional=False,
+                               optional=None,
                                ingkey=None,
                                shop_cat=None,
                                refid=None,
                                undoable=False
                                ):
-        if amount: self.imodel.set_value(iter,1,amount)
-        if unit: self.imodel.set_value(iter,2,unit)
-        if item: self.imodel.set_value(iter,3,item)
-        if optional: self.imodel.set_value(iter,4,optional)
-        if ingkey: self.imodel.set_value(iter,5,ingkey)
+        if amount is not None: self.imodel.set_value(iter,1,amount)
+        if unit is not None: self.imodel.set_value(iter,2,unit)
+        if item is not None: self.imodel.set_value(iter,3,item)
+        if optional is not None: self.imodel.set_value(iter,4,optional)
+        if ingkey is not None: self.imodel.set_value(iter,5,ingkey)
         if shop_cat:
             self.imodel.set_value(iter,6,shop_cat)
         elif ingkey and self.rc.rg.sl.orgdic.has_key(ingkey):
@@ -1786,7 +1786,6 @@ class IngredientTreeUI:
         myfilter.refilter()
 
     def ingtree_edited_cb (self, renderer, path_string, text, colnum, head):
-        debug("ingtree_edited_cb (self, renderer, path_string, text, colnum, head):",5)
         indices = path_string.split(':')
         path = tuple( map(int, indices))
         store = self.ingTree.get_model()
@@ -1796,8 +1795,8 @@ class IngredientTreeUI:
         if type(ing) in [str,unicode]:
             debug('Changing group to %s'%text,2)
             self.change_group(iter, text)
-            return            
-        else:            
+            return
+        else:       
             attr=self.head_to_att[head]
             d[attr]=text
             if attr=='amount':
@@ -1807,7 +1806,7 @@ class IngredientTreeUI:
                     show_amount_error(text)
                     raise
             elif attr=='unit':
-                amt,msg=self.changeUnit(text,ing)
+                amt,msg=self.changeUnit(text,self.ingController.get_rowdict(iter))
                 if amt:
                     d['amount']=amt
                 if msg:
@@ -1985,13 +1984,13 @@ class IngredientTreeUI:
         self.rc.setEdited(True)
 
     # Edit Callbacks
-    def changeUnit (self, new_unit, ing):
+    def changeUnit (self, new_unit, ingdict):
         """Handed a new unit and an ingredient, we decide whether to convert and return:
         None (don't convert) or Amount (new amount)
         Message (message for our user) or None (no message for our user)"""
-        key=ing.ingkey
-        old_unit=ing.unit
-        old_amt=ing.amount        
+        key=ingdict['ingkey']
+        old_unit=ingdict['unit']
+        old_amt=ingdict['amount']       
         density=None
         conversion = self.rg.conv.converter(old_unit,new_unit,key)
         if conversion and conversion != 1:
@@ -2004,7 +2003,7 @@ class IngredientTreeUI:
             DONT_CONVERT = 2
             choice = de.getRadio(label=_('Changed unit.'),
                                  sublabel=_('You have changed the unit for %(item)s from %(old)s to %(new)s. Would you like the amount converted or not?')%{
-                'item':ing.item,
+                'item':ingdict['item'],
                 'old':old_unit,
                 'new':new_unit},
                                  options=[(opt1,CONVERT),
@@ -2423,11 +2422,12 @@ class IngredientEditor:
             d['ingkey']=self.rg.rd.km.get_key(d['item'])
         sh = self.shopBox.entry.get_text()
         if sh: d['shop_cat']=sh
-        if self.ing:
+        if self.ing is not None:
             self.rc.ingtree_ui.ingController.undoable_update_ingredient_row(self.ing,d)
         else:
-            add_with_undo(lambda *args: self.rc.ingtree_ui.ingController.add_new_ingredient(**d),
-                          self.rc)
+            add_with_undo(self.rc,
+                          lambda *args: self.rc.ingtree_ui.ingController.add_new_ingredient(**d),
+                          )
         debug('blank selves/new',5)
         self.new()
         debug('done!',5)
