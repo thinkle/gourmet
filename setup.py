@@ -19,7 +19,7 @@ try:
     from version import version
 except:
     #print 'Version info may be out of date.'
-    version = "0.10.0"
+    version = "0.11.0"
 
 name= 'gourmet'
 
@@ -148,7 +148,7 @@ setup(
                 'gourmet.exporters',
                 'gourmet.legacy_db',
                 'gourmet.legacy_db.db_085',
-                'gourmet.legacy_db.db_08',
+                'gourmet.legacy_db.db_09',
                 'gourmet.nutrition',
                 ],
     package_dir = {'gourmet' : os.path.join('src','lib')},

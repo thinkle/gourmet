@@ -24,7 +24,8 @@ class RecData (rdatabase.RecData):
         # create the directory if it does not yet exist
         if not os.path.exists(mydir):
             os.mkdir(mydir)
-        self.db = metakit.storage(str(self.file),1) #filename must be string, not unicode
+        # READ ONLY
+        self.db = metakit.storage(str(self.file),0) #filename must be string, not unicode 
         self.contentview=self.db.contents()
         #self.load()
         self.db.autocommit()

@@ -3,10 +3,10 @@ import glob, os
 # We dump legacy databases by default into data files that Gourmet
 # will automatically import. This isn't too sophisticated at the
 # moment.
-import db_085.rmetakit, db_08.rmetakit
+import db_085.rmetakit, db_09.rmetakit
 
-legacy_modules = {'.mk':[db_085.rmetakit,db_08.rmetakit],
-                  #[__import__(f,{},['rmetakit']) for f in ['db_085.rmetakit','db_08.rmetakit']],
+legacy_modules = {'.mk':[db_085.rmetakit,db_09.rmetakit],
+                  #[__import__(f,{},['rmetakit']) for f in ['db_085.rmetakit','db_09.rmetakit']],
                   #'.db':[] # No legacy SQL support at present...
                   }
 
@@ -19,7 +19,6 @@ def get_file_for_ending (dir, ending):
     This could be more complicated in the future...."""
     potential_dbs = glob.glob(os.path.join(dir,'*%s'%ending))
     if not potential_dbs:
-        print 'no potential'
         return
     elif len(potential_dbs)>1:
         latest = 0
@@ -42,7 +41,9 @@ def get_legacy_db_in_directory (dir):
             mods = legacy_modules[ending]
             for m in mods:
                 try:
+                    print 'Loading ',fi,'with',m
                     rm = load_db(fi,m)
+                    assert(type(rm.rview[0].cuisine)!=int)
                 except:
                     print 'Failed to load for ',m
                     import traceback; traceback.print_exc()
