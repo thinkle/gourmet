@@ -3,11 +3,8 @@
 * Fix ingredient editing so that changes are no longer automatically
   committed to the DB. Now the ingredient tab of the recipe edit window
   works like everything else, with a standard "save" model.
-
 * While we're at it, we prevent crashes from happening.
-
 * Make Undo work more consistently throughout recipe card.
-
 * Make database upgrade happen at runtime rather than install-time --
   this allows us to play nicely with RPM and DEB packages.
 
