@@ -1,4 +1,5 @@
 import exporter, gxml_exporter, gxml2_exporter, html_exporter, mealmaster_exporter, recipe_emailer
+#import eatdrinkfeelgood_exporter
 import recipe_emailer
 import printer
 from gettext import gettext as _
@@ -27,7 +28,7 @@ saveas_filters = [
     [MMF,['text/mmf'],['*.mmf','*.MMF']],
     [TXT,['text/plain'],['*.txt','*.TXT']],      
     [GXML2,['text/xml'],['*.grmt','*.xml','*.XML']],
-    [EDFG,['text/xml'],['*.xml','*.XML']],
+    #[EDFG,['text/xml'],['*.xml','*.XML']],
     #[GXML,['text/xml'],['*.xml','*.XML']],
     ]
 
@@ -37,7 +38,7 @@ saveas_single_filters = [
     [TXT,['text/plain'],['*.txt','*.TXT']],      
     #[GXML,['text/xml'],['*.xml','*.XML']],
     [GXML2,['text/xml'],['*.grmt','*.xml','*.XML']],
-    [EDFG,['text/xml'],['*.xml','*.XML']],
+    #[EDFG,['text/xml'],['*.xml','*.XML']],
     ]
 
 # Add RTF to our files if it's supported
@@ -141,23 +142,23 @@ exporter_dict = {
            'sublabel':_('Exporting recipes to Rich Text file %(file)s.'),
            'single_completed':_('Recipe saved as Rich Text file %(file)s'),
            },
-    EDFG : {'mult_exporter': lambda args : eatdrinkfeelgood_exporter.EdfgXmlM(
-        args['rd'], 
-        args['rv'],
-        args['file'],
-        args['conv'],
-        progress_func=None),
-        'exporter': lambda args : eatdrinkfeelgood_exporter.EdfgXml(
-        args['rd'],
-        args['rec'],
-        args['out'],
-        change_units=args['change_units'],
-        mult=args['mult'],
-        conv=args['conv']),
-        'label':_('Exporting Eat Drink Feel Good Format'),
-        'sublabel':_('Exporting recipes to EDFG in directory %(file)s'),
-        'single_completed':_('Recipe saved as EDFG file %(file)s'),
-        },
+    # EDFG : {'mult_exporter': lambda args : eatdrinkfeelgood_exporter.EdfgXmlM(
+#         args['rd'], 
+#         args['rv'],
+#         args['file'],
+#         args['conv'],
+#         progress_func=None),
+#         'exporter': lambda args : eatdrinkfeelgood_exporter.EdfgXml(
+#         args['rd'],
+#         args['rec'],
+#         args['out'],
+#         change_units=args['change_units'],
+#         mult=args['mult'],
+#         conv=args['conv']),
+#         'label':_('Exporting Eat Drink Feel Good Format'),
+#         'sublabel':_('Exporting recipes to EDFG in directory %(file)s'),
+#         'single_completed':_('Recipe saved as EDFG file %(file)s'),
+#         },
     }
 
 class Tester:
