@@ -1543,7 +1543,9 @@ class IngredientTreeUI:
                    _('Unit'):'unit',
                    _('Item'):'item',
                    _('Key'):'ingkey',
-                   _('Optional'):'optional',}
+                   _('Optional'):'optional',
+                   _('Shopping Category'):'shop_cat',
+                   }
 
     def __init__ (self, rc):
         self.rc =rc; self.glade = self.rc.glade; self.rg = self.rc.rg
@@ -2346,7 +2348,7 @@ class IngredientEditor:
                 )
         else:
             self.amountBox.set_text('')
-        if d.has_key('unit'):
+        if d.has_key('unit') and d['unit']:
             self.unitBox.entry.set_text(d['unit'])
         else:
             self.unitBox.entry.set_text('')
