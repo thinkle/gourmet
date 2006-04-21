@@ -34,6 +34,14 @@ def get_image_from_string (raw):
         out.close()
     return Image.open(sfi)
 
+def get_string_from_image (image):
+    """Convert an image into a string representing its JPEG self"""
+    ofi = StringIO.StringIO()
+    image.save(ofi,"JPEG")
+    ret = ofi.getvalue()
+    ofi.close()
+    return ret
+
 def get_pixbuf_from_jpg (raw):
     """Given raw data of a jpeg file, we return a gtk.gdk.Pixbuf"""
     #o=open('/tmp/recimage.jpg','w')
