@@ -85,11 +85,9 @@ def gtk_update ():
         gtk.main_iteration()
 
 def gtk_leave ():
-    print 'fake_leave'
     gtk_update()
 
 def gtk_enter ():
-    print 'fake_enter'
     pass
 
 def gtk_threads_init ():
@@ -100,4 +98,4 @@ def gtk_threads_init ():
     import sys
     if sys.platform != 'win32':
         gtk.threads_init()
-    #print 'Threads started.'
+
