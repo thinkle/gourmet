@@ -469,7 +469,7 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         self.images = image_urls
 
     def commit_rec (self, *args, **kwargs):
-        if hasattr(self,'images'):
+        if hasattr(self,'images') and sys.platform!='win32':
             if self.progress: self.progress(-1,_('Getting images...'))
             self.ibd=imageBrowser.ImageBrowserDialog(
                 title=_("Select recipe image"),
