@@ -1,3 +1,16 @@
+gourmet (0.11.1-1) breezy; urgency=low
+
+  * Fix bug that broke changing the shopping category of an ingredient
+  from within the ingredient editing view.
+  * Fix traceback when filling ingredient-editor from a unitless
+  ingredient.
+  * Fix problem with recipe-links not working when they contained
+  unicode (such as the unicode for 1/2, 1/4, etc.)
+  * Make page-chooser in edit-view highlight the first page when we open
+  a new recipe card. Otherwise, the function of the widget is unclear.
+
+ -- Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>  Fri, 21 Apr 2006 15:09:56 -0400
+
 gourmet (0.11.0-1) breezy; urgency=low
 
   * Fix ingredient editing so that changes are no longer automatically
