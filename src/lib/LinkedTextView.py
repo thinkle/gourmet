@@ -62,11 +62,14 @@ class LinkedPangoBuffer (PangoBuffer):
                     match=True
             if not match:
                 break
+        text = unicode(text)
         if match and self.markup_dict.has_key(text):
             new_tag = self.create_tag()
             new_tag.set_data('href',self.markup_dict[text])
             tags = list(tags)
             tags.append(new_tag)
+        elif match:
+            print 'Funny',text,'looks like a link, but is not in markup_dict',self.markup_dict
         PangoBuffer.insert_with_tags(self,itr,text,*tags)
 
 class LinkedTextView (gtk.TextView):
@@ -183,12 +186,14 @@ if __name__ == '__main__':
     tv.connect('link-activated',print_link)    
     w = gtk.Window()
     w.add(tv)
-    tv.get_buffer().set_text("""This is some text
+    tv.get_buffer().set_text(u"""This is some text
     Some <i>fancy</i>, <u>fancy</u>, text.
     This is <a href="foo">a link</a>, a
     <a href="fancy_desc">fancy, fancy</a> link.
 
     <a href="123:foo">recipe link</a>
+
+    <a href="456:boo">\xbc recipe boogoochooboo</a>
     
     <b>Yeah!</b>
     """)
