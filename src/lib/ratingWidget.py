@@ -407,9 +407,9 @@ class TreeWithStarMaker:
                 #mod.set_value(itr,self.col_position,curval + 1)
                 self.call_handlers(curval + 1, mod, itr, self.data_col)
                 return True
-            elif name in [str(x) for x in range(self.upper + 1)]:
+            elif name in [str(x) for x in range(self.upper/2 + 1)]:
                 #mod.set_value(itr,self.col_position,int(name))
-                self.call_handlers(int(name), mod, itr, self.data_col)
+                self.call_handlers(int(name)*2, mod, itr, self.data_col)
                 return True
         
     
@@ -441,8 +441,7 @@ class Tree(gtk.TreeView):
         
 if __name__ == '__main__':
     vb = gtk.VBox()
-    s = StarGenerator(set_image='/home/tom/Projects/grm-0.8/images/gold_star.png',
-                      unset_image='/home/tom/Projects/grm-0.8/images/no_star.png',)
+    s = StarGenerator()
     for i in range(10):
         hb = gtk.HBox()
         hb.pack_start(StarButton(s,start_value=i),fill=False,expand=False)
