@@ -15,7 +15,7 @@ import sys, os
 sys.path.append(os.path.join('.', 'src', 'lib'))
 import version
 
-includes = ["atk", 
+includes = ["atk",
         #    "gourmet.importers.html_plugins.allrecipes", 
             "gourmet.importers.html_plugins.html_helpers", 
         #    "gourmet.importers.html_plugins.eating_well",
@@ -26,7 +26,11 @@ includes = ["atk",
         #    "gtk._gtk" 
             ]
 
-dll_excludes = ["libpangowin32-1.0-0.dll",
+dll_excludes = ["libpangocairo-1.0-0.dll",
+                "libpangowin32-1.0-0.dll",
+                "libcairo-2.dll","libfontconfig-1.dll",
+                "libpango-1.0-0.dll",
+                "libpangoft2-1.0-0.dll",
                 "libgtk-win32-2.0-0.dll",
                 "iconv.dll",
                 "libglib-2.0-0.dll",
@@ -43,7 +47,7 @@ dll_excludes = ["libpangowin32-1.0-0.dll",
                 "libpango-1.0-0.dll"
                 ]
 
-packages = ["xml.dom"]
+packages = ["xml.dom","cairo","pangocairo"]
 
 setup(
     # The first three parameters are not required, if at least a
