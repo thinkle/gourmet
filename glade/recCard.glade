@@ -8,7 +8,7 @@
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
-  <property name="default_width">730</property>
+  <property name="default_width">800</property>
   <property name="default_height">500</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
@@ -1703,7 +1703,6 @@ as Ingredient</property>
 			<widget class="GtkToolButton" id="ingDelButton">
 			  <property name="visible">True</property>
 			  <property name="tooltip" translatable="yes">Delete selected ingredients.</property>
-			  <property name="label" translatable="yes">_Delete Ingredient</property>
 			  <property name="use_underline">True</property>
 			  <property name="stock_id">gtk-delete</property>
 			  <property name="visible_horizontal">True</property>
