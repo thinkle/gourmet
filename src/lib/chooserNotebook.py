@@ -9,6 +9,7 @@ class ChooserNotebook:
         self.notebook.set_show_border(False)
         self.notebook.connect('switch-page',self.page_changed_cb)
         self.setup_tree()
+        self.page_changed_cb(self.notebook,None,self.notebook.get_current_page())
         
     def get_tab_labels (self):
         return [self.notebook.get_tab_label(c).get_text() for c in self.notebook.get_children()]
