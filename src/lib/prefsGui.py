@@ -175,7 +175,10 @@ class PreferencesGui:
                     widget.set_value(curval)
                 except:
                     widget.set_text(str(curval))
-            widget.connect('changed',self.number_callback,pref_name,get_method)
+            if isinstance(widget,gtk.SpinButton):
+                widget.get_adjustment().connect('value-changed',self.number_callback,pref_name,get_method)
+            else:
+                widget.connect('changed',self.number_callback,pref_name,get_method)
 
     def number_callback (self, widget, pref_name, get_method='get_value'):
         self.set_pref(pref_name,getattr(widget,get_method)())
@@ -241,7 +244,7 @@ if __name__ == '__main__':
                 print 'runnnig hook'
                 h(k,v)
             
-    gf='/home/tom/Projects/grm-0.8/glade/preferenceDialog.glade'
+    gf='/home/tom/Projects/grm-db-experiments/glade/preferenceDialog.glade'
     import sys
     p=PreferencesGui(FauxPrefs(),gf)
     def printstuff (*args): print args
