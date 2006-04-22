@@ -1353,7 +1353,7 @@
 				      <property name="update_policy">GTK_UPDATE_ALWAYS</property>
 				      <property name="snap_to_ticks">False</property>
 				      <property name="wrap">False</property>
-				      <property name="adjustment">0 0 10000 1 10 10</property>
+				      <property name="adjustment">0 0 5000 1 10 10</property>
 				      <signal name="changed" handler="rcEdited" last_modification_time="Thu, 24 Feb 2005 04:26:52 GMT"/>
 				    </widget>
 				    <packing>
@@ -1703,7 +1703,6 @@ as Ingredient</property>
 			<widget class="GtkToolButton" id="ingDelButton">
 			  <property name="visible">True</property>
 			  <property name="tooltip" translatable="yes">Delete selected ingredients.</property>
-			  <property name="use_underline">True</property>
 			  <property name="stock_id">gtk-delete</property>
 			  <property name="visible_horizontal">True</property>
 			  <property name="visible_vertical">True</property>
@@ -3753,7 +3752,7 @@ as Ingredient</property>
 					  <property name="update_policy">GTK_UPDATE_ALWAYS</property>
 					  <property name="snap_to_ticks">False</property>
 					  <property name="wrap">False</property>
-					  <property name="adjustment">1 0.25 100 0.25 10 10</property>
+					  <property name="adjustment">1 0.25 10000 0.25 10 10</property>
 					  <accessibility>
 					    <atkproperty name="AtkObject::accessible_name" translatable="yes">servings</atkproperty>
 					  </accessibility>
@@ -3816,7 +3815,7 @@ as Ingredient</property>
 					  <property name="update_policy">GTK_UPDATE_ALWAYS</property>
 					  <property name="snap_to_ticks">False</property>
 					  <property name="wrap">False</property>
-					  <property name="adjustment">1 0.0500000007451 100 0.5 10 10</property>
+					  <property name="adjustment">1 0.0500000007451 10000 0.5 10 10</property>
 					  <accessibility>
 					    <atkproperty name="AtkObject::accessible_name" translatable="yes">multiply by</atkproperty>
 					  </accessibility>
