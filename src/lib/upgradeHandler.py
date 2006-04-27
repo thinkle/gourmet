@@ -1,5 +1,5 @@
 import gourmet.recipeManager as recipeManager
-import pickle, os
+import pickle, os, re
 
 def load_recmanager ():
     return recipeManager.RecipeManager(**recipeManager.dbargs)
