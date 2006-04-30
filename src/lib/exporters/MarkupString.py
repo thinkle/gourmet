@@ -37,9 +37,9 @@ class MarkupString (str):
         str.__init__(self,string)
         self.handler = simpleHandler()
         try:
-            xml.sax.parseString("<foobar>%s</foobar>"%string,self.handler)
+            xml.sax.parseString("<foobar>%s</foobar>"%str(string),self.handler)
         except:
-            print 'Unable to parse',string
+            print 'Unable to parse "%s"'%string
             raise
         self.raw=self.handler.content
 
