@@ -193,6 +193,7 @@ class NumberDialog (ModalDialog):
             self.label.show()
         self.hbox.add(self.spinButton)
         self.spinButton.get_adjustment().connect("value_changed",self.update_value)
+        self.spinButton.get_adjustment().connect("changed",self.update_value)
         self.spinButton.show()
         self.spinButton.connect('activate',self.entry_activate_cb)
         self.hbox.show()                
@@ -1257,8 +1258,15 @@ if __name__ == '__main__':
                                             ['Web Page (HTML)',['text/html'],['*.htm','*.HTM','*.html','*.HTML']],
                                             ['Mealmaster File',['text/mmf'],['*.mmf','*.MMF']]]))],
         ]:
+        print b,f,s
         b = gtk.Button(s)
-        b.connect('clicked',f)
+        def wrap (f):
+            def _ (*args,**kwargs):
+                print 'Doing ',f
+                print 'f returns:',f()
+                print 'Done'
+            return _
+        b.connect('clicked',wrap(f))
         vb.add(b)
     w.add(vb)
     vb.show_all()
