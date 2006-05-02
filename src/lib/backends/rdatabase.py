@@ -890,10 +890,9 @@ class RecipeManager (RecData):
         if m:
             debug('ingredient parser successfully parsed %s'%s,1)
             d={}
-            g=m.groups()
-            a,u,i=(g[convert.ING_MATCHER_AMT_GROUP],
-                   g[convert.ING_MATCHER_UNIT_GROUP],
-                   g[convert.ING_MATCHER_ITEM_GROUP])
+            a,u,i=(m.group(convert.ING_MATCHER_AMT_GROUP),
+                   m.group(convert.ING_MATCHER_UNIT_GROUP),
+                   m.group(convert.ING_MATCHER_ITEM_GROUP))
             if a:
                 asplit = convert.RANGE_MATCHER.split(a)
                 if len(asplit)==2:
