@@ -1,3 +1,11 @@
+gourmet (0.11.2) breezy; urgency=low
+
+  * Add new icons from Yula Zubritsky
+  * Add nifty timer.
+  * Parse times written out as words.
+
+ -- Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>  Mon,  1 May 2006 21:51:23 -0400
+
 gourmet (0.11.1-1) breezy; urgency=low
 
   * Fix bug that broke changing the shopping category of an ingredient
