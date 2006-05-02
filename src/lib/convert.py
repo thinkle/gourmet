@@ -452,6 +452,29 @@ class converter:
     def timestring_to_seconds (self, timestring):
         """Take a timestring and parse it into seconds.
 
+        We assume numbers come before time units - surely this will
+        break some languages(?). We'll build the parameter in when the
+        time comes...
+        """
+        numbers = []
+        for match in NUMBER_FINDER.finditer(timestring):
+            if numbers: numbers[-1].append(match.start())
+            numbers.append([match.start(),match.end()])
+        if numbers: numbers[-1].append(None)
+        print numbers
+        secs = 0
+        for num_start,num_end,section_end in numbers:
+            num = frac_to_float(timestring[num_start:num_end])
+            unit = timestring[num_end:section_end].strip()
+            if self.unit_dict.has_key(unit):
+                conv = self.converter(unit,'seconds')
+                if conv:
+                    secs += num * conv
+        return secs
+
+    def timestring_to_seconds_old (self, timestring):
+        """Take a timestring and parse it into seconds.
+
         This logic may be a little fragile for non-English languages.
         """
         words = re.split('[ \s,;]+',str(timestring))
@@ -550,6 +573,22 @@ def integerp (num, approx=0.01):
 # want to limit special fractions to these and use straight-up ascii
 # fractions otherwise. These fractions must also be keys in
 # NUM_TO_FRACTIONS
+
+NUMBER_WORDS = {}
+if hasattr(defaults,'NUMBERS'):
+    for n,words in defaults.NUMBERS.items():
+        for w in words:
+            NUMBER_WORDS[w] = n
+all_number_words = NUMBER_WORDS.keys()
+all_number_words.sort(
+    lambda x,y: ((len(y)>len(x) and 1) or (len(x)>len(y) and -1) or 0)
+    )
+
+NUMBER_WORD_REGEXP = '|'.join(all_number_words).replace(' ','\s+')
+FRACTION_WORD_REGEXP = '|'.join(filter(lambda n: NUMBER_WORDS[n]<1.0,
+                                       all_number_words)
+                                ).replace(' ','\s+')
+
 NORMAL_FRACTIONS = [(1,2),(1,4),(3,4)] 
 
 NUM_TO_FRACTIONS = {
@@ -621,7 +660,13 @@ NUMBER_END_REGEXP = NUMBER_REGEXP + SLASH
 NUMBER_END_NO_RANGE_REGEXP = NUMBER_END_REGEXP + " /]"
 NUMBER_END_REGEXP += " /-"
 NUMBER_END_REGEXP += "]"
-NUMBER_REGEXP = "("+NUMBER_START_REGEXP+"+"+NUMBER_END_REGEXP+"*"+")"
+NUMBER_REGEXP = "("+NUMBER_START_REGEXP+NUMBER_END_REGEXP+"*"
+if NUMBER_WORD_REGEXP:
+     NUMBER_REGEXP = NUMBER_REGEXP + '|' + NUMBER_WORD_REGEXP + ')'
+     NUMBER_NO_RANGE_REGEXP = '(' + NUMBER_START_REGEXP + '+|' + NUMBER_WORD_REGEXP + ')'
+else:
+    NUMBER_REGEXP = NUMBER_REGEXP + ")"
+    NUMBER_NO_RANGE_REGEXP = NUMBER_START_REGEXP + '+'
 NUMBER_MATCHER = re.compile("^%s$"%NUMBER_REGEXP,re.UNICODE)
 
 UNICODE_FRACTION_REGEXP = "[" + "".join(UNICODE_FRACTIONS.keys()) + "]"
@@ -632,8 +677,24 @@ DIVISOR_REGEXP = "[0-9" + "".join(SUB_DICT.values()) + "]+"
 FRACTION_REGEXP = "(" + UNICODE_FRACTION_REGEXP + "|" + DIVIDEND_REGEXP + \
                           SLASH_REGEXP + DIVISOR_REGEXP + ")"
 
+AND_REGEXP = "(\s+%s\s+|\s*[&+]\s*|\s+)"%_('and')
+
 # Match a fraction
-FRACTION_MATCHER = re.compile("([0-9]+\s+)?%s"%FRACTION_REGEXP,re.UNICODE)
+if NUMBER_WORD_REGEXP:
+    NUM_AND_FRACTION_REGEXP = "((?P<int>%s+|%s)%s)?(?P<frac>(%s|%s))"%(NUMBER_START_REGEXP,
+                                                                       NUMBER_WORD_REGEXP,
+                                                                       AND_REGEXP,
+                                                                       FRACTION_REGEXP,
+                                                                       FRACTION_WORD_REGEXP
+                                                                       )
+    
+else:
+    NUM_AND_FRACTION_REGEXP = re.compile("((?P<int>%s)+\s+)?(?P<frac>%s)"%(NUMBER_START_REGEXP,FRACTION_REGEXP),re.UNICODE)
+
+FRACTION_MATCHER = re.compile(NUM_AND_FRACTION_REGEXP,re.UNICODE)
+
+NUMBER_FINDER_REGEXP = "(%(NUM_AND_FRACTION_REGEXP)s|%(NUMBER_NO_RANGE_REGEXP)s)(?=($| |[\W]))"%locals()
+NUMBER_FINDER = re.compile(NUMBER_FINDER_REGEXP,re.UNICODE)
 
 # Note: the order matters on this range regular expression in order
 # for it to properly split things like 1 - to - 3, which really do
@@ -646,22 +707,27 @@ RANGE_MATCHER = re.compile(RANGE_REGEXP[1:-1]) # no parens for this one
 # ingredients (e.g. 1 cup milk) that get misparsed by other ingredient
 # parsers. This is often necessary because formats like mealmaster and
 # mastercook are rarely actually followed.
-ING_MATCHER = re.compile("""
+NUMBER_FINDER_REGEXP2 = NUMBER_FINDER_REGEXP.replace('int','int2').replace('frac','frac2')
+ING_MATCHER_REGEXP = """
  \s* # opening whitespace
- (
- %(NUMBER_START_REGEXP)s+ # a number
- %(NUMBER_END_REGEXP)s* # possibly a long/complex number
- %(RANGE_REGEXP)s? # a possible range delimiter
- %(NUMBER_END_REGEXP)s* # and more numbers
+ (?P<amount>
+ %(NUMBER_FINDER_REGEXP)s # a number
+ \s* # Extra whitespace
+ (%(RANGE_REGEXP)s # a possible range delimiter
+ \s* #More extra whitespace
+ %(NUMBER_FINDER_REGEXP2)s)? # and more numbers
  )? # and of course no number is possible
- (\s*[\w.]+\s+)? # a unit
- (.*?)$ # and the rest of our stuff...
- """%locals(),
+ \s* # Whitespace between number and unit
+ (?P<unit>\s*[\w.]+\s+)? # a unit
+ (?P<item>.*?)$ # and the rest of our stuff...
+ """%locals()
+
+ING_MATCHER = re.compile(ING_MATCHER_REGEXP,
                          re.VERBOSE|re.UNICODE)
 
-ING_MATCHER_AMT_GROUP = 0
-ING_MATCHER_UNIT_GROUP = 2
-ING_MATCHER_ITEM_GROUP = 3
+ING_MATCHER_AMT_GROUP = 'amount'
+ING_MATCHER_UNIT_GROUP = 'unit'
+ING_MATCHER_ITEM_GROUP = 'item'
 
 def convert_fractions_to_ascii (s):
     """Convert all unicode-like fractions in string S with their ASCII equivalents"""
@@ -735,7 +801,10 @@ def float_string (s):
     thousands and thousands of things are rare.
     Also, we recognize items outside of our locale, since e.g. American might well be
     importing British recipes and viceversa.
-    """    
+    """
+    if NUMBER_WORDS.has_key(s.lower()):
+        print 'We have key',s.lower()
+        return NUMBER_WORDS[s.lower()]
     THOUSEP = locale.localeconv()['thousands_sep']
     DECSEP = locale.localeconv()['decimal_point']
     if s.count(',') > 1 and s.count('.') <= 1:
@@ -769,10 +838,14 @@ def frac_to_float (s):
     s = unicode(s)
     m=FRACTION_MATCHER.match(s)
     if m:
-        i,frac = m.groups()
-        if not i: i=0
+        i = m.group('int')
+        frac = m.group('frac')
+        if i: i=float_string(i)
+        else: i = 0
         if UNICODE_FRACTIONS.has_key(frac):
-            return float(i)+UNICODE_FRACTIONS[frac]
+            return i+UNICODE_FRACTIONS[frac]
+        elif NUMBER_WORDS.has_key(frac):
+            return i+NUMBER_WORDS[frac]
         else:
             n,d = SLASH_MATCHER.split(frac)
             n = SUP_DICT.get(n,n)
