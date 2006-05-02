@@ -1,3 +1,9 @@
+==== Version 0.11.2 changes since 0.11.1 ====
+
+* Add new icons from Yula Zubritsky
+* Add nifty timer.
+* Parse times written out as words.
+
 ==== Version 0.11.1 changes since 0.11.0 ====
 
 * Fix bug that broke changing the shopping category of an ingredient
