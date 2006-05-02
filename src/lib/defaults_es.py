@@ -448,7 +448,7 @@ NUMBERS = {
     (1.0/4):['quarto','un quarto'],
     (3.0/4):['tres quartos'],
     (2.0/3):['dos tercios'],
-    (1.0/3):['un tercio',]
+    (1.0/3):['un tercio',],
     (1.0/2):['una mitad','la mitad'],
     1:['un','una','uno'],
     2:['dow','un par','un par de'],
