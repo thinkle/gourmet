@@ -15,6 +15,7 @@ from gglobals import *
 from recindex import RecIndex
 import exporters.recipe_emailer as recipe_emailer
 import locale, gettext
+from timer import show_timer
 _ = gettext.gettext
 from defaults import lang as defaults
 
@@ -175,7 +176,8 @@ class RecGui (RecIndex):
             'email':self.email_recs,
             #'email_prefs':self.email_prefs,
             'showDeletedRecipes':self.show_deleted_recs,
-            'emptyTrash':self.empty_trash
+            'emptyTrash':self.empty_trash,
+            'on_timer': lambda *args: show_timer(),
 #            'shopCatEditor': self.showShopEditor,            
             })
         # self.rc will be a list of open recipe cards.
