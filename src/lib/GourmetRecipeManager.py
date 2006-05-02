@@ -41,26 +41,32 @@ except ImportError:
 
 def check_for_data_to_import (rm):
     if rm.fetch_len(rm.rview)==0:
-        import legacy_db
-        pd = de.ProgressDialog(label=_('Importing old recipe data'),
-                               sublabel=_('Importing recipe data from a previous version of Gourmet into new database.'),
-                               )
-        def set_prog (p,msg=None):
-            p=float(p)
-            pd.set_progress(p,msg)
-            while gtk.events_pending():
-                gtk.main_iteration()
-        legacy_db.backup_legacy_data(gourmetdir, pd, set_prog)
-        backup_file = os.path.join(gourmetdir,'GOURMET_DATA_DUMP')
-        if os.path.exists(backup_file):
-            import upgradeHandler        
-            pd.show()
-            upgradeHandler.import_backup_file(
-                rm,backup_file,set_prog
-                )
-            os.rename(backup_file,backup_file+'.ALREADY_LOADED')
-            pd.hide()
-            pd.destroy()
+        try:
+            import legacy_db
+        except ImportError:
+            print "Not trying to update."
+            print "We had an import error."
+            import traceback; traceback.print_exc()
+        else:
+            pd = de.ProgressDialog(label=_('Importing old recipe data'),
+                                   sublabel=_('Importing recipe data from a previous version of Gourmet into new database.'),
+                                   )
+            def set_prog (p,msg=None):
+                p=float(p)
+                pd.set_progress(p,msg)
+                while gtk.events_pending():
+                    gtk.main_iteration()
+            legacy_db.backup_legacy_data(gourmetdir, pd, set_prog)
+            backup_file = os.path.join(gourmetdir,'GOURMET_DATA_DUMP')
+            if os.path.exists(backup_file):
+                import upgradeHandler        
+                pd.show()
+                upgradeHandler.import_backup_file(
+                    rm,backup_file,set_prog
+                    )
+                os.rename(backup_file,backup_file+'.ALREADY_LOADED')
+                pd.hide()
+                pd.destroy()
         
 class RecGui (RecIndex):
     """This is the main application. We subclass RecIndex, which handles displaying a list of
