@@ -694,3 +694,29 @@ def guess_plurals (s):
     return ret
 
 IGNORE = ["and","with","of","for","cold","warm","finely","thinly","roughly","coarsely"]
+
+NUMBERS = {
+    (1.0/8):['eighth','an eigth'],
+    (1.0/4):['quarter','a quarter'],
+    (3.0/4):['three quarters'],
+    (2.0/3):['two thirds'],
+    (1.0/3):['third','a third'],
+    (1.0/2):['half','a half','one half'],
+    1:['an','a','one'],
+    2:['two','a couple','a couple of','a pair of'],
+    3:['three'],
+    4:['four'],
+    5:['five'],
+    6:['six'],
+    7:['seven'],
+    8:['eight'],
+    9:['nine'],
+    10:['ten'],
+    11:['eleven'],
+    12:['twelve','a dozen'],
+    20:['twenty'],
+    30:['thirty'],
+    40:['forty'],
+    50:['fifty'],
+    60:['sixty'],
+    }

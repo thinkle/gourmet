@@ -188,3 +188,6 @@ def guess_singulars (s):
 def guess_plurals (s): return [s+'s',s+'es']
 
 IGNORE=[]
+
+NUMBERS = {
+    }

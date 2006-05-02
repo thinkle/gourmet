@@ -528,3 +528,6 @@ def guess_singulars (s): return []
 def guess_plurals (s): return []
 
 IGNORE=[]
+
+NUMBERS = {
+    }

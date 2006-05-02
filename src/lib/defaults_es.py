@@ -442,3 +442,30 @@ def guess_plurals (s):
     return [s+'s',s+'es']
 
 IGNORE = []
+
+NUMBERS = {
+    (1.0/8):['octavo','un octavo'],
+    (1.0/4):['quarto','un quarto'],
+    (3.0/4):['tres quartos'],
+    (2.0/3):['dos tercios'],
+    (1.0/3):['un tercio',]
+    (1.0/2):['una mitad','la mitad'],
+    1:['un','una','uno'],
+    2:['dow','un par','un par de'],
+    3:['tres'],
+    4:['cuatro'],
+    5:['cinco'],
+    6:['seis'],
+    7:['siete'],
+    8:['ocho'],
+    9:['nueve'],
+    10:['diez'],
+    11:['once'],
+    12:['doce','una dozena','una docena de','una dozena de'],
+    20:['veinte'],
+    30:['treinta'],
+    40:['cuarenta'],
+    50:['cincuenta'],
+    60:['sesenta'],
+    100:['cien'],
+    }

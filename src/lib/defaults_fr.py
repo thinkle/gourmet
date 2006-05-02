@@ -1133,3 +1133,6 @@ def guess_plurals (s): return [s+'s',s+'es']
 IGNORE=["et","avec","de","des","d'","pour","froid","froide","froids","froides",
          "chaud","chaude","chauds","chaudes","finement","mince","minces",
          "approximativement","grosso modo","vulgairement"]
+
+NUMBERS = {
+    }
