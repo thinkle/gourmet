@@ -30,6 +30,7 @@ glade/recCard.glade
 glade/recSelector.glade
 glade/rec_ref_window.glade
 glade/shopList.glade
+glade/timerDialog.glade
 src/lib/legacy_db/__init__.py
 src/lib/legacy_db/db_09/__init__.py
 src/lib/legacy_db/db_09/rdatabase.py
