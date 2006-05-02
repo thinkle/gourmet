@@ -404,7 +404,7 @@
 		      <accelerator key="N" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image35">
+			<widget class="GtkImage" id="image41">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-add</property>
 			  <property name="icon_size">1</property>
@@ -420,12 +420,13 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="new2">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Clear shopping List</property>
+		      <property name="tooltip" translatable="yes">Remove recipes from shopping list</property>
+		      <property name="label" translatable="yes">Remove recipes</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="shopClear" last_modification_time="Sat, 22 May 2004 16:02:14 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image36">
+			<widget class="GtkImage" id="image42">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-clear</property>
 			  <property name="icon_size">1</property>
@@ -454,7 +455,7 @@
 		      <accelerator key="d" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image37">
+			<widget class="GtkImage" id="image43">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-remove</property>
 			  <property name="icon_size">1</property>
@@ -477,7 +478,7 @@
 		      <accelerator key="b" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image38">
+			<widget class="GtkImage" id="image44">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-undo</property>
 			  <property name="icon_size">1</property>
@@ -621,8 +622,10 @@
 	  <child>
 	    <widget class="GtkToolButton" id="button7">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Remove the selected recipe from your shopping list (or remove all items if no recipe is selected)</property>
+	      <property name="tooltip" translatable="yes">Remove the selected recipes from your shopping list (or remove all items if no recipe is selected)</property>
 	      <property name="can_focus">True</property>
+	      <property name="label" translatable="yes">Remove Recipes</property>
+	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-clear</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
@@ -653,7 +656,7 @@
 	      <property name="visible">True</property>
 	      <property name="label" translatable="yes">Nutritional Info</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_id">gtk-dialog-info</property>
+	      <property name="icon">Nutrition.png</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
