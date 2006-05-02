@@ -17,6 +17,8 @@ images/gold_star.png
 images/half_gold_star.png
 images/no_star.png
 images/gourmet_logo.png
+images/AddToShoppingList.png
+images/Nutrition.png
 glade/app.glade
 glade/converter.glade
 glade/databaseChooser.glade
@@ -99,6 +101,8 @@ src/lib/TextBufferMarkup.py
 src/lib/ThumbnailGenerator.py
 src/lib/thumbnail.py
 src/lib/timeEntry.py
+src/lib/timer.py
+src/lib/timeScanner.py
 src/lib/treeview_extras.py
 src/lib/upgradeHandler.py
 src/lib/Undo.py
@@ -118,7 +122,6 @@ src/lib/importers/zip_importer.py
 src/lib/importers/html_importer.py
 src/lib/importers/html_plugins/
 src/lib/importers/html_plugins/allrecipes.py
-src/lib/importers/html_plugins/eating_well.py
 src/lib/importers/html_plugins/epicurious.py
 src/lib/importers/html_plugins/foodnetwork.py
 src/lib/importers/html_plugins/html_helpers.py
