@@ -87,13 +87,16 @@ class LinkedTextView (gtk.TextView):
     def __init__ (self):
         gobject.GObject.__init__(self)
         gtk.TextView.__init__(self)
-        self.set_buffer(LinkedPangoBuffer())
+        self.set_buffer(self.make_buffer())
         buf = self.get_buffer()
         self.set_text = buf.set_text
         self.connect('key-press-event',self.key_press_event)
         self.connect('event-after',self.event_after)
         self.connect('motion-notify-event',self.motion_notify_event)
         self.connect('visibility-notify-event',self.visibility_notify_event)
+
+    def make_buffer (self):
+        return LinkedPangoBuffer()
 
     # Links can be activated by pressing Enter.
     def key_press_event(self, text_view, event):
@@ -124,7 +127,6 @@ class LinkedTextView (gtk.TextView):
         x, y = text_view.window_to_buffer_coords(gtk.TEXT_WINDOW_WIDGET,
             int(event.x), int(event.y))
         iter = text_view.get_iter_at_location(x, y)
-
         self.follow_if_link(text_view, iter)
         return False
 
@@ -167,11 +169,12 @@ class LinkedTextView (gtk.TextView):
         self.set_cursor_if_appropriate (text_view, bx, by)
         return False
 
-    def follow_if_link(self, text_view, iter):
+    def follow_if_link (self, text_view, iter):
         ''' Looks at all tags covering the position of iter in the text view,
             and if one of them is a link, follow it by showing the page identified
             by the data attached to it.
         '''
+        print 'LinkedTextView.follow_if_link'
         tags = iter.get_tags()
         for tag in tags:
             href = tag.get_data('href')
