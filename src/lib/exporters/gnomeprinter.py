@@ -363,11 +363,15 @@ class SimpleWriter (print_writer):
     def write_subheader (self, text):
         debug('write_subheader ',3)
         self.dont_escape=True
-        self.write_heading(xml.sax.saxutils.escape(text),
-                           size=12,
-                           style="normal",
-                           space_after=0,
-                           space_before=0.5)
+        try:
+            self.write_heading(xml.sax.saxutils.escape(text),
+                               size=12,
+                               style="normal",
+                               space_after=0,
+                               space_before=0.5)
+        except:
+            print 'Trouble printing "%s"'%text
+            raise
         self.dont_escape=False
 
     def write_paragraph (self, text, *args, **kwargs):
