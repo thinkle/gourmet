@@ -22,7 +22,8 @@ from importers.importer import parse_range
 from FauxActionGroups import ActionManager
 import mnemonic_manager
 
-import LinkedTextView
+import LinkedTextView, timeScanner
+from timer import show_timer
 
 class RecRef:
     def __init__ (self, id, title):
@@ -116,6 +117,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.makeStarButton = lambda *args: ratingWidget.make_star_button(self.rg.star_generator)
         self.makeStarImage = lambda *args: ratingWidget.make_star_image(self.rg.star_generator)
         self.makeLinkedTextView = lambda *args: LinkedTextView.LinkedTextView()
+        self.makeLinkedTimeView = lambda *args: timeScanner.LinkedTimeView()
         self.makeNutritionLabel = lambda *args: NutritionLabel(self.prefs)
         def custom_handler (glade,func_name,
                             widg, s1,s2,i1,i2):
@@ -161,6 +163,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'edit_ingredients': lambda *args: self.show_edit(tab=self.NOTEBOOK_ING_PAGE),
             'edit_instructions': lambda *args: self.show_edit(tab=self.NOTEBOOK_INST_PAGE),
             'edit_modifications': lambda *args: self.show_edit(tab=self.NOTEBOOK_MOD_PAGE),
+            'on_timer': lambda *args: show_timer(),
             })
 
     def setup_style (self):
@@ -213,7 +216,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             setattr(self,'%sDisplay'%attr,self.glade.get_widget('%sDisplay'%attr))
             setattr(self,'%sDisplayLabel'%attr,self.glade.get_widget('%sDisplayLabel'%attr))
         # Set up wrapping callbacks...
-        self.reflow_on_resize = [getattr(self,'%sDisplay'%s) for s in ['modifications','instructions']]
+        self.reflow_on_resize = [getattr(self,'%sDisplay'%s) for s in ['modifications',#'instructions'
+                                                                       ]
+                                 ]
         self.glade.get_widget(
             'recipeDetailsWindow'
             ).connect('size-allocate',self.flow_my_text_on_allocate)
@@ -226,6 +231,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.ingredientsDisplay.connect('link-activated',
                                         self.show_recipe_link_cb)
         self.ingredientsDisplay.set_wrap_mode(gtk.WRAP_WORD)
+        self.instructionsDisplay.set_wrap_mode(gtk.WRAP_WORD)
+        self.instructionsDisplay.set_editable(False)
+        self.instructionsDisplay.connect('time-link-activated',
+                                         timeScanner.show_timer_cb,
+                                         self.rg.conv
+                                         )
         self.special_display_functions = {
             'servings':self.updateServingsDisplay,
             'ingredients':self.updateIngredientsDisplay,
@@ -691,7 +702,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                             widg.set_text(convert.seconds_to_timestring(attval))
                     else:
                         widg.set_text(attval)
-                        if attr in ['modifications','instructions']:
+                        if attr in ['modifications',#'instructions'
+                                    ]:
                             widg.set_use_markup(True)
                             widg.set_size_request(600,-1)
                     widg.show()
