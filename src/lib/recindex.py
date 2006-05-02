@@ -37,14 +37,14 @@ class RecIndex:
         # Don't # allow for special keybindings
         #self.srchentry.connect('key_press_event',self.srchentry_keypressCB)
         self.searchByDic = {
-            _('title'):'title',
-            _('ingredient'):'ingredient',
-            _('instructions'):'instructions',
-            _('notes'):'modifications',
-            _('category'):'category',
-            _('cuisine'):'cuisine',
+            unicode(_('title')):'title',
+            unicode(_('ingredient')):'ingredient',
+            unicode(_('instructions')):'instructions',
+            unicode(_('notes')):'modifications',
+            unicode(_('category')):'category',
+            unicode(_('cuisine')):'cuisine',
             #_('rating'):'rating',
-            _('source'):'source',
+            unicode(_('source')):'source',
             }
         self.searchByList = [_('title'),
                              _('ingredient'),
