@@ -789,7 +789,7 @@ NUMBERS = {
     (3.0/4):['three quarters'],
     (2.0/3):['two thirds'],
     (1.0/3):['third','a third'],
-    (1.0/2):['half','a half','one half'],
+    (1.0/2):['one half','a half','half'],
     1:['an','a','one'],
     2:['two','a couple','a couple of','a pair of'],
     3:['three'],
