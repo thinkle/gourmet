@@ -98,6 +98,9 @@ src/lib/recipeManager.py
 src/lib/shopEditor.py
 src/lib/shopgui.py
 src/lib/shopping.py
+src/lib/sound.py
+src/lib/sound_windows.py
+src/lib/sound_gnome.py
 src/lib/TextBufferMarkup.py
 src/lib/ThumbnailGenerator.py
 src/lib/thumbnail.py
