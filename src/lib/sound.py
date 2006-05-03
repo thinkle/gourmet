@@ -1,5 +1,4 @@
 try:
-    import FooB
     from sound_gnome import Player
 except ImportError:
     print 'No gnome player'
