@@ -172,6 +172,7 @@ class TimerDialog:
 
     def refresh (self, *args):
         self.stop_annoying()
+        self.timer.reset_cb()
         self.timerFinishedLabel.hide()
         self.keepAnnoyingLabel.hide()
         self.timerBox.show()
