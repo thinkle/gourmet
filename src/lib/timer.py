@@ -146,7 +146,6 @@ class TimerDialog:
 
     def play_tune (self):
         sound_file = self.sounds_and_files[cb.cb_get_active_text(self.soundComboBox)]
-        print 'play tune',sound_file
         self.player.play_file(sound_file)
 
     def annoy_user (self):
@@ -160,7 +159,6 @@ class TimerDialog:
         if self.repeatCheckButton.get_active():
             self.keep_annoying = True
             gobject.timeout_add(3000,self.annoy_user)
-        print 'show message'
         self.timerBox.hide()
         self.expander1.hide()
         self.timerFinishedLabel.show()
@@ -169,11 +167,8 @@ class TimerDialog:
         
 
     def stop_annoying (self):
-        print 'done showing message'
         self.keep_annoying = False
-        print "don't annoy"
         self.timerDialog.set_urgency_hint(False)
-        print 'Not urgent.'
 
     def refresh (self, *args):
         self.stop_annoying()
@@ -197,13 +192,10 @@ class TimerDialog:
                                                  ):
             self.timer.running = False
             self.timerDialog.hide()
-            print 'destroy timerDialog'
             self.timerDialog.destroy()
         else:
             self.timer.connect_timer_hook(self.timerDialog.show,1)
-            print 'hide timerDialog'
             self.timerDialog.hide()
-            
 
     def run (self): self.timerDialog.run()
     def show (self): self.timerDialog.show()
