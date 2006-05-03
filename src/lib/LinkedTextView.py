@@ -174,7 +174,6 @@ class LinkedTextView (gtk.TextView):
             and if one of them is a link, follow it by showing the page identified
             by the data attached to it.
         '''
-        print 'LinkedTextView.follow_if_link'
         tags = iter.get_tags()
         for tag in tags:
             href = tag.get_data('href')
