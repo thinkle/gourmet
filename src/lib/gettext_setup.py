@@ -45,8 +45,9 @@ elif os.name == 'nt':
                 # assume we are in Python\Lib\site-packages\gourmet\
                 # back up four direcotires and add gourmet\data\
                 pybase = os.path.split(os.path.split(os.path.split(os.path.split(__file__)[0])[0])[0])[0]
-                datad = os.path.join(pybase,'gourmet','data')
-    DIR = os.path.join(datad,'i18n')
+                gourmetd = os.path.join(pybase,'gourmet')
+                datad = os.path.join(gourmetd,data)
+    DIR = os.path.join(gourmetd,'i18n')
 
 gettext.bindtextdomain('gourmet',DIR)
 gettext.textdomain('gourmet')
