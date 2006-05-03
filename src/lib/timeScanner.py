@@ -43,17 +43,14 @@ class LinkedTimeView (LinkedTextView.LinkedTextView):
         return TimeBuffer()
 
     def follow_if_link (self, text_view, iter):
-        print 'follow...'
         tags = iter.get_tags()
         for tag in tags:
             href = tag.get_data('href')
             if href:
-                print 'href!'
                 start_sentence = iter.copy();
                 start_sentence.backward_sentence_start() 
                 end_sentence = iter.copy()
                 if not end_sentence.ends_sentence(): end_sentence.forward_sentence_end()
-                print 'sentence:',self.get_buffer().get_slice(start_sentence,end_sentence)
                 self.emit('time-link-activated',href,self.get_buffer().get_slice(start_sentence,end_sentence))
                 return True
 
