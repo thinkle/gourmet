@@ -43,6 +43,9 @@ data/WEIGHT.txt
 data/FOOD_DES.txt
 data/recipe.dtd
 data/RULES_TEMPLATE
+data/error.wav
+data/warning.wav
+data/phone.wav
 style/default.css
 src/gourmet
 src/lib/cb_extras.py
