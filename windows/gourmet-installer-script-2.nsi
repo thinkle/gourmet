@@ -29,7 +29,7 @@
 ;Defines
 
     !define GOURMET_NAME "Gourmet Recipe Manager"
-    !define GOURMET_VERSION "0.9.1"
+    !define GOURMET_VERSION "0.11.2"
     !define GOURMET_PUBLISHER "Thomas M. Hinkle"
     !define GOURMET_WEB_SITE "http://grecipe-manager.sourceforge.net"
     !define GOURMET_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Gourmet.exe"
@@ -50,7 +50,7 @@
     !define GTK_VERSION				"2.8.8"
     !define GTK_REG_KEY				"SOFTWARE\GTK\2.0"
     !define GTK_DEFAULT_INSTALL_PATH		"$COMMONFILES\GTK\2.0"
-    !define GTK_RUNTIME_INSTALLER		"gtk-win32-2.8.8-rc2.exe"  ;"gtk-runtime*.exe"
+    !define GTK_RUNTIME_INSTALLER		"gtk-win32-2.8.14-rc1.exe"  ;"gtk-runtime*.exe"
 
     !define GAIM_VERSION                        "${GOURMET_VERSION}"
     
