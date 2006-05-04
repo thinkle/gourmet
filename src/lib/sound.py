@@ -12,3 +12,5 @@ except ImportError:
             def play_file (self,path):
                 print 'No player installed -- beeping instead'
                 for n in range(5): sys.stdout.write('\a'); sys.stdout.flush()
+
+print 'Player is ',Player

@@ -1,4 +1,4 @@
-import gnome, gtk, gtk.glade, gobject, time, gglobals, os
+import gtk, gtk.glade, gobject, time, gglobals, os
 import xml.sax.saxutils
 from sound import Player
 import cb_extras as cb
@@ -96,9 +96,9 @@ class TimerDialog:
     keep_annoying = False
 
     sounds_and_files = {
-        _('Ringing Sound'):'/usr/share/sounds/phone.wav',
-        _('Warning Sound'):'/usr/share/sounds/warning.wav',
-        _('Error Sound'):'/usr/share/sounds/error.wav',
+        _('Ringing Sound'):'phone.wav',
+        _('Warning Sound'):'warning.wav',
+        _('Error Sound'):'error.wav',
         }
 
     def __init__ (self):
@@ -146,6 +146,7 @@ class TimerDialog:
 
     def play_tune (self):
         sound_file = self.sounds_and_files[cb.cb_get_active_text(self.soundComboBox)]
+	sound_file = os.path.join(gglobals.datad,sound_file)
         self.player.play_file(sound_file)
 
     def annoy_user (self):
