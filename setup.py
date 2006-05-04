@@ -73,10 +73,12 @@ def data_files():
     icons = glob.glob(os.path.join('images','*.ico'))
     style = glob.glob(os.path.join('style','*.css'))
     glade = glob.glob(os.path.join('glade','*.glade'))
+    sounds = glob.glob(os.path.join('data','*.wav'))
     i18n = glob.glob(os.path.join('i18n','*/*/*.mo'))
     images.extend(icons)
     images.extend(style)
     images.extend(glade)
+    images.extend(sounds)
     #print "data_files: ",images,style
     # Note that this os specific stuff must be kept in sync with gglobals.py
     if os.name == 'nt' or os.name == 'dos':
