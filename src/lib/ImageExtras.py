@@ -28,11 +28,14 @@ def get_image_from_string (raw):
         sfi.write(raw)
         sfi.seek(0)
     else:
-        sfi=tempfile.mktemp('.jpg')
-        out = open(sfi,'wb')
-        out.write(raw)
-        out.close()
-    return Image.open(sfi)
+        sfi = write_image_tempfile(raw)
+    try:
+        return Image.open(sfi)
+    except:
+        print 'Trouble in image land.'
+        print 'We dumped the offending string here:'
+        print sfi
+        print "But we can't seem to load it..."
 
 def get_string_from_image (image):
     """Convert an image into a string representing its JPEG self"""
