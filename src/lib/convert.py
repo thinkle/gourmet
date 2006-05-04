@@ -836,7 +836,8 @@ def float_string (s):
 def frac_to_float (s):
     """We assume fractions look like this (I )?N/D"""
     if NUMBER_WORDS.has_key(s): return NUMBER_WORDS[s]
-    if NUMBER_WORDS.has_key(s.lower()): return NUMBER_WORDS[s.lower()]    
+    if hasattr(s,'lower') and NUMBER_WORDS.has_key(s.lower()):
+        return NUMBER_WORDS[s.lower()]    
     s = unicode(s)
     m=FRACTION_MATCHER.match(s)
     if m:
