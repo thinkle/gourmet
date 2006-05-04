@@ -1,4 +1,17 @@
-gourmet (0.11.2) breezy; urgency=low
+gourmet (0.11.2-3) breezy; urgency=low
+
+  * Fix minor bug in convert.py
+  * Include sound files as well as sound package.
+
+ -- Thomas M. Hinkle <tom@localhost.localdomain>  Wed,  3 May 2006 21:26:13 -0400
+
+gourmet (0.11.2-2) breezy; urgency=low
+
+  * Include sound module so we actually work this time.
+
+ -- Thomas M. Hinkle <tom@localhost.localdomain>  Wed,  3 May 2006 18:34:58 -0400
+
+gourmet (0.11.2-1) breezy; urgency=low
 
   * Add new icons from Yula Zubritsky
   * Add nifty timer.
