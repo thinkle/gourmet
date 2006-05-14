@@ -349,10 +349,9 @@ class ConvenientImporter (importer.importer):
         if not txt: return        
         mm = convert.ING_MATCHER.match(txt)
         if mm:
-            groups = mm.groups()
-            amount = groups[convert.ING_MATCHER_AMT_GROUP]
-            unit = groups[convert.ING_MATCHER_UNIT_GROUP]
-            item = groups[convert.ING_MATCHER_ITEM_GROUP]
+            amount = mm.group(convert.ING_MATCHER_AMT_GROUP)
+            unit = mm.group(convert.ING_MATCHER_UNIT_GROUP)
+            item = mm.group(convert.ING_MATCHER_ITEM_GROUP)
             # If our unit isn't familiar, don't add it as a unit!
             if unit and not self.conv.unit_dict.has_key(unit.strip()):
                 unit = ''
@@ -388,9 +387,9 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         self.parser_to_choice = {
             'ingredient':'Ingredient',
             'ingredients':'Ingredients',
-            #'instructions':'Instructions',
+            'instructions':'Instructions',
             'None':'Ignore',
-            #'title':'Title',
+            'title':'Title',
             }
         self.added_to = False
         self.attdic = gglobals.REC_ATTR_DIC 
@@ -734,12 +733,15 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         st,end = self.textbuffer.get_selection_bounds()
         while end.starts_line() and end.backward_char():
             end = self.textbuffer.get_iter_at_offset(end.get_offset()-1)
+
+        # Here's how we would add a "Remove" button -- but this really
+        # requires rethinking the whole interview
+
+        #anchor = self.textbuffer.create_child_anchor(end)
+        #button = gtk.Button('_Remove tag'); button.show()
+        #self.textview.add_child_at_anchor(button,anchor)
+        
         self.textbuffer.insert_with_tags(end,']',self.markup_tag)
-        # We'll do something real soon...
-        #self.resultbuffer.insert(
-        #    self.resultbuffer.get_end_iter(),
-        #    "%s: %s\n"%(active_txt,selection)
-        #    )
         action = self.actions[active_txt]
         if self.action_to_label.has_key(active_txt):
             active_txt = self.action_to_label[active_txt]
