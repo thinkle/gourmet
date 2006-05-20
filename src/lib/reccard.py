@@ -1439,9 +1439,10 @@ class IngredientController:
         return deleted_dic,prev_ref,ing_obj
 
     def do_delete_iters (self, iters):
-        for i in iters:
-            i = self.get_iter_from_persistent_ref(i)
-            self.imodel.remove(i)
+        for ref in iters:
+            i = self.get_iter_from_persistent_ref(ref)
+            if not i: print 'Failed to get reference from',i
+            else: self.imodel.remove(i)
 
     def do_undelete_iters (self, rowdicts_and_iters):
         for rowdic,prev_iter,ing_obj,children,expanded in rowdicts_and_iters:
@@ -1458,7 +1459,7 @@ class IngredientController:
                 self.update_ingredient_row(iter,**rowdic)
             else:
                 #print 'UNDELETE->Add kwargs',rowdic,prev_iter
-                itr = self.add_ingredient_from_kwargs(prev_iter,
+                itr = self.add_ingredient_from_kwargs(prev_iter=prev_iter,
                                                 fallback_on_append=False,
                                                 **rowdic)
             if children:
