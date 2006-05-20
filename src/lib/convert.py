@@ -8,6 +8,9 @@ from gdebug import *
 FRACTIONS_ALL = 1
 FRACTIONS_NORMAL = 0
 FRACTIONS_ASCII = -1
+FRACTIONS_OFF = -2
+
+USE_FRACTIONS = FRACTIONS_NORMAL
 
 class converter:
 
@@ -768,31 +771,38 @@ def float_to_frac (n, d=[2,3,4,5,6,8,10,16],approx=0.01,fractions=FRACTIONS_NORM
     """Take a number -- or anything that can become a float --
     and attempt to return a fraction with a denominator in the list `d'. We
     approximate fractions to within approx. i.e. if approx=0.01, then 0.331=1/3"""
-    if not n: return ""
-    n=float(n)
-    i = int(n)
-    if i >= 1:
-        i="%s"%int(n)
+    if USE_FRACTIONS == FRACTIONS_OFF:
+        return float_to_metric(n)
     else:
-        i=""
-    rem = n - int(n)
-    if rem==0:
-        if i:
-            return "%s"%i
+        if not n: return ""
+        n=float(n)
+        i = int(n)
+        if i >= 1:
+            i="%s"%int(n)
         else:
-            return "0"
+            i=""
+        rem = n - int(n)
+        if rem==0:
+            if i:
+                return "%s"%i
+            else:
+                return "0"
+        else:
+            flag = False
+            for div in d:
+                f = fractify(rem,div,approx=approx,fractions=fractions)
+                if f:
+                    return " ".join([i,f]).strip()
+             # use locale-specific metric formatting if fractions don't work
+            return float_to_metric(n)
+
+def float_to_metric(n):
+    """Returns a formatted string in metric format, using locale-specific formatting"""    
+    if len("%s"%n) > 5:
+        return locale.format("%.2f",n,True) # format(formatstring, number, use_thousands_separator)
     else:
-        flag = False
-        for div in d:
-            f = fractify(rem,div,approx=approx,fractions=fractions)
-            if f:
-                return " ".join([i,f]).strip()
-        if len("%s"%n) > 5:
-            # use locale-specific formatting if fractions don't work
-            return locale.format("%.2f",n,True) # format(formatstring, number, use_thousands_separator)
-        else:
-            return locale.format("%s",n,True)
-        
+        return locale.format("%s",n,True)
+    
 def float_string (s):
     """Convert string to a float, assuming it is some sort of decimal number
 
