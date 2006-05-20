@@ -540,7 +540,7 @@ class RecGui (RecIndex):
             make_visible=lambda *args: self.redo_search()
             )
         self.set_reccount()
-        self.message(_("Deleted ") + string.join([r.title for r in recs],', '))
+        self.message(_("Deleted") + ' ' + string.join([(r.title or _('Untitled')) for r in recs],', '))
 
     def recTreePurge (self, recs, paths=None, model=None):
         if not use_threads and self.lock.locked_lock():
