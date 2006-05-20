@@ -19,7 +19,7 @@
 CREDITS = ""
 
 #The next line can be used to determine some things about how to handle this language
-LANG_PROPERTIES={'hasAccents':True, 'capitalisedNouns':True} 
+LANG_PROPERTIES={'hasAccents':True, 'capitalisedNouns':True,'useFractions':False} 
 
 
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!

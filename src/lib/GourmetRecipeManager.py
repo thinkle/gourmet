@@ -101,8 +101,23 @@ class RecGui (RecIndex):
             self.prefs,
             buttons={'clear_remembered_optional_button':lambda *args: self.forget_remembered_optional_ingredients()}
             )
-        self.prefsGui.apply_prefs_dic['recipes_per_page']= lambda p,v: getattr(getattr(self,'rmodel'),
+        self.prefsGui.apply_prefs_dic['recipes_per_page'] = lambda p,v: getattr(getattr(self,'rmodel'),
                                                                                'change_items_per_page')(v)
+
+        def toggleFractions (prefname,use):
+            print 'toggleFractions->',use
+            if use:
+                convert.USE_FRACTIONS = convert.FRACTIONS_NORMAL
+            else:
+                convert.USE_FRACTIONS = convert.FRACTIONS_OFF
+        self.prefsGui.apply_prefs_dic['useFractions'] = toggleFractions
+        if self.prefs.get('useFractions',
+                          defaults.LANG_PROPERTIES['useFractions']
+                          ):
+            convert.USE_FRACTIONS = convert.FRACTIONS_NORMAL
+        else:
+            convert.USE_FRACTIONS = convert.FRACTIONS_OFF
+        
         self.update_splash(_("Loading graphical interface..."))        
         gtk.glade.bindtextdomain('gourmet',DIR)
         gtk.glade.textdomain('gourmet')

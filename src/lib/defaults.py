@@ -18,7 +18,7 @@ if not lang: lang = __import__('defaults_%s'%deflang,globals(),locals())
 try:
     langProperties=lang.LANG_PROPERTIES
 except:
-    langProperties={'hasAccents':False, 'capitalisedNouns':False} 
+    lang.LANG_PROPERTIES=langProperties={'hasAccents':False, 'capitalisedNouns':False, 'useFractions':True} 
     # 'hasAccents' includes accents, umlauts etc, that might not be correctly handled
     # by eg lower()
     # 'capitalisedNouns' means that you don't want to use lower() anyway, cos it's
