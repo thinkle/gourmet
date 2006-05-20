@@ -14,6 +14,16 @@ if loc:
 
 if not lang: lang = __import__('defaults_%s'%deflang,globals(),locals())
 
+# The next item is used to allow us to know some things about handling the language
+try:
+    langProperties=lang.LANG_PROPERTIES
+except:
+    langProperties={'hasAccents':False, 'capitalisedNouns':False} 
+    # 'hasAccents' includes accents, umlauts etc, that might not be correctly handled
+    # by eg lower()
+    # 'capitalisedNouns' means that you don't want to use lower() anyway, cos it's
+    #  ungramatical e.g. in the german Language, Nouns are written with Capital-Letters.
+
 #from lang.__name__ import *
 
 # NOW WE DO AUTOMATED STUFF
@@ -40,7 +50,7 @@ for amb,lst in lang.AMBIGUOUS.items():
 for row in lang.INGREDIENT_DATA:
     name,key,shop=row
     add_itm(lang.keydic,key,name)
-    lang.shopdic[name]=shop
+    lang.shopdic[key]=shop
 
 lang.unit_group_lookup = {}
 

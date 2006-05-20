@@ -65,7 +65,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.setup_defaults()
         t=TimeAction('RecCard.__init__ 1',0)
         self.mult=1
-        self.rg = RecGui
+
         self.rg = RecGui
         self.prefs = self.rg.prefs
         self.rd = self.rg.rd
@@ -1625,6 +1625,14 @@ class IngredientTreeUI:
             # All columns are reorderable and resizeable
             col.set_reorderable(True)
             col.set_resizable(True)
+            col.set_alignment(0)
+            col.set_min_width(55) 
+            if n==2:     #unit
+                col.set_min_width(80) 
+            if n==3:     #item
+                col.set_min_width(130) 
+            if n==5:     #key
+                col.set_min_width(130)
             self.ingTree.append_column(col)
         # Hackish menu for old GTK setups...
         self.setupShopPopupMenu()
@@ -2159,11 +2167,20 @@ class IngredientEditor:
         self.setup_comboboxen()
         self.setup_signals()
         self.last_ing = ""
+        self.keySetEventInhibit = False
 
     def init_dics (self):
         self.orgdic = self.rg.sl.sh.orgdic
         self.shopcats = self.rg.sl.sh.get_orgcats()        
         
+    def setup_keybox (self, model):
+        # setup combo box for keybox
+        self.keyBox.set_model(model.filter_new()) 
+        if self.keyBox.get_text_column() == -1:       # ie is not set
+            self.keyBox.set_text_column(0)
+        if len(model) > 5:
+            self.keyBox.set_wrap_width(3)
+                
     def setup_comboboxen (self):
         # setup combo box for unitbox
         debug('start setup_comboboxen()',3)
@@ -2179,16 +2196,9 @@ class IngredientEditor:
         self.unitBox.entry = self.unitBox.get_children()[0]
         #cb.setup_completion(self.unitBox) # add autocompletion
 
-        # setup combo box for keybox
-        def setup_keybox (model):
-            self.keyBox.set_model(model.filter_new())        
-            self.keyBox.set_text_column(0)
-            if len(model) > 5:
-                self.keyBox.set_wrap_width(3)
-                
-        setup_keybox(self.rg.inginfo.key_model)
+        self.setup_keybox(self.rg.inginfo.key_model)
         self.rg.inginfo.disconnect_calls.append(lambda *args: self.keyBox.set_model(empty_model))
-        self.rg.inginfo.key_connect_calls.append(setup_keybox)
+        self.rg.inginfo.key_connect_calls.append(self.setup_keybox)
         cb.setup_completion(self.keyBox) #add autocompletion
         cb.FocusFixer(self.keyBox)
         # add autocompletion for items
@@ -2212,6 +2222,7 @@ class IngredientEditor:
         #self.glade.signal_connect('ieApply', self.apply)
         self.ieBox = self.glade.get_widget('ieBox')
         self.ieExpander = self.glade.get_widget('ieExpander')
+        self.ieAdd = self.glade.get_widget('ieAdd')
 
         #self.ieBox.hide()
         self.amountBox = self.glade.get_widget('ieAmount')
@@ -2245,25 +2256,58 @@ class IngredientEditor:
                 if type(widg) == gtk.ComboBoxEntry:
                     widg = widg.get_children()[0]
                 if type(widg) == gtk.Entry:
-                    widg.connect('activate',self.add)
+                    widg.connect('activate',self.returned)
 
     def keySet (self, *args):
-        debug("keySet (self, *args):",0)
-        if not re.match("^\s*$",self.keyBox.entry.get_text()):
-            debug('user set key',0)
-            self.user_set_key=True
-            self.setShopper()
-        else:
-            debug('user unset key',0)
-            #if user blanks key, we do our automagic again            
-            self.user_set_key=False 
+        # Handler for a change in the 'Key' combo box.
+        # Firstly, this could be caused by a user, or by the program. We can disable the effects
+        # of the latter by using the keySetEventInhibit function/flag.
+        # Then, the user could be working from ingredient to shopping category (with our automated help)
+        # Here the ingredient box is filled.
+        # Otherwise, we are going backwards, from a shopping category to an ingredient. 
+        # Here the ingredient box is empty
 
-    def shopSet (self, *args):
-        if not re.match("^\s*$",self.shopBox.entry.get_text()):
-            self.user_set_shopper=True
+        if self.keySetEventInhibit:
+            pass
         else:
-            #if user blanks key, we do our automagic again
-            self.user_set_key=False
+            debug("keySet (self, *args):",0)
+            if self.ingBox.get_text():
+                debug("keySet: ingredient box had data:",3)
+                if not re.match("^\s*$",self.keyBox.entry.get_text()):
+                    debug('user set key',0)
+                    self.user_set_key=True
+                    self.setShopper()
+                else:
+                    debug('user unset key',0)
+                    #if user blanks key, we do our automagic again            
+                    self.user_set_key=False 
+            else:
+                debug("keySet:  ingredient box was empty:",3)
+                thisKey=self.keyBox.entry.get_text()
+                ing = self.rg.rd.fetch_one(self.rg.rd.ikview, ingkey=thisKey)
+                if ing:
+                    self.ingBox.set_text( ing.item )
+                else:
+                    self.ingBox.set_text('')
+
+    def shopSet (self, eventObject):
+        # Handler for a change to the shop category combo box
+
+        if self.ingBox.get_text():
+            # User has already filled in the ingredient box, so assume they are
+            # setting this manually, or it's being filled in a result of that entry
+            if not re.match("^\s*$",self.shopBox.entry.get_text()):
+                self.user_set_shopper=True
+            else:
+                #if user blanks key, we do our automagic again
+                self.user_set_key=False
+        else:
+            #No entry in ingredient box, so assume the user is working back from shop entry
+            # to find their desired ingredient
+            chosenCategory=self.shopBox.entry.get_text()    
+            self.rg.inginfo.make_key_model(chosenCategory)
+            self.setup_keybox(self.rg.inginfo.key_model)
+           # we *could* insert the first entry of the model into the keybox (but we won't)
 
     def addKey (self,key,item):
         debug("addKey (self,key,item):",5)
@@ -2292,13 +2336,16 @@ class IngredientEditor:
         return self.rg.rd.key_search(ing)
 
     def setKey (self, *args):
+        #Handler for finishing edits to ingredient box, or lost focus
         debug("setKeyList (self, *args):        ",5)
         ing =  self.ingBox.get_text()
         if ing == self.last_ing:
             return
         myKeys = self.getKeyList(ing)
         if myKeys and not self.user_set_key:
+            self.keySetEventInhibit = True
             self.keyBox.entry.set_text(myKeys[0])
+            self.keySetEventInhibit = False
             self.user_set_key=False
         # and while we're at it...
         self.setKeyList()
@@ -2375,6 +2422,7 @@ class IngredientEditor:
         self.getShopper()
 
     def new (self, *args):
+        # Handler for "New" Button
         debug("new (self, *args):",5)
         self.ing = None
         self.unitBox.entry.set_text("")
@@ -2397,7 +2445,16 @@ class IngredientEditor:
                       )
         self.quickEntry.set_text('')
 
+    def returned(self, *args):
+        # Handler when the user hits the return button in one of the comboboxes
+        # don't add the item immediately in case our guess of key etc was a bit wrong of the mark
+        # (with python's poor handling of accent caharacters, this could easily be the case!)
+        # Let the user do the add...
+        self.ieAdd.grab_focus()
+
     def add (self, *args):
+        # Handler for click of the "Add" button.
+        # means probably that user has entered something in the ingredient field...?
         debug("add (self, *args):",5)
         d = {}        
         d['ingkey']=self.getKey()
@@ -2438,7 +2495,7 @@ class IngredientEditor:
             self.rc.ingtree_ui.ingController.undoable_update_ingredient_row(self.ing,d)
         else:
             add_with_undo(self.rc,
-                          lambda *args: self.rc.ingtree_ui.ingController.add_new_ingredient(**d),
+                          lambda *args: self.rc.ingtree_ui.ingController.add_new_ingredient(**d)
                           )
         debug('blank selves/new',5)
         self.new()
@@ -2458,7 +2515,7 @@ class IngInfo:
     def __init__ (self, rd):
         self.rd = rd
         self.make_item_model()
-        self.make_key_model()
+        self.make_key_model('')
         # this is a little bit silly... but, because of recent bugginess...
         # we'll have to do it. disable and enable calls are methods that
         # get called to disable and enable our models while adding to them
@@ -2479,11 +2536,21 @@ class IngInfo:
             for i,k,c in defaults.lang.INGREDIENT_DATA:
                 self.item_model.append([i])
         
-    def make_key_model (self):
-        #unique_key_vw = self.rd.iview_not_deleted.counts(self.rd.iview_not_deleted.ingkey, 'groupvw')
+    def make_key_model (self, myShopCategory):
+        # make up the model for the combo box for the ingredient keys
+        if myShopCategory:
+            unique_key_vw = self.rd.get_unique_values('ingkey',table=self.rd.sview, shopcategory=myShopCategory)
+        else:
+            unique_key_vw = self.rd.get_unique_values('ingkey',table=self.rd.ikview)
+
         # the key model by default stores a string and a list.
         self.key_model = gtk.ListStore(str)
-        for k in self.rd.get_unique_values('ingkey',table=self.rd.iview,deleted=False):
+        keys=[]
+        for k in unique_key_vw:
+            keys.append(k)
+
+        keys.sort()
+        for k in keys:
             self.key_model.append([k])
 
     def change_key (self, old_key, new_key):

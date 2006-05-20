@@ -55,6 +55,7 @@ src/lib/convertGui.py
 src/lib/convert.py
 src/lib/defaults_en_GB.py
 src/lib/defaults_en.py
+src/lib/defaults_de.py
 src/lib/defaults_fr.py
 src/lib/defaults_es.py
 src/lib/defaults_nl.py
