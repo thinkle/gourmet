@@ -15,6 +15,7 @@ src/lib/check_encodings.py
 src/lib/chooserNotebook.py
 src/lib/convertGui.py
 src/lib/convert.py
+src/lib/defaults_de.py
 src/lib/defaults_en_GB.py
 src/lib/defaults_en.py
 src/lib/defaults_fr.py
