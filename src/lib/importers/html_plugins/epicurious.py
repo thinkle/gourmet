@@ -29,7 +29,7 @@ def filter_epicurious_notes (text, markup):
     return text
 
 recipe_intro_tag = {'tag':'div',
-                    'attributes':{'id':'recipeIntro'}
+                    'attributes':{'id':'recipe_intro'}
                     }
 
 RULES = [
