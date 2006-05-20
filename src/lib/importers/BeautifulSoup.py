@@ -1,7 +1,7 @@
 """Beautiful Soup
 Elixir and Tonic
-'The Screen-Scraper's Friend'
-v2.1.0
+"The Screen-Scraper's Friend"
+v2.1.1
 http://www.crummy.com/software/BeautifulSoup/
 
 Beautiful Soup parses arbitrarily invalid XML- or HTML-like substance
@@ -41,7 +41,8 @@ SELF_CLOSING_TAGS and/or NESTABLE_TAGS.
 from __future__ import generators
 
 __author__ = "Leonard Richardson (leonardr@segfault.org)"
-__version__ = "2.1.0"
+__version__ = "2.1.1"
+__date__ = "$Date: 2006/05/20 13:14:37 $"
 __copyright__ = "Copyright (c) 2004-2005 Leonard Richardson"
 __license__ = "PSF"
 
@@ -59,8 +60,8 @@ class NullType(object):
     'Null' that, unlike None, accepts any message and returns itself.
 
     Examples:
-    >>> Null('send', 'a', 'message')('and one more',
-    ...      'and what you get still') is Null
+    >>> Null("send", "a", "message")("and one more",
+    ...      "and what you get still") is Null
     True
     """
 
@@ -247,7 +248,7 @@ class PageElement:
             #ways of matching match the tag name as a string
             chunk = chunk.name
         #Now we know that chunk is a string
-        if not type(chunk) in types.StringTypes:
+        if not isinstance(chunk, basestring):
             chunk = str(chunk)
         if hasattr(howToMatch, 'match'):
             # It's a regexp object.
@@ -581,51 +582,57 @@ class BeautifulStoneSoup(Tag, SGMLParser):
     or when BeautifulSoup makes an assumption counter to what you were
     expecting."""
 
+    bad_chunks = []
+
     SELF_CLOSING_TAGS = {}
     NESTABLE_TAGS = {}
+    RESET_NESTING_TAGS = {}
     QUOTE_TAGS = {}
 
     #As a public service we will by default silently replace MS smart quotes
     #and similar characters with their HTML or ASCII equivalents.
-    MS_CHARS = { '\x80' : 'euro',
+    MS_CHARS = { #'\xe2' : '&rsquo;',
+                 '\344' : '&rsquo;',
+                 #'\x80' : '&euro;',
                  '\x81' : ' ',
-                 '\x82' : 'sbquo',
-                 '\x83' : 'fnof',
-                 '\x84' : 'bdquo',
-                 '\x85' : 'hellip',
-                 '\x86' : 'dagger',
-                 '\x87' : 'Dagger',
-                 '\x88' : 'caret',
+                 '\x82' : '&sbquo;',
+                 '\x83' : '&fnof;',
+                 '\x84' : '&bdquo;',
+                 '\x85' : '&hellip;',
+                 '\x86' : '&dagger;',
+                 '\x87' : '&Dagger;',
+                 '\x88' : '&caret;',
                  '\x89' : '%',
-                 '\x8A' : 'Scaron',
-                 '\x8B' : 'lt;',
-                 '\x8C' : 'OElig',
+                 '\x8A' : '&Scaron;',
+                 '\x8B' : '&lt;',
+                 '\x8C' : '&OElig;',
                  '\x8D' : '?',
                  '\x8E' : 'Z',
                  '\x8F' : '?',
                  '\x90' : '?',
-                 '\x91' : 'lsquo',
-                 '\x92' : 'rsquo',
-                 '\x93' : 'ldquo',
-                 '\x94' : 'rdquo',
-                 '\x95' : 'bull',
-                 '\x96' : 'ndash',
-                 '\x97' : 'mdash',
-                 '\x98' : 'tilde',
-                 '\x99' : 'trade',
-                 '\x9a' : 'scaron',
-                 '\x9b' : 'gt',
-                 '\x9c' : 'oelig',
+                 '\x91' : '&lsquo;',
+                 '\x92' : '&rsquo;',
+                 '\342' : '&rsquo;',
+                 '\x93' : '&ldquo;',
+                 '\x94' : '&rdquo;',
+                 '\x95' : '&bull;',
+                 '\x96' : '&ndash;',
+                 '\x97' : '&mdash;',
+                 '\x98' : '&tilde;',
+                 #'\x99' : '&trade;',
+                 '\x9a' : '&scaron;',
+                 '\x9b' : '&gt;',
+                 '\x9c' : '&oelig;',
                  '\x9d' : '?',
                  '\x9e' : 'z',
-                 '\x9f' : 'Yuml',}
+                 '\x9f' : '&Yuml;',}
 
     PARSER_MASSAGE = [(re.compile('(<[^<>]*)/>'),
                        lambda(x):x.group(1) + ' />'),
                       (re.compile('<!\s+([^<>]*)>'),
                        lambda(x):'<!' + x.group(1) + '>'),
-                      (re.compile("([\x80-\x9f])", re.M),
-                       lambda(x): '&' + BeautifulStoneSoup.MS_CHARS.get(x.group(1)) + ';')
+                      (re.compile("([\x80-\x9f])"),
+                       lambda(x): BeautifulStoneSoup.MS_CHARS.get(x.group(1)))
                       ]
 
     ROOT_TAG_NAME = '[document]'
@@ -689,11 +696,11 @@ class BeautifulStoneSoup(Tag, SGMLParser):
             for fix, m in self.avoidParserProblems:
                 text = fix.sub(m, text)
         SGMLParser.feed(self, text)
-        self.endData()
 
     def done(self):
         """Called when you're done parsing, so that the unclosed tags can be
         correctly processed."""
+        self.endData() #NEW
         while self.currentTag.name != self.ROOT_TAG_NAME:
             self.popTag()
             
@@ -726,7 +733,17 @@ class BeautifulStoneSoup(Tag, SGMLParser):
         self.currentTag = self.tagStack[-1]
 
     def endData(self):
-        currentData = ''.join(self.currentData)
+        try: currentData = ''.join(self.currentData)
+        except:
+            print "FAILED WITH DATA:"
+            f = ''
+            for n,itm in enumerate(self.currentData):
+                try:
+                    f += itm
+                    print n,itm
+                except:
+                    print n,itm,'UNJOINABLE'
+            raise
         if currentData:
             if not currentData.strip():
                 if '\n' in currentData:
@@ -752,7 +769,6 @@ class BeautifulStoneSoup(Tag, SGMLParser):
         if name == self.ROOT_TAG_NAME:
             return            
 
-        #print "Pop to tag", name
         numPops = 0
         mostRecentTag = None
         for i in range(len(self.tagStack)-1, 0, -1):
@@ -815,6 +831,7 @@ class BeautifulStoneSoup(Tag, SGMLParser):
             self._popToTag(popTo, inclusive)
 
     def unknown_starttag(self, name, attrs, selfClosing=0):
+        #print "Start tag %s" % name
         if self.quoteStack:
             #This is not a real tag.
             #print "<%s> is not real!" % name
@@ -834,6 +851,7 @@ class BeautifulStoneSoup(Tag, SGMLParser):
         if name in self.QUOTE_TAGS:
             #print "Beginning quote (%s)" % name
             self.quoteStack.append(name)
+            self.literal = 1
 
     def unknown_endtag(self, name):
         if self.quoteStack and self.quoteStack[-1] != name:
@@ -845,8 +863,23 @@ class BeautifulStoneSoup(Tag, SGMLParser):
         self._popToTag(name)
         if self.quoteStack and self.quoteStack[-1] == name:
             self.quoteStack.pop()
+            self.literal = (len(self.quoteStack) > 0)
 
     def handle_data(self, data):
+        try:
+            data.encode()
+        except:
+            encoded = False
+            for enc in ['utf-8','iso8859']:
+                try:
+                    data = data.decode(enc)
+                    encoded = True
+                    break
+                except:
+                    print 'Failed to decode',data,' as ',enc
+            if not encoded:
+                self.bad_chunks.append(data)
+                print 'Data',data,'can\'t be coerced into unicode'
         self.currentData.append(data)
 
     def handle_pi(self, text):
@@ -861,7 +894,7 @@ class BeautifulStoneSoup(Tag, SGMLParser):
         "Propagate char refs right through."
         # MODIFIED BY TOM TO HANDLE CHARS
         try:
-            self.handle_data(unichr(int(ref)))
+            self.handle_data(str(unichr(int(ref))))
         except ValueError:
             self.handle_data('&#%s;' % ref)
 
@@ -945,7 +978,7 @@ class BeautifulSoup(BeautifulStoneSoup):
     subclass."""
 
     SELF_CLOSING_TAGS = buildTagMap(None, ['br' , 'hr', 'input', 'img', 'meta',
-                                           'spacer', 'link', 'frame'])
+                                           'spacer', 'link', 'frame', 'base'])
 
     QUOTE_TAGS = {'script': None}
     
@@ -969,8 +1002,8 @@ class BeautifulSoup(BeautifulStoneSoup):
                            'dt' : ['dl'] }
 
     #Tables can contain other tables, but there are restrictions.    
-    NESTABLE_TABLE_TAGS = {'table' : ['tr', 'td'], #Not sure about this one.
-                           'tr' : ['table'],
+    NESTABLE_TABLE_TAGS = {'table' : [], 
+                           'tr' : ['table', 'tbody', 'tfoot', 'thead'],
                            'td' : ['tr'],
                            'th' : ['tr'],
                            }
@@ -1080,5 +1113,6 @@ class SimplifyingSOAPParser(BeautifulSOAP):
 #By default, act as an HTML pretty-printer.
 if __name__ == '__main__':
     import sys
-    soup = BeautifulSoup(sys.stdin.read())
+    ofi = '/tmp/asparagus-custard-tart.html'
+    soup = BeautifulSoup(open(ofi).read())
     print soup.prettify()
