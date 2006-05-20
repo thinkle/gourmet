@@ -177,10 +177,12 @@ class importer:
         debug('commiting recipe %s'%self.rec,0)
         # Check for images without thumbnails
         if self.rec.get('image',None) and not self.rec.get('thumb',None):
-            print 'Adding thumbnail.'
-            img = ImageExtras.get_image_from_string(self.rec['image'])
-            thumb = ImageExtras.resize_image(img,40,40)
-            self.rec['thumb'] = ImageExtras.get_string_from_image(thumb)
+            if not self.rec['image']: del self.rec['image']
+            else:
+                print 'Adding thumbnail.'
+                img = ImageExtras.get_image_from_string(self.rec['image'])
+                thumb = ImageExtras.resize_image(img,40,40)
+                self.rec['thumb'] = ImageExtras.get_string_from_image(thumb)
         r = self.rd.add_rec(self.rec)
         tt.end()
         self.added_recs.append(r)
