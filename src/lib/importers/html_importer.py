@@ -520,11 +520,13 @@ class WebPageImporter (importer.importer):
                         self.commit_ing()
             elif k == 'image':
                 try:
-                    if v: self.rec['image']=get_image_from_tag(v,self.url)
+                    if v: img = get_image_from_tag(v,self.url)
                 except:
-                    debug('Error retrieving image',0)
-                    debug('tried to retrieve image from %s'%v,0)
-                    raise
+                    print 'Error retrieving image'
+                    print 'tried to retrieve image from %s'%v
+                else:
+                    if img:
+                        self.rec['image'] = img
             else: self.rec[k]=v
         self.commit_rec()
         if self.prog: self.prog(1,_('Import complete.'))
