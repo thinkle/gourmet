@@ -14,7 +14,8 @@ for base,units in convert.converter.time_units:
 time_matcher = re.compile(
     '(?P<firstnum>'+convert.NUMBER_FINDER_REGEXP + ')(' + \
     convert.RANGE_REGEXP + convert.NUMBER_FINDER_REGEXP.replace('int','int2').replace('frac','frac2') + ')?' \
-    + '\s*' + '(?P<unit>' + '|'.join(all_units) + ')'
+    + '\s*' + '(?P<unit>' + '|'.join(all_units) + ')',
+    re.UNICODE
     )
 
 
