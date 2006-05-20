@@ -1,5 +1,6 @@
 import string, re, time, sys
 from defaults import lang as defaults
+from defaults import langProperties as langProperties
 from gdebug import *
 
 note_separator_regexp = '(;|\s+-\s+|--)'
@@ -25,7 +26,8 @@ class KeyManager:
         self.ignored = defaults.IGNORE
         self.ignored.extend(self.cooking_verbs)
         self.ignored_regexp = re.compile("[,; ]?(" + '|'.join(self.ignored) + ")[,; ]?")
-        if not(self.rm.ikview):
+        #if not(self.rm.ikview): # wrong
+        if self.rm.fetch_len(self.rm.ikview) == 0:
             self.initialize_from_defaults()
         self.initialize_categories()
         
@@ -189,7 +191,12 @@ class KeyManager:
         """Generate a generic-looking key from a string."""
         timer = TimeAction('keymanager.generate_key 1',3)
         debug("Start generate_key(self,%s)"%ingr,10)
-        ingr = ingr.strip().lower()
+        ingr = ingr.strip()
+        # language specific here - turn off the strip().lower() for German, 'cos:
+        # i) german Nouns always start with an uppercase Letter.
+        # ii) the function 'lower()' doesn't appear to work correctly with umlauts.
+        if (not langProperties['capitalisedNouns']):
+            ingr = unicode(ingr.decode('utf8')).lower()
         timer.end()
         timer = TimeAction('keymanager.generate_key 2',3)
         debug("verbless string=%s"%ingr,10)
