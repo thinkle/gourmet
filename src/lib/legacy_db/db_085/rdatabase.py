@@ -777,6 +777,9 @@ class dbDic:
                     val = pickle.loads(val)
                 except:
                     print 'Problem unpickling value ',val, ' for key ',key
-                    raise 
+                    print """Fearlessly, stupidly pushing forward!
+                    (This may help us with corrupt data, but this
+                    shouldn't be a normal part of our business).
+                    """
             ret.append((key,val))
         return ret
