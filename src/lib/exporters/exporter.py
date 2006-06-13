@@ -390,7 +390,12 @@ class exporter_mult (exporter):
         """        
         if attr=='servings' and self.mult:
             ret = getattr(obj,attr)
-            fl_ret = convert.frac_to_float(ret)
+            try:
+                fl_ret = convert.frac_to_float(ret)
+            except:
+                print 'Funkiness with attribute',fl_ret
+                print "We're ignoring this and pushing on fearlessly."
+                fl_ret = None
             if fl_ret:
                 return convert.float_to_frac(fl_ret * self.mult,
                                              fractions=self.fractions)
