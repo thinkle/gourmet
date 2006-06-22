@@ -301,12 +301,11 @@ class RecIndex:
             titl = self.rtcolsdic[c]
             col = gtk.TreeViewColumn('_%s'%titl,renderer, text=n)
             # Ensure that the columns aren't really narrow on initialising.
-            col.set_min_width(80)
+            col.set_min_width(60)
             if c=='title':            # Adjust these two to be even bigger
                  col.set_min_width(200)
             elif c=='rating':
                  col.set_min_width(150)
-                 
             col.set_reorderable(True)
             col.set_resizable(True)
             col.set_clickable(True)
