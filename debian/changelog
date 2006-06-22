@@ -1,3 +1,14 @@
+gourmet (0.11.3-1) breezy; urgency=low
+
+  * Fix bug that caused unicode error on upgrade from metakit.
+  * Fix some other bugginess in handling old upgrades.
+  * i18n fixes from Simon Darlington
+  * Fix bug that reversed ingredient order when adding ingredients to a group.
+  * Allow fraction-use to be turned off, and make it default to off for
+    German (other locales can default it to off via defaults_foo.py)	
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@sf.net>  Thu, 22 Jun 2006 07:59:38 -0400
+
 gourmet (0.11.2-3) breezy; urgency=low
 
   * Fix minor bug in convert.py
