@@ -1,5 +1,5 @@
 import gourmet.recipeManager as recipeManager
-import pickle, os, re
+import pickle, os, re, types
 
 def load_recmanager ():
     return recipeManager.RecipeManager(**recipeManager.dbargs)
@@ -223,6 +223,17 @@ def import_backup_file (rm, backup_file, prog=None):
             elif action.find('END_FIELD: ')==0:
                 try:
                     row[col]=pickle.loads(buf)
+                    if type(row[col]) in types.StringTypes:
+                        try:
+                            row[col] = row[col].decode()
+                        except UnicodeDecodeError:
+                            print 'Warning - unicode funkiness with:'
+                            try:
+                                print '\t',row[col]
+                            except:
+                                print "\t(something so funky I can't print it)"
+                                print "\t',row[col].decode('ascii','replace')"
+                            row[col] = row[col].decode('utf8','replace')
                 except:
                     print 'Error unpickling',buf
         else:

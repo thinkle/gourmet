@@ -1367,8 +1367,7 @@ if __name__ == '__main__':
         prof.runcall(startGUI)
         stats = hotshot.stats.load(os.path.join(tempfile.tempdir,'GOURMET_HOTSHOT_PROFILE'))
         stats.strip_dirs()
-        stats.sort_stats('time','calls')
-        stats.print_stats()
+        stats.sort_stats('time','calls').print_stats()
         #profile.run('startGUI()',profi)
         #import pstats
         #p=pstats.Stats(profi)

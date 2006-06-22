@@ -8,13 +8,13 @@ import timer
 all_units = []
 for base,units in convert.converter.time_units:
     for u in units:
-        if u not in all_units: all_units.append(re.escape(u))
-
+        u = re.escape(unicode(u))
+        if u not in all_units: all_units.append(u)
 
 time_matcher = re.compile(
-    '(?P<firstnum>'+convert.NUMBER_FINDER_REGEXP + ')(' + \
-    convert.RANGE_REGEXP + convert.NUMBER_FINDER_REGEXP.replace('int','int2').replace('frac','frac2') + ')?' \
-    + '\s*' + '(?P<unit>' + '|'.join(all_units) + ')',
+    u'(?P<firstnum>'+convert.NUMBER_FINDER_REGEXP + u')(' + \
+    convert.RANGE_REGEXP + convert.NUMBER_FINDER_REGEXP.replace(u'int',u'int2').replace(u'frac',u'frac2') + u')?' \
+    + u'\s*' + u'(?P<unit>' + u'|'.join(all_units) + u')',
     re.UNICODE
     )
 
