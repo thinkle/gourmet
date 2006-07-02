@@ -803,13 +803,17 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def resetIngredients (self):
         """Reset our display of ingredients based on what's in our database at present."""
+        # Our basic ingredient list...
         self.create_ing_alist()
+        # Our ingredient card display
         self.updateIngredientsDisplay()
+        # Reset our treeview in our editor window
         self.resetIngList()
         self.update_nutrition_info()
 
     def updateIngredientsDisplay (self):
-        """Update our display of ingredients, only reloading from DB if this is our first time."""
+        """Update our display of ingredients, only reloading from DB if this is our first time.
+        """
         if not self.ing_alist:
             self.create_ing_alist()
         group_strings = []
@@ -1077,7 +1081,6 @@ class ImageBox:
         self.delW = self.glade.get_widget('delImageButton')
         self.imageD = self.glade.get_widget('imageDisplay')
         self.image = None
-        changed=False
 
     def get_image (self, rec=None):
         debug("get_image (self, rec=None):",5)
@@ -1223,15 +1226,20 @@ class UndoableTreeStuff:
 
 class IngredientController:
 
-    """Handle updates to our ingredient model."""
+    """Handle updates to our ingredient model.
+
+    Changes are not reported as they happen; rather, we use the
+    commit_ingredients method to do sync up our database with what
+    we're showing as our database.
+    """
 
     def __init__ (self, rc):
         self.rc = rc; self.rg = self.rc.rg; self.glade = self.rc.glade
         self.new_item_count = 0
-        self.deleted_items = []
 
     # Setup methods
     def create_imodel (self, rec):
+        self.ingredient_objects = []        
         self.current_rec=rec
         ings=self.rg.rd.get_ings(rec)
         # as long as we have the list here, this is a good place to update
@@ -1293,6 +1301,7 @@ class IngredientController:
                                   )
         else:
             self.imodel.set_value(iter,0,self.new_item_count)
+            self.new_item_count+=1            
         self.update_ingredient_row(
             iter,**ingdict
             )
@@ -1303,7 +1312,6 @@ class IngredientController:
                             **kwargs
                             ):
         ret = self.add_ingredient_from_kwargs(*args,**kwargs)
-        self.new_item_count+=1
         return ret
 
     def undoable_update_ingredient_row (self, ref, d):
@@ -1338,7 +1346,10 @@ class IngredientController:
                 
     def add_ingredient (self, ing, prev_iter=None, group_iter=None,
                         fallback_on_append=True, shop_cat=None):
-        """group_iter is an iter to put our ingredient inside of.
+        """add an ingredient to our model based on an ingredient
+        object.
+
+        group_iter is an iter to put our ingredient inside of.
 
         prev_iter is an ingredient after which we insert our ingredient
 
@@ -1346,6 +1357,8 @@ class IngredientController:
         prepend when we have no group_iter.
         """
         i = ing
+        # Append our ingredient object to a list so that we will be able to notice if it has been deleted...
+        self.ingredient_objects.append(ing)
         iter = self._new_iter_(prev_iter=prev_iter,group_iter=group_iter,fallback_on_append=fallback_on_append)
         #amt,unit = self.make_readable_amt_unit(i)
         amt = self.rg.rd.get_amount_as_string(i)
@@ -1394,15 +1407,15 @@ class IngredientController:
     def delete_iters (self, *iters):
         refs = []
         undo_info = []
-        for iter in iters:
-            orig_ref = self.get_persistent_ref_from_iter(iter)
+        for itr in iters:
+            orig_ref = self.get_persistent_ref_from_iter(itr)
             refs.append(orig_ref)
-            deleted_dic,prev_ref,ing_obj = self._get_undo_info_for_iter_(iter)
-            child = self.imodel.iter_children(iter)
+            deleted_dic,prev_ref,ing_obj = self._get_undo_info_for_iter_(itr)
+            child = self.imodel.iter_children(itr)
             children = []
             if child:
                 expanded = self.rc.ingtree_ui.ingTree.row_expanded(
-                    self.imodel.get_path(iter)
+                    self.imodel.get_path(itr)
                     )
             else:
                 expanded = False
@@ -1410,11 +1423,13 @@ class IngredientController:
                 children.append(self._get_undo_info_for_iter_(child))
                 child = self.imodel.iter_next(child)
             undo_info.append((deleted_dic,prev_ref,ing_obj,children,expanded))
+        print 'PERFORM DELETION',refs
         u = Undo.UndoableObject(
             lambda *args: self.do_delete_iters(refs),
             lambda *args: self.do_undelete_iters(undo_info),
             self.rc.history
             )
+        self.rc.setEdited(True)
         u.perform()
 
     def _get_prev_path_ (self, path):
@@ -1543,8 +1558,15 @@ class IngredientController:
         iter = self.imodel.get_iter_first()
         n = 0
 
+        deleted = self.ingredient_objects[:]
+
+        # We use an embedded function rather than a simple loop so we
+        # can recursively crawl our tree -- so think of commit_iter as
+        # the inside of the loop, only better
+
         def commit_iter (iter, pos, group=None):
             ing = self.imodel.get_value(iter,0)
+            # If ingredient is a string, than this is a group
             if type(ing) in [str,unicode]:
                 group = self.imodel.get_value(iter,1)
                 i = self.imodel.iter_children(iter)
@@ -1552,21 +1574,26 @@ class IngredientController:
                     pos = commit_iter(i,pos,group)
                     i = self.imodel.iter_next(i)
                 return pos
+            # Otherwise, this is an ingredient...
             else:
                 d = self.get_rowdict(iter)
+                # Get the amount as amount and rangeamount
                 if d['amount']:
                     amt,rangeamount = parse_range(d['amount'])
                     d['amount']=amt
                     if rangeamount: d['rangeamount']=rangeamount
+                # Get category info as necessary
                 if d.has_key('shop_cat'):
                     self.rg.sl.orgdic[d['ingkey']] = d['shop_cat']
                     del d['shop_cat']
                 d['position']=pos
                 d['inggroup']=group
+                # If we are a recref...
                 if isinstance(ing,RecRef):
                     d['refid'] = ing.refid
+                # If we are a real, old ingredient
                 if type(ing) != int and not isinstance(ing,RecRef):
-                    # Then we're a row reference...
+                    deleted.remove(ing) # We have not been deleted...
                     for att in ['amount','unit','item','ingkey','position','inggroup','optional']:
                         if getattr(ing,att)==d[att]: del d[att]
                     if d:
@@ -1580,10 +1607,14 @@ class IngredientController:
         while iter:
             n = commit_iter(iter,n)
             iter = self.imodel.iter_next(iter)
+        # Now delete all deleted ings...
+        for i in deleted:
+            self.rg.rd.delete_ing(i)
 
 class IngredientTreeUI:
 
-    """Handle our ingredient treeview display, drag-n-drop, etc."""
+    """Handle our ingredient treeview display, drag-n-drop, etc.
+    """
 
     head_to_att = {_('Amt'):'amount',
                    _('Unit'):'unit',
