@@ -721,8 +721,8 @@ class RecData:
             self.do_modify(self.ikview,row,{'count':row.count+1})
         else:
             self.do_add(self.ikview,{'item':item,'ingkey':key,'count':1})
-        for w in re.split('\W+',item):
-            w=w.lower().strip()
+        for w in item.rsplit():
+            w=str(w.decode('utf8').lower())
             row = self.fetch_one(self.ikview,word=w,ingkey=key)
             if row:
                 self.do_modify(self.ikview,row,{'count':row.count+1})
@@ -737,8 +737,8 @@ class RecData:
                 self.do_modify(self.ikview,row,{'count':new_count})
             else:
                 self.delete_by_criteria(self.ikview,{'item':item,'ingkey':key})
-        for w in re.split('\W+',item):
-            w=w.lower()
+        for w in item.rsplit():
+            w=str(w.decode('utf8').lower())
             row = self.fetch_one(self.ikview,item=item,ingkey=key)
             if row:
                 new_count = row.count - 1
