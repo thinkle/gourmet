@@ -30,7 +30,7 @@ class UndoableObject:
         self.get_reundo_action_args=get_reundo_action_args
         self.reapply_name = reapply_name
         self.reundo_name = reundo_name
-        self.is_undo=is_undo
+        self.is_undo=is_undo  # If our action itself is an undo
         if self.get_reapply_action_args:
             self.reapplyable = True
         else:
@@ -144,6 +144,9 @@ class UndoableTextChange (UndoableObject):
     def perform (self):
         self.history.append(self)
 
+    def __repr__ (self):
+        return '<Undo.UndoableTextChange '+repr(self.txt_id)+repr(self.text)+'>'
+
 class UndoableTextContainer:
     def __init__ (self, container, history):
         self.history = history
@@ -198,26 +201,46 @@ class UndoableEntry (UndoableTextContainer):
         self.entry.set_position(index + length)
         
 class UndoableGenericWidget:
+    """Wrap a widget in an Undo class.
+
+    We take a set_method, a get_method, and a signal, as well as a
+    history list to append our Undo objects to.
+    """
     def __init__ (self, widget, history, set_method='set_value',get_method='get_value', signal='changed'):
         self.w = widget
         self.set_method = set_method
         self.get_method = get_method
-        self.set = getattr(self.w,self.set_method)
-        self.get = getattr(self.w,self.get_method)
+        self.im_doing_the_setting = False
         self.history = history
         self.last_value = self.get()
         self.w.connect(signal,self.changecb)
+        
+
+    def set (self, val):
+        self.im_doing_the_setting = True
+        getattr(self.w,self.set_method)(val)
+        self.im_doing_the_setting = False
+
+    def get (self):
+        return getattr(self.w,self.get_method)()
 
     def changecb (self,*args):
+        if self.im_doing_the_setting:
+            # If we are doing the setting, presumably this is from one
+            # of the Undo objects we created, in which case we don't
+            # want to add a new item to the Undo queue
+            return
         old_val = self.last_value
         new_val = self.get()
+        if old_val==new_val: return # Ignore redundant changes...
         if new_val != old_val:
             # We don't perform because we're being called after the action has happened.
             # We simply append ourselves to the history list.
-            self.history.append(UndoableObject(lambda *args: self.set(new_val),
-                                               lambda *args: self.set(old_val),
-                                               self.history)
-                                )
+            u = UndoableObject(lambda *args: self.set(new_val),
+                               lambda *args: self.set(old_val),
+                               self.history,
+                               )
+            self.history.append(u)
             self.last_value=new_val
         
 class UndoableTextView (UndoableTextContainer):
@@ -247,16 +270,29 @@ class UndoableTextView (UndoableTextContainer):
 
 class UndoHistoryList (list):
     """An UndoHistoryList."""
-    def __init__ (self, undo_widget, redo_widget, reapply_widget=None, signal='activate'):
+    def __init__ (self, undo_widget, redo_widget, reapply_widget=None, save_widget=None, signal='activate'):
         self.undo_widget = undo_widget
         self.redo_widget = redo_widget
         self.reapply_widget = reapply_widget
+        self.action_hooks = []
         list.__init__(self)
         self.gui_update()
         if signal:
             if self.undo_widget: self.undo_widget.connect(signal,self.undo)
             if self.redo_widget: self.redo_widget.connect(signal,self.redo)
             if self.reapply_widget: self.reapply_widget.connect(signal,self.reapply)
+
+    def add_action_hook (self, hook):
+        """Add action hook
+
+        Hook will be a callback as follows
+
+        hook(undo_history,action,type)
+
+        where undo_history is this instance of UndoHistory and
+        type is 'perform','undo','redo', or 'reapply'
+        """
+        self.action_hooks.append(hook)
 
     def undo (self, *args):
         index = -1
@@ -266,8 +302,10 @@ class UndoHistoryList (list):
                 index = index - 1
         except:
             debug('All %s available action are .is_undo=True'%len(self),0)
+            print 'All actions are undos - why are we undoing?',index
             raise
         self[index].inverse()
+        for h in self.action_hooks: h(self,self[index],'undo')
 
     def redo (self, *args):
         if len(self) == 0: return False
@@ -279,10 +317,12 @@ class UndoHistoryList (list):
             debug('All %s available actions are is_undo=False'%len(self),0)
             raise
         self[index].inverse()
+        for h in self.action_hooks: h(self,self[index],'redo')        
 
     def reapply (self, *args):
         debug('Reapplying',0)
         self[-1].reapply()
+        for h in self.action_hooks: h(self,self[-1],'reapply')
 
     def set_sensitive (self,w,val):
         debug('set_sensitive',0)
@@ -331,6 +371,10 @@ class UndoHistoryList (list):
     def append (self,obj):
         debug('Appending %s'%obj,0)
         list.append(self,obj)
+        if obj.is_undo==False: # Is this necessary? Not sure...
+            for h in self.action_hooks:
+                print 'perform hook->',obj
+                h(self,obj,'perform')
         self.gui_update()
 
     def remove (self,obj):
@@ -350,6 +394,7 @@ class MultipleUndoLists:
         self.signal = signal
         self.get_current_id = get_current_id
         self.histories = {}
+        self.action_hooks = []
         if signal:
             if self.undo_widget: self.undo_widget.connect(signal,self.undo)
             if self.redo_widget: self.redo_widget.connect(signal,self.redo)
@@ -358,6 +403,9 @@ class MultipleUndoLists:
         # attempts to implement the following programatically are failing me...
         # it feels awful to write each of these methods out here, but here goes...
 
+    def add_action_hook (self, hook):
+        self.action_hooks.append(hook)
+        for h in self.get_all_histories(): h.add_action_hook(hook)
     def __add__ (self,*args,**kwargs): return self.get_history().__add__(*args,**kwargs)
     def __contains__ (self,*args,**kwargs): return self.get_history().__contains__(*args,**kwargs)
     def __delitem__ (self,*args,**kwargs): return self.get_history().__delitem__(*args,**kwargs)
@@ -398,6 +446,8 @@ class MultipleUndoLists:
     def undo (self,*args,**kwargs): return self.get_history().undo(*args,**kwargs)
     def reapply (self,*args,**kwargs): return self.get_history().reapply(*args,**kwargs)
 
+    def get_all_histories (self): return self.histories.values()
+
     def get_history (self):
         hid=self.get_current_id()
         if self.histories.has_key(hid):
@@ -409,7 +459,9 @@ class MultipleUndoLists:
             return self.histories[hid]
 
     def make_history (self):
-        return UndoHistoryList(self.undo_widget,self.redo_widget,None,None)
+        uhl = UndoHistoryList(self.undo_widget,self.redo_widget,None,None)
+        for h in self.action_hooks: uhl.add_action_hook(h)
+        return uhl
 
     def switch_context (self, hid):
         # set sensitivity for current context
@@ -427,6 +479,12 @@ if __name__ == '__main__':
     import gtk
     w = gtk.Window()
     e = gtk.Entry()
+    sb = gtk.SpinButton()
+    adj = sb.get_adjustment()
+    adj.upper=100
+    adj.lower=-100
+    adj.step_increment = 1
+    adj.page_increment = 10
     tv = gtk.TextView()
     ub = gtk.Button(stock=gtk.STOCK_UNDO)
     rb = gtk.Button(stock=gtk.STOCK_REDO)
@@ -439,15 +497,20 @@ if __name__ == '__main__':
     vb.add(bb)
     vb.add(e)
     vb.add(tv)
+    vb.add(sb); sb.show()
     w.add(vb)
     uhl = UndoHistoryList(ub,rb,signal='clicked')
     UndoableTextView(tv,uhl)
     UndoableEntry(e,uhl)
+    UndoableGenericWidget(sb,uhl)
     w.show_all()
     w.connect('delete-event',lambda *args:gtk.main_quit())
     def show_changes (*args):
         for c in uhl:
-            print c,' initial: ',c.initial_text,' current: ',c.text
+            if hasattr(c,'initial_text'):
+                print c,' initial: ',c.initial_text,' current: ',c.text
+            else:
+                print c
     ub.connect('clicked',lambda *args: debug('Undo clicked!',0))
     sc.connect('clicked',show_changes)
     rb.connect('clicked',lambda *args: debug('Redo clicked!',0))    
