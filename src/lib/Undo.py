@@ -12,6 +12,7 @@ class UndoableObject:
     it can supply get_reapply_action_args, which will allow the action to be "reapplied" to new
     arguments (for example, if the action is setting a text attribute, reapply might set that attribute
     for the currently highlighted text)."""
+    
     def __init__ (self, action, inverse, history,
                   action_args=None,
                   undo_action_args=None,
@@ -19,18 +20,24 @@ class UndoableObject:
                   get_reundo_action_args=None,
                   reapply_name=None,
                   reundo_name=None,
-                  is_undo=False):
-        if not action_args: action_args=[]
-        if not undo_action_args: undo_action_args=[]
-        self.history=history
-        self.action=action
-        self.inverse_action=inverse
+                  is_undo=False,
+                  widget=None, # Keep track of widget where this
+                               # action began (useful for GUIs to
+                               # check if actions have changed value
+                               # from "saved" state)
+                  ):
+        if not action_args: action_args = []
+        if not undo_action_args: undo_action_args = []
+        self.history = history
+        self.action = action
+        self.inverse_action = inverse
         self.get_reapply_action_args = get_reapply_action_args
         self.undo_action_args = undo_action_args
-        self.get_reundo_action_args=get_reundo_action_args
+        self.get_reundo_action_args = get_reundo_action_args
         self.reapply_name = reapply_name
         self.reundo_name = reundo_name
-        self.is_undo=is_undo  # If our action itself is an undo
+        self.is_undo = is_undo  # If our action itself is an undo
+        self.widget = widget
         if self.get_reapply_action_args:
             self.reapplyable = True
         else:
@@ -41,13 +48,14 @@ class UndoableObject:
         self.action(*self.action_args)
         self.history.append(self)
 
-    def inverse (self):        
+    def inverse (self):
         u = UndoableObject(self.inverse_action, self.action, self.history,
                            action_args=self.undo_action_args,
                            undo_action_args=self.action_args,
                            get_reapply_action_args=self.get_reundo_action_args,
                            get_reundo_action_args=self.get_reapply_action_args,
-                           is_undo=not self.is_undo)
+                           is_undo=not self.is_undo,
+                           widget=self.widget)
         self.history.remove(self)
         u.perform()
 
@@ -61,18 +69,23 @@ class UndoableObject:
                                reapply_name=self.reundo_name, reundo_name=self.reapply_name)
             u.perform()
 
+    def __repr__ (self):
+        return '<Undo.UndoableObject %s widget=%s>'%(self.is_undo,self.widget)
+
 class UndoableTextChange (UndoableObject):
-    def __init__ (self, set_text_action, history, initial_text="",text="",txt_id=None):
+    def __init__ (self, set_text_action, history, initial_text="",text="",txt_id=None,is_undo=False):
         self.txt_id = txt_id
         self.blob_matcher = re.compile('\s+\S+\s+')
         self.initial_text = initial_text
         self.text = text
         self._set_text = set_text_action
-        UndoableObject.__init__(self,lambda *args: self._set_text(self.text),lambda *args: self._set_text(self.initial_text),history)
+        UndoableObject.__init__(self,lambda *args: self._set_text(self.text),lambda *args: self._set_text(self.initial_text),history,
+                                is_undo=is_undo,widget=self.txt_id)
         self.mode=self.determine_mode()
         try:
             self.cindex,self.clen = self.find_change(self.text)
         except TooManyChanges:
+            print 'Too many changes - assume 0,0'
             self.cindex,self.clen = 0,0
 
     def determine_mode (self,text=None,initial_text=None):
@@ -83,16 +96,18 @@ class UndoableTextChange (UndoableObject):
         elif len(text) < len(initial_text):
             return 'delete'
 
-    def find_change (self, text2=None):
+    def find_change (self, text2=None, initial_text=None):
+        if initial_text is None: initial_text = self.initial_text
         if not self.mode:
             self.text = text2
             self.determine_mode()
-        if not text2: text2=self.text
-        if not hasattr(self,'sm'):
-            self.sm = difflib.SequenceMatcher(None,self.initial_text,text2)
-        else:
-            self.sm.set_seq2(text2)
-        blocks=self.sm.get_matching_blocks()
+        if text2 is None: text2=self.text
+        #if not hasattr(self,'sm'):
+        #self.sm = difflib.SequenceMatcher(None,initial_text,text2)
+        #else:
+        #self.sm.set_seq2(text2)
+        #blocks=self.sm.get_matching_blocks()
+        blocks = difflib.SequenceMatcher(None,initial_text,text2).get_matching_blocks()
         # we only are interested in similar blocks at different positions
         # (which tell us where the changes happened).
         ch_blocks = filter(lambda x: x[0] != x[1] and x[2] != 0, blocks)
@@ -105,47 +120,105 @@ class UndoableTextChange (UndoableObject):
             return [change_index,change_length]
         else:
             if self.mode=='delete':
-                return [len(self.initial_text),len(self.initial_text)-len(text2)]
+                return [len(initial_text),len(initial_text)-len(text2)]
             else: #self.mode=='add', we presume
-                return [len(self.initial_text),len(text2)-len(self.initial_text)]
+                return [len(initial_text),len(text2)-len(initial_text)]
 
     def add_text (self, new_text):
-        mode=self.determine_mode(new_text)
+        mode=self.determine_mode(new_text,self.text)
         contmode = self.determine_mode(new_text,self.text)
         if (mode == contmode == self.mode):
             try:
                 cindex,clen = self.find_change(new_text)
             except TooManyChanges:
-                self.new_action(new_text)
+                #self.new_action(new_text)
+                print 'Too Many changes!'
+                pass # We'll go to the end of the method...
             else:
+                # We will return...
                 if ((cindex==self.cindex) or
-                    (self.mode=='delete' and cindex==self.cindex-(clen-self.clen))
+                    (self.mode=='add' and cindex==self.cindex) or
+                    (self.mode=='delete' and cindex==(self.cindex-clen))
                     ):
-                    changed_text = new_text[cindex:cindex+clen]
-                    if not self.blob_matcher.search(changed_text):
+                    if self.mode=='add': changed_text = new_text[cindex:cindex+(self.clen+clen)]
+                    else: changed_text=''
+                    # Now we make sure the addition is at the end or middle of our new text...
+                    relative_cindex,relative_clen = self.find_change(new_text,self.text)
+                    #print
+                    #print new_text
+                    #print 'Old cindex,clen=',self.cindex,self.clen
+                    #print 'New cindex,clen=',cindex,clen
+                    #print 'Rel cindex,clen=',relative_cindex,relative_clen
+                    #print 'Adding text to the end?',relative_cindex==cindex+(clen-relative_clen)
+                    #print 'Adding text to the start?',relative_cindex==self.cindex
+                    # We only consider a word at a time to be a continuous change...
+                    if (
+                        # Adding text to the end
+                        (
+                        relative_cindex==cindex+(clen-relative_clen) 
+                        or
+                        # Adding text to the beginning
+                        (relative_cindex==self.clen or relative_cindex==self.cindex) 
+                        )
+                        and
+                        not self.blob_matcher.search(changed_text)
+                        ):
                         self.text = new_text
-                        self.cindex,self.clen = cindex,clen
+                        self.cindex,self.clen = self.find_change(new_text)
                         return
+                else:
+                    print 'Change index changed... was ',self.cindex,'is',cindex
+        # If the mode has changed or we have too many changes to
+        # handle simply, we just create a new undo action for this new
+        # change
         self.new_action(new_text)
 
     def new_action (self, new_text):
+        print 'UndoableTextChange.new_text: ',self.text,'=>',new_text
         self.history.append(UndoableTextChange(self._set_text,self.history,
-                                                   initial_text=self.text, text=new_text)
+                                               initial_text=self.text, text=new_text,
+                                               txt_id=self.txt_id,
+                                               )
                             )
 
     def inverse (self):
-        self._set_text(self.initial_text)
+        #self._set_text(self.initial_text)
         u=UndoableTextChange(self._set_text,self.history,initial_text=self.text,
-                             text=self.initial_text)
-        u.is_undo=not self.is_undo
+                             text=self.initial_text,txt_id=self.txt_id,
+                             is_undo=not self.is_undo,
+                             )
         self.history.remove(self)
         u.perform()
 
     def perform (self):
+        self._set_text(self.text)
         self.history.append(self)
 
     def __repr__ (self):
-        return '<Undo.UndoableTextChange '+repr(self.txt_id)+repr(self.text)+'>'
+        return '<Undo.UndoableTextChange '+repr(self.mode)+' '+repr(self.txt_id)+\
+               repr(self.initial_text)+'=>'+repr(self.text)+'clen'+str(self.clen)+\
+               'cindex'+str(self.cindex)+'>'
+
+    def __eq__ (self,obj):
+        """We are equal too objects that represent the same txt_id and
+        are either the same action as us or the inverse of us
+        """
+        if not hasattr(obj,'txt_id'):
+            return False
+        else:
+            return (
+                self.txt_id==obj.txt_id
+                and
+                ((self.initial_text==obj.initial_text
+                  and
+                  self.text == obj.text)
+                 or
+                 (self.initial_text==obj.text
+                  and
+                  self.text==obj.initial_text)
+                 )
+                )
+    
 
 class UndoableTextContainer:
     def __init__ (self, container, history):
@@ -160,8 +233,8 @@ class UndoableTextContainer:
         if self._setting:
             return
         txt = self.get_text()
-        if txt == self.txt: pass
-        if len(self.history)>1 and hasattr(self.history[-1],'txt_id') and self.history[-1].txt_id==self.container:
+        if txt == self.txt: return
+        if len(self.history)>=1 and hasattr(self.history[-1],'txt_id') and self.history[-1].txt_id==self.container:
             self.change = self.history[-1]
             self.history[-1].add_text(txt)
         else:
@@ -178,10 +251,23 @@ class UndoableTextContainer:
 
     def _set_text (self,txt):
         self._setting = True
-        self.set_text(txt)
+        try:
+            index,length = self.change.find_change(txt)
+        except TooManyChanges:
+            # If we changed more than one block, there is no obvious
+            # place to put the cursor, so we put it at the end
+            print 'Weird -- too many changes'
+            index = 0; length = len(txt) 
+        # Put the cursor where the change happened
+        if self.change.mode=='add':
+            cursor_index = index+length
+        else: # self.mode==Delete
+            cursor_index = index
+        print 'set_text',txt,cursor_index
+        self.set_text(txt,cursor_index)
         self._setting = False
-        
-    def set_text (self,txt): raise NotImplementedError
+
+    def set_text (self,txt,cursor_index): raise NotImplementedError
 
 class UndoableEntry (UndoableTextContainer):
     def __init__ (self, entry,history):
@@ -194,11 +280,10 @@ class UndoableEntry (UndoableTextContainer):
                            self.change_event_cb
                            )
         
-    def set_text (self, txt):
-        index,length = self.change.find_change(txt)
-        self.entry.set_text(txt)
+    def set_text (self, txt, cursor_index):
         self.entry.grab_focus()
-        self.entry.set_position(index + length)
+        self.entry.set_text(txt)
+        self.entry.set_position(cursor_index)
         
 class UndoableGenericWidget:
     """Wrap a widget in an Undo class.
@@ -214,7 +299,6 @@ class UndoableGenericWidget:
         self.history = history
         self.last_value = self.get()
         self.w.connect(signal,self.changecb)
-        
 
     def set (self, val):
         self.im_doing_the_setting = True
@@ -236,9 +320,11 @@ class UndoableGenericWidget:
         if new_val != old_val:
             # We don't perform because we're being called after the action has happened.
             # We simply append ourselves to the history list.
+            print 'UndoableGenericWidget',old_val,'-->',new_val
             u = UndoableObject(lambda *args: self.set(new_val),
                                lambda *args: self.set(old_val),
                                self.history,
+                               widget=self.w
                                )
             self.history.append(u)
             self.last_value=new_val
@@ -255,14 +341,10 @@ class UndoableTextView (UndoableTextContainer):
         self.buffer.connect('apply-tag',self.change_event_cb)
         self.buffer.connect('remove-tag',self.change_event_cb)
         
-    def set_text (self, text):        
+    def set_text (self, text, cursor_index):        
         self.buffer.set_text(text)
         self.tv.grab_focus()
-        try:
-            index,length = self.change.find_change(text)
-            self.buffer.place_cursor(self.buffer.get_iter_at_offset(index + length))
-        except TooManyChanges:
-            print 'WARNING: THAT SHOULDNT HAVE HAPPENED! Too many changes!'
+        self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_index))
 
     def get_text (self):
         return self.buffer.get_text(self.buffer.get_start_iter(),
@@ -295,27 +377,35 @@ class UndoHistoryList (list):
         self.action_hooks.append(hook)
 
     def undo (self, *args):
+        print 'UNDO CB'
         index = -1
         if len(self) == 0: return False
         try:
             while self[index].is_undo:
-                index = index - 1
-        except:
+                index -= 1
+        except IndexError:
             debug('All %s available action are .is_undo=True'%len(self),0)
-            print 'All actions are undos - why are we undoing?',index
+            print 'There is nothing to undo!'
+            print 'All %s actions are undos'%len(self)
+            print self,index
             raise
+        print "UNDO ",index
         self[index].inverse()
         for h in self.action_hooks: h(self,self[index],'undo')
 
     def redo (self, *args):
+        print 'REDO CB'
         if len(self) == 0: return False
         index = -1
         try:
             while not self[index].is_undo:
                 index = index - 1
-        except:
+        except IndexError:
             debug('All %s available actions are is_undo=False'%len(self),0)
+            print 'There is nothing to redo!'
+            print 'All %s available actions are is_undo=False'%len(self)
             raise
+        print "REDO",index
         self[index].inverse()
         for h in self.action_hooks: h(self,self[index],'redo')        
 
