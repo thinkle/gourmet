@@ -131,9 +131,7 @@ class UndoableTextChange (UndoableObject):
             try:
                 cindex,clen = self.find_change(new_text)
             except TooManyChanges:
-                #self.new_action(new_text)
-                print 'Too Many changes!'
-                pass # We'll go to the end of the method...
+                pass # We'll go to the end of the method & create a new action
             else:
                 # We will return...
                 if ((cindex==self.cindex) or
@@ -166,15 +164,12 @@ class UndoableTextChange (UndoableObject):
                         self.text = new_text
                         self.cindex,self.clen = self.find_change(new_text)
                         return
-                else:
-                    print 'Change index changed... was ',self.cindex,'is',cindex
         # If the mode has changed or we have too many changes to
         # handle simply, we just create a new undo action for this new
         # change
         self.new_action(new_text)
 
     def new_action (self, new_text):
-        print 'UndoableTextChange.new_text: ',self.text,'=>',new_text
         self.history.append(UndoableTextChange(self._set_text,self.history,
                                                initial_text=self.text, text=new_text,
                                                txt_id=self.txt_id,
@@ -250,22 +245,31 @@ class UndoableTextContainer:
     def get_text (self): raise NotImplementedError
 
     def _set_text (self,txt):
-        self._setting = True
-        try:
-            index,length = self.change.find_change(txt)
-        except TooManyChanges:
-            # If we changed more than one block, there is no obvious
-            # place to put the cursor, so we put it at the end
-            print 'Weird -- too many changes'
-            index = 0; length = len(txt) 
-        # Put the cursor where the change happened
-        if self.change.mode=='add':
-            cursor_index = index+length
-        else: # self.mode==Delete
-            cursor_index = index
-        print 'set_text',txt,cursor_index
+        self._setting = True # Set flag so we don't trigger our own
+                             # callbacks
+        orig = self.get_text() # Get current text for comparison
+                               # (helps with placement of cursor)
+        if len(txt) > orig:         # If we're adding
+            try:
+                index,length = self.change.find_change(txt,orig)
+                cursor_index = index+length
+            except TooManyChanges:
+                # If we changed more than one block, there is no obvious
+                # place to put the cursor, so we put it at the end
+                cursor_index = len(txt)
+        else: # If we're Removing
+            try:
+                # We get the *index* of the inverse of our action
+                # i.e. If we go from Thhis -> This, then we reverse to
+                # This -> Thhis (which is the same as where it would
+                # have been after hitting backspace) and we put it
+                # there.
+                index,length = self.change.find_change(orig,txt)
+                cursor_index = index
+            except TooManyChanges:
+                cursor_index = len(txt)
         self.set_text(txt,cursor_index)
-        self._setting = False
+        self._setting = False # Unset flag
 
     def set_text (self,txt,cursor_index): raise NotImplementedError
 
@@ -320,7 +324,6 @@ class UndoableGenericWidget:
         if new_val != old_val:
             # We don't perform because we're being called after the action has happened.
             # We simply append ourselves to the history list.
-            print 'UndoableGenericWidget',old_val,'-->',new_val
             u = UndoableObject(lambda *args: self.set(new_val),
                                lambda *args: self.set(old_val),
                                self.history,
@@ -377,7 +380,6 @@ class UndoHistoryList (list):
         self.action_hooks.append(hook)
 
     def undo (self, *args):
-        print 'UNDO CB'
         index = -1
         if len(self) == 0: return False
         try:
@@ -389,12 +391,10 @@ class UndoHistoryList (list):
             print 'All %s actions are undos'%len(self)
             print self,index
             raise
-        print "UNDO ",index
         self[index].inverse()
         for h in self.action_hooks: h(self,self[index],'undo')
 
     def redo (self, *args):
-        print 'REDO CB'
         if len(self) == 0: return False
         index = -1
         try:
@@ -405,7 +405,6 @@ class UndoHistoryList (list):
             print 'There is nothing to redo!'
             print 'All %s available actions are is_undo=False'%len(self)
             raise
-        print "REDO",index
         self[index].inverse()
         for h in self.action_hooks: h(self,self[index],'redo')        
 
@@ -463,7 +462,6 @@ class UndoHistoryList (list):
         list.append(self,obj)
         if obj.is_undo==False: # Is this necessary? Not sure...
             for h in self.action_hooks:
-                print 'perform hook->',obj
                 h(self,obj,'perform')
         self.gui_update()
 
