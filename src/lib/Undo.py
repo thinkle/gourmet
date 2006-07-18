@@ -355,7 +355,7 @@ class UndoableTextView (UndoableTextContainer):
 
 class UndoHistoryList (list):
     """An UndoHistoryList."""
-    def __init__ (self, undo_widget, redo_widget, reapply_widget=None, save_widget=None, signal='activate'):
+    def __init__ (self, undo_widget, redo_widget, reapply_widget=None, signal='activate'):
         self.undo_widget = undo_widget
         self.redo_widget = redo_widget
         self.reapply_widget = reapply_widget
@@ -406,7 +406,7 @@ class UndoHistoryList (list):
             print 'All %s available actions are is_undo=False'%len(self)
             raise
         self[index].inverse()
-        for h in self.action_hooks: h(self,self[index],'redo')        
+        for h in self.action_hooks: h(self,self[index],'redo')
 
     def reapply (self, *args):
         debug('Reapplying',0)
@@ -530,8 +530,13 @@ class MultipleUndoLists:
     def remove (self,*args,**kwargs): return self.get_history().remove(*args,**kwargs)
     def reverse (self,*args,**kwargs): return self.get_history().reverse(*args,**kwargs)
     def sort (self,*args,**kwargs): return self.get_history().sort(*args,**kwargs)
-    def redo (self,*args,**kwargs): return self.get_history().redo(*args,**kwargs)
-    def undo (self,*args,**kwargs): return self.get_history().undo(*args,**kwargs)
+
+    def redo (self,*args,**kwargs):
+        return self.get_history().redo(*args,**kwargs)
+
+    def undo (self,*args,**kwargs):
+        return self.get_history().undo(*args,**kwargs)
+    
     def reapply (self,*args,**kwargs): return self.get_history().reapply(*args,**kwargs)
 
     def get_all_histories (self): return self.histories.values()

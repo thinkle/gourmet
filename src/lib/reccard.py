@@ -2,7 +2,7 @@
 import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
 import xml.sax.saxutils
 import exporters
-import convert, TextBufferMarkup
+import convert, TextBufferMarkup, types
 from recindex import RecIndex
 import prefs, WidgetSaver, timeEntry, Undo, ratingWidget
 import keymanager
@@ -77,9 +77,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.setup_action_manager()
         self.get_widgets()
         self.register_pref_dialog()
+        self.widgets_changed_since_save = {}
         self.history = Undo.MultipleUndoLists(self.undo,self.redo,
                                               get_current_id=self.notebook.get_current_page
                                               )
+        self.history.add_action_hook(self.undo_action_callback)
         # Setup notebook page switching...
         def hackish_notebook_switcher_handler (*args):
             # because the switch page signal happens before switching...
@@ -146,7 +148,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'rcToggleMult' : self.multTogCB,
             'toggleEdit' : self.saveEditsCB,
             'rcSave' : self.saveAs,
-            'rcEdited' : self.setEdited,
+            # UNDO NOW HANDLES setEdited 'rcEdited' : self.setEdited,
             'setRecImage' : self.ImageBox.set_from_fileCB,
             'delRecImage' : self.ImageBox.removeCB,
             'instrAddImage' : self.addInstrImageCB,
@@ -203,7 +205,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def get_widgets (self):
         t=TimeAction('RecCard.get_widgets 1',0)
         self.timeB = self.glade.get_widget('preptimeBox')
-        self.timeB.connect('changed',self.setEdited)
+        # UNDO NOW HANDLES setEdited self.timeB.connect('changed',self.setEdited)
         self.nutritionLabel = self.glade.get_widget('nutritionLabel')
         self.nutritionLabel.connect('ingredients-changed',
                                     lambda *args: self.resetIngredients()
@@ -470,6 +472,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         debug("saveEditsCB (self, click=None, click2=None, click3=None):",5)
         self.rg.message("Committing edits!")
         self.setEdited(False)
+        self.widgets_changed_since_save =  {}
         self.view.set_sensitive(True)        
         self.new = False
         newdict = {'id': self.current_rec.id}
@@ -571,6 +574,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.updateRecDisplay()
             
     def updateRecipe (self, rec, show=True):
+        """Update our recipe."""
+        # The real work is done in UpdateRec -- we just add a check
+        # that allows us to properly handle recipes as integer IDs or
+        # as objects and that asks the user if they want to abandon
+        # edits before getting the new recipe
         debug("updateRecipe (self, rec):",0)
         if type(rec) == int:
             rec=self.rg.rd.fetch_one(self.rg.rd.rview,id=rec)
@@ -661,7 +669,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         #self.servingsChange()
         self.ImageBox.get_image()
         self.ImageBox.edited=False
-        
         self.setEdited(False)
                 
     def undoableWidget (self, widget, signal='changed',
@@ -784,7 +791,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.servingsMultiplyByLabel.set_text("x %s"%convert.float_to_frac(self.mult))
         else:
             self.servingsMultiplyByLabel.set_label("")
-
+    
     def create_ing_alist (self):
         """Create alist ing_alist based on ingredients in DB for current_rec"""
         ings=self.rg.rd.get_ings(self.current_rec)
@@ -986,8 +993,76 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def changedCB (self, widget):
         ## This needs to keep track of undo history...
-        self.setEdited()
+        # UNDO NOW HANDLES setEdited self.setEdited()
+        pass
 
+    def get_prop_for_widget (self, widget):
+        if not widget: return
+        for p,w in self.rw.items():
+            if widget==w: return p
+            # For comboboxes whose entries we've been handed...
+            if hasattr(widget,'parent') and widget.parent==w and isinstance(widget,gtk.Entry): return p
+
+    def undo_action_callback (self, undo_history, action, typ):
+        # For all actions that go into the undo system, not just UNDO
+        widget = action.widget
+        prop = self.get_prop_for_widget(widget)
+        if prop:
+            # For all changes to simple recipe attributes (Title,
+            # Cuisine, etc.), we look at every change and compare with
+            # the original value. If it has, we delete the change from
+            # our dictionary of changes. If all changes have been set
+            # back to original value, we are no longer "Edited"            
+            if hasattr(widget,'get_value'): val = widget.get_value()
+            elif hasattr(widget,'get_text'): val = widget.get_text()
+            elif hasattr(widget,'entry'): val = widget.entry.get_text()
+            elif hasattr(widget,'get_buffer'): val = widget.get_buffer().get_text()
+            else: raise TypeError("I don't know how to get the value from action %s widget %s"%(action,widget))
+            # HAVE TO HANDLE CATEGORIES
+            if prop=='category':
+                orig_value = ', '.join(self.rg.rd.get_cats(self.current_rec))
+            else:
+                orig_value = getattr(self.current_rec,prop)
+            if type(orig_value) in types.StringTypes:
+                val = val.strip(); orig_value=orig_value.strip()
+            else:
+                if not val: val = 0
+                if not orig_value: orig_value = 0
+            if orig_value==val:
+                if self.widgets_changed_since_save.has_key(prop):
+                    del self.widgets_changed_since_save[prop]
+            else:
+                self.widgets_changed_since_save[prop]=val            
+        else:
+            # If we can't compare with original values, we keep a
+            # dictionary of all changes made on a per-widget basis.
+            if not widget:
+                self.widgets_changed_since_save['UntrackableChange']=True
+            else:
+                # We store each change in our dictionary... if the
+                # change has disappeared from the history list, then
+                # we can surmise it has been "undone"
+                if self.widgets_changed_since_save.has_key(widget):
+                    old_change = self.widgets_changed_since_save[widget][-1]
+                    if (old_change.is_undo != action.is_undo
+                        and
+                        old_change not in undo_history):
+                        # If we are the inverse of the old action and
+                        # the old action is no longer in history, then
+                        # we can assume (safely?) that we have undone
+                        # the old action
+                        del self.widgets_changed_since_save[widget][-1]
+                        if not self.widgets_changed_since_save[widget]:
+                            del self.widgets_changed_since_save[widget]
+                    else:
+                        self.widgets_changed_since_save[widget].append(action)
+                else:
+                    self.widgets_changed_since_save[widget]=[action]
+        if self.widgets_changed_since_save:
+            self.setEdited(True)
+        else:
+            self.setEdited(False)
+        
     def setEdited (self, boolean=True):
         debug("setEdited (self, boolean=True):",5)
         self.edited=boolean
@@ -1150,19 +1225,31 @@ class ImageBox:
         debug("set_from_fileCB (self, *args):",5)
         f=de.select_image("Select Image",action=gtk.FILE_CHOOSER_ACTION_OPEN)
         if f:
-            self.set_from_file(f)
-            self.rc.setEdited(True)
+            Undo.UndoableObject(
+                lambda *args: self.set_from_file(f),
+                lambda *args: self.remove_image(),
+                self.rc.history,
+                widget=self.imageW).perform()
+            # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
             self.edited=True
 
     def removeCB (self, *args):
         debug("removeCB (self, *args):",5)
         if de.getBoolean(label="Are you sure you want to remove this image?",
                          parent=self.rc.widget):
-            self.rc.current_rec.image=''
-            self.image=None
-            self.draw_image()
-            self.edited=True
-            self.rc.setEdited(True)
+            current_image = ie.get_string_from_image(self.image)
+            Undo.UndoableObject(
+                lambda *args: self.remove_image(),
+                lambda *args: self.set_from_string(current_image),
+                self.rc.history,
+                widget=self.imageW).perform()
+
+    def remove_image (self):
+        self.rc.current_rec.image=''
+        self.image=None
+        self.draw_image()
+        self.edited=True
+        # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
 
 def add_with_undo (rc,method):
     uts = UndoableTreeStuff(rc.ingtree_ui.ingController)
@@ -1173,7 +1260,8 @@ def add_with_undo (rc,method):
     Undo.UndoableObject(
         do_it,
         uts.undo_recorded_additions,
-        rc.history
+        rc.history,
+        widget=rc.ingtree_ui.ingController.imodel
         ).perform()
 
 class UndoableTreeStuff:
@@ -1236,6 +1324,7 @@ class IngredientController:
     def __init__ (self, rc):
         self.rc = rc; self.rg = self.rc.rg; self.glade = self.rc.glade
         self.new_item_count = 0
+        self.commited_items_converter = {}
 
     # Setup methods
     def create_imodel (self, rec):
@@ -1277,7 +1366,6 @@ class IngredientController:
         if group_iter and not prev_iter:
             if type(self.imodel.get_value(group_iter, 0)) not in [str,unicode]:
                 prev_iter = group_iter
-                print 'treating ',group_iter,'as prev_iter, not group_iter'
                 print 'fix this old code!'
                 import traceback; traceback.print_stack()
                 print '(not a real traceback, just a hint for fixing the old code)'
@@ -1320,9 +1408,10 @@ class IngredientController:
         Undo.UndoableObject(
             lambda *args: self.update_ingredient_row(itr,**d),
             lambda *args: self.update_ingredient_row(itr,**orig),
-            self.rc.history
+            self.rc.history,
+            widget=self.imodel,
             ).perform()
-    
+
     def update_ingredient_row (self,iter,
                                amount=None,
                                unit=None,
@@ -1342,7 +1431,7 @@ class IngredientController:
             self.imodel.set_value(iter,6,shop_cat)
         elif ingkey and self.rc.rg.sl.orgdic.has_key(ingkey):
             self.imodel.set_value(iter,6,self.rc.rg.sl.orgdic[ingkey])
-        self.rc.setEdited(True)
+        # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
                 
     def add_ingredient (self, ing, prev_iter=None, group_iter=None,
                         fallback_on_append=True, shop_cat=None):
@@ -1405,6 +1494,7 @@ class IngredientController:
 
     #def change_group (self, name,
     def delete_iters (self, *iters):
+        print 'delete iters ',iters
         refs = []
         undo_info = []
         for itr in iters:
@@ -1427,9 +1517,10 @@ class IngredientController:
         u = Undo.UndoableObject(
             lambda *args: self.do_delete_iters(refs),
             lambda *args: self.do_undelete_iters(undo_info),
-            self.rc.history
-            )
-        self.rc.setEdited(True)
+            self.rc.history,
+            widget=self.imodel,
+            )    
+        # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
         u.perform()
 
     def _get_prev_path_ (self, path):
@@ -1534,6 +1625,12 @@ class IngredientController:
             )
 
     def get_iter_from_persistent_ref (self, ref):
+        try:
+            if self.commited_items_converter.has_key(ref):
+                ref = self.commited_items_converter[ref]
+        except TypeError:
+            # If ref is unhashable, we don't care
+            pass
         itr = self.imodel.get_iter_first()
         while itr:
             v = self.imodel.get_value(itr,0)
@@ -1600,7 +1697,8 @@ class IngredientController:
                         self.rc.rg.rd.modify_ing(ing,d)
                 else:
                     d['id'] = self.rc.current_rec.id
-                    self.rg.rd.add_ing(d)
+                    self.commited_items_converter[ing] = self.rg.rd.add_ing(d)
+                    print 'Added conversion for ',ing,'to its object',self.commited_items_converter[ing]
                 return pos+1
         # end commit iter
 
@@ -1851,7 +1949,8 @@ class IngredientTreeUI:
                                           colnum,newval),
             lambda *args: store.set_value(self.ingController.get_iter_from_persistent_ref(ref),
                                           colnum,val),
-            self.rc.history
+            self.rc.history,
+            widget=self.ingController.imodel
             )
         u.perform()
         
@@ -1948,12 +2047,13 @@ class IngredientTreeUI:
                         te.move_iter(mod,i,sibling=diter,direction="before")
                 else:
                     for i in selected_iters:
-                        te.move_iter(mod,i,sibling=diter,direction="after")
-                self.rc.setEdited(True)
+                        te.move_iter(mod,i,sibling=diter,direction="after")    
+                # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
             Undo.UndoableObject(
                 do_move,
                 uts.restore_positions,
-                self.rc.history).perform()
+                self.rc.history,
+                widget=self.ingController.imodel).perform()
                #self.ingTree.get_selection().select_iter(new_iter)
         else:
             # if this is external, we copy
@@ -2019,7 +2119,9 @@ class IngredientTreeUI:
                               lambda *args: self.ingDownMover(
             [self.ingController.get_path_from_persistent_ref(r) for r in refs]
             ),
-                              self.rc.history)
+                              self.rc.history,
+                              widget=self.ingController.imodel,
+                              )
         u.perform()
 
     def ingDownCB (self, *args):
@@ -2048,7 +2150,7 @@ class IngredientTreeUI:
             itera = ts.get_iter(p)
             moveup(ts,p,itera)
         tt.restore_selections()
-        self.rc.setEdited(True)
+        # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
         
     def ingDownMover (self, paths):
         ts = self.ingController.imodel
@@ -2066,7 +2168,7 @@ class IngredientTreeUI:
             itera = ts.get_iter(p)
             movedown(ts,p,itera)
         tt.restore_selections()
-        self.rc.setEdited(True)
+        # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
 
     # Edit Callbacks
     def changeUnit (self, new_unit, ingdict):
@@ -2191,7 +2293,7 @@ class IngredientTreeUI:
                 )
             gi = self.ingController.get_persistent_ref_from_iter(itr)
             self.ingTree.expand_row(self.ingController.imodel.get_path(itr),True)
-            self.rc.setEdited(True)
+            # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
         def do_unadd_group ():
             gi = 'GROUP '+group_name  #HACK HACK HACK
             self.ingController.imodel.remove(
@@ -2216,8 +2318,8 @@ class IngredientTreeUI:
             model.set_value(iter,0,oldgroup0)
             model.set_value(iter,1,oldgroup1)
         obj = Undo.UndoableObject(change_my_group,unchange_my_group,self.history)
-        obj.perform()
-        self.setEdited(True)
+        obj.perform()    
+        # UNDO NOW HANDLES setEdited self.setEdited(True)
 
 class IngredientEditor:
     def __init__ (self, RecGui, rc):
@@ -2514,7 +2616,7 @@ class IngredientEditor:
     def returned(self, *args):
         # Handler when the user hits the return button in one of the comboboxes
         # don't add the item immediately in case our guess of key etc was a bit wrong of the mark
-        # (with python's poor handling of accent caharacters, this could easily be the case!)
+        # (with python's poor handling of accent characters, this could easily be the case!)
         # Let the user do the add...
         self.ieAdd.grab_focus()
 
@@ -2726,13 +2828,12 @@ if __name__ == '__main__':
         rc.show_edit(tab=rc.NOTEBOOK_ING_PAGE)        
         g = rc.ingtree_ui.ingController.add_group('Foo bar')
         for l in ('''1 c. sugar
-                  1 c. silly; chopped and sorted
-                  1 lb. very silly
-                  1 tbs. extraordinarily silly'''.split('\n')):
+        1 c. silly; chopped and sorted
+        1 lb. very silly
+        1 tbs. extraordinarily silly'''.split('\n')):
             rc.add_ingredient_from_line(l,group_iter=g)
         rc.ingtree_ui.ingController.delete_iters(g)
         rc.undo.emit('activate')
-        
     import GourmetRecipeManager
     rg = GourmetRecipeManager.RecGui()
     rg.app.hide()
@@ -2742,7 +2843,10 @@ if __name__ == '__main__':
                                   lambda *args: gtk.main_quit()
                                   )
         rc.edit_window.connect('delete-event',lambda *args: gtk.main_quit())
-        test_ing_editing(rc)
+        rc.show_edit()
+        rc.rw['title'].set_text('Foo')
+        
+        #test_ing_editing(rc)
     except:
         rg.app.hide()
         raise

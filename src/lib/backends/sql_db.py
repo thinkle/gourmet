@@ -443,6 +443,17 @@ class RowObject:
         for n,cn in enumerate(self.__column_names__):
             setattr(self,cn,self.__columns__[n])
 
+    def __eq__ (self, other_obj):
+        if hasattr(other_obj,'__idprop__') and hasattr(other_obj,'__eq__'):
+            return other_obj.__eq__(self)
+        else:
+            try:
+                return (self.__columns__ == other_obj.__columns__
+                        and
+                        self.__column_names__ == other_obj.__column_names__)
+            except:
+                return False
+
 class DelayedRowObject (RowObject):
 
     def __init__ (self, id, idprop, table, db):
@@ -471,6 +482,12 @@ class DelayedRowObject (RowObject):
             if cn==att: ret = row[n]
         self.__retrieved__ = True
         return ret
+
+    def __eq__ (self, other_obj):
+        if isinstance(other_obj,DelayedRowObject) or isinstance(other_obj,RowObject):
+            return (getattr(self,self.__idprop__) == getattr(other_obj,self.__idprop__))
+        else:
+            return False
 
 class Fetcher (list):
     def __init__ (self, cursor, column_names):
