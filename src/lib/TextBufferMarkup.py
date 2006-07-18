@@ -293,6 +293,7 @@ class InteractivePangoBuffer (PangoBuffer):
         self.internal_toggle = False
         self.insert = self.get_insert()
         self.connect('mark-set',self._mark_set_cb)
+        self.connect('changed',self._changed_cb)        
         for w,tup in toggle_widget_alist:
             self.setup_widget(w,*tup)
 
@@ -317,7 +318,11 @@ class InteractivePangoBuffer (PangoBuffer):
             for t in tags: self.remove_tag_from_selection(t)
 
     def _mark_set_cb (self, buffer, iter, mark, *params):
-        if mark==self.insert:
+        # Every time the cursor moves, update our widgets that reflect
+        # the state of the text.
+        if hasattr(self,'_in_mark_set') and self._in_mark_set: return
+        self._in_mark_set = True
+        if mark.get_name()=='insert':
             for tags,widg in self.tag_widgets.items():
                 active = True
                 for t in tags:
@@ -326,6 +331,24 @@ class InteractivePangoBuffer (PangoBuffer):
                 self.internal_toggle=True
                 widg.set_active(active)
                 self.internal_toggle=False
+        if hasattr(self,'last_mark'):                
+            self.move_mark(self.last_mark,iter)
+        else:
+            self.last_mark = self.create_mark('last',iter,left_gravity=True)
+        self._in_mark_set = False
+            
+    def _changed_cb (self, tb):
+        if not hasattr(self,'last_mark'): return
+        # If our insertion point has a mark, we want to apply the tag
+        # each time the user types...
+        old_itr = self.get_iter_at_mark(self.last_mark)
+        insert_itr = self.get_iter_at_mark(self.insert)
+        if old_itr!=insert_itr:
+            # If we've changed...
+            for t in insert_itr.get_toggled_tags(True):
+                self.apply_tag(t,old_itr,insert_itr)
+
+
 
 class SimpleEditor:
     def __init__ (self):
