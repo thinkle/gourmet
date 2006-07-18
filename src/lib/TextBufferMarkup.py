@@ -344,9 +344,14 @@ class InteractivePangoBuffer (PangoBuffer):
         old_itr = self.get_iter_at_mark(self.last_mark)
         insert_itr = self.get_iter_at_mark(self.insert)
         if old_itr!=insert_itr:
-            # If we've changed...
-            for t in insert_itr.get_toggled_tags(True):
-                self.apply_tag(t,old_itr,insert_itr)
+            # Use the state of our widgets to determine what
+            # properties to apply...
+            for tags,w in self.tag_widgets.items():
+                if w.get_active():
+                    #print 'apply tags...',tags
+                    for t in tags: self.apply_tag(t,old_itr,insert_itr)
+        
+                    
 
 
 
@@ -362,13 +367,14 @@ class SimpleEditor:
         self.sw.add(self.tv)
         self.ipb = InteractivePangoBuffer(
             normal_button=self.nb)
-        #self.ipb.set_text("""<b>This is bold</b>. <i>This is italic</i>
-        #    <b><i>This is bold, italic, and <u>underlined!</u></i></b>
-        #    This is a numerical range (three hundred and fifty to four hundred) 350-400 which may get messed up.
+        self.ipb.set_text("""<b>This is bold</b>. <i>This is italic</i>
+            <b><i>This is bold, italic, and <u>underlined!</u></i></b>
+            """)
         #    Here are some more: 1-2, 2-3, 3-4, 10-20, 30-40, 50-60
         #    This is <span color="blue">blue</span>, <span color="red">red</span> and <span color="green">green</span>""")
-        self.ipb.set_text("""This is a numerical range (three hundred and fifty to four hundred) 350-400 which may get messed up.
-        Here are some more: 1-2, 2-3, 3-4, 10-20, 30-40, 50-60""")
+        #self.ipb.set_text("""This is a numerical range (three hundred and fifty to four hundred) 350-400 which may get messed up.
+        #Here are some more: 1-2, 2-3, 3-4, 10-20, 30-40, 50-60""")
+
         self.tv.set_buffer(self.ipb)
         for lab,stock,font in [('gtk-italic',True,'<i>italic</i>'),
                                ('gtk-bold',True,'<b>bold</b>'),
