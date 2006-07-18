@@ -196,11 +196,13 @@ class KeyManager:
         # i) german Nouns always start with an uppercase Letter.
         # ii) the function 'lower()' doesn't appear to work correctly with umlauts.
         if (not langProperties['capitalisedNouns']):
-            ingr = unicode(ingr.decode('utf8')).lower()
+            # We want to use unicode's lower() method
+            if not isinstance(ingr,unicode):
+                ingr = unicode(ingr.decode('utf8'))
+            ingr = ingr.lower()
         timer.end()
         timer = TimeAction('keymanager.generate_key 2',3)
         debug("verbless string=%s"%ingr,10)
-        # we remove final s
         if ingr.find(',') == -1:
             # if there are no commas, we see if it makes sense
             # to turn, e.g. whole-wheat bread into bread, whole-wheat
