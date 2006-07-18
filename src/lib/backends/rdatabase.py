@@ -1,6 +1,6 @@
 import os.path
 from gourmet.gdebug import debug, TimeAction
-import re, pickle, string, os.path, string
+import re, pickle, string, os.path, string, time
 from gettext import gettext as _
 import gourmet.gglobals
 from gourmet import Undo, keymanager, convert, shopping
@@ -30,6 +30,13 @@ class RecData:
     AMT_MODE_LOW = 0
     AMT_MODE_AVERAGE = 1
     AMT_MODE_HIGH = 2
+
+    INFO_TABLE_DESC = ('info',
+                  [('version_super','int',[]), # three part version numbers 2.1.10, etc. 1.0.0
+                   ('version_major','int',[]),
+                   ('version_minor','int',[]),
+                   ('last_access','int',[])
+                   ])
 
     INGKEY_LOOKUP_TABLE_DESC = ('keylookup',
                                  [('word','text',[]),
@@ -165,6 +172,18 @@ class RecData:
 
     def save (self):
         """Save our database (if we have a separate 'save' concept)"""
+        row = self.fetch_one(self.infoview)
+        if row:
+            self.do_modify(
+                self.infoview,
+                row,
+                {'last_access':time.time()}
+                )
+        else:
+            self.do_add(
+                self.infoview,
+                {'last_access':time.time()}
+                )
         pass
 
     def setup_tables (self):
@@ -172,6 +191,7 @@ class RecData:
 
         Subclasses should do any necessary adjustments/tweaking before calling
         this function."""
+        self.infoview = self._setup_table(*self.INFO_TABLE_DESC) # For storing version info...
         self.rview = self._setup_table(*self.RECIPE_TABLE_DESC)
         self.iview = self._setup_table(*self.INGREDIENTS_TABLE_DESC)
         self.catview = self._setup_table(*self.CATEGORY_TABLE_DESC)
@@ -191,6 +211,48 @@ class RecData:
         self.nwview = self.setup_table(*self.NUTRITION_WEIGHT_TABLE_DESC)
         self.naliasesview = self._setup_table(*self.NUTRITION_ALIASES_TABLE_DESC)
         self.nconversions = self._setup_table(*self.NUTRITION_CONVERSIONS)
+
+    def update_version_info (self, version_string):
+        """Report our version to the database.
+
+        If necessary, we'll do some version-dependent updates to the GUI
+        """
+        stored_info = self.fetch_one(self.infoview)
+        if not stored_info:
+            # Default info -- the last version before we added the
+            # version tracker...
+            self.do_add(self.infoview,
+                        {'version_super':0,
+                         'version_major':11,
+                         'version_minor':0})
+            stored_info = self.fetch_one(self.infoview)            
+        current_super,current_major,current_super = [int(s) for s in version_string.split('.')]
+        ### Code for updates between versions...
+        
+        # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up ikview tables...
+        # We don't actually do this yet... (FIXME)
+        if False and current_super == 0 and current_major <= 11 and current_minor <= 3:
+            # Drop ikview table, which wasn't being properly kept up
+            # to date...
+            self.delete_by_criteria(self.ikview) 
+            # And update it in accord with current ingredients (less
+            # than an ideal decision, alas)
+            for ingredient in self.fetch_all(self.iview):
+                self.add_ing_to_keydic(ingredient.item,ingredient.ingkey)
+
+        ### End of code for updates between versions...
+        if (current_super!=stored_info.version_super
+            or
+            current_major!=stored_info.version_major
+            or
+            current_minor!=stored_info.version_minor
+            ):
+            self.do_modify(
+                self.infoview,
+                {'version_super':current_super,
+                 'version_major':current_major,
+                 'version_minor':current_minor,}
+                )
 
     def _setup_table (self, *args,**kwargs):
         """Do any magic needed for automagic norming of tables
@@ -388,13 +450,25 @@ class RecData:
         # something for a whole bunch of ingredients...
         for i in ings: self.modify_ing(i,ingdict)
 
+    def modify_ing_and_update_keydic (self, ing, ingdict):
+        """Update our key dictionary and modify our dictionary.
+
+        This is a separate method from modify_ing because we only do
+        this for hand-entered data, not for mass imports.
+        """
+        # If our ingredient has changed, update our keydic...
+        if ing.item!=ingdict.get('item',ing.item) or ing.ingkey!=ingdict.get('ingkey',ing.ingkey):
+            if ing.item and ing.ingkey:
+                self.remove_ing_from_keydic(ing.item,ing.ingkey)
+                self.add_ing_to_keydic(
+                    ingdict.get('item',ing.item),
+                    ingdict.get('ingkey',ing.ingkey)
+                    )
+        return self.modify_ing(ing,ingdict)
+        
+
     def modify_ing (self, ing, ingdict):
         self.validate_ingdic(ingdict)
-        #if ing.item!=ingdict.get('item',ing.item) or ing.ingkey!=ingdict.get('ingkey',ing.ingkey):
-        #    if ing.item and ing.ingkey:
-        #      self.remove_ing_from_keydic(ing.item,ing.ingkey)
-        #    self.add_ing_to_keydic(ingdict.get('item',ing.item),
-        #                           ingdict.get('ingkey',ing.ingkey))
         return self.do_modify_ing(ing,ingdict)
 
     # Lower level DB access functions -- hopefully subclasses can
@@ -423,6 +497,11 @@ class RecData:
                 if c: self.do_add_cat({'id':ID,'category':c})
             return ret
 
+    def add_ing_and_update_keydic (self, dic):
+        if dic.has_key('item') and dic.has_key('ingkey') and dic['item'] and dic['ingkey']:
+            self.add_ing_to_keydic(dic['item'],dic['ingkey'])
+        return self.add_ing(dic)
+    
     def add_ing (self, dic):
         self.validate_ingdic(dic)
         try:          
@@ -452,8 +531,6 @@ class RecData:
 
     def do_modify_ing (self, ing, ingdict):
         """modify ing based on dictionary of properties and new values."""
-        #self.delete_ing(ing)
-        #return self.add_ing(ingdict)
         for k,v in ingdict.items():
             if hasattr(ing,k):
                 self.changed=True
@@ -715,6 +792,7 @@ class RecData:
                 raise ValueError("%s is an invalid value for mode"%mode)
     
     def add_ing_to_keydic (self, item, key):
+        #print 'add ',item,key,'to keydic'
         if not item or not key: return
         row = self.fetch_one(self.ikview, item=item, ingkey=key)
         if row:
@@ -730,6 +808,7 @@ class RecData:
                 self.do_add(self.ikview,{'word':w,'ingkey':key,'count':1})
 
     def remove_ing_from_keydic (self, item, key):
+        #print 'remove ',item,key,'to keydic'        
         row = self.fetch_one(self.ikview,item=item,ingkey=key)
         if row:
             new_count = row.count - 1
