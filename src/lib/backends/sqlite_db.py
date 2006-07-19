@@ -47,6 +47,7 @@ class RecData (sql_db.RecData):
         self.connection.create_function('instr',2,instr)        
 
     def save (self):
+        rdatabase.RecData.save(self) # Do anything generic...
         self.connection.commit()
         self.changed = False
 

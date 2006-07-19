@@ -1694,10 +1694,10 @@ class IngredientController:
                     for att in ['amount','unit','item','ingkey','position','inggroup','optional']:
                         if getattr(ing,att)==d[att]: del d[att]
                     if d:
-                        self.rc.rg.rd.modify_ing(ing,d)
+                        self.rc.rg.rd.modify_ing_and_update_keydic(ing,d)
                 else:
                     d['id'] = self.rc.current_rec.id
-                    self.commited_items_converter[ing] = self.rg.rd.add_ing(d)
+                    self.commited_items_converter[ing] = self.rg.rd.add_ing_and_update_keydic(d)
                     print 'Added conversion for ',ing,'to its object',self.commited_items_converter[ing]
                 return pos+1
         # end commit iter
