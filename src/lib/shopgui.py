@@ -115,7 +115,7 @@ class ShopGui (ActionManager):
     def create_rmodel (self):
         debug("create_rmodel (self):",5)
         mod = gtk.TreeStore(gobject.TYPE_PYOBJECT, gobject.TYPE_STRING, gobject.TYPE_STRING)
-        for r,mult in self.recs.items():
+        for r,mult in self.recs.values():
             iter = mod.append(None)
             mod.set_value(iter,0,r)
             mod.set_value(iter,1,r.title)
@@ -177,7 +177,7 @@ class ShopGui (ActionManager):
         w = printer(*args,**kwargs)
         w.write_header(_("Shopping list for %s")%time.strftime("%x"))
         w.write_subheader(_("For the following recipes:"))
-        for r,mult in self.recs.items():
+        for r,mult in self.recs.values():
             itm = "%s"%r.title
             if mult != 1:
                 itm += _(" x%s")%mult
@@ -205,7 +205,7 @@ class ShopGui (ActionManager):
         selectedRecs=self.getSelectedRecs()
         if selectedRecs:
             for t in selectedRecs:
-                self.recs.__delitem__(t)
+                self.recs.__delitem__(t.id)
                 debug("clear removed %s"%t,3)
             self.resetSL()
         elif de.getBoolean(label=_("No recipes selected. Do you want to clear the entire list?")):
@@ -219,7 +219,7 @@ class ShopGui (ActionManager):
         debug("addRec (self, rec, mult, includes={}):",5)
         """Add recipe to our list, assuming it's not already there.
         includes is a dictionary of optional items we want to include/exclude."""
-        self.recs[rec]=mult
+        self.recs[rec.id]=(rec,mult)
         self.includes[rec.id]=includes
         self.resetSL()
 
@@ -247,7 +247,7 @@ class ShopGui (ActionManager):
         
     def resetSL (self):
         debug("resetSL (self):",5)
-        self.data,self.pantry = self.grabIngsFromRecs(self.recs.items(),self.extras)
+        self.data,self.pantry = self.grabIngsFromRecs(self.recs.values(),self.extras)
         self.slMod = self.createIngModel(self.data)
         self.pMod = self.createIngModel(self.pantry)
         self.slTree.set_model(self.slMod)
@@ -574,11 +574,8 @@ class ShopGui (ActionManager):
         """Handed an array of (rec . mult)s, we combine their ingredients.
         recs may be IDs or objects."""
         lst = start[0:]
-        for r in recs:
-            if len(r) > 1:
-                lst.extend(self.grabIngFromRec(r[0],mult=r[1]))
-            else:
-                lst.extend(self.grabIngFromRec(r[0]))
+        for rec,mult in recs:
+            lst.extend(self.grabIngFromRec(rec,mult=mult))
         self.sh = recipeManager.mkShopper(lst, self.rg.rd, conv=self.conv)
         data = self.sh.organize(self.sh.dic)
         pantry = self.sh.organize(self.sh.mypantry)
@@ -587,11 +584,10 @@ class ShopGui (ActionManager):
             
     def grabIngFromRec (self, rec, mult=1):
         """Get an ingredient from a recipe and return a list with our amt,unit,key"""
-        debug("grabIngFromRec (self, rec=%s(%s), mult=%s):"%(rec.title,rec.id,mult),5)
         """We will need [[amt,un,key],[amt,un,key]]"""
-        if type(rec) == type(""): #if we have an ID (type str), grab the recipe from it
-            rec = self.rg.rd.get_rec(rec)
-        ings = self.rg.rd.get_ings(rec) # grab all of our ingredients
+        debug("grabIngFromRec (self, rec=%s, mult=%s):"%(rec,mult),5)
+        # Grab all of our ingredients
+        ings = self.rg.rd.get_ings(rec)
         lst = []
         # this constant should be 'ask',or rdatabase.RecData.AMT_MODE_LOW|AMT_MODE_AVERAGE|AMT_MODE_HIGH
         # this is handled in preferences (see prefsGui.py)
