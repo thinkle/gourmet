@@ -464,7 +464,6 @@ class converter:
             if numbers: numbers[-1].append(match.start())
             numbers.append([match.start(),match.end()])
         if numbers: numbers[-1].append(None)
-        print numbers
         secs = 0
         for num_start,num_end,section_end in numbers:
             num = frac_to_float(timestring[num_start:num_end])
