@@ -183,6 +183,8 @@ class importer:
                 img = ImageExtras.get_image_from_string(self.rec['image'])
                 thumb = ImageExtras.resize_image(img,40,40)
                 self.rec['thumb'] = ImageExtras.get_string_from_image(thumb)
+                # Make sure our image is properly formatted...
+                self.rec['image'] = ImageExtras.get_string_from_image(img)
         r = self.rd.add_rec(self.rec)
         tt.end()
         self.added_recs.append(r)

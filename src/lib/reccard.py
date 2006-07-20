@@ -1195,10 +1195,7 @@ class ImageBox:
                 wwidth,wheight=100,100
             self.image=ie.resize_image(self.image,wwidth,wheight)
             self.thumb=ie.resize_image(self.image,40,40)
-            file = StringIO.StringIO()            
-            self.image.save(file,'JPEG')
-            self.set_from_string(file.getvalue())
-            file.close()
+            self.set_from_string(ie.get_string_from_image(self.image))
         else:
             self.hide()
 
@@ -1219,7 +1216,7 @@ class ImageBox:
     def set_from_file (self, file):
         debug("set_from_file (self, file):",5)
         self.image = Image.open(file)
-        self.draw_image()        
+        self.draw_image()
         
     def set_from_fileCB (self, *args):
         debug("set_from_fileCB (self, *args):",5)

@@ -40,6 +40,7 @@ def get_image_from_string (raw):
 def get_string_from_image (image):
     """Convert an image into a string representing its JPEG self"""
     ofi = StringIO.StringIO()
+    image = image.convert('RGB')
     image.save(ofi,"JPEG")
     ret = ofi.getvalue()
     ofi.close()
