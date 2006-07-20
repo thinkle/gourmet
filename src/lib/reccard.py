@@ -485,7 +485,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             buf = self.rw[t].get_buffer()
             newdict[t]=buf.get_text(buf.get_start_iter(),buf.get_end_iter())
         if self.ImageBox.edited:
-            newdict['thumb'],newdict['thumb']=self.ImageBox.commit()
+            newdict['image'],newdict['thumb']=self.ImageBox.commit()
             self.ImageBox.edited=False
         debug("modify_rec, newdict=%s"%newdict,1)
         self.current_rec = self.rg.rd.modify_rec(self.current_rec,newdict)
