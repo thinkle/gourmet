@@ -189,7 +189,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         hadj = sw.get_hadjustment()
         xsize = hadj.page_size
         width = allocation.width
-        widg_width = int(xsize * 0.85)
+        widg_width = int(xsize * 0.75)
         for widget in self.reflow_on_resize:
             widget.set_size_request(widg_width,-1)
             t = widget.get_text()
@@ -216,7 +216,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             setattr(self,'%sDisplay'%attr,self.glade.get_widget('%sDisplay'%attr))
             setattr(self,'%sDisplayLabel'%attr,self.glade.get_widget('%sDisplayLabel'%attr))
         # Set up wrapping callbacks...
-        self.reflow_on_resize = [getattr(self,'%sDisplay'%s) for s in ['modifications',#'instructions'
+        self.reflow_on_resize = [getattr(self,'%sDisplay'%s) for s in ['title',
+                                                                       'cuisine',
+                                                                       'category',
+                                                                       'source'
                                                                        ]
                                  ]
         self.glade.get_widget(
@@ -231,12 +234,14 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.ingredientsDisplay.connect('link-activated',
                                         self.show_recipe_link_cb)
         self.ingredientsDisplay.set_wrap_mode(gtk.WRAP_WORD)
-        self.instructionsDisplay.set_wrap_mode(gtk.WRAP_WORD)
-        self.instructionsDisplay.set_editable(False)
-        self.instructionsDisplay.connect('time-link-activated',
-                                         timeScanner.show_timer_cb,
-                                         self.rg.conv
-                                         )
+        for d in ['instructionsDisplay','modificationsDisplay']:
+            disp = getattr(self,d)
+            disp.set_wrap_mode(gtk.WRAP_WORD)
+            disp.set_editable(False)
+            disp.connect('time-link-activated',
+                         timeScanner.show_timer_cb,
+                         self.rg.conv
+                         )
         self.special_display_functions = {
             'servings':self.updateServingsDisplay,
             'ingredients':self.updateIngredientsDisplay,
@@ -707,10 +712,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                             widg.set_text(convert.seconds_to_timestring(attval))
                     else:
                         widg.set_text(attval)
-                        if attr in ['modifications',#'instructions'
-                                    ]:
-                            widg.set_use_markup(True)
-                            widg.set_size_request(600,-1)
+                        #if attr in ['modifications',#'instructions'
+                        #            ]:
+                        #    widg.set_use_markup(True)
+                        #    widg.set_size_request(600,-1)
                     widg.show()
                     widgLab.show()
                 else:
