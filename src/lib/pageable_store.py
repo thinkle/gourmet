@@ -75,6 +75,10 @@ class PageableListStore (gtk.ListStore):
 
         We return (bottom,top,total)
         """
+        # Don't show an empty page -- if we find ourselves with no
+        # recipes, back up a page automatically.
+        if len(self)==0 and self.page!=0:
+            self.goto_last_page()
         bottom = self.page*self.per_page + 1
         top = self.page*self.per_page+len(self)
         total = self._get_length_()
@@ -357,9 +361,13 @@ class PageableViewStore (PageableListStore):
 
     def change_view (self, vw, length=None):
         self.do_change_view(vw,length=length)
-        if self.page != 0:
-            self.page = 0
-            self.emit('page-changed')                
+        # Don't change the page anymore... it screws up a lot of
+        # things... if we want to change the page during a search for
+        # "usability", then we should do this from higher up so we can
+        # have more fine-grained control of when it happens. 
+        # if self.page != 0:
+        #     self.page = 0
+        #     self.emit('page-changed')                
 
 if gtk.pygtk_version[1]<8:
     gobject.type_register(PageableListStore)

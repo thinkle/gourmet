@@ -164,14 +164,13 @@ class RecIndex:
 
     def rmodel_sort_cb (self, rmodel, sorts):
         self.sort_by = sorts
-        print 'Sorting by ',sorts
         self.last_search = {}
         self.search()
         #self.do_search(None,None)
 
     def create_rmodel (self, vw):
         self.rmodel = RecipeModel(vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
-        self.set_reccount()
+        #self.set_reccount() # This will be called by the rmodel_page_changed_cb
     
     def setup_rectree (self):
         """Create our recipe treemodel."""
@@ -363,8 +362,9 @@ class RecIndex:
         elif self.limitButton: self.limitButton.set_sensitive(False)
         if self.make_search_dic(txt,searchBy) == self.last_search:
             debug("Same search!",0)
-            return        
+            return
         if self.srchentry.window: self.srchentry.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+        debug('Doing new search for %s, last search was %s'%(self.make_search_dic(txt,searchBy),self.last_search),0)
         gobject.idle_add(lambda *args: self.do_search(txt, searchBy))
 
     def make_search_dic (self, txt, searchBy):
@@ -381,7 +381,6 @@ class RecIndex:
     def do_search (self, txt, searchBy):
         if txt and searchBy:
             srch = self.make_search_dic(txt,searchBy)
-            srch['column']=searchBy
             self.last_search = srch.copy()
             self.update_rmodel(self.rd.search_recipes(
                 self.searches + [srch],
