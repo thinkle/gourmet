@@ -148,7 +148,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'rcToggleMult' : self.multTogCB,
             'toggleEdit' : self.saveEditsCB,
             'rcSave' : self.saveAs,
-            # UNDO NOW HANDLES setEdited 'rcEdited' : self.setEdited,
             'setRecImage' : self.ImageBox.set_from_fileCB,
             'delRecImage' : self.ImageBox.removeCB,
             'instrAddImage' : self.addInstrImageCB,
@@ -205,7 +204,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
     def get_widgets (self):
         t=TimeAction('RecCard.get_widgets 1',0)
         self.timeB = self.glade.get_widget('preptimeBox')
-        # UNDO NOW HANDLES setEdited self.timeB.connect('changed',self.setEdited)
         self.nutritionLabel = self.glade.get_widget('nutritionLabel')
         self.nutritionLabel.connect('ingredients-changed',
                                     lambda *args: self.resetIngredients()
@@ -993,7 +991,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def changedCB (self, widget):
         ## This needs to keep track of undo history...
-        # UNDO NOW HANDLES setEdited self.setEdited()
         pass
 
     def get_prop_for_widget (self, widget):
@@ -1227,7 +1224,6 @@ class ImageBox:
                 lambda *args: self.remove_image(),
                 self.rc.history,
                 widget=self.imageW).perform()
-            # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
             self.edited=True
 
     def removeCB (self, *args):
@@ -1246,7 +1242,6 @@ class ImageBox:
         self.image=None
         self.draw_image()
         self.edited=True
-        # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
 
 def add_with_undo (rc,method):
     uts = UndoableTreeStuff(rc.ingtree_ui.ingController)
@@ -1266,26 +1261,35 @@ class UndoableTreeStuff:
         self.ic = ic
 
     def start_recording_additions (self):
+        debug('UndoableTreeStuff.start_recording_additiong',3)        
         self.added = []
+        self.pre_ss = te.selectionSaver(self.ic.rc.ingtree_ui.ingTree)        
         self.connection = self.ic.imodel.connect('row-inserted',
                                                  self.row_inserted_cb)
+        debug('UndoableTreeStuff.start_recording_additiong DONE',3)        
         
     def stop_recording_additions (self):
+        debug('UndoableTreeStuff.stop_recording_additiong',3)                
         self.added = [self.ic.get_persistent_ref_from_iter(i.get_model().get_iter(i.get_path())) for i in self.added]
         self.ic.imodel.disconnect(self.connection)
-
+        debug('UndoableTreeStuff.stop_recording_additiong DONE',3)        
+        
     def undo_recorded_additions (self):
+        debug('UndoableTreeStuff.undo_recorded_additions',3)                
         for a in self.added:
             itr = self.ic.get_iter_from_persistent_ref(a)
             if itr:
                 self.ic.imodel.remove(
                     itr
                     )
+        debug('UndoableTreeStuff.undo_recorded_additions DONE',3)                
 
     def row_inserted_cb (self, tm, path, itr):
         self.added.append(gtk.TreeRowReference(tm,tm.get_path(itr)))
 
     def record_positions (self, iters):
+        debug('UndoableTreeStuff.record_positions',3)                
+        self.pre_ss = te.selectionSaver(self.ic.rc.ingtree_ui.ingTree)        
         self.positions = []
         for i in iters:
             path = self.ic.imodel.get_path(i)
@@ -1299,8 +1303,10 @@ class UndoableTreeStuff:
             parent_ref = parent and self.ic.get_persistent_ref_from_path(parent)
             ref = self.ic.get_persistent_ref_from_iter(i)
             self.positions.append((ref,sib_ref,parent_ref))
+        debug('UndoableTreeStuff.record_positions DONE',3)                
 
     def restore_positions (self):
+        debug('UndoableTreeStuff.restore_positions',3)                        
         for ref,sib_ref,parent_ref in self.positions:
             te.move_iter(self.ic.imodel,
                          self.ic.get_iter_from_persistent_ref(ref),
@@ -1308,6 +1314,8 @@ class UndoableTreeStuff:
                          parent=parent_ref and self.ic.get_iter_from_persistent_ref(parent_ref),
                          direction='after'
                          )
+            self.pre_ss.restore_selections()
+        debug('UndoableTreeStuff.restore_positions DONE',3)                        
 
 class IngredientController:
 
@@ -1428,7 +1436,6 @@ class IngredientController:
             self.imodel.set_value(iter,6,shop_cat)
         elif ingkey and self.rc.rg.sl.orgdic.has_key(ingkey):
             self.imodel.set_value(iter,6,self.rc.rg.sl.orgdic[ingkey])
-        # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
                 
     def add_ingredient (self, ing, prev_iter=None, group_iter=None,
                         fallback_on_append=True, shop_cat=None):
@@ -1517,7 +1524,6 @@ class IngredientController:
             self.rc.history,
             widget=self.imodel,
             )    
-        # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
         u.perform()
 
     def _get_prev_path_ (self, path):
@@ -1952,7 +1958,7 @@ class IngredientTreeUI:
         u.perform()
         
     def ingtree_start_keyedit_cb (self, renderer, cbe, path_string):
-        debug('ingtree_start',0)
+        debug('ingtree_start_keyedit_cb',0)
         indices = path_string.split(':')
         path = tuple( map(int, indices))
         store = self.ingTree.get_model()
@@ -2006,29 +2012,32 @@ class IngredientTreeUI:
         mod=self.ingTree.get_model()
         if drop_info:
             path, position = drop_info
-            diter = mod.get_iter(path)
-            dest_ing=mod.get_value(diter,0)
+            dref = self.ingController.get_persistent_ref_from_path(path)
+            dest_ing=mod.get_value(mod.get_iter(path),0)
             if type(dest_ing) in [str,unicode]: group=True
             else: group=False
-            debug('drop_info good, GROUP=%s'%group,5)
-            #new_iter=mod.append(None)
-            #path=mod.get_path(new_iter)
         else:
-            diter = None
+            dref = None
             group = False
             position = None
         if str(selection.target) == 'GOURMET_INTERNAL':
             # if this is ours, we move it
-             # all things must go backwards in treeView land...
             uts = UndoableTreeStuff(self.ingController)
             selected_iter_refs = [
                 self.ingController.get_persistent_ref_from_iter(i) for i in self.selected_iter
                 ]
             def do_move ():
+                debug('do_move - inside dragIngsRecCB ',3)
+                debug('do_move - get selected_iters from - %s '%selected_iter_refs,3)
+                if dref:
+                    diter = self.ingController.get_iter_from_persistent_ref(dref)
+                else:
+                    diter = None
                 selected_iters = [
                     self.ingController.get_iter_from_persistent_ref(r) for r in selected_iter_refs
                     ]
-                uts.record_positions(selected_iters)
+                uts.record_positions(selected_iters)                
+                debug('do_move - we have selected_iters - %s '%selected_iters,3)
                 selected_iters.reverse()
                 if (group and
                     (position==gtk.TREE_VIEW_DROP_INTO_OR_BEFORE
@@ -2044,8 +2053,18 @@ class IngredientTreeUI:
                         te.move_iter(mod,i,sibling=diter,direction="before")
                 else:
                     for i in selected_iters:
-                        te.move_iter(mod,i,sibling=diter,direction="after")    
-                # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
+                        te.move_iter(mod,i,sibling=diter,direction="after")
+                debug('do_move - inside dragIngsRecCB - move selections',3)
+                self.ingTree.get_selection().unselect_all()
+                for r in selected_iter_refs:
+                    i = self.ingController.get_iter_from_persistent_ref(r)
+                    if not i:
+                        print 'Odd - I get no iter for ref',r
+                        import traceback; traceback.print_stack()
+                        print 'Strange indeed! carry on...'
+                    else:
+                        self.ingTree.get_selection().select_iter(i)
+                debug('do_move - inside dragIngsRecCB - DONE',3)
             Undo.UndoableObject(
                 do_move,
                 uts.restore_positions,
@@ -2059,19 +2078,25 @@ class IngredientTreeUI:
             lines.reverse()
             if (position==gtk.TREE_VIEW_DROP_BEFORE or
                 position==gtk.TREE_VIEW_DROP_INTO_OR_BEFORE and not group):
-                pre_path = te.path_next(mod.get_path(diter),-1)
+                pre_path = te.path_next(self.ingController.get_path_from_persistent_ref(dref),-1)
                 if pre_path:
                     itr_ref = self.ingController.get_persistent_ref_from_path(pre_path)
                 else:
                     itr_ref = None
             else:
-                itr_ref = self.ingController.get_persistent_ref_from_iter(diter)
+                itr_ref = dref
             def do_add ():
                 for l in lines:
-                    self.rc.add_ingredient_from_line(
-                        l,
-                        group_iter=self.ingController.get_iter_from_persistent_ref(itr_ref)
-                        )
+                    if group: 
+                        self.rc.add_ingredient_from_line(
+                            l,
+                            group_iter=self.ingController.get_iter_from_persistent_ref(itr_ref)
+                            )
+                    else:
+                        self.rc.add_ingredient_from_line(
+                            l,
+                            prev_iter=self.ingController.get_iter_from_persistent_ref(itr_ref)
+                            )
             add_with_undo(self.rc,do_add)
         #self.commit_positions()
         debug("restoring selections.")
@@ -2147,7 +2172,6 @@ class IngredientTreeUI:
             itera = ts.get_iter(p)
             moveup(ts,p,itera)
         tt.restore_selections()
-        # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
         
     def ingDownMover (self, paths):
         ts = self.ingController.imodel
@@ -2165,7 +2189,6 @@ class IngredientTreeUI:
             itera = ts.get_iter(p)
             movedown(ts,p,itera)
         tt.restore_selections()
-        # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
 
     # Edit Callbacks
     def changeUnit (self, new_unit, ingdict):
@@ -2290,7 +2313,6 @@ class IngredientTreeUI:
                 )
             gi = self.ingController.get_persistent_ref_from_iter(itr)
             self.ingTree.expand_row(self.ingController.imodel.get_path(itr),True)
-            # UNDO NOW HANDLES setEdited self.rc.setEdited(True)
         def do_unadd_group ():
             gi = 'GROUP '+group_name  #HACK HACK HACK
             self.ingController.imodel.remove(
@@ -2305,7 +2327,7 @@ class IngredientTreeUI:
 
     def change_group (self, iter, text):
         debug('Undoable group change: %s %s'%(iter,text),3)
-        model = self.ingtree_ui.ingController.imodel
+        model = self.ingController.imodel
         oldgroup0 = model.get_value(iter,0)
         oldgroup1 = model.get_value(iter,1)
         def change_my_group ():
@@ -2316,7 +2338,6 @@ class IngredientTreeUI:
             model.set_value(iter,1,oldgroup1)
         obj = Undo.UndoableObject(change_my_group,unchange_my_group,self.history)
         obj.perform()    
-        # UNDO NOW HANDLES setEdited self.setEdited(True)
 
 class IngredientEditor:
     def __init__ (self, RecGui, rc):
