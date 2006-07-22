@@ -1503,11 +1503,20 @@ class IngredientController:
 
     #def change_group (self, name,
     def delete_iters (self, *iters):
-        print 'delete iters ',iters
         refs = []
         undo_info = []
+        paths = [self.imodel.get_path(i) for i in iters]
         for itr in iters:
             orig_ref = self.get_persistent_ref_from_iter(itr)
+            # We don't want to add children twice, once as a
+            # consequent of their parents and once because they've
+            # been selected in their own right.
+            parent = self.imodel.iter_parent(itr)
+            parent_path =  parent and self.imodel.get_path(parent)
+            if parent_path in paths:
+                # If our parent is in the iters to be deleted -- we
+                # don't need to delete it individual
+                continue
             refs.append(orig_ref)
             deleted_dic,prev_ref,ing_obj = self._get_undo_info_for_iter_(itr)
             child = self.imodel.iter_children(itr)
@@ -1522,13 +1531,14 @@ class IngredientController:
                 children.append(self._get_undo_info_for_iter_(child))
                 child = self.imodel.iter_next(child)
             undo_info.append((deleted_dic,prev_ref,ing_obj,children,expanded))
-        print 'PERFORM DELETION',refs
+
         u = Undo.UndoableObject(
             lambda *args: self.do_delete_iters(refs),
             lambda *args: self.do_undelete_iters(undo_info),
             self.rc.history,
             widget=self.imodel,
-            )    
+            )
+        debug('IngredientController.delete_iters Performing deletion of %s'%refs,2)
         u.perform()
 
     def _get_prev_path_ (self, path):
