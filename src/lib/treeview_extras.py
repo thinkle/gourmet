@@ -161,8 +161,12 @@ class selectionSaver:
         """Add iter to list of selected items"""
         v = self.model.get_value(iter,self.uc)
         self.selected.append(v)
-        self.expanded[v] = self.tv.row_expanded(self.model.get_path(iter))
-
+        try:
+            self.expanded[v] = self.tv.row_expanded(self.model.get_path(iter))
+        except TypeError:
+            print 'Hmmm, perhaps ',v,"isn't hashable."
+            raise
+        
     def rem_selection (self, iter):
         """Remove iter from list of selected items. Silently do nothing if
         handed an iter that wasn't selected in the first place."""
@@ -206,14 +210,6 @@ class selectionSaver:
                         iter = self.model.iter_next(parent)
                     else:
                         iter = None
-        #    #if iter: print 'walking...',self.model.get_path(iter)
-        #    
-        #if new_paths:
-        #    self.tv.scroll_to_cell(new_paths[0])
-        #if len(new_paths) > 1:
-        #    # we try to get all cells visible if possible... if not,
-        #    # we leave the last cell in view
-        #    self.tv.scroll_to_cell(new_paths[-1])
             
 class TreeViewConf:
     """Handed a treeView and two configuration items, this class allows
