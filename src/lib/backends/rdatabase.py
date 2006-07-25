@@ -393,6 +393,14 @@ class RecData:
         """
         return None
 
+
+    def row_equal (self, r1, r2):
+        """Test whether two row references are the same.
+
+        Return True if r1 and r2 reference the same row in the database.
+        """
+        return r1==r2
+    
     # convenience DB access functions for working with ingredients,
     # recipes, etc.
 

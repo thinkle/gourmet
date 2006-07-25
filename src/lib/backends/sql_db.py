@@ -114,7 +114,7 @@ class RecData (rdatabase.RecData):
         else:
             where,params = '',[]
         cursor = self.connection.cursor()
-        column_names = self.columns[table]
+        column_names = self.columns[table] + ['rowid']
         sql = 'SELECT ' + (distinct and 'DISTINCT ' or '') + ', '.join(column_names) + ' FROM '+table+' '+where
         if sort_by:
             sql += ' '+self.make_order_by_statement(sort_by)+' '
@@ -433,6 +433,27 @@ class RecData (rdatabase.RecData):
                      d.values()
                      )
         return rowid
+
+    def row_equal (self, r1, r2):
+        """Test whether two row references are the same.
+
+        Return True if r1 and r2 reference the same row in the database.
+
+        We assume our caller has actually taken care that r1 and r2
+        come from the same table -- we only compare one property
+        (idprop) assuming that either r1 or r2 have an __idprop__ and
+        that both rows have the column specified by __idprop__.
+        """
+        idprop = (hasattr(r1,'__idprop__') and r1.__idprop__
+                  or
+                  hasattr(r2,'__idprop__') and r2.__idprop__
+                  or
+                  'rowid'
+                  )
+        if hasattr(r1,idprop) and hasattr(r2,idprop):
+            return getattr(r1,idprop) == getattr(r2,idprop)
+        else:
+            return False
 
 class RowObject:
     def __init__ (self, column_names, columns):
