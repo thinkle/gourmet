@@ -1160,11 +1160,30 @@ class ImageBox:
         self.image = None
 
     def get_image (self, rec=None):
+        """Set image based on current recipe."""
         debug("get_image (self, rec=None):",5)
         if not rec:
             rec=self.rc.current_rec
         if rec.image:
-            self.set_from_string(rec.image)
+            try:
+                self.set_from_string(rec.image)
+            except:
+                print 'Problem with image from recipe.'
+                print 'Moving ahead anyway.'
+                print 'Here is the traceback'
+                import traceback; traceback.print_exc()
+                print "And for your debugging convenience, I'm dumping"
+                print "a copy of the faulty image in /tmp/bad_image.jpg"
+                import tempfile
+                try:
+                    dumpto = os.path.join(tempfile.tempdir,'bad_image.jpg')
+                    ofi = file(dumpto,'w')
+                    ofi.write(rec.image)
+                    ofi.close()
+                except:
+                    print 'Nevermind -- I had a problem dumping the file.'
+                    traceback.print_exc()
+                    print '(Ignoring this traceback...)'
         else:
             self.image=None
             self.hide()
