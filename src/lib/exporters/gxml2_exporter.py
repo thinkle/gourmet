@@ -93,6 +93,7 @@ class rec_to_xml (XmlExporter):
         self.inglist_el = group_el
         
     def write_groupfoot (self):
+        self.top_inglist.appendChild(self.inglist_el)
         self.inglist_el = self.top_inglist
     
 
