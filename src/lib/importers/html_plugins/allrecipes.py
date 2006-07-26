@@ -17,7 +17,9 @@ RULES = [
      ],
     ['ingredient_block',
      [{'tag':'ul',
-       'attributes':{'class':'arlist','style':'list-style: none;'}
+       'attributes':{'class':'arlist2',
+                     #'style':'list-style: none;'
+                     }
        },
       {'tag':'li',
        'index':[0,None]}
@@ -31,7 +33,7 @@ RULES = [
      ],
     ['instructions',
      [{'tag':'ol',
-       'attributes':{'class':'arlist'},
+       'attributes':{'class':'arlist2'},
        },
       {'tag':'li',
        'index':[0,None],
