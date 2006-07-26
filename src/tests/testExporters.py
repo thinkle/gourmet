@@ -1,5 +1,6 @@
+import test
 import os,os.path
-DIR = os.path.abspath('exporters/reference_setup/')
+DIR = os.path.abspath('reference_setup/')
 TEST_FILE_DIRECTORY = os.path.join(DIR,'recipes.db')
 import gglobals
 
@@ -13,7 +14,7 @@ import exporters
 import tempfile
 import traceback
 import unittest
-import tempfile
+import re
 
 OUTPUT_DIRECTORY = os.path.join(
     '/tmp',
@@ -27,6 +28,66 @@ if os.path.exists(OUTPUT_DIRECTORY):
 
 if not os.path.exists(OUTPUT_DIRECTORY): os.makedirs(OUTPUT_DIRECTORY)
 
+def confirm_strings_are_in_file (ss, fi):
+    whole_file = file(fi,'r').read()
+    for s in ss:
+        try:
+            assert(re.search(s,whole_file))
+        except:
+            raise AssertionError('Fail to find %s in exported file %s.'%(s,fi))
+
+confirmation_tests = {
+    # These are extra tests that should be run -- each method must
+    # take the filename of the exported file as its argument and raise
+    # an error if it fails
+
+    # Gourmet File Format Test
+    'Gourmet XML File':lambda f: confirm_strings_are_in_file([
+    '''<recipe\s*id="2">\s*<title>\s*Ranges\s*</title>''',
+    '''<ingref amount="1" refid="2">\s*Ranges\s*</ingref>''',
+    # Nested ingredients...
+    '''<inggroup>\s*<groupname>\s*Dressing\s*</groupname>\s*<ingredient>\s*<amount>\s*1/2\s*</amount>\s*<unit>\s*tsp\.\s*</unit>\s*<item>\s*red pepper flakes\s*</item>\s*<key>\s*red pepper flakes\s*</key>\s*</ingredient>''',
+    # Image
+    '''<image format="jpeg">\s*<!\[CDATA\[/9j''',
+    # Times
+    '''<cooktime>\s*20 minutes''',
+    '''<preptime>\s*1/2 hour''',
+    '''<rating>\s*4/5 stars''',
+    '''<servings>\s*4\s*''',
+    '''<category>\s*Dessert''',
+    '''<cuisine>\s*Asian/Chinese''',
+    # Formatting
+    re.escape('''&amp;amp;lt;i&amp;amp;gt;But this should be in italics'''),
+    re.escape('''&amp;amp;lt;b&amp;amp;gt;And this should be in bold'''),
+    ],
+                                                  f),
+    # End Gourmet File Format Test
+
+    # MealMaster test
+    'MealMaster file': lambda f: confirm_strings_are_in_file([
+    # formatting
+    re.escape('''*But this should be in italics*'''),
+    '''AND THIS SHOULD BE IN BOLD''',
+    'Title: Ranges', # title
+    '1\s*recipe\s*Ranges', # recipe reference
+    '-+DRESSING-+\s*1/2\s*t\s*red pepper flakes' # Ingredient group
+    ],
+                                                             f),
+
+    # RTF Tests
+    'RTF':lambda f: confirm_strings_are_in_file([
+    # Formatting
+    '\\i.*But this should be in italics',
+    '\\b.*And this should be in bold',
+    '1 recipe Ranges', #Recipe reference
+    re.escape('\pict{\jpegblip'), #Image
+    ],
+                                                f)
+    # End RTF Tests
+    
+    # End MealMaster test
+
+    }
 
 
 class ExportTest:
@@ -68,7 +129,7 @@ class ExportTest:
         self.db = rm.RecipeManager(**rm.dbargs)
         if self.db.fetch_len(self.db.rview)==0: raise "No recipes in database."
         self.mult_export_args = {'rd':self.db,
-                                 'rv':self.db.rview,
+                                 'rv':self.db.fetch_all(self.db.rview),
                                  'conv':None,
                                  'prog':None,
                                  }
@@ -84,8 +145,11 @@ class ExportTest:
                                     '.'.join([k,str(n)])
                                     )
         self.mult_export_args['file']=new_file
-        print 'Testing export ',k,'to',new_file
+        print 'Testing export ',k,'to',new_file,self.mult_export_args
         exporters.exporter_dict[k]['mult_exporter'](self.mult_export_args.copy()).run()
+        if confirmation_tests.has_key(k):
+            print 'Running confirmation test on ',k
+            confirmation_tests[k](new_file) # Test!
         print 'Done!'
 
     def test_all_exports (self):
@@ -95,7 +159,7 @@ class ExportTest:
 
 def add_export_test_cases (name, bases, attrs):
     def make_method (k):
-        def _ (self): self.it.test_export(k)
+        def _ (self): self.et.test_export(k)
         return _
     for k in exporters.exporter_dict:
         method_name = 'test'+k.replace(' ','')
@@ -103,14 +167,24 @@ def add_export_test_cases (name, bases, attrs):
     print "Our class has attrs:",attrs
     return type(name,bases,attrs)
 
+et = None
+
 class ExportTestCase (unittest.TestCase):
 
-    __metaclass__ = add_export_test_cases
+    __metaclass__ = add_export_test_cases # Makes us testFoo methods
+                                          # for each type of Foo we
+                                          # support
 
     def setUp (self):
         print 'setUp'
-        self.it = ExportTest()
-        self.it.setup_db()
+        global et
+        if not et:
+            print 'Initialize DB'
+            et = self.et = ExportTest()
+            self.et.setup_db()
+        else:
+            print 'Use previously initialized DB'
+            self.et = et
 
     #def testAllExports (self):
     #    self.it.test_all_exports()
