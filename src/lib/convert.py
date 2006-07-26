@@ -459,6 +459,17 @@ class converter:
         break some languages(?). We'll build the parameter in when the
         time comes...
         """
+        # Before we do our real work, parse times that look like this 0:30
+        # Note the following will be true
+        # 1:30 = 1 1/2 hours
+        # 00:00:20 = 20 seconds
+        if re.match('^\d\d?:\d\d(:\d\d)?',timestring):
+            times = [locale.atof(s) for s in timestring.split(':')]
+            if len(times) == 3:
+                h,m,s = times
+            else:
+                h,m = times; s = 0
+            return h*60*60 + m*60 + s
         numbers = []
         for match in NUMBER_FINDER.finditer(timestring):
             if numbers: numbers[-1].append(match.start())
