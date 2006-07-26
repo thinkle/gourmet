@@ -470,19 +470,20 @@ class RatingConverter:
     user convert those to stars as they see fit.
     """
     
-    conversions = {'excellent':5,
-                   'great':4,
-                   'good':3,
-                   'fair':2,
-                   'okay':2,
-                   'poor':1,
-                   _('Excellent').lower():5,
-                   _('Great').lower():4,
-                   _('Good').lower():3,
-                   _('Fair').lower():2,
-                   _('Poor').lower():1,
-                   _('Okay').lower():2,
+    conversions = {'excellent':10,
+                   'great':8,
+                   'good':6,
+                   'fair':4,
+                   'okay':4,
+                   'poor':2,
+                   _('Excellent').lower():10,
+                   _('Great').lower():8,
+                   _('Good').lower():6,
+                   _('Fair').lower():4,
+                   _('Okay').lower():4,
+                   _('Poor').lower():2,
                    }
+    
     
 
     def __init__ (self):
@@ -507,7 +508,10 @@ class RatingConverter:
         for v in self.to_convert.values():
             if not need_conversions and not self.conversions.has_key(v.lower()):
                 need_conversions = True
-            if not v in ratings: ratings.append(v)
+            if v not in ratings:
+                ratings.append(v)
+                conv = string_to_rating(v)
+                if conv: self.conversions[v] = conv
         if need_conversions:
             self.conversions = de.get_ratings_conversion(ratings,star_generator,defaults=self.conversions)
 
@@ -517,7 +521,9 @@ class RatingConverter:
             self.get_conversions()
         for id,rating in self.to_convert.items():
             try:
-                db.modify_rec(db.get_rec(id),{'rating':self.conversions[str(rating).lower()]})
+                if not self.conversions.has_key(rating) and hasattr(rating,'lower') and self.conversions.has_key(rating.lower()):
+                    rating = rating.lower()
+                db.modify_rec(db.get_rec(id),{'rating':self.conversions[rating]})
             except:
                 print 'wtf... problem with rating ',rating,'for recipe',id
                 raise
