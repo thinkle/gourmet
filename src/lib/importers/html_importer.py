@@ -180,10 +180,10 @@ class BeautifulSoupScraper:
                 else: get_to += 1
             if get_to:
                 ret = base.fetch(step.get('tag'),
-                                 step.get('attributes'),
+                                 step.get('attributes',{}),
                                  get_to)
             else:
-                ret = base.fetch(step.get('tag'),step.get('attributes'))
+                ret = base.fetch(step.get('tag'),step.get('attributes',{}))
         if ret:
             # if we have moveto, we do it with our index -- for
             # example, if we have step['moveto']='parent', we grab the
@@ -531,4 +531,3 @@ class WebPageImporter (importer.importer):
         self.commit_rec()
         if self.prog: self.prog(1,_('Import complete.'))
 
-    
