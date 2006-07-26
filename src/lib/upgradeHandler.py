@@ -1,5 +1,7 @@
 import gourmet.recipeManager as recipeManager
-import pickle, os, re, types
+import pickle, os, re, types, base64
+
+B64_ENCODE = ['image','thumb']
 
 def load_recmanager ():
     return recipeManager.RecipeManager(**recipeManager.dbargs)
@@ -25,6 +27,7 @@ def get_tables (rm):
         tables.append((d[0],table_object,columns))
     return tables
 
+# A flag we sincerely hope none of our data contains!
 marker = "GOURMET_EXPORT_OUTPUT_" 
 
 class SimpleExporter:
@@ -33,7 +36,6 @@ class SimpleExporter:
         self.prog = prog
         self.partial = 0
 
-    # A flag we sincerely hope none of our data contains!
     def write_data (self, outfi, recmanager = None):
         self.outfi = outfi
         if recmanager:
@@ -61,11 +63,16 @@ class SimpleExporter:
             for c,typ in columns:
                 self.outfi.write(
                     '\n'+marker+'START_FIELD: '+c+'\n'
-                    )                
+                    )
                 try:
-                    self.outfi.write(
-                        pickle.dumps(getattr(row,c))
-                        )
+                    if c in B64_ENCODE:
+                        self.outfi.write(
+                            pickle.dumps(base64.encodestring(getattr(row,c)))
+                            )
+                    else:
+                        self.outfi.write(
+                            pickle.dumps(getattr(row,c))
+                            )
                 except:
                     print "Problem with %(name)s %(table_object)s %(row)s %(c)s"%locals()
                     raise
@@ -174,11 +181,22 @@ class DatabaseAdapter:
         for to_buffer in ['image','thumb']:
             if row.has_key(to_buffer) and row[to_buffer]:
                 row[to_buffer]=buffer(row[to_buffer])
-        if row.has_key('image') and not row.has_key('thumb'):
+        if ((row.has_key('image') and row['image'])
+            and
+            (not row.has_key('thumb') or not row['thumb'])
+            ):
+            # Some old versions of Gourmet had a bug that prevented
+            # proper thumbnail creation. If our user has images with
+            # no thumbnails, we will kindly create the thumbnails for
+            # them.
             import ImageExtras
             img = ImageExtras.get_image_from_string(row['image'])
-            thumb = ImageExtras.resize_image(img,40,40)
-            row['thumb'] = buffer(ImageExtras.get_string_from_image(thumb))
+            if not img:
+                print 'Odd -- no image for ',row.get('title','Untitled?')
+            else:
+                thumb = ImageExtras.resize_image(img,40,40)
+                print 'Adding thumbnail to',row.get('title','Untitled?')
+                row['thumb'] = buffer(ImageExtras.get_string_from_image(thumb))
         for c in ['title','cuisine','source']:
             if row.get(c,None):
                 row[c]=row[c].strip()
@@ -223,16 +241,18 @@ def import_backup_file (rm, backup_file, prog=None):
             elif action.find('END_FIELD: ')==0:
                 try:
                     row[col]=pickle.loads(buf)
-                    if type(row[col]) in types.StringTypes:
+                    if col in B64_ENCODE:
+                        row[col] = base64.decodestring(row[col])
+                    if type(row[col]) in types.StringTypes and col not in ['image','thumb']:
                         try:
                             row[col] = row[col].decode()
                         except UnicodeDecodeError:
                             print 'Warning - unicode funkiness with:'
                             try:
-                                print '\t',row[col]
+                                print '\t',col,row[col][:80]
                             except:
                                 print "\t(something so funky I can't print it)"
-                                print "\t',row[col].decode('ascii','replace')"
+                                print "\t",row[col].decode('ascii','replace')[:80]
                             row[col] = row[col].decode('utf8','replace')
                 except:
                     print 'Error unpickling',buf
