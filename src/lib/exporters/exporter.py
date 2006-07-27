@@ -202,7 +202,6 @@ class exporter:
                 else:
                     ret = "%s/5 %s"%(ret/2.0,_('stars'))
             elif attr=='servings' and type(ret)!=str:
-                print 'USING',self.fractions
                 ret = convert.float_to_frac(ret,fractions=self.fractions)
             if type(ret) in [str,unicode] and attr not in ['thumb','image']:
                 try:
