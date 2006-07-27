@@ -1,85 +1,48 @@
-<!ENTITY % customatt 
- "id ID #REQUIRED">
-<!ENTITY amp " and ">
+<!ELEMENT gourmetDoc ( recipe+ ) >
 
-<!ELEMENT recipeDoc (recipeHead, recipe-list+)>
+<!ELEMENT amount ( #PCDATA ) >
 
-<!ELEMENT recipeHead
- (categoryDecl, cuisineDecl?, sourceDecl?)>
+<!ELEMENT category ( #PCDATA ) >
 
-<!ELEMENT categoryDecl (category)+>
-<!ELEMENT category  (#PCDATA)*>
-<!ATTLIST category %customatt;>
-<!ELEMENT cuisineDecl (cuisine+)>
-<!ELEMENT cuisine (#PCDATA)*>
-<!ATTLIST cuisine %customatt;>
-<!ELEMENT sourceDecl  (source+)>
-<!ELEMENT source (#PCDATA)*>
-<!ATTLIST source %customatt;>
+<!ELEMENT cooktime ( #PCDATA ) >
 
-<!ELEMENT recipe-list
-(recipe-list+ | recipe+)>
+<!ELEMENT cuisine ( #PCDATA ) >
 
-<!ATTLIST recipe-list
- source CDATA #IMPLIED
- description CDATA #IMPLIED>
+<!ELEMENT image ( #PCDATA ) >
+<!ATTLIST image format NMTOKEN #REQUIRED >
 
-<!ELEMENT recipe
-(title, instructions?, modifications?, ingredient-list)>
-<!ATTLIST recipe
-  date    CDATA #IMPLIED
-  audience (open | restricted | private) #IMPLIED
-  cuisine IDREF #IMPLIED
-  servings CDATA #IMPLIED
-  preptime CDATA #IMPLIED
-  rating CDATA #IMPLIED
-  description CDATA #IMPLIED
-  category IDREF #IMPLIED
-  source IDREF #IMPLIED
-  id     ID  #IMPLIED>
 
-<!ELEMENT title (#PCDATA)*>
-<!ELEMENT instructions (#PCDATA | temp | step)*>
-<!ELEMENT step (#PCDATA |temp |step)*>
-<!ELEMENT temp (#PCDATA)*>
-<!ATTLIST temp
- unit (kelvin | celsius | fahrenheit) 'kelvin'
- normalized CDATA #IMPLIED>
-<!ELEMENT modifications
- (#PCDATA | step | temp)*>
-<!ATTLIST modifications
-  source IDREF #IMPLIED
-  date CDATA #IMPLIED>
+<!ELEMENT ingredient ( amount | item | key | unit )* >
+<!ATTLIST ingredient optional NMTOKEN #IMPLIED >
 
-<!ELEMENT ingredient-list
- ((inggroup+ | ingredient | ingref)+)>
+<!ELEMENT inggroup (groupname, (ingredient | ingref)+) >
 
-<!ELEMENT inggroup (ingredient | ingref)+>
-<!ATTLIST inggroup 
-  name CDATA #REQUIRED>
+<!ELEMENT ingredient-list ( ingredient | ingref | inggroup)* >
 
-<!ELEMENT ingref (#PCDATA)*>
-<!ATTLIST ingref
-  refid IDREF #REQUIRED
-  amount CDATA #IMPLIED>
-  
-<!ELEMENT ingredient
- (amount, item)>
-<!ATTLIST ingredient
- optional (yes | no) 'no'>
+<!ELEMENT ingref ( #PCDATA ) >
+<!ATTLIST ingref amount CDATA #REQUIRED 
+          ingref refid NMTOKEN #REQUIRED >
 
-<!ELEMENT amount
- (#PCDATA)*>
-<!ATTLIST amount
- unit CDATA #IMPLIED
- norm CDATA #IMPLIED
->
+<!ELEMENT instructions ( #PCDATA ) >
 
-<!ELEMENT item
- (#PCDATA)*>
-<!ATTLIST item
- key CDATA #REQUIRED
- alternative CDATA #IMPLIED
- sameas IDREF #IMPLIED>
+<!ELEMENT item ( #PCDATA ) >
 
+<!ELEMENT key ( #PCDATA ) >
+
+<!ELEMENT modifications ( #PCDATA ) >
+
+<!ELEMENT preptime ( #PCDATA ) >
+
+<!ELEMENT rating ( #PCDATA ) >
+
+<!ELEMENT servings ( #PCDATA ) >
+
+<!ELEMENT recipe ( title, category?, cuisine?, source?, rating?, preptime?, cooktime?, servings?, image?, ingredient-list, instructions?, modifications? ) >
+<!ATTLIST recipe id NMTOKEN #REQUIRED >
+
+<!ELEMENT source ( #PCDATA ) >
+
+<!ELEMENT title ( #PCDATA ) >
+
+<!ELEMENT unit ( #PCDATA ) >
 
