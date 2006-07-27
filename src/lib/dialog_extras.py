@@ -238,7 +238,6 @@ class EntryDialog (ModalDialog):
                 self.label.set_width_chars(default_character_width)
             if hasattr(self,'sublabel') and hasattr(self.sublabel,'set_width_chars'):
                 self.sublabel.set_width_chars(default_character_width)
-        if default_value: self.entry.set_text(default_value)
         self.hbox.add(self.entry)
         self.entry.set_flags(gtk.CAN_DEFAULT)
         self.entry.grab_default()
@@ -249,6 +248,10 @@ class EntryDialog (ModalDialog):
             self.tt = gtk.Tooltips()
             self.tt.set_tip(self.entry,entryTip)
         self.entry.connect("changed",self.update_value)
+        # Set the default value after connecting our handler so our
+        # value gets updated!
+        if default_value:
+            self.entry.set_text(default_value)
         self.entry.show_all()
         self.entry.show()
         self.widget_that_grabs_focus = self.entry
