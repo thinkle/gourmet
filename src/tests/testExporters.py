@@ -1,6 +1,6 @@
 import test
 import os,os.path
-DIR = os.path.abspath('reference_setup/')
+DIR = os.path.abspath(os.path.join(os.path.split(__file__)[0],'reference_setup/'))
 TEST_FILE_DIRECTORY = os.path.join(DIR,'recipes.db')
 import gglobals
 
@@ -17,7 +17,7 @@ import unittest
 import re
 
 OUTPUT_DIRECTORY = os.path.join(
-    '/tmp',
+    tempfile.tempdir,
     'export_tests')
 OUTPUT_DIRECTORY = os.path.join(OUTPUT_DIRECTORY,
                                 time.strftime('%d.%m.%y'))
