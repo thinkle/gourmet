@@ -252,13 +252,14 @@ NAME_TO_ATTR = {_('Instructions'):'instructions',
                 }
 
 DEFAULT_ATTR_ORDER = ['title',
+                      'servings',
+                      'cooktime',
+                      'preptime',
                       'category',
                       'cuisine',
-                      'servings',
-                      'source',
                       'rating',
-                      'preptime',
-                      'cooktime',]
+                      'source',
+                      ]
 
 DEFAULT_TEXT_ATTR_ORDER = ['instructions',
                            'modifications',]
