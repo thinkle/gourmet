@@ -8,23 +8,22 @@ class XmlExporter (exporter_mult):
     #doctype_desc = ''
     #dtd_path = ''
 
-    def __init__ (self, rd, r, out, conv=None,
+    def __init__ (self, rd, r, out,
                   order=['attr','image','ings','text'],
-                  change_units=True,
-                  mult=1,
-                  xmlDoc = None):
+                  xmlDoc=None,
+                  **kwargs):
         if xmlDoc:
             self.xmlDoc = xmlDoc
             self.i_created_this_document = False
             self.top_element = self.xmlDoc.childNodes[1]
         else:
             self.create_xmldoc()
-        exporter_mult.__init__(self, rd,r,out, use_ml=True,
-                                        convert_attnames=False,
-                                        order=order,
-                                        do_markup=True,
-                                        change_units=change_units,
-                                        mult=mult)
+        exporter_mult.__init__(self, rd,r,out,
+                               use_ml=True,
+                               convert_attnames=False,
+                               do_markup=True,
+                               order=order,
+                               **kwargs)
 
     def create_xmldoc (self):
         self.i_created_this_document = True
@@ -44,8 +43,13 @@ class XmlExporter (exporter_mult):
         element.setAttribute(attribute,value)
         
     def append_text (self, element, text):
-        t = self.xmlDoc.createTextNode(xml.sax.saxutils.escape(text))
-        element.appendChild(t)
+        try:
+            t = self.xmlDoc.createTextNode(xml.sax.saxutils.escape(text))
+            element.appendChild(t)
+        except:
+            print 'FAILED WHILE WORKING ON ',element
+            print 'TRYING TO APPEND',text[:100]
+            raise
             
     def create_text_element (self, element_name, text, attrs={}):
         element = self.create_element_with_attrs(element_name,attrs)

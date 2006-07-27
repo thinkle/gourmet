@@ -109,7 +109,14 @@ class rview_to_xml (exporter.ExporterMultirec, XmlExporter):
             progress_func=progress_func,
             exporter_kwargs={'change_units':change_units,
                              'mult':mult,
-                             'xmlDoc':self.xmlDoc
+                             'xmlDoc':self.xmlDoc,
+                             # This order is now in our DTD so we'd
+                             # better make it solid.
+                             'attr_order':('title','category',
+                                           'cuisine','source',
+                                           'rating','preptime',
+                                           'cooktime','servings'),
+                             'order':['attr','image','ings','text'],
                              }
             )
         
