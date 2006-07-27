@@ -19,12 +19,14 @@ def load_gnomeprint ():
         return True
 
 def load_wxprint ():
-    try:
-        print 'importing wxprinter'
-        global RecRenderer,SimpleWriter
-        from wxprinter import RecRenderer, SimpleWriter
-    except:
-        return True
+    # We don't want to use wxprint anymore -- it crashes
+    return True
+    #try:
+    #    print 'importing wxprinter'
+    #    global RecRenderer,SimpleWriter
+    #    from wxprinter import RecRenderer, SimpleWriter
+    #except:
+    #    return True
 
 def load_lprprint ():
     global RecRenderer,SimpleWriter

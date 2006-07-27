@@ -33,20 +33,8 @@ class rtf_exporter (exporter.exporter_mult):
                   doc=None,
                   multidoc=False,
                   ss=None):
-        if doc: self.doc=doc        
-        else: self.doc = PyRTF.Document()
-        self.multidoc=multidoc        
-        if ss: self.ss=ss
-        else: self.ss = self.doc.StyleSheet
-        self.ss.ParagraphStyles.Normal.TextStyle.TextPropertySet.Font = self.ss.Fonts.TimesNewRoman
-        self.ss.ParagraphStyles.Heading1.TextStyle.TextPropertySet.Bold = True
-        if not hasattr(self.ss.ParagraphStyles, 'Heading3'):
-            ps = PyRTF.ParagraphStyle('Heading 3',
-                                      PyRTF.TextStyle(PyRTF.TextPropertySet(self.ss.Fonts.Arial, 22)),
-                                      PyRTF.ParagraphPropertySet( space_before=240,
-                                                                  space_after = 60),
-                                      )
-            self.ss.ParagraphStyles.append( ps )
+        self.setup_document(doc,ss)
+        self.multidoc=multidoc
         exporter.exporter_mult.__init__(self, rd, r, out,
                                         conv=conv,
                                         imgcount=imgcount,
@@ -57,10 +45,24 @@ class rtf_exporter (exporter.exporter_mult):
                                         do_markup=False #we'll handle this internally...
                                         )
 
+    def setup_document (self, doc=None, ss=None):
+        if doc: self.doc=doc        
+        else: self.doc = PyRTF.Document()
+        if ss: self.ss=ss
+        else: self.ss = self.doc.StyleSheet
+        self.ss.ParagraphStyles.Normal.TextStyle.TextPropertySet.Font = self.ss.Fonts.TimesNewRoman
+        self.ss.ParagraphStyles.Heading1.TextStyle.TextPropertySet.Bold = True
+        if not hasattr(self.ss.ParagraphStyles, 'Heading3'):
+            ps = PyRTF.ParagraphStyle('Heading 3',
+                                      PyRTF.TextStyle(PyRTF.TextPropertySet(self.ss.Fonts.Arial, 22)),
+                                      PyRTF.ParagraphPropertySet( space_before=240,
+                                                                  space_after = 60),
+                                      )
+            self.ss.ParagraphStyles.append( ps )        
+
     def write_head (self):        
         self.recsection = PyRTF.Section(break_type=PyRTF.Section.PAGE)
         self.doc.Sections.append( self.recsection )
-        len(self.doc.Sections)
         self.add_paragraph("%s\n"%self.r.title,self.ss.ParagraphStyles.Heading1)
         
     def write_foot (self):
