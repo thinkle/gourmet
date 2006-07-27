@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import gtk.gdk
+import os
 from gdebug import *
 
 class WidgetSaver:
@@ -37,20 +38,36 @@ class WindowSaver (WidgetSaver):
         in dictionary. The dictionary consists of
         {window_size: widget.get_size(),
          position: widget.get_position(),}"""
+
+        # Window positioning is bad on Windows -- setting
+        # GRAVITY_STATIC creates a nightmare for users, so we'll just
+        # disable this whole thing
+        if os.name=='nt': return 
+        
         widget.set_gravity(gtk.gdk.GRAVITY_STATIC)
+        #widget.set_gravity(gtk.gdk.GRAVITY_NORTH_WEST)
         WidgetSaver.__init__(self, widget, dictionary, signals, show)
 
     def load_properties (self):
+        if os.name=='nt': return
         for p,f in ['window_size', self.w.resize],['position',self.w.move]:
             if self.dictionary.has_key(p) and self.dictionary[p]:
-                debug('applying %s %s'%(f,self.dictionary[p]),4)
+                debug('applying %s %s'%(f,self.dictionary[p]),3)
+                #if os.name=='nt' and p=='position' and self.dictionary['position'][1]<20:
+                #    #print 'FIDDLING WITH WINDOW FOR WINDOWS'
+                #    #self.dictionary[p] = self.dictionary[p][0],20
                 apply(f,self.dictionary[p])
         
     def save_properties (self, *args):
+        if os.name=='nt': return
         if self.w.window and not self.w.window.get_state()&gtk.gdk.WINDOW_STATE_MAXIMIZED:
             # ignore the maximized window when we save sizes
             self.dictionary['window_size']=self.w.get_size()
             self.dictionary['position']=self.w.get_position()
+            # For Windows, we sometimes have windows put out of view...
+            #if self.dictionary['position'][1] < 20:
+            #    self.w.set_position((self.dictionary['position'][0],20))
+            #    #self.dictionary['position']=self.w.get_position()
             debug('Saved properties: %s'%self.dictionary,4)
         return False
     
