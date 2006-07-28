@@ -1,4 +1,6 @@
-import exporter, gxml_exporter, gxml2_exporter, html_exporter, mealmaster_exporter, recipe_emailer
+import exporter, gxml_exporter, gxml2_exporter
+import html_exporter, mealmaster_exporter, recipe_emailer
+import pdf_exporter
 #import eatdrinkfeelgood_exporter
 import recipe_emailer
 import printer
@@ -17,6 +19,7 @@ WEBPAGE = _('HTML Web Page')
 MMF = _('MealMaster file')
 TXT = _('Plain Text')
 RTF = _('RTF')
+PDF = _('PDF (Portable Document Format)')
 GXML2 = _('Gourmet XML File')
 GXML = _('Gourmet XML File (Obsolete, < v.0.8.2)')
 EDFG = _('Eat Drink Feel Good XML File')
@@ -28,6 +31,7 @@ saveas_filters = [
     [MMF,['text/mmf'],['*.mmf','*.MMF']],
     [TXT,['text/plain'],['*.txt','*.TXT']],      
     [GXML2,['text/xml'],['*.grmt','*.xml','*.XML']],
+    [PDF,['application/pdf'],['*.pdf']],
     #[EDFG,['text/xml'],['*.xml','*.XML']],
     #[GXML,['text/xml'],['*.xml','*.XML']],
     ]
@@ -38,6 +42,7 @@ saveas_single_filters = [
     [TXT,['text/plain'],['*.txt','*.TXT']],      
     #[GXML,['text/xml'],['*.xml','*.XML']],
     [GXML2,['text/xml'],['*.grmt','*.xml','*.XML']],
+    [PDF,['application/pdf'],['*.pdf']],    
     #[EDFG,['text/xml'],['*.xml','*.XML']],
     ]
 
@@ -142,6 +147,21 @@ exporter_dict = {
            'sublabel':_('Exporting recipes to Rich Text file %(file)s.'),
            'single_completed':_('Recipe saved as Rich Text file %(file)s'),
            },
+    PDF : {'mult_exporter':lambda args: pdf_exporter.PdfExporterMultiDoc(args['rd'],
+                                                                         args['rv'],
+                                                                         args['file'],
+                                                                         progress_func=args['prog'],
+                                                                         ),
+           'exporter':lambda args: pdf_exporter.PdfExporter(args['rd'],
+                                                            args['rec'],
+                                                            args['out'],
+                                                            change_units=args['change_units'],
+                                                            mult=args['mult']),
+           'label':_('PDF Export'),
+           'sublabel':_('Exporting recipes to PDF %(file)s.'),
+           'single_completed':_('Recipe saved as PDF %(file)s'),
+           },
+    
     # EDFG : {'mult_exporter': lambda args : eatdrinkfeelgood_exporter.EdfgXmlM(
 #         args['rd'], 
 #         args['rv'],
