@@ -1,6 +1,6 @@
 import tempfile
 from pdf_exporter import SimpleWriter, PdfExporterMultiDoc
-=======
+
 from gettext import gettext as _
 import gourmet.dialog_extras as de
 import gourmet.gglobals as gglobals
