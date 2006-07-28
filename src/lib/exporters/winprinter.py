@@ -1,11 +1,13 @@
 import tempfile
-from pdf_exporter import SimpleWriter, PdfExporterMultiDoc
+from pdf_exporter import PdfWriter, PdfExporterMultiDoc
 
 from gettext import gettext as _
 import gourmet.dialog_extras as de
 import gourmet.gglobals as gglobals
 from gourmet.convert import FRACTIONS_NORMAL
 import exporter
+import win32api
+
 
 def print_file_with_windows (filename):
     # Method from:
@@ -34,12 +36,12 @@ class SimpleWriter (PdfWriter):
 
     def __init__ (self, file=None, dialog_parent=None, show_dialog=True):
         self.filename = tempfile.mktemp('.pdf')
-        self.outfile = file(self.filename,'w')
-        PdfWriter.__init__(self)
+        self.outfile = open(self.filename,'w')
+        #PdfWriter.__init__(self)
         self.setup_document(self.outfile)
 
     def close (self):
-        PdfWriter.close()
+        PdfWriter.close(self)
         self.outfile.close()
         print_file_with_windows(self.filename)
     
