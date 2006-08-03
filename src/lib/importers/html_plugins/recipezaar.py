@@ -48,11 +48,32 @@ def recipezaar_ingredient_parser (text, tag):
         ret['item']=" ".join(words)
     return ret
 
+def cut_title (title, tagname):
+    """Cut recipe # from title
+
+    Title's are often followed by the recipezaar recipe # which we
+    don't really want.
+    """
+    i = title.find(' Recipe #')
+    if i > -1:
+        return title[:i]
+    else:
+        return title
+
 RULES = [
     ['title',
      [{'tag':'h1'}],
      'text',
+     cut_title
      ],
+    ['source',
+     [{'regexp':'recipe by',
+       'firstNext':'a'
+       },
+      #{'tag':'a'},
+      ],
+     'text',
+    ],
     ['image',
      [{'tag':'img',
        'attributes':{'alt':'Recipe Photo'}}],
@@ -77,16 +98,30 @@ RULES = [
      'text',
      #('(%(num)s+).+'%{'num':NON_UNICODE_NUMBER_REGEXP},True)],
      ('(%(num)s+).+'%{'num':'[\d/]'},True)],
-    ['preptime',
-     [{'regexp':'\s*(%(num)s+\s*(minutes?|hours?|days?|weeks?|months?))'%{'num':NON_UNICODE_NUMBER_REGEXP}}],
+    ['cooktime',
+     [{'tag':'h4',
+       'index':[0,None]},
+      {'regexp':'\s*(%(num)s+\s*(minutes?|hours?|days?|weeks?|months?)\s*)+'%{'num':NON_UNICODE_NUMBER_REGEXP}}
+      ],
      'text',
-     ('\s*(%(num)s+\s*(minutes?|hours?|days?|weeks?|months?))'%{'num':NON_UNICODE_NUMBER_REGEXP},False)
-     #[{'tag':'h4',
-     #  'attributes':{'style':'font-weight: normal;'},
-     #  'index':[0,None]},],
-     #'text',
-     #('\s*(%(num)s+\s*(minutes?|hours?|days?|weeks?|months?))'%{'num':NON_UNICODE_NUMBER_REGEXP},True)
-    ],
+     ('\s*((%(num)s+\s*(minutes?|hours?|days?|weeks?|months?)\s*)+)'%{'num':NON_UNICODE_NUMBER_REGEXP},True)
+     ],
+    ['preptime',
+     [{'tag':'h4','index':[0,None]},
+      {'tag':'span'},
+      {'regexp':'\s*(%(num)s+\s*(secs|mins|hrs)\s*)+\s*prep'%{'num':NON_UNICODE_NUMBER_REGEXP}}
+      ],
+     'text',
+     ('\s*((%(num)s+\s*(secs|mins|hrs)\s*)+)\s*prep'%{'num':NON_UNICODE_NUMBER_REGEXP},
+      True) #force Match
+     ],
+    
+    #[{'tag':'h4',
+    #  'attributes':{'style':'font-weight: normal;'},
+    #  'index':[0,None]},],
+    #'text',
+    #('\s*(%(num)s+\s*(minutes?|hours?|days?|weeks?|months?))'%{'num':NON_UNICODE_NUMBER_REGEXP},True)
+    #
     ['instructions',
      [{'tag':'span',
        'attributes':{'class':'recipetext'},
