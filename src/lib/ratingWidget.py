@@ -4,6 +4,7 @@ import gglobals
 import Image, os.path
 import gglobals
 from gettext import gettext as _
+import tempfile
 
 PLUS_ONE_KEYS = ['plus',
                  'greater',
@@ -62,6 +63,7 @@ class StarGenerator:
                                                      self.height))
         self.background = background
         self.pixbufs = {}
+        self.image_files = {}
 
     def get_pixbuf (self,n,max=10):
 
@@ -78,6 +80,25 @@ class StarGenerator:
     def get_full_width (self, max=10):
         return self.width*max/2
 
+    def get_image (self, *args, **kwargs):
+        """Get an Image (PIL) object representing n/max stars
+        """
+        # Just an alias for semantic clarity...
+        return self.build_image(*args,**kwargs)
+
+    def get_file (self, n, max=10, ext='.jpg'):
+        if (self.image_files.has_key((n,max,ext))
+            and
+            os.path.exists(self.image_files[(n,max,ext)])
+            ):
+            return self.image_files[(n,max,ext)]
+        fi = tempfile.mktemp("%s_of_%s.%s"%(n,max,ext))
+        i = self.get_image(n,max)
+        i = i.convert('RGB')
+        i.save(fi)
+        self.image_files[(n,max,ext)]=fi
+        return fi
+        
     def build_image (self, n, max=10):
         """Build an image representing n/max stars."""
         img=Image.new('RGBA',
