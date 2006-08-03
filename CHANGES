@@ -6,6 +6,7 @@
 * Fix bug that caused unicode error on upgrade from metakit.
 * Fix some other bugginess in handling old upgrades.
 * Rearrange main index window to work better on small screens.
+* Update to DTD thanks to Gianpaolo Racca.
 
 ==== Version 0.11.2 changes since 0.11.1 ====
 
