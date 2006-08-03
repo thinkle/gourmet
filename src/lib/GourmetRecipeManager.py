@@ -1342,6 +1342,7 @@ def startGUI ():
     splash.show()
     splash.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
     gt.gtk_enter()
+    #gtk.threads_enter()
     while gtk.events_pending():
         # show our GUI
         gtk.main_iteration()
@@ -1356,6 +1357,7 @@ def startGUI ():
     debug('hiding splash screen.',1)
     splash.hide()
     gtk.main()
+    #gtk.threads_leave()
     gt.gtk_leave()
               
 if __name__ == '__main__':
