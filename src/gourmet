@@ -30,5 +30,7 @@ elif options.psyco:
     except ImportError:
         # ignore
         pass
+
 import gourmet.GourmetRecipeManager
 gourmet.GourmetRecipeManager.startGUI()
+
