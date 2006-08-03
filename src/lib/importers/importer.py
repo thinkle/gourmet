@@ -156,6 +156,7 @@ class importer:
         # Check preptime and cooktime
         for t in ['preptime','cooktime']:
             if self.rec.has_key(t) and type(self.rec[t])!=int:
+                print 'IMPORTING TEXT TIME %s: "%s"'%(t,self.rec[t])
                 secs = self.conv.timestring_to_seconds(self.rec[t])
                 if secs != None:
                     self.rec[t]=secs
@@ -182,12 +183,17 @@ class importer:
         if self.rec.get('image',None) and not self.rec.get('thumb',None):
             if not self.rec['image']: del self.rec['image']
             else:
-                print 'Adding thumbnail.'
                 img = ImageExtras.get_image_from_string(self.rec['image'])
-                thumb = ImageExtras.resize_image(img,40,40)
-                self.rec['thumb'] = ImageExtras.get_string_from_image(thumb)
-                # Make sure our image is properly formatted...
-                self.rec['image'] = ImageExtras.get_string_from_image(img)
+                if img:
+                    thumb = ImageExtras.resize_image(img,40,40)
+                    self.rec['thumb'] = ImageExtras.get_string_from_image(thumb)
+                    # Make sure our image is properly formatted...
+                    self.rec['image'] = ImageExtras.get_string_from_image(img)
+                else:
+                    print "ODD: we got no image from ",self.rec['image'][:100]
+                    print 'Deleting "image"'
+                    del self.rec['image']
+                    del self.rec['thumb']                    
         r = self.rd.add_rec(self.rec)
         tt.end()
         self.added_recs.append(r)
@@ -520,7 +526,6 @@ class RatingConverter:
 
     def do_conversions (self, db):
         if not self.got_conversions:
-            print 'Get conversion!'
             self.get_conversions()
         for id,rating in self.to_convert.items():
             try:
