@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-22 08:02-0400\n"
+"POT-Creation-Date: 2006-08-03 18:05-0400\n"
 "PO-Revision-Date: 2005-04-17 15:04+0000\n"
 "Last-Translator: Branislav Hanacek <brango@brango.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -129,12 +129,12 @@ msgstr "Znovu _aplikovať zmeny"
 msgid "Recipe Index"
 msgstr "Zoznam receptov"
 
-#: ../glade/app.glade.h:26 ../glade/recCard.glade.h:60
+#: ../glade/app.glade.h:26 ../glade/recCard.glade.h:59
 #: ../glade/shopList.glade.h:13
 msgid "Recipe _Card"
 msgstr "_Karta receptu"
 
-#: ../glade/app.glade.h:27 ../glade/recCard.glade.h:61
+#: ../glade/app.glade.h:27 ../glade/recCard.glade.h:60
 #: ../glade/shopList.glade.h:14
 msgid "Recipe _List"
 msgstr "Z_oznam receptov"
@@ -194,7 +194,7 @@ msgstr "_Odstrániť recept"
 msgid "_E-Mail recipe"
 msgstr "Odoslať recept _E-mailom"
 
-#: ../glade/app.glade.h:41 ../glade/recCard.glade.h:85
+#: ../glade/app.glade.h:41 ../glade/recCard.glade.h:84
 #: ../glade/shopList.glade.h:27
 msgid "_Edit"
 msgstr "_Upraviť"
@@ -212,7 +212,7 @@ msgstr ""
 msgid "_File"
 msgstr "_Súbor"
 
-#: ../glade/app.glade.h:45 ../glade/recCard.glade.h:87
+#: ../glade/app.glade.h:45 ../glade/recCard.glade.h:86
 #: ../glade/shopList.glade.h:29
 msgid "_Help"
 msgstr "_Pomocník"
@@ -226,11 +226,11 @@ msgid "_Ingredient Key Editor"
 msgstr "Editor kľúčov p_rísad"
 
 #: ../glade/app.glade.h:48 ../glade/generic_importer.glade.h:4
-#: ../glade/recCard.glade.h:92
+#: ../glade/recCard.glade.h:91
 msgid "_New Recipe"
 msgstr "_Nový recept"
 
-#: ../glade/app.glade.h:49 ../glade/recCard.glade.h:94
+#: ../glade/app.glade.h:49 ../glade/recCard.glade.h:93
 msgid "_Print"
 msgstr ""
 
@@ -238,7 +238,7 @@ msgstr ""
 msgid "_Print recipe"
 msgstr "Tlačiť rece_pt"
 
-#: ../glade/app.glade.h:51 ../glade/recCard.glade.h:97
+#: ../glade/app.glade.h:51 ../glade/recCard.glade.h:96
 msgid "_Redo"
 msgstr "_Opakovať"
 
@@ -246,7 +246,7 @@ msgstr "_Opakovať"
 msgid "_Search for"
 msgstr "_Vyhľadať"
 
-#: ../glade/app.glade.h:53 ../glade/recCard.glade.h:101
+#: ../glade/app.glade.h:53 ../glade/recCard.glade.h:100
 #: ../glade/shopList.glade.h:33
 msgid "_Shopping List"
 msgstr "_Nákupný zoznam"
@@ -255,23 +255,23 @@ msgstr "_Nákupný zoznam"
 msgid "_Show deleted recipes"
 msgstr "Zobraziť _odstránené recepty"
 
-#: ../glade/app.glade.h:55 ../glade/recCard.glade.h:102
+#: ../glade/app.glade.h:55 ../glade/recCard.glade.h:101
 msgid "_Timer"
 msgstr ""
 
-#: ../glade/app.glade.h:56 ../glade/recCard.glade.h:104
+#: ../glade/app.glade.h:56 ../glade/recCard.glade.h:103
 msgid "_Tools"
 msgstr "_Nástroje"
 
-#: ../glade/app.glade.h:57 ../glade/recCard.glade.h:106
+#: ../glade/app.glade.h:57 ../glade/recCard.glade.h:105
 msgid "_Undo"
 msgstr "Vrátiť _späť"
 
-#: ../glade/app.glade.h:58 ../glade/recCard.glade.h:107
+#: ../glade/app.glade.h:58 ../glade/recCard.glade.h:106
 msgid "_Unit Converter"
 msgstr "_Prevodník jednotiek"
 
-#: ../glade/app.glade.h:59 ../glade/recCard.glade.h:109
+#: ../glade/app.glade.h:59 ../glade/recCard.glade.h:108
 #: ../glade/shopList.glade.h:34
 msgid "_View"
 msgstr "Po_hľad"
@@ -396,10 +396,10 @@ msgstr "_Listovať"
 msgid "_Database System"
 msgstr "_Databázový systém"
 
-#: ../glade/databaseChooser.glade.h:15 ../glade/recCard.glade.h:83
-#: ../src/lib/dialog_extras.py:796 ../src/lib/dialog_extras.py:1186
-#: ../src/lib/gglobals.py:325 ../src/lib/GourmetRecipeManager.py:453
-#: ../src/lib/reccard.py:975
+#: ../glade/databaseChooser.glade.h:15 ../glade/recCard.glade.h:82
+#: ../src/lib/dialog_extras.py:799 ../src/lib/dialog_extras.py:1189
+#: ../src/lib/gglobals.py:326 ../src/lib/GourmetRecipeManager.py:453
+#: ../src/lib/reccard.py:989
 msgid "_Details"
 msgstr "_Detaily"
 
@@ -445,7 +445,7 @@ msgid "_Advanced Search"
 msgstr ""
 
 #: ../glade/keyeditor.glade.h:8 ../glade/nutritionDruid.glade.h:13
-#: ../glade/recCard.glade.h:77
+#: ../glade/recCard.glade.h:76
 msgid "_Amount: "
 msgstr "_Množstvo: "
 
@@ -464,7 +464,7 @@ msgid "_Search for:"
 msgstr ""
 
 #: ../glade/keyeditor.glade.h:12 ../glade/nutritionDruid.glade.h:18
-#: ../glade/recCard.glade.h:108
+#: ../glade/recCard.glade.h:107
 msgid "_Unit: "
 msgstr "_Jednotka: "
 
@@ -618,7 +618,7 @@ msgid "Index View"
 msgstr "Zobrazenie indexu"
 
 #: ../glade/preferenceDialog.glade.h:16 ../glade/shopList.glade.h:23
-#: ../src/lib/shopgui.py:155 ../src/lib/exporters/pdf_exporter.py:11
+#: ../src/lib/shopgui.py:155 ../src/lib/exporters/pdf_exporter.py:471
 msgid "Shopping List"
 msgstr "Nákupný zoznam"
 
@@ -626,7 +626,7 @@ msgstr "Nákupný zoznam"
 msgid "Use fractions when possible for display"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:18 ../glade/recCard.glade.h:76
+#: ../glade/preferenceDialog.glade.h:18 ../glade/recCard.glade.h:75
 msgid "_Allow units to change when multiplying"
 msgstr "_Povoliť zmeny jednotiek pri násobení"
 
@@ -780,7 +780,7 @@ msgstr "K_uchyňa"
 msgid "Coo_king Time:"
 msgstr "Doba varen_ia"
 
-#: ../glade/recCard.glade.h:32 ../src/lib/reccard.py:300
+#: ../glade/recCard.glade.h:32 ../src/lib/reccard.py:305
 msgid "Delete selected ingredient"
 msgstr "Odstrániť vybranú prísadu"
 
@@ -850,11 +850,11 @@ msgstr "Prísada (_kľúč)"
 msgid "Ingredient Key _Editor"
 msgstr "_Editor kľúča prísady"
 
-#: ../glade/recCard.glade.h:48 ../src/lib/exporters/exporter.py:235
+#: ../glade/recCard.glade.h:48 ../src/lib/exporters/exporter.py:237
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:286
 #: ../src/lib/exporters/gnomeprinter.py:332
 #: ../src/lib/exporters/html_exporter.py:99
-#: ../src/lib/exporters/wxprinter.py:104
+#: ../src/lib/exporters/pdf_exporter.py:428
 msgid "Ingredients"
 msgstr "Prísady"
 
@@ -863,78 +863,74 @@ msgstr "Prísady"
 msgid "Instructions"
 msgstr "Postup"
 
-#: ../glade/recCard.glade.h:50 ../src/lib/gglobals.py:251
-msgid "Modifications"
-msgstr "Zmeny"
-
-#: ../glade/recCard.glade.h:51
+#: ../glade/recCard.glade.h:50
 msgid "Move ingredient _up"
 msgstr "Presunúť prísadu na_hor"
 
-#: ../glade/recCard.glade.h:52
+#: ../glade/recCard.glade.h:51
 msgid "Move ingredient do_wn"
 msgstr "Presunúť prísadu na_dol"
 
-#: ../glade/recCard.glade.h:53
+#: ../glade/recCard.glade.h:52
 msgid "Move selected ingredients down"
 msgstr "Presunúť vybrané prísady na_dol"
 
-#: ../glade/recCard.glade.h:54
+#: ../glade/recCard.glade.h:53
 msgid "Move selected ingredients up"
 msgstr "Presunúť prísadu na_hor"
 
-#: ../glade/recCard.glade.h:55 ../src/lib/gglobals.py:245
+#: ../glade/recCard.glade.h:54 ../src/lib/gglobals.py:245
 #: ../src/lib/gglobals.py:250
 msgid "Notes"
 msgstr "Poznámky"
 
-#: ../glade/recCard.glade.h:56
+#: ../glade/recCard.glade.h:55
 msgid "Paste ingredient list from the clipboard."
 msgstr "Vložiť prísady zo schránky."
 
-#: ../glade/recCard.glade.h:57
+#: ../glade/recCard.glade.h:56
 msgid "Pre_paration Time: "
 msgstr "Doba _prípravy: "
 
-#: ../glade/recCard.glade.h:58
+#: ../glade/recCard.glade.h:57
 msgid "Print recipe"
 msgstr ""
 
-#: ../glade/recCard.glade.h:59
+#: ../glade/recCard.glade.h:58
 msgid "Recipe Card"
 msgstr "Karta receptu"
 
-#: ../glade/recCard.glade.h:62
+#: ../glade/recCard.glade.h:61
 #, fuzzy
 msgid "Redo"
 msgstr "_Opakovať"
 
-#: ../glade/recCard.glade.h:63
+#: ../glade/recCard.glade.h:62
 msgid "Revert"
 msgstr ""
 
-#: ../glade/recCard.glade.h:64
+#: ../glade/recCard.glade.h:63
 msgid "S_hopping Category: "
 msgstr "Nákupná _kategória: "
 
-#: ../glade/recCard.glade.h:65
+#: ../glade/recCard.glade.h:64
 msgid "S_ource:"
 msgstr "Zdro_j:"
 
-#: ../glade/recCard.glade.h:66
+#: ../glade/recCard.glade.h:65
 #, fuzzy
 msgid "Save"
 msgstr "_Uložiť"
 
-#: ../glade/recCard.glade.h:67
+#: ../glade/recCard.glade.h:66
 msgid "Save changes"
 msgstr "Uložiť zmeny"
 
-#: ../glade/recCard.glade.h:68
+#: ../glade/recCard.glade.h:67
 msgid "Standardized name for ingredient (to be used in shopping lists)."
 msgstr "Štandardizované meno pre prísadu (bude použité v nákupnom zozname)"
 
-#: ../glade/recCard.glade.h:69
+#: ../glade/recCard.glade.h:68
 msgid ""
 "Type your ingredient here. Numeric amounts and standard units will "
 "automatically be recognized. Anything typed after a semicolon will not be "
@@ -943,22 +939,22 @@ msgid ""
 "section below."
 msgstr ""
 
-#: ../glade/recCard.glade.h:70
+#: ../glade/recCard.glade.h:69
 #, fuzzy
 msgid "Undo"
 msgstr "Vrátiť _späť"
 
-#: ../glade/recCard.glade.h:71
+#: ../glade/recCard.glade.h:70
 #, fuzzy
 msgid "View Recipe Card"
 msgstr "Zobraziť _kartu receptu"
 
-#: ../glade/recCard.glade.h:72
+#: ../glade/recCard.glade.h:71
 #, fuzzy
 msgid "View _Recipe Card"
 msgstr "Zobraziť _kartu receptu"
 
-#: ../glade/recCard.glade.h:73
+#: ../glade/recCard.glade.h:72
 msgid ""
 "When multiplying recipe, automatically change units to keep amounts as "
 "useable as possible."
@@ -966,97 +962,97 @@ msgstr ""
 "Pri násobení receptu automaticky zmeniť jednotky tak, aby boli čo "
 "najpoužiteľnejšie."
 
-#: ../glade/recCard.glade.h:74
+#: ../glade/recCard.glade.h:73
 msgid "_Add Image"
 msgstr "_Pridať obrázok"
 
-#: ../glade/recCard.glade.h:75
+#: ../glade/recCard.glade.h:74
 msgid "_Add ingredient"
 msgstr "_Pridať prísadu"
 
-#: ../glade/recCard.glade.h:78
+#: ../glade/recCard.glade.h:77
 msgid "_Bold"
 msgstr "_Tučne"
 
-#: ../glade/recCard.glade.h:79
+#: ../glade/recCard.glade.h:78
 msgid "_Category:"
 msgstr "_Kategória:"
 
-#: ../glade/recCard.glade.h:80
+#: ../glade/recCard.glade.h:79
 msgid "_Close"
 msgstr "_Zatvoriť"
 
-#: ../glade/recCard.glade.h:81
+#: ../glade/recCard.glade.h:80
 msgid "_Delete ingredient"
 msgstr "_Odstrániť prísadu"
 
-#: ../glade/recCard.glade.h:82
+#: ../glade/recCard.glade.h:81
 msgid "_Delete this Recipe"
 msgstr "_Odstrániť tento recept"
 
-#: ../glade/recCard.glade.h:84
+#: ../glade/recCard.glade.h:83
 msgid "_E-mail recipe"
 msgstr "Odoslať recept _E-mailom"
 
-#: ../glade/recCard.glade.h:86
+#: ../glade/recCard.glade.h:85
 msgid "_Forget remembered optional ingredients"
 msgstr "_Zabudnúť zapamätané voliteľné prísady"
 
-#: ../glade/recCard.glade.h:88
+#: ../glade/recCard.glade.h:87
 msgid "_Import Ingredients"
 msgstr "_Importovať prísady"
 
-#: ../glade/recCard.glade.h:89
+#: ../glade/recCard.glade.h:88
 msgid "_Import ingredient list"
 msgstr "_Importovať zoznam prísad"
 
-#: ../glade/recCard.glade.h:90
+#: ../glade/recCard.glade.h:89
 msgid "_Ingredient:"
 msgstr "_Prísada:"
 
-#: ../glade/recCard.glade.h:91
+#: ../glade/recCard.glade.h:90
 msgid "_Italic"
 msgstr "_Kurzíva"
 
-#: ../glade/recCard.glade.h:93
+#: ../glade/recCard.glade.h:92
 msgid "_Optional"
 msgstr "_Voliteľné"
 
-#: ../glade/recCard.glade.h:95
+#: ../glade/recCard.glade.h:94
 msgid "_Rating:"
 msgstr "_Hodnotenie:"
 
-#: ../glade/recCard.glade.h:96
+#: ../glade/recCard.glade.h:95
 #, fuzzy
 msgid "_Recipe"
 msgstr "_Recepty"
 
-#: ../glade/recCard.glade.h:98
+#: ../glade/recCard.glade.h:97
 msgid "_Remove Image"
 msgstr "_Odstrániť obrázok"
 
-#: ../glade/recCard.glade.h:99
+#: ../glade/recCard.glade.h:98
 msgid "_Save"
 msgstr "_Uložiť"
 
-#: ../glade/recCard.glade.h:100
+#: ../glade/recCard.glade.h:99
 msgid "_Servings: "
 msgstr "Por_cií: "
 
-#: ../glade/recCard.glade.h:103
+#: ../glade/recCard.glade.h:102
 msgid "_Title: "
 msgstr "Ná_zov: "
 
-#: ../glade/recCard.glade.h:105
+#: ../glade/recCard.glade.h:104
 msgid "_Underline"
 msgstr "_Podčiarknuté"
 
-#: ../glade/recCard.glade.h:110
+#: ../glade/recCard.glade.h:109
 #, fuzzy
 msgid "multiply by"
 msgstr "Vynásobiť %s: "
 
-#: ../glade/recCard.glade.h:111 ../glade/rec_ref_window.glade.h:11
+#: ../glade/recCard.glade.h:110 ../glade/rec_ref_window.glade.h:11
 msgid "servings"
 msgstr "porcií"
 
@@ -1130,7 +1126,7 @@ msgid "Amount"
 msgstr "Množstvo"
 
 #: ../glade/shopList.glade.h:5 ../src/lib/keyEditor.py:431
-#: ../src/lib/reccard.py:1590 ../src/lib/reccard.py:1621
+#: ../src/lib/reccard.py:1830 ../src/lib/reccard.py:1861
 msgid "Item"
 msgstr "Položka"
 
@@ -1212,14 +1208,14 @@ msgstr "Vrátiť položku do nákupného zoznamu"
 msgid "Return selected items to your shopping list"
 msgstr "Vrátiť vybrané položky do nákupného zoznamu"
 
-#: ../glade/shopList.glade.h:22 ../src/lib/reccard.py:1593
-#: ../src/lib/reccard.py:1624 ../src/lib/reccard.py:1749
+#: ../glade/shopList.glade.h:22 ../src/lib/reccard.py:1833
+#: ../src/lib/reccard.py:1864 ../src/lib/reccard.py:1989
 msgid "Shopping Category"
 msgstr "Nákupná kategória"
 
 #: ../glade/shopList.glade.h:24 ../src/lib/keyEditor.py:432
-#: ../src/lib/nutrition/nutritionModel.py:8 ../src/lib/reccard.py:1589
-#: ../src/lib/reccard.py:1620
+#: ../src/lib/nutrition/nutritionModel.py:8 ../src/lib/reccard.py:1829
+#: ../src/lib/reccard.py:1860
 msgid "Unit"
 msgstr "Jednotka"
 
@@ -1325,7 +1321,7 @@ msgstr "Je potrebná informácia o hustote"
 #. all possible forms in all languages.
 #.
 #. See http://www.sbin.org/doc/glibc/libc_8.html
-#: ../src/lib/convert.py:36 ../src/lib/convert.py:509
+#: ../src/lib/convert.py:36 ../src/lib/convert.py:519
 msgid "second"
 msgid_plural "seconds"
 msgstr[0] ""
@@ -1337,7 +1333,7 @@ msgstr[2] ""
 msgid "min."
 msgstr ""
 
-#: ../src/lib/convert.py:38 ../src/lib/convert.py:508
+#: ../src/lib/convert.py:38 ../src/lib/convert.py:518
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] ""
@@ -1349,14 +1345,14 @@ msgstr[2] ""
 msgid "hrs."
 msgstr ""
 
-#: ../src/lib/convert.py:40 ../src/lib/convert.py:507
+#: ../src/lib/convert.py:40 ../src/lib/convert.py:517
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: ../src/lib/convert.py:41 ../src/lib/convert.py:506
+#: ../src/lib/convert.py:41 ../src/lib/convert.py:516
 msgid "day"
 msgid_plural "days"
 msgstr[0] ""
@@ -1366,21 +1362,21 @@ msgstr[2] ""
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
 #. 'decades':lambda decades: ngettext("decade","decades",round(decades))
-#: ../src/lib/convert.py:42 ../src/lib/convert.py:503
+#: ../src/lib/convert.py:42 ../src/lib/convert.py:513
 msgid "year"
 msgid_plural "years"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: ../src/lib/convert.py:504
+#: ../src/lib/convert.py:514
 msgid "month"
 msgid_plural "months"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: ../src/lib/convert.py:505
+#: ../src/lib/convert.py:515
 msgid "week"
 msgid_plural "weeks"
 msgstr[0] ""
@@ -1393,109 +1389,109 @@ msgstr[2] ""
 #. You can of course make your language only use commas or
 #. ands or spaces or whatever you like by translating both
 #. ", " and " and " with the same string.
-#: ../src/lib/convert.py:552
+#: ../src/lib/convert.py:562
 msgid " and "
 msgstr ""
 
-#: ../src/lib/convert.py:552
+#: ../src/lib/convert.py:562
 msgid ", "
 msgstr ""
 
-#: ../src/lib/convert.py:554
+#: ../src/lib/convert.py:564
 msgid " "
 msgstr ""
 
-#: ../src/lib/convert.py:683
+#: ../src/lib/convert.py:693
 msgid "and"
 msgstr ""
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
 #. show up sometimes.
-#: ../src/lib/convert.py:705
+#: ../src/lib/convert.py:715
 msgid "to"
 msgstr "do"
 
 #. setup pause button
-#: ../src/lib/dialog_extras.py:395
+#: ../src/lib/dialog_extras.py:398
 msgid "_Pause"
 msgstr "_Pozastaviť"
 
 #. setup stop button
-#: ../src/lib/dialog_extras.py:406
+#: ../src/lib/dialog_extras.py:409
 msgid "_Stop"
 msgstr "_Zastaviť"
 
-#: ../src/lib/dialog_extras.py:460 ../src/lib/dialog_extras.py:550
+#: ../src/lib/dialog_extras.py:463 ../src/lib/dialog_extras.py:553
 msgid "Don't ask me this again."
 msgstr "Nepýtaj sa ma to znovu."
 
-#: ../src/lib/dialog_extras.py:516
+#: ../src/lib/dialog_extras.py:519
 msgid "Do you really want to do this"
 msgstr "Naozaj to chcete?"
 
-#: ../src/lib/dialog_extras.py:728
+#: ../src/lib/dialog_extras.py:731
 msgid "excellent"
 msgstr ""
 
-#: ../src/lib/dialog_extras.py:729
+#: ../src/lib/dialog_extras.py:732
 msgid "great"
 msgstr ""
 
-#: ../src/lib/dialog_extras.py:730
+#: ../src/lib/dialog_extras.py:733
 msgid "good"
 msgstr ""
 
-#: ../src/lib/dialog_extras.py:731
+#: ../src/lib/dialog_extras.py:734
 msgid "fair"
 msgstr ""
 
-#: ../src/lib/dialog_extras.py:732
+#: ../src/lib/dialog_extras.py:735
 msgid "poor"
 msgstr ""
 
-#: ../src/lib/dialog_extras.py:744
+#: ../src/lib/dialog_extras.py:747
 msgid "Convert ratings to 5 star scale."
 msgstr ""
 
-#: ../src/lib/dialog_extras.py:745
+#: ../src/lib/dialog_extras.py:748
 msgid "Convert ratings."
 msgstr ""
 
-#: ../src/lib/dialog_extras.py:746
+#: ../src/lib/dialog_extras.py:749
 msgid "Please give each of the ratings an equivalent on a scale of 1 to 5"
 msgstr ""
 
-#: ../src/lib/dialog_extras.py:759
+#: ../src/lib/dialog_extras.py:762
 msgid "Current Rating"
 msgstr ""
 
-#: ../src/lib/dialog_extras.py:764
+#: ../src/lib/dialog_extras.py:767
 msgid "Rating out of 5 Stars"
 msgstr ""
 
-#: ../src/lib/dialog_extras.py:997 ../src/lib/FileChooserSaveAs.py:153
+#: ../src/lib/dialog_extras.py:1000 ../src/lib/FileChooserSaveAs.py:153
 msgid "Select File_type"
 msgstr "Vybrať _typ súboru"
 
-#: ../src/lib/dialog_extras.py:1068
+#: ../src/lib/dialog_extras.py:1071
 msgid "No file selected"
 msgstr "Nie je vybraný žiadny súbor"
 
-#: ../src/lib/dialog_extras.py:1069
+#: ../src/lib/dialog_extras.py:1072
 msgid "No file was selected, so the action has been cancelled"
 msgstr "Nebol vybraný žiadny súbor, takže akcia bola zrušená."
 
-#: ../src/lib/dialog_extras.py:1082 ../src/lib/FileChooserSaveAs.py:224
+#: ../src/lib/dialog_extras.py:1085 ../src/lib/FileChooserSaveAs.py:224
 #, python-format
 msgid "A file named %s already exists."
 msgstr "Súbor s menom %s už existuje."
 
-#: ../src/lib/dialog_extras.py:1083 ../src/lib/FileChooserSaveAs.py:225
+#: ../src/lib/dialog_extras.py:1086 ../src/lib/FileChooserSaveAs.py:225
 msgid "Do you want to replace it with the one you are saving?"
 msgstr "Želáte si ho prepísať tým, ktorý práve ukladáte?"
 
-#: ../src/lib/dialog_extras.py:1183
+#: ../src/lib/dialog_extras.py:1186
 #, python-format
 msgid ""
 "I'm sorry, I can't understand\n"
@@ -1504,14 +1500,14 @@ msgstr ""
 "Ľutujem, ale nerozumiem\n"
 "množstvo \"%s\"."
 
-#: ../src/lib/dialog_extras.py:1185
+#: ../src/lib/dialog_extras.py:1188
 msgid ""
 "Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
 msgstr ""
 "Množstvo musí byť číslo (zlomok alebo desatinné číslo), rozsah čísel alebo "
 "prázdne."
 
-#: ../src/lib/dialog_extras.py:1187
+#: ../src/lib/dialog_extras.py:1190
 msgid ""
 "\n"
 "The \"unit\" must be in the \"unit\" field by itself.\n"
@@ -1533,8 +1529,7 @@ msgstr ""
 #. renderer.set_property('editable',True)
 #. renderer.connect('edited',tst)
 #: ../src/lib/gglobals.py:234 ../src/lib/shopgui.py:102
-#: ../src/lib/exporters/rtf_exporter.py:76
-#: ../src/lib/exporters/wxprinter.py:87
+#: ../src/lib/exporters/rtf_exporter.py:78
 msgid "Title"
 msgstr "Názov"
 
@@ -1546,7 +1541,7 @@ msgstr "Kategória"
 msgid "Cuisine"
 msgstr "Kuchyňa"
 
-#: ../src/lib/gglobals.py:237 ../src/lib/ratingWidget.py:313
+#: ../src/lib/gglobals.py:237 ../src/lib/ratingWidget.py:334
 msgid "Rating"
 msgstr "Hodnotenie"
 
@@ -1566,24 +1561,28 @@ msgstr "Doba prípravy"
 msgid "Cooking Time"
 msgstr "Doba varenia"
 
+#: ../src/lib/gglobals.py:251
+msgid "Modifications"
+msgstr "Zmeny"
+
 #. print dir(err)
-#: ../src/lib/gglobals.py:317
+#: ../src/lib/gglobals.py:318
 msgid "Unable to open URL"
 msgstr "Nie je možné otvoriť URL"
 
-#: ../src/lib/gglobals.py:318
+#: ../src/lib/gglobals.py:319
 msgid "Unable to launch mail reader."
 msgstr "Nie je možné spustiť prezerač mailov."
 
-#: ../src/lib/gglobals.py:319
+#: ../src/lib/gglobals.py:320
 msgid "Unable to open website."
 msgstr "Nie je možné otvoriť Web-stránku."
 
-#: ../src/lib/gglobals.py:320
+#: ../src/lib/gglobals.py:321
 msgid "Unable to open file."
 msgstr "Nie je ožné otvoriť súbor."
 
-#: ../src/lib/gglobals.py:326
+#: ../src/lib/gglobals.py:327
 #, python-format
 msgid "There was an error launching the url: %s"
 msgstr "Pri otváraní URL vznikla chyba: %s"
@@ -1784,7 +1783,7 @@ msgstr "Vynásobiť %s: "
 msgid "Saved!"
 msgstr "Uložené!"
 
-#: ../src/lib/GourmetRecipeManager.py:781 ../src/lib/reccard.py:797
+#: ../src/lib/GourmetRecipeManager.py:781 ../src/lib/reccard.py:807
 msgid ""
 "Forget previously saved choices for which optional ingredients to shop for. "
 "This action is not reversable."
@@ -1801,7 +1800,7 @@ msgstr ""
 "Toto ovplyvní všetky recepty. Ak chcete zabudnúť nastavenia pre jeden "
 "recept, môžete to urobiť z menu <b>Nástroje</b> v karte receptu."
 
-#: ../src/lib/GourmetRecipeManager.py:786 ../src/lib/reccard.py:796
+#: ../src/lib/GourmetRecipeManager.py:786 ../src/lib/reccard.py:806
 msgid "Forget which optional ingredients to shop for?"
 msgstr "Zabudnúť ktoré voliteľné prísady nakúpiť?"
 
@@ -1829,7 +1828,7 @@ msgstr "Zastaviť export"
 msgid "Your export will start once the other process is finished."
 msgstr "Váš export začne akonáhle skončí iný proces."
 
-#: ../src/lib/GourmetRecipeManager.py:856 ../src/lib/reccard.py:953
+#: ../src/lib/GourmetRecipeManager.py:856 ../src/lib/reccard.py:967
 #, python-format
 msgid "Gourmet cannot export file of type \"%s\""
 msgstr "Gourmet nemôže exportovať súbor typu \"%s\""
@@ -2030,8 +2029,8 @@ msgstr[1] ""
 msgstr[2] ""
 
 #: ../src/lib/keyEditor.py:58 ../src/lib/keyEditor.py:430
-#: ../src/lib/reccard.py:1591 ../src/lib/reccard.py:1623
-#: ../src/lib/reccard.py:1645
+#: ../src/lib/reccard.py:1831 ../src/lib/reccard.py:1863
+#: ../src/lib/reccard.py:1885
 msgid "Key"
 msgstr "Kľúč"
 
@@ -2788,167 +2787,167 @@ msgid "Ethnic Foods"
 msgstr ""
 
 #. self.serves = float(self.serveW.get_text())
-#: ../src/lib/reccard.py:200
+#: ../src/lib/reccard.py:201
 #, fuzzy
 msgid "Edit Recipe:"
 msgstr "Tlačiť recepty"
 
-#: ../src/lib/reccard.py:201
+#: ../src/lib/reccard.py:202
 #, fuzzy
 msgid "Recipe Card:"
 msgstr "Karta receptu: "
 
 #. action groups
-#: ../src/lib/reccard.py:278
+#: ../src/lib/reccard.py:283
 #, fuzzy
 msgid "Add _ingredient"
 msgstr "_Pridať prísadu"
 
-#: ../src/lib/reccard.py:280
+#: ../src/lib/reccard.py:285
 msgid "Add new ingredient to the list."
 msgstr "Pridať novú prísadu do zoznamu."
 
-#: ../src/lib/reccard.py:283
+#: ../src/lib/reccard.py:288
 msgid "Create new subgroup of ingredients."
 msgstr "Vytvoriť novú podskupinu prísad."
 
-#: ../src/lib/reccard.py:285
+#: ../src/lib/reccard.py:290
 msgid "Import list of ingredients from text file."
 msgstr "Importovať zoznam prísad z textového súboru."
 
-#: ../src/lib/reccard.py:291
+#: ../src/lib/reccard.py:296
 msgid "Paste list of ingredients from clipboard."
 msgstr "Vložiť zoznam prísad zo schránky."
 
-#: ../src/lib/reccard.py:294
+#: ../src/lib/reccard.py:299
 msgid "Add another recipe as an \"ingredient\" in the current recipe."
 msgstr "Pridať ďalší recept ako \"prísadu\" v aktuálnom recepte."
 
-#: ../src/lib/reccard.py:302
+#: ../src/lib/reccard.py:307
 msgid "Move selected ingredient up."
 msgstr "Presunúť vybranú prísadu nahor."
 
-#: ../src/lib/reccard.py:305
+#: ../src/lib/reccard.py:310
 msgid "Move selected ingredient down."
 msgstr "Posunúť vybranú prísadu nadol."
 
 #. 'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
 #. ['editButton','editMenu']]},
 #. ],
-#: ../src/lib/reccard.py:319
+#: ../src/lib/reccard.py:324
 msgid "View recipe card for current recipe"
 msgstr ""
 
-#: ../src/lib/reccard.py:433
+#: ../src/lib/reccard.py:438
 #, fuzzy, python-format
 msgid "Unable to find recipe %s in database."
 msgstr "Odstráníť tento recept z databázy"
 
-#: ../src/lib/reccard.py:466
+#: ../src/lib/reccard.py:471
 msgid "Choose an image to insert in instructions... "
 msgstr "Vybrať obrázok pre postup... "
 
-#: ../src/lib/reccard.py:578
+#: ../src/lib/reccard.py:589
 #, python-format
 msgid "Abandon your edits to %s?"
 msgstr "Zahodiť zmeny v %s?"
 
-#: ../src/lib/reccard.py:586
+#: ../src/lib/reccard.py:597
 msgid "Are you sure you want to abandon your changes?"
 msgstr "Naozaj chcete zahodiť vaše zmeny?"
 
-#: ../src/lib/reccard.py:601
+#: ../src/lib/reccard.py:612
 #, python-format
 msgid "Couldn't make sense of %s as number of servings"
 msgstr "Nie je možné reprezentovať %s ako počet porcií"
 
-#: ../src/lib/reccard.py:826
+#: ../src/lib/reccard.py:840
 msgid "(Optional)"
 msgstr "(Voliteľné)"
 
 #. FIXME
-#: ../src/lib/reccard.py:904
+#: ../src/lib/reccard.py:918
 msgid "Choose a file containing your ingredient list."
 msgstr "Vybrať súbor obsahujúci zoznam prísad."
 
 #. strip off extra "." if necessary
-#: ../src/lib/reccard.py:948
+#: ../src/lib/reccard.py:962
 msgid "Save recipe as..."
 msgstr "Uložiť recept ako..."
 
-#: ../src/lib/reccard.py:973
+#: ../src/lib/reccard.py:987
 #, python-format
 msgid "Unable to save %s"
 msgstr "Nie je možné uložiť %s"
 
-#: ../src/lib/reccard.py:974
+#: ../src/lib/reccard.py:988
 msgid "There was an error during export."
 msgstr "Počas exportu nastala chyba."
 
-#: ../src/lib/reccard.py:993 ../src/lib/reccard.py:1045
-#: ../src/lib/reccard.py:1056
+#: ../src/lib/reccard.py:1074 ../src/lib/reccard.py:1126
+#: ../src/lib/reccard.py:1137
 msgid "You have unsaved changes."
 msgstr "Máte neuložené zmeny."
 
-#: ../src/lib/reccard.py:997
+#: ../src/lib/reccard.py:1078
 msgid "There are no unsaved changes."
 msgstr "Nie sú žiadne neuložené zmeny."
 
-#: ../src/lib/reccard.py:1016
+#: ../src/lib/reccard.py:1097
 #, python-format
 msgid "Save edits to %s before closing?"
 msgstr "Uložiť zmeny do %s pred zatvorením?"
 
-#: ../src/lib/reccard.py:1046
+#: ../src/lib/reccard.py:1127
 msgid "Apply changes before e-mailing?"
 msgstr "Aplikovať zmeny pred odoslaním E-mailu?"
 
-#: ../src/lib/reccard.py:1057
+#: ../src/lib/reccard.py:1138
 msgid "Apply changes before printing?"
 msgstr "Aplikovať z pred tlačou?"
 
-#: ../src/lib/reccard.py:1060
+#: ../src/lib/reccard.py:1141
 #, python-format
 msgid "Print Recipe %s"
 msgstr "Tlačiť recept %s"
 
-#: ../src/lib/reccard.py:1588 ../src/lib/reccard.py:1619
+#: ../src/lib/reccard.py:1828 ../src/lib/reccard.py:1859
 msgid "Amt"
 msgstr "Mnž."
 
-#: ../src/lib/reccard.py:1592 ../src/lib/reccard.py:1622
+#: ../src/lib/reccard.py:1832 ../src/lib/reccard.py:1862
 msgid "Optional"
 msgstr "Voliteľné"
 
-#: ../src/lib/reccard.py:1701
+#: ../src/lib/reccard.py:1941
 msgid "New Category"
 msgstr "Nová kategória"
 
-#: ../src/lib/reccard.py:1766
+#: ../src/lib/reccard.py:2006
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
 msgstr "Recept %s (ID %s) nie je v databáze."
 
-#: ../src/lib/reccard.py:1783 ../src/lib/shopgui.py:459
+#: ../src/lib/reccard.py:2023 ../src/lib/shopgui.py:459
 #, python-format
 msgid "Category to add %s to"
 msgstr "Pridať %s do kategórie"
 
-#: ../src/lib/reccard.py:2052
+#: ../src/lib/reccard.py:2313
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
 msgstr "Prevedené: %(amt)s %(unit)s"
 
-#: ../src/lib/reccard.py:2054
+#: ../src/lib/reccard.py:2315
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
 msgstr "Neprevedené: %(amt)s %(unit)s"
 
-#: ../src/lib/reccard.py:2058
+#: ../src/lib/reccard.py:2319
 msgid "Changed unit."
 msgstr "Zmenená jednotka."
 
-#: ../src/lib/reccard.py:2059
+#: ../src/lib/reccard.py:2320
 #, python-format
 msgid ""
 "You have changed the unit for %(item)s from %(old)s to %(new)s. Would you "
@@ -2957,42 +2956,42 @@ msgstr ""
 "Zmenili ste jednotku pre %(item)s z %(old)s na %(new)s. Želáte si tiež "
 "previesť aj množstvo?"
 
-#: ../src/lib/reccard.py:2070
+#: ../src/lib/reccard.py:2331
 #, python-format
 msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
 msgstr "Prevedené %(old_amt)s %(old_unit)s na %(new_amt)s %(new_unit)s"
 
-#: ../src/lib/reccard.py:2071
+#: ../src/lib/reccard.py:2332
 msgid "old_amt"
 msgstr "old_amt"
 
-#: ../src/lib/reccard.py:2082
+#: ../src/lib/reccard.py:2343
 #, python-format
 msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
 msgstr "Prevod z %(old_unit)s na %(new_unit)s nie je možný."
 
-#: ../src/lib/reccard.py:2082
+#: ../src/lib/reccard.py:2343
 msgid "old_unit"
 msgstr "old_unit"
 
-#: ../src/lib/reccard.py:2137
+#: ../src/lib/reccard.py:2398
 msgid "Adding Ingredient Group"
 msgstr "Pridať skupinu prísad"
 
-#: ../src/lib/reccard.py:2138
+#: ../src/lib/reccard.py:2399
 msgid "Enter a name for new subgroup of ingredients"
 msgstr "Vložiť meno pre novú podskupinu prísad"
 
-#: ../src/lib/reccard.py:2139
+#: ../src/lib/reccard.py:2400
 msgid "Name of group: "
 msgstr "Meno skupiny: "
 
-#: ../src/lib/reccard.py:2512
+#: ../src/lib/reccard.py:2791
 #, python-format
 msgid "Assuming you wanted item equal to key %s"
 msgstr "Predpokladá sa, ze si prajete položku rovnajúcu sa kľúču %s"
 
-#: ../src/lib/reccard.py:2519
+#: ../src/lib/reccard.py:2798
 #, python-format
 msgid ""
 "You forgot an item. Assuming you meant \"%s\" as an item and not a unit."
@@ -3000,19 +2999,19 @@ msgstr ""
 "Zabudli ste položku. Predpokladá sa, že ste mysleli \"%s\" ako položku a nie "
 "jednotku."
 
-#: ../src/lib/reccard.py:2521
+#: ../src/lib/reccard.py:2800
 msgid "An ingredient must have an item!"
 msgstr "Prísada musí mať jednotku!"
 
-#: ../src/lib/reccard.py:2671
+#: ../src/lib/reccard.py:2951
 msgid "Recipe cannot call itself as an ingredient!"
 msgstr "Recept nie je možné použiť ako prísadu v sebe samom!"
 
-#: ../src/lib/reccard.py:2672 ../src/lib/shopgui.py:627
+#: ../src/lib/reccard.py:2952 ../src/lib/shopgui.py:623
 msgid "Infinite recursion is not allowed in recipes!"
 msgstr "V receptoch nie je povolená nekonečná rekurzia!"
 
-#: ../src/lib/reccard.py:2689
+#: ../src/lib/reccard.py:2969
 msgid "You haven't selected any recipes!"
 msgstr "Nevybrali ste žiadny recept!"
 
@@ -3020,7 +3019,7 @@ msgstr "Nevybrali ste žiadny recept!"
 msgid "notes"
 msgstr "poznámkach"
 
-#: ../src/lib/recindex.py:207
+#: ../src/lib/recindex.py:206
 #, python-format
 msgid "%s recipe"
 msgid_plural "%s recipes"
@@ -3030,26 +3029,26 @@ msgstr[2] ""
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
-#: ../src/lib/recindex.py:211
+#: ../src/lib/recindex.py:210
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
 msgstr ""
 
-#: ../src/lib/recindex.py:375
+#: ../src/lib/recindex.py:374
 msgid "or"
 msgstr ""
 
-#: ../src/lib/recindex.py:405
+#: ../src/lib/recindex.py:403
 #, fuzzy, python-format
 msgid " %s in %s"
 msgstr " %s obsahuje %s"
 
-#: ../src/lib/recindex.py:407
+#: ../src/lib/recindex.py:405
 #, fuzzy, python-format
 msgid ", %s in %s"
 msgstr ", %s obsahuje %s"
 
-#: ../src/lib/recindex.py:432
+#: ../src/lib/recindex.py:430
 #, python-format
 msgid "Unable to recognize %s as a time."
 msgstr ""
@@ -3123,20 +3122,20 @@ msgstr "Vložiť kategóriu"
 msgid "Category: "
 msgstr "Kategória: "
 
-#: ../src/lib/shopgui.py:626
+#: ../src/lib/shopgui.py:622
 msgid "Recipe calls for itself as an ingredient."
 msgstr "Recept používa sám seba ako prísadu."
 
-#: ../src/lib/shopgui.py:627
+#: ../src/lib/shopgui.py:623
 #, python-format
 msgid "Ingredient %s will be ignored."
 msgstr "Prísada %s sa ignoruje."
 
-#: ../src/lib/shopgui.py:688
+#: ../src/lib/shopgui.py:684
 msgid "Select optional ingredients."
 msgstr "Vybrať voliteľné prísady."
 
-#: ../src/lib/shopgui.py:689
+#: ../src/lib/shopgui.py:685
 msgid ""
 "Please specify which of the following optional ingredients you'd like to "
 "include on your shopping list."
@@ -3270,7 +3269,7 @@ msgid ""
 "internationalization, assorted bugfixes)"
 msgstr ""
 
-#: ../src/lib/backends/rdatabase.py:547 ../src/lib/backends/sql_db.py:339
+#: ../src/lib/backends/rdatabase.py:632 ../src/lib/backends/sql_db.py:334
 msgid "New Recipe"
 msgstr "Nový recept"
 
@@ -3346,43 +3345,43 @@ msgstr "Pozrieť prísady"
 msgid "Processing ingredients."
 msgstr "Pozrieť prísady"
 
-#: ../src/lib/importers/importer.py:196
+#: ../src/lib/importers/importer.py:201
 #, python-format
 msgid "Imported %s of %s recipes."
 msgstr "Importovaných %s z %s receptov."
 
-#: ../src/lib/importers/importer.py:376
+#: ../src/lib/importers/importer.py:381
 #, python-format
 msgid "<i>Importing %s</i>"
 msgstr "<i>Importuje sa %s</i>"
 
-#: ../src/lib/importers/importer.py:406
+#: ../src/lib/importers/importer.py:411
 #, python-format
 msgid "Imported %(number)s recipes from %(file)s (%(total)s total)"
 msgstr "Importované %(number)s receptov z %(file)s (%(total)s celkom)"
 
-#: ../src/lib/importers/importer.py:477
+#: ../src/lib/importers/importer.py:482
 msgid "Excellent"
 msgstr ""
 
-#: ../src/lib/importers/importer.py:478
+#: ../src/lib/importers/importer.py:483
 msgid "Great"
 msgstr ""
 
-#: ../src/lib/importers/importer.py:479
+#: ../src/lib/importers/importer.py:484
 msgid "Good"
 msgstr ""
 
-#: ../src/lib/importers/importer.py:480
+#: ../src/lib/importers/importer.py:485
 msgid "Fair"
 msgstr ""
 
-#: ../src/lib/importers/importer.py:481
-msgid "Poor"
+#: ../src/lib/importers/importer.py:486
+msgid "Okay"
 msgstr ""
 
-#: ../src/lib/importers/importer.py:482
-msgid "Okay"
+#: ../src/lib/importers/importer.py:487
+msgid "Poor"
 msgstr ""
 
 #: ../src/lib/importers/interactive_importer.py:472
@@ -3437,7 +3436,7 @@ msgstr ""
 msgid "All importable files"
 msgstr "Všetky importovateľné súbory"
 
-#: ../src/lib/importers/mastercook_importer.py:118
+#: ../src/lib/importers/mastercook_importer.py:120
 msgid "Mastercook import finished."
 msgstr "Import súboru vo formáte MasterCook dokončený."
 
@@ -3448,11 +3447,11 @@ msgstr "Import súboru vo formáte MasterCook dokončený."
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
 #. files, even though some of them may not be fubared :)
-#: ../src/lib/importers/mastercook_importer.py:247
+#: ../src/lib/importers/mastercook_importer.py:257
 msgid "Tidying up XML"
 msgstr "Čistí sa XML"
 
-#: ../src/lib/importers/mastercook_importer.py:255
+#: ../src/lib/importers/mastercook_importer.py:265
 msgid "Beginning import"
 msgstr "Začína sa import"
 
@@ -3461,29 +3460,29 @@ msgstr "Začína sa import"
 msgid "Imported %s recipes."
 msgstr "Importovaných %s z %s receptov."
 
-#: ../src/lib/exporters/exporter.py:201 ../src/lib/exporters/exporter.py:203
-#: ../src/lib/exporters/exporter.py:484 ../src/lib/exporters/exporter.py:486
+#: ../src/lib/exporters/exporter.py:204 ../src/lib/exporters/exporter.py:206
+#: ../src/lib/exporters/exporter.py:493 ../src/lib/exporters/exporter.py:495
 msgid "stars"
 msgstr ""
 
-#: ../src/lib/exporters/exporter.py:343 ../src/lib/exporters/exporter.py:421
+#: ../src/lib/exporters/exporter.py:352 ../src/lib/exporters/exporter.py:430
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:301
 #: ../src/lib/exporters/gnomeprinter.py:349
 #: ../src/lib/exporters/html_exporter.py:143
-#: ../src/lib/exporters/wxprinter.py:98
+#: ../src/lib/exporters/pdf_exporter.py:435
 msgid "optional"
 msgstr "voliteľný"
 
-#: ../src/lib/exporters/exporter.py:500
+#: ../src/lib/exporters/exporter.py:509
 #, python-format
 msgid "Exported %(number)s of %(total)s recipes"
 msgstr "Exportovaných %(number)s z %(total)s receptov"
 
-#: ../src/lib/exporters/exporter.py:518
+#: ../src/lib/exporters/exporter.py:527
 msgid "Export complete."
 msgstr "Export dokončený."
 
-#: ../src/lib/exporters/exporter.py:544
+#: ../src/lib/exporters/exporter.py:553
 #: ../src/lib/exporters/html_exporter.py:62
 msgid "Recipe"
 msgstr "Recept"
@@ -3505,109 +3504,127 @@ msgstr "_Rozsah"
 
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:245
 #: ../src/lib/exporters/gnomeprinter.py:284
-#: ../src/lib/exporters/lprprinter.py:7 ../src/lib/exporters/winprinter.py:13
-#: ../src/lib/exporters/wxprinter.py:16
+#: ../src/lib/exporters/lprprinter.py:7 ../src/lib/exporters/winprinter.py:25
 msgid "Print Recipes"
 msgstr "Tlačiť recepty"
 
 #. Filetypes as presented to user
-#: ../src/lib/exporters/__init__.py:16
+#: ../src/lib/exporters/__init__.py:18
 msgid "HTML Web Page"
 msgstr "HTML web-stránka"
 
-#: ../src/lib/exporters/__init__.py:17
+#: ../src/lib/exporters/__init__.py:19
 msgid "MealMaster file"
 msgstr "Súbor MealMaster"
 
-#: ../src/lib/exporters/__init__.py:18
+#: ../src/lib/exporters/__init__.py:20
 msgid "Plain Text"
 msgstr "Normálny text"
 
-#: ../src/lib/exporters/__init__.py:19
+#: ../src/lib/exporters/__init__.py:21
 msgid "RTF"
 msgstr "RTF"
 
-#: ../src/lib/exporters/__init__.py:20
+#: ../src/lib/exporters/__init__.py:22
+msgid "PDF (Portable Document Format)"
+msgstr ""
+
+#: ../src/lib/exporters/__init__.py:23
 msgid "Gourmet XML File"
 msgstr "Súbor MasterCook XML"
 
-#: ../src/lib/exporters/__init__.py:21
+#: ../src/lib/exporters/__init__.py:24
 msgid "Gourmet XML File (Obsolete, < v.0.8.2)"
 msgstr "Súbor Gourmet XML (Zastaralý, < v.0.8.2)"
 
-#: ../src/lib/exporters/__init__.py:22
+#: ../src/lib/exporters/__init__.py:25
 msgid "Eat Drink Feel Good XML File"
 msgstr ""
 
-#: ../src/lib/exporters/__init__.py:68
+#: ../src/lib/exporters/__init__.py:73
 msgid "Exporting Webpage"
 msgstr "Exportuje sa Web-stránka"
 
-#: ../src/lib/exporters/__init__.py:69
+#: ../src/lib/exporters/__init__.py:74
 #, python-format
 msgid "Exporting recipes to HTML files in directory %(file)s"
 msgstr "Recepty z adresára %(file)s sa exportujú do HTML"
 
-#: ../src/lib/exporters/__init__.py:70
+#: ../src/lib/exporters/__init__.py:75
 #, python-format
 msgid "Recipe saved as HTML file %(file)s"
 msgstr "Recept bol uložený ako HTML súbor %(file)s"
 
-#: ../src/lib/exporters/__init__.py:87
+#: ../src/lib/exporters/__init__.py:92
 msgid "MealMaster Export"
 msgstr "Export do MealMaster"
 
-#: ../src/lib/exporters/__init__.py:88
+#: ../src/lib/exporters/__init__.py:93
 #, python-format
 msgid "Exporting recipes to MealMaster file %(file)s."
 msgstr "Recepty sa exportuju do súboru pre MealMaster %(file)s."
 
-#: ../src/lib/exporters/__init__.py:89
+#: ../src/lib/exporters/__init__.py:94
 #, python-format
 msgid "Recipe saved as MealMaster file %(file)s"
 msgstr "Recept bol uložený do súboru MealMaster %(file)s"
 
-#: ../src/lib/exporters/__init__.py:101
+#: ../src/lib/exporters/__init__.py:106
 msgid "Text Export"
 msgstr "Textový export"
 
-#: ../src/lib/exporters/__init__.py:102
+#: ../src/lib/exporters/__init__.py:107
 #, python-format
 msgid "Exporting recipes to Plain Text file %(file)s."
 msgstr "Recepty sa exportujú do čisto textového súboru %(file)s."
 
-#: ../src/lib/exporters/__init__.py:103
+#: ../src/lib/exporters/__init__.py:108
 #, python-format
 msgid "Recipe saved as Plain Text file %(file)s"
 msgstr "Recept bol uložený ako normálny textový súbor %(file)s"
 
-#: ../src/lib/exporters/__init__.py:116
+#: ../src/lib/exporters/__init__.py:121
 msgid "Gourmet XML Export"
 msgstr "Export Gourmet XML"
 
-#: ../src/lib/exporters/__init__.py:117
+#: ../src/lib/exporters/__init__.py:122
 #, python-format
 msgid "Exporting recipes to Gourmet XML file %(file)s."
 msgstr "Exportujú sa recepty do Gourmet XML súboru %(file)s."
 
-#: ../src/lib/exporters/__init__.py:118
+#: ../src/lib/exporters/__init__.py:123
 #, python-format
 msgid "Recipe saved in Gourmet XML file %(file)s."
 msgstr "Recept uložený v Gourmet XML súbore %(file)s."
 
-#: ../src/lib/exporters/__init__.py:141
+#: ../src/lib/exporters/__init__.py:146
 msgid "RTF Export"
 msgstr "Export do RTF"
 
-#: ../src/lib/exporters/__init__.py:142
+#: ../src/lib/exporters/__init__.py:147
 #, python-format
 msgid "Exporting recipes to Rich Text file %(file)s."
 msgstr "Recepty sa exportujú do Rich Text súboru %(file)s."
 
-#: ../src/lib/exporters/__init__.py:143
+#: ../src/lib/exporters/__init__.py:148
 #, python-format
 msgid "Recipe saved as Rich Text file %(file)s"
 msgstr "Recept bol uložený do Rich Text súboru %(file)s"
+
+#: ../src/lib/exporters/__init__.py:160
+#, fuzzy
+msgid "PDF Export"
+msgstr "Export do RTF"
+
+#: ../src/lib/exporters/__init__.py:161
+#, fuzzy, python-format
+msgid "Exporting recipes to PDF %(file)s."
+msgstr "Recepty sa exportujú do čisto textového súboru %(file)s."
+
+#: ../src/lib/exporters/__init__.py:162
+#, fuzzy, python-format
+msgid "Recipe saved as PDF %(file)s"
+msgstr "Recept bol uložený ako HTML súbor %(file)s"
 
 #: ../src/lib/exporters/lprprinter.py:15 ../src/lib/exporters/lprprinter.py:18
 msgid "Enter print command"
@@ -3639,7 +3656,7 @@ msgstr ""
 msgid "Command: "
 msgstr "Príkaz: "
 
-#: ../src/lib/exporters/pdf_exporter.py:23
+#: ../src/lib/exporters/pdf_exporter.py:482
 msgid "Shopping list for: "
 msgstr "Nákupný list pre: "
 
@@ -3669,18 +3686,16 @@ msgid ""
 "an attachment."
 msgstr "Nezvolili ste vloženie receptu do E-mailu ani pripojenie ako prílohu."
 
-#: ../src/lib/exporters/winprinter.py:9
-msgid "Printing not supported"
-msgstr "Tlač nie je podporovaná"
+#~ msgid "Printing not supported"
+#~ msgstr "Tlač nie je podporovaná"
 
-#: ../src/lib/exporters/winprinter.py:10
-msgid ""
-"To print recipes, first export them, then print from another program. If you "
-"install wxWindows, you can print directly from Gourmet."
-msgstr ""
-"Pred tlačou receptov ich najskôr exportuje a potom ich tlačte z iného "
-"programu. Ak si nainštalujete wxWindows, budete môcť tlačiť priamo z "
-"programu Gourmet."
+#~ msgid ""
+#~ "To print recipes, first export them, then print from another program. If "
+#~ "you install wxWindows, you can print directly from Gourmet."
+#~ msgstr ""
+#~ "Pred tlačou receptov ich najskôr exportuje a potom ich tlačte z iného "
+#~ "programu. Ak si nainštalujete wxWindows, budete môcť tlačiť priamo z "
+#~ "programu Gourmet."
 
 #, fuzzy
 #~ msgid "Clear shopping List"

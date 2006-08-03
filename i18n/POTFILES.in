@@ -119,5 +119,4 @@ src/lib/exporters/printer.py
 src/lib/exporters/recipe_emailer.py
 src/lib/exporters/rtf_exporter.py
 src/lib/exporters/winprinter.py
-src/lib/exporters/wxprinter.py
 src/lib/exporters/xml_exporter.py
