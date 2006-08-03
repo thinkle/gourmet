@@ -329,11 +329,7 @@ img_src_regexp = re.compile('<img[^>]+src=[\'\"]([^\'"]+)')
 
 def get_image_from_tag (iurl, page_url):
     if not iurl: return
-    if iurl[0]=="/":
-        base_url = "/".join(page_url.split('/')[0:3]) + '/'
-    else:
-        base_url = "/".join(page_url.split('/')[0:-1]) + '/'
-    iurl = base_url + iurl
+    iurl = urllib.basejoin(page_url,iurl)
     tmpfi,info=urllib.urlretrieve(iurl)
     ifi=file(tmpfi,'rb')
     retval=ifi.read()
@@ -495,9 +491,12 @@ class WebPageImporter (importer.importer):
         for k,v in self.d.items():
             debug('processing %s:%s'%(k,v),1)
             if self.prog: self.prog(-1,_('Importing recipe'))
+            # parsed ingredients...
             if k=='ingredient_parsed':
+                print 'HANDLING parsed ingredients'
                 if type(v) != list: v=[v]
                 for ingdic in v:
+                    
                     if self.prog: self.prog(-1,_('Processing ingredients'))
                     # we take a special keyword, "text", which gets
                     # parsed
@@ -508,9 +507,14 @@ class WebPageImporter (importer.importer):
                         del ingdic['text']
                     self.start_ing(**ingdic)
                     self.commit_ing()
+                continue
+
+            # Listy stuff...
             elif type(v)==list:
                 if k in self.JOIN_AS_PARAGRAPHS: v = "\n".join(v)
                 else: v = " ".join(v)
+
+            # Ingredients in blocks
             if k == 'ingredient_block':
                 for l in v.split('\n'):
                     if self.prog: self.prog(-1,_('Processing ingredients.'))
@@ -518,6 +522,7 @@ class WebPageImporter (importer.importer):
                     if dic:
                         self.start_ing(**dic)
                         self.commit_ing()
+                        
             elif k == 'image':
                 try:
                     if v: img = get_image_from_tag(v,self.url)
@@ -528,6 +533,7 @@ class WebPageImporter (importer.importer):
                     if img:
                         self.rec['image'] = img
             else: self.rec[k]=v
+        #print 'COMMITTING RECIPE',self.rec
         self.commit_rec()
         if self.prog: self.prog(1,_('Import complete.'))
 
