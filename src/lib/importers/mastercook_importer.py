@@ -84,6 +84,8 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
             'Desc':[],
             'Srce':[],
             'Note':[],
+            'CatT':[],
+            'Yield':['unit','qty'],
             }
         self.current_elements = []
         self.bufs = []
@@ -143,6 +145,9 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
             if attrs:
                 self.rec['title']=self.grabattr(attrs,'name')
         if end:
+            if self.rec.has_key('yield'):
+                self._add_to_instructions("\nYield: %s %s"%self.rec['yield'])
+                del self.rec['yield']
             self.commit_rec()
         
     def RTxt_handler (self, start=False, end=False, attrs=None):
@@ -156,12 +161,17 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
         if attrs:
             self.rec['servings']=self.grabattr(attrs,'qty')
 
+    def Yield_handler (self, start=False, end=False, attrs=None):
+        if attrs:
+            self.rec['yield']=(self.grabattr(attrs,'qty'),self.grabattr(attrs,'unit'))
+
     def CatT_handler (self, start=False, end=False, attrs=None):
         if start:
             self.catbuf = ""
             self.bufs.append('catbuf')
         if end:
             self.bufs.remove('catbuf')
+            self.catbuf = self.catbuf.strip()
             if self.rec.has_key('category'):
                 self.rec['category']=self.rec['category']+" "+self.catbuf
             else:
@@ -198,7 +208,7 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
             self.bufs.append('dbuf')
         if end:
             self.bufs.remove('dbuf')
-            self._add_to_instructions(self.dbuf)
+            self._add_to_instructions(self.dbuf.strip())
 
     # these all add to instructions
     Desc_handler = DirT_handler
@@ -209,7 +219,7 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
             self.ipbuf = ""
             self.bufs.append('ipbuf')
         if end:
-            self.item += "; %s"%xml.sax.saxutils.unescape(self.ipbuf)
+            self.item += "; %s"%xml.sax.saxutils.unescape(self.ipbuf.strip())
             self.bufs.remove('ipbuf')
         
     def Srce_handler (self, start=False, end=False, attrs=None):
@@ -217,7 +227,7 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
             self.srcbuf = ""
             self.bufs.append('srcbuf')
         if end:
-            self.rec['source']=self.srcbuf
+            self.rec['source']=self.srcbuf.strip()
             self.bufs.remove('srcbuf')
     
 
