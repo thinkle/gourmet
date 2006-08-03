@@ -131,10 +131,13 @@ class importer:
 
         This is frequently a fallback for bad input -- we try to make
         sure we don't lose data this way."""
+        # We add e.g. "Servings: lots" to instructions -- REC_ATTR_DIC
+        # gets us the properly i18n'd name
+        text_to_add = gourmet.gglobals.REC_ATTR_DIC[attr]+': '+recdic[attr]
         if not recdic.has_key('instructions'):
-            recdic['instructions']=recdic[attr]
+            recdic['instructions']=text_to_add
         else:
-            recdic['instructions']=recdic['instructions']+'\n'+recdic[attr]
+            recdic['instructions']=recdic['instructions']+'\n'+text_to_add
         del recdic[attr]
 
     def commit_rec (self):
@@ -146,7 +149,7 @@ class importer:
         # instructions.
         if self.rec.has_key('servings'):
             servs=self.convert_servings(self.rec['servings'])
-            if servs:
+            if servs != None:
                 self.rec['servings']=str(servs)
             else:
                 self._move_to_instructions(self.rec,'servings')
@@ -154,7 +157,7 @@ class importer:
         for t in ['preptime','cooktime']:
             if self.rec.has_key(t) and type(self.rec[t])!=int:
                 secs = self.conv.timestring_to_seconds(self.rec[t])
-                if secs:
+                if secs != None:
                     self.rec[t]=secs
                 else:
                     self._move_to_instructions(self.rec,t)
