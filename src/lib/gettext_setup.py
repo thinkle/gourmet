@@ -47,7 +47,7 @@ elif os.name == 'nt':
                 pybase = os.path.split(os.path.split(os.path.split(os.path.split(__file__)[0])[0])[0])[0]
                 gourmetd = os.path.join(pybase,'gourmet')
                 datad = os.path.join(gourmetd,'data')
-    DIR = os.path.join(gourmetd,'i18n')
+    DIR = os.path.join(datad,'i18n')
 
 gettext.bindtextdomain('gourmet',DIR)
 gettext.textdomain('gourmet')
