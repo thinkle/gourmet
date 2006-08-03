@@ -457,16 +457,15 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
             out = file(out,'wb')
         self.setup_document(out)
         self.output_file = out
+        kwargs['doc'] = self.doc
+        kwargs['styleSheet'] = self.styleSheet
+        kwargs['txt'] = self.txt
         exporter.ExporterMultirec.__init__(
             self,
             rd, recipes, out,
             one_file=True, ext='pdf',
             exporter=PdfExporter,
-            exporter_kwargs={'doc':self.doc,
-                             'styleSheet':self.styleSheet,
-                             'txt':self.txt,
-                             },
-            **kwargs
+            exporter_kwargs=kwargs,
             )
 
     def write_footer (self):

@@ -1,4 +1,4 @@
-import tempfile
+import tempfile, gtk
 from pdf_exporter import PdfWriter, PdfExporterMultiDoc
 
 from gettext import gettext as _
@@ -6,27 +6,40 @@ import gourmet.dialog_extras as de
 import gourmet.gglobals as gglobals
 from gourmet.convert import FRACTIONS_NORMAL
 import exporter
+
 import win32api
 
 
 def print_file_with_windows (filename):
     # Method from:
     # http://tgolden.sc.sabren.com/python/win32_how_do_i/print.html#shellexecute
-    win32api.ShellExecute(
-        0,
-        "print",
-        filename,
-        None,
-        ".",
-        0
-        )    
+    if de.getBoolean(label=_('Print'),
+                  sublabel=_('Ready to print your recipe through the PDF file %s. Unfortunately, we have no print preview - shall we go ahead and print?')%filename):
+        win32api.ShellExecute(
+            0,
+            "print",
+            filename,
+            None,
+            ".",
+            0
+            )
+        d = de.MessageDialog(label=_('Print job sent'),
+                       sublabel=_("Print job has been sent. If something goes wrong, you can open the PDF file and try printing again."))
+    else:
+        d = de.MessageDialog(label=_('Print job cancelled'),
+                       sublabel=_("If you'd like, you can open the PDF file.")
+                              )
+    b = gtk.Button(stock=gtk.STOCK_JUMP_TO)
+    b.connect('clicked',lambda *args: gglobals.launch_url(filename))
+    d.vbox.pack_end(b,expand=False); b.show()
+    d.run()
+        
 
 class RecRenderer:
     def __init__ (self, rd, recs, mult=1, dialog_title=_("Print Recipes"),
-                  dialog_parent=None):
+                  dialog_parent=None, **kwargs):
         filename = tempfile.mktemp('.pdf')
-        outfile = file(filename,'w')
-        e = PdfExporterMultiDoc(rd,recs,outfile)
+        e = PdfExporterMultiDoc(rd,recs,filename, **kwargs)
         e.run()
         print_file_with_windows(filename)
         #show_disappointing_message()

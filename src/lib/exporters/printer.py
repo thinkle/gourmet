@@ -30,8 +30,7 @@ def load_wxprint ():
 
 def load_lprprint ():
     global RecRenderer,SimpleWriter
-    if os.name == 'nt':
-        print 'Install wxWindows to print on Windows'
+    if os.name == 'nt':        
         from winprinter import RecRenderer, SimpleWriter
     else:
         from lprprinter import RecRenderer, SimpleWriter
