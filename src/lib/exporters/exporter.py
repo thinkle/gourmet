@@ -101,6 +101,7 @@ class exporter:
         self.write_attr_foot()
 
     def _write_text_ (self):
+        #print 'exporter._write_text_',self.text_attr_order,'!'
         for a in self.text_attr_order:
             # This code will never be called for Gourmet
             # proper... here for convenience of symbiotic project...
@@ -113,13 +114,14 @@ class exporter:
                         s = dct.get('text','')
                         img = dct.get('image','')
                         time = dct.get('time',0)
-                        print 'Exporter sees step AS:'
-                        print '  text:',s
-                        print '  image:',img
-                        print '  time:',time
+                        #print 'Exporter sees step AS:'
+                        #print '  text:',s
+                        #print '  image:',img
+                        #print '  time:',time
                     else:
                         img = ''
-                    if self.do_markup: txt=self.handle_markup(s)
+                    if self.do_markup:
+                        txt=self.handle_markup(s)
                     if not self.use_ml: txt = xml.sax.saxutils.unescape(s)
                     if self.convert_attnames:
                         out_a = gglobals.TEXT_ATTR_DIC[a]
@@ -140,7 +142,8 @@ class exporter:
             # End of non-Gourmet code
             txt=self._grab_attr_(self.r,a)
             if txt and txt.strip():
-                if self.do_markup: txt=self.handle_markup(txt)
+                if self.do_markup:  txt=self.handle_markup(txt)
+                #else: print 'exporter: do_markup=False'
                 if not self.use_ml: txt = xml.sax.saxutils.unescape(txt)
                 if self.convert_attnames:
                     self.write_text(gglobals.TEXT_ATTR_DIC[a],txt)
@@ -207,7 +210,7 @@ class exporter:
                 try:
                     ret = ret.encode(self.DEFAULT_ENCODING)
                 except:
-                    print "wtf:",ret,"doesn't look like unicode."
+                    print "oops:",ret,"doesn't look like unicode."
                     raise
             return ret
 
@@ -287,8 +290,15 @@ class exporter:
         while more:
             fd,lang,atts=ai.get_font()
             chunk = xml.sax.saxutils.escape(txt.__getslice__(*ai.range()))
+            trailing_newline = ''
             fields=fd.get_set_fields()
             if fields != 0: #if there are fields
+                # Sometimes we get trailing newlines, which is ugly
+                # because we end up with e.g. <b>Foo\n</b>
+                #
+                # So we define trailing_newline as a variable
+                if chunk and chunk[-1]=='\n':
+                    trailing_newline = '\n'; chunk = chunk[:-1]
                 if 'style' in fields.value_nicks and fd.get_style()==pango.STYLE_ITALIC:
                     chunk=self.handle_italic(chunk)
                 if 'weight' in fields.value_nicks and fd.get_weight()==pango.WEIGHT_BOLD:
@@ -296,7 +306,7 @@ class exporter:
             for att in atts:
                 if att.type==pango.ATTR_UNDERLINE and att.value==pango.UNDERLINE_SINGLE:
                     chunk=self.handle_underline(chunk)
-            outtxt += chunk
+            outtxt += chunk + trailing_newline
             more=ai.next()
         return outtxt
 
@@ -487,7 +497,7 @@ class ExporterMultirec:
                 try:
                     ret = ret.encode(self.DEFAULT_ENCODING)
                 except:
-                    print "wtf:",ret,"doesn't look like unicode."
+                    print "oops:",ret,"doesn't look like unicode."
                     raise
             return ret
         
