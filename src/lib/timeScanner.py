@@ -1,7 +1,7 @@
 """Scan text for time and show links that will pop up a timer if the
 user clicks on any time in the TextView."""
 
-import convert, re, gobject
+import convert, re, gtk, gobject
 import LinkedTextView
 import timer
 
@@ -61,6 +61,9 @@ def show_timer_cb (tv,l,note,c):
     timer.show_timer(c.timestring_to_seconds(l),
                note)
     
+
+if gtk.pygtk_version[1] < 8:
+    gobject.type_register(LinkedTimeView)    
 
 if __name__ == '__main__':
     

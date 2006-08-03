@@ -181,6 +181,9 @@ class LinkedTextView (gtk.TextView):
                 self.emit('link-activated',href)
                 return True
 
+if gtk.pygtk_version[1] < 8:
+    gobject.type_register(LinkedTextView)    
+
 if __name__ == '__main__':
     def print_link (tv,l):
         print l
