@@ -129,7 +129,7 @@ class Star (platypus.Flowable):
 class FiveStars (Star):
 
     def __init__ (self, height, filled=5, out_of=5,
-                  filled_color=colors.gold,
+                  filled_color=colors.black,
                   unfilled_color=colors.lightgrey
                   ):
         self.height = self.size = height
@@ -197,9 +197,14 @@ class PdfWriter:
         try:
             return platypus.Paragraph(unicode(txt).encode('iso-8859-1','replace'),style)
         except UnicodeDecodeError:
-            print 'Trouble with ',txt
-            raise
-            
+            try:
+                #print 'WORK AROUND UNICODE ERROR WITH ',txt[:20]
+                # This seems to be the standard on windows.
+                return platypus.Paragraph(txt,style)
+            except:
+                print 'Trouble with ',txt
+                raise
+    
     def write_paragraph (self, txt, style=None, keep_with_next=False, attributes=""):
         p = self.make_paragraph(txt,style,attributes)
         if keep_with_next:
@@ -256,7 +261,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                   **kwargs):
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
-            out = file(out,'w')
+            out = file(out,'wb')
         if not doc:
             self.setup_document(out)
             self.multidoc = False
@@ -420,7 +425,6 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         self.attributes.append(self.make_paragraph("%s: %s"%(label,text)))
 
     def write_text (self, label, text):
-        #print 'write_text handed',text        
         #text = '<para>' + re.sub('\n(?!=$)','</para>\n<para>',text) + '</para>'
         #print 'text ->',unicode(text).encode('iso-8859-1','replace')
         self.write_subheader(label)
@@ -450,7 +454,7 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
     def __init__ (self, rd, recipes, out, **kwargs):
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
-            out = file(out,'w')
+            out = file(out,'wb')
         self.setup_document(out)
         self.output_file = out
         exporter.ExporterMultirec.__init__(
@@ -508,18 +512,20 @@ def write_shopping_list (shopper, recs, file, head=_('Shopping List')):
     doc.build(txt)
 
 if __name__ == '__main__':
+    from tempfile import tempdir
+    import os.path
     sw = PdfWriter()
-    f = file('/tmp/foo.pdf','w')
+    f = file(os.path.join(tempdir,'foo.pdf'),'wb')
     sw.setup_document(f)
-    sw.write_header('Heading')
-    sw.write_subheader('This is a subheading')
+    #sw.write_header('Heading')
+    #sw.write_subheader('This is a subheading')
     sw.write_paragraph('These are some sentences.  '*24)
-    sw.write_paragraph('This is a <i>paragraph</i> with <b>some</b> <u>markup</u>.')
+    #sw.write_paragraph('This is a <i>paragraph</i> with <b>some</b> <u>markup</u>.')
     #sw.write_paragraph(u"This is some text with unicode - 45\u00b0, \u00bfHow's that?".encode('iso-8859-1'))
-    sw.write_paragraph(u"This is some text with a unicode object - 45\u00b0, \u00bfHow's that?")
+    #sw.write_paragraph(u"This is some text with a unicode object - 45\u00b0, \u00bfHow's that?")
     sw.close()
     f.close()
-    star_file = file('/tmp/star.pdf','w')
+    star_file = file(os.path.join(tempdir,'star.pdf'),'wb')
     sw = PdfWriter()
     sw.setup_document(star_file)
     for n in range(6,72,2):
@@ -530,18 +536,27 @@ if __name__ == '__main__':
     star_file.close()
     #import gnome
     #gnome.program_init('1.0','Gourmet PDF Exporter Test')
-    #gglobals.launch_url('file:///tmp/star.pdf')
-    #raise "I don't want to go any further"
-    import gourmet.recipeManager as rm
-    import gnome
-    rd = rm.RecipeManager(file='/home/tom/Projects/grm/src/tests/reference_setup/recipes.db')
-    #ofi = file('/tmp/test_rec.pdf','w')
-    #rr = []
+    #gglobals.launch_url('file:/os.path.join(tempdir,/star.pdf')
+    #raise "I don')t want to go any further"
+    #import gourmet.recipeManager as rm
+    #import gnome
+    #rd = rm.RecipeManager(file='/home/tom/Projects/grm/src/tests/reference_setup/recipes.db')
+    #if os.name == 'nt':
+    #    base = 'C:\\grm\grm'
+    #else:
+    #    base = '/home/tom/Projects/grm'
+    #rd = rm.RecipeManager(file=os.path.join(base,'src','tests','reference_setup','recipes.db'))
+    ##ofi = file(os.path.join(tempdir,'test_rec.pdf'),'w')
+    ##rr = []
     #for n,rec in enumerate(rd.fetch_all(rd.rview)):
     #    if rec.image:
     #        rr.append(rec)
-    pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.rview),'/tmp/fooby.pdf')
-    pe.run()
+    #pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.rview),os.path.join(tempdir,'fooby.pdf'))
+    #pe.run()
     import gourmet.gglobals as gglobals
-    gnome.program_init('1.0','Gourmet PDF Exporter Test')
-    gglobals.launch_url('file:///tmp/fooby.pdf')
+    #gnome.program_init('1.0','Gourmet PDF Exporter Test')
+    print 'Launching',os.path.join(tempdir,'foo.pdf')
+    gglobals.launch_url(os.path.join(tempdir,'foo.pdf'))    
+    print 'Launching',os.path.join(tempdir,'star.pdf')
+    gglobals.launch_url(os.path.join(tempdir,'star.pdf'))
+
