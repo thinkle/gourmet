@@ -966,8 +966,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         if not exp_type or not exporters.exporter_dict.has_key(exp_type):
             de.show_message(_('Gourmet cannot export file of type "%s"')%os.path.splitext(fn)[1])
             return
-        out=open(fn,'w')
         myexp = exporters.exporter_dict[exp_type]
+        if myexp.get('mode',''):
+            out=open(fn,'wb')
+        else:
+            out=open(fn,'w')
         try:
             myexp['exporter']({
                 'rd':self.rg.rd,
@@ -989,10 +992,18 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 expander=(_('_Details'),error_mess),
                 message_type=gtk.MESSAGE_ERROR
                 )
-        # set prefs for next time
-        out.close()
-        ext=os.path.splitext(fn)[1]
-        self.prefs['save_recipe_as']=ext
+        else:
+            # set prefs for next time
+            out.close()
+            ext=os.path.splitext(fn)[1]
+            self.prefs['save_recipe_as']=ext
+            self.rg.offer_url(
+                label=_("Export succeeded"),
+                sublabel=_("Exported %(filetype)s to %(filename)s")%{
+                'filetype':exp_type,
+                'filename':fn,},
+                url='file:///%s'%fn
+                )
 
     def changedCB (self, widget):
         ## This needs to keep track of undo history...

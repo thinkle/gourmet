@@ -1114,7 +1114,7 @@ class RecGui (RecIndex):
         if linktype == exporters.WEBPAGE:
             url += '/index.htm'
             linktype = _("webpage")
-        sublabel = _("Exported %s to %s"%(linktype,file))
+        sublabel = _("Exported %s to %s")%(linktype,file)
         def offerer (t):
             if t.completed:
                 #self.idle_offer_url(label, sublabel, url, True)
