@@ -141,7 +141,6 @@ class ImageBrowserDialog (ModalDialog):
         self.set_default_size(600,600)
 
     def setup_dialog (self, *args, **kwargs):
-        gtk.threads_init()
         ModalDialog.setup_dialog(self,*args,**kwargs)
         self.ib = ImageBrowser()
         self.ib.connect('selection-changed',self.selection_changed_cb)
@@ -204,10 +203,13 @@ class ImageBrowserTest (unittest.TestCase):
         self.ibd = ImageBrowserDialog()
         self.ibd.add_images_from_uris_w_progress(
             ['http://ideasinfood.typepad.com/ideas_in_food/images/katzs_pastrami_reuben.jpg'] \
-            + ['file:///home/tom/pictures/'+image for image in ['Caneel beach.JPG','Cinnamon beach.JPG','dsc00258.jpg']]
+#            + ['file:///home/tom/pictures/'+image for image in ['Caneel beach.JPG','Cinnamon beach.JPG','dsc00258.jpg']]
             )
         #for image in []:
-        #    self.ibd.add_image_from_uri()        
+        #    self.ibd.add_image_from_uri()
+        import os
+        if os.name!='nt':
+            gtk.threads_init()
         self.ibd.run()
 
 def get_image_file (uri):

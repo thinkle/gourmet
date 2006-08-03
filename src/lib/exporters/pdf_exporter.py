@@ -179,7 +179,7 @@ class FiveStars (Star):
 class PdfWriter:
 
     def __init__ (self):
-        self.keep_with_next = []    
+        pass
 
     def setup_document (self, file, **kwargs):
         self.doc = platypus.SimpleDocTemplate(file)
@@ -210,18 +210,8 @@ class PdfWriter:
         if keep_with_next:
             # If we want to keep this together -- we append it to a
             # little "holder" class for now...
-            self.keep_with_next.append(p)
-            return
-        elif self.keep_with_next:
-            self.keep_with_next.append(p)
-            self.txt.extend(self.keep_with_next)
-            #p = platypus.KeepTogether(
-            #    self.keep_with_next
-            #    )
-            self.keep_with_next = []
-        #self.txt.append(p)
-        else:
-            self.txt.append(p)
+            p.KeepWithNext = 1
+        self.txt.append(p)
 
     def write_header (self, txt):
         """Write a header.
@@ -248,8 +238,6 @@ class PdfWriter:
             )
 
     def close (self):
-        if self.keep_with_next:
-            self.txt.append(platypus.KeepWithNext(self.keep_with_next))
         self.doc.build(self.txt)
         
 class PdfExporter (exporter.exporter_mult, PdfWriter):
@@ -261,6 +249,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                   **kwargs):
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
+            print 'PdfExporter opens binary file ',out
             out = file(out,'wb')
         if not doc:
             self.setup_document(out)
@@ -433,8 +422,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             # HARDCODING paragraph style to space
             if first_para:
                 first_para = False
-            else:
-                self.write_paragraph(t,attributes="spacebefore='6'")
+            self.write_paragraph(t,attributes="spacebefore='6'")
 
     def write_inghead (self):
         self.write_subheader(xml.sax.saxutils.escape(_('Ingredients')))
@@ -451,9 +439,10 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         self.write_paragraph(txt)
 
 class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
-    def __init__ (self, rd, recipes, out, **kwargs):
+    def __init__ (self, rd, recipes, out, progress_func=None, conv=None, **kwargs):
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
+            print 'Open binary file ',out
             out = file(out,'wb')
         self.setup_document(out)
         self.output_file = out
@@ -465,6 +454,8 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
             rd, recipes, out,
             one_file=True, ext='pdf',
             exporter=PdfExporter,
+            conv=conv,
+            progress_func=progress_func,
             exporter_kwargs=kwargs,
             )
 

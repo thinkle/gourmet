@@ -146,6 +146,7 @@ exporter_dict = {
            'label':_('RTF Export'),
            'sublabel':_('Exporting recipes to Rich Text file %(file)s.'),
            'single_completed':_('Recipe saved as Rich Text file %(file)s'),
+           'mode':'b'
            },
     PDF : {'mult_exporter':lambda args: pdf_exporter.PdfExporterMultiDoc(args['rd'],
                                                                          args['rv'],
@@ -160,6 +161,7 @@ exporter_dict = {
            'label':_('PDF Export'),
            'sublabel':_('Exporting recipes to PDF %(file)s.'),
            'single_completed':_('Recipe saved as PDF %(file)s'),
+           'mode':'b'           
            },
     
     # EDFG : {'mult_exporter': lambda args : eatdrinkfeelgood_exporter.EdfgXmlM(
@@ -180,6 +182,12 @@ exporter_dict = {
 #         'single_completed':_('Recipe saved as EDFG file %(file)s'),
 #         },
     }
+
+for name,mimetype,extensions in saveas_single_filters:
+    exporter_dict[name]['single_extension']=extensions[0].strip('.*')
+for name,mimetype,extensions in saveas_filters:
+    exporter_dict[name]['multiple_extension']=extensions[0].strip('.*')
+
 
 class Tester:
     def __init__ (self):

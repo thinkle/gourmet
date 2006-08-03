@@ -1,4 +1,4 @@
-import exporter, PyRTF
+import exporter, PyRTF, types
 from gourmet import convert
 from gourmet.gdebug import *
 from gourmet.ImageExtras import write_image_tempfile
@@ -44,6 +44,7 @@ class rtf_exporter (exporter.exporter_mult):
                                         fractions=convert.FRACTIONS_NORMAL, #1/2 1/4 3/4 fractions
                                         do_markup=False #we'll handle this internally...
                                         )
+
 
     def setup_document (self, doc=None, ss=None):
         if doc: self.doc=doc        
