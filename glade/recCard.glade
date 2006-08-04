@@ -3216,22 +3216,23 @@ as Ingredient</property>
 
 		      <child>
 			<widget class="GtkHBox" id="hbox32">
+			  <property name="width_request">370</property>
 			  <property name="visible">True</property>
 			  <property name="homogeneous">False</property>
-			  <property name="spacing">0</property>
+			  <property name="spacing">1</property>
 
 			  <child>
 			    <widget class="GtkLabel" id="titleDisplay">
+			      <property name="width_request">254</property>
 			      <property name="visible">True</property>
-			      <property name="can_focus">True</property>
-			      <property name="label" translatable="yes">&lt;b&gt;Title&lt;/b&gt;</property>
+			      <property name="label" translatable="yes">&lt;b&gt;An long example: rather extraordinarily long actually -- very long, actually.&lt;/b&gt;</property>
 			      <property name="use_underline">True</property>
 			      <property name="use_markup">True</property>
 			      <property name="justify">GTK_JUSTIFY_LEFT</property>
 			      <property name="wrap">True</property>
-			      <property name="selectable">True</property>
+			      <property name="selectable">False</property>
 			      <property name="xalign">0</property>
-			      <property name="yalign">0.5</property>
+			      <property name="yalign">0</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
 			      <property name="mnemonic_widget">titleDisplay</property>
@@ -3248,14 +3249,28 @@ as Ingredient</property>
 			  </child>
 
 			  <child>
-			    <widget class="GtkButton" id="button383502">
+			    <widget class="GtkAlignment" id="alignment33">
 			      <property name="visible">True</property>
-			      <property name="can_focus">True</property>
-			      <property name="label" translatable="yes">Edit _description</property>
-			      <property name="use_underline">True</property>
-			      <property name="relief">GTK_RELIEF_NONE</property>
-			      <property name="focus_on_click">True</property>
-			      <signal name="clicked" handler="edit_details" last_modification_time="Mon, 06 Feb 2006 10:59:27 GMT"/>
+			      <property name="xalign">0.5</property>
+			      <property name="yalign">1</property>
+			      <property name="xscale">1</property>
+			      <property name="yscale">1</property>
+			      <property name="top_padding">0</property>
+			      <property name="bottom_padding">0</property>
+			      <property name="left_padding">6</property>
+			      <property name="right_padding">0</property>
+
+			      <child>
+				<widget class="GtkButton" id="button383502">
+				  <property name="visible">True</property>
+				  <property name="can_focus">True</property>
+				  <property name="label" translatable="yes">Edit _description</property>
+				  <property name="use_underline">True</property>
+				  <property name="relief">GTK_RELIEF_NONE</property>
+				  <property name="focus_on_click">True</property>
+				  <signal name="clicked" handler="edit_details" last_modification_time="Mon, 06 Feb 2006 10:59:27 GMT"/>
+				</widget>
+			      </child>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -3274,6 +3289,7 @@ as Ingredient</property>
 
 		      <child>
 			<widget class="GtkHBox" id="hbox38">
+			  <property name="width_request">385</property>
 			  <property name="visible">True</property>
 			  <property name="homogeneous">False</property>
 			  <property name="spacing">0</property>
@@ -3875,24 +3891,6 @@ as Ingredient</property>
 				  </child>
 
 				  <child>
-				    <widget class="Custom" id="ratingDisplay">
-				      <property name="visible">True</property>
-				      <property name="creation_function">makeStarImage</property>
-				      <property name="int1">0</property>
-				      <property name="int2">0</property>
-				      <property name="last_modification_time">Sun, 26 Jun 2005 11:13:08 GMT</property>
-				    </widget>
-				    <packing>
-				      <property name="left_attach">1</property>
-				      <property name="right_attach">2</property>
-				      <property name="top_attach">3</property>
-				      <property name="bottom_attach">4</property>
-				      <property name="x_options"></property>
-				      <property name="y_options"></property>
-				    </packing>
-				  </child>
-
-				  <child>
 				    <widget class="GtkImage" id="imageDisplay">
 				      <property name="visible">True</property>
 				      <property name="xalign">0.5</property>
@@ -3906,6 +3904,38 @@ as Ingredient</property>
 				      <property name="top_attach">2</property>
 				      <property name="bottom_attach">3</property>
 				      <property name="x_options">fill</property>
+				    </packing>
+				  </child>
+
+				  <child>
+				    <widget class="GtkAlignment" id="alignment34">
+				      <property name="visible">True</property>
+				      <property name="xalign">0</property>
+				      <property name="yalign">0.5</property>
+				      <property name="xscale">1</property>
+				      <property name="yscale">1</property>
+				      <property name="top_padding">0</property>
+				      <property name="bottom_padding">0</property>
+				      <property name="left_padding">0</property>
+				      <property name="right_padding">0</property>
+
+				      <child>
+					<widget class="Custom" id="ratingDisplay">
+					  <property name="visible">True</property>
+					  <property name="creation_function">makeStarImage</property>
+					  <property name="int1">0</property>
+					  <property name="int2">0</property>
+					  <property name="last_modification_time">Sun, 26 Jun 2005 11:13:08 GMT</property>
+					</widget>
+				      </child>
+				    </widget>
+				    <packing>
+				      <property name="left_attach">1</property>
+				      <property name="right_attach">2</property>
+				      <property name="top_attach">3</property>
+				      <property name="bottom_attach">4</property>
+				      <property name="x_options"></property>
+				      <property name="y_options"></property>
 				    </packing>
 				  </child>
 				</widget>
@@ -3927,6 +3957,7 @@ as Ingredient</property>
 
 		      <child>
 			<widget class="GtkHSeparator" id="hseparator2">
+			  <property name="width_request">385</property>
 			  <property name="visible">True</property>
 			</widget>
 			<packing>
@@ -3938,6 +3969,7 @@ as Ingredient</property>
 
 		      <child>
 			<widget class="GtkHBox" id="hbox34">
+			  <property name="width_request">375</property>
 			  <property name="visible">True</property>
 			  <property name="homogeneous">False</property>
 			  <property name="spacing">0</property>
@@ -3994,12 +4026,26 @@ as Ingredient</property>
 		      </child>
 
 		      <child>
-			<widget class="Custom" id="instructionsDisplay">
+			<widget class="GtkAlignment" id="alignment35">
 			  <property name="visible">True</property>
-			  <property name="creation_function">makeLinkedTimeView</property>
-			  <property name="int1">0</property>
-			  <property name="int2">0</property>
-			  <property name="last_modification_time">Sat, 14 Jan 2006 21:09:18 GMT</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xscale">1</property>
+			  <property name="yscale">1</property>
+			  <property name="top_padding">0</property>
+			  <property name="bottom_padding">0</property>
+			  <property name="left_padding">6</property>
+			  <property name="right_padding">6</property>
+
+			  <child>
+			    <widget class="Custom" id="instructionsDisplay">
+			      <property name="visible">True</property>
+			      <property name="creation_function">makeLinkedTimeView</property>
+			      <property name="int1">0</property>
+			      <property name="int2">0</property>
+			      <property name="last_modification_time">Sat, 14 Jan 2006 21:09:18 GMT</property>
+			    </widget>
+			  </child>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -4010,6 +4056,7 @@ as Ingredient</property>
 
 		      <child>
 			<widget class="GtkHBox" id="hbox36">
+			  <property name="width_request">375</property>
 			  <property name="visible">True</property>
 			  <property name="homogeneous">False</property>
 			  <property name="spacing">0</property>
@@ -4066,12 +4113,26 @@ as Ingredient</property>
 		      </child>
 
 		      <child>
-			<widget class="Custom" id="modificationsDisplay">
+			<widget class="GtkAlignment" id="alignment36">
 			  <property name="visible">True</property>
-			  <property name="creation_function">makeLinkedTimeView</property>
-			  <property name="int1">0</property>
-			  <property name="int2">0</property>
-			  <property name="last_modification_time">Sat, 14 Jan 2006 21:09:18 GMT</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xscale">1</property>
+			  <property name="yscale">1</property>
+			  <property name="top_padding">0</property>
+			  <property name="bottom_padding">0</property>
+			  <property name="left_padding">6</property>
+			  <property name="right_padding">6</property>
+
+			  <child>
+			    <widget class="Custom" id="modificationsDisplay">
+			      <property name="visible">True</property>
+			      <property name="creation_function">makeLinkedTimeView</property>
+			      <property name="int1">0</property>
+			      <property name="int2">0</property>
+			      <property name="last_modification_time">Sat, 14 Jan 2006 21:09:18 GMT</property>
+			    </widget>
+			  </child>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -4116,7 +4177,7 @@ as Ingredient</property>
 			  <property name="top_padding">0</property>
 			  <property name="bottom_padding">0</property>
 			  <property name="left_padding">12</property>
-			  <property name="right_padding">0</property>
+			  <property name="right_padding">6</property>
 
 			  <child>
 			    <widget class="Custom" id="nutritionLabel">
@@ -4181,6 +4242,7 @@ as Ingredient</property>
 
 		      <child>
 			<widget class="GtkHBox" id="hbox37">
+			  <property name="width_request">225</property>
 			  <property name="visible">True</property>
 			  <property name="homogeneous">False</property>
 			  <property name="spacing">0</property>
