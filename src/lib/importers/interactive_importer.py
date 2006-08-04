@@ -680,12 +680,12 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
             tags = itr.get_tags()
         action = None
         for t in tags:
-            if self.parser_to_choice.has_key(t.props.name):
-                action = self.parser_to_choice[t.props.name]
-            elif self.attdic.has_key(t.props.name):
-                action = self.attdic[t.props.name]
-            elif self.textattdic.has_key(t.props.name):
-                action = self.textattdic[t.props.name]
+            if self.parser_to_choice.has_key(t.get_property('name')):
+                action = self.parser_to_choice[t.get_property('name')]
+            elif self.attdic.has_key(t.get_property('name')):
+                action = self.attdic[t.get_property('name')]
+            elif self.textattdic.has_key(t.get_property('name')):
+                action = self.textattdic[t.get_property('name')]
         self.set_current_action(action)
         
     #-- InteractiveImporter.on_cursor_moved }
