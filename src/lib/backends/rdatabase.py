@@ -3,7 +3,7 @@ from gourmet.gdebug import debug, TimeAction
 import re, pickle, string, os.path, string, time
 from gettext import gettext as _
 import gourmet.gglobals
-from gourmet import Undo, keymanager, convert, shopping
+from gourmet import Undo, keymanager, convert
 from gourmet.defaults import lang as defaults
 import gourmet.nutrition.parser_data
 import StringIO
