@@ -17,6 +17,17 @@ import types, re
 import tempfile, os.path
 import math
 
+DEFAULT_PDF_ARGS = {
+    #'pagesize':'letter',
+    #'pagemode':'landscape',
+    #'left_margin':0.3*inch,
+    #'right_margin':0.3*inch,
+    #'top_margin':0.3*inch,
+    #'bottom_margin':0.3*inch,
+    #'base_font_size':8,
+    #'mode':('index_cards',(5*inch,3.5*inch))
+    }
+
 # Code for MCLine from:
 # http://two.pairlist.net/pipermail/reportlab-users/2005-February/003695.html
 class MCLine(platypus.Flowable):
@@ -31,6 +42,12 @@ class MCLine(platypus.Flowable):
     
     def draw(self):
         self.canv.line(0,0,self.width,0)
+
+class ParagraphKeepWithNext (platypus.Paragraph):
+    
+    keepWithNext = True
+    def getKeepWithNext (self): return 1
+    
 
 import reportlab.lib.colors as colors
 class Star (platypus.Flowable):
@@ -181,18 +198,107 @@ class PdfWriter:
     def __init__ (self):
         pass
 
-    def setup_document (self, file, **kwargs):
-        self.doc = platypus.SimpleDocTemplate(file)
-        self.styleSheet=styles.getSampleStyleSheet()
+    def setup_document (self, file, mode=('column',1), size='default', pagesize='letter',
+                        pagemode='portrait',left_margin=inch,right_margin=inch,
+                        top_margin=inch,
+                        bottom_margin=inch,
+                        base_font_size=10
+                        ):
+        if type(mode)!=tuple: raise "What is this mode! %s"%str(mode)
+        if type(pagesize) in types.StringTypes:
+            self.pagesize = getattr(pagesizes,pagemode)(getattr(pagesizes,pagesize))
+        else:
+            self.pagesize = pagesize
+        self.margins = (left_margin,right_margin,top_margin,bottom_margin)
+        if mode[0] == 'column':
+            frames = self.setup_column_frames(mode[1])
+        elif mode[0] == 'index_cards':
+            frames = self.setup_multiple_index_cards(mode[1])
+        else:
+            raise("WTF - mode = %s"%str(mode))
+        pt = platypus.PageTemplate(frames=frames)
+        self.doc = platypus.BaseDocTemplate(file,pagesize=self.pagesize,
+                                            pageTemplates=[pt],)
+        self.doc.frame_width = frames[0].width
+        self.doc.frame_height = frames[0].height
+        self.styleSheet = styles.getSampleStyleSheet()
+        perc_scale = float(base_font_size)/self.styleSheet['Normal'].fontSize
+        if perc_scale!=1.0:
+            self.scale_stylesheet(perc_scale)
         self.txt = []
-        # Flag for keeping two items together -- specifically, when we
-        # define a header, we set this flag to True... then our lovely
-        # methods wait for the next element we define and put it and
-        # our Head into a KeepTogether block
+
+    def scale_stylesheet (self, perc):
+        for name,sty in self.styleSheet.byName.items():
+            for attr in ['firstLineIndent',
+                         'fontSize',
+                         'leftIndent',
+                         'rightIndent',
+                         'leading']:
+                setattr(sty,attr,int(perc*getattr(sty,attr)))
         
-    def make_paragraph (self, txt, style=None, attributes=""):
+    def setup_column_frames (self, n):
+        COLUMN_SEPARATOR = 0.5 * inch
+        x = self.pagesize[0]
+        y = self.pagesize[1]
+        leftM,rightM,topM,bottomM = self.margins
+        FRAME_Y = bottomM
+        FRAME_HEIGHT = y - topM - bottomM
+        FRAME_WIDTH = (x - (COLUMN_SEPARATOR*(n-1)) - leftM - rightM)/n
+        frames = []
+        for i in range(n):
+            left_start = leftM + (FRAME_WIDTH + COLUMN_SEPARATOR)*i
+            frames.append(
+                platypus.Frame(
+                left_start,FRAME_Y,width=FRAME_WIDTH,height=FRAME_HEIGHT
+                )
+                )
+        return frames
+
+    def setup_multiple_index_cards (self,card_size):
+        leftM,rightM,topM,bottomM = self.margins
+        MINIMUM_SPACING = 0.1*inch
+        drawable_x = self.pagesize[0] - leftM - rightM
+        drawable_y = self.pagesize[1] - topM - bottomM
+        fittable_x = int(drawable_x / (card_size[0]+MINIMUM_SPACING))
+        x_spacer = (
+            # Extra space = 
+            fittable_x * # Number of cards times
+            ((drawable_x/fittable_x) # space per card
+             - card_size[0] ) # - space occupied by card
+            / # Divide extra space by n+1, so we get [   CARD    ], [  CARD  CARD  ], etc.
+            (fittable_x+1)
+            )
+        fittable_y = int(drawable_y / (card_size[1]+MINIMUM_SPACING))
+        y_spacer = (
+            fittable_y *
+            ((drawable_y/fittable_y)
+              - (card_size[1]))
+             /
+            (fittable_y+1)
+            )
+        if (not fittable_x) or (not fittable_y):
+            raise ValueError("Card size %s does not fit on page %s with margins %s"%(
+                card_size,self.pagesize,self.margins
+                )
+                             )
+        frames = []
+        for x in range(fittable_x):
+            x_start = leftM + (x_spacer*(x+1)) + (card_size[0]*x)
+            for y in range(fittable_y-1,-1,-1):
+                # Count down for the y, since we start from the bottom
+                # and move up
+                y_start = bottomM + (y_spacer*(y+1)) +  (card_size[1]*y)
+                frames.append(
+                    platypus.Frame(x_start,y_start,
+                                   width=card_size[0],
+                                   height=card_size[1],
+                                   showBoundary=1)
+                    )
+        return frames
+    
+    def make_paragraph (self, txt, style=None, attributes="",keep_with_next=False):
         if attributes:
-            txt = '<para %s>%s</para>'%(attributes,txt)
+            txt = '<para %s>%s</para>'%(attributes,xml.sax.saxutils.escape(txt))
         if not style: style = self.styleSheet['Normal']
         try:
             return platypus.Paragraph(unicode(txt).encode('iso-8859-1','replace'),style)
@@ -200,18 +306,20 @@ class PdfWriter:
             try:
                 #print 'WORK AROUND UNICODE ERROR WITH ',txt[:20]
                 # This seems to be the standard on windows.
-                return platypus.Paragraph(txt,style)
+                platypus.Paragraph(txt,style)
             except:
                 print 'Trouble with ',txt
                 raise
     
     def write_paragraph (self, txt, style=None, keep_with_next=False, attributes=""):
-        p = self.make_paragraph(txt,style,attributes)
+        p = self.make_paragraph(txt,style,attributes,keep_with_next=keep_with_next)
         if keep_with_next:
-            # If we want to keep this together -- we append it to a
-            # little "holder" class for now...
-            p.KeepWithNext = 1
+            # Keep with next isn't working, so we use a conditional
+            # page break, on the assumption that no header should have
+            # less than 3/4 inch of stuff after it on the page.
+            self.txt.append(platypus.CondPageBreak(0.75*inch))
         self.txt.append(p)
+        
 
     def write_header (self, txt):
         """Write a header.
@@ -238,7 +346,11 @@ class PdfWriter:
             )
 
     def close (self):
-        self.doc.build(self.txt)
+        t = self.txt[:]
+        try: self.doc.build(self.txt)
+        except:
+            print 'Trouble building',t[:20]
+            raise
         
 class PdfExporter (exporter.exporter_mult, PdfWriter):
 
@@ -246,20 +358,21 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                   doc=None,
                   styleSheet=None,
                   txt=[],
+                  pdf_args=DEFAULT_PDF_ARGS,
                   **kwargs):
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
-            print 'PdfExporter opens binary file ',out
             out = file(out,'wb')
         if not doc:
-            self.setup_document(out)
+            self.setup_document(out,**pdf_args)
             self.multidoc = False
         else:
             self.doc = doc; self.styleSheet = styleSheet; self.txt = []
             self.master_txt = txt
             self.multidoc = True
             # Put nice lines to separate multiple recipes out...
-            self.txt.append(MCLine(inch*6))
+            if pdf_args.get('mode',('columns',1))[0]=='columns':
+                self.txt.append(MCLine(self.doc.frame_width*0.8))
         exporter.exporter_mult.__init__(
             self,
             rd,r,
@@ -276,8 +389,13 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         else:
             #self.txt.append(platypus.PageBreak()) # Otherwise, a new page
             # Append to the txt list we were handed ourselves in a KeepTogether block
-            self.txt.append(platypus.Spacer(0,inch*0.5))
-            self.master_txt.append(platypus.KeepTogether(self.txt))
+            #self.txt.append(platypus.Spacer(0,inch*0.5))
+            #if pdf_args.get('mode',('column',1))[0]=='column':
+            #    self.master_txt.append(platypus.KeepTogether(self.txt))
+            #else:
+            if self.master_txt:
+                self.master_txt.append(platypus.FrameBreak())
+            self.master_txt.extend(self.txt)
             #self.master_txt.extend(self.txt)
 
     def handle_italic (self, chunk):
@@ -292,26 +410,24 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
     def scale_image (self, image, proportion=None):
         # Platypus assumes image size is in points -- this appears to
         # be off by the amount below.
-        if not proportion: proportion = inch/200 # we want 200 dots per image
-        image.imageHeight = image.imageHeight*proportion
-        image.imageWidth = image.imageWidth*proportion
+        if not proportion: proportion = inch/100 # we want 100 dots per image
+        image.drawHeight = image.drawHeight*proportion        
+        image.drawWidth = image.drawWidth*proportion
 
     def write_image (self, data):
         fn = ImageExtras.write_image_tempfile(data)
         i = platypus.Image(fn)
         self.scale_image(i)
         factor = 1
-        MAX_WIDTH = self.doc.width * 0.75
-        MAX_HEIGHT = self.doc.height * 0.75
-        if i.imageWidth > MAX_WIDTH:
-            factor = MAX_WIDTH/i.imageWidth
-        if i.imageHeight > MAX_HEIGHT:
-            f = MAX_HEIGHT/i.imageHeight
+        MAX_WIDTH = self.doc.frame_width * 0.35
+        MAX_HEIGHT = self.doc.frame_height * 0.5
+        if i.drawWidth > MAX_WIDTH:
+            factor = MAX_WIDTH/i.drawWidth
+        if i.drawHeight > MAX_HEIGHT:
+            f = MAX_HEIGHT/i.drawHeight
             if f < factor: factor = f
         if factor < 1.0:
-            #print 'Shrinking by ',factor
             self.scale_image(i,factor)
-        #print 'Image resized to ',i.imageWidth,i.imageHeight
         self.image = i
 
     def write_attr_head (self):
@@ -329,10 +445,9 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             # If we only have an image...
             self.txt.append(self.image)
             return
-        elif hasattr(self,'image') and self.image.imageWidth > (self.doc.width / 2.25):
+        elif hasattr(self,'image') and self.image.drawWidth > (self.doc.frame_width / 2.25):
             self.txt.append(self.image)
             self.txt.extend(self.attributes)
-            #print 'Image too big -- no table for you!'
             return
         # Otherwise, we're going to make a table...
         if hasattr(self,'image'):
@@ -377,7 +492,6 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             assert(type(val)==int)
         except:
             raise TypeError("Rating %s is not an integer"%val)
-        #print 'Get image file for ',val,
         i = FiveStars(10, filled=(val/2.0)) # 12 point
         lwidth = len(label+': ')*4 # A very cheap approximation of width
         t = platypus.Table(
@@ -414,8 +528,6 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         self.attributes.append(self.make_paragraph("%s: %s"%(label,text)))
 
     def write_text (self, label, text):
-        #text = '<para>' + re.sub('\n(?!=$)','</para>\n<para>',text) + '</para>'
-        #print 'text ->',unicode(text).encode('iso-8859-1','replace')
         self.write_subheader(label)
         first_para = True
         for t in text.split('\n'):
@@ -425,10 +537,33 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             self.write_paragraph(t,attributes="spacebefore='6'")
 
     def write_inghead (self):
+        self.save_txt = self.txt[:]
+        self.txt = []
         self.write_subheader(xml.sax.saxutils.escape(_('Ingredients')))
 
     def write_grouphead (self, name):
         self.write_paragraph(name,self.styleSheet['Heading3'])
+
+    def write_ingfoot (self):
+        # Ugly -- we know that heads comprise two elements -- a
+        # condbreak and a head...
+        ings = self.txt[2:]
+        if len(ings) > 4:
+            half = (len(ings) / 2)
+            first_half = ings[:-half]
+            second_half = ings[-half:]
+            t = platypus.Table(
+                [[first_half,second_half]]
+                )
+            t.hAlign = 'LEFT'
+            t.setStyle(
+                platypus.TableStyle([
+                ('VALIGN',(0,0),(1,0),'TOP'),
+                ]
+                                    )
+                )
+            self.txt = self.txt[:2] + [t]
+        self.txt = self.save_txt + [platypus.KeepTogether(self.txt)]
 
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
         txt = ""
@@ -436,19 +571,27 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             if not blob: continue
             if txt: txt += " %s"%blob
             else: txt = blob
-        self.write_paragraph(txt)
+        hanging = inch*0.25
+        self.write_paragraph(
+            txt,
+            attributes=' firstLineIndent="-%(hanging)s" leftIndent="%(hanging)s"'%locals()
+            )
+                              
 
 class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
-    def __init__ (self, rd, recipes, out, progress_func=None, conv=None, **kwargs):
+    def __init__ (self, rd, recipes, out, progress_func=None, conv=None,
+                  pdf_args=DEFAULT_PDF_ARGS,
+                  **kwargs):
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
             print 'Open binary file ',out
             out = file(out,'wb')
-        self.setup_document(out)
+        self.setup_document(out,**pdf_args)
         self.output_file = out
         kwargs['doc'] = self.doc
         kwargs['styleSheet'] = self.styleSheet
         kwargs['txt'] = self.txt
+        kwargs['pdf_args'] = pdf_args
         exporter.ExporterMultirec.__init__(
             self,
             rd, recipes, out,
@@ -460,93 +603,82 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
             )
 
     def write_footer (self):
-        #print 'We have ',len(self.txt),'elements.'
-        #print 'Our first elements is:'
-        #for n in range(1):
-        #    print n,self.txt[n]
         self.close()
         self.output_file.close()
             
-
-def write_shopping_list (shopper, recs, file, head=_('Shopping List')):
-    # setup document
-    self.styleSheet=styles.getSampleStyleSheet()
-    normsty=styleSheet['Normal']
-    catheadsty=styleSheet['Heading3']
-    headsty = styleSheet['Heading1']
-    spacer = platypus.Spacer(1,0.2*units.inch)
-    # organize shopping output
-    org = shopper.organize(shopper.dic)
-    txt = []
-    txt.append(platypus.Paragraph(head,headsty))
-    txt.append(platypus.Paragraph(_("Shopping list for: "),catheadsty))
-    for r,mult in recs.items():
-        recline = "%s"%r.title
-
-        if mult: recline += " x%s"%convert.float_to_frac(mult)
-        p=platypus.Paragraph(recline,normsty)
-        txt.append(p)
-    txt.append(spacer)
-    for c,d in org:
-        #print 'category: ',c,' d: ',d
-        p=platypus.Paragraph(c,catheadsty)
-        # space around the paragraph...        
-        #txt.append(spacer)
-        txt.append(p)
-        for i,a in d:
-            p=platypus.Paragraph("%s %s"%(a,i),normsty)
-            txt.append(p)
-        # space around the list...
-        #txt.append(spacer)
-    #print 'txt: ',txt
-    doc.build(txt)
-
 if __name__ == '__main__':
     from tempfile import tempdir
     import os.path
     sw = PdfWriter()
     f = file(os.path.join(tempdir,'foo.pdf'),'wb')
-    sw.setup_document(f)
+    sw.setup_document(f,
+                      mode=('index_cards',(5*inch,3.5*inch)),
+                      #pagesize=(5*inch,3.5*inch),
+                      pagesize='letter',
+                      pagemode='landscape',
+                      left_margin=0.25*inch,right_margin=0.25*inch,
+                      top_margin=0.25*inch,bottom_margin=0.25*inch,
+                      base_font_size=8,
+                      )
     #sw.write_header('Heading')
     #sw.write_subheader('This is a subheading')
-    sw.write_paragraph('These are some sentences.  '*24)
+    for n in range(5):
+        sw.write_header(
+            u"This is a header"
+            )
+        #sw.write_subheader(
+        #    u"This is a subheader"
+        #    )
+        sw.write_paragraph(
+            u"%s: These are some sentences.  Hopefully some of these will be quite long sentences.  Some of this text includes unicode -- 45\u00b0F, for example... \u00bfHow's that?"%n*10
+            )
     #sw.write_paragraph('This is a <i>paragraph</i> with <b>some</b> <u>markup</u>.')
     #sw.write_paragraph(u"This is some text with unicode - 45\u00b0, \u00bfHow's that?".encode('iso-8859-1'))
     #sw.write_paragraph(u"This is some text with a unicode object - 45\u00b0, \u00bfHow's that?")
     sw.close()
     f.close()
-    star_file = file(os.path.join(tempdir,'star.pdf'),'wb')
-    sw = PdfWriter()
-    sw.setup_document(star_file)
-    for n in range(6,72,2):
-        sw.write_paragraph("This is some text with a %s pt star"%n)
-        sw.txt.append(FiveStars(n,filled=3.5))
-        
-    sw.close()
-    star_file.close()
+    
+    #star_file = file(os.path.join(tempdir,'star.pdf'),'wb')
+    #sw = PdfWriter()
+    #sw.setup_document(star_file,mode='two_column')
+    #for n in range(6,72,2):
+    #    sw.write_paragraph("This is some text with a %s pt star"%n)
+    #    sw.txt.append(FiveStars(n,filled=3.5))
+    #    
+    #sw.close()
+    #star_file.close()
     #import gnome
     #gnome.program_init('1.0','Gourmet PDF Exporter Test')
     #gglobals.launch_url('file:/os.path.join(tempdir,/star.pdf')
     #raise "I don')t want to go any further"
-    #import gourmet.recipeManager as rm
-    #import gnome
-    #rd = rm.RecipeManager(file='/home/tom/Projects/grm/src/tests/reference_setup/recipes.db')
-    #if os.name == 'nt':
-    #    base = 'C:\\grm\grm'
-    #else:
-    #    base = '/home/tom/Projects/grm'
+    
+    import gnome
+
+    if os.name == 'nt':
+        base = 'C:\\grm\grm'
+    else:
+        base = '/home/tom/Projects/grm'
+
+    import gourmet.recipeManager as rm
     #rd = rm.RecipeManager(file=os.path.join(base,'src','tests','reference_setup','recipes.db'))
-    ##ofi = file(os.path.join(tempdir,'test_rec.pdf'),'w')
-    ##rr = []
-    #for n,rec in enumerate(rd.fetch_all(rd.rview)):
-    #    if rec.image:
-    #        rr.append(rec)
+    rd = rm.RecipeManager()
+    #ofi = file(os.path.join(tempdir,'test_rec.pdf'),'w')
+    rr = []
+    for n,rec in enumerate(rd.fetch_all(rd.rview,deleted=False)):
+        if rec.image:
+            rr.append(rec)
     #pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.rview),os.path.join(tempdir,'fooby.pdf'))
-    #pe.run()
+    #pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.rview,deleted=False)[:10],os.path.join(tempdir,'fooby.pdf'))
+    pe = PdfExporterMultiDoc(rd,rr,os.path.join(tempdir,'fooby.pdf'))
+    pe.run()
     import gourmet.gglobals as gglobals
-    #gnome.program_init('1.0','Gourmet PDF Exporter Test')
-    print 'Launching',os.path.join(tempdir,'foo.pdf')
-    gglobals.launch_url(os.path.join(tempdir,'foo.pdf'))    
-    print 'Launching',os.path.join(tempdir,'star.pdf')
-    gglobals.launch_url(os.path.join(tempdir,'star.pdf'))
+    try:
+        import gnome
+        gnome.program_init('1.0','Gourmet PDF Exporter Test')
+    except ImportError:
+        print 'We must be on windows...'
+    print 'Launching',os.path.join(tempdir,'fooby.pdf')
+    gglobals.launch_url('file://'+os.path.join(tempdir,'fooby.pdf'))    
+    #print 'Launching',os.path.join(tempdir,'star.pdf')
+    #gglobals.launch_url('file://'+os.path.join(tempdir,'star.pdf'))
 
