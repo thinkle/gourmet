@@ -245,7 +245,11 @@ class GenericScraper (BeautifulSoupScraper):
     def __init__ (self):
         BeautifulSoupScraper.__init__(self,
             [['text',
-              [{'tag':'body'}],
+              [{'tag':'body',
+                # Believe it or not, I've found recipe webpages with
+                # more than one body tag
+                'index':[0,None],
+                }],
               'text',
               ],
              ['images',
