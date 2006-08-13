@@ -300,6 +300,7 @@ class RecData:
     # basic DB access functions
 
     def fetch_all (self, table, sort_by=[], **criteria):
+        ret = table
         if criteria:
             ret =  table.select(**criteria)
         if sort_by:
