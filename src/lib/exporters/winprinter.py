@@ -1,7 +1,8 @@
 import tempfile, gtk
-from pdf_exporter import PdfWriter, PdfExporterMultiDoc
+from pdf_exporter import PdfWriter, PdfExporterMultiDoc, get_pdf_prefs
 
 from gettext import gettext as _
+from gettext import ngettext
 import gourmet.dialog_extras as de
 import gourmet.gglobals as gglobals
 from gourmet.convert import FRACTIONS_NORMAL
@@ -39,6 +40,7 @@ class RecRenderer:
     def __init__ (self, rd, recs, mult=1, dialog_title=_("Print Recipes"),
                   dialog_parent=None, **kwargs):
         filename = tempfile.mktemp('.pdf')
+        pdf_args = get_pdf_prefs()
         e = PdfExporterMultiDoc(rd,recs,filename, **kwargs)
         e.run()
         print_file_with_windows(filename)
@@ -51,7 +53,19 @@ class SimpleWriter (PdfWriter):
         self.filename = tempfile.mktemp('.pdf')
         self.outfile = open(self.filename,'w')
         #PdfWriter.__init__(self)
-        self.setup_document(self.outfile)
+        self.setup_document(self.outfile,
+                            self.get_pdf_prefs({
+                'page_size':_('Letter'),
+                'orientation':_('Portrait'),
+                'font_size':10.0,
+                'page_layout':(ngettext('%s Column','%s Column',2)%2),
+                'left_margin':1.0,
+                'right_margin':1.0,
+                'top_margin':1.0,
+                'bottom_margin':1.0,    
+            }
+                                               )
+                            mode=('column',2))
 
     def close (self):
         PdfWriter.close(self)

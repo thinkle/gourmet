@@ -8,6 +8,7 @@ import reportlab.lib.fonts as fonts
 import reportlab.lib.units as units
 import reportlab.lib.styles as styles
 from gettext import gettext as _
+from gettext import ngettext
 from gourmet import convert
 from gourmet import gglobals
 from gourmet import dialog_extras as de
@@ -638,7 +639,18 @@ class PdfPageDrawer (PageDrawer):
         size,areas = self.sizer.get_pagesize_and_frames_for_widget(*args,**kwargs)
         self.set_page_area(size[0],size[1],areas)
 
-def get_pdf_prefs ():
+PDF_PREF_DEFAULT={
+    'page_size':_('Letter'),
+    'orientation':_('Portrait'),
+    'font_size':10.0,
+    'page_layout':_('Plain'),
+    'left_margin':1.0,
+    'right_margin':1.0,
+    'top_margin':1.0,
+    'bottom_margin':1.0,    
+    }
+
+def get_pdf_prefs (defaults=PDF_PREF_DEFAULT):
     page_sizes = {
         _('11x17"'):'elevenSeventeen',
         _('Index Card (3.5x5")'):(3.5*inch,5*inch),
@@ -661,22 +673,24 @@ def get_pdf_prefs ():
 
     layouts = {
         _('Plain'):('column',1),
-        _('2 columns'):('column',2),
         _('Index Cards (3.5x5)'):('index_cards',(5*inch,3.5*inch)),
         _('Index Cards (4x6)'):('index_cards',(6*inch,4*inch)),
         _('Index Cards (A7)'):('index_cards',(105*mm,74*mm)),
         }
-    
+    for n in range(2,5):
+        layouts[ngettext('%s Column','%s Columns',n)%n]=('column',n)
+    layout_strings = layouts.keys()
+    layout_strings.sort()        
     opts=[
-        [_('Page _Size')+':',(_('Letter'),size_strings)],
-        [_('_Orientation')+':',(_('Portrait'),page_modes.keys())],
-        [_('_Font Size')+':',10.0],
-        [_('Page _Layout'),(_('Plain'),
-                            layouts.keys())],
-        [_('Left Margin')+':',1.0],
-        [_('Right Margin')+':',1.0],
-        [_('Top Margin')+':',1.0],
-        [_('Bottom Margin')+':',1.0],
+        [_('Page _Size')+':',(defaults['page_size'],size_strings)],
+        [_('_Orientation')+':',(defaults['orientation'],page_modes.keys())],
+        [_('_Font Size')+':',defaults['font_size']],
+        [_('Page _Layout'),(defaults['page_layout'],
+                            layout_strings)],
+        [_('Left Margin')+':',defaults['left_margin']],
+        [_('Right Margin')+':',defaults['right_margin']],
+        [_('Top Margin')+':',defaults['top_margin']],
+        [_('Bottom Margin')+':',defaults['bottom_margin']],
         ]
 
     OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = range(8)
