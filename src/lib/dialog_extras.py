@@ -456,8 +456,10 @@ class PreferencesDialog (ModalDialog):
         self.table = optionTable.OptionTable(options=self.options,
                                              option_label=option_label,
                                              value_label=value_label,
-                                             changedcb=self.changedcb)        
-        self.vbox.add(self.table)
+                                             changedcb=self.changedcb)
+        self.hbox = gtk.HBox(); self.hbox.show()
+        self.hbox.add(self.table)
+        self.vbox.add(self.hbox)
         if dont_ask_cb:
             if not dont_ask_custom_text:
                 dont_ask_custom_text=_("Don't ask me this again.")
@@ -1199,14 +1201,15 @@ For example, you could enter 2-4 or 1 1/2 - 3 1/2.
 
 
 if __name__ == '__main__':
-    import testExtras
     w=gtk.Window()
     w.connect('delete_event',gtk.main_quit)
     b=gtk.Button("show dialog (modal)")
     opts=(["Toggle Option",True],
           ["String Option","Hello"],
           ["Integer Option",1],
-          ["Float Option",float(3)])
+          ["Float Option",float(3)],
+          ["Option Option",("B",["A","B","C"])],
+          )
     pd=PreferencesDialog(options=opts)
     def run_prefs (*args):
          pd.run()

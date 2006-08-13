@@ -1,5 +1,5 @@
 from reportlab.pdfbase import pdfmetrics
-from reportlab.lib.units import inch
+from reportlab.lib.units import inch,mm
 from reportlab.pdfgen import canvas
 import reportlab.platypus as platypus
 from reportlab.platypus.flowables import ParagraphAndImage
@@ -10,12 +10,14 @@ import reportlab.lib.styles as styles
 from gettext import gettext as _
 from gourmet import convert
 from gourmet import gglobals
+from gourmet import dialog_extras as de
 from gourmet import ImageExtras
 import xml.sax.saxutils
 import exporter
 import types, re
 import tempfile, os.path
 import math
+from page_drawer import PageDrawer
 
 DEFAULT_PDF_ARGS = {
     #'pagesize':'letter',
@@ -42,12 +44,6 @@ class MCLine(platypus.Flowable):
     
     def draw(self):
         self.canv.line(0,0,self.width,0)
-
-class ParagraphKeepWithNext (platypus.Paragraph):
-    
-    keepWithNext = True
-    def getKeepWithNext (self): return 1
-    
 
 import reportlab.lib.colors as colors
 class Star (platypus.Flowable):
@@ -204,18 +200,9 @@ class PdfWriter:
                         bottom_margin=inch,
                         base_font_size=10
                         ):
-        if type(mode)!=tuple: raise "What is this mode! %s"%str(mode)
-        if type(pagesize) in types.StringTypes:
-            self.pagesize = getattr(pagesizes,pagemode)(getattr(pagesizes,pagesize))
-        else:
-            self.pagesize = pagesize
-        self.margins = (left_margin,right_margin,top_margin,bottom_margin)
-        if mode[0] == 'column':
-            frames = self.setup_column_frames(mode[1])
-        elif mode[0] == 'index_cards':
-            frames = self.setup_multiple_index_cards(mode[1])
-        else:
-            raise("WTF - mode = %s"%str(mode))
+        frames = self.setup_frames(mode,size,pagesize,pagemode,
+                                   left_margin,right_margin,top_margin,
+                                   bottom_margin,base_font_size)
         pt = platypus.PageTemplate(frames=frames)
         self.doc = platypus.BaseDocTemplate(file,pagesize=self.pagesize,
                                             pageTemplates=[pt],)
@@ -226,6 +213,25 @@ class PdfWriter:
         if perc_scale!=1.0:
             self.scale_stylesheet(perc_scale)
         self.txt = []
+
+    def setup_frames (self,mode=('column',1), size='default', pagesize='letter',
+                        pagemode='portrait',left_margin=inch,right_margin=inch,
+                        top_margin=inch,
+                        bottom_margin=inch,
+                        base_font_size=10):
+        if type(mode)!=tuple: raise "What is this mode! %s"%str(mode)
+        if type(pagesize) in types.StringTypes:
+            self.pagesize = getattr(pagesizes,pagemode)(getattr(pagesizes,pagesize))
+        else:
+            self.pagesize = getattr(pagesizes,pagemode)(pagesize)
+        self.margins = (left_margin,right_margin,top_margin,bottom_margin)
+        if mode[0] == 'column':
+            frames = self.setup_column_frames(mode[1])
+        elif mode[0] == 'index_cards':
+            frames = self.setup_multiple_index_cards(mode[1])
+        else:
+            raise("WTF - mode = %s"%str(mode))
+        return frames
 
     def scale_stylesheet (self, perc):
         for name,sty in self.styleSheet.byName.items():
@@ -371,8 +377,8 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             self.master_txt = txt
             self.multidoc = True
             # Put nice lines to separate multiple recipes out...
-            if pdf_args.get('mode',('columns',1))[0]=='columns':
-                self.txt.append(MCLine(self.doc.frame_width*0.8))
+            #if pdf_args.get('mode',('columns',1))[0]=='columns':
+            #    self.txt.append(MCLine(self.doc.frame_width*0.8))
         exporter.exporter_mult.__init__(
             self,
             rd,r,
@@ -605,8 +611,165 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
     def write_footer (self):
         self.close()
         self.output_file.close()
+
+class Sizer (PdfWriter):
+
+    def get_size (self, *args, **kwargs):
+        frames = self.setup_frames(*args,**kwargs)
+        return self.pagesize,frames
+
+    def get_pagesize_and_frames_for_widget (self, *args, **kwargs):
+        ps,ff = self.get_size(*args,**kwargs)
+        frames = [
+            (f.x1, # X (top corner)
+             ps[1]-f._y2, #Y (top corner)
+             f.width,f.height) for f in ff]
+        return ps,frames
+
+class PdfPageDrawer (PageDrawer):
+
+    def __init__ (self,*args,**kwargs):
+        PageDrawer.__init__(self,*args,**kwargs)
+        self.sizer = Sizer()
+        self.set_page()
+
+    def set_page (self, *args, **kwargs):
+        self.last_kwargs = kwargs
+        size,areas = self.sizer.get_pagesize_and_frames_for_widget(*args,**kwargs)
+        self.set_page_area(size[0],size[1],areas)
+
+def get_pdf_prefs ():
+    page_sizes = {
+        _('11x17"'):'elevenSeventeen',
+        _('Index Card (3.5x5")'):(3.5*inch,5*inch),
+        _('Index Card (4x6")'):(4*inch,6*inch),
+        _('Index Card (5x8")'):(5*inch,8*inch),
+        _('Index Card (A7)'):(74*mm,105*mm),
+        _('Letter'):'letter',
+        _('Legal'):'legal',
+        'A0':'A0','A1':'A1','A2':'A2','A3':'A3','A4':'A4','A5':'A5','A6':'A6',
+        'B0':'B0','B1':'B1','B2':'B2','B3':'B3','B4':'B4','B5':'B5','B6':'B6',
+        }
+    INDEX_CARDS = [(3.5*inch,5*inch),(4*inch,6*inch),(5*inch,8*inch),(74*mm,105*mm)]
+    page_modes = {
+        _('Portrait'):'portrait',
+        _('Landscape'):'landscape',      
+        }
+
+    size_strings = page_sizes.keys()
+    size_strings.sort()
+
+    layouts = {
+        _('Plain'):('column',1),
+        _('2 columns'):('column',2),
+        _('Index Cards (3.5x5)'):('index_cards',(5*inch,3.5*inch)),
+        _('Index Cards (4x6)'):('index_cards',(6*inch,4*inch)),
+        _('Index Cards (A7)'):('index_cards',(105*mm,74*mm)),
+        }
+    
+    opts=[
+        [_('Page _Size')+':',(_('Letter'),size_strings)],
+        [_('_Orientation')+':',(_('Portrait'),page_modes.keys())],
+        [_('_Font Size')+':',10.0],
+        [_('Page _Layout'),(_('Plain'),
+                            layouts.keys())],
+        [_('Left Margin')+':',1.0],
+        [_('Right Margin')+':',1.0],
+        [_('Top Margin')+':',1.0],
+        [_('Bottom Margin')+':',1.0],
+        ]
+
+    OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = range(8)
+    def get_args_from_opts (opts):
+        args = {}
+        args['pagesize']=page_sizes[opts[OPT_PS][1]] # PAGE SIZE
+        args['pagemode']=page_modes[opts[OPT_PO][1]] # PAGE MODE
+        args['base_font_size']=opts[OPT_FS][1] # FONT SIZE
+        args['mode']=layouts[opts[OPT_PL][1]] # LAYOUT/MODE
+        args['left_margin']=opts[OPT_LM][1]*inch
+        args['right_margin']=opts[OPT_RM][1]*inch
+        args['top_margin']=opts[OPT_TM][1]*inch
+        args['bottom_margin']=opts[OPT_BM][1]*inch
+        return args
+
+    page_drawer = PdfPageDrawer(yalign=0.0)
+
+    global in_ccb
+    in_ccb = False
+    def change_cb (option_table, *args,**kwargs):
+        global in_ccb
+        if in_ccb: return
+        in_ccb = True
+        option_table.apply()
+        args = get_args_from_opts(opts)
+        changed = False
+        if args['pagesize']!=page_drawer.last_kwargs.get('pagesize','letter'):
+            last_pagesize = page_drawer.last_kwargs.get('pagesize','letter')
+            pagesize = args['pagesize']
+            # If pagesize has changed from index to non-index card,
+            # toggle orientation and margins by default for our user's
+            # convenience...
+            if pagesize in INDEX_CARDS and last_pagesize not in INDEX_CARDS:
+                changed = True
+                option_table.set_option(OPT_PO,_('Landscape'))
+                for o in [OPT_LM,OPT_RM,OPT_BM,OPT_TM]:
+                    option_table.set_option(o,0.25)
+                option_table.set_option(OPT_FS,8)
+            elif pagesize not in INDEX_CARDS and last_pagesize in INDEX_CARDS:
+                changed = True                
+                option_table.set_option(OPT_PO,_('Portrait'))
+                for o in [OPT_LM,OPT_RM,OPT_BM,OPT_TM]:
+                    option_table.set_option(o,1)
+                option_table.set_option(OPT_FS,10)
+        if (args['mode'][0] != page_drawer.last_kwargs.get('mode',('column',1))[0]
+            or
+            (args['mode'][0]=='index_cards'
+             and (args['mode'] != page_drawer.last_kwargs['mode']
+                  or
+                  (args['pagesize'] != page_drawer.last_kwargs['pagesize']
+                   and
+                   'elevenSeventeen' in [args['pagesize'],page_drawer.last_kwargs['pagesize']]
+                   )
+                  )
+             )
+            ):
+            # If our mode has changed...
+            changed = True
+            if args['mode'][0]=='index_cards':
+                option_table.set_option(OPT_FS,8)
+                for o in [OPT_LM,OPT_RM,OPT_BM,OPT_TM]:
+                    option_table.set_option(o,0.35)
+                if (args['mode'][1][0] <= 5.2*inch) ^ (args['pagesize']=='elevenSeventeen'):
+                    option_table.set_option(OPT_PO,_('Landscape'))
+                else:
+                    option_table.set_option(OPT_PO,_('Portrait'))
+            else:
+                # Otherwise it's columns...
+                option_table.set_option(OPT_FS,10)                
+                for o in [OPT_LM,OPT_RM,OPT_BM,OPT_TM]:
+                    option_table.set_option(o,1)
+        if changed:
+            option_table.apply()
+            args = get_args_from_opts(opts)
+        page_drawer.set_page(**args)
+        page_drawer.queue_draw()
+        in_ccb = False
+    
+    pd = de.PreferencesDialog(opts,option_label=None,value_label=None,
+                              label='PDF Options',
+                              )
+    pd.table.connect('changed',change_cb)
+    pd.hbox.pack_start(page_drawer,fill=True,expand=True)
+    page_drawer.set_size_request(200,100)
+    page_drawer.show()
+
+    pd.run()
+
+    return get_args_from_opts (opts)
+    
             
 if __name__ == '__main__':
+    opts = get_pdf_prefs(); print opts
     from tempfile import tempdir
     import os.path
     sw = PdfWriter()

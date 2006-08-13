@@ -967,10 +967,15 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             de.show_message(_('Gourmet cannot export file of type "%s"')%os.path.splitext(fn)[1])
             return
         myexp = exporters.exporter_dict[exp_type]
+        if myexp.get('extra_prefs_dialog',None):
+            extra_prefs = myexp['extra_prefs_dialog']()
+        else:
+            extra_prefs = {}
         if myexp.get('mode',''):
             out=open(fn,'wb')
         else:
             out=open(fn,'w')
+
         try:
             myexp['exporter']({
                 'rd':self.rg.rd,
@@ -979,6 +984,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 'conv':self.rg.conv,
                 'change_units':self.prefs.get('readableUnits',True),
                 'mult':self.mult,
+                'extra_prefs':extra_prefs
                 })
             self.message(myexp['single_completed']%{'file':fn})
         except:

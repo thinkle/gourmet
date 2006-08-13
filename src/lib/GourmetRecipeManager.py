@@ -819,6 +819,10 @@ class RecGui (RecIndex):
             post_hooks = [self.after_dialog_offer_url(exp_type,file)]
             if exporters.exporter_dict.has_key(exp_type):
                 myexp = exporters.exporter_dict[exp_type]
+                if myexp.has_key('extra_prefs_dialog'):
+                    extra_prefs = myexp['extra_prefs_dialog']()
+                else:
+                    extra_prefs = {}
                 pd_args={'label':myexp['label'],'sublabel':myexp['sublabel']%{'file':file}}
                 if export_all: recs = self.rd.fetch_all(self.rd.rview,deleted=False)
                 else: recs = self.recTreeSelectedRecs()
@@ -826,7 +830,9 @@ class RecGui (RecIndex):
                                                    'rv': recs,
                                                    'conv':self.conv,
                                                    'prog':self.set_progress_thr,
-                                                   'file':file})
+                                                   'file':file,
+                                                   'extra_prefs':extra_prefs,
+                                                   })
             if expClass:
                 self.threads += 1
                 def show_progress (t):
