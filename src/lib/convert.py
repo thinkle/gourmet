@@ -12,6 +12,31 @@ FRACTIONS_OFF = -2
 
 USE_FRACTIONS = FRACTIONS_NORMAL
 
+class PossiblyCaseInsensitiveDictionary (dict):
+
+    transformations = ["lower","title","upper"]
+
+    def has_key (self, k):
+        if dict.has_key(self,k): return True
+        else:
+            for t in self.transformations:
+                if hasattr(k,t):
+                    if dict.has_key(self,getattr(k,t)()): return True
+        return False
+
+    def __getitem__ (self, k):
+        if dict.has_key(self,k):
+            return dict.__getitem__(self,k)
+        else:
+            for t in self.transformations:
+                if hasattr(k,t):
+                    nk = getattr(k,t)()
+                    if dict.has_key(self,nk):
+                        return dict.__getitem__(self,nk)
+        # Raise plain old error
+        dict.__getitem__(self,k)
+        
+
 class converter:
 
     unit_to_seconds = {
@@ -87,7 +112,7 @@ class converter:
                 if not a.upper() in lst: lst.append(a.upper())
                 if not a.lower() in lst: lst.append(a.lower())
             self.units.append((u,lst))
-        self.unit_dict={}
+        self.unit_dict=PossiblyCaseInsensitiveDictionary()
         for itm in self.units:
             key = itm[0]
             variations = itm[1]
