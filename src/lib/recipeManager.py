@@ -15,7 +15,7 @@ if db=='mysql' and not dbargs.has_key('pw'):
         sublabel=_('Please enter your password for user %s of the MySQL database at host %s'%(dbargs['user'],
                                                                                               dbargs['host'])
                    ),
-        entryLabel=_('Password: '),
+        entryLabel=_('Password:'),
         visibility=False,
         )
     

@@ -902,7 +902,7 @@
 				  <child>
 				    <widget class="GtkLabel" id="preptimeLabel">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">Pre_paration Time: </property>
+				      <property name="label" translatable="yes">Pre_paration Time:</property>
 				      <property name="use_underline">True</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -978,7 +978,7 @@
 				  <child>
 				    <widget class="GtkLabel" id="recipeLabel">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">_Title: </property>
+				      <property name="label" translatable="yes">_Title:</property>
 				      <property name="use_underline">True</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1007,7 +1007,7 @@
 				  <child>
 				    <widget class="GtkLabel" id="servingsLabel">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">_Servings: </property>
+				      <property name="label" translatable="yes">_Servings:</property>
 				      <property name="use_underline">True</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1036,7 +1036,7 @@
 				  <child>
 				    <widget class="GtkLabel" id="label67">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">Image: </property>
+				      <property name="label" translatable="yes">Image:</property>
 				      <property name="use_underline">True</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1888,7 +1888,7 @@ as Ingredient</property>
 					  <property name="n_columns">2</property>
 					  <property name="homogeneous">False</property>
 					  <property name="row_spacing">6</property>
-					  <property name="column_spacing">18</property>
+					  <property name="column_spacing">6</property>
 
 					  <child>
 					    <widget class="GtkLabel" id="label56">
@@ -1945,7 +1945,7 @@ as Ingredient</property>
 					  <child>
 					    <widget class="GtkLabel" id="label57">
 					      <property name="visible">True</property>
-					      <property name="label" translatable="yes">_Unit: </property>
+					      <property name="label" translatable="yes">_Unit:</property>
 					      <property name="use_underline">True</property>
 					      <property name="use_markup">False</property>
 					      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -2120,7 +2120,7 @@ as Ingredient</property>
 					  <child>
 					    <widget class="GtkLabel" id="label35">
 					      <property name="visible">True</property>
-					      <property name="label" translatable="yes">S_hopping Category: </property>
+					      <property name="label" translatable="yes">S_hopping Category:</property>
 					      <property name="use_underline">True</property>
 					      <property name="use_markup">False</property>
 					      <property name="justify">GTK_JUSTIFY_LEFT</property>

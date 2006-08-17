@@ -638,12 +638,12 @@
 			      <property name="n_columns">2</property>
 			      <property name="homogeneous">False</property>
 			      <property name="row_spacing">0</property>
-			      <property name="column_spacing">0</property>
+			      <property name="column_spacing">6</property>
 
 			      <child>
 				<widget class="GtkLabel" id="label3">
 				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">_Key: </property>
+				  <property name="label" translatable="yes">_Key:</property>
 				  <property name="use_underline">True</property>
 				  <property name="use_markup">False</property>
 				  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -693,7 +693,7 @@
 			      <child>
 				<widget class="GtkLabel" id="label4">
 				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">_Item: </property>
+				  <property name="label" translatable="yes">_Item:</property>
 				  <property name="use_underline">True</property>
 				  <property name="use_markup">False</property>
 				  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -743,7 +743,7 @@
 			      <child>
 				<widget class="GtkLabel" id="label5">
 				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">_Unit: </property>
+				  <property name="label" translatable="yes">_Unit:</property>
 				  <property name="use_underline">True</property>
 				  <property name="use_markup">False</property>
 				  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -793,7 +793,7 @@
 			      <child>
 				<widget class="GtkLabel" id="label6">
 				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">_Amount: </property>
+				  <property name="label" translatable="yes">_Amount:</property>
 				  <property name="use_underline">True</property>
 				  <property name="use_markup">False</property>
 				  <property name="justify">GTK_JUSTIFY_LEFT</property>

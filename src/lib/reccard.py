@@ -468,7 +468,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def addInstrImageCB (self, *args):
         debug("addInstrImageCB (self, *args):",5)
-        f = de.select_file(_("Choose an image to insert in instructions... "),action=gtk.FILE_CHOOSER_ACTION_OPEN)
+        f = de.select_file(_("Choose an image to insert in instructions..."),action=gtk.FILE_CHOOSER_ACTION_OPEN)
         self.addInstrImage(f)
 
     def saveEditsCB (self, click=None, click2=None, click3=None):
@@ -2414,7 +2414,7 @@ class IngredientTreeUI:
     def ingNewGroupCB (self, *args):
         group_name = de.getEntry(label=_('Adding Ingredient Group'),
                                  sublabel=_('Enter a name for new subgroup of ingredients'),
-                                 entryLabel=_('Name of group: '),
+                                 entryLabel=_('Name of group:'),
                                  )
         selected_iters=self.getSelectedIters() or []
         undo_info = []

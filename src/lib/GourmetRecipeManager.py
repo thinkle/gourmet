@@ -736,7 +736,7 @@ class RecGui (RecIndex):
                     return
             else:
                 mult = de.getNumber(default=float(1),
-                                    label=_("Multiply %s by: ")%r.title,
+                                    label=_("Multiply %s by:")%r.title,
                                     parent=self.app.get_toplevel(),
                                     digits=2)
                 if not mult:
@@ -881,7 +881,7 @@ class RecGui (RecIndex):
         sublabel = _('Enter the URL of a recipe archive or recipe website.')
         url = de.getEntry(label=_('Enter website address.'),
                           sublabel=sublabel,
-                          entryLabel=_('Enter URL: '),
+                          entryLabel=_('Enter URL:'),
                           entryTip=_('Enter the address of a website or recipe archive. The address should begin with http://'),
                           default_character_width=60,
                           )
@@ -1020,7 +1020,7 @@ class RecGui (RecIndex):
                 if type(fn)==str: fname = fn
                 else: fname = "file"
                 source=de.getEntry(label=_("Default source for recipes imported from %s")%fname,
-                                   entryLabel=_('Source: '),
+                                   entryLabel=_('Source:'),
                                    default=os.path.split(fname)[1], parent=self.app)
                 # the 'get_source' dict is the kwarg that gets
                 # set to the source

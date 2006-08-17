@@ -457,7 +457,7 @@ class ShopGui (ActionManager):
         sublab = ', '.join(kk)
         cat = de.getEntry(label=_('Enter Category'),
                           sublabel=_("Category to add %s to") %sublab,
-                          entryLabel=_('Category: '),
+                          entryLabel=_('Category:'),
                           parent=self.widget)
         if cat:
             for k in kk:
