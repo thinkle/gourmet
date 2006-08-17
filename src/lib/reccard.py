@@ -189,7 +189,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         hadj = sw.get_hadjustment()
         xsize = hadj.page_size
         width = allocation.width
-        widg_width = int(xsize * 0.75)
+        widg_width = int(xsize * 0.5)
         for widget in self.reflow_on_resize:
             widget.set_size_request(widg_width,-1)
             t = widget.get_text()
