@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-03 18:05-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2006-08-19 12:30-0400\n"
+"PO-Revision-Date: 2006-08-03 21:53+0000\n"
+"Last-Translator: Michail Dim. Drakomathioulakis <bagera@acn.gr>\n"
 "Language-Team: Greek, Modern (1453-) <el@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,15 +20,15 @@ msgstr ""
 
 #: ../glade/app.glade.h:1 ../glade/recSelector.glade.h:1
 msgid "A_dd Search Criteria"
-msgstr "Προσθήκη κριτηρίων αναζήτησης"
+msgstr "Προσθήκη Κριτηρίων Αναζήτησης"
 
 #: ../glade/app.glade.h:2
 msgid "Add recipe to shopping list"
-msgstr "Προσθήκη της συνταγής στη λίστα αντικειμένων προς αγορά"
+msgstr "Προσθήκη Συνταγής στον Κατάλογο Αγορών"
 
 #: ../glade/app.glade.h:3
 msgid "Add selected recipe to a shopping list."
-msgstr "Προσθήκη της επιλεγμένης συνταγής στη λίστα αντικειμένων προς αγορά"
+msgstr "Προσθήκη επιλεγμένης Συνταγής στον Κατάλογο Αγορών"
 
 #: ../glade/app.glade.h:4
 msgid "Add to _Pantry"
@@ -36,11 +36,11 @@ msgstr "Προσθήκη στο Κελάρι"
 
 #: ../glade/app.glade.h:5 ../glade/recCard.glade.h:28
 msgid "Add to _Shopping List"
-msgstr "Προσθήκη στη Λίστα Αγορών"
+msgstr "Προσθήκη στον Κατάλογο Αγορών"
 
 #: ../glade/app.glade.h:6
 msgid "Add to _shopping list"
-msgstr "Προσθήκη στη Λίστα Αγορών"
+msgstr "Προσθήκη στον Κατάλογο Αγορών"
 
 #: ../glade/app.glade.h:7 ../glade/recSelector.glade.h:2
 msgid "Adva_nced Search"
@@ -48,27 +48,27 @@ msgstr "Προχωρημένη Αναζήτηση"
 
 #: ../glade/app.glade.h:8
 msgid "Create a new recipe"
-msgstr "Δημιουργιά νέας συνταγής"
+msgstr "Δημιουργιά νέας Συνταγής"
 
 #: ../glade/app.glade.h:9
 msgid "Delete selected recipe"
-msgstr "Διαγραφή επιλεγμένης συνταγής"
+msgstr "Διαγραφή επιλεγμένης Συνταγής"
 
 #: ../glade/app.glade.h:10
 msgid "Delete selected recipes"
-msgstr "Διαγραφή επιλεγμένων συνταγών"
+msgstr "Διαγραφή επιλεγμένων Συνταγών"
 
 #: ../glade/app.glade.h:11
 msgid "E-_mail selected recipes"
-msgstr "Αποστολή επιλεγμένων συνταγών με E_-mail"
+msgstr "e-Ταχυδρόμηση επιλεγμένων Συνταγών"
 
 #: ../glade/app.glade.h:12
 msgid "E-mail selected recipe"
-msgstr "Αποστολή της επιλεγμένης συνταγής με e-mail"
+msgstr "e-Ταχυδρόμηση επιλεγμένης Συνταγής"
 
 #: ../glade/app.glade.h:13
 msgid "E-mail selected recipes"
-msgstr "Αποστολή των επιλεγμένων συνταγών  με e-mail"
+msgstr "e-Ταχυδρόμηση επιλεγμένων Συνταγών"
 
 #: ../glade/app.glade.h:14
 msgid "Edit Ingredient Keys"
@@ -76,24 +76,24 @@ msgstr "Επεξεργασία Κλειδιών Συστατικού"
 
 #: ../glade/app.glade.h:15
 msgid "Export A_ll Recipes"
-msgstr "Εξαγωγή όλων των συνταγών"
+msgstr "Εξαγωγή όλων των Συνταγών"
 
 #: ../glade/app.glade.h:16
-#, fuzzy
 msgid "Export selected recipes"
-msgstr "Εξαγωγή επιλεγμένης συνταγής"
+msgstr "Εξαγωγή επιλεγμένων Συνταγών"
 
 #: ../glade/app.glade.h:17
 msgid "Import _Webpage"
-msgstr "Εισαγωγή _Ιστοσελίδας"
+msgstr "Εισαγωγή Ιστοσελίδας"
 
 #: ../glade/app.glade.h:18
 msgid "Jump to recipe in Recipe Card vew"
-msgstr "Μεταπήδηση σε συνταγή στην Προβολή Κάρτας Συνταγής"
+msgstr "Μεταπήδηση σε Συνταγή στην Προβολή Κάρτας Συνταγής"
 
 #: ../glade/app.glade.h:19 ../glade/recSelector.glade.h:3
 #: ../glade/rec_ref_window.glade.h:2
-msgid "Limiting Search to: "
+#, fuzzy
+msgid "Limiting Search to:"
 msgstr "Περιορισμός Αναζήτησης με βάση το: "
 
 #: ../glade/app.glade.h:20
@@ -103,22 +103,26 @@ msgid ""
 "be included when you save or print the list unless you tell me you need to "
 "buy it."
 msgstr ""
+"Ουδέποτε Αγορά αυτού του Αντικειμένου. Όταν απαιτείται για μία Συνταγή, θα "
+"εμφανίζεται στο \"Κελάρι\", στον Κατάλογο Αγορών, ως υπενθύμιση ότι το "
+"χρειάζεστε, αλλά δεν θα συμπεριλαμβάνεται όταν τον αποθηκεύετε ή τον "
+"εκτυπώνετε, εκτός εάν δώσετε εντολή για Αγορά του."
 
 #: ../glade/app.glade.h:21
 msgid "Open a timer"
-msgstr ""
+msgstr "Άνοιγμα Χρονόμετρου"
 
 #: ../glade/app.glade.h:22
 msgid "Print selected recipe"
-msgstr "Εκτύπωση επιλεγμένης συνταγής"
+msgstr "Εκτύπωση επιλεγμένης Συνταγής"
 
 #: ../glade/app.glade.h:23
 msgid "Print selected recipes"
-msgstr "Εκτύπωση επιλεγμένων συνταγών"
+msgstr "Εκτύπωση επιλεγμένων Συνταγών"
 
 #: ../glade/app.glade.h:24
 msgid "Re_apply changes"
-msgstr "Επ_αναεφαρμογή των αλλαγών"
+msgstr "Επανεφαρμογή Αλλαγών"
 
 #: ../glade/app.glade.h:25
 msgid "Recipe Index"
@@ -127,158 +131,154 @@ msgstr "Ευρετήριο Συνταγών"
 #: ../glade/app.glade.h:26 ../glade/recCard.glade.h:59
 #: ../glade/shopList.glade.h:13
 msgid "Recipe _Card"
-msgstr "_Κάρτα Συνταγής"
+msgstr "Καρτέλα Συνταγής"
 
 #: ../glade/app.glade.h:27 ../glade/recCard.glade.h:60
 #: ../glade/shopList.glade.h:14
 msgid "Recipe _List"
-msgstr "Λίστα _Συνταγών"
+msgstr "Κατάλογος Συνταγών"
 
 #: ../glade/app.glade.h:28 ../glade/keyeditor.glade.h:3
 #: ../glade/recSelector.glade.h:4
 msgid "Search _Results"
-msgstr "Αποτελέσματα _Αναζήτησης"
+msgstr "Αποτελέσματα Αναζήτησης"
 
 #: ../glade/app.glade.h:29 ../glade/recSelector.glade.h:5
-#, fuzzy
 msgid "Search as _you type"
-msgstr "Αναζήτηση _κατά την πληκτρολόγηση"
+msgstr "Αναζήτηση κατά την πληκτρολόγηση"
 
 #: ../glade/app.glade.h:30 ../glade/recSelector.glade.h:6
 msgid "Search by other critera within the current search results."
-msgstr "Αναζήτηση με άλλα κριτήρια στα αποτελέσματα της υπάρχουσας αναζήτησης."
+msgstr "Αναζήτηση με άλλα Κριτήρια στα αποτελέσματα της υπάρχουσας Αναζήτησης."
 
 #: ../glade/app.glade.h:31 ../glade/keyeditor.glade.h:5
 #: ../glade/recSelector.glade.h:7 ../glade/rec_ref_window.glade.h:4
-#, fuzzy
 msgid "Search for recipes as you type"
-msgstr "Αναζήτηση συνταγών κατά την πληκτρολόγηση"
+msgstr "Αναζήτηση Συνταγών κατά την πληκτρολόγηση"
 
 #: ../glade/app.glade.h:32 ../glade/keyeditor.glade.h:6
 #: ../glade/recSelector.glade.h:9
-#, fuzzy
 msgid "Use regular expressions"
-msgstr "Χρήση κανονικών εκφράσεων"
+msgstr "Χρήση συνηθισμένων εκφράσεων"
 
 #: ../glade/app.glade.h:33
 msgid "View Re_cipe"
-msgstr "Προβολή Συντα_γής"
+msgstr "Προβολή Συνταγής"
 
 #: ../glade/app.glade.h:34
 msgid "View Recipe _Card"
-msgstr "Προβολή Καρτέλας _Συνταγής"
+msgstr "Προβολή Καρτέλας Συνταγής"
 
 #: ../glade/app.glade.h:35
 msgid "View selected recipe"
-msgstr "Προβολή επιλεγμένης συνταγής"
+msgstr "Προβολή επιλεγμένης Συνταγής"
 
 #: ../glade/app.glade.h:36
 msgid "_About"
-msgstr "_Περί"
+msgstr "Περί"
 
 #: ../glade/app.glade.h:37
 msgid "_Actions"
-msgstr "_Ενέργειες"
+msgstr "Ενέργειες"
 
 #: ../glade/app.glade.h:38 ../glade/recSelector.glade.h:10
 msgid "_Delete"
-msgstr "_Διαγραφή"
+msgstr "Διαγραφή"
 
 #: ../glade/app.glade.h:39
 msgid "_Delete Recipe"
-msgstr "_Διαγραφή Συνταγής"
+msgstr "Διαγραφή Συνταγής"
 
 #: ../glade/app.glade.h:40
 msgid "_E-Mail recipe"
-msgstr "Α_ποστολή της συνταγής μέσω ηλεκτρονικού ταχυδρομείου"
+msgstr "e-Ταχυδρόμηση Συνταγής"
 
 #: ../glade/app.glade.h:41 ../glade/recCard.glade.h:84
 #: ../glade/shopList.glade.h:27
 msgid "_Edit"
-msgstr "Επε_ξεργασία"
+msgstr "Επεξεργασία"
 
 #: ../glade/app.glade.h:42
 msgid "_Empty trash"
-msgstr "Α_δειασμα του Κάδου Απορριμάτων"
+msgstr "Άδειασμα Κάδου Απορριμάτων"
 
 #: ../glade/app.glade.h:43
 msgid "_Export selected recipes"
-msgstr "_Εξαγωγή επιλεγμένων συνταγών"
+msgstr "Εξαγωγή επιλεγμένων Συνταγών"
 
 #: ../glade/app.glade.h:44 ../glade/databaseChooser.glade.h:16
 #: ../glade/shopList.glade.h:28
 msgid "_File"
-msgstr "_Αρχείο"
+msgstr "Αρχείο"
 
 #: ../glade/app.glade.h:45 ../glade/recCard.glade.h:86
 #: ../glade/shopList.glade.h:29
 msgid "_Help"
-msgstr "_Βοήθεια"
+msgstr "Βοήθεια"
 
 #: ../glade/app.glade.h:46
 msgid "_Import File"
-msgstr "Εισα_γωγή Αρχείου"
+msgstr "Εισαγωγή Αρχείου"
 
 #: ../glade/app.glade.h:47
 msgid "_Ingredient Key Editor"
-msgstr ""
+msgstr "Επεξεργατής Κλειδιού Συστατικών"
 
 #: ../glade/app.glade.h:48 ../glade/generic_importer.glade.h:4
 #: ../glade/recCard.glade.h:91
 msgid "_New Recipe"
-msgstr "_Νέα Συνταγή"
+msgstr "Νέα Συνταγή"
 
 #: ../glade/app.glade.h:49 ../glade/recCard.glade.h:93
 msgid "_Print"
-msgstr ""
+msgstr "Εκτύπωση"
 
 #: ../glade/app.glade.h:50
 msgid "_Print recipe"
-msgstr "_Εκτύπωση συνταγής"
+msgstr "Εκτύπωση Συνταγής"
 
 #: ../glade/app.glade.h:51 ../glade/recCard.glade.h:96
 msgid "_Redo"
-msgstr "_Ακύρωση Αναίρεσης"
+msgstr "Ακύρωση Αναίρεσης"
 
 #: ../glade/app.glade.h:52 ../glade/recSelector.glade.h:11
-#, fuzzy
 msgid "_Search for"
-msgstr "Αναζήτηση κατά"
+msgstr "Αναζήτηση για"
 
 #: ../glade/app.glade.h:53 ../glade/recCard.glade.h:100
 #: ../glade/shopList.glade.h:33
 msgid "_Shopping List"
-msgstr "_Λίστα Αντικειμένων προς Αγορά"
+msgstr "Κατάλογος Αγορών"
 
 #: ../glade/app.glade.h:54
 msgid "_Show deleted recipes"
-msgstr "Προ_βολή Διεγραμμένων Συνταγών"
+msgstr "Προβολή Διαγεγραμμένων Συνταγών"
 
 #: ../glade/app.glade.h:55 ../glade/recCard.glade.h:101
 msgid "_Timer"
-msgstr ""
+msgstr "Χρονόμετρο"
 
 #: ../glade/app.glade.h:56 ../glade/recCard.glade.h:103
 msgid "_Tools"
-msgstr "Ε_ργαλεία"
+msgstr "Εργαλεία"
 
 #: ../glade/app.glade.h:57 ../glade/recCard.glade.h:105
 msgid "_Undo"
-msgstr "_Αναίρεση"
+msgstr "Αναίρεση"
 
 #: ../glade/app.glade.h:58 ../glade/recCard.glade.h:106
 msgid "_Unit Converter"
-msgstr "_Μετατροπέας Μονάδων"
+msgstr "Μετατροπέας Μονάδων"
 
 #: ../glade/app.glade.h:59 ../glade/recCard.glade.h:108
 #: ../glade/shopList.glade.h:34
 msgid "_View"
-msgstr "Προ_βολή"
+msgstr "Προβολή"
 
 #: ../glade/app.glade.h:60 ../glade/keyeditor.glade.h:13
 #: ../glade/recSelector.glade.h:13
 msgid "_in"
-msgstr ""
+msgstr "Σε"
 
 #: ../glade/converter.glade.h:1 ../glade/databaseChooser.glade.h:1
 #: ../glade/rec_ref_window.glade.h:1
@@ -303,11 +303,11 @@ msgstr ";"
 
 #: ../glade/converter.glade.h:6
 msgid "Density _Information"
-msgstr ""
+msgstr "Πληροφορίες Πυκνότητας"
 
 #: ../glade/converter.glade.h:7
 msgid "I_tem:"
-msgstr "Α_ντικείμενο:"
+msgstr "Αντικείμενο:"
 
 #: ../glade/converter.glade.h:8 ../src/lib/convertGui.py:152
 msgid "None"
@@ -317,27 +317,27 @@ msgstr "Καμμία"
 msgid "Unit Converter"
 msgstr "Μετατροπέας Μονάδων"
 
-#: ../glade/converter.glade.h:10
+#: ../glade/converter.glade.h:10 ../glade/keyeditor.glade.h:8
+#: ../glade/nutritionDruid.glade.h:13
 msgid "_Amount:"
-msgstr "_Ποσό"
+msgstr "Ποσό"
 
 #: ../glade/converter.glade.h:11
 msgid "_Density:"
-msgstr ""
+msgstr "Πυκνότητα:"
 
 #: ../glade/converter.glade.h:12
 msgid "_Result:"
-msgstr "_Αποτέλεσμα"
+msgstr "Αποτέλεσμα:"
 
-#: ../glade/converter.glade.h:13
+#: ../glade/converter.glade.h:13 ../glade/keyeditor.glade.h:12
+#: ../glade/nutritionDruid.glade.h:18 ../glade/recCard.glade.h:107
 msgid "_Unit:"
-msgstr "_Μονάδα"
+msgstr "Μονάδα:"
 
 #: ../glade/databaseChooser.glade.h:2
 msgid "<b>Choose Database System for Gourmet to Use</b>"
-msgstr ""
-"<b>Επιλογή Συστήματος Βάσης Δεδομένων που θα χρησιμοποιηθεί από το Gourmet</"
-"b>"
+msgstr "<b>Επιλογή Συστήματος Βάσης Δεδομένων για χρήση από το Gourmet</b>"
 
 #: ../glade/databaseChooser.glade.h:3
 msgid "Choose Database"
@@ -345,15 +345,15 @@ msgstr "Επιλογή Βάσης Δεδομένων"
 
 #: ../glade/databaseChooser.glade.h:4
 msgid "Database _Name:"
-msgstr "_Ονομα της Βάσης Δεδομένων"
+msgstr "Όνομα Βάσης Δεδομένων"
 
 #: ../glade/databaseChooser.glade.h:5
 msgid ""
 "Hostname of the system where your database server is running. If your "
 "database server is running on your local system, use localhost."
 msgstr ""
-"Το όνομα του κεντρικού υπολογιστή όπου τρέχει ο διακομιστής της βάσης "
-"δεδομένων. Εάν ο διακομιστής της βάσης δεδομένων τρέχει στο τοπικό σας "
+"Το όνομα (Hostname) του συστήματος όπου τρέχει ο διακομιστής της Βάσης "
+"Δεδομένων. Εάν ο διακομιστής της Βάσης Δεδομένων τρέχει στο τοπικό σας "
 "σύστημα, χρησιμοποιήστε localhost."
 
 #: ../glade/databaseChooser.glade.h:6
@@ -362,301 +362,307 @@ msgid ""
 "SQLite (stored in a local file)\n"
 "MySQL (requires connection to a database)"
 msgstr ""
+"Metakit (προεπιλογή, αποθηκευμένο σε τοπικό αρχείο)↵\n"
+"SQLite (αποθηκευμένο σε τοπικό αρχείο)↵\n"
+"MySQL (απαιτείται σύνδεση σε Βάση Δεδομένων)"
 
 #: ../glade/databaseChooser.glade.h:9
 msgid ""
 "Name of the database in which Gourmet should store its information. Gourmet "
 "will try to create this database if it does not already exist."
 msgstr ""
-"Ονομα της βάσης δεδομένων όπου το Gourmet θα αποθηκεύσει τα δεδομένα του. Το "
-"Gourmet θα προσπαθήσει να δημιουργήσει τη βάση δεδομένων στη περίπτωση που "
-"αυτή δεν υπάρχει ήδη."
+"Το όνομα της Βάσης Δεδομένων όπου το Gourmet θα αποθηκεύσει τα δεδομένα του. "
+"Το Gourmet θα προσπαθήσει να δημιουργήσει τη Βάση Δεδομένων στη περίπτωση "
+"που αυτή δεν υπάρχει ήδη."
 
 #: ../glade/databaseChooser.glade.h:10
 msgid "Password for your username on the database."
-msgstr "Κωδικός για το όνομα χρήστη που έχεις σε αυτή τη βάση δεδομένων"
+msgstr "Ο Κωδικός σας για το Όνομα Χρήστη σας στην Βάση Δεδομένων"
 
 #: ../glade/databaseChooser.glade.h:11
 msgid ""
 "Save the password for next time. This means the password will be stored "
 "insecurely in your configuration file."
 msgstr ""
-"Σώσιμο του κωδικού για επόμενη φορά. Αυτό σημαίνει ότι ο κωδικός θα "
-"αποθηκευτεί με μή ασφαλή τρόπο στο αρχείο   ρυθμίσεων του προγράμματος."
+"Αποθήκευση του Κωδικού για μελλοντική χρήση. Αυτό σημαίνει ότι ο Κωδικός θα "
+"αποθηκευτεί με μη ασφαλή τρόπο στο αρχείο ρυθμίσεων του προγράμματος."
 
 #: ../glade/databaseChooser.glade.h:12
 msgid "Your username on the database."
-msgstr "Το όνομα χρήστη που έχεις σε αυτή τη βάση δεδομένων"
+msgstr "Το Όνομα Χρήστη σας στη Βάση Δεδομένων"
 
 #: ../glade/databaseChooser.glade.h:13
 msgid "_Browse"
-msgstr "_Πλοήγηση"
+msgstr "Πλοήγηση"
 
 #: ../glade/databaseChooser.glade.h:14
 msgid "_Database System"
-msgstr "_Σύστημα Βάσης Δεδομένων"
+msgstr "Σύστημα Βάσης Δεδομένων"
 
 #: ../glade/databaseChooser.glade.h:15 ../glade/recCard.glade.h:82
-#: ../src/lib/dialog_extras.py:799 ../src/lib/dialog_extras.py:1189
+#: ../src/lib/dialog_extras.py:801 ../src/lib/dialog_extras.py:1191
 #: ../src/lib/gglobals.py:326 ../src/lib/GourmetRecipeManager.py:453
-#: ../src/lib/reccard.py:989
+#: ../src/lib/reccard.py:998
 msgid "_Details"
-msgstr "_Λεπτομέρειες"
+msgstr "Λεπτομέρειες"
 
 #: ../glade/databaseChooser.glade.h:17
 msgid "_Host:"
-msgstr "_Σύστημα"
+msgstr "Κεντρικό Σύστημα:"
 
 #: ../glade/databaseChooser.glade.h:18
 msgid "_Password:"
-msgstr "_Κωδικός"
+msgstr "Κωδικός:"
 
 #: ../glade/databaseChooser.glade.h:19
 msgid "_Save Password"
-msgstr "_Αποθήκευση Κωδικού"
+msgstr "Αποθήκευση Κωδικού"
 
 #: ../glade/databaseChooser.glade.h:20
 msgid "_Username:"
-msgstr "_Ονομα Χρήστη"
+msgstr "Ονομα Χρήστη:"
 
 #: ../glade/databaseChooser.glade.h:21
 msgid "localhost"
-msgstr "τοπικό σύστημα"
+msgstr "Τοπικό Σύστημα"
 
 #: ../glade/databaseChooser.glade.h:22
 msgid "recipe"
-msgstr "συνταγή"
+msgstr "Συνταγή"
 
 #: ../glade/keyeditor.glade.h:1
-#, fuzzy
 msgid "<b>Change selected ingredients</b>"
-msgstr "Διαγραφή επιλεγμένων συστατικών."
+msgstr "<b>Αλλαγή επιλεγμένων Συστατικών</b>"
 
 #: ../glade/keyeditor.glade.h:2
 msgid "Key Editor"
-msgstr ""
+msgstr "Επεξεργαστής Κλειδιών"
 
 #: ../glade/keyeditor.glade.h:4 ../glade/nutritionDruid.glade.h:10
 msgid "Search as you t_ype"
-msgstr ""
+msgstr "Αναζήτηση κατά την πληκτρολόγηση"
 
 #: ../glade/keyeditor.glade.h:7
 msgid "_Advanced Search"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:8 ../glade/nutritionDruid.glade.h:13
-#: ../glade/recCard.glade.h:76
-msgid "_Amount: "
-msgstr "_Ποσό: "
+msgstr "Σύνθετη Αναζήτηση"
 
 #: ../glade/keyeditor.glade.h:9
 #, fuzzy
-msgid "_Item: "
-msgstr "Α_ντικείμενο:"
+msgid "_Item:"
+msgstr "Αντικείμενο: "
 
 #: ../glade/keyeditor.glade.h:10
 #, fuzzy
-msgid "_Key: "
-msgstr "Κλειδί"
+msgid "_Key:"
+msgstr "Κλειδί: "
 
 #: ../glade/keyeditor.glade.h:11
 msgid "_Search for:"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:12 ../glade/nutritionDruid.glade.h:18
-#: ../glade/recCard.glade.h:107
-msgid "_Unit: "
-msgstr "_Μονάδα: "
+msgstr "Αναζήτηση για:"
 
 #: ../glade/generic_importer.glade.h:1
 msgid ""
 "<i>Select text from the raw recipe and categorize it by labelling which part "
 "of the recipe it is (choose from the recipe elements on the right).</i>"
 msgstr ""
+"<i>Επιλέξτε κείμενο από την Προχειρογραμμένη Συνταγή και, ετικετοποιώντας τα "
+"μέρη της Συνταγής, κατηγοριοποιήστε τα (επιλέξτε από τα Στοιχεία Συνταγής "
+"στα δεξιά)"
 
 #: ../glade/generic_importer.glade.h:2
 msgid ""
 "Start new recipe (use this if the file you're importing contains more than "
 "one recipe)"
 msgstr ""
+"Έναρξη νέας Συνταγής (χρησιμοποιείστε αυτή την εντολή εάν το αρχείο το οποίο "
+"εισάγεται περιέχει πέραν της μίας συνταγές)"
 
 #: ../glade/generic_importer.glade.h:3
 msgid "_Label"
-msgstr ""
+msgstr "Ετικέτα"
 
 #: ../glade/generic_importer.glade.h:5
 msgid "_Raw recipe:"
-msgstr ""
+msgstr "Προχειρογραμμένη Συνταγή:"
 
 #: ../glade/nutritionDruid.glade.h:1
 msgid "<b>Choose a Density</b>"
-msgstr ""
+msgstr "<b>Επιλογή Πυκνότητας</b>"
 
 #: ../glade/nutritionDruid.glade.h:2
 msgid "<i>Enter nutritional information for </i>"
-msgstr ""
+msgstr "<i>Εισάγετε Διατροφικές Πληροφοριές για </i>"
 
 #: ../glade/nutritionDruid.glade.h:3
-msgid "<i>From: </i>"
+#, fuzzy
+msgid "<i>From:</i>"
 msgstr "<i>Από: </i>"
 
 #: ../glade/nutritionDruid.glade.h:4
 msgid "<i>Search _results:</i>"
-msgstr "<i>Αποτελέσματα _αναζήτησης:</i>"
+msgstr "<i>Αποτελέσματα Αναζήτησης:</i>"
 
 #: ../glade/nutritionDruid.glade.h:5
 msgid "<i>Select equivalent of</i>"
-msgstr ""
+msgstr "<i>Επιλέξτε ισοδύναμο του</i>"
 
 #: ../glade/nutritionDruid.glade.h:6
-msgid "<i>To: </i>"
+#, fuzzy
+msgid "<i>To:</i>"
 msgstr "<i>Προς: </i>"
 
 #: ../glade/nutritionDruid.glade.h:7
 msgid "<i>from USDA database</i>"
-msgstr ""
+msgstr "<i>από την Βάση Δεδομένων USDA</i>"
 
 #: ../glade/nutritionDruid.glade.h:8
 msgid "<i>or</i>"
-msgstr ""
+msgstr "<i>ή</i>"
 
 #: ../glade/nutritionDruid.glade.h:9
 msgid "I_gnore"
-msgstr ""
+msgstr "Παράβλεψη"
 
 #: ../glade/nutritionDruid.glade.h:11
 msgid "Show only food in _group:"
-msgstr ""
+msgstr "Προβολή μόνο Φαγητού σε Ομάδα:"
 
 #: ../glade/nutritionDruid.glade.h:12
-msgid "Unit: "
-msgstr ""
+#, fuzzy
+msgid "Unit:"
+msgstr "Μονάδα: "
 
 #: ../glade/nutritionDruid.glade.h:14
 msgid "_Change ingredient"
-msgstr "_Αλλαγή υλικού"
+msgstr "Αλλαγή Συστατικού"
 
 #: ../glade/nutritionDruid.glade.h:15
 msgid "_Change unit"
-msgstr "_Αλλαγή μονάδας"
+msgstr "Αλλαγή Μονάδας"
 
 #: ../glade/nutritionDruid.glade.h:16
 msgid "_Save new unit"
-msgstr "Αποθήκευση νέας μονάδας"
+msgstr "Αποθήκευση Νέας Μονάδας"
 
 #: ../glade/nutritionDruid.glade.h:17
 msgid "_Search USDA Ingredient Database:"
-msgstr ""
+msgstr "Αναζήτηση στην Βάση Δεδομένων Συστατικών USDA:"
 
 #: ../glade/nutritionDruid.glade.h:19 ../src/lib/keyEditor.py:79
 msgid "unit"
-msgstr "μονάδα"
+msgstr "Μονάδα"
 
 #: ../glade/preferenceDialog.glade.h:1
 msgid "<b>Card View Preferences</b>"
-msgstr "<b>Προτιμήσεις Προβολής Κάρτας</b>"
+msgstr "<b>Ρυθμίσεις Προβολής Καρτέλας</b>"
 
 #: ../glade/preferenceDialog.glade.h:2
 msgid "<b>Email Preferences</b>"
-msgstr "<b>Ρυθμίσεις Ηλεκτρονικού Ταχυδρομείου</b>"
+msgstr "<b>Ρυθμίσεις e-Ταχυδρομείου</b>"
 
 #: ../glade/preferenceDialog.glade.h:3
 msgid "<b>Index View Preferences</b>"
-msgstr "<b>Προτιμήσεις Προβολής Ευρετηρίου</b>"
+msgstr "<b>Ρυθμίσεις Προβολής Ευρετηρίου</b>"
 
 #: ../glade/preferenceDialog.glade.h:4
 msgid "<b>Shopping List Preferences</b>"
-msgstr "<b>Ρυθμίσεις Λίστας Αντικειμένων προς Αγορά</b>"
+msgstr "<b>Ρυθμίσεις Καταλόγου Αγορών</b>"
 
 #: ../glade/preferenceDialog.glade.h:5
 msgid "<i>Configure which columns are included in the recipe index view.</i>"
 msgstr ""
+"<i>Ρυθμίστε ποιες στήλες θα συμπεριλαμβάνονται στην Προβολή Ευρετηρίου "
+"Συνταγών.</i>"
 
 #: ../glade/preferenceDialog.glade.h:6
 msgid "<i>Preferences for use when sending a recipe in an email.</i>"
 msgstr ""
-"<i>Ρυθμίσεις για χρήση στη περίπτωση αποστολής μιας συνταγής μέσω "
-"ηλεκτρονικού ταχυδρομείου</i>"
+"<i>Ρυθμίσεις για χρήση κατά την αποστολή μιας Συνταγής μέσω e-Ταχυδρομείου</"
+"i>"
 
 #: ../glade/preferenceDialog.glade.h:7
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
 msgstr ""
+"<i>Απομακρύνετε τα Αντικείμενα που δεν χρησιμοποιείτε από την εμφάνιση της "
+"Καρτέλας Συνταγής</i>"
 
 #: ../glade/preferenceDialog.glade.h:8
 msgid ""
 "<i>What should Gourmet do with Optional Ingredients when adding recipes to "
 "the shopping list?</i>"
 msgstr ""
+"<i>Τι να κάνει το Gourmet με τα Προαιρετικά Συστατικά όταν προσθέτετε "
+"Συνταγές στον Κατάλογο Αγορών;</i>"
 
 #: ../glade/preferenceDialog.glade.h:9
 msgid "As_k whether to include optional ingredients"
-msgstr ""
+msgstr "Ερώτηση για το εάν θα συμπεριληφθούν τα Προαιρετικά Συστατικά"
 
 #: ../glade/preferenceDialog.glade.h:10
 msgid "Card View"
-msgstr "Προβολή Κάρτας"
+msgstr "Προβολή Καρτέλας"
 
 #: ../glade/preferenceDialog.glade.h:11
 msgid "Email Preferences"
-msgstr "Ρυθμίσεις Ηλεκτρονικού Ταχυδρομείου"
+msgstr "Ρυθμίσεις e-Ταχυδρομείου"
 
 #: ../glade/preferenceDialog.glade.h:12
 msgid "Gourmet Recipe Manager Preferences"
-msgstr "Προτιμήσεις του Gourmet Recipe Manager"
+msgstr "Ρυθμίσεις Διαχειριστή Συνταγών Gourmet"
 
 #: ../glade/preferenceDialog.glade.h:13
 msgid "Include Recipe as an _HTML Attachment to the E-mail"
-msgstr ""
+msgstr "Επισύναψη της Συνταγής ως σελίδα HTML στο e-Ταχυδρομείο"
 
 #: ../glade/preferenceDialog.glade.h:14
 msgid "Include Recipe in _Body of E-mail (A good idea no matter what)"
-msgstr ""
+msgstr "Συμπερίληψη της Συνταγής στο σώμα κειμένου του e-Ταχυδρομείου"
 
 #: ../glade/preferenceDialog.glade.h:15
 msgid "Index View"
 msgstr "Προβολή Ευρετηρίου"
 
 #: ../glade/preferenceDialog.glade.h:16 ../glade/shopList.glade.h:23
-#: ../src/lib/shopgui.py:155 ../src/lib/exporters/pdf_exporter.py:471
+#: ../src/lib/shopgui.py:155
 msgid "Shopping List"
-msgstr "Λίστα Αντικειμένων προς Αγορά"
+msgstr "Κατάλογος Αγορών"
 
 #: ../glade/preferenceDialog.glade.h:17
 msgid "Use fractions when possible for display"
-msgstr ""
+msgstr "Χρήση Κλασμάτων οποτε είναι δυνατόν να εμφανιστούν"
 
 #: ../glade/preferenceDialog.glade.h:18 ../glade/recCard.glade.h:75
 msgid "_Allow units to change when multiplying"
-msgstr ""
+msgstr "Επιτρεπτή η αλλαγή Μονάδων κατά τον πολλαπλασιασμό"
 
 #: ../glade/preferenceDialog.glade.h:19
 msgid "_Always add optional ingredients"
-msgstr ""
+msgstr "Πάντα προσθήκη των Προαιρετικών Συστατικών"
 
 #: ../glade/preferenceDialog.glade.h:20
 msgid "_Always use these settings"
-msgstr ""
+msgstr "Πάντα χρήση αυτών των Ρυθμίσεων"
 
 #: ../glade/preferenceDialog.glade.h:21
 msgid "_Clear remembered optional ingredients"
-msgstr ""
+msgstr "Καθαρισμός αναφερομένων Προαιρετικών Συστατικών"
 
 #: ../glade/preferenceDialog.glade.h:22
 msgid "_Never add optional ingredients"
-msgstr ""
+msgstr "Ουδέποτε Προσθήκη Προαιρετικών Συστατικών"
 
 #: ../glade/preferenceDialog.glade.h:23
-msgid "_Recipes per page: "
-msgstr ""
+#, fuzzy
+msgid "_Recipes per page:"
+msgstr "Συνταγές ανά σελίδα: "
 
 #: ../glade/preferenceDialog.glade.h:24
 msgid "_Remember user selections by default"
-msgstr ""
+msgstr "Να θυμάσαι τις Επιλογές Χρήστη (προεπιλογή)"
 
 #: ../glade/preferenceDialog.glade.h:25
-#, fuzzy
 msgid "_Use fractions"
-msgstr "_Ενέργειες"
+msgstr "_Χρήση κλασμάτων"
 
 #: ../glade/recCard.glade.h:1
 msgid ""
@@ -667,51 +673,52 @@ msgstr ""
 "\n"
 
 #: ../glade/recCard.glade.h:4
+msgid ""
+"<b>An long example: rather extraordinarily long actually -- very long, "
+"actually.</b>"
+msgstr ""
+
+#: ../glade/recCard.glade.h:5
 msgid "<b>Category:</b>"
 msgstr "<b>Κατηγορία:</b>"
 
-#: ../glade/recCard.glade.h:5
-msgid "<b>Cooking Time:</b>"
-msgstr "<b>Χρόνος Ψησίματος:</b>"
-
 #: ../glade/recCard.glade.h:6
+msgid "<b>Cooking Time:</b>"
+msgstr "<b>Χρόνος Μαγειρέματος:</b>"
+
+#: ../glade/recCard.glade.h:7
 msgid "<b>Cuisine:</b>"
 msgstr "<b>Κουζίνα:</b>"
 
-#: ../glade/recCard.glade.h:7
+#: ../glade/recCard.glade.h:8
 msgid "<b>Ingredients</b>"
 msgstr "<b>Συστατικά</b>"
 
-#: ../glade/recCard.glade.h:8
+#: ../glade/recCard.glade.h:9
 msgid "<b>Instructions</b>"
 msgstr "<b>Οδηγίες</b>"
 
-#: ../glade/recCard.glade.h:9
+#: ../glade/recCard.glade.h:10
 msgid "<b>Notes</b>"
 msgstr "<b>Σημειώσεις</b>"
 
-#: ../glade/recCard.glade.h:10
-msgid "<b>Nutritional Information</b>"
-msgstr "<b>Διατροφική Πληροφορία</b>"
-
 #: ../glade/recCard.glade.h:11
+msgid "<b>Nutritional Information</b>"
+msgstr "<b>Διατροφικές Πληρoφορίες</b>"
+
+#: ../glade/recCard.glade.h:12
 msgid "<b>Preparation Time:</b>"
 msgstr "<b>Χρόνος Προετοιμασίας:</b>"
 
-#: ../glade/recCard.glade.h:12
+#: ../glade/recCard.glade.h:13
 msgid "<b>Rating:</b>"
 msgstr "<b>Αξιολόγηση:</b>"
 
-#: ../glade/recCard.glade.h:13
+#: ../glade/recCard.glade.h:14
 msgid "<b>Source:</b>"
 msgstr "<b>Πηγή:</b>"
 
-#: ../glade/recCard.glade.h:14
-msgid "<b>Title</b>"
-msgstr "<b>Τίτλος:</b>"
-
 #: ../glade/recCard.glade.h:15
-#, fuzzy
 msgid "<b>_Instructions:</b>"
 msgstr "<b>Οδηγίες:</b>"
 
@@ -720,7 +727,6 @@ msgid "<b>_Multiply by:</b>"
 msgstr "<b>_Πολλαπλασιασμός κατά:</b>"
 
 #: ../glade/recCard.glade.h:17
-#, fuzzy
 msgid "<b>_Notes:</b>"
 msgstr "<b>Σημειώσεις:</b>"
 
@@ -730,131 +736,126 @@ msgstr "<b>_Σερβιρίσματα:</b>"
 
 #: ../glade/recCard.glade.h:19
 msgid "Add _Group"
-msgstr "Προσθήκη _Ομάδας"
+msgstr "Προσθήκη Ομάδας"
 
 #: ../glade/recCard.glade.h:20
 msgid ""
 "Add _Recipe\n"
 "as Ingredient"
 msgstr ""
-"Προσθήκη _Συνταγής\n"
-"σα συστατικό"
+"Προσθήκη Συνταγής\n"
+"ως Συστατικό"
 
 #: ../glade/recCard.glade.h:22
 msgid "Add _ingredient:"
-msgstr "Προσθήκη υλικού:"
+msgstr "Προσθήκη Συστατικού:"
 
 #: ../glade/recCard.glade.h:23
 msgid "Add _recipe as ingredient"
-msgstr "Προσθήκη _συνταγής σα συστατικό"
+msgstr "Προσθήκη Συνταγής ως Συστατικό"
 
 #: ../glade/recCard.glade.h:24
 msgid "Add another recipe as an ingredient."
-msgstr "Προσθήκη μιας άλλης συνταγής σα συστατικό"
+msgstr "Προσθήκη μιας άλλης Συνταγής ως Συστατικό"
 
 #: ../glade/recCard.glade.h:25
 msgid "Add group for ingredients (such as \"Sauce\" or \"Crust\")"
-msgstr "Προσθήκη ομάδας συστατικών (όπως  \"Σάλτσα\" ή \"Κρούστα\")"
+msgstr "Προσθήκη Ομάδας Συστατικών (όπως  \"Σάλτσα\" ή \"Κρούστα\")"
 
 #: ../glade/recCard.glade.h:26
 msgid "Add ingredient _group"
-msgstr "Προσθήκη ομάδας υλικών:"
+msgstr "Προσθήκη Ομάδας Συστατικών:"
 
 #: ../glade/recCard.glade.h:27
-#, fuzzy
 msgid "Add to Shopping _List"
-msgstr "Προσθήκη στη Λίστα Αγορών"
+msgstr "Προσθήκη στον Κατάλογο Αγορών"
 
 #: ../glade/recCard.glade.h:29
 msgid ""
 "Ask user which items to add to the shopping list rather than using saved "
 "settings."
 msgstr ""
+"Ερώτηση στον Χρήστη για το ποια Αντικείμενα να προστεθούν στον Κατάλογο "
+"Αγορών  και όχι χρήση των αποθηκευμένων επιλογών."
 
 #: ../glade/recCard.glade.h:30
 msgid "C_uisine:"
-msgstr "Κ_ουζίνα:"
+msgstr "Κουζίνα:"
 
 #: ../glade/recCard.glade.h:31
 msgid "Coo_king Time:"
-msgstr "Χρό_νος Ψησίματος:"
+msgstr "Χρόνος Μαγειρέματος:"
 
 #: ../glade/recCard.glade.h:32 ../src/lib/reccard.py:305
 msgid "Delete selected ingredient"
-msgstr "Διαγραφή επιλεγμένου συστατικού"
+msgstr "Διαγραφή επιλεγμένου Συστατικού"
 
 #: ../glade/recCard.glade.h:33
 msgid "Delete selected ingredients."
-msgstr "Διαγραφή επιλεγμένων συστατικών."
+msgstr "Διαγραφή επιλεγμένων Συστατικών."
 
 #: ../glade/recCard.glade.h:34
 msgid "Delete this recipe from the database."
-msgstr "Διαγραφή αυτής της συνταγής από τη βάση δεδομένων."
+msgstr "Διαγραφή αυτής της Συνταγής από τη Βάση Δεδομένων."
 
 #: ../glade/recCard.glade.h:35
 msgid "Delete this recipe permanently."
-msgstr "Διαγραφή αυτής της συνταγής για πάντα."
+msgstr "Οριστική Διαγραφή αυτής της Συνταγής."
 
 #: ../glade/recCard.glade.h:36
-#, fuzzy
 msgid "Descriptions"
 msgstr "Περιγραφές"
 
 #: ../glade/recCard.glade.h:37
 msgid "E_xport Recipe"
-msgstr "Ε_ξαγωγή Συνταγής"
+msgstr "Εξαγωγή Συνταγής"
 
 #: ../glade/recCard.glade.h:38
-#, fuzzy
 msgid "Edit Recipe Card"
-msgstr "Κάρτα Συσταγής"
+msgstr "Επεξεργασία Καρτέλας Συνταγής"
 
 #: ../glade/recCard.glade.h:39
-#, fuzzy
 msgid "Edit _description"
-msgstr "Περιγραφές"
+msgstr "Επεξεργασία Περιγραφής"
 
 #: ../glade/recCard.glade.h:40
-#, fuzzy
 msgid "Edit _ingredients"
-msgstr "Επεξεργασία Κλειδιών Συστατικού"
+msgstr "Επεξεργασία Συστατικών"
 
 #: ../glade/recCard.glade.h:41
-#, fuzzy
 msgid "Edit _instructions"
-msgstr "οδηγίες"
+msgstr "Επεξεργασία Οδηγιών"
 
 #: ../glade/recCard.glade.h:42
-#, fuzzy
 msgid "Edit _notes"
-msgstr "Σημειώσεις"
+msgstr "Επεξεργασία Σημειώσεων"
 
 #: ../glade/recCard.glade.h:43
 msgid "Edit section chooser"
-msgstr ""
+msgstr "Επεξεργασία Επιλογέα Τμημάτων"
 
 #: ../glade/recCard.glade.h:44
 #, fuzzy
-msgid "Image: "
-msgstr "_Εικόνα: "
+msgid "Image:"
+msgstr "Εικόνα: "
 
 #: ../glade/recCard.glade.h:45
 msgid "Import ingredients from a plain text file."
-msgstr "Εισαγώγη συστατικών από απλό αρχείο κειμένου."
+msgstr "Εισαγώγη Συστατικών από απλό αρχείο κειμένου."
 
 #: ../glade/recCard.glade.h:46
 msgid "Ingredient (_key):"
-msgstr "Συστατικό (_κλειδί)"
+msgstr "Συστατικό (Κλειδί):"
 
 #: ../glade/recCard.glade.h:47
 msgid "Ingredient Key _Editor"
-msgstr ""
+msgstr "Επεξεργαστής Κλειδιού Συστατικών"
 
 #: ../glade/recCard.glade.h:48 ../src/lib/exporters/exporter.py:237
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:286
 #: ../src/lib/exporters/gnomeprinter.py:332
 #: ../src/lib/exporters/html_exporter.py:99
-#: ../src/lib/exporters/pdf_exporter.py:428
+#: ../src/lib/exporters/pdf_exporter.py:549
 msgid "Ingredients"
 msgstr "Συστατικά"
 
@@ -865,19 +866,19 @@ msgstr "Οδηγίες"
 
 #: ../glade/recCard.glade.h:50
 msgid "Move ingredient _up"
-msgstr "Μετακίνηση συστατικού προς τα _πάνω"
+msgstr "Μετακίνηση Συστατικού προς τα πάνω"
 
 #: ../glade/recCard.glade.h:51
 msgid "Move ingredient do_wn"
-msgstr "Μετακίνηση συστατικού προς τα _κάτω"
+msgstr "Μετακίνηση Συστατικού προς τα κάτω"
 
 #: ../glade/recCard.glade.h:52
 msgid "Move selected ingredients down"
-msgstr "Μετακίνηση επιλεγμένων συνταγών προς τα κάτω"
+msgstr "Μετακίνηση επιλεγμένων Συστατικών προς τα κάτω"
 
 #: ../glade/recCard.glade.h:53
 msgid "Move selected ingredients up"
-msgstr "Μετακίνηση επιλεγμένων συνταγών προς τα πάνω"
+msgstr "Μετακίνηση επιλεγμένων Συστατικών προς τα πάνω"
 
 #: ../glade/recCard.glade.h:54 ../src/lib/gglobals.py:245
 #: ../src/lib/gglobals.py:250
@@ -886,41 +887,41 @@ msgstr "Σημειώσεις"
 
 #: ../glade/recCard.glade.h:55
 msgid "Paste ingredient list from the clipboard."
-msgstr "Επικόλληση λίστας συστατικών από το πρόχειρο."
+msgstr "Επικόλληση Καταλόγου Συστατικών από το πρόχειρο."
 
 #: ../glade/recCard.glade.h:56
-msgid "Pre_paration Time: "
-msgstr "Χρό_νος Προετοιμασίας: "
+#, fuzzy
+msgid "Pre_paration Time:"
+msgstr "Χρόνος Προετοιμασίας: "
 
 #: ../glade/recCard.glade.h:57
 msgid "Print recipe"
-msgstr "Εκτύπωση συνταγής"
+msgstr "Εκτύπωση Συνταγής"
 
 #: ../glade/recCard.glade.h:58
 msgid "Recipe Card"
-msgstr "Κάρτα Συσταγής"
+msgstr "Καρτέλα Συσταγής"
 
 #: ../glade/recCard.glade.h:61
-#, fuzzy
 msgid "Redo"
-msgstr "_Ακύρωση Αναίρεσης"
+msgstr "Ακύρωση Αναίρεσης"
 
 #: ../glade/recCard.glade.h:62
 msgid "Revert"
-msgstr ""
+msgstr "Επαναφορά"
 
 #: ../glade/recCard.glade.h:63
-msgid "S_hopping Category: "
-msgstr ""
+#, fuzzy
+msgid "S_hopping Category:"
+msgstr "Κατηγορία Αγοράς: "
 
 #: ../glade/recCard.glade.h:64
 msgid "S_ource:"
-msgstr "Π_ηγή:"
+msgstr "Πηγή:"
 
 #: ../glade/recCard.glade.h:65
-#, fuzzy
 msgid "Save"
-msgstr "_Αποθήκευση"
+msgstr "Αποθήκευση"
 
 #: ../glade/recCard.glade.h:66
 msgid "Save changes"
@@ -929,6 +930,8 @@ msgstr "Αποθήκευση αλλαγών"
 #: ../glade/recCard.glade.h:67
 msgid "Standardized name for ingredient (to be used in shopping lists)."
 msgstr ""
+"Τυποποιημένο Όνομα για Συστατικό (να χτησιμοποιείται στους Καταλόγους "
+"Αγορών)."
 
 #: ../glade/recCard.glade.h:68
 msgid ""
@@ -938,122 +941,130 @@ msgid ""
 "nutritional information). For more detailed entry, expand the \"Details\" "
 "section below."
 msgstr ""
+"Πληκτρολογείστε εδώ το Συστατικό. Αριθμητικά Ποσά και Τυποποιημένες Μονάδες "
+"θα αναγνωρισθούν αυτόματα. Τίποτα απ' ό,τι πληκτρολογηθεί μετά από κόμμα δεν "
+"θα συμπεριληφθεί στο Κλειδί Συστατικού (π.χ. δεν θα χρησιμοποιείται σε "
+"Καταλόγους Αγορών και Διατροφικές Πληροφορίες). Εάν θέλετε να "
+"πραγματοποιήσετε μια πιο λεπτομερή εισαγωγή, επεκτείνετε το τμήμα "
+"\"Λεπτομέρειες\" πατακάτω."
 
 #: ../glade/recCard.glade.h:69
-#, fuzzy
 msgid "Undo"
-msgstr "_Αναίρεση"
+msgstr "Αναίρεση"
 
 #: ../glade/recCard.glade.h:70
-#, fuzzy
 msgid "View Recipe Card"
-msgstr "Προβολή Καρτέλας _Συνταγής"
+msgstr "Προβολή Καρτέλας Συνταγής"
 
 #: ../glade/recCard.glade.h:71
-#, fuzzy
 msgid "View _Recipe Card"
-msgstr "Προβολή Καρτέλας _Συνταγής"
+msgstr "Προβολή Καρτέλας Συνταγής"
 
 #: ../glade/recCard.glade.h:72
 msgid ""
 "When multiplying recipe, automatically change units to keep amounts as "
 "useable as possible."
 msgstr ""
+"Κατά τον Πολλαπλασιαμό Συνταγής, αυτόματη αλλαγή Μονάδων ώστε να διατηρηθούν "
+"κατά το δυνατόν τα Ποσά."
 
 #: ../glade/recCard.glade.h:73
 msgid "_Add Image"
-msgstr "_Προσθήκη Εικόνας"
+msgstr "Προσθήκη Εικόνας"
 
 #: ../glade/recCard.glade.h:74
 msgid "_Add ingredient"
-msgstr "_Προσθήκη Συστατικού"
+msgstr "Προσθήκη Συστατικού"
+
+#: ../glade/recCard.glade.h:76
+msgid "_Amount: "
+msgstr "Ποσό: "
 
 #: ../glade/recCard.glade.h:77
 msgid "_Bold"
-msgstr "_Εντονα"
+msgstr "Έντονα"
 
 #: ../glade/recCard.glade.h:78
 msgid "_Category:"
-msgstr "_Κατηγορία:"
+msgstr "Κατηγορία:"
 
 #: ../glade/recCard.glade.h:79
 msgid "_Close"
-msgstr "_Κλείσιμο"
+msgstr "Κλείσιμο"
 
 #: ../glade/recCard.glade.h:80
 msgid "_Delete ingredient"
-msgstr "_Διαγραφή Συστατικού"
+msgstr "Διαγραφή Συστατικού"
 
 #: ../glade/recCard.glade.h:81
 msgid "_Delete this Recipe"
-msgstr "_Διαγραφή αυτής της Συνταγής"
+msgstr "Διαγραφή αυτής της Συνταγής"
 
 #: ../glade/recCard.glade.h:83
 msgid "_E-mail recipe"
-msgstr "_Αποστολή μέσω e-mail της συνταγής"
+msgstr "e-Ταχυδρόμηση Συνταγής"
 
 #: ../glade/recCard.glade.h:85
 msgid "_Forget remembered optional ingredients"
-msgstr ""
+msgstr "Μη Χρήση Απομνημονευμένων Προαιρετικών Συστατικών"
 
 #: ../glade/recCard.glade.h:87
 msgid "_Import Ingredients"
-msgstr "_Εισαγωγή Συστατικών"
+msgstr "Εισαγωγή Συστατικών"
 
 #: ../glade/recCard.glade.h:88
 msgid "_Import ingredient list"
-msgstr "_Εισαγωγή λίστας συστατικών"
+msgstr "Εισαγωγή Καταλόγου Συστατικών"
 
 #: ../glade/recCard.glade.h:89
 msgid "_Ingredient:"
-msgstr "_Συστατικό:"
+msgstr "Συστατικό:"
 
 #: ../glade/recCard.glade.h:90
 msgid "_Italic"
-msgstr "_Πλάγια"
+msgstr "Πλάγια"
 
 #: ../glade/recCard.glade.h:92
-#, fuzzy
 msgid "_Optional"
 msgstr "Προαιρετικό"
 
 #: ../glade/recCard.glade.h:94
 msgid "_Rating:"
-msgstr "_Αξιολόγηση:"
+msgstr "Αξιολόγηση:"
 
 #: ../glade/recCard.glade.h:95
-#, fuzzy
 msgid "_Recipe"
 msgstr "Συνταγή"
 
 #: ../glade/recCard.glade.h:97
 msgid "_Remove Image"
-msgstr "_Αφαίρεση Εικόνας"
+msgstr "Αφαίρεση Εικόνας"
 
 #: ../glade/recCard.glade.h:98
 msgid "_Save"
-msgstr "_Αποθήκευση"
+msgstr "Αποθήκευση"
 
 #: ../glade/recCard.glade.h:99
-msgid "_Servings: "
-msgstr "_Σερβιρίσματα: "
+#, fuzzy
+msgid "_Servings:"
+msgstr "Σερβιρίσματα: "
 
 #: ../glade/recCard.glade.h:102
-msgid "_Title: "
-msgstr "_Τίτλος: "
+#, fuzzy
+msgid "_Title:"
+msgstr "Τίτλος: "
 
 #: ../glade/recCard.glade.h:104
 msgid "_Underline"
-msgstr "_Υπογράμμιση"
+msgstr "Υπογράμμιση"
 
 #: ../glade/recCard.glade.h:109
-#, fuzzy
 msgid "multiply by"
-msgstr "<b>_Πολλαπλασιασμός κατά:</b>"
+msgstr "Πολλαπλασιασμός επί"
 
 #: ../glade/recCard.glade.h:110 ../glade/rec_ref_window.glade.h:11
 msgid "servings"
-msgstr "σερβιρίσματα"
+msgstr "Σερβιρίσματα"
 
 #: ../glade/recSelector.glade.h:8
 msgid "Select Recipe"
@@ -1061,7 +1072,7 @@ msgstr "Επιλογή Συνταγής"
 
 #: ../glade/recSelector.glade.h:12
 msgid "_Undelete"
-msgstr "_Ακύρωση Διαγραφής"
+msgstr "Ακύρωση Διαγραφής"
 
 #: ../glade/rec_ref_window.glade.h:3
 msgid "Search by"
@@ -1069,55 +1080,55 @@ msgstr "Αναζήτηση κατά"
 
 #: ../glade/rec_ref_window.glade.h:5
 msgid "Select Recipe to include in Ingredient List"
-msgstr "Επιλογή Συνταγής για εισαγωγή στην Λίστα Συστατικών"
+msgstr "Επιλογή Συνταγής για εισαγωγή στον Κατάλογο Συστατικών"
 
 #: ../glade/rec_ref_window.glade.h:6 ../src/lib/recindex.py:44
 #: ../src/lib/recindex.py:51
 msgid "category"
-msgstr "κατηγορία"
+msgstr "Κατηγορία"
 
 #: ../glade/rec_ref_window.glade.h:7 ../src/lib/recindex.py:45
 #: ../src/lib/recindex.py:52
 msgid "cuisine"
-msgstr "κουζίνα"
+msgstr "Κουζίνα"
 
 #: ../glade/rec_ref_window.glade.h:8 ../src/lib/recindex.py:41
 #: ../src/lib/recindex.py:50
 msgid "ingredient"
-msgstr "συστατικό"
+msgstr "Συστατικό"
 
 #: ../glade/rec_ref_window.glade.h:9 ../src/lib/recindex.py:42
 #: ../src/lib/recindex.py:55
 msgid "instructions"
-msgstr "οδηγίες"
+msgstr "Οδηγίες"
 
 #: ../glade/rec_ref_window.glade.h:10
 msgid "rating"
-msgstr "αξιολόγηση"
+msgstr "Αξιολόγηση"
 
 #. _('rating'):'rating',
 #. _('rating'),
 #: ../glade/rec_ref_window.glade.h:12 ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:54
 msgid "source"
-msgstr "πηγή"
+msgstr "Πηγή"
 
 #: ../glade/rec_ref_window.glade.h:13 ../src/lib/recindex.py:40
 #: ../src/lib/recindex.py:49
 msgid "title"
-msgstr "τίτλος"
+msgstr "Τίτλος"
 
 #: ../glade/shopList.glade.h:1
 msgid "Add Items to Shopping List"
-msgstr "Προσθήκη Αντικειμένων στη Λίστα Αντικειμένων για Αγορά"
+msgstr "Προσθήκη Αντικειμένων στον Κατάλογο Αγορών"
 
 #: ../glade/shopList.glade.h:2
 msgid "Add additional items to your shopping list."
-msgstr "Προσθήκη επιπρόσθετων αντικειμένων στη Λίστα Αντικειμένων προς Αγορά."
+msgstr "Προσθήκη επιπρόσθετων Αντικειμένων στον Κατάλογο Αγορών"
 
 #: ../glade/shopList.glade.h:3
 msgid "Already Have (_Pantry Items)"
-msgstr ""
+msgstr "Υπάρχουν ήδη (Αντικείμενα Κελαριού)"
 
 #: ../glade/shopList.glade.h:4 ../src/lib/keyEditor.py:433
 #: ../src/lib/nutrition/nutritionModel.py:7
@@ -1125,67 +1136,71 @@ msgid "Amount"
 msgstr "Ποσό"
 
 #: ../glade/shopList.glade.h:5 ../src/lib/keyEditor.py:431
-#: ../src/lib/reccard.py:1830 ../src/lib/reccard.py:1861
+#: ../src/lib/reccard.py:1847 ../src/lib/reccard.py:1878
 msgid "Item"
 msgstr "Αντικείμενο"
 
 #: ../glade/shopList.glade.h:6
 msgid "Move selected items from pantry list to shopping list"
 msgstr ""
-"Μετακίνηση των επιλεγμένων αντικειμένων από τη λίστα του κελαριού στη λίστα "
-"αντικειμένων προς αγορά"
+"Μετακίνηση των επιλεγμένων Αντικειμένων από τον Κατάλογο Κελαριού στον "
+"Κατάλογο Αγορών."
 
 #: ../glade/shopList.glade.h:7
 msgid "Move selected items from shopping list to pantry list."
 msgstr ""
-"Μετακίνηση των επιλεγμένων αντικειμένων από τη λίστα αντικειμένων προς αγορά "
-"στη λίστα του κελαριού."
+"Μετακίνηση των επιλεγμένων Αντικειμένων από τον Κατάλογο Αγορών στον "
+"Κατάλογο Κελαριού."
 
 #: ../glade/shopList.glade.h:8
 msgid ""
 "Move selected items from shopping list to pantry list. (You can also move "
 "items by dragging them.)"
 msgstr ""
+"Μετακίνηση των επιλεγμένων Αντικειμένων από τον Κατάλογο Αγορών στον "
+"Κατάλογο Κελαριού. (Μπορείτε επίσης να μετακινείτε τα Αντικείμενα σύροντάς "
+"τα)."
 
 #: ../glade/shopList.glade.h:9
 msgid ""
 "Move selected items from your pantry list back to your shopping list (you "
 "can also move items by dragging them.)"
 msgstr ""
+"Μετακίνηση των επιλεγμένων Αντικειμένων από τον Κατάλογο Κελαριού πίσω στον "
+"στον Κατάλογο Αγορών σας. (Μπορείτε επίσης να μετακινείτε τα Αντικείμενα "
+"σύροντάς τα)."
 
 #: ../glade/shopList.glade.h:10
 msgid "Move to _Shopping List"
-msgstr "Μετακίνηση στη _Λίστα Αντικειμένων προς Αγορά"
+msgstr "Μετακίνηση στον Κατάλογο Αγορών"
 
 #: ../glade/shopList.glade.h:11
-#, fuzzy
 msgid "Nutritional Info"
-msgstr "<b>Διατροφική Πληροφορία</b>"
+msgstr "Διατρογικές Πληροφορίες"
 
 #: ../glade/shopList.glade.h:12
 msgid "Re_turn to Shopping List"
-msgstr "Επι_στροφή στη Λίστα Αντικειμένων προς Αγορά"
+msgstr "Επιστροφή στον Κατάλογο Αγορών"
 
 #: ../glade/shopList.glade.h:15
-#, fuzzy
 msgid "Remove Recipes"
-msgstr "Εισαγωγή Συνταγών"
+msgstr "Απομάκρυνση Συνταγών"
 
 #: ../glade/shopList.glade.h:16
-#, fuzzy
 msgid "Remove recipes"
-msgstr "Συνταγές"
+msgstr "Απομάκρυνση Συνταγών"
 
 #: ../glade/shopList.glade.h:17
-#, fuzzy
 msgid "Remove recipes from shopping list"
-msgstr "Προσθήκη της συνταγής στη λίστα αντικειμένων προς αγορά"
+msgstr "Απομάκρυνση Συνταγών από τον Κατάλογο Αγορών"
 
 #: ../glade/shopList.glade.h:18
 msgid ""
 "Remove the selected recipes from your shopping list (or remove all items if "
 "no recipe is selected)"
 msgstr ""
+"Απομάκρυνση των επιλεγμένων Συνταγών από τον Κατάλογο Αγορών (ή Απομάκρυνση "
+"όλων των Αντικειμένων εάν δεν υπάρχει επιλεγμένη Συνταγή)."
 
 #: ../glade/shopList.glade.h:19
 msgid ""
@@ -1193,6 +1208,10 @@ msgid ""
 "list as a reminder that you need it, but it won't be included when you save "
 "or print your shopping list."
 msgstr ""
+"Απομάκρυνση αυτού του Αντικειμένου από τον Κατάλογο Αγορών. Θα εμφανίζεται "
+"στο \"Κελάρι\", στον Κατάλογο Αγορών, ως υπενθύμιση ότι το χρειάζεστε, αλλά "
+"δεν θα συμπεριλαμβάνεται όταν τον αποθηκεύετε ή τον εκτυπώνετε, εκτός εάν "
+"δώσετε εντολή για Αγορά του."
 
 #: ../glade/shopList.glade.h:20
 msgid "Return Item to Shopping List"
@@ -1203,14 +1222,14 @@ msgid "Return selected items to your shopping list"
 msgstr ""
 "Επιστροφή των επιλεγμένων αντικειμένων στη λίστα αντικειμένων προς αγορά"
 
-#: ../glade/shopList.glade.h:22 ../src/lib/reccard.py:1833
-#: ../src/lib/reccard.py:1864 ../src/lib/reccard.py:1989
+#: ../glade/shopList.glade.h:22 ../src/lib/reccard.py:1850
+#: ../src/lib/reccard.py:1881 ../src/lib/reccard.py:2006
 msgid "Shopping Category"
 msgstr "Κατηγορία Αγορών"
 
 #: ../glade/shopList.glade.h:24 ../src/lib/keyEditor.py:432
-#: ../src/lib/nutrition/nutritionModel.py:8 ../src/lib/reccard.py:1829
-#: ../src/lib/reccard.py:1860
+#: ../src/lib/nutrition/nutritionModel.py:8 ../src/lib/reccard.py:1846
+#: ../src/lib/reccard.py:1877
 msgid "Unit"
 msgstr "Μονάδα"
 
@@ -1220,70 +1239,67 @@ msgstr "_Προσθήκη αντικειμένων στη Λίστα Αντικ�
 
 #: ../glade/shopList.glade.h:26
 msgid "_Add New Items to Shopping List"
-msgstr ""
+msgstr "_Προσθήκη Νέου Αντικειμένου στη Λίστα Αγορών"
 
 #: ../glade/shopList.glade.h:30
 msgid "_Recipes"
-msgstr ""
+msgstr "_Συνατγές"
 
 #: ../glade/shopList.glade.h:31
 msgid "_Remove from Shopping List"
-msgstr ""
+msgstr "_Αφαίρεση από τη Λίστα Αγορών"
 
 #: ../glade/shopList.glade.h:32
 msgid "_Remove from shopping list (move to pantry)"
-msgstr ""
+msgstr "Απομάκρυνση από Κατάλογο Αγορών"
 
 #: ../glade/timerDialog.glade.h:1
 msgid "<b><span size=\"larger\">Timer</span></b>"
-msgstr ""
+msgstr "<b><span size=\"larger\">Χρονόμετρο</span></b>"
 
 #: ../glade/timerDialog.glade.h:2
 msgid "<i>Timer Finished!</i>"
-msgstr ""
+msgstr "<i>Ο Χρονομετρητής Τελειώσε!</i>"
 
 #: ../glade/timerDialog.glade.h:3
 msgid "Re_peat alarm until I turn it off"
-msgstr ""
+msgstr "_Επανάλαβε ειδοποίηση μέχρι να την κλείσω"
 
 #: ../glade/timerDialog.glade.h:4
 msgid "S_ound"
-msgstr ""
+msgstr "Ή_χος"
 
 #: ../glade/timerDialog.glade.h:5
-#, fuzzy
 msgid "Set _Timer: "
-msgstr "_Τίτλος: "
+msgstr "Ρύθμιση Χρονομέτρου: "
 
 #: ../glade/timerDialog.glade.h:6 ../src/lib/timer.py:139
 #: ../src/lib/timer.py:140
-#, fuzzy
 msgid "Timer"
-msgstr "Τίτλος"
+msgstr "Χρονόμετρο"
 
 #: ../glade/timerDialog.glade.h:7
 msgid ""
 "Timer will continue to go off until you close this dialog or reset the timer."
 msgstr ""
+"Το Χρονόμετρο θα συνεχίσει να μετρά έως ότου κλείσετε αυτόν το διάλογο ή το "
+"μηδεμίσετε."
 
 #: ../glade/timerDialog.glade.h:8
-#, fuzzy
 msgid "_Note"
-msgstr "Σημειώσεις"
+msgstr "_Σημείωση"
 
 #: ../glade/timerDialog.glade.h:9
-#, fuzzy
 msgid "_Reset"
-msgstr "_Αποτέλεσμα"
+msgstr "Μηδενισμός"
 
 #: ../glade/timerDialog.glade.h:10
-#, fuzzy
 msgid "_Settings"
-msgstr "Σερβιρίσματα"
+msgstr "Ρυθμίσεις"
 
 #: ../glade/timerDialog.glade.h:11
 msgid "_Start"
-msgstr ""
+msgstr "Έναρξη"
 
 #: ../src/lib/check_encodings.py:89
 msgid "Select encoding"
@@ -1299,7 +1315,7 @@ msgstr ""
 
 #: ../src/lib/check_encodings.py:91
 msgid "See _file with encoding"
-msgstr ""
+msgstr "Δες το Αρχείο με Κωδικοποίηση"
 
 #: ../src/lib/convertGui.py:106
 #, python-format
@@ -1308,7 +1324,7 @@ msgstr "Αδύνατη η μετατροπή από %s σε %s"
 
 #: ../src/lib/convertGui.py:108
 msgid "Need density information."
-msgstr ""
+msgstr "Απαιτούνται πληροφορίες για την πυκνώτητα."
 
 #. this is a bit of a hackish attempt to make a matcher for all
 #. plural forms of time units. We use range(5) since as far as I
@@ -1316,35 +1332,36 @@ msgstr ""
 #. all possible forms in all languages.
 #.
 #. See http://www.sbin.org/doc/glibc/libc_8.html
-#: ../src/lib/convert.py:36 ../src/lib/convert.py:519
+#: ../src/lib/convert.py:61 ../src/lib/convert.py:544
 msgid "second"
 msgid_plural "seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "δευτερόλεπτο"
+msgstr[1] "δευτερόλεπτα"
 
 #. min. = abbreviation for minutes
-#: ../src/lib/convert.py:38
-msgid "min."
-msgstr ""
+#: ../src/lib/convert.py:63
+#, fuzzy
+msgid "min"
+msgstr "λεπτα"
 
-#: ../src/lib/convert.py:38 ../src/lib/convert.py:518
+#: ../src/lib/convert.py:63 ../src/lib/convert.py:543
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "λεπτό"
 msgstr[1] "λεπτά"
 
 #. hrs = abbreviation for hours
-#: ../src/lib/convert.py:40
+#: ../src/lib/convert.py:65
 msgid "hrs."
-msgstr ""
+msgstr "ώρες"
 
-#: ../src/lib/convert.py:40 ../src/lib/convert.py:517
+#: ../src/lib/convert.py:65 ../src/lib/convert.py:542
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "ώρα"
 msgstr[1] "ώρες"
 
-#: ../src/lib/convert.py:41 ../src/lib/convert.py:516
+#: ../src/lib/convert.py:66 ../src/lib/convert.py:541
 msgid "day"
 msgid_plural "days"
 msgstr[0] "ημέρα"
@@ -1353,19 +1370,19 @@ msgstr[1] "ημέρες"
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
 #. 'decades':lambda decades: ngettext("decade","decades",round(decades))
-#: ../src/lib/convert.py:42 ../src/lib/convert.py:513
+#: ../src/lib/convert.py:67 ../src/lib/convert.py:538
 msgid "year"
 msgid_plural "years"
 msgstr[0] "έτος"
 msgstr[1] "έτη"
 
-#: ../src/lib/convert.py:514
+#: ../src/lib/convert.py:539
 msgid "month"
 msgid_plural "months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "μήνας"
+msgstr[1] "μήνες"
 
-#: ../src/lib/convert.py:515
+#: ../src/lib/convert.py:540
 msgid "week"
 msgid_plural "weeks"
 msgstr[0] "εβδομάδα"
@@ -1377,27 +1394,26 @@ msgstr[1] "εβδομάδες"
 #. You can of course make your language only use commas or
 #. ands or spaces or whatever you like by translating both
 #. ", " and " and " with the same string.
-#: ../src/lib/convert.py:562
+#: ../src/lib/convert.py:587
 msgid " and "
 msgstr " και "
 
-#: ../src/lib/convert.py:562
+#: ../src/lib/convert.py:587
 msgid ", "
 msgstr ", "
 
-#: ../src/lib/convert.py:564
+#: ../src/lib/convert.py:589
 msgid " "
 msgstr " "
 
-#: ../src/lib/convert.py:693
-#, fuzzy
+#: ../src/lib/convert.py:718
 msgid "and"
-msgstr " και "
+msgstr "και"
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
 #. show up sometimes.
-#: ../src/lib/convert.py:715
+#: ../src/lib/convert.py:740
 msgid "to"
 msgstr "προς"
 
@@ -1411,88 +1427,92 @@ msgstr "_Παύση"
 msgid "_Stop"
 msgstr "_Σταμάτημα"
 
-#: ../src/lib/dialog_extras.py:463 ../src/lib/dialog_extras.py:553
+#: ../src/lib/dialog_extras.py:465 ../src/lib/dialog_extras.py:555
 msgid "Don't ask me this again."
 msgstr "Μή με ρωτήσεις ξανά για αυτό."
 
-#: ../src/lib/dialog_extras.py:519
+#: ../src/lib/dialog_extras.py:521
 msgid "Do you really want to do this"
 msgstr "Είσαι σίγουρος ότι θές να το κάνεις"
 
-#: ../src/lib/dialog_extras.py:731
+#: ../src/lib/dialog_extras.py:733 ../src/lib/importers/importer.py:488
 msgid "excellent"
 msgstr "άριστη"
 
-#: ../src/lib/dialog_extras.py:732
+#: ../src/lib/dialog_extras.py:734 ../src/lib/importers/importer.py:489
 msgid "great"
 msgstr "σπουδαία"
 
-#: ../src/lib/dialog_extras.py:733
+#: ../src/lib/dialog_extras.py:735 ../src/lib/importers/importer.py:490
 msgid "good"
-msgstr ""
+msgstr "καλό"
 
-#: ../src/lib/dialog_extras.py:734
+#: ../src/lib/dialog_extras.py:736 ../src/lib/importers/importer.py:491
 msgid "fair"
-msgstr ""
+msgstr "καλό"
 
-#: ../src/lib/dialog_extras.py:735
+#: ../src/lib/dialog_extras.py:737 ../src/lib/importers/importer.py:493
 msgid "poor"
-msgstr ""
-
-#: ../src/lib/dialog_extras.py:747
-msgid "Convert ratings to 5 star scale."
-msgstr ""
-
-#: ../src/lib/dialog_extras.py:748
-msgid "Convert ratings."
-msgstr ""
+msgstr "Φτωχό"
 
 #: ../src/lib/dialog_extras.py:749
+msgid "Convert ratings to 5 star scale."
+msgstr "Μετατροπή Αξιολογήσεων σε Κλίμακα 5 Αστέρων."
+
+#: ../src/lib/dialog_extras.py:750
+msgid "Convert ratings."
+msgstr "Μετατροπή Αξιολογήσεων."
+
+#: ../src/lib/dialog_extras.py:751
 msgid "Please give each of the ratings an equivalent on a scale of 1 to 5"
 msgstr ""
+"Παρακαλώ δώστε σε κάθε μία από τις Αξιολογήσεις το ισοδύναμό της σε Κλίμακα "
+"από 1 έως 5"
 
-#: ../src/lib/dialog_extras.py:762
+#: ../src/lib/dialog_extras.py:764
 msgid "Current Rating"
-msgstr ""
+msgstr "Τρέχουσα Αξιολόγηση"
 
-#: ../src/lib/dialog_extras.py:767
+#: ../src/lib/dialog_extras.py:769
 msgid "Rating out of 5 Stars"
-msgstr ""
+msgstr "Αξιολόγηση βάσει 5 Αστέρων"
 
-#: ../src/lib/dialog_extras.py:1000 ../src/lib/FileChooserSaveAs.py:153
+#: ../src/lib/dialog_extras.py:1002 ../src/lib/FileChooserSaveAs.py:153
 msgid "Select File_type"
 msgstr "Επιλογή Τύπου _Αρχείου"
 
-#: ../src/lib/dialog_extras.py:1071
+#: ../src/lib/dialog_extras.py:1073
 msgid "No file selected"
 msgstr "Κανένα αρχείο δεν έχει επιλεχθεί"
 
-#: ../src/lib/dialog_extras.py:1072
+#: ../src/lib/dialog_extras.py:1074
 msgid "No file was selected, so the action has been cancelled"
 msgstr "Δεν επιλέχθηκε αρχείο, γι'αυτό η ενέργεια ακυρώθηκε"
 
-#: ../src/lib/dialog_extras.py:1085 ../src/lib/FileChooserSaveAs.py:224
+#: ../src/lib/dialog_extras.py:1087 ../src/lib/FileChooserSaveAs.py:224
 #, python-format
 msgid "A file named %s already exists."
 msgstr "Το αρχείο με το όνομα %s υπάρχει ήδη."
 
-#: ../src/lib/dialog_extras.py:1086 ../src/lib/FileChooserSaveAs.py:225
+#: ../src/lib/dialog_extras.py:1088 ../src/lib/FileChooserSaveAs.py:225
 msgid "Do you want to replace it with the one you are saving?"
-msgstr ""
+msgstr "Θέλετε να το αντικαταστήσετε με αυτό που αποθηκεύετε;"
 
-#: ../src/lib/dialog_extras.py:1186
+#: ../src/lib/dialog_extras.py:1188
 #, python-format
 msgid ""
 "I'm sorry, I can't understand\n"
 "the amount \"%s\"."
 msgstr "Συγγνώμη, αλλά είναι αδύνατο να καταλάβω το ποσό \"%s\"."
 
-#: ../src/lib/dialog_extras.py:1188
+#: ../src/lib/dialog_extras.py:1190
 msgid ""
 "Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
 msgstr ""
+"Οι ποσότητες πρέπει να είναι αριθμοί (κλάσματα ή δεκαδικοί), διαστήματα "
+"αριθμών ή κενα"
 
-#: ../src/lib/dialog_extras.py:1190
+#: ../src/lib/dialog_extras.py:1192
 msgid ""
 "\n"
 "The \"unit\" must be in the \"unit\" field by itself.\n"
@@ -1503,11 +1523,20 @@ msgid ""
 "To enter a range of numbers, use a \"-\" to separate them.\n"
 "For example, you could enter 2-4 or 1 1/2 - 3 1/2.\n"
 msgstr ""
+"\n"
+"Η \"Μονάδα\" πρέπει να βρίσκεται μόνη της στο πεδίο \"Μονάδα\".\n"
+"Για παράδειγμα, εάν θέλετε να εισάγετε μιάμιση κούπες, το πεδίο \"Ποσότητα\" "
+"πρέπει να περιέχει το ποσό \"1.5\" ή \"1 1/2\" και η λέξη \"κούπες\" να πάει "
+"στο πεδίο \"Μονάδα\".\n"
+"\n"
+"Για να εισάγετε ένα εύρος αριθμών, χρησιμοποιείστε μία \"-\" για να τους "
+"διαχωρίσετε.\n"
+"Για παράδειγμα, μπορείτε να εισάγετε \"2-4\" ή \"1 1/2 -3 1/2\".\n"
 
 #. renderer.set_property('editable',True)
 #. renderer.connect('edited',tst)
 #: ../src/lib/gglobals.py:234 ../src/lib/shopgui.py:102
-#: ../src/lib/exporters/rtf_exporter.py:78
+#: ../src/lib/exporters/rtf_exporter.py:79
 msgid "Title"
 msgstr "Τίτλος"
 
@@ -1565,17 +1594,18 @@ msgstr "Ηταν αδύνατο να ανοιχθεί αυτό το αρχείο
 #: ../src/lib/gglobals.py:327
 #, python-format
 msgid "There was an error launching the url: %s"
-msgstr ""
+msgstr "Παρουσιάσθηκε σφάλμα κατά την φόρτωση του url: %s"
 
 #: ../src/lib/GourmetRecipeManager.py:51
-#, fuzzy
 msgid "Importing old recipe data"
-msgstr "Εισαγωγή Συνταγών"
+msgstr "Εισαγωγή δεδομένων Παλαιάς Συνταγής"
 
 #: ../src/lib/GourmetRecipeManager.py:52
 msgid ""
 "Importing recipe data from a previous version of Gourmet into new database."
 msgstr ""
+"Εισαγωγή δεδομένων Συνταγής από μία προηγούμενη έκδοση του Gourmet στην νέα "
+"Βάση Δεδομένων."
 
 #: ../src/lib/GourmetRecipeManager.py:98
 msgid "Loading window preferences..."
@@ -1591,16 +1621,16 @@ msgstr "Φόρτωση της βάσης δεδομένων με τις συντ
 
 #: ../src/lib/GourmetRecipeManager.py:162
 msgid "Setting up recipe index..."
-msgstr ""
+msgstr "Δημιουργία Καταλόγου Συνταγών"
 
 #: ../src/lib/GourmetRecipeManager.py:213
-#: ../src/lib/GourmetRecipeManager.py:1175
+#: ../src/lib/GourmetRecipeManager.py:1181
 msgid "Done!"
 msgstr "Ολοκληρώθηκε!"
 
 #: ../src/lib/GourmetRecipeManager.py:246
 msgid "Recipe _Index"
-msgstr ""
+msgstr "Κατάλογος Συνταγών"
 
 #: ../src/lib/GourmetRecipeManager.py:247
 msgid "Shopping _List"
@@ -1671,30 +1701,29 @@ msgstr "Να διαγραφεί %s;"
 #, python-format
 msgid "You have unsaved changes to %s. Are you sure you want to delete?"
 msgstr ""
+"Έχετε μη σωθείσες αλλαγές στο %s. Είστε σίγουρος ότι θέλετε να το διαγράψετε;"
 
 #: ../src/lib/GourmetRecipeManager.py:558
-#, fuzzy
 msgid "Deleted"
-msgstr "Διαγράφηκε "
+msgstr "Διαγράφηκε"
 
 #: ../src/lib/GourmetRecipeManager.py:558
-#, fuzzy
 msgid "Untitled"
-msgstr "τίτλος"
+msgstr "Χωρίς Τίτλο"
 
 #: ../src/lib/GourmetRecipeManager.py:562
 #: ../src/lib/GourmetRecipeManager.py:607
 #: ../src/lib/GourmetRecipeManager.py:804
-#: ../src/lib/GourmetRecipeManager.py:847
-#: ../src/lib/GourmetRecipeManager.py:870
-#: ../src/lib/GourmetRecipeManager.py:939
-#: ../src/lib/GourmetRecipeManager.py:1093
-#: ../src/lib/GourmetRecipeManager.py:1274
+#: ../src/lib/GourmetRecipeManager.py:853
+#: ../src/lib/GourmetRecipeManager.py:876
+#: ../src/lib/GourmetRecipeManager.py:945
+#: ../src/lib/GourmetRecipeManager.py:1099
+#: ../src/lib/GourmetRecipeManager.py:1280
 msgid "An import, export or deletion is running"
 msgstr "Μία εισαγωγή, εξαγωγή ή μία διαγραφή τρέχει ήδη"
 
 #: ../src/lib/GourmetRecipeManager.py:563
-#: ../src/lib/GourmetRecipeManager.py:1275
+#: ../src/lib/GourmetRecipeManager.py:1281
 msgid "Please wait until it is finished to delete recipes."
 msgstr "Παρακαλώ περιμένετε μέχρι να διαγραφούν οι συνταγές"
 
@@ -1722,7 +1751,7 @@ msgstr "Είσαι σίγουρος ότι θες να διαγράψεις τι
 
 #: ../src/lib/GourmetRecipeManager.py:579
 msgid "See recipes"
-msgstr ""
+msgstr "Προβολή Συνταγών"
 
 #: ../src/lib/GourmetRecipeManager.py:587
 msgid "Deletion paused"
@@ -1734,7 +1763,7 @@ msgstr "Διακοπή διαγραφής"
 
 #: ../src/lib/GourmetRecipeManager.py:608
 msgid "The recipes will be deleted once the other process is finished."
-msgstr ""
+msgstr "Οι συνταγές θα σβησόύν όταν τελειώσει η διαδικασία."
 
 #: ../src/lib/GourmetRecipeManager.py:641
 #, python-format
@@ -1751,12 +1780,12 @@ msgstr[1] "Εκτύπωση %s συνταγών"
 #: ../src/lib/GourmetRecipeManager.py:731
 #, python-format
 msgid "Number of servings of %s to shop for"
-msgstr ""
+msgstr "Αριθμός Μερίδων του %s προς Αγορά"
 
 #: ../src/lib/GourmetRecipeManager.py:739
-#, python-format
-msgid "Multiply %s by: "
-msgstr ""
+#, fuzzy, python-format
+msgid "Multiply %s by:"
+msgstr "Πολλαπλασίασε %s με: "
 
 #: ../src/lib/GourmetRecipeManager.py:768 ../src/lib/shopgui.py:160
 msgid "Saved!"
@@ -1767,6 +1796,8 @@ msgid ""
 "Forget previously saved choices for which optional ingredients to shop for. "
 "This action is not reversable."
 msgstr ""
+"Παράλειψη προηγουμένων επιλογών Προαιρετικών Συστατικών προς Αγορά. Αυτή η "
+"ενέργεια δεν είναι αναιρέσιμη."
 
 #: ../src/lib/GourmetRecipeManager.py:783
 msgid ""
@@ -1774,14 +1805,17 @@ msgid ""
 "individual recipe, you can do so from the <b>Tools</b> menu of an individual "
 "recipe card."
 msgstr ""
+"Αυτό θα επιρρεάσει όλες τις Συνταγές. Εάν θέλετε να παραλείψετε αυτές τις "
+"ρυθμίσεις για μια συγκεκριμένη Συνταγή, μπορείτε να το κάνετε από το Μενού "
+"<b>Εργαλεία</b> της αντίστοιχης Καρτέλας Συνταγής."
 
 #: ../src/lib/GourmetRecipeManager.py:786 ../src/lib/reccard.py:806
 msgid "Forget which optional ingredients to shop for?"
-msgstr ""
+msgstr "Παράλειψη Προαιρετικών Συστατικών προς Αγορά;"
 
 #: ../src/lib/GourmetRecipeManager.py:805
 msgid "Please wait until it is finished to start your export."
-msgstr ""
+msgstr "Παρακαλώ περιμένετε μέχρι να ολοκληρωθεί για να ξεκινήστε την Εξαγωγή."
 
 #: ../src/lib/GourmetRecipeManager.py:811
 msgid "Export recipes"
@@ -1791,113 +1825,122 @@ msgstr "Εξαγωγή συνταγών"
 msgid "recipes"
 msgstr "συνταγές"
 
-#: ../src/lib/GourmetRecipeManager.py:835
+#: ../src/lib/GourmetRecipeManager.py:841
 msgid "Export Paused"
 msgstr "Η εξαγωγή Παύθηκε"
 
-#: ../src/lib/GourmetRecipeManager.py:835
+#: ../src/lib/GourmetRecipeManager.py:841
 msgid "Stop export"
 msgstr "Διακοπή εξαγωγής"
 
-#: ../src/lib/GourmetRecipeManager.py:848
+#: ../src/lib/GourmetRecipeManager.py:854
 msgid "Your export will start once the other process is finished."
 msgstr "Η εξαγωγή θα ξεκινήσει μόλις η άλλη διεργασία ολοκληρωθεί."
 
-#: ../src/lib/GourmetRecipeManager.py:856 ../src/lib/reccard.py:967
+#: ../src/lib/GourmetRecipeManager.py:862 ../src/lib/reccard.py:967
 #, python-format
 msgid "Gourmet cannot export file of type \"%s\""
 msgstr "Το Gourmet δεν μπορεί να εξάγει σε αρχείο τύπου %s"
 
-#: ../src/lib/GourmetRecipeManager.py:871
-#: ../src/lib/GourmetRecipeManager.py:940
+#: ../src/lib/GourmetRecipeManager.py:877
+#: ../src/lib/GourmetRecipeManager.py:946
 msgid "Please wait until it is finished to start your import."
 msgstr ""
+"Παρακαλώ περιμένετε εως ότου ολοκληρωθεί για να ξεκινήσετε την Εισαγωγή σας."
 
-#: ../src/lib/GourmetRecipeManager.py:875
+#: ../src/lib/GourmetRecipeManager.py:881
 msgid "Enter the URL of a recipe archive or recipe website."
-msgstr ""
+msgstr "Εισάγετε το URL ενός Αρχείου ή Ιστοχώρου Συνταγών."
 
-#: ../src/lib/GourmetRecipeManager.py:876
+#: ../src/lib/GourmetRecipeManager.py:882
 msgid "Enter website address."
-msgstr ""
+msgstr "Εισάγετε διευθυνση ιστοσελίδας."
 
-#: ../src/lib/GourmetRecipeManager.py:878
-msgid "Enter URL: "
-msgstr ""
+#: ../src/lib/GourmetRecipeManager.py:884
+#, fuzzy
+msgid "Enter URL:"
+msgstr "Εισαγωγή URL: "
 
-#: ../src/lib/GourmetRecipeManager.py:879
+#: ../src/lib/GourmetRecipeManager.py:885
 msgid ""
 "Enter the address of a website or recipe archive. The address should begin "
 "with http://"
 msgstr ""
+"Εισάγετε την Διεύθυνση του Ιστοχώρου ή του Αρχείου Συνταγών. Η Διεύθυνση "
+"πρέπει να ξεκινά με http://"
 
-#: ../src/lib/GourmetRecipeManager.py:886
+#: ../src/lib/GourmetRecipeManager.py:892
 #, python-format
 msgid "Importing recipe from %s"
 msgstr "Εισαγωγή συνταγής από %s"
 
-#: ../src/lib/GourmetRecipeManager.py:908
+#: ../src/lib/GourmetRecipeManager.py:914
 #, python-format
 msgid "Gourmet does not know how to import site %s"
 msgstr "Το Gourmet δεν ξέρει πώς να εισαγάγει το δικτυακό τόπο %s"
 
-#: ../src/lib/GourmetRecipeManager.py:910
-#: ../src/lib/GourmetRecipeManager.py:932
+#: ../src/lib/GourmetRecipeManager.py:916
+#: ../src/lib/GourmetRecipeManager.py:938
 #, python-format
 msgid "Are you sure %(url)s points to a page with a recipe on it?"
-msgstr ""
+msgstr "Είστε σίγουρος ότι το %(url)s παραπέμπει σε μια σελίδα με συνταγή;"
 
-#: ../src/lib/GourmetRecipeManager.py:911
+#: ../src/lib/GourmetRecipeManager.py:917
 msgid "Unable to import"
 msgstr "Ηταν αδύνατη η εισαγωγή"
 
-#: ../src/lib/GourmetRecipeManager.py:916
+#: ../src/lib/GourmetRecipeManager.py:922
 msgid "Unable to unzip"
-msgstr ""
+msgstr "Αδύνατη η Αποσυμπίεση"
 
-#: ../src/lib/GourmetRecipeManager.py:917
+#: ../src/lib/GourmetRecipeManager.py:923
 #, python-format
 msgid "Gourmet is unable to unzip the file %s"
-msgstr ""
+msgstr "Το Gourmet δεν μπορεί να αποσυμπιέσει το αρχείο %s"
 
-#: ../src/lib/GourmetRecipeManager.py:921
+#: ../src/lib/GourmetRecipeManager.py:927
 msgid "Unable to retrieve URL"
 msgstr "Ηταν αδύνατη η ανάκτηση του URL"
 
-#: ../src/lib/GourmetRecipeManager.py:922
+#: ../src/lib/GourmetRecipeManager.py:928
 #, python-format
 msgid ""
 "Gourmet was unable to retrieve the site %s. Are you sure your internet "
 "connection is working?  If you can retrieve the site with a webbrowser but "
 "continue to get this error, please submit a bug report at %s."
 msgstr ""
+"Το Gourmet δεν μπόρεσε να βρει τον ιστοχώρο %s. Είστε σίγουρος ότι η Σύνδεση "
+"σας Διαδικτύου δουλεύει; Εάν μπορείτε να περιηγηθείτε στον ιστοχώρο με έναν "
+"Φυλλομετρητή Ιστού αλλά συνεχίζετε να λαμβάνετε αυτό το λάθος, παρακαλούμε "
+"αποστείλατε μια Αναφορά Σφάλματος στο %s."
 
-#: ../src/lib/GourmetRecipeManager.py:931
+#: ../src/lib/GourmetRecipeManager.py:937
 #, python-format
 msgid "Error retrieving %(url)s."
-msgstr ""
+msgstr "Σφάλμα ανάκτησης %(url)s."
 
-#: ../src/lib/GourmetRecipeManager.py:946
+#: ../src/lib/GourmetRecipeManager.py:952
 msgid "Import Recipes"
 msgstr "Εισαγωγή Συνταγών"
 
-#: ../src/lib/GourmetRecipeManager.py:1016
+#: ../src/lib/GourmetRecipeManager.py:1022
 #, python-format
 msgid "Default source for recipes imported from %s"
-msgstr ""
+msgstr "Η Προεπιλεγμένη Πηγή Συνταγών εισήχθη από το %s"
 
-#: ../src/lib/GourmetRecipeManager.py:1017
-msgid "Source: "
-msgstr "Πηγή: "
+#: ../src/lib/GourmetRecipeManager.py:1023
+#, fuzzy
+msgid "Source:"
+msgstr "Πηγή:"
 
-#: ../src/lib/GourmetRecipeManager.py:1046
+#: ../src/lib/GourmetRecipeManager.py:1052
 #, python-format
 msgid "Gourmet could not import the file %s"
 msgid_plural "Gourmet could not import the following files: %s"
 msgstr[0] "Το Gourmet δε μπόρεσε να εισαγάγει το αρχείο %s"
 msgstr[1] "Το Gourmet δε μπόρεσε να εισαγάγει τα ακόλουθα αρχεία: %s"
 
-#: ../src/lib/GourmetRecipeManager.py:1051
+#: ../src/lib/GourmetRecipeManager.py:1057
 #, python-format
 msgid ""
 "If you believe this file is in one of the formats Gourmet supports, please "
@@ -1906,53 +1949,59 @@ msgid_plural ""
 "If you believe these files are in a format Gourmet supports, please submit a "
 "bug report at %s and attach the file."
 msgstr[0] ""
+"Εάν νομίζετε ότι αυτό το αρχείο είναι σε τύπο αρχείου που υποστηρίζεται από "
+"το Gourmet, παρακαλούμε αποστείλατε μια Αναφορά Σφάλματος ατο %s και "
+"επισυνάψατε το αρχείο."
 msgstr[1] ""
+"Εάν νομίζετε ότι αυτά τα αρχεία είναι σε τύπο αρχείου που υποστηρίζεται από "
+"το Gourmet, παρακαλούμε αποστείλατε μια Αναφορά Σφάλματος ατο %s και "
+"επισυνάψατε τα αρχεία."
 
-#: ../src/lib/GourmetRecipeManager.py:1055
+#: ../src/lib/GourmetRecipeManager.py:1061
 msgid "Cannot import file."
 msgid_plural "Cannot import files."
 msgstr[0] "Αδύνατη η εισαγωγή του αρχείου."
 msgstr[1] "Αδύνατη η εισαγωγή των αρχείων."
 
-#: ../src/lib/GourmetRecipeManager.py:1079
+#: ../src/lib/GourmetRecipeManager.py:1085
 #, python-format
 msgid "Importing recipes from %s"
 msgstr "Εισαγωγή συνταγών από %s"
 
-#: ../src/lib/GourmetRecipeManager.py:1083
+#: ../src/lib/GourmetRecipeManager.py:1089
 msgid "Importing Recipes"
 msgstr "Εισαγωγή Συνταγών"
 
-#: ../src/lib/GourmetRecipeManager.py:1094
+#: ../src/lib/GourmetRecipeManager.py:1100
 msgid "Your import will start once the other process is finished."
 msgstr "Η εισαγωγή θα ξεκινήσει μόλις η άλλη διεργασία ολοκληρωθεί."
 
-#: ../src/lib/GourmetRecipeManager.py:1113
+#: ../src/lib/GourmetRecipeManager.py:1119 ../src/lib/reccard.py:1007
 msgid "Export succeeded"
 msgstr "Η εξαγωγή ήταν επιτυχής"
 
-#: ../src/lib/GourmetRecipeManager.py:1116
+#: ../src/lib/GourmetRecipeManager.py:1122
 msgid "webpage"
 msgstr "ιστοσελίδα"
 
-#: ../src/lib/GourmetRecipeManager.py:1117
+#: ../src/lib/GourmetRecipeManager.py:1123
 #, python-format
 msgid "Exported %s to %s"
 msgstr "Εγινε εξαγωγή από %s σε %s"
 
-#: ../src/lib/GourmetRecipeManager.py:1183
+#: ../src/lib/GourmetRecipeManager.py:1189
 msgid "Importing..."
 msgstr "Εισαγωγή..."
 
-#: ../src/lib/GourmetRecipeManager.py:1270
+#: ../src/lib/GourmetRecipeManager.py:1276
 msgid "Undeleted recipes "
 msgstr "Συνταγές που δεν έχουν διαγραφεί "
 
-#: ../src/lib/GourmetRecipeManager.py:1321
+#: ../src/lib/GourmetRecipeManager.py:1327
 msgid "Gourmet Recipe Manager starting up..."
 msgstr "Εκκίνηση του Gourmet Recipe Manager..."
 
-#: ../src/lib/GourmetRecipeManager.py:1330
+#: ../src/lib/GourmetRecipeManager.py:1336
 msgid "Starting gourmet..."
 msgstr "Εκκίνηση του gourmet..."
 
@@ -1986,12 +2035,12 @@ msgstr ""
 #, python-format
 msgid "Deleted %s recipe"
 msgid_plural "Deleted %s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Διαγραφή %s συνταγής"
+msgstr[1] "Διαγραφή %s συνταγών"
 
 #: ../src/lib/keyEditor.py:58 ../src/lib/keyEditor.py:430
-#: ../src/lib/reccard.py:1831 ../src/lib/reccard.py:1863
-#: ../src/lib/reccard.py:1885
+#: ../src/lib/reccard.py:1848 ../src/lib/reccard.py:1880
+#: ../src/lib/reccard.py:1902
 msgid "Key"
 msgstr "Κλειδί"
 
@@ -2005,13 +2054,12 @@ msgid "item"
 msgstr "αντικείμενο"
 
 #: ../src/lib/keyEditor.py:105
-#, fuzzy
 msgid "Field"
-msgstr "_Αρχείο"
+msgstr "Πεδίο"
 
 #: ../src/lib/keyEditor.py:106
 msgid "Value"
-msgstr ""
+msgstr "Τιμή"
 
 #: ../src/lib/keyEditor.py:107
 msgid "Count"
@@ -2024,7 +2072,7 @@ msgstr "Συνταγές"
 #: ../src/lib/keyEditor.py:127
 #, python-format
 msgid "Change all keys \"%s\" to \"%s\"?"
-msgstr ""
+msgstr "Αλλαγή όλων των Κλειδιών \"%s\" σε \"%s\";"
 
 #: ../src/lib/keyEditor.py:128
 #, python-format
@@ -2033,11 +2081,14 @@ msgid ""
 "the key \"%s\", you won't be able to distinguish between those items and the "
 "items you are changing now."
 msgstr ""
+"Δεν θα μπορείτε να αναιρέσετε αυτή την ενέργεια. Εάν υπάρχουν ήδη Συστατικά "
+"με το Κλειδί \"%s\", δεν θα μπορείτε να διακρίνετε ανάμεσα σε αυτά και σ' "
+"εκείνα που αλλάζετε τώρα."
 
 #: ../src/lib/keyEditor.py:140
 #, python-format
 msgid "Change all items \"%s\" to \"%s\"?"
-msgstr ""
+msgstr "Αλλαγή όλων των αντικειμένων από \"%s\" σε \"%s\";"
 
 #: ../src/lib/keyEditor.py:141
 #, python-format
@@ -2046,11 +2097,14 @@ msgid ""
 "the item \"%s\", you won't be able to distinguish between those items and "
 "the items you are changing now."
 msgstr ""
+"Δεν θα μπορείτε να αναιρέσετε αυτή την ενέργεια. Εάν υπάρχουν ήδη Συστατικά "
+"με το Αντικείμενο \"%s\", δεν θα μπορείτε να διακρίνετε ανάμεσα σε αυτά και "
+"σ' εκείνα που αλλάζετε τώρα."
 
 #: ../src/lib/keyEditor.py:152
 #, python-format
 msgid "Change _all instances of \"%(unit)s\" to \"%(text)s\""
-msgstr ""
+msgstr "Αλλαγή όλων των περιπτώσεων του \"%(unit)s\" σε \"%(text)s\""
 
 #: ../src/lib/keyEditor.py:153
 #, python-format
@@ -2058,11 +2112,14 @@ msgid ""
 "Change \"%(unit)s\" to \"%(text)s\" only for _ingredients \"%(item)s\" with "
 "key \"%(key)s\""
 msgstr ""
+"Αλλαγή  του \"%(unit)s\" σε \"%(text)s\" μόνο για Συστατικά \"%(item)s\" με "
+"Κλειδί \"%(key)s\""
 
 #: ../src/lib/keyEditor.py:178
 #, python-format
 msgid "Change _all instances of \"%(amount)s\" %(unit)s to %(text)s %(unit)s"
 msgstr ""
+"Αλλαγή όλων των περιπτώσεων του \"%(amount)s\" %(unit)s σε %(text)s %(unit)s"
 
 #: ../src/lib/keyEditor.py:179
 #, python-format
@@ -2070,6 +2127,8 @@ msgid ""
 "Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only _where the "
 "ingredient key is %(key)s"
 msgstr ""
+"Αλλαγή του \"%(amount)s\" %(unit)s σε \"%(text)s\" %(unit)s μόνο όπου το "
+"Κλειδί Συστατικού είναι %(key)s"
 
 #: ../src/lib/keyEditor.py:180
 #, python-format
@@ -2077,10 +2136,12 @@ msgid ""
 "Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only where the "
 "ingredient key is %(key)s _and where the item is %(item)s"
 msgstr ""
+"Αλλαγή του \"%(amount)s\" %(unit)s σε \"%(text)s\" %(unit)s μόνο όπου το "
+"Κλειδί Συστατικών είναι %(key)s και όπου το Αντικείμενο είναι %(item)s"
 
 #: ../src/lib/keyEditor.py:318
 msgid "Change all selected rows?"
-msgstr ""
+msgstr "Αλλαγή όλων των επιλεγμένων σειρών;"
 
 #: ../src/lib/keyEditor.py:319
 #, python-format
@@ -2088,91 +2149,102 @@ msgid ""
 "This action will not be undoable. Are you that for all %s selected rows, you "
 "want to set the following values:"
 msgstr ""
+"Αυτή η ενέργεια είναι μη αναστρέψιμη. Είστε σίγουρος ότι για όλες τις %s "
+"επιλεγμένες γραμμές, θέλετε να εισάγετε τις ακόλουθες τιμές:"
 
 #: ../src/lib/keyEditor.py:320
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Key to %s"
-msgstr " Πρός \"%s\""
+msgstr ""
+"\n"
+"Κλειδί σε %s"
 
 #: ../src/lib/keyEditor.py:321
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Item to %s"
-msgstr " Πρός \"%s\""
+msgstr ""
+"\n"
+"Αντικείμενο σε %s"
 
 #: ../src/lib/keyEditor.py:322
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Unit to %s"
-msgstr " Πρός \"%s\""
+msgstr ""
+"\n"
+"Μονάδα σε %s"
 
 #: ../src/lib/keyEditor.py:323
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Amount to %s"
-msgstr "_Ποσό: "
+msgstr ""
+"\n"
+"Ποσότητες σε %s"
 
 #: ../src/lib/keyEditor.py:413
 #, python-format
 msgid "%s ingredient"
 msgid_plural "%s ingredients"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s συστατικό"
+msgstr[1] "%s συστατικά"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
 #: ../src/lib/keyEditor.py:417
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
-msgstr ""
+msgstr "Παρουσίαση συστατικών από %(bottom)s μέχρι %(top)s με σύνολο %(total)s"
 
 #. self._hide_warning_slowly()
 #. return
 #: ../src/lib/numberEntry.py:27 ../src/lib/timeEntry.py:54
 #: ../src/lib/timeEntry.py:64
 msgid "Invalid input."
-msgstr ""
+msgstr "Λανθασμένη εισαγωγή δεδομένων."
 
 #: ../src/lib/numberEntry.py:27
 msgid "Not a number."
-msgstr ""
+msgstr "Μη αριθμητικό στοιχείο."
 
 #: ../src/lib/nutrition/databaseGrabber.py:140
 msgid "Parsing nutritional data..."
-msgstr ""
+msgstr "Ανάλυση Διατροφικών Δεδομένων..."
 
 #: ../src/lib/nutrition/databaseGrabber.py:157
 #, python-format
 msgid "Reading nutritional data: imported %s of %s entries."
-msgstr ""
+msgstr "Ανάγνωση Διατροφικών Δεδομένων: Εισήχθησαν %s από %s εγγραφές."
 
 #: ../src/lib/nutrition/databaseGrabber.py:169
-#, fuzzy
 msgid "Parsing weight data..."
-msgstr "Φόρτωση της βάσης δεδομένων με τις συνταγές..."
+msgstr "Ανάλυση Δεδομένων Βάρους..."
 
 #: ../src/lib/nutrition/databaseGrabber.py:178
 #, python-format
 msgid "Reading weight data for nutritional items: imported %s of %s entries"
 msgstr ""
+"Ανάγνωση Δεδομένων Βάρους φια Διατροφικά Αντικείμενα: Εισήχθησαν %s από %s "
+"εγγραφές."
 
 #: ../src/lib/nutrition/nutritionDisplay.py:132
 msgid "100 grams"
-msgstr ""
+msgstr "100 γραμμάρια"
 
 #: ../src/lib/nutrition/nutritionDruid.py:104
 msgid "Any food group"
-msgstr ""
+msgstr "Οποιαδήποτε Ομάδα Τροφών"
 
 #: ../src/lib/nutrition/nutritionDruid.py:345
-#, fuzzy, python-format
+#, python-format
 msgid "Convert unit for %s"
-msgstr "Αδύνατη η μετατροπή από %s σε %s"
+msgstr "Μετατροπή Μονάδας για %s"
 
 #: ../src/lib/nutrition/nutritionDruid.py:348
 #, python-format
@@ -2180,6 +2252,8 @@ msgid ""
 "In order to calculate nutritional information, Gourmet needs you to help it "
 "convert \"%s\" into a unit it understands."
 msgstr ""
+"Προκειμένου να υπολογίσει τις Διατροφικές Πληροφορίες ο Gourmet, χρειάζεται "
+"να μετατρέψετε την \"%s\" σε μια Μονάδα που να αντιλαμβάνεται."
 
 #: ../src/lib/nutrition/nutritionDruid.py:448
 #, python-format
@@ -2187,22 +2261,23 @@ msgid ""
 "Change ingredient key from %(old_key)s to %(new_key)s everywhere or just in "
 "the recipe %(title)s?"
 msgstr ""
+"Αλλαγή του Κλειδιού Συστατικών από %(old_key)s σε %(new_key)s παντού ή μόνο "
+"στην Συνταγή %(title)s;"
 
 #: ../src/lib/nutrition/nutritionDruid.py:453
 #: ../src/lib/nutrition/nutritionDruid.py:489
 msgid "Change _everywhere"
-msgstr ""
+msgstr "Αλλαγή _παντού"
 
 #: ../src/lib/nutrition/nutritionDruid.py:454
 #: ../src/lib/nutrition/nutritionDruid.py:490
-#, fuzzy, python-format
+#, python-format
 msgid "_Just in recipe %s"
-msgstr "Εκτύπωση Συνταγής %s"
+msgstr "_Μόνο στην συνταγή %s"
 
 #: ../src/lib/nutrition/nutritionDruid.py:481
-#, fuzzy
 msgid "Change unit"
-msgstr "_Αλλαγή μονάδας"
+msgstr "Αλλαγή μονάδας"
 
 #: ../src/lib/nutrition/nutritionDruid.py:483
 #, python-format
@@ -2210,6 +2285,8 @@ msgid ""
 "Change unit from %(old_unit)s to %(new_unit)s for all ingredients %(ingkey)s "
 "or just in the recipe %(title)s?"
 msgstr ""
+"Αλλαγή μονάδας από %(old_unit)s σε %(new_unit)s για όλα τα συστατικά %"
+"(ingkey)s ή μόνο για την συνταγή %(title)s;"
 
 #: ../src/lib/nutrition/nutritionDruid.py:560
 #, python-format
@@ -2219,11 +2296,17 @@ msgid ""
 "several descriptions of this food with different densities. Please select "
 "the correct one below."
 msgstr ""
+"Προκειμένου να υπολογίσει τις Διατροφικές Πληροφορίες για \"%(amount)s %"
+"(unit)s %(ingkey)s\", ο Gourmet χρειάζεται να γνωρίζει την Πυκνότητά του. Η "
+"Διατροφική Βάση Δεδομένων μας έχει διάφορες περιγραφές αυτού του Φαγητού με "
+"διαφορετικές Πυκνότητες. Παρακαλώ επιλέξτε την σωστή από τις παρακάτω."
 
 #: ../src/lib/nutrition/nutritionDruid.py:711
 msgid ""
 "To apply nutritional information, Gourmet needs a valid amount and unit."
 msgstr ""
+"Για να εφαρμόσει τις Διατροφικές Πληροφορίες, το Gourmet χρειάζεται έγκυρα "
+"ποσό και μονάδα."
 
 #. filename=None
 #. if de.getBoolean(
@@ -2237,192 +2320,189 @@ msgstr ""
 #. )
 #: ../src/lib/nutrition/nutritionGrabberGui.py:35
 msgid "Loading Nutritional Data"
-msgstr ""
+msgstr "Φόρτωση Διατροφικών Δεδομένων"
 
 #: ../src/lib/nutrition/nutritionGrabberGui.py:40
 msgid "Nutritonal database import complete!"
-msgstr ""
+msgstr "Ολοκληρώθηκε η Εισαγωφή της Διατροφικής Βάσης Δεδομένων!"
 
 #: ../src/lib/nutrition/nutritionGrabberGui.py:59
 #, python-format
 msgid "Fetching nutritional database from zip archive %s"
-msgstr ""
+msgstr "Προσκόμιση Διατροφικής Βάσης Δεδομένων από το αρχείο zip %s"
 
 #: ../src/lib/nutrition/nutritionGrabberGui.py:63
 #, python-format
 msgid "Extracting %s from zip archive."
-msgstr ""
+msgstr "Εξαγωγή %s από αρχείο zip."
 
 #: ../src/lib/nutrition/nutritionLabel.py:10
 msgid "Calories"
-msgstr ""
+msgstr "Θερμίδες"
 
 #: ../src/lib/nutrition/nutritionLabel.py:13
 msgid "Total Fat"
-msgstr ""
+msgstr "Ολικό Λίπος"
 
 #: ../src/lib/nutrition/nutritionLabel.py:15
 msgid "Saturated Fat"
-msgstr ""
+msgstr "Κορεσμένα Λιπαρά"
 
 #: ../src/lib/nutrition/nutritionLabel.py:17
 msgid "Cholesterol"
-msgstr ""
+msgstr "Χοληστερόλη"
 
 #: ../src/lib/nutrition/nutritionLabel.py:19
 msgid "Sodium"
-msgstr ""
+msgstr "Νάτριο"
 
 #: ../src/lib/nutrition/nutritionLabel.py:21
 msgid "Total Carbohydrate"
-msgstr ""
+msgstr "Συνολικοί Υδρογονάνθρακες"
 
 #: ../src/lib/nutrition/nutritionLabel.py:23
 msgid "Dietary Fiber"
-msgstr ""
+msgstr "Διαιτητικές Ίνες"
 
 #: ../src/lib/nutrition/nutritionLabel.py:25
-#, fuzzy
 msgid "Sugars"
-msgstr "ζάχαρη"
+msgstr "Σάκχαρα"
 
 #: ../src/lib/nutrition/nutritionLabel.py:27
-#, fuzzy
 msgid "Protein"
-msgstr "Εκτύπωση"
+msgstr "Πρωτεΐνες"
 
 #: ../src/lib/nutrition/nutritionLabel.py:32
 msgid "Alpha-carotene"
-msgstr ""
+msgstr "α-Καροτένιο"
 
 #: ../src/lib/nutrition/nutritionLabel.py:34
 msgid "Ash"
-msgstr ""
+msgstr "Τέφρα"
 
 #: ../src/lib/nutrition/nutritionLabel.py:36
 msgid "Beta-carotene"
-msgstr ""
+msgstr "β-Κατοτένιο"
 
 #: ../src/lib/nutrition/nutritionLabel.py:38
 msgid "Beta Cryptoxanthin"
-msgstr ""
+msgstr "β-Κρυπτοξανθίνη"
 
 #: ../src/lib/nutrition/nutritionLabel.py:40
 msgid "Calcium"
-msgstr ""
+msgstr "Ασβέστιο"
 
 #: ../src/lib/nutrition/nutritionLabel.py:42
 msgid "Copper"
-msgstr ""
+msgstr "Χαλκός"
 
 #: ../src/lib/nutrition/nutritionLabel.py:44
 msgid "Folate Total"
-msgstr ""
+msgstr "Ολικό Φολικό"
 
 #: ../src/lib/nutrition/nutritionLabel.py:46
 msgid "Folic acid"
-msgstr ""
+msgstr "Φολικό Οξύ"
 
 #: ../src/lib/nutrition/nutritionLabel.py:48
 msgid "Food Folate"
-msgstr ""
+msgstr "Φολικό Τροφής"
 
 #: ../src/lib/nutrition/nutritionLabel.py:50
 msgid "Dietary folate equivalents"
-msgstr ""
+msgstr "Ισοδύναμα Διαιτητικού Φολικού"
 
 #: ../src/lib/nutrition/nutritionLabel.py:52
 msgid "Iron"
-msgstr ""
+msgstr "Σίδηρος"
 
 #: ../src/lib/nutrition/nutritionLabel.py:54
 msgid "Lycopene"
-msgstr ""
+msgstr "Λυκοπένη"
 
 #: ../src/lib/nutrition/nutritionLabel.py:56
 msgid "Lutein+Zeazanthin"
-msgstr ""
+msgstr "Λουτεΐνη+Ζεαζανθίνη"
 
 #: ../src/lib/nutrition/nutritionLabel.py:58
 msgid "Magnesium"
-msgstr ""
+msgstr "Μαγνήσιο"
 
 #: ../src/lib/nutrition/nutritionLabel.py:60
 msgid "Manganese"
-msgstr ""
+msgstr "Μαγγάνιο"
 
 #: ../src/lib/nutrition/nutritionLabel.py:62
 msgid "Niacin"
-msgstr ""
+msgstr "Νιασίνη"
 
 #: ../src/lib/nutrition/nutritionLabel.py:64
 msgid "Pantothenic Acid"
-msgstr ""
+msgstr "Παντοθενικό Οξύ"
 
 #: ../src/lib/nutrition/nutritionLabel.py:66
 msgid "Phosphorus"
-msgstr ""
+msgstr "Φώσφορος"
 
 #: ../src/lib/nutrition/nutritionLabel.py:68
 msgid "Potassium"
-msgstr ""
+msgstr "Κάλλιο"
 
 #: ../src/lib/nutrition/nutritionLabel.py:70
 msgid "Vitamin A"
-msgstr ""
+msgstr "Βιταμίνη Α"
 
 #: ../src/lib/nutrition/nutritionLabel.py:72
-#, fuzzy
 msgid "Retinol"
-msgstr "Αξιολόγηση"
+msgstr "Ρετινόλη"
 
 #: ../src/lib/nutrition/nutritionLabel.py:74
 msgid "Riboflavin"
-msgstr ""
+msgstr "Ριβοφλαβίνη"
 
 #: ../src/lib/nutrition/nutritionLabel.py:76
 msgid "Selenium"
-msgstr ""
+msgstr "Σελήνιο"
 
 #: ../src/lib/nutrition/nutritionLabel.py:78
 msgid "Thiamin"
-msgstr ""
+msgstr "Θειαμίνη"
 
 #: ../src/lib/nutrition/nutritionLabel.py:80
 msgid "Vitamin A (IU)"
-msgstr ""
+msgstr "Βιταμίνη A (IU)"
 
 #: ../src/lib/nutrition/nutritionLabel.py:82
 msgid "Vitamin A (RAE)"
-msgstr ""
+msgstr "Βιταμίνη Α (RAE)"
 
 #: ../src/lib/nutrition/nutritionLabel.py:84
 msgid "Vitamin B6"
-msgstr ""
+msgstr "Βιταμίνη B6"
 
 #: ../src/lib/nutrition/nutritionLabel.py:86
 msgid "Vitamin B12"
-msgstr ""
+msgstr "Βιταμίνη B12"
 
 #: ../src/lib/nutrition/nutritionLabel.py:88
 msgid "Vitamin C"
-msgstr ""
+msgstr "Βιταμίνη C"
 
 #: ../src/lib/nutrition/nutritionLabel.py:90
 msgid "Vitamin E"
-msgstr ""
+msgstr "Βιταμίνη Ε"
 
 #: ../src/lib/nutrition/nutritionLabel.py:92
 msgid "Vitamin K"
-msgstr ""
+msgstr "Βιταμίνη Κ"
 
 #: ../src/lib/nutrition/nutritionLabel.py:94
 msgid "Zinc"
-msgstr ""
+msgstr "Ψευδάργυρος"
 
 #: ../src/lib/nutrition/nutritionLabel.py:195
 msgid "Vitamins and minerals"
-msgstr ""
+msgstr "Βιταμίνες και μεταλλικά στοιχεία"
 
 #: ../src/lib/nutrition/nutritionLabel.py:257
 #, python-format
@@ -2430,10 +2510,12 @@ msgid ""
 "Missing nutritional information\n"
 "for %(missing)s of %(total)s ingredients."
 msgstr ""
+"Απούσες Διατροφικές Πληροφορίες\n"
+"για %(missing)s των %(total)s Συστατικών."
 
 #: ../src/lib/nutrition/nutritionLabel.py:273
 msgid "% _Daily Value"
-msgstr ""
+msgstr "% _Καθημερινή Ποσότητα"
 
 #: ../src/lib/nutrition/nutritionLabel.py:318
 #, python-format
@@ -2441,24 +2523,24 @@ msgid ""
 "Percentage of recommended daily value based on %i calories per day. Click to "
 "edit number of calories per day."
 msgstr ""
+"Ποσοστό  Συνιστωμένης Ημερήσιας Παροχής βαρισμένο στο %i Θερμίδων ανά Ημέρα. "
+"Κάντε κλικ για να επεξεργαστείτε τον αριθμό Θερμίδων ανά Ημέρα."
 
 #: ../src/lib/nutrition/nutritionLabel.py:392
 msgid "Amount per Serving"
-msgstr ""
+msgstr "Ποσό ανά Σερβίρισμα"
 
 #: ../src/lib/nutrition/nutritionLabel.py:394
-#, fuzzy
 msgid "Amount per recipe"
-msgstr "Εκτύπωση %s συνταγής"
+msgstr "Ποσό ανά Συνταγή"
 
 #: ../src/lib/nutrition/nutritionModel.py:9
-#, fuzzy
 msgid "Ingredient"
-msgstr "Συστατικά"
+msgstr "Συστατικό"
 
 #: ../src/lib/nutrition/nutritionModel.py:10
 msgid "USDA Database Equivalent"
-msgstr ""
+msgstr "Ισοδύναμο στην Βάση Δεδομένων USDA"
 
 #: ../src/lib/nutrition/nutritionModel.py:11 ../src/lib/shopping.py:137
 #: ../src/lib/shopping.py:157
@@ -2466,302 +2548,293 @@ msgid "Unknown"
 msgstr "Αγνωστο"
 
 #: ../src/lib/nutrition/parser_data.py:13
-#, fuzzy
 msgid "Water"
-msgstr "νερό"
+msgstr "Νερό"
 
 #: ../src/lib/nutrition/parser_data.py:14
-#, fuzzy
 msgid "Kilocalories"
-msgstr "τοπικό σύστημα"
+msgstr "Χιλιοθερμίδες"
 
 #: ../src/lib/nutrition/parser_data.py:15
 msgid "g protein"
-msgstr ""
+msgstr "g Πρωτεΐνη"
 
 #: ../src/lib/nutrition/parser_data.py:16
 msgid "g lipid"
-msgstr ""
+msgstr "g Λιπίδια"
 
 #: ../src/lib/nutrition/parser_data.py:17
 msgid "g ash"
-msgstr ""
+msgstr "g Τέφρα"
 
 #: ../src/lib/nutrition/parser_data.py:18
 msgid "g carbohydrates"
-msgstr ""
+msgstr "g Yδρογονάνθρακες"
 
 #: ../src/lib/nutrition/parser_data.py:19
 msgid "g fiber"
-msgstr ""
+msgstr "g Ίνες"
 
 #: ../src/lib/nutrition/parser_data.py:20
-#, fuzzy
 msgid "g sugar"
-msgstr "ζάχαρη"
+msgstr "g Σακχάρων"
 
 #: ../src/lib/nutrition/parser_data.py:21
 msgid "mg calcium"
-msgstr ""
+msgstr "mg Ασβεστίου"
 
 #: ../src/lib/nutrition/parser_data.py:22
 msgid "mg iron"
-msgstr ""
+msgstr "mg Σιδήρου"
 
 #: ../src/lib/nutrition/parser_data.py:23
 msgid "mg magnesium"
-msgstr ""
+msgstr "mg μαγνήσιου"
 
 #: ../src/lib/nutrition/parser_data.py:24
 msgid "mg phosphorus"
-msgstr ""
+msgstr "mg φωσφόρου"
 
 #: ../src/lib/nutrition/parser_data.py:25
 msgid "mg potassium"
-msgstr ""
+msgstr "mg Καλίου"
 
 #: ../src/lib/nutrition/parser_data.py:26
 msgid "mg sodium"
-msgstr ""
+msgstr "mg Νατρίου"
 
 #: ../src/lib/nutrition/parser_data.py:27
 msgid "mg zinc"
-msgstr ""
+msgstr "mg Ψευδαργύρου"
 
 #: ../src/lib/nutrition/parser_data.py:28
 msgid "mg copper"
-msgstr ""
+msgstr "mg Χαλκού"
 
 #: ../src/lib/nutrition/parser_data.py:29
 msgid "mg manganese"
-msgstr ""
+msgstr "mg Μαγγανίου"
 
 #: ../src/lib/nutrition/parser_data.py:30
 msgid "microgram selenium"
-msgstr ""
+msgstr "μg Σεληνίου"
 
 #: ../src/lib/nutrition/parser_data.py:31
 msgid "mg vitamin c"
-msgstr ""
+msgstr "mg βταμίνη c"
 
 #: ../src/lib/nutrition/parser_data.py:32
 msgid "mg thiamin"
-msgstr ""
+msgstr "mg Θειαμίνη"
 
 #: ../src/lib/nutrition/parser_data.py:33
 msgid "mg riboflavin"
-msgstr ""
+msgstr "mg Ριβοφλαβίνης"
 
 #: ../src/lib/nutrition/parser_data.py:34
 msgid "mg niacin"
-msgstr ""
+msgstr "mg Νιασίνης"
 
 #: ../src/lib/nutrition/parser_data.py:35
 msgid "mg pantothenic acid"
-msgstr ""
+msgstr "mg Παντοθενικού Οξέος"
 
 #: ../src/lib/nutrition/parser_data.py:36
 msgid "mg vitamin B6"
-msgstr ""
+msgstr "mg βιταμίνη B6"
 
 #: ../src/lib/nutrition/parser_data.py:37
 msgid "microgram Folate Total"
-msgstr ""
+msgstr "μg Ολικού Φολικού"
 
 #: ../src/lib/nutrition/parser_data.py:38
 msgid "microgram Folic acid"
-msgstr ""
+msgstr "μg Φολικού Οξέος"
 
 #: ../src/lib/nutrition/parser_data.py:39
 msgid "microgram Food Folate"
-msgstr ""
+msgstr "μg Φολικού Τροφής"
 
 #: ../src/lib/nutrition/parser_data.py:40
 msgid "microgram dietary folate equivalents"
-msgstr ""
+msgstr "μg Ισοδύναμα Διαιτητικού Φολικού"
 
 #: ../src/lib/nutrition/parser_data.py:41
 msgid "microgram Vitamin B12"
-msgstr ""
+msgstr "μg Βιταμίνης B12"
 
 #: ../src/lib/nutrition/parser_data.py:42
 msgid "Vitamin A IU"
-msgstr ""
+msgstr "IU Βιταμίνης A"
 
 #: ../src/lib/nutrition/parser_data.py:43
 msgid "Vitamin A (microgram Retinal Activity Equivalents"
-msgstr ""
+msgstr "Βιταμίνη Α (Ισοδύναμο σε μg Ρετιναλικής Δραστηριότητας)"
 
 #: ../src/lib/nutrition/parser_data.py:44
 msgid "microgram Retinol"
-msgstr ""
+msgstr "μg Ρετινόλης"
 
 #: ../src/lib/nutrition/parser_data.py:45
 msgid "mg Vitamin E"
-msgstr ""
+msgstr "mg Βιταμίνη Ε"
 
 #: ../src/lib/nutrition/parser_data.py:46
 msgid "mg Vitamin K"
-msgstr ""
+msgstr "mg Βιταμίνη Κ"
 
 #: ../src/lib/nutrition/parser_data.py:47
 msgid "microgram Alpha-carotene"
-msgstr ""
+msgstr "μg α-Καροτένιου"
 
 #: ../src/lib/nutrition/parser_data.py:48
 msgid "microgram Beta-carotene"
-msgstr ""
+msgstr "μg β-Καροτένιου"
 
 #: ../src/lib/nutrition/parser_data.py:49
 msgid "microgram Beta Cryptoxanthin"
-msgstr ""
+msgstr "μg β-Κρυπτοξαθίνης"
 
 #: ../src/lib/nutrition/parser_data.py:50
 msgid "microgram Lycopene"
-msgstr ""
+msgstr "μg Λυκοπένης"
 
 #: ../src/lib/nutrition/parser_data.py:51
 msgid "microgram Lutein+Zeazanthin"
-msgstr ""
+msgstr "μg Λουτεΐνης+Ζεαζανθίνης"
 
 #: ../src/lib/nutrition/parser_data.py:52
 msgid "g Saturated Fatty Acid"
-msgstr ""
+msgstr "g Κεκορεσμένων Λιπαρών Οξέων"
 
 #: ../src/lib/nutrition/parser_data.py:53
 msgid "g Monounsaturated Fatty Acids"
-msgstr ""
+msgstr "g Μονοακόρεστων Λιπαρών Οξέων"
 
 #: ../src/lib/nutrition/parser_data.py:54
 msgid "g Polyunsaturated Fatty Acids"
-msgstr ""
+msgstr "g Πολυακόρεστων Λιπαρών Οξέων"
 
 #: ../src/lib/nutrition/parser_data.py:55
 msgid "mg Cholesterol"
-msgstr ""
+msgstr "mg Χοληστερόλης"
 
 #: ../src/lib/nutrition/parser_data.py:60
-#, fuzzy
 msgid "Percent refuse"
-msgstr "Εκτύπωση συνταγής"
+msgstr "Ποσοστό Άρνησης"
 
 #. the DB Food Group Numbers seem to be inline with the group IDs
 #. (numbers > 1000 are in group 100, etc.)
 #. Since that's true, we can use the following table to properly add groups.
 #: ../src/lib/nutrition/parser_data.py:335
 msgid "Dairy & Egg Products"
-msgstr ""
+msgstr "Γαλακτοκομικά Προϊόντα & Αυγά"
 
 #: ../src/lib/nutrition/parser_data.py:336
 msgid "Spices & Herbs"
-msgstr ""
+msgstr "Μπαχαρικά & Βότανα"
 
 #: ../src/lib/nutrition/parser_data.py:337
 msgid "Baby Foods"
-msgstr ""
+msgstr "Βρεφικές Τροφές"
 
 #: ../src/lib/nutrition/parser_data.py:338
 msgid "Fats and Oils"
-msgstr ""
+msgstr "Λιπαρά και Έλαια"
 
 #: ../src/lib/nutrition/parser_data.py:339
 msgid "Poultry"
-msgstr ""
+msgstr "Πουλερικά"
 
 #: ../src/lib/nutrition/parser_data.py:340
 msgid "Soups & Sauces"
-msgstr ""
+msgstr "Σούπες & Σάλτσες"
 
 #: ../src/lib/nutrition/parser_data.py:341
 msgid "Sausages & Lunch Meats"
-msgstr ""
+msgstr "Λουκάνικα & Κρέας"
 
 #: ../src/lib/nutrition/parser_data.py:342
 msgid "Breakfast Cereals"
-msgstr ""
+msgstr "Δημητριακά Πρωινού"
 
 #: ../src/lib/nutrition/parser_data.py:343
 msgid "Fruits & Fruit Juices"
-msgstr ""
+msgstr "Φρούτα & Χυμοί Φρούτων"
 
 #: ../src/lib/nutrition/parser_data.py:344
 msgid "Pork"
-msgstr ""
+msgstr "Χοιρινό"
 
 #: ../src/lib/nutrition/parser_data.py:345
-#, fuzzy
 msgid "Vegetables"
-msgstr "λάδι, φυτικό"
+msgstr "Λαχανικά"
 
 #: ../src/lib/nutrition/parser_data.py:346
 msgid "Nuts & Seeds"
-msgstr ""
+msgstr "Ξηροί Καρποί & Σπόροι"
 
 #: ../src/lib/nutrition/parser_data.py:347
 msgid "Beef"
-msgstr ""
+msgstr "Μπιφτέκι"
 
 #: ../src/lib/nutrition/parser_data.py:348
 msgid "Beverages"
-msgstr ""
+msgstr "Ποτά"
 
 #: ../src/lib/nutrition/parser_data.py:349
 msgid "Fish & Shellfish"
-msgstr ""
+msgstr "Ψαρια & Όστρακα"
 
 #: ../src/lib/nutrition/parser_data.py:350
 msgid "Legumes"
-msgstr ""
+msgstr "Όσπρια"
 
 #: ../src/lib/nutrition/parser_data.py:351
 msgid "Lamb, Veal & Game"
-msgstr ""
+msgstr "Αρνί, Μοσχάρι & Game"
 
 #: ../src/lib/nutrition/parser_data.py:352
 msgid "Baked Products"
-msgstr ""
+msgstr "Ψημένα Προϊόντα"
 
 #: ../src/lib/nutrition/parser_data.py:353
-#, fuzzy
 msgid "Sweets"
-msgstr "εβδομάδες"
+msgstr "Γλυκά"
 
 #: ../src/lib/nutrition/parser_data.py:354
 msgid "Grains and Pasta"
-msgstr ""
+msgstr "Δημητριακά και Ζυμαρικά"
 
 #: ../src/lib/nutrition/parser_data.py:355
 msgid "Fast Foods"
-msgstr ""
+msgstr "Φαστ Φουντ"
 
 #: ../src/lib/nutrition/parser_data.py:356
 msgid "Meals, Entrees, and Sidedishes"
-msgstr ""
+msgstr "Γεύματα, Ορεκτικά και Συνοδευτικά"
 
 #: ../src/lib/nutrition/parser_data.py:357
 msgid "Snacks"
-msgstr ""
+msgstr "Σνακς"
 
 #: ../src/lib/nutrition/parser_data.py:358
 msgid "Ethnic Foods"
-msgstr ""
+msgstr "Έθνικ Φαγητά"
 
 #. self.serves = float(self.serveW.get_text())
 #: ../src/lib/reccard.py:201
-#, fuzzy
 msgid "Edit Recipe:"
-msgstr "Εκτύπωση των Συνταγών"
+msgstr "Αλλαγή Συνταγής:"
 
 #: ../src/lib/reccard.py:202
-#, fuzzy
 msgid "Recipe Card:"
-msgstr "Κάρτα Συσταγής"
+msgstr "Κάρτα Συνταγής"
 
 #. action groups
 #: ../src/lib/reccard.py:283
-#, fuzzy
 msgid "Add _ingredient"
-msgstr "Προσθήκη υλικού:"
+msgstr "Προσθήκη _υλικού"
 
 #: ../src/lib/reccard.py:285
 msgid "Add new ingredient to the list."
@@ -2781,7 +2854,7 @@ msgstr "Επικόλληση λίστας συστατικών από το πρ�
 
 #: ../src/lib/reccard.py:299
 msgid "Add another recipe as an \"ingredient\" in the current recipe."
-msgstr ""
+msgstr "Προσθήκη άλλης μίας Συνταγής ως \"Συστατικού\" στην παρούσα Συνταγή."
 
 #: ../src/lib/reccard.py:307
 msgid "Move selected ingredient up."
@@ -2796,30 +2869,31 @@ msgstr "Μετακίνηση του επιλεγμένου συστατικού 
 #. ],
 #: ../src/lib/reccard.py:324
 msgid "View recipe card for current recipe"
-msgstr ""
+msgstr "Προβολή Καρτέλας Συνταγής για την παρούσα Συνταγή"
 
 #: ../src/lib/reccard.py:438
-#, fuzzy, python-format
+#, python-format
 msgid "Unable to find recipe %s in database."
-msgstr "Διαγραφή αυτής της συνταγής από τη βάση δεδομένων."
+msgstr "Αδύνατη η εύρεση της Συνταγής %s στην Βάση Δεδομένων"
 
 #: ../src/lib/reccard.py:471
-msgid "Choose an image to insert in instructions... "
+#, fuzzy
+msgid "Choose an image to insert in instructions..."
 msgstr "Επέλεξε μια εικόνα για εισαγωγή στις οδηγίες... "
 
 #: ../src/lib/reccard.py:589
 #, python-format
 msgid "Abandon your edits to %s?"
-msgstr ""
+msgstr "Εγκατάλειψη των αλλαγών σας στο %s ;"
 
 #: ../src/lib/reccard.py:597
 msgid "Are you sure you want to abandon your changes?"
-msgstr ""
+msgstr "Είστε σίγουρος ότι θέλετε να εγκαταλείψτε τις αλλαγές σας;"
 
 #: ../src/lib/reccard.py:612
 #, python-format
 msgid "Couldn't make sense of %s as number of servings"
-msgstr ""
+msgstr "Δεν μοιάζει ο %s ως Αριθμός Μερίδων"
 
 #: ../src/lib/reccard.py:840
 msgid "(Optional)"
@@ -2828,187 +2902,195 @@ msgstr "(Προαιρετικό)"
 #. FIXME
 #: ../src/lib/reccard.py:918
 msgid "Choose a file containing your ingredient list."
-msgstr ""
+msgstr "Επιλέξτε ένα αρχείο που να περιλαμβάνει τον Κατάλογο Συστατικών σας."
 
 #. strip off extra "." if necessary
 #: ../src/lib/reccard.py:962
 msgid "Save recipe as..."
 msgstr "Αποθήκευση συνταγής ως..."
 
-#: ../src/lib/reccard.py:987
+#: ../src/lib/reccard.py:996
 #, python-format
 msgid "Unable to save %s"
 msgstr "Είναι αδύνατη η αποθήκευση του %s"
 
-#: ../src/lib/reccard.py:988
+#: ../src/lib/reccard.py:997
 msgid "There was an error during export."
 msgstr "Συνέβη ένα λάθος κατά τη διάρκεια της εξαγωγής."
 
-#: ../src/lib/reccard.py:1074 ../src/lib/reccard.py:1126
-#: ../src/lib/reccard.py:1137
+#: ../src/lib/reccard.py:1008
+#, fuzzy, python-format
+msgid "Exported %(filetype)s to %(filename)s"
+msgstr "Εγινε εξαγωγή από %s σε %s"
+
+#: ../src/lib/reccard.py:1091 ../src/lib/reccard.py:1143
+#: ../src/lib/reccard.py:1154
 msgid "You have unsaved changes."
-msgstr ""
+msgstr "Έχετε μη αποθηκευμένες αλλαγές."
 
-#: ../src/lib/reccard.py:1078
+#: ../src/lib/reccard.py:1095
 msgid "There are no unsaved changes."
-msgstr ""
+msgstr "Δεν υπάρχουν μη σωθείσες αλλαγές."
 
-#: ../src/lib/reccard.py:1097
+#: ../src/lib/reccard.py:1114
 #, python-format
 msgid "Save edits to %s before closing?"
-msgstr ""
+msgstr "Αποθήκευση αλλαγών στο %s πριν το κλείσιμο;"
 
-#: ../src/lib/reccard.py:1127
+#: ../src/lib/reccard.py:1144
 msgid "Apply changes before e-mailing?"
-msgstr ""
+msgstr "Εφαρμογή των αλλαγών πριν την αποστολή e-mail;"
 
-#: ../src/lib/reccard.py:1138
+#: ../src/lib/reccard.py:1155
 msgid "Apply changes before printing?"
 msgstr "Εφαρμογή των αλλαγών πριν την εκτύπωση;"
 
-#: ../src/lib/reccard.py:1141
+#: ../src/lib/reccard.py:1158
 #, python-format
 msgid "Print Recipe %s"
 msgstr "Εκτύπωση Συνταγής %s"
 
-#: ../src/lib/reccard.py:1828 ../src/lib/reccard.py:1859
+#: ../src/lib/reccard.py:1845 ../src/lib/reccard.py:1876
 msgid "Amt"
-msgstr ""
+msgstr "Ποσότητα"
 
-#: ../src/lib/reccard.py:1832 ../src/lib/reccard.py:1862
+#: ../src/lib/reccard.py:1849 ../src/lib/reccard.py:1879
 msgid "Optional"
 msgstr "Προαιρετικό"
 
-#: ../src/lib/reccard.py:1941
+#: ../src/lib/reccard.py:1958
 msgid "New Category"
 msgstr "Νέα Κατηγορία"
 
-#: ../src/lib/reccard.py:2006
+#: ../src/lib/reccard.py:2023
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
-msgstr ""
+msgstr "Η Συνταγή %s (ID %s) δεν είναι στην Βάση Δεδομένων μας."
 
-#: ../src/lib/reccard.py:2023 ../src/lib/shopgui.py:459
+#: ../src/lib/reccard.py:2040 ../src/lib/shopgui.py:459
 #, python-format
 msgid "Category to add %s to"
-msgstr ""
+msgstr "Κατηγορία για Προσθήκη του %s"
 
-#: ../src/lib/reccard.py:2313
+#: ../src/lib/reccard.py:2330
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
-msgstr ""
+msgstr "Μετατραπείσες: %(amt)s %(unit)s"
 
-#: ../src/lib/reccard.py:2315
+#: ../src/lib/reccard.py:2332
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
-msgstr ""
+msgstr "Μη Μετατραπείσες: %(amt)s %(unit)s"
 
-#: ../src/lib/reccard.py:2319
+#: ../src/lib/reccard.py:2336
 msgid "Changed unit."
-msgstr ""
+msgstr "Αλλαγμένη Μονάδα."
 
-#: ../src/lib/reccard.py:2320
+#: ../src/lib/reccard.py:2337
 #, python-format
 msgid ""
 "You have changed the unit for %(item)s from %(old)s to %(new)s. Would you "
 "like the amount converted or not?"
 msgstr ""
+"Έχετε αλλάξει την Μονάδα για %(item)s από %(old)s σε %(new)s. Θα θέλετε να "
+"μετατραπεί και η ποσότητα ή όχι;"
 
-#: ../src/lib/reccard.py:2331
+#: ../src/lib/reccard.py:2348
 #, python-format
 msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
-msgstr ""
+msgstr "Μετατραπείσες %(old_amt)s %(old_unit)s σε %(new_amt)s %(new_unit)s"
 
-#: ../src/lib/reccard.py:2332
+#: ../src/lib/reccard.py:2349
 msgid "old_amt"
-msgstr ""
+msgstr "Παλιά Ποσότητα"
 
-#: ../src/lib/reccard.py:2343
+#: ../src/lib/reccard.py:2360
 #, python-format
 msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
-msgstr ""
+msgstr "Αδύνατη η Μετατροπή από %(old_unit)s σε %(new_unit)s"
 
-#: ../src/lib/reccard.py:2343
+#: ../src/lib/reccard.py:2360
 msgid "old_unit"
-msgstr ""
+msgstr "παλαίά_μονάδα"
 
-#: ../src/lib/reccard.py:2398
+#: ../src/lib/reccard.py:2415
 msgid "Adding Ingredient Group"
 msgstr "Προσθήκη Ομάδας Συστατικών"
 
-#: ../src/lib/reccard.py:2399
+#: ../src/lib/reccard.py:2416
 msgid "Enter a name for new subgroup of ingredients"
-msgstr ""
+msgstr "Εισάγετε το όνομα για τη νέα υποομάδα συστατικών"
 
-#: ../src/lib/reccard.py:2400
-msgid "Name of group: "
+#: ../src/lib/reccard.py:2417
+#, fuzzy
+msgid "Name of group:"
 msgstr "Ονομασία της ομάδας: "
 
-#: ../src/lib/reccard.py:2791
+#: ../src/lib/reccard.py:2808
 #, python-format
 msgid "Assuming you wanted item equal to key %s"
-msgstr ""
+msgstr "Υποθέτουμε θέλατε το Αντικείμενο ίσο με το Κλειδί %s"
 
-#: ../src/lib/reccard.py:2798
+#: ../src/lib/reccard.py:2815
 #, python-format
 msgid ""
 "You forgot an item. Assuming you meant \"%s\" as an item and not a unit."
 msgstr ""
+"Ξεχάσατε ένα Αντικείμενο. Υποθέτουμε ότι θεωρήσατε το \"%s\" ως Αντικείμενο "
+"και όχι ως Μονάδα."
 
-#: ../src/lib/reccard.py:2800
+#: ../src/lib/reccard.py:2817
 msgid "An ingredient must have an item!"
-msgstr ""
+msgstr "Κάθε Συστατικό πρέπει να έχει ένα Αντικείμενο!"
 
-#: ../src/lib/reccard.py:2951
+#: ../src/lib/reccard.py:2968
 msgid "Recipe cannot call itself as an ingredient!"
-msgstr ""
+msgstr "Μια συνταγή δεν μπορεί να αποκαλεί τον εαυτό της συστατικό!"
 
-#: ../src/lib/reccard.py:2952 ../src/lib/shopgui.py:623
+#: ../src/lib/reccard.py:2969 ../src/lib/shopgui.py:623
 msgid "Infinite recursion is not allowed in recipes!"
-msgstr ""
+msgstr "Δεν επιτρέπεται άπειρη αναδρομή στις Συνταγές!"
 
-#: ../src/lib/reccard.py:2969
+#: ../src/lib/reccard.py:2986
 msgid "You haven't selected any recipes!"
 msgstr "Δεν έχεις επιλέξει καμμία συνταγή!"
 
 #: ../src/lib/recindex.py:43 ../src/lib/recindex.py:56
-#, fuzzy
 msgid "notes"
-msgstr "Σημειώσεις"
+msgstr "σημειώσεις"
 
 #: ../src/lib/recindex.py:206
 #, python-format
 msgid "%s recipe"
 msgid_plural "%s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s συνταγή"
+msgstr[1] "%s συναταγές"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
 #: ../src/lib/recindex.py:210
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
-msgstr ""
+msgstr "Παρουσίαση Συνταγών %(bottom)s έως %(top)s από %(total)s"
 
 #: ../src/lib/recindex.py:374
-#, fuzzy
 msgid "or"
-msgstr "ώρα"
+msgstr "ή"
 
 #: ../src/lib/recindex.py:403
-#, fuzzy, python-format
+#, python-format
 msgid " %s in %s"
-msgstr " %s περιέχει %s"
+msgstr " %s σε %s"
 
 #: ../src/lib/recindex.py:405
-#, fuzzy, python-format
+#, python-format
 msgid ", %s in %s"
-msgstr ", %s περιέχει %s"
+msgstr ", %s σε %s"
 
 #: ../src/lib/recindex.py:430
 #, python-format
 msgid "Unable to recognize %s as a time."
-msgstr ""
+msgstr "Αδύνατη η αναγνώριση του %s ως Χρόνου."
 
 #: ../src/lib/recipeManager.py:14
 msgid "Enter Password"
@@ -3018,9 +3100,12 @@ msgstr "Δώσε Κωδικό"
 #, python-format
 msgid "Please enter your password for user %s of the MySQL database at host %s"
 msgstr ""
+"Παρακαλώ εισάγετε τον Κωδικό για τον Χρήστη %s της MySQL Βάσης Δεδομένων στο "
+"host %s"
 
 #: ../src/lib/recipeManager.py:18
-msgid "Password: "
+#, fuzzy
+msgid "Password:"
 msgstr "Κωδικός: "
 
 #: ../src/lib/shopgui.py:69
@@ -3037,15 +3122,16 @@ msgid ""
 "Move selected items back to the shopping list. You can also move items by "
 "dragging and dropping."
 msgstr ""
+"Μετακίνηση Επιλεγμέμένων Αντικειμένων πίσω στον Κατάλογο Αγορών. Μπορείτε "
+"επίσης να μετακινείτε Αντικείμενα με Έλξη & Απόθεση."
 
 #: ../src/lib/shopgui.py:103
 msgid "x"
 msgstr "Χ"
 
 #: ../src/lib/shopgui.py:129 ../src/lib/shopgui.py:144
-#, fuzzy
 msgid "Nutritional Information for Shopping List"
-msgstr "<b>Διατροφική Πληροφορία</b>"
+msgstr "Διατροφικές Πληροφορίες για Κατάλογο Αγορών"
 
 #: ../src/lib/shopgui.py:153
 msgid "Save Shopping List As..."
@@ -3073,15 +3159,16 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:458
 msgid "Enter Category"
-msgstr ""
+msgstr "Εισάγετε Κατηγορία"
 
 #: ../src/lib/shopgui.py:460
-msgid "Category: "
+#, fuzzy
+msgid "Category:"
 msgstr "Κατηγορία: "
 
 #: ../src/lib/shopgui.py:622
 msgid "Recipe calls for itself as an ingredient."
-msgstr ""
+msgstr "Η Συνταγή αναφέρει τον εαυτό της ως Συστατικό."
 
 #: ../src/lib/shopgui.py:623
 #, python-format
@@ -3097,6 +3184,8 @@ msgid ""
 "Please specify which of the following optional ingredients you'd like to "
 "include on your shopping list."
 msgstr ""
+"Παρακαλώ διευκρινήστε ποιο από τα ακόλουθα Προαιρετικά Συστατικά θα θέλατε "
+"να συμπεριλάβετε στον Κατάλογο Αγορών."
 
 #: ../src/lib/shopping.py:18
 msgid "flour, all purpose"
@@ -3132,20 +3221,19 @@ msgstr "λάδι, ελαιόλαδο"
 
 #: ../src/lib/timer.py:99 ../src/lib/timer.py:120
 msgid "Ringing Sound"
-msgstr ""
+msgstr "Ήχος Κουδουνίσματος"
 
 #: ../src/lib/timer.py:100
 msgid "Warning Sound"
-msgstr ""
+msgstr "Προειδοποιητικός Ήχος"
 
 #: ../src/lib/timer.py:101
 msgid "Error Sound"
-msgstr ""
+msgstr "Ήχος Σφάλματος"
 
 #: ../src/lib/timer.py:191
-#, fuzzy
 msgid "Stop timer?"
-msgstr "Διακοπή εισαγωγής"
+msgstr "Παύση Χρονόμετρου;"
 
 #: ../src/lib/timer.py:192
 msgid ""
@@ -3153,37 +3241,41 @@ msgid ""
 "timer, or you can just close the window. If you close the window, it will "
 "reappear when your timer goes off."
 msgstr ""
+"Ζητήσατε να κλείσει ένα παράθυρο με ενεργό χρονόμετρο. Μπορείτε να "
+"σταματήσετε το χρονόμετρο ή απλώς να κλείσετε το παράθυρο. Εάν κλείσετε το "
+"παράθυρο, αυτό θα επανεμφανισθεί όταν τερματίσει το χρονόμετρο."
 
 #: ../src/lib/timer.py:193
-#, fuzzy
 msgid "Stop _timer"
-msgstr "Διακοπή εισαγωγής"
+msgstr "Διακοπή _χρονόμετρου"
 
 #: ../src/lib/timer.py:193
 msgid "_Keep timing"
-msgstr ""
+msgstr "Διατήρηση Χρονομέτρησης"
 
 #: ../src/lib/timeEntry.py:39
 msgid ""
 "Time must begin with a number or fraction followed by a unit (minutes, "
 "hours, etc.)."
 msgstr ""
+"Ο χρόνος πρέπει να ξεκινά με έναν αριθμό ή ενα κλάσμα ακολουθούμενο από "
+"μονάδες (λεπτά, ώρες κτλ.)."
 
 #: ../src/lib/timeEntry.py:55 ../src/lib/timeEntry.py:65
 msgid "Time must be expressed in hours, minutes, seconds, etc."
-msgstr ""
+msgstr "Ο χρόνος πρέπει να εκφράζεται σε ώρες, λεπτά, δευτερόλεπτα, κτλ."
 
 #: ../src/lib/version.py:3
 msgid "Gourmet Recipe Manager"
 msgstr "Gourmet Recipe Manager"
 
 #: ../src/lib/version.py:4
-#, fuzzy
 msgid "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
-msgstr "Δικαιώματα (c) 2004, Thomas M. Hinkle. GNU GPL άδεια χρήσης"
+msgstr "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
 
 #. repeated in setup.cfg
 #: ../src/lib/version.py:7
+#, fuzzy
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
@@ -3191,8 +3283,17 @@ msgid ""
 "MasterCook archives and several popular websites. Gourmet can export recipes "
 "as text, MealMaster files, HTML web pages, and a custom XML format for "
 "exchange with other Gourmet users. Gourmet supports linking images with "
-"recipes."
+"recipes. Gourmet can also calculate nutritional information for recipes "
+"based on the ingredients."
 msgstr ""
+"Ο Διαχειριστής Συνταγών Gourmet είναι μία εφαρμογή για την αποθήκευση, "
+"οργάνωση και αναζήτηση Συνταγών. Ο Gourmet εισάγει Συνταγές από έναν ευρύ "
+"αριθμό πηγών, συμπεριλαμβανομένων των Αρχείων Τύπου MealMaster και "
+"MasterCook και αρκετών δημοφιλών Ιστοχώρων.\r\n"
+"Ο Gourmet μπορεί να εξάγει Συνταγές ως Κείμενο, Αρχεία MealMaster, "
+"Ιστοσελίδες HTML και μια προσαρμοσμένη μορφή XML για ανταλλαγή με άλλους "
+"χρήστες του Gourmet. Ο Gourmet υποστηρίζει την σύνδεση εικόνων με τις "
+"Συνταγές."
 
 #: ../src/lib/version.py:9
 msgid "Roland Duhaime (Windows porting assistance)"
@@ -3206,7 +3307,7 @@ msgstr ""
 
 #: ../src/lib/version.py:11
 msgid "Richard Ferguson (improvements to Unit Converter interface)"
-msgstr ""
+msgstr "Richard Ferguson (βελτιώσεις στο περιβάλλον του Μετατροπέα Μονάδων)"
 
 #: ../src/lib/version.py:12
 msgid "R.S. Born (improvements to Mealmaster export)"
@@ -3215,146 +3316,100 @@ msgstr "R.S. Born (βελτιώσεις στην εξαγωγή σε τύπο α
 #: ../src/lib/version.py:13
 msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
 msgstr ""
+"ixat <ixat.deviantart.com> (λογότυπος και οθόνη παφλασμών (splash screen) )"
 
 #: ../src/lib/version.py:14
 msgid "Yula Zubritsky (nutrition and add-to-shopping list icons)"
 msgstr ""
+"Yula Zubritsky (εικονίδια \"Διατροφή\" και \"Προσθήκη στον Κατάλογο Αγορών\")"
 
 #: ../src/lib/version.py:15
 msgid ""
 "Simon Darlington <simon.darlington@gmx.net> (improvements to "
 "internationalization, assorted bugfixes)"
 msgstr ""
+"Simon Darlington <simon.darlington@gmx.net> (βελτιώσεις στην διεθνοποίηση, "
+"ανάμεικτες διορθώσεις λαθών κώδικα)"
 
-#: ../src/lib/backends/rdatabase.py:632 ../src/lib/backends/sql_db.py:334
+#: ../src/lib/backends/rdatabase.py:633 ../src/lib/backends/sql_db.py:334
 msgid "New Recipe"
 msgstr "Νέα Συνταγή"
 
-#: ../src/lib/backends/rmetakit.py:17
-msgid "Database format has changed"
-msgstr ""
-
-#: ../src/lib/backends/rmetakit.py:18
-#, python-format
-msgid ""
-"%(progname)s %(version)s has changed the format of its database. Your "
-"database will no longer work with older versions of %(progname)s.  A backup "
-"has been saved in %(backupfile)s"
-msgstr ""
-
-#: ../src/lib/backends/rmetakit.py:622
-#, python-format
-msgid ""
-"In case anything goes wrong, a backup copy of your recipe database is being "
-"exported to %s"
-msgstr ""
-
-#: ../src/lib/backends/rmetakit.py:624
-msgid "Transferring data to new database format"
-msgstr ""
-
 #: ../src/lib/importers/zip_importer.py:43
 msgid "Loading zip archive"
-msgstr ""
+msgstr "Φόρτωση Αρχείου zip"
 
 #: ../src/lib/importers/zip_importer.py:58
 msgid "Unzipping zip archive"
-msgstr ""
+msgstr "Αποσυμπίεση Αρχείου zip"
 
 #: ../src/lib/importers/html_importer.py:42
-#, fuzzy, python-format
+#, python-format
 msgid "Retrieving %s"
-msgstr "Σερβιρίσματα"
+msgstr "Ανάκτηση %s"
 
 #: ../src/lib/importers/html_importer.py:45
-#, fuzzy
 msgid "Retrieving file"
-msgstr "αρχείο τύπου KRecipes"
+msgstr "Ανάκτηση αρχείου"
 
 #. Interactive we go...
-#: ../src/lib/importers/html_importer.py:464
+#: ../src/lib/importers/html_importer.py:478
 msgid "Don't recognize this webpage. Using generic importer..."
-msgstr ""
+msgstr "Δεν είναι δυνατή η αναγνώριση του wesite. Χρήση γενικού εισαγωγέα..."
 
-#: ../src/lib/importers/html_importer.py:472
-#: ../src/lib/importers/html_importer.py:532
-#, fuzzy
+#: ../src/lib/importers/html_importer.py:488
+#: ../src/lib/importers/html_importer.py:558
 msgid "Import complete."
-msgstr "Η εξαγωγή ολοκληρώθηκε."
+msgstr "Η εισαγωγή δεδομένων ολοκληρώθηκε."
 
-#: ../src/lib/importers/html_importer.py:491
+#: ../src/lib/importers/html_importer.py:507
 #, python-format
 msgid "Retrieved from %(url)s."
-msgstr ""
+msgstr "Ανάκτηση από %(url)s."
 
-#: ../src/lib/importers/html_importer.py:497
-#, fuzzy
+#: ../src/lib/importers/html_importer.py:513
 msgid "Importing recipe"
-msgstr "Εισαγωγή Συνταγών"
+msgstr "Εισαγωγή Συνταγής"
 
-#: ../src/lib/importers/html_importer.py:501
-#, fuzzy
+#: ../src/lib/importers/html_importer.py:520
 msgid "Processing ingredients"
-msgstr "Δημιουργία νέου συστατικού"
+msgstr "Επεξεργασία υλικών"
 
-#: ../src/lib/importers/html_importer.py:516
-#, fuzzy
+#: ../src/lib/importers/html_importer.py:540
 msgid "Processing ingredients."
-msgstr "Δημιουργία νέου συστατικού"
+msgstr "Επεξεργασία υλικών."
 
-#: ../src/lib/importers/importer.py:201
+#: ../src/lib/importers/importer.py:207
 #, python-format
 msgid "Imported %s of %s recipes."
 msgstr "Εισήχθησαν %s από %s συνταγές."
 
-#: ../src/lib/importers/importer.py:381
+#: ../src/lib/importers/importer.py:387
 #, python-format
 msgid "<i>Importing %s</i>"
-msgstr ""
+msgstr "<i>Εισαγωγή %s</i>"
 
-#: ../src/lib/importers/importer.py:411
+#: ../src/lib/importers/importer.py:417
 #, python-format
 msgid "Imported %(number)s recipes from %(file)s (%(total)s total)"
-msgstr ""
+msgstr "Εισήχθησαν %(number)s Συνταγές από %(file)s (%(total)s συνολικά)"
 
-#: ../src/lib/importers/importer.py:482
-msgid "Excellent"
-msgstr ""
-
-#: ../src/lib/importers/importer.py:483
-msgid "Great"
-msgstr ""
-
-#: ../src/lib/importers/importer.py:484
-msgid "Good"
-msgstr ""
-
-#: ../src/lib/importers/importer.py:485
-msgid "Fair"
-msgstr ""
-
-#: ../src/lib/importers/importer.py:486
-msgid "Okay"
-msgstr ""
-
-#: ../src/lib/importers/importer.py:487
-msgid "Poor"
-msgstr ""
+#: ../src/lib/importers/importer.py:492
+#, fuzzy
+msgid "okay"
+msgstr "Εντάξει"
 
 #: ../src/lib/importers/interactive_importer.py:472
-#, fuzzy
 msgid "Getting images..."
-msgstr "Εκκίνηση του gourmet..."
+msgstr "Λήψη εικόνων..."
 
 #: ../src/lib/importers/interactive_importer.py:474
-#, fuzzy
 msgid "Select recipe image"
-msgstr "Επιλογή Συνταγής"
+msgstr "Επιλέξτε φωτογραφία συνταγής."
 
 #: ../src/lib/importers/interactive_importer.py:475
-#, fuzzy
 msgid "Select recipe image."
-msgstr "Επιλογή Συνταγής"
+msgstr "Επιλέξτε φωτογραφία συνταγής."
 
 #: ../src/lib/importers/interactive_importer.py:476
 msgid ""
@@ -3362,15 +3417,17 @@ msgid ""
 "images that are of the recipe, or don't select anything if you don't want "
 "any of these images."
 msgstr ""
+"Παρακάτω είναι όλες οι εικόνες που βρέθηκαν στην σελίδα που εισάγετε. "
+"Επιλέξτε όποιες είναι από την Συνταγή ή μην επιλέξετε καμμία εάν δεν θέλετε "
+"καμμία από αυτές τις εικόνες."
 
-#: ../src/lib/importers/interactive_importer.py:500
+#: ../src/lib/importers/interactive_importer.py:502
 msgid "Setting up interactive importer"
-msgstr ""
+msgstr "Εγκατάσταση Διαδραστικού Εισαγωγέα"
 
-#: ../src/lib/importers/interactive_importer.py:654
-#, fuzzy
+#: ../src/lib/importers/interactive_importer.py:659
 msgid "Import complete!"
-msgstr "Η εξαγωγή ολοκληρώθηκε."
+msgstr "Η Εισαγωγή ολοκληρώθηκε!"
 
 #: ../src/lib/importers/__init__.py:9
 msgid "MasterCook file"
@@ -3386,11 +3443,11 @@ msgstr "αρχείο τύπου KRecipes"
 
 #: ../src/lib/importers/__init__.py:88
 msgid "Unformatted text"
-msgstr ""
+msgstr "Μη μορφοποιημένο κείμενο"
 
 #: ../src/lib/importers/__init__.py:108
 msgid "All importable files"
-msgstr ""
+msgstr "Όλα τα Εισαγώγιμα Αρχεία"
 
 #: ../src/lib/importers/mastercook_importer.py:120
 msgid "Mastercook import finished."
@@ -3409,30 +3466,30 @@ msgstr "Συγύρισμα της XML"
 
 #: ../src/lib/importers/mastercook_importer.py:265
 msgid "Beginning import"
-msgstr ""
+msgstr "Έναρξη Εισαγωγής"
 
 #: ../src/lib/importers/plaintext_importer.py:31
-#, fuzzy, python-format
+#, python-format
 msgid "Imported %s recipes."
-msgstr "Εισήχθησαν %s από %s συνταγές."
+msgstr "Εισαχθείσες %s Συνταγές."
 
 #: ../src/lib/exporters/exporter.py:204 ../src/lib/exporters/exporter.py:206
 #: ../src/lib/exporters/exporter.py:493 ../src/lib/exporters/exporter.py:495
 msgid "stars"
-msgstr ""
+msgstr "Αστέρια"
 
 #: ../src/lib/exporters/exporter.py:352 ../src/lib/exporters/exporter.py:430
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:301
 #: ../src/lib/exporters/gnomeprinter.py:349
 #: ../src/lib/exporters/html_exporter.py:143
-#: ../src/lib/exporters/pdf_exporter.py:435
+#: ../src/lib/exporters/pdf_exporter.py:577
 msgid "optional"
 msgstr "προαιρετικό"
 
 #: ../src/lib/exporters/exporter.py:509
 #, python-format
 msgid "Exported %(number)s of %(total)s recipes"
-msgstr ""
+msgstr "Εξαχθείσες %(number)s από %(total)s Συνταγές"
 
 #: ../src/lib/exporters/exporter.py:527
 msgid "Export complete."
@@ -3443,24 +3500,27 @@ msgstr "Η εξαγωγή ολοκληρώθηκε."
 msgid "Recipe"
 msgstr "Συνταγή"
 
+#. Method from:
+#. http://tgolden.sc.sabren.com/python/win32_how_do_i/print.html#shellexecute
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:215
 #: ../src/lib/exporters/gnomeprinter.py:253
+#: ../src/lib/exporters/winprinter.py:17
 msgid "Print"
 msgstr "Εκτύπωση"
 
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:239
 #: ../src/lib/exporters/gnomeprinter.py:276
 msgid "_Current"
-msgstr ""
+msgstr "Τρέχουσα"
 
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:239
 #: ../src/lib/exporters/gnomeprinter.py:276
 msgid "_Range"
-msgstr ""
+msgstr "Περιοχή"
 
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:245
 #: ../src/lib/exporters/gnomeprinter.py:284
-#: ../src/lib/exporters/lprprinter.py:7 ../src/lib/exporters/winprinter.py:25
+#: ../src/lib/exporters/lprprinter.py:7 ../src/lib/exporters/winprinter.py:40
 msgid "Print Recipes"
 msgstr "Εκτύπωση των Συνταγών"
 
@@ -3470,9 +3530,8 @@ msgid "HTML Web Page"
 msgstr "Ιστοσελίδα τύπου HTML"
 
 #: ../src/lib/exporters/__init__.py:19
-#, fuzzy
 msgid "MealMaster file"
-msgstr "Αρχείο τύπου Mealmaster"
+msgstr "Αρχείο MealΜaster"
 
 #: ../src/lib/exporters/__init__.py:20
 msgid "Plain Text"
@@ -3496,7 +3555,7 @@ msgstr "Αρχείο τύπου Gourmet XML (Εκτός Χρήσης < εκδ.0.
 
 #: ../src/lib/exporters/__init__.py:25
 msgid "Eat Drink Feel Good XML File"
-msgstr ""
+msgstr "Αρχείο XML Φάε Πιες Νιώσε Καλά"
 
 #: ../src/lib/exporters/__init__.py:73
 msgid "Exporting Webpage"
@@ -3513,19 +3572,18 @@ msgid "Recipe saved as HTML file %(file)s"
 msgstr "Η συνταγή αποθηκεύτηκε στο αρχείο τύπου HTML %(file)s"
 
 #: ../src/lib/exporters/__init__.py:92
-#, fuzzy
 msgid "MealMaster Export"
-msgstr "Εξαγωγή σε αρχείο τύπου Mealmaster"
+msgstr "Εξαγωγή σε αρχείο MealΜaster"
 
 #: ../src/lib/exporters/__init__.py:93
-#, fuzzy, python-format
+#, python-format
 msgid "Exporting recipes to MealMaster file %(file)s."
-msgstr "Εξαγωγή συνταγών σε αρχεία τύπου HTML στον κατάλογο %(file)s"
+msgstr "Εξαγωγή Συνταγών σε αρχεία τύπου MealMaster %(file)s"
 
 #: ../src/lib/exporters/__init__.py:94
-#, fuzzy, python-format
+#, python-format
 msgid "Recipe saved as MealMaster file %(file)s"
-msgstr "Η συνταγή αποθηκεύτηκε στο αρχείο τύπου HTML %(file)s"
+msgstr "Η Συνταγή αποθηκεύτηκε ως Αρχείο Τύπου MealMaster %(file)s"
 
 #: ../src/lib/exporters/__init__.py:106
 msgid "Text Export"
@@ -3534,12 +3592,12 @@ msgstr "Εξαγωγή σε Αρχείο Κειμένου"
 #: ../src/lib/exporters/__init__.py:107
 #, python-format
 msgid "Exporting recipes to Plain Text file %(file)s."
-msgstr ""
+msgstr "Εξαγωγή Συνταγών στο Αρχείο Απλού Κειμένου %(file)s."
 
 #: ../src/lib/exporters/__init__.py:108
 #, python-format
 msgid "Recipe saved as Plain Text file %(file)s"
-msgstr ""
+msgstr "Η Συνταγή αποθηκεύθηκε ως Αρχείο Απλού Κειμένου %(file)s"
 
 #: ../src/lib/exporters/__init__.py:121
 msgid "Gourmet XML Export"
@@ -3548,55 +3606,54 @@ msgstr "Εξαγωγή σε αρχείο τύπου Gourmet XML"
 #: ../src/lib/exporters/__init__.py:122
 #, python-format
 msgid "Exporting recipes to Gourmet XML file %(file)s."
-msgstr ""
+msgstr "Εξαγωγή Συνταγών στο Αρχείο Gourmet XML %(file)s."
 
 #: ../src/lib/exporters/__init__.py:123
 #, python-format
 msgid "Recipe saved in Gourmet XML file %(file)s."
+msgstr "Η Συνταγή αποθηκεύθηκε ως Αρχείο Gourmet XML %(file)s."
+
+#: ../src/lib/exporters/__init__.py:134
+msgid "RTF Export"
+msgstr "Εξαγωγή σε Αρχείο Εμπλουτισμένου Κειμένου"
+
+#: ../src/lib/exporters/__init__.py:135
+#, python-format
+msgid "Exporting recipes to Rich Text file %(file)s."
+msgstr "Εξαγωγή Συνταγών σε Αρχείο Εμπλουτισμένου Κειμένου %(file)s"
+
+#: ../src/lib/exporters/__init__.py:136
+#, python-format
+msgid "Recipe saved as Rich Text file %(file)s"
+msgstr "Η Συνταγή αποθηκεύθηκε ως Αρχείο Εμπλουτισμένου Κειμένου %(file)s"
+
+#: ../src/lib/exporters/__init__.py:153
+msgid "PDF Export"
 msgstr ""
 
-#: ../src/lib/exporters/__init__.py:146
-#, fuzzy
-msgid "RTF Export"
-msgstr "Εξαγωγή σε Αρχείο Κειμένου"
-
-#: ../src/lib/exporters/__init__.py:147
-#, fuzzy, python-format
-msgid "Exporting recipes to Rich Text file %(file)s."
-msgstr "Εξαγωγή συνταγών σε αρχεία τύπου HTML στον κατάλογο %(file)s"
-
-#: ../src/lib/exporters/__init__.py:148
-#, fuzzy, python-format
-msgid "Recipe saved as Rich Text file %(file)s"
-msgstr "Η συνταγή αποθηκεύτηκε στο αρχείο τύπου HTML %(file)s"
-
-#: ../src/lib/exporters/__init__.py:160
-#, fuzzy
-msgid "PDF Export"
-msgstr "Εξαγωγή σε Αρχείο Κειμένου"
-
-#: ../src/lib/exporters/__init__.py:161
-#, fuzzy, python-format
+#: ../src/lib/exporters/__init__.py:154
+#, python-format
 msgid "Exporting recipes to PDF %(file)s."
-msgstr "Εξαγωγή συνταγών σε αρχεία τύπου HTML στον κατάλογο %(file)s"
+msgstr ""
 
-#: ../src/lib/exporters/__init__.py:162
-#, fuzzy, python-format
+#: ../src/lib/exporters/__init__.py:155
+#, python-format
 msgid "Recipe saved as PDF %(file)s"
-msgstr "Η συνταγή αποθηκεύτηκε στο αρχείο τύπου HTML %(file)s"
+msgstr ""
 
 #: ../src/lib/exporters/lprprinter.py:15 ../src/lib/exporters/lprprinter.py:18
 msgid "Enter print command"
-msgstr ""
+msgstr "Εισαγωγή Εντολής Εκτύπωσης"
 
 #: ../src/lib/exporters/lprprinter.py:16
 #, python-format
 msgid "Unable to find command \"%s\"."
-msgstr ""
+msgstr "Αδύνατη η εύρεση της Εντολής \"%s\"."
 
 #: ../src/lib/exporters/lprprinter.py:17
 msgid "Please enter the command you would like to use to print."
 msgstr ""
+"Παρακαλώ εισάγετε την Εντολή Εκτύπωσης που θα θέλατε να χρησιμοποιήσετε."
 
 #: ../src/lib/exporters/lprprinter.py:22
 #, python-format
@@ -3608,104 +3665,253 @@ msgid ""
 "If you install python-gnome, you will be able to print with a much more "
 "attractive interface."
 msgstr ""
-"Εάν εγκαταστήσεις το python-gnome, θα μπορείς να εκτυπώσεις μέσα από ένα "
-"καλύτερο περιβάλλον χρήσης."
+"Εάν εγκαταστήσετε το python-gnome, θα μπορείτε να εκτυπώνετε χρησιμοποιώντας "
+"ένα πολύ πιο ελκυστικό περιβάλλον χρήσης."
 
 #: ../src/lib/exporters/lprprinter.py:31
-msgid "Command: "
+#, fuzzy
+msgid "Command:"
 msgstr "Εντολή: "
 
-#: ../src/lib/exporters/pdf_exporter.py:482
-msgid "Shopping list for: "
-msgstr "Λίστα αντικειμένων προς αγορά για: "
+#: ../src/lib/exporters/pdf_exporter.py:643
+#: ../src/lib/exporters/pdf_exporter.py:660
+#: ../src/lib/exporters/winprinter.py:58
+msgid "Letter"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:644
+#: ../src/lib/exporters/pdf_exporter.py:667
+#: ../src/lib/exporters/pdf_exporter.py:734
+#: ../src/lib/exporters/pdf_exporter.py:759
+#: ../src/lib/exporters/winprinter.py:59
+#, fuzzy
+msgid "Portrait"
+msgstr "Εκτύπωση"
+
+#: ../src/lib/exporters/pdf_exporter.py:646
+#: ../src/lib/exporters/pdf_exporter.py:675
+#, fuzzy
+msgid "Plain"
+msgstr "Απλό Αρχείο Κειμένου"
+
+#: ../src/lib/exporters/pdf_exporter.py:655
+msgid "11x17\""
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:656
+msgid "Index Card (3.5x5\")"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:657
+msgid "Index Card (4x6\")"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:658
+msgid "Index Card (5x8\")"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:659
+msgid "Index Card (A7)"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:661
+msgid "Legal"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:668
+#: ../src/lib/exporters/pdf_exporter.py:728
+#: ../src/lib/exporters/pdf_exporter.py:757
+msgid "Landscape"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:676
+msgid "Index Cards (3.5x5)"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:677
+msgid "Index Cards (4x6)"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:678
+msgid "Index Cards (A7)"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:681
+#: ../src/lib/exporters/winprinter.py:61
+#, python-format
+msgid "%s Column"
+msgid_plural "%s Columns"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/lib/exporters/pdf_exporter.py:685
+msgid "Page _Size"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:686
+#, fuzzy
+msgid "_Orientation"
+msgstr "Τρέχουσα Αξιολόγηση"
+
+#: ../src/lib/exporters/pdf_exporter.py:687
+msgid "_Font Size"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:688
+msgid "Page _Layout"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:690
+msgid "Left Margin"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:691
+msgid "Right Margin"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:692
+msgid "Top Margin"
+msgstr ""
+
+#: ../src/lib/exporters/pdf_exporter.py:693
+msgid "Bottom Margin"
+msgstr ""
 
 #: ../src/lib/exporters/recipe_emailer.py:105
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
-msgstr ""
+msgstr "Συμπερίληψη Συνταγής στο Σώμα του e-Mηνύματος"
 
 #: ../src/lib/exporters/recipe_emailer.py:106
 msgid "E-mail Recipe as HTML Attachment"
-msgstr ""
+msgstr "e-Ταχυδρόμηση Συνταγής ως Συνvημένο HTML"
 
 #: ../src/lib/exporters/recipe_emailer.py:124
 msgid "Email Options"
-msgstr "Επιλογές Ηλεκτρονικού Ταχυδρομείου"
+msgstr "Επιλογές e-Ταχυδρομείου"
 
 #: ../src/lib/exporters/recipe_emailer.py:127
 msgid "Don't ask before sending e-mail."
-msgstr ""
+msgstr "Χωρίς ερώτηση πριν την αποστολή e-Μηνύματος."
 
 #: ../src/lib/exporters/recipe_emailer.py:144
 msgid "E-mail not sent"
-msgstr "Το μήνυμα Ηλεκτρονικού Ταχυδρομείου δεν στάλθηκε"
+msgstr "Το e-Μήνυμα Ηλεκτρονικού δεν στάλθηκε"
 
 #: ../src/lib/exporters/recipe_emailer.py:145
 msgid ""
 "You have not chosen to include the recipe in the body of the message or as "
 "an attachment."
 msgstr ""
+"Δεν έχετε επιλέξει να συμπεριληφθεί η Συνταγή στο Σώμα του Μηνύματος ή ως "
+"Συννημμένο."
 
-#~ msgid "Printing not supported"
-#~ msgstr "Η εκτύπωση δεν υποστηρίζεται"
+#: ../src/lib/exporters/winprinter.py:18
+#, python-format
+msgid ""
+"Ready to print your recipe through the PDF file %s. Unfortunately, we have "
+"no print preview - shall we go ahead and print?"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Clear shopping List"
-#~ msgstr "Λίστα Αντικειμένων προς Αγορά"
+#: ../src/lib/exporters/winprinter.py:27
+msgid "Print job sent"
+msgstr ""
 
-#~ msgid "Add this recipe to a shopping list"
-#~ msgstr "Προσθήκη αυτής της συνταγής στη λίστα αντικειμένων προς αγορά"
+#: ../src/lib/exporters/winprinter.py:28
+msgid ""
+"Print job has been sent. If something goes wrong, you can open the PDF file "
+"and try printing again."
+msgstr ""
 
-#~ msgid "Export this recipe as a text file."
-#~ msgstr "Εξαγωγή αυτής της συνταγής σε μορφή αρχείου κειμένου."
+#: ../src/lib/exporters/winprinter.py:30
+msgid "Print job cancelled"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Ins_tructions"
-#~ msgstr "Οδηγίες"
+#: ../src/lib/exporters/winprinter.py:31
+msgid "If you'd like, you can open the PDF file."
+msgstr ""
 
-#~ msgid "_Delete Ingredient"
-#~ msgstr "_Διαγραφή Συστατικού"
+#~ msgid "_Unit: "
+#~ msgstr "Μονάδα: "
 
-#, fuzzy
-#~ msgid "_Ingredients"
-#~ msgstr "Συστατικά"
+#~ msgid "<b>Title</b>"
+#~ msgstr "<b>Τίτλος</b>"
 
-#~ msgid "_New Ingredient"
-#~ msgstr "_Νέο Συστατικό"
+#~ msgid "Source: "
+#~ msgstr "Πηγή: "
+
+#~ msgid "Database format has changed"
+#~ msgstr "Ο τύπος αρχείου της Βάσης Δεδομένων έχει αλλάξει"
 
 #~ msgid ""
-#~ "Key\n"
-#~ "Item"
+#~ "%(progname)s %(version)s has changed the format of its database. Your "
+#~ "database will no longer work with older versions of %(progname)s.  A "
+#~ "backup has been saved in %(backupfile)s"
 #~ msgstr ""
-#~ "Πλήκτρο\n"
-#~ "Αντικείμενο"
+#~ "H %(progname)s %(version)s έχει αλλάξει τον Τύπο Αρχείου της Βάσης "
+#~ "Δεδομένων. Η Βάση Δεδομένων σας δεν θα δουλεύει πλέον με παλαιότερες "
+#~ "εκδόσεις του %(progname)s. Ένα Αντίγραφο Ασφαλείας έχει αποθηκευθεί στο %"
+#~ "(backupfile)s"
 
-#~ msgid "Are you sure you want to change the "
-#~ msgstr "Είσαι σίγουρος ότι θές να αλλάξεις το "
+#~ msgid ""
+#~ "In case anything goes wrong, a backup copy of your recipe database is "
+#~ "being exported to %s"
+#~ msgstr ""
+#~ "Σε περίπτωση που κάτι πάει στραβά, ένα Αντίγραφο Ασφαλείας της Βάσης "
+#~ "Δεδομένων των Συνταγών σας θα εξαχθεί στο %s"
 
-#~ msgid " from \"%s\" "
-#~ msgstr " Από \"%s\" "
+#~ msgid "Transferring data to new database format"
+#~ msgstr "Μεταφορά δεδομένων στη νέα μορφή Βάσης Δεδομένων"
 
-#~ msgid "Are you sure you want to delete %s"
-#~ msgstr "Είσαι σίγουρος ότι θες να διαγράψεις το %s"
+#~ msgid "Excellent"
+#~ msgstr "Εξαιρετική"
 
-#~ msgid "Delete it."
-#~ msgid_plural "Delete them."
-#~ msgstr[0] "Διέγραψέ το."
-#~ msgstr[1] "Διέγραψέ τα."
+#~ msgid "Great"
+#~ msgstr "Πολύ Καλή"
 
-#~ msgid "Move it."
-#~ msgid_plural "Move them."
-#~ msgstr[0] "Μετακίνησέ το."
-#~ msgstr[1] "Μετακίνησέ τα."
+#~ msgid "Good"
+#~ msgstr "Καλή"
 
-#~ msgid "Choose Database File"
-#~ msgstr "Επιλογή Αρχείου Βάσης Δεδομένων"
+#~ msgid "Fair"
+#~ msgstr "Μέτρια"
+
+#~ msgid "Poor"
+#~ msgstr "Φτωχή"
+
+#~ msgid "Shopping list for: "
+#~ msgstr "Κατάλογος Αγορών για: "
 
 #~ msgid "E-_mail recipes"
 #~ msgstr "Αποστολή των συνταγών μέσω ηλεκτρονικού ταχυδρομείου"
 
 #~ msgid "_Export"
 #~ msgstr "_Εξαγωγή"
+
+#~ msgid "Add this recipe to a shopping list"
+#~ msgstr "Προσθήκη αυτής της συνταγής στη λίστα αντικειμένων προς αγορά"
+
+#~ msgid "Create new ingredient"
+#~ msgstr "Δημιουργία νέου συστατικού"
+
+#~ msgid "Export this recipe as a text file."
+#~ msgstr "Εξαγωγή αυτής της συνταγής σε μορφή αρχείου κειμένου."
+
+#~ msgid "Ins_tructions"
+#~ msgstr "Οδηγίες"
+
+#~ msgid "_Delete Ingredient"
+#~ msgstr "_Διαγραφή Συστατικού"
+
+#~ msgid "_Descriptions"
+#~ msgstr "Περιγραφές"
+
+#~ msgid "_Ingredients"
+#~ msgstr "Συστατικά"
+
+#~ msgid "_New Ingredient"
+#~ msgstr "_Νέο Συστατικό"
+
+#~ msgid "_Notes"
+#~ msgstr "Σημειώσεις"
 
 #~ msgid "Advanced"
 #~ msgstr "Ειδικές Επιλογές"
@@ -3725,14 +3931,52 @@ msgstr ""
 #~ msgid "Use regular expressions to search"
 #~ msgstr "Χρησιμοποίηση στην αναζήτηση κανονικών παραστάσεων"
 
+#~ msgid ""
+#~ "Key\n"
+#~ "Item"
+#~ msgstr ""
+#~ "Πλήκτρο\n"
+#~ "Αντικείμενο"
+
+#~ msgid "Deleted "
+#~ msgstr "Διαγράφηκε "
+
 #~ msgid "Deleted 1 recipe."
 #~ msgstr "Διαγράφηκε 1 συνταγή"
 
 #~ msgid "Deleted %s recipes"
 #~ msgstr "Διαγράφηκαν %s συνταγές"
 
+#~ msgid "Are you sure you want to change the "
+#~ msgstr "Είσαι σίγουρος ότι θές να αλλάξεις το "
+
+#~ msgid " from \"%s\" "
+#~ msgstr " Από \"%s\" "
+
+#~ msgid " to \"%s\""
+#~ msgstr " Πρός \"%s\""
+
+#~ msgid "Are you sure you want to delete %s"
+#~ msgstr "Είσαι σίγουρος ότι θες να διαγράψεις το %s"
+
+#~ msgid "Delete it."
+#~ msgid_plural "Delete them."
+#~ msgstr[0] "Διέγραψέ το."
+#~ msgstr[1] "Διέγραψέ τα."
+
+#~ msgid "Move it."
+#~ msgid_plural "Move them."
+#~ msgstr[0] "Μετακίνησέ το."
+#~ msgstr[1] "Μετακίνησέ τα."
+
 #~ msgid "%s Recipes"
 #~ msgstr "%s Συνταγές"
+
+#~ msgid " %s contains %s"
+#~ msgstr " %s περιέχει %s"
+
+#~ msgid ", %s contains %s"
+#~ msgstr ", %s περιέχει %s"
 
 #~ msgid "seconds"
 #~ msgstr "δευτερόλεπτα"
@@ -3746,8 +3990,29 @@ msgstr ""
 #~ msgid "days"
 #~ msgstr "ημέρες"
 
+#~ msgid "weeks"
+#~ msgstr "εβδομάδες"
+
 #~ msgid "months"
 #~ msgstr "μήνες"
+
+#, fuzzy
+#~ msgid "Copyright (c) 2004,2005 Thomas M. Hinkle. GNU GPL"
+#~ msgstr "Δικαιώματα (c) 2004, Thomas M. Hinkle. GNU GPL άδεια χρήσης"
+
+#~ msgid "Choose Database File"
+#~ msgstr "Επιλογή Αρχείου Βάσης Δεδομένων"
+
+#~ msgid "Printing not supported"
+#~ msgstr "Η Εκτύπωση δεν υποστηρίζεται"
+
+#~ msgid ""
+#~ "To print recipes, first export them, then print from another program. If "
+#~ "you install wxWindows, you can print directly from Gourmet."
+#~ msgstr ""
+#~ "Για να εκτυπώσετε Συνταγές, πρώτα κάντε Εξαγωγή και μετά Εκτύπωση από "
+#~ "κάποιο άλλο Πρόγραμμα. Εάν εγκαταστήσετε το wxWindows θα μπορείτε να "
+#~ "εκτυπώνετε απευθείας από το Gourmet."
 
 #~ msgid "_Limit Search"
 #~ msgstr "_Περιορισμός Αναζήτησης"
