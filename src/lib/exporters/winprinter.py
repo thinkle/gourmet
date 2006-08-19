@@ -63,10 +63,10 @@ class SimpleWriter (PdfWriter):
                 'right_margin':1.0,
                 'top_margin':1.0,
                 'bottom_margin':1.0,    
-            }
+                }
                                                )
-                            mode=('column',2))
-
+                            )
+                            
     def close (self):
         PdfWriter.close(self)
         self.outfile.close()
