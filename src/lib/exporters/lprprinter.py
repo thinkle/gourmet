@@ -28,7 +28,7 @@ class RecRenderer:
     def get_command (self, label="",sublabel="",default_value=None):
         cmd = de.getEntry(label=label,
                           sublabel=sublabel,
-                          entryLabel=_('Command: '),
+                          entryLabel=_('Command:'),
                           default_value=default_value)
         if not cmd: raise "User cancelled!"
         else: return cmd
