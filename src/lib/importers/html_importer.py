@@ -46,6 +46,20 @@ def get_url (url, progress):
 
 class MyBeautifulSoup (BeautifulSoup.ICantBelieveItsBeautifulSoup):
 
+    def __init__ (self, *args, **kwargs):
+        # Avoid invalid doctype decls of the type
+        # <!DOCTYPE foo ... />
+        # From the overly XML zealous folks at sfgate...
+        # http://sfgate.com/cgi-bin/article.cgi?f=/chronicle/archive/2006/08/16/FDG1LKHOMG1.DTL
+        self.PARSER_MASSAGE.append(
+            (re.compile('<!([^<>]*)/>',),
+             lambda x: '<!'+x.group(1)+'>'
+             )
+            )
+        kwargs['avoidParserProblems']=True
+        BeautifulSoup.ICantBelieveItsBeautifulSoup.__init__(self,*args,**kwargs)
+
+    
     def handle_comment (self, text): pass
     def handle_decl (self, data): pass
     def handle_pi (self, text): pass
@@ -464,9 +478,11 @@ class WebPageImporter (importer.importer):
             self.prog(-1,_("Don't recognize this webpage. Using generic importer..."))
             gs = GenericScraper()
             text,images = gs.scrape_url(self.url, progress=self.prog)
+            if not text and not images:
+                raise "Unable to obtain text or images from url %s"%self.url
             import interactive_importer
             ii = interactive_importer.InteractiveImporter(self.rd)
-            ii.set_text(text)
+            ii.set_text(text+'\n\nRetrieved from %s'%self.url)
             ii.set_images(images)
             ii.run()
             if self.prog: self.prog(1,_('Import complete.'))

@@ -38,11 +38,12 @@ parsing strategy specific to an XML schema or a particular bizarre
 HTML document. Typically your subclass would just override
 SELF_CLOSING_TAGS and/or NESTABLE_TAGS.
 """
+
 from __future__ import generators
 
 __author__ = "Leonard Richardson (leonardr@segfault.org)"
 __version__ = "2.1.1"
-__date__ = "$Date: 2006/05/20 13:14:37 $"
+__date__ = "$Date: 2006/08/19 14:53:36 $"
 __copyright__ = "Copyright (c) 2004-2005 Leonard Richardson"
 __license__ = "PSF"
 
@@ -874,9 +875,11 @@ class BeautifulStoneSoup(Tag, SGMLParser):
                 try:
                     data = data.decode(enc)
                     encoded = True
+                    #print 'Successfully encoded ',data[:10],' as ',enc
                     break
                 except:
-                    print 'Failed to decode',data,' as ',enc
+                    #print 'Failed to decode',data[:10],' as ',enc
+                    pass
             if not encoded:
                 self.bad_chunks.append(data)
                 print 'Data',data,'can\'t be coerced into unicode'

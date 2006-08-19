@@ -486,6 +486,8 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
     
     def set_text (self, txt):
         """Set raw text."""
+        if txt.strip()=='':
+            raise ValueError("There is no text to set")
         self.textbuffer = gtk.TextBuffer()
         self.textview.set_buffer(self.textbuffer)
         parsed = self.parser.parse(txt,progress=self.progress)
@@ -587,7 +589,10 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
         if n >= len(self.sections): n = len(self.sections)-1
         elif n < 0: n = 0
         self.curmark = n
-        s,e=self.sections[n]        
+        if len(self.sections)-1 <= n:
+            print "There is no section ",n
+            return 
+        s,e=self.sections[n]
         start_itr=self.textbuffer.get_iter_at_mark(s)
         end_itr = self.textbuffer.get_iter_at_mark(e)
         # Check where our current section is
@@ -735,8 +740,8 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
             end = self.textbuffer.get_iter_at_offset(end.get_offset()-1)
 
         # Here's how we would add a "Remove" button -- but this really
-        # requires rethinking the whole interview
-
+        # requires rethinking the whole process...
+        #
         #anchor = self.textbuffer.create_child_anchor(end)
         #button = gtk.Button('_Remove tag'); button.show()
         #self.textview.add_child_at_anchor(button,anchor)

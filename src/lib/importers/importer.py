@@ -485,12 +485,12 @@ class RatingConverter:
                    'fair':4,
                    'okay':4,
                    'poor':2,
-                   _('Excellent').lower():10,
-                   _('Great').lower():8,
-                   _('Good').lower():6,
-                   _('Fair').lower():4,
-                   _('Okay').lower():4,
-                   _('Poor').lower():2,
+                   _('excellent').lower():10,
+                   _('great').lower():8,
+                   _('good').lower():6,
+                   _('fair').lower():4,
+                   _('okay').lower():4,
+                   _('poor').lower():2,
                    }
     
     
