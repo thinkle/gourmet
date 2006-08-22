@@ -173,8 +173,8 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         self.servingLabel.set_alignment(0,0.5)
         self.missingLabel = self.make_missing_label()
         #self.attach(self.missingLabel,0,2,1,2)
-        self.pack_start(self.missingLabel)
-        self.pack_start(self.servingLabel)
+        self.pack_start(self.missingLabel,fill=False,expand=False)
+        self.pack_start(self.servingLabel,fill=False,expand=False)
         # setup daily value button to display calories/day assumption
         # and to allow changing it via a nifty little button
         dvb,eb = self.make_dv_boxes()
@@ -182,8 +182,8 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         self.cal_per_day_box = gtk.HBox();
         self.cal_per_day_box.show()
         vb = gtk.VBox(); vb.show()
-        vb.pack_start(dvb)
-        vb.pack_start(eb)
+        vb.pack_start(dvb,fill=False,expand=False)
+        vb.pack_start(eb,fill=False,expand=False)
         self.cal_per_day_box.pack_end(vb)
         self.pack_start(self.cal_per_day_box)
         self.tt.enable()

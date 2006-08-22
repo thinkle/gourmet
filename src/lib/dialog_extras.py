@@ -38,6 +38,7 @@ class ModalDialog (gtk.Dialog):
                           gtk.RESPONSE_CLOSE:self.cancelcb,
                           gtk.RESPONSE_DELETE_EVENT:self.cancelcb}
         if modal: self.set_modal(True)
+        else: self.set_modal(False)        
         if label:
             self.setup_label(label)
         if sublabel:

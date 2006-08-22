@@ -142,10 +142,11 @@ class ShopGui (ActionManager):
         sw.add_with_viewport(nl)
         sw.show(); nl.show()
         md = de.ModalDialog(title=_("Nutritional Information for Shopping List"),modal=False)
+        md.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_NORMAL)
         md.vbox.pack_start(sw,fill=True,expand=True)
         md.set_default_size(600,500)
         nl.show()
-        md.run()
+        md.show()
 
     def save (self, *args):
         debug("save (self, *args):",5)
