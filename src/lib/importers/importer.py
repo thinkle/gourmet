@@ -3,6 +3,7 @@ import os,stat,re,time,StringIO
 from gourmet import keymanager, convert, ImageExtras
 from gourmet.gdebug import debug, TimeAction, print_timer_info
 from gourmet.gglobals import gt, use_threads
+import gourmet.gglobals
 import xml.sax.saxutils
 from gettext import gettext as _
 import gourmet.dialog_extras as de
