@@ -1,10 +1,10 @@
 ==== Version 0.11.5 changes since 0.11.4 ====
+* Add more PDF Export modes for printing index cards, multiple
+  columns, etc. Also add nice print page-layout widget.
 * Tweak spacing in recipe card to avoid ugly disappearance of "Edit" buttons
 * Recognize units in all kinds of capitalized or uncapitalized forms.
 * Fix up bug in time-scanning code that led to making a link like
   <a>3 min</a>utes instead of <a>3 minutes</a>
-* Add more PDF Export modes for printing index cards, multiple
-  columns, etc. Also add nice print page-layout widget.
 * Add i18n for Swedish.
 * Apply patch to fix text-flow in recipe card (Shane Hathaway)
 * Apply localization patch to simplify translations. (Jens Persson)
