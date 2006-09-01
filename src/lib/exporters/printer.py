@@ -18,38 +18,33 @@ def load_gnomeprint ():
         debug('Gnome Printer is not available',0)
         return True
 
-def load_wxprint ():
-    # We don't want to use wxprint anymore -- it crashes
-    return True
-    #try:
-    #    print 'importing wxprinter'
-    #    global RecRenderer,SimpleWriter
-    #    from wxprinter import RecRenderer, SimpleWriter
-    #except:
-    #    return True
-
-def load_lprprint ():
-    global RecRenderer,SimpleWriter
+def load_winprinter ():
     if os.name == 'nt':        
         from winprinter import RecRenderer, SimpleWriter
     else:
-        from lprprinter import RecRenderer, SimpleWriter
+        return True
+    
+
+def load_lprprint ():
+    if os.name == 'nt': return True
+    global RecRenderer,SimpleWriter
+    from lprprinter import RecRenderer, SimpleWriter
 
 
 printers = {'gnomeprint':load_gnomeprint,
-            'wx':load_wxprint,
+            'win':load_winprinter,
             'lpr':load_lprprint}
 
 from gourmet.OptionParser import options
 
-printer_names = ['lpr','wx','gnomeprint']
+printer_names = ['lpr','win','gnomeprint']
 printer = options.printer
 
 try:
     printer_names.remove(printer)
 except ValueError:
     print 'Printer type: ',printer,' not recognized!'
-    printer = printers_names.pop()
+    printer = printer_names.pop()
 
 # A return value of True means we failed to import
 # so we'd better keep trying
