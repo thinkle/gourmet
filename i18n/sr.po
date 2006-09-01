@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-19 12:30-0400\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2006-08-19 12:20-0400\n"
 "PO-Revision-Date: 2005-11-26 05:09+0000\n"
 "Last-Translator: homoludens <marko.homoludens@gmail.com>\n"
 "Language-Team: Serbian <sr@li.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Rosetta-Version: 0.1\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #: ../glade/app.glade.h:1 ../glade/recSelector.glade.h:1
 msgid "A_dd Search Criteria"
@@ -93,9 +93,8 @@ msgstr "Prebaci se na recept u pregledu karte recepata"
 
 #: ../glade/app.glade.h:19 ../glade/recSelector.glade.h:3
 #: ../glade/rec_ref_window.glade.h:2
-#, fuzzy
 msgid "Limiting Search to:"
-msgstr "Ograniči pretraživanje na: "
+msgstr ""
 
 #: ../glade/app.glade.h:20
 msgid ""
@@ -446,14 +445,12 @@ msgid "_Advanced Search"
 msgstr "_Napredno pretraživanje"
 
 #: ../glade/keyeditor.glade.h:9
-#, fuzzy
 msgid "_Item:"
-msgstr "S_tavka:"
+msgstr ""
 
 #: ../glade/keyeditor.glade.h:10
-#, fuzzy
 msgid "_Key:"
-msgstr "Ključ"
+msgstr ""
 
 #: ../glade/keyeditor.glade.h:11
 msgid "_Search for:"
@@ -492,9 +489,8 @@ msgid "<i>Enter nutritional information for </i>"
 msgstr "<i>Unesi hranljive vrednosti za</i>"
 
 #: ../glade/nutritionDruid.glade.h:3
-#, fuzzy
 msgid "<i>From:</i>"
-msgstr "<i>Iz:</i>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:4
 msgid "<i>Search _results:</i>"
@@ -505,9 +501,8 @@ msgid "<i>Select equivalent of</i>"
 msgstr "<i>Odaberi ekvivalent</i>"
 
 #: ../glade/nutritionDruid.glade.h:6
-#, fuzzy
 msgid "<i>To:</i>"
-msgstr "<i>U:</i>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:7
 msgid "<i>from USDA database</i>"
@@ -526,9 +521,8 @@ msgid "Show only food in _group:"
 msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:12
-#, fuzzy
 msgid "Unit:"
-msgstr "Jedinica: "
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:14
 msgid "_Change ingredient"
@@ -572,7 +566,8 @@ msgstr "<i>Podesite koje se kolone uključuju u indeks pregledu recepata.</i>"
 
 #: ../glade/preferenceDialog.glade.h:6
 msgid "<i>Preferences for use when sending a recipe in an email.</i>"
-msgstr "<i>Podešavanja koja se koriste kada se recept šalje putem e-maila.</i>"
+msgstr ""
+"<i>Podešavanja koja se koriste kada se recept šalje putem e-maila.</i>"
 
 #: ../glade/preferenceDialog.glade.h:7
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
@@ -608,7 +603,8 @@ msgstr "Uključi recept kao _HTML fajl u e-mail"
 
 #: ../glade/preferenceDialog.glade.h:14
 msgid "Include Recipe in _Body of E-mail (A good idea no matter what)"
-msgstr "Uključi recept u _Telo e-maila (bez obzira na sve, ovo je dobra ideja)"
+msgstr ""
+"Uključi recept u _Telo e-maila (bez obzira na sve, ovo je dobra ideja)"
 
 #: ../glade/preferenceDialog.glade.h:15
 msgid "Index View"
@@ -644,9 +640,8 @@ msgid "_Never add optional ingredients"
 msgstr "_Nikada nemoj dodavati neobavezne sastojke"
 
 #: ../glade/preferenceDialog.glade.h:23
-#, fuzzy
 msgid "_Recipes per page:"
-msgstr "_Recepta po strani: "
+msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:24
 msgid "_Remember user selections by default"
@@ -831,9 +826,8 @@ msgid "Edit section chooser"
 msgstr ""
 
 #: ../glade/recCard.glade.h:44
-#, fuzzy
 msgid "Image:"
-msgstr "Slika: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:45
 msgid "Import ingredients from a plain text file."
@@ -886,9 +880,8 @@ msgid "Paste ingredient list from the clipboard."
 msgstr "Prebaci listu sastojaka sa klipborda."
 
 #: ../glade/recCard.glade.h:56
-#, fuzzy
 msgid "Pre_paration Time:"
-msgstr "Vreme za pripremanje: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:57
 msgid "Print recipe"
@@ -907,9 +900,8 @@ msgid "Revert"
 msgstr ""
 
 #: ../glade/recCard.glade.h:63
-#, fuzzy
 msgid "S_hopping Category:"
-msgstr "_Kategorija za kupovinu: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:64
 msgid "S_ource:"
@@ -1034,14 +1026,12 @@ msgid "_Save"
 msgstr "_Sačuvaj"
 
 #: ../glade/recCard.glade.h:99
-#, fuzzy
 msgid "_Servings:"
-msgstr "_Porcije: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:102
-#, fuzzy
 msgid "_Title:"
-msgstr "_Naziv: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:104
 msgid "_Underline"
@@ -1096,7 +1086,6 @@ msgid "rating"
 msgstr "rejting"
 
 #. _('rating'):'rating',
-#. _('rating'),
 #: ../glade/rec_ref_window.glade.h:12 ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:54
 msgid "source"
@@ -1189,9 +1178,9 @@ msgid ""
 "list as a reminder that you need it, but it won't be included when you save "
 "or print your shopping list."
 msgstr ""
-"Ukloni ovaj sastojak sa liste za kupovinu. Pojaviće se na na listi \"ostava"
-"\" kao podstenik da Vam treba, ali neće biti uključen u sačuvanoj ili "
-"štampanoj listi za kupovinu."
+"Ukloni ovaj sastojak sa liste za kupovinu. Pojaviće se na na listi "
+"\"ostava\" kao podstenik da Vam treba, ali neće biti uključen u sačuvanoj "
+"ili štampanoj listi za kupovinu."
 
 #: ../glade/shopList.glade.h:20
 msgid "Return Item to Shopping List"
@@ -1307,8 +1296,7 @@ msgstr "Potrebna mi je informacija o gustini."
 #. plural forms of time units. We use range(5) since as far as I
 #. can see, enumerating the forms for 0 through 5 should give you
 #. all possible forms in all languages.
-#.
-#. See http://www.sbin.org/doc/glibc/libc_8.html
+#. 
 #: ../src/lib/convert.py:61 ../src/lib/convert.py:544
 msgid "second"
 msgid_plural "seconds"
@@ -1316,11 +1304,9 @@ msgstr[0] "sekunda"
 msgstr[1] "sekundi"
 msgstr[2] "sekundi"
 
-#. min. = abbreviation for minutes
 #: ../src/lib/convert.py:63
-#, fuzzy
 msgid "min"
-msgstr "min."
+msgstr ""
 
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:543
 msgid "minute"
@@ -1329,7 +1315,6 @@ msgstr[0] "minut"
 msgstr[1] "minuta"
 msgstr[2] "minuta"
 
-#. hrs = abbreviation for hours
 #: ../src/lib/convert.py:65
 msgid "hrs."
 msgstr "h"
@@ -1350,7 +1335,6 @@ msgstr[2] "dani"
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
-#. 'decades':lambda decades: ngettext("decade","decades",round(decades))
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:538
 msgid "year"
 msgid_plural "years"
@@ -1377,7 +1361,6 @@ msgstr[2] "nedelja"
 #. and 6. This set-up allows for variations of this system only.
 #. You can of course make your language only use commas or
 #. ands or spaces or whatever you like by translating both
-#. ", " and " and " with the same string.
 #: ../src/lib/convert.py:587
 msgid " and "
 msgstr " i "
@@ -1396,17 +1379,14 @@ msgstr ""
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
-#. show up sometimes.
 #: ../src/lib/convert.py:740
 msgid "to"
 msgstr "do"
 
-#. setup pause button
 #: ../src/lib/dialog_extras.py:398
 msgid "_Pause"
 msgstr "_Pauza"
 
-#. setup stop button
 #: ../src/lib/dialog_extras.py:409
 msgid "_Stop"
 msgstr "_Stop"
@@ -1515,7 +1495,6 @@ msgstr ""
 "Npr. unesite 2-4 ili 1 1/2 - 3 1/2.\n"
 
 #. renderer.set_property('editable',True)
-#. renderer.connect('edited',tst)
 #: ../src/lib/gglobals.py:234 ../src/lib/shopgui.py:102
 #: ../src/lib/exporters/rtf_exporter.py:79
 msgid "Title"
@@ -1553,7 +1532,6 @@ msgstr "Vreme za kuvanje"
 msgid "Modifications"
 msgstr "Promene"
 
-#. print dir(err)
 #: ../src/lib/gglobals.py:318
 msgid "Unable to open URL"
 msgstr "Ne mogu da otvorim URL adresu"
@@ -1677,7 +1655,8 @@ msgstr "Obriši %s?"
 #: ../src/lib/GourmetRecipeManager.py:537
 #, python-format
 msgid "You have unsaved changes to %s. Are you sure you want to delete?"
-msgstr "Imate nesačuvane promene u %s. Da li se sigurni da želite da obrišete?"
+msgstr ""
+"Imate nesačuvane promene u %s. Da li se sigurni da želite da obrišete?"
 
 #: ../src/lib/GourmetRecipeManager.py:558
 msgid "Deleted"
@@ -1760,9 +1739,9 @@ msgid "Number of servings of %s to shop for"
 msgstr "Broj služenja %s za kupovinu"
 
 #: ../src/lib/GourmetRecipeManager.py:739
-#, fuzzy, python-format
+#, python-format
 msgid "Multiply %s by:"
-msgstr "Pomnoži %s sa: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:768 ../src/lib/shopgui.py:160
 msgid "Saved!"
@@ -1833,9 +1812,8 @@ msgid "Enter website address."
 msgstr "Unesite adresu web sajtova."
 
 #: ../src/lib/GourmetRecipeManager.py:884
-#, fuzzy
 msgid "Enter URL:"
-msgstr "Unesite URL adresu: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:885
 msgid ""
@@ -1859,7 +1837,8 @@ msgstr "Gourmet nezna kako da uveze sajt %s"
 #: ../src/lib/GourmetRecipeManager.py:938
 #, python-format
 msgid "Are you sure %(url)s points to a page with a recipe on it?"
-msgstr "Da li ste sigurni da %(url)s pokazuje na stranicu sa receptom na njoj?"
+msgstr ""
+"Da li ste sigurni da %(url)s pokazuje na stranicu sa receptom na njoj?"
 
 #: ../src/lib/GourmetRecipeManager.py:917
 msgid "Unable to import"
@@ -1904,9 +1883,8 @@ msgid "Default source for recipes imported from %s"
 msgstr "Podrazumevani izvor recepata uveženih sa %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1023
-#, fuzzy
 msgid "Source:"
-msgstr "I_zvor"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1052
 #, python-format
@@ -2022,7 +2000,6 @@ msgstr[2] "Obrisano %s recepata"
 msgid "Key"
 msgstr "Ključ"
 
-#. to set our regexp_toggled variable
 #: ../src/lib/keyEditor.py:79 ../src/lib/keyEditor.py:228
 msgid "key"
 msgstr "ključ"
@@ -2152,14 +2129,12 @@ msgstr[1] "%s sastojaka"
 msgstr[2] "%s sastojaka"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/keyEditor.py:417
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
 msgstr "Prikazujem sastojke %(bottom)s to %(top)s of %(total)s"
 
 #. self._hide_warning_slowly()
-#. return
 #: ../src/lib/numberEntry.py:27 ../src/lib/timeEntry.py:54
 #: ../src/lib/timeEntry.py:64
 msgid "Invalid input."
@@ -2239,10 +2214,10 @@ msgstr ""
 #: ../src/lib/nutrition/nutritionDruid.py:560
 #, python-format
 msgid ""
-"In order to calculate nutritional information for \"%(amount)s %(unit)s %"
-"(ingkey)s\", Gourmet needs to know its density. Our nutritional database has "
-"several descriptions of this food with different densities. Please select "
-"the correct one below."
+"In order to calculate nutritional information for \"%(amount)s %(unit)s "
+"%(ingkey)s\", Gourmet needs to know its density. Our nutritional database "
+"has several descriptions of this food with different densities. Please "
+"select the correct one below."
 msgstr ""
 
 #: ../src/lib/nutrition/nutritionDruid.py:711
@@ -2259,7 +2234,6 @@ msgstr ""
 #. filename=de.select_file(
 #. 'Find ABBREV.txt file',
 #. filters=[['Plain Text',['text/plain'],['*txt']]]
-#. )
 #: ../src/lib/nutrition/nutritionGrabberGui.py:35
 msgid "Loading Nutritional Data"
 msgstr ""
@@ -2663,7 +2637,6 @@ msgstr ""
 
 #. the DB Food Group Numbers seem to be inline with the group IDs
 #. (numbers > 1000 are in group 100, etc.)
-#. Since that's true, we can use the following table to properly add groups.
 #: ../src/lib/nutrition/parser_data.py:335
 msgid "Dairy & Egg Products"
 msgstr ""
@@ -2760,7 +2733,6 @@ msgstr ""
 msgid "Ethnic Foods"
 msgstr ""
 
-#. self.serves = float(self.serveW.get_text())
 #: ../src/lib/reccard.py:201
 msgid "Edit Recipe:"
 msgstr ""
@@ -2769,7 +2741,6 @@ msgstr ""
 msgid "Recipe Card:"
 msgstr ""
 
-#. action groups
 #: ../src/lib/reccard.py:283
 msgid "Add _ingredient"
 msgstr ""
@@ -2804,7 +2775,6 @@ msgstr "Pomeri izabrani sastojak na dole."
 
 #. 'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
 #. ['editButton','editMenu']]},
-#. ],
 #: ../src/lib/reccard.py:324
 msgid "View recipe card for current recipe"
 msgstr ""
@@ -2815,9 +2785,8 @@ msgid "Unable to find recipe %s in database."
 msgstr ""
 
 #: ../src/lib/reccard.py:471
-#, fuzzy
 msgid "Choose an image to insert in instructions..."
-msgstr "Izaberi sliku za ubacivanje u uputstva... "
+msgstr ""
 
 #: ../src/lib/reccard.py:589
 #, python-format
@@ -2837,12 +2806,10 @@ msgstr "Ne mogu da razjasnim %s kao broj porcija"
 msgid "(Optional)"
 msgstr "(Neobavezno)"
 
-#. FIXME
 #: ../src/lib/reccard.py:918
 msgid "Choose a file containing your ingredient list."
 msgstr "Izaberite fajl koji sadrži listu sastojaka."
 
-#. strip off extra "." if necessary
 #: ../src/lib/reccard.py:962
 msgid "Save recipe as..."
 msgstr "Sačuvaj recept kao..."
@@ -2857,9 +2824,9 @@ msgid "There was an error during export."
 msgstr "Došlo je do greške prilikom izvoza."
 
 #: ../src/lib/reccard.py:1008
-#, fuzzy, python-format
+#, python-format
 msgid "Exported %(filetype)s to %(filename)s"
-msgstr "Izvezen %s u %s"
+msgstr ""
 
 #: ../src/lib/reccard.py:1091 ../src/lib/reccard.py:1143
 #: ../src/lib/reccard.py:1154
@@ -2960,9 +2927,8 @@ msgid "Enter a name for new subgroup of ingredients"
 msgstr "Unesite ime za novu podgrupu sastojaka"
 
 #: ../src/lib/reccard.py:2417
-#, fuzzy
 msgid "Name of group:"
-msgstr "Naziv grupe: "
+msgstr ""
 
 #: ../src/lib/reccard.py:2808
 #, python-format
@@ -3006,7 +2972,6 @@ msgstr[1] "%s recepata"
 msgstr[2] "%s recepata"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/recindex.py:210
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
@@ -3037,14 +3002,14 @@ msgstr "Unesite lozinku"
 
 #: ../src/lib/recipeManager.py:15
 #, python-format
-msgid "Please enter your password for user %s of the MySQL database at host %s"
+msgid ""
+"Please enter your password for user %s of the MySQL database at host %s"
 msgstr ""
 "Unesite važu lozinku za korisnika %s MySql baze podataka na računaru %s"
 
 #: ../src/lib/recipeManager.py:18
-#, fuzzy
 msgid "Password:"
-msgstr "Lozinka: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:69
 msgid ""
@@ -3097,9 +3062,8 @@ msgid "Enter Category"
 msgstr "Unesite katagoriju"
 
 #: ../src/lib/shopgui.py:460
-#, fuzzy
 msgid "Category:"
-msgstr "kategorija: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:622
 msgid "Recipe calls for itself as an ingredient."
@@ -3205,9 +3169,7 @@ msgstr "Gourmet Recept Menandžer"
 msgid "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
 msgstr ""
 
-#. repeated in setup.cfg
 #: ../src/lib/version.py:7
-#, fuzzy
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
@@ -3218,13 +3180,6 @@ msgid ""
 "recipes. Gourmet can also calculate nutritional information for recipes "
 "based on the ingredients."
 msgstr ""
-"Gourmet Recipe Manager is an application to store, organize and search "
-"recipes. Gourmet also makes it easy to create shopping lists from recipes. "
-"Gourmet imports recipes from a number of sources, including MealMaster and "
-"MasterCook archives and several popular websites. Gourmet can export recipes "
-"as text, MealMaster files, HTML web pages, and a custom XML format for "
-"exchange with other Gourmet users. Gourmet supports linking images with "
-"recipes."
 
 #: ../src/lib/version.py:9
 msgid "Roland Duhaime (Windows porting assistance)"
@@ -3277,7 +3232,6 @@ msgstr ""
 msgid "Retrieving file"
 msgstr ""
 
-#. Interactive we go...
 #: ../src/lib/importers/html_importer.py:478
 msgid "Don't recognize this webpage. Using generic importer..."
 msgstr ""
@@ -3320,9 +3274,8 @@ msgid "Imported %(number)s recipes from %(file)s (%(total)s total)"
 msgstr "Uveženo %(number)s recepata iz %(file)s (%(total)s ukupno)"
 
 #: ../src/lib/importers/importer.py:492
-#, fuzzy
 msgid "okay"
-msgstr "U redu"
+msgstr ""
 
 #: ../src/lib/importers/interactive_importer.py:472
 msgid "Getting images..."
@@ -3381,7 +3334,6 @@ msgstr "Završen uvoz Mastercooka."
 #. debug('Exception in Handler, trying to clean up source...',0)
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
-#. files, even though some of them may not be fubared :)
 #: ../src/lib/importers/mastercook_importer.py:257
 msgid "Tidying up XML"
 msgstr "Sređivanje XML-a."
@@ -3423,7 +3375,6 @@ msgid "Recipe"
 msgstr "Recept"
 
 #. Method from:
-#. http://tgolden.sc.sabren.com/python/win32_how_do_i/print.html#shellexecute
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:215
 #: ../src/lib/exporters/gnomeprinter.py:253
 #: ../src/lib/exporters/winprinter.py:17
@@ -3446,7 +3397,6 @@ msgstr "_Opseg"
 msgid "Print Recipes"
 msgstr "Štampaj recepte"
 
-#. Filetypes as presented to user
 #: ../src/lib/exporters/__init__.py:18
 msgid "HTML Web Page"
 msgstr "HTML web stranica"
@@ -3589,9 +3539,8 @@ msgstr ""
 "Ako instalirate python-gnome imaćetr mnogo lepši interfejs za štampanje."
 
 #: ../src/lib/exporters/lprprinter.py:31
-#, fuzzy
 msgid "Command:"
-msgstr "Komanda: "
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:643
 #: ../src/lib/exporters/pdf_exporter.py:660
@@ -3604,15 +3553,13 @@ msgstr ""
 #: ../src/lib/exporters/pdf_exporter.py:734
 #: ../src/lib/exporters/pdf_exporter.py:759
 #: ../src/lib/exporters/winprinter.py:59
-#, fuzzy
 msgid "Portrait"
-msgstr "Štampaj"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:646
 #: ../src/lib/exporters/pdf_exporter.py:675
-#, fuzzy
 msgid "Plain"
-msgstr "Običan tekst"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:655
 msgid "11x17\""
@@ -3670,9 +3617,8 @@ msgid "Page _Size"
 msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:686
-#, fuzzy
 msgid "_Orientation"
-msgstr "Trenutni rejting"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:687
 msgid "_Font Size"
@@ -3748,52 +3694,3 @@ msgstr ""
 #: ../src/lib/exporters/winprinter.py:31
 msgid "If you'd like, you can open the PDF file."
 msgstr ""
-
-#~ msgid "_Unit: "
-#~ msgstr "_Jedinica: "
-
-#~ msgid "<b>Title</b>"
-#~ msgstr "<b>Naslov</b>"
-
-#~ msgid "Source: "
-#~ msgstr "Izvor: "
-
-#~ msgid "Database format has changed"
-#~ msgstr "Format baze je promenjen"
-
-#~ msgid ""
-#~ "%(progname)s %(version)s has changed the format of its database. Your "
-#~ "database will no longer work with older versions of %(progname)s.  A "
-#~ "backup has been saved in %(backupfile)s"
-#~ msgstr ""
-#~ "%(progname)s %(version)s je promenio format svoje baze. Vaša baza neće "
-#~ "više raditi na starijim verzijama programa %(progname)s. Bekap je sačuvan "
-#~ "u %(backupfile)s"
-
-#~ msgid ""
-#~ "In case anything goes wrong, a backup copy of your recipe database is "
-#~ "being exported to %s"
-#~ msgstr ""
-#~ "Za slučaj da nešto krene po zlu, rezrvna kopija vaše baze recepata je "
-#~ "izvezena u %s"
-
-#~ msgid "Transferring data to new database format"
-#~ msgstr "Prenosim podatke u novi format baze"
-
-#~ msgid "Excellent"
-#~ msgstr "Izvrsno"
-
-#~ msgid "Great"
-#~ msgstr "Odlično"
-
-#~ msgid "Good"
-#~ msgstr "Dobro"
-
-#~ msgid "Fair"
-#~ msgstr "Prosečno"
-
-#~ msgid "Poor"
-#~ msgstr "Jadno"
-
-#~ msgid "Shopping list for: "
-#~ msgstr "Lista za kupovinu za: "

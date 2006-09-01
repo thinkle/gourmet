@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-19 12:30-0400\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2006-08-19 12:20-0400\n"
 "PO-Revision-Date: 2006-08-14 17:55+0000\n"
 "Last-Translator: maci <monyesz@index.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
@@ -92,9 +92,8 @@ msgstr "Receptre ugrás a Receptkártya nézetben"
 
 #: ../glade/app.glade.h:19 ../glade/recSelector.glade.h:3
 #: ../glade/rec_ref_window.glade.h:2
-#, fuzzy
 msgid "Limiting Search to:"
-msgstr "Keresés korlátozása: "
+msgstr ""
 
 #: ../glade/app.glade.h:20
 msgid ""
@@ -445,14 +444,12 @@ msgid "_Advanced Search"
 msgstr "_Bővített Keresés"
 
 #: ../glade/keyeditor.glade.h:9
-#, fuzzy
 msgid "_Item:"
-msgstr "_Tétel: "
+msgstr ""
 
 #: ../glade/keyeditor.glade.h:10
-#, fuzzy
 msgid "_Key:"
-msgstr "_Kulcsszó: "
+msgstr ""
 
 #: ../glade/keyeditor.glade.h:11
 msgid "_Search for:"
@@ -490,9 +487,8 @@ msgid "<i>Enter nutritional information for </i>"
 msgstr "<i>Tápérték megadása </i>"
 
 #: ../glade/nutritionDruid.glade.h:3
-#, fuzzy
 msgid "<i>From:</i>"
-msgstr "<i>Küldő: </i>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:4
 msgid "<i>Search _results:</i>"
@@ -503,9 +499,8 @@ msgid "<i>Select equivalent of</i>"
 msgstr "<i>Válaszd ki a megegyező</i>"
 
 #: ../glade/nutritionDruid.glade.h:6
-#, fuzzy
 msgid "<i>To:</i>"
-msgstr "<i>Címzett: </i>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:7
 msgid "<i>from USDA database</i>"
@@ -524,9 +519,8 @@ msgid "Show only food in _group:"
 msgstr "Csak megadott _csoportban mutasd:"
 
 #: ../glade/nutritionDruid.glade.h:12
-#, fuzzy
 msgid "Unit:"
-msgstr "Mértékegység: "
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:14
 msgid "_Change ingredient"
@@ -641,9 +635,8 @@ msgid "_Never add optional ingredients"
 msgstr "_Soha ne adja hozzá az opcionális hozzávalókat"
 
 #: ../glade/preferenceDialog.glade.h:23
-#, fuzzy
 msgid "_Recipes per page:"
-msgstr "_Recept per oldal: "
+msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:24
 msgid "_Remember user selections by default"
@@ -762,7 +755,8 @@ msgstr "_Hozzáadás a bevásárló listához"
 msgid ""
 "Ask user which items to add to the shopping list rather than using saved "
 "settings."
-msgstr "Kéredezzen rá, hogy mely hozzávalók kerüljenek fel a bevásárlólistára."
+msgstr ""
+"Kéredezzen rá, hogy mely hozzávalók kerüljenek fel a bevásárlólistára."
 
 #: ../glade/recCard.glade.h:30
 msgid "C_uisine:"
@@ -821,9 +815,8 @@ msgid "Edit section chooser"
 msgstr "Szerkesztési terület kiválasztása"
 
 #: ../glade/recCard.glade.h:44
-#, fuzzy
 msgid "Image:"
-msgstr "Kép: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:45
 msgid "Import ingredients from a plain text file."
@@ -876,9 +869,8 @@ msgid "Paste ingredient list from the clipboard."
 msgstr "Hozzávalók lista másolása a vágólapról."
 
 #: ../glade/recCard.glade.h:56
-#, fuzzy
 msgid "Pre_paration Time:"
-msgstr "El_készítési idő: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:57
 msgid "Print recipe"
@@ -897,9 +889,8 @@ msgid "Revert"
 msgstr "Visszavonás"
 
 #: ../glade/recCard.glade.h:63
-#, fuzzy
 msgid "S_hopping Category:"
-msgstr "Bevásárlási _kategória: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:64
 msgid "S_ource:"
@@ -1027,14 +1018,12 @@ msgid "_Save"
 msgstr "_Mentés"
 
 #: ../glade/recCard.glade.h:99
-#, fuzzy
 msgid "_Servings:"
-msgstr "_Tálalás: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:102
-#, fuzzy
 msgid "_Title:"
-msgstr "_Cím "
+msgstr ""
 
 #: ../glade/recCard.glade.h:104
 msgid "_Underline"
@@ -1089,7 +1078,6 @@ msgid "rating"
 msgstr "osztályozás"
 
 #. _('rating'):'rating',
-#. _('rating'),
 #: ../glade/rec_ref_window.glade.h:12 ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:54
 msgid "source"
@@ -1302,25 +1290,21 @@ msgstr "Sűrűség szükséges."
 #. plural forms of time units. We use range(5) since as far as I
 #. can see, enumerating the forms for 0 through 5 should give you
 #. all possible forms in all languages.
-#.
-#. See http://www.sbin.org/doc/glibc/libc_8.html
+#. 
 #: ../src/lib/convert.py:61 ../src/lib/convert.py:544
 msgid "second"
 msgid_plural "seconds"
 msgstr[0] "Másodperc(ek)"
 
-#. min. = abbreviation for minutes
 #: ../src/lib/convert.py:63
-#, fuzzy
 msgid "min"
-msgstr "perc"
+msgstr ""
 
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:543
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "perc"
 
-#. hrs = abbreviation for hours
 #: ../src/lib/convert.py:65
 msgid "hrs."
 msgstr "óra"
@@ -1337,7 +1321,6 @@ msgstr[0] "Nap(ok)"
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
-#. 'decades':lambda decades: ngettext("decade","decades",round(decades))
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:538
 msgid "year"
 msgid_plural "years"
@@ -1358,7 +1341,6 @@ msgstr[0] "Hét(ek)"
 #. and 6. This set-up allows for variations of this system only.
 #. You can of course make your language only use commas or
 #. ands or spaces or whatever you like by translating both
-#. ", " and " and " with the same string.
 #: ../src/lib/convert.py:587
 msgid " and "
 msgstr " illetve "
@@ -1377,17 +1359,14 @@ msgstr "és"
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
-#. show up sometimes.
 #: ../src/lib/convert.py:740
 msgid "to"
 msgstr "ig"
 
-#. setup pause button
 #: ../src/lib/dialog_extras.py:398
 msgid "_Pause"
 msgstr "_Szünet"
 
-#. setup stop button
 #: ../src/lib/dialog_extras.py:409
 msgid "_Stop"
 msgstr "_Állj"
@@ -1495,7 +1474,6 @@ msgstr ""
 "Pl. 2-4 vagy 1 1/2-3 1/2\n"
 
 #. renderer.set_property('editable',True)
-#. renderer.connect('edited',tst)
 #: ../src/lib/gglobals.py:234 ../src/lib/shopgui.py:102
 #: ../src/lib/exporters/rtf_exporter.py:79
 msgid "Title"
@@ -1533,7 +1511,6 @@ msgstr "Főzési idő"
 msgid "Modifications"
 msgstr "Módosítások"
 
-#. print dir(err)
 #: ../src/lib/gglobals.py:318
 msgid "Unable to open URL"
 msgstr "Az URL nem nyitható meg"
@@ -1562,7 +1539,8 @@ msgstr "Régi recept beimportálása"
 #: ../src/lib/GourmetRecipeManager.py:52
 msgid ""
 "Importing recipe data from a previous version of Gourmet into new database."
-msgstr "Régebbi verziójú Gourmet receptek beimportálása egy friss adatbázisba."
+msgstr ""
+"Régebbi verziójú Gourmet receptek beimportálása egy friss adatbázisba."
 
 #: ../src/lib/GourmetRecipeManager.py:98
 msgid "Loading window preferences..."
@@ -1596,11 +1574,12 @@ msgstr "Bevásárló_lista."
 #: ../src/lib/GourmetRecipeManager.py:286
 msgid "translator-credits"
 msgstr ""
-"Erdősi Bálint Kelemen Gábor <kelemeng@gnome.hu> Nepusz Tamás <nepusz@mit.bme."
-"hu> Reviczky Ádám János <reviczky@freemail.hu> Bán Szabolcs <shooby@gnome."
-"hu> Dvornik László <dvornik@gnome.hu> Kovács Emese <emese@gnome.hu> Sári "
-"Gábor <saga@gnome.hu> Tímár András <timar@gnome.hu> Muráncsik Sebestyén "
-"<worxefoz@mailpont.hu> Kecskeméthy Zoltán <kecsi@linuxbox.hu>"
+"Erdősi Bálint Kelemen Gábor <kelemeng@gnome.hu> Nepusz Tamás "
+"<nepusz@mit.bme.hu> Reviczky Ádám János <reviczky@freemail.hu> Bán Szabolcs "
+"<shooby@gnome.hu> Dvornik László <dvornik@gnome.hu> Kovács Emese "
+"<emese@gnome.hu> Sári Gábor <saga@gnome.hu> Tímár András <timar@gnome.hu> "
+"Muráncsik Sebestyén <worxefoz@mailpont.hu> Kecskeméthy Zoltán "
+"<kecsi@linuxbox.hu>"
 
 #: ../src/lib/GourmetRecipeManager.py:320
 #: ../src/lib/GourmetRecipeManager.py:331
@@ -1743,9 +1722,9 @@ msgid "Number of servings of %s to shop for"
 msgstr "Adagok száma a %s-nek amit venni kell"
 
 #: ../src/lib/GourmetRecipeManager.py:739
-#, fuzzy, python-format
+#, python-format
 msgid "Multiply %s by:"
-msgstr "%s duplázása mint: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:768 ../src/lib/shopgui.py:160
 msgid "Saved!"
@@ -1819,9 +1798,8 @@ msgid "Enter website address."
 msgstr "Adja meg a weboldal címét."
 
 #: ../src/lib/GourmetRecipeManager.py:884
-#, fuzzy
 msgid "Enter URL:"
-msgstr "Írjon be URL-t: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:885
 msgid ""
@@ -1890,9 +1868,8 @@ msgid "Default source for recipes imported from %s"
 msgstr "A receptek alapértelmezett forrásából importáltam ( innen: %s )"
 
 #: ../src/lib/GourmetRecipeManager.py:1023
-#, fuzzy
 msgid "Source:"
-msgstr "_Forrás"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1052
 #, python-format
@@ -1996,7 +1973,6 @@ msgstr[0] "%s receptek törölve"
 msgid "Key"
 msgstr "Kulcs"
 
-#. to set our regexp_toggled variable
 #: ../src/lib/keyEditor.py:79 ../src/lib/keyEditor.py:228
 msgid "key"
 msgstr "kulcs"
@@ -2062,8 +2038,8 @@ msgid ""
 "Change \"%(unit)s\" to \"%(text)s\" only for _ingredients \"%(item)s\" with "
 "key \"%(key)s\""
 msgstr ""
-"Csere \"%(unit)s\"-ról \"%(text)s\"-ra csak a \"%(item)s\" hozzávalókban \"%"
-"(key)s\" kulcsszóval."
+"Csere \"%(unit)s\"-ról \"%(text)s\"-ra csak a \"%(item)s\" hozzávalókban "
+"\"%(key)s\" kulcsszóval."
 
 #: ../src/lib/keyEditor.py:178
 #, python-format
@@ -2146,14 +2122,12 @@ msgid_plural "%s ingredients"
 msgstr[0] "%s hozzávaló(k)"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/keyEditor.py:417
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
 msgstr "Hozzávalók mutatása %(bottom)s-tól %(top)s-ig a %(total)sból"
 
 #. self._hide_warning_slowly()
-#. return
 #: ../src/lib/numberEntry.py:27 ../src/lib/timeEntry.py:54
 #: ../src/lib/timeEntry.py:64
 msgid "Invalid input."
@@ -2239,10 +2213,10 @@ msgstr ""
 #: ../src/lib/nutrition/nutritionDruid.py:560
 #, python-format
 msgid ""
-"In order to calculate nutritional information for \"%(amount)s %(unit)s %"
-"(ingkey)s\", Gourmet needs to know its density. Our nutritional database has "
-"several descriptions of this food with different densities. Please select "
-"the correct one below."
+"In order to calculate nutritional information for \"%(amount)s %(unit)s "
+"%(ingkey)s\", Gourmet needs to know its density. Our nutritional database "
+"has several descriptions of this food with different densities. Please "
+"select the correct one below."
 msgstr ""
 "\"%(amount)s %(unit)s %(ingkey)s\"  tápértékének információk kiszámításához "
 "Gourmet-nek tudnia kell a sűrűséget. Mivel a tápérték adatbázisunk más-más "
@@ -2265,7 +2239,6 @@ msgstr ""
 #. filename=de.select_file(
 #. 'Find ABBREV.txt file',
 #. filters=[['Plain Text',['text/plain'],['*txt']]]
-#. )
 #: ../src/lib/nutrition/nutritionGrabberGui.py:35
 msgid "Loading Nutritional Data"
 msgstr "Tápérték adatok olvasása"
@@ -2685,7 +2658,6 @@ msgstr "emészthetetlen százalék"
 
 #. the DB Food Group Numbers seem to be inline with the group IDs
 #. (numbers > 1000 are in group 100, etc.)
-#. Since that's true, we can use the following table to properly add groups.
 #: ../src/lib/nutrition/parser_data.py:335
 msgid "Dairy & Egg Products"
 msgstr "Diétás Tojás termékek"
@@ -2782,7 +2754,6 @@ msgstr "Rágcsálnivalók"
 msgid "Ethnic Foods"
 msgstr "Hagyományos ételek"
 
-#. self.serves = float(self.serveW.get_text())
 #: ../src/lib/reccard.py:201
 msgid "Edit Recipe:"
 msgstr "Recept szerksztése:"
@@ -2791,7 +2762,6 @@ msgstr "Recept szerksztése:"
 msgid "Recipe Card:"
 msgstr "Recept kártya:"
 
-#. action groups
 #: ../src/lib/reccard.py:283
 msgid "Add _ingredient"
 msgstr "Hozzávaló fel_vétele"
@@ -2826,7 +2796,6 @@ msgstr "Kijelölt hozzávaló lefelé mozgatása."
 
 #. 'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
 #. ['editButton','editMenu']]},
-#. ],
 #: ../src/lib/reccard.py:324
 msgid "View recipe card for current recipe"
 msgstr "Recept kártya megtekintése."
@@ -2837,9 +2806,8 @@ msgid "Unable to find recipe %s in database."
 msgstr "Nem találtam ilyen %s receptet az adatbázisban."
 
 #: ../src/lib/reccard.py:471
-#, fuzzy
 msgid "Choose an image to insert in instructions..."
-msgstr "Válasszon képet az étel elkészítéséhez... "
+msgstr ""
 
 #: ../src/lib/reccard.py:589
 #, python-format
@@ -2859,12 +2827,10 @@ msgstr "Nem tudom az adagok számát a %s-nek"
 msgid "(Optional)"
 msgstr "(Opcionális)"
 
-#. FIXME
 #: ../src/lib/reccard.py:918
 msgid "Choose a file containing your ingredient list."
 msgstr "Válassz ki a hozzávalókat tartalmazó fájlt."
 
-#. strip off extra "." if necessary
 #: ../src/lib/reccard.py:962
 msgid "Save recipe as..."
 msgstr "Recept mentése más néven..."
@@ -2879,9 +2845,9 @@ msgid "There was an error during export."
 msgstr "Hiba lépett fel az exportálás során."
 
 #: ../src/lib/reccard.py:1008
-#, fuzzy, python-format
+#, python-format
 msgid "Exported %(filetype)s to %(filename)s"
-msgstr "Exportálva %s %s-be"
+msgstr ""
 
 #: ../src/lib/reccard.py:1091 ../src/lib/reccard.py:1143
 #: ../src/lib/reccard.py:1154
@@ -2984,9 +2950,8 @@ msgid "Enter a name for new subgroup of ingredients"
 msgstr "Adjon nevet a hozzávalók új alcsoportjának"
 
 #: ../src/lib/reccard.py:2417
-#, fuzzy
 msgid "Name of group:"
-msgstr "Csoport neve: "
+msgstr ""
 
 #: ../src/lib/reccard.py:2808
 #, python-format
@@ -3028,7 +2993,6 @@ msgid_plural "%s recipes"
 msgstr[0] "%s recept(ek)"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/recindex.py:210
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
@@ -3059,13 +3023,13 @@ msgstr "Jelszó megadása"
 
 #: ../src/lib/recipeManager.py:15
 #, python-format
-msgid "Please enter your password for user %s of the MySQL database at host %s"
+msgid ""
+"Please enter your password for user %s of the MySQL database at host %s"
 msgstr "Adja meg a %s felhasználó MySQL adatbázis jelszavát a %s gépen."
 
 #: ../src/lib/recipeManager.py:18
-#, fuzzy
 msgid "Password:"
-msgstr "Jelszó: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:69
 msgid ""
@@ -3118,9 +3082,8 @@ msgid "Enter Category"
 msgstr "Kategória megadása"
 
 #: ../src/lib/shopgui.py:460
-#, fuzzy
 msgid "Category:"
-msgstr "Kategória: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:622
 msgid "Recipe calls for itself as an ingredient."
@@ -3226,9 +3189,7 @@ msgstr "Gourmet Recipe Manager"
 msgid "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
 msgstr ""
 
-#. repeated in setup.cfg
 #: ../src/lib/version.py:7
-#, fuzzy
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
@@ -3239,14 +3200,6 @@ msgid ""
 "recipes. Gourmet can also calculate nutritional information for recipes "
 "based on the ingredients."
 msgstr ""
-"Gourmet Recept Menedzser egy alkalmazás, amelynek fő feladata, hogy tárold, "
-"rendszerezd a recepteket, és azok közt megönnyítsd a keresést. A Gourmettel "
-"könyebben készíthetsz bevásárlólistát a receptekhez. Gourmet importál "
-"recepteket számtalan forrásból, MealMaster, MasterCook archívumokból, és "
-"rengeteg népszerű webhelyről. Gormet receptjeit elmenti szövegként, "
-"MealMaster fájlként, HTML weblapként, és testreszabott XML fájlként is, hogy "
-"megoszd azokat a többi Gourmet felhasználóval is. Gourmet támogatja a "
-"képekre való hivatkozást a receptekhez."
 
 #: ../src/lib/version.py:9
 msgid "Roland Duhaime (Windows porting assistance)"
@@ -3299,7 +3252,6 @@ msgstr "Betöltés %s"
 msgid "Retrieving file"
 msgstr "Betöltjük az állományt"
 
-#. Interactive we go...
 #: ../src/lib/importers/html_importer.py:478
 msgid "Don't recognize this webpage. Using generic importer..."
 msgstr ""
@@ -3344,9 +3296,8 @@ msgid "Imported %(number)s recipes from %(file)s (%(total)s total)"
 msgstr "%(number)s recept importálva a %(file)s-ból (Összesen %(total)s)"
 
 #: ../src/lib/importers/importer.py:492
-#, fuzzy
 msgid "okay"
-msgstr "Rendben"
+msgstr ""
 
 #: ../src/lib/importers/interactive_importer.py:472
 msgid "Getting images..."
@@ -3408,7 +3359,6 @@ msgstr "Mastercook importálás befejezve."
 #. debug('Exception in Handler, trying to clean up source...',0)
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
-#. files, even though some of them may not be fubared :)
 #: ../src/lib/importers/mastercook_importer.py:257
 msgid "Tidying up XML"
 msgstr "XML rendezése"
@@ -3450,7 +3400,6 @@ msgid "Recipe"
 msgstr "Recept"
 
 #. Method from:
-#. http://tgolden.sc.sabren.com/python/win32_how_do_i/print.html#shellexecute
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:215
 #: ../src/lib/exporters/gnomeprinter.py:253
 #: ../src/lib/exporters/winprinter.py:17
@@ -3473,7 +3422,6 @@ msgstr "_Tartomány"
 msgid "Print Recipes"
 msgstr "Receptek nyomtatása"
 
-#. Filetypes as presented to user
 #: ../src/lib/exporters/__init__.py:18
 msgid "HTML Web Page"
 msgstr "HTML weboldal"
@@ -3617,9 +3565,8 @@ msgstr ""
 "nyomtathat."
 
 #: ../src/lib/exporters/lprprinter.py:31
-#, fuzzy
 msgid "Command:"
-msgstr "Parancs: "
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:643
 #: ../src/lib/exporters/pdf_exporter.py:660
@@ -3632,15 +3579,13 @@ msgstr ""
 #: ../src/lib/exporters/pdf_exporter.py:734
 #: ../src/lib/exporters/pdf_exporter.py:759
 #: ../src/lib/exporters/winprinter.py:59
-#, fuzzy
 msgid "Portrait"
-msgstr "Nyomtat"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:646
 #: ../src/lib/exporters/pdf_exporter.py:675
-#, fuzzy
 msgid "Plain"
-msgstr "Egyszerű szöveg"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:655
 msgid "11x17\""
@@ -3696,9 +3641,8 @@ msgid "Page _Size"
 msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:686
-#, fuzzy
 msgid "_Orientation"
-msgstr "Jelenlegi arány"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:687
 msgid "_Font Size"
@@ -3775,60 +3719,14 @@ msgstr ""
 msgid "If you'd like, you can open the PDF file."
 msgstr ""
 
-#~ msgid "_Unit: "
-#~ msgstr "_Mértékegység: "
-
-#~ msgid "<b>Title</b>"
-#~ msgstr "<b>Cím</b>"
-
-#~ msgid "Source: "
-#~ msgstr "Forrás: "
-
-#~ msgid "Database format has changed"
-#~ msgstr "Adatbázis formátuma megváltozott"
-
-#~ msgid ""
-#~ "%(progname)s %(version)s has changed the format of its database. Your "
-#~ "database will no longer work with older versions of %(progname)s.  A "
-#~ "backup has been saved in %(backupfile)s"
-#~ msgstr ""
-#~ "%(progname)s %(version)s megváltoztatta az adatbázisa formátumát. Az "
-#~ "adatbázidos most már nem támogatja a régebbi verzióit a %(progname)snek. "
-#~ "A biztonsági másolat el lett tárolva a %(backupfile)sbe."
-
-#~ msgid ""
-#~ "In case anything goes wrong, a backup copy of your recipe database is "
-#~ "being exported to %s"
-#~ msgstr ""
-#~ "Ha valami baj történne, a a receptek adatbázisának biztonsági másolata "
-#~ "ide kerül: %s"
-
-#~ msgid "Transferring data to new database format"
-#~ msgstr "Konverálom az adatokat az új adatbázis-formátumra"
-
-#~ msgid "Excellent"
-#~ msgstr "Tökéletes"
-
-#~ msgid "Great"
-#~ msgstr "Kiváló"
-
-#~ msgid "Good"
-#~ msgstr "Jó"
-
-#~ msgid "Fair"
-#~ msgstr "Megfelelő"
-
-#~ msgid "Poor"
-#~ msgstr "Vacak"
-
-#~ msgid "Shopping list for: "
-#~ msgstr "Bevásárlólista ennek: "
-
 #~ msgid "E-_mail recipes"
 #~ msgstr "Receptek küldése e-_mailben"
 
 #~ msgid "Limit search by this term"
 #~ msgstr "Keresés korlátozása ezzel a kifejezéssel"
+
+#~ msgid "Limiting Search to: "
+#~ msgstr "Keresés korlátozása: "
 
 #~ msgid "Search _by"
 #~ msgstr "Keresendő:"
@@ -3848,6 +3746,9 @@ msgstr ""
 #~ msgid "<b>Notes:</b>"
 #~ msgstr "<b>Megjegyzések:</b>"
 
+#~ msgid "<b>Title</b>"
+#~ msgstr "<b>Cím</b>"
+
 #~ msgid "Add this recipe to a shopping list"
 #~ msgstr "Recept hozzáadása a bevásárlólistához"
 
@@ -3856,6 +3757,12 @@ msgstr ""
 
 #~ msgid "Export this recipe as a text file."
 #~ msgstr "Recept exportálása szövegként."
+
+#~ msgid "Pre_paration Time: "
+#~ msgstr "El_készítési idő: "
+
+#~ msgid "S_hopping Category: "
+#~ msgstr "Bevásárlási _kategória: "
 
 #~ msgid "_Delete Ingredient"
 #~ msgstr "Hozzávaló _törlése"
@@ -3868,6 +3775,15 @@ msgstr ""
 
 #~ msgid "_New Ingredient"
 #~ msgstr "Ú_j hozzávaló"
+
+#~ msgid "_Servings: "
+#~ msgstr "_Tálalás: "
+
+#~ msgid "_Title: "
+#~ msgstr "_Cím "
+
+#~ msgid "_Unit: "
+#~ msgstr "_Mértékegység: "
 
 #~ msgid "Advanced"
 #~ msgstr "Részletes"
@@ -3885,11 +3801,11 @@ msgstr ""
 #~ msgstr "Reguláris kifejezés használata kereséshez"
 
 #~ msgid ""
-#~ "Remove the selected recipe from your shopping list (or remove all items "
-#~ "if no recipe is selected)"
+#~ "Remove the selected recipe from your shopping list (or remove all items if "
+#~ "no recipe is selected)"
 #~ msgstr ""
-#~ "A kiválasztott recept törlése a bevásárló listáról (tételek törlése, "
-#~ "melyhez nincs kiválasztva recept)"
+#~ "A kiválasztott recept törlése a bevásárló listáról (tételek törlése, melyhez "
+#~ "nincs kiválasztva recept)"
 
 #~ msgid "Change key for selected items to: "
 #~ msgstr "Kijelölt tételek kulcsának megváltoztatása: "
@@ -3907,28 +3823,42 @@ msgstr ""
 #~ msgid "Deleted "
 #~ msgstr "Törölve "
 
+#, python-format
+#~ msgid "Multiply %s by: "
+#~ msgstr "%s duplázása mint: "
+
 #~ msgid ""
-#~ "Gourmet can download a recipe in any supported recipe archive format or "
-#~ "can import recipes from the following websites:"
+#~ "Gourmet can download a recipe in any supported recipe archive format or can "
+#~ "import recipes from the following websites:"
 #~ msgstr ""
-#~ "Gourmettel képes vagy letölteni recepteket támogatott receptarchívumból "
-#~ "vagy importálni recepteket a következő webhelyekről:"
+#~ "Gourmettel képes vagy letölteni recepteket támogatott receptarchívumból vagy "
+#~ "importálni recepteket a következő webhelyekről:"
+
+#~ msgid "Enter URL: "
+#~ msgstr "Írjon be URL-t: "
+
+#~ msgid "Source: "
+#~ msgstr "Forrás: "
 
 #~ msgid "Deleted 1 recipe."
 #~ msgstr "Egy recept törölve."
 
+#, python-format
 #~ msgid "Deleted %s recipes"
 #~ msgstr "%s recept törölve"
 
 #~ msgid "Are you sure you want to change the "
 #~ msgstr "Biztosan megváltoztatja a(z) "
 
+#, python-format
 #~ msgid "for \"%s from \"%s\""
 #~ msgstr "\"%s-nek \"%s\"-ből"
 
+#, python-format
 #~ msgid " from \"%s\" "
 #~ msgstr " \"%s\"-ből "
 
+#, python-format
 #~ msgid " to \"%s\""
 #~ msgstr " \"%s\"-be"
 
@@ -3938,6 +3868,7 @@ msgstr ""
 #~ msgid "You haven't entered a key!"
 #~ msgstr "Nem adott meg kulcsot!"
 
+#, python-format
 #~ msgid ""
 #~ "Are you sure you want the keys\n"
 #~ " for all %s selections set to\n"
@@ -3950,18 +3881,24 @@ msgstr ""
 #~ msgid "Recipe Card: "
 #~ msgstr "Receptkártya "
 
+#~ msgid "Choose an image to insert in instructions... "
+#~ msgstr "Válasszon képet az étel elkészítéséhez... "
+
 #~ msgid "Changes to ingredients saved automatically."
 #~ msgstr "A hozzávalók módosításai automatikusan mentve."
 
+#~ msgid "Name of group: "
+#~ msgstr "Csoport neve: "
+
+#, python-format
 #~ msgid "Are you sure you want to delete %s"
 #~ msgstr "Biztosan törli a %s elemet?"
 
+#, python-format
 #~ msgid "Shall I delete the item contained in %s or move it out of the group?"
 #~ msgid_plural ""
-#~ "Shall I delete the items contained in %s or just move them out of the "
-#~ "group?"
-#~ msgstr[0] ""
-#~ "Törölhetem a %s-ben levő elemet(ket) vagy vegyem ki a csoportból?"
+#~ "Shall I delete the items contained in %s or just move them out of the group?"
+#~ msgstr[0] "Törölhetem a %s-ben levő elemet(ket) vagy vegyem ki a csoportból?"
 
 #~ msgid "Delete it."
 #~ msgid_plural "Delete them."
@@ -3974,14 +3911,23 @@ msgstr ""
 #~ msgid "See ingredients"
 #~ msgstr "Hozzávalók megtekintése"
 
+#, python-format
 #~ msgid "%s Recipes"
 #~ msgstr "%s receptek"
 
+#, python-format
 #~ msgid " %s contains %s"
 #~ msgstr " %s tartalmaz %s-t"
 
+#, python-format
 #~ msgid ", %s contains %s"
 #~ msgstr ", %s tartalmaz %s-t"
+
+#~ msgid "Password: "
+#~ msgstr "Jelszó: "
+
+#~ msgid "Category: "
+#~ msgstr "Kategória: "
 
 #~ msgid "seconds"
 #~ msgstr "másodperc"
@@ -4007,20 +3953,20 @@ msgstr ""
 #, fuzzy
 #~ msgid ""
 #~ "Gourmet Recipe Manager is an application to store, organize and search "
-#~ "recipes. Gourmet also makes it easy to create shopping lists from "
-#~ "recipes. Gourmet imports recipes from a number of sources, including "
-#~ "MealMaster and MasterCook archives and several popular websites. Gourmet "
-#~ "can export recipes as text, MealMaster files, HTML web pages, and a "
-#~ "custom XML format for excahnge with other Gourmet users. Gourmet supports "
-#~ "linking images with recipes."
+#~ "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
+#~ "Gourmet imports recipes from a number of sources, including MealMaster and "
+#~ "MasterCook archives and several popular websites. Gourmet can export recipes "
+#~ "as text, MealMaster files, HTML web pages, and a custom XML format for "
+#~ "excahnge with other Gourmet users. Gourmet supports linking images with "
+#~ "recipes."
 #~ msgstr ""
 #~ "Gourmet Recipe Manager egy recept keresö, organizalo es elmentöprogram. "
-#~ "Gourmetvel továbbá könyen lehet bevásárlolistákat késziteni a "
-#~ "receptekböl. Gourmet importálni tudja a MealMaster, MasterCook és "
-#~ "különbözö weboldalakrol származo recepteket. Gourmetval a recepteket "
-#~ "exportálni lehet sima text, MealMaster, sajátos XML fájlformatumokba es "
-#~ "weboldalakba, igy könnyitve a receptek cserélését a felhasználok között. "
-#~ "Képek is csatlakoztathatók a receptekhez."
+#~ "Gourmetvel továbbá könyen lehet bevásárlolistákat késziteni a receptekböl. "
+#~ "Gourmet importálni tudja a MealMaster, MasterCook és különbözö weboldalakrol "
+#~ "származo recepteket. Gourmetval a recepteket exportálni lehet sima text, "
+#~ "MealMaster, sajátos XML fájlformatumokba es weboldalakba, igy könnyitve a "
+#~ "receptek cserélését a felhasználok között. Képek is csatlakoztathatók a "
+#~ "receptekhez."
 
 #~ msgid "Choose Database File"
 #~ msgstr "Válassza ki az adatbázis fájlt"
@@ -4039,12 +3985,18 @@ msgstr ""
 #~ msgid "Recipe saved as Mealmaster file %(file)s"
 #~ msgstr "Recept elmentve Melmaster %(file)s fájlba."
 
+#~ msgid "Command: "
+#~ msgstr "Parancs: "
+
+#~ msgid "Shopping list for: "
+#~ msgstr "Bevásárlólista ennek: "
+
 #~ msgid "Printing not supported"
 #~ msgstr "A nyomtatás nem támogatott"
 
 #~ msgid ""
-#~ "To print recipes, first export them, then print from another program. If "
-#~ "you install wxWindows, you can print directly from Gourmet."
+#~ "To print recipes, first export them, then print from another program. If you "
+#~ "install wxWindows, you can print directly from Gourmet."
 #~ msgstr ""
 #~ "Receptek nyomtatásához előszöt ki kell exportálnia a receptet és másik "
 #~ "programból kinyomtatni. Ha telepíti a wxWindows(wxWidget)-t, akkor "

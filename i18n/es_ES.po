@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gourmet Recipe Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-19 12:30-0400\n"
-"PO-Revision-Date: 2006-04-15 13:38+0000\n"
-"Last-Translator: Félix Velasco <felix.velasco@gmail.com>\n"
+"POT-Creation-Date: 2006-08-19 12:20-0400\n"
+"PO-Revision-Date: 2006-09-01 14:26+0000\n"
+"Last-Translator: Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>\n"
 "Language-Team: Spanish (Spain) <es_ES@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,9 +92,8 @@ msgstr "Ir a la receta en Tarjetas de Recetas"
 
 #: ../glade/app.glade.h:19 ../glade/recSelector.glade.h:3
 #: ../glade/rec_ref_window.glade.h:2
-#, fuzzy
 msgid "Limiting Search to:"
-msgstr "Limitar Búsqueda a: "
+msgstr "Limitando la búsqueda a:"
 
 #: ../glade/app.glade.h:20
 msgid ""
@@ -110,7 +109,7 @@ msgstr ""
 
 #: ../glade/app.glade.h:21
 msgid "Open a timer"
-msgstr ""
+msgstr "Abrir un temporizador"
 
 #: ../glade/app.glade.h:22
 msgid "Print selected recipe"
@@ -222,7 +221,7 @@ msgstr "_Importar archivo"
 
 #: ../glade/app.glade.h:47
 msgid "_Ingredient Key Editor"
-msgstr ""
+msgstr "Editor de Claves de _Ingredients"
 
 #: ../glade/app.glade.h:48 ../glade/generic_importer.glade.h:4
 #: ../glade/recCard.glade.h:91
@@ -256,7 +255,7 @@ msgstr "Mo_strar recetas borradas"
 
 #: ../glade/app.glade.h:55 ../glade/recCard.glade.h:101
 msgid "_Timer"
-msgstr ""
+msgstr "_Temporizador"
 
 #: ../glade/app.glade.h:56 ../glade/recCard.glade.h:103
 msgid "_Tools"
@@ -278,7 +277,7 @@ msgstr "_Ver"
 #: ../glade/app.glade.h:60 ../glade/keyeditor.glade.h:13
 #: ../glade/recSelector.glade.h:13
 msgid "_in"
-msgstr ""
+msgstr "_en"
 
 #: ../glade/converter.glade.h:1 ../glade/databaseChooser.glade.h:1
 #: ../glade/rec_ref_window.glade.h:1
@@ -287,23 +286,23 @@ msgstr "*"
 
 #: ../glade/converter.glade.h:2
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: ../glade/converter.glade.h:3
 msgid "<b>From</b>"
-msgstr ""
+msgstr "<b>Desde</b>"
 
 #: ../glade/converter.glade.h:4
 msgid "<b>To</b>"
-msgstr ""
+msgstr "<b>A</b>"
 
 #: ../glade/converter.glade.h:5
 msgid "?"
-msgstr ""
+msgstr "¿?"
 
 #: ../glade/converter.glade.h:6
 msgid "Density _Information"
-msgstr ""
+msgstr "_Información de densidad"
 
 #: ../glade/converter.glade.h:7
 msgid "I_tem:"
@@ -411,23 +410,23 @@ msgstr ""
 
 #: ../glade/databaseChooser.glade.h:18
 msgid "_Password:"
-msgstr ""
+msgstr "Contra_seña"
 
 #: ../glade/databaseChooser.glade.h:19
 msgid "_Save Password"
-msgstr ""
+msgstr "_Guardar la contraseña"
 
 #: ../glade/databaseChooser.glade.h:20
 msgid "_Username:"
-msgstr ""
+msgstr "Nombre de _usuario"
 
 #: ../glade/databaseChooser.glade.h:21
 msgid "localhost"
-msgstr ""
+msgstr "localhost"
 
 #: ../glade/databaseChooser.glade.h:22
 msgid "recipe"
-msgstr ""
+msgstr "receta"
 
 #: ../glade/keyeditor.glade.h:1
 msgid "<b>Change selected ingredients</b>"
@@ -491,9 +490,8 @@ msgid "<i>Enter nutritional information for </i>"
 msgstr "<i>Introducir información nutricional para </i>"
 
 #: ../glade/nutritionDruid.glade.h:3
-#, fuzzy
 msgid "<i>From:</i>"
-msgstr "<i>De: </i>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:4
 msgid "<i>Search _results:</i>"
@@ -504,13 +502,13 @@ msgid "<i>Select equivalent of</i>"
 msgstr "<i>Seleccionar equivalente a</i>"
 
 #: ../glade/nutritionDruid.glade.h:6
-#, fuzzy
 msgid "<i>To:</i>"
-msgstr "<i>a: </i>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:7
 msgid "<i>from USDA database</i>"
-msgstr "<i>de la base de datos del Departamento de Agricultura de los EEUU</i>"
+msgstr ""
+"<i>de la base de datos del Departamento de Agricultura de los EEUU</i>"
 
 #: ../glade/nutritionDruid.glade.h:8
 msgid "<i>or</i>"
@@ -525,9 +523,8 @@ msgid "Show only food in _group:"
 msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:12
-#, fuzzy
 msgid "Unit:"
-msgstr "unidad"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:14
 msgid "_Change ingredient"
@@ -644,9 +641,8 @@ msgid "_Never add optional ingredients"
 msgstr "_Nunca añadir ingredientes opcionales"
 
 #: ../glade/preferenceDialog.glade.h:23
-#, fuzzy
 msgid "_Recipes per page:"
-msgstr "_Recetas por página: "
+msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:24
 msgid "_Remember user selections by default"
@@ -877,9 +873,8 @@ msgid "Paste ingredient list from the clipboard."
 msgstr ""
 
 #: ../glade/recCard.glade.h:56
-#, fuzzy
 msgid "Pre_paration Time:"
-msgstr "<b>Tiempo de preparación:</b>"
+msgstr ""
 
 #: ../glade/recCard.glade.h:57
 msgid "Print recipe"
@@ -898,9 +893,8 @@ msgid "Revert"
 msgstr ""
 
 #: ../glade/recCard.glade.h:63
-#, fuzzy
 msgid "S_hopping Category:"
-msgstr "Li_sta de compras"
+msgstr ""
 
 #: ../glade/recCard.glade.h:64
 msgid "S_ource:"
@@ -1026,9 +1020,8 @@ msgid "_Servings:"
 msgstr ""
 
 #: ../glade/recCard.glade.h:102
-#, fuzzy
 msgid "_Title:"
-msgstr "_Archivo"
+msgstr ""
 
 #: ../glade/recCard.glade.h:104
 msgid "_Underline"
@@ -1083,7 +1076,6 @@ msgid "rating"
 msgstr ""
 
 #. _('rating'):'rating',
-#. _('rating'),
 #: ../glade/rec_ref_window.glade.h:12 ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:54
 msgid "source"
@@ -1285,15 +1277,13 @@ msgstr ""
 #. plural forms of time units. We use range(5) since as far as I
 #. can see, enumerating the forms for 0 through 5 should give you
 #. all possible forms in all languages.
-#.
-#. See http://www.sbin.org/doc/glibc/libc_8.html
+#. 
 #: ../src/lib/convert.py:61 ../src/lib/convert.py:544
 msgid "second"
 msgid_plural "seconds"
 msgstr[0] ""
 msgstr[1] ""
 
-#. min. = abbreviation for minutes
 #: ../src/lib/convert.py:63
 msgid "min"
 msgstr ""
@@ -1304,7 +1294,6 @@ msgid_plural "minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#. hrs = abbreviation for hours
 #: ../src/lib/convert.py:65
 msgid "hrs."
 msgstr ""
@@ -1323,7 +1312,6 @@ msgstr[1] ""
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
-#. 'decades':lambda decades: ngettext("decade","decades",round(decades))
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:538
 msgid "year"
 msgid_plural "years"
@@ -1347,7 +1335,6 @@ msgstr[1] ""
 #. and 6. This set-up allows for variations of this system only.
 #. You can of course make your language only use commas or
 #. ands or spaces or whatever you like by translating both
-#. ", " and " and " with the same string.
 #: ../src/lib/convert.py:587
 msgid " and "
 msgstr ""
@@ -1366,17 +1353,14 @@ msgstr ""
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
-#. show up sometimes.
 #: ../src/lib/convert.py:740
 msgid "to"
 msgstr ""
 
-#. setup pause button
 #: ../src/lib/dialog_extras.py:398
 msgid "_Pause"
 msgstr ""
 
-#. setup stop button
 #: ../src/lib/dialog_extras.py:409
 msgid "_Stop"
 msgstr ""
@@ -1475,7 +1459,6 @@ msgid ""
 msgstr ""
 
 #. renderer.set_property('editable',True)
-#. renderer.connect('edited',tst)
 #: ../src/lib/gglobals.py:234 ../src/lib/shopgui.py:102
 #: ../src/lib/exporters/rtf_exporter.py:79
 msgid "Title"
@@ -1513,7 +1496,6 @@ msgstr ""
 msgid "Modifications"
 msgstr ""
 
-#. print dir(err)
 #: ../src/lib/gglobals.py:318
 msgid "Unable to open URL"
 msgstr ""
@@ -1848,9 +1830,8 @@ msgid "Default source for recipes imported from %s"
 msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1023
-#, fuzzy
 msgid "Source:"
-msgstr "<b>Origen:</b>"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1052
 #, python-format
@@ -1956,7 +1937,6 @@ msgstr[1] ""
 msgid "Key"
 msgstr ""
 
-#. to set our regexp_toggled variable
 #: ../src/lib/keyEditor.py:79 ../src/lib/keyEditor.py:228
 msgid "key"
 msgstr ""
@@ -2085,14 +2065,12 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/keyEditor.py:417
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
 msgstr ""
 
 #. self._hide_warning_slowly()
-#. return
 #: ../src/lib/numberEntry.py:27 ../src/lib/timeEntry.py:54
 #: ../src/lib/timeEntry.py:64
 msgid "Invalid input."
@@ -2172,10 +2150,10 @@ msgstr ""
 #: ../src/lib/nutrition/nutritionDruid.py:560
 #, python-format
 msgid ""
-"In order to calculate nutritional information for \"%(amount)s %(unit)s %"
-"(ingkey)s\", Gourmet needs to know its density. Our nutritional database has "
-"several descriptions of this food with different densities. Please select "
-"the correct one below."
+"In order to calculate nutritional information for \"%(amount)s %(unit)s "
+"%(ingkey)s\", Gourmet needs to know its density. Our nutritional database "
+"has several descriptions of this food with different densities. Please "
+"select the correct one below."
 msgstr ""
 
 #: ../src/lib/nutrition/nutritionDruid.py:711
@@ -2192,7 +2170,6 @@ msgstr ""
 #. filename=de.select_file(
 #. 'Find ABBREV.txt file',
 #. filters=[['Plain Text',['text/plain'],['*txt']]]
-#. )
 #: ../src/lib/nutrition/nutritionGrabberGui.py:35
 msgid "Loading Nutritional Data"
 msgstr ""
@@ -2596,7 +2573,6 @@ msgstr ""
 
 #. the DB Food Group Numbers seem to be inline with the group IDs
 #. (numbers > 1000 are in group 100, etc.)
-#. Since that's true, we can use the following table to properly add groups.
 #: ../src/lib/nutrition/parser_data.py:335
 msgid "Dairy & Egg Products"
 msgstr ""
@@ -2693,7 +2669,6 @@ msgstr ""
 msgid "Ethnic Foods"
 msgstr ""
 
-#. self.serves = float(self.serveW.get_text())
 #: ../src/lib/reccard.py:201
 msgid "Edit Recipe:"
 msgstr ""
@@ -2702,7 +2677,6 @@ msgstr ""
 msgid "Recipe Card:"
 msgstr ""
 
-#. action groups
 #: ../src/lib/reccard.py:283
 msgid "Add _ingredient"
 msgstr ""
@@ -2737,7 +2711,6 @@ msgstr ""
 
 #. 'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
 #. ['editButton','editMenu']]},
-#. ],
 #: ../src/lib/reccard.py:324
 msgid "View recipe card for current recipe"
 msgstr ""
@@ -2769,12 +2742,10 @@ msgstr ""
 msgid "(Optional)"
 msgstr ""
 
-#. FIXME
 #: ../src/lib/reccard.py:918
 msgid "Choose a file containing your ingredient list."
 msgstr ""
 
-#. strip off extra "." if necessary
 #: ../src/lib/reccard.py:962
 msgid "Save recipe as..."
 msgstr ""
@@ -2932,7 +2903,6 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/recindex.py:210
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
@@ -2963,7 +2933,8 @@ msgstr ""
 
 #: ../src/lib/recipeManager.py:15
 #, python-format
-msgid "Please enter your password for user %s of the MySQL database at host %s"
+msgid ""
+"Please enter your password for user %s of the MySQL database at host %s"
 msgstr ""
 
 #: ../src/lib/recipeManager.py:18
@@ -3017,9 +2988,8 @@ msgid "Enter Category"
 msgstr ""
 
 #: ../src/lib/shopgui.py:460
-#, fuzzy
 msgid "Category:"
-msgstr "<b>Categoría:</b>"
+msgstr ""
 
 #: ../src/lib/shopgui.py:622
 msgid "Recipe calls for itself as an ingredient."
@@ -3121,7 +3091,6 @@ msgstr ""
 msgid "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
 msgstr ""
 
-#. repeated in setup.cfg
 #: ../src/lib/version.py:7
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
@@ -3185,7 +3154,6 @@ msgstr ""
 msgid "Retrieving file"
 msgstr ""
 
-#. Interactive we go...
 #: ../src/lib/importers/html_importer.py:478
 msgid "Don't recognize this webpage. Using generic importer..."
 msgstr ""
@@ -3288,7 +3256,6 @@ msgstr ""
 #. debug('Exception in Handler, trying to clean up source...',0)
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
-#. files, even though some of them may not be fubared :)
 #: ../src/lib/importers/mastercook_importer.py:257
 msgid "Tidying up XML"
 msgstr ""
@@ -3330,7 +3297,6 @@ msgid "Recipe"
 msgstr ""
 
 #. Method from:
-#. http://tgolden.sc.sabren.com/python/win32_how_do_i/print.html#shellexecute
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:215
 #: ../src/lib/exporters/gnomeprinter.py:253
 #: ../src/lib/exporters/winprinter.py:17
@@ -3353,7 +3319,6 @@ msgstr ""
 msgid "Print Recipes"
 msgstr ""
 
-#. Filetypes as presented to user
 #: ../src/lib/exporters/__init__.py:18
 msgid "HTML Web Page"
 msgstr ""
@@ -3650,14 +3615,17 @@ msgstr ""
 msgid "If you'd like, you can open the PDF file."
 msgstr ""
 
-#~ msgid "<b>Title</b>"
-#~ msgstr "<b>Título</b>"
-
 #~ msgid "E-_mail recipes"
 #~ msgstr "Enviar recetas por e-_mail"
 
+#~ msgid "Limiting Search to: "
+#~ msgstr "Limitar Búsqueda a: "
+
 #~ msgid "_Export"
 #~ msgstr "_Exportar"
+
+#~ msgid "<b>Title</b>"
+#~ msgstr "<b>Título</b>"
 
 #~ msgid "Create new ingredient"
 #~ msgstr "Crear nuevo ingrediente"

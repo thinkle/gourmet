@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gourmet Recipe Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-19 12:30-0400\n"
+"POT-Creation-Date: 2006-08-19 12:20-0400\n"
 "PO-Revision-Date: 2006-08-12 17:26+0000\n"
 "Last-Translator: Gregory <desikn@gmail.com>\n"
 "Language-Team: Dutch (Belgium) <nl_BE@li.org>\n"
@@ -93,9 +93,8 @@ msgstr "Ga naar recept in Receptenkaart mode"
 
 #: ../glade/app.glade.h:19 ../glade/recSelector.glade.h:3
 #: ../glade/rec_ref_window.glade.h:2
-#, fuzzy
 msgid "Limiting Search to:"
-msgstr "Limiteer zoeken tot: "
+msgstr ""
 
 #: ../glade/app.glade.h:20
 msgid ""
@@ -446,14 +445,12 @@ msgid "_Advanced Search"
 msgstr "_Geavanceerd zoeken"
 
 #: ../glade/keyeditor.glade.h:9
-#, fuzzy
 msgid "_Item:"
-msgstr "_Item: "
+msgstr ""
 
 #: ../glade/keyeditor.glade.h:10
-#, fuzzy
 msgid "_Key:"
-msgstr "_Sleutel: "
+msgstr ""
 
 #: ../glade/keyeditor.glade.h:11
 msgid "_Search for:"
@@ -490,9 +487,8 @@ msgid "<i>Enter nutritional information for </i>"
 msgstr "<i>Voedingswaarde informatie invullen</i>"
 
 #: ../glade/nutritionDruid.glade.h:3
-#, fuzzy
 msgid "<i>From:</i>"
-msgstr "<i>Van: </i>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:4
 msgid "<i>Search _results:</i>"
@@ -503,9 +499,8 @@ msgid "<i>Select equivalent of</i>"
 msgstr "<i>Equivalent selecteren van</i>"
 
 #: ../glade/nutritionDruid.glade.h:6
-#, fuzzy
 msgid "<i>To:</i>"
-msgstr "<i>Naar: </i>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:7
 msgid "<i>from USDA database</i>"
@@ -524,9 +519,8 @@ msgid "Show only food in _group:"
 msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:12
-#, fuzzy
 msgid "Unit:"
-msgstr "Eenheid: "
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:14
 msgid "_Change ingredient"
@@ -643,9 +637,8 @@ msgid "_Never add optional ingredients"
 msgstr "_Nooit optionele ingredienten toevoegen"
 
 #: ../glade/preferenceDialog.glade.h:23
-#, fuzzy
 msgid "_Recipes per page:"
-msgstr "_Recepten per pagina: "
+msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:24
 msgid "_Remember user selections by default"
@@ -826,9 +819,8 @@ msgid "Edit section chooser"
 msgstr "Sectiekiezer bewerken"
 
 #: ../glade/recCard.glade.h:44
-#, fuzzy
 msgid "Image:"
-msgstr "_Afbeelding: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:45
 msgid "Import ingredients from a plain text file."
@@ -881,9 +873,8 @@ msgid "Paste ingredient list from the clipboard."
 msgstr "Plak de ingrediëntenlijst vanuit het klembord."
 
 #: ../glade/recCard.glade.h:56
-#, fuzzy
 msgid "Pre_paration Time:"
-msgstr "Voor_bereidingstijd: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:57
 msgid "Print recipe"
@@ -902,9 +893,8 @@ msgid "Revert"
 msgstr ""
 
 #: ../glade/recCard.glade.h:63
-#, fuzzy
 msgid "S_hopping Category:"
-msgstr "B_oodschappencategorie: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:64
 msgid "S_ource:"
@@ -1030,14 +1020,12 @@ msgid "_Save"
 msgstr "_Opslaan"
 
 #: ../glade/recCard.glade.h:99
-#, fuzzy
 msgid "_Servings:"
-msgstr "_Porties: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:102
-#, fuzzy
 msgid "_Title:"
-msgstr "_Titel: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:104
 msgid "_Underline"
@@ -1092,7 +1080,6 @@ msgid "rating"
 msgstr "waardering"
 
 #. _('rating'):'rating',
-#. _('rating'),
 #: ../glade/rec_ref_window.glade.h:12 ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:54
 msgid "source"
@@ -1187,10 +1174,10 @@ msgid ""
 "list as a reminder that you need it, but it won't be included when you save "
 "or print your shopping list."
 msgstr ""
-"Verwijder dit item van het boodschappenlijstje. Het zal in de \"provisiekast"
-"\"-lijst verschijnen als een herinnering dat u het moet kopen, maar het zal "
-"niet inbegrepen worden wanneer u uw boodschappenlijstje wilt opslaan of "
-"afdrukken."
+"Verwijder dit item van het boodschappenlijstje. Het zal in de "
+"\"provisiekast\"-lijst verschijnen als een herinnering dat u het moet kopen, "
+"maar het zal niet inbegrepen worden wanneer u uw boodschappenlijstje wilt "
+"opslaan of afdrukken."
 
 #: ../glade/shopList.glade.h:20
 msgid "Return Item to Shopping List"
@@ -1306,19 +1293,16 @@ msgstr "Densiteitsinformatie nodig."
 #. plural forms of time units. We use range(5) since as far as I
 #. can see, enumerating the forms for 0 through 5 should give you
 #. all possible forms in all languages.
-#.
-#. See http://www.sbin.org/doc/glibc/libc_8.html
+#. 
 #: ../src/lib/convert.py:61 ../src/lib/convert.py:544
 msgid "second"
 msgid_plural "seconds"
 msgstr[0] "seconden"
 msgstr[1] "seconden"
 
-#. min. = abbreviation for minutes
 #: ../src/lib/convert.py:63
-#, fuzzy
 msgid "min"
-msgstr "min."
+msgstr ""
 
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:543
 msgid "minute"
@@ -1326,7 +1310,6 @@ msgid_plural "minutes"
 msgstr[0] "minuten"
 msgstr[1] "minuten"
 
-#. hrs = abbreviation for hours
 #: ../src/lib/convert.py:65
 msgid "hrs."
 msgstr "u."
@@ -1345,7 +1328,6 @@ msgstr[1] "dagen"
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
-#. 'decades':lambda decades: ngettext("decade","decades",round(decades))
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:538
 msgid "year"
 msgid_plural "years"
@@ -1369,7 +1351,6 @@ msgstr[1] ""
 #. and 6. This set-up allows for variations of this system only.
 #. You can of course make your language only use commas or
 #. ands or spaces or whatever you like by translating both
-#. ", " and " and " with the same string.
 #: ../src/lib/convert.py:587
 msgid " and "
 msgstr ""
@@ -1388,17 +1369,14 @@ msgstr ""
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
-#. show up sometimes.
 #: ../src/lib/convert.py:740
 msgid "to"
 msgstr ""
 
-#. setup pause button
 #: ../src/lib/dialog_extras.py:398
 msgid "_Pause"
 msgstr "_Gepauzeerd"
 
-#. setup stop button
 #: ../src/lib/dialog_extras.py:409
 msgid "_Stop"
 msgstr "_Stop"
@@ -1497,7 +1475,6 @@ msgid ""
 msgstr ""
 
 #. renderer.set_property('editable',True)
-#. renderer.connect('edited',tst)
 #: ../src/lib/gglobals.py:234 ../src/lib/shopgui.py:102
 #: ../src/lib/exporters/rtf_exporter.py:79
 msgid "Title"
@@ -1535,7 +1512,6 @@ msgstr "Kooktijd"
 msgid "Modifications"
 msgstr "Wijzigingen"
 
-#. print dir(err)
 #: ../src/lib/gglobals.py:318
 msgid "Unable to open URL"
 msgstr "Openen van locatie mislukte."
@@ -1742,9 +1718,9 @@ msgid "Number of servings of %s to shop for"
 msgstr "Aantal porties van %s om te kopen"
 
 #: ../src/lib/GourmetRecipeManager.py:739
-#, fuzzy, python-format
+#, python-format
 msgid "Multiply %s by:"
-msgstr "Vermenigvuldig %s met: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:768 ../src/lib/shopgui.py:160
 msgid "Saved!"
@@ -1810,9 +1786,8 @@ msgid "Enter website address."
 msgstr "Vul website adres in."
 
 #: ../src/lib/GourmetRecipeManager.py:884
-#, fuzzy
 msgid "Enter URL:"
-msgstr "URL: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:885
 msgid ""
@@ -1878,9 +1853,8 @@ msgid "Default source for recipes imported from %s"
 msgstr "Standaard bron voor recepten geïmporteerd van %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1023
-#, fuzzy
 msgid "Source:"
-msgstr "B_ron:"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1052
 #, python-format
@@ -1987,7 +1961,6 @@ msgstr[1] ""
 msgid "Key"
 msgstr "Sleutel"
 
-#. to set our regexp_toggled variable
 #: ../src/lib/keyEditor.py:79 ../src/lib/keyEditor.py:228
 msgid "key"
 msgstr "sleutel"
@@ -2116,14 +2089,12 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/keyEditor.py:417
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
 msgstr ""
 
 #. self._hide_warning_slowly()
-#. return
 #: ../src/lib/numberEntry.py:27 ../src/lib/timeEntry.py:54
 #: ../src/lib/timeEntry.py:64
 msgid "Invalid input."
@@ -2203,10 +2174,10 @@ msgstr ""
 #: ../src/lib/nutrition/nutritionDruid.py:560
 #, python-format
 msgid ""
-"In order to calculate nutritional information for \"%(amount)s %(unit)s %"
-"(ingkey)s\", Gourmet needs to know its density. Our nutritional database has "
-"several descriptions of this food with different densities. Please select "
-"the correct one below."
+"In order to calculate nutritional information for \"%(amount)s %(unit)s "
+"%(ingkey)s\", Gourmet needs to know its density. Our nutritional database "
+"has several descriptions of this food with different densities. Please "
+"select the correct one below."
 msgstr ""
 
 #: ../src/lib/nutrition/nutritionDruid.py:711
@@ -2223,7 +2194,6 @@ msgstr ""
 #. filename=de.select_file(
 #. 'Find ABBREV.txt file',
 #. filters=[['Plain Text',['text/plain'],['*txt']]]
-#. )
 #: ../src/lib/nutrition/nutritionGrabberGui.py:35
 msgid "Loading Nutritional Data"
 msgstr ""
@@ -2627,7 +2597,6 @@ msgstr ""
 
 #. the DB Food Group Numbers seem to be inline with the group IDs
 #. (numbers > 1000 are in group 100, etc.)
-#. Since that's true, we can use the following table to properly add groups.
 #: ../src/lib/nutrition/parser_data.py:335
 msgid "Dairy & Egg Products"
 msgstr ""
@@ -2724,7 +2693,6 @@ msgstr ""
 msgid "Ethnic Foods"
 msgstr ""
 
-#. self.serves = float(self.serveW.get_text())
 #: ../src/lib/reccard.py:201
 msgid "Edit Recipe:"
 msgstr ""
@@ -2733,7 +2701,6 @@ msgstr ""
 msgid "Recipe Card:"
 msgstr ""
 
-#. action groups
 #: ../src/lib/reccard.py:283
 msgid "Add _ingredient"
 msgstr ""
@@ -2768,7 +2735,6 @@ msgstr "Verplaats geselecteerd ingrediënt omlaag."
 
 #. 'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
 #. ['editButton','editMenu']]},
-#. ],
 #: ../src/lib/reccard.py:324
 msgid "View recipe card for current recipe"
 msgstr ""
@@ -2779,9 +2745,8 @@ msgid "Unable to find recipe %s in database."
 msgstr ""
 
 #: ../src/lib/reccard.py:471
-#, fuzzy
 msgid "Choose an image to insert in instructions..."
-msgstr "Kies een afbeelding om bij instructies in te voegen ... "
+msgstr ""
 
 #: ../src/lib/reccard.py:589
 #, python-format
@@ -2801,12 +2766,10 @@ msgstr "Weet geen raad met %s als aantal porties"
 msgid "(Optional)"
 msgstr "(Optioneel)"
 
-#. FIXME
 #: ../src/lib/reccard.py:918
 msgid "Choose a file containing your ingredient list."
 msgstr "Kies een bestand die uw ingrediëntenlijst bevat."
 
-#. strip off extra "." if necessary
 #: ../src/lib/reccard.py:962
 msgid "Save recipe as..."
 msgstr "Sla recept op als ..."
@@ -2821,9 +2784,9 @@ msgid "There was an error during export."
 msgstr "Er was een fout opgetreden tijdens het exporteren."
 
 #: ../src/lib/reccard.py:1008
-#, fuzzy, python-format
+#, python-format
 msgid "Exported %(filetype)s to %(filename)s"
-msgstr "%s naar %s geëxporteerd"
+msgstr ""
 
 #: ../src/lib/reccard.py:1091 ../src/lib/reccard.py:1143
 #: ../src/lib/reccard.py:1154
@@ -2924,9 +2887,8 @@ msgid "Enter a name for new subgroup of ingredients"
 msgstr "Geef een nieuwe naam in voor subgroep van ingrediënten"
 
 #: ../src/lib/reccard.py:2417
-#, fuzzy
 msgid "Name of group:"
-msgstr "Naam van groep: "
+msgstr ""
 
 #: ../src/lib/reccard.py:2808
 #, python-format
@@ -2969,7 +2931,6 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/recindex.py:210
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
@@ -3000,15 +2961,15 @@ msgstr "Geef uw paswoord in"
 
 #: ../src/lib/recipeManager.py:15
 #, python-format
-msgid "Please enter your password for user %s of the MySQL database at host %s"
+msgid ""
+"Please enter your password for user %s of the MySQL database at host %s"
 msgstr ""
 "Gelieve uw paswoord voor gebruiker %s van de MySQL databank op host %s in te "
 "geven"
 
 #: ../src/lib/recipeManager.py:18
-#, fuzzy
 msgid "Password:"
-msgstr "Paswoord: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:69
 msgid ""
@@ -3057,9 +3018,8 @@ msgid "Enter Category"
 msgstr "Geef categorie in"
 
 #: ../src/lib/shopgui.py:460
-#, fuzzy
 msgid "Category:"
-msgstr "Categorie: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:622
 msgid "Recipe calls for itself as an ingredient."
@@ -3163,9 +3123,7 @@ msgstr "Gourmet Receptenbeheerder"
 msgid "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
 msgstr ""
 
-#. repeated in setup.cfg
 #: ../src/lib/version.py:7
-#, fuzzy
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
@@ -3176,13 +3134,6 @@ msgid ""
 "recipes. Gourmet can also calculate nutritional information for recipes "
 "based on the ingredients."
 msgstr ""
-"Gourmet receptenbeheerder is een programma om recepten te bewaren, "
-"organizeren en te zoeken. Gourmet maakt het ook gemakkelijk om "
-"boodschappenlijstjes te creeëren van recepten. Gourmet importeert MealMaster "
-"en MasterCook XML-bestanden en kan naar een aantal bestanden exporteren, "
-"zoals tekst, HTML webpagina's en een XML-formaat om met andere Gourmet "
-"gebruikers uit te wisselen. Gourmet ondersteunt het linken naar afbeeldingen "
-"in recepten."
 
 #: ../src/lib/version.py:9
 msgid "Roland Duhaime (Windows porting assistance)"
@@ -3235,7 +3186,6 @@ msgstr ""
 msgid "Retrieving file"
 msgstr ""
 
-#. Interactive we go...
 #: ../src/lib/importers/html_importer.py:478
 msgid "Don't recognize this webpage. Using generic importer..."
 msgstr ""
@@ -3338,7 +3288,6 @@ msgstr "MasterCook import beëindigd."
 #. debug('Exception in Handler, trying to clean up source...',0)
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
-#. files, even though some of them may not be fubared :)
 #: ../src/lib/importers/mastercook_importer.py:257
 msgid "Tidying up XML"
 msgstr "XML schoonmaken"
@@ -3380,7 +3329,6 @@ msgid "Recipe"
 msgstr "Recept"
 
 #. Method from:
-#. http://tgolden.sc.sabren.com/python/win32_how_do_i/print.html#shellexecute
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:215
 #: ../src/lib/exporters/gnomeprinter.py:253
 #: ../src/lib/exporters/winprinter.py:17
@@ -3403,7 +3351,6 @@ msgstr "_Bereik"
 msgid "Print Recipes"
 msgstr "Druk recepten af"
 
-#. Filetypes as presented to user
 #: ../src/lib/exporters/__init__.py:18
 msgid "HTML Web Page"
 msgstr "HTML Webpagina"
@@ -3471,7 +3418,8 @@ msgstr "Tekst export"
 #: ../src/lib/exporters/__init__.py:107
 #, python-format
 msgid "Exporting recipes to Plain Text file %(file)s."
-msgstr "Bezig recepten naar platte tekst-bestand %(file)s aan het exporteren."
+msgstr ""
+"Bezig recepten naar platte tekst-bestand %(file)s aan het exporteren."
 
 #: ../src/lib/exporters/__init__.py:108
 #, python-format
@@ -3531,7 +3479,8 @@ msgstr "Kan commando \"%s\" niet vinden."
 
 #: ../src/lib/exporters/lprprinter.py:17
 msgid "Please enter the command you would like to use to print."
-msgstr "Gelieve het commando te geven welke u wilt gebruiken om af te drukken."
+msgstr ""
+"Gelieve het commando te geven welke u wilt gebruiken om af te drukken."
 
 #: ../src/lib/exporters/lprprinter.py:22
 #, python-format
@@ -3547,9 +3496,8 @@ msgstr ""
 "aantrekkelijkere interface."
 
 #: ../src/lib/exporters/lprprinter.py:31
-#, fuzzy
 msgid "Command:"
-msgstr "Commando: "
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:643
 #: ../src/lib/exporters/pdf_exporter.py:660
@@ -3562,15 +3510,13 @@ msgstr ""
 #: ../src/lib/exporters/pdf_exporter.py:734
 #: ../src/lib/exporters/pdf_exporter.py:759
 #: ../src/lib/exporters/winprinter.py:59
-#, fuzzy
 msgid "Portrait"
-msgstr "Druk af"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:646
 #: ../src/lib/exporters/pdf_exporter.py:675
-#, fuzzy
 msgid "Plain"
-msgstr "Platte tekst"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:655
 msgid "11x17\""
@@ -3707,23 +3653,17 @@ msgstr ""
 msgid "If you'd like, you can open the PDF file."
 msgstr ""
 
-#~ msgid "_Unit: "
-#~ msgstr "_Eenheid: "
-
-#~ msgid "<b>Title</b>"
-#~ msgstr "<b>Titel</b>"
-
-#~ msgid "Source: "
-#~ msgstr "Bron: "
-
-#~ msgid "Shopping list for: "
-#~ msgstr "Boodschappenlijstje voor: "
-
 #~ msgid "E-_mail recipes"
 #~ msgstr "E-_mail recepten"
 
+#~ msgid "Limiting Search to: "
+#~ msgstr "Limiteer zoeken tot: "
+
 #~ msgid "_Export"
 #~ msgstr "_Exporteren"
+
+#~ msgid "<b>Title</b>"
+#~ msgstr "<b>Titel</b>"
 
 #~ msgid "Add this recipe to a shopping list"
 #~ msgstr "Voeg dit recept toe aan boodschappenlijstje"
@@ -3734,8 +3674,17 @@ msgstr ""
 #~ msgid "Export this recipe as a text file."
 #~ msgstr "Exporteer dit recept als een tekstbestand."
 
+#~ msgid "Image: "
+#~ msgstr "_Afbeelding: "
+
 #~ msgid "Ins_tructions"
 #~ msgstr "Ins_tructies"
+
+#~ msgid "Pre_paration Time: "
+#~ msgstr "Voor_bereidingstijd: "
+
+#~ msgid "S_hopping Category: "
+#~ msgstr "B_oodschappencategorie: "
 
 #~ msgid "_Delete Ingredient"
 #~ msgstr "_Verwijder ingrediënt"
@@ -3754,6 +3703,15 @@ msgstr ""
 
 #~ msgid "_Notes"
 #~ msgstr "_Notities"
+
+#~ msgid "_Servings: "
+#~ msgstr "_Porties: "
+
+#~ msgid "_Title: "
+#~ msgstr "_Titel: "
+
+#~ msgid "_Unit: "
+#~ msgstr "_Eenheid: "
 
 #~ msgid "Advanced"
 #~ msgstr "Geavanceerd"
@@ -3789,21 +3747,35 @@ msgstr ""
 #~ msgid "Deleted "
 #~ msgstr "Verwijderd "
 
+#, python-format
+#~ msgid "Multiply %s by: "
+#~ msgstr "Vermenigvuldig %s met: "
+
+#~ msgid "Enter URL: "
+#~ msgstr "URL: "
+
+#~ msgid "Source: "
+#~ msgstr "Bron: "
+
 #~ msgid "Deleted 1 recipe."
 #~ msgstr "1 recept verwijderd."
 
+#, python-format
 #~ msgid "Deleted %s recipes"
 #~ msgstr "%s recepten verwijderd"
 
 #~ msgid "Are you sure you want to change the "
 #~ msgstr "Bent u zeker dat u het volgende wilt veranderen: "
 
+#, python-format
 #~ msgid "for \"%s from \"%s\""
 #~ msgstr "voor \"%s\" van \"%s\""
 
+#, python-format
 #~ msgid " from \"%s\" "
 #~ msgstr " van \"%s\" "
 
+#, python-format
 #~ msgid " to \"%s\""
 #~ msgstr " naar \"%s\""
 
@@ -3813,6 +3785,7 @@ msgstr ""
 #~ msgid "You haven't entered a key!"
 #~ msgstr "U heeft geen sleutel ingegeven!"
 
+#, python-format
 #~ msgid ""
 #~ "Are you sure you want the keys\n"
 #~ " for all %s selections set to\n"
@@ -3825,16 +3798,23 @@ msgstr ""
 #~ msgid "Recipe Card: "
 #~ msgstr "Receptenkaart: "
 
+#~ msgid "Choose an image to insert in instructions... "
+#~ msgstr "Kies een afbeelding om bij instructies in te voegen ... "
+
 #~ msgid "Changes to ingredients saved automatically."
 #~ msgstr "Veranderingen aan ingrediënten automatisch opgeslagen."
 
+#~ msgid "Name of group: "
+#~ msgstr "Naam van groep: "
+
+#, python-format
 #~ msgid "Are you sure you want to delete %s"
 #~ msgstr "Bent u zeker dat u %s wilt verwijderen"
 
+#, python-format
 #~ msgid "Shall I delete the item contained in %s or move it out of the group?"
 #~ msgid_plural ""
-#~ "Shall I delete the items contained in %s or just move them out of the "
-#~ "group?"
+#~ "Shall I delete the items contained in %s or just move them out of the group?"
 #~ msgstr[0] "Zal ik het item in %s verwijderen of uit de groep verplaatsen?"
 #~ msgstr[1] "Zal ik de items in %s verwijderen of uit de groep verplaatsen?"
 
@@ -3851,14 +3831,23 @@ msgstr ""
 #~ msgid "See ingredients"
 #~ msgstr "Zie ingrediënten"
 
+#, python-format
 #~ msgid "%s Recipes"
 #~ msgstr "%s recepten"
 
+#, python-format
 #~ msgid " %s contains %s"
 #~ msgstr " %s bevat %s"
 
+#, python-format
 #~ msgid ", %s contains %s"
 #~ msgstr ", %s bevat %s"
+
+#~ msgid "Password: "
+#~ msgstr "Paswoord: "
+
+#~ msgid "Category: "
+#~ msgstr "Categorie: "
 
 #~ msgid "seconds"
 #~ msgstr "seconden"
@@ -3884,16 +3873,22 @@ msgstr ""
 #~ msgid "Choose Database File"
 #~ msgstr "Kies databank bestand"
 
+#~ msgid "Command: "
+#~ msgstr "Commando: "
+
+#~ msgid "Shopping list for: "
+#~ msgstr "Boodschappenlijstje voor: "
+
 #~ msgid "Printing not supported"
 #~ msgstr "Afdrukken niet ondersteunt"
 
 #~ msgid ""
-#~ "To print recipes, first export them, then print from another program. If "
-#~ "you install wxWindows, you can print directly from Gourmet."
+#~ "To print recipes, first export them, then print from another program. If you "
+#~ "install wxWindows, you can print directly from Gourmet."
 #~ msgstr ""
-#~ "Om ingrediënten af te drukken, exporteer hun eerst, druk dan af vanuit "
-#~ "een ander programma. Als u wxWindows installeert, dan kan je rechtstreeks "
-#~ "vanuit Gourmet afdrukken."
+#~ "Om ingrediënten af te drukken, exporteer hun eerst, druk dan af vanuit een "
+#~ "ander programma. Als u wxWindows installeert, dan kan je rechtstreeks vanuit "
+#~ "Gourmet afdrukken."
 
 #~ msgid "Search as you _type"
 #~ msgstr "Zoeken terwijl u _typet"
@@ -3928,17 +3923,19 @@ msgstr ""
 #~ msgid "Include this item on your shopping list."
 #~ msgstr "Zet dit item op uw boodschappenlijstje."
 
+#, python-format
 #~ msgid "Cannot import file %s"
 #~ msgstr "Kan bestand %s niet importeren"
 
+#, python-format
 #~ msgid ""
-#~ "It looks like Gourmet cannot import this file. If you believe this file "
-#~ "is in one of the formats Gourmet supports, please submit a bug report at %"
-#~ "s and attach the file."
+#~ "It looks like Gourmet cannot import this file. If you believe this file is "
+#~ "in one of the formats Gourmet supports, please submit a bug report at %s and "
+#~ "attach the file."
 #~ msgstr ""
-#~ "Gourmet kan dit bestand niet importeren. Als u denkt dat dit bestand één "
-#~ "van de formaten is dat Gourmet ondersteunt, gelieve een fout te "
-#~ "rapporteren aan %s en het bestand in bijlage bij te voegen."
+#~ "Gourmet kan dit bestand niet importeren. Als u denkt dat dit bestand één van "
+#~ "de formaten is dat Gourmet ondersteunt, gelieve een fout te rapporteren aan "
+#~ "%s en het bestand in bijlage bij te voegen."
 
 #~ msgid "Show in Index View"
 #~ msgstr "Toon in indexweergave"
@@ -3959,3 +3956,19 @@ msgstr ""
 #~ "Bijvoorbeeld, als u anderhalve kopjes wilt ingeven\n"
 #~ "het veld aantal kan dan \"1.5\" bevatten of \"1 1/2\". \"kopjes\"\n"
 #~ "zou in het aparte veld \"eenheid\" moeten.\n"
+
+#~ msgid ""
+#~ "Gourmet Recipe Manager is an application to store, organize and search "
+#~ "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
+#~ "Gourmet imports MealMaster and MasterCook XML files and can export a number "
+#~ "of formats, including text, HTML web pages, and a custom XML format for "
+#~ "exchange with other Gourmet users. Gourmet supports linking images with "
+#~ "recipes."
+#~ msgstr ""
+#~ "Gourmet receptenbeheerder is een programma om recepten te bewaren, "
+#~ "organizeren en te zoeken. Gourmet maakt het ook gemakkelijk om "
+#~ "boodschappenlijstjes te creeëren van recepten. Gourmet importeert MealMaster "
+#~ "en MasterCook XML-bestanden en kan naar een aantal bestanden exporteren, "
+#~ "zoals tekst, HTML webpagina's en een XML-formaat om met andere Gourmet "
+#~ "gebruikers uit te wisselen. Gourmet ondersteunt het linken naar afbeeldingen "
+#~ "in recepten."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-19 12:30-0400\n"
+"POT-Creation-Date: 2006-08-19 12:20-0400\n"
 "PO-Revision-Date: 2005-10-11 19:40+0000\n"
 "Last-Translator: Branislav Hanacek <brango@brango.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Rosetta-Version: 0.1\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
 "X-Generator: Rosetta (http://launchpad.ubuntu.com/rosetta/)\n"
 
 #: ../glade/app.glade.h:1 ../glade/recSelector.glade.h:1
@@ -94,9 +94,8 @@ msgstr "Skočiť na recept v karte receptu"
 
 #: ../glade/app.glade.h:19 ../glade/recSelector.glade.h:3
 #: ../glade/rec_ref_window.glade.h:2
-#, fuzzy
 msgid "Limiting Search to:"
-msgstr "Obmedziť vyhľadávanie na: "
+msgstr ""
 
 #: ../glade/app.glade.h:20
 msgid ""
@@ -447,14 +446,12 @@ msgid "_Advanced Search"
 msgstr ""
 
 #: ../glade/keyeditor.glade.h:9
-#, fuzzy
 msgid "_Item:"
-msgstr "_Položka:"
+msgstr ""
 
 #: ../glade/keyeditor.glade.h:10
-#, fuzzy
 msgid "_Key:"
-msgstr "Kľúč"
+msgstr ""
 
 #: ../glade/keyeditor.glade.h:11
 msgid "_Search for:"
@@ -489,9 +486,8 @@ msgid "<i>Enter nutritional information for </i>"
 msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:3
-#, fuzzy
 msgid "<i>From:</i>"
-msgstr "<b>Od</b>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:4
 msgid "<i>Search _results:</i>"
@@ -502,9 +498,8 @@ msgid "<i>Select equivalent of</i>"
 msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:6
-#, fuzzy
 msgid "<i>To:</i>"
-msgstr "<b>Do</b>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:7
 msgid "<i>from USDA database</i>"
@@ -523,9 +518,8 @@ msgid "Show only food in _group:"
 msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:12
-#, fuzzy
 msgid "Unit:"
-msgstr "_Jednotka"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:14
 msgid "_Change ingredient"
@@ -570,7 +564,8 @@ msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:6
 msgid "<i>Preferences for use when sending a recipe in an email.</i>"
-msgstr "<i>Nastavenia použité pri posielaní receptu elektronickou poštou.</i>"
+msgstr ""
+"<i>Nastavenia použité pri posielaní receptu elektronickou poštou.</i>"
 
 #: ../glade/preferenceDialog.glade.h:7
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
@@ -642,9 +637,8 @@ msgid "_Never add optional ingredients"
 msgstr "Voliteľné prísady _nikdy nepridať"
 
 #: ../glade/preferenceDialog.glade.h:23
-#, fuzzy
 msgid "_Recipes per page:"
-msgstr "_Recepty"
+msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:24
 msgid "_Remember user selections by default"
@@ -825,9 +819,8 @@ msgid "Edit section chooser"
 msgstr ""
 
 #: ../glade/recCard.glade.h:44
-#, fuzzy
 msgid "Image:"
-msgstr "Obrázok: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:45
 msgid "Import ingredients from a plain text file."
@@ -880,9 +873,8 @@ msgid "Paste ingredient list from the clipboard."
 msgstr "Vložiť prísady zo schránky."
 
 #: ../glade/recCard.glade.h:56
-#, fuzzy
 msgid "Pre_paration Time:"
-msgstr "Doba _prípravy: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:57
 msgid "Print recipe"
@@ -901,9 +893,8 @@ msgid "Revert"
 msgstr ""
 
 #: ../glade/recCard.glade.h:63
-#, fuzzy
 msgid "S_hopping Category:"
-msgstr "Nákupná _kategória: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:64
 msgid "S_ource:"
@@ -1027,14 +1018,12 @@ msgid "_Save"
 msgstr "_Uložiť"
 
 #: ../glade/recCard.glade.h:99
-#, fuzzy
 msgid "_Servings:"
-msgstr "Por_cií: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:102
-#, fuzzy
 msgid "_Title:"
-msgstr "Ná_zov: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:104
 msgid "_Underline"
@@ -1089,7 +1078,6 @@ msgid "rating"
 msgstr "hodnoteniach"
 
 #. _('rating'):'rating',
-#. _('rating'),
 #: ../glade/rec_ref_window.glade.h:12 ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:54
 msgid "source"
@@ -1300,8 +1288,7 @@ msgstr "Je potrebná informácia o hustote"
 #. plural forms of time units. We use range(5) since as far as I
 #. can see, enumerating the forms for 0 through 5 should give you
 #. all possible forms in all languages.
-#.
-#. See http://www.sbin.org/doc/glibc/libc_8.html
+#. 
 #: ../src/lib/convert.py:61 ../src/lib/convert.py:544
 msgid "second"
 msgid_plural "seconds"
@@ -1309,11 +1296,9 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#. min. = abbreviation for minutes
 #: ../src/lib/convert.py:63
-#, fuzzy
 msgid "min"
-msgstr "_v"
+msgstr ""
 
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:543
 msgid "minute"
@@ -1322,7 +1307,6 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#. hrs = abbreviation for hours
 #: ../src/lib/convert.py:65
 msgid "hrs."
 msgstr ""
@@ -1343,7 +1327,6 @@ msgstr[2] ""
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
-#. 'decades':lambda decades: ngettext("decade","decades",round(decades))
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:538
 msgid "year"
 msgid_plural "years"
@@ -1370,7 +1353,6 @@ msgstr[2] ""
 #. and 6. This set-up allows for variations of this system only.
 #. You can of course make your language only use commas or
 #. ands or spaces or whatever you like by translating both
-#. ", " and " and " with the same string.
 #: ../src/lib/convert.py:587
 msgid " and "
 msgstr ""
@@ -1389,17 +1371,14 @@ msgstr ""
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
-#. show up sometimes.
 #: ../src/lib/convert.py:740
 msgid "to"
 msgstr "do"
 
-#. setup pause button
 #: ../src/lib/dialog_extras.py:398
 msgid "_Pause"
 msgstr "_Pozastaviť"
 
-#. setup stop button
 #: ../src/lib/dialog_extras.py:409
 msgid "_Stop"
 msgstr "_Zastaviť"
@@ -1509,7 +1488,6 @@ msgstr ""
 "Napríklad, môžete zadať 2-4 alebo 1 1/2-3 1/2.\n"
 
 #. renderer.set_property('editable',True)
-#. renderer.connect('edited',tst)
 #: ../src/lib/gglobals.py:234 ../src/lib/shopgui.py:102
 #: ../src/lib/exporters/rtf_exporter.py:79
 msgid "Title"
@@ -1547,7 +1525,6 @@ msgstr "Doba varenia"
 msgid "Modifications"
 msgstr "Zmeny"
 
-#. print dir(err)
 #: ../src/lib/gglobals.py:318
 msgid "Unable to open URL"
 msgstr "Nie je možné otvoriť URL"
@@ -1754,9 +1731,9 @@ msgid "Number of servings of %s to shop for"
 msgstr "Nakúpiť pre %s porcií"
 
 #: ../src/lib/GourmetRecipeManager.py:739
-#, fuzzy, python-format
+#, python-format
 msgid "Multiply %s by:"
-msgstr "Vynásobiť %s: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:768 ../src/lib/shopgui.py:160
 msgid "Saved!"
@@ -1826,9 +1803,8 @@ msgid "Enter website address."
 msgstr "Zadajte adresu Web-stránky."
 
 #: ../src/lib/GourmetRecipeManager.py:884
-#, fuzzy
 msgid "Enter URL:"
-msgstr "Zadajte URL: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:885
 msgid ""
@@ -1897,9 +1873,8 @@ msgid "Default source for recipes imported from %s"
 msgstr "Predvolený zdroj pre recepty importované z %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1023
-#, fuzzy
 msgid "Source:"
-msgstr "Zdro_j:"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1052
 #, python-format
@@ -2015,7 +1990,6 @@ msgstr[2] ""
 msgid "Key"
 msgstr "Kľúč"
 
-#. to set our regexp_toggled variable
 #: ../src/lib/keyEditor.py:79 ../src/lib/keyEditor.py:228
 msgid "key"
 msgstr "kľúč"
@@ -2145,14 +2119,12 @@ msgstr[1] ""
 msgstr[2] ""
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/keyEditor.py:417
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
 msgstr ""
 
 #. self._hide_warning_slowly()
-#. return
 #: ../src/lib/numberEntry.py:27 ../src/lib/timeEntry.py:54
 #: ../src/lib/timeEntry.py:64
 msgid "Invalid input."
@@ -2232,10 +2204,10 @@ msgstr ""
 #: ../src/lib/nutrition/nutritionDruid.py:560
 #, python-format
 msgid ""
-"In order to calculate nutritional information for \"%(amount)s %(unit)s %"
-"(ingkey)s\", Gourmet needs to know its density. Our nutritional database has "
-"several descriptions of this food with different densities. Please select "
-"the correct one below."
+"In order to calculate nutritional information for \"%(amount)s %(unit)s "
+"%(ingkey)s\", Gourmet needs to know its density. Our nutritional database "
+"has several descriptions of this food with different densities. Please "
+"select the correct one below."
 msgstr ""
 
 #: ../src/lib/nutrition/nutritionDruid.py:711
@@ -2252,7 +2224,6 @@ msgstr ""
 #. filename=de.select_file(
 #. 'Find ABBREV.txt file',
 #. filters=[['Plain Text',['text/plain'],['*txt']]]
-#. )
 #: ../src/lib/nutrition/nutritionGrabberGui.py:35
 msgid "Loading Nutritional Data"
 msgstr ""
@@ -2656,7 +2627,6 @@ msgstr ""
 
 #. the DB Food Group Numbers seem to be inline with the group IDs
 #. (numbers > 1000 are in group 100, etc.)
-#. Since that's true, we can use the following table to properly add groups.
 #: ../src/lib/nutrition/parser_data.py:335
 msgid "Dairy & Egg Products"
 msgstr ""
@@ -2753,7 +2723,6 @@ msgstr ""
 msgid "Ethnic Foods"
 msgstr ""
 
-#. self.serves = float(self.serveW.get_text())
 #: ../src/lib/reccard.py:201
 msgid "Edit Recipe:"
 msgstr ""
@@ -2762,7 +2731,6 @@ msgstr ""
 msgid "Recipe Card:"
 msgstr ""
 
-#. action groups
 #: ../src/lib/reccard.py:283
 msgid "Add _ingredient"
 msgstr ""
@@ -2797,7 +2765,6 @@ msgstr "Posunúť vybranú prísadu nadol."
 
 #. 'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
 #. ['editButton','editMenu']]},
-#. ],
 #: ../src/lib/reccard.py:324
 msgid "View recipe card for current recipe"
 msgstr ""
@@ -2808,9 +2775,8 @@ msgid "Unable to find recipe %s in database."
 msgstr ""
 
 #: ../src/lib/reccard.py:471
-#, fuzzy
 msgid "Choose an image to insert in instructions..."
-msgstr "Vybrať obrázok pre postup... "
+msgstr ""
 
 #: ../src/lib/reccard.py:589
 #, python-format
@@ -2830,12 +2796,10 @@ msgstr "Nie je možné reprezentovať %s ako počet porcií"
 msgid "(Optional)"
 msgstr "(Voliteľné)"
 
-#. FIXME
 #: ../src/lib/reccard.py:918
 msgid "Choose a file containing your ingredient list."
 msgstr "Vybrať súbor obsahujúci zoznam prísad."
 
-#. strip off extra "." if necessary
 #: ../src/lib/reccard.py:962
 msgid "Save recipe as..."
 msgstr "Uložiť recept ako..."
@@ -2850,9 +2814,9 @@ msgid "There was an error during export."
 msgstr "Počas exportu nastala chyba."
 
 #: ../src/lib/reccard.py:1008
-#, fuzzy, python-format
+#, python-format
 msgid "Exported %(filetype)s to %(filename)s"
-msgstr "Exportované %s do %s"
+msgstr ""
 
 #: ../src/lib/reccard.py:1091 ../src/lib/reccard.py:1143
 #: ../src/lib/reccard.py:1154
@@ -2953,9 +2917,8 @@ msgid "Enter a name for new subgroup of ingredients"
 msgstr "Vložiť meno pre novú podskupinu prísad"
 
 #: ../src/lib/reccard.py:2417
-#, fuzzy
 msgid "Name of group:"
-msgstr "Meno skupiny: "
+msgstr ""
 
 #: ../src/lib/reccard.py:2808
 #, python-format
@@ -2999,7 +2962,6 @@ msgstr[1] ""
 msgstr[2] ""
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/recindex.py:210
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
@@ -3030,14 +2992,14 @@ msgstr "Zadajte heslo"
 
 #: ../src/lib/recipeManager.py:15
 #, python-format
-msgid "Please enter your password for user %s of the MySQL database at host %s"
+msgid ""
+"Please enter your password for user %s of the MySQL database at host %s"
 msgstr ""
 "Zadajte, prosím, Vaše heslo pre užívateľa %s v MySQL databáze na počítači %s"
 
 #: ../src/lib/recipeManager.py:18
-#, fuzzy
 msgid "Password:"
-msgstr "Heslo: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:69
 msgid ""
@@ -3090,9 +3052,8 @@ msgid "Enter Category"
 msgstr "Vložiť kategóriu"
 
 #: ../src/lib/shopgui.py:460
-#, fuzzy
 msgid "Category:"
-msgstr "Kategória: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:622
 msgid "Recipe calls for itself as an ingredient."
@@ -3196,9 +3157,7 @@ msgstr "Správca receptov Gourmet"
 msgid "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
 msgstr ""
 
-#. repeated in setup.cfg
 #: ../src/lib/version.py:7
-#, fuzzy
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
@@ -3209,13 +3168,6 @@ msgid ""
 "recipes. Gourmet can also calculate nutritional information for recipes "
 "based on the ingredients."
 msgstr ""
-"Správca receptov Gourmet je aplakácia naukladanie, organizáciu a "
-"vyhľadávanie receptob. Gourmet taktiež pomáha pri vytváraní nákupných "
-"zoznamov pre vybrané recepty. Gourmet dokáže importovať recepty z množstva "
-"zdrojov, včítane archívov MealMaster a MasterCook a niekoľkých populárnych "
-"Web-stránok. Gourmet dokáže exportovať recepty ako text, súbory MealMaster, "
-"HTML web-stránky alebo XML súbor pre ľahšiu výmenu s inými používateľmi. "
-"Gourmet podporuje priloženie obrázka k receptu."
 
 #: ../src/lib/version.py:9
 msgid "Roland Duhaime (Windows porting assistance)"
@@ -3268,7 +3220,6 @@ msgstr ""
 msgid "Retrieving file"
 msgstr ""
 
-#. Interactive we go...
 #: ../src/lib/importers/html_importer.py:478
 msgid "Don't recognize this webpage. Using generic importer..."
 msgstr ""
@@ -3371,7 +3322,6 @@ msgstr "Import súboru vo formáte MasterCook dokončený."
 #. debug('Exception in Handler, trying to clean up source...',0)
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
-#. files, even though some of them may not be fubared :)
 #: ../src/lib/importers/mastercook_importer.py:257
 msgid "Tidying up XML"
 msgstr "Čistí sa XML"
@@ -3413,7 +3363,6 @@ msgid "Recipe"
 msgstr "Recept"
 
 #. Method from:
-#. http://tgolden.sc.sabren.com/python/win32_how_do_i/print.html#shellexecute
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:215
 #: ../src/lib/exporters/gnomeprinter.py:253
 #: ../src/lib/exporters/winprinter.py:17
@@ -3436,7 +3385,6 @@ msgstr "_Rozsah"
 msgid "Print Recipes"
 msgstr "Tlačiť recepty"
 
-#. Filetypes as presented to user
 #: ../src/lib/exporters/__init__.py:18
 msgid "HTML Web Page"
 msgstr "HTML web-stránka"
@@ -3580,9 +3528,8 @@ msgstr ""
 "atraktívnejším rozhraním."
 
 #: ../src/lib/exporters/lprprinter.py:31
-#, fuzzy
 msgid "Command:"
-msgstr "Príkaz: "
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:643
 #: ../src/lib/exporters/pdf_exporter.py:660
@@ -3595,15 +3542,13 @@ msgstr ""
 #: ../src/lib/exporters/pdf_exporter.py:734
 #: ../src/lib/exporters/pdf_exporter.py:759
 #: ../src/lib/exporters/winprinter.py:59
-#, fuzzy
 msgid "Portrait"
-msgstr "Tlačiť"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:646
 #: ../src/lib/exporters/pdf_exporter.py:675
-#, fuzzy
 msgid "Plain"
-msgstr "Normálny text"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:655
 msgid "11x17\""
@@ -3712,7 +3657,8 @@ msgstr "E-mail nebol odoslaný."
 msgid ""
 "You have not chosen to include the recipe in the body of the message or as "
 "an attachment."
-msgstr "Nezvolili ste vloženie receptu do E-mailu ani pripojenie ako prílohu."
+msgstr ""
+"Nezvolili ste vloženie receptu do E-mailu ani pripojenie ako prílohu."
 
 #: ../src/lib/exporters/winprinter.py:18
 #, python-format
@@ -3739,23 +3685,17 @@ msgstr ""
 msgid "If you'd like, you can open the PDF file."
 msgstr ""
 
-#~ msgid "_Unit: "
-#~ msgstr "_Jednotka: "
-
-#~ msgid "<b>Title</b>"
-#~ msgstr "<b>Názov</b>"
-
-#~ msgid "Source: "
-#~ msgstr "Zdroj: "
-
-#~ msgid "Shopping list for: "
-#~ msgstr "Nákupný list pre: "
-
 #~ msgid "E-_mail recipes"
 #~ msgstr "Poslať recept E-_mailom"
 
+#~ msgid "Limiting Search to: "
+#~ msgstr "Obmedziť vyhľadávanie na: "
+
 #~ msgid "_Export"
 #~ msgstr "_Exportovať"
+
+#~ msgid "<b>Title</b>"
+#~ msgstr "<b>Názov</b>"
 
 #~ msgid "Add this recipe to a shopping list"
 #~ msgstr "Pridať tento recept do nákupného zoznamu"
@@ -3766,8 +3706,17 @@ msgstr ""
 #~ msgid "Export this recipe as a text file."
 #~ msgstr "Eportovať tento recept ako textový súbor."
 
+#~ msgid "Image: "
+#~ msgstr "Obrázok: "
+
 #~ msgid "Ins_tructions"
 #~ msgstr "_Postup"
+
+#~ msgid "Pre_paration Time: "
+#~ msgstr "Doba _prípravy: "
+
+#~ msgid "S_hopping Category: "
+#~ msgstr "Nákupná _kategória: "
 
 #~ msgid "_Delete Ingredient"
 #~ msgstr "_Odstrániť prísadu"
@@ -3786,6 +3735,15 @@ msgstr ""
 
 #~ msgid "_Notes"
 #~ msgstr "_Poznámky"
+
+#~ msgid "_Servings: "
+#~ msgstr "Por_cií: "
+
+#~ msgid "_Title: "
+#~ msgstr "Ná_zov: "
+
+#~ msgid "_Unit: "
+#~ msgstr "_Jednotka: "
 
 #~ msgid "Advanced"
 #~ msgstr "Rozširené"
@@ -3809,11 +3767,11 @@ msgstr ""
 #~ msgstr "Použiť regulárne výrazy na vyhľadávanie"
 
 #~ msgid ""
-#~ "Remove the selected recipe from your shopping list (or remove all items "
-#~ "if no recipe is selected)"
+#~ "Remove the selected recipe from your shopping list (or remove all items if "
+#~ "no recipe is selected)"
 #~ msgstr ""
-#~ "Odstrániť vybraný recept z nákupného zoznamu (alebo odstrániť všetky "
-#~ "položky ak nie je zvolený žiadny recept)"
+#~ "Odstrániť vybraný recept z nákupného zoznamu (alebo odstrániť všetky položky "
+#~ "ak nie je zvolený žiadny recept)"
 
 #~ msgid "Change key for selected items to: "
 #~ msgstr "Zmeniť kľúč pre vybrané položky na: "
@@ -3828,28 +3786,42 @@ msgstr ""
 #~ msgid "Deleted "
 #~ msgstr "Odstránený "
 
+#, python-format
+#~ msgid "Multiply %s by: "
+#~ msgstr "Vynásobiť %s: "
+
 #~ msgid ""
-#~ "Gourmet can download a recipe in any supported recipe archive format or "
-#~ "can import recipes from the following websites:"
+#~ "Gourmet can download a recipe in any supported recipe archive format or can "
+#~ "import recipes from the following websites:"
 #~ msgstr ""
 #~ "Gourmet dokáže stiahnuť recept v akomkoľvek podporovanom formáte archívu "
 #~ "alebo importovať recepty z nasledovných Web-stránok:"
 
+#~ msgid "Enter URL: "
+#~ msgstr "Zadajte URL: "
+
+#~ msgid "Source: "
+#~ msgstr "Zdroj: "
+
 #~ msgid "Deleted 1 recipe."
 #~ msgstr "Odstránený 1 recept."
 
+#, python-format
 #~ msgid "Deleted %s recipes"
 #~ msgstr "Odstránených %s receptov"
 
 #~ msgid "Are you sure you want to change the "
 #~ msgstr "Naozaj chcete zmeniť "
 
+#, python-format
 #~ msgid "for \"%s from \"%s\""
 #~ msgstr "pre \"%s z \"%s\""
 
+#, python-format
 #~ msgid " from \"%s\" "
 #~ msgstr " z \"%s\" "
 
+#, python-format
 #~ msgid " to \"%s\""
 #~ msgstr " do \"%s\""
 
@@ -3859,6 +3831,7 @@ msgstr ""
 #~ msgid "You haven't entered a key!"
 #~ msgstr "Nezadali ste kľúč!"
 
+#, python-format
 #~ msgid ""
 #~ "Are you sure you want the keys\n"
 #~ " for all %s selections set to\n"
@@ -3871,19 +3844,25 @@ msgstr ""
 #~ msgid "Recipe Card: "
 #~ msgstr "Karta receptu: "
 
+#~ msgid "Choose an image to insert in instructions... "
+#~ msgstr "Vybrať obrázok pre postup... "
+
 #~ msgid "Changes to ingredients saved automatically."
 #~ msgstr "Zmeny v prísadách sú uložené automaticky."
 
+#~ msgid "Name of group: "
+#~ msgstr "Meno skupiny: "
+
+#, python-format
 #~ msgid "Are you sure you want to delete %s"
 #~ msgstr "Naozaj chcete odstrániť %s"
 
+#, python-format
 #~ msgid "Shall I delete the item contained in %s or move it out of the group?"
 #~ msgid_plural ""
-#~ "Shall I delete the items contained in %s or just move them out of the "
-#~ "group?"
+#~ "Shall I delete the items contained in %s or just move them out of the group?"
 #~ msgstr[0] ""
-#~ "Má sa vymazať položka obsiahnutá v %s alebo sa má presunúť preč zo "
-#~ "skupiny?"
+#~ "Má sa vymazať položka obsiahnutá v %s alebo sa má presunúť preč zo skupiny?"
 #~ msgstr[1] ""
 #~ "Majú sa vymazať položky obsiahnuté v %s alebo sa majú presunúť preč zo "
 #~ "skupiny?"
@@ -3906,14 +3885,23 @@ msgstr ""
 #~ msgid "See ingredients"
 #~ msgstr "Pozrieť prísady"
 
+#, python-format
 #~ msgid "%s Recipes"
 #~ msgstr "%s receptov"
 
+#, python-format
 #~ msgid " %s contains %s"
 #~ msgstr " %s obsahuje %s"
 
+#, python-format
 #~ msgid ", %s contains %s"
 #~ msgstr ", %s obsahuje %s"
+
+#~ msgid "Password: "
+#~ msgstr "Heslo: "
+
+#~ msgid "Category: "
+#~ msgstr "Kategória: "
 
 #~ msgid "seconds"
 #~ msgstr "sekúnd"
@@ -3936,15 +3924,38 @@ msgstr ""
 #~ msgid "Copyright (c) 2004,2005 Thomas M. Hinkle. GNU GPL"
 #~ msgstr "Copyright (c) 2004,2005 Thomas M. Hinkle. GNU GPL"
 
+#~ msgid ""
+#~ "Gourmet Recipe Manager is an application to store, organize and search "
+#~ "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
+#~ "Gourmet imports recipes from a number of sources, including MealMaster and "
+#~ "MasterCook archives and several popular websites. Gourmet can export recipes "
+#~ "as text, MealMaster files, HTML web pages, and a custom XML format for "
+#~ "excahnge with other Gourmet users. Gourmet supports linking images with "
+#~ "recipes."
+#~ msgstr ""
+#~ "Správca receptov Gourmet je aplakácia naukladanie, organizáciu a "
+#~ "vyhľadávanie receptob. Gourmet taktiež pomáha pri vytváraní nákupných "
+#~ "zoznamov pre vybrané recepty. Gourmet dokáže importovať recepty z množstva "
+#~ "zdrojov, včítane archívov MealMaster a MasterCook a niekoľkých populárnych "
+#~ "Web-stránok. Gourmet dokáže exportovať recepty ako text, súbory MealMaster, "
+#~ "HTML web-stránky alebo XML súbor pre ľahšiu výmenu s inými používateľmi. "
+#~ "Gourmet podporuje priloženie obrázka k receptu."
+
 #~ msgid "Choose Database File"
 #~ msgstr "Vybrať databázový súbor"
+
+#~ msgid "Command: "
+#~ msgstr "Príkaz: "
+
+#~ msgid "Shopping list for: "
+#~ msgstr "Nákupný list pre: "
 
 #~ msgid "Printing not supported"
 #~ msgstr "Tlač nie je podporovaná"
 
 #~ msgid ""
-#~ "To print recipes, first export them, then print from another program. If "
-#~ "you install wxWindows, you can print directly from Gourmet."
+#~ "To print recipes, first export them, then print from another program. If you "
+#~ "install wxWindows, you can print directly from Gourmet."
 #~ msgstr ""
 #~ "Pred tlačou receptov ich najskôr exportuje a potom ich tlačte z iného "
 #~ "programu. Ak si nainštalujete wxWindows, budete môcť tlačiť priamo z "

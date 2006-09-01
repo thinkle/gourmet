@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gourmet Recipe Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-19 12:30-0400\n"
+"POT-Creation-Date: 2006-08-19 12:20-0400\n"
 "PO-Revision-Date: 2005-08-08 08:50+0000\n"
 "Last-Translator: Rostislav Raykov <nostalgiafed@gmail.com>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -90,9 +90,8 @@ msgstr "Отиване към рецепта при картовия изгле�
 
 #: ../glade/app.glade.h:19 ../glade/recSelector.glade.h:3
 #: ../glade/rec_ref_window.glade.h:2
-#, fuzzy
 msgid "Limiting Search to:"
-msgstr "Ограничаване на търсенето до: "
+msgstr ""
 
 #: ../glade/app.glade.h:20
 msgid ""
@@ -470,9 +469,8 @@ msgid "<i>Enter nutritional information for </i>"
 msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:3
-#, fuzzy
 msgid "<i>From:</i>"
-msgstr "<b>От</b>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:4
 msgid "<i>Search _results:</i>"
@@ -483,9 +481,8 @@ msgid "<i>Select equivalent of</i>"
 msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:6
-#, fuzzy
 msgid "<i>To:</i>"
-msgstr "<b>До</b>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:7
 msgid "<i>from USDA database</i>"
@@ -504,9 +501,8 @@ msgid "Show only food in _group:"
 msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:12
-#, fuzzy
 msgid "Unit:"
-msgstr "_Единица:"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:14
 msgid "_Change ingredient"
@@ -620,9 +616,8 @@ msgid "_Never add optional ingredients"
 msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:23
-#, fuzzy
 msgid "_Recipes per page:"
-msgstr "_Рецепти"
+msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:24
 msgid "_Remember user selections by default"
@@ -799,9 +794,8 @@ msgid "Edit section chooser"
 msgstr ""
 
 #: ../glade/recCard.glade.h:44
-#, fuzzy
 msgid "Image:"
-msgstr "Снимка: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:45
 msgid "Import ingredients from a plain text file."
@@ -854,9 +848,8 @@ msgid "Paste ingredient list from the clipboard."
 msgstr ""
 
 #: ../glade/recCard.glade.h:56
-#, fuzzy
 msgid "Pre_paration Time:"
-msgstr "Време за _приготвяне: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:57
 msgid "Print recipe"
@@ -875,9 +868,8 @@ msgid "Revert"
 msgstr ""
 
 #: ../glade/recCard.glade.h:63
-#, fuzzy
 msgid "S_hopping Category:"
-msgstr "Категори_я за пазаруване: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:64
 msgid "S_ource:"
@@ -999,14 +991,12 @@ msgid "_Save"
 msgstr "_Запазване"
 
 #: ../glade/recCard.glade.h:99
-#, fuzzy
 msgid "_Servings:"
-msgstr "_Порции: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:102
-#, fuzzy
 msgid "_Title:"
-msgstr "_Заглавие: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:104
 msgid "_Underline"
@@ -1061,7 +1051,6 @@ msgid "rating"
 msgstr "оценка"
 
 #. _('rating'):'rating',
-#. _('rating'),
 #: ../glade/rec_ref_window.glade.h:12 ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:54
 msgid "source"
@@ -1263,25 +1252,21 @@ msgstr "Нужна е информацията за плътността."
 #. plural forms of time units. We use range(5) since as far as I
 #. can see, enumerating the forms for 0 through 5 should give you
 #. all possible forms in all languages.
-#.
-#. See http://www.sbin.org/doc/glibc/libc_8.html
+#. 
 #: ../src/lib/convert.py:61 ../src/lib/convert.py:544
 msgid "second"
 msgid_plural "seconds"
 msgstr[0] ""
 
-#. min. = abbreviation for minutes
 #: ../src/lib/convert.py:63
-#, fuzzy
 msgid "min"
-msgstr "_в"
+msgstr ""
 
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:543
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] ""
 
-#. hrs = abbreviation for hours
 #: ../src/lib/convert.py:65
 msgid "hrs."
 msgstr ""
@@ -1298,7 +1283,6 @@ msgstr[0] ""
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
-#. 'decades':lambda decades: ngettext("decade","decades",round(decades))
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:538
 msgid "year"
 msgid_plural "years"
@@ -1319,7 +1303,6 @@ msgstr[0] ""
 #. and 6. This set-up allows for variations of this system only.
 #. You can of course make your language only use commas or
 #. ands or spaces or whatever you like by translating both
-#. ", " and " and " with the same string.
 #: ../src/lib/convert.py:587
 msgid " and "
 msgstr ""
@@ -1338,17 +1321,14 @@ msgstr ""
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
-#. show up sometimes.
 #: ../src/lib/convert.py:740
 msgid "to"
 msgstr "до"
 
-#. setup pause button
 #: ../src/lib/dialog_extras.py:398
 msgid "_Pause"
 msgstr "_Пауза"
 
-#. setup stop button
 #: ../src/lib/dialog_extras.py:409
 msgid "_Stop"
 msgstr "_Спиране"
@@ -1447,7 +1427,6 @@ msgid ""
 msgstr ""
 
 #. renderer.set_property('editable',True)
-#. renderer.connect('edited',tst)
 #: ../src/lib/gglobals.py:234 ../src/lib/shopgui.py:102
 #: ../src/lib/exporters/rtf_exporter.py:79
 msgid "Title"
@@ -1485,7 +1464,6 @@ msgstr "Време за готвене"
 msgid "Modifications"
 msgstr "Промени"
 
-#. print dir(err)
 #: ../src/lib/gglobals.py:318
 msgid "Unable to open URL"
 msgstr ""
@@ -1549,8 +1527,8 @@ msgstr "Списък за п_азаруване"
 msgid "translator-credits"
 msgstr ""
 "Ростислав \"zbrox\" Райков <zbrox@i-space.org>Проектът за превод на GNOME "
-"има нужда от подкрепа.Научете повече за нас на http://gnome.cult."
-"bgДокладвайте за грешки на http://gnome.cult.bg/bugs"
+"има нужда от подкрепа.Научете повече за нас на "
+"http://gnome.cult.bgДокладвайте за грешки на http://gnome.cult.bg/bugs"
 
 #: ../src/lib/GourmetRecipeManager.py:320
 #: ../src/lib/GourmetRecipeManager.py:331
@@ -1693,9 +1671,9 @@ msgid "Number of servings of %s to shop for"
 msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:739
-#, fuzzy, python-format
+#, python-format
 msgid "Multiply %s by:"
-msgstr "Умножаване на %s по: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:768 ../src/lib/shopgui.py:160
 msgid "Saved!"
@@ -1761,9 +1739,8 @@ msgid "Enter website address."
 msgstr "Въведете адреса на интернет страницата."
 
 #: ../src/lib/GourmetRecipeManager.py:884
-#, fuzzy
 msgid "Enter URL:"
-msgstr "Въвеждане на URL: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:885
 msgid ""
@@ -1827,9 +1804,8 @@ msgid "Default source for recipes imported from %s"
 msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1023
-#, fuzzy
 msgid "Source:"
-msgstr "_Източник:"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1052
 #, python-format
@@ -1931,7 +1907,6 @@ msgstr[0] ""
 msgid "Key"
 msgstr ""
 
-#. to set our regexp_toggled variable
 #: ../src/lib/keyEditor.py:79 ../src/lib/keyEditor.py:228
 msgid "key"
 msgstr ""
@@ -2059,14 +2034,12 @@ msgid_plural "%s ingredients"
 msgstr[0] ""
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/keyEditor.py:417
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
 msgstr ""
 
 #. self._hide_warning_slowly()
-#. return
 #: ../src/lib/numberEntry.py:27 ../src/lib/timeEntry.py:54
 #: ../src/lib/timeEntry.py:64
 msgid "Invalid input."
@@ -2146,10 +2119,10 @@ msgstr ""
 #: ../src/lib/nutrition/nutritionDruid.py:560
 #, python-format
 msgid ""
-"In order to calculate nutritional information for \"%(amount)s %(unit)s %"
-"(ingkey)s\", Gourmet needs to know its density. Our nutritional database has "
-"several descriptions of this food with different densities. Please select "
-"the correct one below."
+"In order to calculate nutritional information for \"%(amount)s %(unit)s "
+"%(ingkey)s\", Gourmet needs to know its density. Our nutritional database "
+"has several descriptions of this food with different densities. Please "
+"select the correct one below."
 msgstr ""
 
 #: ../src/lib/nutrition/nutritionDruid.py:711
@@ -2166,7 +2139,6 @@ msgstr ""
 #. filename=de.select_file(
 #. 'Find ABBREV.txt file',
 #. filters=[['Plain Text',['text/plain'],['*txt']]]
-#. )
 #: ../src/lib/nutrition/nutritionGrabberGui.py:35
 msgid "Loading Nutritional Data"
 msgstr ""
@@ -2570,7 +2542,6 @@ msgstr ""
 
 #. the DB Food Group Numbers seem to be inline with the group IDs
 #. (numbers > 1000 are in group 100, etc.)
-#. Since that's true, we can use the following table to properly add groups.
 #: ../src/lib/nutrition/parser_data.py:335
 msgid "Dairy & Egg Products"
 msgstr ""
@@ -2667,7 +2638,6 @@ msgstr ""
 msgid "Ethnic Foods"
 msgstr ""
 
-#. self.serves = float(self.serveW.get_text())
 #: ../src/lib/reccard.py:201
 msgid "Edit Recipe:"
 msgstr ""
@@ -2676,7 +2646,6 @@ msgstr ""
 msgid "Recipe Card:"
 msgstr ""
 
-#. action groups
 #: ../src/lib/reccard.py:283
 msgid "Add _ingredient"
 msgstr ""
@@ -2711,7 +2680,6 @@ msgstr ""
 
 #. 'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
 #. ['editButton','editMenu']]},
-#. ],
 #: ../src/lib/reccard.py:324
 msgid "View recipe card for current recipe"
 msgstr ""
@@ -2722,9 +2690,8 @@ msgid "Unable to find recipe %s in database."
 msgstr ""
 
 #: ../src/lib/reccard.py:471
-#, fuzzy
 msgid "Choose an image to insert in instructions..."
-msgstr "Избор на снимка, която да се вмъкне в инструкциите... "
+msgstr ""
 
 #: ../src/lib/reccard.py:589
 #, python-format
@@ -2744,12 +2711,10 @@ msgstr ""
 msgid "(Optional)"
 msgstr ""
 
-#. FIXME
 #: ../src/lib/reccard.py:918
 msgid "Choose a file containing your ingredient list."
 msgstr "Изберете файл съдържащ списъка със съставки."
 
-#. strip off extra "." if necessary
 #: ../src/lib/reccard.py:962
 msgid "Save recipe as..."
 msgstr "Запазване на рецепта като..."
@@ -2865,9 +2830,8 @@ msgid "Enter a name for new subgroup of ingredients"
 msgstr "Въведете име за новата подгрупа съставки"
 
 #: ../src/lib/reccard.py:2417
-#, fuzzy
 msgid "Name of group:"
-msgstr "Име на група: "
+msgstr ""
 
 #: ../src/lib/reccard.py:2808
 #, python-format
@@ -2907,7 +2871,6 @@ msgid_plural "%s recipes"
 msgstr[0] ""
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/recindex.py:210
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
@@ -2938,13 +2901,13 @@ msgstr "Въведете парола"
 
 #: ../src/lib/recipeManager.py:15
 #, python-format
-msgid "Please enter your password for user %s of the MySQL database at host %s"
+msgid ""
+"Please enter your password for user %s of the MySQL database at host %s"
 msgstr ""
 
 #: ../src/lib/recipeManager.py:18
-#, fuzzy
 msgid "Password:"
-msgstr "Парола: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:69
 msgid ""
@@ -2993,9 +2956,8 @@ msgid "Enter Category"
 msgstr "Въведете категория"
 
 #: ../src/lib/shopgui.py:460
-#, fuzzy
 msgid "Category:"
-msgstr "Категория: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:622
 msgid "Recipe calls for itself as an ingredient."
@@ -3097,7 +3059,6 @@ msgstr "Gourmet Recipe Manager"
 msgid "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
 msgstr ""
 
-#. repeated in setup.cfg
 #: ../src/lib/version.py:7
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
@@ -3161,7 +3122,6 @@ msgstr ""
 msgid "Retrieving file"
 msgstr ""
 
-#. Interactive we go...
 #: ../src/lib/importers/html_importer.py:478
 msgid "Don't recognize this webpage. Using generic importer..."
 msgstr ""
@@ -3264,7 +3224,6 @@ msgstr ""
 #. debug('Exception in Handler, trying to clean up source...',0)
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
-#. files, even though some of them may not be fubared :)
 #: ../src/lib/importers/mastercook_importer.py:257
 msgid "Tidying up XML"
 msgstr "Подреждане на XML кода"
@@ -3306,7 +3265,6 @@ msgid "Recipe"
 msgstr "Рецепта"
 
 #. Method from:
-#. http://tgolden.sc.sabren.com/python/win32_how_do_i/print.html#shellexecute
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:215
 #: ../src/lib/exporters/gnomeprinter.py:253
 #: ../src/lib/exporters/winprinter.py:17
@@ -3329,7 +3287,6 @@ msgstr "_Диапазон"
 msgid "Print Recipes"
 msgstr "Разпечатване на рецепти"
 
-#. Filetypes as presented to user
 #: ../src/lib/exporters/__init__.py:18
 msgid "HTML Web Page"
 msgstr "HTML интернет страница"
@@ -3471,9 +3428,8 @@ msgid ""
 msgstr ""
 
 #: ../src/lib/exporters/lprprinter.py:31
-#, fuzzy
 msgid "Command:"
-msgstr "Команда: "
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:643
 #: ../src/lib/exporters/pdf_exporter.py:660
@@ -3486,15 +3442,13 @@ msgstr ""
 #: ../src/lib/exporters/pdf_exporter.py:734
 #: ../src/lib/exporters/pdf_exporter.py:759
 #: ../src/lib/exporters/winprinter.py:59
-#, fuzzy
 msgid "Portrait"
-msgstr "Печат"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:646
 #: ../src/lib/exporters/pdf_exporter.py:675
-#, fuzzy
 msgid "Plain"
-msgstr "Прост текст"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:655
 msgid "11x17\""
@@ -3628,29 +3582,32 @@ msgstr ""
 msgid "If you'd like, you can open the PDF file."
 msgstr ""
 
-#~ msgid "_Unit: "
-#~ msgstr "_Единица: "
-
-#~ msgid "<b>Title</b>"
-#~ msgstr "<b>Заглавие</b>"
-
-#~ msgid "Source: "
-#~ msgstr "Източник: "
-
-#~ msgid "Shopping list for: "
-#~ msgstr "Списък за пазаруване за: "
-
 #~ msgid "E-_mail recipes"
 #~ msgstr "Изпращане на рецепти по _ел. поща"
+
+#~ msgid "Limiting Search to: "
+#~ msgstr "Ограничаване на търсенето до: "
 
 #~ msgid "_Export"
 #~ msgstr "_Изнасяне"
 
+#~ msgid "<b>Title</b>"
+#~ msgstr "<b>Заглавие</b>"
+
 #~ msgid "Create new ingredient"
 #~ msgstr "Създаване на нова съставка"
 
+#~ msgid "Image: "
+#~ msgstr "Снимка: "
+
 #~ msgid "Ins_tructions"
 #~ msgstr "Инс_трукции"
+
+#~ msgid "Pre_paration Time: "
+#~ msgstr "Време за _приготвяне: "
+
+#~ msgid "S_hopping Category: "
+#~ msgstr "Категори_я за пазаруване: "
 
 #~ msgid "_Delete Ingredient"
 #~ msgstr "_Изтриване на съставка"
@@ -3670,6 +3627,15 @@ msgstr ""
 #~ msgid "_Notes"
 #~ msgstr "_Бележки"
 
+#~ msgid "_Servings: "
+#~ msgstr "_Порции: "
+
+#~ msgid "_Title: "
+#~ msgstr "_Заглавие: "
+
+#~ msgid "_Unit: "
+#~ msgstr "_Единица: "
+
 #~ msgid "Advanced"
 #~ msgstr "Допълнителни"
 
@@ -3685,21 +3651,35 @@ msgstr ""
 #~ msgid "Deleted "
 #~ msgstr "Изтрито "
 
+#, python-format
+#~ msgid "Multiply %s by: "
+#~ msgstr "Умножаване на %s по: "
+
+#~ msgid "Enter URL: "
+#~ msgstr "Въвеждане на URL: "
+
+#~ msgid "Source: "
+#~ msgstr "Източник: "
+
 #~ msgid "Deleted 1 recipe."
 #~ msgstr "Една рецепта е изтрита."
 
+#, python-format
 #~ msgid "Deleted %s recipes"
 #~ msgstr "%s рецепти са изтрити."
 
 #~ msgid "Are you sure you want to change the "
 #~ msgstr "Сигурни ли сте, че искате да промените "
 
+#, python-format
 #~ msgid "for \"%s from \"%s\""
 #~ msgstr "за \"%s\" от \"%s\""
 
+#, python-format
 #~ msgid " from \"%s\" "
 #~ msgstr " от \"%s\" "
 
+#, python-format
 #~ msgid " to \"%s\""
 #~ msgstr " до \"%s\""
 
@@ -3709,6 +3689,13 @@ msgstr ""
 #~ msgid "Recipe Card: "
 #~ msgstr "Карта с рецепта: "
 
+#~ msgid "Choose an image to insert in instructions... "
+#~ msgstr "Избор на снимка, която да се вмъкне в инструкциите... "
+
+#~ msgid "Name of group: "
+#~ msgstr "Име на група: "
+
+#, python-format
 #~ msgid "Are you sure you want to delete %s"
 #~ msgstr "Сигурни ли сте, че искате да изтриете %s"
 
@@ -3723,14 +3710,23 @@ msgstr ""
 #~ msgid "See ingredients"
 #~ msgstr "Преглед на съставките"
 
+#, python-format
 #~ msgid "%s Recipes"
 #~ msgstr "%s рецепти"
 
+#, python-format
 #~ msgid " %s contains %s"
 #~ msgstr " %s съдържа %s"
 
+#, python-format
 #~ msgid ", %s contains %s"
 #~ msgstr ", %s съдържа %s"
+
+#~ msgid "Password: "
+#~ msgstr "Парола: "
+
+#~ msgid "Category: "
+#~ msgstr "Категория: "
 
 #~ msgid "seconds"
 #~ msgstr "секунди"
@@ -3755,6 +3751,12 @@ msgstr ""
 
 #~ msgid "Choose Database File"
 #~ msgstr "Избро на файл на база данни"
+
+#~ msgid "Command: "
+#~ msgstr "Команда: "
+
+#~ msgid "Shopping list for: "
+#~ msgstr "Списък за пазаруване за: "
 
 #~ msgid "Printing not supported"
 #~ msgstr "Разпечатването не се поддържа"

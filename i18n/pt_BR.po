@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gourmet Recipe Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-19 12:30-0400\n"
+"POT-Creation-Date: 2006-08-19 12:20-0400\n"
 "PO-Revision-Date: 2005-11-13 15:03+0000\n"
 "Last-Translator: Alexandre <arosas@fisica.ufpb.br>\n"
 "Language-Team: Portuguese (Brazil) <pt_BR@li.org>\n"
@@ -92,9 +92,8 @@ msgstr "Pule para receita em Ver Cartão de Receita"
 
 #: ../glade/app.glade.h:19 ../glade/recSelector.glade.h:3
 #: ../glade/rec_ref_window.glade.h:2
-#, fuzzy
 msgid "Limiting Search to:"
-msgstr "Limitando pesquisa para: "
+msgstr ""
 
 #: ../glade/app.glade.h:20
 msgid ""
@@ -445,14 +444,12 @@ msgid "_Advanced Search"
 msgstr "Busca _Avançada"
 
 #: ../glade/keyeditor.glade.h:9
-#, fuzzy
 msgid "_Item:"
-msgstr "I_tem:"
+msgstr ""
 
 #: ../glade/keyeditor.glade.h:10
-#, fuzzy
 msgid "_Key:"
-msgstr "Código"
+msgstr ""
 
 #: ../glade/keyeditor.glade.h:11
 msgid "_Search for:"
@@ -492,9 +489,8 @@ msgid "<i>Enter nutritional information for </i>"
 msgstr "<i> Entre informação nutricional para</i>"
 
 #: ../glade/nutritionDruid.glade.h:3
-#, fuzzy
 msgid "<i>From:</i>"
-msgstr "<i>DeÇ</i>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:4
 msgid "<i>Search _results:</i>"
@@ -505,9 +501,8 @@ msgid "<i>Select equivalent of</i>"
 msgstr "<i>Selecionar equivalente a</i>"
 
 #: ../glade/nutritionDruid.glade.h:6
-#, fuzzy
 msgid "<i>To:</i>"
-msgstr "<i>Para: </i>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:7
 msgid "<i>from USDA database</i>"
@@ -526,9 +521,8 @@ msgid "Show only food in _group:"
 msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:12
-#, fuzzy
 msgid "Unit:"
-msgstr "Unidade: "
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:14
 msgid "_Change ingredient"
@@ -576,7 +570,8 @@ msgstr "Preferências para o uso quando enviando uma receita por email."
 
 #: ../glade/preferenceDialog.glade.h:7
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
-msgstr "Remover itens que você não utiliza da interface do Cartão de Receitas."
+msgstr ""
+"Remover itens que você não utiliza da interface do Cartão de Receitas."
 
 #: ../glade/preferenceDialog.glade.h:8
 msgid ""
@@ -644,9 +639,8 @@ msgid "_Never add optional ingredients"
 msgstr "_Nunca adicionar ingredientes opcionais"
 
 #: ../glade/preferenceDialog.glade.h:23
-#, fuzzy
 msgid "_Recipes per page:"
-msgstr "_Receitas por página "
+msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:24
 msgid "_Remember user selections by default"
@@ -657,7 +651,6 @@ msgid "_Use fractions"
 msgstr ""
 
 #: ../glade/recCard.glade.h:1
-
 msgid ""
 "\n"
 "\n"
@@ -754,7 +747,8 @@ msgstr "Adicionar outra Receita como um Ingrediente"
 
 #: ../glade/recCard.glade.h:25
 msgid "Add group for ingredients (such as \"Sauce\" or \"Crust\")"
-msgstr "Adicionar grupos para Ingredientes (tais como: \"Molho\" e \"Salada\")"
+msgstr ""
+"Adicionar grupos para Ingredientes (tais como: \"Molho\" e \"Salada\")"
 
 #: ../glade/recCard.glade.h:26
 msgid "Add ingredient _group"
@@ -829,9 +823,8 @@ msgid "Edit section chooser"
 msgstr ""
 
 #: ../glade/recCard.glade.h:44
-#, fuzzy
 msgid "Image:"
-msgstr "Imagem: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:45
 msgid "Import ingredients from a plain text file."
@@ -884,9 +877,8 @@ msgid "Paste ingredient list from the clipboard."
 msgstr "Colar lista de ingredientes do 'Clipboard'"
 
 #: ../glade/recCard.glade.h:56
-#, fuzzy
 msgid "Pre_paration Time:"
-msgstr "Tempo de pre_paração: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:57
 msgid "Print recipe"
@@ -905,9 +897,8 @@ msgid "Revert"
 msgstr ""
 
 #: ../glade/recCard.glade.h:63
-#, fuzzy
 msgid "S_hopping Category:"
-msgstr "Categoria de compras: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:64
 msgid "S_ource:"
@@ -1031,14 +1022,12 @@ msgid "_Save"
 msgstr "_Salvar"
 
 #: ../glade/recCard.glade.h:99
-#, fuzzy
 msgid "_Servings:"
-msgstr "_Porções: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:102
-#, fuzzy
 msgid "_Title:"
-msgstr "_Título "
+msgstr ""
 
 #: ../glade/recCard.glade.h:104
 msgid "_Underline"
@@ -1093,7 +1082,6 @@ msgid "rating"
 msgstr "avaliação"
 
 #. _('rating'):'rating',
-#. _('rating'),
 #: ../glade/rec_ref_window.glade.h:12 ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:54
 msgid "source"
@@ -1132,7 +1120,8 @@ msgstr "Mover os ítens selecionados da despensa para a lista de compras"
 
 #: ../glade/shopList.glade.h:7
 msgid "Move selected items from shopping list to pantry list."
-msgstr "Mover itens selecionados da lista de compras para a lista da despensa."
+msgstr ""
+"Mover itens selecionados da lista de compras para a lista da despensa."
 
 #: ../glade/shopList.glade.h:8
 msgid ""
@@ -1304,19 +1293,16 @@ msgstr "É necessária informação sobre densidade"
 #. plural forms of time units. We use range(5) since as far as I
 #. can see, enumerating the forms for 0 through 5 should give you
 #. all possible forms in all languages.
-#.
-#. See http://www.sbin.org/doc/glibc/libc_8.html
+#. 
 #: ../src/lib/convert.py:61 ../src/lib/convert.py:544
 msgid "second"
 msgid_plural "seconds"
 msgstr[0] "segundo"
 msgstr[1] "segundos"
 
-#. min. = abbreviation for minutes
 #: ../src/lib/convert.py:63
-#, fuzzy
 msgid "min"
-msgstr "min."
+msgstr ""
 
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:543
 msgid "minute"
@@ -1324,7 +1310,6 @@ msgid_plural "minutes"
 msgstr[0] "minuto"
 msgstr[1] "minutos"
 
-#. hrs = abbreviation for hours
 #: ../src/lib/convert.py:65
 msgid "hrs."
 msgstr "h"
@@ -1343,7 +1328,6 @@ msgstr[1] "dias"
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
-#. 'decades':lambda decades: ngettext("decade","decades",round(decades))
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:538
 msgid "year"
 msgid_plural "years"
@@ -1367,7 +1351,6 @@ msgstr[1] "semanas"
 #. and 6. This set-up allows for variations of this system only.
 #. You can of course make your language only use commas or
 #. ands or spaces or whatever you like by translating both
-#. ", " and " and " with the same string.
 #: ../src/lib/convert.py:587
 msgid " and "
 msgstr " e "
@@ -1386,17 +1369,14 @@ msgstr ""
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
-#. show up sometimes.
 #: ../src/lib/convert.py:740
 msgid "to"
 msgstr "para"
 
-#. setup pause button
 #: ../src/lib/dialog_extras.py:398
 msgid "_Pause"
 msgstr "_Pausa"
 
-#. setup stop button
 #: ../src/lib/dialog_extras.py:409
 msgid "_Stop"
 msgstr "_Parar"
@@ -1507,7 +1487,6 @@ msgstr ""
 "Por exemplo, você poderá entrar 2-4 ou 1 1/2 - 3 1/2.\n"
 
 #. renderer.set_property('editable',True)
-#. renderer.connect('edited',tst)
 #: ../src/lib/gglobals.py:234 ../src/lib/shopgui.py:102
 #: ../src/lib/exporters/rtf_exporter.py:79
 msgid "Title"
@@ -1545,7 +1524,6 @@ msgstr "Tempo de cozimento"
 msgid "Modifications"
 msgstr "Modificações"
 
-#. print dir(err)
 #: ../src/lib/gglobals.py:318
 msgid "Unable to open URL"
 msgstr "Impossível de abrir URL"
@@ -1751,9 +1729,9 @@ msgid "Number of servings of %s to shop for"
 msgstr "Número de porções de %s para fazer compra"
 
 #: ../src/lib/GourmetRecipeManager.py:739
-#, fuzzy, python-format
+#, python-format
 msgid "Multiply %s by:"
-msgstr "Multiplicar %s por: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:768 ../src/lib/shopgui.py:160
 msgid "Saved!"
@@ -1824,9 +1802,8 @@ msgid "Enter website address."
 msgstr "Informe o endereço da página."
 
 #: ../src/lib/GourmetRecipeManager.py:884
-#, fuzzy
 msgid "Enter URL:"
-msgstr "Informe URL: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:885
 msgid ""
@@ -1896,9 +1873,8 @@ msgid "Default source for recipes imported from %s"
 msgstr "Fonte default para receitas importadas de %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1023
-#, fuzzy
 msgid "Source:"
-msgstr "Origem:"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1052
 #, python-format
@@ -2008,7 +1984,6 @@ msgstr[1] "Receitas %s apagadas"
 msgid "Key"
 msgstr "Código"
 
-#. to set our regexp_toggled variable
 #: ../src/lib/keyEditor.py:79 ../src/lib/keyEditor.py:228
 msgid "key"
 msgstr "chave"
@@ -2137,14 +2112,12 @@ msgstr[0] "%s ingrediente"
 msgstr[1] "%s ingredientes"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/keyEditor.py:417
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
 msgstr "Mostrando ingredientes %(bottom)s a %(top)s de %(total)s"
 
 #. self._hide_warning_slowly()
-#. return
 #: ../src/lib/numberEntry.py:27 ../src/lib/timeEntry.py:54
 #: ../src/lib/timeEntry.py:64
 msgid "Invalid input."
@@ -2224,10 +2197,10 @@ msgstr ""
 #: ../src/lib/nutrition/nutritionDruid.py:560
 #, python-format
 msgid ""
-"In order to calculate nutritional information for \"%(amount)s %(unit)s %"
-"(ingkey)s\", Gourmet needs to know its density. Our nutritional database has "
-"several descriptions of this food with different densities. Please select "
-"the correct one below."
+"In order to calculate nutritional information for \"%(amount)s %(unit)s "
+"%(ingkey)s\", Gourmet needs to know its density. Our nutritional database "
+"has several descriptions of this food with different densities. Please "
+"select the correct one below."
 msgstr ""
 
 #: ../src/lib/nutrition/nutritionDruid.py:711
@@ -2244,7 +2217,6 @@ msgstr ""
 #. filename=de.select_file(
 #. 'Find ABBREV.txt file',
 #. filters=[['Plain Text',['text/plain'],['*txt']]]
-#. )
 #: ../src/lib/nutrition/nutritionGrabberGui.py:35
 msgid "Loading Nutritional Data"
 msgstr ""
@@ -2648,7 +2620,6 @@ msgstr ""
 
 #. the DB Food Group Numbers seem to be inline with the group IDs
 #. (numbers > 1000 are in group 100, etc.)
-#. Since that's true, we can use the following table to properly add groups.
 #: ../src/lib/nutrition/parser_data.py:335
 msgid "Dairy & Egg Products"
 msgstr ""
@@ -2745,7 +2716,6 @@ msgstr ""
 msgid "Ethnic Foods"
 msgstr ""
 
-#. self.serves = float(self.serveW.get_text())
 #: ../src/lib/reccard.py:201
 msgid "Edit Recipe:"
 msgstr ""
@@ -2754,7 +2724,6 @@ msgstr ""
 msgid "Recipe Card:"
 msgstr ""
 
-#. action groups
 #: ../src/lib/reccard.py:283
 msgid "Add _ingredient"
 msgstr ""
@@ -2789,7 +2758,6 @@ msgstr "Move ingrediente selecionado para baixo."
 
 #. 'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
 #. ['editButton','editMenu']]},
-#. ],
 #: ../src/lib/reccard.py:324
 msgid "View recipe card for current recipe"
 msgstr ""
@@ -2800,9 +2768,8 @@ msgid "Unable to find recipe %s in database."
 msgstr ""
 
 #: ../src/lib/reccard.py:471
-#, fuzzy
 msgid "Choose an image to insert in instructions..."
-msgstr "Escolha uma imagem para inserir nas instruções.... "
+msgstr ""
 
 #: ../src/lib/reccard.py:589
 #, python-format
@@ -2822,12 +2789,10 @@ msgstr "Não faz sentido servir %s porções"
 msgid "(Optional)"
 msgstr "(Opcional)"
 
-#. FIXME
 #: ../src/lib/reccard.py:918
 msgid "Choose a file containing your ingredient list."
 msgstr "Escolha um arquivo contendo sua lista de ingredientes"
 
-#. strip off extra "." if necessary
 #: ../src/lib/reccard.py:962
 msgid "Save recipe as..."
 msgstr "Salvar receita como..."
@@ -2842,9 +2807,9 @@ msgid "There was an error during export."
 msgstr "Aconteceu um erro durante a exportação."
 
 #: ../src/lib/reccard.py:1008
-#, fuzzy, python-format
+#, python-format
 msgid "Exported %(filetype)s to %(filename)s"
-msgstr "Exportado %s para %s"
+msgstr ""
 
 #: ../src/lib/reccard.py:1091 ../src/lib/reccard.py:1143
 #: ../src/lib/reccard.py:1154
@@ -2945,9 +2910,8 @@ msgid "Enter a name for new subgroup of ingredients"
 msgstr "Informe o nome do novo subgrupo de ingredientes"
 
 #: ../src/lib/reccard.py:2417
-#, fuzzy
 msgid "Name of group:"
-msgstr "Nome do grupo: "
+msgstr ""
 
 #: ../src/lib/reccard.py:2808
 #, python-format
@@ -2990,7 +2954,6 @@ msgstr[0] "%s receita"
 msgstr[1] "%s receitas"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/recindex.py:210
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
@@ -3021,15 +2984,15 @@ msgstr "Digitar a senha"
 
 #: ../src/lib/recipeManager.py:15
 #, python-format
-msgid "Please enter your password for user %s of the MySQL database at host %s"
+msgid ""
+"Please enter your password for user %s of the MySQL database at host %s"
 msgstr ""
 "Por favor entre em sua senha para usuário %s do banco de dados de MySQL a "
 "host %s"
 
 #: ../src/lib/recipeManager.py:18
-#, fuzzy
 msgid "Password:"
-msgstr "Senha: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:69
 msgid ""
@@ -3082,9 +3045,8 @@ msgid "Enter Category"
 msgstr "Entre a Categoria"
 
 #: ../src/lib/shopgui.py:460
-#, fuzzy
 msgid "Category:"
-msgstr "Categoria: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:622
 msgid "Recipe calls for itself as an ingredient."
@@ -3190,9 +3152,7 @@ msgstr "Gourmet Gerenciador de Receitas"
 msgid "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
 msgstr ""
 
-#. repeated in setup.cfg
 #: ../src/lib/version.py:7
-#, fuzzy
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
@@ -3203,13 +3163,6 @@ msgid ""
 "recipes. Gourmet can also calculate nutritional information for recipes "
 "based on the ingredients."
 msgstr ""
-"O gerenciador de receitas Gourmet (Gourmet Recipe Manager) é um aplicativo "
-"que armazena, organiza e procura receitas. Gourmet também facilita a criação "
-"de listas de compra a partir de receitas. Gourmet importa receitas de várias "
-"fontes, incluindo arquivos MealMaster e MasterCook, além de vários websites "
-"populares. Gourmet pode exportar receitas como texto, arquivos MealMaster, "
-"páginas HTML e formato XML adaptado para troca com outros usuário de "
-"Gourmet. Gourmet permite associar imagens a receitas."
 
 #: ../src/lib/version.py:9
 msgid "Roland Duhaime (Windows porting assistance)"
@@ -3262,7 +3215,6 @@ msgstr ""
 msgid "Retrieving file"
 msgstr ""
 
-#. Interactive we go...
 #: ../src/lib/importers/html_importer.py:478
 msgid "Don't recognize this webpage. Using generic importer..."
 msgstr ""
@@ -3305,9 +3257,8 @@ msgid "Imported %(number)s recipes from %(file)s (%(total)s total)"
 msgstr "Importado %(number)s receitas de %(file)s (%(total)s total)"
 
 #: ../src/lib/importers/importer.py:492
-#, fuzzy
 msgid "okay"
-msgstr "Bom"
+msgstr ""
 
 #: ../src/lib/importers/interactive_importer.py:472
 msgid "Getting images..."
@@ -3366,7 +3317,6 @@ msgstr "Importação Masterkcook terminada"
 #. debug('Exception in Handler, trying to clean up source...',0)
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
-#. files, even though some of them may not be fubared :)
 #: ../src/lib/importers/mastercook_importer.py:257
 msgid "Tidying up XML"
 msgstr "Arrumando XML"
@@ -3408,7 +3358,6 @@ msgid "Recipe"
 msgstr "Receita"
 
 #. Method from:
-#. http://tgolden.sc.sabren.com/python/win32_how_do_i/print.html#shellexecute
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:215
 #: ../src/lib/exporters/gnomeprinter.py:253
 #: ../src/lib/exporters/winprinter.py:17
@@ -3431,7 +3380,6 @@ msgstr "Inte_rvalo"
 msgid "Print Recipes"
 msgstr "Imprimir Receitas"
 
-#. Filetypes as presented to user
 #: ../src/lib/exporters/__init__.py:18
 msgid "HTML Web Page"
 msgstr "Página HTML"
@@ -3575,9 +3523,8 @@ msgstr ""
 "mais atraente."
 
 #: ../src/lib/exporters/lprprinter.py:31
-#, fuzzy
 msgid "Command:"
-msgstr "Commando: "
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:643
 #: ../src/lib/exporters/pdf_exporter.py:660
@@ -3590,15 +3537,13 @@ msgstr ""
 #: ../src/lib/exporters/pdf_exporter.py:734
 #: ../src/lib/exporters/pdf_exporter.py:759
 #: ../src/lib/exporters/winprinter.py:59
-#, fuzzy
 msgid "Portrait"
-msgstr "Imprimir"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:646
 #: ../src/lib/exporters/pdf_exporter.py:675
-#, fuzzy
 msgid "Plain"
-msgstr "Texto Plano"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:655
 msgid "11x17\""
@@ -3655,9 +3600,8 @@ msgid "Page _Size"
 msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:686
-#, fuzzy
 msgid "_Orientation"
-msgstr "Nota Atual"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:687
 msgid "_Font Size"
@@ -3735,60 +3679,17 @@ msgstr ""
 msgid "If you'd like, you can open the PDF file."
 msgstr ""
 
-#~ msgid "_Unit: "
-#~ msgstr "_Unidade: "
-
-#~ msgid "<b>Title</b>"
-#~ msgstr "<b>Título</b>"
-
-#~ msgid "Source: "
-#~ msgstr "Fonte: "
-
-#~ msgid "Database format has changed"
-#~ msgstr "Formato do banco de dados mudou"
-
-#~ msgid ""
-#~ "%(progname)s %(version)s has changed the format of its database. Your "
-#~ "database will no longer work with older versions of %(progname)s.  A "
-#~ "backup has been saved in %(backupfile)s"
-#~ msgstr ""
-#~ "%(progname)s %(version)s alterou o formato do banco de dados. Seu banco "
-#~ "de dados não irá mais funcionar com versões antigas de %(progname)s. Uma "
-#~ "cópia de segurança foi criadada em %(backupfile)s"
-
-#~ msgid ""
-#~ "In case anything goes wrong, a backup copy of your recipe database is "
-#~ "being exported to %s"
-#~ msgstr ""
-#~ "Caso algo dê errado, uma cópia de segurança do banco de dados de receitas "
-#~ "está sendo exportada para %s"
-
-#~ msgid "Transferring data to new database format"
-#~ msgstr "Transferindo dados para novo formato do banco de dados"
-
-#~ msgid "Excellent"
-#~ msgstr "Excelente"
-
-#~ msgid "Great"
-#~ msgstr "Muito bom"
-
-#~ msgid "Good"
-#~ msgstr "Bom"
-
-#~ msgid "Fair"
-#~ msgstr "Razoável"
-
-#~ msgid "Poor"
-#~ msgstr "Fraco"
-
-#~ msgid "Shopping list for: "
-#~ msgstr "Lista de Compras para: "
-
 #~ msgid "E-_mail recipes"
 #~ msgstr "Enviar receitas por e_mail"
 
+#~ msgid "Limiting Search to: "
+#~ msgstr "Limitando pesquisa para: "
+
 #~ msgid "_Export"
 #~ msgstr "_Exportar"
+
+#~ msgid "<b>Title</b>"
+#~ msgstr "<b>Título</b>"
 
 #~ msgid "Add this recipe to a shopping list"
 #~ msgstr "Adicionar esta Receita à Lista de Compra"
@@ -3799,8 +3700,17 @@ msgstr ""
 #~ msgid "Export this recipe as a text file."
 #~ msgstr "Exportar receita como arquivo texto."
 
+#~ msgid "Image: "
+#~ msgstr "Imagem: "
+
 #~ msgid "Ins_tructions"
 #~ msgstr "Ins_truções"
+
+#~ msgid "Pre_paration Time: "
+#~ msgstr "Tempo de pre_paração: "
+
+#~ msgid "S_hopping Category: "
+#~ msgstr "Categoria de compras: "
 
 #~ msgid "_Delete Ingredient"
 #~ msgstr "_Apagar Ingrediente"
@@ -3819,6 +3729,15 @@ msgstr ""
 
 #~ msgid "_Notes"
 #~ msgstr "_Notas"
+
+#~ msgid "_Servings: "
+#~ msgstr "_Porções: "
+
+#~ msgid "_Title: "
+#~ msgstr "_Título "
+
+#~ msgid "_Unit: "
+#~ msgstr "_Unidade: "
 
 #~ msgid "Advanced"
 #~ msgstr "Avançado"
@@ -3842,8 +3761,8 @@ msgstr ""
 #~ msgstr "Usar expressões regulares para pesquisar"
 
 #~ msgid ""
-#~ "Remove the selected recipe from your shopping list (or remove all items "
-#~ "if no recipe is selected)"
+#~ "Remove the selected recipe from your shopping list (or remove all items if "
+#~ "no recipe is selected)"
 #~ msgstr ""
 #~ "Remover a receita selecionada de sua lista de compras (ou remova todos os "
 #~ "itens se não existir receita selecionada)"
@@ -3861,28 +3780,42 @@ msgstr ""
 #~ msgid "Deleted "
 #~ msgstr "Apagado "
 
+#, python-format
+#~ msgid "Multiply %s by: "
+#~ msgstr "Multiplicar %s por: "
+
 #~ msgid ""
-#~ "Gourmet can download a recipe in any supported recipe archive format or "
-#~ "can import recipes from the following websites:"
+#~ "Gourmet can download a recipe in any supported recipe archive format or can "
+#~ "import recipes from the following websites:"
 #~ msgstr ""
 #~ "O Gourmet pode baixar receitas em qualquer formato suportado ou pode "
 #~ "importar receitas das seguintes páginas:"
 
+#~ msgid "Enter URL: "
+#~ msgstr "Informe URL: "
+
+#~ msgid "Source: "
+#~ msgstr "Fonte: "
+
 #~ msgid "Deleted 1 recipe."
 #~ msgstr "1 receita Excluida"
 
+#, python-format
 #~ msgid "Deleted %s recipes"
 #~ msgstr "%s receitas excluidas"
 
 #~ msgid "Are you sure you want to change the "
 #~ msgstr "Tem certeza que deseja mudar o "
 
+#, python-format
 #~ msgid "for \"%s from \"%s\""
 #~ msgstr "para \"%s\" de \"%s\""
 
+#, python-format
 #~ msgid " from \"%s\" "
 #~ msgstr " de \"%s\" "
 
+#, python-format
 #~ msgid " to \"%s\""
 #~ msgstr " para \"%s\""
 
@@ -3892,6 +3825,7 @@ msgstr ""
 #~ msgid "You haven't entered a key!"
 #~ msgstr "Você não informou a chave!"
 
+#, python-format
 #~ msgid ""
 #~ "Are you sure you want the keys\n"
 #~ " for all %s selections set to\n"
@@ -3904,16 +3838,23 @@ msgstr ""
 #~ msgid "Recipe Card: "
 #~ msgstr "Cartão de Receita: "
 
+#~ msgid "Choose an image to insert in instructions... "
+#~ msgstr "Escolha uma imagem para inserir nas instruções.... "
+
 #~ msgid "Changes to ingredients saved automatically."
 #~ msgstr "Mudanças nos ingredientes salvas automaticamente."
 
+#~ msgid "Name of group: "
+#~ msgstr "Nome do grupo: "
+
+#, python-format
 #~ msgid "Are you sure you want to delete %s"
 #~ msgstr "Tem certeza que quer excluir %s"
 
+#, python-format
 #~ msgid "Shall I delete the item contained in %s or move it out of the group?"
 #~ msgid_plural ""
-#~ "Shall I delete the items contained in %s or just move them out of the "
-#~ "group?"
+#~ "Shall I delete the items contained in %s or just move them out of the group?"
 #~ msgstr[0] "Eu excuirei o item contido em %s ou moverei isto do grupo?"
 #~ msgstr[1] ""
 #~ "Eu excluirei os itens contidos em %s ou moverei eles para fora do grupo?"
@@ -3931,14 +3872,23 @@ msgstr ""
 #~ msgid "See ingredients"
 #~ msgstr "Veja ingredientes"
 
+#, python-format
 #~ msgid "%s Recipes"
 #~ msgstr "%s Receitas"
 
+#, python-format
 #~ msgid " %s contains %s"
 #~ msgstr " %s contém %s"
 
+#, python-format
 #~ msgid ", %s contains %s"
 #~ msgstr ", %s contém %s"
+
+#~ msgid "Password: "
+#~ msgstr "Senha: "
+
+#~ msgid "Category: "
+#~ msgstr "Categoria: "
 
 #~ msgid "seconds"
 #~ msgstr "segundos"
@@ -3963,30 +3913,36 @@ msgstr ""
 
 #~ msgid ""
 #~ "Gourmet Recipe Manager is an application to store, organize and search "
-#~ "recipes. Gourmet also makes it easy to create shopping lists from "
-#~ "recipes. Gourmet imports recipes from a number of sources, including "
-#~ "MealMaster and MasterCook archives and several popular websites. Gourmet "
-#~ "can export recipes as text, MealMaster files, HTML web pages, and a "
-#~ "custom XML format for excahnge with other Gourmet users. Gourmet supports "
-#~ "linking images with recipes."
+#~ "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
+#~ "Gourmet imports recipes from a number of sources, including MealMaster and "
+#~ "MasterCook archives and several popular websites. Gourmet can export recipes "
+#~ "as text, MealMaster files, HTML web pages, and a custom XML format for "
+#~ "excahnge with other Gourmet users. Gourmet supports linking images with "
+#~ "recipes."
 #~ msgstr ""
 #~ "Gourmet Recipe Manager é uma aplicação que armazena, organiza e pesquisa "
 #~ "receitas. Gourmet também facilita a criação de lista de compras das "
-#~ "receitas. Gourmet importa receitas de várias fontes, incluindo MealMaster "
-#~ "e MasterCook e alguns websites populares. Gourmet pode exportar receitas "
-#~ "como texto, arquivos MealMaster, páginas HTML, e um formato XML "
-#~ "customizado para intercâmbio com outros usuários Gourmet. Gourmet suporta "
-#~ "linkar imagens com as receitas."
+#~ "receitas. Gourmet importa receitas de várias fontes, incluindo MealMaster e "
+#~ "MasterCook e alguns websites populares. Gourmet pode exportar receitas como "
+#~ "texto, arquivos MealMaster, páginas HTML, e um formato XML customizado para "
+#~ "intercâmbio com outros usuários Gourmet. Gourmet suporta linkar imagens com "
+#~ "as receitas."
 
 #~ msgid "Choose Database File"
 #~ msgstr "Escolha o arquivo de Banco de Dados"
+
+#~ msgid "Command: "
+#~ msgstr "Commando: "
+
+#~ msgid "Shopping list for: "
+#~ msgstr "Lista de Compras para: "
 
 #~ msgid "Printing not supported"
 #~ msgstr "Impressão não suportada"
 
 #~ msgid ""
-#~ "To print recipes, first export them, then print from another program. If "
-#~ "you install wxWindows, you can print directly from Gourmet."
+#~ "To print recipes, first export them, then print from another program. If you "
+#~ "install wxWindows, you can print directly from Gourmet."
 #~ msgstr ""
 #~ "Para imprimir receitas, primerio exporte-as, então imprima com outro "
 #~ "programa. Se você instalar wxWindows, você pode imprimir diretamente de "

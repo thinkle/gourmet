@@ -1,95 +1,95 @@
-# Turkish translation for grecipe-manager
-# Copyright (c) (c) 2005 Canonical Ltd, and Rosetta Contributors 2005
+# Chinese (China) translation for grecipe-manager
+# Copyright (c) (c) 2006 Canonical Ltd, and Rosetta Contributors 2006
 # This file is distributed under the same license as the grecipe-manager package.
-# FIRST AUTHOR <halilicelik@gmail.com>, 2005.
+# <>, 2006.
+# , fuzzy
+# <>, 2006.
 #
-#, fuzzy
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-08-19 12:20-0400\n"
-"PO-Revision-Date: 2005-10-11 14:14+0000\n"
-"Last-Translator: Halil Ibrahim ÇELİK <halilicelik@gmail.com>\n"
-"Language-Team: Turkish <tr@li.org>\n"
+"PO-Revision-Date: 2006-02-05 12:00+0000\n"
+"Last-Translator: Tao Wei <weitao1979@gmail.com>\n"
+"Language-Team: Chinese (China) <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Rosetta-Version: 0.1\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Rosetta (http://launchpad.ubuntu.com/rosetta/)\n"
 
 #: ../glade/app.glade.h:1 ../glade/recSelector.glade.h:1
 msgid "A_dd Search Criteria"
-msgstr ""
+msgstr "添加搜索条件(_d)"
 
 #: ../glade/app.glade.h:2
 msgid "Add recipe to shopping list"
-msgstr "Tarifi alış veriş listesine ekle"
+msgstr "添加食谱到购物清单"
 
 #: ../glade/app.glade.h:3
 msgid "Add selected recipe to a shopping list."
-msgstr "Seçilmiş tarifi alış veriş listesine ekle"
+msgstr "添加选则的食谱到购物清单"
 
 #: ../glade/app.glade.h:4
 msgid "Add to _Pantry"
-msgstr "_Kilere ekle"
+msgstr "添加至 Pantry"
 
 #: ../glade/app.glade.h:5 ../glade/recCard.glade.h:28
 msgid "Add to _Shopping List"
-msgstr "_Alışveriş listesine ekle"
+msgstr "添加到购物清单"
 
 #: ../glade/app.glade.h:6
 msgid "Add to _shopping list"
-msgstr "_Alışveriş listesine ekle"
+msgstr "添加到购物清单"
 
 #: ../glade/app.glade.h:7 ../glade/recSelector.glade.h:2
 msgid "Adva_nced Search"
-msgstr "Gelişmiş arama"
+msgstr "高级搜索"
 
 #: ../glade/app.glade.h:8
 msgid "Create a new recipe"
-msgstr "Yeni tarif yarat"
+msgstr "创建一个新的食谱"
 
 #: ../glade/app.glade.h:9
 msgid "Delete selected recipe"
-msgstr "Seçili tarifi sil"
+msgstr "删除选择的食谱"
 
 #: ../glade/app.glade.h:10
 msgid "Delete selected recipes"
-msgstr ""
+msgstr "删除选择的食谱"
 
 #: ../glade/app.glade.h:11
 msgid "E-_mail selected recipes"
-msgstr ""
+msgstr "通过电子邮件发送选择的食谱(_m)"
 
 #: ../glade/app.glade.h:12
 msgid "E-mail selected recipe"
-msgstr "Seçili tarifi e-mektupla gönder"
+msgstr "通过电子邮件发送选择的食谱"
 
 #: ../glade/app.glade.h:13
 msgid "E-mail selected recipes"
-msgstr "Seçili tarifleri e-mektupla gönder"
+msgstr "通过电子邮件发送选择的食谱"
 
 #: ../glade/app.glade.h:14
 msgid "Edit Ingredient Keys"
-msgstr "İçerik anahtarlarını değiştir"
+msgstr "编辑成份按钮"
 
 #: ../glade/app.glade.h:15
 msgid "Export A_ll Recipes"
-msgstr ""
+msgstr "输出全部食谱(_l)"
 
 #: ../glade/app.glade.h:16
 msgid "Export selected recipes"
-msgstr ""
+msgstr "输出选择的食谱"
 
 #: ../glade/app.glade.h:17
 msgid "Import _Webpage"
-msgstr ""
+msgstr "输出为网页(_W)"
 
 #: ../glade/app.glade.h:18
 msgid "Jump to recipe in Recipe Card vew"
-msgstr "Tarif kartı görünümündeki tarife git"
+msgstr "跳到食谱卡片视图上的食谱"
 
 #: ../glade/app.glade.h:19 ../glade/recSelector.glade.h:3
 #: ../glade/rec_ref_window.glade.h:2
@@ -103,9 +103,7 @@ msgid ""
 "be included when you save or print the list unless you tell me you need to "
 "buy it."
 msgstr ""
-"Bu kalem maddeyi asla satın almayınız. Tarif içinden çağrıldığında listenin "
-"kiler bölümünde görünecektir. \"Satın Al\" demediğiniz sürece kaydettiğiniz "
-"ya da yazdırdığınız listeye dahil edilmeyecektir."
+"千万不要购买这个条目。当从一个食谱中要求时，它将显示为食品室清单的一部分，来提醒您需要它，但它当保存或者打印时不会被包括进去，除非您告诉我您需要购买它。"
 
 #: ../glade/app.glade.h:21
 msgid "Open a timer"
@@ -113,145 +111,145 @@ msgstr ""
 
 #: ../glade/app.glade.h:22
 msgid "Print selected recipe"
-msgstr "Seçili tarifi yazdır"
+msgstr "打印选择的食谱"
 
 #: ../glade/app.glade.h:23
 msgid "Print selected recipes"
-msgstr ""
+msgstr "打印选择的食谱"
 
 #: ../glade/app.glade.h:24
 msgid "Re_apply changes"
-msgstr "Değişiklikleri yeniden uygula"
+msgstr "重新应用更改(_a)"
 
 #: ../glade/app.glade.h:25
 msgid "Recipe Index"
-msgstr "Tarif fihiristi"
+msgstr "食谱索引"
 
 #: ../glade/app.glade.h:26 ../glade/recCard.glade.h:59
 #: ../glade/shopList.glade.h:13
 msgid "Recipe _Card"
-msgstr "Tarfi kartı"
+msgstr "食谱卡片(_C)"
 
 #: ../glade/app.glade.h:27 ../glade/recCard.glade.h:60
 #: ../glade/shopList.glade.h:14
 msgid "Recipe _List"
-msgstr "Tarif Listesi"
+msgstr "食谱清单(_L)"
 
 #: ../glade/app.glade.h:28 ../glade/keyeditor.glade.h:3
 #: ../glade/recSelector.glade.h:4
 msgid "Search _Results"
-msgstr ""
+msgstr "搜索结果(_R)"
 
 #: ../glade/app.glade.h:29 ../glade/recSelector.glade.h:5
 msgid "Search as _you type"
-msgstr ""
+msgstr "按照您输入的搜索(_y)"
 
 #: ../glade/app.glade.h:30 ../glade/recSelector.glade.h:6
 msgid "Search by other critera within the current search results."
-msgstr ""
+msgstr "在当前搜索结果中使用其他搜索条件来搜索。"
 
 #: ../glade/app.glade.h:31 ../glade/keyeditor.glade.h:5
 #: ../glade/recSelector.glade.h:7 ../glade/rec_ref_window.glade.h:4
 msgid "Search for recipes as you type"
-msgstr "Yazarken tarifleri ara"
+msgstr "按照您输入的搜索食谱"
 
 #: ../glade/app.glade.h:32 ../glade/keyeditor.glade.h:6
 #: ../glade/recSelector.glade.h:9
 msgid "Use regular expressions"
-msgstr "Düzgün ifadeler kullan"
+msgstr "用户正常的表达"
 
 #: ../glade/app.glade.h:33
 msgid "View Re_cipe"
-msgstr "Tarife görüntüle"
+msgstr "观看食谱(_c)"
 
 #: ../glade/app.glade.h:34
 msgid "View Recipe _Card"
-msgstr "Tarif kartını görüntüle"
+msgstr "观看食谱卡片(_C)"
 
 #: ../glade/app.glade.h:35
 msgid "View selected recipe"
-msgstr "Seçili tarife bak"
+msgstr "观看选择的食谱"
 
 #: ../glade/app.glade.h:36
 msgid "_About"
-msgstr "Hakkında"
+msgstr "关于"
 
 #: ../glade/app.glade.h:37
 msgid "_Actions"
-msgstr "Eylemler"
+msgstr "操作"
 
 #: ../glade/app.glade.h:38 ../glade/recSelector.glade.h:10
 msgid "_Delete"
-msgstr "_Sil"
+msgstr "删除"
 
 #: ../glade/app.glade.h:39
 msgid "_Delete Recipe"
-msgstr "Tarifi sil"
+msgstr "删除食谱"
 
 #: ../glade/app.glade.h:40
 msgid "_E-Mail recipe"
-msgstr "Tarifi e-mektupla gönder"
+msgstr "通过电子邮件发送食谱(_E)"
 
 #: ../glade/app.glade.h:41 ../glade/recCard.glade.h:84
 #: ../glade/shopList.glade.h:27
 msgid "_Edit"
-msgstr "Değiştir"
+msgstr "编辑"
 
 #: ../glade/app.glade.h:42
 msgid "_Empty trash"
-msgstr "Çöp kutusunu boşalt"
+msgstr "清空垃圾箱"
 
 #: ../glade/app.glade.h:43
 msgid "_Export selected recipes"
-msgstr ""
+msgstr "输出选择的食谱(_E)"
 
 #: ../glade/app.glade.h:44 ../glade/databaseChooser.glade.h:16
 #: ../glade/shopList.glade.h:28
 msgid "_File"
-msgstr "Dosya"
+msgstr "文件(_F)"
 
 #: ../glade/app.glade.h:45 ../glade/recCard.glade.h:86
 #: ../glade/shopList.glade.h:29
 msgid "_Help"
-msgstr "Yardım"
+msgstr "帮助(_H)"
 
 #: ../glade/app.glade.h:46
 msgid "_Import File"
-msgstr ""
+msgstr "输入文件(_I)"
 
 #: ../glade/app.glade.h:47
 msgid "_Ingredient Key Editor"
-msgstr "İçerik anahtar kelime işlemcisi"
+msgstr "成份键编辑(_I)"
 
 #: ../glade/app.glade.h:48 ../glade/generic_importer.glade.h:4
 #: ../glade/recCard.glade.h:91
 msgid "_New Recipe"
-msgstr "Yeni Tarif"
+msgstr "新食谱(_N)"
 
 #: ../glade/app.glade.h:49 ../glade/recCard.glade.h:93
 msgid "_Print"
-msgstr ""
+msgstr "打印(_P)"
 
 #: ../glade/app.glade.h:50
 msgid "_Print recipe"
-msgstr "Tarifi yazdır"
+msgstr "打印食谱(_P)"
 
 #: ../glade/app.glade.h:51 ../glade/recCard.glade.h:96
 msgid "_Redo"
-msgstr "Yeniden yap"
+msgstr "重做(_R)"
 
 #: ../glade/app.glade.h:52 ../glade/recSelector.glade.h:11
 msgid "_Search for"
-msgstr ""
+msgstr "搜索(_S)"
 
 #: ../glade/app.glade.h:53 ../glade/recCard.glade.h:100
 #: ../glade/shopList.glade.h:33
 msgid "_Shopping List"
-msgstr "Alış veriş listesi"
+msgstr "购物单(_S)"
 
 #: ../glade/app.glade.h:54
 msgid "_Show deleted recipes"
-msgstr "Silinmiş tarifleri göster"
+msgstr "观看删除的食谱(_S)"
 
 #: ../glade/app.glade.h:55 ../glade/recCard.glade.h:101
 msgid "_Timer"
@@ -259,25 +257,25 @@ msgstr ""
 
 #: ../glade/app.glade.h:56 ../glade/recCard.glade.h:103
 msgid "_Tools"
-msgstr "Araçlar"
+msgstr "工具(_T)"
 
 #: ../glade/app.glade.h:57 ../glade/recCard.glade.h:105
 msgid "_Undo"
-msgstr "Yapmaktan vazgeç"
+msgstr "取消(_U)"
 
 #: ../glade/app.glade.h:58 ../glade/recCard.glade.h:106
 msgid "_Unit Converter"
-msgstr "Birim Çevi_rici"
+msgstr "单位转换(_U)"
 
 #: ../glade/app.glade.h:59 ../glade/recCard.glade.h:108
 #: ../glade/shopList.glade.h:34
 msgid "_View"
-msgstr "G_ör"
+msgstr "显示(_V)"
 
 #: ../glade/app.glade.h:60 ../glade/keyeditor.glade.h:13
 #: ../glade/recSelector.glade.h:13
 msgid "_in"
-msgstr ""
+msgstr "内部(_i)"
 
 #: ../glade/converter.glade.h:1 ../glade/databaseChooser.glade.h:1
 #: ../glade/rec_ref_window.glade.h:1
@@ -290,69 +288,67 @@ msgstr "1"
 
 #: ../glade/converter.glade.h:3
 msgid "<b>From</b>"
-msgstr "<b>Kimden</b>"
+msgstr "<b>从</b>"
 
 #: ../glade/converter.glade.h:4
 msgid "<b>To</b>"
-msgstr "<b>Kime</b>"
+msgstr "<b>到</b>"
 
 #: ../glade/converter.glade.h:5
 msgid "?"
-msgstr "?"
+msgstr "？"
 
 #: ../glade/converter.glade.h:6
 msgid "Density _Information"
-msgstr "Yoğunluk _Bilgisi"
+msgstr "密度信息(_I)"
 
 #: ../glade/converter.glade.h:7
 msgid "I_tem:"
-msgstr "_Kalem"
+msgstr "条目(_t)："
 
 #: ../glade/converter.glade.h:8 ../src/lib/convertGui.py:152
 msgid "None"
-msgstr "Hiç yok"
+msgstr "没有"
 
 #: ../glade/converter.glade.h:9
 msgid "Unit Converter"
-msgstr "Birim Çevirici"
+msgstr "单位转换"
 
 #: ../glade/converter.glade.h:10 ../glade/keyeditor.glade.h:8
 #: ../glade/nutritionDruid.glade.h:13
 msgid "_Amount:"
-msgstr "_Miktar"
+msgstr "数量(_A)："
 
 #: ../glade/converter.glade.h:11
 msgid "_Density:"
-msgstr "_Yoğunluk"
+msgstr "密度(_D)："
 
 #: ../glade/converter.glade.h:12
 msgid "_Result:"
-msgstr "_Sonuç"
+msgstr "结果"
 
 #: ../glade/converter.glade.h:13 ../glade/keyeditor.glade.h:12
 #: ../glade/nutritionDruid.glade.h:18 ../glade/recCard.glade.h:107
 msgid "_Unit:"
-msgstr "_Birim"
+msgstr "单位(_U)："
 
 #: ../glade/databaseChooser.glade.h:2
 msgid "<b>Choose Database System for Gourmet to Use</b>"
-msgstr "<b>Gourmet'nin kullanacağı Veritabanı Sistemini Seç</b>"
+msgstr "<b>选择Gourmet使用的数据库</b>"
 
 #: ../glade/databaseChooser.glade.h:3
 msgid "Choose Database"
-msgstr "Veritabanı Seç"
+msgstr "选择数据库"
 
 #: ../glade/databaseChooser.glade.h:4
 msgid "Database _Name:"
-msgstr "Veritabanı _Adı:"
+msgstr "数据库名称"
 
 #: ../glade/databaseChooser.glade.h:5
 msgid ""
 "Hostname of the system where your database server is running. If your "
 "database server is running on your local system, use localhost."
-msgstr ""
-"Veritabanı sunumcunuzun çalıştığı sistemin adı. Eğer veritabanı sunumcunuz "
-"yerel bilgisayarınızda ise \"localhost\" adını kullanın."
+msgstr "您数据库所在服务器运行时的系统主机名，如果您的数据库所在的服务器是运行在您的本地系统，那么请使用 localhost"
 
 #: ../glade/databaseChooser.glade.h:6
 msgid ""
@@ -360,72 +356,68 @@ msgid ""
 "SQLite (stored in a local file)\n"
 "MySQL (requires connection to a database)"
 msgstr ""
-"Metakit(öntanımlı, yerel bir dosyada tutulur)\n"
-"SQLite(yerel bir dosyada tutulur)\n"
-"MySQL(bir veritabanına bağlantı gerekir)"
+"Metakit (默认，存储在本地文件)\n"
+"SQLite (存储在本地文件)\n"
+"MySQL (需要一个到数据库的链接)"
 
 #: ../glade/databaseChooser.glade.h:9
 msgid ""
 "Name of the database in which Gourmet should store its information. Gourmet "
 "will try to create this database if it does not already exist."
-msgstr ""
-"Gourmet'in bilgilerini kaydedeceği veritabanının adı. Bu veri tabanı yoksa "
-"Gourmet yaratmaya çalışacaktır."
+msgstr "Gourmet用来储存信息的数据库名称。如果它不存在，Gourmet将会试图创建这个数据库。"
 
 #: ../glade/databaseChooser.glade.h:10
 msgid "Password for your username on the database."
-msgstr "Veritabanındaki kullanıcı kodunuzun parolası."
+msgstr "您数据库用户的密码。"
 
 #: ../glade/databaseChooser.glade.h:11
 msgid ""
 "Save the password for next time. This means the password will be stored "
 "insecurely in your configuration file."
-msgstr ""
-"Parolayı bir dahaki seferde kaydet. Bu, parolanızın kurulum dosyanızda "
-"güvensiz bir şekilde bulunması demektir."
+msgstr "下次保存密码。这意味着密码将会不安全的储存在配置文件中。"
 
 #: ../glade/databaseChooser.glade.h:12
 msgid "Your username on the database."
-msgstr "Veritabanındaki kullanıcı kodunuz."
+msgstr "您在数据库的用户名"
 
 #: ../glade/databaseChooser.glade.h:13
 msgid "_Browse"
-msgstr "_Listele"
+msgstr "浏览"
 
 #: ../glade/databaseChooser.glade.h:14
 msgid "_Database System"
-msgstr "_Veritabanı Sistemi"
+msgstr "数据库系统"
 
 #: ../glade/databaseChooser.glade.h:15 ../glade/recCard.glade.h:82
 #: ../src/lib/dialog_extras.py:801 ../src/lib/dialog_extras.py:1191
 #: ../src/lib/gglobals.py:326 ../src/lib/GourmetRecipeManager.py:453
 #: ../src/lib/reccard.py:998
 msgid "_Details"
-msgstr "_Ayrıntılar"
+msgstr "详细信息"
 
 #: ../glade/databaseChooser.glade.h:17
 msgid "_Host:"
-msgstr "_Bilgisayar Adı:"
+msgstr "主机(_H)："
 
 #: ../glade/databaseChooser.glade.h:18
 msgid "_Password:"
-msgstr "_Parola"
+msgstr "密码"
 
 #: ../glade/databaseChooser.glade.h:19
 msgid "_Save Password"
-msgstr "Parolayı _Kaydet"
+msgstr "保存密码"
 
 #: ../glade/databaseChooser.glade.h:20
 msgid "_Username:"
-msgstr "_Kullanıcı adı:"
+msgstr "用户名"
 
 #: ../glade/databaseChooser.glade.h:21
 msgid "localhost"
-msgstr "localhost"
+msgstr "本地"
 
 #: ../glade/databaseChooser.glade.h:22
 msgid "recipe"
-msgstr "tarif"
+msgstr "食谱"
 
 #: ../glade/keyeditor.glade.h:1
 msgid "<b>Change selected ingredients</b>"
@@ -433,15 +425,15 @@ msgstr ""
 
 #: ../glade/keyeditor.glade.h:2
 msgid "Key Editor"
-msgstr "Anahtar Düzenleyici"
+msgstr "按钮编辑"
 
 #: ../glade/keyeditor.glade.h:4 ../glade/nutritionDruid.glade.h:10
 msgid "Search as you t_ype"
-msgstr ""
+msgstr "按照您输入的搜索(_y)"
 
 #: ../glade/keyeditor.glade.h:7
 msgid "_Advanced Search"
-msgstr ""
+msgstr "高级搜索"
 
 #: ../glade/keyeditor.glade.h:9
 msgid "_Item:"
@@ -453,27 +445,27 @@ msgstr ""
 
 #: ../glade/keyeditor.glade.h:11
 msgid "_Search for:"
-msgstr ""
+msgstr "搜索"
 
 #: ../glade/generic_importer.glade.h:1
 msgid ""
 "<i>Select text from the raw recipe and categorize it by labelling which part "
 "of the recipe it is (choose from the recipe elements on the right).</i>"
-msgstr ""
+msgstr "<i>从生的食谱中选择文本并且归类它(从右边的食谱元素中选择)。</i>"
 
 #: ../glade/generic_importer.glade.h:2
 msgid ""
 "Start new recipe (use this if the file you're importing contains more than "
 "one recipe)"
-msgstr ""
+msgstr "开始新的食谱(当您导入包含超过一个的食谱时使用这个命令)"
 
 #: ../glade/generic_importer.glade.h:3
 msgid "_Label"
-msgstr ""
+msgstr "标签"
 
 #: ../glade/generic_importer.glade.h:5
 msgid "_Raw recipe:"
-msgstr ""
+msgstr "生食谱(_R)："
 
 #: ../glade/nutritionDruid.glade.h:1
 msgid "<b>Choose a Density</b>"
@@ -481,7 +473,7 @@ msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:2
 msgid "<i>Enter nutritional information for </i>"
-msgstr ""
+msgstr "<i>输入营养信息</i>"
 
 #: ../glade/nutritionDruid.glade.h:3
 msgid "<i>From:</i>"
@@ -489,11 +481,11 @@ msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:4
 msgid "<i>Search _results:</i>"
-msgstr ""
+msgstr "<i>搜索结果(_r)：</i>"
 
 #: ../glade/nutritionDruid.glade.h:5
 msgid "<i>Select equivalent of</i>"
-msgstr ""
+msgstr "<i>搜索相等的</i>"
 
 #: ../glade/nutritionDruid.glade.h:6
 msgid "<i>To:</i>"
@@ -501,15 +493,15 @@ msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:7
 msgid "<i>from USDA database</i>"
-msgstr ""
+msgstr "<i>来自USDA数据库</i>"
 
 #: ../glade/nutritionDruid.glade.h:8
 msgid "<i>or</i>"
-msgstr ""
+msgstr "<i>或者</i>"
 
 #: ../glade/nutritionDruid.glade.h:9
 msgid "I_gnore"
-msgstr ""
+msgstr "忽略"
 
 #: ../glade/nutritionDruid.glade.h:11
 msgid "Show only food in _group:"
@@ -521,31 +513,31 @@ msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:14
 msgid "_Change ingredient"
-msgstr ""
+msgstr "改变原料(_C)"
 
 #: ../glade/nutritionDruid.glade.h:15
 msgid "_Change unit"
-msgstr ""
+msgstr "改变单位(_C)"
 
 #: ../glade/nutritionDruid.glade.h:16
 msgid "_Save new unit"
-msgstr ""
+msgstr "保存新单位(_S)"
 
 #: ../glade/nutritionDruid.glade.h:17
 msgid "_Search USDA Ingredient Database:"
-msgstr ""
+msgstr "搜索USDA原料数据库(_S)："
 
 #: ../glade/nutritionDruid.glade.h:19 ../src/lib/keyEditor.py:79
 msgid "unit"
-msgstr ""
+msgstr "单位"
 
 #: ../glade/preferenceDialog.glade.h:1
 msgid "<b>Card View Preferences</b>"
-msgstr ""
+msgstr "<b>卡片视图设置</b>"
 
 #: ../glade/preferenceDialog.glade.h:2
 msgid "<b>Email Preferences</b>"
-msgstr ""
+msgstr "<b>电子邮件设置</b>"
 
 #: ../glade/preferenceDialog.glade.h:3
 msgid "<b>Index View Preferences</b>"
@@ -553,7 +545,7 @@ msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:4
 msgid "<b>Shopping List Preferences</b>"
-msgstr ""
+msgstr "<b>购物清单设置</b>"
 
 #: ../glade/preferenceDialog.glade.h:5
 msgid "<i>Configure which columns are included in the recipe index view.</i>"
@@ -579,15 +571,15 @@ msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:10
 msgid "Card View"
-msgstr ""
+msgstr "卡片视图"
 
 #: ../glade/preferenceDialog.glade.h:11
 msgid "Email Preferences"
-msgstr ""
+msgstr "电子邮件设置"
 
 #: ../glade/preferenceDialog.glade.h:12
 msgid "Gourmet Recipe Manager Preferences"
-msgstr ""
+msgstr "Gourmet食谱管理设置"
 
 #: ../glade/preferenceDialog.glade.h:13
 msgid "Include Recipe as an _HTML Attachment to the E-mail"
@@ -599,12 +591,12 @@ msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:15
 msgid "Index View"
-msgstr ""
+msgstr "目录视图"
 
 #: ../glade/preferenceDialog.glade.h:16 ../glade/shopList.glade.h:23
 #: ../src/lib/shopgui.py:155
 msgid "Shopping List"
-msgstr "Alış veriş Listesi"
+msgstr "购物单"
 
 #: ../glade/preferenceDialog.glade.h:17
 msgid "Use fractions when possible for display"
@@ -612,7 +604,7 @@ msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:18 ../glade/recCard.glade.h:75
 msgid "_Allow units to change when multiplying"
-msgstr "Çarparken birim değişmesine i_zin ver"
+msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:19
 msgid "_Always add optional ingredients"
@@ -620,7 +612,7 @@ msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:20
 msgid "_Always use these settings"
-msgstr ""
+msgstr "永远使用这些设置"
 
 #: ../glade/preferenceDialog.glade.h:21
 msgid "_Clear remembered optional ingredients"
@@ -628,7 +620,7 @@ msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:22
 msgid "_Never add optional ingredients"
-msgstr ""
+msgstr "永远不田间可选的原料(_N)"
 
 #: ../glade/preferenceDialog.glade.h:23
 msgid "_Recipes per page:"
@@ -636,7 +628,7 @@ msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:24
 msgid "_Remember user selections by default"
-msgstr ""
+msgstr "默认记住用户的选择(_R)"
 
 #: ../glade/preferenceDialog.glade.h:25
 msgid "_Use fractions"
@@ -649,6 +641,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
+"\n"
 
 #: ../glade/recCard.glade.h:4
 msgid ""
@@ -658,71 +651,71 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:5
 msgid "<b>Category:</b>"
-msgstr "<b>Kategori:</b>"
+msgstr "<b>种类：</b>"
 
 #: ../glade/recCard.glade.h:6
 msgid "<b>Cooking Time:</b>"
-msgstr "<b>Pişirme Süresi:</b>"
+msgstr "<b>烹饪时间：</b>"
 
 #: ../glade/recCard.glade.h:7
 msgid "<b>Cuisine:</b>"
-msgstr "<b>Yemekler:</b>"
+msgstr "<b>烹调法：</b>"
 
 #: ../glade/recCard.glade.h:8
 msgid "<b>Ingredients</b>"
-msgstr "<b>İç Malzeme</b>"
+msgstr "<b>原料</b>"
 
 #: ../glade/recCard.glade.h:9
 msgid "<b>Instructions</b>"
-msgstr "<b>Talimat</b>"
+msgstr "<b>指令</b>"
 
 #: ../glade/recCard.glade.h:10
 msgid "<b>Notes</b>"
-msgstr "<b>Notes</b>"
+msgstr "<b>备注</b>"
 
 #: ../glade/recCard.glade.h:11
 msgid "<b>Nutritional Information</b>"
-msgstr ""
+msgstr "<b>营养信息</b>"
 
 #: ../glade/recCard.glade.h:12
 msgid "<b>Preparation Time:</b>"
-msgstr "<b>Hazırlama Zamanı:</b>"
+msgstr "<b>准备时间：</b>"
 
 #: ../glade/recCard.glade.h:13
 msgid "<b>Rating:</b>"
-msgstr "<b>Değerleme:</b>"
+msgstr "<b>评价：</b>"
 
 #: ../glade/recCard.glade.h:14
 msgid "<b>Source:</b>"
-msgstr "<b>Kaynak:</b>"
+msgstr "<b>来源：</b>"
 
 #: ../glade/recCard.glade.h:15
 msgid "<b>_Instructions:</b>"
-msgstr ""
+msgstr "<b>_I规程：</b>"
 
 #: ../glade/recCard.glade.h:16
 msgid "<b>_Multiply by:</b>"
-msgstr ""
+msgstr "<b>_M相乘：</b>"
 
 #: ../glade/recCard.glade.h:17
 msgid "<b>_Notes:</b>"
-msgstr ""
+msgstr "<b>_N注释：</b>"
 
 #: ../glade/recCard.glade.h:18
 msgid "<b>_Servings:</b>"
-msgstr ""
+msgstr "<b>_S一人份：</b>"
 
 #: ../glade/recCard.glade.h:19
 msgid "Add _Group"
-msgstr "Grup _Ekle"
+msgstr "添加组_G"
 
 #: ../glade/recCard.glade.h:20
 msgid ""
 "Add _Recipe\n"
 "as Ingredient"
 msgstr ""
-"_Tarifi\n"
-"İç malzeme olarak Ekle"
+"作为原料\n"
+"添加食谱_R"
 
 #: ../glade/recCard.glade.h:22
 msgid "Add _ingredient:"
@@ -730,19 +723,19 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:23
 msgid "Add _recipe as ingredient"
-msgstr "_recipe'ye malzeme olarak ekle"
+msgstr ""
 
 #: ../glade/recCard.glade.h:24
 msgid "Add another recipe as an ingredient."
-msgstr "Başka tarife malzeme olarak ekle"
+msgstr ""
 
 #: ../glade/recCard.glade.h:25
 msgid "Add group for ingredients (such as \"Sauce\" or \"Crust\")"
-msgstr "Malzemeler için grup ekle (\"Sos\" veya \"kabuk\" gibi)"
+msgstr ""
 
 #: ../glade/recCard.glade.h:26
 msgid "Add ingredient _group"
-msgstr "Malzemeyi _group'a ekle"
+msgstr ""
 
 #: ../glade/recCard.glade.h:27
 msgid "Add to Shopping _List"
@@ -756,35 +749,35 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:30
 msgid "C_uisine:"
-msgstr "Y_emekler"
+msgstr "烹调法(_C)："
 
 #: ../glade/recCard.glade.h:31
 msgid "Coo_king Time:"
-msgstr "Piş_me Süresi:"
+msgstr "烹调时间："
 
 #: ../glade/recCard.glade.h:32 ../src/lib/reccard.py:305
 msgid "Delete selected ingredient"
-msgstr "Seçili malzemeyi sil"
+msgstr "删除选择的原料"
 
 #: ../glade/recCard.glade.h:33
 msgid "Delete selected ingredients."
-msgstr "Seçili malzemeyi sil"
+msgstr "删除选择的原料。"
 
 #: ../glade/recCard.glade.h:34
 msgid "Delete this recipe from the database."
-msgstr "Bu tarifi veritabanından sil."
+msgstr "从数据库中删除此食谱。"
 
 #: ../glade/recCard.glade.h:35
 msgid "Delete this recipe permanently."
-msgstr "Bu tarifi kalıcı olarak sil."
+msgstr "永久删除此食谱。"
 
 #: ../glade/recCard.glade.h:36
 msgid "Descriptions"
-msgstr "Betimlemeler"
+msgstr ""
 
 #: ../glade/recCard.glade.h:37
 msgid "E_xport Recipe"
-msgstr "Tarifi Dışa A_ktar"
+msgstr "输出食谱(_x)"
 
 #: ../glade/recCard.glade.h:38
 msgid "Edit Recipe Card"
@@ -816,15 +809,15 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:45
 msgid "Import ingredients from a plain text file."
-msgstr "Malzemeyi bir düz metinden içeriye aktar."
+msgstr "输出食谱为简单的文本文件。"
 
 #: ../glade/recCard.glade.h:46
 msgid "Ingredient (_key):"
-msgstr "Malzeme (_anahtarı):"
+msgstr "原料(按钮_k)："
 
 #: ../glade/recCard.glade.h:47
 msgid "Ingredient Key _Editor"
-msgstr "Malzeme anahtar _Düzenleyicisi"
+msgstr "原料按钮编辑(_E)"
 
 #: ../glade/recCard.glade.h:48 ../src/lib/exporters/exporter.py:237
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:286
@@ -832,37 +825,37 @@ msgstr "Malzeme anahtar _Düzenleyicisi"
 #: ../src/lib/exporters/html_exporter.py:99
 #: ../src/lib/exporters/pdf_exporter.py:549
 msgid "Ingredients"
-msgstr "Malzeme"
+msgstr "成分"
 
 #: ../glade/recCard.glade.h:49 ../src/lib/gglobals.py:244
 #: ../src/lib/gglobals.py:249
 msgid "Instructions"
-msgstr "Talimatlar"
+msgstr "规程"
 
 #: ../glade/recCard.glade.h:50
 msgid "Move ingredient _up"
-msgstr "Malzemeyi _yukarı taşı"
+msgstr "向上移动原料(_u)"
 
 #: ../glade/recCard.glade.h:51
 msgid "Move ingredient do_wn"
-msgstr "Malzemeyi _aşağı taşı"
+msgstr "向下移动原料(_w)"
 
 #: ../glade/recCard.glade.h:52
 msgid "Move selected ingredients down"
-msgstr "Seçili malzemeleri aşağı taşı"
+msgstr "向下移动选择的食谱"
 
 #: ../glade/recCard.glade.h:53
 msgid "Move selected ingredients up"
-msgstr "Seçili malzemeleri yukarı taşı"
+msgstr "向上移动选择的食谱"
 
 #: ../glade/recCard.glade.h:54 ../src/lib/gglobals.py:245
 #: ../src/lib/gglobals.py:250
 msgid "Notes"
-msgstr "Notlar"
+msgstr "备注"
 
 #: ../glade/recCard.glade.h:55
 msgid "Paste ingredient list from the clipboard."
-msgstr "İç malzeme listesini bellekten yapıştır"
+msgstr "从剪贴板上粘贴原料清单。"
 
 #: ../glade/recCard.glade.h:56
 msgid "Pre_paration Time:"
@@ -870,11 +863,11 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:57
 msgid "Print recipe"
-msgstr ""
+msgstr "打印食谱"
 
 #: ../glade/recCard.glade.h:58
 msgid "Recipe Card"
-msgstr "Yemek Tarif Kartı"
+msgstr "食谱卡片"
 
 #: ../glade/recCard.glade.h:61
 msgid "Redo"
@@ -890,7 +883,7 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:64
 msgid "S_ource:"
-msgstr "_Kaynak:"
+msgstr "来源(_o)："
 
 #: ../glade/recCard.glade.h:65
 msgid "Save"
@@ -898,11 +891,11 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:66
 msgid "Save changes"
-msgstr "Değişiklikleri kaydet"
+msgstr "保存更改"
 
 #: ../glade/recCard.glade.h:67
 msgid "Standardized name for ingredient (to be used in shopping lists)."
-msgstr "Malzeme için standart isim (alış veriş listelerinde kullanılacak)."
+msgstr ""
 
 #: ../glade/recCard.glade.h:68
 msgid ""
@@ -930,44 +923,42 @@ msgid ""
 "When multiplying recipe, automatically change units to keep amounts as "
 "useable as possible."
 msgstr ""
-"Tarifi çarparken, miktarları mümkün olduğu kadar kullanılabilir tutmak için "
-"otomatik birim değiştir."
 
 #: ../glade/recCard.glade.h:73
 msgid "_Add Image"
-msgstr "_Resim ekle"
+msgstr "添加图片"
 
 #: ../glade/recCard.glade.h:74
 msgid "_Add ingredient"
-msgstr "_Malzeme ekle"
+msgstr "添加原料(_A)"
 
 #: ../glade/recCard.glade.h:76
 msgid "_Amount: "
-msgstr "Mi_ktar "
+msgstr "数量(_A)： "
 
 #: ../glade/recCard.glade.h:77
 msgid "_Bold"
-msgstr "_Koyu"
+msgstr "粗题"
 
 #: ../glade/recCard.glade.h:78
 msgid "_Category:"
-msgstr "_Kategori"
+msgstr "种类(_C)："
 
 #: ../glade/recCard.glade.h:79
 msgid "_Close"
-msgstr "_Kapat"
+msgstr "关闭"
 
 #: ../glade/recCard.glade.h:80
 msgid "_Delete ingredient"
-msgstr "Malzemeyi _Sil"
+msgstr "删除原料(_D)"
 
 #: ../glade/recCard.glade.h:81
 msgid "_Delete this Recipe"
-msgstr "Bu tarifi _sil"
+msgstr "删除这个食谱"
 
 #: ../glade/recCard.glade.h:83
 msgid "_E-mail recipe"
-msgstr "Tarifi _e-mektupla gönder"
+msgstr "通过电子邮件发送食谱"
 
 #: ../glade/recCard.glade.h:85
 msgid "_Forget remembered optional ingredients"
@@ -975,27 +966,27 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:87
 msgid "_Import Ingredients"
-msgstr "Malzemeyi _dışarıdan al"
+msgstr "导入原料(_I)"
 
 #: ../glade/recCard.glade.h:88
 msgid "_Import ingredient list"
-msgstr "Malzeme listesini _dışarıdan al"
+msgstr "导入原料列表(_I)"
 
 #: ../glade/recCard.glade.h:89
 msgid "_Ingredient:"
-msgstr "Ma_lzeme"
+msgstr "原料(_I)："
 
 #: ../glade/recCard.glade.h:90
 msgid "_Italic"
-msgstr "_Yatık"
+msgstr "斜体"
 
 #: ../glade/recCard.glade.h:92
 msgid "_Optional"
-msgstr ""
+msgstr "选项(_O)"
 
 #: ../glade/recCard.glade.h:94
 msgid "_Rating:"
-msgstr "_Değerleme"
+msgstr "评价(_R)："
 
 #: ../glade/recCard.glade.h:95
 msgid "_Recipe"
@@ -1003,11 +994,11 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:97
 msgid "_Remove Image"
-msgstr "_Resmi Sil"
+msgstr "移除图片(_R)"
 
 #: ../glade/recCard.glade.h:98
 msgid "_Save"
-msgstr "_Kaydet"
+msgstr "保存"
 
 #: ../glade/recCard.glade.h:99
 msgid "_Servings:"
@@ -1019,7 +1010,7 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:104
 msgid "_Underline"
-msgstr "Alt _Çizgi"
+msgstr "下划线"
 
 #: ../glade/recCard.glade.h:109
 msgid "multiply by"
@@ -1027,80 +1018,80 @@ msgstr ""
 
 #: ../glade/recCard.glade.h:110 ../glade/rec_ref_window.glade.h:11
 msgid "servings"
-msgstr "porsiyon"
+msgstr "一人份"
 
 #: ../glade/recSelector.glade.h:8
 msgid "Select Recipe"
-msgstr "Tarif seç"
+msgstr "选择食谱"
 
 #: ../glade/recSelector.glade.h:12
 msgid "_Undelete"
-msgstr "Si_lmeyi geri al"
+msgstr "未删除(_U)"
 
 #: ../glade/rec_ref_window.glade.h:3
 msgid "Search by"
-msgstr "İle ara"
+msgstr "搜索"
 
 #: ../glade/rec_ref_window.glade.h:5
 msgid "Select Recipe to include in Ingredient List"
-msgstr "Malzeme Listesine dahil etmek için Tarif Seçiniz"
+msgstr ""
 
 #: ../glade/rec_ref_window.glade.h:6 ../src/lib/recindex.py:44
 #: ../src/lib/recindex.py:51
 msgid "category"
-msgstr "kategori"
+msgstr "种类"
 
 #: ../glade/rec_ref_window.glade.h:7 ../src/lib/recindex.py:45
 #: ../src/lib/recindex.py:52
 msgid "cuisine"
-msgstr "Yemekler"
+msgstr "烹调法"
 
 #: ../glade/rec_ref_window.glade.h:8 ../src/lib/recindex.py:41
 #: ../src/lib/recindex.py:50
 msgid "ingredient"
-msgstr "iç malzeme"
+msgstr "原料"
 
 #: ../glade/rec_ref_window.glade.h:9 ../src/lib/recindex.py:42
 #: ../src/lib/recindex.py:55
 msgid "instructions"
-msgstr "talimatlar"
+msgstr "规程"
 
 #: ../glade/rec_ref_window.glade.h:10
 msgid "rating"
-msgstr "değerleme"
+msgstr "评价"
 
 #. _('rating'):'rating',
 #: ../glade/rec_ref_window.glade.h:12 ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:54
 msgid "source"
-msgstr "kaynak"
+msgstr "来源"
 
 #: ../glade/rec_ref_window.glade.h:13 ../src/lib/recindex.py:40
 #: ../src/lib/recindex.py:49
 msgid "title"
-msgstr "başlık"
+msgstr "标题"
 
 #: ../glade/shopList.glade.h:1
 msgid "Add Items to Shopping List"
-msgstr "Alış veriş listesine malzeme ekle"
+msgstr "添加条目到购物单"
 
 #: ../glade/shopList.glade.h:2
 msgid "Add additional items to your shopping list."
-msgstr ""
+msgstr "添加另外的条目到购物单"
 
 #: ../glade/shopList.glade.h:3
 msgid "Already Have (_Pantry Items)"
-msgstr ""
+msgstr "已经拥有（储物室条目(_P)）"
 
 #: ../glade/shopList.glade.h:4 ../src/lib/keyEditor.py:433
 #: ../src/lib/nutrition/nutritionModel.py:7
 msgid "Amount"
-msgstr "Miktar"
+msgstr "数量"
 
 #: ../glade/shopList.glade.h:5 ../src/lib/keyEditor.py:431
 #: ../src/lib/reccard.py:1847 ../src/lib/reccard.py:1878
 msgid "Item"
-msgstr "Madde"
+msgstr "条目"
 
 #: ../glade/shopList.glade.h:6
 msgid "Move selected items from pantry list to shopping list"
@@ -1124,7 +1115,7 @@ msgstr ""
 
 #: ../glade/shopList.glade.h:10
 msgid "Move to _Shopping List"
-msgstr ""
+msgstr "移动到购物清单(_S)"
 
 #: ../glade/shopList.glade.h:11
 msgid "Nutritional Info"
@@ -1132,7 +1123,7 @@ msgstr ""
 
 #: ../glade/shopList.glade.h:12
 msgid "Re_turn to Shopping List"
-msgstr ""
+msgstr "返回购物清单(_t)"
 
 #: ../glade/shopList.glade.h:15
 msgid "Remove Recipes"
@@ -1158,9 +1149,6 @@ msgid ""
 "list as a reminder that you need it, but it won't be included when you save "
 "or print your shopping list."
 msgstr ""
-"Bu kalemi alış veriş listesinden siliniz. İhtiyacınız olduğundan \"kiler\" "
-"listesinde görünecek, fakat alış veriş listesini yazdırdığınızda veya "
-"kaydettiğinizde listeye dahil edilmeyecektir."
 
 #: ../glade/shopList.glade.h:20
 msgid "Return Item to Shopping List"
@@ -1173,33 +1161,33 @@ msgstr ""
 #: ../glade/shopList.glade.h:22 ../src/lib/reccard.py:1850
 #: ../src/lib/reccard.py:1881 ../src/lib/reccard.py:2006
 msgid "Shopping Category"
-msgstr "Alış veriş kategorisi"
+msgstr "购物分类"
 
 #: ../glade/shopList.glade.h:24 ../src/lib/keyEditor.py:432
 #: ../src/lib/nutrition/nutritionModel.py:8 ../src/lib/reccard.py:1846
 #: ../src/lib/reccard.py:1877
 msgid "Unit"
-msgstr "Birim"
+msgstr "单位"
 
 #: ../glade/shopList.glade.h:25
 msgid "_Add Items to Shopping List"
-msgstr "Maddeleri alış veriş listesine _ekle"
+msgstr "添加条目到购物清单(_A)"
 
 #: ../glade/shopList.glade.h:26
 msgid "_Add New Items to Shopping List"
-msgstr ""
+msgstr "添加新条目到购物清单(_A)"
 
 #: ../glade/shopList.glade.h:30
 msgid "_Recipes"
-msgstr ""
+msgstr "食谱"
 
 #: ../glade/shopList.glade.h:31
 msgid "_Remove from Shopping List"
-msgstr ""
+msgstr "从购物清单中移除(_R)"
 
 #: ../glade/shopList.glade.h:32
 msgid "_Remove from shopping list (move to pantry)"
-msgstr ""
+msgstr "从购物清单中移除(移动到食品室)(_R)"
 
 #: ../glade/timerDialog.glade.h:1
 msgid "<b><span size=\"larger\">Timer</span></b>"
@@ -1249,28 +1237,26 @@ msgstr ""
 
 #: ../src/lib/check_encodings.py:89
 msgid "Select encoding"
-msgstr "Karakter seti seç"
+msgstr "选择编码"
 
 #: ../src/lib/check_encodings.py:90
 msgid ""
 "Cannot determine proper encoding. Please select the correct encoding from "
 "the following list."
 msgstr ""
-"Uygun karakter seti belirlenemedi. Lütfen aşağıdaki listeden doğru karakter "
-"setini seçiniz."
 
 #: ../src/lib/check_encodings.py:91
 msgid "See _file with encoding"
-msgstr "_Dosyayı karakter seti ile gör"
+msgstr ""
 
 #: ../src/lib/convertGui.py:106
 #, python-format
 msgid "Cannot convert %s to %s"
-msgstr "%s %s'ye çevrilemedi"
+msgstr ""
 
 #: ../src/lib/convertGui.py:108
 msgid "Need density information."
-msgstr "Yoğunluk bilgisine ihtiyaç var"
+msgstr "需要密度信息。"
 
 #. this is a bit of a hackish attempt to make a matcher for all
 #. plural forms of time units. We use range(5) since as far as I
@@ -1280,7 +1266,7 @@ msgstr "Yoğunluk bilgisine ihtiyaç var"
 #: ../src/lib/convert.py:61 ../src/lib/convert.py:544
 msgid "second"
 msgid_plural "seconds"
-msgstr[0] ""
+msgstr[0] "秒"
 
 #: ../src/lib/convert.py:63
 msgid "min"
@@ -1289,38 +1275,38 @@ msgstr ""
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:543
 msgid "minute"
 msgid_plural "minutes"
-msgstr[0] ""
+msgstr[0] "分钟"
 
 #: ../src/lib/convert.py:65
 msgid "hrs."
-msgstr ""
+msgstr "小时"
 
 #: ../src/lib/convert.py:65 ../src/lib/convert.py:542
 msgid "hour"
 msgid_plural "hours"
-msgstr[0] ""
+msgstr[0] "小时"
 
 #: ../src/lib/convert.py:66 ../src/lib/convert.py:541
 msgid "day"
 msgid_plural "days"
-msgstr[0] ""
+msgstr[0] "天"
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:538
 msgid "year"
 msgid_plural "years"
-msgstr[0] ""
+msgstr[0] "年"
 
 #: ../src/lib/convert.py:539
 msgid "month"
 msgid_plural "months"
-msgstr[0] ""
+msgstr[0] "月"
 
 #: ../src/lib/convert.py:540
 msgid "week"
 msgid_plural "weeks"
-msgstr[0] ""
+msgstr[0] "周"
 
 #. Translators... this is a messay way of concatenating
 #. lists. In English we do lists this way: 1, 2, 3, 4, 5
@@ -1329,15 +1315,15 @@ msgstr[0] ""
 #. ands or spaces or whatever you like by translating both
 #: ../src/lib/convert.py:587
 msgid " and "
-msgstr ""
+msgstr " 和 "
 
 #: ../src/lib/convert.py:587
 msgid ", "
-msgstr ""
+msgstr "， "
 
 #: ../src/lib/convert.py:589
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/lib/convert.py:718
 msgid "and"
@@ -1347,96 +1333,98 @@ msgstr ""
 #. for it to properly split things like 1 - to - 3, which really do
 #: ../src/lib/convert.py:740
 msgid "to"
-msgstr ""
+msgstr "到"
 
 #: ../src/lib/dialog_extras.py:398
 msgid "_Pause"
-msgstr "_Durakla"
+msgstr "暂停"
 
 #: ../src/lib/dialog_extras.py:409
 msgid "_Stop"
-msgstr "_Dur"
+msgstr "停止"
 
 #: ../src/lib/dialog_extras.py:465 ../src/lib/dialog_extras.py:555
 msgid "Don't ask me this again."
-msgstr "Bunu bana tekrar sorma."
+msgstr "不要再问我"
 
 #: ../src/lib/dialog_extras.py:521
 msgid "Do you really want to do this"
-msgstr "Bunu yapmayı gerçekten istiyor musunuz?"
+msgstr "您确认要这么做吗?"
 
 #: ../src/lib/dialog_extras.py:733 ../src/lib/importers/importer.py:488
 msgid "excellent"
-msgstr ""
+msgstr "优秀"
 
 #: ../src/lib/dialog_extras.py:734 ../src/lib/importers/importer.py:489
 msgid "great"
-msgstr ""
+msgstr "良好"
 
 #: ../src/lib/dialog_extras.py:735 ../src/lib/importers/importer.py:490
 msgid "good"
-msgstr ""
+msgstr "好"
 
 #: ../src/lib/dialog_extras.py:736 ../src/lib/importers/importer.py:491
 msgid "fair"
-msgstr ""
+msgstr "可以"
 
 #: ../src/lib/dialog_extras.py:737 ../src/lib/importers/importer.py:493
 msgid "poor"
-msgstr ""
+msgstr "差"
 
 #: ../src/lib/dialog_extras.py:749
 msgid "Convert ratings to 5 star scale."
-msgstr ""
+msgstr "转换评价到5星级。"
 
 #: ../src/lib/dialog_extras.py:750
 msgid "Convert ratings."
-msgstr ""
+msgstr "转换评价。"
 
 #: ../src/lib/dialog_extras.py:751
 msgid "Please give each of the ratings an equivalent on a scale of 1 to 5"
-msgstr ""
+msgstr "请给每个评价1到5"
 
 #: ../src/lib/dialog_extras.py:764
 msgid "Current Rating"
-msgstr ""
+msgstr "当前的评价"
 
 #: ../src/lib/dialog_extras.py:769
 msgid "Rating out of 5 Stars"
-msgstr ""
+msgstr "评价高出5颗星"
 
 #: ../src/lib/dialog_extras.py:1002 ../src/lib/FileChooserSaveAs.py:153
 msgid "Select File_type"
-msgstr "Dosya _tipi seç"
+msgstr "选择文件类型(_t)"
 
 #: ../src/lib/dialog_extras.py:1073
 msgid "No file selected"
-msgstr "Hiçbir dosya seçilmedi"
+msgstr "没有选定文件"
 
 #: ../src/lib/dialog_extras.py:1074
 msgid "No file was selected, so the action has been cancelled"
-msgstr "Hiçbir dosya seçilmediği için eylem iptal edildi"
+msgstr "没有选定文件，因此操作被取消"
 
 #: ../src/lib/dialog_extras.py:1087 ../src/lib/FileChooserSaveAs.py:224
 #, python-format
 msgid "A file named %s already exists."
-msgstr "%s isimli dosya zaten var"
+msgstr "文件名称 %s 已经存在。"
 
 #: ../src/lib/dialog_extras.py:1088 ../src/lib/FileChooserSaveAs.py:225
 msgid "Do you want to replace it with the one you are saving?"
-msgstr "Onu kaydettiğinizle değiştirmek istiyor musunuz?"
+msgstr "您想用保存的文件来覆盖以前的么？"
 
 #: ../src/lib/dialog_extras.py:1188
 #, python-format
 msgid ""
 "I'm sorry, I can't understand\n"
 "the amount \"%s\"."
-msgstr "Özür dilerim, \"%s\" miktarı anlaşılamadı."
+msgstr ""
+"对不起，我不能理解\n"
+"这个数量“%s”。"
 
 #: ../src/lib/dialog_extras.py:1190
 msgid ""
 "Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
-msgstr ""
+msgstr "数量必须是数字（分数或者十进制），数字范围，或者空格。"
 
 #: ../src/lib/dialog_extras.py:1192
 msgid ""
@@ -1454,60 +1442,60 @@ msgstr ""
 #: ../src/lib/gglobals.py:234 ../src/lib/shopgui.py:102
 #: ../src/lib/exporters/rtf_exporter.py:79
 msgid "Title"
-msgstr "Başlık"
+msgstr "标题"
 
 #: ../src/lib/gglobals.py:235
 msgid "Category"
-msgstr "Kategori"
+msgstr "种类"
 
 #: ../src/lib/gglobals.py:236
 msgid "Cuisine"
-msgstr "Yemek"
+msgstr "烹调法"
 
 #: ../src/lib/gglobals.py:237 ../src/lib/ratingWidget.py:334
 msgid "Rating"
-msgstr "Değerleme"
+msgstr "评价"
 
 #: ../src/lib/gglobals.py:238
 msgid "Source"
-msgstr "Kaynak"
+msgstr "源"
 
 #: ../src/lib/gglobals.py:239
 msgid "Servings"
-msgstr "Porsiyon"
+msgstr "一人份"
 
 #: ../src/lib/gglobals.py:240
 msgid "Preparation Time"
-msgstr "Hazırlama süresi"
+msgstr "准备时间"
 
 #: ../src/lib/gglobals.py:241
 msgid "Cooking Time"
-msgstr "Pişirme süresi"
+msgstr "烹调时间"
 
 #: ../src/lib/gglobals.py:251
 msgid "Modifications"
-msgstr "Değişiklikler"
+msgstr "修改"
 
 #: ../src/lib/gglobals.py:318
 msgid "Unable to open URL"
-msgstr "URL açılamadı"
+msgstr "不能够打开链接"
 
 #: ../src/lib/gglobals.py:319
 msgid "Unable to launch mail reader."
-msgstr "Posta okuyucu başlatılamadı."
+msgstr "不能加载邮件阅读器"
 
 #: ../src/lib/gglobals.py:320
 msgid "Unable to open website."
-msgstr "Web sitesi açılamadı."
+msgstr "不能打开网址"
 
 #: ../src/lib/gglobals.py:321
 msgid "Unable to open file."
-msgstr "Dosya açılamadı."
+msgstr "不能打开文件"
 
 #: ../src/lib/gglobals.py:327
 #, python-format
 msgid "There was an error launching the url: %s"
-msgstr "URL açılırken bir hata oluştu: %s"
+msgstr "当加载地址：%s时出现错误"
 
 #: ../src/lib/GourmetRecipeManager.py:51
 msgid "Importing old recipe data"
@@ -1520,36 +1508,36 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:98
 msgid "Loading window preferences..."
-msgstr "Pencere tercihleri yükleniyor"
+msgstr "加载窗口设置..."
 
 #: ../src/lib/GourmetRecipeManager.py:121
 msgid "Loading graphical interface..."
-msgstr "Grafik ara yüz yükleniyor"
+msgstr "加载图形界面..."
 
 #: ../src/lib/GourmetRecipeManager.py:160
 msgid "Loading recipe database..."
-msgstr "Yemek tarifleri veri tabanı yükleniyor"
+msgstr "加载食谱数据..."
 
 #: ../src/lib/GourmetRecipeManager.py:162
 msgid "Setting up recipe index..."
-msgstr "Tarif fihiristi düzenleniyor"
+msgstr "设置食谱目录..."
 
 #: ../src/lib/GourmetRecipeManager.py:213
 #: ../src/lib/GourmetRecipeManager.py:1181
 msgid "Done!"
-msgstr "Yapıldı!"
+msgstr "完成！"
 
 #: ../src/lib/GourmetRecipeManager.py:246
 msgid "Recipe _Index"
-msgstr "Yemek Tarif _Fihiristi"
+msgstr "食谱目录(_I)"
 
 #: ../src/lib/GourmetRecipeManager.py:247
 msgid "Shopping _List"
-msgstr "Alış veriş _Listesi"
+msgstr "购物单"
 
 #: ../src/lib/GourmetRecipeManager.py:286
 msgid "translator-credits"
-msgstr "çevirmenler"
+msgstr "翻译人员"
 
 #: ../src/lib/GourmetRecipeManager.py:320
 #: ../src/lib/GourmetRecipeManager.py:331
@@ -1559,7 +1547,7 @@ msgid ""
 "Website: %s"
 msgstr ""
 "\n"
-"Web sitesi: %s"
+"网站·%s"
 
 #: ../src/lib/GourmetRecipeManager.py:329
 #, python-format
@@ -1568,45 +1556,45 @@ msgid ""
 "Translated by: %s"
 msgstr ""
 "\n"
-"Çeviren: %s"
+"由·%s 翻译"
 
 #: ../src/lib/GourmetRecipeManager.py:339
 msgid "Import paused"
-msgstr "Dıştan alma durakladı"
+msgstr "导入暂停"
 
 #: ../src/lib/GourmetRecipeManager.py:340
 msgid "Stop import"
-msgstr "İçe aktarmayı durdur"
+msgstr "停止导入"
 
 #: ../src/lib/GourmetRecipeManager.py:385
 #, python-format
 msgid "Save your edits to %s"
-msgstr "Değişiklikleri %s kaydet"
+msgstr "保存您的编辑到 %s"
 
 #: ../src/lib/GourmetRecipeManager.py:395
 msgid "An import is in progress."
-msgstr "Dışarıdan alma sürüyor"
+msgstr "一个导入正在进行中。"
 
 #: ../src/lib/GourmetRecipeManager.py:396
 msgid "An export is in progress."
-msgstr "Dışarı verme sürüyor"
+msgstr "一个导出正在进行中。"
 
 #: ../src/lib/GourmetRecipeManager.py:397
 msgid "A delete is in progress."
-msgstr "Bir silme işlemi sürüyor"
+msgstr "一个删除正在进行中。"
 
 #: ../src/lib/GourmetRecipeManager.py:399
 msgid "Exit program anyway?"
-msgstr "Yine de programdan çıkılsın mı?"
+msgstr "退出程序？"
 
 #: ../src/lib/GourmetRecipeManager.py:401
 msgid "Don't exit!"
-msgstr "Çıkmayınız!"
+msgstr "不退出！"
 
 #: ../src/lib/GourmetRecipeManager.py:536
 #, python-format
 msgid "Delete %s?"
-msgstr ""
+msgstr "删除 %s ？"
 
 #: ../src/lib/GourmetRecipeManager.py:537
 #, python-format
@@ -1630,66 +1618,66 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1099
 #: ../src/lib/GourmetRecipeManager.py:1280
 msgid "An import, export or deletion is running"
-msgstr "Bir içe aktarma, dışa verme veya silme işlemi yapılıyor"
+msgstr "一个导入，导出或者删除正在运行"
 
 #: ../src/lib/GourmetRecipeManager.py:563
 #: ../src/lib/GourmetRecipeManager.py:1281
 msgid "Please wait until it is finished to delete recipes."
-msgstr "Lütfen tariflerin silinmesinin bitmesini bekleyiniz."
+msgstr "请等待直到结束删除食谱。"
 
 #: ../src/lib/GourmetRecipeManager.py:568
 msgid "Permanently delete recipes?"
-msgstr "Tarifler temelli silinsin mi?"
+msgstr "永久删除食谱？"
 
 #: ../src/lib/GourmetRecipeManager.py:570
 msgid "Permanently delete recipe?"
-msgstr "Tarif temelli silinsin mi?"
+msgstr "永久删除食谱？"
 
 #: ../src/lib/GourmetRecipeManager.py:571
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
-msgstr "<i>%s</i>Tarifi silmek istiyor musunuz?"
+msgstr "您确认要删除食谱 <i>%s</i> 吗？"
 
 #: ../src/lib/GourmetRecipeManager.py:573
 msgid "Are you sure you want to delete the following recipes?"
-msgstr "Aşağıdaki tarifleri silmek istediğinize emin misiniz?"
+msgstr "您确认要删除一下食谱吗？"
 
 #: ../src/lib/GourmetRecipeManager.py:577
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
-msgstr "Seçtiğiniz %s tarifleri silmek istediğinize emin misiniz?"
+msgstr "您确认要删除%s条选择的食谱吗？"
 
 #: ../src/lib/GourmetRecipeManager.py:579
 msgid "See recipes"
-msgstr "Yemek tariflerine bakınız"
+msgstr "观看食谱"
 
 #: ../src/lib/GourmetRecipeManager.py:587
 msgid "Deletion paused"
-msgstr "Bekletileni sil"
+msgstr "删除暂停"
 
 #: ../src/lib/GourmetRecipeManager.py:587
 msgid "Stop deletion"
-msgstr "Silmeyi durdur"
+msgstr "删除停止"
 
 #: ../src/lib/GourmetRecipeManager.py:608
 msgid "The recipes will be deleted once the other process is finished."
-msgstr "Diğer işlem biter bitmez tarifler silinecektir."
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:641
 #, python-format
 msgid "Deleted recipe %s"
-msgstr "Silinmiş tarif %s"
+msgstr "删除食谱 %s"
 
 #: ../src/lib/GourmetRecipeManager.py:677
 #, python-format
 msgid "Print %s recipe"
 msgid_plural "Print %s recipes"
-msgstr[0] "%s tarifi bas"
+msgstr[0] "打印食谱 %s"
 
 #: ../src/lib/GourmetRecipeManager.py:731
 #, python-format
 msgid "Number of servings of %s to shop for"
-msgstr "Alış veriş edilecek porsiyon sayısı %s"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:739
 #, python-format
@@ -1698,7 +1686,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:768 ../src/lib/shopgui.py:160
 msgid "Saved!"
-msgstr "Kaydedildi!"
+msgstr "已经保存！"
 
 #: ../src/lib/GourmetRecipeManager.py:781 ../src/lib/reccard.py:807
 msgid ""
@@ -1719,37 +1707,37 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:805
 msgid "Please wait until it is finished to start your export."
-msgstr "Dışa aktarmanızı başlatmak için lütfen iş bitinceye kadar bekleyin."
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:811
 msgid "Export recipes"
-msgstr "Tarifleri dışarı ver"
+msgstr "输出食谱"
 
 #: ../src/lib/GourmetRecipeManager.py:812
 msgid "recipes"
-msgstr "tarifler"
+msgstr "食谱"
 
 #: ../src/lib/GourmetRecipeManager.py:841
 msgid "Export Paused"
-msgstr "Dışa aktarma durakladı"
+msgstr "暂停输出"
 
 #: ../src/lib/GourmetRecipeManager.py:841
 msgid "Stop export"
-msgstr "Dışa aktarmayı durdur"
+msgstr "停止输出"
 
 #: ../src/lib/GourmetRecipeManager.py:854
 msgid "Your export will start once the other process is finished."
-msgstr "Diğer işlem bitince dışa aktarımınız başlayacak."
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:862 ../src/lib/reccard.py:967
 #, python-format
 msgid "Gourmet cannot export file of type \"%s\""
-msgstr "Gourmet \"%s\" türü dosyayı dışarıya veremez"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:877
 #: ../src/lib/GourmetRecipeManager.py:946
 msgid "Please wait until it is finished to start your import."
-msgstr "Lütfen içe aktarımı başlatmak için bitinceye kadar bekleyiniz."
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:881
 msgid "Enter the URL of a recipe archive or recipe website."
@@ -1757,7 +1745,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:882
 msgid "Enter website address."
-msgstr ""
+msgstr "输入网址"
 
 #: ../src/lib/GourmetRecipeManager.py:884
 msgid "Enter URL:"
@@ -1787,11 +1775,11 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:917
 msgid "Unable to import"
-msgstr ""
+msgstr "不能够输入"
 
 #: ../src/lib/GourmetRecipeManager.py:922
 msgid "Unable to unzip"
-msgstr ""
+msgstr "不能够解压"
 
 #: ../src/lib/GourmetRecipeManager.py:923
 #, python-format
@@ -1817,12 +1805,12 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:952
 msgid "Import Recipes"
-msgstr "Tarifleri içe aktar"
+msgstr "导入食谱"
 
 #: ../src/lib/GourmetRecipeManager.py:1022
 #, python-format
 msgid "Default source for recipes imported from %s"
-msgstr "%s'den içe aktarılan tarifler için öntanımlı kaynak"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1023
 msgid "Source:"
@@ -1847,94 +1835,94 @@ msgstr[0] ""
 #: ../src/lib/GourmetRecipeManager.py:1061
 msgid "Cannot import file."
 msgid_plural "Cannot import files."
-msgstr[0] ""
+msgstr[0] "不能导入文件。"
 
 #: ../src/lib/GourmetRecipeManager.py:1085
 #, python-format
 msgid "Importing recipes from %s"
-msgstr "%s'den yemek tarifleri içeriye aktarılıyor"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1089
 msgid "Importing Recipes"
-msgstr "Yemek tarifleri içeriye aktarılıyor"
+msgstr "导入食谱中"
 
 #: ../src/lib/GourmetRecipeManager.py:1100
 msgid "Your import will start once the other process is finished."
-msgstr "Diğer işlem bitirilince içe aktarımınız başlayacaktır."
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1119 ../src/lib/reccard.py:1007
 msgid "Export succeeded"
-msgstr "Dışa aktarım başarılı oldu."
+msgstr "成功导出"
 
 #: ../src/lib/GourmetRecipeManager.py:1122
 msgid "webpage"
-msgstr "web sayfası"
+msgstr "网页"
 
 #: ../src/lib/GourmetRecipeManager.py:1123
 #, python-format
 msgid "Exported %s to %s"
-msgstr "%s'den %s'ye kadar dışa aktarıldı"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1189
 msgid "Importing..."
-msgstr "İçeriye aktarılıyor..."
+msgstr "输入中..."
 
 #: ../src/lib/GourmetRecipeManager.py:1276
 msgid "Undeleted recipes "
-msgstr "Silinmemiş tarifler "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1327
 msgid "Gourmet Recipe Manager starting up..."
-msgstr "Gourmet Tarif Yöneticisi başlatılıyor..."
+msgstr "Gourmet 食谱管理软件正在加载..."
 
 #: ../src/lib/GourmetRecipeManager.py:1336
 msgid "Starting gourmet..."
-msgstr "gourmet başlatılıyor..."
+msgstr "开始 gourmet..."
 
 #: ../src/lib/GourmetThreads.py:42
 #, python-format
 msgid "%s stopped."
-msgstr "%s durduruldu."
+msgstr "%s 停止"
 
 #: ../src/lib/GourmetThreads.py:43
 #, python-format
 msgid "%s was interrupted by user request."
-msgstr "%s kullanıcı isteğiyle kesildi."
+msgstr ""
 
 #: ../src/lib/GourmetThreads.py:50
 #, python-format
 msgid "%s interrupted"
-msgstr "%s kesildi"
+msgstr "%s 中断"
 
 #: ../src/lib/GourmetThreads.py:51
 #, python-format
 msgid "There was an error during %s."
-msgstr "%s işlemi sırasında bir hata meydana geldi."
+msgstr ""
 
 #: ../src/lib/GourmetThreads.py:108
 #, python-format
 msgid "Deleting recipes from database... (%s of %s deleted)"
-msgstr "Tarifler veri tabanından siliniyor...(%s nin %s silindi)"
+msgstr ""
 
 #: ../src/lib/GourmetThreads.py:112
 #, python-format
 msgid "Deleted %s recipe"
 msgid_plural "Deleted %s recipes"
-msgstr[0] ""
+msgstr[0] "删除 %s 食谱"
 
 #: ../src/lib/keyEditor.py:58 ../src/lib/keyEditor.py:430
 #: ../src/lib/reccard.py:1848 ../src/lib/reccard.py:1880
 #: ../src/lib/reccard.py:1902
 msgid "Key"
-msgstr "Anahtar"
+msgstr ""
 
 #: ../src/lib/keyEditor.py:79 ../src/lib/keyEditor.py:228
 msgid "key"
-msgstr "anahtar"
+msgstr ""
 
 #: ../src/lib/keyEditor.py:79 ../src/lib/keyEditor.py:224
 msgid "item"
-msgstr "kalem"
+msgstr "条目"
 
 #: ../src/lib/keyEditor.py:105
 msgid "Field"
@@ -1946,11 +1934,11 @@ msgstr ""
 
 #: ../src/lib/keyEditor.py:107
 msgid "Count"
-msgstr "Sayı"
+msgstr "计数"
 
 #: ../src/lib/keyEditor.py:108 ../src/lib/exporters/recipe_emailer.py:55
 msgid "Recipes"
-msgstr "Tarifler"
+msgstr "食谱"
 
 #: ../src/lib/keyEditor.py:127
 #, python-format
@@ -2064,11 +2052,11 @@ msgstr ""
 #: ../src/lib/numberEntry.py:27 ../src/lib/timeEntry.py:54
 #: ../src/lib/timeEntry.py:64
 msgid "Invalid input."
-msgstr ""
+msgstr "非法输入。"
 
 #: ../src/lib/numberEntry.py:27
 msgid "Not a number."
-msgstr ""
+msgstr "不是一个数字。"
 
 #: ../src/lib/nutrition/databaseGrabber.py:140
 msgid "Parsing nutritional data..."
@@ -2383,7 +2371,7 @@ msgstr ""
 #: ../src/lib/nutrition/nutritionModel.py:11 ../src/lib/shopping.py:137
 #: ../src/lib/shopping.py:157
 msgid "Unknown"
-msgstr "Bilinmiyor"
+msgstr "未知的"
 
 #: ../src/lib/nutrition/parser_data.py:13
 msgid "Water"
@@ -2673,31 +2661,31 @@ msgstr ""
 
 #: ../src/lib/reccard.py:285
 msgid "Add new ingredient to the list."
-msgstr "Listeye yeni malzeme iç malzemesi ekle"
+msgstr ""
 
 #: ../src/lib/reccard.py:288
 msgid "Create new subgroup of ingredients."
-msgstr "Yeni iç malzemesi alt grubu yarat"
+msgstr ""
 
 #: ../src/lib/reccard.py:290
 msgid "Import list of ingredients from text file."
-msgstr "İç malzemesi listesini dışarıdan bir metin dosyasından içe aktar"
+msgstr ""
 
 #: ../src/lib/reccard.py:296
 msgid "Paste list of ingredients from clipboard."
-msgstr "Bellekten tarif listesini yapıştır."
+msgstr ""
 
 #: ../src/lib/reccard.py:299
 msgid "Add another recipe as an \"ingredient\" in the current recipe."
-msgstr "Başka bir tarifi bu tarife bir \"malzeme\" olarak ekle."
+msgstr ""
 
 #: ../src/lib/reccard.py:307
 msgid "Move selected ingredient up."
-msgstr "Seçili malzemeyi yukarı taşı."
+msgstr "向上移动原料"
 
 #: ../src/lib/reccard.py:310
 msgid "Move selected ingredient down."
-msgstr "Seçili malzemeyi aşağı taşı."
+msgstr "向下移动选择的原料"
 
 #. 'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
 #. ['editButton','editMenu']]},
@@ -2717,37 +2705,37 @@ msgstr ""
 #: ../src/lib/reccard.py:589
 #, python-format
 msgid "Abandon your edits to %s?"
-msgstr "%s'ye yaptığınız değişikliklerden vazgeçmek mi istiyorsunuz?"
+msgstr "放弃您的 %s 更改？"
 
 #: ../src/lib/reccard.py:597
 msgid "Are you sure you want to abandon your changes?"
-msgstr "Değişikliklerinizden vazgeçmek istediğinize emin misiniz?"
+msgstr "您确认要放弃您的更改吗？"
 
 #: ../src/lib/reccard.py:612
 #, python-format
 msgid "Couldn't make sense of %s as number of servings"
-msgstr "Porsiyon sayısı olarak %s'ye bir anlam verilemedi."
+msgstr ""
 
 #: ../src/lib/reccard.py:840
 msgid "(Optional)"
-msgstr "(Seçimlik)"
+msgstr "（选项）"
 
 #: ../src/lib/reccard.py:918
 msgid "Choose a file containing your ingredient list."
-msgstr "İç malzemelistenizi içeren dosyayı seçiniz."
+msgstr "选择一个含有您原料列表的文件"
 
 #: ../src/lib/reccard.py:962
 msgid "Save recipe as..."
-msgstr "Tarifi farklı kaydet"
+msgstr "食谱另存为..."
 
 #: ../src/lib/reccard.py:996
 #, python-format
 msgid "Unable to save %s"
-msgstr "%s Kaydedilemedi"
+msgstr "不能够保存%s"
 
 #: ../src/lib/reccard.py:997
 msgid "There was an error during export."
-msgstr "Dışa aktarım sırasında bir hata oldu."
+msgstr "在输出过程中遇到一个错误。"
 
 #: ../src/lib/reccard.py:1008
 #, python-format
@@ -2757,101 +2745,98 @@ msgstr ""
 #: ../src/lib/reccard.py:1091 ../src/lib/reccard.py:1143
 #: ../src/lib/reccard.py:1154
 msgid "You have unsaved changes."
-msgstr "Değişiklikleri kaydetmediniz."
+msgstr "您有尚未保存的更改。"
 
 #: ../src/lib/reccard.py:1095
 msgid "There are no unsaved changes."
-msgstr "Kaydedilmemiş değişiklik yok."
+msgstr "没有未保存的更改"
 
 #: ../src/lib/reccard.py:1114
 #, python-format
 msgid "Save edits to %s before closing?"
-msgstr "Kapatmadan önce değişiklikler %s'ye kaydedilsin mi?"
+msgstr "在关闭前保存编辑到 %s 吗？"
 
 #: ../src/lib/reccard.py:1144
 msgid "Apply changes before e-mailing?"
-msgstr "e-posta göndermeden önce değişiklikler uygulansın mı?"
+msgstr "在通过电子邮件发送前应用更改吗？"
 
 #: ../src/lib/reccard.py:1155
 msgid "Apply changes before printing?"
-msgstr "Yazdırmadan önce değişiklikler uygulansın mı?"
+msgstr "在打印前应用更改吗？"
 
 #: ../src/lib/reccard.py:1158
-#, fuzzy, python-format
+#, python-format
 msgid "Print Recipe %s"
-msgstr "% tarifi yazdır"
+msgstr "打印食谱 %s"
 
 #: ../src/lib/reccard.py:1845 ../src/lib/reccard.py:1876
 msgid "Amt"
-msgstr "Mik"
+msgstr ""
 
 #: ../src/lib/reccard.py:1849 ../src/lib/reccard.py:1879
 msgid "Optional"
-msgstr "Seçmeli (Zorunlu değil)"
+msgstr "选项"
 
 #: ../src/lib/reccard.py:1958
 msgid "New Category"
-msgstr "Yeni Kategori"
+msgstr "新种类"
 
 #: ../src/lib/reccard.py:2023
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
-msgstr "Tarif %s (ID %s) veri tabanında yok."
+msgstr ""
 
 #: ../src/lib/reccard.py:2040 ../src/lib/shopgui.py:459
 #, python-format
 msgid "Category to add %s to"
-msgstr "%s'ye eklenecek kategori"
+msgstr ""
 
 #: ../src/lib/reccard.py:2330
-#, fuzzy, python-format
+#, python-format
 msgid "Converted: %(amt)s %(unit)s"
-msgstr "%(amt) %(unit) çevrildi"
+msgstr ""
 
 #: ../src/lib/reccard.py:2332
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
-msgstr "Çevrilmedi: %(amt)s %(unit)s"
+msgstr ""
 
 #: ../src/lib/reccard.py:2336
 msgid "Changed unit."
-msgstr "Değişmiş birim."
+msgstr "已经改变单位。"
 
 #: ../src/lib/reccard.py:2337
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "You have changed the unit for %(item)s from %(old)s to %(new)s. Would you "
 "like the amount converted or not?"
 msgstr ""
-"%(kalem)s için %(eski)s den %(yeni)ye kadar birimi değiştirdiniz. Miktarın "
-"çevrilmesini istiyor veya istemiyor musunuz?"
 
 #: ../src/lib/reccard.py:2348
-#, fuzzy, python-format
+#, python-format
 msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
 msgstr ""
-"%(eski_mik)s %(eski_birim)s den %(yeni_mik)s %(yeni_birim)s'e kadar çevrildi"
 
 #: ../src/lib/reccard.py:2349
 msgid "old_amt"
-msgstr "eski_mik"
+msgstr ""
 
 #: ../src/lib/reccard.py:2360
-#, fuzzy, python-format
+#, python-format
 msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
-msgstr "%(eski_birim den)s %(yeni_birim e)s çevirme yapılamadı"
+msgstr ""
 
 #: ../src/lib/reccard.py:2360
 msgid "old_unit"
-msgstr "eski_birim"
+msgstr "旧单位(_u)"
 
 #: ../src/lib/reccard.py:2415
 msgid "Adding Ingredient Group"
-msgstr "Malzeme grubu ekleniyor"
+msgstr ""
 
 #: ../src/lib/reccard.py:2416
 msgid "Enter a name for new subgroup of ingredients"
-msgstr "Malzemenin yeni alt grubu için bir isim giriniz"
+msgstr ""
 
 #: ../src/lib/reccard.py:2417
 msgid "Name of group:"
@@ -2860,41 +2845,39 @@ msgstr ""
 #: ../src/lib/reccard.py:2808
 #, python-format
 msgid "Assuming you wanted item equal to key %s"
-msgstr "%s ye eşit olan kalemleri istediğiniz varsayılıyor"
+msgstr ""
 
 #: ../src/lib/reccard.py:2815
 #, python-format
 msgid ""
 "You forgot an item. Assuming you meant \"%s\" as an item and not a unit."
 msgstr ""
-"Bir iç malzemeyi unuttunuz. \"%s\" iç malzemesi olarak kabul edildi, birim "
-"değil."
 
 #: ../src/lib/reccard.py:2817
 msgid "An ingredient must have an item!"
-msgstr "Bir iç malzemesi içinde bir madde olmalı."
+msgstr "一个原料必须有一个条目！"
 
 #: ../src/lib/reccard.py:2968
 msgid "Recipe cannot call itself as an ingredient!"
-msgstr "Tarif kendisini malzeme olarak alamaz!"
+msgstr "食谱不能够作为原料加载自己"
 
 #: ../src/lib/reccard.py:2969 ../src/lib/shopgui.py:623
 msgid "Infinite recursion is not allowed in recipes!"
-msgstr "Tariflerde sonsuz döngüye izin verilmez!"
+msgstr ""
 
 #: ../src/lib/reccard.py:2986
 msgid "You haven't selected any recipes!"
-msgstr "Hiçbir tarif seçmediniz!"
+msgstr "您还没有选择任何食谱！"
 
 #: ../src/lib/recindex.py:43 ../src/lib/recindex.py:56
 msgid "notes"
-msgstr ""
+msgstr "备注"
 
 #: ../src/lib/recindex.py:206
 #, python-format
 msgid "%s recipe"
 msgid_plural "%s recipes"
-msgstr[0] ""
+msgstr[0] "%s 食谱"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #: ../src/lib/recindex.py:210
@@ -2919,19 +2902,17 @@ msgstr ""
 #: ../src/lib/recindex.py:430
 #, python-format
 msgid "Unable to recognize %s as a time."
-msgstr ""
+msgstr "不能认出时间 %s"
 
 #: ../src/lib/recipeManager.py:14
 msgid "Enter Password"
-msgstr "Parola giriniz"
+msgstr "输入密码"
 
 #: ../src/lib/recipeManager.py:15
 #, python-format
 msgid ""
 "Please enter your password for user %s of the MySQL database at host %s"
 msgstr ""
-"Ana bilgisayar %s deki MySQL veri tabanının %s kullanıcısı için lütfen "
-"parola giriniz."
 
 #: ../src/lib/recipeManager.py:18
 msgid "Password:"
@@ -2959,16 +2940,16 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:153
 msgid "Save Shopping List As..."
-msgstr "Alışveriş listesini farklı kaydet..."
+msgstr "令存购物清单为..."
 
 #: ../src/lib/shopgui.py:178
 #, python-format
 msgid "Shopping list for %s"
-msgstr "%s için alış veriş listesi"
+msgstr "%s 的购物清单"
 
 #: ../src/lib/shopgui.py:179
 msgid "For the following recipes:"
-msgstr "Aşağıdaki tarifler için:"
+msgstr "如下的食谱："
 
 #: ../src/lib/shopgui.py:183
 #, python-format
@@ -2977,12 +2958,11 @@ msgstr " x%s"
 
 #: ../src/lib/shopgui.py:211
 msgid "No recipes selected. Do you want to clear the entire list?"
-msgstr ""
-"Hiçbir tarif seçilmedi. Tüm listeyi temizlemek istediğinizten emin misiniz?"
+msgstr "没有选择食谱。您想清除整个目录吗？"
 
 #: ../src/lib/shopgui.py:458
 msgid "Enter Category"
-msgstr "Kategori giriniz"
+msgstr ""
 
 #: ../src/lib/shopgui.py:460
 msgid "Category:"
@@ -2990,56 +2970,54 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:622
 msgid "Recipe calls for itself as an ingredient."
-msgstr "Tarif kend kendini iç malzeme olarak dahil ediyor."
+msgstr ""
 
 #: ../src/lib/shopgui.py:623
 #, python-format
 msgid "Ingredient %s will be ignored."
-msgstr "İç malzemesi %s göz  önüne alınmadı."
+msgstr ""
 
 #: ../src/lib/shopgui.py:684
 msgid "Select optional ingredients."
-msgstr "Zorunlu olmayan malzemeyi seçiniz"
+msgstr "选择可选的原料。"
 
 #: ../src/lib/shopgui.py:685
 msgid ""
 "Please specify which of the following optional ingredients you'd like to "
 "include on your shopping list."
 msgstr ""
-"Lütfen aşağıdaki zorunlu olmayan malzemeden hangilerini alış veriş listenize "
-"eklemek istediğinizi belirleyiniz."
 
 #: ../src/lib/shopping.py:18
 msgid "flour, all purpose"
-msgstr "un, genel amaçlı"
+msgstr ""
 
 #: ../src/lib/shopping.py:18
 msgid "sugar"
-msgstr "şeker"
+msgstr "糖"
 
 #: ../src/lib/shopping.py:18
 msgid "salt"
-msgstr "tuz"
+msgstr "盐"
 
 #: ../src/lib/shopping.py:19
 msgid "black pepper, ground"
-msgstr "karabiber, çekilmiş"
+msgstr "黑胡椒，磨过的"
 
 #: ../src/lib/shopping.py:20
 msgid "ice"
-msgstr "buz"
+msgstr "冰"
 
 #: ../src/lib/shopping.py:20
 msgid "water"
-msgstr "su"
+msgstr "水"
 
 #: ../src/lib/shopping.py:21
 msgid "oil, vegetable"
-msgstr "yağ, bitkisel"
+msgstr "植物油"
 
 #: ../src/lib/shopping.py:22
 msgid "oil, olive"
-msgstr "yağ, zeytin"
+msgstr "橄榄油"
 
 #: ../src/lib/timer.py:99 ../src/lib/timer.py:120
 msgid "Ringing Sound"
@@ -3084,7 +3062,7 @@ msgstr ""
 
 #: ../src/lib/version.py:3
 msgid "Gourmet Recipe Manager"
-msgstr "Gourmet Tarif Yöneticisi"
+msgstr "Gourmet食谱管理软件"
 
 #: ../src/lib/version.py:4
 msgid "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
@@ -3104,23 +3082,23 @@ msgstr ""
 
 #: ../src/lib/version.py:9
 msgid "Roland Duhaime (Windows porting assistance)"
-msgstr "Roland Duhaime (Windows'a taşıma yardımcısı)"
+msgstr "Roland Duhaime (Windows porting assistance)"
 
 #: ../src/lib/version.py:10
 msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
-msgstr ""
+msgstr "Daniel Folkinshteyn <nanotube@gmail.com>(微软视窗安装)"
 
 #: ../src/lib/version.py:11
 msgid "Richard Ferguson (improvements to Unit Converter interface)"
-msgstr "Richard Ferguson (Birim Çevirici ara yüzünde iyileştirmeler)"
+msgstr "Richard·Ferguson·(improvements·to·Unit·Converter·interface)"
 
 #: ../src/lib/version.py:12
 msgid "R.S. Born (improvements to Mealmaster export)"
-msgstr "R.S. Born ( Mealmaster dışa aktarmada iyileştirmeler)"
+msgstr "R.S.·Born·(improvements·to·Mealmaster·export)"
 
 #: ../src/lib/version.py:13
 msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
-msgstr ""
+msgstr "ixat <ixat.deviantart.com> （图标和启动界面）"
 
 #: ../src/lib/version.py:14
 msgid "Yula Zubritsky (nutrition and add-to-shopping list icons)"
@@ -3134,7 +3112,7 @@ msgstr ""
 
 #: ../src/lib/backends/rdatabase.py:633 ../src/lib/backends/sql_db.py:334
 msgid "New Recipe"
-msgstr "Yeni Tarif"
+msgstr "新食谱"
 
 #: ../src/lib/importers/zip_importer.py:43
 msgid "Loading zip archive"
@@ -3182,17 +3160,17 @@ msgstr ""
 #: ../src/lib/importers/importer.py:207
 #, python-format
 msgid "Imported %s of %s recipes."
-msgstr "%s tarifin %s i içe aktarıldı."
+msgstr ""
 
 #: ../src/lib/importers/importer.py:387
 #, python-format
 msgid "<i>Importing %s</i>"
-msgstr "<i>İçe aktarıyor %s</i>"
+msgstr "<i>导入·%s</i>"
 
 #: ../src/lib/importers/importer.py:417
-#, fuzzy, python-format
+#, python-format
 msgid "Imported %(number)s recipes from %(file)s (%(total)s total)"
-msgstr "%(dosya) dan %(number) si içe aktarıldı."
+msgstr ""
 
 #: ../src/lib/importers/importer.py:492
 msgid "okay"
@@ -3227,27 +3205,27 @@ msgstr ""
 
 #: ../src/lib/importers/__init__.py:9
 msgid "MasterCook file"
-msgstr "MasterCook dosyası"
+msgstr "MasterCook文件"
 
 #: ../src/lib/importers/__init__.py:10
 msgid "MasterCook XML file"
-msgstr "MasterCook XML dosyası"
+msgstr "MasterCook XML文件"
 
 #: ../src/lib/importers/__init__.py:11
 msgid "KRecipes file"
-msgstr "KRecipes dosyası"
+msgstr "KRecipes文件"
 
 #: ../src/lib/importers/__init__.py:88
 msgid "Unformatted text"
-msgstr ""
+msgstr "没有格式的文件"
 
 #: ../src/lib/importers/__init__.py:108
 msgid "All importable files"
-msgstr "Bütün içe aktarılabilir dosyalar"
+msgstr "所有可以导入的文件"
 
 #: ../src/lib/importers/mastercook_importer.py:120
 msgid "Mastercook import finished."
-msgstr "MasterCook içe aktarımı tamamlandı."
+msgstr "Mastercook导入结束。"
 
 #. try:
 #. self.parse = xml.sax.parse(self.fn,self.rh)
@@ -3257,11 +3235,11 @@ msgstr "MasterCook içe aktarımı tamamlandı."
 #. importing, we're going to go ahead and clean up all mastercook
 #: ../src/lib/importers/mastercook_importer.py:257
 msgid "Tidying up XML"
-msgstr "XML düzenleniyor."
+msgstr "整理XML"
 
 #: ../src/lib/importers/mastercook_importer.py:265
 msgid "Beginning import"
-msgstr "İçe aktarım başlıyor."
+msgstr "开始输入"
 
 #: ../src/lib/importers/plaintext_importer.py:31
 #, python-format
@@ -3271,7 +3249,7 @@ msgstr ""
 #: ../src/lib/exporters/exporter.py:204 ../src/lib/exporters/exporter.py:206
 #: ../src/lib/exporters/exporter.py:493 ../src/lib/exporters/exporter.py:495
 msgid "stars"
-msgstr ""
+msgstr "星"
 
 #: ../src/lib/exporters/exporter.py:352 ../src/lib/exporters/exporter.py:430
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:301
@@ -3279,60 +3257,60 @@ msgstr ""
 #: ../src/lib/exporters/html_exporter.py:143
 #: ../src/lib/exporters/pdf_exporter.py:577
 msgid "optional"
-msgstr "Seçmeli"
+msgstr "选项"
 
 #: ../src/lib/exporters/exporter.py:509
-#, fuzzy, python-format
+#, python-format
 msgid "Exported %(number)s of %(total)s recipes"
-msgstr "%(total) tarifin %(number)'ı dışa aktarıldı."
+msgstr ""
 
 #: ../src/lib/exporters/exporter.py:527
 msgid "Export complete."
-msgstr "Dışa aktarım tamamlandı."
+msgstr "导出结束。"
 
 #: ../src/lib/exporters/exporter.py:553
 #: ../src/lib/exporters/html_exporter.py:62
 msgid "Recipe"
-msgstr "Yemek Tarifi"
+msgstr "食谱"
 
 #. Method from:
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:215
 #: ../src/lib/exporters/gnomeprinter.py:253
 #: ../src/lib/exporters/winprinter.py:17
 msgid "Print"
-msgstr "Yazdır"
+msgstr "打印"
 
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:239
 #: ../src/lib/exporters/gnomeprinter.py:276
 msgid "_Current"
-msgstr "_Geçerli"
+msgstr "当前(_C)"
 
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:239
 #: ../src/lib/exporters/gnomeprinter.py:276
 msgid "_Range"
-msgstr "_Menzil"
+msgstr "范围(_R)"
 
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:245
 #: ../src/lib/exporters/gnomeprinter.py:284
 #: ../src/lib/exporters/lprprinter.py:7 ../src/lib/exporters/winprinter.py:40
 msgid "Print Recipes"
-msgstr "Yemek tariflerini yazdır"
+msgstr "打印食谱"
 
 #: ../src/lib/exporters/__init__.py:18
 msgid "HTML Web Page"
-msgstr "HTML Web Sayfası"
+msgstr "HTML网页"
 
 #: ../src/lib/exporters/__init__.py:19
 msgid "MealMaster file"
-msgstr ""
+msgstr "MealMaster文件"
 
 #: ../src/lib/exporters/__init__.py:20
 msgid "Plain Text"
-msgstr "Düz Metin"
+msgstr "简单文本"
 
 #: ../src/lib/exporters/__init__.py:21
 msgid "RTF"
-msgstr "Zengin Metin Dosyası"
+msgstr "RTF"
 
 #: ../src/lib/exporters/__init__.py:22
 msgid "PDF (Portable Document Format)"
@@ -3340,11 +3318,11 @@ msgstr ""
 
 #: ../src/lib/exporters/__init__.py:23
 msgid "Gourmet XML File"
-msgstr "Gourmet XML Dosyası"
+msgstr "Gourmet XML文件"
 
 #: ../src/lib/exporters/__init__.py:24
 msgid "Gourmet XML File (Obsolete, < v.0.8.2)"
-msgstr "Gourmet XML Dosyası (Artık kullanılmıyor, < v.0.8.2)"
+msgstr "Gourmet XML文件 (旧式的， < v.0.8.2)"
 
 #: ../src/lib/exporters/__init__.py:25
 msgid "Eat Drink Feel Good XML File"
@@ -3352,21 +3330,21 @@ msgstr ""
 
 #: ../src/lib/exporters/__init__.py:73
 msgid "Exporting Webpage"
-msgstr "Web sayfası dışa veriliyor"
+msgstr "导出网页"
 
 #: ../src/lib/exporters/__init__.py:74
-#, fuzzy, python-format
+#, python-format
 msgid "Exporting recipes to HTML files in directory %(file)s"
-msgstr "Dizindeki %(file) HTML dosyaları olarak dışa aktarılıyor."
+msgstr ""
 
 #: ../src/lib/exporters/__init__.py:75
-#, fuzzy, python-format
+#, python-format
 msgid "Recipe saved as HTML file %(file)s"
-msgstr "%(file) Tarif HTML dosyası olarak kaydedildi"
+msgstr ""
 
 #: ../src/lib/exporters/__init__.py:92
 msgid "MealMaster Export"
-msgstr ""
+msgstr "MealMaster导出"
 
 #: ../src/lib/exporters/__init__.py:93
 #, python-format
@@ -3380,35 +3358,35 @@ msgstr ""
 
 #: ../src/lib/exporters/__init__.py:106
 msgid "Text Export"
-msgstr "Düz metin olarak dışarı ver"
+msgstr "文本导出"
 
 #: ../src/lib/exporters/__init__.py:107
-#, fuzzy, python-format
+#, python-format
 msgid "Exporting recipes to Plain Text file %(file)s."
-msgstr "Tarifler düz metin olarak dışarı veriliyor. %(dosya)lar"
+msgstr ""
 
 #: ../src/lib/exporters/__init__.py:108
-#, fuzzy, python-format
+#, python-format
 msgid "Recipe saved as Plain Text file %(file)s"
-msgstr "Tarifler düz metin olarak kaydedildi. %(dosya)lar"
+msgstr ""
 
 #: ../src/lib/exporters/__init__.py:121
 msgid "Gourmet XML Export"
-msgstr "Gourmet XML olarak dışarı ver."
+msgstr "Gourmet XML导出"
 
 #: ../src/lib/exporters/__init__.py:122
-#, fuzzy, python-format
+#, python-format
 msgid "Exporting recipes to Gourmet XML file %(file)s."
-msgstr "Tarifler Gourmet XML dosyası olarak dışarı veriliyor."
+msgstr ""
 
 #: ../src/lib/exporters/__init__.py:123
-#, fuzzy, python-format
+#, python-format
 msgid "Recipe saved in Gourmet XML file %(file)s."
-msgstr "Tarif Gourmet XML dosyası olarak kaydedildi."
+msgstr ""
 
 #: ../src/lib/exporters/__init__.py:134
 msgid "RTF Export"
-msgstr ""
+msgstr "RTF导出"
 
 #: ../src/lib/exporters/__init__.py:135
 #, python-format
@@ -3436,29 +3414,27 @@ msgstr ""
 
 #: ../src/lib/exporters/lprprinter.py:15 ../src/lib/exporters/lprprinter.py:18
 msgid "Enter print command"
-msgstr "Yazdırma komutu giriniz"
+msgstr "输入打印命令"
 
 #: ../src/lib/exporters/lprprinter.py:16
 #, python-format
 msgid "Unable to find command \"%s\"."
-msgstr "\"%s\" komutu bulunamadı"
+msgstr "不能够找到命令\"%s\"。"
 
 #: ../src/lib/exporters/lprprinter.py:17
 msgid "Please enter the command you would like to use to print."
-msgstr "Lütfen yazdırmada kullanacağınız komutu giriniz."
+msgstr "请输入您在打印时想使用的命令。"
 
 #: ../src/lib/exporters/lprprinter.py:22
 #, python-format
 msgid "Printing via %s"
-msgstr "%s ile basılıyor"
+msgstr "通过%s打印"
 
 #: ../src/lib/exporters/lprprinter.py:23
 msgid ""
 "If you install python-gnome, you will be able to print with a much more "
 "attractive interface."
 msgstr ""
-"Eğer python-gnome yüklerseniz, daha güzel bir yazdırma arayüzü ile "
-"yazdırabilirsiniz."
 
 #: ../src/lib/exporters/lprprinter.py:31
 msgid "Command:"
@@ -3567,29 +3543,28 @@ msgstr ""
 #: ../src/lib/exporters/recipe_emailer.py:105
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
 msgstr ""
-"Tarifi e-mektup gövde metnine dahil et. (Ne olursa olsu, iyi bir fikir.)"
 
 #: ../src/lib/exporters/recipe_emailer.py:106
 msgid "E-mail Recipe as HTML Attachment"
-msgstr "Tarifi HTML eklentisi olarak e-mektupla gönder"
+msgstr ""
 
 #: ../src/lib/exporters/recipe_emailer.py:124
 msgid "Email Options"
-msgstr "e-mektup seçenekleri"
+msgstr "电子邮件选项"
 
 #: ../src/lib/exporters/recipe_emailer.py:127
 msgid "Don't ask before sending e-mail."
-msgstr "e-posta göndermeden önce sormayınız."
+msgstr "在发送电子邮件前不询问"
 
 #: ../src/lib/exporters/recipe_emailer.py:144
 msgid "E-mail not sent"
-msgstr "e-posta gönderilmedi"
+msgstr "电子邮件没有送出"
 
 #: ../src/lib/exporters/recipe_emailer.py:145
 msgid ""
 "You have not chosen to include the recipe in the body of the message or as "
 "an attachment."
-msgstr "Tarifi mesaj gövdesinde eklemediniz veya eklenti olarak seçmediniz."
+msgstr ""
 
 #: ../src/lib/exporters/winprinter.py:18
 #, python-format
@@ -3616,341 +3591,185 @@ msgstr ""
 msgid "If you'd like, you can open the PDF file."
 msgstr ""
 
-#~ msgid "E-_mail recipes"
-#~ msgstr "Tarifleri e-mektupla gönder"
-
-#~ msgid "Limit search by this term"
-#~ msgstr "Aramayı bu koşulla sınırla"
-
 #~ msgid "Limiting Search to: "
-#~ msgstr "Aramayı ... ile sınırla "
+#~ msgstr "条件搜索： "
 
-#~ msgid "Search _by"
-#~ msgstr "... ile ara"
+#~ msgid "<i>From: </i>"
+#~ msgstr "<i>来自：</i>"
 
-#~ msgid "Search as you _type"
-#~ msgstr "Yazarken ara"
+#~ msgid "<i>To: </i>"
+#~ msgstr "<i>到：</i>"
 
-#~ msgid "_Export"
-#~ msgstr "Dışarı ver"
-
-#~ msgid "_Limit Search"
-#~ msgstr "Aramayı sınırla"
-
-#~ msgid "<b>Instructions:</b>"
-#~ msgstr "<b>Talimat:</b>"
-
-#~ msgid "<b>Notes:</b>"
-#~ msgstr "<b>Notlar:</b>"
-
-#~ msgid "<b>Title</b>"
-#~ msgstr "<b>Başlık</b>"
-
-#~ msgid "Add this recipe to a shopping list"
-#~ msgstr "Bu tarifi bir alış veriş listesine ekle"
-
-#~ msgid "Create new ingredient"
-#~ msgstr "Yeni malzeme yarat"
-
-#~ msgid "Export this recipe as a text file."
-#~ msgstr "Bu tarifi düz metin olarak dışa aktar."
-
-#~ msgid "Pre_paration Time: "
-#~ msgstr "Hazır_lık Süresi: "
-
-#~ msgid "S_hopping Category: "
-#~ msgstr "_Alış veriş Kategorisi: "
-
-#~ msgid "_Delete Ingredient"
-#~ msgstr "Malzemeyi _Sil"
-
-#~ msgid "_Image: "
-#~ msgstr "_Resim "
-
-#~ msgid "_Ingredient Editor"
-#~ msgstr "_Malzeme Metin Düzenleyicisi"
-
-#~ msgid "_New Ingredient"
-#~ msgstr "_Yeni Malzeme"
-
-#~ msgid "_Servings: "
-#~ msgstr "_Porsiyon: "
-
-#~ msgid "_Title: "
-#~ msgstr "_Başlık "
+#~ msgid "Unit: "
+#~ msgstr "单位： "
 
 #~ msgid "_Unit: "
-#~ msgstr "_Birim "
+#~ msgstr "单位(_U)： "
 
-#~ msgid "Advanced"
-#~ msgstr "Gelişmiş"
+#~ msgid "_Recipes per page: "
+#~ msgstr "每页显示的食谱(_R)： "
 
-#~ msgid "Advanced Search"
-#~ msgstr "Gelişmiş arama"
+#~ msgid "/n"
+#~ msgstr "/n"
 
-#~ msgid "Search as you type"
-#~ msgstr "Yazarken ara"
+#~ msgid "<b>Title</b>"
+#~ msgstr "<b>标题</b>"
 
-#~ msgid "Use regular expressions (an advanced method of searching)"
-#~ msgstr "(Aramanın gelişmiş bir yöntemi) Düzgün ifadeleri kullan"
+#~ msgid "Add this recipe to a shopping list"
+#~ msgstr "把此食谱加入到购物单中"
 
-#~ msgid "Use regular expressions to search"
-#~ msgstr "Aramak için düzgün ifadeleri kullan"
+#~ msgid "Create new ingredient"
+#~ msgstr "创建新的原料"
 
-#~ msgid "Change key for selected items to: "
-#~ msgstr "Seçili malzeme için anahtarı değiştir: "
+#~ msgid "Export this recipe as a text file."
+#~ msgstr "输出此食谱为文本文件。"
+
+#~ msgid "Image: "
+#~ msgstr "图片： "
+
+#~ msgid "Ins_tructions"
+#~ msgstr "规程(_t)"
+
+#~ msgid "Pre_paration Time: "
+#~ msgstr "准备时间(_p)： "
+
+#~ msgid "S_hopping Category: "
+#~ msgstr "购物目录(_h)： "
+
+#~ msgid "_Delete Ingredient"
+#~ msgstr "删除原料(_D)"
+
+#~ msgid "_Descriptions"
+#~ msgstr "描述(_D)"
+
+#~ msgid "_Ingredient Editor"
+#~ msgstr "原料编辑(_I)"
+
+#~ msgid "_Ingredients"
+#~ msgstr "原料(_I)"
+
+#~ msgid "_New Ingredient"
+#~ msgstr "新的原料(_N)"
+
+#~ msgid "_Notes"
+#~ msgstr "备注"
+
+#~ msgid "_Servings: "
+#~ msgstr "人份(_S)： "
+
+#~ msgid "_Title: "
+#~ msgstr "标题(_T)： "
 
 #~ msgid ""
 #~ "Key\n"
 #~ "Item"
 #~ msgstr ""
-#~ "Anahtar\n"
-#~ "Malzeme"
+#~ "按钮\n"
+#~ "条目"
 
-#~ msgid "Details"
-#~ msgstr "Ayrıntılar"
+#~ msgid "min."
+#~ msgstr "分钟"
 
 #~ msgid "Deleted "
-#~ msgstr "Silindi "
+#~ msgstr "删除 "
 
-#, python-format
-#~ msgid "Multiply %s by: "
-#~ msgstr "%s'yi şununla çarp: "
+#~ msgid "Enter URL: "
+#~ msgstr "输入网站地址： "
 
 #~ msgid "Source: "
-#~ msgstr "Kaynak: "
-
-#~ msgid "Deleted 1 recipe."
-#~ msgstr "1 Tarif silindi"
-
-#, python-format
-#~ msgid "Deleted %s recipes"
-#~ msgstr "%s tarif silindi"
+#~ msgstr "来源： "
 
 #~ msgid "Are you sure you want to change the "
-#~ msgstr "...'yi değiştirmek istediğinizden emin misiniz? "
-
-#, python-format
-#~ msgid "for \"%s from \"%s\""
-#~ msgstr "\"%s için \"%s\" den itibaren"
-
-#, python-format
-#~ msgid " from \"%s\" "
-#~ msgstr " \"%s\" den "
-
-#, python-format
-#~ msgid " to \"%s\""
-#~ msgstr " \"%s\"'ye"
-
-#~ msgid "Don't ask me before changing keys and items."
-#~ msgstr "Anahtar ve kalemleri değiştirmeden bana soru sormayınız."
-
-#~ msgid "You haven't entered a key!"
-#~ msgstr "Bir anahtar girmediniz!"
-
-#, fuzzy, python-format
-#~ msgid ""
-#~ "Are you sure you want the keys\n"
-#~ " for all %s selections set to\n"
-#~ " \"%s\""
-#~ msgstr ""
-#~ "Anahtarların\n"
-#~ " bütün %s seçimleri için\n"
-#~ " \"%s% ye ayarlanmasını\n"
-#~ "istediğinizden emin misiniz?"
+#~ msgstr "您确认您想改变 "
 
 #~ msgid "Recipe Card: "
-#~ msgstr "Tarif Kartı: "
-
-#~ msgid "Choose an image to insert in instructions... "
-#~ msgstr "Talimatların içine yerleştirmek için bir resim seçiniz... "
-
-#~ msgid "Changes to ingredients saved automatically."
-#~ msgstr "Otomatik olarak kaydedilen iç malzemeyi değiştirir."
+#~ msgstr "食谱卡片： "
 
 #~ msgid "Name of group: "
-#~ msgstr "Grubun ismi: "
+#~ msgstr "组别的名称： "
 
 #, python-format
 #~ msgid "Are you sure you want to delete %s"
-#~ msgstr "%s yi silmek istediğinize emin misiniz?"
-
-#, python-format
-#~ msgid "Shall I delete the item contained in %s or move it out of the group?"
-#~ msgid_plural ""
-#~ "Shall I delete the items contained in %s or just move them out of the group?"
-#~ msgstr[0] "%s içindeki malzeme silinsin mi, veya grup dışına taşınsın mı?"
+#~ msgstr "您确认要删除 %s吗？"
 
 #~ msgid "Delete it."
 #~ msgid_plural "Delete them."
-#~ msgstr[0] "Onu sil."
+#~ msgstr[0] "删除它"
 
 #~ msgid "Move it."
 #~ msgid_plural "Move them."
-#~ msgstr[0] "Onu taşı."
+#~ msgstr[0] "移除它"
 
 #~ msgid "See ingredients"
-#~ msgstr "Malzemeye bakınız"
-
-#, python-format
-#~ msgid "%s Recipes"
-#~ msgstr "%s Tarif"
+#~ msgstr "观看原料"
 
 #, python-format
 #~ msgid " %s contains %s"
-#~ msgstr " %s %s içerir"
+#~ msgstr " %s 包含 %s"
 
 #, python-format
 #~ msgid ", %s contains %s"
-#~ msgstr ", %s %s içerir"
+#~ msgstr ", %s 包含 %s"
 
 #~ msgid "Password: "
-#~ msgstr "Parola: "
+#~ msgstr "密码： "
 
 #~ msgid "Category: "
-#~ msgstr "Kategori: "
+#~ msgstr "种类： "
 
-#~ msgid "seconds"
-#~ msgstr "saniye"
-
-#~ msgid "minutes"
-#~ msgstr "dakika"
-
-#~ msgid "hours"
-#~ msgstr "saat"
-
-#~ msgid "days"
-#~ msgstr "gün"
-
-#~ msgid "weeks"
-#~ msgstr "hafta"
-
-#~ msgid "months"
-#~ msgstr "ay"
-
-#~ msgid "Copyright (c) 2004, Thomas M. Hinkle. GNU GPL"
-#~ msgstr "Copyright (c) 2004, Thomas M. Hinkle. GNU GPL"
-
-#~ msgid "Choose Database File"
-#~ msgstr "Veritabanı dosyası seçiniz"
-
-#~ msgid "Mealmaster file"
-#~ msgstr "MealMaster dosyası"
-
-#~ msgid "Mealmaster Export"
-#~ msgstr "Mealmaster Dışa aktar"
-
-#, fuzzy, python-format
-#~ msgid "Exporting recipes to MealMaster(tm) file %(file)s."
-#~ msgstr ""
-#~ "Dizindeki %(file) tarif MealMaster(tm) dosyaları olarak dışa aktarılıyor."
-
-#, fuzzy, python-format
-#~ msgid "Recipe saved as Mealmaster file %(file)s"
-#~ msgstr "%(file) Tarif Mealmaster dosyası olarak kaydedildi"
-
-#~ msgid "Command: "
-#~ msgstr "Komut: "
-
-#~ msgid "Shopping list for: "
-#~ msgstr "... için alış veriş listesi "
-
-#~ msgid "Printing not supported"
-#~ msgstr "Yazdırma işlemi desteklenmiyor."
-
-#~ msgid ""
-#~ "To print recipes, first export them, then print from another program. If you "
-#~ "install wxWindows, you can print directly from Gourmet."
-#~ msgstr ""
-#~ "Tarifleri yazdırmak için önce dışarı gönderiniz (export), sonra başka bir "
-#~ "program aracılığı ile yazdırınız. Eğer wxWindows yüklerseniz, Gourmet "
-#~ "programından doğrudan yazdırabilirsiniz."
-
-#~ msgid "E-_mail preferences"
-#~ msgstr "e-mektup tercihleri"
-
-#~ msgid "Edit preferences for e-mailing recipes"
-#~ msgstr "Tariflerin e-mektupla gönderilmesi için tercihler"
-
-#~ msgid "Index View _Preferences"
-#~ msgstr "Görüntüleme tercihleri fihiristi"
-
-#~ msgid "_Import"
-#~ msgstr "İçeri al"
-
-#~ msgid "<b>Multiply by:</b>"
-#~ msgstr "<b>Şununla çarp:</b>"
-
-#~ msgid "<b>Servings:</b>"
-#~ msgstr "<b>Porsiyon:</b>"
-
-#~ msgid "Already Have (Pantry Items)"
-#~ msgstr "Zaten var (Kiler Malzemesi)"
-
-#~ msgid "Include this item on your shopping list."
-#~ msgstr "Bu maddeyi alış veriş listesine dahil et"
-
-#, python-format
-#~ msgid "Cannot import file %s"
-#~ msgstr "%s dosyası içe aktarılamıyor"
-
-#, python-format
-#~ msgid ""
-#~ "It looks like Gourmet cannot import this file. If you believe this file is "
-#~ "in one of the formats Gourmet supports, please submit a bug report at %s and "
-#~ "attach the file."
-#~ msgstr ""
-#~ "Gourmet'in bu dosyayı içe aktarması mümkün görünmüyor. Eğer bu dosyanın "
-#~ "Gourmet'in desteklediği biçimlerden biri türünde olduğunu düşünüyorsanız, "
-#~ "lütfen dosyayı iliştirip hata olarak %s bildiriniz."
-
-#~ msgid "Show in Index View"
-#~ msgstr "Fihirist görünümünde göster"
-
-#~ msgid "Amounts must be numbers (fractions or decimals) or blank."
-#~ msgstr "Miktarlar sayı (kesir veya ondalık) veya boşluk olmalıdır."
-
-#~ msgid ""
-#~ "\n"
-#~ "The \"unit\" must be in the \"unit\" field by itself.\n"
-#~ "For example, if you want to enter one and a half cups,\n"
-#~ "the amount field could contain \"1.5\" or \"1 1/2\". \"cups\"\n"
-#~ "should go in the separate \"unit\" field.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\"Birim\" kendiliğinden \"birim\" alanında olmalıdır.\n"
-#~ "Örneğin, bir buçuk fincan\n"
-#~ "yazmak istiyorsanız, miktar alanına \"1.5\" veya \"1 1/2\" yazınız. "
-#~ "\"Fincan\"\n"
-#~ "ayrı olarak \"birim\" alanına yazılmalıdır.\n"
+#~ msgid "Copyright (c) 2004,2005, Thomas M. Hinkle. GNU GPL"
+#~ msgstr "版权所有 (c) 2004,2005, Thomas M. Hinkle. GNU GPL"
 
 #~ msgid ""
 #~ "Gourmet Recipe Manager is an application to store, organize and search "
 #~ "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
-#~ "Gourmet imports MealMaster and MasterCook XML files and can export a number "
-#~ "of formats, including text, HTML web pages, and a custom XML format for "
+#~ "Gourmet imports recipes from a number of sources, including MealMaster and "
+#~ "MasterCook archives and several popular websites. Gourmet can export recipes "
+#~ "as text, MealMaster files, HTML web pages, and a custom XML format for "
 #~ "exchange with other Gourmet users. Gourmet supports linking images with "
 #~ "recipes."
 #~ msgstr ""
-#~ "Gourmet Tarif Yöneticisi yemek tariflerini saklama, düzenleme ve aramaya "
-#~ "yarayan bir uygulamadır. Gourmet uygulaması aynı zamanda tariflerden alış "
-#~ "veriş listeleri da çıkarabilir. Gourmet MealMaster ve MasterCook XML "
-#~ "dosyalarından içe aktarabilir ve diğer Gourmet kullanıcıları ile veri "
-#~ "paylaşımı için HTML web sayfaları, özel XML biçimleri de dahil birçok biçime "
-#~ "dosya aktarabilir. Gourmet tariflere resim iliştirilmesini de destekler."
+#~ ""
+#~ "Gourmet食谱管理软件是一个可以保存，管理和搜索食谱的程序。Gourmet还使得食谱很容易的转换为购物清单。Gourmet可以从很多中源文件中导入食谱，"
+#~ "包括 MealMaster 和 MasterCook "
+#~ "档案和一些有名的网站。Gourmet可以把食谱导出为文本文件，MealMaster文件，HTML网页，"
+#~ "和自定义的XML格式，可以很方便的和其他Gourmet用户交流。Gourmet支持在食谱中的图片链接。"
 
-#, python-format
-#~ msgid "Print %s Recipes"
-#~ msgstr "%s tarifi yazdır"
+#~ msgid "Choose Database File"
+#~ msgstr "选择数据库文件"
 
-#, python-format
-#~ msgid ""
-#~ "Shall I delete the items contained in %s or just move them out of the group?"
-#~ msgstr ""
-#~ "%s içindeki maddeler silinsin mi ya da sadece grup dışına mı taşınsın?"
+#~ msgid "Database format has changed"
+#~ msgstr "数据库格式已经更改"
 
-#~ msgid "Delete them."
-#~ msgstr "Onları sil."
+#~ msgid "Transferring data to new database format"
+#~ msgstr "正在转换数据到新的数据库格式"
 
-#~ msgid "Move them."
-#~ msgstr "Onları taşı"
+#~ msgid "Excellent"
+#~ msgstr "优秀"
+
+#~ msgid "Great"
+#~ msgstr "良好"
+
+#~ msgid "Good"
+#~ msgstr "好"
+
+#~ msgid "Fair"
+#~ msgstr "一般"
+
+#~ msgid "Poor"
+#~ msgstr "差"
+
+#~ msgid "Okay"
+#~ msgstr "可以"
+
+#~ msgid "Recipe saved as HTML file %s"
+#~ msgstr "食谱保存为 HTML 文件 %s"
+
+#~ msgid "Command: "
+#~ msgstr "命令： "
+
+#~ msgid "Shopping list for: "
+#~ msgstr "购物清单： "
+
+#~ msgid "Printing not supported"
+#~ msgstr "不支持打印"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-19 12:30-0400\n"
+"POT-Creation-Date: 2006-08-19 12:20-0400\n"
 "PO-Revision-Date: 2006-03-30 17:20+0000\n"
 "Last-Translator: Jaro Larnos <jaro.larnos@pp.inet.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -99,9 +99,8 @@ msgstr "Hyppää reseptiin"
 
 #: ../glade/app.glade.h:19 ../glade/recSelector.glade.h:3
 #: ../glade/rec_ref_window.glade.h:2
-#, fuzzy
 msgid "Limiting Search to:"
-msgstr "Haku rajoitettu: "
+msgstr ""
 
 #: ../glade/app.glade.h:20
 #, fuzzy
@@ -462,14 +461,12 @@ msgid "_Advanced Search"
 msgstr "Edistynyt haku"
 
 #: ../glade/keyeditor.glade.h:9
-#, fuzzy
 msgid "_Item:"
-msgstr "Tarvike:"
+msgstr ""
 
 #: ../glade/keyeditor.glade.h:10
-#, fuzzy
 msgid "_Key:"
-msgstr "Avain"
+msgstr ""
 
 #: ../glade/keyeditor.glade.h:11
 #, fuzzy
@@ -514,9 +511,8 @@ msgid "<i>Enter nutritional information for </i>"
 msgstr "<i>Anna ravintotiedot kohteelle </i>"
 
 #: ../glade/nutritionDruid.glade.h:3
-#, fuzzy
 msgid "<i>From:</i>"
-msgstr "<i>Lähettäjä: </i>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:4
 #, fuzzy
@@ -529,9 +525,8 @@ msgid "<i>Select equivalent of</i>"
 msgstr "<i>Valitse samankaltainen kuin </i>"
 
 #: ../glade/nutritionDruid.glade.h:6
-#, fuzzy
 msgid "<i>To:</i>"
-msgstr "<i>Vastaanottaja: </i>"
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:7
 #, fuzzy
@@ -553,9 +548,8 @@ msgid "Show only food in _group:"
 msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:12
-#, fuzzy
 msgid "Unit:"
-msgstr "Yksikkö: "
+msgstr ""
 
 #: ../glade/nutritionDruid.glade.h:14
 msgid "_Change ingredient"
@@ -687,9 +681,8 @@ msgid "_Never add optional ingredients"
 msgstr "Älä lisää valinnaisia aineksia"
 
 #: ../glade/preferenceDialog.glade.h:23
-#, fuzzy
 msgid "_Recipes per page:"
-msgstr "Reseptiä sivulla: "
+msgstr ""
 
 #: ../glade/preferenceDialog.glade.h:24
 #, fuzzy
@@ -877,9 +870,8 @@ msgid "Edit section chooser"
 msgstr ""
 
 #: ../glade/recCard.glade.h:44
-#, fuzzy
 msgid "Image:"
-msgstr "Kuva: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:45
 msgid "Import ingredients from a plain text file."
@@ -933,9 +925,8 @@ msgid "Paste ingredient list from the clipboard."
 msgstr "Liitä aineslista leikepöydältä."
 
 #: ../glade/recCard.glade.h:56
-#, fuzzy
 msgid "Pre_paration Time:"
-msgstr "Valmistusaika: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:57
 msgid "Print recipe"
@@ -954,9 +945,8 @@ msgid "Revert"
 msgstr ""
 
 #: ../glade/recCard.glade.h:63
-#, fuzzy
 msgid "S_hopping Category:"
-msgstr "Ostosryhmä: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:64
 msgid "S_ource:"
@@ -1082,14 +1072,12 @@ msgid "_Save"
 msgstr "Tallenna"
 
 #: ../glade/recCard.glade.h:99
-#, fuzzy
 msgid "_Servings:"
-msgstr "Annoksia: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:102
-#, fuzzy
 msgid "_Title:"
-msgstr "Nimi: "
+msgstr ""
 
 #: ../glade/recCard.glade.h:104
 #, fuzzy
@@ -1147,7 +1135,6 @@ msgid "rating"
 msgstr "arvosana"
 
 #. _('rating'):'rating',
-#. _('rating'),
 #: ../glade/rec_ref_window.glade.h:12 ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:54
 msgid "source"
@@ -1374,19 +1361,16 @@ msgstr "Tiheystieto tarvitaan."
 #. plural forms of time units. We use range(5) since as far as I
 #. can see, enumerating the forms for 0 through 5 should give you
 #. all possible forms in all languages.
-#.
-#. See http://www.sbin.org/doc/glibc/libc_8.html
+#. 
 #: ../src/lib/convert.py:61 ../src/lib/convert.py:544
 msgid "second"
 msgid_plural "seconds"
 msgstr[0] "sekunti"
 msgstr[1] "sekuntia"
 
-#. min. = abbreviation for minutes
 #: ../src/lib/convert.py:63
-#, fuzzy
 msgid "min"
-msgstr "min."
+msgstr ""
 
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:543
 msgid "minute"
@@ -1394,7 +1378,6 @@ msgid_plural "minutes"
 msgstr[0] "minuutti"
 msgstr[1] "minuuttia"
 
-#. hrs = abbreviation for hours
 #: ../src/lib/convert.py:65
 msgid "hrs."
 msgstr "h."
@@ -1413,7 +1396,6 @@ msgstr[1] "päivää"
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
-#. 'decades':lambda decades: ngettext("decade","decades",round(decades))
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:538
 msgid "year"
 msgid_plural "years"
@@ -1437,7 +1419,6 @@ msgstr[1] "viikkoa"
 #. and 6. This set-up allows for variations of this system only.
 #. You can of course make your language only use commas or
 #. ands or spaces or whatever you like by translating both
-#. ", " and " and " with the same string.
 #: ../src/lib/convert.py:587
 msgid " and "
 msgstr " ja "
@@ -1456,19 +1437,16 @@ msgstr ""
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
-#. show up sometimes.
 #: ../src/lib/convert.py:740
 #, fuzzy
 msgid "to"
 msgstr "-"
 
-#. setup pause button
 #: ../src/lib/dialog_extras.py:398
 #, fuzzy
 msgid "_Pause"
 msgstr "Tauko"
 
-#. setup stop button
 #: ../src/lib/dialog_extras.py:409
 #, fuzzy
 msgid "_Stop"
@@ -1577,7 +1555,6 @@ msgid ""
 msgstr ""
 
 #. renderer.set_property('editable',True)
-#. renderer.connect('edited',tst)
 #: ../src/lib/gglobals.py:234 ../src/lib/shopgui.py:102
 #: ../src/lib/exporters/rtf_exporter.py:79
 msgid "Title"
@@ -1616,7 +1593,6 @@ msgstr "Keittoaika"
 msgid "Modifications"
 msgstr "Muutokset"
 
-#. print dir(err)
 #: ../src/lib/gglobals.py:318
 msgid "Unable to open URL"
 msgstr "URL:n avaaminen epäonnistui"
@@ -1735,12 +1711,12 @@ msgid "Don't exit!"
 msgstr "Älä poistu!"
 
 #: ../src/lib/GourmetRecipeManager.py:536
-#, fuzzy, python-format
+#, fuzzy
 msgid "Delete %s?"
 msgstr "Poista %s?"
 
 #: ../src/lib/GourmetRecipeManager.py:537
-#, fuzzy, python-format
+#, fuzzy
 msgid "You have unsaved changes to %s. Are you sure you want to delete?"
 msgstr ""
 "Sinulla on tallentamattomia muutoksia tiedostoon %s. Oletko varma että "
@@ -1827,9 +1803,9 @@ msgid "Number of servings of %s to shop for"
 msgstr "Annoksia %s:sta, joita varten tehdään ostoksia"
 
 #: ../src/lib/GourmetRecipeManager.py:739
-#, fuzzy, python-format
+#, python-format
 msgid "Multiply %s by:"
-msgstr "%s:n kerroin: "
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:768 ../src/lib/shopgui.py:160
 msgid "Saved!"
@@ -1960,9 +1936,8 @@ msgid "Default source for recipes imported from %s"
 msgstr "%s:sta tuotujen reseptien vakiolähde"
 
 #: ../src/lib/GourmetRecipeManager.py:1023
-#, fuzzy
 msgid "Source:"
-msgstr "Lähde:"
+msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1052
 #, python-format
@@ -2068,7 +2043,6 @@ msgstr[1] ""
 msgid "Key"
 msgstr "Avain"
 
-#. to set our regexp_toggled variable
 #: ../src/lib/keyEditor.py:79 ../src/lib/keyEditor.py:228
 msgid "key"
 msgstr "avaimen"
@@ -2197,14 +2171,12 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/keyEditor.py:417
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
 msgstr ""
 
 #. self._hide_warning_slowly()
-#. return
 #: ../src/lib/numberEntry.py:27 ../src/lib/timeEntry.py:54
 #: ../src/lib/timeEntry.py:64
 msgid "Invalid input."
@@ -2284,10 +2256,10 @@ msgstr ""
 #: ../src/lib/nutrition/nutritionDruid.py:560
 #, python-format
 msgid ""
-"In order to calculate nutritional information for \"%(amount)s %(unit)s %"
-"(ingkey)s\", Gourmet needs to know its density. Our nutritional database has "
-"several descriptions of this food with different densities. Please select "
-"the correct one below."
+"In order to calculate nutritional information for \"%(amount)s %(unit)s "
+"%(ingkey)s\", Gourmet needs to know its density. Our nutritional database "
+"has several descriptions of this food with different densities. Please "
+"select the correct one below."
 msgstr ""
 
 #: ../src/lib/nutrition/nutritionDruid.py:711
@@ -2304,7 +2276,6 @@ msgstr ""
 #. filename=de.select_file(
 #. 'Find ABBREV.txt file',
 #. filters=[['Plain Text',['text/plain'],['*txt']]]
-#. )
 #: ../src/lib/nutrition/nutritionGrabberGui.py:35
 msgid "Loading Nutritional Data"
 msgstr ""
@@ -2708,7 +2679,6 @@ msgstr ""
 
 #. the DB Food Group Numbers seem to be inline with the group IDs
 #. (numbers > 1000 are in group 100, etc.)
-#. Since that's true, we can use the following table to properly add groups.
 #: ../src/lib/nutrition/parser_data.py:335
 msgid "Dairy & Egg Products"
 msgstr ""
@@ -2805,7 +2775,6 @@ msgstr ""
 msgid "Ethnic Foods"
 msgstr ""
 
-#. self.serves = float(self.serveW.get_text())
 #: ../src/lib/reccard.py:201
 msgid "Edit Recipe:"
 msgstr ""
@@ -2814,7 +2783,6 @@ msgstr ""
 msgid "Recipe Card:"
 msgstr ""
 
-#. action groups
 #: ../src/lib/reccard.py:283
 msgid "Add _ingredient"
 msgstr ""
@@ -2849,7 +2817,6 @@ msgstr "Siirrä valittua ainesosaa alaspäin."
 
 #. 'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
 #. ['editButton','editMenu']]},
-#. ],
 #: ../src/lib/reccard.py:324
 msgid "View recipe card for current recipe"
 msgstr ""
@@ -2860,9 +2827,8 @@ msgid "Unable to find recipe %s in database."
 msgstr ""
 
 #: ../src/lib/reccard.py:471
-#, fuzzy
 msgid "Choose an image to insert in instructions..."
-msgstr "Valitse ohjeisiin lisättävä kuva... "
+msgstr ""
 
 #: ../src/lib/reccard.py:589
 #, python-format
@@ -2882,12 +2848,10 @@ msgstr "%s on virheellinen annosmäärä"
 msgid "(Optional)"
 msgstr "(Valinnainen)"
 
-#. FIXME
 #: ../src/lib/reccard.py:918
 msgid "Choose a file containing your ingredient list."
 msgstr "Valitse  ainesosaluettelon sisältävä tiedosto."
 
-#. strip off extra "." if necessary
 #: ../src/lib/reccard.py:962
 msgid "Save recipe as..."
 msgstr "Tallenna resepti nimellä..."
@@ -2902,9 +2866,9 @@ msgid "There was an error during export."
 msgstr "Vienti epäonnistui."
 
 #: ../src/lib/reccard.py:1008
-#, fuzzy, python-format
+#, python-format
 msgid "Exported %(filetype)s to %(filename)s"
-msgstr "%s viety %s:ään."
+msgstr ""
 
 #: ../src/lib/reccard.py:1091 ../src/lib/reccard.py:1143
 #: ../src/lib/reccard.py:1154
@@ -3004,9 +2968,8 @@ msgid "Enter a name for new subgroup of ingredients"
 msgstr "Anna uuden ainesosaryhmän nimi"
 
 #: ../src/lib/reccard.py:2417
-#, fuzzy
 msgid "Name of group:"
-msgstr "Ryhmän nimi: "
+msgstr ""
 
 #: ../src/lib/reccard.py:2808
 #, python-format
@@ -3050,7 +3013,6 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
-#. strings in case your language needs the order changed!
 #: ../src/lib/recindex.py:210
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
@@ -3081,13 +3043,13 @@ msgstr "Syötä salasana"
 
 #: ../src/lib/recipeManager.py:15
 #, python-format
-msgid "Please enter your password for user %s of the MySQL database at host %s"
+msgid ""
+"Please enter your password for user %s of the MySQL database at host %s"
 msgstr "Syötä käyttäjän %s salasana palvelimen %s MySQL-tietokannassa"
 
 #: ../src/lib/recipeManager.py:18
-#, fuzzy
 msgid "Password:"
-msgstr "Salasana: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:69
 msgid ""
@@ -3136,9 +3098,8 @@ msgid "Enter Category"
 msgstr "Syötä luokka"
 
 #: ../src/lib/shopgui.py:460
-#, fuzzy
 msgid "Category:"
-msgstr "Luokka: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:622
 msgid "Recipe calls for itself as an ingredient."
@@ -3241,7 +3202,6 @@ msgstr "Gourmet-reseptinhallinta"
 msgid "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
 msgstr ""
 
-#. repeated in setup.cfg
 #: ../src/lib/version.py:7
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
@@ -3305,7 +3265,6 @@ msgstr ""
 msgid "Retrieving file"
 msgstr ""
 
-#. Interactive we go...
 #: ../src/lib/importers/html_importer.py:478
 msgid "Don't recognize this webpage. Using generic importer..."
 msgstr ""
@@ -3345,7 +3304,8 @@ msgstr "<i>Tuodaan: %s</i>"
 #: ../src/lib/importers/importer.py:417
 #, python-format
 msgid "Imported %(number)s recipes from %(file)s (%(total)s total)"
-msgstr "Tuotiin %(number)s reseptiä tiedostosta %(file)s (yhteensä: %(total)s)"
+msgstr ""
+"Tuotiin %(number)s reseptiä tiedostosta %(file)s (yhteensä: %(total)s)"
 
 #: ../src/lib/importers/importer.py:492
 msgid "okay"
@@ -3408,7 +3368,6 @@ msgstr "Mastercook-vienti onnistui."
 #. debug('Exception in Handler, trying to clean up source...',0)
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
-#. files, even though some of them may not be fubared :)
 #: ../src/lib/importers/mastercook_importer.py:257
 msgid "Tidying up XML"
 msgstr "XML:ää siivotaan"
@@ -3450,7 +3409,6 @@ msgid "Recipe"
 msgstr "Resepti"
 
 #. Method from:
-#. http://tgolden.sc.sabren.com/python/win32_how_do_i/print.html#shellexecute
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:215
 #: ../src/lib/exporters/gnomeprinter.py:253
 #: ../src/lib/exporters/winprinter.py:17
@@ -3473,7 +3431,6 @@ msgstr "Väli"
 msgid "Print Recipes"
 msgstr "Tulosta reseptit"
 
-#. Filetypes as presented to user
 #: ../src/lib/exporters/__init__.py:18
 msgid "HTML Web Page"
 msgstr "HTML-sivu"
@@ -3527,12 +3484,12 @@ msgid "MealMaster Export"
 msgstr "Mealmaster-vienti"
 
 #: ../src/lib/exporters/__init__.py:93
-#, fuzzy, python-format
+#, fuzzy
 msgid "Exporting recipes to MealMaster file %(file)s."
 msgstr "Viedään reseptejä MealMaster(tm) -tiedostoon %(file)s."
 
 #: ../src/lib/exporters/__init__.py:94
-#, fuzzy, python-format
+#, fuzzy
 msgid "Recipe saved as MealMaster file %(file)s"
 msgstr "Resepti tallennettu MealMaster(tm) -tiedostoon %(file)s"
 
@@ -3570,12 +3527,12 @@ msgid "RTF Export"
 msgstr "Tekstivienti"
 
 #: ../src/lib/exporters/__init__.py:135
-#, fuzzy, python-format
+#, fuzzy
 msgid "Exporting recipes to Rich Text file %(file)s."
 msgstr "Viedään reseptejä tekstitiedostoon %(file)s."
 
 #: ../src/lib/exporters/__init__.py:136
-#, fuzzy, python-format
+#, fuzzy
 msgid "Recipe saved as Rich Text file %(file)s"
 msgstr "Resepti tallennettu tekstitiedostoon %(file)s"
 
@@ -3620,9 +3577,8 @@ msgstr ""
 "avulla."
 
 #: ../src/lib/exporters/lprprinter.py:31
-#, fuzzy
 msgid "Command:"
-msgstr "Komento: "
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:643
 #: ../src/lib/exporters/pdf_exporter.py:660
@@ -3635,15 +3591,13 @@ msgstr ""
 #: ../src/lib/exporters/pdf_exporter.py:734
 #: ../src/lib/exporters/pdf_exporter.py:759
 #: ../src/lib/exporters/winprinter.py:59
-#, fuzzy
 msgid "Portrait"
-msgstr "Tulosta"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:646
 #: ../src/lib/exporters/pdf_exporter.py:675
-#, fuzzy
 msgid "Plain"
-msgstr "Tekstitiedosto"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:655
 msgid "11x17\""
@@ -3700,9 +3654,8 @@ msgid "Page _Size"
 msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:686
-#, fuzzy
 msgid "_Orientation"
-msgstr "Tämänhetkinen arvosana"
+msgstr ""
 
 #: ../src/lib/exporters/pdf_exporter.py:687
 msgid "_Font Size"
@@ -3780,24 +3733,18 @@ msgstr ""
 msgid "If you'd like, you can open the PDF file."
 msgstr ""
 
-#~ msgid "_Unit: "
-#~ msgstr "Yksikkö: "
+#~ msgid "E-_mail recipes"
+#~ msgstr "Lähetä reseptit sähköpostitse"
+
+#~ msgid "Limiting Search to: "
+#~ msgstr "Haku rajoitettu: "
+
+#~ msgid "_Export"
+#~ msgstr "Vie"
 
 #, fuzzy
 #~ msgid "<b>Title</b>"
 #~ msgstr "<b>Nimi</b>"
-
-#~ msgid "Source: "
-#~ msgstr "Lähde: "
-
-#~ msgid "Shopping list for: "
-#~ msgstr "Ostoslista: "
-
-#~ msgid "E-_mail recipes"
-#~ msgstr "Lähetä reseptit sähköpostitse"
-
-#~ msgid "_Export"
-#~ msgstr "Vie"
 
 #~ msgid "Add this recipe to a shopping list"
 #~ msgstr "Lisää tämä resepti ostoslistalle"
@@ -3809,8 +3756,18 @@ msgstr ""
 #~ msgstr "Vie resepti tekstitiedostoon."
 
 #, fuzzy
+#~ msgid "Image: "
+#~ msgstr "Kuva: "
+
+#, fuzzy
 #~ msgid "Ins_tructions"
 #~ msgstr "Ohjeet"
+
+#~ msgid "Pre_paration Time: "
+#~ msgstr "Valmistusaika: "
+
+#~ msgid "S_hopping Category: "
+#~ msgstr "Ostosryhmä: "
 
 #~ msgid "_Delete Ingredient"
 #~ msgstr "Poista aines"
@@ -3831,6 +3788,16 @@ msgstr ""
 #, fuzzy
 #~ msgid "_Notes"
 #~ msgstr "Huomautukset"
+
+#~ msgid "_Servings: "
+#~ msgstr "Annoksia: "
+
+#, fuzzy
+#~ msgid "_Title: "
+#~ msgstr "Nimi: "
+
+#~ msgid "_Unit: "
+#~ msgstr "Yksikkö: "
 
 #~ msgid "Advanced"
 #~ msgstr "Tarkennettu"
@@ -3854,8 +3821,8 @@ msgstr ""
 #~ msgstr "Käytä haussa säännöllisiä lausekkeita"
 
 #~ msgid ""
-#~ "Remove the selected recipe from your shopping list (or remove all items "
-#~ "if no recipe is selected)"
+#~ "Remove the selected recipe from your shopping list (or remove all items if "
+#~ "no recipe is selected)"
 #~ msgstr ""
 #~ "Poista valittu resepti ostoslistalta (tai poista kaikki tarvikkeet, jos "
 #~ "yhtään reseptiä ei ole valittu)."
@@ -3873,21 +3840,32 @@ msgstr ""
 #~ msgid "Deleted "
 #~ msgstr "Poistettu "
 
+#, python-format
+#~ msgid "Multiply %s by: "
+#~ msgstr "%s:n kerroin: "
+
+#~ msgid "Source: "
+#~ msgstr "Lähde: "
+
 #~ msgid "Deleted 1 recipe."
 #~ msgstr "Poistettiin 1 resepti."
 
+#, python-format
 #~ msgid "Deleted %s recipes"
 #~ msgstr "Poistettiin %s reseptiä"
 
 #~ msgid "Are you sure you want to change the "
 #~ msgstr "Haluatko varmasti vaihtaa "
 
+#, python-format
 #~ msgid "for \"%s from \"%s\""
 #~ msgstr "%s:lle %s:sta"
 
+#, python-format
 #~ msgid " from \"%s\" "
 #~ msgstr " %s:sta "
 
+#, python-format
 #~ msgid " to \"%s\""
 #~ msgstr " %s:ksi"
 
@@ -3897,6 +3875,7 @@ msgstr ""
 #~ msgid "You haven't entered a key!"
 #~ msgstr "Anna avain!"
 
+#, python-format
 #~ msgid ""
 #~ "Are you sure you want the keys\n"
 #~ " for all %s selections set to\n"
@@ -3908,16 +3887,23 @@ msgstr ""
 #~ msgid "Recipe Card: "
 #~ msgstr "Reseptikortti: "
 
+#~ msgid "Choose an image to insert in instructions... "
+#~ msgstr "Valitse ohjeisiin lisättävä kuva... "
+
 #~ msgid "Changes to ingredients saved automatically."
 #~ msgstr "Ainesosien muutokset talletettu automaattisesti."
 
+#~ msgid "Name of group: "
+#~ msgstr "Ryhmän nimi: "
+
+#, python-format
 #~ msgid "Are you sure you want to delete %s"
 #~ msgstr "Haluatko varmasti poistaa %s:n"
 
+#, python-format
 #~ msgid "Shall I delete the item contained in %s or move it out of the group?"
 #~ msgid_plural ""
-#~ "Shall I delete the items contained in %s or just move them out of the "
-#~ "group?"
+#~ "Shall I delete the items contained in %s or just move them out of the group?"
 #~ msgstr[0] ""
 #~ "Poistetaanko %s:n sisältämä tarvike, vai siirretäänkö se vain ryhmän "
 #~ "ulkopuolelle?"
@@ -3938,14 +3924,23 @@ msgstr ""
 #~ msgid "See ingredients"
 #~ msgstr "Näytä ainesosat"
 
+#, python-format
 #~ msgid "%s Recipes"
 #~ msgstr "%s reseptiä"
 
+#, python-format
 #~ msgid " %s contains %s"
 #~ msgstr " %s sisältää %s"
 
+#, python-format
 #~ msgid ", %s contains %s"
 #~ msgstr ", %s sisältää %s"
+
+#~ msgid "Password: "
+#~ msgstr "Salasana: "
+
+#~ msgid "Category: "
+#~ msgstr "Luokka: "
 
 #~ msgid "seconds"
 #~ msgstr "sekuntia"
@@ -3972,16 +3967,21 @@ msgstr ""
 #~ msgid "Choose Database File"
 #~ msgstr "Valitse tiedokantatiedosto"
 
+#~ msgid "Command: "
+#~ msgstr "Komento: "
+
+#~ msgid "Shopping list for: "
+#~ msgstr "Ostoslista: "
+
 #~ msgid "Printing not supported"
 #~ msgstr "Tulostustoiminto ei ole tuettu Windowsissa."
 
 #~ msgid ""
-#~ "To print recipes, first export them, then print from another program. If "
-#~ "you install wxWindows, you can print directly from Gourmet."
+#~ "To print recipes, first export them, then print from another program. If you "
+#~ "install wxWindows, you can print directly from Gourmet."
 #~ msgstr ""
-#~ "Jos haluat tulostaa reseptejä, vie ne ensin tiedostoon ja tulosta "
-#~ "toisesta sovelluksesta. Jos asennat wxWidgetsin, voit tulostaa suoraan "
-#~ "Gourmet'sta."
+#~ "Jos haluat tulostaa reseptejä, vie ne ensin tiedostoon ja tulosta toisesta "
+#~ "sovelluksesta. Jos asennat wxWidgetsin, voit tulostaa suoraan Gourmet'sta."
 
 #~ msgid "Search as you _type"
 #~ msgstr "Hae kirjoittaessasi"
