@@ -195,7 +195,7 @@ import OptionParser
 if OptionParser.options.db=='metakit': db = 'metakit'
 if OptionParser.options.db=='sqlite': db = 'sqlite'
 dbargs = {}
-if not OptionParser.options.db or OptionParser.options.choosedb:
+if not OptionParser.options.db or (hasattr(OptionParser.options,'choosedb') and OptionParser.options.choosedb):
     import prefs
     p = prefs.Prefs()
     db = p.get('db_backend',None)
