@@ -1,3 +1,40 @@
+gourmet (0.11.5-1) breezy; urgency=low
+
+  * Add more PDF Export modes for printing index cards, multiple
+    columns, etc. Also add nice print page-layout widget.
+  * Tweak spacing in recipe card to avoid ugly disappearance of "Edit" buttons
+  * Recognize units in all kinds of capitalized or uncapitalized forms.
+  * Fix up bug in time-scanning code that led to making a link like
+    <a>3 min</a>utes instead of <a>3 minutes</a>
+  * Add i18n for Swedish.
+  * Apply patch to fix text-flow in recipe card (Shane Hathaway)
+  * Apply localization patch to simplify translations. (Jens Persson)
+
+ -- Thomas M. Hinkle <tom@localhost.localdomain>  Sat, 19 Aug 2006 13:44:55 -0400
+
+gourmet (0.11.4-2) breezy; urgency=low
+
+  * reportlab dependency.
+
+ -- Thomas M. Hinkle <tom@localhost.localdomain>  Thu,  3 Aug 2006 19:23:06 -0400
+
+gourmet (0.11.4-1) breezy; urgency=low
+
+  * Make deleting an ingredient ungrey "Save" button
+  * Fix various bits of badness with Undo
+  * Fix gravity of cursor for text markup in instructions and notes.
+  * Fix allrecipes.com import
+  * Allow recognition of times written as 01:30 for 1 1/2 hours
+  * Improve testing suites (and therefore improve thoroughness of
+    bug-checking before release)
+  * Fixed generic web import.
+  * PDF Import
+  * Printing support for windows
+  * Fix ugly window placement issues on windows and some other places.
+  * Improve recipezaar import.
+
+ -- Thomas M. Hinkle <tom@localhost.localdomain>  Thu,  3 Aug 2006 18:58:46 -0400
+
 gourmet (0.11.3-1) breezy; urgency=low
 
   * Fix bug that caused unicode error on upgrade from metakit.
