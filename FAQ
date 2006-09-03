@@ -204,17 +204,35 @@ information it needs to calculate nutritional information, either
 using the USDA database foods or entering nutritional information by
 hand if necessary.
 
-8. What if I have a good idea for how to improve Gourmet?
+8. Can I do fancy printing with Gourmet?
+
+Yes. Gourmet's PDF Export supports a number of fancy layout options,
+including printing to recipe cards or printing to paper in a format
+convenient for cutting out and pasting onto recipe cards (if your
+printer can't handle printing directly onto a recipe card).
+
+You can export PDF's by selecting "Export recipe" or "Export Recipes"
+and then selecting "Portable Document Format (PDF)" as the type of
+export. You will then get a screen with a number of options, including
+page layout options that include a variety of index-card formats (as
+well as printing in multiple columns, etc.).
+
+Once you've exported a PDF, you can use your PDF viewer to print.
+
+On windows, Adobe Acrobat is used for printing from Gourmet, so you'll
+get all of these fancy options when you select "print" directly.
+
+9. What if I have a good idea for how to improve Gourmet?
 
 Please submit a feature request at the following website:
 https://sourceforge.net/tracker/?atid=649655&group_id=108118&func=browse
 
-9. What if I find a bug?
+10. What if I find a bug?
 
 Please submit a bug report at the following website:
 https://sourceforge.net/tracker/?atid=649652&group_id=108118&func=browse
 
-10. What if I have a question not answered here?
+11. What if I have a question not answered here?
 
 Post your question in the Gourmet Help Forum here:
 https://sourceforge.net/forum/forum.php?forum_id=371768
