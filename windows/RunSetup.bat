@@ -1,4 +1,4 @@
-set python=C:\Python23\python.exe
-set setup="C:\Documents and Settings\tmhinkle\My Documents\grm\setup.py"
+set python=C:\Python24\python.exe
+set setup="C:\grm\grm\setup.py"
 
 %python% %setup% install
