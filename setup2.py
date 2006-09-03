@@ -76,7 +76,7 @@ setup(
     # targets to build
     console = [
         {
-            "script": "C:\Python24\Scripts\Gourmet.pyw",
+            "script": "C:\Python24\Scripts\GourmetDebug.pyw",
             "dest_base": "Gourmet_debug"
         }
     ],
