@@ -340,9 +340,11 @@ class PageableViewStore (PageableListStore):
         if (attr,-1) in self.__sorts__: self.__sorts__.remove((attr,-1))
         elif (attr, 1) in self.__sorts__: self.__sorts__.remove((attr,1))
         if direction==self.FORWARD:
-            self.__sorts__ = [(attr,1)] + self.__sorts__
+            #self.__sorts__ = [(attr,1)] + self.__sorts__
+            self.__sorts__.append((attr,1))
         elif direction==self.REVERSE:
-            self.__sorts__ = [(attr,-1)] + self.__sorts__
+            #self.__sorts__ = [(attr,-1)] + self.__sorts__
+            self.__sorts__.append((attr,-1))
         self.emit('view-sort',self.__sorts__)
 
     #def _do_sort_ (self):
