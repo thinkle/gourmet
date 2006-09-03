@@ -42,7 +42,7 @@ fields={'cuisine': ['deutsch', 'amerikanisch','italienisch','franzoisisch',
 		    '3 - OK','2 - mittelmässig','1 - vergiss es!',
                     '(nicht geprüft)'],
 
-        'source' : ['Epicurious (http://www.epicurious.com)'],
+        'source' : [],
 
         'category' :[
 		     'Nachspeise','Vorspeise','Hauptgericht',

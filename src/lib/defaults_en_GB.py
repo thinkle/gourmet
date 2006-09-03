@@ -9,7 +9,7 @@ fields={'cuisine': ['English','Scottish','Welsh','Irish','American',
                     'Southwestern','Asian/Thai','Asian/Vietnamese',
                     'Asian/Chinese','Asian/Japanese',],
         'rating' : ['Excellent','Great','Good','Fair','Poor'],
-        'source' : ['Epicurious'],
+        'source' : [],
         'category' : ['Dessert','Entree','Salad','Soup',
                       'Breakfast'],
                   }

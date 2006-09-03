@@ -36,7 +36,7 @@ fields={'cuisine': ['Américaine','Italienne','Mexicaine'
                     'Asiatique/chinoise','Asiatique/japonaise','Canadienne'
 		    'Canadienne/québécoise','Grecque','Française'],
         'rating' : ['5 - Excellent','4 - Très bon','3 - Bon','2 - Moyen','1 - Mauvais','(non-testé)'],
-        'source' : ['Epicurious (http://www.epicurious.com)'],
+        'source' : [],
         'category' : ['Dessert','Entrée','Salade','Soupe',
                       'Petit-déjeuné'],
                   }

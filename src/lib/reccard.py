@@ -622,6 +622,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 slist = self.rg.rd.get_unique_values(c,deleted=False)
             if not slist:
                 slist = self.rg.rd.get_default_values(c)
+            else:
+                for default_value in self.rg.rd.get_default_values(c):
+                    if default_value not in slist: slist.append(default_value)
+            slist.sort()
             cb.set_model_from_list(self.rw[c],slist)
             cb.setup_completion(self.rw[c])
             if c=='category':

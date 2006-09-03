@@ -16,7 +16,7 @@ fields={'cuisine': ['Estadunidense','Italiana','Mexicana',
                     'Sudoeste dos Estados Unidos','Tailandesa','Vietnamita',
                     'Chinesa','Japonesa','Mineira','Nordestina','Portuguesa','Brasileira'],
         'rating' : ['Excelente','Ótima','Boa','Razoável','Fraca'],
-        'source' : ['Epícuro'],
+        'source' : [],
         'category' : ['Sobremesa','Entrada','Salada','Sopa',
                       'Café da manhã'],
                   }

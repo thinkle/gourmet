@@ -34,7 +34,7 @@ fields={'cuisine': ['Husmanskost','Italienskt','Thai',
                     'Indiskt','Spanskt','Asian/Vietnamese',
                     'Asian/Chinese','Asian/Japanese',],
         'rating' : ['Fantastiskt','Utmärkt','Bra','Hyfsat','Dåligt'],
-        'source' : ['Epicurious'],
+        'source' : [],
         'category' : ['Efterrätt','Förrätt','Varmrätt',
                       'Sallad','Soppa','Bröd'],
                   }
