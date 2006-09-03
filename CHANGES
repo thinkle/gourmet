@@ -1,3 +1,9 @@
+==== Version 0.12.0-pre1 changes since 0.11.5 ====
+* Fix sort order
+* Don't drop default entries for Category/Cuisine once user has entered one.
+* Change version number to reflect intend to create a stable version
+  once we're sure this version doesn't have any show-stoppers.
+
 ==== Version 0.11.5 changes since 0.11.4 ====
 * Add more PDF Export modes for printing index cards, multiple
   columns, etc. Also add nice print page-layout widget.

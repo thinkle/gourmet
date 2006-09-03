@@ -1,3 +1,11 @@
+gourmet (0.12.0-pre1-1) breezy; urgency=low
+
+  * Fix sort order
+  * Don't drop default entries for Category/Cuisine once user has entered one.
+  * Change version number to reflect intend to create a stable version.
+
+ -- Thomas M. Hinkle <thomas_hinkle@sf.net>  Sun,  3 Sep 2006 11:02:39 -0400
+
 gourmet (0.11.5-1) breezy; urgency=low
 
   * Add more PDF Export modes for printing index cards, multiple
