@@ -53,3 +53,4 @@ while printers[printer]() and printers:
     print "Loading ",printer," failed:",
     printer = printer_names.pop()
     print "trying ",printer
+    

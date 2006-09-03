@@ -41,6 +41,7 @@ class RecRenderer:
                   dialog_parent=None, **kwargs):
         filename = tempfile.mktemp('.pdf')
         pdf_args = get_pdf_prefs()
+        kwargs['pdf_args']=pdf_args
         e = PdfExporterMultiDoc(rd,recs,filename, **kwargs)
         e.run()
         print_file_with_windows(filename)
@@ -51,20 +52,12 @@ class SimpleWriter (PdfWriter):
 
     def __init__ (self, file=None, dialog_parent=None, show_dialog=True):
         self.filename = tempfile.mktemp('.pdf')
-        self.outfile = open(self.filename,'w')
+        self.outfile = open(self.filename,'wb')
         #PdfWriter.__init__(self)
         self.setup_document(self.outfile,
-                            self.get_pdf_prefs({
-                'page_size':_('Letter'),
-                'orientation':_('Portrait'),
-                'font_size':10.0,
-                'page_layout':(ngettext('%s Column','%s Column',2)%2),
-                'left_margin':1.0,
-                'right_margin':1.0,
-                'top_margin':1.0,
-                'bottom_margin':1.0,    
-                }
-                                               )
+                            **get_pdf_prefs({
+                'page_layout':(ngettext('%s Column','%s Columns',2)%2),
+                })
                             )
                             
     def close (self):
