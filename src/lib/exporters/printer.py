@@ -19,6 +19,7 @@ def load_gnomeprint ():
         return True
 
 def load_winprinter ():
+    global RecRenderer,SimpleWriter
     if os.name == 'nt':        
         from winprinter import RecRenderer, SimpleWriter
     else:

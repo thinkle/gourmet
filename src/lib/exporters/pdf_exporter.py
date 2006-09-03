@@ -1,3 +1,4 @@
+import reportlab
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.units import inch,mm
 from reportlab.pdfgen import canvas
@@ -19,6 +20,8 @@ import types, re
 import tempfile, os.path
 import math
 from page_drawer import PageDrawer
+
+PASS_REPORTLAB_UNICODE = (reportlab.Version.find('2')==0)
 
 DEFAULT_PDF_ARGS = {
     #'pagesize':'letter',
@@ -308,7 +311,10 @@ class PdfWriter:
             txt = '<para %s>%s</para>'%(attributes,xml.sax.saxutils.escape(txt))
         if not style: style = self.styleSheet['Normal']
         try:
-            return platypus.Paragraph(unicode(txt).encode('iso-8859-1','replace'),style)
+            if PASS_REPORTLAB_UNICODE:
+                return platypus.Paragraph(unicode(txt),style)
+            else:
+                return platypus.Paragraph(unicode(txt).encode('iso-8859-1','replace'),style)
         except UnicodeDecodeError:
             try:
                 #print 'WORK AROUND UNICODE ERROR WITH ',txt[:20]
@@ -829,8 +835,6 @@ if __name__ == '__main__':
     #gglobals.launch_url('file:/os.path.join(tempdir,/star.pdf')
     #raise "I don')t want to go any further"
     
-    import gnome
-
     if os.name == 'nt':
         base = 'C:\\grm\grm'
     else:
