@@ -204,6 +204,7 @@ class PdfWriter:
                         bottom_margin=inch,
                         base_font_size=10
                         ):
+        #print 'mode',mode,'size',size,'pagesize',pagesize,'pagemode',pagemode
         frames = self.setup_frames(mode,size,pagesize,pagemode,
                                    left_margin,right_margin,top_margin,
                                    bottom_margin,base_font_size)
@@ -689,15 +690,23 @@ def get_pdf_prefs (defaults=PDF_PREF_DEFAULT):
     layout_strings = layouts.keys()
     layout_strings.sort()        
     opts=[
-        [_('Page _Size')+':',(defaults['page_size'],size_strings)],
-        [_('_Orientation')+':',(defaults['orientation'],page_modes.keys())],
-        [_('_Font Size')+':',defaults['font_size']],
-        [_('Page _Layout'),(defaults['page_layout'],
+        [_('Page _Size')+':',(defaults.get('page_size',PDF_PREF_DEFAULT['page_size']),
+                              size_strings)],
+        [_('_Orientation')+':',(defaults.get('orientation',PDF_PREF_DEFAULT['orientation']),
+                                page_modes.keys())],
+        [_('_Font Size')+':',defaults.get('font_size',PDF_PREF_DEFAULT['font_size'])]
+        ,
+        [_('Page _Layout'),(defaults.get('page_layout',PDF_PREF_DEFAULT['page_layout']),
+                            
                             layout_strings)],
-        [_('Left Margin')+':',defaults['left_margin']],
-        [_('Right Margin')+':',defaults['right_margin']],
-        [_('Top Margin')+':',defaults['top_margin']],
-        [_('Bottom Margin')+':',defaults['bottom_margin']],
+        [_('Left Margin')+':',defaults.get('left_margin',PDF_PREF_DEFAULT['left_margin'])]
+        ,
+        [_('Right Margin')+':',defaults.get('right_margin',PDF_PREF_DEFAULT['right_margin'])]
+        ,
+        [_('Top Margin')+':',defaults.get('top_margin',PDF_PREF_DEFAULT['top_margin'])]
+        ,
+        [_('Bottom Margin')+':',defaults.get('bottom_margin',PDF_PREF_DEFAULT['bottom_margin'])]
+        ,
         ]
 
     OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = range(8)
@@ -776,14 +785,16 @@ def get_pdf_prefs (defaults=PDF_PREF_DEFAULT):
         page_drawer.queue_draw()
         in_ccb = False
     
+
+    print 'Set up pd with ',opts
     pd = de.PreferencesDialog(opts,option_label=None,value_label=None,
                               label='PDF Options',
                               )
     pd.table.connect('changed',change_cb)
+    pd.table.emit('changed')
     pd.hbox.pack_start(page_drawer,fill=True,expand=True)
     page_drawer.set_size_request(200,100)
     page_drawer.show()
-
     pd.run()
 
     return get_args_from_opts (opts)
@@ -792,6 +803,66 @@ def get_pdf_prefs (defaults=PDF_PREF_DEFAULT):
 if __name__ == '__main__':
     from tempfile import tempdir
     import os.path
+    #opts = get_pdf_prefs(); print opts
+    sw = PdfWriter()
+    f = file(os.path.join(tempdir,'foo.pdf'),'wb')
+    sw.setup_document(f,
+                      mode=('index_cards',(5*inch,3.5*inch)),
+                      pagesize='letter',
+                      pagemode='landscape',
+                      left_margin=0.25*inch,right_margin=0.25*inch,
+                      top_margin=0.25*inch,bottom_margin=0.25*inch,
+                      base_font_size=8,
+                      )
+    #sw.write_header('Heading')
+    #sw.write_subheader('This is a subheading')
+    for n in range(5):
+        sw.write_header(
+            u"This is a header"
+            )
+        #sw.write_subheader(
+        #    u"This is a subheader"
+        #    )
+        sw.write_paragraph(
+            u"%s: These are some sentences.  Hopefully some of these will be quite long sentences.  Some of this text includes unicode -- 45\u00b0F, for example... \u00bfHow's that?"%n*10
+            )
+    #sw.write_paragraph('This is a <i>paragraph</i> with <b>some</b> <u>markup</u>.')
+    #sw.write_paragraph(u"This is some text with unicode - 45\u00b0, \u00bfHow's that?".encode('iso-8859-1'))
+    #sw.write_paragraph(u"This is some text with a unicode object - 45\u00b0, \u00bfHow's that?")
+    sw.close()
+    f.close()
+    
+    #star_file = file(os.path.join(tempdir,'star.pdf'),'wb')
+    #sw = PdfWriter()
+    #sw.setup_document(star_file,mode='two_column')
+    #for n in range(6,72,2):
+    #    sw.write_paragraph("This is some text with a %s pt star"%n)
+    #    sw.txt.append(FiveStars(n,filled=3.5))
+    #    
+    #sw.close()
+    #star_file.close()
+    #import gnome
+    #gnome.program_init('1.0','Gourmet PDF Exporter Test')
+    #gglobals.launch_url('file:/os.path.join(tempdir,/star.pdf')
+    #raise "I don')t want to go any further"
+    
+    if os.name == 'nt':
+        base = 'C:\\grm\grm'
+    else:
+        base = '/home/tom/Projects/grm'
+
+    import gourmet.recipeManager as rm
+    #rd = rm.RecipeManager(file=os.path.join(base,'src','tests','reference_setup','recipes.db'))
+    rd = rm.RecipeManager()
+    #ofi = file(os.path.join(tempdir,'test_rec.pdf'),'w')
+    rr = []
+    for n,rec in enumerate(rd.fetch_all(rd.rview,deleted=False)):
+        if rec.image:
+            rr.append(rec)
+    #pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.rview),os.path.join(tempdir,'fooby.pdf'))
+    #pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.rview,deleted=False)[:10],os.path.join(tempdir,'fooby.pdf'))
+    pe = PdfExporterMultiDoc(rd,rr,os.path.join(tempdir,'fooby.pdf'))
+    pe.run()
 
     def test_3_x_5 ():
         print 'Test 3x5 layout'
@@ -817,11 +888,12 @@ if __name__ == '__main__':
         f.close()
         return os.path.join(tempdir,'foo.pdf')
 
-    def test_grm_export ():
-        if os.name == 'nt':
-            base = 'C:\\grm\grm'
-        else:
-            base = '/home/tom/Projects/grm'
+    def test_grm_export (pdf_args=DEFAULT_PDF_ARGS):
+        fname = tempfile.mktemp('.pdf')
+        #if os.name == 'nt':
+        #    base = 'C:\\grm\grm'
+        #else:
+        #    base = '/home/tom/Projects/grm'
         import gourmet.recipeManager as rm
         #rd = rm.RecipeManager(file=os.path.join(base,'src','tests','reference_setup','recipes.db'))
         rd = rm.RecipeManager()
@@ -829,9 +901,9 @@ if __name__ == '__main__':
         for n,rec in enumerate(rd.fetch_all(rd.rview,deleted=False)):
             if rec.image:
                 rr.append(rec)
-        pe = PdfExporterMultiDoc(rd,rr,os.path.join(tempdir,'fooby.pdf'))
+        pe = PdfExporterMultiDoc(rd,rr,fname,pdf_args=pdf_args)
         pe.run()
-        return os.path.join(tempdir,'fooby.pdf')
+        return fname
 
     import gourmet.gglobals as gglobals
     try:
@@ -840,12 +912,12 @@ if __name__ == '__main__':
     except ImportError:
         print 'We must be on windows...'
 
-    print 'TEST 3x5'
-    gglobals.launch_url('file://'+test_3_x_5())
-    print 'END TEST'
-    print 'TEST GRM'
-    gglobals.launch_url('file://'+test_grm_export())
-    print 'END TEST'
-    #print 'Launching',os.path.join(tempdir,'star.pdf')
-    #gglobals.launch_url('file://'+os.path.join(tempdir,'star.pdf'))
-
+    #print 'TEST 3x5'
+    #gglobals.launch_url('file://'+test_3_x_5())
+    #print 'END TEST'
+    #print 'TEST GRM'
+    #gglobals.launch_url('file://'+test_grm_export())
+    #print 'TEST CUSTOM GRM'
+    #gglobals.launch_url('file://'+test_grm_export(get_pdf_prefs({'page_size':_('A4'),'page_layout':'2 Columns'})))
+    #print 'END TEST'
+    
