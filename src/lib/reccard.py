@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import gc
 import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
 import xml.sax.saxutils
 import exporters
@@ -194,6 +195,38 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             widget.set_size_request(widg_width,-1)
             t = widget.get_text()
             widget.set_text(t)
+        # Flow our image...
+        image_width = int(xsize * 0.75)
+        if not hasattr(self.ImageBox,'orig_pixbuf') or not self.ImageBox.orig_pixbuf: return
+        pb = self.ImageBox.imageD.get_pixbuf()
+        iwidth = pb.get_width()
+        origwidth = self.ImageBox.orig_pixbuf.get_width()
+        new_pb = None
+        if iwidth > image_width:
+            scale = float(image_width)/iwidth
+            width = iwidth * scale
+            height = pb.get_height() * scale
+            new_pb = self.ImageBox.orig_pixbuf.scale_simple(
+                int(width),
+                int(height),
+                gtk.gdk.INTERP_BILINEAR
+                )
+        elif (origwidth > iwidth) and (image_width > iwidth):
+            if image_width < origwidth:
+                scale = float(image_width)/origwidth
+                width = image_width
+                height = self.ImageBox.orig_pixbuf.get_height() * scale
+                new_pb = self.ImageBox.orig_pixbuf.scale_simple(
+                    int(width),
+                    int(height),
+                    gtk.gdk.INTERP_BILINEAR
+                    )
+            else:
+                new_pb = self.ImageBox.orig_pixbuf
+        if new_pb:
+            del pb
+            self.ImageBox.imageD.set_from_pixbuf(new_pb)
+        gc.collect()
 
     def setup_defaults (self):
         self.mult = 1
@@ -225,6 +258,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.glade.get_widget(
             'recipeDetailsWindow'
             ).connect('size-allocate',self.flow_my_text_on_allocate)
+        self.glade.get_widget('recipeDetailsWindow').set_redraw_on_allocate(True)
         self.servingsDisplaySpin = self.glade.get_widget('servingsDisplaySpin')
         self.servingsDisplaySpin.connect('changed',self.servingsChangeCB)
         self.servingsMultiplyByLabel = self.glade.get_widget('multiplyByLabel')
@@ -1252,6 +1286,7 @@ class ImageBox:
         debug("set_from_string (self, string):",5)
         pb=ie.get_pixbuf_from_jpg(string)
         self.imageW.set_from_pixbuf(pb)
+        self.orig_pixbuf = pb
         self.imageD.set_from_pixbuf(pb)
         self.show_image()
 
@@ -1285,6 +1320,7 @@ class ImageBox:
     def remove_image (self):
         self.rc.current_rec.image=''
         self.image=None
+        self.orig_pixbuf = None
         self.draw_image()
         self.edited=True
 
