@@ -9,6 +9,7 @@ import gourmet.nutrition.parser_data
 import StringIO
 from gourmet import ImageExtras
 import unittest
+import gourmet.version
 
 # This is our base class for rdatabase.  All functions needed by
 # Gourmet to access the database should be defined here and
@@ -211,6 +212,7 @@ class RecData:
         self.nwview = self.setup_table(*self.NUTRITION_WEIGHT_TABLE_DESC)
         self.naliasesview = self._setup_table(*self.NUTRITION_ALIASES_TABLE_DESC)
         self.nconversions = self._setup_table(*self.NUTRITION_CONVERSIONS)
+        self.update_version_info(gourmet.version.version)
 
     def update_version_info (self, version_string):
         """Report our version to the database.
@@ -218,7 +220,7 @@ class RecData:
         If necessary, we'll do some version-dependent updates to the GUI
         """
         stored_info = self.fetch_one(self.infoview)
-        if not stored_info:
+        if not stored_info or not stored_info.version_major:
             # Default info -- the last version before we added the
             # version tracker...
             self.do_add(self.infoview,
@@ -226,18 +228,23 @@ class RecData:
                          'version_major':11,
                          'version_minor':0})
             stored_info = self.fetch_one(self.infoview)            
-        current_super,current_major,current_super = [int(s) for s in version_string.split('.')]
+        version = [s for s in version_string.split('.')]
+        current_super = int(version[0])
+        current_major = int(version[1])
+        current_minor = int(version[2])
         ### Code for updates between versions...
+
         
         # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up ikview tables...
         # We don't actually do this yet... (FIXME)
-        if False and current_super == 0 and current_major <= 11 and current_minor <= 3:
+        if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
+            print 'Fixing broken ingredient-key view from earlier versions.'
             # Drop ikview table, which wasn't being properly kept up
             # to date...
-            self.delete_by_criteria(self.ikview) 
+            self.delete_by_criteria(self.ikview,{}) 
             # And update it in accord with current ingredients (less
             # than an ideal decision, alas)
-            for ingredient in self.fetch_all(self.iview):
+            for ingredient in self.fetch_all(self.iview,deleted=False):
                 self.add_ing_to_keydic(ingredient.item,ingredient.ingkey)
 
         ### End of code for updates between versions...
@@ -249,6 +256,7 @@ class RecData:
             ):
             self.do_modify(
                 self.infoview,
+                stored_info,
                 {'version_super':current_super,
                  'version_major':current_major,
                  'version_minor':current_minor,}
