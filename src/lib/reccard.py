@@ -2326,7 +2326,9 @@ class IngredientTreeUI:
         Message (message for our user) or None (no message for our user)"""
         key=ingdict['ingkey']
         old_unit=ingdict['unit']
-        old_amt=ingdict['amount']       
+        old_amt=ingdict['amount']
+        if type(old_amt)==str:
+            old_amt = convert.frac_to_float(old_amt)
         density=None
         conversion = self.rg.conv.converter(old_unit,new_unit,key)
         if conversion and conversion != 1:
