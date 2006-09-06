@@ -161,7 +161,8 @@ class MessageDialog (gtk.MessageDialog, ModalDialog):
         #curtext = self.label.get_text()
         #curtext += "\n%s"%sublabel
         #self.label.set_text(xml.sax.saxutils.escape(curtext))
-        self.format_secondary_text(sublabel)
+        self.format_secondary_markup(sublabel)
+        
                   
 class NumberDialog (ModalDialog):
 
