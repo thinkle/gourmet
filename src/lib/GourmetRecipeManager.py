@@ -555,6 +555,8 @@ class RecGui (RecIndex):
             make_visible=lambda *args: self.redo_search()
             )
         self.set_reccount()
+        if hasattr(self,'recTrash'):
+            self.recTrash.update_from_db()
         self.message(_("Deleted") + ' ' + string.join([(r.title or _('Untitled')) for r in recs],', '))
 
     def recTreePurge (self, recs, paths=None, model=None):
@@ -562,6 +564,9 @@ class RecGui (RecIndex):
             de.show_message(label=_('An import, export or deletion is running'),
                             sublabel=_('Please wait until it is finished to delete recipes.')
                             )
+            return
+        if not recs:
+            # Do nothing if there are no recipes to delete.
             return
         if not paths: paths=[]
         expander=None
@@ -662,12 +667,12 @@ class RecGui (RecIndex):
             self.recTrash = RecTrash(self.rd,self.rg)
         else:
             self.recTrash.show()
+            
 
     def empty_trash (self, *args):
-        recs = self.rd.rview.select(deleted=True)
-        self.rg.recTreePurge(recs)
-        if hasattr(self,'recTrash'):
-            self.recTrash.rmodel.update_tree()
+        self.recTreePurge(
+            self.rd.fetch_all(self.rd.rview,deleted=True)
+            )
 
     def print_recs (self, *args):
         debug('printing recipes',3)
@@ -1255,13 +1260,20 @@ class RecTrash (RecIndex):
         return True
     
     def show (self, *args, **kwargs):
-        self.rmodel.update_tree()
         self.window.show(*args,**kwargs)
 
     def setup_search_views (self):
         self.last_search = ["",""]
         self.rvw = self.rd.fetch_all(self.rd.rview,deleted=True)
         self.searches = self.default_searches
+        self.sort_by = []
+
+    def update_from_db (self):
+        print 'UDPATE TRASH FROM DB!'
+        self.update_rmodel(self.rg.rd.fetch_all(
+            self.rg.rd.rview,deleted=True
+            )
+                                  )
 
     def recTreeUndeleteSelectedRecs (self, *args):
         mod,rr = self.rectree.get_selection().get_selected_rows()
@@ -1271,7 +1283,7 @@ class RecTrash (RecIndex):
             msg += r.title + ', '
             self.rg.rd.modify_rec(r,{'deleted':False})
         if msg: msg = msg[0:-2] # cut off the last comma
-        self.rmodel.update_tree()
+        self.update_from_db()
         self.rg.redo_search()
         self.rg.message(_('Undeleted recipes ') + msg)
 
@@ -1287,6 +1299,7 @@ class RecTrash (RecIndex):
         mod,rr=sel.get_selected_rows()
         recs = map(lambda path: mod[path][0],rr)
         self.rg.recTreePurge(recs,rr,mod)
+        self.update_from_db()
 
 def set_accel_paths (glade, widgets, base='<main>'):
     """A convenience function. Hand us a function and set accel

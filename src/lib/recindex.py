@@ -538,7 +538,7 @@ class RecIndex:
         except:
             debug('something bizaare just happened in visibility_fun',0)
             return False
- 
+
     def update_rmodel (self, rview):
         self.rmodel.change_view(rview)
         self.set_reccount()
