@@ -779,7 +779,7 @@ class shopIngredientEditor (reccard.IngredientEditor):
         #self.ieBox.hide()
         self.amountBox = self.glade.get_widget('sdAmount')
         self.unitBox = self.glade.get_widget('sdUnit')
-        self.keyBox = self.glade.get_widget('sdKey')
+        self.keyBox = self.ingBox = self.glade.get_widget('sdKey')
         self.shopBox = self.glade.get_widget('sdShopCat')
         # add some of our own signals...
         self.glade.signal_connect('sdAdd',self.add)
@@ -821,6 +821,10 @@ class shopIngredientEditor (reccard.IngredientEditor):
             self.sg.extras.append(itm)
             self.sg.resetSL()
             self.new()
+
+    def returned (self, *args):
+        self.add()
+        self.amountBox.grab_focus()
         
     def toggleShopDialog (self, *args):
         if self.sdToggle: self.showShopDialog()

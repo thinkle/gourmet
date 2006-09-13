@@ -2566,7 +2566,7 @@ class IngredientEditor:
             if len (self.shopBox.get_model()) > 10:
                 self.shopBox.set_wrap_width(3)
         self.new()
-        
+
     def setup_glade (self):
         self.glade=self.rc.glade
         #self.glade.signal_connect('ieKeySet', self.keySet)
@@ -2623,7 +2623,7 @@ class IngredientEditor:
             pass
         else:
             debug("keySet (self, *args):",0)
-            if self.ingBox.get_text():
+            if hasattr(self,'ingBox') and self.ingBox.get_text():
                 debug("keySet: ingredient box had data:",3)
                 if not re.match("^\s*$",self.keyBox.entry.get_text()):
                     debug('user set key',0)
@@ -2637,15 +2637,20 @@ class IngredientEditor:
                 debug("keySet:  ingredient box was empty:",3)
                 thisKey=self.keyBox.entry.get_text()
                 ing = self.rg.rd.fetch_one(self.rg.rd.ikview, ingkey=thisKey)
-                if ing:
-                    self.ingBox.set_text( ing.item )
-                else:
-                    self.ingBox.set_text('')
+                if hasattr(self,'ingBox'):
+                    if ing:
+                        self.ingBox.set_text( ing.item )
+                    else:
+                        self.ingBox.set_text('')
 
     def shopSet (self, eventObject):
         # Handler for a change to the shop category combo box
 
-        if self.ingBox.get_text():
+        if (
+            (hasattr(self,'ingBox') and self.ingBox.get_text())
+            or
+            self.keyBox.entry.get_text()
+            ):
             # User has already filled in the ingredient box, so assume they are
             # setting this manually, or it's being filled in a result of that entry
             if not re.match("^\s*$",self.shopBox.entry.get_text()):
