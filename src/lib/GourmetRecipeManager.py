@@ -829,7 +829,7 @@ class RecGui (RecIndex):
                 else:
                     extra_prefs = {}
                 pd_args={'label':myexp['label'],'sublabel':myexp['sublabel']%{'file':file}}
-                if export_all: recs = self.rd.fetch_all(self.rd.rview,deleted=False)
+                if export_all: recs = self.rd.fetch_all(self.rd.rview,deleted=False,sort_by=[('title',1)])
                 else: recs = self.recTreeSelectedRecs()
                 expClass = myexp['mult_exporter']({'rd':self.rd,
                                                    'rv': recs,
