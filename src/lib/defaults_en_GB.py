@@ -496,9 +496,9 @@ INGREDIENT_DATA = [["alfalfa sprouts","alfalfa sprouts","produce"],
                    ]
 
 CONVERTER_TABLE = {
-    ("c.", "tbs."):16,
+    ("c.", "Tbs."):16,
     ("lb.", "oz."):16,
-    ("tbs.", "tsp."):3,
+    ("Tbs.", "tsp."):3,
     ("pt.", "c."):2,
     ("qt.", "c."):4,
     ("gallon", "qt."):4,
@@ -555,7 +555,7 @@ UNITS = [["bucket" , ["bucket", "buckets", "bckt."]],
          ["dram", ["dram", "drams"]],
          ["drop",["drop"]],
          ["tsp.", ["teaspoon","tsp", "tsp.","tea spoon", "tsps.", "teaspoons", "tea spoons", "Teaspoon", "t"]],
-         ["tbs.", ["tablespoon","tbs", "tbsp", "tbs.", "tbsp.", "table spoon", "tbsps.", "tablespoons", "Tablespoon", "T"]],
+         ["Tbs.", ["tablespoon","tbs", "tbsp", "tbs.", "tbsp.", "table spoon", "tbsps.", "tablespoons", "Tablespoon", "T"]],
          ["lb.", [ "pound", "lb","lb.", "lbs.", "pounds"]],
          ["oz.", [ "ounce", "oz","ounces", "oz."]],
          ["c.", ["cup", "c.", "cups"]],
@@ -601,7 +601,7 @@ UNIT_GROUPS = {
                        ],
     'imperial volume':[('drop',(0,10)),
                        ('tsp.',(0.125,3)),
-                       ('tbs.',(1,4)),
+                       ('Tbs.',(1,4)),
                        ('c.',(0.25,4)),
                        ('pt.',(1,1)),
                        ('qt.',(1,3)),
@@ -621,14 +621,14 @@ CROSS_UNIT_TABLE = {
     ## up in the dictionary referenced here (i.e. the density_table)
     ## currently, 'density' is the only keyword used
     ("pt.", "lb."):['density',1],
-    ("tbs.", "oz."):['density',0.5],
+    ("Tbs.", "oz."):['density',0.5],
     ("c.", "oz."):['density',8],
     ("pt.", "oz."):['density',16],
     ("ml.", "g."):['density',1]}
 
 VOL_TO_MASS_TABLE = {
     ("pt.", "lb.") : 1,
-    ("tbs.", "oz.") : 0.5,
+    ("Tbs.", "oz.") : 0.5,
     ("c.", "oz.") : 8,
     ("pt.", "oz.") : 16,
     ("ml.", "g.") : 1,
