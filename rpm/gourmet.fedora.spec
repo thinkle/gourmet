@@ -20,6 +20,7 @@ Requires:	libglade
 Requires:	metakit
 Requires:	pygtk2 > 2.3.9
 Requires:	python-imaging
+Requires:	python-sqlite2
 # The following are really optional
 #Requires:	PyRTF
 Requires:	gnome-python2
