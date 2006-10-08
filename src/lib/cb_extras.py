@@ -105,6 +105,17 @@ def setup_completion (cbe, col=0):
 
 def make_completion (entry, model, col=0):
     """Setup completion for an entry based on model."""
+    if not isinstance(entry,gtk.Entry):
+        import traceback
+        if isinstance(entry.child,gtk.Entry):
+            print 'WARNING: make_completion() called with ',entry,'and model',model
+            entry = entry.child
+            traceback.print_stack(limit=3)
+            print 'Using its child, ',entry,'instead.'
+        else:
+            print 'WARNING: ',entry,'is not a GTK Entry'
+            traceback.print_stack(limit=3)            
+            return
     completion = gtk.EntryCompletion()
     completion.set_model(model)
     completion.set_text_column(col)
