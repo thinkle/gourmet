@@ -61,6 +61,9 @@ class RecData:
                    ('image',"binary",[]),
                    ('thumb','binary',[]),
                    ('deleted','bool',[]),
+                   ('recipe_hash','VARCHAR(32)',[]),
+                   ('ingredient_hash','VARCHAR(32)',[]),
+                   ('link','text',[]),
                    ],
                          'id' # key
                          ) 
@@ -233,7 +236,7 @@ class RecData:
         current_major = int(version[1])
         current_minor = int(version[2])
         ### Code for updates between versions...
-
+        if current_major < 12
         
         # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up ikview tables...
         # We don't actually do this yet... (FIXME)
