@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+ #!/usr/bin/env python
 import gtk.glade, gtk, gobject, pango, sys, os.path, time, os, string
 import recipeManager, convert, WidgetSaver, reccard
 import dialog_extras as de
@@ -768,6 +768,7 @@ class shopIngredientEditor (reccard.IngredientEditor):
         self.sg = ShopGui
         self.last_key = ""
         reccard.IngredientEditor.__init__(self, RecGui, None)
+        #self.ingBox = self.keyBox
 
     def init_dics (self):
         self.orgdic = self.sg.sh.orgdic
@@ -779,7 +780,7 @@ class shopIngredientEditor (reccard.IngredientEditor):
         #self.ieBox.hide()
         self.amountBox = self.glade.get_widget('sdAmount')
         self.unitBox = self.glade.get_widget('sdUnit')
-        self.keyBox = self.ingBox = self.glade.get_widget('sdKey')
+        self.keyBox = self.glade.get_widget('sdKey')
         self.shopBox = self.glade.get_widget('sdShopCat')
         # add some of our own signals...
         self.glade.signal_connect('sdAdd',self.add)
