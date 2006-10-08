@@ -2547,7 +2547,6 @@ class IngredientEditor:
         # http://bugzilla.gnome.org/show_bug.cgi?id=312528
         self.unitBox.entry = self.unitBox.get_children()[0]
         #cb.setup_completion(self.unitBox) # add autocompletion
-
         self.setup_keybox(self.rg.inginfo.key_model)
         self.rg.inginfo.disconnect_calls.append(lambda *args: self.keyBox.set_model(empty_model))
         self.rg.inginfo.key_connect_calls.append(self.setup_keybox)
@@ -2568,14 +2567,13 @@ class IngredientEditor:
         self.new()
 
     def setup_glade (self):
-        self.glade=self.rc.glade
+        self.glade = self.rc.glade
         #self.glade.signal_connect('ieKeySet', self.keySet)
         #self.glade.signal_connect('ieShopSet', self.shopSet)
         #self.glade.signal_connect('ieApply', self.apply)
         self.ieBox = self.glade.get_widget('ieBox')
         self.ieExpander = self.glade.get_widget('ieExpander')
         self.ieAdd = self.glade.get_widget('ieAdd')
-
         #self.ieBox.hide()
         self.amountBox = self.glade.get_widget('ieAmount')
         self.unitBox = self.glade.get_widget('ieUnit')
