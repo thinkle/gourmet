@@ -120,6 +120,7 @@ class renderer:
         x,y=para.get_size()
         x = x/pango.SCALE
         y = y/pango.SCALE
+        if space: y += 1
         #print 'paragraph of size ',x,y
         botpos = self.pos[1] - y
         #print 'moves bottom to ',botpos, ' bottom at %s'%self.bottom
@@ -325,7 +326,11 @@ class RecWriter (exporter.exporter_mult):
         debug('write_text ',3)
         self.print_writer.write_heading(label, space_after=0, space_before=0.5)
         pars = re.split("\n+", text)
-        for p in pars: self.print_writer.write_paragraph(p, space=True)
+        for n,p in enumerate(pars):
+            if n==0:
+                self.print_writer.write_paragraph(p)
+            else:
+                self.print_writer.write_paragraph(p,first_indent=25)
         
     def write_inghead (self):
         debug('write_inghead ',3)
@@ -390,8 +395,8 @@ if __name__ == '__main__':
                 if h > 5: align='right'
                 else: align='left'
             else: align='center'
-            img = gtk.gdk.pixbuf_new_from_file("/tmp/gourmet_temporary_img.jpg")
-            o.write_pixbuf(img, align=align)
+            #img = gtk.gdk.pixbuf_new_from_file("/tmp/gourmet_temporary_img.jpg")
+            #o.write_pixbuf(img, align=align)
             for n in range(15):
                 o.write_paragraph('This is job number %s. The is paragraph number %s.  '%(do_this,n) * 10, first_indent=25)
         o.close()
