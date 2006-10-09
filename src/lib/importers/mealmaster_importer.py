@@ -75,6 +75,8 @@ class mmf_importer (plaintext_importer.TextImporter):
     files from various internet sources should expect to tweak files
     by hand with some frequency.
     """
+
+    committed = False
     
     def __init__ (self,rd,filename='Data/mealmaster.mmf',
                   progress=None, source=None,threaded=True,
