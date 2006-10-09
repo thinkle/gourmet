@@ -1,4 +1,4 @@
-gourmet (0.12.0.pre2-1) breezy; urgency=low
+gourmet (0.12.0-1) breezy; urgency=low
 
   * Fix buggy trash behavior.
   * Begin storing version # in database to allow database upgrades and fixes.
@@ -8,6 +8,17 @@ gourmet (0.12.0.pre2-1) breezy; urgency=low
 
  -- Thomas M. Hinkle <thomas_hinkle@sf.net>  Sun,  3 Sep 2006 11:02:39 -0400
 
+=======
+gourmet (0.12.1-1) breezy; urgency=low
+
+  * Fix buggy trash behavior.
+  * Store version in database for ease of upgrades.
+  * Implement fix for broken databases from pre-0.11.4 installs
+  * Fix-up paragraphing in printing.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@sf.net>  Sun,  8 Oct 2006 19:53:47 -0400
+
+>>>>>>> 1.24.2.2
 gourmet (0.12.0.pre1-1) breezy; urgency=low
 
   * Fix sort order

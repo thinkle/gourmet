@@ -97,5 +97,8 @@ def gtk_threads_init ():
     # FauxThreads anyway)
     import sys
     if sys.platform != 'win32':
-        gtk.threads_init()
+        if hasattr(gtk.gdk,'threads_init'):
+            gtk.gdk.threads_init()
+        else:
+            gtk.threads_init()
 

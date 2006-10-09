@@ -36,15 +36,15 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     HIDEABLE_WIDGETS = [
         ('handlebox','Toolbar'),
-        ('imageFrame','Image'),
-        ('ieHandlebox','Ingredient Editor'),
-        (['servingsLabel','servingsBox','rcMultCheck'],'Servings'),
+        #('imageFrame','Image'),
+        #('ieHandlebox','Ingredient Editor'),
+        #(['servingsLabel','servingsBox','rcMultCheck'],'Servings'),
         (['cuisineLabel','cuisineBox'],'Cuisine'),
-        (['categoryLabel','categoryBox'],'Category'),
+        #(['categoryLabel','categoryBox'],'Category'),
         (['preptimeLabel','preptimeBox'],'Preparation Time'),
         (['cooktimeLabel','cooktimeBox'],'Cooking Time'),
-        (['ratingLabel','ratingBox'],'Rating'),
-        (['sourceLabel','sourceBox'],'Source'),
+        #(['ratingLabel','ratingBox'],'Rating'),
+        #(['sourceLabel','sourceBox'],'Source'),
         #(['instrExp'],'Instructions'),
         #(['modExp'],'Modifications'),
         ]
