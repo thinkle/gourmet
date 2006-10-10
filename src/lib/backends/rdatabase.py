@@ -10,6 +10,7 @@ import StringIO
 from gourmet import ImageExtras
 import unittest
 import gourmet.version
+import gourmet.recipeIdentifier as recipeIdentifier
 
 # This is our base class for rdatabase.  All functions needed by
 # Gourmet to access the database should be defined here and
@@ -61,9 +62,15 @@ class RecData:
                    ('image',"binary",[]),
                    ('thumb','binary',[]),
                    ('deleted','bool',[]),
-                   #('recipe_hash','VARCHAR(32)',[]),
-                   #('ingredient_hash','VARCHAR(32)',[]),
-                   #('link','text',[]),
+                   # Note that the next three defs are repeated
+                   # stupidly below where old tables are altered
+                   # ("search for add_column_to_table(" and you'll
+                   # find the section I mean)
+                   ('recipe_hash','VARCHAR(32)',[]), # A hash for uniquely identifying a recipe (based on title etc)
+                   ('ingredient_hash','VARCHAR(32)',[]), # A hash for uniquely identifying a recipe (based on ingredients)
+                   ('link','text',[]), # A field for a URL -- we ought to know about URLs
+                   ('last_modified','int',[]),
+                   # End stupidly repeated section
                    ],
                          'id' # key
                          ) 
@@ -236,8 +243,8 @@ class RecData:
         current_major = int(version[1])
         current_minor = int(version[2])
         ### Code for updates between versions...
-        #if current_major < 12
-        #
+
+
         # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up ikview tables...
         # We don't actually do this yet... (FIXME)
         if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
@@ -250,6 +257,56 @@ class RecData:
             for ingredient in self.fetch_all(self.iview,deleted=False):
                 self.add_ing_to_keydic(ingredient.item,ingredient.ingkey)
 
+        # Add recipe_hash, ingredient_hash and link fields
+        # (These all get added in 0.13.0)
+        if stored_info.version_super == 0 and stored_info.version_major <= 12:
+            print 'UPDATE FROM < 0.13.0...'
+            # Don't change the table defs here without changing them
+            # above as well (for new users) - sorry for the stupid
+            # repetition of code.
+            self.add_column_to_table(self.rview,('last_modified','int',[]))
+            self.add_column_to_table(self.rview,('recipe_hash','VARCHAR(32)',[]))
+            self.add_column_to_table(self.rview,('ingredient_hash','VARCHAR(32)',[]))
+            # Add hash values to identify all recipes...
+            for r in self.fetch_all(self.rview): self.update_hashes(r)
+            # Add a link field...
+            self.add_column_to_table(self.rview,('link','text',[]))
+            print 'Searching for links in old recipe fields...'
+            URL_SOURCES = ['instructions','source','modifications']
+            recs = self.search_recipes(
+                [
+                {'column':col,
+                 'operator':'LIKE',
+                 'search':'%://%',
+                 'logic':'OR'
+                 }
+                for col in URL_SOURCES
+                ])
+            for r in recs:
+                rec_url = ''
+                for src in URL_SOURCES:
+                    blob = getattr(r,src)
+                    url = None
+                    if blob:
+                        m = re.search('\w+://[^ ]*',blob)
+                        if m:
+                            rec_url = blob[m.start():m.end()]
+                            if rec_url[-1] in ['.',')',',',';',':']:
+                                # Strip off trailing punctuation on
+                                # the assumption this is part of a
+                                # sentence -- this will break some
+                                # URLs, but hopefully rarely enough it
+                                # won't harm (m)any users.
+                                rec_url = rec_url[:-1]
+                            break
+                if rec_url:
+                    self.do_modify_rec(
+                        r,
+                        {'link':rec_url}
+                        )
+                    
+
+                        
         ### End of code for updates between versions...
         if (current_super!=stored_info.version_super
             or
@@ -398,6 +455,12 @@ class RecData:
     def update_by_criteria (self, table, update_criteria, new_values_dic):
         raise NotImplementedError
 
+    def add_column_to_table (self, table, column_spec):
+        """table is a table, column_spec is a tuple defining the
+        column, following the format for new tables.
+        """
+        raise NotImplementedError
+
     # Metakit has no AUTOINCREMENT, so it has to do special magic here
     def increment_field (self, table, field):
         """Increment field in table, or return None if the DB will do
@@ -486,7 +549,27 @@ class RecData:
                     )
         return self.modify_ing(ing,ingdict)
         
+    def update_hashes (self, rec):
+        rhash,ihash = recipeIdentifier.hash_recipe(rec,self)
+        self.do_modify_rec(rec,{'recipe_hash':rhash,'ingredient_hash':ihash})
 
+    def find_duplicates (self, rec, match_ingredient=True, match_recipe=True):
+        """Return recipes that appear to be duplicates"""
+        if match_ingredient and match_recipe:
+            perfect_matches = self.fetch_all(ingredient_hash=rec.ingredient_hash,recipe_hash=rec.recipe_hash)
+        elif match_ingredient:
+            perfect_matches = self.fetch_all(ingredient_hash=rec.ingredient_hash)
+        else:
+            perfect_matches = self.fetch_all(recipe_hash=rec.recipe_hash)
+        matches = []
+        if len(perfect_matches) == 1:
+            return []
+        else:
+            for r in perfect_matches:
+                if r.id != rec.id:
+                    matches.append(r)
+            return matches
+        
     def modify_ing (self, ing, ingdict):
         self.validate_ingdic(ingdict)
         return self.do_modify_ing(ing,ingdict)

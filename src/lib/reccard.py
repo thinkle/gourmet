@@ -526,13 +526,15 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.ImageBox.edited=False
         debug("modify_rec, newdict=%s"%newdict,1)
         self.current_rec = self.rg.rd.modify_rec(self.current_rec,newdict)
-        # save DB for metakit
-        self.rg.rd.save()
         ## if our title has changed, we need to update menus
         self.updateRecDisplay()
         self.rg.rmodel.update_recipe(self.current_rec)
         self.ingtree_ui.ingController.commit_ingredients()
         self.resetIngredients()
+        # Update hashes for tracking unique recipes...
+        self.rg.rd.update_hashes(self.current_rec)
+        # save DB for metakit
+        self.rg.rd.save()
         if newdict.has_key('title'):
             self.edit_window.set_title("%s %s"%(self.edit_title,self.current_rec.title.strip()))
             self.display_window.set_title("%s %s"%(self.default_title,self.current_rec.title.strip()))

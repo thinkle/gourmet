@@ -14,6 +14,12 @@ class RecData (rdatabase.RecData):
     def __init__ (self, *args): raise NotImplementedError
 
     # SQL Convenience stuff
+
+    def adjust_type (self, typ):
+        if typ=='int': return 'INTEGER'
+        elif typ=='binary': return 'BLOB'
+        else: return typ
+    
     def create (self, name, table, key=None, flags=[]):
         """Use this method to create a table in this database object. Expected
         arguments are a table name and a list [(name, type, [flags])] } with the column names
@@ -23,26 +29,39 @@ class RecData (rdatabase.RecData):
         #    raise TypeError, 'expected dictionary type argument'
         add_string = "CREATE TABLE %s ("%name
         sql_params = []
-        for rowname,typ,flags in table:
-            if typ=='int': typ='INTEGER'
-            elif typ=='binary': typ='BLOB'
-            #if type(typ) != type(""):
-            #    typ = self.pytype_to_sqltype(typ)
-            #typ = self.hone_type(typ)
-            add_string +=  "%s %s"%(rowname,typ)
-            if 'AUTOINCREMENT' in flags and rowname != key:
+        for colname,typ,flags in table:
+            self.adjust_type(typ)
+            add_string +=  "%s %s"%(colname,typ)
+            if 'AUTOINCREMENT' in flags and colname != key:
                 if key:
-                    key = rowname
-            if rowname==key:
+                    key = colname
+            if colname==key:
                 add_string += " PRIMARY KEY"
                 if 'AUTOINCREMENT' in flags:
-                    add_string += " AUTOINCREMENT"#; print 'AUTOINCREMENT',rowname,typ,flags
+                    add_string += " AUTOINCREMENT"#; print 'AUTOINCREMENT',colname,typ,flags
             add_string += ","
         add_string = add_string[0:-1] + ")"
         self.execute(self.cursor,add_string,sql_params)
         if key:
             self.execute(self.cursor,'CREATE INDEX %s%sIndex'%(name,key) +' ON %s (%s)'%(name,key))
         self.changed=True
+
+    def add_column_to_table (self, table, col_def):
+        colname,typ,flags = col_def
+        typ = self.adjust_type(typ)
+        if flags: print 'WARNING: add_column_to_table Ignoring flags %s'%flags
+        try:
+            print 'Alter table'
+            print 'ALTER TABLE %(table)s ADD %(colname)s %(typ)s'%locals()
+            self.execute(
+                self.cursor,
+                'ALTER TABLE %(table)s ADD %(colname)s %(typ)s'%locals()
+                )
+            self.changed = True
+        except:
+            print 'Perhaps the table already existed.'
+            import traceback; traceback.print_exc()
+            print 'Fearlessly charging onward...'
 
     def make_where_statement (self, criteria, logic="AND"):
         sel_string = ""
@@ -125,10 +144,11 @@ class RecData (rdatabase.RecData):
         
     def fetch_one (self, table, **criteria):
         where,params = self.make_where_statement(criteria)
-        self.execute(self.cursor,'SELECT '+', '.join(self.columns[table])+' FROM %s '%table + where,params)
+        column_names = self.columns[table]+['rowid']
+        self.execute(self.cursor,'SELECT '+', '.join(column_names)+' FROM %s '%table + where,params)
         result = self.cursor.fetchone()
         if not result: return None
-        else: return RowObject(self.columns[table],result)
+        else: return RowObject(column_names,result)
 
     def fetch_count (self, table, column, sort_by=None,**criteria):
         where,params = self.make_where_statement(criteria)

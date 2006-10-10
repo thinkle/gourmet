@@ -196,6 +196,8 @@ class importer:
                     del self.rec['image']
                     del self.rec['thumb']                    
         r = self.rd.add_rec(self.rec)
+        # Update hash-keys...
+        self.rd.update_hashes(r)
         tt.end()
         self.added_recs.append(r)
         if remembered_rating: self.rating_converter.add(r.id,remembered_rating)
