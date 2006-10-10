@@ -41,7 +41,11 @@ class RecData (sql_db.RecData):
         self.cursor = self.connection.cursor()
         # Create regexp function, based on example at
         # http://lists.initd.org/pipermail/pysqlite/2005-November/000253.html
-        def regexp(expr, item): return re.search(expr,item,re.IGNORECASE) is not None
+        def regexp(expr, item):
+            if item:
+                return re.search(expr,item,re.IGNORECASE) is not None
+            else:
+                return False
         def instr(s,subs): return s.lower().find(subs.lower())+1
         self.connection.create_function('regexp',2,regexp)
         self.connection.create_function('instr',2,instr)        

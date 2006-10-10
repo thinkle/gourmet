@@ -1,4 +1,16 @@
-==== Version 0.12.0-pre2 changes since 0.12.0-pre1 ====
+==== Version 0.13.0 changes since 0.12.2 ====
+* Addition of hash fields to help with identification of duplicate
+  recipes.
+* Addition of last_modified field to recipe database.
+* Addition of link field to database - now recipes imported from the
+  web will automatically have a link pointing back to the original page.
+
+==== Version 0.12.2 changes since 0.12.1 ====
+* Fix Mealmaster importing bug
+* Fix bug (?) which could cause ingredient search to fail in strange
+  cases (where a DB had ingredients with key=None)
+
+==== Version 0.12.1 changes since 0.12.0-pre1 ====
 
 * Fix buggy trash behavior.
 * Store version in database for ease of upgrades.

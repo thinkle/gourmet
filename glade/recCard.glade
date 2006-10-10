@@ -1110,7 +1110,7 @@
 				  </child>
 
 				  <child>
-				    <widget class="GtkHBox" id="hbox28">
+				    <widget class="GtkHBox" id="imageBox">
 				      <property name="visible">True</property>
 				      <property name="homogeneous">False</property>
 				      <property name="spacing">0</property>
