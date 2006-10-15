@@ -30,7 +30,7 @@ class RecData (rdatabase.RecData):
         add_string = "CREATE TABLE %s ("%name
         sql_params = []
         for colname,typ,flags in table:
-            self.adjust_type(typ)
+            typ = self.adjust_type(typ)
             add_string +=  "%s %s"%(colname,typ)
             if 'AUTOINCREMENT' in flags and colname != key:
                 if key:
