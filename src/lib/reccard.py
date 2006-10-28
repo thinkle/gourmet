@@ -241,7 +241,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.nutritionLabel.connect('ingredients-changed',
                                     lambda *args: self.resetIngredients()
                                     )
-        self.display_info = ['title','rating','preptime',
+        self.display_info = ['title','rating','preptime','link',
                              'servings','cooktime','source',
                              'cuisine','category','instructions',
                              'modifications','ingredients']
@@ -280,6 +280,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'servings':self.updateServingsDisplay,
             'ingredients':self.updateIngredientsDisplay,
             'title':self.updateTitleDisplay,
+            'link':self.updateLinkDisplay,
             }
         WidgetSaver.WidgetPrefs.__init__(
             self,
@@ -292,6 +293,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         #self.serveW = self.glade.get_widget('servingsBox')
         #self.multCheckB = self.glade.get_widget('rcMultCheck')
         self.multLabel = self.glade.get_widget('multLabel')
+        self.linkDisplayButton = self.glade.get_widget('linkDisplayButton')
+        self.linkDisplayButton.connect('clicked',self.link_cb)
         self.edit_window = self.widget = self.glade.get_widget('recCard')
         self.display_window = self.glade.get_widget('recCardDisplay')
         self.edit_window.set_transient_for(self.display_window)
@@ -823,6 +826,19 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.servingsDisplayLabel.hide()
             self.multiplyDisplayLabel.show()
             self.multiplyDisplaySpin.show()
+
+    def updateLinkDisplay (self):
+        if self.current_rec.link:
+            self.linkDisplayButton.show()
+            self.linkDisplay.set_markup(
+                '<span underline="single" color="blue">%s</span>'%self.current_rec.link
+                )
+            self.link = self.current_rec.link
+        else:
+            self.link = ''
+            self.linkDisplayButton.hide()
+
+    def link_cb (self, *args): launch_url(self.link)
 
     def updateServingMultiplierLabel (self,*args):
         serves = self.servingsDisplaySpin.get_value()

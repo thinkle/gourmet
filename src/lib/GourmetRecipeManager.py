@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string, keyEditor, traceback
+import os.path, time, os, sys, re, threading, StringIO, pango, string
+import Image
+import gtk.glade, gtk, gobject, gtk.gdk, traceback
+import keyEditor
 import recipeManager
 import nutrition.nutrition, nutrition.nutritionGrabberGui
 import exporters.printer as printer
