@@ -344,7 +344,11 @@ class ConvenientImporter (importer.importer):
 
     def add_ing_from_text (self, txt):
         self.set_added_to(True)
-        txt=txt.strip()
+        try:
+            txt=unicode(txt.strip())
+        except UnicodeDecodeError:
+            print 'Weird -- ignoring unicode error with ',txt
+            txt = txt.strip()
         txt = re.sub('\s+',' ',txt)
         if not txt: return        
         mm = convert.ING_MATCHER.match(txt)
@@ -352,6 +356,7 @@ class ConvenientImporter (importer.importer):
             amount = mm.group(convert.ING_MATCHER_AMT_GROUP)
             unit = mm.group(convert.ING_MATCHER_UNIT_GROUP)
             item = mm.group(convert.ING_MATCHER_ITEM_GROUP)
+            print 'Parsed ingredient: "%s"'%txt,"into:",amount,unit,item
             # If our unit isn't familiar and is longer than 2
             # characters, don't add it as a unit! (this lets most
             # abbreviations through)
@@ -488,6 +493,7 @@ class InteractiveImporter (SimpleGladeApp, ConvenientImporter):
     
     def set_text (self, txt):
         """Set raw text."""
+        txt = unicode(txt)
         if txt.strip()=='':
             raise ValueError("There is no text to set")
         self.textbuffer = gtk.TextBuffer()
@@ -770,10 +776,10 @@ class InteractiveTextImporter (InteractiveImporter):
 
 def main():
     from gourmet import recipeManager
-    rd = recipeManager.RecipeManager(**recipeManager.dbargs)
+    rd = recipeManager.RecipeManager(file='/tmp/foo.db')
     window1 = InteractiveImporter(rd)
     window1.set_text(
-        """
+        u"""
 Quick Pesto Dinner
 
 Category: Quick, Easy, Summer
@@ -781,13 +787,8 @@ Yield: 2 Servings
 
 Ingredients:
 1-2 c. fresh basil
-1/4-1/2 c. olive oil
-1/4-1/2 c. pine nuts or walnuts
-1/4 c. parmesan cheese
-A handful of cheese
-Some sausages
-3-6 cloves garlic
-1/2 lb. whole-wheat spaghetti
+\xbc  cup minced fresh ginger (about 6 inches ginger root, peeled)
+\xbc lb. whole-wheat spaghetti
 1-2 fresh tomatoes
 
 To accompany dish:
@@ -804,6 +805,7 @@ Chop up tomatoes roughly.
 Toss spaghetti in pesto and tomatoes.
 """)
     window1.run()        
+    return window1
 
 if __name__ == '__main__':
-    main()
+    ii = main()
