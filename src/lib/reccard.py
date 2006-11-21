@@ -228,6 +228,20 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.ImageBox.imageD.set_from_pixbuf(new_pb)
         gc.collect()
 
+    def on_card_edit_size_allocate_cb (self,sw,allocation):
+        width = allocation.width
+        max_col_width = (width*3)/16
+        for c in self.ingtree_ui.ingTree.get_columns():
+            for rend in c.get_cell_renderers():
+                try:
+                    rend.get_property('wrap-width')
+                except TypeError:
+                    pass
+                else:
+                    rend.set_property('wrap-width',max_col_width)
+        self.ingtree_ui.ingTree.queue_draw()
+        gobject.timeout_add(100,self.ingtree_ui.ingTree.columns_autosize)
+
     def setup_defaults (self):
         self.mult = 1
         #self.serves = float(self.serveW.get_text())
@@ -258,6 +272,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.glade.get_widget(
             'recipeDetailsWindow'
             ).connect('size-allocate',self.flow_my_text_on_allocate)
+        self.glade.get_widget('recCard').connect('size-allocate',self.on_card_edit_size_allocate_cb)
         self.glade.get_widget('recipeDetailsWindow').set_redraw_on_allocate(True)
         self.servingsDisplaySpin = self.glade.get_widget('servingsDisplaySpin')
         self.servingsDisplaySpin.connect('changed',self.servingsChangeCB)
@@ -1923,7 +1938,7 @@ class IngredientTreeUI:
         self.ingTree.show()
         
     # Basic setup methods
-    
+
     def setup_columns (self):
         self.ingColsByName = {}
         self.ingColsByAttr = {}
@@ -1957,6 +1972,13 @@ class IngredientTreeUI:
                     renderer = gtk.CellRendererText()
                 renderer.set_property('editable',True)
                 renderer.connect('edited',self.ingtree_edited_cb,n,head)
+                try:
+                    renderer.get_property('wrap-width')
+                except TypeError:
+                    pass
+                else:
+                    renderer.set_property('wrap-mode',gtk.WRAP_WORD)
+                    renderer.set_property('wrap-width',150)
                 if head==_('Key'):
                     try:
                         renderer.connect('editing-started',
@@ -1975,9 +1997,9 @@ class IngredientTreeUI:
             col.set_reorderable(True)
             col.set_resizable(True)
             col.set_alignment(0)
-            col.set_min_width(55) 
-            if n==2:     #unit
-                col.set_min_width(80) 
+            col.set_min_width(45) 
+            #if n==2:     #unit
+            #    col.set_min_width(80) 
             if n==3:     #item
                 col.set_min_width(130) 
             if n==5:     #key
