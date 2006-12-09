@@ -740,6 +740,22 @@ NUMBER_FINDER = re.compile(NUMBER_FINDER_REGEXP,re.UNICODE)
 RANGE_REGEXP = '([ -]*%s[ -]*|\s*-\s*)'%_('to') # for 'to' used in a range, as in 3-4
 RANGE_MATCHER = re.compile(RANGE_REGEXP[1:-1]) # no parens for this one
 
+
+# We need a special matcher to match known units when they are more
+# than one word. The assumption remains that units should be one word
+# -- but if we already know about two word units, then we should
+# recognize them.
+
+multi_word_units = []
+for canonical_name,other_names in defaults.UNITS:
+    if ' ' in canonical_name: multi_word_units.append(canonical_name)
+    for n in other_names:
+        if ' ' in n: multi_word_units.append(n)
+MULTI_WORD_UNIT_REGEXP = '(' + \
+                       '|'.join([re.escape(u) for u in multi_word_units]) \
+                       + ')'
+
+
 # generic ingredient matcher. This is far from a good matcher -- it's
 # used as a fallback to test for things that obviously look like
 # ingredients (e.g. 1 cup milk) that get misparsed by other ingredient
@@ -756,7 +772,7 @@ ING_MATCHER_REGEXP = """
  %(NUMBER_FINDER_REGEXP2)s)? # and more numbers
  )? # and of course no number is possible
  \s* # Whitespace between number and unit
- (?P<unit>\s*[\w.]+\s+)? # a unit
+ (?P<unit>\s*(%(MULTI_WORD_UNIT_REGEXP)s|[\w.]+))?\s+ # a unit
  (?P<item>.*?)$ # and the rest of our stuff...
  """%locals()
 
