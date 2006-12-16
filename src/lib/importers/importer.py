@@ -346,14 +346,6 @@ def string_to_rating (s):
         bottom = float(convert.frac_to_float(m.groups()[2]))
         return int(top/bottom * 10)
 
-            
-        
-        
-        
-        
-    
-
-
 class MultipleImporter:
     def __init__ (self,grm,imports):
         """GRM is a GourmetRecipeManager instance.
@@ -496,8 +488,6 @@ class RatingConverter:
                    _('poor').lower():2,
                    }
     
-    
-
     def __init__ (self):
         self.to_convert = {}
         self.got_conversions = False

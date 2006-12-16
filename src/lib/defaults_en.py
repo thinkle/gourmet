@@ -645,6 +645,7 @@ UNITS = [["bucket" , ["bucket", "buckets", "bckt."]],
          ["grains", ["grain", "grains"]],
          ["dram", ["dram", "drams"]],
          ["drop",["drop"]],
+         ["fl. oz.",["fl oz","fluid ounce","fluid ounces","fl. oz.","fl oz.","fl. oz"]],
          ['',['each','ea','ea.']],
          ["tsp.", ["teaspoon","tsp", "tsp.","tea spoon", "tsps.", "teaspoons", "tea spoons", "Teaspoon", "Teaspoons","t",'ts',"Ts.","Tsp.","Tsp"]],
          ["Tbs.", ["tablespoon","tbs", "tbsp", "tbs.", "tbsp.", "table spoon", "tbsps.", "tablespoons", "Tablespoon", "T",'tb',"Tbs.", "Tbsp", "Tbsp."]],
@@ -702,7 +703,9 @@ UNIT_GROUPS = {
                        ('gallon',(1,None)),
                        ('peck',(1,2)),
                        ('bucket',(1,2)),
-                       ('bushel',(1,None))]
+                       ('bushel',(1,None)),
+                       ('fl oz',(1,None)),
+                       ]
     }
 
 

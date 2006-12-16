@@ -243,7 +243,8 @@ class RecIndex:
                                 'resizable':True},
                     )
                 cssu.set_sort_column_id(twsm.col,twsm.data_col)
-                n += 1                
+                n += 1
+                twsm.col.set_min_width(110)
                 continue
             # And we also special case our time column
             elif c in ['preptime','cooktime']:
@@ -295,16 +296,24 @@ class RecIndex:
                 renderer.set_property('text-column',0)
             else:
                 renderer = gtk.CellRendererText()
+                # If we have gtk > 2.8, set up text-wrapping
+                try:
+                    renderer.get_property('wrap-width')
+                except TypeError:
+                    pass
+                else:
+                    renderer.set_property('wrap-mode',gtk.WRAP_WORD)
+                    if c == 'title': renderer.set_property('wrap-width',200)
+                    else: renderer.set_property('wrap-width',150)
             renderer.set_property('editable',self.editable)
             renderer.connect('edited',self.rtree_edited_cb,n, c)
             titl = self.rtcolsdic[c]
             col = gtk.TreeViewColumn('_%s'%titl,renderer, text=n)
             # Ensure that the columns aren't really narrow on initialising.
-            col.set_min_width(60)
-            if c=='title':            # Adjust these two to be even bigger
-                 col.set_min_width(200)
-            elif c=='rating':
-                 col.set_min_width(150)
+            #if c=='title':            # Adjust these two to be even bigger
+            #    col.set_min_width(200)
+            #else:
+            #    col.set_min_width(60)
             col.set_reorderable(True)
             col.set_resizable(True)
             col.set_clickable(True)

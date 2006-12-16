@@ -475,14 +475,45 @@ class RecData (rdatabase.RecData):
         else:
             return False
 
-class RowObject:
+    def find_all_duplicates (self):
+        """Find all duplicate recipes (by recipe_hash and ingredient_hash)."""
+        self.cursor.execute('''
+        SELECT ingredient_hash,recipe_hash
+        FROM recipe
+        GROUP BY ingredient_hash,recipe_hash
+        HAVING ( COUNT(ingredient_hash) > 1 AND COUNT(recipe_hash) > 1)
+        ''')
+        all_dups = self.cursor.fetchall()
+        duplicate_sets = []
+        for ing_hash,rec_hash in all_dups:
+            self.cursor.execute('''
+            SELECT id FROM recipe
+            WHERE (ingredient_hash="%(ing_hash)s"
+                   AND
+                   recipe_hash="%(rec_hash)s"
+                   )
+            ORDER BY last_modified
+                   '''%locals())
+            duplicate_sets.append([r[0] for r in self.cursor.fetchall()])
+        return duplicate_sets
+
+class RowObject (object):
+    __setting__ = True
     def __init__ (self, column_names, columns):
+        self.__setting__ = True
         self.__columns__ = columns
         self.__column_names__ = column_names
         if len(self.__columns__)!=len(self.__column_names__):
             raise "Number of columns and number of column names must be the same!"
         for n,cn in enumerate(self.__column_names__):
             setattr(self,cn,self.__columns__[n])
+        self.__setting__ = False
+
+    def __setattr__ (self, *args,**kwargs):
+        if not self.__setting__ and args[0] in self.__column_names__:
+            raise "Column Properties are ReadOnly"
+        else:
+            object.__setattr__(self,*args,**kwargs)
 
 class DelayedRowObject (RowObject):
 

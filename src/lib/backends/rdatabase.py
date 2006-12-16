@@ -256,7 +256,7 @@ class RecData:
             # than an ideal decision, alas)
             for ingredient in self.fetch_all(self.iview,deleted=False):
                 self.add_ing_to_keydic(ingredient.item,ingredient.ingkey)
-
+                
         # Add recipe_hash, ingredient_hash and link fields
         # (These all get added in 0.13.0)
         if stored_info.version_super == 0 and stored_info.version_major <= 12:
@@ -444,13 +444,6 @@ class RecData:
                 if not v in lst: lst.append(v)
         return lst
 
-    # Metakit has no AUTOINCREMENT, so it has to do special magic here
-    def increment_field (self, table, field):
-        """Increment field in table, or return None if the DB will do
-        this automatically.
-        """
-        return None
-
     def delete_by_criteria (self, table, criteria):
         """Table is our table.
         Criteria is a dictionary of critiera to delete by.
@@ -493,7 +486,7 @@ class RecData:
 
         Return modified recipe.
         """
-        self.validate_recdic(dic)
+        self.validate_recdic(dic)        
         debug('validating dictionary',3)
         if dic.has_key('category'):
             newcats = dic['category'].split(', ')
@@ -509,6 +502,8 @@ class RecData:
         return self.do_modify_rec(rec,dic)
     
     def validate_recdic (self, recdic):
+        if not recdic.has_key('last_modified'):
+            recdic['last_modified']=time.time()
         if recdic.has_key('image') and not recdic.has_key('thumb'):
             # if we have an image but no thumbnail, we want to create the thumbnail.
             try:
@@ -574,13 +569,32 @@ class RecData:
                 if r.id != rec.id:
                     matches.append(r)
             return matches
-        
+
+    def find_all_duplicates (self):
+        """Return a list of sets of duplicate recipes."""
+        raise NotImplementedError
+
+    def merge_mergeable_duplicates (self):
+        """Merge all duplicates for which a simple merge is possible.
+        For those recipes which can't be merged, return:
+        [recipe-id-list,to-merge-dic,diff-dic]
+        """
+        dups = self.find_all_duplicates()
+        unmerged = []
+        for recs in dups:
+            rec_objs = [self.fetch_one(self.rview,id=r) for r in recs]
+            merge_dic,diffs = recipeIdentifier.merge_recipes(self,rec_objs)
+            if not diffs:
+                if merge_dic:
+                    self.modify_rec(rec_objs[0],merge_dic)
+                for r in rec_objs[1:]: self.delete_rec(r)
+            else:
+                unmerged.append([recs,merge_dic,diffs])
+        return unmerged
+    
     def modify_ing (self, ing, ingdict):
         self.validate_ingdic(ingdict)
         return self.do_modify_ing(ing,ingdict)
-
-    # Lower level DB access functions -- hopefully subclasses can
-    # stick to implementing these    
 
     def add_rec (self, dic):
         cats = []
@@ -617,6 +631,9 @@ class RecData:
         except:
             print 'Problem adding',dic
             raise
+
+    # Lower level DB access functions -- hopefully subclasses can
+    # stick to implementing these    
 
     def do_add (self, table, dic):
         table.append(dic)

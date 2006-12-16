@@ -482,7 +482,8 @@ class WebPageImporter (importer.importer):
                 raise "Unable to obtain text or images from url %s"%self.url
             import interactive_importer
             ii = interactive_importer.InteractiveImporter(self.rd)
-            ii.set_text(text+'\n\nRetrieved from %s'%self.url)
+            ii.set_text(text)
+            ii.add_attribute('link',self.url)
             ii.set_images(images)
             ii.run()
             if self.prog: self.prog(1,_('Import complete.'))
@@ -492,6 +493,8 @@ class WebPageImporter (importer.importer):
         """Get URL based on template stored in d
         """
         self.start_rec()
+        # Set link
+        self.rec['link']=self.url
         # Add webpage as source
         if self.add_webpage_source:
             # add Domain as source
@@ -502,18 +505,11 @@ class WebPageImporter (importer.importer):
             elif src: src = [src,add_str]
             else: src = domain # no parens if we're the only source
             self.d['source']=src
-            # and add a note to instructions with the full URL
-            instr=self.d.get('instructions',[])
-            add_str=_('Retrieved from %(url)s.')%{'url':self.url}
-            if type(instr)==list: instr.append(add_str)
-            else: instr = [instr,add_str]
-            self.d['instructions']=instr
         for k,v in self.d.items():
             debug('processing %s:%s'%(k,v),1)
             if self.prog: self.prog(-1,_('Importing recipe'))
             # parsed ingredients...
             if k=='ingredient_parsed':
-                print 'HANDLING parsed ingredients'
                 if type(v) != list: v=[v]
                 for ingdic in v:
                     

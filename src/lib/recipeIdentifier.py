@@ -1,7 +1,6 @@
 import convert, xml.sax.saxutils
 import md5, difflib, types
 from gettext import gettext as _
-
 from gglobals import REC_ATTRS,TEXT_ATTR_DIC,INT_REC_ATTRS
 
 IMAGE_ATTRS = ['image','thumb']
@@ -148,42 +147,47 @@ def diff_ings (rec1,rec2,rd):
     if ings1 != ings2:
         return get_two_columns(ings1.splitlines(),ings2.splitlines())
 
-def diff_recipe (rec1,rec2,rd):
+def diff_recipe (rd,recs):
     diffs = {}
     for attr in ALL_ATTRS:
         if attr == 'category':
-            val1 = ', '.join(rd.get_cats(rec1))
-            val2 = ', '.join(rd.get_cats(rec2))
+            vals = [', '.join(rd.get_cats(r)) for r in recs]
         else:
-            val1 = getattr(rec1,attr)
-            val2 = getattr(rec2,attr)
-        if val1 != val2 and (val1 and val2):
+            vals = [getattr(r,attr) for r in recs]
+        if vals != [vals[0]] * len(vals):
             #if TEXT_ATTR_DIC.has_key(attr):
             #    val1,val2 = 
-            diffs[attr]=(val1,val2)
+            diffs[attr]=vals
     return diffs
 
-def merge_recipes (rec1, rec2, rd):
-    diffs = diff_recipe(rec1,rec2,rd)
+def merge_recipes (rd, recs):
+    diffs = diff_recipe(rd,recs)
     my_recipe = {}
     for attr,vals in diffs.items():
         # We don't care about fill-in-the-missing-thingy differences
-        if not vals[0]:
-            my_recipe[attr] = vals[1]
-        elif not vals[1]:
-            my_recipe[attr] = vals[0]
-            # We don't care about capitalization differences...
-        elif (
-            (type(vals[0]) in types.StringTypes)
-            and
-            (vals[0].lower() == vals[1].lower())
-            ):
-            my_recipe[attr] = vals[0]
+        value = None
+        conflict = False
+        for v in vals:
+            if not v:
+                continue
+            elif not value:
+                value = v
+            elif (v != value):
+                if ((type(v) in types.StringTypes
+                     and
+                     type(value) in types.StringTypes)
+                    and v.lower()==value.lower()):
+                    continue
+                else:
+                    conflict = True
+                    break
+        if conflict: continue
+        else:
+            if value: my_recipe[attr]=value
             del diffs[attr]
-    return my_recipe
+    return my_recipe,diffs
 
-
-if __name__ == '__main__':
+if __name__ == '__main__' and False:
     import recipeManager
     rd = recipeManager.default_rec_manager()
     empty_hash = get_ingredient_hash([],None)

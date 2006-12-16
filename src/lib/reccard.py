@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import gc
 import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
-import xml.sax.saxutils
+import xml.sax.saxutils, pango
 import exporters
 import convert, TextBufferMarkup, types
 from recindex import RecIndex
@@ -170,6 +170,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def setup_style (self):
         # Do some funky style modifications...
+        print 'setup style'
         display_toplevel_widget = self.glade.get_widget('displayPanes')
         new_style = display_toplevel_widget.get_style().copy()
         cmap = display_toplevel_widget.get_colormap()
@@ -180,10 +181,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         def set_style (widg, styl):
             if (not isinstance(widg,gtk.Button) and
                 not isinstance(widg,gtk.Entry) and
+                not isinstance(widg,gtk.Notebook) and
                 not isinstance(widg,gtk.Separator)
                 ): widg.set_style(styl)
             if hasattr(widg,'get_children'):
-                for c in widg.get_children(): set_style(c,styl)
+                for c in widg.get_children():
+                    set_style(c,styl)
         set_style(display_toplevel_widget,new_style)
 
     def flow_my_text_on_allocate (self,sw,allocation):
@@ -193,8 +196,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         widg_width = int(xsize * 0.5)
         for widget in self.reflow_on_resize:
             widget.set_size_request(widg_width,-1)
-            t = widget.get_text()
-            widget.set_text(t)
+            t = widget.get_label()
+            widget.set_label(t)
         # Flow our image...
         image_width = int(xsize * 0.75)
         if not hasattr(self.ImageBox,'orig_pixbuf') or not self.ImageBox.orig_pixbuf: return
@@ -262,12 +265,17 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         for attr in self.display_info:
             setattr(self,'%sDisplay'%attr,self.glade.get_widget('%sDisplay'%attr))
             setattr(self,'%sDisplayLabel'%attr,self.glade.get_widget('%sDisplayLabel'%attr))
+        # Set up title to always be bold
+        #al = pango.AttrList()
+        #al.insert(pango.AttrWeight(pango.WEIGHT_BOLD,0,-1))
+        #self.titleDisplay.set_attributes(al)
         # Set up wrapping callbacks...
-        self.reflow_on_resize = [getattr(self,'%sDisplay'%s) for s in ['title',
-                                                                       'cuisine',
-                                                                       'category',
-                                                                       'source'
-                                                                       ]
+        self.reflow_on_resize = [getattr(self,'%sDisplay'%s) for s in [
+            'title',
+            'cuisine',
+            'category',
+            'source'
+            ]
                                  ]
         self.glade.get_widget(
             'recipeDetailsWindow'
@@ -812,10 +820,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def updateTitleDisplay (self):
         titl = self.current_rec.title
-        if not titl: titl="<b>Unitled</b>"
-        titl = "<b>" + xml.sax.saxutils.escape(titl) + "</b>"
-        self.titleDisplay.set_text(titl)
-        self.titleDisplay.set_use_markup(True)
+        if not titl: titl="Unitled"
+        titl = "<b><big>" + xml.sax.saxutils.escape(titl) + "</big></b>"
+        self.titleDisplay.set_label(titl)
 
     def updateServingsDisplay (self, serves=None):
         self.serves_orig=self.current_rec.servings
@@ -1972,6 +1979,7 @@ class IngredientTreeUI:
                     renderer = gtk.CellRendererText()
                 renderer.set_property('editable',True)
                 renderer.connect('edited',self.ingtree_edited_cb,n,head)
+                # If we have gtk > 2.8, set up text-wrapping
                 try:
                     renderer.get_property('wrap-width')
                 except TypeError:
