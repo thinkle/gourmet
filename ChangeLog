@@ -1,0 +1,14 @@
+2006-12-16  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* glade/recCard.glade Move nutrition into a separate tab to reduce clutter/scrolling.
+	* src/lib/LinkedTextView.py Fix links with escaped characters (e.g. &)
+	* src/lib/defaults_en.py Add fluid ounces
+	* src/lib/reccard.py Comment on text-wrapping code. Fix title display.
+	* src/lib/recindex.py Set up text wrapping for index view
+	* src/lib/backends/rdatabase.py Add last-modified timestamp. Add some methods for dealing with dups.
+	* src/lib/backends/sql_db.py Raise an error if we set attributes on read-only RowObject
+	* src/lib/recipeIdentifier.py Updates in still-experimental-and-incomplete recipeIdentifier code
+	* src/lib/importers/html_importer.py Automatically add 'link' attribute to all HTML imports
+
+	
+
