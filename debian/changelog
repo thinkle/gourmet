@@ -1,3 +1,14 @@
+gourmet (0.13.0-1) breezy; urgency=low
+
+  * Update nutrition stuff with by-ingredient nutritional info highlighting.
+  * Slightly updated recipe card interface with nutritional info on a separate tab.
+  * Fix some bugs in showing links as well as other stuff.
+  * Automatically add a link attribute to all HTML imports.
+  * Nicely wrap text in list-views everywhere for tidier displays
+    and no more horizontal-scrollbars.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@sf.net>  Mon,  23 Dec 2006 20:45:47 -0400
+
 gourmet (0.12.2-1) breezy; urgency=low
 
   * Fix Mealmaster importing bug
