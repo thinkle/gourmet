@@ -158,7 +158,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                   pressable=True
                   ):
         self.pressable = pressable
-        self.toggles = []; self.__toggling__ = False
+        self.toggles = {}; self.__toggling__ = False
         self.active_name = None
         self.active_unit = None
         self.active_label = None
@@ -227,21 +227,9 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                 if self.pressable:
                     b = gtk.Button(); b.add(permanentl)
                     b.set_relief(gtk.RELIEF_NONE)
-                    #sty=b.get_style().copy(); cm=b.get_colormap()
-                    #for state,col in [(gtk.STATE_ACTIVE,cm.alloc_color('#ff0077')),
-                    #                  (gtk.STATE_PRELIGHT,cm.alloc_color('#aa0033'))]:
-                    #    sty.fg[state] = col
-                    #    sty.bg[state] = col
-                    #    sty.base[state] = col
-                    #    sty.dark[state] = col
-                    #    sty.light[state] = col
-                    #    sty.mid[state] = col
-                    #    sty.black = col
-                    #
-                    #b.set_style(sty)
                     b.connect('clicked',self.toggle_label,label,name,properties,unit)
                     hb.pack_start(b)
-                    self.toggles.append(b)
+                    self.toggles[name] = b
                 else:
                     hb.pack_start(permanentl)
                 unit_label = gtk.Label()
@@ -263,14 +251,16 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                     'unit_label': unit_label,
                     'unit':unit,
                     'usda_rec_per_cal':(RECOMMENDED_INTAKE.has_key(name) and
-                                        RECOMMENDED_INTAKE[name])
+                                        RECOMMENDED_INTAKE[name]),
+                    'box':hb,
+                    'type':typ,
                     })
 
     def toggle_label (self, button, label, name,properties, unit):
         if self.__toggling__: return
         self.__toggling__ = True
         if name != self.active_name:
-            for b in self.toggles:
+            for b in self.toggles.values():
                 lab = b.get_children()[0]
                 if b != button:
                     orig = lab.get_label()
@@ -286,6 +276,10 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
             self.active_name = None
             self.active_unit = None
             self.active_label = None
+            lab = button.get_children()[0]
+            orig = lab.get_label()
+            if orig.find(self.active_button_markup[0])==0:
+                lab.set_label(orig[len(self.active_button_markup[0]):(- len(self.active_button_markup[1]))])
         self.emit('label-changed')
         self.__toggling__ = False
 
@@ -303,7 +297,6 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         return hb
 
     def set_missing_label_text (self,missing,total):
-        print 'set_missing_label',missing,total
         self.missingLabelLabel.set_markup(
             '<span color="red" style="italic">' +\
             _('''Missing nutritional information\nfor %(missing)s of %(total)s ingredients.''')%locals()+\
@@ -434,6 +427,15 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                 rawval = sum([getattr(self.nutinfo,p) or 0 for p in props])
             if self.servings:
                 rawval = float(rawval) / self.servings
+            if itm['type'] != MAJOR:
+                # If the item is not "MAJOR", then we hide it if the
+                # rawval is 0
+                if rawval == 0:
+                    itm['box'].hide()
+                    if itm['percent_label']: itm['percent_label'].hide()
+                else:
+                    itm['box'].show()
+                    if itm['percent_label']: itm['percent_label'].show()                
             if itm['unit_label']:
                 itm['unit_label'].set_text('%i%s'%(rawval,itm['unit']))
             if itm['usda_rec_per_cal'] and itm['percent_label']:

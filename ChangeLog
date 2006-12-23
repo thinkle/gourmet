@@ -1,3 +1,22 @@
+2006-12-23  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* data/recipe.dtd Add link
+	* glade/recCard.glade Move title and shopping-list button above
+	other stuff to un-clutter ingredient text and keep title in view
+	at all times.
+	* src/lib/reccard.py Default to highlighting calories, and save
+	last-highlighted nutritional item as a preference. Update flowing
+	to take into account different default widths (so that our title,
+	which is not the width of the whole card, can be wrapped
+	appropriately). Highlight ingredients with boldness as well as
+	color. Also, change color highlighting so that all items with some
+	of the content will have a visible amount of yellow behind them.
+	* src/lib/nutrition/nutritionLabel.py Hide MINOR items for which
+	there is no nutritional content. Also, track toggles in a
+	dictionary so that callers can programatically toggle highlighting
+	(i.e. so that we can store preferences for which nutritional info
+	to highlight)
+
 2006-12-22  Thomas M. Hinkle  <tom@localhost.localdomain>
 
 

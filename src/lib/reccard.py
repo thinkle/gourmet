@@ -68,6 +68,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         t=TimeAction('RecCard.__init__ 1',0)
         self.mult=1
         self.nutritional_highlighting = False
+        self.been_to_nutrition_tab = False
         self.rg = RecGui
         self.prefs = self.rg.prefs
         self.rd = self.rg.rd
@@ -198,8 +199,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         hadj = sw.get_hadjustment()
         xsize = hadj.page_size
         width = allocation.width
-        widg_width = int(xsize * 0.5)
-        for widget in self.reflow_on_resize:
+        for widget,perc in self.reflow_on_resize:
+            widg_width = int(xsize * perc)
             widget.set_size_request(widg_width,-1)
             t = widget.get_label()
             widget.set_label(t)
@@ -271,16 +272,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         for attr in self.display_info:
             setattr(self,'%sDisplay'%attr,self.glade.get_widget('%sDisplay'%attr))
             setattr(self,'%sDisplayLabel'%attr,self.glade.get_widget('%sDisplayLabel'%attr))
-        # Set up title to always be bold
-        #al = pango.AttrList()
-        #al.insert(pango.AttrWeight(pango.WEIGHT_BOLD,0,-1))
-        #self.titleDisplay.set_attributes(al)
         # Set up wrapping callbacks...
-        self.reflow_on_resize = [getattr(self,'%sDisplay'%s) for s in [
-            'title',
-            'cuisine',
-            'category',
-            'source'
+        self.reflow_on_resize = [(getattr(self,'%sDisplay'%s[0]),s[1]) for s in [
+            ('title',0.9), # label and percentage of screen it can take up...
+            ('cuisine',0.5),
+            ('category',0.5),
+            ('source',0.5),
             ]
                                  ]
         self.glade.get_widget(
@@ -480,12 +477,18 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.nutritional_highlighting = False
         else:
             self.nutritional_highlighting = True
+        if not self.been_to_nutrition_tab:
+            highlight = self.prefs.get('nutrition_to_highlight','kcal')
+            if highlight:
+                self.nutritionLabel.toggles[highlight].activate()
         if current_state != self.nutritional_highlighting:
             # If we've changed, redraw our ingredient info
             self.updateIngredientsDisplay()
+        self.been_to_nutrition_tab = True
 
     def nutrition_highlighting_label_changed (self, nl):
         self.nutritional_highlighting = True
+        self.prefs['nutrition_to_highlight'] = self.nutritionLabel.active_name
         self.updateIngredientsDisplay()
 
     def multTogCB (self, w, *args):
@@ -955,7 +958,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 if i.item: ing_strs.append(i.item)
                 if (type(i.optional)!=str and i.optional) or i.optional=='yes': 
                     ing_strs.append(_('(Optional)'))
-                color = None
+                color = None; weight = None
                 if self.nutritional_highlighting and self.nutritionLabel.active_name:
                     props = self.nutritionLabel.active_properties
                     if type(props)==str:
@@ -976,9 +979,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                             nut_amt = "%.2f"%nut_amt
                         ing_strs.append('(%s %s)'%(nut_amt,label))
                         color = "#%02x%02x%02x"%(255,255,
-                                                 255-int(255*perc)
+                                                 180-int(180*perc)
                                                 )
                         nut_highlighted = True
+                        weight = int(pango.WEIGHT_NORMAL + ((pango.WEIGHT_HEAVY - pango.WEIGHT_NORMAL) * perc))
                 istr = xml.sax.saxutils.escape(' '.join(ing_strs))
                 if i.refid:
                     labels.append('<a href="%s:%s">'%(i.refid,
@@ -991,6 +995,8 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                         )
                 if color:
                     labels[-1] = '<span background="%s" foreground="black">'%color+labels[-1]+'</span>'
+                if weight:
+                    labels[-1] = '<span weight="%i">'%weight+labels[-1]+'</span>'
                 if (self.nutritional_highlighting
                     and
                     isinstance(self.nutinfo[group_index][ing_index],
