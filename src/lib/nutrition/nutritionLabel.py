@@ -149,12 +149,21 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
     __gsignals__ = {
         'calories-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,()),
         'ingredients-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,()),
+        'label-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,()),
         }
 
     def __init__ (self, prefs,
                   rec=None,
-                  custom_label=None
+                  custom_label=None,
+                  pressable=True
                   ):
+        self.pressable = pressable
+        self.toggles = []; self.__toggling__ = False
+        self.active_name = None
+        self.active_unit = None
+        self.active_label = None
+        self.active_properties = None
+        self.active_button_markup = ('<span background="#ffff00">','</span>')
         self.custom_label = custom_label
         self.prefs = prefs
         self.rec = rec
@@ -215,7 +224,26 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                     permanentl.set_markup('  '+label)
                 elif typ==TINY:
                     permanentl.set_markup('  <span size="smaller">'+label+'</span>')
-                hb.pack_start(permanentl)
+                if self.pressable:
+                    b = gtk.Button(); b.add(permanentl)
+                    b.set_relief(gtk.RELIEF_NONE)
+                    #sty=b.get_style().copy(); cm=b.get_colormap()
+                    #for state,col in [(gtk.STATE_ACTIVE,cm.alloc_color('#ff0077')),
+                    #                  (gtk.STATE_PRELIGHT,cm.alloc_color('#aa0033'))]:
+                    #    sty.fg[state] = col
+                    #    sty.bg[state] = col
+                    #    sty.base[state] = col
+                    #    sty.dark[state] = col
+                    #    sty.light[state] = col
+                    #    sty.mid[state] = col
+                    #    sty.black = col
+                    #
+                    #b.set_style(sty)
+                    b.connect('clicked',self.toggle_label,label,name,properties,unit)
+                    hb.pack_start(b)
+                    self.toggles.append(b)
+                else:
+                    hb.pack_start(permanentl)
                 unit_label = gtk.Label()
                 unit_label.set_alignment(0,0.5)
                 hb.pack_start(unit_label)
@@ -238,6 +266,29 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                                         RECOMMENDED_INTAKE[name])
                     })
 
+    def toggle_label (self, button, label, name,properties, unit):
+        if self.__toggling__: return
+        self.__toggling__ = True
+        if name != self.active_name:
+            for b in self.toggles:
+                lab = b.get_children()[0]
+                if b != button:
+                    orig = lab.get_label()
+                    if orig.find(self.active_button_markup[0])==0:
+                        lab.set_label(orig[len(self.active_button_markup[0]):(- len(self.active_button_markup[1]))])
+                else:
+                    lab.set_label(self.active_button_markup[0]+lab.get_label()+self.active_button_markup[1])
+            self.active_name = name
+            self.active_unit = unit
+            self.active_label = label
+            self.active_properties = properties
+        else:
+            self.active_name = None
+            self.active_unit = None
+            self.active_label = None
+        self.emit('label-changed')
+        self.__toggling__ = False
+
     def make_missing_label (self):
         hb = gtk.HBox()
         l=gtk.Label()
@@ -252,6 +303,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         return hb
 
     def set_missing_label_text (self,missing,total):
+        print 'set_missing_label',missing,total
         self.missingLabelLabel.set_markup(
             '<span color="red" style="italic">' +\
             _('''Missing nutritional information\nfor %(missing)s of %(total)s ingredients.''')%locals()+\
@@ -355,7 +407,12 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
             self.update_display()
             vapor = self.nutinfo._get_vapor()
             if vapor:
-                self.set_missing_label_text(len(vapor),len(self.nutinfo))
+                len(vapor)
+                self.nutinfo.recursive_length()
+                self.set_missing_label_text(
+                    len(vapor),
+                    self.nutinfo.recursive_length()
+                    )
                 self.missingLabel.show()
             else:
                 self.main_table.show()
@@ -454,6 +511,9 @@ if __name__ == '__main__':
                 return self.__attdict__[n]
 
         def has_vapor (self): True
+
+        def recursive_length (self): return self.__len__()
+
         def _get_vapor_ (self):
             return [('black pepper',[(1,'tsp.')]),
                     ('red pepper',[(1,''),
@@ -476,6 +536,9 @@ if __name__ == '__main__':
     hb.show()
     #nl.set_servings(2)
     nl.set_nutinfo(ni)
+    def display_info (w):
+        print w.active_name,w.active_unit,w.active_label
+    nl.connect('label-changed',display_info)
     nl.show()
     w.show()
     w.connect('delete-event',lambda *args: gtk.main_quit())

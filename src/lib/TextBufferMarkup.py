@@ -125,7 +125,6 @@ class PangoBuffer (gtk.TextBuffer):
                     tags.append(self.tags[key])
                 if a.type == pango.ATTR_BACKGROUND:
                     gdkcolor = self.pango_color_to_gdk(a.color)
-                    tag.set_property('background-gdk',gdkcolor)
                     key = 'background%s'%self.color_to_hex(gdkcolor)
                     if not self.tags.has_key(key):
                         self.tags[key]=self.create_tag()
@@ -369,6 +368,9 @@ class SimpleEditor:
             normal_button=self.nb)
         self.ipb.set_text("""<b>This is bold</b>. <i>This is italic</i>
             <b><i>This is bold, italic, and <u>underlined!</u></i></b>
+            <span background="blue">This is a test of bg color</span>
+            <span foreground="blue">This is a test of fg color</span>
+            <span foreground="white" background="blue">This is a test of fg and bg color</span>                        
             """)
         #    Here are some more: 1-2, 2-3, 3-4, 10-20, 30-40, 50-60
         #    This is <span color="blue">blue</span>, <span color="red">red</span> and <span color="green">green</span>""")

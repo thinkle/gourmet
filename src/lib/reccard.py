@@ -16,6 +16,7 @@ import exporters.printer as printer
 from gdebug import *
 from gglobals import *
 from nutrition.nutritionLabel import NutritionLabel
+from nutrition.nutrition import NutritionInfoList, NutritionVapor
 from gettext import gettext as _
 from gettext import ngettext
 import ImageExtras as ie
@@ -66,7 +67,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.setup_defaults()
         t=TimeAction('RecCard.__init__ 1',0)
         self.mult=1
-
+        self.nutritional_highlighting = False
         self.rg = RecGui
         self.prefs = self.rg.prefs
         self.rd = self.rg.rd
@@ -89,6 +90,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             # we'll need to look for the switch with an idle call
             gobject.idle_add(self.notebookChangeCB)
         self.notebook.connect('switch-page',hackish_notebook_switcher_handler)
+        # Now set up nutrition notebook switching
+        def hackish_notebook_switcher_handler_2 (*args):
+            gobject.idle_add(self.nutritionNotebookChangeCB)
+        self.nutrition_notebook.connect('switch-page',hackish_notebook_switcher_handler_2)
         self.page_specific_handlers = []
         self.notebookChangeCB()
         self.initRecipeWidgets()
@@ -258,6 +263,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.nutritionLabel.connect('ingredients-changed',
                                     lambda *args: self.resetIngredients()
                                     )
+        self.nutritionLabel.connect('label-changed',self.nutrition_highlighting_label_changed)
         self.display_info = ['title','rating','preptime','link',
                              'servings','cooktime','source',
                              'cuisine','category','instructions',
@@ -331,9 +337,10 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         def toggle_readable_hook (p,v):
             if p=='readableUnits': self.toggleReadableMenu.set_active(v)
         self.rg.prefs.set_hooks.append(toggle_readable_hook)
-        self.notebook=self.glade.get_widget('notebook1')
+        self.notebook=self.glade.get_widget('editNotebook')
         self.tree_control = self.glade.get_widget('ChooserTreeView')
         cn = chooserNotebook.ChooserNotebook(self.tree_control,self.notebook)
+        self.nutrition_notebook = self.glade.get_widget('nutritionNotebook')        
         t.end()
         
     def setup_action_manager(self):
@@ -465,6 +472,21 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             c2=buf.setup_widget_from_pango(self.italic, '<i>ital</i>')
             c3=buf.setup_widget_from_pango(self.underline, '<u>underline</u>')
             self.page_specific_handlers = [(buf,c1),(buf,c2),(buf,c3)]
+
+    def nutritionNotebookChangeCB (self):
+        page = self.nutrition_notebook.get_current_page()
+        current_state = self.nutritional_highlighting
+        if page == 0: # page 0 = normal display page
+            self.nutritional_highlighting = False
+        else:
+            self.nutritional_highlighting = True
+        if current_state != self.nutritional_highlighting:
+            # If we've changed, redraw our ingredient info
+            self.updateIngredientsDisplay()
+
+    def nutrition_highlighting_label_changed (self, nl):
+        self.nutritional_highlighting = True
+        self.updateIngredientsDisplay()
 
     def multTogCB (self, w, *args):
         debug("multTogCB (self, w, *args):",5)
@@ -813,8 +835,15 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             self.nutritionLabel.set_servings(
                 convert.frac_to_float(self.current_rec.servings)
                 )
-        ings = self.list_all_ings(self.current_rec)
-        self.nutinfo = self.rg.nd.get_nutinfo_for_inglist(ings)
+        #ings = self.list_all_ings(self.current_rec)
+        nutritional_info_list = []
+        if not self.ing_alist:
+            self.create_ing_alist()
+        for g,ings in self.ing_alist:
+            nutritional_info_list.append(
+                self.rg.nd.get_nutinfo_for_inglist(ings,self.rd)
+                )
+        self.nutinfo = NutritionInfoList(nutritional_info_list)
         self.nutritionLabel.set_nutinfo(self.nutinfo)
         self.nutritionLabel.rec = self.current_rec
 
@@ -893,11 +922,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         """Reset our display of ingredients based on what's in our database at present."""
         # Our basic ingredient list...
         self.create_ing_alist()
+        self.update_nutrition_info()
         # Our ingredient card display
         self.updateIngredientsDisplay()
         # Reset our treeview in our editor window
         self.resetIngList()
-        self.update_nutrition_info()
+        
 
     def updateIngredientsDisplay (self):
         """Update our display of ingredients, only reloading from DB if this is our first time.
@@ -905,17 +935,50 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         if not self.ing_alist:
             self.create_ing_alist()
         group_strings = []
+        group_index = 0
+        nut_highlighted = False
         for g,ings in self.ing_alist:
             labels = []
             if g: labels.append("<u>%s</u>"%xml.sax.saxutils.escape(g))
+            ing_index = 0
             for i in ings:
                 ing_strs = []
-                amt,unit = self.make_readable_amt_unit(i)
+                if self.nutritional_highlighting and self.serves_orig:
+                    amt,unit = self.rg.rd.get_amount_and_unit(i,mult = 1.0/self.serves_orig)
+                else:
+                    amt,unit = self.rg.rd.get_amount_and_unit(i,
+                                                              mult=self.mult,
+                                                              conv=self.rg.conv
+                                                              )
                 if amt: ing_strs.append(amt)
                 if unit: ing_strs.append(unit)
                 if i.item: ing_strs.append(i.item)
                 if (type(i.optional)!=str and i.optional) or i.optional=='yes': 
                     ing_strs.append(_('(Optional)'))
+                color = None
+                if self.nutritional_highlighting and self.nutritionLabel.active_name:
+                    props = self.nutritionLabel.active_properties
+                    if type(props)==str:
+                        nut_amt = getattr(self.nutinfo[group_index][ing_index],props)
+                        tot_amt = getattr(self.nutinfo,props)
+                    else:
+                        nut_amt = sum([getattr(self.nutinfo[group_index][ing_index],p) or 0 for p in props])
+                        tot_amt = sum([getattr(self.nutinfo,p) or 0 for p in props])
+                    if nut_amt:
+                        perc = float(nut_amt)/tot_amt
+                        if self.serves_orig: nut_amt = nut_amt/self.serves_orig
+                        label = self.nutritionLabel.active_unit
+                        if not self.nutritionLabel.active_unit:
+                            label = self.nutritionLabel.active_label.lower()
+                        if int(nut_amt) or (nut_amt==int(nut_amt)):
+                            nut_amt = "%i"%nut_amt
+                        else:
+                            nut_amt = "%.2f"%nut_amt
+                        ing_strs.append('(%s %s)'%(nut_amt,label))
+                        color = "#%02x%02x%02x"%(255,255,
+                                                 255-int(255*perc)
+                                                )
+                        nut_highlighted = True
                 istr = xml.sax.saxutils.escape(' '.join(ing_strs))
                 if i.refid:
                     labels.append('<a href="%s:%s">'%(i.refid,
@@ -926,8 +989,19 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                     labels.append(
                         xml.sax.saxutils.escape(istr)
                         )
+                if color:
+                    labels[-1] = '<span background="%s" foreground="black">'%color+labels[-1]+'</span>'
+                if (self.nutritional_highlighting
+                    and
+                    isinstance(self.nutinfo[group_index][ing_index],
+                               NutritionVapor)):
+                    labels[-1] = '<span foreground="red">'+labels[-1]+'</span>'
+                ing_index += 1
             group_strings.append('\n'.join(labels))
+            group_index += 1
         label = '\n\n'.join(group_strings)
+        if nut_highlighted:
+            label = '<i>Highlighting amount of %s in each ingredient.</i>\n'%self.nutritionLabel.active_label+label
         if label:
             self.ingredientsDisplay.set_text(label)
             self.ingredientsDisplay.set_editable(False)
@@ -984,13 +1058,6 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 d['amount'] = convert.float_to_frac(d['amount'])
             return self.ingtree_ui.ingController.add_new_ingredient(prev_iter=prev_iter,group_iter=group_iter,**d)
 
-    def make_readable_amt_unit (self, i):
-        """Handed an ingredient, return a readable amount and unit."""
-        return self.rg.rd.get_amount_and_unit(i,
-                                              mult=self.mult,
-                                              conv=self.rg.conv
-                                              )
-        
     def importIngredientsCB (self, *args):
         debug('importIngredientsCB',5) #FIXME
         f=de.select_file(_("Choose a file containing your ingredient list."),action=gtk.FILE_CHOOSER_ACTION_OPEN)
@@ -1601,7 +1668,6 @@ class IngredientController:
         # Append our ingredient object to a list so that we will be able to notice if it has been deleted...
         if not is_undo: self.ingredient_objects.append(ing)
         iter = self._new_iter_(prev_iter=prev_iter,group_iter=group_iter,fallback_on_append=fallback_on_append)
-        #amt,unit = self.make_readable_amt_unit(i)
         amt = self.rg.rd.get_amount_as_string(i)
         unit = i.unit
         self.imodel.set_value(iter, 0, i)
@@ -3100,8 +3166,8 @@ if __name__ == '__main__':
                                   lambda *args: gtk.main_quit()
                                   )
         rc.edit_window.connect('delete-event',lambda *args: gtk.main_quit())
-        rc.show_edit()
-        rc.rw['title'].set_text('Foo')
+        #rc.show_edit()
+        #rc.rw['title'].set_text('Foo')
         
         #test_ing_editing(rc)
     except:

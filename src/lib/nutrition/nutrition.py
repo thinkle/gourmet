@@ -82,9 +82,12 @@ class NutritionData:
         row=self.db.fetch_one(self.db.naliasesview,**{'ingkey':str(key)})
         return row
 
-    def get_nutinfo_for_ing (self, ing):
+    def get_nutinfo_for_ing (self, ing, rd):
         """A convenience function that grabs the requisite items from
         an ingredient."""
+        if hasattr(ing,'refid') and ing.refid:
+            subrec = rd.get_referenced_rec(ing)
+            return self.get_nutinfo_for_inglist(rd.get_ings(subrec),rd)
         if hasattr(ing,'rangeamount') and ing.rangeamount:
             # just average our amounts
             amount = (ing.rangeamount + ing.amount)/2
@@ -93,11 +96,11 @@ class NutritionData:
         if not amount: amount=1
         return self.get_nutinfo_for_item(ing.ingkey,amount,ing.unit)
 
-    def get_nutinfo_for_inglist (self, inglist):
+    def get_nutinfo_for_inglist (self, inglist, rd):
         """A convenience function to get NutritionInfoList for a list of
         ingredients.
         """
-        return NutritionInfoList([self.get_nutinfo_for_ing(i) for i in inglist])
+        return NutritionInfoList([self.get_nutinfo_for_ing(i,rd) for i in inglist])
 
     def get_nutinfo_for_item (self, key, amt, unit):
         """Handed a key, amount and unit, get out nutritional Database object.
@@ -427,8 +430,8 @@ class NutritionInfoList (list, NutritionInfo):
     """
     def __init__ (self,nutinfos, mult=1):
         self.__nutinfos__ = nutinfos
-        self.__len__ = self.__nutinfos__.__len__
-        self.__getitem__ = self.__nutinfos__.__len__
+        #self.__len__ = self.__nutinfos__.__len__
+        #self.__getitem__ = self.__nutinfos__.__getitem__
         self.__mult__ = 1
 
     def __getattr__ (self, attr):
@@ -460,6 +463,8 @@ class NutritionInfoList (list, NutritionInfo):
         ret = []
         for i in self.__nutinfos__:
             if isinstance(i,NutritionVapor): ret.append(i)
+            if isinstance(i,NutritionInfoList):
+                ret.extend(i._get_vapor())
         return ret
 
     def _get_fudge (self):
@@ -486,9 +491,22 @@ class NutritionInfoList (list, NutritionInfo):
         return NutritionInfoList(self.__nutinfos__[a:b])
 
     def __len__ (self): return len(self.__nutinfos__)
+    def __getitem__ (self,x): return self.__nutinfos__[x]
 
     def __repr__ (self):
         return '<NutritionInfoList>'
+
+    def recursive_length (self):
+        """Return number of contained nutrition info objects, recursing any embedded lists.
+        """
+        n = 0
+        for x in range(len(self)):
+            obj = self[x]
+            if isinstance(obj,NutritionInfoList):
+                n += obj.recursive_length()
+            else:
+                n += 1
+        return n
             
 if __name__ == '__main__':
     import sys

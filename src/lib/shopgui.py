@@ -759,8 +759,8 @@ class OptionalIngDialog (de.ModalDialog):
             for row in self.mod:
                 ing = row[0]
                 ing_include = row[4]
-                if ing_include: ing.shopoptional=2
-                else: ing.shopoptional=1
+                if ing_include: self.rg.rd.modify_ing(ing,{shopoptional:2})
+                else: self.rg.rd.modify_ing(ing,{'shopoptional':1})
         return self.ret
 
 class shopIngredientEditor (reccard.IngredientEditor):

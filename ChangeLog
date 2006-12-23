@@ -1,3 +1,18 @@
+2006-12-22  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+
+	* glade/recCard.glade Less confusing naming of notebook widgets.
+	* src/lib/nutrition/nutrition.py Allow nested
+	NutritionInfoLists. Handle embedded recipes from here. rather than
+	forcing caller to deal with them.
+	* src/lib/nutrition/nutritionLabel.py Set up label to work as
+	button for selecting one part of nutrition to focus on elsewhere
+	(e.g. to choose "Calories" or "Protein" or what have you.
+	* src/lib/reccard.py Set up nutritional highlighting of ingredients.
+	* src/lib/shopgui.py Use modify_ing method to modify ings (not assignment).
+	* src/lib/TextBufferMarkup.py Fix bug in setting background color.
+
+
 2006-12-16  Thomas M. Hinkle  <tom@localhost.localdomain>
 
 	* glade/recCard.glade Move nutrition into a separate tab to reduce clutter/scrolling.
