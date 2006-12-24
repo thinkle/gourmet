@@ -1,3 +1,7 @@
+2006-12-24  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* src/lib/reccard Hide "Website:" label when there is no link.
+
 2006-12-23  Thomas M. Hinkle  <tom@localhost.localdomain>
 
 	* data/recipe.dtd Add link
