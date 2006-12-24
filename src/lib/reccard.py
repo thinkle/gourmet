@@ -891,6 +891,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         else:
             self.link = ''
             self.linkDisplayButton.hide()
+            self.linkDisplayLabel.hide()
 
     def link_cb (self, *args): launch_url(self.link)
 
