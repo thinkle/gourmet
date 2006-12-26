@@ -265,10 +265,9 @@ class RecData:
             # above as well (for new users) - sorry for the stupid
             # repetition of code.
             self.add_column_to_table(self.rview,('last_modified','int',[]))
+
             self.add_column_to_table(self.rview,('recipe_hash','VARCHAR(32)',[]))
             self.add_column_to_table(self.rview,('ingredient_hash','VARCHAR(32)',[]))
-            # Add hash values to identify all recipes...
-            for r in self.fetch_all(self.rview): self.update_hashes(r)
             # Add a link field...
             self.add_column_to_table(self.rview,('link','text',[]))
             print 'Searching for links in old recipe fields...'
@@ -309,8 +308,8 @@ class RecData:
                          'source':new_source,
                          }
                         )
-                    
-
+            # Add hash values to identify all recipes...
+            for r in self.fetch_all(self.rview): self.update_hashes(r)
                         
         ### End of code for updates between versions...
         if (current_super!=stored_info.version_super
@@ -1115,7 +1114,7 @@ class RecipeManager (RecData):
                         d['unit']=u
                     else:
                         # otherwise, unit is not a unit
-                        i = u + i
+                        i = u + ' ' + i
             if i:
                 optmatch = re.search('\s+\(?[Oo]ptional\)?',i)
                 if optmatch:
