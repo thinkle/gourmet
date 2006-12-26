@@ -85,7 +85,7 @@ class UndoableTextChange (UndoableObject):
         try:
             self.cindex,self.clen = self.find_change(self.text)
         except TooManyChanges:
-            print 'Too many changes - assume 0,0'
+            debug('Too many changes - assume 0,0',0)
             self.cindex,self.clen = 0,0
 
     def determine_mode (self,text=None,initial_text=None):
@@ -102,17 +102,12 @@ class UndoableTextChange (UndoableObject):
             self.text = text2
             self.determine_mode()
         if text2 is None: text2=self.text
-        #if not hasattr(self,'sm'):
-        #self.sm = difflib.SequenceMatcher(None,initial_text,text2)
-        #else:
-        #self.sm.set_seq2(text2)
-        #blocks=self.sm.get_matching_blocks()
         blocks = difflib.SequenceMatcher(None,initial_text,text2).get_matching_blocks()
         # we only are interested in similar blocks at different positions
         # (which tell us where the changes happened).
         ch_blocks = filter(lambda x: x[0] != x[1] and x[2] != 0, blocks)
         if ch_blocks and len(ch_blocks)>1:
-            raise TooManyChanges("More than one block changed: %s in %s"%(ch_blocks,text2))
+            raise TooManyChanges("More than one block changed from '%s' to '%s': %s"%(initial_text,text2,ch_blocks))
         if ch_blocks:
             i,j,n = ch_blocks[0]
             change_length = j-i
@@ -129,11 +124,10 @@ class UndoableTextChange (UndoableObject):
         contmode = self.determine_mode(new_text,self.text)
         if (mode == contmode == self.mode):
             try:
+                # This whole thing is in a try/except box because
+                # there are multiple places where "Too many changes"
+                # could crop up as an error.
                 cindex,clen = self.find_change(new_text)
-            except TooManyChanges:
-                pass # We'll go to the end of the method & create a new action
-            else:
-                # We will return...
                 if ((cindex==self.cindex) or
                     (self.mode=='add' and cindex==self.cindex) or
                     (self.mode=='delete' and cindex==(self.cindex-clen))
@@ -142,13 +136,6 @@ class UndoableTextChange (UndoableObject):
                     else: changed_text=''
                     # Now we make sure the addition is at the end or middle of our new text...
                     relative_cindex,relative_clen = self.find_change(new_text,self.text)
-                    #print
-                    #print new_text
-                    #print 'Old cindex,clen=',self.cindex,self.clen
-                    #print 'New cindex,clen=',cindex,clen
-                    #print 'Rel cindex,clen=',relative_cindex,relative_clen
-                    #print 'Adding text to the end?',relative_cindex==cindex+(clen-relative_clen)
-                    #print 'Adding text to the start?',relative_cindex==self.cindex
                     # We only consider a word at a time to be a continuous change...
                     if (
                         # Adding text to the end
@@ -163,7 +150,10 @@ class UndoableTextChange (UndoableObject):
                         ):
                         self.text = new_text
                         self.cindex,self.clen = self.find_change(new_text)
-                        return
+                        ## End here if we've worked
+                        return                
+            except TooManyChanges:
+                pass # We'll go to the end of the method & create a new action
         # If the mode has changed or we have too many changes to
         # handle simply, we just create a new undo action for this new
         # change

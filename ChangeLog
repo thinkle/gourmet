@@ -1,3 +1,12 @@
+2006-12-26  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* src/lib/backends/rdatabase.py Fix bug in new installations (this
+	change was actually made before 0.13.0 went up to SF but not
+	committed to cvs). Also, fix bug in ingredient parser that meant
+	the space between two words in an ingredient got eliminated.
+	* src/lib/Undo.py Catch all "Too many changes" errors that can
+	happen in our text-change undo routine.
+
 2006-12-24  Thomas M. Hinkle  <tom@localhost.localdomain>
 
 	* src/lib/reccard Hide "Website:" label when there is no link.
