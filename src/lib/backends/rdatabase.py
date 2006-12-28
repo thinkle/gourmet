@@ -302,12 +302,17 @@ class RecData:
                     if r.source==rec_url:
                         new_source = rec_url.split('://')[1]
                         new_source = new_source.split('/')[0]
-                    self.do_modify_rec(
-                        r,
-                        {'link':rec_url,
-                         'source':new_source,
-                         }
-                        )
+                        self.do_modify_rec(
+                            r,
+                            {'link':rec_url,
+                             'source':new_source,
+                             }
+                            )
+                    else:
+                        self.do_modify_rec(
+                            r,
+                            {'link':rec_url,}
+                            )
             # Add hash values to identify all recipes...
             for r in self.fetch_all(self.rview): self.update_hashes(r)
                         
