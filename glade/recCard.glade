@@ -335,8 +335,8 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="pasteIngredientMenu">
 		      <property name="visible">True</property>
-		      <property name="label">gtk-paste</property>
-		      <property name="use_stock">True</property>
+		      <property name="label" translatable="yes">Paste Ingredient</property>
+		      <property name="tooltip" translatable="yes">Import Ingredients from clipboard</property>
 		      <signal name="activate" handler="on_pasteIngredientMenu_activate"/>
 		    </widget>
 		  </child>

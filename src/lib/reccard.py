@@ -1071,7 +1071,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         add_with_undo(self, lambda *args: self.importIngredients(f))
 
     def pasteIngsCB (self, *args):
-        self.cb = gtk.clipboard_get(gtk.gdk.SELECTION_PRIMARY)
+        self.cb = gtk.clipboard_get()
         def add_ings_from_clippy (cb,txt,data):
             if txt:
                 def do_add ():
