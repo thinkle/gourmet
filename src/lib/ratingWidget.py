@@ -265,7 +265,7 @@ class StarButton (gtk.Button):
 
     def buttonpress_cb (self, widget, event):
         x,y = event.get_coords()
-        wx,wy = self.image.translate_coordinates(self.image,x,y)
+        wx,wy = self.image.translate_coordinates(self.image,int(x),int(y))
         self.star_width =  self.image.get_pixbuf().get_width() / self.image.upper
         star = x / self.star_width + 1
         star = int(star)

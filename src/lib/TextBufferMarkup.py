@@ -173,7 +173,7 @@ class PangoBuffer (gtk.TextBuffer):
         tagdict=self.get_tags()        
         if not start: start=self.get_start_iter()
         if not end: end=self.get_end_iter()
-        txt = gtk.TextBuffer.get_text(self,start,end)
+        txt = unicode(gtk.TextBuffer.get_text(self,start,end))
         cuts = {}
         for k,v in tagdict.items():
             stag,etag = self.tag_to_markup(k)

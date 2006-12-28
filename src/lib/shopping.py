@@ -67,9 +67,11 @@ class shopper:
                     if type(amt) == tuple or type(a)== tuple :
                         # we're adding ranges -- we'll force both
                         # our amounts to look like ranges to simplify the addition
-                        if type(amt)==float: amt=(amt,amt) 
-                        if type(a)==float: a=(a,a)
-                        print 'amt:',amt,' unit:',unit,'a:',a,'u:',u
+                        if type(amt) != tuple :
+                            amt=(amt,amt) 
+                        if type(a) != tuple :
+                            a=(a,a)
+                        #print 'amt:',amt,' unit:',unit,'a:',a,'u:',u
                         add_low = self.cnv.add_reasonably(amt[0],unit,a[0],u,ing)
                         add_high = self.cnv.add_reasonably(amt[1],unit,a[1],u,ing)
                         if (not add_low) or (not add_high):
