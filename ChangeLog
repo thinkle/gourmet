@@ -1,7 +1,13 @@
 2006-12-29  Thomas M. Hinkle  <tom@localhost.localdomain>
 
+	* glade/recCard.glade Move scrollbar inside of notebook so that
+	nutrition/Recipe tabs are always in view.
 	* src/lib/exports/pdf_exporter.py Fix typo in get_pdf_prefs that
 	required extra nonsense argument.
+	* src/lib/reccard.py Respect "Allow Units to Change" preference
+	(previously, we were always adjusting the units in the recipe card
+	display and never adjusting them in the nutritional info display).
+
 
 2006-12-28  Thomas M. Hinkle  <tom@localhost.localdomain>
 
