@@ -228,13 +228,20 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                     b = gtk.Button(); b.add(permanentl)
                     b.set_relief(gtk.RELIEF_NONE)
                     b.connect('clicked',self.toggle_label,label,name,properties,unit)
-                    hb.pack_start(b)
+                    hb.pack_start(b,expand=False)
                     self.toggles[name] = b
                 else:
                     hb.pack_start(permanentl)
                 unit_label = gtk.Label()
                 unit_label.set_alignment(0,0.5)
-                hb.pack_start(unit_label)
+                if name != 'kcal':
+                    hb.pack_start(unit_label)
+                else:
+                    #print 'pack end'
+                    #hb.pack_end(unit_label,expand=True)
+                    table.attach(unit_label,1,2,n+start_at,n+start_at+1,xoptions=gtk.FILL)
+                    unit_label.set_alignment(1,0.5)
+                    unit_label.show()
                 hb.show_all()
                 table.attach(hb,0,1,n+start_at,n+start_at+1,xoptions=gtk.FILL)
                 if show_percent==SHOW_PERCENT:
