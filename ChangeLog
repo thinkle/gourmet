@@ -2,12 +2,19 @@
 
 	* glade/recCard.glade Move scrollbar inside of notebook so that
 	nutrition/Recipe tabs are always in view.
+	* src/lib/backends/rdatabase.py Only update if we have a new
+	database.
+	* src/lib/backends/sqlite_db.py	Set a flag if we are a new database.
 	* src/lib/exports/pdf_exporter.py Fix typo in get_pdf_prefs that
 	required extra nonsense argument.
+	* src/lib/defaults_en.py Fix fl. oz.
+	* src/lib/nutrition/databaseGrabber.py Be less verbose.
+	* src/lib/nutrition/nutritionLabel.py Improve formatting
 	* src/lib/reccard.py Respect "Allow Units to Change" preference
 	(previously, we were always adjusting the units in the recipe card
-	display and never adjusting them in the nutritional info display).
-
+	display and never adjusting them in the nutritional info
+	display). Properly handle redrawing and flowing with changed
+	reccard glade layout.
 
 2006-12-28  Thomas M. Hinkle  <tom@localhost.localdomain>
 

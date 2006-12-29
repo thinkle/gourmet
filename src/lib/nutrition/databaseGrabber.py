@@ -144,8 +144,8 @@ class DatabaseGrabber:
         n = 0
         for n,l in enumerate(ll):
             l = unicode(l.decode('latin_1'))
-            tline=TimeAction('1 line iteration',0)            
-            t=TimeAction('split fields',0)
+            tline=TimeAction('1 line iteration',2)
+            t=TimeAction('split fields',2)
             d = self.parse_line(l,NUTRITION_FIELDS)
             fields = l.split("^")
             d['desc']=expand_abbrevs(d['desc'])
@@ -155,7 +155,7 @@ class DatabaseGrabber:
             t.end()
             if self.show_progress and n % 50 == 0:
                 self.show_progress(float(n)/tot,_('Reading nutritional data: imported %s of %s entries.')%(n,tot))
-            t = TimeAction('append to db',0)
+            t = TimeAction('append to db',3)
             try:
                 self.db.do_add(self.db.nview,d)
             except:

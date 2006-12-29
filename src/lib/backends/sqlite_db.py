@@ -35,6 +35,10 @@ class RecData (sql_db.RecData):
 
     # Main methods we implement
     def initialize_connection (self):
+        if os.path.exists(self.filename):
+            self.new_db = False
+        else:
+            self.new_db = True
         if not os.path.exists(os.path.split(self.filename)[0]):
             os.makedirs(os.path.split(self.filename)[0])
         self.connection = sqlite.connect(self.filename)#,isolation_level="IMMEDIATE")

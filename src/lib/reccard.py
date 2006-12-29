@@ -282,7 +282,11 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.glade.get_widget(
             'recipeDetailsWindow'
             ).connect('size-allocate',self.flow_my_text_on_allocate)
+        self.glade.get_widget(
+            'nutritionWindow'
+            ).connect('size-allocate',self.flow_my_text_on_allocate)
         self.glade.get_widget('recipeDetailsWindow').set_redraw_on_allocate(True)
+        self.glade.get_widget('nutritionWindow').set_redraw_on_allocate(True)        
         self.glade.get_widget('recCard').connect('size-allocate',self.on_card_edit_size_allocate_cb)
         self.servingsDisplaySpin = self.glade.get_widget('servingsDisplaySpin')
         self.servingsDisplaySpin.connect('changed',self.servingsChangeCB)
@@ -833,6 +837,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
 
     def update_nutrition_info (self):
         """Update nutritional information for ingredient list."""
+        debug('update nutritional information',0)
         if self.current_rec.servings:
             self.nutritionLabel.set_servings(
                 convert.frac_to_float(self.current_rec.servings)
@@ -846,6 +851,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 self.rg.nd.get_nutinfo_for_inglist(ings,self.rd)
                 )
         self.nutinfo = NutritionInfoList(nutritional_info_list)
+        debug('Set nutritionLabel with %s items'%len(self.nutinfo),0)
         self.nutritionLabel.set_nutinfo(self.nutinfo)
         self.nutritionLabel.rec = self.current_rec
 
@@ -949,12 +955,12 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 if self.nutritional_highlighting and self.serves_orig:
                     amt,unit = self.rg.rd.get_amount_and_unit(i,
                                                               mult = 1.0/self.serves_orig,
-                                                              conv=(self.prefs['readableUnits'] and self.rg.conv or None)
+                                                              conv=(self.prefs.get('readableUnits',True) and self.rg.conv or None)
                                                               )
                 else:
                     amt,unit = self.rg.rd.get_amount_and_unit(i,
                                                               mult=self.mult,
-                                                              conv=(self.prefs['readableUnits'] and self.rg.conv or None)
+                                                              conv=(self.prefs.get('readableUnits',True) and self.rg.conv or None)
                                                               )
                 if amt: ing_strs.append(amt)
                 if unit: ing_strs.append(unit)

@@ -178,7 +178,9 @@ class RecData:
     # Basic setup functions
 
     def initialize_connection (self):
-        """Initialize our database connection."""
+        """Initialize our database connection.
+
+        This should also set self.new_db accordingly"""
         raise NotImplementedError
 
     def save (self):
@@ -244,77 +246,78 @@ class RecData:
         current_minor = int(version[2])
         ### Code for updates between versions...
 
+        if not self.new_db:
 
-        # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up ikview tables...
-        # We don't actually do this yet... (FIXME)
-        if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
-            print 'Fixing broken ingredient-key view from earlier versions.'
-            # Drop ikview table, which wasn't being properly kept up
-            # to date...
-            self.delete_by_criteria(self.ikview,{}) 
-            # And update it in accord with current ingredients (less
-            # than an ideal decision, alas)
-            for ingredient in self.fetch_all(self.iview,deleted=False):
-                self.add_ing_to_keydic(ingredient.item,ingredient.ingkey)
-                
-        # Add recipe_hash, ingredient_hash and link fields
-        # (These all get added in 0.13.0)
-        if stored_info.version_super == 0 and stored_info.version_major <= 12:
-            print 'UPDATE FROM < 0.13.0...'
-            # Don't change the table defs here without changing them
-            # above as well (for new users) - sorry for the stupid
-            # repetition of code.
-            self.add_column_to_table(self.rview,('last_modified','int',[]))
+            # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up ikview tables...
+            # We don't actually do this yet... (FIXME)
+            if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
+                print 'Fixing broken ingredient-key view from earlier versions.'
+                # Drop ikview table, which wasn't being properly kept up
+                # to date...
+                self.delete_by_criteria(self.ikview,{}) 
+                # And update it in accord with current ingredients (less
+                # than an ideal decision, alas)
+                for ingredient in self.fetch_all(self.iview,deleted=False):
+                    self.add_ing_to_keydic(ingredient.item,ingredient.ingkey)
 
-            self.add_column_to_table(self.rview,('recipe_hash','VARCHAR(32)',[]))
-            self.add_column_to_table(self.rview,('ingredient_hash','VARCHAR(32)',[]))
-            # Add a link field...
-            self.add_column_to_table(self.rview,('link','text',[]))
-            print 'Searching for links in old recipe fields...'
-            URL_SOURCES = ['instructions','source','modifications']
-            recs = self.search_recipes(
-                [
-                {'column':col,
-                 'operator':'LIKE',
-                 'search':'%://%',
-                 'logic':'OR'
-                 }
-                for col in URL_SOURCES
-                ])
-            for r in recs:
-                rec_url = ''
-                for src in URL_SOURCES:
-                    blob = getattr(r,src)
-                    url = None
-                    if blob:
-                        m = re.search('\w+://[^ ]*',blob)
-                        if m:
-                            rec_url = blob[m.start():m.end()]
-                            if rec_url[-1] in ['.',')',',',';',':']:
-                                # Strip off trailing punctuation on
-                                # the assumption this is part of a
-                                # sentence -- this will break some
-                                # URLs, but hopefully rarely enough it
-                                # won't harm (m)any users.
-                                rec_url = rec_url[:-1]
-                            break
-                if rec_url:
-                    if r.source==rec_url:
-                        new_source = rec_url.split('://')[1]
-                        new_source = new_source.split('/')[0]
-                        self.do_modify_rec(
-                            r,
-                            {'link':rec_url,
-                             'source':new_source,
-                             }
-                            )
-                    else:
-                        self.do_modify_rec(
-                            r,
-                            {'link':rec_url,}
-                            )
-            # Add hash values to identify all recipes...
-            for r in self.fetch_all(self.rview): self.update_hashes(r)
+            # Add recipe_hash, ingredient_hash and link fields
+            # (These all get added in 0.13.0)
+            if stored_info.version_super == 0 and stored_info.version_major <= 12:
+                print 'UPDATE FROM < 0.13.0...'
+                # Don't change the table defs here without changing them
+                # above as well (for new users) - sorry for the stupid
+                # repetition of code.
+                self.add_column_to_table(self.rview,('last_modified','int',[]))
+
+                self.add_column_to_table(self.rview,('recipe_hash','VARCHAR(32)',[]))
+                self.add_column_to_table(self.rview,('ingredient_hash','VARCHAR(32)',[]))
+                # Add a link field...
+                self.add_column_to_table(self.rview,('link','text',[]))
+                print 'Searching for links in old recipe fields...'
+                URL_SOURCES = ['instructions','source','modifications']
+                recs = self.search_recipes(
+                    [
+                    {'column':col,
+                     'operator':'LIKE',
+                     'search':'%://%',
+                     'logic':'OR'
+                     }
+                    for col in URL_SOURCES
+                    ])
+                for r in recs:
+                    rec_url = ''
+                    for src in URL_SOURCES:
+                        blob = getattr(r,src)
+                        url = None
+                        if blob:
+                            m = re.search('\w+://[^ ]*',blob)
+                            if m:
+                                rec_url = blob[m.start():m.end()]
+                                if rec_url[-1] in ['.',')',',',';',':']:
+                                    # Strip off trailing punctuation on
+                                    # the assumption this is part of a
+                                    # sentence -- this will break some
+                                    # URLs, but hopefully rarely enough it
+                                    # won't harm (m)any users.
+                                    rec_url = rec_url[:-1]
+                                break
+                    if rec_url:
+                        if r.source==rec_url:
+                            new_source = rec_url.split('://')[1]
+                            new_source = new_source.split('/')[0]
+                            self.do_modify_rec(
+                                r,
+                                {'link':rec_url,
+                                 'source':new_source,
+                                 }
+                                )
+                        else:
+                            self.do_modify_rec(
+                                r,
+                                {'link':rec_url,}
+                                )
+                # Add hash values to identify all recipes...
+                for r in self.fetch_all(self.rview): self.update_hashes(r)
                         
         ### End of code for updates between versions...
         if (current_super!=stored_info.version_super
