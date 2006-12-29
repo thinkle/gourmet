@@ -826,7 +826,7 @@ class PdfPrefGetter:
         self.page_drawer.queue_draw()
         self.in_ccb = False
 
-def get_pdf_prefs (self, defaults=PDF_PREF_DEFAULT):
+def get_pdf_prefs (defaults=PDF_PREF_DEFAULT):
     pdf_pref_getter = PdfPrefGetter(defaults=defaults)
     return pdf_pref_getter.run()
             
