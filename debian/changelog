@@ -1,3 +1,11 @@
+gourmet (0.13.2-1) breezy; urgency=low
+
+  * Tweak recipe display so nutrition/recipe tab is always in view.
+  * Fix bug in Tablespoon conversion in U.S. English
+  * Make recipe card properly respect adjust-units setting.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@sf.net>  Fri, 29 Dec 2006 10:30:36 -0500
+
 gourmet (0.13.1-1) breezy; urgency=low
 
   * Various small bugfixes.
