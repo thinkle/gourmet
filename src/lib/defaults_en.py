@@ -572,9 +572,9 @@ INGREDIENT_DATA = [["alfalfa sprouts","alfalfa sprouts","produce"],
 # ("unit1","unit2"):conversion_factor, where unit1 contains conversion_factor X unit2
 # For example: 1 cup has 16 tablespoons.
 CONVERTER_TABLE = {
-    ("c.", "tbs."):16,
+    ("c.", "Tbs."):16,
     ("lb.", "oz."):16,
-    ("tbs.", "tsp."):3,
+    ("Tbs.", "tsp."):3,
     ("pt.", "c."):2,
     ("qt.", "c."):4,
     ("gallon", "qt."):4,
@@ -583,7 +583,7 @@ CONVERTER_TABLE = {
     ("l.", "cl."):100,
     ("l.", "dl."):10,
     ("oz.", "g."):28.35,
-    ("fl. oz.","tbs."):2,
+    ("fl. oz.","Tbs."):2,
     ("kg.", "g."):1000,
     ("g.", "mg."):1000,
     ("tsp.", "drop"):76,
