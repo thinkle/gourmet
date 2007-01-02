@@ -445,13 +445,13 @@ IGNORE = []
 
 NUMBERS = {
     (1.0/8):['octavo','un octavo'],
-    (1.0/4):['quarto','un quarto'],
-    (3.0/4):['tres quartos'],
+    (1.0/4):['cuarto','un cuarto'],
+    (3.0/4):['tres cuartos'],
     (2.0/3):['dos tercios'],
     (1.0/3):['un tercio',],
     (1.0/2):['una mitad','la mitad'],
     1:['un','una','uno'],
-    2:['dow','un par','un par de'],
+    2:['dos','un par','un par de'],
     3:['tres'],
     4:['cuatro'],
     5:['cinco'],

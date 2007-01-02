@@ -1,3 +1,11 @@
+2007-01-01  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* src/lib/convert.py Fix i18n related bug in new unit-parsing
+	regular expression. Also, keep new code for debugging bug (this
+	will make us fail more verbosely if we haven't caught all such
+	bugs with our new unicode() call
+	* src/lib/defaults_es.py Fix some typos in Spanish defaults.
+	
 2006-12-29  Thomas M. Hinkle  <tom@localhost.localdomain>
 
 	* glade/recCard.glade Move scrollbar inside of notebook so that

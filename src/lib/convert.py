@@ -752,7 +752,7 @@ for canonical_name,other_names in defaults.UNITS:
     for n in other_names:
         if ' ' in n: multi_word_units.append(n)
 MULTI_WORD_UNIT_REGEXP = '(' + \
-                       '|'.join([re.escape(u) for u in multi_word_units]) \
+                       '|'.join([re.escape(unicode(u)) for u in multi_word_units]) \
                        + ')'
 
 
@@ -762,7 +762,9 @@ MULTI_WORD_UNIT_REGEXP = '(' + \
 # parsers. This is often necessary because formats like mealmaster and
 # mastercook are rarely actually followed.
 NUMBER_FINDER_REGEXP2 = NUMBER_FINDER_REGEXP.replace('int','int2').replace('frac','frac2')
-ING_MATCHER_REGEXP = """
+
+try:
+    ING_MATCHER_REGEXP = """
  \s* # opening whitespace
  (?P<amount>
  %(NUMBER_FINDER_REGEXP)s # a number
@@ -774,7 +776,18 @@ ING_MATCHER_REGEXP = """
  \s* # Whitespace between number and unit
  (?P<unit>\s*(%(MULTI_WORD_UNIT_REGEXP)s|[\w.]+))?\s+ # a unit
  (?P<item>.*?)$ # and the rest of our stuff...
- """%locals()
+ """
+    ING_MATCHER_REGEXP = ING_MATCHER_REGEXP%locals()
+except:
+    print 'Failure with local vars...'
+    for s in ['NUMBER_FINDER_REGEXP',
+              'NUMBER_FINDER_REGEXP2',
+              'RANGE_REGEXP',
+              'MULTI_WORD_UNIT_REGEXP',]:
+        try: print 'DOUBLE CHECK',s,'%%(%s)s'%s%locals()
+        except:
+            print 'Failed with ',s,locals()[s]
+    raise
 
 ING_MATCHER = re.compile(ING_MATCHER_REGEXP,
                          re.VERBOSE|re.UNICODE)
