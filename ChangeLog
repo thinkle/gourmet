@@ -1,3 +1,14 @@
+2007-01-02  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* src/lib/reccard.py Fix up group undo/redo so that ingredient
+	group editing works again. This started with a simple typo fix
+	(self.history->self.rc.history), but in the process of fixing it,
+	I realized the undo was more fundamentally broken and had to be
+	updated to properly use "permanent references"
+	* src/tests/testRecCard.py Add a test for group editing. Exit when
+	tests complete successfully.
+
+	
 2007-01-01  Thomas M. Hinkle  <tom@localhost.localdomain>
 
 	* src/lib/convert.py Fix i18n related bug in new unit-parsing

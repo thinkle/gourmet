@@ -1901,20 +1901,6 @@ class IngredientController:
                         itr = self.imodel.iter_next(parent)
                     else:
                         itr = None
-        itr = self.imodel.get_iter_first()
-        while itr:
-            child = self.imodel.iter_children(itr)
-            if child: itr = child
-            else:
-                next = self.imodel.iter_next(itr)
-                if next:
-                    itr = next
-                else:
-                    parent = self.imodel.iter_parent(itr)
-                    if parent:
-                        itr = self.imodel.iter_next(parent)
-                    else:
-                        itr = None
 
     def commit_ingredients (self):
         """Commit ingredients as they appear in tree to database."""
@@ -2620,18 +2606,29 @@ class IngredientTreeUI:
                            self.rc.history)
         u.perform()
 
-    def change_group (self, iter, text):
-        debug('Undoable group change: %s %s'%(iter,text),3)
+    def change_group (self, itr, text):
+        debug('Undoable group change: %s %s'%(itr,text),3)
         model = self.ingController.imodel
-        oldgroup0 = model.get_value(iter,0)
-        oldgroup1 = model.get_value(iter,1)
+        oldgroup0 = model.get_value(itr,0)
+        oldgroup1 = model.get_value(itr,1)
+        def get_group_iter (old_value):
+            # Somewhat hacky -- our persistent references are stored in
+            # the "0" column, which is simply "GROUP text". This means
+            # that we can't properly "persist" groups since this chunk of
+            # text changes when the group's name changes. In order to
+            # remedy, we're relying on the hackish "GROUP name" value +
+            # knowing what the previous group value was to make the
+            # "persistent" reference work.
+            return self.ingController.get_iter_from_persistent_ref("GROUP %s"%old_value)
         def change_my_group ():
-            model.set_value(iter,0,"GROUP %s"%text)
-            model.set_value(iter,1,text)
+            itr = get_group_iter(oldgroup1)
+            self.ingController.imodel.set_value(itr,0,"GROUP %s"%text)
+            self.ingController.imodel.set_value(itr,1,text)
         def unchange_my_group ():
-            model.set_value(iter,0,oldgroup0)
-            model.set_value(iter,1,oldgroup1)
-        obj = Undo.UndoableObject(change_my_group,unchange_my_group,self.history)
+            itr = get_group_iter(text)
+            self.ingController.imodel.set_value(itr,0,oldgroup0)
+            self.ingController.imodel.set_value(itr,1,oldgroup1)
+        obj = Undo.UndoableObject(change_my_group,unchange_my_group,self.rc.history)
         obj.perform()    
 
 class IngredientEditor:

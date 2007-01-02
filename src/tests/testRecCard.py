@@ -117,6 +117,22 @@ def test_ing_undo (rc, verbose=True):
         )
     if verbose: print 'Undeletion worked!'
 
+def test_ing_group_editing (rc, verbose=True):
+    rc.show_edit(tab=rc.NOTEBOOK_ING_PAGE)
+    # We rely on the first item being a group
+    itr = rec_card.ingtree_ui.ingController.imodel.get_iter(0,)
+    rc.ingtree_ui.change_group(itr,'New Foo')
+    rc.saveEditsCB()
+    ings = rc.rd.get_ings(rc.current_rec)
+    assert(ings[0].inggroup == 'New Foo') # Make sure our new group got saved
+    if verbose: print 'Group successfully changed to "New Foo"'
+    rc.undo.emit('activate') # Undo
+    assert(rc.save.get_sensitive()) # Make sure "Save" is sensitive after undo
+    rc.saveEditsCB() # Save new changes
+    ings = rc.rd.get_ings(rc.current_rec)
+    assert(ings[0].inggroup != 'New Foo') # Make sure our new group got un-done
+    if verbose: print 'Undo of group change worked.'
+    
 def test_undo_save_sensitivity (rc, verbose=True):
     rc.show_edit(tab=rc.NOTEBOOK_ATTR_PAGE)        
     rc.saveEditsCB()
@@ -214,10 +230,15 @@ try:
     print 'Ing Undo works!'
     test_undo_save_sensitivity(rec_card,verbose=False)
     print 'Undo properly sensitizes save widget.'
+    test_ing_group_editing(rec_card,verbose=False)
+    print 'Ing Group Editing works.'
 except:
     import traceback; traceback.print_exc()
     gtk.main()
 else:
     rec_card.hide()
+    import sys
+    sys.exit()
+    
     
     
