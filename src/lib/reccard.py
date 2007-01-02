@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import gc
 import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
+import types
 import xml.sax.saxutils, pango
 import exporters
 import convert, TextBufferMarkup, types
@@ -2225,6 +2226,10 @@ class IngredientTreeUI:
         store=self.ingTree.get_model()
         iter=store.get_iter(path)
         val = store.get_value(iter,colnum)
+        obj = store.get_value(iter,0)
+        if type(obj) in types.StringTypes and obj.find('GROUP')==0:
+            print 'Sorry, whole groups cannot be toggled to "optional"'
+            return
         newval = not val
         ref = self.ingController.get_persistent_ref_from_iter(iter)
         u = Undo.UndoableObject(

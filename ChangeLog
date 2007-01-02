@@ -5,6 +5,9 @@
 	(self.history->self.rc.history), but in the process of fixing it,
 	I realized the undo was more fundamentally broken and had to be
 	updated to properly use "permanent references"
+	* src/lib/reccard.py Disable ingredient group toggling from the UI
+	since it does not work and cannot be easily made to sensibly work
+	given the structure of our ingredient DB.
 	* src/tests/testRecCard.py Add a test for group editing. Exit when
 	tests complete successfully.
 
