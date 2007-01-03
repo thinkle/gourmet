@@ -132,6 +132,7 @@ class ExportTest:
                                  'rv':self.db.fetch_all(self.db.rview),
                                  'conv':None,
                                  'prog':None,
+                                 'extra_prefs':{}
                                  }
 
     def test_export (self, k):

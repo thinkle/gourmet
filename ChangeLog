@@ -1,5 +1,8 @@
 2007-01-02  Thomas M. Hinkle  <tom@localhost.localdomain>
 
+	* src/lib/importers/html_plugins/allrecipes.py Disable this plugin
+	temporarily -- it isn't working properly and I don't have time to
+	fix it.
 	* src/lib/reccard.py Fix up group undo/redo so that ingredient
 	group editing works again. This started with a simple typo fix
 	(self.history->self.rc.history), but in the process of fixing it,
@@ -8,6 +11,12 @@
 	* src/lib/reccard.py Disable ingredient group toggling from the UI
 	since it does not work and cannot be easily made to sensibly work
 	given the structure of our ingredient DB.
+	* src/tests/testExporters.py Update to work with fancy PDF Export.
+
+	* src/tests/testImporters.py Disable AllRecipes test since it's
+	broken and we're disabling the plugin. Also, improve message on
+	failure of import to produce a recipe with the expected title.
+	* src/tests/reference_setup/recipes.db Update to latest DB.
 	* src/tests/testRecCard.py Add a test for group editing. Exit when
 	tests complete successfully.
 
