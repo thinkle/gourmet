@@ -2,8 +2,11 @@ from gourmet import convert
 import re
 from html_helpers import *
 
-SUPPORTED_URLS = ['www.allrecipes.com']
-SUPPORTED_URLS_REGEXPS = ['.*\.allrecipes\.com']
+#SUPPORTED_URLS = ['www.allrecipes.com']
+#SUPPORTED_URLS_REGEXPS = ['.*\.allrecipes\.com']
+# Temporarily disable allrecipes import, as it isn't working properly.
+SUPPORTED_URLS = []
+SUPPORTED_URLS_REGEXPS = []
 
 RULES = [
     ['title',
