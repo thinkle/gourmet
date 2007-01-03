@@ -200,11 +200,14 @@ class RecIndex:
         """Display the count of currently visible recipes."""
         debug("set_reccount (self, *args):",5)
         self.count = self.rmodel._get_length_()
-        #self.stat.push(self.contid,_("%s Recipes")%self.count)
         bottom,top,total = self.rmodel.showing()
         if top >= total and bottom==1:
             lab = ngettext('%s recipe','%s recipes',top)%top
+            for b in self.first_button,self.prev_button,self.next_button,self.last_button:
+                b.hide()
         else:
+            for b in self.first_button,self.prev_button,self.next_button,self.last_button:
+                b.show()
             # Do not translate bottom, top and total -- I use these fancy formatting
             # strings in case your language needs the order changed!
             lab = _('Showing recipes %(bottom)s to %(top)s of %(total)s'%locals())
