@@ -11,8 +11,8 @@
 	* src/lib/reccard.py Disable ingredient group toggling from the UI
 	since it does not work and cannot be easily made to sensibly work
 	given the structure of our ingredient DB.
+	* src/lib/version.py Version 0.13.3
 	* src/tests/testExporters.py Update to work with fancy PDF Export.
-
 	* src/tests/testImporters.py Disable AllRecipes test since it's
 	broken and we're disabling the plugin. Also, improve message on
 	failure of import to produce a recipe with the expected title.
@@ -46,6 +46,7 @@
 	display and never adjusting them in the nutritional info
 	display). Properly handle redrawing and flowing with changed
 	reccard glade layout.
+	* src/lib/version.py Version 0.13.2
 
 2006-12-28  Thomas M. Hinkle  <tom@localhost.localdomain>
 

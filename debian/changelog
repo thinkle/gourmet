@@ -1,3 +1,10 @@
+gourmet (0.13.3-1) breezy; urgency=low
+	
+  * Update tests.
+  * Fix a number of minor bugs.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@sf.net>  Fri, 02 Jan 2007 10:07:36 -0500
+
 gourmet (0.13.2-1) breezy; urgency=low
 
   * Tweak recipe display so nutrition/recipe tab is always in view.
