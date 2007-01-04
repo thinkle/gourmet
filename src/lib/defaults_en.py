@@ -659,7 +659,7 @@ UNITS = [["bucket" , ["bucket", "buckets", "bckt."]],
          ["cl.", ["centiliter","cl", "cl.", "centiliters"]],
          ["dl.", ["deciliter","dl", "dl.","deciliters"]],
          ["l.", ["liter", "l.", "lit.", "liters",'l']],
-         ["g.", ["grams", "gram", "g.",'g']],
+         ["g.", ["grams", "gram", "g.",'g','gr','gr.']],
          ["mg.", ["miligram", "mg.", "mg", "miligrams"]],
          ["kg.", ["kilogram","kg.", "kg", "kilograms"]],
          # These names aren't really convertible, but we want them to

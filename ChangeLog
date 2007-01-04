@@ -1,3 +1,8 @@
+2007-01-04  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* src/lib/defaults_es.py Added gr. abbreviation.
+	* src/lib/defaults_en.py Added gr. abbreviation.	
+
 2007-01-03  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/recindex.py Hide First/Last/Prev/Next buttons when there

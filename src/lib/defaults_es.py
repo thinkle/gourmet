@@ -382,7 +382,7 @@ UNITS = [
     ["cl.", ["cl", "cl.", "centilitro", "centilitros"]],
     ["dl.", ["dl", "dl.", "decilitro", "decilitros"]],
     ["l.", ["litro", "l.", "lit.", "litros"]],
-    ["g.", ["gramos", "gramo", "g."]],
+    ["g.", ["gramos", "gramo", "g.","gr.","g","gr"]],
     ["mg.", ["mg.", "mg", "miligramo", "miligramos"]],
     ["kg.", ["kg.", "kg", "kilogramo", "kilogramos"]],
     ]
