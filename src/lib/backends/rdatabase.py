@@ -453,7 +453,7 @@ class RecData:
 
     def delete_by_criteria (self, table, criteria):
         """Table is our table.
-        Criteria is a dictionary of critiera to delete by.
+        Criteria is a dictionary of criteria to delete by.
         """
         raise NotImplementedError
 

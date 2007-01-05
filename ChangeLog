@@ -1,7 +1,16 @@
 2007-01-04  Thomas M. Hinkle  <tom@localhost.localdomain>
 
+	* glade/valueEditor.glade Create basic value editor for editing
+	values of e.g. categories throughout the database.	
+	* src/lib/backends/sql_db.py Make get_unique_values() sort
+	results.  Allow new syntax for criteria for make_where_statement
+	whereby we can have a list of "and"/"or" values for a single
+	column. Add update_by_criteria alias for update since that's what
+	the rdatabase.py parent class uses.
 	* src/lib/defaults_es.py Added gr. abbreviation.
-	* src/lib/defaults_en.py Added gr. abbreviation.	
+	* src/lib/defaults_en.py Added gr. abbreviation.
+	* src/lib/valueEditor.py Create basic value editor for editing
+	values of e.g. categories throughout the database.
 
 2007-01-03  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 

@@ -74,8 +74,17 @@ class RecData (rdatabase.RecData):
                 else:
                     operator = "=="
                     crit = v
-                sel_string = sel_string + " %s %s "%(k,operator) + " ?" + " %s"%logic
-                sql_params += [crit]
+                if type(v)==tuple:
+                    log,lst = crit
+                    print 'log=',log,'lst=',lst
+                    sel_string += (" %s "%log).join(
+                        [" %s %s ? "%(k,operator) for i in lst]
+                        )
+                    sql_params.extend(lst)
+                    sel_string += " %s"%logic
+                else:
+                    sel_string = sel_string + " %s %s "%(k,operator) + " ?" + " %s"%logic
+                    sql_params += [crit]
             sel_string = sel_string[0:-len(logic)]
         return sel_string,sql_params
 
@@ -300,12 +309,13 @@ class RecData (rdatabase.RecData):
 
     def get_unique_values (self, colname, table=None, **criteria):
         if not table: table=self.rview
+        if table==self.rview and colname=='category': table=self.catview
         if criteria:
             where,params = self.make_where_statement(criteria)
         else:
             where,params = '',[]
         self.execute(self.cursor,
-                     'SELECT DISTINCT %s FROM %s '%(colname,table)+where,
+                     'SELECT DISTINCT %s FROM %s '%(colname,table)+where+'ORDER BY %s'%colname,
                      params)
         ret = []
         for row in self.cursor.fetchall():
@@ -375,6 +385,8 @@ class RecData (rdatabase.RecData):
                      "DELETE FROM "+table+" "+where,
                      params
                      )
+
+    def update_by_criteria (self, *args, **kwargs): self.update(*args,**kwargs)
 
     def update (self, table, criteria, new_values_dic):
         where,params = self.make_where_statement(criteria)
