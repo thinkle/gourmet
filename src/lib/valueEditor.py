@@ -12,16 +12,19 @@ class ValueEditor:
 
     values = 'category','cuisine','source','link'
 
-    def __init__ (self, rd):
-        self.rd = rd
+    def __init__ (self, rd, rg):
+        self.field = None; self.other_field = None
+        self.rd = rd; self.rg = rg
         self.glade = gtk.glade.XML(os.path.join(gglobals.gladebase,'valueEditor.glade'))
         self.__setup_widgets__()
         self.__setup_treeview__()
         self.glade.signal_autoconnect({
             'on_changeValueButton_toggled':self.changeValueButtonToggledCB,
             'on_fieldToEditCombo_changed':self.fieldChangedCB,
+            'on_otherChangeCheckButton_toggled':self.otherChangeToggleCB,
+            'on_otherExpander_activate':self.otherChangeToggleCB,
+            'on_otherFieldCombo_changed':self.otherFieldComboChangedCB,
             })
-        
         
     def __setup_widgets__ (self):
         for w in [
@@ -30,23 +33,37 @@ class ValueEditor:
             'fieldToEditCombo','newValueComboBoxEntry',
             'newValueEntry','changeValueButton',
             'deleteValueButton','forEachLabel',
+            'otherExpander','otherFieldCombo',
+            'otherNewValueEntry','otherNewValueComboBoxEntry',
+            'otherValueBlurbLabel','otherChangeCheckButton',
+            'leaveValueButton'
             ]:
             setattr(self,w,self.glade.get_widget(w))
         self.act_on_selection_widgets = [
             self.deleteValueButton, self.changeValueButton,
-            self.newValueEntry
+            self.newValueEntry,self.otherChangeCheckButton,
+            self.leaveValueButton
             ]
         # Set up the combo-widget at the top with the 
+        self.fields = [gglobals.REC_ATTR_DIC[v] for v in self.values]
         cb.set_model_from_list(
             self.fieldToEditCombo,
-            [gglobals.REC_ATTR_DIC[v] for v in self.values]
+            self.fields
+            )
+        cb.set_model_from_list(
+            self.otherFieldCombo,
+            self.fields
             )
         self.newValueComboBoxEntry.set_sensitive(False)
+        self.otherValueBlurbLabel.hide()
         self.newValueEntryCompletion = gtk.EntryCompletion()
         self.newValueEntry.set_completion(self.newValueEntryCompletion)
+        self.otherNewValueEntryCompletion = gtk.EntryCompletion()
+        self.otherNewValueEntry.set_completion(
+            self.otherNewValueEntryCompletion
+            )
         self.valueDialog.connect('response',self.dialog_response_cb)
         self.valueDialog.set_response_sensitive(gtk.RESPONSE_APPLY,False)
-        
 
     def __setup_treeview__ (self):
         renderer = gtk.CellRendererText()
@@ -91,19 +108,48 @@ class ValueEditor:
         name = cb.cb_get_active_text(combobox)
         self.field = gglobals.NAME_TO_ATTR[name]
         self.populate_treeview()
+        other_fields = self.fields[:]
+        if self.field != 'category':
+            other_fields.remove(gglobals.REC_ATTR_DIC[self.field])
+        cb.set_model_from_list(
+            self.otherFieldCombo,
+            other_fields
+            )
+
+    def otherFieldComboChangedCB (self, combobox):
+        name = cb.cb_get_active_text(combobox)
+        self.other_field = gglobals.NAME_TO_ATTR[name]
+        if self.other_field == 'category':
+            self.otherValueBlurbLabel.hide()
+        else:
+            self.otherValueBlurbLabel.show()
+        mod = self.make_model_for_field(self.other_field)
+        self.otherNewValueComboBoxEntry.set_model(mod)
+        if self.otherNewValueComboBoxEntry.get_text_column()==-1:
+            self.otherNewValueComboBoxEntry.set_text_column(0)
+        self.otherNewValueEntryCompletion.set_model(mod)
+        self.otherNewValueEntryCompletion.set_text_column(0)
+        
 
     def populate_treeview (self):
         """Assume that self.field is set"""
-        vals = self.rd.get_unique_values(self.field)
-        mod = gtk.ListStore(str)
-        for v in vals: mod.append((v,))
+        mod = self.make_model_for_field(self.field)
         self.treeview.set_model(mod)
         self.newValueComboBoxEntry.set_model(mod)
-        self.newValueComboBoxEntry.set_text_column(0)
+        if self.newValueComboBoxEntry.get_text_column()==-1:
+            self.newValueComboBoxEntry.set_text_column(0)
         self.newValueEntryCompletion.set_model(mod)
         self.newValueEntryCompletion.set_text_column(0)
+
+    def make_model_for_field (self, field):
+        vals = self.rd.get_unique_values(field)
+        mod = gtk.ListStore(str)
+        for v in vals: mod.append((v,))
+        return mod
         
     def run (self): return self.valueDialog.run()
+    def show (self): return self.valueDialog.show()
+    def hide (self): return self.valueDialog.hide()    
 
     def dialog_response_cb (self, dialog, response_id):
         if response_id == gtk.RESPONSE_CLOSE:
@@ -133,12 +179,26 @@ class ValueEditor:
                 self.apply_changes(criteria,table)
                 self.populate_treeview()
 
+    def otherChangeToggleCB (self, widg):
+        if widg!=self.otherChangeCheckButton:
+            self.otherChangeCheckButton.activate()
+        if self.otherChangeCheckButton.get_active():
+            self.otherExpander.set_expanded(True)
+        else:
+            self.otherExpander.set_expanded(False)
+
     def get_changes (self):
         if self.deleteValueButton.get_active():
             value = None
         elif self.changeValueButton.get_active():
             value = self.newValueEntry.get_text()
         return {self.field:value}
+
+    def get_other_changes (self):
+        if self.otherChangeCheckButton.get_active():
+            return {self.other_field:self.otherNewValueEntry.get_text()}
+        else:
+            return {}
 
     def get_selected_values (self, ts=None):
         if not ts:
@@ -165,23 +225,51 @@ class ValueEditor:
 
     def apply_changes (self, criteria, table):
         changes = self.get_changes()
+        other_changes = self.get_other_changes()
+        if self.field != 'category' and self.other_field != 'category':
+            changes.update(other_changes)
+        elif other_changes:
+            if self.other_field == 'category':
+                # Inefficient, but works with our current backend
+                # interface... and shouldn't be called often, so we'll
+                # deal with the ugliness for now
+                for r in self.rd.fetch_all(self.rd.rview,**criteria):
+                    if not self.rd.fetch_one(self.rd.catview,{'id':r.id}):
+                        self.rd.do_add_cat({'id':r.id,'category':other_changes['category']})
+            else:
+                if self.field=='category':
+                    IDs = [r.id for r in self.rd.fetch_all(self.rd.catview,**criteria)]
+                    new_criteria = {'id':('==',('or',IDs))}
+                    self.rd.update_by_criteria(
+                        self.rd.rview,
+                        new_criteria,
+                        other_changes
+                        )
+                else:
+                    self.rd.update_by_criteria(
+                        self.rd.rview,
+                        criteria,
+                        other_changes
+                        )
         if self.field=='category' and not changes['category']:
-            print 'self.rd.delete_by_criteria(',table,criteria,')'
             self.rd.delete_by_criteria(table,criteria)
-            return
         else:
-            table = self.rd.rview
-        print 'self.rd.update_by_criteria(',table,criteria,changes,')'
-        self.rd.update_by_criteria(table,criteria,changes)
-        
+            if self.field=='category':
+                table = self.rd.catview
+            else:
+                table = self.rd.rview
+            self.rd.update_by_criteria(table,criteria,changes)
+        self.rg.reset_search()
 
 if __name__ == '__main__':
     import recipeManager
     rm = recipeManager.default_rec_manager()
+    class DummyRG:
+        def reset_search (): pass
     w = gtk.Window()
     b = gtk.Button('edit me now')
     w.add(b); w.show_all()
-    ve = ValueEditor(rm)
+    ve = ValueEditor(rm,DummyRG())
     b.connect('clicked',lambda *args: ve.run())
     w.connect('delete-event',gtk.main_quit)
     gtk.main()

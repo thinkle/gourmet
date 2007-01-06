@@ -2,7 +2,7 @@
 import os.path, time, os, sys, re, threading, StringIO, pango, string
 import Image
 import gtk.glade, gtk, gobject, gtk.gdk, traceback
-import keyEditor
+import keyEditor, valueEditor
 import recipeManager
 import nutrition.nutrition, nutrition.nutritionGrabberGui
 import exporters.printer as printer
@@ -196,6 +196,7 @@ class RecGui (RecIndex):
             'colPrefs': self.show_preferences,
             'unitConverter': self.showConverter,
             'ingKeyEditor': self.showKeyEditor,
+            'valueEditor': self.showValueEditor,
             'print':self.print_recs,
             'email':self.email_recs,
             #'email_prefs':self.email_prefs,
@@ -1231,6 +1232,10 @@ class RecGui (RecIndex):
     def showKeyEditor (self, *args):
         ke=keyEditor.KeyEditor(rd=self.rd, rg=self)
 
+    def showValueEditor (self, *args):
+        if not hasattr(self,'ve'):
+            self.ve=valueEditor.ValueEditor(self.rd,self)
+        self.ve.show()
 
 class RecTrash (RecIndex):
 

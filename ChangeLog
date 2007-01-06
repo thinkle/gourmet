@@ -1,4 +1,17 @@
-2007-01-04  Thomas M. Hinkle  <tom@localhost.localdomain>
+2007-01-06  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* MANIFEST add valueEditor.glade and valueEditor.py
+	* glade/app.glade add button to open valueEditor (called fieldEditor)
+	* glade/valueEditor.glade Fix typo in "title" label. Add interface
+	for changing *other* values (i.e. so that you can change the
+	cuisine from foo->bar wherever the source is set to baz.)
+	* src/lib/GourmetRecipeManager.py Add valueEditor to main interface.
+	* src/lib/valueEditor.py Add ability to change *other* fields that
+	the field selected for (i.e. so that you can change the cuisine
+	from foo->bar wherever the source is set to baz.) Make sure the
+	recipe index is updated when we make a change.
+
+2007-01-04  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* glade/valueEditor.glade Create basic value editor for editing
 	values of e.g. categories throughout the database.	

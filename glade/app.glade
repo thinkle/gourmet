@@ -203,7 +203,7 @@
 			      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image397">
+				<widget class="GtkImage" id="image404">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-new</property>
 				  <property name="icon_size">1</property>
@@ -279,7 +279,7 @@
 			      <accelerator key="p" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image398">
+				<widget class="GtkImage" id="image405">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-print</property>
 				  <property name="icon_size">1</property>
@@ -330,7 +330,7 @@
 			      <accelerator key="z" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image399">
+				<widget class="GtkImage" id="image406">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-undo</property>
 				  <property name="icon_size">1</property>
@@ -352,7 +352,7 @@
 			      <accelerator key="z" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image400">
+				<widget class="GtkImage" id="image407">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-redo</property>
 				  <property name="icon_size">1</property>
@@ -450,11 +450,11 @@
 			      <property name="label" translatable="yes">View Recipe _Card</property>
 			      <property name="use_underline">True</property>
 			      <signal name="activate" handler="rl_viewrec" last_modification_time="Sun, 12 Sep 2004 19:57:17 GMT"/>
-			      <accelerator key="o" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 			      <accelerator key="c" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+			      <accelerator key="o" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image401">
+				<widget class="GtkImage" id="image408">
 				  <property name="visible">True</property>
 				  <property name="pixbuf">recbox.png</property>
 				  <property name="xalign">0.5</property>
@@ -476,7 +476,7 @@
 			      <accelerator key="l" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image402">
+				<widget class="GtkImage" id="image409">
 				  <property name="visible">True</property>
 				  <property name="pixbuf">AddToShoppingList.png</property>
 				  <property name="xalign">0.5</property>
@@ -498,7 +498,7 @@
 			      <accelerator key="d" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image403">
+				<widget class="GtkImage" id="image410">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-delete</property>
 				  <property name="icon_size">1</property>
@@ -559,6 +559,16 @@
 			  </child>
 
 			  <child>
+			    <widget class="GtkMenuItem" id="field_editor1">
+			      <property name="visible">True</property>
+			      <property name="tooltip" translatable="yes">Edit values for fields across several recipes</property>
+			      <property name="label" translatable="yes">_Field Editor</property>
+			      <property name="use_underline">True</property>
+			      <signal name="activate" handler="valueEditor" last_modification_time="Sat, 06 Jan 2007 01:58:05 GMT"/>
+			    </widget>
+			  </child>
+
+			  <child>
 			    <widget class="GtkMenuItem" id="unit_converter1">
 			      <property name="visible">True</property>
 			      <property name="label" translatable="yes">_Unit Converter</property>
@@ -598,7 +608,7 @@
 			      <signal name="activate" handler="about" last_modification_time="Mon, 26 Apr 2004 01:23:41 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image404">
+				<widget class="GtkImage" id="image411">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-dialog-info</property>
 				  <property name="icon_size">1</property>

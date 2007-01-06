@@ -32,6 +32,7 @@ glade/recSelector.glade
 glade/rec_ref_window.glade
 glade/shopList.glade
 glade/timerDialog.glade
+glade/valueEditor.glade
 src/lib/legacy_db/__init__.py
 src/lib/legacy_db/db_09/__init__.py
 src/lib/legacy_db/db_09/rdatabase.py
@@ -117,6 +118,7 @@ src/lib/timeScanner.py
 src/lib/treeview_extras.py
 src/lib/upgradeHandler.py
 src/lib/Undo.py
+src/lib/valueEditor.py
 src/lib/validatingEntry.py
 src/lib/version.py
 src/lib/WidgetSaver.py
