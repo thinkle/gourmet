@@ -445,7 +445,13 @@ class WebPageImporter (importer.importer):
         our web page.
         """
         debug('Scraping url %s'%self.url,0)
-        self.d = scrape_url(self.url, progress=self.prog)
+        try:
+            self.d = scrape_url(self.url, progress=self.prog)
+        except:
+            print 'Trouble using default recipe filter to download %s'%self.url
+            traceback.print_exc()
+            print 'We will use a generic importer instead.'
+            self.d = {}
         debug('Scraping url returned %s'%self.d,0)
         do_generic = not self.d
         if not do_generic:
