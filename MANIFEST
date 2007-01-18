@@ -21,6 +21,7 @@ images/gourmet_logo.png
 images/AddToShoppingList.png
 images/Nutrition.png
 glade/app.glade
+glade/batchEditor.glade
 glade/converter.glade
 glade/databaseChooser.glade
 glade/keyeditor.glade
@@ -50,6 +51,7 @@ data/warning.wav
 data/phone.wav
 style/default.css
 src/gourmet
+src/lib/batchEditor.py
 src/lib/cb_extras.py
 src/lib/check_encodings.py
 src/lib/chooserNotebook.py

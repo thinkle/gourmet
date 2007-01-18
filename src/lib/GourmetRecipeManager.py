@@ -2,7 +2,7 @@
 import os.path, time, os, sys, re, threading, StringIO, pango, string
 import Image
 import gtk.glade, gtk, gobject, gtk.gdk, traceback
-import keyEditor, valueEditor
+import keyEditor, valueEditor, batchEditor
 import recipeManager
 import nutrition.nutrition, nutrition.nutritionGrabberGui
 import exporters.printer as printer
@@ -149,6 +149,7 @@ class RecGui (RecIndex):
                                    self.glade.get_widget('rlShopRecMenu'),
                                    self.glade.get_widget('rlDelRecButton'),
                                    self.glade.get_widget('rlDelRecMenu'),
+                                   self.glade.get_widget('rlBatchEditRecMenu'),
                                    self.glade.get_widget('export_menu_item'),
                                    self.glade.get_widget('email_menu_item'),
                                    self.glade.get_widget('print_menu_item'),
@@ -203,6 +204,7 @@ class RecGui (RecIndex):
             'showDeletedRecipes':self.show_deleted_recs,
             'emptyTrash':self.empty_trash,
             'on_timer': lambda *args: show_timer(),
+            'batch_edit':self.batch_edit_recs,
 #            'shopCatEditor': self.showShopEditor,            
             })
         # self.rc will be a list of open recipe cards.
@@ -461,8 +463,11 @@ class RecGui (RecIndex):
         # connect hooks to modify our view whenever and
         # whenceever our recipes are updated...
         self.rd.modify_hooks.append(self.update_rec_iter)
+        self.rd.modify_hooks.append(self.updateAttributeModels)
+        self.rd.add_hooks.append(self.updateAttributeModels)
         #self.rd.add_hooks.append(self.new_rec_iter)
         self.rd.delete_hooks.append(self.delete_rec_iter)
+        self.rd.delete_hooks.append(self.updateAttributeModels)
         # a flag to make deleting multiple recs
         # more efficient...
         self.doing_multiple_deletions=False
@@ -477,6 +482,7 @@ class RecGui (RecIndex):
         # we'll need to hand these to various other places
         # that want a list of units.
         self.umodel = convertGui.UnitModel(self.conv)
+        self.attributeModels = []
         self.inginfo = reccard.IngInfo(self.rd)
         #self.create_rmodel(self.rd.rview)
         self.sl = shopgui.ShopGui(self, conv=self.conv)
@@ -1120,6 +1126,7 @@ class RecGui (RecIndex):
         debug('hooks: %s'%self.rd.add_hooks,1)
         self.wait_to_filter=False
         gt.gtk_enter()
+        self.updateAttributeModels()
         self.redo_search()
         gt.gtk_leave()
 
@@ -1235,7 +1242,112 @@ class RecGui (RecIndex):
     def showValueEditor (self, *args):
         if not hasattr(self,'ve'):
             self.ve=valueEditor.ValueEditor(self.rd,self)
+        self.ve.valueDialog.connect('response',lambda d,r: (r==gtk.RESPONSE_APPLY and self.updateAttributeModels))
         self.ve.show()
+
+
+    def batch_edit_recs (self, *args):
+        recs = self.recTreeSelectedRecs()
+        if not hasattr(self,'batchEditor'):
+            self.batchEditor =  batchEditor.BatchEditor(self)
+        self.batchEditor.set_values_from_recipe(recs[0])
+        self.batchEditor.dialog.run()
+        # If we have values...
+        if self.batchEditor.values:
+            changes = self.batchEditor.values
+            only_where_blank = self.batchEditor.setFieldWhereBlank
+            attributes = ', '.join(changes.keys())
+            msg = gettext.ngettext('Set %(attributes)s for %(num)s selected recipe?',
+                                   'Set %(attributes)s for %(num)s selected recipes?',
+                                   len(recs))%{'attributes':attributes,
+                                               'num':len(recs),
+                                               }
+            msg += '\n'
+            if only_where_blank:
+                msg += _('Any previously existing values will not be changed.')+'\n'
+            else:
+                msg += _('The new values will overwrite any previously existing values.')+'\n'
+            msg += '<i>'+_('This change cannot be undone.')+'</i>'
+            if de.getBoolean(label=_('Set values for selected recipes'),sublabel=msg,cancel=False,
+                             custom_yes=gtk.STOCK_OK,custom_no=gtk.STOCK_CANCEL,):
+                for r in recs:
+                    if only_where_blank:
+                        changes = self.batchEditor.values.copy()
+                        for attribute in changes.keys():
+                            if hasattr(r,attribute) and getattr(r,attribute):
+                                del changes[attribute]
+                        if changes:
+                            self.rd.modify_rec(r,changes)
+                    else:
+                        self.rd.modify_rec(r,self.batchEditor.values)
+                    self.update_rec_iter(r)
+            else:
+                print 'Cancelled'
+        self.batchEditor.dialog.hide()
+        self.updateAttributeModels()
+                    
+    def getAttributeModel (self, attribute):
+        """Return a ListModel with a unique list of values for attribute.
+
+        This is stored here so that all the different comboboxes that
+        might need e.g. a list of categories can share 1 model and
+        save memory.
+        """
+        if not hasattr(self,'%sModel'%attribute):
+            slist = self.createAttributeList(attribute)
+            m = gtk.ListStore(str)
+            for i in slist: m.append([i])
+            setattr(self,'%sModel'%attribute,m)
+            self.attributeModels.append((attribute,getattr(self,'%sModel'%attribute)))
+        return getattr(self,'%sModel'%attribute)
+
+    def updateAttributeModels (self):
+        print 'updateAttributeModels!'
+        for attr,mod in self.attributeModels:
+            self.updateAttributeModel(attr)
+            
+    def updateAttributeModel (self, attribute):
+        slist = self.createAttributeList(attribute)
+        model = getattr(self,'%sModel'%attribute)
+        for n,item in enumerate(slist):
+            if model[n][0] == item:
+                continue
+            else:
+                # See if we match something later in the model -- if
+                # we do, suck up the whole model
+                additional = 1
+                found_match = False
+                while len(model) > (n+additional):
+                    if model[n+additional][0] == item:
+                        while additional > 0:
+                            model.remove(model.get_iter(n))
+                            additional -= 1
+                            found_match = False
+                        break
+                    additional += 1
+                if not found_match:
+                    model.insert(n,[item])
+        while len(model) > len(slist):
+            last = model.get_iter(len(model) - 1)
+            model.remove(last)
+        return model
+
+    def createAttributeList (self, attribute):
+        """Create a ListModel with unique values of attribute.
+        """
+        if attribute=='category':
+            slist = self.rg.rd.get_unique_values(attribute,self.rg.rd.catview)
+        else:
+            slist = self.rg.rd.get_unique_values(attribute,deleted=False)
+        if not slist:
+            slist = self.rg.rd.get_default_values(attribute)
+        else:
+            for default_value in self.rg.rd.get_default_values(attribute):
+                if default_value not in slist: slist.append(default_value)
+        slist.sort()
+        return slist
+
+    # END class RecGUI
 
 class RecTrash (RecIndex):
 

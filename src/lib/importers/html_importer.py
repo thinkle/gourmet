@@ -525,7 +525,9 @@ class WebPageImporter (importer.importer):
                     if ingdic.has_key('text'):
                         d = self.rd.ingredient_parser(ingdic['text'],conv=self.conv)
                         if d:
-                            for dk,dv in d.items(): ingdic[dk]=dv
+                            for dk,dv in d.items():
+                                if not ingdic.has_key(dk) or not ingdic[dk]:
+                                    ingdic[dk]=dv
                         del ingdic['text']
                     self.start_ing(**ingdic)
                     self.commit_ing()

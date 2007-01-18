@@ -615,7 +615,7 @@ class RecipeModel (pageable_store.PageableViewStore):
         for n,row in enumerate(self):
             debug('Looking at row',3)
             if row[0].id==recipe:
-                indx = n + (self.page * self.per_page)
+                indx = int(n + (self.page * self.per_page))
                 # update parent
                 self.parent_list[indx] = self.rd.fetch_one(self.rd.rview,
                                                            id=recipe)

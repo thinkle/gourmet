@@ -14,7 +14,7 @@
       <signal name="activate" handler="rl_shoprec" last_modification_time="Thu, 29 Apr 2004 00:46:50 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image139">
+	<widget class="GtkImage" id="image412">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-add</property>
 	  <property name="icon_size">1</property>
@@ -36,7 +36,7 @@
       <signal name="activate" handler="rl_viewrec" last_modification_time="Thu, 29 Apr 2004 00:33:46 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image140">
+	<widget class="GtkImage" id="image413">
 	  <property name="visible">True</property>
 	  <property name="pixbuf">recbox.png</property>
 	  <property name="xalign">0.5</property>
@@ -57,7 +57,7 @@
       <signal name="activate" handler="rl_delrec" last_modification_time="Sat, 01 May 2004 15:09:08 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image141">
+	<widget class="GtkImage" id="image414">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-delete</property>
 	  <property name="icon_size">1</property>
@@ -73,6 +73,28 @@
   <child>
     <widget class="GtkSeparatorMenuItem" id="separator9">
       <property name="visible">True</property>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkImageMenuItem" id="batch_edit_recipe1">
+      <property name="visible">True</property>
+      <property name="tooltip" translatable="yes">Edit attributes of selected recipes</property>
+      <property name="label" translatable="yes">_Batch edit recipes</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="batch_edit" last_modification_time="Wed, 17 Jan 2007 23:35:20 GMT"/>
+
+      <child internal-child="image">
+	<widget class="GtkImage" id="image415">
+	  <property name="visible">True</property>
+	  <property name="stock">gtk-edit</property>
+	  <property name="icon_size">1</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
+      </child>
     </widget>
   </child>
 
@@ -95,7 +117,7 @@
       <signal name="activate" handler="print" last_modification_time="Tue, 30 Nov 2004 22:43:58 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image142">
+	<widget class="GtkImage" id="image416">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-print</property>
 	  <property name="icon_size">1</property>
@@ -203,7 +225,7 @@
 			      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image404">
+				<widget class="GtkImage" id="image441">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-new</property>
 				  <property name="icon_size">1</property>
@@ -279,7 +301,7 @@
 			      <accelerator key="p" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image405">
+				<widget class="GtkImage" id="image442">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-print</property>
 				  <property name="icon_size">1</property>
@@ -330,7 +352,7 @@
 			      <accelerator key="z" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image406">
+				<widget class="GtkImage" id="image443">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-undo</property>
 				  <property name="icon_size">1</property>
@@ -352,7 +374,7 @@
 			      <accelerator key="z" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image407">
+				<widget class="GtkImage" id="image444">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-redo</property>
 				  <property name="icon_size">1</property>
@@ -454,7 +476,7 @@
 			      <accelerator key="o" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image408">
+				<widget class="GtkImage" id="image445">
 				  <property name="visible">True</property>
 				  <property name="pixbuf">recbox.png</property>
 				  <property name="xalign">0.5</property>
@@ -476,9 +498,38 @@
 			      <accelerator key="l" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image409">
+				<widget class="GtkImage" id="image446">
 				  <property name="visible">True</property>
 				  <property name="pixbuf">AddToShoppingList.png</property>
+				  <property name="xalign">0.5</property>
+				  <property name="yalign">0.5</property>
+				  <property name="xpad">0</property>
+				  <property name="ypad">0</property>
+				</widget>
+			      </child>
+			    </widget>
+			  </child>
+
+			  <child>
+			    <widget class="GtkSeparatorMenuItem" id="separator15">
+			      <property name="visible">True</property>
+			    </widget>
+			  </child>
+
+			  <child>
+			    <widget class="GtkImageMenuItem" id="rlBatchEditRecMenu">
+			      <property name="visible">True</property>
+			      <property name="tooltip" translatable="yes">Edit attributes of selected recipes</property>
+			      <property name="label" translatable="yes">_Batch edit recipes</property>
+			      <property name="use_underline">True</property>
+			      <signal name="activate" handler="batch_edit" last_modification_time="Wed, 17 Jan 2007 23:36:56 GMT"/>
+			      <accelerator key="E" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+
+			      <child internal-child="image">
+				<widget class="GtkImage" id="image447">
+				  <property name="visible">True</property>
+				  <property name="stock">gtk-edit</property>
+				  <property name="icon_size">1</property>
 				  <property name="xalign">0.5</property>
 				  <property name="yalign">0.5</property>
 				  <property name="xpad">0</property>
@@ -498,7 +549,7 @@
 			      <accelerator key="d" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image410">
+				<widget class="GtkImage" id="image448">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-delete</property>
 				  <property name="icon_size">1</property>
@@ -608,7 +659,7 @@
 			      <signal name="activate" handler="about" last_modification_time="Mon, 26 Apr 2004 01:23:41 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image411">
+				<widget class="GtkImage" id="image449">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-dialog-info</property>
 				  <property name="icon_size">1</property>

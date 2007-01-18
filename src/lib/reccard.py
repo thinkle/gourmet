@@ -707,17 +707,9 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         self.updateRecDisplay()
         for c in self.reccom:
             debug("Widget for %s"%c,5)
-            if c=='category':
-                slist = self.rg.rd.get_unique_values(c,self.rg.rd.catview)
-            else:
-                slist = self.rg.rd.get_unique_values(c,deleted=False)
-            if not slist:
-                slist = self.rg.rd.get_default_values(c)
-            else:
-                for default_value in self.rg.rd.get_default_values(c):
-                    if default_value not in slist: slist.append(default_value)
-            slist.sort()
-            cb.set_model_from_list(self.rw[c],slist)
+            model = self.rg.getAttributeModel(c)
+            self.rw[c].set_model(model)
+            self.rw[c].set_text_column(0)
             cb.setup_completion(self.rw[c])
             if c=='category':
                 val = ', '.join(self.rg.rd.get_cats(rec))
