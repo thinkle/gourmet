@@ -124,6 +124,8 @@ class BeautifulSoupScraper:
             post_processing=None
         elif len(rule)==4:
             store_as,tagpath,retmethod,post_processing=rule
+        else:
+            raise "Rule %s is invalid (it should be 3 or 4 items long)."%rule
         tag = self.get_tag_according_to_path(tagpath)
         self.store_tag(store_as,tag,retmethod,post_processing)
 
@@ -528,6 +530,8 @@ class WebPageImporter (importer.importer):
                             for dk,dv in d.items():
                                 if not ingdic.has_key(dk) or not ingdic[dk]:
                                     ingdic[dk]=dv
+                        elif not ingdic.has_key('item'):
+                            ingdic['item']=ingdic['text']
                         del ingdic['text']
                     self.start_ing(**ingdic)
                     self.commit_ing()
