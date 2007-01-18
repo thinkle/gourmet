@@ -1,4 +1,23 @@
-2007-01-11  Thomas M. Hinkle  <tom@localhost.localdomain>
+2007-01-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* MANIFEST add batchEditor.py and batchEditor.glade
+	* glade/app.glade Add menu items for launching batch editor 
+	* glade/recCard.glade Fix alignment of items on Recipe Details page.
+	* src/lib/GourmetRecipeManager.py Add batch editor. Create new
+	methods to store models for attributes (cuisine, category, etc) in
+	one place, rather than re-creating them in each recipe card,
+	etc. that needs them.
+	* src/lib/reccard.py Use new methods for creating global attribute
+	models.
+	* src/lib/recindex.py Fix type error that cropped up in update_recipe
+	* src/lib/backends/sql_db.py
+	* src/lib/importers/html_importer.py When dealing with pre-parsed
+	ingredient dictionaries, only use our own parsing to fill in gaps
+	(this allows html importer scripts to do some but not all parsing
+	on their own).
+	
+
+2007-01-11  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/importers/html_importer.py When scrapers fail, display
 	the error, but fallback to a generic importer -- this is really
