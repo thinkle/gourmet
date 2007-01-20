@@ -1,5 +1,5 @@
 import convert, xml.sax.saxutils
-import md5, difflib, types
+import md5, difflib, types, re
 from gettext import gettext as _
 from gglobals import REC_ATTRS,TEXT_ATTR_DIC,INT_REC_ATTRS
 
@@ -141,7 +141,11 @@ def get_two_columns (s1,s2):
             right.append(line)
     return left,right
         
-def diff_ings (rec1,rec2,rd):
+def diff_ings_content (rd, rec1, rec2):
+    ings1 = rd.order_ings(rd.get_ings(rec1))
+    ings2 = rd.order_ings(get_ings(rec2))
+
+def diff_ings (rd,rec1,rec2):
     ings1 = format_ings(rec1,rd)
     ings2 = format_ings(rec2,rd)
     if ings1 != ings2:
@@ -161,6 +165,8 @@ def diff_recipe (rd,recs):
     return diffs
 
 def merge_recipes (rd, recs):
+    """Return a dictionary of attributes useable to "merge" recipes
+    and a dictionary with conflicts."""
     diffs = diff_recipe(rd,recs)
     my_recipe = {}
     for attr,vals in diffs.items():
@@ -187,34 +193,69 @@ def merge_recipes (rd, recs):
             del diffs[attr]
     return my_recipe,diffs
 
-if __name__ == '__main__' and False:
-    import recipeManager
+
+def format_ingdiff_line (s):
+    s = re.sub('</?diff>','',s)
+    s = s.replace('<del>','<span color="red" strikethrough="single">')
+    s = s.replace('</del>','</span>')
+    s = s.replace('<add>','<span color="red">')
+    s = s.replace('</add>','</span>')
+    return s
+
+def show_ing_diff (idiff):
+    import gtk
+    left, right = idiff
+    ls = gtk.ListStore(str,str)
+    for n in range(len(left)):
+        ls.append([format_ingdiff_line(left[n]),
+                  format_ingdiff_line(right[n])]
+                  )
+    tv = gtk.TreeView()
+    r = gtk.CellRendererText()
+    tc = gtk.TreeViewColumn('Left',r,markup=0)
+    tc2 = gtk.TreeViewColumn('Right',r,markup=1)
+    tv.append_column(tc)
+    tv.append_column(tc2)
+    tv.set_model(ls)
+    return tv
+
+if __name__ == '__main__':
+    import recipeManager, gtk
     rd = recipeManager.default_rec_manager()
     empty_hash = get_ingredient_hash([],None)
-    rr = {}; ii = {}; ir = {}
+    rr = {}; ii = {}; ir = {}; count = 0
     for rec in rd.fetch_all(rd.rview,deleted=False):
+        count += 1
         rh,ih = hash_recipe(rec,rd)
         ch = rh+ih
-        print ch,rec.id
+        if count % 10 == 0: print count,rec.id,ch
+        #print ch,rec.id
         if ir.has_key(ch):
             print rec.id,rec.title,'is a complete duplicate of',ir[ch].id,ir[ch].title
-            print 'Merge would be: ',merge_recipes(rec,ir[ch],rd)
+            print 'Merge would be: ',merge_recipes(rd,[rec,ir[ch]])
         else:
             ir[ch]=rec
         if rr.has_key(rh):
             print rec.id,rec.title,'duplicates',rr[rh].id,rr[rh].title
-            rdiff = diff_recipe(rec,rr[rh],rd)
-            idiff =  diff_ings(rec,rr[rh],rd)
+            rdiff = diff_recipe(rd,[rec,rr[rh]])
+            idiff =  diff_ings(rd,rec,rr[rh])
             if (not rdiff) and (not idiff):
                 print 'PERFECT DUPS!'
             if rdiff:
                 print 'Rec Diff'
                 for k,v in rdiff.items(): print '%s: %s\t%s'%(k,v[0],v[1])
             if idiff:
+                tv = show_ing_diff(idiff)
+                w = gtk.Window()
+                w.add(tv)
+                w.show_all()
+                w.connect('delete-event',gtk.main_quit)
+                gtk.main()
                 left,right = idiff
                 print 'ING DIFF\n----------\n'
                 for n in range(len(left)):
                     print left[n],right[n]
+                
         else:
             rr[rh]=rec
         if ii.has_key(ih) and ih != empty_hash:

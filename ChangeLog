@@ -1,3 +1,10 @@
+2007-01-20  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/shopgui.py Clarify logic around optional ingredient
+	adding.
+	* src/lib/recipeIdentifier.py Some more work toward a diff-ing
+	interface (not done)
+	
 2007-01-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/importers/html_importer.py Raise more useful error

@@ -590,9 +590,6 @@ class ShopGui (ActionManager):
         # Grab all of our ingredients
         ings = self.rg.rd.get_ings(rec)
         lst = []
-        # this constant should be 'ask',or rdatabase.RecData.AMT_MODE_LOW|AMT_MODE_AVERAGE|AMT_MODE_HIGH
-        # this is handled in preferences (see prefsGui.py)
-        #RESOLVE_RANGE_METHOD=self.rg.prefs.get('shop_handle_ranges','ask')
         include_dic = self.includes.get(rec.id) or {}
         for i in ings:
             if hasattr(i,'refid'): refid=i.refid
@@ -600,12 +597,15 @@ class ShopGui (ActionManager):
             debug("adding ing %s, %s"%(i.item,refid),4)
             if i.optional:
                 # handle boolean includes value which applies to ALL ingredients
-                if not include_dic or (include_dic != True and 
-                                       (not include_dic.has_key(i.ingkey)
-                                        or not include_dic[i.ingkey])
-                                       ):
-                    # we ignore our ingredient (don't add it)
+                if not include_dic:
                     continue
+                if type(include_dic) == dict :
+                    # Then we have to look at the dictionary itself...
+                    if ((not include_dic.has_key(i.ingkey))
+                        or
+                        not include_dic[i.ingkey]):
+                        # we ignore our ingredient (don't add it)
+                        continue
             if self.rg.rd.get_amount(i):
                 amount=self.rg.rd.get_amount(i,mult=mult)                
             else: amount=None            
