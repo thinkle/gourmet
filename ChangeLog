@@ -1,5 +1,15 @@
 2007-01-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
+	* src/lib/importers/html_importer.py Raise more useful error
+	message when a rule is malformed. If custom ingdic has ['text']
+	but not ['item'], make sure we end up with an item.
+	
+	* src/lib/importers/html_plugins/recipezaar.py Update importer
+	script for updated website. Add import for cuisine and category
+	and servings.
+
+2007-01-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
 	* MANIFEST add batchEditor.py and batchEditor.glade
 	* glade/app.glade Add menu items for launching batch editor 
 	* glade/recCard.glade Fix alignment of items on Recipe Details page.
