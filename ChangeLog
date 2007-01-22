@@ -1,3 +1,10 @@
+2007-01-21  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* src/lib/backends/rdatabase.py Fix bug in update code that kept
+	us from properly updating if a version was not stored correctly.
+	* src/lib/recipeIdentifier.py Fix bug in standardize_ingredient
+	that threw an exception with g. or ml. and no amount
+	
 2007-01-20  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/shopgui.py Clarify logic around optional ingredient

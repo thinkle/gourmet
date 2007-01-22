@@ -159,7 +159,8 @@ class RecData:
         'nutritionconversions',
         [('ingkey','text',[]),
          ('unit','text',[]), 
-         ('factor','float',[]),],
+         ('factor','float',[]),], # Factor is the amount we multiply
+                                  # from unit to get 100 grams
         )
     
     def __init__ (self):
@@ -235,10 +236,17 @@ class RecData:
         if not stored_info or not stored_info.version_major:
             # Default info -- the last version before we added the
             # version tracker...
-            self.do_add(self.infoview,
-                        {'version_super':0,
-                         'version_major':11,
-                         'version_minor':0})
+            default_info = {'version_super':0,
+                             'version_major':11,
+                             'version_minor':0}
+            if not stored_info:
+                self.do_add(self.infoview,
+                            default_info)
+            else:
+                self.do_modify(
+                    self.infoview,
+                    stored_info,
+                    default_info)
             stored_info = self.fetch_one(self.infoview)            
         version = [s for s in version_string.split('.')]
         current_super = int(version[0])
