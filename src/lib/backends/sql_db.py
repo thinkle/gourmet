@@ -68,13 +68,8 @@ class RecData (rdatabase.RecData):
         sql_params = []
         if criteria:
             sel_string += "where"
-            for k,v in criteria.items():
-                if type(v)==tuple or type(v)==list:
-                    operator,crit = v
-                else:
-                    operator = "=="
-                    crit = v
-                if type(v)==tuple:
+            for k,v in criteria.items():                
+                if type(v)==tuple and type(v[1]) == list :                    
                     log,lst = crit
                     print 'log=',log,'lst=',lst
                     sel_string += (" %s "%log).join(
@@ -83,6 +78,11 @@ class RecData (rdatabase.RecData):
                     sql_params.extend(lst)
                     sel_string += " %s"%logic
                 else:
+                    if type(v)==tuple or type(v)==list :
+                        operator,crit = v
+                    else:
+                        operator = "=="
+                        crit = v
                     sel_string = sel_string + " %s %s "%(k,operator) + " ?" + " %s"%logic
                     sql_params += [crit]
             sel_string = sel_string[0:-len(logic)]
