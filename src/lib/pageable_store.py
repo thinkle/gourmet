@@ -154,9 +154,11 @@ class PageableListStore (gtk.ListStore):
         for row in self._get_slice_(int(start_at),int(end_at)):
             try: self.append(row)
             except TypeError:
-                print 'Fooey!'
                 print 'columns          : ',self.columns
-                print 'columns_and_types: ',self.columns_and_types
+                print 'problem adding row ',row
+                raise
+            except ValueError:
+                print 'columns          : ',self.columns
                 print 'problem adding row ',row
                 raise
     # Sorting functions
