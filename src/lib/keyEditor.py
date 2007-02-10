@@ -100,8 +100,6 @@ class KeyEditor:
         self.VALUE_COL = 2
         self.COUNT_COL = 3
         self.REC_COL = 4
-        cssu = pageable_store.ColumnSortSetterUpper(self.treeModel)
-        sortable = [self.VALUE_COL,self.COUNT_COL]
         for n,head in [[self.FIELD_COL,_('Field')],
                        [self.VALUE_COL,_('Value')],
                        [self.COUNT_COL,_('Count')],
@@ -113,7 +111,7 @@ class KeyEditor:
             col = gtk.TreeViewColumn(head, renderer, text=n)
             col.set_resizable(True)
             self.treeview.append_column(col)
-            if n in sortable: cssu.set_sort_column_id(col,n)
+
 
     def tree_edited (self, renderer, path_string, text, n, head):
         indices = path_string.split(':')

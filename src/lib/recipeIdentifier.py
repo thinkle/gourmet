@@ -34,7 +34,8 @@ def standardize_ingredient (ing_object, converter):
         if amount: amount = amount*vconv
     if unit in ['g.','ml.']:
         # Round to the 10s place...
-        amount = round(amount,-1)
+        if amount:
+            amount = round(amount,-1)
     istring = "%s %s %s"%(amount,unit,ing)
     return istring.lower()
 
