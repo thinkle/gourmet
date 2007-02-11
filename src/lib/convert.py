@@ -483,6 +483,8 @@ class converter:
         We assume numbers come before time units - surely this will
         break some languages(?). We'll build the parameter in when the
         time comes...
+
+        Return 0 if timestring is unparsable
         """
         # Before we do our real work, parse times that look like this 0:30
         # Note the following will be true
@@ -506,7 +508,7 @@ class converter:
             unit = timestring[num_end:section_end].strip()
             if self.unit_dict.has_key(unit):
                 conv = self.converter(unit,'seconds')
-                if conv:
+                if conv and num:
                     secs += num * conv
         return secs
 

@@ -1,4 +1,20 @@
 TODO
+
+* Check into unit parsing bugs
+   Look into bugs in import routines that get rid of spaces when words
+   in the "unit" position are put into the item field of an
+   ingredient.
+
+* Build an interface for duplicates
+  Build an interface to find duplicate recipes, warn of duplicate
+   imports, etc.
+
+* Implement a "browsing" interface
+   Implement a browsing interface to browse through recipes by
+   category/cuisine/etc.
+
+* Implement a proper editor for nutrition values
+   
 * Fix range parsing in quick ingredient add so adding 1 tomato works.
 
 * Stop random segfaults.
