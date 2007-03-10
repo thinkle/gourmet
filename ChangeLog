@@ -1,3 +1,10 @@
+2007-03-09  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/importers/interactive_importer.py Fix bug where, when
+	unknown units are put into the item string, a space was omitted.
+
+	
+
 2007-02-11  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/convert.py Fix bug in timestring_to_seconds that threw

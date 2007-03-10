@@ -361,7 +361,7 @@ class ConvenientImporter (importer.importer):
             # characters, don't add it as a unit! (this lets most
             # abbreviations through)
             if unit and not self.conv.unit_dict.has_key(unit.strip()) and len(unit.strip())>2:
-                item = unit + item
+                item = unit + ' ' + item
                 unit = ''                
         else:
             print 'Unable to parse ingredient from text "%s"'%txt
