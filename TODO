@@ -1,10 +1,5 @@
 TODO
 
-* Check into unit parsing bugs
-   Look into bugs in import routines that get rid of spaces when words
-   in the "unit" position are put into the item field of an
-   ingredient.
-
 * Build an interface for duplicates
   Build an interface to find duplicate recipes, warn of duplicate
    imports, etc.
@@ -21,4 +16,3 @@ TODO
 
 * Check into bizaare ordering bugs & such reported by HaJo
 * Fix MySQL/SQLite support
-
