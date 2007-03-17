@@ -1,3 +1,8 @@
+2007-03-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/exporters/xml_exporter.py Patch [ 1682624 ] Remove
+	double escaping in xml export from Lennart Fricke
+
 2007-03-09  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/importers/interactive_importer.py Fix bug where, when

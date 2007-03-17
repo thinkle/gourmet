@@ -44,7 +44,7 @@ class XmlExporter (exporter_mult):
         
     def append_text (self, element, text):
         try:
-            t = self.xmlDoc.createTextNode(xml.sax.saxutils.escape(text))
+            t = self.xmlDoc.createTextNode(text)
             element.appendChild(t)
         except:
             print 'FAILED WHILE WORKING ON ',element
