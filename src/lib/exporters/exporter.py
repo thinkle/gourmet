@@ -1,4 +1,4 @@
-import re, Image, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
+import re, Image, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap, types
 from gourmet import gglobals, convert
 from gourmet.gdebug import *
 from gettext import gettext as _
@@ -399,11 +399,11 @@ class exporter_mult (exporter):
         """        
         if attr=='servings' and self.mult:
             ret = getattr(obj,attr)
-            try:
-                fl_ret = convert.frac_to_float(ret)
-            except:
-                print 'Funkiness with attribute',fl_ret
-                print "We're ignoring this and pushing on fearlessly."
+            if type(ret) in [int,float]:
+                fl_ret = float(ret)
+            else:
+                if ret is not None:
+                    print 'WARNING: IGNORING serving value ',ret
                 fl_ret = None
             if fl_ret:
                 return convert.float_to_frac(fl_ret * self.mult,
@@ -493,7 +493,7 @@ class ExporterMultirec:
                     ret = "%s/5 %s"%(ret/2,_('stars'))
                 else:
                     ret = "%s/5 %s"%(ret/2.0,_('stars'))
-            if type(ret) in [str,unicode] and attr not in ['thumb','image']:
+            if type(ret) in types.StringTypes and attr not in ['thumb','image']:
                 try:
                     ret = ret.encode(self.DEFAULT_ENCODING)
                 except:

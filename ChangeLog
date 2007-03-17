@@ -2,6 +2,11 @@
 
 	* src/lib/exporters/xml_exporter.py Patch [ 1682624 ] Remove
 	double escaping in xml export from Lennart Fricke
+	* src/lib/exporters/exporter.py Fix Bug [ 1682613 ] Export with
+	German locale Servings multiplied by 10. We avoid unnecessary
+	float->text->float conversion in mult_exporter.py. Hopefully this
+	fixes the issue (not yet tested in German Locale)
+
 
 2007-03-09  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
