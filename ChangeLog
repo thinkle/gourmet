@@ -1,3 +1,12 @@
+2007-03-25  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/importers/rezkonv_importer.py Fix encoding on top. Also
+	fix some other errors -- import convert module and fix a regexp.
+
+2007-03-18  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/mnemonic_manager.py Improve documentation.
+
 2007-03-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/exporters/xml_exporter.py Patch [ 1682624 ] Remove

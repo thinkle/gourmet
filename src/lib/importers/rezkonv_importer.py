@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 import mealmaster_importer, plaintext_importer, re
+import gourmet.convert as convert
 from gourmet.gdebug import *
 
 class rezconf_constants (mealmaster_importer.mmf_constants):
@@ -37,12 +39,11 @@ class rezkonv_importer (mealmaster_importer.mmf_importer):
         self.ing_opt_matcher = re.compile("(.+?)\s*\(?\s*optional\)?\s*$",re.IGNORECASE)
         # or or the German, oder
         self.ing_or_matcher = re.compile("^[-= ]*[Oo][dD]?[eE]?[Rr][-= ]*$",re.IGNORECASE)
-        
         self.variation_matcher = re.compile("^\s*(VARIATION|HINT|NOTES?|VERÄNDERUNG|VARIANTEN|TIPANMERKUNGEN)(:.*)?",re.IGNORECASE)
         # a crude ingredient matcher -- we look for two numbers, intermingled with spaces
         # followed by a space or more, followed by a two digit unit (or spaces)
         self.ing_num_matcher = re.compile(
-            "^\s*%(top)s+%(num)s+\s+[A-Za-z ][A-Za-z ]? .*"%{'top':convert.DIVIDEND_REGEXP,
+            "^\s*%(top)s%(num)s+\s+[A-Za-z ][A-Za-z ]? .*"%{'top':convert.DIVIDEND_REGEXP,
                                                              'num':convert.NUMBER_REGEXP},
             re.IGNORECASE)
         self.amt_field_matcher = convert.NUMBER_MATCHER
