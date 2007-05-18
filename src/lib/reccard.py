@@ -1064,7 +1064,18 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 del d['rangeamount']
             elif d.has_key('amount'):
                 d['amount'] = convert.float_to_frac(d['amount'])
-            return self.ingtree_ui.ingController.add_new_ingredient(prev_iter=prev_iter,group_iter=group_iter,**d)
+            itr = self.ingtree_ui.ingController.add_new_ingredient(prev_iter=prev_iter,group_iter=group_iter,**d)
+            # If there is just one row selected...
+            sel = self.ingtree_ui.ingTree.get_selection()
+            if sel.count_selected_rows()==1:
+                # Then we move our selection down to our current ingredient...
+                sel.unselect_all()
+                sel.select_iter(itr)
+            # Make sure our newly added ingredient is visible...
+            self.ingtree_ui.ingTree.scroll_to_cell(
+                self.ingtree_ui.ingController.imodel.get_path(itr)
+                )
+            return itr
 
     def importIngredientsCB (self, *args):
         debug('importIngredientsCB',5) #FIXME
@@ -2944,7 +2955,7 @@ class IngredientEditor:
                       )
         self.quickEntry.set_text('')
 
-    def returned(self, *args):
+    def returned (self, *args):
         # Handler when the user hits the return button in one of the comboboxes
         # don't add the item immediately in case our guess of key etc was a bit wrong of the mark
         # (with python's poor handling of accent characters, this could easily be the case!)

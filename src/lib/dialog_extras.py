@@ -440,7 +440,7 @@ class PreferencesDialog (ModalDialog):
                   value_label="Value", default=True, label=None,
                   apply_func=None, parent=None, dont_ask_cb=None,
                   dont_ask_custom_text=None):
-        """Options is a tuple of lists where each list is ['option', VALUE], handed to OptionTable
+        """Options is a tuple of tuples where each tuple is ('option', VALUE), handed to OptionTable
         
         VALUE can be any of the following:
         a string (will be editable)

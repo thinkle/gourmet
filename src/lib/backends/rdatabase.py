@@ -147,6 +147,7 @@ class RecData:
         [(name,typ,[]) for lname,name,typ in gourmet.nutrition.parser_data.WEIGHT_FIELDS]
         )
     
+    # becomes naliasesview
     NUTRITION_ALIASES_TABLE_DESC = (
         'nutritionaliases',
         [('ingkey','text',[]),
@@ -459,6 +460,11 @@ class RecData:
                 if not v in lst: lst.append(v)
         return lst
 
+    def get_ingkeys_with_count (self, search={}):
+        """Get unique list of ingredient keys and counts for number of times they appear in the database.
+        """
+        raise NotImplementedError
+
     def delete_by_criteria (self, table, criteria):
         """Table is our table.
         Criteria is a dictionary of criteria to delete by.
@@ -488,6 +494,19 @@ class RecData:
         Return True if r1 and r2 reference the same row in the database.
         """
         return r1==r2
+
+    def find_duplicates (self, by='recipe',recipes=None, include_deleted=True):
+        """Find all duplicate recipes by recipe or ingredient.
+
+        This uses the recipe_hash and ingredient_hash respectively.
+        To find only those recipes that have both duplicate recipe and
+        ingredient hashes, use find_all_duplicates
+        """
+        raise NotImplementedError
+
+    def find_complete_duplicates (self, recipes=None, include_deleted=True):
+        """Find all duplicate recipes (by recipe_hash and ingredient_hash)."""
+        raise NotImplementedError
     
     # convenience DB access functions for working with ingredients,
     # recipes, etc.

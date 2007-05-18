@@ -326,16 +326,18 @@ class RecData (rdatabase.RecData):
         """Get unique list of ingredient keys and counts for number of times they appear in the database.
         """
         c = self.connection.cursor()
-        SQL = 'SELECT ingkey,COUNT(*) FROM '+self.iview
+        SQL = 'SELECT '+self.iview+'.ingkey,COUNT(*),ndbno FROM '+self.iview\
+              +' LEFT OUTER JOIN '+self.naliasesview+' ON '+\
+              self.iview+'.ingkey=='+self.naliasesview+'.ingkey'
         params = []
         if search:
-            SQL += ' WHERE ' + search.get('column','ingkey') + ' ' + search.get('operator','LIKE') + ' ?'
+            SQL += ' WHERE ' + search.get('column',self.iview+'.ingkey') + ' ' + search.get('operator','LIKE') + ' ?'
             params += [search['search']]
             if self.USE_PAREN_STYLE_REGEXP:
                 SQL = self.REGEXP_FIXER_REGEXP.sub(' REGEXP(\\2,\\1) ',SQL)
-        SQL += ' GROUP BY ingkey'
+        SQL += ' GROUP BY '+self.iview+'.ingkey'
         self.execute(c,SQL,params)
-        return Fetcher(c,['ingkey','count'])
+        return Fetcher(c,['ingkey','count','ndbno'])
 
     # Adding recipes...
     def do_add (self, table, d):
@@ -487,14 +489,76 @@ class RecData (rdatabase.RecData):
         else:
             return False
 
-    def find_all_duplicates (self):
-        """Find all duplicate recipes (by recipe_hash and ingredient_hash)."""
-        self.cursor.execute('''
+    def find_duplicates (self, by='recipe', recipes=None, include_deleted=True):
+        """Find duplicate recipes by recipe_hash or ing_hash.
+
+        recipes is a list of recipes in which the duplicates may occur.
+        
+        Use find_complete_duplicates to find duplicates in both fields."""
+        if by=='recipe': by = 'recipe_hash'
+        elif by=='ingredient': by = 'ingredient_hash'
+        else:
+            print 'WARNING find_duplicates by=',by
+            print 'assuming you mean by ingredient.'
+            by = 'ingredient_hash'
+        if recipes:
+            WHERE_STATEMENT = '''
+            WHERE %s in (%s)
+            '''%(by, ', '.join('"%s"'%getattr(r,by) for r in recipes))
+            if not include_deleted:
+                WHERE_STATEMENT += ''' AND not deleted'''
+        else:
+            if not include_deleted:
+                WHERE_STATEMENT = '''
+                WHERE not deleted
+                '''
+            else:
+                WHERE_STATEMENT = ''
+        SQL = '''
+        SELECT %(by)s
+        FROM recipe
+        %(WHERE_STATEMENT)s
+        GROUP BY %(by)s
+        HAVING (COUNT(%(by)s) > 1)
+        '''%locals()
+        print 'Executing ',SQL
+        self.cursor.execute(SQL)
+        all_dups = self.cursor.fetchall()
+        duplicate_sets = []
+        for rec_hash, in all_dups:
+            self.cursor.execute('''
+            SELECT id FROM recipe
+            WHERE (%(by)s="%(rec_hash)s")
+            ORDER BY last_modified
+                   '''%locals())
+            duplicate_sets.append([r[0] for r in self.cursor.fetchall()])
+        return duplicate_sets
+
+    def find_complete_duplicates (self, recipes=None, include_deleted=True):
+        """Find all duplicate recipes (by recipe_hash *and* ingredient_hash)."""
+        if recipes:
+            hashes = [('"%s"'%r.recipe_hash,'"%s"'%r.ingredient_hash) for r in recipes]
+            rhashes,ihashes = zip(*hashes)
+            WHERE_STATEMENT = '''
+            WHERE recipe_hash in (%s)
+            AND ingredient_hash in (%s)
+            '''%(', '.join(rhashes),
+                 ', '.join(ihashes)
+                 )
+            if not include_deleted:
+                WHERE_STATEMENT += ''' AND not deleted'''
+        else:
+            if include_deleted: WHERE_STATEMENT = ''
+            else: WHERE_STATEMENT = 'WHERE not deleted'
+        SQL = '''
         SELECT ingredient_hash,recipe_hash
         FROM recipe
+        %s
         GROUP BY ingredient_hash,recipe_hash
         HAVING ( COUNT(ingredient_hash) > 1 AND COUNT(recipe_hash) > 1)
-        ''')
+        '''%WHERE_STATEMENT
+        print 'SQL:',SQL
+        self.cursor.execute(SQL)
         all_dups = self.cursor.fetchall()
         duplicate_sets = []
         for ing_hash,rec_hash in all_dups:

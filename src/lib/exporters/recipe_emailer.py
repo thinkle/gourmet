@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import gtk.glade, urllib, StringIO, os.path
-import exporter, html_exporter
+import exporter, html_exporter, pdf_exporter
 from gourmet import gglobals
 from gettext import gettext as _
 import gourmet.dialog_extras as de
@@ -84,6 +84,20 @@ class RecipeEmailer (Emailer):
             for i in e.images:
                 self.attachments.append(i)
 
+    def write_email_pdf (self):
+        prefs = pdf_exporter.get_pdf_prefs()
+        for r in self.recipes:
+            fi = os.path.join(gglobals.tmpdir,"%s.pdf"%r.title)
+            ofi = open(fi,'w')
+            e = pdf_exporter.PdfExporter(self.rd,
+                                         r,
+                                         ofi,
+                                         conv=self.conv,
+                                         change_units=self.change_units,
+                                         pdf_args=prefs)
+            ofi.close()
+            self.attachments.append(fi)
+
     def send_email_html (self, emailaddress=None, include_plain_text=True):
         if include_plain_text: self.write_email_text()
         else: self.body = None
@@ -103,8 +117,8 @@ class EmailerDialog (RecipeEmailer):
         self.option_list = {'':''}
         self.options = {
             _('Include Recipe in Body of E-mail (A good idea no matter what)'):('email_include_body',True),
-            _('E-mail Recipe as HTML Attachment'):('email_include_html',True),
-            #_('E-mail Recipe as PDF Attachment'):('email_include_pdf',False),
+            _('E-mail Recipe as HTML Attachment'):('email_include_html',False),
+            _('E-mail Recipe as PDF Attachment'):('email_include_pdf',True),
             }
         self.option_list = []
         self.email_options = {}
@@ -140,9 +154,26 @@ class EmailerDialog (RecipeEmailer):
             self.write_email_text()
         if self.email_options['email_include_html']:
             self.write_email_html()
+        if self.email_options['email_include_pdf']:
+            self.write_email_pdf()
         if not self.email_options['email_include_body'] and not self.email_options['email_include_body']:
             de.show_message(_("E-mail not sent"),
                             sublabel=_("You have not chosen to include the recipe in the body of the message or as an attachment.")
                             )
         else:
             self.send_email()
+            
+
+if __name__ == '__main__':
+    import gourmet.recipeManager
+    rd = gourmet.recipeManager.default_rec_manager()
+    rec = rd.fetch_one(rd.rview)
+    ed = EmailerDialog([rec],rd,{})
+    ed.setup_dialog()
+    ed.email()
+    #ed.run()
+    #e.write_email_text()
+    #e.write_email_pdf()
+    #e.write_email_html()
+    #e.send_email()
+    

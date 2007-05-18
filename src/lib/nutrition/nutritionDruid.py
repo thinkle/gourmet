@@ -442,17 +442,21 @@ class NutritionInfoDruid (gobject.GObject):
         key = self.ingKeyEntry.get_text()
         #ings = self.rd.fetch_all(self.rd.iview,ingkey=self.ingkey)
         #self.rd.modify_ings(ings,{'ingkey':key})
-        if self.rec and de.getBoolean(
-            label='Change ingredient key',
-            sublabel=_(
-            'Change ingredient key from %(old_key)s to %(new_key)s everywhere or just in the recipe %(title)s?'
-            )%{'old_key':self.ingkey,
-               'new_key':key,
-               'title':self.rec.title
-               },
-            custom_no=_('Change _everywhere'),
-            custom_yes=_('_Just in recipe %s')%self.rec.title
-            ):
+        try:
+            user_says_yes = de.getBoolean(
+                label='Change ingredient key',
+                sublabel=_(
+                'Change ingredient key from %(old_key)s to %(new_key)s everywhere or just in the recipe %(title)s?'
+                )%{'old_key':self.ingkey,
+                   'new_key':key,
+                   'title':self.rec.title
+                   },
+                custom_no=_('Change _everywhere'),
+                custom_yes=_('_Just in recipe %s')%self.rec.title
+                )
+        except de.UserCancelledError:
+            return
+        if self.rec and user_says_yes:
             self.rd.update(self.rd.iview,
                            {'ingkey':self.ingkey,
                             'id':self.rec.id},

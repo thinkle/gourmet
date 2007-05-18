@@ -317,6 +317,8 @@ class RecIndex:
             #    col.set_min_width(200)
             #else:
             #    col.set_min_width(60)
+            if c=='title':
+                col.set_property('expand',True)
             col.set_reorderable(True)
             col.set_resizable(True)
             col.set_clickable(True)

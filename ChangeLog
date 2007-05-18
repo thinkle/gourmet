@@ -1,3 +1,27 @@
+2007-05-18  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* src/lib/dialog_extras.py Improve docstring
+	* src/lib/mnemonic_manager.py Improve crawling algorithm for
+	finding mnemonic labels.
+	* src/lib/nutrition/nutritionDruid.py Behave better when user
+	cancels out of a dialog.
+	* src/lib/reccard.py Move selection down when user adds an
+	ingredient.
+	* src/lib/recipeIdentifier.py Rework API as I work on writing a
+	recipeMerger dialog.
+	* src/lib/recipeMerger.py Check in incomplete duplicate-recipe
+	merger/eliminator code.
+	* glade/recipeMerger.glade Check in incomplete duplicate-recipe
+	merger/eliminator code.
+	* src/lib/recindex.py Expand title column by default (rather than
+	letting the last column take up all the extra space)
+	* src/lib/version.py Bump up version number - When we finish this
+	merger stuff &c this will be a new .x version (0.14.0)
+	* src/lib/backends/rdatabase.py Add methods for finding duplicates
+	* src/lib/backends/sql_db.py Improve duplicate-finding SQL
+	* src/lib/exporters/recipe_emailer.py Allow e-mailing PDFs.
+	
+	
 2007-03-25  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/importers/rezkonv_importer.py Fix encoding on top. Also

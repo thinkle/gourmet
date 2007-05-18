@@ -1,16 +1,44 @@
 import gtk.glade, gtk
 
-def collect_children (parent, children=None):
-    if not children: children = []
+def collect_descendants (parent, descendants=None):
+    """Return all descendants of parent widget.
+
+    Crawls tree recursively.
+    """
+    if not descendants: descendants = []
     if hasattr(parent,'get_children'):
         for c in parent.get_children():
-            if c not in children: children.append(c)
-            collect_children(c,children)
-        return children
+            if c not in descendants: descendants.append(c)
+            collect_descendants(c,descendants)
+        return descendants
     else:
-        return children
+        return descendants
 
 class MnemonicManager:
+
+    """This is a class to help prevent collisions of mnemonics. This
+    works in an automated way, so that we don't have to rely on
+    translators knowing which strings show up on the same page
+    together in order to prevent collisions of mnemonics.
+
+    This class can collect all mnemonics from a glade file or by
+    working down from a toplevel widget.
+
+    mm = MnemonicManager()
+
+    mm.add_toplevel_widget(widget)
+    OR
+    mm.add_glade(GLADE.XML INSTANCE)
+
+    mm.fix_conflicts_peacefully()
+
+    The fix_conflicts_peacefully algorithm will get rid of all the
+    conflicts it can eliminate.  The algorithm knows that submenus are
+    special animals and will set up a separate sub-instance of
+    MnemonicManager to deal with each submenu within the menu system.
+
+    mm.sacred_cows is a list of items that should never be changed.
+    """
 
     sacred_cows = ['okay','cancel','close']
 
@@ -30,7 +58,7 @@ class MnemonicManager:
         return self
 
     def add_toplevel_widget (self, w):
-        widgets = collect_children(w)
+        widgets = collect_descendants(w)
         self.add_ui(widgets)
 
     def add_glade (self, glade=None, glade_file=None):
@@ -183,6 +211,12 @@ class MnemonicManager:
         return filter(lambda l: not self.mnemonics.has_key(l),self.find_alternatives(w))
     
     def fix_conflicts_peacefully (self, do_submenus=True):
+        """Remove all conflicts from mnemonics.
+
+        Don't touch anything in self.sacred_cows.  if do_submenus is
+        True, we will recursively resolve mnemonic conflicts within
+        any sub-menus as well.
+        """
         to_reconcile = []
         changed = []
         for k,v in self.mnemonics.items():
@@ -277,6 +311,7 @@ if __name__ == '__main__':
     mm.fix_conflicts_peacefully()
     def show ():
         g.get_widget('app').show()
+        g.get_widget('app').connect('delete-event',gtk.main_quit)
         gtk.main()
     show()
     
