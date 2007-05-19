@@ -1,4 +1,9 @@
-2007-05-18  Thomas M. Hinkle  <tom@localhost.localdomain>
+2007-05-19  Thomas Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/convert.py Fix bug in regexp in time parser that would
+	through error on some misidentified times.
+
+2007-05-18  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/dialog_extras.py Improve docstring
 	* src/lib/mnemonic_manager.py Improve crawling algorithm for

@@ -490,7 +490,7 @@ class converter:
         # Note the following will be true
         # 1:30 = 1 1/2 hours
         # 00:00:20 = 20 seconds
-        if re.match('^\d\d?:\d\d(:\d\d)?',timestring):
+        if re.match('^\d\d?:\d\d(:\d\d)?$',timestring):
             times = [locale.atof(s) for s in timestring.split(':')]
             if len(times) == 3:
                 h,m,s = times
