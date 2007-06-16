@@ -287,13 +287,13 @@ CONVERTER_TABLE = {
     ("pt.", "tazas"):2,
     ("qt.", "tazas"):4,
     ("galón", "quarto de galón"):4,
-    ("l.", "quarto de galón"):1.057,
-    ("l.", "ml."):1000,
-    ("l.", "cl."):100,
-    ("l.", "dl."):10,
-    ("onza", "g."):28.35,
-    ("kg.", "g."):1000,
-    ("g.", "mg."):1000,
+    ("l", "quarto de galón"):1.057,
+    ("l", "ml"):1000,
+    ("l", "cl"):100,
+    ("l", "dl"):10,
+    ("onza", "g"):28.35,
+    ("kg", "g"):1000,
+    ("g", "mg"):1000,
     ("cucharilla", "drop"):76,
 # Are there translations for these units?
 #    ("onza", "dram"):16,
@@ -307,13 +307,13 @@ CONVERTER_TABLE = {
 METRIC_RANGE = (1,999)
 
 UNIT_GROUPS = {
-    'metric mass':[('mg.',METRIC_RANGE),
-                   ('g.',METRIC_RANGE),
-                   ('kg.',(1,None))],
-    'metric volume':[('ml.',METRIC_RANGE),
-                     ('cl.',(1,99)),
-                     ('dl.',(1,9)),
-                     ('l.',(1,None)),],
+    'metric mass':[('mg',METRIC_RANGE),
+                   ('g',METRIC_RANGE),
+                   ('kg',(1,None))],
+    'metric volume':[('ml',METRIC_RANGE),
+                     ('cl',(1,99)),
+                     ('dl',(1,9)),
+                     ('l',(1,None)),],
     'imperial weight':[
 #    ('grain',(0,27)),
 #    ('dram',(0.5,15)),
@@ -364,7 +364,7 @@ DENSITY_TABLE={
             }
 
 UNITS = [    
-    ["ml.", ["ml.", "mL", "mL.", "ml"]],
+    ["ml", ["ml.", "mL", "mL.", "ml"]],
     #["bucket" , ["bucket", "buckets", "bckt."]],
     #["peck", ["peck", "pecks"]],
     #["bushel", ["bushel", "bushels", "bsh.", "bu.", "bu", "bsh", "bshl", "bshl."]],
@@ -378,13 +378,13 @@ UNITS = [
     ["quarto de galón", ["quarto de galón","quarto"]],
     #["pt.", ["pint", "pt.", "pints"]],
     ["galón", ["galón", "galones", "gal."]],
-    ["ml.", ["ml", "ml.", "mililitro", "mililitros"]],
-    ["cl.", ["cl", "cl.", "centilitro", "centilitros"]],
-    ["dl.", ["dl", "dl.", "decilitro", "decilitros"]],
-    ["l.", ["litro", "l.", "lit.", "litros"]],
-    ["g.", ["gramos", "gramo", "g.","gr.","g","gr"]],
-    ["mg.", ["mg.", "mg", "miligramo", "miligramos"]],
-    ["kg.", ["kg.", "kg", "kilogramo", "kilogramos"]],
+    ["ml", ["ml", "ml.", "mililitro", "mililitros"]],
+    ["cl", ["cl", "cl.", "centilitro", "centilitros"]],
+    ["dl", ["dl", "dl.", "decilitro", "decilitros"]],
+    ["l", ["litro", "l.", "lit.", "litros"]],
+    ["g", ["gramos", "gramo", "g.","gr.","g","gr"]],
+    ["mg", ["mg.", "mg", "miligramo", "miligramos"]],
+    ["kg", ["kg.", "kg", "kilogramo", "kilogramos"]],
     ]
 
 CROSS_UNIT_TABLE = {
@@ -399,21 +399,21 @@ CROSS_UNIT_TABLE = {
     ("cuchara", "onza"):['density',0.5],
     ("taza", "onza"):['density',8],
     #("pt.", "onza"):['density',16],
-    ("ml.", "g."):['density',1]}
+    ("ml", "g"):['density',1]}
 
 VOL_TO_MASS_TABLE = {
     ("pt.", "lb.") : 1,
     ("cuchara", "onza") : 0.5,
     ("tazas", "onza") : 8,
     ("pt.", "onza") : 16,
-    ("ml.", "g.") : 1,
-    ("ml.", "mg.") : 1000,
-    ("ml.", "kg."): 0.001,
-    ("cl.", "kg."): 0.01,
-    ("cl.", "g.") : 10,
-    ("dl.", "kg.") : 0.1,
-    ("dl.", "g.") : 100,    
-    ("l.", "kg.") : 1}
+    ("ml", "g") : 1,
+    ("ml", "mg") : 1000,
+    ("ml", "kg"): 0.001,
+    ("cl", "kg"): 0.01,
+    ("cl", "g") : 10,
+    ("dl", "kg") : 0.1,
+    ("dl", "g") : 100,    
+    ("l", "kg") : 1}
 
 TIME_ABBREVIATIOSN = {
     'hrs' : 'horas',

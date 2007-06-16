@@ -491,7 +491,7 @@ CROSS_UNIT_TABLE = {
     ## will be provided as an 'item' that is then looked
     ## up in the dictionary referenced here (i.e. the density_table)
     ## currently, 'density' is the only keyword used
-    ("ml.", "g."):['density',1]}
+    ("ml", "g"):['density',1]}
 
 # The units here need to correspond to the standard unit names defined
 # in UNITS

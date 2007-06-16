@@ -800,13 +800,13 @@ CONVERTER_TABLE = {
     ("pt.", "c."):2,
     ("qt.", "c."):4,
     ("gallon", "qt."):4,
-    ("l.", "qt."):1.057,
-    ("l.", "ml."):1000,
-    ("l.", "cl."):100,
-    ("l.", "dl."):10,
-    ("oz.", "g."):28.35,
-    ("kg.", "g."):1000,
-    ("g.", "mg."):1000,
+    ("l", "qt."):1.057,
+    ("l", "ml"):1000,
+    ("l", "cl"):100,
+    ("l", "dl"):10,
+    ("oz.", "g"):28.35,
+    ("kg", "g"):1000,
+    ("g", "mg"):1000,
     ("tsp.", "drop"):76,
     ("oz.", "dram"):16,
     ("dram", "grains"):27.34375,
@@ -889,13 +889,13 @@ CONVERTER_TABLE = {
     ("pt.", "c."):2,
     ("qt.", "c."):4,
     ("gallon", "qt."):4,
-    ("l.", "qt."):1.057,
-    ("l.", "ml."):1000,
-    ("l.", "cl."):100,
-    ("l.", "dl."):10,
-    ("oz.", "g."):28.35,
-    ("kg.", "g."):1000,
-    ("g.", "mg."):1000,
+    ("l", "qt."):1.057,
+    ("l", "ml"):1000,
+    ("l", "cl"):100,
+    ("l", "dl"):10,
+    ("oz.", "g"):28.35,
+    ("kg", "g"):1000,
+    ("g", "mg"):1000,
     ("tsp.", "drop"):76,
     ("oz.", "dram"):16,
     ("dram", "grains"):27.34375,
@@ -929,13 +929,13 @@ UNITS = [["bucket" , ["bucket", "buckets", "bckt."]],
          ["qt.", ["quart", "qt.", "quarts"]],
          ["pt.", ["pint", "pt.", "pints"]],
          ["gallon", ["gallon", "gallons","gal."]],
-         ["ml.", ["mililiter","ml", "ml.","mililiters"]],
-         ["cl.", ["centiliter","cl", "cl.", "centiliters"]],
-         ["dl.", ["deciliter","dl", "dl.","deciliters"]],
-         ["l.", ["liter", "l.", "lit.", "liters"]],
-         ["g.", ["grams", "gram", "g."]],
-         ["mg.", ["miligram", "mg.", "mg", "miligrams"]],
-         ["kg.", ["kilogram","kg.", "kg",  "kilograms"]]
+         ["ml", ["mililiter","ml", "ml.","mililiters"]],
+         ["cl", ["centiliter","cl", "cl.", "centiliters"]],
+         ["dl", ["deciliter","dl", "dl.","deciliters"]],
+         ["l", ["liter", "l.", "lit.", "liters"]],
+         ["g", ["grams", "gram", "g."]],
+         ["mg", ["miligram", "mg.", "mg", "miligrams"]],
+         ["kg", ["kilogram","kg.", "kg",  "kilograms"]]
          ]
 
 METRIC_RANGE = (1,999)
@@ -945,13 +945,13 @@ METRIC_RANGE = (1,999)
 # off metric units, since we don't use them).
 # (User choice not implemented yet)
 UNIT_GROUPS = {
-    'metric mass':[('mg.',METRIC_RANGE),
-                   ('g.',METRIC_RANGE),
-                   ('kg.',(1,None))],
-    'metric volume':[('ml.',METRIC_RANGE),
-                     ('cl.',(1,99)),
-                     ('dl.',(1,9)),
-                     ('l.',(1,None)),],
+    'metric mass':[('mg',METRIC_RANGE),
+                   ('g',METRIC_RANGE),
+                   ('kg',(1,None))],
+    'metric volume':[('ml',METRIC_RANGE),
+                     ('cl',(1,99)),
+                     ('dl',(1,9)),
+                     ('l',(1,None)),],
     'imperial weight':[('grains',(0,27)),
                        ('dram',(0.5,15)),
                        ('oz.',(0.25,32)),
@@ -983,7 +983,7 @@ CROSS_UNIT_TABLE = {
     ("tbs.", "oz."):['density',0.5],
     ("c.", "oz."):['density',8],
     ("pt.", "oz."):['density',16],
-    ("ml.", "g."):['density',1]}
+    ("ml", "g"):['density',1]}
 
 # The units here need to correspond to the standard unit names defined
 # in UNITS.  These are some core conversions from mass-to-volume,
@@ -993,14 +993,14 @@ VOL_TO_MASS_TABLE = {
     ("tbs.", "oz.") : 0.5,
     ("c.", "oz.") : 8,
     ("pt.", "oz.") : 16,
-    ("ml.", "g.") : 1,
-    ("ml.", "mg.") : 1000,
-    ("ml.", "kg."): 0.001,
-    ("cl.", "kg."): 0.01,
-    ("cl.", "g.") : 10,
-    ("dl.", "kg.") : 0.1,
-    ("dl.", "g.") : 100,    
-    ("l.", "kg.") : 1}
+    ("ml", "g") : 1,
+    ("ml", "mg") : 1000,
+    ("ml", "kg"): 0.001,
+    ("cl", "kg"): 0.01,
+    ("cl", "g") : 10,
+    ("dl", "kg") : 0.1,
+    ("dl", "g") : 100,    
+    ("l", "kg") : 1}
 
 ### From translator :
 ### FRENCH PART TO BE REVISED !!! US units != UK units != Canadian units !!!
@@ -1037,7 +1037,7 @@ VOL_TO_MASS_TABLE = {
 #          ["cl", ["centiliter","cl","cl.","centiliters","centilitre","centilitres"]],			#cl.
 #          ["dl", ["deciliter","dl","dl.","deciliters","décilitre","decilitre","décilitres","décilitres"]],#dl.
 #          ["l", ["liter","l.","lit.","liters","litre","litres"]],					#l.
-#          ["g", ["grams","gram","g.","gramme","grammes"]],						#g.
+#          ["g", ["grams","gram","g","gramme","grammes"]],						#g.
 #          ["mg", ["miligram","mg.","mg","miligrams","milligramme","milligrammes"]],			#mg.
 #          ["kg", ["kilogram","kg.","kg","kilograms","kilogramme","kilogrammes"]]				#kg.
 #          ]
