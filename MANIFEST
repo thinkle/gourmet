@@ -29,6 +29,7 @@ glade/generic_importer.glade
 glade/nutritionDruid.glade
 glade/preferenceDialog.glade
 glade/recCard.glade
+glade/recipeMerger.glade
 glade/recSelector.glade
 glade/rec_ref_window.glade
 glade/shopList.glade
@@ -105,6 +106,7 @@ src/lib/reccard.py
 src/lib/recindex.py
 src/lib/recipeIdentifier.py
 src/lib/recipeManager.py
+src/lib/recipeMerger.py
 src/lib/shopEditor.py
 src/lib/shopgui.py
 src/lib/shopping.py

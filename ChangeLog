@@ -1,3 +1,22 @@
+2007-06-18  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* MANIFEST Added recipeMerger stuff.
+
+2007-06-18  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* glade/app.glade Add button to get to recipe merger tool
+	(duplicate finder)
+	* glade/recipeMerger.glade Make cancel buttons visible. Hide
+	tabs. Improve spacing.
+	* src/lib/GourmetRecipeManager.py Add callback to show duplicate
+	finder/recipe merger.
+	* src/lib/recipeIdentifier.py Added header comment.
+	* src/lib/recipeMerger.py Fix bug that made ingredient selection
+	fail. Add close callback. Remove print statements and add better
+	documentation.
+	* src/lib/version.py Bring version to 0.13.5 -- we'll up to 0.14
+	when we have a "stable" version with our handy new features.
+
 2007-05-19  Thomas Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/convert.py Fix bug in regexp in time parser that would
