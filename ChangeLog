@@ -17,6 +17,10 @@
 	* src/lib/version.py Bring version to 0.13.5 -- we'll up to 0.14
 	when we have a "stable" version with our handy new features.
 
+2007-06-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/defaults_* Remove . from SI units (such as g, kg, etc.).
+	
 2007-05-19  Thomas Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/convert.py Fix bug in regexp in time parser that would
