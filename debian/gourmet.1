@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><!-- hennerik CVSweb $Revision: 1.2 $ --><title>gourmet/debian/gourmet.1 - view - 1.1</title></head>
+<body bgcolor="#eeeeee">
+<table bgcolor="#9999ee" border="0" cellpadding="1" cellspacing="0" width="100%"><tbody><tr valign="bottom"><td><a href="http://cvs.alioth.debian.org/cgi-bin/cvsweb.cgi/gourmet/debian/gourmet.1?cvsroot=pkg-gourmet#rev1.1"><img src="gourmet%20Files/back" alt="[BACK]" border="0" height="22" width="20"></a> <b>Return to <a href="http://cvs.alioth.debian.org/cgi-bin/cvsweb.cgi/gourmet/debian/gourmet.1?cvsroot=pkg-gourmet#rev1.1">gourmet.1</a>
+ CVS log</b> <img src="gourmet%20Files/text" alt="[TXT]" border="0" height="22" width="20"></td><td align="right"><img src="gourmet%20Files/dir" alt="[DIR]" border="0" height="22" width="20"> <b>Up to  <a href="http://cvs.alioth.debian.org/cgi-bin/cvsweb.cgi/?cvsroot=pkg-gourmet#dirlist">[GForge-CVS]</a> / <a href="http://cvs.alioth.debian.org/cgi-bin/cvsweb.cgi/gourmet/?cvsroot=pkg-gourmet#dirlist">gourmet</a> / <a href="http://cvs.alioth.debian.org/cgi-bin/cvsweb.cgi/gourmet/debian/?cvsroot=pkg-gourmet#dirlist">debian</a></b></td></tr></tbody></table><hr noshade="noshade"><table width="100%"><tbody><tr><td bgcolor="#ffffff">File:  <a href="http://cvs.alioth.debian.org/cgi-bin/cvsweb.cgi/?cvsroot=pkg-gourmet#dirlist">[GForge-CVS]</a> / <a href="http://cvs.alioth.debian.org/cgi-bin/cvsweb.cgi/gourmet/?cvsroot=pkg-gourmet#dirlist">gourmet</a> / <a href="http://cvs.alioth.debian.org/cgi-bin/cvsweb.cgi/gourmet/debian/?cvsroot=pkg-gourmet#dirlist">debian</a> / <a href="http://cvs.alioth.debian.org/cgi-bin/cvsweb.cgi/gourmet/debian/gourmet.1?cvsroot=pkg-gourmet">gourmet.1</a> (<a href="http://cvs.alioth.debian.org/cgi-bin/cvsweb.cgi/%7Echeckout%7E/gourmet/debian/gourmet.1?rev=1.1&amp;cvsroot=pkg-gourmet" target="cvs_checkout" onclick="window.open('/cgi-bin/cvsweb.cgi/~checkout~/gourmet/debian/gourmet.1?rev=1.1','cvs_checkout','resizeable,scrollbars');"><b>download</b></a>)<br>
+Revision <b>1.1</b>, <i>Mon Nov  7 06:43:35 2005 UTC</i> (4 days, 8 hours ago) by <i>seanius</i>
+<br>CVS Tags: <b>HEAD</b><pre>adding new files
+</pre>
+</td></tr></tbody></table><hr noshade="noshade"><pre>.\" -*- nroff -*-
+.TH gourmet 1 "Tue Sep 13 19:02:08 CEST 2005" "sean finney" "Gourmet Recipe Manager"
+
+.SH NAME
+gourmet \- a recipe manager
+
+.SH SYNOPSIS
+.B gourmet
+.RB [ OPTIONS... ]
+.br
+
+.SH DESCRIPTION
+Gourmet Recipe Manager is a gtk-based recipe organizer and shopping
+list generator intended for the GNOME desktop environment (though it does
+not need all the GNOME libraries).  Gourmet can import Mealmaster(tm)
+files and can export recipes in a number of formats, including text,
+RTF and web pages.
+
+.SH OPTIONS
+.IP "--force-wxprinter"     
+.IP "--force-lprprinter"    
+.IP "--choose-database"
+Show Database chooser dialog
+.IP "--plugin-directory=HTML_PLUGIN_DIR"
+Directory for webpage import filter plugins.
+.IP "--use-threads"
+Enable threading support.
+.IP "--disable-threads"
+Disable threading support.
+.IP "--sqlite"
+Use SQLITE database backend
+.IP "--metakit"
+Use metakit backend
+.IP "--gourmet-directory=GOURMETDIR"
+Gourmet configuration directory
+.IP "--debug-threading-interval=THREAD_DEBUG_INTERVAL"
+Interval for threading debug calls
+.IP "--debug-threading"
+Print debugging information about threading.
+.IP "--debug-file=DEBUG_FILE"
+Regular expression that matches filename(s) whose code
+we want to display debug messages from.
+.IP "-q"
+Don't print gourmet error messages
+.IP "--showtimes"
+Print timestamps on debug statements.
+.IP "-v"
+Be verbose (extra v's will increase the verbosity level
+.IP "--data-directory=DATAD"
+Directory for Gourmet data files.
+.IP "--image-directory=IMAGED"
+Directory for Gourmet image files.
+.IP "--glade-directory=GLADED"
+Directory for Gourmet glade files.
+.IP "--disable-psyco"
+Do not use psyco if it is installed.
+.IP "--version"
+show program's version number and exit
+.IP "-h, --help"
+show this help message and exit
+
+.SH AUTHOR
+.B gourmet
+is written by Thomas Mills Hinkle &lt;<a href="mailto:Thomas_Hinkle@alumni.brown.edu">Thomas_Hinkle@alumni.brown.edu</a>&gt;.
+This manual page was written by Sean Finney &lt;<a href="mailto:seanius@debian.org">seanius@debian.org</a>&gt;
+for the Debian project (but may be used by others).
+</pre></body></html>
