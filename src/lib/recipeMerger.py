@@ -1,3 +1,8 @@
+"""recipeMerger.py
+
+This module contains code for handling the 'merging' of duplicate
+recipes.
+"""
 import gtk, os.path, time
 import recipeIdentifier
 import ratingWidget, convert
@@ -11,6 +16,9 @@ class ConflictError (ValueError):
         self.conflicts = conflicts
 
 class RecipeMergerDialog:
+
+    """A dialog to allow the user to merge recipes.
+    """
 
     # These line up to the position of the options in the search-type
     # combo box in glade...
@@ -27,6 +35,7 @@ class RecipeMergerDialog:
         self.rd = rd
         self.glade = gtk.glade.XML(os.path.join(gglobals.gladebase,'recipeMerger.glade'))
         self.get_widgets()
+        self.searchTypeCombo.set_active(self.COMPLETE_DUP_MODE)
         self.mm = mnemonic_manager.MnemonicManager()
         self.mm.add_glade(self.glade)
         self.mm.fix_conflicts_peacefully()
@@ -37,6 +46,7 @@ class RecipeMergerDialog:
             'on_mergeAllButton_clicked':self.merge_all,
             'on_mergeSelectedButton_clicked':self.merge_selected,
             'on_applyButton_clicked':self.apply_merge,
+            'close':self.close,
             }
             )
         
@@ -155,11 +165,12 @@ class RecipeMergerDialog:
         if type(to_keep)==int:
             to_keep = self.rd.get_rec(to_keep)
         self.rd.modify_rec(to_keep,merge_dic)
-        for r in recs[1:]:
-            self.rd.delete_rec(r)
+        for r in recs:
+            if r.id != to_keep.id:
+                self.rd.delete_rec(r)
         
     def apply_merge (self, *args):
-        print 'Apply ',self.diff_table.selected_dic
+        #print 'Apply ',self.diff_table.selected_dic,'on ',self.diff_table.rec
         self.do_merge(self.diff_table.selected_dic,
                       self.current_recs,
                       to_keep=self.diff_table.rec)
@@ -186,6 +197,11 @@ class RecipeMergerDialog:
         
 
     def show (self): self.glade.get_widget('window1').show()
+
+    def close (self, *args):
+        w = self.glade.get_widget('window1')
+        w.hide()
+        w.destroy()
         
 class RecipeMerger:
 
@@ -307,7 +323,7 @@ class DiffTable (gtk.Table):
         self.selected_dic[attribute] = v
 
     def add_ingblocks (self, rd, recs):
-        print 'add_ingblocks for ',[r.id for r in recs]
+        #print 'add_ingblocks for ',[r.id for r in recs]
         self.rd = rd
         self.iblock_dic = {}
         if len(recs) == 1:
@@ -379,9 +395,10 @@ class DiffTable (gtk.Table):
 
     def ing_value_toggled (self, rb, block):
         if rb.get_active():
-            print 'ING TOGGLED - REC = ',
+            #print 'RB clicked',rb,'for block',block
+            #print 'ING TOGGLED - REC = ',
             self.rec = self.iblock_dic[block]
-            print self.rec
+            #print self.rec
 
     def get_ing_text_blobs (self, r1, r2):
         """Return an ing-blurb for r1 and r2 suitable for display."""

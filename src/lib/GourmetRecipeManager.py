@@ -16,6 +16,7 @@ from ImageExtras import get_pixbuf_from_jpg
 from gdebug import *
 from gglobals import *
 from recindex import RecIndex
+import recipeMerger
 import exporters.recipe_emailer as recipe_emailer
 import locale, gettext
 from timer import show_timer
@@ -205,6 +206,7 @@ class RecGui (RecIndex):
             'emptyTrash':self.empty_trash,
             'on_timer': lambda *args: show_timer(),
             'batch_edit':self.batch_edit_recs,
+            'on_duplicate_finder':self.show_duplicate_editor,
 #            'shopCatEditor': self.showShopEditor,            
             })
         # self.rc will be a list of open recipe cards.
@@ -1285,6 +1287,11 @@ class RecGui (RecIndex):
                 print 'Cancelled'
         self.batchEditor.dialog.hide()
         self.updateAttributeModels()
+
+    def show_duplicate_editor (self, *args):
+        rmd = recipeMerger.RecipeMergerDialog(self.rd)
+        rmd.populate_tree()
+        rmd.show()
                     
     def getAttributeModel (self, attribute):
         """Return a ListModel with a unique list of values for attribute.

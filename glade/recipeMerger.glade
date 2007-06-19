@@ -8,7 +8,7 @@
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
-  <property name="default_width">600</property>
+  <property name="default_width">700</property>
   <property name="default_height">650</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
@@ -19,6 +19,7 @@
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
   <property name="urgency_hint">False</property>
+  <signal name="delete_event" handler="close" last_modification_time="Mon, 18 Jun 2007 23:30:09 GMT"/>
 
   <child>
     <widget class="GtkVBox" id="vbox2">
@@ -33,16 +34,16 @@
 	  <property name="yalign">0.5</property>
 	  <property name="xscale">1</property>
 	  <property name="yscale">1</property>
-	  <property name="top_padding">0</property>
+	  <property name="top_padding">12</property>
 	  <property name="bottom_padding">0</property>
 	  <property name="left_padding">12</property>
-	  <property name="right_padding">6</property>
+	  <property name="right_padding">12</property>
 
 	  <child>
 	    <widget class="GtkNotebook" id="notebook">
 	      <property name="visible">True</property>
-	      <property name="show_tabs">True</property>
-	      <property name="show_border">True</property>
+	      <property name="show_tabs">False</property>
+	      <property name="show_border">False</property>
 	      <property name="tab_pos">GTK_POS_TOP</property>
 	      <property name="scrollable">False</property>
 	      <property name="enable_popup">False</property>
@@ -203,12 +204,13 @@ Recipes with similar recipe information and ingredients</property>
 
 		      <child>
 			<widget class="GtkButton" id="closeButton">
+			  <property name="visible">True</property>
 			  <property name="can_default">True</property>
 			  <property name="label">gtk-close</property>
 			  <property name="use_stock">True</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
 			  <property name="focus_on_click">True</property>
-			  <signal name="clicked" handler="previousPage"/>
+			  <signal name="clicked" handler="close" last_modification_time="Mon, 18 Jun 2007 23:29:10 GMT"/>
 			</widget>
 		      </child>
 
@@ -236,7 +238,7 @@ Recipes with similar recipe information and ingredients</property>
 		      </child>
 		    </widget>
 		    <packing>
-		      <property name="padding">0</property>
+		      <property name="padding">12</property>
 		      <property name="expand">False</property>
 		      <property name="fill">True</property>
 		    </packing>
@@ -330,6 +332,7 @@ Recipes with similar recipe information and ingredients</property>
 
 		      <child>
 			<widget class="GtkButton" id="cancelMergeButton">
+			  <property name="visible">True</property>
 			  <property name="can_default">True</property>
 			  <property name="label">gtk-cancel</property>
 			  <property name="use_stock">True</property>

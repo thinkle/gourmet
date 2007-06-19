@@ -1,3 +1,16 @@
+"""recipeIdentifier.py
+
+This module contains code for creating hashes to identify recipes
+based on title & instructions (recipe hash) or based on ingredients (ingredient hash).
+
+The hash_recipe function is a convenience function that provide both a
+recipe hash and an ingredient hash.
+
+For individual hashes, use the get_recipe_hash and get_ingredient_hash
+functions.
+
+"""
+
 import convert, xml.sax.saxutils
 import md5, difflib, types, re
 from gettext import gettext as _
