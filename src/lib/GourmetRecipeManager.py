@@ -368,7 +368,7 @@ class RecGui (RecIndex):
         self.stop_message = stop_message
         self.thread = thread        
         self.progress_dialog.show()
-        self.progress_dialog.connect('close',lambda *args: setattr(self,progress_dialog,None))
+        self.progress_dialog.connect('close',lambda *args: setattr(self.progress_dialog,None))
         #self.pauseButton.show()
         #self.stopButton.show()
         
@@ -1087,6 +1087,7 @@ class RecGui (RecIndex):
         # we have to make sure we don't filter while we go (to avoid
         # slowing down the process too much).
         self.wait_to_filter=True
+        self.last_impClass = impClass
         pre_hooks = [lambda *args: self.inginfo.disconnect_manually()]
         post_hooks = [lambda *args: self.inginfo.reconnect_manually()]
         pre_hooks.append(lambda *args: self.rd.add_hooks.insert(0,self.import_pre_hook))
@@ -1094,6 +1095,7 @@ class RecGui (RecIndex):
         self.threads += 1
         release = lambda *args: self.lock.release()
         post_hooks.extend([self.import_cleanup,
+                           lambda *args: setattr(self,'last_impClass',None),
                            release])
         def show_progress_dialog (t):
             debug('showing progress dialog',3)
@@ -1128,7 +1130,19 @@ class RecGui (RecIndex):
         debug('hooks: %s'%self.rd.add_hooks,1)
         self.wait_to_filter=False
         gt.gtk_enter()
+        # Check for duplicates
+        if self.last_impClass and self.last_impClass.added_recs:
+            rmd = recipeMerger.RecipeMergerDialog(
+                self.rd,
+                in_recipes=self.last_impClass.added_recs,
+                on_close_callback=lambda *args: self.redo_search()
+                )
+            rmd.show_if_there_are_dups(
+                label=_('Some of the imported recipes appear to be duplicates. You can merge them here, or close this dialog to leave them as they are.')
+                )
+        # Update our models for category, cuisine, etc.
         self.updateAttributeModels()
+        # Reset our index view
         self.redo_search()
         gt.gtk_leave()
 
@@ -1289,8 +1303,11 @@ class RecGui (RecIndex):
         self.updateAttributeModels()
 
     def show_duplicate_editor (self, *args):
-        rmd = recipeMerger.RecipeMergerDialog(self.rd)
-        rmd.populate_tree()
+        rmd = recipeMerger.RecipeMergerDialog(
+            self.rd,
+            on_close_callback=lambda *args: self.redo_search()
+            )
+        rmd.populate_tree_if_possible()
         rmd.show()
                     
     def getAttributeModel (self, attribute):

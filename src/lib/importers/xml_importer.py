@@ -39,6 +39,8 @@ class converter:
         self.threaded = threaded
         self.progress = progress
         self.rh = recHandler(recData=self.rd,prog=self.progress,conv=conv)
+        self.added_ings = self.rh.added_ings
+        self.added_recs = self.rh.added_recs
         self.terminate = self.rh.terminate
         self.suspend = self.rh.suspend
         self.resume = self.rh.resume

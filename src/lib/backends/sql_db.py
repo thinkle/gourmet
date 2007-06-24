@@ -502,18 +502,24 @@ class RecData (rdatabase.RecData):
             print 'assuming you mean by ingredient.'
             by = 'ingredient_hash'
         if recipes:
+            if not getattr(recipes[0],by):
+                recipes = [self.get_rec(r.id) for r in recipes]
+                recipes = filter(lambda x: x, recipes)
+            # This case happens when we've already merged the recipes
+            # (so recipes refer to non-existent objects, meaning
+            # we have no data to refer to at all)
+            if not recipes: return []
+            hashes = ['"%s"'%getattr(r,by) for r in recipes]
             WHERE_STATEMENT = '''
             WHERE %s in (%s)
-            '''%(by, ', '.join('"%s"'%getattr(r,by) for r in recipes))
-            if not include_deleted:
-                WHERE_STATEMENT += ''' AND not deleted'''
+            '''%(by,', '.join(rhashes))
+            if not include_deleted: WHERE_STATEMENT += ' AND not deleted '
+        elif not include_deleted:
+            WHERE_STATEMENT = '''
+            WHERE not deleted
+            '''
         else:
-            if not include_deleted:
-                WHERE_STATEMENT = '''
-                WHERE not deleted
-                '''
-            else:
-                WHERE_STATEMENT = ''
+            WHERE_STATEMENT = ''
         SQL = '''
         SELECT %(by)s
         FROM recipe
@@ -521,7 +527,7 @@ class RecData (rdatabase.RecData):
         GROUP BY %(by)s
         HAVING (COUNT(%(by)s) > 1)
         '''%locals()
-        print 'Executing ',SQL
+        #print 'Executing ',SQL
         self.cursor.execute(SQL)
         all_dups = self.cursor.fetchall()
         duplicate_sets = []
@@ -537,6 +543,13 @@ class RecData (rdatabase.RecData):
     def find_complete_duplicates (self, recipes=None, include_deleted=True):
         """Find all duplicate recipes (by recipe_hash *and* ingredient_hash)."""
         if recipes:
+            if not recipes[0].recipe_hash:
+                recipes = [self.get_rec(r.id) for r in recipes]
+                recipes = filter(lambda x: x, recipes)
+            # This case happens when we've already merged the recipes
+            # (so recipes refer to non-existent objects, meaning
+            # we have no data to refer to at all)
+            if not recipes: return []
             hashes = [('"%s"'%r.recipe_hash,'"%s"'%r.ingredient_hash) for r in recipes]
             rhashes,ihashes = zip(*hashes)
             WHERE_STATEMENT = '''
@@ -557,7 +570,7 @@ class RecData (rdatabase.RecData):
         GROUP BY ingredient_hash,recipe_hash
         HAVING ( COUNT(ingredient_hash) > 1 AND COUNT(recipe_hash) > 1)
         '''%WHERE_STATEMENT
-        print 'SQL:',SQL
+        #print 'SQL:',SQL
         self.cursor.execute(SQL)
         all_dups = self.cursor.fetchall()
         duplicate_sets = []

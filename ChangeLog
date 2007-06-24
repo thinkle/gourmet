@@ -1,3 +1,31 @@
+2007-06-23  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* glade/recipeMerger.glade Add label for possible message when
+	merger window is used as a dialog. Fix close and cancel buttons.
+	* src/lib/backends/sql_db.py Fix behavior of find_duplicates and
+	find_complete_duplicates when given a recipes parameter.
+	* src/lib/importers.py Make MulipleImporter track added_recs
+	* src/lib/importers/xml_importer.py Give converters added_ings and
+	added_rec attributes (references to underlying importer class)
+	* src/lib/GourmetRecipeManager.py Fix typo bug in progress_dialog
+	close callback. Add importer callback to bring up duplicates
+	dialog when we import recipes that look like duplicates. Fix
+	normal RecipeMergerDialog call (from Tools->Find Duplicates) so
+	that it uses our new callbacks that will try to show whatever kind
+	of duplicate there is rather than show an empty list.
+
+	* src/lib/recipeMerger Merge identical recipes in one-click rather
+	than making user click "Apply". Add show_if_there_are_dups
+	callback to show the dialog only if there are duplicates found
+	(i.e. for use as a post-importer dialog). Also add
+	populate_tree_if_possible callback to attempt to set the
+	searchType combo box so there will be something to show. Add a
+	parameter for a on_close_callback that allows our creator to do
+	something when we're closed. Add very lame image display (namely,
+	text that says "An image" or "No image").
+
+	* src/lib/version.py Up version to 0.13.6
+	
 2007-06-18  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* MANIFEST Added recipeMerger stuff.

@@ -357,6 +357,7 @@ class MultipleImporter:
         then run with c.run()
         """
         self.imports = imports
+        self.added_recs = []
         self.grm = grm
         self.total_size = 0
         self.current_prog = 0
@@ -391,6 +392,10 @@ class MultipleImporter:
             self.resume = self.iclass.resume
             self.iclass.run()
             self.current_prog += self.current_percentage
+            if hasattr(self.iclass,'added_recs'):
+                self.added_recs += self.iclass.added_recs
+            else:
+                print 'ODD:',self.iclass,'has no added_recs'
         self.grm.set_progress_thr(1,'Import complete!')
     
     def show_progress (self, prog, msg):

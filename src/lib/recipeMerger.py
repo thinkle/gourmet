@@ -29,10 +29,11 @@ class RecipeMergerDialog:
     DUP_INDEX_PAGE = 0
     MERGE_PAGE = 1
     
-    def __init__ (self, rd, in_recipes=None):
-        self.to_merge = [] # Queue of recipes to be merged...
-        self.in_recipes = in_recipes
+    def __init__ (self, rd, in_recipes=None, on_close_callback=None):
         self.rd = rd
+        self.in_recipes = in_recipes
+        self.on_close_callback = on_close_callback
+        self.to_merge = [] # Queue of recipes to be merged...
         self.glade = gtk.glade.XML(os.path.join(gglobals.gladebase,'recipeMerger.glade'))
         self.get_widgets()
         self.searchTypeCombo.set_active(self.COMPLETE_DUP_MODE)
@@ -44,6 +45,7 @@ class RecipeMergerDialog:
             'on_searchTypeCombo_changed':lambda *args: self.populate_tree(),
             'on_includeDeletedRecipesCheckButton_toggled':lambda *args: self.populate_tree(),
             'on_mergeAllButton_clicked':self.merge_all,
+            'on_cancelMergeButton_clicked':self.cancel_merge,
             'on_mergeSelectedButton_clicked':self.merge_selected,
             'on_applyButton_clicked':self.apply_merge,
             'close':self.close,
@@ -103,6 +105,7 @@ class RecipeMergerDialog:
     def populate_tree (self):
         """Populate treeview with duplicate recipes.
         """
+        #print 'CALL: populate_tree'
         search_mode =self.searchTypeCombo.get_active()
         include_deleted = self.includeDeletedRecipesCheckButton.get_active()
         if search_mode == self.RECIPE_DUP_MODE:
@@ -145,6 +148,10 @@ class RecipeMergerDialog:
             self.current_diff_data = recipeIdentifier.diff_recipes(self.rd,self.current_recs)
             self.diff_table = DiffTable(self.current_diff_data,self.current_recs[0],parent=self.recipeDiffScrolledWindow)
             self.diff_table.add_ingblocks(self.rd, self.current_recs)
+            if not self.diff_table.idiffs and not self.current_diff_data:
+                # If there are no differences, just merge the recipes...
+                self.apply_merge()
+                return
             if self.recipeDiffScrolledWindow.get_child():
                 self.recipeDiffScrolledWindow.remove(self.recipeDiffScrolledWindow.get_child())
             self.diff_table.show()
@@ -170,6 +177,7 @@ class RecipeMergerDialog:
                 self.rd.delete_rec(r)
         
     def apply_merge (self, *args):
+        #print "CALL: apply_merge"
         #print 'Apply ',self.diff_table.selected_dic,'on ',self.diff_table.rec
         self.do_merge(self.diff_table.selected_dic,
                       self.current_recs,
@@ -181,6 +189,7 @@ class RecipeMergerDialog:
     def merge_selected (self, *args):
         """Merge currently selected row from treeview.
         """
+        #print "CALL: merge_selected"
         mod,rows = self.duplicateRecipeTreeView.get_selection().get_selected_rows()
         dup_indices = [mod[r][0] for r in rows]
         self.to_merge = []
@@ -192,16 +201,45 @@ class RecipeMergerDialog:
     def merge_all (self, *args):
         """Merge all rows currently in treeview.
         """
+        #print 'CALL: merge_all'
         self.to_merge = range(len(self.dups))
         self.merge_next_recipe()
-        
 
-    def show (self): self.glade.get_widget('window1').show()
+    def cancel_merge (self, *args):
+        self.merge_next_recipe()
+        if not self.to_merge:
+            self.populate_tree()
+
+    def populate_tree_if_possible (self):
+        self.populate_tree()
+        if not self.dups:
+            self.searchTypeCombo.set_active(self.RECIPE_DUP_MODE)
+            self.populate_tree()
+            if not self.dups:
+                self.searchTypeCombo.set_active(self.ING_DUP_MODE)
+                self.populate_tree()
+
+    def show_if_there_are_dups (self, label=None):
+        self.populate_tree_if_possible()
+        if self.dups:
+            self.show(label=label)
+        else:
+            self.destroy()
+        
+    def show (self, label=None):
+        if label:
+            l = self.glade.get_widget('infoLabel')
+            l.set_markup('<span background="yellow" foreground="black"><b><i>%s</i></b></span>'%label)
+            l.show()
+        self.glade.get_widget('window1').show()
 
     def close (self, *args):
+        #print "CALL: close"
         w = self.glade.get_widget('window1')
         w.hide()
         w.destroy()
+        if self.on_close_callback:
+            self.on_close_callback(self)
         
 class RecipeMerger:
 
@@ -227,7 +265,7 @@ class RecipeMerger:
     def uiMergeRecipes (self, recs):
         diffs = recipeIdentifier.diff_recipes(self.rd,
                                               recs)
-        idiffs = recipeIdentifier.diff_ings(rd,r1,r2)
+        idiffs = recipeIdentifier.diff_ings(self.rd,r1,r2)
         if diffs:
             return DiffTable(diffs,recs[0])
         else:
@@ -245,7 +283,7 @@ class DiffTable (gtk.Table):
     """
 
     def __init__ (self, diff_dic, recipe_object=None, parent=None):
-
+        self.idiffs = []
         self.diff_dic = diff_dic
         gtk.Table.__init__(self)
         self.selected_dic = {}
@@ -403,6 +441,7 @@ class DiffTable (gtk.Table):
     def get_ing_text_blobs (self, r1, r2):
         """Return an ing-blurb for r1 and r2 suitable for display."""
         idiff = recipeIdentifier.diff_ings(self.rd,r1,r2)
+        if idiff: self.idiffs.append(idiff)
         def is_line (l):
             return not (l == '<diff/>')
         if idiff:
@@ -447,6 +486,8 @@ def get_display_constructor (attribute):
             upper=10)
     elif attribute in ['preptime','cooktime']:
         return lambda v: gtk.Label(convert.seconds_to_timestring(v))
+    elif attribute=='image':
+        return lambda v: (v and gtk.Label("An Image") or gtk.Label("No Image"))
     elif attribute in gglobals.DEFAULT_TEXT_ATTR_ORDER:        
         return make_text_label
     else:

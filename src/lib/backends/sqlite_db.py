@@ -100,4 +100,3 @@ if __name__ == '__main__':
     #rd.add_ing({'id':rec.id,'item':'Butter','ingkey':'butter, salted','amount':2,'unit':'pats'})
     #rec = rd.add_rec({'title':'Pop Tarts','servings':4,'category':'junk food, high fat','cuisine':'American'})
     #rd.add_ing({'id':rec.id,'item':'Pop tarts','amount':1,'unit':'box','ingkey':'pop tarts'})
-
