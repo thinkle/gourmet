@@ -16,7 +16,7 @@ class Mx2Cleaner:
         self.toss_regexp = re.compile(self.toss_regexp)
         self.attr_regexp = '(<[^>]+?)\"([^=]+\"[^=]+)\"'
         self.attr_regexp = re.compile(self.attr_regexp)
-        self.encodings = ['iso8859','ascii','latin_1','cp850','cp1252','utf-8']
+        self.encodings = ['cp1252','iso8859','ascii','latin_1','cp850','utf-8']
         
     def cleanup (self, infile, outfile):
         infile = open(infile,'r')
