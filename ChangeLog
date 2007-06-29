@@ -1,5 +1,11 @@
 2007-06-29  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
+	* src/lib/reccard.py Fix bug that prevented images from being
+	deleted. While we're at it, remove confirmation dialog on image
+	deletion, since it is undo-able.
+
+2007-06-29  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
 	* glade/keyeditor.glade Add button to edit nutritional
 	information.
 	* glade/nutritionDruid.glade Fix name collisions between two

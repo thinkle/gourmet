@@ -1381,9 +1381,12 @@ class ImageBox:
         debug("commit (self):",5)
         """Return image and thumbnail data suitable for storage in the database"""
         if self.image:
+            self.imageD.show()
             return ie.get_string_from_image(self.image),ie.get_string_from_image(self.thumb)
         else:
+            self.imageD.hide()
             return '',''
+        
     
     def draw_image (self):
         debug("draw_image (self):",5)
@@ -1435,17 +1438,19 @@ class ImageBox:
 
     def removeCB (self, *args):
         debug("removeCB (self, *args):",5)
-        if de.getBoolean(label="Are you sure you want to remove this image?",
-                         parent=self.rc.widget):
+        #if de.getBoolean(label="Are you sure you want to remove this image?",
+        #                 parent=self.rc.widget):
+        if self.image:
             current_image = ie.get_string_from_image(self.image)
-            Undo.UndoableObject(
-                lambda *args: self.remove_image(),
-                lambda *args: self.set_from_string(current_image),
-                self.rc.history,
-                widget=self.imageW).perform()
+        else:
+            current_image = ie.get_string_from_pixbuf(self.orig_pixbuf)
+        Undo.UndoableObject(
+            lambda *args: self.remove_image(),
+            lambda *args: self.set_from_string(current_image),
+            self.rc.history,
+            widget=self.imageW).perform()
 
     def remove_image (self):
-        self.rc.current_rec.image=''
         self.image=None
         self.orig_pixbuf = None
         self.draw_image()
