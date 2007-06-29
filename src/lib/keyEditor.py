@@ -7,7 +7,7 @@ from gettext import gettext as _
 from gettext import ngettext
 import mnemonic_manager
 import pageable_store
-
+import nutrition.nutritionDruid as nutritionDruid
 
 class KeyEditor:
 
@@ -68,6 +68,7 @@ class KeyEditor:
             'applyEntries':self.applyEntriesCB,
             'clearEntries':self.clearEntriesCB,
             'close_window': lambda *args: self.window.hide(),
+            'editNutritionalInfo':self.editNutritionalInfoCB,
             })
         # setup mnemonic manager
         self.mm = mnemonic_manager.MnemonicManager()
@@ -100,15 +101,37 @@ class KeyEditor:
         self.VALUE_COL = 2
         self.COUNT_COL = 3
         self.REC_COL = 4
+        self.NUT_COL = 5
         for n,head in [[self.FIELD_COL,_('Field')],
                        [self.VALUE_COL,_('Value')],
                        [self.COUNT_COL,_('Count')],
-                       [self.REC_COL, _('Recipes')]]:
-            renderer = gtk.CellRendererText()
+                       [self.REC_COL, _('Recipes')],
+                       [self.NUT_COL, _('Nutritional Info')],
+                       ]:
+            if n == self.NUT_COL:
+                renderer = gtk.CellRendererToggle()
+            else:
+                renderer = gtk.CellRendererText()
+            # If we have gtk > 2.8, set up text-wrapping
+            try:
+                renderer.get_property('wrap-width')
+            except TypeError:
+                pass
+            else:
+                renderer.set_property('wrap-mode',gtk.WRAP_WORD)
+                if n == self.FIELD_COL:
+                    renderer.set_property('wrap-width',60)
+                elif n in [self.VALUE_COL,self.REC_COL]: renderer.set_property('wrap-width',250)
+                else: renderer.set_property('wrap-width',100)
             if n==self.VALUE_COL:
                 renderer.set_property('editable',True)
                 renderer.connect('edited',self.tree_edited,n,head)
-            col = gtk.TreeViewColumn(head, renderer, text=n)
+            if n == self.NUT_COL:
+                col = gtk.TreeViewColumn(head, renderer, active=n, visible=n)
+            else:
+                col = gtk.TreeViewColumn(head, renderer, text=n)
+            if n == self.VALUE_COL:
+                col.set_property('expand',True)
             col.set_resizable(True)
             self.treeview.append_column(col)
 
@@ -201,6 +224,12 @@ class KeyEditor:
         self.treeModel.connect('page-changed',self.model_changed_cb)
         self.treeModel.connect('view-changed',self.model_changed_cb)
         
+    def resetTree (self):
+        self.search_string = 'NO ONE WOULD EVER SEARCH FOR THIS HACKISH STRING'
+        curpage = self.treeModel.page
+        self.doSearch()
+        self.treeModel.set_page(curpage)
+
     def doSearch (self):
         """Do the actual searching."""
         last_search = self.search_string
@@ -350,10 +379,54 @@ class KeyEditor:
                         self.rd.ikview,
                         {'ingkey':curdic['ingkey']}
                         )
-            self.update_iter(itr,newdic) # A recursive method that
-                                         # will set values for us and
-                                         # our children as necessary
-            updated_iters.append(itr) 
+        self.resetTree()
+            #self.update_iter(itr,newdic) # A recursive method that
+            #                             # will set values for us and
+            #                             # our children as necessary
+            #updated_iters.append(itr) 
+
+    def editNutritionalInfoCB (self, *args):
+        nid = nutritionDruid.NutritionInfoDruid(self.rg.nd, self.rg.prefs)
+        mod,rows = self.treeview.get_selection().get_selected_rows()
+        keys_to_update = {}
+        for path in rows:
+            itr = mod.get_iter(path)
+            # Climb to the key-level for each selection -- we don't
+            # care about anything else.
+            parent = mod.iter_parent(itr)
+            while parent:
+                itr = parent
+                parent = mod.iter_parent(itr)
+            curkey = mod.get_value(itr,self.VALUE_COL)
+            #if mod.get_value(itr,self.NUT_COL):
+            #    print "We can't yet edit nutritional information..."
+            #else:
+            if True:
+                keys_to_update[curkey]=[]
+                child = mod.iter_children(itr)
+                while child:
+                    grandchild = mod.iter_children(child)
+                    while grandchild:
+                        # Grand children are units...
+                        unit = mod.get_value(grandchild,self.VALUE_COL)
+                        amounts = []
+                        greatgrandchild = mod.iter_children(grandchild)
+                        while greatgrandchild:
+                            amount = mod.get_value(
+                                greatgrandchild,
+                                self.VALUE_COL
+                                )
+                            keys_to_update[curkey].append((convert.frac_to_float(amount),unit))
+                            greatgrandchild = mod.iter_next(greatgrandchild)
+                        grandchild = mod.iter_next(grandchild)
+                    child = mod.iter_next(child)
+                nid.add_ingredients(keys_to_update.items())
+                nid.connect('finish',self.update_nutinfo)
+                nid.show()
+            
+    def update_nutinfo (self, *args):
+        print 'KeyEditor.update_nutinfo'
+        self.treeModel.reset_views()
 
     def update_iter (self, itr, newdic):
         """Update iter and its children based on values in newdic"""
@@ -430,7 +503,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
     UNIT = _('Unit')+':'
     AMOUNT = _('Amount')+':'    
     
-    columns = ['obj','ingkey','item','count','recipe']
+    columns = ['obj','ingkey','item','count','recipe','ndbno']
     def __init__ (self, rd, per_page=15):
         self.rd = rd
         pageable_store.PageableTreeStore.__init__(self,
@@ -439,11 +512,26 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                                                    str, # value
                                                    int, # count
                                                    str, # recipe
+                                                   int, # nutritional information equivalent
                                                    ],
                                                   per_page=per_page)
 
     def reset_views (self):
         self.view = self.rd.get_ingkeys_with_count()
+        for n in range(self._get_length_()):
+            parent = (n,)
+            path = parent
+            try:
+                itr = self.get_iter(path)
+            except ValueError:
+                print 'Trouble with path',path
+                return
+            self.emit('row-changed',path,itr)
+            child = self.iter_children(itr)
+            while child:
+                path = self.get_path(child)
+                self.emit('row-changed',path,child)
+                child = self.iter_next(child)
         #self.ikview = self.rd.filter(self.rd.ikview,lambda row: row.item)
         # Limit iview to ingkeys only, then select the unique values of that, then
         # filter ourselves to values that have keys
@@ -454,7 +542,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
         self.reset_views()
 
     def limit_on_ingkey (self, txt, search_options={}):
-        self.limit(txt,'ingkey',search_options)
+        self.limit(txt,self.rd.iview+'.ingkey',search_options)
 
     def limit_on_item (self, txt, search_options={}):
         self.limit(txt,'item',search_options)
@@ -486,6 +574,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                 # avoidable slowdown (look here if code seems sluggish)
                 row.count,
                 None,
+                row.ndbno or 0,
                 ]
 
     def _get_children_ (self,itr):
@@ -499,7 +588,9 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                             self.ITEM,
                             item,
                             self.rd.fetch_len(self.rd.iview,ingkey=ingkey,item=item),
-                            self.get_recs(ingkey,item)])
+                            self.get_recs(ingkey,item),
+                            0
+                            ])
         elif field==self.ITEM:
             ingkey = self.get_value(self.iter_parent(itr),2)
             item = value
@@ -508,13 +599,15 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                             self.UNIT,
                             unit,
                             self.rd.fetch_len(self.rd.iview,ingkey=ingkey,item=item,unit=unit),
-                            None])
+                            None,
+                            0])
             if not ret:
                 ret.append([None,
                             self.UNIT,
                             '',
                             self.get_value(self.iter_parent(itr),3),
-                            None])                
+                            None,
+                            0])                
         elif field==self.UNIT:
             item = self.get_value(self.iter_parent(itr),2)
             ingkey = self.get_value(self.iter_parent(
@@ -536,14 +629,16 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                                                    ingkey=ingkey,item=item,
                                                    unit=unit,
                                                    amount=i.amount)),
-                            None])
+                            None,
+                            0])
                 amounts.append(astring)
             if not ret:
                 ret.append([None,
                             self.AMOUNT,
                             '',
                             self.get_value(self.iter_parent(itr),3),
-                            None])
+                            None,
+                            0])
             
         return ret
         #row = row[0]
@@ -572,6 +667,8 @@ if gtk.pygtk_version[1]<8:
 if __name__ == '__main__':
     import recipeManager
     rm = recipeManager.default_rec_manager()
+    import sys
+    sys.path.append(os.path.realpath('../tests'))
     import testExtras
     rg = testExtras.FakeRecGui(rm)
     ke=KeyEditor(rm,rg)

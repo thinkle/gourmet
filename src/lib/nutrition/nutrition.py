@@ -42,9 +42,15 @@ class NutritionData:
         ndbno is our nutritional database number."""
         if type(ndbno)!=int:
             ndbno = int(ndbno)
-        self.db.do_add(self.db.naliasesview,{'ndbno':ndbno,
-                                             'ingkey':key}
-                       )
+        prev_association = self.db.fetch_one(self.db.naliasesview,ingkey=key)
+        if prev_association:
+            self.db.do_modify(self.db.naliasesview,
+                              prev_association,
+                              {'ndbno':ndbno})
+        else:
+            self.db.do_add(self.db.naliasesview,{'ndbno':ndbno,
+                                                 'ingkey':key}
+                           )
 
     def set_conversion (self, key, unit, factor):
         """Set conversion for ingredient key.
@@ -53,7 +59,14 @@ class NutritionData:
         """
         if self.conv.unit_dict.has_key(unit):
             unit = self.conv.unit_dict[unit]
-        self.db.do_add(self.db.nconversions,{'ingkey':key,'unit':unit,'factor':factor})
+        prev_entry = self.db.fetch_one(self.db.nconversions,
+                                       **{'ingkey':key,'unit':unit})
+        if prev_entry:
+            self.db.do_modify(self.db.nconversions,
+                               prev_entry,
+                               {'factor':factor})
+        else:
+            self.db.do_add(self.db.nconversions,{'ingkey':key,'unit':unit,'factor':factor})
 
     def get_matches (self, key, max=50):
         """Handed a string, get a list of likely USDA database matches.
@@ -154,10 +167,10 @@ class NutritionData:
         number of grams this AMOUNT converts to.
         """
         # our default is 100g
-        cnv=self.conv.converter('g.',unit)
+        cnv=self.conv.converter('g',unit)
         if not row: row=self.get_nutinfo(key)
         if not cnv:
-            cnv = self.conv.converter('g.',unit,
+            cnv = self.conv.converter('g',unit,
                                       density=self.get_density(key,row,fudge=fudge)
                                       )
         if not cnv:

@@ -465,22 +465,31 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         self.update_display()
         
     def solidify_vapor_cb (self,*args):
-        vapor = self.nutinfo._get_vapor()
+        self.show_druid(fix_vapor=True)
+
+    def show_druid (self, nd=None, fix_vapor=False):
+        vapor = fix_vapor and self.nutinfo._get_vapor()
+        if not nd:
+            if vapor: nd=vapor[0].__nd__
+            else:
+                raise "No nutritional database handed to us!"
         import nutritionDruid
+        self.ndruid = nutritionDruid.NutritionInfoDruid(nd,
+                                                        prefs=self.prefs,rec=self.rec)
+        self.ndruid.connect('key-changed',lambda w,tpl: self.emit('ingredients-changed'))
+        self.ndruid.connect('unit-changed',lambda w,tpl: self.emit('ingredients-changed'))
         if vapor:
-            self.ndruid = nutritionDruid.NutritionInfoDruid(vapor[0].__nd__,
-                                                            prefs=self.prefs,rec=self.rec)
-            self.ndruid.connect('key-changed',lambda w,tpl: self.emit('ingredients-changed'))
-            self.ndruid.connect('unit-changed',lambda w,tpl: self.emit('ingredients-changed'))
             ings = [(v.__key__,[(v.__amt__,
                                  v.__unit__)]
                      ) for v in vapor]
             self.ndruid.add_ingredients(
-                ings
+                ings,
                 )
-            self.ndruid.connect('finish',
-                                self.update_nutinfo)
-            self.ndruid.show()
+        else:
+            self.ndruid.setup_nutrition_index()
+        self.ndruid.connect('finish',
+                            self.update_nutinfo)
+        self.ndruid.show()
         
     def update_nutinfo (self,*args):
         self.nutinfo._reset()

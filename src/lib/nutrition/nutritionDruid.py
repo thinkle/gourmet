@@ -5,7 +5,7 @@ from gourmet.mnemonic_manager import MnemonicManager
 from gourmet.defaults import lang as defaults
 from gourmet.pageable_store import PageableViewStore
 from nutritionLabel import NUT_LAYOUT, SEP, RECOMMENDED_INTAKE
-import nutritionInfoEditor
+from nutritionInfoEditor import NutritionInfoIndex,MockObject
 from gourmet.numberEntry import NumberEntry
 import gourmet.cb_extras as cb
 import gourmet.dialog_extras as de
@@ -153,8 +153,6 @@ class NutritionUSDAIndex:
 
     def _setup_nuttree_ (self):
         """Set up our treeview with USDA nutritional equivalents"""
-        print 'DEBUG:'
-        print 'WE HAVE ',self.rd.fetch_len(self.rd.nview),'NUTRITIONAL ITEMS...'
         self.nutrition_store = PageableNutritionStore(self.rd.fetch_all(self.rd.nview))
         self.usdaFirstButton.connect('clicked', lambda *args: self.nutrition_store.goto_first_page())
         self.usdaLastButton.connect('clicked', lambda *args: self.nutrition_store.goto_last_page())
@@ -243,6 +241,9 @@ class NutritionInfoDruid (gobject.GObject):
     INFO_PAGE = 4
     INDEX_PAGE = 5
 
+    DEFAULT_AMOUNT = 8
+    DEFAULT_UNIT = 'oz.'
+
     __gsignals__ = {
         # The key callback will return a tuple (old_key,new_key)
         'key-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_PYOBJECT,(gobject.TYPE_PYOBJECT,)),
@@ -251,7 +252,7 @@ class NutritionInfoDruid (gobject.GObject):
         'finish':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,())
         }
 
-    def __init__ (self, nd, prefs, rec=None):
+    def __init__ (self, nd, prefs, rec=None, in_string=''):
         # Very primitive custom handler here -- we just return a
         # NumberEntry no matter what glade says. Obviously if glade
         # gets updated we'd better fix this (see reccard.py for a more
@@ -264,7 +265,11 @@ class NutritionInfoDruid (gobject.GObject):
         self.prefs = prefs
         self.nd = nd
         self.rec = rec
+        self.in_string = in_string or (rec and _('recipe') or _('selection'))
         self.rd = self.nd.db
+        self.def_ingredient_amounts = {} # For default amounts for nutritional label...
+        self.amounts = {}
+        self.ing_to_index = {} # A way to keep track of the order of our ingredients...
         self._setup_widgets_()
         # keep track of pages/setups we've been on         
         self.path = []
@@ -286,7 +291,8 @@ class NutritionInfoDruid (gobject.GObject):
                          'ingKeyLabel2',
                          # Search stuff
                          'usdaSearchEntry','usdaSearchAsYouTypeToggle','usdaFindButton',
-                         'usdaFirstButton','usdaBackButton','usdaForwardButton','usdaLastButton','usdaShowingLabel',
+                         'usdaFirstButton','usdaBackButton','usdaForwardButton',
+                         'usdaLastButton','usdaShowingLabel',
                          'usdaTreeview','foodGroupComboBox',
                          'customBox','customButton',
                          # Unit adjusting stuff
@@ -298,7 +304,14 @@ class NutritionInfoDruid (gobject.GObject):
                          # Custom nutritional information screen
                          'massUnitComboBox','customNutritionAmountEntry',
                          # Density-Choosing page
-                         'densityLabel','densityBox']
+                         'densityLabel','densityBox',
+                         # Index page...
+                         'editButton',
+                         # INFO PAGE
+                         'infoIngredientKeyLabel','infoUSDALabel','nutritionLabelBox',
+                         'infoDensityLabel','infoOtherEquivalentsLabel',
+                         'infoCustomEquivalentsTable',
+                         ]
         for widget_name in self.widgets:
             setattr(self,widget_name,self.glade.get_widget(widget_name))
             if not getattr(self,widget_name): print "WIDGET: ",widget_name,"NOT FOUND."
@@ -307,9 +320,6 @@ class NutritionInfoDruid (gobject.GObject):
         self.usdaIndex = NutritionUSDAIndex(self.rd,
                                             prefs=self.prefs,
                                             widgets=[(w,getattr(self,w)) for w in self.widgets])
-        self.nutInfoIndex = nutritionInfoEditor.NutritionInfoIndex(
-            self.rd, self.rg, self.glade
-            )
         self.glade.signal_autoconnect(
             {'previousPage':self.previous_page_cb,
              'applyPage':self.apply_cb,
@@ -318,10 +328,12 @@ class NutritionInfoDruid (gobject.GObject):
              'usdaPage':self.usda_cb,
              'close':self.close,
              'on_foodGroupComboBox_changed':self.usdaIndex.food_group_filter_changed_cb,
+             'edit':self.view_nutritional_info,
+             'infoEditUSDAAssociation':self.info_edit_usda_association,
              }
             )
         # hide our tabs...
-        #self.notebook.set_show_tabs(False)
+        self.notebook.set_show_tabs(False)
         # custom widgety stuff
         self.changeIngKeyAction = SpecialAction(highlight_widgets=[self.ingKeyEntry,self.applyKeyButton,
                                                                    ],
@@ -346,17 +358,197 @@ class NutritionInfoDruid (gobject.GObject):
         self.massUnitComboBox.connect('changed',self.custom_unit_changed)
         self._setup_custom_box()
 
+    ### BEGIN METHODS FOR NUTRITIONAL INFORMATION INDEX
+
+    def setup_nutrition_index (self):
+        if not hasattr(self,'full_inglist'):
+            self.add_ingredients([])
+        self.nutInfoIndex = NutritionInfoIndex(
+            self.rd, prefs=self.prefs, glade=self.glade,
+            ingredients=self.full_inglist,
+            in_string=self.in_string,
+            )
+        self.path.append((self.INDEX_PAGE,None))
+        self.goto_page_index()
+
+    ### END METHODS FOR NUTRITIONAL INFORMATION INDEX
+
+    ### BEGIN METHODS FOR DISPLAYING CURRENT NUTRITIONAL INFO
+    def view_nutritional_info (self, *args):
+        nutalias = self.nutInfoIndex.get_selected_ingredient()
+        if nutalias.ndbno == 0:
+            # Then this is not really an item... we better edit it!
+            self.add_ingredients(
+                [(
+                nutalias.ingkey,
+                self.get_amounts_and_units_for_ingkey(nutalias.ingkey)
+                  )]
+                )
+        else:
+            self.show_info_page(nutalias)
+            self.path.append(
+                (self.show_info_page,[nutalias])
+                )
+            
+    def show_info_page (self, nutalias):
+        self.infoIngredientKeyLabel.set_text(nutalias.ingkey)
+        self.infoUSDALabel.set_text(nutalias.desc)
+        self.goto_page_info()
+        self.prevDruidButton.set_sensitive(True)
+        self.set_nutritional_label(nutalias)
+        self.set_density_info(nutalias)
+        self.info_nutalias = nutalias
+
+    def set_density_info (self, nutalias):
+        densities,extra_units = self.nd.get_conversions(nutalias.ingkey)
+        density_texts = []
+        for k,v in densities.items():
+            if not k:
+                density_texts = ['%.2f'%v] + density_texts
+            else:
+                density_texts.append('%s: %.2f'%(k,v))
+        self.infoDensityLabel.set_text('\n'.join(density_texts) or 'None')
+        eutexts = ['%s: %s g'%(k,v) for k,v in extra_units.items() ]
+        eutexts.sort()
+        extra_units_text = '\n'.join(eutexts)
+        self.infoOtherEquivalentsLabel.set_text(
+            extra_units_text or 'None'
+            )
+        others = self.rd.fetch_all(self.rd.nconversions,ingkey=nutalias.ingkey)
+        other_label = '\n'.join(['%s: %.1f g'%(
+            conv.unit or '100 %s'%_('ml'),1.0/conv.factor
+            ) for conv in others])
+        if others:
+            self.populate_custom_equivalents_table(others)
+        else:
+            self.infoCustomEquivalentsTable.hide()
+
+    def populate_custom_equivalents_table (self, equivalents):
+        # Remove previous children...
+        for c in self.infoCustomEquivalentsTable.get_children():
+            self.infoCustomEquivalentsTable.remove(c); c.unparent()
+        for n,eq in enumerate(equivalents):
+            lab = gtk.Label("%s: %.1f g"%(
+                eq.unit or 'No unit', 1.0/eq.factor)
+                            )
+            rembut = gtk.Button('C_hange'); rembut.set_use_underline(True)
+            rembut.connect('clicked',
+                           self.info_edit_equivalent,
+                           eq)
+            self.infoCustomEquivalentsTable.attach(lab,
+                                                   0,1,n,n+1)
+            self.infoCustomEquivalentsTable.attach(rembut,
+                                                   1,2,n,n+1)
+        self.infoCustomEquivalentsTable.show_all()
+
+    def set_nutritional_label (self, nutalias):
+        if not hasattr(self,'nutritionLabel'):
+            from nutritionLabel import NutritionLabel
+            self.nutritionAmountLabel = gtk.Label()
+            self.nutritionLabel = NutritionLabel(self.prefs)
+            self.nutritionLabelBox.pack_start(self.nutritionAmountLabel,
+                                              fill=0,
+                                              expand=0)
+            self.nutritionLabelBox.pack_start(self.nutritionLabel,
+                                              fill=0,
+                                              expand=0,
+                                              )
+            self.nutritionAmountLabel.set_alignment(0.0,0.0)
+            self.nutritionAmountLabel.show()
+            self.nutritionLabel.show()
+        amount,unit = self.def_ingredient_amounts.get(nutalias.ingkey,
+                                                  (self.DEFAULT_AMOUNT,
+                                                   self.DEFAULT_UNIT)
+                                                  )
+        nutinfo = self.nd.get_nutinfo_for_inglist([
+            MockObject(amount=amount,
+                       unit=unit,
+                       ingkey=nutalias.ingkey)
+            ],
+                                                  self.rd
+                                                  )
+        if nutinfo._get_vapor():
+            amount = self.DEFAULT_AMOUNT; unit = self.DEFAULT_UNIT
+            nutinfo = self.nd.get_nutinfo_for_inglist([
+            MockObject(amount=amount,
+                       unit=unit,
+                       ingkey=nutalias.ingkey)
+            ],
+                                                      self.rd
+                                                      )
+
+        self.nutritionLabel.set_nutinfo(
+            nutinfo
+            )
+        self.nutritionAmountLabel.set_markup(
+            '<i>Nutritional information for %(amount)s %(unit)s</i>'%{
+            'amount':amount,
+            'unit':unit,
+            })
+    
+    def get_amounts_and_units_for_ingkey (self, ingkey):
+        """Return a list of amounts and units present in database for ingkey"""
+        amounts_and_units = []
+        ings = self.rd.fetch_all(self.rd.iview,ingkey=ingkey)        
+        for i in ings:
+            a,u = i.amount,i.unit
+            if (a,u) not in amounts_and_units:
+                amounts_and_units.append((a,u))
+        return amounts_and_units
+
+    # start nutritional-info callbacks
+    def info_edit_usda_association (self, *args):
+        """Edit the USDA association for the item on the information page."""
+        self.edit_nutinfo(ingkey=self.info_nutalias.ingkey,
+                          desc=self.info_nutalias.desc)
+        self.path.append(
+            (self.edit_nutinfo,
+             [self.info_nutalias.ingkey,
+              self.info_nutalias.desc])
+            )
+
+    def info_edit_equivalent (self, button, eq):
+        """Edit equivalents callback. eq is a nutalias DB object.
+        """
+        self.amounts[self.ingkey] = {}
+        self.amount = 1
+        self.ingkey = self.info_nutalias.ingkey
+        self.set_from_unit(eq.unit)
+        self.fromAmountEntry.set_text('1')
+        conv = self.nd.get_conversion_for_amt(1,eq.unit,self.info_nutalias.ingkey)
+        amt_in_grams = conv * 100
+        self.setup_to_units()
+        to_unit = cb.cb_set_active_text(self.toUnitCombo,'g')
+        self.toAmountEntry.set_text(convert.float_to_frac(amt_in_grams,
+                                                          fractions=convert.FRACTIONS_ASCII
+                                                          ))
+        
+        # Hack to avoid adding ourselves to the path on a "back" event
+        # -- if button is None, then we know we were called
+        # artificially from previous_page_cb (not from a button press
+        # event)
+        if button:
+            self.path.append(
+                (self.info_edit_equivalent,
+                 [None,eq])
+                )
+        self.goto_page_unit_convert()
+
+    # end nutritional-info callbacks
+
+    ### END METHODS FOR DISPLAYING CURRENT NUTRITIONAL INFO
 
     ### BEGIN  METHODS FOR CUSTOM NUTRITIONAL INTERFACE
     def _setup_custom_box (self):
         """Setup the interface for entering custom nutritional information.
         """
         t = gtk.Table()
-        masses = [i[0] for i in defaults.UNIT_GROUPS['metric mass'] + defaults.UNIT_GROUPS['imperial weight']]
+        masses = [i[0] for i in defaults.UNIT_GROUPS['metric mass']\
+                  + defaults.UNIT_GROUPS['imperial weight']]
         cb.set_model_from_list(
             self.massUnitComboBox,
             masses)
-        cb.cb_set_active_text(self.massUnitComboBox,'g.')
+        cb.cb_set_active_text(self.massUnitComboBox,'g')
         self.customNutritionAmountEntry.set_value(100)
         self.nutrition_info = {}
         self.custom_box.add(t)
@@ -415,7 +607,6 @@ class NutritionInfoDruid (gobject.GObject):
             rda = RECOMMENDED_INTAKE.get(name,None)*2000
             if rda:
                 self.changing_number_internally = True
-                print 'Setting to ',v,'percent of RDA (',rda,')'
                 number_widget.set_value(
                     v*0.01*rda
                     )
@@ -425,7 +616,7 @@ class NutritionInfoDruid (gobject.GObject):
         amount = self.customNutritionAmountEntry.get_value()
         unit = cb.cb_get_active_text(self.massUnitComboBox)
         if amount and unit:
-            base_convert = self.nd.conv.converter(unit,'g.')/float(100)
+            base_convert = self.nd.conv.converter(unit,'g')/float(100)
             self.custom_factor = 1/(base_convert * amount)
 
     def apply_custom (self, *args):
@@ -441,7 +632,6 @@ class NutritionInfoDruid (gobject.GObject):
                 del nutinfo['fat']
                 nutinfo['fapoly']=unsatfat # Fudge
         nutinfo['desc']=self.ingkey
-        print 'committed',nutinfo
         ndbno = self.nd.add_custom_nutrition_info(nutinfo)
 
     ### END METHODS FOR CUSTOM NUTRITIONAL INTERFACE 
@@ -453,7 +643,6 @@ class NutritionInfoDruid (gobject.GObject):
         self.ingKeyLabel2.set_markup('<i><b>'+txt+'</b></i>') # Custom Page
         self.nutrition_info['desc']=txt
         self.ingkey = txt
-
 
     ### BEGIN METHODS FOR SETTING UNIT EQUIVALENTS
         
@@ -505,7 +694,7 @@ class NutritionInfoDruid (gobject.GObject):
 
     def apply_amt_convert (self,*args):
         to_unit = cb.cb_get_active_text(self.toUnitCombo)
-        base_convert = self.nd.conv.converter('g.',to_unit)
+        base_convert = self.nd.conv.converter('g',to_unit)
         if not base_convert:
             self.densities,self.extra_units = self.nd.get_conversions(self.ingkey)
             if self.extra_units.has_key(to_unit):
@@ -517,8 +706,10 @@ class NutritionInfoDruid (gobject.GObject):
                     describer = describer[0:-1]
                     density = self.densities[describer]
                 else:
+                    if not self.densities.has_key(None):
+                        raise "Unable to make sense of conversion from %s %s"%(to_unit,self.ingkey)
                     density = self.densities[None]
-                base_convert = self.nd.conv.converter('g.',to_unit,density=density)
+                base_convert = self.nd.conv.converter('g',to_unit,density=density)
         to_amount = convert.frac_to_float(self.toAmountEntry.get_text())
         from_amount = convert.frac_to_float(self.fromAmountEntry.get_text())
         ratio = from_amount / to_amount
@@ -569,7 +760,7 @@ class NutritionInfoDruid (gobject.GObject):
                     custom_yes=_('_Just in recipe %s')%self.rec.title
                     )
             except de.UserCancelledError:
-                self.changeIngKeyAction.dehighlight_action()            
+                self.changeIngKeyAction.dehighlight_action()
                 return
         else:
             if not de.getBoolean(label=_('Change ingredient key'),
@@ -579,6 +770,7 @@ class NutritionInfoDruid (gobject.GObject):
                                                },
                                  cancel=False,
                                  ):
+                self.changeIngKeyAction.dehighlight_action()
                 return
         if self.rec and user_says_yes:
             self.rd.update(self.rd.iview,
@@ -638,7 +830,6 @@ class NutritionInfoDruid (gobject.GObject):
     ### BEGIN METHODS FOR DENSITY-CHOOSING INTERFACE
         
     def get_density (self,amount,unit):
-        print 'Pick from',self.densities
         self.densityLabel.set_text(
             _("""In order to calculate nutritional information for "%(amount)s %(unit)s %(ingkey)s", Gourmet needs to know its density. Our nutritional database has several descriptions of this food with different densities. Please select the correct one below.""")%({'amount':amount,'unit':unit,'ingkey':self.ingkey})
             )
@@ -668,7 +859,7 @@ class NutritionInfoDruid (gobject.GObject):
 
     ### BEGIN CALLBACKS TO WALK THROUGH INGREDIENTS
 
-    def add_ingredients (self, inglist):
+    def add_ingredients (self, inglist, full_inglist=[]):
         """Add a list of ingredients for our druid to guide the user through.
 
         Our ingredient list is in the following form for, believe it
@@ -691,6 +882,18 @@ class NutritionInfoDruid (gobject.GObject):
         """
         # to start, we take our first ing
         self.inglist = inglist
+        if not full_inglist:
+            if self.rec:
+                self.full_inglist = []
+                for i in self.rd.get_ings(self.rec):
+                    self.full_inglist.append(i.ingkey)
+                    self.def_ingredient_amounts[i.ingkey] = (i.amount,i.unit)
+            else:
+                self.full_inglist = []
+                for ingkey,amounts_and_units in self.inglist:
+                    self.full_inglist.append(ingkey)
+                    if amounts_and_units:
+                        self.def_ingredient_amounts[ingkey] = amounts_and_units[0]
         self.ing_index = 0
         self.setup_next_ing()
 
@@ -704,17 +907,26 @@ class NutritionInfoDruid (gobject.GObject):
         if not ing:
             return
         ingkey,amounts = ing
-        self.amounts = amounts
+        self.ing_to_index[ingkey] = self.ing_index
+        self.amounts[ingkey] = amounts
         self.amount_index = 0
         self.set_ingkey(ingkey)
         if not self.nd.get_nutinfo(ingkey):
-            self.autosearch_ingkey()
-            self.goto_page_key_to_nut()
+            self.edit_nutinfo()
+            self.path.append((self.edit_nutinfo,[ingkey]))
         else:
             self.setup_to_units()
             self.check_next_amount()
-        #self.from_unit = unit
-        #self.from_amount = amount
+
+    def edit_nutinfo (self, ingkey=None, desc=None):        
+        if ingkey: self.set_ingkey(ingkey)
+        if desc:
+            self.usdaIndex.set_search(desc)
+        else:
+            self.autosearch_ingkey()        
+        self.goto_page_key_to_nut()
+        ing_index = self.ing_to_index.get(ingkey,None)
+        if ing_index: self.ing_index = ing_index
 
     def check_next_amount (self):
         """Check the next amount on our amounts list.
@@ -722,10 +934,10 @@ class NutritionInfoDruid (gobject.GObject):
         If the amount is already convertible, we don't do anything.
         If the amount is not convertible, we ask our user for help!
         """
-        if self.amount_index >= len(self.amounts):
+        if self.amount_index >= len(self.amounts[self.ingkey]):
             self.setup_next_ing()
             return
-        amount,unit = self.amounts[self.amount_index]
+        amount,unit = self.amounts[self.ingkey][self.amount_index]
         if not amount: amount=1
         self.amount = amount
         self.amount_index += 1
@@ -735,36 +947,73 @@ class NutritionInfoDruid (gobject.GObject):
                                       (not self.nd.get_conversion_for_amt(amount,unit,self.ingkey,fudge=False)
                                        ))
         if existing_conversion_fudged:
-            print 'We have',existing_conversion,'for',amount,unit,'but it was fudged.'
             self.get_density(amount,unit)
         elif existing_conversion:
             self.check_next_amount()
         else:
-            self.set_from_unit(unit)
-            self.fromAmountEntry.set_text(convert.float_to_frac(amount,
-                                                                fractions=convert.FRACTIONS_ASCII)
-                                          )
-            self.toAmountEntry.set_text(convert.float_to_frac(amount,
-                                                              fractions=convert.FRACTIONS_ASCII)
-                                        )
-            self.goto_page_unit_convert()
+            self.edit_units(amount, unit, self.ingkey)
+            self.path.append((self.edit_units,
+                              [amount,unit,self.ingkey,self.amount_index])
+                             )
+    
+    def edit_units (self, amount, unit, ingkey, indx=None):
+        self.set_ingkey(ingkey)
+        self.set_from_unit(unit)
+        if indx is not None: self.amount_index = indx
+        self.fromAmountEntry.set_text(convert.float_to_frac(amount,
+                                                            fractions=convert.FRACTIONS_ASCII)
+                                      )
+        self.toAmountEntry.set_text(convert.float_to_frac(amount,
+                                                          fractions=convert.FRACTIONS_ASCII)
+                                    )
+        self.goto_page_unit_convert()
 
     def previous_page_cb (self, *args):
-        #self.notebook.set_current_page(self.notebook.get_current_page()-1)
-        indx = self.curpage - 1
-        typ,ingkey,amount_index = self.path[indx]
-        if ingkey!=self.ingkey:
-            self.ing_index -= 2
-            self.setup_next_ing()
-            if typ==self.UNIT_PAGE:
+        """Move to the previous item in self.path
+
+
+        PATH ITEMS are in the form:
+
+        (CUSTOM_METHOD,ARGS)
+
+        We'll call CUSTOM_METHOD(ARGS)
+        """
+        self.path.pop() # pop off current page...
+        method,args = self.path[-1]
+        if callable(method):
+            method(*args)
+        else:
+            # for convenience, if the method isn't callable, we take
+            # it to be a page
+            self.notebook.set_current_page(method)
+        if len(self.path) <= 1:
+            self.prevDruidButton.set_sensitive(False)
+        return
+    
+        if amount_index==None:
+            # Custom
+            if typ==self.INFO_PAGE:
+                self.show_info_page(ingkey) #ingkey is really a nutalias
+                #in this case...
+            elif typ==self.INDEX_PAGE:
+                self.goto_page_index()
+            else:
+                self.notebook.set_current_page(typ)
+                if callable(ingkey): ingkey()
+        else:
+            if ingkey!=self.ingkey:
+                self.ing_index -= 2
+                self.setup_next_ing()
+                if typ==self.UNIT_PAGE:
+                    self.amount_index = amount_index - 1
+                    self.check_next_amount()
+            elif typ==self.UNIT_PAGE:
                 self.amount_index = amount_index - 1
                 self.check_next_amount()
-        elif typ==self.UNIT_PAGE:
-            self.amount_index = amount_index - 1
-            self.check_next_amount()
-        else:
-            self.ing_index -= 1
-            self.setup_next_ing()
+
+            else:
+                self.ing_index -= 1
+                self.setup_next_ing()
         self.curpage = indx
         if self.curpage == 0:
             self.prevDruidButton.set_sensitive(False)
@@ -787,14 +1036,11 @@ class NutritionInfoDruid (gobject.GObject):
         elif page == self.DENSITY_PAGE:
             self.apply_density()
             self.check_next_amount()
-        self.path.append((page,self.ingkey,self.amount_index))
         self.curpage += 1
-        #self.notebook.set_current_page(page + 1)
         self.prevDruidButton.set_sensitive(True)
-
+    
     def ignore_cb (self, *args):
         page = self.notebook.get_current_page()
-        self.path.append((page,self.ingkey,self.amount_index))
         self.curpage += 1
         self.prevDruidButton.set_sensitive(True)
         if page == self.NUT_PAGE:
@@ -806,16 +1052,33 @@ class NutritionInfoDruid (gobject.GObject):
 
     ### BEGIN CONVENIENCE METHODS FOR SWITCHING PAGES
     def goto_page_key_to_nut (self):
+        for b in [self.applyButton,self.ignoreButton]: b.show()
+        for b in [self.editButton]: b.hide()        
         self.notebook.set_current_page(self.NUT_PAGE)
 
     def goto_page_unit_convert(self):
+        for b in [self.applyButton,self.ignoreButton]: b.show()
+        for b in [self.editButton]: b.hide()        
         self.notebook.set_current_page(self.UNIT_PAGE)
 
     def goto_page_custom (self):
+        for b in [self.applyButton,self.ignoreButton]: b.show()
+        for b in [self.editButton]: b.hide()        
         self.notebook.set_current_page(self.CUSTOM_PAGE)
 
     def goto_page_density (self):
+        for b in [self.applyButton,self.ignoreButton]: b.show()
+        for b in [self.editButton]: b.hide()
         self.notebook.set_current_page(self.DENSITY_PAGE)
+
+    def goto_page_index (self):
+        for b in [self.editButton]: b.show()
+        for b in [self.applyButton,self.ignoreButton]: b.hide()
+        self.notebook.set_current_page(self.INDEX_PAGE)
+
+    def goto_page_info (self):
+        for b in [self.editButton,self.applyButton,self.ignoreButton]: b.hide()
+        self.notebook.set_current_page(self.INFO_PAGE)
 
     ### END CONVENIENCE METHODS FOR SWITCHING PAGES
 
@@ -829,12 +1092,16 @@ class NutritionInfoDruid (gobject.GObject):
         self.glade.get_widget('window').show()
 
     def finish (self):
-        self.glade.get_widget('window').hide()
-        print self,'EMIT: finish'
-        self.emit('finish')
+        # When done -- goto nutritional index page...
+        if not hasattr(self,'nutInfoIndex'):
+            self.setup_nutrition_index()
+        else:
+            self.nutInfoIndex.reset()
+            self.goto_page_index()
 
     def close (self, *args):
-        self.finish()
+        self.glade.get_widget('window').hide()
+        self.emit('finish')
         #self.glade.get_widget('window').hide()
         
     ### END METHODS FOR STARTING AND FINISHING
@@ -849,8 +1116,17 @@ class PageableNutritionStore (PageableViewStore):
 if __name__ == '__main__':
     import nutrition
     from gourmet.recipeManager import RecipeManager,dbargs
-    dbargs['file']='/tmp/mlfoo.db'
+    dbargs['file']='/tmp/boofoo.db'
     rd=RecipeManager(**dbargs)
+    rd.add_ing(dict(ingkey='1% milk',
+               amount=1.0,
+               unit='c.'))
+    rd.add_ing(dict(ingkey='1% milk',
+               amount=10,
+               unit='oz.'))
+    rd.add_ing(dict(ingkey='1% milk',
+               amount=1,
+               unit='splash'))
     import nutritionGrabberGui
     try:
         nutritionGrabberGui.check_for_db(rd)
@@ -871,15 +1147,17 @@ if __name__ == '__main__':
     #nid.autosearch_ingkey()
     #nid.set_from_unit('tsp.')
     nid.add_ingredients([
-        ('brown sugar',[(1,'c.')]),
+        ('white sugar',[(1,'c.')]),
         ('black pepper',[(1,'tsp.'),(2,'pinch')]),
         ('tomato',[(1,''),(2,'cups'),(0.5,'lb.')]),
         ('kiwi',[(1,''),(0.5,'c.')]),
         ('raw onion',[(1,'c.')]),
         ('sugar, powdered',[(1,'c.')]),
         ('garlic',[(1,'clove')]),
-        ('cauliflower',[(1,'head')]),
-        ('skim milk',[(1,'c.')])
+        ('cauliflower',[(1,'head'),(3,'chunks')]),
+        ('salt',[(3,'tsp'),]),
+        ('1% milk',[(1,'c.')])
+        
         ])
                          
     def quit (*args):

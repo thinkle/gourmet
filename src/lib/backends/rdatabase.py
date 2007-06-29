@@ -416,6 +416,10 @@ class RecData:
         """
         return len(self.fetch_all(table,**criteria))
 
+    def fetch_join (self, table1, table2, col1, col2,
+                    column_names=None, sort_by=[], **criteria):
+        raise NotImplementedError
+
     def search (self, table, colname, text, exact=0, use_regexp=True):
         """Search colname of table for text, optionally using regular
         expressions and/or requiring an exact match."""

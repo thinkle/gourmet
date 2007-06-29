@@ -1,3 +1,42 @@
+2007-06-29  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* glade/keyeditor.glade Add button to edit nutritional
+	information.
+	* glade/nutritionDruid.glade Fix name collisions between two
+	different treeview setups that are now in this druid. Make various
+	tweaks to nutritional info display page.
+	* glade/recCard.glade Add generic "edit nutritional info" button
+	(in parallel with all other edit buttons).
+	* src/lib/keyEditor.py Add check mark to show whether there is
+	nutritional info. Also add callbacks to handle editing nutritional
+	info from this view. Wrap text if possible to avoid horizontal
+	scrolling.
+	* src/lib/reccard.py Add edit_nutrition callback.
+	* src/lib/backends/rdatabase.py Add fetch_join method.
+	* src/lib/backends/sql_db.py Tweak make_where_statement call to
+	allow "in (foo, bar)" SQL queries. Also change handling of "OR"
+	and "AND" syntax. Add fetch_join method to allow simple joins.
+	* src/lib/nutrition/nutrition.py Allow modifying of existing
+	ingkey->ndbno association and conversions. Change from "g." to "g"
+	everywhere.
+	* src/lib/nutrition/nutritionDruid.py We now allow editing
+	nutritional information (and viewing and searching existing info
+	in the database). Change "g." to "g" everywhere. Added methods for
+	display of nutrtional information. Reconceptualize "back" button
+	to work with a simpler stack model.
+	* src/lib/nutrition/nutritionLabel.py Add generic show_druid
+	method to show druid even when there is no vapor.
+	
+2007-06-28  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* nutritionDruid.py Clean up code for nutrition druid (part way to
+	a complete rewrite).
+
+2007-06-27  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/importers/mastercook_importer.py Fixed order of
+	encodings, fixing bug #1721376
+
 2007-06-23  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* glade/recipeMerger.glade Add label for possible message when

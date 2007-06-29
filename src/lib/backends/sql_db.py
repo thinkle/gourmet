@@ -68,14 +68,26 @@ class RecData (rdatabase.RecData):
         sql_params = []
         if criteria:
             sel_string += "where"
-            for k,v in criteria.items():                
-                if type(v)==tuple and type(v[1]) == list :                    
-                    log,lst = crit
-                    print 'log=',log,'lst=',lst
-                    sel_string += (" %s "%log).join(
-                        [" %s %s ? "%(k,operator) for i in lst]
+            for k,v in criteria.items():
+                if type(v)==tuple and v[0].lower()=='in':
+                    # This allows for syntax like
+                    # ingkey=('in',['foo','bar','baz'])
+                    sel_string += " %s IN (%s) "%(
+                        k,
+                        ', '.join(['?']*len(v[1]))
                         )
-                    sql_params.extend(lst)
+                    sql_params.extend(v[1])
+                    sel_string += '%s'%logic
+                elif type(v)==tuple and type(v[1]) == list :
+                    # This allows syntax like the following...
+                    # ingkey=("OR",[('==','Foo'),('LIKE','S%')])
+                    log,lst = v
+                    sel_strings = []
+                    for itm in v[1]:
+                        substr,subparams = self.make_where_statement({k:itm})
+                        sel_strings.append(substr.strip('where '))
+                        sql_params.extend(subparams)
+                    sel_string += ' ('+(" %s "%log).join(sel_strings)+')'
                     sel_string += " %s"%logic
                 else:
                     if type(v)==tuple or type(v)==list :
@@ -150,7 +162,7 @@ class RecData (rdatabase.RecData):
             sql += ' '+'LIMIT '+', '.join([str(n) for n in limit])
         self.execute(cursor,sql,params)
         return Fetcher(cursor, column_names)
-        
+
     def fetch_one (self, table, **criteria):
         where,params = self.make_where_statement(criteria)
         column_names = self.columns[table]+['rowid']
@@ -158,6 +170,54 @@ class RecData (rdatabase.RecData):
         result = self.cursor.fetchone()
         if not result: return None
         else: return RowObject(column_names,result)
+
+    def __get_full_names__ (self, column_names, tables):
+        full_names = []
+        for cn in column_names:
+            found = False
+            for t in tables:
+                if cn in self.columns[t]:
+                    full_names.append('%s.%s'%(t,cn))
+                    found = True
+                    break
+            if not found:
+                raise NameError('Column %s not found in tables %s'%(cn,tables))
+        return full_names
+            
+
+    def fetch_join (self, table1, table2, col1, col2,
+                    column_names=None, sort_by=[], **criteria):
+        '''Fetch a join of table1, table2 where col1 is equal to col2.
+
+        If column_names are specified, we only get those
+        names. Otherwise, we fetch *.'''
+        # Use full names for column names...
+        if not column_names:
+            column_names = ['%s.%s'%(table1,c) for c in self.columns[table1]] \
+                           + ['%s.%s'%(table2,c) for c in self.columns[table2]] \
+                           + ['%s.rowid'%table1]
+        else: full_column_names = self.__get_full_names__(column_names,[table1,table2]) + ['%s.rowid'%table1]
+        # Use full names for sorting...
+        sort_by_full_colnames = self.__get_full_names__([s[0] for s in sort_by],[table1,table2])
+        new_sort_by = []
+        for n,s in enumerate(sort_by):
+            new_sort_by.append((sort_by_full_colnames[n],s[1]))
+        sort_by = new_sort_by
+        # Use full names in criteria...
+        full_criteria = {}
+        for k,v in criteria.items():
+            full_criteria[self.__get_full_names__([k],[table1,table2])[0]] = v
+        criteria = full_criteria
+        # Now all our columns are straightened out...
+        where,params = self.make_where_statement(criteria)
+        sql = 'SELECT ' + ', '.join(column_names)
+        sql += ''' FROM %(table1)s JOIN %(table2)s ON %(table1)s.%(col1)s = %(table2)s.%(col2)s
+        '''%locals()
+        sql += ' ' + where
+        sql += ' ' + self.make_order_by_statement(sort_by) + ' '
+        cursor = self.connection.cursor()
+        self.execute(cursor,sql,params)
+        return Fetcher(cursor, [c.split('.')[-1] for c in column_names])
 
     def fetch_count (self, table, column, sort_by=None,**criteria):
         where,params = self.make_where_statement(criteria)

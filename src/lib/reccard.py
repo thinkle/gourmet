@@ -172,6 +172,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
             'edit_ingredients': lambda *args: self.show_edit(tab=self.NOTEBOOK_ING_PAGE),
             'edit_instructions': lambda *args: self.show_edit(tab=self.NOTEBOOK_INST_PAGE),
             'edit_modifications': lambda *args: self.show_edit(tab=self.NOTEBOOK_MOD_PAGE),
+            'edit_nutrition': lambda *args: self.nutritionLabel.show_druid(nd=self.nd),
             'on_timer': lambda *args: show_timer(),
             })
 
