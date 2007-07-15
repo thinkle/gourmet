@@ -89,6 +89,7 @@ src/lib/nutrition/databaseGrabber.py
 src/lib/nutrition/enter_nutritional_defaults.py
 src/lib/nutrition/nutritionDisplay.py
 src/lib/nutrition/nutritionDruid.py
+src/lib/nutrition/nutritionInfoEditor.py
 src/lib/nutrition/nutritionGrabberGui.py
 src/lib/nutrition/nutritionLabel.py
 src/lib/nutrition/nutritionModel.py

@@ -1,3 +1,8 @@
+2007-07-15  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* MANIFEST Added nutritionInfoEditor.py
+	* src/lib/defaults_en_GB.py Declared encoding (PEP 263)
+
 2007-06-29  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/reccard.py Fix bug that prevented images from being

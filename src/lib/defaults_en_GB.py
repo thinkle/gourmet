@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
 ## we set up default information.
 
 ## first, easy to maintain lists which can eventually be moved to
