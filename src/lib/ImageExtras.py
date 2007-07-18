@@ -46,12 +46,18 @@ def get_string_from_image (image):
     ofi.close()
     return ret
 
+def get_string_from_pixbuf (pb):
+    fn = tempfile.mktemp('jpg')
+    pb.save(fn,'jpeg')
+    s = file(fn,'r').read()
+    return s
+    
 def get_pixbuf_from_jpg (raw):
     """Given raw data of a jpeg file, we return a gtk.gdk.Pixbuf"""
     #o=open('/tmp/recimage.jpg','w')
     fn=write_image_tempfile(raw,name='gourmet_tempfile')
     i=gtk.Image()
-    i.set_from_file(fn)    
+    i.set_from_file(fn)
     return i.get_pixbuf()
 
 def write_image_tempfile (raw, name=None, ext=".jpg"):

@@ -1,4 +1,14 @@
-2007-07-15  Thomas M. Hinkle  <tom@localhost.localdomain>
+2007-07-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/gourmet Update copyright dates.
+	* src/gourmet_in_place Add convenient script to run Gourmet from
+	source in tree.
+	* glade/app.glade Change name of ingredient editor, since now it
+	edits nutritional info as well as keys.
+	* src/lib/ImageExtras.py Commit method needed in bugfix committed
+	on on 6/29
+
+2007-07-15  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* MANIFEST Added nutritionInfoEditor.py
 	* src/lib/defaults_en_GB.py Declared encoding (PEP 263)

@@ -6,9 +6,16 @@
 #import sys
 #import signal
 #signal.signal(signal.SIGINT, signal.SIG_DFL)
-import sys
+import sys, os, os.path
+if os.path.exists('foo'):
+    os.remove('foo/gourmet')
+    os.rmdir('foo')
 
-sys.path.append('/usr/share') # for debian
+os.mkdir('foo')
+os.symlink(os.path.abspath('lib'),'foo/gourmet')
+sys.path = [os.path.abspath('foo')] + sys.path
+
+print sys.path
 
 from gourmet.OptionParser import *
 
@@ -33,4 +40,5 @@ elif options.psyco:
 
 import gourmet.GourmetRecipeManager
 gourmet.GourmetRecipeManager.startGUI()
-
+for mod in sys.modules:
+    print mod,sys.modules[mod]
