@@ -241,6 +241,7 @@ REC_ATTRS = [('title',_('Title'),'Entry'),
              ('preptime',_('Preparation Time'),'Entry'),
              ('cooktime',_('Cooking Time'),'Entry'),
              ]
+
 INT_REC_ATTRS = ['rating','preptime','cooktime']
 TEXT_ATTR_DIC = {'instructions':_('Instructions'),
                  'modifications':_('Notes'),
@@ -272,6 +273,10 @@ def build_rec_attr_dic ():
         NAME_TO_ATTR[name]=attr
 
 build_rec_attr_dic()
+
+DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
+                          ['link','servings','preptime','cooktime']
+                          ]
 
 try:
     import gnomeprint.ui, gnomeprint

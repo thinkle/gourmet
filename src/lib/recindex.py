@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import gtk.glade, gtk, time, re, gtk.gdk, gobject
+import gtk.glade, gtk, time, re, gtk.gdk, gobject, pango
 import WidgetSaver, Undo, ratingWidget
 from ImageExtras import get_pixbuf_from_jpg
 import dialog_extras as de
@@ -72,7 +72,7 @@ class RecIndex:
         self.srchLimitDefaultText=self.srchLimitText
         self.searchButton = self.glade.get_widget('searchButton')
         self.rSearchByMenu = self.glade.get_widget('rlistSearchByMenu')
-        cb.set_model_from_list(self.rSearchByMenu, self.searchByList)
+        cb.set_model_from_list(self.rSearchByMenu, self.searchByList, expand=False)
         cb.setup_typeahead(self.rSearchByMenu)
         self.rSearchByMenu.set_active(0)
         self.rSearchByMenu.connect('changed',self.search_as_you_type)
@@ -187,7 +187,7 @@ class RecIndex:
         self.setup_reccolumns()
         # this has to come after columns are added or else adding columns resets out column order!
         self.rectree_conf=te.TreeViewConf(self.rectree,
-                                          hidden=self.prefs.get('rectree_hidden_columns',[]),
+                                          hidden=self.prefs.get('rectree_hidden_columns',DEFAULT_HIDDEN_COLUMNS),
                                           order=self.prefs.get('rectree_column_order',{}))
         self.rectree_conf.apply_column_order()
         self.rectree_conf.apply_visibility()
@@ -299,15 +299,18 @@ class RecIndex:
                 renderer.set_property('text-column',0)
             else:
                 renderer = gtk.CellRendererText()
-                # If we have gtk > 2.8, set up text-wrapping
-                try:
-                    renderer.get_property('wrap-width')
-                except TypeError:
-                    pass
+                if c=='link':
+                    renderer.set_property('ellipsize',pango.ELLIPSIZE_END)
                 else:
-                    renderer.set_property('wrap-mode',gtk.WRAP_WORD)
-                    if c == 'title': renderer.set_property('wrap-width',200)
-                    else: renderer.set_property('wrap-width',150)
+                    # If we have gtk > 2.8, set up text-wrapping
+                    try:
+                        renderer.get_property('wrap-width')
+                    except TypeError:
+                        pass
+                    else:
+                        renderer.set_property('wrap-mode',gtk.WRAP_WORD)
+                        if c == 'title': renderer.set_property('wrap-width',200)
+                        else: renderer.set_property('wrap-width',150)
             renderer.set_property('editable',self.editable)
             renderer.connect('edited',self.rtree_edited_cb,n, c)
             titl = self.rtcolsdic[c]

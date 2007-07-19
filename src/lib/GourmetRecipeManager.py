@@ -1226,7 +1226,7 @@ class RecGui (RecIndex):
         gt.gtk_leave()
 
     def register_col_dialog (self, *args):
-        already_hidden=self.prefs.get('rectree_hidden_columns',None)
+        already_hidden=self.prefs.get('rectree_hidden_columns',DEFAULT_HIDDEN_COLUMNS)
         if not already_hidden: already_hidden=[]
         def mapper (i):
             if i in already_hidden: return [i, False]

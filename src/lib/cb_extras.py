@@ -53,7 +53,7 @@ class setup_typeahead:
         # we try to connect to our children renderers...
         if self.cb.get_children():
             for c in cb.get_children():
-                c.set_direction(gtk.DIR_UP)
+                #c.set_direction(gtk.DIR_UP)
                 try:
                     c.connect('key_press_event',self.key_press_cb)
                 except:
@@ -155,8 +155,8 @@ def set_model_from_list (cb, list, expand=True):
 if __name__ == '__main__':
     w = gtk.Window()
     vb = gtk.VBox()
-    vb.add(gtk.Button('Blank button'))
-    for n in range(10): vb.add(gtk.Button('Other blank'))
+    #vb.add(gtk.Button('Blank button'))
+    #for n in range(10): vb.add(gtk.Button('Other blank'))
     hbox = gtk.HBox()
     label = gtk.Label()
     label.set_text_with_mnemonic('Enter a _fruit: ')
@@ -168,24 +168,29 @@ if __name__ == '__main__':
                               'Bananas'])
     hbox.add(label)
     hbox.add(cbe)    
-    label2 = gtk.Label()
-    label2.set_text_with_mnemonic('Mode of _Transportation')
-    cb = gtk.ComboBox()
-    label2.set_mnemonic_widget(cb)
-    set_model_from_list(cb, ['Planes','Trains','Automobiles','Spacecraft','Bicycles'])
-    setup_typeahead(cb)
-    hb2 = gtk.HBox()
-    hb2.add(label2)
-    hb2.add(cb)
-    hb2.show_all()
     vb.add(gtk.Label("""Here's an EntryCompletion widget automatically
     in sync with the ComboBoxEntry widget. Hitting return will select
     the first item in the EntryCompletion popup window."""))
     vb.add(hbox)
+    def make_combo (expand=True):
+        label2 = gtk.Label()
+        label2.set_text_with_mnemonic('Mode of _Transportation')
+        cb = gtk.ComboBox()
+        label2.set_mnemonic_widget(cb)
+        set_model_from_list(cb, ['Planes','Trains','Automobiles','Spacecraft','Bicycles'],
+                            expand=expand)
+        setup_typeahead(cb)
+        hb2 = gtk.HBox()
+        hb2.add(label2)
+        hb2.add(cb)
+        hb2.show_all()
+        return hb2
     vb.add(gtk.Label("""Here's a ComboBox widget. With the widget selected,
     you can type e.g. "a" to select "airplane." Once the cb-popup window
     is up, however, typing doesn't do anything (doh!)"""))
-    vb.add(hb2)
+    vb.add(make_combo())
+    vb.add(gtk.Label("""ComboBox, expand=False"""))
+    vb.add(make_combo(expand=False))
     vb.show_all()
     w.add(vb)
     w.show_all()

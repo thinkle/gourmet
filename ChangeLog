@@ -1,3 +1,15 @@
+2007-07-19  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/GourmetRecipeManager Use default DEFAULT_HIDDEN_COLUMNS
+	for hidden columns (so that not all columns are shown by default).
+	* src/lib/cb_extras.py Don't screw up the alignment of combo boxes.
+	* src/lib/gglobals.py Add DEFAULT_HIDDEN_COLUMNS so that link,
+	servings, preptime and cooktime are not included in index views by
+	default.
+	* src/lib/recindex.py Use DEFAULT_HIDDEN_COLUMNS
+	variable. Ellipsize links when they are shown rather than wraping
+	them.
+	
 2007-07-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/gourmet Update copyright dates.
