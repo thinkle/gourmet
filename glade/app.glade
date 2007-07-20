@@ -708,7 +708,6 @@
 	    <widget class="GtkToolbar" id="toolbar1">
 	      <property name="visible">True</property>
 	      <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
-	      <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
 	      <property name="tooltips">True</property>
 	      <property name="show_arrow">True</property>
 
@@ -731,25 +730,6 @@
 	      </child>
 
 	      <child>
-		<widget class="GtkToolItem" id="toolitem23">
-		  <property name="visible">True</property>
-		  <property name="visible_horizontal">True</property>
-		  <property name="visible_vertical">True</property>
-		  <property name="is_important">False</property>
-
-		  <child>
-		    <widget class="GtkVSeparator" id="vseparator1">
-		      <property name="visible">True</property>
-		    </widget>
-		  </child>
-		</widget>
-		<packing>
-		  <property name="expand">False</property>
-		  <property name="homogeneous">False</property>
-		</packing>
-	      </child>
-
-	      <child>
 		<widget class="GtkToolButton" id="rlDelRecButton">
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
@@ -766,7 +746,7 @@
 	      </child>
 
 	      <child>
-		<widget class="GtkToolItem" id="toolitem24">
+		<widget class="GtkToolItem" id="toolitem25">
 		  <property name="visible">True</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
@@ -855,7 +835,7 @@
 			<widget class="GtkHBox" id="hbox28">
 			  <property name="visible">True</property>
 			  <property name="homogeneous">False</property>
-			  <property name="spacing">0</property>
+			  <property name="spacing">6</property>
 
 			  <child>
 			    <widget class="GtkButton" id="rlAddButton">
@@ -932,7 +912,7 @@
 			      </child>
 			    </widget>
 			    <packing>
-			      <property name="padding">4</property>
+			      <property name="padding">0</property>
 			      <property name="expand">False</property>
 			      <property name="fill">False</property>
 			      <property name="pack_type">GTK_PACK_END</property>
@@ -986,7 +966,7 @@
 			      <signal name="key_press_event" handler="rlistSearchBox_key_press_event" last_modification_time="Wed, 22 Sep 2004 22:41:18 GMT"/>
 			    </widget>
 			    <packing>
-			      <property name="padding">6</property>
+			      <property name="padding">0</property>
 			      <property name="expand">True</property>
 			      <property name="fill">True</property>
 			    </packing>
@@ -1026,7 +1006,7 @@
 			      <property name="focus_on_click">True</property>
 			    </widget>
 			    <packing>
-			      <property name="padding">6</property>
+			      <property name="padding">0</property>
 			      <property name="expand">False</property>
 			      <property name="fill">False</property>
 			    </packing>
@@ -1043,7 +1023,7 @@
 			      <signal name="clicked" handler="search" last_modification_time="Sun, 04 Jul 2004 18:43:27 GMT"/>
 			    </widget>
 			    <packing>
-			      <property name="padding">6</property>
+			      <property name="padding">0</property>
 			      <property name="expand">False</property>
 			      <property name="fill">False</property>
 			      <property name="pack_type">GTK_PACK_END</property>
@@ -1112,7 +1092,6 @@
 			<widget class="GtkToolbar" id="srchLimitBar">
 			  <property name="visible">True</property>
 			  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
-			  <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
 			  <property name="tooltips">True</property>
 			  <property name="show_arrow">True</property>
 
@@ -1276,7 +1255,7 @@
 		    <widget class="GtkHBox" id="hbox31">
 		      <property name="visible">True</property>
 		      <property name="homogeneous">False</property>
-		      <property name="spacing">0</property>
+		      <property name="spacing">6</property>
 
 		      <child>
 			<widget class="GtkLabel" id="showingLabel">
@@ -1313,7 +1292,7 @@
 			  <property name="focus_on_click">True</property>
 			</widget>
 			<packing>
-			  <property name="padding">6</property>
+			  <property name="padding">0</property>
 			  <property name="expand">False</property>
 			  <property name="fill">False</property>
 			</packing>
@@ -1329,7 +1308,7 @@
 			  <property name="focus_on_click">True</property>
 			</widget>
 			<packing>
-			  <property name="padding">6</property>
+			  <property name="padding">0</property>
 			  <property name="expand">False</property>
 			  <property name="fill">False</property>
 			</packing>
@@ -1345,7 +1324,7 @@
 			  <property name="focus_on_click">True</property>
 			</widget>
 			<packing>
-			  <property name="padding">6</property>
+			  <property name="padding">0</property>
 			  <property name="expand">False</property>
 			  <property name="fill">False</property>
 			</packing>
@@ -1361,7 +1340,7 @@
 			  <property name="focus_on_click">True</property>
 			</widget>
 			<packing>
-			  <property name="padding">6</property>
+			  <property name="padding">0</property>
 			  <property name="expand">False</property>
 			  <property name="fill">False</property>
 			</packing>

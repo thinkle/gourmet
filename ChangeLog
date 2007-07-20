@@ -1,3 +1,13 @@
+2007-07-19  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* glade/app.glade Glade cleanup from Jeff/Kiddo
+	* glade/generic_importer.glade Glade cleanup from Jeff/Kiddo
+	* glade/nutritionDruid.glade Glade cleanup from Jeff/Kiddo
+	* glade/recMerger.glade Glade cleanup from Jeff/Kiddo
+	* glade/recSelector.glade Glade cleanup from Jeff/Kiddo
+	* glade/valueEditor.glade Glade cleanup from Jeff/Kiddo
+	* src/lib/nutrition/nutritionInfoEditor.py: Add to CVS.
+
 2007-07-19  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/GourmetRecipeManager Use default DEFAULT_HIDDEN_COLUMNS

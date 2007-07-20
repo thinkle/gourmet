@@ -19,7 +19,6 @@
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
   <property name="urgency_hint">False</property>
-  <property name="visible">False</property> 
 
   <child>
     <widget class="GtkVBox" id="vbox1">
@@ -38,7 +37,7 @@
 	  <property name="xalign">0</property>
 	  <property name="yalign">0.5</property>
 	  <property name="xpad">12</property>
-	  <property name="ypad">4</property>
+	  <property name="ypad">6</property>
 	  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 	  <property name="width_chars">-1</property>
 	  <property name="single_line_mode">False</property>
@@ -133,7 +132,7 @@
 	      <child>
 		<widget class="GtkVBox" id="vbox2">
 		  <property name="homogeneous">False</property>
-		  <property name="spacing">0</property>
+		  <property name="spacing">6</property>
 
 		  <child>
 		    <widget class="GtkScrolledWindow" id="scrolledwindow3">
@@ -168,7 +167,7 @@
 		    <widget class="GtkHBox" id="hbox4">
 		      <property name="visible">True</property>
 		      <property name="homogeneous">False</property>
-		      <property name="spacing">12</property>
+		      <property name="spacing">0</property>
 
 		      <child>
 			<widget class="GtkButton" id="button5">
@@ -189,7 +188,7 @@
 		      </child>
 		    </widget>
 		    <packing>
-		      <property name="padding">6</property>
+		      <property name="padding">0</property>
 		      <property name="expand">False</property>
 		      <property name="fill">False</property>
 		    </packing>
@@ -209,7 +208,7 @@
 		<widget class="GtkVBox" id="vbox4">
 		  <property name="visible">True</property>
 		  <property name="homogeneous">False</property>
-		  <property name="spacing">0</property>
+		  <property name="spacing">6</property>
 
 		  <child>
 		    <widget class="GtkScrolledWindow" id="scrolledwindow4">
@@ -251,7 +250,7 @@
 		    <widget class="GtkHBox" id="hbox3">
 		      <property name="visible">True</property>
 		      <property name="homogeneous">False</property>
-		      <property name="spacing">12</property>
+		      <property name="spacing">6</property>
 
 		      <child>
 			<widget class="GtkButton" id="button3">
@@ -288,7 +287,7 @@
 		      </child>
 		    </widget>
 		    <packing>
-		      <property name="padding">6</property>
+		      <property name="padding">0</property>
 		      <property name="expand">False</property>
 		      <property name="fill">True</property>
 		    </packing>
@@ -313,9 +312,10 @@
 
       <child>
 	<widget class="GtkHButtonBox" id="hbuttonbox1">
+	  <property name="border_width">12</property>
 	  <property name="visible">True</property>
 	  <property name="layout_style">GTK_BUTTONBOX_END</property>
-	  <property name="spacing">12</property>
+	  <property name="spacing">6</property>
 
 	  <child>
 	    <widget class="GtkButton" id="NewRecipeButton">
@@ -410,21 +410,6 @@
 	  <property name="padding">0</property>
 	  <property name="expand">False</property>
 	  <property name="fill">False</property>
-	</packing>
-      </child>
-
-      <child>
-	<widget class="GtkToolbar" id="toolbar1">
-	  <property name="visible">True</property>
-	  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
-	  <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
-	  <property name="tooltips">True</property>
-	  <property name="show_arrow">True</property>
-	</widget>
-	<packing>
-	  <property name="padding">0</property>
-	  <property name="expand">False</property>
-	  <property name="fill">True</property>
 	</packing>
       </child>
     </widget>
