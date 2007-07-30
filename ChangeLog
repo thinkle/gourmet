@@ -1,4 +1,9 @@
-2007-07-19  Thomas M. Hinkle  <tom@localhost.localdomain>
+2007-07-30  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* glade/recSelector.glade Fix reversion introduced in Jeff/Kiddo
+	patch (ShowingLabel had gone missing)
+
+2007-07-19  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* glade/app.glade Glade cleanup from Jeff/Kiddo
 	* glade/generic_importer.glade Glade cleanup from Jeff/Kiddo
