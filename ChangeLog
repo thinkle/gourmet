@@ -1,4 +1,10 @@
-2007-08-03  Thomas M. Hinkle  <tom@localhost.localdomain>
+2007-08-03  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/prefs.py Handle broken config files gracefully. Namely,
+	if there is an error loading, print the error to the screen and
+	save a backup of the broken file. Then proceed as if there had
+	been no original config file (overwriting the old one on a clean
+	close with a new, clean config file).
 
 	* src/lib/importers/mastercook_importer.py Fix for attributes with
 	< or > signs - path from Anthony Foglia.

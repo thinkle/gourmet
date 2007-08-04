@@ -57,7 +57,21 @@ class Prefs:
     def load (self):
         if os.path.isfile(self.file):
             ifi=open(self.file,'r')
-            self.config=pickle.load(ifi)
-            return True
-        else:
-            return False
+            try:
+                self.config=pickle.load(ifi)
+            except:
+                import traceback
+                print 'ERROR LOADING CONFIGURATION FILE'
+                print 'Saving a copy of broken configuration file saved as'
+                print '%s.broken'%self.file
+                ifi.seek(0)
+                ofi = file(self.file+'.broken','w')
+                ofi.write(ifi.read())
+                ofi.close()
+                print traceback.print_exc()
+            else:
+                return True
+        return False
+
+if __name__ == '__main__':
+    p = Prefs()
