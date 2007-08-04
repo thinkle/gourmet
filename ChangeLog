@@ -1,3 +1,8 @@
+2007-08-03  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* src/lib/importers/mastercook_importer.py Fix for attributes with
+	< or > signs - path from Anthony Foglia.
+
 2007-07-30  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* glade/recSelector.glade Fix reversion introduced in Jeff/Kiddo

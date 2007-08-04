@@ -14,7 +14,7 @@ class Mx2Cleaner:
             self.toss_regexp = self.toss_regexp + r + "|"
         self.toss_regexp = self.toss_regexp[0:-1] + ")"
         self.toss_regexp = re.compile(self.toss_regexp)
-        self.attr_regexp = '(<[^>]+?)\"([^=]+\"[^=]+)\"'
+        self.attr_regexp = '(<[^>]+?)\"([^=]+[\"<>][^=]+)\"'
         self.attr_regexp = re.compile(self.attr_regexp)
         self.encodings = ['cp1252','iso8859','ascii','latin_1','cp850','utf-8']
         
@@ -86,6 +86,7 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
             'Note':[],
             'CatT':[],
             'Yield':['unit','qty'],
+            
             }
         self.current_elements = []
         self.bufs = []
