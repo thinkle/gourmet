@@ -1,3 +1,8 @@
+2007-08-04  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/importers/mastercook_importer.py Make Notes import as
+	Notes rather than instructions (bug report from Anthony Foglia).
+
 2007-08-03  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/prefs.py Handle broken config files gracefully. Namely,

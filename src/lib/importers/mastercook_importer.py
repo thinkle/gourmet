@@ -86,7 +86,6 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
             'Note':[],
             'CatT':[],
             'Yield':['unit','qty'],
-            
             }
         self.current_elements = []
         self.bufs = []
@@ -211,9 +210,20 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
             self.bufs.remove('dbuf')
             self._add_to_instructions(self.dbuf.strip())
 
-    # these all add to instructions
+    # this also gets added to instructions
     Desc_handler = DirT_handler
-    Note_handler = DirT_handler
+
+    def Note_handler (self, start=False, end=False, attrs=None):
+        if start:
+            self.dbuf = ""
+            self.bufs.append('dbuf')
+        if end:
+            self.bufs.remove('dbuf')
+            buf = xml.sax.saxutils.unescape(self.dbuf.strip())
+            if self.rec.has_key('modifications'):
+                self.rec['modifications'] = self.rec['modifications'] + "\n%s"%buf
+            else:
+                self.rec['modifications'] = buf
 
     def IPrp_handler (self, start=False, end=False, attrs=None):
         if start:
