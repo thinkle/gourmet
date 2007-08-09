@@ -1,3 +1,14 @@
+2007-08-08  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/Undo.py Fix potential bug that prevents action_hooks
+	from being run correctly -- we grab a reference to the action
+	directly in case carrying the action out modifies the history list
+	itself.
+	* src/tests/testRecCard.py Reduce repetition of try/except blocks
+	by abstracting out the try/except-with-informative-message
+	pattern. Also, make VERBOSE into a global variable (again,
+	simplifies).
+
 2007-08-04  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/importers/mastercook_importer.py Make Notes import as

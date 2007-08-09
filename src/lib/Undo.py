@@ -381,8 +381,9 @@ class UndoHistoryList (list):
             print 'All %s actions are undos'%len(self)
             print self,index
             raise
-        self[index].inverse()
-        for h in self.action_hooks: h(self,self[index],'undo')
+        action = self[index]
+        action.inverse()
+        for h in self.action_hooks: h(self,action,'undo')
 
     def redo (self, *args):
         if len(self) == 0: return False
@@ -395,13 +396,15 @@ class UndoHistoryList (list):
             print 'There is nothing to redo!'
             print 'All %s available actions are is_undo=False'%len(self)
             raise
-        self[index].inverse()
-        for h in self.action_hooks: h(self,self[index],'redo')
+        action = self[index]
+        action.inverse()
+        for h in self.action_hooks: h(self,action,'redo')
 
     def reapply (self, *args):
         debug('Reapplying',0)
-        self[-1].reapply()
-        for h in self.action_hooks: h(self,self[-1],'reapply')
+        action = self[-1]
+        action.reapply()
+        for h in self.action_hooks: h(self,action,'reapply')
 
     def set_sensitive (self,w,val):
         debug('set_sensitive',0)
