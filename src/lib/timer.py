@@ -155,7 +155,7 @@ class TimerDialog:
             return True
 
     def timer_done_cb (self):
-        self.timerDialog.set_urgency_hint(True)
+        if hasattr(self.timerDialog,'set_urgency_hint'): self.timerDialog.set_urgency_hint(True)
         self.play_tune()
         if self.repeatCheckButton.get_active():
             self.keep_annoying = True
@@ -169,7 +169,7 @@ class TimerDialog:
 
     def stop_annoying (self):
         self.keep_annoying = False
-        self.timerDialog.set_urgency_hint(False)
+        if hasattr(self.timerDialog,'set_urgency_hint'): self.timerDialog.set_urgency_hint(False)
 
     def refresh (self, *args):
         self.stop_annoying()
