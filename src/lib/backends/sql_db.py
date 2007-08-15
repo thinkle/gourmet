@@ -572,7 +572,7 @@ class RecData (rdatabase.RecData):
             hashes = ['"%s"'%getattr(r,by) for r in recipes]
             WHERE_STATEMENT = '''
             WHERE %s in (%s)
-            '''%(by,', '.join(rhashes))
+            '''%(by,', '.join(hashes))
             if not include_deleted: WHERE_STATEMENT += ' AND not deleted '
         elif not include_deleted:
             WHERE_STATEMENT = '''

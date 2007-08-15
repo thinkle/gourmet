@@ -1,3 +1,13 @@
+2007-08-15  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/backends/sql_db.py Applied patch from Anthony Foglia to
+	fix typo bug in find_dupliaces
+
+2007-08-08  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/timer.py Backwards compatability for pre-2.8 versions:
+	set_urgency_hint.
+
 2007-08-08  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/Undo.py Fix potential bug that prevents action_hooks
