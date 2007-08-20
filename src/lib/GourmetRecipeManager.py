@@ -415,15 +415,27 @@ class RecGui (RecIndex):
                             t.terminate()
                         except:
                             debug("Unable to terminate thread %s"%t,0)
+                            # try not to lose data if this is going to
+                            # end up in a force quit
+                            self.save_default() 
                             return True
                 if not use_threads:
                     for t in self._threads:
                         try:
                             t.terminate()
                             self.threads = self.threads - 1
-                        except: return True
+                        except:
+                            # try not to lose data if this is going to
+                            # end up in a force quit
+                            self.save_default()
+                            return True
             else:
                 return True
+        # Delete our deleted ingredient keys -- we don't need these
+        # for posterity since there is no "trash" interface for
+        # ingredients anyway.
+        self.rd.delete_by_criteria(self.rd.iview,{'deleted':True})
+        # Save our recipe info...
         self.save_default()
         for r in self.rc.values():
             r.widget.destroy()

@@ -1,3 +1,14 @@
+2007-08-20  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/defaults_en.py Call granulated sugar granulated sugar,
+	not white sugar.
+	* src/lib/GourmetRecipeManager When threaded quitting fails, save
+	our database just in case the user force-quits and loses
+	data. Also, purge deleted ingredients on quit since they won't be
+	of any use (they're already lost to the UI--why keep them in the DB)
+	* src/lib/backends/sql_db.py Don't return deleted ingredients in
+	list of ingredient keys (in get_ingkeys_with_count)
+
 2007-08-15  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/backends/sql_db.py Applied patch from Anthony Foglia to

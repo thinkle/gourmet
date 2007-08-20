@@ -79,7 +79,7 @@ SYNONYMS=[
     ['black cod','sablefish'],
     ['chilean sea bass','patagonian toothfish'],
     ['flour, all purpose','flour, all-purpose','flour','white flour'],
-    ['sugar, white','sugar'],    
+    ['sugar, granulated','sugar'],    
     ]
 
 # A DICTIONARY CONTAINING INGREDIENT KEYS AND NDBNO for the USDA
@@ -503,7 +503,7 @@ INGREDIENT_DATA = [["alfalfa sprouts","alfalfa sprouts","produce"],
                    ['fish sauce','fish sauce', 'international',],
                    ['green curry paste','green curry paste', 'international',],
                    ['curly endive','endive, curly', 'produce',],
-                   ['white sugar','sugar, white', 'baking',],
+                   ['granulated sugar','sugar, granulated', 'baking',],
                    ['fresh cheese white goat','cheese, fresh white goat', 'dairy',],
                    ['cilantro stems','cilantro stems', 'produce',],
                    ['yellow cornmeal','cornmeal, yellow', 'baking',],
@@ -614,7 +614,7 @@ DENSITY_TABLE={
     "light cream":1.012,
     "half and half":1.025,
     "honey":1.420,
-    "sugar, white":1.550,
+    "sugar, granulated":1.550,
     "salt":2.165,
     "butter":0.911,
     "oil, vegetable":0.88,

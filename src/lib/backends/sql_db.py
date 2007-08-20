@@ -393,8 +393,11 @@ class RecData (rdatabase.RecData):
         if search:
             SQL += ' WHERE ' + search.get('column',self.iview+'.ingkey') + ' ' + search.get('operator','LIKE') + ' ?'
             params += [search['search']]
+            SQL += ' AND NOT deleted'
             if self.USE_PAREN_STYLE_REGEXP:
                 SQL = self.REGEXP_FIXER_REGEXP.sub(' REGEXP(\\2,\\1) ',SQL)
+        else:
+            SQL += ' WHERE not deleted'
         SQL += ' GROUP BY '+self.iview+'.ingkey'
         self.execute(c,SQL,params)
         return Fetcher(c,['ingkey','count','ndbno'])

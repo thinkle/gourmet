@@ -1216,7 +1216,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
                 if self.widgets_changed_since_save.has_key(prop):
                     del self.widgets_changed_since_save[prop]
             else:
-                self.widgets_changed_since_save[prop]=val            
+                self.widgets_changed_since_save[prop]=val  
         else:
             # If we can't compare with original values, we keep a
             # dictionary of all changes made on a per-widget basis.
