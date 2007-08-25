@@ -246,7 +246,7 @@ class website_exporter (ExporterMultirec):
         else:
             rec = self.rd.get_rec(id)
             if rec:
-                return self.generate_filename(rec,self.ext)
+                return self.generate_filename(rec,self.ext,add_id=True)
             else:
                 return None
 

@@ -10,6 +10,7 @@ class RecData (rdatabase.RecData):
     USE_PAREN_STYLE_REGEXP = False
 
     REGEXP_FIXER_REGEXP = re.compile('\s*([A-Za-z0-9_?.]*)\s*REGEXP\s*([A-Za-z0-9_?.]*)\s*')
+    qmark = '?'
 
     def __init__ (self, *args): raise NotImplementedError
 
@@ -74,7 +75,7 @@ class RecData (rdatabase.RecData):
                     # ingkey=('in',['foo','bar','baz'])
                     sel_string += " %s IN (%s) "%(
                         k,
-                        ', '.join(['?']*len(v[1]))
+                        ', '.join([self.qmark]*len(v[1]))
                         )
                     sql_params.extend(v[1])
                     sel_string += '%s'%logic
@@ -95,7 +96,7 @@ class RecData (rdatabase.RecData):
                     else:
                         operator = "=="
                         crit = v
-                    sel_string = sel_string + " %s %s "%(k,operator) + " ?" + " %s"%logic
+                    sel_string = sel_string + " %s %s "%(k,operator) + " " + self.qmark + " %s"%logic
                     sql_params += [crit]
             sel_string = sel_string[0:-len(logic)]
         return sel_string,sql_params
@@ -245,9 +246,9 @@ class RecData (rdatabase.RecData):
         where_statements = []
         order_statements = []
         for w in words:
-            where_statements.append('desc LIKE ?')
+            where_statements.append('desc LIKE %s'%self.qmark)
             params.append('%'+w+'%')
-            order_statements.append('InStr(desc,?)')
+            order_statements.append('InStr(desc,%s)'%self.qmark)
             order_params.append(w)
         statement = 'SELECT DISTINCT foodgroup FROM %s'%self.nview \
                     + (where_statements
@@ -269,13 +270,13 @@ class RecData (rdatabase.RecData):
         where_statements = []
         order_statements = []
         for w in words:
-            where_statements.append('desc LIKE ?')
+            where_statements.append('desc LIKE %s'%self.qmark)
             params.append('%'+w+'%')
-            order_statements.append('InStr(desc,?)')
+            order_statements.append('InStr(desc,%s)'%self.qmark)
             order_params.append(w)
         order_statements.append('length(desc)')
         if group:
-            where_statements.append('foodgroup = ?')
+            where_statements.append('foodgroup = %s'%self.qmark)
             params.append(group)
         order_statements.append('desc')
         statement = 'SELECT ' + ', '.join(self.columns[self.nview]) + ' FROM %s'%self.nview \
@@ -312,18 +313,18 @@ class RecData (rdatabase.RecData):
         for s in searches:
             col = s['column']
             if col=='ingredient':
-                sql = '''
+                sql = ('''
                 SELECT DISTINCT id FROM %(view)s
-                WHERE ingkey %(operator)s ?'''%{
+                WHERE ingkey %(operator)s '''+self.qmark)%{
                     'view':self.iview,
                     'operator':s.get('operator','LIKE')
                     }
                 prms = [s['search']]
                 nested_selects.append((sql,prms))
             elif col=='category':
-                sql = '''
+                sql = ('''
                 SELECT DISTINCT id FROM %(view)s
-                WHERE category %(operator)s ?'''%{
+                WHERE category %(operator)s '''+ self.qmark)%{
                     'view':self.catview,
                     'operator':s['operator']
                     }
@@ -335,7 +336,7 @@ class RecData (rdatabase.RecData):
                 if crit:
                     crit += ' ' + s.get('logic','AND') + ' '
                 op = s.get('operator','LIKE')
-                crit += col + ' ' + op + ' ' + '?'                
+                crit += col + ' ' + op + ' ' + self.qmark
                 params.append(s['search'])
         cursor = self.connection.cursor()
         if crit:
@@ -391,7 +392,7 @@ class RecData (rdatabase.RecData):
               self.iview+'.ingkey=='+self.naliasesview+'.ingkey'
         params = []
         if search:
-            SQL += ' WHERE ' + search.get('column',self.iview+'.ingkey') + ' ' + search.get('operator','LIKE') + ' ?'
+            SQL += ' WHERE ' + search.get('column',self.iview+'.ingkey') + ' ' + search.get('operator','LIKE') + ' ' + self.qmark
             params += [search['search']]
             SQL += ' AND NOT deleted'
             if self.USE_PAREN_STYLE_REGEXP:
@@ -405,7 +406,7 @@ class RecData (rdatabase.RecData):
     # Adding recipes...
     def do_add (self, table, d):
         SQL = 'INSERT INTO ' + table + '('+', '.join(d.keys()) + ')'        
-        SQL += ' VALUES (' +  ", ".join(["?"]*len(d)) + ')'
+        SQL += ' VALUES (' +  ", ".join([self.qmark]*len(d)) + ')'
         self.execute(self.cursor,SQL,d.values())
 
     def do_add_nutrition (self, d):
@@ -458,7 +459,7 @@ class RecData (rdatabase.RecData):
         params = new_values_dic.values() + params
         self.execute(self.cursor,
                      "UPDATE " + table + " SET " +\
-                     ", ".join(["%s = ?"%k for k in new_values_dic.keys()]) +\
+                     ", ".join([("%s = "+self.qmark)%k for k in new_values_dic.keys()]) +\
                      " " + where,
                      params)
 
@@ -521,7 +522,7 @@ class RecData (rdatabase.RecData):
                       +
                       " SET "
                       +
-                      ", ".join(["%s=?"%k for k in d.keys()])
+                      ", ".join([("%s="+self.qmark)%k for k in d.keys()])
                       +
                       " WHERE "
                       +

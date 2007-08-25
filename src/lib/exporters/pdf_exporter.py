@@ -193,6 +193,30 @@ class FiveStars (Star):
                                     origin=(0,0)
                                     )
             
+# Copied from http://two.pairlist.net/pipermail/reportlab-users/2004-April/002917.html
+# A convenience class for bookmarking
+class Bookmark(platypus.Flowable):
+    """ Utility class to display PDF bookmark. """
+
+    def __init__(self, title, key):
+        self.title = title
+        self.key = key
+        platypus.Flowable.__init__(self)
+
+    def wrap(self, availWidth, availHeight):
+        """ Doesn't take up any space. """
+        return (0, 0)
+
+    def draw(self):
+        # set the bookmark outline to show when the file's opened
+        self.canv.showOutline()
+        # step 1: put a bookmark on the
+        self.canv.bookmarkPage(str(self.key))
+        # step 2: put an entry in the bookmark outline
+        self.canv.addOutlineEntry(self.title,
+                                  self.key, 0, 0)
+
+
 class PdfWriter:
 
     def __init__ (self):
@@ -204,7 +228,6 @@ class PdfWriter:
                         bottom_margin=inch,
                         base_font_size=10
                         ):
-        #print 'mode',mode,'size',size,'pagesize',pagesize,'pagemode',pagemode
         frames = self.setup_frames(mode,size,pagesize,pagemode,
                                    left_margin,right_margin,top_margin,
                                    bottom_margin,base_font_size)
@@ -236,7 +259,6 @@ class PdfWriter:
             frames = self.setup_multiple_index_cards(mode[1])
         else:
             raise("WTF - mode = %s"%str(mode))
-        #print 'Set up frames',frames
         return frames
 
     def scale_stylesheet (self, perc):
@@ -311,7 +333,9 @@ class PdfWriter:
     
     def make_paragraph (self, txt, style=None, attributes="",keep_with_next=False):
         if attributes:
-            txt = '<para %s>%s</para>'%(attributes,xml.sax.saxutils.escape(txt))
+            txt = '<para %s>%s</para>'%(attributes,txt)
+        else:
+            txt = '<para>%s</para>'%txt
         if not style: style = self.styleSheet['Normal']
         try:
             if PASS_REPORTLAB_UNICODE:
@@ -326,7 +350,7 @@ class PdfWriter:
             except:
                 print 'Trouble with ',txt
                 raise
-    
+
     def write_paragraph (self, txt, style=None, keep_with_next=False, attributes=""):
         p = self.make_paragraph(txt,style,attributes,keep_with_next=keep_with_next)
         if keep_with_next:
@@ -335,7 +359,7 @@ class PdfWriter:
             # less than 3/4 inch of stuff after it on the page.
             self.txt.append(platypus.CondPageBreak(0.75*inch))
         self.txt.append(p)
-        
+
 
     def write_header (self, txt):
         """Write a header.
@@ -376,6 +400,8 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                   txt=[],
                   pdf_args=DEFAULT_PDF_ARGS,
                   **kwargs):
+        self.links = [] # Keep track of what recipes we link to to
+                        # make sure we use them...
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
             out = file(out,'wb')
@@ -410,7 +436,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             #    self.master_txt.append(platypus.KeepTogether(self.txt))
             #else:
             if self.master_txt:
-                self.master_txt.append(platypus.FrameBreak())
+                self.master_txt.append(platypus.FrameBreak())            
             self.master_txt.extend(self.txt)
             #self.master_txt.extend(self.txt)
 
@@ -533,14 +559,21 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
     def write_attr (self, label, text):
         attr = gglobals.NAME_TO_ATTR[label]
         if attr=='title':
+            self.txt.append(Bookmark(self.r.title,'r'+str(self.r.id)))
             self.write_paragraph(text,style=self.styleSheet['Heading1'])
-            return
         if attr=='rating':
             from gourmet.importers.importer import string_to_rating
             val = string_to_rating(text)
             if val:
                 self.attributes.append(self.make_rating(label,val))
                 return
+        if attr=='link':
+            trimmed = text.strip()
+            if len(trimmed)>32:
+                trimmed=trimmed[:29]+'&#8230;'
+            self.attributes.append(self.make_paragraph('%s: <link href="%s">%s</link>'%(label,text,trimmed)))
+            return
+        # If nothing else has returned...
         self.attributes.append(self.make_paragraph("%s: %s"%(label,text)))
 
     def write_text (self, label, text):
@@ -592,15 +625,36 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             txt,
             attributes=' firstLineIndent="-%(hanging)s" leftIndent="%(hanging)s"'%locals()
             )
-                              
+
+    def write_ingref (self, amount, unit, item, refid, optional):
+        reffed = self.rd.get_rec(refid)
+        if not reffed:
+            reffed = self.rd.fetch_one(self.rd.rview,title=item,deleted=False)
+            if reffed:
+                refid = reffed.id
+        if not reffed:
+            return self.write_ing(amount,unit,item,optional=optional)
+        txt = ""
+        for blob in [amount,unit,item,(optional and _('optional') or '')]:
+            if blob == item:
+              blob = '<link href="r%s">'%refid + blob + '</link>'  
+            if not blob: continue
+            if txt: txt += " %s"%blob
+            else: txt = blob
+        hanging = inch*0.25
+        self.links.append(refid)
+        self.write_paragraph(
+            txt,
+            attributes=' firstLineIndent="-%(hanging)s" leftIndent="%(hanging)s"'%locals()
+            )
 
 class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
     def __init__ (self, rd, recipes, out, progress_func=None, conv=None,
                   pdf_args=DEFAULT_PDF_ARGS,
                   **kwargs):
+        self.links = []
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
-            print 'Open binary file ',out
             out = file(out,'wb')
         self.setup_document(out,**pdf_args)
         self.output_file = out
@@ -894,6 +948,20 @@ if __name__ == '__main__':
     #pe = PdfExporterMultiDoc(rd,rr,os.path.join(tempdir,'fooby.pdf'))
     #pe.run()
 
+    def test_formatting ():
+        print 'Test formatting'
+        sw = PdfWriter()
+        f = file(os.path.join(tempdir,'format.pdf'),'wb')
+        sw.setup_document(f)
+        sw.write_header('This is a header & isn\'t it nifty')
+        sw.write_paragraph('<i>This</i> is a <b>paragraph</b> with <u>formatting</u>!')
+        sw.write_header('<u>This is a formatted header & it is also nifty &amp; cool</u>')
+        sw.write_paragraph('<i>This is another formatted paragraph</i>')
+        sw.write_paragraph('<span fg="\#f00">This is color</span>')
+        sw.close()
+        f.close()
+        return os.path.join(tempdir,'format.pdf')
+
     def test_3_x_5 ():
         print 'Test 3x5 layout'
         sw = PdfWriter()
@@ -925,13 +993,13 @@ if __name__ == '__main__':
         #else:
         #    base = '/home/tom/Projects/grm'
         import gourmet.recipeManager as rm
-        #rd = rm.RecipeManager(file=os.path.join(base,'src','tests','reference_setup','recipes.db'))
-        rd = rm.RecipeManager()
+        rd = rm.RecipeManager(file=os.path.join(base,'src','tests','reference_setup','recipes.db'))
+        #rd = rm.RecipeManager()
         rr = []
-        for n,rec in enumerate(rd.fetch_all(rd.rview,deleted=False)):
-            if rec.image:
-                rr.append(rec)
-        pe = PdfExporterMultiDoc(rd,rr,fname,pdf_args=pdf_args)
+        #for n,rec in enumerate(rd.fetch_all(rd.rview,deleted=False)):
+        #    if rec.image:
+        #        rr.append(rec)
+        pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.rview,deleted=False),fname,pdf_args=pdf_args)
         pe.run()
         return fname
 
@@ -944,12 +1012,13 @@ if __name__ == '__main__':
 
     #print 'TEST 3x5'
     #gglobals.launch_url('file://'+test_3_x_5())
+    #gglobals.launch_url('file://'+test_formatting())
     #print 'END TEST'
     #print 'TEST GRM'
-    #gglobals.launch_url('file://'+test_grm_export())
+    gglobals.launch_url('file://'+test_grm_export())
     #print 'TEST CUSTOM GRM'
     #gglobals.launch_url('file://'+test_grm_export(get_pdf_prefs({'page_size':_('A4'),'page_layout':'2 Columns'})))
-    ppg = PdfPrefGetter()
-    print ppg.run()
+    #ppg = PdfPrefGetter()
+    #print ppg.run()
     #print 'END TEST'
     

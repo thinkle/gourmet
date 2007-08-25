@@ -1,3 +1,12 @@
+gourmet (0.13.7-1) breezy; urgency=low
+
+  * Fixes and improvements to PDF export.
+  * Cleanups to UI (mostly behind the scenes glade fixes)
+  * Fixes to mastercook import (from Anthony Foglia)
+  * Fixes to Undo in recipe card view.
+
+ -- Thomas Mills Hinkle <Thomas_Hinkle@sf.net>  Sat, 25 Aug 2007 20:51:36 -0500
+
 gourmet (0.13.5-1) breezy; urgency=low
 	
   * Activate interface for removing duplicates

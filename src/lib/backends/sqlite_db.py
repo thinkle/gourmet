@@ -1,9 +1,19 @@
 import sql_db, rdatabase
-from pysqlite2 import dbapi2 as sqlite
+try:
+    import sqlite3 as sqlite
+    print 'Using sqlite3'
+except ImportError:
+    from pysqlite2 import dbapi2 as sqlite
+    print 'Using sqlite2'
 import os, os.path, re
 import gourmet.gglobals as gglobals
 from gourmet import keymanager
 from gettext import gettext as _
+
+if sqlite.paramstyle=='qmark':
+    QMARK = '?'
+else:
+    QMARK = '%s'
 
 
 class RecData (sql_db.RecData):
@@ -18,6 +28,7 @@ class RecData (sql_db.RecData):
         self.filename = filename
         self.db = db
         self.columns = {}
+        self.qmark = QMARK
         rdatabase.RecData.__init__(self)
 
     def setup_table (self, *args,**kwargs):
@@ -60,7 +71,7 @@ class RecData (sql_db.RecData):
         self.changed = False
 
     def check_for_table (self, name):
-        self.cursor.execute('SELECT name FROM sqlite_master WHERE NAME=?',[name])
+        self.cursor.execute('SELECT name FROM sqlite_master WHERE NAME=%s'%self.qmark,[name])
         if self.cursor.fetchall(): return True
         else: return False
 

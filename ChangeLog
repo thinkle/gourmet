@@ -1,3 +1,34 @@
+2007-08-25  Thomas M. Hinkle  <tom@localhost.localdomain>
+
+	* TODO Update todo list.
+	* glade/nutritionDruid.glade Fix reversion/bug introduced in UI
+	cleanup from Jeff/Kiddo
+	* src/lib/version.py Upped version to 0.13.7
+	* src/lib/backends/sql_db.py Respect SQL libraries different
+	paramstyles rather than hardcoding the question mark.
+	* src/lib/backends/sqlite_db.py Make sqlite3 (built-into
+	python2.5) the default and fallback to pysqlite2 only as
+	needed. Respect SQL libraries different paramstyles rather than
+	hardcoding the question mark.
+	* src/lib/exporters/exporter.py Update exporter so that if two
+	recipes have the same name, they can both be exported
+	(generate_filename now gets a flag -- if we are exporting multiple
+	recipes, we automatically append ID numbers, otherwise we don't,
+	since they are unnecessarily ugly if someone just wants to e-mail
+	a copy of a single recipe to their mom or whatnot.
+	* src/lib/exporters/pdf_exporter.py Fix bug 1776930 (formatting
+	broken in PDF). Add links for recipe references and for webpages.
+	* src/lib/exporters/html_exporter.py Use the changes in exporter.py
+	to avoid screwing up if more than one recipe have the same name.
+	* src/lib/exporters/gxml2_exporter.py Export the link field.
+	* src/lib/nutrition/nutritionDruid.py Fix nutrition labels per
+	ingredients so they don't say "per recipe". Fix bug that broke the
+	nutrition druid when user changed an ingredient key.
+	* src/tests/testExporters.py Update export tests.
+	* src/tests/reference_setup/recipes.db Add a webpage to export
+	test suite.
+
+	
 2007-08-20  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/defaults_en.py Call granulated sugar granulated sugar,
@@ -8,7 +39,7 @@
 	of any use (they're already lost to the UI--why keep them in the DB)
 	* src/lib/backends/sql_db.py Don't return deleted ingredients in
 	list of ingredient keys (in get_ingkeys_with_count)
-
+	
 2007-08-15  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/backends/sql_db.py Applied patch from Anthony Foglia to

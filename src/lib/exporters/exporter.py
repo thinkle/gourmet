@@ -510,7 +510,7 @@ class ExporterMultirec:
                 self.pf(float(self.rcount)/float(self.rlen), msg)
             fn=None
             if not self.one_file:
-                fn=self.generate_filename(r,self.ext)
+                fn=self.generate_filename(r,self.ext,add_id=True)
                 self.ofi=open(fn,'wb')
             if self.padding and not first:
                 self.ofi.write(self.padding)
@@ -533,7 +533,7 @@ class ExporterMultirec:
     def write_footer (self):
         pass
 
-    def generate_filename (self, rec, ext):
+    def generate_filename (self, rec, ext, add_id=False):
         title=rec.title
         # get rid of potentially confusing characters in the filename
         # Windows doesn't like a number of special characters, so for
@@ -545,7 +545,7 @@ class ExporterMultirec:
                 ntitle += c
         title = ntitle
         # truncate long filenames
-        max_filename_length = 255
+        max_filename_length = 252
         if len(title) > (max_filename_length - 4):
             title = title[0:max_filename_length-4]
         # make sure there is a title
@@ -553,6 +553,9 @@ class ExporterMultirec:
             title = _("Recipe")
         title=title.replace("/"," ")
         title=title.replace("\\"," ")
+        # Add ID #
+        if add_id:
+            title = title + str(rec.id)
         file_w_ext="%s%s%s"%(self.unique_name(title),os.path.extsep,ext)
         return os.path.join(self.outdir,file_w_ext)
 

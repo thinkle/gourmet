@@ -43,8 +43,8 @@ confirmation_tests = {
 
     # Gourmet File Format Test
     'Gourmet XML File':lambda f: confirm_strings_are_in_file([
-    '''<recipe\s*id="2">\s*<title>\s*Ranges\s*</title>''',
-    '''<ingref amount="1" refid="2">\s*Ranges\s*</ingref>''',
+    '''<ingref''',
+    '''<link''',
     # Nested ingredients...
     '''<inggroup>\s*<groupname>\s*Dressing\s*</groupname>\s*<ingredient>\s*<amount>\s*1/2\s*</amount>\s*<unit>\s*tsp\.\s*</unit>\s*<item>\s*red pepper flakes\s*</item>\s*<key>\s*red pepper flakes\s*</key>\s*</ingredient>''',
     # Image
@@ -57,8 +57,8 @@ confirmation_tests = {
     '''<category>\s*Dessert''',
     '''<cuisine>\s*Asian/Chinese''',
     # Formatting
-    re.escape('''&amp;amp;lt;i&amp;amp;gt;But this should be in italics'''),
-    re.escape('''&amp;amp;lt;b&amp;amp;gt;And this should be in bold'''),
+    re.escape('''&amp;lt;i&amp;gt;But this should be in italics'''),
+    re.escape('''&amp;lt;b&amp;gt;And this should be in bold'''),
     ],
                                                   f),
     # End Gourmet File Format Test
@@ -73,6 +73,7 @@ confirmation_tests = {
     '-+DRESSING-+\s*1/2\s*t\s*red pepper flakes' # Ingredient group
     ],
                                                              f),
+    # End MealMaster test
 
     # RTF Tests
     'RTF':lambda f: confirm_strings_are_in_file([
@@ -82,11 +83,9 @@ confirmation_tests = {
     '1 recipe Ranges', #Recipe reference
     re.escape('\pict{\jpegblip'), #Image
     ],
-                                                f)
+                                                f),
     # End RTF Tests
     
-    # End MealMaster test
-
     }
 
 

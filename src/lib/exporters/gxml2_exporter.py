@@ -115,7 +115,9 @@ class rview_to_xml (exporter.ExporterMultirec, XmlExporter):
                              'attr_order':('title','category',
                                            'cuisine','source',
                                            'rating','preptime',
-                                           'cooktime','servings'),
+                                           'cooktime','servings',
+                                           'link'
+                                           ),
                              'order':['attr','image','ings','text'],
                              }
             )

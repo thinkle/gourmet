@@ -268,7 +268,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.in_string = in_string or (rec and _('recipe') or _('selection'))
         self.rd = self.nd.db
         self.def_ingredient_amounts = {} # For default amounts for nutritional label...
-        self.amounts = {}
+        self.amounts = {} # List amounts by ingredient
         self.ing_to_index = {} # A way to keep track of the order of our ingredients...
         self._setup_widgets_()
         # keep track of pages/setups we've been on         
@@ -445,7 +445,7 @@ class NutritionInfoDruid (gobject.GObject):
         if not hasattr(self,'nutritionLabel'):
             from nutritionLabel import NutritionLabel
             self.nutritionAmountLabel = gtk.Label()
-            self.nutritionLabel = NutritionLabel(self.prefs)
+            self.nutritionLabel = NutritionLabel(self.prefs, custom_label=' ')
             self.nutritionLabelBox.pack_start(self.nutritionAmountLabel,
                                               fill=0,
                                               expand=0)
@@ -785,6 +785,9 @@ class NutritionInfoDruid (gobject.GObject):
                           )
         old_key = self.ingkey
         self.set_ingkey(key)
+        # Update amounts dictionary...
+        self.amounts[key] = self.amounts[old_key]
+        del self.amounts[old_key]
         self.autosearch_ingkey()
         self.changeIngKeyAction.dehighlight_action()
         if self.nd.get_nutinfo(key):
@@ -918,8 +921,11 @@ class NutritionInfoDruid (gobject.GObject):
             self.setup_to_units()
             self.check_next_amount()
 
-    def edit_nutinfo (self, ingkey=None, desc=None):        
-        if ingkey: self.set_ingkey(ingkey)
+    def edit_nutinfo (self, ingkey=None, desc=None):
+        self.amounts[ingkey or desc] = self.get_amounts_and_units_for_ingkey(ingkey)
+        self.amount_index = 0
+        if ingkey:
+            self.set_ingkey(ingkey)
         if desc:
             self.usdaIndex.set_search(desc)
         else:
