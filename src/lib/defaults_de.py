@@ -35,19 +35,19 @@ LANG_PROPERTIES={'hasAccents':True, 'capitalisedNouns':True,'useFractions':False
 # Feel free to change the number or content of categories to be consistent
 # with what users in your locale are likely to be familiar with.
 
-fields={'cuisine': ['deutsch', 'amerikanisch','italienisch','franzoisisch',
-		    'mexicanisch','asiatisch','griechisch','vegetarisch'],
+fields={'cuisine': ['deutsch', 'amerikanisch','italienisch','französisch',
+		    'mexikanisch','asiatisch','griechisch','vegetarisch'],
 
         'rating' : ['5 - ausgezeichnet','4 - lecker',
-		    '3 - OK','2 - mittelmässig','1 - vergiss es!',
+		    '3 - OK','2 - mittelmäßig','1 - vergiss es!',
                     '(nicht geprüft)'],
 
         'source' : [],
 
         'category' :[
 		     'Nachspeise','Vorspeise','Hauptgericht',
-		     'Beilage','Salat','Suppe','Frühstuck',
-		     'Picnik','Andere','Plan'],
+		     'Beilage','Salat','Suppe','Frühstück',
+		     'Picknick','Andere','Plan'],
                   }
 
 # In English, there are a heck of a lot of synonyms. This is a list
@@ -70,7 +70,7 @@ SYNONYMS=[
     ["Kalbfleisch","Kalb"],
     ["Truthahn","Puter","Pute"],
     ["Rindfleisch","Rind"],
-    ["Rotbusch","Roobusch","Roibusch"],
+    ["Rotbusch","Rooibos","Rooibosch"],
     ["Seelachs","Köhler"],
     ["Anschovis","Anchovis","Sardelle"],
     ["Kabeljau","Dorsch"],
@@ -91,16 +91,19 @@ SYNONYMS=[
     ["Gemüsebouillon","Gemüsebrühe"],
     ["Hühnerbouillon","Hühnerbrühe"],
     ["Muskat","Muskatnuss","Muscat","Muscatnuss"],
-    ["Sesamus","Tahin"],
+    ["Sesammus","Tahin"],
     ["Brokkoli", "Broccoli"], 
     ["Kräuter","gemischte Kräuter"],
     ["Langkornreis","Reis"],
+    ["Eierschwammerl","Pfifferlinge"],
+    ["Herrenpilze","Steinpilze"],
+    ["Paradeiser","Tomaten"],
 
     # Irregular plurals
-    ["Äpfeln","Apfel"],
-    ["Pfirsiche", "Pfirsich"],
-    ["Nüsse","Nüße","Nuss","Nuß", "Nusse", "Nuße"],
-    ["Eier", "Ei"]
+    ["Äpfel","Apfel"],
+    ["Pfirsiche""Pfirsich"],
+    ["Nüsse", "Nuss"],
+    ["Eier","Ei"]
 
     #non-standard usage
  
@@ -198,8 +201,8 @@ INGREDIENT_DATA = [  ## G e m ü s e
 
                    ["Paprika","Paprika","Gemüse"],					#pepper
                    ["rote Paprika","Paprika, rote","Gemüse"],				#red bell pepper
-                   ["grüne Paprika","Paprika, grüne","Gemüse"],				#
-                   ["gelbe Paprika","Paprika, gelbe","Gemüse"],				#
+                   ["grüne Paprika","Paprika, grüne","Gemüse"],			#
+                   ["gelbe Paprika","Paprika, gelbe","Gemüse"],			#
                    ["Chile","Chile","Gemüse"],						#chilli pepper
                    ["Jalapeño-Chile","Chile, Jalapeño","Gemüse"],			#jalapeño pepper
                    ["Habanero-Chile","Chile, Habanero","Gemüse"],			#habanero pepper
@@ -217,7 +220,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Kopfsalat","Kopfsalat","Gemüse"],					#lettuce 
                    ["Rucolasalat","Rucolasalat","Gemüse"],				#rucola 
                    ["Friseesalat","Friseesalat","Gemüse"],				#open lettuce 
-                   ["Feldsalat","Feldesalat","Gemüse"],					#lettuce 
+                   ["Feldsalat","Feldesalat","Gemüse"],				#lettuce 
 
                    ["Saubohnen","Saubohnen","Gemüse"],					#broad beans
                    ["Bobby Bohnen","Bobby Bohnen","Gemüse"],				#small green beans
@@ -236,11 +239,11 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Rispentomaten","Tomaten, Rispen-","Gemüse"],			#tomato on stems
 
                    ["Kartoffel","Kartoffel","Gemüse"],					#potato
-                   ["Speisekartoffeln","Kartoffeln, Speise-","Gemüse"],			#standard cooking potatoes
+                   ["Speisekartoffeln","Kartoffeln, Speise-","Gemüse"],		#standard cooking potatoes
                    ["Süßkartoffel","Süßkartoffel","Gemüse"],				#sweet potato
 
                    ["Jamswurzel","Jamswurzel","Gemüse"],				#yam
-                   ["Kastanien","Kastanien","Gemüse"],					#water chestnut
+                   ["Wasserkastanie","Wasserkastanie","Gemüse"],			#water chestnut
                    ["Brunnenkresse","Brunnenkresse","Gemüse"],				#watercress
 
                    ["Oliven","Oliven","Gemüse"],					#
@@ -269,19 +272,19 @@ INGREDIENT_DATA = [  ## G e m ü s e
 
                    ## F r u c h t e
                    ["Obst","Obst","Obst"],						#general fruit
-                   ["Äpfeln","Äpfeln","Obst"],						#apple
-                   ["rote Äpfeln","Äpfeln, rote","Obst"],				#
-                   ["goldene Äpfel","Äpfeln, goldene","Obst"],				#
-                   ["Granny Smith Äpfeln","Äpfel, Granny Smith","Obst"],		#
-                   ["Fuji Äpfeln","Äpfeln, Fuji-","Obst"],				#
-                   ["grüne Äpfeln","Äpfeln, grüne","Obst"],				#green apple
-                   ["Granatapfeln","Granatapfeln","Obst"],				#pomegranate
+                   ["Äpfel","Äpfel","Obst"],						#apple
+                   ["rote Äpfel","Äpfel, rote","Obst"],					#
+                   ["goldene Äpfel","Äpfel, goldene","Obst"],				#
+                   ["Granny Smith Äpfel","Äpfel, Granny Smith","Obst"],		#
+                   ["Fuji Äpfel","Äpfel, Fuji-","Obst"],				#
+                   ["grüne Äpfel","Äpfel, grüne","Obst"],				#green apple
+                   ["Granatäpfel","Granatäpfel","Obst"],				#pomegranate
                    ["Quitte","Quitte","Obst"],						#quince
                    ["Hagebutten","Hagebutten","Obst"],					#rose hip
                    ["Aprikosen","Aprikosen","Obst"],					#apricot
                    ["Birnen","Birnen","Obst"],						#pear
                    ["Conference Birnen","Birnen, Conference","Obst"],			#pear, large conference
-                   ["William Birnen","Birnen, William","Obst"],				#pear, standard william
+                   ["William Birnen","Birnen, William","Obst"],			#pear, standard william
                    ["Kirschen","Kirschen","Obst"],					#cherry
                    ["Pflaumen","Pflaumen","Obst"],					#plum
                    ["Pfirsiche","Pfirsiche","Obst"],					#peach
@@ -293,7 +296,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Blaubeeren","Beeren, Blaubeeren","Obst"],				#blueberry
                    ["Preiselbeeren","Beeren, Preiselbeeren","Obst"],			#cranberry
                    ["Johannisbeeren","Beeren, Johannisbeeren","Obst"],			#red currant
-                   ["schwarze Johannisbeeren","Beeren, schwarze Johannisbeeren","Obst"],	#black currant
+                   ["schwarze Johannisbeeren","Beeren, schwarze Johannisbeeren","Obst"],#black currant
                    ["Holunderbeeren","Beeren, Holunderbeeren","Obst"],			#elderberry
                    ["Stachelbeeren","Stachelbeeren","Obst"],				#gooseberry
                    ["Kiwi","Kiwi","Obst"],						#kiwi fruit
@@ -302,7 +305,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Honigmelonen","Melonen, Honig-","Obst"],				#honeydew melon
                    ["Galiamelonen","Melonen, Galia-","Obst"],				#galia melon
                    ["Netzmelonen","Melonen, Netz-","Obst"],				#net melon
-                   ["Wassermelonen","Melonen, Wasser-","Obst"],				#watermelon
+                   ["Wassermelonen","Melonen, Wasser-","Obst"],			#watermelon
                    ["Feigen","Feigen","Obst"],						#fig
                    ["Weintrauben","Weintrauben","Obst"],				#grape
                    ["Tafeltrauben","Weintrauben, Tafel","Obst"],			#green grapes
@@ -328,7 +331,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Papaya","Papaya","Obst"],						#papaya
                    ["Ananas","Ananas","Obst"],						#pineapple
                    ["Tamarinde","Tamarinde","Obst"],					#tamarind
-                   ["Rahbarber","Rahbarber","Obst"],					#rhubarb
+                   ["Rhabarber","Rhabarber","Obst"],					#rhubarb
  
 
                    ## M e e r e s f r ü c h t e
@@ -359,7 +362,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Rogen","Rogen","Meeresfrüchte"],					#roe of fish
                    ["Kaviar","Kaviar","Meeresfrüchte"],					#caviar
                    ["Krebs","Krebs","Meeresfrüchte"],					#crab
-                   ["Hummer","Hummer","Meeresfrüchte"],					#lobster
+                   ["Hummer","Hummer","Meeresfrüchte"],				#lobster
                    ["Garnele","Garnele","Meeresfrüchte"],				#prawns
                    ["Krabbe","Krabbe","Meeresfrüchte"],					#shrimp
                    ["Klaffmuschel","Klaffmuschel","Meeresfrüchte"],			#clam
@@ -367,8 +370,8 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Tintenfisch","Tintenfisch","Meeresfrüchte"],			#octopus
                    ["Auster","Auster","Meeresfrüchte"],					#oyster
                    ["Schnecke","Schnecke","Meeresfrüchte"],				#snail
-                   ["Kalmar","Kalmar","Meeresfrüchte"],					#squid
-                   ["Kammuschel","Kammuschel","Meeresfrüchte"],				#scallop
+                   ["Kalmar","Kalmar","Meeresfrüchte"],				#squid
+                   ["Kammuschel","Kammuschel","Meeresfrüchte"],			#scallop
 
                    ## F l e i s c h
                    ["Speck","Speck","Fleisch"],						#chopped bacon 
@@ -378,7 +381,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Lamm","Lamm","Fleisch"],						#lamb
                    ["Kalb","Kalb","Fleisch"],						#veal
                    ["Steak","Steak","Fleisch"],						#steak
-                   ["Hamburger","Hamburger","Fleisch"],					#hamburger
+                   ["Hamburger","Hamburger","Fleisch"],				#hamburger
                    ["Roastbeef","Roastbeef","Fleisch"],					#roast beef
                    ["Hähnchen","Hähnchen","Fleisch"],					#chicken
                    ["Pute","Pute","Fleisch"],						#turkey
@@ -399,9 +402,9 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Currywurst","Currywurst","Fleisch"],				#sausage
 
 		   ## L e b e n s m i t t e l
-                   ["Weizenmehl","Mehl, Weizen-","Lebensmittel"],					#all purpose flour
+                   ["Weizenmehl","Mehl, Weizen-","Lebensmittel"],			#all purpose flour
                    ["Vollkorn Weizenmehl","Mehl, Vollkorn Weizen-","Lebensmittel"],	#wholemeal flour 
-                   ["Hirsemehl","Mehl, Hirse-","Lebensmittel"],				#flour
+                   ["Hirsemehl","Mehl, Hirse-","Lebensmittel"],			#flour
                    ["Roggenmischung","Mehl, Roggenmischung","Lebensmittel"],		#rye flour
                    ["Backpulver","Backpulver","Lebensmittel"],				#baking powder
                    ["Natron","Natron","Lebensmittel"],					#baking soda
@@ -425,14 +428,14 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Erdnüsse","Erdnüsse","Lebensmittel"],				#peanut
                    ["Kartoffelpüree","Kartoffelpüree","Lebensmittel"],			#potato mash
                    ["Klöße","Klöße","Lebensmittel"],					#potato dumplings
-                   ["Pollenta","Pollenta","Lebensmittel"],				#yellow cornmeal
+                   ["Polenta","Polenta","Lebensmittel"],				#yellow cornmeal
                    ["kernige Haferflocken","Haferflocken, kernig","Lebensmittel"],	#rolled oats
                    ["zarte Haferflocken","Haferflocken, zart","Lebensmittel"],		#fine rolled oats
                    ["Ketchup","Ketchup","Lebensmittel"],				#ketchup
                    ["Mayonnaise","Mayonnaise","Lebensmittel"],				#mayonnaise
 		   ["Knäckebrot","Knäckebrot","Lebensmittel"],				#ryebread wafers
 		   ["Dosentomaten","Tomaten, Dosen-","Lebensmittel"],			#canned tomatoes
-		   ["Dosenmais","Mais, Dosen-","Lebensmittel"],				#canned sweetcorn
+		   ["Dosenmais","Mais, Dosen-","Lebensmittel"],			#canned sweetcorn
 
                    ["Sonnenblumenkerne","Sonnenblumenkerne","Lebensmittel"],		#sunflower seeds
                    ["Sesammus","Sesammus","Lebensmittel"],				#sesame seeds
@@ -447,7 +450,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Bouillon","Bouillon","Lebensmittel"],				#broth
 		   ["Gemüsebouillon","Bouillon, Gemüse-","Lebensmittel"],		#vegetable broth
     		   ["Hühnerbouillon","Bouillon, Hühner-","Lebensmittel"],		#broth, chicken
-                   ["Hollandais","Hollandais","Lebensmittel"],				#hollandais sauce
+                   ["Hollandaise","Hollandaise","Lebensmittel"],			#hollandais sauce
 
                    ["gehackte Tomaten","Tomaten, gehackt","Lebensmittel"],		#chopped tomato
                    ["geschälte Tomaten","Tomaten, geschält","Lebensmittel"],		#peeled tomato
@@ -474,20 +477,20 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Pizzateig","Teig, Pizza-","Reis & Teigwaren"],			#pizza dough
 
                    ["Langkornreis","Reis, Langkorn-","Reis & Teigwaren"],		#rice longcorn
-                   ["Basmatireis","Reis, Basmati-","Reis & Teigwaren"],			#basmati rice
+                   ["Basmatireis","Reis, Basmati-","Reis & Teigwaren"],		#basmati rice
                    ["Milchreis","Reis, Milch-","Reis & Teigwaren"],			#pudding rice
                    ["Naturreis","Reis, Natur-","Reis & Teigwaren"],			#whole rice
                    ["Wildreis","Reis, Wild-","Reis & Teigwaren"],			#wild (black) rice
                    ["Spitzenlangkornreis","Reis, Spitzenlangkorn-","Reis & Teigwaren"],	#rice longcorn cook
 
                    ## B r o t
-                   ["Brot","Brot, allgemeines","Brot"],					#bread, any
+                   ["Brot","Brot, allgemeines","Brot"],				#bread, any
                    ["Weißbrot","Brot, weiß","Brot"],					#white bread
                    ["Toastbrot","Brot, Toast-","Brot"],					#sliced white toasting bread
                    ["Vollkornbrot","Brot, Vollkorn-","Brot"],				#wholemeal bread
                    ["Sonnenblumenkernbrot","Brot, Sonnenblumenkern-","Brot"],		#sunflower seed wholmeal
                    ["Kürbiskernbrot","Brot, Kürbiskern-","Brot"],			#pupkin seed wholemeal
-                   ["Sesambrot","Brot, Sesam-","Brot"],					#sesame seed wholemeal
+                   ["Sesambrot","Brot, Sesam-","Brot"],				#sesame seed wholemeal
                    ["Dreikornbrot","Brot, Dreikorn-","Brot"],				#3 corn wholemeal bread
                    ["Krustenbrot","Brot, Krusten-","Brot"],				#Crusty wholemeal bread
                    ["Landbrot","Brot, Land-","Brot"],					#wholemeal bread
@@ -508,11 +511,11 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Curry","Curry","Kräuter u Gewürze"],				#curry powder
                    ["Currypaste","Currypaste","Kräuter u Gewürze"],			#curry paste
                    ["Madras Curry","Curry, madras","Kräuter u Gewürze"],		#hotter curry powder
-                   ["Garam Masala","Garam Masala","Kräuter u Gewürze"],			#
+                   ["Garam Masala","Garam Masala","Kräuter u Gewürze"],		#
                    ["Zimtschote","Zimt, Zimtschote","Kräuter u Gewürze"],		#(modifier?)
                    ["gemahlener Zimt","Zimt, gemahlener","Kräuter u Gewürze"],		#(modifier?)
                    ["Korianderkerne","Korianderkerne","Kräuter u Gewürze"],		#(modifier?)
-                   ["gemahlener Koriander","Koriander, gemahlener","Kräuter u Gewürze"],	#(modifier?)
+                   ["gemahlener Koriander","Koriander, gemahlener","Kräuter u Gewürze"],#(modifier?)
                    ["Cuminkerne","Cuminkerne","Kräuter u Gewürze"],			#(modifier?)
                    ["gemahlener Cumin","Cumin, gemahlener","Kräuter u Gewürze"],	#(modifier?)
                    ["Senfkerne","Senfkerne","Kräuter u Gewürze"],			#(modifier?)
@@ -534,25 +537,25 @@ INGREDIENT_DATA = [  ## G e m ü s e
 
 		   ## M a r m e l a d e
 		   ["Pflaumenmarmelade","Marmelade, Pflaumen-","Konfitüren"],		#plum jam
-		   ["Aprikosenmarmelade","Marmelade, Aprikosen-","Konfitüren"],		#apricot jam
+		   ["Aprikosenmarmelade","Marmelade, Aprikosen-","Konfitüren"],	#apricot jam
 		   ["Orangenmamalade","Marmalade, Orangen-","Konfitüren"],		#orange jam
 		   ["Marmelade","Marmelade","Konfitüren"],				#jam - general
 		   ["Erdbeermarmelade","Marmelade, Erdbeer-","Konfitüren"],		#strawberry jam
 		   ["Himbeermarmelade","Marmelade, Himbeer-","Konfitüren"],		#raspberry jam
 		   ["Erdnussbutter","Erdnussbutter","Konfitüren"],			#peanut butter
 		   ["Nutella","Nutella","Konfitüren"],					#nussply
-		   ["Sesamus","Sesamus","Konfitüren"],					#tahini - sesame spread
+		   ["Sesammus","Sesammus","Konfitüren"],				#tahini - sesame spread
                    ["Honig","Honig","Konfitüren"],					#honey
 
 		   ## I n t e r n a t i o n a l
                    ["Tartex","Tartex","International"],					#tartex spread
-                   ["Kokosmilch","Kokusmilch","International"],				#coconut milk
-                   ["Kokoscreme","Kokuscreme","International"],				#coconut cream
+                   ["Kokosmilch","Kokusmilch","International"],			#coconut milk
+                   ["Kokoscreme","Kokuscreme","International"],			#coconut cream
                    ["grüne Currypaste","Currypaste, grüne","International"],		#green curry paste
                    ["rote Currypaste","Currypaste, rote","International"],		#red curry paste
                    ["Reisessig","Essig, Reis-","International"],			#rice vinegar
                    ["Salsa","Salsa","International"],					#salsam
-                   ["Sesamkerne","Sesamkerne","International"],				#sesame seeds
+                   ["Sesamkerne","Sesamkerne","International"],			#sesame seeds
                    ["Soja-Sauce","Soja-Sauce","International"],				#soy sauce
                    ["Sojacreme","Sojacreme","International"],		                #soya cream
 		   ["Bulgur","Bulgur","International"],					#bulgar
@@ -566,7 +569,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Käse","Käse, allgemeiner","Milchprodukte"],			#cheese, any
                    ["Butter","Butter","Milchprodukte"],					#butter
                    ["Margarine","Margarine","Milchprodukte"],				#	
-                   ["Eier","Eier","Milchprodukte"],						#egg
+                   ["Eier","Eier","Milchprodukte"],					#egg
                    ["frische Milch","Milch, frische","Milchprodukte"],			#milk
                    ["fettarme Milch","Milch, fettarme","Milchprodukte"],		#skimmed milk
 		   ["H-Milch","Milch, H-Milch","Milchprodukte"],			#long-life milk
@@ -609,7 +612,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    ["Früchtetee, ","Tee, Früchtetee","Getränke, heiß"],			#fruit tea
                    ["Pfefferminztee","Tee, Pfefferminztee","Getränke, heiß"],		#peppermint tea
                    ["Hagebuttentee","Tee, Hagebuttentee","Getränke, heiß"],		#rosehip tea
-                   ["Kamillentee","Tee, Kamillentee","Getränke, heiß"],			#camomile tea
+                   ["Kamillentee","Tee, Kamillentee","Getränke, heiß"],		#camomile tea
                    ["Fencheltee","Tee, Fencheltee","Getränke, heiß"],			#fenchel tea
                    ["Rotbuschtee","Tee, Rotbuschtee","Getränke, heiß"],			#roobusch tea
                    ["Kräutertee","Tee, Kräutertee","Getränke, heiß"],			#herb tea
@@ -672,8 +675,8 @@ DENSITY_TABLE={
     "Milch, fettarm":1.033,		#milk, skim
     "Milch 2%":1.031,			#milk, 2%
     "Milch 1%":1.03,			#milk, 1%
-    "Kokosmilch":0.875,			#coconut milk
-    "Buttermilch":1.03,			#buttermilk
+    "Kokosmilch":0.875,		#coconut milk
+    "Buttermilch":1.03,		#buttermilk
     "Sahne riche":0.994,		#heavy cream
     "Sahne légère":1.012,		#light cream
     "Sahne 11,5%":1.025,		#half-and-half
@@ -729,7 +732,7 @@ UNITS = [
          ["Dose, mittel", ["Dose, mittel","dose, mittel","mittlere Dose","mittlere dose"]],
          ["Dose, groß", ["Dose, groß", "dose, groß","größe Dose","größe dose"]],
          ["Dose, klein", ["Dose, klein","dose, klein","kleine Dose","kleine dose"]],
-	 ["Zeh", ["Zeh","Zehen","zeh","zehen"]],           #garlick
+	 ["Zeh", ["Zeh","Zehen","zeh","zehen"]],           #garlic
 	 ["Paket",["Paket","Pakete","paket","pakete", "Packung", "packung", "pack"]],
 	 ["Prise",["Prise","Prisen","prise","prisen"]],    #pinch
 	 ["Bund",["Bund","Bunde","bund","bunde"]],         #bunch
@@ -827,9 +830,9 @@ TIME_ABBREVIATIONS = {
     }
 
 IGNORE = ["und","mit","von","für",
-          "kalt","kalte","kalter","kaltes","kalten",
+          "kalt","kalter","kalte","kaltes","kalten",
           "warm","warmer","warme","warmes","warmen",
-          "dunn","dunner","dunne","dunnes","dunnen",
+          "dünn","dünner","dünne","dünnes","dünnen",
           "dick","dicker","dicke","dickes","dicken"
           ]
 

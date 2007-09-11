@@ -32,7 +32,10 @@ if os.name == 'posix':
         usr_share = os.path.join('/usr','share')
     DIR = os.path.join(usr_share,'locale')
 else:
-    DIR = os.path.join(datad,'i18n')
+    pth = datad.split(os.path.sep)
+    pth = pth[:-1] # strip off data
+    dirparts = os.path.sep.join(pth)
+    DIR = os.path.join(dirparts,'i18n')
 
 import gettext_setup
 

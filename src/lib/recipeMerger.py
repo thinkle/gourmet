@@ -224,7 +224,7 @@ class RecipeMergerDialog:
         if self.dups:
             self.show(label=label)
         else:
-            self.destroy()
+            self.glade.get_widget('window1').destroy()
         
     def show (self, label=None):
         if label:

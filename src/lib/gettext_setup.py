@@ -47,15 +47,30 @@ elif os.name == 'nt':
                 pybase = os.path.split(os.path.split(os.path.split(os.path.split(__file__)[0])[0])[0])[0]
                 gourmetd = os.path.join(pybase,'gourmet')
                 datad = os.path.join(gourmetd,'data')
+
+    pth = datad.split(os.path.sep)
+    pth = pth[:-1] # strip off data
+    datad = os.path.sep.join(pth)
+
     DIR = os.path.join(datad,'i18n')
 
 gettext.bindtextdomain('gourmet',DIR)
 gettext.textdomain('gourmet')
 gettext.install('gourmet',DIR,unicode=1)
 
-import locale
+import locale, os
 try:
-    locale.setlocale(locale.LC_ALL,'')
+    if os.name == 'posix':
+        locale.setlocale(locale.LC_ALL,'')
+
+    # Windows locales are named differently, e.g. German_Austria instead of de_AT
+    # Fortunately, we can find the POSIX-like type using a different method
+    # After that, we set the LC_ALL environment variable for use with gettext.
+    elif os.name == 'nt': 
+        import win32api
+        locid = win32api.GetUserDefaultLangID()
+        loc = locale.windows_locale[locid]
+        os.environ["LC_ALL"] = loc
+
 except locale.Error:
     print 'Unable to properly set locale %s.%s'%(locale.getdefaultlocale())
-    

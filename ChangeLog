@@ -1,5 +1,26 @@
-2007-08-25  Thomas M. Hinkle  <tom@localhost.localdomain>
+2007-09-10  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
+	* src/lib/defaults_de.py patch from SF user enfant_terribly fixing
+	up some problems in the German translation.
+	* src/lib/defaults.py  patch from SF user enfant_terrible
+	fixing language support on Windows.
+	* src/lib/gettext_setup.py patch from SF user enfant_terrible
+	fixing language support on Windows.
+	* src/lib/GourmetRecipeManager.py patch from SF user
+	enfant_terrible fixing language support on Windows.
+	* src/lib/recipeMerger.py Properly destroy dialog on close.
+	* src/lib/exporters/html_exporter.py Actually apply the changes
+	logged on 8/25
+	* i18n/de_AT.po Updates from enfant_terrible
+	* i18n/de_DE.po Updates from enfant_terrible	
+
+2007-08-25  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/exporters/html_exporter.py Make recipe links hyperlinks.
+	
+2007-08-25  Thomas M. Hinkle  <thomas_hinkle@sf.net>
+	
+	* RELEASE 0.13.7
 	* TODO Update todo list.
 	* glade/nutritionDruid.glade Fix reversion/bug introduced in UI
 	cleanup from Jeff/Kiddo
@@ -27,7 +48,6 @@
 	* src/tests/testExporters.py Update export tests.
 	* src/tests/reference_setup/recipes.db Add a webpage to export
 	test suite.
-
 	
 2007-08-20  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 

@@ -109,7 +109,16 @@ class html_exporter (exporter_mult):
         self.out.write("<div class='header'>")
 
     def write_attr (self, label, text):
-        self.out.write("<p class='%s'><span class='label'>%s:</span> %s</p>\n"%(label, label.capitalize(), xml.sax.saxutils.escape(text)))
+        attr = gglobals.NAME_TO_ATTR[label]
+        if attr=='link':
+            webpage = text.strip('http://')
+            webpage = webpage.split('/')[0]
+            self.out.write('<a href="%s">'%text +
+                           _('Original Page from %s')%webpage +
+                           '</a>')
+        else:
+            self.out.write("<p class='%s'><span class='label'>%s:</span> %s</p>\n"%(label, label.capitalize(), xml.sax.saxutils.escape(text)))
+        
     def write_attr_foot (self):
         self.out.write("</div>")
     

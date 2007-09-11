@@ -1,8 +1,18 @@
-import locale
+import locale, os
 deflang = 'en'
-locale.setlocale(locale.LC_ALL,'')
-loc, enc = locale.getlocale()
 lang = None
+
+if os.name == 'posix':
+    locale.setlocale(locale.LC_ALL,'')
+    loc, enc = locale.getlocale()
+
+# Windows locales are named differently, e.g. German_Austria instead of de_AT
+# Fortunately, we can find the POSIX-like type using a different method.
+elif os.name == 'nt': 
+    import win32api
+    locid = win32api.GetUserDefaultLangID()
+    loc = locale.windows_locale[locid]
+
 if loc:
     try:
         lang = __import__('defaults_%s'%loc,globals(),locals())
