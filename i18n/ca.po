@@ -1,286 +1,304 @@
-# Catalan translation for grecipe-manager
-# Copyright (c) (c) 2005 Canonical Ltd, and Rosetta Contributors 2005
-# This file is distributed under the same license as the grecipe-manager package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2005.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: grecipe-manager\n"
+"Project-Id-Version: Gourmet Recipe Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-19 12:20-0400\n"
-"PO-Revision-Date: 2005-09-04 10:00+0000\n"
-"Last-Translator: edu <chefuri@gmail.com>\n"
-"Language-Team: Catalan <ca@li.org>\n"
+"POT-Creation-Date: 2006-08-19 12:30-0400\n"
+"PO-Revision-Date: 2007-09-04 02:24+0100\n"
+"Last-Translator: Raül Cambeiro <raulcambeiro@ambtu.bcn.es>\n"
+"Language-Team: Catalan <rulet@menta.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Rosetta-Version: 0.1\n"
-"Plural-Forms: nplurals=2; plural=n != 1\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Catalan\n"
 
-#: ../glade/app.glade.h:1 ../glade/recSelector.glade.h:1
+#: ../glade/app.glade.h:1
+#: ../glade/recSelector.glade.h:1
 msgid "A_dd Search Criteria"
-msgstr "A_fegir Criteri de Cerca"
+msgstr "A_fegeix un criteri de cerca"
 
 #: ../glade/app.glade.h:2
 msgid "Add recipe to shopping list"
-msgstr "Afegir recepta a la llista de la compra"
+msgstr "Afegeix la recepta a la llista de la compra"
 
 #: ../glade/app.glade.h:3
 msgid "Add selected recipe to a shopping list."
-msgstr "Afegir la recepta seleccionada a una llista de la compra."
+msgstr "Afegeix la recepta seleccionada a la llista de la compra."
 
 #: ../glade/app.glade.h:4
 msgid "Add to _Pantry"
-msgstr "Afegir al _Rebost"
+msgstr "Afegeix al _rebost"
 
-#: ../glade/app.glade.h:5 ../glade/recCard.glade.h:28
+#: ../glade/app.glade.h:5
+#: ../glade/recCard.glade.h:28
 msgid "Add to _Shopping List"
-msgstr "Afegir a la Lli_sta de la Compra"
+msgstr "Afegeix a la _llista de la compra"
 
 #: ../glade/app.glade.h:6
 msgid "Add to _shopping list"
-msgstr "Afegir a la lli_sta de la compra"
+msgstr "Afegeix a la _llista de la compra"
 
-#: ../glade/app.glade.h:7 ../glade/recSelector.glade.h:2
+#: ../glade/app.glade.h:7
+#: ../glade/recSelector.glade.h:2
 msgid "Adva_nced Search"
-msgstr "Cerca Ava_nçada"
+msgstr "Cerca ava_nçada"
 
 #: ../glade/app.glade.h:8
 msgid "Create a new recipe"
-msgstr "Crear una recepta nova"
+msgstr "Crea una recepta nova"
 
 #: ../glade/app.glade.h:9
 msgid "Delete selected recipe"
-msgstr "Esborrar la recepta seleccionada"
+msgstr "Elimina la recepta seleccionada"
 
 #: ../glade/app.glade.h:10
 msgid "Delete selected recipes"
-msgstr ""
+msgstr "Elimina les receptes seleccionades"
 
 #: ../glade/app.glade.h:11
 msgid "E-_mail selected recipes"
-msgstr ""
+msgstr "Envia per _correu les receptes seleccionades"
 
 #: ../glade/app.glade.h:12
 msgid "E-mail selected recipe"
-msgstr "Enviar la recepta seleccionada per e-mail"
+msgstr "Envia per correu la recepta seleccionada"
 
 #: ../glade/app.glade.h:13
 msgid "E-mail selected recipes"
-msgstr "Enviar les receptes seleccionades per e-mail"
+msgstr "Envia per correu les receptes seleccionades"
 
 #: ../glade/app.glade.h:14
 msgid "Edit Ingredient Keys"
-msgstr "Editar els Ingredients Clau"
+msgstr "Edita les claus de l'ingredient"
 
 #: ../glade/app.glade.h:15
 msgid "Export A_ll Recipes"
-msgstr ""
+msgstr "Exporta _totes les receptes"
 
 #: ../glade/app.glade.h:16
 msgid "Export selected recipes"
-msgstr "Exportar les receptes seleccionades"
+msgstr "Exporta les receptes seleccionades"
 
 #: ../glade/app.glade.h:17
 msgid "Import _Webpage"
-msgstr "Importar Pàgina _Web"
+msgstr "Importa des d'una pàgina _web"
 
 #: ../glade/app.glade.h:18
 msgid "Jump to recipe in Recipe Card vew"
-msgstr "Anar a la recepta en vista Fitxa"
+msgstr "Vés a la recepta en la vista de targeta"
 
-#: ../glade/app.glade.h:19 ../glade/recSelector.glade.h:3
+#: ../glade/app.glade.h:19
+#: ../glade/recSelector.glade.h:3
 #: ../glade/rec_ref_window.glade.h:2
 msgid "Limiting Search to:"
-msgstr ""
+msgstr "Limita la cerca a:"
 
 #: ../glade/app.glade.h:20
-msgid ""
-"Never buy this item. When called for in a recipe, it will show up in a "
-"\"pantry\" section of the list as a reminder that you need it, but it won't "
-"be included when you save or print the list unless you tell me you need to "
-"buy it."
-msgstr ""
-"No compreu mai aquest producte. Quan calgui per a una recepta, apareixerà en "
-"una secció \"rebost\" de la llista com a recordatori que en necessiteu, però "
-"no s'inclourà quan deseu o imprimiu la llista, tret que digueu que l'heu de "
-"comprar."
+msgid "Never buy this item. When called for in a recipe, it will show up in a \"pantry\" section of the list as a reminder that you need it, but it won't be included when you save or print the list unless you tell me you need to buy it."
+msgstr "No comprar mai aquest element. Quan aparegui en una recepta, es mostrarà dins la secció «rebost» de la llista com a recordatori que és necessari, però no s'inclourà quan deseu o imprimiu la llista tret que ho indiqueu expressament."
 
 #: ../glade/app.glade.h:21
 msgid "Open a timer"
-msgstr ""
+msgstr "Obre un temporitzador"
 
 #: ../glade/app.glade.h:22
 msgid "Print selected recipe"
-msgstr "Imprimir la recepta seleccionada"
+msgstr "Imprimeix la recepta seleccionada"
 
 #: ../glade/app.glade.h:23
 msgid "Print selected recipes"
-msgstr ""
+msgstr "Imprimeix les receptes seleccionades"
 
 #: ../glade/app.glade.h:24
 msgid "Re_apply changes"
-msgstr "Tornar a _aplicar els canvis"
+msgstr "Torna a _aplicar els canvis"
 
 #: ../glade/app.glade.h:25
 msgid "Recipe Index"
-msgstr "Índex de Receptes"
+msgstr "Índex de receptes"
 
-#: ../glade/app.glade.h:26 ../glade/recCard.glade.h:59
+#: ../glade/app.glade.h:26
+#: ../glade/recCard.glade.h:59
 #: ../glade/shopList.glade.h:13
 msgid "Recipe _Card"
-msgstr "Fitxa de Re_cepta"
+msgstr "_Targeta de recepta"
 
-#: ../glade/app.glade.h:27 ../glade/recCard.glade.h:60
+#: ../glade/app.glade.h:27
+#: ../glade/recCard.glade.h:60
 #: ../glade/shopList.glade.h:14
 msgid "Recipe _List"
-msgstr "_Llista de Receptes"
+msgstr "_Llista de receptes"
 
-#: ../glade/app.glade.h:28 ../glade/keyeditor.glade.h:3
+#: ../glade/app.glade.h:28
+#: ../glade/keyeditor.glade.h:3
 #: ../glade/recSelector.glade.h:4
 msgid "Search _Results"
-msgstr "_Resultats de la Cerca"
+msgstr "_Resultats de la cerca"
 
-#: ../glade/app.glade.h:29 ../glade/recSelector.glade.h:5
+#: ../glade/app.glade.h:29
+#: ../glade/recSelector.glade.h:5
 msgid "Search as _you type"
-msgstr "Cercar en escr_iure"
+msgstr "Cerca a mesura que s'_escriu"
 
-#: ../glade/app.glade.h:30 ../glade/recSelector.glade.h:6
+#: ../glade/app.glade.h:30
+#: ../glade/recSelector.glade.h:6
 msgid "Search by other critera within the current search results."
-msgstr "Cercar amb altres criteris dins els resultats actuals"
+msgstr "Cerca amb un altre criteri dins d'aquests resultats de cerca."
 
-#: ../glade/app.glade.h:31 ../glade/keyeditor.glade.h:5
-#: ../glade/recSelector.glade.h:7 ../glade/rec_ref_window.glade.h:4
+#: ../glade/app.glade.h:31
+#: ../glade/keyeditor.glade.h:5
+#: ../glade/recSelector.glade.h:7
+#: ../glade/rec_ref_window.glade.h:4
 msgid "Search for recipes as you type"
-msgstr "Cercar receptes en escriure"
+msgstr "Cerca receptes a mesura que escriviu"
 
-#: ../glade/app.glade.h:32 ../glade/keyeditor.glade.h:6
+#: ../glade/app.glade.h:32
+#: ../glade/keyeditor.glade.h:6
 #: ../glade/recSelector.glade.h:9
 msgid "Use regular expressions"
-msgstr "Usar expressions regulars"
+msgstr "Usa expressions regulars"
 
 #: ../glade/app.glade.h:33
 msgid "View Re_cipe"
-msgstr "Veure Re_cepta"
+msgstr "Visualitza la re_cepta"
 
 #: ../glade/app.glade.h:34
 msgid "View Recipe _Card"
-msgstr "Veure _Fitxa"
+msgstr "Visualitza la _targeta de la recepta"
 
 #: ../glade/app.glade.h:35
 msgid "View selected recipe"
-msgstr "Visualitzar la recepta seleccionada"
+msgstr "Visualitza la recepta seleccionada"
 
 #: ../glade/app.glade.h:36
 msgid "_About"
-msgstr "Quant _a"
+msgstr "_Quant a"
 
 #: ../glade/app.glade.h:37
 msgid "_Actions"
 msgstr "_Accions"
 
-#: ../glade/app.glade.h:38 ../glade/recSelector.glade.h:10
+#: ../glade/app.glade.h:38
+#: ../glade/recSelector.glade.h:10
 msgid "_Delete"
-msgstr ""
+msgstr "_Elimina"
 
 #: ../glade/app.glade.h:39
 msgid "_Delete Recipe"
-msgstr "Es_borrar Recepta"
+msgstr "_Elimina la recepta"
 
 #: ../glade/app.glade.h:40
 msgid "_E-Mail recipe"
-msgstr "_Enviar la Recepta per E-Mail"
+msgstr "Envia la recepta per correu"
 
-#: ../glade/app.glade.h:41 ../glade/recCard.glade.h:84
+#: ../glade/app.glade.h:41
+#: ../glade/recCard.glade.h:84
 #: ../glade/shopList.glade.h:27
 msgid "_Edit"
-msgstr "_Editar"
+msgstr "_Edita"
 
 #: ../glade/app.glade.h:42
 msgid "_Empty trash"
-msgstr "Buidar la pap_erera"
+msgstr "_Buida la paperera"
 
 #: ../glade/app.glade.h:43
 msgid "_Export selected recipes"
-msgstr ""
+msgstr "_Exporta les receptes seleccionades"
 
-#: ../glade/app.glade.h:44 ../glade/databaseChooser.glade.h:16
+#: ../glade/app.glade.h:44
+#: ../glade/databaseChooser.glade.h:16
 #: ../glade/shopList.glade.h:28
 msgid "_File"
 msgstr "_Fitxer"
 
-#: ../glade/app.glade.h:45 ../glade/recCard.glade.h:86
+#: ../glade/app.glade.h:45
+#: ../glade/recCard.glade.h:86
 #: ../glade/shopList.glade.h:29
 msgid "_Help"
 msgstr "A_juda"
 
 #: ../glade/app.glade.h:46
 msgid "_Import File"
-msgstr "_Importar Fitxer"
+msgstr "_Importa un fitxer"
 
 #: ../glade/app.glade.h:47
 msgid "_Ingredient Key Editor"
-msgstr "Editor d'_Ingredients Clau"
+msgstr "Editor de les claus dels _ingredients"
 
-#: ../glade/app.glade.h:48 ../glade/generic_importer.glade.h:4
+#: ../glade/app.glade.h:48
+#: ../glade/generic_importer.glade.h:4
 #: ../glade/recCard.glade.h:91
 msgid "_New Recipe"
-msgstr "Recepta _Nova"
+msgstr "_Nova recepta"
 
-#: ../glade/app.glade.h:49 ../glade/recCard.glade.h:93
+#: ../glade/app.glade.h:49
+#: ../glade/recCard.glade.h:93
 msgid "_Print"
-msgstr ""
+msgstr "Im_primeix"
 
 #: ../glade/app.glade.h:50
 msgid "_Print recipe"
-msgstr "Im_primir recepta"
+msgstr "Im_primeix la recepta"
 
-#: ../glade/app.glade.h:51 ../glade/recCard.glade.h:96
+#: ../glade/app.glade.h:51
+#: ../glade/recCard.glade.h:96
 msgid "_Redo"
-msgstr "_Refer"
+msgstr "_Refés"
 
-#: ../glade/app.glade.h:52 ../glade/recSelector.glade.h:11
+#: ../glade/app.glade.h:52
+#: ../glade/recSelector.glade.h:11
 msgid "_Search for"
-msgstr "_Cercar..."
+msgstr "_Cerca"
 
-#: ../glade/app.glade.h:53 ../glade/recCard.glade.h:100
+#: ../glade/app.glade.h:53
+#: ../glade/recCard.glade.h:100
 #: ../glade/shopList.glade.h:33
 msgid "_Shopping List"
-msgstr "Lli_sta de la compra"
+msgstr "_Llista de la compra"
 
 #: ../glade/app.glade.h:54
 msgid "_Show deleted recipes"
-msgstr "Mo_strar les receptes esborrades"
+msgstr "Mo_stra les receptes eliminades"
 
-#: ../glade/app.glade.h:55 ../glade/recCard.glade.h:101
+#: ../glade/app.glade.h:55
+#: ../glade/recCard.glade.h:101
 msgid "_Timer"
-msgstr ""
+msgstr "_Temporitzador"
 
-#: ../glade/app.glade.h:56 ../glade/recCard.glade.h:103
+#: ../glade/app.glade.h:56
+#: ../glade/recCard.glade.h:103
 msgid "_Tools"
-msgstr "E_ines"
+msgstr "Ei_nes"
 
-#: ../glade/app.glade.h:57 ../glade/recCard.glade.h:105
+#: ../glade/app.glade.h:57
+#: ../glade/recCard.glade.h:105
 msgid "_Undo"
-msgstr "_Desfer"
+msgstr "_Desfés"
 
-#: ../glade/app.glade.h:58 ../glade/recCard.glade.h:106
+#: ../glade/app.glade.h:58
+#: ../glade/recCard.glade.h:106
 msgid "_Unit Converter"
-msgstr "Conversor d'_Unitats"
+msgstr "Convertidor d'_unitats"
 
-#: ../glade/app.glade.h:59 ../glade/recCard.glade.h:108
+#: ../glade/app.glade.h:59
+#: ../glade/recCard.glade.h:108
 #: ../glade/shopList.glade.h:34
 msgid "_View"
-msgstr "_Veure"
+msgstr "_Visualitza"
 
-#: ../glade/app.glade.h:60 ../glade/keyeditor.glade.h:13
+#: ../glade/app.glade.h:60
+#: ../glade/keyeditor.glade.h:13
 #: ../glade/recSelector.glade.h:13
-#, fuzzy
 msgid "_in"
 msgstr "_a"
 
-#: ../glade/converter.glade.h:1 ../glade/databaseChooser.glade.h:1
+#: ../glade/converter.glade.h:1
+#: ../glade/databaseChooser.glade.h:1
 #: ../glade/rec_ref_window.glade.h:1
 msgid "*"
 msgstr "*"
@@ -302,59 +320,58 @@ msgid "?"
 msgstr "?"
 
 #: ../glade/converter.glade.h:6
-#, fuzzy
 msgid "Density _Information"
-msgstr "_Informació de Densitat"
+msgstr "_Informació de densitat"
 
 #: ../glade/converter.glade.h:7
 msgid "I_tem:"
-msgstr ""
+msgstr "Elemen_t:"
 
-#: ../glade/converter.glade.h:8 ../src/lib/convertGui.py:152
+#: ../glade/converter.glade.h:8
+#: ../src/lib/convertGui.py:152
 msgid "None"
-msgstr ""
+msgstr "Cap"
 
 #: ../glade/converter.glade.h:9
 msgid "Unit Converter"
-msgstr ""
+msgstr "Convertidor d'unitats"
 
-#: ../glade/converter.glade.h:10 ../glade/keyeditor.glade.h:8
+#: ../glade/converter.glade.h:10
+#: ../glade/keyeditor.glade.h:8
 #: ../glade/nutritionDruid.glade.h:13
 msgid "_Amount:"
-msgstr ""
+msgstr "Qu_antitat:"
 
 #: ../glade/converter.glade.h:11
 msgid "_Density:"
-msgstr ""
+msgstr "_Densitat:"
 
 #: ../glade/converter.glade.h:12
 msgid "_Result:"
-msgstr ""
+msgstr "_Resultat:"
 
-#: ../glade/converter.glade.h:13 ../glade/keyeditor.glade.h:12
-#: ../glade/nutritionDruid.glade.h:18 ../glade/recCard.glade.h:107
+#: ../glade/converter.glade.h:13
+#: ../glade/keyeditor.glade.h:12
+#: ../glade/nutritionDruid.glade.h:18
+#: ../glade/recCard.glade.h:107
 msgid "_Unit:"
-msgstr ""
+msgstr "_Unitat:"
 
 #: ../glade/databaseChooser.glade.h:2
 msgid "<b>Choose Database System for Gourmet to Use</b>"
-msgstr "<b>Escollir Sistema de Base de Dades per usar amb Gourmet</b>"
+msgstr "<b>Trieu el sistema de base de dades que emprarà el Gourmet</b>"
 
 #: ../glade/databaseChooser.glade.h:3
 msgid "Choose Database"
-msgstr "Escollir Base de Dades"
+msgstr "Trieu la base de dades"
 
 #: ../glade/databaseChooser.glade.h:4
 msgid "Database _Name:"
-msgstr "_om de la Base de Dades:"
+msgstr "_Nom de la base de dades:"
 
 #: ../glade/databaseChooser.glade.h:5
-msgid ""
-"Hostname of the system where your database server is running. If your "
-"database server is running on your local system, use localhost."
-msgstr ""
-"Nom del sistema on s'executa el servidor de la base de dades. Si és el "
-"vostre sistema local, poseu-hi localhost."
+msgid "Hostname of the system where your database server is running. If your database server is running on your local system, use localhost."
+msgstr "Nom de la màquina on es troba el servidor de bases de dades. Si el servidor de bases de dades és en aquest sistema, empreu 'localhost'."
 
 #: ../glade/databaseChooser.glade.h:6
 msgid ""
@@ -362,52 +379,47 @@ msgid ""
 "SQLite (stored in a local file)\n"
 "MySQL (requires connection to a database)"
 msgstr ""
-"Metakit (per defecte, en fitxer local)\n"
-"SQLite (en fitxer local)\n"
-"MySQL (cal una connexió a una base de dades)"
+"Metakit (predeterminat, es desa en un fitxer local)\n"
+"SQLite (es desa en un fitxer local)\n"
+"MySQL (requereix connexió a una base de dades)"
 
 #: ../glade/databaseChooser.glade.h:9
-msgid ""
-"Name of the database in which Gourmet should store its information. Gourmet "
-"will try to create this database if it does not already exist."
-msgstr ""
-"Nom de la base de dades on Gourmet desarà la informació. Gourmet intentarà "
-"crear-la si no existeix."
+msgid "Name of the database in which Gourmet should store its information. Gourmet will try to create this database if it does not already exist."
+msgstr "Nom de la base de dades en la qual el Gourmet desarà la informació. El Gourmet mirarà de crear aquesta base de dades si no existeix."
 
 #: ../glade/databaseChooser.glade.h:10
 msgid "Password for your username on the database."
-msgstr "Contrasenya del vostre usuari a la base de dades"
+msgstr "Contrasenya per al vostre nom d'usuari a la base de dades."
 
 #: ../glade/databaseChooser.glade.h:11
-msgid ""
-"Save the password for next time. This means the password will be stored "
-"insecurely in your configuration file."
-msgstr ""
-"Recordar la contrasenya per a la propera vegada. Això significa que es "
-"desarà la contrasenya de forma insegura al vostre fitxer de configuració."
+msgid "Save the password for next time. This means the password will be stored insecurely in your configuration file."
+msgstr "Desa la contrasenya per a la propera vegada. Això significa que la contrasenya es desarà de manera insegura en el vostre fitxer de configuració."
 
 #: ../glade/databaseChooser.glade.h:12
 msgid "Your username on the database."
-msgstr "El vostre nom d'usuari a la base de dades"
+msgstr "El vostre nom d'usuari a la base de dades."
 
 #: ../glade/databaseChooser.glade.h:13
 msgid "_Browse"
-msgstr "_Navegar"
+msgstr "_Navega"
 
 #: ../glade/databaseChooser.glade.h:14
 msgid "_Database System"
-msgstr "Sistema de _Base de Dades"
+msgstr "Sistema de base de _dades"
 
-#: ../glade/databaseChooser.glade.h:15 ../glade/recCard.glade.h:82
-#: ../src/lib/dialog_extras.py:801 ../src/lib/dialog_extras.py:1191
-#: ../src/lib/gglobals.py:326 ../src/lib/GourmetRecipeManager.py:453
+#: ../glade/databaseChooser.glade.h:15
+#: ../glade/recCard.glade.h:82
+#: ../src/lib/dialog_extras.py:801
+#: ../src/lib/dialog_extras.py:1191
+#: ../src/lib/gglobals.py:326
+#: ../src/lib/GourmetRecipeManager.py:453
 #: ../src/lib/reccard.py:998
 msgid "_Details"
 msgstr "_Detalls"
 
 #: ../glade/databaseChooser.glade.h:17
 msgid "_Host:"
-msgstr "_Servidor:"
+msgstr "_Nom de la màquina:"
 
 #: ../glade/databaseChooser.glade.h:18
 msgid "_Password:"
@@ -415,15 +427,15 @@ msgstr "_Contrasenya:"
 
 #: ../glade/databaseChooser.glade.h:19
 msgid "_Save Password"
-msgstr "De_sar la Contrasenya"
+msgstr "De_sa la contrasenya"
 
 #: ../glade/databaseChooser.glade.h:20
 msgid "_Username:"
-msgstr "Nom d'_Usuari:"
+msgstr "Nom d'_usuari:"
 
 #: ../glade/databaseChooser.glade.h:21
 msgid "localhost"
-msgstr "servidor local"
+msgstr "localhost"
 
 #: ../glade/databaseChooser.glade.h:22
 msgid "recipe"
@@ -431,223 +443,216 @@ msgstr "recepta"
 
 #: ../glade/keyeditor.glade.h:1
 msgid "<b>Change selected ingredients</b>"
-msgstr ""
+msgstr "<b>Canvia els ingredients seleccionats</b>"
 
 #: ../glade/keyeditor.glade.h:2
 msgid "Key Editor"
-msgstr "Editor de Tecles"
+msgstr "Editor de claus"
 
-#: ../glade/keyeditor.glade.h:4 ../glade/nutritionDruid.glade.h:10
+#: ../glade/keyeditor.glade.h:4
+#: ../glade/nutritionDruid.glade.h:10
 msgid "Search as you t_ype"
-msgstr ""
+msgstr "Cerca a mesura que s'_escriu"
 
 #: ../glade/keyeditor.glade.h:7
 msgid "_Advanced Search"
-msgstr ""
+msgstr "Cerca _avançada"
 
 #: ../glade/keyeditor.glade.h:9
 msgid "_Item:"
-msgstr ""
+msgstr "Elemen_t:"
 
 #: ../glade/keyeditor.glade.h:10
 msgid "_Key:"
-msgstr ""
+msgstr "C_lau:"
 
 #: ../glade/keyeditor.glade.h:11
 msgid "_Search for:"
-msgstr ""
+msgstr "_Cerca:"
 
 #: ../glade/generic_importer.glade.h:1
-msgid ""
-"<i>Select text from the raw recipe and categorize it by labelling which part "
-"of the recipe it is (choose from the recipe elements on the right).</i>"
-msgstr ""
+msgid "<i>Select text from the raw recipe and categorize it by labelling which part of the recipe it is (choose from the recipe elements on the right).</i>"
+msgstr "<i>Seleccioneu fragments de text de la recepta i categoritzeu-los indicant de quina part de la recepta es tracta (trieu els elements de la llista de la dreta).</i>"
 
 #: ../glade/generic_importer.glade.h:2
-msgid ""
-"Start new recipe (use this if the file you're importing contains more than "
-"one recipe)"
-msgstr ""
+msgid "Start new recipe (use this if the file you're importing contains more than one recipe)"
+msgstr "Inicia una nova recepta (useu això si el fitxer des d'on importeu conté més d'una recepta)"
 
 #: ../glade/generic_importer.glade.h:3
 msgid "_Label"
-msgstr ""
+msgstr "_Etiqueta"
 
 #: ../glade/generic_importer.glade.h:5
 msgid "_Raw recipe:"
-msgstr ""
+msgstr "_Recepta sense format:"
 
 #: ../glade/nutritionDruid.glade.h:1
 msgid "<b>Choose a Density</b>"
-msgstr ""
+msgstr "<b>Trieu una densitat</b>"
 
 #: ../glade/nutritionDruid.glade.h:2
 msgid "<i>Enter nutritional information for </i>"
-msgstr ""
+msgstr "<i>Introduïu la informació nutricional per a </i>"
 
 #: ../glade/nutritionDruid.glade.h:3
 msgid "<i>From:</i>"
-msgstr ""
+msgstr "<i>De:</i>"
 
 #: ../glade/nutritionDruid.glade.h:4
 msgid "<i>Search _results:</i>"
-msgstr ""
+msgstr "<i>_Resultats de la cerca:</i>"
 
 #: ../glade/nutritionDruid.glade.h:5
 msgid "<i>Select equivalent of</i>"
-msgstr ""
+msgstr "<i>Seleccioneu l'equivalent de</i>"
 
 #: ../glade/nutritionDruid.glade.h:6
 msgid "<i>To:</i>"
-msgstr ""
+msgstr "<i>A:</i>"
 
 #: ../glade/nutritionDruid.glade.h:7
 msgid "<i>from USDA database</i>"
-msgstr ""
+msgstr "<i>de la base de dades de l'USDA (Dept. d'Agricultura dels EUA)</i>"
 
 #: ../glade/nutritionDruid.glade.h:8
 msgid "<i>or</i>"
-msgstr ""
+msgstr "<i>o</i>"
 
 #: ../glade/nutritionDruid.glade.h:9
 msgid "I_gnore"
-msgstr ""
+msgstr "I_gnora"
 
 #: ../glade/nutritionDruid.glade.h:11
 msgid "Show only food in _group:"
-msgstr ""
+msgstr "Mostra només els aliments del _grup:"
 
 #: ../glade/nutritionDruid.glade.h:12
 msgid "Unit:"
-msgstr ""
+msgstr "Unitat:"
 
 #: ../glade/nutritionDruid.glade.h:14
 msgid "_Change ingredient"
-msgstr ""
+msgstr "_Canvia l'ingredient"
 
 #: ../glade/nutritionDruid.glade.h:15
 msgid "_Change unit"
-msgstr ""
+msgstr "_Canvia la unitat"
 
 #: ../glade/nutritionDruid.glade.h:16
 msgid "_Save new unit"
-msgstr ""
+msgstr "De_sa la nova unitat"
 
 #: ../glade/nutritionDruid.glade.h:17
 msgid "_Search USDA Ingredient Database:"
-msgstr ""
+msgstr "_Cerca a la base de dades d'ingredients de l'USDA"
 
-#: ../glade/nutritionDruid.glade.h:19 ../src/lib/keyEditor.py:79
+#: ../glade/nutritionDruid.glade.h:19
+#: ../src/lib/keyEditor.py:79
 msgid "unit"
-msgstr ""
+msgstr "unitat"
 
 #: ../glade/preferenceDialog.glade.h:1
 msgid "<b>Card View Preferences</b>"
-msgstr "<b>Preferències de la Fitxa</b>"
+msgstr "<b>Visualitza les preferències de targeta</b>"
 
 #: ../glade/preferenceDialog.glade.h:2
 msgid "<b>Email Preferences</b>"
-msgstr "<b>Preferències d'E-mail</b>"
+msgstr "<b>Preferències de correu</b>"
 
 #: ../glade/preferenceDialog.glade.h:3
 msgid "<b>Index View Preferences</b>"
-msgstr "<b>Preferències de Vista Inicial</b>"
+msgstr "<b>Preferències de la vista d'índex</b>"
 
 #: ../glade/preferenceDialog.glade.h:4
 msgid "<b>Shopping List Preferences</b>"
-msgstr "<b>Preferències de Llista de la Compra</b>"
+msgstr "<b>Preferències de la llista de la compra</b>"
 
 #: ../glade/preferenceDialog.glade.h:5
 msgid "<i>Configure which columns are included in the recipe index view.</i>"
-msgstr ""
-"<i>Configureu quines columnes s'inclouen a la vista inicial de la recepta</i>"
+msgstr "<i>Configura quines columnes s'inclouen a la vista d'índex de receptes.</i>"
 
 #: ../glade/preferenceDialog.glade.h:6
 msgid "<i>Preferences for use when sending a recipe in an email.</i>"
-msgstr "<i>Preferències en enviar receptes per e-mail</i>"
+msgstr "<i>Preferències en enviar una recepta per correu.</i>"
 
 #: ../glade/preferenceDialog.glade.h:7
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
-msgstr "<i>Eliminar elements no usats de la Fitxa de Recepta</i>"
+msgstr "<i>Elimina elements que no empreu de la interfície «Targeta de recepta».</i>"
 
 #: ../glade/preferenceDialog.glade.h:8
-msgid ""
-"<i>What should Gourmet do with Optional Ingredients when adding recipes to "
-"the shopping list?</i>"
-msgstr ""
-"<i>Què ha de fer Gourmet amb els Ingredients Opcionals en afegir receptes a "
-"la llista de la compra?</i>"
+msgid "<i>What should Gourmet do with Optional Ingredients when adding recipes to the shopping list?</i>"
+msgstr "<i>Què ha de fer el Gourmet amb els ingredients opcionals quan afegiu receptes a la llista de la compra?</i>"
 
 #: ../glade/preferenceDialog.glade.h:9
 msgid "As_k whether to include optional ingredients"
-msgstr "Pre_guntar si incloure els ingredients opcionals"
+msgstr "_Demana si s'han d'incloure o no els ingredients opcionals"
 
 #: ../glade/preferenceDialog.glade.h:10
 msgid "Card View"
-msgstr "Vista de Fitxa"
+msgstr "Vista de targeta"
 
 #: ../glade/preferenceDialog.glade.h:11
 msgid "Email Preferences"
-msgstr "Preferències d'E-mail"
+msgstr "Preferències de correu"
 
 #: ../glade/preferenceDialog.glade.h:12
 msgid "Gourmet Recipe Manager Preferences"
-msgstr "Preferències del Gestor de Receptes Gourmet"
+msgstr "Preferències del gestor de receptes Gourmet"
 
 #: ../glade/preferenceDialog.glade.h:13
 msgid "Include Recipe as an _HTML Attachment to the E-mail"
-msgstr "Incloure la Recepta a l'E-mail com un adjunt _HML"
+msgstr "Inclou la recepta com a adjunció al missatge en _HTML"
 
 #: ../glade/preferenceDialog.glade.h:14
-#, fuzzy
 msgid "Include Recipe in _Body of E-mail (A good idea no matter what)"
-msgstr ""
-"Incloure la Recepta al cos de l'E-_mail (una bona idea sense pensar-s'hi)"
+msgstr "Inclou la recepta en el _cos del missatge (sempre és bona idea)"
 
 #: ../glade/preferenceDialog.glade.h:15
 msgid "Index View"
-msgstr "Vista d'Índex"
+msgstr "Vista d'índex"
 
-#: ../glade/preferenceDialog.glade.h:16 ../glade/shopList.glade.h:23
+#: ../glade/preferenceDialog.glade.h:16
+#: ../glade/shopList.glade.h:23
 #: ../src/lib/shopgui.py:155
 msgid "Shopping List"
-msgstr "Llista de la Compra"
+msgstr "Llista de la compra"
 
 #: ../glade/preferenceDialog.glade.h:17
 msgid "Use fractions when possible for display"
-msgstr ""
+msgstr "Mostra fraccions quan sigui possible"
 
-#: ../glade/preferenceDialog.glade.h:18 ../glade/recCard.glade.h:75
+#: ../glade/preferenceDialog.glade.h:18
+#: ../glade/recCard.glade.h:75
 msgid "_Allow units to change when multiplying"
-msgstr "_Admetre el canvi d'unitats en multiplicar"
+msgstr "_Permet el canvi d'unitats en multiplicar"
 
 #: ../glade/preferenceDialog.glade.h:19
 msgid "_Always add optional ingredients"
-msgstr "_Afegir sempre ingredients opcionals"
+msgstr "_Afegeix sempre els ingredients opcionals"
 
 #: ../glade/preferenceDialog.glade.h:20
 msgid "_Always use these settings"
-msgstr "Us_ar sempre aquesta configuració"
+msgstr "_Empra sempre aquesta configuració"
 
 #: ../glade/preferenceDialog.glade.h:21
 msgid "_Clear remembered optional ingredients"
-msgstr ""
+msgstr "_Neteja els ingredients opcionals emmagatzemats"
 
 #: ../glade/preferenceDialog.glade.h:22
 msgid "_Never add optional ingredients"
-msgstr ""
+msgstr "_Mai afegeixis els ingredients opcionals"
 
 #: ../glade/preferenceDialog.glade.h:23
 msgid "_Recipes per page:"
-msgstr ""
+msgstr "_Receptes per pàgina:"
 
 #: ../glade/preferenceDialog.glade.h:24
 msgid "_Remember user selections by default"
-msgstr ""
+msgstr "_Recorda per defecte les seleccions de l'usuari"
 
 #: ../glade/preferenceDialog.glade.h:25
 msgid "_Use fractions"
-msgstr ""
+msgstr "_Usa fraccions"
 
 #: ../glade/recCard.glade.h:1
 msgid ""
@@ -658,10 +663,8 @@ msgstr ""
 "\n"
 
 #: ../glade/recCard.glade.h:4
-msgid ""
-"<b>An long example: rather extraordinarily long actually -- very long, "
-"actually.</b>"
-msgstr ""
+msgid "<b>An long example: rather extraordinarily long actually -- very long, actually.</b>"
+msgstr "<b>Un exemple llarg: més aviat extraordinàriament i veritablement llarg. Molt llarg realment.</b>"
 
 #: ../glade/recCard.glade.h:5
 msgid "<b>Category:</b>"
@@ -669,7 +672,7 @@ msgstr "<b>Categoria:</b>"
 
 #: ../glade/recCard.glade.h:6
 msgid "<b>Cooking Time:</b>"
-msgstr "<b>Temps:</b>"
+msgstr "<b>Temps de cocció:</b>"
 
 #: ../glade/recCard.glade.h:7
 msgid "<b>Cuisine:</b>"
@@ -689,7 +692,7 @@ msgstr "<b>Notes</b>"
 
 #: ../glade/recCard.glade.h:11
 msgid "<b>Nutritional Information</b>"
-msgstr ""
+msgstr "<b>Informació nutricional</b>"
 
 #: ../glade/recCard.glade.h:12
 msgid "<b>Preparation Time:</b>"
@@ -697,11 +700,11 @@ msgstr "<b>Temps de preparació:</b>"
 
 #: ../glade/recCard.glade.h:13
 msgid "<b>Rating:</b>"
-msgstr "<b>Classificació:</b>"
+msgstr "<b>Puntuació:</b>"
 
 #: ../glade/recCard.glade.h:14
 msgid "<b>Source:</b>"
-msgstr "<b>Origen:</b>"
+msgstr "<b>Font:</b>"
 
 #: ../glade/recCard.glade.h:15
 msgid "<b>_Instructions:</b>"
@@ -709,57 +712,55 @@ msgstr "<b>_Instruccions:</b>"
 
 #: ../glade/recCard.glade.h:16
 msgid "<b>_Multiply by:</b>"
-msgstr "<b>_Multiplicat per:</b>"
+msgstr "<b>_Multiplica per:</b>"
 
 #: ../glade/recCard.glade.h:17
 msgid "<b>_Notes:</b>"
-msgstr "<b>_Notes</b>"
+msgstr "<b>_Notes:</b>"
 
 #: ../glade/recCard.glade.h:18
 msgid "<b>_Servings:</b>"
-msgstr ""
+msgstr "<b>_Racions:</b>"
 
 #: ../glade/recCard.glade.h:19
 msgid "Add _Group"
-msgstr ""
+msgstr "Afegeix un _grup"
 
 #: ../glade/recCard.glade.h:20
 msgid ""
 "Add _Recipe\n"
 "as Ingredient"
 msgstr ""
+"Afegeix una _recepta\n"
+"com a ingredient"
 
 #: ../glade/recCard.glade.h:22
 msgid "Add _ingredient:"
-msgstr ""
+msgstr "Afegeix un _ingredient:"
 
 #: ../glade/recCard.glade.h:23
 msgid "Add _recipe as ingredient"
-msgstr ""
+msgstr "Afegeix una _recepta com a ingredient"
 
 #: ../glade/recCard.glade.h:24
 msgid "Add another recipe as an ingredient."
-msgstr ""
+msgstr "Afegeix una altra recepta com a ingredient."
 
 #: ../glade/recCard.glade.h:25
-#, fuzzy
 msgid "Add group for ingredients (such as \"Sauce\" or \"Crust\")"
-msgstr "Afegeix grup d'ingredients (així com \"Salsa\" o \"Guarnició\")"
+msgstr "Afegeix un grup d'ingredients (com «Salsa» o «Massa»)"
 
 #: ../glade/recCard.glade.h:26
 msgid "Add ingredient _group"
-msgstr "Afegeix _grup d'ingredients"
+msgstr "Afegeix un _grup d'ingredients"
 
 #: ../glade/recCard.glade.h:27
 msgid "Add to Shopping _List"
-msgstr ""
+msgstr "Afegeix a la _llista de la compra"
 
 #: ../glade/recCard.glade.h:29
-msgid ""
-"Ask user which items to add to the shopping list rather than using saved "
-"settings."
-msgstr ""
-"Pregunta què posar a la llista de compres enlloc de consultar la configuració"
+msgid "Ask user which items to add to the shopping list rather than using saved settings."
+msgstr "Demana a l'usuari quins elements s'han d'afegir a la llista de la compra per comptes d'usar les preferències emmagatzemades."
 
 #: ../glade/recCard.glade.h:30
 msgid "C_uisine:"
@@ -767,81 +768,84 @@ msgstr "C_uina:"
 
 #: ../glade/recCard.glade.h:31
 msgid "Coo_king Time:"
-msgstr "Te_mps de cocció:"
+msgstr "Temps de _cocció:"
 
-#: ../glade/recCard.glade.h:32 ../src/lib/reccard.py:305
+#: ../glade/recCard.glade.h:32
+#: ../src/lib/reccard.py:305
 msgid "Delete selected ingredient"
 msgstr "Elimina l'ingredient seleccionat"
 
 #: ../glade/recCard.glade.h:33
 msgid "Delete selected ingredients."
-msgstr "Elimina els ingredients seleccionats"
+msgstr "Elimina els ingredients seleccionats."
 
 #: ../glade/recCard.glade.h:34
 msgid "Delete this recipe from the database."
-msgstr "Elimina aquesta recepta de la base de dades"
+msgstr "Elimina aquesta recepta de la base de dades."
 
 #: ../glade/recCard.glade.h:35
 msgid "Delete this recipe permanently."
-msgstr ""
+msgstr "Elimina aquesta recepta permanentment."
 
 #: ../glade/recCard.glade.h:36
 msgid "Descriptions"
-msgstr ""
+msgstr "Descripcions"
 
 #: ../glade/recCard.glade.h:37
 msgid "E_xport Recipe"
-msgstr ""
+msgstr "E_xporta la recepta"
 
 #: ../glade/recCard.glade.h:38
 msgid "Edit Recipe Card"
-msgstr ""
+msgstr "Edita la targeta de la recepta"
 
 #: ../glade/recCard.glade.h:39
 msgid "Edit _description"
-msgstr ""
+msgstr "Edita la _descripció"
 
 #: ../glade/recCard.glade.h:40
 msgid "Edit _ingredients"
-msgstr ""
+msgstr "Edita els _ingredients"
 
 #: ../glade/recCard.glade.h:41
 msgid "Edit _instructions"
-msgstr ""
+msgstr "Edita les _instruccions"
 
 #: ../glade/recCard.glade.h:42
 msgid "Edit _notes"
-msgstr ""
+msgstr "Edita les _notes"
 
 #: ../glade/recCard.glade.h:43
 msgid "Edit section chooser"
-msgstr ""
+msgstr "Edita el selector de secció"
 
 #: ../glade/recCard.glade.h:44
 msgid "Image:"
-msgstr ""
+msgstr "Imatge:"
 
 #: ../glade/recCard.glade.h:45
 msgid "Import ingredients from a plain text file."
-msgstr ""
+msgstr "Importa els ingredients d'un fitxer de text net."
 
 #: ../glade/recCard.glade.h:46
 msgid "Ingredient (_key):"
-msgstr ""
+msgstr "Ingredient (_clau):"
 
 #: ../glade/recCard.glade.h:47
 msgid "Ingredient Key _Editor"
-msgstr ""
+msgstr "_Editor de claus d'ingredient"
 
-#: ../glade/recCard.glade.h:48 ../src/lib/exporters/exporter.py:237
+#: ../glade/recCard.glade.h:48
+#: ../src/lib/exporters/exporter.py:237
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:286
 #: ../src/lib/exporters/gnomeprinter.py:332
 #: ../src/lib/exporters/html_exporter.py:99
 #: ../src/lib/exporters/pdf_exporter.py:549
 msgid "Ingredients"
-msgstr ""
+msgstr "Ingredients"
 
-#: ../glade/recCard.glade.h:49 ../src/lib/gglobals.py:244
+#: ../glade/recCard.glade.h:49
+#: ../src/lib/gglobals.py:244
 #: ../src/lib/gglobals.py:249
 msgid "Instructions"
 msgstr "Instruccions"
@@ -862,98 +866,91 @@ msgstr "Mou els ingredients seleccionats avall"
 msgid "Move selected ingredients up"
 msgstr "Mou els ingredients seleccionats amunt"
 
-#: ../glade/recCard.glade.h:54 ../src/lib/gglobals.py:245
+#: ../glade/recCard.glade.h:54
+#: ../src/lib/gglobals.py:245
 #: ../src/lib/gglobals.py:250
 msgid "Notes"
 msgstr "Notes"
 
 #: ../glade/recCard.glade.h:55
-#, fuzzy
 msgid "Paste ingredient list from the clipboard."
-msgstr "Enganxa la llista d'ingredients des del porta-retalls"
+msgstr "Enganxa la llista d'ingredients des del porta-retalls."
 
 #: ../glade/recCard.glade.h:56
 msgid "Pre_paration Time:"
-msgstr ""
+msgstr "Temps de _preparació:"
 
 #: ../glade/recCard.glade.h:57
 msgid "Print recipe"
-msgstr ""
+msgstr "Imprimeix la recepta"
 
 #: ../glade/recCard.glade.h:58
 msgid "Recipe Card"
-msgstr "Fitxa de Recepta"
+msgstr "Targeta de recepta"
 
 #: ../glade/recCard.glade.h:61
 msgid "Redo"
-msgstr ""
+msgstr "Refés"
 
 #: ../glade/recCard.glade.h:62
 msgid "Revert"
-msgstr ""
+msgstr "Reverteix"
 
 #: ../glade/recCard.glade.h:63
 msgid "S_hopping Category:"
-msgstr ""
+msgstr "_Categoria de compra:"
 
 #: ../glade/recCard.glade.h:64
 msgid "S_ource:"
-msgstr ""
+msgstr "_Font:"
 
 #: ../glade/recCard.glade.h:65
 msgid "Save"
-msgstr ""
+msgstr "Desa"
 
 #: ../glade/recCard.glade.h:66
 msgid "Save changes"
-msgstr ""
+msgstr "Desa els canvis"
 
 #: ../glade/recCard.glade.h:67
 msgid "Standardized name for ingredient (to be used in shopping lists)."
-msgstr ""
+msgstr "Nom estandarditzat de l'ingredient (per a les llistes de la compra)."
 
 #: ../glade/recCard.glade.h:68
-msgid ""
-"Type your ingredient here. Numeric amounts and standard units will "
-"automatically be recognized. Anything typed after a semicolon will not be "
-"included in the ingredient key (i.e. will not be used for shopping lists and "
-"nutritional information). For more detailed entry, expand the \"Details\" "
-"section below."
-msgstr ""
+msgid "Type your ingredient here. Numeric amounts and standard units will automatically be recognized. Anything typed after a semicolon will not be included in the ingredient key (i.e. will not be used for shopping lists and nutritional information). For more detailed entry, expand the \"Details\" section below."
+msgstr "Introduïu l'ingredient aquí. Les quantitats numèriques amb unitats estàndard es reconeixeran automàticament. Qualsevol cosa que escriviu darrere un punt i coma no s'inclourà a la clau de l'ingredient (i no s'usarà per a les llistes de la compra ni per a la informació nutricional). Si voleu especificar-ne els detalls, expandiu la secció «Detalls» de sota."
 
 #: ../glade/recCard.glade.h:69
 msgid "Undo"
-msgstr ""
+msgstr "Desfés"
 
 #: ../glade/recCard.glade.h:70
 msgid "View Recipe Card"
-msgstr ""
+msgstr "Visualitza la targeta de la recepta"
 
 #: ../glade/recCard.glade.h:71
 msgid "View _Recipe Card"
-msgstr ""
+msgstr "Visualitza la targeta de la _recepta"
 
 #: ../glade/recCard.glade.h:72
-msgid ""
-"When multiplying recipe, automatically change units to keep amounts as "
-"useable as possible."
-msgstr ""
+msgid "When multiplying recipe, automatically change units to keep amounts as useable as possible."
+msgstr "En multiplicar la recepta, canvia les unitats automàticament per a mantenir les quantitats tant usables com sigui possible."
 
 #: ../glade/recCard.glade.h:73
 msgid "_Add Image"
-msgstr ""
+msgstr "_Afegeix una imatge"
 
 #: ../glade/recCard.glade.h:74
 msgid "_Add ingredient"
-msgstr ""
+msgstr "_Afegeix un ingredient"
 
 #: ../glade/recCard.glade.h:76
 msgid "_Amount: "
-msgstr ""
+msgstr "_Quantitat:"
 
 #: ../glade/recCard.glade.h:77
 msgid "_Bold"
-msgstr ""
+msgstr "_Negreta"
 
 #: ../glade/recCard.glade.h:78
 msgid "_Category:"
@@ -961,112 +958,117 @@ msgstr "_Categoria:"
 
 #: ../glade/recCard.glade.h:79
 msgid "_Close"
-msgstr "Tan_ca"
+msgstr "_Tanca"
 
 #: ../glade/recCard.glade.h:80
 msgid "_Delete ingredient"
-msgstr "E_limina l'ingredient"
+msgstr "_Elimina l'ingredient"
 
 #: ../glade/recCard.glade.h:81
 msgid "_Delete this Recipe"
-msgstr "E_limina aquesta Recepta"
+msgstr "_Elimina aquesta recepta"
 
 #: ../glade/recCard.glade.h:83
 msgid "_E-mail recipe"
-msgstr "_Envia la recepta per e-mail"
+msgstr "_Envia la recepta per correu"
 
 #: ../glade/recCard.glade.h:85
 msgid "_Forget remembered optional ingredients"
-msgstr "_Oblida els ingredients opcionals memoritzats"
+msgstr "_Oblida els ingredients opcionals emmagatzemats"
 
 #: ../glade/recCard.glade.h:87
 msgid "_Import Ingredients"
-msgstr "_Importa Ingredients"
+msgstr "_Importa ingredients"
 
 #: ../glade/recCard.glade.h:88
 msgid "_Import ingredient list"
-msgstr "_Importa llista d'ingredients"
+msgstr "_Importa una llista d'ingredients"
 
 #: ../glade/recCard.glade.h:89
 msgid "_Ingredient:"
-msgstr ""
+msgstr "_Ingredient:"
 
 #: ../glade/recCard.glade.h:90
 msgid "_Italic"
-msgstr ""
+msgstr "Curs_iva"
 
 #: ../glade/recCard.glade.h:92
 msgid "_Optional"
-msgstr ""
+msgstr "_Opcional"
 
 #: ../glade/recCard.glade.h:94
 msgid "_Rating:"
-msgstr ""
+msgstr "_Puntuació:"
 
 #: ../glade/recCard.glade.h:95
 msgid "_Recipe"
-msgstr ""
+msgstr "_Recepta"
 
 #: ../glade/recCard.glade.h:97
 msgid "_Remove Image"
-msgstr ""
+msgstr "_Elimina la imatge"
 
 #: ../glade/recCard.glade.h:98
 msgid "_Save"
-msgstr ""
+msgstr "De_sa"
 
 #: ../glade/recCard.glade.h:99
 msgid "_Servings:"
-msgstr ""
+msgstr "_Racions:"
 
 #: ../glade/recCard.glade.h:102
 msgid "_Title:"
-msgstr ""
+msgstr "_Títol:"
 
 #: ../glade/recCard.glade.h:104
 msgid "_Underline"
-msgstr "S_ubratlla"
+msgstr "S_ubratllat:"
 
 #: ../glade/recCard.glade.h:109
 msgid "multiply by"
-msgstr ""
+msgstr "multiplica per"
 
-#: ../glade/recCard.glade.h:110 ../glade/rec_ref_window.glade.h:11
+#: ../glade/recCard.glade.h:110
+#: ../glade/rec_ref_window.glade.h:11
 msgid "servings"
 msgstr "racions"
 
 #: ../glade/recSelector.glade.h:8
 msgid "Select Recipe"
-msgstr "Seleccioneu Recepta"
+msgstr "Seleccioneu una recepta"
 
 #: ../glade/recSelector.glade.h:12
 msgid "_Undelete"
-msgstr ""
+msgstr "Rec_upera"
 
 #: ../glade/rec_ref_window.glade.h:3
 msgid "Search by"
-msgstr ""
+msgstr "Cerca per"
 
 #: ../glade/rec_ref_window.glade.h:5
 msgid "Select Recipe to include in Ingredient List"
-msgstr ""
+msgstr "Seleccioneu la recepta per incloure a la llista d'ingredients"
 
-#: ../glade/rec_ref_window.glade.h:6 ../src/lib/recindex.py:44
+#: ../glade/rec_ref_window.glade.h:6
+#: ../src/lib/recindex.py:44
 #: ../src/lib/recindex.py:51
 msgid "category"
-msgstr ""
+msgstr "categoria"
 
-#: ../glade/rec_ref_window.glade.h:7 ../src/lib/recindex.py:45
+#: ../glade/rec_ref_window.glade.h:7
+#: ../src/lib/recindex.py:45
 #: ../src/lib/recindex.py:52
 msgid "cuisine"
-msgstr ""
+msgstr "cuina"
 
-#: ../glade/rec_ref_window.glade.h:8 ../src/lib/recindex.py:41
+#: ../glade/rec_ref_window.glade.h:8
+#: ../src/lib/recindex.py:41
 #: ../src/lib/recindex.py:50
 msgid "ingredient"
-msgstr ""
+msgstr "ingredient"
 
-#: ../glade/rec_ref_window.glade.h:9 ../src/lib/recindex.py:42
+#: ../glade/rec_ref_window.glade.h:9
+#: ../src/lib/recindex.py:42
 #: ../src/lib/recindex.py:55
 msgid "instructions"
 msgstr "instruccions"
@@ -1076,121 +1078,122 @@ msgid "rating"
 msgstr "puntuació"
 
 #. _('rating'):'rating',
-#: ../glade/rec_ref_window.glade.h:12 ../src/lib/recindex.py:47
+#. _('rating'),
+#: ../glade/rec_ref_window.glade.h:12
+#: ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:54
 msgid "source"
 msgstr "font"
 
-#: ../glade/rec_ref_window.glade.h:13 ../src/lib/recindex.py:40
+#: ../glade/rec_ref_window.glade.h:13
+#: ../src/lib/recindex.py:40
 #: ../src/lib/recindex.py:49
 msgid "title"
 msgstr "títol"
 
 #: ../glade/shopList.glade.h:1
 msgid "Add Items to Shopping List"
-msgstr "Afegir Elements a la Llista de Compra"
+msgstr "Afegeix elements a la llista de la compra"
 
 #: ../glade/shopList.glade.h:2
 msgid "Add additional items to your shopping list."
-msgstr "Afegir elements adicionals a la llista de compra"
+msgstr "Afegeix elements addicionals a la llista de la compra"
 
 #: ../glade/shopList.glade.h:3
 msgid "Already Have (_Pantry Items)"
-msgstr "Ja Ho Tinc (_Producte al Rebost)"
+msgstr "Ja en teniu (elements del _rebost)"
 
-#: ../glade/shopList.glade.h:4 ../src/lib/keyEditor.py:433
+#: ../glade/shopList.glade.h:4
+#: ../src/lib/keyEditor.py:433
 #: ../src/lib/nutrition/nutritionModel.py:7
 msgid "Amount"
 msgstr "Quantitat"
 
-#: ../glade/shopList.glade.h:5 ../src/lib/keyEditor.py:431
-#: ../src/lib/reccard.py:1847 ../src/lib/reccard.py:1878
+#: ../glade/shopList.glade.h:5
+#: ../src/lib/keyEditor.py:431
+#: ../src/lib/reccard.py:1847
+#: ../src/lib/reccard.py:1878
 msgid "Item"
 msgstr "Element"
 
 #: ../glade/shopList.glade.h:6
 msgid "Move selected items from pantry list to shopping list"
-msgstr "Mou els elements seleccionats del rebost a la llista de compra"
+msgstr "Mou els elements seleccionats del rebost a la llista de la compra"
 
 #: ../glade/shopList.glade.h:7
 msgid "Move selected items from shopping list to pantry list."
-msgstr "Mou els elements seleccionats de la llista de compra al rebost"
+msgstr "Mou els elements seleccionats de la llista de la compra al rebost."
 
 #: ../glade/shopList.glade.h:8
-msgid ""
-"Move selected items from shopping list to pantry list. (You can also move "
-"items by dragging them.)"
-msgstr ""
+msgid "Move selected items from shopping list to pantry list. (You can also move items by dragging them.)"
+msgstr "Mou els elements seleccionats de la llista de la compra a la llista del rebost. (Podeu moure els elements arrossegant-los.)"
 
 #: ../glade/shopList.glade.h:9
-msgid ""
-"Move selected items from your pantry list back to your shopping list (you "
-"can also move items by dragging them.)"
-msgstr ""
+msgid "Move selected items from your pantry list back to your shopping list (you can also move items by dragging them.)"
+msgstr "Mou els elements seleccionats de la llista del rebost de nou a la llista de la compra. (Podeu moure els elements arrossegant-los.)"
 
 #: ../glade/shopList.glade.h:10
 msgid "Move to _Shopping List"
-msgstr ""
+msgstr "Mou a la _llista de la compra"
 
 #: ../glade/shopList.glade.h:11
 msgid "Nutritional Info"
-msgstr ""
+msgstr "Informació nutricional"
 
 #: ../glade/shopList.glade.h:12
 msgid "Re_turn to Shopping List"
-msgstr ""
+msgstr "_Torna a la llista de la compra"
 
 #: ../glade/shopList.glade.h:15
 msgid "Remove Recipes"
-msgstr ""
+msgstr "Elimina les receptes"
 
 #: ../glade/shopList.glade.h:16
 msgid "Remove recipes"
-msgstr ""
+msgstr "Elimina les receptes"
 
 #: ../glade/shopList.glade.h:17
 msgid "Remove recipes from shopping list"
-msgstr ""
+msgstr "Elimina les receptes de la llista de la compra"
 
 #: ../glade/shopList.glade.h:18
-msgid ""
-"Remove the selected recipes from your shopping list (or remove all items if "
-"no recipe is selected)"
-msgstr ""
+msgid "Remove the selected recipes from your shopping list (or remove all items if no recipe is selected)"
+msgstr "Elimina les receptes seleccionades de la llista de la compra (o elimina tots els elements si no hi ha cap recepta seleccionada)"
 
 #: ../glade/shopList.glade.h:19
-msgid ""
-"Remove this item from the shopping list. It will show up in the \"pantry\" "
-"list as a reminder that you need it, but it won't be included when you save "
-"or print your shopping list."
-msgstr ""
+msgid "Remove this item from the shopping list. It will show up in the \"pantry\" list as a reminder that you need it, but it won't be included when you save or print your shopping list."
+msgstr "Elimina aquest element de la llista de la compra. Apareixerà a la llista del rebost com a recordatori de què el necessiteu, però no s'inclourà en desar o imprimir la llista de la compra."
 
 #: ../glade/shopList.glade.h:20
 msgid "Return Item to Shopping List"
-msgstr ""
+msgstr "Retorna l'element a la llista de la compra"
 
 #: ../glade/shopList.glade.h:21
 msgid "Return selected items to your shopping list"
-msgstr ""
+msgstr "Retorna els elements seleccionats a la llista de la compra"
 
-#: ../glade/shopList.glade.h:22 ../src/lib/reccard.py:1850
-#: ../src/lib/reccard.py:1881 ../src/lib/reccard.py:2006
+#: ../glade/shopList.glade.h:22
+#: ../src/lib/reccard.py:1850
+#: ../src/lib/reccard.py:1881
+#: ../src/lib/reccard.py:2006
 msgid "Shopping Category"
-msgstr ""
+msgstr "Categoria de compra"
 
-#: ../glade/shopList.glade.h:24 ../src/lib/keyEditor.py:432
-#: ../src/lib/nutrition/nutritionModel.py:8 ../src/lib/reccard.py:1846
+#: ../glade/shopList.glade.h:24
+#: ../src/lib/keyEditor.py:432
+#: ../src/lib/nutrition/nutritionModel.py:8
+#: ../src/lib/reccard.py:1846
 #: ../src/lib/reccard.py:1877
 msgid "Unit"
-msgstr ""
+msgstr "Unitat"
 
 #: ../glade/shopList.glade.h:25
 msgid "_Add Items to Shopping List"
-msgstr "_Afegeix Elements a la Llista de Compra"
+msgstr "_Afegeix elements a la llista de la compra"
 
 #: ../glade/shopList.glade.h:26
 msgid "_Add New Items to Shopping List"
-msgstr "_Afegeix Elements nous a la Llista de Compra"
+msgstr "_Afegeix elements nous a la llista de la compra"
 
 #: ../glade/shopList.glade.h:30
 msgid "_Recipes"
@@ -1198,244 +1201,261 @@ msgstr "_Receptes"
 
 #: ../glade/shopList.glade.h:31
 msgid "_Remove from Shopping List"
-msgstr "Lleva de la Llista de Comp_ra"
+msgstr "_Elimina de la llista de la compra"
 
 #: ../glade/shopList.glade.h:32
 msgid "_Remove from shopping list (move to pantry)"
-msgstr "Lleva de la llista de comp_ra (desa-ho al rebost)"
+msgstr "_Elimina de la llista de la compra (mou al rebost)"
 
 #: ../glade/timerDialog.glade.h:1
 msgid "<b><span size=\"larger\">Timer</span></b>"
-msgstr ""
+msgstr "<b><span size=\"larger\">Temporitzador</span></b>"
 
 #: ../glade/timerDialog.glade.h:2
 msgid "<i>Timer Finished!</i>"
-msgstr ""
+msgstr "<i>El temporitzador ha arribat a zero!</i>"
 
 #: ../glade/timerDialog.glade.h:3
 msgid "Re_peat alarm until I turn it off"
-msgstr ""
+msgstr "Re_peteix l'alarma fins que l'apagui"
 
 #: ../glade/timerDialog.glade.h:4
 msgid "S_ound"
-msgstr ""
+msgstr "S_o"
 
 #: ../glade/timerDialog.glade.h:5
 msgid "Set _Timer: "
-msgstr ""
+msgstr "Estableix el _temporitzador:"
 
-#: ../glade/timerDialog.glade.h:6 ../src/lib/timer.py:139
+#: ../glade/timerDialog.glade.h:6
+#: ../src/lib/timer.py:139
 #: ../src/lib/timer.py:140
 msgid "Timer"
-msgstr ""
+msgstr "Temporitzador"
 
 #: ../glade/timerDialog.glade.h:7
-msgid ""
-"Timer will continue to go off until you close this dialog or reset the timer."
-msgstr ""
+msgid "Timer will continue to go off until you close this dialog or reset the timer."
+msgstr "El temporitzador continuarà activat fins que tanqueu aquest diàleg o el reinicieu."
 
 #: ../glade/timerDialog.glade.h:8
 msgid "_Note"
-msgstr ""
+msgstr "_Nota"
 
 #: ../glade/timerDialog.glade.h:9
 msgid "_Reset"
-msgstr ""
+msgstr "_Reinicia"
 
 #: ../glade/timerDialog.glade.h:10
 msgid "_Settings"
-msgstr ""
+msgstr "_Paràmetres"
 
 #: ../glade/timerDialog.glade.h:11
 msgid "_Start"
-msgstr ""
+msgstr "_Inicia"
 
 #: ../src/lib/check_encodings.py:89
 msgid "Select encoding"
 msgstr "Seleccioneu la codificació"
 
 #: ../src/lib/check_encodings.py:90
-msgid ""
-"Cannot determine proper encoding. Please select the correct encoding from "
-"the following list."
-msgstr ""
-"No s'ha pogut determinar la codificació adequada. Siusplau seleccioneu la "
-"codificació correcta de la següent llista."
+msgid "Cannot determine proper encoding. Please select the correct encoding from the following list."
+msgstr "No es pot determinar la codificació adequada. Seleccioneu la codificació correcta de la llista següent:"
 
 #: ../src/lib/check_encodings.py:91
 msgid "See _file with encoding"
-msgstr "Visualitza el _fitxer amb la codificació"
+msgstr "Mira el _fitxer amb aquesta codificació"
 
 #: ../src/lib/convertGui.py:106
 #, python-format
 msgid "Cannot convert %s to %s"
-msgstr "No s'ha pogut convertir %s a %s"
+msgstr "No es pot convertir %s a %s"
 
 #: ../src/lib/convertGui.py:108
-#, fuzzy
 msgid "Need density information."
-msgstr "Cal informació de la densitat"
+msgstr "Es necessita informació de densitat."
 
 #. this is a bit of a hackish attempt to make a matcher for all
 #. plural forms of time units. We use range(5) since as far as I
 #. can see, enumerating the forms for 0 through 5 should give you
 #. all possible forms in all languages.
-#. 
-#: ../src/lib/convert.py:61 ../src/lib/convert.py:544
+#.
+#. See http://www.sbin.org/doc/glibc/libc_8.html
+#: ../src/lib/convert.py:61
+#: ../src/lib/convert.py:544
 msgid "second"
 msgid_plural "seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "segon"
+msgstr[1] "segons"
 
+#. min. = abbreviation for minutes
 #: ../src/lib/convert.py:63
 msgid "min"
-msgstr ""
+msgstr "min."
 
-#: ../src/lib/convert.py:63 ../src/lib/convert.py:543
+#: ../src/lib/convert.py:63
+#: ../src/lib/convert.py:543
 msgid "minute"
 msgid_plural "minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "minut"
+msgstr[1] "minuts"
 
+#. hrs = abbreviation for hours
 #: ../src/lib/convert.py:65
 msgid "hrs."
-msgstr ""
+msgstr "h."
 
-#: ../src/lib/convert.py:65 ../src/lib/convert.py:542
+#: ../src/lib/convert.py:65
+#: ../src/lib/convert.py:542
 msgid "hour"
 msgid_plural "hours"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "hora"
+msgstr[1] "hores"
 
-#: ../src/lib/convert.py:66 ../src/lib/convert.py:541
+#: ../src/lib/convert.py:66
+#: ../src/lib/convert.py:541
 msgid "day"
 msgid_plural "days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "dia"
+msgstr[1] "dies"
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
-#: ../src/lib/convert.py:67 ../src/lib/convert.py:538
+#. 'decades':lambda decades: ngettext("decade","decades",round(decades))
+#: ../src/lib/convert.py:67
+#: ../src/lib/convert.py:538
 msgid "year"
 msgid_plural "years"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "any"
+msgstr[1] "anys"
 
 #: ../src/lib/convert.py:539
 msgid "month"
 msgid_plural "months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "mes"
+msgstr[1] "mesos"
 
 #: ../src/lib/convert.py:540
 msgid "week"
 msgid_plural "weeks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "setmana"
+msgstr[1] "setmanes"
 
 #. Translators... this is a messay way of concatenating
 #. lists. In English we do lists this way: 1, 2, 3, 4, 5
 #. and 6. This set-up allows for variations of this system only.
 #. You can of course make your language only use commas or
 #. ands or spaces or whatever you like by translating both
+#. ", " and " and " with the same string.
 #: ../src/lib/convert.py:587
 msgid " and "
-msgstr ""
+msgstr " i "
 
 #: ../src/lib/convert.py:587
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../src/lib/convert.py:589
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/lib/convert.py:718
 msgid "and"
-msgstr ""
+msgstr "i"
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
+#. show up sometimes.
 #: ../src/lib/convert.py:740
 msgid "to"
 msgstr "a"
 
+#. setup pause button
 #: ../src/lib/dialog_extras.py:398
 msgid "_Pause"
-msgstr "_Pausa"
+msgstr "Fes una _pausa"
 
+#. setup stop button
 #: ../src/lib/dialog_extras.py:409
 msgid "_Stop"
-msgstr "A_tura"
+msgstr "_Atura"
 
-#: ../src/lib/dialog_extras.py:465 ../src/lib/dialog_extras.py:555
+#: ../src/lib/dialog_extras.py:465
+#: ../src/lib/dialog_extras.py:555
 msgid "Don't ask me this again."
-msgstr "No m'ho tornis a preguntar."
+msgstr "No ho tornis a demanar."
 
 #: ../src/lib/dialog_extras.py:521
 msgid "Do you really want to do this"
-msgstr ""
+msgstr "De debò voleu fer-ho?"
 
-#: ../src/lib/dialog_extras.py:733 ../src/lib/importers/importer.py:488
+#: ../src/lib/dialog_extras.py:733
+#: ../src/lib/importers/importer.py:488
 msgid "excellent"
-msgstr ""
+msgstr "exceŀlent"
 
-#: ../src/lib/dialog_extras.py:734 ../src/lib/importers/importer.py:489
+#: ../src/lib/dialog_extras.py:734
+#: ../src/lib/importers/importer.py:489
 msgid "great"
-msgstr ""
+msgstr "molt bo"
 
-#: ../src/lib/dialog_extras.py:735 ../src/lib/importers/importer.py:490
+#: ../src/lib/dialog_extras.py:735
+#: ../src/lib/importers/importer.py:490
 msgid "good"
-msgstr ""
+msgstr "bo"
 
-#: ../src/lib/dialog_extras.py:736 ../src/lib/importers/importer.py:491
+#: ../src/lib/dialog_extras.py:736
+#: ../src/lib/importers/importer.py:491
 msgid "fair"
-msgstr ""
+msgstr "regular"
 
-#: ../src/lib/dialog_extras.py:737 ../src/lib/importers/importer.py:493
+#: ../src/lib/dialog_extras.py:737
+#: ../src/lib/importers/importer.py:493
 msgid "poor"
-msgstr ""
+msgstr "pobre"
 
 #: ../src/lib/dialog_extras.py:749
 msgid "Convert ratings to 5 star scale."
-msgstr ""
+msgstr "Converteix les puntuacions a una escala de 5 estrelles."
 
 #: ../src/lib/dialog_extras.py:750
 msgid "Convert ratings."
-msgstr ""
+msgstr "Converteix les puntuacions."
 
 #: ../src/lib/dialog_extras.py:751
 msgid "Please give each of the ratings an equivalent on a scale of 1 to 5"
-msgstr ""
+msgstr "Proporcioneu a cadascuna de les puntuacions un equivalent en una escala d'1 a 5."
 
 #: ../src/lib/dialog_extras.py:764
 msgid "Current Rating"
-msgstr ""
+msgstr "Puntuació actual"
 
 #: ../src/lib/dialog_extras.py:769
 msgid "Rating out of 5 Stars"
-msgstr ""
+msgstr "Puntuació sobre 5 estrelles"
 
-#: ../src/lib/dialog_extras.py:1002 ../src/lib/FileChooserSaveAs.py:153
+#: ../src/lib/dialog_extras.py:1002
+#: ../src/lib/FileChooserSaveAs.py:153
 msgid "Select File_type"
-msgstr ""
+msgstr "Seleccioneu el _tipus de fitxer"
 
 #: ../src/lib/dialog_extras.py:1073
 msgid "No file selected"
-msgstr ""
+msgstr "No heu seleccionat cap fitxer"
 
 #: ../src/lib/dialog_extras.py:1074
 msgid "No file was selected, so the action has been cancelled"
-msgstr ""
+msgstr "Com que no heu seleccionat cap fitxer, s'ha canceŀlat l'acció."
 
-#: ../src/lib/dialog_extras.py:1087 ../src/lib/FileChooserSaveAs.py:224
+#: ../src/lib/dialog_extras.py:1087
+#: ../src/lib/FileChooserSaveAs.py:224
 #, python-format
 msgid "A file named %s already exists."
-msgstr ""
+msgstr "Ja existeix un fitxer amb el nom %s."
 
-#: ../src/lib/dialog_extras.py:1088 ../src/lib/FileChooserSaveAs.py:225
+#: ../src/lib/dialog_extras.py:1088
+#: ../src/lib/FileChooserSaveAs.py:225
 msgid "Do you want to replace it with the one you are saving?"
-msgstr ""
+msgstr "Voleu reemplaçar-lo amb el que esteu desant?"
 
 #: ../src/lib/dialog_extras.py:1188
 #, python-format
@@ -1443,11 +1463,12 @@ msgid ""
 "I'm sorry, I can't understand\n"
 "the amount \"%s\"."
 msgstr ""
+"Malauradament, no s'ha pogut\n"
+"interpretar la quantitat «%s»."
 
 #: ../src/lib/dialog_extras.py:1190
-msgid ""
-"Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
-msgstr ""
+msgid "Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
+msgstr "Les quantitats han de ser nombres (fraccions o decimals), rangs de nombres o s'han de deixar en blanc."
 
 #: ../src/lib/dialog_extras.py:1192
 msgid ""
@@ -1460,28 +1481,39 @@ msgid ""
 "To enter a range of numbers, use a \"-\" to separate them.\n"
 "For example, you could enter 2-4 or 1 1/2 - 3 1/2.\n"
 msgstr ""
+"\n"
+"La «unitat» ha d'estar en el camp «unitat» tota sola.\n"
+"Per exemple, si voleu introduir «una tassa i mitja»,\n"
+"el camp «quantitat» pot contenir «1.5» o «1 1/2». «Tasses»\n"
+"ha d'anar separat en el camp «unitat».\n"
+"\n"
+"Per a introduir un rang de nombres, empreu «-» per a separar-los.\n"
+"Per exemple, podeu introduir «2-4» or «1 1/2 - 3 1/2».\n"
 
 #. renderer.set_property('editable',True)
-#: ../src/lib/gglobals.py:234 ../src/lib/shopgui.py:102
+#. renderer.connect('edited',tst)
+#: ../src/lib/gglobals.py:234
+#: ../src/lib/shopgui.py:102
 #: ../src/lib/exporters/rtf_exporter.py:79
 msgid "Title"
-msgstr ""
+msgstr "Títol"
 
 #: ../src/lib/gglobals.py:235
 msgid "Category"
-msgstr ""
+msgstr "Categoria"
 
 #: ../src/lib/gglobals.py:236
 msgid "Cuisine"
-msgstr ""
+msgstr "Cuina"
 
-#: ../src/lib/gglobals.py:237 ../src/lib/ratingWidget.py:334
+#: ../src/lib/gglobals.py:237
+#: ../src/lib/ratingWidget.py:334
 msgid "Rating"
-msgstr "Valoració"
+msgstr "Puntuació"
 
 #: ../src/lib/gglobals.py:238
 msgid "Source"
-msgstr "Origen"
+msgstr "Font"
 
 #: ../src/lib/gglobals.py:239
 msgid "Servings"
@@ -1489,19 +1521,20 @@ msgstr "Racions"
 
 #: ../src/lib/gglobals.py:240
 msgid "Preparation Time"
-msgstr "Temps de Preparació"
+msgstr "Temps de preparació"
 
 #: ../src/lib/gglobals.py:241
 msgid "Cooking Time"
-msgstr "Temps de Cocció"
+msgstr "Temps de cocció"
 
 #: ../src/lib/gglobals.py:251
 msgid "Modifications"
 msgstr "Modificacions"
 
+#. print dir(err)
 #: ../src/lib/gglobals.py:318
 msgid "Unable to open URL"
-msgstr "No s'ha pogut obrir la URL"
+msgstr "No s'ha pogut obrir l'URL"
 
 #: ../src/lib/gglobals.py:319
 msgid "Unable to launch mail reader."
@@ -1509,7 +1542,7 @@ msgstr "No s'ha pogut obrir el lector de correu."
 
 #: ../src/lib/gglobals.py:320
 msgid "Unable to open website."
-msgstr "No s'ha pogut obrir la plana web."
+msgstr "No s'ha pogut obrir el lloc web."
 
 #: ../src/lib/gglobals.py:321
 msgid "Unable to open file."
@@ -1518,49 +1551,48 @@ msgstr "No s'ha pogut obrir el fitxer."
 #: ../src/lib/gglobals.py:327
 #, python-format
 msgid "There was an error launching the url: %s"
-msgstr ""
+msgstr "S'ha produït un error en obrir l'URL: %s"
 
 #: ../src/lib/GourmetRecipeManager.py:51
 msgid "Importing old recipe data"
-msgstr ""
+msgstr "S'estan important dades antigues de receptes"
 
 #: ../src/lib/GourmetRecipeManager.py:52
-msgid ""
-"Importing recipe data from a previous version of Gourmet into new database."
-msgstr ""
+msgid "Importing recipe data from a previous version of Gourmet into new database."
+msgstr "S'estan important dades d'una versió anterior del Gourmet a la nova base de dades."
 
 #: ../src/lib/GourmetRecipeManager.py:98
 msgid "Loading window preferences..."
-msgstr ""
+msgstr "S'està carregant la finestra de preferències..."
 
 #: ../src/lib/GourmetRecipeManager.py:121
 msgid "Loading graphical interface..."
-msgstr ""
+msgstr "S'està carregant la interfície gràfica..."
 
 #: ../src/lib/GourmetRecipeManager.py:160
 msgid "Loading recipe database..."
-msgstr ""
+msgstr "S'està carregant la base de dades de receptes..."
 
 #: ../src/lib/GourmetRecipeManager.py:162
 msgid "Setting up recipe index..."
-msgstr ""
+msgstr "S'està preparant l'índex de receptes..."
 
 #: ../src/lib/GourmetRecipeManager.py:213
 #: ../src/lib/GourmetRecipeManager.py:1181
 msgid "Done!"
-msgstr ""
+msgstr "Fet!"
 
 #: ../src/lib/GourmetRecipeManager.py:246
 msgid "Recipe _Index"
-msgstr ""
+msgstr "_Índex de receptes"
 
 #: ../src/lib/GourmetRecipeManager.py:247
 msgid "Shopping _List"
-msgstr ""
+msgstr "_Llista de la compra"
 
 #: ../src/lib/GourmetRecipeManager.py:286
 msgid "translator-credits"
-msgstr ""
+msgstr "Raül Cambeiro <rulet a menta.net>"
 
 #: ../src/lib/GourmetRecipeManager.py:320
 #: ../src/lib/GourmetRecipeManager.py:331
@@ -1569,6 +1601,8 @@ msgid ""
 "\n"
 "Website: %s"
 msgstr ""
+"\n"
+"Lloc web: %s"
 
 #: ../src/lib/GourmetRecipeManager.py:329
 #, python-format
@@ -1581,54 +1615,54 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:339
 msgid "Import paused"
-msgstr ""
+msgstr "S'ha aturat la importació"
 
 #: ../src/lib/GourmetRecipeManager.py:340
 msgid "Stop import"
-msgstr ""
+msgstr "Atura la importació"
 
 #: ../src/lib/GourmetRecipeManager.py:385
 #, python-format
 msgid "Save your edits to %s"
-msgstr ""
+msgstr "Desa les edicions a %s"
 
 #: ../src/lib/GourmetRecipeManager.py:395
 msgid "An import is in progress."
-msgstr ""
+msgstr "Hi ha una importació en procés."
 
 #: ../src/lib/GourmetRecipeManager.py:396
 msgid "An export is in progress."
-msgstr ""
+msgstr "Hi ha una exportació en procés."
 
 #: ../src/lib/GourmetRecipeManager.py:397
 msgid "A delete is in progress."
-msgstr ""
+msgstr "Hi ha una eliminació en procés."
 
 #: ../src/lib/GourmetRecipeManager.py:399
 msgid "Exit program anyway?"
-msgstr ""
+msgstr "Voleu sortir del programa igualment?"
 
 #: ../src/lib/GourmetRecipeManager.py:401
 msgid "Don't exit!"
-msgstr ""
+msgstr "No surtis"
 
 #: ../src/lib/GourmetRecipeManager.py:536
 #, python-format
 msgid "Delete %s?"
-msgstr ""
+msgstr "Voleu eliminar %s?"
 
 #: ../src/lib/GourmetRecipeManager.py:537
 #, python-format
 msgid "You have unsaved changes to %s. Are you sure you want to delete?"
-msgstr ""
+msgstr "Teniu canvis per desar a %s. Segur que voleu eliminar-ho?"
 
 #: ../src/lib/GourmetRecipeManager.py:558
 msgid "Deleted"
-msgstr ""
+msgstr "S'ha eliminat"
 
 #: ../src/lib/GourmetRecipeManager.py:558
 msgid "Untitled"
-msgstr ""
+msgstr "Sense títol"
 
 #: ../src/lib/GourmetRecipeManager.py:562
 #: ../src/lib/GourmetRecipeManager.py:607
@@ -1639,400 +1673,383 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1099
 #: ../src/lib/GourmetRecipeManager.py:1280
 msgid "An import, export or deletion is running"
-msgstr ""
+msgstr "Hi ha una importació, una exportació o una eliminació en marxa"
 
 #: ../src/lib/GourmetRecipeManager.py:563
 #: ../src/lib/GourmetRecipeManager.py:1281
 msgid "Please wait until it is finished to delete recipes."
-msgstr ""
+msgstr "Espereu que acabi per a eliminar receptes."
 
 #: ../src/lib/GourmetRecipeManager.py:568
 msgid "Permanently delete recipes?"
-msgstr ""
+msgstr "Voleu eliminar les receptes permanentment?"
 
 #: ../src/lib/GourmetRecipeManager.py:570
 msgid "Permanently delete recipe?"
-msgstr ""
+msgstr "Voleu eliminar la recepta permanentment?"
 
 #: ../src/lib/GourmetRecipeManager.py:571
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
-msgstr ""
+msgstr "De debò voleu eliminar la recepta <i>%s</i>?"
 
 #: ../src/lib/GourmetRecipeManager.py:573
 msgid "Are you sure you want to delete the following recipes?"
-msgstr ""
+msgstr "De debò voleu eliminar les receptes següents?"
 
 #: ../src/lib/GourmetRecipeManager.py:577
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
-msgstr ""
+msgstr "De debò voleu eliminar les %s receptes seleccionades?"
 
 #: ../src/lib/GourmetRecipeManager.py:579
 msgid "See recipes"
-msgstr ""
+msgstr "Mira les receptes"
 
 #: ../src/lib/GourmetRecipeManager.py:587
 msgid "Deletion paused"
-msgstr ""
+msgstr "S'ha aturat l'eliminació"
 
 #: ../src/lib/GourmetRecipeManager.py:587
 msgid "Stop deletion"
-msgstr ""
+msgstr "Atura l'eliminació"
 
 #: ../src/lib/GourmetRecipeManager.py:608
 msgid "The recipes will be deleted once the other process is finished."
-msgstr ""
+msgstr "Les receptes s'eliminaran quan l'altre procés hagi finalitzat."
 
 #: ../src/lib/GourmetRecipeManager.py:641
 #, python-format
 msgid "Deleted recipe %s"
-msgstr ""
+msgstr "S'ha eliminat la recepta %s"
 
 #: ../src/lib/GourmetRecipeManager.py:677
 #, python-format
 msgid "Print %s recipe"
 msgid_plural "Print %s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Imprimeix %s recepta"
+msgstr[1] "Imprimeix %s receptes"
 
 #: ../src/lib/GourmetRecipeManager.py:731
 #, python-format
 msgid "Number of servings of %s to shop for"
-msgstr ""
+msgstr "Nombre de racions de %s per comprar"
 
 #: ../src/lib/GourmetRecipeManager.py:739
 #, python-format
 msgid "Multiply %s by:"
-msgstr ""
+msgstr "Multiplica %s per:"
 
-#: ../src/lib/GourmetRecipeManager.py:768 ../src/lib/shopgui.py:160
+#: ../src/lib/GourmetRecipeManager.py:768
+#: ../src/lib/shopgui.py:160
 msgid "Saved!"
-msgstr ""
+msgstr "S'ha desat."
 
-#: ../src/lib/GourmetRecipeManager.py:781 ../src/lib/reccard.py:807
-msgid ""
-"Forget previously saved choices for which optional ingredients to shop for. "
-"This action is not reversable."
-msgstr ""
+#: ../src/lib/GourmetRecipeManager.py:781
+#: ../src/lib/reccard.py:807
+msgid "Forget previously saved choices for which optional ingredients to shop for. This action is not reversable."
+msgstr "Oblida les preferències desades anteriorment sobre quins ingredients opcionals comprar. Aquesta acció no és reversible."
 
 #: ../src/lib/GourmetRecipeManager.py:783
-msgid ""
-"This will affect all recipes. If you want to forget the settings for an "
-"individual recipe, you can do so from the <b>Tools</b> menu of an individual "
-"recipe card."
-msgstr ""
+msgid "This will affect all recipes. If you want to forget the settings for an individual recipe, you can do so from the <b>Tools</b> menu of an individual recipe card."
+msgstr "Això afectarà totes les receptes. Si voleu esborrar les preferències per a una recepta en particular, podeu fer-ho des del menú <b>Eines</b> de la targeta de la recepta."
 
-#: ../src/lib/GourmetRecipeManager.py:786 ../src/lib/reccard.py:806
+#: ../src/lib/GourmetRecipeManager.py:786
+#: ../src/lib/reccard.py:806
 msgid "Forget which optional ingredients to shop for?"
-msgstr ""
+msgstr "Voleu esborrar els ingredients opcionals que s'han de comprar?"
 
 #: ../src/lib/GourmetRecipeManager.py:805
 msgid "Please wait until it is finished to start your export."
-msgstr ""
+msgstr "Espereu fins que acabi per a iniciar l'exportació."
 
 #: ../src/lib/GourmetRecipeManager.py:811
 msgid "Export recipes"
-msgstr ""
+msgstr "Exporta receptes"
 
 #: ../src/lib/GourmetRecipeManager.py:812
 msgid "recipes"
-msgstr ""
+msgstr "receptes"
 
 #: ../src/lib/GourmetRecipeManager.py:841
 msgid "Export Paused"
-msgstr ""
+msgstr "S'ha interromput l'exportació"
 
 #: ../src/lib/GourmetRecipeManager.py:841
 msgid "Stop export"
-msgstr ""
+msgstr "Atura l'exportació"
 
 #: ../src/lib/GourmetRecipeManager.py:854
 msgid "Your export will start once the other process is finished."
-msgstr ""
+msgstr "L'exportació començarà quan l'altre procés finalitzi."
 
-#: ../src/lib/GourmetRecipeManager.py:862 ../src/lib/reccard.py:967
+#: ../src/lib/GourmetRecipeManager.py:862
+#: ../src/lib/reccard.py:967
 #, python-format
 msgid "Gourmet cannot export file of type \"%s\""
-msgstr ""
+msgstr "El Gourmet no pot exportar un fitxer del tipus «%s»"
 
 #: ../src/lib/GourmetRecipeManager.py:877
 #: ../src/lib/GourmetRecipeManager.py:946
 msgid "Please wait until it is finished to start your import."
-msgstr ""
+msgstr "Espereu que acabi per a iniciar la importació."
 
 #: ../src/lib/GourmetRecipeManager.py:881
 msgid "Enter the URL of a recipe archive or recipe website."
-msgstr ""
+msgstr "Introduïu l'URL de l'arxiu de receptes o del lloc web de receptes."
 
 #: ../src/lib/GourmetRecipeManager.py:882
 msgid "Enter website address."
-msgstr ""
+msgstr "Introduïu l'adreça web."
 
 #: ../src/lib/GourmetRecipeManager.py:884
 msgid "Enter URL:"
-msgstr ""
+msgstr "Introduïu l'URL:"
 
 #: ../src/lib/GourmetRecipeManager.py:885
-msgid ""
-"Enter the address of a website or recipe archive. The address should begin "
-"with http://"
-msgstr ""
+msgid "Enter the address of a website or recipe archive. The address should begin with http://"
+msgstr "Introduïu l'adreça del lloc web o de l'arxiu de receptes. L'adreça hauria de començar per http://"
 
 #: ../src/lib/GourmetRecipeManager.py:892
 #, python-format
 msgid "Importing recipe from %s"
-msgstr ""
+msgstr "S'està important una recepta de %s"
 
 #: ../src/lib/GourmetRecipeManager.py:914
 #, python-format
 msgid "Gourmet does not know how to import site %s"
-msgstr ""
+msgstr "El Gourmet no pot importar des del lloc %s"
 
 #: ../src/lib/GourmetRecipeManager.py:916
 #: ../src/lib/GourmetRecipeManager.py:938
 #, python-format
 msgid "Are you sure %(url)s points to a page with a recipe on it?"
-msgstr ""
+msgstr "Esteu segur que %(url)s apunta a una pàgina amb una recepta?"
 
 #: ../src/lib/GourmetRecipeManager.py:917
 msgid "Unable to import"
-msgstr ""
+msgstr "No s'ha pogut importar"
 
 #: ../src/lib/GourmetRecipeManager.py:922
 msgid "Unable to unzip"
-msgstr ""
+msgstr "No s'ha pogut descomprimir"
 
 #: ../src/lib/GourmetRecipeManager.py:923
 #, python-format
 msgid "Gourmet is unable to unzip the file %s"
-msgstr ""
+msgstr "El Gourmet no ha pogut descomprimir el fitxer %s"
 
 #: ../src/lib/GourmetRecipeManager.py:927
 msgid "Unable to retrieve URL"
-msgstr ""
+msgstr "No s'ha pogut obtenir l'URL"
 
 #: ../src/lib/GourmetRecipeManager.py:928
 #, python-format
-msgid ""
-"Gourmet was unable to retrieve the site %s. Are you sure your internet "
-"connection is working?  If you can retrieve the site with a webbrowser but "
-"continue to get this error, please submit a bug report at %s."
-msgstr ""
+msgid "Gourmet was unable to retrieve the site %s. Are you sure your internet connection is working?  If you can retrieve the site with a webbrowser but continue to get this error, please submit a bug report at %s."
+msgstr "El Gourmet no ha pogut obtenir el lloc %s. Verifiqueu que la vostra connexió a internet funciona. Si podeu accedir al lloc amb un navegador web però continueu tenint aquest error, envieu un informe d'error a %s."
 
 #: ../src/lib/GourmetRecipeManager.py:937
 #, python-format
 msgid "Error retrieving %(url)s."
-msgstr ""
+msgstr "S'ha produït un error en obtenir %(url)s."
 
 #: ../src/lib/GourmetRecipeManager.py:952
 msgid "Import Recipes"
-msgstr ""
+msgstr "Importa receptes"
 
 #: ../src/lib/GourmetRecipeManager.py:1022
 #, python-format
 msgid "Default source for recipes imported from %s"
-msgstr ""
+msgstr "Font predeterminada per a les receptes importades de %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1023
 msgid "Source:"
-msgstr ""
+msgstr "Font:"
 
 #: ../src/lib/GourmetRecipeManager.py:1052
 #, python-format
 msgid "Gourmet could not import the file %s"
 msgid_plural "Gourmet could not import the following files: %s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "El Gourmet no ha pogut importar el fitxer %s"
+msgstr[1] "El Gourmet no ha pogut importar els fitxers següents: %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1057
 #, python-format
-msgid ""
-"If you believe this file is in one of the formats Gourmet supports, please "
-"submit a bug report at %s and attach the file."
-msgid_plural ""
-"If you believe these files are in a format Gourmet supports, please submit a "
-"bug report at %s and attach the file."
-msgstr[0] ""
-msgstr[1] ""
+msgid "If you believe this file is in one of the formats Gourmet supports, please submit a bug report at %s and attach the file."
+msgid_plural "If you believe these files are in a format Gourmet supports, please submit a bug report at %s and attach the file."
+msgstr[0] "Si creieu que aquest fitxer està en un format reconegut pel Gourmet, envieu un informe d'error a %s i adjunteu-hi el fitxer."
+msgstr[1] "Si creieu que aquests fitxers estan en un format reconegut pel Gourmet, envieu un informe d'error a %s i adjunteu-hi els fitxers."
 
 #: ../src/lib/GourmetRecipeManager.py:1061
 msgid "Cannot import file."
 msgid_plural "Cannot import files."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "No s'ha pogut importar el fitxer."
+msgstr[1] "No s'han pogut importar els fitxers."
 
 #: ../src/lib/GourmetRecipeManager.py:1085
 #, python-format
 msgid "Importing recipes from %s"
-msgstr ""
+msgstr "S'estan important receptes de %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1089
 msgid "Importing Recipes"
-msgstr ""
+msgstr "S'estan important receptes"
 
 #: ../src/lib/GourmetRecipeManager.py:1100
 msgid "Your import will start once the other process is finished."
-msgstr ""
+msgstr "La importació començarà quan acabi l'altre procés."
 
-#: ../src/lib/GourmetRecipeManager.py:1119 ../src/lib/reccard.py:1007
+#: ../src/lib/GourmetRecipeManager.py:1119
+#: ../src/lib/reccard.py:1007
 msgid "Export succeeded"
-msgstr ""
+msgstr "S'ha exportat amb èxit"
 
 #: ../src/lib/GourmetRecipeManager.py:1122
 msgid "webpage"
-msgstr ""
+msgstr "lloc web"
 
 #: ../src/lib/GourmetRecipeManager.py:1123
 #, python-format
 msgid "Exported %s to %s"
-msgstr ""
+msgstr "S'ha exportat %s a %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1189
 msgid "Importing..."
-msgstr ""
+msgstr "S'està important..."
 
 #: ../src/lib/GourmetRecipeManager.py:1276
 msgid "Undeleted recipes "
-msgstr ""
+msgstr "Receptes recuperades"
 
 #: ../src/lib/GourmetRecipeManager.py:1327
 msgid "Gourmet Recipe Manager starting up..."
-msgstr ""
+msgstr "S'està iniciant el gestor de receptes Gourmet..."
 
 #: ../src/lib/GourmetRecipeManager.py:1336
 msgid "Starting gourmet..."
-msgstr ""
+msgstr "S'està iniciant el Gourmet..."
 
 #: ../src/lib/GourmetThreads.py:42
 #, python-format
 msgid "%s stopped."
-msgstr ""
+msgstr "S'ha aturat %s."
 
 #: ../src/lib/GourmetThreads.py:43
 #, python-format
 msgid "%s was interrupted by user request."
-msgstr ""
+msgstr "%s ha estat interromput a petició de l'usuari."
 
 #: ../src/lib/GourmetThreads.py:50
 #, python-format
 msgid "%s interrupted"
-msgstr ""
+msgstr "%s ha estat interromput"
 
 #: ../src/lib/GourmetThreads.py:51
 #, python-format
 msgid "There was an error during %s."
-msgstr ""
+msgstr "S'ha produït un error en %s"
 
 #: ../src/lib/GourmetThreads.py:108
 #, python-format
 msgid "Deleting recipes from database... (%s of %s deleted)"
-msgstr ""
+msgstr "S'estan eliminant receptes de la base de dades... (%s de %s eliminades)"
 
 #: ../src/lib/GourmetThreads.py:112
 #, python-format
 msgid "Deleted %s recipe"
 msgid_plural "Deleted %s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "S'ha eliminat %s recepta"
+msgstr[1] "S'han eliminat %s receptes"
 
-#: ../src/lib/keyEditor.py:58 ../src/lib/keyEditor.py:430
-#: ../src/lib/reccard.py:1848 ../src/lib/reccard.py:1880
+#: ../src/lib/keyEditor.py:58
+#: ../src/lib/keyEditor.py:430
+#: ../src/lib/reccard.py:1848
+#: ../src/lib/reccard.py:1880
 #: ../src/lib/reccard.py:1902
 msgid "Key"
-msgstr ""
+msgstr "Clau"
 
-#: ../src/lib/keyEditor.py:79 ../src/lib/keyEditor.py:228
+#. to set our regexp_toggled variable
+#: ../src/lib/keyEditor.py:79
+#: ../src/lib/keyEditor.py:228
 msgid "key"
-msgstr ""
+msgstr "clau"
 
-#: ../src/lib/keyEditor.py:79 ../src/lib/keyEditor.py:224
+#: ../src/lib/keyEditor.py:79
+#: ../src/lib/keyEditor.py:224
 msgid "item"
-msgstr ""
+msgstr "element"
 
 #: ../src/lib/keyEditor.py:105
 msgid "Field"
-msgstr ""
+msgstr "Camp"
 
 #: ../src/lib/keyEditor.py:106
 msgid "Value"
-msgstr ""
+msgstr "Valor"
 
 #: ../src/lib/keyEditor.py:107
 msgid "Count"
-msgstr ""
+msgstr "Recompte"
 
-#: ../src/lib/keyEditor.py:108 ../src/lib/exporters/recipe_emailer.py:55
+#: ../src/lib/keyEditor.py:108
+#: ../src/lib/exporters/recipe_emailer.py:55
 msgid "Recipes"
-msgstr ""
+msgstr "Receptes"
 
 #: ../src/lib/keyEditor.py:127
 #, python-format
 msgid "Change all keys \"%s\" to \"%s\"?"
-msgstr ""
+msgstr "Voleu canviar totes les claus «%s» a «%s»?"
 
 #: ../src/lib/keyEditor.py:128
 #, python-format
-msgid ""
-"You won't be able to undo this action. If there are already ingredients with "
-"the key \"%s\", you won't be able to distinguish between those items and the "
-"items you are changing now."
-msgstr ""
+msgid "You won't be able to undo this action. If there are already ingredients with the key \"%s\", you won't be able to distinguish between those items and the items you are changing now."
+msgstr "No podreu desfer aquesta acció. Si ja hi ha ingredients amb la clau «%s», no podreu distingir entre aquests elements i els que esteu canviant ara."
 
 #: ../src/lib/keyEditor.py:140
 #, python-format
 msgid "Change all items \"%s\" to \"%s\"?"
-msgstr ""
+msgstr "Voleu canviar tots els elements «%s» a «%s»?"
 
 #: ../src/lib/keyEditor.py:141
 #, python-format
-msgid ""
-"You won't be able to undo this action. If there are already ingredients with "
-"the item \"%s\", you won't be able to distinguish between those items and "
-"the items you are changing now."
-msgstr ""
+msgid "You won't be able to undo this action. If there are already ingredients with the item \"%s\", you won't be able to distinguish between those items and the items you are changing now."
+msgstr "No podreu desfer aquesta acció. Si ja hi ha ingredients amb l'element «%s», no podreu distingir entre aquests elements i els que esteu canviant ara."
 
 #: ../src/lib/keyEditor.py:152
 #, python-format
 msgid "Change _all instances of \"%(unit)s\" to \"%(text)s\""
-msgstr ""
+msgstr "Canvia _totes les instàncies de «%(unit)s» a «%(text)s»"
 
 #: ../src/lib/keyEditor.py:153
 #, python-format
-msgid ""
-"Change \"%(unit)s\" to \"%(text)s\" only for _ingredients \"%(item)s\" with "
-"key \"%(key)s\""
-msgstr ""
+msgid "Change \"%(unit)s\" to \"%(text)s\" only for _ingredients \"%(item)s\" with key \"%(key)s\""
+msgstr "Canvia «%(unit)s» a «%(text)s» només per als _ingredients «%(item)s» amb clau «%(key)s»"
 
 #: ../src/lib/keyEditor.py:178
 #, python-format
 msgid "Change _all instances of \"%(amount)s\" %(unit)s to %(text)s %(unit)s"
-msgstr ""
+msgstr "Canvia _totes les instàncies de «%(amount)s» %(unit)s a %(text)s %(unit)s"
 
 #: ../src/lib/keyEditor.py:179
 #, python-format
-msgid ""
-"Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only _where the "
-"ingredient key is %(key)s"
-msgstr ""
+msgid "Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only _where the ingredient key is %(key)s"
+msgstr "Canvia «%(amount)s» %(unit)s a %(text)s %(unit)s només _quan la clau de l'ingredient és %(key)s"
 
 #: ../src/lib/keyEditor.py:180
 #, python-format
-msgid ""
-"Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only where the "
-"ingredient key is %(key)s _and where the item is %(item)s"
-msgstr ""
+msgid "Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only where the ingredient key is %(key)s _and where the item is %(item)s"
+msgstr "Canvia «%(amount)s» %(unit)s a %(text)s %(unit)s només quan la clau de l'ingredient és %(key)s _i quan l'element és %(item)s"
 
 #: ../src/lib/keyEditor.py:318
 msgid "Change all selected rows?"
-msgstr ""
+msgstr "Voleu canviar totes les files seleccionades?"
 
 #: ../src/lib/keyEditor.py:319
 #, python-format
-msgid ""
-"This action will not be undoable. Are you that for all %s selected rows, you "
-"want to set the following values:"
-msgstr ""
+msgid "This action will not be undoable. Are you that for all %s selected rows, you want to set the following values:"
+msgstr "Aquesta acció no es podrà desfer. Confirmeu que, per a les %s files seleccionades, voleu establir els valors següents:"
 
 #: ../src/lib/keyEditor.py:320
 #, python-format
@@ -2040,6 +2057,8 @@ msgid ""
 "\n"
 "Key to %s"
 msgstr ""
+"\n"
+"Clau a %s"
 
 #: ../src/lib/keyEditor.py:321
 #, python-format
@@ -2047,6 +2066,8 @@ msgid ""
 "\n"
 "Item to %s"
 msgstr ""
+"\n"
+"Element a %s"
 
 #: ../src/lib/keyEditor.py:322
 #, python-format
@@ -2054,6 +2075,8 @@ msgid ""
 "\n"
 "Unit to %s"
 msgstr ""
+"\n"
+"Unitat a %s"
 
 #: ../src/lib/keyEditor.py:323
 #, python-format
@@ -2061,110 +2084,104 @@ msgid ""
 "\n"
 "Amount to %s"
 msgstr ""
+"\n"
+"Quantitat a %s"
 
 #: ../src/lib/keyEditor.py:413
 #, python-format
 msgid "%s ingredient"
 msgid_plural "%s ingredients"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s ingredient"
+msgstr[1] "%s ingredients"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
+#. strings in case your language needs the order changed!
 #: ../src/lib/keyEditor.py:417
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
-msgstr ""
+msgstr "Es mostren els ingredients %(bottom)s a %(top)s de %(total)s"
 
 #. self._hide_warning_slowly()
-#: ../src/lib/numberEntry.py:27 ../src/lib/timeEntry.py:54
+#. return
+#: ../src/lib/numberEntry.py:27
+#: ../src/lib/timeEntry.py:54
 #: ../src/lib/timeEntry.py:64
 msgid "Invalid input."
-msgstr ""
+msgstr "Entrada no vàlida."
 
 #: ../src/lib/numberEntry.py:27
 msgid "Not a number."
-msgstr ""
+msgstr "No és un nombre."
 
 #: ../src/lib/nutrition/databaseGrabber.py:140
 msgid "Parsing nutritional data..."
-msgstr ""
+msgstr "S'estan analitzant les dades nutricionals..."
 
 #: ../src/lib/nutrition/databaseGrabber.py:157
 #, python-format
 msgid "Reading nutritional data: imported %s of %s entries."
-msgstr ""
+msgstr "S'han llegit les dades nutricionals: s'han importat %s de %s entrades."
 
 #: ../src/lib/nutrition/databaseGrabber.py:169
 msgid "Parsing weight data..."
-msgstr ""
+msgstr "S'estan analitzant les dades de pes..."
 
 #: ../src/lib/nutrition/databaseGrabber.py:178
 #, python-format
 msgid "Reading weight data for nutritional items: imported %s of %s entries"
-msgstr ""
+msgstr "S'han llegit les dades de pes per als elements nutricionals: s'han importat %s de %s entrades"
 
 #: ../src/lib/nutrition/nutritionDisplay.py:132
 msgid "100 grams"
-msgstr ""
+msgstr "100 grams"
 
 #: ../src/lib/nutrition/nutritionDruid.py:104
 msgid "Any food group"
-msgstr ""
+msgstr "Qualsevol grup de menjar"
 
 #: ../src/lib/nutrition/nutritionDruid.py:345
 #, python-format
 msgid "Convert unit for %s"
-msgstr ""
+msgstr "Converteix la unitat de %s"
 
 #: ../src/lib/nutrition/nutritionDruid.py:348
 #, python-format
-msgid ""
-"In order to calculate nutritional information, Gourmet needs you to help it "
-"convert \"%s\" into a unit it understands."
-msgstr ""
+msgid "In order to calculate nutritional information, Gourmet needs you to help it convert \"%s\" into a unit it understands."
+msgstr "Per tal de calcular la informació nutricional, el Gourmet necessita que l'ajudeu a convertir «%s» a una unitat que pugui interpretar."
 
 #: ../src/lib/nutrition/nutritionDruid.py:448
 #, python-format
-msgid ""
-"Change ingredient key from %(old_key)s to %(new_key)s everywhere or just in "
-"the recipe %(title)s?"
-msgstr ""
+msgid "Change ingredient key from %(old_key)s to %(new_key)s everywhere or just in the recipe %(title)s?"
+msgstr "Voleu canviar la clau de l'ingredient de %(old_key)s a %(new_key)s a tot arreu o només a la recepta %(title)s?"
 
 #: ../src/lib/nutrition/nutritionDruid.py:453
 #: ../src/lib/nutrition/nutritionDruid.py:489
 msgid "Change _everywhere"
-msgstr ""
+msgstr "Canvia-ho a tot _arreu"
 
 #: ../src/lib/nutrition/nutritionDruid.py:454
 #: ../src/lib/nutrition/nutritionDruid.py:490
 #, python-format
 msgid "_Just in recipe %s"
-msgstr ""
+msgstr "Canvia-ho _només a la recepta %s"
 
 #: ../src/lib/nutrition/nutritionDruid.py:481
 msgid "Change unit"
-msgstr ""
+msgstr "Canvia la unitat"
 
 #: ../src/lib/nutrition/nutritionDruid.py:483
 #, python-format
-msgid ""
-"Change unit from %(old_unit)s to %(new_unit)s for all ingredients %(ingkey)s "
-"or just in the recipe %(title)s?"
-msgstr ""
+msgid "Change unit from %(old_unit)s to %(new_unit)s for all ingredients %(ingkey)s or just in the recipe %(title)s?"
+msgstr "Voleu canviar la unitat de %(old_unit)s a %(new_unit)s per a tots els ingredients %(ingkey)s o només a la recepta %(title)s?"
 
 #: ../src/lib/nutrition/nutritionDruid.py:560
 #, python-format
-msgid ""
-"In order to calculate nutritional information for \"%(amount)s %(unit)s "
-"%(ingkey)s\", Gourmet needs to know its density. Our nutritional database "
-"has several descriptions of this food with different densities. Please "
-"select the correct one below."
-msgstr ""
+msgid "In order to calculate nutritional information for \"%(amount)s %(unit)s %(ingkey)s\", Gourmet needs to know its density. Our nutritional database has several descriptions of this food with different densities. Please select the correct one below."
+msgstr "Per tal de calcular la informació nutricional per a «%(amount)s %(unit)s %(ingkey)s», el Gourmet necessita saber-ne la densitat. La base de dades nutricional té diverses descripcions d'aquest menjar amb diferents densitats. Trieu l'opció correcta a sota."
 
 #: ../src/lib/nutrition/nutritionDruid.py:711
-msgid ""
-"To apply nutritional information, Gourmet needs a valid amount and unit."
-msgstr ""
+msgid "To apply nutritional information, Gourmet needs a valid amount and unit."
+msgstr "Per a aplicar la informació nutricional, el Gourmet necessita una quantitat i una unitat vàlides."
 
 #. filename=None
 #. if de.getBoolean(
@@ -2175,191 +2192,192 @@ msgstr ""
 #. filename=de.select_file(
 #. 'Find ABBREV.txt file',
 #. filters=[['Plain Text',['text/plain'],['*txt']]]
+#. )
 #: ../src/lib/nutrition/nutritionGrabberGui.py:35
 msgid "Loading Nutritional Data"
-msgstr ""
+msgstr "S'estan carregant les dades nutricionals"
 
 #: ../src/lib/nutrition/nutritionGrabberGui.py:40
 msgid "Nutritonal database import complete!"
-msgstr ""
+msgstr "S'ha completat la importació de la base de dades nutricional."
 
 #: ../src/lib/nutrition/nutritionGrabberGui.py:59
 #, python-format
 msgid "Fetching nutritional database from zip archive %s"
-msgstr ""
+msgstr "S'està recollint la base de dades nutricional de l'arxiu zip %s"
 
 #: ../src/lib/nutrition/nutritionGrabberGui.py:63
 #, python-format
 msgid "Extracting %s from zip archive."
-msgstr ""
+msgstr "S'està extraient %s de l'arxiu zip."
 
 #: ../src/lib/nutrition/nutritionLabel.py:10
 msgid "Calories"
-msgstr ""
+msgstr "Calories"
 
 #: ../src/lib/nutrition/nutritionLabel.py:13
 msgid "Total Fat"
-msgstr ""
+msgstr "Greixos totals"
 
 #: ../src/lib/nutrition/nutritionLabel.py:15
 msgid "Saturated Fat"
-msgstr ""
+msgstr "Greixos saturats"
 
 #: ../src/lib/nutrition/nutritionLabel.py:17
 msgid "Cholesterol"
-msgstr ""
+msgstr "Colesterol"
 
 #: ../src/lib/nutrition/nutritionLabel.py:19
 msgid "Sodium"
-msgstr ""
+msgstr "Sodi"
 
 #: ../src/lib/nutrition/nutritionLabel.py:21
 msgid "Total Carbohydrate"
-msgstr ""
+msgstr "Hidrats de carboni totals"
 
 #: ../src/lib/nutrition/nutritionLabel.py:23
 msgid "Dietary Fiber"
-msgstr ""
+msgstr "Fibra dietètica"
 
 #: ../src/lib/nutrition/nutritionLabel.py:25
 msgid "Sugars"
-msgstr ""
+msgstr "Sucres"
 
 #: ../src/lib/nutrition/nutritionLabel.py:27
 msgid "Protein"
-msgstr ""
+msgstr "Proteïnes"
 
 #: ../src/lib/nutrition/nutritionLabel.py:32
 msgid "Alpha-carotene"
-msgstr ""
+msgstr "Alfa-carotè"
 
 #: ../src/lib/nutrition/nutritionLabel.py:34
 msgid "Ash"
-msgstr ""
+msgstr "Carbonats"
 
 #: ../src/lib/nutrition/nutritionLabel.py:36
 msgid "Beta-carotene"
-msgstr ""
+msgstr "Beta-carotè"
 
 #: ../src/lib/nutrition/nutritionLabel.py:38
 msgid "Beta Cryptoxanthin"
-msgstr ""
+msgstr "Beta-criptoxantina"
 
 #: ../src/lib/nutrition/nutritionLabel.py:40
 msgid "Calcium"
-msgstr ""
+msgstr "Calci"
 
 #: ../src/lib/nutrition/nutritionLabel.py:42
 msgid "Copper"
-msgstr ""
+msgstr "Coure"
 
 #: ../src/lib/nutrition/nutritionLabel.py:44
 msgid "Folate Total"
-msgstr ""
+msgstr "Folats totals"
 
 #: ../src/lib/nutrition/nutritionLabel.py:46
 msgid "Folic acid"
-msgstr ""
+msgstr "Àcid fòlic"
 
 #: ../src/lib/nutrition/nutritionLabel.py:48
 msgid "Food Folate"
-msgstr ""
+msgstr "Folat alimentari"
 
 #: ../src/lib/nutrition/nutritionLabel.py:50
 msgid "Dietary folate equivalents"
-msgstr ""
+msgstr "Equivalents dietètics de folats"
 
 #: ../src/lib/nutrition/nutritionLabel.py:52
 msgid "Iron"
-msgstr ""
+msgstr "Ferro"
 
 #: ../src/lib/nutrition/nutritionLabel.py:54
 msgid "Lycopene"
-msgstr ""
+msgstr "Licopè"
 
 #: ../src/lib/nutrition/nutritionLabel.py:56
 msgid "Lutein+Zeazanthin"
-msgstr ""
+msgstr "Luteïna i zeaxantina"
 
 #: ../src/lib/nutrition/nutritionLabel.py:58
 msgid "Magnesium"
-msgstr ""
+msgstr "Magnesi"
 
 #: ../src/lib/nutrition/nutritionLabel.py:60
 msgid "Manganese"
-msgstr ""
+msgstr "Manganès"
 
 #: ../src/lib/nutrition/nutritionLabel.py:62
 msgid "Niacin"
-msgstr ""
+msgstr "Niacina"
 
 #: ../src/lib/nutrition/nutritionLabel.py:64
 msgid "Pantothenic Acid"
-msgstr ""
+msgstr "Àcid pantotènic"
 
 #: ../src/lib/nutrition/nutritionLabel.py:66
 msgid "Phosphorus"
-msgstr ""
+msgstr "Fòsfor"
 
 #: ../src/lib/nutrition/nutritionLabel.py:68
 msgid "Potassium"
-msgstr ""
+msgstr "Potassi"
 
 #: ../src/lib/nutrition/nutritionLabel.py:70
 msgid "Vitamin A"
-msgstr ""
+msgstr "Vitamina A"
 
 #: ../src/lib/nutrition/nutritionLabel.py:72
 msgid "Retinol"
-msgstr ""
+msgstr "Retinol"
 
 #: ../src/lib/nutrition/nutritionLabel.py:74
 msgid "Riboflavin"
-msgstr ""
+msgstr "Riboflavina"
 
 #: ../src/lib/nutrition/nutritionLabel.py:76
 msgid "Selenium"
-msgstr ""
+msgstr "Seleni"
 
 #: ../src/lib/nutrition/nutritionLabel.py:78
 msgid "Thiamin"
-msgstr ""
+msgstr "Tiamina"
 
 #: ../src/lib/nutrition/nutritionLabel.py:80
 msgid "Vitamin A (IU)"
-msgstr ""
+msgstr "Vitamina A (IU)"
 
 #: ../src/lib/nutrition/nutritionLabel.py:82
 msgid "Vitamin A (RAE)"
-msgstr ""
+msgstr "Vitamina A (RAE)"
 
 #: ../src/lib/nutrition/nutritionLabel.py:84
 msgid "Vitamin B6"
-msgstr ""
+msgstr "Vitamina B6"
 
 #: ../src/lib/nutrition/nutritionLabel.py:86
 msgid "Vitamin B12"
-msgstr ""
+msgstr "Vitamina B12"
 
 #: ../src/lib/nutrition/nutritionLabel.py:88
 msgid "Vitamin C"
-msgstr ""
+msgstr "Vitamina C"
 
 #: ../src/lib/nutrition/nutritionLabel.py:90
 msgid "Vitamin E"
-msgstr ""
+msgstr "Vitamina E"
 
 #: ../src/lib/nutrition/nutritionLabel.py:92
 msgid "Vitamin K"
-msgstr ""
+msgstr "Vitamina K"
 
 #: ../src/lib/nutrition/nutritionLabel.py:94
 msgid "Zinc"
-msgstr ""
+msgstr "Zinc"
 
 #: ../src/lib/nutrition/nutritionLabel.py:195
 msgid "Vitamins and minerals"
-msgstr ""
+msgstr "Vitamines i minerals"
 
 #: ../src/lib/nutrition/nutritionLabel.py:257
 #, python-format
@@ -2367,893 +2385,885 @@ msgid ""
 "Missing nutritional information\n"
 "for %(missing)s of %(total)s ingredients."
 msgstr ""
+"Falta informació nutricional\n"
+"per a %(missing)s de %(total)s ingredients."
 
 #: ../src/lib/nutrition/nutritionLabel.py:273
 msgid "% _Daily Value"
-msgstr ""
+msgstr "% Valor _diari"
 
 #: ../src/lib/nutrition/nutritionLabel.py:318
 #, python-format
-msgid ""
-"Percentage of recommended daily value based on %i calories per day. Click to "
-"edit number of calories per day."
-msgstr ""
+msgid "Percentage of recommended daily value based on %i calories per day. Click to edit number of calories per day."
+msgstr "Percentatge de valor diari recomanat basat en %i calories per dia. Feu clic per a editar el nombre de calories per dia."
 
 #: ../src/lib/nutrition/nutritionLabel.py:392
 msgid "Amount per Serving"
-msgstr ""
+msgstr "Quantitat per ració"
 
 #: ../src/lib/nutrition/nutritionLabel.py:394
 msgid "Amount per recipe"
-msgstr ""
+msgstr "Quantitat per recepta"
 
 #: ../src/lib/nutrition/nutritionModel.py:9
 msgid "Ingredient"
-msgstr ""
+msgstr "Ingredient"
 
 #: ../src/lib/nutrition/nutritionModel.py:10
 msgid "USDA Database Equivalent"
-msgstr ""
+msgstr "Equivalent a la base de dades de l'USDA"
 
-#: ../src/lib/nutrition/nutritionModel.py:11 ../src/lib/shopping.py:137
+#: ../src/lib/nutrition/nutritionModel.py:11
+#: ../src/lib/shopping.py:137
 #: ../src/lib/shopping.py:157
 msgid "Unknown"
-msgstr ""
+msgstr "Desconegut"
 
 #: ../src/lib/nutrition/parser_data.py:13
 msgid "Water"
-msgstr ""
+msgstr "Aigua"
 
 #: ../src/lib/nutrition/parser_data.py:14
 msgid "Kilocalories"
-msgstr ""
+msgstr "Kilocalories"
 
 #: ../src/lib/nutrition/parser_data.py:15
 msgid "g protein"
-msgstr ""
+msgstr "g. de proteïnes"
 
 #: ../src/lib/nutrition/parser_data.py:16
 msgid "g lipid"
-msgstr ""
+msgstr "g. de lípids"
 
 #: ../src/lib/nutrition/parser_data.py:17
 msgid "g ash"
-msgstr ""
+msgstr "g. de cendres"
 
 #: ../src/lib/nutrition/parser_data.py:18
 msgid "g carbohydrates"
-msgstr ""
+msgstr "g. d'hidrats de carboni"
 
 #: ../src/lib/nutrition/parser_data.py:19
 msgid "g fiber"
-msgstr ""
+msgstr "g. de fibra"
 
 #: ../src/lib/nutrition/parser_data.py:20
 msgid "g sugar"
-msgstr ""
+msgstr "g. de sucre"
 
 #: ../src/lib/nutrition/parser_data.py:21
 msgid "mg calcium"
-msgstr ""
+msgstr "mg. de calci"
 
 #: ../src/lib/nutrition/parser_data.py:22
 msgid "mg iron"
-msgstr ""
+msgstr "mg. de ferro"
 
 #: ../src/lib/nutrition/parser_data.py:23
 msgid "mg magnesium"
-msgstr ""
+msgstr "mg. de magnesi"
 
 #: ../src/lib/nutrition/parser_data.py:24
 msgid "mg phosphorus"
-msgstr ""
+msgstr "mg. de fòsfor"
 
 #: ../src/lib/nutrition/parser_data.py:25
 msgid "mg potassium"
-msgstr ""
+msgstr "mg. de potassi"
 
 #: ../src/lib/nutrition/parser_data.py:26
 msgid "mg sodium"
-msgstr ""
+msgstr "mg. de sodi"
 
 #: ../src/lib/nutrition/parser_data.py:27
 msgid "mg zinc"
-msgstr ""
+msgstr "mg. de zinc"
 
 #: ../src/lib/nutrition/parser_data.py:28
 msgid "mg copper"
-msgstr ""
+msgstr "mg. de coure"
 
 #: ../src/lib/nutrition/parser_data.py:29
 msgid "mg manganese"
-msgstr ""
+msgstr "mg. de manganès"
 
 #: ../src/lib/nutrition/parser_data.py:30
 msgid "microgram selenium"
-msgstr ""
+msgstr "µg. de seleni"
 
 #: ../src/lib/nutrition/parser_data.py:31
 msgid "mg vitamin c"
-msgstr ""
+msgstr "mg. de vitamina C"
 
 #: ../src/lib/nutrition/parser_data.py:32
 msgid "mg thiamin"
-msgstr ""
+msgstr "mg. de tiamina"
 
 #: ../src/lib/nutrition/parser_data.py:33
 msgid "mg riboflavin"
-msgstr ""
+msgstr "mg. de riboflavina"
 
 #: ../src/lib/nutrition/parser_data.py:34
 msgid "mg niacin"
-msgstr ""
+msgstr "mg. de niacina"
 
 #: ../src/lib/nutrition/parser_data.py:35
 msgid "mg pantothenic acid"
-msgstr ""
+msgstr "mg. d'àcid pantotènic"
 
 #: ../src/lib/nutrition/parser_data.py:36
 msgid "mg vitamin B6"
-msgstr ""
+msgstr "mg. de vitamina B6"
 
 #: ../src/lib/nutrition/parser_data.py:37
 msgid "microgram Folate Total"
-msgstr ""
+msgstr "µg. de folats totals"
 
 #: ../src/lib/nutrition/parser_data.py:38
 msgid "microgram Folic acid"
-msgstr ""
+msgstr "µg. d'àcid fòlic"
 
 #: ../src/lib/nutrition/parser_data.py:39
 msgid "microgram Food Folate"
-msgstr ""
+msgstr "µg. de folat alimentari"
 
 #: ../src/lib/nutrition/parser_data.py:40
 msgid "microgram dietary folate equivalents"
-msgstr ""
+msgstr "µg. d'equivalents dietètics de folats"
 
 #: ../src/lib/nutrition/parser_data.py:41
 msgid "microgram Vitamin B12"
-msgstr ""
+msgstr "µg. de vitamina B12"
 
 #: ../src/lib/nutrition/parser_data.py:42
 msgid "Vitamin A IU"
-msgstr ""
+msgstr "Vitamina A IU"
 
 #: ../src/lib/nutrition/parser_data.py:43
 msgid "Vitamin A (microgram Retinal Activity Equivalents"
-msgstr ""
+msgstr "Vitamina A (µg. d'equivalents de l'activitat del retinol)"
 
 #: ../src/lib/nutrition/parser_data.py:44
 msgid "microgram Retinol"
-msgstr ""
+msgstr "µg. de retinol"
 
 #: ../src/lib/nutrition/parser_data.py:45
 msgid "mg Vitamin E"
-msgstr ""
+msgstr "mg. de vitamina E"
 
 #: ../src/lib/nutrition/parser_data.py:46
 msgid "mg Vitamin K"
-msgstr ""
+msgstr "mg. de vitamina K"
 
 #: ../src/lib/nutrition/parser_data.py:47
 msgid "microgram Alpha-carotene"
-msgstr ""
+msgstr "µg. d'alfa-carotè"
 
 #: ../src/lib/nutrition/parser_data.py:48
 msgid "microgram Beta-carotene"
-msgstr ""
+msgstr "µg. de beta-carotè"
 
 #: ../src/lib/nutrition/parser_data.py:49
 msgid "microgram Beta Cryptoxanthin"
-msgstr ""
+msgstr "µg. de beta-criptoxantina"
 
 #: ../src/lib/nutrition/parser_data.py:50
 msgid "microgram Lycopene"
-msgstr ""
+msgstr "µg. de licopè"
 
 #: ../src/lib/nutrition/parser_data.py:51
 msgid "microgram Lutein+Zeazanthin"
-msgstr ""
+msgstr "µg. de luteïna i zeaxantina"
 
 #: ../src/lib/nutrition/parser_data.py:52
 msgid "g Saturated Fatty Acid"
-msgstr ""
+msgstr "g. d'àcids grassos saturats"
 
 #: ../src/lib/nutrition/parser_data.py:53
 msgid "g Monounsaturated Fatty Acids"
-msgstr ""
+msgstr "g. d'acids grassos monoinsaturats"
 
 #: ../src/lib/nutrition/parser_data.py:54
 msgid "g Polyunsaturated Fatty Acids"
-msgstr ""
+msgstr "g. d'àcids grassos poliinsaturats"
 
 #: ../src/lib/nutrition/parser_data.py:55
 msgid "mg Cholesterol"
-msgstr ""
+msgstr "mg. de colesterol"
 
 #: ../src/lib/nutrition/parser_data.py:60
 msgid "Percent refuse"
-msgstr ""
+msgstr "Percentatge de rebuig"
 
 #. the DB Food Group Numbers seem to be inline with the group IDs
 #. (numbers > 1000 are in group 100, etc.)
+#. Since that's true, we can use the following table to properly add groups.
 #: ../src/lib/nutrition/parser_data.py:335
 msgid "Dairy & Egg Products"
-msgstr ""
+msgstr "Productes làctics i ous"
 
 #: ../src/lib/nutrition/parser_data.py:336
 msgid "Spices & Herbs"
-msgstr ""
+msgstr "Espècies i herbes"
 
 #: ../src/lib/nutrition/parser_data.py:337
 msgid "Baby Foods"
-msgstr ""
+msgstr "Aliments infantils"
 
 #: ../src/lib/nutrition/parser_data.py:338
 msgid "Fats and Oils"
-msgstr ""
+msgstr "Greixos i olis"
 
 #: ../src/lib/nutrition/parser_data.py:339
 msgid "Poultry"
-msgstr ""
+msgstr "Aviram"
 
 #: ../src/lib/nutrition/parser_data.py:340
 msgid "Soups & Sauces"
-msgstr ""
+msgstr "Sopes i salses"
 
 #: ../src/lib/nutrition/parser_data.py:341
 msgid "Sausages & Lunch Meats"
-msgstr ""
+msgstr "Embotits i carns fredes"
 
 #: ../src/lib/nutrition/parser_data.py:342
 msgid "Breakfast Cereals"
-msgstr ""
+msgstr "Cereals d'esmorzar"
 
 #: ../src/lib/nutrition/parser_data.py:343
 msgid "Fruits & Fruit Juices"
-msgstr ""
+msgstr "Fruites i sucs"
 
 #: ../src/lib/nutrition/parser_data.py:344
 msgid "Pork"
-msgstr ""
+msgstr "Porc"
 
 #: ../src/lib/nutrition/parser_data.py:345
 msgid "Vegetables"
-msgstr ""
+msgstr "Verdures i hortalisses"
 
 #: ../src/lib/nutrition/parser_data.py:346
 msgid "Nuts & Seeds"
-msgstr ""
+msgstr "Fruita seca i llavors"
 
 #: ../src/lib/nutrition/parser_data.py:347
 msgid "Beef"
-msgstr ""
+msgstr "Bou"
 
 #: ../src/lib/nutrition/parser_data.py:348
 msgid "Beverages"
-msgstr ""
+msgstr "Begudes"
 
 #: ../src/lib/nutrition/parser_data.py:349
 msgid "Fish & Shellfish"
-msgstr ""
+msgstr "Peix i marisc"
 
 #: ../src/lib/nutrition/parser_data.py:350
 msgid "Legumes"
-msgstr ""
+msgstr "Llegums"
 
 #: ../src/lib/nutrition/parser_data.py:351
 msgid "Lamb, Veal & Game"
-msgstr ""
+msgstr "Xai, vedella i caça"
 
 #: ../src/lib/nutrition/parser_data.py:352
 msgid "Baked Products"
-msgstr ""
+msgstr "Pastisseria"
 
 #: ../src/lib/nutrition/parser_data.py:353
 msgid "Sweets"
-msgstr ""
+msgstr "Dolços"
 
 #: ../src/lib/nutrition/parser_data.py:354
 msgid "Grains and Pasta"
-msgstr ""
+msgstr "Cereals i pastes"
 
 #: ../src/lib/nutrition/parser_data.py:355
 msgid "Fast Foods"
-msgstr ""
+msgstr "Menjar ràpid"
 
 #: ../src/lib/nutrition/parser_data.py:356
 msgid "Meals, Entrees, and Sidedishes"
-msgstr ""
+msgstr "Àpats, entrants i guarnicions"
 
 #: ../src/lib/nutrition/parser_data.py:357
 msgid "Snacks"
-msgstr ""
+msgstr "Mossades"
 
 #: ../src/lib/nutrition/parser_data.py:358
 msgid "Ethnic Foods"
-msgstr ""
+msgstr "Aliments ètnics"
 
+#. self.serves = float(self.serveW.get_text())
 #: ../src/lib/reccard.py:201
 msgid "Edit Recipe:"
-msgstr ""
+msgstr "Edita la recepta:"
 
 #: ../src/lib/reccard.py:202
 msgid "Recipe Card:"
-msgstr ""
+msgstr "Targeta de recepta:"
 
+#. action groups
 #: ../src/lib/reccard.py:283
 msgid "Add _ingredient"
-msgstr ""
+msgstr "Afegeix un _ingredient"
 
 #: ../src/lib/reccard.py:285
 msgid "Add new ingredient to the list."
-msgstr ""
+msgstr "Afegeix un ingredient nou a la llista."
 
 #: ../src/lib/reccard.py:288
 msgid "Create new subgroup of ingredients."
-msgstr ""
+msgstr "Crea un subgrup d'ingredients nou."
 
 #: ../src/lib/reccard.py:290
 msgid "Import list of ingredients from text file."
-msgstr ""
+msgstr "Importa la llista d'ingredients d'un fitxer de text."
 
 #: ../src/lib/reccard.py:296
 msgid "Paste list of ingredients from clipboard."
-msgstr ""
+msgstr "Enganxa la llista d'ingredients del porta-retalls."
 
 #: ../src/lib/reccard.py:299
 msgid "Add another recipe as an \"ingredient\" in the current recipe."
-msgstr ""
+msgstr "Afegeix una altra recepta com a «ingredient» de la recepta actual."
 
 #: ../src/lib/reccard.py:307
 msgid "Move selected ingredient up."
-msgstr ""
+msgstr "Mou l'ingredient seleccionat amunt."
 
 #: ../src/lib/reccard.py:310
 msgid "Move selected ingredient down."
-msgstr ""
+msgstr "Mou l'ingredient seleccionat avall."
 
 #. 'editButtons':[{'edit':[{'tooltip':_("Toggle whether we're editing the recipe card")},
 #. ['editButton','editMenu']]},
+#. ],
 #: ../src/lib/reccard.py:324
 msgid "View recipe card for current recipe"
-msgstr ""
+msgstr "Visualitza la targeta de recepta de la recepta actual"
 
 #: ../src/lib/reccard.py:438
 #, python-format
 msgid "Unable to find recipe %s in database."
-msgstr ""
+msgstr "No s'ha pogut trobar la recepta %s a la base de dades."
 
 #: ../src/lib/reccard.py:471
 msgid "Choose an image to insert in instructions..."
-msgstr ""
+msgstr "Trieu una imatge per a inserir-la a les instruccions..."
 
 #: ../src/lib/reccard.py:589
 #, python-format
 msgid "Abandon your edits to %s?"
-msgstr ""
+msgstr "Voleu abandonar els canvis fets a %s?"
 
 #: ../src/lib/reccard.py:597
 msgid "Are you sure you want to abandon your changes?"
-msgstr ""
+msgstr "De debò voleu abandonar els canvis?"
 
 #: ../src/lib/reccard.py:612
 #, python-format
 msgid "Couldn't make sense of %s as number of servings"
-msgstr ""
+msgstr "No s'ha pogut interpretar %s com a nombre de racions"
 
 #: ../src/lib/reccard.py:840
 msgid "(Optional)"
-msgstr ""
+msgstr "(Opcional)"
 
+#. FIXME
 #: ../src/lib/reccard.py:918
 msgid "Choose a file containing your ingredient list."
-msgstr ""
+msgstr "Trieu un fitxer que contingui la llista d'ingredients."
 
+#. strip off extra "." if necessary
 #: ../src/lib/reccard.py:962
 msgid "Save recipe as..."
-msgstr ""
+msgstr "Anomena i desa la recepta..."
 
 #: ../src/lib/reccard.py:996
 #, python-format
 msgid "Unable to save %s"
-msgstr ""
+msgstr "No s'ha pogut desar %s"
 
 #: ../src/lib/reccard.py:997
 msgid "There was an error during export."
-msgstr ""
+msgstr "S'ha produït un error en exportar."
 
 #: ../src/lib/reccard.py:1008
 #, python-format
 msgid "Exported %(filetype)s to %(filename)s"
-msgstr ""
+msgstr "S'ha exportat %(filetype)s a %(filename)s"
 
-#: ../src/lib/reccard.py:1091 ../src/lib/reccard.py:1143
+#: ../src/lib/reccard.py:1091
+#: ../src/lib/reccard.py:1143
 #: ../src/lib/reccard.py:1154
 msgid "You have unsaved changes."
-msgstr ""
+msgstr "Teniu canvis sense desar."
 
 #: ../src/lib/reccard.py:1095
 msgid "There are no unsaved changes."
-msgstr ""
+msgstr "No hi ha cap canvi sense desar,"
 
 #: ../src/lib/reccard.py:1114
 #, python-format
 msgid "Save edits to %s before closing?"
-msgstr ""
+msgstr "Voleu desar els canvis a %s abans de tancar?"
 
 #: ../src/lib/reccard.py:1144
 msgid "Apply changes before e-mailing?"
-msgstr ""
+msgstr "Voleu aplicar els canvis abans d'enviar per correu?"
 
 #: ../src/lib/reccard.py:1155
 msgid "Apply changes before printing?"
-msgstr ""
+msgstr "Voleu aplicar els canvis abans d'imprimir?"
 
 #: ../src/lib/reccard.py:1158
 #, python-format
 msgid "Print Recipe %s"
-msgstr ""
+msgstr "Imprimeix la recepta %s"
 
-#: ../src/lib/reccard.py:1845 ../src/lib/reccard.py:1876
+#: ../src/lib/reccard.py:1845
+#: ../src/lib/reccard.py:1876
 msgid "Amt"
-msgstr ""
+msgstr "Quantitat"
 
-#: ../src/lib/reccard.py:1849 ../src/lib/reccard.py:1879
+#: ../src/lib/reccard.py:1849
+#: ../src/lib/reccard.py:1879
 msgid "Optional"
-msgstr ""
+msgstr "Opcional"
 
 #: ../src/lib/reccard.py:1958
 msgid "New Category"
-msgstr ""
+msgstr "Nova categoria"
 
 #: ../src/lib/reccard.py:2023
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
-msgstr ""
+msgstr "La recepta %s (ID %s) no és a la base de dades."
 
-#: ../src/lib/reccard.py:2040 ../src/lib/shopgui.py:459
+#: ../src/lib/reccard.py:2040
+#: ../src/lib/shopgui.py:459
 #, python-format
 msgid "Category to add %s to"
-msgstr ""
+msgstr "Categoria a la qual afegir %s"
 
 #: ../src/lib/reccard.py:2330
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
-msgstr ""
+msgstr "S'ha convertit: %(amt)s %(unit)s"
 
 #: ../src/lib/reccard.py:2332
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
-msgstr ""
+msgstr "No s'ha convertit: %(amt)s %(unit)s"
 
 #: ../src/lib/reccard.py:2336
 msgid "Changed unit."
-msgstr ""
+msgstr "S'ha canviat la unitat."
 
 #: ../src/lib/reccard.py:2337
 #, python-format
-msgid ""
-"You have changed the unit for %(item)s from %(old)s to %(new)s. Would you "
-"like the amount converted or not?"
-msgstr ""
+msgid "You have changed the unit for %(item)s from %(old)s to %(new)s. Would you like the amount converted or not?"
+msgstr "Heu canviat la unitat de %(item)s de %(old)s a %(new)s. Voleu convertir la quantitat?"
 
 #: ../src/lib/reccard.py:2348
 #, python-format
 msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
-msgstr ""
+msgstr "S'ha convertit %(old_amt)s %(old_unit)s a %(new_amt)s %(new_unit)s"
 
 #: ../src/lib/reccard.py:2349
 msgid "old_amt"
-msgstr ""
+msgstr "old_amt"
 
 #: ../src/lib/reccard.py:2360
 #, python-format
 msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
-msgstr ""
+msgstr "No s'ha pogut convertir de %(old_unit)s a %(new_unit)s"
 
 #: ../src/lib/reccard.py:2360
 msgid "old_unit"
-msgstr ""
+msgstr "old_unit"
 
 #: ../src/lib/reccard.py:2415
 msgid "Adding Ingredient Group"
-msgstr ""
+msgstr "S'està afegint el grup d'ingredients"
 
 #: ../src/lib/reccard.py:2416
 msgid "Enter a name for new subgroup of ingredients"
-msgstr ""
+msgstr "Introduïu un nom per al nou subgrup d'ingredients"
 
 #: ../src/lib/reccard.py:2417
 msgid "Name of group:"
-msgstr ""
+msgstr "Nom del grup:"
 
 #: ../src/lib/reccard.py:2808
 #, python-format
 msgid "Assuming you wanted item equal to key %s"
-msgstr ""
+msgstr "S'assumirà que voleu un element igual a la clau %s"
 
 #: ../src/lib/reccard.py:2815
 #, python-format
-msgid ""
-"You forgot an item. Assuming you meant \"%s\" as an item and not a unit."
-msgstr ""
+msgid "You forgot an item. Assuming you meant \"%s\" as an item and not a unit."
+msgstr "Heu oblidat un element. S'assumirà que volíeu «%s» com a element i no com a unitat."
 
 #: ../src/lib/reccard.py:2817
 msgid "An ingredient must have an item!"
-msgstr ""
+msgstr "Un ingredient necessita un element."
 
 #: ../src/lib/reccard.py:2968
 msgid "Recipe cannot call itself as an ingredient!"
-msgstr ""
+msgstr "La recepta no es pot cridar a ella mateixa com a ingredient."
 
-#: ../src/lib/reccard.py:2969 ../src/lib/shopgui.py:623
+#: ../src/lib/reccard.py:2969
+#: ../src/lib/shopgui.py:623
 msgid "Infinite recursion is not allowed in recipes!"
-msgstr ""
+msgstr "La recurrència infinita no està permesa en les receptes."
 
 #: ../src/lib/reccard.py:2986
 msgid "You haven't selected any recipes!"
-msgstr ""
+msgstr "No heu seleccionat cap recepta."
 
-#: ../src/lib/recindex.py:43 ../src/lib/recindex.py:56
+#: ../src/lib/recindex.py:43
+#: ../src/lib/recindex.py:56
 msgid "notes"
-msgstr ""
+msgstr "notes"
 
 #: ../src/lib/recindex.py:206
 #, python-format
 msgid "%s recipe"
 msgid_plural "%s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s recepta"
+msgstr[1] "%s receptes"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
+#. strings in case your language needs the order changed!
 #: ../src/lib/recindex.py:210
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
-msgstr ""
+msgstr "Es mostren les receptes %(bottom)s a %(top)s de %(total)s"
 
 #: ../src/lib/recindex.py:374
 msgid "or"
-msgstr ""
+msgstr "o"
 
 #: ../src/lib/recindex.py:403
 #, python-format
 msgid " %s in %s"
-msgstr ""
+msgstr " %s a %s"
 
 #: ../src/lib/recindex.py:405
 #, python-format
 msgid ", %s in %s"
-msgstr ""
+msgstr ", %s a %s"
 
 #: ../src/lib/recindex.py:430
 #, python-format
 msgid "Unable to recognize %s as a time."
-msgstr ""
+msgstr "No s'ha pogut interpretar %s com a temps."
 
 #: ../src/lib/recipeManager.py:14
 msgid "Enter Password"
-msgstr ""
+msgstr "Introduïu la contrasenya"
 
 #: ../src/lib/recipeManager.py:15
 #, python-format
-msgid ""
-"Please enter your password for user %s of the MySQL database at host %s"
-msgstr ""
+msgid "Please enter your password for user %s of the MySQL database at host %s"
+msgstr "Introduïu la contrasenya per a l'usuari %s de la base de dades MySQL de la màquina %s"
 
 #: ../src/lib/recipeManager.py:18
 msgid "Password:"
-msgstr ""
+msgstr "Contrasenya:"
 
 #: ../src/lib/shopgui.py:69
-msgid ""
-"Move selected items from shopping list to \"pantry\" list. You can also move "
-"items by dragging and dropping."
-msgstr ""
+msgid "Move selected items from shopping list to \"pantry\" list. You can also move items by dragging and dropping."
+msgstr "Mou els elements seleccionats de la llista de la compra a la llista del «rebost». També podeu moure els elements arrossegant-los i deixant-los anar."
 
 #: ../src/lib/shopgui.py:76
-msgid ""
-"Move selected items back to the shopping list. You can also move items by "
-"dragging and dropping."
-msgstr ""
+msgid "Move selected items back to the shopping list. You can also move items by dragging and dropping."
+msgstr "Torna a moure els elements seleccionats a la llista de la compra. També podeu moure els elements arrossegant-los i deixant-los anar."
 
 #: ../src/lib/shopgui.py:103
 msgid "x"
-msgstr ""
+msgstr "x"
 
-#: ../src/lib/shopgui.py:129 ../src/lib/shopgui.py:144
+#: ../src/lib/shopgui.py:129
+#: ../src/lib/shopgui.py:144
 msgid "Nutritional Information for Shopping List"
-msgstr ""
+msgstr "Informació nutricional per a la llista de la compra"
 
 #: ../src/lib/shopgui.py:153
 msgid "Save Shopping List As..."
-msgstr ""
+msgstr "Anomena i desa la llista de la compra..."
 
 #: ../src/lib/shopgui.py:178
 #, python-format
 msgid "Shopping list for %s"
-msgstr ""
+msgstr "Llista de la compra per a %s"
 
 #: ../src/lib/shopgui.py:179
 msgid "For the following recipes:"
-msgstr ""
+msgstr "Per a les següents receptes:"
 
 #: ../src/lib/shopgui.py:183
 #, python-format
 msgid " x%s"
-msgstr ""
+msgstr " x%s"
 
 #: ../src/lib/shopgui.py:211
 msgid "No recipes selected. Do you want to clear the entire list?"
-msgstr ""
+msgstr "No heu seleccionat cap recepta. Voleu netejar la llista sencera?"
 
 #: ../src/lib/shopgui.py:458
 msgid "Enter Category"
-msgstr ""
+msgstr "Introduïu la categoria"
 
 #: ../src/lib/shopgui.py:460
 msgid "Category:"
-msgstr ""
+msgstr "Categoria:"
 
 #: ../src/lib/shopgui.py:622
 msgid "Recipe calls for itself as an ingredient."
-msgstr ""
+msgstr "La recepta es crida a ella mateixa com a ingredient."
 
 #: ../src/lib/shopgui.py:623
 #, python-format
 msgid "Ingredient %s will be ignored."
-msgstr ""
+msgstr "S'ignorarà l'ingredient %s."
 
 #: ../src/lib/shopgui.py:684
 msgid "Select optional ingredients."
-msgstr ""
+msgstr "Seleccioneu els ingredients opcionals."
 
 #: ../src/lib/shopgui.py:685
-msgid ""
-"Please specify which of the following optional ingredients you'd like to "
-"include on your shopping list."
-msgstr ""
+msgid "Please specify which of the following optional ingredients you'd like to include on your shopping list."
+msgstr "Especifiqueu quins dels ingredients opcionals següents voleu incloure a la llista de la compra."
 
 #: ../src/lib/shopping.py:18
 msgid "flour, all purpose"
-msgstr ""
+msgstr "farina, tots els usos"
 
 #: ../src/lib/shopping.py:18
 msgid "sugar"
-msgstr ""
+msgstr "sucre"
 
 #: ../src/lib/shopping.py:18
 msgid "salt"
-msgstr ""
+msgstr "sal"
 
 #: ../src/lib/shopping.py:19
 msgid "black pepper, ground"
-msgstr ""
+msgstr "pebre negre, mòlt"
 
 #: ../src/lib/shopping.py:20
 msgid "ice"
-msgstr ""
+msgstr "gel"
 
 #: ../src/lib/shopping.py:20
 msgid "water"
-msgstr ""
+msgstr "aigua"
 
 #: ../src/lib/shopping.py:21
 msgid "oil, vegetable"
-msgstr ""
+msgstr "oli, vegetal"
 
 #: ../src/lib/shopping.py:22
 msgid "oil, olive"
-msgstr ""
+msgstr "oli, oliva"
 
-#: ../src/lib/timer.py:99 ../src/lib/timer.py:120
+#: ../src/lib/timer.py:99
+#: ../src/lib/timer.py:120
 msgid "Ringing Sound"
-msgstr ""
+msgstr "Timbre"
 
 #: ../src/lib/timer.py:100
 msgid "Warning Sound"
-msgstr ""
+msgstr "So d'avís"
 
 #: ../src/lib/timer.py:101
 msgid "Error Sound"
-msgstr ""
+msgstr "So d'error"
 
 #: ../src/lib/timer.py:191
 msgid "Stop timer?"
-msgstr ""
+msgstr "Voleu aturar el temporitzador?"
 
 #: ../src/lib/timer.py:192
-msgid ""
-"You've requested to close a window with an active timer. You can stop the "
-"timer, or you can just close the window. If you close the window, it will "
-"reappear when your timer goes off."
-msgstr ""
+msgid "You've requested to close a window with an active timer. You can stop the timer, or you can just close the window. If you close the window, it will reappear when your timer goes off."
+msgstr "Heu demanat tancar una finestra amb un temporitzador actiu. Podeu aturar el temporitzador o directament tancar la finestra. Si tanqueu la finestra, tornarà a aparèixer quan el temporitzador arribi a zero."
 
 #: ../src/lib/timer.py:193
 msgid "Stop _timer"
-msgstr ""
+msgstr "Atura el _temporitzador"
 
 #: ../src/lib/timer.py:193
 msgid "_Keep timing"
-msgstr ""
+msgstr "_Continua comptant"
 
 #: ../src/lib/timeEntry.py:39
-msgid ""
-"Time must begin with a number or fraction followed by a unit (minutes, "
-"hours, etc.)."
-msgstr ""
+msgid "Time must begin with a number or fraction followed by a unit (minutes, hours, etc.)."
+msgstr "El temps ha de començar amb un nombre o una fracció seguits d'una unitat (minuts, hores, etc.)."
 
-#: ../src/lib/timeEntry.py:55 ../src/lib/timeEntry.py:65
+#: ../src/lib/timeEntry.py:55
+#: ../src/lib/timeEntry.py:65
 msgid "Time must be expressed in hours, minutes, seconds, etc."
-msgstr ""
+msgstr "El temps s'ha d'expressar en hores, minuts, segons, etc."
 
 #: ../src/lib/version.py:3
 msgid "Gourmet Recipe Manager"
-msgstr ""
+msgstr "Gestor de receptes Gourmet"
 
 #: ../src/lib/version.py:4
 msgid "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
-msgstr ""
+msgstr "Copyright (c) 2004,2005,2006 Thomas M. Hinkle. GNU GPL"
 
+#. repeated in setup.cfg
 #: ../src/lib/version.py:7
-msgid ""
-"Gourmet Recipe Manager is an application to store, organize and search "
-"recipes. Gourmet also makes it easy to create shopping lists from recipes. "
-"Gourmet imports recipes from a number of sources, including MealMaster and "
-"MasterCook archives and several popular websites. Gourmet can export recipes "
-"as text, MealMaster files, HTML web pages, and a custom XML format for "
-"exchange with other Gourmet users. Gourmet supports linking images with "
-"recipes. Gourmet can also calculate nutritional information for recipes "
-"based on the ingredients."
-msgstr ""
+msgid "Gourmet Recipe Manager is an application to store, organize and search recipes. Gourmet also makes it easy to create shopping lists from recipes. Gourmet imports recipes from a number of sources, including MealMaster and MasterCook archives and several popular websites. Gourmet can export recipes as text, MealMaster files, HTML web pages, and a custom XML format for exchange with other Gourmet users. Gourmet supports linking images with recipes. Gourmet can also calculate nutritional information for recipes based on the ingredients."
+msgstr "El gestor de receptes Gourmet és una aplicació per a emmagatzemar, organitzar i cercar receptes. El Gourmet també facilita l'elaboració de llistes de la compra a partir de receptes. El Gourmet importa receptes de diverses fonts, incloent arxius MealMaster i MasterCook i diversos llocs web coneguts. El Gourmet pot exportar receptes com a text, fitxers MealMaster, pàgines web HTML i un format XML propi per a l'intercanvi amb altres usuaris del Gourmet. El Gourmet permet enllaçar imatges a les receptes. A més, el Gourmet pot calcular informació nutricional de les receptes en base als ingredients."
 
 #: ../src/lib/version.py:9
 msgid "Roland Duhaime (Windows porting assistance)"
-msgstr ""
+msgstr "Roland Duhaime (assistència en el port a Windows)"
 
 #: ../src/lib/version.py:10
 msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
-msgstr ""
+msgstr "Daniel Folkinshteyn <nanotube@gmail.com> (instaŀlador per a Windows)"
 
 #: ../src/lib/version.py:11
 msgid "Richard Ferguson (improvements to Unit Converter interface)"
-msgstr ""
+msgstr "Richard Ferguson (millores en la interfície del convertidor d'unitats)"
 
 #: ../src/lib/version.py:12
 msgid "R.S. Born (improvements to Mealmaster export)"
-msgstr ""
+msgstr "R.S. Born (millores en l'exportació a Mealmaster)"
 
 #: ../src/lib/version.py:13
 msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
-msgstr ""
+msgstr "ixat <ixat.deviantart.com> (logo i pantalla de presentació)"
 
 #: ../src/lib/version.py:14
 msgid "Yula Zubritsky (nutrition and add-to-shopping list icons)"
-msgstr ""
+msgstr "Yula Zubritsky (icones de nutrició i d'afegeix a la llista de la compra)"
 
 #: ../src/lib/version.py:15
-msgid ""
-"Simon Darlington <simon.darlington@gmx.net> (improvements to "
-"internationalization, assorted bugfixes)"
-msgstr ""
+msgid "Simon Darlington <simon.darlington@gmx.net> (improvements to internationalization, assorted bugfixes)"
+msgstr "Simon Darlington <simon.darlington@gmx.net> (millores en la internacionalització, diverses correccions d'errades)"
 
-#: ../src/lib/backends/rdatabase.py:633 ../src/lib/backends/sql_db.py:334
+#: ../src/lib/backends/rdatabase.py:633
+#: ../src/lib/backends/sql_db.py:334
 msgid "New Recipe"
-msgstr ""
+msgstr "Nova recepta"
 
 #: ../src/lib/importers/zip_importer.py:43
 msgid "Loading zip archive"
-msgstr ""
+msgstr "S'està carregant l'arxiu zip"
 
 #: ../src/lib/importers/zip_importer.py:58
 msgid "Unzipping zip archive"
-msgstr ""
+msgstr "S'està descomprimint l'arxiu zip"
 
 #: ../src/lib/importers/html_importer.py:42
 #, python-format
 msgid "Retrieving %s"
-msgstr ""
+msgstr "S'està obtenint %s"
 
 #: ../src/lib/importers/html_importer.py:45
 msgid "Retrieving file"
-msgstr ""
+msgstr "S'està obtenint el fitxer"
 
+#. Interactive we go...
 #: ../src/lib/importers/html_importer.py:478
 msgid "Don't recognize this webpage. Using generic importer..."
-msgstr ""
+msgstr "No s'ha pogut reconèixer aquesta pàgina web. S'emprarà l'importador genèric..."
 
 #: ../src/lib/importers/html_importer.py:488
 #: ../src/lib/importers/html_importer.py:558
 msgid "Import complete."
-msgstr ""
+msgstr "S'ha completat la importació."
 
 #: ../src/lib/importers/html_importer.py:507
 #, python-format
 msgid "Retrieved from %(url)s."
-msgstr ""
+msgstr "Obtingut de %(url)s."
 
 #: ../src/lib/importers/html_importer.py:513
 msgid "Importing recipe"
-msgstr ""
+msgstr "S'està important la recepta"
 
 #: ../src/lib/importers/html_importer.py:520
 msgid "Processing ingredients"
-msgstr ""
+msgstr "S'estan processant els ingredients"
 
 #: ../src/lib/importers/html_importer.py:540
 msgid "Processing ingredients."
-msgstr ""
+msgstr "S'estan processant els ingredients."
 
 #: ../src/lib/importers/importer.py:207
 #, python-format
 msgid "Imported %s of %s recipes."
-msgstr ""
+msgstr "S'han importat %s de %s receptes."
 
 #: ../src/lib/importers/importer.py:387
 #, python-format
 msgid "<i>Importing %s</i>"
-msgstr ""
+msgstr "<i>S'està important %s</i>"
 
 #: ../src/lib/importers/importer.py:417
 #, python-format
 msgid "Imported %(number)s recipes from %(file)s (%(total)s total)"
-msgstr ""
+msgstr "S'han importat %(number)s receptes de %(file)s (%(total)s en total)"
 
 #: ../src/lib/importers/importer.py:492
 msgid "okay"
-msgstr ""
+msgstr "Correcte"
 
 #: ../src/lib/importers/interactive_importer.py:472
 msgid "Getting images..."
-msgstr ""
+msgstr "S'estan obtenint les imatges..."
 
 #: ../src/lib/importers/interactive_importer.py:474
 msgid "Select recipe image"
-msgstr ""
+msgstr "Seleccioneu la imatge de la recepta"
 
 #: ../src/lib/importers/interactive_importer.py:475
 msgid "Select recipe image."
-msgstr ""
+msgstr "Seleccioneu la imatge de la recepta."
 
 #: ../src/lib/importers/interactive_importer.py:476
-msgid ""
-"Below are all the images found for the page you are importing. Select any "
-"images that are of the recipe, or don't select anything if you don't want "
-"any of these images."
-msgstr ""
+msgid "Below are all the images found for the page you are importing. Select any images that are of the recipe, or don't select anything if you don't want any of these images."
+msgstr "A sota trobareu totes les imatges trobades a la pàgina que esteu important. Seleccioneu les imatges que són de la recepta, o bé no seleccioneu res si no voleu fer servir cap d'aquestes imatges."
 
 #: ../src/lib/importers/interactive_importer.py:502
 msgid "Setting up interactive importer"
-msgstr ""
+msgstr "S'està preparant l'importador interactiu"
 
 #: ../src/lib/importers/interactive_importer.py:659
 msgid "Import complete!"
-msgstr ""
+msgstr "S'ha completat la importació."
 
 #: ../src/lib/importers/__init__.py:9
 msgid "MasterCook file"
-msgstr ""
+msgstr "Fitxer de MasterCook"
 
 #: ../src/lib/importers/__init__.py:10
 msgid "MasterCook XML file"
-msgstr ""
+msgstr "Fitxer XML de MasterCook"
 
 #: ../src/lib/importers/__init__.py:11
 msgid "KRecipes file"
-msgstr ""
+msgstr "Fitxer del KRecipes"
 
 #: ../src/lib/importers/__init__.py:88
 msgid "Unformatted text"
-msgstr ""
+msgstr "Text sense format"
 
 #: ../src/lib/importers/__init__.py:108
 msgid "All importable files"
-msgstr ""
+msgstr "Tots els fitxers importables"
 
 #: ../src/lib/importers/mastercook_importer.py:120
 msgid "Mastercook import finished."
-msgstr ""
+msgstr "S'ha finalitzat la importació de MasterCook."
 
 #. try:
 #. self.parse = xml.sax.parse(self.fn,self.rh)
@@ -3261,219 +3271,224 @@ msgstr ""
 #. debug('Exception in Handler, trying to clean up source...',0)
 #. since encoding type errors show up only after we've started
 #. importing, we're going to go ahead and clean up all mastercook
+#. files, even though some of them may not be fubared :)
 #: ../src/lib/importers/mastercook_importer.py:257
 msgid "Tidying up XML"
-msgstr ""
+msgstr "S'està ordenant l'XML"
 
 #: ../src/lib/importers/mastercook_importer.py:265
 msgid "Beginning import"
-msgstr ""
+msgstr "S'està iniciant la importació"
 
 #: ../src/lib/importers/plaintext_importer.py:31
 #, python-format
 msgid "Imported %s recipes."
-msgstr ""
+msgstr "S'han importat %s receptes."
 
-#: ../src/lib/exporters/exporter.py:204 ../src/lib/exporters/exporter.py:206
-#: ../src/lib/exporters/exporter.py:493 ../src/lib/exporters/exporter.py:495
+#: ../src/lib/exporters/exporter.py:204
+#: ../src/lib/exporters/exporter.py:206
+#: ../src/lib/exporters/exporter.py:493
+#: ../src/lib/exporters/exporter.py:495
 msgid "stars"
-msgstr ""
+msgstr "estrelles"
 
-#: ../src/lib/exporters/exporter.py:352 ../src/lib/exporters/exporter.py:430
+#: ../src/lib/exporters/exporter.py:352
+#: ../src/lib/exporters/exporter.py:430
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:301
 #: ../src/lib/exporters/gnomeprinter.py:349
 #: ../src/lib/exporters/html_exporter.py:143
 #: ../src/lib/exporters/pdf_exporter.py:577
 msgid "optional"
-msgstr ""
+msgstr "opcional"
 
 #: ../src/lib/exporters/exporter.py:509
 #, python-format
 msgid "Exported %(number)s of %(total)s recipes"
-msgstr ""
+msgstr "S'han exportat %(number)s receptes de %(total)s"
 
 #: ../src/lib/exporters/exporter.py:527
 msgid "Export complete."
-msgstr ""
+msgstr "S'ha completat l'exportació."
 
 #: ../src/lib/exporters/exporter.py:553
 #: ../src/lib/exporters/html_exporter.py:62
 msgid "Recipe"
-msgstr ""
+msgstr "Recepta"
 
 #. Method from:
+#. http://tgolden.sc.sabren.com/python/win32_how_do_i/print.html#shellexecute
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:215
 #: ../src/lib/exporters/gnomeprinter.py:253
 #: ../src/lib/exporters/winprinter.py:17
 msgid "Print"
-msgstr ""
+msgstr "Imprimeix"
 
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:239
 #: ../src/lib/exporters/gnomeprinter.py:276
 msgid "_Current"
-msgstr ""
+msgstr "A_ctual"
 
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:239
 #: ../src/lib/exporters/gnomeprinter.py:276
 msgid "_Range"
-msgstr ""
+msgstr "_Rang"
 
 #: ../src/lib/exporters/gnomeprinter_obsolete.py:245
 #: ../src/lib/exporters/gnomeprinter.py:284
-#: ../src/lib/exporters/lprprinter.py:7 ../src/lib/exporters/winprinter.py:40
+#: ../src/lib/exporters/lprprinter.py:7
+#: ../src/lib/exporters/winprinter.py:40
 msgid "Print Recipes"
-msgstr ""
+msgstr "Imprimeix les receptes"
 
+#. Filetypes as presented to user
 #: ../src/lib/exporters/__init__.py:18
 msgid "HTML Web Page"
-msgstr ""
+msgstr "Pàgina web HTML"
 
 #: ../src/lib/exporters/__init__.py:19
 msgid "MealMaster file"
-msgstr ""
+msgstr "Fitxer MealMaster"
 
 #: ../src/lib/exporters/__init__.py:20
 msgid "Plain Text"
-msgstr ""
+msgstr "Text net"
 
 #: ../src/lib/exporters/__init__.py:21
 msgid "RTF"
-msgstr ""
+msgstr "RTF (Format de Text Enriquit)"
 
 #: ../src/lib/exporters/__init__.py:22
 msgid "PDF (Portable Document Format)"
-msgstr ""
+msgstr "PDF (Format de Document Portable)"
 
 #: ../src/lib/exporters/__init__.py:23
 msgid "Gourmet XML File"
-msgstr ""
+msgstr "Fitxer XML del Gourmet"
 
 #: ../src/lib/exporters/__init__.py:24
 msgid "Gourmet XML File (Obsolete, < v.0.8.2)"
-msgstr ""
+msgstr "Fitxer XML del Gourmet (obsolet, < v.0.8.2)"
 
 #: ../src/lib/exporters/__init__.py:25
 msgid "Eat Drink Feel Good XML File"
-msgstr ""
+msgstr "Fitxer XML d'Eat Drink Feel Good"
 
 #: ../src/lib/exporters/__init__.py:73
 msgid "Exporting Webpage"
-msgstr ""
+msgstr "S'està exportant la pàgina web"
 
 #: ../src/lib/exporters/__init__.py:74
 #, python-format
 msgid "Exporting recipes to HTML files in directory %(file)s"
-msgstr ""
+msgstr "S'estan exportant les receptes a fitxers HTML en el directori %(file)s"
 
 #: ../src/lib/exporters/__init__.py:75
 #, python-format
 msgid "Recipe saved as HTML file %(file)s"
-msgstr ""
+msgstr "S'ha desat la recepta en el fitxer HTML %(file)s"
 
 #: ../src/lib/exporters/__init__.py:92
 msgid "MealMaster Export"
-msgstr ""
+msgstr "Exportació a MealMaster"
 
 #: ../src/lib/exporters/__init__.py:93
 #, python-format
 msgid "Exporting recipes to MealMaster file %(file)s."
-msgstr ""
+msgstr "S'estan exportant les receptes al fitxer MealMaster %(file)s."
 
 #: ../src/lib/exporters/__init__.py:94
 #, python-format
 msgid "Recipe saved as MealMaster file %(file)s"
-msgstr ""
+msgstr "S'ha desat la recepta al fitxer MealMaster %(file)s"
 
 #: ../src/lib/exporters/__init__.py:106
 msgid "Text Export"
-msgstr ""
+msgstr "Exportació a text"
 
 #: ../src/lib/exporters/__init__.py:107
 #, python-format
 msgid "Exporting recipes to Plain Text file %(file)s."
-msgstr ""
+msgstr "S'estan exportant les receptes al fitxer de text net %(file)s."
 
 #: ../src/lib/exporters/__init__.py:108
 #, python-format
 msgid "Recipe saved as Plain Text file %(file)s"
-msgstr ""
+msgstr "S'ha desat la recepta al fitxer de text net %(file)s"
 
 #: ../src/lib/exporters/__init__.py:121
 msgid "Gourmet XML Export"
-msgstr ""
+msgstr "Exportació a l'XML del Gourmet"
 
 #: ../src/lib/exporters/__init__.py:122
 #, python-format
 msgid "Exporting recipes to Gourmet XML file %(file)s."
-msgstr ""
+msgstr "S'estan exportant les receptes al fitxer XML del Gormet %(file)s."
 
 #: ../src/lib/exporters/__init__.py:123
 #, python-format
 msgid "Recipe saved in Gourmet XML file %(file)s."
-msgstr ""
+msgstr "S'ha desat la recepta al fitxer XML del Gourmet %(file)s."
 
 #: ../src/lib/exporters/__init__.py:134
-#, fuzzy
 msgid "RTF Export"
-msgstr "_Exporta a RTF"
+msgstr "Exportació a RTF"
 
 #: ../src/lib/exporters/__init__.py:135
 #, python-format
 msgid "Exporting recipes to Rich Text file %(file)s."
-msgstr ""
+msgstr "S'estan exportant les receptes al fitxer de text enriquit %(file)s."
 
 #: ../src/lib/exporters/__init__.py:136
 #, python-format
 msgid "Recipe saved as Rich Text file %(file)s"
-msgstr ""
+msgstr "S'ha desat la recepta al fitxer de text enriquit %(file)s"
 
 #: ../src/lib/exporters/__init__.py:153
 msgid "PDF Export"
-msgstr ""
+msgstr "Exportació a PDF"
 
 #: ../src/lib/exporters/__init__.py:154
 #, python-format
 msgid "Exporting recipes to PDF %(file)s."
-msgstr ""
+msgstr "S'estan exportant les receptes al fitxer PDF %(file)s."
 
 #: ../src/lib/exporters/__init__.py:155
 #, python-format
 msgid "Recipe saved as PDF %(file)s"
-msgstr ""
+msgstr "S'ha desat la recepta al fitxer PDF %(file)s"
 
-#: ../src/lib/exporters/lprprinter.py:15 ../src/lib/exporters/lprprinter.py:18
+#: ../src/lib/exporters/lprprinter.py:15
+#: ../src/lib/exporters/lprprinter.py:18
 msgid "Enter print command"
-msgstr ""
+msgstr "Introduïu l'ordre d'impressió"
 
 #: ../src/lib/exporters/lprprinter.py:16
 #, python-format
 msgid "Unable to find command \"%s\"."
-msgstr ""
+msgstr "No s'ha pogut trobar l'ordre «%s»."
 
 #: ../src/lib/exporters/lprprinter.py:17
 msgid "Please enter the command you would like to use to print."
-msgstr ""
+msgstr "Introduïu l'ordre que voleu fer servir per a imprimir."
 
 #: ../src/lib/exporters/lprprinter.py:22
 #, python-format
 msgid "Printing via %s"
-msgstr ""
+msgstr "S'està imprimint a través de %s"
 
 #: ../src/lib/exporters/lprprinter.py:23
-msgid ""
-"If you install python-gnome, you will be able to print with a much more "
-"attractive interface."
-msgstr ""
+msgid "If you install python-gnome, you will be able to print with a much more attractive interface."
+msgstr "Si instal·leu python-gnome, podreu imprimir amb una interfície molt més atractiva."
 
 #: ../src/lib/exporters/lprprinter.py:31
 msgid "Command:"
-msgstr ""
+msgstr "Ordre:"
 
 #: ../src/lib/exporters/pdf_exporter.py:643
 #: ../src/lib/exporters/pdf_exporter.py:660
 #: ../src/lib/exporters/winprinter.py:58
 msgid "Letter"
-msgstr ""
+msgstr "Carta"
 
 #: ../src/lib/exporters/pdf_exporter.py:644
 #: ../src/lib/exporters/pdf_exporter.py:667
@@ -3481,222 +3496,137 @@ msgstr ""
 #: ../src/lib/exporters/pdf_exporter.py:759
 #: ../src/lib/exporters/winprinter.py:59
 msgid "Portrait"
-msgstr ""
+msgstr "Retrat"
 
 #: ../src/lib/exporters/pdf_exporter.py:646
 #: ../src/lib/exporters/pdf_exporter.py:675
 msgid "Plain"
-msgstr ""
+msgstr "Senzill"
 
 #: ../src/lib/exporters/pdf_exporter.py:655
 msgid "11x17\""
-msgstr ""
+msgstr "11x17\""
 
 #: ../src/lib/exporters/pdf_exporter.py:656
 msgid "Index Card (3.5x5\")"
-msgstr ""
+msgstr "Targeta d'índex (3.5x5\")"
 
 #: ../src/lib/exporters/pdf_exporter.py:657
 msgid "Index Card (4x6\")"
-msgstr ""
+msgstr "Targeta d'índex (4x6\")"
 
 #: ../src/lib/exporters/pdf_exporter.py:658
 msgid "Index Card (5x8\")"
-msgstr ""
+msgstr "Targeta d'índex (5x8\")"
 
 #: ../src/lib/exporters/pdf_exporter.py:659
 msgid "Index Card (A7)"
-msgstr ""
+msgstr "Targeta d'índex (A7)"
 
 #: ../src/lib/exporters/pdf_exporter.py:661
 msgid "Legal"
-msgstr ""
+msgstr "Legal"
 
 #: ../src/lib/exporters/pdf_exporter.py:668
 #: ../src/lib/exporters/pdf_exporter.py:728
 #: ../src/lib/exporters/pdf_exporter.py:757
 msgid "Landscape"
-msgstr ""
+msgstr "Apaïsat"
 
 #: ../src/lib/exporters/pdf_exporter.py:676
 msgid "Index Cards (3.5x5)"
-msgstr ""
+msgstr "Targeta d'índex (3.5x5)"
 
 #: ../src/lib/exporters/pdf_exporter.py:677
 msgid "Index Cards (4x6)"
-msgstr ""
+msgstr "Targeta d'índex (4x6)"
 
 #: ../src/lib/exporters/pdf_exporter.py:678
 msgid "Index Cards (A7)"
-msgstr ""
+msgstr "Targeta d'índex (A7)"
 
 #: ../src/lib/exporters/pdf_exporter.py:681
 #: ../src/lib/exporters/winprinter.py:61
 #, python-format
 msgid "%s Column"
 msgid_plural "%s Columns"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s columna"
+msgstr[1] "%s columnes"
 
 #: ../src/lib/exporters/pdf_exporter.py:685
 msgid "Page _Size"
-msgstr ""
+msgstr "_Mida de la pàgina"
 
 #: ../src/lib/exporters/pdf_exporter.py:686
 msgid "_Orientation"
-msgstr ""
+msgstr "_Orientació"
 
 #: ../src/lib/exporters/pdf_exporter.py:687
 msgid "_Font Size"
-msgstr ""
+msgstr "Mida del _tipus de lletra"
 
 #: ../src/lib/exporters/pdf_exporter.py:688
 msgid "Page _Layout"
-msgstr ""
+msgstr "_Disposició de la pàgina"
 
 #: ../src/lib/exporters/pdf_exporter.py:690
 msgid "Left Margin"
-msgstr ""
+msgstr "Marge esquerre"
 
 #: ../src/lib/exporters/pdf_exporter.py:691
 msgid "Right Margin"
-msgstr ""
+msgstr "Marge dret"
 
 #: ../src/lib/exporters/pdf_exporter.py:692
 msgid "Top Margin"
-msgstr ""
+msgstr "Marge superior"
 
 #: ../src/lib/exporters/pdf_exporter.py:693
 msgid "Bottom Margin"
-msgstr ""
+msgstr "Marge inferior"
 
 #: ../src/lib/exporters/recipe_emailer.py:105
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
-msgstr ""
-"Incloure la recepta al cos del E-mail (es una bona idea de totes maneres)"
+msgstr "Inclou la recepta en el cos del missatge (sempre és bona idea)"
 
 #: ../src/lib/exporters/recipe_emailer.py:106
 msgid "E-mail Recipe as HTML Attachment"
-msgstr "Adjuntar Recepta com fitxer HTML"
+msgstr "Envia la recepta com a adjunció en HTML"
 
 #: ../src/lib/exporters/recipe_emailer.py:124
 msgid "Email Options"
-msgstr "Opcions d'Email"
+msgstr "Opcions del correu"
 
 #: ../src/lib/exporters/recipe_emailer.py:127
 msgid "Don't ask before sending e-mail."
-msgstr "No preguntar abans d'enviar l'e-mail"
+msgstr "No preguntis res abans d'enviar el correu."
 
 #: ../src/lib/exporters/recipe_emailer.py:144
 msgid "E-mail not sent"
-msgstr "L'e-mail no s'ha enviat"
+msgstr "No s'ha enviat el correu."
 
 #: ../src/lib/exporters/recipe_emailer.py:145
-msgid ""
-"You have not chosen to include the recipe in the body of the message or as "
-"an attachment."
-msgstr ""
-"No ha escollit incloure la recepta en el cos del missatge ni adjuntarla."
+msgid "You have not chosen to include the recipe in the body of the message or as an attachment."
+msgstr "No heu triat incloure la recepta en el cos del missatge ni com a adjunció."
 
 #: ../src/lib/exporters/winprinter.py:18
 #, python-format
-msgid ""
-"Ready to print your recipe through the PDF file %s. Unfortunately, we have "
-"no print preview - shall we go ahead and print?"
-msgstr ""
+msgid "Ready to print your recipe through the PDF file %s. Unfortunately, we have no print preview - shall we go ahead and print?"
+msgstr "La impressió de la recepta al fitxer PDF %s està preparada. Malauradament, no hi ha previsualització de la impressió. Voleu continuar i imprimir-ho?"
 
 #: ../src/lib/exporters/winprinter.py:27
 msgid "Print job sent"
-msgstr ""
+msgstr "S'ha enviat la tasca d'impressió"
 
 #: ../src/lib/exporters/winprinter.py:28
-msgid ""
-"Print job has been sent. If something goes wrong, you can open the PDF file "
-"and try printing again."
-msgstr ""
+msgid "Print job has been sent. If something goes wrong, you can open the PDF file and try printing again."
+msgstr "S'ha enviat la tasca d'impressió. Si alguna cosa va malament, podeu obrir el fitxer PDF i mirar d'imprimir-lo un altre cop."
 
 #: ../src/lib/exporters/winprinter.py:30
 msgid "Print job cancelled"
-msgstr ""
+msgstr "S'ha canceŀlat la tasca d'impressió"
 
 #: ../src/lib/exporters/winprinter.py:31
 msgid "If you'd like, you can open the PDF file."
-msgstr ""
+msgstr "Si voleu, podeu obrir el fitxer PDF."
 
-#~ msgid "E-_mail recipes"
-#~ msgstr "Enviar recepta per e-_mail"
-
-#~ msgid "Limiting Search to: "
-#~ msgstr "Limitar Cerca a: "
-
-#~ msgid "_Export"
-#~ msgstr "_Exportar"
-
-#~ msgid "<b>Title</b>"
-#~ msgstr "<b>Títol</b>"
-
-#~ msgid "Add this recipe to a shopping list"
-#~ msgstr "Afegeix aquesta recepta a una llista de compra"
-
-#~ msgid "Create new ingredient"
-#~ msgstr "Crea un nou ingredient"
-
-#, fuzzy
-#~ msgid "Ins_tructions"
-#~ msgstr "Ins_truccions"
-
-#~ msgid "Pre_paration Time: "
-#~ msgstr "Temps de Pre_paració: "
-
-#, fuzzy
-#~ msgid "S_hopping Category: "
-#~ msgstr "Catego_ria de compra: "
-
-#~ msgid "_Delete Ingredient"
-#~ msgstr "E_limina l'Ingredient"
-
-#~ msgid "_Descriptions"
-#~ msgstr "_Descripcions"
-
-#, fuzzy
-#~ msgid "_Ingredients"
-#~ msgstr "_Ingredients"
-
-#~ msgid "_Servings: "
-#~ msgstr "Racion_s: "
-
-#~ msgid "_Title: "
-#~ msgstr "_Títol: "
-
-#~ msgid "_Unit: "
-#~ msgstr "_Unitat: "
-
-#~ msgid "Advanced"
-#~ msgstr "Avançat"
-
-#~ msgid "Advanced Search"
-#~ msgstr "Cerca Avançada"
-
-#~ msgid "Limit search by this term"
-#~ msgstr "Limita la cerca per aquest terme"
-
-#~ msgid "Search _by"
-#~ msgstr "_Cerca per"
-
-#, fuzzy
-#~ msgid "Search as you type"
-#~ msgstr "Cerca mentre escriviu"
-
-#~ msgid "Shopping list for: "
-#~ msgstr "Llista de la compra per: "
-
-#~ msgid "Printing not supported"
-#~ msgstr "No es pot imprimir"
-
-#~ msgid ""
-#~ "To print recipes, first export them, then print from another program. If you "
-#~ "install wxWindows, you can print directly from Gourmet."
-#~ msgstr ""
-#~ "Per imprimir les receptes, primer exporti-les, després imprimeixi-les amb un "
-#~ "altre programa. Si instal·la wxWindows, pots imprimir directament desde "
-#~ "Gourmet."
