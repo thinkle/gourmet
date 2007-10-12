@@ -333,7 +333,7 @@ class RecGui (RecIndex):
                 pass
             about.show()
         except ImportError:
-            sublabel = '%s\n%s'%(copyright,description)
+            sublabel = '%s\n%s\n'%(copyright,description)
             for a in authors:
                 sublabel += '\n%s'%a
             if translator:
@@ -342,7 +342,7 @@ class RecGui (RecIndex):
                 sublabel += _('\nWebsite: %s')%website
             import xml.sax.saxutils
             de.show_message(label=xml.sax.saxutils.escape('%s %s'%(appname,myversion)),
-                            sublabel=sublabel) #new line that leaves strings as they are.
+                            sublabel=xml.sax.saxutils.escape(sublabel)) #new line that leaves strings as they are.
             
     def show_help (self, *args):
         de.show_faq(HELP_FILE)

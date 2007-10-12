@@ -1,3 +1,7 @@
+2007-10-12  Thomas Mills HInkle  <thomas_hinkle@sf.net>
+
+	* Fix non-GNOME fallback about dialog in GourmetRecipeManager.py
+
 2007-09-12  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* i18n/ca.po Updated Catalan translation from Raul Cambero.
