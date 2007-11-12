@@ -1,10 +1,9 @@
 import sql_db, rdatabase
 try:
     import sqlite3 as sqlite
-    print 'Using sqlite3'
 except ImportError:
     from pysqlite2 import dbapi2 as sqlite
-    print 'Using sqlite2'
+
 import os, os.path, re
 import gourmet.gglobals as gglobals
 from gourmet import keymanager
