@@ -47,15 +47,31 @@ def modules_check():
         raise
     mod_list = [#'metakit',
         'Image',
-        'pysqlite2',
+        'reportlab',
+        ('pysqlite2','sqlite3')
         ]
     ok = 1
     for m in mod_list:
-        try:
-            exec('import %s' % m)
-        except ImportError:
-            ok = False
-            print 'Error: %s Python module is required to install %s' \
+        if type(m)==tuple:
+            have_mod = False
+            for mod in m:
+                try:
+                    exec('import %s'%mod)
+                except ImportError:
+                    pass
+                else:
+                    have_mod = True
+            if not have_mod:
+                ok = False
+                print 'Error: %s is Python module is required to install %s'%(
+                    ' or '.join(m), name.title()
+                    )
+        else:
+            try:
+                exec('import %s' % m)
+            except ImportError:
+                ok = False
+                print 'Error: %s Python module is required to install %s' \
                   % (m, name.title())
     recommended_mod_list = ['PyRTF']
     for m in recommended_mod_list:
