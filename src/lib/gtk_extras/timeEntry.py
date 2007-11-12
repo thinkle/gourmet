@@ -15,11 +15,11 @@
 ### Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 ### 02111-1307, USA.
 
-import gtk, re, cb_extras, gobject, time
+import gtk, re, gobject, time
 from gettext import gettext as _
-import convert
+import gourmet.convert as convert
 import gobject
-import validatingEntry
+import cb_extras, validatingEntry
 
 TIME_TO_READ = 1000
 

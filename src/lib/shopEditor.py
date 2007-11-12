@@ -1,8 +1,8 @@
 import gtk, gtk.glade, gobject, rmetakit, re, pickle
 from gglobals import *
-import WidgetSaver
-import cb_extras as cb
-import dialog_extras as de
+from gtk_extras import WidgetSaver
+from gtk_extras import cb_extras as cb
+from gtk_extras import dialog_extras as de
 
 class ShopEditor:
 

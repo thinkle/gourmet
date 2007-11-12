@@ -37,7 +37,7 @@ class SuspendableThread (threading.Thread):
             debug('SuspendableThread Running %s'%self.c,3)
             self.c.run()
         except Terminated:
-            import dialog_extras
+            from gtk_extras import dialog_extras
             dialog_extras.show_message(
                     label=_("%s stopped."%self.name.title()),
                     sublabel=_("%s was interrupted by user request."%self.name.title())
@@ -45,7 +45,7 @@ class SuspendableThread (threading.Thread):
         except:            
             if self.display_errors:
                 self._threads_enter()
-                import dialog_extras
+                from gtk_extras import dialog_extras
                 dialog_extras.show_traceback(
                     label=_("%s interrupted")%self.name.title(),
                     sublabel=_("There was an error during %s.")%self.name,

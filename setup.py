@@ -161,6 +161,8 @@ setup(
     modules_check = modules_check,
     packages = ['gourmet',
                 'gourmet.backends',
+                'gourmet.defaults',
+                'gourmet.gtk_extras',
                 'gourmet.importers',
                 'gourmet.importers.html_plugins',
                 'gourmet.exporters',

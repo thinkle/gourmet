@@ -16,7 +16,7 @@
 ### 02111-1307, USA.
 
 import pango,gtk, xml.sax.saxutils
-from gdebug import *
+from gourmet.gdebug import *
 
 class PangoBuffer (gtk.TextBuffer):
     desc_to_attr_table = {

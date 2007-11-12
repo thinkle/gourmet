@@ -2,7 +2,7 @@ from gettext import gettext as _
 import convert, shopping, os.path
 import OptionParser
 import gglobals
-import dialog_extras as de
+from gtk_extras import dialog_extras as de
 
 db=gglobals.db
 dbargs = gglobals.dbargs

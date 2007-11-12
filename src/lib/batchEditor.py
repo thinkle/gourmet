@@ -1,7 +1,7 @@
 import os
 import gtk, gtk.glade
 import gglobals
-import ratingWidget, timeEntry, cb_extras
+from gtk_extras import ratingWidget, timeEntry, cb_extras
 
 class BatchEditor:
 

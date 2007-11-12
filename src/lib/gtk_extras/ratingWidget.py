@@ -1,8 +1,7 @@
 import gtk, gtk.gdk
 import gobject
-import gglobals
+import gourmet.gglobals as gglobals
 import Image, os.path
-import gglobals
 from gettext import gettext as _
 import tempfile
 

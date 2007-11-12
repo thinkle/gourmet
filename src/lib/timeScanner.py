@@ -2,7 +2,7 @@
 user clicks on any time in the TextView."""
 
 import convert, re, gtk, gobject
-import LinkedTextView
+from gtk_extras import LinkedTextView
 import timer
 
 all_units = []

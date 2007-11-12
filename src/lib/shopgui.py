@@ -1,16 +1,17 @@
  #!/usr/bin/env python
 import gtk.glade, gtk, gobject, pango, sys, os.path, time, os, string
-import recipeManager, convert, WidgetSaver, reccard
-import dialog_extras as de
-import treeview_extras as te
+import recipeManager, convert, reccard
+from gtk_extras import WidgetSaver, mnemonic_manager
+from gtk_extras import dialog_extras as de
+from gtk_extras import treeview_extras as te
 import exporters.printer as printer
 from gdebug import *
 from gglobals import *
 from gettext import gettext as _
 from nutrition.nutritionLabel import NutritionLabel
 from nutrition.nutrition import NutritionInfoList
-from FauxActionGroups import ActionManager
-import mnemonic_manager
+from gtk_extras.FauxActionGroups import ActionManager
+
 
 class ShopGui (ActionManager):
     """A class to manage our shopping window."""

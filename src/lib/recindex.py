@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 import gtk.glade, gtk, time, re, gtk.gdk, gobject, pango
-import WidgetSaver, Undo, ratingWidget
+from gtk_extras import WidgetSaver, ratingWidget
 from ImageExtras import get_pixbuf_from_jpg
-import dialog_extras as de
-import treeview_extras as te
-import cb_extras as cb
-import convert
+from gtk_extras import dialog_extras as de
+from gtk_extras import treeview_extras as te
+from gtk_extras import cb_extras as cb
+import convert, Undo
 from gglobals import *
 from gdebug import debug
-import mnemonic_manager
-import pageable_store
+from gtk_extras import mnemonic_manager
+from gtk_extras import pageable_store
 from gettext import gettext as _
 from gettext import ngettext
 

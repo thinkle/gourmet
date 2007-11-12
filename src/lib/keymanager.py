@@ -1,6 +1,6 @@
 import string, re, time, sys
-from defaults import lang as defaults
-from defaults import langProperties as langProperties
+from defaults.defaults import lang as defaults
+from defaults.defaults import langProperties as langProperties
 from gdebug import *
 
 note_separator_regexp = '(;|\s+-\s+|--)'

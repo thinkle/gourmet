@@ -4,15 +4,16 @@ import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, 
 import types
 import xml.sax.saxutils, pango
 import exporters
-import convert, TextBufferMarkup, types
+import convert, types
 from recindex import RecIndex
-import prefs, WidgetSaver, timeEntry, Undo, ratingWidget
-import keymanager
-import dialog_extras as de
-from dialog_extras import show_amount_error
-import treeview_extras as te
-import cb_extras as cb
-import chooserNotebook
+import prefs
+import keymanager, Undo
+from gtk_extras import WidgetSaver, timeEntry, ratingWidget, TextBufferMarkup
+from gtk_extras import dialog_extras as de
+from gtk_extras.dialog_extras import show_amount_error
+from gtk_extras import treeview_extras as te
+from gtk_extras import cb_extras as cb
+from gtk_extras import chooserNotebook
 import exporters.printer as printer
 from gdebug import *
 from gglobals import *
@@ -22,10 +23,11 @@ from gettext import gettext as _
 from gettext import ngettext
 import ImageExtras as ie
 from importers.importer import parse_range
-from FauxActionGroups import ActionManager
-import mnemonic_manager
+from gtk_extras.FauxActionGroups import ActionManager
+from gtk_extras import mnemonic_manager
+from gtk_extras import LinkedTextView
+import timeScanner
 
-import LinkedTextView, timeScanner
 from timer import show_timer
 
 class RecRef:
@@ -3049,7 +3051,7 @@ class IngInfo:
         for i in self.rd.get_unique_values('item',table=self.rd.iview,deleted=False):
             self.item_model.append([i])
         if len(self.item_model)==0:
-            import defaults
+            import defaults.defaults
             for i,k,c in defaults.lang.INGREDIENT_DATA:
                 self.item_model.append([i])
         

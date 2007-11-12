@@ -8,10 +8,11 @@ import nutrition.nutrition, nutrition.nutritionGrabberGui
 import exporters.printer as printer
 import prefs, prefsGui, shopgui, reccard, convertGui, fnmatch, tempfile
 import exporters, importers
-import convert, WidgetSaver, version, ratingWidget
+import convert, version
+from gtk_extras import ratingWidget, WidgetSaver
 import importers.mastercook_importer as mastercook_importer
-import dialog_extras as de
-import treeview_extras as te
+from gtk_extras import dialog_extras as de
+from gtk_extras import treeview_extras as te
 from ImageExtras import get_pixbuf_from_jpg
 from gdebug import *
 from gglobals import *
@@ -21,7 +22,7 @@ import exporters.recipe_emailer as recipe_emailer
 import locale, gettext
 from timer import show_timer
 _ = gettext.gettext
-from defaults import lang as defaults
+from defaults.defaults import lang as defaults
 
 from zipfile import BadZipfile
 

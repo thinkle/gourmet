@@ -1,5 +1,5 @@
 import gtk, gobject
-from gdebug import debug
+from gourmet.gdebug import debug
 
 class FocusFixer:
     key = None

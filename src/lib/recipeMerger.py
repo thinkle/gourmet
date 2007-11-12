@@ -5,8 +5,8 @@ recipes.
 """
 import gtk, os.path, time
 import recipeIdentifier
-import ratingWidget, convert
-import mnemonic_manager
+from gtk_extras import ratingWidget, mnemonic_manager
+import convert
 import gglobals
 import convert
 from gettext import gettext as _

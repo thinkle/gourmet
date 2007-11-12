@@ -18,7 +18,7 @@
 
 import validatingEntry
 import gtk, gobject
-import convert
+import gourmet.convert as convert
 import re
 from gettext import gettext as _
 

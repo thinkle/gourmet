@@ -296,7 +296,7 @@ def is_on_system (app):
     if p.read():
         return app
     
-import dialog_extras
+from gtk_extras import dialog_extras
 
 def launch_url (url, ext=""):
     if os.name == 'nt':

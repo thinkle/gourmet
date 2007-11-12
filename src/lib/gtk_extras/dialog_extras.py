@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-import gtk, gobject, os.path, optionTable, thumbnail, cb_extras, fnmatch
-import gglobals, re
+import gtk, gobject, os.path, optionTable, thumbnail, cb_extras, fnmatch,  re
 import pango
 import xml.sax.saxutils
 from gettext import gettext as _
-from gdebug import debug
+from gourmet.gdebug import debug
 H_PADDING=12
 Y_PADDING=12
 

@@ -1,5 +1,6 @@
 import gtk, gtk.glade, os.path
-import backends.rdatabase, gglobals, optionTable
+import backends.rdatabase, gglobals
+from gtk_extras import optionTable
 
 class PreferencesGui:
     """The glue between our glade preferences dialog and our prefs modules.

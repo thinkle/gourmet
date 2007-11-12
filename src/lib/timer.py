@@ -1,7 +1,7 @@
 import gtk, gtk.glade, gobject, time, gglobals, os
 import xml.sax.saxutils
 from sound import Player
-import cb_extras as cb
+from gtk_extras import cb_extras as cb
 from gettext import gettext as _
 
 class TimeSpinnerGlade:
@@ -89,7 +89,7 @@ class TimeSpinnerGlade:
         for h in self.timer_hooks: h()
 
 
-import dialog_extras as de
+from gtk_extras import dialog_extras as de
 
 class TimerDialog:
 

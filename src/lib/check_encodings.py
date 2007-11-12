@@ -1,6 +1,6 @@
 import gtk
 from gdebug import debug
-import dialog_extras as de
+from gtk_extras import dialog_extras as de
 from gettext import gettext as _
 
 class CheckEncoding:

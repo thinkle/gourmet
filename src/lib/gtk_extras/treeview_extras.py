@@ -1,5 +1,5 @@
 #!/usr/bin/python2.3
-from gdebug import *
+from gourmet.gdebug import *
 import gtk
 
 def path_next (path, inc=1):

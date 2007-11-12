@@ -1,12 +1,10 @@
 import gtk, gtk.glade, gobject, re, os, os.path
 import gglobals, convert
-import WidgetSaver
-import cb_extras as cb
-import dialog_extras as de
+from gtk_extras import WidgetSaver, mnemonic_manager, pageable_store
+from gtk_extras import cb_extras as cb
+from gtk_extras import dialog_extras as de
 from gettext import gettext as _
 from gettext import ngettext
-import mnemonic_manager
-import pageable_store
 import nutrition.nutritionDruid as nutritionDruid
 
 class KeyEditor:

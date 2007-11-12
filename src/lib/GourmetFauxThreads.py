@@ -4,7 +4,7 @@
 # presents our own threading style routines go Gourmet but doesn't actually
 # do any threading.
 
-import dialog_extras as de
+from gtk_extras import dialog_extras as de
 import GourmetThreads, gtk
 from gdebug import *
 from gettext import gettext as _

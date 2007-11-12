@@ -255,7 +255,7 @@ class shopper:
         return self.orgcats
 
 def setup_default_orgdic ():
-    from defaults import lang as defaults
+    from defaults.defaults import lang as defaults
     return defaults.shopdic
 
 class shopperTestCase (unittest.TestCase):

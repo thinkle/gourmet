@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import re, locale
-from defaults import lang as defaults
+from defaults.defaults import lang as defaults
 from gettext import gettext as _
 from gettext import ngettext
 from gdebug import *

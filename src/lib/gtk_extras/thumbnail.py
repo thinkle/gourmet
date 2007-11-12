@@ -1,5 +1,5 @@
 import Image, urllib, md5, os.path, os, StringIO
-from gdebug import debug
+from gourmet.gdebug import debug
 
 MAX_THUMBSIZE=10000000
 
