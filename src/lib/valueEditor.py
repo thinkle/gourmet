@@ -1,7 +1,7 @@
 import gtk, gtk.glade, gobject
 import gglobals, convert, os.path
-import cb_extras as cb
-import dialog_extras as de
+from gtk_extras import cb_extras as cb
+from gtk_extras import dialog_extras as de
 from gettext import ngettext
 from gettext import gettext as _
 

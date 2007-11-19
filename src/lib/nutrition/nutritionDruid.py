@@ -9,7 +9,7 @@ from nutritionInfoEditor import NutritionInfoIndex,MockObject
 from gourmet.numberEntry import NumberEntry
 import gourmet.cb_extras as cb
 import gourmet.dialog_extras as de
-import gourmet.WidgetSaver as WidgetSaver
+import gourmet.gtk_extras.WidgetSaver as WidgetSaver
 import re
 import os,os.path
 from gettext import gettext as _

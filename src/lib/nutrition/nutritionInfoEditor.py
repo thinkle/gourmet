@@ -1,5 +1,5 @@
 import gtk, gtk.glade, gobject
-import gourmet.pageable_store as pageable_store
+import gourmet.gtk_extras.pageable_store as pageable_store
 import gourmet.gglobals as gglobals
 import os, re
 import gourmet.cb_extras as cb
