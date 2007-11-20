@@ -1,3 +1,9 @@
+2007-11-19  Thomas Mills HInkle  <thomas_hinkle@sf.net>
+
+	* src/lib/exporters/gxml2_exporter.py Rearrange order of
+	attributes to be slightly more logical (with link following
+	source, since they are related).
+
 2007-11-11  Thomas Mills HInkle  <thomas_hinkle@sf.net>
 
 	* everything or close to it: Rearrange code -- move all defaults_*

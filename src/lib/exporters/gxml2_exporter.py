@@ -112,11 +112,12 @@ class rview_to_xml (exporter.ExporterMultirec, XmlExporter):
                              'xmlDoc':self.xmlDoc,
                              # This order is now in our DTD so we'd
                              # better make it solid.
-                             'attr_order':('title','category',
-                                           'cuisine','source',
-                                           'rating','preptime',
-                                           'cooktime','servings',
-                                           'link'
+                             'attr_order':('title',
+                                           'category','cuisine',
+                                           'source','link',
+                                           'rating',
+                                           'preptime','cooktime',
+                                           'servings',
                                            ),
                              'order':['attr','image','ings','text'],
                              }
