@@ -3,7 +3,7 @@ from gettext import gettext as _
 from gdebug import debug
 import unittest
 
-class shopper:
+class Shopper:
     def __init__ (self, inglist):
         """We expect a list of tuples/lists, each of which contains
         amount, unit, key [[amt,un,key],[amt,un,key],...]
@@ -246,7 +246,7 @@ class shopper:
             self.pantry[i]=True
             
     def get_orgcats (self):
-        """Return a list of categories being used for our shopper"""
+        """Return a list of categories being used for our Shopper"""
         self.orgcats=[]
         for v in self.orgdic.values():
             if v and (v not in  self.orgcats):
@@ -258,16 +258,16 @@ def setup_default_orgdic ():
     from defaults.defaults import lang as defaults
     return defaults.shopdic
 
-class shopperTestCase (unittest.TestCase):
+class ShopperTestCase (unittest.TestCase):
     def testAddition (self):
-        sh = shopper([('1','tsp.','pepper'),
+        sh = Shopper([('1','tsp.','pepper'),
                       ('1','tsp.','pepper')])
         assert(
             sh.dic['pepper'][0][0] == 2
             )
 
     def testUnitConversion (self):
-        sh = shopper([('1','tsp.','pepper'),
+        sh = Shopper([('1','tsp.','pepper'),
                       ('1','tsp.','pepper'),
                       ('1','tsp.','pepper'),])
         assert(
@@ -278,7 +278,7 @@ class shopperTestCase (unittest.TestCase):
             )
 
     def testRangeAddition (self):
-        sh = shopper([
+        sh = Shopper([
             ((1,2),'c.','milk'),
             (1,'c.','milk')]
                      )

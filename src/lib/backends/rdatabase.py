@@ -990,7 +990,7 @@ class RecData:
                     self.delete_by_criteria(self.ikview,{'word':w,'ingkey':key})
 
     def ing_shopper (self, view):
-        return mkShopper(self.ingview_to_lst(view))
+        return DatabaseShopper(self.ingview_to_lst(view))
 
     # functions to undoably modify tables 
 
@@ -1203,13 +1203,13 @@ class RecipeManager (RecData):
         for v in vw1,vw2:
             for i in v: self.modify_ing(i,{'shopoptional':0})
 
-class mkConverter(convert.converter):
+class DatabaseConverter(convert.converter):
     def __init__ (self, db):
         self.db = db
         convert.converter.__init__(self)
     ## still need to finish this class and then
     ## replace calls to convert.converter with
-    ## calls to rmetakit.mkConverter
+    ## calls to rmetakit.DatabaseConverter
 
     def create_conv_table (self):
         self.conv_table = dbDic('ckey','value',self.db.cview, self.db,

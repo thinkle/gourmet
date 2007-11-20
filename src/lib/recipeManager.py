@@ -41,16 +41,16 @@ elif db=='sqlite':
 elif db=='mysql':
     from backends.rmysql import *
     
-class mkShopper (shopping.shopper):
-    """We are a shopper class that conveniently saves our key dictionaries
-    in our metakit database"""
+class DatabaseShopper (shopping.Shopper):
+    """We are a Shopper class that conveniently saves our key dictionaries
+    in our database"""
     def __init__ (self, lst, db, conv=None):
         self.db = db
         self.cnv = conv
-        shopping.shopper.__init__(self,lst)
+        shopping.Shopper.__init__(self,lst)
 
     def init_converter (self):
-        #self.cnv = mkConverter(self.db)
+        #self.cnv = DatabaseConverter(self.db)
         if not self.cnv:
             self.cnv = convert.converter()
     
@@ -83,13 +83,13 @@ class mkShopper (shopping.shopper):
                 self.pantry[i]=True
 
     
-class mkConverter(convert.converter):
+class DatabaseConverter(convert.converter):
     def __init__ (self, db):
         self.db = db
         convert.converter.__init__(self)
     ## still need to finish this class and then
     ## replace calls to convert.converter with
-    ## calls to rmetakit.mkConverter
+    ## calls to rmetakit.DatabaseConverter
 
     def create_conv_table (self):
         self.conv_table = dbDic('ckey','value',self.db.cview, self.db,

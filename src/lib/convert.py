@@ -37,7 +37,7 @@ class PossiblyCaseInsensitiveDictionary (dict):
         dict.__getitem__(self,k)
         
 
-class converter:
+class Converter:
 
     unit_to_seconds = {
     'seconds':1,
@@ -549,7 +549,7 @@ time_formatters = {
 def seconds_to_timestring (time, round_at=None, fractions=FRACTIONS_NORMAL):
     time = int(time)
     time_strings = []
-    units = converter.unit_to_seconds.items()
+    units = Converter.unit_to_seconds.items()
     units.sort(lambda a,b: a[1]<b[1] and 1 or a[1]>b[1] and -1 or 0)
     for unit,divisor in units:  
         time_covered = time / int(divisor)
@@ -945,9 +945,9 @@ def frac_to_float (s):
 
 
 if __name__ == '__main__' and False:
-    class interactive:
+    class InteractiveConverter:
         def __init__ (self):
-            self.c = converter()
+            self.c = Converter()
             self.options = {'Convert':self.converter,
                             'Add':self.adder,
                             'Adjust':self.adjuster,
@@ -1023,4 +1023,4 @@ if __name__ == '__main__' and False:
             sys.exit()
         
     
-    #i=interactive()
+    #i=InteractiveConverter()

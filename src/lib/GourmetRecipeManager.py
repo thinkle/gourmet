@@ -489,8 +489,8 @@ class RecGui (RecIndex):
         # a flag to make deleting multiple recs
         # more efficient...
         self.doing_multiple_deletions=False
-        #self.conv = rmetakit.mkConverter(self.rd)
-        self.conv = convert.converter()
+        #self.conv = rmetakit.DatabaseConverter(self.rd)
+        self.conv = convert.Converter()
         # initialize our nutritional database
         nutrition.nutritionGrabberGui.check_for_db(self.rd)
         self.nd = nutrition.nutrition.NutritionData(self.rd,self.conv)

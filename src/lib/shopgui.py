@@ -578,7 +578,7 @@ class ShopGui (ActionManager):
         lst = start[0:]
         for rec,mult in recs:
             lst.extend(self.grabIngFromRec(rec,mult=mult))
-        self.sh = recipeManager.mkShopper(lst, self.rg.rd, conv=self.conv)
+        self.sh = recipeManager.DatabaseShopper(lst, self.rg.rd, conv=self.conv)
         data = self.sh.organize(self.sh.dic)
         pantry = self.sh.organize(self.sh.mypantry)
         debug("returning: data=%s pantry=%s"%(data,pantry),5)
@@ -669,7 +669,7 @@ class ShopGui (ActionManager):
 
     def setup_shop_dialog (self):
         self.orgdic = self.sh.orgdic
-        self.sie = shopIngredientEditor(self.rg, self)
+        self.sie = ShopIngredientEditor(self.rg, self)
 
     def message (self, txt):
         debug("message (self, txt): %s"%txt,5)
@@ -764,7 +764,7 @@ class OptionalIngDialog (de.ModalDialog):
                 else: self.rg.rd.modify_ing(ing,{'shopoptional':1})
         return self.ret
 
-class shopIngredientEditor (reccard.IngredientEditor):
+class ShopIngredientEditor (reccard.IngredientEditor):
     def __init__ (self, RecGui, ShopGui):
         self.sg = ShopGui
         self.last_key = ""

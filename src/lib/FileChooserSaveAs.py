@@ -2,7 +2,7 @@ import gtk, gobject, os.path, fnmatch
 
 from gettext import gettext as _
 
-class select_file_dialog:
+class FileSelectorDialog:
     """We set up a file dialog.  If we are SAVEing and we have filters,
     we set up a nice ComboBox to let the user choose the filetype of the file,
     trying to immitate the functionality described here:
@@ -253,7 +253,7 @@ def saveas_file (title,
     """Select a file and return a tuple containing
     the filename and the export type (the string the user selected)"""
 
-    sfd=select_file_dialog(title,filename=filename,filters=filters,
+    sfd=FileSelectorDialog(title,filename=filename,filters=filters,
                            action=action,set_filter=set_filter,buttons=buttons,
                            show_filetype=show_filetype,parent=parent)
     retval = sfd.run()
