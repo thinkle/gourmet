@@ -1,5 +1,7 @@
 TODO
 
+SEE http://grecipe-manager.wiki.sourceforge.net/TODO
+
 * Finalize interface for duplicates
    Build an interface to find duplicate recipes, warn of duplicate
    imports, etc.
