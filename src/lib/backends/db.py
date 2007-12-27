@@ -13,7 +13,6 @@ from gourmet.defaults import lang as defaults
 import gourmet.nutrition.parser_data
 import StringIO
 from gourmet import ImageExtras
-import unittest
 import gourmet.version
 import gourmet.recipeIdentifier as recipeIdentifier
 
@@ -102,11 +101,17 @@ class RecData:
         ]
 
 
-    def __init__ (self, file=os.path.join(gglobals.gourmetdir,'recipes.db')):
+    def __init__ (self, file=os.path.join(gglobals.gourmetdir,'recipes.db'),
+                  custom_url=None):
         # hooks run after adding, modifying or deleting a recipe.
         # Each hook is handed the recipe, except for delete_hooks,
         # which is handed the ID (since the recipe has been deleted)
-        self.filename = file
+        if custom_url:
+            self.url = custom_url
+            self.filename = None
+        else:
+            self.filename = file
+            self.url = 'sqlite:///' + self.filename
         self.add_hooks = []
         self.modify_hooks = []
         self.delete_hooks = []
@@ -120,11 +125,14 @@ class RecData:
 
     def initialize_connection (self):
         """Initialize our database connection.
-
+        
         This should also set self.new_db accordingly"""
-        self.new_db = not os.path.exists(self.filename)
-        print 'Connecting to file ',self.filename
-        self.db = sqlalchemy.create_engine('sqlite:///'+self.filename)
+        if self.filename:
+            self.new_db = not os.path.exists(self.filename)
+            print 'Connecting to file ',self.filename
+        else:
+            self.new_db = True # ??? How will we do this now?
+        self.db = sqlalchemy.create_engine(self.url)
         self.metadata = sqlalchemy.MetaData(self.db)
         self.session = sqlalchemy.create_session()
         #raise NotImplementedError
@@ -135,13 +143,12 @@ class RecData:
                 return False
         def instr(s,subs): return s.lower().find(subs.lower())+1
         # Workaround to create REGEXP function in sqlite
-        sqlite_connection = self.db.connect().connection
-        sqlite_connection.create_function('regexp',2,regexp)
-        print 'DEBUG DEBUG DEBUG'
-        c = sqlite_connection.cursor()
-        c.execute('select name from sqlite_master')
-        for row in c.fetchall(): print row[0]
-        #sqlite_connection.create_function('instr',2,instr)
+        if self.url.startswith('sqlite'):
+            sqlite_connection = self.db.connect().connection
+            sqlite_connection.create_function('regexp',2,regexp)
+            c = sqlite_connection.cursor()
+            c.execute('select name from sqlite_master')
+            #sqlite_connection.create_function('instr',2,instr)
 
     def save (self):
         """Save our database (if we have a separate 'save' concept)"""
@@ -326,19 +333,7 @@ class RecData:
             pass
         self.__setup_object_for_table(self.convtable_table, Convtable)
 
-    def setup_nutrition_tables (self):
-
-        cols = [Column(name,map_type_to_sqlalchemy(typ),**(name=='ndbno' and {'primary_key':True} or {}))
-                 for lname,name,typ in gourmet.nutrition.parser_data.NUTRITION_FIELDS
-                 ] + [Column('foodgroup',String(length=None),**{})]
-        print 'nutrition cols:',cols
-        self.nutrition_table = Table('nutrition',self.metadata,
-                                     *cols
-                                     )
-        class Nutrition (object):
-            pass
-        self.__setup_object_for_table(self.nutrition_table, Nutrition)
-        
+    def setup_usda_weights_table (self):
         self.usda_weights_table = Table('usda_weights',self.metadata,
                                         Column('id',Integer(),primary_key=True),
                                         *[Column(name,map_type_to_sqlalchemy(typ),**{})
@@ -347,6 +342,21 @@ class RecData:
         class UsdaWeight (object):
             pass
         self.__setup_object_for_table(self.usda_weights_table, UsdaWeight)
+
+    def setup_nutrition_tables (self):
+
+        cols = [Column(name,map_type_to_sqlalchemy(typ),**(name=='ndbno' and {'primary_key':True} or {}))
+                 for lname,name,typ in gourmet.nutrition.parser_data.NUTRITION_FIELDS
+                 ] + [Column('foodgroup',String(length=None),**{})]
+        #print 'nutrition cols:',cols
+        self.nutrition_table = Table('nutrition',self.metadata,
+                                     *cols
+                                     )
+        class Nutrition (object):
+            pass
+        self.__setup_object_for_table(self.nutrition_table, Nutrition)
+        
+        self.setup_usda_weights_table()
 
         self.nutritionaliases_table = Table('nutritionaliases',self.metadata,                                            
                                             Column('ingkey',String(length=None),**{'primary_key':True}),
@@ -367,7 +377,6 @@ class RecData:
         
         for table in self.tables:
             name,columns = table
-            print 'Setup ',name
             setattr(self,name+'_table',
                     Table(name,
                           self.metadata,
@@ -406,7 +415,7 @@ class RecData:
 
             # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up keylookup_table tables...
             # We don't actually do this yet... (FIXME)
-            print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
+            #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
             if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
                 print 'Fixing broken ingredient-key view from earlier versions.'
                 # Drop keylookup_table table, which wasn't being properly kept up
@@ -422,10 +431,10 @@ class RecData:
                 # (i.e. the column named 'id' should always be a unique
                 # identifier for a given table -- it should not be used to
                 # refer to the IDs from *other* tables
-                print 'METADATA TABLES:', self.metadata.tables
+                print 'Upgrade from < 0.14'
                 self.alter_table('categories',self.setup_category_table,
                                  {'id':'recipe_id'},['category'])
-                print 'RECREATE INGREDIENTS TABLE'
+                print 'RECREATE INGREDIENTS TABLE (This could take a while...)'
                 self.alter_table('ingredients',self.setup_ingredient_table,
                                  {'id':'recipe_id'},
                                  ['refid', 'unit', 'amount', 'rangeamount',
@@ -434,6 +443,9 @@ class RecData:
                 print 'RECREATE KEYLOOKUP TABLE'
                 self.alter_table('keylookup',self.setup_keylookup_table,
                                  {},['word','item','ingkey','count'])
+                print 'RECREATE USDA WEIGHTS TABLE'
+                self.alter_table('usda_weights',self.setup_usda_weights_table,{},
+                                 [name for lname,name,typ in gourmet.nutrition.parser_data.WEIGHT_FIELDS])
             # Add recipe_hash, ingredient_hash and link fields
             # (These all get added in 0.13.0)
             if stored_info.version_super == 0 and stored_info.version_major <= 12:
@@ -637,7 +649,6 @@ class RecData:
 
         sort_by is a list of tuples (column,1) [ASCENDING] or (column,-1) [DESCENDING]
         """
-        print 'SEARCH',searches
         criteria = self.get_criteria((searches,'and'))
         return sqlalchemy.select([self.recipe_table],criteria,distinct=True,
                                  order_by=make_order_by(sort_by,self.recipe_table)
@@ -945,7 +956,7 @@ class RecData:
         if not rdict.has_key('deleted'):
             rdict['deleted']=0
         insert_statement = self.recipe_table.insert()
-        select = self.recipe_table.select(db.recipe_table.c.id==insert_statement.execute(**rdict).lastrowid)
+        select = self.recipe_table.select(self.recipe_table.c.id==insert_statement.execute(**rdict).lastrowid)
         return select.execute().fetchone()
 
     def validate_ingdic (self,dic):
@@ -1337,9 +1348,9 @@ class RecData:
     
 class RecipeManager (RecData):
     
-    def __init__ (self,file):
+    def __init__ (self,*args,**kwargs):
         debug('recipeManager.__init__()',3)
-        RecData.__init__(self,file=file)
+        RecData.__init__(self,*args,**kwargs)
         self.km = keymanager.KeyManager(rm=self)
         
     def key_search (self, ing):
@@ -1590,15 +1601,9 @@ def test_db ():
     import tempfile
     db = RecData(file=tempfile.mktemp())
     print 'BEGIN TESTING'
-    from rdatabase import test_db
+    from db_tests import test_db
     test_db(db)
     print 'END TESTING'
-
-def test_nut ():
-    print gglobals.gourmetdir
-    db = RecData()
-    db.fetch_join(db.nutritionaliases_table,db.nutrition_table,'ndbno','ndbno',sort_by=[('ingkey',1)])
-    return db
 
 def add_sample_recs ():
     for rec,ings in [[dict(title='Spaghetti',cuisine='Italian',category='Easy, Entree'),
