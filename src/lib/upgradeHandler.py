@@ -328,7 +328,7 @@ if __name__ == '__main__':
     recipeManager.dbargs['file']=tempfile.mktemp('.db')
     rm = recipeManager.RecipeManager(**recipeManager.dbargs)
     ofi = '/tmp/tmpCB4E9M.gourmet_dump'
-    from gtk_extras import gourmet.dialog_extras as de
+    from gtk_extras import dialog_extras as de
     import gtk
     pd = de.ProgressDialog()
     pd.show()

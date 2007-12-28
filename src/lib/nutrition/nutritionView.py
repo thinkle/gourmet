@@ -220,7 +220,7 @@ class NutritionItemView:
     def usdaChangedCB (self, *args):
         usda_choice = self.get_active_usda()
         ndbno = self.usdaDict[usda_choice]
-        self.nut = self.nd.db.nview.select({'ndbno':ndbno})[0]
+        self.nut = self.nd.db.nutrition_table.select({'ndbno':ndbno})[0]
         self.setup_unit_boxes(nutrow=self.nut)
         self.set_amount()
 
@@ -369,7 +369,7 @@ class NutritionCardViewOld:
         for i in self.rc.ings:
             aliasrow=self.get_nd().get_key(i.ingkey)
             if aliasrow:
-                nut_row = self.rc.rg.rd.nview.select({'ndbno':aliasrow.ndbno})
+                nut_row = self.rc.rg.rd.nutrition_table.select({'ndbno':aliasrow.ndbno})
             else:
                 nut_row = None
             self.nmodel.append([i,nut_row,i.ingkey])
@@ -465,7 +465,7 @@ class NutritionCardViewOld:
         ing=nmod.get_value(itr,self.ING_COL)
         # (make undoable!)
         #self.rc.rg.rd.undoable_modify_ing(ing,{'ingkey':key},self.rc.history)
-        row = self.rc.rg.rd.nview.select({'ndbno':ndbno})[0]
+        row = self.rc.rg.rd.nutrition_table.select({'ndbno':ndbno})[0]
         nmod.set_value(itr,self.NUT_COL,row)
         #nmod.set_value(itr,self.STR_COL,key)
 

@@ -520,7 +520,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         rec = self.rg.rd.get_rec(int(rid))
         if not rec:
             rec = self.rg.rd.fetch_one(
-                self.rg.rd.rview,
+                self.rg.rd.recipe_table,
                 title=rname
                 )
         if rec:
@@ -678,7 +678,7 @@ class RecCard (WidgetSaver.WidgetPrefs,ActionManager):
         # edits before getting the new recipe
         debug("updateRecipe (self, rec):",0)
         if type(rec) == int:
-            rec=self.rg.rd.fetch_one(self.rg.rd.rview,id=rec)
+            rec=self.rg.rd.fetch_one(self.rg.rd.recipe_table,id=rec)
         if not self.edited or de.getBoolean(parent=self.edit_window,
                                             label=_("Abandon your edits to %s?")%self.current_rec.title):
             self.updateRec(rec)
@@ -2776,7 +2776,7 @@ class IngredientEditor:
             else:
                 debug("keySet:  ingredient box was empty:",3)
                 thisKey=self.keyBox.entry.get_text()
-                ing = self.rg.rd.fetch_one(self.rg.rd.ikview, ingkey=thisKey)
+                ing = self.rg.rd.fetch_one(self.rg.rd.keylookup_table, ingkey=thisKey)
                 if hasattr(self,'ingBox'):
                     if ing:
                         self.ingBox.set_text( ing.item )
@@ -3046,9 +3046,9 @@ class IngInfo:
         self.rd.add_ing_hooks.append(self.add_ing)
 
     def make_item_model(self):
-        #unique_item_vw = self.rd.iview_not_deleted.counts(self.rd.iview_not_deleted.item, 'count')
+        #unique_item_vw = self.rd.ingredients_table_not_deleted.counts(self.rd.ingredients_table_not_deleted.item, 'count')
         self.item_model = gtk.ListStore(str)
-        for i in self.rd.get_unique_values('item',table=self.rd.iview,deleted=False):
+        for i in self.rd.get_unique_values('item',table=self.rd.ingredients_table,deleted=False):
             self.item_model.append([i])
         if len(self.item_model)==0:
             import defaults.defaults
@@ -3058,9 +3058,9 @@ class IngInfo:
     def make_key_model (self, myShopCategory):
         # make up the model for the combo box for the ingredient keys
         if myShopCategory:
-            unique_key_vw = self.rd.get_unique_values('ingkey',table=self.rd.sview, shopcategory=myShopCategory)
+            unique_key_vw = self.rd.get_unique_values('ingkey',table=self.rd.shopcats_table, shopcategory=myShopCategory)
         else:
-            unique_key_vw = self.rd.get_unique_values('ingkey',table=self.rd.ikview)
+            unique_key_vw = self.rd.get_unique_values('ingkey',table=self.rd.keylookup_table)
 
         # the key model by default stores a string and a list.
         self.key_model = gtk.ListStore(str)
@@ -3189,7 +3189,7 @@ if __name__ == '__main__':
     rg = GourmetRecipeManager.RecGui()
     rg.app.hide()
     try:
-        rc = RecCard(rg,rg.rd.fetch_one(rg.rd.rview))
+        rc = RecCard(rg,rg.rd.fetch_one(rg.rd.recipe_table))
         rc.display_window.connect('delete-event',
                                   lambda *args: gtk.main_quit()
                                   )

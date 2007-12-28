@@ -253,7 +253,7 @@ if __name__ == '__main__':
     
     #empty_hash = get_ingredient_hash([],None)
     #rr = {}; ii = {}; ir = {}; count = 0
-#     for rec in rd.fetch_all(rd.rview,deleted=False):
+#     for rec in rd.fetch_all(rd.recipe_table,deleted=False):
 #         count += 1
 #         rh,ih = hash_recipe(rec,rd)
 #         ch = rh+ih

@@ -2,7 +2,7 @@ import convert
 import gtk, gtk.glade
 from gglobals import *
 from gdebug import *
-from cb_extras import *
+from gtk_extras.cb_extras import *
 from gettext import gettext as _
 
 class ConvGui:

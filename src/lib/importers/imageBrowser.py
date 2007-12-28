@@ -1,7 +1,7 @@
 import gtk, gtk.gdk, gobject
 from gourmet.ImageExtras import get_pixbuf_from_jpg
 from gourmet.gtk_extras.thumbnail import check_for_thumbnail,fetched_uris
-from gourmet.dialog_extras import ModalDialog
+from gourmet.gtk_extras.dialog_extras import ModalDialog
 import unittest
 from gourmet.gdebug import debug,TimeAction
 import threading, Queue, time

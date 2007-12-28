@@ -170,7 +170,7 @@ class html_exporter (exporter_mult):
         return linkify(filename)
 
 class website_exporter (ExporterMultirec):
-    def __init__ (self, rd, rview, out, conv=None, ext='htm', copy_css=True,
+    def __init__ (self, rd, recipe_table, out, conv=None, ext='htm', copy_css=True,
                   css=os.path.join(gglobals.datad,'default.css'),
                   imagedir='pics' + os.path.sep,
                   index_rows=['title','category','cuisine','rating','servings'],
@@ -199,7 +199,7 @@ class website_exporter (ExporterMultirec):
                          'mult':mult}
         if conv:
             self.exportargs['conv']=conv
-        ExporterMultirec.__init__(self, rd, rview, out,
+        ExporterMultirec.__init__(self, rd, recipe_table, out,
                                   one_file=False,
                                   ext=self.ext,
                                   progress_func=progress_func,

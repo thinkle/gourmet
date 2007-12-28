@@ -280,7 +280,7 @@ class EdfgXml(exporter.exporter_mult):
         
 
 class EdfgXmlM(exporter.ExporterMultirec):
-    def __init__ (self, rd, rview, out, one_file=True, progress_func=None,
+    def __init__ (self, rd, recipe_table, out, one_file=True, progress_func=None,
         change_units=False, mult=1):
         self.rd=rd
         impl = xml.dom.getDOMImplementation()
@@ -290,7 +290,7 @@ class EdfgXmlM(exporter.ExporterMultirec):
         self.xmlDoc = impl.createDocument(None, "eatdrinkfeelgood", doctype)
         self.top_element = self.xmlDoc.documentElement
         exporter.ExporterMultirec.__init__(
-            self, rd, rview, out, one_file=True, ext='xml', exporter=EdfgXml,
+            self, rd, recipe_table, out, one_file=True, ext='xml', exporter=EdfgXml,
             progress_func=progress_func,
             exporter_kwargs={'change_units':change_units,
                              'mult':mult,
@@ -377,7 +377,7 @@ class ExportTestCase (unittest.TestCase):
         from gourmet.exporters import exporter
         e=EdfgXmlM(
             self.rd,
-            [self.rd.rview[k] for k in self.rd.rview],
+            [self.rd.recipe_table[k] for k in self.rd.recipe_table],
             self.out_file,
             #threaded = False
             )

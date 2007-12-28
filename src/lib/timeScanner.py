@@ -6,7 +6,7 @@ from gtk_extras import LinkedTextView
 import timer
 
 all_units = []
-for base,units in convert.converter.time_units:
+for base,units in convert.Converter.time_units:
     for u in units:
         u = re.escape(unicode(u))
         if u not in all_units: all_units.append(u)
@@ -68,7 +68,7 @@ if gtk.pygtk_version[1] < 8:
 if __name__ == '__main__':
     
     import gtk
-    c = convert.converter()
+    c = convert.Converter()
     tv = LinkedTimeView()
     tv.connect('time-link-activated',show_timer_cb,c)
     tv.get_buffer().set_text(

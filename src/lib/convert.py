@@ -83,7 +83,6 @@ class Converter:
         self.add_time_table()
         self.build_converter_dictionary()
         self.build_converter_dictionary(self.v2m_table,density=True)
-        
 
     def add_time_table (self):
         for u,conv in self.unit_to_seconds.items():
@@ -942,6 +941,11 @@ def frac_to_float (s):
         except:
             None
 
+#class ConverterSingleton:
+#    
+#    __impl == Converter
+#
+#    def __init__ (
 
 
 if __name__ == '__main__' and False:

@@ -142,10 +142,10 @@ class ImportTestCase (unittest.TestCase):
 
     def tearDown (self):
         print 'tearDown'
-        from exporters.gxml2_exporter import rview_to_xml as gxml_exporter
+        from exporters.gxml2_exporter import recipe_table_to_xml as gxml_exporter
         n = 1
         while os.path.exists('/tmp/gourmet_import_test_%s.grmt'%n): n+=1
-        ge=gxml_exporter(self.it.db,self.it.db.fetch_all(self.it.db.rview),'/tmp/gourmet_import_test_%s.grmt'%n)
+        ge=gxml_exporter(self.it.db,self.it.db.fetch_all(self.it.db.recipe_table),'/tmp/gourmet_import_test_%s.grmt'%n)
         ge.run()
 
     def testMastercookXML (self):

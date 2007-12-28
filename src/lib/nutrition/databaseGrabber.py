@@ -157,9 +157,9 @@ class DatabaseGrabber:
                 self.show_progress(float(n)/tot,_('Reading nutritional data: imported %s of %s entries.')%(n,tot))
             t = TimeAction('append to db',3)
             try:
-                self.db.do_add(self.db.nview,d)
+                self.db.do_add(self.db.nutrition_table,d)
             except:
-                print 'Error appending',d,'to nview'
+                print 'Error appending',d,'to nutrition_table'
                 raise
             t.end()                                
             tline.end()
@@ -180,9 +180,9 @@ class DatabaseGrabber:
             d = self.parse_line(l,WEIGHT_FIELDS)
             if d.has_key('stdev'): del d['stdev']
             try:
-                self.db.do_add(self.db.nwview,d)
+                self.db.do_add(self.db.usda_weights_table,d)
             except:
-                print "Error appending ",d,"to nwview"
+                print "Error appending ",d,"to usda_weights_table"
                 raise
             
 

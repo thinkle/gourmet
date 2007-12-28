@@ -10,7 +10,7 @@ echo Untar our latest package
 tar -zxf $TOP_DIR/dist/$LATEST_TARBALL
 cd $UNTAR_DIR
 echo REMOVE OLD STUFF
-sudo rm -rf /usr/share/gourmet/ /usr/lib/python2.4/site-packages/gourmet/ /tmp/foobaz
+sudo rm -rf /usr/share/gourmet/ /usr/lib/python2.5/site-packages/gourmet/ /tmp/foobaz
 echo Install our new tarball
 sudo python setup.py install
 echo 'Testing gourmet'

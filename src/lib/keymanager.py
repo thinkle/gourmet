@@ -26,8 +26,8 @@ class KeyManager:
         self.ignored = defaults.IGNORE
         self.ignored.extend(self.cooking_verbs)
         self.ignored_regexp = re.compile("[,; ]?(" + '|'.join(self.ignored) + ")[,; ]?")
-        #if not(self.rm.ikview): # wrong
-        if self.rm.fetch_len(self.rm.ikview) == 0:
+        #if not(self.rm.keylookup_table): # wrong
+        if self.rm.fetch_len(self.rm.keylookup_table) == 0:
             self.initialize_from_defaults()
         self.initialize_categories()
         
@@ -64,7 +64,7 @@ class KeyManager:
         should be flour, barley"""
         debug("Start initialize_categories",10)
         self.cats = []
-        for k in self.rm.get_unique_values('ingkey',self.rm.iview,deleted=False):
+        for k in self.rm.get_unique_values('ingkey',self.rm.ingredients_table,deleted=False):
             fnd=k.find(',')
             if fnd != -1:
                 self.cats.append(k[0:fnd])
@@ -92,7 +92,7 @@ class KeyManager:
 
     def get_key_fast (self, s):
         try:
-            if s: srch = self.rm.fetch_all(self.rm.ikview,
+            if s: srch = self.rm.fetch_all(self.rm.keylookup_table,
                                            item=s,
                                            sort_by=[('count',1)]
                                            )
@@ -136,10 +136,10 @@ class KeyManager:
         if len(main_txts)==1:
             main_txts.extend(defaults.guess_plurals(txt))
         for t in main_txts:
-            is_key = self.rm.fetch_one(self.rm.iview,ingkey=t)
+            is_key = self.rm.fetch_one(self.rm.ingredients_table,ingkey=t)
             if is_key>=0:
                 retvals[t]=.9
-            exact = self.rm.fetch_all(self.rm.ikview,
+            exact = self.rm.fetch_all(self.rm.keylookup_table,
                                       item=t)
             if exact:
                 for o in exact:
@@ -164,7 +164,7 @@ class KeyManager:
         for w in words:
             if not w:
                 continue
-            srch = self.rm.fetch_all(self.rm.ikview,word=w)
+            srch = self.rm.fetch_all(self.rm.keylookup_table,word=w)
             total_count = sum([m.count for m in srch])
             for m in srch:
                 ik = m.ingkey
@@ -452,13 +452,13 @@ class KeyManagerOldSchool:
 
 class KeyDictionary:
     def __init__ (self, rm):
-        """We create a readonly dictionary based on the metakit iview table."""
+        """We create a readonly dictionary based on the metakit ingredients_table table."""
         self.rm = rm
         self.default = defaults.keydic
 
     def has_key (self, k):
         debug('has_key testing for %s'%k,1)
-        if self.rm.fetch_one(self.rm.iview,item=k): return True
+        if self.rm.fetch_one(self.rm.ingredients_table,item=k): return True
         elif self.default.has_key(k): return True
         else: return False
 
@@ -473,19 +473,19 @@ class KeyDictionary:
 
     def __getitem__ (self, k):
         kvw = self.rm.fetch_count(
-            self.rm.iview,
+            self.rm.ingredients_table,
             'ingkey',
             sort_by=('count',-1),
             item=k
             )
 
     def keys (self):
-        ll = self.rm.get_unique_values('item',self.rm.iview,deleted=False)
+        ll = self.rm.get_unique_values('item',self.rm.ingredients_table,deleted=False)
         ll.extend(self.default.keys())
         return ll
 
     def values (self):
-        ll = self.rm.get_unique_values('ingkey',self.rm.iview,deleted=False)
+        ll = self.rm.get_unique_values('ingkey',self.rm.ingredients_table,deleted=False)
         ll.extend(self.default.values())
         return ll
 

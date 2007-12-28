@@ -126,19 +126,19 @@ class RecData:
 
         Subclasses should do any necessary adjustments/tweaking before calling
         this function."""
-        self.rview = self.setup_table(*self.RECIPE_TABLE_DESC)
-        self.iview = self.setup_table(*self.INGREDIENTS_TABLE_DESC)
-        self.iview_not_deleted = self.iview.select(deleted=False)
-        self.iview_deleted = self.iview.select(deleted=True)
-        self.sview = self.setup_table(*self.SHOPCATS_TABLE_DESC)
-        self.scview = self.setup_table(*self.SHOPCATSORDER_TABLE_DESC)
-        self.pview = self.setup_table(*self.PANTRY_TABLE_DESC)
+        self.recipe_table = self.setup_table(*self.RECIPE_TABLE_DESC)
+        self.ingredients_table = self.setup_table(*self.INGREDIENTS_TABLE_DESC)
+        self.ingredients_table_not_deleted = self.ingredients_table.select(deleted=False)
+        self.ingredients_table_deleted = self.ingredients_table.select(deleted=True)
+        self.shopcats_table = self.setup_table(*self.SHOPCATS_TABLE_DESC)
+        self.shopcatsorder_table = self.setup_table(*self.SHOPCATSORDER_TABLE_DESC)
+        self.pantry_table = self.setup_table(*self.PANTRY_TABLE_DESC) 
         self.metaview = self.setup_table(*self.CATEGORIES_TABLE_DESC)
         # converter items
-        self.cdview = self.setup_table(*self.DENSITY_TABLE_DESC)
-        self.cview = self.setup_table(*self.CONVTABLE_TABLE_DESC)
-        self.cuview = self.setup_table(*self.CROSSUNITDICT_TABLE_DESC)
-        self.uview = self.setup_table(*self.UNITDICT_TABLE_DESC)
+        self.density_table = self.setup_table(*self.DENSITY_TABLE_DESC)
+        self.convtable_table = self.setup_table(*self.CONVTABLE_TABLE_DESC)
+        self.crossunitdict_table = self.setup_table(*self.CROSSUNITDICT_TABLE_DESC)
+        self.unitdict_table = self.setup_table(*self.UNITDICT_TABLE_DESC)
         
     def setup_table (self, name, data, key):
         """Create and return an object representing a table/view of our database.
@@ -212,7 +212,7 @@ class RecData:
             return []
 
     def get_unique_values (self, colname,table=None):
-        if not table: table=self.rview
+        if not table: table=self.recipe_table
         dct = {}
         if defaults.fields.has_key(colname):
             for v in defaults.fields[colname]:
@@ -235,16 +235,16 @@ class RecData:
             id=rec.id
         else:
             id=rec
-        return self.iview.select(id=id,deleted=False)
+        return self.ingredients_table.select(id=id,deleted=False)
 
-    def order_ings (self, iview):
+    def order_ings (self, ingredients_table):
         """Handed a view of ingredients, we return an alist:
         [['group'|None ['ingredient1', 'ingredient2', ...]], ... ]
         """
         defaultn = 0
         groups = {}
         group_order = {}
-        for i in iview:
+        for i in ingredients_table:
             # defaults
             if not hasattr(i,'inggroup'):
                 group=None
@@ -379,7 +379,7 @@ class RecData:
         # name (the name of the ingredient *should* be the title of
         # the recipe, though the user could change this)
         if hasattr(ing,'item'):
-            recs=self.search(self.rview,'title',ing.item,exact=True,use_regexp=False)
+            recs=self.search(self.recipe_table,'title',ing.item,exact=True,use_regexp=False)
             if len(recs)==0:
                 self.modify_ing(ing,{'idref':recs[0].id})
                 return recs[0]
@@ -393,15 +393,15 @@ class RecData:
                       0)
                 return recs[0]
     
-    def get_rec (self, id, rview=None):
+    def get_rec (self, id, recipe_table=None):
         """Handed an ID, return a recipe object."""
-        if rview:
-            print 'handing get_rec an rview is deprecated'
-            print 'Ignoring rview handed to get_rec'
-        rview=self.rview
-        s = rview.select(id=id)
+        if recipe_table:
+            print 'handing get_rec an recipe_table is deprecated'
+            print 'Ignoring recipe_table handed to get_rec'
+        recipe_table=self.recipe_table
+        s = recipe_table.select(id=id)
         if len(s)>0:
-            return rview.select(id=id)[0]
+            return recipe_table.select(id=id)[0]
         else:
             return None
 
@@ -416,12 +416,12 @@ class RecData:
         t.end()
         try:
             debug('Adding recipe %s'%rdict, 4)
-            t = TimeAction('rdatabase.add_rec - rview.append(rdict)',3)
-            self.rview.append(rdict)
+            t = TimeAction('rdatabase.add_rec - recipe_table.append(rdict)',3)
+            self.recipe_table.append(rdict)
             t.end()
             debug('Running add hooks %s'%self.add_hooks,2)
-            if self.add_hooks: self.run_hooks(self.add_hooks,self.rview[-1])
-            return self.rview[-1]
+            if self.add_hooks: self.run_hooks(self.add_hooks,self.recipe_table[-1])
+            return self.recipe_table[-1]
         except:
             debug("There was a problem adding recipe%s"%rdict,-1)
             raise
@@ -456,7 +456,7 @@ class RecData:
             n = start + 1
         else:
             n = 0
-        while self.rview.find(id=self.format_id(n, base)) > -1 or self.iview.find(id=self.format_id(n, base)) > -1:
+        while self.recipe_table.find(id=self.format_id(n, base)) > -1 or self.ingredients_table.find(id=self.format_id(n, base)) > -1:
             # if the ID exists, we keep incrementing
             # until we find a unique ID
             n += 1 
@@ -471,7 +471,7 @@ class RecData:
         return base+str(n)
 
     def add_ing (self, ingdict):
-        """Add ingredient to iview based on ingdict and return
+        """Add ingredient to ingredients_table based on ingdict and return
         ingredient object. Ingdict contains:
         id: recipe_id
         unit: unit
@@ -485,17 +485,17 @@ class RecData:
                else is irrelevant except for amount.
         """
         self.changed=True        
-        debug('adding to iview %s'%ingdict,3)
+        debug('adding to ingredients_table %s'%ingdict,3)
         timer = TimeAction('rdatabase.add_ing 2',5)
         if ingdict.has_key('amount') and not ingdict['amount']: del ingdict['amount']
-        self.iview.append(ingdict)
+        self.ingredients_table.append(ingdict)
         timer.end()
         debug('running ing hooks %s'%self.add_ing_hooks,3)
         timer = TimeAction('rdatabase.add_ing 3',5)
-        if self.add_ing_hooks: self.run_hooks(self.add_ing_hooks, self.iview[-1])
+        if self.add_ing_hooks: self.run_hooks(self.add_ing_hooks, self.ingredients_table[-1])
         timer.end()
         debug('done with ing hooks',3)
-        return self.iview[-1]
+        return self.ingredients_table[-1]
 
     def undoable_modify_ing (self, ing, dic, history, make_visible=None):
         """modify ingredient object ing based on a dictionary of properties and new values.
@@ -622,11 +622,11 @@ class RecipeManager (RecData):
             debug("Unable to parse %s"%s,0)
             return None
 
-    def ing_search (self, ing, keyed=None, rview=None, use_regexp=True, exact=False):
+    def ing_search (self, ing, keyed=None, recipe_table=None, use_regexp=True, exact=False):
         """Search for an ingredient."""
         raise NotImplementedError
     
-    def ings_search (self, ings, keyed=None, rview=None, use_regexp=True, exact=False):
+    def ings_search (self, ings, keyed=None, recipe_table=None, use_regexp=True, exact=False):
         """Search for multiple ingredients."""
         raise NotImplementedError
 
@@ -641,7 +641,7 @@ class RecipeManager (RecData):
         if recipe:
             vw = self.get_ings(recipe)
         else:
-            vw = self.iview
+            vw = self.ingredients_table
         # this is ugly...
         vw1 = vw.select(shopoptional=1)
         vw2 = vw.select(shopoptional=2)
@@ -657,7 +657,7 @@ class mkConverter(convert.converter):
     ## calls to rmetakit.mkConverter
 
     def create_conv_table (self):
-        self.conv_table = dbDic('ckey','value',self.db.cview, self.db,
+        self.conv_table = dbDic('ckey','value',self.db.convtable_table, self.db,
                                 pickle_key=True)
         for k,v in defaults.CONVERTER_TABLE.items():
             if not self.conv_table.has_key(k):
@@ -665,20 +665,20 @@ class mkConverter(convert.converter):
 
     def create_density_table (self):
         self.density_table = dbDic('dkey','value',
-                                   self.db.cdview,self.db)
+                                   self.db.density_table,self.db)
         for k,v in defaults.DENSITY_TABLE.items():
             if not self.density_table.has_key(k):
                 self.density_table[k]=v
 
     def create_cross_unit_table (self):
-        self.cross_unit_table=dbDic('cukey','value',self.db.cuview,self.db)
+        self.cross_unit_table=dbDic('cukey','value',self.db.crossunitdict_table,self.db)
         for k,v in defaults.CROSS_UNIT_TABLE:
             if not self.cross_unit_table.has_key(k):
                 self.cross_unit_table[k]=v
 
     def create_unit_dict (self):
         self.units = defaults.UNITS
-        self.unit_dict=dbDic('ukey','value',self.db.uview,self.db)
+        self.unit_dict=dbDic('ukey','value',self.db.unitdict_table,self.db)
         for itm in self.units:
             key = itm[0]
             variations = itm[1]

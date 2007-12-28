@@ -153,7 +153,7 @@ class RecData:
         'ingkey')
 
     NUTRITION_CONVERSIONS = (
-        'nutritionconversions',
+        'nutritionconversions_table',
         [('ingkey','int',[]),
          ('unit','int',[]), 
          ('factor','float',[]),],
@@ -192,25 +192,25 @@ class RecData:
         for desc in self.NORMALIZED_TABLES:
             self.normalizations[desc[0]]=self.setup_table(*desc)
             
-        self.rview = self._setup_table(*self.RECIPE_TABLE_DESC)
-        self.iview = self._setup_table(*self.INGREDIENTS_TABLE_DESC)
-        self.catview = self._setup_table(*self.CATEGORY_TABLE_DESC)
-        self.iview_not_deleted = self.iview.select(deleted=False)
-        self.iview_deleted = self.iview.select(deleted=True)
-        self.ikview = self._setup_table(*self.INGKEY_LOOKUP_TABLE_DESC)
-        self.sview = self._setup_table(*self.SHOPCATS_TABLE_DESC)
-        self.scview = self._setup_table(*self.SHOPCATSORDER_TABLE_DESC)
-        self.pview = self._setup_table(*self.PANTRY_TABLE_DESC)
+        self.recipe_table = self._setup_table(*self.RECIPE_TABLE_DESC)
+        self.ingredients_table = self._setup_table(*self.INGREDIENTS_TABLE_DESC)
+        self.categories_table = self._setup_table(*self.CATEGORY_TABLE_DESC)
+        self.ingredients_table_not_deleted = self.ingredients_table.select(deleted=False)
+        self.ingredients_table_deleted = self.ingredients_table.select(deleted=True)
+        self.keylookup_table = self._setup_table(*self.INGKEY_LOOKUP_TABLE_DESC)
+        self.shopcats_table = self._setup_table(*self.SHOPCATS_TABLE_DESC)
+        self.shopcatsorder_table = self._setup_table(*self.SHOPCATSORDER_TABLE_DESC)
+        self.pantry_table = self._setup_table(*self.PANTRY_TABLE_DESC)
         # converter items
-        self.cdview = self._setup_table(*self.DENSITY_TABLE_DESC)
-        self.cview = self._setup_table(*self.CONVTABLE_TABLE_DESC)
-        self.cuview = self._setup_table(*self.CROSSUNITDICT_TABLE_DESC)
-        self.uview = self._setup_table(*self.UNITDICT_TABLE_DESC)
-        self.nview = self._setup_table(*self.NUTRITION_TABLE_DESC)
+        self.density_table = self._setup_table(*self.DENSITY_TABLE_DESC)
+        self.convtable_table = self._setup_table(*self.CONVTABLE_TABLE_DESC)
+        self.crossunitdict_table = self._setup_table(*self.CROSSUNITDICT_TABLE_DESC)
+        self.unitdict_table = self._setup_table(*self.UNITDICT_TABLE_DESC)
+        self.nutrition_table = self._setup_table(*self.NUTRITION_TABLE_DESC)
         # Don't normalize this one!
-        self.nwview = self.setup_table(*self.NUTRITION_WEIGHT_TABLE_DESC)
-        self.naliasesview = self._setup_table(*self.NUTRITION_ALIASES_TABLE_DESC)
-        self.nconversions = self._setup_table(*self.NUTRITION_CONVERSIONS)
+        self.usda_weights_table = self.setup_table(*self.NUTRITION_WEIGHT_TABLE_DESC)
+        self.nutritionaliases_table = self._setup_table(*self.NUTRITION_ALIASES_TABLE_DESC)
+        self.nutritionconversions_table = self._setup_table(*self.NUTRITION_CONVERSIONS)
 
     def _setup_table (self, *args,**kwargs):
         return NormalizedView(self.setup_table(*args,**kwargs),self,self.normalizations)
@@ -258,9 +258,9 @@ class RecData:
 
     def get_unique_values (self, colname,table=None):
         """Get list of unique values for column in table."""
-        if not table: table=self.rview
-        if colname=='category' and table==self.rview:
-            table=self.catview
+        if not table: table=self.recipe_table
+        if colname=='category' and table==self.recipe_table:
+            table=self.categories_table
         if self.normalizations.has_key(colname):
             lst = [getattr(o,colname) for o in self.normalizations[colname]]
         else:
@@ -319,7 +319,7 @@ class RecData:
         debug('validating dictionary',3)
         if dic.has_key('category'):
             cats = dic['category'].split(', ')
-            self.delete_by_criteria(self.catview,{'id':rec.id})
+            self.delete_by_criteria(self.categories_table,{'id':rec.id})
             for c in cats:
                 self.do_add_cat({'id':rec.id,'category':c})
             del dic['category']
@@ -396,13 +396,13 @@ class RecData:
             raise
 
     def do_add_ing (self,dic):
-        self.iview.append(dic)
-        return self.iview[-1]
+        self.ingredients_table.append(dic)
+        return self.ingredients_table[-1]
 
     def do_add_cat (self, dic):
-        self.catview.append(dic)
-        #return 'catview has ',len(self.catview),'items'
-        return self.catview[-1]
+        self.categories_table.append(dic)
+        #return 'categories_table has ',len(self.categories_table),'items'
+        return self.categories_table[-1]
 
     def validate_ingdic (self,dic):
         """Do any necessary validation and modification of ingredient dictionaries."""
@@ -432,10 +432,10 @@ class RecData:
             id=rec.id
         else:
             id=rec
-        return self.iview.select(id=id,deleted=False)
+        return self.ingredients_table.select(id=id,deleted=False)
 
     def get_cats (self, rec):
-        svw = self.catview.select(id=rec.id)
+        svw = self.categories_table.select(id=rec.id)
         cats =  [c.category or '' for c in svw]
         # hackery...
         while '' in cats:
@@ -453,7 +453,7 @@ class RecData:
         # name (the name of the ingredient *should* be the title of
         # the recipe, though the user could change this)
         if hasattr(ing,'item'):
-            recs=self.search(self.rview,'title',ing.item,exact=True,use_regexp=False)
+            recs=self.search(self.recipe_table,'title',ing.item,exact=True,use_regexp=False)
             if len(recs)==0:
                 self.modify_ing(ing,{'idref':recs[0].id})
                 return recs[0]
@@ -467,13 +467,13 @@ class RecData:
                       0)
                 return recs[0]
 
-    def get_rec (self, id, rview=None):
+    def get_rec (self, id, recipe_table=None):
         """Handed an ID, return a recipe object."""
-        if rview:
-            print 'handing get_rec an rview is deprecated'
-            print 'Ignoring rview handed to get_rec'
-        rview=self.rview
-        return self.fetch_one(self.rview, id=id)
+        if recipe_table:
+            print 'handing get_rec an recipe_table is deprecated'
+            print 'Ignoring recipe_table handed to get_rec'
+        recipe_table=self.recipe_table
+        return self.fetch_one(self.recipe_table, id=id)
 
     def do_add_rec (self, rdict):
         """Add a recipe based on a dictionary of properties and values."""
@@ -484,10 +484,10 @@ class RecData:
             rdict['id']=self.new_id()
         try:
             debug('Adding recipe %s'%rdict, 4)
-            self.rview.append(rdict)
+            self.recipe_table.append(rdict)
             debug('Running add hooks %s'%self.add_hooks,2)
-            if self.add_hooks: self.run_hooks(self.add_hooks,self.rview[-1])
-            return self.rview[-1]
+            if self.add_hooks: self.run_hooks(self.add_hooks,self.recipe_table[-1])
+            return self.recipe_table[-1]
         except:
             debug("There was a problem adding recipe%s"%rdict,-1)
             raise
@@ -496,9 +496,9 @@ class RecData:
         """Delete recipe object rec from our database."""
         if type(rec)!=int: rec=rec.id
         debug('deleting recipe ID %s'%rec,0)
-        self.delete_by_criteria(self.rview,{'id':rec})
-        self.delete_by_criteria(self.catview,{'id':rec})
-        self.delete_by_criteria(self.iview,{'id':rec})
+        self.delete_by_criteria(self.recipe_table,{'id':rec})
+        self.delete_by_criteria(self.categories_table,{'id':rec})
+        self.delete_by_criteria(self.ingredients_table,{'id':rec})
         debug('deleted recipe ID %s'%rec,0)
         #raise NotImplementedError
 
@@ -516,14 +516,14 @@ class RecData:
 
     # Convenience functions for dealing with ingredients
 
-    def order_ings (self, iview):
+    def order_ings (self, ingredients_table):
         """Handed a view of ingredients, we return an alist:
         [['group'|None ['ingredient1', 'ingredient2', ...]], ... ]
         """
         defaultn = 0
         groups = {}
         group_order = {}
-        for i in iview:
+        for i in ingredients_table:
             # defaults
             if not hasattr(i,'inggroup'):
                 group=None
@@ -564,7 +564,7 @@ class RecData:
         #for i in ings:
         #    debug("Deleting ingredient: %s"%i.ingredient,5)
         #    self.delete_ing(i)
-        self.delete_by_criteria(self.iview,{'id':id})
+        self.delete_by_criteria(self.ingredients_table,{'id':id})
         for ingd in ingdicts:
             self.add_ing(ingd)
     
@@ -664,11 +664,11 @@ class RecData:
     
     def add_ing_to_keydic (self, item, key):
         if not item or not key: return
-        row = self.fetch_one(self.ikview, item=item, ingkey=key)
+        row = self.fetch_one(self.keylookup_table, item=item, ingkey=key)
         if row:
             row.count+=1
         else:
-            self.ikview.append({'item':item,'ingkey':key,'count':1})
+            self.keylookup_table.append({'item':item,'ingkey':key,'count':1})
         if type(item)==int:
             # already normalized...
             item = self.fetch_one(self.normalizations['item'],id=item).item
@@ -677,20 +677,20 @@ class RecData:
             key = self.fetch_one(self.normalizations['ingkey'],id=key).ingkey
         for w in re.split('\W+',item):
             w=w.lower().strip()
-            row = self.fetch_one(self.ikview,word=w,ingkey=key)
+            row = self.fetch_one(self.keylookup_table,word=w,ingkey=key)
             if row:
                 row.count+=1
             else:
-                self.ikview.append({'word':w,'ingkey':key,'count':1})
+                self.keylookup_table.append({'word':w,'ingkey':key,'count':1})
 
 
     def remove_ing_from_keydic (self, item, key):
-        row = self.fetch_one(self.ikview,item=item,ingkey=key)
+        row = self.fetch_one(self.keylookup_table,item=item,ingkey=key)
         if row:
             row.count -= 1
         for w in re.split('\W+',item):
             w=w.lower()
-            row = self.fetch_one(self.ikview,item=item,ingkey=key)
+            row = self.fetch_one(self.keylookup_table,item=item,ingkey=key)
             if row:
                 row.count -= 1
 
@@ -869,12 +869,12 @@ class RecipeManager (RecData):
             debug("Unable to parse %s"%s,0)
             return None
 
-    def ing_search (self, ing, keyed=None, rview=None, use_regexp=True, exact=False):
+    def ing_search (self, ing, keyed=None, recipe_table=None, use_regexp=True, exact=False):
         """Search for an ingredient."""
-        if not rview: rview = self.rview
-        vw = self.joined_search(rview,self.iview,'ingkey',ing,use_regexp=use_regexp,exact=exact)
+        if not recipe_table: recipe_table = self.recipe_table
+        vw = self.joined_search(recipe_table,self.ingredients_table,'ingkey',ing,use_regexp=use_regexp,exact=exact)
         if not keyed:
-            vw2 = self.joined_search(rview,self.iview,'item',ing,use_regexp=use_regexp,exact=exact)
+            vw2 = self.joined_search(recipe_table,self.ingredients_table,'item',ing,use_regexp=use_regexp,exact=exact)
             if vw2 and vw:
                 vw = vw.union(vw2)
             else: vw = vw2
@@ -883,7 +883,7 @@ class RecipeManager (RecData):
     def joined_search (self, table1, table2, search_by, search_str, use_regexp=True, exact=False, join_on='id'):
         raise NotImplementedError
 
-    def ings_search (self, ings, keyed=None, rview=None, use_regexp=True, exact=False):
+    def ings_search (self, ings, keyed=None, recipe_table=None, use_regexp=True, exact=False):
         """Search for multiple ingredients."""
         raise NotImplementedError
 
@@ -898,7 +898,7 @@ class RecipeManager (RecData):
         if recipe:
             vw = self.get_ings(recipe)
         else:
-            vw = self.iview
+            vw = self.ingredients_table
         # this is ugly...
         vw1 = vw.select(shopoptional=1)
         vw2 = vw.select(shopoptional=2)
@@ -914,7 +914,7 @@ class mkConverter(convert.converter):
     ## calls to rmetakit.mkConverter
 
     def create_conv_table (self):
-        self.conv_table = dbDic('ckey','value',self.db.cview, self.db,
+        self.conv_table = dbDic('ckey','value',self.db.convtable_table, self.db,
                                 pickle_key=True)
         for k,v in defaults.CONVERTER_TABLE.items():
             if not self.conv_table.has_key(k):
@@ -922,20 +922,20 @@ class mkConverter(convert.converter):
 
     def create_density_table (self):
         self.density_table = dbDic('dkey','value',
-                                   self.db.cdview,self.db)
+                                   self.db.density_table,self.db)
         for k,v in defaults.DENSITY_TABLE.items():
             if not self.density_table.has_key(k):
                 self.density_table[k]=v
 
     def create_cross_unit_table (self):
-        self.cross_unit_table=dbDic('cukey','value',self.db.cuview,self.db)
+        self.cross_unit_table=dbDic('cukey','value',self.db.crossunitdict_table,self.db)
         for k,v in defaults.CROSS_UNIT_TABLE:
             if not self.cross_unit_table.has_key(k):
                 self.cross_unit_table[k]=v
 
     def create_unit_dict (self):
         self.units = defaults.UNITS
-        self.unit_dict=dbDic('ukey','value',self.db.uview,self.db)
+        self.unit_dict=dbDic('ukey','value',self.db.unitdict_table,self.db)
         for itm in self.units:
             key = itm[0]
             variations = itm[1]
@@ -1086,9 +1086,9 @@ class Normalizer:
 class NormalizedView (Normalizer):
     """Some magic to allow normalizing our tables without touching our
     reliance on simple attribute-style access to properties. With this
-    beautiful magic, in other words, iview[0].ingkey will give us the
+    beautiful magic, in other words, ingredients_table[0].ingkey will give us the
     key even though key is actually normalized through a separate table.
-    Similarly, iview.select(ingkey='sugar') will do the proper magic.
+    Similarly, ingredients_table.select(ingkey='sugar') will do the proper magic.
     """
     def __init__ (self, view, rd, normdic):
         self.__view__ = view

@@ -3,7 +3,7 @@ import gtk.glade, urllib, StringIO, os.path
 import exporter, html_exporter, pdf_exporter
 from gourmet import gglobals
 from gettext import gettext as _
-import gourmet.dialog_extras as de
+import gourmet.gtk_extras.dialog_extras as de
 from gourmet.gdebug import debug
 
 class StringIOfaker (StringIO.StringIO):
@@ -167,7 +167,7 @@ class EmailerDialog (RecipeEmailer):
 if __name__ == '__main__':
     import gourmet.recipeManager
     rd = gourmet.recipeManager.default_rec_manager()
-    rec = rd.fetch_one(rd.rview)
+    rec = rd.fetch_one(rd.recipe_table)
     ed = EmailerDialog([rec],rd,{})
     ed.setup_dialog()
     ed.email()

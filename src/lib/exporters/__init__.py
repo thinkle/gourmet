@@ -107,12 +107,12 @@ exporter_dict = {
            'sublabel':_('Exporting recipes to Plain Text file %(file)s.'),
            'single_completed':_('Recipe saved as Plain Text file %(file)s'),
            },    # END TXT
-    GXML2 : {'mult_exporter':lambda args: gxml2_exporter.rview_to_xml(
+    GXML2 : {'mult_exporter':lambda args: gxml2_exporter.recipe_table_to_xml(
     args['rd'],
     args['rv'],
     args['file'],
     progress_func=args['prog']),
-             'exporter': lambda args: gxml2_exporter.rview_to_xml(args['rd'],
+             'exporter': lambda args: gxml2_exporter.recipe_table_to_xml(args['rd'],
                                                                   [args['rec']],
                                                                   args['out'],
                                                                   change_units=args['change_units'],
@@ -218,8 +218,8 @@ class Tester:
     def run_export (self, **args):
         defaults = {'rd':self.rm,
                     'mult':1,
-                    'rec':self.rm.rview.select(deleted=False)[0],
-                    'rv':self.rm.rview.select(deleted=False),
+                    'rec':self.rm.recipe_table.select(deleted=False)[0],
+                    'rv':self.rm.recipe_table.select(deleted=False),
                     'change_units':True,
                     'conv':self.conv,
                     'format': TXT,

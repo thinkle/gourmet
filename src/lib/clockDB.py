@@ -125,7 +125,7 @@ class StressTester:
     @time_method
     def test_fetch_recipe (self,min=0,max=10):
         for r in range(100):
-            recipe = self.db.fetch_all(self.db.rview)[random.randint(min,max)]
+            recipe = self.db.fetch_all(self.db.recipe_table)[random.randint(min,max)]
             for prop in ['title','cuisine','source',
                          'preptime','cooktime','instructions',
                          'modifications']:

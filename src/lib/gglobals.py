@@ -192,38 +192,7 @@ else:
                         )
 
 import OptionParser
-if OptionParser.options.db=='metakit': db = 'metakit'
-if OptionParser.options.db=='sqlite': db = 'sqlite'
-dbargs = {}
-if not OptionParser.options.db or (hasattr(OptionParser.options,'choosedb') and OptionParser.options.choosedb):
-    import prefs
-    p = prefs.Prefs()
-    db = p.get('db_backend',None)
-    if (not db) or OptionParser.options.choosedb:
-        import backends.DatabaseChooser
-        d=backends.DatabaseChooser.DatabaseChooser(modal=True)
-        dbdict = d.run()
-        p['db_backend']=dbdict['db_backend']
-        if dbdict.has_key('pw'): pw = dbdict['pw']
-        # if we're not supposed to store the password, we'd better not!
-        if dbdict.has_key('store_pw') and not dbdict['store_pw']:
-            del dbdict['pw']
-            p['store_pw']=dbdict['store_pw']
-        for arg in ['store_pw','db_backend']:
-            if dbdict.has_key(arg): del dbdict[arg]
-        p['dbargs'] = dbdict
-        p.save()
-    db = p.get('db_backend')
-    dbargs = p.get('dbargs')
-    if pw:
-        dbargs['pw']=pw
-
-if not db: db = 'metakit'
-
-if db != 'metakit':
-    debug('SQL database in use. Disabling threads.',0)
-    use_threads=False
-
+use_threads = False
 if use_threads:
     debug('using GourmetThreads',0)
     import GourmetThreads as gt

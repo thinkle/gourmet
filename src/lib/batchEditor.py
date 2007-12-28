@@ -95,5 +95,5 @@ if __name__ == '__main__':
     import GourmetRecipeManager
     rg = GourmetRecipeManager.RecGui()
     be=BatchEditor(rg)
-    be.set_values_from_recipe(rg.rd.fetch_one(rg.rd.rview))
+    be.set_values_from_recipe(rg.rd.fetch_one(rg.rd.recipe_table))
     be.dialog.run()

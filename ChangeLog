@@ -1,3 +1,82 @@
+2007-12-28  Thomas Mills HInkle  <tom@hydrophax>
+
+	* Everywhere Change names of database tables from views (metakit
+	legacy) to table (current reality). Capitalize all classes.
+
+	* MANIFEST - Remove old database modules; add new one.
+
+	* test_tarball.sh - Assume python2.5 rather than python2.4
+
+	* glade/app.glade - Move search options to menus; hide and
+	simplify search interface by default (now that we have "search
+	anywhere")
+
+	* src/gourmet_in_place - Some improvements to make sure this gets
+	its glade and data files from the source directory.
+
+	* src/lib/convertGui.py (Module): Fix import statement to work
+	with the new code organization (gtk_extras.cb_extras)
+
+	* src/lib/gglobals.py (Module): Remove old database stuff (metakit
+	v sqlite etc), replace with new.
+
+	* src/lib/GourmetRecipeManager.py (Module) - Break up giant
+	__init__ method so it is more readable. Make hitting return work
+	if we are not in search-as-you-type mode.
+
+	* src/lib/OptionParser.py (Module) - Remove old database
+	options. Add --database-url argument for custom database
+	arguments.
+
+	* src/lib/recindex.py (Module): Add "anywhere" to search options
+	-- this allows us to search for a string in any of the columns
+	without specifying! Also, fix search-as-you-type toggle.
+	
+	* src/lib/recipeManager.py (Module): Update to use new database.
+
+	* src/lib/timeScanner.py (Module): Update to use capitalized Converter class name.
+
+	* src/lib/upgradeHandler.py (Module): Fix import dialog_extras statement.
+	
+	* src/lib/backends/__init__.py (Module): Remove inaccurate comments
+	
+	* src/lib/backends/db.py (Module) - New database backend class
+	based on sqlalchemy. This provides at least the basis for support
+	for all sql dialects that sqlalchemy supports. You can try other
+	database settings by using the database-url argument to Gourmet.
+
+	* src/lib/backends/db_tests.py (Module) - Move tests that were at the
+	bottom of rdatabase.py to a separate test file.
+
+	* src/lib/backends/db/* - Remove old legacy database files.
+
+	* src/lib/gtk_extras/timeEntry.py (Module): Fix reference to
+	capitalized Converter() class
+
+	* src/lib/exporters/__init__.py (Module): Change rview_to_xml to
+	recipe_table_to_xml in accordance with our new freedom from
+	metakit semantics.
+	
+	* src/lib/importers/imageBrowser.py (Module): Fix gtk_extras import.
+
+	* src/lib/importers/importer.py (Module): Fix gtk_extras import.
+
+	* src/lib/nutrition/nutritionDruid.py (Module): Fix up various import
+	statements for modules now in gtk_extras.
+
+
+2007-11-19  Thomas Mills HInkle  <thomas_hinkle@sf.net>
+
+	* src/lib/FileChooserSaveAs.py Class renaming - capitalize all class names.
+	* src/lib/convert.py Class renaming - capitalize all class names.
+	* src/lib/convertGui.py Class renaming - capitalize all class names.
+	* src/lib/reccard.py Class renaming - capitalize all class names.
+	* src/lib/recipeManager.py Class renaming - capitalize all class names.
+	* src/lib/shopgui.py Class renaming - capitalize all class names.
+	* src/lib/shopping.py Class renaming - capitalize all class names.
+	* src/lib/backends/rdatabase.py Class renaming - capitalize all class names.
+	* src/tests/reference_setup/recipes.db Class renaming - capitalize all class names.
+
 2007-11-19  Thomas Mills HInkle  <thomas_hinkle@sf.net>
 
 	* src/lib/exporters/gxml2_exporter.py Rearrange order of

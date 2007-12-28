@@ -4,43 +4,18 @@ import OptionParser
 import gglobals
 from gtk_extras import dialog_extras as de
 
-db=gglobals.db
-dbargs = gglobals.dbargs
-
 # Follow commandline db specification if given
+dbargs = {}
 
-if db=='mysql' and not dbargs.has_key('pw'):
-    dbargs['pw']=de.getEntry(
-        label=_('Enter Password'),
-        sublabel=_('Please enter your password for user %s of the MySQL database at host %s'%(dbargs['user'],
-                                                                                              dbargs['host'])
-                   ),
-        entryLabel=_('Password:'),
-        visibility=False,
-        )
-    
-# otherwise, default to metakit; fallback to sqlite
-
-#db = 'mysql'
-#db='sqlite'
-if db == 'sqlite' and not dbargs.has_key('file'):
+if not dbargs.has_key('file'):
     dbargs['file']=os.path.join(gglobals.gourmetdir,'recipes.db')
-elif db == 'metakit' and not dbargs.has_key('file'):
-    dbargs['file']=os.path.join(gglobals.gourmetdir,'recipes.mk')
-
-if not db:
-    try:
-        from backends.rmetakit import *
-    except ImportError:
-        from backends.rsqlite import *
-elif db=='metakit':
-    from backends.rmetakit import *
-elif db=='sqlite':
-    #from backends.rsqlite import *
-    from backends.sqlite_db import *
-elif db=='mysql':
-    from backends.rmysql import *
+if OptionParser.options.db_url:
+    print 'We have a db_url and it is,',OptionParser.options.db_url
+    dbargs['custom_url'] = OptionParser.options.db_url
     
+
+from backends.db import *
+
 class DatabaseShopper (shopping.Shopper):
     """We are a Shopper class that conveniently saves our key dictionaries
     in our database"""
@@ -52,10 +27,10 @@ class DatabaseShopper (shopping.Shopper):
     def init_converter (self):
         #self.cnv = DatabaseConverter(self.db)
         if not self.cnv:
-            self.cnv = convert.converter()
+            self.cnv = convert.Converter()
     
     def init_orgdic (self):
-        self.orgdic = dbDic('ingkey','shopcategory',self.db.sview,db=self.db,pickle_key=False,
+        self.orgdic = dbDic('ingkey','shopcategory',self.db.shopcats_table,db=self.db,pickle_key=False,
                             pickle_val=False)
         if len(self.orgdic.items())==0:
             dic = shopping.setup_default_orgdic()
@@ -63,19 +38,19 @@ class DatabaseShopper (shopping.Shopper):
                 self.orgdic[k]=v
 
     def init_ingorder_dic (self):
-        self.ingorder_dic = dbDic('ingkey','position',self.db.sview,db=self.db,
+        self.ingorder_dic = dbDic('ingkey','position',self.db.shopcats_table,db=self.db,
                                   pickle_key=False,pickle_val=False)
 
     def init_catorder_dic (self):
         self.catorder_dic = dbDic('shopcategory',
                                   'position',
-                                  self.db.scview,
+                                  self.db.shopcatsorder_table,
                                   db=self.db,
                                   pickle_key=False,
                                   pickle_val=False)
 
     def init_pantry (self):
-        self.pantry = dbDic('ingkey','pantry',self.db.pview,db=self.db,
+        self.pantry = dbDic('ingkey','pantry',self.db.pantry_table,db=self.db,
                             pickle_key=False,
                             pickle_val=False)
         if len(self.pantry.items())==0:
@@ -83,16 +58,16 @@ class DatabaseShopper (shopping.Shopper):
                 self.pantry[i]=True
 
     
-class DatabaseConverter(convert.converter):
+class DatabaseConverter(convert.Converter):
     def __init__ (self, db):
         self.db = db
-        convert.converter.__init__(self)
+        convert.Converter.__init__(self)
     ## still need to finish this class and then
-    ## replace calls to convert.converter with
+    ## replace calls to convert.Converter with
     ## calls to rmetakit.DatabaseConverter
 
     def create_conv_table (self):
-        self.conv_table = dbDic('ckey','value',self.db.cview, self.db,
+        self.conv_table = dbDic('ckey','value',self.db.convtable_table, self.db,
                                 pickle_key=True)
         for k,v in defaults.CONVERTER_TABLE.items():
             if not self.conv_table.has_key(k):
@@ -100,20 +75,20 @@ class DatabaseConverter(convert.converter):
 
     def create_density_table (self):
         self.density_table = dbDic('dkey','value',
-                                   self.db.cdview,self.db)
+                                   self.db.density_table,self.db)
         for k,v in defaults.DENSITY_TABLE.items():
             if not self.density_table.has_key(k):
                 self.density_table[k]=v
 
     def create_cross_unit_table (self):
-        self.cross_unit_table=dbDic('cukey','value',self.db.cuview,self.db)
+        self.cross_unit_table=dbDic('cukey','value',self.db.crossunitdict_table,self.db)
         for k,v in defaults.CROSS_UNIT_TABLE:
             if not self.cross_unit_table.has_key(k):
                 self.cross_unit_table[k]=v
 
     def create_unit_dict (self):
         self.units = defaults.UNITS
-        self.unit_dict=dbDic('ukey','value',self.db.uview,self.db)
+        self.unit_dict=dbDic('ukey','value',self.db.unitdict_table,self.db)
         for itm in self.units:
             key = itm[0]
             variations = itm[1]

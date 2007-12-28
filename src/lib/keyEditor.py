@@ -147,12 +147,12 @@ class KeyEditor:
                              sublabel=_("You won't be able to undo this action. If there are already ingredients with the key \"%s\", you won't be able to distinguish between those items and the items you are changing now."%text)
                              ):
                 self.rd.update(
-                    self.rd.iview,
+                    self.rd.ingredients_table,
                     curdic,
                     {'ingkey':text}
                     )
                 self.rd.delete_by_criteria(
-                    self.rd.ikview,
+                    self.rd.keylookup_table,
                     {'ingkey':key}
                     )
         elif field=='item':
@@ -160,7 +160,7 @@ class KeyEditor:
                              sublabel=_("You won't be able to undo this action. If there are already ingredients with the item \"%s\", you won't be able to distinguish between those items and the items you are changing now.")%text
                              ):
                 self.rd.update(
-                    self.rd.iview,
+                    self.rd.ingredients_table,
                     curdic,
                     {'item':text}
                     ) 
@@ -175,13 +175,13 @@ class KeyEditor:
                               )
             if val==1:
                 self.rd.update(
-                    self.rd.iview,
+                    self.rd.ingredients_table,
                     {'unit':unit},
                     {'unit':text},
                     )
             elif val==2:
                 self.rd.update(
-                    self.rd.iview,
+                    self.rd.ingredients_table,
                     curdic,
                     {'unit':text}
                     )
@@ -207,7 +207,7 @@ class KeyEditor:
             elif val == 3:
                 cond = curdic
             self.rd.update(
-                self.rd.iview,
+                self.rd.ingredients_table,
                 {'unit':unit,'amount':convert.frac_to_float(amount)},
                 {'unit':unit,'amount':new_amount}
                 )
@@ -368,13 +368,13 @@ class KeyEditor:
             curkey = self.treeModel.get_value(itr,self.VALUE_COL)
             if not already_updated:
                 self.rd.update(
-                    self.rd.iview,
+                    self.rd.ingredients_table,
                     curdic,
                     newdic,
                     )
                 if curdic.has_key('ingkey') and newdic.has_key('ingkey'):
                     self.rd.delete_by_criteria(
-                        self.rd.ikview,
+                        self.rd.keylookup_table,
                         {'ingkey':curdic['ingkey']}
                         )
         self.resetTree()
@@ -530,17 +530,17 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                 path = self.get_path(child)
                 self.emit('row-changed',path,child)
                 child = self.iter_next(child)
-        #self.ikview = self.rd.filter(self.rd.ikview,lambda row: row.item)
-        # Limit iview to ingkeys only, then select the unique values of that, then
+        #self.keylookup_table = self.rd.filter(self.rd.keylookup_table,lambda row: row.item)
+        # Limit ingredients_table to ingkeys only, then select the unique values of that, then
         # filter ourselves to values that have keys
-        #self.view = self.rd.filter(self.rd.iview.project(self.rd.iview.ingkey).unique(),
+        #self.view = self.rd.filter(self.rd.ingredients_table.project(self.rd.ingredients_table.ingkey).unique(),
         #                           lambda foo: foo.ingkey)
 
     def _setup_parent_ (self, *args, **kwargs):
         self.reset_views()
 
     def limit_on_ingkey (self, txt, search_options={}):
-        self.limit(txt,self.rd.iview+'.ingkey',search_options)
+        self.limit(txt,self.rd.ingredients_table+'.ingkey',search_options)
 
     def limit_on_item (self, txt, search_options={}):
         self.limit(txt,'item',search_options)
@@ -581,22 +581,22 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
         value = self.get_value(itr,2)
         if field==self.KEY:
             ingkey = value
-            for item in self.rd.get_unique_values('item',self.rd.iview,ingkey=ingkey):
+            for item in self.rd.get_unique_values('item',self.rd.ingredients_table,ingkey=ingkey):
                 ret.append([None,
                             self.ITEM,
                             item,
-                            self.rd.fetch_len(self.rd.iview,ingkey=ingkey,item=item),
+                            self.rd.fetch_len(self.rd.ingredients_table,ingkey=ingkey,item=item),
                             self.get_recs(ingkey,item),
                             0
                             ])
         elif field==self.ITEM:
             ingkey = self.get_value(self.iter_parent(itr),2)
             item = value
-            for unit in self.rd.get_unique_values('unit',self.rd.iview,ingkey=ingkey,item=item):
+            for unit in self.rd.get_unique_values('unit',self.rd.ingredients_table,ingkey=ingkey,item=item):
                 ret.append([None,
                             self.UNIT,
                             unit,
-                            self.rd.fetch_len(self.rd.iview,ingkey=ingkey,item=item,unit=unit),
+                            self.rd.fetch_len(self.rd.ingredients_table,ingkey=ingkey,item=item,unit=unit),
                             None,
                             0])
             if not ret:
@@ -612,18 +612,18 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                 self.iter_parent(itr)),2)
             unit = self.get_value(itr,2)
             amounts = []
-            for i in self.rd.fetch_all(self.rd.iview,ingkey=ingkey,item=item,unit=unit):
+            for i in self.rd.fetch_all(self.rd.ingredients_table,ingkey=ingkey,item=item,unit=unit):
                 astring = self.rd.get_amount_as_string(i)
                 if astring in amounts: continue
                 ret.append([None,
                             self.AMOUNT,
                             astring,
                             (i.rangeamount
-                             and self.rd.fetch_len(self.rd.iview,
+                             and self.rd.fetch_len(self.rd.ingredients_table,
                                                    ingkey=ingkey,item=item,
                                                    unit=unit,
                                                    amount=i.amount,rangeamount=i.rangeamount)
-                             or  self.rd.fetch_len(self.rd.iview,
+                             or  self.rd.fetch_len(self.rd.ingredients_table,
                                                    ingkey=ingkey,item=item,
                                                    unit=unit,
                                                    amount=i.amount)),
@@ -649,7 +649,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
 
     def get_recs (self, key, item):
         """Return a string with a list of recipes containing an ingredient with key and item"""
-        recs = [i.id for i in self.rd.fetch_all(self.rd.iview,ingkey=key,item=item)]
+        recs = [i.id for i in self.rd.fetch_all(self.rd.ingredients_table,ingkey=key,item=item)]
         titles = []
         looked_at = []
         for r_id in recs:

@@ -48,13 +48,14 @@ except ImportError:
     rtf=False
 
 def check_for_data_to_import (rm):
-    if rm.fetch_len(rm.rview)==0:
+    if rm.fetch_len(rm.recipe_table)==0:
         try:
             import legacy_db
         except ImportError:
-            print "Not trying to update."
-            print "We had an import error."
-            import traceback; traceback.print_exc()
+            #print "Not trying to update."
+            #print "We had an import error."
+            #import traceback; traceback.print_exc()
+            1
         else:
             pd = de.ProgressDialog(label=_('Importing old recipe data'),
                                    sublabel=_('Importing recipe data from a previous version of Gourmet into new database.'),
@@ -77,9 +78,11 @@ def check_for_data_to_import (rm):
                 pd.destroy()
         
 class RecGui (RecIndex):
-    """This is the main application. We subclass RecIndex, which handles displaying a list of
-    recipes and searching them (a functionality we need in a few other places, such as when
-    calling a recipe as an ingredient or when looking through the "trash". """
+    """This is the main application. We subclass RecIndex, which
+    handles displaying a list of recipes and searching them (a
+    functionality we need in a few other places, such as when calling
+    a recipe as an ingredient or when looking through the"trash".
+    """
 
     def __init__ (self,splash_label=None):
         # used on imports to make filtering wait until
@@ -88,9 +91,8 @@ class RecGui (RecIndex):
         try:
             import gnome
             # The following allows accessibility support to work for
-            # some unknown reason
-            # apparently some outdated GNOME bindings are
-            # missing this.
+            # some unknown reason apparently some outdated GNOME
+            # bindings are missing this.
             if hasattr(gnome,'program_init'):
                 gnome.program_init(version.appname,version.version)
             else:
@@ -104,36 +106,9 @@ class RecGui (RecIndex):
         # just make sure we were given a splash label to update
         self.splash_label = splash_label
         self.update_splash(_("Loading window preferences..."))
-        self.prefs = prefs.Prefs()
-        self.prefsGui = prefsGui.PreferencesGui(
-            self.prefs,
-            buttons={'clear_remembered_optional_button':lambda *args: self.forget_remembered_optional_ingredients()}
-            )
-        self.prefsGui.apply_prefs_dic['recipes_per_page'] = lambda p,v: getattr(getattr(self,'rmodel'),
-                                                                               'change_items_per_page')(v)
-
-        def toggleFractions (prefname,use):
-            print 'toggleFractions->',use
-            if use:
-                convert.USE_FRACTIONS = convert.FRACTIONS_NORMAL
-            else:
-                convert.USE_FRACTIONS = convert.FRACTIONS_OFF
-        self.prefsGui.apply_prefs_dic['useFractions'] = toggleFractions
-        if self.prefs.get('useFractions',
-                          defaults.LANG_PROPERTIES['useFractions']
-                          ):
-            convert.USE_FRACTIONS = convert.FRACTIONS_NORMAL
-        else:
-            convert.USE_FRACTIONS = convert.FRACTIONS_OFF
-        
+        self.setup_prefs()
         self.update_splash(_("Loading graphical interface..."))        
-        gtk.glade.bindtextdomain('gourmet',DIR)
-        gtk.glade.textdomain('gourmet')
-        debug("gladebase is: %s"%gladebase,1)
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'app.glade'))
-        self.pop = self.glade.get_widget('rlmen')
-        self.app = self.glade.get_widget('app')
-        self.prog = self.glade.get_widget('progressbar')
+        self.setup_glade()
         # configuration stuff
         # WidgetSaver is our way of remembering the state and position of
         # windows and widgets for the future.
@@ -146,39 +121,22 @@ class RecGui (RecIndex):
         self.lock = gt.get_lock()
         self._threads = []
         self.threads = 0
-        self.selected = True
-        # widgets that should be sensitive only when a row is selected
-        self.act_on_row_widgets = [self.glade.get_widget('rlViewRecButton'),
-                                   self.glade.get_widget('rlViewRecMenu'),
-                                   self.glade.get_widget('rlShopRecButton'),
-                                   self.glade.get_widget('rlShopRecMenu'),
-                                   self.glade.get_widget('rlDelRecButton'),
-                                   self.glade.get_widget('rlDelRecMenu'),
-                                   self.glade.get_widget('rlBatchEditRecMenu'),
-                                   self.glade.get_widget('export_menu_item'),
-                                   self.glade.get_widget('email_menu_item'),
-                                   self.glade.get_widget('print_menu_item'),
-                                   ]
-        
+        self.selected = True        
+        self.update_splash(_("Loading recipe database..."))
+        self.init_recipes()
+        self.update_splash(_("Setting up recipe index..."))
         self.rtcolsdic={}
         self.rtwidgdic={}
         for a,l,w in REC_ATTRS:
             self.rtcolsdic[a]=l
             self.rtwidgdic[a]=w
-        self.rtcols = [r[0] for r in REC_ATTRS]
-        self.update_splash(_("Loading recipe database..."))
-        self.init_recipes()
-        self.update_splash(_("Setting up recipe index..."))
+            self.rtcols = [r[0] for r in REC_ATTRS]        
         RecIndex.__init__(self,
                           #model=self.rmodel,
                           glade=self.glade,
                           rd=self.rd,
                           rg=self,
                           editable=False)
-
-        # we need an "ID" to add/remove messages to/from the status bar
-        self.pauseid = self.stat.get_context_id('pause')
-        # setup call backs for e.g. right-clicking on the recipe tree to get a popup menu
         self.rectree.connect("popup-menu",self.popup_rmenu)#self.recTreeSelectRec)
         self.rectree.connect("button-press-event",self.rectree_click_cb)
         # connect the rest of our handlers
@@ -224,12 +182,63 @@ class RecGui (RecIndex):
         self.srchentry.connect('activate',self.search_entry_activate_cb)
         self.update_splash(_("Done!"))
         self.threads = 0
+        # we need an "ID" to add/remove messages to/from the status bar
+        self.pauseid = self.stat.get_context_id('pause')
+        # setup call backs for e.g. right-clicking on the recipe tree to get a popup menu
+        
+    def setup_glade (self):
+        gtk.glade.bindtextdomain('gourmet',DIR)
+        gtk.glade.textdomain('gourmet')
+        debug("gladebase is: %s"%gladebase,1)
+        self.glade = gtk.glade.XML(os.path.join(gladebase,'app.glade'))
+        self.pop = self.glade.get_widget('rlmen')
+        self.app = self.glade.get_widget('app')
+        self.prog = self.glade.get_widget('progressbar')
+        # widgets that should be sensitive only when a row is selected
+        self.act_on_row_widgets = [self.glade.get_widget('rlViewRecButton'),
+                                   self.glade.get_widget('rlViewRecMenu'),
+                                   self.glade.get_widget('rlShopRecButton'),
+                                   self.glade.get_widget('rlShopRecMenu'),
+                                   self.glade.get_widget('rlDelRecButton'),
+                                   self.glade.get_widget('rlDelRecMenu'),
+                                   self.glade.get_widget('rlBatchEditRecMenu'),
+                                   self.glade.get_widget('export_menu_item'),
+                                   self.glade.get_widget('email_menu_item'),
+                                   self.glade.get_widget('print_menu_item'),
+                                   ]        
+        
+    def setup_prefs (self):
+        self.prefs = prefs.Prefs()
+        self.prefsGui = prefsGui.PreferencesGui(
+            self.prefs,
+            buttons={'clear_remembered_optional_button':lambda *args: self.forget_remembered_optional_ingredients()}
+            )
+        self.prefsGui.apply_prefs_dic['recipes_per_page'] = lambda p,v: getattr(getattr(self,'rmodel'),
+                                                                               'change_items_per_page')(v)
+        
+        def toggleFractions (prefname,use):
+            print 'toggleFractions->',use
+            if use:
+                convert.USE_FRACTIONS = convert.FRACTIONS_NORMAL
+            else:
+                convert.USE_FRACTIONS = convert.FRACTIONS_OFF
+        self.prefsGui.apply_prefs_dic['useFractions'] = toggleFractions
+        if self.prefs.get('useFractions',
+                          defaults.LANG_PROPERTIES['useFractions']
+                          ):
+            convert.USE_FRACTIONS = convert.FRACTIONS_NORMAL
+        else:
+            convert.USE_FRACTIONS = convert.FRACTIONS_OFF
 
     def search_entry_activate_cb (self, *args):
         if self.rmodel._get_length_()==1:
             self.recTreeSelectRec()
         else:
-            self.limit_search()
+            if not self.search_as_you_type:
+                self.search()
+                gobject.idle_add(lambda *args: self.limit_search())
+            else:
+                self.limit_search()
             
     def update_splash (self, text):
         """Update splash screen on startup."""
@@ -438,7 +447,7 @@ class RecGui (RecIndex):
         # Delete our deleted ingredient keys -- we don't need these
         # for posterity since there is no "trash" interface for
         # ingredients anyway.
-        self.rd.delete_by_criteria(self.rd.iview,{'deleted':True})
+        self.rd.delete_by_criteria(self.rd.ingredients_table,{'deleted':True})
         # Save our recipe info...
         self.save_default()
         for r in self.rc.values():
@@ -502,7 +511,7 @@ class RecGui (RecIndex):
         self.umodel = convertGui.UnitModel(self.conv)
         self.attributeModels = []
         self.inginfo = reccard.IngInfo(self.rd)
-        #self.create_rmodel(self.rd.rview)
+        #self.create_rmodel(self.rd.recipe_table)
         self.sl = shopgui.ShopGui(self, conv=self.conv)
         self.sl.hide()
 
@@ -699,7 +708,7 @@ class RecGui (RecIndex):
 
     def empty_trash (self, *args):
         self.recTreePurge(
-            self.rd.fetch_all(self.rd.rview,deleted=True)
+            self.rd.fetch_all(self.rd.recipe_table,deleted=True)
             )
 
     def print_recs (self, *args):
@@ -857,7 +866,7 @@ class RecGui (RecIndex):
                 else:
                     extra_prefs = {}
                 pd_args={'label':myexp['label'],'sublabel':myexp['sublabel']%{'file':file}}
-                if export_all: recs = self.rd.fetch_all(self.rd.rview,deleted=False,sort_by=[('title',1)])
+                if export_all: recs = self.rd.fetch_all(self.rd.recipe_table,deleted=False,sort_by=[('title',1)])
                 else: recs = self.recTreeSelectedRecs()
                 expClass = myexp['mult_exporter']({'rd':self.rd,
                                                    'rv': recs,
@@ -1376,7 +1385,7 @@ class RecGui (RecIndex):
         """Create a ListModel with unique values of attribute.
         """
         if attribute=='category':
-            slist = self.rg.rd.get_unique_values(attribute,self.rg.rd.catview)
+            slist = self.rg.rd.get_unique_values(attribute,self.rg.rd.categories_table)
         else:
             slist = self.rg.rd.get_unique_values(attribute,deleted=False)
         if not slist:
@@ -1424,14 +1433,14 @@ class RecTrash (RecIndex):
 
     def setup_search_views (self):
         self.last_search = ["",""]
-        self.rvw = self.rd.fetch_all(self.rd.rview,deleted=True)
+        self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=True)
         self.searches = self.default_searches
         self.sort_by = []
 
     def update_from_db (self):
         print 'UDPATE TRASH FROM DB!'
         self.update_rmodel(self.rg.rd.fetch_all(
-            self.rg.rd.rview,deleted=True
+            self.rg.rd.recipe_table,deleted=True
             )
                                   )
 
@@ -1538,8 +1547,146 @@ def startGUI ():
     gtk.main()
     #gtk.threads_leave()
     gt.gtk_leave()
+
+ui = '''<ui>
+<menubar name="RecipeIndexMenuBar">
+  <menu name="File" action="File">
+    <menuitem action="New"/>
+    <menuitem action="ImportFile"/>
+    <menuitem action="ImportWeb"/>
+    <separator/>
+    <menuitem action="ExportSelected"/>
+    <menuitem action="ExportAll"/>
+    <separator/>
+    <menuitem action="Print"/>
+    <separator/>
+    <menuitem action="Quit"/>
+  </menu>
+  <!--<menu name="Edit" action="Edit">
+    <menuitem action="Undo"/>
+    <menuitem action="Redo"/>
+  </menu>-->
+  <menu name="View" action="View">
+    <menuitem action="OpenRec"/>
+  </menu>
+  <menu name="Actions" action="Actions">
+    <menuitem action="OpenRec"/>
+    <menuitem action="DeleteRec"/>
+    <menuitem action="Email"/>
+  </menu>
+  <menu name="Tools" action="Tools">
+    <menuitem action="Timer"/>
+    <menuitem action="UnitConverter"/>
+  </menu>
+  <menu name="Settings" action="Settings">
+    <menuitem action="toggleRegexp"/>
+    <menuitem action="toggleSearchAsYouType"/>
+    <!--<menuitem action="toggleSearchBy"/>-->
+    <separator/>
+    <menuitem action="Preferences"/>
+    <menuitem action="Plugins"/>
+  </menu>
+  <menu name="HelpMenu" action="HelpMenu">
+    <menuitem action="About"/>
+    <menuitem action="Help"/>
+  </menu>
+</menubar>
+
+<toolbar name="RecipeIndexToolBar">
+  <toolitem action="New"/>
+  <toolitem action="DeleteRec"/>
+  <toolitem action="OpenRec"/>
+  <toolitem action="Print"/>
+</toolbar>
+</ui>
+'''
+
+class RecGuiNew (RecGui):
+    def __init__ (self):
+        self.setup_actions()
+        self.setup_main_window()
+
+    def setup_main_window (self):
+        self.w = gtk.Window()
+        self.w.set_title('Test')
+        self.main = gtk.VBox()
+        self.w.add(self.main)
+        mb = self.ui_manager.get_widget('/RecipeIndexMenuBar'); mb.show()
+        self.main.pack_start(mb,fill=False,expand=False);
+        l = gtk.Label('Testing'); self.main.add(l)
+        l.show()
+        self.main.show()
+        self.w.show()
+
+    def setup_actions (self):
+        self.ui_manager = gtk.UIManager()
+        self.ui_manager.add_ui_from_string(ui)
+        self.search_actions = gtk.ActionGroup('SearchActions')
+        self.search_actions.add_toggle_actions([
+            ('toggleRegexp',None,_('Use regular expressions in search'),
+             None,_('Use regular expressions (an advanced search language) in text search'),
+             lambda *args: args),
+            ('toggleSearchAsYouType',None,_('Search as you type'),None,
+             _('Search as you type (turn off if search is too slow).'),
+             lambda *args: args
+             )])
+        self.main_actions = gtk.ActionGroup('MainActions')
+        self.on_selected_actions = gtk.ActionGroup('IndexOnSelectedActions')
+        self.on_selected_actions.add_actions([
+            ('OpenRec',gtk.STOCK_OPEN,_('Open recipe'),
+             None,_('Open selected recipe'),self.recTreeSelectRec),
+            ('DeleteRec',gtk.STOCK_DELETE,_('Delete recipe'),
+             None,_('Delete selected recipes'),self.recTreeDeleteRecCB),
+            ('ExportSelected',None,_('E_xport selected recipes'),
+             None,_('Export selected recipes to file'),self.export_selected_recs),
+            ('Print',gtk.STOCK_PRINT,_('_Print'),
+             None,None,self.print_recs),
+            ('Email', None, _('E-mail recipes'),
+             None,None,self.email_recs),
+            ])
+        
+        self.main_actions.add_actions([
+            ('File',None,_('_File')),
+            ('Edit',None,_('_Edit')),
+            ('Actions',None,_('_Actions')),
+            ('View',None,_('_View')),
+            ('Tools',None,_('_Tools')),
+            ('Settings',None,_('_Settings')),
+            ('HelpMenu',None,_('_Help')),            
+            ('About',gtk.STOCK_ABOUT,_('_About'),
+             None,None,self.show_about),
+            ('New',gtk.STOCK_NEW,_('_New'),
+             None,None,self.newRecCard),
+            ('Help',gtk.STOCK_HELP,_('_Help'),
+             None,None,self.show_help),
+            ('ImportFile',None,_('_Import file'),
+             None,_('Import recipe from file'),self.importg),
+            ('ImportWeb',None,_('Import _webpage'),
+             None,_('Import recipe from webpage'),self.import_webpageg),
+            ('Timer',None,_('_Timer'),
+             None,_('Show timer'),lambda *args: show_timer()),
+            ('UnitConverter',None,_('_Unit Converter'),
+             None,_('Calculate unit conversions'),self.showConverter),
+            ('ExportAll',None,_('Export _all recipes'),
+             None,_('Export all recipes to file'),self.export_all_recs),
+            ('Plugins',None,_('_Plugins'),
+             None,_('Manage plugins which add extra functionality to Gourmet.'),
+             lambda *args: args),
+            ('Preferences',gtk.STOCK_PREFERENCES,_('_Preferences'),
+             None,None,self.show_preferences),
+            #('Redo',gtk.STOCK_REDO,_('_Redo'),
+            # None,None),
+            #('Undo',gtk.STOCK_UNDO,_('_Undo'),
+            # None,None),
+            ('Quit',gtk.STOCK_QUIT,_('_Quit'),
+             None,None,self.quit),
+            ])
+
+        self.ui_manager.insert_action_group(self.on_selected_actions,0)
+        self.ui_manager.insert_action_group(self.search_actions,0)
+        self.ui_manager.insert_action_group(self.main_actions,0)
               
-if __name__ == '__main__':
+if __name__ == '__main__' and False:
     if os.name!='nt':
         import profile, tempfile,os.path
         import hotshot, hotshot.stats
@@ -1555,3 +1702,4 @@ if __name__ == '__main__':
         #p.strip_dirs().sort_stats('cumulative').print_stats()
     else:
         startGUI()
+

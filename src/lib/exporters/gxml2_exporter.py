@@ -97,15 +97,15 @@ class rec_to_xml (XmlExporter):
         self.inglist_el = self.top_inglist
     
 
-class rview_to_xml (exporter.ExporterMultirec, XmlExporter):
+class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
     doc_element = 'gourmetDoc'
     doctype_desc = ''
     dtd_path = ''
-    def __init__ (self, rd, rview, out, one_file=True, progress_func=None, change_units=False,
+    def __init__ (self, rd, recipe_table, out, one_file=True, progress_func=None, change_units=False,
                   mult=1):
         self.create_xmldoc()
         exporter.ExporterMultirec.__init__(
-            self, rd, rview, out, one_file=True, ext='xml', exporter=rec_to_xml,
+            self, rd, recipe_table, out, one_file=True, ext='xml', exporter=rec_to_xml,
             progress_func=progress_func,
             exporter_kwargs={'change_units':change_units,
                              'mult':mult,

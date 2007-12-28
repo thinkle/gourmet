@@ -77,14 +77,14 @@ class rec_to_xml (exporter.exporter):
         self.out.write(base64.b64encode(image))
         self.out.write(']]></image>')
 
-class rview_to_xml (exporter.ExporterMultirec):
-    def __init__ (self, rd, rview, out, one_file=True, progress_func=None):
+class recipe_table_to_xml (exporter.ExporterMultirec):
+    def __init__ (self, rd, recipe_table, out, one_file=True, progress_func=None):
         self.rd=rd
         self.catDic = self.createDictionary('category')
         self.srcDic = self.createDictionary('source')
         self.cuiDic = self.createDictionary('cuisine')
         exporter.ExporterMultirec.__init__(
-            self, rd, rview, out, one_file=True, ext='xml', exporter=rec_to_xml,
+            self, rd, recipe_table, out, one_file=True, ext='xml', exporter=rec_to_xml,
             exporter_kwargs={'attdics':{'cuisine':self.cuiDic,
                                         'category':self.catDic,
                                         'source':self.srcDic,},
@@ -108,7 +108,7 @@ class rview_to_xml (exporter.ExporterMultirec):
     def createDictionary(self,attr):
         dic = {}
         cnt = 1
-        for r in self.rd.rview:
+        for r in self.rd.recipe_table:
             itm = getattr(r,attr)
             if not dic.has_key(itm):
                 dic[itm]="%s%s"%(attr,cnt)

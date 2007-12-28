@@ -127,10 +127,8 @@ src/lib/Undo.py
 src/lib/valueEditor.py
 src/lib/version.py
 src/lib/backends/__init__.py
-src/lib/backends/rdatabase.py
-src/lib/backends/rmetakit.py
-src/lib/backends/sql_db.py
-src/lib/backends/sqlite_db.py
+src/lib/backends/db.py
+src/lib/backends/db_tests.py
 src/lib/importers/BeautifulSoup.py
 src/lib/importers/generic_recipe_parser.py
 src/lib/importers/gxml_importer.py

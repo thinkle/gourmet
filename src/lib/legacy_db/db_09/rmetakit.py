@@ -67,9 +67,9 @@ class RecData (rdatabase.RecData):
                 )
             n = 0
             tot = 3
-            for tabl,desc in [('sview',self.SHOPCATS_TABLE_DESC),
-                              ('scview',self.SHOPCATSORDER_TABLE_DESC),
-                              ('pview',self.PANTRY_TABLE_DESC)]:
+            for tabl,desc in [('shopcats_table',self.SHOPCATS_TABLE_DESC),
+                              ('shopcatsorder_table',self.SHOPCATSORDER_TABLE_DESC),
+                              ('pantry_table',self.PANTRY_TABLE_DESC)]:
                 self.copy_table(
                     old_db,
                     tabl,
@@ -162,7 +162,7 @@ class RecData (rdatabase.RecData):
     def save (self):
         """Commit our metakit database to file."""
         debug('saving database to file %s'%self.file,0)
-        debug('there are %s recipes in the database'%len(self.rview),0)
+        debug('there are %s recipes in the database'%len(self.recipe_table),0)
         if self.changed:
             self.db.commit()
             self.changed=False
@@ -208,12 +208,12 @@ class RecData (rdatabase.RecData):
             return resultvw
         return []
 
-    def ings_search (self, ings, keyed=None, rview=None, use_regexp=True, exact=False):
+    def ings_search (self, ings, keyed=None, recipe_table=None, use_regexp=True, exact=False):
         """Handed a list of regexps, return a list of recipes containing all
         items."""
         for i in ings:
-            rview = self.ing_search(i,keyed=keyed,rview=rview,exact=exact,use_regexp=use_regexp)
-        return rview
+            recipe_table = self.ing_search(i,keyed=keyed,recipe_table=recipe_table,exact=exact,use_regexp=use_regexp)
+        return recipe_table
 
     def joined_search (self, table1, table2, search_by, search_str,
                        use_regexp=True, exact=False, join_on='id'):
@@ -277,7 +277,7 @@ class RecData (rdatabase.RecData):
         return rec
     
     def do_add_ing (self, ingdic):
-        """Add ingredient to iview based on ingdict and return
+        """Add ingredient to ingredients_table based on ingdict and return
         ingredient object. Ingdict contains:
         id: recipe_id
         unit: unit
@@ -292,13 +292,13 @@ class RecData (rdatabase.RecData):
         """
         self.remove_unicode(ingdic)
         if ingdic.has_key('amount') and not ingdic['amount']: del ingdic['amount']
-        self.iview.append(ingdic)
-        if self.add_ing_hooks: self.run_hooks(self.add_ing_hooks, self.iview[-1])
+        self.ingredients_table.append(ingdic)
+        if self.add_ing_hooks: self.run_hooks(self.add_ing_hooks, self.ingredients_table[-1])
         self.changed=True
-        return self.iview[-1]
+        return self.ingredients_table[-1]
 
     def delete_ing (self, ing):
-        self.iview.delete(ing.__index__)
+        self.ingredients_table.delete(ing.__index__)
         self.changed=True
 
     # Convenience functions
@@ -428,9 +428,9 @@ class RecData (rdatabase.RecData):
             )
         self._backup_database_and_make_progress_dialog(dumpfile)
         ofi = file(dumpfile,'w')
-        gxml2_exporter.rview_to_xml(
+        gxml2_exporter.recipe_table_to_xml(
             subrm,
-            subrm.rview,
+            subrm.recipe_table,
             ofi,
             one_file=True,
             progress_func=lambda p,m: self.pd.set_progress(p*0.5,m)
@@ -546,9 +546,9 @@ class RecData (rdatabase.RecData):
         if not hasattr(self.contentview[0],table) or not hasattr(getattr(self.contentview[0],table),old[0]):
             debug('Old property %s doesn\'t exist'%old[0],9)
             return
-        tmpview = self.setup_table(table, [new,old])
-        vw = tmpview.filter(lambda x: getattr(x,old[0]))
-        to_move_vw = tmpview.remapwith(vw)
+        tmpantry_table = self.setup_table(table, [new,old])
+        vw = tmpantry_table.filter(lambda x: getattr(x,old[0]))
+        to_move_vw = tmpantry_table.remapwith(vw)
         to_move = len(to_move_vw)
         if to_move > 0:
             self._backup_database()
@@ -630,10 +630,10 @@ class RecDataOldDB (RecData):
         self.NORMALIZED_TABLES = []
         rdatabase.RecData.setup_tables(self)
         # We have some columns that need renaming...
-        for table,old,new in [('sview','shopkey','ingkey'),
-                              ('sview','category','shopcategory'),
-                              ('scview','category','shopcategory'),
-                              ('pview','itm','ingkey'),]:
+        for table,old,new in [('shopcats_table','shopkey','ingkey'),
+                              ('shopcats_table','category','shopcategory'),
+                              ('shopcatsorder_table','category','shopcategory'),
+                              ('pantry_table','itm','ingkey'),]:
             if hasattr(getattr(self,table,),old):
                 setattr(self,table,getattr(self,table).rename(old,new))
 

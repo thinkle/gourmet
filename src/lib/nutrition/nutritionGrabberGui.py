@@ -1,7 +1,7 @@
 import gtk
 import databaseGrabber
 import os, os.path, time
-import gourmet.dialog_extras as de
+import gourmet.gtk_extras.dialog_extras as de
 from gourmet.GourmetThreads import Terminated
 from gourmet.gglobals import datad
 from gettext import gettext as _
@@ -64,7 +64,7 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
         return databaseGrabber.DatabaseGrabber.get_abbrev_from_url(self)
     
 def check_for_db (db):
-    if db.fetch_len(db.nview) < 10:
+    if db.fetch_len(db.nutrition_table) < 10:
         print 'Grabbing nutrition database!'
         dgg = DatabaseGrabberGui(db)        
         dgg.load_db()        
@@ -73,5 +73,5 @@ if __name__=='__main__':
     import gourmet.recipeManager
     print 'loading db'
     db = gourmet.recipeManager.RecipeManager(**gourmet.recipeManager.dbargs)
-    print 'checking for nview'
+    print 'checking for nutrition_table'
     check_for_db(db)

@@ -43,7 +43,7 @@ def get_legacy_db_in_directory (dir):
                 try:
                     print 'Loading ',fi,'with',m
                     rm = load_db(fi,m)
-                    assert(type(rm.rview[0].cuisine)!=int)
+                    assert(type(rm.recipe_table[0].cuisine)!=int)
                 except:
                     print 'Failed to load for ',m
                     import traceback; traceback.print_exc()

@@ -26,13 +26,13 @@ class NutritionData:
         #density=self.get_density(key,row)
         if row: self.row.ndbno=row.ndbno
         else:
-            self.db.do_add(self.db.naliasesview,
+            self.db.do_add(self.db.nutritionaliases_table,
                            {'ndbno':row.ndbno,
                             'ingkey':key})
 
     def set_density_for_key (self, key, density_equivalent):
         self.db.update(
-            self.db.naliasesview,
+            self.db.nutritionaliases_table,
             {'ingkey':key},
             {'density_equivalent':density_equivalent}
             )
@@ -42,13 +42,13 @@ class NutritionData:
         ndbno is our nutritional database number."""
         if type(ndbno)!=int:
             ndbno = int(ndbno)
-        prev_association = self.db.fetch_one(self.db.naliasesview,ingkey=key)
+        prev_association = self.db.fetch_one(self.db.nutritionaliases_table,ingkey=key)
         if prev_association:
-            self.db.do_modify(self.db.naliasesview,
+            self.db.do_modify(self.db.nutritionaliases_table,
                               prev_association,
                               {'ndbno':ndbno})
         else:
-            self.db.do_add(self.db.naliasesview,{'ndbno':ndbno,
+            self.db.do_add(self.db.nutritionaliases_table,{'ndbno':ndbno,
                                                  'ingkey':key}
                            )
 
@@ -59,14 +59,14 @@ class NutritionData:
         """
         if self.conv.unit_dict.has_key(unit):
             unit = self.conv.unit_dict[unit]
-        prev_entry = self.db.fetch_one(self.db.nconversions,
+        prev_entry = self.db.fetch_one(self.db.nutritionconversions_table,
                                        **{'ingkey':key,'unit':unit})
         if prev_entry:
-            self.db.do_modify(self.db.nconversions,
+            self.db.do_modify(self.db.nutritionconversions_table,
                                prev_entry,
                                {'factor':factor})
         else:
-            self.db.do_add(self.db.nconversions,{'ingkey':key,'unit':unit,'factor':factor})
+            self.db.do_add(self.db.nutritionconversions_table,{'ingkey':key,'unit':unit,'factor':factor})
 
     def get_matches (self, key, max=50):
         """Handed a string, get a list of likely USDA database matches.
@@ -92,7 +92,7 @@ class NutritionData:
     def _get_key (self, key):
         """Handed an ingredient key, get our nutritional Database equivalent
         if one exists."""
-        row=self.db.fetch_one(self.db.naliasesview,**{'ingkey':str(key)})
+        row=self.db.fetch_one(self.db.nutritionaliases_table,**{'ingkey':str(key)})
         return row
 
     def get_nutinfo_for_ing (self, ing, rd):
@@ -137,7 +137,7 @@ class NutritionData:
         """
         aliasrow = self._get_key(key)
         if aliasrow:
-            nvrow=self.db.fetch_one(self.db.nview,**{'ndbno':aliasrow.ndbno})
+            nvrow=self.db.fetch_one(self.db.nutrition_table,**{'ndbno':aliasrow.ndbno})
             if nvrow: return NutritionInfo(nvrow)
         # if we don't have a nutritional db row, return a
         # NutritionVapor instance which remembers our query and allows
@@ -186,13 +186,13 @@ class NutritionData:
                 unit = self.conv.unit_dict[unit]
             elif not unit:
                 unit = ''
-            lookup = self.db.fetch_one(self.db.nconversions,ingkey=key,unit=unit)
+            lookup = self.db.fetch_one(self.db.nutritionconversions_table,ingkey=key,unit=unit)
             if lookup:
                 cnv = lookup.factor
             else:
                 # otherwise, cycle through any units we have and see
                 # if we can get a conversion via those units...
-                for conv in self.db.fetch_all(self.db.nconversions,ingkey=key):
+                for conv in self.db.fetch_all(self.db.nutritionconversions_table,ingkey=key):
                     factor = self.conv.converter(unit,conv.unit)
                     if factor:
                         cnv = conv.factor*factor
@@ -254,7 +254,7 @@ class NutritionData:
         """Return a dictionary with gram weights.
         """
         ret = {}
-        nutweights = self.db.fetch_all(self.db.nwview,**{'ndbno':row.ndbno})
+        nutweights = self.db.fetch_all(self.db.usda_weights_table,**{'ndbno':row.ndbno})
         for nw in nutweights:
             mtch = self.wght_breaker.match(nw.unit)
             if not mtch:
@@ -295,7 +295,7 @@ class NutritionData:
 
     def add_custom_nutrition_info (self, nutrition_dictionary):
         """Add custom nutritional information."""
-        #new_ndbno = self.db.increment_field(self.db.nview,'ndbno')
+        #new_ndbno = self.db.increment_field(self.db.nutrition_table,'ndbno')
         #if new_ndbno: nutrition_dictionary['ndbno']=new_ndbno
         return self.db.do_add_nutrition(nutrition_dictionary).ndbno
         
@@ -611,7 +611,7 @@ def foo ():
     #import random
     #fake_key = "0"
     #while raw_input('Get another density?'):
-    #    row=random.choice(db.nview)
+    #    row=random.choice(db.nutrition_table)
     #    print 'Information: ',row.desc, nd.get_conversions(row=row)
     #    #print 'Gramweights: ',nd.get_gramweights(row)
     #    #print 'Density of ',row.desc,' = ',nd.get_densities(row)

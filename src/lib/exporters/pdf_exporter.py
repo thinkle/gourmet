@@ -12,7 +12,7 @@ from gettext import gettext as _
 from gettext import ngettext
 from gourmet import convert
 from gourmet import gglobals
-from gourmet import dialog_extras as de
+from gourmet.gtk_extras import dialog_extras as de
 from gourmet import ImageExtras
 import xml.sax.saxutils
 import exporter
@@ -629,7 +629,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
     def write_ingref (self, amount, unit, item, refid, optional):
         reffed = self.rd.get_rec(refid)
         if not reffed:
-            reffed = self.rd.fetch_one(self.rd.rview,title=item,deleted=False)
+            reffed = self.rd.fetch_one(self.rd.recipe_table,title=item,deleted=False)
             if reffed:
                 refid = reffed.id
         if not reffed:
@@ -940,11 +940,11 @@ if __name__ == '__main__':
     #rd = rm.RecipeManager()
     #ofi = file(os.path.join(tempdir,'test_rec.pdf'),'w')
     #rr = []
-    #for n,rec in enumerate(rd.fetch_all(rd.rview,deleted=False)):
+    #for n,rec in enumerate(rd.fetch_all(rd.recipe_table,deleted=False)):
     #    if rec.image:
     #        rr.append(rec)
-    #pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.rview),os.path.join(tempdir,'fooby.pdf'))
-    #pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.rview,deleted=False)[:10],os.path.join(tempdir,'fooby.pdf'))
+    #pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.recipe_table),os.path.join(tempdir,'fooby.pdf'))
+    #pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.recipe_table,deleted=False)[:10],os.path.join(tempdir,'fooby.pdf'))
     #pe = PdfExporterMultiDoc(rd,rr,os.path.join(tempdir,'fooby.pdf'))
     #pe.run()
 
@@ -996,10 +996,10 @@ if __name__ == '__main__':
         rd = rm.RecipeManager(file=os.path.join(base,'src','tests','reference_setup','recipes.db'))
         #rd = rm.RecipeManager()
         rr = []
-        #for n,rec in enumerate(rd.fetch_all(rd.rview,deleted=False)):
+        #for n,rec in enumerate(rd.fetch_all(rd.recipe_table,deleted=False)):
         #    if rec.image:
         #        rr.append(rec)
-        pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.rview,deleted=False),fname,pdf_args=pdf_args)
+        pe = PdfExporterMultiDoc(rd,rd.fetch_all(rd.recipe_table,deleted=False),fname,pdf_args=pdf_args)
         pe.run()
         return fname
 

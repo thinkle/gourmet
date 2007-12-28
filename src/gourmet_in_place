@@ -14,9 +14,9 @@ if os.path.exists('foo'):
 os.mkdir('foo')
 os.symlink(os.path.abspath('lib'),'foo/gourmet')
 sys.path = [os.path.abspath('foo')] + sys.path
-sys.argv.append('--gourmet-directory=%s'%os.path.abspath('../glade/'))
+sys.argv.append('--data-directory=%s'%os.path.abspath('../data/'))
+sys.argv.append('--glade-directory=%s'%os.path.abspath('../glade/'))
 sys.argv.append('--image-directory=%s'%os.path.abspath('../images/'))
-print sys.path
 
 from gourmet.OptionParser import *
 
@@ -27,7 +27,6 @@ def thread_debug ():
     t.terminate = lambda *args: t.cancel()
     t.start()
     
-
 if options.thread_debug:
     import threading
     thread_debug()
@@ -41,5 +40,5 @@ elif options.psyco:
 
 import gourmet.GourmetRecipeManager
 gourmet.GourmetRecipeManager.startGUI()
-for mod in sys.modules:
-    print mod,sys.modules[mod]
+#for mod in sys.modules:
+#    print mod,sys.modules[mod]

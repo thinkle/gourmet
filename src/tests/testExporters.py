@@ -108,7 +108,7 @@ class ExportTest:
             self.do_test(d['test'])
 
     def do_test (self, test):
-        recs = self.db.search(self.db.rview,
+        recs = self.db.search(self.db.recipe_table,
                               'title',
                               test['title'],
                               exact=True,
@@ -126,9 +126,9 @@ class ExportTest:
     def setup_db (self):
         print 'rm.dbargs[file]=',rm.dbargs['file']
         self.db = rm.RecipeManager(**rm.dbargs)
-        if self.db.fetch_len(self.db.rview)==0: raise "No recipes in database."
+        if self.db.fetch_len(self.db.recipe_table)==0: raise "No recipes in database."
         self.mult_export_args = {'rd':self.db,
-                                 'rv':self.db.fetch_all(self.db.rview),
+                                 'rv':self.db.fetch_all(self.db.recipe_table),
                                  'conv':None,
                                  'prog':None,
                                  'extra_prefs':{}

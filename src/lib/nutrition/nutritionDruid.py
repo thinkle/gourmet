@@ -1,14 +1,14 @@
 import gtk, gtk.glade, gobject
 import gourmet.convert as convert
 import gourmet.gglobals as gglobals
-from gourmet.mnemonic_manager import MnemonicManager
+from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
 from gourmet.defaults import lang as defaults
-from gourmet.pageable_store import PageableViewStore
+from gourmet.gtk_extras.pageable_store import PageableViewStore
 from nutritionLabel import NUT_LAYOUT, SEP, RECOMMENDED_INTAKE
 from nutritionInfoEditor import NutritionInfoIndex,MockObject
-from gourmet.numberEntry import NumberEntry
-import gourmet.cb_extras as cb
-import gourmet.dialog_extras as de
+from gourmet.gtk_extras.numberEntry import NumberEntry
+import gourmet.gtk_extras.cb_extras as cb
+import gourmet.gtk_extras.dialog_extras as de
 import gourmet.gtk_extras.WidgetSaver as WidgetSaver
 import re
 import os,os.path
@@ -104,7 +104,7 @@ class NutritionUSDAIndex:
         self.usdaFindButton.connect('clicked',self.search_cb)
         self.usdaSearchAsYouTypeToggle.connect('toggled',self.toggle_saut)
         cb.set_model_from_list(self.foodGroupComboBox,
-                               [self.ALL_GROUPS]+self.rd.get_unique_values('foodgroup',self.rd.nview)
+                               [self.ALL_GROUPS]+self.rd.get_unique_values('foodgroup',self.rd.nutrition_table)
                                )
         cb.cb_set_active_text(self.foodGroupComboBox,self.ALL_GROUPS)        
         
@@ -121,7 +121,7 @@ class NutritionUSDAIndex:
         if 'raw' not in words:
             words += ['raw'] 
         search_terms = []
-        search_in = self.rd.nview
+        search_in = self.rd.nutrition_table
         srch = []
         searchvw = None
         for w in words:
@@ -138,7 +138,7 @@ class NutritionUSDAIndex:
         self.__override_search__ = True # turn off any handling of text insertion
         search_text = ' '.join(srch)
         self.usdaSearchEntry.set_text(search_text)
-        self.searchvw = searchvw or self.rd.fetch_all(self.rd.nview)        
+        self.searchvw = searchvw or self.rd.fetch_all(self.rd.nutrition_table)        
         self.nutrition_store.change_view(self.searchvw)
         self.__last_search__ = search_text
         self.__override_search__ = False # turn back on search handling!
@@ -153,7 +153,7 @@ class NutritionUSDAIndex:
 
     def _setup_nuttree_ (self):
         """Set up our treeview with USDA nutritional equivalents"""
-        self.nutrition_store = PageableNutritionStore(self.rd.fetch_all(self.rd.nview))
+        self.nutrition_store = PageableNutritionStore(self.rd.fetch_all(self.rd.nutrition_table))
         self.usdaFirstButton.connect('clicked', lambda *args: self.nutrition_store.goto_first_page())
         self.usdaLastButton.connect('clicked', lambda *args: self.nutrition_store.goto_last_page())
         self.usdaForwardButton.connect('clicked', lambda *args: self.nutrition_store.next_page())
@@ -161,7 +161,7 @@ class NutritionUSDAIndex:
         self.nutrition_store.connect('page-changed',self.update_nuttree_showing)
         self.nutrition_store.connect('view-changed',self.update_nuttree_showing)        
         self.update_nuttree_showing()
-        self.searchvw = self.rd.nview
+        self.searchvw = self.rd.nutrition_table
         self.usdaTreeview.set_model(self.nutrition_store)
         renderer = gtk.CellRendererText()
         col = gtk.TreeViewColumn('Item',renderer,text=1)
@@ -414,7 +414,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.infoOtherEquivalentsLabel.set_text(
             extra_units_text or 'None'
             )
-        others = self.rd.fetch_all(self.rd.nconversions,ingkey=nutalias.ingkey)
+        others = self.rd.fetch_all(self.rd.nutritionconversions_table,ingkey=nutalias.ingkey)
         other_label = '\n'.join(['%s: %.1f g'%(
             conv.unit or '100 %s'%_('ml'),1.0/conv.factor
             ) for conv in others])
@@ -489,7 +489,7 @@ class NutritionInfoDruid (gobject.GObject):
     def get_amounts_and_units_for_ingkey (self, ingkey):
         """Return a list of amounts and units present in database for ingkey"""
         amounts_and_units = []
-        ings = self.rd.fetch_all(self.rd.iview,ingkey=ingkey)        
+        ings = self.rd.fetch_all(self.rd.ingredients_table,ingkey=ingkey)        
         for i in ings:
             a,u = i.amount,i.unit
             if (a,u) not in amounts_and_units:
@@ -744,7 +744,7 @@ class NutritionInfoDruid (gobject.GObject):
         if key==self.ingkey:
             self.changeIngKeyAction.dehighlight_action()            
             return
-        #ings = self.rd.fetch_all(self.rd.iview,ingkey=self.ingkey)
+        #ings = self.rd.fetch_all(self.rd.ingredients_table,ingkey=self.ingkey)
         #self.rd.modify_ings(ings,{'ingkey':key})
         if self.rec:
             try:
@@ -773,13 +773,13 @@ class NutritionInfoDruid (gobject.GObject):
                 self.changeIngKeyAction.dehighlight_action()
                 return
         if self.rec and user_says_yes:
-            self.rd.update(self.rd.iview,
+            self.rd.update(self.rd.ingredients_table,
                            {'ingkey':self.ingkey,
                             'id':self.rec.id},
                            {'ingkey':key}
                            )
         else:
-            self.rd.update(self.rd.iview,
+            self.rd.update(self.rd.ingredients_table,
                           {'ingkey':self.ingkey},
                           {'ingkey':key}
                           )
@@ -798,7 +798,7 @@ class NutritionInfoDruid (gobject.GObject):
     def save_unit_cb (self,*args):
         from_unit = self.fromUnitComboBoxEntry.get_children()[0].get_text()
         old_from_unit = self.fromUnit
-        #ings = self.rd.fetch_all(self.rd.iview,ingkey=self.ingkey,unit=old_from_unit)
+        #ings = self.rd.fetch_all(self.rd.ingredients_table,ingkey=self.ingkey,unit=old_from_unit)
         #self.rd.modify_ings(ings,{'unit':from_unit})
         if self.rec and de.getBoolean(
             label=_('Change unit'),
@@ -812,14 +812,14 @@ class NutritionInfoDruid (gobject.GObject):
             custom_no=_('Change _everywhere'),
             custom_yes=_('_Just in recipe %s')%self.rec.title
             ):
-            self.rd.update(self.rd.iview,
+            self.rd.update(self.rd.ingredients_table,
                            {'ingkey':self.ingkey,
                             'unit':old_from_unit,
                             'id':self.rec.id},
                            {'unit':from_unit}
                            )
         else:
-            self.rd.update(self.rd.iview,
+            self.rd.update(self.rd.ingredients_table,
                           {'ingkey':self.ingkey,
                            'unit':old_from_unit},
                           {'unit':from_unit}

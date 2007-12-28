@@ -218,9 +218,9 @@ class ValueEditor:
         elif len(values)==1:
             criteria = {self.field:values[0]}
         if self.field == 'category':
-            table = self.rd.catview
+            table = self.rd.categories_table
         else:
-            table = self.rd.rview
+            table = self.rd.recipe_table
         return criteria,table
 
     def apply_changes (self, criteria, table):
@@ -233,21 +233,21 @@ class ValueEditor:
                 # Inefficient, but works with our current backend
                 # interface... and shouldn't be called often, so we'll
                 # deal with the ugliness for now
-                for r in self.rd.fetch_all(self.rd.rview,**criteria):
-                    if not self.rd.fetch_one(self.rd.catview,{'id':r.id}):
+                for r in self.rd.fetch_all(self.rd.recipe_table,**criteria):
+                    if not self.rd.fetch_one(self.rd.categories_table,{'id':r.id}):
                         self.rd.do_add_cat({'id':r.id,'category':other_changes['category']})
             else:
                 if self.field=='category':
-                    IDs = [r.id for r in self.rd.fetch_all(self.rd.catview,**criteria)]
+                    IDs = [r.id for r in self.rd.fetch_all(self.rd.categories_table,**criteria)]
                     new_criteria = {'id':('==',('or',IDs))}
                     self.rd.update_by_criteria(
-                        self.rd.rview,
+                        self.rd.recipe_table,
                         new_criteria,
                         other_changes
                         )
                 else:
                     self.rd.update_by_criteria(
-                        self.rd.rview,
+                        self.rd.recipe_table,
                         criteria,
                         other_changes
                         )
@@ -255,9 +255,9 @@ class ValueEditor:
             self.rd.delete_by_criteria(table,criteria)
         else:
             if self.field=='category':
-                table = self.rd.catview
+                table = self.rd.categories_table
             else:
-                table = self.rd.rview
+                table = self.rd.recipe_table
             self.rd.update_by_criteria(table,criteria,changes)
         self.rg.reset_search()
 

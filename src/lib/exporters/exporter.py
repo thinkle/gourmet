@@ -432,7 +432,7 @@ class exporter_mult (exporter):
 
 class ExporterMultirec:
 
-    def __init__ (self, rd, rview, out, one_file=True,
+    def __init__ (self, rd, recipe_table, out, one_file=True,
                   ext='txt',
                   conv=None,
                   imgcount=1,
@@ -440,13 +440,13 @@ class ExporterMultirec:
                   exporter=exporter,
                   exporter_kwargs={},
                   padding=None):
-        """Output all recipes in rview into a document or multiple
+        """Output all recipes in recipe_table into a document or multiple
         documents. if one_file, then everything is in one
         file. Otherwise, we treat 'out' as a directory and put
         individual recipe files within it."""        
         self.timer=TimeAction('exporterMultirec.__init__()')
         self.rd = rd
-        self.rview = rview
+        self.recipe_table = recipe_table
         self.out = out
         self.padding=padding
         if not one_file:
@@ -461,7 +461,7 @@ class ExporterMultirec:
         else: self.ofi = out
         self.write_header()
         self.rcount = 0
-        self.rlen = len(self.rview)
+        self.rlen = len(self.recipe_table)
         self.suspended = False
         self.terminated = False
         self.pf = progress_func
@@ -503,7 +503,7 @@ class ExporterMultirec:
         
     def run (self):
         first = True
-        for r in self.rview:
+        for r in self.recipe_table:
             self.check_for_sleep()
             if self.pf:
                 msg = _("Exported %(number)s of %(total)s recipes")%{'number':self.rcount,'total':self.rlen}

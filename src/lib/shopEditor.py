@@ -176,9 +176,9 @@ class ShopEditor:
         
     def changeItem (self, key, item=None, new_key=None, new_item=None):
         if item:
-            vw=self.rd.iview.select(key=key,item=item)
+            vw=self.rd.ingredients_table.select(key=key,item=item)
         else:
-            vw=self.rd.iview.select(key=key)
+            vw=self.rd.ingredients_table.select(key=key)
         for i in vw:
             print 'changing item for %s %s %s'%(i.id,i.ingkey,i.item)
             if new_key:
@@ -190,7 +190,7 @@ class ShopEditor:
         
     def makeTreeModel (self):
         self.treeModel = gtk.TreeStore(gobject.TYPE_PYOBJECT, str, str)
-        unique_cat_vw = self.rd.sview.groupby(self.rd.sview.category, 'groupvw')
+        unique_cat_vw = self.rd.shopcats_table.groupby(self.rd.shopcats_table.category, 'groupvw')
         self.cat_to_key={}
         for c in unique_cat_vw:
             iter=self.treeModel.append(None,[c, pickle.loads(c.category), ""])

@@ -6,7 +6,7 @@ from gourmet.gglobals import gt, use_threads
 import gourmet.gglobals
 import xml.sax.saxutils
 from gettext import gettext as _
-import gourmet.dialog_extras as de
+import gourmet.gtk_extras.dialog_extras as de
 import re
 
 class importer:

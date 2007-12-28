@@ -194,7 +194,7 @@ class RecData (rdatabase.RecData):
     def save (self):
         """Commit our metakit database to file."""
         debug('saving database to file %s'%self.file,0)
-        debug('there are %s recipes in the database'%len(self.rview),0)
+        debug('there are %s recipes in the database'%len(self.recipe_table),0)
         if self.changed:
             self.db.commit()
             self.changed=False
@@ -218,29 +218,29 @@ class RecData (rdatabase.RecData):
         self.run_hooks(self.modify_hooks,rec)
         self.changed=True
 
-    def ings_search (self, ings, keyed=None, rview=None, use_regexp=True, exact=False):
+    def ings_search (self, ings, keyed=None, recipe_table=None, use_regexp=True, exact=False):
         """Handed a list of regexps, return a list of recipes containing all
         items."""
         for i in ings:
-            rview = self.ing_search(i,keyed=keyed,rview=rview,exact=exact,use_regexp=use_regexp)
-        return rview
+            recipe_table = self.ing_search(i,keyed=keyed,recipe_table=recipe_table,exact=exact,use_regexp=use_regexp)
+        return recipe_table
 
-    def ing_search (self, ing, keyed=None, rview=None, use_regexp=True, exact=False):
+    def ing_search (self, ing, keyed=None, recipe_table=None, use_regexp=True, exact=False):
         """Handed an ingredient (or, rather, a regexp for an
         ingredient), return a list of recipes. By default
         (keyed=None), we search through keys or item descriptions. If
         'keyed', we search only in keys."""
-        iview = self.iview
-        if not rview:
-            rview=self.rview
-        vw = self.search(iview, 'ingkey', ing, use_regexp=use_regexp, exact=exact)
+        ingredients_table = self.ingredients_table
+        if not recipe_table:
+            recipe_table=self.recipe_table
+        vw = self.search(ingredients_table, 'ingkey', ing, use_regexp=use_regexp, exact=exact)
         if not keyed:
-            vw2 = self.search(iview, 'item', ing)
+            vw2 = self.search(ingredients_table, 'item', ing)
             vw = vw.union(vw2)
         ## this is hackish--using a dictionary to get a list of unique IDs
         ## I should figure out how to do this right so I get a view returned
         ## which can be searched again.
-        ## return self.rview.remapwith(vw)
+        ## return self.recipe_table.remapwith(vw)
         ## segfaults for unknown reason
         rlist = {}
         for v in vw:
@@ -249,15 +249,15 @@ class RecData (rdatabase.RecData):
 #        for rid in rlist.keys():
 #            recs.append(self.get_rec(rid))
         ## now, being backasswards as we are, we use a filter to get ourselves a proper view
-        return self.ids_to_rview(rlist.keys(),rview=rview)
+        return self.ids_to_recipe_table(rlist.keys(),recipe_table=recipe_table)
 
-    def ids_to_rview (self, ids, rview=None):
+    def ids_to_recipe_table (self, ids, recipe_table=None):
         """A backasswards function that shouldn't be necessary: we
         take a list of IDs and return a view containing those recipes."""
-        if not rview:
-            rview=self.rview
-        indexvw = rview.filter(lambda row: ids.__contains__(row.id))
-        resultvw = rview.remapwith(indexvw)
+        if not recipe_table:
+            recipe_table=self.recipe_table
+        indexvw = recipe_table.filter(lambda row: ids.__contains__(row.id))
+        resultvw = recipe_table.remapwith(indexvw)
         resultvw.unique()
         return resultvw
 
@@ -309,18 +309,18 @@ class RecData (rdatabase.RecData):
         self.run_hooks(self.delete_hooks,rec)
         did = rec.id
         debug("deleting recipe %s %s"%(rec.id,rec.title),2)
-        self.rview.delete(rec.__index__)
+        self.recipe_table.delete(rec.__index__)
         debug("successfully deleted recipe!",2)
         ## and now we delete the ingredients
         debug('selecting ingredients')
-        for i in self.iview.select(id=did):
+        for i in self.ingredients_table.select(id=did):
             debug("DEBUG: Deleting ingredient %s"%i.item)
-            self.iview.delete(i.__index__)
+            self.ingredients_table.delete(i.__index__)
         debug('delete_rec finished.')
         self.changed=True
     
     def delete_ing (self, ing):
-        self.iview.delete(ing.__index__)
+        self.ingredients_table.delete(ing.__index__)
         self.changed=True
 
     def add_ing (self, ingdic):

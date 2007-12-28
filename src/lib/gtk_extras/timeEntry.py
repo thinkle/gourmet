@@ -26,7 +26,7 @@ TIME_TO_READ = 1000
 class TimeEntry (validatingEntry.ValidatingEntry):
 
     def __init__ (self, conv=None):
-        if not conv: self.conv = convert.converter()
+        if not conv: self.conv = convert.Converter()
         else: self.conv = conv
         validatingEntry.ValidatingEntry.__init__(self)
         self.entry.get_value = self.get_value

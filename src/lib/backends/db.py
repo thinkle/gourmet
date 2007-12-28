@@ -132,7 +132,8 @@ class RecData:
             print 'Connecting to file ',self.filename
         else:
             self.new_db = True # ??? How will we do this now?
-        self.db = sqlalchemy.create_engine(self.url)
+        self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal') 
+        self.db.begin()
         self.metadata = sqlalchemy.MetaData(self.db)
         self.session = sqlalchemy.create_session()
         #raise NotImplementedError
@@ -165,7 +166,7 @@ class RecData:
                 self.info_table,
                 {'last_access':time.time()}
                 )
-        pass
+        self.db.commit()
 
     def __setup_object_for_table (self, table, klass):
         self.__table_to_object__[table] = klass

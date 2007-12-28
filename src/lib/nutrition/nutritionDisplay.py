@@ -46,7 +46,7 @@ class SimpleNutritionalDisplay:
     def __init__ (self,nutrition_data):
         self.w = gtk.Window()
         self.nd = nutrition_data
-        self.nm = NutritionModel(ndObj.db.nview)
+        self.nm = NutritionModel(ndObj.db.nutrition_table)
         self.sw = gtk.ScrolledWindow()
         self.tv = gtk.TreeView()
         rend = gtk.CellRendererText()
@@ -115,7 +115,7 @@ class SimpleIngredientCalculator (de.mDialog):
 
     def nutBoxCB (self, *args):
         txt=cb.cb_get_active_text(self.nutBox)
-        row=self.db.nview[self.db.nview.find({'desc':txt})]        
+        row=self.db.nutrition_table[self.db.nutrition_table.find({'desc':txt})]        
         conversion =  self.nd.get_conversion_for_amt(
             float(self.amtBox.get_value()),
             cb.cb_get_active_text(self.unitBox),
@@ -135,8 +135,8 @@ class SimpleIngredientCalculator (de.mDialog):
         
     def updateCombo (self, *args):
         self.txt = self.itmBox.get_text()
-        indexvw = self.db.nview.filter(self.search_func)
-        nvw = self.db.nview.remapwith(indexvw)
+        indexvw = self.db.nutrition_table.filter(self.search_func)
+        nvw = self.db.nutrition_table.remapwith(indexvw)
         mod = gtk.ListStore(str)
         map(lambda r: mod.append([r.desc]), nvw)
         self.nutBox.set_model(mod)        
@@ -168,7 +168,7 @@ if __name__ == '__main__':
     def quit (*args):
         db.save()
         gtk.mainquit()
-    #snd=SimpleNutritionalDisplay(db.nview)
+    #snd=SimpleNutritionalDisplay(db.nutrition_table)
     #snd.w.connect('delete-event',quit)
     import nutrition.nutrition
     nd=nutrition.nutrition.NutritionData(db,conv)

@@ -37,6 +37,7 @@ class RecIndex:
         # Don't # allow for special keybindings
         #self.srchentry.connect('key_press_event',self.srchentry_keypressCB)
         self.searchByDic = {
+            unicode(_('anywhere')):'anywhere',
             unicode(_('title')):'title',
             unicode(_('ingredient')):'ingredient',
             unicode(_('instructions')):'instructions',
@@ -46,7 +47,8 @@ class RecIndex:
             #_('rating'):'rating',
             unicode(_('source')):'source',
             }
-        self.searchByList = [_('title'),
+        self.searchByList = [_('anywhere'),
+                             _('title'),
                              _('ingredient'),
                              _('category'),
                              _('cuisine'),
@@ -105,6 +107,7 @@ class RecIndex:
             'rlistReset' : self.reset_search,
             'rlistLimit' : self.limit_search,
             'search_as_you_type_toggle' : self.toggleTypeSearchCB,})
+        self.toggleTypeSearchCB(self.sautTog)
         # this has to come after the type toggle is connected!
         self.rg.conf.append(WidgetSaver.WidgetSaver(
             self.sautTog,
@@ -133,7 +136,7 @@ class RecIndex:
     def setup_search_views (self):
         """Setup our views of the database."""
         self.last_search = {}
-        self.rvw = self.rd.fetch_all(self.rd.rview,deleted=False)
+        self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=False)
         self.searches = self.default_searches[0:]
         self.sort_by = []
 
@@ -291,7 +294,7 @@ class RecIndex:
                 renderer = gtk.CellRendererCombo()
                 model = gtk.ListStore(str)
                 if c=='category':
-                    map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c,self.rg.rd.catview)
+                    map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c,self.rg.rd.categories_table)
                         )
                 else:
                     map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c))
@@ -409,17 +412,19 @@ class RecIndex:
                 sort_by=self.sort_by)
                                )
         else:
-            self.update_rmodel(self.rd.fetch_all(self.rview,deleted=False,sort_by=self.sort_by))
+            self.update_rmodel(self.rd.fetch_all(self.recipe_table,deleted=False,sort_by=self.sort_by))
     
     def limit_search (self, *args):
         debug("limit_search (self, *args):",5)
         self.search() # make sure we've done the search...
+        
         self.searches.append(self.last_search)
+        last_col = self.last_search['column']
         self.srchLimitBar.show()
         if self.srchLimitDefaultText==self.srchLimitText:
-            newtext=_(" %s in %s")%(self.srchentry.get_text(),self.last_search['column'])
+            newtext=_(" %s in %s")%(self.srchentry.get_text(),last_col)
         else:
-            newtext=_(", %s in %s")%(self.srchentry.get_text(),self.last_search['column'])
+            newtext=_(", %s in %s")%(self.srchentry.get_text(),last_col)
         self.srchLimitText="%s%s"%(self.srchLimitLabel.get_text(),newtext)
         self.srchLimitLabel.set_markup("<i>%s</i>"%self.srchLimitText)
         self.srchentry.set_text("")
@@ -556,8 +561,8 @@ class RecIndex:
             debug('something bizaare just happened in visibility_fun',0)
             return False
 
-    def update_rmodel (self, rview):
-        self.rmodel.change_view(rview)
+    def update_rmodel (self, recipe_table):
+        self.rmodel.change_view(recipe_table)
         self.set_reccount()
 
 class RecipeModel (pageable_store.PageableViewStore):
@@ -622,7 +627,7 @@ class RecipeModel (pageable_store.PageableViewStore):
             if row[0].id==recipe:
                 indx = int(n + (self.page * self.per_page))
                 # update parent
-                self.parent_list[indx] = self.rd.fetch_one(self.rd.rview,
+                self.parent_list[indx] = self.rd.fetch_one(self.rd.recipe_table,
                                                            id=recipe)
                 # update self
                 self.update_iter(row.iter)
@@ -633,9 +638,9 @@ class RecipeModel (pageable_store.PageableViewStore):
     #    # This is ugly, terrible, no good code. Among other things,
     #    # this is rather specifically metakit hackery which will have
     #    # to be reworked should another backend ever be implemented.
-    #    #sorted_catview = self.rd.catview.sort('category')
+    #    #sorted_categories_table = self.rd.categories_table.sort('category')
     #    #if self.rd.__class__.__module__.find('rmetakit')>=0:
-    #    #    for r in sorted_catview:
+    #    #    for r in sorted_categories_table:
     #    #        if r and r.category:
     #    #            self.rd.modify_rec(r,
     #    #                               {'categoryname':r.category})
