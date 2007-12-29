@@ -559,7 +559,6 @@ class RecData:
                     column_names=None, sort_by=[], **criteria):
         if column_names:
             raise 'column_names KWARG NO LONGER SUPPORTED BY fetch_join!'
-        print 'select=',make_simple_select_arg(criteria,table1,table2)
         return  table1.join(table2,getattr(table1.c,col1)==getattr(table2.c,col2)).select(
             *make_simple_select_arg(criteria,table1,table2)
             ).execute().fetchall()
@@ -790,13 +789,14 @@ class RecData:
         debug('validating dictionary',3)
         if dic.has_key('category'):
             newcats = dic['category'].split(', ')
+            newcats = filter(lambda x: x, newcats) # Make sure our categories are not blank
             curcats = self.get_cats(rec)
             for c in curcats:
                 if c not in newcats:
-                    self.delete_by_criteria(self.categories_table,{'id':rec.id,'category':c})
+                    self.delete_by_criteria(self.categories_table,{'recipe_id':rec.id,'category':c})
             for c in newcats:
                 if c not in curcats:
-                    self.do_add_cat({'id':rec.id,'category':c})
+                    self.do_add_cat({'recipe_id':rec.id,'category':c})
             del dic['category']
         debug('do modify rec',3)
         return self.do_modify_rec(rec,dic)
@@ -1130,7 +1130,7 @@ class RecData:
             ramt = getattr(ing,'rangeamount')
         except:
             # this blanket exception is here for our lovely upgrade
-            # which requires a working export with a out-of-date DB
+            # which requires a working export with an out-of-date DB
             ramt = None
         if mult != 1:
             if amt: amt = amt * mult
@@ -1179,7 +1179,7 @@ class RecData:
         if type(amt)==tuple:
             return "%s-%s"%(convert.float_to_frac(amt[0],fractions=fractions).strip(),
                             convert.float_to_frac(amt[1],fractions=fractions).strip())
-        elif type(amt)==float:
+        elif type(amt) in (float,int):
             return convert.float_to_frac(amt,fractions=fractions)
         else: return ""
 
@@ -1522,7 +1522,7 @@ class dbDic:
         else: store_v = v
         row = self.db.fetch_one(self.vw,**{self.kp:k})
         if row:
-            self.db.do_modify(self.vw, row, {self.vp:store_v})
+            self.db.do_modify(self.vw, row, {self.vp:store_v},id_col=self.kp)
         else:
             self.db.do_add(self.vw,{self.kp:k,self.vp:store_v})
         self.db.changed=True

@@ -1,5 +1,5 @@
 import gtk, gtk.glade, os.path
-import backends.rdatabase, gglobals
+import gglobals
 from gtk_extras import optionTable
 
 class PreferencesGui:

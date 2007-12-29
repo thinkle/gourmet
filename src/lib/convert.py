@@ -406,7 +406,9 @@ class Converter:
             n1 = 0
             for u2,rng in units:
                 conv = self.converter(u,u2)
-                if not conv: return amt,unit
+                if not conv:
+                    print "Warning: no conversion for",u,u2
+                    continue
                 new_amt = conv * amt
                 readability = self.readability_score(new_amt,u2)
                 debug('%s %s, Readability = %s'%(new_amt,u2,readability),6)

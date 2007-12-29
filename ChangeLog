@@ -1,3 +1,20 @@
+2007-12-29  Thomas Mills HInkle  <thomas_hinkle@sf.net>
+
+	* src/lib/convert.py (Module): adjust_amount - if we somehow have
+	units in our unit list that don't convert, print warning rather
+	than defaulting to no conversion.
+
+	* src/lib/defaults/defaults_en_GB.py (Module): Fix tsp/Tbs. Remove
+	periods after imperial unit names.
+
+	* src/lib/defaults/defaults_en.py (Module): Fix tsp/Tbs
+	conversion. Remove periods after imperial unit names.
+
+	* src/lib/backends/db.py (Module): Fix category modifications. Fix
+	amount-fetching convenience methods (apparently sqlalchemy can
+	return an integer out of a float field!?!) Fix dbDic.
+
+
 2007-12-28  Thomas Mills HInkle  <tom@hydrophax>
 
 	* Everywhere Change names of database tables from views (metakit
