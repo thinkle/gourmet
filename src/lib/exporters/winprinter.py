@@ -3,7 +3,7 @@ from pdf_exporter import PdfWriter, PdfExporterMultiDoc, get_pdf_prefs
 
 from gettext import gettext as _
 from gettext import ngettext
-import gourmet.dialog_extras as de
+import gourmet.gtk_extras.dialog_extras as de
 import gourmet.gglobals as gglobals
 from gourmet.convert import FRACTIONS_NORMAL
 import exporter

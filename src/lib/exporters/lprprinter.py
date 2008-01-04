@@ -1,4 +1,4 @@
-import gourmet.dialog_extras as de
+from gourmet.gtk_extras import dialog_extras as de
 import exporter
 import os
 from gettext import gettext as _

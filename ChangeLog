@@ -1,3 +1,11 @@
+2008-01-04  Thomas Mills HInkle  <thomas_hinkle@sf.net>
+
+	* src/lib/exporters/lprprinter.py (Module): Fix import statement
+	for dialog_extras (moved to gtk_extras)
+	* src/lib/exporters/winprinter.py (Module): Fix import statement
+	for dialog_extras (moved to gtk_extras)
+	
+
 2007-12-29  Thomas Mills HInkle  <thomas_hinkle@sf.net>
 
 	* src/lib/convert.py (Module): adjust_amount - if we somehow have
