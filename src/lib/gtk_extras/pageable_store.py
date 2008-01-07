@@ -292,7 +292,7 @@ class ColumnSortSetterUpper:
         #tree_column.set_sort_column_id(model_column)
         tree_column.connect('clicked',self.sort_by_column_callback,model_column)
                                  
-    def sort_by_column_callback (self,tree_column,model_column):        
+    def sort_by_column_callback (self,tree_column,model_column):
         toggle_to = self.mod.toggle_sort(model_column)
         if toggle_to==None:
             tree_column.set_sort_indicator(False)

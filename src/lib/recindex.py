@@ -25,6 +25,7 @@ class RecIndex:
     def __init__ (self, glade, rd, rg, editable=False):
         #self.visible = 1 # can equal 1 or 2
         self.editable=editable
+        self.selected = True        
         self.rtcols=rg.rtcols
         self.rtcolsdic=rg.rtcolsdic
         self.rtwidgdic=rg.rtwidgdic
@@ -32,10 +33,6 @@ class RecIndex:
         self.glade = glade
         self.rd = rd
         self.rg = rg
-        self.srchentry=self.glade.get_widget('rlistSearchbox')
-	self.limitButton = self.glade.get_widget('rlAddButton')
-        # Don't # allow for special keybindings
-        #self.srchentry.connect('key_press_event',self.srchentry_keypressCB)
         self.searchByDic = {
             unicode(_('anywhere')):'anywhere',
             unicode(_('title')):'title',
@@ -64,9 +61,18 @@ class RecIndex:
         #    "c":_("category"),
         #    "u":_("cuisine"),
         #    's':_("source"),
-        #    }
+        #    }        
+        self.setup_search_actions()
+        self.setup_widgets()
+
+    def setup_widgets (self):
+        self.srchentry=self.glade.get_widget('rlistSearchbox')
+	self.limitButton = self.glade.get_widget('rlAddButton')
+        # Don't # allow for special keybindings
+        #self.srchentry.connect('key_press_event',self.srchentry_keypressCB)        
         self.SEARCH_MENU_KEY = "b"
-        self.srchLimitBar=self.glade.get_widget('srchLimitBar')
+        self.srchLimitBar = self.glade.get_widget('srchLimitBar')
+        assert(self.srchLimitBar)
         self.srchLimitBar.hide()
         self.srchLimitLabel=self.glade.get_widget('srchLimitLabel')
         self.srchLimitClearButton = self.glade.get_widget('srchLimitClear')
@@ -79,8 +85,13 @@ class RecIndex:
         self.rSearchByMenu.set_active(0)
         self.rSearchByMenu.connect('changed',self.search_as_you_type)
         self.sautTog = self.glade.get_widget('searchAsYouTypeToggle')
-        self.sautTog.connect('toggled',self.toggleTypeSearchCB)
+        self.search_actions.get_action('toggleSearchAsYouType').connect_proxy(self.sautTog)
         self.regexpTog = self.glade.get_widget('regexpTog')
+        self.searchOptionsBox = self.glade.get_widget('searchOptionsBox')
+        self.search_actions.get_action('toggleShowSearchOptions').connect_proxy(
+            self.glade.get_widget('searchOptionsToggle')
+            )
+        self.search_actions.get_action('toggleRegexp').connect_proxy(self.regexpTog)
         self.rectree = self.glade.get_widget('recTree')
         self.rectree.connect('start-interactive-search',lambda *args: self.srchentry.grab_focus())
         self.prev_button = self.glade.get_widget('prevButton')
@@ -104,6 +115,7 @@ class RecIndex:
             'categorySearch' : lambda *args: self.set_search_by('category'),
             'cuisineSearch' : lambda *args: self.set_search_by('cuisine'),
             'search' : self.search,
+            'searchBoxActivatedCB':self.search_entry_activate_cb,
             'rlistReset' : self.reset_search,
             'rlistLimit' : self.limit_search,
             'search_as_you_type_toggle' : self.toggleTypeSearchCB,})
@@ -124,7 +136,7 @@ class RecIndex:
         # setup a history
         self.uim=self.glade.get_widget('undo_menu_item')
         self.rim=self.glade.get_widget('redo_menu_item')
-        self.raim=self.glade.get_widget('reapply_menu_item')        
+        self.raim=self.glade.get_widget('reapply_menu_item')
         self.history = Undo.UndoHistoryList(self.uim,self.rim,self.raim)
         # Fix up our mnemonics with some heavenly magic
         self.mm = mnemonic_manager.MnemonicManager()
@@ -133,12 +145,31 @@ class RecIndex:
         self.mm.add_treeview(self.rectree)
         self.mm.fix_conflicts_peacefully()
 
+    def setup_search_actions (self):
+        self.search_actions = gtk.ActionGroup('SearchActions')
+        self.search_actions.add_toggle_actions([
+            ('toggleRegexp',None,_('Use regular expressions in search'),
+             None,_('Use regular expressions (an advanced search language) in text search'),
+             self.toggleRegexpCB),
+            ('toggleSearchAsYouType',None,_('Search as you type'),None,
+             _('Search as you type (turn off if search is too slow).'),
+             self.toggleTypeSearchCB
+             ),
+            ('toggleShowSearchOptions',
+             None,
+             _('Show Search _Options'),
+             None,
+             _('Show advanced searching options'),
+             self.toggleShowSearchOptions),
+            ])
+
     def setup_search_views (self):
         """Setup our views of the database."""
         self.last_search = {}
-        self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=False)
+        #self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=False)
         self.searches = self.default_searches[0:]
         self.sort_by = []
+        self.rvw = self.rd.search_recipes(self.searches,sort_by=self.sort_by)
 
     def make_rec_visible (self, *args):
         """Make sure recipe REC shows up in our index."""
@@ -149,6 +180,16 @@ class RecIndex:
         #self.visible.append(rec.id)
         #if not self.rg.wait_to_filter:
         #    self.rmodel_filter.refilter()
+
+    def search_entry_activate_cb (self, *args):
+        if self.rmodel._get_length_()==1:
+            self.rec_tree_select_rec()
+        else:
+            if not self.search_as_you_type:
+                self.search()
+                gobject.idle_add(lambda *args: self.limit_search())
+            else:
+                self.limit_search()
     
     def rmodel_page_changed_cb (self, rmodel):
         if rmodel.page==0:
@@ -194,8 +235,9 @@ class RecIndex:
                                           order=self.prefs.get('rectree_column_order',{}))
         self.rectree_conf.apply_column_order()
         self.rectree_conf.apply_visibility()
-        self.rectree.connect("row-activated",self.recTreeSelectRec)#self.recTreeSelectRec)
+        self.rectree.connect("row-activated",self.rec_tree_select_rec)#self.rec_tree_select_rec)
         self.rectree.get_selection().connect("changed",self.selection_changedCB)
+        self.rectree.set_property('rules-hint',True) # stripes!
         self.rectree.expand_all()
         self.rectree.show()
 
@@ -345,10 +387,17 @@ class RecIndex:
 
     def toggleRegexpCB (self, widget):
         """Toggle search-with-regexp option."""
+        #if widget.get_active():
+        #    self.message('Advanced searching (regular expressions) turned on')
+        #else:
+        #    self.message('Advanced searching off')
+        pass
+
+    def toggleShowSearchOptions (self, widget):
         if widget.get_active():
-            self.message('Advanced searching (regular expressions) turned on')
+            self.searchOptionsBox.show()
         else:
-            self.message('Advanced searching off')
+            self.searchOptionsBox.hide()
 
     def regexpp (self):
         """Return True if we're using regexps"""
@@ -417,14 +466,15 @@ class RecIndex:
     def limit_search (self, *args):
         debug("limit_search (self, *args):",5)
         self.search() # make sure we've done the search...
-        
         self.searches.append(self.last_search)
         last_col = self.last_search['column']
         self.srchLimitBar.show()
-        if self.srchLimitDefaultText==self.srchLimitText:
-            newtext=_(" %s in %s")%(self.srchentry.get_text(),last_col)
+        if last_col != _('anywhere'):
+            newtext = ' ' + _('%s in %s')%(self.srchentry.get_text(),last_col)
         else:
-            newtext=_(", %s in %s")%(self.srchentry.get_text(),last_col)
+            newtext = ' ' + self.srchentry.get_text()
+        if self.srchLimitDefaultText!=self.srchLimitLabel.get_text():
+            newtext = ',' + newtext
         self.srchLimitText="%s%s"%(self.srchLimitLabel.get_text(),newtext)
         self.srchLimitLabel.set_markup("<i>%s</i>"%self.srchLimitText)
         self.srchentry.set_text("")
@@ -449,7 +499,7 @@ class RecIndex:
         else:
             secs = self.rg.conv.timestring_to_seconds(text)
             if not secs:
-                self.message(_("Unable to recognize %s as a time."%text))
+                #self.message(_("Unable to recognize %s as a time."%text))
                 return
         indices = path_string.split(':')
         path = tuple( map(int, indices))
@@ -461,7 +511,7 @@ class RecIndex:
             self.rd.undoable_modify_rec(rec,
                                         {attribute:secs},
                                         self.history,
-                                        get_current_rec_method=lambda *args: self.recTreeSelectedRecs()[0],
+                                        get_current_rec_method=lambda *args: self.get_selected_recs_from_rec_tree()[0],
                                         )
             self.update_modified_recipe(rec,attribute,secs)
         # Is this really stupid? I don't know, but I did it before so
@@ -488,7 +538,7 @@ class RecIndex:
             self.rd.undoable_modify_rec(rec,
                                         {attribute:text},
                                         self.history,
-                                        get_current_rec_method=lambda *args: self.recTreeSelectedRecs()[0],
+                                        get_current_rec_method=lambda *args: self.get_selected_recs_from_rec_tree()[0],
                                         )
             self.update_modified_recipe(rec,attribute,text)
         # for metakit, which isn't autocomitting very nicely...        
@@ -505,7 +555,7 @@ class RecIndex:
                 rec,
                 {'rating':value},
                 self.history,
-                get_current_rec_method = lambda *args: self.recTreeSelectedRecs()[0],
+                get_current_rec_method = lambda *args: self.get_selected_recs_from_rec_tree()[0],
                 )
             #self.rmodel.row_changed(self.rmodel.get_path(treeiter),treeiter)
             self.rmodel.update_iter(treeiter)
@@ -517,11 +567,11 @@ class RecIndex:
         the information in the index view."""
         pass
 
-    def recTreeSelectRec (self, *args):
+    def rec_tree_select_rec (self, *args):
         raise NotImplementedError
 
-    def recTreeSelectedRecs (self):
-        debug("recTreeSelectedRecs (self):",5)
+    def get_selected_recs_from_rec_tree (self):
+        debug("get_selected_recs_from_rec_tree (self):",5)
         def foreach(model,path,iter,recs):
             debug("foreach(model,path,iter,recs):",5)
             try:

@@ -623,10 +623,10 @@ CROSS_UNIT_TABLE = {
     ## will be provided as an 'item' that is then looked
     ## up in the dictionary referenced here (i.e. the density_table)
     ## currently, 'density' is the only keyword used
-    ("pt", "lb."):['density',1],
-    ("Tbs", "oz."):['density',0.5],
-    ("c", "oz."):['density',8],
-    ("pt", "oz."):['density',16],
+    ("pt", "lb"):['density',1],
+    ("Tbs", "oz"):['density',0.5],
+    ("c", "oz"):['density',8],
+    ("pt", "oz"):['density',16],
     ("ml", "g"):['density',1]}
 
 VOL_TO_MASS_TABLE = {

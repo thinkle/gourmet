@@ -707,7 +707,7 @@ class NutritionInfoDruid (gobject.GObject):
                     density = self.densities[describer]
                 else:
                     if not self.densities.has_key(None):
-                        raise "Unable to make sense of conversion from %s %s"%(to_unit,self.ingkey)
+                        raise RuntimeError("Unable to make sense of conversion from %s %s"%(to_unit,self.ingkey))
                     density = self.densities[None]
                 base_convert = self.nd.conv.converter('g',to_unit,density=density)
         to_amount = convert.frac_to_float(self.toAmountEntry.get_text())

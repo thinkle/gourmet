@@ -56,7 +56,18 @@ def fix_colnames (dict, *tables):
 def make_simple_select_arg (criteria,*tables):
     args = []
     for k,v in fix_colnames(criteria,*tables).items():
-        args.append(k==v)
+        if type(v)==tuple:
+            operator,value = v
+            if operator=='in':
+                args.append(k.in_(*value))
+            elif hasattr(k,operator):
+                args.append(getattr(k,operator)(value))
+            elif hasattr(k,operator+'_'): # for keywords like 'in'
+                args.append(getattr(k,operator+'_')(value))
+            else:
+                args.append(k.op(operator)(value))
+        else:
+            args.append(k==v)
     if len(args)>1:
         return [and_(*args)]
     elif args:
@@ -64,18 +75,28 @@ def make_simple_select_arg (criteria,*tables):
     else:
         return []
 
-def make_order_by (sort_by, table, count_by=None):
-        ret = []
-        for col,dir in sort_by:
-            if col=='count' and not hasattr(table.c,'count'):
-                col = sqlalchemy.func.count(getattr(table.c,count_by))
-            else:
+def make_order_by (sort_by, table, count_by=None, join_tables=[]):
+    ret = []
+    for col,dir in sort_by:
+        if col=='count' and not hasattr(table.c,'count'):
+            col = sqlalchemy.func.count(getattr(table.c,count_by))
+        else:
+            if hasattr(table.c,col):
                 col = getattr(table.c,col)
-            if dir==1: # Ascending
-                ret.append(sqlalchemy.asc(col))
-            else:
-                ret.append(sqlalchemy.desc(col))
-        return ret
+            elif join_tables:
+                broken = True
+                for t in join_tables:
+                    if hasattr(t.c,col):
+                        broken = False
+                        col = getattr(t.c,col)
+                        break
+                if broken:
+                    raise ValueError("No such column for tables %s %s: %s"%(table, join_tables, col))
+        if dir==1: # Ascending
+            ret.append(sqlalchemy.asc(col))
+        else:
+            ret.append(sqlalchemy.desc(col))
+    return ret
     
 class DBObject:
     pass
@@ -343,6 +364,17 @@ class RecData:
         class UsdaWeight (object):
             pass
         self.__setup_object_for_table(self.usda_weights_table, UsdaWeight)
+    
+    def setup_nutrition_conversions_table (self):
+        self.nutritionconversions_table = Table('nutritionconversions',self.metadata,
+                                                Column('id',Integer(),primary_key=True),
+                                                Column('ingkey',String(length=None),**{}),
+                                                Column('unit',String(length=None),**{}), 
+                                                Column('factor',Float(),**{}), # Factor is the amount we multiply
+                                                # from unit to get 100 grams
+                                                ) # NUTRITION_CONVERSIONS
+        class NutritionConversion (object): pass
+        self.__setup_object_for_table(self.nutritionconversions_table, NutritionConversion)
 
     def setup_nutrition_tables (self):
 
@@ -366,15 +398,7 @@ class RecData:
         class NutritionAlias (object): pass
         self.__setup_object_for_table(self.nutritionaliases_table, NutritionAlias)
 
-        self.nutritionconversions_table = Table('nutritionconversions',self.metadata,
-                                                Column('id',Integer(),primary_key=True),
-                                                Column('ingkey',String(length=None),**{}),
-                                                Column('unit',String(length=None),**{}), 
-                                                Column('factor',Float(),**{}), # Factor is the amount we multiply
-                                                # from unit to get 100 grams
-                                                ) # NUTRITION_CONVERSIONS
-        class NutritionConversion (object): pass
-        self.__setup_object_for_table(self.nutritionconversions_table, NutritionConversion)
+        self.setup_nutrition_conversions_table()
         
         for table in self.tables:
             name,columns = table
@@ -447,6 +471,8 @@ class RecData:
                 print 'RECREATE USDA WEIGHTS TABLE'
                 self.alter_table('usda_weights',self.setup_usda_weights_table,{},
                                  [name for lname,name,typ in gourmet.nutrition.parser_data.WEIGHT_FIELDS])
+                self.alter_table('nutritionconversions',self.setup_nutrition_conversions_table,{},
+                                 ['ingkey','unit','factor'])
             # Add recipe_hash, ingredient_hash and link fields
             # (These all get added in 0.13.0)
             if stored_info.version_super == 0 and stored_info.version_major <= 12:
@@ -637,7 +663,7 @@ class RecData:
             else:
                 retval = (col==crit['search'])
             if subtable:
-                retval = self.recipe_table.c.id.op('in')(
+                retval = self.recipe_table.c.id.in_(
                     sqlalchemy.select([subtable.c.recipe_id],retval)
                     )
             return retval
@@ -650,9 +676,17 @@ class RecData:
         sort_by is a list of tuples (column,1) [ASCENDING] or (column,-1) [DESCENDING]
         """
         criteria = self.get_criteria((searches,'and'))
-        return sqlalchemy.select([self.recipe_table],criteria,distinct=True,
-                                 order_by=make_order_by(sort_by,self.recipe_table)
-                                 ).execute().fetchall()
+        if 'category' in [s[0] for s in sort_by]:
+            return sqlalchemy.select([c for c in self.recipe_table.c],# + [self.categories_table.c.category],
+                                     criteria,distinct=True,
+                                     from_obj=[sqlalchemy.outerjoin(self.recipe_table,self.categories_table)],
+                                     order_by=make_order_by(sort_by,self.recipe_table,
+                                                            join_tables=[self.categories_table])
+                                     ).execute().fetchall()
+        else:
+            return sqlalchemy.select([self.recipe_table],criteria,distinct=True,
+                                     order_by=make_order_by(sort_by,self.recipe_table,),
+                                     ).execute().fetchall()
 
     def filter (self, table, func):
         """Return a table representing filtered with func.
@@ -686,6 +720,8 @@ class RecData:
         delete_args = []
         for k,v in criteria.items():
             delete_args.append(k==v)
+        if len(delete_args) > 1:
+            delete_args = [and_(*delete_args)]
         table.delete(*delete_args).execute()
 
     def update_by_criteria (self, table, update_criteria, new_values_dic):
@@ -762,15 +798,74 @@ class RecData:
     def find_duplicates (self, by='recipe',recipes=None, include_deleted=True):
         """Find all duplicate recipes by recipe or ingredient.
 
+        Returns a nested list of IDs, where each nested list is a list
+        of duplicates.
+
         This uses the recipe_hash and ingredient_hash respectively.
         To find only those recipes that have both duplicate recipe and
         ingredient hashes, use find_all_duplicates
         """
-        raise NotImplementedError
+        if by=='recipe':
+            col = self.recipe_table.c.recipe_hash
+        elif by=='ingredient':
+            col = self.recipe_table.c.ingredient_hash
+        args = []
+        if not include_deleted: args.append(self.recipe_table.c.deleted==False)
+        kwargs = dict(having=sqlalchemy.func.count(col)>1,
+                      group_by=col)
+        duped_hashes = sqlalchemy.select([col],
+                                         *args,
+                                         **kwargs)
+        query = sqlalchemy.select([self.recipe_table.c.id,col],
+                                  include_deleted and col.in_(duped_hashes) or and_(col.in_(duped_hashes),
+                                                                                    self.recipe_table.c.deleted==False),
+                                  order_by=col).execute()
+        recs_by_hash = {}
+        for result in query.fetchall():
+            rec_id = result[0]; hsh = result[1]
+            if not recs_by_hash.has_key(hsh):
+                recs_by_hash[hsh] = []
+            recs_by_hash[hsh].append(rec_id)
+        results = recs_by_hash.values()
+        if recipes:
+            rec_ids = [r.id for r in recipes]
+            results = filter(lambda reclist: True in [(rid in rec_ids) for rid in reclist], results)
+        return results
 
     def find_complete_duplicates (self, recipes=None, include_deleted=True):
         """Find all duplicate recipes (by recipe_hash and ingredient_hash)."""
-        raise NotImplementedError
+        args = []
+        if not include_deleted: args.append(self.recipe_table.c.deleted==False)
+        
+        ing_hashes,rec_hashes = [sqlalchemy.select([col],
+                                                   *args,
+                                                   **dict(having=sqlalchemy.func.count(col)>1,
+                                                   group_by=col)
+                                                   ) for col in [self.recipe_table.c.ingredient_hash,
+                                                                 self.recipe_table.c.recipe_hash]
+                             ]
+        if not include_deleted: select_statements = [self.recipe_table.c.deleted==False]
+        else: select_statements = []
+        select_statements.append(self.recipe_table.c.ingredient_hash.in_(ing_hashes))
+        select_statements.append(self.recipe_table.c.recipe_hash.in_(rec_hashes))
+
+        query = sqlalchemy.select([self.recipe_table.c.id,
+                                   self.recipe_table.c.recipe_hash,
+                                   self.recipe_table.c.ingredient_hash],
+                                  and_(*select_statements),
+                                  order_by=[self.recipe_table.c.recipe_hash,
+                                            self.recipe_table.c.ingredient_hash]).execute()
+        recs_by_hash = {}
+        for result in query.fetchall():
+            rec_id = result[0]; rhsh = result[1]; ihsh = result[2]
+            if not recs_by_hash.has_key((rhsh,ihsh)):
+                recs_by_hash[(rhsh,ihsh)] = []
+            recs_by_hash[(rhsh,ihsh)].append(rec_id)
+        results = recs_by_hash.values()
+        if recipes:
+            rec_ids = [r.id for r in recipes]
+            results = filter(lambda reclist: True in [(rid in rec_ids) for rid in reclist], results)
+        return results
     
     # convenience DB access functions for working with ingredients,
     # recipes, etc.
@@ -853,7 +948,7 @@ class RecData:
         rhash,ihash = recipeIdentifier.hash_recipe(rec,self)
         self.do_modify_rec(rec,{'recipe_hash':rhash,'ingredient_hash':ihash})
 
-    def find_duplicates (self, rec, match_ingredient=True, match_recipe=True):
+    def find_duplicates_of_rec (self, rec, match_ingredient=True, match_recipe=True):
         """Return recipes that appear to be duplicates"""
         if match_ingredient and match_recipe:
             perfect_matches = self.fetch_all(ingredient_hash=rec.ingredient_hash,recipe_hash=rec.recipe_hash)
@@ -1627,3 +1722,4 @@ def add_sample_recs ():
         for i in ings:
             i['recipe_id']=r.id
             db.add_ing(i)
+db = RecData()

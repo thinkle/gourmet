@@ -76,138 +76,55 @@ def check_for_data_to_import (rm):
                 os.rename(backup_file,backup_file+'.ALREADY_LOADED')
                 pd.hide()
                 pd.destroy()
-        
-class RecGui (RecIndex):
-    """This is the main application. We subclass RecIndex, which
-    handles displaying a list of recipes and searching them (a
-    functionality we need in a few other places, such as when calling
-    a recipe as an ingredient or when looking through the"trash".
+
+class GourmetApplication:
+    """The main Gourmet Application.
+
+    This handles everything that needs to be handled across the
+    different interfaces -- updating the view menu, and so on.
+
+    This handles plugin registration, configuration, and so on.
     """
 
-    def __init__ (self,splash_label=None):
-        # used on imports to make filtering wait until
-        # we are all done.
-        self.wait_to_filter=False
-        try:
-            import gnome
-            # The following allows accessibility support to work for
-            # some unknown reason apparently some outdated GNOME
-            # bindings are missing this.
-            if hasattr(gnome,'program_init'):
-                gnome.program_init(version.appname,version.version)
-            else:
-                debug(
-                    'You appear to have an outdated version of python-gnome bindings: gnome.program_init does not exist.',
-                    0)
-        except ImportError:
-            pass
-        if debug_level > 0:
-            debug("Debug level: %s"%debug_level, debug_level)
-        # just make sure we were given a splash label to update
+    shared_go_menu = '''
+    <ui>
+    <menubar name="%(name)s">
+    <menu name="Go" action="Go">
+    <menuitem action="GoRecipeIndex"/>
+    </menu></menubar></ui>
+    '''
+    go_path = '/%(name)s/Go/'
+    
+    def __init__ (self, splash_label=None):
+        # These first two items might be better handled using a
+        # singleton design pattern... 
         self.splash_label = splash_label
-        self.update_splash(_("Loading window preferences..."))
-        self.setup_prefs()
-        self.update_splash(_("Loading graphical interface..."))        
-        self.setup_glade()
-        # configuration stuff
-        # WidgetSaver is our way of remembering the state and position of
-        # windows and widgets for the future.
-        self.conf = []
-        self.conf.append(WidgetSaver.WindowSaver(self.app,
-                                                 self.prefs.get('app_window',
-                                                                {}),
-                                                 show=False))        
-        # a thread lock for import/export threads
+        self.conv = convert.Converter() 
+        self.star_generator = ratingWidget.StarGenerator()        
+        # Setup methods...
+        self.setup_threading()
+        self.setup_prefs() # Setup preferences...
+        self.setup_plugins()
+        self.setup_recipes() # Setup recipe database
+        self.setup_nutrition()
+        self.setup_shopping()
+        self.setup_go_menu()
+        self.rc={}
+
+    def setup_threading (self):
         self.lock = gt.get_lock()
         self._threads = []
         self.threads = 0
-        self.selected = True        
-        self.update_splash(_("Loading recipe database..."))
-        self.init_recipes()
-        self.update_splash(_("Setting up recipe index..."))
-        self.rtcolsdic={}
-        self.rtwidgdic={}
-        for a,l,w in REC_ATTRS:
-            self.rtcolsdic[a]=l
-            self.rtwidgdic[a]=w
-            self.rtcols = [r[0] for r in REC_ATTRS]        
-        RecIndex.__init__(self,
-                          #model=self.rmodel,
-                          glade=self.glade,
-                          rd=self.rd,
-                          rg=self,
-                          editable=False)
-        self.rectree.connect("popup-menu",self.popup_rmenu)#self.recTreeSelectRec)
-        self.rectree.connect("button-press-event",self.rectree_click_cb)
-        # connect the rest of our handlers
-        self.glade.signal_autoconnect({
-            'newRec' : self.newRecCard,
-            'shopHide' : self.sl.hide,
-            'showShop' : self.sl.show,
-            'showList' : lambda *args: self.app.present(),            
-            'new' : self.new,
-            'defaultsave': self.save_default,
-            'export' : self.export_selected_recs,
-            'export_all': self.export_all_recs,
-            'import' : self.importg,
-            'import_webpage': self.import_webpageg,
-            'quit' : self.quit,
-            'about' : self.show_about,
-            'show_help' : self.show_help,
-            'rl_viewrec' : self.recTreeSelectRec,
-            'rl_shoprec' : self.recTreeShopRec,
-            'rl_delrec': self.recTreeDeleteRecCB,
-            'colPrefs': self.show_preferences,
-            'unitConverter': self.showConverter,
-            'ingKeyEditor': self.showKeyEditor,
-            'valueEditor': self.showValueEditor,
-            'print':self.print_recs,
-            'email':self.email_recs,
-            #'email_prefs':self.email_prefs,
-            'showDeletedRecipes':self.show_deleted_recs,
-            'emptyTrash':self.empty_trash,
-            'on_timer': lambda *args: show_timer(),
-            'batch_edit':self.batch_edit_recs,
-            'on_duplicate_finder':self.show_duplicate_editor,
-#            'shopCatEditor': self.showShopEditor,            
-            })
-        # self.rc will be a list of open recipe cards.
-        self.rc={}
-        # updateViewMenu creates our view menu based on which cards are open
-        self.updateViewMenu()
-        self.register_col_dialog()
-        ## make sure the focus is where it ought to be...
-        self.app.present()
-        self.srchentry.grab_focus()
-        self.srchentry.connect('activate',self.search_entry_activate_cb)
-        self.update_splash(_("Done!"))
-        self.threads = 0
-        # we need an "ID" to add/remove messages to/from the status bar
-        self.pauseid = self.stat.get_context_id('pause')
-        # setup call backs for e.g. right-clicking on the recipe tree to get a popup menu
-        
-    def setup_glade (self):
-        gtk.glade.bindtextdomain('gourmet',DIR)
-        gtk.glade.textdomain('gourmet')
-        debug("gladebase is: %s"%gladebase,1)
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'app.glade'))
-        self.pop = self.glade.get_widget('rlmen')
-        self.app = self.glade.get_widget('app')
-        self.prog = self.glade.get_widget('progressbar')
-        # widgets that should be sensitive only when a row is selected
-        self.act_on_row_widgets = [self.glade.get_widget('rlViewRecButton'),
-                                   self.glade.get_widget('rlViewRecMenu'),
-                                   self.glade.get_widget('rlShopRecButton'),
-                                   self.glade.get_widget('rlShopRecMenu'),
-                                   self.glade.get_widget('rlDelRecButton'),
-                                   self.glade.get_widget('rlDelRecMenu'),
-                                   self.glade.get_widget('rlBatchEditRecMenu'),
-                                   self.glade.get_widget('export_menu_item'),
-                                   self.glade.get_widget('email_menu_item'),
-                                   self.glade.get_widget('print_menu_item'),
-                                   ]        
-        
+
+    def setup_plugins (self):
+        pass
+
+    def show_preferences (self, *args):
+        self.prefsGui.show_dialog(page=self.prefsGui.INDEX_PAGE)
+
+    # Setup preferences system
     def setup_prefs (self):
+        self.conf = []        
         self.prefs = prefs.Prefs()
         self.prefsGui = prefsGui.PreferencesGui(
             self.prefs,
@@ -230,16 +147,7 @@ class RecGui (RecIndex):
         else:
             convert.USE_FRACTIONS = convert.FRACTIONS_OFF
 
-    def search_entry_activate_cb (self, *args):
-        if self.rmodel._get_length_()==1:
-            self.recTreeSelectRec()
-        else:
-            if not self.search_as_you_type:
-                self.search()
-                gobject.idle_add(lambda *args: self.limit_search())
-            else:
-                self.limit_search()
-            
+    # Splash convenience method for start-up splashscreen
     def update_splash (self, text):
         """Update splash screen on startup."""
         debug("Setting splash text: %s"%text,3)
@@ -247,20 +155,107 @@ class RecGui (RecIndex):
         self.splash_label.set_text(text)        
         while gtk.events_pending():
             gtk.main_iteration()
+                
+    # Convenience method for showing progress dialogs for import/export/deletion
+    def show_progress_dialog (self, thread, progress_dialog_kwargs={},message=_("Import paused"),
+                           stop_message=_("Stop import")):
+        """Show a progress dialog"""
+        if hasattr(thread,'name'): name=thread.name
+        else: name = ''
+        for k,v in [('okay',True),
+                    ('label',name),
+                    ('parent',self.app),
+                    ('pause',self.pause_cb),
+                    ('stop',self.stop_cb),
+                    ('modal',False),]:
+            if not progress_dialog_kwargs.has_key(k):
+                progress_dialog_kwargs[k]=v
+        if not hasattr(self,'progress_dialog') or not self.progress_dialog:
+            self.progress_dialog = de.ProgressDialog(**progress_dialog_kwargs)
+            self.prog = self.progress_dialog.progress_bar
+        else:
+            self.progress_dialog.reassign_buttons(pausecb=progress_dialog_kwargs['pause'],
+                                              stopcb=progress_dialog_kwargs['stop'])
+            self.progress_dialog.reset_label(progress_dialog_kwargs['label'])
+        self.pause_message = message
+        self.stop_message = stop_message
+        self.thread = thread        
+        self.progress_dialog.show()
+        self.progress_dialog.connect('close',lambda *args: setattr(self.progress_dialog,None))
         
+    def hide_progress_dialog (self):
+        """Make the progress dialog go away."""
+        if hasattr(self,'progress_dialog') and self.progress_dialog:
+            self.progress_dialog.hide()
+            self.progress_dialog.destroy()
+            self.progress_dialog = None
+
+    # setup recipe database
+    def setup_recipes (self):
+        """Initialize recipe database.
+
+        We load our recipe database from recipeManager. If there's any problem,
+        we display the traceback to the user so they can send it out for debugging
+        (or possibly make sense of it themselves!)."""
+        try:
+            self.rd = recipeManager.RecipeManager(**recipeManager.dbargs)
+            check_for_data_to_import(self.rd)
+            # initiate autosave stuff
+            # autosave every 3 minutes (milliseconds * 1000 milliseconds/second * 60 seconds/minute)
+            gobject.timeout_add(1000*60*3,lambda *args: self.rd.save() or True)
+        except:
+            self.prefs['db_backend'] = None
+            self.prefs.save()
+            from StringIO import StringIO
+            f = StringIO()
+            traceback.print_exc(file=f)
+            error_mess = f.getvalue()
+            de.show_message(label='Database Connection failed.',
+                            sublabel='There was a problem with the database information you gave Gourmet',
+                            expander=(_('_Details'),
+                                      error_mess)
+                            )
+            raise
+        # connect hooks to modify our view whenever and
+        # whenceever our recipes are updated...
+        self.rd.modify_hooks.append(self.update_attribute_models)
+        self.rd.add_hooks.append(self.update_attribute_models)
+        self.rd.delete_hooks.append(self.update_attribute_models)
+        # we'll need to hand these to various other places
+        # that want a list of units.
+        self.umodel = convertGui.UnitModel(self.conv)
+        self.attributeModels = []
+        self.inginfo = reccard.IngInfo(self.rd)
+
+    def setup_shopping (self):
+        """Setup shopping related stuff"""
+        #self.create_rmodel(self.rd.recipe_table)
+        self.sl = shopgui.ShopGui(self, conv=self.conv)
+        self.sl.hide()
+
+    def setup_nutrition (self):
+        """Setup nutritional database stuff."""
+        # FIXME this should go away when we re-implement the
+        # nutritonalinfo as a plugin
+        nutrition.nutritionGrabberGui.check_for_db(self.rd)
+        self.nd = nutrition.nutrition.NutritionData(self.rd,self.conv)
+        self.rd.nd = self.nd
+        # initialize star-generator for use elsewhere
+
+    # Methods for keeping track of open recipe cards...
     def del_rc (self, id):
         """Forget about recipe card identified by id"""
         if self.rc.has_key(id):
             del self.rc[id]
-        self.updateViewMenu()
+        self.update_go_menu()
 
     def update_reccards (self, rec):
         if self.rc.has_key(rec.id):
             rc=self.rc[rec.id]
             rc.updateRecipe(rec,show=False)
-            self.updateViewMenu()
-        
-    def viewMenu (self):
+            self.update_go_menu()
+
+    def go_menu (self):
         """Build a _View menu based on recipes currently
         opened in recipe cards."""
         m=gtk.Menu()
@@ -282,17 +277,129 @@ class RecGui (RecIndex):
             i.show()
         return m
 
-    def updateViewMenu (self):
-        """Update view menus in all open windows."""
-        glades=[self.glade, self.sl.glade]
-        for r in self.rc.values():
-            glades.append(r.glade)
-        for glade in glades:
-            menu=self.viewMenu()
-            vmi=glade.get_widget('view_menu_item')
-            if vmi:
-                vmi.set_submenu(menu)
-    
+    def setup_go_menu (self):
+        self.goActionGroup = gtk.ActionGroup('GoActions')
+        self.goActionGroup.add_actions([('Go',None,_('_Go'))])
+        self.uimanagers = {}
+        self.merged_go_menus = {}
+
+    def add_uimanager_to_manage (self, id, uimanager, menu_root_name):
+        uimanager.insert_action_group(self.goActionGroup,0)
+        uimanager.add_ui_from_string(self.shared_go_menu%{'name':menu_root_name})
+        self.uimanagers[id] = [uimanager,menu_root_name,
+                               {} # a dictionary of added menu items
+                               ]
+
+    def update_action_group (self):
+        for rc in self.rc.values():
+            action_name = 'GoRecipe'+str(rc.current_rec.id)
+            existing_action = self.goActionGroup.get_action(action_name)
+            if not existing_action:
+                print 'Add Action',action_name,rc.current_rec.title
+                self.goActionGroup.add_actions(
+                    [(action_name,None,'_'+rc.current_rec.title,
+                      None,None,rc.show)]
+                    )
+            else:
+                if existing_action.props.label != '_'+rc.current_rec.title:
+                    print 'Title changed -- updating action'
+                    existing_action.props.label = '_'+rc.current_rec.title
+
+    def update_go_menu (self):
+        self.update_action_group()
+        for uiid in self.uimanagers:
+            self.update_go_menu_for_ui(uiid)
+            
+    def update_go_menu_for_ui (self, id):
+        """Update the go_menu of interface identified by ID
+
+        The interface must have first been handed to
+        add_uimanager_to_manage
+        """
+        print 'Updating Go Menu',id
+        uimanager,menu_root_name,merged_dic = self.uimanagers[id]
+        for rc in self.rc.values():
+            print 'check for path',
+            path = self.go_path%{'name':menu_root_name} + 'GoRecipe'+str(rc.current_rec.id)
+            print path
+            if not uimanager.get_widget(path):
+                print "Doesn't exist -- we'd best create it!"
+                actionName = 'GoRecipe'+str(rc.current_rec.id)
+                uistring = '''<menubar name="%(menu_root_name)s">
+                <menu name="Go" action="Go">
+                <menuitem action="%(actionName)s"/>
+                </menu>
+                </menubar>'''%locals()
+                merge_id = uimanager.add_ui_from_string(uistring)
+                merged_dic[rc.current_rec.id] = merge_id
+                uimanager.ensure_update()                
+        for idkey in merged_dic:
+            if not self.rc.has_key(idkey):
+                uimanager.remove_ui(merged_dic[idkey])
+
+    # Methods to keep one set of listmodels for each attribute for
+    # which we might want text completion or a dropdown...
+    def update_attribute_models (self):
+        for attr,mod in self.attributeModels:
+            self.update_attribute_model(attr)
+            
+    def update_attribute_model (self, attribute):
+        slist = self.create_attribute_list(attribute)
+        model = getattr(self,'%sModel'%attribute)
+        for n,item in enumerate(slist):
+            if model[n][0] == item:
+                continue
+            else:
+                # See if we match something later in the model -- if
+                # we do, suck up the whole model
+                additional = 1
+                found_match = False
+                while len(model) > (n+additional):
+                    if model[n+additional][0] == item:
+                        while additional > 0:
+                            model.remove(model.get_iter(n))
+                            additional -= 1
+                            found_match = False
+                        break
+                    additional += 1
+                if not found_match:
+                    model.insert(n,[item])
+        while len(model) > len(slist):
+            last = model.get_iter(len(model) - 1)
+            model.remove(last)
+        return model
+
+    def create_attribute_list (self, attribute):
+        """Create a ListModel with unique values of attribute.
+        """
+        if attribute=='category':
+            slist = self.rg.rd.get_unique_values(attribute,self.rg.rd.categories_table)
+        else:
+            slist = self.rg.rd.get_unique_values(attribute,deleted=False)
+        if not slist:
+            slist = self.rg.rd.get_default_values(attribute)
+        else:
+            for default_value in self.rg.rd.get_default_values(attribute):
+                if default_value not in slist: slist.append(default_value)
+        slist.sort()
+        return slist
+
+    def get_attribute_model (self, attribute):
+        """Return a ListModel with a unique list of values for attribute.
+
+        This is stored here so that all the different comboboxes that
+        might need e.g. a list of categories can share 1 model and
+        save memory.
+        """
+        if not hasattr(self,'%sModel'%attribute):
+            slist = self.create_attribute_list(attribute)
+            m = gtk.ListStore(str)
+            for i in slist: m.append([i])
+            setattr(self,'%sModel'%attribute,m)
+            self.attributeModels.append((attribute,getattr(self,'%sModel'%attribute)))
+        return getattr(self,'%sModel'%attribute)
+
+    # About/Help
     def show_about (self, *args):
         """Show information about ourselves, using GNOME's
         nice interface if available."""
@@ -357,48 +464,24 @@ class RecGui (RecIndex):
     def show_help (self, *args):
         de.show_faq(HELP_FILE)
 
-    def show_progress_dialog (self, thread, progress_dialog_kwargs={},message=_("Import paused"),
-                           stop_message=_("Stop import")):
-        """Show a progress dialog"""
-        if hasattr(thread,'name'): name=thread.name
-        else: name = ''
-        for k,v in [('okay',True),
-                    ('label',name),
-                    ('parent',self.app),
-                    ('pause',self.pause_cb),
-                    ('stop',self.stop_cb),
-                    ('modal',False),]:
-            if not progress_dialog_kwargs.has_key(k):
-                progress_dialog_kwargs[k]=v
-        if not hasattr(self,'progress_dialog') or not self.progress_dialog:
-            self.progress_dialog = de.ProgressDialog(**progress_dialog_kwargs)
-            self.prog = self.progress_dialog.progress_bar
+    def save (self, file=None, db=None, xml=None):
+        debug("save (self, file=None, db=None, xml=None):",5)
+        if file and not xml and not db:
+            if re.search(".xml$",file):
+                xml=file
+            else:
+                db=file
+        if xml:
+            self.exportXML(file)
         else:
-            self.progress_dialog.reassign_buttons(pausecb=progress_dialog_kwargs['pause'],
-                                              stopcb=progress_dialog_kwargs['stop'])
-            self.progress_dialog.reset_label(progress_dialog_kwargs['label'])
-        self.pause_message = message
-        self.stop_message = stop_message
-        self.thread = thread        
-        self.progress_dialog.show()
-        self.progress_dialog.connect('close',lambda *args: setattr(self.progress_dialog,None))
-        #self.pauseButton.show()
-        #self.stopButton.show()
+            self.rd.file=db
+            self.rd.save()
+            self.message(_("Saved!"))
         
-    def hide_progress_dialog (self):
-        """Make the progress dialog go away."""
-        if hasattr(self,'progress_dialog') and self.progress_dialog:
-            self.progress_dialog.hide()
-            self.progress_dialog.destroy()
-            self.progress_dialog = None
-            
-    def quit (self, *args):
-        """Close down shop, giving user option of saving changes and
-        saving our window prefs for posterity."""
-        debug("quit (self, *args):",5)
+        
+    def quit (self):
         for c in self.conf:
             c.save_properties()
-        a=self.glade.get_widget('app')
         for r in self.rc.values():
             for c in r.conf:
                 c.save_properties()
@@ -409,7 +492,7 @@ class RecGui (RecIndex):
         for conf in self.sl.conf:
             conf.save_properties()
         self.prefs.save()
-        threads=threading.enumerate()
+        threads=threading.enumerate()        
         if len(threads) > 1 or (not use_threads and self.lock.locked_lock()):
             msg = "Another process is in progress"
             for t in threads:
@@ -449,9 +532,185 @@ class RecGui (RecIndex):
         # ingredients anyway.
         self.rd.delete_by_criteria(self.rd.ingredients_table,{'deleted':True})
         # Save our recipe info...
-        self.save_default()
+        self.save()
         for r in self.rc.values():
             r.widget.destroy()
+    
+        
+class RecGuiOld (RecIndex, GourmetApplication):
+    """This is the main application. We subclass RecIndex, which
+    handles displaying a list of recipes and searching them (a
+    functionality we need in a few other places, such as when calling
+    a recipe as an ingredient or when looking through the"trash".
+    """
+
+    def __init__ (self,splash_label=None):
+        # used on imports to make filtering wait until
+        # we are all done.
+        GourmetApplication.__init__(self)
+        self.wait_to_filter=False
+        try:
+            import gnome
+            # The following allows accessibility support to work for
+            # some unknown reason apparently some outdated GNOME
+            # bindings are missing this.
+            if hasattr(gnome,'program_init'):
+                gnome.program_init(version.appname,version.version)
+            else:
+                debug(
+                    'You appear to have an outdated version of python-gnome bindings: gnome.program_init does not exist.',
+                    0)
+        except ImportError:
+            pass
+        if debug_level > 0:
+            debug("Debug level: %s"%debug_level, debug_level)
+        # just make sure we were given a splash label to update
+        self.splash_label = splash_label
+        self.update_splash(_("Loading window preferences..."))
+        self.setup_prefs()
+        self.update_splash(_("Loading graphical interface..."))        
+        self.setup_glade()
+        # configuration stuff
+        # WidgetSaver is our way of remembering the state and position of
+        # windows and widgets for the future.
+        self.conf.append(WidgetSaver.WindowSaver(self.app,
+                                                 self.prefs.get('app_window',
+                                                                {'size':(600,800)}),
+                                                 show=False))        
+        # a thread lock for import/export threads        
+        self.update_splash(_("Loading recipe database..."))
+        self.init_recipes()
+        self.update_splash(_("Setting up recipe index..."))
+        self.setup_index_columns()
+        RecIndex.__init__(self,
+                          #model=self.rmodel,
+                          glade=self.glade,
+                          rd=self.rd,
+                          rg=self,
+                          editable=False)
+        self.rectree.connect("popup-menu",self.popup_rmenu)#self.rec_tree_select_rec)
+        self.rectree.connect("button-press-event",self.rectree_click_cb)
+        # connect the rest of our handlers
+        self.glade.signal_autoconnect({
+            'newRec' : self.new_rec_card,
+            'shopHide' : self.sl.hide,
+            'showShop' : self.sl.show,
+            'showList' : lambda *args: self.app.present(),            
+            'new' : self.new,
+            'defaultsave': self.save_default,
+            'export' : self.export_selected_recs,
+            'export_all': self.export_all_recs,
+            'import' : self.importg,
+            'import_webpage': self.import_webpageg,
+            'quit' : self.quit,
+            'about' : self.show_about,
+            'show_help' : self.show_help,
+            'rl_viewrec' : self.rec_tree_select_rec,
+            'rl_shoprec' : self.recTreeShopRec,
+            'rl_delrec': self.rec_tree_delete_rec_cb,
+            'colPrefs': self.show_preferences,
+            'unitConverter': self.showConverter,
+            'ingKeyEditor': self.showKeyEditor,
+            'valueEditor': self.showValueEditor,
+            'print':self.print_recs,
+            'email':self.email_recs,
+            #'email_prefs':self.email_prefs,
+            'showDeletedRecipes':self.show_deleted_recs,
+            'emptyTrash':self.empty_trash,
+            'on_timer': lambda *args: show_timer(),
+            'batch_edit':self.batch_edit_recs,
+            'on_duplicate_finder':self.show_duplicate_editor,
+#            'shopCatEditor': self.showShopEditor,            
+            })
+        # self.rc will be a list of open recipe cards.
+        # update_go_menu creates our view menu based on which cards are open
+        self.update_go_menu()
+        self.register_col_dialog()
+        ## make sure the focus is where it ought to be...
+        self.app.present()
+        self.srchentry.grab_focus()
+        self.srchentry.connect('activate',self.search_entry_activate_cb)
+        self.update_splash(_("Done!"))
+        self.threads = 0
+        # we need an "ID" to add/remove messages to/from the status bar
+        self.pauseid = self.stat.get_context_id('pause')
+        # setup call backs for e.g. right-clicking on the recipe tree to get a popup menu
+        self.setup_database_hooks()
+
+    def setup_index_columns (self):
+        self.rtcolsdic={}
+        self.rtwidgdic={}
+        for a,l,w in REC_ATTRS:
+            self.rtcolsdic[a]=l
+            self.rtwidgdic[a]=w
+            self.rtcols = [r[0] for r in REC_ATTRS]        
+
+    def setup_database_hooks (self):
+        self.rd.modify_hooks.append(self.update_rec_iter)
+        self.rd.delete_hooks.append(self.delete_rec_iter)
+        #self.rd.add_hooks.append(self.new_rec_iter)
+        self.doing_multiple_deletions=False
+    
+    def setup_glade (self):
+        gtk.glade.bindtextdomain('gourmet',DIR)
+        gtk.glade.textdomain('gourmet')
+        debug("gladebase is: %s"%gladebase,1)
+        self.glade = gtk.glade.XML(os.path.join(gladebase,'app.glade'))
+        self.pop = self.glade.get_widget('rlmen')
+        self.app = self.glade.get_widget('app')
+        self.prog = self.glade.get_widget('progressbar')
+        # widgets that should be sensitive only when a row is selected
+        self.act_on_row_widgets = [self.glade.get_widget('rlViewRecButton'),
+                                   self.glade.get_widget('rlViewRecMenu'),
+                                   self.glade.get_widget('rlShopRecButton'),
+                                   self.glade.get_widget('rlShopRecMenu'),
+                                   self.glade.get_widget('rlDelRecButton'),
+                                   self.glade.get_widget('rlDelRecMenu'),
+                                   self.glade.get_widget('rlBatchEditRecMenu'),
+                                   self.glade.get_widget('export_menu_item'),
+                                   self.glade.get_widget('email_menu_item'),
+                                   self.glade.get_widget('print_menu_item'),
+                                   ]        
+        
+    def show_progress_dialog (self, thread, progress_dialog_kwargs={},message=_("Import paused"),
+                           stop_message=_("Stop import")):
+        """Show a progress dialog"""
+        if hasattr(thread,'name'): name=thread.name
+        else: name = ''
+        for k,v in [('okay',True),
+                    ('label',name),
+                    ('parent',self.app),
+                    ('pause',self.pause_cb),
+                    ('stop',self.stop_cb),
+                    ('modal',False),]:
+            if not progress_dialog_kwargs.has_key(k):
+                progress_dialog_kwargs[k]=v
+        if not hasattr(self,'progress_dialog') or not self.progress_dialog:
+            self.progress_dialog = de.ProgressDialog(**progress_dialog_kwargs)
+            self.prog = self.progress_dialog.progress_bar
+        else:
+            self.progress_dialog.reassign_buttons(pausecb=progress_dialog_kwargs['pause'],
+                                              stopcb=progress_dialog_kwargs['stop'])
+            self.progress_dialog.reset_label(progress_dialog_kwargs['label'])
+        self.pause_message = message
+        self.stop_message = stop_message
+        self.thread = thread        
+        self.progress_dialog.show()
+        self.progress_dialog.connect('close',lambda *args: setattr(self.progress_dialog,None))
+        
+    def hide_progress_dialog (self):
+        """Make the progress dialog go away."""
+        if hasattr(self,'progress_dialog') and self.progress_dialog:
+            self.progress_dialog.hide()
+            self.progress_dialog.destroy()
+            self.progress_dialog = None
+    
+    def quit (self, *args):
+        """Close down shop, giving user option of saving changes and
+        saving our window prefs for posterity."""
+        debug("quit (self, *args):",5)
+        GourmetApplication.quit(self)
+        a=self.glade.get_widget('app')
         self.sl.widget.destroy()
         a.destroy()
         gtk.main_quit()
@@ -462,58 +721,7 @@ class RecGui (RecIndex):
         debug("new (self, *args):",5)
         self.init_recipes()
 
-    def init_recipes (self):
-        """Initialize recipe database.
 
-        We load our recipe database from recipeManager. If there's any problem,
-        we display the traceback to the user so they can send it out for debugging
-        (or possibly make sense of it themselves!)."""
-        try:
-            self.rd = recipeManager.RecipeManager(**recipeManager.dbargs)
-            check_for_data_to_import(self.rd)
-            # initiate autosave stuff
-            # autosave every 3 minutes (milliseconds * 1000 milliseconds/second * 60 seconds/minute)
-            gobject.timeout_add(1000*60*3,lambda *args: self.rd.save() or True)
-        except:
-            self.prefs['db_backend'] = None
-            self.prefs.save()
-            from StringIO import StringIO
-            f = StringIO()
-            traceback.print_exc(file=f)
-            error_mess = f.getvalue()
-            de.show_message(label='Database Connection failed.',
-                            sublabel='There was a problem with the database information you gave Gourmet',
-                            expander=(_('_Details'),
-                                      error_mess)
-                            )
-            raise
-        # connect hooks to modify our view whenever and
-        # whenceever our recipes are updated...
-        self.rd.modify_hooks.append(self.update_rec_iter)
-        self.rd.modify_hooks.append(self.updateAttributeModels)
-        self.rd.add_hooks.append(self.updateAttributeModels)
-        #self.rd.add_hooks.append(self.new_rec_iter)
-        self.rd.delete_hooks.append(self.delete_rec_iter)
-        self.rd.delete_hooks.append(self.updateAttributeModels)
-        # a flag to make deleting multiple recs
-        # more efficient...
-        self.doing_multiple_deletions=False
-        #self.conv = rmetakit.DatabaseConverter(self.rd)
-        self.conv = convert.Converter()
-        # initialize our nutritional database
-        nutrition.nutritionGrabberGui.check_for_db(self.rd)
-        self.nd = nutrition.nutrition.NutritionData(self.rd,self.conv)
-        self.rd.nd = self.nd
-        # initialize star-generator for use elsewhere
-        self.star_generator = ratingWidget.StarGenerator()
-        # we'll need to hand these to various other places
-        # that want a list of units.
-        self.umodel = convertGui.UnitModel(self.conv)
-        self.attributeModels = []
-        self.inginfo = reccard.IngInfo(self.rd)
-        #self.create_rmodel(self.rd.recipe_table)
-        self.sl = shopgui.ShopGui(self, conv=self.conv)
-        self.sl.hide()
 
     def selection_changed (self, selected=False):
         if selected != self.selected:
@@ -529,7 +737,7 @@ class RecGui (RecIndex):
             self.popup_rmenu(event)
             return True
         #if event.button==1 and event.type ==gtk.gdk._2BUTTON_PRESS:
-        #    self.recTreeSelectRec()
+        #    self.rec_tree_select_rec()
 
     def reset_rtree (self):
         """Re-create our recipe model."""
@@ -548,153 +756,6 @@ class RecGui (RecIndex):
 
     def update_rec_iter (self, rec): self.rmodel.update_recipe(rec)
 
-    def recTreeDeleteRecCB (self, *args):
-        """Make a watch show up (this can be slow
-        if lots of recs are selected!"""
-        #gtk.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-        #gobject.idle_add(self.recTreeDeleteRec)
-        # this seems broken
-        sel=self.rectree.get_selection()
-        if not sel: return
-        mod,rr=sel.get_selected_rows()
-        recs = [mod[path][0] for path in rr]
-        self.recTreeDeleteRecs(recs)
-
-    def delete_open_card_carefully (self, rec):
-        """Delete any open card windows, confirming if the card is edited.
-
-        We return True if the user cancels deletion.
-        """
-        if self.rc.has_key(rec.id):
-            rc = self.rc[rec.id]            
-            if rc.edited:
-                rc.widget.present()
-                if not de.getBoolean(
-                    label=_('Delete %s?'),
-                    sublabel=_('You have unsaved changes to %s. Are you sure you want to delete?'),
-                    custom_yes=gtk.STOCK_DELETE,
-                    custom_no=gtk.STOCK_CANCEL,
-                    cancel=False):
-                    return True
-            rc.widget.hide()
-            self.del_rc(rec.id)
-            
-    def recTreeDeleteRecs (self, recs):
-        cancelled = []
-        for rec in recs:
-            if self.delete_open_card_carefully(rec): # returns True if user cancels
-                cancelled.append(rec)
-        if cancelled:
-            for c in cancelled: recs.remove(c)
-        self.rd.undoable_delete_recs(
-            [self.rd.get_rec(r.id) for r in recs],
-            self.history,
-            make_visible=lambda *args: self.redo_search()
-            )
-        self.set_reccount()
-        if hasattr(self,'recTrash'):
-            self.recTrash.update_from_db()
-        self.message(_("Deleted") + ' ' + string.join([(r.title or _('Untitled')) for r in recs],', '))
-
-    def recTreePurge (self, recs, paths=None, model=None):
-        if not use_threads and self.lock.locked_lock():
-            de.show_message(label=_('An import, export or deletion is running'),
-                            sublabel=_('Please wait until it is finished to delete recipes.')
-                            )
-            return
-        if not recs:
-            # Do nothing if there are no recipes to delete.
-            return
-        if not paths: paths=[]
-        expander=None
-        bigmsg = _("Permanently delete recipes?")
-        if len(recs) == 1:
-            bigmsg = _("Permanently delete recipe?")
-            msg = _("Are you sure you want to delete the recipe <i>%s</i>")%recs[0].title
-        elif len(recs) < 5:
-            msg = _("Are you sure you want to delete the following recipes?")
-            for r in recs:
-                msg += "\n<i>%s</i>"%r.title
-        else:
-            msg = _("Are you sure you want to delete the %s selected recipes?")%len(recs)
-            tree = te.QuickTree([r.title for r in recs])
-            expander = [_("See recipes"),tree]
-        if de.getBoolean(parent=self.app,label=bigmsg,sublabel=msg,expander=expander):
-            self.redo_search() # update all
-
-            def show_progress (t):
-                gt.gtk_enter()
-                self.show_progress_dialog(t,
-                                          progress_dialog_kwargs={'label':'Deleting recipes'},
-                                          message=_('Deletion paused'), stop_message=_("Stop deletion"))
-                gt.gtk_leave()
-            def save_delete_hooks (t):
-                self.saved_delete_hooks = self.rd.delete_hooks[0:]
-                self.rd.delete_hooks = []
-            def restore_delete_hooks (t):
-                self.rd.delete_hooks = self.saved_delete_hooks
-            pre_hooks = [
-                lambda *args: self.lock.acquire(),
-                save_delete_hooks,
-                show_progress,
-                ]
-            post_hooks = [
-                restore_delete_hooks,
-                lambda *args: self.lock.release()]
-            t=gt.SuspendableThread(gt.SuspendableDeletions(self, recs),
-                                name='delete',
-                                pre_hooks = pre_hooks,
-                                post_hooks = post_hooks)
-            if self.lock.locked_lock():
-                de.show_message(label=_('An import, export or deletion is running'),
-                                sublabel=_('The recipes will be deleted once the other process is finished.')
-                                )
-            debug('PRE_HOOKS=%s'%t.pre_hooks,1)
-            debug('POST_HOOKS=%s'%t.post_hooks,1)
-            debug('rd.add_hooks=%s'%self.rd.add_hooks,1)
-            gt.gtk_leave()
-            t.start()
-            gt.gtk_enter()
-        else:
-            return True
-
-    def delete_rec (self, rec):
-        debug("delete_rec (self, rec): %s"%rec,5)
-        debug("does %s have %s"%(self.rc,rec.id),5)
-        if self.rc.has_key(rec.id):
-            debug("Getting rid of open recipe card window.",2)
-            w=self.rc[rec.id].widget
-            self.rc[rec.id].hide()
-            w.destroy()
-            self.updateViewMenu()
-        if hasattr(rec,'id') and rec.id:
-            if rec:
-                titl = rec.title
-                debug('deleting recipe %s'%rec.title,1)
-                # try a workaround to segfaults -- grab rec anew from ID.
-                dbrec = self.rd.get_rec(rec.id)
-                if dbrec:
-                    self.rd.delete_rec(dbrec)
-                else:
-                    print 'wtf?!?',rec,':',rec.id,' not real?'
-            else: debug('no recipe to delete!?!',1)
-            if not self.doing_multiple_deletions:
-                gt.gtk_enter()
-                self.message(_("Deleted recipe %s")%titl)
-                self.doing_multiple_deletions=False
-                gt.gtk_leave()
-        else:
-            debug("%s %s does not have an ID!"%(rec,rec.title),2)
-        debug("returning None",2)
-        return None
-
-    def email_recs (self, *args):
-        debug('email_recs called!',1)
-        recs = self.recTreeSelectedRecs()
-        d=recipe_emailer.EmailerDialog(recs, self.rd, self.prefs, self.conv)
-        d.setup_dialog()
-        d.email()
-
     #def email_prefs (self, *args):
     #    d = recipe_emailer.EmailerDialog([],None,self.prefs,self.conv)
     #    d.setup_dialog(force=True)
@@ -704,16 +765,15 @@ class RecGui (RecIndex):
             self.recTrash = RecTrash(self.rd,self.rg)
         else:
             self.recTrash.show()
-            
 
     def empty_trash (self, *args):
-        self.recTreePurge(
+        self.purge_rec_tree(
             self.rd.fetch_all(self.rd.recipe_table,deleted=True)
             )
 
     def print_recs (self, *args):
         debug('printing recipes',3)
-        recs = self.recTreeSelectedRecs()
+        recs = self.get_selected_recs_from_rec_tree()
         gt.gtk_leave()
         printer.RecRenderer(self.rd, recs,
                             dialog_title=gettext.ngettext('Print %s recipe',
@@ -732,39 +792,41 @@ class RecGui (RecIndex):
             self.pop.popup(None,None,None,0,0)
             return True
 
-    def newRecCard (self, *args):
+    def new_rec_card (self, *args):
         self.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
         def show ():
             rc=reccard.RecCard(self)
             self.make_rec_visible(rc.current_rec)
             self.rc[rc.current_rec.id]=rc
             self.app.window.set_cursor(None)
+            self.update_go_menu()
+            f.close()
         gobject.idle_add(show)
 
     def update_modified_recipe (self, rec, attribute, value):
         if self.rc.has_key(rec.id):
             self.rc[rec.id].updateAttribute(attribute,value)
 
-    def openRecCard (self, rec):
+    def open_rec_card (self, rec):
         if self.rc.has_key(rec.id):
             self.rc[rec.id].show()
         else:
             def show ():
                 w=reccard.RecCard(self, rec)
                 self.rc[rec.id]=w
-                self.updateViewMenu()
+                self.update_go_menu()
                 self.app.window.set_cursor(None)
             self.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
             gobject.idle_add(show)
 
-    def recTreeSelectRec (self, *args):
-        debug("recTreeSelectRec (self, *args):",5)
-        for rec in self.recTreeSelectedRecs():
-            self.openRecCard(rec)
+    def rec_tree_select_rec (self, *args):
+        debug("rec_tree_select_rec (self, *args):",5)
+        for rec in self.get_selected_recs_from_rec_tree():
+            self.open_rec_card(rec)
 
     def recTreeShopRec (self, *args):
         debug("recTreeShopRec (self, *args):",5)
-        rr=self.recTreeSelectedRecs()
+        rr=self.get_selected_recs_from_rec_tree()
         #r = self.recTreeSelectedRec()
         for r in rr:
             if r.servings and r.servings != "None":
@@ -867,7 +929,7 @@ class RecGui (RecIndex):
                     extra_prefs = {}
                 pd_args={'label':myexp['label'],'sublabel':myexp['sublabel']%{'file':file}}
                 if export_all: recs = self.rd.fetch_all(self.rd.recipe_table,deleted=False,sort_by=[('title',1)])
-                else: recs = self.recTreeSelectedRecs()
+                else: recs = self.get_selected_recs_from_rec_tree()
                 expClass = myexp['mult_exporter']({'rd':self.rd,
                                                    'rv': recs,
                                                    'conv':self.conv,
@@ -1166,7 +1228,7 @@ class RecGui (RecIndex):
                 label=_('Some of the imported recipes appear to be duplicates. You can merge them here, or close this dialog to leave them as they are.')
                 )
         # Update our models for category, cuisine, etc.
-        self.updateAttributeModels()
+        self.update_attribute_models()
         # Reset our index view
         self.redo_search()
         gt.gtk_leave()
@@ -1264,9 +1326,6 @@ class RecGui (RecIndex):
                                      'indexViewVBox',
                                      self.configure_columns)        
 
-    def show_preferences (self, *args):
-        self.prefsGui.show_dialog(page=self.prefsGui.INDEX_PAGE)
-
     def configure_columns (self, retcolumns):
         hidden=[]
         for c,v in retcolumns:
@@ -1274,155 +1333,59 @@ class RecGui (RecIndex):
         self.rectree_conf.hidden=self.prefs['rectree_hidden_columns']=hidden
         self.rectree_conf.apply_visibility()
 
-    def showConverter (self, *args):
-        cg=convertGui.ConvGui(converter=self.conv, unitModel=self.umodel)
-
-    def showKeyEditor (self, *args):
-        ke=keyEditor.KeyEditor(rd=self.rd, rg=self)
-
-    def showValueEditor (self, *args):
-        if not hasattr(self,'ve'):
-            self.ve=valueEditor.ValueEditor(self.rd,self)
-        self.ve.valueDialog.connect('response',lambda d,r: (r==gtk.RESPONSE_APPLY and self.updateAttributeModels))
-        self.ve.show()
-
-
-    def batch_edit_recs (self, *args):
-        recs = self.recTreeSelectedRecs()
-        if not hasattr(self,'batchEditor'):
-            self.batchEditor =  batchEditor.BatchEditor(self)
-        self.batchEditor.set_values_from_recipe(recs[0])
-        self.batchEditor.dialog.run()
-        # If we have values...
-        if self.batchEditor.values:
-            changes = self.batchEditor.values
-            only_where_blank = self.batchEditor.setFieldWhereBlank
-            attributes = ', '.join(changes.keys())
-            msg = gettext.ngettext('Set %(attributes)s for %(num)s selected recipe?',
-                                   'Set %(attributes)s for %(num)s selected recipes?',
-                                   len(recs))%{'attributes':attributes,
-                                               'num':len(recs),
-                                               }
-            msg += '\n'
-            if only_where_blank:
-                msg += _('Any previously existing values will not be changed.')+'\n'
-            else:
-                msg += _('The new values will overwrite any previously existing values.')+'\n'
-            msg += '<i>'+_('This change cannot be undone.')+'</i>'
-            if de.getBoolean(label=_('Set values for selected recipes'),sublabel=msg,cancel=False,
-                             custom_yes=gtk.STOCK_OK,custom_no=gtk.STOCK_CANCEL,):
-                for r in recs:
-                    if only_where_blank:
-                        changes = self.batchEditor.values.copy()
-                        for attribute in changes.keys():
-                            if hasattr(r,attribute) and getattr(r,attribute):
-                                del changes[attribute]
-                        if changes:
-                            self.rd.modify_rec(r,changes)
-                    else:
-                        self.rd.modify_rec(r,self.batchEditor.values)
-                    self.update_rec_iter(r)
-            else:
-                print 'Cancelled'
-        self.batchEditor.dialog.hide()
-        self.updateAttributeModels()
-
-    def show_duplicate_editor (self, *args):
-        rmd = recipeMerger.RecipeMergerDialog(
-            self.rd,
-            on_close_callback=lambda *args: self.redo_search()
-            )
-        rmd.populate_tree_if_possible()
-        rmd.show()
-                    
-    def getAttributeModel (self, attribute):
-        """Return a ListModel with a unique list of values for attribute.
-
-        This is stored here so that all the different comboboxes that
-        might need e.g. a list of categories can share 1 model and
-        save memory.
-        """
-        if not hasattr(self,'%sModel'%attribute):
-            slist = self.createAttributeList(attribute)
-            m = gtk.ListStore(str)
-            for i in slist: m.append([i])
-            setattr(self,'%sModel'%attribute,m)
-            self.attributeModels.append((attribute,getattr(self,'%sModel'%attribute)))
-        return getattr(self,'%sModel'%attribute)
-
-    def updateAttributeModels (self):
-        print 'updateAttributeModels!'
-        for attr,mod in self.attributeModels:
-            self.updateAttributeModel(attr)
-            
-    def updateAttributeModel (self, attribute):
-        slist = self.createAttributeList(attribute)
-        model = getattr(self,'%sModel'%attribute)
-        for n,item in enumerate(slist):
-            if model[n][0] == item:
-                continue
-            else:
-                # See if we match something later in the model -- if
-                # we do, suck up the whole model
-                additional = 1
-                found_match = False
-                while len(model) > (n+additional):
-                    if model[n+additional][0] == item:
-                        while additional > 0:
-                            model.remove(model.get_iter(n))
-                            additional -= 1
-                            found_match = False
-                        break
-                    additional += 1
-                if not found_match:
-                    model.insert(n,[item])
-        while len(model) > len(slist):
-            last = model.get_iter(len(model) - 1)
-            model.remove(last)
-        return model
-
-    def createAttributeList (self, attribute):
-        """Create a ListModel with unique values of attribute.
-        """
-        if attribute=='category':
-            slist = self.rg.rd.get_unique_values(attribute,self.rg.rd.categories_table)
-        else:
-            slist = self.rg.rd.get_unique_values(attribute,deleted=False)
-        if not slist:
-            slist = self.rg.rd.get_default_values(attribute)
-        else:
-            for default_value in self.rg.rd.get_default_values(attribute):
-                if default_value not in slist: slist.append(default_value)
-        slist.sort()
-        return slist
-
     # END class RecGUI
 
 class RecTrash (RecIndex):
 
     default_searches = [{'column':'deleted','operator':'=','search':True}]
+    RESPONSE_DELETE_PERMANENTLY = 1
+    RESPONSE_UNDELETE = 2
+    RESPONSE_EMPTY_TRASH = 3    
     
-    def __init__ (self, rd, rg):
+    def __init__ (self, rg):
         self.rg = rg
         self.rmodel = self.rg.rmodel
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'recSelector.glade'))
-        self.glade.get_widget('selectActionBox').set_property('visible',False)
-        tab=self.glade.get_widget('trashActionBox')
-        tab.set_property('visible',True)
-        #try:
-        #    tab.set_visible(True)
-        #except:
-        #    print "Can't set trashActionBox visible"
-        #    for c in tab.get_children(): c.set_visible(True)
-        self.window = self.glade.get_widget('recDialog')
-        self.window.connect('delete-event',self.dismiss)
-        self.window.set_title('Wastebasket (Deleted Recipes)')
-        self.glade.signal_autoconnect({
-            'purgeRecs':self.recTreePurgeSelectedRecs,
-            'undeleteRecs':self.recTreeUndeleteSelectedRecs,
-            'ok':self.dismiss,
-            })
+        self.glade = gtk.glade.XML(os.path.join(gladebase,'recipe_index.glade'))
         RecIndex.__init__(self, self.glade, self.rg.rd, self.rg)
+        self.setup_main_window()
+        
+    def setup_main_window (self):
+        self.window = gtk.Dialog(_("Trash"),
+                                 self.rg.window,
+                                 gtk.DIALOG_DESTROY_WITH_PARENT,
+                                 ("_Empty trash",self.RESPONSE_EMPTY_TRASH,
+                                  "_Delete permanently",self.RESPONSE_DELETE_PERMANENTLY,
+                                  "_Undelete",self.RESPONSE_UNDELETE,
+                                  gtk.STOCK_CLOSE,gtk.RESPONSE_CLOSE))
+        self.window.set_default_response(gtk.RESPONSE_CLOSE)
+        #a = gtk.Alignment(); a.set_padding(12,12,12,12)
+        box = gtk.VBox(); box.show()
+        box.set_border_width(12)
+        #a.add(box); a.show(); 
+        #self.window.vbox.add(a)
+        self.window.vbox.add(box)
+        top_label = gtk.Label(); top_label.set_alignment(0.0,0.5)
+        top_label.set_markup('<span weight="bold" size="large">'+_('Trash')+'</span>\n<i>'+_('Browse, permanently delete or undelete deleted recipes')+'</i>')
+        box.pack_start(top_label,expand=False,fill=False);top_label.show()
+        self.recipe_index_interface = self.glade.get_widget('recipeIndexBox')
+        self.recipe_index_interface.unparent()
+        box.pack_start(self.recipe_index_interface,fill=True,expand=True)
+        self.recipe_index_interface.show()
+        self.rg.conf.append(WidgetSaver.WindowSaver(self.window,
+                                                    self.prefs.get('trash_window',
+                                                                   {'size':(600,800)}),
+                                                    show=False))
+        self.window.connect('response',self.response_cb)
+
+    def response_cb (self, dialog, response):
+        if response==self.RESPONSE_DELETE_PERMANENTLY:
+            self.purge_selected_recs()
+        elif response==self.RESPONSE_UNDELETE:
+            self.undelete_selected_recs()
+        elif response==self.RESPONSE_EMPTY_TRASH:
+            self.purge_all()
+        else:
+            self.dismiss()
 
     def dismiss (self, *args):
         self.window.hide()
@@ -1430,21 +1393,20 @@ class RecTrash (RecIndex):
     
     def show (self, *args, **kwargs):
         self.window.show(*args,**kwargs)
+        self.srchentry.grab_focus()
 
-    def setup_search_views (self):
-        self.last_search = ["",""]
-        self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=True)
-        self.searches = self.default_searches
-        self.sort_by = []
+    #def setup_search_views (self):
+    #    self.last_search = ["",""]
+    #    self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=True)
+    #    self.searches = self.default_searches
+    #    self.sort_by = []
 
     def update_from_db (self):
-        print 'UDPATE TRASH FROM DB!'
         self.update_rmodel(self.rg.rd.fetch_all(
             self.rg.rd.recipe_table,deleted=True
-            )
-                                  )
+            ))
 
-    def recTreeUndeleteSelectedRecs (self, *args):
+    def undelete_selected_recs (self, *args):
         mod,rr = self.rectree.get_selection().get_selected_rows()
         recs = [mod[path][0] for path in rr]
         msg = ''
@@ -1456,7 +1418,7 @@ class RecTrash (RecIndex):
         self.rg.redo_search()
         self.rg.message(_('Undeleted recipes ') + msg)
 
-    def recTreePurgeSelectedRecs (self, *args):
+    def purge_selected_recs (self, *args):
         if not use_threads and self.rg.lock.locked_lock():
             de.show_message(label=_('An import, export or deletion is running'),
                             sublabel=_('Please wait until it is finished to delete recipes.')
@@ -1467,7 +1429,11 @@ class RecTrash (RecIndex):
         if not sel: return
         mod,rr=sel.get_selected_rows()
         recs = map(lambda path: mod[path][0],rr)
-        self.rg.recTreePurge(recs,rr,mod)
+        self.rg.purge_rec_tree(recs,rr,mod)
+        self.update_from_db()
+
+    def purge_all (self, *args):
+        self.rg.purge_rec_tree(self.rvw)
         self.update_from_db()
 
 def set_accel_paths (glade, widgets, base='<main>'):
@@ -1548,6 +1514,447 @@ def startGUI ():
     #gtk.threads_leave()
     gt.gtk_leave()
 
+class ImporterExporter:
+    """Provide importer exporter classes."""
+    # WARNING: This is not actually an independent class.  This is a
+    # crude method of bookkeeping as we update. Everything contained
+    # in this class should be reworked within a plugin system. For
+    # now, we just attach it to this class so we can have cleaner code
+    # and maintain old functionality as we implement plugins
+    # piece-by-piece.
+    # IMPORT/EXPORT - this will be reworked within a plugin framework...
+    def print_recs (self, *args):
+        debug('printing recipes',3)
+        recs = self.get_selected_recs_from_rec_tree()
+        gt.gtk_leave()
+        printer.RecRenderer(self.rd, recs,
+                            dialog_title=gettext.ngettext('Print %s recipe',
+                                                          'Print %s recipes',
+                                                          len(recs))%len(recs),
+                            dialog_parent = self.app,
+                            change_units = self.prefs.get('readableUnits',True)
+                            )
+        gt.gtk_enter()
+
+    def export_selected_recs (self, *args): self.exportg(export_all=False)
+    def export_all_recs (self, *args): self.exportg(export_all=True)
+
+    def exportg (self, export_all=False):
+        """If all is false, export only selected recipes.
+
+        If all is True, export all recipes.
+        """
+        if not use_threads and self.lock.locked_lock():
+            de.show_message(
+                parent=self.app.get_toplevel(),
+                label=_('An import, export or deletion is running'),
+                sublabel=_('Please wait until it is finished to start your export.')
+                            )
+            return
+        saveas_filters = exporters.saveas_filters[0:]
+        ext = self.prefs.get('save_recipes_as','%sxml'%os.path.extsep)
+        exp_directory = self.prefs.get('rec_exp_directory','~')
+        file,exp_type=de.saveas_file(_("Export recipes"),
+                                     filename="%s/%s%s"%(exp_directory,_('recipes'),ext),
+                                     parent=self.app.get_toplevel(),
+                                     filters=saveas_filters)
+        if file:
+            self.prefs['rec_exp_directory']=os.path.split(file)[0]
+            self.prefs['save_recipes_as']=os.path.splitext(file)[1]
+            expClass=None
+            post_hooks = [self.after_dialog_offer_url(exp_type,file)]
+            if exporters.exporter_dict.has_key(exp_type):
+                myexp = exporters.exporter_dict[exp_type]
+                if myexp.has_key('extra_prefs_dialog'):
+                    extra_prefs = myexp['extra_prefs_dialog']()
+                else:
+                    extra_prefs = {}
+                pd_args={'label':myexp['label'],'sublabel':myexp['sublabel']%{'file':file}}
+                if export_all: recs = self.rd.fetch_all(self.rd.recipe_table,deleted=False,sort_by=[('title',1)])
+                else: recs = self.get_selected_recs_from_rec_tree()
+                expClass = myexp['mult_exporter']({'rd':self.rd,
+                                                   'rv': recs,
+                                                   'conv':self.conv,
+                                                   'prog':self.set_progress_thr,
+                                                   'file':file,
+                                                   'extra_prefs':extra_prefs,
+                                                   })
+            if expClass:
+                self.threads += 1
+                def show_progress (t):
+                    debug('showing pause button',1)
+                    gt.gtk_enter()
+                    self.show_progress_dialog(t,message=_('Export Paused'),stop_message=_("Stop export"),
+                                              progress_dialog_kwargs=pd_args,
+                                              )
+                    gt.gtk_leave()
+                pre_hooks = [show_progress]
+                pre_hooks.insert(0, lambda *args: self.lock.acquire())
+                #post_hooks.append(lambda *args: self.reset_prog_thr())
+                post_hooks.append(lambda *args: self.lock.release())
+                t=gt.SuspendableThread(expClass, name='export',
+                                    pre_hooks=pre_hooks,
+                                    post_hooks=post_hooks)
+                if self.lock.locked_lock():
+                    de.show_message(label=_('An import, export or deletion is running'),
+                                    sublabel=_('Your export will start once the other process is finished.'))
+                debug('PRE_HOOKS=%s'%t.pre_hooks,1)
+                debug('POST_HOOKS=%s'%t.post_hooks,1)                
+                t.start()
+                if not use_threads:
+                    if not hasattr(self,'_threads'): self._threads = []
+                    self._threads.append(t)
+            else:
+                de.show_message(label=_('Gourmet cannot export file of type "%s"')%os.path.splitext(file)[1],
+                                message_type=gtk.MESSAGE_ERROR)
+
+    def import_pre_hook (self, *args):
+        debug('import_pre_hook, gt.gtk_enter()',1)
+        debug('about to run... %s'%self.rd.add_hooks[1:-1],1)
+        gt.gtk_enter()
+
+    def import_post_hook (self, *args):
+        debug('import_post_hook,gt.gtk_leave()',5)
+        gt.gtk_leave()
+
+    def import_webpageg (self, *args):
+        if not use_threads and self.lock.locked_lock():
+            de.show_message(label=_('An import, export or deletion is running'),
+                            sublabel=_('Please wait until it is finished to start your import.')
+                            )
+            return
+        import importers.html_importer
+        sublabel = _('Enter the URL of a recipe archive or recipe website.')
+        url = de.getEntry(label=_('Enter website address.'),
+                          sublabel=sublabel,
+                          entryLabel=_('Enter URL:'),
+                          entryTip=_('Enter the address of a website or recipe archive. The address should begin with http://'),
+                          default_character_width=60,
+                          )
+        if not url: return
+        if url.find('//')<0:
+            url = 'http://'+url
+        self.show_progress_dialog(None,
+                                  progress_dialog_kwargs={'label':_('Importing recipe from %s')%url,
+                                                      'stop':False,
+                                                      'pause':False,})
+        try:
+            i=importers.html_importer.import_url(
+                url,
+                self.rd,
+                progress=self.set_progress_thr,
+                threaded=True)
+            #self.rd,
+            #    url,
+            #    prog=self.set_progress_thr,
+            #    threaded=True)
+            if type(i)==list:
+                impClass,cant_import = self.prepare_import_classes(i)
+                if impClass:
+                    self.run_import(impClass,url,display_errors=False)
+                else:
+                    raise NotImplementedError("Gourmet cannot import")
+            else:
+                self.run_import(i,url,display_errors=False)
+        except NotImplementedError:
+            sublabel=_('Gourmet does not know how to import site %s')%url
+            sublabel += "\n"
+            sublabel += _('Are you sure %(url)s points to a page with a recipe on it?')%locals()
+            de.show_message(label=_('Unable to import'),
+                            sublabel=sublabel,
+                            message_type=gtk.MESSAGE_ERROR)
+            self.hide_progress_dialog()
+        except BadZipfile:
+            de.show_message(label=_('Unable to unzip'),
+                            sublabel=_('Gourmet is unable to unzip the file %s')%url,
+                            message_type=gtk.MESSAGE_ERROR)
+        except IOError:
+            self.hide_progress_dialog()
+            de.show_traceback(label=_('Unable to retrieve URL'),
+                              sublabel=_("""Gourmet was unable to retrieve the site %s. Are you sure your internet connection is working?  If you can retrieve the site with a webbrowser but continue to get this error, please submit a bug report at %s.""")%(url,BUG_URL)
+                              )
+            raise
+        except gt.Terminated:
+            if self.threads > 0: self.threads = self.threads - 1
+            self.lock.release()
+        except:
+            self.hide_progress_dialog()
+            de.show_traceback(
+                label=_('Error retrieving %(url)s.')%locals(),
+                sublabel=_('Are you sure %(url)s points to a page with a recipe on it?')%locals()
+                )
+            raise
+        self.make_rec_visible()
+        
+    def importg (self, *args):
+        if not use_threads and self.lock.locked_lock():
+            de.show_message(label=_('An import, export or deletion is running'),
+                            sublabel=_('Please wait until it is finished to start your import.')
+                            )
+            return
+        import_directory = "%s/"%self.prefs.get('rec_import_directory',None)
+        debug('show import dialog',0)
+        ifiles=de.select_file(
+            _("Import Recipes"),
+            filename=import_directory,
+            filters=importers.FILTERS,
+            action=gtk.FILE_CHOOSER_ACTION_OPEN,
+            select_multiple=True)
+        if ifiles:
+            self.prefs['rec_import_directory']=os.path.split(ifiles[0])[0]
+            self.import_multiple_files(ifiles)
+        self.make_rec_visible()
+            
+    def prepare_import_classes (self, files):
+        """Handed multiple import files, prepare to import.
+
+        We return a tuple (importerClasses,cant_import)
+
+        importClass - an instance of importers.importer.MultipleImport
+        which handles the actual import when their run methods are
+        called.
+
+        cant_import - a list of files we couldn't import.
+
+        This does most of the work of import_multiple_files, but
+        leaves it up to our caller to display our progress dialog,
+        etc.
+        """
+        impClass = None            
+        importerClasses = []
+        cant_import = []
+        # we're going to make a copy of the list and chew it up. We do
+        # this rather than doing a for loop because zip files or other
+        # archives can end up expanding our list
+        imp_files = files[0:] 
+        while files:
+            fn = files.pop()
+            if type(fn)==str and os.path.splitext(fn)[1] in ['.gz','.gzip','.zip','.tgz','.tar','.bz2']:
+                try:
+                    debug('trying to unzip %s'%fn,0)
+                    from importers.zip_importer import archive_to_filelist
+                    archive_files = archive_to_filelist(fn)
+                    for a in archive_files:
+                        if type(a) == str:
+                            files += [a]
+                        else:
+                            # if we have file objects, we're going to write
+                            # them out to real files, so we don't have to worry
+                            # about details later (this is stupid, but I'm sick of
+                            # tracking down places where I e.g. closed files regardless
+                            # of whether I opened them)
+                            finame=tempfile.mktemp(a.name)
+                            tfi=open(finame,'w')
+                            tfi.write(a.read())
+                            tfi.close()
+                            files += [finame]
+                    continue
+                except:
+                    cant_import.append(fn)
+                    raise
+                    continue
+            try:
+                impfilt = importers.FILTER_INFO[importers.select_import_filter(fn)]
+            except NotImplementedError:
+                cant_import.append(fn)
+                continue
+            impClass = impfilt['import']({'file':fn,
+                                          'rd':self.rd,
+                                          'threaded':True,
+                                          })
+            if impfilt['get_source']:
+                if type(fn)==str: fname = fn
+                else: fname = "file"
+                source=de.getEntry(label=_("Default source for recipes imported from %s")%fname,
+                                   entryLabel=_('Source:'),
+                                   default=os.path.split(fname)[1], parent=self.app)
+                # the 'get_source' dict is the kwarg that gets
+                # set to the source
+                impClass[2][impfilt['get_source']]=source
+            if impClass: importerClasses.append((impClass,fn))
+            else:
+                debug('GOURMET cannot import file %s'%fn)
+        if importerClasses:
+            impClass = importers.importer.MultipleImporter(self,
+                                                           importerClasses)
+            return impClass,cant_import
+        else:
+            return None,cant_import
+
+    def import_multiple_files (self, files):
+        """Import multiple files,  showing dialog."""
+        # This should probably be moved to importer with a quiet/not quiet options
+        # and all of the necessary connections handed as arguments.
+        impClass,cant_import=self.prepare_import_classes(files)
+        if impClass:
+            filenames = filter(lambda x: isinstance(x,str), files)
+            self.run_import(
+                impClass,
+                import_source=string.join([os.path.split(f)[1] for f in filenames],", ")
+                )
+        if cant_import:
+            # if this is a file with a name...
+            BUG_URL="http://sourceforge.net/tracker/?group_id=108118&atid=649652"
+            sublabel = gettext.ngettext("Gourmet could not import the file %s",
+                                            "Gourmet could not import the following files: %s",
+                                            len(cant_import))%", ".join(cant_import)
+            sublabel += "\n"
+            sublabel += gettext.ngettext(
+                "If you believe this file is in one of the formats Gourmet supports, please submit a bug report at %s and attach the file.",
+                "If you believe these files are in a format Gourmet supports, please submit a bug report at %s and attach the file.",
+                len(cant_import))%BUG_URL
+            self.offer_url(
+                label=gettext.ngettext("Cannot import file.",
+                                       "Cannot import files.",
+                                       len(cant_import)),
+                sublabel=sublabel,
+                url=BUG_URL)
+            return
+
+    def run_import (self, impClass, import_source="", display_errors=True):
+        """Run our actual import and display progress dialog."""
+        # we have to make sure we don't filter while we go (to avoid
+        # slowing down the process too much).
+        self.wait_to_filter=True
+        self.last_impClass = impClass
+        pre_hooks = [lambda *args: self.inginfo.disconnect_manually()]
+        post_hooks = [lambda *args: self.inginfo.reconnect_manually()]
+        pre_hooks.append(lambda *args: self.rd.add_hooks.insert(0,self.import_pre_hook))
+        pre_hooks.append(lambda *args: self.rd.add_hooks.append(self.import_post_hook))
+        self.threads += 1
+        release = lambda *args: self.lock.release()
+        post_hooks.extend([self.import_cleanup,
+                           lambda *args: setattr(self,'last_impClass',None),
+                           release])
+        def show_progress_dialog (t):
+            debug('showing progress dialog',3)
+            gt.gtk_enter()
+            if import_source:
+                sublab = _('Importing recipes from %s')%import_source
+            else: sublab = None
+            self.rg.show_progress_dialog(
+                t,
+                {'label':_('Importing Recipes'),
+                 'sublabel':sublab
+                 })
+            gt.gtk_leave()
+        pre_hooks.insert(0,show_progress_dialog)
+        pre_hooks.insert(0, lambda *args: self.lock.acquire())
+        t=gt.SuspendableThread(impClass,name="import",
+                               pre_hooks=pre_hooks, post_hooks=post_hooks,
+                               display_errors=display_errors)
+        if self.lock.locked_lock():
+            de.show_message(label=_('An import, export or deletion is running'),
+                            sublabel=_('Your import will start once the other process is finished.'))
+        debug('starting thread',2)
+        debug('PRE_HOOKS=%s'%t.pre_hooks,1)
+        debug('POST_HOOKS=%s'%t.post_hooks,1)
+        t.start()
+
+    def import_cleanup (self, *args):
+        """Remove our threading hooks"""
+        debug('import_cleanup!',1)
+        self.rd.add_hooks.remove(self.import_pre_hook)
+        self.rd.add_hooks.remove(self.import_post_hook)
+        debug('hooks: %s'%self.rd.add_hooks,1)
+        self.wait_to_filter=False
+        gt.gtk_enter()
+        # Check for duplicates
+        if self.last_impClass and self.last_impClass.added_recs:
+            rmd = recipeMerger.RecipeMergerDialog(
+                self.rd,
+                in_recipes=self.last_impClass.added_recs,
+                on_close_callback=lambda *args: self.redo_search()
+                )
+            rmd.show_if_there_are_dups(
+                label=_('Some of the imported recipes appear to be duplicates. You can merge them here, or close this dialog to leave them as they are.')
+                )
+        # Update our models for category, cuisine, etc.
+        self.update_attribute_models()
+        # Reset our index view
+        self.redo_search()
+        gt.gtk_leave()
+    
+class StuffThatShouldBePlugins:
+    # As you can tell by the name, everything in this class should
+    # really be re-implemented as a plugin. Once that process is
+    # complete, this class will disappear!
+
+    def batch_edit_recs (self, *args):
+        recs = self.get_selected_recs_from_rec_tree()
+        if not hasattr(self,'batchEditor'):
+            self.batchEditor =  batchEditor.BatchEditor(self)
+        self.batchEditor.set_values_from_recipe(recs[0])
+        self.batchEditor.dialog.run()
+        # If we have values...
+        if self.batchEditor.values:
+            changes = self.batchEditor.values
+            only_where_blank = self.batchEditor.setFieldWhereBlank
+            attributes = ', '.join(changes.keys())
+            msg = gettext.ngettext('Set %(attributes)s for %(num)s selected recipe?',
+                                   'Set %(attributes)s for %(num)s selected recipes?',
+                                   len(recs))%{'attributes':attributes,
+                                               'num':len(recs),
+                                               }
+            msg += '\n'
+            if only_where_blank:
+                msg += _('Any previously existing values will not be changed.')+'\n'
+            else:
+                msg += _('The new values will overwrite any previously existing values.')+'\n'
+            msg += '<i>'+_('This change cannot be undone.')+'</i>'
+            if de.getBoolean(label=_('Set values for selected recipes'),sublabel=msg,cancel=False,
+                             custom_yes=gtk.STOCK_OK,custom_no=gtk.STOCK_CANCEL,):
+                for r in recs:
+                    if only_where_blank:
+                        changes = self.batchEditor.values.copy()
+                        for attribute in changes.keys():
+                            if hasattr(r,attribute) and getattr(r,attribute):
+                                del changes[attribute]
+                        if changes:
+                            self.rd.modify_rec(r,changes)
+                    else:
+                        self.rd.modify_rec(r,self.batchEditor.values)
+                    self.update_rec_iter(r)
+            else:
+                print 'Cancelled'
+        self.batchEditor.dialog.hide()
+        self.update_attribute_models()
+
+    def show_duplicate_finder (self, *args):
+        rmd = recipeMerger.RecipeMergerDialog(
+            self.rd,
+            on_close_callback=lambda *args: self.redo_search()
+            )
+        rmd.populate_tree_if_possible()
+        rmd.show()
+
+    def showConverter (self, *args):
+        cg=convertGui.ConvGui(converter=self.conv, unitModel=self.umodel)
+
+    def showKeyEditor (self, *args):
+        ke=keyEditor.KeyEditor(rd=self.rd, rg=self)
+
+    def showValueEditor (self, *args):
+        if not hasattr(self,'ve'):
+            self.ve=valueEditor.ValueEditor(self.rd,self)
+        self.ve.valueDialog.connect('response',lambda d,r: (r==gtk.RESPONSE_APPLY and self.update_attribute_models))
+        self.ve.show()
+
+    def show_duplicate_editor (self, *args):
+        rmd = recipeMerger.RecipeMergerDialog(
+            self.rd,
+            on_close_callback=lambda *args: self.redo_search()
+            )
+        rmd.populate_tree_if_possible()
+        rmd.show()
+
+    def email_recs (self, *args):
+        debug('email_recs called!',1)
+        recs = self.get_selected_recs_from_rec_tree()
+        d=recipe_emailer.EmailerDialog(recs, self.rd, self.prefs, self.conv)
+        d.setup_dialog()
+        d.email()
+
 ui = '''<ui>
 <menubar name="RecipeIndexMenuBar">
   <menu name="File" action="File">
@@ -1558,6 +1965,7 @@ ui = '''<ui>
     <menuitem action="ExportSelected"/>
     <menuitem action="ExportAll"/>
     <separator/>
+    <menuitem action="Email"/>    
     <menuitem action="Print"/>
     <separator/>
     <menuitem action="Quit"/>
@@ -1565,18 +1973,24 @@ ui = '''<ui>
   <!--<menu name="Edit" action="Edit">
     <menuitem action="Undo"/>
     <menuitem action="Redo"/>
-  </menu>-->
-  <menu name="View" action="View">
-    <menuitem action="OpenRec"/>
-  </menu>
+  </menu>-->  
   <menu name="Actions" action="Actions">
     <menuitem action="OpenRec"/>
-    <menuitem action="DeleteRec"/>
-    <menuitem action="Email"/>
+    <menuitem action="DeleteRec"/>    
+    <separator/>
+    <menuitem action="BatchEdit"/>
+    <!-- <menuitem action=" -->
+  </menu>
+  <menu name="Go" action="Go">
   </menu>
   <menu name="Tools" action="Tools">
     <menuitem action="Timer"/>
     <menuitem action="UnitConverter"/>
+    <separator/>
+    <menuitem action="KeyEditor"/>
+    <menuitem action="DuplicateDeleter"/>
+    <separator/>
+    <menuitem action="ViewTrash"/>
   </menu>
   <menu name="Settings" action="Settings">
     <menuitem action="toggleRegexp"/>
@@ -1601,72 +2015,107 @@ ui = '''<ui>
 </ui>
 '''
 
-class RecGuiNew (RecGui):
-    def __init__ (self):
+class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBePlugins):
+    def __init__ (self, splash_label=None):
+        self.doing_multiple_deletions = False
+        GourmetApplication.__init__(self, splash_label=splash_label)
+        self.setup_index_columns()
+        self.setup_hacks()
+        self.glade = gtk.glade.XML(os.path.join(gladebase,'recipe_index.glade'))
         self.setup_actions()
+        RecIndex.__init__(self,
+                          glade=self.glade,
+                          rd=self.rd,
+                          rg=self,
+                          editable=False)
+        self.setup_database_hooks()        
         self.setup_main_window()
+        self.ui_manager.insert_action_group(self.search_actions,0)
+        self.window.add_accel_group(self.ui_manager.get_accel_group())
+
+    def setup_hacks (self):
+        # THese are properties that we need to set to test with our
+        # current recindex class. However, each of these properties
+        # should die with our redesign once done.
+        self.act_on_row_widgets = []
+
+    def setup_index_columns (self):
+        self.rtcolsdic={}
+        self.rtwidgdic={}
+        for a,l,w in REC_ATTRS:
+            self.rtcolsdic[a]=l
+            self.rtwidgdic[a]=w
+            self.rtcols = [r[0] for r in REC_ATTRS]        
+
+    def setup_database_hooks (self):
+        self.rd.delete_hooks.append(
+            lambda self,*args: (self.doing_multiple_deletions==False and self.redo_search())
+            )
+        self.rd.modify_hooks.append(self.rmodel.update_recipe)
+        
+    def selection_changed (self, selected=False):
+        if selected != self.selected:
+            if selected: self.selected=True
+            else: self.selected=False
+            self.onSelectedActionGroup.set_sensitive(
+                self.selected
+                )
 
     def setup_main_window (self):
-        self.w = gtk.Window()
-        self.w.set_title('Test')
+        self.window = self.app = gtk.Window()
+        self.conf.append(WidgetSaver.WindowSaver(self.window,
+                                                 self.prefs.get('app_window',
+                                                                {'window_size':(800,600)}),
+                                                 )
+                         )
+        self.window.set_title(version.appname)
         self.main = gtk.VBox()
-        self.w.add(self.main)
+        self.window.add(self.main)
         mb = self.ui_manager.get_widget('/RecipeIndexMenuBar'); mb.show()
-        self.main.pack_start(mb,fill=False,expand=False);
-        l = gtk.Label('Testing'); self.main.add(l)
-        l.show()
+        self.main.pack_start(mb,fill=False,expand=False);        
+        self.recipe_index_interface = self.glade.get_widget('recipeIndexBox')
+        self.recipe_index_interface.unparent()
+        self.main.add(self.recipe_index_interface)
+        self.recipe_index_interface.show()
         self.main.show()
-        self.w.show()
+        self.window.show()
 
     def setup_actions (self):
         self.ui_manager = gtk.UIManager()
         self.ui_manager.add_ui_from_string(ui)
-        self.search_actions = gtk.ActionGroup('SearchActions')
-        self.search_actions.add_toggle_actions([
-            ('toggleRegexp',None,_('Use regular expressions in search'),
-             None,_('Use regular expressions (an advanced search language) in text search'),
-             lambda *args: args),
-            ('toggleSearchAsYouType',None,_('Search as you type'),None,
-             _('Search as you type (turn off if search is too slow).'),
-             lambda *args: args
-             )])
-        self.main_actions = gtk.ActionGroup('MainActions')
-        self.on_selected_actions = gtk.ActionGroup('IndexOnSelectedActions')
-        self.on_selected_actions.add_actions([
+        self.mainActionGroup = gtk.ActionGroup('MainActions')
+        self.onSelectedActionGroup = gtk.ActionGroup('IndexOnSelectedActions')
+        self.onSelectedActionGroup.add_actions([
             ('OpenRec',gtk.STOCK_OPEN,_('Open recipe'),
-             None,_('Open selected recipe'),self.recTreeSelectRec),
+             '<Control>O',_('Open selected recipe'),self.rec_tree_select_rec),
             ('DeleteRec',gtk.STOCK_DELETE,_('Delete recipe'),
-             None,_('Delete selected recipes'),self.recTreeDeleteRecCB),
+             'Delete',_('Delete selected recipes'),self.rec_tree_delete_rec_cb),
             ('ExportSelected',None,_('E_xport selected recipes'),
              None,_('Export selected recipes to file'),self.export_selected_recs),
             ('Print',gtk.STOCK_PRINT,_('_Print'),
-             None,None,self.print_recs),
-            ('Email', None, _('E-mail recipes'),
+             '<Control>P',None,self.print_recs),
+            ('Email', None, _('E-_mail recipes'),
              None,None,self.email_recs),
+            ('BatchEdit',None,_('Batch _edit recipes'),
+             '<Control>E',None,self.batch_edit_recs),            
             ])
         
-        self.main_actions.add_actions([
+        self.mainActionGroup.add_actions([
             ('File',None,_('_File')),
             ('Edit',None,_('_Edit')),
             ('Actions',None,_('_Actions')),
-            ('View',None,_('_View')),
-            ('Tools',None,_('_Tools')),
-            ('Settings',None,_('_Settings')),
+            ('Settings',None,_('Setti_ngs')),
             ('HelpMenu',None,_('_Help')),            
             ('About',gtk.STOCK_ABOUT,_('_About'),
              None,None,self.show_about),
             ('New',gtk.STOCK_NEW,_('_New'),
-             None,None,self.newRecCard),
+             None,None,self.new_rec_card),
             ('Help',gtk.STOCK_HELP,_('_Help'),
              None,None,self.show_help),
             ('ImportFile',None,_('_Import file'),
              None,_('Import recipe from file'),self.importg),
             ('ImportWeb',None,_('Import _webpage'),
              None,_('Import recipe from webpage'),self.import_webpageg),
-            ('Timer',None,_('_Timer'),
-             None,_('Show timer'),lambda *args: show_timer()),
-            ('UnitConverter',None,_('_Unit Converter'),
-             None,_('Calculate unit conversions'),self.showConverter),
             ('ExportAll',None,_('Export _all recipes'),
              None,_('Export all recipes to file'),self.export_all_recs),
             ('Plugins',None,_('_Plugins'),
@@ -1680,11 +2129,314 @@ class RecGuiNew (RecGui):
             # None,None),
             ('Quit',gtk.STOCK_QUIT,_('_Quit'),
              None,None,self.quit),
+            ('ViewTrash',None,_('Open _Trash'),
+             None,None,self.show_deleted_recs),
+            ('DuplicateDeleter',None,_('Find _duplicate recipes'),
+             None,_('Find and remove duplicate recipes'),self.show_duplicate_finder)            
             ])
 
-        self.ui_manager.insert_action_group(self.on_selected_actions,0)
-        self.ui_manager.insert_action_group(self.search_actions,0)
-        self.ui_manager.insert_action_group(self.main_actions,0)
+        self.toolActionGroup = gtk.ActionGroup('ToolActions')
+        self.toolActionGroup.add_actions([
+            ('Tools',None,_('_Tools')),
+            ('Timer',None,_('_Timer'),
+             None,_('Show timer'),lambda *args: show_timer()),
+            ('UnitConverter',None,_('_Unit Converter'),
+             None,_('Calculate unit conversions'),self.showConverter),
+            ('KeyEditor',None,_('Ingredient _Key Editor'),
+             None,_('Edit ingredient keys en masse'),self.showKeyEditor),
+            ])
+
+        
+        self.goActionGroup.add_actions([
+            ('GoRecipeIndex',None,_('Recipe _Index'),
+             None,_('Searchable index of recipes in the database.'),self.present)]
+                                       )
+        self.ui_manager.insert_action_group(self.onSelectedActionGroup,0)
+        self.ui_manager.insert_action_group(self.mainActionGroup,0)
+        self.ui_manager.insert_action_group(self.toolActionGroup,0)
+        self.add_uimanager_to_manage(-1,self.ui_manager,'RecipeIndexMenuBar')
+
+    # Status bar stuff
+    def message (self, msg):
+        debug("message (self, msg): %s"%msg,5)
+        self.stat.push(self.contid,msg)
+        gobject.timeout_add(1500,self.flush_messages)
+
+    def flush_messages (self, ret=False):
+        debug("flush_messages (self):",5)
+        self.stat.pop(self.contid)
+        return ret
+
+
+    # Basic callbacks
+    def new_rec_card (self, *args):
+        self.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+        def show ():
+            rc=reccard.RecCard(self)
+            self.make_rec_visible(rc.current_rec)
+            self.rc[rc.current_rec.id]=rc
+            self.app.window.set_cursor(None)
+            self.update_go_menu()
+        gobject.idle_add(show)
+
+    def open_rec_card (self, rec):
+        if self.rc.has_key(rec.id):
+            self.rc[rec.id].show()
+        else:
+            def show ():
+                w=reccard.RecCard(self, rec)
+                self.rc[rec.id]=w
+                self.update_go_menu()
+                self.app.window.set_cursor(None)
+            self.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+            gobject.idle_add(show)
+        
+
+    # Extra callbacks for actions on our treeview
+    def rec_tree_select_rec (self, *args):
+        debug("rec_tree_select_rec (self, *args):",5)
+        for rec in self.get_selected_recs_from_rec_tree():
+            self.open_rec_card(rec)
+    
+    # Deletion
+    def show_deleted_recs (self, *args):
+        if not hasattr(self,'recTrash'):
+            self.recTrash = RecTrash(self.rg)
+            self.recTrash.show()
+        else:
+            self.recTrash.show()
+    
+    def rec_tree_delete_rec_cb (self, *args):
+        """Make a watch show up (this can be slow
+        if lots of recs are selected!"""
+        #gtk.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+        #gobject.idle_add(self.recTreeDeleteRec)
+        # this seems broken
+        sel=self.rectree.get_selection()
+        if not sel: return
+        mod,rr=sel.get_selected_rows()
+        recs = [mod[path][0] for path in rr]
+        self.rec_tree_delete_recs(recs)
+
+    def delete_open_card_carefully (self, rec):
+        """Delete any open card windows, confirming if the card is edited.
+
+        We return True if the user cancels deletion.
+        """
+        if self.rc.has_key(rec.id):
+            rc = self.rc[rec.id]            
+            if rc.edited:
+                rc.widget.present()
+                if not de.getBoolean(
+                    label=_('Delete %s?'),
+                    sublabel=_('You have unsaved changes to %s. Are you sure you want to delete?'),
+                    custom_yes=gtk.STOCK_DELETE,
+                    custom_no=gtk.STOCK_CANCEL,
+                    cancel=False):
+                    return True
+            rc.widget.hide()
+            self.del_rc(rec.id)
+            
+    def rec_tree_delete_recs (self, recs):
+        cancelled = []
+        for rec in recs:
+            if self.delete_open_card_carefully(rec): # returns True if user cancels
+                cancelled.append(rec)
+        if cancelled:
+            for c in cancelled: recs.remove(c)
+        self.rd.undoable_delete_recs(
+            [self.rd.get_rec(r.id) for r in recs],
+            self.history,
+            make_visible=lambda *args: self.redo_search()
+            )
+        self.set_reccount()
+        if hasattr(self,'recTrash'):
+            self.recTrash.update_from_db()
+        self.message(_("Deleted") + ' ' + string.join([(r.title or _('Untitled')) for r in recs],', '))
+
+    def purge_rec_tree (self, recs, paths=None, model=None):
+        if not use_threads and self.lock.locked_lock():
+            de.show_message(label=_('An import, export or deletion is running'),
+                            sublabel=_('Please wait until it is finished to delete recipes.')
+                            )
+            return
+        if not recs:
+            # Do nothing if there are no recipes to delete.
+            return
+        if not paths: paths=[]
+        expander=None
+        bigmsg = _("Permanently delete recipes?")
+        if len(recs) == 1:
+            bigmsg = _("Permanently delete recipe?")
+            msg = _("Are you sure you want to delete the recipe <i>%s</i>")%recs[0].title
+        elif len(recs) < 5:
+            msg = _("Are you sure you want to delete the following recipes?")
+            for r in recs:
+                msg += "\n<i>%s</i>"%r.title
+        else:
+            msg = _("Are you sure you want to delete the %s selected recipes?")%len(recs)
+            tree = te.QuickTree([r.title for r in recs])
+            expander = [_("See recipes"),tree]
+        if de.getBoolean(parent=self.app,label=bigmsg,sublabel=msg,expander=expander):
+            self.redo_search() # update all
+
+            def show_progress (t):
+                gt.gtk_enter()
+                self.show_progress_dialog(t,
+                                          progress_dialog_kwargs={'label':'Deleting recipes'},
+                                          message=_('Deletion paused'), stop_message=_("Stop deletion"))
+                gt.gtk_leave()
+            def save_delete_hooks (t):
+                self.saved_delete_hooks = self.rd.delete_hooks[0:]
+                self.rd.delete_hooks = []
+            def restore_delete_hooks (t):
+                self.rd.delete_hooks = self.saved_delete_hooks
+            pre_hooks = [
+                lambda *args: self.lock.acquire(),
+                save_delete_hooks,
+                show_progress,
+                ]
+            post_hooks = [
+                restore_delete_hooks,
+                lambda *args: self.lock.release()]
+            t=gt.SuspendableThread(gt.SuspendableDeletions(self, recs),
+                                name='delete',
+                                pre_hooks = pre_hooks,
+                                post_hooks = post_hooks)
+            if self.lock.locked_lock():
+                de.show_message(label=_('An import, export or deletion is running'),
+                                sublabel=_('The recipes will be deleted once the other process is finished.')
+                                )
+            debug('PRE_HOOKS=%s'%t.pre_hooks,1)
+            debug('POST_HOOKS=%s'%t.post_hooks,1)
+            debug('rd.add_hooks=%s'%self.rd.add_hooks,1)
+            gt.gtk_leave()
+            t.start()
+            gt.gtk_enter()
+        else:
+            return True
+
+    def delete_rec (self, rec):
+        debug("delete_rec (self, rec): %s"%rec,5)
+        debug("does %s have %s"%(self.rc,rec.id),5)
+        if self.rc.has_key(rec.id):
+            debug("Getting rid of open recipe card window.",2)
+            w=self.rc[rec.id].widget
+            self.rc[rec.id].hide()
+            w.destroy()
+            self.update_go_menu()
+        if hasattr(rec,'id') and rec.id:
+            if rec:
+                titl = rec.title
+                debug('deleting recipe %s'%rec.title,1)
+                # try a workaround to segfaults -- grab rec anew from ID.
+                dbrec = self.rd.get_rec(rec.id)
+                if dbrec:
+                    self.rd.delete_rec(dbrec)
+                else:
+                    print 'wtf?!?',rec,':',rec.id,' not real?'
+            else: debug('no recipe to delete!?!',1)
+            if not self.doing_multiple_deletions:
+                gt.gtk_enter()
+                self.message(_("Deleted recipe %s")%titl)
+                self.doing_multiple_deletions=False
+                gt.gtk_leave()
+        else:
+            debug("%s %s does not have an ID!"%(rec,rec.title),2)
+        debug("returning None",2)
+        return None
+    # end deletion
+
+    # end Extra Callbacks for actions on treeview
+    
+    def after_dialog_offer_url (self, linktype, file):
+        url = "file:///%s"%file
+        label = _("Export succeeded")
+        if linktype == exporters.WEBPAGE:
+            url += '/index.htm'
+            linktype = _("webpage")
+        sublabel = _("Exported %s to %s")%(linktype,file)
+        def offerer (t):
+            if t.completed:
+                #self.idle_offer_url(label, sublabel, url, True)
+                self.offer_url(label, sublabel, url, True)
+        return offerer
+
+    def idle_offer_url (self, label, sublabl, url, from_thread):
+        if from_thread:
+            gt.gtk_enter()
+        gobject.idle_add(lambda *args: self.offer_url(label,sublabl,url,True))
+        if from_thread:
+            gt.gtk_leave()
+
+    def offer_url (self, label, sublabel, url, from_thread=False):
+        if from_thread:
+            gt.gtk_enter()
+        if hasattr(self,'progress_dialog'):
+            self.hide_progress_dialog()            
+        d=de.MessageDialog(label=label,
+                           sublabel=sublabel,
+                           cancel=False
+                           )
+        b = gtk.Button(stock=gtk.STOCK_JUMP_TO)
+        b.connect('clicked',lambda *args: launch_url(url))
+        d.vbox.pack_end(b,expand=False)
+        b.show()
+        d.run()
+        if from_thread:
+            gt.gtk_leave()
+
+    # Methods to handle threading
+    def pause_cb (self, button, *args):
+        if button.get_active():
+            debug('Suspending thread from pause_cb',0)
+            self.thread.suspend()
+            self.stat.push(self.pauseid, self.pause_message)
+            self.flusher = gobject.timeout_add(1000,lambda *args: self.flush_messages(True))
+        else:
+            self.stat.pop(self.pauseid)            
+            gobject.source_remove(self.flusher)
+            self.thread.resume()
+            
+    def stop_cb (self, *args):
+        debug('Stop_cb called; pausing thread',1)
+        self.thread.suspend()
+        if de.getBoolean(label=self.stop_message):
+            debug('Stopping thread from stop cb',0)
+            self.thread.terminate()
+            if self.threads > 0:
+                self.threads = self.threads - 1
+                try: self.lock.release()
+                except: pass
+            self.hide_progress_dialog()
+        else:
+            debug('Resuming thread: stop_cb cancelled',0)
+            self.thread.resume()
+            return True
+
+    def reset_prog_thr (self,message=_("Done!")):
+        debug('reset_prog_thr',0)
+        #self.prog.set_fraction(1)
+        self.set_progress_thr(1,message)
+        gt.gtk_enter()
+        self.set_reccount()
+        gt.gtk_leave()
+
+    def set_progress_thr (self, prog, message=_("Importing...")):
+        debug("set_progress_thr (self, %s,%s)"%(prog,message),1)
+        gt.gtk_enter()
+        if hasattr(self,'progress_dialog'):
+            self.progress_dialog.set_progress(prog,message)
+        gt.gtk_leave()
+        
+    # Stuff to show and destroy ourselves
+
+    def present (self, *args): self.window.present()
+    
+    def quit (self, *args):
+        GourmetApplication.quit(self)
+        self.window.destroy()
+        gtk.main_quit()
               
 if __name__ == '__main__' and False:
     if os.name!='nt':
@@ -1703,3 +2455,6 @@ if __name__ == '__main__' and False:
     else:
         startGUI()
 
+elif __name__ == '__main__':
+    rgn = RecGui()
+    gtk.main()

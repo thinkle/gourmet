@@ -68,7 +68,6 @@ FILTER_INFO = {
              'patterns': ['*.xml','*.gourmet'],
              'mimetypes': ['text/xml','application/xml','text/plain'],
              'tester': importer.Tester('.*<recipeDoc[> ]'),
-             'get_source':False,
              },
     'krecipe':{'import':lambda args: [krecipe_importer.converter,
                                       [args['file'],args['rd']],

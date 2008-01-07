@@ -1,3 +1,48 @@
+2008-01-06  Thomas Mills HInkle  <tom@hydrophax>
+
+	* glade/recCard.glade (Module): Reorganize glade file as we move
+	more of the UI construction into code and out of glade.
+
+	* src/lib/GourmetRecipeManager.py (Module): Reorganize module in
+	preparation for coming change to plugin basis. Separate out
+	various bits of RecGui class into sub-classes that make more sense
+	-- ImporterExporter, GourmetApplication, and so on. Use UIManager
+	and ActionManager to build UI rather than glade -- now we use
+	UIManager's nifty merging to handle our updated Go menu (formerly
+	View menu)
+
+	* src/lib/Undo.py (Module): Move undo stuff that was in reccard.py here.
+
+	* src/lib/batchEditor.py (Module): changed method names (from GourmetRecipeManager.py)
+
+	* src/lib/reccard.py (Module): Completely rearrange module. We
+	break recipe editor and recipe display into separate classes. We
+	use UIManager and ActionManager for the UI in preparation for the
+	coming plugin interface.
+
+	* src/lib/recindex.py (Module): Setup searchActions action group
+	for user with uimanager.
+
+	setup_search_views - respect the default_searches parameter.
+	
+	searchentry_activate_cb - this callback belongs here and not in
+	subclasses.
+
+	* src/lib/backends/db.py: Allow sorting by category.  Implement
+	duplicate-finding methods.  make_simple_select_arg now supports
+	operators including "in"
+
+	* src/lib/defaults/defaults_en.py: Remove periods from units.
+
+	* src/lib/defaults/defaults_en_GB.py: Remove periods from units.
+
+	* src/lib/gtk_extras/ratingWidget.py: Don't throw an error when we
+	receive a click event w/ no selected row
+
+	* src/lib/nutrition/nutritionDruid.py: Use proper exception class
+	so that unicode doesn't throw an error in the error-throwing.
+
+
 2008-01-04  Thomas Mills HInkle  <thomas_hinkle@sf.net>
 
 	* src/lib/exporters/lprprinter.py (Module): Fix import statement

@@ -414,6 +414,7 @@ class TreeWithStarMaker:
     def tree_keypress_callback (self, tv, event):
         path,col = tv.get_cursor()
         if not col: return
+        if not path: return
         if col.get_property('title') == self.col_title:
             # go ahead and edit...
             name=gtk.gdk.keyval_name(event.keyval)
