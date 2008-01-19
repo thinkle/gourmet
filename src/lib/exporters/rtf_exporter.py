@@ -25,7 +25,7 @@ class rtf_exporter_multidoc (exporter.ExporterMultirec):
         
 class rtf_exporter (exporter.exporter_mult):
     def __init__ (self, rd, r, out,
-                  conv=convert.converter(),
+                  conv=convert.Converter(),
                   imgcount=1,
                   mult=1,
                   change_units=False,

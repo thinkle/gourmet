@@ -55,7 +55,7 @@ class exporter:
         self.fractions=fractions
         self.use_ml=use_ml
         self.convert_attnames = convert_attnames
-        if not conv: conv=convert.converter()
+        if not conv: conv=convert.Converter()
         self.conv=conv
         self.imgcount=imgcount
         self.write_head()

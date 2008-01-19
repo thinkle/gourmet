@@ -186,7 +186,7 @@ class Tester:
     def __init__ (self):
         import gourmet.recipeManager, gourmet.convert
         self.rm = gourmet.recipeManager.RecipeManager(**gourmet.recipeManager.dbargs)
-        self.conv = gourmet.convert.converter()
+        self.conv = gourmet.convert.Converter()
 
     def interactive_test (self):
         self.run_export(**self.get_choice())

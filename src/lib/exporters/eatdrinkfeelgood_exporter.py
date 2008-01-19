@@ -352,7 +352,7 @@ class ExportTestCase (unittest.TestCase):
         self.rd = fake_db.RecData(tempfile.mktemp('.db'))
         import gourmet.nutrition.nutrition as nutrition
         import gourmet.convert
-        c = gourmet.convert.converter()
+        c = gourmet.convert.Converter()
         self.rd.nd = nutrition.NutritionData(self.rd,c)
 
         class DumbImporter (CozyInteractiveImporter):
