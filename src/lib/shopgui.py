@@ -8,8 +8,8 @@ import exporters.printer as printer
 from gdebug import *
 from gglobals import *
 from gettext import gettext as _
-from nutrition.nutritionLabel import NutritionLabel
-from nutrition.nutrition import NutritionInfoList
+#from nutrition.nutritionLabel import NutritionLabel
+#from nutrition.nutrition import NutritionInfoList
 from gtk_extras.FauxActionGroups import ActionManager
 
 
@@ -24,7 +24,6 @@ class ShopGui (ActionManager):
         self.mm.fix_conflicts_peacefully()
         self.conv=conv
         self.rg = RecGui
-        self.nd = self.rg.nd # convenient reference to our nutrition
         self.recs = {}
         self.extras = []
         self.data,self.pantry=self.grabIngsFromRecs([])
@@ -61,7 +60,7 @@ class ShopGui (ActionManager):
             'move_to_shopping' : self.rem_selection_from_pantry,
             'move_to_pantry' : self.add_selection_to_pantry,
             'show_help': lambda *args: de.show_faq(HELP_FILE,jump_to='Shopping'),
-            'show_nutritional_info': self.show_nutritional_info,
+            #'show_nutritional_info': self.show_nutritional_info,
             })
 
     def init_action_manager (self):
@@ -123,31 +122,31 @@ class ShopGui (ActionManager):
             mod.set_value(iter,2,convert.float_to_frac(mult))
         return mod
 
-    def show_nutritional_info (self, *args):
-        """Show nutritional information for this shopping list.
-        """
-        nl = NutritionLabel(self.rg.prefs,
-                            custom_label=_('Nutritional Information for Shopping List')
-                            )
-        ings = []
-        for d in [self.sh.dic,self.sh.mypantry]:
-            for k,units in d.items():
-                for a,u in units:
-                    ings.append([k,a,u])
-        nutinfo = NutritionInfoList(
-            [self.nd.get_nutinfo_for_item(*i) for i in ings]
-            )
-        nl.set_nutinfo(nutinfo)
-        sw = gtk.ScrolledWindow()
-        sw.set_policy(gtk.POLICY_NEVER,gtk.POLICY_AUTOMATIC)
-        sw.add_with_viewport(nl)
-        sw.show(); nl.show()
-        md = de.ModalDialog(title=_("Nutritional Information for Shopping List"),modal=False)
-        md.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_NORMAL)
-        md.vbox.pack_start(sw,fill=True,expand=True)
-        md.set_default_size(600,500)
-        nl.show()
-        md.show()
+    # def show_nutritional_info (self, *args):
+#         """Show nutritional information for this shopping list.
+#         """
+#         nl = NutritionLabel(self.rg.prefs,
+#                             custom_label=_('Nutritional Information for Shopping List')
+#                             )
+#         ings = []
+#         for d in [self.sh.dic,self.sh.mypantry]:
+#             for k,units in d.items():
+#                 for a,u in units:
+#                     ings.append([k,a,u])
+#         nutinfo = NutritionInfoList(
+#             [self.nd.get_nutinfo_for_item(*i) for i in ings]
+#             )
+#         nl.set_nutinfo(nutinfo)
+#         sw = gtk.ScrolledWindow()
+#         sw.set_policy(gtk.POLICY_NEVER,gtk.POLICY_AUTOMATIC)
+#         sw.add_with_viewport(nl)
+#         sw.show(); nl.show()
+#         md = de.ModalDialog(title=_("Nutritional Information for Shopping List"),modal=False)
+#         md.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_NORMAL)
+#         md.vbox.pack_start(sw,fill=True,expand=True)
+#         md.set_default_size(600,500)
+#         nl.show()
+#         md.show()
 
     def save (self, *args):
         debug("save (self, *args):",5)

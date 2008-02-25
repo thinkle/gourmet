@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module = key_editor
+Version = 1.0
+API_Version = 1.0
+_Name = Key Editor
+_Comment = Assign and edit ingredient keys (unique identifiers for ingredients, used for consolidating items on shopping lists).
+_Category = Tools
+Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>

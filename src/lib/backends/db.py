@@ -10,11 +10,12 @@ from gettext import gettext as _
 import gourmet.gglobals as gglobals
 from gourmet import Undo, keymanager, convert
 from gourmet.defaults import lang as defaults
-import gourmet.nutrition.parser_data
 import StringIO
 from gourmet import ImageExtras
 import gourmet.version
 import gourmet.recipeIdentifier as recipeIdentifier
+from gourmet.plugin_loader import Pluggable, pluggable_method
+from gourmet.plugin import DatabasePlugin
 
 import sqlalchemy, sqlalchemy.orm
 from sqlalchemy import Integer, Binary, String, Float, Boolean, Numeric, Table, Column, ForeignKey
@@ -106,7 +107,7 @@ class DBObject:
 # categories_table: id -> recipe_id, category_entry_id -> id
 # ingredients_table: ingredient_id -> id, id -> recipe_id
 
-class RecData:
+class RecData (Pluggable): 
 
     """RecData is our base class for handling database connections.
 
@@ -117,16 +118,21 @@ class RecData:
     AMT_MODE_AVERAGE = 1
     AMT_MODE_HIGH = 2
 
-    tables = [
-        # becomes nutritionaliases_table
-        ]
-
+    _singleton = {}
 
     def __init__ (self, file=os.path.join(gglobals.gourmetdir,'recipes.db'),
                   custom_url=None):
         # hooks run after adding, modifying or deleting a recipe.
         # Each hook is handed the recipe, except for delete_hooks,
         # which is handed the ID (since the recipe has been deleted)
+        if RecData._singleton.has_key(file):
+            raise RecData._singleton[file]
+        else:
+            RecData._singleton[file] = self
+        # We keep track of IDs we've handed out with new_id() in order
+        # to prevent collisions
+        self.new_ids = []
+        self._created = False
         if custom_url:
             self.url = custom_url
             self.filename = None
@@ -139,7 +145,10 @@ class RecData:
         self.add_ing_hooks = []
         timer = TimeAction('initialize_connection + setup_tables',2)
         self.initialize_connection()
-        self.setup_tables()        
+        Pluggable.__init__(self,[DatabasePlugin])        
+        self.setup_tables()
+        self.update_version_info(gourmet.version.version)
+        self._created = True
         timer.end()
 
     # Basic setup functions
@@ -189,7 +198,7 @@ class RecData:
                 )
         self.db.commit()
 
-    def __setup_object_for_table (self, table, klass):
+    def _setup_object_for_table (self, table, klass):
         self.__table_to_object__[table] = klass
         #print 'Mapping ',repr(klass),'->',repr(table)
         if True in [col.primary_key for col in table.columns]:
@@ -198,6 +207,7 @@ class RecData:
             # if there's no primary key...
             sqlalchemy.orm.mapper(klass,table,primary_key='rowid')
 
+    @pluggable_method
     def setup_tables (self):
         """
         Subclasses should do any necessary adjustments/tweaking before calling
@@ -206,9 +216,7 @@ class RecData:
         self.__table_to_object__ = {}
         self.setup_base_tables()
         self.setup_shopper_tables() # could one day be part of a plugin
-        self.setup_nutrition_tables() # could one day be part of a plugin
         self.metadata.create_all()
-        self.update_version_info(gourmet.version.version)        
 
     def setup_base_tables (self):
         self.setup_info_table()
@@ -225,7 +233,7 @@ class RecData:
                                  )
         class Info (object):
             pass
-        self.__setup_object_for_table(self.info_table, Info)
+        self._setup_object_for_table(self.info_table, Info)
 
     def setup_recipe_table (self):
         self.recipe_table = Table('recipe',self.metadata,
@@ -251,7 +259,7 @@ class RecData:
                                   Column('last_modified',Integer(),**{}),
                                   ) # RECIPE_TABLE_DESC
         class Recipe (object): pass
-        self.__setup_object_for_table(self.recipe_table,Recipe)
+        self._setup_object_for_table(self.recipe_table,Recipe)
 
     def setup_category_table (self):
         self.categories_table = Table('categories',self.metadata,
@@ -260,7 +268,7 @@ class RecData:
                                     Column('category',String(length=None),**{}) # Category ID
                                     ) # CATEGORY_TABLE_DESC
         class Category (object): pass
-        self.__setup_object_for_table(self.categories_table,Category)
+        self._setup_object_for_table(self.categories_table,Category)
 
     def setup_ingredient_table (self):
         self.ingredients_table = Table('ingredients',self.metadata,
@@ -280,7 +288,7 @@ class RecData:
                                        Column('deleted',Boolean(),**{}),
                                        )
         class Ingredient (object): pass
-        self.__setup_object_for_table(self.ingredients_table, Ingredient)
+        self._setup_object_for_table(self.ingredients_table, Ingredient)
 
     def setup_keylookup_table (self):
         # Keylookup table - for speedy keylookup
@@ -292,7 +300,7 @@ class RecData:
                                       Column('count',Integer(),**{})
                                      ) # INGKEY_LOOKUP_TABLE_DESC
         class KeyLookup (object): pass
-        self.__setup_object_for_table(self.keylookup_table, KeyLookup)
+        self._setup_object_for_table(self.keylookup_table, KeyLookup)
 
     def setup_shopper_tables (self):
         
@@ -305,7 +313,7 @@ class RecData:
                                     Column('position',Integer(),**{}),
                                     )
         class ShopCat (object): pass
-        self.__setup_object_for_table(self.shopcats_table, ShopCat)
+        self._setup_object_for_table(self.shopcats_table, ShopCat)
         
         # shopcatsorder - Keep track of the order of shopping categories
         self.shopcatsorder_table = Table('shopcatsorder',self.metadata,
@@ -313,7 +321,7 @@ class RecData:
                                          Column('position',Integer(),**{}),
                                          )
         class ShopCatOrder (object): pass
-        self.__setup_object_for_table(self.shopcatsorder_table, ShopCatOrder)
+        self._setup_object_for_table(self.shopcatsorder_table, ShopCatOrder)
         
         # pantry table -- which items are in the "pantry" (i.e. not to
         # be added to the shopping list)
@@ -322,7 +330,7 @@ class RecData:
                                   Column('pantry',Boolean(),**{}),
                                   )
         class Pantry (object): pass
-        self.__setup_object_for_table(self.pantry_table, Pantry)
+        self._setup_object_for_table(self.pantry_table, Pantry)
 
         # Keep track of the density of items...
         self.density_table = Table('density',self.metadata,
@@ -330,14 +338,14 @@ class RecData:
                                    Column('value',String(length=150),**{})
                                    )
         class Density (object): pass
-        self.__setup_object_for_table(self.density_table, Density)
+        self._setup_object_for_table(self.density_table, Density)
         
         self.crossunitdict_table = Table('crossunitdict',self.metadata,                                         
                                          Column('cukey',String(length=150),**{'primary_key':True}),
                                          Column('value',String(length=150),**{}),
                                          )
         class CrossUnit (object): pass
-        self.__setup_object_for_table(self.crossunitdict_table,CrossUnit)
+        self._setup_object_for_table(self.crossunitdict_table,CrossUnit)
         
         self.unitdict_table = Table('unitdict',self.metadata,
                                     Column('ukey',String(length=150),**{'primary_key':True}),
@@ -345,7 +353,7 @@ class RecData:
                                     )
         class Unitdict (object):
             pass
-        self.__setup_object_for_table(self.unitdict_table, Unitdict)
+        self._setup_object_for_table(self.unitdict_table, Unitdict)
         
         self.convtable_table = Table('convtable',self.metadata,
                                      Column('ckey',String(length=150),**{'primary_key':True}),
@@ -353,61 +361,7 @@ class RecData:
                                      )
         class Convtable (object):
             pass
-        self.__setup_object_for_table(self.convtable_table, Convtable)
-
-    def setup_usda_weights_table (self):
-        self.usda_weights_table = Table('usda_weights',self.metadata,
-                                        Column('id',Integer(),primary_key=True),
-                                        *[Column(name,map_type_to_sqlalchemy(typ),**{})
-                                          for lname,name,typ in gourmet.nutrition.parser_data.WEIGHT_FIELDS]
-                                        )
-        class UsdaWeight (object):
-            pass
-        self.__setup_object_for_table(self.usda_weights_table, UsdaWeight)
-    
-    def setup_nutrition_conversions_table (self):
-        self.nutritionconversions_table = Table('nutritionconversions',self.metadata,
-                                                Column('id',Integer(),primary_key=True),
-                                                Column('ingkey',String(length=None),**{}),
-                                                Column('unit',String(length=None),**{}), 
-                                                Column('factor',Float(),**{}), # Factor is the amount we multiply
-                                                # from unit to get 100 grams
-                                                ) # NUTRITION_CONVERSIONS
-        class NutritionConversion (object): pass
-        self.__setup_object_for_table(self.nutritionconversions_table, NutritionConversion)
-
-    def setup_nutrition_tables (self):
-
-        cols = [Column(name,map_type_to_sqlalchemy(typ),**(name=='ndbno' and {'primary_key':True} or {}))
-                 for lname,name,typ in gourmet.nutrition.parser_data.NUTRITION_FIELDS
-                 ] + [Column('foodgroup',String(length=None),**{})]
-        #print 'nutrition cols:',cols
-        self.nutrition_table = Table('nutrition',self.metadata,
-                                     *cols
-                                     )
-        class Nutrition (object):
-            pass
-        self.__setup_object_for_table(self.nutrition_table, Nutrition)
-        
-        self.setup_usda_weights_table()
-
-        self.nutritionaliases_table = Table('nutritionaliases',self.metadata,                                            
-                                            Column('ingkey',String(length=None),**{'primary_key':True}),
-                                            Column('ndbno',Integer,ForeignKey('nutrition.ndbno'),**{}),
-                                            Column('density_equivalent',String(length=20),**{}),)
-        class NutritionAlias (object): pass
-        self.__setup_object_for_table(self.nutritionaliases_table, NutritionAlias)
-
-        self.setup_nutrition_conversions_table()
-        
-        for table in self.tables:
-            name,columns = table
-            setattr(self,name+'_table',
-                    Table(name,
-                          self.metadata,
-                          *[Column(col[0],col[1],**col[2]) for col in columns],
-                          **{'schema':None}
-                          ))
+        self._setup_object_for_table(self.convtable_table, Convtable)
 
     def update_version_info (self, version_string):
         """Report our version to the database.
@@ -435,9 +389,8 @@ class RecData:
         current_major = int(version[1])
         current_minor = int(version[2])
         ### Code for updates between versions...
-
+        
         if not self.new_db:
-
             # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up keylookup_table tables...
             # We don't actually do this yet... (FIXME)
             #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
@@ -468,11 +421,6 @@ class RecData:
                 print 'RECREATE KEYLOOKUP TABLE'
                 self.alter_table('keylookup',self.setup_keylookup_table,
                                  {},['word','item','ingkey','count'])
-                print 'RECREATE USDA WEIGHTS TABLE'
-                self.alter_table('usda_weights',self.setup_usda_weights_table,{},
-                                 [name for lname,name,typ in gourmet.nutrition.parser_data.WEIGHT_FIELDS])
-                self.alter_table('nutritionconversions',self.setup_nutrition_conversions_table,{},
-                                 ['ingkey','unit','factor'])
             # Add recipe_hash, ingredient_hash and link fields
             # (These all get added in 0.13.0)
             if stored_info.version_super == 0 and stored_info.version_major <= 12:
@@ -530,7 +478,11 @@ class RecData:
                                 )
                 # Add hash values to identify all recipes...
                 for r in self.fetch_all(self.recipe_table): self.update_hashes(r)
-                        
+        for plugin in self.plugins:
+            plugin.update_version(
+                (stored_info.version_super,stored_info.version_major,stored_info.version_minor),
+                (current_super,current_major,current_minor)
+                )
         ### End of code for updates between versions...
         if (current_super!=stored_info.version_super
             or
@@ -894,7 +846,9 @@ class RecData:
                     self.do_add_cat({'recipe_id':rec.id,'category':c})
             del dic['category']
         debug('do modify rec',3)
-        return self.do_modify_rec(rec,dic)
+        retval = self.do_modify_rec(rec,dic)
+        self.update_hashes(rec)
+        return retval
     
     def validate_recdic (self, recdic):
         if not recdic.has_key('last_modified'):
@@ -1012,6 +966,7 @@ class RecData:
                 ID = ret.id
             for c in cats:
                 if c: self.do_add_cat({'recipe_id':ID,'category':c})
+            self.update_hashes(ret)
             return ret
 
     def add_ing_and_update_keydic (self, dic):
@@ -1051,6 +1006,18 @@ class RecData:
         self.changed=True
         if not rdict.has_key('deleted'):
             rdict['deleted']=0
+        if rdict.has_key('id'):
+            # If our dictionary has an id, then we assume we are a
+            # reserved ID
+            if rdict['id'] in self.new_ids:
+                rid = rdict['id']; del rdict['id']
+                self.new_ids.remove(rid)
+                self.update_by_criteria(self.recipe_table,
+                                        {'id':rid},
+                                        rdict)
+                return self.recipe_table.select(self.recipe_table.c.id==rid).execute().fetchone()
+            else:
+                raise ValueError('New recipe created with preset id %s, but ID is not in our list of new_ids'%rdict['id'])
         insert_statement = self.recipe_table.insert()
         select = self.recipe_table.select(self.recipe_table.c.id==insert_statement.execute(**rdict).lastrowid)
         return select.execute().fetchone()
@@ -1138,7 +1105,10 @@ class RecData:
         return self.add_rec(blankdict)
 
     def new_id (self):
-        raise NotImplementedError("WARNING: NEW_ID IS NO LONGER FUNCTIONAL, FIND A NEW WAY AROUND THE PROBLEM")
+        #raise NotImplementedError("WARNING: NEW_ID IS NO LONGER FUNCTIONAL, FIND A NEW WAY AROUND THE PROBLEM")
+        rec = self.new_rec()
+        self.new_ids.append(rec.id)
+        return rec.id
     
     # Convenience functions for dealing with ingredients
 
@@ -1288,7 +1258,7 @@ class RecData:
         self.AMT_MODE_HIGH means we take the high number.
         """
         amt = self.get_amount(ing)
-        if type(amt) in [float, type(None)]:
+        if type(amt) in [float, int, type(None)]:
             return amt
         else:
             # otherwise we do our magic
@@ -1722,4 +1692,12 @@ def add_sample_recs ():
         for i in ings:
             i['recipe_id']=r.id
             db.add_ing(i)
-db = RecData()
+
+def get_database (*args,**kwargs):
+    try:
+        return RecData(*args,**kwargs)
+    except RecData, rd:
+        return rd
+
+if __name__ == '__main__':
+    db = RecData()

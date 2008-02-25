@@ -17,8 +17,6 @@ from gtk_extras import chooserNotebook
 import exporters.printer as printer
 from gdebug import *
 from gglobals import *
-from nutrition.nutritionLabel import NutritionLabel
-from nutrition.nutrition import NutritionInfoList, NutritionVapor
 from gettext import gettext as _
 from gettext import ngettext
 import ImageExtras as ie
@@ -26,7 +24,8 @@ from importers.importer import parse_range
 from gtk_extras.FauxActionGroups import ActionManager
 from gtk_extras import mnemonic_manager
 from gtk_extras import LinkedTextView
-from plugin import RecDisplayModule, RecEditorModule
+from plugin import RecDisplayModule, RecEditorModule, ToolPlugin, RecDisplayPlugin
+import plugin_loader
 import timeScanner
 
 # TODO
@@ -36,22 +35,6 @@ import timeScanner
 # Separate out nutritional info and shopping info as plugins
 
 from timer import show_timer
-
-class GladeCustomHandlers:
-    def __init__ (self,rg):
-        self.rg = rg; self.prefs = self.rg.prefs
-        self.makeTimeEntry = lambda *args: timeEntry.makeTimeEntry()
-        self.makeStarButton = lambda *args: ratingWidget.make_star_button(self.rg.star_generator)
-        self.makeStarImage = lambda *args: ratingWidget.make_star_image(self.rg.star_generator)
-        self.makeLinkedTextView = lambda *args: LinkedTextView.LinkedTextView()
-        self.makeLinkedTimeView = lambda *args: timeScanner.LinkedTimeView()
-        self.makeNutritionLabel = lambda *args: NutritionLabel(self.prefs)
-        def custom_handler (glade,func_name,
-                            widg, s1,s2,i1,i2):
-            f=getattr(self,func_name)
-            w= f(s1,s2,i1,i2)
-            return w
-        gtk.glade.set_custom_handler(custom_handler)
 
 class RecRef:
     def __init__ (self, id, title):
@@ -90,8 +73,11 @@ class RecCard (object):
     def get_edited (self):
         if hasattr(self,'recipe_editor') and self.recipe_editor.edited: return True
         else: return False
-    edited = property(get_edited)
-    
+
+    def set_edited (self, val):
+        if hasattr(self,'recipe_editor') and self.recipe_editor.edited:
+            self.recipe_editor.edited = bool(val)
+    edited = property(get_edited,set_edited)
 
     def show_display (self):
         if not hasattr(self,'recipe_display'):
@@ -110,9 +96,10 @@ class RecCard (object):
 
     def update_recipe (self, recipe):
         self.current_rec = recipe
-        assert(self.current_rec==self.recipe_display.current_rec==self.recipe_editor.current_rec)
         if hasattr(self,'recipe_display'):
             self.recipe_display.update_from_database()
+        if hasattr(self,'recipe_editor') and not self.recipe_editor.window.props.visible:
+            delattr(self,'recipe_editor')
 
     def show (self):
         if self.new:
@@ -130,7 +117,7 @@ class RecCard (object):
 
 # RECIPE CARD DISPLAY
 
-class RecCardDisplay:
+class RecCardDisplay (plugin_loader.Pluggable):
 
     ui = '''
     <ui>
@@ -150,9 +137,12 @@ class RecCardDisplay:
           </menu>
           <menu name="Go" action="Go"/>
           <menu name="Tools" action="Tools">
-            <menuitem action="Timer"/>
-            <menuitem action="UnitConverter"/>
+            <placeholder name="StandaloneTool">
+            <menuitem action="Timer"/></placeholder>
+            <separator/>
+            <placeholder name="DataTool">
             <menuitem action="KeyEditor"/>
+            </placeholder>
             <separator/>
             <menuitem action="ForgetRememberedOptionals"/>    
           </menu>
@@ -163,6 +153,8 @@ class RecCardDisplay:
     </ui>
     '''
 
+    _custom_handlers_setup = False
+
     def __init__ (self, reccard, recGui, recipe=None):
         self.reccard = reccard; self.rg = recGui; self.current_rec = recipe
         self.mult = 1 # parameter
@@ -171,9 +163,13 @@ class RecCardDisplay:
         self.setup_glade()
         self.setup_uimanager()
         self.setup_main_window()
+        self.setup_notebook()
         self.ingredientDisplay = IngredientDisplay(self)
         self.modules = [self.ingredientDisplay]
         self.update_from_database()
+        plugin_loader.Pluggable.__init__(self,
+                                         [ToolPlugin,RecDisplayPlugin])
+        self.setup_style()
 
     def setup_uimanager (self):
         self.ui_manager = gtk.UIManager()
@@ -200,7 +196,7 @@ class RecCardDisplay:
             ('Close',gtk.STOCK_CLOSE,None,
              None,None,self.hide),
             ('Preferences',gtk.STOCK_PREFERENCES,None,
-             None,None,self.show_pref_dialog),
+             None,None,self.preferences_cb),
             ('Help',gtk.STOCK_HELP,_('_Help'),
              None,None,lambda *args: de.show_faq(HELP_FILE,jump_to='Entering and Editing recipes')),
             ]
@@ -225,14 +221,21 @@ class RecCardDisplay:
          None,None,self.export_cb)
 
     def setup_glade (self):
-        GladeCustomHandlers(self.rg)
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'recCard.glade'))
+        if not RecCardDisplay._custom_handlers_setup:
+            for name,handler in [
+                ('makeStarImage', lambda *args: ratingWidget.make_star_image(self.rg.star_generator)),
+                ('makeLinkedTextView', lambda *args: LinkedTextView.LinkedTextView()),
+                ('makeLinkedTimeView', lambda *args: timeScanner.LinkedTimeView()),
+                ]:
+                gladeCustomHandlers.add_custom_handler(name,handler)
+            RecCardDisplay._custom_handlers_setup = True
+        self.glade = gtk.glade.XML(os.path.join(gladebase,'recCardDisplay.glade'))
         self.glade.signal_autoconnect({
+            'shop_for_recipe':self.shop_for_recipe_cb,
             'edit_details': lambda *args: self.reccard.show_edit(module='description'),
             'edit_ingredients': lambda *args: self.reccard.show_edit(module='ingredients'),
             'edit_instructions': lambda *args: self.reccard.show_edit(module='instructions'),
             'edit_modifications': lambda *args: self.reccard.show_edit(module='notes'),
-            #'edit_nutrition': lambda *args: self.nutritionLabel.show_druid(nd=self.nd),
             })
         self.setup_widgets_from_glade()
 
@@ -265,17 +268,83 @@ class RecCardDisplay:
         self.multiplyDisplayLabel = self.glade.get_widget('multiplyByDisplayLabel')
         # Image display widget
         self.imageDisplay = self.glade.get_widget('imageDisplay')
-        # Set up wrapping callbacks...
+        # end setup_widgets_from_glade
         self.reflow_on_resize = [(getattr(self,'%sDisplay'%s[0]),s[1]) for s in [
             ('title',0.9), # label and percentage of screen it can take up...
             ('cuisine',0.5),
             ('category',0.5),
             ('source',0.5),
             ]]
-        # end setup_widgets_from_glade
+        sw = self.glade.get_widget('recipeBodyDisplay')
+        sw.connect('size-allocate',self.reflow_on_allocate_cb)
+        sw.set_redraw_on_allocate(True)                
+        
+    def reflow_on_allocate_cb (self, sw, allocation):
+        hadj = sw.get_hadjustment()
+        xsize = hadj.page_size
+        width = allocation.width
+        for widget,perc in self.reflow_on_resize:
+            widg_width = int(xsize * perc)
+            widget.set_size_request(widg_width,-1)
+            t = widget.get_label()
+            widget.set_label(t)
+        # Flow our image...
+        image_width = int(xsize * 0.75)
+        if not hasattr(self,'orig_pixbuf') or not self.orig_pixbuf: return
+        pb = self.imageDisplay.get_pixbuf()
+        iwidth = pb.get_width()
+        origwidth = self.orig_pixbuf.get_width()
+        new_pb = None
+        if iwidth > image_width:
+            scale = float(image_width)/iwidth
+            width = iwidth * scale
+            height = pb.get_height() * scale
+            new_pb = self.orig_pixbuf.scale_simple(
+                int(width),
+                int(height),
+                gtk.gdk.INTERP_BILINEAR
+                )
+        elif (origwidth > iwidth) and (image_width > iwidth):
+            if image_width < origwidth:
+                scale = float(image_width)/origwidth
+                width = image_width
+                height = self.orig_pixbuf.get_height() * scale
+                new_pb = self.orig_pixbuf.scale_simple(
+                    int(width),
+                    int(height),
+                    gtk.gdk.INTERP_BILINEAR
+                    )
+            else:
+                new_pb = self.orig_pixbuf
+        if new_pb:
+            del pb
+            self.imageDisplay.set_from_pixbuf(new_pb)
+        gc.collect()
+        
+    def setup_style (self,main=None):
+        """Modify style of widgets so we have a white background"""
+        if not main: main = self.main
+        new_style = main.get_style().copy()
+        cmap = main.get_colormap()
+        new_style.bg[gtk.STATE_NORMAL]= cmap.alloc_color('white')
+        new_style.bg[gtk.STATE_INSENSITIVE] = cmap.alloc_color('white')
+        new_style.fg[gtk.STATE_NORMAL]= cmap.alloc_color('black')
+        new_style.fg[gtk.STATE_INSENSITIVE] = cmap.alloc_color('black')
+        # define a function to walk our widgets recursively 
+        def set_style (widg, styl):
+            if (not isinstance(widg,gtk.Button) and
+                not isinstance(widg,gtk.Entry) and
+                not isinstance(widg,gtk.Notebook) and
+                not isinstance(widg,gtk.Separator)
+                ): widg.set_style(styl)
+            if hasattr(widg,'get_children'):
+                for c in widg.get_children():
+                    set_style(c,styl)
+        set_style(main,new_style)
 
+    # Main GUI setup
     def setup_main_window (self):
-        self.window = gtk.Window()
+        self.window = gtk.Window()        
         self.window.connect('delete-event',self.hide)
         self.conf.append(WidgetSaver.WindowSaver(self.window,
                                                  self.prefs.get('reccard_window_%s'%self.current_rec.id,
@@ -295,16 +364,59 @@ class RecCardDisplay:
         self.window.show()
 
     def setup_notebook (self):
+        def hackish_notebook_switcher_handler (*args):
+            # because the switch page signal happens before switching...
+            # we'll need to look for the switch with an idle call
+            gobject.idle_add(self.left_notebook_change_cb)
+        self._last_module = None
+        self.left_notebook.connect('switch-page',hackish_notebook_switcher_handler)
         self.left_notebook_pages = {}
-        self.left_notebook_pages['details'] = 0
+        self.left_notebook_pages[0] = self
+
+    def shop_for_recipe_cb (self, *args):
+        import shopgui
+        d = shopgui.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
+                                      self.mult,
+                                      self.prefs,
+                                      self.rg)
+        self.rg.sl.addRec(self.current_rec,self.mult,d)
+        self.rg.sl.show()
 
     def add_plugin_to_left_notebook (self, klass):
         instance = klass(self)
         tab_label = gtk.Label(instance.label)
         n = self.left_notebook.append_page(instance.main,tab_label=tab_label)
-        self.left_notebook_pages[instance.name] = n
+        self.left_notebook_pages[n] = instance
         instance.main.show(); tab_label.show()
         self.modules.append(instance)
+        self.left_notebook.set_show_tabs(
+            self.left_notebook.get_n_pages() > 1
+            )
+
+    def remove_plugin_from_left_notebook (self, klass):
+        for mod in self.modules[:]:
+            if isinstance(mod,klass):
+                self.modules.remove(mod)
+                page_num = self.left_notebook.page_num(mod.main)
+                self.left_notebook.remove_page(
+                    page_num
+                    )
+                del self.left_notebook_pages[page_num]
+                del mod.main; del mod
+        self.left_notebook.set_show_tabs(
+            self.left_notebook.get_n_pages() > 1
+            )
+
+    def left_notebook_change_cb (self):
+        page = self.left_notebook.get_current_page()
+        module = self.left_notebook_pages.get(page,None)
+        if (self._last_module and self._last_module != module
+            and hasattr(self._last_module,'leave_page')
+            ):
+            self._last_module.leave_page()
+        if module:
+            if hasattr(module,'enter_page'): module.enter_page()
+            self._last_module = module
 
     def update_from_database (self):
         # FIXME: remember to set sensitivity of remembered-optionals -
@@ -368,10 +480,12 @@ class RecCardDisplay:
     def update_image (self):
         imagestring = self.current_rec.image
         if not imagestring:
+            self.orig_pixbuf = None
             self.imageDisplay.hide()
         else:
+            self.orig_pixbuf = ie.get_pixbuf_from_jpg(imagestring)
             self.imageDisplay.set_from_pixbuf(
-                ie.get_pixbuf_from_jpg(imagestring)
+                self.orig_pixbuf
                 )
 
     def update_servings_display (self):
@@ -417,8 +531,8 @@ class RecCardDisplay:
             self.link = ''
             self.linkDisplayButton.hide()
             self.linkDisplayLabel.hide()
-    
-    def export_cb (self):
+
+    def export_cb (self, *args):
         opt = self.prefs.get('save_recipe_as','html')
         if opt and opt[0]=='.': opt = opt[1:] #strip off extra "." if necessary
         fn,exp_type=de.saveas_file(_("Save recipe as..."),
@@ -447,7 +561,7 @@ class RecCardDisplay:
                 'mult':self.mult,
                 'extra_prefs':extra_prefs
                 })
-            self.message(myexp['single_completed']%{'file':fn})
+            #self.message(myexp['single_completed']%{'file':fn})
         except:
             from StringIO import StringIO
             f = StringIO()
@@ -480,8 +594,8 @@ class RecCardDisplay:
             self.prefs['readableUnits']=False
             self.resetIngList()
 
-    def show_pref_dialog (self):
-        pass
+    def preferences_cb (self, *args):
+        self.rg.prefsGui.show_dialog(page=self.rg.prefsGui.CARD_PAGE)
 
     def hide (self, *args):
         self.window.hide()
@@ -489,8 +603,8 @@ class RecCardDisplay:
         return True
 
     # Future plugin callbacks
-    def email_cb (self):
-        if self.edited:
+    def email_cb (self, *args):
+        if self.reccard.edited:
             if de.getBoolean(label=_("You have unsaved changes."),
                              sublabel=_("Apply changes before e-mailing?")):
                 self.saveEditsCB()
@@ -501,13 +615,14 @@ class RecCardDisplay:
         d.email()        
 
     def print_cb (self, *args):
-        if self.edited:
+        if self.reccard.edited:
             if de.getBoolean(label=_("You have unsaved changes."),
                              sublabel=_("Apply changes before printing?")):
                 self.saveEditsCB()
+        print 'RecRenderer!'
         printer.RecRenderer(self.rg.rd, [self.current_rec], mult=self.mult,
                             dialog_title=_("Print Recipe %s"%(self.current_rec.title)),
-                            dialog_parent=self.edit_window,
+                            dialog_parent=self.window,
                             change_units=self.prefs.get('readableUnits',True)
                             )
 
@@ -545,7 +660,7 @@ class IngredientDisplay:
         self.prefs = self.recipe_display.rg.prefs
         self.setup_widgets()
         self.recipe_display = recipe_display; self.rg = self.recipe_display.rg
-        self.markup_ingredient_hooks = [self.nutritional_markup_hook]
+        self.markup_ingredient_hooks = []
 
     def setup_widgets (self):
         self.glade = self.recipe_display.glade
@@ -554,7 +669,6 @@ class IngredientDisplay:
         self.ingredientsDisplay.connect('link-activated',
                                         self.show_recipe_link_cb)
         self.ingredientsDisplay.set_wrap_mode(gtk.WRAP_WORD)
-        
 
     def update_from_database (self):
         self.ing_alist = self.rg.rd.order_ings(
@@ -586,19 +700,18 @@ class IngredientDisplay:
                 if i.item: ing_strs.append(i.item)
                 if i.optional:
                     ing_strs.append(_('(Optional)'))
-                istr = xml.sax.saxutils.escape(' '.join(ing_strs))
+                istr = xml.sax.saxutils.escape(' '.join(ing_strs))                
+                if i.refid:
+                    istr = ('<a href="%s:%s">'%(i.refid,
+                                                xml.sax.saxutils.escape(i.item))
+                             + istr
+                            + '</a>')
                 istr = self.run_markup_ingredient_hooks(istr,i,
                                                         ing_index,
                                                         group_index)
-                if i.refid:
-                    labels.append('<a href="%s:%s">'%(i.refid,
-                                                      xml.sax.saxutils.escape(i.item)
-                                        )\
-                                  +istr+'</a>')
-                else:
-                    labels.append(
-                        istr
-                        )                
+                labels.append(
+                    istr
+                    )                
                 ing_index += 1
             group_strings.append('\n'.join(labels))
             group_index += 1
@@ -618,49 +731,14 @@ class IngredientDisplay:
         for hook in self.markup_ingredient_hooks:
             # each hook gets the following args:
             # ingredient string, ingredient object, ingredient index, group index
-            ingstring = hook(ing_string, ing_obj, ing_index, group_index)
-        return ingstring
+            ing_string = hook(ing_string, ing_obj, ing_index, group_index)
+        return ing_string
 
     def create_ing_alist (self):
         """Create alist ing_alist based on ingredients in DB for current_rec"""
         ings=self.rg.rd.get_ings(self.current_rec)
         self.ing_alist = self.rg.rd.order_ings(ings)
         debug('self.ing_alist updated: %s'%self.ing_alist,1)
-
-    # SHOULD BECOME PART OF NUTRITIONAL PLUGIN
-    def nutritional_markup_hook (self, istr, ing, ing_index, group_index):
-        if False and self.recipe_display.nutritional_highlighting and self.recipe_display.nutritionLabel.active_name:
-            props = self.nutritionLabel.active_properties
-            if type(props)==str:
-                nut_amt = getattr(self.nutinfo[group_index][ing_index],props)
-                tot_amt = getattr(self.nutinfo,props)
-            else:
-                nut_amt = sum([getattr(self.nutinfo[group_index][ing_index],p) or 0 for p in props])
-                tot_amt = sum([getattr(self.nutinfo,p) or 0 for p in props])
-            if nut_amt:
-                perc = float(nut_amt)/tot_amt
-                if self.serves_orig: nut_amt = nut_amt/self.serves_orig
-                label = self.nutritionLabel.active_unit
-                if not self.nutritionLabel.active_unit:
-                    label = self.nutritionLabel.active_label.lower()
-                if int(nut_amt) or (nut_amt==int(nut_amt)):
-                    nut_amt = "%i"%nut_amt
-                else:
-                    nut_amt = "%.2f"%nut_amt
-                istr = istr + ' (%s %s)'%(nut_amt,label)
-                color = "#%02x%02x%02x"%(255,255,
-                                         180-int(180*perc)
-                                        )
-                nut_highlighted = True
-                weight = int(pango.WEIGHT_NORMAL + ((pango.WEIGHT_HEAVY - pango.WEIGHT_NORMAL) * perc))
-                if color:
-                    istr = '<span background="%s" foreground="black">'%color + istr + '</span>'
-                if weight:
-                    istr = '<span weight=%i">'%weight + istr + '</span>'
-            if isinstance(self.nutinfo[group_index][ing_index],
-                          NutritionVapor):
-                istr = '<span foreground="red">'+istr+'</span>'
-        return istr
 
     # Callbacks
 
@@ -681,7 +759,7 @@ class IngredientDisplay:
 
 # RECIPE EDITOR MODULES
 
-class RecEditor (WidgetSaver.WidgetPrefs):
+class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     ui = '''
     <ui>
@@ -702,8 +780,13 @@ class RecEditor (WidgetSaver.WidgetPrefs):
         </menu>
         <!--<menu name="Go" action="Go"/>-->
         <menu name="Tools" action="Tools">
+        <placeholder name="StandaloneTool">
           <menuitem action="UnitConverter"/>
+          </placeholder>
+          <separator/>
+            <placeholder name="DataTool">          
           <menuitem action="KeyEditor"/>
+          </placeholder>
         </menu>
         <menu name="HelpMenu" action="HelpMenu">
           <menuitem action="Help"/>
@@ -756,6 +839,7 @@ class RecEditor (WidgetSaver.WidgetPrefs):
             # and set our page to the details page
             #self.notebook.set_current_page(self.NOTEBOOK_ATTR_PAGE)
         self.set_edited(False)
+        plugin_loader.Pluggable.__init__(self,[ToolPlugin])
         self.show()
         
     def setup_defaults (self):
@@ -852,7 +936,7 @@ class RecEditor (WidgetSaver.WidgetPrefs):
             gobject.idle_add(self.notebook_change_cb)
         self.notebook.connect('switch-page',hackish_notebook_switcher_handler)
         self.notebook.set_tab_pos(gtk.POS_LEFT)
-        # Now set up nutrition notebook switching
+        self._last_module = None
         self.last_merged_ui = None
         self.last_merged_action_groups = None
         self.notebook_change_cb()
@@ -881,6 +965,14 @@ class RecEditor (WidgetSaver.WidgetPrefs):
         for ag in self.modules[page].action_groups:
             self.ui_manager.insert_action_group(ag,0)
         self.last_merged_action_groups = self.modules[page].action_groups
+        module = self.modules[page]
+        if (self._last_module and self._last_module!=module
+            and hasattr(self._last_module,'leave_page')
+            ):
+            self._last_module.leave_page()
+        if module:
+            if hasattr(module,'enter_page'): module.enter_page()
+            self._last_module = module
 
     def save_cb (self, *args):
         self.widgets_changed_since_save = {}
@@ -910,9 +1002,11 @@ class RecEditor (WidgetSaver.WidgetPrefs):
     def close_cb (self, *args):
         self.window.hide()
         self.reccard.hide()
+        return True
 
     def preferences_cb (self, *args):
-        pass # copy from show_pref_dialog
+        """Show our preference dialog for the recipe card."""
+        self.rg.prefsGui.show_dialog(page=self.rg.prefsGui.CARD_PAGE)        
 
     def show_recipe_display_cb (self, *args):
         """Show recipe card display (not editor)."""
@@ -957,13 +1051,13 @@ class IngredientEditorModule (RecEditorModule):
         
 
     def setup_main_interface (self):
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'recCard.glade'))
+        self.glade = gtk.glade.XML(os.path.join(gladebase,'recCardIngredientsEditor.glade'))
         self.main = self.glade.get_widget('ingredientsMainWidget')
         self.main.unparent()
         self.ie = IngredientEditor(self.rg, self)
         self.ingtree_ui = IngredientTreeUI(self)
-        self.update_from_database()
         self.setup_action_groups()
+        self.update_from_database()
 
     def update_from_database (self):
         self.ingtree_ui.set_tree_for_rec(self.re.current_rec)
@@ -1039,6 +1133,12 @@ class IngredientEditorModule (RecEditorModule):
                 add_with_undo(self, lambda *args: do_add())
         self.cb.request_text(add_ings_from_clippy)
 
+    def save (self, recdic):
+        # Save ingredients...
+        print 'Save ingredients!'
+        self.ingtree_ui.ingController.commit_ingredients()
+        return recdic
+
 class DescriptionEditorModule (RecEditorModule):
     name = 'description'
     label = _('Description')
@@ -1061,12 +1161,20 @@ class DescriptionEditorModule (RecEditorModule):
       </toolbar>
     </ui>
     '''
+    _custom_handlers_setup = False
 
     def setup_main_interface (self):
-        GladeCustomHandlers(self.rg)
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'recCard.glade'))
-        self.imageBox = ImageBox(self)        
+        if not DescriptionEditorModule._custom_handlers_setup:
+            for name,handler in [
+                ('makeStarButton', lambda *args: ratingWidget.make_star_button(self.rg.star_generator)),
+                ('makeTimeEntry', lambda *args: timeEntry.make_time_entry()),
+                ]:
+                gladeCustomHandlers.add_custom_handler(name,handler)
+            DescriptionEditorModule._custom_handlers_setup = True
+        self.glade = gtk.glade.XML(os.path.join(gladebase,'recCardDescriptionEditor.glade'))
+        self.imageBox = ImageBox(self)
         self.init_recipe_widgets()
+        # Set up wrapping callbacks...
         self.glade.signal_autoconnect({
             'setRecImage' : self.imageBox.set_from_fileCB,
             'delRecImage' : self.imageBox.removeCB,            
@@ -1133,16 +1241,16 @@ class DescriptionEditorModule (RecEditorModule):
                 Undo.UndoableEntry(self.rw[e],self.history)
         self.imageBox.get_image()
 
-    def save (self, ingdic):
+    def save (self, recdic):
         for c in self.reccom:
-            ingdic[c]=self.rw[c].entry.get_text()
+            recdic[c]=self.rw[c].entry.get_text()
         for e in self.recent:
-            if e in INT_REC_ATTRS: ingdic[e]=self.rw[e].get_value()
-            else: ingdic[e]=self.rw[e].get_text()
+            if e in INT_REC_ATTRS: recdic[e]=self.rw[e].get_value()
+            else: recdic[e]=self.rw[e].get_text()
         if self.imageBox.edited:
-            ingdic['image'],ingdic['thumb']=self.imageBox.commit()
+            recdic['image'],recdic['thumb']=self.imageBox.commit()
             self.imageBox.edited=False
-        return ingdic
+        return recdic
 
 class ImageBox: # used in DescriptionEditor for recipe image.
     def __init__ (self, RecCard):
@@ -1306,11 +1414,11 @@ class TextFieldEditor ():
 
     def setup_main_interface (self):
         self.main = gtk.ScrolledWindow()
-        self.main.set_policy(gtk.POLICY_NEVER,gtk.POLICY_AUTOMATIC)
+        self.main.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
         self.tv = gtk.TextView()
-        self.tv.set_wrap_mode(gtk.WRAP_WORD)
         self.main.add(self.tv)
         buf = TextBufferMarkup.InteractivePangoBuffer()
+        self.tv.set_wrap_mode(gtk.WRAP_WORD)
         self.tv.set_buffer(buf)
         self.tv.show()
         self.tv.db_prop = self.prop
@@ -1325,9 +1433,9 @@ class TextFieldEditor ():
             txt = "".encode('utf8')
         self.tv.get_buffer().set_text(txt)
 
-    def save (self, ingdic):
-        ingdic[self.prop] = self.tv.get_buffer().get_text()
-        return ingdic
+    def save (self, recdic):
+        recdic[self.prop] = self.tv.get_buffer().get_text()
+        return recdic
 
 class InstructionsEditorModule (TextFieldEditor,RecEditorModule):
     name = 'instructions'
@@ -1684,16 +1792,16 @@ class IngredientEditor:
             # wanted the item to be the same as the key
             if d['ingkey']:
                 d['item']=d['item']
-                self.re.message(_('Assuming you wanted item equal to key %s')%d['ingkey'])
+                #self.re.message(_('Assuming you wanted item equal to key %s')%d['ingkey'])
             # if there's not an item or a key, we check if our user
             # made a typing error and meant the unit as an item
             elif d['unit'] and not d['unit'] in self.rg.conv.units:
                 itm = d['unit']
                 d['item']=d['unit']
                 d['unit']=""
-                self.re.message(_('You forgot an item. Assuming you meant "%s" as an item and not a unit.')%itm)
+                #self.re.message(_('You forgot an item. Assuming you meant "%s" as an item and not a unit.')%itm)
             else:
-                self.re.message(_('An ingredient must have an item!'))
+                #self.re.message(_('An ingredient must have an item!'))
                 return
         if self.optCheck.get_active(): d['optional']=True
         else: d['optional']=False
@@ -1739,8 +1847,6 @@ class IngredientController:
         self.ingredient_objects = []        
         self.current_rec=rec
         ings=self.rg.rd.get_ings(rec)
-        
-        
         ## now we continue with our regular business...
         debug("%s ings"%len(ings),3)
         self.ing_alist=self.rg.rd.order_ings(ings)
@@ -2086,7 +2192,7 @@ class IngredientController:
         # each object as we come to it in our tree -- any items not
         # eliminated have been deleted.
         deleted = self.ingredient_objects[:]
-
+        
         # We use an embedded function rather than a simple loop so we
         # can recursively crawl our tree -- so think of commit_iter as
         # the inside of the loop, only better
@@ -2393,7 +2499,8 @@ class IngredientTreeUI:
         if selected != self.selected:
             if selected: self.selected=True
             else: self.selected=False
-            self.re.ingredientEditorOnRowActionGroup.set_sensitive(self.selected)
+            if hasattr(self.re,'ingredientEditorOnRowActionGroup'):
+                self.re.ingredientEditorOnRowActionGroup.set_sensitive(self.selected)
 
     def ingtree_toggled_cb (self, cellrenderer, path, colnum, head):
         debug("ingtree_toggled_cb (self, cellrenderer, path, colnum, head):",5)
@@ -2455,8 +2562,8 @@ class IngredientTreeUI:
                 amt,msg=self.changeUnit(text,self.ingController.get_rowdict(iter))
                 if amt:
                     d['amount']=amt
-                if msg:
-                    self.re.message(msg)
+                #if msg:
+                #    self.re.message(msg)
             elif attr=='item':
                 d['ingkey']=self.rg.rd.km.get_key(text)
             ref = self.ingController.get_persistent_ref_from_iter(iter)
@@ -2741,6 +2848,7 @@ class IngredientTreeUI:
         #else: return None
 
     def set_tree_for_rec (self, rec):
+        print 'Update ingredient edit ingTree for recipe!'
         self.ingTree.set_model(
             self.ingController.create_imodel(rec)
             )
@@ -2817,7 +2925,7 @@ class UndoableTreeStuff:
     def start_recording_additions (self):
         debug('UndoableTreeStuff.start_recording_additiong',3)        
         self.added = []
-        self.pre_ss = te.selectionSaver(self.ic.rc.ingtree_ui.ingTree)        
+        self.pre_ss = te.selectionSaver(self.ic.re.ingtree_ui.ingTree)        
         self.connection = self.ic.imodel.connect('row-inserted',
                                                  self.row_inserted_cb)
         debug('UndoableTreeStuff.start_recording_additiong DONE',3)        
@@ -2872,7 +2980,33 @@ class UndoableTreeStuff:
                          direction='after'
                          )
             self.pre_ss.restore_selections()
-        debug('UndoableTreeStuff.restore_positions DONE',3)                        
+        debug('UndoableTreeStuff.restore_positions DONE',3)
+
+class UndoableObjectWithInverseThatHandlesItsOwnUndo (Undo.UndoableObject):
+
+    """A class for an UndoableObject whose Undo method already makes
+    its own undo magic happen without need for our intervention.
+    """
+    # This is useful for making Undo's of "add"s -- we use the delete
+    # methods for our Undoing nwhich already do a good job handling all
+    # the Undo magic properly
+
+    def inverse (self):
+        self.history.remove(self)
+        self.inverse_action()
+
+def add_with_undo (rc,method):
+    uts = UndoableTreeStuff(rc.ingtree_ui.ingController)
+    def do_it ():
+        uts.start_recording_additions()
+        method()
+        uts.stop_recording_additions()
+    UndoableObjectWithInverseThatHandlesItsOwnUndo(
+        do_it,
+        uts.undo_recorded_additions,
+        rc.history,
+        widget=rc.ingtree_ui.ingController.imodel
+        ).perform()
                                       
 class IngInfo:
     """Keep models for autocompletion, comboboxes, and other
@@ -3048,6 +3182,8 @@ if __name__ == '__main__':
     rg = GourmetRecipeManager.RecGui()
     import pdb
     rc = RecCard(rg,recipe=rg.rd.fetch_one(rg.rd.recipe_table,title='Asparagus Custard Tart'))
+    #import pdb
+    #pdb.runcall(rc.show_edit)
     #rc.show()
     #rc.show_display()
     #re = RecEditor(rg,recipe=rg.rd.fetch_one(rg.rd.recipe_table))
@@ -3323,7 +3459,7 @@ if __name__ == '__main__' and False:
 #             'nutritionWindow'
 #             ).connect('size-allocate',self.flow_my_text_on_allocate)
 #         self.glade.get_widget('recipeDetailsWindow').set_redraw_on_allocate(True)
-#         self.glade.get_widget('nutritionWindow').set_redraw_on_allocate(True)        
+#         self.glade.get_widget('nutritionWindow').set_redraw_on_allocate(True)
 #         self.glade.get_widget('recCard').connect('size-allocate',self.on_card_edit_size_allocate_cb)
 #         self.servingsDisplaySpin = self.glade.get_widget('servingsDisplaySpin')
 #         self.servingsDisplaySpin.connect('changed',self.servingsChangeCB)
@@ -3468,7 +3604,7 @@ if __name__ == '__main__' and False:
 #             self.rg.rec_apply_list = [self.apply_option]
 #             # make a function to call these apply functions for each open item
 #             self.rg.apply_rec_options = lambda *args: [cb(*args) for cb in self.rg.rec_apply_list]
-#             self.rg.prefsGui.add_pref_table(options,
+#             self.rg.prefsGui.dd_pref_table(options,
 #                                             'cardViewVBox',
 #                                             self.rg.apply_rec_options
 #                                             )

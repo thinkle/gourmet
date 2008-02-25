@@ -75,7 +75,8 @@ class PangoBuffer (gtk.TextBuffer):
         try:
             self.parsed,self.txt,self.separator = pango.parse_markup(txt,u'\x00')
         except:
-            debug('Escaping text, we seem to have a problem here!')
+            print 'Escaping text, we seem to have a problem here!'
+            import traceback; traceback.print_exc()
             txt=xml.sax.saxutils.escape(txt)
             self.parsed,self.txt,self.separator = pango.parse_markup(txt,u'\x00')
         self.attrIter = self.parsed.get_iterator()

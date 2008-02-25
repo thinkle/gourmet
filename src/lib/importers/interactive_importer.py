@@ -64,7 +64,7 @@ class SimpleGladeApp:
             except TypeError:
                 setattr(self, key, value)
         self.glade = None
-        self.install_custom_handler(self.custom_handler)
+        #self.install_custom_handler(self.custom_handler)
         self.glade = self.create_glade(self.glade_path, root, domain)
         if root:
             self.main_widget = self.get_widget(root)
@@ -164,28 +164,28 @@ class SimpleGladeApp:
                         prefix_action = prefix_actions_d[prefix]
                         prefix_action(widget)
 
-    def custom_handler(self,
-            glade, function_name, widget_name,
-            str1, str2, int1, int2):
-        """
-        Generic handler for creating custom widgets, internally used to
-        enable custom widgets (custom widgets of glade).
-
-        The custom widgets have a creation function specified in design time.
-        Those creation functions are always called with str1,str2,int1,int2 as
-        arguments, that are values specified in design time.
-
-        Methods of classes inheriting from SimpleGladeApp are used as
-        creation functions automatically.
-
-        If a custom widget has create_foo as creation function, then the
-        method named create_foo is called with str1,str2,int1,int2 as arguments.
-        """
-        try:
-            handler = getattr(self, function_name)
-            return handler(str1, str2, int1, int2)
-        except AttributeError:
-            return None
+    #def custom_handler(self,
+    #        glade, function_name, widget_name,
+    #        str1, str2, int1, int2):
+    #    """
+    #    Generic handler for creating custom widgets, internally used to
+    #    enable custom widgets (custom widgets of glade).
+    #
+    #    The custom widgets have a creation function specified in design time.
+    #    Those creation functions are always called with str1,str2,int1,int2 as
+    #    arguments, that are values specified in design time.
+    #
+    #    Methods of classes inheriting from SimpleGladeApp are used as
+    #    creation functions automatically.
+    #
+    #    If a custom widget has create_foo as creation function, then the
+    #    method named create_foo is called with str1,str2,int1,int2 as arguments.
+    #    """
+    #    try:
+    #        handler = getattr(self, function_name)
+    #        return handler(str1, str2, int1, int2)
+    #    except AttributeError:
+    #        return None
 
     def gtk_widget_show(self, widget, *args):
         """
@@ -295,8 +295,8 @@ class SimpleGladeApp:
         """
         pass
 
-    def install_custom_handler(self, custom_handler):
-        gtk.glade.set_custom_handler(custom_handler)
+    #def install_custom_handler(self, custom_handler):
+    #    gtk.glade.set_custom_handler(custom_handler)
 
     def create_glade(self, glade_path, root, domain):
         return gtk.glade.XML(self.glade_path, root, domain)

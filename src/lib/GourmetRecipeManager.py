@@ -2,12 +2,12 @@
 import os.path, time, os, sys, re, threading, StringIO, pango, string
 import Image
 import gtk.glade, gtk, gobject, gtk.gdk, traceback
-import keyEditor, valueEditor, batchEditor
+#import valueEditor, batchEditor
 import recipeManager
-import nutrition.nutrition, nutrition.nutritionGrabberGui
 import exporters.printer as printer
-import prefs, prefsGui, shopgui, reccard, convertGui, fnmatch, tempfile
+import prefs, prefsGui, shopgui, reccard, fnmatch, tempfile
 import exporters, importers
+from exporters.exportManager import ExportManager
 import convert, version
 from gtk_extras import ratingWidget, WidgetSaver
 import importers.mastercook_importer as mastercook_importer
@@ -17,12 +17,12 @@ from ImageExtras import get_pixbuf_from_jpg
 from gdebug import *
 from gglobals import *
 from recindex import RecIndex
-import recipeMerger
 import exporters.recipe_emailer as recipe_emailer
 import locale, gettext
 from timer import show_timer
 _ = gettext.gettext
 from defaults.defaults import lang as defaults
+import plugin_loader, plugin, plugin_gui
 
 from zipfile import BadZipfile
 
@@ -94,8 +94,13 @@ class GourmetApplication:
     </menu></menubar></ui>
     '''
     go_path = '/%(name)s/Go/'
+
+    __single = None
     
     def __init__ (self, splash_label=None):
+        if GourmetApplication.__single:
+            raise GourmetApplication.__single
+        GourmetApplication.__single = self
         # These first two items might be better handled using a
         # singleton design pattern... 
         self.splash_label = splash_label
@@ -106,10 +111,14 @@ class GourmetApplication:
         self.setup_prefs() # Setup preferences...
         self.setup_plugins()
         self.setup_recipes() # Setup recipe database
-        self.setup_nutrition()
+        #self.setup_nutrition()
         self.setup_shopping()
         self.setup_go_menu()
         self.rc={}
+        self.setup_exporters()
+
+    def setup_exporters (self):
+        self.exportManager = ExportManager()
 
     def setup_threading (self):
         self.lock = gt.get_lock()
@@ -134,7 +143,6 @@ class GourmetApplication:
                                                                                'change_items_per_page')(v)
         
         def toggleFractions (prefname,use):
-            print 'toggleFractions->',use
             if use:
                 convert.USE_FRACTIONS = convert.FRACTIONS_NORMAL
             else:
@@ -198,7 +206,7 @@ class GourmetApplication:
         we display the traceback to the user so they can send it out for debugging
         (or possibly make sense of it themselves!)."""
         try:
-            self.rd = recipeManager.RecipeManager(**recipeManager.dbargs)
+            self.rd = recipeManager.default_rec_manager()
             check_for_data_to_import(self.rd)
             # initiate autosave stuff
             # autosave every 3 minutes (milliseconds * 1000 milliseconds/second * 60 seconds/minute)
@@ -223,7 +231,7 @@ class GourmetApplication:
         self.rd.delete_hooks.append(self.update_attribute_models)
         # we'll need to hand these to various other places
         # that want a list of units.
-        self.umodel = convertGui.UnitModel(self.conv)
+        self.umodel = UnitModel(self.conv)
         self.attributeModels = []
         self.inginfo = reccard.IngInfo(self.rd)
 
@@ -232,15 +240,6 @@ class GourmetApplication:
         #self.create_rmodel(self.rd.recipe_table)
         self.sl = shopgui.ShopGui(self, conv=self.conv)
         self.sl.hide()
-
-    def setup_nutrition (self):
-        """Setup nutritional database stuff."""
-        # FIXME this should go away when we re-implement the
-        # nutritonalinfo as a plugin
-        nutrition.nutritionGrabberGui.check_for_db(self.rd)
-        self.nd = nutrition.nutrition.NutritionData(self.rd,self.conv)
-        self.rd.nd = self.nd
-        # initialize star-generator for use elsewhere
 
     # Methods for keeping track of open recipe cards...
     def del_rc (self, id):
@@ -295,14 +294,12 @@ class GourmetApplication:
             action_name = 'GoRecipe'+str(rc.current_rec.id)
             existing_action = self.goActionGroup.get_action(action_name)
             if not existing_action:
-                print 'Add Action',action_name,rc.current_rec.title
                 self.goActionGroup.add_actions(
                     [(action_name,None,'_'+rc.current_rec.title,
                       None,None,rc.show)]
                     )
             else:
                 if existing_action.props.label != '_'+rc.current_rec.title:
-                    print 'Title changed -- updating action'
                     existing_action.props.label = '_'+rc.current_rec.title
 
     def update_go_menu (self):
@@ -316,14 +313,10 @@ class GourmetApplication:
         The interface must have first been handed to
         add_uimanager_to_manage
         """
-        print 'Updating Go Menu',id
         uimanager,menu_root_name,merged_dic = self.uimanagers[id]
         for rc in self.rc.values():
-            print 'check for path',
             path = self.go_path%{'name':menu_root_name} + 'GoRecipe'+str(rc.current_rec.id)
-            print path
             if not uimanager.get_widget(path):
-                print "Doesn't exist -- we'd best create it!"
                 actionName = 'GoRecipe'+str(rc.current_rec.id)
                 uistring = '''<menubar name="%(menu_root_name)s">
                 <menu name="Go" action="Go">
@@ -477,7 +470,7 @@ class GourmetApplication:
             self.rd.file=db
             self.rd.save()
             self.message(_("Saved!"))
-        
+        self.loader.save_active_plugins() # relies on us being a pluggable...
         
     def quit (self):
         for c in self.conf:
@@ -534,7 +527,7 @@ class GourmetApplication:
         # Save our recipe info...
         self.save()
         for r in self.rc.values():
-            r.widget.destroy()
+            r.hide()
     
         
 class RecGuiOld (RecIndex, GourmetApplication):
@@ -610,7 +603,6 @@ class RecGuiOld (RecIndex, GourmetApplication):
             'rl_delrec': self.rec_tree_delete_rec_cb,
             'colPrefs': self.show_preferences,
             'unitConverter': self.showConverter,
-            'ingKeyEditor': self.showKeyEditor,
             'valueEditor': self.showValueEditor,
             'print':self.print_recs,
             'email':self.email_recs,
@@ -619,7 +611,6 @@ class RecGuiOld (RecIndex, GourmetApplication):
             'emptyTrash':self.empty_trash,
             'on_timer': lambda *args: show_timer(),
             'batch_edit':self.batch_edit_recs,
-            'on_duplicate_finder':self.show_duplicate_editor,
 #            'shopCatEditor': self.showShopEditor,            
             })
         # self.rc will be a list of open recipe cards.
@@ -643,7 +634,7 @@ class RecGuiOld (RecIndex, GourmetApplication):
         for a,l,w in REC_ATTRS:
             self.rtcolsdic[a]=l
             self.rtwidgdic[a]=w
-            self.rtcols = [r[0] for r in REC_ATTRS]        
+            self.rtcols = [r[0] for r in REC_ATTRS] 
 
     def setup_database_hooks (self):
         self.rd.modify_hooks.append(self.update_rec_iter)
@@ -1209,29 +1200,6 @@ class RecGuiOld (RecIndex, GourmetApplication):
         debug('POST_HOOKS=%s'%t.post_hooks,1)
         t.start()
 
-    def import_cleanup (self, *args):
-        """Remove our threading hooks"""
-        debug('import_cleanup!',1)
-        self.rd.add_hooks.remove(self.import_pre_hook)
-        self.rd.add_hooks.remove(self.import_post_hook)
-        debug('hooks: %s'%self.rd.add_hooks,1)
-        self.wait_to_filter=False
-        gt.gtk_enter()
-        # Check for duplicates
-        if self.last_impClass and self.last_impClass.added_recs:
-            rmd = recipeMerger.RecipeMergerDialog(
-                self.rd,
-                in_recipes=self.last_impClass.added_recs,
-                on_close_callback=lambda *args: self.redo_search()
-                )
-            rmd.show_if_there_are_dups(
-                label=_('Some of the imported recipes appear to be duplicates. You can merge them here, or close this dialog to leave them as they are.')
-                )
-        # Update our models for category, cuisine, etc.
-        self.update_attribute_models()
-        # Reset our index view
-        self.redo_search()
-        gt.gtk_leave()
 
     def after_dialog_offer_url (self, linktype, file):
         url = "file:///%s"%file
@@ -1333,7 +1301,7 @@ class RecGuiOld (RecIndex, GourmetApplication):
         self.rectree_conf.hidden=self.prefs['rectree_hidden_columns']=hidden
         self.rectree_conf.apply_visibility()
 
-    # END class RecGUI
+    # END class RecGUIOld
 
 class RecTrash (RecIndex):
 
@@ -1436,6 +1404,27 @@ class RecTrash (RecIndex):
         self.rg.purge_rec_tree(self.rvw)
         self.update_from_db()
 
+class UnitModel (gtk.ListStore):
+    def __init__ (self, converter):
+        debug('UnitModel.__init__',5)
+        self.conv = converter
+        gtk.ListStore.__init__(self, str, str)
+        # the first item of each conv.units
+        lst = map(lambda a: (a[1][0],a[0]), filter(lambda x: not (converter.unit_to_seconds.has_key(x[1][0])
+                                                                  or
+                                                                  converter.unit_to_seconds.has_key(x[0])
+                                                                  )
+                                                   ,
+                                                   self.conv.units)
+                  )
+        lst.sort()
+        for ulong,ushort in lst:
+            iter=self.append()
+            self.set_value(iter,0,ushort)
+            if ulong != ushort:
+                ulong = "%s (%s)"%(ulong,ushort)
+            self.set_value(iter,1,"%s"%ulong)
+
 def set_accel_paths (glade, widgets, base='<main>'):
     """A convenience function. Hand us a function and set accel
     paths based on it."""
@@ -1502,6 +1491,8 @@ def startGUI ():
         gtk.main_iteration()
     try:
         r=RecGui(splash_label=splash.label)
+    except RecGui, rg:
+        r=rg
     except:
         splash.hide()
         while gtk.events_pending():
@@ -1536,9 +1527,51 @@ class ImporterExporter:
                             )
         gt.gtk_enter()
 
-    def export_selected_recs (self, *args): self.exportg(export_all=False)
-    def export_all_recs (self, *args): self.exportg(export_all=True)
+    def export_selected_recs (self, *args): self.do_export(export_all=False)
+    def export_all_recs (self, *args): self.do_export(export_all=True)
 
+    def do_export (self, export_all=False):
+        if not use_threads and self.lock.locked_lock():
+            de.show_message(
+                parent=self.app.get_toplevel(),
+                label=_('An import, export or deletion is running'),
+                sublabel=_('Please wait until it is finished to start your export.')
+                            )
+            return
+        if export_all: recs = self.rd.fetch_all(self.rd.recipe_table,deleted=False,sort_by=[('title',1)])
+        else: recs = self.get_selected_recs_from_rec_tree()
+        exporterInstance,pd_args =  self.exportManager.get_multiple_exporter(recs,
+                                                                     self.prefs,
+                                                                     prog=self.set_progress_thr,
+                                                                     parent=self.app.get_toplevel())
+        if exporterInstance:
+            self.threads += 1
+            def show_progress (t):
+                debug('showing pause button',1)
+                gt.gtk_enter()
+                self.show_progress_dialog(t,message=_('Export Paused'),stop_message=_("Stop export"),
+                                          progress_dialog_kwargs=pd_args,
+                                          )
+                gt.gtk_leave()
+            pre_hooks = [show_progress]
+            post_hooks = [self.after_dialog_offer_url(exporterInstance.type,exporterInstance.fn)]
+            pre_hooks.insert(0, lambda *args: self.lock.acquire())
+            #post_hooks.append(lambda *args: self.reset_prog_thr())
+            post_hooks.append(lambda *args: self.lock.release())
+            t=gt.SuspendableThread(exporterInstance, name='export',
+                                   pre_hooks=pre_hooks,
+                                   post_hooks=post_hooks)
+            if self.lock.locked_lock():
+                de.show_message(label=_('An import, export or deletion is running'),
+                                sublabel=_('Your export will start once the other process is finished.'))
+            else:
+                debug('PRE_HOOKS=%s'%t.pre_hooks,1)
+                debug('POST_HOOKS=%s'%t.post_hooks,1)                
+                t.start()
+                if not use_threads:
+                    if not hasattr(self,'_threads'): self._threads = []
+                    self._threads.append(t)
+        
     def exportg (self, export_all=False):
         """If all is false, export only selected recipes.
 
@@ -1851,6 +1884,7 @@ class ImporterExporter:
         debug('POST_HOOKS=%s'%t.post_hooks,1)
         t.start()
 
+    @plugin_loader.pluggable_method
     def import_cleanup (self, *args):
         """Remove our threading hooks"""
         debug('import_cleanup!',1)
@@ -1859,26 +1893,43 @@ class ImporterExporter:
         debug('hooks: %s'%self.rd.add_hooks,1)
         self.wait_to_filter=False
         gt.gtk_enter()
-        # Check for duplicates
-        if self.last_impClass and self.last_impClass.added_recs:
-            rmd = recipeMerger.RecipeMergerDialog(
-                self.rd,
-                in_recipes=self.last_impClass.added_recs,
-                on_close_callback=lambda *args: self.redo_search()
-                )
-            rmd.show_if_there_are_dups(
-                label=_('Some of the imported recipes appear to be duplicates. You can merge them here, or close this dialog to leave them as they are.')
-                )
         # Update our models for category, cuisine, etc.
         self.update_attribute_models()
         # Reset our index view
         self.redo_search()
         gt.gtk_leave()
+
     
 class StuffThatShouldBePlugins:
     # As you can tell by the name, everything in this class should
     # really be re-implemented as a plugin. Once that process is
     # complete, this class will disappear!
+
+    def shop_recs (self, *args):
+        debug("recTreeShopRec (self, *args):",5)
+        rr=self.get_selected_recs_from_rec_tree()
+        #r = self.recTreeSelectedRec()
+        for r in rr:
+            if r.servings and r.servings != "None":
+                debug("servings=%s"%r.servings,5)
+                serv = de.getNumber(default=float(r.servings),
+                                    label=_("Number of servings of %s to shop for")%r.title,
+                                    parent=self.app.get_toplevel())
+                if serv: mult = float(serv)/float(r.servings)
+                else:
+                    debug('getNumber cancelled',2)
+                    return
+            else:
+                mult = de.getNumber(default=float(1),
+                                    label=_("Multiply %s by:")%r.title,
+                                    parent=self.app.get_toplevel(),
+                                    digits=2)
+                if not mult:
+                    mult = float(1)
+            d=shopgui.getOptionalIngDic(self.rd.get_ings(r),mult,self.prefs,self)
+            self.sl.addRec(r,mult,d)
+            self.sl.show()
+
 
     def batch_edit_recs (self, *args):
         recs = self.get_selected_recs_from_rec_tree()
@@ -1920,33 +1971,11 @@ class StuffThatShouldBePlugins:
         self.batchEditor.dialog.hide()
         self.update_attribute_models()
 
-    def show_duplicate_finder (self, *args):
-        rmd = recipeMerger.RecipeMergerDialog(
-            self.rd,
-            on_close_callback=lambda *args: self.redo_search()
-            )
-        rmd.populate_tree_if_possible()
-        rmd.show()
-
-    def showConverter (self, *args):
-        cg=convertGui.ConvGui(converter=self.conv, unitModel=self.umodel)
-
-    def showKeyEditor (self, *args):
-        ke=keyEditor.KeyEditor(rd=self.rd, rg=self)
-
     def showValueEditor (self, *args):
         if not hasattr(self,'ve'):
             self.ve=valueEditor.ValueEditor(self.rd,self)
         self.ve.valueDialog.connect('response',lambda d,r: (r==gtk.RESPONSE_APPLY and self.update_attribute_models))
         self.ve.show()
-
-    def show_duplicate_editor (self, *args):
-        rmd = recipeMerger.RecipeMergerDialog(
-            self.rd,
-            on_close_callback=lambda *args: self.redo_search()
-            )
-        rmd.populate_tree_if_possible()
-        rmd.show()
 
     def email_recs (self, *args):
         debug('email_recs called!',1)
@@ -1976,19 +2005,19 @@ ui = '''<ui>
   </menu>-->  
   <menu name="Actions" action="Actions">
     <menuitem action="OpenRec"/>
+    <menuitem action="ShopRec"/>
     <menuitem action="DeleteRec"/>    
     <separator/>
     <menuitem action="BatchEdit"/>
-    <!-- <menuitem action=" -->
   </menu>
   <menu name="Go" action="Go">
   </menu>
   <menu name="Tools" action="Tools">
+    <placeholder name="StandaloneTool">
     <menuitem action="Timer"/>
-    <menuitem action="UnitConverter"/>
+    </placeholder>
     <separator/>
-    <menuitem action="KeyEditor"/>
-    <menuitem action="DuplicateDeleter"/>
+    <placeholder name="DataTool"/>
     <separator/>
     <menuitem action="ViewTrash"/>
   </menu>
@@ -2010,12 +2039,13 @@ ui = '''<ui>
   <toolitem action="New"/>
   <toolitem action="DeleteRec"/>
   <toolitem action="OpenRec"/>
+  <toolitem action="ShopRec"/>
   <toolitem action="Print"/>
 </toolbar>
 </ui>
 '''
 
-class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBePlugins):
+class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBePlugins, plugin_loader.Pluggable):
     def __init__ (self, splash_label=None):
         self.doing_multiple_deletions = False
         GourmetApplication.__init__(self, splash_label=splash_label)
@@ -2032,12 +2062,39 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.setup_main_window()
         self.ui_manager.insert_action_group(self.search_actions,0)
         self.window.add_accel_group(self.ui_manager.get_accel_group())
+        self.setup_column_display_preferences()
+        plugin_loader.Pluggable.__init__(self,
+                                         [plugin.MainPlugin,plugin.ToolPlugin])
 
     def setup_hacks (self):
         # THese are properties that we need to set to test with our
         # current recindex class. However, each of these properties
         # should die with our redesign once done.
         self.act_on_row_widgets = []
+
+    def setup_column_display_preferences (self, *args):
+        already_hidden=self.prefs.get('rectree_hidden_columns',DEFAULT_HIDDEN_COLUMNS)
+        if not already_hidden: already_hidden=[]
+        def mapper (i):
+            if i in already_hidden: return [i, False]
+            else: return [i, True]
+        options=map(lambda i: self.rtcolsdic[i], self.rtcols)
+        options=map(mapper, options)
+        #pd = de.preferences_dialog(options=options, option_label=None, value_label=_("Show in Index View"),
+        #                           apply_func=self.configure_columns, parent=self.app)
+        self.prefsGui.add_pref_table(options,
+                                     'indexViewVBox',
+                                     self.configure_columns)        
+
+    def configure_columns (self, retcolumns):
+        print 'Configure columns->',retcolumns
+        hidden=[]
+        for c,v in retcolumns:
+            if not v: hidden.append(c)
+        self.rectree_conf.hidden=self.prefs['rectree_hidden_columns']=hidden
+        print 'Apply visibility'
+        self.rectree_conf.apply_visibility()
+
 
     def setup_index_columns (self):
         self.rtcolsdic={}
@@ -2086,7 +2143,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.mainActionGroup = gtk.ActionGroup('MainActions')
         self.onSelectedActionGroup = gtk.ActionGroup('IndexOnSelectedActions')
         self.onSelectedActionGroup.add_actions([
-            ('OpenRec',gtk.STOCK_OPEN,_('Open recipe'),
+            ('OpenRec','recipe-box',_('Open recipe'),
              '<Control>O',_('Open selected recipe'),self.rec_tree_select_rec),
             ('DeleteRec',gtk.STOCK_DELETE,_('Delete recipe'),
              'Delete',_('Delete selected recipes'),self.rec_tree_delete_rec_cb),
@@ -2097,7 +2154,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('Email', None, _('E-_mail recipes'),
              None,None,self.email_recs),
             ('BatchEdit',None,_('Batch _edit recipes'),
-             '<Control>E',None,self.batch_edit_recs),            
+             '<Control>E',None,self.batch_edit_recs),
+            ('ShopRec','add-to-shopping-list',None,None,None,self.shop_recs)
             ])
         
         self.mainActionGroup.add_actions([
@@ -2120,7 +2178,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
              None,_('Export all recipes to file'),self.export_all_recs),
             ('Plugins',None,_('_Plugins'),
              None,_('Manage plugins which add extra functionality to Gourmet.'),
-             lambda *args: args),
+             lambda *args: plugin_gui.show_plugin_chooser()),
             ('Preferences',gtk.STOCK_PREFERENCES,_('_Preferences'),
              None,None,self.show_preferences),
             #('Redo',gtk.STOCK_REDO,_('_Redo'),
@@ -2131,8 +2189,6 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
              None,None,self.quit),
             ('ViewTrash',None,_('Open _Trash'),
              None,None,self.show_deleted_recs),
-            ('DuplicateDeleter',None,_('Find _duplicate recipes'),
-             None,_('Find and remove duplicate recipes'),self.show_duplicate_finder)            
             ])
 
         self.toolActionGroup = gtk.ActionGroup('ToolActions')
@@ -2140,10 +2196,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('Tools',None,_('_Tools')),
             ('Timer',None,_('_Timer'),
              None,_('Show timer'),lambda *args: show_timer()),
-            ('UnitConverter',None,_('_Unit Converter'),
-             None,_('Calculate unit conversions'),self.showConverter),
-            ('KeyEditor',None,_('Ingredient _Key Editor'),
-             None,_('Edit ingredient keys en masse'),self.showKeyEditor),
+            #('UnitConverter',None,_('_Unit Converter'),
+            # None,_('Calculate unit conversions'),self.showConverter),
             ])
 
         
@@ -2437,7 +2491,13 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         GourmetApplication.quit(self)
         self.window.destroy()
         gtk.main_quit()
-              
+
+def get_application ():
+    try:
+        return RecGui()
+    except RecGui, rg:
+        return rg
+
 if __name__ == '__main__' and False:
     if os.name!='nt':
         import profile, tempfile,os.path

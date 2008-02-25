@@ -6,7 +6,13 @@
 #import sys
 #import signal
 #signal.signal(signal.SIGINT, signal.SIG_DFL)
-import sys, os, os.path
+import sys, os, os.path, glob
+
+for desktop_file in glob.glob('lib/plugins/*plugin.in') + glob.glob('lib/plugins/*plugins/*plugin.in'):
+    os.system('intltool-merge -d i18n/ %s %s'%(desktop_file,
+                                               desktop_file[:-3])
+              )
+
 if os.path.exists('foo'):
     os.remove('foo/gourmet')
     os.rmdir('foo')

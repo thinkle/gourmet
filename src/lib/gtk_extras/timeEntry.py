@@ -93,7 +93,7 @@ class TimeEntry (validatingEntry.ValidatingEntry):
 
 if gtk.pygtk_version[1] < 8: gobject.type_register(TimeEntry)
         
-def makeTimeEntry ():
+def make_time_entry():
     te=TimeEntry()
     te.show()
     return te

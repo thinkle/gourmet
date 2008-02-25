@@ -1,10 +1,61 @@
-import os, os.path, gobject, re, gtk
+try:
+    import gnomevfs
+    import AASOIUQWE
+    # Okay, actually gnomevfs sucks so we'll put this off for
+    # now. Among other problems, gnomevfs Handlers don't really behave
+    # like proper file objects.
+except ImportError:
+    vfs_available = False
+    open = open
+    import os.path; os
+    exists = os.path.exists
+    makedirs = os.makedirs
+else:
+    vfs_available = True
+    def exists (fn):
+        return gnomevfs.exists(fn)
+    def open (fn, mode='r'):
+        if mode and mode[0]=='w':
+            if not exists(fn):
+                return gnomevfs.create(fn,gnomevfs.OPEN_WRITE)
+            else:
+                return gnomevfs.open(fn,gnomevfs.OPEN_WRITE)
+        else:
+            if mode != 'r':
+                print 'WARNING, treating open mode %s as gnomevfs OPEN_READ'%mode
+            return gnomevfs.open(fn,gnomevfs.OPEN_READ)
+    def makedirs (path):
+        gnomevfs.make_directory(path,gnomevfs.PERM_USER_ALL)
+        
+    
+import os, os.path, gobject, re, gtk, gtk.glade
 import tempfile
 from gdebug import debug
 from OptionParser import options
 
 import gettext_setup
 from gettext import gettext as _
+
+
+class GladeCustomHandlers:
+    def __init__ (self):
+
+        def custom_handler (glade,func_name,
+                            widg, s1,s2,i1,i2):
+            print 'Glade wants ',func_name
+            f=getattr(self,func_name)
+            w= f(s1,s2,i1,i2)
+            return w
+        gtk.glade.set_custom_handler(custom_handler)
+
+    def add_custom_handler (self, handler_name, handler):
+        print 'register custom handler',handler_name,handler
+        if hasattr(self,handler_name):
+            import traceback; traceback.print_stack()
+            print 'WARNING: ','We already had a handler named %s'%handler
+        setattr(self,handler_name,handler)
+
+gladeCustomHandlers = GladeCustomHandlers()
 
 tmpdir = tempfile.gettempdir()
 BUG_URL = "http://sourceforge.net/tracker/?group_id=108118&atid=649652"
@@ -304,3 +355,20 @@ def launch_url (url, ext=""):
                 )
 
 empty_model = gtk.ListStore(str)
+
+# Set up custom STOCK items and ICONS!
+icon_factory = gtk.IconFactory()
+for filename,stock_id,label,modifier,keyval in [
+    ('Nutrition.png','nutritional-info',_('Nutritional Information'),0,0),
+    ('AddToShoppingList.png','add-to-shopping-list',_('Add to _Shopping List'),gtk.gdk.CONTROL_MASK,gtk.gdk.keyval_from_name('l')),
+    ('recbox.png','recipe-box',None,0,0),
+    ]:
+    pb = gtk.gdk.pixbuf_new_from_file(os.path.join(imagedir,filename))
+    iconset = gtk.IconSet(pb)
+    icon_factory.add(stock_id,iconset)
+    icon_factory.add_default()
+    gtk.stock_add([(stock_id,
+                    label,
+                    modifier,
+                    keyval,
+                    "")])

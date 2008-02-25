@@ -22,7 +22,7 @@ class importer:
         come to us unmarked up (i.e. if we need to escape < and &, etc."""
 
         timeaction = TimeAction('importer.__init__',10)
-        if not conv: self.conv = convert.converter()
+        if not conv: self.conv = convert.Converter()
         self.id_converter = {} # a dictionary for tracking named IDs
         self.total = total
         self.prog = prog
@@ -232,8 +232,8 @@ class importer:
         timeaction = TimeAction('importer.start_ing',10)
         gt.gtk_update()
         self.ing=kwargs
-        self.ing['id']=self.rec['id']
-        debug('ing ID %s, recipe ID %s'%(self.ing['id'],self.rec['id']),0)
+        self.ing['recipe_id']=self.rec['id']
+        debug('ing ID %s, recipe ID %s'%(self.ing['recipe_id'],self.rec['id']),0)
         timeaction.end()
                  
     def commit_ing (self):

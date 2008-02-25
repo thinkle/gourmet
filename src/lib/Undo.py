@@ -412,9 +412,7 @@ class UndoHistoryList (list):
             print 'No widget to sensitize'
             return
         try:
-            print 'Sensitize',w,'to',val
             w.set_sensitive(val)
-            print w,'sensitized to',w.get_sensitive()
             debug('%s.set_sensitive succeeded'%w,0)
         except AttributeError:
             # 2.6 will give gtk.Action a set_sensitive property, but for now...

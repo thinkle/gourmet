@@ -1,3 +1,147 @@
+2008-02-25  Thomas Mills HInkle  <tom@hydrophax>
+
+	* glade/recCardDescriptionEditor.glade: Put recipe card
+	description into its own Glade file (part of UIManager rewrite)
+	* glade/recCardDisplay.glade UIManager rewrite
+	* glade/recCardIngredientsEditor.glade  UIManager rewrite
+	* glade/recipe_index.glade - Move recipe index view into its own
+	individual glade file
+	* src/gourmet_in_place Update gourmet_in_place script to i18n .in files.
+	* src/lib/gtk_extras/timeEntry.py (make_time_entry): Rename
+	makeTimeEntry to make_time_entry for consistency with new coding
+	style.
+	* MANIFEST: Add many of plugins to Manifest. (This probably isn't
+	all-the-way-updated yet though).
+
+	* Various-other-files-I'm-too-lazy-to-track Making the change to a
+	plugin system, this means adding logs of plugins and moving around
+	import/export modules. As of this commit, exporters have been
+	fully plugin-a-fied; importers have yet to be converted properly.
+
+2008-02-24  Thomas Mills HInkle  <tom@hydrophax>
+
+	* gourmet.desktop.in: This is now the gourmet desktop file (built
+	into an i18n'd version with intltool).
+
+	* setup.py : Add calls to intltool to build desktop files. Add new
+	export_plugins.
+	
+	
+2008-01-26  Thomas Mills HInkle  <tom@hydrophax>
+
+	* src/lib/gglobals.py: Add our own icons as stock icons.
+	* src/lib/backends/db.py (RecData.get_amount_as_float): Our new
+	SQLAlchemy class can make amounts show up as floats *or* integers.
+
+2008-01-18  Thomas Mills HInkle  <tom@hydrophax>
+
+	* setup.py: Proper i18n of desktop file and plugin information files.
+	* gourmet.desktop.in: Proper i18n of desktop file.
+	* glade/app.glade Remove app.glade
+	* glade/converter.glade Remove converter.glade -- this now belongs
+	in the UnitConverter plugin.
+	* glade/recCardDescriptionEditor.glade Break recCard.glade into pieces
+	* glade/recCardDisplay.glade Break recCard.glade into pieces.
+	* glade/recCardIngredientsEditor.glade Break recCard.glade up
+	* glade/recipe_index.glade Main search view (replaces app.glade)
+	* src/lib/plugins/key_editor/*: Create keyEditorPlugin (move
+	keyEditor from src/lib/keyEditor to here).
+	* src/lib/plugins/key_editor.gourmet-plugin.in: Add Key Editor
+	plugin.
+	* src/lib/plugins/unit_converter.gourmet-plugin.in: Add Unit
+	Converter plugin.
+	* src/lib/plugins/nutritional_information.gourmet-plugin.in: Add
+	nutritional information plugin.
+	* src/lib/plugins/nutritional_information/* Move files from
+	src/lib/nutrition/ here. Create reccard_plugin, main_plugin and
+	data_plugin
+	* src/lib/plugins/duplicate_finder.gourmet-plugin.in: Add
+	duplicate_finder plugin.
+	* src/lib/gtk_extras/timeEntry.py (make_time_entry): Use proper
+	function_or_method_style name for function (was makeTimeEntry)
+	* src/lib/exporters/*: Fix Converter capitalization.
+	* src/lib/backends/db.py (RecData): Make RecData pluggable.
+	(RecData.__init__): Make RecData a singleton (on a per-file basis
+	-- that is, we keep a dictionary of database files and only allow
+	one instance to be created per file. Also, add a _created flag so
+	plugins can tell if they're being plugged in before or after the
+	creation of the DB.
+	(RecData.setup_tables): Make setup_tables pluggable.
+	(setup_nutrition_tables): Remove all nutrition table setup code -
+	this is now implemented in the nutrition plugin.
+	(RecData.update_version_info): Add code to run the plugin method
+	update_version()
+	(get_database): Add method to grab singleton database.
+	* src/lib/shopgui.py: Remove nutritional information code -- will
+	be reimplemented as part of our plugin.
+	* src/lib/recipeManager.py (default_rec_manager): Return singleton
+	RecipeManager() (singleton for a given db file, that is)
+	* src/lib/reccard.py: Remove nutrition items and import new plugin
+	framework -- nutrition is now a plugin!
+	(GladeCustomHandlers): Remove GladeCustomHandlers -- this is now
+	part of gglobals. Update code to use gglobals.gladeCustomHandlers.
+	(RecCard.set_edited): Allow edited property to be set (when
+	GourmetApplication saves, it does this)
+	(RecCardDisplay): Make RecCardDisplay pluggable.
+	(RecCardDisplay.setup_style): Make widgets white.
+	(RecCardDisplay.remove_plugin_to_left_notebook): Make it possible
+	to remove plugin
+	(RecEditor): Make RecEditor pluggable.
+	(DescriptionEditorModule.setup_main_interface): Use separate glade
+	file - recCardDescriptionEditor.glade
+	(TextFieldEditor.setup_main_interface): Workaround textview bug by
+	setting scroll policy to AUTOMATIC,AUTOMATIC even though we don't
+	really want it that way.
+
+	* src/lib/GourmetRecipeManager.py (GourmetApplication.__init__):
+	Make GourmetApplication a singleton -- this simplifies life here
+	on out.
+	(setup_nutrition): Remove - nutrition into a plugin
+	(quit): Update reccard calls to work with new recipe card.
+	(ImporterExporter.import_cleanup): Add plugin
+	hook (pluggable_method decorator) so that the recipeMerger plugin
+	can hook into imports.
+	(UnitModel): Move UnitModel from convertGui (which is now a
+	plugin) here.
+	(show_duplicate_finder): Remove - now a plugin
+	(show_duplicate_editor): Remove - now a plugin
+	(RecGui.__init__): Make Pluggable
+	(RecGui.setup_actions): Add show_plugin_chooser action. Remove
+	items that are now plugins
+	(get_application): Create convenience method to get our singleton
+	application.
+
+	* src/lib/Undo.py (UndoHistoryList.set_sensitive): Be less verbose.
+	(Module): 
+
+	* src/lib/gglobals.py (GladeCustomHandlers): Add custom handler
+	code for glade here. Now anyone who needs a custom handler
+	registers it through the gladeCustomHandlers instance that's
+	instantiated in gglobals.
+	(Module): 
+
+	* src/lib/plugin.py New plugin module. This provides the base
+	classes that plugins need to subclass.
+	(Module): 
+
+	* src/lib/plugin_gui.py Dialog for turning plugins on and off.
+	* src/lib/plugin_loader.py Plugin management module. This provides
+	the base class that pluggables need to subclass, as well as
+	providing a nice decorator function for making individual methods
+	"pluggable" (i.e. for adding pre-hooks and post-hooks)
+
+
+2008-01-17  Thomas Mills HInkle  <tom@hydrophax>
+
+	* src/lib/gtk_extras/timeEntry.py (make_time_entry): Update
+	function name to new underscore_function_name norm
+
+2008-01-09  Thomas Mills HInkle  <tom@hydrophax>
+
+	* src/lib/convertGui.py: 
+
+	* src/lib/recipeMerger.py: 
+
 2008-01-06  Thomas Mills HInkle  <tom@hydrophax>
 
 	* glade/recCard.glade (Module): Reorganize glade file as we move
@@ -24,7 +168,7 @@
 	for user with uimanager.
 
 	setup_search_views - respect the default_searches parameter.
-	
+
 	searchentry_activate_cb - this callback belongs here and not in
 	subclasses.
 
@@ -49,7 +193,7 @@
 	for dialog_extras (moved to gtk_extras)
 	* src/lib/exporters/winprinter.py (Module): Fix import statement
 	for dialog_extras (moved to gtk_extras)
-	
+
 
 2007-12-29  Thomas Mills HInkle  <thomas_hinkle@sf.net>
 

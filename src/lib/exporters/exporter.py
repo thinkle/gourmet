@@ -2,12 +2,14 @@ import re, Image, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap,
 from gourmet import gglobals, convert
 from gourmet.gdebug import *
 from gettext import gettext as _
+from gourmet.plugin_loader import Pluggable, pluggable_method
+from gourmet.plugin import BaseExporterPlugin, BaseExporterMultiRecPlugin
 
 REC_ATTR_DIC = gglobals.REC_ATTR_DIC
 DEFAULT_ATTR_ORDER = gglobals.DEFAULT_ATTR_ORDER
 DEFAULT_TEXT_ATTR_ORDER = gglobals.DEFAULT_TEXT_ATTR_ORDER
 
-class exporter:
+class exporter (Pluggable):
     """A base exporter class.
 
     All Gourmet exporters should subclass this class or one of its
@@ -58,8 +60,9 @@ class exporter:
         if not conv: conv=convert.Converter()
         self.conv=conv
         self.imgcount=imgcount
-        self.write_head()
         self.images = []
+        Pluggable.__init__(self,[BaseExporterPlugin])        
+        self.write_head()
         for task in order:
             t=TimeAction('exporter._write_attrs_()',4)
             if task=='image':
@@ -80,7 +83,7 @@ class exporter:
 
     # Internal methods -- ideally, subclasses should have no reason to
     # override any of these methods.
-        
+    @pluggable_method
     def _write_attrs_ (self):
         self.write_attr_head()
         for a in self.attr_order:
@@ -95,11 +98,12 @@ class exporter:
                 if (a=='preptime' or a=='cooktime') and a.find("0 ")==0: pass
                 else:
                     if self.convert_attnames:
-                        self.write_attr(REC_ATTR_DIC[a],txt)
+                        self.write_attr(REC_ATTR_DIC.get(a,a),txt)
                     else:
                         self.write_attr(a,txt)
         self.write_attr_foot()
 
+    @pluggable_method
     def _write_text_ (self):
         #print 'exporter._write_text_',self.text_attr_order,'!'
         for a in self.text_attr_order:
@@ -124,7 +128,7 @@ class exporter:
                         txt=self.handle_markup(s)
                     if not self.use_ml: txt = xml.sax.saxutils.unescape(s)
                     if self.convert_attnames:
-                        out_a = gglobals.TEXT_ATTR_DIC[a]
+                        out_a = gglobals.TEXT_ATTR_DIC.get(a,a)
                     else:
                         out_a = a
                     # Goodness this is an ugly way to pass the
@@ -146,10 +150,11 @@ class exporter:
                 #else: print 'exporter: do_markup=False'
                 if not self.use_ml: txt = xml.sax.saxutils.unescape(txt)
                 if self.convert_attnames:
-                    self.write_text(gglobals.TEXT_ATTR_DIC[a],txt)
+                    self.write_text(gglobals.TEXT_ATTR_DIC.get(a,a),txt)
                 else:
                     self.write_text(a,txt)
 
+    @pluggable_method
     def _write_ings_ (self):
         """Write all of our ingredients.
         """
@@ -217,7 +222,10 @@ class exporter:
     def _get_amount_and_unit_ (self, ing):
         return self.rd.get_amount_and_unit(ing,fractions=self.fractions)
 
-    # Below are the images inherited exporters should subclass.
+    # Below are the images inherited exporters should
+    # subclass. Subclasses overriding methods should make these
+    # pluggable so that plugins can fiddle about with things as they
+    # see fit.
 
     def write_image (self, image):
         """Write image based on binary data for an image file (jpeg format)."""
@@ -232,22 +240,27 @@ class exporter:
         """Write any necessary footer material at recipe end."""
         pass
 
+    @pluggable_method
     def write_inghead(self):
         """Write any necessary markup before ingredients."""
         self.out.write("\n---\n%s\n---\n"%_("Ingredients"))
 
+    @pluggable_method
     def write_ingfoot(self):
         """Write any necessary markup after ingredients."""
         pass
 
+    @pluggable_method
     def write_attr_head (self):
         """Write any necessary markup before attributes."""
         pass
-    
+
+    @pluggable_method
     def write_attr_foot (self):
         """Write any necessary markup after attributes."""
         pass
 
+    @pluggable_method
     def write_attr (self, label, text):
         """Write an attribute with label and text.
 
@@ -262,6 +275,7 @@ class exporter:
         """
         self.out.write("%s: %s\n"%(label, text.strip()))
 
+    @pluggable_method
     def write_text (self, label, text):
         """Write a text chunk.
 
@@ -322,15 +336,18 @@ class exporter:
         """Make chunk underlined, or the equivalent of"""
         return "_" + chunk + "_"
 
+    @pluggable_method
     def write_grouphead (self, text):
         """The start of group of ingredients named TEXT"""
         self.out.write("\n%s:\n"%text.strip())
 
+    @pluggable_method
     def write_groupfoot (self):
         """Mark the end of a group of ingredients.
         """
         pass
     
+    @pluggable_method
     def write_ingref (self, amount=1, unit=None,
                       item=None, optional=False,
                       refid=None):
@@ -340,6 +357,7 @@ class exporter:
                        unit=unit, item=item,
                        key=None, optional=optional)
 
+    @pluggable_method
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
         """Write ingredient."""
         if amount:
@@ -387,6 +405,7 @@ class exporter_mult (exporter):
                           fractions=fractions,
                           )
 
+    @pluggable_method
     def write_attr (self, label, text):
         #attr = gglobals.NAME_TO_ATTR[label]
         self.out.write("%s: %s\n"%(label, text))
@@ -419,6 +438,7 @@ class exporter_mult (exporter):
             return self.rd.get_amount_and_unit(ing,mult=self.mult,conv=self.conv,
                                                fractions=self.fractions)
 
+    @pluggable_method
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
         if amount:
             self.out.write("%s"%amount)
@@ -430,7 +450,7 @@ class exporter_mult (exporter):
             self.out.write(" (%s)"%_("optional"))
         self.out.write("\n")        
 
-class ExporterMultirec:
+class ExporterMultirec (Pluggable):
 
     def __init__ (self, rd, recipe_table, out, one_file=True,
                   ext='txt',
@@ -443,12 +463,13 @@ class ExporterMultirec:
         """Output all recipes in recipe_table into a document or multiple
         documents. if one_file, then everything is in one
         file. Otherwise, we treat 'out' as a directory and put
-        individual recipe files within it."""        
+        individual recipe files within it."""
         self.timer=TimeAction('exporterMultirec.__init__()')
         self.rd = rd
         self.recipe_table = recipe_table
         self.out = out
         self.padding=padding
+        Pluggable.__init__(self,[BaseExporterMultiRecPlugin])        
         if not one_file:
             self.outdir=out
             if os.path.exists(self.outdir):
@@ -472,7 +493,6 @@ class ExporterMultirec:
                                                   convert.FRACTIONS_ASCII)
         self.DEFAULT_ENCODING = self.exporter.DEFAULT_ENCODING
         self.one_file = one_file
-        self.rd = rd
 
     def _grab_attr_ (self, obj, attr):
         if attr=='category':
@@ -501,6 +521,7 @@ class ExporterMultirec:
                     raise
             return ret
         
+    @pluggable_method
     def run (self):
         first = True
         for r in self.recipe_table:
@@ -527,9 +548,11 @@ class ExporterMultirec:
         if self.pf: self.pf(1,_("Export complete."))
         print_timer_info()
 
+    @pluggable_method
     def write_header (self):
         pass
 
+    @pluggable_method
     def write_footer (self):
         pass
 

@@ -6,6 +6,14 @@ import imp
 import sys
 import glob
 import os.path
+import os
+
+for desktop_file in ['gourmet.desktop.in'] + glob.glob('src/lib/plugins/*plugin.in')  + glob.glob('lib/plugins/*/*plugin.in'):
+    #print 'intltool-merge -d i18n/ %s %s'%(desktop_file,
+    #                                           desktop_file[:-3])
+    os.system('intltool-merge -d i18n/ %s %s'%(desktop_file,
+                                               desktop_file[:-3])
+              )
 
 #from distutils.core import setup
 from tools.gourmet_distutils import setup
@@ -128,7 +136,7 @@ def data_files():
         #print pth,fn
         pth = os.path.join(i18n_base,pth)
         files.append((pth,[f]))
-    print files
+    #print files
     return files
 
 class my_install_data(install_data):
@@ -136,7 +144,7 @@ class my_install_data(install_data):
         self.set_undefined_options('install',
                                    ('install_lib', 'install_dir'))
         install_data.finalize_options(self)
-        print 'install_data has: ',dir(install_data)
+        #print 'install_data has: ',dir(install_data)
 
 if os.name == 'nt':
     script = os.path.join('windows','Gourmet.pyw')
@@ -147,7 +155,7 @@ else:
     #import tools.upgrade_pre_script
     #tools.upgrade_pre_script.dump_old_data()
         
-setup(
+result = setup(
     name = name,
     version = version,
     #windows = [ {'script':os.path.join('src','gourmet'),
@@ -170,7 +178,18 @@ setup(
                 'gourmet.legacy_db.db_085',
                 'gourmet.legacy_db.db_09',
                 'gourmet.nutrition',
+                'gourmet.plugins',
+                'gourmet.plugins.duplicate_finder',
+                'gourmet.plugins.key_editor',
+                'gourmet.plugins.nutritional_information',
+                'gourmet.plugins.unit_converter',
+                'gourmet.plugins.exporters.import_export',
+                'gourmet.plugins.exporters.import_export.gxml_plugin',
+                'gourmet.plugins.exporters.import_export.html_plugin',
+                'gourmet.plugins.exporters.import_export.mealmaster_plugin',                
+                'gourmet.plugins.exporters.import_export.pdf_plugin',
                 ],
+    package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*.glade','plugins/*/*.glade']},
     package_dir = {'gourmet' : os.path.join('src','lib')},
     scripts = [script],
     cmdclass={'install_data' : my_install_data},

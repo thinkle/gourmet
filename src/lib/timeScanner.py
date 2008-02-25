@@ -4,6 +4,7 @@ user clicks on any time in the TextView."""
 import convert, re, gtk, gobject
 from gtk_extras import LinkedTextView
 import timer
+import xml.sax.saxutils
 
 all_units = []
 for base,units in convert.Converter.time_units:
@@ -21,6 +22,7 @@ time_matcher = re.compile(
 
 
 def make_time_links (s):
+    s = xml.sax.saxutils.escape(s)
     return time_matcher.sub('<a href="\g<firstnum> \g<unit>">\g<0></a>',s)
 
 
