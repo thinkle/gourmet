@@ -86,7 +86,7 @@ class PluginChooser:
         return sw
 
     def toggled_cb (self, renderer, path, tv):
-        ls == tv.get_model()
+        ls = tv.get_model()
         print 'Toggled work!'
         plugin_set = ls[path][1]
         prev_state = ls[path][0]

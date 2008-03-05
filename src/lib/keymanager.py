@@ -18,8 +18,17 @@ class KeyManager:
     MAX_MATCHES = 10
     word_splitter = re.compile('\W+')
 
+    __single = None
+
     def __init__ (self, kd={}, rm=None):
+        if KeyManager.__single:
+            raise KeyManager.__single
+        else:
+            KeyManager.__single = self
         self.kd = kd
+        if not rm:
+            import recipeManager
+            rm = recipeManager.default_rec_manager()
         self.rm = rm
         self.cooking_verbs=cooking_verbs
         # This needs to be made sane i18n-wise
@@ -509,6 +518,13 @@ cooking_verbs=["cored",
                "heated",
                "warmed",
                "chilled"]
+
+def get_keymanager (*args, **kwargs):
+    try:
+        return KeyManager(*args,**kwargs)
+    except KeyManager, km:
+        return km
+
 if __name__ == '__main__':
 
     def timef (f):

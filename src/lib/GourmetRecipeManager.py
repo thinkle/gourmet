@@ -8,6 +8,7 @@ import exporters.printer as printer
 import prefs, prefsGui, shopgui, reccard, fnmatch, tempfile
 import exporters, importers
 from exporters.exportManager import ExportManager
+from importers.importManager import ImportManager
 import convert, version
 from gtk_extras import ratingWidget, WidgetSaver
 import importers.mastercook_importer as mastercook_importer
@@ -115,10 +116,8 @@ class GourmetApplication:
         self.setup_shopping()
         self.setup_go_menu()
         self.rc={}
-        self.setup_exporters()
-
-    def setup_exporters (self):
         self.exportManager = ExportManager()
+        self.importManager = ImportManager()
 
     def setup_threading (self):
         self.lock = gt.get_lock()
@@ -593,7 +592,7 @@ class RecGuiOld (RecIndex, GourmetApplication):
             'defaultsave': self.save_default,
             'export' : self.export_selected_recs,
             'export_all': self.export_all_recs,
-            'import' : self.importg,
+            'import' : self.do_import,
             'import_webpage': self.import_webpageg,
             'quit' : self.quit,
             'about' : self.show_about,
@@ -1034,7 +1033,7 @@ class RecGuiOld (RecIndex, GourmetApplication):
                 )
             raise
         self.make_rec_visible()
-        
+
     def importg (self, *args):
         if not use_threads and self.lock.locked_lock():
             de.show_message(label=_('An import, export or deletion is running'),
@@ -1718,7 +1717,10 @@ class ImporterExporter:
                 )
             raise
         self.make_rec_visible()
-        
+
+    def do_import (self, *args):
+        self.importManager.offer_import(self.window)
+
     def importg (self, *args):
         if not use_threads and self.lock.locked_lock():
             de.show_message(label=_('An import, export or deletion is running'),
@@ -2128,6 +2130,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.window.set_title(version.appname)
         self.main = gtk.VBox()
         self.window.add(self.main)
+        self.window.connect('delete-event',self.quit)
         mb = self.ui_manager.get_widget('/RecipeIndexMenuBar'); mb.show()
         self.main.pack_start(mb,fill=False,expand=False);        
         self.recipe_index_interface = self.glade.get_widget('recipeIndexBox')
@@ -2157,7 +2160,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
              '<Control>E',None,self.batch_edit_recs),
             ('ShopRec','add-to-shopping-list',None,None,None,self.shop_recs)
             ])
-        
+
         self.mainActionGroup.add_actions([
             ('File',None,_('_File')),
             ('Edit',None,_('_Edit')),
@@ -2171,7 +2174,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('Help',gtk.STOCK_HELP,_('_Help'),
              None,None,self.show_help),
             ('ImportFile',None,_('_Import file'),
-             None,_('Import recipe from file'),self.importg),
+             None,_('Import recipe from file'),self.do_import),
             ('ImportWeb',None,_('Import _webpage'),
              None,_('Import recipe from webpage'),self.import_webpageg),
             ('ExportAll',None,_('Export _all recipes'),

@@ -34,7 +34,27 @@ import plugin_loader
 class Plugin:
     pass
 
-class ImporterPlugin (Plugin): 
+class StandardPlugin (Plugin):
+
+    def activate (self, pluggable):
+        """Called when plugin is activated. Once each time the
+        pluggable instance is instantiated.
+        """
+        pass
+
+    def deactivate (self, pluggable):
+        """Called when plugin is deactivated.
+        
+        Once each time the pluggable instance is destroyed.
+        """
+        pass
+    
+    def remove (self):
+        """Remove the plugin from the UI (the user has turned it off).
+        """
+        pass
+
+class ImporterPlugin (StandardPlugin): 
 
     # Do we let users type in a source to associate with these
     # recipes.
@@ -43,7 +63,16 @@ class ImporterPlugin (Plugin):
     name = None # The name of our importer
     patterns = [] # Glob patterns to match this filetype
     mimetypes = [] # mimetypes associated with this filetype
-    tester = None # A class to test our importer with.
+
+    def activate (self, pluggable):
+        pluggable.register_plugin(self)
+
+    def deactivate (self, pluggable):
+        pluggable.unregister_plugin(self)
+
+    def test_file (self,filename):
+        '''Test whether filename is an instance of this type.'''
+        return True
 
     def do_import (self, kwargs):
         """Import based on arguments.
@@ -57,7 +86,8 @@ class ImporterPlugin (Plugin):
         """
         raise NotImplementedError
 
-class ExporterPlugin (Plugin):
+
+class ExporterPlugin (StandardPlugin):
 
     label = ''
     sublabel = ''
@@ -144,25 +174,6 @@ class BaseExporterMultiRecPlugin (Plugin):
     '''
     pass
 
-class StandardPlugin (Plugin):
-
-    def activate (self, pluggable):
-        """Called when plugin is activated. Once each time the
-        pluggable instance is instantiated.
-        """
-        pass
-
-    def deactivate (self, pluggable):
-        """Called when plugin is deactivated.
-        
-        Once each time the pluggable instance is destroyed.
-        """
-        pass
-    
-    def remove (self):
-        """Remove the plugin from the UI (the user has turned it off).
-        """
-        pass
 
 class DatabasePlugin (StandardPlugin):
 
