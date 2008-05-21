@@ -101,7 +101,10 @@ class ModalDialog (gtk.Dialog):
             self.expander = gtk.Expander(label)
             self.expander.set_use_underline(True)
             self.expander_vbox = gtk.VBox()
-            self.expander.add(self.expander_vbox)
+            sw = gtk.ScrolledWindow()
+            sw.add_with_viewport(self.expander_vbox)
+            sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+            self.expander.add(sw)
             self._add_expander_item(body)
             self.expander.show()
             self.expander_vbox.show_all()
@@ -794,9 +797,10 @@ def show_traceback (label="Error", sublabel=None):
     """Show an error dialog with a traceback viewable."""
     from StringIO import StringIO
     import traceback
-    f = StringIO()
-    traceback.print_exc(file=f)
-    error_mess = f.getvalue()
+    #f = StringIO()
+    #traceback.print_exc(file=f)
+    #f.getvalue()
+    error_mess =traceback.format_exc()
     show_message(label=label,
                  sublabel=sublabel,
                  expander=(_("_Details"),error_mess),
@@ -826,10 +830,16 @@ def select_file (title,
                  action=gtk.FILE_CHOOSER_ACTION_OPEN,
                  set_filter=True,
                  select_multiple=False,
-                 buttons=None
+                 buttons=None,
+                 parent=None
                  ):
-    sfd=FileSelectorDialog(title,filename=filename,filters=filters,select_multiple=select_multiple,
-                           action=action,set_filter=set_filter,buttons=buttons)
+    sfd=FileSelectorDialog(title,
+                           filename=filename,
+                           filters=filters,
+                           select_multiple=select_multiple,
+                           action=action,
+                           set_filter=set_filter,
+                           buttons=buttons,parent=parent)
     return sfd.run()
 
 def saveas_file (title,
@@ -903,7 +913,11 @@ class FileSelectorDialog:
         self.fsd = gtk.FileChooserDialog(self.title,
                                          action=self.action,
                                          parent=self.parent,
-                                         buttons=self.buttons)
+                                         buttons=self.buttons,
+                                         #backend = (vfs_available and 'gnome-vfs') or None,
+                                         )
+        #if vfs_available:
+        #    self.fsd.props.local_only = False
         self.fsd.set_default_response(gtk.RESPONSE_OK)
         self.fsd.set_select_multiple(self.multiple)
         if self.filename:
@@ -1067,8 +1081,14 @@ class FileSelectorDialog:
         response = self.fsd.run()
         if response == gtk.RESPONSE_OK:
             if self.multiple:
+                #if vfs_available:
+                #    fn = self.fsd.get_uris()
+                #else:
                 fn = self.fsd.get_filenames()
             else:
+                #if vfs_available:
+                #    fn = self.fsd.get_uri()
+                #else:
                 fn = self.fsd.get_filename()
             if not fn:
                 show_message(label=_('No file selected'),
@@ -1202,6 +1222,7 @@ For example, you could enter 2-4 or 1 1/2 - 3 1/2.
 
 
 if __name__ == '__main__':
+    print 'Got',saveas_file('Saveas')
     w=gtk.Window()
     w.connect('delete_event',gtk.main_quit)
     b=gtk.Button("show dialog (modal)")

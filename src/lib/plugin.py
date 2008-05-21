@@ -66,6 +66,7 @@ class ImporterPlugin (StandardPlugin):
 
     def activate (self, pluggable):
         pluggable.register_plugin(self)
+        self.importManager = pluggable
 
     def deactivate (self, pluggable):
         pluggable.unregister_plugin(self)

@@ -3,7 +3,7 @@ import gc
 import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
 import types
 import xml.sax.saxutils, pango
-import exporters
+import exporters.exportManager
 import convert, types
 from recindex import RecIndex
 import prefs
@@ -159,7 +159,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.reccard = reccard; self.rg = recGui; self.current_rec = recipe
         self.mult = 1 # parameter
         self.conf = reccard.conf
-        self.prefs = self.rg.prefs
+        self.prefs = prefs.get_prefs()
         self.setup_glade()
         self.setup_uimanager()
         self.setup_main_window()
@@ -534,57 +534,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def export_cb (self, *args):
         opt = self.prefs.get('save_recipe_as','html')
-        if opt and opt[0]=='.': opt = opt[1:] #strip off extra "." if necessary
-        fn,exp_type=de.saveas_file(_("Save recipe as..."),
-                                   filename="~/%s.%s"%(self.current_rec.title,opt),
-                                   filters=exporters.saveas_single_filters[0:])
-        if not fn: return
-        if not exp_type or not exporters.exporter_dict.has_key(exp_type):
-            de.show_message(_('Gourmet cannot export file of type "%s"')%os.path.splitext(fn)[1])
-            return
-        myexp = exporters.exporter_dict[exp_type]
-        if myexp.get('extra_prefs_dialog',None):
-            extra_prefs = myexp['extra_prefs_dialog']()
-        else:
-            extra_prefs = {}
-        if myexp.get('mode',''):
-            out=open(fn,'wb')
-        else:
-            out=open(fn,'w')
-        try:
-            myexp['exporter']({
-                'rd':self.rg.rd,
-                'rec':self.current_rec,
-                'out':out,
-                'conv':self.rg.conv,
-                'change_units':self.prefs.get('readableUnits',True),
-                'mult':self.mult,
-                'extra_prefs':extra_prefs
-                })
-            #self.message(myexp['single_completed']%{'file':fn})
-        except:
-            from StringIO import StringIO
-            f = StringIO()
-            import traceback; traceback.print_exc(file=f)
-            error_mess = f.getvalue()
-            de.show_message(
-                label=_('Unable to save %s')%fn,
-                sublabel=_('There was an error during export.'),
-                expander=(_('_Details'),error_mess),
-                message_type=gtk.MESSAGE_ERROR
-                )
-        else:
-            # set prefs for next time
-            out.close()
-            ext=os.path.splitext(fn)[1]
-            self.prefs['save_recipe_as']=ext
-            self.rg.offer_url(
-                label=_("Export succeeded"),
-                sublabel=_("Exported %(filetype)s to %(filename)s")%{
-                'filetype':exp_type,
-                'filename':fn,},
-                url='file:///%s'%fn
-                )
+        fn = exportManager.get_export_manager().offer_single_export(self.current_rec,self.prefs,parent=self.window)
+        
 
     def toggle_readable_units_cb (self, widget):
         if widget.get_active():
@@ -657,7 +608,7 @@ class IngredientDisplay:
     
     def __init__ (self, recipe_display):
         self.recipe_display = recipe_display
-        self.prefs = self.recipe_display.rg.prefs
+        self.prefs = prefs.get_prefs()
         self.setup_widgets()
         self.recipe_display = recipe_display; self.rg = self.recipe_display.rg
         self.markup_ingredient_hooks = []
@@ -3106,6 +3057,7 @@ class IngInfo:
 class RecSelector (RecIndex):
     """Select a recipe and add it to RecCard's ingredient list"""
     def __init__(self, recGui, ingEditor):
+        self.prefs = prefs.get_prefs()
         self.glade=gtk.glade.XML(os.path.join(gladebase,'recipe_index.glade'))
         self.rg=recGui
         self.ingEditor = ingEditor
@@ -3118,6 +3070,7 @@ class RecSelector (RecIndex):
                           editable=False
                           )
         self.dialog.run()
+        
 
     def setup_main_window (self):
         d = gtk.Dialog(_("Choose recipe"),
@@ -3143,18 +3096,18 @@ class RecSelector (RecIndex):
             self.ok()
         else:
             self.quit()
-
+ 
     def quit (self):
         self.dialog.destroy()
-
+ 
     def rec_tree_select_rec (self, *args):
         self.ok()
-
+ 
     def ok (self,*args):
         debug('ok',0)
         pre_iter=self.ingEditor.ingtree_ui.get_selected_ing()
         try:
-            for rec in self.recTreeSelectedRecs():
+            for rec in self.get_selected_recs_from_rec_tree():
                 if rec.id == self.re.current_rec.id:
                     de.show_message(label=_("Recipe cannot call itself as an ingredient!"),
                                     sublabel=_('Infinite recursion is not allowed in recipes!')

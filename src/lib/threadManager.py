@@ -7,7 +7,7 @@
 #   3. Finish successfully
 #   4. Stop with an error.
 #
-# If you need to get user inpu in the middle of your threaded process,
+# If you need to get user input in the middle of your threaded process,
 # you need to redesign so that it works as follows:
 #
 # 1. Run the first half of your process as a thread.
@@ -25,10 +25,9 @@
 # processes.
 #
 #
-
+from gettext import gettext as _
 import threading, gtk, gobject, time
 gobject.threads_init()
-
 
 # _IdleObject etc. based on example John Stowers
 # <john.stowers@gmail.com>
@@ -44,6 +43,12 @@ class _IdleObject(gobject.GObject):
     def emit(self, *args):
         if args[0]!='progress': print 'emit',args
         gobject.idle_add(gobject.GObject.emit,self,*args)
+
+class Terminated (Exception):
+    def __init__ (self, value):
+        self.value=value
+    def __str__(self):
+        return repr(self.value)
 
 class SuspendableThread (threading.Thread, _IdleObject):
 
@@ -81,16 +86,26 @@ class SuspendableThread (threading.Thread, _IdleObject):
         self.initialized = True
         self.start()
 
+    def connect_subthread (self, subthread):
+        '''For subthread subthread, connect to error and pause signals and 
+        and emit as if they were our own.'''
+        subthread.connect('error',lambda st,enum,ename,strace: self.emit('error',enum,ename,strace))
+        subthread.connect('stopped',lambda st: self.emit('stopped'))
+        subthread.connect('pause',lambda st: self.emit('pause'))
+        subthread.connect('resume',lambda st: self.emit('resume'))
+
     def run (self):
         try:
             print self,'run!'
             self.do_run()
             print self,'Done!'
         except Terminated:
+            print 'stopped!'
             self.emit('stopped')
         except:
+            print 'Error!'
             import traceback
-            self.emit('error',
+            self.emit('error',1,
                       'Error during %s'%self.name,
                       traceback.format_exc())
         else:
@@ -151,7 +166,11 @@ class ThreadManager:
         self.threads = []
 
     def add_thread (self, thread):
-        assert(isinstance(thread,SuspendableThread))
+        try:
+            assert(isinstance(thread,SuspendableThread))
+        except AssertionError:
+            print 'Class',thread,type(thread),'is not a SuspendableThread'
+            raise
         self.threads.append(thread)
         thread.connect('pause',self.register_thread_paused)
         thread.connect('resume',self.register_thread_resume)
@@ -164,9 +183,10 @@ class ThreadManager:
         
     def register_thread_done (self, thread):
         print thread,'done'
-        self.threads.remove(thread)
-        self.active_count -= 1
-        self.start_queued_threads()        
+        if thread in self.threads:
+            self.threads.remove(thread)
+            self.active_count -= 1
+            self.start_queued_threads()        
 
     def register_thread_paused (self, thread):
         print thread,'paused'        
@@ -203,8 +223,147 @@ def get_thread_manager ():
     except ThreadManager, tm:
         return tm
 
+class ThreadManagerGui:
+
+    __single__ = None
+    paused_text = ' (' + _('Paused') + ')'
+
+    def __init__ (self, parent=None):
+        if ThreadManagerGui.__single__:
+            raise ThreadManagerGui.__single__
+        else:
+            ThreadManagerGui.__single__ = self
+        self.tm = get_thread_manager()
+        self.threads = {}
+        self.dialog = gtk.Dialog(parent=parent,
+                                 buttons=(gtk.STOCK_CLOSE,gtk.RESPONSE_CLOSE))
+        self.dialog.connect('response',self.close)
+        self.dialog.connect('delete-event',self.delete_event_cb)
+        self.sw = gtk.ScrolledWindow()
+        self.pbtable = gtk.Table()
+        self.last_row = 0
+        self.sw.add_with_viewport(self.pbtable)
+        self.sw.set_policy(gtk.POLICY_NEVER,gtk.POLICY_AUTOMATIC)
+        self.sw.show_all()
+        self.dialog.vbox.add(self.sw)
+        self.to_remove = [] # a list of widgets to remove when we close...
+
+    def response (self, dialog, response):
+        if response==gtk.RESPONSE_CLOSE:
+            self.close()
+        
+    def register_thread_with_dialog (self, description, thread):
+        pb = gtk.ProgressBar()
+        pause_button = gtk.ToggleButton();
+        lab = gtk.Label(_('Pause'))
+        pause_button.add(lab); pause_button.show_all()
+        dlab = gtk.Label(description)
+        cancel_button = gtk.Button(stock=gtk.STOCK_CANCEL)
+        self.pbtable.attach(dlab,0,3,self.last_row,self.last_row+1)
+        self.pbtable.attach(pb,0,1,self.last_row+1,self.last_row+2)
+        self.pbtable.attach(cancel_button,1,2,self.last_row+1,self.last_row+2)
+        self.pbtable.attach(pause_button,2,3,self.last_row+1,self.last_row+2)
+        # Create an object for easy reference to our widgets in callbacks
+        class ThreadBox: pass
+        threadbox = ThreadBox()
+        threadbox.pb = pb
+        threadbox.buttons = [pause_button,cancel_button]
+        threadbox.label = dlab
+        threadbox.pb.show(); threadbox.label.show()
+        threadbox.widgets = [threadbox.pb, threadbox.label] + threadbox.buttons
+        threadbox.row = self.last_row
+        for b in threadbox.buttons: b.show()
+        thread.connect('completed',self.thread_done,threadbox)
+        thread.connect('error',self.thread_error,threadbox)
+        thread.connect('stopped',self.thread_stopped,threadbox)        
+        thread.connect('pause',self.thread_pause,threadbox)
+        thread.connect('resume',self.thread_resume,threadbox)
+        thread.connect('progress',self.progress_update,threadbox.pb)        
+        pause_button.connect('clicked',self.pause_cb,thread)
+        cancel_button.connect('clicked',self.cancel_cb,thread)
+        self.last_row += 2
+
+    def pause_cb (self, b, thread):
+        if b.get_active():
+            thread.suspend()
+        else:
+            self.tm.resume_thread(thread)
+
+    def cancel_cb (self, b, thread):
+        thread.terminate()
+
+    def thread_done (self, thread, threadbox):
+        print 'thread_done cb'
+        for b in threadbox.buttons: b.hide()
+        self.to_remove.append(threadbox)
+        txt = threadbox.pb.get_text()
+        threadbox.pb.set_text(txt + ' ('+_('Done')+')')
+
+    def progress_update (self, thread, perc, txt, pb):
+        if perc >= 0.0:
+            pb.set_percentage(perc)
+        else:
+            pb.pulse()
+        pb.set_text(txt)
+
+    def thread_error (self, thread, errno, errname, trace, threadbox):
+        print 'thread_error cb'
+        for b in threadbox.buttons: b.hide()
+        threadbox.pb.set_text(_('Error: %s')%errname)
+        b = gtk.Button(_('Details'))
+        b.connect('clicked',self.show_traceback,errno,errname,trace)
+        self.pbtable.attach(b,2,3,threadbox.row+1,threadbox.row+2)
+        threadbox.widgets.append(b)
+        b.show()
+        self.to_remove.append(threadbox)
+
+    def thread_stopped (self, thread, threadbox):
+        txt = threadbox.pb.get_text()
+        txt += (' ('+_('cancelled') + ')')
+        threadbox.pb.set_text(txt)
+
+    def thread_pause (self, thread, threadbox):
+        txt = threadbox.pb.get_text()
+        txt += self.paused_text
+        threadbox.pb.set_text(txt)
+
+    def thread_resume (self, thread, threadbox):
+        txt = threadbox.pb.get_text()
+        if txt.find(self.paused_text):
+            txt = txt[:-len(self.paused_text)]
+            threadbox.pb.set_text(txt)
+        
+    def show (self, *args):
+        self.dialog.present()
+
+    def delete_event_cb (self, *args):
+        self.dialog.hide()
+        return True
+
+    def close (self, *args):
+        while self.to_remove:
+            box_to_remove = self.to_remove.pop()
+            for w in box_to_remove.widgets:
+                w.hide()
+                self.pbtable.remove(w)
+        self.dialog.hide()
+
+    def show_traceback (self, button, errno, errname, traceback):
+        import gourmet.gtk_extras.dialog_extras as de
+        de.show_message(label=_('Error'),
+                        sublabel=_('Error %s: %s')%(errno,errname),
+                        expander=(_('Traceback'),traceback),
+                        )
+
+def get_thread_manager_gui ():
+    try:
+        return ThreadManagerGui()
+    except ThreadManagerGui, tmg:
+        print 'Returning single'
+        return tmg
 
 if __name__ == '__main__':
+    import gtk
     class TestThread (SuspendableThread):
 
         def do_run (self):
@@ -212,6 +371,16 @@ if __name__ == '__main__':
                 time.sleep(0.01)
                 self.emit('progress',n/1000.0,'%s of 1000'%n)
                 self.check_for_sleep()
+
+    class TestError (SuspendableThread):
+
+        def do_run (self):
+            for n in range(1000):
+                time.sleep(0.01)
+                if n==100: raise AttributeError("This is a phony error")
+                self.emit('progress',n/1000.0,'%s of 1000'%n)
+                self.check_for_sleep()
+                
 
     class TestInterminable (SuspendableThread):
 
@@ -222,42 +391,17 @@ if __name__ == '__main__':
                 self.check_for_sleep()
                 
     tm = get_thread_manager()
-    tm.add_thread(TestInterminable())
-    tm.add_thread(TestThread())
-    tm.add_thread(TestThread())
-    tm.add_thread(TestThread())
-    tm.add_thread(TestInterminable())
-    tm.threads[0].suspend()
-    
-    w = gtk.Window()
-    vb = gtk.VBox(); w.add(vb)
-    vb.add(gtk.Label('Threads Test'))
-    
-    def progress_cb (thread_obj,perc,msg,pb):
-        if perc < 0:
-            pb.pulse()
-        else:
-            pb.set_fraction(perc)
-        pb.set_text(msg)
-
-    for t in tm.threads:
-        print 'Add pb'
-        hb = gtk.HBox()
-        pb = gtk.ProgressBar()
-        t.connect('progress',progress_cb,pb)
-        hb.add(pb)
-        b = gtk.ToggleButton('Pause')
-        def toggle_pause (b, t):
-            if b.get_active(): t.suspend()
-            else: tm.resume_thread(t)
-        b.connect('toggled',toggle_pause,t)
-        hb.add(b)
-        vb.add(hb)
-    w.show_all()
-    def quit ():
-        tm.thread_queue = []
-        for thr in tm.threads:
-            if thr.initialized: thr.terminate()
-        gtk.main_quit()
-    w.connect('delete-event',quit)
+    tmg = get_thread_manager_gui()
+    for desc,thread in [
+        ('Interminable 1',TestInterminable()),
+        ('Linear 1',TestThread()),
+        ('Linear 2',TestThread()),
+        ('Interminable 2',TestInterminable()),
+        ('Error 3',TestError())
+        ]:
+        tm.add_thread(thread)
+        tmg.register_thread_with_dialog(desc,thread)
+    def quit (*args): gtk.main_quit()
+    tmg.dialog.connect('delete-event',quit)
+    tmg.show()
     gtk.main()

@@ -2,25 +2,25 @@
 import os,stat,re,time,StringIO
 from gourmet import keymanager, convert, ImageExtras
 from gourmet.gdebug import debug, TimeAction, print_timer_info
-from gourmet.gglobals import gt, use_threads
 import gourmet.gglobals
 import xml.sax.saxutils
 from gettext import gettext as _
 import gourmet.gtk_extras.dialog_extras as de
 import re
+from gourmet.threadManager import SuspendableThread
 
-class importer:
+class importer (SuspendableThread):
 
     """Base class for all importers. We provide an interface to the recipe database
     for importers to use. Basically, the importer builds up a dictionary of properties inside of
     self.rec and then commits that dictionary with commit_rec(). Similarly, ingredients are built
     as self.ing and then committed with commit_ing()."""
     
-    def __init__ (self, rd, threaded=False, total=0, prog=None, do_markup=True,conv=None,rating_converter=None):
+    def __init__ (self, rd, total=0, prog=None, do_markup=True,conv=None,rating_converter=None,
+                  name='importer'):
         """rd is our recipeData instance. Total is used to keep track of progress
         with function progress. do_markup should be True if instructions and modifications
         come to us unmarked up (i.e. if we need to escape < and &, etc."""
-
         timeaction = TimeAction('importer.__init__',10)
         if not conv: self.conv = convert.Converter()
         self.id_converter = {} # a dictionary for tracking named IDs
@@ -37,7 +37,6 @@ class importer:
         #self.rd.add_hooks = []
         self.position=0
         self.group=None
-        self.threaded=threaded
         # allow threaded calls to pause
         self.suspended = False
         # allow threaded calls to be terminated (this
@@ -59,15 +58,12 @@ class importer:
         else:
             debug('Making new keymanager',2)
             self.km=keymanager.KeyManager(rm=self.rd)
-        if not self.threaded:
-            ## run ourselves, unless we're threaded, in which
-            ## case we'll want to call run explicitly from outside.
-            self.run()
-            self._run_cleanup_()
         timeaction.end()
+        SuspendableThread.__init__(self,
+                                   name=name)
     # end __init__
 
-    def run (self):
+    def do_run (self):
         debug('Running ing hooks',0)
         for i in self.added_ings:
             for h in self.rd_orig_ing_hooks:
@@ -88,16 +84,13 @@ class importer:
 
     def check_for_sleep (self):
         timeaction = TimeAction('importer.check_for_sleep',10)
-        gt.gtk_update()
+        #gt.gtk_update()
         if self.terminated:
             raise gt.Terminated("Importer Terminated!")
         while self.suspended:
-            gt.gtk_update()
+            #gt.gtk_update()
             if self.terminated:
                 raise gt.Terminated("Importer Terminated!")
-            if not use_threads:
-                # we only sleep a little while if we're suspended!
-                time.sleep(0.1)
             else:
                 time.sleep(1)
         timeaction.end()
@@ -195,7 +188,7 @@ class importer:
                     print 'Deleting "image"'
                     del self.rec['image']
                     del self.rec['thumb']                    
-        r = self.rd.add_rec(self.rec)
+        r = self.rd.add_rec(self.rec, accept_ids=True) # See doc on add_rec 
         # Update hash-keys...
         self.rd.update_hashes(r)
         tt.end()
@@ -230,9 +223,14 @@ class importer:
             
     def start_ing (self, **kwargs):
         timeaction = TimeAction('importer.start_ing',10)
-        gt.gtk_update()
+        #gt.gtk_update()
         self.ing=kwargs
-        self.ing['recipe_id']=self.rec['id']
+        if self.ing.has_key('id'):
+            self.ing['recipe_id']=self.ing['id']
+            del self.ing['id']
+            print 'WARNING: setting ingredients ID is deprecated. Assuming you mean to set recipe_id'
+        elif self.rec.has_key('id'):
+            self.ing['recipe_id']=self.rec['id']
         debug('ing ID %s, recipe ID %s'%(self.ing['recipe_id'],self.rec['id']),0)
         timeaction.end()
                  
@@ -288,7 +286,7 @@ class importer:
         """We should NEVER get non-numeric amounts.
         Amounts must contain [/.0-9 ] e.g. 1.2 or 1 1/5
         or 1/3 etc."""
-        gt.gtk_update()
+        #gt.gtk_update()
         self.ing['amount'],self.ing['rangeamount']=parse_range(amount)
         timeaction.end()
 
@@ -372,7 +370,7 @@ class MultipleImporter:
                 self.total_size += size
                 self.sizes[fn]=size
 
-    def run (self):
+    def do_run (self):
         for importer,fn in self.imports:
             ic,args,kwargs = importer
             self.fn = fn

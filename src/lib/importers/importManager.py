@@ -4,6 +4,7 @@ import gourmet.gtk_extras.dialog_extras as de
 from gourmet.recipeManager import default_rec_manager
 import os.path
 from fnmatch import fnmatch
+from gourmet.threadManager import get_thread_manager, get_thread_manager_gui
 
 
 class ImportManager (plugin_loader.Pluggable):
@@ -11,7 +12,11 @@ class ImportManager (plugin_loader.Pluggable):
     '''A class to manage importers.
     '''
 
+    __single = None
+
     def __init__ (self):
+        if ImportManager.__single: raise ImportManager.__single
+        else: ImportManager.__single = self
         self.plugins_by_name = {}
         self.plugins = []
         plugin_loader.Pluggable.__init__(self,
@@ -36,6 +41,7 @@ class ImportManager (plugin_loader.Pluggable):
         while filenames:
             fn = filenames.pop()
             found_plugin = False
+            print 'we have the following plugins:',self.plugins
             for plugin in self.plugins:
                 for pattern in plugin.patterns:
                     print 'Testing ',pattern,'against',fn
@@ -48,9 +54,23 @@ class ImportManager (plugin_loader.Pluggable):
             if not found_plugin: print 'Warning, no plugin found for file ',fn
         for fn,importer_plugin in importers:
             print 'Doing import for ',fn,importer_plugin
-            importer_plugin.do_import(file=fn,
-                                      rd=default_rec_manager(),
-                                      )
+            importer = importer_plugin.get_importer(file=fn,
+                                         rd=default_rec_manager())
+
+            if hasattr(importer,'pre_run'):
+                importer.pre_run()
+            tm = get_thread_manager()
+            tm.add_thread(importer)
+            tmg = get_thread_manager_gui()
+            tmg.register_thread_with_dialog(_('Import') + '('+importer_plugin.name+')',
+                                            importer)
+            tmg.show()
+            
+                                                
+                
+            #importer_plugin.do_import(file=fn,
+            #                          rd=default_rec_manager(),
+            #                          )
         
     def get_importer (self, name):
         return self.plugins_by_name[name]
@@ -76,7 +96,12 @@ class ImportManager (plugin_loader.Pluggable):
         else:
             print 'WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name
     
-
+def get_import_manager ():
+    try:
+        return ImportManager()
+    except ImportManager, im:
+        return im
+    
 if __name__ == '__main__':
     im = ImportManager()
     im.offer_import()

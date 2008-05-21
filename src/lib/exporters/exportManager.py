@@ -1,6 +1,7 @@
 import gourmet.plugin_loader as plugin_loader
 from gourmet.plugin import ExporterPlugin
 import gourmet.gtk_extras.dialog_extras as de
+from gourmet.threadManager import get_thread_manager, get_thread_manager_gui
 import os.path
 
 class ExportManager (plugin_loader.Pluggable):
@@ -8,7 +9,11 @@ class ExportManager (plugin_loader.Pluggable):
     '''A class to manage exporters.
     '''
 
+    __single = None
+
     def __init__ (self):
+        if ExportManager.__single: raise ExportManager.__single
+        else: ExportManager.__single = self
         self.plugins_by_name = {}
         plugin_loader.Pluggable.__init__(self,
                                          [ExporterPlugin]
@@ -50,9 +55,15 @@ class ExportManager (plugin_loader.Pluggable):
             'extra_prefs':extra_prefs,
             })
         outfi.close()
+        import gourmet.GourmetRecipeManager
+        main_app =  gourmet.GourmetRecipeManager.get_application()
+        main_app.offer_url(_('Export complete!'),
+                           _('Recipe exported to %s')%filename,
+                           url='file:///%s'%filename)
         return filename
+    
 
-    def get_multiple_exporter (self, recs, prefs, parent=None, prog=None):
+    def offer_multiple_export (self, recs, prefs, parent=None, prog=None):
         """Offer user a chance to export multiple recipes at once.
 
         Return the exporter class capable of doing this and a
@@ -75,18 +86,25 @@ class ExportManager (plugin_loader.Pluggable):
                 extra_prefs = myexp.run_extra_prefs_dialog() or {}
                 pd_args={'label':myexp.label,'sublabel':myexp.sublabel%{'file':fn}}
                 print 'exporting',len(recs),'recs'
-                exporterClass = myexp.get_multiple_exporter({'rd':self.app.rd,
+                exporterInstance = myexp.get_multiple_exporter({'rd':self.app.rd,
                                                              'rv': recs,
                                                              'conv':self.app.conv,
                                                              'prog':prog,
                                                              'file':fn,
                                                              'extra_prefs':extra_prefs,
                                                              })
-                exporterClass.fn = fn
-                exporterClass.type = exp_type
-                return exporterClass,pd_args
-        else:
-            return None,{}
+                import gourmet.GourmetRecipeManager
+                main_app =  gourmet.GourmetRecipeManager.get_application()
+                tm = get_thread_manager()
+                tmg = get_thread_manager_gui()
+                tm.add_thread(exporterInstance)
+                tmg.register_thread_with_dialog(_('Export')+'('+myexp.label+')',exporterInstance)
+                tmg.show()
+                exporterInstance.connect('completed',
+                                         lambda *args: main_app.offer_url('Export complete!',
+                                                                          'Recipes exported to %s'%fn,
+                                                                          url='file:///%s'%fn))
+                
 
     def can_export_type (self, name): return self.plugins_by_name.has_key(name)
 
@@ -118,3 +136,8 @@ class ExportManager (plugin_loader.Pluggable):
         else:
             print 'WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name
     
+def get_export_manager ():
+    try:
+        return ExportManager()
+    except ExporterManager, em:
+        return em

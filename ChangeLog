@@ -1,4 +1,51 @@
-2008-02-25  Thomas Mills HInkle  <tom@hydrophax>
+2008-05-20  Thomas Mills HInkle  <tom@hydrophax>
+
+	* src/lib/backends/db.py (RecData.initialize_connection): Handle
+	newer sqlalchemy API
+	* src/lib/threadManager.py: Add Terminated exception class
+	* src/lib/GourmetRecipeManager.py: Make use of new threading for
+	export and import
+	* src/lib/gglobals.py: Remove old threading stuff
+	* src/lib/prefs.py: Make Prefs a singleton
+	* src/lib/exporters/exportManager.py: Use threadManager
+	* src/lib/exporters/exporter.py: Use threadManager
+	* src/lib/gtk_extras/dialog_extras.py (ModalDialog.setup_expander):
+	Put expander into a scrolled window so we don't create monstrous
+	dialogs that exceed the screenspace.
+	* src/lib/importers/*: Continue working to port importers to
+	threadManager and to plugins...
+
+2008-04-26  Thomas Mills HInkle  <tmhinkle@gmail.com>
+
+	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter.py (mealmaster_exporter.write_text):
+	Fix from Christopher Donham (#1151150)
+
+2008-04-23  Thomas Mills HInkle  <tmhinkle@gmail.com>
+
+	* src/lib/gtk_extras/dialog_extras.py (ModalDialog.setup_expander):
+	Add expander text in scrolled window in case it's too big to fit
+	in one dialog
+
+2008-03-05  Thomas Mills HInkle  <tmhinkle@gmail.com>
+
+	** Note - I'm half-way through re-implementing importers and
+	import plugins.
+
+	* src/lib/threadManager.py : Create a new module to handle
+	threading (so we can move this out of GourmetRecipeManager.py and
+	handle it more carefully. This will lead to the elimination of
+	GourmetThreads.py and GourmetFauxThreads.py
+
+	* src/lib/importers/__init__.py (Module): Remove importer set-up
+	code from here. It now belongs in the new file name
+	importManager.py
+
+	* src/lib/keymanager.py (get_keymanager): Make KeyManager a singleton.
+
+	* src/lib/GourmetRecipeManager.py (GourmetApplication.__init__):
+	Use new import manager to do imports.
+
+2008-02-25  Thomas Mills HInkle  <tmhinkle@gmail.com>
 
 	* glade/recCardDescriptionEditor.glade: Put recipe card
 	description into its own Glade file (part of UIManager rewrite)
@@ -18,7 +65,7 @@
 	import/export modules. As of this commit, exporters have been
 	fully plugin-a-fied; importers have yet to be converted properly.
 
-2008-02-24  Thomas Mills HInkle  <tom@hydrophax>
+2008-02-24  Thomas Mills HInkle  <tmhinkle@gmail.com>
 
 	* gourmet.desktop.in: This is now the gourmet desktop file (built
 	into an i18n'd version with intltool).
@@ -27,13 +74,13 @@
 	export_plugins.
 	
 	
-2008-01-26  Thomas Mills HInkle  <tom@hydrophax>
+2008-01-26  Thomas Mills HInkle  <tmhinkle@gmail.com>
 
 	* src/lib/gglobals.py: Add our own icons as stock icons.
 	* src/lib/backends/db.py (RecData.get_amount_as_float): Our new
 	SQLAlchemy class can make amounts show up as floats *or* integers.
 
-2008-01-18  Thomas Mills HInkle  <tom@hydrophax>
+2008-01-18  Thomas Mills HInkle  <tmhinkle@gmail.com>
 
 	* setup.py: Proper i18n of desktop file and plugin information files.
 	* gourmet.desktop.in: Proper i18n of desktop file.
@@ -131,18 +178,18 @@
 	"pluggable" (i.e. for adding pre-hooks and post-hooks)
 
 
-2008-01-17  Thomas Mills HInkle  <tom@hydrophax>
+2008-01-17  Thomas Mills HInkle  <tmhinkle@gmail.com>
 
 	* src/lib/gtk_extras/timeEntry.py (make_time_entry): Update
 	function name to new underscore_function_name norm
 
-2008-01-09  Thomas Mills HInkle  <tom@hydrophax>
+2008-01-09  Thomas Mills HInkle  <tmhinkle@gmail.com>
 
 	* src/lib/convertGui.py: 
 
 	* src/lib/recipeMerger.py: 
 
-2008-01-06  Thomas Mills HInkle  <tom@hydrophax>
+2008-01-06  Thomas Mills HInkle  <tmhinkle@gmail.com>
 
 	* glade/recCard.glade (Module): Reorganize glade file as we move
 	more of the UI construction into code and out of glade.
@@ -212,7 +259,7 @@
 	return an integer out of a float field!?!) Fix dbDic.
 
 
-2007-12-28  Thomas Mills HInkle  <tom@hydrophax>
+2007-12-28  Thomas Mills HInkle  <tmhinkle@gmail.com>
 
 	* Everywhere Change names of database tables from views (metakit
 	legacy) to table (current reality). Capitalize all classes.

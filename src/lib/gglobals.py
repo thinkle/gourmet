@@ -243,13 +243,13 @@ else:
                         )
 
 import OptionParser
-use_threads = False
-if use_threads:
-    debug('using GourmetThreads',0)
-    import GourmetThreads as gt
-else:
-    debug('using GourmetFauxThreads',0)    
-    import GourmetFauxThreads as gt
+#use_threads = False
+#if use_threads:
+#    debug('using GourmetThreads',0)
+#    import GourmetThreads as gt
+#else:
+#    debug('using GourmetFauxThreads',0)    
+#    import GourmetFauxThreads as gt
 
 REC_ATTRS = [('title',_('Title'),'Entry'),
              ('category',_('Category'),'Combo'),

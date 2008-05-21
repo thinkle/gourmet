@@ -165,7 +165,11 @@ class RecData (Pluggable):
         self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal') 
         self.db.begin()
         self.metadata = sqlalchemy.MetaData(self.db)
-        self.session = sqlalchemy.create_session()
+        try:
+            self.session = sqlalchemy.orm.create_session()
+        except AttributeError:
+            # older sqlalchemy support
+            self.session = sqlalchemy.create_session()
         #raise NotImplementedError
         def regexp(expr, item):
             if item:
@@ -200,12 +204,13 @@ class RecData (Pluggable):
 
     def _setup_object_for_table (self, table, klass):
         self.__table_to_object__[table] = klass
-        #print 'Mapping ',repr(klass),'->',repr(table)
+        print 'Mapping ',repr(klass),'->',repr(table)
         if True in [col.primary_key for col in table.columns]:
             sqlalchemy.orm.mapper(klass,table)
         else:
             # if there's no primary key...
-            sqlalchemy.orm.mapper(klass,table,primary_key='rowid')
+            sqlalchemy.orm.mapper(klass,table,
+                                  primary_key=[table.oid_column])
 
     @pluggable_method
     def setup_tables (self):
@@ -677,7 +682,24 @@ class RecData (Pluggable):
         table.delete(*delete_args).execute()
 
     def update_by_criteria (self, table, update_criteria, new_values_dic):
-        table.update(*make_simple_select_arg(update_criteria,table)).execute(**new_values_dic)
+        try:
+            to_del = []
+            for k in new_values_dic:
+                if type(k) != str:
+                    to_del.append(k)
+            for k in to_del:
+                v = new_values_dic[k]
+                del new_values_dic[k]
+                new_values_dic[str(k)] = v
+            table.update(*make_simple_select_arg(update_criteria,table)).execute(**new_values_dic)
+        except:
+            print 'update_by_criteria error...'
+            print 'table:',table
+            print 'UPDATE_CRITERIA:'
+            for k,v in update_criteria.items(): print '','KEY:',k,'VAL:',v
+            print 'NEW_VALUES_DIC:'
+            for k,v in new_values_dic.items(): print '','KEY:',k,type(k),'VAL:',v
+            raise
 
     def add_column_to_table (self, table, column_spec):
         """table is a table, column_spec is a tuple defining the
@@ -945,7 +967,13 @@ class RecData (Pluggable):
         self.validate_ingdic(ingdict)
         return self.do_modify_ing(ing,ingdict)
 
-    def add_rec (self, dic):
+    def add_rec (self, dic, accept_ids=False):
+        """Dictionary is a dictionary of column values for our recipe.
+
+        If accept_ids is True, we accept recipes with IDs already
+        set. These IDs need to have been reserved with the new_id()
+        method.
+        """
         cats = []
         if dic.has_key('category'):
             cats = dic['category'].split(', ')
@@ -957,7 +985,8 @@ class RecData (Pluggable):
         try:
             ret = self.do_add_rec(dic)
         except:
-            print 'Problem adding ',dic
+            print 'Problem adding recipe with dictionary...'
+            for k,v in dic.items(): print 'KEY:',k,'VALUE:',v
             raise
         else:
             if type(ret)==int:
@@ -1036,7 +1065,13 @@ class RecData (Pluggable):
 
     def do_modify (self, table, row, d, id_col='id'):
         if id_col:
-            qr = table.update(getattr(table.c,id_col)==getattr(row,id_col)).execute(**d)
+            try:
+                qr = table.update(getattr(table.c,id_col)==getattr(row,id_col)).execute(**d)
+            except:
+                print 'do_modify failed with args'
+                print 'table=',table,'row=',row
+                print 'd=',d,'id_col=',id_col
+                raise
             select = table.select(getattr(table.c,id_col)==getattr(row,id_col))
         else:
             qr = table.update().execute(**d)
@@ -1095,7 +1130,6 @@ class RecData (Pluggable):
         self.delete_by_criteria(self.categories_table,{'recipe_id':rec})
         self.delete_by_criteria(self.ingredients_table,{'recipe_id':rec})
         debug('deleted recipe ID %s'%rec,0)
-        #raise NotImplementedError
 
     def new_rec (self):
         """Create and return a new, empty recipe"""
@@ -1106,7 +1140,8 @@ class RecData (Pluggable):
 
     def new_id (self):
         #raise NotImplementedError("WARNING: NEW_ID IS NO LONGER FUNCTIONAL, FIND A NEW WAY AROUND THE PROBLEM")
-        rec = self.new_rec()
+        #rec = self.new_rec()
+        rec = self.do_add_rec({'deleted':1})
         self.new_ids.append(rec.id)
         return rec.id
     

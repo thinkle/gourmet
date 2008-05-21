@@ -12,29 +12,32 @@ class TextImporter (importer.importer):
 
     end_of_paragraph_length = 60
 
-    def __init__ (self, filename, rd, progress=None, threaded=False,conv=None):
+    def __init__ (self, filename, rd, conv=None):
         self.fn = filename
         self.rec = {}
         self.ing = {}
-        self.progress = progress
         self.compile_regexps()
-        importer.importer.__init__(self,rd,threaded=threaded,conv=conv)
+        importer.importer.__init__(self,rd,conv=conv)
+
+    def pre_run (self):
+        self.lines = check_encodings.get_file(self.fn)
+        self.total = len(self.lines)
+        print 'we have ',self.total,'lines in file',self.fn
         
-    def run (self):
-        ll = check_encodings.get_file(self.fn)
-        tot=len(ll)
-        for n in range(tot):
-            l=ll[n]
-            if self.progress:
-                if n % 15 == 0:
-                    prog = float(n)/float(tot)
-                    msg = _("Imported %s recipes.")%(len(self.added_recs))
-                    self.progress(prog,msg)
+    def do_run (self):
+        if not hasattr(self,'lines'):
+            raise "pre_run has not been run!"
+        for n in range(self.total):
+            l=self.lines[n]
+            if n % 15 == 0:
+                prog = float(n)/float(self.total)
+                msg = _("Imported %s recipes.")%(len(self.added_recs))
+                self.emit('progress',prog,msg)
             self.handle_line(l)
         # commit the last rec if need be
         if self.rec:
             self.commit_rec()
-        importer.importer.run(self)
+        importer.importer.do_run(self)
 
     def handle_line (self):
         raise NotImplementedError

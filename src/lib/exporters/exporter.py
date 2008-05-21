@@ -4,12 +4,13 @@ from gourmet.gdebug import *
 from gettext import gettext as _
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import BaseExporterPlugin, BaseExporterMultiRecPlugin
+from gourmet.threadManager import SuspendableThread
 
 REC_ATTR_DIC = gglobals.REC_ATTR_DIC
 DEFAULT_ATTR_ORDER = gglobals.DEFAULT_ATTR_ORDER
 DEFAULT_TEXT_ATTR_ORDER = gglobals.DEFAULT_TEXT_ATTR_ORDER
 
-class exporter (Pluggable):
+class exporter (SuspendableThread, Pluggable):
     """A base exporter class.
 
     All Gourmet exporters should subclass this class or one of its
@@ -18,6 +19,8 @@ class exporter (Pluggable):
     This class can also be used directly for plain text export.
     """
     DEFAULT_ENCODING = 'utf-8'
+
+    name='exporter'
 
     def __init__ (self, rd, r, out,
                   conv=None,
@@ -28,7 +31,8 @@ class exporter (Pluggable):
                   do_markup=True,
                   use_ml=False,
                   convert_attnames=True,
-                  fractions=convert.FRACTIONS_ASCII
+                  fractions=convert.FRACTIONS_ASCII,
+
                   ):
         """Instantiate our exporter.
 
@@ -47,7 +51,6 @@ class exporter (Pluggable):
                          attribute name staying consistent for processing, since converting attnames
                          will produce locale specific strings.
         """
-        tt = TimeAction('exporter.__init__()',0)
 	self.attr_order=attr_order
         self.text_attr_order = text_attr_order
         self.out = out
@@ -61,25 +64,24 @@ class exporter (Pluggable):
         self.conv=conv
         self.imgcount=imgcount
         self.images = []
-        Pluggable.__init__(self,[BaseExporterPlugin])        
+        self.order = order
+        Pluggable.__init__(self,[BaseExporterPlugin])
+        SuspendableThread.__init__(self,self.name)
+
+    def do_run (self):
         self.write_head()
-        for task in order:
-            t=TimeAction('exporter._write_attrs_()',4)
+        for task in self.order:
             if task=='image':
                 if self._grab_attr_(self.r,'image'):
                     self.write_image(self.r.image)
             if task=='attr':
                 self._write_attrs_()
-                t.end()
-                t=TimeAction('exporter._write_text_()',4)
+
             elif task=='text':
                 self._write_text_()
-                t.end()
-                t=TimeAction('exporter._write_ings_()',4)            
             elif task=='ings': self._write_ings_()
-            t.end()
         self.write_foot()
-        tt.end()
+
 
     # Internal methods -- ideally, subclasses should have no reason to
     # override any of these methods.
@@ -87,7 +89,6 @@ class exporter (Pluggable):
     def _write_attrs_ (self):
         self.write_attr_head()
         for a in self.attr_order:
-            gglobals.gt.gtk_update()
             txt=self._grab_attr_(self.r,a)
             debug('_write_attrs_ writing %s=%s'%(a,txt),1)
             if txt and (
@@ -161,10 +162,8 @@ class exporter (Pluggable):
         ingredients = self.rd.get_ings(self.r)
         if not ingredients:
             return
-        gglobals.gt.gtk_update()
         self.write_inghead()
         for g,ings in self.rd.order_ings(ingredients):
-            gglobals.gt.gtk_update()
             if g:
                 self.write_grouphead(g)            
             for i in ings:
@@ -450,7 +449,9 @@ class exporter_mult (exporter):
             self.out.write(" (%s)"%_("optional"))
         self.out.write("\n")        
 
-class ExporterMultirec (Pluggable):
+class ExporterMultirec (SuspendableThread, Pluggable):
+
+    name = 'Exporter'
 
     def __init__ (self, rd, recipe_table, out, one_file=True,
                   ext='txt',
@@ -469,23 +470,10 @@ class ExporterMultirec (Pluggable):
         self.recipe_table = recipe_table
         self.out = out
         self.padding=padding
-        Pluggable.__init__(self,[BaseExporterMultiRecPlugin])        
-        if not one_file:
-            self.outdir=out
-            if os.path.exists(self.outdir):
-                if not os.path.isdir(self.outdir):
-                    self.outdir=self.unique_name(self.outdir)
-                    os.makedirs(self.outdir)
-            else: os.makedirs(self.outdir)
-        if one_file and type(out)==str:
-            self.ofi=open(out,'wb')
-        else: self.ofi = out
-        self.write_header()
-        self.rcount = 0
-        self.rlen = len(self.recipe_table)
-        self.suspended = False
-        self.terminated = False
-        self.pf = progress_func
+        self.one_file = one_file
+        Pluggable.__init__(self,[BaseExporterMultiRecPlugin])
+        SuspendableThread.__init__(self,self.name)
+        if progress_func: print 'Argument progress_func is obsolete and will be ignored:',progress_func
         self.ext = ext
         self.exporter = exporter
         self.exporter_kwargs = exporter_kwargs
@@ -522,13 +510,27 @@ class ExporterMultirec (Pluggable):
             return ret
         
     @pluggable_method
-    def run (self):
+    def do_run (self):
+        self.rcount = 0
+        self.rlen = len(self.recipe_table)        
+        if not self.one_file:
+            self.outdir=self.out
+            if os.path.exists(self.outdir):
+                if not os.path.isdir(self.outdir):
+                    self.outdir=self.unique_name(self.outdir)
+                    os.makedirs(self.outdir)
+            else: os.makedirs(self.outdir)
+        if self.one_file and type(self.out)==str:
+            self.ofi=open(self.out,'wb')
+        else: self.ofi = self.out
+        self.write_header()
+        self.suspended = False
+        self.terminated = False
         first = True
         for r in self.recipe_table:
             self.check_for_sleep()
-            if self.pf:
-                msg = _("Exported %(number)s of %(total)s recipes")%{'number':self.rcount,'total':self.rlen}
-                self.pf(float(self.rcount)/float(self.rlen), msg)
+            msg = _("Exported %(number)s of %(total)s recipes")%{'number':self.rcount,'total':self.rlen}
+            self.emit('progress',float(self.rcount)/float(self.rlen), msg)
             fn=None
             if not self.one_file:
                 fn=self.generate_filename(r,self.ext,add_id=True)
@@ -536,6 +538,8 @@ class ExporterMultirec (Pluggable):
             if self.padding and not first:
                 self.ofi.write(self.padding)
             e=self.exporter(out=self.ofi, r=r, rd=self.rd, **self.exporter_kwargs)
+            self.connect_subthread(e)
+            e.do_run()
             self.recipe_hook(r,fn,e)
             if not self.one_file:
                 self.ofi.close()
@@ -545,7 +549,7 @@ class ExporterMultirec (Pluggable):
         if self.one_file:
             self.ofi.close()
         self.timer.end()
-        if self.pf: self.pf(1,_("Export complete."))
+        self.emit('progress',1,_("Export complete."))
         print_timer_info()
 
     @pluggable_method
@@ -602,11 +606,9 @@ class ExporterMultirec (Pluggable):
             return filename
 
     def check_for_sleep (self):
-        gglobals.gt.gtk_update()
         if self.terminated:
             raise "Exporter Terminated!"
         while self.suspended:
-            gglobals.gt.gtk_update()
             if self.terminated:
                 debug('Thread Terminated!',0)
                 raise "Exporter Terminated!"
