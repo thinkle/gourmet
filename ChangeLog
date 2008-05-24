@@ -1,4 +1,11 @@
-2008-05-20  Thomas Mills HInkle  <tom@hydrophax>
+2008-05-24  Thomas Mills Hinkle  <tmhinkle@gmail.com>
+
+	* setup.py (result): Change location of import/export plugins.
+	* src/lib/reccard.py (RecCardDisplay.update_image): Show/hide
+	image when image has been created or removed.
+	(ImageBox.commit): Fix typo that raised error.
+
+2008-05-20  Thomas Mills HInkle  <tmhinkle@gmail.com>
 
 	* src/lib/backends/db.py (RecData.initialize_connection): Handle
 	newer sqlalchemy API

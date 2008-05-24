@@ -487,7 +487,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
             self.imageDisplay.set_from_pixbuf(
                 self.orig_pixbuf
                 )
-
+            self.imageDisplay.show()
+            
     def update_servings_display (self):
         self.serves_orig=self.current_rec.servings
         try:
@@ -1250,15 +1251,15 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         self.delW.hide()
         self.addW.show()
         return True
-        
+
     def commit (self):
         debug("commit (self):",5)
         """Return image and thumbnail data suitable for storage in the database"""
         if self.image:
-            self.imageD.show()
+            self.imageW.show()
             return ie.get_string_from_image(self.image),ie.get_string_from_image(self.thumb)
         else:
-            self.imageD.hide()
+            self.imageW.hide()
             return '',''
     
     def draw_image (self):
@@ -1290,7 +1291,6 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         pb=ie.get_pixbuf_from_jpg(string)
         self.imageW.set_from_pixbuf(pb)
         self.orig_pixbuf = pb
-        #self.imageD.set_from_pixbuf(pb)
         self.show_image()
 
     def set_from_file (self, file):
