@@ -17,7 +17,7 @@ from ImageExtras import get_pixbuf_from_jpg
 from gdebug import *
 from gglobals import *
 from recindex import RecIndex
-import exporters.recipe_emailer as recipe_emailer
+#import exporters.recipe_emailer as recipe_emailer
 import locale, gettext
 from timer import show_timer
 _ = gettext.gettext
@@ -763,11 +763,6 @@ class ImporterExporter:
         gt.gtk_leave()
 
     def import_webpageg (self, *args):
-        if not use_threads and self.lock.locked_lock():
-            de.show_message(label=_('An import, export or deletion is running'),
-                            sublabel=_('Please wait until it is finished to start your import.')
-                            )
-            return
         import importers.html_importer
         sublabel = _('Enter the URL of a recipe archive or recipe website.')
         url = de.getEntry(label=_('Enter website address.'),
@@ -819,9 +814,9 @@ class ImporterExporter:
                               sublabel=_("""Gourmet was unable to retrieve the site %s. Are you sure your internet connection is working?  If you can retrieve the site with a webbrowser but continue to get this error, please submit a bug report at %s.""")%(url,BUG_URL)
                               )
             raise
-        except gt.Terminated:
-            if self.threads > 0: self.threads = self.threads - 1
-            self.lock.release()
+        #except gt.Terminated:
+        #    if self.threads > 0: self.threads = self.threads - 1
+        #    self.lock.release()
         except:
             self.hide_progress_dialog()
             de.show_traceback(
@@ -1093,12 +1088,12 @@ class StuffThatShouldBePlugins:
         self.ve.valueDialog.connect('response',lambda d,r: (r==gtk.RESPONSE_APPLY and self.update_attribute_models))
         self.ve.show()
 
-    def email_recs (self, *args):
-        debug('email_recs called!',1)
-        recs = self.get_selected_recs_from_rec_tree()
-        d=recipe_emailer.EmailerDialog(recs, self.rd, self.prefs, self.conv)
-        d.setup_dialog()
-        d.email()
+    #def email_recs (self, *args):
+    #    debug('email_recs called!',1)
+    #    recs = self.get_selected_recs_from_rec_tree()
+    #    d=recipe_emailer.EmailerDialog(recs, self.rd, self.prefs, self.conv)
+    #    d.setup_dialog()
+    #    d.email()
 
 ui = '''<ui>
 <menubar name="RecipeIndexMenuBar">
@@ -1110,7 +1105,9 @@ ui = '''<ui>
     <menuitem action="ExportSelected"/>
     <menuitem action="ExportAll"/>
     <separator/>
-    <menuitem action="Email"/>    
+    <placeholder name="FileMenuTool"/>
+    <separator/>
+    <!-- <menuitem action="Email"/> -->
     <menuitem action="Print"/>
     <separator/>
     <menuitem action="Quit"/>
@@ -1268,8 +1265,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
              None,_('Export selected recipes to file'),self.export_selected_recs),
             ('Print',gtk.STOCK_PRINT,_('_Print'),
              '<Control>P',None,self.print_recs),
-            ('Email', None, _('E-_mail recipes'),
-             None,None,self.email_recs),
+            #('Email', None, _('E-_mail recipes'),
+            # None,None,self.email_recs),
             ('BatchEdit',None,_('Batch _edit recipes'),
              '<Control>E',None,self.batch_edit_recs),
             ('ShopRec','add-to-shopping-list',None,None,None,self.shop_recs)

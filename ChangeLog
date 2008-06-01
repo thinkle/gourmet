@@ -1,3 +1,10 @@
+2008-06-01  Thomas Hinkle   <tmhinkle@gmail.com>
+
+	* src/lib/reccard.py (RecCardDisplay.ui): Remove e-mail
+	stuff (this will be reimplemented as a plugin).
+	* src/lib/GourmetRecipeManager.py: Remove all e-mail stuff (this
+	will be reimplemented in a plugin).
+
 2008-05-24  Thomas Mills Hinkle  <tmhinkle@gmail.com>
 
 	* setup.py (result): Change location of import/export plugins.
