@@ -1,5 +1,25 @@
 2008-06-01  Thomas Hinkle   <tmhinkle@gmail.com>
 
+	* src/lib/plugins/duplicate_finder/recipeMergerPlugin.py: Get rid
+	of all GourmetThreads calls (as we plan to delete that module).
+
+	* src/lib/importers/importManager.py (ImportManager.offer_import):
+	Call make_rec_visible when we're done importing to show newly
+	imported recipes.
+
+	* src/lib/version.py (copyright): ++ last 2 years
+
+	* src/lib/gglobals.py: Get rid of attempts to use gnomevfs
+
+	* setup.py: Remove obsolete nutrition module
+
+	* create_manifest.py: Create a script to generate a MANIFEST
+	automatically (this is what MANIFEST.in should do, but trying to
+	use MANIFEST.in was turning into a living hell, so I gave up and
+	hand-coded a script to do the job more easily)
+	* test_tarball.sh: Add call to new MANIFEST-generating script +
+	clear out old directories from /tmp/ before starting.
+
 	* src/lib/reccard.py (RecCardDisplay.ui): Remove e-mail
 	stuff (this will be reimplemented as a plugin).
 	* src/lib/GourmetRecipeManager.py: Remove all e-mail stuff (this

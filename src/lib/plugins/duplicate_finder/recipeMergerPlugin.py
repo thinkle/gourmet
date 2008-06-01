@@ -1,8 +1,8 @@
 from gourmet.plugin import ToolPlugin
 import gtk
 import recipeMerger
-from gourmet.gglobals import gt # for threading protection on import
-                                # hooks
+#from gourmet.gglobals import gt # for threading protection on import
+#                                # hooks
 from gourmet.plugin_loader import PRE,POST
 
 class RecipeMergerPlugin (ToolPlugin):
@@ -28,7 +28,7 @@ class RecipeMergerPlugin (ToolPlugin):
 
     def import_cleanup_hook (self, rg, retval, *args, **kwargs):
         # Check for duplicates
-        gt.gtk_enter()
+        #gt.gtk_enter()
         if rg.last_impClass and rg.last_impClass.added_recs:
             rmd = recipeMerger.RecipeMergerDialog(
                 rg.rd,
@@ -38,7 +38,7 @@ class RecipeMergerPlugin (ToolPlugin):
             rmd.show_if_there_are_dups(
                 label=_('Some of the imported recipes appear to be duplicates. You can merge them here, or close this dialog to leave them as they are.')
                 )
-        gt.gtk_leave()
+        #gt.gtk_leave()
     
     def setup_action_groups (self):
         self.action_group = gtk.ActionGroup('RecipeMergerPluginActionGroup')

@@ -124,7 +124,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
        <menubar name="RecipeDisplayMenuBar">
           <menu name="Recipe" action="Recipe">
             <menuitem action="Export"/>
-            <menuitem action="Email"/>
+            <!-- <menuitem action="Email"/> -->
             <menuitem action="Print"/>
             <separator/>
             <menuitem action="Delete"/>
@@ -210,8 +210,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
                                                        )
         self.recipeDisplayFuturePluginActionGroup = gtk.ActionGroup('RecipeDisplayFuturePluginActions')
         self.recipeDisplayFuturePluginActionGroup.add_actions([
-            ('Email',None,_('E-_mail recipe'),
-             None,None,self.email_cb),
+            #('Email',None,_('E-_mail recipe'),
+            # None,None,self.email_cb),
             ('Print',gtk.STOCK_PRINT,_('Print recipe'),
              None,None,self.print_cb),
             ('ForgetRememberedOptionals',None,_('Forget remembered optional ingredients'),
@@ -555,16 +555,16 @@ class RecCardDisplay (plugin_loader.Pluggable):
         return True
 
     # Future plugin callbacks
-    def email_cb (self, *args):
-        if self.reccard.edited:
-            if de.getBoolean(label=_("You have unsaved changes."),
-                             sublabel=_("Apply changes before e-mailing?")):
-                self.saveEditsCB()
-        from exporters import recipe_emailer
-        d=recipe_emailer.EmailerDialog([self.current_rec],
-                                       self.rg.rd, self.prefs, self.rg.conv)
-        d.setup_dialog()
-        d.email()        
+    # def email_cb (self, *args):
+#         if self.reccard.edited:
+#             if de.getBoolean(label=_("You have unsaved changes."),
+#                              sublabel=_("Apply changes before e-mailing?")):
+#                 self.saveEditsCB()
+#         from exporters import recipe_emailer
+#         d=recipe_emailer.EmailerDialog([self.current_rec],
+#                                        self.rg.rd, self.prefs, self.rg.conv)
+#         d.setup_dialog()
+#         d.email()        
 
     def print_cb (self, *args):
         if self.reccard.edited:

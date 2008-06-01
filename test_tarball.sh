@@ -1,3 +1,6 @@
+python create_manifest.py
+echo Clear out previous tests from tmp/ to avoid confusion
+sudo rm -rf /tmp/gourmet-*
 echo Run python setup.py sdist
 python setup.py sdist
 echo setup.py done

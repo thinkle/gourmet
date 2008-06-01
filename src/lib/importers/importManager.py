@@ -6,7 +6,6 @@ import os.path
 from fnmatch import fnmatch
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui
 
-
 class ImportManager (plugin_loader.Pluggable):
 
     '''A class to manage importers.
@@ -65,9 +64,12 @@ class ImportManager (plugin_loader.Pluggable):
             tmg.register_thread_with_dialog(_('Import') + '('+importer_plugin.name+')',
                                             importer)
             tmg.show()
-            
-                                                
-                
+            def follow_up ():
+                from gourmet.GourmetRecipeManager import get_application
+                get_application().make_rec_visible()
+            importer.connect('completed',
+                             follow_up
+                             )
             #importer_plugin.do_import(file=fn,
             #                          rd=default_rec_manager(),
             #                          )

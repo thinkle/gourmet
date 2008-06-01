@@ -177,7 +177,6 @@ result = setup(
                 'gourmet.legacy_db',
                 'gourmet.legacy_db.db_085',
                 'gourmet.legacy_db.db_09',
-                'gourmet.nutrition',
                 'gourmet.plugins',
                 'gourmet.plugins.duplicate_finder',
                 'gourmet.plugins.key_editor',
@@ -194,3 +193,4 @@ result = setup(
     scripts = [script],
     cmdclass={'install_data' : my_install_data},
     )
+

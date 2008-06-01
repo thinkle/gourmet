@@ -1,32 +1,31 @@
-try:
-    import gnomevfs
-    import AASOIUQWE
-    # Okay, actually gnomevfs sucks so we'll put this off for
-    # now. Among other problems, gnomevfs Handlers don't really behave
-    # like proper file objects.
-except ImportError:
-    vfs_available = False
-    open = open
-    import os.path; os
-    exists = os.path.exists
-    makedirs = os.makedirs
-else:
-    vfs_available = True
-    def exists (fn):
-        return gnomevfs.exists(fn)
-    def open (fn, mode='r'):
-        if mode and mode[0]=='w':
-            if not exists(fn):
-                return gnomevfs.create(fn,gnomevfs.OPEN_WRITE)
-            else:
-                return gnomevfs.open(fn,gnomevfs.OPEN_WRITE)
-        else:
-            if mode != 'r':
-                print 'WARNING, treating open mode %s as gnomevfs OPEN_READ'%mode
-            return gnomevfs.open(fn,gnomevfs.OPEN_READ)
-    def makedirs (path):
-        gnomevfs.make_directory(path,gnomevfs.PERM_USER_ALL)
-        
+#try:
+#    import gnomevfs
+#    import AASOIUQWE
+#    # Okay, actually gnomevfs sucks so we'll put this off for
+#    # now. Among other problems, gnomevfs Handlers don't really behave
+#    # like proper file objects.
+#except ImportError:
+vfs_available = False
+open = open
+import os.path; os
+exists = os.path.exists
+makedirs = os.makedirs
+#else:
+#    vfs_available = True
+#    def exists (fn):
+#        return gnomevfs.exists(fn)
+#    def open (fn, mode='r'):
+#        if mode and mode[0]=='w':
+#            if not exists(fn):
+#                return gnomevfs.create(fn,gnomevfs.OPEN_WRITE)
+#            else:
+#                return gnomevfs.open(fn,gnomevfs.OPEN_WRITE)
+#        else:
+#            if mode != 'r':
+#                print 'WARNING, treating open mode %s as gnomevfs OPEN_READ'%mode
+#            return gnomevfs.open(fn,gnomevfs.OPEN_READ)
+#    def makedirs (path):
+#        gnomevfs.make_directory(path,gnomevfs.PERM_USER_ALL)
     
 import os, os.path, gobject, re, gtk, gtk.glade
 import tempfile
