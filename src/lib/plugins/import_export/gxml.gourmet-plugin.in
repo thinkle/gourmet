@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module = gxml_plugin
+Version = 1.0
+API_Version = 1.0
+_Name = Gourmet XML Export
+_Comment = Export recipes as Gourmet XML files, suitable for backup or exchange with other Gourmet users.
+_Category = Importer/Exporter
+Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>
