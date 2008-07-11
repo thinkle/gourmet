@@ -61,7 +61,7 @@ class Mx2Cleaner:
                 pass
         raise "Could not encode %s"%l
         
-class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
+class MastercookXMLHandler (xml.sax.ContentHandler, importer.Importer):
     """We handle MasterCook XML Files"""
     def __init__ (self, recData, source=None, progress=None, conv=None):
         debug('MastercookXMLHandler starting',0)
@@ -90,7 +90,7 @@ class MastercookXMLHandler (xml.sax.ContentHandler, importer.importer):
         self.current_elements = []
         self.bufs = []
         xml.sax.ContentHandler.__init__(self)
-        importer.importer.__init__(self,rd=recData,prog=self.progress,conv=conv)
+        importer.Importer.__init__(self,rd=recData,prog=self.progress,conv=conv)
 
     def grabattr (self, attrs, name, default=''):
         return unquoteattr(attrs.get(name,default))

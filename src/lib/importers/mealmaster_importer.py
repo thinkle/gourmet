@@ -264,7 +264,7 @@ class mmf_importer (plaintext_importer.TextImporter):
         self.parse_inglist()
         if self.source:
             self.rec['source']=self.source
-        importer.importer.commit_rec(self)
+        importer.Importer.commit_rec(self)
         # blank rec
         self.committed = True
         self.in_variation=False
@@ -425,7 +425,7 @@ class mmf_importer (plaintext_importer.TextImporter):
         unit = unit.strip()
         if self.mmf.unit_conv.has_key(unit):
             unit = self.mmf.unit_conv[unit]
-        importer.importer.add_unit(self,unit)
+        importer.Importer.add_unit(self,unit)
         testtimer.end()
 
 def split_fields (strings, char=" "):

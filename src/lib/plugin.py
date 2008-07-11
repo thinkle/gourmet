@@ -75,15 +75,10 @@ class ImporterPlugin (StandardPlugin):
         '''Test whether filename is an instance of this type.'''
         return True
 
-    def do_import (self, kwargs):
-        """Import based on arguments.
+    def get_importer (self, filename):
+        """Return an importer class for filename.
 
-        kwargs is a dictionary containing a number of parameters we're
-        likely to want:
-
-        kwargs['file'] => filename
-        kwargs['rd'] => recipe database object
-        kwargs['threaded'] => A boolean telling us if we're running in a separate thread
+        rd is our recipe database object.
         """
         raise NotImplementedError
 

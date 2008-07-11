@@ -3,32 +3,68 @@ import os,stat,re,time,StringIO
 from gourmet import keymanager, convert, ImageExtras
 from gourmet.gdebug import debug, TimeAction, print_timer_info
 import gourmet.gglobals
+from gourmet.recipeManager import get_recipe_manager # for getting out database...
 import xml.sax.saxutils
 from gettext import gettext as _
 import gourmet.gtk_extras.dialog_extras as de
 import re
 from gourmet.threadManager import SuspendableThread
 
-class importer (SuspendableThread):
+# Convenience functions
+
+def string_to_rating (s):
+    m = simple_matcher.match(s)
+    if m:
+        top=float(convert.frac_to_float(m.groups()[0]))
+        bottom = float(convert.frac_to_float(m.groups()[2]))
+        return int(top/bottom * 10)
+
+def add_to_fn (fn):
+    '''Add 1 to a filename.'''
+    f,e=os.path.splitext(fn)
+    try:
+        f,n=os.path.splitext(f)
+        n = int(n[1:])
+        n += 1
+        return f + "%s%s"%(os.path.extsep,n) + e
+    except:
+        return f + "%s1"%os.path.extsep + e
+
+class Importer (SuspendableThread):
 
     """Base class for all importers. We provide an interface to the recipe database
     for importers to use. Basically, the importer builds up a dictionary of properties inside of
     self.rec and then commits that dictionary with commit_rec(). Similarly, ingredients are built
     as self.ing and then committed with commit_ing()."""
     
-    def __init__ (self, rd, total=0, prog=None, do_markup=True,conv=None,rating_converter=None,
+    def __init__ (self,
+                  rd = None, # OBSOLETE
+                  total=0,
+                  prog=None, # OBSOLETE
+                  do_markup=True,conv=None,rating_converter=None,
                   name='importer'):
-        """rd is our recipeData instance. Total is used to keep track of progress
-        with function progress. do_markup should be True if instructions and modifications
-        come to us unmarked up (i.e. if we need to escape < and &, etc."""
+        """rd is our recipeData instance.
+
+        Total is used to keep track of progress.
+
+        do_markup should be True if instructions and modifications
+        come to us unmarked up (i.e. if we need to escape < and &,
+        etc. -- this might be False if importing e.g. XML).
+        """
+
         timeaction = TimeAction('importer.__init__',10)
         if not conv: self.conv = convert.Converter()
         self.id_converter = {} # a dictionary for tracking named IDs
         self.total = total
-        self.prog = prog
+        if prog or rd:
+            import traceback; traceback.print_stack()
+            if prog:
+                print 'WARNING: ',self,'handed obsolete parameter prog=',prog
+            if rd:
+                print 'WARNING: ',self,'handed obsolete parameter rd=',rd
         self.do_markup=do_markup
         self.count = 0
-        self.rd=rd
+        self.rd = get_recipe_manager()
         self.rd_orig_ing_hooks = self.rd.add_ing_hooks
         self.added_recs=[]
         self.added_ings=[]
@@ -198,11 +234,13 @@ class importer (SuspendableThread):
         timeaction.end()
         self.rec_timer.end()
         self.count += 1
-        if self.prog and self.total:
-            self.prog(float(self.count)/self.total,
-                      _("Imported %s of %s recipes."%(self.count,self.total))
-                      )
-
+        if self.total:
+            self.emit(
+                'progress',
+                float(self.count)/self.total,
+                _("Imported %s of %s recipes.")%(self.count,self.total)
+                )
+                      
     def convert_servings (self, str):
         """Return a numerical servings value"""
         timeaction = TimeAction('importer.convert_servings',10)
@@ -337,12 +375,6 @@ simple_matcher = re.compile(
     '(%(NUMBER_REGEXP)s+)\s*/\s*([\d]+)'%locals()
     )
 
-def string_to_rating (s):
-    m = simple_matcher.match(s)
-    if m:
-        top=float(convert.frac_to_float(m.groups()[0]))
-        bottom = float(convert.frac_to_float(m.groups()[2]))
-        return int(top/bottom * 10)
 
 class MultipleImporter:
     def __init__ (self,grm,imports):

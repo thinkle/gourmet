@@ -200,14 +200,14 @@ class mastercook_importer (plaintext_importer.TextImporter):
             return
         key_base = self.ing['item'].split('--')[0]
         self.ing['ingkey']=self.km.get_key_fast(key_base)
-        importer.importer.commit_ing(self)
+        importer.Importer.commit_ing(self)
         self.ing = {}
 
     def commit_rec (self):
         ll=self.instr.split('\n')        
         self.rec['instructions']=self.unwrap_lines(self.instr)
         self.rec['modifications']=self.unwrap_lines(self.mods)
-        importer.importer.commit_rec(self)
+        importer.Importer.commit_rec(self)
         
 class Tester (importer.Tester):
     def __init__ (self):

@@ -4,11 +4,11 @@ from gourmet.gdebug import *
 from gourmet.gglobals import *
 from gourmet.threadManager import SuspendableThread
 
-class RecHandler (xml.sax.ContentHandler, importer.importer):
+class RecHandler (xml.sax.ContentHandler, importer.Importer):
     def __init__ (self, recData, total=None, prog=None, conv=None, parent_thread=None):
         self.elbuf = ""
         xml.sax.ContentHandler.__init__(self)
-        importer.importer.__init__(self,rd=recData,total=total,prog=prog,
+        importer.Importer.__init__(self,rd=recData,total=total,prog=prog,
                                    do_markup=False, conv=conv)
         self.parent_thread = parent_thread
         self.check_for_sleep = parent_thread.check_for_sleep
@@ -22,7 +22,7 @@ class RecHandler (xml.sax.ContentHandler, importer.importer):
 
     
 
-class converter (importer.importer):
+class converter (importer.Importer):
     def __init__ (self, filename, rd, recHandler, recMarker=None, threaded=False, progress=None,
                   conv=None, name='XML Importer'):
 
@@ -54,7 +54,7 @@ class converter (importer.importer):
         self.suspend = self.rh.suspend
         self.resume = self.rh.resume
         self.name = name
-        importer.importer.__init__(self,rd,name=name)
+        importer.Importer.__init__(self,rd,name=name)
 
     def do_run (self):
         # count the recipes in the file        
@@ -71,5 +71,5 @@ class converter (importer.importer):
         t.end()
         self.rh.total=recs
         self.parse = xml.sax.parse(self.fn, self.rh)
-        importer.importer._run_cleanup_(self.rh)
+        importer.Importer._run_cleanup_(self.rh)
         

@@ -3,7 +3,7 @@ from gourmet import check_encodings
 from gourmet.gdebug import *
 from gettext import gettext as _
 
-class TextImporter (importer.importer):
+class TextImporter (importer.Importer):
     ATTR_DICT = {'Recipe By':'source',
                  'Serving Size':'servings',
                  'Preparation Time':'preptime',
@@ -12,12 +12,12 @@ class TextImporter (importer.importer):
 
     end_of_paragraph_length = 60
 
-    def __init__ (self, filename, rd, conv=None):
+    def __init__ (self, filename, conv=None):
         self.fn = filename
         self.rec = {}
         self.ing = {}
         self.compile_regexps()
-        importer.importer.__init__(self,rd,conv=conv)
+        importer.Importer.__init__(self,conv=conv)
 
     def pre_run (self):
         self.lines = check_encodings.get_file(self.fn)
@@ -37,7 +37,7 @@ class TextImporter (importer.importer):
         # commit the last rec if need be
         if self.rec:
             self.commit_rec()
-        importer.importer.do_run(self)
+        importer.Importer.do_run(self)
 
     def handle_line (self):
         raise NotImplementedError

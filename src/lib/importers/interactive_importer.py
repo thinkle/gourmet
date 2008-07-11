@@ -309,7 +309,7 @@ class SimpleGladeApp:
 
 # End copied material
 
-class ConvenientImporter (importer.importer):
+class ConvenientImporter (importer.Importer):
     """Add some convenience methods to our standard importer.
     """
     started=False

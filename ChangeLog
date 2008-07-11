@@ -1,5 +1,37 @@
+2008-07-08  Thomas Mills HInkle  <tom@hydrophax>
+
+	* src/lib/importers/importManager.py (ImportFileList): Add a way
+	to handle an importer calling more importers -- specifically, we
+	allow ourselves to raise an exception that contains a list of
+	files, thus circumventing any threading problems that would happen
+	from calling importManager methods within an importer.
+
+	* src/lib/plugin.py (ImporterPlugin.get_importer): Update method
+	name in accordance with actual usage (we return an importer class
+	rather than doing the import here, so the import manager can
+	handle threading etc.
+
+	* src/lib/importers/plaintext_importer.py (TextImporter.__init__):
+	Remove rd argument from TextImporter.
+
+	* src/lib/plugins/import_export/ Add mealmaster plugin to cvs. Add
+	plugin to handle zip archives and tarballs.
+
+	* src/lib/recipeManager.py (get_recipe_manager): Add
+	get_recipe_manager name as alias for poorly named
+	default_rec_manager (the right thing would be just to replace the
+	name, but I'm lazy just now)
+
+	* src/lib/importers/importer.py (Importer): Rename class Importer
+	in accord with conventions. Remove rd argument (as we move to
+	singleton pattern to handle this). Remove prog arguments (as we
+	move to SuspendableThread to handle this). Move convenience
+	function add_to_fn to this file
+
 2008-06-01  Thomas Hinkle   <tmhinkle@gmail.com>
 
+	* Release 0.14.0
+	
 	* src/lib/plugins/duplicate_finder/recipeMergerPlugin.py: Get rid
 	of all GourmetThreads calls (as we plan to delete that module).
 

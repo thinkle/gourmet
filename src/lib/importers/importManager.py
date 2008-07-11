@@ -5,6 +5,16 @@ from gourmet.recipeManager import default_rec_manager
 import os.path
 from fnmatch import fnmatch
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui
+from zip_importer import archive_to_filelist
+
+class ImportFileList (Exception):
+    """A special case error -- if an importer throws this error
+    instead of returning an importer, our importer will import the
+    list of files returned... This is basically a thread-safe way
+    around the problem of how to let an importer initiate other
+    imports (for zip files etc)"""
+    def __init__ (self, filelist):
+        self.filelist = filelist
 
 class ImportManager (plugin_loader.Pluggable):
 
@@ -36,7 +46,14 @@ class ImportManager (plugin_loader.Pluggable):
                                    select_multiple = True
                                    )
         if not filenames: return
-        importers = []
+
+        self.import_filenames(filenames)
+        
+    def import_filenames (self, filenames):
+        """Import list of filenames, filenames, based on our currently
+        registered plugins...
+        """
+        importers = []        
         while filenames:
             fn = filenames.pop()
             found_plugin = False
@@ -53,26 +70,29 @@ class ImportManager (plugin_loader.Pluggable):
             if not found_plugin: print 'Warning, no plugin found for file ',fn
         for fn,importer_plugin in importers:
             print 'Doing import for ',fn,importer_plugin
-            importer = importer_plugin.get_importer(file=fn,
-                                         rd=default_rec_manager())
-
-            if hasattr(importer,'pre_run'):
-                importer.pre_run()
-            tm = get_thread_manager()
-            tm.add_thread(importer)
-            tmg = get_thread_manager_gui()
-            tmg.register_thread_with_dialog(_('Import') + '('+importer_plugin.name+')',
-                                            importer)
-            tmg.show()
-            def follow_up ():
-                from gourmet.GourmetRecipeManager import get_application
-                get_application().make_rec_visible()
-            importer.connect('completed',
-                             follow_up
-                             )
-            #importer_plugin.do_import(file=fn,
-            #                          rd=default_rec_manager(),
-            #                          )
+            try:
+                importer = importer_plugin.get_importer(fn)
+            except ImportFileList, ifl:
+                # recurse with new filelist...
+                self.import_filenames(ifl.filelist)
+            else:
+                if hasattr(importer,'pre_run'):
+                    importer.pre_run()
+                tm = get_thread_manager()
+                tm.add_thread(importer)
+                tmg = get_thread_manager_gui()
+                tmg.register_thread_with_dialog(_('Import') + '('+importer_plugin.name+')',
+                                                importer)
+                tmg.show()
+                def follow_up ():
+                    from gourmet.GourmetRecipeManager import get_application
+                    get_application().make_rec_visible()
+                importer.connect('completed',
+                                 follow_up
+                                 )
+                #importer_plugin.do_import(file=fn,
+                #                          rd=default_rec_manager(),
+                #                          )
         
     def get_importer (self, name):
         return self.plugins_by_name[name]

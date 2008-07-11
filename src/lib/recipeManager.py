@@ -129,6 +129,8 @@ def default_rec_manager ():
     except RecData,rd:
         return rd
 
+get_recipe_manager = default_rec_manager # better function name...
+
 if __name__ == '__main__':
     #rm = RecipeManager(**dbargs)
     rm = RecipeManager(file='/tmp/0112/recipes.db')
