@@ -26,7 +26,7 @@
 #
 #
 from gettext import gettext as _
-import threading, gtk, gobject, time
+import threading, gtk, pango, gobject, time
 gobject.threads_init()
 
 # _IdleObject etc. based on example John Stowers
@@ -55,9 +55,6 @@ class SuspendableThread (threading.Thread, _IdleObject):
 
     """A class for long-running processes that shouldn't interrupt the
     GUI.
-
-    runnerClass will handle the actual process. runnerClass cannot
-    touch the GUI. To interact with the GUI, emit a signal.
     """
 
     __gsignals__ = {
@@ -150,7 +147,14 @@ class SuspendableThread (threading.Thread, _IdleObject):
             return threading.Thread.__repr__(self)
         except AssertionError:
             return '<SuspendableThread %s - uninitialized>'%self.name
-        
+
+class NotThreadSafe:
+
+    """Subclasses of this do things that are not thread safe. An error
+    will be raised if an object that is an instance of this class is
+    added to a thread manager.
+    """
+    pass
 
 class ThreadManager:
 
@@ -171,6 +175,8 @@ class ThreadManager:
         except AssertionError:
             print 'Class',thread,type(thread),'is not a SuspendableThread'
             raise
+        if isinstance(thread,NotThreadSafe):
+            raise TypeError("Thread %s is NotThreadSafe"%thread)
         self.threads.append(thread)
         thread.connect('pause',self.register_thread_paused)
         thread.connect('resume',self.register_thread_resume)
@@ -253,11 +259,11 @@ class ThreadManagerGui:
             self.close()
         
     def register_thread_with_dialog (self, description, thread):
-        pb = gtk.ProgressBar()
+        pb = gtk.ProgressBar(); pb.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         pause_button = gtk.ToggleButton();
         lab = gtk.Label(_('Pause'))
         pause_button.add(lab); pause_button.show_all()
-        dlab = gtk.Label(description)
+        dlab = gtk.Label(description); dlab.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         cancel_button = gtk.Button(stock=gtk.STOCK_CANCEL)
         self.pbtable.attach(dlab,0,3,self.last_row,self.last_row+1)
         self.pbtable.attach(pb,0,1,self.last_row+1,self.last_row+2)

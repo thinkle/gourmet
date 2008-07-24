@@ -374,6 +374,10 @@ class RecData (Pluggable):
         If necessary, we'll do some version-dependent updates to the GUI
         """
         stored_info = self.fetch_one(self.info_table)
+        version = [s for s in version_string.split('.')]
+        current_super = int(version[0])
+        current_major = int(version[1])
+        current_minor = int(version[2])
         if not stored_info or not stored_info.version_major:
             # Default info -- the last version before we added the
             # version tracker...
@@ -381,18 +385,22 @@ class RecData (Pluggable):
                              'version_major':11,
                              'version_minor':0}
             if not stored_info:
-                self.do_add(self.info_table,
-                            default_info)
+                if not self.new_db:
+                    self.do_add(self.info_table,
+                                default_info)
+                else:
+                    self.do_add(self.info_table,
+                                {'version_super':current_super,
+                                 'version_major':current_major,
+                                 'version_minor':current_minor,}
+                                )
             else:
                 self.do_modify(
                     self.info_table,
                     stored_info,
                     default_info)
             stored_info = self.fetch_one(self.info_table)            
-        version = [s for s in version_string.split('.')]
-        current_super = int(version[0])
-        current_major = int(version[1])
-        current_minor = int(version[2])
+        
         ### Code for updates between versions...
         
         if not self.new_db:
@@ -483,11 +491,11 @@ class RecData (Pluggable):
                                 )
                 # Add hash values to identify all recipes...
                 for r in self.fetch_all(self.recipe_table): self.update_hashes(r)
-        for plugin in self.plugins:
-            plugin.update_version(
-                (stored_info.version_super,stored_info.version_major,stored_info.version_minor),
-                (current_super,current_major,current_minor)
-                )
+            for plugin in self.plugins:
+                plugin.update_version(
+                    (stored_info.version_super,stored_info.version_major,stored_info.version_minor),
+                    (current_super,current_major,current_minor)
+                    )
         ### End of code for updates between versions...
         if (current_super!=stored_info.version_super
             or
@@ -1453,6 +1461,7 @@ class RecipeManager (RecData):
         debug('recipeManager.__init__()',3)
         RecData.__init__(self,*args,**kwargs)
         self.km = keymanager.KeyManager(rm=self)
+        #self.km = keymanager.get_keymanager(rm=self)
         
     def key_search (self, ing):
         """Handed a string, we search for keys that could match

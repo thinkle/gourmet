@@ -12,7 +12,7 @@ class MealmasterImporterPlugin (ImporterPlugin):
 
     def test_file (self, filename):
         '''Given a filename, test whether the file is of this type.'''
-        Tester(mealmaster_importer.mm_start_pattern).test(filename)
+        return Tester(mealmaster_importer.mm_start_pattern).test(filename)
 
     def get_importer (self, filename):
         return mealmaster_importer.mmf_importer(filename=filename)

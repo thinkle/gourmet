@@ -763,68 +763,7 @@ class ImporterExporter:
         gt.gtk_leave()
 
     def import_webpageg (self, *args):
-        import importers.html_importer
-        sublabel = _('Enter the URL of a recipe archive or recipe website.')
-        url = de.getEntry(label=_('Enter website address.'),
-                          sublabel=sublabel,
-                          entryLabel=_('Enter URL:'),
-                          entryTip=_('Enter the address of a website or recipe archive. The address should begin with http://'),
-                          default_character_width=60,
-                          )
-        if not url: return
-        if url.find('//')<0:
-            url = 'http://'+url
-        self.show_progress_dialog(None,
-                                  progress_dialog_kwargs={'label':_('Importing recipe from %s')%url,
-                                                      'stop':False,
-                                                      'pause':False,})
-        try:
-            i=importers.html_importer.import_url(
-                url,
-                self.rd,
-                progress=self.set_progress_thr,
-                threaded=True)
-            #self.rd,
-            #    url,
-            #    prog=self.set_progress_thr,
-            #    threaded=True)
-            if type(i)==list:
-                impClass,cant_import = self.prepare_import_classes(i)
-                if impClass:
-                    self.run_import(impClass,url,display_errors=False)
-                else:
-                    raise NotImplementedError("Gourmet cannot import")
-            else:
-                self.run_import(i,url,display_errors=False)
-        except NotImplementedError:
-            sublabel=_('Gourmet does not know how to import site %s')%url
-            sublabel += "\n"
-            sublabel += _('Are you sure %(url)s points to a page with a recipe on it?')%locals()
-            de.show_message(label=_('Unable to import'),
-                            sublabel=sublabel,
-                            message_type=gtk.MESSAGE_ERROR)
-            self.hide_progress_dialog()
-        except BadZipfile:
-            de.show_message(label=_('Unable to unzip'),
-                            sublabel=_('Gourmet is unable to unzip the file %s')%url,
-                            message_type=gtk.MESSAGE_ERROR)
-        except IOError:
-            self.hide_progress_dialog()
-            de.show_traceback(label=_('Unable to retrieve URL'),
-                              sublabel=_("""Gourmet was unable to retrieve the site %s. Are you sure your internet connection is working?  If you can retrieve the site with a webbrowser but continue to get this error, please submit a bug report at %s.""")%(url,BUG_URL)
-                              )
-            raise
-        #except gt.Terminated:
-        #    if self.threads > 0: self.threads = self.threads - 1
-        #    self.lock.release()
-        except:
-            self.hide_progress_dialog()
-            de.show_traceback(
-                label=_('Error retrieving %(url)s.')%locals(),
-                sublabel=_('Are you sure %(url)s points to a page with a recipe on it?')%locals()
-                )
-            raise
-        self.make_rec_visible()
+        self.importManager.offer_web_import(parent=self.app.get_toplevel())
 
     def do_import (self, *args):
         self.importManager.offer_import(self.window)
@@ -1159,7 +1098,14 @@ ui = '''<ui>
 '''
 
 class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBePlugins, plugin_loader.Pluggable):
+
+    __single = None
+    
     def __init__ (self, splash_label=None):
+        if RecGui.__single:
+            raise RecGui.__single
+        else:
+            RecGui.__single = self
         self.doing_multiple_deletions = False
         GourmetApplication.__init__(self, splash_label=splash_label)
         self.setup_index_columns()
@@ -1610,6 +1556,7 @@ def get_application ():
     try:
         return RecGui()
     except RecGui, rg:
+        print 'Second time getting application...'
         return rg
 
 if __name__ == '__main__' and False:

@@ -1,3 +1,50 @@
+2008-07-24  Thomas Mills HInkle  <tom@hydrophax>
+
+	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py (MealmasterImporterPlugin.test_file):
+	Fix typo but that made no file look like a Mealmaster file.
+	
+
+	* src/lib/importers/xml_importer.py: Stop passing around recData
+	instances (use singleton pattern instead). Also, fix
+	capitalization of classes.
+
+	* src/lib/importers/interactive_importer.py: Rewrite interactive
+	importer to allow removing tags once applied and to include
+	auto-markup of recipes. The UI is basic but functional now, with a
+	number of obvious improvements yet-to-be-made. Once this UI is
+	mature, it is likely many imprecise importers will be implemented
+	as preparsers for the interactive importer rather than as their
+	own importers.
+
+	* src/lib/importers/importManager.py (ImportManager): Add code to
+	handle web-based import (asking user for URL, fetching file,
+	finding importer)
+
+	* src/lib/importers/generic_recipe_parser.py (RecipeParser.parse):
+	Update code to work with threadManager based progress-reporting
+
+	* src/lib/backends/db.py (RecData.update_version_info): Fix
+	indentation error bug in version update that meant that in new
+	installations, the version was being set to an old verison,
+	resulting in an attempt to run upgrade code on the 2nd run.
+
+	* src/lib/threadManager.py (NotThreadSafe): Add class
+	NotThreadSafe for the somewhat hackish purpose of allowing
+	e.g. importer classes that touch the GUI. By inheriting
+	NotThreadSafe, subclasses will ensure that such classes are not
+	run in their own threads, no matter what, even when they look like
+	they should be.
+
+	* src/lib/plugin.py (ImporterPlugin.test_url): Add web methods
+	test_url and get_web_importer to ImporterPlugin base class. By
+	default, these methods act on normal files (which our
+	importManager will retrieve for us), so nothing special has to
+	happen except for importers that might, for example, need to know
+	the URL whence a file came.
+
+	* src/lib/GourmetRecipeManager.py (ImporterExporter.import_webpageg):
+	Move import code for web import to importManager where it belongs
+
 2008-07-08  Thomas Mills HInkle  <tom@hydrophax>
 
 	* src/lib/importers/importManager.py (ImportFileList): Add a way

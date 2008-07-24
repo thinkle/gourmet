@@ -72,7 +72,7 @@ class ImporterPlugin (StandardPlugin):
         pluggable.unregister_plugin(self)
 
     def test_file (self,filename):
-        '''Test whether filename is an instance of this type.'''
+        '''Test whether file filename is importable by this plugin.'''
         return True
 
     def get_importer (self, filename):
@@ -81,6 +81,19 @@ class ImporterPlugin (StandardPlugin):
         rd is our recipe database object.
         """
         raise NotImplementedError
+
+    def test_url (self, url, data, content_type):
+        '''Test whether data retrieved from url is importable by this plugin.
+        '''
+        tempfilename = self.importManager.get_tempfilename(url,data,content_type)
+        return self.test_file(tempfilename)
+
+    def get_web_importer (self, url, data, content_type):
+        '''Get an importer for data data retrieved from url'''
+        tempfilename = self.importManager.get_tempfilename(url,data,content_type)
+        return self.get_importer(tempfilename)
+        
+
 
 
 class ExporterPlugin (StandardPlugin):

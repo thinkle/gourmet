@@ -1,14 +1,15 @@
 import xml.sax, re, sys
 import importer
 from gourmet.gdebug import *
+from gourmet.recipeManager import get_recipe_manager # for getting out database...
 from gourmet.gglobals import *
 from gourmet.threadManager import SuspendableThread
 
 class RecHandler (xml.sax.ContentHandler, importer.Importer):
-    def __init__ (self, recData, total=None, prog=None, conv=None, parent_thread=None):
+    def __init__ (self, total=None, conv=None, parent_thread=None):
         self.elbuf = ""
         xml.sax.ContentHandler.__init__(self)
-        importer.Importer.__init__(self,rd=recData,total=total,prog=prog,
+        importer.Importer.__init__(self,total=total,
                                    do_markup=False, conv=conv)
         self.parent_thread = parent_thread
         self.check_for_sleep = parent_thread.check_for_sleep
@@ -20,10 +21,8 @@ class RecHandler (xml.sax.ContentHandler, importer.Importer):
     def characters (self, ch):
         self.elbuf += ch
 
-    
-
-class converter (importer.Importer):
-    def __init__ (self, filename, rd, recHandler, recMarker=None, threaded=False, progress=None,
+class Converter (importer.Importer):
+    def __init__ (self, filename, recHandler, recMarker=None,
                   conv=None, name='XML Importer'):
 
         """Initialize an XML converter which will use recHandler to parse data.
@@ -42,19 +41,16 @@ class converter (importer.Importer):
         their own recHandlers.
         """
 
-        self.rd = rd
         self.recMarker=recMarker
         self.fn = filename
-        self.threaded = threaded
-        self.progress = progress
-        self.rh = recHandler(recData=self.rd,prog=self.progress,conv=conv, parent_thread=self)
+        self.rh = recHandler(conv=conv,parent_thread=self)
         self.added_ings = self.rh.added_ings
         self.added_recs = self.rh.added_recs
         self.terminate = self.rh.terminate
         self.suspend = self.rh.suspend
         self.resume = self.rh.resume
         self.name = name
-        importer.Importer.__init__(self,rd,name=name)
+        importer.Importer.__init__(self,name=name)
 
     def do_run (self):
         # count the recipes in the file        
