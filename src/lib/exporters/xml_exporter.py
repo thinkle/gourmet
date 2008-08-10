@@ -1,5 +1,6 @@
 from exporter import exporter_mult
 import xml.dom
+import types
 # Base XML exporter class
 
 class XmlExporter (exporter_mult):
@@ -43,6 +44,12 @@ class XmlExporter (exporter_mult):
         element.setAttribute(attribute,value)
         
     def append_text (self, element, text):
+        try:
+            assert(type(text) in types.StringTypes)
+        except:
+            print 'Text is not text'
+            print 'append_text received',element,text
+            raise TypeError(text+' is not a StringType')
         try:
             t = self.xmlDoc.createTextNode(text)
             element.appendChild(t)

@@ -107,10 +107,11 @@ class MasterLoader:
     def activate_plugin_set (self, plugin_set):
         """Activate a set of plugins.
         """
-        if not plugin_set in self.active_plugin_sets:
-            print 'ADD ',plugin_set,'TO ACTIVE_PLUGIN_SETS'
-            self.check_dependencies(plugin_set)
-            self.active_plugin_sets.append(plugin_set.module)
+        if plugin_set in self.active_plugin_sets:
+            return
+        print 'ADD ',plugin_set,'TO ACTIVE_PLUGIN_SETS'
+        self.check_dependencies(plugin_set)
+        self.active_plugin_sets.append(plugin_set.module)
         self.active_plugins.extend(plugin_set.plugins)
         for plugin in plugin_set.plugins:
             for klass in self.pluggables_by_class:
@@ -265,13 +266,13 @@ class Pluggable:
             pi.deactivate(self)
 
     def run_pre_hook (self, fname, *args, **kwargs):
-        print 'Looking for pre hooks for',fname
+        print 'Looking for pre hooks for',fname,
         for hook in self.pre_hooks.get(fname,[]):
             print 'run hook',hook
             hook(self,*args,**kwargs)
 
     def run_post_hook (self, fname, retval, *args, **kwargs):
-        print 'Looking for post hooks for',fname        
+        print 'Looking for post hooks for',fname,'found',self.post_hooks.get(fname,[])
         for hook in self.post_hooks.get(fname,[]):
             print 'run hook',hook
             hook(retval,self,*args,**kwargs)

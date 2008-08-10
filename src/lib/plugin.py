@@ -162,6 +162,7 @@ class BaseExporterPlugin (Plugin):
                 else:
                     klass = args[0]
                 val = field_fetcher(klass.r)
+                if not val: val = ''
                 klass.write_text(field_name,val)
             self.hooks_to_add.append((position,'_write_text_',do_write))
         else:
@@ -186,15 +187,39 @@ class BaseExporterMultiRecPlugin (Plugin):
 
 class DatabasePlugin (StandardPlugin):
 
+    name = '' # The name of our database -- subclasses should provide
+              # this -- it will allow Gourmet to store version
+              # information for database updates
+
+    version = 1 # Version information -- this will allow Gourmet to
+                # store information on the plugin version for future
+                # updates.
+
+    active = False
+    
     def activate (self, db):
-        print 'Activate!'
+        if self.active:
+            print 'Strange -- activate called twice'
+            print 'Activate plugin',self,db,'from:'
+            import traceback; traceback.print_stack()
+            print 'ignoring'
+            return 
         self.db = db
         if db._created:
+            # For creation after DB is initialized...
             print 'Table already created -- create tables now.'
             self.create_tables()
+            
+            self.db.metadata.create_all()
+            db.update_plugin_version(self)
         else:
             print 'Add hook!'
             db.add_hook(plugin_loader.POST,'setup_tables',self.create_tables)
+        self.active = True
+        
+    def deactivate (self, db):
+        db.remove_hook(plugin_loader.POST,'setup_tables',self.create_tables)
+        self.active = False
         
     def create_tables (self):
         """Handed the database, create table definitions as necessary.
@@ -203,16 +228,17 @@ class DatabasePlugin (StandardPlugin):
         """
         pass
     
-    def update_version (self, stored_version, current_version):
-        """Given the old version, perform any updates to the database as necessary.
+    def update_version (self, gourmet_stored, plugin_stored,
+                        gourmet_current, plugin_current):
+        """Given the old version number, perform any updates to the
+        database as necessary.
 
-        The old version is an object with version_super, version_major
-        and version_minor attributes containing our 3 version numbers.
+        The Gourmet version #s are tuples with version_super, version_major
+        and version_minor.
+
+        The plugin version numbers are single numbers corresponding to
+        the version attribute of your your plugin class.
         """
-        # Note - plugin authors may want to store their own version
-        # info in a table of their own creation if they anticipate
-        # changing their database tables in the future. Of course, if
-        # you design carefully, this method shouldn't be necessary :)
         pass
 
 class UIModule:

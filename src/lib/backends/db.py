@@ -147,6 +147,7 @@ class RecData (Pluggable):
         self.initialize_connection()
         Pluggable.__init__(self,[DatabasePlugin])        
         self.setup_tables()
+        self.metadata.create_all()
         self.update_version_info(gourmet.version.version)
         self._created = True
         timer.end()
@@ -221,7 +222,6 @@ class RecData (Pluggable):
         self.__table_to_object__ = {}
         self.setup_base_tables()
         self.setup_shopper_tables() # could one day be part of a plugin
-        self.metadata.create_all()
 
     def setup_base_tables (self):
         self.setup_info_table()
@@ -239,6 +239,22 @@ class RecData (Pluggable):
         class Info (object):
             pass
         self._setup_object_for_table(self.info_table, Info)
+        self.plugin_info_table = Table('plugin_info',self.metadata,
+                                       Column('plugin',String(length=None),**{}),
+                                       # three part version numbers
+                                       # 2.1.10, etc. 1.0.0 -- these
+                                       # contain the Gourmet version
+                                       # at the last time of
+                                       # plugging-in
+                                       Column('id',Integer(),**{'primary_key':True}),
+                                       Column('version_super',Integer(),**{}), 
+                                       Column('version_major',Integer(),**{}),
+                                       Column('version_minor',Integer(),**{}),
+                                       # Stores the last time the plugin was used...
+                                       Column('plugin_version',String(length=None),**{}))
+        class PluginInfo (object):
+            pass
+        self._setup_object_for_table(self.plugin_info_table, PluginInfo)
 
     def setup_recipe_table (self):
         self.recipe_table = Table('recipe',self.metadata,
@@ -442,8 +458,8 @@ class RecData (Pluggable):
                 # above as well (for new users) - sorry for the stupid
                 # repetition of code.
                 self.add_column_to_table(self.recipe_table,('last_modified',Integer(),{}))
-                self.add_column_to_table(self.recipe_table,('recipe_hash','String(length=32)',{}))
-                self.add_column_to_table(self.recipe_table,('ingredient_hash','String(length=32)',{}))
+                self.add_column_to_table(self.recipe_table,('recipe_hash',String(length=32),{}))
+                self.add_column_to_table(self.recipe_table,('ingredient_hash',String(length=32),{}))
                 # Add a link field...
                 self.add_column_to_table(self.recipe_table,('link',String(length=None),{}))
                 print 'Searching for links in old recipe fields...'
@@ -492,10 +508,9 @@ class RecData (Pluggable):
                 # Add hash values to identify all recipes...
                 for r in self.fetch_all(self.recipe_table): self.update_hashes(r)
             for plugin in self.plugins:
-                plugin.update_version(
-                    (stored_info.version_super,stored_info.version_major,stored_info.version_minor),
-                    (current_super,current_major,current_minor)
-                    )
+                self.update_plugin_version(plugin,
+                                           (current_super,current_major,current_minor)
+                                           )
         ### End of code for updates between versions...
         if (current_super!=stored_info.version_super
             or
@@ -511,6 +526,47 @@ class RecData (Pluggable):
                  'version_minor':current_minor,},
                 id_col=None
                 )
+
+    def update_plugin_version (self, plugin, current_version=None):
+        if current_version:
+            current_super,current_major,current_minor = current_version
+        else:
+            i = self.fetch_one(self.info_table)
+            current_super,current_major,current_minor = (i.version_super,
+                                                         i.version_major,
+                                                         i.version_minor)
+        existing = self.fetch_one(self.plugin_info_table,
+                                  plugin=plugin.name)
+        if existing:
+            sup,maj,minor,plugin_version = (existing.version_super,
+                                            existing.version_major,
+                                            existing.version_minor,
+                                            existing.plugin_version)
+        else:
+            # Default to the version before our plugin system existed
+            sup,maj,minor = 0,13,9
+            plugin_version = 1
+        plugin.update_version(
+            gourmet_stored=(sup,maj,minor),
+            plugin_stored = plugin_version,
+            gourmet_current=(current_super,current_major,current_minor),
+            plugin_current = plugin.version,
+            )
+        # Now we store the information so we know we've done an update
+        info = {
+            'plugin':plugin.name,
+            'version_super':current_super,
+            'version_major':current_major,
+            'version_minor':current_minor,
+            'plugin_version':plugin.version}
+        if existing and (
+            current_minor != minor or
+            current_major != maj or
+            current_super != sup or
+            plugin.version != plugin_version):
+            self.do_modify(self.plugin_info_table,existing,info)
+        else:
+            self.do_add(self.plugin_info_table,info)
 
     def run_hooks (self, hooks, *args):
         """A basic hook-running function. We use hooks to allow parts of the application
@@ -713,8 +769,13 @@ class RecData (Pluggable):
         """table is a table, column_spec is a tuple defining the
         column, following the format for new tables.
         """
-        #column = Column(*column_spec)
-        raise NotImplementedError
+        name = table.name; new_col = column_spec[0]; coltyp = column_spec[1]
+        sql = 'ALTER TABLE %(name)s ADD %(new_col)s %(coltyp)s;'%locals()
+        try:
+            self.db.execute(sql)
+        except:
+            print 'Ignoring error in add_column_to_table'
+            import traceback; traceback.print_exc()
 
     def alter_table (self, table_name, setup_function, cols_to_change={}, cols_to_keep=[]):
         """Change table, moving some columns.
@@ -733,6 +794,7 @@ class RecData (Pluggable):
         will allow us to e.g. change/add primary key columns to sqlite
         tables
         """
+        print 'Attempting to alter ',table_name,setup_function,cols_to_change,cols_to_keep
         try:
             self.db.execute('ALTER TABLE %(t)s RENAME TO %(t)s_temp'%{'t':table_name})
         except:
