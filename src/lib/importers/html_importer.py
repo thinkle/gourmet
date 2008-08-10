@@ -370,6 +370,7 @@ def scrape_url (url, progress=None):
         return bss.scrape_url(url,progress=progress)
 
 def add_to_fn (fn):
+    '''Add 1 to a filename.'''
     f,e=os.path.splitext(fn)
     try:
         f,n=os.path.splitext(f)
@@ -413,7 +414,7 @@ def import_url (url, rd, progress=None, add_webpage_source=True, threaded=False,
         ofi.close()
         return [fn]
 
-class WebPageImporter (importer.importer):
+class WebPageImporter (importer.Importer):
     """Import a webpage as a recipe
 
     We use our BeautifulSoupScraper class to do the actual scraping.
@@ -437,7 +438,7 @@ class WebPageImporter (importer.importer):
         self.url = url
         self.prog = prog
         self.interactive = interactive
-        importer.importer.__init__(self,rd,threaded=threaded,total=total,prog=prog,do_markup=True,
+        importer.Importer.__init__(self,rd,threaded=threaded,total=total,prog=prog,do_markup=True,
                                    conv=conv)
 
     def run (self):
@@ -564,4 +565,3 @@ class WebPageImporter (importer.importer):
         #print 'COMMITTING RECIPE',self.rec
         self.commit_rec()
         if self.prog: self.prog(1,_('Import complete.'))
-

@@ -1,9 +1,12 @@
-import xml.sax, re, sys
+import xml.sax, xml.sax.saxutils, re, sys
 import importer
 from gourmet.gdebug import *
 from gourmet.recipeManager import get_recipe_manager # for getting out database...
 from gourmet.gglobals import *
 from gourmet.threadManager import SuspendableThread
+
+def unquoteattr (str):
+    return xml.sax.saxutils.unescape(str).replace("_"," ")
 
 class RecHandler (xml.sax.ContentHandler, importer.Importer):
     def __init__ (self, total=None, conv=None, parent_thread=None):

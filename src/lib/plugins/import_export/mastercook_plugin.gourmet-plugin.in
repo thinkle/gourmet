@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module = mastercook_import_plugin
+Version = 1.0
+API_Version = 1.0
+_Name = Mastercook import
+_Comment = Import files from the Mastercook program.
+_Category = Importer/Exporter
+Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>

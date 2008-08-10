@@ -121,9 +121,10 @@ class ImportManager (plugin_loader.Pluggable):
                     print 'Testing ',pattern,'against',fn
                     if fnmatch(fn.upper(),pattern.upper()):
                         print 'A match!'
-                        if plugin.test_file(fn)==-1: # FALLBACK
+                        result = plugin.test_file(fn)
+                        if result==-1: # FALLBACK
                             fallback = plugin
-                        if plugin.test_file(fn):
+                        elif result:
                             importers.append((fn,plugin))
                             found_plugin = True
                         else:

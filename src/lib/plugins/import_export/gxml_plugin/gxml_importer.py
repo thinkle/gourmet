@@ -4,6 +4,8 @@ from gourmet.gdebug import *
 from gourmet.gglobals import *
 import base64
 
+unquoteattr = xml_importer.unquoteattr
+
 class RecHandler (xml_importer.RecHandler):
     def __init__ (self, total=None, conv=None, parent_thread=None):
         xml_importer.RecHandler.__init__(self,total,conv=conv,parent_thread=parent_thread)

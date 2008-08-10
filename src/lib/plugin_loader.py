@@ -94,11 +94,22 @@ class MasterLoader:
         elif self.active_plugin_sets == self.default_active_plugin_sets:
             print 'No change to plugins, nothing to save.'
 
+    def check_dependencies (self, plugin_set):
+        if plugin_set.dependencies:
+            missing = []
+            depends = [ps.strip() for ps in plugin_set.dependencies.split(',')]
+            for dep in depends:
+                if not dep in self.active_plugin_sets:
+                    missing.append(dep)
+            if missing:
+                raise DependencyError(plugin_set,missing)
+
     def activate_plugin_set (self, plugin_set):
         """Activate a set of plugins.
         """
         if not plugin_set in self.active_plugin_sets:
-            print 'ADD ',plugin_set,'TO ACTIVE_PLUGIN_SETS'            
+            print 'ADD ',plugin_set,'TO ACTIVE_PLUGIN_SETS'
+            self.check_dependencies(plugin_set)
             self.active_plugin_sets.append(plugin_set.module)
         self.active_plugins.extend(plugin_set.plugins)
         for plugin in plugin_set.plugins:
@@ -196,7 +207,7 @@ class PluginSet:
         # bindings that I can find atm. One possibility would be to
         # use this:
         # http://svn.async.com.br/cgi-bin/viewvc.cgi/kiwi/trunk/kiwi/desktopparser.py?revision=7336&view=markup
-        self.props = dict([(k,None) for k in ['Name','Comment','Authors','Version','API_Version','Website','Copyright']])
+        self.props = dict([(k,None) for k in ['Name','Comment','Authors','Version','API_Version','Website','Copyright','Dependencies']])
 
         for line in plugin_info_file.readlines():
             if line=='[Gourmet Plugin]\n': pass
@@ -277,6 +288,20 @@ class Pluggable:
         else: hookdic = self.post_hooks
         del hookdic[name]
 
+class DependencyError (Exception):
+
+    def __init__ (self, pluginset, missing_dependencies):
+        self.plugin_set = pluginset
+        self.dependencies = missing_dependencies
+        print self.plugin_set,'requires but did not find',self.dependencies
+        
+    def __repr__ (self):
+        return ('<DependencyError '
+                + repr(self.plugin_set)
+                + ' missing required dependencies '
+                + repr(self.dependencies)
+                )
+    
 def pluggable_method (f):
     def _ (self, *args, **kwargs):
         '''Run hooks around method'''
