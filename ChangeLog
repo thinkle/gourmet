@@ -1,3 +1,23 @@
+2008-08-10  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/exporters/xml_exporter.py (XmlExporter.append_text):
+	Raise a clear type error when handed non-text.
+
+	* src/lib/backends/db.py (RecData): Fix alter table and
+	add-column-to-table routines. Add new table plugin_info for
+	storing version info on plugins, so that plugins know the Gourmet
+	version and Plugin version at the last time of
+	instantiation (since a plugin could have been in use, then out of
+	use, then reactivated after an upgrade).
+
+	* src/lib/plugin_loader.py (MasterLoader.activate_plugin_set):
+	Avoid activating a plugin set twice.
+
+	* src/lib/plugin.py (DatabasePlugin.activate): Update database
+	plugin code to work with new versioning code for telling plugins
+	about version changes reliably. Fix bug in exporter plugin when we
+	get a None where we expect text.
+
 2008-07-24  Thomas Mills HInkle  <tom@hydrophax>
 
 	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py (MealmasterImporterPlugin.test_file):
