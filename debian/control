@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>
 Uploaders: Elizabeth Bevilacqua <lyz@princessleia.com>
 Build-Depends: debhelper (>= 4.0.0), python-dev
-Standards-Version: 3.6.0
+Standards-Version: 3.8.0
 
 Package: gourmet
 Architecture: all
