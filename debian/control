@@ -1,8 +1,8 @@
-Send-To: calvin@debian.org
 Source: gourmet
 Section: gnome
 Priority: optional
 Maintainer: Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>
+Uploaders: Elizabeth Bevilacqua <lyz@princessleia.com>
 Build-Depends: debhelper (>= 4.0.0), python-dev
 Standards-Version: 3.6.0
 

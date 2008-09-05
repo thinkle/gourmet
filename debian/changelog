@@ -1,4 +1,11 @@
-gourmet (0.13.7-1) breezy; urgency=low
+gourmet (0.13.4-3) UNRELEASED; urgency=low
+
+  * Fixes to bring package up to Debian Standards
+  * Added Elizabeth Bevilacqua to Uploaders
+
+ -- Elizabeth Bevilacqua <lyz@princessleia.com>  Fri, 05 Sep 2008 02:14:26 +0000
+
+gourmet (0.13.4-2) breezy; urgency=low
 
   * Fixes and improvements to PDF export.
   * Cleanups to UI (mostly behind the scenes glade fixes)
@@ -7,7 +14,7 @@ gourmet (0.13.7-1) breezy; urgency=low
 
  -- Thomas Mills Hinkle <Thomas_Hinkle@sf.net>  Sat, 25 Aug 2007 20:51:36 -0500
 
-gourmet (0.13.5-1) breezy; urgency=low
+gourmet (0.13.4-1) breezy; urgency=low
 	
   * Activate interface for removing duplicates
   * Fix SI interface
@@ -64,7 +71,6 @@ gourmet (0.12.1-2) breezy; urgency=low
 
  -- Thomas M. Hinkle <thomas_hinkle@sf.net>  Sun,  3 Sep 2006 11:02:39 -0400
 
-=======
 gourmet (0.12.1-1) breezy; urgency=low
 
   * Fix buggy trash behavior.
@@ -74,7 +80,6 @@ gourmet (0.12.1-1) breezy; urgency=low
 
  -- Thomas Mills Hinkle <Thomas_Hinkle@sf.net>  Sun,  8 Oct 2006 19:53:47 -0400
 
->>>>>>> 1.24.2.2
 gourmet (0.12.0.pre1-1) breezy; urgency=low
 
   * Fix sort order
@@ -303,7 +308,6 @@ gourmet (0.8.5.9-1) unstable; urgency=low
    
  -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Monday, 01 August 2005 11:34:00 -0400
 	
->>>>>>> 1.5.2.22.2.6
 gourmet (0.8.5.8-1) unstable; urgency=low
   * Fixed bug in deletion of new recipe and improved interface for
   deleting recipes that are already open
@@ -344,7 +348,6 @@ gourmet (0.8.5.6-1) unstable; urgency=low
  -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 28 July 2005 00:30:00 -0400
 	
 gourmet (0.8.5.5-1) unstable; urgency=low
-======= end
 
   * Use integers for indices in databases (this should be faster)
 	
@@ -457,7 +460,6 @@ gourmet (0.8.3.4-1) unstable; urgency=low
 
 
 
->>>>>>> 1.5.2.26
 gourmet (0.8.3.3-1) unstable; urgency=low
 
   * Fixed bug that broke renaming of ingredient groups.
@@ -590,12 +592,11 @@ gourmet (0.7.0-1) unstable; urgency=low
 
  -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 02 Jan 2005 07:45:48 -0500
 
- gourmet (0.6.7-2) unstable; urgency=low
+gourmet (0.6.7-2) unstable; urgency=low
 
   * Mealmaster import improved; workaround around pygtk 2.5 bug and properly handle encoding. -2 fixes a number of stupid problems that should never have made the previous release.
 
  -- Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>  Thursday, 02 Dec 2004 07:45:48 -0500
-
 
 gourmet (0.6.7-1) unstable; urgency=low
 
