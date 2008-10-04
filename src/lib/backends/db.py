@@ -545,13 +545,17 @@ class RecData (Pluggable):
         else:
             # Default to the version before our plugin system existed
             sup,maj,minor = 0,13,9
-            plugin_version = 1
-        plugin.update_version(
-            gourmet_stored=(sup,maj,minor),
-            plugin_stored = plugin_version,
-            gourmet_current=(current_super,current_major,current_minor),
-            plugin_current = plugin.version,
-            )
+            plugin_version = 0
+        try:
+            plugin.update_version(
+                gourmet_stored=(sup,maj,minor),
+                plugin_stored = plugin_version,
+                gourmet_current=(current_super,current_major,current_minor),
+                plugin_current = plugin.version,
+                )
+        except:
+            print 'Problem updating plugin',plugin,plugin.name
+            raise
         # Now we store the information so we know we've done an update
         info = {
             'plugin':plugin.name,

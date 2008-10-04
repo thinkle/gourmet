@@ -21,10 +21,11 @@ DEFAULT_TAG_LABELS = gglobals.REC_ATTR_DIC.copy()
 for attr in gglobals.DEFAULT_ATTR_ORDER:
     if attr != 'link':
         DEFAULT_TAGS.append(attr)
-DEFAULT_TAGS.extend(['instructions','ingredients','inggroup'])
+DEFAULT_TAGS.extend(['instructions','ingredients','inggroup','ignore'])
 for tag,label in [('instructions',_('Instructions')),
                   ('ingredients',_('Ingredients')),
                   ('inggroup',_('Ingredient Subgroup')),
+                  ('ignore',_('Hide'))
                   ]:
     if not DEFAULT_TAG_LABELS.has_key(tag):
         DEFAULT_TAG_LABELS[tag] = label
@@ -117,9 +118,10 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         self.w.add(self.hb)
         self.tv = gtk.TextView()
         self.tv.set_size_request(600,400)
+        self.tv.set_wrap_mode(gtk.WRAP_WORD)
         self.action_area = gtk.VBox()
         sw = gtk.ScrolledWindow(); sw.add(self.tv)
-        sw.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
+        sw.set_policy(gtk.POLICY_NEVER,gtk.POLICY_AUTOMATIC)
         self.hb.add(sw); sw.show(); self.tv.show()
         self.hb.add(self.action_area)
         self.tb = self.tv.get_buffer()
@@ -155,7 +157,11 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         self.markup_tag.set_property('foreground',
                                      '#f00'
                                      )
+        self.ignore_tag = gtk.TextTag('ignore')
+        self.ignore_tag.set_property('invisible',True)
+        self.ignore_tag.set_property('editable',False)
         self.tb.get_tag_table().add(self.markup_tag)
+        self.tb.get_tag_table().add(self.ignore_tag)        
         
     def label_callback (self, button, label):
         self.label_selection(label)
@@ -184,8 +190,39 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             self.tb.get_iter_at_offset(end_offset),
             label
             )
-        
+
+    def unhide_area (self, midno):
+        st,end = self.markup_marks[midno]
+        self.tb.remove_tag(self.ignore_tag,
+                           self.tb.get_iter_at_mark(st),
+                           self.tb.get_iter_at_mark(end)
+                           )
+
+    def hide_range (self, st, end):
+        """Hide text between start and end.
+
+        Return midno that can be used to unhide the range."""
+        midno = self.midno; self.midno += 1
+        start_mark = gtk.TextMark('start-markup-%s'%midno,False)
+        end_mark = gtk.TextMark('end-markup-%s'%midno,True)
+        self.tb.apply_tag(self.ignore_tag,
+                       st,end)
+        self.tb.add_mark(start_mark,st)
+        self.tb.add_mark(end_mark,end)
+        self.markup_marks[midno] = (start_mark,end_mark)
+        return midno
+
     def label_range (self, st, end, label):
+        if self.tags_by_label.get(label,'')=='ignore':
+            midno = self.hide_range(st,end)
+            b = gtk.Button('Ignored text: Reveal hidden text')
+            anchor = self.insert_widget(end,b)
+            def unhide_text (*args):
+                self.unhide_area(midno)
+                self.remove_widget(anchor)
+            b.connect('clicked',unhide_text)
+            b.show()
+            return
         if self.label_counts.has_key(label):
             count = self.label_counts[label]
             self.label_counts[label] += 1
@@ -337,6 +374,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                 self.commit_rec(); started=False
                 # Start new one...
                 self.start_rec()
+            elif tag=='ignore':
+                continue
             else:
                 print 'UNKNOWN TAG',tag,text,label
         if started: self.commit_rec()
@@ -346,7 +385,10 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
 
     def set_text (self, txt):
         txt = unicode(txt) # convert to unicode for good measure
-        parsed = self.parser.parse(txt)
+        self.set_parsed(self.parser.parse(txt))
+        
+
+    def set_parsed (self, parsed):
         for chunk,tag in parsed:
             if tag==None:
                 self.tb.insert(self.tb.get_end_iter(),
@@ -398,6 +440,8 @@ Meanwhile, boil a large pot of water and cook spaghetti.
 Chop up tomatoes roughly.
 
 Toss spaghetti in pesto and tomatoes.
+
+Ignore: this
 """)
     gtk.main()
     

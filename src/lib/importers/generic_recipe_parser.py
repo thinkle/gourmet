@@ -58,7 +58,8 @@ class RecipeParser:
                   'category',
                   'cuisine',                  
                   'rating',
-                  'source']
+                  'source',
+                  'ignore']
 
     ALIASES = [('cooking time','cooktime'),
                ('preparation time','preptime'),
@@ -74,6 +75,7 @@ class RecipeParser:
     ing_matcher = re.compile("^\s*(%s\s*\w+.*)"%convert.NUMBER_REGEXP)
 
     def __init__ (self):
+        self.title_parsed = False
         self.make_rules()
     
     #INGREDIENT = 'ING'
@@ -135,7 +137,6 @@ class RecipeParser:
         self.txt = txt
         self.parsed = []
         self.break_into_paras()
-        title_parsed = False
         tot=len(self.paras)
         n = 1
         for p in self.paras:
@@ -147,9 +148,9 @@ class RecipeParser:
                 n+=1
             self.parsed.append(('\n',None))
             # genericly guess that the title is the first line!
-            if not title_parsed and p:
+            if not self.title_parsed and p.strip():
                 self.parsed.append((p,'title'))
-                title_parsed = True
+                self.title_parsed = True
             elif not p.strip():
                 self.parsed.append((p,None))
             else:
