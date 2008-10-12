@@ -2166,6 +2166,8 @@ class IngredientController:
                     amt,rangeamount = parse_range(d['amount'])
                     d['amount']=amt
                     if rangeamount: d['rangeamount']=rangeamount
+                else:
+                    d['amount']=None
                 # Get category info as necessary
                 if d.has_key('shop_cat'):
                     self.rg.sl.orgdic[d['ingkey']] = d['shop_cat']
@@ -2178,6 +2180,7 @@ class IngredientController:
                 # If we are a real, old ingredient
                 if type(ing) != int and not isinstance(ing,RecRef):
                     for att in ['amount','unit','item','ingkey','position','inggroup','optional']:
+                        # Remove all unchanged attrs from dict...
                         if getattr(ing,att)==d[att]: del d[att]
                     if ing in deleted:
                         # We have not been deleted...

@@ -79,7 +79,7 @@ class MasterLoader:
     def save_active_plugins (self):
         # If we have not changed from the defaults and no
         # configuration file exists, don't bother saving one.
-
+        print 'Saving',self.active_plugin_sets
         if ((self.active_plugin_sets != self.default_active_plugin_sets)
             or
             os.path.exists(self.active_plugin_filename)):
@@ -97,12 +97,28 @@ class MasterLoader:
     def check_dependencies (self, plugin_set):
         if plugin_set.dependencies:
             missing = []
-            depends = [ps.strip() for ps in plugin_set.dependencies.split(',')]
+            depends = plugin_set.dependencies or []
             for dep in depends:
                 if not dep in self.active_plugin_sets:
                     missing.append(dep)
             if missing:
                 raise DependencyError(plugin_set,missing)
+
+    def check_if_depended_upon (self, plugin_set):
+        """Return a list of active plugin set objects that depend on
+        plugin_set.
+        """
+        depending_on_me = []
+        for module in self.active_plugin_sets:
+            ps = self.available_plugin_sets[module]
+            if ps.dependencies:
+                try:
+                    if plugin_set.module in ps.dependencies:
+                        depending_on_me.append(ps)
+                except:
+                    print 'Problem checking dependencies of ',ps,ps.Dependencies
+                    raise
+        return depending_on_me
 
     def activate_plugin_set (self, plugin_set):
         """Activate a set of plugins.
@@ -119,8 +135,13 @@ class MasterLoader:
                         pluggable.plugin_plugin(self.get_instantiated_plugin(plugin))
 
     def deactivate_plugin_set (self, plugin_set):
-        if plugin_set in self.active_plugin_sets:
-            self.active_plugin_sets.remove(plugin_set)
+        # Deactivate any plugin sets that depend upon us...
+        for ps in self.check_if_depended_upon(plugin_set):
+            self.deactivate_plugin_set(ps)
+        if plugin_set.module in self.active_plugin_sets:
+            self.active_plugin_sets.remove(plugin_set.module)
+        else:
+            print 'Odd',plugin_set.module,'is not listed as active.'
         for plugin in plugin_set.plugins:
             if self.instantiated_plugins.has_key(plugin):
                 self.instantiated_plugins[plugin].remove()
@@ -225,6 +246,8 @@ class PluginSet:
                     self.props[key]=val
             else:
                 print 'Ignoring line',line
+        if self.dependencies:
+            self.props['Dependencies'] = [d.strip() for d in self.dependencies.split(',')]
 
 class Pluggable:
     """A plugin-able class."""

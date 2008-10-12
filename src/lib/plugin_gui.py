@@ -1,5 +1,6 @@
 import plugin_loader
 import gtk, gobject
+import gtk_extras.dialog_extras as de
 from xml.sax.saxutils import escape
 
 class PluginChooser:
@@ -49,8 +50,8 @@ class PluginChooser:
     
     def make_list_store (self, plugin_list):
         ls = gtk.ListStore(bool, # activated
-                                gobject.TYPE_PYOBJECT, # the plugin-set object with all other info
-                                )
+                           gobject.TYPE_PYOBJECT, # the plugin-set object with all other info
+                           )
         for module_name,plugin_set in plugin_list: #self.loader.available_plugin_sets.items():
             ls.append(
                 (module_name in self.loader.active_plugin_sets,
@@ -87,19 +88,46 @@ class PluginChooser:
 
     def toggled_cb (self, renderer, path, tv):
         ls = tv.get_model()
-        print 'Toggled work!'
         plugin_set = ls[path][1]
         prev_state = ls[path][0]
         state = not prev_state
+        self.do_change_plugin(plugin_set, state, ls)
+        ls[path][0] = state
+
+    def do_change_plugin (self, plugin_set, state, ls):
         try:
             if state:
-                print 'activate: ',plugin_set
+                try:
+                    self.loader.check_dependencies(plugin_set)
+                except plugin_loader.DependencyError, dep_error:
+                    print 'Missing dependencies:',dep_error.dependencies
+                    for row in ls:
+                        ps = row[1]
+                        if ps.module in dep_error.dependencies and not row[0]:
+                            print 'Activate dependency ',ps.module
+                            self.do_change_plugin(ps,True, ls)
+                            row[0] = True
                 self.loader.activate_plugin_set(plugin_set)
             else:
-                print 'deactivate: ',plugin_set                
-                self.loader.deactivate_plugin_set(plugin_set)
+                dependers = self.loader.check_if_depended_upon(plugin_set)
+                if dependers:
+                    if de.getBoolean(
+                        label=_("Plugin is needed for other plugins. Deactivate plugin anyway?"),
+                        sublabel=(_('The following plugins require %s:'%plugin_set.name) + '\n' +
+                                  '\n'.join(plugin_set.name for plugin_set in dependers)
+                                  ),
+                        custom_yes=_('Deactivate anyway'),
+                        custom_no=_('Keep plugin active')
+                        ):
+                        self.loader.deactivate_plugin_set(plugin_set)
+                        for row in ls:
+                            if row[1] in dependers:
+                                row[0] = False
+                    else:
+                        raise "Cancelled"
+                else:
+                    self.loader.deactivate_plugin_set(plugin_set)
         except:
-            import gtk_extras.dialog_extras as de
             if state:
                 de.show_message(message_type=gtk.MESSAGE_ERROR,
                                 label=_('An error occurred activating plugin.'))
@@ -107,8 +135,6 @@ class PluginChooser:
                 de.show_message(message_type=gtk.MESSAGE_ERROR,
                                 label=_('An error occurred deactivating plugin.'))
             raise
-        else:
-            ls[path][0] = state
 
     def response_cb (self, window, response):
         if response==gtk.RESPONSE_CLOSE: self.window.hide()

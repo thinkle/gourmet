@@ -1,3 +1,21 @@
+2008-10-12  Thomas Mills HInkle  <tom@hydrophax>
+
+	* src/lib/plugin_loader.py: Fix dependency checking. Add
+	check_if_depended_upon and make deactivating a dependee plugin
+	deactivate depender plugins well.
+
+	* src/lib/plugin_gui.py (PluginChooser): Check dependencies when
+	activating and deactivating and act appropriately. Automatically
+	activate dependencies. Ask users when deactivating a
+	depeneded-upon plugin.
+
+	* src/lib/sound.py (Player.play_file): Remove debug print statement
+
+2008-10-12  Thomas Mills Hinkle  <thomas_hinkle@sf.net>
+
+	* src/lib/reccard.py (IngredientController.commit_ingredients.commit_iter):
+	Fix null amounts (they should be None, not the empty string). 
+
 2008-10-12  Thomas Mills HInkle  <thomas_hinkle@sf.net>
 
 	* src/lib/plugin_loader.py: Remove excess print statements. Don't

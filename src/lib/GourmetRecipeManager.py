@@ -1556,7 +1556,6 @@ def get_application ():
     try:
         return RecGui()
     except RecGui, rg:
-        print 'Second time getting application...'
         return rg
 
 if __name__ == '__main__' and False:

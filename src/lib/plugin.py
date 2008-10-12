@@ -156,7 +156,7 @@ class BaseExporterPlugin (Plugin):
         '''
         if type==self.TEXT:
             def do_write (*args):
-                print 'do_write received arguments',args
+                #print 'do_write received arguments',args
                 if position==plugin_loader.POST:
                     klass = args[1]
                 else:
@@ -167,7 +167,7 @@ class BaseExporterPlugin (Plugin):
             self.hooks_to_add.append((position,'_write_text_',do_write))
         else:
             def do_write (*args):
-                print 'do_write received arguments',args                
+                #print 'do_write received arguments',args                
                 if position==plugin_loader.POST:
                     klass = args[1]
                 else:
@@ -213,7 +213,6 @@ class DatabasePlugin (StandardPlugin):
             self.db.metadata.create_all()
             db.update_plugin_version(self)
         else:
-            print 'Add hook!'
             db.add_hook(plugin_loader.POST,'setup_tables',self.create_tables)
         self.active = True
         
@@ -278,7 +277,7 @@ class UIPlugin (StandardPlugin, UIModule):
         self.add_to_uimanager(pluggable.ui_manager)
 
     def remove (self):
-        print 'remove!',self
+        #print 'remove!',self
         for uimanager in self.merged:
             merge_id,action_ids = self.merged[uimanager]
             for ag in action_ids: uimanager.remove_action_group(ag)

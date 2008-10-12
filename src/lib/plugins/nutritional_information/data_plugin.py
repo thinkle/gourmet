@@ -32,7 +32,7 @@ class NutritionDataPlugin (DatabasePlugin):
         self.db._setup_object_for_table(self.db.nutritionconversions_table, NutritionConversion)
 
     def create_tables (self, *args):
-        print 'nutritional_information.data_plugin.create_tables()'
+        #print 'nutritional_information.data_plugin.create_tables()'
         cols = [Column(name,gourmet.backends.db.map_type_to_sqlalchemy(typ),**(name=='ndbno' and {'primary_key':True} or {}))
                  for lname,name,typ in parser_data.NUTRITION_FIELDS
                  ] + [Column('foodgroup',String(length=None),**{})]

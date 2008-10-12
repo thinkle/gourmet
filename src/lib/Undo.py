@@ -409,7 +409,8 @@ class UndoHistoryList (list):
     def set_sensitive (self,w,val):
         debug('set_sensitive',0)
         if not w:
-            print 'No widget to sensitize'
+            #import traceback; traceback.print_stack()
+            #print 'No widget to sensitize',w,val
             return
         try:
             w.set_sensitive(val)

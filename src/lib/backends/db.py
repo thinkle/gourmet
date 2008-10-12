@@ -205,7 +205,7 @@ class RecData (Pluggable):
 
     def _setup_object_for_table (self, table, klass):
         self.__table_to_object__[table] = klass
-        print 'Mapping ',repr(klass),'->',repr(table)
+        #print 'Mapping ',repr(klass),'->',repr(table)
         if True in [col.primary_key for col in table.columns]:
             sqlalchemy.orm.mapper(klass,table)
         else:
