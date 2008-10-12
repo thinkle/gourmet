@@ -53,7 +53,6 @@ class MasterLoader:
         self.available_plugin_sets = {}
         for d in self.plugin_directories:
             plugins = glob.glob('%s/*.gourmet-plugin'%d)
-            print 'found plugins:',plugins,'in',d
             for ppath in plugins:
                 plugin_set = PluginSet(ppath)
                 if self.available_plugin_sets.has_key(plugin_set.module):
@@ -67,7 +66,6 @@ class MasterLoader:
         if os.path.exists(self.active_plugin_filename):
             infi = file(self.active_plugin_filename,'r')
             self.active_plugin_sets = [l.strip() for l in infi.readlines()]
-            print 'active_plugin_sets = ',self.active_plugin_sets
         else:
             self.active_plugin_sets = self.default_active_plugin_sets[:]
         self.active_plugins = []
@@ -81,18 +79,20 @@ class MasterLoader:
     def save_active_plugins (self):
         # If we have not changed from the defaults and no
         # configuration file exists, don't bother saving one.
+
         if ((self.active_plugin_sets != self.default_active_plugin_sets)
             or
             os.path.exists(self.active_plugin_filename)):
-            print 'Saving active plugins to',self.active_plugin_filename
             ofi = file(self.active_plugin_filename,'w')
+            saved = [] # keep track of what we've written to avoid
+                       # saving a plugin twice
             for plugin_set in self.active_plugin_sets:
-                print 'Save module...',plugin_set
-                ofi.write(plugin_set+'\n')
-            print 'Done saving.'
+                if not plugin_set in saved:
+                    ofi.write(plugin_set+'\n')
+                saved.append(plugin_set)
             ofi.close()
-        elif self.active_plugin_sets == self.default_active_plugin_sets:
-            print 'No change to plugins, nothing to save.'
+        #elif self.active_plugin_sets == self.default_active_plugin_sets:
+        #    print 'No change to plugins, nothing to save.'
 
     def check_dependencies (self, plugin_set):
         if plugin_set.dependencies:
@@ -109,7 +109,6 @@ class MasterLoader:
         """
         if plugin_set in self.active_plugin_sets:
             return
-        print 'ADD ',plugin_set,'TO ACTIVE_PLUGIN_SETS'
         self.check_dependencies(plugin_set)
         self.active_plugin_sets.append(plugin_set.module)
         self.active_plugins.extend(plugin_set.plugins)
@@ -121,7 +120,6 @@ class MasterLoader:
 
     def deactivate_plugin_set (self, plugin_set):
         if plugin_set in self.active_plugin_sets:
-            print 'REMOVE ',plugin_set,'FROM ACTIVE_PLUGIN_SETS'
             self.active_plugin_sets.remove(plugin_set)
         for plugin in plugin_set.plugins:
             if self.instantiated_plugins.has_key(plugin):
@@ -139,16 +137,15 @@ class MasterLoader:
         if not self.pluggables_by_class.has_key(klass):
             self.pluggables_by_class[klass] = []
         self.pluggables_by_class[klass].append(pluggable)
-        for plugin in self.active_plugins:
-            print 'checking active plugin',plugin
-            if issubclass(plugin,klass):
-                print 'plugin ',plugin
+        for p in self.active_plugins:
+            if issubclass(p,klass):
                 try:
-                    plugin_instance = self.get_instantiated_plugin(plugin)
+                    plugin_instance = self.get_instantiated_plugin(p)
                 except:
                     print 'Failed to instantiate plugin'
                     import traceback; traceback.print_exc()
                 else:
+                    #print 'Instantiating plugin',p,plugin_instance,'of',klass
                     pluggable.plugin_plugin(plugin_instance)
 
     def unregister_pluggable (self, pluggable, klass):
@@ -189,6 +186,8 @@ class PluginSet:
                 sys.path.append(self.curdir)
             try:
                 self._loaded = __import__(self.module)
+                #print 'Loaded plugin set',self._loaded
+                #print 'plugins=',self._loaded.plugins
             except ImportError:
                 print 'PATH:',sys.path
                 raise
@@ -237,7 +236,7 @@ class Pluggable:
         A pluggable can take multiple types of sub-classes if it
         likes.
         """
-        print 'Pluggabe.__init__([',plugin_klasses,'])'
+        #print 'Pluggable.__init__([',plugin_klasses,'])'
         self.pre_hooks = {} # stores hooks to be run before methods by
                             # method name
         self.post_hooks = {} # stores hooks to be run after methods by
@@ -246,14 +245,12 @@ class Pluggable:
         self.klasses = plugin_klasses
         self.plugins = []
         for klass in self.klasses:
-            print 'register self ',self,'as pluggable for ',klass
+            #print 'register self ',self,'as pluggable for ',klass
             self.loader.register_pluggable(self,klass)
 
     def plugin_plugin (self, plugin_instance):
         try:
-            print 'plugging in ',plugin_instance
             self.plugins.append(plugin_instance)
-            print 'activate!'
             plugin_instance.activate(self)
         except:
             print 'PLUGIN FAILED TO LOAD'
@@ -262,19 +259,14 @@ class Pluggable:
     def destroy (self):
         self.loader.unregister_pluggable(self,self.klass)
         for pi in self.plugins:
-            print 'deactivate plugin',pi
             pi.deactivate(self)
 
     def run_pre_hook (self, fname, *args, **kwargs):
-        print 'Looking for pre hooks for',fname,
         for hook in self.pre_hooks.get(fname,[]):
-            print 'run hook',hook
             hook(self,*args,**kwargs)
 
     def run_post_hook (self, fname, retval, *args, **kwargs):
-        print 'Looking for post hooks for',fname,'found',self.post_hooks.get(fname,[])
         for hook in self.post_hooks.get(fname,[]):
-            print 'run hook',hook
             hook(retval,self,*args,**kwargs)
 
     def add_hook (self, type, name, hook):

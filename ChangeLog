@@ -1,3 +1,30 @@
+2008-10-12  Thomas Mills HInkle  <thomas_hinkle@sf.net>
+
+	* src/lib/plugin_loader.py: Remove excess print statements. Don't
+	write duplicate entries for plugins in saved_plugins file.
+
+	* src/lib/GourmetRecipeManager.py: Remove all obsolete
+	gt.threads calls
+
+	* style/default.css: Make title sans-serif
+	* src/lib/exporters/gnomeprinter.py (renderer.write_paragraph):
+	Catch IndexErrors if we're trying to break a string with no spaces
+	in it.
+
+2008-10-03  Thomas Mills HInkle  <thomas_hinkle@sf.net>
+
+	* src/lib/importers/interactive_importer.py Add support for
+	'ignore' tag in parsed data. This will lead to "hidden" text (we
+	display a button to un-hide it if the user so chooses).
+	* src/lib/importers/generic_recipe_parser.py (RecipeParser.parse):
+	Add 'ignored' keyword to base parser (this allows a preparser to
+	mark some text not worth the user seeing (for example, banner ads
+	in HTML import)
+	* src/lib/backends/db
+	* src/lib/plugins/import_export/web_import_plugin Port basic
+        web import plugin to plugin system. Still not clear on how
+        we'll do web import plugin plugins.
+
 2008-08-10  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/exporters/xml_exporter.py (XmlExporter.append_text):
@@ -18,11 +45,30 @@
 	about version changes reliably. Fix bug in exporter plugin when we
 	get a None where we expect text.
 
-2008-07-24  Thomas Mills HInkle  <tom@hydrophax>
+2008-08-10  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/exporters/xml_exporter.py (XmlExporter.append_text):
+	Raise a clear type error when handed non-text.
+
+	* src/lib/backends/db.py (RecData): Fix alter table and
+	add-column-to-table routines. Add new table plugin_info for
+	storing version info on plugins, so that plugins know the Gourmet
+	version and Plugin version at the last time of
+	instantiation (since a plugin could have been in use, then out of
+	use, then reactivated after an upgrade).
+
+	* src/lib/plugin_loader.py (MasterLoader.activate_plugin_set):
+	Avoid activating a plugin set twice.
+
+	* src/lib/plugin.py (DatabasePlugin.activate): Update database
+	plugin code to work with new versioning code for telling plugins
+	about version changes reliably. Fix bug in exporter plugin when we
+	get a None where we expect text.
+
+2008-07-24  Thomas Mills HInkle  <thomas_hinkle@sf.net>
 
 	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py (MealmasterImporterPlugin.test_file):
 	Fix typo but that made no file look like a Mealmaster file.
-	
 
 	* src/lib/importers/xml_importer.py: Stop passing around recData
 	instances (use singleton pattern instead). Also, fix
@@ -65,7 +111,7 @@
 	* src/lib/GourmetRecipeManager.py (ImporterExporter.import_webpageg):
 	Move import code for web import to importManager where it belongs
 
-2008-07-08  Thomas Mills HInkle  <tom@hydrophax>
+2008-07-08  Thomas Mills HInkle  <thomas_hinkle@sf.net>
 
 	* src/lib/importers/importManager.py (ImportFileList): Add a way
 	to handle an importer calling more importers -- specifically, we
@@ -999,6 +1045,4 @@
 	* src/lib/backends/sql_db.py Raise an error if we set attributes on read-only RowObject
 	* src/lib/recipeIdentifier.py Updates in still-experimental-and-incomplete recipeIdentifier code
 	* src/lib/importers/html_importer.py Automatically add 'link' attribute to all HTML imports
-
-	
 

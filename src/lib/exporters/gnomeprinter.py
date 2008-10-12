@@ -134,8 +134,11 @@ class renderer:
             mymarkup = MarkupString(markup)
             char = int(len(mymarkup.raw)*shrink_by_percentage)
             # we automatically backup until we find a space. If there are no spaces, we fail.
-            while mymarkup[char]!=" ":
-                char -= 1
+            try:
+                while mymarkup[char]!=" ":
+                    char -= 1
+            except IndexError:
+                char += 1
             startmark = mymarkup[:char]
             endmark = mymarkup[char+1:]
             #print 'breaking block into %s and endblock (length of %s)'%(startmark,len(endmark))
@@ -369,6 +372,7 @@ class SimpleWriter (print_writer):
         debug('write_subheader ',3)
         self.dont_escape=True
         try:
+            #print text
             self.write_heading(xml.sax.saxutils.escape(text),
                                size=12,
                                style="normal",
