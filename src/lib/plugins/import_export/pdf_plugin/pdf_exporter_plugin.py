@@ -12,23 +12,25 @@ class PdfExporterPlugin (ExporterPlugin):
     filetype_desc = PDF
     saveas_filters = [PDF,['application/pdf'],['*.pdf']]
     saveas_single_filters = [PDF,['application/pdf'],['*.pdf']]
-    mode = 'b'
+    mode = 'wb'
 
     def get_multiple_exporter (self, args):
         return pdf_exporter.PdfExporterMultiDoc(args['rd'],
                                                 args['rv'],
                                                 args['file'],
-                                                progress_func=args['prog'],
                                                 pdf_args=args['extra_prefs'],
                                                 )
     def do_single_exporter (self, args):
-        pdf_exporter.PdfExporter(args['rd'],
-                                 args['rec'],
-                                 args['out'],
-                                 change_units=args['change_units'],
-                                 mult=args['mult'],
-                                 pdf_args=args['extra_prefs'],
+        print 'Create exporter with args=',args
+        exp = pdf_exporter.PdfExporter(args['rd'],
+                                       args['rec'],
+                                       args['out'],
+                                       change_units=args['change_units'],
+                                       mult=args['mult'],
+                                       pdf_args=args['extra_prefs'],
                                  )
+        print exp,'.do_run()',
+        exp.do_run()
 
     def run_extra_prefs_dialog (self):
         return pdf_exporter.get_pdf_prefs()

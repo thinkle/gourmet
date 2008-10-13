@@ -1526,8 +1526,8 @@ class RecipeManager (RecData):
     def __init__ (self,*args,**kwargs):
         debug('recipeManager.__init__()',3)
         RecData.__init__(self,*args,**kwargs)
-        self.km = keymanager.KeyManager(rm=self)
-        #self.km = keymanager.get_keymanager(rm=self)
+        #self.km = keymanager.KeyManager(rm=self)
+        self.km = keymanager.get_keymanager(rm=self)
         
     def key_search (self, ing):
         """Handed a string, we search for keys that could match

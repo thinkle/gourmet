@@ -333,24 +333,30 @@ class PdfWriter:
     
     def make_paragraph (self, txt, style=None, attributes="",keep_with_next=False):
         if attributes:
-            print 'make_paragraph',txt,style,attributes
-            txt = '<para %s>%s</para>'%(attributes,txt)
+            xmltxt = '<para %s>%s</para>'%(attributes,txt)
         else:
-            txt = '<para>%s</para>'%txt
+            xmltxt = '<para>%s</para>'%txt
         if not style: style = self.styleSheet['Normal']
         try:
             if PASS_REPORTLAB_UNICODE:
-                return platypus.Paragraph(unicode(txt),style)
+                return platypus.Paragraph(unicode(xmltxt),style)
             else:
-                return platypus.Paragraph(unicode(txt).encode('iso-8859-1','replace'),style)
+                return platypus.Paragraph(unicode(xmltxt).encode('iso-8859-1','replace'),style)
         except UnicodeDecodeError:
             try:
                 #print 'WORK AROUND UNICODE ERROR WITH ',txt[:20]
                 # This seems to be the standard on windows.
-                platypus.Paragraph(txt,style)
+                platypus.Paragraph(xmltxt,style)
             except:
-                print 'Trouble with ',txt
+                print 'Trouble with ',xmltxt
                 raise
+        except:
+            # Try escaping text...
+            print 'TROUBLE WITH',txt[:20],'TRYING IT ESCAPED...'
+            return self.make_paragraph(xml.sax.saxutils.escape(txt),
+                                style,
+                                attributes,
+                                keep_with_next)
 
     def write_paragraph (self, txt, style=None, keep_with_next=False, attributes=""):
         p = self.make_paragraph(txt,style,attributes,keep_with_next=keep_with_next)
@@ -401,13 +407,14 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                   txt=[],
                   pdf_args=DEFAULT_PDF_ARGS,
                   **kwargs):
+        print 'Instantiate PdfExporter',doc,kwargs,txt
         self.links = [] # Keep track of what recipes we link to to
                         # make sure we use them...
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
-            out = file(out,'wb')
+            self.out = file(out,'wb')
         if not doc:
-            self.setup_document(out,**pdf_args)
+            self.setup_document(self.out,**pdf_args)
             self.multidoc = False
         else:
             self.doc = doc; self.styleSheet = styleSheet; self.txt = []
@@ -426,9 +433,12 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             fractions=convert.FRACTIONS_NORMAL,
             **kwargs
             )
+
+    def write_foot (self):
+        print 'PdfExporter.write_foot!'
         if not self.multidoc:
             self.close() # Finish the document if this is all-in-one
-            out.close()
+            self.out.close()
         else:
             #self.txt.append(platypus.PageBreak()) # Otherwise, a new page
             # Append to the txt list we were handed ourselves in a KeepTogether block
@@ -956,7 +966,7 @@ if __name__ == '__main__':
         sw.setup_document(f)
         sw.write_header('This is a header & isn\'t it nifty')
         sw.write_paragraph('<i>This</i> is a <b>paragraph</b> with <u>formatting</u>!')
-        sw.write_header('<u>This is a formatted header & it is also nifty &amp; cool</u>')
+        sw.write_header('<u>This is a formatted header &amp; it is also nifty &amp; cool</u>')
         sw.write_paragraph('<i>This is another formatted paragraph</i>')
         sw.write_paragraph('<span fg="\#f00">This is color</span>')
         sw.close()
@@ -994,7 +1004,7 @@ if __name__ == '__main__':
         #else:
         #    base = '/home/tom/Projects/grm'
         import gourmet.recipeManager as rm
-        rd = rm.RecipeManager(file=os.path.join(base,'src','tests','reference_setup','recipes.db'))
+        rd = rm.get_recipe_manager(file=os.path.join(base,'src','tests','reference_setup','recipes.db'))
         #rd = rm.RecipeManager()
         rr = []
         #for n,rec in enumerate(rd.fetch_all(rd.recipe_table,deleted=False)):
@@ -1012,8 +1022,8 @@ if __name__ == '__main__':
         print 'We must be on windows...'
 
     #print 'TEST 3x5'
-    #gglobals.launch_url('file://'+test_3_x_5())
-    #gglobals.launch_url('file://'+test_formatting())
+    gglobals.launch_url('file://'+test_3_x_5())
+    gglobals.launch_url('file://'+test_formatting())
     #print 'END TEST'
     #print 'TEST GRM'
     gglobals.launch_url('file://'+test_grm_export())

@@ -1,5 +1,12 @@
 2008-10-12  Thomas Mills HInkle  <tom@hydrophax>
 
+	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py: Move
+	finish-up code out of PdfExporter.__init__ and into write_foot, so
+	that it happens after writing the recipe (this reflects a change
+	in the design of exporters -- everything used to happen on
+	instantiation, but with threading, everything should happen in the
+	do_run call that can be run as a separate thread.
+
 	* src/lib/plugin_loader.py: Fix dependency checking. Add
 	check_if_depended_upon and make deactivating a dependee plugin
 	deactivate depender plugins well.

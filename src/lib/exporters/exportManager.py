@@ -21,7 +21,7 @@ class ExportManager (plugin_loader.Pluggable):
         from gourmet.GourmetRecipeManager import get_application
         self.app = get_application()
 
-    def offer_single_export (self, rec, prefs, parent=None):
+    def offer_single_export (self, rec, prefs, mult=1, parent=None):
         """Offer to export a single file.
 
         Return the filename if we have in fact exported said file.
@@ -43,15 +43,23 @@ class ExportManager (plugin_loader.Pluggable):
             return
         exporter_plugin = self.get_exporter(exp_type)
         extra_prefs = exporter_plugin.run_extra_prefs_dialog() or {}
+        if hasattr(exporter_plugin,'mode'):
+            export_file_mode = exporter_plugin.mode
+            if export_file_mode not in ['w','a','wb']:
+                export_file_mode = 'w'
+                print 'IGNORING INVALID FILE MODE',export_file_mode
+        else:
+            export_file_mode = 'w'
         outfi = file(filename,
-                     exporter_plugin.mode)
-        exporter_plugin.do_single_export(**{
-            'rd':self.rg.rd,
-            'rec':self.current_rec,
+                     export_file_mode)
+        # this should write to our file...
+        exporter_plugin.do_single_export({
+            'rd':self.app.rd,
+            'rec':rec,
             'out':outfi,
-            'conv':self.rg.conv,
-            'change_units':self.prefs.get('readableUnits',True),
-            'mult':self.mult,            
+            'conv':self.app.conv,
+            'change_units':self.app.prefs.get('readableUnits',True),
+            'mult':mult,     
             'extra_prefs':extra_prefs,
             })
         outfi.close()
@@ -114,7 +122,7 @@ class ExportManager (plugin_loader.Pluggable):
     def get_single_filters (self):
         filters = []
         for plugin in self.plugins:
-            filters.extend(plugin.saveas_single_filters)
+            filters.append(plugin.saveas_single_filters)
         return filters
 
     def get_multiple_filters (self):
@@ -139,5 +147,5 @@ class ExportManager (plugin_loader.Pluggable):
 def get_export_manager ():
     try:
         return ExportManager()
-    except ExporterManager, em:
+    except ExportManager, em:
         return em

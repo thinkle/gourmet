@@ -511,6 +511,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
         
     @pluggable_method
     def do_run (self):
+        print 'Exportermultirec.do_run'
         self.rcount = 0
         self.rlen = len(self.recipe_table)        
         if not self.one_file:

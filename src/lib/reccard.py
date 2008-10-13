@@ -535,7 +535,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def export_cb (self, *args):
         opt = self.prefs.get('save_recipe_as','html')
-        fn = exportManager.get_export_manager().offer_single_export(self.current_rec,self.prefs,parent=self.window)
+        fn = exporters.exportManager.get_export_manager().offer_single_export(self.current_rec,self.prefs,parent=self.window,
+                                                                              mult=self.mult)
         
 
     def toggle_readable_units_cb (self, widget):
