@@ -295,6 +295,7 @@ class RecRenderer (print_writer):
             if do_new_page:
                 self.new_page()
             r=RecWriter(rd, r, self, change_units=change_units, mult=mult)
+            r.do_run()
             do_new_page = True # put pagebreaks between recipes...
         self.close()
         

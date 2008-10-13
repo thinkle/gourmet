@@ -79,7 +79,6 @@ class MasterLoader:
     def save_active_plugins (self):
         # If we have not changed from the defaults and no
         # configuration file exists, don't bother saving one.
-        print 'Saving',self.active_plugin_sets
         if ((self.active_plugin_sets != self.default_active_plugin_sets)
             or
             os.path.exists(self.active_plugin_filename)):

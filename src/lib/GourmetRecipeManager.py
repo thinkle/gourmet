@@ -23,7 +23,7 @@ from timer import show_timer
 _ = gettext.gettext
 from defaults.defaults import lang as defaults
 import plugin_loader, plugin, plugin_gui
-
+from threadManager import get_thread_manager, get_thread_manager_gui
 from zipfile import BadZipfile
 
 if os.name == 'posix':
@@ -732,15 +732,18 @@ class ImporterExporter:
     def print_recs (self, *args):
         debug('printing recipes',3)
         recs = self.get_selected_recs_from_rec_tree()
-        gt.gtk_leave()
-        printer.RecRenderer(self.rd, recs,
-                            dialog_title=gettext.ngettext('Print %s recipe',
-                                                          'Print %s recipes',
-                                                          len(recs))%len(recs),
-                            dialog_parent = self.app,
-                            change_units = self.prefs.get('readableUnits',True)
-                            )
-        gt.gtk_enter()
+        renderer = printer.RecRenderer(self.rd, recs,
+                                       dialog_title=gettext.ngettext('Print %s recipe',
+                                                                     'Print %s recipes',
+                                                                     len(recs))%len(recs),
+                                       dialog_parent = self.app,
+                                       change_units = self.prefs.get('readableUnits',True)
+                                       )
+        #tm = get_thread_manager()
+        #tmg = get_thread_manager_gui()
+        #tm.add_thread(renderer)
+        #tmg.register_thread_with_dialog(_('Print recipes'),renderer)
+        #tmg.show()
 
     def export_selected_recs (self, *args): self.do_export(export_all=False)
     def export_all_recs (self, *args): self.do_export(export_all=True)
@@ -756,11 +759,11 @@ class ImporterExporter:
     def import_pre_hook (self, *args):
         debug('import_pre_hook, gt.gtk_enter()',1)
         debug('about to run... %s'%self.rd.add_hooks[1:-1],1)
-        gt.gtk_enter()
+        #gt.gtk_enter()
 
     def import_post_hook (self, *args):
         debug('import_post_hook,gt.gtk_leave()',5)
-        gt.gtk_leave()
+        #gt.gtk_leave()
 
     def import_webpageg (self, *args):
         self.importManager.offer_web_import(parent=self.app.get_toplevel())
@@ -897,6 +900,7 @@ class ImporterExporter:
         """Run our actual import and display progress dialog."""
         # we have to make sure we don't filter while we go (to avoid
         # slowing down the process too much).
+        raise NotImplemented
         self.wait_to_filter=True
         self.last_impClass = impClass
         pre_hooks = [lambda *args: self.inginfo.disconnect_manually()]
@@ -910,7 +914,7 @@ class ImporterExporter:
                            release])
         def show_progress_dialog (t):
             debug('showing progress dialog',3)
-            gt.gtk_enter()
+            #gt.gtk_enter()
             if import_source:
                 sublab = _('Importing recipes from %s')%import_source
             else: sublab = None
@@ -919,7 +923,7 @@ class ImporterExporter:
                 {'label':_('Importing Recipes'),
                  'sublabel':sublab
                  })
-            gt.gtk_leave()
+            #gt.gtk_leave()
         pre_hooks.insert(0,show_progress_dialog)
         pre_hooks.insert(0, lambda *args: self.lock.acquire())
         t=gt.SuspendableThread(impClass,name="import",

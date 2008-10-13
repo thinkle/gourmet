@@ -1,3 +1,19 @@
+2008-10-13  Thomas Mills HInkle  <thinkle@sf.net>
+
+	* src/lib/plugin_loader.py (Pluggable.__init__): Be less verbose...
+
+	* src/lib/GourmetRecipeManager.py (print_recs): Remove gt.* calls.
+
+	* src/lib/exporters/gnomeprinter.py: Correct printing (we were
+	using old exporter API in which exporter's did export on
+	instantiation. We now work with the new API, though printing is
+	not properly threaded (this is a one-line fix to get printing back
+	for now -- printing should be reworked with the different printers
+	written as plug-ins etc).
+
+	* src/lib/gglobals.py (GladeCustomHandlers.__init__.custom_handler):
+	Be less verbose.
+
 2008-10-12  Thomas Mills HInkle  <tom@hydrophax>
 
 	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py: Move

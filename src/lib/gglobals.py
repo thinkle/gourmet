@@ -41,14 +41,12 @@ class GladeCustomHandlers:
 
         def custom_handler (glade,func_name,
                             widg, s1,s2,i1,i2):
-            print 'Glade wants ',func_name
             f=getattr(self,func_name)
             w= f(s1,s2,i1,i2)
             return w
         gtk.glade.set_custom_handler(custom_handler)
 
     def add_custom_handler (self, handler_name, handler):
-        print 'register custom handler',handler_name,handler
         if hasattr(self,handler_name):
             import traceback; traceback.print_stack()
             print 'WARNING: ','We already had a handler named %s'%handler
