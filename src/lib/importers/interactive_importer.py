@@ -7,7 +7,8 @@ import importer
 import re
 import gourmet.convert as convert
 from gourmet.threadManager import NotThreadSafe
-
+import imageBrowser
+import gourmet.ImageExtras as ImageExtras
 # TODO
 # 1. Make this interface actually import recipes...
 # 2. Add drop-down menu buttons in place of red labels to make it
@@ -379,6 +380,30 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             else:
                 print 'UNKNOWN TAG',tag,text,label
         if started: self.commit_rec()
+        print "We've added the recipes...",self.added_recs
+        if hasattr(self,'images') and self.images:
+            # This is ugly -- we run the dialog once per recipe. This
+            # should happen rarely in current use-case (I don't know
+            # of a usecase where many recipes will come from a single
+            # text document / website); if in fact this becomes a
+            # common usecase, we'll need to rework the UI here.
+            for rec in self.added_recs:
+                ibd = imageBrowser.ImageBrowserDialog(
+                    title=_('Select recipe image'),
+                    label=_('Select image for recipe "%s"'%rec.title or _('Untitled')),
+                    sublabel=_("Below are all the images found for the page you are importing. Select any images that are of the recipe, or don't select anything if you don't want any of these images."),
+                    )
+                for i in self.images: ibd.add_image_from_uri(i)
+                ibd.run()
+                if ibd.ret:
+                    ifi = file(imageBrowser.get_image_file(ibd.ret),'r')
+                    image_str = ifi.read(); ifi.close()
+                    image = ImageExtras.get_image_from_string(image_str)
+                    # Adding image!
+                    thumb = ImageExtras.resize_image(image,40,40)
+                    self.rd.modify_rec(rec,{'image':ImageExtras.get_string_from_image(image),
+                                            'thumb':ImageExtras.get_string_from_image(thumb),
+                                            })
         if self.modal:
             self.w.hide()
             gtk.main_quit()
@@ -407,7 +432,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             gtk.main()
         else:
             self.w.connect('delete-event',lambda *args: self.w.hide())
-
+        
     
             
 if __name__ == '__main__':
@@ -415,6 +440,7 @@ if __name__ == '__main__':
     ii.w.connect('delete-event',gtk.main_quit)
     ii.w.show_all()
     if True:
+        ii.images = ['http://grecipe-manager.sourceforge.net/CardView.png']
         ii.set_text(
         u"""
 Quick Pesto Dinner

@@ -1,3 +1,29 @@
+2008-10-16  Thomas Mills HInkle  <tom@hydrophax>
+
+	* src/lib/plugins/import_export/web_import_plugin/* - Add web
+	import plugin. We've removed the fully-automated web import in
+	favor of a preparser to the interactive importer; this means that
+	work we do building scrapers can only help, since users can always
+	fall-back to fully manual marking up if the scraper does a bad
+	job.
+
+	* src/lib/plugins/import_export/website_import_plugins/* - Add web
+	import plugin plugin for helping scrape specific websites (food
+	channel, about.com, etc).
+
+	* src/lib/importers/interactive_importer.py
+	(InteractiveImporter.commit_changes): Add image browser dialog
+	back to interactive importer (if self.images is populated)
+
+	* src/lib/plugin_loader.py (MasterLoader.activate_plugin_set):
+	Don't iterate over the dictionary since we might modify it.
+
+	* src/lib/plugin.py (PluginPlugin): Create PluginPlugin class for
+	allowing Pluggables in plugin classes -- we have plugin plugins
+	specify a target string so that different pluggable plugins can
+	differentiate among themselves. (This is currently used only for
+	allowing the web importer to accept plugins).
+
 2008-10-13  Thomas Mills HInkle  <thinkle@sf.net>
 
 	* src/lib/plugin_loader.py (Pluggable.__init__): Be less verbose...

@@ -327,7 +327,23 @@ class MainPlugin (StandardPlugin):
 class PluginPlugin (StandardPlugin):
     """This class is used for plugins that plugin to other plugins.
     """
-    pass
+
+    target_pluggable = None
+    
+    def activate (self, pluggable):
+        # Check whether we are actually intended for this pluggable,
+        # then call do_activate, or remove ourselves from the plugins
+        # list accordingly.
+        if self.target_pluggable in pluggable.targets:
+            # do_activate is where we do our real activation
+            pluggable.plugins.append(self)
+            self.do_activate(pluggable)
+        else:
+            # nevermind... we're not for this pluggable
+            pluggable.plugins.remove(self)
+            
+    def do_activate (self, pluggable):
+        pass
 
 class RecDisplayModule (UIModule):
 

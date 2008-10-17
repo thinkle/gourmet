@@ -128,7 +128,7 @@ class MasterLoader:
         self.active_plugin_sets.append(plugin_set.module)
         self.active_plugins.extend(plugin_set.plugins)
         for plugin in plugin_set.plugins:
-            for klass in self.pluggables_by_class:
+            for klass in self.pluggables_by_class.keys():
                 if issubclass(plugin,klass):
                     for pluggable in self.pluggables_by_class[klass]:
                         pluggable.plugin_plugin(self.get_instantiated_plugin(plugin))
