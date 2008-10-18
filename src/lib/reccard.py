@@ -169,6 +169,9 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.update_from_database()
         plugin_loader.Pluggable.__init__(self,
                                          [ToolPlugin,RecDisplayPlugin])
+        self.mm = mnemonic_manager.MnemonicManager()
+        self.mm.add_toplevel_widget(self.window)
+        self.mm.fix_conflicts_peacefully()
         self.setup_style()
 
     def setup_uimanager (self):
@@ -344,7 +347,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     # Main GUI setup
     def setup_main_window (self):
-        self.window = gtk.Window()        
+        self.window = gtk.Window()
         self.window.connect('delete-event',self.hide)
         self.conf.append(WidgetSaver.WindowSaver(self.window,
                                                  self.prefs.get('reccard_window_%s'%self.current_rec.id,
@@ -759,6 +762,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
     '''    
 
     def __init__ (self, reccard, rg, recipe=None, recipe_display=None):
+        self.edited = False
         self.editor_modules = [
             DescriptionEditorModule,
             IngredientEditorModule,
@@ -776,7 +780,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         self.setup_main_interface()
         self.setup_modules()
         #self.conf.append(WidgetSaver.WindowSaver(self.window, self.rg.prefs.get(self.pref_id+'_edit',{})))
-        self.setup_notebook()        
+        self.setup_notebook()
         self.page_specific_handlers = []
         #self.setEdited(False)
         # parameters for tracking what has changed
@@ -793,6 +797,9 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
             #self.notebook.set_current_page(self.NOTEBOOK_ATTR_PAGE)
         self.set_edited(False)
         plugin_loader.Pluggable.__init__(self,[ToolPlugin])
+        self.mm = mnemonic_manager.MnemonicManager()
+        self.mm.add_toplevel_widget(self.window)
+        self.mm.fix_conflicts_peacefully()        
         self.show()
         
     def setup_defaults (self):
@@ -895,6 +902,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         self.notebook_change_cb()
 
     def set_edited (self, edited):
+        self.edited = edited
         if edited:
             self.mainRecEditActionGroup.get_action('Save').set_sensitive(True)
             self.mainRecEditActionGroup.get_action('Revert').set_sensitive(True)            

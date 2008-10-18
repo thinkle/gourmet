@@ -11,7 +11,6 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
     targets = ['webimport_plugin']
 
     def __init__ (self, *args, **kwargs):
-        print 'Instantiate GenericWebImporter!'
         Pluggable.__init__(self, [PluginPlugin])
 
     #def activate (self, pluggable):
@@ -20,12 +19,10 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
 
     def test_file (self, filename):
         '''Given a file name, test whether the file is of this type.'''
-        print 'GenericWebImporter.test_file(',filename,')'
         if filename.endswith('.htm') or filename.endswith('.html'):
             return True # We are a fallback option
 
     def test_url (self, url, data, content_type):
-        print 'GenericWebImporter.test_url(',url,data[:20],content_type,')'
         for p in self.plugins:
             if p.test_url(url, data):
                 return 1

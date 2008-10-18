@@ -10,7 +10,7 @@ import exporters, importers
 from exporters.exportManager import get_export_manager
 from importers.importManager import get_import_manager
 import convert, version
-from gtk_extras import ratingWidget, WidgetSaver
+from gtk_extras import ratingWidget, WidgetSaver, mnemonic_manager
 from gtk_extras import dialog_extras as de
 from gtk_extras import treeview_extras as te
 from ImageExtras import get_pixbuf_from_jpg
@@ -498,7 +498,7 @@ class GourmetApplication:
                             debug("Unable to terminate thread %s"%t,0)
                             # try not to lose data if this is going to
                             # end up in a force quit
-                            self.save_default() 
+                            #self.save_default() 
                             return True
                 if not use_threads:
                     for t in self._threads:
@@ -508,7 +508,7 @@ class GourmetApplication:
                         except:
                             # try not to lose data if this is going to
                             # end up in a force quit
-                            self.save_default()
+                            #self.save_default()
                             return True
             else:
                 return True
@@ -1128,6 +1128,11 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.setup_column_display_preferences()
         plugin_loader.Pluggable.__init__(self,
                                          [plugin.MainPlugin,plugin.ToolPlugin])
+        self.mm = mnemonic_manager.MnemonicManager()
+        self.mm.add_toplevel_widget(self.window)
+        self.mm.fix_conflicts_peacefully()
+        self.window.show()
+
 
     def setup_hacks (self):
         # THese are properties that we need to set to test with our
@@ -1150,12 +1155,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                                      self.configure_columns)        
 
     def configure_columns (self, retcolumns):
-        print 'Configure columns->',retcolumns
         hidden=[]
         for c,v in retcolumns:
             if not v: hidden.append(c)
         self.rectree_conf.hidden=self.prefs['rectree_hidden_columns']=hidden
-        print 'Apply visibility'
         self.rectree_conf.apply_visibility()
 
 
@@ -1199,7 +1202,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.main.add(self.recipe_index_interface)
         self.recipe_index_interface.show()
         self.main.show()
-        self.window.show()
+
 
     def setup_actions (self):
         self.ui_manager = gtk.UIManager()
@@ -1344,7 +1347,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         if self.rc.has_key(rec.id):
             rc = self.rc[rec.id]            
             if rc.edited:
-                rc.widget.present()
+                rc.show_edit()
                 if not de.getBoolean(
                     label=_('Delete %s?'),
                     sublabel=_('You have unsaved changes to %s. Are you sure you want to delete?'),
@@ -1352,7 +1355,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                     custom_no=gtk.STOCK_CANCEL,
                     cancel=False):
                     return True
-            rc.widget.hide()
+            rc.hide()
             self.del_rc(rec.id)
             
     def rec_tree_delete_recs (self, recs):
