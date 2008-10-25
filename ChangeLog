@@ -1,4 +1,22 @@
-2008-10-16  Thomas Mills HInkle  <tom@hydrophax>
+2008-10-25  Thomas Mills HInkle  <thomas_hinkle@users.sourceforge.net>
+
+	* MANIFEST: Include data/ directory.
+
+	* src/lib/legacy_db/db_085/rdatabase.py (mkConverter.create_conv_table):
+	Fix capitalization of converter.Converter
+
+2008-10-18  Thomas Mills HInkle  <thomas_hinkle@users.sourceforge.net>
+	* src/lib/gtk_extras/mnemonic_manager.py: Fix mnemonic-manager's
+	handling of submenus. Automatically add TreeViews to mnemonic
+	manager.
+
+	* src/lib/GourmetRecipeManager.py: Add mnemonic-manager calls to
+	resolve conflicts.
+
+	* src/lib/reccard.py: Add mnemonic-manager calls to resolve
+	mnemonic conflicts.
+
+2008-10-16  Thomas Mills HInkle  <thomas_hinkle@users.sourceforge.net>
 
 	* src/lib/plugins/import_export/web_import_plugin/* - Add web
 	import plugin. We've removed the fully-automated web import in
@@ -40,7 +58,7 @@
 	* src/lib/gglobals.py (GladeCustomHandlers.__init__.custom_handler):
 	Be less verbose.
 
-2008-10-12  Thomas Mills HInkle  <tom@hydrophax>
+2008-10-12  Thomas Mills HInkle  <thomas_hinkle@users.sourceforge.net>
 
 	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py: Move
 	finish-up code out of PdfExporter.__init__ and into write_foot, so

@@ -316,7 +316,7 @@ class RecData:
             amt,unit = conv.adjust_unit(amt,unit)
             if ramount and unit != ing.unit:
                 # if we're changing units... convert the upper range too
-                ramount = ramount * conv.converter(ing.unit, unit)
+                ramount = ramount * conv.Converter(ing.unit, unit)
         if ramount: amt = (amt,ramount)
         return (self._format_amount_string_from_amount(amt,fractions=fractions),unit)
         
@@ -648,10 +648,10 @@ class RecipeManager (RecData):
         for v in vw1,vw2:
             for i in v: self.modify_ing(i,{'shopoptional':0})
 
-class mkConverter(convert.converter):
+class mkConverter(convert.Converter):
     def __init__ (self, db):
         self.db = db
-        convert.converter.__init__(self)
+        convert.Converter.__init__(self)
     ## still need to finish this class and then
     ## replace calls to convert.converter with
     ## calls to rmetakit.mkConverter

@@ -7,6 +7,14 @@ TODO
 copyright
 setup.cfg
 setup.py
+data/default.css
+data/FAQ
+data/phone.wav
+data.warning.wav
+data/recipe.dtd
+data/FOOD_DES.txt
+data/WEIGHT.txt
+data/ABBREV.txt
 src/gourmet
 src/gourmet_in_place
 src/lib/GourmetFauxThreads.py
