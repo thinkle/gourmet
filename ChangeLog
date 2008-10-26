@@ -1,3 +1,12 @@
+2008-10-25  Thomas Mills HInkle  <tom@hydrophax>
+
+	* src/lib/recindex.py (RecIndex.setup_widgets): Make
+	search-as-you-type the default.
+
+	* create_manifest.py: Add data directory
+	* src/lib/plugins/import_export/gxml.gourmet-plugin.in: This is an
+	import and export plugin
+
 2008-10-25  Thomas Mills HInkle  <thomas_hinkle@users.sourceforge.net>
 
 	* MANIFEST: Include data/ directory.

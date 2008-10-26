@@ -150,10 +150,10 @@ class RecIndex:
         self.search_actions.add_toggle_actions([
             ('toggleRegexp',None,_('Use regular expressions in search'),
              None,_('Use regular expressions (an advanced search language) in text search'),
-             self.toggleRegexpCB),
+             self.toggleRegexpCB,False),
             ('toggleSearchAsYouType',None,_('Search as you type'),None,
              _('Search as you type (turn off if search is too slow).'),
-             self.toggleTypeSearchCB
+             self.toggleTypeSearchCB, True
              ),
             ('toggleShowSearchOptions',
              None,

@@ -27,6 +27,8 @@ setup.py
 
 outfi.write(STARTER_LIST)
 write_lst_to_file(['src/gourmet','src/gourmet_in_place'])
+write_lst_to_file(recursive_match('data',['*.txt','*.wav','*.css']))
+write_lst_to_file(['data/FAQ'])
 write_lst_to_file(recursive_match('src/lib',['*.py']))
 write_lst_to_file(recursive_match('glade',['*.glade']))
 write_lst_to_file(recursive_match('src/lib/plugins/',['*.glade',

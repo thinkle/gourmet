@@ -30,6 +30,9 @@ class MasterLoader:
         'unit_converter',
         'duplicate_finder',
         'key_editor',
+        'gxml_plugin',
+        'html_plugin',
+        'archive_plugin',
         ]
     active_plugin_filename = os.path.join(gglobals.gourmetdir,'active_plugins')
 
