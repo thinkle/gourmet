@@ -413,7 +413,7 @@ class RecIndex:
 
     def set_search_by (self, str):
         """Manually set the search by label to str"""
-        debug('set_search_by',0)
+        debug('set_search_by',1)
         #self.rSearchByMenu.get_children()[0].set_text(str)
         cb.cb_set_active_text(self.rSearchByMenu, str)
         self.search()
@@ -430,10 +430,10 @@ class RecIndex:
 	if txt and self.limitButton: self.limitButton.set_sensitive(True)
         elif self.limitButton: self.limitButton.set_sensitive(False)
         if self.make_search_dic(txt,searchBy) == self.last_search:
-            debug("Same search!",0)
+            debug("Same search!",1)
             return
         if self.srchentry.window: self.srchentry.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-        debug('Doing new search for %s, last search was %s'%(self.make_search_dic(txt,searchBy),self.last_search),0)
+        debug('Doing new search for %s, last search was %s'%(self.make_search_dic(txt,searchBy),self.last_search),1)
         gobject.idle_add(lambda *args: self.do_search(txt, searchBy))
 
     def make_search_dic (self, txt, searchBy):
@@ -608,7 +608,7 @@ class RecIndex:
                 return True
             else: return False
         except:
-            debug('something bizaare just happened in visibility_fun',0)
+            debug('something bizaare just happened in visibility_fun',1)
             return False
 
     def update_rmodel (self, recipe_table):
