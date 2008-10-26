@@ -1,5 +1,9 @@
 2008-10-25  Thomas Mills HInkle  <tom@hydrophax>
 
+	* Release 0.14.1
+
+2008-10-25  Thomas Mills HInkle  <tom@hydrophax>
+
 	* src/lib/recindex.py (RecIndex.setup_widgets): Make
 	search-as-you-type the default.
 
