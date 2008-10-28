@@ -2,7 +2,6 @@ import htmllib, urllib, re, StringIO, tempfile, os, os.path
 import importer
 import BeautifulSoup
 import socket
-from html_plugins import *
 from gourmet.gdebug import *
 from gettext import gettext as _
 import traceback

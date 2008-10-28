@@ -99,10 +99,14 @@ def data_files():
     glade = glob.glob(os.path.join('glade','*.glade'))
     sounds = glob.glob(os.path.join('data','*.wav'))
     i18n = glob.glob(os.path.join('i18n','*/*/*.mo'))
+    txts = glob.glob(os.path.join('data','*.txt'))
+    dtds = glob.glob(os.path.join('data','*.dtd'))        
     images.extend(icons)
     images.extend(style)
     images.extend(glade)
     images.extend(sounds)
+    images.extend(txts)
+    images.extend(dtds)    
     #print "data_files: ",images,style
     # Note that this os specific stuff must be kept in sync with gglobals.py
     if os.name == 'nt' or os.name == 'dos':
@@ -121,13 +125,7 @@ def data_files():
              ),
             (os.path.join(base,'applications'),
              ['gourmet.desktop']
-             ),]
-        base = os.path.join(base,'gourmet')
-    files.extend([(os.path.join(base), images + ['FAQ'] +[os.path.join('data','recipe.dtd'),
-                                                          os.path.join('data','ABBREV.txt'),
-                                                          os.path.join('data','WEIGHT.txt'),
-                                                          os.path.join('data','FOOD_DES.txt'),                                                          
-                                                          ]),])
+             ),]    
     for f in i18n:
         pth,fn=os.path.split(f)
         pthfiles = pth.split(os.path.sep)
@@ -136,7 +134,9 @@ def data_files():
         #print pth,fn
         pth = os.path.join(i18n_base,pth)
         files.append((pth,[f]))
-    #print files
+    base = os.path.join(base,'gourmet')            
+    files.extend([(base, images + ['FAQ'])])
+    #print 'DATA FILES:',files
     return files
 
 class my_install_data(install_data):
