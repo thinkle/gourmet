@@ -1,5 +1,7 @@
 2008-10-27  Thomas Hinkle  <tom@grenville>
 
+	* setup.py (result): Add new plugins.
+
 	* src/lib/backends/db.py (RecData.backup_db): Automatically make a
 	copy of the database when we're about to do a DB update, just in
 	case something ugly happens.
