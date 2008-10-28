@@ -2,7 +2,7 @@
 #import sys
 #sys.path.append('/usr/share/')
 ## End for testing - DELETE ME
-
+import shutil
 import os.path
 from gourmet.gdebug import debug, TimeAction
 import re, pickle, string, os.path, string, time
@@ -386,6 +386,17 @@ class RecData (Pluggable):
             pass
         self._setup_object_for_table(self.convtable_table, Convtable)
 
+    def backup_db (self):
+        """Make a backup copy of the DB -- this ensures experimental
+        code won't permanently screw our users."""
+        import time, os.path
+        backup_file_name = self.filename + '.backup-' + time.strftime('%d-%m-%y')
+        while os.path.exists(backup_file_name):
+            backup_file_name += 'I'
+        print 'Making a backup copy of DB in ',backup_file_name
+        print 'You can use it to restore if something ugly happens.'
+        shutil.copy(self.filename,backup_file_name) # Make a backup...            
+
     def update_version_info (self, version_string):
         """Report our version to the database.
 
@@ -420,12 +431,12 @@ class RecData (Pluggable):
             stored_info = self.fetch_one(self.info_table)            
         
         ### Code for updates between versions...
-        
-        if not self.new_db:
+        if not self.new_db:            
             # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up keylookup_table tables...
             # We don't actually do this yet... (FIXME)
             #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
             if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
+                self.backup_db()
                 print 'Fixing broken ingredient-key view from earlier versions.'
                 # Drop keylookup_table table, which wasn't being properly kept up
                 # to date...
@@ -436,6 +447,7 @@ class RecData (Pluggable):
                     self.add_ing_to_keydic(ingredient.item,ingredient.ingkey)
 
             if stored_info.version_super == 0 and stored_info.version_major < 14:
+                self.backup_db()
                 # Name changes to make working with IDs make more sense
                 # (i.e. the column named 'id' should always be a unique
                 # identifier for a given table -- it should not be used to
@@ -455,6 +467,7 @@ class RecData (Pluggable):
             # Add recipe_hash, ingredient_hash and link fields
             # (These all get added in 0.13.0)
             if stored_info.version_super == 0 and stored_info.version_major <= 12:
+                self.backup_db()                
                 print 'UPDATE FROM < 0.13.0...'
                 # Don't change the table defs here without changing them
                 # above as well (for new users) - sorry for the stupid
