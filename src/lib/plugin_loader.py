@@ -3,6 +3,7 @@ POST = 1
 import gglobals, os.path, glob, sys
 import gobject
 import plugin
+from gdebug import debug
 from defaults.defaults import loc
 
 try:
@@ -55,8 +56,10 @@ class MasterLoader:
         """
         self.available_plugin_sets = {}
         for d in self.plugin_directories:
+            debug('Loading plugins from %s'%d,1)
             plugins = glob.glob('%s/*.gourmet-plugin'%d)
             for ppath in plugins:
+                debug('Found %s'%ppath,1)
                 plugin_set = PluginSet(ppath)
                 if self.available_plugin_sets.has_key(plugin_set.module):
                     print 'Ignoring duplicate plugin ',plugin_set.module,'found in ',ppath
@@ -153,6 +156,9 @@ class MasterLoader:
         if self.instantiated_plugins.has_key(plugin):
             return self.instantiated_plugins[plugin]
         else:
+            debug('Instantiate %s from %s'%(plugin,
+                                            plugin.__module__),
+                  1)
             self.instantiated_plugins[plugin] = plugin()
             return self.instantiated_plugins[plugin]
             

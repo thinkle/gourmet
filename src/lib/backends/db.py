@@ -1,7 +1,7 @@
-# For testing - DELETE ME
-import sys
-sys.path.append('/usr/share/')
-# End for testing - DELETE ME
+## For testing - DELETE ME
+#import sys
+#sys.path.append('/usr/share/')
+## End for testing - DELETE ME
 
 import os.path
 from gourmet.gdebug import debug, TimeAction
@@ -145,7 +145,7 @@ class RecData (Pluggable):
         self.add_ing_hooks = []
         timer = TimeAction('initialize_connection + setup_tables',2)
         self.initialize_connection()
-        Pluggable.__init__(self,[DatabasePlugin])        
+        Pluggable.__init__(self,[DatabasePlugin])            
         self.setup_tables()
         self.metadata.create_all()
         self.update_version_info(gourmet.version.version)
@@ -158,6 +158,7 @@ class RecData (Pluggable):
         """Initialize our database connection.
         
         This should also set self.new_db accordingly"""
+        debug('Initializing DB connection',1)
         if self.filename:
             self.new_db = not os.path.exists(self.filename)
             print 'Connecting to file ',self.filename
@@ -182,9 +183,10 @@ class RecData (Pluggable):
         if self.url.startswith('sqlite'):
             sqlite_connection = self.db.connect().connection
             sqlite_connection.create_function('regexp',2,regexp)
-            c = sqlite_connection.cursor()
-            c.execute('select name from sqlite_master')
+            #c = sqlite_connection.cursor()
+            #c.execute('select name from sqlite_master')
             #sqlite_connection.create_function('instr',2,instr)
+        debug('Done initializing DB connection',1)
 
     def save (self):
         """Save our database (if we have a separate 'save' concept)"""
@@ -825,7 +827,11 @@ class RecData (Pluggable):
                 newdic[cols_to_change[k]]=getattr(row,k)
             for c in cols_to_keep:
                 newdic[c] = getattr(row,c)
-            self.do_add(getattr(self,'%s_table'%table_name),newdic)
+            try:
+                self.do_add(getattr(self,'%s_table'%table_name),newdic)
+            except:
+                print 'Trouble inserting newdic,',newdic
+                raise
         self.db.execute('DROP TABLE %s_temp'%table_name)
 
     # Metakit has no AUTOINCREMENT, so it has to do special magic here
@@ -1088,9 +1094,32 @@ class RecData (Pluggable):
     # Lower level DB access functions -- hopefully subclasses can
     # stick to implementing these    
 
+    def coerce_types (self, table, dic):
+        """Modify dic to make sure types are correct for table.
+        """
+        type_to_pytype = {Float:float,
+                          Integer:int,
+                          String:str,
+                          Boolean:bool,
+                          Numeric:float,
+                          }
+        for k,v in dic.copy().items():
+            column_obj = getattr(table.c,k)
+            if column_obj.type.__class__ in type_to_pytype:
+                try:
+                    v = type_to_pytype[column_obj.type.__class__](v)
+                except:
+                    v = None
+                if dic[k] != v:
+                    dic[k] = v
+
     def do_add (self, table, dic):
         insert_statement = table.insert()
-        result_proxy = insert_statement.execute(**dic)
+        try:
+            result_proxy = insert_statement.execute(**dic)
+        except ValueError:
+            self.coerce_types(table,dic)
+            result_proxy = insert_statement.execute(**dic)
         return result_proxy
 
     def do_add_and_return_item (self, table, dic, id_prop='id'):

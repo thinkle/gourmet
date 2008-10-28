@@ -1,3 +1,13 @@
+2008-10-27  Thomas Hinkle  <thomas_hinkle@users.sourceforge.net>
+
+	* src/lib/plugin_loader.py: Add debug calls to make it easy to see
+	what plugins are being loaded from where with a -v flag.
+
+	* src/lib/backends/db.py (RecData.do_add): On ValueError, try
+	coercing our dictionary of column->values into proper types or
+	None and reinserting. This fixes a bug with the update code, where
+	empty strings were being passed where we needed null (None).
+
 2008-10-25  Thomas Mills HInkle  <tom@hydrophax>
 
 	* Release 0.14.1
