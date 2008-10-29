@@ -1,0 +1,238 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-10-09 22:30-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: GourmetRecipeManager.py:25
+msgid "Loading window preferences..."
+msgstr ""
+
+#: GourmetRecipeManager.py:27
+msgid "Loading graphical interface..."
+msgstr ""
+
+#: GourmetRecipeManager.py:63
+msgid "Loading recipe database..."
+msgstr ""
+
+#: GourmetRecipeManager.py:65
+msgid "Setting up recipe index..."
+msgstr ""
+
+#: GourmetRecipeManager.py:99
+msgid "Done!"
+msgstr ""
+
+#: GourmetRecipeManager.py:121
+msgid "Recipe _Index"
+msgstr ""
+
+#: GourmetRecipeManager.py:122
+msgid "Shopping _List"
+msgstr ""
+
+#: GourmetRecipeManager.py:153
+msgid "Gourmet is a Recipe Manager for GNOME"
+msgstr ""
+
+#: GourmetRecipeManager.py:154
+msgid "Copyright (c) 2004, Thomas M. Hinkle. GNU GPL"
+msgstr ""
+
+#: GourmetRecipeManager.py:155
+msgid "Gourmet Recipe Manager"
+msgstr ""
+
+#: GourmetRecipeManager.py:190
+#, python-format
+msgid "Save your edits to %s"
+msgstr ""
+
+#: GourmetRecipeManager.py:199
+msgid "Save database before quitting?"
+msgstr ""
+
+#: GourmetRecipeManager.py:238
+#, python-format
+msgid "I can't determine the type of file %s"
+msgstr ""
+
+#: GourmetRecipeManager.py:386
+#, python-format
+msgid "Are you sure you want to delete the recipe <i>%s</i>"
+msgstr ""
+
+#: GourmetRecipeManager.py:388
+msgid "Are you sure you want to delete the following recipes?"
+msgstr ""
+
+#: GourmetRecipeManager.py:392
+#, python-format
+msgid "Are you sure you want to delete the %s selected recipes?"
+msgstr ""
+
+#: GourmetRecipeManager.py:394
+msgid "See recipes"
+msgstr ""
+
+#: GourmetRecipeManager.py:417
+msgid "Total Recipes (Deleting recipes from database...)"
+msgstr ""
+
+#: GourmetRecipeManager.py:421
+#, python-format
+msgid "Deleted %s recipes."
+msgstr ""
+
+#: GourmetRecipeManager.py:444
+#, python-format
+msgid "Deleted recipe %s"
+msgstr ""
+
+#: GourmetRecipeManager.py:487
+#, python-format
+msgid "Number of Servings of %s to Shop For"
+msgstr ""
+
+#: GourmetRecipeManager.py:495
+#, python-format
+msgid "Multiply %s by: "
+msgstr ""
+
+#: GourmetRecipeManager.py:524
+msgid "Saved!"
+msgstr ""
+
+#: GourmetRecipeManager.py:538
+msgid "Export Mealmaster (tm) File"
+msgstr ""
+
+#: GourmetRecipeManager.py:538 GourmetRecipeManager.py:576
+msgid "recipes"
+msgstr ""
+
+#: GourmetRecipeManager.py:545
+msgid "Mealmaster export cancelled!"
+msgstr ""
+
+#: GourmetRecipeManager.py:549
+#, python-format
+msgid "total recipes. %i%% done exporting mealmaster file."
+msgstr ""
+
+#: GourmetRecipeManager.py:558
+msgid "Export Webpage to Directory."
+msgstr ""
+
+#: GourmetRecipeManager.py:558
+msgid "my_recipes"
+msgstr ""
+
+#: GourmetRecipeManager.py:565
+msgid "Webpage export cancelled!"
+msgstr ""
+
+#: GourmetRecipeManager.py:568
+#, python-format
+msgid "total recipes. %i%% done creating web page."
+msgstr ""
+
+#: GourmetRecipeManager.py:575
+msgid ""
+"You need to install PyRTF to export RTF. Go to http://pyrtf.sourceforge.net "
+"if you wish to download it."
+msgstr ""
+
+#: GourmetRecipeManager.py:576
+msgid "Export Rich Text Format"
+msgstr ""
+
+#: GourmetRecipeManager.py:583
+msgid "RTF Export cancelled!"
+msgstr ""
+
+#: GourmetRecipeManager.py:586
+#, python-format
+msgid "total recipes. %i%% done creating RTF Document."
+msgstr ""
+
+#: GourmetRecipeManager.py:594
+msgid "Export Plain Text File"
+msgstr ""
+
+#: GourmetRecipeManager.py:600
+msgid "Text export cancelled!"
+msgstr ""
+
+#: GourmetRecipeManager.py:604
+#, python-format
+msgid "total recipes. %i%% done exporting text."
+msgstr ""
+
+#: GourmetRecipeManager.py:611
+msgid "Export XML"
+msgstr ""
+
+#: GourmetRecipeManager.py:617
+msgid "XML export cancelled."
+msgstr ""
+
+#: GourmetRecipeManager.py:622
+#, python-format
+msgid "total recipes. %i%% done exporting XML file."
+msgstr ""
+
+#: GourmetRecipeManager.py:628
+msgid "Import XML"
+msgstr ""
+
+#: GourmetRecipeManager.py:639
+#, python-format
+msgid "There was an error which prevented Gourmet from importing %s"
+msgstr ""
+
+#: GourmetRecipeManager.py:648
+msgid "Import Mealmaster"
+msgstr ""
+
+#: GourmetRecipeManager.py:650
+msgid "Mealmaster Files"
+msgstr ""
+
+#: GourmetRecipeManager.py:651
+msgid "Plain Text"
+msgstr ""
+
+#: GourmetRecipeManager.py:653
+#, python-format
+msgid "Default source for memories imported from %s"
+msgstr ""
+
+#: GourmetRecipeManager.py:691
+msgid "Total Recipes (Importing...)"
+msgstr ""
+
+#: GourmetRecipeManager.py:704
+msgid "Show in Index View"
+msgstr ""
+
+#: GourmetRecipeManager.py:735
+msgid "Gourmet Recipe Manager starting up..."
+msgstr ""
+
+#: GourmetRecipeManager.py:744
+msgid "Starting gourmet..."
+msgstr ""

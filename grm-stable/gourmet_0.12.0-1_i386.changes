@@ -1,0 +1,23 @@
+Format: 1.7
+Date: Sun,  8 Oct 2006 19:53:47 -0400
+Source: gourmet
+Binary: gourmet
+Architecture: source all
+Version: 0.12.0-1
+Distribution: breezy
+Urgency: low
+Maintainer: Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>
+Changed-By: Thomas Mills Hinkle <Thomas_Hinkle@sf.net>
+Description: 
+ gourmet    - A gtk-based recipe organizer and shopping list generator
+Changes: 
+ gourmet (0.12.0-1) breezy; urgency=low
+ .
+   * Fix buggy trash behavior.
+   * Store version in database for ease of upgrades.
+   * Implement fix for broken databases from pre-0.11.4 installs
+   * Fix-up paragraphing in printing.
+Files: 
+ fbf14f2ee4427ed5a494a36df37eb1e2 292 gnome optional gourmet_0.12.0-1.dsc
+ 7d65f18e0245a78507db22f9c720e40c 8919704 gnome optional gourmet_0.12.0-1.tar.gz
+ 542c0852dbf290b172485202d4536431 2052382 gnome optional gourmet_0.12.0-1_all.deb
