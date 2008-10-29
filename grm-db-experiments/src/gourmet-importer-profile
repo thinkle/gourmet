@@ -1,0 +1,84 @@
+#!/usr/bin/python
+# Copyright (c) 2004 Tom Hinkle
+# You may use and distribute this software under the terms of the
+# GNU General Public License, version 2 or later
+
+import profile
+import sys, optparse
+sys.path.append('src/lib/') # for in-place testing
+import os.path, os
+import gglobals
+from OptionParser import *
+
+
+import gdebug
+gdebug.debug_level=options.debug
+
+import recipeManager
+print args
+
+formats = {
+    'Mastercook (mx2)':'mx2',
+    'Mealmaster (mmf)' :'mmf'
+    }
+
+choice = None
+choicedic = {}
+n=1
+for f in formats.keys():
+    choicedic[n]=f
+    n += 1
+
+choice = 2
+while not choice:
+    for n,s in choicedic.items():
+        print n,": ",s
+    instring = raw_input('Choose an input format: ')
+    try:
+        choice = choicedic[int(instring)]
+    except:
+        print 'Please enter one of the numbers above!'
+
+
+print 'Loading recipe database for import...'
+import rmetakit
+rd=recipeManager.RecipeManager(**recipeManager.dbargs)
+
+def show_progress (*args, **kwargs):
+    print '|',
+
+print 'Beginning import...'
+
+for inputfile in args:
+    source = os.path.split(inputfile)[1]
+    print 'importing %s'%inputfile
+    formats[choice]='mmf'
+    if formats[choice]=='mmf':
+        import mealmaster_importer
+        profile.run("""mealmaster_importer.mmf_importer(filename=inputfile,
+	                                            rd=rd,
+        	                                    progress=show_progress,
+                	                            source=source,
+                        	                    threaded=False
+	                                            )""")
+    elif formats[choice]=='mx2':
+        import mastercook_importer
+        profile.run('mastercook_importer.converter(inputfile,rd=rd,source=source,threaded=False,progress=show_progress)')
+        #impClass = mastercook_importer.converter(inputfile,rd=rd,source=source,threaded=False,
+        #                                             progress=show_progress)
+
+    print ''
+print 'Done with import!'
+#yesorno = ''
+#while yesorno not in ['yes','y','no','n']:
+#    yesorno = raw_input('Save imported recipes to database (yes or no): ')
+
+#if yesorno == 'yes' or yesorno == 'y':
+#    rd.save()
+#    print 'Saved!'
+#
+#else:
+#    print 'Not saved.'
+
+import gdebug
+gdebug.print_timer_info()

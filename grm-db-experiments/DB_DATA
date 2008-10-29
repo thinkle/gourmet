@@ -1,0 +1,328 @@
+TEST FOR NEW SQLITE SETUP
+
+SQL database in use. Disabling threads.
+SQL database in use. Disabling threads.
+AUTOINCREMENT id INTEGER ['AUTOINCREMENT']
+Start 1 *1000 recipes
+At  100 recipes. 3.18575000763 seconds
+At  200 recipes. 5.54450297356 seconds
+At  300 recipes. 8.68513298035 seconds
+At  400 recipes. 11.6803529263 seconds
+At  500 recipes. 14.4607658386 seconds
+At  600 recipes. 17.2007329464 seconds
+At  700 recipes. 19.9908649921 seconds
+At  800 recipes. 22.7404928207 seconds
+At  900 recipes. 25.4738469124 seconds
+At  1000 recipes. 28.2743527889 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Start 2 *1000 recipes
+At  100 recipes. 2.72288203239 seconds
+At  200 recipes. 5.47388720512 seconds
+At  300 recipes. 8.20579314232 seconds
+At  400 recipes. 10.9160079956 seconds
+At  500 recipes. 14.306677103 seconds
+At  600 recipes. 18.0818331242 seconds
+At  700 recipes. 21.7837781906 seconds
+At  800 recipes. 24.5183370113 seconds
+At  900 recipes. 27.4722621441 seconds
+At  1000 recipes. 30.3059430122 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Start 3 *1000 recipes
+At  100 recipes. 3.76274085045 seconds
+At  200 recipes. 7.64281988144 seconds
+At  300 recipes. 11.4811620712 seconds
+At  400 recipes. 15.3158679008 seconds
+At  500 recipes. 18.2637429237 seconds
+At  600 recipes. 21.0795030594 seconds
+At  700 recipes. 24.2228159904 seconds
+At  800 recipes. 28.5676338673 seconds
+At  900 recipes. 32.6791448593 seconds
+At  1000 recipes. 36.8321318626 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Start 4 *1000 recipes
+At  100 recipes. 3.30370092392 seconds
+At  200 recipes. 7.33856391907 seconds
+At  300 recipes. 11.1130568981 seconds
+At  400 recipes. 14.9361269474 seconds
+At  500 recipes. 18.6772108078 seconds
+At  600 recipes. 21.4846158028 seconds
+At  700 recipes. 24.2276158333 seconds
+At  800 recipes. 27.2054018974 seconds
+At  900 recipes. 31.0035970211 seconds
+At  1000 recipes. 34.8035759926 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Start 5 *1000 recipes
+At  100 recipes. 3.77120518684 seconds
+At  200 recipes. 7.57535910606 seconds
+At  300 recipes. 11.3536801338 seconds
+At  400 recipes. 14.9802851677 seconds
+At  500 recipes. 17.7146811485 seconds
+At  600 recipes. 20.4345571995 seconds
+At  700 recipes. 24.0280871391 seconds
+At  800 recipes. 27.8212440014 seconds
+At  900 recipes. 31.5919749737 seconds
+At  1000 recipes. 35.4243211746 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Done running tests!
+
+Method		Time
+------		----
+add_1000_recipes 		28.2763020992
+test_fetch_recipe (fetch 100 recs) 		1.83922815323
+test_exact_search 		0.0616860389709
+test_regexp_search 		0.103529214859
+commit_recs 		0.391911029816
+add_1000_recipes 		30.3083949089
+test_fetch_recipe (fetch 100 recs) 		3.46004104614
+test_exact_search 		0.132165908813
+test_regexp_search 		0.331073045731
+commit_recs 		0.252513885498
+add_1000_recipes 		36.8372859955
+test_fetch_recipe (fetch 100 recs) 		5.9184191227
+test_exact_search 		0.15439081192
+test_regexp_search 		0.385426998138
+commit_recs 		0.0287561416626
+add_1000_recipes 		34.8114349842
+test_fetch_recipe (fetch 100 recs) 		10.4697768688
+test_exact_search 		0.304819822311
+test_regexp_search 		0.681410074234
+commit_recs 		0.0420019626617
+add_1000_recipes 		35.4299938679
+test_fetch_recipe (fetch 100 recs) 		12.9875299931
+test_exact_search 		0.335078954697
+test_regexp_search 		0.830878973007
+commit_recs 		0.0391190052032
+
+
+TEST FOR METAKIT 0.9.0.3 SETUP
+
+tom@lacky lib :( $ python clockDB.py
+Start 1 *1000 recipes
+At  100 recipes. 1.66099214554 seconds
+At  200 recipes. 3.53431296349 seconds
+At  300 recipes. 5.43656396866 seconds
+At  400 recipes. 7.39182114601 seconds
+At  500 recipes. 9.43189096451 seconds
+At  600 recipes. 12.2083330154 seconds
+At  700 recipes. 15.1680901051 seconds
+At  800 recipes. 18.2773339748 seconds
+At  900 recipes. 21.4502289295 seconds
+At  1000 recipes. 25.0135769844 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Start 2 *1000 recipes
+At  100 recipes. 3.39091920853 seconds
+At  200 recipes. 7.92367315292 seconds
+At  300 recipes. 11.5966060162 seconds
+At  400 recipes. 15.311024189 seconds
+At  500 recipes. 19.1451380253 seconds
+At  600 recipes. 23.1092610359 seconds
+At  700 recipes. 28.7299861908 seconds
+At  800 recipes. 34.1804051399 seconds
+At  900 recipes. 37.2955811024 seconds
+At  1000 recipes. 41.6574101448 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Start 3 *1000 recipes
+At  100 recipes. 6.75750207901 seconds
+At  200 recipes. 12.5172729492 seconds
+At  300 recipes. 18.1935648918 seconds
+At  400 recipes. 27.4538898468 seconds
+At  500 recipes. 33.8750169277 seconds
+At  600 recipes. 44.5813698769 seconds
+At  700 recipes. 55.6426570415 seconds
+At  800 recipes. 63.4598798752 seconds
+At  900 recipes. 71.7961988449 seconds
+At  1000 recipes. 78.5532860756 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Start 4 *1000 recipes
+At  100 recipes. 6.61274504662 seconds
+At  200 recipes. 13.3392140865 seconds
+At  300 recipes. 20.1568470001 seconds
+At  400 recipes. 27.1374349594 seconds
+At  500 recipes. 34.5358359814 seconds
+At  600 recipes. 41.2373509407 seconds
+At  700 recipes. 47.5578520298 seconds
+At  800 recipes. 55.4584009647 seconds
+At  900 recipes. 63.5762369633 seconds
+At  1000 recipes. 69.2027668953 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Start 5 *1000 recipes
+At  100 recipes. 8.02067399025 seconds
+At  200 recipes. 14.8363640308 seconds
+At  300 recipes. 21.5455269814 seconds
+At  400 recipes. 30.3102991581 seconds
+At  500 recipes. 38.2669911385 seconds
+At  600 recipes. 46.7337920666 seconds
+At  700 recipes. 55.6743021011 seconds
+At  800 recipes. 62.8840930462 seconds
+At  900 recipes. 69.4175009727 seconds
+At  1000 recipes. 78.6064391136 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Done running tests!
+
+Method		Time
+------		----
+add_1000_recipes 		25.0166389942
+test_fetch_recipe 		2.7498049736
+test_exact_search 		0.111115932465
+test_regexp_search 		0.114039182663
+commit_recs 		0.0478520393372
+add_1000_recipes 		41.6640310287
+test_fetch_recipe 		5.71313405037
+test_exact_search 		0.246064901352
+test_regexp_search 		0.359790086746
+commit_recs 		0.0869212150574
+add_1000_recipes 		78.5562319756
+test_fetch_recipe 		5.80713510513
+test_exact_search 		0.333554983139
+test_regexp_search 		0.395629167557
+commit_recs 		0.0654530525208
+add_1000_recipes 		69.2058289051
+test_fetch_recipe 		9.80604791641
+test_exact_search 		0.469063043594
+test_regexp_search 		0.45578289032
+commit_recs 		0.060830116272
+add_1000_recipes 		78.6114850044
+test_fetch_recipe 		12.734762907
+test_exact_search 		0.579355955124
+test_regexp_search 		0.582492828369
+commit_recs 		0.0644290447235
+
+TEST FOR METAKIT 0.8.5.14 SETUP
+
+tom@lacky lib :( $ python clockDB.py 
+Start 1 *1000 recipes
+At  100 recipes. 0.246143102646 seconds
+At  200 recipes. 0.636449098587 seconds
+At  300 recipes. 1.17260622978 seconds
+At  400 recipes. 1.83995604515 seconds
+At  500 recipes. 2.66240501404 seconds
+At  600 recipes. 3.63117599487 seconds
+At  700 recipes. 4.732817173 seconds
+At  800 recipes. 5.99737405777 seconds
+At  900 recipes. 7.4371471405 seconds
+At  1000 recipes. 9.08347821236 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Start 2 *1000 recipes
+At  100 recipes. 1.82176804543 seconds
+At  200 recipes. 3.88666296005 seconds
+At  300 recipes. 6.43328905106 seconds
+At  400 recipes. 9.17928004265 seconds
+At  500 recipes. 12.1182320118 seconds
+At  600 recipes. 15.5844728947 seconds
+At  700 recipes. 19.8333129883 seconds
+At  800 recipes. 24.2805068493 seconds
+At  900 recipes. 28.5379519463 seconds
+At  1000 recipes. 34.3679440022 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Start 3 *1000 recipes
+At  100 recipes. 5.46754193306 seconds
+At  200 recipes. 10.0049331188 seconds
+At  300 recipes. 15.3336060047 seconds
+At  400 recipes. 21.5362010002 seconds
+At  500 recipes. 26.983246088 seconds
+At  600 recipes. 35.7406148911 seconds
+At  700 recipes. 42.0046029091 seconds
+At  800 recipes. 49.0706689358 seconds
+At  900 recipes. 57.4514369965 seconds
+At  1000 recipes. 64.3114590645 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Start 4 *1000 recipes
+At  100 recipes. 8.61163401604 seconds
+At  200 recipes. 15.5017268658 seconds
+At  300 recipes. 24.876021862 seconds
+At  400 recipes. 32.690103054 seconds
+At  500 recipes. 42.9907429218 seconds
+At  600 recipes. 53.497385025 seconds
+At  700 recipes. 62.0372920036 seconds
+At  800 recipes. 73.390130043 seconds
+At  900 recipes. 83.1089839935 seconds
+At  1000 recipes. 94.9216959476 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Start 5 *1000 recipes
+At  100 recipes. 11.8524639606 seconds
+At  200 recipes. 22.7970020771 seconds
+At  300 recipes. 36.1692841053 seconds
+At  400 recipes. 48.7545039654 seconds
+At  500 recipes. 61.8951330185 seconds
+At  600 recipes. 76.2521669865 seconds
+At  700 recipes. 90.9062280655 seconds
+At  800 recipes. 103.076798916 seconds
+At  900 recipes. 118.417653084 seconds
+At  1000 recipes. 134.040337086 seconds
+fetching
+exact searches
+regexp searches
+committing...
+Done running tests!
+
+Method		Time
+------		----
+add_1000_recipes 		9.08592200279
+test_fetch_recipe 		2.3983130455
+test_exact_search 		0.111760854721
+test_regexp_search 		0.115175962448
+commit_recs 		0.0679700374603
+add_1000_recipes 		34.3698291779
+test_fetch_recipe 		6.46923303604
+test_exact_search 		0.249930858612
+test_regexp_search 		0.714660167694
+commit_recs 		0.0776660442352
+add_1000_recipes 		64.3146901131
+test_fetch_recipe 		8.09871912003
+test_exact_search 		0.52286696434
+test_regexp_search 		0.534258127213
+commit_recs 		0.140293836594
+add_1000_recipes 		94.9266960621
+test_fetch_recipe 		13.0591669083
+test_exact_search 		0.675206899643
+test_regexp_search 		0.709216117859
+commit_recs 		0.165955066681
+add_1000_recipes 		134.044647932
+test_fetch_recipe 		16.4234588146
+test_exact_search 		0.848060131073
+test_regexp_search 		0.869093894958
+commit_recs 		0.197050094604
+tom@lacky lib :) $ 
+
