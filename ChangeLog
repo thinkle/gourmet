@@ -1,5 +1,7 @@
 2008-10-27  Thomas Hinkle  <tom@grenville>
 
+	* Version->0.14.2
+
 	* src/lib/importers/html_importer.py: Don't import old
 	html_plugins directory
 
