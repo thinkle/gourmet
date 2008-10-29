@@ -1,0 +1,4 @@
+Issues in simplifying the database:
+
+search needs to be changed to simplify the DB backend.
+filtering probably does as well...

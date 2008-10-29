@@ -1,0 +1,11 @@
+# HTTP Cookie File
+# http://www.netscape.com/newsref/std/cookie_spec.html
+# This is a generated file!  Do not edit.
+# To delete cookies, use the Cookie Manager.
+
+.athenos.com	TRUE	/	FALSE	253375966803	INTERSE	633288632783428997
+.google.ca	TRUE	/	FALSE	1256010057	PREF	ID=d0a50824514fff69:TM=1192938056:LM=1192938056:S=_vOwbV20vExwi-wG
+.groups.google.ca	TRUE	/	FALSE	1208706068	__utmz	52075775.1192938068.1.1.utmccn=(organic)|utmcsr=google|utmctr=|utmcmd=organic
+.groups.google.ca	TRUE	/	FALSE	1256010068	__utma	52075775.925113325.1192938068.1192938068.1192938068.1
+groups.google.ca	FALSE	/	FALSE	1704067201	GTZ	240
+.google.com	TRUE	/	FALSE	1256010057	PREF	ID=0696b3d5a3cbc681:TM=1192938056:LM=1192938056:S=t7WMn2g6J6ik8fDn

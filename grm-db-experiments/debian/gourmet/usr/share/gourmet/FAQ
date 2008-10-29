@@ -1,0 +1,222 @@
+1. What is this F.A.Q. for?
+
+Gourmet is intended to be as intuitive to use as possible. If
+you find something in gourmet counterintuitive, confusing, or
+hard-to-use, I'll consider it a bug and try my best to fix it.
+
+Although Gourmet is intended to be intuitive to use, it is not always
+so. Rather than write a complete manual, I've put together a brief
+list of pointers in the form of this F.A.Q., trying to focus on those
+elements of Gourmet that are not as transparent to the user.
+
+2. Getting recipes
+
+2.a Where can I get some recipes for Gourmet?
+
+Gourmet can easily import mealmaster and mastercook files. There are
+large archives of these files available on the web -- search for the
+kind of recipes you're interested in an "mealmaster" or "mastercook",
+and you should find them.
+
+Gourmet can also import recipes from websites. A very few websites
+have support for automated import. In most cases, Gourmet will pop up
+a window asking you to identify the title, source, ingredients,
+etc. from the text of the recipe on the webpage. Then Gourmet will ask
+if you want to choose any images from the webpage to associate with
+the web page.
+
+2.b. What is that funny dialog about "encoding" that comes up when I import?
+
+There exist many different ways to "encode" the same characters. When
+a recipe includes accented characters or symbols (like the degree
+symbol), it is important that Gourmet choose the right encoding to
+read the recipe, or all of these characters will come out wrong.
+
+When Gourmet encounters a file with unusual characters, it limits the
+possible encodings to as few choices as possible and then presents you
+with a choice, showing you the file with different encodings. The
+lines where the different encodings result in different characters are
+highlighted yellow, so you can quickly scroll to them and see which
+encoding looks right.
+
+3. How do I do complicated searches?
+
+Using the "Limit" button, you can combine any of searches Gourmet
+offers. For example, you can first search for Category "Salad", then
+press "Limit", and then search for Jícama, in order to find all Salads
+with Jícama in them.
+
+Using "Advanced" searching (on by default), you can also use "or" to
+search for e.g. something with a category that is category or
+appetizer.
+
+Gourmet also supports regular expression searching. If you know what
+that is, you'll find it very useful. If you don't know what it is,
+know that searches with punctuation in them may not work as expected
+(not that there's much reason to search within a recipe for
+punctuation).
+
+4. Shopping lists
+
+4.a. How do I create a shopping list?
+
+There are two ways: Click on the "Add to shopping list" button from a
+recipe card, or, click on the "Add to shopping list" button with one
+or more recipes selected in the recipe index view. You can also type
+"C-L" from either view to add to the shopping list more quickly.
+
+4.b. What is the "pantry" for?
+
+The idea of the "pantry" list is to record ingredients that you do not
+want to shop for. In my kitchen, for example, I almost never need to
+buy any of the basic spices, or staples like flour, butter, sugar,
+etc. So I put them in my pantry list.
+
+The reason these are added to a list rather than simply deleted from
+your shopping list is so that you can always see what ingredients a
+recipe calls for -- for the rare cases when you've run out of a staple
+that's usually in your pantry.
+
+4.c. So how can I delete recipes from my shopping list?
+
+Drag them to the pantry list. Or use the "remove from shopping list" button
+on the toolbar. Or type "Control-D" while the item is selected. The idea of
+the "pantry" is just a metaphor -- you should put anything you don't want on your
+shopping list into the pantry list, regardless of whether you actually have those items.
+
+4.d. So how can I move something from my pantry back onto my shopping list.
+
+Drag the item from the pantry list to the shopping list. Or use the
+button on the toolbar. Or type "Control-B" ("B" for Back) while the
+item is selected.
+
+5. Entering and Editing recipes
+
+5.a. How do I edit recipes
+
+When you create a recipe card, you open a window with multiple
+tabs. The first "recipe card" tab displays the recipe and allows you
+to multiply your recipe.
+
+The other tabs are for editing different aspects of the recipe:
+"Details" includes the title, image, category, cuisine, preparation
+time, cooking time, etc. The other tabs are self-explanatory.
+
+When you open a previously created recipe, you'll see an attractive
+"Recipe Card" display. If you want to edit any part of this display,
+click on the "Edit" button next to the relevant section. For example,
+next to the "Ingredients" header, there's a "Edit ingredients" button
+which will open the edit window on the ingredients tab.
+
+5.b. There are two many fields; I don't care about X.
+
+If you know that you never want to enter information about "Cuisine"
+or "Preparation Time", you can remove the field from the "Details"
+view to make recipe entry quicker for you.
+
+To remove fields, open a recipe card, then select "Preferences" from
+the "Edit" menu. You will then be able to hide the field you don't
+like.
+
+5.c. What are ingredient "key"s?
+
+Ingredient "keys" are the standardized name for an ingredient that
+will go on your shopping list and, in future versions of gourmet, be
+used to look up nutritional information.
+
+An ingredient like "Tomatoes, seeded and finely chopped" should be
+keyed as "tomato" or "tomato, red" -- whatever you want to appear on
+your shopping list.
+
+Standardizing keys means your shopping list can properly combine
+ingredients from various recipes, understanding that "Tomatoes, seeded
+and finely chopped", "ripe tomatoes", and "3 tomatoes, in slices", are
+all the same thing. If this doesn't matter to you, don't worry about
+making your ingredient keys standard.
+
+5.d. Is there a fast way to fix up ingredient keys?
+
+Yes. The "Key Editor" under "Tools" allows you to browse and search
+all the ingredient keys in your database. This way, you can search for
+all instances of "pepper" and standardize "pepper", "pepper, black"
+and "black pepper" to one key.
+
+You can also see what recipe different keys are used in, so that if
+you see something is obviously wrong, you can go correct it.
+
+Finally, the Key Editor allows you to easily change amounts and units
+as well, either for individual instances or en masse. Using the Key
+Editor, you can easily change all instances of ts. to tsp., or you
+could tell it that for water, you'd like to change all instances of 1
+kg. to 1 liter.
+
+5.e. How do I convert units?
+
+Just edit the unit by clicking on the "unit" cell in your ingredient
+list. Gourmet will then offer you a choice between simply changing the
+unit and converting the item.
+
+If you select 1/2 cup milk, for example, and change "cup" to "g.",
+Gourmet will ask you whether you want to convert it (121.69 grams) or
+simply change the unit (1/2 g.). Although Gourmet does know the
+density of milk (allowing it to calculate this example), it can't
+always to weight-to-volume conversions!
+
+Gourmet also includes a unit converter under the "Tools" menu to let
+you do any conversions you like.
+
+5.f. What if about OR ingredients - this ingredient OR that?
+
+Gourmet doesn't yet support this, because I haven't figured out a way
+to make it work easily from the interface. If you have an idea about
+how entering "X or Y" should work, please submit a feature request.
+
+In the mean time, you can create the basic functionality of "OR" by
+making both of the ingredients you want to choose between
+optional. When you go to add the recipe to a shopping list, you'll be
+given an option of which items to add, and you can choose. This isn't
+perfect of course, because it allows you to add both or neither
+ingredient, which is not what the recipe calls for!
+
+6. How do I save recipes in a menu?
+
+A frequent request is to have gourmet support saving collections of
+recipes as a menu or daily/weekly/monthly plan. I hope to implement
+some formal support for this feature in the future -- if you have
+ideas what it should look like, please submit a Feature Request at
+sourceforge.
+
+In the mean time, Gourmet supports adding recipes as ingredients by
+pressing on the "Add recipe as ingredient" button in the "Ingredients"
+tab of a recipe card. Using this feature, you can create a menu by
+creating a "New Recipe" and then adding as many recipes as
+"ingredients" as you like.
+
+7. Can I calculate nutritional information with Gourmet?
+
+Yes! Gourmet includes a copy of the USDA nutritional database, which
+has thousands of items. For now, Gourmet doesn't know about any
+ingredients by default--unless you tell it about your ingredients,
+Gourmet will always say it is "missing nutritional information" for
+the items in your recipe. If you care about nutritional information,
+click "Edit" and a new window will pop up and ask you to give it the
+information it needs to calculate nutritional information, either
+using the USDA database foods or entering nutritional information by
+hand if necessary.
+
+8. What if I have a good idea for how to improve Gourmet?
+
+Please submit a feature request at the following website:
+https://sourceforge.net/tracker/?atid=649655&group_id=108118&func=browse
+
+9. What if I find a bug?
+
+Please submit a bug report at the following website:
+https://sourceforge.net/tracker/?atid=649652&group_id=108118&func=browse
+
+10. What if I have a question not answered here?
+
+Post your question in the Gourmet Help Forum here:
+https://sourceforge.net/forum/forum.php?forum_id=371768
+Or, if for some reason that won't work, feel free to e-mail me at:
+Thomas_Hinkle@alumni.brown.edu
