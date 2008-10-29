@@ -1,0 +1,48 @@
+<!ELEMENT gourmetDoc ( recipe+ ) >
+
+<!ELEMENT amount ( #PCDATA ) >
+
+<!ELEMENT category ( #PCDATA ) >
+
+<!ELEMENT cooktime ( #PCDATA ) >
+
+<!ELEMENT cuisine ( #PCDATA ) >
+
+<!ELEMENT image ( #PCDATA ) >
+<!ATTLIST image format NMTOKEN #REQUIRED >
+
+
+<!ELEMENT ingredient ( amount | item | key | unit )* >
+<!ATTLIST ingredient optional NMTOKEN #IMPLIED >
+
+<!ELEMENT inggroup (groupname, (ingredient | ingref)+) >
+
+<!ELEMENT ingredient-list ( ingredient | ingref | inggroup)* >
+
+<!ELEMENT ingref ( #PCDATA ) >
+<!ATTLIST ingref amount CDATA #REQUIRED 
+          ingref refid NMTOKEN #REQUIRED >
+
+<!ELEMENT instructions ( #PCDATA ) >
+
+<!ELEMENT item ( #PCDATA ) >
+
+<!ELEMENT key ( #PCDATA ) >
+
+<!ELEMENT modifications ( #PCDATA ) >
+
+<!ELEMENT preptime ( #PCDATA ) >
+
+<!ELEMENT rating ( #PCDATA ) >
+
+<!ELEMENT servings ( #PCDATA ) >
+
+<!ELEMENT recipe ( title, category?, cuisine?, source?, rating?, preptime?, cooktime?, servings?, image?, ingredient-list, instructions?, modifications? ) >
+<!ATTLIST recipe id NMTOKEN #REQUIRED >
+
+<!ELEMENT source ( #PCDATA ) >
+
+<!ELEMENT title ( #PCDATA ) >
+
+<!ELEMENT unit ( #PCDATA ) >
+
