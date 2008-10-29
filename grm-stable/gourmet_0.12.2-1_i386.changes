@@ -1,0 +1,22 @@
+Format: 1.7
+Date: Mon,  9 Oct 2006 20:45:47 -0400
+Source: gourmet
+Binary: gourmet
+Architecture: source all
+Version: 0.12.2-1
+Distribution: breezy
+Urgency: low
+Maintainer: Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>
+Changed-By: Thomas Mills Hinkle <Thomas_Hinkle@sf.net>
+Description: 
+ gourmet    - A gtk-based recipe organizer and shopping list generator
+Changes: 
+ gourmet (0.12.2-1) breezy; urgency=low
+ .
+   * Fix Mealmaster importing bug
+   * Fix bug (?) which could cause ingredient search to fail in strange
+     cases (where a DB had ingredients with key=None)
+Files: 
+ 1da7b018616022b7be356e453f523e89 293 gnome optional gourmet_0.12.2-1.dsc
+ 19beac34aa952009d00d09d4fd2c969c 15141588 gnome optional gourmet_0.12.2-1.tar.gz
+ cffa26a6503bdfb4d267577d69f38297 2052760 gnome optional gourmet_0.12.2-1_all.deb
