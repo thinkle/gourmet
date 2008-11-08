@@ -78,7 +78,12 @@ class MasterLoader:
         self.instantiated_plugins = {}
         for p in self.active_plugin_sets:
             if self.available_plugin_sets.has_key(p):
-                self.active_plugins.extend(self.available_plugin_sets[p].plugins)
+                try:
+                    self.active_plugins.extend(self.available_plugin_sets[p].plugins)
+                except:
+                    import traceback
+                    print 'WARNING: Failed to load plugin %s'%p
+                    traceback.print_exc()
             else:
                 print 'Plugin ',p,'not found'
 
@@ -171,7 +176,7 @@ class MasterLoader:
                 try:
                     plugin_instance = self.get_instantiated_plugin(p)
                 except:
-                    print 'Failed to instantiate plugin'
+                    print 'WARNING: Failed to instantiate plugin %s of type %s'%(p,k)
                     import traceback; traceback.print_exc()
                 else:
                     #print 'Instantiating plugin',p,plugin_instance,'of',klass
@@ -218,9 +223,12 @@ class PluginSet:
                 #print 'Loaded plugin set',self._loaded
                 #print 'plugins=',self._loaded.plugins
             except ImportError:
+                print 'WARNING: Plugin module import failed'
                 print 'PATH:',sys.path
-                raise
-            return self._loaded
+                import traceback; traceback.print_exc()
+                return None
+            else:
+                return self._loaded
 
     def __getattr__ (self, attr):
         if attr == 'plugins': return self.get_plugins()
@@ -284,7 +292,7 @@ class Pluggable:
             self.plugins.append(plugin_instance)
             plugin_instance.activate(self)
         except:
-            print 'PLUGIN FAILED TO LOAD'
+            print 'WARNING: PLUGIN FAILED TO LOAD',plugin_instance
             import traceback; traceback.print_exc()
 
     def destroy (self):
