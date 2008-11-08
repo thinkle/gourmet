@@ -1,3 +1,9 @@
+2008-11-08  Thomas Mills Hinkle  <thomas_hinkle@users.sf.net>
+
+	* src/lib/plugin_loader.py: Catch plugin errors and display as
+	warning; don't let plugin failures bring down whole app at
+	start-up.
+
 2008-10-27  Thomas Hinkle  <tom@grenville>
 
 	* Version->0.14.2
