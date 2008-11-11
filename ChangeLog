@@ -1,3 +1,10 @@
+2008-11-11  Thomas Mills Hinkle  <thomas_hinkle@users.sf.net>
+
+	* src/lib/importers/importManager.py (ImportManager.finish_web_import):
+	Recognize mimetypes with ;'s and encoding declarations to fix
+	issue reported at
+	https://sourceforge.net/forum/message.php?msg_id=5619998
+
 2008-11-08  Thomas Mills Hinkle  <thomas_hinkle@users.sf.net>
 
 	* src/lib/plugin_loader.py: Catch plugin errors and display as
@@ -18,7 +25,7 @@
 	copy of the database when we're about to do a DB update, just in
 	case something ugly happens.
 
-2008-10-27  Thomas Hinkle  <thomas_hinkle@users.sourceforge.net>
+2008-10-27  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/plugin_loader.py: Add debug calls to make it easy to see
 	what plugins are being loaded from where with a -v flag.
@@ -28,7 +35,7 @@
 	None and reinserting. This fixes a bug with the update code, where
 	empty strings were being passed where we needed null (None).
 
-2008-10-25  Thomas Mills HInkle  <tom@hydrophax>
+2008-10-25  Thomas Hinkle  <thomas_hinkle@users.sourceforge.net>
 
 	* Release 0.14.1
 

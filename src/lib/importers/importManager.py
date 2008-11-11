@@ -63,11 +63,11 @@ class ImportManager (plugin_loader.Pluggable):
         self.setup_thread(reader,'Downloading %s'%url, connect_follow_up=False)
 
     def finish_web_import (self, reader):
-        print 'Now we can read ',reader.url,'!'
         # Filter by mimetype...
         if reader.content_type:
+            base_content_type=reader.content_type.split(';')[0]
             possible_plugins = filter(
-                lambda p: reader.content_type in p.mimetypes,
+                lambda p: base_content_type in p.mimetypes,
                 self.plugins)
         else:
             possible_plugins = self.plugins
@@ -79,7 +79,8 @@ class ImportManager (plugin_loader.Pluggable):
             elif result:
                 plugin = p
                 break
-        if not plugin: plugin = fallback
+        if not plugin:
+            plugin = fallback
         if not plugin:
             de.show_message(
                 title=_('Unable to import URL'),
