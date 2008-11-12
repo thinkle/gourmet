@@ -1,8 +1,0 @@
-TODO
-* Fix range parsing in quick ingredient add so adding 1 tomato works.
-
-* Stop random segfaults.
-
-* Check into bizaare ordering bugs & such reported by HaJo
-* Fix MySQL/SQLite support
-
