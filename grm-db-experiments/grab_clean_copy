@@ -1,6 +1,0 @@
-#!/bin/sh
-
-cd /tmp/
-cvs -d:ext:thomas_hinkle@cvs.sf.net:/cvsroot/grecipe-manager co grm
-cd /tmp/grm
-#sudo dpkg-buildpackage
