@@ -33,7 +33,9 @@ class WebParser (InteractiveImporter):
         self.ignore_unparsed = False
         self.url = url
         self.name = 'Web Parser'
-        self.soup = BeautifulSoup.BeautifulSoup(data)
+        self.soup = BeautifulSoup.BeautifulStoneSoup(data,
+                                                     convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
+                                                     )
         #self.generic_parser = RecipeParser()
         self.preparse()
         self.get_images()
@@ -146,6 +148,11 @@ class WebParser (InteractiveImporter):
             pre_add = self.cut_extra_whitespace(pre_add)
             to_add = to_add[lws:]
             self.parsed.append((pre_add,None))
+        # Do extra substitution of MS Characters -- shouldn't be necessary...
+        for char,tup in BeautifulSoup.UnicodeDammit.MS_CHARS.items():
+            char = char.decode('iso-8859-1').encode('utf-8')
+            if to_add.find(char) >= 0:
+                to_add = to_add.replace(char,unichr(long(tup[1],16)))
         self.parsed.append((to_add,self.last_label))
 
     def format_tag_whitespace (self, tag):
