@@ -25,11 +25,11 @@ class rec_to_xml (XmlExporter):
         self.top_element.appendChild(self.rec_el)
 
     def write_attr (self, attr, text):
-        self.rec_el.appendChild(self.create_text_element(attr,text))
+        self.rec_el.appendChild(self.create_text_element(attr.replace(' ',''),text))
         
     def write_text (self, attr, text):
         self.rec_el.appendChild(
-            self.create_text_element(attr,text)
+            self.create_text_element(attr.replace(' ',''),text)
             )
 
     def write_image (self, image):

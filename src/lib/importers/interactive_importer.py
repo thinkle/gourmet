@@ -414,7 +414,9 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         
 
     def set_parsed (self, parsed):
+        #dbg_file = file('/tmp/out','w')
         for chunk,tag in parsed:
+            #dbg_file.write(chunk)
             if tag==None:
                 self.tb.insert(self.tb.get_end_iter(),
                                chunk)
@@ -424,7 +426,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                     chunk,
                     self.labels_by_tag.get(tag,tag)
                     )
-    
+        #dbg_file.close()
+        
     def do_run (self):
         self.w.show_all()
         if self.modal:
