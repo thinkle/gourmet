@@ -33,9 +33,9 @@ class WebParser (InteractiveImporter):
         self.ignore_unparsed = False
         self.url = url
         self.name = 'Web Parser'
-        self.soup = BeautifulSoup.BeautifulStoneSoup(data,
-                                                     convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
-                                                     )
+        self.soup = BeautifulSoup.BeautifulSoup(data,
+                                                convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
+                                                )
         #self.generic_parser = RecipeParser()
         self.preparse()
         self.get_images()
@@ -64,10 +64,8 @@ class WebParser (InteractiveImporter):
                 for exc in  self.imageexcluders:
                     if exc.search(img_url):
                         exclude = True
-                        print 'Excluding',img_url
                         break
                 if exclude: continue
-            print 'Adding image: ',img_url            
             self.images.append(img_url)
         
     def parse (self, tag=None):
@@ -81,7 +79,6 @@ class WebParser (InteractiveImporter):
         return self.parsed
     
     def crawl (self, tag, parent_label=None):
-        #print 'CRAWL',tag,'PARENT_LABEL=',None
         formatting = self.format_tag_whitespace(tag)
         if formatting == -1:
             return # special case allows formatting method to
@@ -94,10 +91,9 @@ class WebParser (InteractiveImporter):
             # inherit...
             label = parent_label
         elif self.ignore_unparsed and not label:
-            print 'Ignore!'
             label = 'ignore'
-        elif not label:
-            print 'DONT IGNORE'
+        #elif not label:
+        #    print 'DONT IGNORE'
         #print 'ID TAG',tag,'with',label            
         if hasattr(tag,'contents') and tag.contents:
             for child in tag.contents:
@@ -110,8 +106,8 @@ class WebParser (InteractiveImporter):
             #print 'ADD TO BUFFER:',tag.string
             if hasattr(tag,'string'):
                 self.buffer += self.reduce_whitespace(tag.string or '')
-            else:
-                print 'Ignoring tag',tag
+            #else:
+            #    print 'Ignoring tag',tag
         if end_ws: self.buffer += end_ws
         return label
 
@@ -160,7 +156,8 @@ class WebParser (InteractiveImporter):
         not be considered for text
         '''
         for klass in self.INVISIBLE_TYPES:
-            if isinstance(tag,klass): return -1
+            if isinstance(tag,klass):
+                return -1
         if not hasattr(tag,'name'):
             return '',''
         elif tag.name in self.IGNORE:
@@ -191,12 +188,11 @@ class WebParser (InteractiveImporter):
             else:
                 new_parse.append((p,attr))
         return new_parse
-    
+
     def parse_webpage (self):
         self.preparse()
         tags = [pp[1] for pp in self.preparsed_elements]
         if 'include' in tags:
-            print 'IGNORING UNPARSED MATERIAL'
             self.ignore_unparsed = True
         parsed = self.parse()
         if self.do_postparse:
@@ -225,13 +221,11 @@ class MenuAndAdStrippingWebParser (WebParser):
         els = self.soup(id=menu_regexp)
         els.extend(self.soup(attrs={'class':menu_regexp}))
         for menu in els:
-            print 'Ignore menu',menu
             self.preparsed_elements.append((menu,'ignore'))
         menu_text_regexp = re.compile(
             '.*sitemap.*|^\s-*about\s-*',re.IGNORECASE
             )
         for menu in self.soup(text=menu_text_regexp):
-            print 'Ignore menu',menu
             self.preparsed_elements.append((menu,'ignore'))
 
     def cut_sponsored_links (self):
@@ -239,7 +233,6 @@ class MenuAndAdStrippingWebParser (WebParser):
         spons = self.soup(id=ad_re)
         spons.extend(self.soup(attrs={'class':ad_re}))
         for spon in spons:
-            print 'Ignore sponsored ',spon
             self.preparsed_elements.append((spon,'ignore'))
         
 class WebParserTester (WebParser):
@@ -266,7 +259,6 @@ class AboutDotComWebParser (MenuAndAdStrippingWebParser):
             for el in self.soup(id=i):
                 self.preparsed_elements.append((el,t))
         if self.preparsed_elements:
-            print 'IGNORE UNPARSED STUFF'
             self.ignore_unparsed = True
             self.preparsed_elements.append((self.soup('title')[0],'title'))
             # Now get rid of the annoying "More... recipes..."
