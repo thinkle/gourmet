@@ -1,3 +1,24 @@
+2008-11-22  Thomas Hinkle  <tom@grenville>
+
+	This is the warning-fix edition, where we get rid of all the
+	annoying warnings on Gourmet startup!
+
+	* src/lib/backends/db.py: Use Text() class explicitly for strings
+	without length limit instead of deprecated String(length=None
+
+	* src/lib/GourmetRecipeManager.py (RecGui.__init__): Add action
+	group search_action before calling setup_main_window -- this gets
+	rid of annoying warning about missing actions on startup.
+
+	* src/lib/recindex.py (RecIndex.setup_reccolumns.get_colnum): cell
+	renderers take pango.WRAP_* enums, not gtk.WRAP_* enums
+
+	* src/lib/reccard.py (IngredientDisplay.setup_widgets): cell
+	renderers take pango.WRAP_ enums, not gtk.WRAP_* enums.
+
+	* glade/preferenceDialog.glade: Fix deprecation error about
+	setting an adjustment with non-zero page size.
+
 2008-11-20  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/plugins/import_export/web_import_plugin/webpage_importer.py:

@@ -625,7 +625,7 @@ class IngredientDisplay:
         self.ingredientsDisplay.connect('link-activated',
                                         self.show_recipe_link_cb)
         self.ingredientsDisplay.set_wrap_mode(gtk.WRAP_WORD)
-
+        
     def update_from_database (self):
         self.ing_alist = self.rg.rd.order_ings(
             self.rg.rd.get_ings(self.recipe_display.current_rec)
@@ -2296,7 +2296,7 @@ class IngredientTreeUI:
                 except TypeError:
                     pass
                 else:
-                    renderer.set_property('wrap-mode',gtk.WRAP_WORD)
+                    renderer.set_property('wrap-mode',pango.WRAP_WORD)
                     renderer.set_property('wrap-width',150)
                 if head==_('Key'):
                     try:

@@ -1122,8 +1122,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                           rg=self,
                           editable=False)
         self.setup_database_hooks()        
-        self.setup_main_window()
         self.ui_manager.insert_action_group(self.search_actions,0)
+        self.setup_main_window()
         self.window.add_accel_group(self.ui_manager.get_accel_group())
         self.setup_column_display_preferences()
         plugin_loader.Pluggable.__init__(self,

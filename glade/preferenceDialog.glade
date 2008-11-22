@@ -192,7 +192,7 @@
 					      <property name="update_policy">GTK_UPDATE_ALWAYS</property>
 					      <property name="snap_to_ticks">False</property>
 					      <property name="wrap">False</property>
-					      <property name="adjustment">15 0 100 1 10 10</property>
+					      <property name="adjustment">15 1 100 1 10 0</property>
 					    </widget>
 					  </child>
 					</widget>

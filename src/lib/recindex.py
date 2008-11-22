@@ -353,7 +353,7 @@ class RecIndex:
                     except TypeError:
                         pass
                     else:
-                        renderer.set_property('wrap-mode',gtk.WRAP_WORD)
+                        renderer.set_property('wrap-mode',pango.WRAP_WORD)
                         if c == 'title': renderer.set_property('wrap-width',200)
                         else: renderer.set_property('wrap-width',150)
             renderer.set_property('editable',self.editable)

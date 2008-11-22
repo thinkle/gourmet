@@ -18,7 +18,7 @@ from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import DatabasePlugin
 
 import sqlalchemy, sqlalchemy.orm
-from sqlalchemy import Integer, Binary, String, Float, Boolean, Numeric, Table, Column, ForeignKey
+from sqlalchemy import Integer, Binary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
 from sqlalchemy.sql import and_, or_
 
 def map_type_to_sqlalchemy (typ):
@@ -30,7 +30,7 @@ def map_type_to_sqlalchemy (typ):
         return String(
             length=int(typ[typ.find('(')+1:typ.find(')')])
             )
-    if typ=='text': return String(length=None)
+    if typ=='text': return Text()
     if typ=='bool': return Boolean()
     if typ=='float': return Float()
     if typ=='binary': return Binary()
@@ -253,7 +253,7 @@ class RecData (Pluggable):
                                        Column('version_major',Integer(),**{}),
                                        Column('version_minor',Integer(),**{}),
                                        # Stores the last time the plugin was used...
-                                       Column('plugin_version',String(length=None),**{}))
+                                       Column('plugin_version',String(length=32),**{}))
         class PluginInfo (object):
             pass
         self._setup_object_for_table(self.plugin_info_table, PluginInfo)
@@ -261,13 +261,13 @@ class RecData (Pluggable):
     def setup_recipe_table (self):
         self.recipe_table = Table('recipe',self.metadata,
                                   Column('id',Integer(),**{'primary_key':True}),
-                                  Column('title',String(length=None),**{}),
-                                  Column('instructions',String(length=None),**{}),
-                                  Column('modifications',String(length=None),**{}),
-                                  Column('cuisine',String(length=None),**{}),
+                                  Column('title',Text(),**{}),
+                                  Column('instructions',Text(),**{}),
+                                  Column('modifications',Text(),**{}),
+                                  Column('cuisine',Text(),**{}),
                                   Column('rating',Integer(),**{}),
-                                  Column('description',String(length=None),**{}),
-                                  Column('source',String(length=None),**{}),
+                                  Column('description',Text(),**{}),
+                                  Column('source',Text(),**{}),
                                   Column('preptime',Integer(),**{}),
                                   Column('cooktime',Integer(),**{}),
                                   Column('servings',Float(),**{}),
@@ -278,7 +278,7 @@ class RecData (Pluggable):
                                   Column('recipe_hash',String(length=32),**{}),
                                   # A hash for uniquely identifying a recipe (based on ingredients)
                                   Column('ingredient_hash',String(length=32),**{}),
-                                  Column('link',String(length=None),**{}), # A field for a URL -- we ought to know about URLs
+                                  Column('link',Text(),**{}), # A field for a URL -- we ought to know about URLs
                                   Column('last_modified',Integer(),**{}),
                                   ) # RECIPE_TABLE_DESC
         class Recipe (object): pass
@@ -288,7 +288,7 @@ class RecData (Pluggable):
         self.categories_table = Table('categories',self.metadata,
                                     Column('id',Integer(),primary_key=True),
                                     Column('recipe_id',Integer,ForeignKey('recipe.id'),**{}), #recipe ID
-                                    Column('category',String(length=None),**{}) # Category ID
+                                    Column('category',Text(),**{}) # Category ID
                                     ) # CATEGORY_TABLE_DESC
         class Category (object): pass
         self._setup_object_for_table(self.categories_table,Category)
@@ -298,15 +298,15 @@ class RecData (Pluggable):
                                        Column('id',Integer(),primary_key=True),
                                        Column('recipe_id',Integer,ForeignKey('recipe.id'),**{}),
                                        Column('refid',Integer,ForeignKey('recipe.id'),**{}),
-                                       Column('unit',String(length=None),**{}),
+                                       Column('unit',Text(),**{}),
                                        Column('amount',Float(),**{}),
                                        Column('rangeamount',Float(),**{}),
-                                       Column('item',String(length=None),**{}),
-                                       Column('ingkey',String(length=None),**{}),
+                                       Column('item',Text(),**{}),
+                                       Column('ingkey',Text(),**{}),
                                        Column('optional',Boolean(),**{}),
                                        #Integer so we can distinguish unset from False
                                        Column('shopoptional',Integer(),**{}), 
-                                       Column('inggroup',String(length=None),**{}),
+                                       Column('inggroup',Text(),**{}),
                                        Column('position',Integer(),**{}),
                                        Column('deleted',Boolean(),**{}),
                                        )
@@ -317,9 +317,9 @@ class RecData (Pluggable):
         # Keylookup table - for speedy keylookup
         self.keylookup_table = Table('keylookup',self.metadata,
                                      Column('id',Integer(),primary_key=True),
-                                     Column('word',String(length=None),**{}),
-                                      Column('item',String(length=None),**{}),
-                                      Column('ingkey',String(length=None),**{}),
+                                     Column('word',Text(),**{}),
+                                      Column('item',Text(),**{}),
+                                      Column('ingkey',Text(),**{}),
                                       Column('count',Integer(),**{})
                                      ) # INGKEY_LOOKUP_TABLE_DESC
         class KeyLookup (object): pass
@@ -331,8 +331,8 @@ class RecData (Pluggable):
 
         # shopcats - Keep track of which shoppin category ingredients are in...
         self.shopcats_table = Table('shopcats',self.metadata,
-                                    Column('ingkey',String(length=None),**{'primary_key':True}),
-                                    Column('shopcategory',String(length=None),**{}),
+                                    Column('ingkey',Text(),**{'primary_key':True}),
+                                    Column('shopcategory',Text(),**{}),
                                     Column('position',Integer(),**{}),
                                     )
         class ShopCat (object): pass
@@ -340,7 +340,7 @@ class RecData (Pluggable):
         
         # shopcatsorder - Keep track of the order of shopping categories
         self.shopcatsorder_table = Table('shopcatsorder',self.metadata,
-                                         Column('shopcategory',String(length=None),**{'primary_key':True}),
+                                         Column('shopcategory',Text(),**{'primary_key':True}),
                                          Column('position',Integer(),**{}),
                                          )
         class ShopCatOrder (object): pass
@@ -349,7 +349,7 @@ class RecData (Pluggable):
         # pantry table -- which items are in the "pantry" (i.e. not to
         # be added to the shopping list)
         self.pantry_table = Table('pantry',self.metadata,
-                                  Column('ingkey',String(length=None),**{'primary_key':True}),
+                                  Column('ingkey',Text(),**{'primary_key':True}),
                                   Column('pantry',Boolean(),**{}),
                                   )
         class Pantry (object): pass
@@ -476,7 +476,7 @@ class RecData (Pluggable):
                 self.add_column_to_table(self.recipe_table,('recipe_hash',String(length=32),{}))
                 self.add_column_to_table(self.recipe_table,('ingredient_hash',String(length=32),{}))
                 # Add a link field...
-                self.add_column_to_table(self.recipe_table,('link',String(length=None),{}))
+                self.add_column_to_table(self.recipe_table,('link',Text(),{}))
                 print 'Searching for links in old recipe fields...'
                 URL_SOURCES = ['instructions','source','modifications']
                 recs = self.search_recipes(
