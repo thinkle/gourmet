@@ -10,10 +10,14 @@ def recursive_match (base, patterns, seed=[]):
 outfi = open('MANIFEST','w')
 
 def write_lst_to_file (lst, fi=outfi):
+    lst = list(set(lst))
+    lst.sort()
     for itm in lst:
+        print 'Write:',itm
         fi.write(itm.strip()+'\n')
 
-STARTER_LIST ='''CHANGES
+STARTER_LIST ='''ChangeLog
+CHANGES
 FAQ
 MANIFEST
 README
@@ -25,22 +29,20 @@ setup.py
 ''' 
 # A hack because MANIFEST.in isn't working right... grrr...
 
-outfi.write(STARTER_LIST)
-write_lst_to_file(['src/gourmet','src/gourmet_in_place'])
-write_lst_to_file(recursive_match('data',['*.txt','*.wav','*.css']))
-write_lst_to_file(['data/FAQ'])
-write_lst_to_file(recursive_match('src/lib',['*.py']))
-write_lst_to_file(recursive_match('glade',['*.glade']))
-write_lst_to_file(recursive_match('src/lib/plugins/',['*.glade',
-                                                      '*.gourmet-plugin',
-                                                      '*.gourmet-plugin.in']
-                                  ))
-write_lst_to_file(recursive_match('images/',['*.png']))
-write_lst_to_file(recursive_match('',['*.desktop.in']))
-write_lst_to_file(recursive_match('i18n',['NOTE_TO_TRANSLATORS','*.in','*.pot','*.po','*.mo']))
-write_lst_to_file(recursive_match('documentation',['*.xml','*.png']))
-write_lst_to_file(recursive_match('windows',['*.pyw']))
-write_lst_to_file(recursive_match('tools',['*.py']))
-
-
-
+lst = STARTER_LIST.split('\n')
+lst.extend(['src/gourmet','src/gourmet_in_place'])
+recursive_match('data',['*.txt','*.wav','*.css'],lst)
+lst.extend(['data/FAQ'])
+recursive_match('src/lib',['*.py'],lst)
+recursive_match('glade',['*.glade'],lst)
+recursive_match('src/lib/plugins/',['*.glade',
+                                    '*.gourmet-plugin',
+                                    '*.gourmet-plugin.in'],
+                lst)
+recursive_match('images/',['*.png'],lst)
+recursive_match('',['*.desktop.in'],lst)
+recursive_match('i18n',['NOTE_TO_TRANSLATORS','*.in','*.pot','*.po','*.mo'],lst)
+recursive_match('documentation',['*.xml','*.png'],lst)
+recursive_match('windows',['*.pyw'],lst)
+recursive_match('tools',['*.py'],lst)
+write_lst_to_file(lst)
