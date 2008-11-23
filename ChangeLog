@@ -1,3 +1,7 @@
+2008-11-23  Thomas Hinkle  <tom@grenville>
+
+	* setup.py: Fix typo that prevented new import/export .in files from being i18n'd.
+
 2008-11-23  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* setup.py (crawl): Automate addition of plugin directories to

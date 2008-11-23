@@ -8,7 +8,7 @@ import glob
 import os.path
 import os
 
-for desktop_file in ['gourmet.desktop.in'] + glob.glob('src/lib/plugins/*plugin.in')  + glob.glob('lib/plugins/*/*plugin.in'):
+for desktop_file in ['gourmet.desktop.in'] + glob.glob('src/lib/plugins/*plugin.in')  + glob.glob('src/lib/plugins/*/*plugin.in'):
     #print 'intltool-merge -d i18n/ %s %s'%(desktop_file,
     #                                           desktop_file[:-3])
     os.system('intltool-merge -d i18n/ %s %s'%(desktop_file,
