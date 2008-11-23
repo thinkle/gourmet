@@ -154,7 +154,20 @@ else:
     # Importing runs the actual script...
     #import tools.upgrade_pre_script
     #tools.upgrade_pre_script.dump_old_data()
-        
+
+plugins = []
+import os, os.path
+
+def crawl (base, basename):
+    bdir = base
+    subdirs = filter(lambda x: x != 'CVS' and os.path.isdir(os.path.join(bdir,x)), os.listdir(bdir))
+    for subd in subdirs:
+        name = basename + '.' + subd
+        plugins.append(name)
+        crawl(os.path.join(bdir,subd),name)
+
+crawl('src/lib/plugins', 'gourmet.plugins')
+
 result = setup(
     name = name,
     version = version,
@@ -177,22 +190,7 @@ result = setup(
                 'gourmet.legacy_db.db_085',
                 'gourmet.legacy_db.db_09',
                 'gourmet.plugins',
-                'gourmet.plugins.duplicate_finder',
-                'gourmet.plugins.key_editor',
-                'gourmet.plugins.nutritional_information',
-                'gourmet.plugins.unit_converter',
-                'gourmet.plugins.import_export',
-                'gourmet.plugins.import_export.archive_plugin',
-                'gourmet.plugins.import_export.gxml_plugin',
-                'gourmet.plugins.import_export.html_plugin',
-                'gourmet.plugins.import_export.mastercook_import_plugin',
-                'gourmet.plugins.import_export.mealmaster_plugin',                
-                'gourmet.plugins.import_export.plaintext_plugin',
-                'gourmet.plugins.import_export.pdf_plugin',
-                'gourmet.plugins.import_export.web_import_plugin',                                
-                'gourmet.plugins.import_export.website_import_plugins',
-
-                ],
+                ] + plugins,
     package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*.glade','plugins/*/*.glade']},
     package_dir = {'gourmet' : os.path.join('src','lib')},
     scripts = [script],

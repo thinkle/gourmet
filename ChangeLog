@@ -1,3 +1,8 @@
+2008-11-23  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* setup.py (crawl): Automate addition of plugin directories to
+	setup.py script.
+
 2008-11-23  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in:
