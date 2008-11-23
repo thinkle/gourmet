@@ -28,12 +28,21 @@ class MasterLoader:
     # get_master_loader()
     __single = None
     default_active_plugin_sets = [
+        # tools
         'unit_converter',
         'duplicate_finder',
         'key_editor',
+        # import/export
         'gxml_plugin',
         'html_plugin',
+        'mastercook_import_plugin',
+        'mealmaster_plugin',
         'archive_plugin',
+        'pdf_plugin',
+        'plaintext_plugin',
+        'web_import_plugin',
+        'website_import_plugins',
+        'krecipe_plugin',
         ]
     active_plugin_filename = os.path.join(gglobals.gourmetdir,'active_plugins')
 

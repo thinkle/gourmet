@@ -303,7 +303,11 @@ class ThreadManagerGui:
         for b in threadbox.buttons: b.hide()
         self.to_remove.append(threadbox)
         txt = threadbox.pb.get_text()
-        threadbox.pb.set_text(txt + ' ('+_('Done')+')')
+        if txt:
+            threadbox.pb.set_text(txt + ' ('+_('Done')+')')
+        else:
+            threadbox.pb.set_text('Done')
+        threadbox.pb.set_percentage(1)
 
     def progress_update (self, thread, perc, txt, pb):
         if perc >= 0.0:

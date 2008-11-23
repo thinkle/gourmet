@@ -472,8 +472,9 @@ class GourmetApplication:
                 c.save_properties()
             if r.edited and de.getBoolean(parent=self.app,
                                              label=_("Save your edits to %s")%r.current_rec.title):
-                r.saveEditsCB()
-            else: r.edited=False # in case someone else checks this (e.g. reccard on close)
+                r.recipe_editor.save_cb()
+            else:
+                r.edited=False # in case someone else checks this (e.g. reccard on close)
         for conf in self.sl.conf:
             conf.save_properties()
         self.prefs.save()

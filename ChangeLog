@@ -1,3 +1,21 @@
+2008-11-23  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in:
+	Port old krecipe importer to new plugin system.
+
+	* src/lib/plugins/import_export/krecipe_plugin/ New krecipe plugin.
+
+	* src/lib/threadManager.py (ThreadManagerGui.thread_done): Handle
+	case where there is no text when we're done with progress bar;
+	show completed processes as progress 100% no matter what.
+
+	* src/lib/plugin_loader.py (MasterLoader): Add all import/export
+	as defaults (these don't clog up the interface, so why not include
+	them).
+
+	* src/lib/GourmetRecipeManager.py (GourmetApplication.quit): Fix
+	error saving recipe card on quit.
+
 2008-11-22  Thomas Hinkle  <tom@grenville>
 
 	This is the warning-fix edition, where we get rid of all the
