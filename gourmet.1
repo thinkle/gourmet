@@ -1,0 +1,83 @@
+.TH "gourmet" "1" "September 2008" 
+.SH NAME
+gourmet \- A Gtk-based recipe organizer and shopping list generator
+.SH SYNOPSIS
+.B gourmet
+[\fIoptions\fR]
+.SH DESCRIPTION
+.PP
+This manual page describes briefly the \fBgourmet\fR command.
+.PP
+Gourmet Recipe Manager is a Gtk-based recipe organizer and shopping list
+generator intended for the GNOME desktop environment (though it does not need
+all the GNOME libraries). Gourmet can import Mealmaster(tm) files and can
+export recipes in a number of formats, including text, RTF and web pages.
+Gourmet also can calculate nutritional information for recipes. 
+.SH OPTIONS
+.TP
+\fB\-\-force\-winprinter\fR
+Force the use of the windows PDF\-based printer.
+.TP
+\fB\-\-force\-lprprinter\fR
+Force the use of the LPR\-based printer even if
+gnomeprint is available.
+.TP
+\fB\-\-database\-url\fR=\fIDB_URL\fR
+Custom url for database of form driver://args/location
+.TP
+\fB\-\-plugin\-directory\fR=\fIHTML_PLUGIN_DIR\fR
+Directory for webpage import filter plugins.
+.TP
+\fB\-\-use\-threads\fR
+Enable threading support.
+.TP
+\fB\-\-disable\-threads\fR
+Disable threading support.
+.TP
+\fB\-\-gourmet\-directory\fR=\fIGOURMETDIR\fR
+Gourmet configuration directory.
+.TP
+\fB\-\-debug\-threading\-interval\fR=\fITHREAD_DEBUG_INTERVAL\fR
+Interval for threading debug calls.
+.TP
+\fB\-\-debug\-threading\fR
+Print debugging information about threading.
+.TP
+\fB\-\-debug\-file\fR=\fIDEBUG_FILE\fR
+Regular expression that matches filename(s) whose code
+we want to display debug messages from.
+.TP
+\fB\-q\fR
+Don't print \fBgourmet\fR error messages.
+.TP
+\fB\-\-showtimes\fR
+Print timestamps on debug statements.
+.TP
+\fB\-v\fR
+Be verbose (extra v's will increase the verbosity
+level.
+.TP
+\fB\-\-data\-directory\fR=\fIDATAD\fR
+Directory for \fBgourmet\fR data files.
+.TP
+\fB\-\-image\-directory\fR=\fIIMAGED\fR
+Directory for \fBgourmet\fR image files.
+.TP
+\fB\-\-glade\-directory\fR=\fIGLADED\fR
+Directory for \fBgourmet\fR glade files.
+.TP
+\fB\-\-disable\-psyco\fR
+Do not use psyco if it is installed.
+.TP
+\fB\-\-version\fR
+show version number and exit.
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show this help message and exit
+.SH AUTHORS
+Thomas Hinkle <Thomas_Hinkle@alumni.brown.edu>
+
+.PP
+This manual page was written by Francois Wendling <frwendling@free.fr> for the
+Debian GNU/Linux system (but may be used by others).
+
