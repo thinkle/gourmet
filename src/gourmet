@@ -8,7 +8,7 @@
 #signal.signal(signal.SIGINT, signal.SIG_DFL)
 import sys
 
-sys.path.append('/usr/share') # for debian
+sys.path.append('/usr/share/gourmet') # for debian
 
 from gourmet.OptionParser import *
 
