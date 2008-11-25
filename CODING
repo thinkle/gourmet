@@ -1,0 +1,13 @@
+Style:
+
+The style used in Gourmet can be rather varied. However, new code
+should adhere to style guidelines old code should be updated to meet
+them. Generally, we try to follow the python style guidelines set out
+by Mr. Guido Van Russom.
+
+The following conventions are not strictly followed in Gourmet, but
+I'd like to follow them from here on out for greater consistency.
+
+* Class names are capitalized, using CamelCase.
+* method names begin with verbs and use underscores for multiple words
+* attributes should be lower cased and use camel caps for multiple words.
