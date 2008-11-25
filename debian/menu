@@ -1,2 +1,0 @@
-?package(gourmet):needs="X11" section="Applications/Data Management"\
-  title="gourmet" command="/usr/bin/gourmet"
