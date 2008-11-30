@@ -26,15 +26,15 @@
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Neste >"
+!define GOURMET_LICENSE_BUTTON			"Neste >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) er utgitt under GPL (GNU General Public License). Lisensen er oppgitt her kun med henblikk på informasjon. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) er utgitt under GPL (GNU General Public License). Lisensen er oppgitt her kun med henblikk på informasjon. $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (obligatorisk)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (obligatorisk)"
 
 !define GTK_SECTION_TITLE			"GTK+ Runtime Environment (obligatorisk)"
 
@@ -48,9 +48,9 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue-tema"
 
-!define GAIM_SECTION_DESCRIPTION		"Gourmets kjernefiler og dll'er"
+!define GOURMET_SECTION_DESCRIPTION		"Gourmets kjernefiler og dll'er"
 
-!define GTK_SECTION_DESCRIPTION		"Et GUI-verktøy for flere ulike plattformer, brukes av GAIM."
+!define GTK_SECTION_DESCRIPTION		"Et GUI-verktøy for flere ulike plattformer, brukes av GOURMET."
 
 !define GTK_THEMES_SECTION_DESCRIPTION	"GTK+ Tema kan endre utseendet og følelsen av GTK+ applikasjoner."
 
@@ -72,17 +72,17 @@
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Besøk Gourmet for Windows' Nettside"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Besøk Gourmet for Windows' Nettside"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (kun avinstallering)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (kun avinstallering)"
 
-!define GAIM_PROMPT_WIPEOUT			"Din gamle Gourmet-katalog holder på å slettes. Ønsker du å fortsette?$\r$\rMerk: Eventuelle ikke-standard plugin'er du har installert vil bli slettet.$\rGourmets brukerinstillinger vil ikke bli berørt."
+!define GOURMET_PROMPT_WIPEOUT			"Din gamle Gourmet-katalog holder på å slettes. Ønsker du å fortsette?$\r$\rMerk: Eventuelle ikke-standard plugin'er du har installert vil bli slettet.$\rGourmets brukerinstillinger vil ikke bli berørt."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Installasjonskatalogen du har spesifisert finnes fra før. Eventuelt innhold$\rvil bli slettet. Ønsker du å fortsette?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Installasjonskatalogen du har spesifisert finnes fra før. Eventuelt innhold$\rvil bli slettet. Ønsker du å fortsette?"
 
 
 
@@ -102,7 +102,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1		"Avinstalleringsprogrammet kunne ikke finne noen registeroppføring for Gourmet.$\rTrolig har en annen bruker installert denne applikasjonen."
+!define un.GOURMET_UNINSTALL_ERROR_1		"Avinstalleringsprogrammet kunne ikke finne noen registeroppføring for Gourmet.$\rTrolig har en annen bruker installert denne applikasjonen."
 
-!define un.GAIM_UNINSTALL_ERROR_2		"Du har ikke rettigheter til å avinstallere denne applikasjonen."
+!define un.GOURMET_UNINSTALL_ERROR_2		"Du har ikke rettigheter til å avinstallere denne applikasjonen."
 

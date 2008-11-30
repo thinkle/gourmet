@@ -26,15 +26,15 @@
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Següent >"
+!define GOURMET_LICENSE_BUTTON			"Següent >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) és distribuït sota llicència GPLe. Podeu consultar la llicència, només per proposits informatius, aquí. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) és distribuït sota llicència GPLe. Podeu consultar la llicència, només per proposits informatius, aquí. $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (necessari)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (necessari)"
 
 !define GTK_SECTION_TITLE			"Entorn d'Execució GTK+ (necessari)"
 
@@ -48,7 +48,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Tema Light House Blue"
 
-!define GAIM_SECTION_DESCRIPTION		"Fitxers i dlls del nucli de Gourmet"
+!define GOURMET_SECTION_DESCRIPTION		"Fitxers i dlls del nucli de Gourmet"
 
 !define GTK_SECTION_DESCRIPTION		"Una eina IGU multiplataforma, utilitzada per Gourmet"
 
@@ -72,17 +72,17 @@
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Visita la pàgina web de Gourmet per Windows"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Visita la pàgina web de Gourmet per Windows"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (només esborrar)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (només esborrar)"
 
-!define GAIM_PROMPT_WIPEOUT			"El teu directori antic de Gourmet serà esborrat. Vols continuar?$\r$\rNota: Els plugins no estàndards que tinguis instal.lats seran esborrats.$\rLes preferències d'usuari de Gourmet no es veruan afectades."
+!define GOURMET_PROMPT_WIPEOUT			"El teu directori antic de Gourmet serà esborrat. Vols continuar?$\r$\rNota: Els plugins no estàndards que tinguis instal.lats seran esborrats.$\rLes preferències d'usuari de Gourmet no es veruan afectades."
 
-!define GAIM_PROMPT_DIR_EXISTS		"El directori d'instal.lació que has especificat ja existeix. Tots els continguts$\rseran esborrats. Vols continuar?"
+!define GOURMET_PROMPT_DIR_EXISTS		"El directori d'instal.lació que has especificat ja existeix. Tots els continguts$\rseran esborrats. Vols continuar?"
 
 
 
@@ -102,7 +102,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1		"L'instal.lador podria no trobar les entrades del registre de Gourmet.$\rProbablement un altre usuari ha instal.lat aquesta aplicació."
+!define un.GOURMET_UNINSTALL_ERROR_1		"L'instal.lador podria no trobar les entrades del registre de Gourmet.$\rProbablement un altre usuari ha instal.lat aquesta aplicació."
 
-!define un.GAIM_UNINSTALL_ERROR_2		"No tens permís per desinstal.lar aquesta aplicació."
+!define un.GOURMET_UNINSTALL_ERROR_2		"No tens permís per desinstal.lar aquesta aplicació."
 

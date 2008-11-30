@@ -26,15 +26,15 @@
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Më tej >"
+!define GOURMET_LICENSE_BUTTON			"Më tej >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) qarkullon nën licensën GPL. Licensa këtu sillet vetëm për qëllime njoftimi. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) qarkullon nën licensën GPL. Licensa këtu sillet vetëm për qëllime njoftimi. $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (i nevojshëm)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (i nevojshëm)"
 
 !define GTK_SECTION_TITLE			"GTK+ Runtime Environment (i nevojshëm)"
 
@@ -48,7 +48,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Temë Light House Blue"
 
-!define GAIM_SECTION_DESCRIPTION		"Kartela dhe dll bazë të Gourmet-it"
+!define GOURMET_SECTION_DESCRIPTION		"Kartela dhe dll bazë të Gourmet-it"
 
 !define GTK_SECTION_DESCRIPTION		"Një grup mjetesh shumëplatformësh për GUI, përdorur nga Gourmet-i"
 
@@ -72,17 +72,17 @@
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Vizitoni Faqen Web të Gourmet-it për Windows"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Vizitoni Faqen Web të Gourmet-it për Windows"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (vetëm hiq)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (vetëm hiq)"
 
-!define GAIM_PROMPT_WIPEOUT			"Është gati për t'u fshirë drejtoria juaj e vjetër Gourmet. Doni të vazhdohet?$\r$\rShënim: Do të fshihet çfarëdo shtojceë jo standarde që mund të keni instaluar.$\rNuk do të preken rregullime Gourmet përdoruesash."
+!define GOURMET_PROMPT_WIPEOUT			"Është gati për t'u fshirë drejtoria juaj e vjetër Gourmet. Doni të vazhdohet?$\r$\rShënim: Do të fshihet çfarëdo shtojceë jo standarde që mund të keni instaluar.$\rNuk do të preken rregullime Gourmet përdoruesash."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Drejtoria e instalimit që treguat ekziston tashmë. Çfarëdo përmbajtje$\rdo të fshihet. Do të donit të vazhdohet?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Drejtoria e instalimit që treguat ekziston tashmë. Çfarëdo përmbajtje$\rdo të fshihet. Do të donit të vazhdohet?"
 
 
 
@@ -102,7 +102,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1		"Çinstaluesi nuk gjeti dot zëra regjistri për Gourmet-in.$\rKa mundësi që këtë zbatim ta ketë instaluar një tjetër përdorues."
+!define un.GOURMET_UNINSTALL_ERROR_1		"Çinstaluesi nuk gjeti dot zëra regjistri për Gourmet-in.$\rKa mundësi që këtë zbatim ta ketë instaluar një tjetër përdorues."
 
-!define un.GAIM_UNINSTALL_ERROR_2		"Nuk keni leje të çinstaloni këtë zbatim."
+!define un.GOURMET_UNINSTALL_ERROR_2		"Nuk keni leje të çinstaloni këtë zbatim."
 

@@ -20,7 +20,7 @@
 
 !define INSTALLER_IS_RUNNING                     "Instalarea este deja pornitã."
 
-!define GAIM_IS_RUNNING                  "O instanþã a programului Gourmet este deja pornitã. Închideþi-o ºi încercaþi din nou."
+!define GOURMET_IS_RUNNING                  "O instanþã a programului Gourmet este deja pornitã. Închideþi-o ºi încercaþi din nou."
 
 !define GTK_INSTALLER_NEEDED			"Mediul GTK+ nu e prezent sau aveþi o versiune prea veche.$\rInstalaþi cel puþin versiunea v${GTK_VERSION} a mediului GTK+"
 
@@ -28,15 +28,15 @@
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON                      "Înainte >"
+!define GOURMET_LICENSE_BUTTON                      "Înainte >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT         "$(^Name) are licenþã GPL (GNU Public License). Licenþa este inclusã aici doar pentru scopuri informative. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT         "$(^Name) are licenþã GPL (GNU Public License). Licenþa este inclusã aici doar pentru scopuri informative. $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (obligatoriu)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (obligatoriu)"
 
 !define GTK_SECTION_TITLE			"Mediu GTK+ (obligatoriu)"
 
@@ -50,13 +50,13 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Temã Light House Blue"
 
-!define GAIM_SHORTCUTS_SECTION_TITLE "Scurtãturi"
+!define GOURMET_SHORTCUTS_SECTION_TITLE "Scurtãturi"
 
-!define GAIM_DESKTOP_SHORTCUT_SECTION_TITLE "Desktop"
+!define GOURMET_DESKTOP_SHORTCUT_SECTION_TITLE "Desktop"
 
-!define GAIM_STARTMENU_SHORTCUT_SECTION_TITLE "Meniu Start"
+!define GOURMET_STARTMENU_SHORTCUT_SECTION_TITLE "Meniu Start"
 
-!define GAIM_SECTION_DESCRIPTION		"Fiºiere Gourmet ºi dll-uri"
+!define GOURMET_SECTION_DESCRIPTION		"Fiºiere Gourmet ºi dll-uri"
 
 !define GTK_SECTION_DESCRIPTION		"Un mediu de dezvoltare multiplatformã utilizat de Gourmet"
 
@@ -70,11 +70,11 @@
 
 !define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Tema Lighthouseblue."
 
-!define GAIM_SHORTCUTS_SECTION_DESCRIPTION   "Scurtãturi pentru pornirea Gourmet"
+!define GOURMET_SHORTCUTS_SECTION_DESCRIPTION   "Scurtãturi pentru pornirea Gourmet"
 
-!define GAIM_DESKTOP_SHORTCUT_DESC   "Creeazã iconiþe Gourmet pe Desktop"
+!define GOURMET_DESKTOP_SHORTCUT_DESC   "Creeazã iconiþe Gourmet pe Desktop"
 
-!define GAIM_STARTMENU_SHORTCUT_DESC   "Creeazã o intrare Gourmet în meniul Start"
+!define GOURMET_STARTMENU_SHORTCUT_DESC   "Creeazã o intrare Gourmet în meniul Start"
 
 
 
@@ -86,17 +86,17 @@
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE               "Vizitaþi pagina de web Windows Gourmet"
+!define GOURMET_FINISH_VISIT_WEB_SITE               "Vizitaþi pagina de web Windows Gourmet"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (doar dezinstalare)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (doar dezinstalare)"
 
-!define GAIM_PROMPT_WIPEOUT			"Vechiul director Gourmet va fi ºters. Doriþi sã continuaþi?$\r$\rNotã: Orice module externe vor fi ºterse.$\rSetãrile utilizatorilor Gourmet nu vor fi afectate."
+!define GOURMET_PROMPT_WIPEOUT			"Vechiul director Gourmet va fi ºters. Doriþi sã continuaþi?$\r$\rNotã: Orice module externe vor fi ºterse.$\rSetãrile utilizatorilor Gourmet nu vor fi afectate."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Directorul ales pentru instalare existã deja.$\rConþinutul sãu va fi ºters. Doriþi sã continuaþi?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Directorul ales pentru instalare existã deja.$\rConþinutul sãu va fi ºters. Doriþi sã continuaþi?"
 
 
 
@@ -116,7 +116,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1         "Programul de dezinstalare nu a gãsit intrãri Gourmet în regiºtri.$\rProbabil un alt utilizator a instalat aceastã aplicaþie."
+!define un.GOURMET_UNINSTALL_ERROR_1         "Programul de dezinstalare nu a gãsit intrãri Gourmet în regiºtri.$\rProbabil un alt utilizator a instalat aceastã aplicaþie."
 
-!define un.GAIM_UNINSTALL_ERROR_2         "Nu aveþi drepturile de acces necesare dezinstalãrii acestei aplicaþii."
+!define un.GOURMET_UNINSTALL_ERROR_2         "Nu aveþi drepturile de acces necesare dezinstalãrii acestei aplicaþii."
 

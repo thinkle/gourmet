@@ -26,15 +26,15 @@
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Další >"
+!define GOURMET_LICENSE_BUTTON			"Další >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"K použití $(^Name) se vztahuje GPL licence. Licence je zde uvedena pouze pro Vaší informaci. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"K použití $(^Name) se vztahuje GPL licence. Licence je zde uvedena pouze pro Vaší informaci. $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (nutné)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (nutné)"
 
 !define GTK_SECTION_TITLE			"GTK+ Runtime Environment (nutné)"
 
@@ -48,7 +48,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue téma"
 
-!define GAIM_SECTION_DESCRIPTION		"Základní soubory a DLL pro Gourmet"
+!define GOURMET_SECTION_DESCRIPTION		"Základní soubory a DLL pro Gourmet"
 
 !define GTK_SECTION_DESCRIPTION		"Multi-platform GUI toolkit používaný Gourmetem"
 
@@ -72,17 +72,17 @@
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Navštívit Windows Gourmet Web Page"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Navštívit Windows Gourmet Web Page"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (odinstalovat)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (odinstalovat)"
 
-!define GAIM_PROMPT_WIPEOUT			"Váš starý adresáø pro Gourmet bude vymazán. Chcete pokraèovat?$\r$\rUpozornìní: Jakákoli nestandardní rozšíøení (plugin) , která máte nainstalována budou ztracena.$\rUživatelská nastavení pro Gourmet budou zachována."
+!define GOURMET_PROMPT_WIPEOUT			"Váš starý adresáø pro Gourmet bude vymazán. Chcete pokraèovat?$\r$\rUpozornìní: Jakákoli nestandardní rozšíøení (plugin) , která máte nainstalována budou ztracena.$\rUživatelská nastavení pro Gourmet budou zachována."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Adresáø který byl zadán pro instalaci již existuje. Veškerý obsah$\rbude smazán. Chcete pokraèovat?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Adresáø který byl zadán pro instalaci již existuje. Veškerý obsah$\rbude smazán. Chcete pokraèovat?"
 
 
 
@@ -102,7 +102,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1		"Odinstalèní proces nemùže najít záznamy pro Gourmet v registrech.$\rPravdìpodobnì instalaci této aplikace provedl jiný uživatel."
+!define un.GOURMET_UNINSTALL_ERROR_1		"Odinstalèní proces nemùže najít záznamy pro Gourmet v registrech.$\rPravdìpodobnì instalaci této aplikace provedl jiný uživatel."
 
-!define un.GAIM_UNINSTALL_ERROR_2		"Nemáte oprávnìní k odinstalaci této aplikace."
+!define un.GOURMET_UNINSTALL_ERROR_2		"Nemáte oprávnìní k odinstalaci této aplikace."
 

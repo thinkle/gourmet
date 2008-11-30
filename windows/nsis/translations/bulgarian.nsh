@@ -26,7 +26,7 @@
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (изисква се)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (изисква се)"
 
 !define GTK_SECTION_TITLE			"GTK+ Runtime Среда (required)"
 
@@ -40,7 +40,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue Тема"
 
-!define GAIM_SECTION_DESCRIPTION		"Файлове на ядрото на Gourmet и библиотеки"
+!define GOURMET_SECTION_DESCRIPTION		"Файлове на ядрото на Gourmet и библиотеки"
 
 !define GTK_SECTION_DESCRIPTION		"Мултиплатфорен кит за графичен изглед, използван от Gourmet"
 
@@ -64,11 +64,11 @@
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (само премахване)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (само премахване)"
 
-!define GAIM_PROMPT_WIPEOUT			"Вашата стара Gourmet директория ще бъде изтрита. Искате ли да продължите?$\r$\rЗабележка: Всички нестандартни добавки които сте инсталирали ще бъдат изтрити.$\rНастройките на Gourmet няма да бъдат повлияни."
+!define GOURMET_PROMPT_WIPEOUT			"Вашата стара Gourmet директория ще бъде изтрита. Искате ли да продължите?$\r$\rЗабележка: Всички нестандартни добавки които сте инсталирали ще бъдат изтрити.$\rНастройките на Gourmet няма да бъдат повлияни."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Директорията която избрахте съществува. Всичко което е в нея$\rще бъде изтрито. Желаете ли да продължите?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Директорията която избрахте съществува. Всичко което е в нея$\rще бъде изтрито. Желаете ли да продължите?"
 
 
 
@@ -88,7 +88,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1         "Деисталатоа не може да намери записи в регистъра за Gourmet.$\rВероятно е бил инсталиран от друг потребител."
+!define un.GOURMET_UNINSTALL_ERROR_1         "Деисталатоа не може да намери записи в регистъра за Gourmet.$\rВероятно е бил инсталиран от друг потребител."
 
-!define un.GAIM_UNINSTALL_ERROR_2         "Нямате права да деинсталирате тази програма."
+!define un.GOURMET_UNINSTALL_ERROR_2         "Нямате права да деинсталирате тази програма."
 

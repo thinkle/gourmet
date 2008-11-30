@@ -24,7 +24,7 @@
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (neophodno)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (neophodno)"
 
 !define GTK_SECTION_TITLE			"GTK+ okolina za izvršavanje (neophodno)"
 
@@ -38,7 +38,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue tema"
 
-!define GAIM_SECTION_DESCRIPTION		"Osnovne Gourmet datoteke i dinamièke biblioteke"
+!define GOURMET_SECTION_DESCRIPTION		"Osnovne Gourmet datoteke i dinamièke biblioteke"
 
 !define GTK_SECTION_DESCRIPTION		"Skup oruða za grafièko okruženje, za više platformi, koristi ga Gourmet"
 
@@ -62,11 +62,11 @@
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (samo uklanjanje)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (samo uklanjanje)"
 
-!define GAIM_PROMPT_WIPEOUT			"Vaš stari Gourmet direktorijum æe biti obrisan. Da li želite da nastavite?$\r$\rPrimedba: Svi nestandardni dodaci koje ste instalirali æe biti obrisani.$\rGourmet postavke korisnika neæe biti promenjene."
+!define GOURMET_PROMPT_WIPEOUT			"Vaš stari Gourmet direktorijum æe biti obrisan. Da li želite da nastavite?$\r$\rPrimedba: Svi nestandardni dodaci koje ste instalirali æe biti obrisani.$\rGourmet postavke korisnika neæe biti promenjene."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Instalacioni direktorijum koji ste naveli veæ postoji. Sav sadržaj$\ræe biti obrisan. Da li želite da nastavite?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Instalacioni direktorijum koji ste naveli veæ postoji. Sav sadržaj$\ræe biti obrisan. Da li želite da nastavite?"
 
 
 
@@ -86,7 +86,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1         "Program za uklanjanje instalacije ne može da pronaðe stavke registra za Gourmet.$\rVerovatno je ovu aplikaciju instalirao drugi korisnik."
+!define un.GOURMET_UNINSTALL_ERROR_1         "Program za uklanjanje instalacije ne može da pronaðe stavke registra za Gourmet.$\rVerovatno je ovu aplikaciju instalirao drugi korisnik."
 
-!define un.GAIM_UNINSTALL_ERROR_2         "Nemate ovlašæenja za deinstalaciju ove aplikacije."
+!define un.GOURMET_UNINSTALL_ERROR_2         "Nemate ovlašæenja za deinstalaciju ove aplikacije."
 

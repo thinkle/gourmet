@@ -4,7 +4,7 @@
 
 ;;
 
-;;  Hebrew language strings for the Windows Gaim NSIS installer.
+;;  Hebrew language strings for the Windows Gourmet NSIS installer.
 
 ;;  Windows Code page: 1255
 
@@ -76,7 +76,7 @@
 
 
 
-; Gaim Section Prompts and Texts
+; Gourmet Section Prompts and Texts
 
 !define GOURMET_UNINSTALL_DESC			"GOURMET (מחיקה בלבד)"
 

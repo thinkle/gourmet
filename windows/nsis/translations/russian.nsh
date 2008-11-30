@@ -26,15 +26,15 @@
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Следующее >"
+!define GOURMET_LICENSE_BUTTON			"Следующее >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) выпущено под лицензией GPL. Лицензия приведена здесь для ознакомительных целей. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) выпущено под лицензией GPL. Лицензия приведена здесь для ознакомительных целей. $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (необходимо)."
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (необходимо)."
 
 !define GTK_SECTION_TITLE			"GTK+ окружение для запуска (необходимо)."
 
@@ -48,7 +48,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Тема 'Light House Blue'."
 
-!define GAIM_SECTION_DESCRIPTION		"Основная часть Gourmet и библиотеки."
+!define GOURMET_SECTION_DESCRIPTION		"Основная часть Gourmet и библиотеки."
 
 !define GTK_SECTION_DESCRIPTION		"Мультиплатформенный графический инструментарий, используемый Gourmet."
 
@@ -72,17 +72,17 @@
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Посетите веб-страницу Gourmet для пользователей Windows."
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Посетите веб-страницу Gourmet для пользователей Windows."
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (только удаление)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (только удаление)"
 
-!define GAIM_PROMPT_WIPEOUT			"Ваша старая директория Gourmet будет фактически удалена. Вы желаете продолжить ?$\r$\rПримечание: Все нестандартные плагины которые Вы установили будут удалены..$\rПользовательские настройки Gourmet не пострадают."
+!define GOURMET_PROMPT_WIPEOUT			"Ваша старая директория Gourmet будет фактически удалена. Вы желаете продолжить ?$\r$\rПримечание: Все нестандартные плагины которые Вы установили будут удалены..$\rПользовательские настройки Gourmet не пострадают."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Директория, которую Вы указали для установки уже существует. Всё содержимое$\rбудет удалено. Вы желаете продолжить?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Директория, которую Вы указали для установки уже существует. Всё содержимое$\rбудет удалено. Вы желаете продолжить?"
 
 
 
@@ -102,7 +102,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1		"Программа удаления не может найти данные Gourmet в регистре..$\rВероятно это приложение установил другой пользователь."
+!define un.GOURMET_UNINSTALL_ERROR_1		"Программа удаления не может найти данные Gourmet в регистре..$\rВероятно это приложение установил другой пользователь."
 
-!define un.GAIM_UNINSTALL_ERROR_2		"У Вас нет прав на удаление этого приложения."
+!define un.GOURMET_UNINSTALL_ERROR_2		"У Вас нет прав на удаление этого приложения."
 

@@ -26,15 +26,15 @@
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Seuraava >"
+!define GOURMET_LICENSE_BUTTON			"Seuraava >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) on julkaistu GPL lisenssin alla. Lisenssi esitetään tässä vain tiedotuksena. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) on julkaistu GPL lisenssin alla. Lisenssi esitetään tässä vain tiedotuksena. $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (required)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (required)"
 
 !define GTK_SECTION_TITLE			"GTK+ runtime ympäristö (required)"
 
@@ -48,7 +48,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue Teema"
 
-!define GAIM_SECTION_DESCRIPTION		"Gourmetin ytimen tiedostot ja dll:t"
+!define GOURMET_SECTION_DESCRIPTION		"Gourmetin ytimen tiedostot ja dll:t"
 
 !define GTK_SECTION_DESCRIPTION		"Monipohjainen GUI (käyttäjäulkoasu) työkalupakki, Gourmetin käyttämä"
 
@@ -72,17 +72,17 @@
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Vieraile Gourmetin Windows -sivustolla"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Vieraile Gourmetin Windows -sivustolla"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (vain poisto)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (vain poisto)"
 
-!define GAIM_PROMPT_WIPEOUT			"Vanha Gourmet-hakemistosi poistetaan. Tahdotko jatkaa?$\r$\rHuomio: Jokainen jälkeenpäin asennettu lisäosa poistetaan.$\rGourmetin käyttäjäasetuksissa ei tapahdu muutoksia."
+!define GOURMET_PROMPT_WIPEOUT			"Vanha Gourmet-hakemistosi poistetaan. Tahdotko jatkaa?$\r$\rHuomio: Jokainen jälkeenpäin asennettu lisäosa poistetaan.$\rGourmetin käyttäjäasetuksissa ei tapahdu muutoksia."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Antamasti hakemisto on jo olemassa. Kaikki tiedot poistetaan $\r. Tahdotko jatkaa?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Antamasti hakemisto on jo olemassa. Kaikki tiedot poistetaan $\r. Tahdotko jatkaa?"
 
 
 
@@ -102,7 +102,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1		"Asennuksen poistaja ei löytänyt reksiteristä tietoja Gourmetista.$\rOn todennäköistä että joku muu käyttäjä on asentanut ohjelman."
+!define un.GOURMET_UNINSTALL_ERROR_1		"Asennuksen poistaja ei löytänyt reksiteristä tietoja Gourmetista.$\rOn todennäköistä että joku muu käyttäjä on asentanut ohjelman."
 
-!define un.GAIM_UNINSTALL_ERROR_2		"Sinulla ei ole valtuuksia poistaa ohjelmaa."
+!define un.GOURMET_UNINSTALL_ERROR_2		"Sinulla ei ole valtuuksia poistaa ohjelmaa."
 

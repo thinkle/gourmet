@@ -26,15 +26,15 @@
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"次へ >"
+!define GOURMET_LICENSE_BUTTON			"次へ >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name)はGPLライセンスの元でリリースされています。ライセンスはここに参考のためだけに提供されています。 $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name)はGPLライセンスの元でリリースされています。ライセンスはここに参考のためだけに提供されています。 $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (必須)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (必須)"
 
 !define GTK_SECTION_TITLE			"GTK+ Runtime Environment (必須)"
 
@@ -48,7 +48,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blueテーマ"
 
-!define GAIM_SECTION_DESCRIPTION		"Gourmetの核となるファイルとdll"
+!define GOURMET_SECTION_DESCRIPTION		"Gourmetの核となるファイルとdll"
 
 !define GTK_SECTION_DESCRIPTION		"Gourmetの使っているマルチプラットフォームGUIツールキット"
 
@@ -72,17 +72,17 @@
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Windows GourmetのWebページを訪れてください。"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Windows GourmetのWebページを訪れてください。"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (削除のみ)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (削除のみ)"
 
-!define GAIM_PROMPT_WIPEOUT			"古いGourmetのフォルダの削除に関して。続行しますか?$\r$\r注意: あなたのインストールしたすべての非標準なプラグインは削除されます。$\rGourmetの設定は影響を受けません。"
+!define GOURMET_PROMPT_WIPEOUT			"古いGourmetのフォルダの削除に関して。続行しますか?$\r$\r注意: あなたのインストールしたすべての非標準なプラグインは削除されます。$\rGourmetの設定は影響を受けません。"
 
-!define GAIM_PROMPT_DIR_EXISTS		"あなたの指定したインストール先のフォルダはすでに存在しています。内容はすべて$\r削除されます。続行しますか?"
+!define GOURMET_PROMPT_DIR_EXISTS		"あなたの指定したインストール先のフォルダはすでに存在しています。内容はすべて$\r削除されます。続行しますか?"
 
 
 
@@ -102,7 +102,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1		"アンインストーラはGourmetのレジストリエントリを発見できませんでした。$\rおそらく別のユーザにインストールされたでしょう。"
+!define un.GOURMET_UNINSTALL_ERROR_1		"アンインストーラはGourmetのレジストリエントリを発見できませんでした。$\rおそらく別のユーザにインストールされたでしょう。"
 
-!define un.GAIM_UNINSTALL_ERROR_2		"あなたはこのアプリケーションをアンインストールする権限を持っていません。"
+!define un.GOURMET_UNINSTALL_ERROR_2		"あなたはこのアプリケーションをアンインストールする権限を持っていません。"
 

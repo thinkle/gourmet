@@ -18,7 +18,7 @@
 
 
 
-; Make sure to update the GAIM_MACRO_LANGUAGEFILE_END macro in
+; Make sure to update the GOURMET_MACRO_LANGUAGEFILE_END macro in
 
 ; langmacros.nsh when updating this file
 
@@ -28,7 +28,7 @@
 
 !define INSTALLER_IS_RUNNING			"Le programme d'installation est déjà en cours d'exécution."
 
-!define GAIM_IS_RUNNING			"Une instance de Gourmet est en cours d'exécution. Veuillez quitter Gourmet et réessayer."
+!define GOURMET_IS_RUNNING			"Une instance de Gourmet est en cours d'exécution. Veuillez quitter Gourmet et réessayer."
 
 !define GTK_INSTALLER_NEEDED			"Les bibliothèques de l'environnement GTK+ ne sont pas installées ou ont besoin d'une mise à jour.$\rVeuillez installer la version ${GTK_VERSION} ou plus récente des bibliothèques GTK+."
 
@@ -36,15 +36,15 @@
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Suivant >"
+!define GOURMET_LICENSE_BUTTON			"Suivant >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) est disponible sous licence GNU General Public License (GPL). Le texte de licence suivant est fourni uniquement à titre informatif. $_CLICK" 
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) est disponible sous licence GNU General Public License (GPL). Le texte de licence suivant est fourni uniquement à titre informatif. $_CLICK" 
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (obligatoire)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (obligatoire)"
 
 !define GTK_SECTION_TITLE			"Bibliothèques GTK+ (obligatoire)"
 
@@ -58,13 +58,13 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Thème Light House Blue"
 
-!define GAIM_SHORTCUTS_SECTION_TITLE "Raccourcis"
+!define GOURMET_SHORTCUTS_SECTION_TITLE "Raccourcis"
 
-!define GAIM_DESKTOP_SHORTCUT_SECTION_TITLE "Bureau"
+!define GOURMET_DESKTOP_SHORTCUT_SECTION_TITLE "Bureau"
 
-!define GAIM_STARTMENU_SHORTCUT_SECTION_TITLE "Menu Démarrer"
+!define GOURMET_STARTMENU_SHORTCUT_SECTION_TITLE "Menu Démarrer"
 
-!define GAIM_SECTION_DESCRIPTION		"Fichiers et DLLs de base de Gourmet"
+!define GOURMET_SECTION_DESCRIPTION		"Fichiers et DLLs de base de Gourmet"
 
 !define GTK_SECTION_DESCRIPTION		"Un ensemble d'outils pour interfaces graphiques multi-plateforme, utilisé par Gourmet"
 
@@ -78,11 +78,11 @@
 
 !define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Thème Lighthouseblue"
 
-!define GAIM_SHORTCUTS_SECTION_DESCRIPTION   "Raccourcis pour lancer Gourmet"
+!define GOURMET_SHORTCUTS_SECTION_DESCRIPTION   "Raccourcis pour lancer Gourmet"
 
-!define GAIM_DESKTOP_SHORTCUT_DESC   "Créer un raccourci pour Gourmet sur le bureau"
+!define GOURMET_DESKTOP_SHORTCUT_DESC   "Créer un raccourci pour Gourmet sur le bureau"
 
-!define GAIM_STARTMENU_SHORTCUT_DESC   "Créer un raccourci pour Gourmet dans le menu Démarrer"
+!define GOURMET_STARTMENU_SHORTCUT_DESC   "Créer un raccourci pour Gourmet dans le menu Démarrer"
 
 
 
@@ -94,17 +94,17 @@
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Visitez la page web de Gourmet Windows"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Visitez la page web de Gourmet Windows"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (supprimer uniquement)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (supprimer uniquement)"
 
-!define GAIM_PROMPT_WIPEOUT			"L'ancien dossier de Gourmet va être supprimé. Voulez-vous continuer ?$\r$\rNote : Tous les plugins non standards que vous avez installés seront aussi supprimés.$\rLes configurations et les comptes utilisateurs de Gourmet ne sont pas touchés."
+!define GOURMET_PROMPT_WIPEOUT			"L'ancien dossier de Gourmet va être supprimé. Voulez-vous continuer ?$\r$\rNote : Tous les plugins non standards que vous avez installés seront aussi supprimés.$\rLes configurations et les comptes utilisateurs de Gourmet ne sont pas touchés."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Le dossier d'installation que vous avez choisi existe déjà. Son contenu sera effacé.$\rVoulez-vous continuer ?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Le dossier d'installation que vous avez choisi existe déjà. Son contenu sera effacé.$\rVoulez-vous continuer ?"
 
 
 
@@ -124,7 +124,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1         "Le programme de désinstallation n'a pas retrouvé les entrées de Gourmet dans la base de registres.$\rL'application a peut-être été installée par un utilisateur différent."
+!define un.GOURMET_UNINSTALL_ERROR_1         "Le programme de désinstallation n'a pas retrouvé les entrées de Gourmet dans la base de registres.$\rL'application a peut-être été installée par un utilisateur différent."
 
-!define un.GAIM_UNINSTALL_ERROR_2         "Vous n'avez pas les permissions pour supprimer cette application."
+!define un.GOURMET_UNINSTALL_ERROR_2         "Vous n'avez pas les permissions pour supprimer cette application."
 

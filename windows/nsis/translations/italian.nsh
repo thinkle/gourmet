@@ -26,15 +26,15 @@
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Avanti >"
+!define GOURMET_LICENSE_BUTTON			"Avanti >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) è distribuito sotto licenza GPL. La licenza è mostrata qui solamente a scopo informativo. $_CLICK" 
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) è distribuito sotto licenza GPL. La licenza è mostrata qui solamente a scopo informativo. $_CLICK" 
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (richiesto)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (richiesto)"
 
 !define GTK_SECTION_TITLE			"Ambiente di Runtime GTK+ (richiesto)"
 
@@ -48,7 +48,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Tema Light House Blue"
 
-!define GAIM_SECTION_DESCRIPTION		"File principali di Gourmet e dll"
+!define GOURMET_SECTION_DESCRIPTION		"File principali di Gourmet e dll"
 
 !define GTK_SECTION_DESCRIPTION		"Un toolkit multipiattaforma per interfacce grafiche, usato da Gourmet"
 
@@ -72,17 +72,17 @@
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Visita la pagina web di Gourmet per Windows"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Visita la pagina web di Gourmet per Windows"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (solo rimozione)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (solo rimozione)"
 
-!define GAIM_PROMPT_WIPEOUT			"La tua vecchia directory di Gourmet sta per essere cancellata. Vuoi andare avanti?$\r$\rNota: Tutti i plugin non standard che hai installato saranno cancellati.$\rLe impostazioni di Gourmet non saranno rimosse."
+!define GOURMET_PROMPT_WIPEOUT			"La tua vecchia directory di Gourmet sta per essere cancellata. Vuoi andare avanti?$\r$\rNota: Tutti i plugin non standard che hai installato saranno cancellati.$\rLe impostazioni di Gourmet non saranno rimosse."
 
-!define GAIM_PROMPT_DIR_EXISTS		"La directory di installazione specificata esiste già. Tutto il contenuto$\rverrà cancellato. Vuoi continuare?"
+!define GOURMET_PROMPT_DIR_EXISTS		"La directory di installazione specificata esiste già. Tutto il contenuto$\rverrà cancellato. Vuoi continuare?"
 
 
 
@@ -102,7 +102,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1         "Il programma di rimozione non è in grado di trovare le voci di registro per Gourmet.$\rProbabilmente un altro utente ha installato questa applicazione."
+!define un.GOURMET_UNINSTALL_ERROR_1         "Il programma di rimozione non è in grado di trovare le voci di registro per Gourmet.$\rProbabilmente un altro utente ha installato questa applicazione."
 
-!define un.GAIM_UNINSTALL_ERROR_2         "Non hai il permesso per rimuovere questa applicazione."
+!define un.GOURMET_UNINSTALL_ERROR_2         "Non hai il permesso per rimuovere questa applicazione."
 

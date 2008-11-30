@@ -26,15 +26,15 @@
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"下一步 >"
+!define GOURMET_LICENSE_BUTTON			"下一步 >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) 以 GPL 许可发布。在此提供此许可仅为参考。$_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) 以 GPL 许可发布。在此提供此许可仅为参考。$_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (必需)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (必需)"
 
 !define GTK_SECTION_TITLE			"GTK+ 运行时刻环境(必需)"
 
@@ -48,7 +48,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue 主题"
 
-!define GAIM_SECTION_DESCRIPTION		"Gourmet 核心文件和 DLLs"
+!define GOURMET_SECTION_DESCRIPTION		"Gourmet 核心文件和 DLLs"
 
 !define GTK_SECTION_DESCRIPTION		"Gourmet 所用的多平台 GUI 工具包"
 
@@ -72,17 +72,17 @@
 
 ; Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"浏览 Windows Gourmet 网页"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"浏览 Windows Gourmet 网页"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (只能删除)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (只能删除)"
 
-!define GAIM_PROMPT_WIPEOUT			"即将删除您的旧 Gourmet 目录。您想要继续吗?$\r$\r注意: 您所安装的任何非标准的插件都将被删除。$\r但是不会影响 Gourmet 用户设置。"
+!define GOURMET_PROMPT_WIPEOUT			"即将删除您的旧 Gourmet 目录。您想要继续吗?$\r$\r注意: 您所安装的任何非标准的插件都将被删除。$\r但是不会影响 Gourmet 用户设置。"
 
-!define GAIM_PROMPT_DIR_EXISTS		"您指定的安装目录已经存在。$\r所有内容都将被删除。您想要继续吗?"
+!define GOURMET_PROMPT_DIR_EXISTS		"您指定的安装目录已经存在。$\r所有内容都将被删除。您想要继续吗?"
 
 
 
@@ -102,7 +102,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1         "卸载程序找不到 Gourmet 的注册表项目。$\r可能是另外的用户安装了此程序。"
+!define un.GOURMET_UNINSTALL_ERROR_1         "卸载程序找不到 Gourmet 的注册表项目。$\r可能是另外的用户安装了此程序。"
 
-!define un.GAIM_UNINSTALL_ERROR_2         "您没有权限卸载此程序。"
+!define un.GOURMET_UNINSTALL_ERROR_2         "您没有权限卸载此程序。"
 

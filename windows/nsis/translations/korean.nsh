@@ -24,7 +24,7 @@
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (필수)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (필수)"
 
 !define GTK_SECTION_TITLE			"GTK+ 런타임 환경 (필수)"
 
@@ -38,7 +38,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue 테마"
 
-!define GAIM_SECTION_DESCRIPTION		"가임의 코어 파일과 dll"
+!define GOURMET_SECTION_DESCRIPTION		"가임의 코어 파일과 dll"
 
 !define GTK_SECTION_DESCRIPTION		"가임이 사용하는 멀티 플랫폼 GUI 툴킷"
 
@@ -62,11 +62,11 @@
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (remove only)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (remove only)"
 
-!define GAIM_PROMPT_WIPEOUT			"가임 디렉토리가 지워질 것입니다. 계속 할까요?$\r$\rNote: 비표준 플러그인은 지워지지 않을 수도 있습니다.$\r가임 사용자 설정에는 영향을 미치지 않습니다."
+!define GOURMET_PROMPT_WIPEOUT			"가임 디렉토리가 지워질 것입니다. 계속 할까요?$\r$\rNote: 비표준 플러그인은 지워지지 않을 수도 있습니다.$\r가임 사용자 설정에는 영향을 미치지 않습니다."
 
-!define GAIM_PROMPT_DIR_EXISTS		"입력하신 설치 디렉토리가 이미 있습니다. 안에 들은 내용이 지워질 수도 있습니다. 계속할까요?"
+!define GOURMET_PROMPT_DIR_EXISTS		"입력하신 설치 디렉토리가 이미 있습니다. 안에 들은 내용이 지워질 수도 있습니다. 계속할까요?"
 
 
 
@@ -86,7 +86,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1         "언인스톨러가 가임의 레지스트리 엔트리를 찾을 수 없습니다.$\r이 프로그램을 다른 유저 권한으로 설치한 것 같습니다."
+!define un.GOURMET_UNINSTALL_ERROR_1         "언인스톨러가 가임의 레지스트리 엔트리를 찾을 수 없습니다.$\r이 프로그램을 다른 유저 권한으로 설치한 것 같습니다."
 
-!define un.GAIM_UNINSTALL_ERROR_2         "이 프로그램을 제거할 수 있는 권한이 없습니다."
+!define un.GOURMET_UNINSTALL_ERROR_2         "이 프로그램을 제거할 수 있는 권한이 없습니다."
 
