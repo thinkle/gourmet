@@ -125,7 +125,9 @@ def data_files():
              ),
             (os.path.join(base,'applications'),
              ['gourmet.desktop']
-             ),]    
+             ),]
+        base = os.path.join(base,'gourmet')
+
     for f in i18n:
         pth,fn=os.path.split(f)
         pthfiles = pth.split(os.path.sep)
@@ -133,8 +135,7 @@ def data_files():
         pth = os.path.sep.join(pthfiles)
         #print pth,fn
         pth = os.path.join(i18n_base,pth)
-        files.append((pth,[f]))
-    base = os.path.join(base,'gourmet')            
+        files.append((pth,[f]))           
     files.extend([(base, images + ['FAQ'])])
     #print 'DATA FILES:',files
     return files
