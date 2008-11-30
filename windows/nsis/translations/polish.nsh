@@ -20,27 +20,27 @@
 
 ; Startup GTK+ check
 
-!define GTK_INSTALLER_NEEDED			"Runtime œrodowiska GTK+ zosta³ zagubiony lub wymaga upgrade-u.$\r Proszê zainstaluj v${GTK_VERSION} albo wy¿sz¹ wersjê runtime-u GTK+."
+!define GTK_INSTALLER_NEEDED			"Runtime rodowiska GTK+ zosta zagubiony lub wymaga upgrade-u.$\r Prosz zainstaluj v${GTK_VERSION} albo wyszê¿¹ wersj runtime-u GTK+."
 
 
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Dalej >"
+!define GOURMET_LICENSE_BUTTON			"Dalej >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) jest wydzielone w licencji GPL. Udziela siê licencji wy³¹cznie do celów informacyjnych. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) jest wydzielone w licencji GPL. Udziela si licencji wyê³¹cznie do celw informacyjnych. $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Wymagany jest Gourmet Recipe Manager"
+!define GOURMET_SECTION_TITLE			"Wymagany jest Gourmet Recipe Manager"
 
-!define GTK_SECTION_TITLE			"Wymagany jest runtime œrodowiska GTK+"
+!define GTK_SECTION_TITLE			"Wymagany jest runtime rodowiska GTK+"
 
 !define GTK_THEMES_SECTION_TITLE		"Temat GTK+"
 
-!define GTK_NOTHEME_SECTION_TITLE		"Brak tematów"
+!define GTK_NOTHEME_SECTION_TITLE		"Brak tematw"
 
 !define GTK_WIMP_SECTION_TITLE		"Temat Wimp"
 
@@ -48,15 +48,15 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Temat Light House Blue"
 
-!define GAIM_SECTION_DESCRIPTION		"Zbiory Core Gourmet oraz dll"
+!define GOURMET_SECTION_DESCRIPTION		"Zbiory Core Gourmet oraz dll"
 
-!define GTK_SECTION_DESCRIPTION		"Wieloplatformowe narzêdzie GUI, u¿ywane w Gourmet"
+!define GTK_SECTION_DESCRIPTION		"Wieloplatformowe narzdzie GUI, uywane w Gourmet"
 
-!define GTK_THEMES_SECTION_DESCRIPTION	"Tematy GTK+ mog¹ zmieniæ wygl¹d i dzia³anie aplikacji GTK+ ."
+!define GTK_THEMES_SECTION_DESCRIPTION	"Tematy GTK+ mogê¿¹ zmieni wygld i dziaæ¹³anie aplikacji GTK+ ."
 
-!define GTK_NO_THEME_DESC			"Nie instaluj tematów GTK+"
+!define GTK_NO_THEME_DESC			"Nie instaluj tematw GTK+"
 
-!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator) to temat GTK który doskonale wkomponowuje siê w œrodowisko systemu Windows."
+!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator) to temat GTK ktry doskonale wkomponowuje si w rodowisko systemu Windows."
 
 !define GTK_BLUECURVE_THEME_DESC		"Temat The Bluecurve."
 
@@ -66,43 +66,43 @@
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"Znaleziono star¹ wersjê runtime-u GTK+. Czy chcesz upgrade-owaæ?$\rNote: Gourmet mo¿e nie dzia³aæ jeœli nie wykonasz procedury."
+!define GTK_UPGRADE_PROMPT			"Znaleziono starêœ¹ wersj runtime-u GTK+. Czy chcesz upgrade-owa?$\rNote: Gourmet moe nie dziaæ¿³a jeli nie wykonasz procedury."
 
 
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"WejdŸ na stronê Gourmet Web Page"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"WejdæœŸ na stron Gourmet Web Page"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (usuñ program)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (usu program)"
 
-!define GAIM_PROMPT_WIPEOUT			"Stary katalog Gourmet zosta³ usuniêty. Czy chcesz kontunuowaæ?$\r$\rNote: Wszystkie stare - niestandardowe plugin-y zosta³y usuniête.$\r Ustawienia u¿utkownika Gourmet bêd¹ wy³¹czone."
+!define GOURMET_PROMPT_WIPEOUT			"Stary katalog Gourmet zosta usunity. Czy chcesz kontunuowa?$\r$\rNote: Wszystkie stare - niestandardowe plugin-y zostay usunite.$\r Ustawienia uutkownika Gourmet bd wyê¹³czone."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Wybrany katalog instalacyjny ju¿ istnieje. Jego zawartoœæ $\r zostanie skasowana. Czy chcesz kontunuowaæ?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Wybrany katalog instalacyjny ju istnieje. Jego zawarto $\r zostanie skasowana. Czy chcesz kontunuowa?"
 
 
 
 ; GTK+ Section Prompts
 
-!define GTK_INSTALL_ERROR			"B³¹d instalacji runtime-a GTK+."
+!define GTK_INSTALL_ERROR			"Bæ³¹d instalacji runtime-a GTK+."
 
-!define GTK_BAD_INSTALL_PATH			"Nie ma dostêpu do wybranej œcie¿ki / ³aty."
+!define GTK_BAD_INSTALL_PATH			"Nie ma dostpu do wybranej cieêœ¿ki / aty."
 
 
 
 ; GTK+ Themes section
 
-!define GTK_NO_THEME_INSTALL_RIGHTS		"Nie masz uprawnieñ do zainstalowania tematu GTK+."
+!define GTK_NO_THEME_INSTALL_RIGHTS		"Nie masz uprawnie do zainstalowania tematu GTK+."
 
 
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1		"Deinstalator nie mo¿e znaleŸæ rejestrów dla Gourmet.$\r Wskazuje to na to, ¿e instalacjê przeprowadzi³ inny u¿ytkownik."
+!define un.GOURMET_UNINSTALL_ERROR_1		"Deinstalator nie moe znale? rejestrw dla Gourmet.$\r Wskazuje to na to, e instalacj przeprowadzi inny uê³¿ytkownik."
 
-!define un.GAIM_UNINSTALL_ERROR_2		"Nie masz uprawnieñ do deinstalacji tej aplikacji."
+!define un.GOURMET_UNINSTALL_ERROR_2		"Nie masz uprawnie do deinstalacji tej aplikacji."
 

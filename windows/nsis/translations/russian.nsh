@@ -20,89 +20,89 @@
 
 ; Startup GTK+ check
 
-!define GTK_INSTALLER_NEEDED			"Окружение для запуска GTK+ недоступно или нуждается в обновлении.$\rПожалуйста установите v${GTK_VERSION} или более старшую версию GTK+."
+!define GTK_INSTALLER_NEEDED			"   GTK+     .$\r  v${GTK_VERSION}     GTK+."
 
 
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Следующее >"
+!define GOURMET_LICENSE_BUTTON			" >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) выпущено под лицензией GPL. Лицензия приведена здесь для ознакомительных целей. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name)    GPL.      . $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (необходимо)."
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager ()."
 
-!define GTK_SECTION_TITLE			"GTK+ окружение для запуска (необходимо)."
+!define GTK_SECTION_TITLE			"GTK+    ()."
 
-!define GTK_THEMES_SECTION_TITLE		"Темы для GTK+."
+!define GTK_THEMES_SECTION_TITLE		"  GTK+."
 
-!define GTK_NOTHEME_SECTION_TITLE		"Без темы."
+!define GTK_NOTHEME_SECTION_TITLE		" ."
 
-!define GTK_WIMP_SECTION_TITLE		"Тема 'Wimp Theme'"
+!define GTK_WIMP_SECTION_TITLE		" 'Wimp Theme'"
 
-!define GTK_BLUECURVE_SECTION_TITLE		"Тема 'Bluecurve'."
+!define GTK_BLUECURVE_SECTION_TITLE		" 'Bluecurve'."
 
-!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Тема 'Light House Blue'."
+!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	" 'Light House Blue'."
 
-!define GAIM_SECTION_DESCRIPTION		"Основная часть Gourmet и библиотеки."
+!define GOURMET_SECTION_DESCRIPTION		"  Gourmet  ."
 
-!define GTK_SECTION_DESCRIPTION		"Мультиплатформенный графический инструментарий, используемый Gourmet."
+!define GTK_SECTION_DESCRIPTION		"  ,  Gourmet."
 
-!define GTK_THEMES_SECTION_DESCRIPTION	"Темы для GTK+ изменяют его внешний вид и восприятие пользователем."
+!define GTK_THEMES_SECTION_DESCRIPTION	"  GTK+       ."
 
-!define GTK_NO_THEME_DESC			"Не устанавливать темы для GTK+."
+!define GTK_NO_THEME_DESC			"    GTK+."
 
-!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows-подстройка) это тема для GTK, которая очень гармонично подстроится под визуальное окружение из среды рабочего стола Windows."
+!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows-)    GTK,            Windows."
 
-!define GTK_BLUECURVE_THEME_DESC		"Тема 'The Bluecurve'."
+!define GTK_BLUECURVE_THEME_DESC		" 'The Bluecurve'."
 
-!define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Тема 'The Lighthouseblue'."
+!define GTK_LIGHTHOUSEBLUE_THEME_DESC	" 'The Lighthouseblue'."
 
 
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"Найдена старая версия GTK+. Вы не хотели бы обновить её ?$\rПримечание: Gourmet может не работать если Вы не сделаете этого."
+!define GTK_UPGRADE_PROMPT			"   GTK+.       ?$\r: Gourmet        ."
 
 
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Посетите веб-страницу Gourmet для пользователей Windows."
+!define GOURMET_FINISH_VISIT_WEB_SITE		" - Gourmet   Windows."
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (только удаление)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet ( )"
 
-!define GAIM_PROMPT_WIPEOUT			"Ваша старая директория Gourmet будет фактически удалена. Вы желаете продолжить ?$\r$\rПримечание: Все нестандартные плагины которые Вы установили будут удалены..$\rПользовательские настройки Gourmet не пострадают."
+!define GOURMET_PROMPT_WIPEOUT			"   Gourmet   .    ?$\r$\r:        ..$\r  Gourmet  ."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Директория, которую Вы указали для установки уже существует. Всё содержимое$\rбудет удалено. Вы желаете продолжить?"
+!define GOURMET_PROMPT_DIR_EXISTS		",       .  $\r .   ?"
 
 
 
 ; GTK+ Section Prompts
 
-!define GTK_INSTALL_ERROR			"Ошибка при установке окружения GTK+."
+!define GTK_INSTALL_ERROR			"    GTK+."
 
-!define GTK_BAD_INSTALL_PATH			"Путь который Вы ввели недоступен или не существует."
+!define GTK_BAD_INSTALL_PATH			"       ."
 
 
 
 ; GTK+ Themes section
 
-!define GTK_NO_THEME_INSTALL_RIGHTS		"У Вас нет прав на установление темы для GTK+."
+!define GTK_NO_THEME_INSTALL_RIGHTS		"        GTK+."
 
 
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1		"Программа удаления не может найти данные Gourmet в регистре..$\rВероятно это приложение установил другой пользователь."
+!define un.GOURMET_UNINSTALL_ERROR_1		"      Gourmet  ..$\r     ."
 
-!define un.GAIM_UNINSTALL_ERROR_2		"У Вас нет прав на удаление этого приложения."
+!define un.GOURMET_UNINSTALL_ERROR_2		"       ."
 

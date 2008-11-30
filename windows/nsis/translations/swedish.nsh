@@ -18,7 +18,7 @@
 
 
 
-; Make sure to update the GAIM_MACRO_LANGUAGEFILE_END macro in
+; Make sure to update the GOURMET_MACRO_LANGUAGEFILE_END macro in
 
 ; langmacros.nsh when updating this file
 
@@ -26,27 +26,27 @@
 
 ; Startup Checks
 
-!define INSTALLER_IS_RUNNING			"Installationsprogrammet körs redan."
+!define INSTALLER_IS_RUNNING			"Installationsprogrammet krs redan."
 
-!define GAIM_IS_RUNNING			"En instans av Giam körs redan. Avsluta Gourmet och försök igen."
+!define GOURMET_IS_RUNNING			"En instans av Giam krs redan. Avsluta Gourmet och frsk igen."
 
-!define GTK_INSTALLER_NEEDED			"Körmiljön GTK+ är antingen inte installerat eller behöver uppgraderas.$\rVar god installera v${GTK_VERSION} eller högre av GTK+-körmiljön."
+!define GTK_INSTALLER_NEEDED			"Krmiljn GTK+ r antingen inte installerat eller behver uppgraderas.$\rVar god installera v${GTK_VERSION} eller hgre av GTK+-krmiljn."
 
 
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Nästa >"
+!define GOURMET_LICENSE_BUTTON			"Nsta >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) är utgivet under GPL. Licensen finns tillgänglig här för infromationssyften enbart. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) r utgivet under GPL. Licensen finns tillgnglig hr fr infromationssyften enbart. $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (obligatorisk)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (obligatorisk)"
 
-!define GTK_SECTION_TITLE			"GTK+-körmiljö (obligatorisk)"
+!define GTK_SECTION_TITLE			"GTK+-krmilj (obligatorisk)"
 
 !define GTK_THEMES_SECTION_TITLE		"GTK+-teman"
 
@@ -57,47 +57,47 @@
 !define GTK_BLUECURVE_SECTION_TITLE	"Bluecurve-tema"
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue-tema"
-!define GAIM_SHORTCUTS_SECTION_TITLE "Genvägar"
-!define GAIM_DESKTOP_SHORTCUT_SECTION_TITLE "Skrivbord"
-!define GAIM_STARTMENU_SHORTCUT_SECTION_TITLE "Startmeny"
-!define GAIM_SECTION_DESCRIPTION		"Gourmets kärnfiler och DLL:er"
+!define GOURMET_SHORTCUTS_SECTION_TITLE "Genvgar"
+!define GOURMET_DESKTOP_SHORTCUT_SECTION_TITLE "Skrivbord"
+!define GOURMET_STARTMENU_SHORTCUT_SECTION_TITLE "Startmeny"
+!define GOURMET_SECTION_DESCRIPTION		"Gourmets krnfiler och DLL:er"
 
-!define GTK_SECTION_DESCRIPTION		"En GUI-verktygsuppsättning för flera olika plattformar som Gourmet använder."
+!define GTK_SECTION_DESCRIPTION		"En GUI-verktygsuppsttning fr flera olika plattformar som Gourmet anvnder."
 
-!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+-teman kan ändra känslan av och utseendet på GTK+-applikationer."
+!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+-teman kan ndra knslan av och utseendet p GTK+-applikationer."
 
-!define GTK_NO_THEME_DESC			"Installera inte något GTK+-tema"
+!define GTK_NO_THEME_DESC			"Installera inte ngot GTK+-tema"
 
-!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator) ett GTK-tema som smälter bra in i Windows-miljön."
+!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator) ett GTK-tema som smlter bra in i Windows-miljn."
 
 !define GTK_BLUECURVE_THEME_DESC		"The Bluecurve-tema."
 
 !define GTK_LIGHTHOUSEBLUE_THEME_DESC	"The Lighthouseblue-tema."
 
-!define GAIM_SHORTCUTS_SECTION_DESCRIPTION   "Genvägar för att starta Gourmet"
-!define GAIM_DESKTOP_SHORTCUT_DESC   "Skapar en genväg till Gourmet på skrivbordet"
-!define GAIM_STARTMENU_SHORTCUT_DESC   "Skapar ett tillägg i startmenyn för Gourmet"
+!define GOURMET_SHORTCUTS_SECTION_DESCRIPTION   "Genvgar fr att starta Gourmet"
+!define GOURMET_DESKTOP_SHORTCUT_DESC   "Skapar en genvg till Gourmet p skrivbordet"
+!define GOURMET_STARTMENU_SHORTCUT_DESC   "Skapar ett tillgg i startmenyn fr Gourmet"
 
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"En äldre version av GTK+ runtime hittades, vill du uppgradera den?$\rOBS! Gourmet kommer kanske inte att fungera om du inte uppgraderar."
+!define GTK_UPGRADE_PROMPT			"En ldre version av GTK+ runtime hittades, vill du uppgradera den?$\rOBS! Gourmet kommer kanske inte att fungera om du inte uppgraderar."
 
 
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Besök Windows-Gourmets hemsida"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Besk Windows-Gourmets hemsida"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (enbart för avinstallation)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (enbart fr avinstallation)"
 
-!define GAIM_PROMPT_WIPEOUT			"Din gamla Gourmet-katalog kommer att raderas, vill du fortsätta?$\r$\rOBS! om du har installerat några extra insticksmoduler kommer de raderas.$\rGourmets användarinställningar kommer inte påverkas."
+!define GOURMET_PROMPT_WIPEOUT			"Din gamla Gourmet-katalog kommer att raderas, vill du fortstta?$\r$\rOBS! om du har installerat ngra extra insticksmoduler kommer de raderas.$\rGourmets anvndarinstllningar kommer inte pverkas."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Den katalog du vill installera i finns redan. Allt i katalogen$\rkommer att raderas, vill du fortsätta?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Den katalog du vill installera i finns redan. Allt i katalogen$\rkommer att raderas, vill du fortstta?"
 
 
 
@@ -105,19 +105,19 @@
 
 !define GTK_INSTALL_ERROR			"Fel vid installation av GTK+ runtime."
 
-!define GTK_BAD_INSTALL_PATH			"Den sökväg du angivit går inte att komma åt eller skapa."
+!define GTK_BAD_INSTALL_PATH			"Den skvg du angivit gr inte att komma t eller skapa."
 
 
 
 ; GTK+ Themes section
 
-!define GTK_NO_THEME_INSTALL_RIGHTS		"Du har inte rättigheter att installera ett GTK+tema."
+!define GTK_NO_THEME_INSTALL_RIGHTS		"Du har inte rttigheter att installera ett GTK+tema."
 
 
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1         "Avinstalleraren kunde inte hitta registervärden för Gourmet.$\rAntagligen har en annan användare installerat applikationen."
+!define un.GOURMET_UNINSTALL_ERROR_1         "Avinstalleraren kunde inte hitta registervrden fr Gourmet.$\rAntagligen har en annan anvndare installerat applikationen."
 
-!define un.GAIM_UNINSTALL_ERROR_2         "Du har inte rättigheter att avinstallera den här applikationen."
+!define un.GOURMET_UNINSTALL_ERROR_2         "Du har inte rttigheter att avinstallera den hr applikationen."
 

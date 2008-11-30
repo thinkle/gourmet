@@ -20,7 +20,7 @@
 
 !define INSTALLER_IS_RUNNING			"Er is al een installatie actief."
 
-!define GAIM_IS_RUNNING			"Gourmet wordt op dit moment uitgevoerd. Sluit Gourmet af en start de installatie opnieuw."
+!define GOURMET_IS_RUNNING			"Gourmet wordt op dit moment uitgevoerd. Sluit Gourmet af en start de installatie opnieuw."
 
 !define GTK_INSTALLER_NEEDED			"De GTK+ runtime-omgeving is niet aanwezig of moet vernieuwd worden.$\rInstalleer v${GTK_VERSION} of nieuwer van de GTK+ runtime-omgeving"
 
@@ -30,15 +30,15 @@
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Volgende >"
+!define GOURMET_LICENSE_BUTTON			"Volgende >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) wordt uitgegeven onder de GPL licentie. Deze licentie wordt hier slechts ter informatie aangeboden. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) wordt uitgegeven onder de GPL licentie. Deze licentie wordt hier slechts ter informatie aangeboden. $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (vereist)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (vereist)"
 
 !define GTK_SECTION_TITLE			"GTK+ runtime-omgeving (vereist)"
 
@@ -52,7 +52,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue thema"
 
-!define GAIM_SECTION_DESCRIPTION		"Gourmet hoofdbestanden en dlls"
+!define GOURMET_SECTION_DESCRIPTION		"Gourmet hoofdbestanden en dlls"
 
 !define GTK_SECTION_DESCRIPTION		"Een multi-platform gebruikersinterface, gebruikt door Gourmet"
 
@@ -76,17 +76,17 @@
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Neem een kijkje op de Windows Gourmet webpagina"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Neem een kijkje op de Windows Gourmet webpagina"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (alleen verwijderen)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (alleen verwijderen)"
 
-!define GAIM_PROMPT_WIPEOUT			"Uw oude Gourmet map staat op het punt om verwijderd te worden. Wilt u doorgaan?$\r$\rLet op: Alle door uzelf geïnstalleerde plugins zullen ook verwijderd worden.$\rDe gebruikersinstellingen van Gourmet worden niet aangeraakt."
+!define GOURMET_PROMPT_WIPEOUT			"Uw oude Gourmet map staat op het punt om verwijderd te worden. Wilt u doorgaan?$\r$\rLet op: Alle door uzelf genstalleerde plugins zullen ook verwijderd worden.$\rDe gebruikersinstellingen van Gourmet worden niet aangeraakt."
 
-!define GAIM_PROMPT_DIR_EXISTS		"De gegeven installatiemap bestaat al. Eventuele inhoud zal verwijderd worden. Wilt u doorgaan?"
+!define GOURMET_PROMPT_DIR_EXISTS		"De gegeven installatiemap bestaat al. Eventuele inhoud zal verwijderd worden. Wilt u doorgaan?"
 
 
 
@@ -106,7 +106,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1         "Het verwijderingsprogramma voor Gourmet kon geen register-ingangen voor Gourmet vinden.$\rWaarschijnlijk heeft een andere gebruiker het programma geïnstalleerd."
+!define un.GOURMET_UNINSTALL_ERROR_1         "Het verwijderingsprogramma voor Gourmet kon geen register-ingangen voor Gourmet vinden.$\rWaarschijnlijk heeft een andere gebruiker het programma genstalleerd."
 
-!define un.GAIM_UNINSTALL_ERROR_2         "U mag dit programma niet verwijderen."
+!define un.GOURMET_UNINSTALL_ERROR_2         "U mag dit programma niet verwijderen."
 

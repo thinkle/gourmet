@@ -18,7 +18,7 @@
 
 
 
-; Make sure to update the GAIM_MACRO_LANGUAGEFILE_END macro in
+; Make sure to update the GOURMET_MACRO_LANGUAGEFILE_END macro in
 
 ; langmacros.nsh when updating this file
 
@@ -26,105 +26,105 @@
 
 ; Startup Checks
 
-!define INSTALLER_IS_RUNNING			"Le programme d'installation est déjà en cours d'exécution."
+!define INSTALLER_IS_RUNNING			"Le programme d'installation est dj en cours d'excution."
 
-!define GAIM_IS_RUNNING			"Une instance de Gourmet est en cours d'exécution. Veuillez quitter Gourmet et réessayer."
+!define GOURMET_IS_RUNNING			"Une instance de Gourmet est en cours d'excution. Veuillez quitter Gourmet et ressayer."
 
-!define GTK_INSTALLER_NEEDED			"Les bibliothèques de l'environnement GTK+ ne sont pas installées ou ont besoin d'une mise à jour.$\rVeuillez installer la version ${GTK_VERSION} ou plus récente des bibliothèques GTK+."
+!define GTK_INSTALLER_NEEDED			"Les bibliothques de l'environnement GTK+ ne sont pas installes ou ont besoin d'une mise  jour.$\rVeuillez installer la version ${GTK_VERSION} ou plus rcente des bibliothques GTK+."
 
 
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Suivant >"
+!define GOURMET_LICENSE_BUTTON			"Suivant >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) est disponible sous licence GNU General Public License (GPL). Le texte de licence suivant est fourni uniquement à titre informatif. $_CLICK" 
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) est disponible sous licence GNU General Public License (GPL). Le texte de licence suivant est fourni uniquement  titre informatif. $_CLICK" 
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (obligatoire)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (obligatoire)"
 
-!define GTK_SECTION_TITLE			"Bibliothèques GTK+ (obligatoire)"
+!define GTK_SECTION_TITLE			"Bibliothques GTK+ (obligatoire)"
 
-!define GTK_THEMES_SECTION_TITLE		"Thèmes GTK+"
+!define GTK_THEMES_SECTION_TITLE		"Thmes GTK+"
 
-!define GTK_NOTHEME_SECTION_TITLE		"Pas de thème"
+!define GTK_NOTHEME_SECTION_TITLE		"Pas de thme"
 
-!define GTK_WIMP_SECTION_TITLE		"Thème Wimp"
+!define GTK_WIMP_SECTION_TITLE		"Thme Wimp"
 
-!define GTK_BLUECURVE_SECTION_TITLE		"Thème Bluecurve"
+!define GTK_BLUECURVE_SECTION_TITLE		"Thme Bluecurve"
 
-!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Thème Light House Blue"
+!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Thme Light House Blue"
 
-!define GAIM_SHORTCUTS_SECTION_TITLE "Raccourcis"
+!define GOURMET_SHORTCUTS_SECTION_TITLE "Raccourcis"
 
-!define GAIM_DESKTOP_SHORTCUT_SECTION_TITLE "Bureau"
+!define GOURMET_DESKTOP_SHORTCUT_SECTION_TITLE "Bureau"
 
-!define GAIM_STARTMENU_SHORTCUT_SECTION_TITLE "Menu Démarrer"
+!define GOURMET_STARTMENU_SHORTCUT_SECTION_TITLE "Menu Dmarrer"
 
-!define GAIM_SECTION_DESCRIPTION		"Fichiers et DLLs de base de Gourmet"
+!define GOURMET_SECTION_DESCRIPTION		"Fichiers et DLLs de base de Gourmet"
 
-!define GTK_SECTION_DESCRIPTION		"Un ensemble d'outils pour interfaces graphiques multi-plateforme, utilisé par Gourmet"
+!define GTK_SECTION_DESCRIPTION		"Un ensemble d'outils pour interfaces graphiques multi-plateforme, utilis par Gourmet"
 
-!define GTK_THEMES_SECTION_DESCRIPTION	"Les thèmes GTK+ permettent de changer l'aspect des applications GTK+."
+!define GTK_THEMES_SECTION_DESCRIPTION	"Les thmes GTK+ permettent de changer l'aspect des applications GTK+."
 
-!define GTK_NO_THEME_DESC			"Ne pas installer de thème GTK+"
+!define GTK_NO_THEME_DESC			"Ne pas installer de thme GTK+"
 
-!define GTK_WIMP_THEME_DESC			"GTK-Wimp (imitateur de Windows) est un thème de GTK+ qui se fond dans l'environnement graphique de Windows."
+!define GTK_WIMP_THEME_DESC			"GTK-Wimp (imitateur de Windows) est un thme de GTK+ qui se fond dans l'environnement graphique de Windows."
 
-!define GTK_BLUECURVE_THEME_DESC		"Thème Bluecurve"
+!define GTK_BLUECURVE_THEME_DESC		"Thme Bluecurve"
 
-!define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Thème Lighthouseblue"
+!define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Thme Lighthouseblue"
 
-!define GAIM_SHORTCUTS_SECTION_DESCRIPTION   "Raccourcis pour lancer Gourmet"
+!define GOURMET_SHORTCUTS_SECTION_DESCRIPTION   "Raccourcis pour lancer Gourmet"
 
-!define GAIM_DESKTOP_SHORTCUT_DESC   "Créer un raccourci pour Gourmet sur le bureau"
+!define GOURMET_DESKTOP_SHORTCUT_DESC   "Crer un raccourci pour Gourmet sur le bureau"
 
-!define GAIM_STARTMENU_SHORTCUT_DESC   "Créer un raccourci pour Gourmet dans le menu Démarrer"
+!define GOURMET_STARTMENU_SHORTCUT_DESC   "Crer un raccourci pour Gourmet dans le menu Dmarrer"
 
 
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"Une ancienne version des bibliothèques GTK+ a été trouvée. Voulez-vous la mettre à jour ?$\rNote : Gourmet peut ne pas fonctionner si vous ne le faites pas."
+!define GTK_UPGRADE_PROMPT			"Une ancienne version des bibliothques GTK+ a t trouve. Voulez-vous la mettre  jour ?$\rNote : Gourmet peut ne pas fonctionner si vous ne le faites pas."
 
 
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Visitez la page web de Gourmet Windows"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Visitez la page web de Gourmet Windows"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (supprimer uniquement)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (supprimer uniquement)"
 
-!define GAIM_PROMPT_WIPEOUT			"L'ancien dossier de Gourmet va être supprimé. Voulez-vous continuer ?$\r$\rNote : Tous les plugins non standards que vous avez installés seront aussi supprimés.$\rLes configurations et les comptes utilisateurs de Gourmet ne sont pas touchés."
+!define GOURMET_PROMPT_WIPEOUT			"L'ancien dossier de Gourmet va tre supprim. Voulez-vous continuer ?$\r$\rNote : Tous les plugins non standards que vous avez installs seront aussi supprims.$\rLes configurations et les comptes utilisateurs de Gourmet ne sont pas touchs."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Le dossier d'installation que vous avez choisi existe déjà. Son contenu sera effacé.$\rVoulez-vous continuer ?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Le dossier d'installation que vous avez choisi existe dj. Son contenu sera effac.$\rVoulez-vous continuer ?"
 
 
 
 ; GTK+ Section Prompts
 
-!define GTK_INSTALL_ERROR			"Erreur lors de l'installation des bibliothèques GTK+"
+!define GTK_INSTALL_ERROR			"Erreur lors de l'installation des bibliothques GTK+"
 
-!define GTK_BAD_INSTALL_PATH			"Le dossier d'installation ne peut pas être créé ou n'est pas accessible."
+!define GTK_BAD_INSTALL_PATH			"Le dossier d'installation ne peut pas tre cr ou n'est pas accessible."
 
 
 
 ; GTK+ Themes section
 
-!define GTK_NO_THEME_INSTALL_RIGHTS		"Vous n'avez pas les permissions pour installer un thème GTK+."
+!define GTK_NO_THEME_INSTALL_RIGHTS		"Vous n'avez pas les permissions pour installer un thme GTK+."
 
 
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1         "Le programme de désinstallation n'a pas retrouvé les entrées de Gourmet dans la base de registres.$\rL'application a peut-être été installée par un utilisateur différent."
+!define un.GOURMET_UNINSTALL_ERROR_1         "Le programme de dsinstallation n'a pas retrouv les entres de Gourmet dans la base de registres.$\rL'application a peut-tre t installe par un utilisateur diffrent."
 
-!define un.GAIM_UNINSTALL_ERROR_2         "Vous n'avez pas les permissions pour supprimer cette application."
+!define un.GOURMET_UNINSTALL_ERROR_2         "Vous n'avez pas les permissions pour supprimer cette application."
 

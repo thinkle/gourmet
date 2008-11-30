@@ -10,7 +10,7 @@
 
 ;;
 
-;;  Jørgen_Vinne_Iversen <jorgenvi@tihlde.org>
+;;  Jrgen_Vinne_Iversen <jorgenvi@tihlde.org>
 
 ;;  Version 2
 
@@ -20,21 +20,21 @@
 
 ; Startup GTK+ check
 
-!define GTK_INSTALLER_NEEDED			"GTK+ runtime environment mangler eller trenger en oppgradering.$\rVennligst installér GTK+ v${GTK_VERSION} eller høyere"
+!define GTK_INSTALLER_NEEDED			"GTK+ runtime environment mangler eller trenger en oppgradering.$\rVennligst installr GTK+ v${GTK_VERSION} eller hyere"
 
 
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Neste >"
+!define GOURMET_LICENSE_BUTTON			"Neste >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) er utgitt under GPL (GNU General Public License). Lisensen er oppgitt her kun med henblikk på informasjon. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) er utgitt under GPL (GNU General Public License). Lisensen er oppgitt her kun med henblikk p informasjon. $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (obligatorisk)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (obligatorisk)"
 
 !define GTK_SECTION_TITLE			"GTK+ Runtime Environment (obligatorisk)"
 
@@ -48,15 +48,15 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue-tema"
 
-!define GAIM_SECTION_DESCRIPTION		"Gourmets kjernefiler og dll'er"
+!define GOURMET_SECTION_DESCRIPTION		"Gourmets kjernefiler og dll'er"
 
-!define GTK_SECTION_DESCRIPTION		"Et GUI-verktøy for flere ulike plattformer, brukes av GAIM."
+!define GTK_SECTION_DESCRIPTION		"Et GUI-verkty for flere ulike plattformer, brukes av GOURMET."
 
-!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+ Tema kan endre utseendet og følelsen av GTK+ applikasjoner."
+!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+ Tema kan endre utseendet og flelsen av GTK+ applikasjoner."
 
-!define GTK_NO_THEME_DESC			"Ikke installér noe GTK+ tema."
+!define GTK_NO_THEME_DESC			"Ikke installr noe GTK+ tema."
 
-!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows-imitator) er et GTK-tema som passer godt inn i Windows-miljø."
+!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows-imitator) er et GTK-tema som passer godt inn i Windows-milj."
 
 !define GTK_BLUECURVE_THEME_DESC		"Bluecurve-tema."
 
@@ -66,23 +66,23 @@
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"En eldre versjon av GTK+ runtime ble funnet. Ønsker du å oppgradere?$\rMerk: Gourmet vil kanskje ikke virke hvis du ikke oppgraderer."
+!define GTK_UPGRADE_PROMPT			"En eldre versjon av GTK+ runtime ble funnet. nsker du  oppgradere?$\rMerk: Gourmet vil kanskje ikke virke hvis du ikke oppgraderer."
 
 
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Besøk Gourmet for Windows' Nettside"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Besk Gourmet for Windows' Nettside"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (kun avinstallering)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (kun avinstallering)"
 
-!define GAIM_PROMPT_WIPEOUT			"Din gamle Gourmet-katalog holder på å slettes. Ønsker du å fortsette?$\r$\rMerk: Eventuelle ikke-standard plugin'er du har installert vil bli slettet.$\rGourmets brukerinstillinger vil ikke bli berørt."
+!define GOURMET_PROMPT_WIPEOUT			"Din gamle Gourmet-katalog holder p  slettes. nsker du  fortsette?$\r$\rMerk: Eventuelle ikke-standard plugin'er du har installert vil bli slettet.$\rGourmets brukerinstillinger vil ikke bli berrt."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Installasjonskatalogen du har spesifisert finnes fra før. Eventuelt innhold$\rvil bli slettet. Ønsker du å fortsette?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Installasjonskatalogen du har spesifisert finnes fra fr. Eventuelt innhold$\rvil bli slettet. nsker du  fortsette?"
 
 
 
@@ -96,13 +96,13 @@
 
 ; GTK+ Themes section
 
-!define GTK_NO_THEME_INSTALL_RIGHTS		"Du har ikke rettigheter til å installere et GTK+ tema."
+!define GTK_NO_THEME_INSTALL_RIGHTS		"Du har ikke rettigheter til  installere et GTK+ tema."
 
 
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1		"Avinstalleringsprogrammet kunne ikke finne noen registeroppføring for Gourmet.$\rTrolig har en annen bruker installert denne applikasjonen."
+!define un.GOURMET_UNINSTALL_ERROR_1		"Avinstalleringsprogrammet kunne ikke finne noen registeroppfring for Gourmet.$\rTrolig har en annen bruker installert denne applikasjonen."
 
-!define un.GAIM_UNINSTALL_ERROR_2		"Du har ikke rettigheter til å avinstallere denne applikasjonen."
+!define un.GOURMET_UNINSTALL_ERROR_2		"Du har ikke rettigheter til  avinstallere denne applikasjonen."
 

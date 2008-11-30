@@ -20,89 +20,89 @@
 
 ; Startup GTK+ check
 
-!define GTK_INSTALLER_NEEDED			"GTK+ runtime buïto chybí, nebo je potøeba provést upgrade.$\rProveïte instalaci verze${GTK_VERSION} nebo vyšší."
+!define GTK_INSTALLER_NEEDED			"GTK+ runtime buto chyb, nebo je poteba provst upgrade.$\rProvete instalaci verze${GTK_VERSION} nebo vyïšš."
 
 
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"Další >"
+!define GOURMET_LICENSE_BUTTON			"Dal >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"K použití $(^Name) se vztahuje GPL licence. Licence je zde uvedena pouze pro Vaší informaci. $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"K pouit $(^Name) se vztahuje GPL licence. Licence je zde uvedena pouze pro Va informaci. $_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (nutné)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (nutn)"
 
-!define GTK_SECTION_TITLE			"GTK+ Runtime Environment (nutné)"
+!define GTK_SECTION_TITLE			"GTK+ Runtime Environment (nutn)"
 
-!define GTK_THEMES_SECTION_TITLE		"GTK+ témata"
+!define GTK_THEMES_SECTION_TITLE		"GTK+ tmata"
 
-!define GTK_NOTHEME_SECTION_TITLE		"Bez témat"
+!define GTK_NOTHEME_SECTION_TITLE		"Bez tmat"
 
-!define GTK_WIMP_SECTION_TITLE		"Wimp téma"
+!define GTK_WIMP_SECTION_TITLE		"Wimp tma"
 
-!define GTK_BLUECURVE_SECTION_TITLE		"Bluecurve téma"
+!define GTK_BLUECURVE_SECTION_TITLE		"Bluecurve tma"
 
-!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue téma"
+!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue tma"
 
-!define GAIM_SECTION_DESCRIPTION		"Základní soubory a DLL pro Gourmet"
+!define GOURMET_SECTION_DESCRIPTION		"Zkladn soubory a DLL pro Gourmet"
 
-!define GTK_SECTION_DESCRIPTION		"Multi-platform GUI toolkit používaný Gourmetem"
+!define GTK_SECTION_DESCRIPTION		"Multi-platform GUI toolkit pouvan Gourmetem"
 
-!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+ témata umožòují mìnit vzhled a zpùsob ovládání GTK+ aplikací."
+!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+ tmata umouj mnit vzhled a zpsob ovldn GTK+ aplikac."
 
-!define GTK_NO_THEME_DESC			"Neinstalovat GTK+ téma"
+!define GTK_NO_THEME_DESC			"Neinstalovat GTK+ tma"
 
-!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator) je GTK téma které zapadne do Vašeho pracovního prostøedí ve Windows."
+!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator) je GTK tma kter zapadne do Vaeho pracovnho prosted ve Windows."
 
-!define GTK_BLUECURVE_THEME_DESC		"Bluecurve téma."
+!define GTK_BLUECURVE_THEME_DESC		"Bluecurve tma."
 
-!define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Lighthouseblue téma."
+!define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Lighthouseblue tma."
 
 
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"Byla nalezena starší verze GTK+ runtime. Chcete provést upgrade?$\rUpozornìní: Bez upgradu Gourmet nemusí pracovat správnì."
+!define GTK_UPGRADE_PROMPT			"Byla nalezena star verze GTK+ runtime. Chcete provst upgrade?$\rUpozornn: Bez upgradu Gourmet nemus pracovat sprvn."
 
 
 
 ; Installer Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"Navštívit Windows Gourmet Web Page"
+!define GOURMET_FINISH_VISIT_WEB_SITE		"Navtvit Windows Gourmet Web Page"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (odinstalovat)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (odinstalovat)"
 
-!define GAIM_PROMPT_WIPEOUT			"Váš starý adresáø pro Gourmet bude vymazán. Chcete pokraèovat?$\r$\rUpozornìní: Jakákoli nestandardní rozšíøení (plugin) , která máte nainstalována budou ztracena.$\rUživatelská nastavení pro Gourmet budou zachována."
+!define GOURMET_PROMPT_WIPEOUT			"V star adres pro Gourmet bude vymazn. Chcete pokraovat?$\r$\rUpozornn: Jakkoli nestandardn rozen (plugin) , kter mte nainstalovna budou ztracena.$\rUivatelsk nastaven pro Gourmet budou zachovna."
 
-!define GAIM_PROMPT_DIR_EXISTS		"Adresáø který byl zadán pro instalaci již existuje. Veškerý obsah$\rbude smazán. Chcete pokraèovat?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Adres kter byl zadn pro instalaci ji existuje. Veážšker obsah$\rbude smazn. Chcete pokraovat?"
 
 
 
 ; GTK+ Section Prompts
 
-!define GTK_INSTALL_ERROR			"Chyba pøi instalaci GTK+ runtime."
+!define GTK_INSTALL_ERROR			"Chyba pi instalaci GTK+ runtime."
 
-!define GTK_BAD_INSTALL_PATH			"Zadaná cesta je nedostupná, nebo ji nelze vytvoøit."
+!define GTK_BAD_INSTALL_PATH			"Zadan cesta je nedostupn, nebo ji nelze vytvoit."
 
 
 
 ; GTK+ Themes section
 
-!define GTK_NO_THEME_INSTALL_RIGHTS		"Nemáte oprávnìní k instalaci GTK+ tématu."
+!define GTK_NO_THEME_INSTALL_RIGHTS		"Nemte oprvnn k instalaci GTK+ tmatu."
 
 
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1		"Odinstalèní proces nemùže najít záznamy pro Gourmet v registrech.$\rPravdìpodobnì instalaci této aplikace provedl jiný uživatel."
+!define un.GOURMET_UNINSTALL_ERROR_1		"Odinstaln proces neme najt zznamy pro Gourmet v registrech.$\rPravdpodobn instalaci tto aplikace provedl jin uivatel."
 
-!define un.GAIM_UNINSTALL_ERROR_2		"Nemáte oprávnìní k odinstalaci této aplikace."
+!define un.GOURMET_UNINSTALL_ERROR_2		"Nemte oprvnn k odinstalaci tto aplikace."
 

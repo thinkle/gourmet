@@ -20,89 +20,89 @@
 
 ; Startup GTK+ check
 
-!define GTK_INSTALLER_NEEDED			"¿ÉÄÜÈ±ÉÙ GTK+ ÔËÐÐÊ±¿Ì»·¾³£¬»òÕßÐèÒª¸üÐÂ¸Ã»·¾³¡£$\rÇë°²×° v${GTK_VERSION} »ò¸ü¸ß°æ±¾µÄ GTK+ ÔËÐÐÊ±¿Ì»·¾³"
+!define GTK_INSTALLER_NEEDED			"í³¿È± GTK+ Ê±Ì»ÒªÂ¸Ã»$\rë°²×° v${GTK_VERSION} ß°æ±¾ GTK+ Ê±Ì»"
 
 
 
 ; License Page
 
-!define GAIM_LICENSE_BUTTON			"ÏÂÒ»²½ >"
+!define GOURMET_LICENSE_BUTTON			"Ò» >"
 
-!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) ÒÔ GPL Ðí¿É·¢²¼¡£ÔÚ´ËÌá¹©´ËÐí¿É½öÎª²Î¿¼¡£$_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name)  GPL É·Ú´á¹©É½ÎªÎ¿$_CLICK"
 
 
 
 ; Components Page
 
-!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (±ØÐè)"
+!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager ()"
 
-!define GTK_SECTION_TITLE			"GTK+ ÔËÐÐÊ±¿Ì»·¾³(±ØÐè)"
+!define GTK_SECTION_TITLE			"GTK+ Ê±Ì»()"
 
-!define GTK_THEMES_SECTION_TITLE		"GTK+ Ö÷Ìâ"
+!define GTK_THEMES_SECTION_TITLE		"GTK+ "
 
-!define GTK_NOTHEME_SECTION_TITLE		"ÎÞÖ÷Ìâ"
+!define GTK_NOTHEME_SECTION_TITLE		""
 
-!define GTK_WIMP_SECTION_TITLE		"Wimp Ö÷Ìâ"
+!define GTK_WIMP_SECTION_TITLE		"Wimp "
 
-!define GTK_BLUECURVE_SECTION_TITLE		"Bluecurve Ö÷Ìâ"
+!define GTK_BLUECURVE_SECTION_TITLE		"Bluecurve "
 
-!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue Ö÷Ìâ"
+!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue "
 
-!define GAIM_SECTION_DESCRIPTION		"Gourmet ºËÐÄÎÄ¼þºÍ DLLs"
+!define GOURMET_SECTION_DESCRIPTION		"Gourmet Ä¼ DLLs"
 
-!define GTK_SECTION_DESCRIPTION		"Gourmet ËùÓÃµÄ¶àÆ½Ì¨ GUI ¹¤¾ß°ü"
+!define GTK_SECTION_DESCRIPTION		"Gourmet ÃµÄ¶Æ½Ì¨ GUI ß°"
 
-!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+ Ö÷Ìâ¿ÉÒÔ¸ü¸Ä GTK+ ³ÌÐòµÄ¹Û¸Ð¡£"
+!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+ Ô¸ GTK+ Ä³Ä¹Û¸Ð¡"
 
-!define GTK_NO_THEME_DESC			"²»°²×° GTK+ Ö÷Ìâ"
+!define GTK_NO_THEME_DESC			"×° GTK+ "
 
-!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator)ÊÇ is a GTK theme that blends well into the Windows desktop environment."
+!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator) is a GTK theme that blends well into the Windows desktop environment."
 
-!define GTK_BLUECURVE_THEME_DESC		"Bluecurve Ö÷Ìâ¡£"
+!define GTK_BLUECURVE_THEME_DESC		"Bluecurve â¡£"
 
-!define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Lighthouseblue Ö÷Ìâ¡£"
+!define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Lighthouseblue â¡£"
 
 
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"·¢ÏÖÁË¾É°æ±¾µÄ GTK+ ÔËÐÐÊ±¿Ì¡£ÄúÏëÒªÉý¼¶Âð?$\r×¢Òâ: ³ý·ÇÄú½øÐÐÉý¼¶£¬·ñÔò Gourmet ¿ÉÄÜÎÞ·¨¹¤×÷¡£"
+!define GTK_UPGRADE_PROMPT			"Ë¾É°æ±¾ GTK+ Ê±Ì¡Òªí¶³?$\r×¢: í¶³í¶£ Gourmet Þ·í½†"
 
 
 
 ; Finish Page
 
-!define GAIM_FINISH_VISIT_WEB_SITE		"ä¯ÀÀ Windows Gourmet ÍøÒ³"
+!define GOURMET_FINISH_VISIT_WEB_SITE		" Windows Gourmet Ò³"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GAIM_UNINSTALL_DESC			"Gourmet (Ö»ÄÜÉ¾³ý)"
+!define GOURMET_UNINSTALL_DESC			"Gourmet (Ö»É¾)"
 
-!define GAIM_PROMPT_WIPEOUT			"¼´½«É¾³ýÄúµÄ¾É Gourmet Ä¿Â¼¡£ÄúÏëÒª¼ÌÐøÂð?$\r$\r×¢Òâ: ÄúËù°²×°µÄÈÎºÎ·Ç±ê×¼µÄ²å¼þ¶¼½«±»É¾³ý¡£$\rµ«ÊÇ²»»áÓ°Ïì Gourmet ÓÃ»§ÉèÖÃ¡£"
+!define GOURMET_PROMPT_WIPEOUT			"í¶³í´½É¾Ä¾ Gourmet Ä¿Â¼Òª?$\r$\r×¢: í¦ƒ×°ÎºÎ·Ç±×¼Ä²íº›í¼½É¾íµ†$\rí³µÇ²Ó° Gourmet Ã»Ã¡"
 
-!define GAIM_PROMPT_DIR_EXISTS		"ÄúÖ¸¶¨µÄ°²×°Ä¿Â¼ÒÑ¾­´æÔÚ¡£$\rËùÓÐÄÚÈÝ¶¼½«±»É¾³ý¡£ÄúÏëÒª¼ÌÐøÂð?"
+!define GOURMET_PROMPT_DIR_EXISTS		"Ö¸Ä°×°Ä¿Â¼Ñ¾Ú¡$\rÝ¶É¾íµ†Òª?"
 
 
 
 ; GTK+ Section Prompts
 
-!define GTK_INSTALL_ERROR			"°²×° GTK+ ÔËÐÐÊ±¿ÌÊ§°Ü¡£"
+!define GTK_INSTALL_ERROR			"í¢ƒ×° GTK+ Ê±Ê§Ü¡"
 
-!define GTK_BAD_INSTALL_PATH			"ÎÞ·¨·ÃÎÊ»ò´´½¨ÄúÊäÈëµÄÂ·¾¶¡£"
+!define GTK_BAD_INSTALL_PATH			"Þ·Ê»ò´´½Â·"
 
 
 
 ; GTK+ Themes section
 
-!define GTK_NO_THEME_INSTALL_RIGHTS		"ÄúÃ»ÓÐÈ¨ÏÞ°²×° GTK+ Ö÷Ìâ¡£"
+!define GTK_NO_THEME_INSTALL_RIGHTS		"Ã»È¨Þ°×° GTK+ â¡£"
 
 
 
 ; Uninstall Section Prompts
 
-!define un.GAIM_UNINSTALL_ERROR_1         "Ð¶ÔØ³ÌÐòÕÒ²»µ½ Gourmet µÄ×¢²á±íÏîÄ¿¡£$\r¿ÉÄÜÊÇÁíÍâµÄÓÃ»§°²×°ÁË´Ë³ÌÐò¡£"
+!define un.GOURMET_UNINSTALL_ERROR_1         "Ð¶Ø³Ò² Gourmet ×¢Ä¿$\rÃ»×°Ë´Ë³í©†"
 
-!define un.GAIM_UNINSTALL_ERROR_2         "ÄúÃ»ÓÐÈ¨ÏÞÐ¶ÔØ´Ë³ÌÐò¡£"
+!define un.GOURMET_UNINSTALL_ERROR_2         "Ã»È¨Ð¶Ø´Ë³í©†"
 
