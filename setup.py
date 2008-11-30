@@ -148,9 +148,10 @@ class my_install_data(install_data):
         #print 'install_data has: ',dir(install_data)
 
 if os.name == 'nt':
-    script = os.path.join('windows','Gourmet.pyw')
+    script = [os.path.join('windows','Gourmet.pyw'),
+              os.path.join('windows','GourmetDebug.pyw')]
 else:
-    script = os.path.join('src','gourmet')
+    script = [os.path.join('src','gourmet')]
     # Run upgrade pre script
     # Importing runs the actual script...
     #import tools.upgrade_pre_script
@@ -194,7 +195,7 @@ result = setup(
                 ] + plugins,
     package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*.glade','plugins/*/*.glade']},
     package_dir = {'gourmet' : os.path.join('src','lib')},
-    scripts = [script],
+    scripts = script,
     cmdclass={'install_data' : my_install_data},
     )
 

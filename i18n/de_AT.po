@@ -317,7 +317,7 @@ msgstr "<b>von</b>"
 
 #: ../glade/converter.glade.h:4
 msgid "<b>To</b>"
-msgstr "<v>nach</b>"
+msgstr "<b>nach</b>"
 
 #: ../glade/converter.glade.h:5
 msgid "?"
@@ -363,7 +363,7 @@ msgstr "_Einheit:"
 
 #: ../glade/databaseChooser.glade.h:2
 msgid "<b>Choose Database System for Gourmet to Use</b>"
-msgstr "<b> Wählen Sie ein Datenbanksystem für Gourmet</b>"
+msgstr "<b>Wählen Sie ein Datenbanksystem für Gourmet</b>"
 
 #: ../glade/databaseChooser.glade.h:3
 msgid "Choose Database"
@@ -448,7 +448,7 @@ msgstr "Rezept"
 #: ../glade/keyeditor.glade.h:1
 #, fuzzy
 msgid "<b>Change selected ingredients</b>"
-msgstr "Ausgewählte Zutat ändern"
+msgstr "<b>Ausgewählte Zutaten ändern</b>"
 
 #: ../glade/keyeditor.glade.h:2
 msgid "Key Editor"
@@ -572,7 +572,7 @@ msgstr "<b> Bevorzugte Indexansicht </b>"
 
 #: ../glade/preferenceDialog.glade.h:4
 msgid "<b>Shopping List Preferences</b>"
-msgstr "Voreinstellungen Einkausliste"
+msgstr "<b>Voreinstellungen Einkausliste</b>"
 
 #: ../glade/preferenceDialog.glade.h:5
 msgid "<i>Configure which columns are included in the recipe index view.</i>"
@@ -580,15 +580,15 @@ msgstr "<i> Definiere welche Spalten in der Rezeptindexansicht enthalten sind </
 
 #: ../glade/preferenceDialog.glade.h:6
 msgid "<i>Preferences for use when sending a recipe in an email.</i>"
-msgstr "Voreinstellungen zum Versenden eines Rezeptes per email"
+msgstr "<i>Voreinstellungen zum Versenden eines Rezeptes per email</i>"
 
 #: ../glade/preferenceDialog.glade.h:7
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
-msgstr "Entfernen von Nicht Benutzten Zutaten aus der Rezept Karten Menue"
+msgstr "<i>Entfernen von Nicht Benutzten Zutaten aus der Rezept Karten Menue</i>"
 
 #: ../glade/preferenceDialog.glade.h:8
 msgid "<i>What should Gourmet do with Optional Ingredients when adding recipes to the shopping list?</i>"
-msgstr "Was soll Gourmet mit optionalen Zutaten machen wenn dass Rezept zur Einkaufsliste hinzugefügt wird"
+msgstr "<i>Was soll Gourmet mit optionalen Zutaten machen wenn dass Rezept zur Einkaufsliste hinzugefügt wird</i>"
 
 #: ../glade/preferenceDialog.glade.h:9
 msgid "As_k whether to include optional ingredients"
@@ -716,7 +716,7 @@ msgstr "<b>Quelle:</b>"
 #: ../glade/recCard.glade.h:15
 #, fuzzy
 msgid "<b>_Instructions:</b>"
-msgstr "<b>Anweisungen:</b>"
+msgstr "<b>Anwe_isungen:</b>"
 
 #: ../glade/recCard.glade.h:16
 msgid "<b>_Multiply by:</b>"
@@ -1752,7 +1752,7 @@ msgstr "Bisher gespeicherte Auswahl für optionale Zutaten auf Einkaufsliste lö
 
 #: ../src/lib/GourmetRecipeManager.py:783
 msgid "This will affect all recipes. If you want to forget the settings for an individual recipe, you can do so from the <b>Tools</b> menu of an individual recipe card."
-msgstr "Gültig für alle Rezepte. Falls die Angaben nur für ein Rezept gelöscht werden sollen, dies im <Tools</b> Menü der einzelnen Rezeptkarte vornehmen"
+msgstr "Gültig für alle Rezepte. Falls die Angaben nur für ein Rezept gelöscht werden sollen, dies im <b>Tools</b> Menü der einzelnen Rezeptkarte vornehmen"
 
 #: ../src/lib/GourmetRecipeManager.py:786
 #: ../src/lib/reccard.py:806

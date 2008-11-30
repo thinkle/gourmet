@@ -79,7 +79,7 @@ setup(
     # targets to build
     console = [
         {
-            "script": os.path.join(sys.exec_prefix, 'Scripts','GourmetDebug.pyw')",
+            "script": os.path.join(sys.exec_prefix, 'Scripts','GourmetDebug.pyw'),
             "dest_base": "Gourmet_debug"
         }
     ],
