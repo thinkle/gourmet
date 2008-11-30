@@ -10,7 +10,7 @@
 
 ;;
 
-;;  Author: "Bernat Lpez" <bernatl@adequa.net>
+;;  Author: "Bernat López" <bernatl@adequa.net>
 
 ;;  Version 2
 
@@ -20,23 +20,23 @@
 
 ; Startup GTK+ check
 
-!define GTK_INSTALLER_NEEDED			"L'entorn d'execuci GTK+ no existeix o necessita sser actualitzat.$\rSius plau instal.la la versi${GTK_VERSION} o superior de l'entonr GTK+"
+!define GTK_INSTALLER_NEEDED			"L'entorn d'execució GTK+ no existeix o necessita ésser actualitzat.$\rSius plau instal.la la versió${GTK_VERSION} o superior de l'entonr GTK+"
 
 
 
 ; License Page
 
-!define GOURMET_LICENSE_BUTTON			"Segent >"
+!define GAIM_LICENSE_BUTTON			"Següent >"
 
-!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) s distribut sota llicncia GPLe. Podeu consultar la llicncia, noms per proposits informatius, aqu. $_CLICK"
+!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) és distribuït sota llicència GPLe. Podeu consultar la llicència, només per proposits informatius, aquí. $_CLICK"
 
 
 
 ; Components Page
 
-!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (necessari)"
+!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (necessari)"
 
-!define GTK_SECTION_TITLE			"Entorn d'Execuci GTK+ (necessari)"
+!define GTK_SECTION_TITLE			"Entorn d'Execució GTK+ (necessari)"
 
 !define GTK_THEMES_SECTION_TITLE		"Temes GTK+"
 
@@ -48,7 +48,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Tema Light House Blue"
 
-!define GOURMET_SECTION_DESCRIPTION		"Fitxers i dlls del nucli de Gourmet"
+!define GAIM_SECTION_DESCRIPTION		"Fitxers i dlls del nucli de Gourmet"
 
 !define GTK_SECTION_DESCRIPTION		"Una eina IGU multiplataforma, utilitzada per Gourmet"
 
@@ -56,7 +56,7 @@
 
 !define GTK_NO_THEME_DESC			"No instal.lis un tema GTK+"
 
-!define GTK_WIMP_THEME_DESC			"GTK-Imwi (imitador Windows) s un tema GTK que s'integra perfectament en un entorn d'escriptori Windows."
+!define GTK_WIMP_THEME_DESC			"GTK-Imwi (imitador Windows) és un tema GTK que s'integra perfectament en un entorn d'escriptori Windows."
 
 !define GTK_BLUECURVE_THEME_DESC		"El tema Corba Blava."
 
@@ -66,31 +66,31 @@
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"S'ha trobat una versi antiga de l'entorn d'execuci GTK. Vols actualitzar-la?$\rNota: Gourmet no funcionar sino ho fas."
+!define GTK_UPGRADE_PROMPT			"S'ha trobat una versió antiga de l'entorn d'execució GTK. Vols actualitzar-la?$\rNota: Gourmet no funcionarà sino ho fas."
 
 
 
 ; Installer Finish Page
 
-!define GOURMET_FINISH_VISIT_WEB_SITE		"Visita la pgina web de Gourmet per Windows"
+!define GAIM_FINISH_VISIT_WEB_SITE		"Visita la pàgina web de Gourmet per Windows"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GOURMET_UNINSTALL_DESC			"Gourmet (noms esborrar)"
+!define GAIM_UNINSTALL_DESC			"Gourmet (només esborrar)"
 
-!define GOURMET_PROMPT_WIPEOUT			"El teu directori antic de Gourmet ser esborrat. Vols continuar?$\r$\rNota: Els plugins no estndards que tinguis instal.lats seran esborrats.$\rLes preferncies d'usuari de Gourmet no es veruan afectades."
+!define GAIM_PROMPT_WIPEOUT			"El teu directori antic de Gourmet serà esborrat. Vols continuar?$\r$\rNota: Els plugins no estàndards que tinguis instal.lats seran esborrats.$\rLes preferències d'usuari de Gourmet no es veruan afectades."
 
-!define GOURMET_PROMPT_DIR_EXISTS		"El directori d'instal.laci que has especificat ja existeix. Tots els continguts$\rseran esborrats. Vols continuar?"
+!define GAIM_PROMPT_DIR_EXISTS		"El directori d'instal.lació que has especificat ja existeix. Tots els continguts$\rseran esborrats. Vols continuar?"
 
 
 
 ; GTK+ Section Prompts
 
-!define GTK_INSTALL_ERROR			"Error installlant l'entorn d'execuci GTK+."
+!define GTK_INSTALL_ERROR			"Error installlant l'entorn d'execució GTK+."
 
-!define GTK_BAD_INSTALL_PATH			"El directori que has introdut no pot sser accedit o creat."
+!define GTK_BAD_INSTALL_PATH			"El directori que has introduït no pot ésser accedit o creat."
 
 
 
@@ -102,7 +102,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GOURMET_UNINSTALL_ERROR_1		"L'instal.lador podria no trobar les entrades del registre de Gourmet.$\rProbablement un altre usuari ha instal.lat aquesta aplicaci."
+!define un.GAIM_UNINSTALL_ERROR_1		"L'instal.lador podria no trobar les entrades del registre de Gourmet.$\rProbablement un altre usuari ha instal.lat aquesta aplicació."
 
-!define un.GOURMET_UNINSTALL_ERROR_2		"No tens perms per desinstal.lar aquesta aplicaci."
+!define un.GAIM_UNINSTALL_ERROR_2		"No tens permís per desinstal.lar aquesta aplicació."
 

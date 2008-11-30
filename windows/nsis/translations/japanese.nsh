@@ -20,89 +20,89 @@
 
 ; Startup GTK+ check
 
-!define GTK_INSTALLER_NEEDED			"GTK+^CÂ‹ÂµÍƒAbvO[hKé•—vÜ‚B$\rv${GTK_VERSION}ÂµÍ‚ÈGTK+Ìƒ^CCãƒ“Xg[Ä‚B"
+!define GTK_INSTALLER_NEEDED			"GTK+ƒ‰ƒ“ƒ^ƒCƒ€ŠÂ‹«‚ª–³‚¢‚©‚à‚µ‚­‚ÍƒAƒbƒvƒOƒŒ[ƒh‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B$\rv${GTK_VERSION}‚à‚µ‚­‚Í‚»‚êˆÈã‚ÌGTK+ƒ‰ƒ“ƒ^ƒCƒ€‚ðƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B"
 
 
 
 ; License Page
 
-!define GOURMET_LICENSE_BUTTON			" >"
+!define GAIM_LICENSE_BUTTON			"ŽŸ‚Ö >"
 
-!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name)Ö‚GPLÍƒCZXÌŒÅƒ[XÄ‚Ü‚BCZXÍ‚ÉŽQlÌ‚ß‚É’ñ‹Ÿ‚Ä‚Ü‚B $_CLICK"
+!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name)‚ÍGPLƒ‰ƒCƒZƒ“ƒX‚ÌŒ³‚ÅƒŠƒŠ[ƒX‚³‚ê‚Ä‚¢‚Ü‚·Bƒ‰ƒCƒZƒ“ƒX‚Í‚±‚±‚ÉŽQl‚Ì‚½‚ß‚¾‚¯‚É’ñ‹Ÿ‚³‚ê‚Ä‚¢‚Ü‚·B $_CLICK"
 
 
 
 ; Components Page
 
-!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (K{)"
+!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (•K{)"
 
-!define GTK_SECTION_TITLE			"GTK+ Runtime Environment (K{)"
+!define GTK_SECTION_TITLE			"GTK+ Runtime Environment (•K{)"
 
-!define GTK_THEMES_SECTION_TITLE		"GTK+Ìƒe[}"
+!define GTK_THEMES_SECTION_TITLE		"GTK+‚Ìƒe[ƒ}"
 
-!define GTK_NOTHEME_SECTION_TITLE		"e[}È‚"
+!define GTK_NOTHEME_SECTION_TITLE		"ƒe[ƒ}‚È‚µ"
 
-!define GTK_WIMP_SECTION_TITLE		"Wimpe[}"
+!define GTK_WIMP_SECTION_TITLE		"Wimpƒe[ƒ}"
 
-!define GTK_BLUECURVE_SECTION_TITLE		"Bluecurvee[}"
+!define GTK_BLUECURVE_SECTION_TITLE		"Bluecurveƒe[ƒ}"
 
-!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Bluee[}"
+!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blueƒe[ƒ}"
 
-!define GOURMET_SECTION_DESCRIPTION		"GourmetÌŠjÆ‚È‚téƒƒ@Cdll"
+!define GAIM_SECTION_DESCRIPTION		"Gourmet‚ÌŠj‚Æ‚È‚éƒtƒ@ƒCƒ‹‚Ædll"
 
-!define GTK_SECTION_DESCRIPTION		"GourmetÆ‚ÌŽgBÄ‚}éƒƒ`vbgtH[GUIc[Lbg"
+!define GTK_SECTION_DESCRIPTION		"Gourmet‚ÌŽg‚Á‚Ä‚¢‚éƒ}ƒ‹ƒ`ƒvƒ‰ƒbƒgƒtƒH[ƒ€GUIƒc[ƒ‹ƒLƒbƒg"
 
-!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+Ìƒe[}ÍAGTK+ÌƒAvP[VÌƒbNtB[Ï‚Ü‚B"
+!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+‚Ìƒe[ƒ}‚ÍAGTK+‚ÌƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚Ìƒ‹ƒbƒN•ƒtƒB[ƒ‹‚ð•Ï‚¦‚ç‚ê‚Ü‚·B"
 
-!define GTK_NO_THEME_DESC			"GTK+Ìƒe[}Cãƒ“Xg[È‚"
+!define GTK_NO_THEME_DESC			"GTK+‚Ìƒe[ƒ}‚ðƒCƒ“ƒXƒg[ƒ‹‚µ‚È‚¢"
 
-!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator)WindowsÍ‚ÌƒfXNgbvÂ‹Æ‚æ‚­ae[}Å‚B"
+!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator)‚ÍWindows‚ÌƒfƒXƒNƒgƒbƒvŠÂ‹«‚Æ‚æ‚­’²˜a‚µ‚½ƒe[ƒ}‚Å‚·B"
 
-!define GTK_BLUECURVE_THEME_DESC		"Bluecurvee[}B"
+!define GTK_BLUECURVE_THEME_DESC		"Bluecurveƒe[ƒ}B"
 
-!define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Lighthousebluee[}B"
+!define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Lighthouseblueƒe[ƒ}B"
 
 
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"Ã‚o[WGTK+Ìƒ^CÂ‚Ü‚BAbvO[hÜ‚?$\r: GourmetÓ‚ÍƒAbvO[hÈ‚è“®È‚Å‚å‚¤B"
+!define GTK_UPGRADE_PROMPT			"ŒÃ‚¢ƒo[ƒWƒ‡ƒ“‚ÌGTK+ƒ‰ƒ“ƒ^ƒCƒ€‚ªŒ©‚Â‚©‚è‚Ü‚µ‚½BƒAƒbƒvƒOƒŒ[ƒh‚µ‚Ü‚·‚©?$\r’ˆÓ: Gourmet‚ÍƒAƒbƒvƒOƒŒ[ƒh‚µ‚È‚¢ŒÀ‚è“®‚©‚È‚¢‚Å‚µ‚å‚¤B"
 
 
 
 ; Installer Finish Page
 
-!define GOURMET_FINISH_VISIT_WEB_SITE		"Windows GourmetWebÌƒy[WK?Ä‚B"
+!define GAIM_FINISH_VISIT_WEB_SITE		"Windows Gourmet‚ÌWebƒy[ƒW‚ð–K‚ê‚Ä‚­‚¾‚³‚¢B"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GOURMET_UNINSTALL_DESC			"Gourmet (íœÌ‚)"
+!define GAIM_UNINSTALL_DESC			"Gourmet (íœ‚Ì‚Ý)"
 
-!define GOURMET_PROMPT_WIPEOUT			"ÝŒÃ‚GourmetÌƒtH_ÌíœÉŠÖ‚ÄBsÜ‚?$\r$\r: Ó‚È‚ÌƒCXg[×‚Ä‚Ì”Wñ•€ÈƒvOCÍíœÜ‚B$\rGourmetÌÝ’Í‰eó‚¯‚Ü‚B"
+!define GAIM_PROMPT_WIPEOUT			"ŒÃ‚¢Gourmet‚ÌƒtƒHƒ‹ƒ_‚Ìíœ‚ÉŠÖ‚µ‚ÄB‘±s‚µ‚Ü‚·‚©?$\r$\r’ˆÓ: ‚ ‚È‚½‚ÌƒCƒ“ƒXƒg[ƒ‹‚µ‚½‚·‚×‚Ä‚Ì”ñ•W€‚Èƒvƒ‰ƒOƒCƒ“‚Ííœ‚³‚ê‚Ü‚·B$\rGourmet‚ÌÝ’è‚Í‰e‹¿‚ðŽó‚¯‚Ü‚¹‚ñB"
 
-!define GOURMET_PROMPT_DIR_EXISTS		"ñ‚ È‚ÌŽwè‚µCXg[ÌƒtH_Í‚Å‚É‘Ý‚Ä‚Ü‚Be×‚Í‚×‚$\rÄíœÜ‚BsÜ‚?"
+!define GAIM_PROMPT_DIR_EXISTS		"‚ ‚È‚½‚ÌŽw’è‚µ‚½ƒCƒ“ƒXƒg[ƒ‹æ‚ÌƒtƒHƒ‹ƒ_‚Í‚·‚Å‚É‘¶Ý‚µ‚Ä‚¢‚Ü‚·B“à—e‚Í‚·‚×‚Ä$\ríœ‚³‚ê‚Ü‚·B‘±s‚µ‚Ü‚·‚©?"
 
 
 
 ; GTK+ Section Prompts
 
-!define GTK_INSTALL_ERROR			"GTK+^CÌƒCXg[ÅƒG[Ü‚B"
+!define GTK_INSTALL_ERROR			"GTK+ƒ‰ƒ“ƒ^ƒCƒ€‚ÌƒCƒ“ƒXƒg[ƒ‹‚ÅƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B"
 
-!define GTK_BAD_INSTALL_PATH			"È‚Ì“Í‚pXÉƒANZXÜ‚Íì¬Å‚Ü‚B"
+!define GTK_BAD_INSTALL_PATH			"‚ ‚È‚½‚Ì“ü—Í‚µ‚½ƒpƒX‚ÉƒAƒNƒZƒX‚Ü‚½‚Íì¬‚Å‚«‚Ü‚¹‚ñB"
 
 
 
 ; GTK+ Themes section
 
-!define GTK_NO_THEME_INSTALL_RIGHTS		"ñ‚ È‚GTK+Í‚Ìƒe[}Cãƒ“Xg[éŒ î‚BÄ‚Ü‚B"
+!define GTK_NO_THEME_INSTALL_RIGHTS		"‚ ‚È‚½‚ÍGTK+‚Ìƒe[ƒ}‚ðƒCƒ“ƒXƒg[ƒ‹‚·‚éŒ ŒÀ‚ðŽ‚Á‚Ä‚¢‚Ü‚¹‚ñB"
 
 
 
 ; Uninstall Section Prompts
 
-!define un.GOURMET_UNINSTALL_ERROR_1		"?A?CXg[GourmetÍ‚ÌƒWXgGgð”­ŒÅ‚Ü‚Å‚B$\rç‚­Ê‚Ìƒ[UÉƒCXg[ê‚½Å‚å‚¤B"
+!define un.GAIM_UNINSTALL_ERROR_1		"ƒAƒ“ƒCƒ“ƒXƒg[ƒ‰‚ÍGourmet‚ÌƒŒƒWƒXƒgƒŠƒGƒ“ƒgƒŠ‚ð”­Œ©‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B$\r‚¨‚»‚ç‚­•Ê‚Ìƒ†[ƒU‚ÉƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚½‚Å‚µ‚å‚¤B"
 
-!define un.GOURMET_UNINSTALL_ERROR_2		"È‚Í‚ÌƒAvP[VAãƒ“CXg[éŒ î‚BÄ‚Ü‚B"
+!define un.GAIM_UNINSTALL_ERROR_2		"‚ ‚È‚½‚Í‚±‚ÌƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ðƒAƒ“ƒCƒ“ƒXƒg[ƒ‹‚·‚éŒ ŒÀ‚ðŽ‚Á‚Ä‚¢‚Ü‚¹‚ñB"
 

@@ -18,37 +18,37 @@
 
 ; Startup GTK+ check
 
-!define GTK_INSTALLER_NEEDED			"GTK+ Å¸ È¯æ¿¡ f Ö°Å³ ×·Ìµå°¡ Ê¿Õ´Ï´.$\rGTK+ Ù·Å¸ È¯; v${GTK_VERSION}Ì³  Ì» 8 Î¼Ä¡Ö¼."
+!define GTK_INSTALLER_NEEDED			"GTK+ ·±Å¸ÀÓ È¯°æ¿¡ ¹®Á¦°¡ ÀÖ°Å³ª ¾÷±×·¹ÀÌµå°¡ ÇÊ¿äÇÕ´Ï´Ù.$\rGTK+ ·±Å¸ÀÓ È¯°æÀ» v${GTK_VERSION}ÀÌ³ª ±× ÀÌ»ó ¹öÀüÀ¸·Î ¼³Ä¡ÇØÁÖ¼¼¿ä."
 
 
 
 ; Components Page
 
-!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (Ê¼)"
+!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (ÇÊ¼ö)"
 
-!define GTK_SECTION_TITLE			"GTK+ ?Å¸ È¯ (Ê¼)"
+!define GTK_SECTION_TITLE			"GTK+ ·±Å¸ÀÓ È¯°æ (ÇÊ¼ö)"
 
-!define GTK_THEMES_SECTION_TITLE		"GTK+ ×¸"
+!define GTK_THEMES_SECTION_TITLE		"GTK+ Å×¸¶"
 
-!define GTK_NOTHEME_SECTION_TITLE		"×¸ ="
+!define GTK_NOTHEME_SECTION_TITLE		"Å×¸¶ ¾øÀ½"
 
-!define GTK_WIMP_SECTION_TITLE		"+ ×¸"
+!define GTK_WIMP_SECTION_TITLE		"À«ÇÁ Å×¸¶"
 
-!define GTK_BLUECURVE_SECTION_TITLE		"Ä¿ ×¸"
+!define GTK_BLUECURVE_SECTION_TITLE		"ºí·çÄ¿ºê Å×¸¶"
 
-!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue ×¸"
+!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue Å×¸¶"
 
-!define GOURMET_SECTION_DESCRIPTION		" Ú¾ Ï° dll"
+!define GAIM_SECTION_DESCRIPTION		"°¡ÀÓÀÇ ÄÚ¾î ÆÄÀÏ°ú dll"
 
-!define GTK_SECTION_DESCRIPTION		"? Ì»Ï´ Â¸Æ¼ Ã· GUI Å¶"
+!define GTK_SECTION_DESCRIPTION		"°¡ÀÓÀÌ »ç¿ëÇÏ´Â ¸ÖÆ¼ ÇÃ·§Æû GUI ÅøÅ¶"
 
-!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+ ×¸ GTK+ wÎ±×· Ç·; Ù² Ü¼ Ö½4Ï´."
+!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+ Å×¸¶´Â GTK+ ÇÁ·Î±×·¥ÀÇ ·è¾ØÇÊÀ» ¹Ù²Ü ¼ö ÀÖ½À´Ï´Ù."
 
-!define GTK_NO_THEME_DESC			"GTK+ ×¸ Ä¡ Ê½4Ï´."
+!define GTK_NO_THEME_DESC			"GTK+ Å×¸¶¸¦ ¼³Ä¡ÇÏÁö ¾Ê½À´Ï´Ù."
 
-!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator)Ù´ ) ìµ¥Å©Å¾ È¯æ¿¡  vÈ­Ç´ GTK ×¸Ô´Ï´."
+!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator)´Â À©µµ¿ì µ¥½ºÅ©Å¾ È¯°æ¿¡ Àß Á¶È­µÇ´Â GTK Å×¸¶ÀÔ´Ï´Ù."
 
-!define GTK_BLUECURVE_THEME_DESC		"ÙºÄ¿ ×¸."
+!define GTK_BLUECURVE_THEME_DESC		"ºí·çÄ¿ºê Å×¸¶."
 
 !define GTK_LIGHTHOUSEBLUE_THEME_DESC	"The Lighthouseblue theme."
 
@@ -56,37 +56,37 @@
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"  GTK+ ?Å¸; Ã£Ò½4Ï´. Ù¾×·ÌµÒ±?$\rNote: ×·Ìµ 8 é°¡ Ìµ ; ? Ö½4Ï´."
+!define GTK_UPGRADE_PROMPT			"¿¾³¯ ¹öÀü GTK+ ·±Å¸ÀÓÀ» Ã£¾Ò½À´Ï´Ù. ¾÷±×·¹ÀÌµåÇÒ±î¿ä?$\rNote: ¾÷±×·¹ÀÌµåÇÏÁö ¾ÊÀ¸¸é °¡ÀÓÀÌ µ¿ÀÛÇÏÁö ¾ÊÀ» ¼öµµ ÀÖ½À´Ï´Ù."
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GOURMET_UNINSTALL_DESC			"Gourmet (remove only)"
+!define GAIM_UNINSTALL_DESC			"Gourmet (remove only)"
 
-!define GOURMET_PROMPT_WIPEOUT			"Ù° Óµ?ä¸®  Ô´Ï´. Ù° Ò±?$\r$\rNote: Ç¥ Ã·:  ; ? Ö½4Ï´.$\rÙ° Ó» Ú¼d Â¿; Ä¡ Ê½4Ï´."
+!define GAIM_PROMPT_WIPEOUT			"°¡ÀÓ µð·ºÅä¸®°¡ Áö¿öÁú °ÍÀÔ´Ï´Ù. °è¼Ó ÇÒ±î¿ä?$\r$\rNote: ºñÇ¥ÁØ ÇÃ·¯±×ÀÎÀº Áö¿öÁöÁö ¾ÊÀ» ¼öµµ ÀÖ½À´Ï´Ù.$\r°¡ÀÓ »ç¿ëÀÚ ¼³Á¤¿¡´Â ¿µÇâÀ» ¹ÌÄ¡Áö ¾Ê½À´Ï´Ù."
 
-!define GOURMET_PROMPT_DIR_EXISTS		"Ô·Ï½ Å¼Ä¡ ?ä¸® Ì¹ Ö½4Ï´. Ù¾È¿ :   ? Ö½4Ï´. Ù°Ò±?"
+!define GAIM_PROMPT_DIR_EXISTS		"ÀÔ·ÂÇÏ½Å ¼³Ä¡ µð·ºÅä¸®°¡ ÀÌ¹Ì ÀÖ½À´Ï´Ù. ¾È¿¡ µéÀº ³»¿ëÀÌ Áö¿öÁú ¼öµµ ÀÖ½À´Ï´Ù. °è¼ÓÇÒ±î¿ä?"
 
 
 
 ; GTK+ Section Prompts
 
-!define GTK_INSTALL_ERROR			"GTK+ ä·±Å¸ Ó¼Ä¡  ß¿7 ß»."
+!define GTK_INSTALL_ERROR			"GTK+ ·±Å¸ÀÓ ¼³Ä¡ Áß ¿À·ù ¹ß»ý."
 
-!define GTK_BAD_INSTALL_PATH			"Ô·Ï½ Å°Î¿ b Ò¼ Å³   4Ï´."
+!define GTK_BAD_INSTALL_PATH			"ÀÔ·ÂÇÏ½Å °æ·Î¿¡ Á¢±ÙÇÒ ¼ö ¾ø°Å³ª ¸¸µé ¼ö ¾ø¾ú½À´Ï´Ù."
 
 
 
 ; GTK+ Themes section
 
-!define GTK_NO_THEME_INSTALL_RIGHTS		"GTK+ ×¸ Ä¡ Ò± Ì¾4Ï´."
+!define GTK_NO_THEME_INSTALL_RIGHTS		"GTK+ Å×¸¶¸¦ ¼³Ä¡ÇÒ ±ÇÇÑÀÌ ¾ø½À´Ï´Ù."
 
 
 
 ; Uninstall Section Prompts
 
-!define un.GOURMET_UNINSTALL_ERROR_1         "Ù¾Î½ç·¯  Ç·?Æ® Æ® Ã£;  4Ï´.$\r wÎ±×·; Ù¸ / 8 Î¼Ä¡ Ñ° Í°4Ï´."
+!define un.GAIM_UNINSTALL_ERROR_1         "¾ðÀÎ½ºÅç·¯°¡ °¡ÀÓÀÇ ·¹Áö½ºÆ®¸® ¿£Æ®¸®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.$\rÀÌ ÇÁ·Î±×·¥À» ´Ù¸¥ À¯Àú ±ÇÇÑÀ¸·Î ¼³Ä¡ÇÑ °Í °°½À´Ï´Ù."
 
-!define un.GOURMET_UNINSTALL_ERROR_2         " wÎ±×·; f Ò¼ Ö´ Â± Ì¾4Ï´."
+!define un.GAIM_UNINSTALL_ERROR_2         "ÀÌ ÇÁ·Î±×·¥À» Á¦°ÅÇÒ ¼ö ÀÖ´Â ±ÇÇÑÀÌ ¾ø½À´Ï´Ù."
 

@@ -20,75 +20,75 @@
 
 ; Startup GTK+ check
 
-!define GTK_INSTALLER_NEEDED			"GTK+ runtime      .$\r   v${GTK_VERSION}  -"
+!define GTK_INSTALLER_NEEDED			"GTK+ runtime липсва или трябва да бъде обновена.$\rМоля инсталирайте версия v${GTK_VERSION} или по-нова"
 
 
 
 ; Components Page
 
-!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager ( )"
+!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (изисква се)"
 
-!define GTK_SECTION_TITLE			"GTK+ Runtime  (required)"
+!define GTK_SECTION_TITLE			"GTK+ Runtime Среда (required)"
 
-!define GTK_THEMES_SECTION_TITLE		"GTK+ "
+!define GTK_THEMES_SECTION_TITLE		"GTK+ Теми"
 
-!define GTK_NOTHEME_SECTION_TITLE		" "
+!define GTK_NOTHEME_SECTION_TITLE		"Без Тема"
 
-!define GTK_WIMP_SECTION_TITLE		"Wimp "
+!define GTK_WIMP_SECTION_TITLE		"Wimp Тема"
 
-!define GTK_BLUECURVE_SECTION_TITLE		"Bluecurve "
+!define GTK_BLUECURVE_SECTION_TITLE		"Bluecurve Тема"
 
-!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue "
+!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue Тема"
 
-!define GOURMET_SECTION_DESCRIPTION		"    Gourmet  "
+!define GAIM_SECTION_DESCRIPTION		"Файлове на ядрото на Gourmet и библиотеки"
 
-!define GTK_SECTION_DESCRIPTION		"    ,   Gourmet"
+!define GTK_SECTION_DESCRIPTION		"Мултиплатфорен кит за графичен изглед, използван от Gourmet"
 
-!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+       GTK+ ."
+!define GTK_THEMES_SECTION_DESCRIPTION	"GTK+ темите могат да променят Изгледа на GTK+ приложения."
 
-!define GTK_NO_THEME_DESC			"  GTK+ "
+!define GTK_NO_THEME_DESC			"Не инсталирайте GTK+ тема"
 
-!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator)  GTK       Windows."
+!define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator) е GTK тема която се смесва добре със Windows."
 
-!define GTK_BLUECURVE_THEME_DESC		"Bluecurve ."
+!define GTK_BLUECURVE_THEME_DESC		"Bluecurve темата."
 
-!define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Lighthouseblue ."
+!define GTK_LIGHTHOUSEBLUE_THEME_DESC	"Lighthouseblue темата."
 
 
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"  GTK+ runtime  .    ?$\rNote: Gourmet        ."
+!define GTK_UPGRADE_PROMPT			"Стара версия GTK+ runtime е открита. Искате ли да обновите?$\rNote: Gourmet може да не сработи ако не го направите."
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GOURMET_UNINSTALL_DESC			"Gourmet ( )"
+!define GAIM_UNINSTALL_DESC			"Gourmet (само премахване)"
 
-!define GOURMET_PROMPT_WIPEOUT			"  Gourmet    .    ?$\r$\r:         .$\r  Gourmet    ."
+!define GAIM_PROMPT_WIPEOUT			"Вашата стара Gourmet директория ще бъде изтрита. Искате ли да продължите?$\r$\rЗабележка: Всички нестандартни добавки които сте инсталирали ще бъдат изтрити.$\rНастройките на Gourmet няма да бъдат повлияни."
 
-!define GOURMET_PROMPT_DIR_EXISTS		"   .     $\r  .    ?"
+!define GAIM_PROMPT_DIR_EXISTS		"Директорията която избрахте съществува. Всичко което е в нея$\rще бъде изтрито. Желаете ли да продължите?"
 
 
 
 ; GTK+ Section Prompts
 
-!define GTK_INSTALL_ERROR			"    GTK+ runtime."
+!define GTK_INSTALL_ERROR			"Грешка при инсталиране на GTK+ runtime."
 
-!define GTK_BAD_INSTALL_PATH			"        ."
+!define GTK_BAD_INSTALL_PATH			"Въведеният път не може да бъде достъпен или създаден."
 
 
 
 ; GTK+ Themes section
 
-!define GTK_NO_THEME_INSTALL_RIGHTS		"     GTK+ ."
+!define GTK_NO_THEME_INSTALL_RIGHTS		"Нямате права за да инсталирате GTK+ тема."
 
 
 
 ; Uninstall Section Prompts
 
-!define un.GOURMET_UNINSTALL_ERROR_1         "         Gourmet.$\r      ."
+!define un.GAIM_UNINSTALL_ERROR_1         "Деисталатоа не може да намери записи в регистъра за Gourmet.$\rВероятно е бил инсталиран от друг потребител."
 
-!define un.GOURMET_UNINSTALL_ERROR_2         "     ."
+!define un.GAIM_UNINSTALL_ERROR_2         "Нямате права да деинсталирате тази програма."
 

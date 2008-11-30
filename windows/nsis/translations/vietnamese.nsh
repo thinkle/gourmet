@@ -28,15 +28,15 @@
 
 ; License Page
 
-!define GOURMET_LICENSE_BUTTON			"Tiếp theo >"
+!define GAIM_LICENSE_BUTTON			"Tiếp theo >"
 
-!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) được phát hành theo giấy  phép GPL. Giấy phép thấy ở đây chỉ là để cung cấp thông tin mà thôi. $_CLICK"
+!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) được phát hành theo giấy  phép GPL. Giấy phép thấy ở đây chỉ là để cung cấp thông tin mà thôi. $_CLICK"
 
 
 
 ; Components Page
 
-!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (phải có)"
+!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (phải có)"
 
 !define GTK_SECTION_TITLE			"GTK+ Runtime Environment (phải có)"
 
@@ -50,7 +50,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue Theme"
 
-!define GOURMET_SECTION_DESCRIPTION		"Các tập tin Gourmet chính và dlls"
+!define GAIM_SECTION_DESCRIPTION		"Các tập tin Gourmet chính và dlls"
 
 !define GTK_SECTION_DESCRIPTION		"Bộ công cụ giao diện đồ họa đa nền để dùng cho Gourmet"
 
@@ -74,17 +74,17 @@
 
 ; Installer Finish Page
 
-!define GOURMET_FINISH_VISIT_WEB_SITE		"Hãy xem trang chủ Windows Gourmet"
+!define GAIM_FINISH_VISIT_WEB_SITE		"Hãy xem trang chủ Windows Gourmet"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GOURMET_UNINSTALL_DESC			"Gourmet (chỉ bỏ cài đặt)"
+!define GAIM_UNINSTALL_DESC			"Gourmet (chỉ bỏ cài đặt)"
 
-!define GOURMET_PROMPT_WIPEOUT			"Thư mục Gourmet cũ sẽ bị xóa. Bạn muốn tiếp tục không?$\r$\rNote: Mọi plugin không chuẩn mà bạn đã cài sẽ bị xóa.$\rCác thiết lập người dùng Gourmet sẽ không còn tác dụng."
+!define GAIM_PROMPT_WIPEOUT			"Thư mục Gourmet cũ sẽ bị xóa. Bạn muốn tiếp tục không?$\r$\rNote: Mọi plugin không chuẩn mà bạn đã cài sẽ bị xóa.$\rCác thiết lập người dùng Gourmet sẽ không còn tác dụng."
 
-!define GOURMET_PROMPT_DIR_EXISTS		"Thư mục cài đặt mà bạn định ra đã tồn tại rồi. Mọi nội dung$\rsẽ bị xóa. Bạn muốn tiếp tục không?"
+!define GAIM_PROMPT_DIR_EXISTS		"Thư mục cài đặt mà bạn định ra đã tồn tại rồi. Mọi nội dung$\rsẽ bị xóa. Bạn muốn tiếp tục không?"
 
 
 
@@ -104,7 +104,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GOURMET_UNINSTALL_ERROR_1		"Trình gỡ cài đặt không tìm được các  registry entry cho Gourmet.$\rCó thể là chương trình được người dùng khác cài đặt."
+!define un.GAIM_UNINSTALL_ERROR_1		"Trình gỡ cài đặt không tìm được các  registry entry cho Gourmet.$\rCó thể là chương trình được người dùng khác cài đặt."
 
-!define un.GOURMET_UNINSTALL_ERROR_2		"Bạn không có quyền hạn để gỡ bỏ chương trình này."
+!define un.GAIM_UNINSTALL_ERROR_2		"Bạn không có quyền hạn để gỡ bỏ chương trình này."
 

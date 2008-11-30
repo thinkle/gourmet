@@ -4,7 +4,7 @@
 
 ;;
 
-;;  Hebrew language strings for the Windows Gourmet NSIS installer.
+;;  Hebrew language strings for the Windows Gaim NSIS installer.
 
 ;;  Windows Code page: 1255
 
@@ -20,89 +20,89 @@
 
 ; Startup GTK+ check
 
-!define GTK_INSTALLER_NEEDED			".     GTK+ $\r  v${GTK_VERSION} .GTK+     "
+!define GTK_INSTALLER_NEEDED			".לא נמצאת או צריכה שידרוג GTK+ סביבת$\rבבקשה התקן v${GTK_VERSION} .GTK+ או גבוהה יותר של סביבת"
 
 
 
 ; License Page
 
-!define GOURMET_LICENSE_BUTTON			" >"
+!define GOURMET_LICENSE_BUTTON			"הבא >"
 
-!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) .      .GPL    $_CLICK"
+!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) .הרישיון נמצא כאן בשביל מידע בלבד .GPL משוחרר תחת רישיון $_CLICK"
 
 
 
 ; Components Page
 
-!define GOURMET_SECTION_TITLE			"() .GOURMET RECIPE MANAGER"
+!define GOURMET_SECTION_TITLE			"(חובה) .GOURMET RECIPE MANAGER"
 
-!define GTK_SECTION_TITLE			"() .GTK+ "
+!define GTK_SECTION_TITLE			"(חובה) .GTK+ סביבת"
 
-!define GTK_THEMES_SECTION_TITLE		"GTK+  "
+!define GTK_THEMES_SECTION_TITLE		"GTK+ מראות של"
 
-!define GTK_NOTHEME_SECTION_TITLE		" "
+!define GTK_NOTHEME_SECTION_TITLE		"ללא מראה"
 
-!define GTK_WIMP_SECTION_TITLE		"Wimp "
+!define GTK_WIMP_SECTION_TITLE		"Wimp מראה"
 
-!define GTK_BLUECURVE_SECTION_TITLE		"Bluecurve "
+!define GTK_BLUECURVE_SECTION_TITLE		"Bluecurve מראה"
 
-!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue "
+!define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Light House Blue מראה"
 
-!define GOURMET_SECTION_DESCRIPTION		". DLL- GOURMET "
+!define GOURMET_SECTION_DESCRIPTION		".בסיססים DLL-ו GOURMET קבצי"
 
-!define GTK_SECTION_DESCRIPTION		".- GUI "
+!define GTK_SECTION_DESCRIPTION		".מולטי-פלטפורמיים GUI כלי"
 
-!define GTK_THEMES_SECTION_DESCRIPTION	" .GTK+       GTK+ "
+!define GTK_THEMES_SECTION_DESCRIPTION	" .GTK+ יכולים לשנות את המראה של תוכנות GTK+ מראות"
 
-!define GTK_NO_THEME_DESC			".GTK+    "
+!define GTK_NO_THEME_DESC			".GTK+ לא להתקין מראה של"
 
-!define GTK_WIMP_THEME_DESC			".      GTK-Wimp (Windows impersonator)"
+!define GTK_WIMP_THEME_DESC			".זה מראה שמשתלב למראה של חלונות GTK-Wimp (Windows impersonator)"
 
-!define GTK_BLUECURVE_THEME_DESC		".Bluecurve  "
+!define GTK_BLUECURVE_THEME_DESC		".Bluecurve המראה של"
 
-!define GTK_LIGHTHOUSEBLUE_THEME_DESC	".Lighthouseblue "
+!define GTK_LIGHTHOUSEBLUE_THEME_DESC	".Lighthouseblueהמראה של"
 
 
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"A?.  GTK+   $\rNote: .     GOURMET"
+!define GTK_UPGRADE_PROMPT			"A?נמצאה. לשדרג GTK+ סביבה ישנה של$\rNote: .יכול לא לעבוד אם לא GOURMET"
 
 
 
 ; Installer Finish Page
 
-!define GOURMET_FINISH_VISIT_WEB_SITE		".GOURMET  "
+!define GOURMET_FINISH_VISIT_WEB_SITE		".GOURMETבקרו באתר של"
 
 
 
-; Gourmet Section Prompts and Texts
+; Gaim Section Prompts and Texts
 
-!define GOURMET_UNINSTALL_DESC			"GOURMET ( )"
+!define GOURMET_UNINSTALL_DESC			"GOURMET (מחיקה בלבד)"
 
-!define GOURMET_PROMPT_WIPEOUT			"?  .  GOURMET $\r$\rNote: :    .$\r.   "
+!define GOURMET_PROMPT_WIPEOUT			"?הישנה הולכת להימחק. להמשיך GOURMET תיקיית$\r$\rNote: הערה: תוספות לא רגילות ימחקו.$\r.הגדרות המשתמש לא ישתנו"
 
-!define GOURMET_PROMPT_DIR_EXISTS		"   .   $\r?. "
+!define GOURMET_PROMPT_DIR_EXISTS		"תיקיית ההתקנה כבר קיימת. כל משבתוכה $\r?ימחק. להמשיך"
 
 
 
 ; GTK+ Section Prompts
 
-!define GTK_INSTALL_ERROR			".GTK+   "
+!define GTK_INSTALL_ERROR			".GTK+ שגיאה בהתקנת סביבת"
 
-!define GTK_BAD_INSTALL_PATH			".    "
+!define GTK_BAD_INSTALL_PATH			".המסלול שציינת לא יכול להיווצר"
 
 
 
 ; GTK+ Themes section
 
-!define GTK_NO_THEME_INSTALL_RIGHTS		".GTK+      "
+!define GTK_NO_THEME_INSTALL_RIGHTS		".GTK+ אין לך זכות להתקין מראה של"
 
 
 
 ; Uninstall Section Prompts
 
-!define un.GOURMET_UNINSTALL_ERROR_1		".GTK+      $\r.       "
+!define un.GOURMET_UNINSTALL_ERROR_1		".GTK+ ההתקנה לא מצאה את הרישומים של$\r.יכול להיות שמשמתמש אחר התקין את התוכנה הזאת"
 
-!define un.GOURMET_UNINSTALL_ERROR_2		".     "
+!define un.GOURMET_UNINSTALL_ERROR_2		".אין לך זכות למחוק תוכנה זאת"
 

@@ -8,7 +8,7 @@
 
 ;;  Windows Code page: 1252
 
-;;  Translator: Javier Fernandez-Sanguino Pea
+;;  Translator: Javier Fernandez-Sanguino Peña
 
 ;;
 
@@ -20,23 +20,23 @@
 
 ; Startup GTK+ check
 
-!define GTK_INSTALLER_NEEDED			"El entorno de ejecucin de GTK+ falta o necesita ser actualizado.$\rPor favor, instale la versin v${GTK_VERSION} del ejecutable GTK+ o alguna posterior."
+!define GTK_INSTALLER_NEEDED			"El entorno de ejecución de GTK+ falta o necesita ser actualizado.$\rPor favor, instale la versión v${GTK_VERSION} del ejecutable GTK+ o alguna posterior."
 
 
 
 ; License Page
 
-!define GOURMET_LICENSE_BUTTON			"Siguiente >"
+!define GAIM_LICENSE_BUTTON			"Siguiente >"
 
-!define GOURMET_LICENSE_BOTTOM_TEXT		"$(^Name) se distribuye bajo la licencia GPL. Esta licencia se incluye aqu slo con propsito informativo: $_CLICK"
+!define GAIM_LICENSE_BOTTOM_TEXT		"$(^Name) se distribuye bajo la licencia GPL. Esta licencia se incluye aquí sólo con propósito informativo: $_CLICK"
 
 
 
 ; Components Page
 
-!define GOURMET_SECTION_TITLE			"Gourmet Recipe Manager (necesario)"
+!define GAIM_SECTION_TITLE			"Gourmet Recipe Manager (necesario)"
 
-!define GTK_SECTION_TITLE			"Entorno de ejecucin de GTK+ (necesario)"
+!define GTK_SECTION_TITLE			"Entorno de ejecución de GTK+ (necesario)"
 
 !define GTK_THEMES_SECTION_TITLE		"Temas GTK+" 
 
@@ -48,7 +48,7 @@
 
 !define GTK_LIGHTHOUSEBLUE_SECTION_TITLE	"Tema Light House Blue"
 
-!define GOURMET_SECTION_DESCRIPTION		"Ficheros y dlls principales de Core"
+!define GAIM_SECTION_DESCRIPTION		"Ficheros y dlls principales de Core"
 
 !define GTK_SECTION_DESCRIPTION		"Una suite de herramientas GUI multiplataforma, utilizada por Gourmet"
 
@@ -66,23 +66,23 @@
 
 ; GTK+ Directory Page
 
-!define GTK_UPGRADE_PROMPT			"Se ha encontrado una versin antiga del ejecutable de GTK+. Desea actualizarla?$\rObservacin: Gourmet no funcionar a menos que lo haga."
+!define GTK_UPGRADE_PROMPT			"Se ha encontrado una versión antigüa del ejecutable de GTK+. ¿Desea actualizarla?$\rObservación: Gourmet no funcionará a menos que lo haga."
 
 
 
 ; Installer Finish Page
 
-!define GOURMET_FINISH_VISIT_WEB_SITE		"Visite la pgina Web de Gourmet Windows"
+!define GAIM_FINISH_VISIT_WEB_SITE		"Visite la página Web de Gourmet Windows"
 
 
 
 ; Gourmet Section Prompts and Texts
 
-!define GOURMET_UNINSTALL_DESC			"Gourmet (slo eliminar)"
+!define GAIM_UNINSTALL_DESC			"Gourmet (sólo eliminar)"
 
-!define GOURMET_PROMPT_WIPEOUT			"Su directorio antigo de Gourmet va a ser borrado. Desea continuar?$\r$\rObservacin: cualquier aplique no estndar que pudiera haber instalado ser borrado.$\rsto no afectar a sus preferencias de usuario en Gourmet."
+!define GAIM_PROMPT_WIPEOUT			"Su directorio antigüo de Gourmet va a ser borrado. ¿Desea continuar?$\r$\rObservación: cualquier aplique no estándar que pudiera haber instalado será borrado.$\rÉsto no afectará a sus preferencias de usuario en Gourmet."
 
-!define GOURMET_PROMPT_DIR_EXISTS		"El directorio de instalacin que ha especificado ya existe. Todos los contenidos$\rser borrados. Desea continuar?"
+!define GAIM_PROMPT_DIR_EXISTS		"El directorio de instalación que ha especificado ya existe. Todos los contenidos$\rserá borrados. ¿Desea continuar?"
 
 
 
@@ -90,7 +90,7 @@
 
 !define GTK_INSTALL_ERROR			"Error al instalar el ejecutable GTK+."
 
-!define GTK_BAD_INSTALL_PATH			"No se pudo acceder o crear la ruta que vd. indic."
+!define GTK_BAD_INSTALL_PATH			"No se pudo acceder o crear la ruta que vd. indicó."
 
 
 
@@ -102,7 +102,7 @@
 
 ; Uninstall Section Prompts
 
-!define un.GOURMET_UNINSTALL_ERROR_1         "El desinstalador no pudo encontrar las entradas en el registro de Gourmet.$\rEs probable que otro usuario instalara la aplicacin."
+!define un.GAIM_UNINSTALL_ERROR_1         "El desinstalador no pudo encontrar las entradas en el registro de Gourmet.$\rEs probable que otro usuario instalara la aplicación."
 
-!define un.GOURMET_UNINSTALL_ERROR_2         "No tiene permisos para desinstalar esta aplicacin."
+!define un.GAIM_UNINSTALL_ERROR_2         "No tiene permisos para desinstalar esta aplicación."
 
