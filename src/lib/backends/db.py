@@ -59,6 +59,8 @@ def make_simple_select_arg (criteria,*tables):
     for k,v in fix_colnames(criteria,*tables).items():
         if type(v)==tuple:
             operator,value = v
+            if type(v)==str:
+                v = unicode(v)
             if operator=='in':
                 args.append(k.in_(*value))
             elif hasattr(k,operator):
@@ -101,8 +103,6 @@ def make_order_by (sort_by, table, count_by=None, join_tables=[]):
     
 class DBObject:
     pass
-
-
 # CHANGES SINCE PREVIOUS VERSIONS...
 # categories_table: id -> recipe_id, category_entry_id -> id
 # ingredients_table: ingredient_id -> id, id -> recipe_id
@@ -242,7 +242,7 @@ class RecData (Pluggable):
             pass
         self._setup_object_for_table(self.info_table, Info)
         self.plugin_info_table = Table('plugin_info',self.metadata,
-                                       Column('plugin',String(length=None),**{}),
+                                       Column('plugin',Text(),**{}),
                                        # three part version numbers
                                        # 2.1.10, etc. 1.0.0 -- these
                                        # contain the Gourmet version

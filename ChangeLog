@@ -1,3 +1,10 @@
+2008-12-01  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/backends/db.py (RecData.setup_info_table): String->Text
+	fix to avoid annoying warning.
+	(make_simple_select_arg): Make sure we use unicode in our select
+	args.
+
 2008-11-23  Thomas Hinkle  <tom@grenville>
 
 	* setup.py: Fix typo that prevented new import/export .in files from being i18n'd.
