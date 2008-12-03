@@ -22,7 +22,7 @@ class HtmlExporterPlugin (ExporterPlugin):
             )
 
     def do_single_export (self, args)    :
-        html_exporter.html_exporter(
+        he = html_exporter.html_exporter(
             args['rd'],
             args['rec'],
             args['out'],
@@ -30,6 +30,7 @@ class HtmlExporterPlugin (ExporterPlugin):
             mult=args['mult'],
             conv=args['conv']
             )
+        he.run()
 
     def run_extra_prefs_dialog (self):
         pass

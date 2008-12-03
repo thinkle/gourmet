@@ -1,3 +1,24 @@
+2008-12-02  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py (HtmlExporterPlugin.do_single_export):
+	Fix single export (export from recipe card view)
+
+	* src/lib/reccard.py (RecCardDisplay.ui): Eliminate KeyEditor (it's a plugin now).
+	(IngredientEditorModule.setup_action_groups): Shorten button names
+	for ingredient editing toolbar.
+	(TextEditor): Add generic TextEditor base class with copy/paste/cut support.
+	(DescriptionEditorModule.ui): Add "Cut" item
+	(TextFieldEditor.ui): Add "Cut" item
+	(TextFieldEditor.setup_action_groups): Add rich text editing (bold/italic/underline)
+	(IngredientController.get_path_from_persistent_ref): Avoid
+	throwing error when we don't find an iter (return None instead)
+	(IngredientController.commit_ingredients.commit_iter): Save new
+	ingredient object into ListStore -- this fixes bug that broke
+	editing of new ingredients once committed.
+	(UndoableTreeStuff.record_positions): Fix typo (rc->re)
+	Note: there are substantial problems with drag-n-drop to be worked
+	out still in the ingredient treeview.
+
 2008-12-01  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/backends/db.py (RecData.setup_info_table): String->Text
@@ -90,7 +111,7 @@
 	* src/lib/importers/html_importer.py: Don't import old
 	html_plugins directory
 
-	* setup.py (result): Add new plugins.
+v	* setup.py (result): Add new plugins.
 	(data_files): Fix data files.
 
 	* src/lib/backends/db.py (RecData.backup_db): Automatically make a

@@ -141,7 +141,6 @@ class RecCardDisplay (plugin_loader.Pluggable):
             <menuitem action="Timer"/></placeholder>
             <separator/>
             <placeholder name="DataTool">
-            <menuitem action="KeyEditor"/>
             </placeholder>
             <separator/>
             <menuitem action="ForgetRememberedOptionals"/>    
@@ -575,7 +574,6 @@ class RecCardDisplay (plugin_loader.Pluggable):
             if de.getBoolean(label=_("You have unsaved changes."),
                              sublabel=_("Apply changes before printing?")):
                 self.saveEditsCB()
-        print 'RecRenderer!'
         printer.RecRenderer(self.rg.rd, [self.current_rec], mult=self.mult,
                             dialog_title=_("Print Recipe %s"%(self.current_rec.title)),
                             dialog_parent=self.window,
@@ -1010,7 +1008,6 @@ class IngredientEditorModule (RecEditorModule):
     def setup (self):
         pass
         
-
     def setup_main_interface (self):
         self.glade = gtk.glade.XML(os.path.join(gladebase,'recCardIngredientsEditor.glade'))
         self.main = self.glade.get_widget('ingredientsMainWidget')
@@ -1029,7 +1026,7 @@ class IngredientEditorModule (RecEditorModule):
         self.ingredientEditorActionGroup.add_actions([
             ('AddIngredient',gtk.STOCK_ADD,_('Add ingredient'),
              None,None),
-            ('AddIngredientGroup',None,_('Add ingredient group'),
+            ('AddIngredientGroup',None,_('Add group'),
              None,None,self.ingtree_ui.ingNewGroupCB),
             ('PasteIngredient',gtk.STOCK_PASTE,_('Paste ingredients'),
              None,None,self.paste_ingredients_cb),
@@ -1040,11 +1037,11 @@ class IngredientEditorModule (RecEditorModule):
              lambda *args: RecSelector(self.rg, self)),
             ])
         self.ingredientEditorOnRowActionGroup.add_actions([
-            ('DeleteIngredient',gtk.STOCK_DELETE,_('Delete ingredient'),
+            ('DeleteIngredient',gtk.STOCK_DELETE,_('Delete'),
              None,None,self.ie.delete_cb),            
-            ('MoveIngredientUp',gtk.STOCK_GO_UP,_('Move ingredient up'),
+            ('MoveIngredientUp',gtk.STOCK_GO_UP,_('Up'),
              None,None,self.ingtree_ui.ingUpCB),
-            ('MoveIngredientDown',gtk.STOCK_GO_DOWN,_('Move ingredient down'),
+            ('MoveIngredientDown',gtk.STOCK_GO_DOWN,_('Down'),
              None,None,self.ingtree_ui.ingDownCB),
             ])
         self.action_groups.append(self.ingredientEditorActionGroup)
@@ -1096,33 +1093,113 @@ class IngredientEditorModule (RecEditorModule):
 
     def save (self, recdic):
         # Save ingredients...
-        print 'Save ingredients!'
         self.ingtree_ui.ingController.commit_ingredients()
         return recdic
 
-class DescriptionEditorModule (RecEditorModule):
+class TextEditor:
+
+    def setup (self):
+        self.edit_widgets = [] # for keeping track of editable widgets
+        self.edit_textviews = [] # for keeping track of editable
+                                 # textviews
+
+    def setup_action_groups (self):
+        self.copyPasteActionGroup = gtk.ActionGroup('CopyPasteActionGroup')
+        self.copyPasteActionGroup.add_actions([
+            ('Copy',gtk.STOCK_COPY,None,None,None,self.do_copy),
+            ('Paste',gtk.STOCK_PASTE,None,None,None,self.do_paste),
+            ('Cut',gtk.STOCK_CUT,None,None,None,self.do_cut),            
+            ])
+        self.cb = gtk.Clipboard()
+        gobject.timeout_add(500,self.do_sensitize)
+        self.action_groups.append(self.copyPasteActionGroup)
+
+    def do_sensitize (self):
+        for w in self.edit_widgets:
+            if w.has_focus():
+                self.copyPasteActionGroup.get_action('Copy').set_sensitive(
+                    w.get_selection_bounds() and True or False
+                    )
+                self.copyPasteActionGroup.get_action('Cut').set_sensitive(
+                    w.get_selection_bounds() and True or False
+                    )
+                self.copyPasteActionGroup.get_action('Paste').set_sensitive(
+                    self.cb.wait_is_text_available() or False
+                    )
+                return True
+        for tv in self.edit_textviews:
+            tb = tv.get_buffer()
+            self.copyPasteActionGroup.get_action('Copy').set_sensitive(
+                tb.get_selection_bounds() and True or False
+                )
+            self.copyPasteActionGroup.get_action('Cut').set_sensitive(
+                tb.get_selection_bounds() and True or False
+                )
+            self.copyPasteActionGroup.get_action('Paste').set_sensitive(
+                self.cb.wait_is_text_available() or False
+                )
+        return True
+        
+    def do_copy (self, *args):
+        for w in self.edit_widgets:        
+            if w.has_focus():
+                w.copy_clipboard()
+                return
+        for tv in self.edit_textviews:
+            tv.get_buffer().copy_clipboard(self.cb)
+
+    def do_cut (self, *args):
+        for w in self.edit_widgets:        
+            if w.has_focus():
+                w.cut_clipboard()
+        for tv in self.edit_textviews:
+            buf  = tv.get_buffer()
+            buf.cut_clipboard(self.cb,tv.get_editable())
+
+    def do_paste (self, *args):
+        text = self.cb.wait_for_text()
+        if self.edit_widgets:
+            widget = self.edit_widgets[0]
+        else:
+            widget = self.edit_textviews[0]
+        parent = widget.parent
+        while parent and not hasattr(parent,'focus_widget') :
+            parent = parent.parent
+        widget = parent.focus_widget
+        if isinstance(widget,gtk.TextView):
+            buf = widget.get_buffer()
+            buf.paste_clipboard(self.cb,None,widget.get_editable())
+        elif isinstance(widget,gtk.Editable):
+            widget.paste_clipboard()
+        else:
+            print 'What has focus?',widget
+        
+class DescriptionEditorModule (TextEditor, RecEditorModule):
     name = 'description'
     label = _('Description')
     ui = '''
-    <ui>
       <menubar name="RecipeEditorMenuBar">
         <menu name="Edit" action="Edit">
           <placeholder name="EditActions">
             <menuitem action="Undo"/>
             <menuitem action="Redo"/>
             <separator/>
+            <menuitem action="Cut"/>
             <menuitem action="Copy"/>
             <menuitem action="Paste"/>
           </placeholder>
         </menu>
       </menubar>
       <toolbar name="RecipeEditorToolBar">
+        <toolitem action="Cut"/>
         <toolitem action="Copy"/>
         <toolitem action="Paste"/>
       </toolbar>
-    </ui>
     '''
     _custom_handlers_setup = False
+
+    def __init__ (self, *args):
+        RecEditorModule.__init__(self, *args)
 
     def setup_main_interface (self):
         if not DescriptionEditorModule._custom_handlers_setup:
@@ -1153,10 +1230,12 @@ class DescriptionEditorModule (RecEditorModule):
             else: raise "REC_ATTRS widget type %s not recognized"%w
         for a in self.reccom:
             self.rw[a]=self.glade.get_widget("%sBox"%a)
+            self.edit_widgets.append(self.rw[a])            
             self.rw[a].db_prop = a
             #self.rw[a].get_children()[0].connect('changed',self.changed_cb)
-        for a in self.recent:
+        for a in self.recent:            
             self.rw[a]=self.glade.get_widget("%sBox"%a)
+            self.edit_widgets.append(self.rw[a])            
             self.rw[a].db_prop = a
             #self.rw[a].connect('changed',self.changed_cb)
         self.update_from_database()
@@ -1338,16 +1417,16 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         self.draw_image()
         self.edited=True
 
-        
-class TextFieldEditor ():
+
+class TextFieldEditor (TextEditor):
     ui = '''
-    <ui>
       <menubar name="RecipeEditorMenuBar">
         <menu name="Edit" action="Edit">
           <placeholder name="EditActions">
             <menuitem action="Undo"/>
             <menuitem action="Redo"/>
             <separator/>
+            <menuitem action="Cut"/>            
             <menuitem action="Copy"/>
             <menuitem action="Paste"/>
             <separator/>
@@ -1362,15 +1441,34 @@ class TextFieldEditor ():
         <toolitem action="Bold"/>
         <toolitem action="Italic"/>
         <separator/>
+        <toolitem action="Cut"/>        
         <toolitem action="Copy"/>
         <toolitem action="Paste"/>
+        <separator/>
       </toolbar>
-    </ui>
     '''
     prop = None
 
     def setup (self): # Text Field Editor
         self.images = [] # For inline images in text fields (future)
+        TextEditor.setup(self)
+
+    def setup_action_groups (self):
+        TextEditor.setup_action_groups(self)
+        self.richTextActionGroup = gtk.ActionGroup('RichTextActionGroup')
+        self.richTextActionGroup.add_toggle_actions([
+            ('Bold',gtk.STOCK_BOLD,None,None,None,None),
+            ('Italic',gtk.STOCK_ITALIC,None,None,None,None),
+            ('Underline',gtk.STOCK_UNDERLINE,None,None,None,None),            
+            ])
+        for action,markup in [('Bold','<b>b</b>'),
+                              ('Italic','<i>i</i>'),
+                              ('Underline','<u>u</u>')]:
+            self.tv.get_buffer().setup_widget_from_pango(
+                self.richTextActionGroup.get_action(action),
+                markup
+                )
+        self.action_groups.append(self.richTextActionGroup)
 
     def setup_main_interface (self):
         self.main = gtk.ScrolledWindow()
@@ -1384,6 +1482,8 @@ class TextFieldEditor ():
         self.tv.db_prop = self.prop
         self.update_from_database()
         Undo.UndoableTextView(self.tv,self.history)
+        self.setup_action_groups()
+        self.edit_textviews = [self.tv]
 
     def update_from_database (self):
         txt = getattr(self.re.current_rec,self.prop)
@@ -2114,10 +2214,13 @@ class IngredientController:
         return uid
 
     def get_path_from_persistent_ref (self, ref):
-        return self.imodel.get_path(
-            self.get_iter_from_persistent_ref(ref)
-            )
-
+        itr = self.get_iter_from_persistent_ref(ref)
+        if itr:
+            return self.imodel.get_path(
+                itr
+                )
+    
+    @debug_decorator
     def get_iter_from_persistent_ref (self, ref):
         try:
             if self.commited_items_converter.has_key(ref):
@@ -2211,6 +2314,7 @@ class IngredientController:
                 else:
                     d['recipe_id'] = self.re.current_rec.id
                     self.commited_items_converter[ing] = self.rg.rd.add_ing_and_update_keydic(d)
+                    self.imodel.set_value(iter,0,self.commited_items_converter[ing])
                     # Add ourself to the list of ingredient objects so
                     # we will notice subsequent deletions.
                     self.ingredient_objects.append(self.commited_items_converter[ing])
@@ -2917,7 +3021,7 @@ class UndoableTreeStuff:
 
     def record_positions (self, iters):
         debug('UndoableTreeStuff.record_positions',3)                
-        self.pre_ss = te.selectionSaver(self.ic.rc.ingtree_ui.ingTree)        
+        self.pre_ss = te.selectionSaver(self.ic.re.ingtree_ui.ingTree)        
         self.positions = []
         for i in iters:
             path = self.ic.imodel.get_path(i)
