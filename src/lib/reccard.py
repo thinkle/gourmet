@@ -2220,7 +2220,7 @@ class IngredientController:
                 itr
                 )
     
-    @debug_decorator
+    #@debug_decorator
     def get_iter_from_persistent_ref (self, ref):
         try:
             if self.commited_items_converter.has_key(ref):

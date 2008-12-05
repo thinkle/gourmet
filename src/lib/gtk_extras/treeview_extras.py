@@ -2,6 +2,12 @@
 from gourmet.gdebug import *
 import gtk
 
+def print_tree (mod):
+    for row in mod:
+        print [col for col in row]
+        for child in row.iterchildren():
+            print '-> ',[col for col in child]
+        
 def path_next (path, inc=1):
     """Return the path NEXT rows after PATH. Next can be negative, in
     which case we get previous paths."""
@@ -36,6 +42,17 @@ def move_iter (mod, iter, sibling=None, parent=None, direction="before"):
         dpath = ()
     rowdata = get_row(mod, iter)
     children=harvest_children(mod, iter)
+    if direction != "after":
+        direction = "before"
+    path = mod.get_path(iter)
+    if sibling:
+        dpath = mod.get_path(sibling)
+    elif parent:
+        dpath = mod.get_path(parent)
+    else:
+        dpath = ()
+    rowdata = get_row(mod, iter)
+    children=harvest_children(mod, iter)
     def insert_new (parent):
         """A little subroutine to insert our row. We'll call this at the appropriate
         time depending on the order of source and destination iters"""
@@ -56,17 +73,19 @@ def move_iter (mod, iter, sibling=None, parent=None, direction="before"):
             return mod.insert_after(parent,sibling,rowdata)
     # if the source is before the destination, we add then remove. otherwise, we remove then add.
     path_last = path_compare(path,dpath)
-    if path_last:
+    if path_last==1:
+        # Source after destination (remove, then add)
         remove_children(mod, iter)
         mod.remove(iter)
         new=insert_new(parent)
         insert_children(mod, new, children)
     elif path_last==0: debug("Moving into my self is nonsensical!",1)
     else:
+        # Source before destination (add, then remove)
         new=insert_new(parent)
         insert_children(mod, new, children)
-        mod.remove(iter)
         remove_children(mod, iter)
+        mod.remove(iter)
 
 def insert_children (mod, iter, children):
     for row in children:
@@ -312,8 +331,10 @@ class QuickTree (gtk.ScrolledWindow):
 if __name__ == '__main__':
     vb = gtk.VBox()
     sw = QuickTree(
-        ['Foo','Bar'],
-        ['Bar','Foo']
+        [['Foo','Bar'],
+        ['Bar','Foo'],
+        ['Foob','Barb'],
+        ['Baz','Bang'],      ]
         )
     sw.tv.set_reorderable(True)
     sw.tv.ss = selectionSaver(sw.tv,0)

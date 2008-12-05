@@ -12,6 +12,15 @@ if debug_file:
 
 if debug_level > 0: print 'DEBUG_LEVEL=',debug_level
 if debug_file: print 'DEBUG_FILE=',debug_file
+
+def debug_decorator (f):
+    def _ (*args, **kwargs):
+        print 'Calling ',f.__name__,'with ',args,kwargs
+        ret = f(*args,**kwargs)
+        print 'Returning:',ret
+        return ret
+    return _
+
 def debug (message, level=10):
     if timestamp: ts= '%s:'%time.time()
     else: ts = ''
