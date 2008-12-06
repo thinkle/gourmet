@@ -20,8 +20,7 @@ class PdfExporterPlugin (ExporterPlugin):
                                                 args['file'],
                                                 pdf_args=args['extra_prefs'],
                                                 )
-    def do_single_exporter (self, args):
-        print 'Create exporter with args=',args
+    def do_single_export (self, args):
         exp = pdf_exporter.PdfExporter(args['rd'],
                                        args['rec'],
                                        args['out'],
@@ -29,8 +28,7 @@ class PdfExporterPlugin (ExporterPlugin):
                                        mult=args['mult'],
                                        pdf_args=args['extra_prefs'],
                                  )
-        print exp,'.do_run()',
-        exp.do_run()
+        exp.run()
 
     def run_extra_prefs_dialog (self):
         return pdf_exporter.get_pdf_prefs()

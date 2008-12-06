@@ -413,6 +413,8 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
             self.out = file(out,'wb')
+        else:
+            self.out = out
         if not doc:
             self.setup_document(self.out,**pdf_args)
             self.multidoc = False
@@ -435,10 +437,9 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             )
 
     def write_foot (self):
-        print 'PdfExporter.write_foot!'
         if not self.multidoc:
             self.close() # Finish the document if this is all-in-one
-            self.out.close()
+            #self.out.close()
         else:
             #self.txt.append(platypus.PageBreak()) # Otherwise, a new page
             # Append to the txt list we were handed ourselves in a KeepTogether block

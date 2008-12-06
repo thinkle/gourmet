@@ -1,3 +1,23 @@
+2008-12-06  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* MANIFEST Update manifest.
+
+	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py (PdfExporterPlugin.do_single_export):
+	Fix name of method.
+
+	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py (PdfExporter.__init__):
+	Fix handling of output arg that is an open file.
+
+2008-12-04  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/gtk_extras/treeview_extras.py (print_tree): Add a handy
+	convenience function for debugging treeview changes
+	(move_iter): Fix destination description on drag-n-drop
+	calls. This should fix dnd.
+
+	* src/lib/gdebug.py (debug_decorator): Add handy decorator for
+	quick debugging.
+
 2008-12-02  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py (HtmlExporterPlugin.do_single_export):
@@ -16,8 +36,6 @@
 	ingredient object into ListStore -- this fixes bug that broke
 	editing of new ingredients once committed.
 	(UndoableTreeStuff.record_positions): Fix typo (rc->re)
-	Note: there are substantial problems with drag-n-drop to be worked
-	out still in the ingredient treeview.
 
 2008-12-01  Thomas Hinkle  <tom@grenville>
 
