@@ -17,4 +17,7 @@ sudo rm -rf /usr/share/gourmet/ /usr/lib/python2.5/site-packages/gourmet/ /tmp/f
 echo Install our new tarball
 sudo python setup.py install
 echo 'Testing gourmet'
+echo "Don't forget to run through the standard tests before releasing!"
+echo
+cat TESTS
 gourmet -v --gourmet-directory=/tmp/foobaz

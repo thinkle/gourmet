@@ -108,12 +108,15 @@ def apply_line_markup (line, markup):
     if len(markup) < len(line):
         markup += ' '*(len(line)-len(markup))
     for n in range(len(line)):
-        if markup[n]==' ':
+        if markup[n]==' ' or markup[n]=='\n':
             tag = None
         elif markup[n]=='+':
             tag = 'add'
         elif markup[n]=='-':
             tag = 'del'
+        else:
+            #print "WARNING: don't recognize diff tag \"%s\""%markup[n]
+            tag = None
         if tag != current_tag:
             if current_tag:
                 out += '</%s>'%current_tag

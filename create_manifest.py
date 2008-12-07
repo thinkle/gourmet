@@ -23,6 +23,7 @@ MANIFEST
 README
 README.txt
 TODO
+TESTS
 copyright
 setup.cfg
 setup.py

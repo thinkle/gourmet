@@ -1,5 +1,27 @@
 2008-12-06  Thomas Mills Hinkle  <tom@hydrophax>
 
+	* src/lib/importers/importManager.py: Remove broken import of
+	zip_importer (this has moved into a plugin)
+
+	* test_tarball.sh: Print contents of TESTS as a reminder of what
+	to test.
+
+	* create_manifest.py (STARTER_LIST): Include TESTS file in MANIFEST
+
+	* MANIFEST: Include TESTS file in MANIFEST (list of common tests
+	we should run on releases -- this might be something downstream
+	packages want to make sure they run through.
+
+	* src/lib/plugins/import_export/web_import_plugin/webpage_importer.py (WebParser.get_images):
+	Ignore <img> tags with no src= attribute (I didn't realize there
+	were such tags)
+
+	* src/lib/recipeIdentifier.py (apply_line_markup): Don't throw
+	error when we get diff markup we don't expect
+
+	* src/lib/gglobals.py (launch_url): Project Ridley -
+	gnome.url_show -> gtk.show_uri
+
 	* MANIFEST Update manifest.
 
 	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py (PdfExporterPlugin.do_single_export):

@@ -56,9 +56,11 @@ class WebParser (InteractiveImporter):
     def get_images (self):
         self.images = []
         for i in self.soup('img'):
-            src = i['src']
+            try:
+                src = i['src']
+            except KeyError:
+                continue
             img_url = urllib.basejoin(self.url,src)
-
             if self.imageexcluders:
                 exclude = False
                 for exc in  self.imageexcluders:

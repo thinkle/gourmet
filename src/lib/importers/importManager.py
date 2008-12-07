@@ -5,7 +5,6 @@ from gourmet.recipeManager import default_rec_manager
 import os.path
 from fnmatch import fnmatch
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui, NotThreadSafe
-from zip_importer import archive_to_filelist
 from webextras import URLReader
 import tempfile
 

@@ -320,8 +320,11 @@ def launch_url (url, ext=""):
         os.startfile(url)
     elif os.name == 'posix':
         try:
-            import gnome
-            gnome.url_show(url)
+            if hasattr(gtk,'show_uri'):
+                gtk.show_uri(gtk.gdk.Screen(),url,0L)
+            else:
+                import gnome
+                gnome.url_show(url)
         except ImportError:
             print 'gnome libraries not available, trying builtins'
             if not ext: ext=os.path.splitext(url)
