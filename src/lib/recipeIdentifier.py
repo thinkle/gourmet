@@ -71,7 +71,7 @@ def get_recipe_hash (recipe_object):
     return m.hexdigest()
 
 def hash_recipe (rec, rd, conv=None):
-    if not conv: conv = convert.Converter()
+    if not conv: conv = convert.get_converter()
     rechash = get_recipe_hash(rec)
     inghash = get_ingredient_hash(rd.get_ings(rec),conv)
     return rechash,inghash

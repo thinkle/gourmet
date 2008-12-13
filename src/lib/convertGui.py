@@ -7,14 +7,14 @@ from gettext import gettext as _
 
 class ConvGui:
     """This is a simple interface for the converter."""
-    def __init__ (self, converter=convert.Converter(),
+    def __init__ (self, converter=None,
                   unitModel=None,
                   amt1=None, unit1=None, item=None,
                   okcb=None
                   ):
         self.possible_conversions = None
         self.glade = gtk.glade.XML(os.path.join(gladebase,'converter.glade'))
-        self.conv = converter
+        self.conv = convert.get_converter()
         self.changing_item = False
         self.okcb = okcb
         self.widget_names = ['window','amt1Entry', 'amt2Label', 'unit1ComboBox', 'unit2ComboBox',

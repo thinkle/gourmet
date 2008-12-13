@@ -175,7 +175,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
 
     def IngR_handler (self, start=False, end=False, attrs=None):
         if attrs:
-            self.start_ing(recipe_id=self.rec['id'])
+            self.start_ing()
             self.item = self.grabattr(attrs,'name')
             self.add_amt(self.grabattr(attrs,'qty'))
             self.ing['unit']=self.grabattr(attrs,'unit')

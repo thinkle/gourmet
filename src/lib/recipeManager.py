@@ -27,7 +27,7 @@ class DatabaseShopper (shopping.Shopper):
     def init_converter (self):
         #self.cnv = DatabaseConverter(self.db)
         if not self.cnv:
-            self.cnv = convert.Converter()
+            self.cnv = convert.get_converter()
     
     def init_orgdic (self):
         self.orgdic = dbDic('ingkey','shopcategory',self.db.shopcats_table,db=self.db,pickle_key=False,

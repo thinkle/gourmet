@@ -104,7 +104,7 @@ class GourmetApplication:
         # These first two items might be better handled using a
         # singleton design pattern... 
         self.splash_label = splash_label
-        self.conv = convert.Converter() 
+        self.conv = convert.get_converter() 
         self.star_generator = ratingWidget.StarGenerator()        
         # Setup methods...
         self.setup_prefs() # Setup preferences...
@@ -140,12 +140,14 @@ class GourmetApplication:
             else:
                 convert.USE_FRACTIONS = convert.FRACTIONS_OFF
         self.prefsGui.apply_prefs_dic['useFractions'] = toggleFractions
-        if self.prefs.get('useFractions',
-                          defaults.LANG_PROPERTIES['useFractions']
-                          ):
-            convert.USE_FRACTIONS = convert.FRACTIONS_NORMAL
-        else:
-            convert.USE_FRACTIONS = convert.FRACTIONS_OFF
+        # Call our method once with the default prefs to apply saved
+        # user settings
+        toggleFractions(None,
+                        self.prefs.get('useFractions',
+                                       defaults.LANG_PROPERTIES['useFractions']
+                                       )
+                        )
+
 
     # Splash convenience method for start-up splashscreen
     def update_splash (self, text):
@@ -1566,7 +1568,7 @@ def get_application ():
     except RecGui, rg:
         return rg
 
-if __name__ == '__main__' and False:
+if __name__ == '__main__':
     if os.name!='nt':
         import profile, tempfile,os.path
         import hotshot, hotshot.stats
@@ -1583,6 +1585,6 @@ if __name__ == '__main__' and False:
     else:
         startGUI()
 
-elif __name__ == '__main__':
-    rgn = RecGui()
-    gtk.main()
+#elif __name__ == '__main__':
+#    rgn = RecGui()
+#    gtk.main()

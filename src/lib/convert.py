@@ -39,6 +39,8 @@ class PossiblyCaseInsensitiveDictionary (dict):
 
 class Converter:
 
+    __single = None
+
     unit_to_seconds = {
     'seconds':1,
     'minutes':60,
@@ -71,6 +73,8 @@ class Converter:
                   ]
     
     def __init__(self):
+        if Converter.__single: raise Converter.__single
+        else: Converter.__single = self
         self.create_conv_table()
         self.create_density_table()
         self.create_cross_unit_table()
@@ -530,7 +534,12 @@ class Converter:
                     if n: seconds += n * conv
                     num = []
         if seconds: return seconds
-    
+
+def get_converter ():
+    try:
+        return Converter()
+    except Converter, c:
+        return c
 
 # Each of our time formatting functions takes two arguments, which
 # allows us to handle fractions in the outside world
@@ -953,7 +962,7 @@ def frac_to_float (s):
 if __name__ == '__main__' and False:
     class InteractiveConverter:
         def __init__ (self):
-            self.c = Converter()
+            self.c = get_converter()
             self.options = {'Convert':self.converter,
                             'Add':self.adder,
                             'Adjust':self.adjuster,

@@ -8,7 +8,7 @@ import xml.sax.saxutils
 from gettext import gettext as _
 import gourmet.gtk_extras.dialog_extras as de
 import re
-from gourmet.threadManager import SuspendableThread
+from gourmet.threadManager import SuspendableThread, Terminated
 
 # Convenience functions
 
@@ -53,7 +53,7 @@ class Importer (SuspendableThread):
         """
 
         timeaction = TimeAction('importer.__init__',10)
-        if not conv: self.conv = convert.Converter()
+        if not conv: self.conv = convert.get_converter()
         self.id_converter = {} # a dictionary for tracking named IDs
         self.total = total
         if prog or rd:
@@ -122,11 +122,11 @@ class Importer (SuspendableThread):
         timeaction = TimeAction('importer.check_for_sleep',10)
         #gt.gtk_update()
         if self.terminated:
-            raise gt.Terminated("Importer Terminated!")
+            raise Terminated("Importer Terminated!")
         while self.suspended:
             #gt.gtk_update()
             if self.terminated:
-                raise gt.Terminated("Importer Terminated!")
+                raise Terminated("Importer Terminated!")
             else:
                 time.sleep(1)
         timeaction.end()
@@ -135,6 +135,9 @@ class Importer (SuspendableThread):
         self.rec_timer = TimeAction('importer RECIPE IMPORT',10)
         timeaction = TimeAction('importer.start_rec',10)
         self.check_for_sleep()
+        if hasattr(self,'added_ings') and self.added_ings:
+            print 'WARNING: starting new rec, but we have ingredients that we never added!'
+            print 'Unadded ingredients: ',self.added_ings
         self.added_ings=[]
         self.group = None
         if dict:
@@ -142,17 +145,9 @@ class Importer (SuspendableThread):
         else:
             self.rec = {}
         #if not self.rec.has_key('id'):
-        # always create a new ID     
-        if self.rec.has_key('id'):
-            if self.id_converter.has_key(self.rec['id']):
-                self.rec['id']=self.id_converter[self.rec['id']]
-            else:
-                real_id = self.rd.new_id()
-                self.id_converter[self.rec['id']]=real_id
-                self.rec['id']=real_id
-        else:
-            self.rec['id']=self.rd.new_id()
-        debug('New Import\'s ID=%s'%self.rec['id'],0)
+        #else:
+        #    self.rec['id']=self.rd.new_id()
+        #debug('New Import\'s ID=%s'%self.rec['id'],0)
         timeaction.end()
 
     def _move_to_instructions (self, recdic, attr):
@@ -186,7 +181,6 @@ class Importer (SuspendableThread):
         # Check preptime and cooktime
         for t in ['preptime','cooktime']:
             if self.rec.has_key(t) and type(self.rec[t])!=int:
-                print 'IMPORTING TEXT TIME %s: "%s"'%(t,self.rec[t])
                 secs = self.conv.timestring_to_seconds(self.rec[t])
                 if secs != None:
                     self.rec[t]=secs
@@ -224,7 +218,29 @@ class Importer (SuspendableThread):
                     print 'Deleting "image"'
                     del self.rec['image']
                     del self.rec['thumb']                    
-        r = self.rd.add_rec(self.rec, accept_ids=True) # See doc on add_rec 
+        ## if we have an ID, we need to remember it for the converter
+        if self.rec.has_key('id'):
+            id_to_convert = self.rec['id']            
+        else:
+            id_to_convert = None
+        if id_to_convert:
+            if self.id_converter.has_key(self.rec['id']):
+                self.rec['id']=self.id_converter[self.rec['id']]
+                r = self.rd.add_rec(self.rec,accept_ids=True) # See doc on add_rec
+            else:
+                del self.rec['id']
+                r =  self.rd.add_rec(self.rec)
+                self.id_converter[id_to_convert] = r.id
+        else:
+            r = self.rd.add_rec(self.rec)
+        # Add ingredients...
+        for i in self.added_ings:
+            if i.has_key('id'):
+                print 'WARNING: Ingredient has ID set -- ignoring value'
+                del i['id']
+            i['recipe_id'] = r.id
+        self.rd.add_ings(self.added_ings)
+        self.added_ings = []
         # Update hash-keys...
         self.rd.update_hashes(r)
         tt.end()
@@ -263,17 +279,17 @@ class Importer (SuspendableThread):
         timeaction = TimeAction('importer.start_ing',10)
         #gt.gtk_update()
         self.ing=kwargs
-        if self.ing.has_key('id'):
-            self.ing['recipe_id']=self.ing['id']
-            del self.ing['id']
-            print 'WARNING: setting ingredients ID is deprecated. Assuming you mean to set recipe_id'
-        elif self.rec.has_key('id'):
-            self.ing['recipe_id']=self.rec['id']
-        debug('ing ID %s, recipe ID %s'%(self.ing['recipe_id'],self.rec['id']),0)
+        #if self.ing.has_key('id'):
+        #    self.ing['recipe_id']=self.ing['id']
+        #    del self.ing['id']
+        #    print 'WARNING: setting ingredients ID is deprecated. Assuming you mean to set recipe_id'
+        #elif self.rec.has_key('id'):
+        #    self.ing['recipe_id']=self.rec['id']
+        #debug('ing ID %s, recipe ID %s'%(self.ing['recipe_id'],self.rec['id']),0)
         timeaction.end()
                  
-    def commit_ing (self):
-        timeaction = TimeAction('importer.commit_ing 1',10)
+    def finish_ing (self):
+        timeaction = TimeAction('importer.finish_ing 1',10)
         # Strip whitespace...
         for key in ['item','ingkey','unit']:
             if self.ing.has_key(key):
@@ -315,10 +331,11 @@ class Importer (SuspendableThread):
             self.ing['inggroup']=self.group
         timeaction.end()
         timeaction = TimeAction('importer.commit_ing 4',10)
-        self.added_ings.append(self.rd.add_ing(self.ing))
+        self.added_ings.append(self.ing); self.ing = {}
         timeaction.end()
-        
 
+    commit_ing = finish_ing
+        
     def add_amt (self, amount):
         timeaction = TimeAction('importer.add_amt',10)
         """We should NEVER get non-numeric amounts.
@@ -374,84 +391,6 @@ NUMBER_REGEXP = convert.NUMBER_REGEXP
 simple_matcher = re.compile(
     '(%(NUMBER_REGEXP)s+)\s*/\s*([\d]+)'%locals()
     )
-
-
-class MultipleImporter:
-    def __init__ (self,grm,imports):
-        """GRM is a GourmetRecipeManager instance.
-        
-        Imports is a list of classes to run and filenames.
-        [(class,args,kwargs),filename]
-
-        The classes will be initiated: c=class(*args,**kwargs) and
-        then run with c.run()
-        """
-        self.imports = imports
-        self.added_recs = []
-        self.grm = grm
-        self.total_size = 0
-        self.current_prog = 0
-        self.sizes = {}
-        self.completed_imports = 0
-        self.current_imports = 0
-        self.completed_imports_last_fn = ""
-        self.num_matcher = re.compile('(%s+)'%convert.NUMBER_REGEXP)
-        for c,fn in imports:
-            if fn and type(fn)==str:
-                size = os.stat(fn)[stat.ST_SIZE]
-                self.total_size += size
-                self.sizes[fn]=size
-
-    def do_run (self):
-        for importer,fn in self.imports:
-            ic,args,kwargs = importer
-            self.fn = fn
-            if self.total_size: self.current_percentage = float(self.sizes.get(fn,-1))/self.total_size
-            else: self.current_percentage = -1
-            gt.gtk_enter()
-            if self.grm.progress_dialog.detail_label:
-                self.grm.progress_dialog.detail_label.set_text(_('<i>Importing %s</i>')%fn)
-                self.grm.progress_dialog.detail_label.set_use_markup(True)
-            #self.grm.progress_dialog.label.set_text(_('<i>Importing %s</i>')%fn)
-            gt.gtk_leave()
-            print 'Using import class ',ic
-            kwargs['progress']=self.show_progress
-            self.iclass = ic(*args,**kwargs)
-            self.suspend = self.iclass.suspend
-            self.terminate = self.iclass.terminate
-            self.resume = self.iclass.resume
-            self.iclass.run()
-            self.current_prog += self.current_percentage
-            if hasattr(self.iclass,'added_recs'):
-                self.added_recs += self.iclass.added_recs
-            else:
-                print 'ODD:',self.iclass,'has no added_recs'
-        self.grm.set_progress_thr(1,'Import complete!')
-    
-    def show_progress (self, prog, msg):
-        if len(self.imports)>1:
-            # we muck about with the messages if we have more than one...            
-            m=self.num_matcher.search(msg)
-            if not m: msg=""
-            elif m.groups()[0]:
-                if self.fn != self.completed_imports_last_fn:
-                    self.completed_imports_last_fn = self.fn
-                    self.completed_imports += self.current_imports
-                try:
-                    self.current_imports=int(m.groups()[0])
-                except:
-                    pass
-                else:
-                    total = self.current_imports + self.completed_imports
-                    if self.completed_imports:
-                        msg = _("Imported %(number)s recipes from %(file)s (%(total)s total)")%{
-                            'number':self.current_imports,
-                            'total':total,
-                            'file':os.path.split(self.fn)[1]
-                            }
-        self.grm.set_progress_thr(self.current_prog + (prog * self.current_percentage),
-                  msg)
-        
 
 def parse_range (number_string):
     """Parse a range and return a tuple with a low and high number as floats.

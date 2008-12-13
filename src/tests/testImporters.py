@@ -1,17 +1,29 @@
 import test # Get our path set so we work...
+import sys
+sys.argv.append('--gourmet-directory=/tmp/')
 import recipeManager as rm
 import time
-import importers
 import os,os.path,re
-import importers.html_importer
 import tempfile
 import traceback
 import unittest
+import importers.importManager
+from gourmet.recipeManager import get_recipe_manager
 
 TEST_FILE_DIRECTORY = 'recipe_files'
 
 times = []
-def time_me (f): return f
+def time_me (f):
+    def _ (*args, **kwargs):
+        start = time.time()
+        ret = f(*args,**kwargs)
+        end = time.time()
+        times.append(
+            ((f.__name__,args,kwargs),end-start)
+            )
+        return ret
+    return f
+
 def old_time_me (f):
     def _ (*args,**kwargs):
         print 'Running',f.__name__,args,kwargs
@@ -30,11 +42,35 @@ def old_time_me (f):
             return ret
     return _
 
+class ThreadlessImportManager (importers.importManager.ImportManager):
+
+    def get_app_and_prefs (self):
+        self.prefs = {}
+
+    def do_import (self, importer_plugin, method, *method_args):
+        # No threading, for profiling purposes!
+        try:
+            importer = getattr(importer_plugin,method)(*method_args)
+        except ImportFileList, ifl:
+            # recurse with new filelist...
+            self.import_filenames(ifl.filelist)
+        else:
+            if hasattr(importer,'pre_run'):
+                importer.pre_run()
+            importer.run()
+            self.follow_up(None,importer)
+
+def get_im ():
+    try:
+        return ThreadlessImportManager()
+    except ThreadlessImportManager,im:
+        return im
+
 class ImportTest:
 
     #failures = []
 
-    def run (self):
+    def run (self, tests):
         for d in tests: self.run_test(d)
 
     def run_test (self, d):
@@ -42,8 +78,10 @@ class ImportTest:
             d['filename']=os.path.join(TEST_FILE_DIRECTORY,
                                        d['filename'])
             self.test_import(d['filename'])
-        elif d.has_key('url'): self.test_web_import(d['url'])
-        else: print 'WTF: no test contained in ',d
+        elif d.has_key('url'):
+            self.test_web_import(d['url'])
+        else:
+            print 'WTF: no test contained in ',d
         if d.has_key('test'):
             self.do_test(d['test'])
 
@@ -108,24 +146,16 @@ class ImportTest:
     
     @time_me
     def setup_db (self):
-        rm.dbargs['file']=tempfile.mktemp('.mk')
-        self.db = rm.RecipeManager(**rm.dbargs)
-
+        self.im = get_im()
+        self.db = get_recipe_manager()
+        
     @time_me
     def test_import (self,filename):
-        filt = importers.FILTER_INFO[importers.select_import_filter(filename)]
-        impClass,args,kwargs = filt['import']({'file':filename,
-                                               'rd':self.db,
-                                               'threaded':True,
-                                               'progress':self.progress
-                                               })
-        impInstance = impClass(*args,**kwargs)
-        impInstance.run()
+        self.im.import_filenames([filename])
 
     @time_me
     def test_web_import (self, url):
-        importers.html_importer.import_url(url,self.db,progress=self.progress,
-                                           interactive=False)
+        self.im.import_url(url)
 
     def progress (self, bar, msg):
         pass
@@ -204,51 +234,7 @@ class ImportTestCase (unittest.TestCase):
 
 
 if __name__ == '__main__':
-    PROFILE = False
-
-    if PROFILE:
-
-        import tempfile,os.path
-        import hotshot, hotshot.stats    
-
-        import gtk
-        class ImportProfiler:
-
-            def __init__ (self):
-
-                self.w = gtk.Window()
-                self.vb = gtk.VBox(); self.vb.show()
-                pb = gtk.Button('Profile'); pb.show()
-                pb.connect('clicked',self.run_profile)
-                qb = gtk.Button(stock=gtk.STOCK_QUIT); qb.show()
-                qb.connect('clicked',self.quit)
-                self.vb.pack_start(pb)
-                self.vb.pack_start(qb)
-                self.w.connect('delete-event',self.quit)
-                self.w.add(self.vb)
-                self.w.show()
-
-            def start (self):
-                gtk.main()
-
-            def quit (self, *args): gtk.main_quit()
-
-            def run_profile (self, *args):
-                it=ImportTest()
-                it.setup_db()
-                prof = hotshot.Profile(os.path.join(tempfile.tempdir,'GOURMET_IMPORTER_HOTSHOT_PROFILE'))
-                prof.runcall(
-                    lambda *args: it.run_test({'filename':os.path.join(TEST_FILE_DIRECTORY,'b1q97.txt')})
-                    )
-                stats = hotshot.stats.load(os.path.join(tempfile.tempdir,'GOURMET_IMPORTER_HOTSHOT_PROFILE'))
-                stats.strip_dirs()
-                stats.sort_stats('time','calls')
-                stats.print_stats()
-                self.quit()
-
-        ip = ImportProfiler()
-        ip.start()
-    else:
-        unittest.main()
-    #pass
+    sys.argv.remove('--gourmet-directory=/tmp/')
+    test.remove_sysargs()
+    unittest.main()
     

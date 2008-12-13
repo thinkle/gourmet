@@ -18,7 +18,7 @@ try:
 except nutritionGrabberGui.Terminated:
     pass
 
-c = gourmet.convert.Converter()
+c = gourmet.convert.get_converter()
 nd = NutritionData(rd,c)
 nid = NutritionInfoDruid(nd,{})
 nid.add_ingredients([(k,[(1,'')]) for k in ingredients_to_check])

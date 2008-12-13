@@ -14,7 +14,7 @@ except:
 
 class ConvGui:
     """This is a simple interface for the converter."""
-    def __init__ (self, converter=convert.Converter(),
+    def __init__ (self, converter=convert.get_converter(),
                   unitModel=None,
                   amt1=None, unit1=None, item=None,
                   okcb=None

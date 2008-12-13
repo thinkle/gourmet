@@ -26,15 +26,18 @@ class ImportManager (plugin_loader.Pluggable):
     __single = None
 
     def __init__ (self):
-        self.tempfiles = {}
-        self.extensions_by_mimetype = {}
         if ImportManager.__single: raise ImportManager.__single
         else: ImportManager.__single = self
+        self.tempfiles = {}
+        self.extensions_by_mimetype = {}
         self.plugins_by_name = {}
         self.plugins = []
         plugin_loader.Pluggable.__init__(self,
                                          [ImporterPlugin]
                                          )
+        self.get_app_and_prefs()
+
+    def get_app_and_prefs (self):
         from gourmet.GourmetRecipeManager import get_application
         self.app = get_application()
         self.prefs = self.app.prefs
@@ -54,6 +57,9 @@ class ImportManager (plugin_loader.Pluggable):
                           default_character_width=60,
                           )
         if not url: return
+        else: return self.import_url(url)
+
+    def import_url (self, url):
         if url.find('//')<0:
             url = 'http://'+url
         reader = URLReader(url)
@@ -160,7 +166,8 @@ class ImportManager (plugin_loader.Pluggable):
     def follow_up (self, threadmanager, importer):
         if hasattr(importer,'post_run'):
             importer.post_run()
-        self.app.make_rec_visible()                        
+        if hasattr(self,'app'):
+            self.app.make_rec_visible()                        
 
     def setup_thread (self, importer, label, connect_follow_up=True):
         tm = get_thread_manager()

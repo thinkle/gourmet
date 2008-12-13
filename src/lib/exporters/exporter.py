@@ -60,7 +60,7 @@ class exporter (SuspendableThread, Pluggable):
         self.fractions=fractions
         self.use_ml=use_ml
         self.convert_attnames = convert_attnames
-        if not conv: conv=convert.Converter()
+        if not conv: conv=convert.get_converter()
         self.conv=conv
         self.imgcount=imgcount
         self.images = []

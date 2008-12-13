@@ -26,4 +26,4 @@ class MastercookTextImporterPlugin (ImporterPlugin):
         return mastercook_plaintext_importer.Tester().test(filename)
 
     def get_importer (self, filename):
-        mastercook_plaintext_importer.MastercookPlaintextImporter
+        return mastercook_plaintext_importer.MastercookPlaintextImporter(filename)

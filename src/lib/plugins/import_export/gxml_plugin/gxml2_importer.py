@@ -52,9 +52,9 @@ class RecHandler (xml_importer.RecHandler):
         elif name=='image':
             self.rec['image']=base64.b64decode(self.elbuf.strip())
         elif name in self.REC_ATTRS:
-            self.rec[name]=xml.sax.saxutils.unescape(self.elbuf.strip())
+            self.rec[str(name)]=xml.sax.saxutils.unescape(self.elbuf.strip())
         elif name in self.ING_ATTRS.keys():
-            self.ing[self.ING_ATTRS[name]]=xml.sax.saxutils.unescape(self.elbuf.strip())
+            self.ing[str(self.ING_ATTRS[name])]=xml.sax.saxutils.unescape(self.elbuf.strip())
 
 
 class Converter (xml_importer.Converter):

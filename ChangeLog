@@ -1,3 +1,104 @@
+2008-12-13  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/tests/testImporters.py: Update testImporters to work with
+	importManager.
+
+	* src/tests/test.py: Use same method gourmet_in_place uses for
+	making sure we use our version of Gourmet libraries and not ones
+	installed elsewhere in system.
+	(profile): Add convenience function for profiling calls.
+
+	* src/lib/plugins/unit_converter/convertGui.py (ConvGui.__init__):
+	Use new convert.get_converter() method instead of
+	convert.Converter()
+
+	* src/lib/plugins/nutritional_information/enter_nutritional_defaults.py:
+	Use new get_converter() method.
+
+	* src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer_plugin.py (MastercookTextImporterPlugin.get_importer):
+	Fix typo (actually return an importer object instead of none).
+
+	* src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer.py (MastercookXMLHandler.IngR_handler):
+	Update start_ing() call (we no longer set recipe_ids before
+	commit-time.
+
+	* src/lib/plugins/import_export/gxml_plugin/gxml2_importer.py (RecHandler.endElement):
+	Make sure our keys in our dictionary rec are all strings and not
+	unicode objects (this throws an error on the DB side).
+
+	* src/lib/version.py (version): 0.14.3 - Get ready for another release soon.
+	* src/lib/importers/importer.py (Importer.__init__): use new
+	get_converter() method to get Converter singleton. This speeds up
+	import by a factor of 3 or so (we were wasting a lot of time
+	instantiating new Converter classes all the time because we
+	weren't passing it around as designed. It's easier just to use the
+	singleton and not have to worry about remembering to pass the
+	converter instance back and forth.
+	(Importer.check_for_sleep): Fix name error (we no longer import
+	anything as gt)
+	(Importer.start_rec): Add a warning when ingredients are left from
+	previous recipe at start of next recipe.
+	(Importer.start_rec): Don't generate new id in start_rec code.
+	(Importer.commit_rec): Fix IDs here -- if we have an ID from our
+	importer, we add it here to our ID converter (or get it from our
+	ID converter if we already created it -- if, for example, another
+	recipe in the import referenced this recipe before it was
+	created).  We also add ingredients to the database all at once now
+	rather than making separate INSERT calls for each ingredient.
+	(Importer.start_ing): No longer set recipe_id up in start_ing --
+	it will be handled in commit_rec now.
+	(Importer.finish_ing): Change commit_ing to finish_ing as we no
+	longer commit our ingredients here (we commit all ingredients
+	together in commit_rec. This should help speed up imports.
+	(Importer.commit_ing): commit_ing is now an alias for finish_ing
+	-- this enables all our old code to keep working. However, if any
+	old code actually depended on commit_ing commiting the ingredient
+	to the database, it will break. The model now is that we run
+	start_ing and finish_ing for each ing before running commit_rec.
+	(MultipleImporter): Remove MultipleImporter class. This is now
+	handled in importManager (and has been for some time)
+
+	* src/lib/importers/importManager.py (ImportManager.__init__):
+	Singleton exception should be the first thing that happens here.
+	(ImportManager.get_app_and_prefs): Move the get_application() call
+	out of __init__ for convenience of subclassing (this allows the
+	creation of non-gui-dependant subclasses easily.
+
+	* src/lib/gtk_extras/timeEntry.py (TimeEntry.__init__): use new
+	get_converter() method to get Converter singleton.
+
+	* src/lib/exporters/exporter.py (exporter.__init__): use new
+	get_converter() method to get Converter singleton.
+
+	* src/lib/backends/db.py (RecData.initialize_connection): Run
+	commit() once after initialization. This appears to fix a problem
+	where some importers were throwing a "database locked" error on
+	import if no recipe had been created yet in that instance of the
+	application.
+	(RecData.add_rec): Always return ID of recipe (it was
+	unpredictable before whether this would return an ID or an object.
+
+	* src/lib/timeScanner.py (c): use new get_converter() method to
+	get Converter singleton
+
+	* src/lib/recipeManager.py (DatabaseShopper.init_converter): use
+	new get_converter() method to get Converter singleton
+
+	* src/lib/recipeIdentifier.py (hash_recipe): use new
+	get_converter() method to get Converter singleton
+
+	* src/lib/convertGui.py (ConvGui.__init__): Converter is now a singleton.
+	(get_converter): Convenience method to get the Converter singleton.
+
+	* src/lib/convert.py (Converter.__single): Converter is now a singleton.
+	(get_converter): Convenience method to get the Converter singleton.
+
+	* src/lib/GourmetRecipeManager.py (GourmetApplication.__init__):
+	use new get_converter() method to get Converter singleton
+
+	(GourmetApplication.setup_prefs): Make sure that we set
+	useFractions the same way from prefs and from user toggling.
+
 2008-12-06  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/importers/importManager.py: Remove broken import of

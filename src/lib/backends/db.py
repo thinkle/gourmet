@@ -186,6 +186,7 @@ class RecData (Pluggable):
             #c = sqlite_connection.cursor()
             #c.execute('select name from sqlite_master')
             #sqlite_connection.create_function('instr',2,instr)
+        self.db.commit() # Somehow necessary to prevent "DB Locked" errors 
         debug('Done initializing DB connection',1)
 
     def save (self):
@@ -1062,6 +1063,7 @@ class RecData (Pluggable):
 
     def add_rec (self, dic, accept_ids=False):
         """Dictionary is a dictionary of column values for our recipe.
+        Return the ID of the newly created recipe.
 
         If accept_ids is True, we accept recipes with IDs already
         set. These IDs need to have been reserved with the new_id()
@@ -1079,11 +1081,12 @@ class RecData (Pluggable):
             ret = self.do_add_rec(dic)
         except:
             print 'Problem adding recipe with dictionary...'
-            for k,v in dic.items(): print 'KEY:',k,'VALUE:',v
+            for k,v in dic.items(): print 'KEY:',k,'of type',type(k),'VALUE:',v,'of type',type(v)
             raise
         else:
             if type(ret)==int:
                 ID = ret
+                ret = self.get_rec(ID) 
             else:
                 ID = ret.id
             for c in cats:
@@ -1103,6 +1106,15 @@ class RecData (Pluggable):
         except:
             print 'Problem adding',dic
             raise
+
+    def add_ings (self, dics):
+        """Add multiple ingredient dictionaries at a time."""
+        for d in dics: self.validate_ingdic(d)
+        try:
+            self.ingredients_table.insert().execute(*dics)
+        except ValueError:
+            for d in dics: self.coerce_types(self.ingredients_table,d)
+            self.ingredients_table.insert().execute(*dics)
 
     # Lower level DB access functions -- hopefully subclasses can
     # stick to implementing these    

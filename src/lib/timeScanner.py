@@ -70,7 +70,7 @@ if gtk.pygtk_version[1] < 8:
 if __name__ == '__main__':
     
     import gtk
-    c = convert.Converter()
+    c = convert.get_converter()
     tv = LinkedTimeView()
     tv.connect('time-link-activated',show_timer_cb,c)
     tv.get_buffer().set_text(
