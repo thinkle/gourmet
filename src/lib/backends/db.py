@@ -1368,7 +1368,7 @@ class RecData (Pluggable):
         else:
             return amt
 
-    def get_amount_and_unit (self, ing, mult=1, conv=None,fractions=convert.FRACTIONS_ALL):
+    def get_amount_and_unit (self, ing, mult=1, conv=None,fractions=None):
         """Return a tuple of strings representing our amount and unit.
         
         If we are handed a converter interface, we will adjust the
@@ -1389,7 +1389,7 @@ class RecData (Pluggable):
     def get_amount_as_string (self,
                               ing,
                               mult=1,
-                              fractions=convert.FRACTIONS_ALL
+                              fractions=None,
                               ):
         """Return a string representing our amount.
         If we have a multiplier, multiply the amount before returning it.        
@@ -1397,13 +1397,20 @@ class RecData (Pluggable):
         amt = self.get_amount(ing,mult)
         return self._format_amount_string_from_amount(amt, fractions=fractions)
 
-    def _format_amount_string_from_amount (self, amt, fractions=convert.FRACTIONS_ALL):
+    def _format_amount_string_from_amount (self, amt, fractions=None):
         """Format our amount string given an amount tuple.
 
+        If fractions is None, we use the default setting from
+        convert.USE_FRACTIONS. Otherwise, we will override that
+        setting.
+        
         If you're thinking of using this function from outside, you
         should probably just use a convenience function like
         get_amount_as_string or get_amount_and_unit
         """
+        if fractions is None:
+            # None means use the default value
+            fractions = convert.USE_FRACTIONS
         if type(amt)==tuple:
             return "%s-%s"%(convert.float_to_frac(amt[0],fractions=fractions).strip(),
                             convert.float_to_frac(amt[1],fractions=fractions).strip())

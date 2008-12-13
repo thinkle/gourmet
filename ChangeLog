@@ -1,3 +1,13 @@
+2008-12-13  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/exporters/exportManager.py (ExportManager.offer_single_export):
+	Give us a useful error message when ignoring an invalid file mode.
+
+	* src/lib/backends/db.py (RecData._format_amount_string_from_amount):
+	Don't set default here to be FRACTIONS_ALL. Instead, default to
+	use the converter default (whatever that has been set to). This
+	will be correct as far as i18n etc.
+
 2008-12-13  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/tests/testImporters.py: Update testImporters to work with

@@ -46,8 +46,8 @@ class ExportManager (plugin_loader.Pluggable):
         if hasattr(exporter_plugin,'mode'):
             export_file_mode = exporter_plugin.mode
             if export_file_mode not in ['w','a','wb']:
-                export_file_mode = 'w'
                 print 'IGNORING INVALID FILE MODE',export_file_mode
+                export_file_mode = 'w'
         else:
             export_file_mode = 'w'
         outfi = file(filename,
