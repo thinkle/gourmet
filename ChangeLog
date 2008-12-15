@@ -1,3 +1,10 @@
+2008-12-15  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/gtk_extras/LinkedTextView.py (LinkedPangoBuffer.set_text):
+	Unescape all text so that markup outside of links works
+	properly (fixes bug where <span> tags showed up in recipe card
+	display view.)
+
 2008-12-13  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/exporters/exportManager.py (ExportManager.offer_single_export):

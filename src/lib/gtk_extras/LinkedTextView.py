@@ -36,11 +36,12 @@ class LinkedPangoBuffer (PangoBuffer):
     markup_dict = {}
 
     def set_text (self, txt):
+        txt = xml.sax.saxutils.unescape(txt)
         m = self.href_regexp.search(txt)
         if m:
             while m:
                 href = m.groups()[0]
-                body = xml.sax.saxutils.unescape(m.groups()[1])
+                body = m.groups()[1]
                 if self.markup_dict.has_key(body) and self.markup_dict[body]!=href:
                     raise """Damn -- our not-so-clever implementation of <a href=""> parsing requires
                     that no two distinct links have the same text describing them!"""
