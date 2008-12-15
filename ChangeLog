@@ -1,5 +1,18 @@
 2008-12-15  Thomas Mills Hinkle  <tom@hydrophax>
 
+	* src/lib/plugin_loader.py (MasterLoader.register_pluggable):
+	Fixed warning message.
+
+	* src/lib/GourmetRecipeManager.py (SuspendableDeletions): Create
+	class for running deletions in their own thread. This used to be
+	in the moribund GourmetThreads module.
+	(purge_selected_recs): Update deletion code to work with new
+	threadManager module.
+	(ImporterExporter): Get rid of unused old code.
+	(purge_rec_tree): Remove old lock-checking code.
+	(RecGui.purge_rec_tree): Update deletion code to work with new
+	threadManager module.
+
 	* src/lib/gtk_extras/LinkedTextView.py (LinkedPangoBuffer.set_text):
 	Unescape all text so that markup outside of links works
 	properly (fixes bug where <span> tags showed up in recipe card

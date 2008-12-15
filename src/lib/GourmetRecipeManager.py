@@ -23,7 +23,7 @@ from timer import show_timer
 _ = gettext.gettext
 from defaults.defaults import lang as defaults
 import plugin_loader, plugin, plugin_gui
-from threadManager import get_thread_manager, get_thread_manager_gui
+from threadManager import get_thread_manager, get_thread_manager_gui, SuspendableThread
 from zipfile import BadZipfile
 
 if os.name == 'posix':
@@ -524,6 +524,20 @@ class GourmetApplication:
         for r in self.rc.values():
             r.hide()
 
+class SuspendableDeletions (SuspendableThread):
+
+    def __init__ (self, recs, name=None):
+        self.recs = recs
+        self.rg = get_application()
+        SuspendableThread.__init__(self, name=name)
+
+    def do_run (self):
+        tot = len(self.recs)
+        for n,r in enumerate(self.recs):
+            self.check_for_sleep()
+            self.rg.rd.delete_rec(r)
+            self.emit('progress',float(n)/tot,_('Permanently deleted %s of %s recipes')%(n,tot))
+
 class RecTrash (RecIndex):
 
     default_searches = [{'column':'deleted','operator':'=','search':True}]
@@ -608,11 +622,6 @@ class RecTrash (RecIndex):
         self.rg.message(_('Undeleted recipes ') + msg)
 
     def purge_selected_recs (self, *args):
-        if not use_threads and self.rg.lock.locked_lock():
-            de.show_message(label=_('An import, export or deletion is running'),
-                            sublabel=_('Please wait until it is finished to delete recipes.')
-                            )
-            return
         debug("recTreeDeleteRec (self, *args):",5)
         sel = self.rectree.get_selection()
         if not sel: return
@@ -748,213 +757,26 @@ class ImporterExporter:
         #tmg.register_thread_with_dialog(_('Print recipes'),renderer)
         #tmg.show()
 
-    def export_selected_recs (self, *args): self.do_export(export_all=False)
-    def export_all_recs (self, *args): self.do_export(export_all=True)
-
-    def do_export (self, export_all=False):
-        if export_all: recs = self.rd.fetch_all(self.rd.recipe_table,deleted=False,sort_by=[('title',1)])
-        else: recs = self.get_selected_recs_from_rec_tree()
-        self.exportManager.offer_multiple_export(recs,
-                                                 self.prefs,
-                                                 prog=self.set_progress_thr,
-                                                 parent=self.app.get_toplevel())
-
-    def import_pre_hook (self, *args):
-        debug('import_pre_hook, gt.gtk_enter()',1)
-        debug('about to run... %s'%self.rd.add_hooks[1:-1],1)
-        #gt.gtk_enter()
-
-    def import_post_hook (self, *args):
-        debug('import_post_hook,gt.gtk_leave()',5)
-        #gt.gtk_leave()
-
     def import_webpageg (self, *args):
         self.importManager.offer_web_import(parent=self.app.get_toplevel())
 
     def do_import (self, *args):
         self.importManager.offer_import(self.window)
 
-    def importg (self, *args):
-        if not use_threads and self.lock.locked_lock():
-            de.show_message(label=_('An import, export or deletion is running'),
-                            sublabel=_('Please wait until it is finished to start your import.')
-                            )
-            return
-        import_directory = "%s/"%self.prefs.get('rec_import_directory',None)
-        debug('show import dialog',0)
-        ifiles=de.select_file(
-            _("Import Recipes"),
-            filename=import_directory,
-            filters=importers.FILTERS,
-            action=gtk.FILE_CHOOSER_ACTION_OPEN,
-            select_multiple=True)
-        if ifiles:
-            self.prefs['rec_import_directory']=os.path.split(ifiles[0])[0]
-            self.import_multiple_files(ifiles)
-        self.make_rec_visible()
-            
-    def prepare_import_classes (self, files):
-        """Handed multiple import files, prepare to import.
-
-        We return a tuple (importerClasses,cant_import)
-
-        importClass - an instance of importers.importer.MultipleImport
-        which handles the actual import when their run methods are
-        called.
-
-        cant_import - a list of files we couldn't import.
-
-        This does most of the work of import_multiple_files, but
-        leaves it up to our caller to display our progress dialog,
-        etc.
-        """
-        impClass = None            
-        importerClasses = []
-        cant_import = []
-        # we're going to make a copy of the list and chew it up. We do
-        # this rather than doing a for loop because zip files or other
-        # archives can end up expanding our list
-        imp_files = files[0:] 
-        while files:
-            fn = files.pop()
-            if type(fn)==str and os.path.splitext(fn)[1] in ['.gz','.gzip','.zip','.tgz','.tar','.bz2']:
-                try:
-                    debug('trying to unzip %s'%fn,0)
-                    from importers.zip_importer import archive_to_filelist
-                    archive_files = archive_to_filelist(fn)
-                    for a in archive_files:
-                        if type(a) == str:
-                            files += [a]
-                        else:
-                            # if we have file objects, we're going to write
-                            # them out to real files, so we don't have to worry
-                            # about details later (this is stupid, but I'm sick of
-                            # tracking down places where I e.g. closed files regardless
-                            # of whether I opened them)
-                            finame=tempfile.mktemp(a.name)
-                            tfi=open(finame,'w')
-                            tfi.write(a.read())
-                            tfi.close()
-                            files += [finame]
-                    continue
-                except:
-                    cant_import.append(fn)
-                    raise
-                    continue
-            try:
-                impfilt = importers.FILTER_INFO[importers.select_import_filter(fn)]
-            except NotImplementedError:
-                cant_import.append(fn)
-                continue
-            impClass = impfilt['import']({'file':fn,
-                                          'rd':self.rd,
-                                          'threaded':True,
-                                          })
-            if impfilt['get_source']:
-                if type(fn)==str: fname = fn
-                else: fname = "file"
-                source=de.getEntry(label=_("Default source for recipes imported from %s")%fname,
-                                   entryLabel=_('Source:'),
-                                   default=os.path.split(fname)[1], parent=self.app)
-                # the 'get_source' dict is the kwarg that gets
-                # set to the source
-                impClass[2][impfilt['get_source']]=source
-            if impClass: importerClasses.append((impClass,fn))
-            else:
-                debug('GOURMET cannot import file %s'%fn)
-        if importerClasses:
-            impClass = importers.importer.MultipleImporter(self,
-                                                           importerClasses)
-            return impClass,cant_import
+    def do_export (self, export_all=False):
+        if not hasattr(self,'exportManager'):
+            self.exportManager = get_export_manager()
+        if export_all:
+            recs = self.rd.fetch_all(self.rd.recipe_table,deleted=False,sort_by=[('title',1)])
         else:
-            return None,cant_import
+            recs = self.get_selected_recs_from_rec_tree()
+        self.exportManager.offer_multiple_export(
+            recs,
+            self.prefs,
+            prog=self.set_progress_thr,
+            parent=self.app.get_toplevel())
 
-    def import_multiple_files (self, files):
-        """Import multiple files,  showing dialog."""
-        # This should probably be moved to importer with a quiet/not quiet options
-        # and all of the necessary connections handed as arguments.
-        impClass,cant_import=self.prepare_import_classes(files)
-        if impClass:
-            filenames = filter(lambda x: isinstance(x,str), files)
-            self.run_import(
-                impClass,
-                import_source=string.join([os.path.split(f)[1] for f in filenames],", ")
-                )
-        if cant_import:
-            # if this is a file with a name...
-            BUG_URL="http://sourceforge.net/tracker/?group_id=108118&atid=649652"
-            sublabel = gettext.ngettext("Gourmet could not import the file %s",
-                                            "Gourmet could not import the following files: %s",
-                                            len(cant_import))%", ".join(cant_import)
-            sublabel += "\n"
-            sublabel += gettext.ngettext(
-                "If you believe this file is in one of the formats Gourmet supports, please submit a bug report at %s and attach the file.",
-                "If you believe these files are in a format Gourmet supports, please submit a bug report at %s and attach the file.",
-                len(cant_import))%BUG_URL
-            self.offer_url(
-                label=gettext.ngettext("Cannot import file.",
-                                       "Cannot import files.",
-                                       len(cant_import)),
-                sublabel=sublabel,
-                url=BUG_URL)
-            return
 
-    def run_import (self, impClass, import_source="", display_errors=True):
-        """Run our actual import and display progress dialog."""
-        # we have to make sure we don't filter while we go (to avoid
-        # slowing down the process too much).
-        raise NotImplemented
-        self.wait_to_filter=True
-        self.last_impClass = impClass
-        pre_hooks = [lambda *args: self.inginfo.disconnect_manually()]
-        post_hooks = [lambda *args: self.inginfo.reconnect_manually()]
-        pre_hooks.append(lambda *args: self.rd.add_hooks.insert(0,self.import_pre_hook))
-        pre_hooks.append(lambda *args: self.rd.add_hooks.append(self.import_post_hook))
-        self.threads += 1
-        release = lambda *args: self.lock.release()
-        post_hooks.extend([self.import_cleanup,
-                           lambda *args: setattr(self,'last_impClass',None),
-                           release])
-        def show_progress_dialog (t):
-            debug('showing progress dialog',3)
-            #gt.gtk_enter()
-            if import_source:
-                sublab = _('Importing recipes from %s')%import_source
-            else: sublab = None
-            self.rg.show_progress_dialog(
-                t,
-                {'label':_('Importing Recipes'),
-                 'sublabel':sublab
-                 })
-            #gt.gtk_leave()
-        pre_hooks.insert(0,show_progress_dialog)
-        pre_hooks.insert(0, lambda *args: self.lock.acquire())
-        t=gt.SuspendableThread(impClass,name="import",
-                               pre_hooks=pre_hooks, post_hooks=post_hooks,
-                               display_errors=display_errors)
-        if self.lock.locked_lock():
-            de.show_message(label=_('An import, export or deletion is running'),
-                            sublabel=_('Your import will start once the other process is finished.'))
-        debug('starting thread',2)
-        debug('PRE_HOOKS=%s'%t.pre_hooks,1)
-        debug('POST_HOOKS=%s'%t.post_hooks,1)
-        t.start()
-
-    @plugin_loader.pluggable_method
-    def import_cleanup (self, *args):
-        """Remove our threading hooks"""
-        debug('import_cleanup!',1)
-        self.rd.add_hooks.remove(self.import_pre_hook)
-        self.rd.add_hooks.remove(self.import_post_hook)
-        debug('hooks: %s'%self.rd.add_hooks,1)
-        self.wait_to_filter=False
-        gt.gtk_enter()
-        # Update our models for category, cuisine, etc.
-        self.update_attribute_models()
-        # Reset our index view
-
-        self.redo_search()
-        gt.gtk_leave()
 
     
 class StuffThatShouldBePlugins:
@@ -1033,13 +855,6 @@ class StuffThatShouldBePlugins:
             self.ve=valueEditor.ValueEditor(self.rd,self)
         self.ve.valueDialog.connect('response',lambda d,r: (r==gtk.RESPONSE_APPLY and self.update_attribute_models))
         self.ve.show()
-
-    #def email_recs (self, *args):
-    #    debug('email_recs called!',1)
-    #    recs = self.get_selected_recs_from_rec_tree()
-    #    d=recipe_emailer.EmailerDialog(recs, self.rd, self.prefs, self.conv)
-    #    d.setup_dialog()
-    #    d.email()
 
 ui = '''<ui>
 <menubar name="RecipeIndexMenuBar">
@@ -1218,7 +1033,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('DeleteRec',gtk.STOCK_DELETE,_('Delete recipe'),
              'Delete',_('Delete selected recipes'),self.rec_tree_delete_rec_cb),
             ('ExportSelected',None,_('E_xport selected recipes'),
-             None,_('Export selected recipes to file'),self.export_selected_recs),
+             None,_('Export selected recipes to file'),
+             lambda *args: self.do_export(export_all=False)),
             ('Print',gtk.STOCK_PRINT,_('_Print'),
              '<Control>P',None,self.print_recs),
             #('Email', None, _('E-_mail recipes'),
@@ -1245,7 +1061,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('ImportWeb',None,_('Import _webpage'),
              None,_('Import recipe from webpage'),self.import_webpageg),
             ('ExportAll',None,_('Export _all recipes'),
-             None,_('Export all recipes to file'),self.export_all_recs),
+             None,_('Export all recipes to file'),lambda *args: self.do_export(export_all=True)),
             ('Plugins',None,_('_Plugins'),
              None,_('Manage plugins which add extra functionality to Gourmet.'),
              lambda *args: plugin_gui.show_plugin_chooser()),
@@ -1379,11 +1195,6 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.message(_("Deleted") + ' ' + string.join([(r.title or _('Untitled')) for r in recs],', '))
 
     def purge_rec_tree (self, recs, paths=None, model=None):
-        if not use_threads and self.lock.locked_lock():
-            de.show_message(label=_('An import, export or deletion is running'),
-                            sublabel=_('Please wait until it is finished to delete recipes.')
-                            )
-            return
         if not recs:
             # Do nothing if there are no recipes to delete.
             return
@@ -1402,41 +1213,14 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             tree = te.QuickTree([r.title for r in recs])
             expander = [_("See recipes"),tree]
         if de.getBoolean(parent=self.app,label=bigmsg,sublabel=msg,expander=expander):
-            self.redo_search() # update all
 
-            def show_progress (t):
-                gt.gtk_enter()
-                self.show_progress_dialog(t,
-                                          progress_dialog_kwargs={'label':'Deleting recipes'},
-                                          message=_('Deletion paused'), stop_message=_("Stop deletion"))
-                gt.gtk_leave()
-            def save_delete_hooks (t):
-                self.saved_delete_hooks = self.rd.delete_hooks[0:]
-                self.rd.delete_hooks = []
-            def restore_delete_hooks (t):
-                self.rd.delete_hooks = self.saved_delete_hooks
-            pre_hooks = [
-                lambda *args: self.lock.acquire(),
-                save_delete_hooks,
-                show_progress,
-                ]
-            post_hooks = [
-                restore_delete_hooks,
-                lambda *args: self.lock.release()]
-            t=gt.SuspendableThread(gt.SuspendableDeletions(self, recs),
-                                name='delete',
-                                pre_hooks = pre_hooks,
-                                post_hooks = post_hooks)
-            if self.lock.locked_lock():
-                de.show_message(label=_('An import, export or deletion is running'),
-                                sublabel=_('The recipes will be deleted once the other process is finished.')
-                                )
-            debug('PRE_HOOKS=%s'%t.pre_hooks,1)
-            debug('POST_HOOKS=%s'%t.post_hooks,1)
-            debug('rd.add_hooks=%s'%self.rd.add_hooks,1)
-            gt.gtk_leave()
-            t.start()
-            gt.gtk_enter()
+            deleterThread = SuspendableDeletions(recs,name='delete_recs')
+            deleterThread.connect('done',lambda *args: self.recTrash.update_from_db())
+            tm = get_thread_manager()
+            tmg = get_thread_manager_gui()
+            tm.add_thread(deleterThread)
+            tmg.register_thread_with_dialog(_('Delete Recipes'),deleterThread)
+            tmg.show()
         else:
             return True
 
@@ -1469,6 +1253,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             debug("%s %s does not have an ID!"%(rec,rec.title),2)
         debug("returning None",2)
         return None
+
     # end deletion
 
     # end Extra Callbacks for actions on treeview
