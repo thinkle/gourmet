@@ -1,3 +1,8 @@
+2008-12-16  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/nutritional_information/data_plugin.py (NutritionDataPlugin.do_add_nutrition):
+	Add do_add_nutrition convenience method (fix bug #2405494)
+
 2008-12-15  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/plugin_loader.py (MasterLoader.register_pluggable):

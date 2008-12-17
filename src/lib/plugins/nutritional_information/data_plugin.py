@@ -52,8 +52,12 @@ class NutritionDataPlugin (DatabasePlugin):
                                             Column('density_equivalent',String(length=20),**{}),)
         class NutritionAlias (object): pass
         self.db._setup_object_for_table(self.db.nutritionaliases_table, NutritionAlias)
-
         self.setup_nutrition_conversions_table()
+        self.db.do_add_nutrition = self.do_add_nutrition
+
+    def do_add_nutrition (self, d):
+        return self.db.do_add_and_return_item(self.db.nutrition_table,d,id_prop='ndbno')
+        
         
     def update_version (self, gourmet_stored, plugin_stored, gourmet_current, plugin_current):
         if ((gourmet_stored[0] == 0 and gourmet_stored[1] < 14)
