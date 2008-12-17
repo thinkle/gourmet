@@ -31,7 +31,7 @@
     !define GOURMET_WEB_SITE "http://grecipe-manager.sourceforge.net"
     !define GOURMET_DOWNLOAD_SITE "http://sourceforge.net/project/showfiles.php?group_id=108118"
     !define GOURMET_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Gourmet.exe"
-    !define GOURMET_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${GOURMET_NAME}"
+    !define GOURMET_UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${GOURMET_NAME}"
     !define GOURMET_UNINST_ROOT_KEY "HKLM"
     !define GOURMET_STARTMENU_REGVAL "NSIS:StartMenuDir"
 
@@ -41,7 +41,6 @@
 
 
     !define GOURMET_REG_KEY             "SOFTWARE\gourmet"
-    !define GOURMET_UNINSTALL_KEY           "${GOURMET_UNINST_KEY}"
     !define HKLM_APP_PATHS_KEY                  "${GOURMET_DIR_REGKEY}"
     !define GOURMET_STARTUP_RUN_KEY         "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
     !define GOURMET_UNINST_EXE              "gourmet-uninst.exe"
@@ -138,7 +137,7 @@
         !define MUI_STARTMENUPAGE_NODISABLE
         !define MUI_STARTMENUPAGE_DEFAULTFOLDER "${GOURMET_NAME}"
         !define MUI_STARTMENUPAGE_REGISTRY_ROOT "${GOURMET_UNINST_ROOT_KEY}"
-        !define MUI_STARTMENUPAGE_REGISTRY_KEY "${GOURMET_UNINST_KEY}"
+        !define MUI_STARTMENUPAGE_REGISTRY_KEY "${GOURMET_UNINSTALL_KEY}"
         !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${GOURMET_STARTMENU_REGVAL}"
         !insertmacro MUI_PAGE_STARTMENU Application $ICONS_GROUP
 
@@ -618,7 +617,7 @@ Section Uninstall
     RMDir /r "$INSTDIR"
 
     ; Registry
-    DeleteRegKey ${GOURMET_UNINST_ROOT_KEY} "${GOURMET_UNINST_KEY}"
+    DeleteRegKey ${GOURMET_UNINST_ROOT_KEY} "${GOURMET_UNINSTALL_KEY}"
     DeleteRegKey HKLM "${GOURMET_DIR_REGKEY}"
     SetAutoClose false ; this lets us look at the uninstall log
 
