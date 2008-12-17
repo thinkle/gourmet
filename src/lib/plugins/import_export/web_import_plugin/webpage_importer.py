@@ -36,6 +36,7 @@ class WebParser (InteractiveImporter):
         self.soup = BeautifulSoup.BeautifulSoup(data,
                                                 convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
                                                 )
+        InteractiveImporter.__init__(self)        
         #self.generic_parser = RecipeParser()
         self.preparse()
         self.get_images()
@@ -204,7 +205,6 @@ class WebParser (InteractiveImporter):
 
     def do_run (self):
         parsed = self.parse_webpage()
-        InteractiveImporter.__init__(self)
         self.set_parsed(parsed)
         return InteractiveImporter.do_run(self)
 

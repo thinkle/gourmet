@@ -26,10 +26,15 @@ def grab_thumbnail (uri, type, iqueue, pqueue, progress_portion=1, progress_star
     pqueue.append(('Getting %s'%uri,0))
     import time
     #print 'Fetching ',uri
-    fi = check_for_thumbnail(uri,type,reporthook)
+    try:
+        fi = check_for_thumbnail(uri,type,reporthook)
+    except:
+        print 'WARNING: Error on creating thumbnail - ignoring'
+        import traceback; traceback.print_exc()
+    else:
+        iqueue.append((fi,uri))
     #print 'Fetched'
     #print 'Adding result to Queue'
-    iqueue.append((fi,uri))
     #print 'Done'
     
 class ImageBrowser (gtk.IconView):

@@ -1,5 +1,11 @@
 2008-12-16  Thomas Hinkle  <tom@grenville>
 
+	* src/lib/plugins/import_export/web_import_plugin/webpage_importer.py (WebParser.__init__):
+	Instantiate InteractiveImporter in __init__.py call.
+
+	* src/lib/importers/imageBrowser.py (grab_thumbnail): Ignore errors
+	in thumbnail creation (with warning).
+
 	* src/lib/plugins/nutritional_information/data_plugin.py (NutritionDataPlugin.do_add_nutrition):
 	Add do_add_nutrition convenience method (fix bug #2405494)
 
