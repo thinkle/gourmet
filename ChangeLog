@@ -1,3 +1,9 @@
+2008-12-19  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/check_encodings.py: Fix bug #2446589 by adding utf-16 to
+	our list of commonly tried encodings. Also, fix a bug in
+	check-encodings/diffy code.
+
 2008-12-16  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/plugins/import_export/web_import_plugin/webpage_importer.py (WebParser.__init__):

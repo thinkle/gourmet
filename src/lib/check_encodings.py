@@ -10,7 +10,7 @@ class CheckEncoding:
     def __init__ (self, file, encodings=None):
         if encodings: self.encodings = encodings
         else:
-            self.encodings = ['iso8859','ascii','latin_1','cp850','cp1252','utf-8',]
+            self.encodings = ['iso8859','ascii','latin_1','cp850','cp1252','utf-8','utf-16','utf-16-be']
         self.all_encodings= ['ascii','cp037','cp424',
                         'cp437','cp500','cp737','cp775','cp850','cp852',
                         'cp855','cp856','cp857','cp860','cp861','cp862',
@@ -218,6 +218,8 @@ class EncodingDialog (de.OptionDialog):
         enc_rest = [e.split('\n') for e in encoded_buffers[1:]]
         for linenum, l in enumerate(enc1.split('\n')):
             other_lines = [len(e)>linenum and e[linenum] for e in enc_rest]
+            # Remove any Falses returned by above 
+            other_lines = filter(lambda x: type(x) != bool, other_lines)
             if False in [l==ol for ol in other_lines]:
                 ranges = []
                 for chnum,ch in enumerate(l):
