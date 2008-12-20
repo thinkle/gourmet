@@ -6,12 +6,9 @@ from gettext import gettext as _
 class CheckEncoding:
 
     """A class to read a file and guess the correct text encoding."""
-    
-    def __init__ (self, file, encodings=None):
-        if encodings: self.encodings = encodings
-        else:
-            self.encodings = ['iso8859','ascii','latin_1','cp850','cp1252','utf-8','utf-16','utf-16-be']
-        self.all_encodings= ['ascii','cp037','cp424',
+
+    encodings = ['iso8859','ascii','latin_1','cp850','cp1252','utf-8','utf-16','utf-16-be']
+    all_encodings= ['ascii','cp037','cp424',
                         'cp437','cp500','cp737','cp775','cp850','cp852',
                         'cp855','cp856','cp857','cp860','cp861','cp862',
                         'cp863','cp864','cp865','cp869','cp874','cp875',
@@ -24,6 +21,9 @@ class CheckEncoding:
                         'mac_cyrillic','mac_greek','mac_iceland','mac_latin2',
                         'mac_roman','mac_turkish','utf_16','utf_16_be',
                         'utf_16_le','utf_7','utf_8']
+    
+    def __init__ (self, file, encodings=None):
+        if encodings: self.encodings = encodings
         if type(file)==str:
             file = open(file,'r')
         self.txt = file.read()
@@ -67,7 +67,7 @@ class GetFile (CheckEncoding):
         encs=self.get_encodings()
         if encs:
             if len(encs.keys()) > 1:
-                encoding = getEncoding(encodings=encs)
+                    encoding = getEncoding(encodings=encs)
             else:
                 encoding = encs.keys()[0]
             self.enc = encoding
@@ -97,11 +97,11 @@ class EncodingDialog (de.OptionDialog):
         self.encodings = encodings
         self.current_error = 0
         self.diff_texts()
-        options = self.create_options()
+        self.options = self.create_options()
         expander=self.create_expander()
         self.setup_buffers()
         de.OptionDialog.__init__(self, default=default,label=label, sublabel=sublabel,
-                                 options=options, expander=expander)
+                                 options=self.options, expander=expander)
         self.set_default_size(700,500)
         self.optionMenu.connect('activate',self.change_encoding)
         self.change_encoding()
@@ -124,7 +124,12 @@ class EncodingDialog (de.OptionDialog):
         self.change_encoding()
 
     def create_options (self):
-        return self.encodings.keys()
+        options = self.encodings.keys()
+        masterlist = CheckEncoding.encodings + CheckEncoding.all_encodings
+        def comp (a,b):
+            return cmp(masterlist.index(a),masterlist.index(b))
+        options.sort(comp)
+        return options
 
     def create_expander (self):
         self.evb = gtk.VBox()
@@ -233,11 +238,15 @@ class EncodingDialog (de.OptionDialog):
         
 def getEncoding (*args,**kwargs):
     d=EncodingDialog(*args,**kwargs)
-    return d.run()
+    result = d.run()
+    if not result and d.encodings:
+        return d.options[0]
+    else:
+        return 'ascii'
 
 if __name__ == '__main__':
     print 'grabbing dialog extras'
-    import dialog_extras as de
+    import gtk_extras.dialog_extras as de
     print 'selecting file'
     fn=de.select_file('Select file to decode',filters=[['Plain Text',['text/plain'],'*txt']],)
     print 'fn = ',fn

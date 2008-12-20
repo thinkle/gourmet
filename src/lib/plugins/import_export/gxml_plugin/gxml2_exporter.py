@@ -19,7 +19,8 @@ class rec_to_xml (XmlExporter):
     doc_element = 'gourmetDoc'
     doctype_desc = ''
     dtd_path = ''
-
+    ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS = False
+    
     def write_head (self):
         self.rec_el = self.create_element_with_attrs("recipe",{'id':self.r.id})
         self.top_element.appendChild(self.rec_el)

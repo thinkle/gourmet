@@ -1,13 +1,13 @@
 import test # Get our path set so we work...
 import sys
 sys.argv.append('--gourmet-directory=/tmp/')
-import recipeManager as rm
+import gourmet.recipeManager as rm
 import time
 import os,os.path,re
 import tempfile
 import traceback
 import unittest
-import importers.importManager
+from gourmet.importers.importManager import ImportManager, ImportFileList
 from gourmet.recipeManager import get_recipe_manager
 
 TEST_FILE_DIRECTORY = 'recipe_files'
@@ -42,7 +42,7 @@ def old_time_me (f):
             return ret
     return _
 
-class ThreadlessImportManager (importers.importManager.ImportManager):
+class ThreadlessImportManager (ImportManager):
 
     def get_app_and_prefs (self):
         self.prefs = {}
@@ -69,6 +69,7 @@ def get_im ():
 class ImportTest:
 
     #failures = []
+    __count = 1
 
     def run (self, tests):
         for d in tests: self.run_test(d)
@@ -87,10 +88,15 @@ class ImportTest:
 
     def do_test (self, test):
         recs = self.db.search_recipes(
-            [{'column':'title',
-             'search':test['title'],
-             'operator':'=',
-             }]
+            [
+                {'column':'deleted',
+                 'search':False,
+                 'operator':'='},
+                {'column':'title',
+                 'search':test['title'],
+                 'operator':'=',
+                 }
+             ]
             )
         if not recs:
             raise AssertionError(
@@ -143,6 +149,7 @@ class ImportTest:
                 assert(not cats)
             except:
                 raise AssertionError('Categories include %s not specified in %s'%(cats,test['categories']))
+        print 'Passed test:',test
     
     @time_me
     def setup_db (self):
@@ -172,11 +179,25 @@ class ImportTestCase (unittest.TestCase):
 
     def tearDown (self):
         print 'tearDown'
-        from exporters.gxml2_exporter import recipe_table_to_xml as gxml_exporter
+        from gourmet.plugins.import_export.gxml_plugin.gxml2_exporter import recipe_table_to_xml as gxml_exporter
         n = 1
         while os.path.exists('/tmp/gourmet_import_test_%s.grmt'%n): n+=1
-        ge=gxml_exporter(self.it.db,self.it.db.fetch_all(self.it.db.recipe_table),'/tmp/gourmet_import_test_%s.grmt'%n)
+        print 'Saving export of imported files to /tmp/gourmet_import_test_%s.grmt'%n
+        ge=gxml_exporter(self.it.db,self.it.db.fetch_all(self.it.db.recipe_table,deleted=False),'/tmp/gourmet_import_test_%s.grmt'%n)
         ge.run()
+        # Trash all our recipes so they don't contaminate the next test...
+        self.it.db.recipe_table.update().execute({'deleted':True}); self.it.db.db.commit()
+
+    def testArchive (self):
+        self.it.run_test({
+                'filename' : 'mealmaster_recs.zip',
+                'test' : {'title':'Almond Mushroom Pate'},
+                }
+                         )
+        self.it.run_test({
+                'filename' : 'recipes.tar.bz2',
+                }
+                         )
 
     def testMastercookXML (self):
         self.it.run_test({'filename':'athenos1.mx2',
@@ -222,15 +243,15 @@ class ImportTestCase (unittest.TestCase):
     #}
     #                          })#allrecipes.com
 
-    def testEpicurious (self):
-        self.it.run_test(
-            {'url':'http://www.epicurious.com/recipes/recipe_views/views/106711'}
-            ) #eatingwell
+    #def testEpicurious (self):
+    #     self.it.run_test(
+    #       {'url':'http://www.epicurious.com/recipes/recipe_views/views/106711'}
+    #        ) #eatingwell
 
-    def testFoodNetwork (self):
-        self.it.run_test(
-            {'url':'http://www.foodnetwork.com/food/recipes/recipe/0,1977,FOOD_9936_31916,00.html'}
-            )
+    #def testFoodNetwork (self):
+    #     self.it.run_test(
+    #        {'url':'http://www.foodnetwork.com/food/recipes/recipe/0,1977,FOOD_9936_31916,00.html'}
+    #       )
 
 
 if __name__ == '__main__':

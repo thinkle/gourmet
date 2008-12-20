@@ -1,30 +1,32 @@
 THIS FILE LISTS TESTS I TRY TO DO BEFORE RELEASE
 
 Shopping List Generation
-- from index view
-- from card view
-- with multiplication
-- with optional ingredients
-- with saved optional ingredients
+- from index view[X]
+- from card view[X]
+- with multiplication[X]
+- with optional ingredients[X]
+- with saved optional ingredients[X]
 
 Index View Searching
-- Limited Searching
+- Limited Searching[X]
 
 Import
-- Webpage
-- Zipped Archive
-- Mealmaster
-- Mastercook
-- gourmet
+- Webpage[X]
+- Zipped Archive[X]
+- Mealmaster[X]
+- Mastercook[X]
+- gourmet[X]
 
 Export
-- html
-- Gourmet (+ reimport)
+- html [X]
+- Gourmet (+ reimport) [X]
+- PDF [X]
 
 Customization
+- Customize columns in Index View [X]
 - Hide recipe widgets
 
 Recipe Card View
-- Export from this view
-- Multiply (+ print)
-- Add image
+- Export from this view [X]
+- Multiply (+ print)  [X]
+- Add image [X]

@@ -401,7 +401,7 @@
 
 				      <child>
 					<widget class="GtkLabel" id="label9">
-					  <property name="visible">True</property>
+					  <property name="visible">False</property>
 					  <property name="label" translatable="yes">&lt;i&gt;Remove items you don't use from the Recipe Card interface.&lt;/i&gt;</property>
 					  <property name="use_underline">False</property>
 					  <property name="use_markup">True</property>

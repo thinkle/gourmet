@@ -44,9 +44,7 @@ class NutritionBaseExporterPlugin (BaseExporterPlugin):
                 if unit:
                     itm_text += ' (%s)'%unit
                 if type(properties) == list:
-                    print 'Summing',properties
                     amts = [getattr(nutinfo,att) for att in properties]
-                    print 'amts',amts
                     amt = sum(amts)
                 else:
                     amt = getattr(nutinfo,properties)

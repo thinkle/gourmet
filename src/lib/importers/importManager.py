@@ -121,12 +121,9 @@ class ImportManager (plugin_loader.Pluggable):
             fn = filenames.pop()
             fallback = None
             found_plugin = False
-            print 'we have the following plugins:',self.plugins
             for plugin in self.plugins:
                 for pattern in plugin.patterns:
-                    print 'Testing ',pattern,'against',fn
                     if fnmatch(fn.upper(),pattern.upper()):
-                        print 'A match!'
                         result = plugin.test_file(fn)
                         if result==-1: # FALLBACK
                             fallback = plugin
@@ -156,7 +153,7 @@ class ImportManager (plugin_loader.Pluggable):
             if hasattr(importer,'pre_run'):
                 importer.pre_run()
             if isinstance(importer,NotThreadSafe):
-                print 'Running manually --- not threadsafe!'
+                #print 'Running manually --- not threadsafe!'
                 importer.run()
                 self.follow_up(None,importer)
             else:
@@ -214,9 +211,20 @@ class ImportManager (plugin_loader.Pluggable):
             return mimetypes.guess_extension(content_type)
         
     def get_filters (self):
-        filters = []
+        all_importable_mimetypes = []
+        all_importable_patterns = []
+        filters = []; names = []
         for plugin in self.plugins:
-            filters.append([plugin.name,plugin.mimetypes,plugin.patterns])
+            if plugin.name in names:
+                i = names.index(plugin.name)
+                filters[i][1] += plugin.mimetypes
+                filters[i][2] += plugin.patterns
+            else:
+                names.append(plugin.name)
+                filters.append([plugin.name,plugin.mimetypes,plugin.patterns])
+            all_importable_mimetypes += plugin.mimetypes
+            all_importable_patterns += plugin.patterns
+        filters = [[_('All importable files'),all_importable_mimetypes,all_importable_patterns]] + filters
         return filters
 
     def register_plugin (self, plugin):

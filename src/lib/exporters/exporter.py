@@ -21,7 +21,8 @@ class exporter (SuspendableThread, Pluggable):
     DEFAULT_ENCODING = 'utf-8'
 
     name='exporter'
-
+    ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS = True
+    
     def __init__ (self, rd, r, out,
                   conv=None,
                   imgcount=1,

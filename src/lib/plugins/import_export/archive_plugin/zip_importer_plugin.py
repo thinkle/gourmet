@@ -1,6 +1,7 @@
 from gourmet.plugin import ImporterPlugin
 from gourmet.importers.importManager import ImportFileList
 from zip_readers import archive_to_filelist
+import fnmatch
 
 class ArchiveImporterPlugin (ImporterPlugin):
 
@@ -15,10 +16,11 @@ class ArchiveImporterPlugin (ImporterPlugin):
 
     def test_file (self, filename):
         '''Given a filename, test whether the file is of this type.'''
-        # Lame lame test...
-        return ( filename.lower().split('.')[-1] in self.patterns )
+        for p in self.patterns:
+            if fnmatch.fnmatch(filename.lower(),p.lower()): return True
 
     def get_importer (self, filename):
         flist = archive_to_filelist(filename)
+        print 'Filelist=',flist
         ifl = ImportFileList(flist)
         raise ifl

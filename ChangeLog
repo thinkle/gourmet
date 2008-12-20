@@ -1,3 +1,38 @@
+2008-12-19  Thomas Hinkle  <tom@grenville>
+
+	* src/tests/testImporters.py (ImportTestCase.testArchive): Add
+	test of archive plugin
+
+	* src/lib/plugins/import_export/archive_plugin/zip_importer_plugin.py (ArchiveImporterPlugin.test_file):
+	Fix file pattern matching using fnmatch.
+
+	* glade/preferenceDialog.glade: Hide label for removing items you
+	don't use from recipe card interface, since this interface isn't
+	currently functional anyway.
+
+	* src/lib/exporters/exporter.py (exporter): Create new
+	ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS attribute (defaults to True).
+
+	* src/lib/plugins/import_export/gxml_plugin/gxml2_exporter.py (rec_to_xml):
+	Don't allow plugins to create new fields since supposedly we could
+	be creating valid XML and plugins would create a moving target.
+
+	* src/lib/plugin.py (BaseExporterPlugin.add_field.do_write):
+	Respect new exporter attribute ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS
+	which allows exporters to prevent their write_attr/write_text
+	methods from being called with new plugin-invented fields
+
+	* src/lib/importers/importManager.py (ImportManager.get_filters):
+	Remove repeat filetypes in file dialog filter dropdown + add "All
+	importable files" filter as default file filter.
+
+	* src/lib/check_encodings.py (EncodingDialog.create_options): Make
+	encodings in encoding choosing dialog follow order given in source
+	code for encodings/all_encodings (presumably the order of common
+	to uncommon).
+	(getEncoding): If user cancels dialog, give them the first
+	encoding on the list rather than throwing an error.
+
 2008-12-19  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/check_encodings.py: Fix bug #2446589 by adding utf-16 to

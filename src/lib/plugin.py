@@ -163,7 +163,8 @@ class BaseExporterPlugin (Plugin):
                     klass = args[0]
                 val = field_fetcher(klass.r)
                 if not val: val = ''
-                klass.write_text(field_name,val)
+                if klass.ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS:
+                    klass.write_text(field_name,val)
             self.hooks_to_add.append((position,'_write_text_',do_write))
         else:
             def do_write (*args):
@@ -173,7 +174,8 @@ class BaseExporterPlugin (Plugin):
                 else:
                     klass = args[0]
                 val = field_fetcher(klass.r)
-                klass.write_attr(field_name,val)
+                if klass.ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS:                
+                    klass.write_attr(field_name,val)
             self.hooks_to_add.append((position,'_write_attrs_',do_write))
 
 class BaseExporterMultiRecPlugin (Plugin):
