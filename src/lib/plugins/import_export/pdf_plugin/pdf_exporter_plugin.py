@@ -32,3 +32,6 @@ class PdfExporterPlugin (ExporterPlugin):
 
     def run_extra_prefs_dialog (self):
         return pdf_exporter.get_pdf_prefs()
+
+    def get_default_prefs (self):
+        return pdf_exporter.PDF_PREF_DEFAULT

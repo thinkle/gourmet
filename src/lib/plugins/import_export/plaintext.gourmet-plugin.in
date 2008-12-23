@@ -3,6 +3,6 @@ Module = plaintext_plugin
 Version = 1.0
 API_Version = 1.0
 _Name = Plain Text Guided Import
-_Comment = Help user mark up and import plain text
+_Comment = Help user mark up and import plain text. Also provides plain text export.
 _Category = Importer/Exporter
 Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>

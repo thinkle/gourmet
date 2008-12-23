@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module = email_plugin
+Version = 1.0
+API_Version = 1.0
+_Name = Send to Email
+_Comment = Email recipes from Gourmet
+_Category = Main
+Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>

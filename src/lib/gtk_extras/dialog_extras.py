@@ -858,14 +858,18 @@ def saveas_file (title,
     retval = sfd.run()
     if not retval:
         return None,None    
+    exp_type = get_type_for_filters(retval, filters)
+    return retval, exp_type
+
+def get_type_for_filters (fname, filters):
+    base,ext = os.path.splitext(fname)
     exp_type = None
-    base,ext = os.path.splitext(retval)
     while filters and not exp_type:
         name,mime,rgxps = filters.pop()
         for r in rgxps:
             if os.path.splitext(r)[1] == ext:
                 exp_type = name
-    return retval,exp_type
+    return exp_type
 
 def select_image (title,
                   filename=None,

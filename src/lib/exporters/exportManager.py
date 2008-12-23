@@ -4,6 +4,9 @@ import gourmet.gtk_extras.dialog_extras as de
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui
 import os.path
 
+EXTRA_PREFS_AUTOMATIC = -1
+EXTRA_PREFS_DEFAULT = 0
+
 class ExportManager (plugin_loader.Pluggable):
 
     '''A class to manage exporters.
@@ -39,8 +42,11 @@ class ExportManager (plugin_loader.Pluggable):
                                            )
         if not filename: return
         if not exp_type or not self.can_export_type(exp_type):
-            de.show_message(label=_('Gourmet cannot export file of type "%s"')%os.path.splitext(fn)[1])
+            de.show_message(label=_('Gourmet cannot export file of type "%s"')%os.path.splitext(filename)[1])
             return
+        return self.do_single_export(filename, exp_type)
+        
+    def do_single_export (self, filename, exp_type):
         exporter_plugin = self.get_exporter(exp_type)
         extra_prefs = exporter_plugin.run_extra_prefs_dialog() or {}
         if hasattr(exporter_plugin,'mode'):
@@ -69,7 +75,6 @@ class ExportManager (plugin_loader.Pluggable):
                            _('Recipe exported to %s')%filename,
                            url='file:///%s'%filename)
         return filename
-    
 
     def offer_multiple_export (self, recs, prefs, parent=None, prog=None):
         """Offer user a chance to export multiple recipes at once.
@@ -88,31 +93,43 @@ class ExportManager (plugin_loader.Pluggable):
         if fn:
             prefs['rec_exp_directory']=os.path.split(fn)[0]
             prefs['save_recipes_as']=os.path.splitext(fn)[1]
-            expClass=None
-            if self.can_export_type(exp_type):
-                myexp = self.get_exporter(exp_type)
+            instance = self.do_multiple_export(recs, fn, exp_type)
+            import gourmet.GourmetRecipeManager
+            main_app =  gourmet.GourmetRecipeManager.get_application()
+            print 'Connect',instance,'to show dialog when done'
+            instance.connect('completed',
+                             lambda *args: main_app.offer_url('Export complete!',
+                                                              'Recipes exported to %s'%fn,
+                                                              url='file:///%s'%fn))
+
+    def do_multiple_export (self, recs, fn, exp_type=None,
+                                           setup_gui=True, extra_prefs=EXTRA_PREFS_AUTOMATIC):
+        if not exp_type:
+            exp_type = de.get_type_for_filters(fn,self.get_multiple_filters())
+        if self.can_export_type(exp_type):
+            myexp = self.get_exporter(exp_type)
+            if extra_prefs == EXTRA_PREFS_AUTOMATIC:
                 extra_prefs = myexp.run_extra_prefs_dialog() or {}
-                pd_args={'label':myexp.label,'sublabel':myexp.sublabel%{'file':fn}}
-                print 'exporting',len(recs),'recs'
-                exporterInstance = myexp.get_multiple_exporter({'rd':self.app.rd,
-                                                             'rv': recs,
-                                                             'conv':self.app.conv,
-                                                             'prog':prog,
-                                                             'file':fn,
-                                                             'extra_prefs':extra_prefs,
-                                                             })
-                import gourmet.GourmetRecipeManager
-                main_app =  gourmet.GourmetRecipeManager.get_application()
-                tm = get_thread_manager()
+            elif extra_prefs == EXTRA_PREFS_DEFAULT:
+                extra_prefs = myexp.get_default_prefs()
+            else:
+                extra_prefs = extra_prefs
+            pd_args={'label':myexp.label,'sublabel':myexp.sublabel%{'file':fn}}
+            exporterInstance = myexp.get_multiple_exporter({'rd':self.app.rd,
+                                                         'rv': recs,
+                                                            #'conv':self.app.conv,
+                                                            #'prog':,
+                                                         'file':fn,
+                                                         'extra_prefs':extra_prefs,
+                                                         })
+            tm = get_thread_manager()
+            tm.add_thread(exporterInstance)
+            if setup_gui:
                 tmg = get_thread_manager_gui()
-                tm.add_thread(exporterInstance)
                 tmg.register_thread_with_dialog(_('Export')+'('+myexp.label+')',exporterInstance)
                 tmg.show()
-                exporterInstance.connect('completed',
-                                         lambda *args: main_app.offer_url('Export complete!',
-                                                                          'Recipes exported to %s'%fn,
-                                                                          url='file:///%s'%fn))
-                
+            print 'Return exporter instance'
+            return exporterInstance  
 
     def can_export_type (self, name): return self.plugins_by_name.has_key(name)
 

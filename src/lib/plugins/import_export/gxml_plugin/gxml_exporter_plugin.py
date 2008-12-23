@@ -17,7 +17,7 @@ class GourmetExporterPlugin (ExporterPlugin):
             args['rd'],
             args['rv'],
             args['file'],
-            progress_func=args['prog'])
+            )
 
     def do_single_export (self, args)    :
         gxml2_exporter.recipe_table_to_xml(args['rd'],

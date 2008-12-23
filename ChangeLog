@@ -1,3 +1,58 @@
+2008-12-22  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py (MealmasterExporterPlugin):
+	Mealmaster file are text/plain, not text/html
+
+	* src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py (GourmetExporterPlugin.get_multiple_exporter):
+	Remove obsolete references to progress_func
+
+	* src/lib/plugins/import_export/gxml_plugin/gxml2_exporter.py (__init__):
+	Remove obsolete references to progress_func
+
+	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py (PdfExporterPlugin.get_default_prefs):
+	Add method to bypass prefs dialog when necessary.
+
+	* src/lib/gtk_extras/dialog_extras.py (get_type_for_filters):
+	Separate function to grab the type of a file based on the filters
+	used to save it. Split this out of the functions that get the
+	actual file.
+
+	* src/lib/exporters/exportManager.py (ExportManager): Split off
+	separate do_multiple_export and do_single_export methods to allow
+	outside functions/plugins to use exporters without having the user
+	select the file name/type through the UI.
+
+	* src/lib/backends/db.py (RecData.backup_db): Warn user when doing
+	a DB update with little/no feedback on progress.
+
+	* src/lib/plugin.py (ExporterPlugin): Add get_default_prefs method
+	as alternative to run_extra_prefs_dialog (to enable full
+	automation, for example, of libraries that like to ask users for
+	prefs)
+
+	* src/lib/plugins/email_plugin/*: Pluginify email
+	functionality. We now just support PDF and plain text (the HTML
+	was a failed attempt to write HTML email anyway)
+	
+	* TESTS: Add some more tests we should do before stable releases.
+
+2008-12-21  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/import_export/plaintext.gourmet-plugin.in (_Comment):
+	++export.
+
+	* src/lib/plugins/import_export/plaintext_plugin/__init__.py: Add
+	plaintext_exporter to plaintext_plugin.
+
+	* src/lib/backends/db.py (RecData.backup_db): Let user know when
+	we're doing a potentially slow DB upgrade (note that this is
+	implemented directly in GTK so the DB code now depends on GTK at
+	least in the upgrade spot; if we ever properly abstract the DB for
+	another front-end we'll need to rework this.
+
+	* src/lib/plugin.py (BaseExporterPlugin.add_field.do_write): Don't
+	pass mark-up to exporters that expect plain text.
+
 2008-12-19  Thomas Hinkle  <tom@grenville>
 
 	* src/tests/testImporters.py (ImportTestCase.testArchive): Add

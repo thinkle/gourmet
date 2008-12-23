@@ -120,6 +120,9 @@ class ExporterPlugin (StandardPlugin):
     def run_extra_prefs_dialog (self):
         pass
 
+    def get_default_prefs (self):
+        return {}
+
 class BaseExporterPlugin (Plugin):
     '''This is designed to change the behavior of other exporters.
 
@@ -162,6 +165,8 @@ class BaseExporterPlugin (Plugin):
                 else:
                     klass = args[0]
                 val = field_fetcher(klass.r)
+                if klass.do_markup:
+                    val = klass.handle_markup(val)
                 if not val: val = ''
                 if klass.ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS:
                     klass.write_text(field_name,val)
@@ -174,6 +179,8 @@ class BaseExporterPlugin (Plugin):
                 else:
                     klass = args[0]
                 val = field_fetcher(klass.r)
+                if klass.do_markup:
+                    val = klass.handle_markup(val)
                 if klass.ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS:                
                     klass.write_attr(field_name,val)
             self.hooks_to_add.append((position,'_write_attrs_',do_write))
@@ -284,7 +291,7 @@ class UIPlugin (StandardPlugin, UIModule):
             merge_id,action_ids = self.merged[uimanager]
             for ag in action_ids: uimanager.remove_action_group(ag)
             uimanager.remove_ui(merge_id)
-
+    
     def add_to_uimanager (self, uimanager):
         merge_id = uimanager.add_ui_from_string(self.ui)
         action_ids = []
@@ -351,7 +358,7 @@ class RecDisplayModule (UIModule):
 
     def __init__ (self, recDisplay):
         self.rd = recDisplay; self.rg = self.rd.rg
-        Module.__init__(self)
+        UIModule.__init__(self)
 
 class RecEditorModule (UIModule):
     

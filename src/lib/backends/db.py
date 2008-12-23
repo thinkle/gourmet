@@ -396,7 +396,15 @@ class RecData (Pluggable):
             backup_file_name += 'I'
         print 'Making a backup copy of DB in ',backup_file_name
         print 'You can use it to restore if something ugly happens.'
-        shutil.copy(self.filename,backup_file_name) # Make a backup...            
+        shutil.copy(self.filename,backup_file_name) # Make a backup...
+        import gourmet.gtk_extras.dialog_extras as de
+        import gtk
+        de.show_message(
+            title=_("Upgrading database"),
+            label=_("Upgrading database"),            
+            sublabel=_("Depending on the size of your database, this may be an intensive process and may take  some time. Your data has been automatically backed up in case something goes wrong."),
+            expander=(_("Details"),_("A backup has been made in %s in case something goes wrong. If this upgrade fails, you can manually rename your backup file recipes.db to recover it for use with older Gourmet.")%backup_file_name),
+            message_type=gtk.MESSAGE_INFO)
 
     def update_version_info (self, version_string):
         """Report our version to the database.
@@ -432,7 +440,7 @@ class RecData (Pluggable):
             stored_info = self.fetch_one(self.info_table)            
         
         ### Code for updates between versions...
-        if not self.new_db:            
+        if not self.new_db:  
             # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up keylookup_table tables...
             # We don't actually do this yet... (FIXME)
             #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor

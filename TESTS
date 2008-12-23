@@ -30,3 +30,10 @@ Recipe Card View
 - Export from this view [X]
 - Multiply (+ print)  [X]
 - Add image [X]
+
+Plugins
+- Test response to bug in plugin (shouldn't bring down app)
+
+Upgrade
+- Test upgrade from last stable version
+- Time permitting, test upgrade from earlier stable versions
