@@ -3,19 +3,37 @@
 This module contains code for handling the 'merging' of duplicate
 recipes.
 """
-import gtk, os.path, time
+import gtk, pango, os.path, time
 import gourmet.recipeIdentifier
-from gourmet.gtk_extras import ratingWidget, mnemonic_manager
+from gourmet.gtk_extras import ratingWidget, mnemonic_manager, dialog_extras
 import gourmet.recipeIdentifier
 import gourmet.convert as convert
 import gourmet.gglobals as gglobals
+import gourmet.recipeManager
 from gettext import gettext as _
+
+NEWER = 1
+OLDER = 2
 
 try:
     current_path = os.path.split(os.path.join(os.getcwd(),__file__))[0]
 except:
     current_path = ''
 
+def time_to_text (val):
+    curtime = time.time()
+    if val == 0:
+        return 'Unknown'
+    # within 18 hours, return in form 4 hours 23 minutes ago or some such    
+    if curtime - val < 18 * 60 * 60:
+        return _("%s ago")%convert.seconds_to_timestring(curtime-val,round_at=1)
+    tupl=time.localtime(val)
+    if curtime - val <  7 * 24 * 60 * 60:
+        return time.strftime('%A %T',tupl)
+    else:
+        return time.strftime('%D %T',tupl)
+       
+    
 class ConflictError (ValueError):
     def __init__ (self, conflicts):
         self.conflicts = conflicts
@@ -34,8 +52,11 @@ class RecipeMergerDialog:
     DUP_INDEX_PAGE = 0
     MERGE_PAGE = 1
     
-    def __init__ (self, rd, in_recipes=None, on_close_callback=None):
-        self.rd = rd
+    def __init__ (self, rd=None, in_recipes=None, on_close_callback=None):
+        if rd:
+            self.rd = rd
+        else:
+            self.rd = gourmet.recipeManager.get_recipe_manager()
         self.in_recipes = in_recipes
         self.on_close_callback = on_close_callback
         self.to_merge = [] # Queue of recipes to be merged...
@@ -53,6 +74,7 @@ class RecipeMergerDialog:
             'on_cancelMergeButton_clicked':self.cancel_merge,
             'on_mergeSelectedButton_clicked':self.merge_selected,
             'on_applyButton_clicked':self.apply_merge,
+            'auto_merge':self.offer_auto_merge,
             'close':self.close,
             }
             )
@@ -62,8 +84,9 @@ class RecipeMergerDialog:
             'recipeDiffScrolledWindow',
             'duplicateRecipeTreeView',
             'mergeAllButton','mergeSelectedButton', # buttons on list-dups page (minus close button)
-            'applyMergeButton','cancelMergeButton', # buttons on merge-recs page
-            'searchTypeCombo','includeDeletedRecipesCheckButton','notebook'
+            'applyMergeButton','closeMergeButton','cancelMergeButton', # buttons on merge-recs page
+            'searchTypeCombo','includeDeletedRecipesCheckButton','notebook',
+            'mergeInfoLabel'
             ]:
             setattr(self,w,self.glade.get_widget(w))
         self.setup_treeview()
@@ -74,12 +97,11 @@ class RecipeMergerDialog:
         self.duplicateRecipeTreeView.append_column(col)
         self.duplicateRecipeTreeView.insert_column_with_data_func(
             -1, # position
-            'Last Modified', # title
-            renderer, # renderer
-            self.time_cell_data_func, # function
-            3 # data column
-            )
-        self.duplicateRecipeTreeView.append_column(col)
+             'Last Modified', # title
+             renderer, # renderer
+             self.time_cell_data_func, # function
+             3 # data column
+             )
         col = gtk.TreeViewColumn('Duplicates',renderer,text=4)
         self.duplicateRecipeTreeView.append_column(col)
         self.duplicateRecipeTreeView.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
@@ -88,24 +110,7 @@ class RecipeMergerDialog:
         """Display time in treeview cell.
         """
         val = model.get_value(titer,data_col)
-        curtime = time.time()
-        # within 18 hours, return in form 4 hours 23 minutes ago or some such
-        if val == 0:
-            cell.set_property('text',_('Unknown'))
-            return
-        if curtime - val < 18 * 60 * 60:
-            cell.set_property('text',
-                              _("%s ago")%convert.seconds_to_timestring(curtime-val,round_at=1))
-            return
-        tupl=time.localtime(val)
-        if curtime - val <  7 * 24 * 60 * 60:
-            cell.set_property('text',
-                              time.strftime('%A %T',tupl))
-            return
-        else:
-            cell.set_property('text',
-                              time.strftime('%D %T',tupl))
-            return
+        cell.set_property('text',time_to_text(val))
 
     def populate_tree (self):
         """Populate treeview with duplicate recipes.
@@ -137,7 +142,7 @@ class RecipeMergerDialog:
             r = self.rd.get_rec(first)
             firstIter = self.treeModel.append(
                 None,
-                (dup_index, first, r.title, r.last_modified or 0, str(nduplicates))
+                (dup_index or 0, first or 0, r.title or '', r.last_modified or 0, str(nduplicates))
                 )
             for o in others:
                 r = self.rd.get_rec(o)
@@ -147,11 +152,18 @@ class RecipeMergerDialog:
     def merge_next_recipe (self, ):
         if self.to_merge:
             self.current_dup_index = self.to_merge.pop(0)
+            self.mergeInfoLabel.set_text(
+                'Merging recipe %(index)s of %(total)s'%{
+                    'index':self.total_to_merge - len(self.to_merge),
+                    'total':self.total_to_merge
+                    })
             duplicate_recipes = self.dups[self.current_dup_index]
             #self.idt = IngDiffTable(self.rd,duplicate_recipes[0],duplicate_recipes[1])
             self.current_recs = [self.rd.get_rec(i) for i in duplicate_recipes]
+            last_modified = {'last_modified':[r.last_modified for r in self.current_recs]}
             self.current_diff_data = gourmet.recipeIdentifier.diff_recipes(self.rd,self.current_recs)
-            self.diff_table = DiffTable(self.current_diff_data,self.current_recs[0],parent=self.recipeDiffScrolledWindow)
+            last_modified.update(self.current_diff_data)            
+            self.diff_table = DiffTable(last_modified,self.current_recs[0],parent=self.recipeDiffScrolledWindow)
             self.diff_table.add_ingblocks(self.rd, self.current_recs)
             if not self.diff_table.idiffs and not self.current_diff_data:
                 # If there are no differences, just merge the recipes...
@@ -201,15 +213,76 @@ class RecipeMergerDialog:
         for d in dup_indices:
             if d not in self.to_merge:
                 self.to_merge.append(d)
+        self.total_to_merge = len(self.to_merge)
         self.merge_next_recipe()
         
     def merge_all (self, *args):
         """Merge all rows currently in treeview.
         """
-        #print 'CALL: merge_all'
-        self.to_merge = range(len(self.dups))
+        self.total_to_merge = len(self.dups)
+        self.to_merge = range(self.total_to_merge)
         self.merge_next_recipe()
 
+    def offer_auto_merge (self, *args):
+        try:
+            option =dialog_extras.getOption(
+                label=_('Auto-Merge recipes'),
+                options=[
+                    (_('Always use newest recipe'),NEWER),
+                    (_('Always use oldest recipe'),OLDER),
+                    # The following would be nice to add eventually...
+                    #_('Always use longer field'),
+                    #_('Ignore differences in ingredient keys')
+                    ]
+                )
+            if not option:
+                return
+            self.do_auto_merge(NEWER)
+        except dialog_extras.UserCancelledError:
+            pass
+
+    def do_auto_merge (self, mode):
+        if self.recipeDiffScrolledWindow.get_child():
+            self.recipeDiffScrolledWindow.remove(self.recipeDiffScrolledWindow.get_child())        
+        vb = gtk.VBox()
+        l = gtk.Label()
+        l.set_markup('<u>Automatically merged recipes</u>')
+        vb.pack_start(l,expand=False,fill=False); vb.show_all()
+        self.recipeDiffScrolledWindow.add_with_viewport(vb)
+        def do_auto_merge ():
+            kept = self.auto_merge_current_rec(mode)
+            label = gtk.Label('%s'%kept.title)
+            vb.pack_start(label,expand=False,fill=False); label.show()
+        self.cancelMergeButton.hide()
+        self.applyMergeButton.hide()
+        self.closeMergeButton.set_sensitive(False)
+        do_auto_merge()
+        while self.to_merge:
+            self.mergeInfoLabel.set_text(
+                'Automatically merging recipe %(index)s of %(total)s'%{
+                    'index':self.total_to_merge - len(self.to_merge),
+                    'total':self.total_to_merge
+                    })            
+            self.current_dup_index = self.to_merge.pop(0)
+            duplicate_recipes = self.dups[self.current_dup_index]            
+            self.current_recs = [self.rd.get_rec(i) for i in duplicate_recipes]
+            do_auto_merge()
+            while gtk.events_pending(): gtk.main_iteration()
+        self.mergeInfoLabel.set_text('Automatically merged %s recipes'%self.total_to_merge)
+        self.closeMergeButton.set_sensitive(True)           
+        
+    def auto_merge_current_rec (self, mode):
+        def compare_recs (r1, r2):
+            result = cmp(r1.last_modified,r2.last_modified)
+            if mode==NEWER: return result
+            else: return -result
+        self.current_recs.sort(compare_recs)
+        keeper = self.current_recs[0]
+        tossers = self.current_recs[1:]
+        for to_toss in tossers:
+            self.rd.delete_rec(to_toss)
+        return keeper
+        
     def cancel_merge (self, *args):
         self.merge_next_recipe()
         if not self.to_merge:
@@ -256,7 +329,7 @@ class RecipeMerger:
 
     def autoMergeRecipes (self, recs):
         to_fill,conflicts = gourmet.recipeIdentifier.merge_recipes(self.rd,
-                                                           recs)
+                                                                   recs)
         if conflicts:
             raise ConflictError(conflicts)
         else:
@@ -265,7 +338,7 @@ class RecipeMerger:
             self.rd.modify_rec(to_keep,to_fill)
             # Delete the other recipes...
             for r in recs[1:]:
-                self.rd.delete_rec(r)
+                self.rd.delete_rec(r.id)
 
     def uiMergeRecipes (self, recs):
         diffs = gourmet.recipeIdentifier.diff_recipes(self.rd,
@@ -285,9 +358,14 @@ class DiffTable (gtk.Table):
 
     recipe_object is a recipe object representing one of our duplicate
     recs, from which we can grab attributes that are not different.
+
+    dont_choose is a list of attributes whose differences are
+    displayed, but where no choice is offered (such as modification
+    time for the recipe).
     """
 
-    def __init__ (self, diff_dic, recipe_object=None, parent=None):
+    def __init__ (self, diff_dic, recipe_object=None, parent=None,
+                  dont_choose=[]):
         self.idiffs = []
         self.diff_dic = diff_dic
         gtk.Table.__init__(self)
@@ -296,7 +374,7 @@ class DiffTable (gtk.Table):
         self.set_row_spacings(6)        
         self.row = 0
         self.max_cols = 1
-        for attr,name,typ in gglobals.REC_ATTRS \
+        for attr,name,typ in [('last_modified','Last Modified',None)] + gglobals.REC_ATTRS \
                 + [('image','Image',None)] \
                 + [(attr,gglobals.TEXT_ATTR_DIC[attr],None) for attr in gglobals.DEFAULT_TEXT_ATTR_ORDER]:
             if diff_dic.has_key(attr):
@@ -414,7 +492,7 @@ class DiffTable (gtk.Table):
                         l = gtk.Label(txt)
                         l.set_alignment(0.0,0.0)                    
                         l.set_use_markup(True)
-                        l.set_line_wrap(True); l.set_line_wrap_mode(gtk.WRAP_WORD)
+                        l.set_line_wrap(True); l.set_line_wrap_mode(pango.WRAP_WORD)
                         l.show()
                         self.setup_widget_size(l,in_col=True)
                         self.attach(l,col+1,col+2,self.row+1+n,self.row+2+n,
@@ -430,7 +508,7 @@ class DiffTable (gtk.Table):
             l = gtk.Label(blocks[0])
             l.set_alignment(0.0,0.0)
             l.set_use_markup(True)
-            l.set_line_wrap(True); l.set_line_wrap_mode(gtk.WRAP_WORD)
+            l.set_line_wrap(True); l.set_line_wrap_mode(pango.WRAP_WORD)
             l.show()
             self.attach(l,1,5,self.row,self.row+1,xoptions=gtk.SHRINK|gtk.FILL,yoptions=gtk.SHRINK|gtk.FILL)
         lab.set_alignment(0.0,0.0); lab.show()
@@ -478,7 +556,7 @@ def make_text_label (t, use_markup=False):
     elif len(t) < 250:
         l = gtk.Label(t)
         if use_markup: l.set_use_markup(use_markup)
-        l.set_line_wrap_mode(gtk.WRAP_WORD)
+        l.set_line_wrap_mode(pango.WRAP_WORD)
         return l
     else:
         return put_text_in_scrolled_window(t)
@@ -495,6 +573,8 @@ def get_display_constructor (attribute):
         return lambda v: (v and gtk.Label("An Image") or gtk.Label("No Image"))
     elif attribute in gglobals.DEFAULT_TEXT_ATTR_ORDER:        
         return make_text_label
+    elif attribute == 'last_modified':
+        return lambda v: gtk.Label(time_to_text(v))
     else:
         return lambda v: v and gtk.Label(v) or gtk.Label(_('None'))
 

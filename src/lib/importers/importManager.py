@@ -1,5 +1,5 @@
 import gourmet.plugin_loader as plugin_loader
-from gourmet.plugin import ImporterPlugin
+from gourmet.plugin import ImporterPlugin, ImportManagerPlugin
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet.recipeManager import default_rec_manager
 import os.path
@@ -32,8 +32,10 @@ class ImportManager (plugin_loader.Pluggable):
         self.extensions_by_mimetype = {}
         self.plugins_by_name = {}
         self.plugins = []
+        self.importer_plugins = []
         plugin_loader.Pluggable.__init__(self,
-                                         [ImporterPlugin]
+                                         [ImporterPlugin,
+                                          ImportManagerPlugin]
                                          )
         self.get_app_and_prefs()
 
@@ -73,9 +75,9 @@ class ImportManager (plugin_loader.Pluggable):
             base_content_type=reader.content_type.split(';')[0]
             possible_plugins = filter(
                 lambda p: base_content_type in p.mimetypes,
-                self.plugins)
+                self.importer_plugins)
         else:
-            possible_plugins = self.plugins
+            possible_plugins = self.importer_plugins
         fallback = None; plugin = None
         for p in possible_plugins:
             result = p.test_url(reader.url,reader.data,reader.content_type)
@@ -121,7 +123,7 @@ class ImportManager (plugin_loader.Pluggable):
             fn = filenames.pop()
             fallback = None
             found_plugin = False
-            for plugin in self.plugins:
+            for plugin in self.importer_plugins:
                 for pattern in plugin.patterns:
                     if fnmatch(fn.upper(),pattern.upper()):
                         result = plugin.test_file(fn)
@@ -159,7 +161,8 @@ class ImportManager (plugin_loader.Pluggable):
             else:
                 label = _('Import') + '('+importer_plugin.name+')'
                 self.setup_thread(importer, label)
-
+                
+    @plugin_loader.pluggable_method
     def follow_up (self, threadmanager, importer):
         if hasattr(importer,'post_run'):
             importer.post_run()
@@ -214,7 +217,7 @@ class ImportManager (plugin_loader.Pluggable):
         all_importable_mimetypes = []
         all_importable_patterns = []
         filters = []; names = []
-        for plugin in self.plugins:
+        for plugin in self.importer_plugins:
             if plugin.name in names:
                 i = names.index(plugin.name)
                 filters[i][1] += plugin.mimetypes
@@ -228,12 +231,15 @@ class ImportManager (plugin_loader.Pluggable):
         return filters
 
     def register_plugin (self, plugin):
-        name = plugin.name
-        if self.plugins_by_name.has_key(name):
-            print 'WARNING','replacing',self.plugins_by_name[name],'with',plugin
-        self.plugins_by_name[name] = plugin
-        self.learn_mimetype_extension_mappings(plugin)
         self.plugins.append(plugin)
+        if isinstance(plugin,ImporterPlugin):
+            name = plugin.name
+            if self.plugins_by_name.has_key(name):
+                print 'WARNING','replacing',self.plugins_by_name[name],'with',plugin
+            self.plugins_by_name[name] = plugin
+            self.learn_mimetype_extension_mappings(plugin)
+            self.importer_plugins.append(plugin)
+        
 
     def learn_mimetype_extension_mappings (self, plugin):
         for mt in plugin.mimetypes:
@@ -247,12 +253,15 @@ class ImportManager (plugin_loader.Pluggable):
                         self.extensions_by_mimetype[mt][ext] = self.extensions_by_mimetype[mt].get(ext,0) + 1
 
     def unregister_plugin (self, plugin):
-        name = plugin.name
-        if self.plugins_by_name.has_key(name):
-            del self.plugins_by_name[name]
-            self.plugins.remove(plugin)
+        if isinstance(plugin,ImporterPlugin):
+            name = plugin.name
+            if self.plugins_by_name.has_key(name):
+                del self.plugins_by_name[name]
+                self.plugins.remove(plugin)
+            else:
+                print 'WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name
         else:
-            print 'WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name
+            self.plugins.remove(plugin)
     
 def get_import_manager ():
     try:

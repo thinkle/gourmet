@@ -21,16 +21,16 @@ class TextImporter (importer.Importer):
 
     def pre_run (self):
         self.lines = check_encodings.get_file(self.fn)
-        self.total = len(self.lines)
-        print 'we have ',self.total,'lines in file',self.fn
+        self.total_lines = len(self.lines)
+        print 'we have ',self.total_lines,'lines in file',self.fn
         
     def do_run (self):
         if not hasattr(self,'lines'):
             raise "pre_run has not been run!"
-        for n in range(self.total):
+        for n in range(self.total_lines):
             l=self.lines[n]
             if n % 15 == 0:
-                prog = float(n)/float(self.total)
+                prog = float(n)/float(self.total_lines)
                 msg = _("Imported %s recipes.")%(len(self.added_recs))
                 self.emit('progress',prog,msg)
             self.handle_line(l)

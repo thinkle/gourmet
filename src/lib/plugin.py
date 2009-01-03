@@ -54,6 +54,13 @@ class StandardPlugin (Plugin):
         """
         pass
 
+class ImportManagerPlugin (StandardPlugin):
+    '''A class for extending the methods of the ImportManager itself.
+    
+    In order to add importers, subclass ImporterPlugin, not this class.
+    '''
+    pass
+    
 class ImporterPlugin (StandardPlugin): 
 
     # Do we let users type in a source to associate with these

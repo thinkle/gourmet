@@ -199,25 +199,12 @@ class GourmetApplication:
         We load our recipe database from recipeManager. If there's any problem,
         we display the traceback to the user so they can send it out for debugging
         (or possibly make sense of it themselves!)."""
-        try:
-            self.rd = recipeManager.default_rec_manager()
-            check_for_data_to_import(self.rd)
-            # initiate autosave stuff
-            # autosave every 3 minutes (milliseconds * 1000 milliseconds/second * 60 seconds/minute)
-            gobject.timeout_add(1000*60*3,lambda *args: self.rd.save() or True)
-        except:
-            self.prefs['db_backend'] = None
-            self.prefs.save()
-            from StringIO import StringIO
-            f = StringIO()
-            traceback.print_exc(file=f)
-            error_mess = f.getvalue()
-            de.show_message(label='Database Connection failed.',
-                            sublabel='There was a problem with the database information you gave Gourmet',
-                            expander=(_('_Details'),
-                                      error_mess)
-                            )
-            raise
+        self.rd = recipeManager.default_rec_manager()
+        check_for_data_to_import(self.rd)
+        # initiate autosave stuff autosave every 3 minutes
+        # (milliseconds * 1000 milliseconds/second * 60
+        # seconds/minute)
+        gobject.timeout_add(1000*60*3,lambda *args: self.rd.save() or True)
         # connect hooks to modify our view whenever and
         # whenceever our recipes are updated...
         self.rd.modify_hooks.append(self.update_attribute_models)
@@ -1038,7 +1025,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('Print',gtk.STOCK_PRINT,_('_Print'),
              '<Control>P',None,self.print_recs),
             #('Email', None, _('E-_mail recipes'),
-            # None,None,self.email_recs),
+            #None,None,self.email_recs),
             ('BatchEdit',None,_('Batch _edit recipes'),
              '<Control>E',None,self.batch_edit_recs),
             ('ShopRec','add-to-shopping-list',None,None,None,self.shop_recs)

@@ -67,7 +67,7 @@ class GetFile (CheckEncoding):
         encs=self.get_encodings()
         if encs:
             if len(encs.keys()) > 1:
-                    encoding = getEncoding(encodings=encs)
+                encoding = getEncoding(encodings=encs)
             else:
                 encoding = encs.keys()[0]
             self.enc = encoding
@@ -239,10 +239,13 @@ class EncodingDialog (de.OptionDialog):
 def getEncoding (*args,**kwargs):
     d=EncodingDialog(*args,**kwargs)
     result = d.run()
-    if not result and d.encodings:
+    print 'getEncoding returns:',result
+    if (not result) and d.encodings:
         return d.options[0]
-    else:
+    elif not result:
         return 'ascii'
+    else:
+        return result
 
 if __name__ == '__main__':
     print 'grabbing dialog extras'

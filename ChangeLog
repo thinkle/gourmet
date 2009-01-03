@@ -1,3 +1,43 @@
+2009-01-03  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/duplicate_finder/recipeMerger.glade: Add
+	auto-merge button to glade file. Rename some buttons for
+	convenient handling from recipeMerger dialog.
+
+	* src/lib/importers/plaintext_importer.py (TextImporter.pre_run):
+	Change attribute total to total_lines to avoid confusing ourbase
+	class into thinking that we know how many recipes have based on
+	how many lines we have (this fixes a bug where users would see
+	something like "Imported 56 of 5000 recipes" for a 5000 lines text
+	file with 56 recipes in it).
+
+	* src/lib/importers/importManager.py (ImportManager.__init__): Add
+	support for ImportManager plugins (which are separate from our
+	standard ImporterPlugins). This allows our RecipeMerger plugin to
+	add a post-import hook.
+
+	* src/lib/plugin.py (ImportManagerPlugin): Add base class for
+	plugings that modify the ImportManager itself (not new import
+	plugins which are already covered by the ImporterPlugin)
+
+	* src/lib/plugins/duplicate_finder/recipeMergerPlugin.py (RecipeMergerImportManagerPlugin):
+	Separate out plugin that adds a check for duplicates after new
+	imports
+
+	* src/lib/plugins/duplicate_finder/recipeMerger.py (RecipeMergerDialog.merge_next_recipe):
+	Add label to interface showing how many recipes have been merged
+	so far (giving user a sense of progress).
+	(RecipeMergerDialog): Add last_modified time to list of attributes
+	shown to user so they can see which recipe is older/newer.
+	(RecipeMergerDialog.offer_auto_merge): Add option to automatically
+	merge, always selecting for newer or older recipes.
+
+	* src/lib/GourmetRecipeManager.py (GourmetApplication.setup_recipes):
+	Remove misleading catchall database connection error message
+
+	* src/lib/check_encodings.py (getEncoding): Fix typo that broke
+	encoding dialog by always returning ascii
+
 2008-12-22  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py (MealmasterExporterPlugin):
