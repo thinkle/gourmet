@@ -1,5 +1,6 @@
 from gourmet.plugin import ExporterPlugin
 import html_exporter
+from gettext import gettext as _
 
 WEBPAGE = _('HTML Web Page')
 

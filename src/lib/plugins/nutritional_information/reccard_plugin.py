@@ -4,6 +4,7 @@ from gourmet.gglobals import gladeCustomHandlers
 from gourmet.plugin import RecDisplayModule, RecDisplayPlugin
 import gtk, pango
 import os.path
+from gettext import gettext as _
 
 try:
     current_path = os.path.split(os.path.join(os.getcwd(),__file__))[0]
