@@ -7,4 +7,3 @@ Type=Application
 Categories=GNOME;Application;Other;
 StartupNotify=true
 Icon=recbox.png
-Encoding=UTF-8
