@@ -213,8 +213,7 @@ class RecData (Pluggable):
             sqlalchemy.orm.mapper(klass,table)
         else:
             # if there's no primary key...
-            sqlalchemy.orm.mapper(klass,table,
-                                  primary_key=[table.oid_column])
+            raise "All tables need a primary key -- specify 'rowid'/Integer/Primary Key in table spec for %s"%table
 
     @pluggable_method
     def setup_tables (self):
@@ -237,8 +236,9 @@ class RecData (Pluggable):
                                 Column('version_super',Integer(),**{}), # three part version numbers 2.1.10, etc. 1.0.0
                                 Column('version_major',Integer(),**{}),
                                 Column('version_minor',Integer(),**{}),
-                                Column('last_access',Integer(),**{})
-                                 )
+                                Column('last_access',Integer(),**{}),
+                                Column('rowid',Integer(),**{'primary_key':True})
+                                )
         class Info (object):
             pass
         self._setup_object_for_table(self.info_table, Info)
