@@ -1,3 +1,8 @@
+2009-01-11  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/backends/db.py (make_simple_select_arg): Update in_()
+	call to comply with SQLAlchemy 0.5 API change.
+
 2009-01-10  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/backends/db.py (RecData._setup_object_for_table): All

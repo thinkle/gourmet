@@ -62,7 +62,7 @@ def make_simple_select_arg (criteria,*tables):
             if type(v)==str:
                 v = unicode(v)
             if operator=='in':
-                args.append(k.in_(*value))
+                args.append(k.in_(value))
             elif hasattr(k,operator):
                 args.append(getattr(k,operator)(value))
             elif hasattr(k,operator+'_'): # for keywords like 'in'
