@@ -2,7 +2,7 @@ import gtk, gobject, os.path
 from gourmet.gglobals import DEFAULT_ATTR_ORDER, REC_ATTR_DIC
 from gourmet.ImageExtras import get_pixbuf_from_jpg
 import gourmet.convert as convert
-from gourmet.ratingWidget import star_generator
+from gourmet.gtk_extras.ratingWidget import star_generator
 from sqlalchemy.sql import and_, or_, not_
 from sqlalchemy import func
 from gettext import gettext as _
@@ -210,7 +210,8 @@ class RecipeBrowser (gtk.VBox):
         self.button_bar.pack_start(self.buttons[-1],expand=False,fill=False)
         self.buttons[-1].show()
         
-if __name__ == '__main__':
+
+def try_out ():
     import gourmet.recipeManager
     rb = RecipeBrowser(gourmet.recipeManager.get_recipe_manager())
     vb = gtk.VBox()
@@ -223,3 +224,5 @@ if __name__ == '__main__':
     w.connect('delete-event',gtk.main_quit)
     gtk.main()
     
+if __name__ == '__main__':
+    try_out()

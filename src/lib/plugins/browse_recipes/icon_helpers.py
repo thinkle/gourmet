@@ -1,6 +1,6 @@
 import Image, ImageDraw, gtk.gdk, os.path
 from gourmet.ImageExtras import get_pixbuf_from_jpg
-from gourmet.ratingWidget import star_generator
+from gourmet.gtk_extras.ratingWidget import star_generator
 
 curdir = os.path.split(__file__)[0]
 
@@ -45,6 +45,10 @@ def get_pixbuf_from_image (image):
 
 
 generic_recipe_image = scale_pb(gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','generic_recipe.png')))
+preptime_image = gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','preptime.png'))
+preptime_empty_image = gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','preptime_empty_clock.png'))
+cooktime_image = gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','cooktime.png'))
+cooktime_empty_image = gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','cooktime_empty_clock.png'))
 
 def get_recipe_image (rec):
     if rec.image:
@@ -77,19 +81,20 @@ def get_recipe_image (rec):
             255 # overall_alpha
             )
     if rec.preptime:
-        prepPB = get_time_slice(rec.preptime)
-        prepPB = prepPB.scale_simple(int(big_side*0.3),int(big_side*0.3),gtk.gdk.INTERP_BILINEAR)
+        #prepPB = get_time_slice(rec.preptime)
+        prepPB = make_preptime_icon(rec.preptime)
+        prepPB = prepPB.scale_simple(int(big_side*0.4),int(big_side*0.4),gtk.gdk.INTERP_BILINEAR)
         prepPB.composite(
             pb,
             pb.props.width/2 + 5,5,
             prepPB.props.width,prepPB.props.height,
             pb.props.width/2 + 5,5,
             1,1,gtk.gdk.INTERP_BILINEAR,
-            188 # alpha
+            127 # alpha
             )
     if rec.cooktime:
-        cookPB = get_time_slice(rec.cooktime)
-        cookPB = cookPB.scale_simple(int(big_side*0.3),int(big_side*0.3),gtk.gdk.INTERP_BILINEAR)
+        cookPB = make_cooktime_icon(rec.cooktime)
+        cookPB = cookPB.scale_simple(int(big_side*0.4),int(big_side*0.4),gtk.gdk.INTERP_BILINEAR)
         cookPB.composite(
             pb,
             pb.props.width/2 + 5,pb.props.height/2,
@@ -142,3 +147,46 @@ def make_time_icon (text):
     d = ImageDraw.Draw(img)
     #Thosed.text(    
 
+PREP = 1
+COOK = 2
+
+def make_preptime_icon (preptime):
+    return make_time_icon(preptime,mode=PREP)
+    
+def make_cooktime_icon (cooktime):
+    return make_time_icon(cooktime,mode=COOK)
+
+def make_time_icon (time, mode):
+    LEFT_CORNER = (31,103)
+    W,H = 65,65
+    if mode == PREP:
+        icon_image = preptime_empty_image.copy()
+    elif mode == COOK:
+        icon_image = cooktime_empty_image.copy()
+    slice_pb = get_time_slice(time)
+    SCALE_X = W / float(slice_pb.props.width)
+    SCALE_Y = H / float(slice_pb.props.height)
+    args = (icon_image,
+           LEFT_CORNER[0],
+           LEFT_CORNER[1],
+           W,H,
+           LEFT_CORNER[0],
+           LEFT_CORNER[1],
+           SCALE_X, SCALE_Y, gtk.gdk.INTERP_BILINEAR, 255)
+    slice_pb.composite(*args)
+    return icon_image
+
+if __name__ == '__main__':
+    t = 60*60*6
+    hb = gtk.HBox()
+    pb = make_preptime_icon(t)
+    w = gtk.Window()
+    i = gtk.Image(); i.set_from_pixbuf(pb)
+    hb.pack_start(i)
+    pb2 = get_time_slice(t)
+    i2 = gtk.Image(); i2.set_from_pixbuf(pb2)
+    hb.pack_start(i2)
+    w.add(hb)
+    w.show_all()
+    w.connect('delete-event',lambda *args: gtk.main_quit())
+    gtk.main()
