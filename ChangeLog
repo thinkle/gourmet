@@ -1,5 +1,10 @@
 2009-01-11  Thomas Mills Hinkle  <tom@hydrophax>
 
+	* src/lib/importers/imageBrowser.py (ImageBrowserDialog.setup_dialog):
+	Fix giant-dialog-window problem caused when Progressbar gets
+	super-long text (e.g. if an image name is gigantic). Fixes Ubuntu
+	bug #289861
+
 	* src/lib/backends/db.py (make_simple_select_arg): Update in_()
 	call to comply with SQLAlchemy 0.5 API change.
 

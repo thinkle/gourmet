@@ -1,4 +1,4 @@
-import gtk, gtk.gdk, gobject
+import gtk, gtk.gdk, gobject, pango
 from gourmet.ImageExtras import get_pixbuf_from_jpg
 from gourmet.gtk_extras.thumbnail import check_for_thumbnail,fetched_uris
 from gourmet.gtk_extras.dialog_extras import ModalDialog
@@ -151,7 +151,7 @@ class ImageBrowserDialog (ModalDialog):
         self.ib.connect('selection-changed',self.selection_changed_cb)
         self.ib.connect('item-activated',self.okcb)
         self.sw = gtk.ScrolledWindow()
-        self.pb = gtk.ProgressBar()
+        self.pb = gtk.ProgressBar(); self.pb.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         self.vbox.pack_end(self.sw)
         self.vbox.pack_end(self.pb,expand=False)
         self.ib.progressbar = self.pb
