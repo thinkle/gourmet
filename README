@@ -1,37 +1,12 @@
 * Introduction *
 
 Gourmet Recipe Manager is a manager, editor, and organizer for
-recipes. It currently has support for MealMaster(tm) and
-MasterCook(tm) import, including 1 and 2 column MealMaster recipes and
-plain text and XML MasterCook(tm). It can also export and import an XML
-format of its own (the DTD is included here for your interest) which I
-developed for an earlier recipe program in emacs-lisp. It also allows
-you to export recipes as MealMaster(tm), HTML, RTF or Plain Text.
-
-Furthermore, to facilitate copying recipes off the web, you can drag a
-list of ingredients from another application (i.e. your web browser)
-to the ingredient list on the Recipe Card view and they will
-automatically be imported (the program will do the best it can parsing
-amounts, units and ingredients -- you can quickly see and correct any
-problems). This can also be done with a list of ingredients in the
-clipboard or in a text file.
-
-In addition to allowing you to edit, import, search and categorize
-recipes, Gourmet generates shopping lists sorted by category. It has a
-simple mechanism for allowing you to designate "pantry" items that you
-already have and don't need to buy, which will gourmet will remember
-between sessions.
-
-Gourmet also includes a handy unit converter to quickly allow you to
-convert any measurement (it even knows the densities of a number of
-common foods!).
-
-The default and best supported backend for Gourmet is sqlite -- a
-all-in-a-file database that you don't need to know anything
-about. Gourmet support for other databases is experimental at best at
-present. In earlier versions of Gourmet, the default backend was
-metakit. Metakit databases from previous versions should be
-automatically converted by newer versions.
+recipes. It has a plugin architecture which allows you to enable
+extensions to Gourmet's base functionality. For example, there is a
+nutritional plugin that allows Gourmet to help you calculate
+nutritional information for any recipe. There are also a wide variety
+of import and export plugins that let Gourmet read and write recipes
+in various formats.
 
 This program aspires to meet the GNOME Human Interface
 Guidelines. Please let me know if you see any ways the interface could
@@ -52,10 +27,12 @@ become more GNOME HIG compliant (or just improve in general).
 
 * Extra Requirements *
 
-1. For RTF support, you will need the PyRTF library available
+1. Python Reportlab (python-reportlab) - for PDF export.
+
+2. For RTF support, you will need the PyRTF library available
    at http://pyrtf.sourceforge.net
 
-2. Gnomeprint bindings, for nice python printing. This is packaged
+3. Gnomeprint bindings, for nice python printing. This is packaged
    differently in different places and versions, but will likely be in
    something called "python-gnome" or "pygtk-extras".
 

@@ -1,4 +1,4 @@
-import gtk, gobject
+import gtk, gobject, os.path
 from gourmet.gglobals import DEFAULT_ATTR_ORDER, REC_ATTR_DIC
 from gourmet.ImageExtras import get_pixbuf_from_jpg
 import gourmet.convert as convert
@@ -6,54 +6,9 @@ from gourmet.ratingWidget import star_generator
 from sqlalchemy.sql import and_, or_, not_
 from sqlalchemy import func
 from gettext import gettext as _
+from icon_helpers import *
 
-ICON_SIZE=175
-
-def scale_pb (pb):
-    w = pb.get_width()
-    h = pb.get_height ()
-    if w < ICON_SIZE or h < ICON_SIZE:
-        if w < h: target = w
-        else: target = h
-    else:
-        target = ICON_SIZE
-    if w > h:
-        target_w = target
-        target_h = int(target * (float(h)/w))
-    else:
-        target_h = target
-        target_w = int(target * (float(w)/h))
-    return pb.scale_simple(target_w,target_h,gtk.gdk.INTERP_BILINEAR)
-
-def get_recipe_image (rec):
-    pb = scale_pb(get_pixbuf_from_jpg(rec.image))
-    if rec.rating:
-        #sg = get_star_generator()
-        sg = star_generator        
-        ratingPB = sg.get_pixbuf(rec.rating)
-        print 'Compositing!',rec.title
-        h = pb.get_height() - ratingPB.get_height() - 5
-        w = pb.get_width() - ratingPB.get_width() - 5
-        if h < 0: h = 0
-        if w < 0: w = 0
-        if ratingPB.props.width > pb.props.width:
-            SCALE = float(pb.props.width)/ratingPB.props.width
-        else:
-            SCALE = 1
-        new_pb = ratingPB.composite(
-            pb,
-            w, #dest_x
-            h, # dest_y
-            int(ratingPB.get_width()*SCALE), # dest_width,
-            int(ratingPB.get_height()*SCALE), #dest_height
-            w, #offset_x,
-            h, #offset_y
-            SCALE,SCALE, #scale_x,scale_y
-            gtk.gdk.INTERP_BILINEAR,
-            255 # overall_alpha
-            )
-        return pb
-    return pb
+curdir = os.path.split(__file__)[0]
 
 class RecipeBrowserView (gtk.IconView):
 
@@ -100,7 +55,12 @@ class RecipeBrowserView (gtk.IconView):
         self.set_model(m)
         for itm in DEFAULT_ATTR_ORDER:
             if itm == 'title': continue
-            m.append((itm,(REC_ATTR_DIC[itm]),None,None))
+            pb = self.get_base_icon(itm)
+            m.append((itm,(REC_ATTR_DIC[itm]),pb,None))
+
+    def get_base_icon (self, itm):
+        
+        return None
 
     def get_pixbuf (self, attr,val):
         if attr=='category':            
@@ -118,6 +78,8 @@ class RecipeBrowserView (gtk.IconView):
             if result: self.category_images.append(result.title)
         elif attr=='rating':
             return star_generator.get_pixbuf(val)
+        elif attr in ['preptime','cooktime']:
+            return get_time_slice(val)
         else:
             tbl = self.rd.recipe_table
             col = getattr(self.rd.recipe_table.c,attr)
@@ -126,7 +88,17 @@ class RecipeBrowserView (gtk.IconView):
         if result and result.thumb:
             return scale_pb(get_pixbuf_from_jpg(result.image))
         else:
-            return None
+            return self.get_default_icon()
+
+    def get_default_icon (self):
+        if hasattr(self,'default_icon'):
+            return self.default_icon
+        else:
+            #from gourmet.gglobals import imagedir
+            path = os.path.join(curdir,'images','generic_category.png')
+            self.default_icon = scale_pb(gtk.gdk.pixbuf_new_from_file(path),do_grow=True)
+            return self.default_icon
+
 
     def convert_val (self, attr, val):
         if attr in ['preptime','cooktime']:
@@ -152,8 +124,6 @@ class RecipeBrowserView (gtk.IconView):
             for n,val in self.rd.fetch_count(self.rd.categories_table,'category'):
                 m.append((attribute+'>'+str(val),str(val)+' (%s)'%n,self.get_pixbuf(attribute,val),val))
         else:
-            
-                
             for n,val in self.rd.fetch_count(self.rd.recipe_table,attribute):
                 if n == 0: continue
                 m.append((attribute+'>'+str(val),self.convert_val(attribute,val)+' (%s)'%n,
@@ -161,7 +131,6 @@ class RecipeBrowserView (gtk.IconView):
                           
     def build_recipe_model (self, path, val):
         m = self.models[path] = self.new_model()
-        print 'build_recipe_model',path,val
         searches = [{'column':'deleted','operator':'=','search':False}]
         path = path.split('>')
         while path:
@@ -172,13 +141,9 @@ class RecipeBrowserView (gtk.IconView):
                 searches.append({'column':attr,'search':val,'operator':'='})
             else:
                 searches.append({'column':attr,'search':val})
-        print 'Search=',searches
         for recipe in self.rd.search_recipes(searches):
-            if recipe.image:
-                pb = get_recipe_image(recipe)
-                m.append((recipe.id,recipe.title,pb,None))
-            else:
-                m.append((recipe.id,recipe.title,None,None))
+            pb = get_recipe_image(recipe)
+            m.append((recipe.id,recipe.title,pb,None))
 
     def set_path (self, path):
         self.path = ['base']
@@ -227,7 +192,9 @@ class RecipeBrowser (gtk.VBox):
 
     def path_selected_cb (self, view, path):
         self.button_bar.show()
-        for b in self.buttons: self.button_bar.remove(b)
+        for b in self.buttons:
+            self.button_bar.remove(b)
+        self.buttons = []
         so_far = ''
         for step in path.split('>'):
             self.append_button(so_far + step)

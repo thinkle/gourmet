@@ -53,7 +53,8 @@ def get_string_from_pixbuf (pb):
     return s
     
 def get_pixbuf_from_jpg (raw):
-    """Given raw data of a jpeg file, we return a gtk.gdk.Pixbuf"""
+    """Given raw data of a jpeg file, we return a gtk.gdk.Pixbuf
+    """
     #o=open('/tmp/recimage.jpg','w')
     fn=write_image_tempfile(raw,name='gourmet_tempfile')
     i=gtk.Image()

@@ -1001,13 +1001,16 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.window.add(self.main)
         self.window.connect('delete-event',self.quit)
         mb = self.ui_manager.get_widget('/RecipeIndexMenuBar'); mb.show()
-        self.main.pack_start(mb,fill=False,expand=False);        
+        self.main.pack_start(mb,fill=False,expand=False);
+        self.main_notebook = gtk.Notebook()
         self.recipe_index_interface = self.glade.get_widget('recipeIndexBox')
         self.recipe_index_interface.unparent()
-        self.main.add(self.recipe_index_interface)
+        self.main_notebook.append_page(self.recipe_index_interface,
+                                       tab_label=gtk.Label(_('Search recipes')))
+        self.main.add(self.main_notebook)
         self.recipe_index_interface.show()
+        self.main_notebook.show(); self.main_notebook.set_show_tabs(False)
         self.main.show()
-
 
     def setup_actions (self):
         self.ui_manager = gtk.UIManager()
@@ -1125,6 +1128,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         for rec in self.get_selected_recs_from_rec_tree():
             self.open_rec_card(rec)
     
+
     # Deletion
     def show_deleted_recs (self, *args):
         if not hasattr(self,'recTrash'):

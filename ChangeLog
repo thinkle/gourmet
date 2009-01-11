@@ -1,3 +1,20 @@
+2009-01-10  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/plugin.py (MainPlugin): Add base methods to MainPlugin
+	to make it easy to add a tab to main interface (add_tab)
+
+	* src/lib/GourmetRecipeManager.py (RecGui.setup_main_window): Add
+	notebook to which plugins can add tabs.
+
+2009-01-07  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/plugins/nutritional_information/parser_data.py (ABBREVS):
+	Remove RED as abbreviation (and add more specification
+	abbreviations like RED NA, RED FAT, RED CAL). (bug # 2492442)
+
+	* src/lib/plugins/browse_recipes/* Implement basic recipe browsing
+	interface as alternative to search (a new plugin).
+
 2009-01-03  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/plugins/duplicate_finder/recipeMerger.glade: Add
@@ -37,6 +54,13 @@
 
 	* src/lib/check_encodings.py (getEncoding): Fix typo that broke
 	encoding dialog by always returning ascii
+
+2008-12-28  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* README: Cut down README to keep it from going out of date so
+	fast; update README to describe plugin system; add reportlab as a
+	requirement.
+
 
 2008-12-22  Thomas Hinkle  <tom@grenville>
 

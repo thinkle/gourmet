@@ -193,7 +193,7 @@ result = setup(
                 'gourmet.legacy_db.db_09',
                 'gourmet.plugins',
                 ] + plugins,
-    package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*.glade','plugins/*/*.glade']},
+    package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*.glade','plugins/*/*.glade', 'plugins/*/images/*.png']},
     package_dir = {'gourmet' : os.path.join('src','lib')},
     scripts = script,
     cmdclass={'install_data' : my_install_data},

@@ -338,7 +338,25 @@ class RecDisplayPlugin (StandardPlugin):
             pluggable.remove_plugin_from_left_notebook(self.moduleKlass)
 
 class MainPlugin (StandardPlugin):
-    pass
+
+    added_tabs = []
+
+    def activate (self, pluggable):
+        self.main = pluggable
+
+    def deactivate (self, pluggable):
+        for t in added_tabs:
+            pluggable.main_notebook.remove_page(t)
+        if pluggable.main_notebook.get_n_pages() <= 1:
+            pluggable.main_notebook.set_show_tabs(False)
+
+    def add_tab (self, widget, label):
+        self.added_tabs.append(self.main.main_notebook.append_page(widget,
+                                                              gtk.Label(label))
+                          )
+        widget.show()
+        self.main.main_notebook.set_show_tabs(True)
+        
 
 class PluginPlugin (StandardPlugin):
     """This class is used for plugins that plugin to other plugins.
