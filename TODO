@@ -1,10 +1,11 @@
 TODO
 
 SEE http://grecipe-manager.wiki.sourceforge.net/TODO
+* Fix Batch Editor to work with plugin system
 
 * Finalize proper editor for nutrition values
    
-* Implement a "browsing" interface
+* Implement a "browsing" interface [X]
    Implement a browsing interface to browse through recipes by
    category/cuisine/etc.
 
@@ -14,7 +15,7 @@ SEE http://grecipe-manager.wiki.sourceforge.net/TODO
    Add support for importing/exporting nutritional information into
    the gourmet XML fileformat import and export
 
-* Add nutritional info to exports
+* Add nutritional info to exports [X]
    Add nutritional info to exports optional support for writing
    nutritional information into export formats for display (PDF,
    print, html, etc)
