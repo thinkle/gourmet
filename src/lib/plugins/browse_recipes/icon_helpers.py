@@ -49,6 +49,19 @@ preptime_image = gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','prep
 preptime_empty_image = gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','preptime_empty_clock.png'))
 cooktime_image = gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','cooktime.png'))
 cooktime_empty_image = gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','cooktime_empty_clock.png'))
+cuisine_image = scale_pb(gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','cuisine.png')))
+rating_image =  scale_pb(gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','rating.png')))
+source_image =  scale_pb(gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','source.png')))
+category_image =  scale_pb(gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','generic_category.png')))
+
+attr_to_icon = {
+    'category':category_image,
+    'source':source_image,
+    'rating':rating_image,
+    'cuisine':cuisine_image,
+    'cooktime':scale_pb(cooktime_image),
+    'preptime':scale_pb(preptime_image),
+    }
 
 def get_recipe_image (rec):
     if rec.image:

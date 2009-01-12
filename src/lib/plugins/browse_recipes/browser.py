@@ -54,13 +54,12 @@ class RecipeBrowserView (gtk.IconView):
         m = self.models['base'] = self.new_model()
         self.set_model(m)
         for itm in DEFAULT_ATTR_ORDER:
-            if itm == 'title': continue
+            if itm in ['title','link']: continue
             pb = self.get_base_icon(itm)
             m.append((itm,(REC_ATTR_DIC[itm]),pb,None))
 
     def get_base_icon (self, itm):
-        
-        return None
+        return attr_to_icon.get(itm,attr_to_icon['category'])
 
     def get_pixbuf (self, attr,val):
         if attr=='category':            
@@ -88,7 +87,7 @@ class RecipeBrowserView (gtk.IconView):
         if result and result.thumb:
             return scale_pb(get_pixbuf_from_jpg(result.image))
         else:
-            return self.get_default_icon()
+            return self.get_base_icon(attr) or self.get_base_icon('category')
 
     def get_default_icon (self):
         if hasattr(self,'default_icon'):
@@ -205,7 +204,7 @@ class RecipeBrowser (gtk.VBox):
             txt = self.view.convert_val(*path.split('>'))
         else:
             txt = path
-        self.buttons.append(gtk.Button(txt))
+        self.buttons.append(gtk.Button(REC_ATTR_DIC.get(txt,txt)))
         self.buttons[-1].connect('clicked',lambda *args: self.view.set_path(path))
         self.button_bar.pack_start(self.buttons[-1],expand=False,fill=False)
         self.buttons[-1].show()

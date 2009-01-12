@@ -1,3 +1,16 @@
+2009-01-11  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/browse_recipes/browser.py (RecipeBrowser.append_button):
+	Use i18n'd text rather than attribute names themselves for
+	breadcrumbs buttons.
+	(RecipeBrowserView.get_pixbuf): Use generic icons differentiated
+	by attribute (source, category, etc)
+	(RecipeBrowserView.build_base_model): Don't browse by link attribute.
+	(RecipeBrowserView.get_base_icon): Use base icons from icon_helpers.py
+
+	* src/lib/plugins/browse_recipes/icon_helpers.py (get_pixbuf_from_image):
+	Add the rest of the icons.
+
 2009-01-11  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/importers/imageBrowser.py (ImageBrowserDialog.setup_dialog):
