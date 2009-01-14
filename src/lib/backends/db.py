@@ -19,7 +19,8 @@ from gourmet.plugin import DatabasePlugin
 
 import sqlalchemy, sqlalchemy.orm
 from sqlalchemy import Integer, Binary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
-from sqlalchemy.sql import and_, or_
+from sqlalchemy.sql import and_, or_, case 
+from sqlalchemy import func
 
 def map_type_to_sqlalchemy (typ):
     """A convenience method -- take a string type and map it into a
@@ -80,7 +81,7 @@ def make_simple_select_arg (criteria,*tables):
 
 def make_order_by (sort_by, table, count_by=None, join_tables=[]):
     ret = []
-    for col,dir in sort_by:
+    for col,direction in sort_by:        
         if col=='count' and not hasattr(table.c,'count'):
             col = sqlalchemy.func.count(getattr(table.c,count_by))
         else:
@@ -95,7 +96,12 @@ def make_order_by (sort_by, table, count_by=None, join_tables=[]):
                         break
                 if broken:
                     raise ValueError("No such column for tables %s %s: %s"%(table, join_tables, col))
-        if dir==1: # Ascending
+        if isinstance(col.type, Text):
+            # Sort nulls last rather than first using case statement...
+            col = case([(col == None, 'z'*20),
+                        (col == '', 'z'*20),
+                        ],else_=func.lower(col))
+        if direction==1: # Ascending
             ret.append(sqlalchemy.asc(col))
         else:
             ret.append(sqlalchemy.desc(col))
@@ -167,6 +173,8 @@ class RecData (Pluggable):
         self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal') 
         self.db.begin()
         self.metadata = sqlalchemy.MetaData(self.db)
+        # Be noisy... (uncomment for debugging/fiddling)
+        # self.metadata.bind.echo = True
         try:
             self.session = sqlalchemy.orm.create_session()
         except AttributeError:
@@ -617,12 +625,11 @@ class RecData (Pluggable):
     def fetch_count (self, table, column, sort_by=[],**criteria):
         """Return a counted view of the table, with the count stored in the property 'count'"""
         result =  sqlalchemy.select(
-            [sqlalchemy.func.count(getattr(table.c,column)),
+            [sqlalchemy.func.count(getattr(table.c,column)).label('count'),
              getattr(table.c,column)],
             group_by=column,
             order_by=make_order_by(sort_by,table,count_by=column)
             ).execute().fetchall()
-        for row in result: row.count = row[0]
         return result
 
     def fetch_len (self, table, **criteria):
@@ -724,6 +731,10 @@ class RecData (Pluggable):
 
         sort_by is a list of tuples (column,1) [ASCENDING] or (column,-1) [DESCENDING]
         """
+        if 'rating' in [t[0] for t in sort_by]:
+            i = [t[0] for t in sort_by].index('rating')
+            d = (sort_by[i][1]==1 and -1 or 1)
+            sort_by[i] = ('rating',d)
         criteria = self.get_criteria((searches,'and'))
         if 'category' in [s[0] for s in sort_by]:
             return sqlalchemy.select([c for c in self.recipe_table.c],# + [self.categories_table.c.category],

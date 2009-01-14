@@ -1,5 +1,9 @@
 2009-01-13  Thomas Mills Hinkle  <tom@hydrophax>
 
+	* src/lib/backends/db.py (RecData.fetch_count): Correctly alias
+	select "COUNT AS COUNT" using sqlalchemy's "label" keyword,
+	avoiding ugly hack that fails in 0.5 anyway.
+
 	* src/lib/exporters/exportManager.py (ExportManager.do_single_export):
 	Fix API for exporting single recipes (this fixes recipe export
 	from recipe card view).
