@@ -44,9 +44,9 @@ class ExportManager (plugin_loader.Pluggable):
         if not exp_type or not self.can_export_type(exp_type):
             de.show_message(label=_('Gourmet cannot export file of type "%s"')%os.path.splitext(filename)[1])
             return
-        return self.do_single_export(filename, exp_type)
+        return self.do_single_export(rec, filename, exp_type, mult)
         
-    def do_single_export (self, filename, exp_type):
+    def do_single_export (self, rec, filename, exp_type, mult=1):
         exporter_plugin = self.get_exporter(exp_type)
         extra_prefs = exporter_plugin.run_extra_prefs_dialog() or {}
         if hasattr(exporter_plugin,'mode'):

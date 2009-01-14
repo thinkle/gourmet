@@ -1,3 +1,15 @@
+2009-01-13  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/exporters/exportManager.py (ExportManager.do_single_export):
+	Fix API for exporting single recipes (this fixes recipe export
+	from recipe card view).
+
+2009-01-12  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/backends/db.py (make_order_by): Sort nulls last
+	(RecData.search_recipes): Special case sorting of 'rating' (the
+	default feels backwards)
+
 2009-01-11  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/plugins/browse_recipes/browser.py (RecipeBrowser.append_button):
@@ -126,7 +138,7 @@
 	* src/lib/plugins/email_plugin/*: Pluginify email
 	functionality. We now just support PDF and plain text (the HTML
 	was a failed attempt to write HTML email anyway)
-	
+
 	* TESTS: Add some more tests we should do before stable releases.
 
 2008-12-21  Thomas Hinkle  <tom@grenville>
