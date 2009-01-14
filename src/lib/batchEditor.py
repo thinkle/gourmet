@@ -5,19 +5,21 @@ from gtk_extras import ratingWidget, timeEntry, cb_extras
 
 class BatchEditor:
 
-    def __init__ (self, rg):
+    _custom_handlers_setup = False
+    
+    def __init__ (self, rg):        
         self.rg = rg
         self.setup_glade()
 
     def setup_glade (self):
-        self.makeTimeEntry = lambda *args: timeEntry.makeTimeEntry()
-        self.makeStarButton = lambda *args: ratingWidget.make_star_button(self.rg.star_generator)
-        def custom_handler (glade,func_name,
-                            widg, s1,s2,i1,i2):
-            f=getattr(self,func_name)
-            w= f(s1,s2,i1,i2)
-            return w
-        gtk.glade.set_custom_handler(custom_handler)        
+
+        if not BatchEditor._custom_handlers_setup:
+            for name,handler in [
+                ('makeStarButton', lambda *args: ratingWidget.make_star_button(self.rg.star_generator)),
+                ('makeTimeEntry', lambda *args: timeEntry.make_time_entry()),
+                ]:
+                gglobals.gladeCustomHandlers.add_custom_handler(name,handler)
+            BatchEditor._custom_handlers_setup = True
         self.glade = gtk.glade.XML(os.path.join(gglobals.gladebase,'batchEditor.glade'))
         self.dialog = self.glade.get_widget('batchEditorDialog')
         self.setFieldWhereBlankButton = self.glade.get_widget('setFieldWhereBlankButton')

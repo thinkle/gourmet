@@ -2,7 +2,7 @@
 import os.path, time, os, sys, re, threading, StringIO, pango, string
 import Image
 import gtk.glade, gtk, gobject, gtk.gdk, traceback
-#import valueEditor, batchEditor
+import valueEditor, batchEditor
 import recipeManager
 import exporters.printer as printer
 import prefs, prefsGui, shopgui, reccard, fnmatch, tempfile
@@ -831,7 +831,7 @@ class StuffThatShouldBePlugins:
                             self.rd.modify_rec(r,changes)
                     else:
                         self.rd.modify_rec(r,self.batchEditor.values)
-                    self.update_rec_iter(r)
+                    self.rmodel.update_recipe(r)
             else:
                 print 'Cancelled'
         self.batchEditor.dialog.hide()

@@ -1,3 +1,16 @@
+2009-01-13  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/browse_recipes/images/cooktime_empty_clock.png:
+	Adjust pixel height so preptime and cooktime clock-pie-wedges can
+	be drawn with same size and position
+	
+	* src/lib/batchEditor.py (BatchEditor.setup_glade): Use new
+	gglobals-based custom handler system.
+
+	* src/lib/GourmetRecipeManager.py (StuffThatShouldBePlugins.batch_edit_recs):
+	Fix batch edit callback (self.update_rec_iter ->
+	self.rmodel.update_recipe
+
 2009-01-13  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/backends/db.py (RecData.fetch_count): Correctly alias
