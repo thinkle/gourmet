@@ -1,12 +1,12 @@
-import gtk, gtk.glade, gobject
-import gglobals, convert, os.path
-from gtk_extras import cb_extras as cb
-from gtk_extras import dialog_extras as de
+import gtk, gtk.glade, gobject, os.path
+import gourmet.gglobals as gglobals
+import gourmet.convert as convert
+from gourmet.gtk_extras import cb_extras as cb
+from gourmet.gtk_extras import dialog_extras as de
 from gettext import ngettext
 from gettext import gettext as _
 
-
-class ValueEditor:
+class FieldEditor:
     """A generic "value" editor for mucking about with the database.
     """
 
@@ -269,7 +269,7 @@ if __name__ == '__main__':
     w = gtk.Window()
     b = gtk.Button('edit me now')
     w.add(b); w.show_all()
-    ve = ValueEditor(rm,DummyRG())
+    ve = FieldEditor(rm,DummyRG())
     b.connect('clicked',lambda *args: ve.run())
     w.connect('delete-event',gtk.main_quit)
     gtk.main()

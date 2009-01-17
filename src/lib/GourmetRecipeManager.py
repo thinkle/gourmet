@@ -2,7 +2,7 @@
 import os.path, time, os, sys, re, threading, StringIO, pango, string
 import Image
 import gtk.glade, gtk, gobject, gtk.gdk, traceback
-import valueEditor, batchEditor
+import batchEditor
 import recipeManager
 import exporters.printer as printer
 import prefs, prefsGui, shopgui, reccard, fnmatch, tempfile
@@ -341,7 +341,8 @@ class GourmetApplication:
         while len(model) > len(slist):
             last = model.get_iter(len(model) - 1)
             model.remove(last)
-        return model
+
+            return model
 
     def create_attribute_list (self, attribute):
         """Create a ListModel with unique values of attribute.
@@ -796,7 +797,6 @@ class StuffThatShouldBePlugins:
             self.sl.addRec(r,mult,d)
             self.sl.show()
 
-
     def batch_edit_recs (self, *args):
         recs = self.get_selected_recs_from_rec_tree()
         if not hasattr(self,'batchEditor'):
@@ -836,12 +836,6 @@ class StuffThatShouldBePlugins:
                 print 'Cancelled'
         self.batchEditor.dialog.hide()
         self.update_attribute_models()
-
-    def showValueEditor (self, *args):
-        if not hasattr(self,'ve'):
-            self.ve=valueEditor.ValueEditor(self.rd,self)
-        self.ve.valueDialog.connect('response',lambda d,r: (r==gtk.RESPONSE_APPLY and self.update_attribute_models))
-        self.ve.show()
 
 ui = '''<ui>
 <menubar name="RecipeIndexMenuBar">
