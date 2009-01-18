@@ -932,7 +932,6 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.mm.fix_conflicts_peacefully()
         self.window.show()
 
-
     def setup_hacks (self):
         # THese are properties that we need to set to test with our
         # current recindex class. However, each of these properties
@@ -974,7 +973,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             lambda self,*args: (self.doing_multiple_deletions==False and self.redo_search())
             )
         self.rd.modify_hooks.append(self.rmodel.update_recipe)
-        
+
     def selection_changed (self, selected=False):
         if selected != self.selected:
             if selected: self.selected=True
@@ -996,6 +995,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.window.connect('delete-event',self.quit)
         mb = self.ui_manager.get_widget('/RecipeIndexMenuBar'); mb.show()
         self.main.pack_start(mb,fill=False,expand=False);
+        self.messagebox = gtk.HBox()
+        self.main.pack_start(self.messagebox,fill=False,expand=False)
         self.main_notebook = gtk.Notebook()
         self.recipe_index_interface = self.glade.get_widget('recipeIndexBox')
         self.recipe_index_interface.unparent()
@@ -1117,6 +1118,18 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         
 
     # Extra callbacks for actions on our treeview
+    @plugin_loader.pluggable_method
+    def get_selected_recs_from_rec_tree (self):
+        return RecIndex.get_selected_recs_from_rec_tree(self)
+
+    @plugin_loader.pluggable_method
+    def update_recipe (self, recipe):
+        return RecIndex.update_recipe(self, recipe)
+
+    @plugin_loader.pluggable_method
+    def redo_search (self, *args):
+        return RecIndex.redo_search(self, *args)
+
     def rec_tree_select_rec (self, *args):
         debug("rec_tree_select_rec (self, *args):",5)
         for rec in self.get_selected_recs_from_rec_tree():
@@ -1130,18 +1143,14 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             self.recTrash.show()
         else:
             self.recTrash.show()
-    
+
+
     def rec_tree_delete_rec_cb (self, *args):
         """Make a watch show up (this can be slow
         if lots of recs are selected!"""
-        #gtk.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-        #gobject.idle_add(self.recTreeDeleteRec)
-        # this seems broken
-        sel=self.rectree.get_selection()
-        if not sel: return
-        mod,rr=sel.get_selected_rows()
-        recs = [mod[path][0] for path in rr]
-        self.rec_tree_delete_recs(recs)
+        self.rec_tree_delete_recs(
+            self.get_selected_recs_from_rec_tree()
+            )
 
     def delete_open_card_carefully (self, rec):
         """Delete any open card windows, confirming if the card is edited.
@@ -1149,7 +1158,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         We return True if the user cancels deletion.
         """
         if self.rc.has_key(rec.id):
-            rc = self.rc[rec.id]            
+            rc = self.rc[rec.id] 
             if rc.edited:
                 rc.show_edit()
                 if not de.getBoolean(
@@ -1162,6 +1171,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             rc.hide()
             self.del_rc(rec.id)
             
+    @plugin_loader.pluggable_method
     def rec_tree_delete_recs (self, recs):
         cancelled = []
         for rec in recs:
@@ -1173,6 +1183,11 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             [self.rd.get_rec(r.id) for r in recs],
             self.history,
             make_visible=lambda *args: self.redo_search()
+            )
+        self.setup_delete_messagebox(
+            gettext.ngettext('You just moved %s recipe to the trash. You can recover this recipe or permanently delete it at any time by clicking Tools->Open Trash.',
+                             'You just moved %s recipes to the trash. You can recover these recipes or permanently delete them at any time by clicking Tools->Open Trash',
+                             len(recs))%len(recs)
             )
         self.set_reccount()
         if hasattr(self,'recTrash'):
@@ -1239,6 +1254,26 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         debug("returning None",2)
         return None
 
+    # Code to show message/undo-button on deletion
+    def setup_delete_messagebox (self, msg):
+        # Clear existing messages...
+        for child in self.messagebox.get_children():
+            self.messagebox.remove(child)
+        # Add new message
+        l = gtk.Label()
+        close_button = gtk.Button(stock=gtk.STOCK_CLOSE)
+        close_button.connect('clicked',lambda *args: self.messagebox.hide())
+        self.messagebox.pack_end(close_button,expand=False,fill=False)
+        undo_button = gtk.Button(stock=gtk.STOCK_UNDO)
+        show_trash_button = gtk.Button('See Trash Now')
+        show_trash_button.connect('clicked',lambda *args: self.show_deleted_recs() or self.messagebox.hide())
+        undo_button.connect('clicked',lambda *args: self.history[-1].inverse() or self.messagebox.hide())
+        self.messagebox.pack_end(undo_button,expand=False,fill=False)
+        self.messagebox.pack_end(show_trash_button,expand=False,fill=False)
+        self.messagebox.pack_start(l,fill=True,expand=True)
+        self.messagebox.show_all()
+        l.set_markup('<i><span background="yellow">'+msg+'</span></i>')
+        l.set_line_wrap(True)
     # end deletion
 
     # end Extra Callbacks for actions on treeview

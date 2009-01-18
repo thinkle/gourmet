@@ -23,6 +23,7 @@ class RecipeBrowserView (gtk.IconView):
         self.rd = rd
         gobject.GObject.__init__(self)
         gtk.IconView.__init__(self)
+        self.set_selection_mode(gtk.SELECTION_MULTIPLE)
         self.models = {}
         self.set_model()
         self.set_text_column(1)
@@ -121,9 +122,10 @@ class RecipeBrowserView (gtk.IconView):
         m = self.models[attribute] = self.new_model()
         if attribute == 'category':
             for n,val in self.rd.fetch_count(self.rd.categories_table,'category'):
+                # known bug here -- this includes deleted recs in the count
                 m.append((attribute+'>'+str(val),str(val)+' (%s)'%n,self.get_pixbuf(attribute,val),val))
         else:
-            for n,val in self.rd.fetch_count(self.rd.recipe_table,attribute):
+            for n,val in self.rd.fetch_count(self.rd.recipe_table,attribute,deleted=False):
                 if n == 0: continue
                 m.append((attribute+'>'+str(val),self.convert_val(attribute,val)+' (%s)'%n,
                           self.get_pixbuf(attribute,val),val))
@@ -161,6 +163,24 @@ class RecipeBrowserView (gtk.IconView):
             self.emit('path-selected',step)
         else:
             self.emit('recipe-selected',rid)
+
+    def get_selected_recipes (self):
+        paths = self.get_selected_items()
+        model = self.get_model()
+        recipes = [int(model[p][0]) for p in paths]
+        def just_recs_filter (item):
+            try:
+                int(item)
+            except:
+                return False
+            else:
+                return True
+        recipes = filter(just_recs_filter,recipes)
+        return [r for r in self.rd.recipe_table.select(self.rd.recipe_table.c.id.in_(recipes)).execute()]
+
+    def reset_model (self):
+        self.models = {}
+        self.switch_model(self.path[-1])
 
     def back (self):
         if len(self.path) > 1:

@@ -315,7 +315,8 @@ class Pluggable:
 
     def run_post_hook (self, fname, retval, *args, **kwargs):
         for hook in self.post_hooks.get(fname,[]):
-            hook(retval,self,*args,**kwargs)
+            retval = hook(retval,self,*args,**kwargs)
+        return retval
 
     def add_hook (self, type, name, hook):
         if type==PRE: hookdic = self.pre_hooks
@@ -348,7 +349,7 @@ def pluggable_method (f):
         '''Run hooks around method'''
         self.run_pre_hook(f.__name__,*args,**kwargs)
         retval = f(self,*args,**kwargs)
-        self.run_post_hook(f.__name__,retval,*args,**kwargs)
+        retval = self.run_post_hook(f.__name__,retval,*args,**kwargs)
         return retval
     return _
 

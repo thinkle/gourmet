@@ -627,15 +627,20 @@ class RecData (Pluggable):
         result =  sqlalchemy.select(
             [sqlalchemy.func.count(getattr(table.c,column)).label('count'),
              getattr(table.c,column)],
-            group_by=column,
-            order_by=make_order_by(sort_by,table,count_by=column)
+            *make_simple_select_arg(criteria,table),
+            **{'group_by':column,
+               'order_by':make_order_by(sort_by,table,count_by=column),
+               }
             ).execute().fetchall()
         return result
 
     def fetch_len (self, table, **criteria):
         """Return the number of rows in table that match criteria
         """
-        return table.count().execute().fetchone()[0]
+        if criteria:
+            return table.count(*make_simple_select_arg(criteria,table)).execute().fetchone()[0]
+        else:
+            return table.count().execute().fetchone()[0]
 
     def fetch_join (self, table1, table2, col1, col2,
                     column_names=None, sort_by=[], **criteria):

@@ -1,3 +1,63 @@
+2009-01-18  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/plugins/python_shell/ipython_view.py: Eitan Isaacson's
+	IPython console widget, with a few modifications.
+
+	* src/lib/plugins/python_shell/__init__.py (ConsolePlugin): Plugin
+	to allow access to a python shell from within Gourmet. This is
+	incredibly handy for testing/development. It also allows a
+	super-geeky user to modify their DB on the fly etc.
+
+	* src/lib/plugins/field_editor/__init__.py (FieldEditorPlugin.show_field_editor):
+	Grab GourmetApplication singleton rather than relying on pluggable
+	being the GourmetApp, which it isn't always.
+
+	* src/lib/plugins/browse_recipes/browser.py (RecipeBrowserView):
+	to selection-multiple mode
+	(RecipeBrowserView.get_selected_recipes): Add handy method to grab
+	selected recs.
+	(RecipeBrowserView.reset_model): Add handy method to reset model
+	in response to DB updates.
+
+	* src/lib/plugins/browse_recipes/__init__.py (BrowserPlugin): Set
+	up hooks so that actions-on-recipes work (add-to-shopping list,
+	delete, etc)
+
+	* src/lib/backends/db.py (RecData.fetch_count): Fix fetch_count to
+	actually work as described. Previously, it ignored criteria.
+	(RecData.fetch_len): Fix fetch_len to actually use criteria.
+
+	* src/lib/plugin_loader.py (Pluggable.run_post_hook): Post hooks
+	should be allowed to modify the return value -- now they're
+	required to do so (otherwise they change the return value of the
+	method to None, of course.
+
+	* src/lib/GourmetRecipeManager.py (RecGui.get_selected_recs_from_rec_tree):
+	Add this method here as a pluggable_method so that plugins can
+	implement recipe browsers/search of their own and have it work
+	with actions that require selected recipes.
+	(RecGui.update_recipe): Make pluggable
+	(RecGui.redo_search): Make pluggable
+	(RecGui.delete_open_card_carefully): Use
+	get_selected_recs_from_rec_tree for deletion (this allows plugins
+	to simply modify get_selected_recs_from_rec_tree and have deletion
+	of selected recipes work right)
+	(RecGui.rec_tree_delete_recs): Add call to show user a message
+	telling them they've deleted recipes and offering undo.
+	(RecGui.setup_delete_messagebox): Method to set up a message to
+	user offering undo after delete.
+
+2009-01-16  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/plugins/field_editor.gourmet-plugin.in: Added field
+	editor plugin (provides material previously in valueEditor
+	module).
+
+	* src/lib/GourmetRecipeManager.py (showValueEditor): Removed value
+	editor -- this is now a plugin (field-editor).
+
+	* src/lib/ValueEditor.py - removed file (moved to field_editor plugin)
+
 2009-01-13  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/plugins/browse_recipes/images/cooktime_empty_clock.png:
