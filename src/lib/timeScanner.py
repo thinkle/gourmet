@@ -22,7 +22,6 @@ time_matcher = re.compile(
 
 
 def make_time_links (s):
-    s = xml.sax.saxutils.escape(s)
     return time_matcher.sub('<a href="\g<firstnum> \g<unit>">\g<0></a>',s)
 
 

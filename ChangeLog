@@ -1,4 +1,20 @@
+2009-01-19  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/timeScanner.py (make_time_links): Remove line that
+	escaped text automatically (caller can handle escaping)
+
 2009-01-18  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/gtk_extras/TextBufferMarkup.py (PangoBuffer.set_text):
+	Give a better error message when we have problems with unescaped
+	text.
+
+	* src/lib/gtk_extras/LinkedTextView.py (set_text): Remove line
+	that unescapes incoming text (this was an attempt to fix another
+	bug in the wrong place, but it causes problems when the clients
+	are behaving properly...)
+	(set_text): Remove line that unescapes incoming text (see above
+	comment about dumb fixes creating more problems than they solve).
 
 	* src/lib/plugins/python_shell/ipython_view.py: Eitan Isaacson's
 	IPython console widget, with a few modifications.

@@ -37,7 +37,6 @@ class LinkedPangoBuffer (PangoBuffer):
     markup_dict = {}
 
     def set_text (self, txt):
-        txt = xml.sax.saxutils.unescape(txt)
         m = self.href_regexp.search(txt)
         if m:
             while m:
