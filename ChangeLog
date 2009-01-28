@@ -1,3 +1,11 @@
+2009-01-28  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* images/reccard.ico: Added reccard icon
+
+	* images/Nutrition.png: Moved to the plugin
+
+	* src/lib/plugins/nutritional_information/images/Nutrition.png: Moved from images/
+
 2009-01-27  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* create_manifest.py: Add png's to plugin files to include; add images/*.ico to included files.
