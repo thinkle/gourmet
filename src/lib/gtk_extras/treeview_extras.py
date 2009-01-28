@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.3
 from gourmet.gdebug import *
 import gtk
 
@@ -176,21 +176,17 @@ class selectionSaver:
     def _add_to_selected (self, model, path, iter):
         self.add_selection(iter)
         
-    def add_selection (self, iter):
+    def add_selection (self, itr):
         """Add iter to list of selected items"""
-        v = self.model.get_value(iter,self.uc)
+        v = self.model.get_value(itr,self.uc)
         self.selected.append(v)
-        try:
-            self.expanded[v] = self.tv.row_expanded(self.model.get_path(iter))
-        except TypeError:
-            print 'Hmmm, perhaps ',v,"isn't hashable."
-            raise
+        self.expanded[v] = self.tv.row_expanded(self.model.get_path(itr))
         
-    def rem_selection (self, iter):
+    def rem_selection (self, itr):
         """Remove iter from list of selected items. Silently do nothing if
         handed an iter that wasn't selected in the first place."""
         try:
-            selected.remove(self.model.get_value(iter,self.uc))
+            selected.remove(self.model.get_value(itr,self.uc))
         except ValueError:
             pass
 
@@ -207,28 +203,28 @@ class selectionSaver:
             self.model = self.tv.get_model()
             self.selection = self.tv.get_selection()
         self.selection.unselect_all()
-        iter = self.model.get_iter_first()
+        itr = self.model.get_iter_first()
         new_paths=[]
-        while iter:
-            v = self.model.get_value(iter,self.uc)
+        while itr:
+            v = self.model.get_value(itr,self.uc)
             if self.selected.__contains__(v):
-                self.selection.select_iter(iter)
-                if self.expanded.get(v,None):
-                    self.tv.expand_row(self.model.get_path(iter),True)
-                new_paths.append(self.model.get_path(iter))
-            child = self.model.iter_children(iter)            
+                self.selection.select_iter(itr)
+                if self.expanded.get(v):
+                    self.tv.expand_row(self.model.get_path(itr),True)
+                new_paths.append(self.model.get_path(itr))
+            child = self.model.iter_children(itr)            
             if child:
-                iter = child
+                itr = child
             else:
-                next = self.model.iter_next(iter)
+                next = self.model.iter_next(itr)
                 if next:
-                    iter = next
+                    itr = next
                 else:
-                    parent = self.model.iter_parent(iter)
+                    parent = self.model.iter_parent(itr)
                     if parent:
-                        iter = self.model.iter_next(parent)
+                        itr = self.model.iter_next(parent)
                     else:
-                        iter = None
+                        itr = None
             
 class TreeViewConf:
     """Handed a treeView and two configuration items, this class allows
@@ -319,12 +315,12 @@ class QuickTree (gtk.ScrolledWindow):
     def setup_model (self):
         self.model = apply(gtk.ListStore,[str]*self.cols)
         for row in self.rows:
-            iter = self.model.append()
+            itr = self.model.append()
             while len(row) > self.cols:
                 row.pop()
             while len(row) < self.cols:
                 row.append("")
-            self.model[iter]=map(lambda i: str(i),row)
+            self.model[itr]=map(lambda i: str(i),row)
         self.tv.set_model(self.model)
             
             
