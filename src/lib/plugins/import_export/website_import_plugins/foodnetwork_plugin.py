@@ -7,7 +7,6 @@ class FoodNetworkPlugin (PluginPlugin):
 
     def test_url (self, url, data):
         if 'foodnetwork.com' in url:
-            print 'WE HAVE ABOUT FNW COM!'
             return 5
 
     def get_importer (self, webpage_importer):

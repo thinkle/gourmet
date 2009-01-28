@@ -6,11 +6,11 @@ class AboutDotComPlugin (PluginPlugin):
     target_pluggable = 'webimport_plugin'
 
     def do_activate (self, pluggable):
-        print 'Activating ',self,'for',pluggable
+        #print 'Activating ',self,'for',pluggable
+        pass
 
     def test_url (self, url, data):
         if 'about.com' in url:
-            print 'WE HAVE ABOUT DOT COM!'
             return 5
 
     def get_importer (self, webpage_importer):

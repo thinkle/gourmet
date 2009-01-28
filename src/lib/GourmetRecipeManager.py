@@ -984,6 +984,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     def setup_main_window (self):
         self.window = self.app = gtk.Window()
+        self.window.set_icon_from_file(os.path.join(imagedir,'recbox.ico'))
         self.conf.append(WidgetSaver.WindowSaver(self.window,
                                                  self.prefs.get('app_window',
                                                                 {'window_size':(800,600)}),

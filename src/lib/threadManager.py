@@ -248,7 +248,7 @@ class ThreadManagerGui:
         self.sw = gtk.ScrolledWindow()
         self.pbtable = gtk.Table()
         self.last_row = 0
-        self.sw.add_with_viewport(self.pbtable)
+        self.sw.add_with_viewport(self.pbtable); self.pbtable.set_border_width(6)
         self.sw.set_policy(gtk.POLICY_NEVER,gtk.POLICY_AUTOMATIC)
         self.sw.show_all()
         self.dialog.vbox.add(self.sw)
@@ -259,16 +259,16 @@ class ThreadManagerGui:
             self.close()
         
     def register_thread_with_dialog (self, description, thread):
-        pb = gtk.ProgressBar(); pb.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
+        pb = gtk.ProgressBar(); pb.set_ellipsize(pango.ELLIPSIZE_MIDDLE); pb.set_size_request(300,-1)
         pause_button = gtk.ToggleButton();
         lab = gtk.Label(_('Pause'))
         pause_button.add(lab); pause_button.show_all()
         dlab = gtk.Label(description); dlab.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         cancel_button = gtk.Button(stock=gtk.STOCK_CANCEL)
-        self.pbtable.attach(dlab,0,3,self.last_row,self.last_row+1)
-        self.pbtable.attach(pb,0,1,self.last_row+1,self.last_row+2)
-        self.pbtable.attach(cancel_button,1,2,self.last_row+1,self.last_row+2)
-        self.pbtable.attach(pause_button,2,3,self.last_row+1,self.last_row+2)
+        self.pbtable.attach(dlab,0,3,self.last_row,self.last_row+1,xoptions=gtk.FILL,yoptions=gtk.SHRINK)
+        self.pbtable.attach(pb,0,1,self.last_row+1,self.last_row+2,xoptions=gtk.FILL,yoptions=gtk.SHRINK)
+        self.pbtable.attach(cancel_button,1,2,self.last_row+1,self.last_row+2,xoptions=gtk.SHRINK,yoptions=gtk.SHRINK)
+        self.pbtable.attach(pause_button,2,3,self.last_row+1,self.last_row+2,xoptions=gtk.SHRINK,yoptions=gtk.SHRINK)
         # Create an object for easy reference to our widgets in callbacks
         class ThreadBox: pass
         threadbox = ThreadBox()
@@ -311,7 +311,7 @@ class ThreadManagerGui:
 
     def progress_update (self, thread, perc, txt, pb):
         if perc >= 0.0:
-            pb.set_percentage(perc)
+            pb.set_fraction(perc)
         else:
             pb.pulse()
         pb.set_text(txt)
@@ -322,7 +322,7 @@ class ThreadManagerGui:
         threadbox.pb.set_text(_('Error: %s')%errname)
         b = gtk.Button(_('Details'))
         b.connect('clicked',self.show_traceback,errno,errname,trace)
-        self.pbtable.attach(b,2,3,threadbox.row+1,threadbox.row+2)
+        self.pbtable.attach(b,2,3,threadbox.row+1,threadbox.row+2,xoptions=gtk.SHRINK,yoptions=gtk.SHRINK)
         threadbox.widgets.append(b)
         b.show()
         self.to_remove.append(threadbox)
@@ -344,6 +344,8 @@ class ThreadManagerGui:
             threadbox.pb.set_text(txt)
         
     def show (self, *args):
+        self.dialog.set_size_request(475,
+                                     350)
         self.dialog.present()
 
     def delete_event_cb (self, *args):

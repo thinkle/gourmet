@@ -346,7 +346,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     # Main GUI setup
     def setup_main_window (self):
-        self.window = gtk.Window()
+        self.window = gtk.Window();
+        self.window.set_icon_from_file(os.path.join(imagedir,'reccard.ico'))        
         self.window.connect('delete-event',self.hide)
         self.conf.append(WidgetSaver.WindowSaver(self.window,
                                                  self.prefs.get('reccard_window_%s'%self.current_rec.id,
@@ -867,6 +868,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     def setup_main_interface (self):
         self.window = gtk.Window()
+        self.window.set_icon_from_file(os.path.join(imagedir,'reccard.ico'))
         self.window.connect('delete-event',
                             self.close_cb)
         self.conf.append(WidgetSaver.WindowSaver(self.window,

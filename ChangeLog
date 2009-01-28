@@ -1,3 +1,40 @@
+2009-01-27  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* create_manifest.py: Add png's to plugin files to include; add images/*.ico to included files.
+
+	* gourmet.desktop.in (Categories): Category->Utility
+
+	* setup.py: Apply debian patch; include .
+
+	* src/lib/plugins/nutritional_information/main_plugin.py (NutritionMainPlugin.activate):
+	Add nutritional icon.
+
+	* src/lib/plugins/import_export/website_import_plugins/foodnetwork_plugin.py (test_url):
+	Be less verbose.
+
+	* src/lib/plugins/import_export/website_import_plugins/about_dot_com_plugin.py (test_url):
+	Be less verbose.
+
+	* src/lib/gtk_extras/treeview_extras.py: Remove python version
+	dependency
+
+	* src/lib/version.py (version): Version->0.14.4
+	(copyright): ++2009
+
+	* src/lib/threadManager.py (ThreadManagerGui): Fix resizing
+	ugliness on table (it's still ugly, but less so)
+
+	* src/lib/reccard.py (RecCardDisplay.setup_main_window): Add icon
+	(RecEditor.setup_main_interface): Add icon
+
+	* src/lib/gglobals.py (add_icon): Rework code for adding icons to
+	make it easy for plugins to add stock icons using the convenience
+	function add_icon
+
+	* src/lib/gdebug.py: Remove python version dependency.
+
+	* src/lib/GourmetRecipeManager.py (RecGui.setup_main_window): Add icon to window.
+
 2009-01-19  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/timeScanner.py (make_time_links): Remove line that

@@ -39,9 +39,10 @@ recursive_match('src/lib',['*.py'],lst)
 recursive_match('glade',['*.glade'],lst)
 recursive_match('src/lib/plugins/',['*.glade',
                                     '*.gourmet-plugin',
-                                    '*.gourmet-plugin.in'],
+                                    '*.gourmet-plugin.in',
+                                    '*.png',],
                 lst)
-recursive_match('images/',['*.png'],lst)
+recursive_match('images/',['*.png','*.ico'],lst)
 recursive_match('',['*.desktop.in'],lst)
 recursive_match('i18n',['NOTE_TO_TRANSLATORS','*.in','*.pot','*.po','*.mo'],lst)
 recursive_match('documentation',['*.xml','*.png'],lst)

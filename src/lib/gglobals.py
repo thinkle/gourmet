@@ -358,11 +358,8 @@ empty_model = gtk.ListStore(str)
 
 # Set up custom STOCK items and ICONS!
 icon_factory = gtk.IconFactory()
-for filename,stock_id,label,modifier,keyval in [
-    ('Nutrition.png','nutritional-info',_('Nutritional Information'),0,0),
-    ('AddToShoppingList.png','add-to-shopping-list',_('Add to _Shopping List'),gtk.gdk.CONTROL_MASK,gtk.gdk.keyval_from_name('l')),
-    ('recbox.png','recipe-box',None,0,0),
-    ]:
+    
+def add_icon (file_name, icon_name, label=None, modifier=0, keyval=0):
     pb = gtk.gdk.pixbuf_new_from_file(os.path.join(imagedir,filename))
     iconset = gtk.IconSet(pb)
     icon_factory.add(stock_id,iconset)
@@ -372,3 +369,9 @@ for filename,stock_id,label,modifier,keyval in [
                     modifier,
                     keyval,
                     "")])
+
+for filename,stock_id,label,modifier,keyval in [    
+    ('AddToShoppingList.png','add-to-shopping-list',_('Add to _Shopping List'),gtk.gdk.CONTROL_MASK,gtk.gdk.keyval_from_name('l')),
+    ('recbox.png','recipe-box',None,0,0),
+    ]:
+    add_icon(filename,stock_id,label,modifier,keyval)

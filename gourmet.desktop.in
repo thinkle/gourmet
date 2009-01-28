@@ -4,6 +4,6 @@ _Comment=Manage recipes and create shopping lists.
 Exec=gourmet
 Terminal=false
 Type=Application
-Categories=GNOME;Application;Other;
+Categories=GNOME;Application;Utility;
 StartupNotify=true
 Icon=recbox.png
