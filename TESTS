@@ -1,35 +1,35 @@
 THIS FILE LISTS TESTS I TRY TO DO BEFORE RELEASE
 
 Shopping List Generation
-- from index view[X]
-- from card view[X]
-- with multiplication[X]
-- with optional ingredients[X]
-- with saved optional ingredients[X]
+- from index view
+- from card view
+- with multiplication
+- with optional ingredients
+- with saved optional ingredients
 
 Index View Searching
-- Limited Searching[X]
+- Limited Searching
 
 Import
-- Webpage[X]
-- Zipped Archive[X]
-- Mealmaster[X]
-- Mastercook[X]
-- gourmet[X]
+- Webpage 
+- Zipped Archive 
+- Mealmaster 
+- Mastercook 
+- gourmet
 
 Export
-- html [X]
-- Gourmet (+ reimport) [X]
-- PDF [X]
+- html 
+- Gourmet (+ reimport) 
+- PDF 
 
 Customization
-- Customize columns in Index View [X]
+- Customize columns in Index View 
 - Hide recipe widgets
 
 Recipe Card View
-- Export from this view [X]
-- Multiply (+ print)  [X]
-- Add image [X]
+- Export from this view 
+- Multiply (+ print)  
+- Add image 
 
 Plugins
 - Test response to bug in plugin (shouldn't bring down app)

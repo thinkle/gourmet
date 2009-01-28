@@ -46,12 +46,7 @@ def modules_check():
             print 'Error importing GTK - is there no windowing environment available?'
             print "We're going to ignore this error and live dangerously. Please make"
             print 'sure you have pygtk > 2.3.93 and gtk.glade available!'
-        else:
-            v1,v2,v3 = gtk.pygtk_version
-            if v1 < 2 or v2 < 3 or (v2 < 4 and v3 < 93):
-                print 'Error: PyGTK-2.3.93 or newer is required.'
     except ImportError:
-        sys.exit('Error: PyGTK-2.3.93 or newer is required.')
         raise
     mod_list = [#'metakit',
         'Image',
@@ -181,7 +176,6 @@ result = setup(
     url = 'http://grecipe-manager.sourceforge.net',
     license = 'GPL',
     data_files = data_files(),
-    modules_check = modules_check,
     packages = ['gourmet',
                 'gourmet.backends',
                 'gourmet.defaults',
@@ -193,7 +187,7 @@ result = setup(
                 'gourmet.legacy_db.db_09',
                 'gourmet.plugins',
                 ] + plugins,
-    package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*.glade','plugins/*/*.glade', 'plugins/*/images/*.png']},
+    package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*.glade','plugins/*/*.glade', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
     package_dir = {'gourmet' : os.path.join('src','lib')},
     scripts = script,
     cmdclass={'install_data' : my_install_data},

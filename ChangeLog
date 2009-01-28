@@ -1,5 +1,21 @@
 2009-01-28  Thomas Mills Hinkle  <tom@hydrophax>
 
+	* src/lib/reccard.py: Add shop-recipe to menus. Add key commands
+	for most menu items.
+
+	* glade/shopList.glade: Remove nutritional info button/icon (this
+	should become a plugin anyway)
+
+	* test_deb.sh (LATEST_DEB): Remove python version specificity.
+
+	* Released 0.14.4 to SF as .deb and .tar.gz
+
+	* src/lib/gtk_extras/treeview_extras.py (selectionSaver.restore_selections):
+	Change variable names from iter->itr (to avoid unintended
+	consequences). Unsuccessfully trying to get at mysterious
+	traceback in restore_selections and add_selection (somehow builtin
+	dictionary method get() is not working).
+
 	* images/reccard.ico: Added reccard icon
 
 	* images/Nutrition.png: Moved to the plugin
@@ -12,7 +28,7 @@
 
 	* gourmet.desktop.in (Categories): Category->Utility
 
-	* setup.py: Apply debian patch; include .
+	* setup.py: Apply debian patch; include png etc.
 
 	* src/lib/plugins/nutritional_information/main_plugin.py (NutritionMainPlugin.activate):
 	Add nutritional icon.

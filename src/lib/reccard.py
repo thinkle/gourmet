@@ -124,6 +124,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
        <menubar name="RecipeDisplayMenuBar">
           <menu name="Recipe" action="Recipe">
             <menuitem action="Export"/>
+            <menuitem action="ShopRec"/>
             <!-- <menuitem action="Email"/> -->
             <menuitem action="Print"/>
             <separator/>
@@ -215,7 +216,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
             #('Email',None,_('E-_mail recipe'),
             # None,None,self.email_cb),
             ('Print',gtk.STOCK_PRINT,_('Print recipe'),
-             None,None,self.print_cb),
+             '<Control>P',None,self.print_cb),
+            ('ShopRec','add-to-shopping-list',None,None,None,self.shop_for_recipe_cb),
             ('ForgetRememberedOptionals',None,_('Forget remembered optional ingredients'),
              None,_('Before adding to shopping list, ask about all optional ingredients, even ones you previously wanted remembered'),self.forget_remembered_optional_ingredients), 
             ])
@@ -232,6 +234,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
                 gladeCustomHandlers.add_custom_handler(name,handler)
             RecCardDisplay._custom_handlers_setup = True
         self.glade = gtk.glade.XML(os.path.join(gladebase,'recCardDisplay.glade'))
+
         self.glade.signal_autoconnect({
             'shop_for_recipe':self.shop_for_recipe_cb,
             'edit_details': lambda *args: self.reccard.show_edit(module='description'),
@@ -1029,22 +1032,22 @@ class IngredientEditorModule (RecEditorModule):
             ('AddIngredient',gtk.STOCK_ADD,_('Add ingredient'),
              None,None),
             ('AddIngredientGroup',None,_('Add group'),
-             None,None,self.ingtree_ui.ingNewGroupCB),
+             '<Control>G',None,self.ingtree_ui.ingNewGroupCB),
             ('PasteIngredient',gtk.STOCK_PASTE,_('Paste ingredients'),
-             None,None,self.paste_ingredients_cb),
+             '<Control>V',None,self.paste_ingredients_cb),
             ('ImportIngredients',None,_('Import ingredients from file'),
-             None,None,self.import_ingredients_cb),
+             '<Control>O',None,self.import_ingredients_cb),
             ('AddRecipeAsIngredient',None,_('Add _recipe as ingredient'),
-             None,_('Add another recipe as an ingredient in this recipe'),
+             '<Control>R',_('Add another recipe as an ingredient in this recipe'),
              lambda *args: RecSelector(self.rg, self)),
             ])
         self.ingredientEditorOnRowActionGroup.add_actions([
             ('DeleteIngredient',gtk.STOCK_DELETE,_('Delete'),
-             None,None,self.ie.delete_cb),            
+             'Delete',None,self.ie.delete_cb),            
             ('MoveIngredientUp',gtk.STOCK_GO_UP,_('Up'),
-             None,None,self.ingtree_ui.ingUpCB),
+             '<Control>Up',None,self.ingtree_ui.ingUpCB),
             ('MoveIngredientDown',gtk.STOCK_GO_DOWN,_('Down'),
-             None,None,self.ingtree_ui.ingDownCB),
+             '<Control>Down',None,self.ingtree_ui.ingDownCB),
             ])
         self.action_groups.append(self.ingredientEditorActionGroup)
         self.action_groups.append(self.ingredientEditorOnRowActionGroup)
@@ -1459,9 +1462,9 @@ class TextFieldEditor (TextEditor):
         TextEditor.setup_action_groups(self)
         self.richTextActionGroup = gtk.ActionGroup('RichTextActionGroup')
         self.richTextActionGroup.add_toggle_actions([
-            ('Bold',gtk.STOCK_BOLD,None,None,None,None),
-            ('Italic',gtk.STOCK_ITALIC,None,None,None,None),
-            ('Underline',gtk.STOCK_UNDERLINE,None,None,None,None),            
+            ('Bold',gtk.STOCK_BOLD,None,'<Control>B',None,None),
+            ('Italic',gtk.STOCK_ITALIC,None,'<Control>I',None,None),
+            ('Underline',gtk.STOCK_UNDERLINE,None,'<Control>U',None,None),            
             ])
         for action,markup in [('Bold','<b>b</b>'),
                               ('Italic','<i>i</i>'),
