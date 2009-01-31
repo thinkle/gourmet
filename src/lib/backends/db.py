@@ -1392,7 +1392,9 @@ class RecData (Pluggable):
         else:
             return amt
 
-    def get_amount_and_unit (self, ing, mult=1, conv=None,fractions=None):
+    @pluggable_method
+    def get_amount_and_unit (self, ing, mult=1, conv=None, fractions=None, adjust_units=False,
+                             favor_current_unit=True,preferred_unit_groups=[]):
         """Return a tuple of strings representing our amount and unit.
         
         If we are handed a converter interface, we will adjust the
@@ -1402,13 +1404,15 @@ class RecData (Pluggable):
         unit=ing.unit
         ramount = None
         if type(amt)==tuple: amt,ramount = amt
-        if conv:
-            amt,unit = conv.adjust_unit(amt,unit)
+        if adjust_units or preferred_unit_groups:
+            amt,unit = conv.adjust_unit(amt,unit,
+                                        favor_current_unit=favor_current_unit,
+                                        preferred_unit_groups=preferred_unit_groups)
             if ramount and unit != ing.unit:
                 # if we're changing units... convert the upper range too
                 ramount = ramount * conv.converter(ing.unit, unit)
         if ramount: amt = (amt,ramount)
-        return (self._format_amount_string_from_amount(amt,fractions=fractions),unit)
+        return (self._format_amount_string_from_amount(amt,fractions=fractions,unit=unit),unit)
         
     def get_amount_as_string (self,
                               ing,
@@ -1421,7 +1425,7 @@ class RecData (Pluggable):
         amt = self.get_amount(ing,mult)
         return self._format_amount_string_from_amount(amt, fractions=fractions)
 
-    def _format_amount_string_from_amount (self, amt, fractions=None):
+    def _format_amount_string_from_amount (self, amt, fractions=None, unit=None):
         """Format our amount string given an amount tuple.
 
         If fractions is None, we use the default setting from
@@ -1435,11 +1439,15 @@ class RecData (Pluggable):
         if fractions is None:
             # None means use the default value
             fractions = convert.USE_FRACTIONS
+        if unit:
+            approx = defaults.unit_rounding_guide.get(unit,0.01)
+        else:
+            approx = 0.01
         if type(amt)==tuple:
-            return "%s-%s"%(convert.float_to_frac(amt[0],fractions=fractions).strip(),
-                            convert.float_to_frac(amt[1],fractions=fractions).strip())
+            return "%s-%s"%(convert.float_to_frac(amt[0],fractions=fractions,approx=approx).strip(),
+                            convert.float_to_frac(amt[1],fractions=fractions,approx=approx).strip())
         elif type(amt) in (float,int):
-            return convert.float_to_frac(amt,fractions=fractions)
+            return convert.float_to_frac(amt,fractions=fractions,approx=approx)
         else: return ""
 
     def get_amount_as_float (self, ing, mode=1): #1 == self.AMT_MODE_AVERAGE

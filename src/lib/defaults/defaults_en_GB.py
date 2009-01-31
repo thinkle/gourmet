@@ -505,7 +505,12 @@ CONVERTER_TABLE = {
     ("pt", "c."):2,
     ("qt", "c."):4,
     ("gallon", "qt."):4,
-    ("l", "qt."):1.057,
+    #("l", "qt."):1.057,
+    ('qt.','l'):0.946
+    ('Japanese cup','ml'):200,
+    ('metric cup','ml'):250,
+    ('imperial cup','ml'):284.130625,
+    ('Imperial pint','oz'):20,
     ("l", "ml"):1000,
     ("l", "cl"):100,
     ("l", "dl"):10,

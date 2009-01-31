@@ -48,13 +48,9 @@ class BrowserPlugin (MainPlugin):
         self.reset_view()
 
     def get_selected_post_hook (self, recs_from_recindex, pluggable):
-        print 'Running post hook!','current page=',self.main.main_notebook.get_current_page()
-        print 'My tabs: ',self.added_tabs
         if self.main.main_notebook.get_current_page() in self.added_tabs:
             # then get recipes from iconview...
-            print 'We use browser views recs!'
             retval = self.browser.view.get_selected_recipes()
-            print 'Returning:',retval
             return retval
         else:
             return recs_from_recindex

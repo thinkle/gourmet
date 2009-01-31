@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import re, locale
+import re, locale, math
 from defaults.defaults import lang as defaults
 from gettext import gettext as _
 from gettext import ngettext
@@ -10,7 +10,7 @@ FRACTIONS_NORMAL = 0
 FRACTIONS_ASCII = -1
 FRACTIONS_OFF = -2
 
-USE_FRACTIONS = FRACTIONS_NORMAL
+USE_FRACTIONS = FRACTIONS_NORMAL 
 
 class PossiblyCaseInsensitiveDictionary (dict):
 
@@ -319,7 +319,7 @@ class Converter:
             readability += 0.05
         ## If it is not a normal fraction, readability takes a hit
         else:
-            readability += -3
+            readability += -2
         ## If it is exactly 1 it gets a bump:
         if amt == 1: readability += 0.5
         if unit:
@@ -382,7 +382,7 @@ class Converter:
         #    readability += -20
         return readability
 
-    def adjust_unit (self, amt, unit, item=None, favor_current_unit=True):
+    def adjust_unit (self, amt, unit, item=None, favor_current_unit=True, preferred_unit_groups=[]):
 
         """Return the most readable equivalent of amount and unit for item ITM
 
@@ -401,7 +401,18 @@ class Converter:
         except KeyError:
             return amt,unit
         else:
-            units=defaults.UNIT_GROUPS[ugroup]
+            units=defaults.UNIT_GROUPS[ugroup]                
+            if preferred_unit_groups:
+                if ugroup not in preferred_unit_groups:
+                    for ug in preferred_unit_groups:
+                        conv = self.converter(u,defaults.UNIT_GROUPS[ug][0][0])
+                        if conv:
+                            units = defaults.UNIT_GROUPS[ug]
+                            amt = conv * amt
+                            u = unit = defaults.UNIT_GROUPS[ug][0][0]
+                            break
+                        else:
+                            continue
             ret_readability = self.readability_score(amt,unit)
             if favor_current_unit: ret_readability += 1
             ret_amt = amt
@@ -411,7 +422,6 @@ class Converter:
             for u2,rng in units:
                 conv = self.converter(u,u2)
                 if not conv:
-                    print "Warning: no conversion for",u,u2
                     continue
                 new_amt = conv * amt
                 readability = self.readability_score(new_amt,u2)
@@ -848,7 +858,7 @@ def float_to_frac (n, d=[2,3,4,5,6,8,10,16],approx=0.01,fractions=FRACTIONS_NORM
     and attempt to return a fraction with a denominator in the list `d'. We
     approximate fractions to within approx. i.e. if approx=0.01, then 0.331=1/3"""
     if USE_FRACTIONS == FRACTIONS_OFF:
-        return float_to_metric(n)
+        return float_to_metric(n,approx)
     else:
         if not n: return ""
         n=float(n)
@@ -858,9 +868,9 @@ def float_to_frac (n, d=[2,3,4,5,6,8,10,16],approx=0.01,fractions=FRACTIONS_NORM
         else:
             i=""
         rem = n - int(n)
-        if rem==0:
+        if rem==0 or rem<approx:
             if i:
-                return "%s"%i
+                return "%i"%round(n)
             else:
                 return "0"
         else:
@@ -870,12 +880,26 @@ def float_to_frac (n, d=[2,3,4,5,6,8,10,16],approx=0.01,fractions=FRACTIONS_NORM
                 if f:
                     return " ".join([i,f]).strip()
              # use locale-specific metric formatting if fractions don't work
-            return float_to_metric(n)
+            return float_to_metric(n,approx)
 
-def float_to_metric(n):
+def float_to_metric(n, approx=0.01):
     """Returns a formatted string in metric format, using locale-specific formatting"""    
-    if len("%s"%n) > 5:
-        return locale.format("%.2f",n,True) # format(formatstring, number, use_thousands_separator)
+    decimals_to_preserve = int(round(math.log(float(1)/approx,10)))
+    if decimals_to_preserve > 0:
+        format_string = "%."+str(decimals_to_preserve)+"f"
+    else:
+        format_string = "%i"
+    if int(n) != n:
+        if (n - int(n) < approx) or ((n - int(n) + approx) > 1):
+            rounded = round(n)
+            if rounded == 0:
+                return float_to_metric(n,approx*.01)
+            return locale.format("%i",int(rounded),True)
+        else:
+            rounded = round(n,decimals_to_preserve)
+            if rounded == 0:
+                return float_to_metric(n,approx*.01)
+            return locale.format("%."+str(decimals_to_preserve)+"f",rounded,True) # format(formatstring, number, use_thousands_separator)
     else:
         return locale.format("%s",n,True)
     

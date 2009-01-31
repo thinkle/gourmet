@@ -548,10 +548,10 @@ class RecCardDisplay (plugin_loader.Pluggable):
     def toggle_readable_units_cb (self, widget):
         if widget.get_active():
             self.prefs['readableUnits']=True
-            self.resetIngList()
+            self.ingredientDisplay.display_ingredients()
         else:
             self.prefs['readableUnits']=False
-            self.resetIngList()
+            self.ingredientDisplay.display_ingredients()
 
     def preferences_cb (self, *args):
         self.rg.prefsGui.show_dialog(page=self.rg.prefsGui.CARD_PAGE)

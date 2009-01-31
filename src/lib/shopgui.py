@@ -870,7 +870,6 @@ def getOptionalIngDic (ivw, mult, prefs, rg):
                 else: dic[i.ingkey]=False
             return dic
         # otherwise, we ask our user
-        print 'Run OID with ',vw,prefs,rg,mult
         oid=OptionalIngDialog(vw, prefs, rg,mult )
         retval = oid.run()
         if retval:

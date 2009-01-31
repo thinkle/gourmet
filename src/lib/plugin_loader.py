@@ -311,7 +311,15 @@ class Pluggable:
 
     def run_pre_hook (self, fname, *args, **kwargs):
         for hook in self.pre_hooks.get(fname,[]):
-            hook(self,*args,**kwargs)
+            try:
+                new_args,new_kwargs = hook(self,*args,**kwargs)
+                assert(isinstance(args,tuple))
+                assert(isinstance(kwargs,dict))
+            except:
+                print 'WARNING',hook,'did not return args,kwargs'
+            else:
+                args,kwargs = new_args,new_kwargs
+        return args,kwargs
 
     def run_post_hook (self, fname, retval, *args, **kwargs):
         for hook in self.post_hooks.get(fname,[]):
@@ -347,7 +355,7 @@ class DependencyError (Exception):
 def pluggable_method (f):
     def _ (self, *args, **kwargs):
         '''Run hooks around method'''
-        self.run_pre_hook(f.__name__,*args,**kwargs)
+        args,kwargs = self.run_pre_hook(f.__name__,*args,**kwargs)
         retval = f(self,*args,**kwargs)
         retval = self.run_post_hook(f.__name__,retval,*args,**kwargs)
         return retval

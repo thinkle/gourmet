@@ -64,6 +64,22 @@ for row in lang.INGREDIENT_DATA:
 
 lang.unit_group_lookup = {}
 
+unit_rounding_guide = {
+    'ml':1,
+    'l':0.001,
+    'mg':1,
+    'g':1,
+    'tsp.':0.075,
+    'Tbs.':0.02,
+    'c.':0.125,
+    }
+
+if hasattr(lang,'unit_rounding_guide'):
+    unit_rounding_guide.update(lang.unit_rounding_guide)
+
+lang.unit_rounding_guide = unit_rounding_guide
+
+
 for group,v in lang.UNIT_GROUPS.items():
     n = 0
     for u,rng in v:

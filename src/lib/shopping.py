@@ -197,7 +197,7 @@ class Shopper:
         """Put two ingredients in order"""
         inga = inga[0]
         ingb = ingb[0]
-        if self.ingorder_dic.has_key(inga) and self.ingorder_dic.has_key(ingb):
+        if False and self.ingorder_dic.has_key(inga) and self.ingorder_dic.has_key(ingb):
             # if both ings have known positions, we use them to compare
             inga = self.ingorder_dic[inga]
             ingb = self.ingorder_dic[ingb]
