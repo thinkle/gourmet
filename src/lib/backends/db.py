@@ -775,7 +775,32 @@ class RecData (Pluggable):
     def get_ingkeys_with_count (self, search={}):
         """Get unique list of ingredient keys and counts for number of times they appear in the database.
         """
-        raise NotImplementedError
+        if search:
+            col = getattr(self.ingredients_table.c,search['column'])
+            operator = search.get('operator','LIKE')
+            if operator=='LIKE':
+                criteria = col.like(search['search'])
+            elif operator=='REGEXP':
+                criteria = col.op('REGEXP')(search['search'])
+            else:
+                criteria = col==crit['search']
+        else:
+            criteria = []
+        result =  sqlalchemy.select(
+            [sqlalchemy.func.count(self.ingredients_table.c.ingkey).label('count'),
+             self.ingredients_table.c.ingkey],
+            criteria,
+            **{'group_by':'ingkey',
+               'order_by':make_order_by([],self.ingredients_table,count_by='ingkey'),
+               }
+            ).execute().fetchall()
+        return result
+        return self.fetch_count(self.ingredients_table,'ingkey',)
+        s = sqlalchemy.select([
+            self.ingredients_table.c.ingkey,
+            func.count(self.ingredients_table.c.ingkey).label('count')
+            ]).execute()
+        return s.fetchall()
 
     def delete_by_criteria (self, table, criteria):
         """Table is our table.

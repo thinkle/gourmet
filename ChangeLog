@@ -1,3 +1,82 @@
+2009-02-01  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/plugins/key_editor/keyeditor.glade: Remove "Edit
+	nutritional info" button.
+
+	* src/lib/plugins/key_editor/keyEditor.py (KeyEditor): Remove
+	references to nutritional info. Update to work with current DB
+	front-end.
+
+	* src/lib/gtk_extras/treeview_extras.py (selectionSaver.add_selection):
+	Fix mysterious bug that occurred when we tried to use sqlalchemy
+	0.5 rowobjects as dictionary keys.
+	(selectionSaver.restore_selections): Fix mysterious bug that
+	occurred when we tried to use sqlalchemy 0.5 rowobjects as
+	dictionary keys.
+
+	* src/lib/backends/db.py (RecData.get_ingkeys_with_count):
+	Implement the functionality needed for a keyEditor interface.
+
+	* src/lib/gglobals.py: ++ png icons for reccard and reccard_edit.
+
+2009-01-31  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/plugins/unit_display_prefs: New plugin that allows user
+	to specify which kinds of units to display, resulting in
+	displaying e.g. all metric units without the need to tinker with
+	the underlying data.
+
+	* src/lib/defaults/defaults_en_GB.py (CONVERTER_TABLE): Add units for
+	non-American cups (Japanese cup, metric cup, imperial cup,
+	imperial pint).
+
+	* src/lib/defaults/defaults_en.py (CONVERTER_TABLE): same change as defaults_en.py
+
+	* src/lib/defaults/defaults.py (unit_rounding_guide): Add
+	parameter unit_rounding_guide (which can be overridden in the
+	defaults_XX files). This allows us to hone what kinds of decimal
+	values we show for different units.
+
+	* src/lib/backends/db.py (RecData.get_amount_and_unit): Make
+	get_amount_and_unit take arguments favor_current_unit and
+	preferred_unit_group to allow further control over how it handles
+	conversion. Also make pluggable, enabling our new
+	unit_display_prefs plugin to do its work.
+
+	* src/lib/shopping.py (Shopper._ing_compare): Disable special
+	ingorder comparisons, falling back to alphabetical. In the future,
+	it would be worth looking into what was implemented and why it was
+	failing -- I've simply disabled the functionality since it wasn't
+	working properly anyway.
+
+	* src/lib/reccard.py (RecCardDisplay.toggle_readable_units_cb):
+	Fix reference to obsolete method resetIngList (replaced by
+	display_ingredients)
+
+	* src/lib/plugin_loader.py (Pluggable.run_pre_hook): Changed API
+	around pre_hook -- pre-hooks can now modify the args fed to the
+	function they're hooking around by returning args,kwargs as the
+	return value. If they don't return a tuple and a dictionary, then
+	we fail with a warning (this means the old API will fail with a
+	warning until I update old plugins that use this).
+	(pluggable_method._): Changed pre-hook API (see above)
+
+	* src/lib/convert.py (float_to_metric): Changes to float-to-metric
+	to allow rounding based on an approx value rather than always
+	assuming we want 2 decimal points.
+	(float_to_frac): Return a simple integer if we're within approx of
+	an integer.
+	(Converter.adjust_unit): Accept a parameter
+	preferred_unit_groups. If we have this parameter, we look for
+	conversions within our preferred groups and convert if possible. A
+	group could be, e.g. metric mass, metric volume, imperial volume,
+	etc., as defined in UNIT_GROUPS in defaults.
+	(Converter.readability_score): Adjust scoring algorithm: being a
+	weird decimal is less bad than being out of the defined range (I
+	was getting values like 2034 mL instead of 2 L because it
+	preferred the integer (2034) to the decimal even though the
+	integer was outside the preferred range for mL).
+
 2009-01-28  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/reccard.py: Add shop-recipe to menus. Add key commands

@@ -71,7 +71,7 @@ class KeyEditor:
             'applyEntries':self.applyEntriesCB,
             'clearEntries':self.clearEntriesCB,
             'close_window': lambda *args: self.window.hide(),
-            'editNutritionalInfo':self.editNutritionalInfoCB,
+            #'editNutritionalInfo':self.editNutritionalInfoCB,
             })
         # setup mnemonic manager
         self.mm = mnemonic_manager.MnemonicManager()
@@ -109,7 +109,7 @@ class KeyEditor:
                        [self.VALUE_COL,_('Value')],
                        [self.COUNT_COL,_('Count')],
                        [self.REC_COL, _('Recipes')],
-                       [self.NUT_COL, _('Nutritional Info')],
+                       #[self.NUT_COL, _('Nutritional Info')],
                        ]:
             if n == self.NUT_COL:
                 renderer = gtk.CellRendererToggle()
@@ -372,7 +372,7 @@ class KeyEditor:
             curdic,field = self.get_dic_describing_iter(itr)
             curkey = self.treeModel.get_value(itr,self.VALUE_COL)
             if not already_updated:
-                self.rd.update(
+                self.rd.update_by_criteria(
                     self.rd.ingredients_table,
                     curdic,
                     newdic,
@@ -506,7 +506,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
     UNIT = _('Unit')+':'
     AMOUNT = _('Amount')+':'    
     
-    columns = ['obj','ingkey','item','count','recipe','ndbno']
+    columns = ['obj','ingkey','item','count','recipe']#,'ndbno']
     def __init__ (self, rd, per_page=15):
         self.rd = rd
         pageable_store.PageableTreeStore.__init__(self,
@@ -515,7 +515,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                                                    str, # value
                                                    int, # count
                                                    str, # recipe
-                                                   int, # nutritional information equivalent
+                                                   #int, # nutritional information equivalent
                                                    ],
                                                   per_page=per_page)
 
@@ -577,7 +577,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                 # avoidable slowdown (look here if code seems sluggish)
                 row.count,
                 None,
-                row.ndbno or 0,
+                #row.ndbno or 0,
                 ]
 
     def _get_children_ (self,itr):
@@ -592,7 +592,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                             item,
                             self.rd.fetch_len(self.rd.ingredients_table,ingkey=ingkey,item=item),
                             self.get_recs(ingkey,item),
-                            0
+                            #0
                             ])
         elif field==self.ITEM:
             ingkey = self.get_value(self.iter_parent(itr),2)
@@ -603,14 +603,14 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                             unit,
                             self.rd.fetch_len(self.rd.ingredients_table,ingkey=ingkey,item=item,unit=unit),
                             None,
-                            0])
+                            ])
             if not ret:
                 ret.append([None,
                             self.UNIT,
                             '',
                             self.get_value(self.iter_parent(itr),3),
                             None,
-                            0])                
+                            ])                
         elif field==self.UNIT:
             item = self.get_value(self.iter_parent(itr),2)
             ingkey = self.get_value(self.iter_parent(
@@ -633,7 +633,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                                                    unit=unit,
                                                    amount=i.amount)),
                             None,
-                            0])
+                            ])
                 amounts.append(astring)
             if not ret:
                 ret.append([None,
@@ -641,7 +641,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                             '',
                             self.get_value(self.iter_parent(itr),3),
                             None,
-                            0])
+                            ])
             
         return ret
         #row = row[0]

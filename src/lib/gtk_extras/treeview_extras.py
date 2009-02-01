@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from gourmet.gdebug import *
-import gtk
+import gtk, gobject
 
 def print_tree (mod):
     for row in mod:
@@ -162,6 +162,7 @@ class selectionSaver:
     def __init__ (self, treeview, unique_column=0):
         """unique_column is the column with unique data (used to identify selections). treeview
         is the treeview in question"""
+        self.expanded = {}
         self.tv = treeview
         self.uc = unique_column
         self.model=self.tv.get_model()
@@ -170,7 +171,7 @@ class selectionSaver:
         
     def save_selections (self):
         self.selected = []
-        self.expanded = {}
+        self.expanded = {}        
         self.selection.selected_foreach(self._add_to_selected)
 
     def _add_to_selected (self, model, path, iter):
@@ -180,7 +181,10 @@ class selectionSaver:
         """Add iter to list of selected items"""
         v = self.model.get_value(itr,self.uc)
         self.selected.append(v)
-        self.expanded[v] = self.tv.row_expanded(self.model.get_path(itr))
+        pth = self.model.get_path(itr)
+        expandedp = self.tv.row_expanded(pth)
+        if expandedp:
+            self.expanded[v] = expandedp
         
     def rem_selection (self, itr):
         """Remove iter from list of selected items. Silently do nothing if
@@ -209,7 +213,7 @@ class selectionSaver:
             v = self.model.get_value(itr,self.uc)
             if self.selected.__contains__(v):
                 self.selection.select_iter(itr)
-                if self.expanded.get(v):
+                if isinstance(v,unicode) and self.expanded.get(v):
                     self.tv.expand_row(self.model.get_path(itr),True)
                 new_paths.append(self.model.get_path(itr))
             child = self.model.iter_children(itr)            
