@@ -1,3 +1,12 @@
+2009-02-03  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/defaults/defaults_en_GB.py: Replace missing
+	comma (syntax error)
+
+	* src/lib/version.py: Version->0.14.5 for release
+
+	* src/lib/reccard.py: Change icon to new recipe card/editor icons. 
+
 2009-02-01  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/plugins/key_editor/keyeditor.glade: Remove "Edit

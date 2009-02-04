@@ -765,8 +765,6 @@ class ImporterExporter:
             parent=self.app.get_toplevel())
 
 
-
-    
 class StuffThatShouldBePlugins:
     # As you can tell by the name, everything in this class should
     # really be re-implemented as a plugin. Once that process is
@@ -870,6 +868,7 @@ ui = '''<ui>
   <menu name="Tools" action="Tools">
     <placeholder name="StandaloneTool">
     <menuitem action="Timer"/>
+    <menuitem action="FieldEditor"/>
     </placeholder>
     <separator/>
     <placeholder name="DataTool"/>
@@ -1068,6 +1067,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('Tools',None,_('_Tools')),
             ('Timer',None,_('_Timer'),
              None,_('Show timer'),lambda *args: show_timer()),
+            ('FieldEditor',None,_('_Field Editor'),
+             None,_('Edit values for any field across multiple recipes at a time'),
+             lambda *args: self.showValueEditor()
+             ),
             #('UnitConverter',None,_('_Unit Converter'),
             # None,_('Calculate unit conversions'),self.showConverter),
             ])
