@@ -20,6 +20,7 @@ def write_lst_to_file (lst, fi=outfi):
 STARTER_LIST ='''ChangeLog
 CHANGES
 FAQ
+gourmet.1
 MANIFEST
 README
 README.txt
