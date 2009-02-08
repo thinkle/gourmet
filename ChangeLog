@@ -1,3 +1,31 @@
+2009-02-07  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* glade/recCardIngredientsEditor.glade: Simplify ingredient
+	interface -- remove detailed expander widget. We now simply have
+	an "Add" textbox and a list of ingredients. All of the complexity
+	of ingredient keys is hidden in this view now, leaving our basic
+	interface simpler and cleaner.
+
+	* src/lib/plugin.py (RecEditorPlugin): Create RecEditorPlugin
+	class.
+	(RecEditorModule.__gsignals__): Add signals 'saved' and
+	'toggle-edited' to RecEditorModule for communicating state-changes
+	of individual modules.
+	(IngredientControllerPlugin): ++IngredientControllerPlugin.
+
+	* src/lib/reccard.py (RecEditor.add_plugin): Rework
+	plugin-interface as part of making ingkey-editor plugin a recipe
+	card editor module.
+	(DescriptionEditorModule.save): Use new signal interface to
+	indicate saved.
+	(IngredientController): Make controller pluggable so that plugins
+	can add info to ingredients if they like.
+	(IngredientTreeUI.setup_columns): Remove ingredient key and
+	shopping category from standard treeview -- these are now only
+	visible with plugins.
+
+	* src/lib/version.py (version): Version->0.14.6
+
 2009-02-03  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/defaults/defaults_en_GB.py: Replace missing

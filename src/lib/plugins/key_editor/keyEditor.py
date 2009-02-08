@@ -5,6 +5,7 @@ from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
 from gettext import gettext as _
 from gettext import ngettext
+import keyEditorPluggable
 #import nutrition.nutritionDruid as nutritionDruid
 
 try:
@@ -137,6 +138,14 @@ class KeyEditor:
                 col.set_property('expand',True)
             col.set_resizable(True)
             self.treeview.append_column(col)
+        plugin_manager = keyEditorPluggable.get_key_editor_plugin_manager()
+        for tvc in plugin_manager.get_treeview_columns(None,
+                                                       key_col=2,
+                                                       instant_apply=True):
+            self.treeview.append_column(tvc)
+            
+        
+        
 
 
     def tree_edited (self, renderer, path_string, text, n, head):

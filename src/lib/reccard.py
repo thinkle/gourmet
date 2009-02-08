@@ -24,7 +24,7 @@ from importers.importer import parse_range
 from gtk_extras.FauxActionGroups import ActionManager
 from gtk_extras import mnemonic_manager
 from gtk_extras import LinkedTextView
-from plugin import RecDisplayModule, RecEditorModule, ToolPlugin, RecDisplayPlugin
+from plugin import RecDisplayModule, RecEditorModule, ToolPlugin, RecDisplayPlugin, RecEditorPlugin, IngredientControllerPlugin
 import plugin_loader
 import timeScanner
 
@@ -346,7 +346,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
                 for c in widg.get_children():
                     set_style(c,styl)
         set_style(main,new_style)
-
+    
     # Main GUI setup
     def setup_main_window (self):
         self.window = gtk.Window();
@@ -798,7 +798,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
             # and set our page to the details page
             #self.notebook.set_current_page(self.NOTEBOOK_ATTR_PAGE)
         self.set_edited(False)
-        plugin_loader.Pluggable.__init__(self,[ToolPlugin])
+        plugin_loader.Pluggable.__init__(self,[ToolPlugin,RecEditorPlugin])
         self.mm = mnemonic_manager.MnemonicManager()
         self.mm.add_toplevel_widget(self.window)
         self.mm.fix_conflicts_peacefully()        
@@ -833,7 +833,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
              None,None,self.close_cb), 
             ('Preferences',gtk.STOCK_PREFERENCES,None,
              None,None,self.preferences_cb), # show_pref_dialog
-            ('ShowRecipeCard',None,_('View Recipe Card'),
+            ('ShowRecipeCard','recipe-card',_('View Recipe Card'),
              None,None,self.show_recipe_display_cb), #view_recipe_card
             ])
 
@@ -848,17 +848,41 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
                 tab_label=tab_label)
             self.module_tab_by_name[instance.name] = n
             instance.main.show(); tab_label.show()
+            instance.connect('toggle-edited',self.module_edited_cb)
             self.modules.append(instance)
 
-    def add_plugin (self, klass):
+    def add_plugin (self, klass, position=None):
         """Register any external plugins"""
-        self.plugins = []
+        print 'RecEditor.add_plugin(',klass,')'
         instance = klass(self)
+        if instance.__class__ in self.editor_modules: return # these are handled in setup_modules...
         tab_label = gtk.Label(instance.label)
-        n = self.notebook.append_page(instance.main,tab_label=tab_label)
+        if not position:
+            n = self.notebook.append_page(instance.main,tab_label=tab_label)
+        else:
+            n = self.notebook.insert_page(instance.main,tab_label=tab_label,position=position)
+            # We'll need to reset the other plugin's positions if we shoved one in the middle
+            for mod in self.modules[position:]:
+                self.module_tab_by_name[mod.name] = self.notebook.page_num(mod.main)
         self.module_tab_by_name[instance.name] = n
-        self.plugins.append(instance)
+        #self.plugins.append(instance)
+        if not position:
+            self.modules.append(instance)
+        else:
+            self.modules = self.modules[:position] + [instance] + self.modules[position:]
         instance.main.show(); tab_label.show()
+        instance.connect('toggle-edited',self.module_edited_cb)
+
+    def module_edited_cb (self, module, val):
+        if val:
+            self.set_edited(True)
+        else:
+            for m in self.modules:
+                if m.edited:
+                    print 'Strange,',module,'told us we are not edited, but ',m,'tells us we are...'
+                    self.set_edited(True)
+                    return
+            self.set_edited(False)
 
     def show_module (self, module_name):
         """Show the part of our interface corresponding with module
@@ -872,7 +896,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
     def setup_main_interface (self):
         self.window = gtk.Window()
         self.window.set_icon_from_file(os.path.join(imagedir,'reccard_edit.png'))
-        title = ((self.current_rec and self.current_rec.title) or _('Recipe')) + ' (%s)'%_('Edit')
+        title = ((self.current_rec and self.current_rec.title) or _('New Recipe')) + ' (%s)'%_('Edit')
         self.window.set_title(title)
         self.window.connect('delete-event',
                             self.close_cb)
@@ -918,7 +942,8 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
     def update_from_database (self):
         for mod in self.modules:
             mod.update_from_database()
-                
+            mod.__edited = False
+            
     def notebook_change_cb (self, *args):
         """Update menus and toolbars"""
         page=self.notebook.get_current_page()
@@ -979,6 +1004,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         self.reccard.show_display()
 
 class IngredientEditorModule (RecEditorModule):
+
     name = 'ingredients'
     label = _('Ingredients')
     ui = '''
@@ -1014,18 +1040,29 @@ class IngredientEditorModule (RecEditorModule):
 
     def setup (self):
         pass
-        
+
     def setup_main_interface (self):
         self.glade = gtk.glade.XML(os.path.join(gladebase,'recCardIngredientsEditor.glade'))
-        self.main = self.glade.get_widget('ingredientsMainWidget')
+        self.main = self.glade.get_widget('ingredientsNotebook')
         self.main.unparent()
-        self.ie = IngredientEditor(self.rg, self)
-        self.ingtree_ui = IngredientTreeUI(self)
+        self.ingtree_ui = IngredientTreeUI(self, self.glade.get_widget('ingTree'))
         self.setup_action_groups()
         self.update_from_database()
+        self.quickEntry = self.glade.get_widget('quickIngredientEntry')
+        self.glade.signal_connect('addQuickIngredient',self.quick_add)
+
+    def quick_add (self, *args):
+        txt = self.quickEntry.get_text()
+        prev_iter,group_iter = self.ingtree_ui.get_previous_iter_and_group_iter()
+        add_with_undo(self,
+                      lambda *args: self.add_ingredient_from_line(txt,
+                                                                  prev_iter=prev_iter,
+                                                                  group_iter=group_iter)
+                      )
+        self.quickEntry.set_text('')
 
     def update_from_database (self):
-        self.ingtree_ui.set_tree_for_rec(self.re.current_rec)
+        self.ingtree_ui.set_tree_for_rec(self.current_rec)
 
     def setup_action_groups (self):
         self.ingredientEditorActionGroup = gtk.ActionGroup('IngredientEditorActionGroup')
@@ -1037,15 +1074,15 @@ class IngredientEditorModule (RecEditorModule):
              '<Control>G',None,self.ingtree_ui.ingNewGroupCB),
             ('PasteIngredient',gtk.STOCK_PASTE,_('Paste ingredients'),
              '<Control>V',None,self.paste_ingredients_cb),
-            ('ImportIngredients',None,_('Import ingredients from file'),
+            ('ImportIngredients',None,_('Import from file'),
              '<Control>O',None,self.import_ingredients_cb),
-            ('AddRecipeAsIngredient',None,_('Add _recipe as ingredient'),
+            ('AddRecipeAsIngredient',None,_('Add _recipe'),
              '<Control>R',_('Add another recipe as an ingredient in this recipe'),
              lambda *args: RecSelector(self.rg, self)),
             ])
         self.ingredientEditorOnRowActionGroup.add_actions([
             ('DeleteIngredient',gtk.STOCK_DELETE,_('Delete'),
-             'Delete',None,self.ie.delete_cb),            
+             'Delete',None,self.delete_cb),            
             ('MoveIngredientUp',gtk.STOCK_GO_UP,_('Up'),
              '<Control>Up',None,self.ingtree_ui.ingUpCB),
             ('MoveIngredientDown',gtk.STOCK_GO_DOWN,_('Down'),
@@ -1098,9 +1135,17 @@ class IngredientEditorModule (RecEditorModule):
                 add_with_undo(self, lambda *args: do_add())
         self.cb.request_text(add_ings_from_clippy)
 
+    def delete_cb (self, *args):
+        debug("delete_cb (self, *args):",5)
+        mod,rows = self.ingtree_ui.ingTree.get_selection().get_selected_rows()
+        rows.reverse()
+        self.ingtree_ui.ingController.delete_iters(*[mod.get_iter(p) for p in rows])
+
+
     def save (self, recdic):
         # Save ingredients...
         self.ingtree_ui.ingController.commit_ingredients()
+        self.emit('saved')
         return recdic
 
 class TextEditor:
@@ -1297,6 +1342,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
         if self.imageBox.edited:
             recdic['image'],recdic['thumb']=self.imageBox.commit()
             self.imageBox.edited=False
+        self.emit('saved')
         return recdic
 
 class ImageBox: # used in DescriptionEditor for recipe image.
@@ -1502,6 +1548,7 @@ class TextFieldEditor (TextEditor):
 
     def save (self, recdic):
         recdic[self.prop] = self.tv.get_buffer().get_text()
+        self.emit('saved')
         return recdic
 
 class InstructionsEditorModule (TextFieldEditor,RecEditorModule):
@@ -1801,25 +1848,6 @@ class IngredientEditor:
             self.optCheck.set_active(False)
         #self.amountBox.grab_focus()
 
-    def get_previous_iter_and_group_iter (self):
-        """Return prev_iter,group_iter"""
-        # If there is a selected iter, we treat it as a group to put
-        # our entry into or after
-        selected_iter = self.re.ingtree_ui.getSelectedIter()
-        if not selected_iter:
-            # default behavior (put last)
-            group_iter = None
-            prev_iter = None
-        elif type(self.re.ingtree_ui.ingController.imodel.get_value(selected_iter,0)) in types.StringTypes:
-            # if we are a group
-            group_iter = selected_iter
-            prev_iter = None
-        else:
-            # then we are a previous iter...
-            group_iter = None
-            prev_iter = selected_iter
-        return prev_iter,group_iter
-
     def quick_add (self, *args):
         txt = self.quickEntry.get_text()
         prev_iter,group_iter = self.get_previous_iter_and_group_iter()
@@ -1895,7 +1923,7 @@ class IngredientEditor:
 
 # Various sub-classes to handle our ingredient treeview
 
-class IngredientController:
+class IngredientController (plugin_loader.Pluggable):
 
     """Handle updates to our ingredient model.
 
@@ -1904,10 +1932,18 @@ class IngredientController:
     we're showing as our database.
     """
 
-    def __init__ (self, re):
-        self.re = re; self.rg = self.re.rg; self.glade = self.re.glade
+    ING_COL = 0
+    AMT_COL = 1
+    UNIT_COL = 2
+    ITEM_COL = 3
+    OPTIONAL_COL = 4
+
+    def __init__ (self, ingredient_editor_module):
+        self.ingredient_editor_module = ingredient_editor_module; self.rg = self.ingredient_editor_module.rg; 
         self.new_item_count = 0
         self.commited_items_converter = {}
+        plugin_loader.Pluggable.__init__(self,
+                                         [IngredientControllerPlugin])
 
     # Setup methods
     def create_imodel (self, rec):
@@ -1922,8 +1958,9 @@ class IngredientController:
                               gobject.TYPE_STRING,
                               gobject.TYPE_STRING,
                               gobject.TYPE_BOOLEAN,
-                              gobject.TYPE_STRING,
-                              gobject.TYPE_STRING)
+                                    #gobject.TYPE_STRING,
+                                    #gobject.TYPE_STRING
+                                    )
         for g,ings in self.ing_alist:
             if g:
                 g=self.add_group(g)
@@ -1983,12 +2020,12 @@ class IngredientController:
         return ret
 
     def undoable_update_ingredient_row (self, ref, d):
-        itr = self.re.ingtree_ui.ingController.get_iter_from_persistent_ref(ref)
-        orig = self.re.ingtree_ui.ingController.get_rowdict(itr)
+        itr = self.ingredient_editor_module.ingtree_ui.ingController.get_iter_from_persistent_ref(ref)
+        orig = self.ingredient_editor_module.ingtree_ui.ingController.get_rowdict(itr)
         Undo.UndoableObject(
             lambda *args: self.update_ingredient_row(itr,**d),
             lambda *args: self.update_ingredient_row(itr,**orig),
-            self.re.history,
+            self.ingredient_editor_module.history,
             widget=self.imodel,
             ).perform()
 
@@ -2006,11 +2043,11 @@ class IngredientController:
         if unit is not None: self.imodel.set_value(iter,2,unit)
         if item is not None: self.imodel.set_value(iter,3,item)
         if optional is not None: self.imodel.set_value(iter,4,optional)
-        if ingkey is not None: self.imodel.set_value(iter,5,ingkey)
-        if shop_cat:
-            self.imodel.set_value(iter,6,shop_cat)
-        elif ingkey and self.re.rg.sl.orgdic.has_key(ingkey):
-            self.imodel.set_value(iter,6,self.re.rg.sl.orgdic[ingkey])
+        #if ingkey is not None: self.imodel.set_value(iter,5,ingkey)
+        #if shop_cat:
+        #    self.imodel.set_value(iter,6,shop_cat)
+        #elif ingkey and self.re.rg.sl.orgdic.has_key(ingkey):
+        #    self.imodel.set_value(iter,6,self.re.rg.sl.orgdic[ingkey])
                 
     def add_ingredient (self, ing, prev_iter=None, group_iter=None,
                         fallback_on_append=True, shop_cat=None,
@@ -2044,14 +2081,14 @@ class IngredientController:
         else:
             opt=False
         self.imodel.set_value(iter, 4, opt)
-        self.imodel.set_value(iter, 5, i.ingkey)
-        if shop_cat:
-            self.imodel.set_value(iter, 6, shop_cat)
-        elif self.rg.sl.orgdic.has_key(i.ingkey):
-            debug("Key %s has category %s"%(i.ingkey,self.rg.sl.orgdic[i.ingkey]),5)
-            self.imodel.set_value(iter, 6, self.rg.sl.orgdic[i.ingkey])
-        else:
-            self.imodel.set_value(iter, 6, None)
+        #self.imodel.set_value(iter, 5, i.ingkey)
+        #if shop_cat:
+        #    self.imodel.set_value(iter, 6, shop_cat)
+        #elif self.rg.sl.orgdic.has_key(i.ingkey):
+        #    debug("Key %s has category %s"%(i.ingkey,self.rg.sl.orgdic[i.ingkey]),5)
+        #    self.imodel.set_value(iter, 6, self.rg.sl.orgdic[i.ingkey])
+        #else:
+        #    self.imodel.set_value(iter, 6, None)
         return iter
 
     def add_group (self, name, prev_iter=None, children_iters=[], fallback_on_append=True):
@@ -2085,7 +2122,7 @@ class IngredientController:
         except TypeError:
             print 'Odd we are failing to get_paths for ',iters
             print 'Our undo stack looks like this...'
-            print self.re.history
+            print self.ingredient_editor_module.history
             raise
         for itr in iters:
             orig_ref = self.get_persistent_ref_from_iter(itr)
@@ -2103,7 +2140,7 @@ class IngredientController:
             child = self.imodel.iter_children(itr)
             children = []
             if child:
-                expanded = self.re.ingtree_ui.ingTree.row_expanded(
+                expanded = self.ingredient_editor_module.ingtree_ui.ingTree.row_expanded(
                     self.imodel.get_path(itr)
                     )
             else:
@@ -2116,7 +2153,7 @@ class IngredientController:
         u = Undo.UndoableObject(
             lambda *args: self.do_delete_iters(refs),
             lambda *args: self.do_undelete_iters(undo_info),
-            self.re.history,
+            self.ingredient_editor_module.history,
             widget=self.imodel,
             is_undo=is_undo
             )
@@ -2195,7 +2232,7 @@ class IngredientController:
                                                               **rd)
                         self.imodel.set_value(itr,0,io)
             if expanded:
-                self.re.ingtree_ui.ingTree.expand_row(self.imodel.get_path(itr),True)
+                self.ingredient_editor_module.ingtree_ui.ingTree.expand_row(self.imodel.get_path(itr),True)
 
     # Get a dictionary describing our current row
     def get_rowdict (self, iter):
@@ -2204,10 +2241,20 @@ class IngredientController:
                     ('unit',2),
                     ('item',3),
                     ('optional',4),
-                    ('ingkey',5),
-                    ('shop_cat',6)]:
+                    ]:
             d[k] = self.imodel.get_value(iter,n)
+        ing_obj = self.imodel.get_value(iter,0)
+        self.get_extra_ingredient_attributes(
+            ing_obj,
+            d)        
         return d
+
+    @plugin_loader.pluggable_method
+    def get_extra_ingredient_attributes (self, ing_obj, ingdict):
+        if not hasattr(ing_obj,'ingkey') or not ing_obj.ingkey:
+            ingdict['ingkey'] = ingdict['item'].split(';')[0]
+        else:
+            ingdict['ingkey'] = ing_obj.ingkey
 
     # Get persistent references to items easily
 
@@ -2317,9 +2364,9 @@ class IngredientController:
                                     # possible, but why not check!)
                         d['deleted']=False
                     if d:
-                        self.re.rg.rd.modify_ing_and_update_keydic(ing,d)
+                        self.ingredient_editor_module.rg.rd.modify_ing_and_update_keydic(ing,d)
                 else:
-                    d['recipe_id'] = self.re.current_rec.id
+                    d['recipe_id'] = self.ingredient_editor_module.current_rec.id
                     self.commited_items_converter[ing] = self.rg.rd.add_ing_and_update_keydic(d)
                     self.imodel.set_value(iter,0,self.commited_items_converter[ing])
                     # Add ourself to the list of ingredient objects so
@@ -2352,10 +2399,10 @@ class IngredientTreeUI:
                    #_('Shopping Category'):'shop_cat',
                    }
 
-    def __init__ (self, re):
-        self.re =re; self.glade = self.re.glade; self.rg = self.re.rg
-        self.ingController = IngredientController(self.re)
-        self.ingTree = self.glade.get_widget('ingTree')
+    def __init__ (self, ie, tree):
+        self.ingredient_editor_module =ie; self.rg = self.ingredient_editor_module.rg
+        self.ingController = IngredientController(self.ingredient_editor_module)
+        self.ingTree = tree
         self.ingTree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)                
         self.setup_columns()
         self.ingTree.connect("row-activated",self.ingtree_row_activated_cb)
@@ -2371,15 +2418,11 @@ class IngredientTreeUI:
     def setup_columns (self):
         self.ingColsByName = {}
         self.ingColsByAttr = {}
-        self.shopmodel = gtk.ListStore(str) # We need a model for
-                                            # shopping-cat dropdown
-        for c in self.re.ie.shopcats:
-            self.shopmodel.append([c])
-        for n,head,tog,model,style in [[1,_('Amt'),False,None,None],
-                                 [2,_('Unit'),False,self.rg.umodel,None],
-                                 [3,_('Item'),False,None,None],
-                                 [4,_('Optional'),True,None,None],
-                                 [5,_('Key'),False,self.rg.inginfo.key_model,pango.STYLE_ITALIC],
+        for n,head,tog,model,style,expand in [[1,_('Amt'),False,None,None,False],
+                                 [2,_('Unit'),False,self.rg.umodel,None,False],
+                                 [3,_('Item'),False,None,None,True],
+                                 [4,_('Optional'),True,None,None,False],
+                                 #[5,_('Key'),False,self.rg.inginfo.key_model,pango.STYLE_ITALIC],
                                  #[6,_('Shopping Category'),False,self.shopmodel,pango.STYLE_ITALIC],
                                  ]:        
             # Toggle setup
@@ -2419,6 +2462,7 @@ class IngredientTreeUI:
                     renderer.set_property('style',style)
                 # Create Column
                 col=gtk.TreeViewColumn(head, renderer, text=n)
+            if expand: col.set_expand(expand)
             # Register ourselves...
             self.ingColsByName[head]=col
             if self.head_to_att.has_key(head):
@@ -2435,8 +2479,6 @@ class IngredientTreeUI:
             if n==5:     #key
                 col.set_min_width(130)
             self.ingTree.append_column(col)
-        # Hackish menu for old GTK setups...
-        self.setupShopPopupMenu()
 
     def setup_drag_and_drop (self):
         ## add drag and drop support
@@ -2461,23 +2503,6 @@ class IngredientTreeUI:
         self.ingTree.connect('drag-end',
                              lambda *args: self.ss.restore_selections()
                              )
-
-    def setupShopPopupMenu (self):
-        if CRC_AVAILABLE: return #if we have the new cellrenderercombo, we don't need this
-        self.shoppop = gtk.Menu()
-        new = gtk.MenuItem(_('New Category'))
-        self.shoppop.append(new)
-        new.connect('activate',self.shop_popup_callback,False)
-        new.show()
-        sep = gtk.MenuItem()
-        self.shoppop.append(sep)
-        sep.show()
-        for i in self.rg.sl.sh.get_orgcats():
-            itm = gtk.MenuItem(i)
-            self.shoppop.append(itm)
-            itm.connect('activate',self.shop_popup_callback,i)
-            itm.show()
-
     # End of setup methods
 
     # Callbacks and the like
@@ -2535,46 +2560,27 @@ class IngredientTreeUI:
                                 )
         else:
             d = self.ingController.get_rowdict(itr)
-            self.re.ie.show(i,d)
-            self.re.ie.ieExpander.set_expanded(True)
-
-    def shop_popup_callback (self, menuitem, i):
-        """i is our new category. If i==False, we prompt for
-        a category."""
-        regenerate_menu=False
-        #colnum for key=5
-        mod=self.ingTree.get_model()
-        key=mod.get_value(self.shoppop_iter,5)
-        debug('shop_pop_callback with key %s'%key,5)
-        if not i:
-            i=de.getEntry(label=_("Category to add %s to")%key,
-                       parent=self.edit_window)
-            if not i:
-                return
-            regenerate_menu=True
-        self.rg.sl.orgdic[key]=i
-        mod.set_value(self.shoppop_iter,6,i)
-        if regenerate_menu:
-            self.setupShopPopupMenu()
+            #self.re.ie.show(i,d)
+            #self.re.ie.ieExpander.set_expanded(True)
 
     def selection_changed_cb (self, *args):
         model,rows=self.ingTree.get_selection().get_selected_rows()
         self.selection_changed(rows and True)
-        if self.re.ie.ieExpander.get_expanded():
-            itr = self.get_selected_ing()
-            if itr:
-                i = self.ingController.imodel.get_value(itr,0)
-                d = self.ingController.get_rowdict(itr)
-                if i: self.re.ie.show(i,d)
-                else: self.re.ie.new()
+        #if self.re.ie.ieExpander.get_expanded():
+        #    itr = self.get_selected_ing()
+        #    if itr:
+        #        i = self.ingController.imodel.get_value(itr,0)
+        #        d = self.ingController.get_rowdict(itr)
+        #        if i: self.re.ie.show(i,d)
+        #        else: self.re.ie.new()
         return True
     
     def selection_changed (self, selected=False):
         if selected != self.selected:
             if selected: self.selected=True
             else: self.selected=False
-            if hasattr(self.re,'ingredientEditorOnRowActionGroup'):
-                self.re.ingredientEditorOnRowActionGroup.set_sensitive(self.selected)
+            if hasattr(self.ingredient_editor_module,'ingredientEditorOnRowActionGroup'):
+                self.ingredient_editor_module.ingredientEditorOnRowActionGroup.set_sensitive(self.selected)
 
     def ingtree_toggled_cb (self, cellrenderer, path, colnum, head):
         debug("ingtree_toggled_cb (self, cellrenderer, path, colnum, head):",5)
@@ -2592,7 +2598,7 @@ class IngredientTreeUI:
                                           colnum,newval),
             lambda *args: store.set_value(self.ingController.get_iter_from_persistent_ref(ref),
                                           colnum,val),
-            self.re.history,
+            self.ingredient_editor_module.history,
             widget=self.ingController.imodel
             )
         u.perform()
@@ -2708,7 +2714,7 @@ class IngredientTreeUI:
             Undo.UndoableObject(
                 do_move,
                 uts.restore_positions,
-                self.re.history,
+                self.ingredient_editor_module.history,
                 widget=self.ingController.imodel).perform()
                #self.ingTree.get_selection().select_iter(new_iter)
         else:
@@ -2728,16 +2734,16 @@ class IngredientTreeUI:
             def do_add ():
                 for l in lines:
                     if group: 
-                        self.re.add_ingredient_from_line(
+                        self.ingredient_editor_module.add_ingredient_from_line(
                             l,
                             group_iter=self.ingController.get_iter_from_persistent_ref(itr_ref)
                             )
                     else:
-                        self.re.add_ingredient_from_line(
+                        self.ingredient_editor_module.add_ingredient_from_line(
                             l,
                             prev_iter=self.ingController.get_iter_from_persistent_ref(itr_ref)
                             )
-            add_with_undo(self.re,do_add)
+            add_with_undo(self.ingredient_editor_module,do_add)
         #self.commit_positions()
         debug("restoring selections.")
         debug("done restoring selections.")        
@@ -2781,7 +2787,7 @@ class IngredientTreeUI:
                               lambda *args: self.ingDownMover(
             [self.ingController.get_path_from_persistent_ref(r) for r in refs]
             ),
-                              self.re.history,
+                              self.ingredient_editor_module.history,
                               widget=self.ingController.imodel,
                               )
         u.perform()
@@ -2794,7 +2800,7 @@ class IngredientTreeUI:
                               lambda *args: self.ingUpMover(
             [self.ingController.get_path_from_persistent_ref(r) for r in refs]
             ),
-                              self.re.history)
+                              self.ingredient_editor_module.history)
         u.perform()
 
     def ingUpMover (self, paths):
@@ -2829,6 +2835,25 @@ class IngredientTreeUI:
             itera = ts.get_iter(p)
             movedown(ts,p,itera)
         tt.restore_selections()
+
+    def get_previous_iter_and_group_iter (self):
+        """Return prev_iter,group_iter"""
+        # If there is a selected iter, we treat it as a group to put
+        # our entry into or after
+        selected_iter = self.getSelectedIter()
+        if not selected_iter:
+            # default behavior (put last)
+            group_iter = None
+            prev_iter = None
+        elif type(self.ingController.imodel.get_value(selected_iter,0)) in types.StringTypes:
+            # if we are a group
+            group_iter = selected_iter
+            prev_iter = None
+        else:
+            # then we are a previous iter...
+            group_iter = None
+            prev_iter = selected_iter
+        return prev_iter,group_iter
 
     # Edit Callbacks
     def changeUnit (self, new_unit, ingdict):
@@ -2964,7 +2989,7 @@ class IngredientTreeUI:
             self.ingController.do_undelete_iters(undo_info)
         u = Undo.UndoableObject(do_add_group,
                            do_unadd_group,
-                           self.re.history)
+                           self.ingredient_editor_module.history)
         u.perform()
 
     def change_group (self, itr, text):
@@ -2989,8 +3014,9 @@ class IngredientTreeUI:
             itr = get_group_iter(text)
             self.ingController.imodel.set_value(itr,0,oldgroup0)
             self.ingController.imodel.set_value(itr,1,oldgroup1)
-        obj = Undo.UndoableObject(change_my_group,unchange_my_group,self.re.history)
-        obj.perform()    
+        obj = Undo.UndoableObject(change_my_group,unchange_my_group,self.ingredient_editor_module.history)
+        obj.perform()
+
 
 class UndoableTreeStuff:
     def __init__ (self, ic):

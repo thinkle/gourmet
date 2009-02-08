@@ -25,10 +25,10 @@
 # Application to muck about with.
 #
 # RecDisplayPlugin - given an instance of the recipe display card.
-# RecEditPlugin - given an instance of the recipe editor.
+# RecEditorPlugin - given an instance of the recipe editor.
 # DatabasePlugin - given an instance of the base database class.
 
-import Undo, gtk, types
+import Undo, gtk, gobject, types
 import plugin_loader
 
 class Plugin:
@@ -337,6 +337,16 @@ class RecDisplayPlugin (StandardPlugin):
         for pluggable in self.pluggables:
             pluggable.remove_plugin_from_left_notebook(self.moduleKlass)
 
+class RecEditorPlugin (StandardPlugin):
+
+    moduleKlass = None
+    position = None
+
+    def activate (self, pluggable):
+        if not hasattr(self,'pluggables'): self.pluggables = []
+        pluggable.add_plugin(self.moduleKlass,self.position)
+        self.pluggables.append(pluggable)
+
 class MainPlugin (StandardPlugin):
 
     added_tabs = []
@@ -370,7 +380,6 @@ class PluginPlugin (StandardPlugin):
         # list accordingly.
         if self.target_pluggable in pluggable.targets:
             # do_activate is where we do our real activation
-            pluggable.plugins.append(self)
             self.do_activate(pluggable)
         else:
             # nevermind... we're not for this pluggable
@@ -385,9 +394,15 @@ class RecDisplayModule (UIModule):
         self.rd = recDisplay; self.rg = self.rd.rg
         UIModule.__init__(self)
 
-class RecEditorModule (UIModule):
+class RecEditorModule (UIModule, gobject.GObject, object):
+
+    __gsignals__ = {
+        'saved':(gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,[]),
+        'toggle-edited':(gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,[gobject.TYPE_BOOLEAN]),
+        }
     
     def __init__ (self, recEditor):
+        gobject.GObject.__init__(self)
         self.action_groups = [] # a list of ActionGroups to be inserted into the uimanager.        
         self.re = recEditor
         self.rg = self.re.rg
@@ -395,6 +410,16 @@ class RecEditorModule (UIModule):
         self.setup()
         self.setup_undo()
         self.setup_main_interface()
+
+    __edited = False
+    def get_edited (self):
+        return self.__edited
+    def set_edited (self, val):
+        self.__edited = val
+        self.emit('toggle-edited',val)
+        return val
+
+    edited = property(get_edited,set_edited)
 
     def setup_undo (self):
         self.undoActionGroup = gtk.ActionGroup(self.name+'UndoActions')
@@ -422,6 +447,7 @@ class RecEditorModule (UIModule):
         Do any modifications to other tables.
         Return possibly modified recipe dictionary
         """
+        self.emit('saved')
         return recdict
 
     def undo_action_callback (self, undo_history, action, typ):
@@ -481,6 +507,12 @@ class RecEditorModule (UIModule):
                 else:
                     self.re.widgets_changed_since_save[widget]=[action]
         if self.re.widgets_changed_since_save:
-            self.re.set_edited(True)
+            self.edited = True
         else:
-            self.re.set_edited(False)
+            self.edited = False
+
+class IngredientControllerPlugin (StandardPlugin):
+    '''Plugins for mucking about with how ingredient information is
+    edited and stored.
+    '''
+    pass
