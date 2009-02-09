@@ -160,7 +160,7 @@ class KeyEditor:
             if de.getBoolean(label=_('Change all keys "%s" to "%s"?')%(key,text),
                              sublabel=_("You won't be able to undo this action. If there are already ingredients with the key \"%s\", you won't be able to distinguish between those items and the items you are changing now."%text)
                              ):
-                self.rd.update(
+                self.rd.update_by_criteria(
                     self.rd.ingredients_table,
                     curdic,
                     {'ingkey':text}
@@ -173,7 +173,7 @@ class KeyEditor:
             if de.getBoolean(label=_('Change all items "%s" to "%s"?')%(curdic['item'],text),
                              sublabel=_("You won't be able to undo this action. If there are already ingredients with the item \"%s\", you won't be able to distinguish between those items and the items you are changing now.")%text
                              ):
-                self.rd.update(
+                self.rd.update_by_criteria(
                     self.rd.ingredients_table,
                     curdic,
                     {'item':text}
@@ -188,13 +188,13 @@ class KeyEditor:
                               default = 2,
                               )
             if val==1:
-                self.rd.update(
+                self.rd.update_by_criteria(
                     self.rd.ingredients_table,
                     {'unit':unit},
                     {'unit':text},
                     )
             elif val==2:
-                self.rd.update(
+                self.rd.update_by_criteria(
                     self.rd.ingredients_table,
                     curdic,
                     {'unit':text}
@@ -220,7 +220,7 @@ class KeyEditor:
                 cond = {'unit':unit,'amount':amount,'ingkey':key}
             elif val == 3:
                 cond = curdic
-            self.rd.update(
+            self.rd.update_by_criteria(
                 self.rd.ingredients_table,
                 {'unit':unit,'amount':convert.frac_to_float(amount)},
                 {'unit':unit,'amount':new_amount}

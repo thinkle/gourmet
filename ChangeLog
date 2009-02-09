@@ -1,5 +1,8 @@
 2009-02-08  Thomas Mills Hinkle  <tom@hydrophax>
 
+	* src/lib/plugins/key_editor/keyEditor.py (KeyEditor.tree_edited):
+	rd.update -> rd.update_by_criteria (correct method name)
+
 	* src/lib/defaults/defaults.py: Fix SF bug #1947796 where calling
 	Gourmet with an unsupported locale broke Gourmet and made it fail
 	to start.
@@ -39,7 +42,7 @@
 
 	* src/lib/version.py: Version->0.14.5 for release
 
-	* src/lib/reccard.py: Change icon to new recipe card/editor icons. 
+	* src/lib/reccard.py: Change icon to new recipe card/editor icons.
 
 2009-02-01  Thomas Mills Hinkle  <tom@hydrophax>
 
