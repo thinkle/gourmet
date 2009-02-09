@@ -1,3 +1,9 @@
+2009-02-08  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/defaults/defaults.py: Fix SF bug #1947796 where calling
+	Gourmet with an unsupported locale broke Gourmet and made it fail
+	to start.
+
 2009-02-07  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* glade/recCardIngredientsEditor.glade: Simplify ingredient
