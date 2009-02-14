@@ -6,8 +6,11 @@ from gettext import gettext as _
 class KeyEditorPlugin (PluginPlugin):
 
     target_pluggable = 'KeyEditorPlugin'
+    title = _('Shopping Category')
     tvcs = {}
     ingkeys_to_change = {}
+    
+    selected_ingkeys = []
     
     def setup_treeview_column (self, ike, key_col, instant_apply=False):
         '''Set up a treeview column to display your data.
@@ -34,7 +37,7 @@ class KeyEditorPlugin (PluginPlugin):
         renderer.set_property('editable',True)
         renderer.set_property('mode',gtk.CELL_RENDERER_MODE_EDITABLE)
         renderer.set_property('sensitive',True)        
-        tvc = gtk.TreeViewColumn(_('Shopping Category'),renderer)
+        tvc = gtk.TreeViewColumn(self.title,renderer)
         tvc.set_cell_data_func(renderer,self.cell_data_func,key_col)
         self.tvcs[renderer] = tvc
         return tvc
@@ -56,6 +59,7 @@ class KeyEditorPlugin (PluginPlugin):
             entry = cbe.child
             completion = gtk.EntryCompletion()
             completion.set_model(self.shopcat_model)
+            completion.set_text_column(0)
             entry.set_completion(completion)
 
     def key_edited_cb (self, renderer, path_string, new_text, extra_params):
@@ -74,39 +78,62 @@ class KeyEditorPlugin (PluginPlugin):
         elif ike:
             ike.emit('toggle-edited',True)
 
+    def apply_association (self, ingkey,val):
+        row = self.rd.shopcats_table.select(self.rd.shopcats_table.c.ingkey==ingkey).execute().fetchone()
+        if row:
+            origval = row.shopcategory
+            self.rd.do_modify(self.rd.shopcats_table,
+                              row,
+                              {'ingkey':ingkey,
+                               'shopcategory':val},
+                              id_col='ingkey')
+            return ingkey,origval
+        else:
+            self.rd.do_add(self.rd.shopcats_table,
+                           {'ingkey':ingkey,
+                            'shopcategory':val}
+                           )
+            return ingkey,None
+        
     def save (self):
         '''Save any data the user has entered in your treeview column.
         '''
         for ingkey,val in self.ingkeys_to_change.items():
-            row = self.rd.shopcats_table.select(self.rd.shopcats_table.c.ingkey==ingkey).execute().fetchone()
-            if row:
-                self.rd.do_modify(self.rd.shopcats_table,
-                                  row,
-                                  {'ingkey':ingkey,
-                                   'shopcategory':val},
-                                  id_col='ingkey')
-            else:
-                self.rd.do_add(self.rd.shopcats_table,
-                               {'ingkey':ingkey,
-                                'shopcategory':val}
-                               )
+            self.apply_association(ingkey,val)
         self.ingkeys_to_change = {}
 
-    def offers_edit_button (self):
+    def offers_edit_widget (self):
         '''Return True if this plugin provides an edit button for
         editing data in some other window (if you need more than an
         editable cellrenderer to let users edit your data. 
         '''
-        return False
+        return True
 
-    def setup_edit_button (self):
-        '''Return an edit button to let users edit your data.
+    def setup_edit_widget (self):
+        '''Return an edit widget to let users edit your data.
         '''
-        raise NotImplementedError
+        self.cb = cb = gtk.ComboBoxEntry()
+        cb.set_model(self.shopcat_model)
+        cb.set_text_column(0)
+        entry = cb.child
+        completion = gtk.EntryCompletion()
+        completion.set_model(self.shopcat_model)
+        completion.set_text_column(0)
+        entry.set_completion(completion)
+        return cb
 
-    def edit_button_cb (self, ingkeys):
-        '''Give the user the ability to edit associations for ingkeys
-        listed in callback.
+    def get_widget_val (self):
+        return self.cb.child.get_text()
+
+    def apply_widget_val (self):
+        val = self.get_widget_val()
+        if val:
+            for ingkey in self.selected_ingkeys:
+                self.apply_association(ingkey,val)
+                
+                
+    def selection_changed (self, ingkeys):
+        '''Selected ingkeys have changed -- currently ingkeys are
+        selected (and should be acted on by our edit_widget
         '''
-        raise NotImplementedError
-
+        self.selected_ingkeys = ingkeys

@@ -742,8 +742,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
           <menuitem action="UnitConverter"/>
           </placeholder>
           <separator/>
-            <placeholder name="DataTool">          
-          <menuitem action="KeyEditor"/>
+          <placeholder name="DataTool">          
           </placeholder>
         </menu>
         <menu name="HelpMenu" action="HelpMenu">
@@ -879,7 +878,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         else:
             for m in self.modules:
                 if m.edited:
-                    print 'Strange,',module,'told us we are not edited, but ',m,'tells us we are...'
+                    #print 'Strange,',module,'told us we are not edited, but ',m,'tells us we are...'
                     self.set_edited(True)
                     return
             self.set_edited(False)
@@ -1939,7 +1938,9 @@ class IngredientController (plugin_loader.Pluggable):
     OPTIONAL_COL = 4
 
     def __init__ (self, ingredient_editor_module):
-        self.ingredient_editor_module = ingredient_editor_module; self.rg = self.ingredient_editor_module.rg; 
+        self.ingredient_editor_module = ingredient_editor_module;
+        self.rg = self.ingredient_editor_module.rg
+        self.re = self.ingredient_editor_module.re
         self.new_item_count = 0
         self.commited_items_converter = {}
         plugin_loader.Pluggable.__init__(self,
@@ -3025,7 +3026,7 @@ class UndoableTreeStuff:
     def start_recording_additions (self):
         debug('UndoableTreeStuff.start_recording_additiong',3)        
         self.added = []
-        self.pre_ss = te.selectionSaver(self.ic.re.ingtree_ui.ingTree)        
+        self.pre_ss = te.selectionSaver(self.ic.ingredient_editor_module.ingtree_ui.ingTree)
         self.connection = self.ic.imodel.connect('row-inserted',
                                                  self.row_inserted_cb)
         debug('UndoableTreeStuff.start_recording_additiong DONE',3)        
@@ -3053,8 +3054,8 @@ class UndoableTreeStuff:
         self.added.append(gtk.TreeRowReference(tm,tm.get_path(itr)))
 
     def record_positions (self, iters):
-        debug('UndoableTreeStuff.record_positions',3)                
-        self.pre_ss = te.selectionSaver(self.ic.re.ingtree_ui.ingTree)        
+        debug('UndoableTreeStuff.record_positions',3)
+        self.pre_ss = te.selectionSaver(self.ic.ingredient_editor_module.ingtree_ui.ingTree)        
         self.positions = []
         for i in iters:
             path = self.ic.imodel.get_path(i)

@@ -37,6 +37,7 @@ glade/shopCatEditor.glade
 glade/shopList.glade
 glade/timerDialog.glade
 glade/valueEditor.glade
+gourmet.1
 gourmet.desktop.in
 i18n/POTFILES.in
 i18n/ar.po
@@ -102,6 +103,7 @@ i18n/zh_CN.po
 i18n/zh_HK.po
 i18n/zh_TW.po
 images/AddToShoppingList.png
+images/Nutrition.png
 images/gold_star.png
 images/gourmet_logo.png
 images/half_gold_star.png
@@ -116,6 +118,7 @@ images/recbox_biggish.png
 images/recbox_icon.png
 images/reccard.ico
 images/reccard.png
+images/reccard_edit.png
 images/splash.png
 setup.cfg
 setup.py
@@ -156,7 +159,6 @@ src/lib/chooserNotebook.py
 src/lib/clockDB.py
 src/lib/convert.py
 src/lib/convertGui.py
-src/lib/defaults.py
 src/lib/defaults/__init__.py
 src/lib/defaults/defaults.py
 src/lib/defaults/defaults_de.py
@@ -168,15 +170,6 @@ src/lib/defaults/defaults_nl.py
 src/lib/defaults/defaults_pt.py
 src/lib/defaults/defaults_sk.py
 src/lib/defaults/defaults_sv.py
-src/lib/defaults_de.py
-src/lib/defaults_en.py
-src/lib/defaults_en_GB.py
-src/lib/defaults_es.py
-src/lib/defaults_fr.py
-src/lib/defaults_nl.py
-src/lib/defaults_pt.py
-src/lib/defaults_sk.py
-src/lib/defaults_sv.py
 src/lib/dialog_extras.py
 src/lib/exporters/MarkupString.py
 src/lib/exporters/__init__.py
@@ -401,8 +394,11 @@ src/lib/plugins/key_editor.gourmet-plugin
 src/lib/plugins/key_editor.gourmet-plugin.in
 src/lib/plugins/key_editor/__init__.py
 src/lib/plugins/key_editor/keyEditor.py
+src/lib/plugins/key_editor/keyEditorPluggable.py
 src/lib/plugins/key_editor/keyEditorPlugin.py
 src/lib/plugins/key_editor/keyeditor.glade
+src/lib/plugins/key_editor/keyeditor_receditor.glade
+src/lib/plugins/key_editor/recipeEditorPlugin.py
 src/lib/plugins/nutritional_information.gourmet-plugin
 src/lib/plugins/nutritional_information.gourmet-plugin.in
 src/lib/plugins/nutritional_information/__init__.py
@@ -429,11 +425,19 @@ src/lib/plugins/python_shell.gourmet-plugin
 src/lib/plugins/python_shell.gourmet-plugin.in
 src/lib/plugins/python_shell/__init__.py
 src/lib/plugins/python_shell/ipython_view.py
+src/lib/plugins/shopping_associations.gourmet-plugin
+src/lib/plugins/shopping_associations.gourmet-plugin.in
+src/lib/plugins/shopping_associations/__init__.py
+src/lib/plugins/shopping_associations/shopping_key_editor_plugin.py
 src/lib/plugins/unit_converter.gourmet-plugin
 src/lib/plugins/unit_converter.gourmet-plugin.in
 src/lib/plugins/unit_converter/__init__.py
 src/lib/plugins/unit_converter/convertGui.py
 src/lib/plugins/unit_converter/converter.glade
+src/lib/plugins/unit_display_prefs.gourmet-plugin
+src/lib/plugins/unit_display_prefs.gourmet-plugin.in
+src/lib/plugins/unit_display_prefs/__init__.py
+src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py
 src/lib/prefs.py
 src/lib/prefsGui.py
 src/lib/profileImport.py
@@ -469,6 +473,7 @@ src/lib/validatingEntry.py
 src/lib/version.py
 tools/__init__.py
 tools/backup_gourmet_to_xml.py
+tools/gourmet-dogtail.py
 tools/gourmet_distutils.py
 tools/rescue_broken_013_to_014_upgrade.py
 tools/upgrade_pre_script.py

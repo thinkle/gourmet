@@ -1,3 +1,33 @@
+2009-02-13  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/plugins/shopping_associations/shopping_key_editor_plugin.py (KeyEditorPlugin):
+	Add text box that allows editing shopping category for multiple
+	selected ingredient keys at a time.
+
+	* src/lib/plugins/nutritional_information/data_plugin.py (NutritionDataPlugin.create_tables):
+	Use Text() type from sqlalchemy instead of deprecated
+	String(length=None)
+
+	* src/lib/plugins/key_editor/recipeEditorPlugin.py (IngredientKeyEditor.setup_main_interface):
+	Make TreeView allow multiple selections so we can do actions on
+	multiple keys at once.
+	(IngredientKeyEditor.setup_main_interface): Setup any extra
+	widgets provided by plugins.
+
+	* src/lib/plugins/key_editor/keyEditorPluggable.py (KeyEditorPlugin):
+	Update API to allow plugins to provide a widget for changing value
+	for all selected rows.
+
+	* src/lib/backends/db.py (RecData.alter_table): Use embedded
+	select in insert statement rather than pythonic for-loop to loop
+	through data -- this is enormously faster.
+
+	* src/lib/reccard.py (RecEditor.ui): Remove KeyEditor (moved to plugin)
+	(UndoableTreeStuff.record_positions): Fix mess with attribute name changes.
+
+	* src/lib/GourmetRecipeManager.py (GourmetApplication.show_about):
+	Remove colons from strings marked for translation.
+
 2009-02-08  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/plugins/key_editor/keyEditor.py (KeyEditor.tree_edited):

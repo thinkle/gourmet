@@ -1,5 +1,5 @@
 import sqlalchemy, sqlalchemy.orm
-from sqlalchemy import Integer, Binary, String, Float, Boolean, Numeric, Table, Column, ForeignKey
+from sqlalchemy import Integer, Binary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
 from sqlalchemy.sql import and_, or_
 import gourmet.backends.db
 from gourmet.plugin import DatabasePlugin
@@ -35,7 +35,7 @@ class NutritionDataPlugin (DatabasePlugin):
         #print 'nutritional_information.data_plugin.create_tables()'
         cols = [Column(name,gourmet.backends.db.map_type_to_sqlalchemy(typ),**(name=='ndbno' and {'primary_key':True} or {}))
                  for lname,name,typ in parser_data.NUTRITION_FIELDS
-                 ] + [Column('foodgroup',String(length=None),**{})]
+                 ] + [Column('foodgroup',Text(),**{})]
         #print 'nutrition cols:',cols
         self.db.nutrition_table = Table('nutrition',self.db.metadata,
                                      *cols
@@ -47,9 +47,9 @@ class NutritionDataPlugin (DatabasePlugin):
         self.setup_usda_weights_table()
 
         self.db.nutritionaliases_table = Table('nutritionaliases',self.db.metadata,
-                                            Column('ingkey',String(length=None),**{'primary_key':True}),
+                                            Column('ingkey',Text(),**{'primary_key':True}),
                                             Column('ndbno',Integer,ForeignKey('nutrition.ndbno'),**{}),
-                                            Column('density_equivalent',String(length=20),**{}),)
+                                            Column('density_equivalent',Text(length=20),**{}),)
         class NutritionAlias (object): pass
         self.db._setup_object_for_table(self.db.nutritionaliases_table, NutritionAlias)
         self.setup_nutrition_conversions_table()

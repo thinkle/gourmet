@@ -18,6 +18,8 @@ class KeyEditorPlugin (PluginPlugin):
 
     target_pluggable = 'KeyEditorPlugin'
 
+    selected_ingkeys = []
+
     def setup_treeview_column (self, ike, key_col, instant_apply=False):
         '''Set up a treeview column to display your data.
 
@@ -37,23 +39,24 @@ class KeyEditorPlugin (PluginPlugin):
         '''
         pass
 
-    def offers_edit_button (self):
+    def offers_edit_widget (self):
         '''Return True if this plugin provides an edit button for
-        editing data in some other window (if you need more than an
-        editable cellrenderer to let users edit your data. 
+        editing data (if you need more than an editable cellrenderer
+        to let users edit your data, or would like to act on multiple
+        rows.
         '''
         return False
 
-    def setup_edit_button (self):
+    def setup_edit_widget (self):
         '''Return an edit button to let users edit your data.
         '''
         raise NotImplementedError
 
-    def edit_button_cb (self, ingkeys):
-        '''Give the user the ability to edit associations for ingkeys
-        listed in callback.
+    def selection_changed (self, ingkeys):
+        '''Selected ingkeys have changed -- currently ingkeys are
+        selected (and should be acted on by our edit_widget
         '''
-        raise NotImplementedError
+        self.selected_ingkeys = ingkeys
 
 # End boilerplate
 
@@ -63,6 +66,7 @@ class KeyEditorPluginManager (Pluggable):
     associations, such as nutritional information, shopping list
     categories, etc.'''
 
+    title = 'Title of Whatever we Do'
     targets = ['KeyEditorPlugin']
 
     __single = None
@@ -74,7 +78,6 @@ class KeyEditorPluginManager (Pluggable):
             raise KeyEditorPluginManager.__single
         Pluggable.__init__(self,[PluginPlugin])
 
-    @gdebug.debug_decorator
     def get_treeview_columns (self, ike, key_col, instant_apply=False):
         return [p.setup_treeview_column(ike, key_col,instant_apply) for p in self.plugins]
 

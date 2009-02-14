@@ -881,20 +881,18 @@ class RecData (Pluggable):
         del self.metadata.tables[table_name]
         setup_function()
         getattr(self,'%s_table'%table_name).create()
-        for row in self.db.execute('''SELECT %(cols)s FROM %(t)s_temp'''%{
-            't':table_name,
-            'cols':', '.join(cols_to_change.keys()+cols_to_keep)
-            }).fetchall():
-            newdic = {}
-            for k in cols_to_change:
-                newdic[cols_to_change[k]]=getattr(row,k)
-            for c in cols_to_keep:
-                newdic[c] = getattr(row,c)
-            try:
-                self.do_add(getattr(self,'%s_table'%table_name),newdic)
-            except:
-                print 'Trouble inserting newdic,',newdic
-                raise
+        TO_COLS = cols_to_keep[:]
+        FROM_COLS = cols_to_keep[:]
+        for fro,to_ in cols_to_change.items():
+            FROM_COLS.append(fro)
+            TO_COLS.append(to_)
+        stmt = '''INSERT INTO %(t)s (%(to_cols)s)
+        SELECT %(from_cols)s FROM %(t)s_temp
+        '''%{'t':table_name,
+             'from_cols':', '.join(FROM_COLS),
+             'to_cols':', '.join(TO_COLS),
+             }
+        self.db.execute(stmt)        
         self.db.execute('DROP TABLE %s_temp'%table_name)
 
     # Metakit has no AUTOINCREMENT, so it has to do special magic here

@@ -429,9 +429,9 @@ class GourmetApplication:
             for a in authors:
                 sublabel += '\n%s'%a
             if translator:
-                sublabel += _('\nTranslated by: %s')%translator
+                sublabel += '\n' + _('Translated by')+': %s'%translator
             if website:
-                sublabel += _('\nWebsite: %s')%website
+                sublabel += '\n'+_('Website')+': %s'%website
             import xml.sax.saxutils
             de.show_message(label=xml.sax.saxutils.escape('%s %s'%(appname,myversion)),
                             sublabel=xml.sax.saxutils.escape(sublabel)) #new line that leaves strings as they are.
