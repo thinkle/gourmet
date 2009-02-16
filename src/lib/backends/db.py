@@ -1197,8 +1197,7 @@ class RecData (Pluggable):
             tname = table.name
             SQL = 'INSERT INTO ' + tname + '('+', '.join(dic.keys()) + ')'
             SQL += ' VALUES (' +  ", ".join(['?']*len(dic)) + ')'
-            retval =  self.extra_connection.execute(SQL,dic.values())
-            return retval
+            self.extra_connection.execute(SQL,dic.values())
         except:
             return self.do_add(table,dic)
 
