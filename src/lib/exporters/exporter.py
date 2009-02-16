@@ -293,6 +293,9 @@ class exporter (SuspendableThread, Pluggable):
 
     def handle_markup (self, txt):
         """Handle markup inside of txt."""
+        if txt == None:
+            print 'Warning, handle_markup handed None'
+            return ''
         import pango
         outtxt = ""
         try:

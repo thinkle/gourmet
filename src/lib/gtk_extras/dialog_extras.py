@@ -143,9 +143,9 @@ class MessageDialog (gtk.MessageDialog, ModalDialog):
     """A simple class for displaying messages to our users."""
     
     def __init__ (self, title="", default=None, okay=True, cancel=True, label=False, sublabel=False,
-                  expander=None, message_type=gtk.MESSAGE_INFO, parent=None):
+                  expander=None, message_type=gtk.MESSAGE_INFO, parent=None, modal=True):
         self.message_type=message_type
-        ModalDialog.__init__(self, title=title, default=default, okay=okay, cancel=cancel, label=label, sublabel=sublabel, parent=parent, expander=expander)
+        ModalDialog.__init__(self, title=title, default=default, okay=okay, cancel=cancel, label=label, sublabel=sublabel, parent=parent, expander=expander, modal=modal)
 
     def setup_dialog (self, *args, **kwargs):
         kwargs['type']=self.message_type

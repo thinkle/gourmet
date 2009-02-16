@@ -1309,7 +1309,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             self.hide_progress_dialog()            
         d=de.MessageDialog(label=label,
                            sublabel=sublabel,
-                           cancel=False
+                           cancel=False,
+                           modal=False
                            )
         b = gtk.Button(stock=gtk.STOCK_JUMP_TO)
         b.connect('clicked',lambda *args: launch_url(url))

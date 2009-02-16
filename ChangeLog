@@ -1,3 +1,30 @@
+2009-02-16  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/python_shell/ipython_view.py: Import IPython
+	outright -- if there's an ImportError, let the plugin fail to
+	instantiate (this makes sense, since the plugin won't work without
+	IPython)
+
+	* src/lib/exporters/exporter.py (exporter.__init__.handle_markup):
+	Handle case where handle_markup is handed None
+
+	* Release 0.14.6 tarball and .deb to SF.net
+	
+	* src/lib/check_encodings.py (EncodingDialog): Fix type on encodings.
+	(EncodingDialog.diff_texts): Make sure we base our diffs on the
+	encoding with the most lines. Otherwise, utf-16 screws us up in
+	most cases so the diff-view no longer works properly.
+
+	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py (PdfExporter.__init__):
+	Sshhh.
+
+	* src/lib/gtk_extras/dialog_extras.py (MessageDialog): Allow
+	passing modal=False to make this a non-modal dialog.
+
+	* src/lib/GourmetRecipeManager.py (RecGui.offer_url): Make dialog
+	non-modal -- the modal dialog was freezing up Gourmet after user
+	clicked "Jump to" button.
+
 2009-02-15  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/plugins/nutritional_information/databaseGrabber.py (DatabaseGrabber.parse_abbrevfile):

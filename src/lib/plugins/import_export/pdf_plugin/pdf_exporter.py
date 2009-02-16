@@ -407,7 +407,6 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                   txt=[],
                   pdf_args=DEFAULT_PDF_ARGS,
                   **kwargs):
-        print 'Instantiate PdfExporter',doc,kwargs,txt
         self.links = [] # Keep track of what recipes we link to to
                         # make sure we use them...
         PdfWriter.__init__(self)
@@ -961,7 +960,6 @@ if __name__ == '__main__':
     #pe.run()
 
     def test_formatting ():
-        print 'Test formatting'
         sw = PdfWriter()
         f = file(os.path.join(tempdir,'format.pdf'),'wb')
         sw.setup_document(f)

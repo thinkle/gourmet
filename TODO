@@ -1,4 +1,7 @@
 TODO
+* Fix export when including a linked recipe.
+* Fail elegantly when missing required modules for a plugin
+* Change servings -> yield + yield_unit
 
 SEE http://grecipe-manager.wiki.sourceforge.net/TODO
 * Fix Batch Editor to work with plugin system
