@@ -1185,11 +1185,29 @@ class RecData (Pluggable):
                 if dic[k] != v:
                     dic[k] = v
 
+    def commit_fast_adds (self):
+        if hasattr(self,'extra_connection'):
+            self.extra_connection.commit()
+
+    def do_add_fast (self, table, dic):
+        '''Add fast -- return None'''
+        if not hasattr(self,'extra_connection'):
+            self.extra_connection = self.db.connect().connection
+        try:
+            tname = table.name
+            SQL = 'INSERT INTO ' + tname + '('+', '.join(dic.keys()) + ')'
+            SQL += ' VALUES (' +  ", ".join(['?']*len(dic)) + ')'
+            retval =  self.extra_connection.execute(SQL,dic.values())
+            return retval
+        except:
+            return self.do_add(table,dic)
+
     def do_add (self, table, dic):
         insert_statement = table.insert()
         try:
             result_proxy = insert_statement.execute(**dic)
         except ValueError:
+            print 'Had to coerce types',table,dic
             self.coerce_types(table,dic)
             result_proxy = insert_statement.execute(**dic)
         return result_proxy

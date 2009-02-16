@@ -1,3 +1,4 @@
+import sys
 import urllib, zipfile, tempfile, os.path, re, string
 from gettext import gettext as _
 from parser_data import *
@@ -157,12 +158,14 @@ class DatabaseGrabber:
                 self.show_progress(float(n)/tot,_('Reading nutritional data: imported %s of %s entries.')%(n,tot))
             t = TimeAction('append to db',3)
             try:
-                self.db.do_add(self.db.nutrition_table,d)
+                self.db.do_add_fast(self.db.nutrition_table,d)
             except:
                 print 'Error appending',d,'to nutrition_table'
                 raise
-            t.end()                                
+            t.end()                        
             tline.end()
+        print 'Commit!'            
+        self.db.commit_fast_adds()
 
     def parse_weightfile (self, weightfile):
         if self.show_progress:
@@ -180,10 +183,12 @@ class DatabaseGrabber:
             d = self.parse_line(l,WEIGHT_FIELDS)
             if d.has_key('stdev'): del d['stdev']
             try:
-                self.db.do_add(self.db.usda_weights_table,d)
+                self.db.do_add_fast(self.db.usda_weights_table,d)
             except:
                 print "Error appending ",d,"to usda_weights_table"
                 raise
+        print 'Commit!'
+        self.db.commit_fast_adds()
             
 
 
@@ -198,7 +203,7 @@ if __name__ == '__main__':
     print 'getting our grabber ready'
     grabber = DatabaseGrabber(db,show_prog)
     print 'grabbing recipes!'
-    #grabber.grab_data('/home/tom/Projects/nutritional_data/')
-    grabber.parse_weightfile(open('/home/tom/Projects/nutritional_data/WEIGHT.txt','r'))
+    grabber.grab_data('/home/tom/Projects/grm/data/')
+    #grabber.parse_weightfile(open('/home/tom/Projects/grm/data/WEIGHT.txt','r'))
     #grabber.get_weight('/home/tom/Projects/nutritional_data/WEIGHT.txt')    
     

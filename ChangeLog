@@ -1,3 +1,20 @@
+2009-02-15  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/plugins/nutritional_information/databaseGrabber.py (DatabaseGrabber.parse_abbrevfile):
+	Use new do_add_fast and commit_fast_adds method to drastically
+	speed-up initial population of nutritional DB
+	(DatabaseGrabber.parse_weightfile): Use new do_add_fast and
+	commit_fast_adds method to drastically speed-up initial population
+	of nutritional DB.
+	* src/lib/backends/db.py (RecData.do_add_fast): Add method that
+	uses sqlite (bypassing sqlalchemy) to add to the DB. This
+	substantially speeds up adding things to the DB. The method
+	returns nothing (unlike do_add, which returns a reference to the
+	added object) and we need to call commit_fast_adds in order to
+	commit the additions to the DB.
+	(RecData.commit_fast_adds): A method to commit anything added
+	using do_add_fast
+
 2009-02-13  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/plugins/shopping_associations/shopping_key_editor_plugin.py (KeyEditorPlugin):
