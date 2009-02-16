@@ -89,7 +89,7 @@ class EncodingDialog (de.OptionDialog):
     def __init__ (self, default=None, label=_("Select encoding"),
                   sublabel=_("Cannot determine proper encoding. Please select the correct encoding from the following list."),
                   expander_label=_("See _file with encoding"),
-                  encodings=[],
+                  encodings={},
                  ):
         self.diff_lines = {}
         self.cursor_already_set = False
@@ -219,6 +219,10 @@ class EncodingDialog (de.OptionDialog):
     def diff_texts (self):
         """Look at our differently encoded buffers for characters where they differ."""
         encoded_buffers = self.encodings.values()
+        def mycmp (a,b):
+            '''Sort by number of newlines (most first)'''
+            return cmp(b.count('\n'),a.count('\n'))
+        encoded_buffers.sort(mycmp)
         enc1 = encoded_buffers[0]
         enc_rest = [e.split('\n') for e in encoded_buffers[1:]]
         for linenum, l in enumerate(enc1.split('\n')):
