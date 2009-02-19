@@ -126,7 +126,7 @@ class GourmetApplication:
     # Setup preferences system
     def setup_prefs (self):
         self.conf = []        
-        self.prefs = prefs.Prefs()
+        self.prefs = prefs.get_prefs()
         self.prefsGui = prefsGui.PreferencesGui(
             self.prefs,
             buttons={'clear_remembered_optional_button':lambda *args: self.forget_remembered_optional_ingredients()}
@@ -219,7 +219,7 @@ class GourmetApplication:
     def setup_shopping (self):
         """Setup shopping related stuff"""
         #self.create_rmodel(self.rd.recipe_table)
-        self.sl = shopgui.ShopGui(self, conv=self.conv)
+        self.sl = shopgui.ShopGui()
         self.sl.hide()
 
     # Methods for keeping track of open recipe cards...
