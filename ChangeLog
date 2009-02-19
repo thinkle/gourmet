@@ -1,3 +1,16 @@
+2009-02-18  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/plugin.py (ShoppingListPlugin): Add ShoppingListPlugin
+	class.
+
+	* src/lib/shopgui.py: Complete overhaul of the shopping UI -- we
+	now use a UIManager based GUI in place of the glade-based one from
+	previous Gourmet versions. This allows us to be easily pluggable,
+	among other things. In addition to converting the interface, a
+	"Change Category" button has been added to the toolbar so that it
+	does not require right-clicking to discover (those right-clicking
+	still works).
+
 2009-02-16  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/plugins/python_shell/ipython_view.py: Import IPython
