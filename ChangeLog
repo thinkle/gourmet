@@ -1,3 +1,10 @@
+2009-02-19  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/GourmetRecipeManager.py (GourmetApplication.setup_prefs):
+	Use singleton method to get prefs
+	(GourmetApplication.setup_shopping): No arguments necessary now to
+	get ShopGUI
+
 2009-02-18  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/plugin.py (ShoppingListPlugin): Add ShoppingListPlugin
