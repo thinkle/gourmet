@@ -516,3 +516,7 @@ class IngredientControllerPlugin (StandardPlugin):
     edited and stored.
     '''
     pass
+
+class ShoppingListPlugin (StandardPlugin, UIPlugin):
+    menu_bars = ['ShoppingListMenuBar']
+    pass
