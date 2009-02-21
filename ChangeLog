@@ -1,3 +1,23 @@
+2009-02-21  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/plugins/nutritional_information/main_plugin.py (NutritionMainPlugin.activate):
+	Fix add_icon call.
+
+	* src/lib/plugins/nutritional_information/__init__.py (plugins): Add shopping list plugin
+	* src/lib/shopgui.py (ui): Add placeholder to file menu for
+	plugins to add things above "close".
+	(ShopGui.__init__): Add ShoppingListPlugin
+
+	* src/lib/reccard.py (IngredientEditorModule.add_ingredient_from_line):
+	Fix ingredient-adding for lines with no amount.
+
+	* src/lib/plugin.py (ShoppingListPlugin.__init__): Fix
+	ShoppingListPlugin API (no menu_bars params necessary, just a ui
+	string)
+
+	* src/lib/gglobals.py (add_icon): Fix add_icon to work as
+	advertised.
+
 2009-02-19  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/GourmetRecipeManager.py (GourmetApplication.setup_prefs):

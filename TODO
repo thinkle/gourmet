@@ -1,8 +1,13 @@
 TODO
 * Fix export when including a linked recipe.
 * Fail elegantly when missing required modules for a plugin
-* Change servings -> yield + yield_unit
-
+* Change from servings to yield
+   Allow different kinds of yields, not just servings. This will let a
+   recipe specify its yield in any logical way (loaves, cups,
+   servings, etc) 
+* Make shopping list pluggable [X]
+* Implement menu-planner plugin 
+   
 SEE http://grecipe-manager.wiki.sourceforge.net/TODO
 * Fix Batch Editor to work with plugin system
 

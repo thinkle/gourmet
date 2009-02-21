@@ -517,6 +517,9 @@ class IngredientControllerPlugin (StandardPlugin):
     '''
     pass
 
-class ShoppingListPlugin (StandardPlugin, UIPlugin):
-    menu_bars = ['ShoppingListMenuBar']
-    pass
+class ShoppingListPlugin (UIPlugin):
+
+    ui = ''
+
+    def __init__ (self):
+        UIPlugin.__init__(self)

@@ -359,8 +359,8 @@ empty_model = gtk.ListStore(str)
 # Set up custom STOCK items and ICONS!
 icon_factory = gtk.IconFactory()
     
-def add_icon (file_name, icon_name, label=None, modifier=0, keyval=0):
-    pb = gtk.gdk.pixbuf_new_from_file(os.path.join(imagedir,filename))
+def add_icon (file_name, stock_id, label=None, modifier=0, keyval=0):
+    pb = gtk.gdk.pixbuf_new_from_file(file_name)
     iconset = gtk.IconSet(pb)
     icon_factory.add(stock_id,iconset)
     icon_factory.add_default()
@@ -376,4 +376,4 @@ for filename,stock_id,label,modifier,keyval in [
     ('reccard.png','recipe-card',None,0,0),
     ('reccard_edit.png','edit-recipe-card',None,0,0),    
     ]:
-    add_icon(filename,stock_id,label,modifier,keyval)
+    add_icon(os.path.join(imagedir,filename),stock_id,label,modifier,keyval)

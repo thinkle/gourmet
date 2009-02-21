@@ -11,7 +11,6 @@ from gettext import gettext as _
 #from nutrition.nutritionLabel import NutritionLabel
 #from nutrition.nutrition import NutritionInfoList
 from gtk_extras.FauxActionGroups import ActionManager
-from gtk_extras.menuToolAction import MenuToolAction
 import plugin_loader, plugin
 
 ui = '''
@@ -20,6 +19,8 @@ ui = '''
     <menu name="File" action="File">
       <menuitem action="Save"/>
       <menuitem action="Print"/>
+      <separator/>
+      <placeholder name="ExtraFileStuff"/>
       <separator/>
       <menuitem action="Close"/>	
     </menu>
@@ -123,8 +124,11 @@ class IngredientAndPantryList:
 	     lambda *args: self.pantryOrShoppingActions.get_action('ChangeCategory').set_active(True)),
 	    ])
 	self.pantryOrShoppingActions.add_toggle_actions([
-	    ('ChangeCategory',None,_('Change _Category'),
-	     _('Change the category of the currently selected item'),None,
+	    ('ChangeCategory',
+             None,
+             _('Change _Category'),
+             None,
+	     _('Change the category of the currently selected item'),
 	     self.change_category
 	     ),
 	    ]
@@ -641,7 +645,7 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
 	    )
 	    
 	plugin_loader.Pluggable.__init__(self,
-					 [])
+					 [plugin.ShoppingListPlugin])
     # Create interface...
     
     def setup_ui_manager (self):
@@ -722,32 +726,31 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
 	    )])
         self.mainActionGroup.add_actions([
 	    ('Edit',None,_('_Edit')),
-                ('Save',# name
-                 gtk.STOCK_SAVE,# stock
-                 None, # text
-                 None, # key-command
-                 None, # tooltip
-                 self.save# callback
-                 ),
-                ('Print'   ,# name
-                 gtk.STOCK_PRINT,# stock
-                 None, # text
-                 '<Ctrl>P', # key-command
-                 None, # tooltip
-                 self.printList # callback
-                 ),
-                ('Close'   ,# name
-                 gtk.STOCK_CLOSE,# stock
-                 None, # text
-                 None, # key-command
-                 None, # tooltip
-                 lambda *args: self.w.hide()# callback
-                 ),
-		('File',None,_('_File')),
-		('Edit',None,_('_Edit')),
-		('Help',gtk.STOCK_HELP,_('_Help'),None,None,
-		 lambda *args: de.show_faq(HELP_FILE,jump_to='Shopping')),		
-		('HelpMenu',None,_('_Help')),
+            ('Save',# name
+             gtk.STOCK_SAVE,# stock
+             None, # text
+             None, # key-command
+             None, # tooltip
+             self.save# callback
+             ),
+            ('Print'   ,# name
+             gtk.STOCK_PRINT,# stock
+             None, # text
+             '<Ctrl>P', # key-command
+             None, # tooltip
+             self.printList # callback
+             ),
+            ('Close'   ,# name
+             gtk.STOCK_CLOSE,# stock
+             None, # text
+             None, # key-command
+             None, # tooltip
+             lambda *args: self.w.hide()# callback
+             ),
+            ('File',None,_('_File')),
+            ('Help',gtk.STOCK_HELP,_('_Help'),None,None,
+             lambda *args: de.show_faq(HELP_FILE,jump_to='Shopping')),		
+            ('HelpMenu',None,_('_Help')),
 		])
 	self.mainActionGroup.add_toggle_actions([
 		('AddNewItems',

@@ -164,7 +164,6 @@ class DatabaseGrabber:
                 raise
             t.end()                        
             tline.end()
-        print 'Commit!'            
         self.db.commit_fast_adds()
 
     def parse_weightfile (self, weightfile):
@@ -187,7 +186,6 @@ class DatabaseGrabber:
             except:
                 print "Error appending ",d,"to usda_weights_table"
                 raise
-        print 'Commit!'
         self.db.commit_fast_adds()
             
 

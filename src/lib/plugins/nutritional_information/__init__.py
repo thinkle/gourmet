@@ -1,7 +1,8 @@
-import data_plugin, main_plugin, reccard_plugin, export_plugin
+import data_plugin, main_plugin, reccard_plugin, export_plugin, shopping_plugin
 plugins = [
     data_plugin.NutritionDataPlugin,
     main_plugin.NutritionMainPlugin,
     reccard_plugin.NutritionDisplayPlugin,
-    export_plugin.NutritionBaseExporterPlugin
+    export_plugin.NutritionBaseExporterPlugin,
+    shopping_plugin.ShoppingNutritionalInfoPlugin,
     ]
