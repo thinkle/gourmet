@@ -1,5 +1,10 @@
 2009-02-21  Thomas Mills Hinkle  <tom@hydrophax>
 
+	* src/lib/version.py - Version-> 0.14.7. Released 0.14.7
+	tarball+deb to SF
+
+2009-02-21  Thomas Mills Hinkle  <tom@hydrophax>
+
 	* src/lib/plugins/nutritional_information/main_plugin.py (NutritionMainPlugin.activate):
 	Fix add_icon call.
 
