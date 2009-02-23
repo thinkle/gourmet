@@ -46,7 +46,9 @@ class KeyEditor:
         # Make our lovely model
         self.makeTreeModel()
         # setup completion in entry
-        cb.make_completion(self.changeKeyEntry,self.rg.inginfo.key_model)
+        model = gtk.ListStore(str)
+        for k in self.rd.get_unique_values('ingkey',table=self.rd.ingredients_table): model.append([k])
+        cb.make_completion(self.changeKeyEntry,model)
         # Setup next/prev/first/last buttons for view
         self.prev_button = self.glade.get_widget('prevButton')
         self.next_button = self.glade.get_widget('nextButton')
@@ -143,10 +145,6 @@ class KeyEditor:
                                                        key_col=2,
                                                        instant_apply=True):
             self.treeview.append_column(tvc)
-            
-        
-        
-
 
     def tree_edited (self, renderer, path_string, text, n, head):
         indices = path_string.split(':')

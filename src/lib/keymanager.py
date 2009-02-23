@@ -189,7 +189,10 @@ class KeyManager:
                 # resulted in this key, matches is the number of keys
                 # that match this word in all, and words is the number
                 # of words we're dealing with.
-                retvals[ik]+=(float(m.count)/total_count)*(float(1)/nwords)
+                words_in_key = len(ik.split())
+                if words_in_key > nwords: wordcount = words_in_key
+                else: wordcount = nwords
+                retvals[ik]+=(float(m.count)/total_count)*(float(1)/(wordcount))
                 # Add some probability if our word shows up in the key
                 if ik.find(w)>=0: retvals[ik]+=0.1
         retv = retvals.items()
@@ -224,7 +227,6 @@ class KeyManager:
         debug("End generate_key",10)
         timer.end()
         return ingr
-
 
     def sing_equal(self, str1, str2):
         debug("Start sing_equal(self,%s,%s)"%(str1,str2),10)

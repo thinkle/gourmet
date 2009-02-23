@@ -1,3 +1,26 @@
+2009-02-22  Thomas Mills Hinkle  <tom@hydrophax>
+
+	* src/lib/plugins/key_editor/recipeEditorPlugin.py (IngredientKeyEditor.update_from_ingredient_editor_cb):
+	Fix typo that caused weirdness in ingredient key editor
+	view (where key of last ingredient in list got propogated to
+	ingredients as they were added).
+	(IngredientKeyEditor.update_from_ingredient_editor_cb): Actually
+	guess the key using keyManager rather than just cutting off key
+	after the semicolon.
+
+	* src/lib/reccard.py (IngredientEditor): Remove old
+	IngredientEditor class (This has all been simplified or moved to
+	plugins).
+
+	* src/lib/keymanager.py (KeyManager.look_for_key): Change math on
+	key lookup slightly so that multi-word keys such as "chocolate
+	chips" get penalized when matching on single-word
+	items ("chocolate"), just as we would punish "chocolate" for being
+	only one word in "chocolate chips".
+
+	* src/lib/plugins/key_editor/keyEditor.py (KeyEditor.__init__):
+	Create our own keymodel (old use of rg.rd.inginfo is obsolete).
+
 2009-02-21  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/version.py - Version-> 0.14.7. Released 0.14.7

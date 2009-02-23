@@ -135,13 +135,11 @@ class IngredientKeyEditor (RecEditorModule):
         if oldkey != new_text:
             self.emit('toggle-edited',True)
         self.model[path][2] = new_text
-        # TODO
 
     def get_key_for_object (self, obj):
         for row in self.model:
             if row[0] == obj:
                 return row[2]
-        # TODO
         return False
 
     def treeselection_changed_cb (self, ts):
@@ -167,12 +165,11 @@ class IngredientKeyEditor (RecEditorModule):
         self.edited = False
 
     # Callbacks
-
     def guess_keys_cb (self, *args):
         changed = False
         for row in self.model:
             item = row[1]
-            row[2] = self.rg.rd.km.get_key(item)
+            row[2] = self.rg.rd.km.get_key(item,1)
             changed = True
         if changed: self.edited = True
 
@@ -192,16 +189,16 @@ class IngredientKeyEditor (RecEditorModule):
                 obj = row[0]
                 item = row[ITM]
                 already_there = False
-                for row in self.model:
-                    if obj==row[0]:
+                for myrow in self.model:
+                    if obj==myrow[0]:
                         already_there = True
-                        if item != row[1]:
-                            row[1] = item
+                        if item != myrow[1]:
+                            myrow[1] = item
                 if not already_there:
                     if hasattr(row[0],'ingkey'):
                         ingkey = row[0].ingkey
                     else:
-                        ingkey = item.split(';')[0]
+                        ingkey = self.rg.rd.km.get_key(item.split(';')[0],1.0)
                     self.model.append((row[0],item,ingkey))
                 
     def save (self, recdic):
