@@ -1,3 +1,8 @@
+2009-02-28  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/listsaver: Added plugin (this was in the tarball
+	released earlier, but had accidentally not been added to CVS).
+
 2009-02-22  Thomas Mills Hinkle  <tom@hydrophax>
 
 	* src/lib/plugins/key_editor/recipeEditorPlugin.py (IngredientKeyEditor.update_from_ingredient_editor_cb):
