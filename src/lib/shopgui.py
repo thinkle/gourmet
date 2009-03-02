@@ -940,6 +940,8 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
 	dct = self.rd.ingredient_parser(txt)
 	if not dct: dct = {'amount':None,'unit':None,'item':txt}
 	self.extras.append([dct.get('amount'),dct.get('unit'),dct.get('item')])
+        # Make sure it doesn't end up in the pantry...        
+        self.sh.remove_from_pantry(dct.get('item')) 
 	self.grabIngsFromRecs(self.recs.values(),self.extras)
 	self.resetSL()
 	self.add_entry.set_text('')

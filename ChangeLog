@@ -1,3 +1,8 @@
+2009-03-01  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/shopgui.py (ShopGui.item_added): Make sure added items
+	don't end up in the pantry.
+
 2009-02-28  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/plugins/listsaver: Added plugin (this was in the tarball
