@@ -31,7 +31,6 @@ class MasterLoader:
         # tools
         'unit_converter',
         'duplicate_finder',
-        'key_editor',
         # import/export
         'gxml_plugin',
         'html_plugin',
@@ -56,6 +55,7 @@ class MasterLoader:
                                    os.path.join(current_path,'plugins','import_export'), # pre-installed exporter plugins
                                    os.path.join(gglobals.datad,'plugins/'), # system-wide plug-ins (?)
                                    ]
+        self.errors = {}
         self.pluggables_by_class = {}
         self.load_plugin_directories()
         self.load_active_plugins()
@@ -92,9 +92,11 @@ class MasterLoader:
                 except:
                     import traceback
                     print 'WARNING: Failed to load plugin %s'%p
+                    self.errors[p] = traceback.format_exc()
                     traceback.print_exc()
             else:
                 print 'Plugin ',p,'not found'
+    
 
     def save_active_plugins (self):
         # If we have not changed from the defaults and no
@@ -145,6 +147,11 @@ class MasterLoader:
         if plugin_set in self.active_plugin_sets:
             return
         self.check_dependencies(plugin_set)
+        # plugin_set.get_module() returns None if there's been a
+        # problem -- we want to raise that problem now.
+        if plugin_set.get_module() is None:
+            self.errors[plugin_set]=plugin_set.error.__class__.__name__+': '+plugin_set.error.message
+            raise plugin_set.error
         self.active_plugin_sets.append(plugin_set.module)
         self.active_plugins.extend(plugin_set.plugins)
         for plugin in plugin_set.plugins:
@@ -161,10 +168,11 @@ class MasterLoader:
             self.active_plugin_sets.remove(plugin_set.module)
         else:
             print 'Odd',plugin_set.module,'is not listed as active.'
-        for plugin in plugin_set.plugins:
-            if self.instantiated_plugins.has_key(plugin):
-                self.instantiated_plugins[plugin].remove()
-            self.active_plugins.remove(plugin)
+        if plugin.get_module():
+            for plugin in plugin_set.plugins:
+                if self.instantiated_plugins.has_key(plugin):
+                    self.instantiated_plugins[plugin].remove()
+                self.active_plugins.remove(plugin)
 
     def get_instantiated_plugin (self, plugin):
         if self.instantiated_plugins.has_key(plugin):
@@ -186,6 +194,7 @@ class MasterLoader:
                     plugin_instance = self.get_instantiated_plugin(p)
                 except:
                     print 'WARNING: Failed to instantiate plugin %s of type %s'%(p,klass)
+                    self.errors[p] = traceback.format_exc()                    
                     import traceback; traceback.print_exc()
                 else:
                     #print 'Instantiating plugin',p,plugin_instance,'of',klass
@@ -231,10 +240,11 @@ class PluginSet:
                 self._loaded = __import__(self.module)
                 #print 'Loaded plugin set',self._loaded
                 #print 'plugins=',self._loaded.plugins
-            except ImportError:
+            except ImportError,ie:
                 print 'WARNING: Plugin module import failed'
                 print 'PATH:',sys.path
                 import traceback; traceback.print_exc()
+                self.error = ie
                 return None
             else:
                 return self._loaded

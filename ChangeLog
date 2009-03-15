@@ -1,3 +1,25 @@
+2009-03-14  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugin_gui.py (PluginChooser.do_change_plugin): Display
+	error to user when loading a plugin fails. Give suggestions as to
+	how to install dependencies in case of import error.
+
+	* src/lib/plugin_loader.py (MasterLoader): Remove key_editor from
+	default plugin set. This is a lot of functionality to put on
+	people who don't want it -- removing it greatly simplifies Gourmet
+	for those not interested.
+	(MasterLoader.__init__): Add class variable 'errors' to keep track
+	of errors raised in instantiating plugins, etc. This allows
+	plugin_gui to display these errors to users. Use this variable
+	when instantiating PluginSets to keep track of error messages our
+	users may want.
+
+2009-03-07  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/shopgui.py (ShopGui): Prevent ShopGui window from
+	getting destroyed on delete-event (when user closes window from WM
+	control).
+
 2009-03-01  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/shopgui.py (ShopGui.item_added): Make sure added items

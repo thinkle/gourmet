@@ -128,12 +128,21 @@ class PluginChooser:
                 else:
                     self.loader.deactivate_plugin_set(plugin_set)
         except:
+            details = self.loader.errors.get(plugin_set,'')
+            if 'ImportError' in details:
+                modname = details.split()[-1]; n = modname.lower()
+                modpossibilities = '"python-%s" '%n+_('or')+' "%s"'%n
+                details += '\n\nYou may need to install additional python packages for this module to work properly. If you have a package management system on your computer, use it to search for a package containing "%s", such as %s'%(modname,modpossibilities)
             if state:
                 de.show_message(message_type=gtk.MESSAGE_ERROR,
-                                label=_('An error occurred activating plugin.'))
+                                label=_('An error occurred activating plugin.'),
+                                sublabel=details)
             else:
                 de.show_message(message_type=gtk.MESSAGE_ERROR,
-                                label=_('An error occurred deactivating plugin.'))
+                                label=_('An error occurred deactivating plugin.'),
+                                sublabel=details
+                                )
+                
             raise
 
     def response_cb (self, window, response):

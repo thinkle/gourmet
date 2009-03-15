@@ -623,6 +623,7 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
         self.w = gtk.Window(); self.main = gtk.VBox()
 	self.w.set_title(_('Shopping List'))
 	self.w.set_default_size(800,600)
+        self.w.connect('delete-event',self.hide)
 	from GourmetRecipeManager import get_application
         self.recs = {}; self.extras = []
 	self.data,self.pantry=self.grabIngsFromRecs([])
@@ -745,7 +746,7 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
              None, # text
              None, # key-command
              None, # tooltip
-             lambda *args: self.w.hide()# callback
+             self.hide# callback
              ),
             ('File',None,_('_File')),
             ('Help',gtk.STOCK_HELP,_('_Help'),None,None,
@@ -880,10 +881,12 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
 	self.grabIngsFromRecs(self.recs.values(),self.extras)
         self.resetSL()
 	self.rectree.set_model(self.create_rmodel())
-        
+
     # Callbacks
     def hide (self, *args):
 	self.w.hide()
+        return True
+        
     def show (self, *args):
 	self.w.show()
 
