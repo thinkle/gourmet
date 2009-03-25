@@ -18,8 +18,8 @@ class HtmlExporterPlugin (ExporterPlugin):
             args['rd'], 
             args['rv'],
             args['file'],
-            args['conv'],
-            progress_func=args['prog']
+            #args['conv'],
+            #progress_func=args['prog']
             )
 
     def do_single_export (self, args)    :
@@ -29,7 +29,7 @@ class HtmlExporterPlugin (ExporterPlugin):
             args['out'],
             change_units=args['change_units'],
             mult=args['mult'],
-            conv=args['conv']
+            #conv=args['conv']
             )
         he.run()
 
