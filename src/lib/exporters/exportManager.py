@@ -82,6 +82,7 @@ class ExportManager (plugin_loader.Pluggable):
         Return the exporter class capable of doing this and a
         dictionary of arguments for the progress dialog.
         """
+        self.app.rd.include_linked_recipes(recs)
         ext = prefs.get('save_recipes_as','%sxml'%os.path.extsep)
         exp_directory = prefs.get('rec_exp_directory','~')
         fn,exp_type=de.saveas_file(_("Export recipes"),

@@ -1,3 +1,12 @@
+2009-03-27  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/exporters/exportManager.py (ExportManager.offer_multiple_export):
+	Include any recipes linked to in your recipes in your export.
+
+	* src/lib/backends/db.py (RecData.include_linked_recipes): Add
+	convenience method to append linked recipes (from
+	recipe-as-ingredient) to a list of recipes.
+
 2009-03-26  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/gtk_extras/dialog_extras.py (saveas_file): If we can't
