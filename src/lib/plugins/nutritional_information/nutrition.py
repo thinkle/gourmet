@@ -46,7 +46,8 @@ class NutritionData:
         if prev_association:
             self.db.do_modify(self.db.nutritionaliases_table,
                               prev_association,
-                              {'ndbno':ndbno})
+                              {'ndbno':ndbno},
+                              "ingkey")
         else:
             self.db.do_add(self.db.nutritionaliases_table,{'ndbno':ndbno,
                                                  'ingkey':key}
