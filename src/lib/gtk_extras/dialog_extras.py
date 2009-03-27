@@ -857,8 +857,15 @@ def saveas_file (title,
                            show_filetype=show_filetype,parent=parent)
     retval = sfd.run()
     if not retval:
-        return None,None    
-    exp_type = get_type_for_filters(retval, filters)
+        return None,None
+    exp_type = get_type_for_filters(retval, filters[:])
+    if not exp_type:
+        # If we don't have a type based on our regexps... then lets
+        # just see what the combobox was set to...
+        try:
+            exp_type = filters[sfd.saveas.get_active()][0]
+        except:
+            pass
     return retval, exp_type
 
 def get_type_for_filters (fname, filters):

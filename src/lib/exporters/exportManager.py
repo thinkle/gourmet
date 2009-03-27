@@ -81,8 +81,6 @@ class ExportManager (plugin_loader.Pluggable):
 
         Return the exporter class capable of doing this and a
         dictionary of arguments for the progress dialog.
-        
-        exporter class will be suitable to run in a threaded mode -- it has a run, terminate, and pau
         """
         ext = prefs.get('save_recipes_as','%sxml'%os.path.extsep)
         exp_directory = prefs.get('rec_exp_directory','~')
@@ -94,6 +92,15 @@ class ExportManager (plugin_loader.Pluggable):
             prefs['rec_exp_directory']=os.path.split(fn)[0]
             prefs['save_recipes_as']=os.path.splitext(fn)[1]
             instance = self.do_multiple_export(recs, fn, exp_type)
+            if not instance:
+                de.show_message(
+                    okay=gtk.STOCK_CLOSE,
+                    cancel=False,
+                    label=_('Unable to export: unknown filetype "%s"'%fn),
+                    sublabel=_('Please make sure to select a filetype from the dropdown menu when saving.'),
+                    message_type=gtk.MESSAGE_ERROR,
+                    )
+                return
             import gourmet.GourmetRecipeManager
             main_app =  gourmet.GourmetRecipeManager.get_application()
             print 'Connect',instance,'to show dialog when done'
@@ -101,6 +108,7 @@ class ExportManager (plugin_loader.Pluggable):
                              lambda *args: main_app.offer_url('Export complete!',
                                                               'Recipes exported to %s'%fn,
                                                               url='file:///%s'%fn))
+            return instance
 
     def do_multiple_export (self, recs, fn, exp_type=None,
                                            setup_gui=True, extra_prefs=EXTRA_PREFS_AUTOMATIC):
@@ -129,7 +137,9 @@ class ExportManager (plugin_loader.Pluggable):
                 tmg.register_thread_with_dialog(_('Export')+'('+myexp.label+')',exporterInstance)
                 tmg.show()
             print 'Return exporter instance'
-            return exporterInstance  
+            return exporterInstance
+        else:
+            print 'WARNING: CANNOT EXPORT TYPE',exp_type
 
     def can_export_type (self, name): return self.plugins_by_name.has_key(name)
 

@@ -1,3 +1,16 @@
+2009-03-26  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/gtk_extras/dialog_extras.py (saveas_file): If we can't
+	guess our file type based on the extension, use whatever is
+	selected in the filetype combo box as fallback.
+
+	* src/lib/exporters/exportManager.py (ExportManager.offer_multiple_export):
+	Show error message if we don't get an export type.
+
+	* src/lib/backends/db.py (RecData.get_amount_and_unit): Don't
+	require conv argument to be passed (switching to singleton design
+	pattern...)
+
 2009-03-26  Artis Rozentāls  <artis.rozentals@gmail.com>
 
 	* src/lib/plugins/nutritional_information/nutrition.py (NutritionData.set_key_from_ndbno):

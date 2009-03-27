@@ -1440,11 +1440,13 @@ class RecData (Pluggable):
         If we are handed a converter interface, we will adjust the
         units to make them readable.
         """
-        amt=self.get_amount(ing,mult)
-        unit=ing.unit
+        amt = self.get_amount(ing,mult)
+        unit = ing.unit
         ramount = None
         if type(amt)==tuple: amt,ramount = amt
         if adjust_units or preferred_unit_groups:
+            if not conv:
+                conv = convert.get_converter()
             amt,unit = conv.adjust_unit(amt,unit,
                                         favor_current_unit=favor_current_unit,
                                         preferred_unit_groups=preferred_unit_groups)
