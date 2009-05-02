@@ -4,6 +4,16 @@ TODO
    Allow different kinds of yields, not just servings. This will let a
    recipe specify its yield in any logical way (loaves, cups,
    servings, etc)
+   - Recipe card [X]
+   - Recipe index [X]
+   - importer base classes [X]
+     - Changes: convert_servings -> convert_str_to_num
+   - exporter base classes
+   - printing
+   - Plugins
+     - Importer plugins
+     - Exporter plugins
+     - Browsing plugins 
 
 * Implement menu-planner plugin 
    
