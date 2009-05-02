@@ -4,7 +4,7 @@
 ## End for testing - DELETE ME
 import shutil
 import os.path
-from gourmet.gdebug import debug, TimeAction
+from gourmet.gdebug import debug, TimeAction, debug_decorator
 import re, pickle, string, os.path, string, time
 from gettext import gettext as _
 import gourmet.gglobals as gglobals
@@ -58,9 +58,11 @@ def fix_colnames (dict, *tables):
 def make_simple_select_arg (criteria,*tables):
     args = []
     for k,v in fix_colnames(criteria,*tables).items():
+        if type(v)==str:
+            v = unicode(v)
         if type(v)==tuple:
             operator,value = v
-            if type(v)==str:
+            if type(value)==str:
                 v = unicode(v)
             if operator=='in':
                 args.append(k.in_(value))
@@ -428,12 +430,10 @@ class RecData (Pluggable):
         If necessary, we'll do some version-dependent updates to the GUI
         """
         stored_info = self.fetch_one(self.info_table)
-        print 'version info stored: ',stored_info
         version = [s for s in version_string.split('.')]
         current_super = int(version[0])
         current_major = int(version[1])
         current_minor = int(version[2])
-        print 'current info',version
         if not stored_info or not stored_info.version_major:
             # Default info -- the last version before we added the
             # version tracker...
@@ -786,8 +786,6 @@ class RecData (Pluggable):
 
     def get_unique_values (self, colname,table=None,**criteria):
         """Get list of unique values for column in table."""
-        print 'Calling get_unique_values...',colname,table,criteria
-        import traceback; print traceback.print_stack()
         if not table: table=self.recipe_table
         if criteria: table = table.select(*make_simple_select_arg(criteria,table))
         if colname=='category' and table==self.recipe_table:
@@ -1232,6 +1230,9 @@ class RecData (Pluggable):
 
     def do_add (self, table, dic):
         insert_statement = table.insert()
+        for k in dic:
+            if type(dic[k])==str:
+                dic[k]=unicode(dic[k])
         try:
             result_proxy = insert_statement.execute(**dic)
         except ValueError:
@@ -1564,6 +1565,9 @@ class RecData (Pluggable):
     def add_ing_to_keydic (self, item, key):
         #print 'add ',item,key,'to keydic'
         if not item or not key: return
+        else:
+            if item: item = unicode(item)
+            if key: key = unicode(key)
         row = self.fetch_one(self.keylookup_table, item=item, ingkey=key)
         if row:
             self.do_modify(self.keylookup_table,row,{'count':row.count+1})
@@ -1571,11 +1575,11 @@ class RecData (Pluggable):
             self.do_add(self.keylookup_table,{'item':item,'ingkey':key,'count':1})
         for w in item.split():
             w=str(w.decode('utf8').lower())
-            row = self.fetch_one(self.keylookup_table,word=w,ingkey=key)
+            row = self.fetch_one(self.keylookup_table,word=unicode(w),ingkey=unicode(key))
             if row:
                 self.do_modify(self.keylookup_table,row,{'count':row.count+1})
             else:
-                self.do_add(self.keylookup_table,{'word':w,'ingkey':key,'count':1})
+                self.do_add(self.keylookup_table,{'word':unicode(w),'ingkey':unicode(key),'count':1})
 
     def remove_ing_from_keydic (self, item, key):
         #print 'remove ',item,key,'to keydic'        

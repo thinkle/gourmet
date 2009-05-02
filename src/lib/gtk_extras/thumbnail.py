@@ -1,4 +1,4 @@
-import Image, urllib, md5, os.path, os, StringIO
+import Image, urllib, hashlib, os.path, os, StringIO
 from gourmet.gdebug import debug
 
 MAX_THUMBSIZE=10000000
@@ -12,7 +12,7 @@ def check_for_thumbnail (uri, type="large",reporthook=None):
     print 'CHECK FOR THUMBNAIL',uri
     if not uri:
         return ""
-    m = md5.md5(uri)
+    m = hashlib.md5(uri)
     name= os.path.join("~",".thumbnails",type,m.hexdigest() + ".png")    
     name = os.path.expanduser(name)
     targetdir = os.path.split(name)[0]

@@ -1,3 +1,14 @@
+2009-05-01  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/recipeIdentifier.py (get_ingredient_hash): md5 ->
+	hashlib (remove deprecated md5 lib)
+
+	* src/lib/gtk_extras/thumbnail.py (check_for_thumbnail): md5 ->
+	hashlib (remove deprecated md5 lib)
+
+	* src/lib/backends/db.py : Fix unicode type errors from sqlalchemy.
+	* src/lib/*: Change servings->yields
+
 2009-03-27  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/exporters/exportManager.py (ExportManager.offer_multiple_export):

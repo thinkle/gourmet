@@ -12,7 +12,7 @@ functions.
 """
 
 import convert, xml.sax.saxutils
-import md5, difflib, types, re
+import hashlib, difflib, types, re
 from gettext import gettext as _
 from gglobals import REC_ATTRS,TEXT_ATTR_DIC,INT_REC_ATTRS
 
@@ -55,7 +55,7 @@ def get_ingredient_hash (ings, conv):
     ings = [standardize_ingredient(i,conv) for i in ings]
     ings.sort()
     ings = '\n'.join(ings)
-    m = md5.md5(ings)
+    m = hashlib.md5(ings)
     #print 'Hash',ings,m.hexdigest()
     return m.hexdigest()
 
