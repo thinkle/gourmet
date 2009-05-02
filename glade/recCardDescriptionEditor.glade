@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.0 on Thu Jan 17 05:46:51 2008 -->
+<!--Generated with glade3 3.4.5 on Sat Apr 18 14:11:34 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="descriptionEditor">
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -232,13 +232,13 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="servingsLabel">
+                          <widget class="GtkLabel" id="yieldLabel">
                             <property name="visible">True</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0.46000000834465027</property>
-                            <property name="label" translatable="yes">_Servings:</property>
+                            <property name="label" translatable="yes">_Yield:</property>
                             <property name="use_underline">True</property>
-                            <property name="mnemonic_widget">servingsBox</property>
+                            <property name="mnemonic_widget">yieldsBox</property>
                           </widget>
                           <packing>
                             <property name="top_attach">1</property>
@@ -423,23 +423,6 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkSpinButton" id="servingsBox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="adjustment">0 0 5000 1 10 10</property>
-                            <property name="climb_rate">1</property>
-                            <signal name="changed" handler="rcEdited"/>
-                          </widget>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
-                            <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                            <property name="x_options">GTK_FILL</property>
-                            <property name="y_options"></property>
-                          </packing>
-                        </child>
-                        <child>
                           <widget class="GtkAlignment" id="alignment27">
                             <property name="visible">True</property>
                             <property name="xalign">0</property>
@@ -465,6 +448,47 @@
                             <property name="bottom_attach">7</property>
                             <property name="x_options">GTK_FILL</property>
                             <property name="y_options"></property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkHBox" id="hbox1">
+                            <property name="visible">True</property>
+                            <child>
+                              <widget class="GtkSpinButton" id="yieldsBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="adjustment">0 0 5000 1 10 10</property>
+                                <property name="climb_rate">1</property>
+                                <signal name="changed" handler="rcEdited"/>
+                              </widget>
+                              <packing>
+                                <property name="expand">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkComboBoxEntry" id="yield_unitBox">
+                                <property name="visible">True</property>
+                                <property name="focus_on_click">False</property>
+                                <property name="items" translatable="yes">servings</property>
+                                <child internal-child="entry">
+                                  <widget class="GtkEntry" id="comboboxentry-entry4">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                  </widget>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </widget>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                            <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                            <property name="y_options">GTK_SHRINK | GTK_FILL</property>
                           </packing>
                         </child>
                       </widget>

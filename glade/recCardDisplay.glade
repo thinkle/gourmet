@@ -44,7 +44,7 @@
                         <child>
                           <widget class="GtkImage" id="image1263">
                             <property name="visible">True</property>
-                            <property name="stock">add-to-shopping-list</property>
+                            <property name="stock">gtk-missing-image</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
@@ -195,10 +195,10 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <widget class="GtkHBox" id="servingsDisplay">
+                                          <widget class="GtkHBox" id="yieldsDisplay">
                                             <property name="visible">True</property>
                                             <child>
-                                              <widget class="GtkSpinButton" id="servingsDisplaySpin">
+                                              <widget class="GtkSpinButton" id="yieldsDisplaySpin">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="can_default">True</property>
@@ -211,6 +211,16 @@
                                               </packing>
                                             </child>
                                             <child>
+                                              <widget class="GtkLabel" id="yield_unitDisplay">
+                                                <property name="visible">True</property>
+                                              </widget>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="padding">6</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                            <child>
                                               <widget class="GtkLabel" id="multiplyByLabel">
                                                 <property name="visible">True</property>
                                                 <property name="xpad">12</property>
@@ -218,7 +228,7 @@
                                               <packing>
                                                 <property name="expand">False</property>
                                                 <property name="fill">False</property>
-                                                <property name="position">1</property>
+                                                <property name="position">2</property>
                                               </packing>
                                             </child>
                                           </widget>
@@ -341,16 +351,16 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <widget class="GtkLabel" id="servingsDisplayLabel">
+                                          <widget class="GtkLabel" id="yieldsDisplayLabel">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="xalign">0</property>
-                                            <property name="label" translatable="yes">&lt;b&gt;_Servings:&lt;/b&gt;</property>
+                                            <property name="label" translatable="yes">&lt;b&gt;_Yields:&lt;/b&gt;</property>
                                             <property name="use_markup">True</property>
                                             <property name="use_underline">True</property>
                                             <property name="wrap">True</property>
                                             <property name="selectable">True</property>
-                                            <property name="mnemonic_widget">servingsDisplaySpin</property>
+                                            <property name="mnemonic_widget">yieldsDisplaySpin</property>
                                           </widget>
                                           <packing>
                                             <property name="x_options">GTK_SHRINK | GTK_FILL</property>

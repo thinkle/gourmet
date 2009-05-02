@@ -233,6 +233,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
                 ]:
                 gladeCustomHandlers.add_custom_handler(name,handler)
             RecCardDisplay._custom_handlers_setup = True
+        print 'Loading glade from ',os.path.join(gladebase,'recCardDisplay.glade')
         self.glade = gtk.glade.XML(os.path.join(gladebase,'recCardDisplay.glade'))
 
         self.glade.signal_autoconnect({
@@ -246,12 +247,21 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def setup_widgets_from_glade (self):
         self.display_info = ['title','rating','preptime','link',
-                             'servings','cooktime','source',
+                             'yields','yield_unit','cooktime','source',
                              'cuisine','category','instructions',
                              'modifications',]
         for attr in self.display_info:
             setattr(self,'%sDisplay'%attr,self.glade.get_widget('%sDisplay'%attr))
             setattr(self,'%sDisplayLabel'%attr,self.glade.get_widget('%sDisplayLabel'%attr))
+            try:
+                assert(getattr(self,'%sDisplay'%attr))
+                if attr not in ['title','yield_unit']: 
+                    assert(getattr(self,'%sDisplayLabel'%attr))
+            except:
+                print 'Failed to load all widgets for ',attr
+                print '%sDisplay'%attr,'->',getattr(self,'%sDisplay'%attr)
+                print '%sDisplayLabel'%attr,'->',getattr(self,'%sDisplayLabel'%attr)
+                raise
         # instructions & notes display
         for d in ['instructionsDisplay','modificationsDisplay']:
             disp = getattr(self,d)
@@ -265,9 +275,9 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.linkDisplayButton = self.glade.get_widget('linkDisplayButton')
         self.linkDisplayButton.connect('clicked',self.link_cb)
         # multiplication spinners
-        self.servingsDisplaySpin = self.glade.get_widget('servingsDisplaySpin')
-        self.servingsDisplaySpin.connect('changed',self.servings_change_cb)
-        self.servingsMultiplyByLabel = self.glade.get_widget('multiplyByLabel')
+        self.yieldsDisplaySpin = self.glade.get_widget('yieldsDisplaySpin')
+        self.yieldsDisplaySpin.connect('changed',self.yields_change_cb)
+        self.yieldsMultiplyByLabel = self.glade.get_widget('multiplyByLabel')
         self.multiplyDisplaySpin = self.glade.get_widget('multiplyByDisplaySpin')
         self.multiplyDisplaySpin.connect('changed',self.multiplication_change_cb)
         self.multiplyDisplayLabel = self.glade.get_widget('multiplyByDisplayLabel')
@@ -445,7 +455,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
                 print 'WARNING: Exception raised by %(module)s.update_from_database()'%locals()
                 import traceback; traceback.print_exc()
         self.special_display_functions = {
-            'servings':self.update_servings_display,
+            'yields':self.update_yields_display,
+            'yield_unit':self.update_yield_unit_display,
             'title':self.update_title_display,
             'link':self.update_link_display,
             }
@@ -494,29 +505,32 @@ class RecCardDisplay (plugin_loader.Pluggable):
                 self.orig_pixbuf
                 )
             self.imageDisplay.show()
+
+    def update_yield_unit_display (self):
+        self.yield_unitDisplay.set_text(self.current_rec.yield_unit or '')
             
-    def update_servings_display (self):
-        self.serves_orig=self.current_rec.servings
+    def update_yields_display (self):
+        self.yields_orig=self.current_rec.yields
         try:
-            self.serves_orig = float(self.serves_orig)
+            self.yields_orig = float(self.yields_orig)
         except:
-            self.serves_orig = None
-        if self.serves_orig:
-            # in this case, display servings spinbutton and update multiplier label as necessary
-            self.servingsDisplay.show()
-            self.servingsDisplayLabel.show()
+            self.yields_orig = None
+        if self.yields_orig:
+            # in this case, display yields spinbutton and update multiplier label as necessary
+            self.yieldsDisplay.show()
+            self.yieldsDisplayLabel.show()
             self.multiplyDisplaySpin.hide()
             self.multiplyDisplayLabel.hide()
-            #if serves:
-            #    self.mult = float(serves)/float(self.serves_orig)
+            #if yields:
+            #    self.mult = float(yields)/float(self.yields_orig)
             #else:
             self.mult = 1
-            serves=float(self.serves_orig)
-            self.servingsDisplaySpin.set_value(serves)
+            yields=float(self.yields_orig)
+            self.yieldsDisplaySpin.set_value(yields)
         else:
             #otherwise, display multiplier label and checkbutton
-            self.servingsDisplay.hide()
-            self.servingsDisplayLabel.hide()
+            self.yieldsDisplay.hide()
+            self.yieldsDisplayLabel.hide()
             self.multiplyDisplayLabel.show()
             self.multiplyDisplaySpin.show()
 
@@ -586,23 +600,23 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def link_cb (self, *args): launch_url(self.link)
 
-    def servings_change_cb (self, widg):
-        self.update_servings_multiplier(widg.get_value())
+    def yields_change_cb (self, widg):
+        self.update_yields_multiplier(widg.get_value())
         self.ingredientDisplay.display_ingredients() # re-update
 
     def multiplication_change_cb (self, *args):
         pass
 
-    def update_servings_multiplier (self, val):
-        serves = self.servingsDisplaySpin.get_value()
-        if float(serves) != self.serves_orig:
-            self.mult = float(serves)/self.serves_orig
+    def update_yields_multiplier (self, val):
+        yields = self.yieldsDisplaySpin.get_value()
+        if float(yields) != self.yields_orig:
+            self.mult = float(yields)/self.yields_orig
         else:
             self.mult = 1
         if self.mult != 1:
-            self.servingsMultiplyByLabel.set_text("x %s"%convert.float_to_frac(self.mult))
+            self.yieldsMultiplyByLabel.set_text("x %s"%convert.float_to_frac(self.mult))
         else:
-            self.servingsMultiplyByLabel.set_label('')
+            self.yieldsMultiplyByLabel.set_label('')
 
     def forget_remembered_optional_ingredients (self):
         pass
@@ -648,9 +662,9 @@ class IngredientDisplay:
                                                           mult=self.recipe_display.mult,
                                                           conv=(self.prefs.get('readableUnits',True) and self.rg.conv or None)
                                                           )
-                #if self.nutritional_highlighting and self.serves_orig:
+                #if self.nutritional_highlighting and self.yields_orig:
                 #    amt,unit = self.rg.rd.get_amount_and_unit(i,
-                #                                              mult = 1.0/self.serves_orig,
+                #                                              mult = 1.0/self.yields_orig,
                 #                                              conv=(self.prefs.get('readableUnits',True) and self.rg.conv or None)
                 #                                              )
                 if amt: ing_strs.append(amt)
@@ -1286,11 +1300,21 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             else: raise "REC_ATTRS widget type %s not recognized"%w
         for a in self.reccom:
             self.rw[a]=self.glade.get_widget("%sBox"%a)
-            self.edit_widgets.append(self.rw[a])            
+            try:
+                assert(self.rw[a])
+            except:
+                print 'No recipe editing widget for',a
+                raise
+            self.edit_widgets.append(self.rw[a])
             self.rw[a].db_prop = a
             #self.rw[a].get_children()[0].connect('changed',self.changed_cb)
         for a in self.recent:            
             self.rw[a]=self.glade.get_widget("%sBox"%a)
+            try:
+                assert(self.rw[a])
+            except:
+                print 'No recipe editing widget for',a
+                raise
             self.edit_widgets.append(self.rw[a])            
             self.rw[a].db_prop = a
             #self.rw[a].connect('changed',self.changed_cb)
@@ -1298,11 +1322,11 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
 
     def update_from_database (self):
         try:
-            self.serves = float(self.current_rec.servings)
+            self.yields = float(self.current_rec.yields)
         except:
-            self.serves = None
-            if hasattr(self.current_rec,'servings'):
-                debug(_("Couldn't make sense of %s as number of servings")%self.current_rec.servings,0)
+            self.yields = None
+            if hasattr(self.current_rec,'yields'):
+                debug(_("Couldn't make sense of %s as number of yields")%self.current_rec.yields,0)
         for c in self.reccom:
             debug("Widget for %s"%c,5)
             model = self.rg.get_attribute_model(c)
@@ -3194,7 +3218,7 @@ if __name__ == '__main__' and False:
 #                                     )
 #         self.nutritionLabel.connect('label-changed',self.nutrition_highlighting_label_changed)
 #         self.display_info = ['title','rating','preptime','link',
-#                              'servings','cooktime','source',
+#                              'yields','cooktime','source',
 #                              'cuisine','category','instructions',
 #                              'modifications','ingredients']
 #         for attr in self.display_info:
@@ -3209,9 +3233,9 @@ if __name__ == '__main__' and False:
 #         self.glade.get_widget('recipeDetailsWindow').set_redraw_on_allocate(True)
 #         self.glade.get_widget('nutritionWindow').set_redraw_on_allocate(True)
 #         self.glade.get_widget('recCard').connect('size-allocate',self.on_card_edit_size_allocate_cb)
-#         self.servingsDisplaySpin = self.glade.get_widget('servingsDisplaySpin')
-#         self.servingsDisplaySpin.connect('changed',self.servingsChangeCB)
-#         self.servingsMultiplyByLabel = self.glade.get_widget('multiplyByLabel')
+#         self.yieldsDisplaySpin = self.glade.get_widget('yieldsDisplaySpin')
+#         self.yieldsDisplaySpin.connect('changed',self.yieldsChangeCB)
+#         self.yieldsMultiplyByLabel = self.glade.get_widget('multiplyByLabel')
 #         self.multiplyDisplaySpin = self.glade.get_widget('multiplyByDisplaySpin')
 #         self.multiplyDisplaySpin.connect('changed',self.multChangeCB)
 #         self.multiplyDisplayLabel = self.glade.get_widget('multiplyByDisplayLabel')
@@ -3227,7 +3251,7 @@ if __name__ == '__main__' and False:
 #                          self.rg.conv
 #                          )
 #         self.special_display_functions = {
-#             'servings':self.update_servings_display,
+#             'yields':self.update_yields_display,
 #             'ingredients':self.updateIngredientsDisplay,
 #             'title':self.update_title_display,
 #             'link':self.update_link_display,
@@ -3240,7 +3264,7 @@ if __name__ == '__main__' and False:
 #             basename='rc_hide_')
 #         self.ImageBox = ImageBox(self)
 #         self.rg.sl.sh.init_orgdic()        
-#         #self.serveW = self.glade.get_widget('servingsBox')
+#         #self.yieldsW = self.glade.get_widget('yieldsBox')
 #         #self.multCheckB = self.glade.get_widget('rcMultCheck')
 #         self.multLabel = self.glade.get_widget('multLabel')
 #         self.linkDisplayButton = self.glade.get_widget('linkDisplayButton')
@@ -3423,7 +3447,7 @@ if __name__ == '__main__' and False:
 #             self.mult = 1
 #             self.multLabel.set_text("")
 #             if old_mult != self.mult:
-#                 self.serveW.set_value(float(self.serves_orig))
+#                 self.yieldsW.set_value(float(self.yields_orig))
         
 #     def modTogCB (self, w, *args):
 #         debug("modTogCB (self, w, *args):",5)
@@ -3516,7 +3540,7 @@ if __name__ == '__main__' and False:
 #         self.rg.sl.addRec(self.current_rec,self.mult,d)
 #         self.rg.sl.show()
 
-#     def servingsChangeCB (self, widg):
+#     def yieldsChangeCB (self, widg):
 #         val=widg.get_value()
 #         self.updateServingMultiplierLabel(val)
 #         self.updateIngredientsDisplay()
@@ -3601,8 +3625,8 @@ if __name__ == '__main__' and False:
 #         if not hasattr(rec,'id'):
 #             rec=self.rg.rd.get_rec(rec)
 #         self.current_rec = rec
-#         self.serves = self.serves_orig
-#         #self.servingsChange()
+#         self.yields = self.yields_orig
+#         #self.yieldsChange()
 #         self.resetIngredients()
 #         self.updateRecDisplay()
 #         for t in self.rectexts:
@@ -3624,7 +3648,7 @@ if __name__ == '__main__' and False:
 #                 raise
 #             b.set_text(txt)
 #             Undo.UndoableTextView(w,self.history)
-#         #self.servingsChange()
+#         #self.yieldsChange()
 #         self.ImageBox.get_image()
 #         self.ImageBox.edited=False
 #         self.setEdited(False)
@@ -3699,9 +3723,9 @@ if __name__ == '__main__' and False:
 #     def update_nutrition_info (self):
 #         """Update nutritional information for ingredient list."""
 #         debug('update nutritional information',0)
-#         if self.current_rec.servings:
-#             self.nutritionLabel.set_servings(
-#                 convert.frac_to_float(self.current_rec.servings)
+#         if self.current_rec.yields:
+#             self.nutritionLabel.set_yields(
+#                 convert.frac_to_float(self.current_rec.yields)
 #                 )
 #         #ings = self.list_all_ings(self.current_rec)
 #         nutritional_info_list = []
@@ -3722,28 +3746,28 @@ if __name__ == '__main__' and False:
 #         titl = "<b><big>" + xml.sax.saxutils.escape(titl) + "</big></b>"
 #         self.titleDisplay.set_label(titl)
 
-#     def update_servings_display (self, serves=None):
-#         self.serves_orig=self.current_rec.servings
+#     def update_yields_display (self, yields=None):
+#         self.yields_orig=self.current_rec.yields
 #         try:
-#             self.serves_orig = float(self.serves_orig)
+#             self.yields_orig = float(self.yields_orig)
 #         except:
-#             self.serves_orig = None
-#         if self.serves_orig:
-#             # in this case, display servings spinbutton and update multiplier label as necessary
-#             self.servingsDisplay.show()
-#             self.servingsDisplayLabel.show()
+#             self.yields_orig = None
+#         if self.yields_orig:
+#             # in this case, display yields spinbutton and update multiplier label as necessary
+#             self.yieldsDisplay.show()
+#             self.yieldsDisplayLabel.show()
 #             self.multiplyDisplaySpin.hide()
 #             self.multiplyDisplayLabel.hide()
-#             if serves:
-#                 self.mult = float(serves)/float(self.serves_orig)
+#             if yields:
+#                 self.mult = float(yields)/float(self.yields_orig)
 #             else:
 #                 self.mult = 1
-#                 serves=float(self.serves_orig)
-#             self.servingsDisplaySpin.set_value(serves)
+#                 yields=float(self.yields_orig)
+#             self.yieldsDisplaySpin.set_value(yields)
 #         else:
 #             #otherwise, display multiplier label and checkbutton
-#             self.servingsDisplay.hide()
-#             self.servingsDisplayLabel.hide()
+#             self.yieldsDisplay.hide()
+#             self.yieldsDisplayLabel.hide()
 #             self.multiplyDisplayLabel.show()
 #             self.multiplyDisplaySpin.show()
 
@@ -3762,15 +3786,15 @@ if __name__ == '__main__' and False:
 #     def link_cb (self, *args): launch_url(self.link)
 
 #     def updateServingMultiplierLabel (self,*args):
-#         serves = self.servingsDisplaySpin.get_value()
-#         if float(serves) != self.serves_orig:
-#             self.mult = float(serves)/self.serves_orig
+#         yields = self.yieldsDisplaySpin.get_value()
+#         if float(yields) != self.yields_orig:
+#             self.mult = float(yields)/self.yields_orig
 #         else:
 #             self.mult = 1
 #         if self.mult != 1:
-#             self.servingsMultiplyByLabel.set_text("x %s"%convert.float_to_frac(self.mult))
+#             self.yieldsMultiplyByLabel.set_text("x %s"%convert.float_to_frac(self.mult))
 #         else:
-#             self.servingsMultiplyByLabel.set_label("")
+#             self.yieldsMultiplyByLabel.set_label("")
     
 #     def forget_remembered_optional_ingredients (self, *args):
 #         if de.getBoolean(parent=self.edit_window,
