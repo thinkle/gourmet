@@ -37,6 +37,10 @@ fields={'cuisine': ['American','Italian','Mexican',
         'source' : [],
         'category' : ['Dessert','Entree','Salad','Soup',
                       'Breakfast'],
+        'yield_unit':['servings','cups','pints','gallons','ounces',
+                      'cookies','crusts',
+                      ],
+        
                   }
 
 # In English, there are a heck of a lot of synonyms. This is a list
@@ -817,3 +821,16 @@ NUMBERS = {
     50:['fifty'],
     60:['sixty'],
     }
+
+PLURALS = [
+    ('loaf','loaves'),
+    ('box','boxes'),
+    ]
+
+PLURALS += [(s,s+'s') for s in
+                       ['cup','crust','clove','serving','pound','gram',
+                        'ounce','tablespoon','teaspoon','gallon','can',
+                        'slice','pie','package','quart','pint',]
+                       ]
+
+        

@@ -2,6 +2,7 @@ import gtk
 import re
 import gourmet.convert as convert
 import unittest
+from gettext import gettext as _
 
 def parse_group (match, text, group_number, tag):
     start,end = match.span(group_number)
@@ -59,13 +60,18 @@ class RecipeParser:
                   'cuisine',                  
                   'rating',
                   'source',
-                  'ignore']
+                  'ignore',
+                  'yields',
+                  'yield_unit'
+                  ]
 
     ALIASES = [('cooking time','cooktime'),
                ('preparation time','preptime'),
                ('time','preptime'),
                ('author','source'),
-               ('by','source')]
+               ('by','source'),
+               ('yield','yields'),
+               ]
 
     IGNORE_ON_OWN = ['instructions','ingredients','directions']
 
@@ -112,6 +118,17 @@ class RecipeParser:
             'instructions',
             re.compile('.*'),
             None])
+        def parse_yield (match_obj, full_text, attr):
+            colon,amt,unit = match_obj.groups()
+            return [(amt.strip(),'yields'),(unit.strip(),'yield_unit')]
+        self.rules = [[
+                'yield',
+                re.compile('%(yield)s(:|s|\s-)\s-*%(num)s\s-*(.*)'%{
+                    'yield':_('yield'),
+                    'num':convert.NUMBER_REGEXP
+                    },re.IGNORECASE),
+                parse_yield
+                ]] + self.rules                    
 
     def break_into_paras (self):
         self.long_lines = False
@@ -221,7 +238,7 @@ This is a test recipe. I hope it is really good.
 This recipe serves 8
 Category: dessert, quick, snack
 Cuisine: Classic American!
-        
+Yield: 2 cups        
 
    1 tbs. milk
    3 tbs. unsweetened bakers chocolate
@@ -241,7 +258,6 @@ Cuisine: Classic American!
 
     def testParser (self):
         parsed = self.rp.parse(self.recipe)
-        for chunk,tag in parsed: print chunk,
 
 if __name__ == '__main__':
     unittest.main()

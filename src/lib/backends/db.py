@@ -279,7 +279,15 @@ class RecData (Pluggable):
                                   Column('source',Text(),**{}),
                                   Column('preptime',Integer(),**{}),
                                   Column('cooktime',Integer(),**{}),
-                                  Column('servings',Float(),**{}),
+                                  # Note: we're leaving servings
+                                  # around as a legacy column... it is
+                                  # replaced by yields/yield_unit, but
+                                  # update is much easier if it's
+                                  # here, and it doesn't do much harm
+                                  # to have it around.
+                                  Column('servings',Float(),**{}), 
+                                  Column('yields',Float(),**{}),                                  
+                                  Column('yield_unit',String(length=32),**{}),
                                   Column('image',Binary(),**{}),
                                   Column('thumb',Binary(),**{}),
                                   Column('deleted',Boolean(),**{}),
@@ -420,10 +428,12 @@ class RecData (Pluggable):
         If necessary, we'll do some version-dependent updates to the GUI
         """
         stored_info = self.fetch_one(self.info_table)
+        print 'version info stored: ',stored_info
         version = [s for s in version_string.split('.')]
         current_super = int(version[0])
         current_major = int(version[1])
         current_minor = int(version[2])
+        print 'current info',version
         if not stored_info or not stored_info.version_major:
             # Default info -- the last version before we added the
             # version tracker...
@@ -446,7 +456,7 @@ class RecData (Pluggable):
                     stored_info,
                     default_info)
             stored_info = self.fetch_one(self.info_table)            
-        
+    
         ### Code for updates between versions...
         if not self.new_db:  
             # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up keylookup_table tables...
@@ -463,6 +473,20 @@ class RecData (Pluggable):
                 for ingredient in self.fetch_all(self.ingredients_table,deleted=False):
                     self.add_ing_to_keydic(ingredient.item,ingredient.ingkey)
 
+            # Change from servings to yields! ( we use the plural to avoid a headache with keywords)
+            if (stored_info.version_super == 0 and stored_info.version_major <= 14 and stored_info.version_minor <= 7):
+                # Don't change the table defs here without changing them
+                # above as well (for new users) - sorry for the stupid
+                # repetition of code.
+                self.add_column_to_table(self.recipe_table,('yields',Float(),{}))
+                self.add_column_to_table(self.recipe_table,('yield_unit',String(length=32),{}))
+                #self.db.execute('''UPDATE recipes SET yield = servings, yield_unit = "servings" WHERE EXISTS servings''')
+                self.recipe_table.update(whereclause=self.recipe_table.c.servings
+                                       ).values({
+                        self.recipe_table.c.yield_unit:'servings',
+                        self.recipe_table.c.yields:self.recipe_table.c.servings
+                        }
+                                                ).execute()
             if stored_info.version_super == 0 and stored_info.version_major < 14:
                 self.backup_db()
                 # Name changes to make working with IDs make more sense
@@ -762,6 +786,8 @@ class RecData (Pluggable):
 
     def get_unique_values (self, colname,table=None,**criteria):
         """Get list of unique values for column in table."""
+        print 'Calling get_unique_values...',colname,table,criteria
+        import traceback; print traceback.print_stack()
         if not table: table=self.recipe_table
         if criteria: table = table.select(*make_simple_select_arg(criteria,table))
         if colname=='category' and table==self.recipe_table:
@@ -839,10 +865,13 @@ class RecData (Pluggable):
         column, following the format for new tables.
         """
         name = table.name; new_col = column_spec[0]; coltyp = column_spec[1]
+        if hasattr(coltyp ,'dialect_impl'):
+            coltyp = coltyp.dialect_impl(self.db.dialect).get_col_spec()
         sql = 'ALTER TABLE %(name)s ADD %(new_col)s %(coltyp)s;'%locals()
         try:
             self.db.execute(sql)
         except:
+            print 'FAILED TO EXECUTE',sql
             print 'Ignoring error in add_column_to_table'
             import traceback; traceback.print_exc()
 

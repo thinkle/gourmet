@@ -77,7 +77,7 @@ class ModalDialog (gtk.Dialog):
         self.sublabel.set_alignment(0,0)
         self.sublabel.set_justify(gtk.JUSTIFY_LEFT)
         self.sublabel.set_use_markup(True)
-        self.sublabel.set_line_wrap(gtk.WRAP_WORD)
+        self.sublabel.set_line_wrap_mode(pango.WRAP_WORD)
         self.sublabel.show()
 
     def setup_buttons (self, cancel, okay):
@@ -114,7 +114,7 @@ class ModalDialog (gtk.Dialog):
         if type(item)==type(""):
             l=gtk.Label(item)
             l.set_selectable(True)
-            l.set_line_wrap(gtk.WRAP_WORD)
+            l.set_line_wrap_mode(pango.WRAP_WORD)
             self.expander_vbox.pack_start(l,
                                           expand=False,
                                           fill=False)
@@ -191,7 +191,7 @@ class NumberDialog (ModalDialog):
         if label:
             self.label=gtk.Label(label)
             self.label.set_selectable(True)
-            self.label.set_line_wrap(gtk.WRAP_WORD)
+            self.label.set_line_wrap_mode(pango.WRAP_WORD)
             self.label.set_padding(H_PADDING, Y_PADDING)
             self.hbox.add(self.label)
             self.label.show()
@@ -226,7 +226,7 @@ class EntryDialog (ModalDialog):
         self.vbox.add(self.hbox)
         if entryLabel:
             self.elabel=gtk.Label(entryLabel)
-            self.elabel.set_line_wrap(gtk.WRAP_WORD)
+            self.elabel.set_line_wrap_mode(pango.WRAP_WORD)
             self.elabel.set_selectable(True)
             self.elabel.set_alignment(0,0)
             self.hbox.add(self.elabel)
@@ -364,7 +364,7 @@ class ProgressDialog (ModalDialog):
         self.vbox.add(self.detail_label)
         self.detail_label.set_use_markup(True)
         self.detail_label.set_padding(H_PADDING,Y_PADDING)
-        self.detail_label.set_line_wrap(gtk.WRAP_WORD)
+        self.detail_label.set_line_wrap_mode(pango.WRAP_WORD)
         self.vbox.show_all()
         if okay: self.set_response_sensitive(gtk.RESPONSE_OK,False) # we're false by default!
         if not stop: self.stop.hide()

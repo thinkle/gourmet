@@ -3,7 +3,7 @@
 This module contains code for handling the 'merging' of duplicate
 recipes.
 """
-import gtk, os.path, time
+import gtk, os.path, time,pango
 import recipeIdentifier
 from gtk_extras import ratingWidget, mnemonic_manager
 import convert
@@ -409,7 +409,7 @@ class DiffTable (gtk.Table):
                         l = gtk.Label(txt)
                         l.set_alignment(0.0,0.0)                    
                         l.set_use_markup(True)
-                        l.set_line_wrap(True); l.set_line_wrap_mode(gtk.WRAP_WORD)
+                        l.set_line_wrap(True); l.set_line_wrap_mode(pango.WRAP_WORD)
                         l.show()
                         self.setup_widget_size(l,in_col=True)
                         self.attach(l,col+1,col+2,self.row+1+n,self.row+2+n,
@@ -425,7 +425,7 @@ class DiffTable (gtk.Table):
             l = gtk.Label(blocks[0])
             l.set_alignment(0.0,0.0)
             l.set_use_markup(True)
-            l.set_line_wrap(True); l.set_line_wrap_mode(gtk.WRAP_WORD)
+            l.set_line_wrap(True); l.set_line_wrap_mode(pango.WRAP_WORD)
             l.show()
             self.attach(l,1,5,self.row,self.row+1,xoptions=gtk.SHRINK|gtk.FILL,yoptions=gtk.SHRINK|gtk.FILL)
         lab.set_alignment(0.0,0.0); lab.show()

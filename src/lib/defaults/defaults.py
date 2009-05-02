@@ -89,3 +89,19 @@ for group,v in lang.UNIT_GROUPS.items():
     for u,rng in v:
         lang.unit_group_lookup[u] = group,n
         n += 1
+
+WORD_TO_SING_PLUR_PAIR = {}
+if hasattr(lang,'PLURALS'):
+    for forms in lang.PLURALS:
+        for f in forms:
+            WORD_TO_SING_PLUR_PAIR[f] = forms
+
+def get_pluralized_form (word, n):
+    from gettext import ngettext
+    if WORD_TO_SING_PLUR_PAIR.has_key(word):
+        forms = list(WORD_TO_SING_PLUR_PAIR[word])
+        forms += [n]
+        return ngettext(*forms)
+    else:
+        return word
+    

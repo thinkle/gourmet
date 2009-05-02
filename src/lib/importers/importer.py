@@ -6,6 +6,7 @@ import gourmet.gglobals
 from gourmet.recipeManager import get_recipe_manager # for getting out database...
 import xml.sax.saxutils
 from gettext import gettext as _
+import gettext
 import gourmet.gtk_extras.dialog_extras as de
 import re
 from gourmet.threadManager import SuspendableThread, Terminated
@@ -173,9 +174,13 @@ class Importer (SuspendableThread):
         # if servings can't be recognized as a number, add them to the
         # instructions.
         if self.rec.has_key('servings'):
-            servs=self.convert_servings(self.rec['servings'])
+            servs=self.convert_str_to_num(self.rec['servings'])
             if servs != None:
-                self.rec['servings']=str(servs)
+                self.rec['servings'] = str(servs)
+                self.rec['yields'] = servs
+                self.rec['yield_unit'] = gettext.ngettext('serving',
+                                                          'servings',
+                                                          servs)
             else:
                 self._move_to_instructions(self.rec,'servings')
         # Check preptime and cooktime
@@ -257,9 +262,9 @@ class Importer (SuspendableThread):
                 _("Imported %s of %s recipes.")%(self.count,self.total)
                 )
                       
-    def convert_servings (self, str):
+    def convert_str_to_num (self, str):
         """Return a numerical servings value"""
-        timeaction = TimeAction('importer.convert_servings',10)
+        timeaction = TimeAction('importer.convert_str_to_num',10)
         debug('converting servings for %s'%str,5)
         try:
             return float(str)

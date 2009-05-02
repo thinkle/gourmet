@@ -254,7 +254,8 @@ REC_ATTRS = [('title',_('Title'),'Entry'),
              ('rating',_('Rating'),'Entry'),
              ('source',_('Source'),'Combo'),
              ('link',_('Website'),'Entry'),
-             ('servings',_('Servings'),'Entry'),
+             ('yields',_('Yield'),'Entry'),
+             ('yield_unit',_('Yield Unit:'),'Combo'),             
              ('preptime',_('Preparation Time'),'Entry'),
              ('cooktime',_('Cooking Time'),'Entry'),
              ]
@@ -271,7 +272,8 @@ NAME_TO_ATTR = {_('Instructions'):'instructions',
                 }
 
 DEFAULT_ATTR_ORDER = ['title',
-                      'servings',
+                      #'servings',
+                      'yields',
                       'cooktime',
                       'preptime',
                       'category',
@@ -292,7 +294,7 @@ def build_rec_attr_dic ():
 build_rec_attr_dic()
 
 DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
-                          ['link','servings','preptime','cooktime']
+                          ['link','yields','yield_unit','preptime','cooktime']
                           ]
 
 try:

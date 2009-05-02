@@ -22,6 +22,7 @@ import locale, gettext
 from timer import show_timer
 _ = gettext.gettext
 from defaults.defaults import lang as defaults
+from defaults.defaults import get_pluralized_form
 import plugin_loader, plugin, plugin_gui
 from threadManager import get_thread_manager, get_thread_manager_gui, SuspendableThread
 from zipfile import BadZipfile
@@ -775,12 +776,16 @@ class StuffThatShouldBePlugins:
         rr=self.get_selected_recs_from_rec_tree()
         #r = self.recTreeSelectedRec()
         for r in rr:
-            if r.servings and r.servings != "None":
-                debug("servings=%s"%r.servings,5)
-                serv = de.getNumber(default=float(r.servings),
-                                    label=_("Number of servings of %s to shop for")%r.title,
-                                    parent=self.app.get_toplevel())
-                if serv: mult = float(serv)/float(r.servings)
+            if r.yields and r.yields != "None":
+                debug("yields=%s"%r.yields,5)
+                serv = de.getNumber(default=float(r.yields),
+                                    label=_("Number of %(unit)s of %(title)s to shop for")%{
+                        'title':r.title,
+                        'unit':get_pluralized_form(r.yield_unit,2),
+                        },
+                                    parent=self.app.get_toplevel()
+                                    )
+                if serv: mult = float(serv)/float(r.yields)
                 else:
                     debug('getNumber cancelled',2)
                     return
