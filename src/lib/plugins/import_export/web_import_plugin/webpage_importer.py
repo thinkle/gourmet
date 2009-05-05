@@ -32,7 +32,7 @@ class WebParser (InteractiveImporter):
     def __init__ (self, url, data, content_type):
         self.ignore_unparsed = False
         self.url = url
-        self.name = 'Web Parser'
+        #self.name = 'Web Parser'
         self.soup = BeautifulSoup.BeautifulSoup(data,
                                                 convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
                                                 )

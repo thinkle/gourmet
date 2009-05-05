@@ -67,7 +67,7 @@ def get_recipe_hash (recipe_object):
     recstring = recstring.strip()
     recstring = recstring.lower()
     #print 'hash',recstring
-    m = md5.md5(recstring)
+    m = hashlib.md5(recstring)
     return m.hexdigest()
 
 def hash_recipe (rec, rd, conv=None):

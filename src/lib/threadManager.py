@@ -73,11 +73,11 @@ class SuspendableThread (threading.Thread, _IdleObject):
 
     def __init__(self, name=None):
         self.initialized = False
-        self.name = name
+        #self.name = name
         self.suspended = False
         self.terminated = False
         _IdleObject.__init__(self)
-        threading.Thread.__init__(self, name=self.name)
+        threading.Thread.__init__(self, name=name)
 
     def initialize_thread (self):
         self.initialized = True

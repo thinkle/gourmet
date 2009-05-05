@@ -22,6 +22,9 @@ DEFAULT_TAG_LABELS = gglobals.REC_ATTR_DIC.copy()
 for attr in gglobals.DEFAULT_ATTR_ORDER:
     if attr != 'link':
         DEFAULT_TAGS.append(attr)
+        if attr == 'yields':
+            # a bit of a hack -- we want to make 'yield unit' a button
+            DEFAULT_TAGS.append('yield_unit')
 DEFAULT_TAGS.extend(['instructions','ingredients','inggroup','ignore'])
 for tag,label in [('instructions',_('Instructions')),
                   ('ingredients',_('Ingredients')),
@@ -356,7 +359,6 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             text = siter.get_text(eiter)
             name = smark.get_name()
             label = name.split('-')[0]
-            print 'Processing',label,'->',text
             tag = self.tags_by_label[label]
             if tag in gglobals.TEXT_ATTR_DIC:
                 self.add_text(tag,text); started=True
@@ -380,7 +382,6 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             else:
                 print 'UNKNOWN TAG',tag,text,label
         if started: self.commit_rec()
-        print "We've added the recipes...",self.added_recs
         if hasattr(self,'images') and self.images:
             # This is ugly -- we run the dialog once per recipe. This
             # should happen rarely in current use-case (I don't know
