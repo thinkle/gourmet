@@ -1,3 +1,14 @@
+2009-05-05  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/threadManager.py (SuspendableThread.__init__): Don't set name attribute on Thread (pass it to Thread.__init__() call (setting name throws an error in python 2.6)
+
+	* src/lib/plugins/import_export/web_import_plugin/webpage_importer.py (WebParser.__init__):
+	No longer set name attribute (this breaks the python 2.6
+	implementation of Thread)
+
+	* src/lib/importers/interactive_importer.py: Add yield_unit to
+	buttons.
+
 2009-05-01  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/recipeIdentifier.py (get_ingredient_hash): md5 ->

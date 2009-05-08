@@ -211,6 +211,10 @@ class exporter (SuspendableThread, Pluggable):
                     ret = "%s/5 %s"%(ret/2.0,_('stars'))
             elif attr=='servings' and type(ret)!=str:
                 ret = convert.float_to_frac(ret,fractions=self.fractions)
+            elif attr=='yields':
+                ret = convert.float_to_frac(ret,fractions=self.fractions)
+                if self._grab_attr_(obj,'yield_unit'):
+                    ret = '%s %s'%(yields,yields_unit) # FIXME: i18n? (fix also below in exporter_mult)
             if type(ret) in [str,unicode] and attr not in ['thumb','image']:
                 try:
                     ret = ret.encode(self.DEFAULT_ENCODING)
@@ -419,7 +423,7 @@ class exporter_mult (exporter):
         Possibly manipulate the attribute we get to hand out export
         something readable.
         """        
-        if attr=='servings' and self.mult:
+        if attr=='servings' or attr=='yields' and self.mult:
             ret = getattr(obj,attr)
             if type(ret) in [int,float]:
                 fl_ret = float(ret)
@@ -428,8 +432,13 @@ class exporter_mult (exporter):
                     print 'WARNING: IGNORING serving value ',ret
                 fl_ret = None
             if fl_ret:
-                return convert.float_to_frac(fl_ret * self.mult,
-                                             fractions=self.fractions)
+                ret = convert.float_to_frac(fl_ret * self.mult,
+                                            fractions=self.fractions)
+                if attr=='yields' :
+                    yield_unit = self._grab_attr_(obj,'yield_unit')
+                    if yield_unit:
+                        ret = '%s %s'%(ret,yield_unit) # FIXME: i18n?
+                return ret
         else:
             return exporter._grab_attr_(self,obj,attr)
 

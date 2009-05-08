@@ -300,6 +300,7 @@ class RecData (Pluggable):
                                   Column('link',Text(),**{}), # A field for a URL -- we ought to know about URLs
                                   Column('last_modified',Integer(),**{}),
                                   ) # RECIPE_TABLE_DESC
+
         class Recipe (object): pass
         self._setup_object_for_table(self.recipe_table,Recipe)
 
