@@ -1231,9 +1231,7 @@ class RecData (Pluggable):
 
     def do_add (self, table, dic):
         insert_statement = table.insert()
-        for k in dic:
-            if type(dic[k])==str:
-                dic[k]=unicode(dic[k])
+        self._force_unicode(dic)
         try:
             result_proxy = insert_statement.execute(**dic)
         except ValueError:
@@ -1277,7 +1275,14 @@ class RecData (Pluggable):
     def validate_ingdic (self,dic):
         """Do any necessary validation and modification of ingredient dictionaries."""
         if not dic.has_key('deleted'): dic['deleted']=False
+        self._force_unicode(dic)
 
+    def _force_unicode (self, dic):
+       for k,v in dic.items():
+            if type(v)==str:
+                # force unicode...
+                dic[k]=unicode(v) 
+                
     def do_modify_rec (self, rec, dic):
         """This is what other DBs should subclass."""
         return self.do_modify(self.recipe_table,rec,dic)

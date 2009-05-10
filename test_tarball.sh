@@ -20,4 +20,4 @@ echo 'Testing gourmet'
 echo "Don't forget to run through the standard tests before releasing!"
 echo
 cat TESTS
-gourmet -v --gourmet-directory=/tmp/foobaz
+gourmet --gourmet-directory=/tmp/foobaz

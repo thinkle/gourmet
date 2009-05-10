@@ -52,7 +52,6 @@ class Converter (importer.Importer):
         self.terminate = self.rh.terminate
         self.suspend = self.rh.suspend
         self.resume = self.rh.resume
-        self.name = name
         importer.Importer.__init__(self,name=name)
 
     def do_run (self):

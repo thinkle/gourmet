@@ -1,3 +1,17 @@
+2009-05-10  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/importers/xml_importer.py (Converter.__init__): Get rid
+	of self.name assignment (Thread throws an error otherwise)
+
+	* src/lib/backends/db.py (RecData._force_unicode): Force unicode
+	for modify methods as well (fixes traceback on import with
+	non-unicode text that was getting fed straight to sqlite.
+
+2009-05-07  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/exporters/exporter.py (exporter_mult._grab_attr_): Add yields/yield_unit
+	(exporter.__init__._grab_attr_): Add support for yields/yield_unit
+
 2009-05-05  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/threadManager.py (SuspendableThread.__init__): Don't set name attribute on Thread (pass it to Thread.__init__() call (setting name throws an error in python 2.6)
