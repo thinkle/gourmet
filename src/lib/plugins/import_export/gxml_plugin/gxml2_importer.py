@@ -2,6 +2,7 @@ import xml.sax, re, sys, xml.sax.saxutils
 from gourmet.importers import xml_importer
 from gourmet.gdebug import *
 from gourmet.gglobals import *
+from gourmet.convert import NUMBER_FINDER
 import base64
 
 class RecHandler (xml_importer.RecHandler):
@@ -51,6 +52,18 @@ class RecHandler (xml_importer.RecHandler):
             self.commit_ing()
         elif name=='image':
             self.rec['image']=base64.b64decode(self.elbuf.strip())
+        elif name=='yields':
+            txt = xml.sax.saxutils.unescape(self.elbuf.strip())
+            match = NUMBER_FINDER.search(txt)
+            if match:
+                number = txt[match.start():match.end()]
+                unit = txt[match.end():].strip()
+                self.rec['yields'] = number
+                self.rec['yield_unit'] = unit
+            else:
+                self.rec['yields'] = 1
+                self.rec['yield_unit'] = unit
+                print 'Warning, recorded',txt,'as 1 ',unit
         elif name in self.REC_ATTRS:
             self.rec[str(name)]=xml.sax.saxutils.unescape(self.elbuf.strip())
         elif name in self.ING_ATTRS.keys():

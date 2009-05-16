@@ -104,10 +104,26 @@ def test_search (db):
     
 def test_unicode (db):
     rec = db.add_rec({'title':u'Comida de \xc1guila',
-                'source':u'C\xc6SAR',})
+                      'source':u'C\xc6SAR',
+                      'category':u'C\xc6sar',
+                      })
     assert(rec.title == u'Comida de \xc1guila')
     assert(rec.source == u'C\xc6SAR')
+    rec = db.modify_rec(rec,{'title':u'\xc1 Comida de \xc1guila'})
+    assert(rec.title==u'\xc1 Comida de \xc1guila')
+    ing = db.add_ing_and_update_keydic({
+            'recipe_id':rec.id,
+            'amount':1.0,
+            'unit':u'\xc1guila',
+            'item':u'\xc1guila',
+            'ingkey':u'\xc1guila'
+            })
+    for attr in 'unit','item','ingkey':
+        assert(getattr(ing,attr)==u'\xc1guila')
+    
 
+                                  
+    
 def test_id_reservation (db):
     rid = db.new_id()
     rid2 = db.new_id()
@@ -147,7 +163,6 @@ def test_db (db):
              test_unicode,
              test_id_reservation,
              test_update,
-             test_nut,
              ]
     success = 0
     for t in tests:
@@ -161,3 +176,11 @@ def test_db (db):
             import traceback; traceback.print_exc()
     print 'Completed ',len(tests),'tests'
     print 'Passed',"%s/%s"%(success,len(tests)),'tests'
+
+def main ():
+    print 'Importing db and tempfile...'
+    import db, tempfile
+    print 'Imported...'
+    db = db.RecData(file=tempfile.mktemp())
+    test_db(db)
+    

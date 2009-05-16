@@ -8,7 +8,7 @@ class XmlExporter (exporter_mult):
     #doc_element = 'rec'
     #doctype_desc = ''
     #dtd_path = ''
-
+    
     def __init__ (self, rd, r, out,
                   order=['attr','image','ings','text'],
                   xmlDoc=None,

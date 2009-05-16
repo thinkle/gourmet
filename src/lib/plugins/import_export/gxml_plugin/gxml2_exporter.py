@@ -102,6 +102,7 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
     doc_element = 'gourmetDoc'
     doctype_desc = ''
     dtd_path = ''
+    
     def __init__ (self, rd, recipe_table, out, one_file=True, change_units=False,
                   mult=1):
         self.create_xmldoc()
@@ -117,7 +118,7 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
                                            'source','link',
                                            'rating',
                                            'preptime','cooktime',
-                                           'servings',
+                                           'yields',
                                            ),
                              'order':['attr','image','ings','text'],
                              }

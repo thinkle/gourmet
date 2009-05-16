@@ -1,3 +1,15 @@
+2009-05-15  Thomas Hinkle  <tom@grenville>
+
+	*
+	src/lib/plugins/import_export/gxml_plugin/gxml2_importer.py (RecHandler.endElement):
+	Add code for parsing yields field into yields and yields_unit.
+
+	* src/lib/plugins/import_export/gxml_plugin/gxml2_exporter.py (recipe_table_to_xml.__init__):
+	Change servings to yields.
+
+	* src/lib/backends/db_tests.py (test_unicode): Extend tests of
+	unicode support.
+
 2009-05-10  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/importers/xml_importer.py (Converter.__init__): Get rid
