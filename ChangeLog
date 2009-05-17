@@ -1,6 +1,38 @@
+2009-05-17  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/importers/importer_tests.py: Add new test suites for
+	base import class (including test against regression of today's
+	new bugfix)
+
+	* src/test_gourmet.py: Add new tests suites.
+
+	* src/lib/importers/interactive_importer_tests.py: basic test
+	suite for interactive importer (created to track down bug with
+	"disappearing" ingredient units).
+
+	* src/lib/importers/importer.py (RatingConverter.get_conversions):
+	Fix converter (bad import call)
+
+	* src/lib/backends/db.py (RecData.validate_ingdic): Make sure
+	ingdic includes keys for all columns. This avoids a very nasty bug
+	when executing an insert statement with more than one
+	row (basically, we'd drop random columns if the rows didn't all
+	have the same columns).
+
+2009-05-16  Thomas Hinkle  <tom@grenville>
+
+	* src/test_gourmet.py: Add unit testing script (currently tests DB
+	and convert backends.)
+
+	* src/lib/backends/db_tests.py: Convert db tests to use unittest
+	module.
+
+	* src/lib/convert_tests.py: Add testing file for our convert module.
+
 2009-05-15  Thomas Hinkle  <tom@grenville>
 
-	*
+	* src/tests/recipe_files/athenos.mx2: Add test mastercook file for importing.
+
 	src/lib/plugins/import_export/gxml_plugin/gxml2_importer.py (RecHandler.endElement):
 	Add code for parsing yields field into yields and yields_unit.
 

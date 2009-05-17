@@ -72,16 +72,19 @@ class ConvenientImporter (importer.Importer):
             # abbreviations through)
             if unit and not self.conv.unit_dict.has_key(unit.strip()) and len(unit.strip())>2:
                 item = unit + ' ' + item
-                unit = ''                
+                unit = ''
         else:
             print 'Unable to parse ingredient from text "%s"'%txt
             print 'Setting amount and unit to None'
             amount = None; unit = None;
             item = txt
         self.start_ing()
-        if amount: self.add_amt(amount)
-        if unit: self.add_unit(unit)
-        if item: self.add_item(item)
+        if amount:
+            self.add_amt(amount)
+        if unit:
+            self.add_unit(unit)
+        if item:
+            self.add_item(item)
         self.commit_ing()
 
     def add_ings_from_text (self, txt, break_at='\n'):
@@ -89,7 +92,8 @@ class ConvenientImporter (importer.Importer):
 
         By default, there is one ingredient per line of text."""
         txt=txt.strip()
-        for i in txt.split(break_at): self.add_ing_from_text(i)
+        for i in txt.split(break_at):
+            self.add_ing_from_text(i)
 
 class InteractiveImporter (ConvenientImporter, NotThreadSafe):
 

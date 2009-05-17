@@ -100,8 +100,8 @@ def make_order_by (sort_by, table, count_by=None, join_tables=[]):
                     raise ValueError("No such column for tables %s %s: %s"%(table, join_tables, col))
         if isinstance(col.type, Text):
             # Sort nulls last rather than first using case statement...
-            col = case([(col == None, 'z'*20),
-                        (col == '', 'z'*20),
+            col = case([(col == None, '"%s"'%'z'*20),
+                        (col == '', '"%s"'%'z'*20),
                         ],else_=func.lower(col))
         if direction==1: # Ascending
             ret.append(sqlalchemy.asc(col))
@@ -1186,7 +1186,12 @@ class RecData (Pluggable):
         """Add multiple ingredient dictionaries at a time."""
         for d in dics: self.validate_ingdic(d)
         try:
-            self.ingredients_table.insert().execute(*dics)
+            # Warning: this method relies on all the dictionaries
+            # looking identical. validate_ingdic should be taking care
+            # of this for us now, but if parameters change in the
+            # future, this rather subtle bug could well rear its ugly
+            # head again.
+            rp = self.ingredients_table.insert().execute(*dics)
         except ValueError:
             for d in dics: self.coerce_types(self.ingredients_table,d)
             self.ingredients_table.insert().execute(*dics)
@@ -1275,6 +1280,9 @@ class RecData (Pluggable):
     def validate_ingdic (self,dic):
         """Do any necessary validation and modification of ingredient dictionaries."""
         if not dic.has_key('deleted'): dic['deleted']=False
+        for k in ['refid','unit','amount','rangeamount','item','ingkey','optional','shopoptional','inggroup','position']:
+           if k not in dic:
+               dic[k] = None
         self._force_unicode(dic)
 
     def _force_unicode (self, dic):
