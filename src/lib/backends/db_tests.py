@@ -1,3 +1,5 @@
+
+
 def test_rec_basics (db):
     rec = db.add_rec({'title':'Fooboo'})
     assert(rec.title=='Fooboo')
