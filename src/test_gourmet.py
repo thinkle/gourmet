@@ -31,11 +31,19 @@ import gourmet.backends.db_tests
 print 'We imported... let\'s call main'
 import unittest
 testsuite = unittest.TestSuite()
-testsuite.addTest(gourmet.backends.db_tests.suite)
+import gourmet.importers.interactive_importer_tests
+import gourmet.importers.importer_tests
 import gourmet.convert_tests
-testsuite.addTest(
-    unittest.defaultTestLoader.loadTestsFromModule(gourmet.convert_tests)
-    )
+for module in [gourmet.importers.interactive_importer_tests,
+               gourmet.importers.importer_tests,
+               gourmet.convert_tests
+               ]:
+    testsuite.addTest(
+        unittest.defaultTestLoader.loadTestsFromModule(
+            module
+            )
+        )
+testsuite.addTest(gourmet.backends.db_tests.suite)
 tr = unittest.TestResult()
 testsuite.run(tr)
 if tr.wasSuccessful():

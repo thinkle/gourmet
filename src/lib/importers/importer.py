@@ -292,7 +292,7 @@ class Importer (SuspendableThread):
         #    self.ing['recipe_id']=self.rec['id']
         #debug('ing ID %s, recipe ID %s'%(self.ing['recipe_id'],self.rec['id']),0)
         timeaction.end()
-                 
+
     def finish_ing (self):
         timeaction = TimeAction('importer.finish_ing 1',10)
         # Strip whitespace...
@@ -483,7 +483,7 @@ class RatingConverter:
         """
         self.got_conversions=True
         if not star_generator:
-            from gourmet.ratingWidget import star_generator
+            from gourmet.gtk_extras.ratingWidget import star_generator
         ratings = []
         need_conversions = False
         for v in self.to_convert.values():

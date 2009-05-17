@@ -42,7 +42,6 @@ class ConvertTest (unittest.TestCase):
             ('a half',0.5),
             ('three quarters',0.75),
             ]:
-            print 'testing recognition of ',s
             self.assertEqual(convert.frac_to_float(s),n)
         
     def test_ingmatcher (self):

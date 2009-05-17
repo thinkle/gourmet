@@ -4,9 +4,7 @@ import db
 class DBTest (unittest.TestCase):
     def setUp (self):
         tmpfile = tempfile.mktemp()
-        print 'getting db...',tmpfile
         self.db = db.get_database(file=tmpfile)
-        print 'got db...'
 
 class testRecBasics (DBTest):
     def runTest (self):
@@ -45,6 +43,14 @@ class testIngBasics (DBTest):
         self.db.delete_ing(ing)
         self.db.delete_ing(ing2)
         self.assertEqual(self.db.fetch_len(self.db.ingredients_table),0)
+        self.db.add_ings([
+                {'rangeamount': None, 'item': 'water', 'recipe_id': rid, 'position': 1, 'ingkey': u'water'},                
+                {'rangeamount': None, 'item': 'linguine', 'amount': 0.5, 'recipe_id': rid, 'position': 1, 'ingkey': u'linguine', 'unit': 'pound'}
+             ]
+                         )
+        ings = self.db.get_ings(rid)
+        self.assertEqual(ings[1].unit,'pound')
+        self.assertEqual(ings[1].amount,0.5)        
 
     def testUnique (self):
         self.db.delete_by_criteria(self.db.ingredients_table,{}) # Clear out ingredients
