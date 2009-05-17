@@ -1,6 +1,17 @@
+2009-05-16  Thomas Hinkle  <tom@grenville>
+
+	* src/test_gourmet.py: Add unit testing script (currently tests DB
+	and convert backends.)
+
+	* src/lib/backends/db_tests.py: Convert db tests to use unittest
+	module.
+
+	* src/lib/convert_tests.py: Add testing file for our convert module.
+
 2009-05-15  Thomas Hinkle  <tom@grenville>
 
-	*
+	* src/tests/recipe_files/athenos.mx2: Add test mastercook file for importing.
+
 	src/lib/plugins/import_export/gxml_plugin/gxml2_importer.py (RecHandler.endElement):
 	Add code for parsing yields field into yields and yields_unit.
 
