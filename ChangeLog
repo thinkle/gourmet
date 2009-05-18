@@ -1,5 +1,22 @@
 2009-05-17  Thomas Hinkle  <tom@grenville>
 
+	* src/lib/plugins/nutritional_information/nutrition.py (NutritionData.get_nutinfo_for_ing):
+	Catch very unusual corner case where i.rangeamount and i.amount
+	don't add cleanly (this means something's wrong with the inputs --
+	but the least we can do is display a nicer error message).
+
+	* src/lib/backends/db_tests.py (TestMoreDataStuff.test_modify_rec):
+	Add test to make sure modify_rec is working.
+	(TestMoreDataStuff.test_modify_ing): Add test to make sure
+	modify_ing is working (this would have caught the regression in my
+	last commit).
+
+	* src/lib/backends/db.py (RecData.add_ings): Move fix previously
+	put in validate_ingdic here (putting it in validate_ingdic has bad
+	side effects -- oops)
+	(validate_ingdic): Remove code put here earlier today (it caused
+	modify_ing, etc. to delete data)
+
 	* src/lib/importers/importer_tests.py: Add new test suites for
 	base import class (including test against regression of today's
 	new bugfix)

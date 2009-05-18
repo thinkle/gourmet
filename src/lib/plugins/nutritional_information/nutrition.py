@@ -104,7 +104,11 @@ class NutritionData:
             return self.get_nutinfo_for_inglist(rd.get_ings(subrec),rd,ingObject=ing)
         if hasattr(ing,'rangeamount') and ing.rangeamount:
             # just average our amounts
-            amount = (ing.rangeamount + ing.amount)/2
+            try:
+                amount = (ing.rangeamount + ing.amount)/2
+            except TypeError:
+                print 'Failed trying to add',ing.rangeamount,ing.amount
+                raise
         else:
             amount = ing.amount
         if not amount: amount=1

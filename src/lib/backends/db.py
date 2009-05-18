@@ -1184,7 +1184,11 @@ class RecData (Pluggable):
 
     def add_ings (self, dics):
         """Add multiple ingredient dictionaries at a time."""
-        for d in dics: self.validate_ingdic(d)
+        for d in dics:
+            self.validate_ingdic(d)
+            for k in ['refid','unit','amount','rangeamount','item','ingkey','optional','shopoptional','inggroup','position']:
+                if not k in d:
+                    d[k] = None
         try:
             # Warning: this method relies on all the dictionaries
             # looking identical. validate_ingdic should be taking care
@@ -1280,9 +1284,6 @@ class RecData (Pluggable):
     def validate_ingdic (self,dic):
         """Do any necessary validation and modification of ingredient dictionaries."""
         if not dic.has_key('deleted'): dic['deleted']=False
-        for k in ['refid','unit','amount','rangeamount','item','ingkey','optional','shopoptional','inggroup','position']:
-           if k not in dic:
-               dic[k] = None
         self._force_unicode(dic)
 
     def _force_unicode (self, dic):

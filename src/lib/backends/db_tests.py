@@ -176,7 +176,38 @@ class TestMoreDataStuff (DBTest):
         r = self.db.add_rec({'title':'Foo','cuisine':'Bar','source':'Z'})
         self.db.update_by_criteria(self.db.recipe_table,{'title':'Foo'},{'title':'Boo'})
         self.assertEqual(self.db.get_rec(r.id).title, 'Boo')
+    
+    def test_modify_rec (self):
+        orig_attrs = {'title':'Foo','cuisine':'Bar','yields':7,'yield_unit':'cups'}
+        new_attrs =  {'title':'Foob','cuisine':'Baz','yields':4,'yield_unit':'servings'}
+        r = self.db.add_rec(orig_attrs.copy())
+        for attr,val in new_attrs.items():
+            r = self.db.modify_rec(r,{attr:val})
+            # Make sure our value changed...
+            self.assertEqual(getattr(r,attr),val,'Incorrect modified value for %s'%attr)
+            # Make sure no other values changed
+            for a,v in orig_attrs.items():
+                if a != attr:
+                    self.assertEqual(getattr(r,a),v,'Incorrect original value for %s'%a)
+            # Change back our recipe
+            r = self.db.modify_rec(r,{attr:orig_attrs[attr]})
 
+    def test_modify_ing (self):
+        r = self.db.add_rec({'title':'itest'})
+        orig_attrs = {'item':'Foo','ingkey':'Bar','amount':7,'unit':'cups','optional':True,'rangeamount':None,'recipe_id':r.id}
+        new_attrs ={'item':'Fooz','ingkey':'Baz','amount':3,'unit':'ounces','optional':False,'rangeamount':2,}
+        i = self.db.add_ing(orig_attrs.copy())
+        for attr,val in new_attrs.items():
+            r = self.db.modify_ing(i,{attr:val})
+            # Make sure our value changed...
+            self.assertEqual(getattr(r,attr),val,'Incorrect modified value for %s'%attr)
+            # Make sure no other values changed
+            for a,v in orig_attrs.items():
+                if a != attr:
+                    self.assertEqual(getattr(r,a),v,'Incorrect original vlaue for %s'%a)
+            # Change back our ingredient...
+            r = self.db.modify_ing(i,{attr:orig_attrs[attr]})
+            
 suite = unittest.TestSuite()
 suite.addTests([
         testRecBasics(),
@@ -184,7 +215,9 @@ suite.addTests([
         testUnicode(),
         testIDReservation(),
         TestMoreDataStuff('test_image_data'),
-        TestMoreDataStuff('test_update')
+        TestMoreDataStuff('test_update'),
+        TestMoreDataStuff('test_modify_rec'),
+        TestMoreDataStuff('test_modify_ing'),                
         ] + [
         testIngBasics(m) for m in ['testUnique','testAddIngs',]
         ]
