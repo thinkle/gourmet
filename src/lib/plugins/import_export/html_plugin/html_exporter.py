@@ -174,7 +174,7 @@ class website_exporter (ExporterMultirec):
     def __init__ (self, rd, recipe_table, out, conv=None, ext='htm', copy_css=True,
                   css=os.path.join(gglobals.datad,'default.css'),
                   imagedir='pics' + os.path.sep,
-                  index_rows=['title','category','cuisine','rating','servings'],
+                  index_rows=['title','category','cuisine','rating','yields'],
                   progress_func=None,
                   change_units=False,
                   mult=1):

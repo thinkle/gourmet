@@ -159,7 +159,8 @@ class MastercookXMLHandler (xml_importer.RecHandler):
 
     def Yield_handler (self, start=False, end=False, attrs=None):
         if attrs:
-            self.rec['yield']=(self.grabattr(attrs,'qty'),self.grabattr(attrs,'unit'))
+            self.rec['yields']=self.grabattr(attrs,'qty')
+            self.rec['yield_unit'] = self.grabattr(attrs,'unit')
 
     def CatT_handler (self, start=False, end=False, attrs=None):
         if start:
