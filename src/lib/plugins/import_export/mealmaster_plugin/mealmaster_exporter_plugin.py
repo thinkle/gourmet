@@ -20,8 +20,6 @@ class MealmasterExporterPlugin (ExporterPlugin):
             args['file'],
             one_file=True,
             ext='mmf',
-            conv=args['conv'],
-            progress_func=args['prog'],
             exporter=mealmaster_exporter.mealmaster_exporter)
 
     def do_single_export (self, args)    :
