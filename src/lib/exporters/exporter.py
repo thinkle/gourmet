@@ -213,8 +213,9 @@ class exporter (SuspendableThread, Pluggable):
                 ret = convert.float_to_frac(ret,fractions=self.fractions)
             elif attr=='yields':
                 ret = convert.float_to_frac(ret,fractions=self.fractions)
-                if self._grab_attr_(obj,'yield_unit'):
-                    ret = '%s %s'%(yields,yields_unit) # FIXME: i18n? (fix also below in exporter_mult)
+                yield_unit = self._grab_attr_(obj,'yield_unit')
+                if yield_unit:
+                    ret = '%s %s'%(ret,yield_unit) # FIXME: i18n? (fix also below in exporter_mult)
             if type(ret) in [str,unicode] and attr not in ['thumb','image']:
                 try:
                     ret = ret.encode(self.DEFAULT_ENCODING)

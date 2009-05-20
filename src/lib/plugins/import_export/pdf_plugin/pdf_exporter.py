@@ -23,16 +23,7 @@ from page_drawer import PageDrawer
 
 PASS_REPORTLAB_UNICODE = (reportlab.Version.find('2')==0)
 
-DEFAULT_PDF_ARGS = {
-    #'pagesize':'letter',
-    #'pagemode':'landscape',
-    #'left_margin':0.3*inch,
-    #'right_margin':0.3*inch,
-    #'top_margin':0.3*inch,
-    #'bottom_margin':0.3*inch,
-    #'base_font_size':8,
-    #'mode':('index_cards',(5*inch,3.5*inch))
-    }
+DEFAULT_PDF_ARGS = {'bottom_margin': 72.0, 'pagesize': 'letter', 'right_margin': 72.0, 'top_margin': 72.0, 'left_margin': 72.0, 'pagemode': 'portrait', 'base_font_size': 10.0, 'mode': ('column', 1)}
 
 # Code for MCLine from:
 # http://two.pairlist.net/pipermail/reportlab-users/2005-February/003695.html

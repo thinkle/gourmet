@@ -6,7 +6,7 @@ from gettext import gettext as _
 
 class mealmaster_exporter (exporter_mult):
     def __init__ (self, rd, r, out, conv=None, change_units=True, mult=1):
-        import gourmet.importers.mealmaster_importer as mealmaster_importer
+        import mealmaster_importer
         self.add_to_instructions=""
         self.conv = conv
         mmf2mk = mealmaster_importer.mmf_constants()
