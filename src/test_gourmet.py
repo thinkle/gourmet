@@ -27,23 +27,27 @@ sys.argv.append('--image-directory=%s'%os.path.abspath('../images/'))
 import gourmet.gglobals
 sys.argv = sys.argv[:-4]
 print 'yippee let\'s import...'
-import gourmet.backends.db_tests
+import gourmet.backends.test_db
 print 'We imported... let\'s call main'
+
+import gourmet.importers.test_interactive_importer
+import gourmet.importers.test_importer
+import gourmet.test_convert
+import gourmet.exporters.test_exportManager
 import unittest
 testsuite = unittest.TestSuite()
-import gourmet.importers.interactive_importer_tests
-import gourmet.importers.importer_tests
-import gourmet.convert_tests
-for module in [gourmet.importers.interactive_importer_tests,
-               gourmet.importers.importer_tests,
-               gourmet.convert_tests
-               ]:
+for module in [
+    gourmet.exporters.test_exportManager,
+    gourmet.importers.test_interactive_importer,
+    gourmet.importers.test_importer,
+    gourmet.test_convert,
+    ]:
     testsuite.addTest(
         unittest.defaultTestLoader.loadTestsFromModule(
             module
             )
         )
-testsuite.addTest(gourmet.backends.db_tests.suite)
+testsuite.addTest(gourmet.backends.test_db.suite)
 tr = unittest.TestResult()
 testsuite.run(tr)
 if tr.wasSuccessful():
@@ -62,4 +66,4 @@ else:
             print er,':',tb
             print '---'
         
-#gourmet.backends.db_tests.main()
+#gourmet.backends.test_db.main()

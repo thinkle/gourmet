@@ -1,3 +1,9 @@
+2009-05-19  Thomas Hinkle  <tom@grenville>
+
+	* (Head): Rename test suites (*_tests.py -> test_*). I had
+	preferred the alphabetization of *_tests.py, but a number of
+	unittest tools are written to work only the other way.
+
 2009-05-17  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/plugins/nutritional_information/nutrition.py (NutritionData.get_nutinfo_for_ing):
