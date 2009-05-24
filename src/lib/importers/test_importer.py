@@ -1,5 +1,4 @@
 import unittest
-print 'foo'
 import importer
 
 class TestImporter (unittest.TestCase):
@@ -21,7 +20,6 @@ class TestImporter (unittest.TestCase):
             self.assertEqual(getattr(rec,att),val)
     
     def testIngredientImport (self):
-        print 'Testing ingredient import'
         self.i.start_rec()
         self.i.rec['title']='Ingredient Import Test'
         self.i.start_ing()
@@ -35,10 +33,7 @@ class TestImporter (unittest.TestCase):
         ing = ings[0]
         self.assertEqual(ing.amount,2)
         self.assertEqual(ing.unit,'cups')
-        print 'unit worked!'
         self.assertEqual(ing.item,'water')
-
-
 
 if __name__ == '__main__':
     unittest.main()
