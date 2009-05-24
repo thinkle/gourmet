@@ -46,9 +46,10 @@ class ExportManager (plugin_loader.Pluggable):
             return
         return self.do_single_export(rec, filename, exp_type, mult)
         
-    def do_single_export (self, rec, filename, exp_type, mult=1):
+    def do_single_export (self, rec, filename, exp_type, mult=1, extra_prefs=EXTRA_PREFS_AUTOMATIC):
         exporter_plugin = self.get_exporter(exp_type)
-        extra_prefs = exporter_plugin.run_extra_prefs_dialog() or {}
+        extra_prefs = self.get_extra_prefs(exporter_plugin,extra_prefs)
+        #extra_prefs = exporter_plugin.run_extra_prefs_dialog() or {}
         if hasattr(exporter_plugin,'mode'):
             export_file_mode = exporter_plugin.mode
             if export_file_mode not in ['w','a','wb']:
@@ -111,18 +112,22 @@ class ExportManager (plugin_loader.Pluggable):
                                                               url='file:///%s'%fn))
             return instance
 
-    def do_multiple_export (self, recs, fn, exp_type=None,
-                                           setup_gui=True, extra_prefs=EXTRA_PREFS_AUTOMATIC):
+    def get_extra_prefs (self, myexp, extra_prefs):
+        if extra_prefs == EXTRA_PREFS_AUTOMATIC:
+            extra_prefs = myexp.run_extra_prefs_dialog() or {}
+        elif extra_prefs == EXTRA_PREFS_DEFAULT:
+            extra_prefs = myexp.get_default_prefs()
+        else:
+            extra_prefs = extra_prefs
+        return extra_prefs
+        
+    def get_multiple_exporter (self, recs, fn, exp_type=None,
+                               setup_gui=True, extra_prefs=EXTRA_PREFS_AUTOMATIC):
         if not exp_type:
             exp_type = de.get_type_for_filters(fn,self.get_multiple_filters())
         if self.can_export_type(exp_type):
             myexp = self.get_exporter(exp_type)
-            if extra_prefs == EXTRA_PREFS_AUTOMATIC:
-                extra_prefs = myexp.run_extra_prefs_dialog() or {}
-            elif extra_prefs == EXTRA_PREFS_DEFAULT:
-                extra_prefs = myexp.get_default_prefs()
-            else:
-                extra_prefs = extra_prefs
+            extra_prefs = self.get_extra_prefs(myexp,extra_prefs)
             pd_args={'label':myexp.label,'sublabel':myexp.sublabel%{'file':fn}}
             exporterInstance = myexp.get_multiple_exporter({'rd':self.app.rd,
                                                          'rv': recs,
@@ -130,7 +135,14 @@ class ExportManager (plugin_loader.Pluggable):
                                                             #'prog':,
                                                          'file':fn,
                                                          'extra_prefs':extra_prefs,
-                                                         })
+                                                         })        
+            return myexp, exporterInstance
+        else:
+            print 'WARNING: CANNOT EXPORT TYPE',exp_type        
+
+    def do_multiple_export (self, recs, fn, exp_type=None,
+                                           setup_gui=True, extra_prefs=EXTRA_PREFS_AUTOMATIC):
+            myexp, exporterInstance = self.get_multiple_exporter(recs,fn,exp_type,setup_gui,extra_prefs)
             tm = get_thread_manager()
             tm.add_thread(exporterInstance)
             if setup_gui:
@@ -138,9 +150,7 @@ class ExportManager (plugin_loader.Pluggable):
                 tmg.register_thread_with_dialog(_('Export')+'('+myexp.label+')',exporterInstance)
                 tmg.show()
             print 'Return exporter instance'
-            return exporterInstance
-        else:
-            print 'WARNING: CANNOT EXPORT TYPE',exp_type
+            return exporterInstance        
 
     def can_export_type (self, name): return self.plugins_by_name.has_key(name)
 
