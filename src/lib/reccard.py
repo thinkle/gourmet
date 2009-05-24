@@ -1922,7 +1922,8 @@ class IngredientController (plugin_loader.Pluggable):
     @plugin_loader.pluggable_method
     def get_extra_ingredient_attributes (self, ing_obj, ingdict):
         if not hasattr(ing_obj,'ingkey') or not ing_obj.ingkey:
-            ingdict['ingkey'] = ingdict['item'].split(';')[0]
+            if ingdict['item']:
+                ingdict['ingkey'] = ingdict['item'].split(';')[0]
         else:
             ingdict['ingkey'] = ing_obj.ingkey
 

@@ -136,12 +136,17 @@ class TestExports (unittest.TestCase):
         for format,plugin in self.em.plugins_by_name.items():
             filters = plugin.saveas_single_filters
             ext = filters[-1][-1].strip('*.')
-            self.em.do_single_export(self.db.get_rec(self.recs['simple recipe']['recipe_id']),'/tmp/Simple.'+ext,format,
-                                     extra_prefs=exportManager.EXTRA_PREFS_DEFAULT)
-            self.em.do_single_export(self.db.get_rec(self.recs['unicode']['recipe_id']),'/tmp/Uni.'+ext,format,
-                                     extra_prefs=exportManager.EXTRA_PREFS_DEFAULT)                                     
-            self.em.do_single_export(self.db.get_rec(self.recs['formatting']['recipe_id']),'/tmp/Formatted.'+ext,format,
-                                     extra_prefs=exportManager.EXTRA_PREFS_DEFAULT)
+            for rec, f in [(self.db.get_rec(self.recs['simple recipe']['recipe_id']),'/tmp/Simple.'+ext),
+                           (self.db.get_rec(self.recs['unicode']['recipe_id']),'/tmp/Uni.'+ext),
+                           (self.db.get_rec(self.recs['formatting']['recipe_id']),'/tmp/Formatted.'+ext),
+                           ]:
+                self.em.do_single_export(rec,f,format,
+                                         extra_prefs=exportManager.EXTRA_PREFS_DEFAULT)
+                if hasattr(plugin,'check_export'):
+                    print 'Checking export for ',plugin,rec,f
+                    fi = open(f,'r')
+                    plugin.check_export(rec,fi)
+                    fi.close()
     
 if __name__ == '__main__':
     unittest.main()

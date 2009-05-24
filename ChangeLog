@@ -1,3 +1,16 @@
+2009-05-24  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py (GourmetExportChecker):
+	Add class for testing exports for validity.
+	(GourmetExporterPlugin.check_export): Run export checker.
+
+	* src/lib/exporters/test_exportManager.py (TestExports.testSingleExport):
+	Run plugin's check_export script if it has one (allows plugins to
+	implement their own test).
+
+	* src/lib/reccard.py (IngredientController.get_extra_ingredient_attributes): Don't throw error
+	if item is blank/None
+
 2009-05-23  Thomas M Hinkle  <tom@minime>
 
 	* src/tests/recipe_files/mealmaster.mmf: Add custom yield (6 puffs
