@@ -14,7 +14,8 @@ class mmf_constants:
                        'Servings':'servings',
                        'Source':'source',
                        'Recipe by':'source',
-                       'Yield':'servings',
+                       'Yield':'yield',
+                       'Yields':'yield',                       
                        'Preparation Time':'preptime',
                        }
         
@@ -169,9 +170,15 @@ class mmf_importer (plaintext_importer.TextImporter):
             debug('Found attribute in %s'%l,4)
             attr,val = attrm.groups()
             debug("Writing attribute, %s=%s"%(attr,val),4)
-            self.rec[self.mmf.recattrs[attr]]=val.strip()
-            self.last_line_was = 'attr'
-            return
+            if self.mmf.recattrs[attr]=='yield':
+                yields,yield_unit = val.split()
+                yields = convert.frac_to_float(yields)
+                self.rec['yields'] = yields
+                self.rec['yield_unit'] = yield_unit
+            else:
+                self.rec[self.mmf.recattrs[attr]]=val.strip()
+                self.last_line_was = 'attr'
+                return
         if not self.instr and self.blank_matcher.match(l):
             debug('ignoring blank line before instructions',4)
             self.last_line_was = 'blank'
