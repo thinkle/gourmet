@@ -7,6 +7,14 @@
 	(ExportManager.do_single_export): Use get_extra_prefs /
 	extra_prefs parameter
 
+2009-05-23  Thomas M Hinkle  <tom@minime>
+
+	* src/tests/recipe_files/mealmaster.mmf: Add custom yield (6 puffs
+	for Almond puff)
+
+	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer.py (mmf_importer.handle_line):
+	Add support for yields units other than servingts.
+
 2009-05-19  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/exporters/exporter.py (exporter.__init__._grab_attr_):
