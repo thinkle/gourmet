@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gourmetDoc>
+<gourmetDoc>
+	<recipe id="114">
+		<title>
+			Amazing rice
+		</title>
+		<category>
+			Side Dish, Grain
+		</category>
+		<cuisine>
+			American
+		</cuisine>
+		<rating>
+			3/5 stars
+		</rating>
+		<preptime>
+			40 minutes
+		</preptime>
+		<cooktime>
+			25 minutes
+		</cooktime>
+		<yields>
+			6 servings
+		</yields>
+		<ingredient-list>
+			<ingredient>
+				<amount>
+					1
+				</amount>
+				<unit>
+					cup
+				</unit>
+				<item>
+					rice
+				</item>
+				<key>
+					rice
+				</key>
+			</ingredient>
+			<ingref amount="1" refid="113">
+				Amazing Sauce
+			</ingref>
+			<ingredient>
+				<amount>
+					2
+				</amount>
+				<unit>
+					cups
+				</unit>
+				<item>
+					broth
+				</item>
+				<key>
+					broth
+				</key>
+			</ingredient>
+		</ingredient-list>
+		<instructions>
+			Cook up the rice &amp;lt;i&amp;gt;well&amp;lt;/i&amp;gt;.
+
+Enjoy!!!
+		</instructions>
+	</recipe>
+	<recipe id="113">
+		<title>
+			Amazing Sauce
+		</title>
+		<category>
+			Sauce, Salsa, Extra
+		</category>
+		<cuisine>
+			Southwestern
+		</cuisine>
+		<source>
+			Tom's imagination
+		</source>
+		<link>
+			http://slashdot.org
+		</link>
+		<rating>
+			4/5 stars
+		</rating>
+		<preptime>
+			10 minutes
+		</preptime>
+		<cooktime>
+			2 days
+		</cooktime>
+		<yields>
+			4 cups
+		</yields>
+		<image format="jpeg">
+<![CDATA[/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAUABQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDgDdeXN5BiUR5L+YWOWJPQcY7Adc8jFTI2cjOQozg5xwMgkenPT3qK7t4JrKaJyoXYVLDIxgfe7d+xPNFmgjszGisigeXg4UkdPTqT+HNa6nzrUXFSWj2LSTyogVEIA4IKgnPvRUcc8U0SSpDhGUFB5g4Hvz17/jRVXIcHcPM+0SASopTGdnO059qo/YxJdw2LTS/ZmVjsGBwpGBnGcYJHXNFFRI6cL1NIQRuoLKOBiiiirOS5/9k=]]>		</image>
+		<ingredient-list>
+			<inggroup>
+				<groupname>
+					veggies
+				</groupname>
+				<ingredient>
+					<amount>
+						1
+					</amount>
+					<unit>
+						cup
+					</unit>
+					<item>
+						tomatoes, diced
+					</item>
+					<key>
+						tomatoes, diced
+					</key>
+				</ingredient>
+				<ingredient>
+					<amount>
+						3
+					</amount>
+					<unit>
+						whole
+					</unit>
+					<item>
+						jalapeño peppers
+					</item>
+					<key>
+						jalapeño peppers
+					</key>
+				</ingredient>
+				<ingredient>
+					<amount>
+						1
+					</amount>
+					<unit>
+						cup
+					</unit>
+					<item>
+						onions, diced
+					</item>
+					<key>
+						onions, diced
+					</key>
+				</ingredient>
+			</inggroup>
+			<ingredient>
+				<amount>
+					2
+				</amount>
+				<unit>
+					cups
+				</unit>
+				<item>
+					cheese
+				</item>
+				<key>
+					cheese
+				</key>
+			</ingredient>
+			<inggroup>
+				<groupname>
+					liquids
+				</groupname>
+				<ingredient>
+					<amount>
+						2
+					</amount>
+					<unit>
+						Tbs.
+					</unit>
+					<item>
+						olive oil
+					</item>
+					<key>
+						olive oil
+					</key>
+				</ingredient>
+				<ingredient>
+					<amount>
+						2
+					</amount>
+					<item>
+						limes, juiced
+					</item>
+					<key>
+						limes, juiced
+					</key>
+				</ingredient>
+			</inggroup>
+		</ingredient-list>
+		<instructions>
+			Mix everything &amp;lt;i&amp;gt;well.&amp;lt;/i&amp;gt;
+
+&amp;lt;b&amp;gt;Then&amp;lt;/b&amp;gt; eat it and &amp;lt;u&amp;gt;enjoy&amp;lt;/u&amp;gt;!
+		</instructions>
+		<modifications>
+			&quot;well&quot; should be italicized.
+
+&quot;Then&quot; should be in bold.
+
+&quot;enjoy&quot; should be underlined.
+		</modifications>
+	</recipe>
+</gourmetDoc>

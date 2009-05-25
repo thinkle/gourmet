@@ -32,12 +32,14 @@ print 'We imported... let\'s call main'
 
 import gourmet.importers.test_interactive_importer
 import gourmet.importers.test_importer
+import gourmet.importers.test_importManager
 import gourmet.test_convert
 import gourmet.exporters.test_exportManager
 import unittest
 testsuite = unittest.TestSuite()
 for module in [
     gourmet.exporters.test_exportManager,
+    gourmet.importers.test_importManager,    
     gourmet.importers.test_interactive_importer,
     gourmet.importers.test_importer,
     gourmet.test_convert,
@@ -65,5 +67,3 @@ else:
             print '---'
             print er,':',tb
             print '---'
-        
-#gourmet.backends.test_db.main()

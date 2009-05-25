@@ -69,5 +69,9 @@ class Converter (importer.Importer):
         t.end()
         self.rh.total=recs
         self.parse = xml.sax.parse(self.fn, self.rh)
+        self.added_ings = self.rh.added_ings
+        self.added_recs = self.rh.added_recs
         importer.Importer._run_cleanup_(self.rh)
+
+        
         

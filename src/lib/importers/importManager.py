@@ -116,7 +116,9 @@ class ImportManager (plugin_loader.Pluggable):
         
     def import_filenames (self, filenames):
         """Import list of filenames, filenames, based on our currently
-        registered plugins...
+        registered plugins.
+
+        Return a list of importers (mostly useful for testing purposes)
         """
         importers = []
         while filenames:
@@ -141,16 +143,23 @@ class ImportManager (plugin_loader.Pluggable):
                     importers.append((fn,fallback))
                 else:
                     print 'Warning, no plugin found for file ',fn
+        ret_importers = [] # a list of importer instances to return
         for fn,importer_plugin in importers:
             print 'Doing import for ',fn,importer_plugin
-            self.do_import(importer_plugin,'get_importer',fn)
+            ret_importers.append(
+                self.do_import(importer_plugin,'get_importer',fn)
+                )
+        print 'import_filenames returns',ret_importers
+        return ret_importers
 
     def do_import (self, importer_plugin, method, *method_args):
+        '''Import using importer_plugin.method(*method_args)
+        '''
         try:
             importer = getattr(importer_plugin,method)(*method_args)
         except ImportFileList, ifl:
             # recurse with new filelist...
-            self.import_filenames(ifl.filelist)
+            return self.import_filenames(ifl.filelist)
         else:
             if hasattr(importer,'pre_run'):
                 importer.pre_run()
@@ -161,6 +170,8 @@ class ImportManager (plugin_loader.Pluggable):
             else:
                 label = _('Import') + '('+importer_plugin.name+')'
                 self.setup_thread(importer, label)
+            print 'do_importer returns importer:',importer
+            return importer
                 
     @plugin_loader.pluggable_method
     def follow_up (self, threadmanager, importer):

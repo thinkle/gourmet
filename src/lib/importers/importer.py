@@ -88,13 +88,7 @@ class Importer (SuspendableThread):
         else:
             self.rating_converter = RatingConverter()
             self.do_conversion = True
-        
-        if hasattr(self.rd,'km'):
-            debug('Using existing keymanager',2)
-            self.km=self.rd.km
-        else:
-            debug('Making new keymanager',2)
-            self.km=keymanager.KeyManager(rm=self.rd)
+        self.km = keymanager.get_keymanager()
         timeaction.end()
         SuspendableThread.__init__(self,
                                    name=name)

@@ -11,12 +11,11 @@ TODO
    - Recipe index [X]
    - importer base classes [X]
      - Changes: convert_servings -> convert_str_to_num
-   - exporter base classes [X]
-   - printing [X]
+   - exporter base classes
+   - printing
    - Plugins
-     - Importer plugins
-         - Mealmaster [X] -> yield integrated
-         - Mastercook -> not broken     - Exporter plugins [X]
+     - Importer plugins [X]
+     - Exporter plugins [X]
      - Browsing plugins 
 
 * Implement menu-planner plugin 

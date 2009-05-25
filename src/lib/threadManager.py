@@ -76,6 +76,7 @@ class SuspendableThread (threading.Thread, _IdleObject):
         #self.name = name
         self.suspended = False
         self.terminated = False
+        self.done = False
         _IdleObject.__init__(self)
         threading.Thread.__init__(self, name=name)
 
@@ -107,6 +108,7 @@ class SuspendableThread (threading.Thread, _IdleObject):
                       traceback.format_exc())
         else:
             self.emit('completed')
+        self.done = True
         self.emit('done')
 
     def do_run (self):

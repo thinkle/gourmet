@@ -1,5 +1,26 @@
 2009-05-24  Thomas M Hinkle  <tom@minime>
 
+	* src/lib/importers/xml_importer.py (Converter.do_run): Make sure
+	we get added_recs from recHandler class.
+
+	* src/lib/importers/importer.py (Importer.__init__): Get
+	keymanager using new singleton access method.
+
+	* src/lib/importers/importManager.py (ImportManager.import_filenames):
+	make import_filenames return a list of importer instances that we
+	used.
+
+2009-05-24  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/exporters/exportManager.py (ExportManager.get_extra_prefs):
+	Add method for handling of extra prefs (through UI or
+	automagically).
+	(do_multiple_export): Use get_extra_prefs / extra_prefs parameter
+	(ExportManager.do_single_export): Use get_extra_prefs /
+	extra_prefs parameter
+
+2009-05-24  Thomas M Hinkle  <tom@minime>
+
 	* src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py (GourmetExportChecker):
 	Add class for testing exports for validity.
 	(GourmetExporterPlugin.check_export): Run export checker.
@@ -8,8 +29,8 @@
 	Run plugin's check_export script if it has one (allows plugins to
 	implement their own test).
 
-	* src/lib/reccard.py (IngredientController.get_extra_ingredient_attributes): Don't throw error
-	if item is blank/None
+	* src/lib/reccard.py (IngredientController.get_extra_ingredient_attributes):
+	Don't throw error if item is blank/None
 
 2009-05-23  Thomas M Hinkle  <tom@minime>
 
@@ -20,6 +41,23 @@
 	Add support for yields units other than servingts.
 
 2009-05-19  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/exporters/exporter.py (exporter.__init__._grab_attr_):
+	Fix handling of yield/yield unit output.
+
+	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py (PdfExporterPlugin.get_default_prefs):
+	Use DEFAULT_PDF_ARGS for default PDF prefs.
+
+	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py: Update default PDF args.
+
+	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py (MealmasterExporterPlugin.get_multiple_exporter):
+	Remove obsolete args (conv/prog)
+
+	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter.py (mealmaster_exporter.__init__):
+	Get mealmaster_importer from plugin, not from obsolete location
+	inside Gourmet's main libraries.
+
+	* src/lib/plugins/import_export/html_plugin/html_exporter.py (website_exporter): Update servings->yields
 
 	* (Head): Rename test suites (*_tests.py -> test_*). I had
 	preferred the alphabetization of *_tests.py, but a number of
