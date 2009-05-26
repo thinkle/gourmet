@@ -39,7 +39,7 @@ class TestImports (unittest.TestCase):
         while not importer.done:
             time.sleep(0.2)
         print 'Done!'
-        assert importer.added_recs,'Importer did not have any added_recs'
+        assert importer.added_recs,'Importer did not have any added_recs (%s,%s)'%(fn,test)
         try:
             test(importer.added_recs,fn)
         except:

@@ -38,8 +38,8 @@ import gourmet.exporters.test_exportManager
 import unittest
 testsuite = unittest.TestSuite()
 for module in [
-    gourmet.exporters.test_exportManager,
     gourmet.importers.test_importManager,    
+    gourmet.exporters.test_exportManager,
     gourmet.importers.test_interactive_importer,
     gourmet.importers.test_importer,
     gourmet.test_convert,

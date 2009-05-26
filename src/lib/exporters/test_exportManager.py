@@ -145,8 +145,16 @@ class TestExports (unittest.TestCase):
                 if hasattr(plugin,'check_export'):
                     print 'Checking export for ',plugin,rec,f
                     fi = open(f,'r')
-                    plugin.check_export(rec,fi)
-                    fi.close()
+                    try:
+                        plugin.check_export(rec,fi)
+                    except:
+                        import traceback
+                        self.assertEqual(1,2,'Exporter test for %s on file %s raised error %s'%(
+                            plugin,f,traceback.format_exc()
+                            )
+                                          )
+                    finally:
+                        fi.close()
     
 if __name__ == '__main__':
     unittest.main()

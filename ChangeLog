@@ -1,3 +1,12 @@
+2009-05-25  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py (test_dir):
+	Look for sample recs in src/tests/recipe_files...
+
+	* src/lib/exporters/test_exportManager.py (TestExports.testSingleExport):
+	Improve error message when plugin's check_export method throws an
+	error.
+
 2009-05-24  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/importers/xml_importer.py (Converter.do_run): Make sure

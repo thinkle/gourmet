@@ -24,7 +24,7 @@ class GourmetExportChecker:
                     'val':getattr(self.rec,attr)
                     },
                                  self.txt), \
-                       'Did not find %s value %s'%(attr,val)
+                                 'Did not find %s value %s'%(attr,getattr(self.rec,attr))
         if self.rec.yields:
             assert re.search('<yields>\s*%s\s*%s\s*</yields>'%(
                 self.rec.yields,

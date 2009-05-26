@@ -77,6 +77,7 @@ class Converter (xml_importer.Converter):
                                         recMarker="</recipe>",
                                         conv=conv,
                                         name='GXML2 Importer')
+        
 
 def unquoteattr (str):
     return xml.sax.saxutils.unescape(str).replace("_"," ")

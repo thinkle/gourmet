@@ -1748,7 +1748,7 @@ class RecipeManager (RecData):
                 return l
         else:
             return None
-            
+
     def ingredient_parser (self, s, conv=None, get_key=True):
         """Handed a string, we hand back a dictionary representing a parsed ingredient (sans recipe ID)"""
         debug('ingredient_parser handed: %s'%s,0)
