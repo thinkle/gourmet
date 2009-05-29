@@ -7,14 +7,27 @@ import sys
 import glob
 import os.path
 import os
+from stat import ST_MTIME
 
-for desktop_file in ['gourmet.desktop.in'] + glob.glob('src/lib/plugins/*plugin.in')  + glob.glob('src/lib/plugins/*/*plugin.in'):
-    #print 'intltool-merge -d i18n/ %s %s'%(desktop_file,
-    #                                           desktop_file[:-3])
-    os.system('intltool-merge -d i18n/ %s %s'%(desktop_file,
-                                               desktop_file[:-3])
-              )
+def maybe_intltool (fname):
+    '''Check whether the file at fname has been updated since
+    intltool-merge was last used on it. If it has, then use
+    intltool-merge to update the output file.
 
+    '''
+    to_name = fname[:-3]
+    if (
+        (not os.path.exists(to_name))
+        or
+        os.stat(to_name)[ST_MTIME] < os.stat(fname)[ST_MTIME]
+        ):
+        os.system('intltool-merge -d i18n/ %s %s'%(fname, to_name))
+
+for f in ['gourmet.desktop.in'] + \
+        glob.glob('src/lib/plugins/*plugin.in')  + \
+        glob.glob('src/lib/plugins/*/*plugin.in'):
+    maybe_intltool(f)
+    
 #from distutils.core import setup
 from tools.gourmet_distutils import setup
 from distutils.command.install_data import install_data

@@ -1,3 +1,11 @@
+2009-05-29  Thomas M Hinkle  <tom@minime>
+
+	* gourmet.desktop.in (_Comment): Update description of app.
+
+	* setup.py (maybe_intltool): Apply patch from Rupert Swarbrick
+	<rswarbrick@googlemail.com> which avoids running intltool-merge
+	when not necessary.
+
 2009-05-28  Thomas M Hinkle  <tom@minime>
 
 	* MANIFEST: Don't include test_* files in MANIFEST.

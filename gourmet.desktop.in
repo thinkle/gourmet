@@ -1,6 +1,6 @@
 [Desktop Entry]
 _Name=Gourmet Recipe Manager
-_Comment=Manage recipes and create shopping lists.
+_Comment=Organize recipes, create shopping lists, calculate nutritional information, and more.
 Exec=gourmet
 Terminal=false
 Type=Application
