@@ -2,4 +2,11 @@
 *.gourmet-plugin
 *.desktop
 *~
-*#
+*#*
+debian
+*.gourmetcleaned.*
+src/foo
+dist/
+build
+build-stamp
+configure-stamp
