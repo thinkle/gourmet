@@ -127,7 +127,6 @@ src/lib/__init__.py
 src/lib/backends/DatabaseChooser.py
 src/lib/backends/__init__.py
 src/lib/backends/db.py
-src/lib/backends/db_tests.py
 src/lib/batchEditor.py
 src/lib/check_encodings.py
 src/lib/clockDB.py
@@ -153,7 +152,6 @@ src/lib/exporters/gnomeprinter.py
 src/lib/exporters/gnomeprinter_obsolete.py
 src/lib/exporters/gxml_exporter.py
 src/lib/exporters/lprprinter.py
-src/lib/exporters/mealmaster_exporter.py
 src/lib/exporters/page_drawer.py
 src/lib/exporters/printer.py
 src/lib/exporters/recipe_emailer.py

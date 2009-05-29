@@ -55,7 +55,7 @@ class RecipeBrowserView (gtk.IconView):
         m = self.models['base'] = self.new_model()
         self.set_model(m)
         for itm in DEFAULT_ATTR_ORDER:
-            if itm in ['title','link']: continue
+            if itm in ['title','link','yields']: continue
             pb = self.get_base_icon(itm)
             m.append((itm,(REC_ATTR_DIC[itm]),pb,None))
 

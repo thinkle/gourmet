@@ -14,6 +14,7 @@ def write_lst_to_file (lst, fi=outfi):
     lst.sort()
     for itm in lst:
         print 'Write:',itm
+        if 'test_' in itm: continue
         if itm.strip():
             fi.write(itm.strip()+'\n')
 

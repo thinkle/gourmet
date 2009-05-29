@@ -69,5 +69,3 @@ def test_2_col (recs, filename):
     assert_equal(recs[0].title, u'Chiles Rellenos de Queso')
     assert_equal(chile_ings[5].item, 'Tomatoes; peeled')
     assert_equal_ignorecase(chile_ings[5].inggroup, 'Tomato Sauce')
-    
-    

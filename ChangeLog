@@ -1,3 +1,12 @@
+2009-05-28  Thomas M Hinkle  <tom@minime>
+
+	* MANIFEST: Don't include test_* files in MANIFEST.
+
+2009-05-26  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/plugins/browse_recipes/browser.py (RecipeBrowserView.build_base_model):
+	Don't include yields in browser.
+
 2009-05-25  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py (test_dir):
