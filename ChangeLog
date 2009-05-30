@@ -1,3 +1,12 @@
+2009-05-30  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/test_plugin_loader.py: Add simple plugin_loader test
+	file.
+	* src/lib/gtk_extras/dialog_extras.py (ProgressDialog.setup_buttons):
+	Bypass strange bug in pygtk with python2.6 which effectively
+	changes ToggleButton API
+	* Release 0.14.8
+
 2009-05-29  Thomas M Hinkle  <tom@minime>
 
 	* gourmet.desktop.in (_Comment): Update description of app.

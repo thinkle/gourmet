@@ -399,7 +399,8 @@ class ProgressDialog (ModalDialog):
             
     def setup_buttons (self, cancel, okay):                        
         # setup pause button 
-        self.pause = gtk.ToggleButton(_('_Pause'),True)        
+        self.pause = gtk.ToggleButton(_('_Pause'))
+        self.pause.set_use_underline(True)        
         self.action_area.pack_end(self.pause)
         # only show it/connect it if we want to...
         if self.custom_pausecb:
