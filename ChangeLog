@@ -1,3 +1,15 @@
+2009-05-30  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/reccard.py (RecSelector.ok): If recipe has a yields
+	value, ask user how much they would like to add (this allows user
+	to specify e.g. "3 cups" or "2 crusts", which is easier than
+	changing the amount of recipes, which is what shows up in the
+	ingredient list.
+	(YieldSelector): Dialog for selecting amount of recipe based on
+	yields value.
+	(getYieldSelection): Convenience function for grabbing amount of
+	recipe based on yields value (or not).
+
 2009-05-30  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/test_plugin_loader.py: Add simple plugin_loader test
