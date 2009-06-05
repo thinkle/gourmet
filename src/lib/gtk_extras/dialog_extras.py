@@ -150,8 +150,10 @@ class MessageDialog (gtk.MessageDialog, ModalDialog):
     def setup_dialog (self, *args, **kwargs):
         kwargs['type']=self.message_type
         if kwargs.has_key('title'):
+            title = kwargs['title']
             del kwargs['title']
         gtk.MessageDialog.__init__(self, *args, **kwargs)
+        self.set_title(title)
 
     def setup_label (self, label):
         if not is_markup(label):

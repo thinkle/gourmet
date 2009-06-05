@@ -1,3 +1,16 @@
+2009-06-04  Thomas M Hinkle  <tom@minime>
+
+	* test_deb.sh: Wipe out packages installed by python2.6 as well.
+
+	* src/lib/reccard.py (RecCard.__init__): ++ get app if not handed
+	GRM instance.
+
+	* src/lib/plugin.py (RecEditorPlugin): ++documentation
+
+	* src/lib/gtk_extras/dialog_extras.py (MessageDialog.setup_dialog):
+	++title on dialog (helps out with testing w/ dogtail + just makes
+	sense).
+
 2009-06-04  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/importers/interactive_importer.py: Add support for old

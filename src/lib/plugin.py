@@ -339,6 +339,13 @@ class RecDisplayPlugin (StandardPlugin):
 
 class RecEditorPlugin (StandardPlugin):
 
+    '''A plugin for our recipe editor.
+
+    moduleKlass is a module to add (provides a new tabby interface on
+    the recEditor) and position is the position of that new module.
+
+    '''
+
     moduleKlass = None
     position = None
 

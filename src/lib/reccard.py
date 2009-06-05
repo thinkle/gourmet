@@ -46,7 +46,10 @@ class RecRef:
 
 class RecCard (object):
     
-    def __init__ (self, rg, recipe=None):
+    def __init__ (self, rg=None, recipe=None):
+        if not rg:
+            from GourmetRecipeManager import get_application
+            rg = get_application()
         self.rg = rg
         self.conf = []
         self.new = False
@@ -86,7 +89,7 @@ class RecCard (object):
 
     def show_edit (self, module=None):
         if not hasattr(self,'recipe_editor'):
-            self.recipe_editor = RecEditor(self, self.rg,self.current_rec)
+            self.recipe_editor = RecEditor(self, self.rg,self.current_rec,new=self.new)
         if module:
             self.recipe_editor.show_module(module)
         self.recipe_editor.window.present()
@@ -776,7 +779,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
     </ui>
     '''    
 
-    def __init__ (self, reccard, rg, recipe=None, recipe_display=None):
+    def __init__ (self, reccard, rg, recipe=None, recipe_display=None, new=False):
         self.edited = False
         self.editor_modules = [
             DescriptionEditorModule,
@@ -801,15 +804,11 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         # parameters for tracking what has changed
         self.widgets_changed_since_save = {}
         self.new = True
-        if recipe:
+        if recipe and not new:
             #self.updateRecipe(recipe,show=False)
             self.new = False
-        else:
-            r=self.rg.rd.new_rec()
-            self.new = True
-            #self.updateRecipe(r,show=False)
-            # and set our page to the details page
-            #self.notebook.set_current_page(self.NOTEBOOK_ATTR_PAGE)
+        elif not recipe:
+            recipe=self.rg.rd.new_rec()
         self.set_edited(False)
         plugin_loader.Pluggable.__init__(self,[ToolPlugin,RecEditorPlugin])
         self.mm = mnemonic_manager.MnemonicManager()
@@ -1004,8 +1003,23 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         self.rg.rec_tree_delete_recs([self.current_rec])
 
     def close_cb (self, *args):
+        if self.edited:
+            try:
+                save_me = de.getBoolean(
+                    title=_("Save changes to %s")%self.current_rec.title,                    
+                    label=_("Save changes to %s")%self.current_rec.title,
+                    custom_yes=gtk.STOCK_SAVE,
+                    )
+            except de.UserCancelledError:
+                return
+            if save_me:
+                self.save_cb()
         self.window.hide()
         self.reccard.hide()
+        if self.new:
+            # If we are new and unedited, delete...
+            self.rg.rd.delete_rec(self.current_rec)
+            self.rg.redo_search()
         return True
 
     def preferences_cb (self, *args):
