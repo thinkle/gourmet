@@ -178,6 +178,7 @@ class PangoBuffer (gtk.TextBuffer):
         txt = unicode(gtk.TextBuffer.get_text(self,start,end))
         cuts = {}
         for k,v in tagdict.items():
+            if not self.tagdict.has_key(k): continue
             stag,etag = self.tag_to_markup(k)
             for st,e in v:
                 if cuts.has_key(st): cuts[st].append(stag) #add start tags second

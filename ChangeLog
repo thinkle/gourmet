@@ -1,5 +1,15 @@
 2009-06-04  Thomas M Hinkle  <tom@minime>
 
+	* src/lib/plugin_loader.py (MasterLoader.default_active_plugin_sets):
+	Add spellcheck to plugins that default to on.
+
+	* src/lib/gtk_extras/TextBufferMarkup.py (PangoBuffer.get_text):
+	Ignore tags that we didn't put there (such as those from
+	gtkspell).
+
+	* src/lib/plugins/spellcheck*: Add spellcheck plugin (adds
+	automatic spell checking to all TextViews in recipe card editor.
+
 	* src/lib/convert.py (NUM_AND_FRACTION_REGEXP): Fix typo for
 	langauges without fraction support (ubuntu bug #352678)
 
