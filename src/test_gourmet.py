@@ -7,11 +7,24 @@
 #import signal
 #signal.signal(signal.SIGINT, signal.SIG_DFL)
 import sys, os, os.path, glob
+from stat import ST_MTIME
+
+def maybe_intltool (fname):
+    '''Check whether the file at fname has been updated since
+    intltool-merge was last used on it. If it has, then use
+    intltool-merge to update the output file.
+
+    '''
+    to_name = fname[:-3]
+    if (
+        (not os.path.exists(to_name))
+        or
+        os.stat(to_name)[ST_MTIME] < os.stat(fname)[ST_MTIME]
+        ):
+        os.system('intltool-merge -d i18n/ %s %s'%(fname, to_name))
 
 for desktop_file in glob.glob('lib/plugins/*plugin.in') + glob.glob('lib/plugins/*/*plugin.in'):
-    os.system('intltool-merge -d i18n/ %s %s'%(desktop_file,
-                                               desktop_file[:-3])
-              )
+    maybe_intltool(desktop_file)
 
 if os.path.exists('foo'):
     os.remove('foo/gourmet')
@@ -30,6 +43,7 @@ print 'yippee let\'s import...'
 import gourmet.backends.test_db
 print 'We imported... let\'s call main'
 
+import gourmet.test_reccard
 import gourmet.importers.test_interactive_importer
 import gourmet.importers.test_importer
 import gourmet.importers.test_importManager

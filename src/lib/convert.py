@@ -749,7 +749,7 @@ if NUMBER_WORD_REGEXP:
                                                                        )
     
 else:
-    NUM_AND_FRACTION_REGEXP = re.compile("((?P<int>%s)+\s+)?(?P<frac>%s)"%(NUMBER_START_REGEXP,FRACTION_REGEXP),re.UNICODE)
+    NUM_AND_FRACTION_REGEXP = "((?P<int>%s)+\s+)?(?P<frac>%s)"%(NUMBER_START_REGEXP,FRACTION_REGEXP)
 
 FRACTION_MATCHER = re.compile(NUM_AND_FRACTION_REGEXP,re.UNICODE)
 
