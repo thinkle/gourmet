@@ -25,12 +25,15 @@ for attr in gglobals.DEFAULT_ATTR_ORDER:
         if attr == 'yields':
             # a bit of a hack -- we want to make 'yield unit' a button
             DEFAULT_TAGS.append('yield_unit')
+            DEFAULT_TAGS.append('servings')
 DEFAULT_TAGS.extend(['instructions','ingredients','inggroup','ignore'])
-for tag,label in [('instructions',_('Instructions')),
-                  ('ingredients',_('Ingredients')),
-                  ('inggroup',_('Ingredient Subgroup')),
-                  ('ignore',_('Hide'))
-                  ]:
+for tag,label in [
+    ('servings',_('Servings')),
+    ('instructions',_('Instructions')),
+    ('ingredients',_('Ingredients')),
+    ('inggroup',_('Ingredient Subgroup')),
+    ('ignore',_('Hide'))
+    ]:
     if not DEFAULT_TAG_LABELS.has_key(tag):
         DEFAULT_TAG_LABELS[tag] = label
 
@@ -107,6 +110,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         if custom_parser: self.parser = custom_parser
         else: self.parser = RecipeParser()
         self.labels_by_tag = tag_labels
+        print 'self.labels_by_tag=',self.labels_by_tag
         self.tags_by_label = {self.NEW_REC_TEXT:'newrec'}
         for k,v in self.labels_by_tag.items(): self.tags_by_label[v]=k
         self.tags = tags
@@ -363,7 +367,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             text = siter.get_text(eiter)
             name = smark.get_name()
             label = name.split('-')[0]
-            tag = self.tags_by_label[label]
+            tag = self.tags_by_label[label]            
             if tag in gglobals.TEXT_ATTR_DIC:
                 self.add_text(tag,text); started=True
             elif tag in gglobals.REC_ATTR_DIC:
@@ -383,6 +387,9 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                 self.start_rec()
             elif tag=='ignore':
                 continue
+            elif tag == 'servings':
+                self.add_attribute('yields',text)
+                self.add_attribute('yield_unit','servings')
             else:
                 print 'UNKNOWN TAG',tag,text,label
         if started: self.commit_rec()

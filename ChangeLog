@@ -1,3 +1,11 @@
+2009-06-04  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/importers/interactive_importer.py: Add support for old
+	style "servings" tags to support legacy importer/markup scripts.
+
+	* src/lib/importers/importer.py (Importer.commit_rec): Make sure
+	yields is floated.
+
 2009-05-30  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/reccard.py (RecSelector.ok): If recipe has a yields

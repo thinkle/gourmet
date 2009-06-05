@@ -165,8 +165,18 @@ class Importer (SuspendableThread):
         for key in ['cuisine','category','title']:
             if self.rec.has_key(key):
                 self.rec[key]=re.sub('\s+',' ',self.rec[key]).strip()
-        # if servings can't be recognized as a number, add them to the
-        # instructions.
+        # if yields/servings can't be recognized as a number, add them
+        # to the instructions.
+        if self.rec.has_key('yields'):
+            try:
+                self.rec['yields'] = float(self.rec['yields'])
+            except:
+                yields = self.convert_str_to_num(self.rec['yields'])
+                if not yields:
+                    print 'Moving yields to instructions!'
+                    self._move_to_instructions(self.rec,'yields')
+                else:
+                    self.rec['yields'] = yields
         if self.rec.has_key('servings'):
             servs=self.convert_str_to_num(self.rec['servings'])
             if servs != None:
