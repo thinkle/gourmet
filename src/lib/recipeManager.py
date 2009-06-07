@@ -34,8 +34,7 @@ class DatabaseShopper (shopping.Shopper):
                             pickle_val=False)
         if len(self.orgdic.items())==0:
             dic = shopping.setup_default_orgdic()
-            for k,v in dic.items():
-                self.orgdic[k]=v
+            self.orgdic.initialize(dic)
 
     def init_ingorder_dic (self):
         self.ingorder_dic = dbDic('ingkey','position',self.db.shopcats_table,db=self.db,
@@ -54,10 +53,8 @@ class DatabaseShopper (shopping.Shopper):
                             pickle_key=False,
                             pickle_val=False)
         if len(self.pantry.items())==0:
-            for i in self.default_pantry:
-                self.pantry[i]=True
+            self.pantry.initialize(dict([(i,True) for i in self.default_pantry]))
 
-    
 class DatabaseConverter(convert.Converter):
     def __init__ (self, db):
         self.db = db

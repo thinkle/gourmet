@@ -342,6 +342,10 @@ src/lib/plugins/shopping_associations.gourmet-plugin
 src/lib/plugins/shopping_associations.gourmet-plugin.in
 src/lib/plugins/shopping_associations/__init__.py
 src/lib/plugins/shopping_associations/shopping_key_editor_plugin.py
+src/lib/plugins/spellcheck.gourmet-plugin
+src/lib/plugins/spellcheck.gourmet-plugin.in
+src/lib/plugins/spellcheck/__init__.py
+src/lib/plugins/spellcheck/reccard_spellcheck_plugin.py
 src/lib/plugins/unit_converter.gourmet-plugin
 src/lib/plugins/unit_converter.gourmet-plugin.in
 src/lib/plugins/unit_converter/__init__.py

@@ -37,10 +37,11 @@ class KeyManager:
         self.ignored_regexp = re.compile("[,; ]?(" + '|'.join(self.ignored) + ")[,; ]?")
         #if not(self.rm.keylookup_table): # wrong
         if self.rm.fetch_len(self.rm.keylookup_table) == 0:
-            self.initialize_from_defaults()
-        self.initialize_categories()
+        #self.initialize_from_defaults()
+        #self.initialize_categories()
         
     def initialize_from_defaults (self):
+        words = []
         for key,items in defaults.keydic.items():
             for i in items:
                 self.rm.add_ing_to_keydic(i,key)

@@ -1,3 +1,23 @@
+2009-06-07  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/plugin_loader.py (MasterLoader.default_active_plugin_sets):
+	Fix typo in list of plugins (missing comma).
+
+	* src/lib/backends/db.py (dbDic.initialize): Add fast method for
+	initializing a dbDic from defaults (faster than adding rows one at
+	a time)
+
+	* src/lib/keyEditor: Get rid of cruft (moved to plugin long ago)
+
+	* src/lib/keymanager.py (KeyManager.__init__): Don't initialize
+	keydic from defaults (this should be part of the key editor plugin
+	-- in our default mode, our users don't really care about
+	keys (they always get the defaults) so we don't need to worry
+	about setting up the DB for search (which is costly and makes
+	first load seem unduly slow).
+
+	* src/lib/version.py (version): Version->0.14.9
+
 2009-06-04  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/plugin_loader.py (MasterLoader.default_active_plugin_sets):

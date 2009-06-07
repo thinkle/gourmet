@@ -31,7 +31,7 @@ class MasterLoader:
         # tools
         'unit_converter',
         'duplicate_finder',
-        'spellcheck'
+        'spellcheck',
         # import/export
         'gxml_plugin',
         'html_plugin',

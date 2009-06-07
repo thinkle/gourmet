@@ -3,6 +3,7 @@
 #sys.path.append('/usr/share/')
 ## End for testing - DELETE ME
 import shutil
+import types
 import os.path
 from gourmet.gdebug import debug, TimeAction, debug_decorator
 import re, pickle, string, os.path, string, time
@@ -1932,6 +1933,26 @@ class dbDic:
         #    retstr += ", "
         retstr += "}"
         return retstr
+
+    def initialize (self, d):
+        '''Initialize values based on dictionary d
+
+        We assume the DB is known to be empty.
+
+        '''
+        dics = []
+        print self,'.pickle_val=',self.pickle_val
+        for k in d:
+            if self.pickle_val:
+                store_v = pickle.dumps(d[k])
+            else:
+                store_v = d[k]
+                if type(store_v) in types.StringTypes:
+                    store_v = unicode(store_v)
+            if type(k) in types.StringTypes:
+                k = unicode(k)
+            dics.append({self.kp:k,self.vp:store_v})
+        self.vw.insert().execute(*dics)
 
     def keys (self):
         ret = []
