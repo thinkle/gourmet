@@ -194,7 +194,6 @@ src/lib/importers/plaintext_importer.py
 src/lib/importers/rezkonv_importer.py
 src/lib/importers/webextras.py
 src/lib/importers/xml_importer.py
-src/lib/keyEditor.py
 src/lib/keymanager.py
 src/lib/legacy_db/__init__.py
 src/lib/legacy_db/db_08/__init__.py
