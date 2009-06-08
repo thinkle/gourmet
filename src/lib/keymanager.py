@@ -35,16 +35,20 @@ class KeyManager:
         self.ignored = defaults.IGNORE
         self.ignored.extend(self.cooking_verbs)
         self.ignored_regexp = re.compile("[,; ]?(" + '|'.join(self.ignored) + ")[,; ]?")
-        #if not(self.rm.keylookup_table): # wrong
         if self.rm.fetch_len(self.rm.keylookup_table) == 0:
-        #self.initialize_from_defaults()
+            self.initialize_from_defaults()
         #self.initialize_categories()
         
     def initialize_from_defaults (self):
-        words = []
+        dics = []
         for key,items in defaults.keydic.items():
             for i in items:
-                self.rm.add_ing_to_keydic(i,key)
+                dics.append(
+                    {'ingkey':unicode(key),
+                     'item':unicode(i),
+                     'count':1}
+                    )
+        self.rm.keylookup_table.insert().execute(dics)
 
     def make_regexp_for_strings (self, ignored):
         ret = "("

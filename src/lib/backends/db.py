@@ -1577,7 +1577,8 @@ class RecData (Pluggable):
             elif mode==self.AMT_MODE_HIGH: return high # mode==self.AMT_MODE_HIGH
             else:
                 raise ValueError("%s is an invalid value for mode"%mode)
-    
+
+    @pluggable_method
     def add_ing_to_keydic (self, item, key):
         #print 'add ',item,key,'to keydic'
         if not item or not key: return
@@ -1589,6 +1590,7 @@ class RecData (Pluggable):
             self.do_modify(self.keylookup_table,row,{'count':row.count+1})
         else:
             self.do_add(self.keylookup_table,{'item':item,'ingkey':key,'count':1})
+        # The below code should move to a plugin for users who care about ingkeys...
         for w in item.split():
             w=str(w.decode('utf8').lower())
             row = self.fetch_one(self.keylookup_table,word=unicode(w),ingkey=unicode(key))
@@ -1941,7 +1943,6 @@ class dbDic:
 
         '''
         dics = []
-        print self,'.pickle_val=',self.pickle_val
         for k in d:
             if self.pickle_val:
                 store_v = pickle.dumps(d[k])
