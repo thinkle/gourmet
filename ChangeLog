@@ -1,3 +1,8 @@
+2009-06-16  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/nutritional_information/nutritionDruid.py (NutritionInfoDruid.apply_custom):
+	Fix custom information for fat.
+
 2009-06-07  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/plugin_loader.py (MasterLoader.default_active_plugin_sets):
