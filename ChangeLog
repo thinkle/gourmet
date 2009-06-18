@@ -1,3 +1,7 @@
+2009-06-17  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/keymanager.py (KeyManager.__init__): Initialize categories again.
+
 2009-06-07  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/recipeManager.py (DatabaseShopper.init_orgdic): Use new

@@ -37,7 +37,7 @@ class KeyManager:
         self.ignored_regexp = re.compile("[,; ]?(" + '|'.join(self.ignored) + ")[,; ]?")
         if self.rm.fetch_len(self.rm.keylookup_table) == 0:
             self.initialize_from_defaults()
-        #self.initialize_categories()
+        self.initialize_categories()
         
     def initialize_from_defaults (self):
         dics = []
