@@ -2632,7 +2632,6 @@ class IngredientTreeUI:
         #else: return None
 
     def set_tree_for_rec (self, rec):
-        print 'Update ingredient edit ingTree for recipe!'
         self.ingTree.set_model(
             self.ingController.create_imodel(rec)
             )

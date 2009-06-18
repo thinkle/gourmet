@@ -19,8 +19,8 @@ class NutritionBaseExporterPlugin (BaseExporterPlugin):
         nutinfo = nd.get_nutinfo_for_inglist(rd.get_ings(rec),rd)
         ings = rd.get_ings(rec)
         vapor = nutinfo._get_vapor()
-        if rec.servings:
-            txt += '<i>%s</i>'%((rec.servings and _('Nutritional information reflects amount per serving.'))
+        if rec.yields and rec.yield_unit:
+            txt += '<i>%s</i>'%((rec.yields and _('Nutritional information reflects amount per %s.'%rec.yield_unit))
                                 or
                                 _('Nutritional information reflects amounts for entire recipe'))
         if len(vapor)==len(ings): return None
@@ -48,8 +48,8 @@ class NutritionBaseExporterPlugin (BaseExporterPlugin):
                     amt = sum(amts)
                 else:
                     amt = getattr(nutinfo,properties)
-                if rec.servings:
-                    amt = amt/rec.servings
+                if rec.yields:
+                    amt = amt/rec.yields
                 itm_text += ' %d'%round(amt)
             txt += '\n'+itm_text
         return '\n'.join([txt,footnotes])

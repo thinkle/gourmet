@@ -28,8 +28,11 @@ class NutritionDisplayModule (RecDisplayModule):
     def update_from_database (self):
         self.nutinfo = self.recipe_display.rg.rd.nd.get_nutinfo_for_inglist(self.recipe_display.rg.rd.get_ings(self.recipe_display.current_rec),
                                                                             self.recipe_display.rg.rd)
-        print 'Set servings',self.recipe_display.current_rec.servings,type(self.recipe_display.current_rec.servings)
-        self.nutritionLabel.set_servings(self.recipe_display.current_rec.servings)
+        #print 'Set servings',self.recipe_display.current_rec.servings,type(self.recipe_display.current_rec.servings)
+        self.nutritionLabel.set_yields(
+            self.recipe_display.current_rec.yields,
+            self.recipe_display.current_rec.yield_unit
+                                       )
         self.nutritionLabel.set_nutinfo(self.nutinfo)
         self.nutritionLabel.rec = self.recipe_display.current_rec
         
@@ -68,17 +71,16 @@ class NutritionDisplayModule (RecDisplayModule):
             self.nutritionLabel.toggles[self.prefs.get('nutrition_to_highlight','kcal')].activate()
         # Save what servings were and set them to "1" so that the
         # ingredient amounts display how much goes into each servings
-        # (assuming there are servings)
+        # (assuming there is a yield value)
         self.mult_orig = self.recipe_display.mult
-        if self.recipe_display.current_rec.servings:
-            self.recipe_display.mult = 1.0/self.recipe_display.current_rec.servings
+        if self.recipe_display.current_rec.yields:
+            self.recipe_display.mult = 1.0/self.recipe_display.current_rec.yields
         self.recipe_display.ingredientDisplay.display_ingredients()
 
     def setup_ingredient_display_hooks (self):
         self.ingredientDisplay = self.recipe_display.ingredientDisplay
         self.ingredientDisplay.markup_ingredient_hooks.append(self.nutritional_markup_hook)
 
-    # SHOULD BECOME PART OF NUTRITIONAL PLUGIN
     def nutritional_markup_hook (self, istr, ing, ing_index, group_index):
         if self.nutritional_highlighting and self.nutritionLabel.active_name:
             props = self.nutritionLabel.active_properties

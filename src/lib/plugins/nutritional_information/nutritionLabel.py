@@ -173,17 +173,17 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         #,2,len(NUT_LAYOUT)+start_at)
         self.show()
         self.tt = gtk.Tooltips()
-        self.servingLabel = gtk.Label()
-        self.set_servings(0)
+        self.yieldLabel = gtk.Label()
+        self.set_yields(0)
         self.nutrition_display_info = []
-        #self.attach(self.servingLabel,
+        #self.attach(self.yieldLabel,
         #            0,2,0,1)
-        self.servingLabel.show()
-        self.servingLabel.set_alignment(0,0.5)
+        self.yieldLabel.show()
+        self.yieldLabel.set_alignment(0,0.5)
         self.missingLabel = self.make_missing_label()
         #self.attach(self.missingLabel,0,2,1,2)
         self.pack_start(self.missingLabel,fill=False,expand=False)
-        self.pack_start(self.servingLabel,fill=False,expand=False)
+        self.pack_start(self.yieldLabel,fill=False,expand=False)
         # setup daily value button to display calories/day assumption
         # and to allow changing it via a nifty little button
         dvb,eb = self.make_dv_boxes()
@@ -316,7 +316,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         else: method = 'show'
         getattr(self.main_table,method)()
         getattr(self.nutexpander,method)()        
-        getattr(self.servingLabel,method)()
+        getattr(self.yieldLabel,method)()
         getattr(self.cal_per_day_box,method)()                
             
     def make_dv_boxes (self):
@@ -386,9 +386,10 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         self.set_edit_tip()
         self.emit('calories-changed')
 
-    def set_servings (self, n):
-        self.servings = n
-        self.setup_serving_label()
+    def set_yields (self, n, unit='servings'):
+        self.yields = n
+        self.yield_unit = unit
+        self.setup_yield_label()
         #self.update_display()
 
     def set_nutinfo (self, nutinfo):
@@ -400,7 +401,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         if len(self.nutinfo)==0:
             self.main_table.hide()
             self.nutexpander.hide()
-            self.servingLabel.hide()
+            self.yieldLabel.hide()
             self.cal_per_day_box.hide()
             self.missingLabel.hide()
         else:
@@ -417,13 +418,13 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
             else:
                 self.main_table.show()
                 self.nutexpander.show()
-                self.servingLabel.show()
+                self.yieldLabel.show()
                 self.cal_per_day_box.show()
                 self.missingLabel.hide()
                 
     def update_display (self):
         """Update the display of labels based on values in nutinfo,
-        adjusted by servings and calories_per_day.
+        adjusted by yields and calories_per_day.
         """
         for itm in self.nutrition_display_info:
             props = itm['props']
@@ -432,8 +433,8 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
             else:
                 # sum a list of properties
                 rawval = sum([getattr(self.nutinfo,p) or 0 for p in props])
-            if self.servings:
-                rawval = float(rawval) / self.servings
+            if self.yields:
+                rawval = float(rawval) / self.yields
             if itm['type'] != MAJOR:
                 # If the item is not "MAJOR", then we hide it if the
                 # rawval is 0
@@ -451,13 +452,13 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                     percent = 100 * (float(rawval) / totrec)
                     itm['percent_label'].set_text("%i%%"%percent)
 
-    def setup_serving_label (self):
+    def setup_yield_label (self):
         if self.custom_label:
-            self.servingLabel.set_markup('<b>'+self.custom_label+'</b>')
-        elif self.servings:
-            self.servingLabel.set_markup('<b>'+_('Amount per Serving')+'</b>')
+            self.yieldLabel.set_markup('<b>'+self.custom_label+'</b>')
+        elif self.yields:
+            self.yieldLabel.set_markup('<b>'+_('Amount per %s'%self.yield_unit)+'</b>')
         else:
-            self.servingLabel.set_markup('<b>'+_('Amount per recipe')+'</b>')
+            self.yieldLabel.set_markup('<b>'+_('Amount per recipe')+'</b>')
         
     def set_nutritional_info (self, info):
         """Set nutrition from a NutritionInfo or NutritionInfoList object."""
@@ -552,7 +553,7 @@ if __name__ == '__main__':
     nl.tt.set_tip(b,'What about this?')
     b.show()
     hb.show()
-    #nl.set_servings(2)
+    #nl.set_yields(2)
     nl.set_nutinfo(ni)
     def display_info (w):
         print w.active_name,w.active_unit,w.active_label

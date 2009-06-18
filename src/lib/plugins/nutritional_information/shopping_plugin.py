@@ -79,7 +79,7 @@ class ShoppingNutritionalInfoPlugin (ShoppingListPlugin):
         self.nutrition_window.vbox.pack_start(self.sw)
         self.nutrition_window.connect('response',self.response_cb)
         self.nutrition_window.connect('close',self.response_cb)
-        self.nl.servingLabel.set_markup('<b>'+_('Amount for Shopping List')+'</b>')
+        self.nl.yieldLabel.set_markup('<b>'+_('Amount for Shopping List')+'</b>')
         self.nl.show()
 
     def response_cb (self, *args):

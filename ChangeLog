@@ -1,3 +1,11 @@
+2009-06-17  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/nutritional_information/reccard_plugin.py: servings->yields
+	* src/lib/plugins/nutritional_information/nutritionLabel.py: servings->yields
+	* src/lib/plugins/nutritional_information/export_plugin.py (NutritionBaseExporterPlugin.get_nutritional_info_as_text_blob): servings->yields
+	* src/lib/GourmetRecipeManager.py (StuffThatShouldBePlugins.batch_edit_recs):
+	Remove obsolete FieldEditor (moved to plugin).
+
 2009-06-17  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/keymanager.py (KeyManager.__init__): Initialize categories again.
