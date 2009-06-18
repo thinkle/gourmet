@@ -1,5 +1,8 @@
 2009-06-17  Thomas Hinkle  <tom@grenville>
 
+	* src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py (GourmetExportChecker.check_attrs):
+	Fix tests (read files as utf-8)
+
 	* src/lib/plugins/nutritional_information/reccard_plugin.py: servings->yields
 	* src/lib/plugins/nutritional_information/nutritionLabel.py: servings->yields
 	* src/lib/plugins/nutritional_information/export_plugin.py (NutritionBaseExporterPlugin.get_nutritional_info_as_text_blob): servings->yields

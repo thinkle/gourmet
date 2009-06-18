@@ -1,12 +1,10 @@
 import re
 
 from gourmet.plugin import ExporterPlugin
-from gourmet.convert import seconds_to_timestring
+from gourmet.convert import seconds_to_timestring, float_to_frac
 import gxml2_exporter
 
 GXML = _('Gourmet XML File')
-
-
 
 class GourmetExportChecker:
 
@@ -16,6 +14,7 @@ class GourmetExportChecker:
         self.check_attrs()
 
     def check_attrs (self):
+        self.txt = self.txt.decode('utf-8')
         for attr in ['title','cuisine',
                      'source','link']:
             if getattr(self.rec,attr):
@@ -27,11 +26,15 @@ class GourmetExportChecker:
                                  'Did not find %s value %s'%(attr,getattr(self.rec,attr))
         if self.rec.yields:
             assert re.search('<yields>\s*%s\s*%s\s*</yields>'%(
-                self.rec.yields,
-                self.rec.yield_unit),
-                             self.txt), \
-                             'Did not find yields value %s %s'%(self.rec.yields,
-                                                                self.rec.yields_unit)
+                    self.rec.yields,
+                    self.rec.yield_unit),
+                             self.txt) or \
+                             re.search('<yields>\s*%s\s*%s\s*</yields>'%(
+                                     float_to_frac(self.rec.yields),
+                                     self.rec.yield_unit),
+                                       self.txt), \
+                                       'Did not find yields value %s %s'%(self.rec.yields,
+                                                                self.rec.yield_unit)
         for att in ['preptime','cooktime']:
             if getattr(self.rec,att):
                 tstr = seconds_to_timestring(getattr(self.rec,att))

@@ -43,7 +43,7 @@ print 'yippee let\'s import...'
 import gourmet.backends.test_db
 print 'We imported... let\'s call main'
 
-import gourmet.test_reccard
+#import gourmet.test_reccard
 import gourmet.importers.test_interactive_importer
 import gourmet.importers.test_importer
 import gourmet.importers.test_importManager
