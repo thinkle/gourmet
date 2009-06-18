@@ -2,6 +2,11 @@
 
 	* src/lib/keymanager.py (KeyManager.__init__): Initialize categories again.
 
+2009-06-16  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/nutritional_information/nutritionDruid.py (NutritionInfoDruid.apply_custom):
+	Fix custom information for fat.
+
 2009-06-07  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/recipeManager.py (DatabaseShopper.init_orgdic): Use new

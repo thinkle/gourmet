@@ -259,10 +259,6 @@ class NutritionInfoDruid (gobject.GObject):
     _created_custom_handler = False
     
     def __init__ (self, nd, prefs, rec=None, in_string=''):
-        # Very primitive custom handler here -- we just return a
-        # NumberEntry no matter what glade says. Obviously if glade
-        # gets updated we'd better fix this (see reccard.py for a more
-        # sophisticated example).
         if not NutritionInfoDruid._created_custom_handler:
             gglobals.gladeCustomHandlers.add_custom_handler('number_entry',
                                                            lambda *args: NumberEntry(default_to_fractions=False)
@@ -638,7 +634,7 @@ class NutritionInfoDruid (gobject.GObject):
             # fact a combination of 3. We'll have to fudge the info
             # about mono- v. poly- unsaturated fats.
             if k=='fat':
-                totfat = v
+                totfat = v * self.custom_factor
                 unsatfat = totfat - nutinfo.get('fasat',0)
                 del nutinfo['fat']
                 nutinfo['fapoly']=unsatfat # Fudge
