@@ -9,7 +9,6 @@ fetched_uris = {}
 def check_for_thumbnail (uri, type="large",reporthook=None):
     """Given a URI, return a file with a thumbnail of the image, or
     None if no thumbnail can be made."""
-    print 'CHECK FOR THUMBNAIL',uri
     if not uri:
         return ""
     m = hashlib.md5(uri)
@@ -22,13 +21,10 @@ def check_for_thumbnail (uri, type="large",reporthook=None):
         import tempfile
         name = tempfile.mktemp()
     if fetched_uris.has_key(uri) and os.path.exists(fetched_uris[uri]):
-        print 'USE PRE-FETCHED IMAGE'
         fn = fetched_uris[uri]
     else:
         try:
-            print 'Getting',uri,reporthook
             fn,headers = urllib.urlretrieve(uri,reporthook=reporthook)
-            print 'Got!',fn,headers
             fetched_uris[uri]=fn
         except IOError:
             return None

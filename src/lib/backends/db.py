@@ -170,7 +170,7 @@ class RecData (Pluggable):
         debug('Initializing DB connection',1)
         if self.filename:
             self.new_db = not os.path.exists(self.filename)
-            print 'Connecting to file ',self.filename,'new=',self.new_db
+            #print 'Connecting to file ',self.filename,'new=',self.new_db
         else:
             self.new_db = True # ??? How will we do this now?
         self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal') 

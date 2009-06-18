@@ -1,3 +1,16 @@
+2009-06-18  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/* Get rid of old debugging print statements throughout library.
+
+	* src/lib/importers/interactive_importer.py (InteractiveImporter.setup_window):
+	Set parent to threadManagerGui dialog.
+
+	* src/lib/version.py: version->0.14.10
+
+	* src/lib/threadManager.py (ThreadManagerGui.__init__): Make
+	thread manager dialog transient for main Gourmet window if not
+	told who its transient for.
+
 2009-06-17  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py (GourmetExportChecker.check_attrs):

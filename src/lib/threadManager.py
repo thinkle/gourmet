@@ -94,14 +94,10 @@ class SuspendableThread (threading.Thread, _IdleObject):
 
     def run (self):
         try:
-            print self,'run!'
             self.do_run()
-            print self,'Done!'
         except Terminated:
-            print 'stopped!'
             self.emit('stopped')
         except:
-            print 'Error!'
             import traceback
             self.emit('error',1,
                       'Error during %s'%self.name,
@@ -134,7 +130,6 @@ class SuspendableThread (threading.Thread, _IdleObject):
         if self.terminated:
             raise Terminated('%s terminated'%self.name)
         if self.suspended:
-            print 'suspended!'
             self.emit('pause')
             emit_resume = True
         while self.suspended:
@@ -190,33 +185,26 @@ class ThreadManager:
             self.thread_queue.append(thread)
         
     def register_thread_done (self, thread):
-        print thread,'done'
         if thread in self.threads:
             self.threads.remove(thread)
             self.active_count -= 1
             self.start_queued_threads()        
 
     def register_thread_paused (self, thread):
-        print thread,'paused'        
         self.active_count -= 1
         self.start_queued_threads()
 
     def register_thread_resume (self, thread):
-        print thread,'resume'                
         self.active_count += 1
 
     def resume_thread (self, thread):
-        print 'resuming thread...'
         if self.active_count < self.max_concurrent_threads:
-            print 'resume right away!'
             thread.resume()
             self.active_count += 1
         else:
-            print 'add to queue'
             self.thread_queue.append(thread)
     
     def start_queued_threads (self):
-        print 'Check queue'
         while self.active_count < self.max_concurrent_threads and self.thread_queue:
             thread_to_add = self.thread_queue.pop()
             self.active_count += 1
@@ -243,6 +231,9 @@ class ThreadManagerGui:
             ThreadManagerGui.__single__ = self
         self.tm = get_thread_manager()
         self.threads = {}
+        if not parent:
+            from GourmetRecipeManager import get_application
+            parent = get_application().window
         self.dialog = gtk.Dialog(parent=parent,
                                  buttons=(gtk.STOCK_CLOSE,gtk.RESPONSE_CLOSE))
         self.dialog.connect('response',self.close)
@@ -301,7 +292,6 @@ class ThreadManagerGui:
         thread.terminate()
 
     def thread_done (self, thread, threadbox):
-        print 'thread_done cb'
         for b in threadbox.buttons: b.hide()
         self.to_remove.append(threadbox)
         txt = threadbox.pb.get_text()
@@ -319,7 +309,6 @@ class ThreadManagerGui:
         pb.set_text(txt)
 
     def thread_error (self, thread, errno, errname, trace, threadbox):
-        print 'thread_error cb'
         for b in threadbox.buttons: b.hide()
         threadbox.pb.set_text(_('Error: %s')%errname)
         b = gtk.Button(_('Details'))
@@ -373,7 +362,6 @@ def get_thread_manager_gui ():
     try:
         return ThreadManagerGui()
     except ThreadManagerGui, tmg:
-        print 'Returning single'
         return tmg
 
 if __name__ == '__main__':

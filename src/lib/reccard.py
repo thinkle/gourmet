@@ -236,7 +236,6 @@ class RecCardDisplay (plugin_loader.Pluggable):
                 ]:
                 gladeCustomHandlers.add_custom_handler(name,handler)
             RecCardDisplay._custom_handlers_setup = True
-        print 'Loading glade from ',os.path.join(gladebase,'recCardDisplay.glade')
         self.glade = gtk.glade.XML(os.path.join(gladebase,'recCardDisplay.glade'))
 
         self.glade.signal_autoconnect({
@@ -865,7 +864,6 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     def add_plugin (self, klass, position=None):
         """Register any external plugins"""
-        print 'RecEditor.add_plugin(',klass,')'
         instance = klass(self)
         if instance.__class__ in self.editor_modules: return # these are handled in setup_modules...
         tab_label = gtk.Label(instance.label)

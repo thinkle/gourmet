@@ -125,7 +125,12 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         ConvenientImporter.__init__(self)
         
     def setup_window (self):
-        self.w = gtk.Window()
+        # set our parent...
+        from gourmet.threadManager import get_thread_manager_gui
+        tmg = get_thread_manager_gui()
+        self.w = gtk.Window();
+        self.w.set_transient_for(tmg.dialog)
+        self.w.set_destroy_with_parent(False)
         self.hb = gtk.HBox()
         self.w.add(self.hb)
         self.tv = gtk.TextView()

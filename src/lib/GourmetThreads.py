@@ -86,7 +86,6 @@ class SuspendableDeletions:
         self.suspended = False
         self.terminated = False
         self.recs = recs
-        print 'SuspendableDeletions handed ',recs
         self.rg = rg
         
     def check_for_sleep (self):
@@ -124,15 +123,12 @@ def get_lock ():
     return threading.Lock()
 
 def gtk_enter ():
-    print 'threads_enter'
     gtk.threads_enter()
 
 def gtk_leave ():
-    print 'threads_leave'
     gtk.threads_leave()
 
 def gtk_threads_init ():
-    print 'threads_init'
     gtk.threads_init()
 
 def gtk_update ():

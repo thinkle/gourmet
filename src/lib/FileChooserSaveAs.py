@@ -179,7 +179,6 @@ class FileSelectorDialog:
         return True
 
     def change_file_extension (self, *args):
-        print 'changing extension'
         #if self.internal_extension_change: return
         fn = os.path.split(self.fsd.get_filename())[1]
         # strip off the old extension if it was one of our
@@ -236,7 +235,6 @@ class FileSelectorDialog:
             return None
 
     def quit (self, *args):
-        print 'removing timeout'
         if hasattr(self,'timeout'):
             gobject.source_remove(self.timeout)
         self.fsd.destroy()

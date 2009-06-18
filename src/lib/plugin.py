@@ -212,7 +212,7 @@ class DatabasePlugin (StandardPlugin):
                 # updates.
 
     active = False
-    
+
     def activate (self, db):
         if self.active:
             print 'Strange -- activate called twice'
@@ -223,7 +223,6 @@ class DatabasePlugin (StandardPlugin):
         self.db = db
         if db._created:
             # For creation after DB is initialized...
-            print 'Table already created -- create tables now.'
             self.create_tables()
             
             self.db.metadata.create_all()
@@ -293,7 +292,6 @@ class UIPlugin (StandardPlugin, UIModule):
         self.add_to_uimanager(pluggable.ui_manager)
 
     def remove (self):
-        #print 'remove!',self
         for uimanager in self.merged:
             merge_id,action_ids = self.merged[uimanager]
             for ag in action_ids: uimanager.remove_action_group(ag)

@@ -177,7 +177,6 @@ class EncodingDialog (de.OptionDialog):
             self.buffer.get_iter_at_line_index(dkeys[self.current_error],0),
             False,
             )
-        print 'moving to %s'%dkeys[self.current_error]
         self.tv.scroll_to_mark(mark,0)
 
     def set_buffer_text (self, buffer, text):
@@ -243,7 +242,6 @@ class EncodingDialog (de.OptionDialog):
 def getEncoding (*args,**kwargs):
     d=EncodingDialog(*args,**kwargs)
     result = d.run()
-    print 'getEncoding returns:',result
     if (not result) and d.encodings:
         return d.options[0]
     elif not result:

@@ -60,7 +60,6 @@ class ShopEditor:
             ['toggled']))
                 
     def dont_ask_cb (self, widget, *args):
-        print 'dont_ask_cb', widget.get_active()
         self.dont_ask=widget.get_active()
 
     def sort_model_fun (model, iter1, iter2, data):
@@ -126,7 +125,6 @@ class ShopEditor:
             self.treeview.connect('row-expanded',self.populateChild)
 
     def tree_edited (self, renderer, path_string, text, n, head):
-        print 'tree_edited called'
         indices = path_string.split(':')
         path = tuple( map(int, indices))
         iter = self.filteredModel.convert_iter_to_child_iter(self.filteredModel.get_iter(path))
@@ -152,7 +150,6 @@ class ShopEditor:
         if children and n==self.KEY_COL:
             self.change_children(key, text, iter)
         else:
-            print 'changing one key'
             if n==self.KEY_COL:
                 self.changeItem(key, item, new_key=text)
             elif n==self.ITEM_COL:
@@ -164,13 +161,10 @@ class ShopEditor:
         # all cases... and then we just have to change the model
         # so our user knows it worked
         self.changeItem(key, new_key=new_key)
-        print 'changing children rows'
         nn = 0
         child = self.treeModel.iter_nth_child(iter,nn)
         while child:
-            print 'changing child row!'
             self.treeModel.set_value(child, self.KEY_COL, new_key)
-            print 'child row changed!'
             nn += 1
             child = self.treeModel.iter_nth_child(iter,nn)        
         
@@ -180,7 +174,6 @@ class ShopEditor:
         else:
             vw=self.rd.ingredients_table.select(key=key)
         for i in vw:
-            print 'changing item for %s %s %s'%(i.id,i.ingkey,i.item)
             if new_key:
                 i.ingkey=new_key
                 self.rd.changed=True                
@@ -201,16 +194,13 @@ class ShopEditor:
                 self.cat_to_key[pickle.loads(c.category)].append(i.ingkey)
 
     def populateChild (self, tv, iter, path):
-        print 'populateChild!'
         iter = self.filteredModel.convert_iter_to_child_iter(iter)
         n = 0
         child = self.treeModel.iter_nth_child(iter,n)
         while child:
-            print '...child'
             i = self.treeModel.get_value(child,0)
             recipes = ""
             for ii in i.itemgroup:
-                print 'ii:',ii
                 id = ii.id
                 r = self.rd.get_rec(ii.id)
                 if r: recipes += ", %s"%r.title
@@ -226,9 +216,7 @@ class ShopEditor:
         self.use_regexp = self.regexpTog.get_active()
         if search_by_str == 'Key':
             self.search_by = self.KEY_COL
-            print 'search_by',self.KEY_COL            
         else:
-            print 'search_by',self.CAT_COL
             #print self.treeModel[-1][self.ITEM_COL]
             self.search_by = self.CAT_COL
         self.filteredModel.refilter()
