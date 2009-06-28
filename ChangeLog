@@ -1,3 +1,8 @@
+2009-06-27  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/importers/interactive_importer.py (InteractiveImporter.commit_changes.mark_sorter):
+	Handle markup in title of recipe in imageBrowser dialog window.
+
 2009-06-18  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/* Get rid of old debugging print statements throughout library.

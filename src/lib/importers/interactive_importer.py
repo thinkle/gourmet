@@ -1,4 +1,5 @@
 import gtk, pango
+from xml.sax.saxutils import escape
 from gettext import gettext as _
 from generic_recipe_parser import RecipeParser
 import gourmet.gtk_extras.cb_extras as cb
@@ -407,7 +408,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             for rec in self.added_recs:
                 ibd = imageBrowser.ImageBrowserDialog(
                     title=_('Select recipe image'),
-                    label=_('Select image for recipe "%s"'%rec.title or _('Untitled')),
+                    label=_('Select image for recipe "%s"'%escape(rec.title or _('Untitled')),
                     sublabel=_("Below are all the images found for the page you are importing. Select any images that are of the recipe, or don't select anything if you don't want any of these images."),
                     )
                 for i in self.images: ibd.add_image_from_uri(i)
