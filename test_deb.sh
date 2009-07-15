@@ -7,4 +7,4 @@ sudo rm -rf /usr/share/gourmet/ /usr/local/share/gourmet/ /usr/local/lib/python2
 echo Install our new package
 sudo dpkg -i $LATEST_DEB
 echo 'Test gourmet'
-gourmet --gourmet-directory=/tmp/foobar
+/usr/bin/gourmet --gourmet-directory=/tmp/foobar

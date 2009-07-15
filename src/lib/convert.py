@@ -125,7 +125,6 @@ class Converter:
 
     def build_converter_dictionary (self, table=None, density=False):
         # first, make a list of all units in our dictionaries
-        #print 'build converter dictionary!'
         if not density:
             convert = self.convert_simple
         else:
@@ -901,7 +900,7 @@ def float_to_metric(n, approx=0.01):
                 return float_to_metric(n,approx*.01)
             return locale.format("%."+str(decimals_to_preserve)+"f",rounded,True) # format(formatstring, number, use_thousands_separator)
     else:
-        return locale.format("%s",n,True)
+        return locale.format("%i",n,True)
     
 def float_string (s):
     """Convert string to a float, assuming it is some sort of decimal number
@@ -930,15 +929,16 @@ def float_string (s):
         return float(s)
     # otherwise let's check if this actually looks like a thousands separator
     # before trusting our locale
-    elif re.match('[0-9]+%s[0-9][0-9][0-9]'%THOUSEP,s):
+    elif re.search('[0-9]+%s[0-9][0-9][0-9]'%re.escape(THOUSEP),s):
         return locale.atof(s)
-    elif THOUSEP and s.find(THOUSEP)>-1 and THOUSEP != '.':
+    elif THOUSEP and s.find(THOUSEP)>-1:
         # otherwise, perhaps our thousand separator is really a
         # decimal separator (we're out of our locale...)
         print 'Warning: assuming %s is a decimal point in %s'%(THOUSEP,s)
-        s = s.replace(THOUSEP,'.')
-        s = s.replace(',','.') # and remove any commas for good measure
-        return float(s)
+        s = s.replace(DECSEP,'!!!')
+        s = s.replace(THOUSEP,DECSEP)
+        s = s.replace('!!!',THOUSEP) # and remove any commas for good measure
+        return locale.atof(s)
     else:
         # otherwise just trust our locale float
         return locale.atof(s)
