@@ -1,8 +1,15 @@
+2009-07-15  Thomas M Hinkle  <tom@minime>
+
+	* windows/gtkrc: Remove custom theme to try to work around bug
+	with vertical notebooks (see bug #2768204)
+
+	* src/lib/plugin_loader.py (MasterLoader.load_plugin_directories):
+	Fix hardcoded / in glob path. Fix from Julianne Sharer.
+
 2009-07-14  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/importers/interactive_importer.py (InteractiveImporter.commit_changes):
 	Fix syntax error in last commit (parens).
-
 	* src/lib/defaults/defaults_de.py: Unicodify strings (u'')
 	* src/lib/convert.py (float_to_metric): Use integer format
 	code (%i) instead of string format-code which allows decimals to
