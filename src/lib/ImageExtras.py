@@ -1,6 +1,8 @@
 import os, os.path, tempfile, gtk, Image, StringIO
 from gdebug import *
 
+TMPFILE = tempfile.mktemp(prefix='gourmet_tempfile_')
+
 def resize_image (image, width=None, height=None):
     debug("resize_image (self, image, width=None, height=None):",5)
     """Resize an image to have a maximum width=width or height=height.
@@ -56,7 +58,7 @@ def get_pixbuf_from_jpg (raw):
     """Given raw data of a jpeg file, we return a gtk.gdk.Pixbuf
     """
     #o=open('/tmp/recimage.jpg','w')
-    fn=write_image_tempfile(raw,name='gourmet_tempfile')
+    fn=write_image_tempfile(raw,name=TMPFILE)
     i=gtk.Image()
     i.set_from_file(fn)
     return i.get_pixbuf()
