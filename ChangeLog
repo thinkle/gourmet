@@ -1,3 +1,8 @@
+2009-07-28  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/reccard.py (RecCardDisplay.multiplication_change_cb):
+	Implement multiplication again.
+
 2009-07-15  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/ImageExtras.py (get_pixbuf_from_jpg): Create one unique

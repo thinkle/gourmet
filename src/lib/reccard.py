@@ -606,8 +606,9 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.update_yields_multiplier(widg.get_value())
         self.ingredientDisplay.display_ingredients() # re-update
 
-    def multiplication_change_cb (self, *args):
-        pass
+    def multiplication_change_cb (self, widg):
+        self.mult = widg.get_value()
+        self.ingredientDisplay.display_ingredients() # re-update
 
     def update_yields_multiplier (self, val):
         yields = self.yieldsDisplaySpin.get_value()
