@@ -61,7 +61,7 @@ class KeyEditor:
         self.last_button.connect('clicked',lambda *args: self.treeModel.goto_last_page())
         # Setup search stuff
         self.search_string=""
-        self.search_by = _('Key')
+        self.search_by = _('key')
         self.use_regexp=True
         self.setupTreeView()
         self.treeview.set_model(self.treeModel)
@@ -435,7 +435,6 @@ class KeyEditor:
                 nid.show()
             
     def update_nutinfo (self, *args):
-        print 'KeyEditor.update_nutinfo'
         self.treeModel.reset_views()
 
     def update_iter (self, itr, newdic):
@@ -515,6 +514,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
     
     columns = ['obj','ingkey','item','count','recipe']#,'ndbno']
     def __init__ (self, rd, per_page=15):
+        self.__last_limit_text = ''
         self.rd = rd
         pageable_store.PageableTreeStore.__init__(self,
                                                   [gobject.TYPE_PYOBJECT, # row ref
@@ -534,7 +534,6 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
             try:
                 itr = self.get_iter(path)
             except ValueError:
-                print 'Trouble with path',path
                 return
             self.emit('row-changed',path,itr)
             child = self.iter_children(itr)
@@ -558,6 +557,10 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
         self.limit(txt,'item',search_options)
 
     def limit (self, txt, column='ingkey', search_options={}):
+        if txt == self.__last_limit_text:
+            return
+        else:
+            self.__last_limit_text = txt
         if not txt: self.reset_views()
         if search_options['use_regexp']:
             s = {'search':txt,'operator':'REGEXP'}
@@ -661,7 +664,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
 
     def get_recs (self, key, item):
         """Return a string with a list of recipes containing an ingredient with key and item"""
-        recs = [i.id for i in self.rd.fetch_all(self.rd.ingredients_table,ingkey=key,item=item)]
+        recs = [i.recipe_id for i in self.rd.fetch_all(self.rd.ingredients_table,ingkey=key,item=item)]
         titles = []
         looked_at = []
         for r_id in recs:

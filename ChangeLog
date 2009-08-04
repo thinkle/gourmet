@@ -1,3 +1,12 @@
+2009-08-03  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/plugins/key_editor/keyEditor.py (KeyEditor.__init__):
+	Fix case of 'key' (error caused extra search to be run on
+	launching keyEditor.py)
+	(KeyStore.limit): Only limit if text has changed.
+	(KeyStore.get_recs): Fix recipe fetching (old DB change --
+	id->recipe_id in ingredients table)
+
 2009-07-28  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/reccard.py (RecCardDisplay.multiplication_change_cb):
