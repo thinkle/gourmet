@@ -16,7 +16,7 @@ class WebParser (InteractiveImporter):
               'dd':['dl'],
               }
     TAB_BEFORE = ['td','dt']
-    IGNORE = ['script','meta','select','link','img']
+    IGNORE = ['script','meta','select','link','img','style']
     TAB = '  '
     JOINABLE = ['instructions','notes','recipe','ignore','ingredients','include',None]
     INVISIBLE_TYPES = [

@@ -44,4 +44,5 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
         url = 'file://'+filename
         data = file(filename).read()
         content_type = 'text/html'
-        return get_web_importer(url,data,content_type)
+        return self.get_web_importer(url,data,content_type)
+

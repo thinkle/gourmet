@@ -1,3 +1,11 @@
+2009-08-06  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/plugins/import_export/web_import_plugin/webpage_importer.py (WebParser.IGNORE):
+	Ignore style tag.
+
+	* src/lib/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py (GenericWebImporter.get_importer):
+	Fix typo (get_web_importer -> self.get_web_importer
+
 2009-08-03  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/plugins/key_editor/keyEditor.py (KeyEditor.__init__):
