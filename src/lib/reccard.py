@@ -36,6 +36,16 @@ import timeScanner
 
 from timer import show_timer
 
+def find_entry (w):
+    if isinstance(w,gtk.Entry):
+        return w
+    else:
+        if not hasattr(w,'get_children'):
+            return None
+        for child in w.get_children():
+            e = find_entry(child)
+            if e: return e
+
 class RecRef:
     def __init__ (self, id, title):
         self.refid = id
@@ -1320,6 +1330,9 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
                 raise
             self.edit_widgets.append(self.rw[a])
             self.rw[a].db_prop = a
+            # Set up accessibility
+            atk = (find_entry(self.rw[a]) or self.rw[a]).get_accessible()
+            atk.set_name(REC_ATTR_DIC[a]+' Entry')
             #self.rw[a].get_children()[0].connect('changed',self.changed_cb)
         for a in self.recent:            
             self.rw[a]=self.glade.get_widget("%sBox"%a)
@@ -1330,6 +1343,9 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
                 raise
             self.edit_widgets.append(self.rw[a])            
             self.rw[a].db_prop = a
+            # Set up accessibility
+            atk = (find_entry(self.rw[a]) or self.rw[a]).get_accessible()
+            atk.set_name(REC_ATTR_DIC[a]+' Entry')
             #self.rw[a].connect('changed',self.changed_cb)
         self.update_from_database()
 
@@ -1574,6 +1590,11 @@ class TextFieldEditor (TextEditor):
         self.tv.set_buffer(buf)
         self.tv.show()
         self.tv.db_prop = self.prop
+        if not self.label:
+            print 'Odd,',self,'has no label'
+        else:
+            atk = self.tv.get_accessible()
+            atk.set_name(self.label + ' Text')
         self.update_from_database()
         Undo.UndoableTextView(self.tv,self.history)
         self.setup_action_groups()

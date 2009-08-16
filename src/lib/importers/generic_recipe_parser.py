@@ -62,7 +62,8 @@ class RecipeParser:
                   'source',
                   'ignore',
                   'yields',
-                  'yield_unit'
+                  'yield_unit',
+                  'modifications',
                   ]
 
     ALIASES = [('cooking time','cooktime'),
@@ -71,6 +72,8 @@ class RecipeParser:
                ('author','source'),
                ('by','source'),
                ('yield','yields'),
+               ('notes','modifications'),
+               ('note','modifications'),               
                ]
 
     IGNORE_ON_OWN = ['instructions','ingredients','directions']
@@ -78,7 +81,7 @@ class RecipeParser:
     joinable_tags = ['instructions','ingredient','ingredients',None]
     change_on_join = {'ingredient':'ingredients'}
 
-    ing_matcher = re.compile("^\s*(%s\s*\w+.*)"%convert.NUMBER_REGEXP)
+    ing_matcher = re.compile("^\s*(%s\s+\w+.*)"%convert.NUMBER_REGEXP)
 
     def __init__ (self):
         self.title_parsed = False

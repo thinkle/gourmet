@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Apr 18 14:11:34 2009 -->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="descriptionEditor">
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
     <child>
       <widget class="GtkScrolledWindow" id="descriptionMainWidget">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-        <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+        <property name="hscrollbar_policy">automatic</property>
+        <property name="vscrollbar_policy">automatic</property>
         <child>
           <widget class="GtkViewport" id="viewport5">
             <property name="visible">True</property>
@@ -28,16 +28,12 @@
                         <property name="column_spacing">6</property>
                         <property name="row_spacing">6</property>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
                           <widget class="GtkEntry" id="linkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="has_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="has_default">True</property>
-                            <property name="invisible_char">*</property>
                             <property name="width_chars">40</property>
                           </widget>
                           <packing>
@@ -54,7 +50,7 @@
                             <property name="xalign">0</property>
                             <property name="label" translatable="yes">_Webpage:</property>
                             <property name="use_underline">True</property>
-                            <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                            <property name="justify">right</property>
                             <property name="mnemonic_widget">sourceBox</property>
                           </widget>
                           <packing>
@@ -72,13 +68,16 @@
                                 <property name="xalign">0</property>
                                 <property name="stock">gtk-missing-image</property>
                               </widget>
+                              <packing>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                             <child>
                               <widget class="GtkButton" id="addImage">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                                 <signal name="clicked" handler="setRecImage"/>
                                 <child>
                                   <widget class="GtkAlignment" id="alignment17">
@@ -97,6 +96,7 @@
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
@@ -146,13 +146,13 @@
                         <child>
                           <widget class="GtkHButtonBox" id="hbuttonbox2">
                             <property name="visible">True</property>
-                            <property name="layout_style">GTK_BUTTONBOX_START</property>
+                            <property name="layout_style">start</property>
                             <child>
                               <widget class="GtkButton" id="delImageButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                                 <signal name="clicked" handler="delRecImage"/>
                                 <child>
                                   <widget class="GtkAlignment" id="alignment18">
@@ -171,6 +171,7 @@
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
@@ -190,6 +191,11 @@
                                   </widget>
                                 </child>
                               </widget>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                           </widget>
                           <packing>
@@ -207,8 +213,10 @@
                             <property name="has_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="has_default">True</property>
-                            <property name="invisible_char">*</property>
                             <property name="width_chars">40</property>
+                            <accessibility>
+                              <atkproperty name="AtkObject::accessible-name" translatable="yes">Title</atkproperty>
+                            </accessibility>
                             <signal name="changed" handler="rcEdited"/>
                           </widget>
                           <packing>
@@ -298,7 +306,7 @@
                             <property name="xalign">0</property>
                             <property name="label" translatable="yes">C_uisine:</property>
                             <property name="use_underline">True</property>
-                            <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                            <property name="justify">right</property>
                             <property name="mnemonic_widget">cuisineBox</property>
                           </widget>
                           <packing>
@@ -314,7 +322,7 @@
                             <property name="xalign">0</property>
                             <property name="label" translatable="yes">_Rating:</property>
                             <property name="use_underline">True</property>
-                            <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                            <property name="justify">right</property>
                             <property name="mnemonic_widget">ratingBox</property>
                           </widget>
                           <packing>
@@ -330,7 +338,7 @@
                             <property name="xalign">0</property>
                             <property name="label" translatable="yes">S_ource:</property>
                             <property name="use_underline">True</property>
-                            <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                            <property name="justify">right</property>
                             <property name="mnemonic_widget">sourceBox</property>
                           </widget>
                           <packing>
@@ -343,11 +351,6 @@
                         <child>
                           <widget class="GtkComboBoxEntry" id="sourceBox">
                             <property name="visible">True</property>
-                            <child internal-child="entry">
-                              <widget class="GtkEntry" id="comboboxentry-entry3">
-                                <property name="visible">True</property>
-                              </widget>
-                            </child>
                           </widget>
                           <packing>
                             <property name="left_attach">1</property>
@@ -361,11 +364,6 @@
                         <child>
                           <widget class="GtkComboBoxEntry" id="cuisineBox">
                             <property name="visible">True</property>
-                            <child internal-child="entry">
-                              <widget class="GtkEntry" id="comboboxentry-entry2">
-                                <property name="visible">True</property>
-                              </widget>
-                            </child>
                           </widget>
                           <packing>
                             <property name="left_attach">1</property>
@@ -407,11 +405,9 @@
                         <child>
                           <widget class="GtkComboBoxEntry" id="categoryBox">
                             <property name="visible">True</property>
-                            <child internal-child="entry">
-                              <widget class="GtkEntry" id="comboboxentry-entry1">
-                                <property name="visible">True</property>
-                              </widget>
-                            </child>
+                            <accessibility>
+                              <atkproperty name="AtkObject::accessible-name" translatable="yes">category</atkproperty>
+                            </accessibility>
                           </widget>
                           <packing>
                             <property name="left_attach">1</property>
@@ -433,9 +429,13 @@
                                   <widget class="Custom" id="ratingBox">
                                     <property name="visible">True</property>
                                     <property name="creation_function">makeStarButton</property>
+                                    <accessibility>
+                                      <atkproperty name="AtkObject::accessible-name" translatable="yes">rating</atkproperty>
+                                    </accessibility>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
+                                    <property name="position">0</property>
                                   </packing>
                                 </child>
                               </widget>
@@ -459,10 +459,14 @@
                                 <property name="can_focus">True</property>
                                 <property name="adjustment">0 0 5000 1 10 10</property>
                                 <property name="climb_rate">1</property>
+                                <accessibility>
+                                  <atkproperty name="AtkObject::accessible-name" translatable="yes">Yield</atkproperty>
+                                </accessibility>
                                 <signal name="changed" handler="rcEdited"/>
                               </widget>
                               <packing>
                                 <property name="expand">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -470,12 +474,9 @@
                                 <property name="visible">True</property>
                                 <property name="focus_on_click">False</property>
                                 <property name="items" translatable="yes">servings</property>
-                                <child internal-child="entry">
-                                  <widget class="GtkEntry" id="comboboxentry-entry4">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                  </widget>
-                                </child>
+                                <accessibility>
+                                  <atkproperty name="AtkObject::accessible-name" translatable="yes">Yield Unit</atkproperty>
+                                </accessibility>
                               </widget>
                               <packing>
                                 <property name="position">1</property>
@@ -491,14 +492,21 @@
                             <property name="y_options">GTK_SHRINK | GTK_FILL</property>
                           </packing>
                         </child>
+                        <child>
+                          <placeholder/>
+                        </child>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
                         <property name="padding">6</property>
+                        <property name="position">0</property>
                       </packing>
                     </child>
                   </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
               </widget>
             </child>

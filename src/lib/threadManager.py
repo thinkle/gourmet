@@ -236,6 +236,7 @@ class ThreadManagerGui:
             parent = get_application().window
         self.dialog = gtk.Dialog(parent=parent,
                                  buttons=(gtk.STOCK_CLOSE,gtk.RESPONSE_CLOSE))
+        self.dialog.set_title(_('Gourmet Import/Export'))
         self.dialog.connect('response',self.close)
         self.dialog.connect('delete-event',self.delete_event_cb)
         self.sw = gtk.ScrolledWindow()

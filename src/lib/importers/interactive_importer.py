@@ -20,6 +20,7 @@ import gourmet.ImageExtras as ImageExtras
 
 DEFAULT_TAGS = []
 DEFAULT_TAG_LABELS = gglobals.REC_ATTR_DIC.copy()
+DEFAULT_TAG_LABELS.update(gglobals.TEXT_ATTR_DIC)
 for attr in gglobals.DEFAULT_ATTR_ORDER:
     if attr != 'link':
         DEFAULT_TAGS.append(attr)
@@ -27,10 +28,11 @@ for attr in gglobals.DEFAULT_ATTR_ORDER:
             # a bit of a hack -- we want to make 'yield unit' a button
             DEFAULT_TAGS.append('yield_unit')
             DEFAULT_TAGS.append('servings')
-DEFAULT_TAGS.extend(['instructions','ingredients','inggroup','ignore'])
+DEFAULT_TAGS.extend(gglobals.DEFAULT_TEXT_ATTR_ORDER)
+
+DEFAULT_TAGS.extend(['ingredients','inggroup','ignore'])
 for tag,label in [
     ('servings',_('Servings')),
-    ('instructions',_('Instructions')),
     ('ingredients',_('Ingredients')),
     ('inggroup',_('Ingredient Subgroup')),
     ('ignore',_('Hide'))
@@ -107,7 +109,9 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                   custom_parser = None,
                   tags=DEFAULT_TAGS,
                   tag_labels=DEFAULT_TAG_LABELS,
-                  modal=True):
+                  modal=True,
+                  title=_('Import recipe')):
+        self.title = title
         if custom_parser: self.parser = custom_parser
         else: self.parser = RecipeParser()
         self.labels_by_tag = tag_labels
@@ -130,6 +134,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         from gourmet.threadManager import get_thread_manager_gui
         tmg = get_thread_manager_gui()
         self.w = gtk.Window();
+        self.w.set_title(self.title)
         self.w.set_transient_for(tmg.dialog)
         self.w.set_destroy_with_parent(False)
         self.hb = gtk.HBox()

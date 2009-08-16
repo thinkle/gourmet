@@ -1,3 +1,29 @@
+2009-08-15  Thomas M Hinkle  <tom@minime>
+
+	* src/test_gui.py (BasicTests.tearDown): Make sure processes
+	really die.
+
+	* src/lib/threadManager.py (ThreadManagerGui.__init__): Add title
+	to default dialog.
+
+	* src/lib/reccard.py (TextFieldEditor.setup_main_interface): Add
+	a11y names for all entries to help make dogtail-based testing
+	easier.
+
+	* src/lib/importers/interactive_importer.py: Fix default tags to
+	include tags for all text fields.
+
+	* src/lib/importers/importManager.py (ImportManager.offer_web_import):
+	Remove "." from dialog title (Enter website address)
+
+	* src/lib/importers/generic_recipe_parser.py (RecipeParser):
+	Include notes in list of fields automatically parsed.
+	(RecipeParser.ing_matcher): Fix typo in regexp that made any line
+	starting with the letter "a" look like in ingredient (require a
+	space between number or article and word)
+
+	* src/lib/gglobals.py (REC_ATTRS): Fix typo that put extra colon in yield unit field.
+
 2009-08-06  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/plugins/import_export/web_import_plugin/webpage_importer.py (WebParser.IGNORE):

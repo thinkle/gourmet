@@ -52,7 +52,7 @@ class ImportManager (plugin_loader.Pluggable):
         plugins.
         """
         sublabel = _('Enter the URL of a recipe archive or recipe website.')
-        url = de.getEntry(label=_('Enter website address.'),
+        url = de.getEntry(label=_('Enter website address'),
                           sublabel=sublabel,
                           entryLabel=_('Enter URL:'),
                           entryTip=_('Enter the address of a website or recipe archive.'),

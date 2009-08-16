@@ -255,7 +255,7 @@ REC_ATTRS = [('title',_('Title'),'Entry'),
              ('source',_('Source'),'Combo'),
              ('link',_('Website'),'Entry'),
              ('yields',_('Yield'),'Entry'),
-             ('yield_unit',_('Yield Unit:'),'Combo'),             
+             ('yield_unit',_('Yield Unit'),'Combo'),             
              ('preptime',_('Preparation Time'),'Entry'),
              ('cooktime',_('Cooking Time'),'Entry'),
              ]

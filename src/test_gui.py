@@ -30,8 +30,9 @@ class BasicTests (unittest.TestCase):
         print 'Done with run!'
         if BasicTests.firstRun:
             print 'first run, sleep a bit extra...'
-            time.sleep(5)
+            time.sleep(3)
             BasicTests.firstRun = False
+        time.sleep(2)
         print 'focus frame'
         dp.focus.application(APPNAME)
         print 'setUp done!'
@@ -46,8 +47,9 @@ class BasicTests (unittest.TestCase):
         print 'Hit quit!'
         time.sleep(2)
         print 'tearDown done!'
+        os.system('killall gourmet_in_place') # Maek sure it's really dead...
 
-    def AtestEditingNewCard (self):
+    def testEditingNewCard (self):
         dp.focus.application(APPNAME)
         dp.focus.frame('Gourmet Recipe Manager')
         #dp.keyCombo('<Ctrl>N')
@@ -83,9 +85,17 @@ class BasicTests (unittest.TestCase):
 
     def testWebImport (self):
         self.do_testWebImport('file:///home/tom/Projects/grecipe-manager/src/tests/recipe_files/sample_site.html')
+        self.search_and_open("Spaghetti")
+        screenshot('web_imported_recipe_card-sample_site.png')        
 
-    def AtestFileImport (self):
+    def testFileImport (self):
         self.do_testFileImport("/home/tom/Projects/grecipe-manager/src/tests/recipe_files/test_set.grmt")
+
+    def testMastercookFileImport (self):
+        self.do_testFileImport("/home/tom/Projects/grecipe-manager/src/tests/recipe_files/athenos1.mx2")
+
+    def testMMFImport (self):
+        self.do_testFileImport("/home/tom/Projects/grecipe-manager/src/tests/recipe_files/mealmaster.mmf")            
 
     def do_testFileImport (self, fn):
         shortname = os.path.split(fn)[1]
@@ -122,14 +132,16 @@ class BasicTests (unittest.TestCase):
         screenshot('manual_web_import_done-%s.png'%shortname)
         dp.focus.dialog('Gourmet Import/Export')
         dp.click('Close')
+
+    def search_and_open (self, txt):
         dp.focus.frame("Gourmet Recipe Manager")
         dp.keyCombo('<Alt>S') # Focus search
         dp.focus.text()
-        dp.type("Spaghetti") # Search for our recipe
+        dp.type(txt) # Search for our recipe
         dp.keyCombo('<Alt>L') # Focus recipe list
         dp.keyCombo('Return') # Open recipe
         time.sleep(1)
-        screenshot('web_imported_recipe_card-%s.png'%shortname)
+
 
 if __name__ == '__main__':
     print 'unittest.main()'
