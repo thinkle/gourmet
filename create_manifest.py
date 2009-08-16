@@ -36,6 +36,7 @@ setup.py
 lst = STARTER_LIST.split('\n')
 lst.extend(['src/gourmet','src/gourmet_in_place'])
 recursive_match('data',['*.txt','*.wav','*.css'],lst)
+recursive_match('style',['*.txt','*.css','*.png','*.jpg'],lst)
 lst.extend(['data/FAQ'])
 recursive_match('src/lib',['*.py'],lst)
 recursive_match('glade',['*.glade'],lst)

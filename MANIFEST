@@ -373,6 +373,7 @@ src/lib/timeScanner.py
 src/lib/timer.py
 src/lib/upgradeHandler.py
 src/lib/version.py
+style/default.css
 tools/__init__.py
 tools/backup_gourmet_to_xml.py
 tools/gourmet_distutils.py

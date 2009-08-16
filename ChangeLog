@@ -1,5 +1,11 @@
 2009-08-15  Thomas M Hinkle  <tom@minime>
 
+	* src/lib/version.py (version): Push version to 0.15.0 (will be
+	stable release -- dependencies, alas, have changed enough that
+	0.13.x has become unstable on up-to-date systems.
+
+	* create_manifest.py: Add style/ directory to manifest.
+
 	* src/test_gui.py (BasicTests.tearDown): Make sure processes
 	really die.
 
