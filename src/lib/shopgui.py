@@ -641,7 +641,7 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
 	    )
 	self.conf.append(
 	    WidgetSaver.WidgetSaver(self.hp,
-				    self.prefs.get('shophpaned1',{'position':self.vp.get_position()})
+				    self.prefs.get('shophpaned1',{'position':self.hp.get_position()})
 				    )
 	    )
 	    
@@ -961,7 +961,7 @@ class OptionalIngDialog (de.ModalDialog):
 	self.rd = recipeManager.get_recipe_manager()
         de.ModalDialog.__init__(
             self, default,
-            label=_("Select optional ingredients."),
+            label=_("Select optional ingredients"),
             sublabel=_("Please specify which of the following optional ingredients you'd like to include on your shopping list."))
         self.mult = mult
         self.vw=vw
