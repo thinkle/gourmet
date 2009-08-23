@@ -1,3 +1,7 @@
+2009-08-22  Thomas M Hinkle  <tom@minime>
+
+	* glade/recCardDisplay.glade: Fix add-to-shopping-list button (use stock id)
+
 2009-08-18  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/shopgui.py (ShopGui.__init__): Fix bug that screwed up

@@ -44,7 +44,7 @@
                         <child>
                           <widget class="GtkImage" id="image1263">
                             <property name="visible">True</property>
-                            <property name="stock">gtk-missing-image</property>
+                            <property name="stock">add-to-shopping-list</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
