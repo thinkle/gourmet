@@ -64,7 +64,7 @@ def make_simple_select_arg (criteria,*tables):
         if type(v)==tuple:
             operator,value = v
             if type(value)==str:
-                v = unicode(v)
+                value = unicode(value)
             if operator=='in':
                 args.append(k.in_(value))
             elif hasattr(k,operator):
