@@ -1,7 +1,7 @@
 from gourmet.plugin import RecEditorModule, RecEditorPlugin, IngredientControllerPlugin
 from gourmet.plugin_loader import PRE,POST
 import gtk, gobject
-from gourmet.reccard import IngredientEditorModule
+from gourmet.reccard import IngredientEditorModule, RecRef
 import keyEditorPluggable
 
 ING = 0
@@ -185,10 +185,16 @@ class IngredientKeyEditor (RecEditorModule):
         if edited:
             # Update based on current ingredients...
             ITM = ie.ingtree_ui.ingController.ITEM_COL
-            for row in ie.ingtree_ui.ingController.imodel:
+            def process_row (row):
                 obj = row[0]
                 item = row[ITM]
                 already_there = False
+                if isinstance(obj,RecRef):
+                    return
+                if item == None: # if this is a group..
+                    for child in row.iterchildren():
+                        process_row(child)
+                    return
                 for myrow in self.model:
                     if obj==myrow[0]:
                         already_there = True
@@ -200,6 +206,8 @@ class IngredientKeyEditor (RecEditorModule):
                     else:
                         ingkey = self.rg.rd.km.get_key(item.split(';')[0],1.0)
                     self.model.append((row[0],item,ingkey))
+            for row in ie.ingtree_ui.ingController.imodel:
+                process_row(row)
                 
     def save (self, recdic):
         # save...

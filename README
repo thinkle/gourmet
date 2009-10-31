@@ -20,8 +20,7 @@ become more GNOME HIG compliant (or just improve in general).
     To print, you'll need e.g. the python-gnome2-extras package as
     well as the the python-gnome2 package).
 3. libglade
-4. Python and pysqlite bindings (if you have python 2.5, these are
-   there by default.)
+4. sqlalchemy
 5. distutils (to install). Provided by python-dev package.
 6. Python Imaging Libraries (PIL)
 
