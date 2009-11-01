@@ -1,3 +1,10 @@
+2009-10-31  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/plugins/key_editor/recipeEditorPlugin.py (IngredientKeyEditor.update_from_ingredient_editor_cb.process_row):
+	Handle groups correctly.
+
+	* README: Fix sql dependencies.
+
 2009-08-26  Thomas Hinkle  <tom@grenville>
 
 	* data/ABBREV.txt
