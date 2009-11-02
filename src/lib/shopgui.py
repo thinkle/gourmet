@@ -4,6 +4,7 @@ import recipeManager, convert, reccard, prefs
 from gtk_extras import WidgetSaver, mnemonic_manager
 from gtk_extras import dialog_extras as de
 from gtk_extras import treeview_extras as te
+from gtk_extras import fix_action_group_importance
 import exporters.printer as printer
 from gdebug import *
 from gglobals import *
@@ -153,8 +154,11 @@ class IngredientAndPantryList:
 	     lambda *args: self.add_selection_to_pantry() # callback
 	     ),
 	    ])
+        fix_action_group_importance(self.pantryActions)
 	self.ui_manager.insert_action_group(self.pantryActions,0)
+        fix_action_group_importance(self.shoppingActions)
 	self.ui_manager.insert_action_group(self.shoppingActions,0)
+        fix_action_group_importance(self.pantryOrShoppingActions)
 	self.ui_manager.insert_action_group(self.pantryOrShoppingActions,0)	
 
     def setup_category_ui (self):
@@ -769,7 +773,10 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
                 #     # callback
                 #    ),
                 ])
+
+        fix_action_group_importance(self.mainActionGroup)
 	self.ui_manager.insert_action_group(self.mainActionGroup,0)
+        fix_action_group_importance(self.recipeListActions)
 	self.ui_manager.insert_action_group(self.recipeListActions,0)
 	IngredientAndPantryList.setup_actions(self)
 

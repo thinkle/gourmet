@@ -10,6 +10,7 @@ import exporters, importers
 from exporters.exportManager import get_export_manager
 from importers.importManager import get_import_manager
 import convert, version
+from gtk_extras import fix_action_group_importance
 from gtk_extras import ratingWidget, WidgetSaver, mnemonic_manager
 from gtk_extras import dialog_extras as de
 from gtk_extras import treeview_extras as te
@@ -265,6 +266,7 @@ class GourmetApplication:
         self.merged_go_menus = {}
 
     def add_uimanager_to_manage (self, id, uimanager, menu_root_name):
+        fix_action_group_importance(self.goActionGroup)
         uimanager.insert_action_group(self.goActionGroup,0)
         uimanager.add_ui_from_string(self.shared_go_menu%{'name':menu_root_name})
         self.uimanagers[id] = [uimanager,menu_root_name,
@@ -924,6 +926,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                           rg=self,
                           editable=False)
         self.setup_database_hooks()        
+        fix_action_group_importance(self.search_actions)
         self.ui_manager.insert_action_group(self.search_actions,0)
         self.setup_main_window()
         self.window.add_accel_group(self.ui_manager.get_accel_group())
@@ -1078,8 +1081,12 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('GoRecipeIndex',None,_('Recipe _Index'),
              None,_('Searchable index of recipes in the database.'),self.present)]
                                        )
+        fix_action_group_importance(self.onSelectedActionGroup)
         self.ui_manager.insert_action_group(self.onSelectedActionGroup,0)
+        fix_action_group_importance(self.mainActionGroup)
+        fix_action_group_importance(self.mainActionGroup)
         self.ui_manager.insert_action_group(self.mainActionGroup,0)
+        fix_action_group_importance(self.toolActionGroup)
         self.ui_manager.insert_action_group(self.toolActionGroup,0)
         self.add_uimanager_to_manage(-1,self.ui_manager,'RecipeIndexMenuBar')
 

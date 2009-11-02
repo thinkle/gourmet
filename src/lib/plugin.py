@@ -30,6 +30,7 @@
 
 import Undo, gtk, gobject, types
 import plugin_loader
+from gtk_extras import fix_action_group_importance
 
 class Plugin:
     pass
@@ -301,6 +302,7 @@ class UIPlugin (StandardPlugin, UIModule):
         merge_id = uimanager.add_ui_from_string(self.ui)
         action_ids = []
         for ag in self.action_groups:
+            fix_action_group_importance(ag)
             uimanager.insert_action_group(ag,0)
             action_ids.append(ag)
         self.merged[uimanager] = merge_id,action_ids    

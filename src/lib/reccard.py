@@ -24,6 +24,7 @@ from importers.importer import parse_range
 from gtk_extras.FauxActionGroups import ActionManager
 from gtk_extras import mnemonic_manager
 from gtk_extras import LinkedTextView
+from gtk_extras import fix_action_group_importance
 from plugin import RecDisplayModule, RecEditorModule, ToolPlugin, RecDisplayPlugin, RecEditorPlugin, IngredientControllerPlugin
 import plugin_loader
 import timeScanner
@@ -191,6 +192,12 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.ui_manager = gtk.UIManager()
         self.ui_manager.add_ui_from_string(self.ui)
         self.setup_actions()
+        for group in [
+            self.recipeDisplayActionGroup,
+            self.rg.toolActionGroup,
+            self.rg.toolActionGroup
+            ]:
+            fix_action_group_importance(group)
         self.ui_manager.insert_action_group(self.recipeDisplayActionGroup,0)
         self.ui_manager.insert_action_group(self.recipeDisplayFuturePluginActionGroup,0)
         self.ui_manager.insert_action_group(self.rg.toolActionGroup,0)
@@ -833,7 +840,9 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         self.ui_manager = gtk.UIManager()
         self.ui_manager.add_ui_from_string(self.ui)
         self.setup_action_groups()
+        fix_action_group_importance(self.mainRecEditActionGroup)
         self.ui_manager.insert_action_group(self.mainRecEditActionGroup,0)
+        fix_action_group_importance(self.rg.toolActionGroup)
         self.ui_manager.insert_action_group(self.rg.toolActionGroup,1)
 
     def setup_action_groups (self):
@@ -975,6 +984,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
                 self.ui_manager.remove_action_group(ag)
         self.last_merged_ui = self.ui_manager.add_ui_from_string(self.modules[page].ui)
         for ag in self.modules[page].action_groups:
+            fix_action_group_importance(ag)
             self.ui_manager.insert_action_group(ag,0)
         self.last_merged_action_groups = self.modules[page].action_groups
         module = self.modules[page]
@@ -1065,7 +1075,7 @@ class IngredientEditorModule (RecEditorModule):
         <toolitem action="MoveIngredientDown"/>
         <toolitem action="DeleteIngredient"/>
         <separator/>
-        <toolitem action="AddIngredientGroup"/>
+        <toolitem  action="AddIngredientGroup"/>
         <toolitem action="AddRecipeAsIngredient"/>
         <separator/>
         <toolitem action="ImportIngredients"/>
@@ -1124,6 +1134,10 @@ class IngredientEditorModule (RecEditorModule):
             ('MoveIngredientDown',gtk.STOCK_GO_DOWN,_('Down'),
              '<Control>Down',None,self.ingtree_ui.ingDownCB),
             ])
+        for group in [self.ingredientEditorActionGroup,
+                      self.ingredientEditorOnRowActionGroup,
+                      ]:
+            fix_action_group_importance(group)
         self.action_groups.append(self.ingredientEditorActionGroup)
         self.action_groups.append(self.ingredientEditorOnRowActionGroup)
 

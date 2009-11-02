@@ -1,3 +1,14 @@
+2009-11-01  Thomas M. Hinkle  <tom@grenville>
+
+	* lib/GourmetRecipeManager.py Make sure all actions w/o icons are
+	marked as important (fixes Gourmet in horizontal-toolbar mode)
+	* lib/plugin.py ditto (fix Gourmet in horizontal-toolbar mode)
+	* lib/reccard.py ditto (fix Gourmet in horizontal-toolbar mode)
+	* lib/shopgui.py  ditto (fix Gourmet in horizontal-toolbar mode)
+	* lib/gtk_extras/__init__.py (fix_action_group_importance): New
+	convenience method to make sure all actions in an ActionGroup that
+	don't have icons are marked important
+
 2009-10-31  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/plugins/key_editor/recipeEditorPlugin.py (IngredientKeyEditor.update_from_ingredient_editor_cb.process_row):
