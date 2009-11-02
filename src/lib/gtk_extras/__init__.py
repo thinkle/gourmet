@@ -4,5 +4,5 @@ def fix_action_group_importance (ag):
     for action in ag.list_actions():
         ifact = gtk.IconFactory()
         if not action.get_property('stock-id') or not  ifact.lookup(action.get_property('stock-id')):
-            print 'No icon found for',action
+            #print 'No icon found for',action
             action.set_property('is-important',True)
