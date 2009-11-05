@@ -1581,6 +1581,9 @@ class RecData (Pluggable):
     @pluggable_method
     def add_ing_to_keydic (self, item, key):
         #print 'add ',item,key,'to keydic'
+        # Make sure we have unicode...
+        if type(item)==str: item = unicode(item)
+        if type(key)==str: key = unicode(key)
         if not item or not key: return
         else:
             if item: item = unicode(item)
