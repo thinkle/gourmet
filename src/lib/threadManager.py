@@ -321,7 +321,7 @@ class ThreadManagerGui:
 
     def thread_stopped (self, thread, threadbox):
         txt = threadbox.pb.get_text()
-        txt += (' ('+_('cancelled') + ')')
+        txt += '(' + _('cancelled') + ')'
         threadbox.pb.set_text(txt)
 
     def thread_pause (self, thread, threadbox):
