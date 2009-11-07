@@ -1,3 +1,17 @@
+2009-11-06  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/plugins/import_export/website_import_plugins/__init__.py (plugins):
+	++new AllRecipes plugin
+
+	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py (PdfPrefTable):
+	Add preference widget that can be embedded in print preview
+	dialog (in preparation for new printing back-end using
+	poppler+reportlab)
+
+	* src/lib/backends/db.py (RecData.update_version_info): Make sure
+	we do updates for 0.14.7 ++ for people updatings from versions
+	before 0.14
+
 2009-11-01  Thomas M. Hinkle  <tom@grenville>
 
 	* lib/GourmetRecipeManager.py Make sure all actions w/o icons are

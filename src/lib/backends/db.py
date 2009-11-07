@@ -461,6 +461,7 @@ class RecData (Pluggable):
     
         ### Code for updates between versions...
         if not self.new_db:  
+            print 'version older than 0.11.4 -- doing update'
             # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up keylookup_table tables...
             # We don't actually do this yet... (FIXME)
             #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
@@ -476,7 +477,11 @@ class RecData (Pluggable):
                     self.add_ing_to_keydic(ingredient.item,ingredient.ingkey)
 
             # Change from servings to yields! ( we use the plural to avoid a headache with keywords)
-            if (stored_info.version_super == 0 and stored_info.version_major <= 14 and stored_info.version_minor <= 7):
+            if (stored_info.version_super == 0 and ((stored_info.version_major <= 14 and stored_info.version_minor <= 7)
+                                                    or
+                                                    (stored_info.version_major < 14)
+                                                    )):
+                print 'Database older than 0.14.7 -- updating'
                 # Don't change the table defs here without changing them
                 # above as well (for new users) - sorry for the stupid
                 # repetition of code.
@@ -490,6 +495,7 @@ class RecData (Pluggable):
                         }
                                                 ).execute()
             if stored_info.version_super == 0 and stored_info.version_major < 14:
+                print 'Database older than 0.14.0 -- updating'
                 self.backup_db()
                 # Name changes to make working with IDs make more sense
                 # (i.e. the column named 'id' should always be a unique

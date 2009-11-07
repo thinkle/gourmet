@@ -1,3 +1,4 @@
+import gtk
 import reportlab
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.units import inch,mm
@@ -13,6 +14,7 @@ from gettext import ngettext
 from gourmet import convert
 from gourmet import gglobals
 from gourmet.gtk_extras import dialog_extras as de
+from gourmet.gtk_extras import optionTable
 from gourmet import ImageExtras
 import xml.sax.saxutils
 import gourmet.exporters.exporter as exporter
@@ -776,14 +778,18 @@ class PdfPrefGetter:
         
         self.page_drawer = PdfPageDrawer(yalign=0.0)    
         self.in_ccb = False
+        self.setup_widgets()
+        self.table.connect('changed',self.change_cb)
+        self.table.emit('changed')
+        self.page_drawer.set_size_request(200,100)
+        self.page_drawer.show()
+
+    def setup_widgets (self):
         self.pd = de.PreferencesDialog(self.opts,option_label=None,value_label=None,
                                   label='PDF Options',
                                   )
-        self.pd.table.connect('changed',self.change_cb)
-        self.pd.table.emit('changed')
-        self.pd.hbox.pack_start(self.page_drawer,fill=True,expand=True)        
-        self.page_drawer.set_size_request(200,100)
-        self.page_drawer.show()
+        self.pd.hbox.pack_start(self.page_drawer,fill=True,expand=True)
+        self.table = self.pd.table
 
     def run (self):
         self.pd.run()
@@ -881,6 +887,21 @@ class PdfPrefGetter:
         self.page_drawer.set_page(**args)
         self.page_drawer.queue_draw()
         self.in_ccb = False
+
+class PdfPrefTable (PdfPrefGetter):
+
+    # Like the dialog, but without the window -- lets it be embedded
+    # in a print preferences widget.
+
+    def setup_widgets (self):
+        self.widg = gtk.HBox()
+        self.table = optionTable.OptionTable(options=self.opts,
+                                             option_label=None,
+                                             value_label=None,
+                                             changedcb=None)
+        self.widg.pack_start(self.table)
+        self.widg.pack_start(self.page_drawer,fill=True,expand=True)
+        self.widg.show_all()
 
 def get_pdf_prefs (defaults=PDF_PREF_DEFAULT):
     pdf_pref_getter = PdfPrefGetter(defaults=defaults)
