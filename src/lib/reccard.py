@@ -14,7 +14,7 @@ from gtk_extras.dialog_extras import show_amount_error
 from gtk_extras import treeview_extras as te
 from gtk_extras import cb_extras as cb
 from gtk_extras import chooserNotebook
-import exporters.printer as printer
+from exporters.printer import get_print_manager
 from gdebug import *
 from gglobals import *
 from gettext import gettext as _
@@ -611,11 +611,13 @@ class RecCardDisplay (plugin_loader.Pluggable):
             if de.getBoolean(label=_("You have unsaved changes."),
                              sublabel=_("Apply changes before printing?")):
                 self.saveEditsCB()
-        printer.RecRenderer(self.rg.rd, [self.current_rec], mult=self.mult,
-                            dialog_title=_("Print Recipe %s"%(self.current_rec.title)),
-                            dialog_parent=self.window,
-                            change_units=self.prefs.get('readableUnits',True)
-                            )
+        printManager = get_print_manager()
+        rr = printManager.get_rec_renderer()
+        rr(self.rg.rd, [self.current_rec], mult=self.mult,
+           dialog_title=_("Print Recipe %s"%(self.current_rec.title)),
+           dialog_parent=self.window,
+           change_units=self.prefs.get('readableUnits',True)
+           )
 
     def link_cb (self, *args): launch_url(self.link)
 

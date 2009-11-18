@@ -6,6 +6,7 @@ import os.path
 import pdf_exporter
 import tempfile
 import reportlab.lib.pagesizes as pagesizes
+from gourmet.plugin import PrinterPlugin
 
 rl2gtk_papersizes = {
     tuple([int(round(s)) for s in pagesizes.letter]) : gtk.PAPER_NAME_LETTER,
@@ -18,7 +19,7 @@ rl2gtk_papersizes = {
 
 class PDFPrinter:
 
-    def setup_printer (self):
+    def setup_printer (self, parent=None):
         po = gtk.PrintOperation()
         #po.set_n_pages(self.d.get_n_pages())
         po.connect('draw_page',self.draw_page)
@@ -27,7 +28,7 @@ class PDFPrinter:
         po.props.custom_tab_label = _('Page Layout')
         po.connect('custom-widget-apply',self.custom_widget_apply)
         po.set_export_filename('/tmp/foo.pdf')
-        po.run(gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG)
+        po.run(gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG, parent=parent)
         
     def set_document (self, filename, operation,context):
         if not filename.startswith('file'):
@@ -80,7 +81,8 @@ def record_args (func):
         
 class PDFSimpleWriter (PDFPrinter):
 
-    def __init__ (self):
+    def __init__ (self, dialog_parent=None):
+        self.parent = dialog_parent
         self.export_commands = []
 
     @record_args
@@ -94,7 +96,7 @@ class PDFSimpleWriter (PDFPrinter):
 
     def close (self, *args, **kwargs):
         self.export_commands.append(('close',[],{}))
-        self.setup_printer()
+        self.setup_printer(self.parent)
     
     def begin_print (self, operation, context):
         fn = tempfile.mktemp()
@@ -110,13 +112,20 @@ class PDFSimpleWriter (PDFPrinter):
         
 class PDFRecipePrinter (PDFPrinter):
 
-    def __init__ (self, rd, recs):
+    def __init__ (self, rd, recs,
+                  mult=1, dialog_title=_('Print Recipes'),
+                  dialog_parent=None, change_units=True):
+        self.change_units = change_units
+        self.mult = mult
+        self.parent = dialog_parent
         self.rd = rd
         self.recs = recs
+        self.setup_printer(self.parent)
         
     def begin_print (self, operation, context):
         fn = tempfile.mktemp()
-        pe = PdfExporterMultiDoc(self.rd,self.recs,fn,pdf_args=self.args)
+        pe = pdf_exporter.PdfExporterMultiDoc(self.rd,self.recs,fn,pdf_args=self.args,
+                                              change_units=self.change_units, mult=self.mult)
         pe.run()
         self.set_document(fn, operation,context)
 
@@ -150,5 +159,11 @@ def test_simplewriter ():
             pwriter.write_paragraph('So is this a test? Or is it. '*i)
     pwriter.close()
 
+class PDFPrintPlugin (PrinterPlugin):
+    SimpleWriter = PDFSimpleWriter
+    simpleWriterPriority = 1
+    RecWriter = PDFRecipePrinter
+    recWriterPriority = 1
+    
 if __name__ == '__main__':
     test_simplewriter()

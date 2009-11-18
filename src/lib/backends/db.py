@@ -461,11 +461,9 @@ class RecData (Pluggable):
     
         ### Code for updates between versions...
         if not self.new_db:  
-            print 'version older than 0.11.4 -- doing update'
-            # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up keylookup_table tables...
-            # We don't actually do this yet... (FIXME)
             #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
             if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
+                print 'version older than 0.11.4 -- doing update'                
                 self.backup_db()
                 print 'Fixing broken ingredient-key view from earlier versions.'
                 # Drop keylookup_table table, which wasn't being properly kept up

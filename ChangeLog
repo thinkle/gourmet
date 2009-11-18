@@ -1,3 +1,19 @@
+2009-11-17  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/GourmetRecipeManager.py (ImporterExporter.print_recs):
+	Use new printing API to print.
+	* src/lib/plugin.py (PrinterPlugin): Add new plugin for printing.
+	* src/lib/reccard.py (RecCardDisplay.print_cb): Use new printing
+	API to print.
+	* src/lib/shopgui.py (ShopGui.doSave): No longer use "lprprinter"
+	to do text save.
+	(ShopGui.printList): Use new printing API to print.
+	* src/lib/exporters/printer.py: Rewrite printer.py to use a plugin
+	architecture. If no plugins are available, no printing. The
+	expected plugin will be the PDF plugin using Reportlab.
+	* plugins/import_export/pdf_plugin/print_plugin.py: Create plugin
+	for new printing plugin architecture.
+
 2009-11-06  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/plugins/import_export/website_import_plugins/__init__.py (plugins):

@@ -5,7 +5,7 @@ from gtk_extras import WidgetSaver, mnemonic_manager
 from gtk_extras import dialog_extras as de
 from gtk_extras import treeview_extras as te
 from gtk_extras import fix_action_group_importance
-import exporters.printer as printer
+from exporters.printer import get_print_manager
 from gdebug import *
 from gglobals import *
 from gettext import gettext as _
@@ -859,8 +859,21 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
     # Saving and printing
     def doSave (self, filename):
         debug("doSave (self, filename):",5)
-        import exporters.lprprinter
-        self._printList(exporters.lprprinter.SimpleWriter,file=filename,show_dialog=False)
+        #import exporters.lprprinter
+        #self._printList(exporters.lprprinter.SimpleWriter,file=filename,show_dialog=False)
+        ofi = file(filename,'w')
+        ofi.write(_("Shopping list for %s")%time.strftime("%x") + '\n\n')
+        ofi.write(_("For the following recipes:"+'\n'))
+        ofi.write('--------------------------------\n')
+        for r,mult in self.recs.values():
+            itm = "%s"%r.title
+            if mult != 1:
+                itm += _(" x%s")%mult
+            ofi.write(itm+'\n')
+        write_itm = lambda a,i: ofi.write("%s %s"%(a,i) + '\n')
+        write_subh = lambda h: ofi.write('\n_%s_\n'%h)
+        self.sh.list_writer(write_subh,write_itm)
+        ofi.close()
 
     def _printList (self, printer, *args, **kwargs):
         w = printer(*args,**kwargs)
@@ -925,7 +938,7 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
 
     def printList (self, *args):
         debug("printList (self, *args):",0)
-        self._printList(printer.SimpleWriter,dialog_parent=self.w)
+        self._printList(get_print_manager().get_simple_writer(),dialog_parent=self.w)
 
     def add_item (self, toggleWidget):
 	if toggleWidget.get_active():

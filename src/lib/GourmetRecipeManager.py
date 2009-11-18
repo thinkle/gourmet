@@ -4,7 +4,7 @@ import Image
 import gtk.glade, gtk, gobject, gtk.gdk, traceback
 import batchEditor
 import recipeManager
-import exporters.printer as printer
+from exporters.printer import get_print_manager
 import prefs, prefsGui, shopgui, reccard, fnmatch, tempfile
 import exporters, importers
 from exporters.exportManager import get_export_manager
@@ -735,12 +735,14 @@ class ImporterExporter:
     def print_recs (self, *args):
         debug('printing recipes',3)
         recs = self.get_selected_recs_from_rec_tree()
-        renderer = printer.RecRenderer(self.rd, recs,
+        printManager = get_print_manager()
+        ru = self.prefs.get('readableUnits',True)
+        renderer = printManager.get_rec_renderer()(self.rd, recs,
                                        dialog_title=gettext.ngettext('Print %s recipe',
                                                                      'Print %s recipes',
                                                                      len(recs))%len(recs),
                                        dialog_parent = self.app,
-                                       change_units = self.prefs.get('readableUnits',True)
+                                       change_units = ru,
                                        )
         #tm = get_thread_manager()
         #tmg = get_thread_manager_gui()

@@ -168,7 +168,7 @@ class ExportManager (plugin_loader.Pluggable):
         for plugin in self.plugins:
             filters.append(plugin.saveas_filters)
         return filters
-        
+
     def register_plugin (self, plugin):
         name = plugin.saveas_filters[0]
         if self.plugins_by_name.has_key(name):
