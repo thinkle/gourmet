@@ -212,7 +212,7 @@ class Bookmark(platypus.Flowable):
 
 class PdfWriter:
 
-    def __init__ (self):
+    def __init__ (self, allrecs=[]):
         pass
 
     def setup_document (self, file, mode=('column',1), size='default', pagesize='letter',
@@ -399,9 +399,9 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                   styleSheet=None,
                   txt=[],
                   pdf_args=DEFAULT_PDF_ARGS,
+                  all_recipes=[], # For learning about references...
                   **kwargs):
-        self.links = [] # Keep track of what recipes we link to to
-                        # make sure we use them...
+        self.all_recipes = all_recipes
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
             self.out = file(out,'wb')
@@ -631,32 +631,27 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             )
 
     def write_ingref (self, amount, unit, item, refid, optional):
-        reffed = self.rd.get_rec(refid)
-        if not reffed:
-            reffed = self.rd.fetch_one(self.rd.recipe_table,title=item,deleted=False)
-            if reffed:
-                refid = reffed.id
-        if not reffed:
+        if refid in [r.id for r in self.all_recipes]:
+            txt = ""
+            for blob in [amount,unit,item,(optional and _('optional') or '')]:
+                if blob == item:
+                    blob = '<link href="r%s">'%refid + blob + '</link>'  
+                elif not blob:
+                    continue
+                if txt: txt += " %s"%blob
+                else: txt = blob
+            hanging = inch*0.25
+            self.write_paragraph(
+                txt,
+                attributes=' firstLineIndent="-%(hanging)s" leftIndent="%(hanging)s"'%locals()
+                )
+        else:
             return self.write_ing(amount,unit,item,optional=optional)
-        txt = ""
-        for blob in [amount,unit,item,(optional and _('optional') or '')]:
-            if blob == item:
-              blob = '<link href="r%s">'%refid + blob + '</link>'  
-            if not blob: continue
-            if txt: txt += " %s"%blob
-            else: txt = blob
-        hanging = inch*0.25
-        self.links.append(refid)
-        self.write_paragraph(
-            txt,
-            attributes=' firstLineIndent="-%(hanging)s" leftIndent="%(hanging)s"'%locals()
-            )
 
 class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
     def __init__ (self, rd, recipes, out, progress_func=None, conv=None,
                   pdf_args=DEFAULT_PDF_ARGS,
                   **kwargs):
-        self.links = []
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
             out = file(out,'wb')
@@ -666,6 +661,7 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
         kwargs['styleSheet'] = self.styleSheet
         kwargs['txt'] = self.txt
         kwargs['pdf_args'] = pdf_args
+        kwargs['all_recipes']=recipes
         exporter.ExporterMultirec.__init__(
             self,
             rd, recipes, out,

@@ -7,14 +7,19 @@ class NoRecRenderer ():
 
     def __init__ (self, *args, **kwargs):
         from gourmet.gtk_extras.dialog_extras import show_message
-        show_message(_('Unable to print: no print plugins are active!'))
+        show_message(label=_('Unable to print: no print plugins are active!'),
+                     sublabel=_("To print, activate a plugin that provides printing support, such as the 'Printing & PDF export' plugin."),
+                     )
         raise NotImplementedError
     
 class NoSimpleWriter ():
 
     def __init__ (self, *args, **kwargs):
         from gourmet.gtk_extras.dialog_extras import show_message
-        show_message(_('Unable to print: no print plugins are active!'))
+        show_message(
+            label=_('Unable to print: no print plugins are active!'),
+            sublabel=_("To print, activate a plugin that provides printing support, such as the 'Printing & PDF export' plugin."),
+            )
         raise NotImplementedError        
 
 class PrintManager (plugin_loader.Pluggable):

@@ -29,7 +29,7 @@ class PDFPrinter:
         po.connect('custom-widget-apply',self.custom_widget_apply)
         po.set_export_filename('/tmp/foo.pdf')
         po.run(gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG, parent=parent)
-        
+
     def set_document (self, filename, operation,context):
         if not filename.startswith('file'):
             filename = 'file://' + os.path.realpath(filename)

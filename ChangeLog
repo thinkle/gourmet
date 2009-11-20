@@ -1,3 +1,24 @@
+2009-11-19  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py (write_ingref):
+	Only write links that will work -- we do this by tracking which
+	recipes are going into our document and checking links against
+	that list of recipes.
+
+	* src/lib/plugins/import_export/pdf.gourmet-plugin.in: Change name
+	and description to reflect this plugin's new status as the primary
+	printing provider.
+
+	* src/lib/exporters/printer.py: Add simple message telling user
+	which plugin to install to get printing if there is no printing.
+
+	* src/lib/exporters/exporter.py (ExporterMultirec.append_referenced_recipes):
+	Add method to automatically append referenced recipes to the list
+	of recipes to be exported.
+
+	* src/lib/plugin_loader.py (MasterLoader.deactivate_plugin_set):
+	Fix typo that broke deactivation of plugins.
+
 2009-11-17  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/GourmetRecipeManager.py (ImporterExporter.print_recs):

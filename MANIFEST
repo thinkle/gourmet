@@ -154,6 +154,7 @@ src/lib/exporters/gxml_exporter.py
 src/lib/exporters/lprprinter.py
 src/lib/exporters/page_drawer.py
 src/lib/exporters/printer.py
+src/lib/exporters/printer_old.py
 src/lib/exporters/recipe_emailer.py
 src/lib/exporters/rtf_exporter.py
 src/lib/exporters/winprinter.py
@@ -283,6 +284,7 @@ src/lib/plugins/import_export/pdf_plugin/__init__.py
 src/lib/plugins/import_export/pdf_plugin/page_drawer.py
 src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py
 src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py
+src/lib/plugins/import_export/pdf_plugin/print_plugin.py
 src/lib/plugins/import_export/plaintext.gourmet-plugin
 src/lib/plugins/import_export/plaintext.gourmet-plugin.in
 src/lib/plugins/import_export/plaintext_plugin/__init__.py
@@ -298,6 +300,7 @@ src/lib/plugins/import_export/website_import.gourmet-plugin
 src/lib/plugins/import_export/website_import.gourmet-plugin.in
 src/lib/plugins/import_export/website_import_plugins/__init__.py
 src/lib/plugins/import_export/website_import_plugins/about_dot_com_plugin.py
+src/lib/plugins/import_export/website_import_plugins/allrecipes_plugin.py
 src/lib/plugins/import_export/website_import_plugins/foodnetwork_plugin.py
 src/lib/plugins/key_editor.gourmet-plugin
 src/lib/plugins/key_editor.gourmet-plugin.in
