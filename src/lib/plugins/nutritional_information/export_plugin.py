@@ -1,5 +1,6 @@
 from gourmet.plugin import BaseExporterPlugin
 from gourmet.recipeManager import default_rec_manager
+import gourmet.defaults
 from nutritionLabel import MAIN_NUT_LAYOUT, MAJOR, MINOR, TINY, SEP, SHOW_PERCENT, DONT_SHOW_PERCENT, SEP
 from gettext import gettext as _
 
@@ -20,7 +21,8 @@ class NutritionBaseExporterPlugin (BaseExporterPlugin):
         ings = rd.get_ings(rec)
         vapor = nutinfo._get_vapor()
         if rec.yields and rec.yield_unit:
-            txt += '<i>%s</i>'%((rec.yields and _('Nutritional information reflects amount per %s.'%rec.yield_unit))
+            singular_unit = gourmet.defaults.get_pluralized_form(self.yield_unit,1)
+            txt += '<i>%s</i>'%((rec.yields and _('Nutritional information reflects amount per %s.'%singular_unit))
                                 or
                                 _('Nutritional information reflects amounts for entire recipe'))
         if len(vapor)==len(ings): return None

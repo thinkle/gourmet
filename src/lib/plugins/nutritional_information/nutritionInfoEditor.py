@@ -1,4 +1,4 @@
-import gtk, gtk.glade, gobject
+import gtk, gtk.glade, gobject, pango
 import gourmet.gtk_extras.pageable_store as pageable_store
 import gourmet.gglobals as gglobals
 import os, re
@@ -87,7 +87,7 @@ class NutritionInfoIndex:
             except TypeError:
                 pass
             else:
-                renderer.set_property('wrap-mode',gtk.WRAP_WORD)
+                renderer.set_property('wrap-mode',pango.WRAP_WORD)
                 renderer.set_property('wrap-width',200)
             #if n==self.VALUE_COL:
             #    renderer.set_property('editable',True)

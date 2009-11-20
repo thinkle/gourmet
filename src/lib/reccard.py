@@ -28,6 +28,7 @@ from gtk_extras import fix_action_group_importance
 from plugin import RecDisplayModule, RecEditorModule, ToolPlugin, RecDisplayPlugin, RecEditorPlugin, IngredientControllerPlugin
 import plugin_loader
 import timeScanner
+import defaults
 
 # TODO
 #
@@ -631,6 +632,12 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def update_yields_multiplier (self, val):
         yields = self.yieldsDisplaySpin.get_value()
+        if yields != self.current_rec.yields:
+            # Consider pluralizing...
+            plur_form = defaults.defaults.get_pluralized_form(self.current_rec.yield_unit,yields)
+            if plur_form != self.yield_unitDisplay.get_text():
+                # Change text!
+                self.yield_unitDisplay.set_text(plur_form)
         if float(yields) != self.yields_orig:
             self.mult = float(yields)/self.yields_orig
         else:

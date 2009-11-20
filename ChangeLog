@@ -1,3 +1,20 @@
+2009-11-20  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/plugins/nutritional_information/reccard_plugin.py (NutritionDisplayModule.enter_page):
+	Fix keyError bug on initialization.
+
+	* src/lib/plugins/nutritional_information/nutritionLabel.py (NutritionLabel.setup_yield_label):
+	Use singular form for "amount per ___" yield unit.
+
+	* src/lib/plugins/nutritional_information/export_plugin.py (NutritionBaseExporterPlugin.get_nutritional_info_as_text_blob):
+	Use singular form for "amount per ____" yield unit.
+
+	* src/lib/shopgui.py (ShopGui.setup_main): Don't show window
+	initially.
+
+	* src/lib/reccard.py (RecCardDisplay.update_yields_multiplier):
+	Use singular forms when settings yields to 1.
+
 2009-11-19  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py (write_ingref):

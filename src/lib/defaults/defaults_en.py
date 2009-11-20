@@ -830,7 +830,8 @@ PLURALS = [
 PLURALS += [(s,s+'s') for s in
                        ['cup','crust','clove','serving','pound','gram',
                         'ounce','tablespoon','teaspoon','gallon','can',
-                        'slice','pie','package','quart','pint',]
+                        'slice','pie','package','quart','pint','muffin',
+                        'cookie',]
                        ]
 
         

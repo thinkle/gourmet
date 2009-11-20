@@ -680,7 +680,7 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
 	self.main.pack_start(self.vp); self.vp.show()
 	vb.show()
 	self.w.add(self.main)
-	self.w.show(); self.main.show()
+	self.main.show()
 	self.w.add_accel_group(self.ui_manager.get_accel_group())
 
     def setup_add_box (self):
