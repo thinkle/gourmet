@@ -126,11 +126,15 @@ class PDFRecipePrinter (PDFPrinter):
         fn = tempfile.mktemp()
         pe = pdf_exporter.PdfExporterMultiDoc(self.rd,self.recs,fn,pdf_args=self.args,
                                               change_units=self.change_units, mult=self.mult)
+        pe.connect('error',self.handle_error)
         pe.run()
         self.set_document(fn, operation,context)
 
-
-
+    def handle_error (self,obj,errno, summary, traceback):
+        print 'There was an error generating a PDF to print.'
+        print summary
+        print traceback
+        raise
 
 def setup_printer (pp):
     po = gtk.PrintOperation()

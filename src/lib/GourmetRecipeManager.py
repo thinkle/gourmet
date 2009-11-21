@@ -206,7 +206,11 @@ class GourmetApplication:
         # initiate autosave stuff autosave every 3 minutes
         # (milliseconds * 1000 milliseconds/second * 60
         # seconds/minute)
-        gobject.timeout_add(1000*60*3,lambda *args: self.rd.save() or True)
+        def autosave ():
+            self.rd.save()
+            return True
+        AUTOSAVE_EACH_N_MINUTES = 2
+        gobject.timeout_add(1000*60*AUTOSAVE_EACH_N_MINUTES,autosave)
         # connect hooks to modify our view whenever and
         # whenceever our recipes are updated...
         self.rd.modify_hooks.append(self.update_attribute_models)

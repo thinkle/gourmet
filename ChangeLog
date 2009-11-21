@@ -1,5 +1,12 @@
 2009-11-20  Thomas M. Hinkle  <tom@grenville>
 
+	* src/lib/plugins/nutritional_information/export_plugin.py (NutritionBaseExporterPlugin.get_nutritional_info_as_text_blob):
+	Fix typo that broke printing.
+
+	* src/lib/GourmetRecipeManager.py (GourmetApplication.setup_recipes):
+	Clarify code around autosave.
+
+
 	* src/lib/plugins/nutritional_information/reccard_plugin.py (NutritionDisplayModule.enter_page):
 	Fix keyError bug on initialization.
 

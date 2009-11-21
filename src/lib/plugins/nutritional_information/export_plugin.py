@@ -21,7 +21,7 @@ class NutritionBaseExporterPlugin (BaseExporterPlugin):
         ings = rd.get_ings(rec)
         vapor = nutinfo._get_vapor()
         if rec.yields and rec.yield_unit:
-            singular_unit = gourmet.defaults.get_pluralized_form(self.yield_unit,1)
+            singular_unit = gourmet.defaults.get_pluralized_form(rec.yield_unit,1) + 2
             txt += '<i>%s</i>'%((rec.yields and _('Nutritional information reflects amount per %s.'%singular_unit))
                                 or
                                 _('Nutritional information reflects amounts for entire recipe'))
