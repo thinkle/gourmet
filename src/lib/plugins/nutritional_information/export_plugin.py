@@ -3,6 +3,7 @@ from gourmet.recipeManager import default_rec_manager
 import gourmet.defaults
 from nutritionLabel import MAIN_NUT_LAYOUT, MAJOR, MINOR, TINY, SEP, SHOW_PERCENT, DONT_SHOW_PERCENT, SEP
 from gettext import gettext as _
+from xml.sax.saxutils import escape
 
 class NutritionBaseExporterPlugin (BaseExporterPlugin):
 
@@ -30,7 +31,7 @@ class NutritionBaseExporterPlugin (BaseExporterPlugin):
             txt = txt + '*'
             footnotes = '\n*' + _('Nutritional information is missing for %s ingredients: %s')%(
                 len(vapor),
-                ', '.join([nv.__ingobject__.item for nv in vapor])
+                ', '.join([escape(nv.__ingobject__.item) for nv in vapor])
                 )
         for itm in MAIN_NUT_LAYOUT:
             if itm == SEP:

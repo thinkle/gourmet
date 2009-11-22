@@ -1,6 +1,25 @@
 #!/usr/bin/env python
 import gtk, cb_extras, gobject
 
+class CustomOption (gtk.HBox):
+
+    __gsignals__ = {
+        'changed':(gobject.SIGNAL_RUN_LAST,
+                   gobject.TYPE_NONE,
+                   []),
+        }
+
+    def __init__ (self):
+        gobject.GObject.__init__(self)
+        gtk.HBox.__init__(self)
+        raise NotImplementedError
+
+    def get_value (self):
+        raise NotImplementedError
+
+    def set_value (self, val):
+        raise NotImplementedError
+
 class OptionTable (gtk.Table):
 
     __gsignals__ = {
@@ -49,7 +68,11 @@ class OptionTable (gtk.Table):
                         xoptions=gtk.SHRINK, yoptions=gtk.SHRINK)
             lab.show()
         for l,v in self.options:
-            if type(v)==type(True):
+            if isinstance(v,CustomOption):
+                w = v
+                self.widgets.append([v,'get_value','set_value'])
+                v.connect('changed',lambda * args: self.emit('changed'))
+            elif type(v)==type(True):
                 w=gtk.CheckButton()
                 w.set_active(v)
                 # widgets contains the widget, the get method and the set method

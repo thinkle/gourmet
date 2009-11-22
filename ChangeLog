@@ -1,3 +1,19 @@
+2009-11-22  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py (CustomUnitOption):
+	Add custom widget for setting margins that allows adjusting of
+	units (cm/inch/points).
+	(PdfPrefGetter.get_args_from_opts): Save page layout preferences
+	correctly.
+
+	* src/lib/gtk_extras/optionTable.py (OptionTable.createOptionWidgets):
+	Add CustomOption option for callers who want to provide their own
+	widget for setting an option.
+
+	* src/lib/plugins/nutritional_information/export_plugin.py (NutritionBaseExporterPlugin.get_nutritional_info_as_text_blob):
+	Escape items in case they have &s or other characters that screw
+	up XML.
+
 2009-11-21  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/plugins/import_export/pdf_plugin/print_plugin.py (PDFRecipePrinter.begin_print):

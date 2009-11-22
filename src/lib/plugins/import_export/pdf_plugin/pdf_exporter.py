@@ -1,4 +1,4 @@
-import gtk
+import gtk, gobject
 import reportlab
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.units import inch,mm
@@ -15,6 +15,7 @@ from gourmet import convert
 from gourmet import gglobals
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import optionTable
+from gourmet.gtk_extras import cb_extras
 from gourmet import ImageExtras
 from gourmet.prefs import get_prefs
 import xml.sax.saxutils
@@ -714,6 +715,102 @@ PDF_PREF_DEFAULT={
     'bottom_margin':1.0*inch,    
     }
 
+class CustomUnitOption (optionTable.CustomOption):
+
+    '''An option for optionTable with adjustable units -- used for margins.
+    '''
+
+    units = {
+        '"':inch,
+        _('cm'):10*mm,
+        _('points'):1,
+        }
+
+    min_val = 0.125*inch
+    max_val = 8*inch
+
+    adjustments = {
+        inch:(0.125,0.5),
+        10*mm:(0.5,1),
+        1:(5,25),
+        }
+
+    def __init__ (self, default_value = inch):
+        gobject.GObject.__init__(self)
+        gtk.HBox.__init__(self)
+        self.__quiet__ = False
+        self.unit_combo = gtk.combo_box_new_text()
+        for key in self.units:
+            self.unit_combo.append_text(key)
+        unit = get_prefs().get('default_margin_unit',_('cm'))
+        if unit not in self.units: unit = _('cm')
+        self.last_unit = self.units[unit]
+        cb_extras.setup_typeahead(self.unit_combo)
+        cb_extras.cb_set_active_text(self.unit_combo,unit)
+        self.unit_combo.connect('changed',self.unit_changed_cb)
+        self.value_adjustment = gtk.Adjustment(
+            value=self.adjust_to_unit(default_value),
+            lower= self.min_val / self.last_unit,
+            upper = self.max_val / self.last_unit,
+            step_incr = self.adjustments[self.last_unit][0],
+            page_incr = self.adjustments[self.last_unit][1],
+            )
+        def emit_changed (*args):
+            self.emit('changed')
+        self.value_adjustment.connect('changed',emit_changed)
+        self.value_widget = gtk.SpinButton(self.value_adjustment,digits=2)
+        self.value_widget.connect('changed',emit_changed)
+        self.value_widget.show(); self.unit_combo.show()
+        self.pack_start(self.value_widget)
+        self.pack_start(self.unit_combo)
+
+    def set_unit (self, unit):
+        cb_extras.cb_set_active_text(self.unit_combo,unit)
+        
+    def unit_changed_cb (self, widget):
+        new_unit = self.units[self.unit_combo.get_active_text()]
+        get_prefs()['default_margin_unit'] = self.unit_combo.get_active_text()
+        old_val = self.value_adjustment.get_value() * self.last_unit
+        self.last_unit = self.units[self.unit_combo.get_active_text()]
+        new_val = self.adjust_to_unit(old_val)
+        self.value_adjustment.set_upper(self.max_val / self.last_unit)
+        self.value_adjustment.set_lower(self.min_val / self.last_unit)
+        self.value_adjustment.set_step_increment(self.adjustments[self.last_unit][0])
+        self.value_adjustment.set_page_increment(self.adjustments[self.last_unit][1])
+        self.value_adjustment.set_value(new_val)
+        if not self.__quiet__:
+            self.emit('changed')
+
+    def adjust_to_unit (self, raw_val):
+        '''Round the value to an appropriate number for our current
+        unit
+        '''
+        val = raw_val / self.last_unit
+        adj = self.adjustments[self.last_unit][0]
+        # "Round" to the increment adjustment specified for our unit
+        floor =  int(val/adj) * adj
+        ceiling = (int(val/adj)+1) * adj
+        # Pick whatever is closest...
+        if abs(floor - val) > abs(ceiling - val):
+            return ceiling
+        else:
+            return floor
+        
+    def get_value (self):
+        return self.last_unit * self.value_adjustment.get_value()
+        
+    def set_value (self, value):
+        self.value_adjustment.set_value(value/self.last_unit)
+        if not self.__quiet__:
+            self.emit('changed')
+
+    def sync_to_other_cuo (self, cuo):
+        def change_cb (other_cuo):
+            self.__quiet__ = True
+            self.set_unit(other_cuo.unit_combo.get_active_text())
+            self.__quiet__ = False
+        cuo.connect('changed',change_cb)
+
 class PdfPrefGetter:
     page_sizes = {
         _('11x17"'):'elevenSeventeen',
@@ -747,33 +844,39 @@ class PdfPrefGetter:
     OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = range(8)
 
     def __init__ (self,):
-        self.make_reverse_dicts()
         self.prefs = get_prefs()
         defaults = self.prefs.get('PDF_EXP',PDF_PREF_DEFAULT)
         self.size_strings = self.page_sizes.keys()
         self.size_strings.sort()
         for n in range(2,5):
             self.layouts[ngettext('%s Column','%s Columns',n)%n]=('column',n)
+        self.make_reverse_dicts()        
         self.layout_strings = self.layouts.keys()
         self.layout_strings.sort()
+        margin_widgets = [
+            CustomUnitOption(defaults.get(pref,PDF_PREF_DEFAULT[pref]))
+            for pref in ['left_margin','right_margin','top_margin','bottom_margin']
+            ]
+        # Make unit changes to one widget affect all the others!
+        for m in margin_widgets:
+            for mm in margin_widgets:
+                if mm is not m:
+                    m.sync_to_other_cuo(mm)
+            
         self.opts = [
             [_('Paper _Size')+':',(defaults.get('page_size',PDF_PREF_DEFAULT['page_size']),
                                   self.size_strings)],
             [_('_Orientation')+':',(defaults.get('orientation',PDF_PREF_DEFAULT['orientation']),
                                     self.page_modes.keys())],
-            [_('_Font Size (points)')+':',int(defaults.get('font_size',PDF_PREF_DEFAULT['font_size']))]
+            [_('_Font Size')+':',int(defaults.get('font_size',PDF_PREF_DEFAULT['font_size']))]
             ,
             [_('Page _Layout'),(defaults.get('page_layout',PDF_PREF_DEFAULT['page_layout']),
 
                                 self.layout_strings)],
-            [_('Left Margin (points)')+':',int(defaults.get('left_margin',PDF_PREF_DEFAULT['left_margin']))]
-            ,
-            [_('Right Margin (points)')+':',int(defaults.get('right_margin',PDF_PREF_DEFAULT['right_margin']))]
-            ,
-            [_('Top Margin (points)')+':',int(defaults.get('top_margin',PDF_PREF_DEFAULT['top_margin']))]
-            ,
-            [_('Bottom Margin (points)')+':',int(defaults.get('bottom_margin',PDF_PREF_DEFAULT['bottom_margin']))]
-            ,
+            [_('Left Margin')+':',margin_widgets[0]],
+            [_('Right Margin')+':',margin_widgets[1]],
+            [_('Top Margin')+':',margin_widgets[2]],
+            [_('Bottom Margin')+':',margin_widgets[3]],
             ]
         
         self.page_drawer = PdfPageDrawer(yalign=0.0)    
@@ -805,6 +908,8 @@ class PdfPrefGetter:
 
     def get_args_from_opts (self, opts):
         args = {}
+        if not get_prefs().has_key('PDF_EXP'):
+            get_prefs()['PDF_EXP'] = {}
         prefs = get_prefs()['PDF_EXP']
         args['pagesize'] = self.page_sizes[opts[self.OPT_PS][1]] # PAGE SIZE
         prefs['page_size'] = self.page_sizes_r[args['pagesize']]
@@ -812,7 +917,7 @@ class PdfPrefGetter:
         prefs['orientation'] = self.page_modes_r[args['pagemode']]
         prefs['font_size'] = args['base_font_size'] = opts[self.OPT_FS][1] # FONT SIZE
         args['mode'] = self.layouts[opts[self.OPT_PL][1]] # LAYOUT/MODE
-        prefs['mode'] = self.layouts_r[args['mode']]
+        prefs['page_layout'] = self.layouts_r[args['mode']]
         prefs['left_margin'] = args['left_margin'] = opts[self.OPT_LM][1]
         prefs['right_margin'] = args['right_margin'] = opts[self.OPT_RM][1]
         prefs['top_margin'] = args['top_margin'] = opts[self.OPT_TM][1]
@@ -921,6 +1026,23 @@ def get_pdf_prefs (defaults=None):
     return pdf_pref_getter.run()
             
 if __name__ == '__main__':
+    w = gtk.Window()
+    cuo = CustomUnitOption(44)
+    cuo2 = CustomUnitOption(98)
+    cuo.sync_to_other_cuo(cuo2)
+    cuo2.sync_to_other_cuo(cuo)
+    vb = gtk.VBox()
+    l = gtk.Label('Hello World')
+    vb.add(l)
+    vb.pack_start(cuo)
+    vb.pack_start(cuo2)
+    w.add(vb)
+    vb.show(); cuo.show(); cuo2.show()
+    w.show()
+    w.connect('delete_event',gtk.main_quit)
+    gtk.main()
+    raise 'Hell'
+    
     from tempfile import tempdir
     import os.path
     #opts = get_pdf_prefs(); print opts
