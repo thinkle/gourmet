@@ -1,3 +1,25 @@
+2009-11-21  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/plugins/import_export/pdf_plugin/print_plugin.py (PDFRecipePrinter.begin_print):
+	Try to raise an error if there's a problem with the PDF.
+
+	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py (PdfPrefTable):
+	Use prefs to save pdf settings automatically.
+
+	* src/lib/gtk_extras/optionTable.py (OptionTable.createOptionWidgets):
+	Fix bug where having a default value of 0 made any other value
+	unsettable.
+
+	* src/lib/reccard.py (RecCardDisplay.print_cb): Move repetitive
+	code to printmanager.
+
+	* src/lib/exporters/printer.py (PrintManager.print_recipes): Move
+	basic printing code to PrintManager.
+
+	* src/lib/GourmetRecipeManager.py (ImporterExporter.print_recs):
+	Move repetitive print code to print manager so we can do things
+	like handle exceptions elegantly there.
+
 2009-11-20  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/plugins/nutritional_information/export_plugin.py (NutritionBaseExporterPlugin.get_nutritional_info_as_text_blob):

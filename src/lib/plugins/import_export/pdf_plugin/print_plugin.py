@@ -115,6 +115,7 @@ class PDFRecipePrinter (PDFPrinter):
     def __init__ (self, rd, recs,
                   mult=1, dialog_title=_('Print Recipes'),
                   dialog_parent=None, change_units=True):
+        self.printing_error = False
         self.change_units = change_units
         self.mult = mult
         self.parent = dialog_parent
@@ -128,12 +129,16 @@ class PDFRecipePrinter (PDFPrinter):
                                               change_units=self.change_units, mult=self.mult)
         pe.connect('error',self.handle_error)
         pe.run()
+        if self.printing_error:
+            print 'PRINTING ERROR!'
+            raise "There was an error generating PDF"
         self.set_document(fn, operation,context)
 
     def handle_error (self,obj,errno, summary, traceback):
         print 'There was an error generating a PDF to print.'
         print summary
         print traceback
+        self.printing_error = True
         raise
 
 def setup_printer (pp):

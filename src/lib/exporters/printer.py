@@ -1,6 +1,8 @@
 from gettext import gettext as _
+import gettext
 import gourmet.plugin_loader as plugin_loader
 from gourmet.plugin import PrinterPlugin
+from gourmet.threadManager import get_thread_manager, get_thread_manager_gui
 import os
 
 class NoRecRenderer ():
@@ -57,6 +59,31 @@ class PrintManager (plugin_loader.Pluggable):
     def get_rec_renderer (self):
         self.rrs.sort()
         return self.rrs[-1][1]
+
+    def print_recipes (self, rd, recs, parent=None, change_units=None, **kwargs):
+        renderer = self.get_rec_renderer()
+        if len(recs) == 1:
+            title = 'Print recipe "%s"'%recs[0].title
+        else:
+            title = gettext.ngettext(
+                'Print %s recipe',
+                'Print %s recipes',
+                len(recs))%len(recs)
+        try:
+            renderer(rd,recs,
+                     dialog_title=title,
+                     dialog_parent=parent,
+                     change_units=change_units,
+                     **kwargs)
+        except:
+            from gourmet.gtk_extras.dialog_extras import show_traceback
+            show_traceback(label='Error printing',
+                           sublabel=_('Well this is embarassing. Something went wrong printing your recipe.')
+                           )
+
+    def show_error (self, *args):
+        from gourmet.gtk_extras.dialog_extras import show_message
+        show_message(sublabel='There was an error printing. Apologies')
     
 def get_print_manager ():
     try:

@@ -613,11 +613,10 @@ class RecCardDisplay (plugin_loader.Pluggable):
                              sublabel=_("Apply changes before printing?")):
                 self.saveEditsCB()
         printManager = get_print_manager()
-        rr = printManager.get_rec_renderer()
-        rr(self.rg.rd, [self.current_rec], mult=self.mult,
-           dialog_title=_("Print Recipe %s"%(self.current_rec.title)),
-           dialog_parent=self.window,
-           change_units=self.prefs.get('readableUnits',True)
+        printManager.print_recipes(
+            self.rg.rd, [self.current_rec], mult=self.mult,
+            parent=self.window,
+            change_units=self.prefs.get('readableUnits',True)
            )
 
     def link_cb (self, *args): launch_url(self.link)

@@ -16,6 +16,7 @@ from gourmet import gglobals
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import optionTable
 from gourmet import ImageExtras
+from gourmet.prefs import get_prefs
 import xml.sax.saxutils
 import gourmet.exporters.exporter as exporter
 import types, re
@@ -25,7 +26,7 @@ from page_drawer import PageDrawer
 
 PASS_REPORTLAB_UNICODE = (reportlab.Version.find('2')==0)
 
-DEFAULT_PDF_ARGS = {'bottom_margin': 72.0, 'pagesize': 'letter', 'right_margin': 72.0, 'top_margin': 72.0, 'left_margin': 72.0, 'pagemode': 'portrait', 'base_font_size': 10.0, 'mode': ('column', 1)}
+DEFAULT_PDF_ARGS = {'bottom_margin': 72, 'pagesize': 'letter', 'right_margin': 72, 'top_margin': 72, 'left_margin': 72, 'pagemode': 'portrait', 'base_font_size': 10, 'mode': ('column', 1)}
 
 # Code for MCLine from:
 # http://two.pairlist.net/pipermail/reportlab-users/2005-February/003695.html
@@ -705,12 +706,12 @@ class PdfPageDrawer (PageDrawer):
 PDF_PREF_DEFAULT={
     'page_size':_('Letter'),
     'orientation':_('Portrait'),
-    'font_size':10.0,
+    'font_size':10,
     'page_layout':_('Plain'),
-    'left_margin':1.0,
-    'right_margin':1.0,
-    'top_margin':1.0,
-    'bottom_margin':1.0,    
+    'left_margin':1.0*inch,
+    'right_margin':1.0*inch,
+    'top_margin':1.0*inch,
+    'bottom_margin':1.0*inch,    
     }
 
 class PdfPrefGetter:
@@ -744,8 +745,11 @@ class PdfPrefGetter:
         }
 
     OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = range(8)
-    
-    def __init__ (self, defaults=PDF_PREF_DEFAULT):
+
+    def __init__ (self,):
+        self.make_reverse_dicts()
+        self.prefs = get_prefs()
+        defaults = self.prefs.get('PDF_EXP',PDF_PREF_DEFAULT)
         self.size_strings = self.page_sizes.keys()
         self.size_strings.sort()
         for n in range(2,5):
@@ -757,18 +761,18 @@ class PdfPrefGetter:
                                   self.size_strings)],
             [_('_Orientation')+':',(defaults.get('orientation',PDF_PREF_DEFAULT['orientation']),
                                     self.page_modes.keys())],
-            [_('_Font Size')+':',defaults.get('font_size',PDF_PREF_DEFAULT['font_size'])]
+            [_('_Font Size (points)')+':',int(defaults.get('font_size',PDF_PREF_DEFAULT['font_size']))]
             ,
             [_('Page _Layout'),(defaults.get('page_layout',PDF_PREF_DEFAULT['page_layout']),
 
                                 self.layout_strings)],
-            [_('Left Margin')+':',defaults.get('left_margin',PDF_PREF_DEFAULT['left_margin'])]
+            [_('Left Margin (points)')+':',int(defaults.get('left_margin',PDF_PREF_DEFAULT['left_margin']))]
             ,
-            [_('Right Margin')+':',defaults.get('right_margin',PDF_PREF_DEFAULT['right_margin'])]
+            [_('Right Margin (points)')+':',int(defaults.get('right_margin',PDF_PREF_DEFAULT['right_margin']))]
             ,
-            [_('Top Margin')+':',defaults.get('top_margin',PDF_PREF_DEFAULT['top_margin'])]
+            [_('Top Margin (points)')+':',int(defaults.get('top_margin',PDF_PREF_DEFAULT['top_margin']))]
             ,
-            [_('Bottom Margin')+':',defaults.get('bottom_margin',PDF_PREF_DEFAULT['bottom_margin'])]
+            [_('Bottom Margin (points)')+':',int(defaults.get('bottom_margin',PDF_PREF_DEFAULT['bottom_margin']))]
             ,
             ]
         
@@ -779,6 +783,14 @@ class PdfPrefGetter:
         self.table.emit('changed')
         self.page_drawer.set_size_request(200,100)
         self.page_drawer.show()
+
+    def make_reverse_dicts (self):
+        self.page_sizes_r = {}; self.layouts_r = {}; self.page_modes_r = {}
+        for dict,dict_r in [
+            (self.page_sizes,self.page_sizes_r),
+            (self.layouts,self.layouts_r),
+            (self.page_modes,self.page_modes_r)]:
+            for k,v in dict.items(): dict_r[v]=k
 
     def setup_widgets (self):
         self.pd = de.PreferencesDialog(self.opts,option_label=None,value_label=None,
@@ -793,14 +805,18 @@ class PdfPrefGetter:
 
     def get_args_from_opts (self, opts):
         args = {}
-        args['pagesize']=self.page_sizes[opts[self.OPT_PS][1]] # PAGE SIZE
-        args['pagemode']=self.page_modes[opts[self.OPT_PO][1]] # PAGE MODE
-        args['base_font_size']=opts[self.OPT_FS][1] # FONT SIZE
-        args['mode']=self.layouts[opts[self.OPT_PL][1]] # LAYOUT/MODE
-        args['left_margin']=opts[self.OPT_LM][1]*inch
-        args['right_margin']=opts[self.OPT_RM][1]*inch
-        args['top_margin']=opts[self.OPT_TM][1]*inch
-        args['bottom_margin']=opts[self.OPT_BM][1]*inch
+        prefs = get_prefs()['PDF_EXP']
+        args['pagesize'] = self.page_sizes[opts[self.OPT_PS][1]] # PAGE SIZE
+        prefs['page_size'] = self.page_sizes_r[args['pagesize']]
+        args['pagemode'] = self.page_modes[opts[self.OPT_PO][1]] # PAGE MODE
+        prefs['orientation'] = self.page_modes_r[args['pagemode']]
+        prefs['font_size'] = args['base_font_size'] = opts[self.OPT_FS][1] # FONT SIZE
+        args['mode'] = self.layouts[opts[self.OPT_PL][1]] # LAYOUT/MODE
+        prefs['mode'] = self.layouts_r[args['mode']]
+        prefs['left_margin'] = args['left_margin'] = opts[self.OPT_LM][1]
+        prefs['right_margin'] = args['right_margin'] = opts[self.OPT_RM][1]
+        prefs['top_margin'] = args['top_margin'] = opts[self.OPT_TM][1]
+        prefs['bottom_margin'] = args['bottom_margin'] = opts[self.OPT_BM][1]
         return args
 
     def change_cb (self, option_table, *args,**kwargs):
@@ -899,8 +915,9 @@ class PdfPrefTable (PdfPrefGetter):
         self.widg.pack_start(self.page_drawer,fill=True,expand=True)
         self.widg.show_all()
 
-def get_pdf_prefs (defaults=PDF_PREF_DEFAULT):
-    pdf_pref_getter = PdfPrefGetter(defaults=defaults)
+def get_pdf_prefs (defaults=None):
+    if defaults: print 'WARNING: ignoring provided defaults and using prefs system instead'
+    pdf_pref_getter = PdfPrefGetter()
     return pdf_pref_getter.run()
             
 if __name__ == '__main__':

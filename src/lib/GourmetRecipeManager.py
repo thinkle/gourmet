@@ -740,19 +740,12 @@ class ImporterExporter:
         debug('printing recipes',3)
         recs = self.get_selected_recs_from_rec_tree()
         printManager = get_print_manager()
-        ru = self.prefs.get('readableUnits',True)
-        renderer = printManager.get_rec_renderer()(self.rd, recs,
-                                       dialog_title=gettext.ngettext('Print %s recipe',
-                                                                     'Print %s recipes',
-                                                                     len(recs))%len(recs),
-                                       dialog_parent = self.app,
-                                       change_units = ru,
-                                       )
-        #tm = get_thread_manager()
-        #tmg = get_thread_manager_gui()
-        #tm.add_thread(renderer)
-        #tmg.register_thread_with_dialog(_('Print recipes'),renderer)
-        #tmg.show()
+        printManager.print_recipes(
+            self.rd,
+            recs,
+            parent=self.app,
+            change_units=self.prefs.get('readableUnits',True)
+            )
 
     def import_webpageg (self, *args):
         self.importManager.offer_web_import(parent=self.app.get_toplevel())

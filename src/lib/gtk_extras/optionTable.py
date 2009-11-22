@@ -18,8 +18,6 @@ class OptionTable (gtk.Table):
         self.ypadding = ypadding
         self.option_label=option_label
         self.value_label=value_label
-        # if pygtk let me emit a signal, I'd just emit a changed signal for any change.
-        # but since it doesn't, I let you connect a function by binding changedcb
         self.changedcb=changedcb
         cols = 2
         rows = len(self.options)
@@ -67,7 +65,7 @@ class OptionTable (gtk.Table):
                 if self.changedcb:
                     w.connect('changed',self.changedcb)
             elif type(v)==type(1) or type(v)==type(float(1)):
-                adj = gtk.Adjustment(value=0, lower=0, upper=100*v, step_incr=v*0.1, page_incr=v*0.5)
+                adj = gtk.Adjustment(value=0, lower=0, upper=100*(v or 1), step_incr=(v or 1)*0.1, page_incr=(v or 1)*0.5)
                 if type(v)==type(1):
                     # if an integer...
                     w=gtk.SpinButton(adj, digits=0)
