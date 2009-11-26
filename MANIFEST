@@ -156,6 +156,7 @@ src/lib/exporters/gxml_exporter.py
 src/lib/exporters/lprprinter.py
 src/lib/exporters/page_drawer.py
 src/lib/exporters/printer.py
+src/lib/exporters/printer_old.py
 src/lib/exporters/recipe_emailer.py
 src/lib/exporters/rtf_exporter.py
 src/lib/exporters/winprinter.py

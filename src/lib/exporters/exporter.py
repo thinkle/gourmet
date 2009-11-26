@@ -467,7 +467,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
 
     name = 'Exporter'
 
-    def __init__ (self, rd, recipe_table, out, one_file=True,
+    def __init__ (self, rd, recipes, out, one_file=True,
                   ext='txt',
                   conv=None,
                   imgcount=1,
@@ -475,13 +475,13 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                   exporter=exporter,
                   exporter_kwargs={},
                   padding=None):
-        """Output all recipes in recipe_table into a document or multiple
+        """Output all recipes in recipes into a document or multiple
         documents. if one_file, then everything is in one
         file. Otherwise, we treat 'out' as a directory and put
         individual recipe files within it."""
         self.timer=TimeAction('exporterMultirec.__init__()')
         self.rd = rd
-        self.recipe_table = recipe_table
+        self.recipes = recipes
         self.out = out
         self.padding=padding
         self.one_file = one_file
@@ -522,12 +522,24 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                     print "oops:",ret,"doesn't look like unicode."
                     raise
             return ret
+
+    def append_referenced_recipes (self):
+        for r in self.recipes[:]:
+            print 'Looking for referenced recs in',r.title,r.id
+            reffed = self.rd.db.execute(
+                'select * from ingredients where recipe_id=? and refid is not null',r.id
+                )
+            for ref in reffed:
+                rec = self.rd.get_rec(ref.refid)
+                if not rec in self.recipes:
+                    print 'Appending recipe ',rec.title,'referenced in ',r.title
+                    self.recipes.append(rec)
         
     @pluggable_method
     def do_run (self):
         print 'Exportermultirec.do_run'
         self.rcount = 0
-        self.rlen = len(self.recipe_table)        
+        self.rlen = len(self.recipes)        
         if not self.one_file:
             self.outdir=self.out
             if os.path.exists(self.outdir):
@@ -542,7 +554,8 @@ class ExporterMultirec (SuspendableThread, Pluggable):
         self.suspended = False
         self.terminated = False
         first = True
-        for r in self.recipe_table:
+        self.append_referenced_recipes()
+        for r in self.recipes:
             self.check_for_sleep()
             msg = _("Exported %(number)s of %(total)s recipes")%{'number':self.rcount,'total':self.rlen}
             self.emit('progress',float(self.rcount)/float(self.rlen), msg)

@@ -4,7 +4,7 @@ import Image
 import gtk.glade, gtk, gobject, gtk.gdk, traceback
 import batchEditor
 import recipeManager
-import exporters.printer as printer
+from exporters.printer import get_print_manager
 import prefs, prefsGui, shopgui, reccard, fnmatch, tempfile
 import exporters, importers
 from exporters.exportManager import get_export_manager
@@ -206,7 +206,11 @@ class GourmetApplication:
         # initiate autosave stuff autosave every 3 minutes
         # (milliseconds * 1000 milliseconds/second * 60
         # seconds/minute)
-        gobject.timeout_add(1000*60*3,lambda *args: self.rd.save() or True)
+        def autosave ():
+            self.rd.save()
+            return True
+        AUTOSAVE_EACH_N_MINUTES = 2
+        gobject.timeout_add(1000*60*AUTOSAVE_EACH_N_MINUTES,autosave)
         # connect hooks to modify our view whenever and
         # whenceever our recipes are updated...
         self.rd.modify_hooks.append(self.update_attribute_models)
@@ -735,18 +739,13 @@ class ImporterExporter:
     def print_recs (self, *args):
         debug('printing recipes',3)
         recs = self.get_selected_recs_from_rec_tree()
-        renderer = printer.RecRenderer(self.rd, recs,
-                                       dialog_title=gettext.ngettext('Print %s recipe',
-                                                                     'Print %s recipes',
-                                                                     len(recs))%len(recs),
-                                       dialog_parent = self.app,
-                                       change_units = self.prefs.get('readableUnits',True)
-                                       )
-        #tm = get_thread_manager()
-        #tmg = get_thread_manager_gui()
-        #tm.add_thread(renderer)
-        #tmg.register_thread_with_dialog(_('Print recipes'),renderer)
-        #tmg.show()
+        printManager = get_print_manager()
+        printManager.print_recipes(
+            self.rd,
+            recs,
+            parent=self.app,
+            change_units=self.prefs.get('readableUnits',True)
+            )
 
     def import_webpageg (self, *args):
         self.importManager.offer_web_import(parent=self.app.get_toplevel())

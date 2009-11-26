@@ -530,3 +530,21 @@ class ShoppingListPlugin (UIPlugin):
 
     def __init__ (self):
         UIPlugin.__init__(self)
+
+
+class PrinterPlugin (StandardPlugin):
+
+    # SimpleWriter class
+    SimpleWriter = None
+    # how good this printer is (0 = use it if nothing else is there,
+    # and up from there)
+    simpleWriterPriority = -2
+    RecWriter = None # RecWriter class
+    recWriterPriority = -2
+    pass
+    
+    def activate (self, pluggable):
+        pluggable.register_plugin(self)
+
+    def deactivate (self, pluggable):
+        pluggable.unregister_plugin(self)

@@ -104,4 +104,4 @@ def get_pluralized_form (word, n):
         return ngettext(*forms)
     else:
         return word
-    
+

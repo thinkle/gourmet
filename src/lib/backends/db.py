@@ -460,12 +460,11 @@ class RecData (Pluggable):
             stored_info = self.fetch_one(self.info_table)            
     
         ### Code for updates between versions...
-        if not self.new_db:  
-            print 'version older than 0.11.4 -- doing update'
-            # Version < 0.11.4 -> version >= 0.11.4... fix up screwed up keylookup_table tables...
-            # We don't actually do this yet... (FIXME)
+        if not self.new_db:
+            sv_text = "%s.%s.%s"%(stored_info.version_super,stored_info.version_major,stored_info.version_minor)
             #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
             if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
+                print 'version older than 0.11.4 -- doing update',sv_text
                 self.backup_db()
                 print 'Fixing broken ingredient-key view from earlier versions.'
                 # Drop keylookup_table table, which wasn't being properly kept up
@@ -481,7 +480,7 @@ class RecData (Pluggable):
                                                     or
                                                     (stored_info.version_major < 14)
                                                     )):
-                print 'Database older than 0.14.7 -- updating'
+                print 'Database older than 0.14.7 -- updating',sv_text
                 # Don't change the table defs here without changing them
                 # above as well (for new users) - sorry for the stupid
                 # repetition of code.
@@ -495,13 +494,13 @@ class RecData (Pluggable):
                         }
                                                 ).execute()
             if stored_info.version_super == 0 and stored_info.version_major < 14:
-                print 'Database older than 0.14.0 -- updating'
+                print 'Database older than 0.14.0 -- updating',sv_text
                 self.backup_db()
                 # Name changes to make working with IDs make more sense
                 # (i.e. the column named 'id' should always be a unique
                 # identifier for a given table -- it should not be used to
                 # refer to the IDs from *other* tables
-                print 'Upgrade from < 0.14'
+                print 'Upgrade from < 0.14',sv_text
                 self.alter_table('categories',self.setup_category_table,
                                  {'id':'recipe_id'},['category'])
                 print 'RECREATE INGREDIENTS TABLE (This could take a while...)'
@@ -517,7 +516,7 @@ class RecData (Pluggable):
             # (These all get added in 0.13.0)
             if stored_info.version_super == 0 and stored_info.version_major <= 12:
                 self.backup_db()                
-                print 'UPDATE FROM < 0.13.0...'
+                print 'UPDATE FROM < 0.13.0...',sv_text
                 # Don't change the table defs here without changing them
                 # above as well (for new users) - sorry for the stupid
                 # repetition of code.
@@ -526,7 +525,7 @@ class RecData (Pluggable):
                 self.add_column_to_table(self.recipe_table,('ingredient_hash',String(length=32),{}))
                 # Add a link field...
                 self.add_column_to_table(self.recipe_table,('link',Text(),{}))
-                print 'Searching for links in old recipe fields...'
+                print 'Searching for links in old recipe fields...',sv_text
                 URL_SOURCES = ['instructions','source','modifications']
                 recs = self.search_recipes(
                     [

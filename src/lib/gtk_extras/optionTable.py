@@ -1,6 +1,25 @@
 #!/usr/bin/env python
 import gtk, cb_extras, gobject
 
+class CustomOption (gtk.HBox):
+
+    __gsignals__ = {
+        'changed':(gobject.SIGNAL_RUN_LAST,
+                   gobject.TYPE_NONE,
+                   []),
+        }
+
+    def __init__ (self):
+        gobject.GObject.__init__(self)
+        gtk.HBox.__init__(self)
+        raise NotImplementedError
+
+    def get_value (self):
+        raise NotImplementedError
+
+    def set_value (self, val):
+        raise NotImplementedError
+
 class OptionTable (gtk.Table):
 
     __gsignals__ = {
@@ -18,8 +37,6 @@ class OptionTable (gtk.Table):
         self.ypadding = ypadding
         self.option_label=option_label
         self.value_label=value_label
-        # if pygtk let me emit a signal, I'd just emit a changed signal for any change.
-        # but since it doesn't, I let you connect a function by binding changedcb
         self.changedcb=changedcb
         cols = 2
         rows = len(self.options)
@@ -51,7 +68,11 @@ class OptionTable (gtk.Table):
                         xoptions=gtk.SHRINK, yoptions=gtk.SHRINK)
             lab.show()
         for l,v in self.options:
-            if type(v)==type(True):
+            if isinstance(v,CustomOption):
+                w = v
+                self.widgets.append([v,'get_value','set_value'])
+                v.connect('changed',lambda * args: self.emit('changed'))
+            elif type(v)==type(True):
                 w=gtk.CheckButton()
                 w.set_active(v)
                 # widgets contains the widget, the get method and the set method
@@ -67,7 +88,7 @@ class OptionTable (gtk.Table):
                 if self.changedcb:
                     w.connect('changed',self.changedcb)
             elif type(v)==type(1) or type(v)==type(float(1)):
-                adj = gtk.Adjustment(value=0, lower=0, upper=100*v, step_incr=v*0.1, page_incr=v*0.5)
+                adj = gtk.Adjustment(value=0, lower=0, upper=100*(v or 1), step_incr=(v or 1)*0.1, page_incr=(v or 1)*0.5)
                 if type(v)==type(1):
                     # if an integer...
                     w=gtk.SpinButton(adj, digits=0)

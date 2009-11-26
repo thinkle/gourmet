@@ -14,7 +14,7 @@ from gtk_extras.dialog_extras import show_amount_error
 from gtk_extras import treeview_extras as te
 from gtk_extras import cb_extras as cb
 from gtk_extras import chooserNotebook
-import exporters.printer as printer
+from exporters.printer import get_print_manager
 from gdebug import *
 from gglobals import *
 from gettext import gettext as _
@@ -28,6 +28,7 @@ from gtk_extras import fix_action_group_importance
 from plugin import RecDisplayModule, RecEditorModule, ToolPlugin, RecDisplayPlugin, RecEditorPlugin, IngredientControllerPlugin
 import plugin_loader
 import timeScanner
+import defaults
 
 # TODO
 #
@@ -611,11 +612,12 @@ class RecCardDisplay (plugin_loader.Pluggable):
             if de.getBoolean(label=_("You have unsaved changes."),
                              sublabel=_("Apply changes before printing?")):
                 self.saveEditsCB()
-        printer.RecRenderer(self.rg.rd, [self.current_rec], mult=self.mult,
-                            dialog_title=_("Print Recipe %s"%(self.current_rec.title)),
-                            dialog_parent=self.window,
-                            change_units=self.prefs.get('readableUnits',True)
-                            )
+        printManager = get_print_manager()
+        printManager.print_recipes(
+            self.rg.rd, [self.current_rec], mult=self.mult,
+            parent=self.window,
+            change_units=self.prefs.get('readableUnits',True)
+           )
 
     def link_cb (self, *args): launch_url(self.link)
 
@@ -629,6 +631,12 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def update_yields_multiplier (self, val):
         yields = self.yieldsDisplaySpin.get_value()
+        if yields != self.current_rec.yields:
+            # Consider pluralizing...
+            plur_form = defaults.defaults.get_pluralized_form(self.current_rec.yield_unit,yields)
+            if plur_form != self.yield_unitDisplay.get_text():
+                # Change text!
+                self.yield_unitDisplay.set_text(plur_form)
         if float(yields) != self.yields_orig:
             self.mult = float(yields)/self.yields_orig
         else:

@@ -1,56 +1,94 @@
-from gourmet.gdebug import debug
+from gettext import gettext as _
+import gettext
+import gourmet.plugin_loader as plugin_loader
+from gourmet.plugin import PrinterPlugin
+from gourmet.threadManager import get_thread_manager, get_thread_manager_gui
 import os
 
-# We grab the printer of choice and import methods from it. Each printer
-# should provide a RecRenderer class which will do the actual printing.
+class NoRecRenderer ():
 
-def load_gnomeprint ():
-    try:
-        import gnomeprint
-        global RecRenderer,SimpleWriter
-        if hasattr(gnomeprint,'pango_create_context') and hasattr(gnomeprint,'pango_get_default_font_map'):            
-            from gnomeprinter import RecRenderer, SimpleWriter
+    def __init__ (self, *args, **kwargs):
+        from gourmet.gtk_extras.dialog_extras import show_message
+        show_message(label=_('Unable to print: no print plugins are active!'),
+                     sublabel=_("To print, activate a plugin that provides printing support, such as the 'Printing & PDF export' plugin."),
+                     )
+        raise NotImplementedError
+    
+class NoSimpleWriter ():
+
+    def __init__ (self, *args, **kwargs):
+        from gourmet.gtk_extras.dialog_extras import show_message
+        show_message(
+            label=_('Unable to print: no print plugins are active!'),
+            sublabel=_("To print, activate a plugin that provides printing support, such as the 'Printing & PDF export' plugin."),
+            )
+        raise NotImplementedError        
+
+class PrintManager (plugin_loader.Pluggable):
+
+    __single = None
+
+    def __init__ (self):
+        if PrintManager.__single:
+            raise PrintManager.__single
         else:
-            # pre-pango gnomeprint
-            debug("Using out-of-date gnomeprint (no pango layout support in printing)",0)
-            from gnomeprinter_obsolete import RecRenderer, SimpleWriter
-    except ImportError:
-        debug('Gnome Printer is not available',0)
-        return True
+            PrintManager.__single = self
+        self.sws = [(-1,NoSimpleWriter)]
+        self.rrs = [(-1,NoRecRenderer)]
+        plugin_loader.Pluggable.__init__(self,
+                                         [PrinterPlugin]
+                                         )
 
-def load_winprinter ():
-    global RecRenderer,SimpleWriter
-    if os.name == 'nt':        
-        from winprinter import RecRenderer, SimpleWriter
-    else:
-        return True
+    def register_plugin (self, plugin):
+        print 'REGISTER PLUGIN',plugin
+        assert(type(plugin.simpleWriterPriority)==int)
+        assert(plugin.SimpleWriter)
+        self.sws.append((plugin.simpleWriterPriority,plugin.SimpleWriter))
+        assert(type(plugin.recWriterPriority)==int)
+        assert(plugin.RecWriter)        
+        self.rrs.append((plugin.recWriterPriority,plugin.RecWriter))
+
+    def unregister_plugin (self, plugin):
+        self.sws.remove(plugin.simpleWriterPriority,plugin.SimpleWriter)
+        self.rrs.remove(plugin.recWriterPriority,plugin.RecWriter)        
+
+    def get_simple_writer (self):
+        self.sws.sort()
+        return self.sws[-1][1]
+
+    def get_rec_renderer (self):
+        self.rrs.sort()
+        return self.rrs[-1][1]
+
+    def print_recipes (self, rd, recs, parent=None, change_units=None, **kwargs):
+        renderer = self.get_rec_renderer()
+        if len(recs) == 1:
+            title = 'Print recipe "%s"'%recs[0].title
+        else:
+            title = gettext.ngettext(
+                'Print %s recipe',
+                'Print %s recipes',
+                len(recs))%len(recs)
+        try:
+            renderer(rd,recs,
+                     dialog_title=title,
+                     dialog_parent=parent,
+                     change_units=change_units,
+                     **kwargs)
+        except:
+            from gourmet.gtk_extras.dialog_extras import show_traceback
+            show_traceback(label='Error printing',
+                           sublabel=_('Well this is embarassing. Something went wrong printing your recipe.')
+                           )
+
+    def show_error (self, *args):
+        from gourmet.gtk_extras.dialog_extras import show_message
+        show_message(sublabel='There was an error printing. Apologies')
     
+def get_print_manager ():
+    try:
+        return PrintManager()
+    except PrintManager, pm:
+        return pm
 
-def load_lprprint ():
-    if os.name == 'nt': return True
-    global RecRenderer,SimpleWriter
-    from lprprinter import RecRenderer, SimpleWriter
-
-
-printers = {'gnomeprint':load_gnomeprint,
-            'win':load_winprinter,
-            'lpr':load_lprprint}
-
-from gourmet.OptionParser import options
-
-printer_names = ['lpr','win','gnomeprint']
-printer = options.printer
-
-try:
-    printer_names.remove(printer)
-except ValueError:
-    print 'Printer type: ',printer,' not recognized!'
-    printer = printer_names.pop()
-
-# A return value of True means we failed to import
-# so we'd better keep trying
-while printers[printer]() and printers:
-    print "Loading ",printer," failed:",
-    printer = printer_names.pop()
-    print "trying ",printer
-    
+#printManager = get_print_manager()

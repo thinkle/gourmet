@@ -1,5 +1,6 @@
 import gtk, pango, gobject
 from gettext import gettext as _
+import gourmet.defaults
 
 MAJOR = 0
 MINOR = 1
@@ -456,7 +457,8 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         if self.custom_label:
             self.yieldLabel.set_markup('<b>'+self.custom_label+'</b>')
         elif self.yields:
-            self.yieldLabel.set_markup('<b>'+_('Amount per %s'%self.yield_unit)+'</b>')
+            singular_unit = gourmet.defaults.get_pluralized_form(self.yield_unit,1)
+            self.yieldLabel.set_markup('<b>'+_('Amount per %s'%singular_unit)+'</b>')
         else:
             self.yieldLabel.set_markup('<b>'+_('Amount per recipe')+'</b>')
         

@@ -68,7 +68,11 @@ class NutritionDisplayModule (RecDisplayModule):
     def enter_page (self):
         self.nutritional_highlighting = True
         if not self.nutritionLabel.active_name:
-            self.nutritionLabel.toggles[self.prefs.get('nutrition_to_highlight','kcal')].activate()
+            if self.prefs.get('nutrition_to_highlight','kcal') in self.nutritionLabel.toggles:
+                self.nutritionLabel.toggles[
+                    self.prefs.get(
+                        'nutrition_to_highlight','kcal')
+                    ].activate()
         # Save what servings were and set them to "1" so that the
         # ingredient amounts display how much goes into each servings
         # (assuming there is a yield value)
@@ -103,7 +107,7 @@ class NutritionDisplayModule (RecDisplayModule):
                 tot_amt = sum([getattr(self.nutinfo,p) or 0 for p in props])
             if nut_amt:
                 perc = float(nut_amt)/tot_amt
-                if self.recipe_display.serves_orig: nut_amt = nut_amt/self.recipe_display.serves_orig
+                if self.recipe_display.yields_orig: nut_amt = nut_amt/self.recipe_display.yields_orig
                 label = self.nutritionLabel.active_unit
                 if not self.nutritionLabel.active_unit:
                     label = self.nutritionLabel.active_label.lower()
