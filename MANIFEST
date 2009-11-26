@@ -31,6 +31,7 @@ glade/recipe_index.glade
 glade/shopCatEditor.glade
 glade/timerDialog.glade
 glade/valueEditor.glade
+gourmet-0.15.0/gourmet.desktop.in
 gourmet.1
 gourmet.desktop.in
 i18n/POTFILES.in
@@ -69,6 +70,7 @@ i18n/it.po
 i18n/ja.po
 i18n/lt.po
 i18n/lv.po
+i18n/messages.mo
 i18n/nb.po
 i18n/nl.po
 i18n/nl_BE.po
@@ -283,6 +285,7 @@ src/lib/plugins/import_export/pdf_plugin/__init__.py
 src/lib/plugins/import_export/pdf_plugin/page_drawer.py
 src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py
 src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py
+src/lib/plugins/import_export/pdf_plugin/print_plugin.py
 src/lib/plugins/import_export/plaintext.gourmet-plugin
 src/lib/plugins/import_export/plaintext.gourmet-plugin.in
 src/lib/plugins/import_export/plaintext_plugin/__init__.py
@@ -298,6 +301,7 @@ src/lib/plugins/import_export/website_import.gourmet-plugin
 src/lib/plugins/import_export/website_import.gourmet-plugin.in
 src/lib/plugins/import_export/website_import_plugins/__init__.py
 src/lib/plugins/import_export/website_import_plugins/about_dot_com_plugin.py
+src/lib/plugins/import_export/website_import_plugins/allrecipes_plugin.py
 src/lib/plugins/import_export/website_import_plugins/foodnetwork_plugin.py
 src/lib/plugins/key_editor.gourmet-plugin
 src/lib/plugins/key_editor.gourmet-plugin.in
