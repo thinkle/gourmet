@@ -1,3 +1,32 @@
+2009-11-29  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/prefsGui.py (PreferencesGui): Make PreferencesGui
+	pluggable.
+
+	* src/lib/plugins/nutritional_information/__init__.py: ++
+	preferences plugin
+
+	* src/lib/plugins/nutritional_information/export_plugin.py (NutritionBaseExporterPlugin):
+	Add preference that allows user to turn off nutritional export
+	altogether or to turn it off when information is only partial.
+
+	* src/lib/plugin.py (BaseExporterPlugin.add_field): Add parameter
+	write_empty_field (which defaults to False) to determine whether
+	we add custom fields with no content.
+	(DatabasePlugin.remove): Change "deactivate" call to "remove",
+	which was what was intended (deactivate is called when the
+	pluggable is destroyed; remove is called when the plugin is
+	deactivated).
+	(PrefsPlugin): Add base class for adding tabs to preferences
+	dialog.
+
+	* src/lib/plugin_loader.py (MasterLoader.register_pluggable): Fix
+	typo.
+
+	* glade/preferenceDialog.glade: Remove hardcoded email
+	preferences (if we want them back, they belong in the email
+	plugin).
+	
 2009-11-22  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py (CustomUnitOption):
