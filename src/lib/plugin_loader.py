@@ -194,9 +194,10 @@ class MasterLoader:
                 try:
                     plugin_instance = self.get_instantiated_plugin(p)
                 except:
+                    import traceback
                     print 'WARNING: Failed to instantiate plugin %s of type %s'%(p,klass)
                     self.errors[p] = traceback.format_exc()                    
-                    import traceback; traceback.print_exc()
+                    traceback.print_exc()
                 else:
                     #print 'Instantiating plugin',p,plugin_instance,'of',klass
                     pluggable.plugin_plugin(plugin_instance)
