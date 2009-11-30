@@ -1,6 +1,7 @@
 from gourmet.plugin import BaseExporterPlugin
 from gourmet.recipeManager import default_rec_manager
 import gourmet.defaults
+from gourmet.prefs import get_prefs
 from nutritionLabel import MAIN_NUT_LAYOUT, MAJOR, MINOR, TINY, SEP, SHOW_PERCENT, DONT_SHOW_PERCENT, SEP
 from gettext import gettext as _
 from xml.sax.saxutils import escape
@@ -9,11 +10,13 @@ class NutritionBaseExporterPlugin (BaseExporterPlugin):
 
     def __init__ (self):
         BaseExporterPlugin.__init__(self)
-        self.add_field('Nutritional Information',
-                       self.get_nutritional_info_as_text_blob,
-                       self.TEXT)
+        if get_prefs().get('include_nutritional_info_in_export',True):
+            self.add_field('Nutritional Information',
+                           self.get_nutritional_info_as_text_blob,
+                           self.TEXT)
 
     def get_nutritional_info_as_text_blob (self, rec):
+        if not get_prefs().get('include_nutritional_info_in_export',True): return None
         txt = ''
         footnotes = ''
         rd = default_rec_manager()
@@ -21,12 +24,15 @@ class NutritionBaseExporterPlugin (BaseExporterPlugin):
         nutinfo = nd.get_nutinfo_for_inglist(rd.get_ings(rec),rd)
         ings = rd.get_ings(rec)
         vapor = nutinfo._get_vapor()
+        if len(vapor)==len(ings): return None
+        if len(vapor) >= 1 and not get_prefs().get('include_partial_nutritional_info',False):
+            return None
         if rec.yields and rec.yield_unit:
             singular_unit = gourmet.defaults.get_pluralized_form(rec.yield_unit,1)
             txt += '<i>%s</i>'%((rec.yields and _('Nutritional information reflects amount per %s.'%singular_unit))
                                 or
                                 _('Nutritional information reflects amounts for entire recipe'))
-        if len(vapor)==len(ings): return None
+
         if vapor:
             txt = txt + '*'
             footnotes = '\n*' + _('Nutritional information is missing for %s ingredients: %s')%(
