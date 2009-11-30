@@ -149,9 +149,15 @@ class BaseExporterPlugin (Plugin):
         for hook in self.hooks_to_add:
             pluggable.add_hook(*hook)
 
+    def remove (self):
+        for hook in self.hooks_to_add:
+            self.pluggable.remove_hook(*hook)
+        self.pluggable.plugins.remove(self)
+
     def add_field (self, field_name, field_fetcher,
                    type,
-                   position=plugin_loader.POST):
+                   position=plugin_loader.POST,
+                   write_empty_field=False):
         '''Add a text field to our export.
 
         field_name is the name of the field.
@@ -164,6 +170,10 @@ class BaseExporterPlugin (Plugin):
 
         position is either PRE or POST -- whether we come before or
         after other text fields.
+
+        if write_empty_field is True, we will write the field
+        regardless of the value. Otherwise, non-True (i.e. blank)
+        values will not print.
         '''
         if type==self.TEXT:
             def do_write (*args):
@@ -176,7 +186,7 @@ class BaseExporterPlugin (Plugin):
                 if klass.do_markup:
                     val = klass.handle_markup(val)
                 if not val: val = ''
-                if klass.ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS:
+                if klass.ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS and (val or write_empty_field):
                     klass.write_text(field_name,val)
             self.hooks_to_add.append((position,'_write_text_',do_write))
         else:
@@ -189,7 +199,7 @@ class BaseExporterPlugin (Plugin):
                 val = field_fetcher(klass.r)
                 if klass.do_markup:
                     val = klass.handle_markup(val)
-                if klass.ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS:                
+                if klass.ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS and (val or write_empty_field):                
                     klass.write_attr(field_name,val)
             self.hooks_to_add.append((position,'_write_attrs_',do_write))
 
@@ -232,8 +242,8 @@ class DatabasePlugin (StandardPlugin):
             db.add_hook(plugin_loader.POST,'setup_tables',self.create_tables)
         self.active = True
         
-    def deactivate (self, db):
-        db.remove_hook(plugin_loader.POST,'setup_tables',self.create_tables)
+    def remove (self):
+        self.db.remove_hook(plugin_loader.POST,'setup_tables',self.create_tables)
         self.active = False
         
     def create_tables (self):
@@ -548,3 +558,38 @@ class PrinterPlugin (StandardPlugin):
 
     def deactivate (self, pluggable):
         pluggable.unregister_plugin(self)
+
+class PrefsPlugin (StandardPlugin):
+
+    '''Add a tab to the preferences notebook.
+
+    Pretty much all of the handling is offloaded to the widget you add.
+
+    If you want to handle applying using the prefsGui system, you can do it with...
+
+    self.prefsGui.apply_prefs_dic['prefname']=function
+
+    where function takes then name and value of the preference as its arguments.
+    '''
+
+    label = None
+    widget = None
+
+    def activate (self, pluggable):
+        self.prefsGui = pluggable
+        self.notebook = pluggable.notebook
+        if self.label and self.widget:
+            self.page_no = self.notebook.append_page(self.widget,tab_label=gtk.Label(self.label))
+            self.widget.show()
+
+    def deactivate (self, pluggable):
+        self.notebook = None
+        self.prefsGui = None
+
+    def remove (self):
+        if self.notebook:
+            self.notebook.remove_page(self.page_no)
+            
+    def set_pref (self, name, value):
+        self.prefsGui.set_pref(name,value)
+        
