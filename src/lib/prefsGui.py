@@ -1,8 +1,9 @@
 import gtk, gtk.glade, os.path
 import gglobals
 from gtk_extras import optionTable
+import plugin_loader, plugin
 
-class PreferencesGui:
+class PreferencesGui (plugin_loader.Pluggable):
     """The glue between our glade preferences dialog and our prefs modules.
 
     Instead of "connecting", as would be normal with pygtk objects, we set up handlers in the
@@ -28,9 +29,9 @@ class PreferencesGui:
         toggle_options={'remember_optionals_by_default':'remember_optionals_by_default',
                         'readableUnits':'toggle_readable_units',
                         'useFractions':'useFractions',
-                        'email_include_body':'email_body_checkbutton',
-                        'email_include_html':'email_html_checkbutton',
-                        'emailer_dont_ask':'remember_email_checkbutton',
+                        #'email_include_body':'email_body_checkbutton',
+                        #'email_include_html':'email_html_checkbutton',
+                        #'emailer_dont_ask':'remember_email_checkbutton',
                         },
 
         number_options = {'recipes_per_page':'recipesPerPageSpinButton'},
@@ -52,7 +53,7 @@ class PreferencesGui:
         buttons = {button_name : callback}
                       
         """
-        
+
         self.prefs = prefs
         self.glade = gtk.glade.XML(glade)
         self.notebook = self.glade.get_widget('notebook')
@@ -81,6 +82,7 @@ class PreferencesGui:
         self.prefs.set_hooks.append(self.update_pref)
         self.pref_tables={}
         self.glade.get_widget('close_button').connect('clicked',lambda *args: self.hide_dialog())
+        plugin_loader.Pluggable.__init__(self,[plugin.PrefsPlugin])
 
     def build_pref_dictionary (self):
         """Build our preferences dictionary pref_dic
