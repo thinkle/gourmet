@@ -99,6 +99,7 @@ class ImportManager (plugin_loader.Pluggable):
                 },
                 )
         else:
+            print 'Doing import of',reader.url,plugin
             self.do_import(plugin,'get_web_importer',reader.url,reader.data,reader.content_type)
 
     def offer_import (self, parent=None):

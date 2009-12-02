@@ -17,7 +17,6 @@ class NutritionDisplayModule (RecDisplayModule):
     _custom_handlers_setup = False
 
     def __init__ (self, recipe_display):
-        print 'Initialize NutritionDisplayModule for',recipe_display
         self.recipe_display = recipe_display
         self.nutritional_highlighting = True
         self.prefs = self.recipe_display.rg.prefs
@@ -128,10 +127,8 @@ class NutritionDisplayModule (RecDisplayModule):
                     istr = '<span weight="%i">'%weight + istr + '</span>'
             if isinstance(nutinfo_for_ing,
                           NutritionVapor):
-                print 'Vapor!',nutinfo_for_ing
                 istr = '<span foreground="red">'+istr+'</span>'
         return istr
-
         
 
 class NutritionDisplayPlugin (RecDisplayPlugin):

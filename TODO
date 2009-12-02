@@ -1,4 +1,9 @@
 TODO
+* Look into drag-n-drop in shopgui
+
+   
+* Put Right Click Menu back [X]
+* Make nutritional export plugin a preference [X]
 * Python 2.6 Compatability
    - interactive importer & Threads module (Threads now complained if
    not initialized and we set name).[X]

@@ -631,6 +631,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def update_yields_multiplier (self, val):
         yields = self.yieldsDisplaySpin.get_value()
+        if yields == self.current_rec.yields:
+            self.yield_unitDisplay.set_text(self.current_rec.yield_unit)
         if yields != self.current_rec.yields:
             # Consider pluralizing...
             plur_form = defaults.defaults.get_pluralized_form(self.current_rec.yield_unit,yields)

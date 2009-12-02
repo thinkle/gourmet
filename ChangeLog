@@ -1,3 +1,18 @@
+2009-12-02  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/importers/importManager.py (ImportManager.finish_web_import):
+	Print information about importer being used.
+
+
+2009-12-01  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/GourmetRecipeManager.py (RecGui.setup_main_window): Add
+	right-click menu back to main interface (we use the contents of
+	the action menu for the right-click).
+
+	* src/lib/reccard.py (RecCardDisplay.update_yields_multiplier):
+	Fix updating of yield_unit on yield_change.
+
 2009-11-29  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/prefsGui.py (PreferencesGui): Make PreferencesGui

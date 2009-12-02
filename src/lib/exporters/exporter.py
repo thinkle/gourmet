@@ -525,7 +525,6 @@ class ExporterMultirec (SuspendableThread, Pluggable):
 
     def append_referenced_recipes (self):
         for r in self.recipes[:]:
-            print 'Looking for referenced recs in',r.title,r.id
             reffed = self.rd.db.execute(
                 'select * from ingredients where recipe_id=? and refid is not null',r.id
                 )
@@ -537,7 +536,6 @@ class ExporterMultirec (SuspendableThread, Pluggable):
         
     @pluggable_method
     def do_run (self):
-        print 'Exportermultirec.do_run'
         self.rcount = 0
         self.rlen = len(self.recipes)        
         if not self.one_file:
