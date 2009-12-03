@@ -1,5 +1,9 @@
 2009-12-02  Thomas M. Hinkle  <tom@grenville>
 
+	* src/lib/check_encodings.py (GetFile.__init__): Divide lines
+	using built-in splitlines() function -- this fixes problems with
+	line breaks on e.g. mac text files.
+
 	* src/lib/importers/importManager.py (ImportManager.finish_web_import):
 	Print information about importer being used.
 

@@ -71,7 +71,7 @@ class GetFile (CheckEncoding):
             else:
                 encoding = encs.keys()[0]
             self.enc = encoding
-            self.lines = encs[self.enc].split('\n')      
+            self.lines = encs[self.enc].splitlines()
             debug('reading file %s as encoding %s'%(file, self.enc))
             self.lines = [l.encode() for l in self.lines]
         else:
@@ -181,7 +181,7 @@ class EncodingDialog (de.OptionDialog):
 
     def set_buffer_text (self, buffer, text):
         """Set buffer text to show encoding differences."""
-        lines = text.split('\n')
+        lines = text.splitlines()
         totl = len(lines)
         shown = []
         for line,diffs in self.diff_lines.items():
@@ -220,11 +220,11 @@ class EncodingDialog (de.OptionDialog):
         encoded_buffers = self.encodings.values()
         def mycmp (a,b):
             '''Sort by number of newlines (most first)'''
-            return cmp(b.count('\n'),a.count('\n'))
+            return cmp(len(b.splitlines()),len(a.splitlines()))
         encoded_buffers.sort(mycmp)
         enc1 = encoded_buffers[0]
-        enc_rest = [e.split('\n') for e in encoded_buffers[1:]]
-        for linenum, l in enumerate(enc1.split('\n')):
+        enc_rest = [e.splitlines() for e in encoded_buffers[1:]]
+        for linenum, l in enumerate(enc1.splitlines()):
             other_lines = [len(e)>linenum and e[linenum] for e in enc_rest]
             # Remove any Falses returned by above 
             other_lines = filter(lambda x: type(x) != bool, other_lines)
@@ -252,7 +252,8 @@ def getEncoding (*args,**kwargs):
 if __name__ == '__main__':
     print 'grabbing dialog extras'
     import gtk_extras.dialog_extras as de
-    print 'selecting file'
-    fn=de.select_file('Select file to decode',filters=[['Plain Text',['text/plain'],'*txt']],)
+    #print 'selecting file'
+    #fn=de.select_file('Select file to decode',filters=[['Plain Text',['text/plain'],'*txt']],)
+    fn = "/home/tom/Desktop/Downloads/General_Tso's_Chicken.txt"
     print 'fn = ',fn
-    print "Got file ", get_file(fn)[0:5]
+    print "Got file ", get_file(fn)
