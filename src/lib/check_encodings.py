@@ -2,12 +2,13 @@ import gtk
 from gdebug import debug
 from gtk_extras import dialog_extras as de
 from gettext import gettext as _
+from prefs import get_prefs
 
 class CheckEncoding:
 
     """A class to read a file and guess the correct text encoding."""
 
-    encodings = ['iso8859','ascii','latin_1','cp850','cp1252','utf-8','utf-16','utf-16-be']
+    encodings = ['iso8859','ascii','latin_1','cp850','cp1252','utf-8']
     all_encodings= ['ascii','cp037','cp424',
                         'cp437','cp500','cp737','cp775','cp850','cp852',
                         'cp855','cp856','cp857','cp860','cp861','cp862',
@@ -23,6 +24,8 @@ class CheckEncoding:
                         'utf_16_le','utf_7','utf_8']
     
     def __init__ (self, file, encodings=None):
+        if get_prefs().get('utf-16',False):
+            self.encodings.extend(['utf_16','utf_16_le','utf_16_be'])
         if encodings: self.encodings = encodings
         if type(file)==str:
             file = open(file,'r')
@@ -51,10 +54,12 @@ class CheckEncoding:
         if not encodings: encodings=self.all_encodings
         self.possible_encodings = {}
         for e in encodings:
+            print 'Test ',e
             try:
                 d=self.txt.decode(e)
-                if not d in self.possible_encodings.values():
-                    # if we don't already have this possibility, add 
+                if d and (not d in self.possible_encodings.values()):
+                    # if we don't already have this possibility, add
+                    print "Maybe it's",e,d
                     self.possible_encodings[e]=d.encode('utf8')
             except UnicodeDecodeError:
                 pass
@@ -181,6 +186,7 @@ class EncodingDialog (de.OptionDialog):
 
     def set_buffer_text (self, buffer, text):
         """Set buffer text to show encoding differences."""
+        print 'Setting buffer to',text
         lines = text.split('\n')
         totl = len(lines)
         shown = []
@@ -201,7 +207,11 @@ class EncodingDialog (de.OptionDialog):
                 l = lines[n]
                 if n==line:
                     start = 0
+                    print 'Inserting',l
                     for sdiff,ediff in diffs:
+                        print 'Cut into...'
+                        print l[start:sdiff]
+                        print l[sdiff:ediff]
                         buffer.insert_with_tags(buffer.get_end_iter(),
                                                 l[start:sdiff],
                                                 *self.line_highlight_tags)
@@ -209,6 +219,7 @@ class EncodingDialog (de.OptionDialog):
                                                 l[sdiff:ediff],
                                                 *self.highlight_tags)
                         start = ediff
+                    print l[start:]
                     buffer.insert_with_tags(buffer.get_end_iter(),
                                             l[start:],
                                             *self.line_highlight_tags)
@@ -237,6 +248,7 @@ class EncodingDialog (de.OptionDialog):
                         else:
                             ranges.append([chnum,chnum+1])
                 self.diff_lines[linenum]=ranges
+        print 'DIFF_LINES=',self.diff_lines
                 
         
 def getEncoding (*args,**kwargs):
@@ -251,8 +263,8 @@ def getEncoding (*args,**kwargs):
 
 if __name__ == '__main__':
     print 'grabbing dialog extras'
-    import gtk_extras.dialog_extras as de
-    print 'selecting file'
-    fn=de.select_file('Select file to decode',filters=[['Plain Text',['text/plain'],'*txt']],)
-    print 'fn = ',fn
-    print "Got file ", get_file(fn)[0:5]
+    #import gtk_extras.dialog_extras as de
+    #print 'selecting file'
+    #fn=de.select_file('Select file to decode',filters=[['Plain Text',['text/plain'],'*txt']],)
+    #print 'fn = ',fn
+    print "Got file ", get_file('/tmp/foo.txt')[0:5]
