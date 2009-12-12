@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module = check_for_unicode_16
+Version = 1.0
+API_Version = 1.0
+_Name = Check for Unicode-16 in text files
+_Comment = Enable this if your utf-16 text files aren't importing cleanly into Gourmet. Disable this if you never use UTF16 and you're constantly being annoyed by the 'Encoding' dialog when you import files.
+_Category = Importer/Exporter
+Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>
