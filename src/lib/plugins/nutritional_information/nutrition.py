@@ -613,10 +613,8 @@ def foo ():
             print att,":",getattr(self.ings,att)
             vv = self.ings._get_vapor()
             if vv:
-                print '(but we have some vapor)'
                 for v in vv:
                     explanation = v._wheres_the_vapor()
-                    print 'Vapor for ',v.__key__
                     if explanation==KEY_VAPOR: print 'No key'
                     if explanation==UNIT_VAPOR: print "Can't handle unit ",v.__unit__
                     if explanation==AMOUNT_VAPOR: print "What am I to do with the amount ",v.__amt__

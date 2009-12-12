@@ -318,6 +318,7 @@ src/lib/plugins/nutritional_information/enter_nutritional_defaults.py
 src/lib/plugins/nutritional_information/export_plugin.py
 src/lib/plugins/nutritional_information/images/Nutrition.png
 src/lib/plugins/nutritional_information/main_plugin.py
+src/lib/plugins/nutritional_information/nutPrefsPlugin.py
 src/lib/plugins/nutritional_information/nut_recipe_card_display.glade
 src/lib/plugins/nutritional_information/nutrition.py
 src/lib/plugins/nutritional_information/nutritionDisplay.py

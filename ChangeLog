@@ -1,3 +1,13 @@
+2009-12-11  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/plugins/nutritional_information/nutrition.py (foo.SimpleInterface.print_info):
+	Be less verbose.
+	* src/lib/importers/importer.py (Importer.commit_rec): Make sure
+	we provide unicode strings to db.
+	* src/lib/reccard.py (IngredientEditorModule.quick_add): Make sure
+	we provide unicode strings to DB.
+	(DescriptionEditorModule.save): Make sure we provide unicode strings.
+
 2009-12-02  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/check_encodings.py (GetFile.__init__): Divide lines
