@@ -1010,8 +1010,22 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                                        tab_label=gtk.Label(_('Search recipes')))
         self.main.add(self.main_notebook)
         self.recipe_index_interface.show()
+
         self.main_notebook.show(); self.main_notebook.set_show_tabs(False)
+
+        # Set up right-clicking again
+        self.rectree.connect('popup-menu',self.rectree_popup)
+        def popcb (tv, event):
+            if event.button==3:
+                self.rectree_popup(tv,event)
+                return True
+        self.rectree.connect('button-press-event',popcb)
         self.main.show()
+
+    def rectree_popup (self, tv, event, *args):
+        menu = self.ui_manager.get_widget("/RecipeIndexMenuBar/Actions/").get_submenu()
+        menu.popup(None,None,None,event.button,event.time)
+        return True
 
     def setup_actions (self):
         self.ui_manager = gtk.UIManager()

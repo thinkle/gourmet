@@ -164,7 +164,7 @@ class Importer (SuspendableThread):
         timeaction = TimeAction('importer.commit_rec',10)
         for key in ['cuisine','category','title']:
             if self.rec.has_key(key):
-                self.rec[key]=re.sub('\s+',' ',self.rec[key]).strip()
+                self.rec[key]=unicode(re.sub('\s+',' ',self.rec[key]).strip())
         # if yields/servings can't be recognized as a number, add them
         # to the instructions.
         if self.rec.has_key('yields'):

@@ -40,7 +40,6 @@ class PrintManager (plugin_loader.Pluggable):
                                          )
 
     def register_plugin (self, plugin):
-        print 'REGISTER PLUGIN',plugin
         assert(type(plugin.simpleWriterPriority)==int)
         assert(plugin.SimpleWriter)
         self.sws.append((plugin.simpleWriterPriority,plugin.SimpleWriter))

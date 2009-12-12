@@ -631,6 +631,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def update_yields_multiplier (self, val):
         yields = self.yieldsDisplaySpin.get_value()
+        if yields == self.current_rec.yields:
+            self.yield_unitDisplay.set_text(self.current_rec.yield_unit)
         if yields != self.current_rec.yields:
             # Consider pluralizing...
             plur_form = defaults.defaults.get_pluralized_form(self.current_rec.yield_unit,yields)
@@ -1106,7 +1108,7 @@ class IngredientEditorModule (RecEditorModule):
         self.glade.signal_connect('addQuickIngredient',self.quick_add)
 
     def quick_add (self, *args):
-        txt = self.quickEntry.get_text()
+        txt = unicode(self.quickEntry.get_text())
         prev_iter,group_iter = self.ingtree_ui.get_previous_iter_and_group_iter()
         add_with_undo(self,
                       lambda *args: self.add_ingredient_from_line(txt,
@@ -1414,10 +1416,10 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
 
     def save (self, recdic):
         for c in self.reccom:
-            recdic[c]=self.rw[c].entry.get_text()
+            recdic[c]=unicode(self.rw[c].entry.get_text())
         for e in self.recent:
             if e in INT_REC_ATTRS: recdic[e]=self.rw[e].get_value()
-            else: recdic[e]=self.rw[e].get_text()
+            else: recdic[e]=unicode(self.rw[e].get_text())
         if self.imageBox.edited:
             recdic['image'],recdic['thumb']=self.imageBox.commit()
             self.imageBox.edited=False

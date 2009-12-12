@@ -31,7 +31,6 @@ glade/recipe_index.glade
 glade/shopCatEditor.glade
 glade/timerDialog.glade
 glade/valueEditor.glade
-gourmet-0.15.0/gourmet.desktop.in
 gourmet.1
 gourmet.desktop.in
 i18n/POTFILES.in
@@ -70,7 +69,6 @@ i18n/it.po
 i18n/ja.po
 i18n/lt.po
 i18n/lv.po
-i18n/messages.mo
 i18n/nb.po
 i18n/nl.po
 i18n/nl_BE.po
@@ -150,16 +148,11 @@ src/lib/exporters/__init__.py
 src/lib/exporters/eatdrinkfeelgood_exporter.py
 src/lib/exporters/exportManager.py
 src/lib/exporters/exporter.py
-src/lib/exporters/gnomeprinter.py
-src/lib/exporters/gnomeprinter_obsolete.py
 src/lib/exporters/gxml_exporter.py
-src/lib/exporters/lprprinter.py
 src/lib/exporters/page_drawer.py
 src/lib/exporters/printer.py
-src/lib/exporters/printer_old.py
 src/lib/exporters/recipe_emailer.py
 src/lib/exporters/rtf_exporter.py
-src/lib/exporters/winprinter.py
 src/lib/exporters/xml_exporter.py
 src/lib/gdebug.py
 src/lib/gettext_setup.py
@@ -325,6 +318,7 @@ src/lib/plugins/nutritional_information/enter_nutritional_defaults.py
 src/lib/plugins/nutritional_information/export_plugin.py
 src/lib/plugins/nutritional_information/images/Nutrition.png
 src/lib/plugins/nutritional_information/main_plugin.py
+src/lib/plugins/nutritional_information/nutPrefsPlugin.py
 src/lib/plugins/nutritional_information/nut_recipe_card_display.glade
 src/lib/plugins/nutritional_information/nutrition.py
 src/lib/plugins/nutritional_information/nutritionDisplay.py
