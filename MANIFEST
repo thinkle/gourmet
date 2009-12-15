@@ -220,6 +220,7 @@ src/lib/plugins/browse_recipes/images/preptime.png
 src/lib/plugins/browse_recipes/images/preptime_empty_clock.png
 src/lib/plugins/browse_recipes/images/rating.png
 src/lib/plugins/browse_recipes/images/source.png
+src/lib/plugins/check_for_unicode_16/__init__.py
 src/lib/plugins/duplicate_finder.gourmet-plugin
 src/lib/plugins/duplicate_finder.gourmet-plugin.in
 src/lib/plugins/duplicate_finder/__init__.py
@@ -353,6 +354,7 @@ src/lib/plugins/unit_display_prefs.gourmet-plugin
 src/lib/plugins/unit_display_prefs.gourmet-plugin.in
 src/lib/plugins/unit_display_prefs/__init__.py
 src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py
+src/lib/plugins/utf16.gourmet-plugin.in
 src/lib/prefs.py
 src/lib/prefsGui.py
 src/lib/profileImport.py

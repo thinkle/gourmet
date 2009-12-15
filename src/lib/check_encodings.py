@@ -186,12 +186,8 @@ class EncodingDialog (de.OptionDialog):
 
     def set_buffer_text (self, buffer, text):
         """Set buffer text to show encoding differences."""
-<<<<<<< HEAD:src/lib/check_encodings.py
         print 'Setting buffer to',text
-        lines = text.split('\n')
-=======
         lines = text.splitlines()
->>>>>>> faca57a58f1f1b6c60e513959e21bd2b9c50563f:src/lib/check_encodings.py
         totl = len(lines)
         shown = []
         for line,diffs in self.diff_lines.items():
