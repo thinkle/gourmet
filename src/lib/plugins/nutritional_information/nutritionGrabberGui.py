@@ -67,8 +67,12 @@ def check_for_db (db):
     if db.fetch_len(db.nutrition_table) < 10:
         print 'Grabbing nutrition database!'
         dgg = DatabaseGrabberGui(db)        
-        dgg.load_db()        
-
+        dgg.load_db()
+    # Check if we have choline in our DB... butter (1123) has choline...
+    elif not db.fetch_one(db.nutrition_table,ndbno=1123).choline:
+        dgg = DatabaseGrabberGui(db)
+        dgg.load_db()
+        
 if __name__=='__main__':
     import gourmet.recipeManager
     print 'loading db'

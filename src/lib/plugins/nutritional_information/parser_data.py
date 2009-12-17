@@ -5,7 +5,6 @@ from gettext import gettext as _
 PER_100_GRAMS = ["kcal","protein","lipid","ash","carb","fiber","sugar","calcium","iron","magnesium","phosphorus","potassium","sodium","zinc","copper","manganese","selenium","vitaminc","thiamin","riboflavin","niacin","pantoacid","vitaminb6","folatetotal","folateacid","foodfolate","folatedfe","vitb12","vitaiu","vitarae","retinol","vite","vitk","alphac","betac","betacrypt","lypocene","famono","fapoly","lutzea","fasat","cholestrl"]
 
 # For the ABBREV FILE
-
 NUTRITION_FIELDS = [
     #[description abbrev type]
     ["Nutrient Databank Number","ndbno","int"],
@@ -38,17 +37,18 @@ NUTRITION_FIELDS = [
     [_("microgram Folic acid"),"folateacid","float"],
     [_("microgram Food Folate"),"foodfolate","float"],
     [_("microgram dietary folate equivalents"),"folatedfe","float"],
+    [_("Choline, total"),'choline','float'],
     [_("microgram Vitamin B12"),"vitb12","float"],
     [_("Vitamin A IU"),"vitaiu","float"],
     [_("Vitamin A (microgram Retinal Activity Equivalents"),"vitarae","float"],
     [_("microgram Retinol"),"retinol","float"],
-    [_("mg Vitamin E"),"vite","float"],
-    [_("mg Vitamin K"),"vitk","float"],
     [_("microgram Alpha-carotene"),"alphac","float"],
     [_("microgram Beta-carotene"),"betac","float"],
     [_("microgram Beta Cryptoxanthin"),"betacrypt","float"],
     [_("microgram Lycopene"),"lypocene","float"],
     [_("microgram Lutein+Zeazanthin"),"lutzea","float"],
+    [_("mg Vitamin E"),"vite","float"],
+    [_("mg Vitamin K"),"vitk","float"],    
     [_("g Saturated Fatty Acid"),"fasat","float"],
     [_("g Monounsaturated Fatty Acids"),"famono","float"],
     [_("g Polyunsaturated Fatty Acids"),"fapoly","float"],

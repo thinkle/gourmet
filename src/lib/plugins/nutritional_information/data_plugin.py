@@ -8,7 +8,7 @@ import parser_data
 class NutritionDataPlugin (DatabasePlugin):
 
     name = 'nutritondata'
-    version = 1
+    version = 2
 
     def setup_usda_weights_table (self):
         self.db.usda_weights_table = Table('usda_weights',self.db.metadata,
@@ -68,3 +68,13 @@ class NutritionDataPlugin (DatabasePlugin):
                              [name for lname,name,typ in parser_data.WEIGHT_FIELDS])
             self.db.alter_table('nutritionconversions',self.setup_nutrition_conversions_table,{},
                              ['ingkey','unit','factor'])
+        if plugin_stored == '1':
+            # Add choline
+            self.db.add_column_to_table(self.db.nutrition_table,
+                                        ('choline',
+                                         gourmet.backends.db.map_type_to_sqlalchemy('float'),
+                                         {})
+                                        )
+
+            
+                                        

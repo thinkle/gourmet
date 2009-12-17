@@ -1,6 +1,6 @@
 [Gourmet Plugin]
 Module = nutritional_information
-Version = 1.0
+Version = 1.1
 API_Version = 1.0
 _Name = Nutritional Information
 _Comment = Calculate nutritional information for recipes.

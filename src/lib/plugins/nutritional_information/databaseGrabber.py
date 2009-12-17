@@ -77,7 +77,6 @@ class DatabaseGrabber:
             ndbno = int(flds[0].strip('~'))
             grpno = int(flds[1].strip('~'))
             self.foodgroups_by_ndbno[ndbno] = grpno
-        
 
     def get_weight (self, filename=None):
         if filename:
@@ -117,7 +116,12 @@ class DatabaseGrabber:
         d = {}
         fields = line.split("^")
         for n,fl in enumerate(fields):
-            lname,sname,typ = field_defs[n]
+            try:
+                lname,sname,typ = field_defs[n]
+            except IndexError:
+                print n,fields[n],'has no definition in ',field_defs,len(field_defs)
+                print 'Ignoring problem and forging ahead!'
+                break
             if fl and fl[0]=='~' and fl[-1]=='~':
                 d[sname]=fl[1:-1]
             if typ=='float':
@@ -127,7 +131,7 @@ class DatabaseGrabber:
                     d[sname]=None
             elif typ=='int':
                 try:
-                    d[sname]=int(d.get(sname,fl))
+                    d[sname]=int(float(d.get(sname,fl)))
                 except:
                     if d.get(sname,fl):
                         print d.get(sname,fl),'is not an integer'
@@ -160,8 +164,19 @@ class DatabaseGrabber:
             try:
                 self.db.do_add_fast(self.db.nutrition_table,d)
             except:
-                print 'Error appending',d,'to nutrition_table'
-                raise
+                try:
+                    #self.db.nutrition_table.update(
+                    #   self.db.nutrition_table.c.ndbno==d['ndbno']
+                    #    ).execute(**d)
+                    SQL = 'UPDATE ' + self.db.nutrition_table.name + ' SET '
+                    args = d.copy(); del args['ndbno']
+                    SQL += ', '.join('%s = ?'%k for k in args)
+                    SQL += ' WHERE ndbno = %s'%d['ndbno']
+                    self.db.extra_connection.execute(SQL,args.values())
+                except:
+                    print 'Error appending to nutrition_table',d
+                    print 'Tried modifying table -- that failed too!'
+                    raise
             t.end()                        
             tline.end()
         self.db.commit_fast_adds()

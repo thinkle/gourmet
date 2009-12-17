@@ -463,18 +463,6 @@ class RecData (Pluggable):
         if not self.new_db:
             sv_text = "%s.%s.%s"%(stored_info.version_super,stored_info.version_major,stored_info.version_minor)
             #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
-            if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
-                print 'version older than 0.11.4 -- doing update',sv_text
-                self.backup_db()
-                print 'Fixing broken ingredient-key view from earlier versions.'
-                # Drop keylookup_table table, which wasn't being properly kept up
-                # to date...
-                self.delete_by_criteria(self.keylookup_table,{}) 
-                # And update it in accord with current ingredients (less
-                # than an ideal decision, alas)
-                for ingredient in self.fetch_all(self.ingredients_table,deleted=False):
-                    self.add_ing_to_keydic(ingredient.item,ingredient.ingkey)
-
             # Change from servings to yields! ( we use the plural to avoid a headache with keywords)
             if (stored_info.version_super == 0 and ((stored_info.version_major <= 14 and stored_info.version_minor <= 7)
                                                     or
@@ -570,6 +558,19 @@ class RecData (Pluggable):
                                 )
                 # Add hash values to identify all recipes...
                 for r in self.fetch_all(self.recipe_table): self.update_hashes(r)
+
+            if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
+                print 'version older than 0.11.4 -- doing update',sv_text
+                self.backup_db()
+                print 'Fixing broken ingredient-key view from earlier versions.'
+                # Drop keylookup_table table, which wasn't being properly kept up
+                # to date...
+                self.delete_by_criteria(self.keylookup_table,{}) 
+                # And update it in accord with current ingredients (less
+                # than an ideal decision, alas)
+                for ingredient in self.fetch_all(self.ingredients_table,deleted=False):
+                    self.add_ing_to_keydic(ingredient.item,ingredient.ingkey)
+
             for plugin in self.plugins:
                 self.update_plugin_version(plugin,
                                            (current_super,current_major,current_minor)

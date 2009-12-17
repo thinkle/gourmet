@@ -354,6 +354,7 @@ src/lib/plugins/unit_display_prefs.gourmet-plugin
 src/lib/plugins/unit_display_prefs.gourmet-plugin.in
 src/lib/plugins/unit_display_prefs/__init__.py
 src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py
+src/lib/plugins/utf16.gourmet-plugin
 src/lib/plugins/utf16.gourmet-plugin.in
 src/lib/prefs.py
 src/lib/prefsGui.py
