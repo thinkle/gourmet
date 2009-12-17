@@ -1,5 +1,7 @@
 2009-12-17  Thomas M. Hinkle  <tom@grenville>
 
+	* Version -> 0.15.3
+	
 	* src/lib/plugins/nutritional_information/parser_data.py (NUTRITION_FIELDS): Update fields for SR21.
 
 	* src/lib/plugins/nutritional_information/nutritionGrabberGui.py (check_for_db):
