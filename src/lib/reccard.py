@@ -964,7 +964,11 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
             # we'll need to look for the switch with an idle call
             gobject.idle_add(self.notebook_change_cb)
         self.notebook.connect('switch-page',hackish_notebook_switcher_handler)
-        self.notebook.set_tab_pos(gtk.POS_LEFT)
+        if os.name == 'nt' or os.name == 'dos':
+            # Until https://bugzilla.gnome.org/show_bug.cgi?id=552681 is fixed
+            self.notebook.set_tab_pos(gtk.POS_TOP)
+        else:
+            self.notebook.set_tab_pos(gtk.POS_LEFT)
         self._last_module = None
         self.last_merged_ui = None
         self.last_merged_action_groups = None
