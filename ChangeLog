@@ -1,5 +1,10 @@
 2009-12-17  Thomas M. Hinkle  <tom@grenville>
 
+	* src/lib/backends/db.py (RecData.validate_recdic): Ensure recipe
+	info is unicode.
+
+	* src/lib/check_encodings.py: Be less verbose.
+
 	* Version -> 0.15.3
 	
 	* src/lib/plugins/nutritional_information/parser_data.py (NUTRITION_FIELDS): Update fields for SR21.
