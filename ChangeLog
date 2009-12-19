@@ -1,5 +1,11 @@
 2009-12-18  Thomas M. Hinkle  <tom@grenville>
 
+	* src/lib/gtk_extras/dialog_extras.py (SimpleFaqDialog.NESTED_MATCHER):
+	Fix bug in REGEXP in number-header parsing.
+
+	* src/lib/plugins/nutritional_information/databaseGrabber.py (DatabaseGrabber.parse_abbrevfile):
+	Remove old code.
+
 	* FAQ: Update FAQ (which was pretty seriously out-of-date).
 
 2009-12-17  Thomas M. Hinkle  <tom@grenville>

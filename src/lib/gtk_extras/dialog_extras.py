@@ -595,7 +595,7 @@ class SimpleFaqDialog (ModalDialog):
 
     # We except one level of nesting in our headers.
     # NESTED_MATCHER should match nested headers
-    NESTED_MATCHER = re.compile("^[0-9][.][A-Za-z0-9.]+ .*")
+    NESTED_MATCHER = re.compile("^[0-9]+[.][A-Za-z0-9.]+ .*")
 
     def __init__ (self,
                   faq_file='/home/tom/Projects/grm-0.8/FAQ',

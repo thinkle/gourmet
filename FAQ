@@ -15,7 +15,7 @@ elements of Gourmet that are not as transparent to the user.
 
 Gourmet can easily import mealmaster and mastercook files. There are
 large archives of these files available on the web -- search for the
-kind of recipes you're interested in an "mealmaster" or "mastercook",
+kind of recipes you're interested in and "mealmaster" or "mastercook",
 and you should find them.
 
 Gourmet can also import recipes from websites. A very few websites
@@ -41,43 +41,56 @@ encoding looks right.
 
 3. How do I do complicated searches?
 
-Using the "Limit" button, you can combine any of searches Gourmet
-offers. For example, you can first search for Category "Salad", then
-press "Limit", and then search for Jícama, in order to find all Salads
-with Jícama in them.
+By default, Gourmet does a simple search for the text you enter
+anywhere. If you want to combine multiple searches, just hit return
+and start typing again. For example, to search for desserts with
+oranges, type "dessert", hit return, and then type "orange."
 
-Using "Advanced" searching (on by default), you can also use "or" to
-search for e.g. something with a category that is category or
-appetizer.
+You can also type "or" to search for one thing or another.
 
-Gourmet also supports regular expression searching. If you know what
-that is, you'll find it very useful. If you don't know what it is,
-know that searches with punctuation in them may not work as expected
-(not that there's much reason to search within a recipe for
-punctuation).
+By clicking "Show Search Options," you can further narrow your search
+results, searching only in a given part of a recipe (e.g. in
+ingredients). You can also turn on support for regular expressions,
+which will allow programmers and others familiar with regular
+expressions to do more powerful searches.
+
+3.b Searching is too slow, what can I do?
+
+If your computer is slow and/or your database is big, you may find that Gourmet is sluggish when you are searching. This is because, by default, Gourmet tries to search as you type. By clicking "Show Search Options" and then unchecking "Search as you type," you can turn off this feature. In this mode, you have to type "return" or click "find" to actually run a search.
+
+If Gourmet is still sluggish in this case, you may need to select more specific searches instead of using the default "search anywhere" option. For most users this should be no problem, but it is possible that with a very large database and a slow machine, you will run into performance problems.
 
 4. Shopping lists
 
 4.a. How do I create a shopping list?
 
-There are two ways: Click on the "Add to shopping list" button from a
-recipe card, or, click on the "Add to shopping list" button with one
-or more recipes selected in the recipe index view. You can also type
-"C-L" from either view to add to the shopping list more quickly.
+There are two ways: Click on the "Shop" button in a recipe card, or,
+select "Add to shopping list" from the right-click menu or the Action
+menu of the index view. You can also type "Control-L" (for list) from
+either view to add to the shopping list more quickly.
 
 4.b. What is the "pantry" for?
 
 The idea of the "pantry" list is to record ingredients that you do not
 want to shop for. In my kitchen, for example, I almost never need to
-buy any of the basic spices, or staples like flour, butter, sugar,
-etc. So I put them in my pantry list.
+buy any of the basic spices, or staples like flour, butter and sugar,
+so I put them in my pantry list.
 
 The reason these are added to a list rather than simply deleted from
 your shopping list is so that you can always see what ingredients a
 recipe calls for -- for the rare cases when you've run out of a staple
 that's usually in your pantry.
 
-4.c. So how can I delete recipes from my shopping list?
+The pantry list is *not* designed to list all the contents of your
+pantry.
+
+Only the items on your shopping list will be printed when you print a
+shopping list. If you don't want something to be included on the
+shopping list, drag it to your pantry list. If you do want it
+included, drag it back form the pantry list to the shopping list. In
+either case, Gourmet will remember what you did for next time.
+
+4.c. How can I delete items from my shopping list?
 
 Drag them to the pantry list. Or use the "remove from shopping list" button
 on the toolbar. Or type "Control-D" while the item is selected. The idea of
@@ -94,31 +107,102 @@ item is selected.
 
 5.a. How do I edit recipes
 
-When you create a recipe card, you open a window with multiple
-tabs. The first "recipe card" tab displays the recipe and allows you
-to multiply your recipe.
+When you create a recipe card, you will see the recipe editor window,
+a window with multiple tabs. Each tab allows you to edit a different
+aspect of the recipe (ingredients, instrucitons, etc.)
 
-The other tabs are for editing different aspects of the recipe:
-"Details" includes the title, image, category, cuisine, preparation
-time, cooking time, etc. The other tabs are self-explanatory.
+When you open a previously created recipe, you'll see a simpler
+"Recipe Card" display that puts all the information you need on one
+screen. If you want to edit any part of this display, click on the
+"Edit" button next to the relevant section. For example, next to the
+"Ingredients" header, there's a "Edit ingredients" button which will
+open the edit window on the ingredients tab.
 
-When you open a previously created recipe, you'll see an attractive
-"Recipe Card" display. If you want to edit any part of this display,
-click on the "Edit" button next to the relevant section. For example,
-next to the "Ingredients" header, there's a "Edit ingredients" button
-which will open the edit window on the ingredients tab.
+5.b. How do I convert units?
 
-5.b. There are too many fields; I don't care about X.
+Just edit the unit by clicking on the "unit" cell in your ingredient
+list. Gourmet will then offer you a choice between simply changing the
+unit and converting the item.
 
-If you know that you never want to enter information about "Cuisine"
-or "Preparation Time", you can remove the field from the "Details"
-view to make recipe entry quicker for you.
+If you select 1/2 cup milk, for example, and change "cup" to "g.",
+Gourmet will ask you whether you want to convert it (121.69 grams) or
+simply change the unit (1/2 g.). Although Gourmet does know the
+density of milk (allowing it to calculate this example), it can't
+always do weight-to-volume conversions!
 
-To remove fields, open a recipe card, then select "Preferences" from
-the "Edit" menu. You will then be able to hide the field you don't
-like.
+If you would like a manual unit calculator, you can activate the "Unit
+Converter" plugin, which will make a handy unit calculator accessible
+in the "Tools" menu.
 
-5.c. What are ingredient "key"s?
+5.c. What if about OR ingredients - this ingredient OR that?
+
+You can replicate the effect of a recipe calling for one ingredient or
+another by making both of the ingredients you want to choose between
+optional.
+
+When you go to add the recipe to a shopping list, you'll be
+given an option of which items to add, and you can choose.
+
+This isn't perfect of course, because it allows you to add both or
+neither ingredient, which is not what the recipe calls for! However, I
+haven't thought of a more elegant way to allow for "or" items in
+ingredient lists yet.
+
+6. How do I save recipes in a menu?
+
+Gourmet allows you to add a recipe to any other recipe as an
+ingredients by pressing on the "Add recipe as ingredient" button in
+the "Ingredients" tab of a recipe editor. Using this feature, you can
+create a menu by creating a "New Recipe" and then adding as many
+recipes as "ingredients" as you like.
+
+You can also activate the "Shopping List Saver" plugin (under Tools)
+to allow you to save everything you've added to your shopping list as
+a recipe for future use.
+
+A frequent request is to have gourmet support saving collections of
+recipes as a menu or daily/weekly/monthly plan.  This has yet to be
+implemented.
+
+7. What are plugins?
+
+Gourmet strives to provide a simple basic interface for all users
+while allowing powerful features to be accessed by users who are
+interested in them. Plugins in Gourmet allow access to more powerful
+features.
+
+Those plugins that are unlikely to "get in the way" of the user, such
+as different import filters, are activated by default. Those plugins
+that may only annoy some users, such as nutritional information, are
+disabled by default. To activate or deactivate plugins, select
+"Plugins" from the "Settings" menu.
+
+Note that plugins can also fail for various reasons. Sometimes, for
+example, a plugin will require another software library that you may
+not have installed. Gourmet tries to give you useful information when
+it encounters a situation like this. At any rate, if a plugin does not
+load correctly, the rest of Gourmet should still be able to run
+without issue.
+
+8. Can I calculate nutritional information with Gourmet?
+
+Yes! Gourmet includes a copy of the USDA nutritional database, which
+has thousands of items. For now, Gourmet doesn't know about any
+ingredients by default--unless you tell it about your ingredients,
+Gourmet will always say it is "missing nutritional information" for
+the items in your recipe. If you care about nutritional information,
+click "Edit" and a new window will pop up and ask you to give it the
+information it needs to calculate nutritional information, either
+using the USDA database foods or entering nutritional information by
+hand if necessary.
+
+9. What are ingredient "key"s?
+
+By default, ingredient "keys" are not shown to the user and are not
+needed for Gourmet. However, users interested in advanced features,
+such as customizing nutritional information or shopping lists, will
+want to activate the plugins that allow for viewing and editing
+ingredient keys.
 
 Ingredient "keys" are the standardized name for an ingredient that
 will go on your shopping list and, in future versions of gourmet, be
@@ -134,9 +218,9 @@ and finely chopped", "ripe tomatoes", and "3 tomatoes, in slices", are
 all the same thing. If this doesn't matter to you, don't worry about
 making your ingredient keys standard.
 
-5.d. Is there a fast way to fix up ingredient keys?
+9.a. Is there a fast way to fix up ingredient keys?
 
-Yes. The "Key Editor" under "Tools" allows you to browse and search
+Yes. The "Key Editor" plugin (under "Tools") allows you to browse and search
 all the ingredient keys in your database. This way, you can search for
 all instances of "pepper" and standardize "pepper", "pepper, black"
 and "black pepper" to one key.
@@ -150,89 +234,24 @@ Editor, you can easily change all instances of ts. to tsp., or you
 could tell it that for water, you'd like to change all instances of 1
 kg. to 1 liter.
 
-5.e. How do I convert units?
+10. Can I do fancy printing with Gourmet?
 
-Just edit the unit by clicking on the "unit" cell in your ingredient
-list. Gourmet will then offer you a choice between simply changing the
-unit and converting the item.
+When you print from Gourmet, you can choose a variety of useful settings under
+the "Page Layout" tab of the print dialog.   This will allow you to choose the format you want to print in (index cards, columns, etc.) and the base font size you would like to use.
 
-If you select 1/2 cup milk, for example, and change "cup" to "g.",
-Gourmet will ask you whether you want to convert it (121.69 grams) or
-simply change the unit (1/2 g.). Although Gourmet does know the
-density of milk (allowing it to calculate this example), it can't
-always to weight-to-volume conversions!
+11. Further Questions
 
-Gourmet also includes a unit converter under the "Tools" menu to let
-you do any conversions you like.
-
-5.f. What if about OR ingredients - this ingredient OR that?
-
-Gourmet doesn't yet support this, because I haven't figured out a way
-to make it work easily from the interface. If you have an idea about
-how entering "X or Y" should work, please submit a feature request.
-
-In the mean time, you can create the basic functionality of "OR" by
-making both of the ingredients you want to choose between
-optional. When you go to add the recipe to a shopping list, you'll be
-given an option of which items to add, and you can choose. This isn't
-perfect of course, because it allows you to add both or neither
-ingredient, which is not what the recipe calls for!
-
-6. How do I save recipes in a menu?
-
-A frequent request is to have gourmet support saving collections of
-recipes as a menu or daily/weekly/monthly plan. I hope to implement
-some formal support for this feature in the future -- if you have
-ideas what it should look like, please submit a Feature Request at
-sourceforge.
-
-In the mean time, Gourmet supports adding recipes as ingredients by
-pressing on the "Add recipe as ingredient" button in the "Ingredients"
-tab of a recipe card. Using this feature, you can create a menu by
-creating a "New Recipe" and then adding as many recipes as
-"ingredients" as you like.
-
-7. Can I calculate nutritional information with Gourmet?
-
-Yes! Gourmet includes a copy of the USDA nutritional database, which
-has thousands of items. For now, Gourmet doesn't know about any
-ingredients by default--unless you tell it about your ingredients,
-Gourmet will always say it is "missing nutritional information" for
-the items in your recipe. If you care about nutritional information,
-click "Edit" and a new window will pop up and ask you to give it the
-information it needs to calculate nutritional information, either
-using the USDA database foods or entering nutritional information by
-hand if necessary.
-
-8. Can I do fancy printing with Gourmet?
-
-Yes. Gourmet's PDF Export supports a number of fancy layout options,
-including printing to recipe cards or printing to paper in a format
-convenient for cutting out and pasting onto recipe cards (if your
-printer can't handle printing directly onto a recipe card).
-
-You can export PDF's by selecting "Export recipe" or "Export Recipes"
-and then selecting "Portable Document Format (PDF)" as the type of
-export. You will then get a screen with a number of options, including
-page layout options that include a variety of index-card formats (as
-well as printing in multiple columns, etc.).
-
-Once you've exported a PDF, you can use your PDF viewer to print.
-
-On windows, Adobe Acrobat is used for printing from Gourmet, so you'll
-get all of these fancy options when you select "print" directly.
-
-9. What if I have a good idea for how to improve Gourmet?
+11.a. What if I have a good idea for how to improve Gourmet?
 
 Please submit a feature request at the following website:
 https://sourceforge.net/tracker/?atid=649655&group_id=108118&func=browse
 
-10. What if I find a bug?
+11.b. What if I find a bug?
 
 Please submit a bug report at the following website:
 https://sourceforge.net/tracker/?atid=649652&group_id=108118&func=browse
 
-11. What if I have a question not answered here?
+11.c. What if I have a question not answered here?
 
 Post your question in the Gourmet Help Forum here:
 https://sourceforge.net/forum/forum.php?forum_id=371768
