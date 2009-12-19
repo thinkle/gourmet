@@ -21,7 +21,11 @@ def maybe_intltool (fname):
         or
         os.stat(to_name)[ST_MTIME] < os.stat(fname)[ST_MTIME]
         ):
-        os.system('intltool-merge -d i18n/ %s %s'%(fname, to_name))
+        if os.name == 'nt' or os.name == 'dos':
+            #Hard-wire path to intltool-merge for now.
+            os.system('perl "C:/Program Files/intltool/bin/intltool-merge" -d i18n/ %s %s'%(fname, to_name))
+        else:
+            os.system('intltool-merge -d i18n/ %s %s'%(fname, to_name))
 
 for f in ['gourmet.desktop.in'] + \
         glob.glob('src/lib/plugins/*plugin.in')  + \
