@@ -26,7 +26,7 @@
 ;Defines
 
     !define GOURMET_NAME "Gourmet Recipe Manager"
-    !define GOURMET_VERSION "0.14.2"
+    !define GOURMET_VERSION "0.15.3"
     !define GOURMET_PUBLISHER "Thomas M. Hinkle"
     !define GOURMET_WEB_SITE "http://grecipe-manager.sourceforge.net"
     !define GOURMET_DOWNLOAD_SITE "http://sourceforge.net/project/showfiles.php?group_id=108118"
@@ -35,7 +35,7 @@
     !define GOURMET_UNINST_ROOT_KEY "HKLM"
     !define GOURMET_STARTMENU_REGVAL "NSIS:StartMenuDir"
 
-    !define PYTHON_PATH "C:\Program Files\Python25"
+    !define PYTHON_PATH "C:\Program Files\Python26"
 
     !define GOURMET_NSIS_INCLUDE_PATH           ".\nsis"
 
@@ -46,16 +46,16 @@
     !define GOURMET_UNINST_EXE              "gourmet-uninst.exe"
     !define GOURMET_REG_LANG                "Installer Language"
 
-    !define GTK_VERSION             "2.12.9"
+    !define GTK_VERSION             "2.16.6-2009-12-01-ash"
     !define GTK_REG_KEY             "SOFTWARE\GTK\2.0"
     !define GTK_DEFAULT_INSTALL_PATH        "$COMMONFILES\GTK\2.0"
-    !define GTK_RUNTIME_INSTALLER       "gtk-2.12.9-win32-2.exe"  ;"gtk-runtime*.exe"
+    !define GTK_RUNTIME_INSTALLER       "gtk2-runtime-2.16.6-2009-12-01-ash.exe"  ;"gtk-runtime*.exe"
 
     !define GTK_DEFAULT_THEME_GTKRC_DIR     "share\themes\Default\gtk-2.0"
     !define GTK_DEFAULT_THEME_ENGINE_DIR        "lib\gtk-2.0\2.4.0\engines"
 
     ; Uncomment this to make an installer with GTK installer integrated.
-    ;!define WITH_GTK
+    !define WITH_GTK
 
     ;TODO (done, answer is no) do we need these?
     ;!define GTK_THEME_DIR              "..\gtk_installer\gtk_themes"
@@ -328,7 +328,7 @@ Section $(GOURMET_SECTION_TITLE) SecGourmet
     SetOutPath "$INSTDIR\documentation\"
     SetOverwrite ifnewer
     File "..\TODO"
-    File "..\README.txt"
+    File "..\README"
     File "..\LICENSE"
     File "..\CHANGES"
 
