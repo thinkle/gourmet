@@ -54,12 +54,10 @@ class CheckEncoding:
         if not encodings: encodings=self.all_encodings
         self.possible_encodings = {}
         for e in encodings:
-            print 'Test ',e
             try:
                 d=self.txt.decode(e)
                 if d and (not d in self.possible_encodings.values()):
                     # if we don't already have this possibility, add
-                    print "Maybe it's",e,d
                     self.possible_encodings[e]=d.encode('utf8')
             except UnicodeDecodeError:
                 pass
@@ -166,7 +164,6 @@ class EncodingDialog (de.OptionDialog):
         self.tv.set_buffer(self.encoding_buffers[self.ret])
         self.buffer = self.encoding_buffers[self.ret]
         debug('changed text to encoding %s'%self.ret,0)        
-        #print 'fdl:',first_diffline,' fdc:',first_diffchar        
         
     def move_to_difference (self, forward=True):        
         dkeys = self.diff_lines.keys()
@@ -186,7 +183,6 @@ class EncodingDialog (de.OptionDialog):
 
     def set_buffer_text (self, buffer, text):
         """Set buffer text to show encoding differences."""
-        print 'Setting buffer to',text
         lines = text.splitlines()
         totl = len(lines)
         shown = []
@@ -207,11 +203,7 @@ class EncodingDialog (de.OptionDialog):
                 l = lines[n]
                 if n==line:
                     start = 0
-                    print 'Inserting',l
                     for sdiff,ediff in diffs:
-                        print 'Cut into...'
-                        print l[start:sdiff]
-                        print l[sdiff:ediff]
                         buffer.insert_with_tags(buffer.get_end_iter(),
                                                 l[start:sdiff],
                                                 *self.line_highlight_tags)
@@ -219,7 +211,6 @@ class EncodingDialog (de.OptionDialog):
                                                 l[sdiff:ediff],
                                                 *self.highlight_tags)
                         start = ediff
-                    print l[start:]
                     buffer.insert_with_tags(buffer.get_end_iter(),
                                             l[start:],
                                             *self.line_highlight_tags)
@@ -248,8 +239,6 @@ class EncodingDialog (de.OptionDialog):
                         else:
                             ranges.append([chnum,chnum+1])
                 self.diff_lines[linenum]=ranges
-        print 'DIFF_LINES=',self.diff_lines
-                
         
 def getEncoding (*args,**kwargs):
     d=EncodingDialog(*args,**kwargs)

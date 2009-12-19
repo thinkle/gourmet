@@ -1071,7 +1071,7 @@ class RecData (Pluggable):
                 traceback.print_stack()
         for k,v in recdic.items():
             try:
-                recdic[k]=v.strip()
+                recdic[k]=unicode(v.strip())
             except:
                 pass
 

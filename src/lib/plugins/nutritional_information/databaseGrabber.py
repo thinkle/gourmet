@@ -165,13 +165,12 @@ class DatabaseGrabber:
                 self.db.do_add_fast(self.db.nutrition_table,d)
             except:
                 try:
-                    #self.db.nutrition_table.update(
-                    #   self.db.nutrition_table.c.ndbno==d['ndbno']
-                    #    ).execute(**d)
                     SQL = 'UPDATE ' + self.db.nutrition_table.name + ' SET '
                     args = d.copy(); del args['ndbno']
                     SQL += ', '.join('%s = ?'%k for k in args)
                     SQL += ' WHERE ndbno = %s'%d['ndbno']
+                    #if d['ndbno']==1123:
+                    #    print SQL,args.values()
                     self.db.extra_connection.execute(SQL,args.values())
                 except:
                     print 'Error appending to nutrition_table',d
