@@ -49,7 +49,7 @@ dll_excludes = ["libpangocairo-1.0-0.dll",
                 "libpango-1.0-0.dll"
                 ]
 
-packages = ["xml.dom","cairo","pangocairo"]
+packages = ["xml.dom","cairo","pangocairo","sqlalchemy"]
 
 setup(
     # The first three parameters are not required, if at least a
