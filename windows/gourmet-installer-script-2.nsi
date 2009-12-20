@@ -46,16 +46,16 @@
     !define GOURMET_UNINST_EXE              "gourmet-uninst.exe"
     !define GOURMET_REG_LANG                "Installer Language"
 
-    !define GTK_VERSION             "2.16.6-2009-12-01-ash"
+    !define GTK_VERSION             "2.12.9"
     !define GTK_REG_KEY             "SOFTWARE\GTK\2.0"
     !define GTK_DEFAULT_INSTALL_PATH        "$COMMONFILES\GTK\2.0"
-    !define GTK_RUNTIME_INSTALLER       "gtk2-runtime-2.16.6-2009-12-01-ash.exe"  ;"gtk-runtime*.exe"
+    !define GTK_RUNTIME_INSTALLER       "gtk-2.12.9-win32-2.exe"  ;"gtk-runtime*.exe"
 
     !define GTK_DEFAULT_THEME_GTKRC_DIR     "share\themes\Default\gtk-2.0"
     !define GTK_DEFAULT_THEME_ENGINE_DIR        "lib\gtk-2.0\2.4.0\engines"
 
     ; Uncomment this to make an installer with GTK installer integrated.
-    !define WITH_GTK
+    ;!define WITH_GTK
 
     ;TODO (done, answer is no) do we need these?
     ;!define GTK_THEME_DIR              "..\gtk_installer\gtk_themes"
