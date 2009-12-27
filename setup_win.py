@@ -16,16 +16,8 @@ sys.path.append(os.path.join('.', 'src', 'lib'))
 import version
 
 includes = ["atk",
-        #    "gourmet.importers.html_plugins.allrecipes", 
-        #    "gourmet.importers.html_plugins.html_helpers", 
-        #    "gourmet.importers.html_plugins.eating_well",
-        #    "gourmet.importers.html_plugins.epicurious",
-        #    "gourmet.importers.html_plugins.recipebookonline",
-        #    "gourmet.importers.html_plugins.recipezaar",
-        #    "gourmet.importers.html_importer",
             "gourmet.defaults.*",
-            "gourmet.defaults"
-        #    "gtk._gtk" 
+            "gourmet.defaults" 
             ]
 
 dll_excludes = ["libpangocairo-1.0-0.dll",
