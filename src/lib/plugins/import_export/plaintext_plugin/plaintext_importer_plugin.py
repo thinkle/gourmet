@@ -4,6 +4,7 @@ from gourmet.threadManager import get_thread_manager
 from gourmet.importers.interactive_importer import InteractiveImporter
 from gourmet import check_encodings
 import os.path
+import fnmatch
 
 MAX_PLAINTEXT_LENGTH = 100000
 
@@ -37,9 +38,14 @@ class PlainTextImporterPlugin (ImporterPlugin):
     patterns = ['*.txt','[^.]*','*']
     mimetypes = ['text/plain']
 
+    antipatterns = ['*.html','*.htm','*.xml','*.doc','*.rtf']
+
     def test_file (self, filename):
         '''Given a filename, test whether the file is of this type.'''
-        return -1 # we are a fallback option
+        if filename.endswith('.txt'):
+            return 1
+        elif not True in [fnmatch.fnmatch(filename,p) for p in self.antipatterns]:
+            return -1 # we are a fallback option
 
     def get_importer (self, filename):
         return PlainTextImporter(filename=filename)

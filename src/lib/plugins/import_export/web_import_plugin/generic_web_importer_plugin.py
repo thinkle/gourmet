@@ -6,7 +6,7 @@ from gettext import gettext as _
 class GenericWebImporter (ImporterPlugin, Pluggable):
 
     name = _('Webpage')
-    patterns = ['*.htm','.*.html']
+    patterns = ['*.htm','*.html','*.xhtml']
     mimetypes = ['text/html','text/xhtml']
     targets = ['webimport_plugin']
 
@@ -19,8 +19,8 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
 
     def test_file (self, filename):
         '''Given a file name, test whether the file is of this type.'''
-        if filename.endswith('.htm') or filename.endswith('.html'):
-            return True # We are a fallback option
+        #if filename.endswith('.htm') or filename.endswith('.xhtml') or filename.endswith('.html'):
+        return -1 # We are a fallback option
 
     def test_url (self, url, data, content_type):
         for p in self.plugins:

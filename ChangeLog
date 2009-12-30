@@ -1,3 +1,13 @@
+2009-12-29  Thomas M Hinkle  <tom@minime>
+
+	* src/lib/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py (GenericWebImporter.test_file):
+	Add support for xhtml. Be fallback option whenever we match a file
+	pattern.
+
+	* src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py (PlainTextImporterPlugin.test_file):
+	Don't match *all* files as fallback options -- have a list of
+	"antipatterns" to exclude.
+
 2009-12-18  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/gtk_extras/dialog_extras.py (SimpleFaqDialog.NESTED_MATCHER):
