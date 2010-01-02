@@ -51,10 +51,11 @@ class MasterLoader:
             raise MasterLoader.__single
         MasterLoader.__single = self
         curfile = gglobals.__file__ # we count on plugins/ being in the same dir as gglobals  
-        self.plugin_directories = [os.path.join(gglobals.gourmetdir,'plugins/'), # user plug-ins
+        self.plugin_directories = [os.path.join(gglobals.gourmetdir,'plugins'), # user plug-ins
                                    os.path.join(current_path,'plugins'), # pre-installed plugins
                                    os.path.join(current_path,'plugins','import_export'), # pre-installed exporter plugins
-                                   os.path.join(gglobals.datad,'plugins/'), # system-wide plug-ins (?)
+                                   os.path.join(gglobals.datad,'plugins'), # system-wide plug-ins (required for windows)
+                                   os.path.join(gglobals.datad,'plugins','import_export'), # exporter plug-ins (required for windows)
                                    ]
         self.errors = {}
         self.pluggables_by_class = {}
