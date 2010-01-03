@@ -11,13 +11,18 @@ from distutils.core import setup
 import py2exe
 
 #do the following imports to get the version number
-import sys, os
+import sys, os, glob
 sys.path.append(os.path.join('.', 'src', 'lib'))
 import version
 
 includes = ["atk",
+            "gourmet.backends.*",
             "gourmet.defaults.*",
-            "gourmet.defaults" 
+            "gourmet.defaults",
+            "gourmet.exporters.*",
+            "gourmet.gtk_extras.*",
+            "gourmet.importers.*",
+            "tarfile",
             ]
 
 dll_excludes = ["libpangocairo-1.0-0.dll",
@@ -41,7 +46,12 @@ dll_excludes = ["libpangocairo-1.0-0.dll",
                 "libpango-1.0-0.dll"
                 ]
 
-packages = ["xml.dom","cairo","pangocairo","sqlalchemy"]
+packages = ["xml.dom","cairo","pangocairo","sqlalchemy","reportlab",
+            #"enchant", # crashes gourmet
+            #"gtkspell", # cannot find libenchant.dll
+            #"IPython", # crashes gourmet
+            #"PIL" # crashes gourmet
+            ]
 
 setup(
     # The first three parameters are not required, if at least a
@@ -84,5 +94,11 @@ setup(
            "dest_base": "Gourmet"
        }
     ],
+    
+    # Maybe some time in the fututre we can use the following instead of including
+    # plugin files via NSIS - dito for data and i18n dirs. But that will need some
+    # recursive magic, and as I'm lazy, I'll stick with NSIS for the job for now. --Bernhard
+    #data_files=[ ("data/plugins",glob.glob(os.path.join(sys.exec_prefix,"Lib/site-packages/gourmet/plugins/*.gourmet-plugin")))]
+
     )
 
