@@ -1,6 +1,6 @@
 from gourmet.plugin import RecEditorModule, RecEditorPlugin, IngredientControllerPlugin
 from gourmet.plugin_loader import PRE,POST
-import gtk, gobject
+import gtk, gobject, pango
 from gourmet.reccard import IngredientEditorModule, RecRef
 import keyEditorPluggable
 
@@ -98,6 +98,7 @@ class IngredientKeyEditor (RecEditorModule):
         item_renderer = gtk.CellRendererText();
         item_renderer.set_property('editable',True)
         item_col = gtk.TreeViewColumn(_('Item'),item_renderer,text=1)
+        item_col.set_expand(True)
         key_renderer = gtk.CellRendererCombo()
         key_renderer.set_property('editable',True)
         key_renderer.connect('editing-started',self.start_keyedit_cb)
@@ -105,8 +106,15 @@ class IngredientKeyEditor (RecEditorModule):
         key_renderer.set_property('mode',gtk.CELL_RENDERER_MODE_EDITABLE)
         key_renderer.set_property('sensitive',True)
         key_col = gtk.TreeViewColumn(_('Key'),key_renderer,text=2)
+        key_col.set_expand(True)
+        self.renderers = [key_renderer,item_renderer]
         self.tv.append_column(item_col)
         self.tv.append_column(key_col)
+        for r in  key_renderer,item_renderer:
+            r.set_property('wrap-mode',pango.WRAP_WORD)
+            r.set_property('wrap-width',200)
+        self.tv.connect('check-resize',self.resize_event_cb)
+        self.tv.connect('size-allocate',self.tv_size_allocate_cb)
         plugin_manager = keyEditorPluggable.get_key_editor_plugin_manager()
         for tvc in plugin_manager.get_treeview_columns(self,
                                                        key_col=2,
@@ -114,6 +122,20 @@ class IngredientKeyEditor (RecEditorModule):
             self.tv.append_column(tvc)
 
 
+    def auto_wrap_columns (self):
+        for col in self.tv.get_columns():
+            renderers = col.get_cell_renderers()
+            for r in renderers:
+                if isinstance(r,gtk.CellRendererText):
+                    r.set_property('wrap-mode',pango.WRAP_WORD)
+                    r.set_property('wrap-width',col.get_width())
+
+    def resize_event_cb (self, widget, event):
+        self.auto_wrap_columns()
+        
+    def tv_size_allocate_cb (self, widget, allocation):
+        self.auto_wrap_columns()
+        
     def start_keyedit_cb (self, renderer, cbe, path_string):
         indices = path_string.split(':')
         path = tuple( map(int, indices))

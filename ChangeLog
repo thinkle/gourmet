@@ -1,3 +1,9 @@
+2010-01-02  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/plugins/key_editor/recipeEditorPlugin.py (IngredientKeyEditor.setup_tree):
+	Wrap text in treeview when it is too long; automatically reflow as
+	window is resized.
+
 2009-12-29  Thomas M Hinkle  <tom@minime>
 
 	* src/lib/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py (GenericWebImporter.test_file):
