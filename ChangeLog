@@ -1,3 +1,11 @@
+2010-01-06  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/importers/interactive_importer.py (InteractiveImporter):
+	Replace text-tags in buffers with ComboBox widget that allows user
+	to change tag of marked-up region. Also, separated out giant list
+	of buttons into categories and made more suitable for wider and
+	shorter screens.
+
 2010-01-02  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/plugins/key_editor/recipeEditorPlugin.py (IngredientKeyEditor.setup_tree):

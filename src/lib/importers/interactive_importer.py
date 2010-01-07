@@ -21,6 +21,7 @@ import gourmet.ImageExtras as ImageExtras
 DEFAULT_TAGS = []
 DEFAULT_TAG_LABELS = gglobals.REC_ATTR_DIC.copy()
 DEFAULT_TAG_LABELS.update(gglobals.TEXT_ATTR_DIC)
+
 for attr in gglobals.DEFAULT_ATTR_ORDER:
     if attr != 'link':
         DEFAULT_TAGS.append(attr)
@@ -28,6 +29,7 @@ for attr in gglobals.DEFAULT_ATTR_ORDER:
             # a bit of a hack -- we want to make 'yield unit' a button
             DEFAULT_TAGS.append('yield_unit')
             DEFAULT_TAGS.append('servings')
+            
 DEFAULT_TAGS.extend(gglobals.DEFAULT_TEXT_ATTR_ORDER)
 
 DEFAULT_TAGS.extend(['ingredients','inggroup','ignore'])
@@ -39,6 +41,19 @@ for tag,label in [
     ]:
     if not DEFAULT_TAG_LABELS.has_key(tag):
         DEFAULT_TAG_LABELS[tag] = label
+
+UI_TAG_ORDER = [
+    (_('Description'),[
+        ('title','servings'),
+        ('yields','yield_unit'),
+        ('source','rating'),
+        ('category','cuisine'),
+        ('preptime','cooktime')]),
+    (_('Text'),[('instructions','modifications')]),
+    (_('Ingredients'),[('ingredients','inggroup')]),
+    (_('Actions'),[('ignore','clear'),
+                   ('newrec',)]),
+    ]
 
 class ConvenientImporter (importer.Importer):
     """Add some convenience methods to our standard importer.
@@ -115,7 +130,6 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         if custom_parser: self.parser = custom_parser
         else: self.parser = RecipeParser()
         self.labels_by_tag = tag_labels
-        print 'self.labels_by_tag=',self.labels_by_tag
         self.tags_by_label = {self.NEW_REC_TEXT:'newrec'}
         for k,v in self.labels_by_tag.items(): self.tags_by_label[v]=k
         self.tags = tags
@@ -140,36 +154,72 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         self.hb = gtk.HBox()
         self.w.add(self.hb)
         self.tv = gtk.TextView()
-        self.tv.set_size_request(600,400)
+        self.tv.set_size_request(600,500)
         self.tv.set_wrap_mode(gtk.WRAP_WORD)
         self.action_area = gtk.VBox()
         sw = gtk.ScrolledWindow(); sw.add(self.tv)
         sw.set_policy(gtk.POLICY_NEVER,gtk.POLICY_AUTOMATIC)
         self.hb.add(sw); sw.show(); self.tv.show()
-        self.hb.add(self.action_area)
+        self.hb.pack_end(self.action_area,expand=False); self.action_area.show()
         self.tb = self.tv.get_buffer()
         self.setup_tags()
 
     def setup_action_area (self):
-        for t in self.tags:
-            tag_button = gtk.Button('_'+self.labels_by_tag[t])
-            tag_button.connect('clicked',
-                               self.label_callback,
-                               self.labels_by_tag[t])
-            self.action_area.pack_start(tag_button,expand=False,fill=False,padding=6)
-            tag_button.show()
-        self.action_area.add(gtk.HSeparator())
-        self.remove_markup_button = gtk.Button(_('Clear _Tags'))
-        self.remove_markup_button.connect('clicked',self.clear_tags)
-        self.action_area.pack_start(self.remove_markup_button,expand=False,fill=False)
+        # Set up hard-coded functional buttons...
         self.new_recipe_button = gtk.Button(_('_New Recipe'))
         self.new_recipe_button.connect('clicked',self.new_recipe_cb)
-        self.action_area.pack_start(self.new_recipe_button)
-        self.action_area.pack_start(gtk.HSeparator(),expand=False,fill=False)
-        self.show_text_button = gtk.Button(stock=gtk.STOCK_OK)
-        self.show_text_button.connect('clicked',
+        self.remove_markup_button = gtk.Button(_('Clear _Tags'))
+        self.remove_markup_button.connect('clicked',self.clear_tags)
+        # Set up ActionModel (used for drop-down menu version of these commands)
+        self.action_model = gtk.ListStore(str,str)
+        action_table = gtk.Table()
+        self.action_area.pack_start(action_table,expand=False)
+        r = 0 #rownum
+        # Get our UI layout from UI_TAG_ORDER
+        for label,rows in UI_TAG_ORDER:
+            if r != 0:
+                blank = gtk.Label('')
+                action_table.attach(blank,0,2,r,r+1);blank.show()
+            r += 1                
+            l = gtk.Label(); l.set_markup('<b>'+label+'</b>')
+            l.set_alignment(0.0,0.5)
+            action_table.attach(l,0,2,r,r+1); l.show()
+            r += 1
+            for row in rows:
+                for c,t in enumerate(row): #column number, tag
+                    if t == 'clear':
+                        tag_button = self.remove_markup_button
+                    elif t=='newrec':
+                        tag_button = self.new_recipe_button
+                    else:
+                        tag_button = gtk.Button('_'+self.labels_by_tag[t])
+                        self.action_model.append([self.labels_by_tag[t],t])
+                        tag_button.connect('clicked',
+                                           self.label_callback,
+                                           self.labels_by_tag[t])
+                    action_table.attach(
+                        tag_button,
+                        c,c+1,r,r+1,
+                        xpadding=12,
+                        )
+                r += 1
+        action_table.set_row_spacings(3)
+        action_table.set_col_spacings(3)
+        #for t in self.tags:
+        #    
+        #    self.action_model.append([self.labels_by_tag[t],t])
+        #    tag_button = gtk.Button('_'+self.labels_by_tag[t])
+        #    tag_button.connect('clicked',
+        #                       self.label_callback,
+        #                       self.labels_by_tag[t])
+        #    self.action_area.pack_start(tag_button,expand=False,fill=False,padding=6)
+        #    tag_button.show()
+        #
+        self.import_button = gtk.Button(_('Import Recipe'))
+        self.import_button.connect('clicked',
                                       lambda *args: self.commit_changes())
-        self.action_area.add(self.show_text_button)
+        self.import_button.set_alignment(0.5,1.0)
+        self.action_area.pack_end(self.import_button,fill=False,expand=False)
         self.action_area.show_all()
 
     def setup_tags (self):
@@ -258,18 +308,23 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         self.tb.add_mark(emark,end)
         self.labelled.append((smark,emark))
         # Now we add the labels...
-        start_txt = '['+label+':'
+        start_txt = '['
         start_id = self.insert_markup_text(st,start_txt,self.markup_tag)
         # Now move the mark back up...
         new_pos = self.tb.get_iter_at_mark(smark); new_pos.forward_chars(len(start_txt))
         self.tb.move_mark(smark,new_pos)
         # Create a "Remove me" button
-        itr = self.tb.get_iter_at_mark(emark)
         #b = gtk.Button('_Remove tag'); b.show)(
         b = gtk.Button()
         i = gtk.Image(); i.set_from_stock(gtk.STOCK_REMOVE,gtk.ICON_SIZE_MENU)
         b.add(i); i.show()
+        itr = self.tb.get_iter_at_mark(emark)        
         anchor = self.insert_widget(itr,b)
+        # Set up combo button...
+        labelbutton = gtk.combo_box_new_text()
+        labelbutton.set_model(self.action_model)
+        cb.cb_set_active_text(labelbutton,label)
+        anchor2 = self.insert_widget(self.tb.get_iter_at_mark(smark),labelbutton)
         # Add final bracket for end of markup
         end_bracket_itr = self.tb.get_iter_at_mark(emark)
         end_id = self.insert_markup_text(end_bracket_itr,']',self.markup_tag)
@@ -285,6 +340,23 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             self.remove_markup_text(start_id)
             self.remove_markup_text(end_id)
             self.remove_widget(anchor)
+            self.remove_widget(anchor2)
+        def change_mark (cb):
+            # copy marks for safekeeping...
+            new_text = cb.get_active_text()
+            sm = gtk.TextMark(None,True)
+            self.tb.add_mark(sm,self.tb.get_iter_at_mark(smark))
+            em = gtk.TextMark(None,False)
+            self.tb.add_mark(em,self.tb.get_iter_at_mark(emark))
+            # remove old marks...
+            remove_markup()
+            # And relabel!
+            self.label_range(
+                self.tb.get_iter_at_mark(sm),
+                self.tb.get_iter_at_mark(em),
+                new_text
+                )
+        labelbutton.connect('changed',change_mark)
         b.connect('clicked',remove_markup)
 
     def new_recipe_cb (self, *args):
@@ -311,6 +383,11 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         self.markup_marks[midno] = (start_mark,end_mark)
         return midno
 
+    def change_mark (self, cb, smark, emark, start_id, end_id):
+
+        new_label = cb.get_active_text()
+        
+        
     def insert_widget (self, itr, widget):
         anchor = self.tb.create_child_anchor(itr)
         self.anchors.append(anchor)
