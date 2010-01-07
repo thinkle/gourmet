@@ -26,7 +26,7 @@
 ;Defines
 
     !define GOURMET_NAME "Gourmet Recipe Manager"
-    !define GOURMET_VERSION "0.15.3"
+    !define GOURMET_VERSION "0.15.3-2alpha"
     !define GOURMET_PUBLISHER "Thomas M. Hinkle"
     !define GOURMET_WEB_SITE "http://grecipe-manager.sourceforge.net"
     !define GOURMET_DOWNLOAD_SITE "http://sourceforge.net/project/showfiles.php?group_id=108118"
@@ -55,7 +55,7 @@
     !define GTK_DEFAULT_THEME_ENGINE_DIR        "lib\gtk-2.0\2.4.0\engines"
 
     ; Uncomment this to make an installer with GTK installer integrated.
-    ;!define WITH_GTK
+    !define WITH_GTK
 
     ;TODO (done, answer is no) do we need these?
     ;!define GTK_THEME_DIR              "..\gtk_installer\gtk_themes"
@@ -108,7 +108,6 @@
 
         !insertmacro MUI_PAGE_WELCOME
 
-
     ; License page
         ; Alter License section
             !define MUI_LICENSEPAGE_BUTTON      "Ok"
@@ -141,6 +140,26 @@
         !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${GOURMET_STARTMENU_REGVAL}"
         !insertmacro MUI_PAGE_STARTMENU Application $ICONS_GROUP
 
+section
+    MessageBox MB_OK "Note that this is an alpha version! $\r $\r \
+                      While the Windows version is basically identical to the Linux version, \ 
+                      it has not been tested as thouroughly. Also, as some of the components Gourmet relies on \
+                      are not available for Windows, some features (mainly plugins) are not (yet) available. Specifically, the $\r \
+                      * Browse Recipes, $\r \
+                      * Printing & PDF Export, $\r \
+                      * Spell Checking, and $\r \
+                      * Python Shell $\r \
+                      plugins are currently not working. $\r $\r \
+                      Furthermore, there seem to be some errors related to the $\r \
+                      * Nutritional Information and $\r \ 
+                      * Unit Display Preferences $\r \
+                      plugins, in particular when deactivating them again. $\r $\r \
+                      We're currently working on resolving these issues. $\r \
+                      If you experience any other issues, please report them at Gourmet's bug tracking system \ 
+                      at http://sourceforge.net/tracker/?group_id=108118&atid=649652 -- \ 
+                      by doing so, you can help us improve Gourmet! $\r $\r \
+                      (This information is also available in the README file)" /SD IDOK
+sectionEnd
 
     ; Instfiles page
         !insertmacro MUI_PAGE_INSTFILES
@@ -149,7 +168,7 @@
         !define MUI_FINISHPAGE_NOAUTOCLOSE
         !define MUI_FINISHPAGE_RUN "$INSTDIR\Gourmet.exe"
         !define MUI_FINISHPAGE_RUN_NOTCHECKED
-        !define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\documentation\README.txt"
+        !define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\documentation\README"
         !define MUI_FINISHPAGE_TEXT_REBOOT "If you just installed GTK+ for the first time, you have to reboot before running Gourmet."
         !define MUI_FINISHPAGE_TEXT_REBOOTLATER "Reboot manually, later."
         !define MUI_FINISHPAGE_TEXT_REBOOTNOW "Reboot automatically right now."
@@ -320,9 +339,10 @@ Section $(GOURMET_SECTION_TITLE) SecGourmet
     ; We include the plugin scripts separately into the install directory, because the gourmet executable
     ; freeze process is not able to incorporate them into the exe due to some funky way they are being
     ; imported.
-    SetOutPath "$INSTDIR\plugins\"
-    File /x "__init__.py" "${PYTHON_PATH}\Lib\site-packages\gourmet\plugins\*.gourmet-plugin"
-    File /r /x "__init__.py" "${PYTHON_PATH}\Lib\site-packages\gourmet\plugins\*.py"
+    SetOutPath "$INSTDIR\data\plugins\"
+    File "${PYTHON_PATH}\Lib\site-packages\gourmet\plugins\*.gourmet-plugin"
+    File /r "${PYTHON_PATH}\Lib\site-packages\gourmet\plugins\*"
+    ;File /r "${PYTHON_PATH}\Lib\site-packages\gourmet\plugins\*.pyc"
 
 
     SetOutPath "$INSTDIR\documentation\"
