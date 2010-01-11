@@ -152,8 +152,8 @@ section
                       Furthermore, there seem to be some errors related to the $\r \
                       * Nutritional Information and $\r \ 
                       * Unit Display Preferences $\r \
-                      plugins, in particular when deactivating them again, and to the $\r $\r \
-                      * Browse Recipes plugin.
+                      plugins, in particular when deactivating them again, and to the $\r \
+                      * Browse Recipes plugin. $\r $\r \
                       We're currently working on resolving these issues. $\r \
                       If you experience any other issues, please report them at Gourmet's bug tracking system \ 
                       at http://sourceforge.net/tracker/?group_id=108118&atid=649652 -- \ 
