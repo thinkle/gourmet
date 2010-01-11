@@ -1,7 +1,7 @@
 # A very simple setup script to create an executable.
 #
-# Run the build process by entering 'setup.py py2exe' or
-# 'python setup.py py2exe' in a console prompt.
+# Run the build process by entering 'setup_win.py py2exe' or
+# 'python setup_win.py py2exe' in a console prompt.
 #
 # If everything works well, you should find a subdirectory named 'dist'
 # containing some files, among them hello.exe and test_wx.exe.
@@ -46,11 +46,12 @@ dll_excludes = ["libpangocairo-1.0-0.dll",
                 "libpango-1.0-0.dll"
                 ]
 
-packages = ["xml.dom","cairo","pangocairo","sqlalchemy","reportlab",
-            #"enchant", # crashes gourmet
-            #"gtkspell", # cannot find libenchant.dll
-            #"IPython", # crashes gourmet
-            #"PIL" # crashes gourmet
+packages = ["xml.dom","cairo","pangocairo","sqlalchemy",
+            "reportlab", # for PDF and Printing export
+            #"enchant", # for the spellcheck plugin; crashes gourmet
+            #"gtkspell", # for the spellcheck plugin; cannot find libenchant.dll
+            #"IPython", # for the python shell plugin; crashes gourmet
+            "PIL.ImageDraw" # for the browse_recipes plugin; PIL alone crashes gourmet
             ]
 
 setup(
@@ -99,6 +100,9 @@ setup(
     # plugin files via NSIS - dito for data and i18n dirs. But that will need some
     # recursive magic, and as I'm lazy, I'll stick with NSIS for the job for now. --Bernhard
     #data_files=[ ("data/plugins",glob.glob(os.path.join(sys.exec_prefix,"Lib/site-packages/gourmet/plugins/*.gourmet-plugin")))]
-
+    
+    #data_files = enchant.utils.win32_data_files() #required for enchant
+    
+    #data_files = [('.', "c:/windows/system32/msvcp71.dll")] #probably needed for xp
     )
 
