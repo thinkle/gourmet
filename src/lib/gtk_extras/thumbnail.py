@@ -26,6 +26,11 @@ def check_for_thumbnail (uri, type="large",reporthook=None):
         try:
             fn,headers = urllib.urlretrieve(uri,reporthook=reporthook)
             fetched_uris[uri]=fn
+        except UnicodeError:
+            try:
+                fn,headers = urllib.urlretrieve(urllib.quote(uri),reporthook=reporthook)
+            except IOError:
+                return None
         except IOError:
             return None
     if not os.path.exists(name):
