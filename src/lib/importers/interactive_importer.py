@@ -510,8 +510,9 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
 
     def set_text (self, txt):
         txt = unicode(txt) # convert to unicode for good measure
-        self.set_parsed(self.parser.parse(txt))
-        
+        txt = self.parser.parse(txt) # Parse
+        txt = re.sub('(\n\s*\n)+','\n\n',txt) # Take out extra newlines
+        self.set_parsed(txt)
 
     def set_parsed (self, parsed):
         #dbg_file = file('/tmp/out','w')

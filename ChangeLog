@@ -1,3 +1,21 @@
+2010-01-16  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/version.py Version->0.15.4
+	* src/lib/plugins/import_export/web_import_plugin/webpage_importer.py (WebParser.postparse):
+	Strip extra newlines.
+	(MenuAndAdStrippingWebParser.cut_menus): Add more common website
+	nav class ID's (footer, header, sitemap).
+	(MenuAndAdStrippingWebParser.cut_menus): Don't ignore the whole
+	body tag, no matter what (fixes epicurious import)
+
+	* src/lib/importers/interactive_importer.py (InteractiveImporter.set_text):
+	Strip extra newlines.
+
+2010-01-15  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/gtk_extras/thumbnail.py (check_for_thumbnail): Catch
+	non-ASCII characters in URLs.
+
 2010-01-06  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/importers/interactive_importer.py (InteractiveImporter):
@@ -40,7 +58,7 @@
 	* src/lib/check_encodings.py: Be less verbose.
 
 	* Version -> 0.15.3
-	
+
 	* src/lib/plugins/nutritional_information/parser_data.py (NUTRITION_FIELDS): Update fields for SR21.
 
 	* src/lib/plugins/nutritional_information/nutritionGrabberGui.py (check_for_db):

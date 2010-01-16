@@ -36,7 +36,7 @@ class WebParser (InteractiveImporter):
         self.soup = BeautifulSoup.BeautifulSoup(data,
                                                 convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
                                                 )
-        InteractiveImporter.__init__(self)        
+        InteractiveImporter.__init__(self)
         #self.generic_parser = RecipeParser()
         self.preparse()
         self.get_images()
@@ -184,6 +184,7 @@ class WebParser (InteractiveImporter):
         '''
         new_parse = []
         for p,attr in parsed:
+            p = re.sub('(\n\s*\n)+','\n\n',p) # Take out extra newlines
             if attr == None or attr == 'recipe':
                 new_parse.extend(
                     self.text_parser.parse(p)
@@ -219,22 +220,25 @@ class MenuAndAdStrippingWebParser (WebParser):
         self.cut_menus()
 
     def cut_menus (self):
-        menu_regexp = re.compile('.*(menu|nav|crumb).*',re.IGNORECASE)
+        menu_regexp = re.compile('.*(menu|nav|search|crumb|sitemap|footer|header).*',re.IGNORECASE)
         els = self.soup(id=menu_regexp)
         els.extend(self.soup(attrs={'class':menu_regexp}))
         for menu in els:
+            if menu.name=='body': continue
             self.preparsed_elements.append((menu,'ignore'))
         menu_text_regexp = re.compile(
             '.*sitemap.*|^\s-*about\s-*',re.IGNORECASE
             )
         for menu in self.soup(text=menu_text_regexp):
+            if menu.name == 'body': continue
             self.preparsed_elements.append((menu,'ignore'))
 
     def cut_sponsored_links (self):
-        ad_re = re.compile('ad.*|.*advert.*',re.IGNORECASE)
+        ad_re = re.compile('ad.*|.*advert.*|.*newsletter.*',re.IGNORECASE)
         spons = self.soup(id=ad_re)
         spons.extend(self.soup(attrs={'class':ad_re}))
         for spon in spons:
+            if spon.name=='body': continue
             self.preparsed_elements.append((spon,'ignore'))
         
 class WebParserTester (WebParser):
