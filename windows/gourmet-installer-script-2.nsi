@@ -26,7 +26,7 @@
 ;Defines
 
     !define GOURMET_NAME "Gourmet Recipe Manager"
-    !define GOURMET_VERSION "0.15.3-2alpha"
+    !define GOURMET_VERSION "0.15.3-2alpha2"
     !define GOURMET_PUBLISHER "Thomas M. Hinkle"
     !define GOURMET_WEB_SITE "http://grecipe-manager.sourceforge.net"
     !define GOURMET_DOWNLOAD_SITE "http://sourceforge.net/project/showfiles.php?group_id=108118"
@@ -55,7 +55,7 @@
     !define GTK_DEFAULT_THEME_ENGINE_DIR        "lib\gtk-2.0\2.4.0\engines"
 
     ; Uncomment this to make an installer with GTK installer integrated.
-    !define WITH_GTK
+    ;!define WITH_GTK
 
     ;TODO (done, answer is no) do we need these?
     ;!define GTK_THEME_DIR              "..\gtk_installer\gtk_themes"
@@ -145,7 +145,6 @@ section
                       While the Windows version is basically identical to the Linux version, \ 
                       it has not been tested as thouroughly. Also, as some of the components Gourmet relies on \
                       are not available for Windows, some features (mainly plugins) are not (yet) available. Specifically, the $\r \
-                      * Browse Recipes, $\r \
                       * Printing & PDF Export, $\r \
                       * Spell Checking, and $\r \
                       * Python Shell $\r \
@@ -153,7 +152,8 @@ section
                       Furthermore, there seem to be some errors related to the $\r \
                       * Nutritional Information and $\r \ 
                       * Unit Display Preferences $\r \
-                      plugins, in particular when deactivating them again. $\r $\r \
+                      plugins, in particular when deactivating them again, and to the $\r \
+                      * Browse Recipes plugin. $\r $\r \
                       We're currently working on resolving these issues. $\r \
                       If you experience any other issues, please report them at Gourmet's bug tracking system \ 
                       at http://sourceforge.net/tracker/?group_id=108118&atid=649652 -- \ 
