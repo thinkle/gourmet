@@ -574,6 +574,7 @@ class RecTrash (RecIndex):
                                                                    {'size':(600,800)}),
                                                     show=False))
         self.window.connect('response',self.response_cb)
+        # So we can let delete key delete recipe when treeview is focused
 
     def response_cb (self, dialog, response):
         if response==self.RESPONSE_DELETE_PERMANENTLY:
@@ -1019,7 +1020,12 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             if event.button==3:
                 self.rectree_popup(tv,event)
                 return True
+        # Set up popup menu in treeview
         self.rectree.connect('button-press-event',popcb)
+        # Set up delete key in recipe treeview
+        self.rectree.connect('key-press-event',self.rec_tree_keypress_cb)
+
+        
         self.main.show()
 
     def rectree_popup (self, tv, event, *args):
@@ -1035,8 +1041,11 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.onSelectedActionGroup.add_actions([
             ('OpenRec','recipe-box',_('Open recipe'),
              '<Control>O',_('Open selected recipe'),self.rec_tree_select_rec),
+            # We no longer bind "Delete" here -- instead, we'll do it
+            # at the TreeView level to prevent the delete key
+            # elsewhere (e.g. in search box) from muddling up users.
             ('DeleteRec',gtk.STOCK_DELETE,_('Delete recipe'),
-             'Delete',_('Delete selected recipes'),self.rec_tree_delete_rec_cb),
+             None,_('Delete selected recipes'),self.rec_tree_delete_rec_cb),
             ('ExportSelected',None,_('E_xport selected recipes'),
              None,_('Export selected recipes to file'),
              lambda *args: self.do_export(export_all=False)),
@@ -1166,14 +1175,21 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         else:
             self.recTrash.show()
 
+    def rec_tree_keypress_cb (self, widget, event):
+        print 'Keypress callback!'
+        keyname = gtk.gdk.keyval_name(event.keyval)
+        print 'User pressed ',keyname
+        if keyname == 'Delete' or keyname == 'BackSpace':
+            self.rec_tree_delete_rec_cb()
+            return True
 
-    def rec_tree_delete_rec_cb (self, *args):
+    def rec_tree_delete_rec_cb (self, *args,**kwargs):
         """Make a watch show up (this can be slow
         if lots of recs are selected!"""
         self.rec_tree_delete_recs(
             self.get_selected_recs_from_rec_tree()
             )
-
+        
     def delete_open_card_carefully (self, rec):
         """Delete any open card windows, confirming if the card is edited.
 

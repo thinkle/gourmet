@@ -1,3 +1,14 @@
+2010-02-09  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/GourmetRecipeManager.py (RecGui): Make
+	delete-key-deletes-recipe behavior a callback on keypresses only
+	in treeview. This prevents users using the delete key in the
+	search box from accidentally deleting recipes. Also, let backspace
+	delete recipes as well for convenience. 
+
+	* src/lib/backends/db.py (RecData.get_criteria): Make sure search
+	strings are proper unicode objects. Fixes bug #2948135.
+
 2010-01-16  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/version.py Version->0.15.4

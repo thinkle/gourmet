@@ -749,6 +749,10 @@ class RecData (Pluggable):
             else:
                 subtable = None
                 col = getattr(self.recipe_table.c,crit['column'])
+            # Make sure we're using unicode!
+            if (type(crit.get('search',u'')) != unicode
+                and type(crit.get('search',u'')) in types.StringTypes):
+                crit['search'] = unicode(crit['search'])
             if crit.get('operator','LIKE')=='LIKE':
                 retval = (col.like(crit['search']))
             elif crit['operator']=='REGEXP':
@@ -759,6 +763,7 @@ class RecData (Pluggable):
                 retval = self.recipe_table.c.id.in_(
                     sqlalchemy.select([subtable.c.recipe_id],retval)
                     )
+            
             return retval
 
     def search_recipes (self, searches, sort_by=[]):
@@ -773,6 +778,7 @@ class RecData (Pluggable):
             d = (sort_by[i][1]==1 and -1 or 1)
             sort_by[i] = ('rating',d)
         criteria = self.get_criteria((searches,'and'))
+        debug('backends.db.search_recipes - search criteria are %s'%searches,2)
         if 'category' in [s[0] for s in sort_by]:
             return sqlalchemy.select([c for c in self.recipe_table.c],# + [self.categories_table.c.category],
                                      criteria,distinct=True,
@@ -784,13 +790,6 @@ class RecData (Pluggable):
             return sqlalchemy.select([self.recipe_table],criteria,distinct=True,
                                      order_by=make_order_by(sort_by,self.recipe_table,),
                                      ).execute().fetchall()
-
-    def filter (self, table, func):
-        """Return a table representing filtered with func.
-
-        func is called with each row of the table.
-        """
-        raise NotImplementedError
 
     def get_unique_values (self, colname,table=None,**criteria):
         """Get list of unique values for column in table."""
