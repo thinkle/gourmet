@@ -43,7 +43,10 @@ dll_excludes = ["libpangocairo-1.0-0.dll",
                 "libgdk_pixbuf-2.0-0.dll",
                 "zlib1.dll",
                 "libglade-2.0-0.dll",
-                "libpango-1.0-0.dll"
+                "libpango-1.0-0.dll",
+                # see http://stackoverflow.com/questions/1979486/py2exe-win32api-pyc-importerror-dll-load-failed
+                "mswsock.dll",
+                "powrprof.dll"
                 ]
 
 packages = ["xml.dom","cairo","pangocairo","sqlalchemy",
