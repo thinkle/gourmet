@@ -368,17 +368,16 @@ class GourmetApplication:
 
     def get_attribute_model (self, attribute):
         """Return a ListModel with a unique list of values for attribute.
-
-        This is stored here so that all the different comboboxes that
-        might need e.g. a list of categories can share 1 model and
-        save memory.
         """
-        if not hasattr(self,'%sModel'%attribute):
-            slist = self.create_attribute_list(attribute)
-            m = gtk.ListStore(str)
-            for i in slist: m.append([i])
-            setattr(self,'%sModel'%attribute,m)
-            self.attributeModels.append((attribute,getattr(self,'%sModel'%attribute)))
+        # This was stored here so that all the different comboboxes that
+        # might need e.g. a list of categories can share 1 model and
+        # save memory.
+        # if not hasattr(self,'%sModel'%attribute): 
+        slist = self.create_attribute_list(attribute)
+        m = gtk.ListStore(str)
+        for i in slist: m.append([i])
+        setattr(self,'%sModel'%attribute,m)
+        self.attributeModels.append((attribute,getattr(self,'%sModel'%attribute)))
         return getattr(self,'%sModel'%attribute)
 
     # About/Help
