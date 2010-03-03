@@ -1,5 +1,10 @@
 2010-03-03  Thomas M. Hinkle  <tom@grenville>
 
+	* src/lib/GourmetRecipeManager.py (GourmetApplication.get_attribute_model):
+	Don't bother caching the attribute models. It results in
+	inconsistency for the user and it's not that expensive to just
+	regenerate the lists each time we need them.
+
 	* defaults_en.py defaults_en_GB.py ++T. and t. as abbreviations
 	for Tablespoon and teaspoon
 
