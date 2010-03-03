@@ -1,3 +1,8 @@
+2010-03-03  Thomas M. Hinkle  <tom@grenville>
+
+	* defaults_en.py defaults_en_GB.py ++T. and t. as abbreviations
+	for Tablespoon and teaspoon
+
 2010-02-09  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/GourmetRecipeManager.py (RecGui): Make
