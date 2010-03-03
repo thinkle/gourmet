@@ -60,11 +60,11 @@ class Converter:
     # all possible forms in all languages.
     #
     # See http://www.sbin.org/doc/glibc/libc_8.html
-    time_units = [('seconds',[ngettext('second','seconds',n) for n in range(5)] + ['s.', 'sec', 'secs' ]),
+    time_units = [('seconds',[ngettext('second','seconds',n) for n in range(5)] + ['s.', 'sec', 'secs','s' ]),
                   # min. = abbreviation for minutes
-                  ('minutes',[_('min'),'min.','min','mins'] + [ngettext('minute','minutes',n) for n in range(5)]),
+                  ('minutes',[_('min'),'min.','min','mins','m'] + [ngettext('minute','minutes',n) for n in range(5)]),
                   # hrs = abbreviation for hours
-                  ('hours',[_('hrs.'),'hrs','hr'] + [ngettext('hour','hours',n) for n in range(5)]),
+                  ('hours',[_('hrs.'),'hrs','hr','h'] + [ngettext('hour','hours',n) for n in range(5)]),
                   ('days',[ngettext('day','days',n) for n in range(5)]),
                   ('years',[ngettext('year','years',n) for n in range(5)]),
                   #('decades',[ngettext('decade','decades',n) for n in range(5)]),
