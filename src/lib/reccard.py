@@ -58,7 +58,7 @@ class RecRef:
 
 class RecCard (object):
     
-    def __init__ (self, rg=None, recipe=None):
+    def __init__ (self, rg=None, recipe=None, manual_show=False):
         if not rg:
             from GourmetRecipeManager import get_application
             rg = get_application()
@@ -69,7 +69,8 @@ class RecCard (object):
             recipe = self.rg.rd.new_rec()
             self.new = True
         self.current_rec = recipe
-        self.show()
+        if not manual_show:
+            self.show()
 
     def set_current_rec (self, rec):
         self.__current_rec = rec

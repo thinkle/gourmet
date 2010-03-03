@@ -868,6 +868,7 @@ ui = '''<ui>
     <menuitem action="ShopRec"/>
     <menuitem action="DeleteRec"/>    
     <separator/>
+    <menuitem action="EditRec"/>    
     <menuitem action="BatchEdit"/>
   </menu>
   <menu name="Go" action="Go">
@@ -1046,6 +1047,9 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             # elsewhere (e.g. in search box) from muddling up users.
             ('DeleteRec',gtk.STOCK_DELETE,_('Delete recipe'),
              None,_('Delete selected recipes'),self.rec_tree_delete_rec_cb),
+            ('EditRec',gtk.STOCK_EDIT,_('Edit recipe'),
+             None,_('Open selected recipes in recipe editor view'),
+             self.rec_tree_edit_rec),
             ('ExportSelected',None,_('E_xport selected recipes'),
              None,_('Export selected recipes to file'),
              lambda *args: self.do_export(export_all=False)),
@@ -1165,7 +1169,20 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         debug("rec_tree_select_rec (self, *args):",5)
         for rec in self.get_selected_recs_from_rec_tree():
             self.open_rec_card(rec)
-    
+
+    def rec_tree_edit_rec (self, *args):
+        for rec in self.get_selected_recs_from_rec_tree():
+            if self.rc.has_key(rec.id):
+                self.rc[rec.id].show_edit()
+            else:
+                def show ():
+                    w=reccard.RecCard(self, rec, manual_show=True)
+                    self.rc[rec.id]=w
+                    self.update_go_menu()
+                    w.show_edit()
+                    self.app.window.set_cursor(None)
+                self.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+                gobject.idle_add(show)
 
     # Deletion
     def show_deleted_recs (self, *args):
