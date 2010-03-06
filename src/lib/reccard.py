@@ -1143,7 +1143,11 @@ class IngredientEditorModule (RecEditorModule):
             ])
         self.ingredientEditorOnRowActionGroup.add_actions([
             ('DeleteIngredient',gtk.STOCK_DELETE,_('Delete'),
-             'Delete',None,self.delete_cb),            
+             #'Delete', # Binding to the delete key meant delete
+             #pressed anywhere would do this, icnluding in a text
+             #field
+             None, 
+             None,self.delete_cb),            
             ('MoveIngredientUp',gtk.STOCK_GO_UP,_('Up'),
              '<Control>Up',None,self.ingtree_ui.ingUpCB),
             ('MoveIngredientDown',gtk.STOCK_GO_DOWN,_('Down'),
@@ -2141,6 +2145,7 @@ class IngredientTreeUI:
         self.setup_columns()
         self.ingTree.connect("row-activated",self.ingtree_row_activated_cb)
         self.ingTree.connect("button-press-event",self.ingtree_click_cb)
+        self.ingTree.connect("key-press-event",self.ingtree_keypress_cb)
         self.selected=True
         #self.selection_changed()
         self.ingTree.get_selection().connect("changed",self.selection_changed_cb)
@@ -2296,6 +2301,13 @@ class IngredientTreeUI:
             d = self.ingController.get_rowdict(itr)
             #self.re.ie.show(i,d)
             #self.re.ie.ieExpander.set_expanded(True)
+
+    def ingtree_keypress_cb (self, widget, event):
+        keyname = gtk.gdk.keyval_name(event.keyval)
+        if keyname == 'Delete' or keyname == 'BackSpace':
+            self.ingredient_editor_module.delete_cb()
+            return True
+                             
 
     def selection_changed_cb (self, *args):
         model,rows=self.ingTree.get_selection().get_selected_rows()

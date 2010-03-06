@@ -1192,9 +1192,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             self.recTrash.show()
 
     def rec_tree_keypress_cb (self, widget, event):
-        print 'Keypress callback!'
         keyname = gtk.gdk.keyval_name(event.keyval)
-        print 'User pressed ',keyname
         if keyname == 'Delete' or keyname == 'BackSpace':
             self.rec_tree_delete_rec_cb()
             return True
