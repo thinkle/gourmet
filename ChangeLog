@@ -1,5 +1,12 @@
 2010-03-05  Thomas M. Hinkle  <tom@grenville>
 
+	* src/lib/gglobals.py (FLOAT_REC_ATTRS): Add list of recipe
+	attributes that are floats (as opposed to ints, text, etc)
+
+	* src/lib/reccard.py (DescriptionEditorModule.save): Make sure
+	floating attributes (e.g. yields) get grabbed as values and not as
+	text.
+
 	* glade/recCardDescriptionEditor.glade: Make yields amount entry
 	accept decimals.
 	* src/lib/defaults/defaults_en.py (UNITS): ++drops

@@ -261,6 +261,7 @@ REC_ATTRS = [('title',_('Title'),'Entry'),
              ]
 
 INT_REC_ATTRS = ['rating','preptime','cooktime']
+FLOAT_REC_ATTRS = ['yields']
 TEXT_ATTR_DIC = {'instructions':_('Instructions'),
                  'modifications':_('Notes'),
                  }
