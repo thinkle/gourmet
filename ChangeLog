@@ -1,5 +1,10 @@
 2010-03-05  Thomas M. Hinkle  <tom@grenville>
 
+	* glade/recCardDescriptionEditor.glade: Make yields amount entry
+	accept decimals.
+	* src/lib/defaults/defaults_en.py (UNITS): ++drops
+	* src/lib/defaults/defaults_en_GB.py (UNITS): ++drops
+
 	* src/lib/reccard.py (IngredientTreeUI.ingtree_keypress_cb): Make
 	delete-key in ingredient editor view only work in treeview (same
 	as change made for main view on 2/9/2010).
