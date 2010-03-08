@@ -40,7 +40,7 @@ fields={'cuisine': ['American','Italian','Mexican',
         'yield_unit':['servings','cups','pints','gallons','ounces',
                       'cookies','crusts',
                       ],
-        
+
                   }
 
 # In English, there are a heck of a lot of synonyms. This is a list
@@ -50,40 +50,40 @@ fields={'cuisine': ['American','Italian','Mexican',
 # SYNONYMS=[]
 SYNONYMS=[
     # the first item of each list is the default
-    ["eggplant","aubergine"],
-    ["scallion","green onion","spring onion"],
     ["arugula","rocket"],
     ["azuki beans", "adzuki beans", "adzuki", "azuki"],
-    ["snap peas","mangetout"],
-    ["bok choy","chinese leaves"],
-    ["chilli pepper","capsicum"],
-    ["corn","sweetcorn","maise","sweet corn"],
-    ["red bell pepper","red pepper"],
-    ["bell pepper, green", "green pepper", "bell pepper","green bell pepper", "pepper"],
     ["beet","beetroot"],
-    ["collard greens","spring greens"],
-    ["cilantro","coriander"],
-    ["turabaga","swede"],
-    ["zucchini","courgette"],
+    ["bell pepper, green", "green pepper", "bell pepper","green bell pepper", "pepper"],
+    ["black cod","sablefish"],
+    ["bok choy","chinese leaves"],
+    ["chilean sea bass","patagonian toothfish"],
+    ["chilli pepper","capsicum"],
     ["chokeberry","cooking apple"],
-    ["juneberry","saskatoon"],
-    ["nannyberry","sheepberry"],
-    ["kiwi fruit","chinese gooseberry"],
-    ["sunberry","wonderberry"],
-    ["start fruit","carambola"],
+    ["cilantro","coriander"],
+    ["collard greens","spring greens"],
+    ["corn","sweetcorn","maize","sweet corn"],
     ["dragonfruit" , "pitaya"],
+    ["eggplant","aubergine"],
+    ["flour, all purpose","flour, all-purpose","flour","white flour"],
     ["jackfruit","nangka"],
+    ["juneberry","saskatoon"],
+    ["kiwi fruit","chinese gooseberry"],
     ["langsat","longkong", "duku"],
-    ["velvet persimmon","mabolo"],
     ["mamoncillo", "quenepa", "genip"],
+    ["nannyberry","sheepberry"],
+    ["red bell pepper","red pepper"],
     ["rose apple", "malay apple"],
+    ["rutabaga","swede"],
     ["salak", "snakefruit"],
     ["sapodilla", "chiku", "sapadilla", "snake fruit", "sawo"],
+    ["scallion","green onion","spring onion"],
+    ["snap peas","mangetout"],
     ["soursop", "guanabana"],
-    ['black cod','sablefish'],
-    ['chilean sea bass','patagonian toothfish'],
-    ['flour, all purpose','flour, all-purpose','flour','white flour'],
-    ['sugar, granulated','sugar'],    
+    ["start fruit","carambola"],
+    ["sugar, granulated","sugar"],
+    ["sunberry","wonderberry"],
+    ["velvet persimmon","mabolo"],
+    ["zucchini","courgette"],
     ]
 
 # A DICTIONARY CONTAINING INGREDIENT KEYS AND NDBNO for the USDA
@@ -647,40 +647,42 @@ DENSITY_TABLE={
 # The second item should be the full name of the unit
 # e.g. ["c.", ["cup",...]]
 #
-UNITS = [["bucket" , ["bucket", "buckets", "bckt."]],
-         ["peck", ["peck", "pecks"]],
-         ["bushel", ["bushel", "bushels", "bsh.", "bu.", "bu", "bsh", "bshl", "bshl."]],
-         ["grains", ["grain", "grains"]],
-         ["dram", ["dram", "drams"]],
-         ["drop",["drop","drops"]],
-         ["fl oz",["fl oz","fluid ounce","fluid ounces","fl. oz.","fl oz.","fl. oz"]],
-         ['',['each','ea','ea.']],
-         ["tsp", ["teaspoon","tsp", "tsp.","tea spoon", "tsps.", "teaspoons", "tea spoons", "Teaspoon", "Teaspoons","t","t.",'ts',"Ts.","Tsp.","Tsp"]],
-         ["Tbs", ["tablespoon","tbs", "tbsp", "tbs.", "tbsp.", "table spoon", "tbsps.", "tablespoons", "Tablespoon", "T","T.",'tb',"Tbs.", "Tbsp", "Tbsp."]],
-         ["lb", [ "pound", "lb","lb.", "lbs.", "pounds"]],
-         ["oz", [ "ounce", "oz","ounces", "oz."]],
-         ["c", ["cup", "c.", "cups"]],
-         ["qt", ["quart", "qt.", "quarts","Qt","Qt."]],
-         ["pt", ["pint", "pt.", "pints"]],
-         ["gallon", ["gallon", "gallons","gal."]],
-         ["ml", ["mililiter","ml", "ml.","mililiters"]],
-         ["cl", ["centiliter","cl", "cl.", "centiliters"]],
-         ["dl", ["deciliter","dl", "dl.","deciliters"]],
-         ["l", ["liter", "l.", "lit.", "liters",'l']],
-         ["g", ["grams", "gram", "g.",'g','gr','gr.']],
-         ["mg", ["miligram", "mg.", "mg", "miligrams"]],
-         ["kg", ["kilogram","kg.", "kg", "kilograms"]],
-         # These names aren't really convertible, but we want them to
-         # be recognized as units...
-         ['small',['small','sm','Small','sm.']],         
-         ['medium',['medium','med.','Medium']],
-         ['large',['large','Large','lg','lg.']],
-         ['clove',['clove','cloves','clv.']],
-         ['whole',['whole','wh.','whl']],
-         ['package',['pkg.','pkg','package','Pkg.','Package','pack']],
-         ['box',['Box','box','bx']],
-         ['can',['can','Can','cn','cn.']],
-         ['slices',['slice','slices']],
+UNITS = [["",       ["each",   "eaches",  "ea",   "ea."]],
+         ["bucket", ["bucket", "buckets", "bckt", "bckt."]],
+         ["peck",   ["peck",   "pecks"]],
+         ["bushel", ["bushel", "bushels", "bshl", "bshl.", "bsh", "bsh.", "bu", "bu."]],
+         ["grains", ["grain",  "grains"]],
+         ["dram",   ["dram",   "drams"]],
+         ["drop",   ["drop",   "drops"]],
+         ["fl oz",  ["fl oz",      "fluid ounce","fluid ounces","fl ounces",   "fl. ounces","fl. oz",     "fl oz.",     "fl. oz."]],
+         ["tsp",    ["teaspoon",   "teaspoons",  "tea_spoon",   "tea_spoons",  "Teaspoon",  "Teaspoons",  "Tea_spoon",  "Tea_spoons",  "tsps","tsps.","Tsps","Tsps.","tsp","tsp.","Tsp","Tsp.","ts","ts.","Ts","Ts.","t","t."]],
+         ["Tbs",    ["tablespoon", "tablespoons","table_spoon", "table_spoons","Tablespoon","Tablespoons","Table_spoon","Table_spoons","tbsp","tbsp.","Tbsp","Tbsp.","tbs","tbs.","Tbs","Tbs.","tb","tb.","Tb","Tb.","T","T."]],
+         ["lb",     ["pound",      "pounds",     "lbs",  "lbs.",  "lb",  "lb."]],
+         ["oz",     ["ounce",      "ounces",     "oz",   "oz."]],
+         ["c",      ["cup",        "cups",       "c."]],
+         ["qt",     ["quart",      "quarts",     "qt.",  "Qt", "Qt."]],
+         ["pt",     ["pint",       "pints",      "pt.",  "Pt", "Pt."]],
+         ["gallon", ["gallon",     "gallons",    "gal",  "gal."]],
+         ["ml",     ["mililiter",  "mililiters", "ml",   "ml."]],
+         ["cl",     ["centiliter", "centiliters","cl",   "cl."]],
+         ["dl",     ["deciliter",  "deciliters", "dl",   "dl."]],
+         ["l",      ["liter",      "liters",     "lit.", "l", "l."]],
+         ["g",      ["grams",    "gram",      "g.", "g", "gr", "gr."]],
+         ["mg",     ["miligram", "miligrams", "mg", "mg."]],
+         ["kg",     ["kilogram", "kilograms", "kg", "kg."]],
+         # These names aren"t really convertible, but we want them to
+         # be recognized as units.
+         ["small",  ["small",  "Small",    "sm",  "sm."]],
+         ["medium", ["medium", "Medium",   "med", "med.", "Med", "Med."]],
+         ["large",  ["large",  "Large",    "lg",  "lg.",  "Lg",  "Lg."]],
+         ["box",    ["box",    "Box",      "bx"]],
+         ["whole",  ["whole",  "whl",      "wh."]],
+         ["clove",  ["clove",  "cloves",   "clv",    "clv."]],
+         ["can",    ["can",    "Can",      "cn",      "cn."]],
+         ["head",   ["head",   "heads",    "Head",    "Heads",    "hd",       "hd."]],
+         ["package",["pkg.",   "package",  "Package", "packages", "Packages", "pkg", "Pkg.", "pack"]],
+         ["slice",  ["slice",  "slices"]],
+         ["bunch",  ["bunch",  "bunches"]],
          ]
 
 METRIC_RANGE = (1,999)
@@ -750,7 +752,7 @@ VOL_TO_MASS_TABLE = {
     ("cl", "kg"): 0.01,
     ("cl", "g") : 10,
     ("dl", "kg") : 0.1,
-    ("dl", "g") : 100,    
+    ("dl", "g") : 100,
     ("l", "kg") : 1}
 
 # TIME ABBREVIATIONS (this is new!)
@@ -793,7 +795,7 @@ def guess_plurals (s):
     ret = [s+'s',s+'es']
     if s[-1]=='f': ret.append(s[0:-1]+'ves')
     return ret
-    
+
 IGNORE = ["and","with","of","for","cold","warm","finely","thinly","roughly","coarsely"]
 
 NUMBERS = {
@@ -833,5 +835,3 @@ PLURALS += [(s,s+'s') for s in
                         'slice','pie','package','quart','pint','muffin',
                         'cookie',]
                        ]
-
-        

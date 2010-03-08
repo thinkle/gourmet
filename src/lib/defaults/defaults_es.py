@@ -15,18 +15,18 @@ CREDITS="Thomas M. Hinkle"
 
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!
 fields={'cuisine': ['Español','Mejicano','Cubano','Argentino','Brazileño','Italiano','Griego',
-                   'Chino',],
-        'rating' : ['Excelente','Bueno','Así Así','Malo'],
+                   'Chino','Francés','Vasco'],
+        'rating' : ['Excelente','Muy Bueno','Bueno','Así Así','Malo'],
         'source' : [],
         'category' : ['Postre','Aperitivo','Ensalada','Sopa',
-                      'Desayuno','Plato principal'],
+                      'Desayuno','Plato principal','Tapa'],
                   }
 
 SYNONYMS=[
     # the first item of each list is the most common
     # word, the others are synonyms
     ['durazno','melocotón'],
-    ['camarón','gambas'],
+    ['camarón','gamba'],
     ]
 
 # a dictionary key=ambiguous word, value=list of terms
@@ -295,13 +295,13 @@ CONVERTER_TABLE = {
     ("kg", "g"):1000,
     ("g", "mg"):1000,
     ("cucharilla", "drop"):76,
-# Are there translations for these units?
-#    ("onza", "dram"):16,
-#    ("dram", "grains"):27.34375,
-#    ("peck", "galón"):2,
-#    ("bucket", "peck"):2,
-#    ("bushel", "bucket"):2,
-#    ("lb.", "grains"):7000,
+    # Are there translations for these units?   Not really, they're english-imperial units, not adopted by Spain...  :-)
+    # ("onza", "dram"):16,
+    # ("dram", "grains"):27.34375,
+    # ("peck", "galón"):2,
+    # ("bucket", "peck"):2,
+    # ("bushel", "bucket"):2,
+    # ("lb.", "grains"):7000,
     }
 
 METRIC_RANGE = (1,999)
@@ -315,8 +315,8 @@ UNIT_GROUPS = {
                      ('dl',(1,9)),
                      ('l',(1,None)),],
     'imperial weight':[
-#    ('grain',(0,27)),
-#    ('dram',(0.5,15)),
+    # ('grain',(0,27)),
+    # ('dram',(0.5,15)),
     ('onza',(0.25,15)),
     ('libra',(0.25,None)),
     ],
@@ -325,15 +325,14 @@ UNIT_GROUPS = {
     ('cucharilla',(0.125,3)),
     ('cuchara',(1,4)),
     ('taza',(0.25,4)),
-#    ('pt.',(1,1)),
+    # ('pt.',(1,1)),
     ('quarto de galón',(1,3)),
     ('galón',(1,None)),
-#                       ('peck',(1,2)),
-#                       ('bucket',(1,2)),
-#                       ('bushel',(1,None))
+    # ('peck',(1,2)),
+    # ('bucket',(1,2)),
+    # ('bushel',(1,None))
     ]
     }
-
 
 DENSITY_TABLE={
     "agua":1,
@@ -342,14 +341,14 @@ DENSITY_TABLE={
     "leche":1.029,
     "leche entera":1.029,
     "leche desnatada":1.033,
-#    "milk, 2%":1.031,
-#    "milk, 1%":1.03,
+    # "milk, 2%":1.031,
+    # "milk, 1%":1.03,
     "leche de coco":0.875,
     "suero de la leche":1.03,
-# heavy cream -- I don't know the differences in Sp.
+    # heavy cream -- I don't know the differences in Sp.
     "crema":0.994,
-#    "light cream":1.012,
-#    "half and half":1.025,
+    # "light cream":1.012,
+    # "half and half":1.025,
     "miel":1.420,
     "azúcar":1.550,
     "sal":2.165,
@@ -363,20 +362,20 @@ DENSITY_TABLE={
     "azúcar impalpable": 0.6,
             }
 
-UNITS = [    
+UNITS = [
     ["ml", ["ml.", "mL", "mL.", "ml"]],
-    #["bucket" , ["bucket", "buckets", "bckt."]],
-    #["peck", ["peck", "pecks"]],
-    #["bushel", ["bushel", "bushels", "bsh.", "bu.", "bu", "bsh", "bshl", "bshl."]],
-    #["grains", ["grain", "grains"]],
-    #["dram", ["dram", "drams"]],    
+    # ["bucket" , ["bucket", "buckets", "bckt."]],
+    # ["peck", ["peck", "pecks"]],
+    # ["bushel", ["bushel", "bushels", "bsh.", "bu.", "bu", "bsh", "bshl", "bshl."]],
+    # ["grains", ["grain", "grains"]],
+    # ["dram", ["dram", "drams"]],
     ["cucharilla", ["cucharilla"]],
     ["cuchara", ["cuchara","tbs", "tbsp","tbsp.", "tablespoon", "table spoon", "tbsps.", "tablespoons", "Tablespoon", "T"]],
     ["libra", ["libra","libras"]],
     ["onza", ["onza","onzas"]],
     ["taza", ["taza","tazas"]],
     ["quarto de galón", ["quarto de galón","quarto"]],
-    #["pt.", ["pint", "pt.", "pints"]],
+    # ["pt.", ["pint", "pt.", "pints"]],
     ["galón", ["galón", "galones", "gal."]],
     ["ml", ["ml", "ml.", "mililitro", "mililitros"]],
     ["cl", ["cl", "cl.", "centilitro", "centilitros"]],
@@ -398,7 +397,7 @@ CROSS_UNIT_TABLE = {
     ("pt.", "lb."):['density',1],
     ("cuchara", "onza"):['density',0.5],
     ("taza", "onza"):['density',8],
-    #("pt.", "onza"):['density',16],
+    # ("pt.", "onza"):['density',16],
     ("ml", "g"):['density',1]}
 
 VOL_TO_MASS_TABLE = {
@@ -412,7 +411,7 @@ VOL_TO_MASS_TABLE = {
     ("cl", "kg"): 0.01,
     ("cl", "g") : 10,
     ("dl", "kg") : 0.1,
-    ("dl", "g") : 100,    
+    ("dl", "g") : 100,
     ("l", "kg") : 1}
 
 TIME_ABBREVIATIOSN = {
@@ -428,7 +427,7 @@ TIME_ABBREVIATIOSN = {
 # _never_ be shown to the user, so it's fine to generate nonsense
 # words as well as correct answers -- our goal is to generate a list
 # of possible hits rather than to get the plural/singular form "right".
-    
+
 def guess_singulars (s):
     if len(s)<3: return []
     rets = []
@@ -461,7 +460,7 @@ NUMBERS = {
     9:['nueve'],
     10:['diez'],
     11:['once'],
-    12:['doce','una dozena','una docena de','una dozena de'],
+    12:['doce','una docena','una dozena','una docena de','una dozena de'],
     20:['veinte'],
     30:['treinta'],
     40:['cuarenta'],
