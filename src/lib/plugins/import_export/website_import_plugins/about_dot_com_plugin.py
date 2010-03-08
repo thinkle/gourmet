@@ -15,12 +15,9 @@ class AboutDotComPlugin (PluginPlugin):
 
     def get_importer (self, webpage_importer):
 
-        print 'GET ABOUT DOT COM!'
-
         class AboutDotComWebParser (webpage_importer.MenuAndAdStrippingWebParser):
 
             def preparse (self):
-                print 'ABOUT DOT COM PREPARSER!!!'
                 includes = [('rInt','instructions'),
                             ('rIng','ingredients'),
                             ('rPrp','instructions'),
@@ -30,7 +27,6 @@ class AboutDotComPlugin (PluginPlugin):
                     for el in self.soup(id=i):
                         self.preparsed_elements.append((el,t))
                 if self.preparsed_elements:
-                    print 'IGNORE UNPARSED STUFF'
                     self.ignore_unparsed = True
                     self.preparsed_elements.append((self.soup('title')[0],'title'))
                     # Now get rid of the annoying "More... recipes..."
