@@ -491,13 +491,21 @@ class RecData (Pluggable):
                 print 'Upgrade from < 0.14',sv_text
                 self.alter_table('categories',self.setup_category_table,
                                  {'id':'recipe_id'},['category'])
-                print 'RECREATE INGREDIENTS TABLE (This could take a while...)'
-                self.alter_table('ingredients',self.setup_ingredient_table,
-                                 {'id':'recipe_id'},
-                                 ['refid', 'unit', 'amount', 'rangeamount',
-                                  'item', 'ingkey', 'optional', 'shopoptional',
-                                  'inggroup', 'position', 'deleted'])
-                print 'RECREATE KEYLOOKUP TABLE'
+                # Testing whether somehow recipe_id already exists
+                # (apparently the version info here may be off? Not
+                # sure -- this is coming from an odd bug report by a
+                # user reported at...
+                # https://sourceforge.net/projects/grecipe-manager/forums/forum/371768/topic/3630545?message=8205906
+                try:
+                    self.db.connect().execute('select recipe_id from ingredients')
+                except sqlite3.OperationalError:
+                    self.alter_table('ingredients',self.setup_ingredient_table,
+                                     {'id':'recipe_id'},
+                                     ['refid', 'unit', 'amount', 'rangeamount',
+                                      'item', 'ingkey', 'optional', 'shopoptional',
+                                      'inggroup', 'position', 'deleted'])
+                else:
+                    print 'Odd -- recipe_id seems to already exist'
                 self.alter_table('keylookup',self.setup_keylookup_table,
                                  {},['word','item','ingkey','count'])
             # Add recipe_hash, ingredient_hash and link fields

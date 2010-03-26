@@ -1,3 +1,10 @@
+2010-03-25  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/backends/db.py (RecData.update_version_info): Make sure
+	recipe_id doesn't already exist as a column before altering old
+	databases -- apparently we were wrong about when this change was
+	made.
+
 2010-03-05  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/gglobals.py (FLOAT_REC_ATTRS): Add list of recipe
