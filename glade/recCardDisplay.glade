@@ -202,7 +202,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="can_default">True</property>
-                                                <property name="adjustment">1 0.25 10000 0.25 10 10</property>
+                                                <property name="adjustment">1 0.25 10000 0.25 10 0</property>
                                                 <property name="climb_rate">0.5</property>
                                                 <property name="digits">2</property>
                                               </widget>
@@ -246,7 +246,7 @@
                                               <widget class="GtkSpinButton" id="multiplyByDisplaySpin">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
-                                                <property name="adjustment">1 0.050000000745099998 10000 0.5 10 10</property>
+                                                <property name="adjustment">1 0.050000000745099998 10000 0.5 10 0</property>
                                                 <property name="climb_rate">0.10000000149</property>
                                                 <property name="digits">2</property>
                                               </widget>
