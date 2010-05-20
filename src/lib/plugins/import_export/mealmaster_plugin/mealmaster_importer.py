@@ -394,7 +394,7 @@ class mmf_importer (plaintext_importer.TextImporter):
                     # thing if this just looks misaligned -- in other words
                     # if the "item" column has 2 c. parsley, let's just parse
                     # the damned thing as 2 c. parsley
-                    parsed = self.rd.ingredient_parser(i,conv=self.conv,get_key=False)
+                    parsed = self.rd.parse_ingredient(i,conv=self.conv,get_key=False)
                     if parsed and parsed.get('amount','') and parsed.get('item',''):
                         amt = "%s"%parsed['amount']
                         u = parsed.get('unit','')

@@ -81,7 +81,7 @@ class RecipeParser:
     joinable_tags = ['instructions','ingredient','ingredients',None]
     change_on_join = {'ingredient':'ingredients'}
 
-    ing_matcher = re.compile("^\s*(%s\s+\w+.*)"%convert.NUMBER_REGEXP)
+    ing_matcher = re.compile(u"^\s*\u2022?\u2023?\u2043?\u204C?\u204D?\u2219?\u25C9?\u25D8?\u25E6?\u2619?\u2765?\u2767?\u29BE?\u29BF?\s*(%s\s+\w+.*)"%convert.NUMBER_REGEXP)
 
     def __init__ (self):
         self.title_parsed = False

@@ -75,37 +75,11 @@ class ConvenientImporter (importer.Importer):
         self.group = txt.strip()
 
     def add_ing_from_text (self, txt):
-        try:
-            txt=unicode(txt.strip())
-        except UnicodeDecodeError:
-            print 'Weird -- ignoring unicode error with ',txt
-            txt = txt.strip()
-        txt = re.sub('\s+',' ',txt)
-        if not txt: return        
-        mm = convert.ING_MATCHER.match(txt)
-        if mm:
-            amount = mm.group(convert.ING_MATCHER_AMT_GROUP)
-            unit = mm.group(convert.ING_MATCHER_UNIT_GROUP)
-            item = mm.group(convert.ING_MATCHER_ITEM_GROUP)
-            #print 'Parsed ingredient: "%s"'%txt,"into:",amount,'|',unit,'|',item
-            # If our unit isn't familiar and is longer than 2
-            # characters, don't add it as a unit! (this lets most
-            # abbreviations through)
-            if unit and not self.conv.unit_dict.has_key(unit.strip()) and len(unit.strip())>2:
-                item = unit + ' ' + item
-                unit = ''
-        else:
-            print 'Unable to parse ingredient from text "%s"'%txt
-            print 'Setting amount and unit to None'
-            amount = None; unit = None;
-            item = txt
-        self.start_ing()
-        if amount:
-            self.add_amt(amount)
-        if unit:
-            self.add_unit(unit)
-        if item:
-            self.add_item(item)
+        if not hasattr(self,'db'):
+            import gourmet.backends.db as db
+            self.db = db.get_database()
+        parsed_dict = self.db.parse_ingredient(txt)
+        self.ing = parsed_dict
         self.commit_ing()
 
     def add_ings_from_text (self, txt, break_at='\n'):

@@ -1768,16 +1768,22 @@ class RecipeManager (RecData):
         else:
             return None
 
-    def ingredient_parser (self, s, conv=None, get_key=True):
+    def parse_ingredient (self, s, conv=None, get_key=True):
         """Handed a string, we hand back a dictionary representing a parsed ingredient (sans recipe ID)"""
         debug('ingredient_parser handed: %s'%s,0)
-        s = unicode(s) # convert to unicode so our ING MATCHER works properly
-        s=s.strip("\n\t #*+-")
+        # Strip whitespace and bullets...
+        d={}
+        s = s.decode('utf8').strip(
+            u'\u2022\u2023\u2043\u204C\u204D\u2219\u25C9\u25D8\u25E6\u2619\u2765\u2767\u29BE\u29BF\n\t #*+-')
+        s = unicode(s)
+        option_m = re.match('\s*optional:?\s*',s,re.IGNORECASE)
+        if option_m:
+            s = s[option_m.end():]
+            d['optional']=True
         debug('ingredient_parser handed: "%s"'%s,1)
         m=convert.ING_MATCHER.match(s)
         if m:
             debug('ingredient parser successfully parsed %s'%s,1)
-            d={}
             a,u,i=(m.group(convert.ING_MATCHER_AMT_GROUP),
                    m.group(convert.ING_MATCHER_UNIT_GROUP),
                    m.group(convert.ING_MATCHER_ITEM_GROUP))
@@ -1811,7 +1817,10 @@ class RecipeManager (RecData):
             return d
         else:
             debug("Unable to parse %s"%s,0)
-            return None
+            d['item'] = s
+            return d
+        
+    ingredient_parser = parse_ingredient
 
     def ing_search (self, ing, keyed=None, recipe_table=None, use_regexp=True, exact=False):
         """Search for an ingredient."""

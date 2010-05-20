@@ -1162,7 +1162,7 @@ class IngredientEditorModule (RecEditorModule):
 
     def add_ingredient_from_line (self, line, group_iter=None, prev_iter=None):
         """Add an ingredient to our list from a line of plain text"""
-        d=self.rg.rd.ingredient_parser(line, conv=self.rg.conv)
+        d=self.rg.rd.parse_ingredient(line, conv=self.rg.conv)
         if d:
             if d.has_key('rangeamount'):
                 d['amount'] = self.rg.rd._format_amount_string_from_amount(
@@ -4015,7 +4015,7 @@ if __name__ == '__main__' and False:
 
 #     def add_ingredient_from_line (self, line, group_iter=None, prev_iter=None):
 #         """Add an ingredient to our list from a line of plain text"""
-#         d=self.rg.rd.ingredient_parser(line, conv=self.rg.conv)
+#         d=self.rg.rd.parse_ingredient(line, conv=self.rg.conv)
 #         if d:
 #             if d.has_key('rangeamount'):
 #                 d['amount'] = self.rg.rd._format_amount_string_from_amount(

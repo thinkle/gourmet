@@ -960,7 +960,7 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
 
     def item_added (self, *args):
 	txt = self.add_entry.get_text()
-	dct = self.rd.ingredient_parser(txt)
+	dct = self.rd.parse_ingredient(txt)
 	if not dct: dct = {'amount':None,'unit':None,'item':txt}
 	self.extras.append([dct.get('amount'),dct.get('unit'),dct.get('item')])
         # Make sure it doesn't end up in the pantry...        

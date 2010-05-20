@@ -525,7 +525,7 @@ class WebPageImporter (importer.Importer):
                     # we take a special keyword, "text", which gets
                     # parsed
                     if ingdic.has_key('text'):
-                        d = self.rd.ingredient_parser(ingdic['text'],conv=self.conv)
+                        d = self.rd.parse_ingredient(ingdic['text'],conv=self.conv)
                         if d:
                             for dk,dv in d.items():
                                 if not ingdic.has_key(dk) or not ingdic[dk]:
@@ -546,7 +546,7 @@ class WebPageImporter (importer.Importer):
             if k == 'ingredient_block':
                 for l in v.split('\n'):
                     if self.prog: self.prog(-1,_('Processing ingredients.'))
-                    dic=self.rd.ingredient_parser(l,conv=self.conv)
+                    dic=self.rd.parse_ingredient(l,conv=self.conv)
                     if dic:
                         self.start_ing(**dic)
                         self.commit_ing()

@@ -224,13 +224,14 @@ class MenuAndAdStrippingWebParser (WebParser):
         els = self.soup(id=menu_regexp)
         els.extend(self.soup(attrs={'class':menu_regexp}))
         for menu in els:
-            if menu.name=='body': continue
+            if hasattr(menu,'name') and menu.name=='body':
+                continue
             self.preparsed_elements.append((menu,'ignore'))
         menu_text_regexp = re.compile(
             '.*sitemap.*|^\s-*about\s-*',re.IGNORECASE
             )
         for menu in self.soup(text=menu_text_regexp):
-            if menu.name == 'body': continue
+            if hasattr(menu,'name') and menu.name == 'body': continue
             self.preparsed_elements.append((menu,'ignore'))
 
     def cut_sponsored_links (self):
@@ -238,7 +239,7 @@ class MenuAndAdStrippingWebParser (WebParser):
         spons = self.soup(id=ad_re)
         spons.extend(self.soup(attrs={'class':ad_re}))
         for spon in spons:
-            if spon.name=='body': continue
+            if hasattr(spon,'name') and spon.name=='body': continue
             self.preparsed_elements.append((spon,'ignore'))
         
 class WebParserTester (WebParser):
