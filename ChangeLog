@@ -1,3 +1,13 @@
+2010-05-19  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/db.py: Change name of ingredient_parser to
+	parse_ingredient (following naming conventions used everyone else
+	by pretty much everyone alive). Make this change throughout other
+	source files.
+
+	* src/lib/importers/generic_recipe_parser.py (RecipeParser): Fix
+	unicode/regexp issue with ing_matcher
+
 2010-03-25  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/backends/db.py (RecData.update_version_info): Make sure
