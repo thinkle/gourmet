@@ -88,7 +88,7 @@ class ConvenientImporter (importer.Importer):
         By default, there is one ingredient per line of text."""
         txt=txt.strip()
         for i in txt.split(break_at):
-            self.add_ing_from_text(i)
+            self.add_ing_from_text(i.strip())
 
 class InteractiveImporter (ConvenientImporter, NotThreadSafe):
 
@@ -454,7 +454,10 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                 self.add_attribute('yields',text)
                 self.add_attribute('yield_unit','servings')
             else:
-                print 'UNKNOWN TAG',tag,text,label
+                try:
+                    print 'UNKNOWN TAG',tag,text,label
+                except UnicodeError:
+                    print 'UNKNOWN TAG (unprintable)'
         if started: self.commit_rec()
         if hasattr(self,'images') and self.images:
             # This is ugly -- we run the dialog once per recipe. This

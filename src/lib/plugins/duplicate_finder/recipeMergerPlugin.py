@@ -20,6 +20,7 @@ class RecipeMergerImportManagerPlugin (ImportManagerPlugin):
             rmd.show_if_there_are_dups(
                 label=_('Some of the imported recipes appear to be duplicates. You can merge them here, or close this dialog to leave them as they are.')
                 )
+        return [threadmanager,importer],{}
 
 class RecipeMergerPlugin (ToolPlugin):
 

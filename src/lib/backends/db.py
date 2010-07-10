@@ -1774,6 +1774,8 @@ class RecipeManager (RecData):
 
     def parse_ingredient (self, s, conv=None, get_key=True):
         """Handed a string, we hand back a dictionary representing a parsed ingredient (sans recipe ID)"""
+        if conv:
+            print 'parse_ingredient: conv argument is now ignored'
         debug('ingredient_parser handed: %s'%s,0)
         # Strip whitespace and bullets...
         d={}
@@ -1799,6 +1801,7 @@ class RecipeManager (RecData):
                 else:
                     d['amount']=convert.frac_to_float(a.strip())
             if u:
+                conv = convert.get_converter()
                 if conv and conv.unit_dict.has_key(u.strip()):
                     # Don't convert units to our units!
                     d['unit']=u.strip()

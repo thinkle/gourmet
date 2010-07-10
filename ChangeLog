@@ -1,5 +1,8 @@
 2010-07-09  Thomas M. Hinkle  <tom@grenville>
 
+	* src/lib/backends/db.py (RecipeManager.parse_ingredient): Fix
+	typo/logic-error that prevented some units from being recognized.
+
 	* src/lib/* Get rid of raise + string calls, as python 2.6
 	prohibits them (patch from #2979619)
 
