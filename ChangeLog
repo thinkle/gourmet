@@ -1,5 +1,8 @@
 2010-07-09  Thomas M. Hinkle  <tom@grenville>
 
+	* src/lib/recindex.py (RecIndex.make_search_dic): Look anywhere in
+	text, not just at beginning. (fixes bug #3021913)
+
 	* src/lib/reccard.py (DescriptionEditorModule.save): Remove old
 	debug statements. Note to self: leaving in print statements is
 	dangerous, as it can raise unicode errors and create bugs where

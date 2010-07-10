@@ -444,7 +444,7 @@ class RecIndex:
                                          '|')
         else:
             srch['operator']='LIKE'
-            srch['search'] = txt.replace('%','%%')+'%'
+            srch['search'] = '%' + txt.replace('%','%%')+'%'
         return srch
 
     def do_search (self, txt, searchBy):
