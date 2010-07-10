@@ -1428,11 +1428,9 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             recdic[c]=unicode(self.rw[c].entry.get_text())
         for e in self.recent:
             if e in INT_REC_ATTRS +  FLOAT_REC_ATTRS:
-                print 'number!'
                 recdic[e]=self.rw[e].get_value()
             else:
                 recdic[e]=unicode(self.rw[e].get_text())
-            print e,recdic[e]
         if self.imageBox.edited:
             recdic['image'],recdic['thumb']=self.imageBox.commit()
             self.imageBox.edited=False

@@ -1,5 +1,10 @@
 2010-07-09  Thomas M. Hinkle  <tom@grenville>
 
+	* src/lib/reccard.py (DescriptionEditorModule.save): Remove old
+	debug statements. Note to self: leaving in print statements is
+	dangerous, as it can raise unicode errors and create bugs where
+	all was well, as in bug #3018283
+
 	* glade/recCardIngredientsEditor.glade: Update ingredient editor tooltip.
 
 2010-06-07  Thomas Mills Hinkle  <tom@pebble>

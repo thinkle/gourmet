@@ -33,7 +33,7 @@
                   <widget class="GtkEntry" id="quickIngredientEntry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="tooltip">Type your ingredient here. Numeric amounts and standard units will automatically be recognized. Anything typed after a semicolon will not be included in the ingredient key (i.e. will not be used for shopping lists and nutritional information). For more detailed entry, expand the "Details" section below.</property>
+                    <property name="tooltip">Type your ingredient here. Numeric amounts and standard units will automatically be recognized. Anything typed after a semicolon will not be included in the ingredient key (i.e. will not be used for shopping lists and nutritional information).</property>
                     <property name="invisible_char">*</property>
                     <signal name="activate" handler="addQuickIngredient"/>
                   </widget>
