@@ -93,6 +93,7 @@ class RecIndex:
             )
         self.search_actions.get_action('toggleRegexp').connect_proxy(self.regexpTog)
         self.rectree = self.glade.get_widget('recTree')
+        self.sw = self.glade.get_widget('scrolledwindow')
         self.rectree.connect('start-interactive-search',lambda *args: self.srchentry.grab_focus())
         self.prev_button = self.glade.get_widget('prevButton')
         self.next_button = self.glade.get_widget('nextButton')
@@ -236,6 +237,7 @@ class RecIndex:
         self.rectree_conf.apply_column_order()
         self.rectree_conf.apply_visibility()
         self.rectree.connect("row-activated",self.rec_tree_select_rec)#self.rec_tree_select_rec)
+        self.rectree.connect('key-press-event',self.tree_keypress_cb)        
         self.rectree.get_selection().connect("changed",self.selection_changedCB)
         self.rectree.set_property('rules-hint',True) # stripes!
         self.rectree.expand_all()
@@ -546,6 +548,34 @@ class RecIndex:
         self.rmodel.update_iter(iter)
         self.rd.save()
 
+    def tree_keypress_cb (self, widget, event):
+        keyname = gtk.gdk.keyval_name(event.keyval)
+        if keyname in ['Page_Up','Page_Down']:
+            sb = self.sw.get_vscrollbar()
+            adj =  self.sw.get_vscrollbar().get_adjustment() 
+            val = adj.get_value(); upper = adj.get_upper()
+            if keyname == 'Page_Up':
+                if val > 0:
+                    return None
+                self.rmodel.prev_page()
+                sb.set_value(upper)
+                return True
+            if keyname == 'Page_Down':
+                if val < (upper - adj.page_size):
+                    return None
+                self.rmodel.next_page()
+                sb.set_value(0)
+                return True
+        if keyname == 'Home':
+            self.rmodel.goto_first_page()
+            self.sw.get_vscrollbar().set_value(0)
+            return True            
+        if keyname == 'End':
+            self.rmodel.goto_last_page()
+            sb = self.sw.get_vscrollbar()
+            sb.set_value(sb.get_adjustment().get_upper())
+            return True            
+        
     def star_change_cb (self, value, model, treeiter, column_number):
         #itr = model.convert_iter_to_child_iter(None,treeiter)
         #self.rmodel.set_value(treeiter,column_number,value)

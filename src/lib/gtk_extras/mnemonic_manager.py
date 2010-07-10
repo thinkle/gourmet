@@ -43,7 +43,7 @@ class MnemonicManager:
     mm.sacred_cows is a list of items that should never be changed.
     """
 
-    sacred_cows = ['okay','cancel','close']
+    sacred_cows = ['okay','cancel','close','file','edit']
 
     def __init__ (self):
         self.mnemonics = {}
