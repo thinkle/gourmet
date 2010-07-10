@@ -1,3 +1,10 @@
+2010-07-10  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/version.py (version): Version-->0.15.5
+
+	* src/lib/recindex.py (RecIndex.tree_keypress_cb): Handle Page-Up,
+	Page-Down, Home and End properly for our multiple page interface.
+
 2010-07-09  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/backends/db.py (RecipeManager.parse_ingredient): Fix
