@@ -220,7 +220,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         else:
             # Otherwise, there's no clear sane default... we'll just
             # select the current whole line
-            cur_pos = self.tb.get_insert()
+            cur_mark = self.tb.get_insert()
+            cur_pos=gtk.TextBuffer.get_iter_at_mark(cur_pos)
             cur_pos.backward_chars(
                 cur_pos.get_line_offset())
             st = cur_pos
@@ -484,8 +485,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
 
     def set_text (self, txt):
         txt = unicode(txt) # convert to unicode for good measure
-        txt = self.parser.parse(txt) # Parse
         txt = re.sub('(\n\s*\n)+','\n\n',txt) # Take out extra newlines
+        txt = self.parser.parse(txt) # Parse
         self.set_parsed(txt)
 
     def set_parsed (self, parsed):

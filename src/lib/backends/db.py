@@ -20,6 +20,10 @@ from gourmet.plugin import DatabasePlugin
 
 import sqlalchemy, sqlalchemy.orm
 from sqlalchemy import Integer, Binary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
+try: 
+    from sqlalchemy import LargeBinary
+except:
+    from sqlalchemy import Binary as LargeBinary
 from sqlalchemy.sql import and_, or_, case 
 from sqlalchemy import func
 
@@ -35,7 +39,7 @@ def map_type_to_sqlalchemy (typ):
     if typ=='text': return Text()
     if typ=='bool': return Boolean()
     if typ=='float': return Float()
-    if typ=='binary': return Binary()
+    if typ=='binary': return LargeBinary()
 
 def fix_colnames (dict, *tables):
     """Map column names to sqlalchemy columns.
@@ -291,8 +295,8 @@ class RecData (Pluggable):
                                   Column('servings',Float(),**{}), 
                                   Column('yields',Float(),**{}),                                  
                                   Column('yield_unit',String(length=32),**{}),
-                                  Column('image',Binary(),**{}),
-                                  Column('thumb',Binary(),**{}),
+                                  Column('image',LargeBinary(),**{}),
+                                  Column('thumb',LargeBinary(),**{}),
                                   Column('deleted',Boolean(),**{}),
                                   # A hash for uniquely identifying a recipe (based on title etc)
                                   Column('recipe_hash',String(length=32),**{}),
@@ -801,7 +805,7 @@ class RecData (Pluggable):
 
     def get_unique_values (self, colname,table=None,**criteria):
         """Get list of unique values for column in table."""
-        if not table: table=self.recipe_table
+        if table is None: table=self.recipe_table
         if criteria: table = table.select(*make_simple_select_arg(criteria,table))
         if colname=='category' and table==self.recipe_table:
             print 'WARNING: you are using a hack to access category values.'

@@ -26,8 +26,14 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
         for p in self.plugins:
             if p.test_url(url, data):
                 return 1
-        if 'html' in content_type:
-            return -1 # We are the fallback option
+        try:
+            iter(content_type)
+        except:
+            # In this case, content_type cannot be html...
+            pass
+        else:
+            if 'html' in content_type:
+                return -1 # We are the fallback option
 
     def get_web_importer (self, url, data, content_type):
         highest = 0

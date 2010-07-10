@@ -2,6 +2,21 @@
 
 	* glade/recCardIngredientsEditor.glade: Update ingredient editor tooltip.
 
+2010-06-07  Thomas Mills Hinkle  <tom@pebble>
+
+	* src/lib/backends/db.py (map_type_to_sqlalchemy): Use LargeBinary type if available (sqlalchemy 0.6+)
+	(RecData.get_unique_values): Fix boolean-related sqlalchemy 0.6+ bug.
+
+	* src/lib/importers/interactive_importer.py (InteractiveImporter.label_selection):
+	Fix error (we needed iter, we got mark) (patch from Jeff Spaleta)
+	(InteractiveImporter.set_text): Fix logic error (remove extra
+	newlines before parsing when it still matters).(patch from Jeff
+	Spaleta)
+
+	* src/lib/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py (GenericWebImporter.test_url):
+	Check that content_type is iterable (modified version of patch
+	from Jeff Spaleta).
+
 2010-05-19  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/db.py: Change name of ingredient_parser to
