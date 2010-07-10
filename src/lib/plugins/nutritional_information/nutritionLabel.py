@@ -475,7 +475,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         if not nd:
             if vapor: nd=vapor[0].__nd__
             else:
-                raise "No nutritional database handed to us!"
+                raise Exception("No nutritional database handed to us!")
         import nutritionDruid
         self.ndruid = nutritionDruid.NutritionInfoDruid(nd,
                                                         prefs=self.prefs,rec=self.rec)

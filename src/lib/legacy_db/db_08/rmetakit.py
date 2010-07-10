@@ -139,7 +139,7 @@ class RecData (rdatabase.RecData):
         if typ == 'int': return "I"
         if typ == 'binary': return 'B'
         else:
-            raise "Can't Understand TYPE %s"%typ
+            raise Exception("Can't Understand TYPE %s" % typ)
     
     def save (self):
         """Commit our metakit database to file."""

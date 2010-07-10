@@ -82,7 +82,8 @@ class RecData (rdatabase.RecData):
                 if colinfo[0]==name: #colinfo is in form (name,type)
                     found,myindex=True,n
                     break
-            if not found: raise "Property %s not in standard description of %s"%(name,table)
+            if not found:
+                raise Exception("Property %s not in standard description of %s" % (name,table))
             del dsc[1][myindex]
             dsc[1].append((DUMMYNAME,old))
             # this will do a "getas" with our new DUMMYNAME attribute and without our old attribute.
@@ -110,9 +111,7 @@ class RecData (rdatabase.RecData):
             self.db.commit() # and drop our dummy column
         # if our property is neither the old nor the new type, raise an error.
         elif prop.type.lower() != self.type_to_metakit_type(new).lower():
-            raise "Property %s is %s, not of old type %s or new type %s!"%(prop.name,
-                                                                          prop.type,
-                                                                          old, new)
+            raise Exception("Property %s is %s, not of old type %s or new type %s!" % (prop.name, prop.type, old, new))
         # note that our DUMMYNAME will be dropped by default once we
         # run the standard setup_tables stuff which will call getas()
         # without the DUMMYNAME
@@ -189,7 +188,7 @@ class RecData (rdatabase.RecData):
         if typ == 'int': return "I"
         if typ == 'binary': return 'B'
         else:
-            raise "Can't Understand TYPE %s"%typ
+            raise Exception("Can't Understand TYPE %s" % typ)
     
     def save (self):
         """Commit our metakit database to file."""

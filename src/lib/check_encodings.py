@@ -78,7 +78,7 @@ class GetFile (CheckEncoding):
             debug('reading file %s as encoding %s'%(file, self.enc))
             self.lines = [l.encode() for l in self.lines]
         else:
-            raise "Cannot decode file %s"%file
+            raise Exception("Cannot decode file %s" % file)
 
 def get_file (file, encodings=None):
     gf = GetFile(file, encodings)

@@ -242,7 +242,8 @@ class PdfWriter:
                         top_margin=inch,
                         bottom_margin=inch,
                         base_font_size=10):
-        if type(mode)!=tuple: raise "What is this mode! %s"%str(mode)
+        if type(mode)!=tuple:
+            raise Exception("What is this mode! %s" % str(mode))
         if type(pagesize) in types.StringTypes:
             self.pagesize = getattr(pagesizes,pagemode)(getattr(pagesizes,pagesize))
         else:
@@ -1041,7 +1042,7 @@ if __name__ == '__main__':
     w.show()
     w.connect('delete_event',gtk.main_quit)
     gtk.main()
-    raise 'Hell'
+    raise Exception("Hell")
     
     from tempfile import tempdir
     import os.path
@@ -1086,7 +1087,7 @@ if __name__ == '__main__':
     #import gnome
     #gnome.program_init('1.0','Gourmet PDF Exporter Test')
     #gglobals.launch_url('file:/os.path.join(tempdir,/star.pdf')
-    #raise "I don')t want to go any further"
+    #raise Exception("I don')t want to go any further")
     
     if os.name == 'nt':
         base = 'C:\\grm\grm'

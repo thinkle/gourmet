@@ -1,5 +1,8 @@
 2010-07-09  Thomas M. Hinkle  <tom@grenville>
 
+	* src/lib/* Get rid of raise + string calls, as python 2.6
+	prohibits them (patch from #2979619)
+
 	* src/lib/recindex.py (RecIndex.make_search_dic): Look anywhere in
 	text, not just at beginning. (fixes bug #3021913)
 

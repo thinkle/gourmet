@@ -111,7 +111,7 @@ class OptionTable (gtk.Table):
                 w.connect('changed',lambda *args: self.emit('changed'))
                 if self.changedcb: w.connect('changed',self.changedcb)
             else:
-                raise "I don't know what to do with a value of type %s (%s)"%(type(v),v)
+                raise Exception("I don't know what to do with a value of type %s (%s)" % (type(v),v))
             # attach out label and our widget
             lab = gtk.Label()
             lab.set_text_with_mnemonic(l)

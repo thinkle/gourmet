@@ -1097,7 +1097,7 @@ def getOptionalIngDic (ivw, mult, prefs, rg=None):
         if retval:
             return retval
         else:
-            raise "Option Dialog cancelled!"
+            raise Exception("Option Dialog cancelled!")
 
 if __name__ == '__main__':
     class TestIngredientAndPantryList (IngredientAndPantryList):

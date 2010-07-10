@@ -93,7 +93,7 @@ class SuspendableDeletions:
             raise Terminated("Deletion Terminated!")
         while self.suspended:
             if self.terminated:
-                raise "Deletion Terminated!"
+                raise Exception("Deletion Terminated!")
             time.sleep(1)
     
     def run (self):

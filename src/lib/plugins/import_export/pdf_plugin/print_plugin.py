@@ -131,7 +131,7 @@ class PDFRecipePrinter (PDFPrinter):
         pe.run()
         if self.printing_error:
             print 'PRINTING ERROR!'
-            raise "There was an error generating PDF"
+            raise Exception("There was an error generating PDF")
         self.set_document(fn, operation,context)
 
     def handle_error (self,obj,errno, summary, traceback):

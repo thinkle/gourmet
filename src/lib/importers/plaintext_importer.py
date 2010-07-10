@@ -26,7 +26,7 @@ class TextImporter (importer.Importer):
         
     def do_run (self):
         if not hasattr(self,'lines'):
-            raise "pre_run has not been run!"
+            raise Exception("pre_run has not been run!")
         for n in range(self.total_lines):
             l=self.lines[n]
             if n % 15 == 0:

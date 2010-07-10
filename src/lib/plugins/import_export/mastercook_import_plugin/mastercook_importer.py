@@ -58,7 +58,7 @@ class Mx2Cleaner:
             except:
                 debug('Could not decode as %s'%e,2)
                 pass
-        raise "Could not encode %s"%l
+        raise Exception("Could not encode %s" % l)
         
 class MastercookXMLHandler (xml_importer.RecHandler):
     """We handle MasterCook XML Files"""

@@ -234,7 +234,7 @@ def import_backup_file (rm, backup_file, prog=None):
                 elif action==None:
                     1
                 else:
-                    raise "BadAdapter - we handed the adapter %(table_name)s,%(row)s and got back %(action)s"%locals()
+                    raise Exception("BadAdapter - we handed the adapter %(table_name)s,%(row)s and got back %(action)s" % locals())
             elif action.find('START_FIELD: ')==0:
                 col = action[len('START_FIELD: '):].strip()
                 buf = ''

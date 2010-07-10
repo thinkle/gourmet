@@ -157,7 +157,7 @@ class RecData (rdatabase.RecData):
         if typ == 'int': return "I"
         if typ == 'binary': return 'B'
         else:
-            raise "Can't Understand TYPE %s"%typ
+            raise Exception("Can't Understand TYPE %s" % typ)
     
     def save (self):
         """Commit our metakit database to file."""
@@ -342,7 +342,7 @@ class RecData (rdatabase.RecData):
         if not row:
             print 'Here are the guts of increment_vw:'
             metakit.dump(self.increment_vw)
-            raise 'Very odd: we find no row for table: %s, field: %s'%(table,field)
+            raise Exception("Very odd: we find no row for table: %s, field: %s" % (table, field))
         row.n += 1
         return row.n
 

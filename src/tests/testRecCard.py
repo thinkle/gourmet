@@ -116,7 +116,7 @@ def test_ing_undo (rc):
         if VERBOSE: print [i[2] for i in ings_groups_and_dcs]
         if VERBOSE: print 'corresponds to'
         if VERBOSE: print [(i.amount,i.unit,i.item) for i in ii]
-        raise "Ings Not Deleted!"
+        raise Exception("Ings Not Deleted!")
     # Undo after save...
     rc.undo.emit('activate') # Undo deletion
     #print 'test_ing_undo - just pressed undo - UNDO HISTORY:',rc.history

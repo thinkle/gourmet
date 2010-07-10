@@ -37,7 +37,7 @@ class SuspendableThread (GourmetThreads.SuspendableThread):
            # cancel=False):
             self.target_func()
         else:
-            raise "Action cancelled by user"
+            raise Exception("Action cancelled by user")
 
     def target_func (self):
         GourmetThreads.SuspendableThread.target_func(self)

@@ -633,11 +633,11 @@ class ExporterMultirec (SuspendableThread, Pluggable):
 
     def check_for_sleep (self):
         if self.terminated:
-            raise "Exporter Terminated!"
+            raise Exception("Exporter Terminated!")
         while self.suspended:
             if self.terminated:
                 debug('Thread Terminated!',0)
-                raise "Exporter Terminated!"
+                raise Exception("Exporter Terminated!")
             if gglobals.use_threads:
                 time.sleep(1)
             else:

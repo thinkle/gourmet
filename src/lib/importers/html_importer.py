@@ -124,7 +124,7 @@ class BeautifulSoupScraper:
         elif len(rule)==4:
             store_as,tagpath,retmethod,post_processing=rule
         else:
-            raise "Rule %s is invalid (it should be 3 or 4 items long)."%rule
+            raise Exception("Rule %s is invalid (it should be 3 or 4 items long)." % rule)
         tag = self.get_tag_according_to_path(tagpath)
         self.store_tag(store_as,tag,retmethod,post_processing)
 
@@ -481,13 +481,14 @@ class WebPageImporter (importer.Importer):
                 the new generic web importer!
                 """
         if do_generic:
-            if not self.interactive: raise "Unable to find importer for %s"%self.url
+            if not self.interactive:
+                raise Exception("Unable to find importer for %s" % self.url)
             # Interactive we go...
             self.prog(-1,_("Don't recognize this webpage. Using generic importer..."))
             gs = GenericScraper()
             text,images = gs.scrape_url(self.url, progress=self.prog)
             if not text and not images:
-                raise "Unable to obtain text or images from url %s"%self.url
+                raise Exception("Unable to obtain text or images from url %s" % self.url)
             import interactive_importer
             ii = interactive_importer.InteractiveImporter(self.rd)
             ii.set_text(text)

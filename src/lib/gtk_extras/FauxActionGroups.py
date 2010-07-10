@@ -156,12 +156,14 @@ class ActionManager:
                 widg=None
                 if not params.has_key('label'):
                     if not widg: widg = self.gladeobj.get_widget(widgets[0])
-                    if not widg: raise "Can't find widget %s"%widgets[0]
+                    if not widg:
+                        raise Exception("Can't find widget %s" % widgets[0])
                     label = widg.get_label()
                     params['label']=label
                 if not params.has_key('stock-id'):
                     if not widg: widg = self.gladeobj.get_widget(widgets[0])
-                    if not widg: raise "Can't find widget %s"%widgets[0]
+                    if not widg:
+                        raise Exception("Can't find widget %s" % widgets[0])
                     stockid = widg.get_stock_id()
                     params['stock-id']=stockid
                 if not params.has_key('tooltip'):

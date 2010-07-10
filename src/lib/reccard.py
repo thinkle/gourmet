@@ -412,10 +412,13 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def shop_for_recipe_cb (self, *args):
         import shopgui
-        d = shopgui.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
-                                      self.mult,
-                                      self.prefs,
-                                      self.rg)
+        try:
+            d = shopgui.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
+                                          self.mult,
+                                          self.prefs,
+                                          self.rg)
+        except Exception:
+            return
         self.rg.sl.addRec(self.current_rec,self.mult,d)
         self.rg.sl.show()
 
@@ -489,9 +492,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
                 widg=getattr(self,'%sDisplay'%attr)
                 widgLab=getattr(self,'%sDisplayLabel'%attr)
                 if not widg or not widgLab:
-                    raise 'There is no widget or label for  %s=%s, %s=%s'%(
-                        attr,widg,'label',widgLab
-                        )
+                    raise Exception("There is no widget or label for  %s=%s, %s=%s" % (attr, widg, "label", widgLab))
                 if attr=='category':
                     attval = ', '.join(self.rg.rd.get_cats(self.current_rec))
                 else:
@@ -1353,7 +1354,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
         for a,l,w in REC_ATTRS:
             if w=='Entry': self.recent.append(a)
             elif w=='Combo': self.reccom.append(a)
-            else: raise "REC_ATTRS widget type %s not recognized"%w
+            else: raise Exception("REC_ATTRS widget type %s not recognized" % w)
         for a in self.reccom:
             self.rw[a]=self.glade.get_widget("%sBox"%a)
             try:
@@ -2632,7 +2633,7 @@ class IngredientTreeUI:
                                           (opt2,DONT_CONVERT),]
                                  )
             if not choice:
-                raise "User cancelled"
+                raise Exception("User cancelled")
             if choice==CONVERT:
                 return (new_amt,
                         _("Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"%{
@@ -3712,7 +3713,7 @@ if __name__ == '__main__' and False:
 #         for a,l,w in REC_ATTRS:
 #             if w=='Entry': self.recent.append(a)
 #             elif w=='Combo': self.reccom.append(a)
-#             else: raise "REC_ATTRS widget type %s not recognized"%w
+#             else: raise Exception("REC_ATTRS widget type %s not recognized" % w)
 #         self.rectexts = ['instructions', 'modifications']
 #         for a in self.reccom:
 #             self.rw[a]=self.glade.get_widget("%sBox"%a)
@@ -3833,7 +3834,7 @@ if __name__ == '__main__' and False:
 #                 widg=getattr(self,'%sDisplay'%attr)
 #                 widgLab=getattr(self,'%sDisplayLabel'%attr)
 #                 if not widg or not widgLab:
-#                     raise 'There is no widget or label for  %s=%s, %s=%s'%(attr,widg,'label',widgLab)
+#                     raise Exception("There is no widget or label for  %s=%s, %s=%s" % (attr, widg, "label", widgLab))
 #                 if attr=='category':
 #                     attval = ', '.join(self.rg.rd.get_cats(self.current_rec))
 #                 else:
@@ -3868,7 +3869,7 @@ if __name__ == '__main__' and False:
 #             if hasattr(i,'refid') and i.refid:
 #                 subrec = self.rd.get_referenced_rec(i)
 #                 if not subrec:
-#                     raise "WTF! Can't find ",i.refid
+#                     raise Exception("WTF! Can't find %s", str(i.refid))
 #                 ret.extend(self.list_all_ings(subrec))
 #                 continue
 #             else:

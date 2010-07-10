@@ -124,7 +124,7 @@ class PluginChooser:
                             if row[1] in dependers:
                                 row[0] = False
                     else:
-                        raise "Cancelled"
+                        raise Exception("Cancelled")
                 else:
                     self.loader.deactivate_plugin_set(plugin_set)
         except:

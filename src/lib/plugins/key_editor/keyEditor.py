@@ -332,7 +332,7 @@ class KeyEditor:
             return {'ingkey':key,'item':item,'unit':unit,'amount':amount},'amount'
         else:
             print 'WTF! WE SHOULD NEVER LAND HERE!',field,value
-            raise 'WTF ERROR'
+            raise Exception("WTF ERROR")
             
     def applyEntriesCB (self, *args):
         newdic = {}

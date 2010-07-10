@@ -228,7 +228,7 @@ class RecData (Pluggable):
             sqlalchemy.orm.mapper(klass,table)
         else:
             # if there's no primary key...
-            raise "All tables need a primary key -- specify 'rowid'/Integer/Primary Key in table spec for %s"%table
+            raise Exception("All tables need a primary key -- specify 'rowid'/Integer/Primary Key in table spec for %s" % table)
 
     @pluggable_method
     def setup_tables (self):
@@ -689,7 +689,7 @@ class RecData (Pluggable):
     def fetch_join (self, table1, table2, col1, col2,
                     column_names=None, sort_by=[], **criteria):
         if column_names:
-            raise 'column_names KWARG NO LONGER SUPPORTED BY fetch_join!'
+            raise Exception("column_names KWARG NO LONGER SUPPORTED BY fetch_join!")
         return  table1.join(table2,getattr(table1.c,col1)==getattr(table2.c,col2)).select(
             *make_simple_select_arg(criteria,table1,table2)
             ).execute().fetchall()
