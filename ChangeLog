@@ -1,3 +1,9 @@
+2010-07-13  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/backends/db.py (RecData.save): Try to work around
+	sqlalchemy bug that seems to through error on some (extra?)
+	commits.
+
 2010-07-10  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/version.py (version): Version-->0.15.5

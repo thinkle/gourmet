@@ -219,7 +219,11 @@ class RecData (Pluggable):
                 self.info_table,
                 {'last_access':time.time()}
                 )
-        self.db.commit()
+        try:
+            self.db.commit()
+        except IndexError:
+            print 'Ignoring sqlalchemy problem'
+            import traceback; traceback.print_exc()
 
     def _setup_object_for_table (self, table, klass):
         self.__table_to_object__[table] = klass
