@@ -5,6 +5,7 @@
 import shutil
 import types
 import os.path
+from gettext import gettext as _
 from gourmet.gdebug import debug, TimeAction, debug_decorator
 import re, pickle, string, os.path, string, time
 from gettext import gettext as _
@@ -775,7 +776,7 @@ class RecData (Pluggable):
                 retval = (col.op('REGEXP')(crit['search']))
             else:
                 retval = (col==crit['search'])
-            if subtable:
+            if subtable is not None:
                 retval = self.recipe_table.c.id.in_(
                     sqlalchemy.select([subtable.c.recipe_id],retval)
                     )
