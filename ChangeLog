@@ -1,5 +1,9 @@
 2010-07-20  Thomas M. Hinkle  <tom@grenville>
 
+	* src/lib/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py (GenericWebImporter.mimetypes):
+	Fixed bug in mimetypes, by adding expected application/xhtml+xml
+	type.
+
 	* src/lib/backends/db.py (RecData.get_criteria): Fix another
 	sqlalchemy-API-change-caused bug.
 
