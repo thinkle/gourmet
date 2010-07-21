@@ -23,7 +23,6 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
         return -1 # We are a fallback option
 
     def test_url (self, url, data, content_type):
-        print 'Generic Web testing ',url
         for p in self.plugins:
             if p.test_url(url, data):
                 return 1
@@ -31,11 +30,9 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
             iter(content_type)
         except:
             # In this case, content_type cannot be html...
-            print 'No content type'
             return None
         else:
             if 'html' in content_type:
-                print 'Generic Web Importer as fallback!'
                 return -1 # We are the fallback option
 
     def get_web_importer (self, url, data, content_type):
