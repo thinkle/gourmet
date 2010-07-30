@@ -1,3 +1,16 @@
+2010-07-30  Thomas Mills Hinkle  <tom@pebble>
+
+	* src/lib/shopping.py: Refactor code -- move some code from
+	shopgui classes to front-end neutral ShoppingList class that can
+	be base class for HTML front-end.
+
+	* src/lib/shopgui.py: Refactor code to allow web-front-end
+
+
+	* src/lib/plugins/web_plugin/: Start a django-based web-front-end
+	to Gourmet
+	
+
 2010-07-20  Thomas M. Hinkle  <tom@grenville>
 
 	* src/lib/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py (GenericWebImporter.mimetypes):

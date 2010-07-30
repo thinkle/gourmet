@@ -14,7 +14,7 @@ class Shopper:
         ## First, we create a dictionary from our list (keyed by ingredient)
         ## each value in the dict. is a list of values. We'll try to add these
         ## as best as we can.
-        self.dic = {}
+        self.dic = {}        
         self.default_pantry=[_('flour, all purpose'),_('sugar'),_('salt'),
                              _('black pepper, ground'),
                              _('ice'), _('water'),
@@ -48,7 +48,7 @@ class Shopper:
         self.init_catorder_dic()
 
     def init_converter (self):
-        self.cnv = convert.converter()
+        self.cnv = convert.get_converter()
 
     def combine_ingredient (self, ing, amts):
         """We take an ingredient and a list of amounts. We return a
@@ -258,6 +258,159 @@ def setup_default_orgdic ():
     from defaults.defaults import lang as defaults
     return defaults.shopdic
 
+class ShoppingList:
+
+    def __init__ (self):
+        self.recs = {}; self.extras = []
+	self.includes = {}
+        self.data,self.pantry=self.grabIngsFromRecs([])
+        import backends.db
+        self.rd = backends.db.get_database()
+        import prefs
+        self.prefs = prefs.get_prefs()
+
+    def get_shopper (self, lst):
+        return Shopper(lst) 
+
+    def grabIngsFromRecs (self, recs, start=[]):
+        debug("grabIngsFromRecs (self, recs):",5)
+        """Handed an array of (rec . mult)s, we combine their ingredients.
+        recs may be IDs or objects."""
+        self.lst = start[0:]
+        for rec,mult in recs:
+            self.lst.extend(self.grabIngFromRec(rec,mult=mult))
+	return self.organize_list(self.lst)
+
+    def organize_list (self, lst):
+        self.sh = self.get_shopper(lst)
+        data = self.sh.organize(self.sh.dic)
+        pantry = self.sh.organize(self.sh.mypantry)
+        debug("returning: data=%s pantry=%s"%(data,pantry),5)
+        return data,pantry
+
+    def grabIngFromRec (self, rec, mult=1):
+        """Get an ingredient from a recipe and return a list with our amt,unit,key"""
+        """We will need [[amt,un,key],[amt,un,key]]"""
+        debug("grabIngFromRec (self, rec=%s, mult=%s):"%(rec,mult),5)
+        # Grab all of our ingredients
+	ings = self.rd.get_ings(rec)
+        lst = []
+        include_dic = self.includes.get(rec.id) or {}
+        for i in ings:
+            if hasattr(i,'refid'): refid=i.refid
+            else: refid=None
+            debug("adding ing %s, %s"%(i.item,refid),4)
+            if i.optional:
+                # handle boolean includes value which applies to ALL ingredients
+                if not include_dic:
+                    continue
+                if type(include_dic) == dict :
+                    # Then we have to look at the dictionary itself...
+                    if ((not include_dic.has_key(i.ingkey))
+                        or
+                        not include_dic[i.ingkey]):
+                        # we ignore our ingredient (don't add it)
+                        continue
+            if self.rd.get_amount(i):
+                amount=self.rd.get_amount(i,mult=mult)                
+            else: amount=None            
+            if refid:
+                ## a reference tells us to get another recipe
+                ## entirely.  it has two parts: i.item (regular name),
+                ## i.refid, i.refmult (amount we multiply recipe by)
+                ## if we don't have the reference (i.refid), we just
+                ## output the recipe name
+                debug("Grabbing recipe as ingredient!",2)
+                # disallow recursion
+                subrec = self.rd.get_referenced_rec(i)
+                if subrec.id == rec.id:
+                    de.show_message(
+                        label=_('Recipe calls for itself as an ingredient.'),
+                        sublabel=_('Ingredient %s will be ignored.')%rec.title + _('Infinite recursion is not allowed in recipes!'))
+                    continue
+                if subrec:
+                    # recipe refs need an amount. We'll
+                    # assume if need be.
+                    amt = self.rd.get_amount_as_float(i)
+                    if not amt: amount=amt
+                    refmult=mult*amt
+                    if not include_dic.has_key(subrec.id):
+                        d = self.getOptionalDic(self.rd.get_ings(subrec),
+                                                refmult,
+                                                self.prefs,
+                                                )
+                        include_dic[subrec.id]=d
+                    nested_list=self.grabIngFromRec(subrec,
+                                                    refmult)
+                    lst.extend(nested_list)
+                    continue
+                else:
+                    # it appears we don't have this recipe
+                    debug("We don't have recipe %s"%i.item,0)
+                    if not i.unit:
+                        i.unit='recipe'
+                    if not i.ingkey:
+                        i.ingkey=i.item
+            lst.append([amount,i.unit,i.ingkey])
+        debug("grabIngFromRec returning %s"%lst,5)
+        return lst
+
+    def getOptionalDic (self, ivw, mult, prefs):
+        """Return a dictionary of optional ingredients with a TRUE|FALSE value
+
+        Alternatively, we return a boolean value, in which case that is
+        the value for all ingredients.
+        
+        The dictionary will tell us which ingredients to add to our shopping list.
+        We look at prefs to see if 'shop_always_add_optional' is set, in which case
+        we don't ask our user."""    
+        return True
+
+    # Saving and printing
+    def doSave (self, filename):
+        debug("doSave (self, filename):",5)
+        #import exporters.lprprinter
+        #self._printList(exporters.lprprinter.SimpleWriter,file=filename,show_dialog=False)
+        ofi = file(filename,'w')
+        ofi.write(_("Shopping list for %s")%time.strftime("%x") + '\n\n')
+        ofi.write(_("For the following recipes:"+'\n'))
+        ofi.write('--------------------------------\n')
+        for r,mult in self.recs.values():
+            itm = "%s"%r.title
+            if mult != 1:
+                itm += _(" x%s")%mult
+            ofi.write(itm+'\n')
+        write_itm = lambda a,i: ofi.write("%s %s"%(a,i) + '\n')
+        write_subh = lambda h: ofi.write('\n_%s_\n'%h)
+        self.sh.list_writer(write_subh,write_itm)
+        ofi.close()
+
+    def _printList (self, printer, *args, **kwargs):
+        w = printer(*args,**kwargs)
+        w.write_header(_("Shopping list for %s")%time.strftime("%x"))
+        w.write_subheader(_("For the following recipes:"))
+        for r,mult in self.recs.values():
+            itm = "%s"%r.title
+            if mult != 1:
+                itm += _(" x%s")%mult
+            w.write_paragraph(itm)
+        write_itm = lambda a,i: w.write_paragraph("%s %s"%(a,i))
+        self.sh.list_writer(w.write_subheader,write_itm)
+        w.close()
+
+    # Setting up recipe...
+    def addRec (self, rec, mult, includes={}):
+        debug("addRec (self, rec, mult, includes={}):",5)
+        """Add recipe to our list, assuming it's not already there.
+        includes is a dictionary of optional items we want to include/exclude."""
+        self.recs[rec.id]=(rec,mult)
+        self.includes[rec.id]=includes
+	self.reset()
+
+    def reset (self):
+        self.grabIngsFromRecs(self.recs.values(),self.extras)
+        
+
 class ShopperTestCase (unittest.TestCase):
     def testAddition (self):
         sh = Shopper([('1','tsp.','pepper'),
@@ -283,6 +436,6 @@ class ShopperTestCase (unittest.TestCase):
             (1,'c.','milk')]
                      )
         assert(sh.dic['milk'][0][0]==(2,3))
-        
+
 if __name__ == '__main__':
     unittest.main()

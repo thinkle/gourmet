@@ -13,6 +13,7 @@ from gettext import gettext as _
 #from nutrition.nutrition import NutritionInfoList
 from gtk_extras.FauxActionGroups import ActionManager
 import plugin_loader, plugin
+from shopping import ShoppingList
 
 ui = '''
 <ui>
@@ -106,7 +107,6 @@ class IngredientAndPantryList:
         # up ingredients by recipe by key
         # {'recipe_id' : {'key1' : False
         #                 'key2  : True}} ... where true and false mean include/exclude
-	self.includes = {}
         self.setup_ui_manager()
 	self.setup_actions()
 	self.create_popups()
@@ -410,6 +410,8 @@ class IngredientAndPantryList:
     # Callbacks for moving data back and forth
     def resetSL (self):
         debug("resetSL (self):",5)
+	if not hasattr(self,'cats_setup') or not self.cats_setup:
+	    self.setup_category_ui()
         self.data,self.pantry = self.organize_list(self.lst)
         self.slMod = self.createIngModel(self.data)
         self.pMod = self.createIngModel(self.pantry)
@@ -532,96 +534,11 @@ class IngredientAndPantryList:
         debug("get_selected_ingredients returns: %s"%selected_keys,3)
         return selected_keys
 
-    def grabIngsFromRecs (self, recs, start=[]):
-        debug("grabIngsFromRecs (self, recs):",5)
-        """Handed an array of (rec . mult)s, we combine their ingredients.
-        recs may be IDs or objects."""
-        self.lst = start[0:]
-        for rec,mult in recs:
-            self.lst.extend(self.grabIngFromRec(rec,mult=mult))
-	return self.organize_list(self.lst)
-    
-    def organize_list (self, lst):
-        self.sh = recipeManager.DatabaseShopper(lst, self.rd)
-	if not hasattr(self,'cats_setup') or not self.cats_setup:
-	    self.setup_category_ui()
-        data = self.sh.organize(self.sh.dic)
-        pantry = self.sh.organize(self.sh.mypantry)
-        debug("returning: data=%s pantry=%s"%(data,pantry),5)
-        return data,pantry
-
-    def grabIngFromRec (self, rec, mult=1):
-        """Get an ingredient from a recipe and return a list with our amt,unit,key"""
-        """We will need [[amt,un,key],[amt,un,key]]"""
-        debug("grabIngFromRec (self, rec=%s, mult=%s):"%(rec,mult),5)
-        # Grab all of our ingredients
-	rd = self.rd
-	ings = rd.get_ings(rec)
-        lst = []
-        include_dic = self.includes.get(rec.id) or {}
-        for i in ings:
-            if hasattr(i,'refid'): refid=i.refid
-            else: refid=None
-            debug("adding ing %s, %s"%(i.item,refid),4)
-            if i.optional:
-                # handle boolean includes value which applies to ALL ingredients
-                if not include_dic:
-                    continue
-                if type(include_dic) == dict :
-                    # Then we have to look at the dictionary itself...
-                    if ((not include_dic.has_key(i.ingkey))
-                        or
-                        not include_dic[i.ingkey]):
-                        # we ignore our ingredient (don't add it)
-                        continue
-            if rd.get_amount(i):
-                amount=rd.get_amount(i,mult=mult)                
-            else: amount=None            
-            if refid:
-                ## a reference tells us to get another recipe
-                ## entirely.  it has two parts: i.item (regular name),
-                ## i.refid, i.refmult (amount we multiply recipe by)
-                ## if we don't have the reference (i.refid), we just
-                ## output the recipe name
-                debug("Grabbing recipe as ingredient!",2)
-                # disallow recursion
-                subrec = rd.get_referenced_rec(i)
-                if subrec.id == rec.id:
-                    de.show_message(
-                        label=_('Recipe calls for itself as an ingredient.'),
-                        sublabel=_('Ingredient %s will be ignored.')%rec.title + _('Infinite recursion is not allowed in recipes!'))
-                    continue
-                if subrec:
-                    # recipe refs need an amount. We'll
-                    # assume if need be.
-                    amt = rd.get_amount_as_float(i)
-                    if not amt: amount=amt
-                    refmult=mult*amt
-                    if not include_dic.has_key(subrec.id):
-                        d = getOptionalIngDic(rd.get_ings(subrec),
-                                              refmult,
-                                              self.prefs,
-					      )
-                        include_dic[subrec.id]=d
-                    nested_list=self.grabIngFromRec(subrec,
-                                                    refmult)
-                    lst.extend(nested_list)
-                    continue
-                else:
-                    # it appears we don't have this recipe
-                    debug("We don't have recipe %s"%i.item,0)
-                    if not i.unit:
-                        i.unit='recipe'
-                    if not i.ingkey:
-                        i.ingkey=i.item
-            lst.append([amount,i.unit,i.ingkey])
-        debug("grabIngFromRec returning %s"%lst,5)
-        return lst
-
-class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
+class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 
     def __init__ (self):
 	IngredientAndPantryList.__init__(self)
+        ShoppingList.__init__(self)
 	self.prefs = prefs.get_prefs()
 	self.conf = []	
         self.w = gtk.Window(); self.main = gtk.VBox()
@@ -629,8 +546,6 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
 	self.w.set_default_size(800,600)
         self.w.connect('delete-event',self.hide)
 	from GourmetRecipeManager import get_application
-        self.recs = {}; self.extras = []
-	self.data,self.pantry=self.grabIngsFromRecs([])
         self.setup_ui_manager()
         self.setup_actions()
         self.setup_main()
@@ -651,6 +566,10 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
 	    
 	plugin_loader.Pluggable.__init__(self,
 					 [plugin.ShoppingListPlugin])
+
+    def get_shopper (self, lst):
+        return recipeManager.DatabaseShopper(lst, self.rd)
+
     # Create interface...
     
     def setup_ui_manager (self):
@@ -780,6 +699,42 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
 	self.ui_manager.insert_action_group(self.recipeListActions,0)
 	IngredientAndPantryList.setup_actions(self)
 
+    def getOptionalIngDic (ivw, mult, prefs):
+        """Return a dictionary of optional ingredients with a TRUE|FALSE value
+
+        Alternatively, we return a boolean value, in which case that is
+        the value for all ingredients.
+        
+        The dictionary will tell us which ingredients to add to our shopping list.
+        We look at prefs to see if 'shop_always_add_optional' is set, in which case
+        we don't ask our user."""    
+        debug("getOptionalIngDic (ivw):",5)
+        #vw = ivw.select(optional=True)
+        vw = filter(lambda r: r.optional==True, ivw)
+        # optional_mode: 0==ask, 1==add, -1==dont add
+        optional_mode=prefs.get('shop_handle_optional',0)
+        if optional_mode:
+            if optional_mode==1:
+                return True
+            elif optional_mode==-1:
+                return False
+        elif len(vw) > 0:
+            if not None in [i.shopoptional for i in vw]:
+                # in this case, we have a simple job -- load our saved
+                # defaults
+                dic = {}
+                for i in vw:
+                    if i.shopoptional==2: dic[i.ingkey]=True
+                    else: dic[i.ingkey]=False
+                return dic
+            # otherwise, we ask our user
+            oid=OptionalIngDialog(vw, prefs, mult)
+            retval = oid.run()
+            if retval:
+                return retval
+            else:
+                raise Exception("Option Dialog cancelled!")
+
     # -- TreeView and TreeModel setup
     def create_rtree (self):
         debug("create_rtree (self):",5)
@@ -856,47 +811,6 @@ class ShopGui (plugin_loader.Pluggable, IngredientAndPantryList):
 	    last_val = val
 	    iter = mod.iter_next(iter)
 
-    # Saving and printing
-    def doSave (self, filename):
-        debug("doSave (self, filename):",5)
-        #import exporters.lprprinter
-        #self._printList(exporters.lprprinter.SimpleWriter,file=filename,show_dialog=False)
-        ofi = file(filename,'w')
-        ofi.write(_("Shopping list for %s")%time.strftime("%x") + '\n\n')
-        ofi.write(_("For the following recipes:"+'\n'))
-        ofi.write('--------------------------------\n')
-        for r,mult in self.recs.values():
-            itm = "%s"%r.title
-            if mult != 1:
-                itm += _(" x%s")%mult
-            ofi.write(itm+'\n')
-        write_itm = lambda a,i: ofi.write("%s %s"%(a,i) + '\n')
-        write_subh = lambda h: ofi.write('\n_%s_\n'%h)
-        self.sh.list_writer(write_subh,write_itm)
-        ofi.close()
-
-    def _printList (self, printer, *args, **kwargs):
-        w = printer(*args,**kwargs)
-        w.write_header(_("Shopping list for %s")%time.strftime("%x"))
-        w.write_subheader(_("For the following recipes:"))
-        for r,mult in self.recs.values():
-            itm = "%s"%r.title
-            if mult != 1:
-                itm += _(" x%s")%mult
-            w.write_paragraph(itm)
-        write_itm = lambda a,i: w.write_paragraph("%s %s"%(a,i))
-        self.sh.list_writer(w.write_subheader,write_itm)
-        w.close()
-
-    # Setting up recipe...
-    def addRec (self, rec, mult, includes={}):
-        debug("addRec (self, rec, mult, includes={}):",5)
-        """Add recipe to our list, assuming it's not already there.
-        includes is a dictionary of optional items we want to include/exclude."""
-        self.recs[rec.id]=(rec,mult)
-        self.includes[rec.id]=includes
-	self.reset()
-	
     def reset (self):
 	self.grabIngsFromRecs(self.recs.values(),self.extras)
         self.resetSL()
@@ -1063,41 +977,6 @@ class OptionalIngDialog (de.ModalDialog):
                 else: self.rd.modify_ing(ing,{'shopoptional':1})
         return self.ret
 
-def getOptionalIngDic (ivw, mult, prefs, rg=None):
-    """Return a dictionary of optional ingredients with a TRUE|FALSE value
-
-    Alternatively, we return a boolean value, in which case that is
-    the value for all ingredients.
-
-    The dictionary will tell us which ingredients to add to our shopping list.
-    We look at prefs to see if 'shop_always_add_optional' is set, in which case
-    we don't ask our user."""    
-    debug("getOptionalIngDic (ivw):",5)
-    #vw = ivw.select(optional=True)
-    vw = filter(lambda r: r.optional==True, ivw)
-    # optional_mode: 0==ask, 1==add, -1==dont add
-    optional_mode=prefs.get('shop_handle_optional',0)
-    if optional_mode:
-        if optional_mode==1:
-            return True
-        elif optional_mode==-1:
-            return False
-    elif len(vw) > 0:
-        if not None in [i.shopoptional for i in vw]:
-            # in this case, we have a simple job -- load our saved
-            # defaults
-            dic = {}
-            for i in vw:
-                if i.shopoptional==2: dic[i.ingkey]=True
-                else: dic[i.ingkey]=False
-            return dic
-        # otherwise, we ask our user
-        oid=OptionalIngDialog(vw, prefs, mult)
-        retval = oid.run()
-        if retval:
-            return retval
-        else:
-            raise Exception("Option Dialog cancelled!")
 
 if __name__ == '__main__':
     class TestIngredientAndPantryList (IngredientAndPantryList):
