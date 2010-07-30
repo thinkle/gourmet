@@ -1,0 +1,30 @@
+<html>
+<body>
+  <div>
+    <h2>Shopping list for...</h2>
+    {% for rec, mult in recs %}
+    <br>{{rec.title}} x{{mult}}
+    {% endfor %}
+  </div>
+  <table>
+    <tr>
+      <td valign="top">
+	<h2>Shopping List</h2>
+    {% for group, lst in data %}
+    <h3>{{group}}</h3>
+    {% for item, amt in lst %}
+    <br>{{item}} {{amount}}
+    {% endfor %}
+    {% endfor %}    
+      </td>
+      <td valign="top">
+	<h1>Pantry List</h1>
+	{% for group, lst in pantry %}
+    <h3>{{group}}</h3>
+    {% for item, amt in lst %}
+    <br>{{item}} {{amount}}
+    {% endfor %}
+    {% endfor %}    
+      </td>
+</body>
+</html>

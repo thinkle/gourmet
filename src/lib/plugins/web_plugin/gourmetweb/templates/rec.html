@@ -1,0 +1,50 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <h1>{{ r.title }}</h1> <a href="/shop/{{r.id}}/{{mult}}">Add to Shopping List</a>
+    <p><i>
+    {% if r.cuisine %} <br>Cuisine: {{ r.cuisine }} {% endif %}
+    {% if r.link %} <br>Original Link: <a href="{{ r.link }}">{{ r.link }}</a> {% endif %}
+    {% if r.rating %} <br>Rating: {{ r.rating }} {% endif %}
+    {% if cats %}<br>Categories: {{ cats }}{% endif %}
+    <br>Yields: {{yields}} {{r.yield_unit}}
+    {% if is_adjusted %}
+    (x{{mult}})
+    {% endif %}
+    <form id="multiply_form" action="/rec/multiply/" method="post">
+      {{ multiplier_form.as_p }}<input type="hidden" name="rid" value="{{ r.id }}"><input type="submit" value="Multiply">
+    </form>
+    {% if r.instructions %}
+    <h2>Instructions</h2>
+    <p>{{ instructions|safe }}</p>
+    {% endif %}
+    {% if r.modifications %}
+    <h2>Notes</h2>
+    <p>{{ notes|safe }}</p>
+    {% endif %}
+
+    
+    <div id="ingredients">
+    <ul>
+      {% for group, items in ings %}
+      
+	{% if group %}
+      <li>
+
+	<b>{{ group }}</b>
+	<ul>
+	{% endif %}
+	{% for item in items %}
+	<li>{{ item }}</li>
+	{% endfor %}
+	{% if group %}
+	</ul>
+	</li>
+	{% endif %}
+
+      {% endfor %}
+    </ul>
+    </div>      
+  </body>
+</html>

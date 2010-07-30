@@ -1,0 +1,24 @@
+<html>
+  <body>
+    <form  id="search_form" action="/rec/do_search/" method="post">{{form.as_p}}
+<input type="submit" value="search">
+    </form>
+    <table>
+      <tr><th>Title</th><th>Cuisine</th><th>Category</th>
+	{% for r, cats in recs %}
+      <tr>
+	<td><a href="/rec/{{ r.id }}/">{{ r.title }}</a></td>
+	<td>{{ r.cuisine }}</td>
+	<td>
+	  -
+	  {% for c in cats %}
+	  {{c}}
+	  -
+	  {% endfor %}
+	  </td>		
+	<td><a href="/shop/{{r.id}}/">(add to shopping list)</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
