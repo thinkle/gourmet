@@ -1,5 +1,39 @@
 <html>
   <head>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(event){
+        $("a").click(function(event){
+         alert("HA!");
+         event.preventDefault();
+        }
+        );
+        $("#my_multiply_form").submit(function(event){
+          alert("Hello!");
+          event.preventDefault();
+           $.ajax({
+            type: "POST",
+	    url: "/rec/multiply_xhr/",
+            dataType:"json",
+	    data: $("#my_multiply_form").serialize(),
+            success: function (data){
+             $("#ingredients").html("");
+             /* var new_ingredients = "<ul>"; */
+	     for (row in data.ingredients) {
+	          if (data.ingredients[row][0] ) {
+	          $("#ingredients").append("<h3>"+data.ingredients[row][0]+"</h2>");}
+	          for (i in data.ingredients[row][1]) {
+	             $("#ingredients").append("<br>"+data.ingredients[row][1][i]);
+	          }
+              }
+              $("#yields").html(data.yields);
+              $("#mult").html("(x"+data.multiplier+")");
+              }
+             });
+         }); 
+         })
+      
+    </script>
   </head>
   <body>
     <h1>{{ r.title }}</h1> <a href="/shop/{{r.id}}/{{mult}}">Add to Shopping List</a>
@@ -8,12 +42,14 @@
     {% if r.link %} <br>Original Link: <a href="{{ r.link }}">{{ r.link }}</a> {% endif %}
     {% if r.rating %} <br>Rating: {{ r.rating }} {% endif %}
     {% if cats %}<br>Categories: {{ cats }}{% endif %}
-    <br>Yields: {{yields}} {{r.yield_unit}}
-    {% if is_adjusted %}
+    <br>Yields: <span id="yields">{{yields}}</span> {{r.yield_unit}}
+    <span id="mult">{% if is_adjusted %}
     (x{{mult}})
-    {% endif %}
-    <form id="multiply_form" action="/rec/multiply/" method="post">
-      {{ multiplier_form.as_p }}<input type="hidden" name="rid" value="{{ r.id }}"><input type="submit" value="Multiply">
+      {% endif %}
+    </span>
+    <form id="my_multiply_form" action="/rec/multiply/" method="post">
+      {{ multiplier_form.as_p }}
+      <input type="hidden" name="rid" value="{{ r.id }}"><input type="submit" value="Multiply">
     </form>
     {% if r.instructions %}
     <h2>Instructions</h2>

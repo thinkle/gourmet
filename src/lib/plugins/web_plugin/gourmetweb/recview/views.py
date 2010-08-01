@@ -116,15 +116,14 @@ def rec (request, rec_id, mult=1):
         )
 
 def multiply_rec_xhr (request):
-    return multiply_rec(request,True)
+    return multiply_rec(request,xhr=True)
 
 def multiply_rec (request, xhr=None):
     if request.method == 'POST':
-        #print dir(request.POST)
         form = MultiplierForm(request.POST)
         if form.is_valid():
             multiplier = form.cleaned_data['multiplier']
-            recid = request.POST['rid']
+            recid = request.POST.get('rid',None)
             if not multiplier:
                 yields = form.cleaned_data['yields']
                 if yields:
