@@ -17,7 +17,7 @@
     Var ISSILENT
     ;Var ISSILENT_STATE
     ;Var STARTUP_RUN_KEY
-    ;Var GOURMET_UNINST_ROOT_KEY
+    ;Var UNINST_ROOT_KEY
     Var GTK_VERSION_INSTALLED
     Var GTK_UPGRADE_MESSAGE_CONTENT
     Var GTK_INSTALL_ERROR_HELPFUL
@@ -25,20 +25,21 @@
 ;--------------------------------
 ;Defines
 
+    !define UNINST_ROOT_KEY "HKLM"
+    !define UNINSTALL_REGKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall"
+
     !define GOURMET_NAME "Gourmet Recipe Manager"
-    !define GOURMET_VERSION "0.15.3-2alpha2"
+    !define GOURMET_VERSION "0.15.6-alpha"
     !define GOURMET_PUBLISHER "Thomas M. Hinkle"
     !define GOURMET_WEB_SITE "http://grecipe-manager.sourceforge.net"
     !define GOURMET_DOWNLOAD_SITE "http://sourceforge.net/project/showfiles.php?group_id=108118"
     !define GOURMET_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Gourmet.exe"
-    !define GOURMET_UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${GOURMET_NAME}"
-    !define GOURMET_UNINST_ROOT_KEY "HKLM"
+    !define GOURMET_UNINSTALL_KEY "${UNINSTALL_REGKEY}\${GOURMET_NAME}"
     !define GOURMET_STARTMENU_REGVAL "NSIS:StartMenuDir"
 
     !define PYTHON_PATH "C:\Program Files\Python26"
 
     !define GOURMET_NSIS_INCLUDE_PATH           ".\nsis"
-
 
     !define GOURMET_REG_KEY             "SOFTWARE\gourmet"
     !define HKLM_APP_PATHS_KEY                  "${GOURMET_DIR_REGKEY}"
@@ -46,16 +47,18 @@
     !define GOURMET_UNINST_EXE              "gourmet-uninst.exe"
     !define GOURMET_REG_LANG                "Installer Language"
 
-    !define GTK_VERSION             "2.12.9"
-    !define GTK_REG_KEY             "SOFTWARE\GTK\2.0"
-    !define GTK_DEFAULT_INSTALL_PATH        "$COMMONFILES\GTK\2.0"
-    !define GTK_RUNTIME_INSTALLER       "gtk-2.12.9-win32-2.exe"  ;"gtk-runtime*.exe"
+    !define GTK_VERSION             "2.16.2"
+    !define GTK_REG_KEY             "SOFTWARE\Gtk+"
+    !define GTK_OLD_REG_KEY             "SOFTWARE\GTK\2.0"
+    !define GTK_UNINSTALL_KEY "${UNINSTALL_REGKEY}\Gtk+"
+    !define GTK_DEFAULT_INSTALL_PATH        "$PROGRAMFILES\Gtk+"
+    !define GTK_RUNTIME_INSTALLER       "glade3-3.6.7-with-GTK+.exe"
 
-    !define GTK_DEFAULT_THEME_GTKRC_DIR     "share\themes\Default\gtk-2.0"
-    !define GTK_DEFAULT_THEME_ENGINE_DIR        "lib\gtk-2.0\2.4.0\engines"
+    !define GTK_DEFAULT_THEME_GTKRC_DIR     "share\themes\Default\gtk-2.0-key"
+    !define GTK_DEFAULT_THEME_ENGINE_DIR        "lib\gtk-2.0\2.10.0\engines"
 
     ; Uncomment this to make an installer with GTK installer integrated.
-    ;!define WITH_GTK
+    !define WITH_GTK
 
     ;TODO (done, answer is no) do we need these?
     ;!define GTK_THEME_DIR              "..\gtk_installer\gtk_themes"
@@ -135,7 +138,7 @@
         var ICONS_GROUP
         !define MUI_STARTMENUPAGE_NODISABLE
         !define MUI_STARTMENUPAGE_DEFAULTFOLDER "${GOURMET_NAME}"
-        !define MUI_STARTMENUPAGE_REGISTRY_ROOT "${GOURMET_UNINST_ROOT_KEY}"
+        !define MUI_STARTMENUPAGE_REGISTRY_ROOT "${UNINST_ROOT_KEY}"
         !define MUI_STARTMENUPAGE_REGISTRY_KEY "${GOURMET_UNINSTALL_KEY}"
         !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${GOURMET_STARTMENU_REGVAL}"
         !insertmacro MUI_PAGE_STARTMENU Application $ICONS_GROUP
@@ -637,7 +640,7 @@ Section Uninstall
     RMDir /r "$INSTDIR"
 
     ; Registry
-    DeleteRegKey ${GOURMET_UNINST_ROOT_KEY} "${GOURMET_UNINSTALL_KEY}"
+    DeleteRegKey ${UNINST_ROOT_KEY} "${GOURMET_UNINSTALL_KEY}"
     DeleteRegKey HKLM "${GOURMET_DIR_REGKEY}"
     SetAutoClose false ; this lets us look at the uninstall log
 
@@ -968,12 +971,22 @@ Function DoWeNeedGtk
   ;StrCmp $3 "HKLM" check_hklm
   ;StrCmp $3 "HKCU" check_hkcu check_hklm
     check_hkcu:
-      ReadRegStr $0 HKCU ${GTK_REG_KEY} "Version"
+      ReadRegStr $0 HKCU ${GTK_UNINSTALL_KEY} "DisplayVersion"
+      StrCpy $5 "HKCU"
+      StrCmp $0 "" check_hkcu_old have_gtk
+
+    check_hkcu_old:
+      ReadRegStr $0 HKCU ${GTK_OLD_REG_KEY} "Version"
       StrCpy $5 "HKCU"
       StrCmp $0 "" check_hklm have_gtk
 
     check_hklm:
-      ReadRegStr $0 HKLM ${GTK_REG_KEY} "Version"
+      ReadRegStr $0 HKLM ${GTK_UNINSTALL_KEY} "DisplayVersion"
+      StrCpy $5 "HKLM"
+      StrCmp $0 "" check_hklm_old have_gtk
+      
+    check_hklm_old:
+      ReadRegStr $0 HKLM ${GTK_OLD_REG_KEY} "Version"
       StrCpy $5 "HKLM"
       StrCmp $0 "" no_gtk have_gtk
 
