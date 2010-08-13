@@ -29,7 +29,7 @@
     !define UNINSTALL_REGKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall"
 
     !define GOURMET_NAME "Gourmet Recipe Manager"
-    !define GOURMET_VERSION "0.15.6-alpha"
+    !define GOURMET_VERSION "0.15.6-alpha" ;TODO: Read from src/lib/version.py
     !define GOURMET_PUBLISHER "Thomas M. Hinkle"
     !define GOURMET_WEB_SITE "http://grecipe-manager.sourceforge.net"
     !define GOURMET_DOWNLOAD_SITE "http://sourceforge.net/project/showfiles.php?group_id=108118"
@@ -283,10 +283,9 @@ Section $(GOURMET_SECTION_TITLE) SecGourmet
   Call CheckUserInstallRights
   Pop $R0
 
-  StrCmp $R0 "NONE" gourmet_none
-  StrCmp $R0 "HKLM" gourmet_hklm gourmet_hkcu
-
-  gourmet_hklm:
+  ${If} $R0 == "NONE"
+    ReadRegStr $R1 HKLM ${GTK_REG_KEY} "Path"
+  ${ElseIf} $R0 == "HKLM" 
     ReadRegStr $R1 HKLM ${GTK_REG_KEY} "Path"
     WriteRegStr HKLM "${HKLM_APP_PATHS_KEY}" "" "$INSTDIR\Gourmet.exe"
     WriteRegStr HKLM "${HKLM_APP_PATHS_KEY}" "Path" "$R1\bin"
@@ -302,29 +301,24 @@ Section $(GOURMET_SECTION_TITLE) SecGourmet
     WriteRegStr HKLM "${GOURMET_UNINSTALL_KEY}" "URLInfoAbout" "${GOURMET_WEB_SITE}"
     ; Sets scope of the desktop and Start Menu entries for all users.
     SetShellVarContext "all"
-    Goto gourmet_install_files
-
-  gourmet_hkcu:
+${Else}
     ReadRegStr $R1 HKCU ${GTK_REG_KEY} "Path"
-    StrCmp $R1 "" 0 gourmet_hkcu1
+    ${If} $R1 == ""
       ReadRegStr $R1 HKLM ${GTK_REG_KEY} "Path"
-    gourmet_hkcu1:
-    WriteRegStr HKCU ${GOURMET_REG_KEY} "" "$INSTDIR"
-    WriteRegStr HKCU ${GOURMET_REG_KEY} "Version" "${GOURMET_VERSION}"
-    WriteRegStr HKCU "${GOURMET_UNINSTALL_KEY}" "DisplayName" $(GOURMET_UNINSTALL_DESC)
-    WriteRegStr HKCU "${GOURMET_UNINSTALL_KEY}" "DisplayIcon" "$INSTDIR\data\recbox.ico"
-    WriteRegStr HKCU "${GOURMET_UNINSTALL_KEY}" "DisplayVersion" "${GOURMET_VERSION}"
-    WriteRegStr HKCU "${GOURMET_UNINSTALL_KEY}" "UninstallString" "$INSTDIR\${GOURMET_UNINST_EXE}"
-    WriteRegDWORD HKCU "${GOURMET_UNINSTALL_KEY}" "NoModify" "1"
-    WriteRegDWORD HKCU "${GOURMET_UNINSTALL_KEY}" "NoRepair" "1"
-    WriteRegStr HKCU "${GOURMET_UNINSTALL_KEY}" "URLUpdateInfo" "${GOURMET_DOWNLOAD_SITE}"
-    WriteRegStr HKCU "${GOURMET_UNINSTALL_KEY}" "URLInfoAbout" "${GOURMET_WEB_SITE}"
-    Goto gourmet_install_files
+    ${Else}
+      WriteRegStr HKCU ${GOURMET_REG_KEY} "" "$INSTDIR"
+      WriteRegStr HKCU ${GOURMET_REG_KEY} "Version" "${GOURMET_VERSION}"
+      WriteRegStr HKCU "${GOURMET_UNINSTALL_KEY}" "DisplayName" $(GOURMET_UNINSTALL_DESC)
+      WriteRegStr HKCU "${GOURMET_UNINSTALL_KEY}" "DisplayIcon" "$INSTDIR\data\recbox.ico"
+      WriteRegStr HKCU "${GOURMET_UNINSTALL_KEY}" "DisplayVersion" "${GOURMET_VERSION}"
+      WriteRegStr HKCU "${GOURMET_UNINSTALL_KEY}" "UninstallString" "$INSTDIR\${GOURMET_UNINST_EXE}"
+      WriteRegDWORD HKCU "${GOURMET_UNINSTALL_KEY}" "NoModify" "1"
+      WriteRegDWORD HKCU "${GOURMET_UNINSTALL_KEY}" "NoRepair" "1"
+      WriteRegStr HKCU "${GOURMET_UNINSTALL_KEY}" "URLUpdateInfo" "${GOURMET_DOWNLOAD_SITE}"
+      WriteRegStr HKCU "${GOURMET_UNINSTALL_KEY}" "URLInfoAbout" "${GOURMET_WEB_SITE}"
+    ${EndIf}
+${EndIf}
 
-  gourmet_none:
-    ReadRegStr $R1 HKLM ${GTK_REG_KEY} "Path"
-
-  gourmet_install_files:
     SetOutPath "$INSTDIR"
     SetOverwrite try
 
@@ -358,18 +352,18 @@ Section $(GOURMET_SECTION_TITLE) SecGourmet
     SetOutPath "$INSTDIR"
 
     ; If we don't have install rights.. we're done
-    StrCmp $R0 "NONE" done
-    SetOverwrite off
+    ${IfNot} $R0 == "NONE"
+      SetOverwrite off
 
-    ; Write out installer language
-    WriteRegStr HKCU "${GOURMET_REG_KEY}" "${GOURMET_REG_LANG}" "$LANGUAGE"
+      ; Write out installer language
+      WriteRegStr HKCU "${GOURMET_REG_KEY}" "${GOURMET_REG_LANG}" "$LANGUAGE"
 
-    ; write out uninstaller
-    SetOverwrite on
-    WriteUninstaller "$INSTDIR\${GOURMET_UNINST_EXE}"
-    SetOverwrite off
+      ; write out uninstaller
+      SetOverwrite on
+      WriteUninstaller "$INSTDIR\${GOURMET_UNINST_EXE}"
+      SetOverwrite off
+    ${EndIf}
 
-  done:
 SectionEnd ; end of default Gourmet section
 
 ;--------------------------------
@@ -489,28 +483,27 @@ Section $(GTK_SECTION_TITLE) SecGtk
   StrCpy $GTK_INSTALL_ERROR_HELPFUL "$GTK_INSTALL_ERROR_HELPFUL $\r \
                                     Please manually run $TEMP\gtk-runtime.exe after installation finishes to make sure GTK+ is installed."
 
-  StrCmp $R0 "0" have_gtk
-  StrCmp $R0 "1" upgrade_gtk
-  StrCmp $R0 "2" no_gtk no_gtk
-
-  no_gtk:
-    StrCmp $R1 "NONE" gtk_no_install_rights
-    ClearErrors
-    MessageBox MB_YESNO "The installer has detected that you have no GTK+ on your machine. $\r \
-                        It is required for Gourmet to run. Do you want to install GTK+ now (recommended)?" /SD IDYES IDNO done
-
-    MessageBox MB_OK "We are now going to install GTK+ ${GTK_VERSION}. $\r Follow along with the installer, but \
-                     please make sure NOT to select 'Reboot Now' at the end of GTK+ installation, if prompted. $\r \
-                     Since this is your first time installing GTK+ on this computer, you might want to reboot \
-                     after the entire installation process is finished, though." /SD IDOK
-
-    ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER' ;removed silent flag
-
-    SetRebootFlag true
-
-    Goto gtk_install_cont
-
-  upgrade_gtk:
+${Switch} $R0
+  ${Case} "0"
+  ; Even if we have a sufficient version of GTK+, we give user choice to re-install.
+    StrCpy $GTK_FOLDER $R6
+    ${IfNot} $R1 == "NONE" ; If we have no rights.. can't re-install..
+        ClearErrors
+        MessageBox MB_YESNO "$GTK_UPGRADE_MESSAGE_CONTENT" /SD IDYES IDNO done
+        MessageBox MB_OK "First, we will uninstall the old version of GTK+. \
+                         Then, we are going to install GTK+ ${GTK_VERSION}. $\r Follow along with the installer, but \
+                         please make sure NOT to select 'Reboot Now' at the end of GTK+ installation, if prompted. $\r \
+                         Since you are upgrading GTK+, you do not have to reboot after installation finishes." /SD IDOK
+    
+        ; We need to uninstall old version of GTK first.
+        Call UninstallGtk
+    
+        ClearErrors
+        ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER' ;do not want /S flag, because silent mode places icons in root of start menu.
+    ${EndIf}
+    ${Break}
+    
+  ${Case} "1" ; Upgrade GTK+
     StrCpy $GTK_FOLDER $R6
     MessageBox MB_YESNO "$GTK_UPGRADE_MESSAGE_CONTENT" /SD IDYES IDNO done
 
@@ -524,76 +517,61 @@ Section $(GTK_SECTION_TITLE) SecGtk
 
     ClearErrors
     ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER'
+    ${Break}
+    
+  ${Case} "2" ; No GTK+ installed
+    ${If} $R1 == "NONE"
+        ; Install GTK+ to Gourmet install dir
+        StrCpy $GTK_FOLDER $INSTDIR
+        ClearErrors
+        
+        ;MessageBox MB_OK "Please make sure NOT to select 'Reboot Now' at the end of GTK+ installation."
+        
+        MessageBox MB_OK "We are now going to install GTK+ ${GTK_VERSION}. $\r Follow along with the installer, but \
+                         please make sure NOT to select 'Reboot Now' at the end of GTK+ installation, if prompted. $\r \
+                         Since this is your first time installing GTK+ on this computer, you might want to reboot \
+                         after the entire installation process is finished, though." /SD IDOK
 
-    Goto gtk_install_cont
-
-  gtk_install_cont:
-    IfErrors gtk_install_error
-      StrCpy $R5 "1"  ; marker that says we installed...
-      Goto done
-
-    gtk_install_error:
-      MessageBox MB_OK "$GTK_INSTALL_ERROR_HELPFUL" /SD IDOK
-      StrCpy $R5 "2"   ; marker saying that there were errors in gtk install
-      Goto done        ; instead of quitting install, we want to finish it properly, but indicate that gtk has to be installed manually.
-
-  have_gtk:      ; Even if we have a sufficient version of GTK+, we give user choice to re-install.
-    StrCpy $GTK_FOLDER $R6
-    StrCmp $R1 "NONE" done ; If we have no rights.. can't re-install..
-
-    ClearErrors
-    MessageBox MB_YESNO "$GTK_UPGRADE_MESSAGE_CONTENT" /SD IDYES IDNO done
-    MessageBox MB_OK "First, we will uninstall the old version of GTK+. \
-                     Then, we are going to install GTK+ ${GTK_VERSION}. $\r Follow along with the installer, but \
-                     please make sure NOT to select 'Reboot Now' at the end of GTK+ installation, if prompted. $\r \
-                     Since you are upgrading GTK+, you do not have to reboot after installation finishes." /SD IDOK
-
-    ; We need to uninstall old version of GTK first.
-    Call UninstallGtk
-
-    ClearErrors
-    ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER' ;do not want /S flag, because silent mode places icons in root of start menu.
-    Goto gtk_install_cont
-
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ; end got_install rights
-
-  gtk_no_install_rights:
-    ; Install GTK+ to Gourmet install dir
-    StrCpy $GTK_FOLDER $INSTDIR
-    ClearErrors
-
-    ;MessageBox MB_OK "Please make sure NOT to select 'Reboot Now' at the end of GTK+ installation."
-
-    MessageBox MB_OK "We are now going to install GTK+ ${GTK_VERSION}. $\r Follow along with the installer, but \
-                     please make sure NOT to select 'Reboot Now' at the end of GTK+ installation, if prompted. $\r \
-                     Since this is your first time installing GTK+ on this computer, you might want to reboot \
-                     after the entire installation process is finished, though." /SD IDOK
-
-    ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER'  ;do not want /S flag, because silent mode places icons in root of start menu.
-    IfErrors gtk_install_error
-
-    SetOverwrite on
-    ClearErrors
-    CopyFiles /FILESONLY "$GTK_FOLDER\bin\*.dll" $GTK_FOLDER
-    SetOverwrite off
-
-    IfErrors gtk_install_error
-
-    Delete "$GTK_FOLDER\bin\*.dll"
-
-    SetRebootFlag true
-
-    Goto done
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ; end gtk_no_install_rights
+        ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER'  ;do not want /S flag, because silent mode places icons in root of start menu.
+        
+        ${IfNot} ${Errors}
+            SetOverwrite on
+            ClearErrors
+            CopyFiles /FILESONLY "$GTK_FOLDER\bin\*.dll" $GTK_FOLDER
+            SetOverwrite off
+            ${IfNot} ${Errors}
+                Delete "$GTK_FOLDER\bin\*.dll"
+                SetRebootFlag true
+            ${Else}
+                SetErrors
+            ${EndIf}
+        ${Else}
+            SetErrors
+        ${EndIf}
+    ${Else}
+        ClearErrors
+        MessageBox MB_YESNO "The installer has detected that you have no GTK+ on your machine. $\r \
+                            It is required for Gourmet to run. Do you want to install GTK+ now (recommended)?" /SD IDYES IDNO done
+    
+        MessageBox MB_OK "We are now going to install GTK+ ${GTK_VERSION}. $\r Follow along with the installer, but \
+                         please make sure NOT to select 'Reboot Now' at the end of GTK+ installation, if prompted. $\r \
+                         Since this is your first time installing GTK+ on this computer, you might want to reboot \
+                         after the entire installation process is finished, though." /SD IDOK
+    
+        ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE /D=$GTK_FOLDER' ;removed silent flag
+    
+        SetRebootFlag true
+    ${EndIf}
+    ${Break}
+${EndSwitch}
 
   done:
-    StrCmp $R5 "2" gtk_errors gtk_no_errors
-    gtk_no_errors:
-      Delete "$TEMP\gtk-runtime.exe"
-    gtk_errors:
+    ${If} ${Errors}
+      MessageBox MB_OK "$GTK_INSTALL_ERROR_HELPFUL" /SD IDOK
       ; leave the runtime in temp so the user can run it manually.
+    ${Else}
+      Delete "$TEMP\gtk-runtime.exe"
+    ${EndIf}
 SectionEnd ; end of GTK+ section
 !endif
 
@@ -604,28 +582,37 @@ SectionEnd ; end of GTK+ section
 Section Uninstall
   Call un.CheckUserInstallRights
   Pop $R0
-  StrCmp $R0 "NONE" no_rights
-  StrCmp $R0 "HKCU" try_hkcu try_hklm
-
-  try_hkcu:
-    ReadRegStr $R0 HKCU ${GOURMET_REG_KEY} ""
-    StrCmp $R0 $INSTDIR 0 cant_uninstall
-      ; HKCU install path matches our INSTDIR.. so uninstall
-      DeleteRegKey HKCU ${GOURMET_REG_KEY}
-      DeleteRegKey HKCU "${GOURMET_UNINSTALL_KEY}"
-      Goto cont_uninstall
-
-  try_hklm:
+  
+  ${Switch} $R0
+  ${Case} "NONE"
+    MessageBox MB_OK $(un.GOURMET_UNINSTALL_ERROR_2) /SD IDOK
+    Quit
+    ;${Break}  
+  ${Case} "HKLM"
     ReadRegStr $R0 HKLM ${GOURMET_REG_KEY} ""
-    StrCmp $R0 $INSTDIR 0 try_hkcu
+    ${If} $R0 == $INSTDIR
       ; HKLM install path matches our INSTDIR.. so uninstall
       DeleteRegKey HKLM ${GOURMET_REG_KEY}
       DeleteRegKey HKLM "${GOURMET_UNINSTALL_KEY}"
       DeleteRegKey HKLM "${HKLM_APP_PATHS_KEY}"
       ; Sets start menu and desktop scope to all users..
       SetShellVarContext "all"
+      ${Break}
+    ${EndIf}
+    ; Don't break here!
+  ${Case} "HKCU"
+    ReadRegStr $R0 HKCU ${GOURMET_REG_KEY} ""
+    ${If} $R0 == $INSTDIR
+      ; HKCU install path matches our INSTDIR.. so uninstall
+      DeleteRegKey HKCU ${GOURMET_REG_KEY}
+      DeleteRegKey HKCU "${GOURMET_UNINSTALL_KEY}"
+    ${Else}
+      MessageBox MB_OK $(un.GOURMET_UNINSTALL_ERROR_1) /SD IDOK
+      Quit
+    ${EndIf}
+    ${Break}
 
-  cont_uninstall:
+  ${EndSwitch}
 
     !insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP ;get the name of our start menu folder
 
@@ -643,18 +630,6 @@ Section Uninstall
     DeleteRegKey ${UNINST_ROOT_KEY} "${GOURMET_UNINSTALL_KEY}"
     DeleteRegKey HKLM "${GOURMET_DIR_REGKEY}"
     SetAutoClose false ; this lets us look at the uninstall log
-
-    Goto done
-
-  cant_uninstall:
-    MessageBox MB_OK $(un.GOURMET_UNINSTALL_ERROR_1) /SD IDOK
-    Quit
-
-  no_rights:
-    MessageBox MB_OK $(un.GOURMET_UNINSTALL_ERROR_2) /SD IDOK
-    Quit
-
-  done:
 SectionEnd ; end of uninstall section
 
 ;--------------------------------
@@ -970,28 +945,23 @@ Function DoWeNeedGtk
   ;DetailPrint "CheckUserInstallRights returned $3"
   ;StrCmp $3 "HKLM" check_hklm
   ;StrCmp $3 "HKCU" check_hkcu check_hklm
-    check_hkcu:
+   ;check_hkcu:
       ReadRegStr $0 HKCU ${GTK_UNINSTALL_KEY} "DisplayVersion"
       StrCpy $5 "HKCU"
-      StrCmp $0 "" check_hkcu_old have_gtk
-
-    check_hkcu_old:
+    ${If} $0 == ""
       ReadRegStr $0 HKCU ${GTK_OLD_REG_KEY} "Version"
       StrCpy $5 "HKCU"
-      StrCmp $0 "" check_hklm have_gtk
-
-    check_hklm:
-      ReadRegStr $0 HKLM ${GTK_UNINSTALL_KEY} "DisplayVersion"
-      StrCpy $5 "HKLM"
-      StrCmp $0 "" check_hklm_old have_gtk
-      
-    check_hklm_old:
-      ReadRegStr $0 HKLM ${GTK_OLD_REG_KEY} "Version"
-      StrCpy $5 "HKLM"
-      StrCmp $0 "" no_gtk have_gtk
-
-
-  have_gtk:
+      ${If} $0 == ""
+        ReadRegStr $0 HKLM ${GTK_UNINSTALL_KEY} "DisplayVersion"
+        StrCpy $5 "HKLM"
+        ${If} $0 == ""
+          ReadRegStr $0 HKLM ${GTK_OLD_REG_KEY} "Version"
+          StrCpy $5 "HKLM"         
+        ${EndIf}
+      ${EndIf}
+    ${EndIf}
+  
+  ${IfNot} $0 == ""
     ;DetailPrint "We have entered have_gtk"
     ; GTK+ is already installed.. check version.
     StrCpy $1 ${GTK_VERSION} ; Minimum GTK+ version needed
@@ -999,43 +969,36 @@ Function DoWeNeedGtk
     Push $0
     Call CheckGtkVersion
     Pop $2
-    StrCmp $2 "1" good_version bad_version
-    bad_version:
+    ${IfNot} $2 == "1"
       ; Bad version. If hklm ver and we have hkcu or no rights.. return no gtk
-      StrCmp $3 "NONE" no_gtk  ; if no rights.. can't upgrade
-      StrCmp $3 "HKCU" 0 upgrade_gtk ; if HKLM can upgrade..
-        StrCmp $5 "HKLM" no_gtk upgrade_gtk ; have hkcu rights.. if found hklm ver can't upgrade..
-
-      upgrade_gtk:
+      ${If} $3 == "HKLM" ; Either: hklm rights
+      ${OrIf} $3 == "HKCU" ; Or: hkcu rights
+      ${AndIf} $5 == "HKCU" ; ... and hkcu version
         StrCpy $2 "1"
         Push $5
         Push $2
-        Goto done
-
-  good_version:
-    StrCmp $5 "HKLM" have_hklm_gtk have_hkcu_gtk
-      have_hkcu_gtk:
-        ; Have HKCU version
-        ReadRegStr $4 HKCU ${GTK_REG_KEY} "Path"
-        Goto good_version_cont
-
-      have_hklm_gtk:
-        ReadRegStr $4 HKLM ${GTK_REG_KEY} "Path"
-        Goto good_version_cont
-
-    good_version_cont:
+      ${Else} ; no rights.. can't upgrade
+        StrCpy $2 "2"
+        Push $3 ; our rights
+        Push $2
+     ${EndIf}   
+        
+    ${Else} ; Good Version.
+      ${IfNot} $5 == "HKLM"
+          ; Have HKCU version
+          ReadRegStr $4 HKCU ${GTK_REG_KEY} "Path"
+      ${Else}
+          ReadRegStr $4 HKLM ${GTK_REG_KEY} "Path"
+      ${EndIf}
       StrCpy $2 "0"
       Push $4  ; The path to existing GTK+
       Push $2
-      Goto done
-
-  no_gtk:
+    ${EndIf}
+  ${Else} ; no rights.. can't upgrade
     StrCpy $2 "2"
     Push $3 ; our rights
     Push $2
-    Goto done
-
-  done:
+  ${EndIf}
 FunctionEnd
 
 Function RunCheck
