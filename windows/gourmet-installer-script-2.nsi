@@ -971,9 +971,9 @@ Function DoWeNeedGtk
     Pop $2
     ${IfNot} $2 == "1"
       ; Bad version. If hklm ver and we have hkcu or no rights.. return no gtk
-      ${If} $3 == "HKLM" ; Either: hklm rights
-      ${OrIf} $3 == "HKCU" ; Or: hkcu rights
+      ${If} $3 == "HKCU" ; Either: hkcu rights
       ${AndIf} $5 == "HKCU" ; ... and hkcu version
+      ${OrIf} $3 == "HKLM" ; Or: hklm rights
         StrCpy $2 "1"
         Push $5
         Push $2
