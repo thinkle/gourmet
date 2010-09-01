@@ -964,15 +964,15 @@ Function DoWeNeedGtk
   ${IfNot} $0 == ""
     ;DetailPrint "We have entered have_gtk"
     ; GTK+ is already installed.. check version.
-    StrCpy $1 ${GTK_VERSION} ; Minimum GTK+ version needed
-    Push $1
+    StrCpy $4 ${GTK_VERSION} ; Minimum GTK+ version needed
+    Push $4
     Push $0
     Call CheckGtkVersion
     Pop $2
     ${IfNot} $2 == "1"
       ; Bad version. If hklm ver and we have hkcu or no rights.. return no gtk
-      ${If} $3 == "HKCU" ; Either: hkcu rights
-      ${AndIf} $5 == "HKCU" ; ... and hkcu version
+      ${If} $3 == "HKCU" ; Either: (hkcu rights
+      ${AndIf} $5 == "HKCU" ; ... and hkcu version)
       ${OrIf} $3 == "HKLM" ; Or: hklm rights
         StrCpy $2 "1"
         Push $5
@@ -1142,13 +1142,12 @@ Function preWelcomePage
     Pop $0
     Pop $GTK_FOLDER
 
-    StrCmp $0 "0" have_gtk need_gtk
-    need_gtk:
+    ${IfNot} $0 == "0"
       IfSilent skip_mb
       MessageBox MB_OK $(GTK_INSTALLER_NEEDED) IDOK
       skip_mb:
       Quit
-    have_gtk:
+    ${EndIf}
   !endif
 FunctionEnd
 
@@ -1158,35 +1157,31 @@ Function preGtkDirPage
   Pop $0
   Pop $1
 
-  StrCmp $0 "0" have_gtk
-  StrCmp $0 "1" upgrade_gtk
-  StrCmp $0 "2" no_gtk no_gtk
-
-  ; Don't show dir selector.. Upgrades are done to existing path..
-  have_gtk:
-  upgrade_gtk:
+  ${If} $0 == "0"
+  ${OrIf} $0 == "1"
+    ; Don't show dir selector.. Upgrades are done to existing path..
     Abort
-
-  no_gtk:
-    StrCmp $1 "NONE" 0 no_gtk_cont
+  ${Else}
+    ${If} $1 == "NONE"
       ; Got no install rights..
       Abort
-    no_gtk_cont:
+    ${Else}
       ; Suggest path..
-      StrCmp $1 "HKCU" 0 hklm1
+      ${If} $1 == "HKCU"
         StrCpy $2 "$SMPROGRAMS"
         Push $2
         Call GetParent
         Call GetParent
         Pop $2
         StrCpy $2 "$2\GTK\2.0"
-        Goto got_path
-      hklm1:
+      ${Else}
         StrCpy $2 "${GTK_DEFAULT_INSTALL_PATH}"
+      ${EndIf}
 
-   got_path:
      StrCpy $name "GTK+ ${GTK_VERSION}"
      StrCpy $GTK_FOLDER $2
+    ${EndIf}
+  ${EndIf}
 FunctionEnd
 
 Function postGtkDirPage
@@ -1308,114 +1303,31 @@ Function ParseParameters
   next:
 FunctionEnd
 
-; GetWindowsVersion
-;
-; Based on Yazno's function, http://yazno.tripod.com/powerpimpit/
-; Updated by Joost Verburg
-;
-; Returns on top of stack
-;
-; Windows Version (95, 98, ME, NT x.x, 2000, XP, 2003)
-; or
-; '' (Unknown Windows Version)
-;
-; Usage:
-;   Call GetWindowsVersion
-;   Pop $R0
-;
-; at this point $R0 is "NT 4.0" or whatnot
-Function GetWindowsVersion
-
-  Push $R0
-  Push $R1
-
-  ReadRegStr $R0 HKLM \
-  "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
-
-  IfErrors 0 lbl_winnt
-
-  ; we are not NT
-  ReadRegStr $R0 HKLM \
-  "SOFTWARE\Microsoft\Windows\CurrentVersion" VersionNumber
-
-  StrCpy $R1 $R0 1
-  StrCmp $R1 '4' 0 lbl_error
-
-  StrCpy $R1 $R0 3
-
-  StrCmp $R1 '4.0' lbl_win32_95
-  StrCmp $R1 '4.9' lbl_win32_ME lbl_win32_98
-
-  lbl_win32_95:
-    StrCpy $R0 '95'
-  Goto lbl_done
-
-  lbl_win32_98:
-    StrCpy $R0 '98'
-  Goto lbl_done
-
-  lbl_win32_ME:
-    StrCpy $R0 'ME'
-  Goto lbl_done
-
-  lbl_winnt:
-    StrCpy $R1 $R0 1
-
-    StrCmp $R1 '3' lbl_winnt_x
-    StrCmp $R1 '4' lbl_winnt_x
-
-    StrCpy $R1 $R0 3
-
-    StrCmp $R1 '5.0' lbl_winnt_2000
-    StrCmp $R1 '5.1' lbl_winnt_XP
-    StrCmp $R1 '5.2' lbl_winnt_2003 lbl_error
-
-  lbl_winnt_x:
-    StrCpy $R0 "NT $R0" 6
-  Goto lbl_done
-
-  lbl_winnt_2000:
-    Strcpy $R0 '2000'
-  Goto lbl_done
-
-  lbl_winnt_XP:
-    Strcpy $R0 'XP'
-  Goto lbl_done
-
-  lbl_winnt_2003:
-    Strcpy $R0 '2003'
-  Goto lbl_done
-
-  lbl_error:
-    Strcpy $R0 ''
-  lbl_done:
-
-  Pop $R1
-  Exch $R0
-FunctionEnd
-
 Function UninstallGtk
 ; First, we find the uninstaller, by looking at the gtk registry key to find the gtk directory
 ; Then we execute it, if found.
-
-  check_hkcu:
+    StrCpy $1 ""
     ReadRegStr $0 HKCU ${GTK_REG_KEY} "Path"
-    ;StrCpy $5 "HKCU"
-    StrCmp $0 "" check_hklm found_gtk_path
+    ${If} $0 == ""
+      ReadRegStr $1 HKCU ${GTK_OLD_REG_KEY} "Path"
+      ${If} $1 == ""
+        ReadRegStr $0 HKLM ${GTK_REG_KEY} "Path"
+        ${If} $0 == ""
+          ReadRegStr $1 HKLM ${GTK_OLD_REG_KEY} "Path"
+        ${EndIf}
+      ${EndIf}
+    ${EndIf}
 
-  check_hklm:
-    ReadRegStr $0 HKLM ${GTK_REG_KEY} "Path"
-    ;StrCpy $5 "HKLM"
-    StrCmp $0 "" no_gtk found_gtk_path
-
-    found_gtk_path:
-    ; We do this copyfiles thing cuz if we dont, it will do it for us, and execwait wont wait properly.
-    ; See also http://nsis.sourceforge.net/Docs/AppendixD.html (section D.1) for detailed explanation.
-    CopyFiles $0\uninst.exe $TEMP
-    ExecWait '"$TEMP\uninst.exe" _?=$0'
-    Delete "$TEMP\uninst.exe"
-
-    no_gtk:
-    ;do nothing
-
+    ${IfNot} $0 == ""
+      ; We do this copyfiles thing cuz if we dont, it will do it for us, and execwait wont wait properly.
+      ; See also http://nsis.sourceforge.net/Docs/AppendixD.html (section D.1) for detailed explanation.
+      CopyFiles $0\GTK_uninstall.exe $TEMP
+      ExecWait '"$TEMP\GTK_uninstall.exe" _?=$0'
+      Delete "$TEMP\GTK_uninstall.exe"
+    ${ElseIfNot} $1 == ""
+      ; Same for old GTK version
+      CopyFiles $1\uninst.exe $TEMP
+      ExecWait '"$TEMP\uninst.exe" _?=$1'
+      Delete "$TEMP\uninst.exe"
+    ${EndIf}
 FunctionEnd
