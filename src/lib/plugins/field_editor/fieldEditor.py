@@ -1,4 +1,4 @@
-import gtk, gtk.glade, gobject, os.path
+import gtk, gobject, os.path
 import gourmet.gglobals as gglobals
 import gourmet.convert as convert
 from gourmet.gtk_extras import cb_extras as cb
@@ -15,10 +15,11 @@ class FieldEditor:
     def __init__ (self, rd, rg):
         self.field = None; self.other_field = None
         self.rd = rd; self.rg = rg
-        self.glade = gtk.glade.XML(os.path.join(gglobals.gladebase,'valueEditor.glade'))
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(os.path.join(gglobals.gladebase,'valueEditor.ui'))
         self.__setup_widgets__()
         self.__setup_treeview__()
-        self.glade.signal_autoconnect({
+        self.ui.connect_signals({
             'on_changeValueButton_toggled':self.changeValueButtonToggledCB,
             'on_fieldToEditCombo_changed':self.fieldChangedCB,
             'on_otherChangeCheckButton_toggled':self.otherChangeToggleCB,
@@ -38,7 +39,7 @@ class FieldEditor:
             'otherValueBlurbLabel','otherChangeCheckButton',
             'leaveValueButton'
             ]:
-            setattr(self,w,self.glade.get_widget(w))
+            setattr(self,w,self.ui.get_object(w))
         self.act_on_selection_widgets = [
             self.deleteValueButton, self.changeValueButton,
             self.newValueEntry,self.otherChangeCheckButton,
