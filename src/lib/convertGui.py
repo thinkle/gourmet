@@ -1,5 +1,5 @@
 import convert
-import gtk, gtk.glade
+import gtk
 from gglobals import *
 from gdebug import *
 from gtk_extras.cb_extras import *
@@ -13,7 +13,8 @@ class ConvGui:
                   okcb=None
                   ):
         self.possible_conversions = None
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'converter.glade'))
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(os.path.join(gladebase,'converter.ui'))
         self.conv = convert.get_converter()
         self.changing_item = False
         self.okcb = okcb
@@ -21,7 +22,7 @@ class ConvGui:
                    'itemComboBox', 'densitySpinButton', 'useDensityCheckButton', 'statusbar','expander1','messageLabel']
         # grab all our widgets
         for w in self.widget_names:
-            setattr(self,w,self.glade.get_widget(w))
+            setattr(self,w,self.ui.get_object(w))
         # HACK FOR READABILITY w/o glade change
         self.resultLabel = self.amt2Label
         self.resultLabel.set_use_markup(True)
@@ -50,7 +51,7 @@ class ConvGui:
         setup_typeahead(self.itemComboBox)
         if amt1:
             self.amt1Entry=self.conv.float_to_frac(amt1)
-        self.glade.signal_autoconnect({
+        self.ui.connect_signals({
             'amt1changed':self.changed,
             'unit1changed':self.changed,
             'unit2changed':self.changed,
