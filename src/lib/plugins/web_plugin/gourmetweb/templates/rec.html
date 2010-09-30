@@ -1,15 +1,29 @@
 <html>
   <head>
+    <style type="text/css">
+      {%include "menu.css" %}
+      #my_multiply_form p {display: inline}
+      #id_multiplier {width: 3em}
+      #id_yields {width: 5em}
+      {%if not rec.yields %}
+      #id_yields {display: none}
+      {%endif%}
+      #ingredients_container {position: fixed; top: 5em; right: 2em;
+        border: 1px dashed #888; padding-top: 0em;
+        width: 35%}
+      #ingredients_container h2 {background-color: #000; color: #ccc; margin: 0em; padding: 5px; text-align: center}
+      #my_multiply_form {background-color: #ccc; width: 300px; border: 1px dashed #000; padding: 1em}
+      #hide_multiplier {text-align: right; float: right; margin: 0; padding: 0}
+      #ingredients ul {padding-left: 1em; margin-left: 0em}
+      #ingredients li {list-style-type: none; padding-left: 0em; margin-left: 0em}
+      #attrs {width: 60%}
+      #recimage {max-width: 60%; display: block}
+      #text {width: 60%}
+      
+    </style>
     <script type="text/javascript" src="/js/jquery.js"></script>
     <script type="text/javascript">
-      $(document).ready(function(event){
-        $("a").click(function(event){
-         alert("HA!");
-         event.preventDefault();
-        }
-        );
-        $("#my_multiply_form").submit(function(event){
-          alert("Hello!");
+      function do_multiply (event){
           event.preventDefault();
            $.ajax({
             type: "POST",
@@ -28,29 +42,52 @@
               }
               $("#yields").html(data.yields);
               $("#mult").html("(x"+data.multiplier+")");
+              $("#shoplink").html("<a href='/shop/{{r.id}}/"+data.multiplier+"'>Add to Shopping List</a>");
               }
-             });
-         }); 
-         })
+          });
+      }
+      function show_multiplier (event){
+        event.preventDefault();
+        $("#my_multiply_form").attr("style","display:block");
+        $("#show_multiplier").attr("style","display:none");
+      }
+      function hide_multiplier (event){
+        event.preventDefault();
+        $("#my_multiply_form").attr("style","display:none");
+        $("#show_multiplier").attr("style","display:inline");
+      }
+      $(document).ready(function(event){
+        $("#my_multiply_form").submit(do_multiply);
+        $("#show_multiplier").click(show_multiplier);
+        $("#hide_multiplier").click(hide_multiplier);
+       });
       
     </script>
   </head>
   <body>
-    <h1>{{ r.title }}</h1> <a href="/shop/{{r.id}}/{{mult}}">Add to Shopping List</a>
+    {%include "menu.html"%}
+
+    <div id="main">
+      <h1>{{ r.title }}</h1> <span id="shoplink"><a href="/shop/{{r.id}}/{{mult}}">Add to Shopping List</a></span>
+    {% if r.image %} <img id="recimage"  src="/img/{{r.id}}/"> {% endif %}
+    <div id="attrs">
     <p><i>
     {% if r.cuisine %} <br>Cuisine: {{ r.cuisine }} {% endif %}
     {% if r.link %} <br>Original Link: <a href="{{ r.link }}">{{ r.link }}</a> {% endif %}
     {% if r.rating %} <br>Rating: {{ r.rating }} {% endif %}
     {% if cats %}<br>Categories: {{ cats }}{% endif %}
-    <br>Yields: <span id="yields">{{yields}}</span> {{r.yield_unit}}
+    {% if r.yields %} <br>Yields: <span id="yields">{{yields}}</span> {{r.yield_unit}} {% endif %}
     <span id="mult">{% if is_adjusted %}
-    (x{{mult}})
+      (x{{mult}})
       {% endif %}
-    </span>
-    <form id="my_multiply_form" action="/rec/multiply/" method="post">
+    </span> <a id="show_multiplier" href="none">(Edit)</a>
+    <form style="display:none" id="my_multiply_form" action="/rec/multiply/" method="post">
       {{ multiplier_form.as_p }}
       <input type="hidden" name="rid" value="{{ r.id }}"><input type="submit" value="Multiply">
+      <a href="none" id="hide_multiplier">(close)</a>
     </form>
+    </i></p></div>
+    <div id="text">
     {% if r.instructions %}
     <h2>Instructions</h2>
     <p>{{ instructions|safe }}</p>
@@ -59,9 +96,11 @@
     <h2>Notes</h2>
     <p>{{ notes|safe }}</p>
     {% endif %}
-
+    </div>
     
-    <div id="ingredients">
+    <div id="ingredients_container">
+      <h2>Ingredients</h2>
+      <div id="ingredients">
     <ul>
       {% for group, items in ings %}
       
@@ -81,6 +120,8 @@
 
       {% endfor %}
     </ul>
-    </div>      
+    </div>
+    </div>
+    </div>
   </body>
 </html>
