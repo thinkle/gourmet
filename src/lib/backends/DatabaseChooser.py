@@ -1,4 +1,4 @@
-import gtk, gtk.glade, os.path
+import gtk, os.path
 from gourmet import gglobals
 from gourmet import cb_extras as cb
 from gourmet import dialog_extras as de
@@ -17,8 +17,9 @@ class DatabaseChooser:
         self.default_files = {'metakit': 'recipes.mk',
                               'sqlite':'recipes.db'
                               }
-        gladefile = os.path.join(gglobals.gladebase,'databaseChooser.glade')
-        self.glade = gtk.glade.XML(gladefile)
+        uifile = os.path.join(gglobals.gladebase,'databaseChooser.ui')
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(uifile)
         self.connection_widgets = ['hostEntry','userEntry','pwEntry','dbEntry',
                                    'hostLabel','userLabel','pwLabel','dbLabel',
                                    'pwCheckButton']
@@ -27,8 +28,8 @@ class DatabaseChooser:
                                                                       'connectionExpander',
                                                                       'window']
         for w in self.widgets:
-            setattr(self,w,self.glade.get_widget(w))
-        self.glade.signal_autoconnect(
+            setattr(self,w,self.ui.get_object(w))
+        self.ui.connect_signals(
             {'ok_clicked':self.ok_cb,
              'cancel_clicked':self.cancel_cb,
              'dbChanged':self.change_db_cb,

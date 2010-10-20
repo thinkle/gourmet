@@ -109,6 +109,7 @@ def data_files():
     icons = glob.glob(os.path.join('images','*.ico'))
     style = glob.glob(os.path.join('style','*.css'))
     glade = glob.glob(os.path.join('glade','*.glade'))
+    ui = glob.glob(os.path.join('glade','*.ui'))
     sounds = glob.glob(os.path.join('data','*.wav'))
     i18n = glob.glob(os.path.join('i18n','*/*/*.mo'))
     txts = glob.glob(os.path.join('data','*.txt'))
@@ -116,6 +117,7 @@ def data_files():
     images.extend(icons)
     images.extend(style)
     images.extend(glade)
+    images.extend(ui)
     images.extend(sounds)
     images.extend(txts)
     images.extend(dtds)    
@@ -204,7 +206,7 @@ result = setup(
                 'gourmet.legacy_db.db_09',
                 'gourmet.plugins',
                 ] + plugins,
-    package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*.glade','plugins/*/*.glade', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
+    package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*.glade','plugins/*/*.glade', 'plugins/unit_converter/*.ui', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
     package_dir = {'gourmet' : os.path.join('src','lib')},
     scripts = script,
     cmdclass={'install_data' : my_install_data},

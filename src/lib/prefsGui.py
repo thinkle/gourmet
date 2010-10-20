@@ -1,10 +1,10 @@
-import gtk, gtk.glade, os.path
+import gtk, os.path
 import gglobals
 from gtk_extras import optionTable
 import plugin_loader, plugin
 
 class PreferencesGui (plugin_loader.Pluggable):
-    """The glue between our glade preferences dialog and our prefs modules.
+    """The glue between our preferences dialog UI and our prefs modules.
 
     Instead of "connecting", as would be normal with pygtk objects, we set up handlers in the
     apply_prefs_dic which contains preference-handlers for each preference we wish.
@@ -19,8 +19,8 @@ class PreferencesGui (plugin_loader.Pluggable):
     def __init__ (
         self,
         prefs,
-        glade=os.path.join(gglobals.gladebase,
-                           'preferenceDialog.glade'),
+        uifile=os.path.join(gglobals.gladebase,
+                            'preferenceDialog.ui'),
         radio_options={'shop_handle_optional':{'optional_ask':0,
                                                'optional_add':1,
                                                'optional_dont_add':-1
@@ -41,7 +41,7 @@ class PreferencesGui (plugin_loader.Pluggable):
         ):
         """Set up our PreferencesGui
 
-        glade points us to our gladefile
+        uifile points us to our UI file
         
         radio_options is a dictionary of preferences controlled by radio buttons.
                       {preference_name: {radio_widget: value,
@@ -55,8 +55,9 @@ class PreferencesGui (plugin_loader.Pluggable):
         """
 
         self.prefs = prefs
-        self.glade = gtk.glade.XML(glade)
-        self.notebook = self.glade.get_widget('notebook')
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(uifile)
+        self.notebook = self.ui.get_object('notebook')
         # pref name: {'buttonName':VALUE,...}
         self.radio_options = radio_options
         self.connect_radio_buttons()
@@ -81,7 +82,7 @@ class PreferencesGui (plugin_loader.Pluggable):
         self.set_widgets_from_prefs()
         self.prefs.set_hooks.append(self.update_pref)
         self.pref_tables={}
-        self.glade.get_widget('close_button').connect('clicked',lambda *args: self.hide_dialog())
+        self.ui.get_object('close_button').connect('clicked',lambda *args: self.hide_dialog())
         plugin_loader.Pluggable.__init__(self,[plugin.PrefsPlugin])
 
     def build_pref_dictionary (self):
@@ -100,7 +101,7 @@ class PreferencesGui (plugin_loader.Pluggable):
             self.pref_dic[pref]={}
             # create a dictionary by value (reversed dictionary)...
             for widg,val in widgdic.items(): self.pref_dic[pref][val]=widg
-        self.d=self.glade.get_widget('dialog')
+        self.d=self.ui.get_object('dialog')
         self.d.connect('delete-event',self.hide_dialog)
 
 
@@ -121,7 +122,7 @@ class PreferencesGui (plugin_loader.Pluggable):
                 widg=action[1]
             # in the future, we can handle Entries, etc...
             if type(widg)==str:
-                widg=self.glade.get_widget(widg)
+                widg=self.ui.get_object(widg)
             getattr(widg,act)(act_args)
             self.update_sensitivity_for_pref(pref,value)
             
@@ -137,12 +138,12 @@ class PreferencesGui (plugin_loader.Pluggable):
 
     def connect_buttons (self):
         for b,cb in self.buttons.items():
-            self.glade.get_widget(b).connect('clicked',cb)
+            self.ui.get_object(b).connect('clicked',cb)
 
     def connect_toggle_buttons (self):
         """Connect signals for toggle buttons in self.toggle_options."""
         for pref,widget in self.toggle_options.items():
-            self.glade.get_widget(widget).connect('toggled',self.toggle_callback,pref)
+            self.ui.get_object(widget).connect('toggled',self.toggle_callback,pref)
 
     def toggle_callback (self, button, pref_name):
         """Set preference 'pref_name' in response to toggle event on button."""
@@ -152,7 +153,7 @@ class PreferencesGui (plugin_loader.Pluggable):
         """Connect radio button signals to properly set preferences on toggle."""
         for pref_name,pref_dic in self.radio_options.items():
             for button,val in pref_dic.items():
-                self.glade.get_widget(button).connect(
+                self.ui.get_object(button).connect(
                     'toggled',
                     self.radio_callback,
                     pref_name,
@@ -165,7 +166,7 @@ class PreferencesGui (plugin_loader.Pluggable):
 
     def connect_number_options (self):
         for pref_name,widgetname in self.number_options.items():
-            widget = self.glade.get_widget(widgetname)
+            widget = self.ui.get_object(widgetname)
             if hasattr(widget,'get_value'):
                 get_method='get_value'
             elif hasattr(widget,'get_text'):
@@ -201,14 +202,14 @@ class PreferencesGui (plugin_loader.Pluggable):
     def update_sensitivity_for_pref (self, name, value):
         try:
             for k,v in self.widget_sensitivity_dic[name][value].items():
-                self.glade.get_widget(k).set_sensitive(v)
+                self.ui.get_object(k).set_sensitive(v)
         except KeyError: pass
             
 
     def add_widget (self, target_widget, child_widget):
         """Add child_widget to target_widget"""
-        if type(target_widget)==str: target_widget=self.glade.get_widget(target_widget)
-        if type(child_widget)==str: child_widget=self.glade.get_widget(child_widget)
+        if type(target_widget)==str: target_widget=self.ui.get_object(target_widget)
+        if type(child_widget)==str: child_widget=self.ui.get_object(child_widget)
         target_widget.add(child_widget)
         target_widget.show_all()
 
@@ -248,7 +249,7 @@ if __name__ == '__main__':
                 print 'runnnig hook'
                 h(k,v)
             
-    gf='/home/tom/Projects/grm-db-experiments/glade/preferenceDialog.glade'
+    gf='/home/tom/Projects/grm-db-experiments/glade/preferenceDialog.ui'
     import sys
     p=PreferencesGui(FauxPrefs(),gf)
     def printstuff (*args): print args

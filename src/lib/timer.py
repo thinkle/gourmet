@@ -1,10 +1,10 @@
-import gtk, gtk.glade, gobject, time, gglobals, os
+import gtk, gobject, time, gglobals, os
 import xml.sax.saxutils
 from sound import Player
 from gtk_extras import cb_extras as cb
 from gettext import gettext as _
 
-class TimeSpinnerGlade:
+class TimeSpinnerUI:
 
     def __init__ (self, hoursSpin, minutesSpin, secondsSpin):
         self.timer_hooks = []
@@ -103,11 +103,12 @@ class TimerDialog:
 
     def __init__ (self):
         self.init_player()
-        self.glade = gtk.glade.XML(os.path.join(gglobals.gladebase,'timerDialog.glade'))
-        self.timer = TimeSpinnerGlade(
-            self.glade.get_widget('hoursSpinButton'),
-            self.glade.get_widget('minutesSpinButton'),
-            self.glade.get_widget('secondsSpinButton')
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(os.path.join(gglobals.gladebase,'timerDialog.ui'))
+        self.timer = TimeSpinnerUI(
+            self.ui.get_object('hoursSpinButton'),
+            self.ui.get_object('minutesSpinButton'),
+            self.ui.get_object('secondsSpinButton')
             )
         self.timer.connect_timer_hook(self.timer_done_cb)
         for w in ['timerDialog','mainLabel',
@@ -115,10 +116,10 @@ class TimerDialog:
                   'noteEntry','expander1','timerBox','resetTimerButton',
                   'timerFinishedLabel','keepAnnoyingLabel'
                   ]:
-            setattr(self,w,self.glade.get_widget(w))
+            setattr(self,w,self.ui.get_object(w))
         cb.set_model_from_list(self.soundComboBox,self.sounds_and_files.keys())
         cb.cb_set_active_text(self.soundComboBox,_('Ringing Sound'))
-        self.glade.signal_autoconnect(
+        self.ui.connect_signals(
             {'reset_cb':self.timer.reset_cb,
              'pause_cb':self.timer.pause_cb,
              'start_cb':self.timer.start_cb,

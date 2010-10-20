@@ -1,4 +1,4 @@
-import gtk, gtk.glade, gobject, rmetakit, re, pickle
+import gtk, gobject, rmetakit, re, pickle
 from gglobals import *
 from gtk_extras import WidgetSaver
 from gtk_extras import cb_extras as cb
@@ -12,7 +12,8 @@ class ShopEditor:
     en masse and for reordering shopping categories."""
     
     def __init__ (self, rd=rmetakit.recipeManager(), rg=None):
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'shopCatEditor.glade'))
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(os.path.join(gglobals.gladebase,'shopCatEditor.ui'))
         self.rd = rd
         self.rg = rg
         self.prefs = self.rg.prefs        
@@ -20,7 +21,7 @@ class ShopEditor:
                              'searchAsYouTypeToggle', 'regexpTog', 'deleteCatButton', 'addCatEntry',
                              'addCatButton']
         for w in self.widget_names:
-            setattr(self,w,self.glade.get_widget(w))
+            setattr(self,w,self.ui.get_object(w))
         # setup entry callback to sensitize/desensitize apply
         self.addCatButton.set_sensitive(False)
         self.addCatEntry.connect('changed',self.addCatEntryChangedCB)
@@ -34,7 +35,7 @@ class ShopEditor:
         self.treeview.set_model(self.filteredModel)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         #self.treeview.set_model(self.treeModel)
-        self.glade.signal_autoconnect({
+        self.ui.connect_signals({
             'iSearch':self.isearchCB,
             'search':self.searchCB,
             'search_as_you_type_toggle':self.search_as_you_typeCB,
