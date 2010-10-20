@@ -888,7 +888,11 @@ class RecData (Pluggable):
         """
         name = table.name; new_col = column_spec[0]; coltyp = column_spec[1]
         if hasattr(coltyp ,'dialect_impl'):
-            coltyp = coltyp.dialect_impl(self.db.dialect).get_col_spec()
+            try:
+                coltyp = coltyp.dialect_impl(self.db.dialect).get_col_spec()
+            except AttributeError:
+                # SQL 0.6
+                coltyp = coltyp.compile(dialect=self.db.dialect)
         sql = 'ALTER TABLE %(name)s ADD %(new_col)s %(coltyp)s;'%locals()
         try:
             self.db.execute(sql)

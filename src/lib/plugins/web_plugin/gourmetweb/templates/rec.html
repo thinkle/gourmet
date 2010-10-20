@@ -1,15 +1,24 @@
 <html>
   <head>
+    <style type="text/css">
+      #ingredients
+      {float:right;
+      background: yellow;
+      position: fixed;
+      top: 50px;
+      right: 5em;
+      width: 40%;
+      }
+      #attributes,#text {width: 50%;}
+      body {margin-left: 5em; margin-right: 5em}
+    </style>
     <script type="text/javascript" src="/js/jquery.js"></script>
     <script type="text/javascript">
       $(document).ready(function(event){
         $("a").click(function(event){
-         alert("HA!");
-         event.preventDefault();
         }
         );
         $("#my_multiply_form").submit(function(event){
-          alert("Hello!");
           event.preventDefault();
            $.ajax({
             type: "POST",
@@ -28,6 +37,8 @@
               }
               $("#yields").html(data.yields);
               $("#mult").html("(x"+data.multiplier+")");
+              $("#shoprec").attr("href",
+                                 "/shop/{{r.id}}/"+data.multiplier);
               }
              });
          }); 
@@ -36,7 +47,8 @@
     </script>
   </head>
   <body>
-    <h1>{{ r.title }}</h1> <a href="/shop/{{r.id}}/{{mult}}">Add to Shopping List</a>
+    <h1>{{ r.title }}</h1> <a id="shoprec" href="/shop/{{r.id}}/{{mult}}">Add to Shopping List</a>
+    <div id="attributes">
     <p><i>
     {% if r.cuisine %} <br>Cuisine: {{ r.cuisine }} {% endif %}
     {% if r.link %} <br>Original Link: <a href="{{ r.link }}">{{ r.link }}</a> {% endif %}
@@ -48,9 +60,11 @@
       {% endif %}
     </span>
     <form id="my_multiply_form" action="/rec/multiply/" method="post">
-      {{ multiplier_form.as_p }}
+      {{ multiplier_form.as_table }}
       <input type="hidden" name="rid" value="{{ r.id }}"><input type="submit" value="Multiply">
     </form>
+    </div>
+    <div id="text">
     {% if r.instructions %}
     <h2>Instructions</h2>
     <p>{{ instructions|safe }}</p>
@@ -60,7 +74,7 @@
     <p>{{ notes|safe }}</p>
     {% endif %}
 
-    
+    </div>
     <div id="ingredients">
     <ul>
       {% for group, items in ings %}
