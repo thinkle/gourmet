@@ -12,7 +12,7 @@ from django.utils import simplejson
 
 
 class MultiplierForm (forms.Form):
-    yields = forms.FloatField(label='New Yield',min_value=0,required=False)
+    #yields = forms.FloatField(label='New Yield',min_value=0,required=False)
     multiplier = forms.FloatField(label='x',min_value=0,required=False)
 
 class NoYieldsMultiplierForm (forms.Form):
@@ -118,8 +118,10 @@ def rec (request, rec_id, mult=1):
         return re.sub('\n','<br>',
                       re.sub('\n\n+','</p><p>','<p>%s</p>'%t.strip()))
     if rec.yields:
+        print 'WITH YIELDS'
         mf = MultiplierForm()
     else:
+        print 'WITHOUT YIELDS'
         mf = NoYieldsMultiplierForm()
     return render_to_response(
         'rec.html',
@@ -139,19 +141,21 @@ def rec (request, rec_id, mult=1):
 def multiply_rec_xhr (request):
     return multiply_rec(request,xhr=True)
 
+
 def multiply_rec (request, xhr=None):
+    # We can't do yields and multiplier in the same place!
     if request.method == 'POST':
         form = MultiplierForm(request.POST)
         if form.is_valid():
             multiplier = form.cleaned_data['multiplier']
+            print multiplier
             recid = request.POST.get('rid',None)
-            if not multiplier:
-                yields = form.cleaned_data['yields']
-                if yields:
-                    orig_yields = rd.get_rec(recid).yields
-                    multiplier = (yields / float(orig_yields))
-                else:
-                    multiplier = 1
+            #yields = form.cleaned_data['yields']
+            #if yields:
+            #    orig_yields = rd.get_rec(recid).yields
+            #    multiplier = (yields / float(orig_yields))
+            #else:
+            #    multiplier = 1
             if xhr:
                 rec = rd.get_rec(recid)
                 d = {'yields':rec.yields * multiplier,
