@@ -1,3 +1,13 @@
+2010-11-16  Thomas Mills Hinkle  <tom@pebble>
+
+	* src/lib/reccard.py (DescriptionEditorModule.update_from_database):
+	Fix signal used for spinbutton for yield and any other
+	spinbuttons. (patch from Saulius Lukauskas)
+
+	* src/lib/plugins/import_export/mastercook_import_plugin/mastercook_plaintext_importer.py:
+	Patch from Saulius Lukauskas fixing column-matching/dash-matching
+	conflict that broke ingredient import.
+
 2010-10-20  Thomas Hinkle  <tom@grenville>
 
 	* src/lib/plugins/web_plugin/gourmetweb/templates/rec.html: Start

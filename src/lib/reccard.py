@@ -1414,7 +1414,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
                 except:
                     debug('%s Value %s is not floatable!'%(e,getattr(self.current_rec,e)))
                     self.rw[e].set_text("")
-                Undo.UndoableGenericWidget(self.rw[e],self.history)
+                Undo.UndoableGenericWidget(self.rw[e],self.history, signal='value-changed')
             elif e in INT_REC_ATTRS:
                 self.rw[e].set_value(int(getattr(self.current_rec,e) or 0))
                 Undo.UndoableGenericWidget(self.rw[e],
