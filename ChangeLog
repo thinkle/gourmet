@@ -1,3 +1,14 @@
+2010-10-20  Thomas Hinkle  <tom@grenville>
+
+	* src/lib/plugins/web_plugin/gourmetweb/templates/rec.html: Start
+	adding some style to web-based recipe view.
+
+	* src/lib/backends/db.py (RecData.add_column_to_table): Workaround
+	sqlalchemy 0.6.0 incompatability
+
+	* src/lib/plugins/nutritional_information/nutrition.py (NutritionData.get_nutinfo_for_ing):
+	Take into account amounts on recipes called as ingredients.
+
 2010-08-01  Thomas Mills Hinkle  <tom@pebble>
 
 	* src/lib/plugins/web_plugin/gourmetweb/templates/rec.html: Add
@@ -15,7 +26,10 @@
 
 	* src/lib/plugins/web_plugin/: Start a django-based web-front-end
 	to Gourmet
-	
+
+2010-07-21  Thomas M. Hinkle  <tom@grenville>
+
+	* src/lib/version.py (version): Version->0.15.6
 
 2010-07-20  Thomas M. Hinkle  <tom@grenville>
 

@@ -1,6 +1,26 @@
 <html>
   <head>
     <style type="text/css">
+<<<<<<< HEAD
+      #ingredients
+      {float:right;
+      background: yellow;
+      position: fixed;
+      top: 50px;
+      right: 5em;
+      width: 40%;
+      }
+      #attributes,#text {width: 50%;}
+      body {margin-left: 5em; margin-right: 5em}
+    </style>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(event){
+        $("a").click(function(event){
+        }
+        );
+        $("#my_multiply_form").submit(function(event){
+=======
       {%include "menu.css" %}
       #my_multiply_form p {display: inline}
       #id_multiplier {width: 3em}
@@ -24,6 +44,7 @@
     <script type="text/javascript" src="/js/jquery.js"></script>
     <script type="text/javascript">
       function do_multiply (event){
+>>>>>>> ecef9cf308ba4cc377ff49cfa9cb5facc3215eba
           event.preventDefault();
            $.ajax({
             type: "POST",
@@ -42,7 +63,12 @@
               }
               $("#yields").html(data.yields);
               $("#mult").html("(x"+data.multiplier+")");
+<<<<<<< HEAD
+              $("#shoprec").attr("href",
+                                 "/shop/{{r.id}}/"+data.multiplier);
+=======
               $("#shoplink").html("<a href='/shop/{{r.id}}/"+data.multiplier+"'>Add to Shopping List</a>");
+>>>>>>> ecef9cf308ba4cc377ff49cfa9cb5facc3215eba
               }
           });
       }
@@ -65,12 +91,17 @@
     </script>
   </head>
   <body>
+<<<<<<< HEAD
+    <h1>{{ r.title }}</h1> <a id="shoprec" href="/shop/{{r.id}}/{{mult}}">Add to Shopping List</a>
+    <div id="attributes">
+=======
     {%include "menu.html"%}
 
     <div id="main">
       <h1>{{ r.title }}</h1> <span id="shoplink"><a href="/shop/{{r.id}}/{{mult}}">Add to Shopping List</a></span>
     {% if r.image %} <img id="recimage"  src="/img/{{r.id}}/"> {% endif %}
     <div id="attrs">
+>>>>>>> ecef9cf308ba4cc377ff49cfa9cb5facc3215eba
     <p><i>
     {% if r.cuisine %} <br>Cuisine: {{ r.cuisine }} {% endif %}
     {% if r.link %} <br>Original Link: <a href="{{ r.link }}">{{ r.link }}</a> {% endif %}
@@ -80,13 +111,23 @@
     <span id="mult">{% if is_adjusted %}
       (x{{mult}})
       {% endif %}
+<<<<<<< HEAD
+    </span>
+    <form id="my_multiply_form" action="/rec/multiply/" method="post">
+      {{ multiplier_form.as_table }}
+=======
     </span> <a id="show_multiplier" href="none">(Edit)</a>
     <form style="display:none" id="my_multiply_form" action="/rec/multiply/" method="post">
       {{ multiplier_form.as_p }}
+>>>>>>> ecef9cf308ba4cc377ff49cfa9cb5facc3215eba
       <input type="hidden" name="rid" value="{{ r.id }}"><input type="submit" value="Multiply">
       <a href="none" id="hide_multiplier">(close)</a>
     </form>
+<<<<<<< HEAD
+    </div>
+=======
     </i></p></div>
+>>>>>>> ecef9cf308ba4cc377ff49cfa9cb5facc3215eba
     <div id="text">
     {% if r.instructions %}
     <h2>Instructions</h2>
@@ -96,11 +137,17 @@
     <h2>Notes</h2>
     <p>{{ notes|safe }}</p>
     {% endif %}
+<<<<<<< HEAD
+
+    </div>
+    <div id="ingredients">
+=======
     </div>
     
     <div id="ingredients_container">
       <h2>Ingredients</h2>
       <div id="ingredients">
+>>>>>>> ecef9cf308ba4cc377ff49cfa9cb5facc3215eba
     <ul>
       {% for group, items in ings %}
       

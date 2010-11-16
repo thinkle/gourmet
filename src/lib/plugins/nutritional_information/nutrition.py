@@ -96,12 +96,12 @@ class NutritionData:
         row=self.db.fetch_one(self.db.nutritionaliases_table,**{'ingkey':str(key)})
         return row
 
-    def get_nutinfo_for_ing (self, ing, rd):
+    def get_nutinfo_for_ing (self, ing, rd, multiplier=None):
         """A convenience function that grabs the requisite items from
         an ingredient."""
         if hasattr(ing,'refid') and ing.refid:
             subrec = rd.get_referenced_rec(ing)
-            return self.get_nutinfo_for_inglist(rd.get_ings(subrec),rd,ingObject=ing)
+            return self.get_nutinfo_for_inglist(rd.get_ings(subrec),rd,ingObject=ing,multiplier=ing.amount)
         if hasattr(ing,'rangeamount') and ing.rangeamount:
             # just average our amounts
             try:
@@ -112,13 +112,14 @@ class NutritionData:
         else:
             amount = ing.amount
         if not amount: amount=1
+        if multiplier: amount = amount * multiplier
         return  self.get_nutinfo_for_item(ing.ingkey,amount,ing.unit,ingObject=ing)
 
-    def get_nutinfo_for_inglist (self, inglist, rd, ingObject=None):
+    def get_nutinfo_for_inglist (self, inglist, rd, ingObject=None, multiplier=None):
         """A convenience function to get NutritionInfoList for a list of
         ingredients.
         """
-        return NutritionInfoList([self.get_nutinfo_for_ing(i,rd) for i in inglist],
+        return NutritionInfoList([self.get_nutinfo_for_ing(i,rd, multiplier) for i in inglist],
                                  ingObject=ingObject)
 
     def get_nutinfo_for_item (self, key, amt, unit, ingObject=None):
