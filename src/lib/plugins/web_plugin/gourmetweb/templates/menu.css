@@ -1,0 +1,9 @@
+#main {padding-top: 3em}
+#menu {position: fixed; background-color: #fff; color: #000}
+#menu {border: 1px solid black; position: right}
+#menu td {padding-right: 2em}
+#menu > a {color: #d4d}
+.small > #menu {font-size: x-large; background: white}
+.tiny > #menu {font-size: x-large; background: white}
+.small {font-size: x-large}
+.tiny {font-size: x-large}
