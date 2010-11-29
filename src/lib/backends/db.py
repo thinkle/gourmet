@@ -507,7 +507,7 @@ class RecData (Pluggable):
                 # https://sourceforge.net/projects/grecipe-manager/forums/forum/371768/topic/3630545?message=8205906
                 try:
                     self.db.connect().execute('select recipe_id from ingredients')
-                except sqlite3.OperationalError:
+                except sqlalchemy.exc.OperationalError:
                     self.alter_table('ingredients',self.setup_ingredient_table,
                                      {'id':'recipe_id'},
                                      ['refid', 'unit', 'amount', 'rangeamount',
@@ -814,7 +814,8 @@ class RecData (Pluggable):
         if criteria: table = table.select(*make_simple_select_arg(criteria,table))
         if colname=='category' and table==self.recipe_table:
             print 'WARNING: you are using a hack to access category values.'
-            table=self.categories_table
+            table = self.categories_table
+            table = table.alias('ingrtable')
         retval = [r[0] for
                   r in sqlalchemy.select([getattr(table.c,colname)],distinct=True).execute().fetchall()
                   ]
