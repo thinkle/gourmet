@@ -245,7 +245,7 @@ class KeyEditor:
         last_search = self.search_string
         self.search_string = self.searchEntry.get_text()
         last_by = self.search_by
-        self.search_by = cb.cb_get_active_text(self.searchByBox)
+        self.treeModel.search_by = self.search_by = cb.cb_get_active_text(self.searchByBox)
         last_regexp = self.use_regexp
         self.use_regexp = self.regexpTog.get_active()
         if (self.search_by==last_by and
@@ -527,7 +527,19 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                                                   per_page=per_page)
 
     def reset_views (self):
-        self.view = self.rd.get_ingkeys_with_count()
+        if self.__last_limit_text:
+            txt = self.__last_limit_text
+            if hasattr(self,'use_regexp') and self.use_regexp:
+                s = {'search':txt,'operator':'REGEXP'}
+            else:
+                s = {'search':'%'+txt.replace('%','%%')+'%','operator':'LIKE'}
+            if self.search_by == _('item'):
+                s['column']='item'
+            else:
+                s['column']='ingkey'
+            self.view = self.rd.get_ingkeys_with_count(s)
+        else:
+            self.view = self.rd.get_ingkeys_with_count()
         for n in range(self._get_length_()):
             parent = (n,)
             path = parent
