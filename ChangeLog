@@ -1,4 +1,21 @@
+2010-12-10  Tom  <tom@localhost6.localdomain6>
+
+	* src/lib/plugins/web_plugin/gourmetweb/templates/shop.html: Add forms to add/remove from pantry.
+
+	* src/lib/plugins/web_plugin/gourmetweb/recview/views.py (MyShoppingList.get_shopper): Use database for shopping list so we can store e.g. pantry data.
+	(multiply_rec): Use 'yields' when possible; otherwise use multiply
+	(shop_to_pantry): Add callback to move items to pantry
+	(shop_to_list): Add callback to remove items from pantry
+
+	* src/lib/plugins/web_plugin/gourmetweb/urls.py: Add shopping list
+	callbacks (move to/from pantry)
+
 2010-12-09  Tom  <tom@localhost6.localdomain6>
+
+	* src/lib/plugins/key_editor/keyEditor.py (KeyEditor.isearchCB):
+	Set cursor to busy while searching.
+
+	* src/lib/recindex.py (RecIndex.search): Fix busy cursor while searching.
 
 	* src/lib/backends/db.py (RecData.get_ingkeys_with_count): Fix bug
 	that broke IngredientEditor view entirely.
