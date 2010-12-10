@@ -434,9 +434,16 @@ class RecIndex:
         if self.make_search_dic(txt,searchBy) == self.last_search:
             debug("Same search!",1)
             return
-        if self.srchentry.window: self.srchentry.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-        debug('Doing new search for %s, last search was %s'%(self.make_search_dic(txt,searchBy),self.last_search),1)
-        gobject.idle_add(lambda *args: self.do_search(txt, searchBy))
+        # Get window
+        if self.srchentry:
+            parent = self.srchentry.parent
+            while parent and not (isinstance(parent,gtk.Window)):
+                parent = parent.parent
+            parent.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+            debug('Doing new search for %s, last search was %s'%(self.make_search_dic(txt,searchBy),self.last_search),1)
+            gobject.idle_add(lambda *args: (self.do_search(txt, searchBy) or parent.window.set_cursor(None)))
+        else:
+            gobject.idle_add(lambda *args: self.do_search(txt, searchBy))
 
     def make_search_dic (self, txt, searchBy):
         srch = {'column':searchBy}
