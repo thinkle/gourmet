@@ -5,19 +5,21 @@ from django.shortcuts import render_to_response
 from django.template import Context, loader
 import sys
 import re
-sys.path.append('/usr/share/gourmet/')
 import gourmet.backends.db
 import gourmet.shopping
+import gourmet.recipeManager
 from django.utils import simplejson
 
 
 class MultiplierForm (forms.Form):
-    #yields = forms.FloatField(label='New Yield',min_value=0,required=False)
-    multiplier = forms.FloatField(label='x',min_value=0,required=False)
+    yields = forms.FloatField(label='New Yield',min_value=0,required=False)
+    multiplier = None
+    #multiplier = forms.FloatField(label='x',min_value=0,required=False)
 
 class NoYieldsMultiplierForm (forms.Form):
     multiplier = forms.FloatField(label='x',min_value=0,required=False)
-
+    yields = None
+    
 class SearchForm (forms.Form):
     choices = {unicode(_('anywhere')):'anywhere',
                unicode(_('title')):'title',
@@ -35,7 +37,13 @@ class SearchForm (forms.Form):
                                      )
 
 rd = gourmet.backends.db.get_database()
-slist = gourmet.shopping.ShoppingList()
+
+class MyShoppingList (gourmet.shopping.ShoppingList):
+
+    def get_shopper (self, lst):
+        return gourmet.recipeManager.DatabaseShopper(lst, rd)
+    
+slist = MyShoppingList()
 
 def list_recs (view, default_search_values={},
                template='index.html'):
@@ -144,18 +152,17 @@ def multiply_rec_xhr (request):
 
 def multiply_rec (request, xhr=None):
     # We can't do yields and multiplier in the same place!
+    print 'MULTIPLY!'
     if request.method == 'POST':
         form = MultiplierForm(request.POST)
         if form.is_valid():
-            multiplier = form.cleaned_data['multiplier']
-            print multiplier
             recid = request.POST.get('rid',None)
-            #yields = form.cleaned_data['yields']
-            #if yields:
-            #    orig_yields = rd.get_rec(recid).yields
-            #    multiplier = (yields / float(orig_yields))
-            #else:
-            #    multiplier = 1
+            try:
+                multiplier = form.cleaned_data['multiplier']
+            except:
+                yields = form.cleaned_data['yields']
+                orig_yields = rd.get_rec(recid).yields
+                multiplier = (yields / float(orig_yields))
             if xhr:
                 rec = rd.get_rec(recid)
                 d = {'yields':rec.yields * multiplier,
@@ -167,7 +174,6 @@ def multiply_rec (request, xhr=None):
                     )
             else:
                 return HttpResponseRedirect('/rec/%s/%s'%(recid,multiplier))
-
         
 def shop (request, rec_id=None, mult=1):
     mult = float(mult)
@@ -192,7 +198,22 @@ def shop_remove (request, rec_id=None):
         print 'Odd, rec_id',rec_id,'is the wrong type'
         raise
     return shop(request)
-        
+
+def shop_to_pantry (request):
+    if request.method == 'POST':
+        for item in request.POST:
+            if item != 'submit':
+                slist.sh.add_to_pantry(item)
+        return HttpResponseRedirect('/shop/')
+    
+def shop_to_list (request):
+    if request.method == 'POST':
+        for item in request.POST:
+            if item != 'submit':
+                slist.sh.remove_from_pantry(item)
+        return HttpResponseRedirect('/shop/')
+
+
 def thumb (request, rec_id):
     return HttpResponse(rd.get_rec(rec_id).thumb,
                         mimetype='image/jpeg'
