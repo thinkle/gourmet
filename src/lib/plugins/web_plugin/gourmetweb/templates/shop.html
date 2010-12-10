@@ -17,23 +17,37 @@
     <br><a href="/rec/{{rec.id}}/">{{rec.title}}</a> x{{mult}} <a href="/shop/remove/{{rec.id}}/">(remove)</a>
     {% endfor %}
   </div>
-  <table>
+  <table width="85%">
     <tr>
-      <td valign="top">
-	<h2>Shopping List</h2>
+      <td valign="top" width="50%">
+	<form
+	   id="shopping_list_form"
+	   action="/shop/to_pantry/"
+	   method="post"
+	   >
+	<h2 style="margin-bottom:0">Shopping List </h2>
+	<input type="submit" name="submit" value="Move checked items to Pantry List">
+	  
     {% for group, lst in data %}
     <h3>{{group}}</h3>
     {% for item, amt in lst %}
-    <br>{{item}} {{amount}}
+    <input type="checkbox" name="{{item}}">{{item}} {{amount}}</input><br>
     {% endfor %}
-    {% endfor %}    
+    {% endfor %}
+    </form>
       </td>
-      <td valign="top">
-	<h1>Pantry List</h1>
+      <td valign="top" width="50%">
+	<form
+	   id="pantry_list_form"
+	   action="/shop/to_list/"
+	   method="post"
+	   >
+	<h2 style="margin-bottom:0">Pantry List</h2>
+	<input type="submit" name="submit" value="Move checked items to Shopping List">
 	{% for group, lst in pantry %}
     <h3>{{group}}</h3>
     {% for item, amt in lst %}
-    <br>{{item}} {{amount}}
+    <input type="checkbox" name="{{item}}">{{item}} {{amount}}<br></input>
     {% endfor %}
     {% endfor %}    
       </td>
