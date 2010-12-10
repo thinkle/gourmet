@@ -1,4 +1,4 @@
-import gtk, gtk.glade, gobject, re, os, os.path
+import gtk, gtk.gdk, gtk.glade, gobject, re, os, os.path, time
 from gourmet import gglobals, convert
 from gourmet.gtk_extras import WidgetSaver, mnemonic_manager, pageable_store
 from gourmet.gtk_extras import cb_extras as cb
@@ -273,7 +273,8 @@ class KeyEditor:
 
     def isearchCB (self, *args):
         if self.searchAsYouTypeToggle.get_active():
-            self.doSearch()
+            self.window.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+            gobject.idle_add(lambda *args: (self.doSearch() or self.window.window.set_cursor(None)))
 
     def searchCB (self, *args):
         self.doSearch()
