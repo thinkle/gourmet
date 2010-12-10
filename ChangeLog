@@ -1,3 +1,7 @@
+2010-12-09  Tom  <tom@localhost6.localdomain6>
+
+	* src/lib/backends/db.py (RecData.do_modify): Force unicode (Fixes #3120915)
+
 2010-11-28  Thomas Mills Hinkle  <tom@pebble>
 
 	* src/lib/backends/db.py (RecData.update_version_info): Patch from Jeff Raber to remove sqlite3 reference
