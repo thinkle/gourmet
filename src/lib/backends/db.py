@@ -1279,7 +1279,7 @@ class RecData (Pluggable):
 
     def do_add_and_return_item (self, table, dic, id_prop='id'):
         result_proxy = self.do_add(table,dic)
-        select = table.select(getattr(table.c,id_prop)==result_proxy.lastrowid)
+        select = table.select(getattr(table.c,id_prop)==result_proxy.inserted_primary_key[0])
         return select.execute().fetchone()
 
     def do_add_ing (self,dic):
@@ -1306,7 +1306,7 @@ class RecData (Pluggable):
             else:
                 raise ValueError('New recipe created with preset id %s, but ID is not in our list of new_ids'%rdict['id'])
         insert_statement = self.recipe_table.insert()
-        select = self.recipe_table.select(self.recipe_table.c.id==insert_statement.execute(**rdict).lastrowid)
+        select = self.recipe_table.select(self.recipe_table.c.id==insert_statement.execute(**rdict).inserted_primary_key[0])
         return select.execute().fetchone()
 
     def validate_ingdic (self,dic):
