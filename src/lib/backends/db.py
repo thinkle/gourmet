@@ -833,23 +833,24 @@ class RecData (Pluggable):
                 criteria = col.op('REGEXP')(search['search'])
             else:
                 criteria = col==crit['search']
+            result =  sqlalchemy.select(
+                [sqlalchemy.func.count(self.ingredients_table.c.ingkey).label('count'),
+                 self.ingredients_table.c.ingkey],
+                criteria,
+                **{'group_by':'ingkey',
+                   'order_by':make_order_by([],self.ingredients_table,count_by='ingkey'),
+                   }
+                ).execute().fetchall()                
         else:
-            criteria = []
-        result =  sqlalchemy.select(
-            [sqlalchemy.func.count(self.ingredients_table.c.ingkey).label('count'),
-             self.ingredients_table.c.ingkey],
-            criteria,
-            **{'group_by':'ingkey',
-               'order_by':make_order_by([],self.ingredients_table,count_by='ingkey'),
-               }
-            ).execute().fetchall()
+            result =  sqlalchemy.select(
+                [sqlalchemy.func.count(self.ingredients_table.c.ingkey).label('count'),
+                 self.ingredients_table.c.ingkey],
+                **{'group_by':'ingkey',
+                   'order_by':make_order_by([],self.ingredients_table,count_by='ingkey'),
+                   }
+                ).execute().fetchall()
+
         return result
-        return self.fetch_count(self.ingredients_table,'ingkey',)
-        s = sqlalchemy.select([
-            self.ingredients_table.c.ingkey,
-            func.count(self.ingredients_table.c.ingkey).label('count')
-            ]).execute()
-        return s.fetchall()
 
     def delete_by_criteria (self, table, criteria):
         """Table is our table.
