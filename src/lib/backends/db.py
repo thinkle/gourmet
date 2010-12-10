@@ -1331,6 +1331,7 @@ class RecData (Pluggable):
     def do_modify (self, table, row, d, id_col='id'):
         if id_col:
             try:
+                self._force_unicode(d)
                 qr = table.update(getattr(table.c,id_col)==getattr(row,id_col)).execute(**d)
             except:
                 print 'do_modify failed with args'
