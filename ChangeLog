@@ -1,5 +1,11 @@
 2010-12-09  Tom  <tom@localhost6.localdomain6>
 
+	* src/lib/backends/db.py (RecData.get_ingkeys_with_count): Fix bug
+	that broke IngredientEditor view entirely.
+
+	* src/lib/plugins/key_editor/keyEditor.py (KeyStore.reset_views):
+	Don't undo search when resetting view after applying an edit.
+
 	* src/lib/backends/db.py (RecData.do_modify): Force unicode (Fixes #3120915)
 
 2010-11-28  Thomas Mills Hinkle  <tom@pebble>
