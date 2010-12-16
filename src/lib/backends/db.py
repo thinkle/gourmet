@@ -811,13 +811,13 @@ class RecData (Pluggable):
     def get_unique_values (self, colname,table=None,**criteria):
         """Get list of unique values for column in table."""
         if table is None: table=self.recipe_table
-        if criteria: table = table.select(*make_simple_select_arg(criteria,table))
+        if criteria: criteria = make_simple_select_arg(criteria,table)[0]
         if colname=='category' and table==self.recipe_table:
             print 'WARNING: you are using a hack to access category values.'
             table = self.categories_table
             table = table.alias('ingrtable')
         retval = [r[0] for
-                  r in sqlalchemy.select([getattr(table.c,colname)],distinct=True).execute().fetchall()
+                  r in sqlalchemy.select([getattr(table.c,colname)],distinct=True,whereclause=criteria).execute().fetchall()
                   ]
         return filter(lambda x: x is not None, retval) # Don't return null values
 

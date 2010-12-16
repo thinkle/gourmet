@@ -1,3 +1,9 @@
+2010-12-16  Tom  <tom@localhost6.localdomain6>
+
+	* src/lib/version.py (version): Version->0.15.7
+	* src/lib/backends/db.py (RecData.get_unique_values): Patch from
+	Steve Langasek for Ubuntu bug #534088
+
 2010-12-10  Tom  <tom@localhost6.localdomain6>
 
 	* src/lib/plugins/web_plugin/gourmetweb/templates/shop.html: Add forms to add/remove from pantry.

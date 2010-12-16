@@ -360,6 +360,14 @@ src/lib/plugins/unit_display_prefs/__init__.py
 src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py
 src/lib/plugins/utf16.gourmet-plugin
 src/lib/plugins/utf16.gourmet-plugin.in
+src/lib/plugins/web_plugin/gourmetweb/__init__.py
+src/lib/plugins/web_plugin/gourmetweb/manage.py
+src/lib/plugins/web_plugin/gourmetweb/recview/__init__.py
+src/lib/plugins/web_plugin/gourmetweb/recview/models.py
+src/lib/plugins/web_plugin/gourmetweb/recview/tests.py
+src/lib/plugins/web_plugin/gourmetweb/recview/views.py
+src/lib/plugins/web_plugin/gourmetweb/settings.py
+src/lib/plugins/web_plugin/gourmetweb/urls.py
 src/lib/prefs.py
 src/lib/prefsGui.py
 src/lib/profileImport.py
