@@ -431,6 +431,7 @@ class RecEditorModule (UIModule, gobject.GObject, object):
     __edited = False
     def get_edited (self):
         return self.__edited
+
     def set_edited (self, val):
         self.__edited = val
         self.emit('toggle-edited',val)
@@ -527,6 +528,10 @@ class RecEditorModule (UIModule, gobject.GObject, object):
             self.edited = True
         else:
             self.edited = False
+    
+    def grab_focus (self):
+        """Put focus on appropriate widget for editing."""
+        pass
 
 class IngredientControllerPlugin (StandardPlugin):
     '''Plugins for mucking about with how ingredient information is
