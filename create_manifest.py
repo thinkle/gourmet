@@ -39,8 +39,8 @@ recursive_match('data',['*.txt','*.wav','*.css'],lst)
 recursive_match('style',['*.txt','*.css','*.png','*.jpg'],lst)
 lst.extend(['data/FAQ'])
 recursive_match('src/lib',['*.py'],lst)
-recursive_match('glade',['*.glade'],lst)
-recursive_match('src/lib/plugins/',['*.glade',
+recursive_match('glade',['*.glade','*.ui'],lst)
+recursive_match('src/lib/plugins/',['*.glade','*.ui',
                                     '*.gourmet-plugin',
                                     '*.gourmet-plugin.in',
                                     '*.png',],
