@@ -105,7 +105,8 @@ class RecCard (object):
             self.recipe_editor = RecEditor(self, self.rg,self.current_rec,new=self.new)
         if module:
             self.recipe_editor.show_module(module)
-        self.recipe_editor.window.present()
+        self.recipe_editor.present()
+        
 
     def delete (self, *args):
         self.rg.rec_tree_delete_recs([self.current_rec])
@@ -810,7 +811,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     def __init__ (self, reccard, rg, recipe=None, recipe_display=None, new=False):
         self.edited = False
-        self.editor_modules = [
+        self.editor_module_classes = [
             DescriptionEditorModule,
             IngredientEditorModule,
             InstructionsEditorModule,
@@ -844,6 +845,11 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         self.mm.add_toplevel_widget(self.window)
         self.mm.fix_conflicts_peacefully()        
         self.show()
+        self.modules[0].grab_focus()
+
+    def present (self):
+        self.window.present()
+        self.modules[0].grab_focus()
         
     def setup_defaults (self):
         self.edit_title = _('Edit Recipe:')
@@ -883,7 +889,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
     def setup_modules (self):
         self.modules = []
         self.module_tab_by_name = {}
-        for klass in self.editor_modules:
+        for klass in self.editor_module_classes:
             instance = klass(self)
             tab_label = gtk.Label(instance.label)
             n = self.notebook.append_page(
@@ -897,7 +903,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
     def add_plugin (self, klass, position=None):
         """Register any external plugins"""
         instance = klass(self)
-        if instance.__class__ in self.editor_modules: return # these are handled in setup_modules...
+        if instance.__class__ in self.editor_module_classes: return # these are handled in setup_modules...
         tab_label = gtk.Label(instance.label)
         if not position:
             n = self.notebook.append_page(instance.main,tab_label=tab_label)
@@ -1064,6 +1070,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
     def show_recipe_display_cb (self, *args):
         """Show recipe card display (not editor)."""
         self.reccard.show_display()
+
 
 class IngredientEditorModule (RecEditorModule):
 
@@ -1424,6 +1431,9 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
                 Undo.UndoableEntry(self.rw[e],self.history)
         self.imageBox.get_image()
 
+    def grab_focus (self):
+        self.glade.get_widget('titleBox').grab_focus()
+        
     def save (self, recdic):
         for c in self.reccom:
             recdic[c]=unicode(self.rw[c].entry.get_text())
