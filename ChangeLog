@@ -1,10 +1,27 @@
-2010-12-16  Tom  <tom@localhost6.localdomain6>
+2011-01-05  Tom  <Thomas_Hinkle@sf.net>
+
+	* create_manifest.py: 
+	(write_lst_to_file): Include *.ui files!
+	* README: Remove obsolete material about Gnomeprint.
+	* src/lib/plugin.py (RecEditorModule.grab_focus): Add method for
+	editor modules to setup focus for editing.
+	* src/lib/reccard.py (RecEditor.present): Add code to allow each
+	module to grab focus programatically to set up editing.
+	(DescriptionEditorModule.grab_focus): Make DescriptionEditorModule
+	grab focus for the "title" box right away, so that when you open
+	the editor window you can start typing.
+
+	* src/lib/backends/db.py (RecData.get_unique_values): Fix bug in
+	DB code that caused a SQL error.
+
+2010-12-16  Tom  <Thomas_Hinkle@sf.net>
 
 	* src/lib/version.py (version): Version->0.15.7
 	* src/lib/backends/db.py (RecData.get_unique_values): Patch from
 	Steve Langasek for Ubuntu bug #534088
+	(RecData.get_unique_values): Fix handling of null criteria.
 
-2010-12-10  Tom  <tom@localhost6.localdomain6>
+2010-12-10  Tom  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/web_plugin/gourmetweb/templates/shop.html: Add forms to add/remove from pantry.
 
@@ -16,7 +33,7 @@
 	* src/lib/plugins/web_plugin/gourmetweb/urls.py: Add shopping list
 	callbacks (move to/from pantry)
 
-2010-12-09  Tom  <tom@localhost6.localdomain6>
+2010-12-09  Tom  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/key_editor/keyEditor.py (KeyEditor.isearchCB):
 	Set cursor to busy while searching.
@@ -31,12 +48,12 @@
 
 	* src/lib/backends/db.py (RecData.do_modify): Force unicode (Fixes #3120915)
 
-2010-11-28  Thomas Mills Hinkle  <tom@pebble>
+2010-11-28  Thomas Mills Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/backends/db.py (RecData.update_version_info): Patch from Jeff Raber to remove sqlite3 reference
 	(RecData.get_unique_values): Patch from buergi to get working with MySQL
 
-2010-11-16  Thomas Mills Hinkle  <tom@pebble>
+2010-11-16  Thomas Mills Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/reccard.py (DescriptionEditorModule.update_from_database):
 	Fix signal used for spinbutton for yield and any other
@@ -57,13 +74,13 @@
 	* src/lib/plugins/nutritional_information/nutrition.py (NutritionData.get_nutinfo_for_ing):
 	Take into account amounts on recipes called as ingredients.
 
-2010-08-01  Thomas Mills Hinkle  <tom@pebble>
+2010-08-01  Thomas Mills Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/web_plugin/gourmetweb/templates/rec.html: Add
 	AJAX magic to do multiplication ajax-style when javascript is
 	available.
 
-2010-07-30  Thomas Mills Hinkle  <tom@pebble>
+2010-07-30  Thomas Mills Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/shopping.py: Refactor code -- move some code from
 	shopgui classes to front-end neutral ShoppingList class that can
@@ -119,7 +136,7 @@
 
 	* glade/recCardIngredientsEditor.glade: Update ingredient editor tooltip.
 
-2010-06-07  Thomas Mills Hinkle  <tom@pebble>
+2010-06-07  Thomas Mills Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/backends/db.py (map_type_to_sqlalchemy): Use LargeBinary type if available (sqlalchemy 0.6+)
 	(RecData.get_unique_values): Fix boolean-related sqlalchemy 0.6+ bug.
@@ -134,7 +151,7 @@
 	Check that content_type is iterable (modified version of patch
 	from Jeff Spaleta).
 
-2010-05-19  Thomas M. Hinkle  <tom@grenville>
+2010-05-19  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/db.py: Change name of ingredient_parser to
 	parse_ingredient (following naming conventions used everyone else
@@ -144,14 +161,14 @@
 	* src/lib/importers/generic_recipe_parser.py (RecipeParser): Fix
 	unicode/regexp issue with ing_matcher
 
-2010-03-25  Thomas M. Hinkle  <tom@grenville>
+2010-03-25  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/backends/db.py (RecData.update_version_info): Make sure
 	recipe_id doesn't already exist as a column before altering old
 	databases -- apparently we were wrong about when this change was
 	made.
 
-2010-03-05  Thomas M. Hinkle  <tom@grenville>
+2010-03-05  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/gglobals.py (FLOAT_REC_ATTRS): Add list of recipe
 	attributes that are floats (as opposed to ints, text, etc)
@@ -169,7 +186,7 @@
 	delete-key in ingredient editor view only work in treeview (same
 	as change made for main view on 2/9/2010).
 
-2010-03-03  Thomas M. Hinkle  <tom@grenville>
+2010-03-03  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/GourmetRecipeManager.py (GourmetApplication.get_attribute_model):
 	Don't bother caching the attribute models. It results in
@@ -179,7 +196,7 @@
 	* defaults_en.py defaults_en_GB.py ++T. and t. as abbreviations
 	for Tablespoon and teaspoon
 
-2010-02-09  Thomas M. Hinkle  <tom@grenville>
+2010-02-09  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/GourmetRecipeManager.py (RecGui): Make
 	delete-key-deletes-recipe behavior a callback on keypresses only
@@ -190,7 +207,7 @@
 	* src/lib/backends/db.py (RecData.get_criteria): Make sure search
 	strings are proper unicode objects. Fixes bug #2948135.
 
-2010-01-16  Thomas M. Hinkle  <tom@grenville>
+2010-01-16  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/version.py Version->0.15.4
 	* src/lib/plugins/import_export/web_import_plugin/webpage_importer.py (WebParser.postparse):
@@ -203,12 +220,12 @@
 	* src/lib/importers/interactive_importer.py (InteractiveImporter.set_text):
 	Strip extra newlines.
 
-2010-01-15  Thomas M. Hinkle  <tom@grenville>
+2010-01-15  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/gtk_extras/thumbnail.py (check_for_thumbnail): Catch
 	non-ASCII characters in URLs.
 
-2010-01-06  Thomas M. Hinkle  <tom@grenville>
+2010-01-06  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/importers/interactive_importer.py (InteractiveImporter):
 	Replace text-tags in buffers with ComboBox widget that allows user
@@ -216,7 +233,7 @@
 	of buttons into categories and made more suitable for wider and
 	shorter screens.
 
-2010-01-02  Thomas M. Hinkle  <tom@grenville>
+2010-01-02  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/key_editor/recipeEditorPlugin.py (IngredientKeyEditor.setup_tree):
 	Wrap text in treeview when it is too long; automatically reflow as
@@ -232,7 +249,7 @@
 	Don't match *all* files as fallback options -- have a list of
 	"antipatterns" to exclude.
 
-2009-12-18  Thomas M. Hinkle  <tom@grenville>
+2009-12-18  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/gtk_extras/dialog_extras.py (SimpleFaqDialog.NESTED_MATCHER):
 	Fix bug in REGEXP in number-header parsing.
@@ -242,7 +259,7 @@
 
 	* FAQ: Update FAQ (which was pretty seriously out-of-date).
 
-2009-12-17  Thomas M. Hinkle  <tom@grenville>
+2009-12-17  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/backends/db.py (RecData.validate_recdic): Ensure recipe
 	info is unicode.
@@ -273,12 +290,12 @@
 	Reorder fields and add choline for SR21 (they changed more than I
 	had first thought!)
 
-2009-12-14  Thomas M. Hinkle  <tom@grenville>
+2009-12-14  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/backends/db.py (RecData.update_version_info): Fix update
 	from versions < 0.11.x
 
-2009-12-11  Thomas M. Hinkle  <tom@grenville>
+2009-12-11  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/nutritional_information/nutrition.py (foo.SimpleInterface.print_info):
 	Be less verbose.
@@ -288,7 +305,7 @@
 	we provide unicode strings to DB.
 	(DescriptionEditorModule.save): Make sure we provide unicode strings.
 
-2009-12-02  Thomas M. Hinkle  <tom@grenville>
+2009-12-02  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/check_encodings.py (GetFile.__init__): Divide lines
 	using built-in splitlines() function -- this fixes problems with
@@ -298,7 +315,7 @@
 	Print information about importer being used.
 
 
-2009-12-01  Thomas M. Hinkle  <tom@grenville>
+2009-12-01  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/GourmetRecipeManager.py (RecGui.setup_main_window): Add
 	right-click menu back to main interface (we use the contents of
@@ -336,7 +353,7 @@
 	preferences (if we want them back, they belong in the email
 	plugin).
 	
-2009-11-22  Thomas M. Hinkle  <tom@grenville>
+2009-11-22  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py (CustomUnitOption):
 	Add custom widget for setting margins that allows adjusting of
@@ -352,7 +369,7 @@
 	Escape items in case they have &s or other characters that screw
 	up XML.
 
-2009-11-21  Thomas M. Hinkle  <tom@grenville>
+2009-11-21  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/import_export/pdf_plugin/print_plugin.py (PDFRecipePrinter.begin_print):
 	Try to raise an error if there's a problem with the PDF.
@@ -374,7 +391,7 @@
 	Move repetitive print code to print manager so we can do things
 	like handle exceptions elegantly there.
 
-2009-11-20  Thomas M. Hinkle  <tom@grenville>
+2009-11-20  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/nutritional_information/export_plugin.py (NutritionBaseExporterPlugin.get_nutritional_info_as_text_blob):
 	Fix typo that broke printing.
@@ -398,7 +415,7 @@
 	* src/lib/reccard.py (RecCardDisplay.update_yields_multiplier):
 	Use singular forms when settings yields to 1.
 
-2009-11-19  Thomas M. Hinkle  <tom@grenville>
+2009-11-19  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py (write_ingref):
 	Only write links that will work -- we do this by tracking which
@@ -419,7 +436,7 @@
 	* src/lib/plugin_loader.py (MasterLoader.deactivate_plugin_set):
 	Fix typo that broke deactivation of plugins.
 
-2009-11-17  Thomas M. Hinkle  <tom@grenville>
+2009-11-17  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/GourmetRecipeManager.py (ImporterExporter.print_recs):
 	Use new printing API to print.
@@ -449,7 +466,7 @@
 	we do updates for 0.14.7 ++ for people updatings from versions
 	before 0.14
 
-2009-11-01  Thomas M. Hinkle  <tom@grenville>
+2009-11-01  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* lib/GourmetRecipeManager.py Make sure all actions w/o icons are
 	marked as important (fixes Gourmet in horizontal-toolbar mode)
@@ -467,7 +484,7 @@
 
 	* README: Fix sql dependencies.
 
-2009-08-26  Thomas Hinkle  <tom@grenville>
+2009-08-26  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* data/ABBREV.txt
 	* data/WEIGHT.txt
@@ -562,12 +579,12 @@
 	correctly parse recipes from period-separated locales where
 	unambiguous (e.g. 23.00 and not 23.000).
 
-2009-06-27  Thomas Hinkle  <tom@grenville>
+2009-06-27  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/importers/interactive_importer.py (InteractiveImporter.commit_changes.mark_sorter):
 	Handle markup in title of recipe in imageBrowser dialog window.
 
-2009-06-18  Thomas Hinkle  <tom@grenville>
+2009-06-18  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/* Get rid of old debugging print statements throughout library.
 
@@ -580,7 +597,7 @@
 	thread manager dialog transient for main Gourmet window if not
 	told who its transient for.
 
-2009-06-17  Thomas Hinkle  <tom@grenville>
+2009-06-17  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py (GourmetExportChecker.check_attrs):
 	Fix tests (read files as utf-8)
@@ -595,7 +612,7 @@
 
 	* src/lib/keymanager.py (KeyManager.__init__): Initialize categories again.
 
-2009-06-16  Thomas Hinkle  <tom@grenville>
+2009-06-16  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/nutritional_information/nutritionDruid.py (NutritionInfoDruid.apply_custom):
 	Fix custom information for fat.
@@ -651,7 +668,7 @@
 	++title on dialog (helps out with testing w/ dogtail + just makes
 	sense).
 
-2009-06-04  Thomas Hinkle  <tom@grenville>
+2009-06-04  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/importers/interactive_importer.py: Add support for old
 	style "servings" tags to support legacy importer/markup scripts.
@@ -659,7 +676,7 @@
 	* src/lib/importers/importer.py (Importer.commit_rec): Make sure
 	yields is floated.
 
-2009-05-30  Thomas Hinkle  <tom@grenville>
+2009-05-30  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/reccard.py (RecSelector.ok): If recipe has a yields
 	value, ask user how much they would like to add (this allows user
@@ -718,7 +735,7 @@
 	make import_filenames return a list of importer instances that we
 	used.
 
-2009-05-24  Thomas Hinkle  <tom@grenville>
+2009-05-24  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/exporters/exportManager.py (ExportManager.get_extra_prefs):
 	Add method for handling of extra prefs (through UI or
@@ -748,7 +765,7 @@
 	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer.py (mmf_importer.handle_line):
 	Add support for yields units other than servingts.
 
-2009-05-19  Thomas Hinkle  <tom@grenville>
+2009-05-19  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/exporters/exporter.py (exporter.__init__._grab_attr_):
 	Fix handling of yield/yield unit output.
@@ -771,7 +788,7 @@
 	preferred the alphabetization of *_tests.py, but a number of
 	unittest tools are written to work only the other way.
 
-2009-05-17  Thomas Hinkle  <tom@grenville>
+2009-05-17  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/nutritional_information/nutrition.py (NutritionData.get_nutinfo_for_ing):
 	Catch very unusual corner case where i.rangeamount and i.amount
@@ -809,7 +826,7 @@
 	row (basically, we'd drop random columns if the rows didn't all
 	have the same columns).
 
-2009-05-16  Thomas Hinkle  <tom@grenville>
+2009-05-16  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/test_gourmet.py: Add unit testing script (currently tests DB
 	and convert backends.)
@@ -819,7 +836,7 @@
 
 	* src/lib/convert_tests.py: Add testing file for our convert module.
 
-2009-05-15  Thomas Hinkle  <tom@grenville>
+2009-05-15  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/tests/recipe_files/athenos.mx2: Add test mastercook file for importing.
 
@@ -832,7 +849,7 @@
 	* src/lib/backends/db_tests.py (test_unicode): Extend tests of
 	unicode support.
 
-2009-05-10  Thomas Hinkle  <tom@grenville>
+2009-05-10  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/importers/xml_importer.py (Converter.__init__): Get rid
 	of self.name assignment (Thread throws an error otherwise)
@@ -841,12 +858,12 @@
 	for modify methods as well (fixes traceback on import with
 	non-unicode text that was getting fed straight to sqlite.
 
-2009-05-07  Thomas Hinkle  <tom@grenville>
+2009-05-07  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/exporters/exporter.py (exporter_mult._grab_attr_): Add yields/yield_unit
 	(exporter.__init__._grab_attr_): Add support for yields/yield_unit
 
-2009-05-05  Thomas Hinkle  <tom@grenville>
+2009-05-05  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/threadManager.py (SuspendableThread.__init__): Don't set name attribute on Thread (pass it to Thread.__init__() call (setting name throws an error in python 2.6)
 
@@ -857,7 +874,7 @@
 	* src/lib/importers/interactive_importer.py: Add yield_unit to
 	buttons.
 
-2009-05-01  Thomas Hinkle  <tom@grenville>
+2009-05-01  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/recipeIdentifier.py (get_ingredient_hash): md5 ->
 	hashlib (remove deprecated md5 lib)
@@ -868,7 +885,7 @@
 	* src/lib/backends/db.py : Fix unicode type errors from sqlalchemy.
 	* src/lib/*: Change servings->yields
 
-2009-03-27  Thomas Hinkle  <tom@grenville>
+2009-03-27  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/exporters/exportManager.py (ExportManager.offer_multiple_export):
 	Include any recipes linked to in your recipes in your export.
@@ -877,7 +894,7 @@
 	convenience method to append linked recipes (from
 	recipe-as-ingredient) to a list of recipes.
 
-2009-03-26  Thomas Hinkle  <tom@grenville>
+2009-03-26  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/gtk_extras/dialog_extras.py (saveas_file): If we can't
 	guess our file type based on the extension, use whatever is
@@ -895,14 +912,14 @@
 	* src/lib/plugins/nutritional_information/nutrition.py (NutritionData.set_key_from_ndbno):
 	Fix association editing.
 
-2009-03-24  Thomas Hinkle  <tom@grenville>
+2009-03-24  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py (HtmlExporterPlugin.get_multiple_exporter):
 	Eliminate obsolete arguments (progress_func is no longer needed
 	with our new signal interface and converters are now gotten using
 	a singleton design pattern.
 
-2009-03-14  Thomas Hinkle  <tom@grenville>
+2009-03-14  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugin_gui.py (PluginChooser.do_change_plugin): Display
 	error to user when loading a plugin fails. Give suggestions as to
@@ -918,18 +935,18 @@
 	when instantiating PluginSets to keep track of error messages our
 	users may want.
 
-2009-03-07  Thomas Hinkle  <tom@grenville>
+2009-03-07  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/shopgui.py (ShopGui): Prevent ShopGui window from
 	getting destroyed on delete-event (when user closes window from WM
 	control).
 
-2009-03-01  Thomas Hinkle  <tom@grenville>
+2009-03-01  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/shopgui.py (ShopGui.item_added): Make sure added items
 	don't end up in the pantry.
 
-2009-02-28  Thomas Hinkle  <tom@grenville>
+2009-02-28  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/listsaver: Added plugin (this was in the tarball
 	released earlier, but had accidentally not been added to CVS).
@@ -982,7 +999,7 @@
 	* src/lib/gglobals.py (add_icon): Fix add_icon to work as
 	advertised.
 
-2009-02-19  Thomas Hinkle  <tom@grenville>
+2009-02-19  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/GourmetRecipeManager.py (GourmetApplication.setup_prefs):
 	Use singleton method to get prefs
@@ -1002,7 +1019,7 @@
 	does not require right-clicking to discover (those right-clicking
 	still works).
 
-2009-02-16  Thomas Hinkle  <tom@grenville>
+2009-02-16  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/python_shell/ipython_view.py: Import IPython
 	outright -- if there's an ImportError, let the plugin fail to
@@ -1113,7 +1130,7 @@
 
 	* src/lib/version.py (version): Version->0.14.6
 
-2009-02-03  Thomas Hinkle  <tom@grenville>
+2009-02-03  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/defaults/defaults_en_GB.py: Replace missing
 	comma (syntax error)
@@ -1338,7 +1355,7 @@
 
 	* src/lib/ValueEditor.py - removed file (moved to field_editor plugin)
 
-2009-01-13  Thomas Hinkle  <tom@grenville>
+2009-01-13  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/browse_recipes/images/cooktime_empty_clock.png:
 	Adjust pixel height so preptime and cooktime clock-pie-wedges can
@@ -1367,7 +1384,7 @@
 	(RecData.search_recipes): Special case sorting of 'rating' (the
 	default feels backwards)
 
-2009-01-11  Thomas Hinkle  <tom@grenville>
+2009-01-11  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/browse_recipes/browser.py (RecipeBrowser.append_button):
 	Use i18n'd text rather than attribute names themselves for
@@ -1413,7 +1430,7 @@
 	* src/lib/plugins/browse_recipes/* Implement basic recipe browsing
 	interface as alternative to search (a new plugin).
 
-2009-01-03  Thomas Hinkle  <tom@grenville>
+2009-01-03  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/duplicate_finder/recipeMerger.glade: Add
 	auto-merge button to glade file. Rename some buttons for
@@ -1460,7 +1477,7 @@
 	requirement.
 
 
-2008-12-22  Thomas Hinkle  <tom@grenville>
+2008-12-22  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py (MealmasterExporterPlugin):
 	Mealmaster file are text/plain, not text/html
@@ -1498,7 +1515,7 @@
 
 	* TESTS: Add some more tests we should do before stable releases.
 
-2008-12-21  Thomas Hinkle  <tom@grenville>
+2008-12-21  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/import_export/plaintext.gourmet-plugin.in (_Comment):
 	++export.
@@ -1515,7 +1532,7 @@
 	* src/lib/plugin.py (BaseExporterPlugin.add_field.do_write): Don't
 	pass mark-up to exporters that expect plain text.
 
-2008-12-19  Thomas Hinkle  <tom@grenville>
+2008-12-19  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/tests/testImporters.py (ImportTestCase.testArchive): Add
 	test of archive plugin
@@ -1556,7 +1573,7 @@
 	our list of commonly tried encodings. Also, fix a bug in
 	check-encodings/diffy code.
 
-2008-12-16  Thomas Hinkle  <tom@grenville>
+2008-12-16  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/import_export/web_import_plugin/webpage_importer.py (WebParser.__init__):
 	Instantiate InteractiveImporter in __init__.py call.
@@ -1587,7 +1604,7 @@
 	properly (fixes bug where <span> tags showed up in recipe card
 	display view.)
 
-2008-12-13  Thomas Hinkle  <tom@grenville>
+2008-12-13  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/exporters/exportManager.py (ExportManager.offer_single_export):
 	Give us a useful error message when ignoring an invalid file mode.
@@ -1759,14 +1776,14 @@
 	editing of new ingredients once committed.
 	(UndoableTreeStuff.record_positions): Fix typo (rc->re)
 
-2008-12-01  Thomas Hinkle  <tom@grenville>
+2008-12-01  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/backends/db.py (RecData.setup_info_table): String->Text
 	fix to avoid annoying warning.
 	(make_simple_select_arg): Make sure we use unicode in our select
 	args.
 
-2008-11-23  Thomas Hinkle  <tom@grenville>
+2008-11-23  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* setup.py: Fix typo that prevented new import/export .in files from being i18n'd.
 
@@ -1775,7 +1792,7 @@
 	* setup.py (crawl): Automate addition of plugin directories to
 	setup.py script.
 
-2008-11-23  Thomas Hinkle  <tom@grenville>
+2008-11-23  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in:
 	Port old krecipe importer to new plugin system.
@@ -1793,7 +1810,7 @@
 	* src/lib/GourmetRecipeManager.py (GourmetApplication.quit): Fix
 	error saving recipe card on quit.
 
-2008-11-22  Thomas Hinkle  <tom@grenville>
+2008-11-22  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	This is the warning-fix edition, where we get rid of all the
 	annoying warnings on Gourmet startup!
@@ -1844,7 +1861,7 @@
 	warning; don't let plugin failures bring down whole app at
 	start-up.
 
-2008-10-27  Thomas Hinkle  <tom@grenville>
+2008-10-27  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* Version->0.14.2
 
@@ -1858,7 +1875,7 @@ v	* setup.py (result): Add new plugins.
 	copy of the database when we're about to do a DB update, just in
 	case something ugly happens.
 
-2008-10-27  Thomas Hinkle  <tom@grenville>
+2008-10-27  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugin_loader.py: Add debug calls to make it easy to see
 	what plugins are being loaded from where with a -v flag.
@@ -1993,7 +2010,7 @@ v	* setup.py (result): Add new plugins.
         web import plugin to plugin system. Still not clear on how
         we'll do web import plugin plugins.
 
-2008-08-10  Thomas Hinkle  <tom@grenville>
+2008-08-10  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/exporters/xml_exporter.py (XmlExporter.append_text):
 	Raise a clear type error when handed non-text.
@@ -2013,7 +2030,7 @@ v	* setup.py (result): Add new plugins.
 	about version changes reliably. Fix bug in exporter plugin when we
 	get a None where we expect text.
 
-2008-08-10  Thomas Hinkle  <tom@grenville>
+2008-08-10  Thomas Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/exporters/xml_exporter.py (XmlExporter.append_text):
 	Raise a clear type error when handed non-text.
