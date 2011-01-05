@@ -812,6 +812,7 @@ class RecData (Pluggable):
         """Get list of unique values for column in table."""
         if table is None: table=self.recipe_table
         if criteria: criteria = make_simple_select_arg(criteria,table)[0]
+        else: criteria=None
         if colname=='category' and table==self.recipe_table:
             print 'WARNING: you are using a hack to access category values.'
             table = self.categories_table
