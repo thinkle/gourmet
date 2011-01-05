@@ -53,10 +53,6 @@ become more GNOME HIG compliant (or just improve in general).
 2. For RTF support, you will need the PyRTF library available
    at http://pyrtf.sourceforge.net
 
-3. Gnomeprint bindings, for nice python printing. This is packaged
-   differently in different places and versions, but will likely be in
-   something called "python-gnome" or "pygtk-extras".
-
 * Install *
 
 As root, issue a python setup.py install.
