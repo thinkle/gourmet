@@ -2017,8 +2017,15 @@ class dbDic:
     def items (self):
         ret = []
         for i in self.db.fetch_all(self.vw):
-            key = getattr(i,self.kp)
-            val = getattr(i,self.vp)
+            try:
+                key = getattr(i,self.kp)
+                val = getattr(i,self.vp)
+            except:
+                print 'TRYING TO GET',self.kp,self.vp,'from',self.vw
+                print 'ERROR!!!'
+                import traceback; traceback.print_exc()
+                print 'IGNORING'
+                continue
             if key and self.pickle_key:
                 try:
                     key = pickle.loads(key)
