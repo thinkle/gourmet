@@ -1,3 +1,12 @@
+2011-02-02  Tom  <Thomas_Hinkle@sf.net>
+
+	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer.py: 
+	Adapt mealmaster plugin to handle 'Windows Gourmet' file (who
+	knows what this program was, but we appreciate their name!). The
+	adaptations shouldn't do any harm to mealmaster, and may help with
+	imports of some of the many broken mealmaster files that exist on
+	the internet.
+
 2011-01-05  Tom  <Thomas_Hinkle@sf.net>
 
 	* create_manifest.py: 
