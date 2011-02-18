@@ -49,7 +49,7 @@ class WindowSaver (WidgetSaver):
         WidgetSaver.__init__(self, widget, dictionary, signals, show)
 
     def load_properties (self):
-        if os.name=='nt': return
+        #if os.name=='nt': return
         for p,f in ['window_size', self.w.resize],['position',self.w.move]:
             if self.dictionary.has_key(p) and self.dictionary[p]:
                 debug('applying %s %s'%(f,self.dictionary[p]),3)

@@ -563,7 +563,6 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 				    self.prefs.get('shophpaned1',{'position':self.hp.get_position()})
 				    )
 	    )
-	    
 	plugin_loader.Pluggable.__init__(self,
 					 [plugin.ShoppingListPlugin])
 

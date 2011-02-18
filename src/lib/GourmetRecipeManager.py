@@ -996,6 +996,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                                                                 {'window_size':(800,600)}),
                                                  )
                          )
+        self.window.set_default_size(*self.prefs.get('app_window')['window_size'])
         self.window.set_title(version.appname)
         self.main = gtk.VBox()
         self.window.add(self.main)
