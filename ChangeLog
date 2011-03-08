@@ -1,3 +1,7 @@
+2011-03-07  Tom  <tom@localhost6.localdomain6>
+
+	* src/lib/backends/db.py (RecData._force_unicode): Don't unicode-ify images!
+
 2011-02-02  Tom  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer.py: 
