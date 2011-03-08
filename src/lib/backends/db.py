@@ -1318,7 +1318,7 @@ class RecData (Pluggable):
 
     def _force_unicode (self, dic):
        for k,v in dic.items():
-            if type(v)==str:
+            if type(v)==str and k not in ['image','thumb']:
                 # force unicode...
                 dic[k]=unicode(v) 
                 
