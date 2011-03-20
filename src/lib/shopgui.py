@@ -109,7 +109,6 @@ class IngredientAndPantryList:
         #                 'key2  : True}} ... where true and false mean include/exclude
         self.setup_ui_manager()
 	self.setup_actions()
-	self.create_popups()
 
     def setup_ui_manager (self):
 	self.ui_manager = gtk.UIManager()
@@ -565,6 +564,9 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 	    )
 	plugin_loader.Pluggable.__init__(self,
 					 [plugin.ShoppingListPlugin])
+        self.sh = self.get_shopper([])
+        self.setup_category_ui()
+	self.create_popups()
 
     def get_shopper (self, lst):
         return recipeManager.DatabaseShopper(lst, self.rd)
