@@ -178,8 +178,12 @@ class RecData (Pluggable):
             #print 'Connecting to file ',self.filename,'new=',self.new_db
         else:
             self.new_db = True # ??? How will we do this now?
-        self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal') 
-        self.db.begin()
+        print self.url
+        #self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal')
+        #self.base_connection = self.db
+        self.db = sqlalchemy.create_engine(self.url)
+        self.base_connection = self.db.connect()
+        self.base_connection.begin()
         self.metadata = sqlalchemy.MetaData(self.db)
         # Be noisy... (uncomment for debugging/fiddling)
         # self.metadata.bind.echo = True
@@ -202,7 +206,7 @@ class RecData (Pluggable):
             #c = sqlite_connection.cursor()
             #c.execute('select name from sqlite_master')
             #sqlite_connection.create_function('instr',2,instr)
-        self.db.commit() # Somehow necessary to prevent "DB Locked" errors 
+        #self.base_connection.commit() # Somehow necessary to prevent "DB Locked" errors 
         debug('Done initializing DB connection',1)
 
     def save (self):
@@ -221,7 +225,8 @@ class RecData (Pluggable):
                 {'last_access':time.time()}
                 )
         try:
-            self.db.commit()
+            #self.base_connection.commit()
+            pass
         except IndexError:
             print 'Ignoring sqlalchemy problem'
             import traceback; traceback.print_exc()
