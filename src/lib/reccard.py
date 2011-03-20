@@ -25,6 +25,7 @@ from gtk_extras.FauxActionGroups import ActionManager
 from gtk_extras import mnemonic_manager
 from gtk_extras import LinkedTextView
 from gtk_extras import fix_action_group_importance
+from gtk_extras.dialog_extras import UserCancelledError
 from plugin import RecDisplayModule, RecEditorModule, ToolPlugin, RecDisplayPlugin, RecEditorPlugin, IngredientControllerPlugin
 import plugin_loader
 import timeScanner
@@ -413,13 +414,13 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.left_notebook_pages[0] = self
 
     def shop_for_recipe_cb (self, *args):
+        print self,'shop_for_recipe_cb'
         import shopgui
         try:
-            d = shopgui.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
-                                          self.mult,
-                                          self.prefs,
-                                          self.rg)
-        except Exception:
+            d = self.rg.sl.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
+                                             self.mult,
+                                             self.prefs)
+        except UserCancelledError:
             return
         self.rg.sl.addRec(self.current_rec,self.mult,d)
         self.rg.sl.show()
