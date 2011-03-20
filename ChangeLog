@@ -1,3 +1,19 @@
+2011-03-20  Tom  <tom@localhost6.localdomain6>
+
+	* src/lib/reccard.py (shop_for_recipe_cb): Fix shopping list, and improve error messages.
+
+	* src/lib/GourmetRecipeManager.py (StuffThatShouldBePlugins.shop_recs): fix shopping list.
+
+	* src/lib/version.py (version): Update version (wasn't committed last time)
+
+	* src/lib/shopping.py: Fix refactoring error.
+
+	* src/lib/shopgui.py (ShopGui.getOptionalIngDic): Fix refactoring error that broke "add-to-shopping list" behavior
+
+2011-03-08  Tom  <tom@localhost6.localdomain6>
+
+	* src/lib/version.py (version): Version --> 0.15.8
+
 2011-03-07  Tom  <tom@localhost6.localdomain6>
 
 	* src/lib/backends/db.py (RecData._force_unicode): Don't unicode-ify images!
