@@ -1,14 +1,25 @@
 2011-03-20  Tom  <tom@localhost6.localdomain6>
 
+	* src/lib/version.py (version): Version --> 0.15.9
+
+	* src/lib/shopgui.py (ShopGui.show): Make sure window shows up
+	when something's added.
+
+	* src/lib/backends/db.py (RecData.initialize_connection): Remove
+	threadlocal strategy. This may be a mistake, but it seems to clear
+	up the commit errors numerous people were experiencing.
+
+	* src/lib/shopgui.py (ShopGui.__init__): Make sure popup menu gets
+	set-up for changing categories in shopping list.
+
 	* src/lib/reccard.py (shop_for_recipe_cb): Fix shopping list, and improve error messages.
 
 	* src/lib/GourmetRecipeManager.py (StuffThatShouldBePlugins.shop_recs): fix shopping list.
 
-	* src/lib/version.py (version): Update version (wasn't committed last time)
-
 	* src/lib/shopping.py: Fix refactoring error.
 
-	* src/lib/shopgui.py (ShopGui.getOptionalIngDic): Fix refactoring error that broke "add-to-shopping list" behavior
+	* src/lib/shopgui.py (ShopGui.getOptionalIngDic): Fix refactoring
+	error that broke "add-to-shopping list" behavior
 
 2011-03-08  Tom  <tom@localhost6.localdomain6>
 
