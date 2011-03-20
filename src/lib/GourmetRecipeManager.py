@@ -797,7 +797,7 @@ class StuffThatShouldBePlugins:
                                     digits=2)
                 if not mult:
                     mult = float(1)
-            d=shopgui.getOptionalIngDic(self.rd.get_ings(r),mult,self.prefs,self)
+            d=self.sl.getOptionalIngDic(self.rd.get_ings(r),mult,self.prefs)
             self.sl.addRec(r,mult,d)
             self.sl.show()
 
