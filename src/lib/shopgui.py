@@ -823,7 +823,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         return True
         
     def show (self, *args):
-	self.w.show()
+	self.w.present()
 
     def clear_recipes (self, *args):
         debug("clear_recipes (self, *args):",5)
