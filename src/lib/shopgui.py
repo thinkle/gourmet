@@ -698,7 +698,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 	self.ui_manager.insert_action_group(self.recipeListActions,0)
 	IngredientAndPantryList.setup_actions(self)
 
-    def getOptionalIngDic (ivw, mult, prefs):
+    def getOptionalIngDic (self, ivw, mult, prefs):
         """Return a dictionary of optional ingredients with a TRUE|FALSE value
 
         Alternatively, we return a boolean value, in which case that is
@@ -732,7 +732,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
             if retval:
                 return retval
             else:
-                raise Exception("Option Dialog cancelled!")
+                raise de.UserCancelError("Option Dialog cancelled!")
 
     # -- TreeView and TreeModel setup
     def create_rtree (self):
