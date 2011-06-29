@@ -1,3 +1,8 @@
+2011-06-28  Tom  <tom@localhost6.localdomain6>
+
+	* src/lib/reccard.py (IngredientController.commit_ingredients.commit_iter):
+	Fix attr lookup error in corner cases.
+
 2011-03-20  Tom  <tom@localhost6.localdomain6>
 
 	* src/lib/version.py (version): Version --> 0.15.9
