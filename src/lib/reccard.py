@@ -2100,7 +2100,9 @@ class IngredientController (plugin_loader.Pluggable):
                 if type(ing) != int and not isinstance(ing,RecRef):
                     for att in ['amount','unit','item','ingkey','position','inggroup','optional']:
                         # Remove all unchanged attrs from dict...
-                        if getattr(ing,att)==d[att]: del d[att]
+                        if hasattr(d,att):
+                            if getattr(ing,att)==d[att]:
+                                del d[att]
                     if ing in deleted:
                         # We have not been deleted...
                         deleted.remove(ing)
