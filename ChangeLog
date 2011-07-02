@@ -1,3 +1,9 @@
+2011-07-01  Tom  <tom@localhost6.localdomain6>
+
+	* src/lib/convert.py (NUMBER_FINDER_REGEXP): Avoid seeing things
+	with a terminal . or , as numbers, thus avoiding seeing numbered
+	lists as ingredients.
+
 2011-06-28  Tom  <tom@localhost6.localdomain6>
 
 	* src/lib/reccard.py (IngredientController.commit_ingredients.commit_iter):
