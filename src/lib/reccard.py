@@ -255,9 +255,10 @@ class RecCardDisplay (plugin_loader.Pluggable):
                 ]:
                 gladeCustomHandlers.add_custom_handler(name,handler)
             RecCardDisplay._custom_handlers_setup = True
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'recCardDisplay.glade'))
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(os.path.join(gladebase,'recCardDisplay.ui'))
 
-        self.glade.signal_autoconnect({
+        self.glade.connect_signals({
             'shop_for_recipe':self.shop_for_recipe_cb,
             'edit_details': lambda *args: self.reccard.show_edit(module='description'),
             'edit_ingredients': lambda *args: self.reccard.show_edit(module='ingredients'),

@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.6 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="recCardDisplay">
     <property name="title">Recipe Card</property>
     <property name="default_width">730</property>
@@ -24,13 +24,16 @@
                 <property name="wrap">True</property>
                 <property name="mnemonic_widget">titleDisplay</property>
               </widget>
+              <packing>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
               <widget class="GtkButton" id="AddToShoppingListButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="relief">GTK_RELIEF_HALF</property>
-                <property name="response_id">0</property>
+                <property name="receives_default">False</property>
+                <property name="relief">half</property>
                 <signal name="clicked" handler="shop_for_recipe"/>
                 <child>
                   <widget class="GtkAlignment" id="alignment37">
@@ -49,6 +52,7 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -71,13 +75,14 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="pack_type">GTK_PACK_END</property>
+                <property name="pack_type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </widget>
           <packing>
             <property name="expand">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -97,8 +102,8 @@
                     <property name="width_request">400</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
-                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <property name="hscrollbar_policy">never</property>
+                    <property name="vscrollbar_policy">automatic</property>
                     <child>
                       <widget class="GtkViewport" id="viewport10">
                         <property name="visible">True</property>
@@ -119,12 +124,12 @@
                                     <property name="left_padding">6</property>
                                     <child>
                                       <widget class="GtkButton" id="button383502">
+                                        <property name="label" translatable="yes">Edit _description</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="label" translatable="yes">Edit _description</property>
-                                        <property name="relief">GTK_RELIEF_NONE</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="relief">none</property>
                                         <property name="use_underline">True</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="edit_details"/>
                                       </widget>
                                     </child>
@@ -132,13 +137,15 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
-                                    <property name="pack_type">GTK_PACK_END</property>
+                                    <property name="pack_type">end</property>
+                                    <property name="position">0</property>
                                   </packing>
                                 </child>
                               </widget>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -167,12 +174,6 @@
                                         <property name="n_columns">2</property>
                                         <property name="column_spacing">6</property>
                                         <property name="row_spacing">6</property>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
                                         <child>
                                           <widget class="GtkAlignment" id="alignment34">
                                             <property name="visible">True</property>
@@ -208,6 +209,7 @@
                                               </widget>
                                               <packing>
                                                 <property name="expand">False</property>
+                                                <property name="position">0</property>
                                               </packing>
                                             </child>
                                             <child>
@@ -253,6 +255,7 @@
                                               <packing>
                                                 <property name="expand">False</property>
                                                 <property name="fill">False</property>
+                                                <property name="position">0</property>
                                               </packing>
                                             </child>
                                           </widget>
@@ -371,8 +374,8 @@
                                           <widget class="GtkButton" id="linkDisplayButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="relief">GTK_RELIEF_NONE</property>
-                                            <property name="response_id">0</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="relief">none</property>
                                             <child>
                                               <widget class="GtkLabel" id="linkDisplay">
                                                 <property name="visible">True</property>
@@ -382,7 +385,7 @@
                                                 <property name="use_markup">True</property>
                                                 <property name="wrap">True</property>
                                                 <property name="selectable">True</property>
-                                                <property name="ellipsize">PANGO_ELLIPSIZE_END</property>
+                                                <property name="ellipsize">end</property>
                                               </widget>
                                             </child>
                                           </widget>
@@ -523,7 +526,16 @@
                                             <property name="bottom_attach">5</property>
                                           </packing>
                                         </child>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
                                       </widget>
+                                      <packing>
+                                        <property name="position">0</property>
+                                      </packing>
                                     </child>
                                   </widget>
                                 </child>
@@ -563,22 +575,23 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
+                                    <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkButton" id="editInstructionsButton">
+                                    <property name="label" translatable="yes">Edit _instructions</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="label" translatable="yes">Edit _instructions</property>
-                                    <property name="relief">GTK_RELIEF_NONE</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="relief">none</property>
                                     <property name="use_underline">True</property>
-                                    <property name="response_id">0</property>
                                     <signal name="clicked" handler="edit_instructions"/>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
-                                    <property name="pack_type">GTK_PACK_END</property>
+                                    <property name="pack_type">end</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
@@ -623,22 +636,23 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
+                                    <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkButton" id="editModificationsButton">
+                                    <property name="label" translatable="yes">Edit _notes</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="label" translatable="yes">Edit _notes</property>
-                                    <property name="relief">GTK_RELIEF_NONE</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="relief">none</property>
                                     <property name="use_underline">True</property>
-                                    <property name="response_id">0</property>
                                     <signal name="clicked" handler="edit_modifications"/>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
-                                    <property name="pack_type">GTK_PACK_END</property>
+                                    <property name="pack_type">end</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
@@ -685,11 +699,14 @@
                     <property name="use_underline">True</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
               </widget>
+              <packing>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
               <widget class="GtkVSeparator" id="vseparator1">
@@ -710,8 +727,8 @@
                     <property name="width_request">250</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <property name="hscrollbar_policy">automatic</property>
+                    <property name="vscrollbar_policy">automatic</property>
                     <child>
                       <widget class="GtkViewport" id="viewport9">
                         <property name="visible">True</property>
@@ -732,22 +749,23 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
+                                    <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkButton" id="button383503">
+                                    <property name="label" translatable="yes">Edit _ingredients</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="label" translatable="yes">Edit _ingredients</property>
-                                    <property name="relief">GTK_RELIEF_NONE</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="relief">none</property>
                                     <property name="use_underline">True</property>
-                                    <property name="response_id">0</property>
                                     <signal name="clicked" handler="edit_ingredients"/>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
-                                    <property name="pack_type">GTK_PACK_END</property>
+                                    <property name="pack_type">end</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
@@ -755,6 +773,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -762,7 +781,7 @@
                                 <property name="visible">True</property>
                                 <property name="left_padding">12</property>
                                 <child>
-                                  <widget class="Custom" id="ingredientsDisplay">
+                                  <widget class="Custom" id="ingredientsDisplay1">
                                     <property name="visible">True</property>
                                     <property name="creation_function">makeLinkedTextView</property>
                                   </widget>
@@ -779,6 +798,9 @@
                       </widget>
                     </child>
                   </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
               </widget>
               <packing>
