@@ -48,7 +48,6 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
         self.attr_matcher = re.compile(attr_matcher)
         
     def handle_line (self, line):
-        if self.dash_matcher.match(line): return
         if self.rec_start_matcher.match(line):
             debug('rec_start! %s'%line,0)
             self.looking_for_title = True
@@ -70,7 +69,9 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
             self.get_ing_cols(rcm)
             self.in_ings = True
             self.reccol_headers=False
-            return
+        
+        if self.dash_matcher.match(line): return
+        
         rcm=self.rec_col_matcher.match(line)
         if rcm:
             self.reccol_headers = rcm

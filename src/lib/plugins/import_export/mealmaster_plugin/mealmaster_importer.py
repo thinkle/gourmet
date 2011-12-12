@@ -10,7 +10,10 @@ class mmf_constants:
     def __init__ (self):
         self.committed = False
         self.recattrs={'Title':'title',
+                       'Name':'title',
                        'Categories':'category',
+                       'Category':'category',
+                       'Serves':'servings',
                        'Servings':'servings',
                        'Source':'source',
                        'Recipe by':'source',
@@ -108,7 +111,7 @@ class mmf_importer (plaintext_importer.TextImporter):
         plaintext_importer.TextImporter.compile_regexps(self)
         self.start_matcher = re.compile(mm_start_pattern)
         self.end_matcher = re.compile("^[M-][M-][M-][M-][M-]\s*$")
-        self.group_matcher = re.compile("^\s*([M-][M-][M-][M-][M-])-*\s*([^-]+)\s*-*",re.IGNORECASE)
+        self.group_matcher = re.compile("^\s*([M-][M-][M-][M-][M-])-*\s*([^-]+)\s*-*|^\s*---\s*([^-]+)\s*---\s*$",re.IGNORECASE)
         self.ing_cont_matcher = re.compile("^\s*[-;]")
         self.ing_opt_matcher = re.compile("(.+?)\s*\(?\s*optional\)?\s*$",re.IGNORECASE)
         self.ing_or_matcher = re.compile("^[- ]*[Oo][Rr][- ]*$",re.IGNORECASE)
@@ -116,8 +119,12 @@ class mmf_importer (plaintext_importer.TextImporter):
         # a crude ingredient matcher -- we look for two numbers,
         # intermingled with spaces followed by a space or more,
         # followed by a two digit unit (or spaces)
+        c = convert.get_converter()
         self.ing_num_matcher = re.compile(
-            "^\s*%s+\s+[a-z ]{1,2}\s+.*\w+.*"%convert.NUMBER_REGEXP,
+            "^\s*%s+\s+([a-z ]{1,2}|%s)\s+.*\w+.*"%(
+                convert.NUMBER_REGEXP,
+                '('+'|'.join(filter(lambda x: x, c.unit_dict.keys()))+')'
+                ),
             re.IGNORECASE)
         self.amt_field_matcher = re.compile("^(\s*%s\s*)$"%convert.NUMBER_REGEXP)
         # we build a regexp to match anything that looks like
@@ -149,6 +156,8 @@ class mmf_importer (plaintext_importer.TextImporter):
         #gt.gtk_update()
         if self.start_matcher.match(l):
             debug("recipe start %s"%l,4)
+            if 'Windows Gourmet' in l:
+                self.unit_length = 15
             self.new_rec()
             self.last_line_was = 'new_rec'
             self.in_variation = False
@@ -274,13 +283,19 @@ class mmf_importer (plaintext_importer.TextImporter):
         """Start a new ingredient group."""
         testtimer = TimeAction('mealmaster_importer.handle_group',10)
         debug("start handle_group",10)
+        print 'handle_group',groupm,groupm.groups()
         # the only group of the match will contain
         # the name of the group. We'll put it into
         # a more sane title case (MealMaster defaults
         # to all caps
-        name = groupm.groups()[1].title()
+        name = groupm.groups()[1]
+        if not name:
+            name = groupm.groups()[2]
+        if not name:
+            return
+        name = name.strip().title()
         self.group=name
-        if re.match('^[^A-Za-z]*$',self.group): self.group=None
+        #if re.match('^[^A-Za-z]*$',self.group): self.group=None #WTF was this for?
         testtimer.end()
         # a blank line before a group could fool us into thinking
         # we were in instructions. If we see a group heading,

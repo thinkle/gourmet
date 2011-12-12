@@ -109,7 +109,6 @@ class IngredientAndPantryList:
         #                 'key2  : True}} ... where true and false mean include/exclude
         self.setup_ui_manager()
 	self.setup_actions()
-	self.create_popups()
 
     def setup_ui_manager (self):
 	self.ui_manager = gtk.UIManager()
@@ -563,9 +562,11 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 				    self.prefs.get('shophpaned1',{'position':self.hp.get_position()})
 				    )
 	    )
-	    
 	plugin_loader.Pluggable.__init__(self,
 					 [plugin.ShoppingListPlugin])
+        self.sh = self.get_shopper([])
+        self.setup_category_ui()
+	self.create_popups()
 
     def get_shopper (self, lst):
         return recipeManager.DatabaseShopper(lst, self.rd)
@@ -699,7 +700,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 	self.ui_manager.insert_action_group(self.recipeListActions,0)
 	IngredientAndPantryList.setup_actions(self)
 
-    def getOptionalIngDic (ivw, mult, prefs):
+    def getOptionalIngDic (self, ivw, mult, prefs):
         """Return a dictionary of optional ingredients with a TRUE|FALSE value
 
         Alternatively, we return a boolean value, in which case that is
@@ -733,7 +734,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
             if retval:
                 return retval
             else:
-                raise Exception("Option Dialog cancelled!")
+                raise de.UserCancelError("Option Dialog cancelled!")
 
     # -- TreeView and TreeModel setup
     def create_rtree (self):
@@ -822,7 +823,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         return True
         
     def show (self, *args):
-	self.w.show()
+	self.w.present()
 
     def clear_recipes (self, *args):
         debug("clear_recipes (self, *args):",5)

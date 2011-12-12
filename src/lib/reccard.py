@@ -25,6 +25,7 @@ from gtk_extras.FauxActionGroups import ActionManager
 from gtk_extras import mnemonic_manager
 from gtk_extras import LinkedTextView
 from gtk_extras import fix_action_group_importance
+from gtk_extras.dialog_extras import UserCancelledError
 from plugin import RecDisplayModule, RecEditorModule, ToolPlugin, RecDisplayPlugin, RecEditorPlugin, IngredientControllerPlugin
 import plugin_loader
 import timeScanner
@@ -105,7 +106,8 @@ class RecCard (object):
             self.recipe_editor = RecEditor(self, self.rg,self.current_rec,new=self.new)
         if module:
             self.recipe_editor.show_module(module)
-        self.recipe_editor.window.present()
+        self.recipe_editor.present()
+        
 
     def delete (self, *args):
         self.rg.rec_tree_delete_recs([self.current_rec])
@@ -389,6 +391,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
                                                                 {'window_size':(700,600)})
                                                  )
                          )
+        self.window.set_default_size(*self.prefs.get('reccard_window_%s'%self.current_rec.id)['window_size'])
         main_vb = gtk.VBox()
         menu = self.ui_manager.get_widget('/RecipeDisplayMenuBar')
         main_vb.pack_start(menu,fill=False,expand=False); menu.show()
@@ -412,13 +415,13 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.left_notebook_pages[0] = self
 
     def shop_for_recipe_cb (self, *args):
+        print self,'shop_for_recipe_cb'
         import shopgui
         try:
-            d = shopgui.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
-                                          self.mult,
-                                          self.prefs,
-                                          self.rg)
-        except Exception:
+            d = self.rg.sl.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
+                                             self.mult,
+                                             self.prefs)
+        except UserCancelledError:
             return
         self.rg.sl.addRec(self.current_rec,self.mult,d)
         self.rg.sl.show()
@@ -811,7 +814,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     def __init__ (self, reccard, rg, recipe=None, recipe_display=None, new=False):
         self.edited = False
-        self.editor_modules = [
+        self.editor_module_classes = [
             DescriptionEditorModule,
             IngredientEditorModule,
             InstructionsEditorModule,
@@ -827,7 +830,6 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         #self.setup_undo()        
         self.setup_main_interface()
         self.setup_modules()
-        #self.conf.append(WidgetSaver.WindowSaver(self.window, self.rg.prefs.get(self.pref_id+'_edit',{})))
         self.setup_notebook()
         self.page_specific_handlers = []
         #self.setEdited(False)
@@ -845,6 +847,11 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         self.mm.add_toplevel_widget(self.window)
         self.mm.fix_conflicts_peacefully()        
         self.show()
+        self.modules[0].grab_focus()
+
+    def present (self):
+        self.window.present()
+        self.modules[0].grab_focus()
         
     def setup_defaults (self):
         self.edit_title = _('Edit Recipe:')
@@ -884,7 +891,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
     def setup_modules (self):
         self.modules = []
         self.module_tab_by_name = {}
-        for klass in self.editor_modules:
+        for klass in self.editor_module_classes:
             instance = klass(self)
             tab_label = gtk.Label(instance.label)
             n = self.notebook.append_page(
@@ -898,7 +905,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
     def add_plugin (self, klass, position=None):
         """Register any external plugins"""
         instance = klass(self)
-        if instance.__class__ in self.editor_modules: return # these are handled in setup_modules...
+        if instance.__class__ in self.editor_module_classes: return # these are handled in setup_modules...
         tab_label = gtk.Label(instance.label)
         if not position:
             n = self.notebook.append_page(instance.main,tab_label=tab_label)
@@ -948,6 +955,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
                                                                    {'window_size':(700,600)})
                                                  )
                          )
+        self.window.set_default_size(*prefs.get_prefs().get('rec_editor_window')['window_size'])
         main_vb = gtk.VBox()
         main_vb.pack_start(self.ui_manager.get_widget('/RecipeEditorMenuBar'),expand=False,fill=False)
         main_vb.pack_start(self.ui_manager.get_widget('/RecipeEditorToolBar'),expand=False,fill=False)
@@ -1065,6 +1073,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
     def show_recipe_display_cb (self, *args):
         """Show recipe card display (not editor)."""
         self.reccard.show_display()
+
 
 class IngredientEditorModule (RecEditorModule):
 
@@ -1415,7 +1424,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
                 except:
                     debug('%s Value %s is not floatable!'%(e,getattr(self.current_rec,e)))
                     self.rw[e].set_text("")
-                Undo.UndoableGenericWidget(self.rw[e],self.history)
+                Undo.UndoableGenericWidget(self.rw[e],self.history, signal='value-changed')
             elif e in INT_REC_ATTRS:
                 self.rw[e].set_value(int(getattr(self.current_rec,e) or 0))
                 Undo.UndoableGenericWidget(self.rw[e],
@@ -1425,6 +1434,9 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
                 Undo.UndoableEntry(self.rw[e],self.history)
         self.imageBox.get_image()
 
+    def grab_focus (self):
+        self.glade.get_widget('titleBox').grab_focus()
+        
     def save (self, recdic):
         for c in self.reccom:
             recdic[c]=unicode(self.rw[c].entry.get_text())
@@ -2089,7 +2101,9 @@ class IngredientController (plugin_loader.Pluggable):
                 if type(ing) != int and not isinstance(ing,RecRef):
                     for att in ['amount','unit','item','ingkey','position','inggroup','optional']:
                         # Remove all unchanged attrs from dict...
-                        if getattr(ing,att)==d[att]: del d[att]
+                        if hasattr(d,att):
+                            if getattr(ing,att)==d[att]:
+                                del d[att]
                     if ing in deleted:
                         # We have not been deleted...
                         deleted.remove(ing)
@@ -2982,6 +2996,7 @@ class RecSelector (RecIndex):
                                                    {'window_size':(800,600)})
                                     )
             )
+        d.set_default_size(*self.prefs.get('recselector')['window_size'])
         self.recipe_index_interface = self.glade.get_widget('recipeIndexBox')
         self.recipe_index_interface.unparent()
         d.vbox.add(self.recipe_index_interface)

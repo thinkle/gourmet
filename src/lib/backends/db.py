@@ -178,8 +178,12 @@ class RecData (Pluggable):
             #print 'Connecting to file ',self.filename,'new=',self.new_db
         else:
             self.new_db = True # ??? How will we do this now?
-        self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal') 
-        self.db.begin()
+        print self.url
+        #self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal')
+        #self.base_connection = self.db
+        self.db = sqlalchemy.create_engine(self.url)
+        self.base_connection = self.db.connect()
+        self.base_connection.begin()
         self.metadata = sqlalchemy.MetaData(self.db)
         # Be noisy... (uncomment for debugging/fiddling)
         # self.metadata.bind.echo = True
@@ -202,7 +206,7 @@ class RecData (Pluggable):
             #c = sqlite_connection.cursor()
             #c.execute('select name from sqlite_master')
             #sqlite_connection.create_function('instr',2,instr)
-        self.db.commit() # Somehow necessary to prevent "DB Locked" errors 
+        #self.base_connection.commit() # Somehow necessary to prevent "DB Locked" errors 
         debug('Done initializing DB connection',1)
 
     def save (self):
@@ -221,7 +225,8 @@ class RecData (Pluggable):
                 {'last_access':time.time()}
                 )
         try:
-            self.db.commit()
+            #self.base_connection.commit()
+            pass
         except IndexError:
             print 'Ignoring sqlalchemy problem'
             import traceback; traceback.print_exc()
@@ -507,7 +512,7 @@ class RecData (Pluggable):
                 # https://sourceforge.net/projects/grecipe-manager/forums/forum/371768/topic/3630545?message=8205906
                 try:
                     self.db.connect().execute('select recipe_id from ingredients')
-                except sqlite3.OperationalError:
+                except sqlalchemy.exc.OperationalError:
                     self.alter_table('ingredients',self.setup_ingredient_table,
                                      {'id':'recipe_id'},
                                      ['refid', 'unit', 'amount', 'rangeamount',
@@ -811,12 +816,14 @@ class RecData (Pluggable):
     def get_unique_values (self, colname,table=None,**criteria):
         """Get list of unique values for column in table."""
         if table is None: table=self.recipe_table
-        if criteria: table = table.select(*make_simple_select_arg(criteria,table))
+        if criteria: criteria = make_simple_select_arg(criteria,table)[0]
+        else: criteria=None
         if colname=='category' and table==self.recipe_table:
             print 'WARNING: you are using a hack to access category values.'
-            table=self.categories_table
+            table = self.categories_table
+            table = table.alias('ingrtable')
         retval = [r[0] for
-                  r in sqlalchemy.select([getattr(table.c,colname)],distinct=True).execute().fetchall()
+                  r in sqlalchemy.select([getattr(table.c,colname)],distinct=True,whereclause=criteria).execute().fetchall()
                   ]
         return filter(lambda x: x is not None, retval) # Don't return null values
 
@@ -832,23 +839,24 @@ class RecData (Pluggable):
                 criteria = col.op('REGEXP')(search['search'])
             else:
                 criteria = col==crit['search']
+            result =  sqlalchemy.select(
+                [sqlalchemy.func.count(self.ingredients_table.c.ingkey).label('count'),
+                 self.ingredients_table.c.ingkey],
+                criteria,
+                **{'group_by':'ingkey',
+                   'order_by':make_order_by([],self.ingredients_table,count_by='ingkey'),
+                   }
+                ).execute().fetchall()                
         else:
-            criteria = []
-        result =  sqlalchemy.select(
-            [sqlalchemy.func.count(self.ingredients_table.c.ingkey).label('count'),
-             self.ingredients_table.c.ingkey],
-            criteria,
-            **{'group_by':'ingkey',
-               'order_by':make_order_by([],self.ingredients_table,count_by='ingkey'),
-               }
-            ).execute().fetchall()
+            result =  sqlalchemy.select(
+                [sqlalchemy.func.count(self.ingredients_table.c.ingkey).label('count'),
+                 self.ingredients_table.c.ingkey],
+                **{'group_by':'ingkey',
+                   'order_by':make_order_by([],self.ingredients_table,count_by='ingkey'),
+                   }
+                ).execute().fetchall()
+
         return result
-        return self.fetch_count(self.ingredients_table,'ingkey',)
-        s = sqlalchemy.select([
-            self.ingredients_table.c.ingkey,
-            func.count(self.ingredients_table.c.ingkey).label('count')
-            ]).execute()
-        return s.fetchall()
 
     def delete_by_criteria (self, table, criteria):
         """Table is our table.
@@ -1278,7 +1286,7 @@ class RecData (Pluggable):
 
     def do_add_and_return_item (self, table, dic, id_prop='id'):
         result_proxy = self.do_add(table,dic)
-        select = table.select(getattr(table.c,id_prop)==result_proxy.lastrowid)
+        select = table.select(getattr(table.c,id_prop)==result_proxy.inserted_primary_key[0])
         return select.execute().fetchone()
 
     def do_add_ing (self,dic):
@@ -1305,7 +1313,7 @@ class RecData (Pluggable):
             else:
                 raise ValueError('New recipe created with preset id %s, but ID is not in our list of new_ids'%rdict['id'])
         insert_statement = self.recipe_table.insert()
-        select = self.recipe_table.select(self.recipe_table.c.id==insert_statement.execute(**rdict).lastrowid)
+        select = self.recipe_table.select(self.recipe_table.c.id==insert_statement.execute(**rdict).inserted_primary_key[0])
         return select.execute().fetchone()
 
     def validate_ingdic (self,dic):
@@ -1315,7 +1323,7 @@ class RecData (Pluggable):
 
     def _force_unicode (self, dic):
        for k,v in dic.items():
-            if type(v)==str:
+            if type(v)==str and k not in ['image','thumb']:
                 # force unicode...
                 dic[k]=unicode(v) 
                 
@@ -1330,6 +1338,7 @@ class RecData (Pluggable):
     def do_modify (self, table, row, d, id_col='id'):
         if id_col:
             try:
+                self._force_unicode(d)
                 qr = table.update(getattr(table.c,id_col)==getattr(row,id_col)).execute(**d)
             except:
                 print 'do_modify failed with args'
@@ -2013,8 +2022,15 @@ class dbDic:
     def items (self):
         ret = []
         for i in self.db.fetch_all(self.vw):
-            key = getattr(i,self.kp)
-            val = getattr(i,self.vp)
+            try:
+                key = getattr(i,self.kp)
+                val = getattr(i,self.vp)
+            except:
+                print 'TRYING TO GET',self.kp,self.vp,'from',self.vw
+                print 'ERROR!!!'
+                import traceback; traceback.print_exc()
+                print 'IGNORING'
+                continue
             if key and self.pickle_key:
                 try:
                     key = pickle.loads(key)

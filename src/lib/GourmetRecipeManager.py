@@ -797,7 +797,7 @@ class StuffThatShouldBePlugins:
                                     digits=2)
                 if not mult:
                     mult = float(1)
-            d=shopgui.getOptionalIngDic(self.rd.get_ings(r),mult,self.prefs,self)
+            d=self.sl.getOptionalIngDic(self.rd.get_ings(r),mult,self.prefs)
             self.sl.addRec(r,mult,d)
             self.sl.show()
 
@@ -996,6 +996,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                                                                 {'window_size':(800,600)}),
                                                  )
                          )
+        self.window.set_default_size(*self.prefs.get('app_window')['window_size'])
         self.window.set_title(version.appname)
         self.main = gtk.VBox()
         self.window.add(self.main)

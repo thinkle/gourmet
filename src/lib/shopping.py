@@ -1,7 +1,7 @@
 import convert, sys
 from gettext import gettext as _
 from gdebug import debug
-import unittest
+import unittest, time
 
 class Shopper:
     def __init__ (self, inglist):
