@@ -137,7 +137,7 @@ class RecCard (object):
 
 class RecCardDisplay (plugin_loader.Pluggable):
 
-    ui = '''
+    ui_string = '''
     <ui>
        <menubar name="RecipeDisplayMenuBar">
           <menu name="Recipe" action="Recipe">
@@ -194,7 +194,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def setup_uimanager (self):
         self.ui_manager = gtk.UIManager()
-        self.ui_manager.add_ui_from_string(self.ui)
+        self.ui_manager.add_ui_from_string(self.ui_string)
         self.setup_actions()
         for group in [
             self.recipeDisplayActionGroup,
@@ -275,8 +275,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
                              'cuisine','category','instructions',
                              'modifications',]
         for attr in self.display_info:
-            setattr(self,'%sDisplay'%attr,self.glade.get_widget('%sDisplay'%attr))
-            setattr(self,'%sDisplayLabel'%attr,self.glade.get_widget('%sDisplayLabel'%attr))
+            setattr(self,'%sDisplay'%attr,self.ui.get_object('%sDisplay'%attr))
+            setattr(self,'%sDisplayLabel'%attr,self.ui.get_object('%sDisplayLabel'%attr))
             try:
                 assert(getattr(self,'%sDisplay'%attr))
                 if attr not in ['title','yield_unit']: 
@@ -296,17 +296,17 @@ class RecCardDisplay (plugin_loader.Pluggable):
                          self.rg.conv
                          )
         # link button
-        self.linkDisplayButton = self.glade.get_widget('linkDisplayButton')
+        self.linkDisplayButton = self.ui.get_object('linkDisplayButton')
         self.linkDisplayButton.connect('clicked',self.link_cb)
         # multiplication spinners
-        self.yieldsDisplaySpin = self.glade.get_widget('yieldsDisplaySpin')
+        self.yieldsDisplaySpin = self.ui.get_object('yieldsDisplaySpin')
         self.yieldsDisplaySpin.connect('changed',self.yields_change_cb)
-        self.yieldsMultiplyByLabel = self.glade.get_widget('multiplyByLabel')
-        self.multiplyDisplaySpin = self.glade.get_widget('multiplyByDisplaySpin')
+        self.yieldsMultiplyByLabel = self.ui.get_object('multiplyByLabel')
+        self.multiplyDisplaySpin = self.ui.get_object('multiplyByDisplaySpin')
         self.multiplyDisplaySpin.connect('changed',self.multiplication_change_cb)
-        self.multiplyDisplayLabel = self.glade.get_widget('multiplyByDisplayLabel')
+        self.multiplyDisplayLabel = self.ui.get_object('multiplyByDisplayLabel')
         # Image display widget
-        self.imageDisplay = self.glade.get_widget('imageDisplay')
+        self.imageDisplay = self.ui.get_object('imageDisplay')
         # end setup_widgets_from_glade
         self.reflow_on_resize = [(getattr(self,'%sDisplay'%s[0]),s[1]) for s in [
             ('title',0.9), # label and percentage of screen it can take up...
@@ -314,7 +314,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
             ('category',0.5),
             ('source',0.5),
             ]]
-        sw = self.glade.get_widget('recipeBodyDisplay')
+        sw = self.ui.get_object('recipeBodyDisplay')
         sw.connect('size-allocate',self.reflow_on_allocate_cb)
         sw.set_redraw_on_allocate(True)                
         
@@ -395,12 +395,12 @@ class RecCardDisplay (plugin_loader.Pluggable):
         main_vb = gtk.VBox()
         menu = self.ui_manager.get_widget('/RecipeDisplayMenuBar')
         main_vb.pack_start(menu,fill=False,expand=False); menu.show()
-        self.main = self.glade.get_widget('recipeDisplayMain')
+        self.main = self.ui.get_object('recipeDisplayMain')
         self.main.unparent()
         main_vb.pack_start(self.main); self.main.show()
         self.window.add(main_vb); main_vb.show()
         # Main has a series of important boxes which we will add our interfaces to...
-        self.left_notebook = self.glade.get_widget('recipeDisplayLeftNotebook')
+        self.left_notebook = self.ui.get_object('recipeDisplayLeftNotebook')
         self.window.add_accel_group(self.ui_manager.get_accel_group())
         self.window.show()
 
@@ -472,7 +472,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
         #    if i.shopoptional==1 or i.shopoptional==2:
         #        remembered=True
         #        break
-        #self.forget_remembered_optionals_menuitem = self.glade.get_widget('forget_remembered_optionals_menuitem')
+        #self.forget_remembered_optionals_menuitem = self.ui.get_object('forget_remembered_optionals_menuitem')
         #self.forget_remembered_optionals_menuitem.set_sensitive(remembered)
         for module in self.modules:
             # Protect ourselves from bad modules, since these could be
@@ -671,9 +671,9 @@ class IngredientDisplay:
         self.markup_ingredient_hooks = []
 
     def setup_widgets (self):
-        self.glade = self.recipe_display.glade
-        self.ingredientsDisplay = self.glade.get_widget('ingredientsDisplay')
-        self.ingredientsDisplayLabel = self.glade.get_widget('ingredientsDisplayLabel')
+        self.ui = self.recipe_display.ui
+        self.ingredientsDisplay = self.ui.get_object('ingredientsDisplay')
+        self.ingredientsDisplayLabel = self.ui.get_object('ingredientsDisplayLabel')
         self.ingredientsDisplay.connect('link-activated',
                                         self.show_recipe_link_cb)
         self.ingredientsDisplay.set_wrap_mode(gtk.WRAP_WORD)
@@ -1115,13 +1115,13 @@ class IngredientEditorModule (RecEditorModule):
 
     def setup_main_interface (self):
         self.glade = gtk.glade.XML(os.path.join(gladebase,'recCardIngredientsEditor.glade'))
-        self.main = self.glade.get_widget('ingredientsNotebook')
+        self.main = self.ui.get_object('ingredientsNotebook')
         self.main.unparent()
-        self.ingtree_ui = IngredientTreeUI(self, self.glade.get_widget('ingTree'))
+        self.ingtree_ui = IngredientTreeUI(self, self.ui.get_object('ingTree'))
         self.setup_action_groups()
         self.update_from_database()
-        self.quickEntry = self.glade.get_widget('quickIngredientEntry')
-        self.glade.signal_connect('addQuickIngredient',self.quick_add)
+        self.quickEntry = self.ui.get_object('quickIngredientEntry')
+        self.ui.signal_connect('addQuickIngredient',self.quick_add)
 
     def quick_add (self, *args):
         txt = unicode(self.quickEntry.get_text())
@@ -1350,11 +1350,11 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
         self.imageBox = ImageBox(self)
         self.init_recipe_widgets()
         # Set up wrapping callbacks...
-        self.glade.signal_autoconnect({
+        self.ui.signal_autoconnect({
             'setRecImage' : self.imageBox.set_from_fileCB,
             'delRecImage' : self.imageBox.removeCB,            
             })
-        self.main = self.glade.get_widget('descriptionMainWidget')
+        self.main = self.ui.get_object('descriptionMainWidget')
         self.main.unparent()
 
     def init_recipe_widgets (self):
@@ -1366,7 +1366,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             elif w=='Combo': self.reccom.append(a)
             else: raise Exception("REC_ATTRS widget type %s not recognized" % w)
         for a in self.reccom:
-            self.rw[a]=self.glade.get_widget("%sBox"%a)
+            self.rw[a]=self.ui.get_object("%sBox"%a)
             try:
                 assert(self.rw[a])
             except:
@@ -1379,7 +1379,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             atk.set_name(REC_ATTR_DIC[a]+' Entry')
             #self.rw[a].get_children()[0].connect('changed',self.changed_cb)
         for a in self.recent:            
-            self.rw[a]=self.glade.get_widget("%sBox"%a)
+            self.rw[a]=self.ui.get_object("%sBox"%a)
             try:
                 assert(self.rw[a])
             except:
@@ -1435,7 +1435,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
         self.imageBox.get_image()
 
     def grab_focus (self):
-        self.glade.get_widget('titleBox').grab_focus()
+        self.ui.get_object('titleBox').grab_focus()
         
     def save (self, recdic):
         for c in self.reccom:
@@ -1458,9 +1458,9 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         self.rg = RecCard.rg
         self.rc = RecCard
         self.glade = self.rc.glade
-        self.imageW = self.glade.get_widget('recImage')
-        self.addW = self.glade.get_widget('addImage')
-        self.delW = self.glade.get_widget('delImageButton')
+        self.imageW = self.ui.get_object('recImage')
+        self.addW = self.ui.get_object('addImage')
+        self.delW = self.ui.get_object('delImageButton')
         self.image = None
 
     def get_image (self, rec=None):
@@ -2997,7 +2997,7 @@ class RecSelector (RecIndex):
                                     )
             )
         d.set_default_size(*self.prefs.get('recselector')['window_size'])
-        self.recipe_index_interface = self.glade.get_widget('recipeIndexBox')
+        self.recipe_index_interface = self.ui.get_object('recipeIndexBox')
         self.recipe_index_interface.unparent()
         d.vbox.add(self.recipe_index_interface)
         d.connect('response',self.response_cb)
@@ -3217,7 +3217,7 @@ if __name__ == '__main__' and False:
 #         self.show()
 #         t.end()
 #         self.setup_uimanager()
-#         self.glade.get_widget('vbox34').pack_end(self.ui_manager.get_widget('/RecipeDisplayMenuBar'))
+#         self.ui.get_object('vbox34').pack_end(self.ui_manager.get_widget('/RecipeDisplayMenuBar'))
 
 #     def setup_uimanager (self):
 #         self.ui_manager = gtk.UIManager()
@@ -3273,7 +3273,7 @@ if __name__ == '__main__' and False:
 #         self.glade = gtk.glade.XML(os.path.join(gladebase,'recCard.glade'))
 #         self.mm = mnemonic_manager.MnemonicManager()
 #         self.mm.add_glade(self.glade)
-#         nlb=self.glade.get_widget('nutritionLabel').edit_missing_button.get_child().get_child().get_children()[1]
+#         nlb=self.ui.get_object('nutritionLabel').edit_missing_button.get_child().get_child().get_children()[1]
 #         self.mm.add_widget_mnemonic(nlb)
 #         self.mm.fix_conflicts_peacefully()
 #         # Manually fixing this particular mnemonic for English...
@@ -3281,7 +3281,7 @@ if __name__ == '__main__' and False:
 #             nlb.set_markup_with_mnemonic('Ed_it')
 
 #     def connect_signals (self):
-#         self.glade.signal_autoconnect({
+#         self.ui.signal_autoconnect({
 #             'rc2shop' : self.addToShopL,
 #             'rcHide' : self.hide,
 #             'rcHideEdit' : self.hide_edit,
@@ -3304,7 +3304,7 @@ if __name__ == '__main__' and False:
 
 #     def setup_style (self):
 #         # Do some funky style modifications...
-#         display_toplevel_widget = self.glade.get_widget('displayPanes')
+#         display_toplevel_widget = self.ui.get_object('displayPanes')
 #         new_style = display_toplevel_widget.get_style().copy()
 #         cmap = display_toplevel_widget.get_colormap()
 #         new_style.bg[gtk.STATE_NORMAL]= cmap.alloc_color('white')
@@ -3384,7 +3384,7 @@ if __name__ == '__main__' and False:
 
 #     def get_widgets (self):
 #         t=TimeAction('RecCard.get_widgets 1',0)
-#         self.nutritionLabel = self.glade.get_widget('nutritionLabel')
+#         self.nutritionLabel = self.ui.get_object('nutritionLabel')
 #         self.nutritionLabel.connect('ingredients-changed',
 #                                     lambda *args: self.resetIngredients()
 #                                     )
@@ -3394,23 +3394,23 @@ if __name__ == '__main__' and False:
 #                              'cuisine','category','instructions',
 #                              'modifications','ingredients']
 #         for attr in self.display_info:
-#             setattr(self,'%sDisplay'%attr,self.glade.get_widget('%sDisplay'%attr))
-#             setattr(self,'%sDisplayLabel'%attr,self.glade.get_widget('%sDisplayLabel'%attr))        
-#         self.glade.get_widget(
+#             setattr(self,'%sDisplay'%attr,self.ui.get_object('%sDisplay'%attr))
+#             setattr(self,'%sDisplayLabel'%attr,self.ui.get_object('%sDisplayLabel'%attr))        
+#         self.ui.get_object(
 #             'recipeDetailsWindow'
 #             ).connect('size-allocate',self.flow_my_text_on_allocate)
-#         self.glade.get_widget(
+#         self.ui.get_object(
 #             'nutritionWindow'
 #             ).connect('size-allocate',self.flow_my_text_on_allocate)
-#         self.glade.get_widget('recipeDetailsWindow').set_redraw_on_allocate(True)
-#         self.glade.get_widget('nutritionWindow').set_redraw_on_allocate(True)
-#         self.glade.get_widget('recCard').connect('size-allocate',self.on_card_edit_size_allocate_cb)
-#         self.yieldsDisplaySpin = self.glade.get_widget('yieldsDisplaySpin')
+#         self.ui.get_object('recipeDetailsWindow').set_redraw_on_allocate(True)
+#         self.ui.get_object('nutritionWindow').set_redraw_on_allocate(True)
+#         self.ui.get_object('recCard').connect('size-allocate',self.on_card_edit_size_allocate_cb)
+#         self.yieldsDisplaySpin = self.ui.get_object('yieldsDisplaySpin')
 #         self.yieldsDisplaySpin.connect('changed',self.yieldsChangeCB)
-#         self.yieldsMultiplyByLabel = self.glade.get_widget('multiplyByLabel')
-#         self.multiplyDisplaySpin = self.glade.get_widget('multiplyByDisplaySpin')
+#         self.yieldsMultiplyByLabel = self.ui.get_object('multiplyByLabel')
+#         self.multiplyDisplaySpin = self.ui.get_object('multiplyByDisplaySpin')
 #         self.multiplyDisplaySpin.connect('changed',self.multChangeCB)
-#         self.multiplyDisplayLabel = self.glade.get_widget('multiplyByDisplayLabel')
+#         self.multiplyDisplayLabel = self.ui.get_object('multiplyByDisplayLabel')
 #         self.ingredientsDisplay.connect('link-activated',
 #                                         self.show_recipe_link_cb)
 #         self.ingredientsDisplay.set_wrap_mode(gtk.WRAP_WORD)
@@ -3436,17 +3436,17 @@ if __name__ == '__main__' and False:
 #             basename='rc_hide_')
 #         self.ImageBox = ImageBox(self)
 #         self.rg.sl.sh.init_orgdic()        
-#         #self.yieldsW = self.glade.get_widget('yieldsBox')
-#         #self.multCheckB = self.glade.get_widget('rcMultCheck')
-#         self.multLabel = self.glade.get_widget('multLabel')
-#         self.linkDisplayButton = self.glade.get_widget('linkDisplayButton')
+#         #self.yieldsW = self.ui.get_object('yieldsBox')
+#         #self.multCheckB = self.ui.get_object('rcMultCheck')
+#         self.multLabel = self.ui.get_object('multLabel')
+#         self.linkDisplayButton = self.ui.get_object('linkDisplayButton')
 #         self.linkDisplayButton.connect('clicked',self.link_cb)
-#         self.edit_window = self.widget = self.glade.get_widget('recCard')
-#         self.display_window = self.glade.get_widget('recCardDisplay')
+#         self.edit_window = self.widget = self.ui.get_object('recCard')
+#         self.display_window = self.ui.get_object('recCardDisplay')
 #         self.edit_window.set_transient_for(self.display_window)
-#         self.stat = self.glade.get_widget('statusbar1')
+#         self.stat = self.ui.get_object('statusbar1')
 #         self.contid = self.stat.get_context_id('main')
-#         self.toggleReadableMenu = self.glade.get_widget('toggle_readable_units_menuitem')
+#         self.toggleReadableMenu = self.ui.get_object('toggle_readable_units_menuitem')
 #         self.toggleReadableMenu.set_active(self.prefs.get('readableUnits',True))
 #         self.toggleReadableMenu.connect('toggled',self.readableUnitsCB)
 #         # this hook won't spark an infinite loop since the 'toggled' signal is only emitted
@@ -3454,10 +3454,10 @@ if __name__ == '__main__' and False:
 #         def toggle_readable_hook (p,v):
 #             if p=='readableUnits': self.toggleReadableMenu.set_active(v)
 #         self.rg.prefs.set_hooks.append(toggle_readable_hook)
-#         self.notebook=self.glade.get_widget('editNotebook')
-#         self.tree_control = self.glade.get_widget('ChooserTreeView')
+#         self.notebook=self.ui.get_object('editNotebook')
+#         self.tree_control = self.ui.get_object('ChooserTreeView')
 #         cn = chooserNotebook.ChooserNotebook(self.tree_control,self.notebook)
-#         self.nutrition_notebook = self.glade.get_widget('nutritionNotebook')        
+#         self.nutrition_notebook = self.ui.get_object('nutritionNotebook')        
 #         t.end()
     
 #     def setup_action_manager(self):
@@ -3732,13 +3732,13 @@ if __name__ == '__main__' and False:
 #             else: raise Exception("REC_ATTRS widget type %s not recognized" % w)
 #         self.rectexts = ['instructions', 'modifications']
 #         for a in self.reccom:
-#             self.rw[a]=self.glade.get_widget("%sBox"%a)
+#             self.rw[a]=self.ui.get_object("%sBox"%a)
 #             self.rw[a].get_children()[0].connect('changed',self.changedCB)
 #         for a in self.recent:
-#             self.rw[a]=self.glade.get_widget("%sBox"%a)
+#             self.rw[a]=self.ui.get_object("%sBox"%a)
 #             self.rw[a].connect('changed',self.changedCB)
 #         for t in self.rectexts:
-#             self.rw[t]=self.glade.get_widget("%sText"%t)
+#             self.rw[t]=self.ui.get_object("%sText"%t)
 #             buf = TextBufferMarkup.InteractivePangoBuffer()
 #             self.rw[t].set_buffer(buf)
 #             buf.connect('changed',self.changedCB)
@@ -4078,8 +4078,8 @@ if __name__ == '__main__' and False:
 #             self.notebook.set_current_page(self.NOTEBOOK_ATTR_PAGE)
 #         else:
 #             #self.notebook.set_show_tabs(False)
-#             self.glade.get_widget('recCard').hide()
-#             self.glade.get_widget('recCardDisplay').show()
+#             self.ui.get_object('recCard').hide()
+#             self.ui.get_object('recCardDisplay').show()
 #             #self.undoButtons.set_visible(False)
 #             #self.saveButtons.set_visible(False)            
 #             #self.notebook.set_current_page(self.NOTEBOOK_DISPLAY_PAGE)
