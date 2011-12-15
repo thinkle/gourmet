@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
+  <!-- interface-requires gourmetwidgets 0.0 -->
   <requires lib="gtk+" version="2.24"/>
+  <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="recCardDisplay">
     <property name="can_focus">False</property>
     <property name="title">Recipe Card</property>
@@ -107,12 +109,14 @@
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="show_tabs">False</property>
                 <property name="show_border">False</property>
+                <property name="tab_hborder">1</property>
                 <child>
                   <object class="GtkScrolledWindow" id="recipeBodyDisplay">
                     <property name="width_request">400</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="hscrollbar_policy">never</property>
+                    <property name="vscrollbar_policy">automatic</property>
                     <child>
                       <object class="GtkViewport" id="viewport10">
                         <property name="visible">True</property>
@@ -198,9 +202,12 @@
                                             <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="xscale">0</property>
-                                            <object class="StarImage" id="ratingDisplay">
-                                              <property name="visible">True</property>
-                                            </object>
+                                            <child>
+                                              <object class="StarImage" id="ratingDisplay">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                              </object>
+                                            </child>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -220,6 +227,10 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="can_default">True</property>
+                                                <property name="primary_icon_activatable">False</property>
+                                                <property name="secondary_icon_activatable">False</property>
+                                                <property name="primary_icon_sensitive">True</property>
+                                                <property name="secondary_icon_sensitive">True</property>
                                                 <property name="climb_rate">0.5</property>
                                                 <property name="digits">2</property>
                                               </object>
@@ -269,6 +280,10 @@
                                               <object class="GtkSpinButton" id="multiplyByDisplaySpin">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
+                                                <property name="primary_icon_activatable">False</property>
+                                                <property name="secondary_icon_activatable">False</property>
+                                                <property name="primary_icon_sensitive">True</property>
+                                                <property name="secondary_icon_sensitive">True</property>
                                                 <property name="climb_rate">0.10000000149</property>
                                                 <property name="digits">2</property>
                                               </object>
@@ -633,6 +648,12 @@
                                 <property name="can_focus">False</property>
                                 <property name="left_padding">6</property>
                                 <property name="right_padding">6</property>
+                                <child>
+                                  <object class="LinkedTimeView" id="instructionsDisplay">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                </child>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -693,6 +714,12 @@
                                 <property name="can_focus">False</property>
                                 <property name="left_padding">6</property>
                                 <property name="right_padding">6</property>
+                                <child>
+                                  <object class="LinkedTimeView" id="modificationsDisplay">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                </child>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -754,6 +781,8 @@
                     <property name="width_request">250</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">automatic</property>
+                    <property name="vscrollbar_policy">automatic</property>
                     <child>
                       <object class="GtkViewport" id="viewport9">
                         <property name="visible">True</property>
@@ -811,6 +840,12 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="left_padding">12</property>
+                                <child>
+                                  <object class="LinkedTextView" id="ingredientsDisplay1">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
