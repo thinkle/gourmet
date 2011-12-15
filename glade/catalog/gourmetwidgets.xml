@@ -1,0 +1,35 @@
+<glade-catalog name="gourmetwidgets" library="gladepython"
+ domain="glade-3" depends="gtk+">
+ <init-function>glade_python_init</init-function>
+
+ <glade-widget-classes>
+   <glade-widget-class
+    title="Time Entry"
+    name="TimeEntry"
+    generic-name="time_entry"/>
+   <glade-widget-class
+    title="Star Button"
+    name="StarButton"
+    generic-name="star_button"/>
+   <glade-widget-class
+    title="Star Image"
+    name="StarImage"
+    generic-name="star_image"/>
+   <glade-widget-class
+    title="Linked Text View"
+    name="LinkedTextView"
+    generic-name="linked_time_view"/>
+   <glade-widget-class
+    title="Linked Time View"
+    name="LinkedTimeView"
+    generic-name="linked_time_view"/>
+ </glade-widget-classes>
+
+ <glade-widget-group name="GourmetWidgets" title="Gourmet Widgets">
+   <glade-widget-class-ref name="TimeEntry"/>
+   <glade-widget-class-ref name="StarButton"/>
+   <glade-widget-class-ref name="StarImage"/>
+   <glade-widget-class-ref name="LinkedTextView"/>
+   <glade-widget-class-ref name="LinkedTimeView"/>
+ </glade-widget-group>
+</glade-catalog>

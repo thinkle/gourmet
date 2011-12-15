@@ -74,6 +74,7 @@ class LinkedPangoBuffer (PangoBuffer):
         PangoBuffer.insert_with_tags(self,itr,text,*tags)
 
 class LinkedTextView (gtk.TextView):
+    __gtype_name__ = 'LinkedTextView'
 
     hovering_over_link = False
     hand_cursor = gtk.gdk.Cursor(gtk.gdk.HAND2)

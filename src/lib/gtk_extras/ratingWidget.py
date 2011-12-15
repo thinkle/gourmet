@@ -145,6 +145,8 @@ star_generator = StarGenerator()
 # StarImage is a class that allows easy setting of an image from a value.
 
 class StarImage (gtk.Image):
+    __gtype_name__ = 'StarImage'
+
     def __init__ (self,
                   star_generator,
                   value=0,
@@ -191,6 +193,7 @@ class StarImage (gtk.Image):
 # via the mouse or the keyboard
 
 class StarButton (gtk.Button):
+    __gtype_name__ = 'StarButton'
 
     """A StarButton, to allow the user to select a number using icons.
 

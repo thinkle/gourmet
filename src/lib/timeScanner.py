@@ -34,6 +34,7 @@ class TimeBuffer (LinkedTextView.LinkedPangoBuffer):
              )
 
 class LinkedTimeView (LinkedTextView.LinkedTextView):
+    __gtype_name__ = 'LinkedTimeView'
 
     __gsignals__ = {
         'time-link-activated':(gobject.SIGNAL_RUN_LAST,

@@ -25,6 +25,7 @@ import cb_extras, validatingEntry
 TIME_TO_READ = 1000
 
 class TimeEntry (validatingEntry.ValidatingEntry):
+    __gtype_name__ = 'TimeEntry'
 
     def __init__ (self, conv=None):
         if not conv: self.conv = convert.get_converter()

@@ -260,7 +260,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.ui = gtk.Builder()
         self.ui.add_from_file(os.path.join(gladebase,'recCardDisplay.ui'))
 
-        self.glade.connect_signals({
+        self.ui.connect_signals({
             'shop_for_recipe':self.shop_for_recipe_cb,
             'edit_details': lambda *args: self.reccard.show_edit(module='description'),
             'edit_ingredients': lambda *args: self.reccard.show_edit(module='ingredients'),
