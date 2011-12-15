@@ -1,0 +1,8 @@
+This directory contains a catalog with some custom widgets needed to use Gourmet's gtkbuilder *.ui files in glade.
+
+Note that as long as we're using Gtk 2 (not 3), you need Glade 3.8 (not 3.10). 
+In Ubuntu, Glade 3.8 is in the glade-gtk2 package, so you need to install that. 
+
+Then, from the root source directory do:
+
+GLADE_CATALOG_PATH=glade/catalog/ glade-gtk2
