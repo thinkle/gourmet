@@ -24,6 +24,7 @@ from importers.importer import parse_range
 from gtk_extras.FauxActionGroups import ActionManager
 from gtk_extras import mnemonic_manager
 from gtk_extras import LinkedTextView
+from gtk_extras.ratingWidget import StarImage
 from gtk_extras import fix_action_group_importance
 from gtk_extras.dialog_extras import UserCancelledError
 from plugin import RecDisplayModule, RecEditorModule, ToolPlugin, RecDisplayPlugin, RecEditorPlugin, IngredientControllerPlugin
@@ -249,14 +250,6 @@ class RecCardDisplay (plugin_loader.Pluggable):
          None,None,self.export_cb)
 
     def setup_glade (self):
-        if not RecCardDisplay._custom_handlers_setup:
-            for name,handler in [
-                ('makeStarImage', lambda *args: ratingWidget.make_star_image(self.rg.star_generator)),
-                ('makeLinkedTextView', lambda *args: LinkedTextView.LinkedTextView()),
-                ('makeLinkedTimeView', lambda *args: timeScanner.LinkedTimeView()),
-                ]:
-                gladeCustomHandlers.add_custom_handler(name,handler)
-            RecCardDisplay._custom_handlers_setup = True
         self.ui = gtk.Builder()
         self.ui.add_from_file(os.path.join(gladebase,'recCardDisplay.ui'))
 
@@ -672,7 +665,7 @@ class IngredientDisplay:
 
     def setup_widgets (self):
         self.ui = self.recipe_display.ui
-        self.ingredientsDisplay = self.ui.get_object('ingredientsDisplay')
+        self.ingredientsDisplay = self.ui.get_object('ingredientsDisplay1')
         self.ingredientsDisplayLabel = self.ui.get_object('ingredientsDisplayLabel')
         self.ingredientsDisplay.connect('link-activated',
                                         self.show_recipe_link_cb)

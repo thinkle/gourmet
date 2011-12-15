@@ -148,12 +148,12 @@ class StarImage (gtk.Image):
     __gtype_name__ = 'StarImage'
 
     def __init__ (self,
-                  star_generator,
+                  star_gen=star_generator,
                   value=0,
                   upper=10):
         """Create an Image widget with value/upper stars filled in.
 
-        star_generator is an instance of the StarGenerator class which will do
+        star_gen is an instance of the StarGenerator class which will do
         the work of creating the Pixbufs with the star images.
 
         The number can be changed via the get_value and set_value methods.
@@ -162,7 +162,7 @@ class StarImage (gtk.Image):
         use a StarButton.
         """
         gtk.Image.__init__(self)
-        self.stars = star_generator
+        self.stars = star_gen
         self.upper = upper
         self.set_value(value)
         
@@ -205,13 +205,13 @@ class StarButton (gtk.Button):
     _custom_handlers_ = {}
 
     def __init__ (self,
-                  star_generator,
+                  star_gen=star_generator,
                   start_value = 0,
                   upper=10,
                   ):
         """Initiate a StarButton.
 
-        star_generator is an instance of the StarGenerator class which will
+        star_gen is an instance of the StarGenerator class which will
         generate our actual images of stars or whatever else.
 
         Upper is the upper number of 'stars' the user can select.
@@ -234,7 +234,7 @@ class StarButton (gtk.Button):
         #             self.activate_cb)
         self.connect('mnemonic-activate',
                      self.activate_cb)
-        self.image = StarImage(star_generator, value=start_value, upper=upper)
+        self.image = StarImage(star_gen, value=start_value, upper=upper)
         self.add(self.image)
         self.image.show()
         # set up convenience methods        
