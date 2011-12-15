@@ -22,7 +22,7 @@ class RecIndex:
 
     default_searches = [{'column':'deleted','operator':'=','search':False}]
     
-    def __init__ (self, glade, rd, rg, editable=False):
+    def __init__ (self, ui, rd, rg, editable=False):
         #self.visible = 1 # can equal 1 or 2
         self.editable=editable
         self.selected = True        
@@ -30,7 +30,7 @@ class RecIndex:
         self.rtcolsdic=rg.rtcolsdic
         self.rtwidgdic=rg.rtwidgdic
         self.prefs=rg.prefs
-        self.glade = glade
+        self.ui = ui
         self.rd = rd
         self.rg = rg
         self.searchByDic = {
@@ -66,41 +66,41 @@ class RecIndex:
         self.setup_widgets()
 
     def setup_widgets (self):
-        self.srchentry=self.glade.get_widget('rlistSearchbox')
-	self.limitButton = self.glade.get_widget('rlAddButton')
+        self.srchentry=self.ui.get_object('rlistSearchbox')
+	self.limitButton = self.ui.get_object('rlAddButton')
         # Don't # allow for special keybindings
         #self.srchentry.connect('key_press_event',self.srchentry_keypressCB)        
         self.SEARCH_MENU_KEY = "b"
-        self.srchLimitBar = self.glade.get_widget('srchLimitBar')
+        self.srchLimitBar = self.ui.get_object('srchLimitBar')
         assert(self.srchLimitBar)
         self.srchLimitBar.hide()
-        self.srchLimitLabel=self.glade.get_widget('srchLimitLabel')
-        self.srchLimitClearButton = self.glade.get_widget('srchLimitClear')
+        self.srchLimitLabel=self.ui.get_object('srchLimitLabel')
+        self.srchLimitClearButton = self.ui.get_object('srchLimitClear')
         self.srchLimitText=self.srchLimitLabel.get_text()
         self.srchLimitDefaultText=self.srchLimitText
-        self.searchButton = self.glade.get_widget('searchButton')
-        self.rSearchByMenu = self.glade.get_widget('rlistSearchByMenu')
+        self.searchButton = self.ui.get_object('searchButton')
+        self.rSearchByMenu = self.ui.get_object('rlistSearchByMenu')
         cb.set_model_from_list(self.rSearchByMenu, self.searchByList, expand=False)
         cb.setup_typeahead(self.rSearchByMenu)
         self.rSearchByMenu.set_active(0)
         self.rSearchByMenu.connect('changed',self.search_as_you_type)
-        self.sautTog = self.glade.get_widget('searchAsYouTypeToggle')
+        self.sautTog = self.ui.get_object('searchAsYouTypeToggle')
         self.search_actions.get_action('toggleSearchAsYouType').connect_proxy(self.sautTog)
-        self.regexpTog = self.glade.get_widget('regexpTog')
-        self.searchOptionsBox = self.glade.get_widget('searchOptionsBox')
+        self.regexpTog = self.ui.get_object('regexpTog')
+        self.searchOptionsBox = self.ui.get_object('searchOptionsBox')
         self.search_actions.get_action('toggleShowSearchOptions').connect_proxy(
-            self.glade.get_widget('searchOptionsToggle')
+            self.ui.get_object('searchOptionsToggle')
             )
         self.search_actions.get_action('toggleRegexp').connect_proxy(self.regexpTog)
-        self.rectree = self.glade.get_widget('recTree')
-        self.sw = self.glade.get_widget('scrolledwindow')
+        self.rectree = self.ui.get_object('recTree')
+        self.sw = self.ui.get_object('scrolledwindow')
         self.rectree.connect('start-interactive-search',lambda *args: self.srchentry.grab_focus())
-        self.prev_button = self.glade.get_widget('prevButton')
-        self.next_button = self.glade.get_widget('nextButton')
-        self.first_button = self.glade.get_widget('firstButton')
-        self.last_button = self.glade.get_widget('lastButton')        
-        self.showing_label = self.glade.get_widget('showingLabel')
-        self.stat = self.glade.get_widget('statusbar')
+        self.prev_button = self.ui.get_object('prevButton')
+        self.next_button = self.ui.get_object('nextButton')
+        self.first_button = self.ui.get_object('firstButton')
+        self.last_button = self.ui.get_object('lastButton')        
+        self.showing_label = self.ui.get_object('showingLabel')
+        self.stat = self.ui.get_object('statusbar')
         self.contid = self.stat.get_context_id('main')
         self.setup_search_views()
         self.setup_rectree()
@@ -108,7 +108,7 @@ class RecIndex:
         self.next_button.connect('clicked',lambda *args: self.rmodel.next_page())
         self.first_button.connect('clicked',lambda *args: self.rmodel.goto_first_page())
         self.last_button.connect('clicked',lambda *args: self.rmodel.goto_last_page())
-        self.glade.signal_autoconnect({
+        self.ui.connect_signals({
             'rlistSearch': self.search_as_you_type,
             'ingredientSearch' : lambda *args: self.set_search_by('ingredient'),
             'titleSearch' : lambda *args: self.set_search_by('title'),
@@ -135,14 +135,14 @@ class RecIndex:
         # and we update our count with each deletion.
         self.rd.delete_hooks.append(self.set_reccount)
         # setup a history
-        self.uim=self.glade.get_widget('undo_menu_item')
-        self.rim=self.glade.get_widget('redo_menu_item')
-        self.raim=self.glade.get_widget('reapply_menu_item')
+        self.uim=self.ui.get_object('undo_menu_item')
+        self.rim=self.ui.get_object('redo_menu_item')
+        self.raim=self.ui.get_object('reapply_menu_item')
         self.history = Undo.UndoHistoryList(self.uim,self.rim,self.raim)
         # Fix up our mnemonics with some heavenly magic
         self.mm = mnemonic_manager.MnemonicManager()
         self.mm.sacred_cows.append("search for") # Don't touch _Search for
-        self.mm.add_glade(self.glade)
+        self.mm.add_glade(self.ui)
         self.mm.add_treeview(self.rectree)
         self.mm.fix_conflicts_peacefully()
 

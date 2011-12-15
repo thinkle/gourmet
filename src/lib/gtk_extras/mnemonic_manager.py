@@ -64,17 +64,18 @@ class MnemonicManager:
         widgets = collect_descendants(w)
         self.add_ui(widgets)
 
-    def add_glade (self, glade=None, glade_file=None):
+    def add_glade (self, ui=None, ui_file=None):
         """Add all mnemonic widgets in glade object.
 
-        We can be passed a gladefile or a glade object.
+        We can be passed a gtk.Builder file or a gtk.Builder object.
         Realistically, though, you'll want to pass the object and keep
         a reference around to use. The file option's really just for
         testing :)
         """
-        if not glade:
-            glade=gtk.glade.XML(glade_file)
-        widgets=glade.get_widget_prefix('') # get all widgets
+        if not ui:
+            ui = gtk.Builder()
+            ui.add_from_file(ui_file)
+        widgets=ui.get_objects() # get all widgets
         # Check if there are more than one window, in which case we
         # each window gets its own sub_handler
         windows = filter(lambda w: isinstance(w,gtk.Window),widgets)

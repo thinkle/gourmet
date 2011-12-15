@@ -398,9 +398,8 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="Custom" id="cooktimeBox">
+                          <object class="TimeEntry" id="cooktimeBox">
                             <property name="visible">True</property>
-                            <property name="creation_function">makeTimeEntry</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -412,9 +411,8 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="Custom" id="preptimeBox">
+                          <object class="TimeEntry" id="preptimeBox">
                             <property name="visible">True</property>
-                            <property name="creation_function">makeTimeEntry</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -454,9 +452,8 @@
                               <object class="GtkHBox" id="hbox30">
                                 <property name="visible">True</property>
                                 <child>
-                                  <object class="Custom" id="ratingBox">
+                                  <object class="StarButton" id="ratingBox">
                                     <property name="visible">True</property>
-                                    <property name="creation_function">makeStarButton</property>
                                     <accessibility>
                                       
                                     </accessibility>

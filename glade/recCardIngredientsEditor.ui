@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <!--Generated with glade3 3.4.5 on Sat Jan 31 18:06:28 2009 -->
 <interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="ingredientsEditor">
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
     <child>
@@ -34,7 +36,7 @@
                     <property name="can_focus">True</property>
                     <property name="tooltip-text">Type your ingredient here. Numeric amounts and standard units will automatically be recognized. Anything typed after a semicolon will not be included in the ingredient key (i.e. will not be used for shopping lists and nutritional information).</property>
                     <property name="invisible_char">*</property>
-                    <signal handler="addQuickIngredient" name="activate"/>
+                    <signal name="activate" handler="addQuickIngredient" swapped="no"/>
                   </object>
                   <packing>
                     <property name="position">1</property>
@@ -46,7 +48,7 @@
                     <property name="can_focus">True</property>
                     <property name="label">gtk-add</property>
                     <property name="use_stock">True</property>
-                    <signal handler="addQuickIngredient" name="clicked"/>
+                    <signal name="activate" handler="addQuickIngredient" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import gc
-import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
+import gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
 import types
 import xml.sax.saxutils, pango
 import exporters.exportManager
@@ -172,14 +172,12 @@ class RecCardDisplay (plugin_loader.Pluggable):
     </ui>
     '''
 
-    _custom_handlers_setup = False
-
     def __init__ (self, reccard, recGui, recipe=None):
         self.reccard = reccard; self.rg = recGui; self.current_rec = recipe
         self.mult = 1 # parameter
         self.conf = reccard.conf
         self.prefs = prefs.get_prefs()
-        self.setup_glade()
+        self.setup_ui()
         self.setup_uimanager()
         self.setup_main_window()
         self.setup_notebook()
@@ -249,7 +247,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
         ('Export',None,_('Export Recipe'),
          None,None,self.export_cb)
 
-    def setup_glade (self):
+    def setup_ui (self):
         self.ui = gtk.Builder()
         self.ui.add_from_file(os.path.join(gladebase,'recCardDisplay.ui'))
 
@@ -260,9 +258,9 @@ class RecCardDisplay (plugin_loader.Pluggable):
             'edit_instructions': lambda *args: self.reccard.show_edit(module='instructions'),
             'edit_modifications': lambda *args: self.reccard.show_edit(module='notes'),
             })
-        self.setup_widgets_from_glade()
+        self.setup_widgets_from_ui()
 
-    def setup_widgets_from_glade (self):
+    def setup_widgets_from_ui (self):
         self.display_info = ['title','rating','preptime','link',
                              'yields','yield_unit','cooktime','source',
                              'cuisine','category','instructions',
@@ -300,7 +298,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.multiplyDisplayLabel = self.ui.get_object('multiplyByDisplayLabel')
         # Image display widget
         self.imageDisplay = self.ui.get_object('imageDisplay')
-        # end setup_widgets_from_glade
+        # end setup_widgets_from_ui
         self.reflow_on_resize = [(getattr(self,'%sDisplay'%s[0]),s[1]) for s in [
             ('title',0.9), # label and percentage of screen it can take up...
             ('cuisine',0.5),
@@ -762,7 +760,7 @@ class IngredientDisplay:
 
 class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
-    ui = '''
+    ui_string = '''
     <ui>
       <menubar name="RecipeEditorMenuBar">
         <menu name="Recipe" action="Recipe">
@@ -851,7 +849,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     def setup_ui_manager (self):
         self.ui_manager = gtk.UIManager()
-        self.ui_manager.add_ui_from_string(self.ui)
+        self.ui_manager.add_ui_from_string(self.ui_string)
         self.setup_action_groups()
         fix_action_group_importance(self.mainRecEditActionGroup)
         self.ui_manager.insert_action_group(self.mainRecEditActionGroup,0)
@@ -1000,7 +998,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
             self.ui_manager.remove_ui(self.last_merged_ui)
             for ag in self.last_merged_action_groups:
                 self.ui_manager.remove_action_group(ag)
-        self.last_merged_ui = self.ui_manager.add_ui_from_string(self.modules[page].ui)
+        self.last_merged_ui = self.ui_manager.add_ui_from_string(self.modules[page].ui_string)
         for ag in self.modules[page].action_groups:
             fix_action_group_importance(ag)
             self.ui_manager.insert_action_group(ag,0)
@@ -1072,7 +1070,7 @@ class IngredientEditorModule (RecEditorModule):
 
     name = 'ingredients'
     label = _('Ingredients')
-    ui = '''
+    ui_string = '''
       <menubar name="RecipeEditorMenuBar">
         <menu name="Edit" action="Edit">
           <placeholder name="EditActions">
@@ -1107,14 +1105,15 @@ class IngredientEditorModule (RecEditorModule):
         pass
 
     def setup_main_interface (self):
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'recCardIngredientsEditor.glade'))
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(os.path.join(gladebase,'recCardIngredientsEditor.ui'))
         self.main = self.ui.get_object('ingredientsNotebook')
         self.main.unparent()
         self.ingtree_ui = IngredientTreeUI(self, self.ui.get_object('ingTree'))
         self.setup_action_groups()
         self.update_from_database()
         self.quickEntry = self.ui.get_object('quickIngredientEntry')
-        self.ui.signal_connect('addQuickIngredient',self.quick_add)
+        self.ui.connect_signals('addQuickIngredient',self.quick_add)
 
     def quick_add (self, *args):
         txt = unicode(self.quickEntry.get_text())
@@ -1307,7 +1306,7 @@ class TextEditor:
 class DescriptionEditorModule (TextEditor, RecEditorModule):
     name = 'description'
     label = _('Description')
-    ui = '''
+    ui_string = '''
       <menubar name="RecipeEditorMenuBar">
         <menu name="Edit" action="Edit">
           <placeholder name="EditActions">
@@ -1326,24 +1325,17 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
         <toolitem action="Paste"/>
       </toolbar>
     '''
-    _custom_handlers_setup = False
 
     def __init__ (self, *args):
         RecEditorModule.__init__(self, *args)
 
     def setup_main_interface (self):
-        if not DescriptionEditorModule._custom_handlers_setup:
-            for name,handler in [
-                ('makeStarButton', lambda *args: ratingWidget.make_star_button(self.rg.star_generator)),
-                ('makeTimeEntry', lambda *args: timeEntry.make_time_entry()),
-                ]:
-                gladeCustomHandlers.add_custom_handler(name,handler)
-            DescriptionEditorModule._custom_handlers_setup = True
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'recCardDescriptionEditor.glade'))
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(os.path.join(gladebase,'recCardDescriptionEditor.ui'))
         self.imageBox = ImageBox(self)
         self.init_recipe_widgets()
         # Set up wrapping callbacks...
-        self.ui.signal_autoconnect({
+        self.ui.connect_signals({
             'setRecImage' : self.imageBox.set_from_fileCB,
             'delRecImage' : self.imageBox.removeCB,            
             })
@@ -1450,7 +1442,7 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         self.edited = False
         self.rg = RecCard.rg
         self.rc = RecCard
-        self.glade = self.rc.glade
+        self.ui = self.rc.ui
         self.imageW = self.ui.get_object('recImage')
         self.addW = self.ui.get_object('addImage')
         self.delW = self.ui.get_object('delImageButton')
@@ -1571,7 +1563,7 @@ class ImageBox: # used in DescriptionEditor for recipe image.
 
 
 class TextFieldEditor (TextEditor):
-    ui = '''
+    ui_string = '''
       <menubar name="RecipeEditorMenuBar">
         <menu name="Edit" action="Edit">
           <placeholder name="EditActions">
@@ -2963,13 +2955,14 @@ class RecSelector (RecIndex):
     """Select a recipe and add it to RecCard's ingredient list"""
     def __init__(self, recGui, ingEditor):
         self.prefs = prefs.get_prefs()
-        self.glade=gtk.glade.XML(os.path.join(gladebase,'recipe_index.glade'))
+        self.ui=gtk.Builder()
+        self.ui.add_from_file(os.path.join(gladebase,'recipe_index.ui'))
         self.rg=recGui
         self.ingEditor = ingEditor
         self.re = self.ingEditor.re
         self.setup_main_window()        
         RecIndex.__init__(self,
-                          self.glade,
+                          self.ui,
                           self.rg.rd,
                           self.rg,
                           editable=False
@@ -3193,7 +3186,7 @@ if __name__ == '__main__' and False:
 #         self.prefs = self.rg.prefs
 #         self.rd = self.rg.rd
 #         self.nd = self.rg.nd
-#         self.setup_glade()
+#         self.setup_ui()
 #         self.setup_style()
 #         #self.setup_action_manager()
 #         self.get_widgets()
@@ -3214,7 +3207,7 @@ if __name__ == '__main__' and False:
 
 #     def setup_uimanager (self):
 #         self.ui_manager = gtk.UIManager()
-#         self.ui_manager.add_ui_from_string(self.ui)
+#         self.ui_manager.add_ui_from_string(self.ui_string)
 #         self.setup_actions()
 #         self.ui_manager.insert_action_group(self.recipeDisplayActionGroup,0)
 #         self.ui_manager.insert_action_group(self.recipeDisplayFuturePluginActionGroup,0)
@@ -3261,7 +3254,7 @@ if __name__ == '__main__' and False:
 #         ('Export',None,_('Export Recipe'),
 #          None,None,self.saveAs)
 
-#     def setup_glade (self):
+#     def setup_ui (self):
 #         GladeCustomHandlers(self.rg)
 #         self.glade = gtk.glade.XML(os.path.join(gladebase,'recCard.glade'))
 #         self.mm = mnemonic_manager.MnemonicManager()

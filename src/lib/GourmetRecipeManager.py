@@ -918,10 +918,11 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         GourmetApplication.__init__(self, splash_label=splash_label)
         self.setup_index_columns()
         self.setup_hacks()
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'recipe_index.glade'))
+        self.ui=gtk.Builder()
+        self.ui.add_from_file(os.path.join(gladebase,'recipe_index.ui'))
         self.setup_actions()
         RecIndex.__init__(self,
-                          glade=self.glade,
+                          ui=self.ui,
                           rd=self.rd,
                           rg=self,
                           editable=False)
@@ -1006,7 +1007,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.messagebox = gtk.HBox()
         self.main.pack_start(self.messagebox,fill=False,expand=False)
         self.main_notebook = gtk.Notebook()
-        self.recipe_index_interface = self.glade.get_widget('recipeIndexBox')
+        self.recipe_index_interface = self.ui.get_object('recipeIndexBox')
         self.recipe_index_interface.unparent()
         self.main_notebook.append_page(self.recipe_index_interface,
                                        tab_label=gtk.Label(_('Search recipes')))
