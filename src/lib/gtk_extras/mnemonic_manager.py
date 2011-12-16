@@ -316,9 +316,10 @@ class MnemonicManager:
 if __name__ == '__main__':
     mm=MnemonicManager()
     import gtk.glade, gtk
-    g = gtk.glade.XML('/usr/share/gourmet/app.glade')
-    mm.add_glade(g)
-    #tree = g.get_widget('recTree')
+    ui = gtk.Builder()
+    ui.add_from_file('/usr/share/gourmet/app.ui') #os.path.join(gladebase,'app.ui'))
+    mm.add_glade(ui)
+    #tree = ui.get_widget('recTree')
     #rend = gtk.CellRendererText()
     #cols = ['Cuisine','Rating','Preparation Time','Cooking Time','Title','Servings']
     #for i,l in enumerate(cols):
@@ -330,8 +331,8 @@ if __name__ == '__main__':
     #mm.add_treeview(tree)
     mm.fix_conflicts_peacefully()
     def show ():
-        g.get_widget('app').show()
-        g.get_widget('app').connect('delete-event',gtk.main_quit)
+        ui.get_widget('app').show()
+        ui.get_widget('app').connect('delete-event',gtk.main_quit)
         gtk.main()
     show()
     
