@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import gtk.glade, gtk, time, re, gtk.gdk, gobject, pango
+import gtk, time, re, gtk.gdk, gobject, pango
 from gtk_extras import WidgetSaver, ratingWidget
 from ImageExtras import get_pixbuf_from_jpg
 from gtk_extras import dialog_extras as de

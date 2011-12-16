@@ -1,4 +1,4 @@
-import gtk.glade, gtk
+import gtk
 
 def collect_descendants (parent, descendants=None):
     """Return all descendants of parent widget.
@@ -315,7 +315,7 @@ class MnemonicManager:
         
 if __name__ == '__main__':
     mm=MnemonicManager()
-    import gtk.glade, gtk
+    import gtk
     ui = gtk.Builder()
     ui.add_from_file('/usr/share/gourmet/app.ui') #os.path.join(gladebase,'app.ui'))
     mm.add_glade(ui)

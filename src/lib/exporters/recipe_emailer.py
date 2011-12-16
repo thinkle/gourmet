@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import gtk.glade, urllib, StringIO, os.path
+import urllib, StringIO, os.path
 import exporter, html_exporter, pdf_exporter
 from gourmet import gglobals
 from gettext import gettext as _

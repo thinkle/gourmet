@@ -27,7 +27,7 @@ makedirs = os.makedirs
 #    def makedirs (path):
 #        gnomevfs.make_directory(path,gnomevfs.PERM_USER_ALL)
     
-import os, os.path, gobject, re, gtk, gtk.glade
+import os, os.path, gobject, re, gtk
 import tempfile
 from gdebug import debug
 from OptionParser import options

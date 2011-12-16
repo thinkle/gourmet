@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import gtk.glade, gtk
+import gtk
 from gourmet.gdebug import *
 from gettext import gettext as _
 from gettext import ngettext
