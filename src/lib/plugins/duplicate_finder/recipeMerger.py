@@ -60,13 +60,14 @@ class RecipeMergerDialog:
         self.in_recipes = in_recipes
         self.on_close_callback = on_close_callback
         self.to_merge = [] # Queue of recipes to be merged...
-        self.glade = gtk.glade.XML(os.path.join(current_path,'recipeMerger.glade'))
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(os.path.join(current_path,'recipeMerger.ui'))
         self.get_widgets()
         self.searchTypeCombo.set_active(self.COMPLETE_DUP_MODE)
         self.mm = mnemonic_manager.MnemonicManager()
-        self.mm.add_glade(self.glade)
+        self.mm.add_glade(self.ui)
         self.mm.fix_conflicts_peacefully()
-        self.glade.signal_autoconnect(
+        self.ui.connect_signals(
             {
             'on_searchTypeCombo_changed':lambda *args: self.populate_tree(),
             'on_includeDeletedRecipesCheckButton_toggled':lambda *args: self.populate_tree(),
@@ -88,7 +89,7 @@ class RecipeMergerDialog:
             'searchTypeCombo','includeDeletedRecipesCheckButton','notebook',
             'mergeInfoLabel'
             ]:
-            setattr(self,w,self.glade.get_widget(w))
+            setattr(self,w,self.ui.get_object(w))
         self.setup_treeview()
 
     def setup_treeview (self):
@@ -302,18 +303,18 @@ class RecipeMergerDialog:
         if self.dups:
             self.show(label=label)
         else:
-            self.glade.get_widget('window1').destroy()
+            self.ui.get_object('window1').destroy()
         
     def show (self, label=None):
         if label:
-            l = self.glade.get_widget('infoLabel')
+            l = self.ui.get_object('infoLabel')
             l.set_markup('<span background="yellow" foreground="black"><b><i>%s</i></b></span>'%label)
             l.show()
-        self.glade.get_widget('window1').show()
+        self.ui.get_object('window1').show()
 
     def close (self, *args):
         #print "CALL: close"
-        w = self.glade.get_widget('window1')
+        w = self.ui.get_object('window1')
         w.hide()
         w.destroy()
         if self.on_close_callback:
@@ -622,7 +623,7 @@ if __name__ == '__main__':
     rmd = RecipeMergerDialog(rd)
     rmd.populate_tree()
     rmd.show()
-    rmd.glade.get_widget('window1').connect('delete-event',gtk.main_quit)
+    rmd.ui.get_object('window1').connect('delete-event',gtk.main_quit)
     gtk.main()
     #dups = rd.find_complete_duplicates()
     #for d in dups[5:]:
