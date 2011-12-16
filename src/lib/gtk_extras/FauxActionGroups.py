@@ -155,20 +155,20 @@ class ActionManager:
                 params,widgets = ainfo
                 widg=None
                 if not params.has_key('label'):
-                    if not widg: widg = self.gladeobj.get_widget(widgets[0])
+                    if not widg: widg = self.gladeobj.get_object(widgets[0])
                     if not widg:
                         raise Exception("Can't find widget %s" % widgets[0])
                     label = widg.get_label()
                     params['label']=label
                 if not params.has_key('stock-id'):
-                    if not widg: widg = self.gladeobj.get_widget(widgets[0])
+                    if not widg: widg = self.gladeobj.get_object(widgets[0])
                     if not widg:
                         raise Exception("Can't find widget %s" % widgets[0])
                     stockid = widg.get_stock_id()
                     params['stock-id']=stockid
                 if not params.has_key('tooltip'):
                     params['tooltip']=''
-                widg = self.gladeobj.get_widget(widgets[0])
+                widg = self.gladeobj.get_object(widgets[0])
                 try:
                     temp_connection=widg.connect('toggled',lambda *args: False)
                     widg.disconnect(temp_connection)                    
@@ -178,10 +178,10 @@ class ActionManager:
                     act = ToggleActionWithSeparators(n,params['label'],params['tooltip'],params['stock-id'])
                 if params.has_key('separators'):
                     if type(params['separators']==str): params['separators']=[params['separators']]
-                    act.separators=[self.gladeobj.get_widget(w) for w in params['separators']]
+                    act.separators=[self.gladeobj.get_object(w) for w in params['separators']]
                     getattr(self,name).separators.extend(act.separators)
                 for w in widgets:
-                    ww = self.gladeobj.get_widget(w)
+                    ww = self.gladeobj.get_object(w)
                     if ww:
                         act.connect_proxy(ww)
                     else:

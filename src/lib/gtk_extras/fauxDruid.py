@@ -1,4 +1,4 @@
-import gtk, gtk.glade
+import gtk
 
 class FauxDruid (gtk.Dialog):
     """A GTK-only implentation of GNOME Druid.
@@ -88,14 +88,15 @@ class FauxGladeDruid (FauxDruid):
                   page_widget_base_name="page",
                   dialog_kwargs={}):
         FauxDruid.__init__(self,**dialog_kwargs)
-        self.glade = gtk.glade.XML(glade_file)
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(glade_file)
         n = 1
-        widg = self.glade.get_widget('%s%s'%(page_widget_base_name,n))
+        widg = self.ui.get_object('%s%s'%(page_widget_base_name,n))
         while widg:
             self.append_page(widg)
             print 'Appended page'
             n += 1
-            widg = self.glade.get_widget('%s%s'%(page_widget_base_name,n))
+            widg = self.ui.get_object('%s%s'%(page_widget_base_name,n))
     
 
 
