@@ -58,11 +58,10 @@ def modules_check():
     try:
         try:
             import gtk
-            import gtk.glade
         except RuntimeError:
             print 'Error importing GTK - is there no windowing environment available?'
             print "We're going to ignore this error and live dangerously. Please make"
-            print 'sure you have pygtk > 2.3.93 and gtk.glade available!'
+            print 'sure you have pygtk > 2.3.93 available!'
     except ImportError:
         raise
     mod_list = [#'metakit',
@@ -108,7 +107,6 @@ def data_files():
     images = glob.glob(os.path.join('images','*.png'))
     icons = glob.glob(os.path.join('images','*.ico'))
     style = glob.glob(os.path.join('style','*.css'))
-    glade = glob.glob(os.path.join('glade','*.glade'))
     ui = glob.glob(os.path.join('glade','*.ui'))
     sounds = glob.glob(os.path.join('data','*.wav'))
     i18n = glob.glob(os.path.join('i18n','*/*/*.mo'))
@@ -116,7 +114,6 @@ def data_files():
     dtds = glob.glob(os.path.join('data','*.dtd'))        
     images.extend(icons)
     images.extend(style)
-    images.extend(glade)
     images.extend(ui)
     images.extend(sounds)
     images.extend(txts)
@@ -206,7 +203,7 @@ result = setup(
                 'gourmet.legacy_db.db_09',
                 'gourmet.plugins',
                 ] + plugins,
-    package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*.glade','plugins/*/*.glade', 'plugins/unit_converter/*.ui', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
+    package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*/*.ui', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
     package_dir = {'gourmet' : os.path.join('src','lib')},
     scripts = script,
     cmdclass={'install_data' : my_install_data},
