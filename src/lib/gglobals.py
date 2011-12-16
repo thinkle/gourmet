@@ -35,25 +35,6 @@ from OptionParser import options
 import gettext_setup
 from gettext import gettext as _
 
-
-class GladeCustomHandlers:
-    def __init__ (self):
-
-        def custom_handler (glade,func_name,
-                            widg, s1,s2,i1,i2):
-            f=getattr(self,func_name)
-            w= f(s1,s2,i1,i2)
-            return w
-        gtk.glade.set_custom_handler(custom_handler)
-
-    def add_custom_handler (self, handler_name, handler):
-        if hasattr(self,handler_name):
-            import traceback; traceback.print_stack()
-            print 'WARNING: ','We already had a handler named %s'%handler
-        setattr(self,handler_name,handler)
-
-gladeCustomHandlers = GladeCustomHandlers()
-
 tmpdir = tempfile.gettempdir()
 BUG_URL = "http://sourceforge.net/tracker/?group_id=108118&atid=649652"
 

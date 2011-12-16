@@ -1,6 +1,6 @@
 from nutritionLabel import NutritionLabel
 from nutrition import NutritionInfoList, NutritionVapor
-from gourmet.gglobals import gladeCustomHandlers
+#from gourmet.gglobals import gladeCustomHandlers
 from gourmet.plugin import RecDisplayModule, RecDisplayPlugin
 import gtk, pango
 import os.path
