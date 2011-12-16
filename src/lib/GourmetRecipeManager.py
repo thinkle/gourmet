@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os.path, time, os, sys, re, threading, StringIO, pango, string
 import Image
-import gtk.glade, gtk, gobject, gtk.gdk, traceback
+import gtk, gobject, gtk.gdk, traceback
 import batchEditor
 import recipeManager
 from exporters.printer import get_print_manager
@@ -542,8 +542,9 @@ class RecTrash (RecIndex):
     def __init__ (self, rg):
         self.rg = rg
         self.rmodel = self.rg.rmodel
-        self.glade = gtk.glade.XML(os.path.join(gladebase,'recipe_index.glade'))
-        RecIndex.__init__(self, self.glade, self.rg.rd, self.rg)
+        self.ui=gtk.Builder()
+        self.ui.add_from_file(os.path.join(gladebase,'recipe_index.ui'))
+        RecIndex.__init__(self, self.ui, self.rg.rd, self.rg)
         self.setup_main_window()
         
     def setup_main_window (self):
@@ -564,7 +565,7 @@ class RecTrash (RecIndex):
         top_label = gtk.Label(); top_label.set_alignment(0.0,0.5)
         top_label.set_markup('<span weight="bold" size="large">'+_('Trash')+'</span>\n<i>'+_('Browse, permanently delete or undelete deleted recipes')+'</i>')
         box.pack_start(top_label,expand=False,fill=False);top_label.show()
-        self.recipe_index_interface = self.glade.get_widget('recipeIndexBox')
+        self.recipe_index_interface = self.ui.get_object('recipeIndexBox')
         self.recipe_index_interface.unparent()
         box.pack_start(self.recipe_index_interface,fill=True,expand=True)
         self.recipe_index_interface.show()
@@ -650,11 +651,11 @@ class UnitModel (gtk.ListStore):
                 ulong = "%s (%s)"%(ulong,ushort)
             self.set_value(iter,1,"%s"%ulong)
 
-def set_accel_paths (glade, widgets, base='<main>'):
+def set_accel_paths (ui, widgets, base='<main>'):
     """A convenience function. Hand us a function and set accel
     paths based on it."""
     for s in widgets:
-        w=glade.get_widget(s)
+        w=ui.get_object(s)
         if type(w) == gtk.MenuItem: set_path_for_menuitem(w)
         else:
             for c in w.get_children():
@@ -841,7 +842,7 @@ class StuffThatShouldBePlugins:
         self.batchEditor.dialog.hide()
         self.update_attribute_models()
 
-ui = '''<ui>
+ui_string = '''<ui>
 <menubar name="RecipeIndexMenuBar">
   <menu name="File" action="File">
     <menuitem action="New"/>
@@ -1035,7 +1036,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     def setup_actions (self):
         self.ui_manager = gtk.UIManager()
-        self.ui_manager.add_ui_from_string(ui)
+        self.ui_manager.add_ui_from_string(ui_string)
         self.mainActionGroup = gtk.ActionGroup('MainActions')
         self.onSelectedActionGroup = gtk.ActionGroup('IndexOnSelectedActions')
         self.onSelectedActionGroup.add_actions([
