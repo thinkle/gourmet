@@ -1,4 +1,4 @@
-import gtk, gtk.gdk, gtk.glade, gobject, re, os, os.path, time
+import gtk, gtk.gdk, gobject, re, os, os.path, time
 from gourmet import gglobals, convert
 from gourmet.gtk_extras import WidgetSaver, mnemonic_manager, pageable_store
 from gourmet.gtk_extras import cb_extras as cb
@@ -20,7 +20,8 @@ class KeyEditor:
     """
     
     def __init__ (self, rd=None, rg=None):
-        self.glade = gtk.glade.XML(os.path.join(current_path,'keyeditor.glade'))
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(os.path.join(current_path,'keyeditor.ui'))
         self.rd = rd
         self.rg = rg
         self.widget_names = ['treeview', 'searchByBox', 'searchEntry', 'searchButton', 'window',
@@ -32,7 +33,7 @@ class KeyEditor:
                              'applyEntriesButton',
                              'clearEntriesButton']
         for w in self.widget_names:
-            setattr(self,w,self.glade.get_widget(w))
+            setattr(self,w,self.ui.get_object(w))
         self.entries = {'ingkey':self.changeKeyEntry,
                         'item':self.changeItemEntry,
                         'unit':self.changeUnitEntry,
@@ -50,11 +51,11 @@ class KeyEditor:
         for k in self.rd.get_unique_values('ingkey',table=self.rd.ingredients_table): model.append([k])
         cb.make_completion(self.changeKeyEntry,model)
         # Setup next/prev/first/last buttons for view
-        self.prev_button = self.glade.get_widget('prevButton')
-        self.next_button = self.glade.get_widget('nextButton')
-        self.first_button = self.glade.get_widget('firstButton')
-        self.last_button = self.glade.get_widget('lastButton')
-        self.showing_label = self.glade.get_widget('showingLabel')
+        self.prev_button = self.ui.get_object('prevButton')
+        self.next_button = self.ui.get_object('nextButton')
+        self.first_button = self.ui.get_object('firstButton')
+        self.last_button = self.ui.get_object('lastButton')
+        self.showing_label = self.ui.get_object('showingLabel')
         self.prev_button.connect('clicked',lambda *args: self.treeModel.prev_page())
         self.next_button.connect('clicked',lambda *args: self.treeModel.next_page())
         self.first_button.connect('clicked',lambda *args: self.treeModel.goto_first_page())
@@ -67,7 +68,7 @@ class KeyEditor:
         self.treeview.set_model(self.treeModel)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         #self.treeview.set_model(self.treeModel)
-        self.glade.signal_autoconnect({
+        self.ui.connect_signals({
             'iSearch':self.isearchCB,
             'search':self.searchCB,
             'search_as_you_type_toggle':self.search_as_you_typeCB,
@@ -79,7 +80,7 @@ class KeyEditor:
         # setup mnemonic manager
         self.mm = mnemonic_manager.MnemonicManager()
         self.mm.sacred_cows.append('search for')
-        self.mm.add_glade(self.glade)
+        self.mm.add_glade(self.ui)
         self.mm.add_treeview(self.treeview)
         self.mm.fix_conflicts_peacefully()
         # to set our regexp_toggled variable
