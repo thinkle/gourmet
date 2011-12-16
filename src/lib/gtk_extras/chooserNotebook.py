@@ -90,11 +90,11 @@ if __name__ == '__main__':
         w.connect('delete-event',lambda *args: gtk.main_quit())
         gtk.main()
 
-    def do_glade_funkiness (gladefile='/usr/share/gourmet/recCard.glade',
+    def do_glade_funkiness (gladefile='/usr/share/gourmet/recCardDisplay.ui',
                             nb_widget='notebook1'):
-        import gtk.glade
-        gf = gtk.glade.XML(gladefile)
-        nb = gf.get_widget(nb_widget)
+        gf = gtk.Builder()
+        gf.add_from_file(gladefile)
+        nb = gf.get_object(nb_widget)
         chooserify_notebook(nb)
         window = nb.parent
         while not isinstance(window,gtk.Window):
