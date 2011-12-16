@@ -1112,7 +1112,7 @@ class IngredientEditorModule (RecEditorModule):
         self.setup_action_groups()
         self.update_from_database()
         self.quickEntry = self.ui.get_object('quickIngredientEntry')
-        self.ui.connect_signals('addQuickIngredient',self.quick_add)
+        self.ui.connect_signals({'addQuickIngredient':self.quick_add})
 
     def quick_add (self, *args):
         txt = unicode(self.quickEntry.get_text())

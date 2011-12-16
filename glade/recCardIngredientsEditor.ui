@@ -48,7 +48,7 @@
                     <property name="can_focus">True</property>
                     <property name="label">gtk-add</property>
                     <property name="use_stock">True</property>
-                    <signal name="activate" handler="addQuickIngredient" swapped="no"/>
+                    <signal name="clicked" handler="addQuickIngredient" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
