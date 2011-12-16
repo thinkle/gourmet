@@ -14,13 +14,13 @@ except:
 class NutritionDisplayModule (RecDisplayModule):
     label = _('Nutrition')
     name = 'nutrition_display'
-    _custom_handlers_setup = False
+    #_custom_handlers_setup = False
 
     def __init__ (self, recipe_display):
         self.recipe_display = recipe_display
         self.nutritional_highlighting = True
         self.prefs = self.recipe_display.rg.prefs
-        self.setup_glade()
+        self.setup_ui()
         self.setup_ingredient_display_hooks()
         self.update_from_database()
         
@@ -35,20 +35,21 @@ class NutritionDisplayModule (RecDisplayModule):
         self.nutritionLabel.set_nutinfo(self.nutinfo)
         self.nutritionLabel.rec = self.recipe_display.current_rec
         
-    def setup_glade (self):
-        if not NutritionDisplayModule._custom_handlers_setup:
-            gladeCustomHandlers.add_custom_handler('makeNutritionLabel',
-                                                   lambda *args: NutritionLabel(self.prefs)
-                                                   )
-            NutritionDisplayModule._custom_handlers_setup = True
-        self.glade = gtk.glade.XML(os.path.join(current_path,'nut_recipe_card_display.glade'))
-        self.glade.signal_autoconnect(
+    def setup_ui (self):
+        #if not NutritionDisplayModule._custom_handlers_setup:
+        #    gladeCustomHandlers.add_custom_handler('makeNutritionLabel',
+        #                                           lambda *args: NutritionLabel(self.prefs)
+        #                                           )
+        #    NutritionDisplayModule._custom_handlers_setup = True
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(os.path.join(current_path,'nut_recipe_card_display.ui'))
+        self.ui.connect_signals(
             {'edit_nutrition': lambda *args: self.nutritionLabel.show_druid(nd=self.recipe_display.rg.rd.nd)}
             )
-        self.nutritionLabel = self.glade.get_widget('nutritionLabel')
+        self.nutritionLabel = self.ui.get_object('nutritionLabel')
         self.nutritionLabel.connect('ingredients-changed', self.ingredients_changed_cb)
         self.nutritionLabel.connect('label-changed',self.nutrition_highlighting_label_changed)
-        self.main = self.glade.get_widget('nutritionDisplay')
+        self.main = self.ui.get_object('nutritionDisplay')
         self.main.unparent()
 
     def ingredients_changed_cb (self, *args):

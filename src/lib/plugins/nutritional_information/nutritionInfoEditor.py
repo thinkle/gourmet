@@ -1,4 +1,4 @@
-import gtk, gtk.glade, gobject, pango
+import gtk, gobject, pango
 import gourmet.gtk_extras.pageable_store as pageable_store
 import gourmet.gglobals as gglobals
 import os, re
@@ -10,14 +10,15 @@ import gourmet.backends.db
 
 class NutritionInfoIndex:
 
-    def __init__ (self, rd, prefs=None, glade=None,
+    def __init__ (self, rd, prefs=None, ui=None,
                   ingredients=None,
                   in_string = _('recipe'),
                   ):
-        if glade:
-            self.glade = glade
+        if ui:
+            self.ui = ui
         else:
-            self.glade = gtk.glade.XML(os.path.join(gglobals.gladebase,'nutritionDruid.glade'))
+            self.ui = gtk.Builder()
+            self.ui.add_from_file(os.path.join(gglobals.gladebase,'nutritionDruid.ui'))
         self.rd = rd
         self.prefs = prefs
         # Initialize variables used for search
@@ -30,18 +31,18 @@ class NutritionInfoIndex:
                              'nutritionFilterInLabel','nutritionFilterComboBox',
                              ]
         for w in self.widget_names:
-            setattr(self,w,self.glade.get_widget(w))    
-        self.prev_button = self.glade.get_widget('prevButton')
-        self.next_button = self.glade.get_widget('nextButton')
-        self.first_button = self.glade.get_widget('firstButton')
-        self.last_button = self.glade.get_widget('lastButton')
-        self.showing_label = self.glade.get_widget('showingLabel')        
+            setattr(self,w,self.ui.get_object(w))
+        self.prev_button = self.ui.get_object('prevButton')
+        self.next_button = self.ui.get_object('nextButton')
+        self.first_button = self.ui.get_object('firstButton')
+        self.last_button = self.ui.get_object('lastButton')
+        self.showing_label = self.ui.get_object('showingLabel')
         self.prev_button.connect('clicked',lambda *args: self.treeModel.prev_page())
         self.next_button.connect('clicked',lambda *args: self.treeModel.next_page())
         self.first_button.connect('clicked',lambda *args: self.treeModel.goto_first_page())
         self.last_button.connect('clicked',lambda *args: self.treeModel.goto_last_page())
         self.set_limit(ingredients,in_string)                
-        self.glade.signal_autoconnect({
+        self.ui.connect_signals({
             'iSearch':self.isearchCB,
             'search':self.searchCB,
             'search_as_you_type_toggle':self.search_as_you_typeCB,

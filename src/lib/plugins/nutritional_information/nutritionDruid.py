@@ -1,4 +1,4 @@
-import gtk, gtk.glade, gobject
+import gtk, gobject
 import gourmet.convert as convert
 import gourmet.gglobals as gglobals
 from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
@@ -256,17 +256,12 @@ class NutritionInfoDruid (gobject.GObject):
         'unit-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_PYOBJECT,(gobject.TYPE_PYOBJECT,)),
         'finish':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,())
         }
-    _created_custom_handler = False
-    
+
     def __init__ (self, nd, prefs, rec=None, in_string=''):
-        if not NutritionInfoDruid._created_custom_handler:
-            gglobals.gladeCustomHandlers.add_custom_handler('number_entry',
-                                                           lambda *args: NumberEntry(default_to_fractions=False)
-                                                           )
-            NutritionInfoDruid._created_custom_handler = True
-        self.glade = gtk.glade.XML(os.path.join(current_path,'nutritionDruid.glade'))
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(os.path.join(current_path,'nutritionDruid.ui'))
         self.mm = MnemonicManager()
-        self.mm.add_glade(self.glade)
+        self.mm.add_glade(self.ui)
         self.mm.fix_conflicts_peacefully()
         self.prefs = prefs
         self.nd = nd
@@ -284,7 +279,7 @@ class NutritionInfoDruid (gobject.GObject):
         # Initiate our gobject-ness so we can emit signals.
         gobject.GObject.__init__(self)                      
         # Save our position with our widget saver...
-        WidgetSaver.WindowSaver(self.glade.get_widget('window'),
+        WidgetSaver.WindowSaver(self.ui.get_object('window'),
                                 self.prefs.get('nutritionDruid',{})
                                 )
 
@@ -319,14 +314,14 @@ class NutritionInfoDruid (gobject.GObject):
                          'infoCustomEquivalentsTable',
                          ]
         for widget_name in self.widgets:
-            setattr(self,widget_name,self.glade.get_widget(widget_name))
+            setattr(self,widget_name,self.ui.get_object(widget_name))
             if not getattr(self,widget_name): print "WIDGET: ",widget_name,"NOT FOUND."
             # make a list of all core control widgets
             if widget_name!='notebook': self.controls.append(getattr(self,widget_name))
         self.usdaIndex = NutritionUSDAIndex(self.rd,
                                             prefs=self.prefs,
                                             widgets=[(w,getattr(self,w)) for w in self.widgets])
-        self.glade.signal_autoconnect(
+        self.ui.connect_signals(
             {'previousPage':self.previous_page_cb,
              'applyPage':self.apply_cb,
              'ignorePage':self.ignore_cb,
@@ -359,7 +354,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.cancelUnitButton.connect('clicked',self.changeUnitAction.dehighlight_action)
         self.saveUnitButton.connect('clicked',self.save_unit_cb)
         # Nutrition box...
-        self.custom_box=self.glade.get_widget('customBox')
+        self.custom_box=self.ui.get_object('customBox')
         self.customNutritionAmountEntry.connect('changed',self.custom_unit_changed)
         self.massUnitComboBox.connect('changed',self.custom_unit_changed)
         self._setup_custom_box()
@@ -371,7 +366,7 @@ class NutritionInfoDruid (gobject.GObject):
             self.add_ingredients([])
         if not hasattr(self,'nutInfoIndex'):
             self.nutInfoIndex = NutritionInfoIndex(
-                self.rd, prefs=self.prefs, glade=self.glade,
+                self.rd, prefs=self.prefs, ui=self.ui,
                 ingredients=self.full_inglist,
                 in_string=self.in_string,
                 )
@@ -1074,7 +1069,7 @@ class NutritionInfoDruid (gobject.GObject):
     ### BEGIN METHODS FOR STARTING AND FINISHING
     
     def show (self):
-        self.glade.get_widget('window').show()
+        self.ui.get_object('window').show()
 
     def finish (self):
         # When done -- goto nutritional index page...
@@ -1085,9 +1080,9 @@ class NutritionInfoDruid (gobject.GObject):
             self.goto_page_index()
 
     def close (self, *args):
-        self.glade.get_widget('window').hide()
+        self.ui.get_object('window').hide()
         self.emit('finish')
-        #self.glade.get_widget('window').hide()
+        #self.ui.get_object('window').hide()
         
     ### END METHODS FOR STARTING AND FINISHING
 
@@ -1147,9 +1142,9 @@ if __name__ == '__main__':
                          
     def quit (*args):
         rd.save()
-        nid.glade.get_widget('window').hide()
+        nid.ui.get_object('window').hide()
         gtk.main_quit()
-    nid.glade.get_widget('window').connect('delete-event',quit)
+    nid.ui.get_object('window').connect('delete-event',quit)
     nid.connect('finish',quit)
     gtk.main()
     del rd

@@ -287,7 +287,7 @@ class NutritionCardView:
                                                 'calcium','iron','sodium',
                                                 'fasat','famono','fapoly','cholestrl'])
             )
-        self.nmodel.attach_treeview(self.rc.glade.get_widget('nutTreeView'))
+        self.nmodel.attach_treeview(self.rc.ui.get_object('nutTreeView'))
         self.ings = self.rc.rg.rd.get_ings(self.rc.current_rec)
         for i in self.ings: self.nmodel.add_ingredient(i)
         NutritionCardViewOld(recCard) # initialize our old interface as well...
@@ -313,38 +313,38 @@ class NutritionCardViewOld:
         self.ings = self.rc.rg.rd.get_ings(self.rc.current_rec)
         nutritionGrabberGui.check_for_db(self.rc.rg.rd)
         # grab our widgets
-        self.treeview = self.rc.glade.get_widget('nutritionTreeView')
+        self.treeview = self.rc.ui.get_object('nutritionTreeView')
         self.treeview.set_property('headers-visible',False)
         self.treeview.set_property('search-column',self.STR_COL)
-        #self.expander = self.rc.glade.get_widget('nutritionExpander')
-        nutTable = self.rc.glade.get_widget('nutritionTable')
-        self.usdaExpander = self.rc.glade.get_widget('usdaExpander')
+        #self.expander = self.rc.ui.get_object('nutritionExpander')
+        nutTable = self.rc.ui.get_object('nutritionTable')
+        self.usdaExpander = self.rc.ui.get_object('usdaExpander')
         self.nutTable = NutritionTable(nutTable,self.rc.prefs)
-        self.keyBox = self.rc.glade.get_widget('nutritionKeyBox')
+        self.keyBox = self.rc.ui.get_object('nutritionKeyBox')
         self.keyBox.entry = self.keyBox.get_children()[0]
-        self.usdaCombo = self.rc.glade.get_widget('nutritionUSDACombo')
-        self.UnitLabel = self.rc.glade.get_widget('nutUnitLabel')
-        self.UnitEntry = self.rc.glade.get_widget('nutUnitEntry')
-        self.UnitCombo = self.rc.glade.get_widget('nutUnitCombo')
-        self.applyButton = self.rc.glade.get_widget('nutritionApplyButton')
+        self.usdaCombo = self.rc.ui.get_object('nutritionUSDACombo')
+        self.UnitLabel = self.rc.ui.get_object('nutUnitLabel')
+        self.UnitEntry = self.rc.ui.get_object('nutUnitEntry')
+        self.UnitCombo = self.rc.ui.get_object('nutUnitCombo')
+        self.applyButton = self.rc.ui.get_object('nutritionApplyButton')
         self.applyButton.connect('clicked',self.applyCB)
-        self.customizeButton = self.rc.glade.get_widget('nutritionCustomizeButton')
-        self.radioManual = self.rc.glade.get_widget('nutMethod')
-        self.radioCalc = self.rc.glade.get_widget('nutMethodCalcButton')
-        self.radioUSDA = self.rc.glade.get_widget('nutMethodLookupButton')
+        self.customizeButton = self.rc.ui.get_object('nutritionCustomizeButton')
+        self.radioManual = self.rc.ui.get_object('nutMethod')
+        self.radioCalc = self.rc.ui.get_object('nutMethodCalcButton')
+        self.radioUSDA = self.rc.ui.get_object('nutMethodLookupButton')
         self.radioManual.connect('toggled',self.nutMethodCB)
         self.niv = NutritionItemView(
             self.get_nd(),
             self.usdaCombo,
             self.keyBox.entry,
-            self.rc.glade.get_widget('nutAmountEntry'),
+            self.rc.ui.get_object('nutAmountEntry'),
             self.UnitCombo,
-            self.rc.glade.get_widget('nutDescBox'),
-            self.rc.glade.get_widget('nutCurrentUnitLabel'),
+            self.rc.ui.get_object('nutDescBox'),
+            self.rc.ui.get_object('nutCurrentUnitLabel'),
             self.nutTable,
-            amountLabel=self.rc.glade.get_widget('nutAmountLabel'),
-            unitChoiceLabel=self.rc.glade.get_widget('nutUnitLabel'),
-            descChoiceLabel=self.rc.glade.get_widget('nutDescLabel'),
+            amountLabel=self.rc.ui.get_object('nutAmountLabel'),
+            unitChoiceLabel=self.rc.ui.get_object('nutUnitLabel'),
+            descChoiceLabel=self.rc.ui.get_object('nutDescLabel'),
             )
         # self.nmodel = NutritionModel(self.rc.ings,self.get_nd()) # no longer use this
         # build our ingredient/nutrition model for our treeview

@@ -138,6 +138,8 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
     """Provide a nutritional label that looks like standard FDA
     labels."""
 
+    __gtype_name__ = 'NutritionLabel'
+
     bold_font = pango.FontDescription()
     bold_font.set_weight(pango.WEIGHT_BOLD)
     tiny_font = pango.FontDescription()
