@@ -1,28 +1,19 @@
 import os
-import gtk, gtk.glade
+import gtk
 import gglobals
 from gtk_extras import ratingWidget, timeEntry, cb_extras
 
 class BatchEditor:
-
-    _custom_handlers_setup = False
     
     def __init__ (self, rg):        
         self.rg = rg
-        self.setup_glade()
+        self.setup_ui()
 
-    def setup_glade (self):
-
-        if not BatchEditor._custom_handlers_setup:
-            for name,handler in [
-                ('makeStarButton', lambda *args: ratingWidget.make_star_button(self.rg.star_generator)),
-                ('makeTimeEntry', lambda *args: timeEntry.make_time_entry()),
-                ]:
-                gglobals.gladeCustomHandlers.add_custom_handler(name,handler)
-            BatchEditor._custom_handlers_setup = True
-        self.glade = gtk.glade.XML(os.path.join(gglobals.gladebase,'batchEditor.glade'))
-        self.dialog = self.glade.get_widget('batchEditorDialog')
-        self.setFieldWhereBlankButton = self.glade.get_widget('setFieldWhereBlankButton')
+    def setup_ui (self):
+        self.ui = gtk.Builder()
+        self.ui.add_from_file(os.path.join(gglobals.gladebase,'batchEditor.ui'))
+        self.dialog = self.ui.get_object('batchEditorDialog')
+        self.setFieldWhereBlankButton = self.ui.get_object('setFieldWhereBlankButton')
         self.setup_boxes()
         self.dialog.connect('response',self.response_cb)
         
@@ -30,10 +21,10 @@ class BatchEditor:
         self.attribute_widgets = {}
         self.get_data_methods = {}
         for a,l,w in gglobals.REC_ATTRS:
-            checkbutton = self.glade.get_widget('%sCheckButton'%a)
+            checkbutton = self.ui.get_object('%sCheckButton'%a)
             if checkbutton:
                 setattr(self,'%sCheckButton'%a,checkbutton)
-                box = self.glade.get_widget('%sBox'%a)
+                box = self.ui.get_object('%sBox'%a)
                 self.attribute_widgets[a] = box
                 setattr(self,'%sBox'%a,box)
                 checkbutton.connect('toggled',self.toggle_cb,a)
