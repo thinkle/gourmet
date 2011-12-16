@@ -24,7 +24,6 @@ from importers.importer import parse_range
 from gtk_extras.FauxActionGroups import ActionManager
 from gtk_extras import mnemonic_manager
 from gtk_extras import LinkedTextView
-from gtk_extras.ratingWidget import StarImage
 from gtk_extras import fix_action_group_importance
 from gtk_extras.dialog_extras import UserCancelledError
 from plugin import RecDisplayModule, RecEditorModule, ToolPlugin, RecDisplayPlugin, RecEditorPlugin, IngredientControllerPlugin
