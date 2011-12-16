@@ -34,7 +34,7 @@ class NumberEntry (validatingEntry.ValidatingEntry):
         $ # end
         """%convert.__dict__
 
-    def __init__ (self, default_to_fractions=True, decimals=2):
+    def __init__ (self, default_to_fractions=False, decimals=2):
         """Decimals is the number of decimal places we set.
 
         Set decimals to -1 for as many as we have.
