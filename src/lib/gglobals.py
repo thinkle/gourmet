@@ -172,27 +172,27 @@ if os.name == 'posix':
 elif os.name == 'nt': 
     #datad = os.path.join('Program Files','Gourmet Recipe Manager','data')
     # We're going to look in a number of places, starting with our current location
-    if os.path.exists('app.glade'):
+    if os.path.exists('app.ui'):
         print "we're in the data directory"
         datad = ''
-    elif os.path.exists(os.path.join('data','app.glade')):
+    elif os.path.exists(os.path.join('data','app.ui')):
         print "data directory = data"
         datad = 'data'
-    elif os.path.exists(os.path.join('..','data','app.glade')):
+    elif os.path.exists(os.path.join('..','data','app.ui')):
         print 'data directory = ..\data\  '
         datad = os.path.join('..','data')
     else:
         pybase = os.path.split(__file__)[0]
-        if os.path.exists(os.path.join(pybase,'app.glade')):
+        if os.path.exists(os.path.join(pybase,'app.ui')):
             print 'found data in ',pybase
             datad = pybase
-        elif os.path.exists(os.path.join(pybase,'data','app.glade')):
+        elif os.path.exists(os.path.join(pybase,'data','app.ui')):
             # look in a "data" directory directly above the directory we are in
             print 'found data in ',pybase,'/data'
             datad = os.path.join(pybase,'data')
         else: # otherwise, backup a directory and look there...
             pybase = os.path.split(pybase)[0]
-            if os.path.exists(os.path.join(pybase,'data','app.glade')):
+            if os.path.exists(os.path.join(pybase,'data','app.ui')):
                 print 'found data in ',pybase,'\data'
                 datad = os.path.join(pybase,'data')
             else:
