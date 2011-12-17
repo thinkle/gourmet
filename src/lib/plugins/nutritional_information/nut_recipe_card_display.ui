@@ -75,6 +75,12 @@
                     <property name="xscale">0</property>
                     <property name="left_padding">12</property>
                     <property name="right_padding">6</property>
+                    <child>
+                      <object class="NutritionLabel" id="nutritionLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
