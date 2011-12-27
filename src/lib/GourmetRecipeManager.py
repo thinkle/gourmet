@@ -28,6 +28,9 @@ import plugin_loader, plugin, plugin_gui
 from threadManager import get_thread_manager, get_thread_manager_gui, SuspendableThread
 from zipfile import BadZipfile
 
+UNDO = 1
+SHOW_TRASH = 2
+
 if os.name == 'posix':
     # somewhat hackish -- we assume USR ==
     usr_share = os.path.join(os.path.split(datad)[0])
@@ -1307,26 +1310,32 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         debug("returning None",2)
         return None
 
+    def _on_bar_response(self, button, response_id):
+        if (response_id == UNDO):
+            self.history[-1].inverse()
+        elif (response_id == SHOW_TRASH):
+            self.show_deleted_recs()
+        self.messagebox.hide()
+
     # Code to show message/undo-button on deletion
     def setup_delete_messagebox (self, msg):
         # Clear existing messages...
         for child in self.messagebox.get_children():
             self.messagebox.remove(child)
         # Add new message
-        l = gtk.Label()
-        close_button = gtk.Button(stock=gtk.STOCK_CLOSE)
-        close_button.connect('clicked',lambda *args: self.messagebox.hide())
-        self.messagebox.pack_end(close_button,expand=False,fill=False)
-        undo_button = gtk.Button(stock=gtk.STOCK_UNDO)
-        show_trash_button = gtk.Button('See Trash Now')
-        show_trash_button.connect('clicked',lambda *args: self.show_deleted_recs() or self.messagebox.hide())
-        undo_button.connect('clicked',lambda *args: self.history[-1].inverse() or self.messagebox.hide())
-        self.messagebox.pack_end(undo_button,expand=False,fill=False)
-        self.messagebox.pack_end(show_trash_button,expand=False,fill=False)
-        self.messagebox.pack_start(l,fill=True,expand=True)
-        self.messagebox.show_all()
-        l.set_markup('<i><span background="yellow">'+msg+'</span></i>')
+        l = gtk.Label(msg)
         l.set_line_wrap(True)
+        l.show()
+        infobar = gtk.InfoBar()
+        infobar.set_message_type(gtk.MESSAGE_INFO)
+        infobar.get_content_area().add(l)
+        infobar.add_button('See Trash Now', SHOW_TRASH)
+        infobar.add_button(gtk.STOCK_UNDO, UNDO)
+        infobar.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
+        infobar.connect('response', self._on_bar_response)
+        infobar.show()
+        self.messagebox.pack_start(infobar)
+        self.messagebox.show()
     # end deletion
 
     # end Extra Callbacks for actions on treeview
