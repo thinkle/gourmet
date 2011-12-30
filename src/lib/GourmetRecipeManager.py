@@ -382,18 +382,10 @@ class GourmetApplication:
 
     # About/Help
     def show_about (self, *args):
-        """Show information about ourselves, using GNOME's
-        nice interface if available."""
+        """Show information about ourselves."""
         debug("show_about (self, *args):",5)
-        description=version.description
-        copyright=version.copyright
-        appname=version.appname
-        myversion=version.version
-        authors=version.authors
-        website="http://grecipe-manager.sourceforge.net"
-        documenters=None
         translator=_("translator-credits")
-        # translator's should translate the string 'translator-credits'
+        # translators should translate the string 'translator-credits'
         # If we're not using a translatino, then this isn't shown
         if translator == "translator-credits":
             translator = None
@@ -403,45 +395,26 @@ class GourmetApplication:
                 translator += "\n%s"%defaults.CREDITS
             else:
                 translator = defaults.CREDITS
-        comments=None
+
         logo=gtk.gdk.pixbuf_new_from_file(os.path.join(imagedir,"gourmet_logo.png"))
-        try:
-            import gnome.ui
-            # to test the non-GNOME hack on a GNOME system,
-            # uncomment the following line
-            # import asdflkjasdf
-            args = [appname,
-                    myversion,
-                    copyright,
-                    description,
-                    authors,
-                    comments,
-                    translator,
-                    logo]
-            if not translator:
-                args = args[0:5] + [None] + args[6:]
-            about= gnome.ui.About(*args)
-            try:
-                about.set_website(website) #will be available in 2.6
-            except AttributeError:
-                debug('No website available in "about" with this version of gtk/gnome',2)
-                c=about.get_property('comments')
-                c += _("\nWebsite: %s")%website
-                about.set_property('comments',c)
-                pass
-            about.show()
-        except ImportError:
-            sublabel = '%s\n%s\n'%(copyright,description)
-            for a in authors:
-                sublabel += '\n%s'%a
-            if translator:
-                sublabel += '\n' + _('Translated by')+': %s'%translator
-            if website:
-                sublabel += '\n'+_('Website')+': %s'%website
-            import xml.sax.saxutils
-            de.show_message(label=xml.sax.saxutils.escape('%s %s'%(appname,myversion)),
-                            sublabel=xml.sax.saxutils.escape(sublabel)) #new line that leaves strings as they are.
-            
+
+        about = gtk.AboutDialog()
+        #about.set_artists(version.artists)
+        about.set_authors(version.authors)
+        about.set_comments(version.description)
+        about.set_copyright(version.copyright)
+        #about.set_documenters(None)
+        about.set_license(version.license)
+        about.set_logo(logo)
+        about.set_program_name(version.appname)
+        about.set_translator_credits(translator)
+        about.set_version(version.version)
+        #about.set_wrap_license(True)
+        about.set_website("http://grecipe-manager.sourceforge.net")
+        #about.set_website_label('Gourmet website')
+        about.run()
+        about.destroy()
+
     def show_help (self, *args):
         de.show_faq(HELP_FILE)
 
