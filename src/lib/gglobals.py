@@ -298,7 +298,7 @@ DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
                           ['link','yields','yield_unit','preptime','cooktime']
                           ]
 
-launchers = [['.*',['gnome-open']],
+launchers = [['.*',['xdg-open']],
              ['rtf',['openoffice','abiword','ted','kword']],
              ['txt',['gedit','kedit',]],
              ['html?',['firefox','mozilla',]]
