@@ -298,12 +298,6 @@ DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
                           ['link','yields','yield_unit','preptime','cooktime']
                           ]
 
-try:
-    import gnomeprint.ui, gnomeprint
-    gnome_printing = True
-except:
-    gnome_printing = False
-
 launchers = [['.*',['gnome-open']],
              ['rtf',['openoffice','abiword','ted','kword']],
              ['txt',['gedit','kedit',]],
