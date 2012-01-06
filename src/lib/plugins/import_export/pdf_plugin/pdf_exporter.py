@@ -1162,11 +1162,11 @@ if __name__ == '__main__':
         return fname
 
     import gourmet.gglobals as gglobals
-    try:
-        import gnome
-        gnome.program_init('1.0','Gourmet PDF Exporter Test')
-    except ImportError:
-        print 'We must be on windows...'
+    #try:
+    #    import gnome
+    #    gnome.program_init('1.0','Gourmet PDF Exporter Test')
+    #except ImportError:
+    #    print 'We must be on windows...'
 
     #print 'TEST 3x5'
     gglobals.launch_url('file://'+test_3_x_5())
