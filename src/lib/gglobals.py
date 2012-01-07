@@ -279,13 +279,7 @@ DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
                           ['link','yields','yield_unit','preptime','cooktime']
                           ]
 
-try:
-    import gnomeprint.ui, gnomeprint
-    gnome_printing = True
-except:
-    gnome_printing = False
-
-launchers = [['.*',['gnome-open']],
+launchers = [['.*',['xdg-open']],
              ['rtf',['openoffice','abiword','ted','kword']],
              ['txt',['gedit','kedit',]],
              ['html?',['firefox','mozilla',]]
@@ -304,13 +298,9 @@ def launch_url (url, ext=""):
         os.startfile(url)
     elif os.name == 'posix':
         try:
-            if hasattr(gtk,'show_uri'):
-                gtk.show_uri(gtk.gdk.Screen(),url,0L)
-            else:
-                import gnome
-                gnome.url_show(url)
+            gtk.show_uri(gtk.gdk.Screen(),url,0L)
         except ImportError:
-            print 'gnome libraries not available, trying builtins'
+            print 'gtk libraries not available, trying builtins'
             if not ext: ext=os.path.splitext(url)
             for regexp,l in launchers:
                 if regexp.match('\.?%s'%regexp, ext):
