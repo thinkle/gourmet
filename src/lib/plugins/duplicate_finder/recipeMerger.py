@@ -564,7 +564,7 @@ def make_text_label (t, use_markup=False):
 
 def get_display_constructor (attribute):
     if attribute == 'rating':
-        return lambda v: ratingWidget.make_star_image(
+        return lambda v: ratingWidget.StarImage(
             ratingWidget.star_generator,
             value=v,
             upper=10)

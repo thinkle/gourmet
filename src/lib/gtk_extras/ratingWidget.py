@@ -300,16 +300,6 @@ class StarButton (gtk.Button):
             return True
 
 
-def make_star_button (*args,**kwargs):
-    sb=StarButton(*args,**kwargs)
-    sb.show()
-    return sb
-
-def make_star_image (*args,**kwargs):
-    si=StarImage(*args,**kwargs)
-    si.show()
-    return si
-
 class TreeWithStarMaker:
     """A class to automatically handle stars in trees.
 
