@@ -155,7 +155,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         'label-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,()),
         }
 
-    def __init__ (self, prefs,
+    def __init__ (self, prefs=None,
                   rec=None,
                   custom_label=None,
                   pressable=True
@@ -265,6 +265,9 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                     'box':hb,
                     'type':typ,
                     })
+
+    def set_prefs (self, prefs):
+        self.prefs = prefs
 
     def toggle_label (self, button, label, name,properties, unit):
         if self.__toggling__: return

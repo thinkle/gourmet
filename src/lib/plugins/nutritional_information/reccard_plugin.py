@@ -47,6 +47,7 @@ class NutritionDisplayModule (RecDisplayModule):
             {'edit_nutrition': lambda *args: self.nutritionLabel.show_druid(nd=self.recipe_display.rg.rd.nd)}
             )
         self.nutritionLabel = self.ui.get_object('nutritionLabel')
+        self.nutritionLabel.set_prefs(self.prefs)
         self.nutritionLabel.connect('ingredients-changed', self.ingredients_changed_cb)
         self.nutritionLabel.connect('label-changed',self.nutrition_highlighting_label_changed)
         self.main = self.ui.get_object('nutritionDisplay')
