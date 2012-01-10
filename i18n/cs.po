@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gourmet 0.6.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 22:35+0100\n"
+"POT-Creation-Date: 2012-01-10 23:17+0100\n"
 "PO-Revision-Date: 2006-02-10 10:37+0000\n"
 "Last-Translator: Zbynek Mrkvicka <zbynek@oachot.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -769,8 +769,9 @@ msgstr ""
 msgid "_Yield:"
 msgstr ""
 
-#: ../glade/recCardDescriptionEditor.glade.h:16 ../src/lib/recindex.py:42
-#: ../src/lib/recindex.py:50
+#: ../glade/recCardDescriptionEditor.glade.h:16
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:29
+#: ../src/lib/recindex.py:42 ../src/lib/recindex.py:50
 msgid "category"
 msgstr "kategorie"
 
@@ -3699,6 +3700,44 @@ msgstr ""
 msgid "Automatically adjust units"
 msgstr ""
 
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:24
+#: ../src/lib/recindex.py:37 ../src/lib/recindex.py:47
+#: ../src/lib/recindex.py:481
+msgid "anywhere"
+msgstr ""
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:25
+#: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
+msgid "title"
+msgstr "název"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:26
+#: ../src/lib/recindex.py:39 ../src/lib/recindex.py:49
+msgid "ingredient"
+msgstr "ingredience"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:27
+#: ../src/lib/recindex.py:40 ../src/lib/recindex.py:54
+msgid "instructions"
+msgstr "instrukce"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:28
+#: ../src/lib/recindex.py:41 ../src/lib/recindex.py:55
+msgid "notes"
+msgstr "poznámky"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:30
+#: ../src/lib/recindex.py:43 ../src/lib/recindex.py:51
+msgid "cuisine"
+msgstr "kuchyně"
+
+#. _('rating'):'rating',
+#. _('rating'),
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:31
+#: ../src/lib/recindex.py:45 ../src/lib/recindex.py:53
+msgid "source"
+msgstr "zdroj"
+
 #. menus
 #: ../src/lib/reccard.py:213 ../src/lib/reccard.py:872
 msgid "_Recipe"
@@ -3928,37 +3967,6 @@ msgstr "Nevybrali jste žádný recept!"
 #, python-format
 msgid "How much of %(title)s does your recipe call for?"
 msgstr ""
-
-#: ../src/lib/recindex.py:37 ../src/lib/recindex.py:47
-#: ../src/lib/recindex.py:481
-msgid "anywhere"
-msgstr ""
-
-#: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
-msgid "title"
-msgstr "název"
-
-#: ../src/lib/recindex.py:39 ../src/lib/recindex.py:49
-msgid "ingredient"
-msgstr "ingredience"
-
-#: ../src/lib/recindex.py:40 ../src/lib/recindex.py:54
-msgid "instructions"
-msgstr "instrukce"
-
-#: ../src/lib/recindex.py:41 ../src/lib/recindex.py:55
-msgid "notes"
-msgstr "poznámky"
-
-#: ../src/lib/recindex.py:43 ../src/lib/recindex.py:51
-msgid "cuisine"
-msgstr "kuchyně"
-
-#. _('rating'):'rating',
-#. _('rating'),
-#: ../src/lib/recindex.py:45 ../src/lib/recindex.py:53
-msgid "source"
-msgstr "zdroj"
 
 #: ../src/lib/recindex.py:152
 #, fuzzy

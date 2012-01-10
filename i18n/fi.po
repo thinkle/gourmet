@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 22:35+0100\n"
+"POT-Creation-Date: 2012-01-10 23:17+0100\n"
 "PO-Revision-Date: 2006-03-30 17:20+0000\n"
 "Last-Translator: Jaro Larnos <jaro.larnos@pp.inet.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -811,8 +811,9 @@ msgstr ""
 msgid "_Yield:"
 msgstr ""
 
-#: ../glade/recCardDescriptionEditor.glade.h:16 ../src/lib/recindex.py:42
-#: ../src/lib/recindex.py:50
+#: ../glade/recCardDescriptionEditor.glade.h:16
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:29
+#: ../src/lib/recindex.py:42 ../src/lib/recindex.py:50
 msgid "category"
 msgstr "luokka"
 
@@ -3751,6 +3752,46 @@ msgstr ""
 msgid "Automatically adjust units"
 msgstr ""
 
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:24
+#: ../src/lib/recindex.py:37 ../src/lib/recindex.py:47
+#: ../src/lib/recindex.py:481
+msgid "anywhere"
+msgstr ""
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:25
+#: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
+#, fuzzy
+msgid "title"
+msgstr "nimi"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:26
+#: ../src/lib/recindex.py:39 ../src/lib/recindex.py:49
+msgid "ingredient"
+msgstr "aines"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:27
+#: ../src/lib/recindex.py:40 ../src/lib/recindex.py:54
+msgid "instructions"
+msgstr "ohjeet"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:28
+#: ../src/lib/recindex.py:41 ../src/lib/recindex.py:55
+#, fuzzy
+msgid "notes"
+msgstr "Huomautukset"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:30
+#: ../src/lib/recindex.py:43 ../src/lib/recindex.py:51
+msgid "cuisine"
+msgstr "keittiö"
+
+#. _('rating'):'rating',
+#. _('rating'),
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:31
+#: ../src/lib/recindex.py:45 ../src/lib/recindex.py:53
+msgid "source"
+msgstr "lähde"
+
 #. menus
 #: ../src/lib/reccard.py:213 ../src/lib/reccard.py:872
 msgid "_Recipe"
@@ -3981,39 +4022,6 @@ msgstr "Reseptejä ei ole valittuna!"
 #, python-format
 msgid "How much of %(title)s does your recipe call for?"
 msgstr ""
-
-#: ../src/lib/recindex.py:37 ../src/lib/recindex.py:47
-#: ../src/lib/recindex.py:481
-msgid "anywhere"
-msgstr ""
-
-#: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
-#, fuzzy
-msgid "title"
-msgstr "nimi"
-
-#: ../src/lib/recindex.py:39 ../src/lib/recindex.py:49
-msgid "ingredient"
-msgstr "aines"
-
-#: ../src/lib/recindex.py:40 ../src/lib/recindex.py:54
-msgid "instructions"
-msgstr "ohjeet"
-
-#: ../src/lib/recindex.py:41 ../src/lib/recindex.py:55
-#, fuzzy
-msgid "notes"
-msgstr "Huomautukset"
-
-#: ../src/lib/recindex.py:43 ../src/lib/recindex.py:51
-msgid "cuisine"
-msgstr "keittiö"
-
-#. _('rating'):'rating',
-#. _('rating'),
-#: ../src/lib/recindex.py:45 ../src/lib/recindex.py:53
-msgid "source"
-msgstr "lähde"
 
 #: ../src/lib/recindex.py:152
 #, fuzzy

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gourmet Recipe Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 22:35+0100\n"
+"POT-Creation-Date: 2012-01-10 23:17+0100\n"
 "PO-Revision-Date: 2007-09-10 00:06+0100\n"
 "Last-Translator: Bernhard Reiter <ockham@gmx.net>\n"
 "Language-Team: German (Germany) <de_DE@li.org>\n"
@@ -785,8 +785,9 @@ msgstr "_Titel:"
 msgid "_Yield:"
 msgstr "Feld"
 
-#: ../glade/recCardDescriptionEditor.glade.h:16 ../src/lib/recindex.py:42
-#: ../src/lib/recindex.py:50
+#: ../glade/recCardDescriptionEditor.glade.h:16
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:29
+#: ../src/lib/recindex.py:42 ../src/lib/recindex.py:50
 msgid "category"
 msgstr "Kategorie"
 
@@ -3801,6 +3802,45 @@ msgstr ""
 msgid "Automatically adjust units"
 msgstr ""
 
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:24
+#: ../src/lib/recindex.py:37 ../src/lib/recindex.py:47
+#: ../src/lib/recindex.py:481
+#, fuzzy
+msgid "anywhere"
+msgstr "Ändere üb_erall"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:25
+#: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
+msgid "title"
+msgstr "Titel"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:26
+#: ../src/lib/recindex.py:39 ../src/lib/recindex.py:49
+msgid "ingredient"
+msgstr "Zutat"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:27
+#: ../src/lib/recindex.py:40 ../src/lib/recindex.py:54
+msgid "instructions"
+msgstr "Anweisungen"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:28
+#: ../src/lib/recindex.py:41 ../src/lib/recindex.py:55
+msgid "notes"
+msgstr "Notizen"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:30
+#: ../src/lib/recindex.py:43 ../src/lib/recindex.py:51
+msgid "cuisine"
+msgstr "Küche"
+
+#. _('rating'):'rating',
+#. _('rating'),
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:31
+#: ../src/lib/recindex.py:45 ../src/lib/recindex.py:53
+msgid "source"
+msgstr "Quelle"
+
 #. menus
 #: ../src/lib/reccard.py:213 ../src/lib/reccard.py:872
 msgid "_Recipe"
@@ -4032,38 +4072,6 @@ msgstr "Sie haben keine Rezepte ausgewählt!"
 #, python-format
 msgid "How much of %(title)s does your recipe call for?"
 msgstr ""
-
-#: ../src/lib/recindex.py:37 ../src/lib/recindex.py:47
-#: ../src/lib/recindex.py:481
-#, fuzzy
-msgid "anywhere"
-msgstr "Ändere üb_erall"
-
-#: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
-msgid "title"
-msgstr "Titel"
-
-#: ../src/lib/recindex.py:39 ../src/lib/recindex.py:49
-msgid "ingredient"
-msgstr "Zutat"
-
-#: ../src/lib/recindex.py:40 ../src/lib/recindex.py:54
-msgid "instructions"
-msgstr "Anweisungen"
-
-#: ../src/lib/recindex.py:41 ../src/lib/recindex.py:55
-msgid "notes"
-msgstr "Notizen"
-
-#: ../src/lib/recindex.py:43 ../src/lib/recindex.py:51
-msgid "cuisine"
-msgstr "Küche"
-
-#. _('rating'):'rating',
-#. _('rating'),
-#: ../src/lib/recindex.py:45 ../src/lib/recindex.py:53
-msgid "source"
-msgstr "Quelle"
 
 #: ../src/lib/recindex.py:152
 #, fuzzy

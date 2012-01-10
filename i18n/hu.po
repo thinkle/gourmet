@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 22:35+0100\n"
+"POT-Creation-Date: 2012-01-10 23:17+0100\n"
 "PO-Revision-Date: 2006-08-14 17:55+0000\n"
 "Last-Translator: maci <monyesz@index.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
@@ -778,8 +778,9 @@ msgstr ""
 msgid "_Yield:"
 msgstr "Mező"
 
-#: ../glade/recCardDescriptionEditor.glade.h:16 ../src/lib/recindex.py:42
-#: ../src/lib/recindex.py:50
+#: ../glade/recCardDescriptionEditor.glade.h:16
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:29
+#: ../src/lib/recindex.py:42 ../src/lib/recindex.py:50
 msgid "category"
 msgstr "kategória"
 
@@ -3766,6 +3767,45 @@ msgstr ""
 msgid "Automatically adjust units"
 msgstr ""
 
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:24
+#: ../src/lib/recindex.py:37 ../src/lib/recindex.py:47
+#: ../src/lib/recindex.py:481
+#, fuzzy
+msgid "anywhere"
+msgstr "Csere mi_ndenütt."
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:25
+#: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
+msgid "title"
+msgstr "cím"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:26
+#: ../src/lib/recindex.py:39 ../src/lib/recindex.py:49
+msgid "ingredient"
+msgstr "hozzávaló"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:27
+#: ../src/lib/recindex.py:40 ../src/lib/recindex.py:54
+msgid "instructions"
+msgstr "elkészítés"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:28
+#: ../src/lib/recindex.py:41 ../src/lib/recindex.py:55
+msgid "notes"
+msgstr "jegyzetek"
+
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:30
+#: ../src/lib/recindex.py:43 ../src/lib/recindex.py:51
+msgid "cuisine"
+msgstr "konyha"
+
+#. _('rating'):'rating',
+#. _('rating'),
+#: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:31
+#: ../src/lib/recindex.py:45 ../src/lib/recindex.py:53
+msgid "source"
+msgstr "forrás"
+
 #. menus
 #: ../src/lib/reccard.py:213 ../src/lib/reccard.py:872
 msgid "_Recipe"
@@ -3999,38 +4039,6 @@ msgstr "Nem választott ki receptet!"
 #, python-format
 msgid "How much of %(title)s does your recipe call for?"
 msgstr ""
-
-#: ../src/lib/recindex.py:37 ../src/lib/recindex.py:47
-#: ../src/lib/recindex.py:481
-#, fuzzy
-msgid "anywhere"
-msgstr "Csere mi_ndenütt."
-
-#: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
-msgid "title"
-msgstr "cím"
-
-#: ../src/lib/recindex.py:39 ../src/lib/recindex.py:49
-msgid "ingredient"
-msgstr "hozzávaló"
-
-#: ../src/lib/recindex.py:40 ../src/lib/recindex.py:54
-msgid "instructions"
-msgstr "elkészítés"
-
-#: ../src/lib/recindex.py:41 ../src/lib/recindex.py:55
-msgid "notes"
-msgstr "jegyzetek"
-
-#: ../src/lib/recindex.py:43 ../src/lib/recindex.py:51
-msgid "cuisine"
-msgstr "konyha"
-
-#. _('rating'):'rating',
-#. _('rating'),
-#: ../src/lib/recindex.py:45 ../src/lib/recindex.py:53
-msgid "source"
-msgstr "forrás"
 
 #: ../src/lib/recindex.py:152
 #, fuzzy
