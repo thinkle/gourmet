@@ -119,8 +119,6 @@ images/recbox.png
 images/recbox_biggish.ico
 images/recbox_biggish.png
 images/recbox_icon.png
-images/recbox_icon_old.png
-images/recbox_old.ico
 images/reccard.ico
 images/reccard.png
 images/reccard_edit.png
@@ -327,6 +325,7 @@ src/lib/plugins/listsaver/shoppingSaverPlugin.py
 src/lib/plugins/nutritional_information.gourmet-plugin
 src/lib/plugins/nutritional_information.gourmet-plugin.in
 src/lib/plugins/nutritional_information/__init__.py
+src/lib/plugins/nutritional_information/catalog/nutritionwidgets.py
 src/lib/plugins/nutritional_information/data_plugin.py
 src/lib/plugins/nutritional_information/databaseGrabber.py
 src/lib/plugins/nutritional_information/enter_nutritional_defaults.py
@@ -387,7 +386,6 @@ src/lib/reccard.py
 src/lib/recindex.py
 src/lib/recipeIdentifier.py
 src/lib/recipeManager.py
-src/lib/recipeMerger.py
 src/lib/shopEditor.py
 src/lib/shopgui.py
 src/lib/shopping.py
