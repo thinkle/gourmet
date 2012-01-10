@@ -111,15 +111,6 @@ src/lib/plugins/browse_recipes/__init__.py
 src/lib/plugins/browse_recipes/browser.py
 src/lib/plugins/browse_recipes/icon_helpers.py
 src/lib/plugins/browse_recipes/images/__init__.py
-src/lib/plugins/browse_recipes/images/cooktime.png
-src/lib/plugins/browse_recipes/images/cooktime_empty_clock.png
-src/lib/plugins/browse_recipes/images/cuisine.png
-src/lib/plugins/browse_recipes/images/generic_category.png
-src/lib/plugins/browse_recipes/images/generic_recipe.png
-src/lib/plugins/browse_recipes/images/preptime.png
-src/lib/plugins/browse_recipes/images/preptime_empty_clock.png
-src/lib/plugins/browse_recipes/images/rating.png
-src/lib/plugins/browse_recipes/images/source.png
 src/lib/plugins/check_for_unicode_16/__init__.py
 src/lib/plugins/duplicate_finder.gourmet-plugin
 src/lib/plugins/duplicate_finder.gourmet-plugin.in
@@ -263,7 +254,6 @@ src/lib/reccard.py
 src/lib/recindex.py
 src/lib/recipeIdentifier.py
 src/lib/recipeManager.py
-src/lib/recipeMerger.py
 src/lib/shopEditor.py
 src/lib/shopgui.py
 src/lib/shopping.py
