@@ -215,7 +215,6 @@ src/lib/plugins/listsaver/shoppingSaverPlugin.py
 src/lib/plugins/nutritional_information.gourmet-plugin
 src/lib/plugins/nutritional_information.gourmet-plugin.in
 src/lib/plugins/nutritional_information/__init__.py
-src/lib/plugins/nutritional_information/catalog/nutritionwidgets.py
 src/lib/plugins/nutritional_information/data_plugin.py
 src/lib/plugins/nutritional_information/databaseGrabber.py
 src/lib/plugins/nutritional_information/enter_nutritional_defaults.py
