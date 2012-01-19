@@ -15,16 +15,3 @@ authors = ["Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>",
            _("Simon Darlington <simon.darlington@gmx.net> (improvements to internationalization, assorted bugfixes)"),
            _("Bernhard Reiter <ockham@raz.or.at> (Windows version maintenance and website re-design)"),
            ]
-# load LICENSE text file
-try:
-    h = open('LICENSE','r')
-    s = h.readlines()
-except IOError, err:
-    print "IO Error %s" % err
-except:
-    print "Unexpexted error"
-
-license = ""
-for line in s:
-    license += line
-h.close()
