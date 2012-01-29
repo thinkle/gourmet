@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--*- mode: xml -*-->
-<interface>
+<interface domain="gourmet">
   <object class="GtkListStore" id="model1">
     <columns>
       <column type="gchararray"/>

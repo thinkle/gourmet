@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--Generated with glade3 3.4.5 on Sat Jan 31 18:06:28 2009 -->
-<interface>
+<interface domain="gourmet">
   <!-- interface-requires gtk+ 2.16 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="ingredientsEditor">

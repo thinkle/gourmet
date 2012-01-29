@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--*- mode: xml -*-->
-<interface>
+<interface domain="gourmet">
   <object class="GtkDialog" id="valueDialog">
     <property name="border_width">12</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>

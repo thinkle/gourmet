@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--*- mode: xml -*-->
-<interface>
+<interface domain="gourmet">
   <object class="GtkWindow" id="window1">
     <property context="yes" name="title" translatable="yes"/>
     <property name="type">GTK_WINDOW_TOPLEVEL</property>
