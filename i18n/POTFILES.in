@@ -1,30 +1,30 @@
 glade/app.glade
 glade/batchEditor.glade
-glade/batchEditor.ui
+[type: gettext/glade]glade/batchEditor.ui
 glade/converter.glade
-glade/converter.ui
+[type: gettext/glade]glade/converter.ui
 glade/converter_new.glade
-glade/converter_new.ui
+[type: gettext/glade]glade/converter_new.ui
 glade/converter_old.glade
 glade/databaseChooser.glade
-glade/databaseChooser.ui
+[type: gettext/glade]glade/databaseChooser.ui
 glade/generic_importer.glade
-glade/generic_importer.ui
+[type: gettext/glade]glade/generic_importer.ui
 glade/keyeditor.glade
 glade/preferenceDialog.glade
-glade/preferenceDialog.ui
+[type: gettext/glade]glade/preferenceDialog.ui
 glade/recCardDescriptionEditor.glade
-glade/recCardDescriptionEditor.ui
+[type: gettext/glade]glade/recCardDescriptionEditor.ui
 glade/recCardDisplay.glade
 glade/recCardIngredientsEditor.glade
-glade/recCardIngredientsEditor.ui
+[type: gettext/glade]glade/recCardIngredientsEditor.ui
 glade/recipe_index.glade
 glade/shopCatEditor.glade
-glade/shopCatEditor.ui
+[type: gettext/glade]glade/shopCatEditor.ui
 glade/timerDialog.glade
-glade/timerDialog.ui
+[type: gettext/glade]glade/timerDialog.ui
 glade/valueEditor.glade
-glade/valueEditor.ui
+[type: gettext/glade]glade/valueEditor.ui
 gourmet.desktop.in
 src/lib/FileChooserSaveAs.py
 src/lib/GourmetFauxThreads.py
@@ -253,7 +253,7 @@ src/lib/plugins/unit_converter.gourmet-plugin.in
 src/lib/plugins/unit_converter/__init__.py
 src/lib/plugins/unit_converter/convertGui.py
 src/lib/plugins/unit_converter/converter.glade
-src/lib/plugins/unit_converter/converter.ui
+[type: gettext/glade]src/lib/plugins/unit_converter/converter.ui
 src/lib/plugins/unit_display_prefs.gourmet-plugin
 src/lib/plugins/unit_display_prefs.gourmet-plugin.in
 src/lib/plugins/unit_display_prefs/__init__.py
