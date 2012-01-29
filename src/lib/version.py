@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import gettext_setup
 from gettext import gettext as _
 appname = _("Gourmet Recipe Manager")
 copyright = _("Copyright (c) 2004,2005,2006,2007,2008,2009,2010,2011 Thomas M. Hinkle. GNU GPL v2")
@@ -15,16 +16,3 @@ authors = ["Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>",
            _("Simon Darlington <simon.darlington@gmx.net> (improvements to internationalization, assorted bugfixes)"),
            _("Bernhard Reiter <ockham@raz.or.at> (Windows version maintenance and website re-design)"),
            ]
-# load LICENSE text file
-try:
-    h = open('LICENSE','r')
-    s = h.readlines()
-except IOError, err:
-    print "IO Error %s" % err
-except:
-    print "Unexpexted error"
-
-license = ""
-for line in s:
-    license += line
-h.close()

@@ -58,7 +58,11 @@ gettext.bindtextdomain('gourmet',DIR)
 gettext.textdomain('gourmet')
 gettext.install('gourmet',DIR,unicode=1)
 
-import locale, os
+import locale
+
+# Needed so the strings from our .ui files get translated!
+locale.bindtextdomain('gourmet',DIR)
+
 try:
     if os.name == 'posix':
         locale.setlocale(locale.LC_ALL,'')

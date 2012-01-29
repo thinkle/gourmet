@@ -401,13 +401,27 @@ class GourmetApplication:
 
         logo=gtk.gdk.pixbuf_new_from_file(os.path.join(imagedir,"gourmet_logo.png"))
 
+        # load LICENSE text file
+        try:
+            h = open(os.path.join(datad,'LICENSE'),'r')
+            s = h.readlines()
+        except IOError, err:
+            print "IO Error %s" % err
+        except:
+            print "Unexpexted error"
+
+        license = ""
+        for line in s:
+            license += line
+        h.close()
+
         about = gtk.AboutDialog()
         #about.set_artists(version.artists)
         about.set_authors(version.authors)
         about.set_comments(version.description)
         about.set_copyright(version.copyright)
         #about.set_documenters(None)
-        about.set_license(version.license)
+        about.set_license(license)
         about.set_logo(logo)
         about.set_program_name(version.appname)
         about.set_translator_credits(translator)

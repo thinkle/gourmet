@@ -147,7 +147,7 @@ def data_files():
         #print pth,fn
         pth = os.path.join(i18n_base,pth)
         files.append((pth,[f]))           
-    files.extend([(base, images + ['FAQ'])])
+    files.extend([(base, images + ['FAQ', 'LICENSE'])])
     #print 'DATA FILES:',files
     return files
 

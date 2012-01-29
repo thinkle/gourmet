@@ -4,6 +4,7 @@ import pango
 import xml.sax.saxutils
 from gettext import gettext as _
 from gourmet.gdebug import debug
+from glib import get_user_special_dir, USER_DIRECTORY_PICTURES
 H_PADDING=12
 Y_PADDING=12
 
@@ -1163,6 +1164,7 @@ class ImageSelectorDialog (FileSelectorDialog):
                   buttons=None
                   ):
         FileSelectorDialog.__init__(self, title, filename, filters, action, set_filter, buttons)
+        self.fsd.set_current_folder(get_user_special_dir(USER_DIRECTORY_PICTURES))
 
     def post_dialog (self):
         self.preview = gtk.Image()

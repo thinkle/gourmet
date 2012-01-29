@@ -1,19 +1,30 @@
 glade/app.glade
 glade/batchEditor.glade
+[type: gettext/glade]glade/batchEditor.ui
 glade/converter.glade
+[type: gettext/glade]glade/converter.ui
 glade/converter_new.glade
+[type: gettext/glade]glade/converter_new.ui
 glade/converter_old.glade
 glade/databaseChooser.glade
+[type: gettext/glade]glade/databaseChooser.ui
 glade/generic_importer.glade
+[type: gettext/glade]glade/generic_importer.ui
 glade/keyeditor.glade
 glade/preferenceDialog.glade
+[type: gettext/glade]glade/preferenceDialog.ui
 glade/recCardDescriptionEditor.glade
+[type: gettext/glade]glade/recCardDescriptionEditor.ui
 glade/recCardDisplay.glade
 glade/recCardIngredientsEditor.glade
+[type: gettext/glade]glade/recCardIngredientsEditor.ui
 glade/recipe_index.glade
 glade/shopCatEditor.glade
+[type: gettext/glade]glade/shopCatEditor.ui
 glade/timerDialog.glade
+[type: gettext/glade]glade/timerDialog.ui
 glade/valueEditor.glade
+[type: gettext/glade]glade/valueEditor.ui
 gourmet.desktop.in
 src/lib/FileChooserSaveAs.py
 src/lib/GourmetFauxThreads.py
@@ -111,15 +122,6 @@ src/lib/plugins/browse_recipes/__init__.py
 src/lib/plugins/browse_recipes/browser.py
 src/lib/plugins/browse_recipes/icon_helpers.py
 src/lib/plugins/browse_recipes/images/__init__.py
-src/lib/plugins/browse_recipes/images/cooktime.png
-src/lib/plugins/browse_recipes/images/cooktime_empty_clock.png
-src/lib/plugins/browse_recipes/images/cuisine.png
-src/lib/plugins/browse_recipes/images/generic_category.png
-src/lib/plugins/browse_recipes/images/generic_recipe.png
-src/lib/plugins/browse_recipes/images/preptime.png
-src/lib/plugins/browse_recipes/images/preptime_empty_clock.png
-src/lib/plugins/browse_recipes/images/rating.png
-src/lib/plugins/browse_recipes/images/source.png
 src/lib/plugins/check_for_unicode_16/__init__.py
 src/lib/plugins/duplicate_finder.gourmet-plugin
 src/lib/plugins/duplicate_finder.gourmet-plugin.in
@@ -218,6 +220,7 @@ src/lib/plugins/nutritional_information/databaseGrabber.py
 src/lib/plugins/nutritional_information/enter_nutritional_defaults.py
 src/lib/plugins/nutritional_information/export_plugin.py
 src/lib/plugins/nutritional_information/images/Nutrition.png
+src/lib/plugins/nutritional_information/images/__init__.py
 src/lib/plugins/nutritional_information/main_plugin.py
 src/lib/plugins/nutritional_information/nutPrefsPlugin.py
 src/lib/plugins/nutritional_information/nut_recipe_card_display.glade
@@ -250,12 +253,21 @@ src/lib/plugins/unit_converter.gourmet-plugin.in
 src/lib/plugins/unit_converter/__init__.py
 src/lib/plugins/unit_converter/convertGui.py
 src/lib/plugins/unit_converter/converter.glade
+[type: gettext/glade]src/lib/plugins/unit_converter/converter.ui
 src/lib/plugins/unit_display_prefs.gourmet-plugin
 src/lib/plugins/unit_display_prefs.gourmet-plugin.in
 src/lib/plugins/unit_display_prefs/__init__.py
 src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py
 src/lib/plugins/utf16.gourmet-plugin
 src/lib/plugins/utf16.gourmet-plugin.in
+src/lib/plugins/web_plugin/gourmetweb/__init__.py
+src/lib/plugins/web_plugin/gourmetweb/manage.py
+src/lib/plugins/web_plugin/gourmetweb/recview/__init__.py
+src/lib/plugins/web_plugin/gourmetweb/recview/models.py
+src/lib/plugins/web_plugin/gourmetweb/recview/tests.py
+src/lib/plugins/web_plugin/gourmetweb/recview/views.py
+src/lib/plugins/web_plugin/gourmetweb/settings.py
+src/lib/plugins/web_plugin/gourmetweb/urls.py
 src/lib/prefs.py
 src/lib/prefsGui.py
 src/lib/profileImport.py
@@ -263,7 +275,6 @@ src/lib/reccard.py
 src/lib/recindex.py
 src/lib/recipeIdentifier.py
 src/lib/recipeManager.py
-src/lib/recipeMerger.py
 src/lib/shopEditor.py
 src/lib/shopgui.py
 src/lib/shopping.py
