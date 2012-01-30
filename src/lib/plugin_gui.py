@@ -30,7 +30,7 @@ class PluginChooser:
             '<b><span size="large">'+_('Plugins')+'</span></b>'
             )
         desc = gtk.Label()
-        desc.set_markup('<i>Plugins add extra functionality to Gourmet.</i>')
+        desc.set_markup('<i>'+_('Plugins add extra functionality to Gourmet.')+'</i>')
         head.set_alignment(0.0,0.0); desc.set_alignment(0.0,0.0)
         self.window.vbox.pack_start(head,expand=False)
         self.window.vbox.pack_start(desc,expand=False)
