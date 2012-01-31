@@ -292,7 +292,7 @@ class GourmetApplication:
                     )
             else:
                 if existing_action.get_property('label') != '_'+rc.current_rec.title:
-                    existing_action.set_property('label')('_'+rc.current_rec.title)
+                    existing_action.set_property('label','_'+rc.current_rec.title)
 
     def update_go_menu (self):
         self.update_action_group()
