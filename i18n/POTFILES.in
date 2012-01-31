@@ -102,50 +102,42 @@ src/lib/plugin.py
 src/lib/plugin_gui.py
 src/lib/plugin_loader.py
 src/lib/plugins/__init__.py
-src/lib/plugins/browse_plugin.gourmet-plugin
-src/lib/plugins/browse_plugin.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/browse_plugin.gourmet-plugin.in
 src/lib/plugins/browse_recipes/__init__.py
 src/lib/plugins/browse_recipes/browser.py
 src/lib/plugins/browse_recipes/icon_helpers.py
 src/lib/plugins/browse_recipes/images/__init__.py
 src/lib/plugins/check_for_unicode_16/__init__.py
-src/lib/plugins/duplicate_finder.gourmet-plugin
-src/lib/plugins/duplicate_finder.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/duplicate_finder.gourmet-plugin.in
 src/lib/plugins/duplicate_finder/__init__.py
 src/lib/plugins/duplicate_finder/recipeMerger.py
 [type: gettext/glade]src/lib/plugins/duplicate_finder/recipeMerger.ui
 src/lib/plugins/duplicate_finder/recipeMergerPlugin.py
-src/lib/plugins/email.gourmet-plugin
-src/lib/plugins/email.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/email.gourmet-plugin.in
 src/lib/plugins/email_plugin/__init__.py
 src/lib/plugins/email_plugin/emailer.py
 src/lib/plugins/email_plugin/emailer_plugin.py
 src/lib/plugins/email_plugin/recipe_emailer.py
-src/lib/plugins/field_editor.gourmet-plugin
-src/lib/plugins/field_editor.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/field_editor.gourmet-plugin.in
 src/lib/plugins/field_editor/__init__.py
 src/lib/plugins/field_editor/fieldEditor.py
 src/lib/plugins/import_export/__init__.py
-src/lib/plugins/import_export/archive.gourmet-plugin
-src/lib/plugins/import_export/archive.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/import_export/archive.gourmet-plugin.in
 src/lib/plugins/import_export/archive_plugin/__init__.py
 src/lib/plugins/import_export/archive_plugin/zip_importer_plugin.py
 src/lib/plugins/import_export/archive_plugin/zip_readers.py
-src/lib/plugins/import_export/gxml.gourmet-plugin
-src/lib/plugins/import_export/gxml.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/import_export/gxml.gourmet-plugin.in
 src/lib/plugins/import_export/gxml_plugin/__init__.py
 src/lib/plugins/import_export/gxml_plugin/gxml2_exporter.py
 src/lib/plugins/import_export/gxml_plugin/gxml2_importer.py
 src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py
 src/lib/plugins/import_export/gxml_plugin/gxml_importer.py
 src/lib/plugins/import_export/gxml_plugin/gxml_importer_plugin.py
-src/lib/plugins/import_export/html.gourmet-plugin
-src/lib/plugins/import_export/html.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/import_export/html.gourmet-plugin.in
 src/lib/plugins/import_export/html_plugin/__init__.py
 src/lib/plugins/import_export/html_plugin/html_exporter.py
 src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py
-src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin
-src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in
 src/lib/plugins/import_export/krecipe_plugin/__init__.py
 src/lib/plugins/import_export/krecipe_plugin/krecipe_importer.py
 src/lib/plugins/import_export/krecipe_plugin/krecipe_importer_plugin.py
@@ -153,24 +145,20 @@ src/lib/plugins/import_export/mastercook_import_plugin/__init__.py
 src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer.py
 src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer_plugin.py
 src/lib/plugins/import_export/mastercook_import_plugin/mastercook_plaintext_importer.py
-src/lib/plugins/import_export/mastercook_plugin.gourmet-plugin
-src/lib/plugins/import_export/mastercook_plugin.gourmet-plugin.in
-src/lib/plugins/import_export/mealmaster.gourmet-plugin
-src/lib/plugins/import_export/mealmaster.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/import_export/mastercook_plugin.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/import_export/mealmaster.gourmet-plugin.in
 src/lib/plugins/import_export/mealmaster_plugin/__init__.py
 src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter.py
 src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py
 src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer.py
 src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py
-src/lib/plugins/import_export/pdf.gourmet-plugin
-src/lib/plugins/import_export/pdf.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/import_export/pdf.gourmet-plugin.in
 src/lib/plugins/import_export/pdf_plugin/__init__.py
 src/lib/plugins/import_export/pdf_plugin/page_drawer.py
 src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py
 src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py
 src/lib/plugins/import_export/pdf_plugin/print_plugin.py
-src/lib/plugins/import_export/plaintext.gourmet-plugin
-src/lib/plugins/import_export/plaintext.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/import_export/plaintext.gourmet-plugin.in
 src/lib/plugins/import_export/plaintext_plugin/__init__.py
 src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py
 src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py
@@ -178,28 +166,23 @@ src/lib/plugins/import_export/web_import_plugin/BeautifulSoup.py
 src/lib/plugins/import_export/web_import_plugin/__init__.py
 src/lib/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py
 src/lib/plugins/import_export/web_import_plugin/webpage_importer.py
-src/lib/plugins/import_export/webimport.gourmet-plugin
-src/lib/plugins/import_export/webimport.gourmet-plugin.in
-src/lib/plugins/import_export/website_import.gourmet-plugin
-src/lib/plugins/import_export/website_import.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/import_export/webimport.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/import_export/website_import.gourmet-plugin.in
 src/lib/plugins/import_export/website_import_plugins/__init__.py
 src/lib/plugins/import_export/website_import_plugins/about_dot_com_plugin.py
 src/lib/plugins/import_export/website_import_plugins/allrecipes_plugin.py
 src/lib/plugins/import_export/website_import_plugins/foodnetwork_plugin.py
-src/lib/plugins/key_editor.gourmet-plugin
-src/lib/plugins/key_editor.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/key_editor.gourmet-plugin.in
 src/lib/plugins/key_editor/__init__.py
 src/lib/plugins/key_editor/keyEditor.py
 src/lib/plugins/key_editor/keyEditorPluggable.py
 src/lib/plugins/key_editor/keyEditorPlugin.py
 [type: gettext/glade]src/lib/plugins/key_editor/keyeditor.ui
 src/lib/plugins/key_editor/recipeEditorPlugin.py
-src/lib/plugins/listsaver.gourmet-plugin
-src/lib/plugins/listsaver.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/listsaver.gourmet-plugin.in
 src/lib/plugins/listsaver/__init__.py
 src/lib/plugins/listsaver/shoppingSaverPlugin.py
-src/lib/plugins/nutritional_information.gourmet-plugin
-src/lib/plugins/nutritional_information.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/nutritional_information.gourmet-plugin.in
 src/lib/plugins/nutritional_information/__init__.py
 src/lib/plugins/nutritional_information/data_plugin.py
 src/lib/plugins/nutritional_information/databaseGrabber.py
@@ -222,29 +205,23 @@ src/lib/plugins/nutritional_information/nutritionView.py
 src/lib/plugins/nutritional_information/parser_data.py
 src/lib/plugins/nutritional_information/reccard_plugin.py
 src/lib/plugins/nutritional_information/shopping_plugin.py
-src/lib/plugins/python_shell.gourmet-plugin
-src/lib/plugins/python_shell.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/python_shell.gourmet-plugin.in
 src/lib/plugins/python_shell/__init__.py
 src/lib/plugins/python_shell/ipython_view.py
-src/lib/plugins/shopping_associations.gourmet-plugin
-src/lib/plugins/shopping_associations.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/shopping_associations.gourmet-plugin.in
 src/lib/plugins/shopping_associations/__init__.py
 src/lib/plugins/shopping_associations/shopping_key_editor_plugin.py
-src/lib/plugins/spellcheck.gourmet-plugin
-src/lib/plugins/spellcheck.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/spellcheck.gourmet-plugin.in
 src/lib/plugins/spellcheck/__init__.py
 src/lib/plugins/spellcheck/reccard_spellcheck_plugin.py
-src/lib/plugins/unit_converter.gourmet-plugin
-src/lib/plugins/unit_converter.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/unit_converter.gourmet-plugin.in
 src/lib/plugins/unit_converter/__init__.py
 src/lib/plugins/unit_converter/convertGui.py
 [type: gettext/glade]src/lib/plugins/unit_converter/converter.ui
-src/lib/plugins/unit_display_prefs.gourmet-plugin
-src/lib/plugins/unit_display_prefs.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/unit_display_prefs.gourmet-plugin.in
 src/lib/plugins/unit_display_prefs/__init__.py
 src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py
-src/lib/plugins/utf16.gourmet-plugin
-src/lib/plugins/utf16.gourmet-plugin.in
+[type: gettext/ini]src/lib/plugins/utf16.gourmet-plugin.in
 src/lib/plugins/web_plugin/gourmetweb/__init__.py
 src/lib/plugins/web_plugin/gourmetweb/manage.py
 src/lib/plugins/web_plugin/gourmetweb/recview/__init__.py
