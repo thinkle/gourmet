@@ -19,9 +19,10 @@ from gdebug import *
 from gglobals import *
 from recindex import RecIndex
 #import exporters.recipe_emailer as recipe_emailer
-import locale, gettext
+import locale
+from gettext import gettext as _
+from gettext import ngettext
 from timer import show_timer
-_ = gettext.gettext
 from defaults.defaults import lang as defaults
 from defaults.defaults import get_pluralized_form
 import plugin_loader, plugin, plugin_gui
@@ -803,7 +804,7 @@ class StuffThatShouldBePlugins:
             changes = self.batchEditor.values
             only_where_blank = self.batchEditor.setFieldWhereBlank
             attributes = ', '.join(changes.keys())
-            msg = gettext.ngettext('Set %(attributes)s for %(num)s selected recipe?',
+            msg = ngettext('Set %(attributes)s for %(num)s selected recipe?',
                                    'Set %(attributes)s for %(num)s selected recipes?',
                                    len(recs))%{'attributes':attributes,
                                                'num':len(recs),
@@ -1228,7 +1229,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             make_visible=lambda *args: self.redo_search()
             )
         self.setup_delete_messagebox(
-            gettext.ngettext('You just moved %s recipe to the trash. You can recover this recipe or permanently delete it at any time by clicking Tools->Open Trash.',
+            ngettext('You just moved %s recipe to the trash. You can recover this recipe or permanently delete it at any time by clicking Tools->Open Trash.',
                              'You just moved %s recipes to the trash. You can recover these recipes or permanently delete them at any time by clicking Tools->Open Trash',
                              len(recs))%len(recs)
             )
