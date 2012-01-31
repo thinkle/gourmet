@@ -69,7 +69,7 @@ def get_recipe_image (rec):
         pb = scale_pb(get_pixbuf_from_jpg(rec.image))
     else:
         pb = generic_recipe_image.copy()
-    big_side = ((pb.props.height > pb.props.width and pb.props.height) or pb.props.width)
+    big_side = ((pb.get_property('height') > pb.get_property('width') and pb.get_property('height')) or pb.get_property('width'))
     if rec.rating:
         #sg = get_star_generator()
         sg = star_generator        
@@ -78,8 +78,8 @@ def get_recipe_image (rec):
         w = pb.get_width() - ratingPB.get_width() - 5
         if h < 0: h = 0
         if w < 0: w = 0
-        if ratingPB.props.width > pb.props.width:
-            SCALE = float(pb.props.width)/ratingPB.props.width
+        if ratingPB.get_property('width') > pb.get_property('width'):
+            SCALE = float(pb.get_property('width'))/ratingPB.get_property('width')
         else:
             SCALE = 1
         ratingPB.composite(
@@ -100,9 +100,9 @@ def get_recipe_image (rec):
         prepPB = prepPB.scale_simple(int(big_side*0.4),int(big_side*0.4),gtk.gdk.INTERP_BILINEAR)
         prepPB.composite(
             pb,
-            pb.props.width/2 + 5,5,
-            prepPB.props.width,prepPB.props.height,
-            pb.props.width/2 + 5,5,
+            pb.get_property('width')/2 + 5,5,
+            prepPB.get_property('width'),prepPB.get_property('height'),
+            pb.get_property('width')/2 + 5,5,
             1,1,gtk.gdk.INTERP_BILINEAR,
             127 # alpha
             )
@@ -111,9 +111,9 @@ def get_recipe_image (rec):
         cookPB = cookPB.scale_simple(int(big_side*0.4),int(big_side*0.4),gtk.gdk.INTERP_BILINEAR)
         cookPB.composite(
             pb,
-            pb.props.width/2 + 5,pb.props.height/2,
-            cookPB.props.width,cookPB.props.height,
-            pb.props.width/2 + 5,pb.props.height/2,
+            pb.get_property('width')/2 + 5,pb.get_property('height')/2,
+            cookPB.get_property('width'),cookPB.get_property('height'),
+            pb.get_property('width')/2 + 5,pb.get_property('height')/2,
             1,1,gtk.gdk.INTERP_BILINEAR,
             188 # alpha
             )
@@ -178,8 +178,8 @@ def make_time_icon (time, mode):
     elif mode == COOK:
         icon_image = cooktime_empty_image.copy()
     slice_pb = get_time_slice(time)
-    SCALE_X = W / float(slice_pb.props.width)
-    SCALE_Y = H / float(slice_pb.props.height)
+    SCALE_X = W / float(slice_pb.get_property('width'))
+    SCALE_Y = H / float(slice_pb.get_property('height'))
     args = (icon_image,
            LEFT_CORNER[0],
            LEFT_CORNER[1],
