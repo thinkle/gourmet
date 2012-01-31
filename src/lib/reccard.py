@@ -116,7 +116,7 @@ class RecCard (object):
         self.current_rec = recipe
         if hasattr(self,'recipe_display'):
             self.recipe_display.update_from_database()
-        if hasattr(self,'recipe_editor') and not self.recipe_editor.window.props.visible:
+        if hasattr(self,'recipe_editor') and not self.recipe_editor.window.get_property('visible'):
             delattr(self,'recipe_editor')
 
     def show (self):
@@ -126,9 +126,9 @@ class RecCard (object):
             self.show_display()
 
     def hide (self):
-        if ((not (hasattr(self,'recipe_display') and self.recipe_display.window.props.visible))
+        if ((not (hasattr(self,'recipe_display') and self.recipe_display.window.get_property('visible')))
              and
-            (not (hasattr(self,'recipe_editor') and self.recipe_editor.window.props.visible))):
+            (not (hasattr(self,'recipe_editor') and self.recipe_editor.window.get_property('visible')))):
             self.rg.del_rc(self.current_rec.id)
 
     # end RecCard
