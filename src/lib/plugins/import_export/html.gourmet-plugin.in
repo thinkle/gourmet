@@ -1,8 +1,8 @@
 [Gourmet Plugin]
-Module = html_plugin
-Version = 1.0
-API_Version = 1.0
-_Name = HTML Export
-_Comment = Create recipe webpages from recipes.
-_Category = Importer/Exporter
-Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>
+Module=html_plugin
+Version=1.0
+API_Version=1.0
+_Name=HTML Export
+_Comment=Create recipe webpages from recipes.
+_Category=Importer/Exporter
+Authors=Thomas M. Hinkle <thomas_hinkle@sf.net>

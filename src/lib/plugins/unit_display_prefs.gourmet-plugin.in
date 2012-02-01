@@ -1,8 +1,8 @@
 [Gourmet Plugin]
-Module = unit_display_prefs
-Version = 1.0
-API_Version = 1.0
-_Name = Unit Display Preferences
-_Comment = Allows you to always use metric (or imperial) units for display.
-_Category = Tools
-Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>
+Module=unit_display_prefs
+Version=1.0
+API_Version=1.0
+_Name=Unit Display Preferences
+_Comment=Allows you to always use metric (or imperial) units for display.
+_Category=Tools
+Authors=Thomas M. Hinkle <thomas_hinkle@sf.net>

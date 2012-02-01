@@ -1,8 +1,8 @@
 [Gourmet Plugin]
-Module = pdf_plugin
-Version = 1.0
-API_Version = 1.0
-_Name = Printing & PDF Export
-_Comment = Print recipes or export them as PDF; this plugin allows a variety of page layouts.
-_Category = Importer/Exporter
-Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>
+Module=pdf_plugin
+Version=1.0
+API_Version=1.0
+_Name=Printing & PDF Export
+_Comment=Print recipes or export them as PDF; this plugin allows a variety of page layouts.
+_Category=Importer/Exporter
+Authors=Thomas M. Hinkle <thomas_hinkle@sf.net>

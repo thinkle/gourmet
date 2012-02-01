@@ -1,8 +1,8 @@
 [Gourmet Plugin]
-Module = field_editor
-Version = 1.0
-API_Version = 1.0
-_Name = Field Editor
-_Comment = Edit fields across multiple recipes at a time. 
-_Category = Tools
-Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>
+Module=field_editor
+Version=1.0
+API_Version=1.0
+_Name=Field Editor
+_Comment=Edit fields across multiple recipes at a time.
+_Category=Tools
+Authors=Thomas M. Hinkle <thomas_hinkle@sf.net>

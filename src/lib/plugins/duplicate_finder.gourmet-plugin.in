@@ -1,8 +1,8 @@
 [Gourmet Plugin]
-Module = duplicate_finder
-Version = 1.0
-API_Version = 1.0
-_Name = Find duplicate recipes
-_Comment = A wizard to find and remove or merge duplicate recipes.
-_Category = Tools
-Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>
+Module=duplicate_finder
+Version=1.0
+API_Version=1.0
+_Name=Find duplicate recipes
+_Comment=A wizard to find and remove or merge duplicate recipes.
+_Category=Tools
+Authors=Thomas M. Hinkle <thomas_hinkle@sf.net>
