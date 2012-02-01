@@ -1,12 +1,13 @@
 from gourmet.plugin import ImporterPlugin
 from gourmet.importers.importManager import ImportFileList
 from zip_readers import archive_to_filelist
+from gettext import gettext as _
 import fnmatch
 
 class ArchiveImporterPlugin (ImporterPlugin):
 
     get_source = False
-    name = 'Archive (zip, tarball.)'
+    name = _('Archive (zip, tarball)')
     patterns = ['*.%s'%suffix for suffix in
                 ['zip',
                  'tar','tar.gz','tgz','tar.bz2',
