@@ -257,7 +257,7 @@ class RecIndex:
                 b.show()
             # Do not translate bottom, top and total -- I use these fancy formatting
             # strings in case your language needs the order changed!
-            lab = _('Showing recipes %(bottom)s to %(top)s of %(total)s'%locals())
+            lab = _('Showing recipes %(bottom)s to %(top)s of %(total)s')%locals()
         self.showing_label.set_markup('<i>' + lab + '</i>')
         if self.count == 1:
             sel = self.rectree.get_selection()
