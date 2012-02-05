@@ -139,7 +139,7 @@
                             <child>
                               <object class="GtkLabel" id="label1">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">_Search for</property>
+                                <property name="label" translatable="yes">_Search for:</property>
                                 <property name="use_underline">True</property>
                                 <property name="mnemonic_widget">rlistSearchbox</property>
                               </object>
