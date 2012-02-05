@@ -898,7 +898,7 @@ class PdfPrefGetter:
 
     def setup_widgets (self):
         self.pd = de.PreferencesDialog(self.opts,option_label=None,value_label=None,
-                                  label='PDF Options',
+                                  label=_('PDF Options'),
                                   )
         self.pd.hbox.pack_start(self.page_drawer,fill=True,expand=True)
         self.table = self.pd.table
