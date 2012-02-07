@@ -15,9 +15,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de\n"
-"X-Rosetta-Version: 0.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1\n"
-"X-Generator: Rosetta (http://launchpad.ubuntu.com/rosetta/)\n"
+"X-Rosetta-Version: 0.1\n"
+"X-Launchpad-Export-Date: 2011-12-30 18:48+0000\n"
+"X-Generator: Launchpad (build 14560)\n"
 
 #: ../glade/app.ui.h:1
 #: ../glade/recipe_index.ui.h:2
