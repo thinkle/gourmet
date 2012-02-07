@@ -1,4 +1,4 @@
-import gettext, os, os.path
+import os, os.path
 
 if os.name == 'posix':
     # somewhat hackish -- we assume USR ==
@@ -54,27 +54,7 @@ elif os.name == 'nt':
 
     DIR = os.path.join(datad,'i18n')
 
-gettext.bindtextdomain('gourmet',DIR)
-gettext.textdomain('gourmet')
-gettext.install('gourmet',DIR,unicode=1)
-
-import locale
-
-# Needed so the strings from our .ui files get translated!
-locale.bindtextdomain('gourmet',DIR)
-
-try:
-    if os.name == 'posix':
-        locale.setlocale(locale.LC_ALL,'')
-
-    # Windows locales are named differently, e.g. German_Austria instead of de_AT
-    # Fortunately, we can find the POSIX-like type using a different method
-    # After that, we set the LC_ALL environment variable for use with gettext.
-    elif os.name == 'nt': 
-        import win32api
-        locid = win32api.GetUserDefaultLangID()
-        loc = locale.windows_locale[locid]
-        os.environ["LC_ALL"] = loc
-
-except locale.Error:
-    print 'Unable to properly set locale %s.%s'%(locale.getdefaultlocale())
+# To have strings from .ui files (gtk.Builder) translated on all platforms,
+# we need the following module to enable localization on all platforms.
+import elib.intl
+elib.intl.install('gourmet', DIR)
