@@ -346,7 +346,7 @@ def add_icon (file_name, stock_id, label=None, modifier=0, keyval=0):
 
 for filename,stock_id,label,modifier,keyval in [    
     ('AddToShoppingList.png','add-to-shopping-list',_('Add to _Shopping List'),gtk.gdk.CONTROL_MASK,gtk.gdk.keyval_from_name('l')),
-    ('recbox.png','recipe-box',None,0,0),
+    ('gourmet.png','gourmet-logo',None,0,0),
     ('reccard.png','recipe-card',None,0,0),
     ('reccard_edit.png','edit-recipe-card',None,0,0),    
     ]:

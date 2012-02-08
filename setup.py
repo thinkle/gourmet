@@ -132,7 +132,7 @@ def data_files():
         # files in /usr/share/X/ (not gourmet)
         files = [
             (os.path.join(base,'pixmaps'),
-             [os.path.join('images','recbox.png')]
+             [os.path.join('images','gourmet.png')]
              ),
             (os.path.join(base,'applications'),
              ['gourmet.desktop']

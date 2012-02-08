@@ -400,7 +400,7 @@ class GourmetApplication:
             else:
                 translator = defaults.CREDITS
 
-        logo=gtk.gdk.pixbuf_new_from_file(os.path.join(imagedir,"gourmet_logo.png"))
+        logo=gtk.gdk.pixbuf_new_from_file(os.path.join(imagedir,"gourmet.png"))
 
         # load LICENSE text file
         try:
@@ -675,7 +675,7 @@ def startGUI ():
     #splash.window_set_auto_startup_notification(False)
     splash.set_property('decorated',False)
     splash.set_position(gtk.WIN_POS_CENTER)
-    splash.set_icon_from_file(os.path.join(imagedir,'recbox.png'))
+    splash.set_icon_from_file(os.path.join(imagedir,'gourmet.png'))
     splash.set_title(_('Gourmet Recipe Manager starting up...'))
     pixbuf=gtk.gdk.pixbuf_new_from_file(os.path.join(imagedir,'splash.png'))
     pixmap, mask = pixbuf.render_pixmap_and_mask()
@@ -983,7 +983,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     def setup_main_window (self):
         self.window = self.app = gtk.Window()
-        self.window.set_icon_from_file(os.path.join(imagedir,'recbox.ico'))
+        self.window.set_icon_from_file(os.path.join(imagedir,'gourmet.ico'))
         self.conf.append(WidgetSaver.WindowSaver(self.window,
                                                  self.prefs.get('app_window',
                                                                 {'window_size':(800,600)}),
@@ -1031,7 +1031,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.mainActionGroup = gtk.ActionGroup('MainActions')
         self.onSelectedActionGroup = gtk.ActionGroup('IndexOnSelectedActions')
         self.onSelectedActionGroup.add_actions([
-            ('OpenRec','recipe-box',_('Open recipe'),
+            ('OpenRec','gourmet-logo',_('Open recipe'),
              '<Control>O',_('Open selected recipe'),self.rec_tree_select_rec),
             # We no longer bind "Delete" here -- instead, we'll do it
             # at the TreeView level to prevent the delete key
