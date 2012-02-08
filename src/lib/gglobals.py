@@ -201,8 +201,8 @@ if options.datad:
 if options.imaged:
     imagedir=options.imaged
 
-if options.gladed:
-    uibase=options.gladed
+if options.uid:
+    uibase=options.uid
 
 HELP_FILE = os.path.join(datad,'FAQ')
 
