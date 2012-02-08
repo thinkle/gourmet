@@ -261,7 +261,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.ui = gtk.Builder()
         self.ui.add_from_file(os.path.join(current_path,'nutritionDruid.ui'))
         self.mm = MnemonicManager()
-        self.mm.add_glade(self.ui)
+        self.mm.add_builder(self.ui)
         self.mm.fix_conflicts_peacefully()
         self.prefs = prefs
         self.nd = nd

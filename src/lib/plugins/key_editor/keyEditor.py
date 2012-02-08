@@ -80,7 +80,7 @@ class KeyEditor:
         # setup mnemonic manager
         self.mm = mnemonic_manager.MnemonicManager()
         self.mm.sacred_cows.append('search for')
-        self.mm.add_glade(self.ui)
+        self.mm.add_builder(self.ui)
         self.mm.add_treeview(self.treeview)
         self.mm.fix_conflicts_peacefully()
         # to set our regexp_toggled variable

@@ -24,14 +24,14 @@ class MnemonicManager:
     translators knowing which strings show up on the same page
     together in order to prevent collisions of mnemonics.
 
-    This class can collect all mnemonics from a glade file or by
+    This class can collect all mnemonics from a gtk.Builder file or by
     working down from a toplevel widget.
 
     mm = MnemonicManager()
 
     mm.add_toplevel_widget(widget)
     OR
-    mm.add_glade(GLADE.XML INSTANCE)
+    mm.add_builder(gtk.Builder instance)
 
     mm.fix_conflicts_peacefully()
 
@@ -64,10 +64,10 @@ class MnemonicManager:
         widgets = collect_descendants(w)
         self.add_ui(widgets)
 
-    def add_glade (self, ui=None, ui_file=None):
-        """Add all mnemonic widgets in glade object.
+    def add_builder (self, ui=None, ui_file=None):
+        """Add all mnemonic widgets in gtk.Builder object.
 
-        We can be passed a gtk.Builder file or a gtk.Builder object.
+        We can be passed a gtk.Builder (.ui) file or a gtk.Builder object.
         Realistically, though, you'll want to pass the object and keep
         a reference around to use. The file option's really just for
         testing :)
@@ -318,7 +318,7 @@ if __name__ == '__main__':
     import gtk
     ui = gtk.Builder()
     ui.add_from_file('/usr/share/gourmet/app.ui') #os.path.join(uibase,'app.ui'))
-    mm.add_glade(ui)
+    mm.add_builder(ui)
     #tree = ui.get_widget('recTree')
     #rend = gtk.CellRendererText()
     #cols = ['Cuisine','Rating','Preparation Time','Cooking Time','Title','Servings']

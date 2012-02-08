@@ -3260,7 +3260,7 @@ if __name__ == '__main__' and False:
 #         GladeCustomHandlers(self.rg)
 #         self.glade = gtk.glade.XML(os.path.join(uibase,'recCard.glade'))
 #         self.mm = mnemonic_manager.MnemonicManager()
-#         self.mm.add_glade(self.glade)
+#         self.mm.add_builder(self.glade)
 #         nlb=self.ui.get_object('nutritionLabel').edit_missing_button.get_child().get_child().get_children()[1]
 #         self.mm.add_widget_mnemonic(nlb)
 #         self.mm.fix_conflicts_peacefully()

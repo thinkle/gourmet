@@ -142,7 +142,7 @@ class RecIndex:
         # Fix up our mnemonics with some heavenly magic
         self.mm = mnemonic_manager.MnemonicManager()
         self.mm.sacred_cows.append("search for") # Don't touch _Search for:
-        self.mm.add_glade(self.ui)
+        self.mm.add_builder(self.ui)
         self.mm.add_treeview(self.rectree)
         self.mm.fix_conflicts_peacefully()
 

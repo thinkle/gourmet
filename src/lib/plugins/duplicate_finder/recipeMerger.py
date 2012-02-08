@@ -65,7 +65,7 @@ class RecipeMergerDialog:
         self.get_widgets()
         self.searchTypeCombo.set_active(self.COMPLETE_DUP_MODE)
         self.mm = mnemonic_manager.MnemonicManager()
-        self.mm.add_glade(self.ui)
+        self.mm.add_builder(self.ui)
         self.mm.fix_conflicts_peacefully()
         self.ui.connect_signals(
             {
