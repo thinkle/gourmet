@@ -19,7 +19,7 @@ class PreferencesGui (plugin_loader.Pluggable):
     def __init__ (
         self,
         prefs,
-        uifile=os.path.join(gglobals.gladebase,
+        uifile=os.path.join(gglobals.uibase,
                             'preferenceDialog.ui'),
         radio_options={'shop_handle_optional':{'optional_ask':0,
                                                'optional_add':1,

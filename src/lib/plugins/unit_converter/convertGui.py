@@ -178,7 +178,7 @@ class ConvGui:
             gtk.main_quit()
 
 if __name__ == '__main__':
-    gladebase="/home/tom/Projects/gourmet/glade/"
+    uibase="/home/tom/Projects/gourmet/glade/"
     cg=ConvGui()
     gtk.main()
     

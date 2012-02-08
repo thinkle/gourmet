@@ -11,7 +11,7 @@ class BatchEditor:
 
     def setup_ui (self):
         self.ui = gtk.Builder()
-        self.ui.add_from_file(os.path.join(gglobals.gladebase,'batchEditor.ui'))
+        self.ui.add_from_file(os.path.join(gglobals.uibase,'batchEditor.ui'))
         self.dialog = self.ui.get_object('batchEditorDialog')
         self.setFieldWhereBlankButton = self.ui.get_object('setFieldWhereBlankButton')
         self.setup_boxes()

@@ -534,7 +534,7 @@ class RecTrash (RecIndex):
         self.rg = rg
         self.rmodel = self.rg.rmodel
         self.ui=gtk.Builder()
-        self.ui.add_from_file(os.path.join(gladebase,'recipe_index.ui'))
+        self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
         RecIndex.__init__(self, self.ui, self.rg.rd, self.rg)
         self.setup_main_window()
         
@@ -911,7 +911,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.setup_index_columns()
         self.setup_hacks()
         self.ui=gtk.Builder()
-        self.ui.add_from_file(os.path.join(gladebase,'recipe_index.ui'))
+        self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
         self.setup_actions()
         RecIndex.__init__(self,
                           ui=self.ui,

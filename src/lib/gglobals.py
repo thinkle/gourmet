@@ -132,7 +132,7 @@ if os.name == 'posix':
             )[0] #src/
             )[0] #./
         datad = os.path.join(base,'data')
-        gladebase = os.path.join(base,'glade')
+        uibase = os.path.join(base,'glade')
         imagedir = os.path.join(base,'images')
         usr = '/usr'
     else:
@@ -146,7 +146,7 @@ if os.name == 'posix':
         # screwed. See the following email for details:
         # http://mail.python.org/pipermail/python-list/2004-May/220700.html
         datad=os.path.join(usr,'share','gourmet')
-        gladebase=datad
+        uibase=datad
         imagedir=datad
 
 # Windows setup (NOTE: this code is foolishly repeated in gettext_setup.py
@@ -183,7 +183,7 @@ elif os.name == 'nt':
                 pybase = os.path.split(os.path.split(os.path.split(os.path.split(__file__)[0])[0])[0])[0]
                 datad = os.path.join(pybase,'gourmet','data')
     # at this point, we'd better have a data directory...
-    gladebase = datad
+    uibase = datad
     imagedir = datad
     use_threads = False
     print "DATAD = ",datad
@@ -195,14 +195,14 @@ else:
 # GRAB EXPLICITLY STATED GLADE/IMAGE/DATA DIRECTORIES FROM OPTIONS
 if options.datad:
     datad=options.datad
-    gladebase=datad
+    uibase=datad
     imagedir=datad
 
 if options.imaged:
     imagedir=options.imaged
 
 if options.gladed:
-    gladebase=options.gladed
+    uibase=options.gladed
 
 HELP_FILE = os.path.join(datad,'FAQ')
 

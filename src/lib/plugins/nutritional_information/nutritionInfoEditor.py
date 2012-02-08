@@ -18,7 +18,7 @@ class NutritionInfoIndex:
             self.ui = ui
         else:
             self.ui = gtk.Builder()
-            self.ui.add_from_file(os.path.join(gglobals.gladebase,'nutritionDruid.ui'))
+            self.ui.add_from_file(os.path.join(gglobals.uibase,'nutritionDruid.ui'))
         self.rd = rd
         self.prefs = prefs
         # Initialize variables used for search

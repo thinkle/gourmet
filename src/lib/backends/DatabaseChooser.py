@@ -17,7 +17,7 @@ class DatabaseChooser:
         self.default_files = {'metakit': 'recipes.mk',
                               'sqlite':'recipes.db'
                               }
-        uifile = os.path.join(gglobals.gladebase,'databaseChooser.ui')
+        uifile = os.path.join(gglobals.uibase,'databaseChooser.ui')
         self.ui = gtk.Builder()
         self.ui.add_from_file(uifile)
         self.connection_widgets = ['hostEntry','userEntry','pwEntry','dbEntry',

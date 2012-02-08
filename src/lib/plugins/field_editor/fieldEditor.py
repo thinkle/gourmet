@@ -16,7 +16,7 @@ class FieldEditor:
         self.field = None; self.other_field = None
         self.rd = rd; self.rg = rg
         self.ui = gtk.Builder()
-        self.ui.add_from_file(os.path.join(gglobals.gladebase,'valueEditor.ui'))
+        self.ui.add_from_file(os.path.join(gglobals.uibase,'valueEditor.ui'))
         self.__setup_widgets__()
         self.__setup_treeview__()
         self.ui.connect_signals({

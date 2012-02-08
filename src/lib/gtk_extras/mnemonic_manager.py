@@ -317,7 +317,7 @@ if __name__ == '__main__':
     mm=MnemonicManager()
     import gtk
     ui = gtk.Builder()
-    ui.add_from_file('/usr/share/gourmet/app.ui') #os.path.join(gladebase,'app.ui'))
+    ui.add_from_file('/usr/share/gourmet/app.ui') #os.path.join(uibase,'app.ui'))
     mm.add_glade(ui)
     #tree = ui.get_widget('recTree')
     #rend = gtk.CellRendererText()

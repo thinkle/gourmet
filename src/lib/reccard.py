@@ -248,7 +248,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def setup_ui (self):
         self.ui = gtk.Builder()
-        self.ui.add_from_file(os.path.join(gladebase,'recCardDisplay.ui'))
+        self.ui.add_from_file(os.path.join(uibase,'recCardDisplay.ui'))
 
         self.ui.connect_signals({
             'shop_for_recipe':self.shop_for_recipe_cb,
@@ -1108,7 +1108,7 @@ class IngredientEditorModule (RecEditorModule):
 
     def setup_main_interface (self):
         self.ui = gtk.Builder()
-        self.ui.add_from_file(os.path.join(gladebase,'recCardIngredientsEditor.ui'))
+        self.ui.add_from_file(os.path.join(uibase,'recCardIngredientsEditor.ui'))
         self.main = self.ui.get_object('ingredientsNotebook')
         self.main.unparent()
         self.ingtree_ui = IngredientTreeUI(self, self.ui.get_object('ingTree'))
@@ -1333,7 +1333,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
 
     def setup_main_interface (self):
         self.ui = gtk.Builder()
-        self.ui.add_from_file(os.path.join(gladebase,'recCardDescriptionEditor.ui'))
+        self.ui.add_from_file(os.path.join(uibase,'recCardDescriptionEditor.ui'))
         self.imageBox = ImageBox(self)
         self.init_recipe_widgets()
         # Set up wrapping callbacks...
@@ -2958,7 +2958,7 @@ class RecSelector (RecIndex):
     def __init__(self, recGui, ingEditor):
         self.prefs = prefs.get_prefs()
         self.ui=gtk.Builder()
-        self.ui.add_from_file(os.path.join(gladebase,'recipe_index.ui'))
+        self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
         self.rg=recGui
         self.ingEditor = ingEditor
         self.re = self.ingEditor.re
@@ -3258,7 +3258,7 @@ if __name__ == '__main__' and False:
 
 #     def setup_ui (self):
 #         GladeCustomHandlers(self.rg)
-#         self.glade = gtk.glade.XML(os.path.join(gladebase,'recCard.glade'))
+#         self.glade = gtk.glade.XML(os.path.join(uibase,'recCard.glade'))
 #         self.mm = mnemonic_manager.MnemonicManager()
 #         self.mm.add_glade(self.glade)
 #         nlb=self.ui.get_object('nutritionLabel').edit_missing_button.get_child().get_child().get_children()[1]

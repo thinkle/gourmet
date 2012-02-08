@@ -104,7 +104,7 @@ class TimerDialog:
     def __init__ (self):
         self.init_player()
         self.ui = gtk.Builder()
-        self.ui.add_from_file(os.path.join(gglobals.gladebase,'timerDialog.ui'))
+        self.ui.add_from_file(os.path.join(gglobals.uibase,'timerDialog.ui'))
         self.timer = TimeSpinnerUI(
             self.ui.get_object('hoursSpinButton'),
             self.ui.get_object('minutesSpinButton'),

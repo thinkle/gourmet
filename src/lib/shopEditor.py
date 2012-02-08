@@ -13,7 +13,7 @@ class ShopEditor:
     
     def __init__ (self, rd=rmetakit.recipeManager(), rg=None):
         self.ui = gtk.Builder()
-        self.ui.add_from_file(os.path.join(gglobals.gladebase,'shopCatEditor.ui'))
+        self.ui.add_from_file(os.path.join(gglobals.uibase,'shopCatEditor.ui'))
         self.rd = rd
         self.rg = rg
         self.prefs = self.rg.prefs        

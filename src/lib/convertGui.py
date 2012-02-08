@@ -14,7 +14,7 @@ class ConvGui:
                   ):
         self.possible_conversions = None
         self.ui = gtk.Builder()
-        self.ui.add_from_file(os.path.join(gladebase,'converter.ui'))
+        self.ui.add_from_file(os.path.join(uibase,'converter.ui'))
         self.conv = convert.get_converter()
         self.changing_item = False
         self.okcb = okcb
@@ -192,7 +192,7 @@ class UnitModel (gtk.ListStore):
             self.set_value(iter,1,"%s"%ulong)
 
 if __name__ == '__main__':
-    gladebase="/home/tom/Projects/gourmet/glade/"
+    uibase="/home/tom/Projects/gourmet/glade/"
     cg=ConvGui()
     gtk.main()
     
