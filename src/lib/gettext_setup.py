@@ -52,7 +52,7 @@ elif os.name == 'nt':
     pth = pth[:-1] # strip off data
     datad = os.path.sep.join(pth)
 
-    DIR = os.path.join(datad,'i18n')
+    DIR = os.path.join(datad,'po')
 
 # To have strings from .ui files (gtk.Builder) translated on all platforms,
 # we need the following module to enable localization on all platforms.

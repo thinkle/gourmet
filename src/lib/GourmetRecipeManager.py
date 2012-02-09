@@ -42,7 +42,7 @@ else:
     pth = datad.split(os.path.sep)
     pth = pth[:-1] # strip off data
     dirparts = os.path.sep.join(pth)
-    DIR = os.path.join(dirparts,'i18n')
+    DIR = os.path.join(dirparts,'po')
 
 import gettext_setup
 

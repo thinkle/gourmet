@@ -48,7 +48,7 @@ recursive_match('src/lib/plugins/',['*.ui',
                 lst)
 recursive_match('images/',['*.png','*.ico'],lst)
 recursive_match('',['*.desktop.in'],lst)
-recursive_match('i18n',['NOTE_TO_TRANSLATORS','*.in','*.pot','*.po','*.mo'],lst)
+recursive_match('po',['NOTE_TO_TRANSLATORS','*.in','*.pot','*.po','*.mo'],lst)
 recursive_match('documentation',['*.xml','*.png'],lst)
 recursive_match('windows',['*.pyw'],lst)
 recursive_match('tools',['*.py'],lst)
