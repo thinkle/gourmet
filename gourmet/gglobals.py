@@ -125,11 +125,9 @@ if os.name == 'posix':
     # special case our standard debian install, which puts
     # all the python libraries into /usr/share/gourmet
     __file__ = os.path.realpath(__file__)
-    if __file__.find('src/lib/')>-1: # Facilitate testing from src/ dir...
+    if __file__.find('gourmet')>-1: # Facilitate testing from gourmet/ dir...
         base = os.path.split(
-            os.path.split(
-            os.path.split(__file__)[0] #lib/
-            )[0] #src/
+            os.path.split(__file__)[0] #gourmet/
             )[0] #./
         datad = os.path.join(base,'data')
         uibase = os.path.join(base,'glade')

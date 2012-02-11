@@ -12,7 +12,8 @@ if os.name == 'posix':
         os.path.join(os.path.sep,'usr','share','locale'),
         os.path.join(os.path.sep,'usr','local','share','locale'),
         'locale',
-        os.path.join(os.path.sep,'opt','locale')
+        os.path.join(os.path.sep,'opt','locale'),
+        'po',
         ]
     DIR = None
     for l in locale_dirs:
