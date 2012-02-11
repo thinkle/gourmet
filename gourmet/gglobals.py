@@ -130,7 +130,7 @@ if os.name == 'posix':
             os.path.split(__file__)[0] #gourmet/
             )[0] #./
         datad = os.path.join(base,'data')
-        uibase = os.path.join(base,'glade')
+        uibase = os.path.join(base,'ui')
         imagedir = os.path.join(base,'images')
         usr = '/usr'
     else:
@@ -190,7 +190,7 @@ else:
     import sys
     sys.exit()
 
-# GRAB EXPLICITLY STATED GLADE/IMAGE/DATA DIRECTORIES FROM OPTIONS
+# GRAB EXPLICITLY STATED UI/IMAGE/DATA DIRECTORIES FROM OPTIONS
 if options.datad:
     datad=options.datad
     uibase=datad

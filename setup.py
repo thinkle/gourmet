@@ -107,7 +107,7 @@ def data_files():
     images = glob.glob(os.path.join('images','*.png'))
     icons = glob.glob(os.path.join('images','*.ico'))
     style = glob.glob(os.path.join('style','*.css'))
-    ui = glob.glob(os.path.join('glade','*.ui'))
+    ui = glob.glob(os.path.join('ui','*.ui'))
     sounds = glob.glob(os.path.join('data','*.wav'))
     locales = glob.glob(os.path.join('po','*/*/*.mo'))
     txts = glob.glob(os.path.join('data','*.txt'))
