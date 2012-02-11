@@ -22,8 +22,7 @@ def maybe_intltool (fname):
         os.stat(to_name)[ST_MTIME] < os.stat(fname)[ST_MTIME]
         ):
         if os.name == 'nt' or os.name == 'dos':
-            #Hard-wire path to intltool-merge for now.
-            os.system('perl "C:/Program Files/intltool/bin/intltool-merge" -d po/ %s %s'%(fname, to_name))
+            os.system('perl intltool-merge -d po/ %s %s'%(fname, to_name))
         else:
             os.system('intltool-merge -d po/ %s %s'%(fname, to_name))
 
