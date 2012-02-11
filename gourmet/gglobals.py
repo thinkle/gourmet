@@ -131,7 +131,7 @@ if os.name == 'posix':
             )[0] #./
         datad = os.path.join(base,'data')
         uibase = os.path.join(base,'ui')
-        imagedir = os.path.join(base,'images')
+        imagedir = os.path.join(datad,'images')
         usr = '/usr'
     else:
         if __file__.find('/usr/share/gourmet')==0:
@@ -144,8 +144,8 @@ if os.name == 'posix':
         # screwed. See the following email for details:
         # http://mail.python.org/pipermail/python-list/2004-May/220700.html
         datad=os.path.join(usr,'share','gourmet')
-        uibase=datad
-        imagedir=datad
+        uibase=os.path.join(datad,'ui')
+        imagedir=os.path.join(datad,'images')
 
 # Windows setup (NOTE: this code is foolishly repeated in gettext_setup.py
 elif os.name == 'nt': 

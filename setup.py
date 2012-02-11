@@ -104,21 +104,14 @@ def modules_check():
 
 def data_files():
     '''Build list of data files to be installed'''
-    images = glob.glob(os.path.join('images','*.png'))
-    icons = glob.glob(os.path.join('images','*.ico'))
-    style = glob.glob(os.path.join('style','*.css'))
-    ui = glob.glob(os.path.join('ui','*.ui'))
-    sounds = glob.glob(os.path.join('data','*.wav'))
-    locales = glob.glob(os.path.join('po','*/*/*.mo'))
-    txts = glob.glob(os.path.join('data','*.txt'))
-    dtds = glob.glob(os.path.join('data','*.dtd'))        
-    images.extend(icons)
-    images.extend(style)
-    images.extend(ui)
-    images.extend(sounds)
-    images.extend(txts)
-    images.extend(dtds)    
-    #print "data_files: ",images,style
+    data_files = []
+
+    for root, dirs, files in os.walk('data'):
+        if files:
+            files = [os.path.join(root, f) for f in files]
+            data_files.append((os.path.join('share','gourmet', root[5:]), files))
+    #print "data_files: ",data_files
+
     # Note that this os specific stuff must be kept in sync with gglobals.py
     if os.name == 'nt' or os.name == 'dos':
         base = 'gourmet'
@@ -132,14 +125,14 @@ def data_files():
         # files in /usr/share/X/ (not gourmet)
         files = [
             (os.path.join(base,'pixmaps'),
-             [os.path.join('images','gourmet.png')]
+             [os.path.join('data','images','gourmet.png')]
              ),
             (os.path.join(base,'applications'),
              ['gourmet.desktop']
              ),]
         base = os.path.join(base,'gourmet')
 
-    for f in locales:
+    for f in glob.glob(os.path.join('po','*/*/*.mo')):
         pth,fn=os.path.split(f)
         pthfiles = pth.split(os.path.sep)
         pthfiles=pthfiles[1:] # strip off po
@@ -147,7 +140,9 @@ def data_files():
         #print pth,fn
         pth = os.path.join(locale_base,pth)
         files.append((pth,[f]))           
-    files.extend([(base, images + ['FAQ', 'LICENSE'])])
+    files.extend(data_files)
+    files.extend([(os.path.join(base,'ui'), glob.glob(os.path.join('ui','*.ui')))])
+    files.extend([(base, ['FAQ', 'LICENSE'])])
     #print 'DATA FILES:',files
     return files
 

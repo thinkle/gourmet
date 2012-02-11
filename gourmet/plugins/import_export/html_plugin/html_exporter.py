@@ -16,7 +16,7 @@ HTML_HEADER_CLOSE = """<meta http-equiv="Content-Style-Stype" content="text/css"
 
 class html_exporter (exporter_mult):
     def __init__ (self, rd, r, out, conv=None,
-                  css=os.path.join(gglobals.datad,"default.css"),
+                  css=os.path.join(gglobals.datad,"style","default.css"),
                   embed_css=True, start_html=True, end_html=True, imagedir="pics/", imgcount=1,
                   link_generator=None,
                   # exporter_mult args
