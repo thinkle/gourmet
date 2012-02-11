@@ -131,6 +131,7 @@ if os.name == 'posix':
             )[0] #./
         datad = os.path.join(base,'data')
         uibase = os.path.join(base,'ui')
+        textbase = base
         imagedir = os.path.join(datad,'images')
         usr = '/usr'
     else:
@@ -145,6 +146,7 @@ if os.name == 'posix':
         # http://mail.python.org/pipermail/python-list/2004-May/220700.html
         datad=os.path.join(usr,'share','gourmet')
         uibase=os.path.join(datad,'ui')
+        textbase=datad
         imagedir=os.path.join(datad,'images')
 
 # Windows setup (NOTE: this code is foolishly repeated in gettext_setup.py
@@ -201,8 +203,6 @@ if options.imaged:
 
 if options.uid:
     uibase=options.uid
-
-HELP_FILE = os.path.join(datad,'FAQ')
 
 # GRAB PLUGIN DIR FOR HTML IMPORT
 if options.html_plugin_dir:
