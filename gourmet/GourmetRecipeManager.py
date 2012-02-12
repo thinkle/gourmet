@@ -428,7 +428,7 @@ class GourmetApplication:
         about.set_translator_credits(translator)
         about.set_version(version.version)
         #about.set_wrap_license(True)
-        about.set_website("http://grecipe-manager.sourceforge.net")
+        about.set_website(version.website)
         #about.set_website_label('Gourmet website')
         about.run()
         about.destroy()
