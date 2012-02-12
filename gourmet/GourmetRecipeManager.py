@@ -417,7 +417,7 @@ class GourmetApplication:
         h.close()
 
         about = gtk.AboutDialog()
-        #about.set_artists(version.artists)
+        about.set_artists(version.artists)
         about.set_authors(version.authors)
         about.set_comments(version.description)
         about.set_copyright(version.copyright)

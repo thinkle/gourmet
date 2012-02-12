@@ -16,3 +16,5 @@ authors = ["Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>",
            _("Simon Darlington <simon.darlington@gmx.net> (improvements to internationalization, assorted bugfixes)"),
            _("Bernhard Reiter <ockham@raz.or.at> (Windows version maintenance and website re-design)"),
            ]
+artists = [_("Nyall Dawson (cookie icon)"),
+           _("Kati Pregartner (splash screen image)")]
