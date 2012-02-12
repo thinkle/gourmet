@@ -129,10 +129,6 @@ if os.name == 'posix':
         base = os.path.split(
             os.path.split(__file__)[0] #gourmet/
             )[0] #./
-        datad = os.path.join(base,'data')
-        uibase = os.path.join(base,'ui')
-        textbase = base
-        imagedir = os.path.join(datad,'images')
         usr = '/usr'
     else:
         if __file__.find('/usr/share/gourmet')==0:
@@ -144,10 +140,10 @@ if os.name == 'posix':
         # prefix. If they specified data and lib prefixes, we're
         # screwed. See the following email for details:
         # http://mail.python.org/pipermail/python-list/2004-May/220700.html
-        datad=os.path.join(usr,'share','gourmet')
-        uibase=os.path.join(datad,'ui')
-        textbase=datad
-        imagedir=os.path.join(datad,'images')
+        base=os.path.join(usr,'share','gourmet')
+    datad = os.path.join(base,'data')
+    uibase = os.path.join(base,'ui')
+    imagedir = os.path.join(base,'images')
 
 # Windows setup (NOTE: this code is foolishly repeated in gettext_setup.py
 elif os.name == 'nt': 

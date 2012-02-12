@@ -105,11 +105,20 @@ def data_files():
     '''Build list of data files to be installed'''
     data_files = []
 
-    for root, dirs, files in os.walk('data'):
-        if files:
-            files = [os.path.join(root, f) for f in files]
-            data_files.append((os.path.join('share','gourmet', root[5:]), files))
-    #print "data_files: ",data_files
+
+    ddirs = [
+        'data',
+        'images',
+        'sound',
+        'style',
+        'ui',
+        ]
+    for d in ddirs:
+        for root, dirs, files in os.walk(d):
+            if files:
+                files = [os.path.join(root, f) for f in files]
+                data_files.append((os.path.join('share','gourmet', root), files))
+    print "data_files: ",data_files
 
     # Note that this os specific stuff must be kept in sync with gglobals.py
     if os.name == 'nt' or os.name == 'dos':
@@ -124,7 +133,7 @@ def data_files():
         # files in /usr/share/X/ (not gourmet)
         files = [
             (os.path.join(base,'pixmaps'),
-             [os.path.join('data','images','gourmet.png')]
+             [os.path.join('images','gourmet.png')]
              ),
             (os.path.join(base,'applications'),
              ['gourmet.desktop']

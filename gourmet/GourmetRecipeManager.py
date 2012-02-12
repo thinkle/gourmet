@@ -404,7 +404,7 @@ class GourmetApplication:
 
         # load LICENSE text file
         try:
-            h = open(os.path.join(textbase,'LICENSE'),'r')
+            h = open(os.path.join(base,'LICENSE'),'r')
             s = h.readlines()
         except IOError, err:
             print "IO Error %s" % err
@@ -434,7 +434,7 @@ class GourmetApplication:
         about.destroy()
 
     def show_help (self, *args):
-        de.show_faq(os.path.join(textbase,'FAQ'))
+        de.show_faq(os.path.join(base,'FAQ'))
 
     def save (self, file=None, db=None, xml=None):
         debug("save (self, file=None, db=None, xml=None):",5)
