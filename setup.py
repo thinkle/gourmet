@@ -40,7 +40,7 @@ from distutils.command.install_data import install_data
 sys.path.append(os.path.join(os.path.split(__file__)[0],'gourmet'))
 #print sys.path
 try:
-    from version import version
+    from version import version, website
 except:
     #print 'Version info may be out of date.'
     version = "0.11.0"
@@ -189,10 +189,10 @@ result = setup(
     version = version,
     #windows = [ {'script':os.path.join('bin','gourmet'),
     #             }],
-    description = 'Recipe Organizer and Shopping List Generator for Gnome',
+    description = 'Recipe Organizer and Shopping List Generator',
     author = 'Thomas Mills Hinkle',
     author_email = 'Thomas_Hinkle@alumni.brown.edu',
-    url = 'http://grecipe-manager.sourceforge.net',
+    url = website,
     license = 'GPL',
     data_files = data_files(),
     packages = ['gourmet',
