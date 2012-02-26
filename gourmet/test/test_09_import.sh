@@ -1,3 +1,3 @@
-rm 09_setup/*.db
-rm 09_setup/GOURMET_DATA*
-gourmet --gourmet-directory=09_setup/
+rm old_databases/gourmet-0.9/*.db
+rm old_databases/gourmet-0.9/GOURMET_DATA*
+gourmet --gourmet-directory=old_databases/gourmet-0.9/

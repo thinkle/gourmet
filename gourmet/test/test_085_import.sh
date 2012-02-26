@@ -1,3 +1,3 @@
-rm 085_setup/*.db
-rm 085_setup/GOURMET_DATA*
-gourmet --gourmet-directory=085_setup/
+rm old_databases/gourmet-0.8.5/*.db
+rm old_databases/gourmet-0.8.5/GOURMET_DATA*
+gourmet --gourmet-directory=old_databases/gourmet-0.8.5
