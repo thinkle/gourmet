@@ -57,5 +57,9 @@ elif os.name == 'nt':
 
 # To have strings from .ui files (gtk.Builder) translated on all platforms,
 # we need the following module to enable localization on all platforms.
-import elib.intl
-elib.intl.install('gourmet', DIR)
+try:
+    import elib.intl
+    elib.intl.install('gourmet', DIR)
+except ImportError:
+    print 'elib.intl failed to load.'
+    print 'IF YOU HAVE TROUBLE WITH TRANSLATIONS, MAKE SURE YOU HAVE THIS LIBRARY INSTALLED.'
