@@ -37,8 +37,6 @@ os.mkdir('foo')
 os.symlink(os.path.abspath('lib'),os.path.join('foo','gourmet'))
 sys.path = [os.path.abspath('foo')] + sys.path
 sys.argv.append('--data-directory=%s'%os.path.abspath(os.path.join('..','data')))
-sys.argv.append('--ui-directory=%s'%os.path.abspath(os.path.join('..','glade')))
-sys.argv.append('--image-directory=%s'%os.path.abspath(os.path.join('..','images')))
 
 from gourmet.OptionParser import *
 

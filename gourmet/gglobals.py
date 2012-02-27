@@ -191,14 +191,6 @@ else:
 # GRAB EXPLICITLY STATED UI/IMAGE/DATA DIRECTORIES FROM OPTIONS
 if options.datad:
     datad=options.datad
-    uibase=datad
-    imagedir=datad
-
-if options.imaged:
-    imagedir=options.imaged
-
-if options.uid:
-    uibase=options.uid
 
 # GRAB PLUGIN DIR FOR HTML IMPORT
 if options.html_plugin_dir:
@@ -214,7 +206,7 @@ else:
                         os.path.join(html_plugin_dir,'RULES_TEMPLATE')
                         )
 
-import OptionParser
+#import OptionParser
 #use_threads = False
 #if use_threads:
 #    debug('using GourmetThreads',0)
