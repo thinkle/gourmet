@@ -935,6 +935,7 @@ class FileSelectorDialog:
         #    self.fsd.props.local_only = False
         self.fsd.set_default_response(gtk.RESPONSE_OK)
         self.fsd.set_select_multiple(self.multiple)
+        self.fsd.set_do_overwrite_confirmation(True)
         if self.filename:
             path,name=os.path.split(os.path.expanduser(self.filename))
             if path: self.fsd.set_current_folder(path)
@@ -1116,18 +1117,6 @@ class FileSelectorDialog:
                     if self.n_to_ext.has_key(self.saveas.get_active()):
                         add_ext = self.n_to_ext[self.saveas.get_active()]
                         if add_ext: fn += add_ext
-                # if we're saving, we warn the user before letting them save over something.
-                # Note: we don't have to worry about multiple filenames since we're looking at ACTION_SAVE
-                if os.path.exists(fn) and not getBoolean(
-                    default=False,
-                    label=_("A file named %s already exists.")%os.path.split(fn)[1],
-                    sublabel=_("Do you want to replace it with the one you are saving?"),
-                    parent=self.fsd,
-                    cancel=False, # cancel==No in this case
-                    custom_yes='_Replace',
-                    custom_no=gtk.STOCK_CANCEL,
-                    ):
-                    return self.run()
             self.quit()
             return fn
         else:
