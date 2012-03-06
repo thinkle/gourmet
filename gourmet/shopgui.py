@@ -674,7 +674,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
              ),
             ('File',None,_('_File')),
             ('Help',gtk.STOCK_HELP,_('_Help'),None,None,
-             lambda *args: de.show_faq(HELP_FILE,jump_to='Shopping')),		
+             lambda *args: de.show_faq(os.path.join(base,'FAQ'),jump_to='Shopping')),
             ('HelpMenu',None,_('_Help')),
 		])
 	self.mainActionGroup.add_toggle_actions([

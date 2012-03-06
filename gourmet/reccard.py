@@ -223,7 +223,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
             ('Preferences',gtk.STOCK_PREFERENCES,None,
              None,None,self.preferences_cb),
             ('Help',gtk.STOCK_HELP,_('_Help'),
-             None,None,lambda *args: de.show_faq(HELP_FILE,jump_to='Entering and Editing recipes')),
+             None,None,lambda *args: de.show_faq(os.path.join(base,'FAQ'),jump_to='Entering and Editing recipes')),
             ]
                                                 )
         self.recipeDisplayActionGroup.add_toggle_actions([
