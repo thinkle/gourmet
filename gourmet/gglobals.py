@@ -32,9 +32,6 @@ import tempfile
 from gdebug import debug
 from OptionParser import options
 
-import gettext_setup
-from gettext import gettext as _
-
 tmpdir = tempfile.gettempdir()
 BUG_URL = "http://sourceforge.net/tracker/?group_id=108118&atid=649652"
 
@@ -116,81 +113,23 @@ use_threads = options.threads
 # Uncomment the below to test FauxThreads
 #use_threads = False
 
-# note: this os specific stuff is rather hackish and must be kept in sync with
-# changes in setup.py
+# note: this stuff must be kept in sync with changes in setup.py
+import settings
+base = settings.base
 
-if os.name == 'posix':
-    # grab the proper subdirectory, assuming we're in
-    # lib/python/site-packages/gourmet/
-    # special case our standard debian install, which puts
-    # all the python libraries into /usr/share/gourmet
-    __file__ = os.path.realpath(__file__)
-    if __file__.find('gourmet')>-1: # Facilitate testing from gourmet/ dir...
-        base = os.path.split(
-            os.path.split(__file__)[0] #gourmet/
-            )[0] #./
-        usr = '/usr'
-    else:
-        if __file__.find('/usr/share/gourmet')==0:
-            usr='/usr'
-        else:
-            usr=os.path.split(os.path.split(os.path.split(os.path.split(os.path.split(__file__)[0])[0])[0])[0])[0]
-        # add share/gourmet
-        # this assumes the user only specified a general build
-        # prefix. If they specified data and lib prefixes, we're
-        # screwed. See the following email for details:
-        # http://mail.python.org/pipermail/python-list/2004-May/220700.html
-        base=os.path.join(usr,'share','gourmet')
-    datad = os.path.join(base,'data')
-    uibase = os.path.join(base,'ui')
-    imagedir = os.path.join(base,'images')
+# To have strings from .ui files (gtk.Builder) translated on all platforms,
+# we need the following module to enable localization on all platforms.
+try:
+    import elib.intl
+    elib.intl.install('gourmet', settings.locale_base)
+except ImportError:
+    print 'elib.intl failed to load.'
+    print 'IF YOU HAVE TROUBLE WITH TRANSLATIONS, MAKE SURE YOU HAVE THIS LIBRARY INSTALLED.'
+from gettext import gettext as _
 
-# Windows setup (NOTE: this code is foolishly repeated in gettext_setup.py
-elif os.name == 'nt': 
-    #datad = os.path.join('Program Files','Gourmet Recipe Manager','data')
-    # We're going to look in a number of places, starting with our current location
-    if os.path.exists('app.ui'):
-        print "we're in the data directory"
-        datad = ''
-    elif os.path.exists(os.path.join('data','app.ui')):
-        print "data directory = data"
-        datad = 'data'
-    elif os.path.exists(os.path.join('..','data','app.ui')):
-        print 'data directory = ..\data\  '
-        datad = os.path.join('..','data')
-    else:
-        pybase = os.path.split(__file__)[0]
-        if os.path.exists(os.path.join(pybase,'app.ui')):
-            print 'found data in ',pybase
-            datad = pybase
-        elif os.path.exists(os.path.join(pybase,'data','app.ui')):
-            # look in a "data" directory directly above the directory we are in
-            print 'found data in ',pybase,'/data'
-            datad = os.path.join(pybase,'data')
-        else: # otherwise, backup a directory and look there...
-            pybase = os.path.split(pybase)[0]
-            if os.path.exists(os.path.join(pybase,'data','app.ui')):
-                print 'found data in ',pybase,'\data'
-                datad = os.path.join(pybase,'data')
-            else:
-                # assume we are in Python\Lib\site-packages\gourmet\
-                # back up four direcotires and add gourmet\data\
-                print "Couldn't find data... I hope it's in ../../../../gourmet/data/"
-                pybase = os.path.split(os.path.split(os.path.split(os.path.split(__file__)[0])[0])[0])[0]
-                datad = os.path.join(pybase,'gourmet','data')
-    # at this point, we'd better have a data directory...
-    uibase = datad
-    imagedir = datad
-    use_threads = False
-    print "DATAD = ",datad
-else:
-    print "Gourmet isn't ready for operating system %s"%os.name
-    import sys
-    sys.exit()
-
-# GRAB EXPLICITLY STATED UI/IMAGE/DATA DIRECTORIES FROM OPTIONS
-if options.datad:
-    datad=options.datad
+datad = os.path.join(base,'data')
+uibase = os.path.join(base,'ui')
+imagedir = os.path.join(base,'images')
 
 # GRAB PLUGIN DIR FOR HTML IMPORT
 if options.html_plugin_dir:
