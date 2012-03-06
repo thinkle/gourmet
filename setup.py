@@ -105,7 +105,6 @@ def data_files():
     '''Build list of data files to be installed'''
     data_files = []
 
-
     ddirs = [
         'data',
         'images',
@@ -120,25 +119,18 @@ def data_files():
                 data_files.append((os.path.join('share','gourmet', root), files))
     print "data_files: ",data_files
 
-    # Note that this os specific stuff must be kept in sync with gglobals.py
-    if os.name == 'nt' or os.name == 'dos':
-        base = 'gourmet'
-        locale_base = os.path.join(base,'po')
-        files = [(os.path.join(base),[os.path.join('bin','gourmet')])]
-        base = os.path.join(base,'data')
-    else:
-        # elif os.name == posix
-        base = 'share'
-        locale_base = os.path.join('share','locale')
-        # files in /usr/share/X/ (not gourmet)
-        files = [
-            (os.path.join(base,'pixmaps'),
-             [os.path.join('images','gourmet.png')]
-             ),
-            (os.path.join(base,'applications'),
-             ['gourmet.desktop']
-             ),]
-        base = os.path.join(base,'gourmet')
+    base = 'share'
+    locale_base = os.path.join('share','locale')
+    # if os.name == 'posix':
+    # files in /usr/share/X/ (not gourmet)
+    files = [
+        (os.path.join(base,'pixmaps'),
+         [os.path.join('images','gourmet.png')]
+         ),
+        (os.path.join(base,'applications'),
+         ['gourmet.desktop']
+         ),]
+    base = os.path.join(base,'gourmet')
 
     for f in glob.glob(os.path.join('po','*/*/*.mo')):
         pth,fn=os.path.split(f)
@@ -172,7 +164,6 @@ else:
     #tools.upgrade_pre_script.dump_old_data()
 
 plugins = []
-import os, os.path
 
 def crawl (base, basename):
     bdir = base
