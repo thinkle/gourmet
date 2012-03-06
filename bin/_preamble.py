@@ -11,9 +11,9 @@
 
 import sys, os
 
-path = os.path.abspath(sys.argv[0])
-while os.path.dirname(path) != path:
-    if os.path.exists(os.path.join(path, 'gourmet', '__init__.py')):
-        sys.path.insert(0, path)
-        break
-    path = os.path.dirname(path)
+def get_path():
+    path = os.path.abspath(sys.argv[0])
+    while os.path.dirname(path) != path:
+        if os.path.exists(os.path.join(path, 'gourmet', '__init__.py')):
+            return path
+        path = os.path.dirname(path)

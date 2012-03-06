@@ -7,6 +7,7 @@ import sys
 
 try:
     import _preamble
+    sys.path.insert(0, _preamble.get_path())
 except ImportError:
     sys.exc_clear()
 
