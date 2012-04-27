@@ -129,7 +129,7 @@ class NutritionData:
         if not amt:
             amt = 1
         if ni:
-            c=self.get_conversion_for_amt(amt,unit,key)
+            c=self.get_conversion_for_amt(amt,unit,key=key,row=ni.__rowref__)
             if c:
                 return NutritionInfo(ni,mult=c,ingObject=ingObject)
         return NutritionVapor(self,key,
@@ -138,6 +138,18 @@ class NutritionData:
                               unit=unit,
                               ingObject=ingObject)
 
+    def get_nutinfo_from_desc (self, desc):
+        nvrow = self.db.fetch_one(self.db.nutrition_table,**{'desc':desc})
+        if nvrow:
+            return NutritionInfo(nvrow)
+        else:
+            matches = self.get_matches(desc)
+            if len(matches) == 1:
+                ndbno = matches[0][1]
+                nvrow = self.db.fetch_one(self.db.nutrition_table,ndbno=ndbno)
+                return NutritionInfo(nvrow)
+        return None
+    
     def get_nutinfo (self, key):
         """Get our nutritional information for ingredient key 'key'
         We return an object interfacing with our DB whose attributes
@@ -147,12 +159,19 @@ class NutritionData:
         if aliasrow:
             nvrow=self.db.fetch_one(self.db.nutrition_table,**{'ndbno':aliasrow.ndbno})
             if nvrow: return NutritionInfo(nvrow)
-        # if we don't have a nutritional db row, return a
-        # NutritionVapor instance which remembers our query and allows
-        # us to redo it.  The idea here is that our callers will get
-        # an object that can guarantee them the latest nutritional
-        # information for a given item.
-        return NutritionVapor(self,key)
+        else:
+            # See if the key happens to match an existing description...
+            print 'Trying nutinfo from desc',key
+            ni = self.get_nutinfo_from_desc(key)
+            if ni: print 'GOT IT!'
+            # if we don't have a nutritional db row, return a
+            # NutritionVapor instance which remembers our query and allows
+            # us to redo it.  The idea here is that our callers will get
+            # an object that can guarantee them the latest nutritional
+            # information for a given item.
+            if ni:
+                return ni
+            return NutritionVapor(self,key)
 
     def get_ndbno (self, key):
         aliasrow = self._get_key(key)
@@ -174,20 +193,38 @@ class NutritionData:
         get_conversion_for_amt(amt,unit,key) * 100 will give us the
         number of grams this AMOUNT converts to.
         """
+        densities,gramweights = self.get_conversions(key,row)
+        if gramweights.has_key(unit):
+            mass = gramweights[unit] * amt
+            return mass * 0.01
+        # Otherwise, we are trying to find our density...
+        cnv = None
+        if (',' in unit) or ('(' in unit): # Check for density in unit description...
+            print 'Checking for density in unit...','densities=',densities
+            if ',' in unit:
+                unit,description = unit.split(',')
+            if '(' in unit:
+                unit,description = unit.split('(')
+                description = description.strip(')')
+            description = description.strip()
+            unit = unit.strip()
+            print 'description=',description
+            if densities.has_key(description):
+                print 'We got a density!','unit=',unit
+                density = densities[description]
+                print density,type(density),'(unit=',unit,')'
+                cnv = self.conv.converter('g.',unit,density=density)
+                print 'We got a conversion!',cnv
         # our default is 100g
-        cnv=self.conv.converter('g',unit)
-        if not row: row=self.get_nutinfo(key)
         if not cnv:
+            # Check for convertible mass...
+            cnv=self.conv.converter('g',unit)
+        if not cnv:
+            # Check for density through key information...
+            if not row: row=self.get_nutinfo(key)
             cnv = self.conv.converter('g',unit,
                                       density=self.get_density(key,row,fudge=fudge)
                                       )
-        if not cnv:
-            # Check our weights tables...
-            extra_conversions = self.get_conversions(key,row)[1]
-            if extra_conversions.has_key(unit):
-                cnv = extra_conversions[unit]
-            elif unit and extra_conversions.has_key(unit.lower()):
-                cnv = extra_conversions[unit.lower()]
         if not cnv:
             # lookup in our custom nutrition-related conversion table
             if self.conv.unit_dict.has_key(unit):
@@ -277,9 +314,9 @@ class NutritionData:
     def get_density (self,key=None,row=None, fudge=True):
         densities = self.get_densities(key,row)
         if densities.has_key(''): densities[None]=densities['']
-        if key: keyrow=self._get_key(key)        
+        if key: keyrow=self._get_key(key)
         if densities:
-            if key and keyrow.density_equivalent and densities.has_key(keyrow.density_equivalent):
+            if key and keyrow and keyrow.density_equivalent and densities.has_key(keyrow.density_equivalent):
                 return densities[keyrow.density_equivalent]
             elif densities.has_key(None):
                 self.conv.density_table[key]=densities[None]
