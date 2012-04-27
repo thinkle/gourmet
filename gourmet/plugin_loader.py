@@ -67,7 +67,7 @@ class MasterLoader:
         """
         self.available_plugin_sets = {}
         for d in self.plugin_directories:
-            debug('Loading plugins from %s'%d,1)
+            debug('Loading plugins from %s'%os.path.realpath(d),1)
             plugins = glob.glob(os.path.join(d,'*.gourmet-plugin'))
             for ppath in plugins:
                 debug('Found %s'%ppath,1)
@@ -350,6 +350,12 @@ class Pluggable:
         if type==PRE: hookdic = self.pre_hooks
         else: hookdic = self.post_hooks
         del hookdic[name]
+
+    def get_plugin_by_module (self, module):
+        for p in self.plugins:
+            if p.__module__ == module:
+                return p
+
 
 class DependencyError (Exception):
 

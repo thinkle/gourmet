@@ -1,6 +1,7 @@
 from gourmet.plugin import ToolPlugin, ImportManagerPlugin
 import gtk
 import recipeMerger
+from gettext import gettext as _
 #from gourmet.gglobals import gt # for threading protection on import
 #                                # hooks
 from gourmet.plugin_loader import PRE,POST

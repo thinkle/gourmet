@@ -161,9 +161,7 @@ class NutritionData:
             if nvrow: return NutritionInfo(nvrow)
         else:
             # See if the key happens to match an existing description...
-            print 'Trying nutinfo from desc',key
             ni = self.get_nutinfo_from_desc(key)
-            if ni: print 'GOT IT!'
             # if we don't have a nutritional db row, return a
             # NutritionVapor instance which remembers our query and allows
             # us to redo it.  The idea here is that our callers will get
