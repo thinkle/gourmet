@@ -1,9 +1,0 @@
-[Gourmet Plugin]
-Module = web_import_plugin
-Version = 1.0
-API_Version = 1.0
-_Name = Webpage import
-_Comment = Import recipes from the web.
-_Category = Importer/Exporter
-Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>
-Dependencies = plaintext_plugin

@@ -1,8 +1,0 @@
-[Gourmet Plugin]
-Module = python_shell
-Version = 1.0
-API_Version = 1.0
-_Name = Python Shell
-_Comment = Allows programmers to access an interactive shell with access to Gourmet's internals.
-_Category = Tools
-Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>

@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module=unit_converter
+Version=1.0
+API_Version=1.0
+_Name=Unit Converter
+_Comment=Provides a simple unit calculator.
+_Category=Tools
+Authors=Thomas M. Hinkle <thomas_hinkle@sf.net>

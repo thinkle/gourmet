@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module=browse_recipes
+Version=1.0
+API_Version=1.0
+_Name=Browse Recipes
+_Comment=Selecting recipes by browsing by category, cuisine, etc.
+_Category=Main
+Authors=Thomas M. Hinkle <thomas_hinkle@sf.net>

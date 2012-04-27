@@ -1,8 +1,0 @@
-[Gourmet Plugin]
-Module = shopping_associations
-Version = 1.0
-API_Version = 1.0
-_Name = Shopping Category Editor
-_Comment = Assign and edit shopping categories for ingredients from within the recipe editor.
-_Category = Tools
-Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>

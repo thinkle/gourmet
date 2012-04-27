@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module=spellcheck
+Version=1.0
+API_Version=1.0
+_Name=Spell Checking
+_Comment=Adds spell checking to paragraph length text boxes in recipe entry (Instructions, Notes).
+_Category=Tools
+Authors=Thomas M. Hinkle <thomas_hinkle@sf.net>

@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module=archive_plugin
+Version=1.0
+API_Version=1.0
+_Name=Zip, Gzip, and Tarball support
+_Comment=Import recipes from zip and tar archives
+_Category=Importer/Exporter
+Authors=Thomas M. Hinkle <thomas_hinkle@sf.net>

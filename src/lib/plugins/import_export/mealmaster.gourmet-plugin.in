@@ -1,8 +1,0 @@
-[Gourmet Plugin]
-Module = mealmaster_plugin
-Version = 1.0
-API_Version = 1.0
-_Name = Mealmaster (tm) Export
-_Comment = Export recipes as mealmaster text files
-_Category = Importer/Exporter
-Authors = Thomas M. Hinkle <thomas_hinkle@sf.net>

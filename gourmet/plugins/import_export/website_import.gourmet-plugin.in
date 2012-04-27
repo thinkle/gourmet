@@ -1,0 +1,9 @@
+[Gourmet Plugin]
+Module=website_import_plugins
+Version=1.0
+API_Version=1.0
+_Name=Website Importers
+_Comment=Importers for about.com, www.foodnetwork.com, and others
+_Category=Importer/Exporter
+Authors=Thomas M. Hinkle <thomas_hinkle@sf.net>
+Dependencies=web_import_plugin

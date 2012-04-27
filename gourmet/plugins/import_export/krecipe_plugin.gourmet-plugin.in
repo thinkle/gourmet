@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module=krecipe_plugin
+Version=1.0
+API_Version=1.0
+_Name=KRecipe import
+_Comment=Import files from the Krecipe program.
+_Category=Importer/Exporter
+Authors=Thomas M. Hinkle <thomas_hinkle@sf.net>

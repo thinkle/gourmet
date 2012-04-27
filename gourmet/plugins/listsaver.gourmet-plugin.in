@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module=listsaver
+Version=1.0
+API_Version=1.0
+_Name=Shopping List Saver
+_Comment=Save shopping lists as recipes for future use.
+_Category=Tools
+Authors=Thomas M. Hinkle <thomas_hinkle@sf.net>

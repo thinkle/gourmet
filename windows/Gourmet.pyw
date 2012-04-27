@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import gtk.glade, gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string, traceback
+import gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string, traceback
 # THIS IS OUR NEW FREEZE TARGET
 
 # UNCOMMENT THE FOLLOWING IMPORT STATEMENTS FOR CX_FREEZE
