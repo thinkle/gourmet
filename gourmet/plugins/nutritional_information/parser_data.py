@@ -92,6 +92,7 @@ SUMMABLE_FIELDS = ['kcal',
 NUT_FIELDNAME_DICT = {}
 for longname,sname,field in NUTRITION_FIELDS:
     NUT_FIELDNAME_DICT[sname]=longname
+    NUT_FIELDNAME_DICT[longname]=sname
 
 ABBREVS = {'ALLPURP':'All Purpose',
            'AL':'Aluminum',
