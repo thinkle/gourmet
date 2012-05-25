@@ -1,5 +1,6 @@
 echo Run dpkg-buildpackage
-sudo dpkg-buildpackage -S -k5DCF5DF9
+sudo dpkg-buildpackage -S -k5DCF5DF9 -IVM -Ifoo -Ipyc -Idist
+sudo dpkg-buildpackage -k5DCF5DF9 -IVM -Ifoo -Ipyc -Idist
 echo dpkg-buildpackage done
 LATEST_DEB=`ls -t ../*.deb | head -1`
 echo REMOVE OLD STUFF

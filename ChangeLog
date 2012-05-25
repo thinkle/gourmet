@@ -2,6 +2,31 @@
 
 	* src/lib/defaults/defaults_en.py: Fix sugar density.
 
+2012-04-27  Tom  <tom@localhost6.localdomain6>
+
+	* gourmet/plugins/unit_display_prefs/__init__.py: import gettext
+
+	* gourmet/plugins/python_shell/__init__.py: import gettext
+
+	* gourmet/plugins/nutritional_information/nutrition.py (NutritionData.get_nutinfo): remove verbosity
+
+	* gourmet/plugins/nutritional_information/nutPrefsPlugin.py: import gettext
+
+	* gourmet/plugins/nutritional_information/main_plugin.py: import gettext
+
+	* gourmet/plugins/field_editor/__init__.py: import gettext
+
+	* gourmet/plugins/email_plugin/emailer_plugin.py: import gettext
+
+	* gourmet/plugins/duplicate_finder/recipeMergerPlugin.py: import gettext
+
+	* gourmet/plugin_gui.py: import gettext
+
+	* gourmet/info.py: import gettext
+
+	* gourmet/plugin_loader.py (Pluggable.get_plugin_by_module): Add
+	convenience function for grabbing plugin instances.
+
 2011-07-01  Tom  <tom@localhost6.localdomain6>
 
 	* src/lib/convert.py (NUMBER_FINDER_REGEXP): Avoid seeing things
