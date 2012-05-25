@@ -1,3 +1,7 @@
+2012-02-10  Thomas M. Hinkle  <tom@pebble>
+
+	* src/lib/defaults/defaults_en.py: Fix sugar density.
+
 2011-07-01  Tom  <tom@localhost6.localdomain6>
 
 	* src/lib/convert.py (NUMBER_FINDER_REGEXP): Avoid seeing things
