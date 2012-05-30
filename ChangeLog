@@ -1,3 +1,7 @@
+2012-02-10  Thomas M. Hinkle  <tom@pebble>
+
+	* src/lib/defaults/defaults_en.py: Fix sugar density.
+
 2012-04-27  Tom  <tom@localhost6.localdomain6>
 
 	* gourmet/plugins/unit_display_prefs/__init__.py: import gettext
