@@ -941,7 +941,8 @@ class RecData (Pluggable):
                 self.db.execute('ALTER TABLE %(t)s RENAME TO %(t)s_temp'%{'t':table_name})
             if do_raise:
                 raise 
-        del self.metadata.tables[table_name]
+        # SQLAlchemy >= 0.7 doesn't allow: del self.metadata.tables[table_name]
+        self.metadata._remove_table(table_name, self.metadata.schema)
         setup_function()
         getattr(self,'%s_table'%table_name).create()
         TO_COLS = cols_to_keep[:]
