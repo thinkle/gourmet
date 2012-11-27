@@ -198,7 +198,6 @@ result = setup(
                 'gourmet.plugins',
                 ] + plugins,
     package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*/*.ui', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
-    package_dir = {'gourmet' : os.path.join('gourmet')},
     scripts = script,
     cmdclass={'install_data' : my_install_data},
     )
