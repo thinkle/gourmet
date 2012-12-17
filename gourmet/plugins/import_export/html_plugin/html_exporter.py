@@ -77,7 +77,7 @@ class html_exporter (exporter_mult):
                     self.out.write("<link rel='stylesheet' href='%s' type='text/css'>"%self.make_relative_link(self.css))
             self.out.write(HTML_HEADER_CLOSE)
             self.out.write('<body>')
-        self.out.write('<div class="recipe">')
+        self.out.write('<div class="recipe" itemscope itemtype="http://schema.org/Recipe">')
         
     def write_image (self, image):
         imgout = os.path.join(self.imagedir_absolute,"%s.jpg"%self.imgcount)
@@ -90,7 +90,7 @@ class html_exporter (exporter_mult):
         o.write(image)
         o.close()
         # we use urllib here because os.path may fsck up slashes for urls.
-        self.out.write('<img src="%s">'%self.make_relative_link("%s%s.jpg"%(self.imagedir,
+        self.out.write('<img src="%s" itemprop="image">'%self.make_relative_link("%s%s.jpg"%(self.imagedir,
                                                                             self.imgcount)
                                                                 )
                        )
@@ -100,7 +100,11 @@ class html_exporter (exporter_mult):
         self.out.write('<div class="ing"><h3>%s</h3><ul class="ing">'%_('Ingredients'))
 
     def write_text (self, label, text):
-        self.out.write("<div class='%s'><h3 class='%s'>%s</h3>%s</div>"%(label,label,label,self.htmlify(text)))
+        attr = gglobals.NAME_TO_ATTR[label]
+        if attr == 'instructions':
+            self.out.write('<div class="%s"><h3 class="%s">%s</h3><div itemprop="recipeInstructions">%s</div></div>' % (label,label,label,self.htmlify(text)))
+        else:
+            self.out.write('<div class="%s"><h3 class="%s">%s</h3>%s</div>' % (label,label,label,self.htmlify(text)))
 
     def handle_italic (self, chunk): return "<em>" + chunk + "</em>"
     def handle_bold (self, chunk): return "<strong>" + chunk + "</strong>"
@@ -116,9 +120,30 @@ class html_exporter (exporter_mult):
             webpage = webpage.split('/')[0]
             self.out.write('<a href="%s">'%text +
                            _('Original Page from %s')%webpage +
-                           '</a>')
+                           '</a>\n')
+        elif attr == 'rating':
+            rating, rest = text.split('/', 1)
+            self.out.write('<p class="%s" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"><span class="label">%s:</span> <span itemprop="ratingValue">%s</span><span>/%s</span></p>\n' % (label, label.capitalize(), rating, rest))
         else:
-            self.out.write("<p class='%s'><span class='label'>%s:</span> %s</p>\n"%(label, label.capitalize(), xml.sax.saxutils.escape(text)))
+            itemprop = None
+            if attr == 'title':
+                itemprop = 'name'
+            elif attr == 'category':
+                itemprop = 'recipeCategory'
+            elif attr == 'cuisine':
+                itemprop = 'recipeCuisine'
+            elif attr == 'yields':
+                itemprop = 'recipeYield'
+            elif attr == 'preptime':
+                itemprop = 'prepTime'
+            elif attr == 'cooktime':
+                itemprop = 'cookTime'
+            elif attr == 'instructions':
+                itemprop = 'recipeInstructions'
+            if itemprop:
+                self.out.write('<p class="%s"><span class="label">%s:</span> <span itemprop="%s">%s</span></p>\n' % (label, label.capitalize(), itemprop, xml.sax.saxutils.escape(text)))
+            else:
+                self.out.write("<p class='%s'><span class='label'>%s:</span> %s</p>\n"%(label, label.capitalize(), xml.sax.saxutils.escape(text)))
         
     def write_attr_foot (self):
         self.out.write("</div>")
@@ -146,7 +171,7 @@ class html_exporter (exporter_mult):
 
     def write_ing (self, amount=1, unit=None,
                    item=None, key=None, optional=False):
-        self.out.write("<li class='ing'>")
+        self.out.write('<li class="ing" itemprop="ingredients">')
         for o in [amount, unit, item]:
             if o: self.out.write(xml.sax.saxutils.escape("%s "%o))
         if optional:
