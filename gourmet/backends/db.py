@@ -446,7 +446,7 @@ class RecData (Pluggable):
         If necessary, we'll do some version-dependent updates to the GUI
         """
         stored_info = self.fetch_one(self.info_table)
-        version = [s for s in version_string.split('.')]
+        version = [s for s in version_string.split('-')[0].split('.')]
         current_super = int(version[0])
         current_major = int(version[1])
         current_minor = int(version[2])
