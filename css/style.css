@@ -1,0 +1,193 @@
+html {
+    height: 100%;
+}
+
+body {
+	background-color: #3c260f; /*white;*/
+	color: #3C260F;
+    background-image: linear-gradient(bottom , rgb(60, 38, 15) 0%, rgb(213, 202, 162) 100%);
+    background-image: -o-linear-gradient(bottom , rgb(60, 38, 15) 0%, rgb(213, 202, 162) 100%);
+    background-image: -moz-linear-gradient(bottom , rgb(60, 38, 15) 0%, rgb(213, 202, 162) 100%);
+    background-image: -webkit-linear-gradient(bottom , rgb(60, 38, 15) 0%, rgb(213, 202, 162) 100%);
+    background-image: -ms-linear-gradient(bottom , rgb(60, 38, 15) 0%, rgb(213, 202, 162) 100%);
+
+    background-image: -webkit-gradient(
+	    linear,
+	    left bottom,
+	    left top,
+	    color-stop(0.0, rgb(60,38,15)),
+	    color-stop(1.0, rgb(213,202,162))
+    );
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+#mainbox {
+	width: 1030px;
+	margin:auto;
+}
+
+#header {
+	width: 100%;
+	margin: 0;
+	padding:0;
+	font-family: FreeSans, Helvetica, Arial, sans-serif;
+	font-size: 48pt;
+	clear:right;
+}
+
+#icon {
+	height: 70px; /*51pt;*/
+	float: left;
+    padding-right: 10px;
+}
+
+.title {
+	font-family: Lobster, serif;
+	float: left;
+	font-size: 48pt;
+	/* text-transform: uppercase; */
+	width: 4em; /*5.1em;*/
+    text-decoration: underline;
+}
+
+.subtitle {
+    color: #fdf9e8;
+	font-size: 40pt;
+	margin: 0 300px 0 0;
+	padding: 10pt 0 0 0;
+	line-height: 80%;
+	vertical-align: bottom;
+    font-weight: bold;
+	text-shadow:-1px 0pt rgb(60, 38, 15), 0pt 1px rgb(60, 38, 15), 1px 0pt rgb(60, 38, 15), 0pt -1px rgb(60, 38, 15)
+}
+
+#tabs {
+	font-size:10pt;
+	overflow: hidden;
+	clear:both;
+}
+
+.head {
+	font-size:large;
+}
+
+.menu {
+	font-family: Verdana, Helvetica, FreeSans, Arial, sans-serif;
+	font-size: 10pt;
+	color:black;
+	padding-top: 0.5em;
+}
+
+.menu h3 {
+	display: inline;
+	font-size: 100%;
+	color: #d5caa2;
+}
+
+.menu ul {
+	display: inline;
+	white-space:nowrap;
+	padding-left:0px;
+}
+
+.menu ul li {
+	display: inline;
+}
+
+#tabs img {
+	padding-bottom:1em;
+	padding-left:1em;
+	float:right;
+	border: 0px solid;
+	max-width: 500px;
+}
+
+#tabs p a {
+	text-decoration: none;
+}
+
+#tabs p a, #tabs p a:link, #tabs p a:visited,
+.menu a:link, .menu a:visited {
+	color: #db9421;
+}
+
+#tabs p a:hover, .menu a:hover {
+	color: #ecb725;
+}
+
+/*Button Properties Are From Here Down */
+	
+div.download {
+	margin-top: 10px;
+	letter-spacing:1px;
+	float: right;
+}
+	
+div.download a {
+	font-size:18pt;
+	color:#fff;
+	text-shadow:1px 1px 1px rgba(171,157,106,1), 0 0 1px rgba(0,0,0,0.6);
+	font-family: Lobster, serif;
+	padding:5px 10px;
+	border:1px solid #b1781b;
+	background:#f8e9b2;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.0, rgb(248,235,186)), color-stop(0.5, rgb(246,230,167)), color-stop(1.0, rgb(248,235,186)));
+	background-image: -moz-linear-gradient(center top, rgb(248,235,186) 0%, rgb(246,230,167) 50%, rgb(248,235,186) 100%);
+	text-decoration:none;
+	-webkit-border-radius:6px;
+	-moz-border-radius:6px;
+	border-radius:6px;
+	/*-webkit-box-shadow:0 0 1px rgba(0,0,0,1);
+	-o-box-shadow: 0 0px 1px rgba(0,0,0,1);
+	-moz-box-shadow: 0 0px 1px rgba(0,0,0,1);
+	box-shadow: 0 0px 1px rgba(0,0,0,1);*/
+	display:block;
+}
+
+div.download a:hover {
+	background:#F8E9B2;
+	color:#5f360f;
+	text-shadow: 0 -1px 0 rgba(0,0,0,1), 0 1px 0 rgba(255,255,255,0.8);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.20, rgb(248,233,178)), color-stop(0.8, rgb(250,241,209)));
+	background-image: -moz-linear-gradient(center top, rgb(248,233,178) 20%, rgb(250,241,209) 80%);
+}
+
+div.download a > span {
+	font-size:0.5em;
+	color:#5f360f;
+	text-shadow: none;
+	/*text-shadow:1px 1px 1px rgba(171,157,106,1), 0 0 1px rgba(0,0,0,0.6);*/
+	/*font-family: Lobster, serif;*/
+	font-family: Verdana, Helvetica, FreeSans, Arial, sans-serif;
+	letter-spacing:0;
+	margin-left: 5px;
+}
+
+/*
+div.download a:hover > span {
+	font-size:0.5em;
+	color:#5f360f;
+	text-shadow: none;
+	font-family: Helvetica, FreeSans, Arial, sans-serif;
+	letter-spacing:0;
+}
+*/
+
+/*
+div.download a:hover > span {
+	text-decoration:underline;
+}
+*/
+
+div.download a > img {
+	border: none;
+	/*vertical-align:middle;*/
+	float:left;
+	width: 40px;
+	height: 40px;
+}
+
+/*END Button Properties*/

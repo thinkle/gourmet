@@ -1,0 +1,345 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="text/html; charset=us-ascii" http-equiv=
+"content-type" />
+<meta name="author" content="Bernhard Reiter">
+<title>Gourmet Recipe Manager</title>
+<link rel="stylesheet" type="text/css" media="all" href=
+"css/cookie/jquery-ui-1.7.2.custom.css" />
+<link rel="stylesheet" href="js/fancybox/jquery.fancybox-1.3.1.css"
+type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css"
+type="text/css" media="screen" />
+<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+<link rel="icon" href="images/favicon.png" type="image/png" />
+
+<script type="text/javascript" src="js/jquery-1.3.2.min.js">
+</script>
+<script type="text/javascript" src=
+"js/jquery-ui-1.7.2.custom.min.js">
+</script>
+<script type="text/javascript" src=
+"js/fancybox/jquery.fancybox-1.3.1.pack.js">
+</script>
+<script type="text/javascript">
+//<![CDATA[
+
+$(document).ready(function() { 
+    $("#tabs").tabs();
+    $("a.screenshot").fancybox({
+        'titlePosition'  : 'inside'
+    });
+}); 
+
+
+//]]>
+</script>
+</head>
+<body>
+<div id="mainbox">
+<div id="header"><img id="icon" src="images/title.png" alt=
+"Gourmet" title="Gourmet" name="icon" />
+<div class="download"><a href="http://sourceforge.net/projects/grecipe-manager/files/0.15.8/gourmet-0.15.9.tar.gz/download"><img src="images/download.png" alt="Cookie Download icon" />Download<br /><span>0.15.9 (tar.gz)<span><!-- Gourmet (0.15.9) for <span>Ubuntu</span>--></a></div>
+<!--<div class="title">Gourmet</div>-->
+<div class="subtitle">Recipe Manager</div>
+</div>
+<!-- /div.header -->
+<div id="tabs">
+<ul>
+<li><a href="#intro">Introduction</a></li>
+<li><a href="#search">Searching and Sorting</a></li>
+<li><a href="#display">Display</a></li>
+<li><a href="#edit">Editing</a></li>
+<li><a href="#importexport">Import and Export</a></li>
+<li><a href="#shopping">Shopping Lists</a></li>
+<li><a href="#credits">Credits/Contribute</a></li>
+<!--<li><a href="#contribute">Contribute</a></li>-->
+</ul>
+<div class="block" id="intro">
+<p class="head"><a href="images/screenshots/BrowseRecipes.png" class="screenshot"
+title="Screenshot of Browse Recipes view"><img alt=
+"Screenshot of Browse Recipes view" src=
+"images/screenshots/small/BrowseRecipes.png" /></a><em>Gourmet Recipe Manager</em> is a
+recipe-organizer available for Linux and Windows that allows you to
+collect, search, organize, and browse your recipes. Gourmet can
+also generate shopping lists and calculate nutritional information.
+It imports Mealmaster, MasterCook and KRecipe files and exports
+<abbr title="Portable Document Format">PDF</abbr>s, webpages and
+other formats. Gourmet is <a href=
+"http://www.gnu.org/philosophy/free-sw.html">free software</a> and
+uses Python, GTK+ and SQLAlchemy.</p>
+<p>For an overview of the features Gourmet Recipe Manager offers,
+feel free to browse through the tabs on top of the page. You can
+<a href=
+"http://sourceforge.net/project/showfiles.php?group_id=108118">download</a>
+<em>Gourmet Recipe Manager</em> from the <a href=
+"http://sourceforge.net/projects/grecipe-manager/">sourceforge
+project page</a>. That page also will allow you to sign up to learn
+about updates, to file <a href=
+"http://sourceforge.net/tracker/?group_id=108118&amp;atid=649652">bug
+reports</a> and to make <a href=
+"http://sourceforge.net/tracker/?atid=649655&amp;group_id=108118&amp;func=browse">
+feature requests</a>, or to sign up for the <a href=
+"http://sourceforge.net/mail/?group_id=108118">mailing
+list</a>.</p>
+</div>
+<div class="block" id="search">
+<h3>Simple Search</h3>
+<p><a href="images/screenshots/SearchView.png" class="screenshot" title=
+"Screenshot of Search view"><img alt="Screenshot of Search view"
+src="images/screenshots/small/SearchView.png" /></a>A simple index view allows you to look
+at all your recipes as a list and quickly search through them by
+ingredient, title, category, cuisine, rating, or instructions.
+Searching happens as you type to save you keystrokes, and multiple
+kinds of searches can easily be combined from this same view (so
+you can search for salads (category) with walnuts (ingredient)
+without having to open a separate dialog. You can easily sort
+recipes by clicking on the column you'd like to sort by.
+Furthermore, for advanced users, you can search using regular
+expressions.</p>
+</div>
+<div class="block" id="display">
+<h3>Recipe Card Display</h3>
+<p><a href="images/screenshots/CardView.png" class="screenshot" title=
+"Screenshot of Recipe Card view"><img alt=
+"Screenshot of Recipe Card view" src="images/screenshots/small/CardView.png" /></a>
+Individual recipes open in their own windows, just like recipe
+cards drawn out of a recipe box. Recipes are attractively displayed
+with a minimal amount of controls and settings cluttering the
+interface. From the recipe card view, you can instantly multiply or
+divide a recipe, and Gourmet will adjust all ingredient amounts and
+even adjust the units to keep them as readable as possible (so that
+2 tbs. x 4 displays as 1/2 cup).</p>
+<p>Since you often need to refer to ingredients as you read a
+recipe, the ingredient list is displayed in a separate pane, so
+that you can look at ingredients as you scroll through the steps of
+a recipe.</p>
+<p><a href="images/screenshots/NutritionalInfo.png" class="screenshot" title=
+"Screenshot of Nutritional Information view"><img alt=
+"Screenshot of Nutrional Information view" src=
+"images/screenshots/small/NutritionalInfo.png" /></a>The recipe card view also includes
+nutritional information for your recipe. Clicking on the "Edit"
+button brings up a simple wizard that will bring you through the
+ingredients in your recipe, allowing you to pick equivalences from
+the <abbr title=
+"United States Department of Agriculture">USDA</abbr> nutritional
+database or enter nutritional information by hand. <em>Gourmet</em>
+does its best to choose good defaults as it guides you through your
+nutritional information, and it remembers your settings for future
+recipes. The nutritional information is not directly tied to the
+displayed ingredient information, so you can make reasonable
+substitutions and approximations for nutritional calculations
+without damaging the integrity of your recipes. You can also tell
+<em>Gourmet</em> to ignore certain ingredients &mdash; no need to
+waste time looking up nutritional information for every last spice
+after all!</p>
+<p>Future versions of Gourmet may make use of this information to
+allow searching and selecting recipes by nutritional content
+&mdash; for now, we just display the information we have and try to
+make it easy for those interested in nutrition to enter in their
+data as quickly as possible. In the future, we will also provide
+more information by default, and we may look for a way to create a
+community-generated database of nutritional information and
+equivalences.</p>
+</div>
+<div class="block" id="edit">
+<h3>Recipe Editor</h3>
+<a href="images/screenshots/RecCardIng.png" class="screenshot" title=
+"Screenshot of Recipe Card Ingredients List"><img src=
+"images/screenshots/small/RecCardIng.png" alt=
+"Screenshot of Recipe Card Ingredients List" /></a>
+<p><em>Gourmet</em> aims to make entering ingredients as intuitive
+and painless as possible, while still allowing for powerful
+features. Features include:</p>
+<ul>
+<li>A keyed ingredient list which allows searches and shopping-list
+generation to understand synonyms (like aubergine and eggplant) and
+ignore ingredient descriptions (i.e. to treat "tomatoes, finely
+chopped" as "tomatoes" for the purpose of searching and generating
+shopping lists.</li>
+<li>An intuitive spreadsheet-like editing interface</li>
+<li>An alternative, fast form-like ingredient entering interface
+(which allows you to easily type ingredient lists without looking
+at the screen.</li>
+<li>Drag-n-drop support for importing ingredient lists from your
+web browser or other application.</li>
+<li>Support for pasting ingredient lists in from your
+clipboard.</li>
+<li>Support for grouping ingredients within a recipe.</li>
+<li>Support for calling another recipe as an ingredient.(Note: this
+allows you to use a recipe as a menu!)</li>
+<li>Support for optional ingredients.</li>
+</ul>
+<p>In addition to ingredients and instructions, you can enter
+information about categories, cuisines, and ratings that you can
+later use to search for recipes. In each case, <em>Gourmet</em>
+allows you a drop down menu of standard categories and categories
+you've used in the past, but also allows you to enter any custom
+categories you like.</p>
+<p>You can also add images to your recipe for an attractive
+display. Thumbnails will be displayed in the recipe index.
+Currently, only HTML export supports images.</p>
+</div>
+<div class="block" id="importexport">
+<h3>Import and Export</h3>
+<p><a href="images/screenshots/Import.png" class="screenshot" title=
+"Screenshot of Importing Recipes message box"><img src="images/screenshots/Import.png"
+alt="Screenshot of Importing Recipes message box" /></a>
+<em>Gourmet</em> includes simple and powerful import and export
+filters for a number of formats, including the two most common
+recipe formats on the web (mealmaster and mastercook).</p>
+<p><em>Gourmet</em> can import the following kinds of files:</p>
+<ul>
+<li>Mealmaster Files</li>
+<li>MasterCook text files</li>
+<li>MasterCook <abbr title="eXtensible Markup Language">XML</abbr>
+files</li>
+<li><em>Gourmet</em> <abbr title=
+"eXtensible Markup Language">XML</abbr> files</li>
+<li>KRecipe <abbr title="eXtensible Markup Language">XML</abbr>
+Files</li>
+<li>Archives (such as Zip Files, Gzip Files, or Tarballs)</li>
+<li>Websites, such as <a href=
+"http://www.epicurious.com">epicurious</a> and <a href=
+"http://www.recipezaar.com">recipezaar</a></li>
+<li>Unformatted plain text files or websites (in this case, Gourmet
+will ask you to identify ingredients, instructions, etc.</li>
+</ul>
+<p><em>Gourmet</em> also can import ingredient lists from a regular
+plain text list, which can be imported from a file, pasted from the
+clipboard or dragged onto the editing view.</p>
+<p><em>Gourmet</em> can export the following kinds of files:</p>
+<ul>
+<li><abbr title="Portable Document Format">PDF</abbr> Files</li>
+<li>Recipe Web Pages</li>
+<li>Rich Text Format</li>
+<li>Plain Text</li>
+<li>Mealmaster Files</li>
+<li><em>Gourmet</em> <abbr title=
+"eXtensible Markup Language">XML</abbr> Files</li>
+</ul>
+<p>On GNU/Linux systems, gourmet can also export PDF or postscript
+files via its printing interface.</p>
+<p><em>Gourmet</em> aims to import and export as many common
+formats as possible. If you have a format you'd like to import,
+please submit a feature request, or, if you're a programmer, go
+ahead and start writing the filter yourself!</p>
+</div>
+<div class="block" id="shopping">
+<h3>Shopping List Manager</h3>
+<p><a href="images/screenshots/ShoppingList.png" class="screenshot" title=
+"Screenshot of Shopping List View"><img alt=
+"Screenshot of Shopping List View" src=
+"images/screenshots/small/ShoppingList.png" /></a><em>Gourmet</em> allows you to
+automatically generate shopping list from your recipes. You can
+easily multiply recipes when you add them to adjust for the number
+of people you're cooking for. If the units are convertable,
+different units used in different recipes will be added up
+correctly on your shoppings list (<em>Gourmet</em> even knows the
+density of some common foods to allow volume-to-weight
+conversions!). If <em>Gourmet</em> can't convert your units, the
+shopping list will simply display both units -- for example, the
+screenshot shows both tsp. and cloves of garlic, since these units
+can't be sensibly combined.</p>
+<p>If you already have an item that appears on your shopping list,
+you can drag it into your "pantry" so it won't be included! Items
+added to your pantry will be remembered in the future (so you don't
+have to manually remove items like "water" from your shopping list
+every time a recipe calls for it). However, since the pantry list
+is shown next to the shopping list, you will always have a list at
+hand of all the ingredients called for by your recipes. (You can
+drag an item back from the pantry to the shopping list if you've
+run out.)</p>
+<p>The shopping list is also automatically sorted into categories.
+<em>Gourmet</em> knows the basic categories of a number of foods
+(produce, meat, fish), and you can create whatever categories are
+convenient for your own shopping -- I use it for sorting out the
+basic sections and aisles of my local grocery store and those items
+that I get from specialty stores. You can set up shopping
+categories as you enter recipes, or you can move ingredients around
+within the shopping list view by drag and dropping or using a popup
+menu.<br /></p>
+</div>
+<div class="block" id="credits">
+<h3>Credits</h3>
+<p><em>Gourmet Recipe Manager</em> by <a href=
+"http://sourceforge.net/users/thomas_hinkle">Thomas Mills
+Hinkle</a> and contributors.<br />
+Website Design by <a href="http://raz.or.at/">Bernhard
+Reiter</a> and <a href="http://kati.pregartner.net/">Kati Pregartner</a>.<br />
+Cookie icon by Nyall Dawson.<br />
+Download button by Adam Willoughby-Knox.</p>
+<p><em>Gourmet Recipe Manager</em> is licensed under the
+<abbr title="GNU General Public License">GPL</abbr>.</p>
+<!--</div>
+<div class="block" id="contribute">-->
+<h3>Contribute</h3>
+<p>If you want to contribute to the project and you're a python
+programmer, please take a look at the <a href=
+"http://sourceforge.net/projects/grecipe-manager/develop">source
+code</a> and start <a href=
+"http://sourceforge.net/apps/mediawiki/grecipe-manager/index.php?title=Development">
+hacking</a>! Due to its <a href=
+"http://sourceforge.net/apps/mediawiki/grecipe-manager/index.php?title=Plugins">
+plugin-based architecture</a>, Gourmet can be easily extended by
+new features. If you would like to use <em>Gourmet</em> in a
+language other than English, you can help translate gourmet using
+this <a href=
+"https://launchpad.net/products/grecipe-manager/+translations">web-based
+tool</a> (this requires no programming knowledge!).</p>
+<p>If you want to contribute money, I encourage you to <a href=
+"http://sourceforge.net/project/project_donations.php?group_id=108118">
+donate to Gourmet</a>, <a href=
+"https://sourceforge.net/donate/">donate to sourceforge</a>, which
+hosts this project, or <a href="http://donate.fsf.org/">donate</a>
+to the <a href="http://www.fsf.org/">free software
+foundation</a>.<br /></p>
+</div>
+</div>
+<!-- /div#tabs -->
+<div class="menu">
+<h3>Gourmet</h3>
+<ul>
+<li><a href=
+"http://sourceforge.net/project/showfiles.php?group_id=108118">Downloads</a></li>
+<li><a href=
+"http://grecipe-manager.wiki.sourceforge.net/Installation">Installation</a></li>
+<li><a href=
+"http://sourceforge.net/news/?group_id=108118">News</a></li>
+<li><a href=
+"http://grecipe-manager.wiki.sourceforge.net/">Wiki</a></li>
+<li><a href="http://sourceforge.net/mail/?group_id=108118">Mailing
+List</a></li>
+</ul>
+<h3>Contribute</h3>
+<ul>
+<li><a href=
+"https://launchpad.net/products/grecipe-manager/+translations">Translate!</a></li>
+<li><a href=
+"http://sourceforge.net/tracker/?group_id=108118&amp;atid=649652">Report
+Bugs</a></li>
+<li><a href=
+"http://sourceforge.net/project/project_donations.php?group_id=108118">
+Donate</a></li>
+</ul>
+<h3>Help</h3>
+<ul>
+<li><a href=
+"http://sourceforge.net/projects/grecipe-manager/forums/forum/371768">Help
+Forum</a></li>
+<li><a href="http://sourceforge.net/projects/grecipe-manager/">SF
+Project Page</a></li>
+<li><a href=
+"https://sourceforge.net/tracker/?group_id=108118&amp;atid=649655">Feature
+Requests</a></li>
+</ul>
+</div>
+<!--<center><a href="http://sourceforge.net"><img src=
+"http://sourceforge.net/sflogo.php?group_id=108118&amp;type=5"
+width="210" height="62" border="0" alt=
+"SourceForge.net Logo" /></a></center>-->
+</div>
+</body>
+</html>
