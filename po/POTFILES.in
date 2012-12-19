@@ -13,9 +13,7 @@
 [type: gettext/glade]glade/valueEditor.ui
 gourmet.desktop.in
 src/lib/FileChooserSaveAs.py
-src/lib/GourmetFauxThreads.py
 src/lib/GourmetRecipeManager.py
-src/lib/GourmetThreads.py
 src/lib/ImageExtras.py
 src/lib/OptionParser.py
 src/lib/PngImagePluginUpToDate.py

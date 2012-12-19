@@ -2,7 +2,6 @@ import gtk
 import databaseGrabber
 import os, os.path, time
 import gourmet.gtk_extras.dialog_extras as de
-from gourmet.GourmetThreads import Terminated
 from gourmet.gglobals import datad
 from gettext import gettext as _
 
@@ -51,7 +50,7 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
         
     def gui_update (self):
         if self.terminated:
-            raise Terminated("Terminated!")
+            raise Exception("Terminated!")
         while gtk.events_pending():
             gtk.main_iteration()
 
