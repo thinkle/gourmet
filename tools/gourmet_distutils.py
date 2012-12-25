@@ -21,18 +21,6 @@ from distutils.dep_util import newer
 from distutils.dist import Distribution
 from distutils.core import setup
 
-class gourmet_build(build):
-    def has_po_files(self):
-        return self.distribution.has_po_files()
-
-    def has_desktop_file(self):
-        return self.distribution.has_desktop_file()
-
-    sub_commands = []
-    sub_commands.extend(build.sub_commands)
-    #sub_commands.append(('build_mo', has_po_files))
-    sub_commands.append(('build_desktop', has_desktop_file))
-
 class build_mo(Command):
 
     description = 'build binary message catalog'
@@ -364,13 +352,16 @@ class build_desktop(Command):
                                    ('build_base', 'build_base'))
 
     def run(self):
-        self.announce("Building gourmet.desktop file....")
+        self.announce("Building %s file...." % self.distribution.desktop_file)
         dest = os.path.normpath(os.path.join(self.build_base,'share/applications'))
-        self.mkpath(dest, 1)
-        cmd = '%s -d -u po gourmet.desktop.in %s/gourmet.desktop' % (self.intl_merge, dest)
+        self.mkpath(dest)
+        cmd = '%s -d -u po %s.in %s/%s' % (self.intl_merge,
+                                           self.distribution.desktop_file,
+                                           dest,
+                                           self.distribution.desktop_file)
         err, val = commands.getstatusoutput(cmd)
         if err:
-            sys.exit('Error merging translation in gourmet.desktop')
+            sys.exit('Error merging translation in %s' % self.distribution.desktop_file)
         print "%s" % val
 
 
@@ -396,7 +387,7 @@ class install_desktop(install_data):
             self.run_command('build_desktop')
 
         src = os.path.normpath(os.path.join(
-            self.build_dir,'share','applications','gourmet.desktop'))
+            self.build_dir,'share','applications',self.distribution.desktop_file))
         dest = os.path.join(self.install_dir, 'share','applications')
         self.mkpath(dest)
         (out, _) = self.copy_file(src, dest)
@@ -406,7 +397,7 @@ class install_desktop(install_data):
         return self.outfiles
 
     def get_inputs (self):
-        return (os.path.join(self.build_dir, 'share','applications','gourmet.desktop'))
+        return (os.path.join(self.build_dir, 'share','applications','self.distribution.desktop_file'))
 
 class translate(Command):
 
@@ -461,7 +452,7 @@ class GourmetDistribution(Distribution):
         self.pot_file = None
         self.translations = []
         self.config_files = []
-        self.desktop_file = None
+        self.desktop_file = 'gourmet.desktop'
         Distribution.__init__(self, attrs)
         self.cmdclass = {
             'build_desktop': build_desktop,
@@ -471,7 +462,6 @@ class GourmetDistribution(Distribution):
 #            'install_mo' : install_mo,
             'install_gconf' : install_gconf,
             'install_desktop' : install_desktop,
-            'build' : gourmet_build,
 #            'build_mo' : build_mo,
             'translate' : translate,}
 

@@ -26,9 +26,8 @@ def maybe_intltool (fname):
         else:
             os.system('intltool-merge -d po/ %s %s'%(fname, to_name))
 
-for f in ['gourmet.desktop.in'] + \
-        glob.glob('gourmet/plugins/*plugin.in')  + \
-        glob.glob('gourmet/plugins/*/*plugin.in'):
+for f in glob.glob('gourmet/plugins/*plugin.in') + \
+         glob.glob('gourmet/plugins/*/*plugin.in'):
     maybe_intltool(f)
     
 #from distutils.core import setup
@@ -130,9 +129,11 @@ def data_files():
         (os.path.join(base,'icons','hicolor','scalable','apps'),
          [os.path.join('images','gourmet.svg')]
          ),
-        (os.path.join(base,'applications'),
-         ['gourmet.desktop']
-         ),]
+#       gourmet.desktop is installed by tools.gourmet_distutils
+#        (os.path.join(base,'applications'),
+#         ['gourmet.desktop']
+#         ),
+        ]
     base = os.path.join(base,'gourmet')
 
     for f in glob.glob(os.path.join('po','*/*/*.mo')):
