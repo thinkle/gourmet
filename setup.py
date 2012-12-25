@@ -124,8 +124,11 @@ def data_files():
     # if os.name == 'posix':
     # files in /usr/share/X/ (not gourmet)
     files = [
-        (os.path.join(base,'pixmaps'),
+        (os.path.join(base,'icons','hicolor','48x48','apps'),
          [os.path.join('images','gourmet.png')]
+         ),
+        (os.path.join(base,'icons','hicolor','scalable','apps'),
+         [os.path.join('images','gourmet.svg')]
          ),
         (os.path.join(base,'applications'),
          ['gourmet.desktop']
