@@ -12,7 +12,6 @@
 [type: gettext/glade]glade/timerDialog.ui
 [type: gettext/glade]glade/valueEditor.ui
 gourmet.desktop.in
-src/lib/FileChooserSaveAs.py
 src/lib/GourmetRecipeManager.py
 src/lib/ImageExtras.py
 src/lib/OptionParser.py
