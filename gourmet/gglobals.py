@@ -130,6 +130,7 @@ from gettext import gettext as _
 datad = os.path.join(base,'data')
 uibase = os.path.join(base,'ui')
 imagedir = os.path.join(base,'images')
+style_dir = os.path.join(base,'style')
 
 # GRAB PLUGIN DIR FOR HTML IMPORT
 if options.html_plugin_dir:
