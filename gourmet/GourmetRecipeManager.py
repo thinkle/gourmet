@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-import os.path, time, os, sys, re, threading, StringIO, pango, string
-import gtk, gobject, gtk.gdk, traceback
+import os.path, os, re, threading, string
+import gtk, gobject, gtk.gdk
 import batchEditor
 import recipeManager
 from exporters.printer import get_print_manager
-import prefs, prefsGui, shopgui, reccard, fnmatch, tempfile
-import exporters, importers
+import prefs, prefsGui, shopgui, reccard
+import exporters
 from exporters.exportManager import get_export_manager
 from importers.importManager import get_import_manager
 import convert, version
@@ -13,12 +13,9 @@ from gtk_extras import fix_action_group_importance
 from gtk_extras import ratingWidget, WidgetSaver, mnemonic_manager
 from gtk_extras import dialog_extras as de
 from gtk_extras import treeview_extras as te
-from ImageExtras import get_pixbuf_from_jpg
 from gdebug import *
 from gglobals import *
 from recindex import RecIndex
-#import exporters.recipe_emailer as recipe_emailer
-import locale
 from gettext import gettext as _
 from gettext import ngettext
 from timer import show_timer
@@ -26,10 +23,9 @@ from defaults.defaults import lang as defaults
 from defaults.defaults import get_pluralized_form
 import plugin_loader, plugin, plugin_gui
 from threadManager import get_thread_manager, get_thread_manager_gui, SuspendableThread
-from zipfile import BadZipfile
 
 try:
-    import rtf_exporter
+    from exporters import rtf_exporter
     rtf=True
 except ImportError:
     debug('No RTF support',0)
@@ -43,7 +39,7 @@ def check_for_data_to_import (rm):
             #print "Not trying to update."
             #print "We had an import error."
             #import traceback; traceback.print_exc()
-            1
+            pass
         else:
             pd = de.ProgressDialog(label=_('Importing old recipe data'),
                                    sublabel=_('Importing recipe data from a previous version of Gourmet into new database.'),
