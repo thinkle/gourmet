@@ -10,7 +10,7 @@ class HtmlExporterPlugin (ExporterPlugin):
     sublabel = _('Exporting recipes to HTML files in directory %(file)s')
     single_completed_string = _('Recipe saved as HTML file %(file)s')
     filetype_desc = WEBPAGE
-    saveas_filters = [WEBPAGE,['text/html'],['']]
+    saveas_filters = [WEBPAGE,['text/html'],['*.html']]
     saveas_single_filters =     [WEBPAGE,['text/html'],['*.html','*.htm','*.HTM','*.HTML']]
 
     def get_multiple_exporter (self, args):
