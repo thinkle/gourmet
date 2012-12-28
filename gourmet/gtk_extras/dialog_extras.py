@@ -942,8 +942,6 @@ class FileSelectorDialog:
             if name: self.fsd.set_current_name(name)
         self.setup_filters()
         if self.action==gtk.FILE_CHOOSER_ACTION_SAVE:
-            # a stupid hack until GNOME finally realizes the proper filechooser widget
-            # described here: http://www.gnome.org/~seth/designs/filechooser-spec/
             self.setup_saveas_widget()
 
     def setup_buttons (self):
@@ -973,70 +971,25 @@ class FileSelectorDialog:
             self.fsd.set_filter(self.fsd.list_filters()[0])
 
     def setup_saveas_widget (self):
-        """We imitate the functionality we want GNOME to have not long
-        from now and we provide a saveas widget."""
+        """Set up the filter widget."""
         if not self.filters:
             self.do_saveas = False
             return
         self.do_saveas = True
-        self.saveas = gtk.ComboBox()
-        # set up a ComboBox 
-        self.it = gtk.icon_theme_get_default()
-        ls=gtk.ListStore(str,gtk.gdk.Pixbuf)
         n = 0
-        longest_word = 0
-        self.ext_to_n = {}
-        self.n_to_ext = {}
+        self.ext_to_filter = {}
+        self.name_to_ext = {}
         for name,mimetypes,regexps in self.filters:
-            if len(name) > longest_word:
-                longest_word = len(name)
-            image = None
-            baseimage = None
-            # we're going to turn this list around and pop off one
-            # item at a time in order and see if we have a corresponding
-            # icon.
-            mimetypes = mimetypes[0:] # copy the list so we don't mutilate it
-            mimetypes.reverse()
-            while mimetypes and not image:
-                mt = mimetypes.pop()
-                if mt.find("/") > -1:
-                    base,det=mt.split("/")
-                else:
-                    base = mt
-                    det = ""
-                image = self.find_mime_icon(base,det)
-                if not image and not baseimage:
-                    baseimage = self.find_mime_icon(base)
-            # n_to_ext let's us grab the correct extension from our active iter
-            self.n_to_ext[n]=os.path.splitext(regexps[0])[-1]
+            # name_to_ext lets us grab the correct extension from our active iter
+            self.name_to_ext[name]=os.path.splitext(regexps[0])[-1]
             for r in regexps:
                 ext = os.path.splitext(r)[-1]
-                # ext_to_n let's us select the correct iter from the extension typed in
-                self.ext_to_n[ext]=n
-            # for example, if there's no gnome-mime-text-plain, we'll settle for gnome-mime-text
-            if not image: image=baseimage
-            ls.append([name,image])
+                # ext_to_filter let's us select the correct iter from the extension typed in
+                self.ext_to_filter[ext]=self.fsd.list_filters()[n]
             n += 1
-        self.saveas.set_model(ls)
-        crp = gtk.CellRendererPixbuf()
-        crp.set_property('xalign',0)
-        self.saveas.pack_start(crp, expand=False)
-        self.saveas.add_attribute(crp, 'pixbuf', 1)
-        self.saveas.connect('changed', self.change_file_extension)
-        crt = gtk.CellRendererText()
-        self.saveas.pack_start(crt, expand=True)
-        self.saveas.add_attribute(crt, 'text', 0)
-        self.hbox = gtk.HBox()
-        l=gtk.Label()
-        l.set_use_markup(True)
-        l.set_selectable(True)
-        l.set_text_with_mnemonic(_('Select File_type'))
-        l.set_mnemonic_widget(self.saveas)
-        self.hbox.add(l)
-        self.hbox.add(self.saveas)
-        self.hbox.show_all()
-        self.fsd.set_extra_widget(self.hbox)
+
         self.fn = None
+        self.fsd.connect('notify::filter',self.change_file_extension)
         self.fsd.connect('selection-changed',self.update_filetype_widget)
         self.internal_extension_change=False
         self.update_filetype_widget()
@@ -1052,13 +1005,13 @@ class FileSelectorDialog:
             if not fn:
                 return True
             ext=os.path.splitext(fn)[1]
-            if self.ext_to_n.has_key(ext):
+            if self.ext_to_filter.has_key(ext):
                 self.internal_extension_change=True
-                self.saveas.set_active(self.ext_to_n[ext])
+                self.fsd.set_filter(self.ext_to_filter[ext])
                 self.internal_extension_change=False
         return True
 
-    def change_file_extension (self, *args):
+    def change_file_extension (self, fsd, data):
         if self.internal_extension_change: return
         fn = os.path.split(self.fsd.get_filename())[1]
         # strip off the old extension if it was one of our
@@ -1067,23 +1020,13 @@ class FileSelectorDialog:
             base = os.path.splitext(fn)[0]
         else:
             base = fn
-        ext = self.n_to_ext[self.saveas.get_active()]
+        ext = self.name_to_ext[fsd.get_filter().get_name()]
         if self.show_filetype:
             debug('changing file extension to %s'%(base + ext),3)
             self.fsd.set_current_name(base + ext)
         else:
             debug('changing file extension for %s to %s'%(base, ext))
             self.fsd.set_current_name(base)
-            
-    def find_mime_icon (self, base, ext=None, size=48):
-        prefixes = ['gnome','gnome-mime']
-        while prefixes:
-            prefix = prefixes.pop()
-            name = prefix + "-" + base
-            if ext:
-                name = name + "-" + ext
-            if self.it.has_icon(name):
-                return self.it.load_icon(name, size, gtk.ICON_LOOKUP_USE_BUILTIN)
 
     def is_extension_legal (self, fn):
         if not fn: return
@@ -1114,8 +1057,8 @@ class FileSelectorDialog:
             if self.action==gtk.FILE_CHOOSER_ACTION_SAVE:
                 # add the extension if need be...
                 if self.do_saveas and not self.is_extension_legal(fn):
-                    if self.n_to_ext.has_key(self.saveas.get_active()):
-                        add_ext = self.n_to_ext[self.saveas.get_active()]
+                    if self.name_to_ext.has_key(self.fsd.get_filter().get_name()):
+                        add_ext = self.name_to_ext[self.fsd.get_filter().get_name()]
                         if add_ext: fn += add_ext
             self.quit()
             return fn
