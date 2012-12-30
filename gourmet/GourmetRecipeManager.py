@@ -137,7 +137,6 @@ class GourmetApplication:
                                        )
                         )
 
-
     # Splash convenience method for start-up splashscreen
     def update_splash (self, text):
         """Update splash screen on startup."""
@@ -907,6 +906,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.setup_main_window()
         self.window.add_accel_group(self.ui_manager.get_accel_group())
         self.setup_column_display_preferences()
+        self.setup_toolbar_display_preferences()
         plugin_loader.Pluggable.__init__(self,
                                          [plugin.MainPlugin,plugin.ToolPlugin])
         self.mm = mnemonic_manager.MnemonicManager()
@@ -930,6 +930,18 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.prefsGui.add_pref_table(options,
                                      'indexViewVBox',
                                      self.configure_columns)        
+
+    def setup_toolbar_display_preferences (self):
+        def toggleToolbar (prefname,use):
+            tb = self.ui_manager.get_widget('/RecipeIndexToolBar')
+            if use:
+                tb.show()
+            else:
+                tb.hide()
+        self.prefsGui.apply_prefs_dic['showToolbar'] = toggleToolbar
+        # Call our method once with the default prefs to apply saved
+        # user settings
+        toggleToolbar(None, self.prefs.get('showToolbar',True))
 
     def configure_columns (self, retcolumns):
         hidden=[]
@@ -975,7 +987,9 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.window.add(self.main)
         self.window.connect('delete-event',self.quit)
         mb = self.ui_manager.get_widget('/RecipeIndexMenuBar'); mb.show()
-        self.main.pack_start(mb,fill=False,expand=False);
+        self.main.pack_start(mb,fill=False,expand=False)
+        tb = self.ui_manager.get_widget('/RecipeIndexToolBar')
+        self.main.pack_start(tb,fill=False,expand=False)
         self.messagebox = gtk.HBox()
         self.main.pack_start(self.messagebox,fill=False,expand=False)
         self.main_notebook = gtk.Notebook()

@@ -29,6 +29,7 @@ class PreferencesGui (plugin_loader.Pluggable):
         toggle_options={'remember_optionals_by_default':'remember_optionals_by_default',
                         'readableUnits':'toggle_readable_units',
                         'useFractions':'useFractions',
+                        'showToolbar':'show_toolbar',
                         #'email_include_body':'email_body_checkbutton',
                         #'email_include_html':'email_html_checkbutton',
                         #'emailer_dont_ask':'remember_email_checkbutton',
