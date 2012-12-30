@@ -9,7 +9,7 @@ import prefs, prefsGui, shopgui, reccard, fnmatch, tempfile
 import exporters, importers
 from exporters.exportManager import get_export_manager
 from importers.importManager import get_import_manager
-import convert, info
+import convert, version
 from gtk_extras import fix_action_group_importance
 from gtk_extras import ratingWidget, WidgetSaver, mnemonic_manager
 from gtk_extras import dialog_extras as de
@@ -403,18 +403,18 @@ class GourmetApplication:
         h.close()
 
         about = gtk.AboutDialog()
-        about.set_artists(info.artists)
-        about.set_authors(info.authors)
-        about.set_comments(info.description)
-        about.set_copyright(info.copyright)
+        about.set_artists(version.artists)
+        about.set_authors(version.authors)
+        about.set_comments(version.description)
+        about.set_copyright(version.copyright)
         #about.set_documenters(None)
         about.set_license(license)
         about.set_logo(logo)
-        about.set_program_name(info.appname)
+        about.set_program_name(version.appname)
         about.set_translator_credits(translator)
-        about.set_version(info.version)
+        about.set_version(version.version)
         #about.set_wrap_license(True)
-        about.set_website(info.website)
+        about.set_website(version.website)
         #about.set_website_label('Gourmet website')
         about.run()
         about.destroy()
@@ -976,7 +976,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                                                  )
                          )
         self.window.set_default_size(*self.prefs.get('app_window')['window_size'])
-        self.window.set_title(info.appname)
+        self.window.set_title(version.appname)
         self.main = gtk.VBox()
         self.window.add(self.main)
         self.window.connect('delete-event',self.quit)
