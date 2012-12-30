@@ -32,7 +32,7 @@ for f in glob.glob('gourmet/plugins/*plugin.in') + \
     
 #from distutils.core import setup
 from tools.gourmet_distutils import setup
-from distutils.command.install_data import install_data
+from distutils.command.install_data import install_data as _install_data
 
 # grab the version from our new "version" module
 # first we have to extend our path to include gourmet/
@@ -115,7 +115,7 @@ def data_files():
         for root, dirs, files in os.walk(d):
             if files:
                 files = [os.path.join(root, f) for f in files]
-                data_files.append((os.path.join('share','gourmet', root), files))
+                data_files.append((os.path.join('gourmet', root), files))
     print "data_files: ",data_files
 
     base = 'share'
@@ -150,12 +150,12 @@ def data_files():
     #print 'DATA FILES:',files
     return files
 
-class my_install_data(install_data):
+class install_data(_install_data):
     def finalize_options(self):
         self.set_undefined_options('install',
                                    ('install_lib', 'install_dir'))
-        install_data.finalize_options(self)
-        #print 'install_data has: ',dir(install_data)
+        _install_data.finalize_options(self)
+        #print 'install_data has: ',dir(_install_data)
 
 if os.name == 'nt':
     script = [os.path.join('windows','Gourmet.pyw'),
@@ -203,6 +203,6 @@ result = setup(
                 ] + plugins,
     package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*/*.ui', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
     scripts = script,
-    cmdclass={'install_data' : my_install_data},
+    cmdclass={'install_data' : install_data},
     )
 

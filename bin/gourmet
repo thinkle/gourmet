@@ -5,11 +5,13 @@
 
 import sys
 
-try:
-    import _preamble
-    sys.path.insert(0, _preamble.get_path())
-except ImportError:
-    sys.exc_clear()
+# The following line is modified at installation time by setup.py so it
+# points to the actual modules installation path.
+lib_dir = '.'
 
-import gourmet.GourmetRecipeManager
-gourmet.GourmetRecipeManager.startGUI()
+if lib_dir not in sys.path:
+    sys.path.insert(0, lib_dir)
+
+from gourmet import GourmetRecipeManager
+GourmetRecipeManager.startGUI()
+

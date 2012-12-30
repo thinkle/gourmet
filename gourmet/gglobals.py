@@ -115,7 +115,7 @@ use_threads = options.threads
 
 # note: this stuff must be kept in sync with changes in setup.py
 import settings
-base = settings.base
+base = os.path.join(settings.data_dir, "gourmet")
 
 # To have strings from .ui files (gtk.Builder) translated on all platforms,
 # we need the following module to enable localization on all platforms.
