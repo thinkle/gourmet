@@ -12,14 +12,20 @@ import re
 import glob
 import types
 import commands
+import fileinput
+import string
+from types import StringType, ListType, TupleType
 
 from distutils.core import Command
 from distutils.command.build import build
+from distutils.command.build_py import build_py as _build_py
+from distutils.command.build_scripts import build_scripts as _build_scripts
 from distutils.command.install import install
 from distutils.command.install_data import install_data
 from distutils.dep_util import newer
 from distutils.dist import Distribution
 from distutils.core import setup
+from distutils.util import convert_path
 
 class build_mo(Command):
 
@@ -38,6 +44,74 @@ class build_mo(Command):
                                    ('force', 'force'))
     def run(self):
 	pass
+
+class build_py(_build_py):
+    """build_py command
+    
+    This specific build_py command will modify module 'build_config' so that it
+    contains information on installation prefixes afterwards.
+    """
+
+    def build_module (self, module, module_file, package):
+        if type(package) is StringType:
+            package = string.split(package, '.')
+        elif type(package) not in (ListType, TupleType):
+            raise TypeError, \
+                  "'package' must be a string (dot-separated), list, or tuple"
+
+        if ( module == 'settings' and len(package) == 1
+             and package[0] == 'gourmet'
+             and 'install' in self.distribution.command_obj):
+            iobj = self.distribution.command_obj['install']
+            data_dir = iobj.install_data
+            if (iobj.root):
+                data_dir = data_dir[len(iobj.root):]
+
+            # abuse fileinput to replace two lines in bin/gourmet
+            for line in fileinput.input(module_file, inplace = 1):
+                if "data_dir = " in line:
+                    line = "data_dir = '%s'\n" % data_dir
+
+                print line,
+
+            if False:
+                with open(module_file, 'w') as module_fp:
+                    module_fp.write('# -*- coding: UTF-8 -*-\n\n')
+                    module_fp.write("DATA_DIR = '%s'\n"%(
+                        os.path.join(data_dir, 'share')))
+
+        _build_py.build_module(self, module, module_file, package)
+
+class build_scripts(_build_scripts):
+    """build_scripts command
+
+    This specific build_scripts command will modify the bin/gourmet script
+    so that it contains information on installation prefixes afterwards.
+    """
+
+    def copy_scripts(self):
+        _build_scripts.copy_scripts(self)
+
+        if "install" in self.distribution.command_obj:
+            iobj = self.distribution.command_obj["install"]
+            lib_dir = iobj.install_lib
+            data_dir = iobj.install_data
+
+            if iobj.root:
+                lib_dir = lib_dir[len(iobj.root):]
+                data_dir = data_dir[len(iobj.root):]
+
+            script = convert_path("bin/gourmet")
+            outfile = os.path.join(self.build_dir, os.path.basename(script))
+
+            # abuse fileinput to replace two lines in bin/gourmet
+            for line in fileinput.input(outfile, inplace = 1):
+                if "lib_dir = '.'" in line:
+                    line = "lib_dir = '%s'\n" % lib_dir
+                elif "data_dir = '.'" in line:
+                    line = "data_dir = '%s'\n" % data_dir
+
+                print line,
 
 class gourmet_install(install):
     user_options = []
@@ -456,6 +530,8 @@ class GourmetDistribution(Distribution):
         Distribution.__init__(self, attrs)
         self.cmdclass = {
             'build_desktop': build_desktop,
+            'build_py': build_py,
+            'build_scripts': build_scripts,
             'install' : gourmet_install,
             'install_modules_check' : install_modules_check,
             'install_config' : install_config,
