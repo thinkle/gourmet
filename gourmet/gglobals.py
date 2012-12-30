@@ -243,8 +243,6 @@ def launch_url (url, ext=""):
                           _("There was an error launching the url: %s"%url)]
                 )
 
-empty_model = gtk.ListStore(str)
-
 # Set up custom STOCK items and ICONS!
 icon_factory = gtk.IconFactory()
     
