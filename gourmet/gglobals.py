@@ -33,7 +33,6 @@ from gdebug import debug
 from OptionParser import options
 
 tmpdir = tempfile.gettempdir()
-BUG_URL = "http://sourceforge.net/tracker/?group_id=108118&atid=649652"
 
 if options.gourmetdir:
     gourmetdir = options.gourmetdir
