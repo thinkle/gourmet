@@ -2149,7 +2149,6 @@ class IngredientTreeUI:
         self.ingTree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)                
         self.setup_columns()
         self.ingTree.connect("row-activated",self.ingtree_row_activated_cb)
-        self.ingTree.connect("button-press-event",self.ingtree_click_cb)
         self.ingTree.connect("key-press-event",self.ingtree_keypress_cb)
         self.selected=True
         #self.selection_changed()
@@ -2177,8 +2176,7 @@ class IngredientTreeUI:
                 col=gtk.TreeViewColumn(head, renderer, active=n)
             # Non-Toggle setup
             else:
-                # Work around to support older pygtk
-                if CRC_AVAILABLE and model:
+                if model:
                     debug('Using CellRendererCombo, n=%s'%n,0)
                     renderer = gtk.CellRendererCombo()
                     renderer.set_property('model',model)
@@ -2267,27 +2265,6 @@ class IngredientTreeUI:
                 return False
             else:
                 return True
-        
-    def ingtree_click_cb (self, tv, event):
-        debug("ingtree_click_cb",5)
-        if CRC_AVAILABLE: return False # in this case, popups are handled already!
-        x = int(event.x)
-        y = int(event.y)
-        time = event.time
-        try:
-            path, col, cellx, celly = tv.get_path_at_pos(x,y)
-        except: return
-        debug("ingtree_click_cb: path=%s, col=%s, cellx=%s, celly=%s"%(path,
-                                                     col,
-                                                     cellx,
-                                                     celly),
-              5)
-        if col.get_title()==_('Shopping Category'):
-            tv.grab_focus()
-            tv.set_cursor(path,col,0)
-            self.shoppop_iter=tv.get_model().get_iter(path)
-            self.shoppop.popup(None,None,None,event.button,event.time)
-            return True
         
     def ingtree_row_activated_cb (self, tv, path, col, p=None):
         debug("ingtree_row_activated_cb (self, tv, path, col, p=None):",5)

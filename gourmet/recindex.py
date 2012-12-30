@@ -334,7 +334,7 @@ class RecIndex:
                 col.set_property('resizable',True)
                 n+=1
                 continue
-            elif self.editable and CRC_AVAILABLE and self.rtwidgdic[c]=='Combo':
+            elif self.editable and self.rtwidgdic[c]=='Combo':
                 renderer = gtk.CellRendererCombo()
                 model = gtk.ListStore(str)
                 if c=='category':

@@ -511,12 +511,10 @@ class NutritionTreeModel (gtk.TreeStore):
         for col in self.columns:
             # not yet i18n'd
             if col=='USDA':                
-                if gglobals.CRC_AVAILABLE:
-                    rend = gtk.CellRendererCombo()
-                    self.usda_model = gtk.ListStore(str,str)
-                    rend.set_property('model',self.usda_model)
-                    rend.set_property('text-column',0)
-                else: rend = text_renderer
+                rend = gtk.CellRendererCombo()
+                self.usda_model = gtk.ListStore(str,str)
+                rend.set_property('model',self.usda_model)
+                rend.set_property('text-column',0)
                 rend.set_property('editable',True)
                 rend.connect('editing-started',self.usda_editing_started_cb)
                 rend.connect('edited',self.usda_edited_cb)

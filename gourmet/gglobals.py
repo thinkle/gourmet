@@ -35,8 +35,6 @@ from OptionParser import options
 tmpdir = tempfile.gettempdir()
 BUG_URL = "http://sourceforge.net/tracker/?group_id=108118&atid=649652"
 
-CRC_AVAILABLE = hasattr(gtk,'CellRendererCombo') # is this wonderful feature available?
-
 if options.gourmetdir:
     gourmetdir = options.gourmetdir
     debug("User specified gourmetdir %s"%gourmetdir,0)
