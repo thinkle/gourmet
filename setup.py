@@ -114,7 +114,7 @@ def data_files():
                 data_files.append((os.path.join('gourmet', root), files))
     print "data_files: ",data_files
 
-    base = 'share'
+    base = ''
     locale_base = os.path.join('share','locale')
     # if os.name == 'posix':
     # files in /usr/share/X/ (not gourmet)

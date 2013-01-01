@@ -74,12 +74,6 @@ class build_py(_build_py):
 
                 print line,
 
-            if False:
-                with open(module_file, 'w') as module_fp:
-                    module_fp.write('# -*- coding: UTF-8 -*-\n\n')
-                    module_fp.write("DATA_DIR = '%s'\n"%(
-                        os.path.join(data_dir, 'share')))
-
         _build_py.build_module(self, module, module_file, package)
 
 class build_scripts(_build_scripts):
@@ -427,7 +421,7 @@ class build_desktop(Command):
 
     def run(self):
         self.announce("Building %s file...." % self.distribution.desktop_file)
-        dest = os.path.normpath(os.path.join(self.build_base,'share/applications'))
+        dest = os.path.normpath(os.path.join(self.build_base,'applications'))
         self.mkpath(dest)
         cmd = '%s -d -u po %s.in %s/%s' % (self.intl_merge,
                                            self.distribution.desktop_file,
@@ -461,8 +455,8 @@ class install_desktop(install_data):
             self.run_command('build_desktop')
 
         src = os.path.normpath(os.path.join(
-            self.build_dir,'share','applications',self.distribution.desktop_file))
-        dest = os.path.join(self.install_dir, 'share','applications')
+            self.build_dir,'applications',self.distribution.desktop_file))
+        dest = os.path.join(self.install_dir,'applications')
         self.mkpath(dest)
         (out, _) = self.copy_file(src, dest)
         self.outfiles.append(out)
@@ -471,7 +465,7 @@ class install_desktop(install_data):
         return self.outfiles
 
     def get_inputs (self):
-        return (os.path.join(self.build_dir, 'share','applications','self.distribution.desktop_file'))
+        return (os.path.join(self.build_dir,'applications',self.distribution.desktop_file))
 
 class translate(Command):
 
