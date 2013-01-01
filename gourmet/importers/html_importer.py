@@ -473,9 +473,9 @@ class WebPageImporter (importer.Importer):
                 traceback.print_exc()
                 print """If you think automated import should have worked for the webpage you
                 were importing, copy the output starting at "Automated HTML Import failed" into
-                a bug report and submit it at the sourceforge site
+                a bug report and submit it at the GitHub site
                 
-                https://sourceforge.net/tracker/?group_id=108118&atid=649652
+                https://github.com/thinkle/gourmet/issues
 
                 Sorry automated import didn't work. I hope you like
                 the new generic web importer!
