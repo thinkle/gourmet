@@ -37,12 +37,8 @@ from distutils.command.install_data import install_data as _install_data
 # grab the version from our new "version" module
 # first we have to extend our path to include gourmet/
 sys.path.append(os.path.join(os.path.split(__file__)[0],'gourmet'))
-#print sys.path
-try:
-    from version import version, website
-except:
-    #print 'Version info may be out of date.'
-    version = "0.11.0"
+
+from version import version, website
 
 name= 'gourmet'
 
