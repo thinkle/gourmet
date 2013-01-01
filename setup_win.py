@@ -62,12 +62,12 @@ setup(
     # 'version' is given, then a versioninfo resource is built from
     # them and added to the executables.
     version = version.version,
-    description = "Recipe Organizer and Shopping List Generator for Gnome",
-    name = "Gourmet Recipe Manager",
-    author = "Thomas Mills Hinkle",
-    author_email = 'Thomas_Hinkle@alumni.brown.edu',
-    url = 'http://grecipe-manager.sourceforge.net',
-    license = "GPL",
+    description = version.description,
+    name = version.name,
+    author = version.author,
+    author_email = version.author_email,
+    url = version.website,
+    license = version.license,
 
 
     options = {"py2exe": {

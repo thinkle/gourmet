@@ -38,9 +38,7 @@ from distutils.command.install_data import install_data as _install_data
 # first we have to extend our path to include gourmet/
 sys.path.append(os.path.join(os.path.split(__file__)[0],'gourmet'))
 
-from version import version, website
-
-name= 'gourmet'
+import version
 
 if sys.version < '2.2':
     sys.exit('Error: Python-2.2 or newer is required. Current version:\n %s'
@@ -176,15 +174,14 @@ def crawl (base, basename):
 crawl('gourmet/plugins', 'gourmet.plugins')
 
 result = setup(
-    name = name,
-    version = version,
+    name = version.name,
+    version = version.version,
     #windows = [ {'script':os.path.join('bin','gourmet'),
     #             }],
-    description = 'Recipe Organizer and Shopping List Generator',
-    author = 'Thomas Mills Hinkle',
-    author_email = 'Thomas_Hinkle@alumni.brown.edu',
-    url = website,
-    license = 'GPL',
+    description = version.description,
+    author = version.author,
+    url = version.website,
+    license = version.license,
     data_files = data_files(),
     packages = ['gourmet',
                 'gourmet.backends',
