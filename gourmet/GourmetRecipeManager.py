@@ -923,11 +923,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
     def setup_column_display_preferences (self, *args):
         already_hidden=self.prefs.get('rectree_hidden_columns',DEFAULT_HIDDEN_COLUMNS)
         if not already_hidden: already_hidden=[]
-        def mapper (i):
-            if i in already_hidden: return [i, False]
-            else: return [i, True]
         options=map(lambda i: self.rtcolsdic[i], self.rtcols)
-        options=map(mapper, options)
+        options=map(lambda i: [i, i not in already_hidden], options)
         #pd = de.preferences_dialog(options=options, option_label=None, value_label=_("Show in Index View"),
         #                           apply_func=self.configure_columns, parent=self.app)
         self.prefsGui.add_pref_table(options,
