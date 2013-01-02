@@ -36,22 +36,25 @@ become more GNOME HIG compliant (or just improve in general).
 
 * Minimum Requirements *
 
-1. Python 2.4
-2. PyGTK>2.3.9 and PyGNOME 
-   (Note: with pygtk > 2.5, pygnome bindings have been split up.
-    To print, you'll need e.g. the python-gnome2-extras package as
-    well as the the python-gnome2 package).
-3. libglade
-4. sqlalchemy
-5. distutils (to install). Provided by python-dev package.
-6. Python Imaging Libraries (PIL)
+1. Python 2.6
+2. PyGTK (>=2.16)
+3. SQLalchemy (>= 0.7)
+4. Python Imaging Libraries (PIL)
+5. elib.intl
+
+* Build requirements *
+
+1. intltool
+2. python-distutils-extra
 
 * Extra Requirements *
 
 1. Python Reportlab (python-reportlab) - for PDF export.
-
 2. For RTF support, you will need the PyRTF library available
    at http://pyrtf.sourceforge.net
+3. PyGTKSpell
+4. pypoppler
+5. python-gst0.10
 
 * Install *
 
