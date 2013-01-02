@@ -25,7 +25,7 @@ TODO
 
 * Implement menu-planner plugin 
    
-SEE http://grecipe-manager.wiki.sourceforge.net/TODO
+SEE https://github.com/thinkle/gourmet/wiki/TODO
 * Fix Batch Editor to work with plugin system
 
 * Finalize proper editor for nutrition values

@@ -243,17 +243,19 @@ the "Page Layout" tab of the print dialog.   This will allow you to choose the f
 
 11.a. What if I have a good idea for how to improve Gourmet?
 
-Please submit a feature request at the following website:
-https://sourceforge.net/tracker/?atid=649655&group_id=108118&func=browse
+Please submit a an issue tagged with the 'feature-request' label (and possibly
+other applicable labels) at the following website:
+https://github.com/thinkle/gourmet/issues
 
 11.b. What if I find a bug?
 
-Please submit a bug report at the following website:
-https://sourceforge.net/tracker/?atid=649652&group_id=108118&func=browse
+Please submit an issue tagged with the 'bug' label (and possibly other
+applicable labels)  at the following website:
+https://github.com/thinkle/gourmet/issues
 
 11.c. What if I have a question not answered here?
 
 Post your question in the Gourmet Help Forum here:
-https://sourceforge.net/forum/forum.php?forum_id=371768
+https://answers.launchpad.net/gourmet
 Or, if for some reason that won't work, feel free to e-mail me at:
 Thomas_Hinkle@alumni.brown.edu
