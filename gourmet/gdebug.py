@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from OptionParser import *
+from OptionParser import options
 import time,traceback
 
 debug_level=options.debug

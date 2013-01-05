@@ -9,9 +9,8 @@ import keymanager
 import shopping
 import os.path
 import ImageExtras
-import OptionParser
 
-from gourmet.OptionParser import *
+from OptionParser import options
 
 def thread_debug ():
     print 'THREADING DEBUG INFO: ',threading.enumerate()
