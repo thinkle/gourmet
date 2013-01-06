@@ -127,6 +127,7 @@ from gettext import gettext as _
 datad = os.path.join(base,'data')
 uibase = os.path.join(base,'ui')
 imagedir = os.path.join(base,'images')
+icondir = os.path.join(settings.icon_base,"48x48","apps")
 style_dir = os.path.join(base,'style')
 
 # GRAB PLUGIN DIR FOR HTML IMPORT
@@ -258,7 +259,6 @@ def add_icon (file_name, stock_id, label=None, modifier=0, keyval=0):
 
 for filename,stock_id,label,modifier,keyval in [    
     ('AddToShoppingList.png','add-to-shopping-list',_('Add to _Shopping List'),gtk.gdk.CONTROL_MASK,gtk.gdk.keyval_from_name('l')),
-    ('gourmet.png','gourmet-logo',None,0,0),
     ('reccard.png','recipe-card',None,0,0),
     ('reccard_edit.png','edit-recipe-card',None,0,0),    
     ]:
