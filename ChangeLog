@@ -1,3 +1,11 @@
+2013-01-06  Thomas Mills Hinkle  <tom@pebble>
+
+	* gourmet/plugins/listsaver/shoppingSaverPlugin.py: gettext fix
+
+	* gourmet/plugins/key_editor/recipeEditorPlugin.py: gettext fix
+
+	* gourmet/plugins/import_export/pdf_plugin/print_plugin.py: Fix gettext
+
 2012-02-10  Thomas M. Hinkle  <tom@pebble>
 
 	* src/lib/defaults/defaults_en.py: Fix sugar density.

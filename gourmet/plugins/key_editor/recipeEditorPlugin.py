@@ -3,6 +3,7 @@ from gourmet.plugin_loader import PRE,POST
 import gtk, gobject, pango
 from gourmet.reccard import IngredientEditorModule, RecRef
 import keyEditorPluggable
+from gettext import gettext as _
 
 ING = 0
 ITM = 1

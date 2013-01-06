@@ -7,6 +7,7 @@ import pdf_exporter
 import tempfile
 import reportlab.lib.pagesizes as pagesizes
 from gourmet.plugin import PrinterPlugin
+from gettext import gettext as _
 
 rl2gtk_papersizes = {
     tuple([int(round(s)) for s in pagesizes.letter]) : gtk.PAPER_NAME_LETTER,
