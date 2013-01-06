@@ -1,5 +1,5 @@
 ; Installer script for win32 Gourmet
-; First author: Thomas Hinkle (thomas_hinkle@users.sourceforge.net)
+; First author: Thomas Hinkle (Thomas_Hinkle@alumni.brown.edu)
 ; Second author: Daniel Folkinshteyn (nanotube@users.sourceforge.net)
 ; Third author: Bernhard Reiter (ockham@raz.or.at)
 ;
@@ -31,8 +31,8 @@
     !define GOURMET_NAME "Gourmet Recipe Manager"
     !define GOURMET_VERSION "0.15.6-alpha" ;TODO: Read from src/lib/version.py
     !define GOURMET_PUBLISHER "Thomas M. Hinkle"
-    !define GOURMET_WEB_SITE "http://grecipe-manager.sourceforge.net"
-    !define GOURMET_DOWNLOAD_SITE "http://sourceforge.net/project/showfiles.php?group_id=108118"
+    !define GOURMET_WEB_SITE "http://thinkle.github.com/gourmet/"
+    !define GOURMET_DOWNLOAD_SITE "https://launchpad.net/gourmet/+download"
     !define GOURMET_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Gourmet.exe"
     !define GOURMET_UNINSTALL_KEY "${UNINSTALL_REGKEY}\${GOURMET_NAME}"
     !define GOURMET_STARTMENU_REGVAL "NSIS:StartMenuDir"
@@ -159,7 +159,7 @@ section
                       * Browse Recipes plugin. $\r $\r \
                       We're currently working on resolving these issues. $\r \
                       If you experience any other issues, please report them at Gourmet's bug tracking system \ 
-                      at http://sourceforge.net/tracker/?group_id=108118&atid=649652 -- \ 
+                      at https://github.com/thinkle/gourmet/issues -- \
                       by doing so, you can help us improve Gourmet! $\r $\r \
                       (This information is also available in the README file)" /SD IDOK
 sectionEnd
