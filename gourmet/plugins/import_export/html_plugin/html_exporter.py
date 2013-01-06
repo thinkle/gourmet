@@ -102,9 +102,9 @@ class html_exporter (exporter_mult):
     def write_text (self, label, text):
         attr = gglobals.NAME_TO_ATTR[label]
         if attr == 'instructions':
-            self.out.write('<div class="%s"><h3 class="%s">%s</h3><div itemprop="recipeInstructions">%s</div></div>' % (label,label,label,self.htmlify(text)))
+            self.out.write('<div class="%s"><h3 class="%s">%s</h3><div itemprop="recipeInstructions">%s</div></div>' % (attr,label,label,self.htmlify(text)))
         else:
-            self.out.write('<div class="%s"><h3 class="%s">%s</h3>%s</div>' % (label,label,label,self.htmlify(text)))
+            self.out.write('<div class="%s"><h3 class="%s">%s</h3>%s</div>' % (attr,label,label,self.htmlify(text)))
 
     def handle_italic (self, chunk): return "<em>" + chunk + "</em>"
     def handle_bold (self, chunk): return "<strong>" + chunk + "</strong>"
@@ -123,7 +123,7 @@ class html_exporter (exporter_mult):
                            '</a>\n')
         elif attr == 'rating':
             rating, rest = text.split('/', 1)
-            self.out.write('<p class="%s" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"><span class="label">%s:</span> <span itemprop="ratingValue">%s</span><span>/%s</span></p>\n' % (label, label.capitalize(), rating, rest))
+            self.out.write('<p class="%s" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"><span class="label">%s:</span> <span itemprop="ratingValue">%s</span><span>/%s</span></p>\n' % (attr, label.capitalize(), rating, rest))
         else:
             itemprop = None
             if attr == 'title':
@@ -141,9 +141,9 @@ class html_exporter (exporter_mult):
             elif attr == 'instructions':
                 itemprop = 'recipeInstructions'
             if itemprop:
-                self.out.write('<p class="%s"><span class="label">%s:</span> <span itemprop="%s">%s</span></p>\n' % (label, label.capitalize(), itemprop, xml.sax.saxutils.escape(text)))
+                self.out.write('<p class="%s"><span class="label">%s:</span> <span itemprop="%s">%s</span></p>\n' % (attr, label.capitalize(), itemprop, xml.sax.saxutils.escape(text)))
             else:
-                self.out.write("<p class='%s'><span class='label'>%s:</span> %s</p>\n"%(label, label.capitalize(), xml.sax.saxutils.escape(text)))
+                self.out.write("<p class='%s'><span class='label'>%s:</span> %s</p>\n"%(attr, label.capitalize(), xml.sax.saxutils.escape(text)))
         
     def write_attr_foot (self):
         self.out.write("</div>")
