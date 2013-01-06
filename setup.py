@@ -2,39 +2,87 @@
 #
 # setup.py for Gourmet
 
-import imp
 import sys
 import glob
 import os.path
 import os
-from stat import ST_MTIME
+import fileinput
+import string
+from types import StringType, ListType, TupleType
 
-def maybe_intltool (fname):
-    '''Check whether the file at fname has been updated since
-    intltool-merge was last used on it. If it has, then use
-    intltool-merge to update the output file.
+from distutils.core import setup
+from distutils.command.build_py import build_py as _build_py
+from distutils.command.build_scripts import build_scripts as _build_scripts
+from distutils.util import convert_path
+from DistUtilsExtra.command import *
 
-    '''
-    to_name = fname[:-3]
-    if (
-        (not os.path.exists(to_name))
-        or
-        os.stat(to_name)[ST_MTIME] < os.stat(fname)[ST_MTIME]
-        ):
-        if os.name == 'nt' or os.name == 'dos':
-            os.system('perl intltool-merge -d po/ %s %s'%(fname, to_name))
-        else:
-            os.system('intltool-merge -d po/ %s %s'%(fname, to_name))
-
-for f in glob.glob('gourmet/plugins/*plugin.in') + \
-         glob.glob('gourmet/plugins/*/*plugin.in'):
-    maybe_intltool(f)
+class build_py(_build_py):
+    """build_py command
     
-#from distutils.core import setup
-from tools.gourmet_distutils import setup
-from distutils.command.install_data import install_data as _install_data
+    This specific build_py command will modify module 'build_config' so that it
+    contains information on installation prefixes afterwards.
+    """
 
-# grab the version from our new "version" module
+    def build_module (self, module, module_file, package):
+        if type(package) is StringType:
+            package = string.split(package, '.')
+        elif type(package) not in (ListType, TupleType):
+            raise TypeError, \
+                  "'package' must be a string (dot-separated), list, or tuple"
+
+        if ( module == 'settings' and len(package) == 1
+             and package[0] == 'gourmet'
+             and 'install' in self.distribution.command_obj):
+            iobj = self.distribution.command_obj['install']
+            data_dir = iobj.install_data
+            if (iobj.root):
+                data_dir = data_dir[len(iobj.root):]
+            data_dir = os.path.join(data_dir, 'share')
+
+            # abuse fileinput to replace two lines in bin/gourmet
+            for line in fileinput.input(module_file, inplace = 1):
+                if "data_dir = " in line:
+                    line = "data_dir = '%s'\n" % data_dir
+                elif "icon_base = " in line:
+                    line = "icon_base = '%s'\n" % \
+                        os.path.join(data_dir, 'icons', 'hicolor')
+
+                print line,
+
+        _build_py.build_module(self, module, module_file, package)
+
+class build_scripts(_build_scripts):
+    """build_scripts command
+
+    This specific build_scripts command will modify the bin/gourmet script
+    so that it contains information on installation prefixes afterwards.
+    """
+
+    def copy_scripts(self):
+        _build_scripts.copy_scripts(self)
+
+        if "install" in self.distribution.command_obj:
+            iobj = self.distribution.command_obj["install"]
+            lib_dir = iobj.install_lib
+            data_dir = iobj.install_data
+
+            if iobj.root:
+                lib_dir = lib_dir[len(iobj.root):]
+                data_dir = data_dir[len(iobj.root):]
+
+            script = convert_path("bin/gourmet")
+            outfile = os.path.join(self.build_dir, os.path.basename(script))
+
+            # abuse fileinput to replace two lines in bin/gourmet
+            for line in fileinput.input(outfile, inplace = 1):
+                if "lib_dir = '.'" in line:
+                    line = "lib_dir = '%s'\n" % lib_dir
+                elif "data_dir = '.'" in line:
+                    line = "data_dir = '%s'\n" % data_dir
+
+                print line,
+
+# grab the version from our "version" module
 # first we have to extend our path to include gourmet/
 sys.path.append(os.path.join(os.path.split(__file__)[0],'gourmet'))
 
@@ -109,47 +157,17 @@ def data_files():
         for root, dirs, files in os.walk(d):
             if files:
                 files = [os.path.join(root, f) for f in files]
-                data_files.append((os.path.join('gourmet', root), files))
-    print "data_files: ",data_files
+                data_files.append((os.path.join('share','gourmet', root), files))
 
-    base = ''
-    locale_base = os.path.join('share','locale')
-    # if os.name == 'posix':
     # files in /usr/share/X/ (not gourmet)
-    files = [
-        (os.path.join(base,'icons','hicolor','48x48','apps'),
-         [os.path.join('images','gourmet.png')]
-         ),
-        (os.path.join(base,'icons','hicolor','scalable','apps'),
-         [os.path.join('images','gourmet.svg')]
-         ),
-#       gourmet.desktop is installed by tools.gourmet_distutils
-#        (os.path.join(base,'applications'),
-#         ['gourmet.desktop']
-#         ),
-        ]
-    base = os.path.join(base,'gourmet')
+    files = []
+    base = os.path.join('share','gourmet')
 
-    for f in glob.glob(os.path.join('po','*/*/*.mo')):
-        pth,fn=os.path.split(f)
-        pthfiles = pth.split(os.path.sep)
-        pthfiles=pthfiles[1:] # strip off po
-        pth = os.path.sep.join(pthfiles)
-        #print pth,fn
-        pth = os.path.join(locale_base,pth)
-        files.append((pth,[f]))           
     files.extend(data_files)
     files.extend([(os.path.join(base,'ui'), glob.glob(os.path.join('ui','*.ui')))])
     files.extend([(base, ['FAQ', 'LICENSE'])])
     #print 'DATA FILES:',files
     return files
-
-class install_data(_install_data):
-    def finalize_options(self):
-        self.set_undefined_options('install',
-                                   ('install_lib', 'install_dir'))
-        _install_data.finalize_options(self)
-        #print 'install_data has: ',dir(_install_data)
 
 if os.name == 'nt':
     script = [os.path.join('windows','Gourmet.pyw'),
@@ -165,7 +183,7 @@ plugins = []
 
 def crawl (base, basename):
     bdir = base
-    subdirs = filter(lambda x: x != 'CVS' and os.path.isdir(os.path.join(bdir,x)), os.listdir(bdir))
+    subdirs = filter(lambda x: os.path.isdir(os.path.join(bdir,x)), os.listdir(bdir))
     for subd in subdirs:
         name = basename + '.' + subd
         plugins.append(name)
@@ -194,8 +212,13 @@ result = setup(
                 'gourmet.legacy_db.db_09',
                 'gourmet.plugins',
                 ] + plugins,
-    package_data = {'gourmet': ['plugins/*.gourmet-plugin','plugins/*/*.gourmet-plugin','plugins/*/*.ui', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
+    package_data = {'gourmet': ['plugins/*/*.ui', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
     scripts = script,
-    cmdclass={'install_data' : install_data},
+    cmdclass={'build' : build_extra.build_extra,
+              'build_i18n' :  build_i18n.build_i18n,
+              'build_icons' :  build_icons.build_icons,
+              'build_py' : build_py,
+              'build_scripts' : build_scripts,
+             },
     )
 
