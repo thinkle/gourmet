@@ -16,6 +16,11 @@ from distutils.command.build_scripts import build_scripts as _build_scripts
 from distutils.util import convert_path
 from DistUtilsExtra.command import *
 
+# grab the version from our "version" module
+# first we have to extend our path to include gourmet/
+sys.path.append(os.path.join(os.path.split(__file__)[0],'gourmet'))
+import version
+
 class build_py(_build_py):
     """build_py command
     
@@ -81,66 +86,6 @@ class build_scripts(_build_scripts):
                     line = "data_dir = '%s'\n" % data_dir
 
                 print line,
-
-# grab the version from our "version" module
-# first we have to extend our path to include gourmet/
-sys.path.append(os.path.join(os.path.split(__file__)[0],'gourmet'))
-
-import version
-
-if sys.version < '2.2':
-    sys.exit('Error: Python-2.2 or newer is required. Current version:\n %s'
-             % sys.version)
-
-def modules_check():
-    '''Check if necessary modules is installed.
-    The function is executed by distutils (by the install command).'''
-    try:
-        try:
-            import gtk
-        except RuntimeError:
-            print 'Error importing GTK - is there no windowing environment available?'
-            print "We're going to ignore this error and live dangerously. Please make"
-            print 'sure you have pygtk > 2.3.93 available!'
-    except ImportError:
-        raise
-    mod_list = [#'metakit',
-        'Image',
-        'reportlab',
-        ('pysqlite2','sqlite3')
-        ]
-    ok = 1
-    for m in mod_list:
-        if type(m)==tuple:
-            have_mod = False
-            for mod in m:
-                try:
-                    exec('import %s'%mod)
-                except ImportError:
-                    pass
-                else:
-                    have_mod = True
-            if not have_mod:
-                ok = False
-                print 'Error: %s is Python module is required to install %s'%(
-                    ' or '.join(m), name.title()
-                    )
-        else:
-            try:
-                exec('import %s' % m)
-            except ImportError:
-                ok = False
-                print 'Error: %s Python module is required to install %s' \
-                  % (m, name.title())
-    recommended_mod_list = ['PyRTF']
-    for m in recommended_mod_list:
-        try:
-            exec('import %s' % m)
-        except ImportError:
-            print '%s Python module is recommended for use with %s' \
-                  % (m, name.title())
-    if not ok:
-        sys.exit(1)
 
 def data_files():
     '''Build list of data files to be installed'''
