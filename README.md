@@ -1,16 +1,21 @@
-* Windows Version Warning *
+Windows Version Warning
+=======================
 
-Note that this is an alpha version!
+**Note that this is an alpha version!**
 
 While the Windows version is basically identical to the Linux version, 
 it has not been tested as thouroughly. Also, as some of the components Gourmet relies on
-are not available for Windows, some features (mainly plugins) are not (yet) available. Specifically, the
+are not available for Windows, some features (mainly plugins) are not (yet) available.
+Specifically, the
+
 * Printing & PDF Export,
 * Spell Checking, and
 * Python Shell 
+
 plugins are currently not working.
 
 Furthermore, there seem to be some errors related to the
+
 * Nutritional Information and
 * Unit Display Preferences
 plugins, in particular when deactivating them again, and to the
@@ -20,7 +25,8 @@ We're currently working on resolving these issues.
 If you experience any other issues, please report them at Gourmet's bug tracking system 
 at https://github.com/thinkle/gourmet/issues -- by doing so, you can help us improve Gourmet!
 
-* Introduction *
+Introduction
+============
 
 Gourmet Recipe Manager is a manager, editor, and organizer for
 recipes. It has a plugin architecture which allows you to enable
@@ -34,7 +40,11 @@ This program aspires to meet the GNOME Human Interface
 Guidelines. Please let me know if you see any ways the interface could
 become more GNOME HIG compliant (or just improve in general).
 
-* Minimum Requirements *
+Requirements
+============
+
+Minimum Requirements
+--------------------
 
 1. Python 2.6
 2. PyGTK (>=2.16)
@@ -42,12 +52,14 @@ become more GNOME HIG compliant (or just improve in general).
 4. Python Imaging Libraries (PIL)
 5. elib.intl
 
-* Build requirements *
+Build Requirements
+------------------
 
 1. intltool
 2. python-distutils-extra
 
-* Extra Requirements *
+Extra Requirements
+------------------
 
 1. Python Reportlab (python-reportlab) - for PDF export.
 2. For RTF support, you will need the PyRTF library available
@@ -56,22 +68,26 @@ become more GNOME HIG compliant (or just improve in general).
 4. pypoppler
 5. python-gst0.10
 
-* Install *
+Install
+=======
 
-As root, issue a python setup.py install.
+Under Linux and Unix systems, running `sudo python setup.py install` will
+install gourmet to locations specified in the [install] section of setup.cfg,
+which by default are subdirectories of /usr/local.
 
-That should be all you need. You can now simply issue
+That should be all you need, and will create an entry in your launcher menu.
+Alternatively, you can now run gourmet by issuing
 
-gourmet
+`gourmet`
 
-from the commandline. Alternatively, use the nifty launcher
-installed in /usr/share/applications/
+from the commandline.
 
 Gourmet also has commandline options, most of which should not be
-needed by an average user. Issuing gourmet --help will get you help
+needed by an average user. Issuing `gourmet --help` will get you help
 for those options.
 
-* Warning *
+Warning
+=======
 
 No warantee, etc. Please inform me of bugs/problems/feature
 requests and I'll respond as quickly as I can. I can be reached
