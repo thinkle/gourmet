@@ -2,6 +2,7 @@ import gtk
 import gourmet.plugin
 import gourmet.GourmetRecipeManager
 import keyEditor
+from gettext import gettext as _
 
 class KeyEditorPlugin (gourmet.plugin.ToolPlugin):
     menu_items = '''
