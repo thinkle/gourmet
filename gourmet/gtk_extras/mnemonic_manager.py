@@ -314,10 +314,12 @@ class MnemonicManager:
         
         
 if __name__ == '__main__':
-    mm=MnemonicManager()
+    from gourmet import gglobals
     import gtk
+    import os.path
+    mm=MnemonicManager()
     ui = gtk.Builder()
-    ui.add_from_file('/usr/share/gourmet/app.ui') #os.path.join(uibase,'app.ui'))
+    ui.add_from_file(os.path.join(gglobals.uibase,'app.ui'))
     mm.add_builder(ui)
     #tree = ui.get_widget('recTree')
     #rend = gtk.CellRendererText()

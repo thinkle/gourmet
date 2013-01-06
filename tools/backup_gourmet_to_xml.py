@@ -1,4 +1,3 @@
-import sys; sys.path.append('/usr/share/')
 import gourmet.recipeManager, gourmet.exporters
 
 rm = gourmet.recipeManager.RecipeManager()

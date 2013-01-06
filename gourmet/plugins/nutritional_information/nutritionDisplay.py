@@ -1,5 +1,3 @@
-import sys
-sys.path.append('/usr/share/')
 import gtk, re
 import parser_data
 import gourmet.cb_extras as cb

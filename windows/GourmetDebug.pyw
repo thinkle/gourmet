@@ -8,8 +8,6 @@
 import win32ui
 import sys
 
-sys.path.append('/usr/share') # for debian
-
 import gtk
 w = gtk.Dialog()
 l = gtk.Label("Enter commandline arguments below")

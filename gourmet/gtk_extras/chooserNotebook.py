@@ -70,6 +70,9 @@ def chooserify_notebook (nb):
     return hb,cn
         
 if __name__ == '__main__':
+    from gourmet import gglobals
+
+    import os.path
 
     def make_sample_notebook ():
         nb = gtk.Notebook()
@@ -90,7 +93,7 @@ if __name__ == '__main__':
         w.connect('delete-event',lambda *args: gtk.main_quit())
         gtk.main()
 
-    def do_glade_funkiness (gladefile='/usr/share/gourmet/recCardDisplay.ui',
+    def do_glade_funkiness (gladefile=os.path.join(gglobals.uibase,'recCardDisplay.ui'),
                             nb_widget='notebook1'):
         gf = gtk.Builder()
         gf.add_from_file(gladefile)
