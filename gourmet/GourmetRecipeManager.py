@@ -1012,6 +1012,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.rectree.connect('button-press-event',popcb)
         # Set up delete key in recipe treeview
         self.rectree.connect('key-press-event',self.rec_tree_keypress_cb)
+        self.srchentry.grab_focus()        
         self.main.show()
 
     def rectree_popup (self, tv, event, *args):

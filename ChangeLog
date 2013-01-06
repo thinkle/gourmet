@@ -1,5 +1,7 @@
 2013-01-06  Thomas Mills Hinkle  <tom@pebble>
 
+	* gourmet/GourmetRecipeManager.py (RecGui.setup_main_window): Make sure search entry has focus.
+
 	* gourmet/plugins/listsaver/shoppingSaverPlugin.py: gettext fix
 
 	* gourmet/plugins/key_editor/recipeEditorPlugin.py: gettext fix
