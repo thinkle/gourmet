@@ -55,6 +55,11 @@ class build_py(_build_py):
                 elif "icon_base = " in line:
                     line = "icon_base = '%s'\n" % \
                         os.path.join(data_dir, 'icons', 'hicolor')
+                elif "locale_base = " in line:
+                    line = "locale_base = '%s'\n" % \
+                        os.path.join(data_dir, 'locale')
+                elif "plugin_base = " in line:
+                    line = "plugin_base = ''\n"
 
                 print line,
 
