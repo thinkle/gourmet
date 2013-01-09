@@ -1,0 +1,58 @@
+#!/usr/bin/make -f
+
+include /usr/share/quilt/quilt.make
+
+build: build-stamp
+build-stamp: debian/stamp-patched
+	dh_testdir
+
+	touch build-stamp
+
+clean: unpatch
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	dh_clean gourmet.desktop
+
+	rm -rf build/
+
+	find . -name "*.pyc" -delete
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+
+	python setup.py install --no-compile --root=$(CURDIR)/debian/gourmet \
+	--install-lib /usr/share/gourmet --prefix=/usr
+
+#	python setup.py install --no-compile --disable-modules-check --root=$(CURDIR)/debian/gourmet \
+#	--install-lib /usr/share/gourmet --prefix=/usr
+
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
+	dh_installchangelogs -i CHANGES
+	dh_installdocs -i
+	dh_installmenu -i
+	dh_installman -i gourmet.1
+	dh_python2 -i
+	dh_link -i
+	dh_strip -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_shlibdeps -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i -- -Zbzip2
+
+# Build architecture-dependent files here. (nothing to be done)
+binary-arch: build install
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

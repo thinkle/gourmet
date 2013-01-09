@@ -1,0 +1,138 @@
+gourmet (0.15.9-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Christian Marillat <marillat@debian.org>  Thu, 24 Mar 2011 08:43:54 +0100
+
+gourmet (0.15.8-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/rules Replaces python-central bu python2 (Closes: #616834).
+  * This release fix an execption when opening the database (Closes: #597263).
+
+ -- Christian Marillat <marillat@debian.org>  Wed, 09 Mar 2011 08:56:36 +0100
+
+gourmet (0.15.7-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Christian Marillat <marillat@debian.org>  Sat, 18 Dec 2010 18:54:09 +0100
+
+gourmet (0.15.6-1) unstable; urgency=low
+
+  * New upstream release.
+  * Removed 02_sqlalchemy-bug patch included upstream.
+
+ -- Christian Marillat <marillat@debian.org>  Fri, 23 Jul 2010 14:55:58 +0200
+
+gourmet (0.15.5-2) unstable; urgency=low
+
+  * Patch from upstream git to fix a sqlalchemy bug (Ctrl+Q doesn't work).
+
+ -- Christian Marillat <marillat@debian.org>  Fri, 16 Jul 2010 11:14:08 +0200
+
+gourmet (0.15.5-1) unstable; urgency=low
+
+  * New upstream release.
+  * Removed 02_sqlalchemy patch included upstream.
+  * Bump Standards-Version to 3.9.0 (no changes).
+
+ -- Christian Marillat <marillat@debian.org>  Sun, 11 Jul 2010 09:03:29 +0200
+
+gourmet (0.15.4-4) unstable; urgency=low
+
+  * New patch (02_sqlalchemy) from upstream git to fix sqlalchemy 0.6 bugs
+    (Closes: #585009 #585093).
+  * Added python-gtkspell in recommends. Thsi package is needed if the
+    spellcheck plugin is enabled. (Closes: #586881).
+  * Seems to works with python-pysqlite2 and thus remove the conflicts for
+    this package (Closes: #586880).
+
+ -- Christian Marillat <marillat@debian.org>  Wed, 23 Jun 2010 16:02:36 +0200
+
+gourmet (0.15.4-3) unstable; urgency=low
+
+  * Don't set a python version in debian/pyversions (Closes: 584834).
+  * Don't raise str exception in src/lib/plugin_gui.py (Closes: 584833)
+    thanks to Steve Langasek for the patch.
+
+ -- Christian Marillat <marillat@debian.org>  Mon, 07 Jun 2010 17:31:01 +0200
+
+gourmet (0.15.4-2) unstable; urgency=low
+
+  * Added python-poppler as dependency needed for printing (Closes: #548612)
+
+ -- Christian Marillat <marillat@debian.org>  Fri, 16 Apr 2010 19:25:25 +0200
+
+gourmet (0.15.4-1) unstable; urgency=low
+
+  * New maintainer (Closes: #572734)
+  * New upstream release [Closes: #530841)
+
+ -- Christian Marillat <marillat@debian.org>  Sun, 07 Mar 2010 10:03:58 +0100
+
+gourmet (0.14.5-2.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * When built with Python 2.6 as default, do not install
+    into /usr/local/* (Closes: #571475)
+
+ -- Jonathan Wiltshire <debian@jwiltshire.org.uk>  Tue, 02 Mar 2010 22:41:25 +0000
+
+gourmet (0.14.5-2) unstable; urgency=low
+
+  * reintroduce conflict for python-pysqlite. (Closes: #516803)
+    python prior to 2.5 is thus unsupported.
+  * drop suggests for obsolete packages
+
+ -- Rolf Leggewie <foss@rolf.leggewie.biz>  Tue, 24 Feb 2009 21:23:47 +0900
+
+gourmet (0.14.5-1) unstable; urgency=low
+
+  * new upstream release
+  * 0.14.5 no longer conflicts with newer versions of python-pysqlite and
+    python-sqlalchemy.  Relax dependencies accordingly.
+  * all patches have been pushed upstream, so they can be dropped in Debian.
+    The manpage was forgotten when preparing the tarball upstream, so it
+    will stick around for another release.
+
+ -- Rolf Leggewie <foss@rolf.leggewie.biz>  Tue, 10 Feb 2009 17:34:51 +0100
+
+gourmet (0.14.3-2) unstable; urgency=low
+
+  * Conflict with python-pysqlite >= 2.5 which when installed crashes 
+    gourmet at startup. (Closes: #507382) and python-sqlalchemy >= 0.5.
+    Both restrictions should eventually be relaxed when upstream has
+    made the code compatible with the newer libs.
+
+ -- Rolf Leggewie <foss@rolf.leggewie.biz>  Mon, 12 Jan 2009 23:03:28 +0100
+
+gourmet (0.14.3-1) unstable; urgency=low
+
+  * new upstream release
+
+ -- Rolf Leggewie <foss@rolf.leggewie.biz>  Mon, 05 Jan 2009 19:29:20 +0100
+
+gourmet (0.14.2-1) unstable; urgency=low
+
+  * new upstream release
+  * add manpage, courtesy of François Wendling.  (Closes: #495796).
+  * add 06-change-sys-path-append.patch
+    sys.path.append('/usr/share') can be dangerous
+
+ -- Rolf Leggewie <foss@rolf.leggewie.biz>  Mon, 24 Nov 2008 10:38:57 +0100
+
+gourmet (0.14.0-1) unstable; urgency=low
+
+  * initial release on debian.  Closes #427474.
+  * 01-disable_gtk_check.patch enables headless builds
+  * 02-fix_gnome_menu.patch makes sure gourmet places itself correctly
+    in the menu
+  * the upstream tarball apparently misses some files unintentionally
+    They have been fetched from upstream cvs and sf.net ticket 2022831
+    has been opened about this.  The missing files are in
+    03_missing_data_dir.patch
+  * 04-fix-python_version_dependency.patch makes sure that the very old
+    python2.3 does not end up in Depends
+
+ -- Rolf Leggewie <foss@rolf.leggewie.biz>  Sat, 26 Jul 2008 13:29:41 +0200
