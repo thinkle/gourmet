@@ -30,12 +30,12 @@ makedirs = os.makedirs
 import os, os.path, gobject, re, gtk
 import tempfile
 from gdebug import debug
-from OptionParser import options
+from OptionParser import args
 
 tmpdir = tempfile.gettempdir()
 
-if options.gourmetdir:
-    gourmetdir = options.gourmetdir
+if args.gourmetdir:
+    gourmetdir = args.gourmetdir
     debug("User specified gourmetdir %s"%gourmetdir,0)
 else:
     if os.name =='nt':
@@ -106,7 +106,7 @@ if not os.access(gourmetdir,os.W_OK):
     
 debug('gourmetdir=%s'%gourmetdir,2)
 
-use_threads = options.threads
+use_threads = args.threads
 # Uncomment the below to test FauxThreads
 #use_threads = False
 
@@ -132,8 +132,8 @@ plugin_base = settings.plugin_base
 style_dir = os.path.join(base,'style')
 
 # GRAB PLUGIN DIR FOR HTML IMPORT
-if options.html_plugin_dir:
-    html_plugin_dir = options.html_plugin_dir
+if args.html_plugin_dir:
+    html_plugin_dir = args.html_plugin_dir
 else:
     html_plugin_dir = os.path.join(gourmetdir,'html_plugins')
     if not os.path.exists(html_plugin_dir):
