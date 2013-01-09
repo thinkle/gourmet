@@ -3,16 +3,18 @@ Section: gnome
 Priority: optional
 Maintainer: Christian Marillat <marillat@debian.org>
 Homepage: http://grecipe-manager.sf.net/
-Standards-Version: 3.9.1
-XS-Python-Version: >= 2.6
-Build-Depends: debhelper (>= 7), quilt
-Build-Depends-Indep: python-gtk2-dev, intltool
+Standards-Version: 3.9.4
+Build-Depends: debhelper (>= 7), python-all
+Build-Depends-Indep: intltool
 
 Package: gourmet
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-imaging, python-glade2, python-gtk2 (>= 2.3.92), python-reportlab, python-sqlalchemy, python-poppler
-Recommends: python-gnome2, python-gtkspell
-Description: A gtk-based recipe organizer and shopping list generator
+Pre-Depends: dpkg (>= 1.15.6~)
+Depends: ${misc:Depends}, ${python:Depends}, python-imaging, python-elib.intl,
+ python-gtk2 (>= 2.22.0), python-reportlab, python-sqlalchemy (>= 0.7),
+ python-poppler
+Recommends: python-gst0.10, python-gtkspell
+Description: gtk-based recipe organizer and shopping list generator
  Gourmet Recipe Manager is a gtk-based recipe organizer and shopping list
  generator intended for the GNOME desktop environment (though it does not
  need all the GNOME libraries). Gourmet can import Mealmaster(tm) files and

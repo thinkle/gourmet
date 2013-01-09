@@ -1,3 +1,28 @@
+gourmet (0.16.0-1) unstable; urgency=low
+
+  [ Bernhard Reiter ]
+  * New upstream release.
+  * debian/control:
+    - Bump Standards-Version to 3.9.4.
+    - Remove XS-Python-Version line.
+    - Build-Depends: Remove quilt, add python-all.
+    - Build-Depends-Indep: Remove python-gtk2-dev.
+    - Add Pre-Depends: dpkg (>= 1.15.6~) (for xz compression).
+    - Depends: Drop python-glade2, increase python-gtk2 version (>= 2.22.0),
+      version depend on python-sqlalchemy (>= 0.7), add python-elib.intl.
+    - Recommends: Drop python-gnome2, add python-gst0.10.
+    - Description: Drop article.
+  * debian/copyright:
+    - Switch to packaging-manuals/copyright-format/1.0 format.
+    - Add contributors as of gourmet/version.py.
+  * debian/dirs: Remove, as obsolete.
+  * debian/docs: s/README/README.md
+  * debian/patches/01_fix_raise_str.diff, debian/patches/series:
+    Drop (fixed upstream).
+  * debian/rules: Switch to tiny dh style, xz compression.
+
+ -- Bernhard Reiter <ockham@raz.or.at>  Mon, 26 Nov 2012 12:34:12 +0100
+
 gourmet (0.15.9-1) unstable; urgency=low
 
   * New upstream release.
