@@ -231,6 +231,10 @@ class PluginSet:
         self.load_plugin_file_data(f)
         f.close()
         self.curdir, plugin_info_file = os.path.split(plugin_info_path)
+        plugin_modules_dir = os.path.join(gglobals.lib_dir,"plugins")
+        self.plugin_modules_dir = plugin_modules_dir
+        self.import_export_modules_dir = os.path.join(plugin_modules_dir,
+                                                      "import_export")
         self.module = self.props['Module']
 
     def get_module (self):
@@ -239,6 +243,11 @@ class PluginSet:
         else:
             if not self.curdir in sys.path:
                 sys.path.append(self.curdir)
+            if not self.plugin_modules_dir in sys.path:
+                sys.path.append(self.plugin_modules_dir)
+            if not self.import_export_modules_dir in sys.path:
+                sys.path.append(self.import_export_modules_dir)
+
             try:
                 self._loaded = __import__(self.module)
                 #print 'Loaded plugin set',self._loaded
