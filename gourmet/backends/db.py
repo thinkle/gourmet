@@ -369,35 +369,44 @@ class RecData (Pluggable):
         class KeyLookup (object): pass
         self._setup_object_for_table(self.keylookup_table, KeyLookup)
 
-    def setup_shopper_tables (self):
-        
-        self.setup_keylookup_table()
-
+    def setup_shopcats_table (self):
         # shopcats - Keep track of which shoppin category ingredients are in...
         self.shopcats_table = Table('shopcats',self.metadata,
-                                    Column('ingkey',Text(),**{'primary_key':True}),
-                                    Column('shopcategory',Text(),**{}),
-                                    Column('position',Integer(),**{}),
+                                    Column('id',Integer(),primary_key=True),
+                                    Column('ingkey',Text(32)),
+                                    Column('shopcategory',Text()),
+                                    Column('position',Integer()),
                                     )
         class ShopCat (object): pass
         self._setup_object_for_table(self.shopcats_table, ShopCat)
         
+    def setup_shopcatsorder_table (self):
         # shopcatsorder - Keep track of the order of shopping categories
         self.shopcatsorder_table = Table('shopcatsorder',self.metadata,
-                                         Column('shopcategory',Text(),**{'primary_key':True}),
-                                         Column('position',Integer(),**{}),
+                                         Column('id',Integer(),primary_key=True),
+                                         Column('shopcategory',Text(32)),
+                                         Column('position',Integer()),
                                          )
         class ShopCatOrder (object): pass
         self._setup_object_for_table(self.shopcatsorder_table, ShopCatOrder)
         
+    def setup_pantry_table (self):
         # pantry table -- which items are in the "pantry" (i.e. not to
         # be added to the shopping list)
         self.pantry_table = Table('pantry',self.metadata,
-                                  Column('ingkey',Text(),**{'primary_key':True}),
-                                  Column('pantry',Boolean(),**{}),
+                                  Column('id',Integer(),primary_key=True),
+                                  Column('ingkey',Text(32)),
+                                  Column('pantry',Boolean()),
                                   )
         class Pantry (object): pass
         self._setup_object_for_table(self.pantry_table, Pantry)
+
+    def setup_shopper_tables (self):
+
+        self.setup_keylookup_table()
+        self.setup_shopcats_table()
+        self.setup_shopcatsorder_table()
+        self.setup_pantry_table()
 
         # Keep track of the density of items...
         self.density_table = Table('density',self.metadata,
@@ -510,6 +519,19 @@ class RecData (Pluggable):
                                             self.shopcats_table.c.shopcategory
                                           )-8)
                              }).execute()
+
+                # The following tables had Text columns as primary keys,
+                # which, when used with MySQL, requires an extra parameter
+                # specifying the length of the substring that MySQL is
+                # supposed to use for the key. Thus, we're adding columns
+                # named id of type Integer and make them the new primary keys
+                # instead.
+                self.alter_table('shopcats',self.setup_shopcats_table,
+                                 {},['ingkey','shopcategory','position'])
+                self.alter_table('shopcatsorder',self.setup_shopcatsorder_table,
+                                 {},['shopcategory','position'])
+                self.alter_table('pantry',self.setup_pantry_table,
+                                 {},['ingkey','pantry'])
             if (stored_info.version_super == 0 and ((stored_info.version_major <= 14 and stored_info.version_minor <= 7)
                                                     or
                                                     (stored_info.version_major < 14)
@@ -946,7 +968,7 @@ class RecData (Pluggable):
 
         table is the table object. table_name is the table
         name. setup_function is a function that will setup our correct
-        table. cols_to_change is a list of columns that are changing
+        table. cols_to_change is a dictionary of columns that are changing
         names (key=orig, val=new). cols_to_keep is a list of columns
         that should be copied over as is.
 
