@@ -17,9 +17,9 @@ import sqlalchemy, sqlalchemy.orm
 from sqlalchemy import Integer, LargeBinary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
 from sqlalchemy.sql import and_, or_, case 
 from sqlalchemy import event, func
+from sqlalchemy.ext.declarative import declarative_base
 
-Session = sqlalchemy.orm.sessionmaker()
-
+Base = declarative_base()
 Session = sqlalchemy.orm.sessionmaker()
 
 def map_type_to_sqlalchemy (typ):
@@ -115,7 +115,15 @@ class DBObject:
 # categories_table: id -> recipe_id, category_entry_id -> id
 # ingredients_table: ingredient_id -> id, id -> recipe_id
 
-class VersionInfo (object):
+class VersionInfo (Base):
+    __tablename__ = 'info'
+
+    version_super = Column(Integer) # three part version numbers 2.1.10, etc. 1.0.0
+    version_major = Column(Integer)
+    version_minor = Column(Integer)
+    last_access = Column(Integer)
+    rowid = Column(Integer, primary_key=True)
+
     def __init__(self, version_super, version_major, version_minor,
                  last_access=None, rowid=None):
         self.version_super = version_super
@@ -141,7 +149,22 @@ class VersionInfo (object):
                    100*(self.version_major - other.version_major) + \
                        (self.version_minor - other.version_minor)
 
-class PluginInfo (object):
+class PluginInfo (Base):
+    __tablename__ = 'plugin_info'
+
+    plugin = Column(Text)
+    # three part version numbers
+    # 2.1.10, etc. 1.0.0 -- these
+    # contain the Gourmet version
+    # at the last time of
+    # plugging-in
+    id = Column(Integer, primary_key=True)
+    version_super = Column(Integer)
+    version_major = Column(Integer)
+    version_minor = Column(Integer)
+    # Stores the last time the plugin was used...
+    plugin_version = Column(String(32))
+
     def __init__(self, plugin,
                  version_super, version_major, version_minor,
                  plugin_version=None, id=None):
@@ -213,7 +236,7 @@ class RecData (Pluggable):
         self.initialize_connection()
         Pluggable.__init__(self,[DatabasePlugin])            
         self.setup_tables()
-        self.metadata.create_all()
+        Base.metadata.create_all(self.db)
         self.update_version_info(gourmet.version.version)
         self._created = True
         timer.end()
@@ -316,177 +339,163 @@ class RecData (Pluggable):
         self.setup_ingredient_table()        
         
     def setup_info_table (self):
-        self.info_table = Table('info',self.metadata,
-                                Column('version_super',Integer(),**{}), # three part version numbers 2.1.10, etc. 1.0.0
-                                Column('version_major',Integer(),**{}),
-                                Column('version_minor',Integer(),**{}),
-                                Column('last_access',Integer(),**{}),
-                                Column('rowid',Integer(),**{'primary_key':True})
-                                )
-
-        self._setup_object_for_table(self.info_table, VersionInfo)
-        self.plugin_info_table = Table('plugin_info',self.metadata,
-                                       Column('plugin',Text(),**{}),
-                                       # three part version numbers
-                                       # 2.1.10, etc. 1.0.0 -- these
-                                       # contain the Gourmet version
-                                       # at the last time of
-                                       # plugging-in
-                                       Column('id',Integer(),**{'primary_key':True}),
-                                       Column('version_super',Integer(),**{}), 
-                                       Column('version_major',Integer(),**{}),
-                                       Column('version_minor',Integer(),**{}),
-                                       # Stores the last time the plugin was used...
-                                       Column('plugin_version',String(length=32),**{}))
-
-        self._setup_object_for_table(self.plugin_info_table, PluginInfo)
+        self.info_table = VersionInfo.__table__
+        self.plugin_info_table = PluginInfo.__table__
 
     def setup_recipe_table (self):
-        self.recipe_table = Table('recipe',self.metadata,
-                                  Column('id',Integer(),**{'primary_key':True}),
-                                  Column('title',Text(),**{}),
-                                  Column('instructions',Text(),**{}),
-                                  Column('modifications',Text(),**{}),
-                                  Column('cuisine',Text(),**{}),
-                                  Column('rating',Integer(),**{}),
-                                  Column('description',Text(),**{}),
-                                  Column('source',Text(),**{}),
-                                  Column('preptime',Integer(),**{}),
-                                  Column('cooktime',Integer(),**{}),
-                                  # Note: we're leaving servings
-                                  # around as a legacy column... it is
-                                  # replaced by yields/yield_unit, but
-                                  # update is much easier if it's
-                                  # here, and it doesn't do much harm
-                                  # to have it around.
-                                  Column('servings',Float(),**{}), 
-                                  Column('yields',Float(),**{}),                                  
-                                  Column('yield_unit',String(length=32),**{}),
-                                  Column('image',LargeBinary(),**{}),
-                                  Column('thumb',LargeBinary(),**{}),
-                                  Column('deleted',Boolean(),**{}),
-                                  # A hash for uniquely identifying a recipe (based on title etc)
-                                  Column('recipe_hash',String(length=32),**{}),
-                                  # A hash for uniquely identifying a recipe (based on ingredients)
-                                  Column('ingredient_hash',String(length=32),**{}),
-                                  Column('link',Text(),**{}), # A field for a URL -- we ought to know about URLs
-                                  Column('last_modified',Integer(),**{}),
-                                  ) # RECIPE_TABLE_DESC
+        class Recipe (Base):
+            __tablename__ = 'recipe'
 
-        class Recipe (object): pass
-        self._setup_object_for_table(self.recipe_table,Recipe)
+            id = Column(Integer, primary_key=True)
+            title = Column(Text)
+            instructions = Column(Text)
+            modifications = Column(Text)
+            cuisine = Column(Text)
+            rating = Column(Integer)
+            description = Column(Text)
+            source = Column(Text)
+            preptime = Column(Integer)
+            cooktime = Column(Integer)
+            # Note: we're leaving servings
+            # around as a legacy column... it is
+            # replaced by yields/yield_unit, but
+            # update is much easier if it's
+            # here, and it doesn't do much harm
+            # to have it around.
+            servings = Column(Float)
+            yields = Column(Float)
+            yield_unit = Column(String(32))
+            image = Column(LargeBinary)
+            thumb = Column(LargeBinary)
+            deleted = Column(Boolean)
+            # A hash for uniquely identifying a recipe (based on title etc)
+            recipe_hash = Column(String(32))
+            # A hash for uniquely identifying a recipe (based on ingredients)
+            ingredient_hash = Column(String(32))
+            link = Column(Text) # A field for a URL -- we ought to know about URLs
+            last_modified = Column(Integer)
+
+        self.recipe_table = Recipe.__table__
 
     def setup_category_table (self):
-        self.categories_table = Table('categories',self.metadata,
-                                    Column('id',Integer(),primary_key=True),
-                                    Column('recipe_id',Integer,ForeignKey('recipe.id'),**{}), #recipe ID
-                                    Column('category',Text(),**{}) # Category ID
-                                    ) # CATEGORY_TABLE_DESC
-        class Category (object): pass
-        self._setup_object_for_table(self.categories_table,Category)
+        class Category (Base):
+            __tablename__ = 'categories'
+
+            id = Column(Integer, primary_key=True)
+            recipe_id = Column(Integer, ForeignKey('recipe.id')) #recipe ID
+            category = Column(Text) # Category ID
+
+        self.categories_table = Category.__table__
 
     def setup_ingredient_table (self):
-        self.ingredients_table = Table('ingredients',self.metadata,
-                                       Column('id',Integer(),primary_key=True),
-                                       Column('recipe_id',Integer,ForeignKey('recipe.id'),**{}),
-                                       Column('refid',Integer,ForeignKey('recipe.id'),**{}),
-                                       Column('unit',Text(),**{}),
-                                       Column('amount',Float(),**{}),
-                                       Column('rangeamount',Float(),**{}),
-                                       Column('item',Text(),**{}),
-                                       Column('ingkey',Text(),**{}),
-                                       Column('optional',Boolean(),**{}),
-                                       #Integer so we can distinguish unset from False
-                                       Column('shopoptional',Integer(),**{}), 
-                                       Column('inggroup',Text(),**{}),
-                                       Column('position',Integer(),**{}),
-                                       Column('deleted',Boolean(),**{}),
-                                       )
-        class Ingredient (object): pass
-        self._setup_object_for_table(self.ingredients_table, Ingredient)
+        class Ingredient (Base):
+            __tablename__ = 'ingredients'
+
+            id = Column(Integer, primary_key=True)
+            recipe_id = Column(Integer, ForeignKey('recipe.id'))
+            refid = Column(Integer, ForeignKey('recipe.id'))
+            unit = Column(Text)
+            amount = Column(Float)
+            rangeamount = Column(Float)
+            item = Column(Text)
+            ingkey = Column(Text)
+            optional = Column(Boolean)
+            #Integer so we can distinguish unset from False
+            shopoptional = Column(Integer)
+            inggroup = Column(Text)
+            position = Column(Integer)
+            deleted = Column(Boolean)
+
+        self.ingredients_table = Ingredient.__table__
 
     def setup_keylookup_table (self):
         # Keylookup table - for speedy keylookup
-        self.keylookup_table = Table('keylookup',self.metadata,
-                                     Column('id',Integer(),primary_key=True),
-                                     Column('word',Text(),**{}),
-                                      Column('item',Text(),**{}),
-                                      Column('ingkey',Text(),**{}),
-                                      Column('count',Integer(),**{})
-                                     ) # INGKEY_LOOKUP_TABLE_DESC
-        class KeyLookup (object): pass
-        self._setup_object_for_table(self.keylookup_table, KeyLookup)
+        class KeyLookup (Base):
+            __tablename__ = 'keylookup'
+
+            id = Column(Integer, primary_key=True)
+            word = Column(Text)
+            item = Column(Text)
+            ingkey = Column(Text)
+            count = Column(Integer)
+
+        self.keylookup_table = KeyLookup.__table__
 
     def setup_shopcats_table (self):
         # shopcats - Keep track of which shoppin category ingredients are in...
-        self.shopcats_table = Table('shopcats',self.metadata,
-                                    Column('id',Integer(),primary_key=True),
-                                    Column('ingkey',Text(32)),
-                                    Column('shopcategory',Text()),
-                                    Column('position',Integer()),
-                                    )
-        class ShopCat (object): pass
-        self._setup_object_for_table(self.shopcats_table, ShopCat)
-        
+        class ShopCat (Base):
+            __tablename__ = 'shopcats'
+
+            id = Column(Integer, primary_key=True)
+            ingkey = Column(Text(32))
+            shopcategory = Column(Text)
+            position = Column(Integer)
+
+        self.shopcats_table = ShopCat.__table__
+
     def setup_shopcatsorder_table (self):
         # shopcatsorder - Keep track of the order of shopping categories
-        self.shopcatsorder_table = Table('shopcatsorder',self.metadata,
-                                         Column('id',Integer(),primary_key=True),
-                                         Column('shopcategory',Text(32)),
-                                         Column('position',Integer()),
-                                         )
-        class ShopCatOrder (object): pass
-        self._setup_object_for_table(self.shopcatsorder_table, ShopCatOrder)
-        
+        class ShopCatOrder (Base):
+            __tablename__ = 'shopcatsorder'
+
+            id = Column(Integer, primary_key=True)
+            shopcategory = Column(Text(32))
+            position = Column(Integer)
+
+        self.shopcatsorder_table = ShopCatOrder.__table__
+
     def setup_pantry_table (self):
         # pantry table -- which items are in the "pantry" (i.e. not to
         # be added to the shopping list)
-        self.pantry_table = Table('pantry',self.metadata,
-                                  Column('id',Integer(),primary_key=True),
-                                  Column('ingkey',Text(32)),
-                                  Column('pantry',Boolean()),
-                                  )
-        class Pantry (object): pass
-        self._setup_object_for_table(self.pantry_table, Pantry)
+        class Pantry (Base):
+            __tablename__ = 'pantry'
+
+            id = Column(Integer, primary_key=True)
+            ingkey = Column(Text(32))
+            pantry = Column(Boolean)
+
+        self.pantry_table = Pantry.__table__
 
     def setup_density_table (self):
         # Keep track of the density of items...
-        self.density_table = Table('density',self.metadata,
-                                   Column('id',Integer(),primary_key=True),
-                                   Column('dkey',String(length=150)),
-                                   Column('value',String(length=150))
-                                   )
-        class Density (object): pass
-        self._setup_object_for_table(self.density_table, Density)
+        class Density (Base):
+            __tablename__ = 'density'
+
+            id = Column(Integer, primary_key=True)
+            dkey = Column(String(150))
+            value = Column(String(150))
+
+        self.density_table = Density.__table__
 
     def setup_crossunitdict_table (self):
-        self.crossunitdict_table = Table('crossunitdict',self.metadata,
-                                         Column('id',Integer(),primary_key=True),
-                                         Column('cukey',String(length=150)),
-                                         Column('value',String(length=150)),
-                                         )
-        class CrossUnit (object): pass
-        self._setup_object_for_table(self.crossunitdict_table,CrossUnit)
-        
+        class CrossUnit (Base):
+            __tablename__ = 'crossunitdict'
+
+            id = Column(Integer, primary_key=True)
+            cukey = Column(String(150))
+            value = Column(String(150))
+
+        self.crossunitdict_table = CrossUnit.__table__
+
     def setup_unitdict_table (self):
-        self.unitdict_table = Table('unitdict',self.metadata,
-                                    Column('id',Integer(),primary_key=True),
-                                    Column('ukey',String(length=150)),
-                                    Column('value',String(length=150)),
-                                    )
-        class Unitdict (object):
-            pass
-        self._setup_object_for_table(self.unitdict_table, Unitdict)
+        class Unitdict (Base):
+            __tablename__ = 'unitdict'
+
+            id = Column(Integer, primary_key=True)
+            ukey = Column(String(150))
+            value = Column(String(150))
+
+        self.unitdict_table = Unitdict.__table__
 
     def setup_convtable_table (self):
-        self.convtable_table = Table('convtable',self.metadata,
-                                     Column('id',Integer(),primary_key=True),
-                                     Column('ckey',String(length=150)),
-                                     Column('value',String(length=150))
-                                     )
-        class Convtable (object):
-            pass
-        self._setup_object_for_table(self.convtable_table, Convtable)
+        class Convtable (Base):
+            __tablename__ = 'convtable'
+
+            id = Column(Integer, primary_key=True)
+            ckey = Column(String(150))
+            value = Column(String(150))
+
+        self.convtable_table = Convtable.__table__
 
     def setup_shopper_tables (self):
         self.setup_keylookup_table()
@@ -609,13 +618,13 @@ class RecData (Pluggable):
 
     # basic DB access functions
     def fetch_all (self, table, sort_by=[], **criteria):
-        return table.select(*make_simple_select_arg(criteria,table),
+        return self.db.execute(table.select(*make_simple_select_arg(criteria,table),
                             **{'order_by':make_order_by(sort_by,table)}
-                            ).execute().fetchall()
+                            )).fetchall()
 
     def fetch_one (self, table, **criteria):
         """Fetch one item from table and arguments"""
-        return table.select(*make_simple_select_arg(criteria,table)).execute().fetchone()
+        return self.db.execute(table.select(*make_simple_select_arg(criteria,table))).fetchone()
 
     def fetch_count (self, table, column, sort_by=[],**criteria):
         """Return a counted view of the table, with the count stored in the property 'count'"""
@@ -633,9 +642,9 @@ class RecData (Pluggable):
         """Return the number of rows in table that match criteria
         """
         if criteria:
-            return table.count(*make_simple_select_arg(criteria,table)).execute().fetchone()[0]
+            return self.db.execute(table.count(*make_simple_select_arg(criteria,table))).fetchone()[0]
         else:
-            return table.count().execute().fetchone()[0]
+            return self.db.execute(table.count()).fetchone()[0]
 
     def fetch_join (self, table1, table2, col1, col2,
                     column_names=None, sort_by=[], **criteria):
@@ -743,16 +752,16 @@ class RecData (Pluggable):
         criteria = self.get_criteria((searches,'and'))
         debug('backends.db.search_recipes - search criteria are %s'%searches,2)
         if 'category' in [s[0] for s in sort_by]:
-            return sqlalchemy.select([c for c in self.recipe_table.c],# + [self.categories_table.c.category],
+            return self.db.execute(sqlalchemy.select([c for c in self.recipe_table.c],# + [self.categories_table.c.category],
                                      criteria,distinct=True,
                                      from_obj=[sqlalchemy.outerjoin(self.recipe_table,self.categories_table)],
                                      order_by=make_order_by(sort_by,self.recipe_table,
                                                             join_tables=[self.categories_table])
-                                     ).execute().fetchall()
+                                     )).fetchall()
         else:
-            return sqlalchemy.select([self.recipe_table],criteria,distinct=True,
+            return self.db.execute(sqlalchemy.select([self.recipe_table],criteria,distinct=True,
                                      order_by=make_order_by(sort_by,self.recipe_table,),
-                                     ).execute().fetchall()
+                                     )).fetchall()
 
     def get_unique_values (self, colname,table=None,**criteria):
         """Get list of unique values for column in table."""
@@ -764,7 +773,7 @@ class RecData (Pluggable):
             table = self.categories_table
             table = table.alias('ingrtable')
         retval = [r[0] for
-                  r in sqlalchemy.select([getattr(table.c,colname)],distinct=True,whereclause=criteria).execute().fetchall()
+                  r in self.db.execute(sqlalchemy.select([getattr(table.c,colname)],distinct=True,whereclause=criteria)).fetchall()
                   ]
         return filter(lambda x: x is not None, retval) # Don't return null values
 
@@ -809,7 +818,7 @@ class RecData (Pluggable):
             delete_args.append(k==v)
         if len(delete_args) > 1:
             delete_args = [and_(*delete_args)]
-        table.delete(*delete_args).execute()
+        self.db.execute(table.delete(*delete_args))
 
     def update_by_criteria (self, table, update_criteria, new_values_dic):
         try:
@@ -878,7 +887,7 @@ class RecData (Pluggable):
             if do_raise:
                 raise 
         # SQLAlchemy >= 0.7 doesn't allow: del self.metadata.tables[table_name]
-        self.metadata._remove_table(table_name, self.metadata.schema)
+        Base.metadata._remove_table(table_name, Base.metadata.schema)
         setup_function()
         getattr(self,'%s_table'%table_name).create()
         TO_COLS = cols_to_keep[:]
@@ -1223,17 +1232,17 @@ class RecData (Pluggable):
         insert_statement = table.insert()
         self._force_unicode(dic)
         try:
-            result_proxy = insert_statement.execute(**dic)
+            result_proxy = self.db.execute(insert_statement,**dic)
         except ValueError:
             print 'Had to coerce types',table,dic
             self.coerce_types(table,dic)
-            result_proxy = insert_statement.execute(**dic)
+            result_proxy = self.db.execute(insert_statement,**dic)
         return result_proxy
 
     def do_add_and_return_item (self, table, dic, id_prop='id'):
         result_proxy = self.do_add(table,dic)
         select = table.select(getattr(table.c,id_prop)==result_proxy.inserted_primary_key[0])
-        return select.execute().fetchone()
+        return self.db.execute(select).fetchone()
 
     def do_add_ing (self,dic):
         return self.do_add_and_return_item(self.ingredients_table,dic,id_prop='id')
@@ -1259,8 +1268,8 @@ class RecData (Pluggable):
             else:
                 raise ValueError('New recipe created with preset id %s, but ID is not in our list of new_ids'%rdict['id'])
         insert_statement = self.recipe_table.insert()
-        select = self.recipe_table.select(self.recipe_table.c.id==insert_statement.execute(**rdict).inserted_primary_key[0])
-        return select.execute().fetchone()
+        select = self.recipe_table.select(self.recipe_table.c.id==self.db.execute(insert_statement,**rdict).inserted_primary_key[0])
+        return self.db.execute(select).fetchone()
 
     def validate_ingdic (self,dic):
         """Do any necessary validation and modification of ingredient dictionaries."""
@@ -1285,7 +1294,7 @@ class RecData (Pluggable):
         if id_col:
             try:
                 self._force_unicode(d)
-                qr = table.update(getattr(table.c,id_col)==getattr(row,id_col)).execute(**d)
+                qr = self.db.execute(table.update(getattr(table.c,id_col)==getattr(row,id_col)),**d)
             except:
                 print 'do_modify failed with args'
                 print 'table=',table,'row=',row
@@ -1293,9 +1302,9 @@ class RecData (Pluggable):
                 raise
             select = table.select(getattr(table.c,id_col)==getattr(row,id_col))
         else:
-            qr = table.update().execute(**d)
+            qr = self.db.execute(table.update(),**d)
             select = table.select()
-        return select.execute().fetchone()
+        return self.db.execute(select).fetchone()
 
     def get_ings (self, rec):
         """Handed rec, return a list of ingredients.

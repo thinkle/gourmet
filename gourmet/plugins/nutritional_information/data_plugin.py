@@ -11,7 +11,7 @@ class NutritionDataPlugin (DatabasePlugin):
     version = 4
 
     def setup_usda_weights_table (self):
-        self.db.usda_weights_table = Table('usda_weights',self.db.metadata,
+        self.db.usda_weights_table = Table('usda_weights',gourmet.backends.db.Base.metadata,
                                         Column('id',Integer(),primary_key=True),
                                         *[Column(name,gourmet.backends.db.map_type_to_sqlalchemy(typ),**{})
                                           for lname,name,typ in parser_data.WEIGHT_FIELDS]
@@ -19,26 +19,29 @@ class NutritionDataPlugin (DatabasePlugin):
         class UsdaWeight (object):
             pass
         self.db._setup_object_for_table(self.db.usda_weights_table, UsdaWeight)
-    
+
     def setup_nutritionconversions_table (self):
-        self.db.nutritionconversions_table = Table('nutritionconversions',self.db.metadata,
-                                                Column('id',Integer(),primary_key=True),
-                                                Column('ingkey',String(length=255),**{}),
-                                                Column('unit',String(length=255),**{}), 
-                                                Column('factor',Float(),**{}), # Factor is the amount we multiply
-                                                # from unit to get 100 grams
-                                                ) # NUTRITION_CONVERSIONS
-        class NutritionConversion (object): pass
-        self.db._setup_object_for_table(self.db.nutritionconversions_table, NutritionConversion)
+        class NutritionConversion(gourmet.backends.db.Base):
+            __tablename__ = 'nutritionconversions'
+
+            id = Column(Integer, primary_key=True)
+            ingkey = Column(String(length=255))
+            unit = Column(String(length=255))
+            factor = Column(Float)
+            # Factor is the amount we multiply from unit to get 100 grams
+
+        self.db.nutritionconversions_table = NutritionConversion.__table__
 
     def setup_nutritionaliases_table (self):
-        self.db.nutritionaliases_table = Table('nutritionaliases',self.db.metadata,
-                                            Column('id',Integer(),primary_key=True),
-                                            Column('ingkey',Text()),
-                                            Column('ndbno',Integer,ForeignKey('nutrition.ndbno')),
-                                            Column('density_equivalent',Text(length=20)))
-        class NutritionAlias (object): pass
-        self.db._setup_object_for_table(self.db.nutritionaliases_table, NutritionAlias)
+        class NutritionAlias(gourmet.backends.db.Base):
+            __tablename__ = 'nutritionaliases'
+
+            id = Column(Integer, primary_key=True)
+            ingkey = Column(Text)
+            ndbno = Column(Integer,ForeignKey('nutrition.ndbno'))
+            density_equivalent = Column(Text(length=20))
+
+        self.db.nutritionaliases_table = NutritionAlias.__table__
 
     def do_add_nutrition (self, d):
         return self.db.do_add_and_return_item(self.db.nutrition_table,d,id_prop='ndbno')
@@ -49,7 +52,7 @@ class NutritionDataPlugin (DatabasePlugin):
                  for lname,name,typ in parser_data.NUTRITION_FIELDS
                  ] + [Column('foodgroup',Text(),**{})]
         #print 'nutrition cols:',cols
-        self.db.nutrition_table = Table('nutrition',self.db.metadata,
+        self.db.nutrition_table = Table('nutrition',gourmet.backends.db.Base.metadata,
                                      *cols
                                      )
         class Nutrition (object):
@@ -57,8 +60,10 @@ class NutritionDataPlugin (DatabasePlugin):
         self.db._setup_object_for_table(self.db.nutrition_table, Nutrition)
         
         self.setup_usda_weights_table()
-        self.setup_nutritionaliases_table()
         self.setup_nutritionconversions_table()
+        self.setup_nutritionaliases_table()
+
+        #gourmet.backends.db.Base.metadata.create_all(rd.db)
         self.db.do_add_nutrition = self.do_add_nutrition
 
     def update_version (self, stored_plugin_version, current_plugin_version):
