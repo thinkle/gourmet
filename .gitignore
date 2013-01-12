@@ -3,9 +3,8 @@
 *.desktop
 *~
 *#*
+.pydevproject
 debian
-*.gourmetcleaned.*
-src/foo
 dist/
 build
 build-stamp

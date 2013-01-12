@@ -29,6 +29,8 @@ class build_py(_build_py):
     """
 
     def build_module (self, module, module_file, package):
+        _build_py.build_module(self, module, module_file, package)
+
         if type(package) is StringType:
             package = string.split(package, '.')
         elif type(package) not in (ListType, TupleType):
@@ -38,6 +40,8 @@ class build_py(_build_py):
         if ( module == 'settings' and len(package) == 1
              and package[0] == 'gourmet'
              and 'install' in self.distribution.command_obj):
+            outfile = self.get_module_outfile(self.build_lib, package, module)
+
             iobj = self.distribution.command_obj['install']
             data_dir = iobj.install_data
             if (iobj.root):
@@ -45,16 +49,19 @@ class build_py(_build_py):
             data_dir = os.path.join(data_dir, 'share')
 
             # abuse fileinput to replace two lines in bin/gourmet
-            for line in fileinput.input(module_file, inplace = 1):
+            for line in fileinput.input(outfile, inplace = 1):
                 if "data_dir = " in line:
                     line = "data_dir = '%s'\n" % data_dir
                 elif "icon_base = " in line:
                     line = "icon_base = '%s'\n" % \
                         os.path.join(data_dir, 'icons', 'hicolor')
+                elif "locale_base = " in line:
+                    line = "locale_base = '%s'\n" % \
+                        os.path.join(data_dir, 'locale')
+                elif "plugin_base = " in line:
+                    line = "plugin_base = ''\n"
 
                 print line,
-
-        _build_py.build_module(self, module, module_file, package)
 
 class build_scripts(_build_scripts):
     """build_scripts command

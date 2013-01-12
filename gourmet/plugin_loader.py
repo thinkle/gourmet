@@ -54,8 +54,8 @@ class MasterLoader:
         self.plugin_directories = [os.path.join(gglobals.gourmetdir,'plugins'), # user plug-ins
                                    os.path.join(current_path,'plugins'), # pre-installed plugins
                                    os.path.join(current_path,'plugins','import_export'), # pre-installed exporter plugins
-                                   os.path.join(gglobals.datad,'plugins'), # system-wide plug-ins (required for windows)
-                                   os.path.join(gglobals.datad,'plugins','import_export'), # exporter plug-ins (required for windows)
+                                   os.path.join(gglobals.plugin_base,'plugins'), # system-wide plug-ins (required for running from source)
+                                   os.path.join(gglobals.plugin_base,'plugins','import_export'), # exporter plug-ins (required for running from source)
                                    ]
         self.errors = {}
         self.pluggables_by_class = {}

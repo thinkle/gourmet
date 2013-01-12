@@ -128,6 +128,7 @@ datad = os.path.join(base,'data')
 uibase = os.path.join(base,'ui')
 imagedir = os.path.join(base,'images')
 icondir = os.path.join(settings.icon_base,"48x48","apps")
+plugin_base = settings.plugin_base
 style_dir = os.path.join(base,'style')
 
 # GRAB PLUGIN DIR FOR HTML IMPORT

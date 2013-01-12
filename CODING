@@ -1,3 +1,14 @@
+Getting Started:
+
+Before you start coding, you should first build localized *.mo and
+*.gourmet-plugin files within a build/ subdirectory of the source tree by
+running
+
+    python setup.py build_i18n -m
+
+Afterwards, you can just launch bin/gourmet from the source directory to test
+the program and see how changes to the source code affect it.
+
 Style:
 
 The style used in Gourmet can be rather varied. However, new code

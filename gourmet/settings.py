@@ -2,7 +2,8 @@ import os.path
 
 # The following lines are modified at installation time by setup.py so they
 # point to the actual data files installation paths.
-data_dir = '/usr/local/share'
-icon_base = '/usr/local/share/icons/hicolor'
+data_dir = '..'
+icon_base = os.path.join(data_dir, "gourmet", "icons")
+locale_base = os.path.join(data_dir, "gourmet", "build", "mo")
+plugin_base = os.path.join(data_dir, "gourmet", "build", "gourmet")
 
-locale_base = os.path.join(data_dir, "locale")
