@@ -6,7 +6,7 @@ from gourmet.importers.importer import Tester
 from gourmet.threadManager import get_thread_manager
 
 from gourmet.recipeManager import get_recipe_manager
-
+from gettext import gettext as _
     
 test_dir = os.path.split(__file__)[0] # our directory src/lib/plugins/import_export/plugin/*/
 test_dir = os.path.split(test_dir)[0] # one back... src/lib/plugins/import_export/plugin/

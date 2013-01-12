@@ -33,6 +33,8 @@ class WebParser (InteractiveImporter):
         self.ignore_unparsed = False
         self.url = url
         #self.name = 'Web Parser'
+        print "HERE's the data we got:", data
+        print "END DATA"
         self.soup = BeautifulSoup.BeautifulSoup(data,
                                                 convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
                                                 )

@@ -5,6 +5,7 @@ from gourmet.importers.interactive_importer import InteractiveImporter
 from gourmet import check_encodings
 import os.path
 import fnmatch
+from gettext import gettext as _
 
 MAX_PLAINTEXT_LENGTH = 100000
 

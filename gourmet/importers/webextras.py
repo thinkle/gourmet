@@ -1,5 +1,5 @@
 import socket, gourmet.threadManager, urllib
-
+from gettext import gettext as _
 DEFAULT_SOCKET_TIMEOUT=45.0
 URLOPEN_SOCKET_TIMEOUT=15.0
 
@@ -58,6 +58,7 @@ def read_socket_w_progress (sock, suspendableThread=None, message=None):
         block = sock.read(bs)
         data = block
         sofar = bs
+        print "FETCHING:",data
         while block:
             if fs>0:
                 suspendableThread.emit('progress',float(sofar)/fs, message)
@@ -66,7 +67,10 @@ def read_socket_w_progress (sock, suspendableThread=None, message=None):
             sofar += bs
             block = sock.read(bs)
             data += block
+            print "FETCHED:",block
     sock.close()
+    print "FETCHED ",data
+    print "DONE FETCHING"
     suspendableThread.emit('progress',1, message)
     return data
 

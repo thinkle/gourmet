@@ -4,6 +4,7 @@ import xml.sax, re, os.path
 from gourmet.gdebug import debug
 from gourmet.importers.xml_importer import unquoteattr
 import gourmet.importers.xml_importer as xml_importer
+from gettext import gettext as _
 
 class Mx2Cleaner:
     def __init__ (self):
