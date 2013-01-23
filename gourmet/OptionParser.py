@@ -36,4 +36,4 @@ group.add_argument('-v',action='count',dest='debug',help='Be verbose (extra v\'s
 if has_argcomplete:
     argcomplete.autocomplete(parser)
 
-args = parser.parse_args()
+options = parser.parse_args()
