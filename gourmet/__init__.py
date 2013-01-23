@@ -10,19 +10,19 @@ import shopping
 import os.path
 import ImageExtras
 
-from OptionParser import args
+from OptionParser import options
 
 def thread_debug ():
     print 'THREADING DEBUG INFO: ',threading.enumerate()
-    t=threading.Timer(args.thread_debug_interval,thread_debug)
+    t=threading.Timer(options.thread_debug_interval,thread_debug)
     print '(starting timer: ',t,')'
     t.terminate = lambda *args: t.cancel()
     t.start()
 
-if args.thread_debug:
+if options.thread_debug:
     import threading
     thread_debug()
-elif args.psyco:
+elif options.psyco:
     try:
         import psyco
         psyco.full()

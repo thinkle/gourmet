@@ -1,10 +1,10 @@
 #!/usr/bin/python
-from OptionParser import args
+from OptionParser import options
 import time,traceback
 
-debug_level=args.debug
-debug_file=args.debug_file
-timestamp=args.time
+debug_level=options.debug
+debug_file=options.debug_file
+timestamp = options.time
 
 if debug_file:
     import re
@@ -33,7 +33,7 @@ def debug (message, level=10):
         else:
             finame = " ".join(stack)
             line = ""
-        if args.debug_file:
+        if options.debug_file:
             if debug_file.search(finame):
                 print "DEBUG: ",ts,"%s: %s"%(finame,line),message
         else:
@@ -61,7 +61,7 @@ class TimeAction:
             else:
                 finame = " ".join(stack)
                 line = ""
-            if not args.debug_file or debug_file.search(finame):
+            if not options.debug_file or debug_file.search(finame):
                 print "DEBUG: %s TOOK %s SECONDS"%(self.name,t)
                 if not timers.has_key(self.name): timers[self.name]=[t]
                 else: timers[self.name].append(t)
