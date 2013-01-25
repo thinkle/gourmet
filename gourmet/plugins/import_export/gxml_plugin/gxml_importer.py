@@ -3,6 +3,7 @@ from gourmet.importers import xml_importer
 from gourmet.gdebug import *
 from gourmet.gglobals import *
 import base64
+from gettext import gettext as _
 
 unquoteattr = xml_importer.unquoteattr
 

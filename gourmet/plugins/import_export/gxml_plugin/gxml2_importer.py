@@ -4,6 +4,7 @@ from gourmet.gdebug import *
 from gourmet.gglobals import *
 from gourmet.convert import NUMBER_FINDER
 import base64
+from gettext import gettext as _
 
 class RecHandler (xml_importer.RecHandler):
     ING_ATTRS =  {
