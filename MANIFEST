@@ -174,7 +174,6 @@ src/lib/gtk_extras/thumbnail.py
 src/lib/gtk_extras/timeEntry.py
 src/lib/gtk_extras/treeview_extras.py
 src/lib/gtk_extras/validatingEntry.py
-src/lib/importers/BeautifulSoup.py
 src/lib/importers/__init__.py
 src/lib/importers/generic_recipe_parser.py
 src/lib/importers/html_importer.py
@@ -284,7 +283,6 @@ src/lib/plugins/import_export/plaintext.gourmet-plugin.in
 src/lib/plugins/import_export/plaintext_plugin/__init__.py
 src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py
 src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py
-src/lib/plugins/import_export/web_import_plugin/BeautifulSoup.py
 src/lib/plugins/import_export/web_import_plugin/__init__.py
 src/lib/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py
 src/lib/plugins/import_export/web_import_plugin/webpage_importer.py

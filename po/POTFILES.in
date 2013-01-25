@@ -67,7 +67,6 @@ gourmet/gtk_extras/thumbnail.py
 gourmet/gtk_extras/timeEntry.py
 gourmet/gtk_extras/treeview_extras.py
 gourmet/gtk_extras/validatingEntry.py
-gourmet/importers/BeautifulSoup.py
 gourmet/importers/__init__.py
 gourmet/importers/generic_recipe_parser.py
 gourmet/importers/html_importer.py
@@ -155,7 +154,6 @@ gourmet/plugins/import_export/pdf_plugin/print_plugin.py
 gourmet/plugins/import_export/plaintext_plugin/__init__.py
 gourmet/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py
 gourmet/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py
-gourmet/plugins/import_export/web_import_plugin/BeautifulSoup.py
 gourmet/plugins/import_export/web_import_plugin/__init__.py
 gourmet/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py
 gourmet/plugins/import_export/web_import_plugin/webpage_importer.py
