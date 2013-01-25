@@ -13,7 +13,7 @@ Pre-Depends: dpkg (>= 1.15.6~)
 Depends: ${misc:Depends}, ${python:Depends}, python-imaging, python-elib.intl,
  python-gtk2 (>= 2.22.0), python-reportlab, python-sqlalchemy (>= 0.7),
  python-poppler
-Recommends: python-gst0.10, python-gtkspell
+Recommends: python-gst0.10, python-gtkspell, python-beautifulsoup
 Description: gtk-based recipe organizer and shopping list generator
  Gourmet Recipe Manager is a gtk-based recipe organizer and shopping list
  generator intended for the GNOME desktop environment (though it does not
