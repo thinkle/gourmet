@@ -72,6 +72,7 @@ Extra Requirements
 3. PyGTKSpell
 4. pypoppler
 5. python-gst0.10
+6. BeautifulSoup (for the Web import plugin)
 
 Install
 =======
