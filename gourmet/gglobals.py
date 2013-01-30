@@ -198,7 +198,7 @@ DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
 launchers = [['.*',['xdg-open']],
              ['rtf',['libreoffice','openoffice','abiword','ted','kword']],
              ['txt',['gedit','kedit',]],
-             ['html?',['firefox','mozilla',]]
+             ['html?',['chromium-browser','firefox','mozilla',]]
              ]
 
 
