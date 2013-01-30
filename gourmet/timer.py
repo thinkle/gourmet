@@ -147,7 +147,7 @@ class TimerDialog:
 
     def play_tune (self):
         sound_file = self.sounds_and_files[cb.cb_get_active_text(self.soundComboBox)]
-        sound_file = os.path.join(gglobals.base,'sound',sound_file)
+        sound_file = os.path.join(gglobals.data_dir,'sound',sound_file)
         self.player.play_file(sound_file)
 
     def annoy_user (self):

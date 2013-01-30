@@ -112,7 +112,7 @@ use_threads = options.threads
 
 # note: this stuff must be kept in sync with changes in setup.py
 import settings
-base = os.path.join(settings.data_dir, "gourmet")
+base = os.path.join(settings.base_dir,'gourmet')
 
 # To have strings from .ui files (gtk.Builder) translated on all platforms,
 # we need the following module to enable localization on all platforms.
@@ -124,13 +124,14 @@ except ImportError:
     print 'IF YOU HAVE TROUBLE WITH TRANSLATIONS, MAKE SURE YOU HAVE THIS LIBRARY INSTALLED.'
 from gettext import gettext as _
 
-datad = os.path.join(base,'data')
+data_dir = settings.data_dir
+imagedir = os.path.join(settings.data_dir,'images')
+style_dir = os.path.join(settings.data_dir,'style')
+
 uibase = os.path.join(base,'ui')
-imagedir = os.path.join(base,'images')
 icondir = os.path.join(settings.icon_base,"48x48","apps")
 doc_base = settings.doc_base
 plugin_base = settings.plugin_base
-style_dir = os.path.join(base,'style')
 
 # GRAB PLUGIN DIR FOR HTML IMPORT
 if options.html_plugin_dir:
@@ -139,7 +140,7 @@ else:
     html_plugin_dir = os.path.join(gourmetdir,'html_plugins')
     if not os.path.exists(html_plugin_dir):
         os.makedirs(html_plugin_dir)
-        template_file = os.path.join(datad,'RULES_TEMPLATE')
+        template_file = os.path.join(settings.data_dir,'RULES_TEMPLATE')
         if os.path.exists(template_file):
             import shutil
             shutil.copy(template_file,

@@ -43,21 +43,27 @@ class build_py(_build_py):
             outfile = self.get_module_outfile(self.build_lib, package, module)
 
             iobj = self.distribution.command_obj['install']
-            data_dir = iobj.install_data
+            base = iobj.install_data
             if (iobj.root):
-                data_dir = data_dir[len(iobj.root):]
-            data_dir = os.path.join(data_dir, 'share')
+                base = base[len(iobj.root):]
+            base = os.path.join(base, 'share')
+            data_dir = os.path.join(base, 'gourmet')
 
             # abuse fileinput to replace two lines in bin/gourmet
             for line in fileinput.input(outfile, inplace = 1):
-                if "data_dir = " in line:
+                if "base_dir = " in line:
+                    line = "base_dir = '%s'\n" % base
+                elif "data_dir = " in line:
                     line = "data_dir = '%s'\n" % data_dir
+                elif "doc_base = " in line:
+                    line = "doc_base = '%s'\n" % \
+                        os.path.join(base, 'doc', 'gourmet')
                 elif "icon_base = " in line:
                     line = "icon_base = '%s'\n" % \
-                        os.path.join(data_dir, 'icons', 'hicolor')
+                        os.path.join(base, 'icons', 'hicolor')
                 elif "locale_base = " in line:
                     line = "locale_base = '%s'\n" % \
-                        os.path.join(data_dir, 'locale')
+                        os.path.join(base, 'locale')
                 elif "plugin_base = " in line:
                     line = "plugin_base = ''\n"
 
@@ -98,18 +104,10 @@ def data_files():
     '''Build list of data files to be installed'''
     data_files = []
 
-    ddirs = [
-        'data',
-        'images',
-        'sound',
-        'style',
-        'ui',
-        ]
-    for d in ddirs:
-        for root, dirs, files in os.walk(d):
-            if files:
-                files = [os.path.join(root, f) for f in files]
-                data_files.append((os.path.join('share','gourmet', root), files))
+    for root, dirs, files in os.walk('data'):
+        if files:
+            files = [os.path.join(root, f) for f in files]
+            data_files.append((os.path.join('share','gourmet', root[len('data')+1:]), files))
 
     # files in /usr/share/X/ (not gourmet)
     files = []
