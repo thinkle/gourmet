@@ -1,7 +1,7 @@
 try:
-    from sound_gnome import Player
+    from sound_gst import Player
 except ImportError:
-    print 'No gnome player'
+    print 'No gst player'
     try:
         from sound_windows import Player
     except ImportError:
