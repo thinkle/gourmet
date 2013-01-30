@@ -21,24 +21,24 @@ class mmf_constants:
                        'Preparation Time':'preptime',
                        }
         
-        self.unit_conv = {'ts':'tsp.',
-                          'tb':'tbs.',
+        self.unit_conv = {'ts':'tsp',
+                          'tb':'Tbs',
                           'sm':'small',
                           'md':'medium',
                           'ea':'',
                           'lg':'large',
-                          'c':'c.',
+                          'c':'c',
                           'pn':'pinch',
                           'ds':'dash',
-                          'T' : 'tbs.',
-                          't' : 'tsp.',
+                          'T' : 'tbs',
+                          't' : 'tsp',
                           'pk' : 'package',
                           'x' : '',
                           'ea' : '',
-                          't' : 'tsp.',
-                          'pt' : 'pt.',
-                          'qt' : 'qt.',
-                          'oz' : 'oz.'
+                          't' : 'tsp',
+                          'pt' : 'pt',
+                          'qt' : 'qt',
+                          'oz' : 'oz'
                           }
         self.unit_convr = {}
         for k,v in self.unit_conv.items():
