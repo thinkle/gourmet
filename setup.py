@@ -117,7 +117,7 @@ def data_files():
 
     files.extend(data_files)
     files.extend([(os.path.join(base,'ui'), glob.glob(os.path.join('ui','*.ui')))])
-    files.extend([(base, ['FAQ', 'LICENSE'])])
+    files.extend([(os.path.join('share','doc','gourmet'), ['FAQ', 'LICENSE'])])
     #print 'DATA FILES:',files
     return files
 
