@@ -564,7 +564,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         return t
     
     def write_attr (self, label, text):
-        attr = gglobals.NAME_TO_ATTR[label]
+        attr = gglobals.NAME_TO_ATTR.get(label,label)
         if attr=='title':
             self.txt.append(Bookmark(self.r.title,'r'+str(self.r.id)))
             self.write_paragraph(text,style=self.styleSheet['Heading1'])

@@ -100,7 +100,7 @@ class html_exporter (exporter_mult):
         self.out.write('<div class="ing"><h3>%s</h3><ul class="ing">'%_('Ingredients'))
 
     def write_text (self, label, text):
-        attr = gglobals.NAME_TO_ATTR[label]
+        attr = gglobals.NAME_TO_ATTR.get(label,label)
         if attr == 'instructions':
             self.out.write('<div class="%s"><h3 class="%s">%s</h3><div itemprop="recipeInstructions">%s</div></div>' % (attr,label,label,self.htmlify(text)))
         else:
@@ -114,7 +114,7 @@ class html_exporter (exporter_mult):
         self.out.write("<div class='header'>")
 
     def write_attr (self, label, text):
-        attr = gglobals.NAME_TO_ATTR[label]
+        attr = gglobals.NAME_TO_ATTR.get(label,label)
         if attr=='link':
             webpage = text.strip('http://')
             webpage = webpage.split('/')[0]

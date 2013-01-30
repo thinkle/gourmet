@@ -19,11 +19,12 @@ class mealmaster_exporter (exporter_mult):
         exporter_mult.__init__(self, rd, r, out,
                                conv=conv,
                                order=['attr','ings','text'],
-                               attr_order=['category',
+                               attr_order=['title',
+                                           'cuisine',
+                                           'category',
                                            'yields',
                                            'cooktime',
                                            'preptime',
-                                           'cuisine',
                                            'rating',
                                            'source',
                                            'link'],
@@ -43,7 +44,7 @@ class mealmaster_exporter (exporter_mult):
             else:
                 self.categories=text
             return
-        if label=='servings' and self.categories:
+        if label=='yields' and self.categories:
             # categories go before servings
             self.write_categories()
 	#Mealmaster pukes at the preptime line so this removes it    
@@ -55,11 +56,11 @@ class mealmaster_exporter (exporter_mult):
                     label=self.recattrs[label]
                 else:
                     label=label.capitalize()
-                label=self.pad(label,12)
+                label=self.pad(label,8)
 		self.out.write("%s: %s\n"%(label, text))
 
     def write_categories (self):
-        self.out.write("%s: %s\n"%(self.pad("Categories",12),self.categories))
+        self.out.write("%s: %s\n"%(self.pad("Categories",8),self.categories))
         self.categories = ""
 
     def write_attr_foot (self):
@@ -105,6 +106,8 @@ class mealmaster_exporter (exporter_mult):
         if type(amount)==type(1.0) or type(amount)==type(1):
   	    amount = convert.float_to_frac(amount)
   	if not amount: amount = ""
+        if not unit: unit = ""
+        unit_bad = False
         if len(unit) > 2 or '.' in unit:
             unit_bad = True
             # Try to fix the unit
