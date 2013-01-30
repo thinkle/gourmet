@@ -2,6 +2,7 @@ import gourmet.plugin_loader as plugin_loader
 from gourmet.plugin import ExporterPlugin
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui
+from glib import get_user_special_dir, USER_DIRECTORY_DOCUMENTS
 import os.path
 
 EXTRA_PREFS_AUTOMATIC = -1
@@ -33,10 +34,15 @@ class ExportManager (plugin_loader.Pluggable):
         # strip the period if one ended up on our default extension
         if default_extension and default_extension[0]=='.':
             default_extension = default_extension[1:]
+        exp_directory = prefs.get('rec_exp_directory',
+                                  get_user_special_dir(USER_DIRECTORY_DOCUMENTS)
+                                  )
         filename,exp_type = de.saveas_file(_('Save recipe as...'),
-                                           filename='~/%s%s%s'%(rec.title,
-                                                                os.path.extsep,
-                                                                default_extension),
+                                           filename='%s%s%s%s%s'%(exp_directory,
+                                                                  os.path.sep,
+                                                                  rec.title,
+                                                                  os.path.extsep,
+                                                                  default_extension),
                                            filters=self.get_single_filters(),
                                            parent=parent
                                            )
@@ -85,9 +91,14 @@ class ExportManager (plugin_loader.Pluggable):
         """
         self.app.rd.include_linked_recipes(recs)
         ext = prefs.get('save_recipes_as','%sxml'%os.path.extsep)
-        exp_directory = prefs.get('rec_exp_directory','~')
+        exp_directory = prefs.get('rec_exp_directory',
+                                  get_user_special_dir(USER_DIRECTORY_DOCUMENTS)
+                                  )
         fn,exp_type=de.saveas_file(_("Export recipes"),
-                                     filename="%s/%s%s"%(exp_directory,_('recipes'),ext),
+                                     filename="%s%s%s%s"%(exp_directory,
+                                                          os.path.sep,
+                                                          _('recipes'),
+                                                          ext),
                                      parent=parent,
                                      filters=self.get_multiple_filters())
         if fn:
