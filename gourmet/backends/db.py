@@ -313,15 +313,6 @@ class RecData (Pluggable):
             print 'Ignoring sqlalchemy problem'
             import traceback; traceback.print_exc()
 
-    def _setup_object_for_table (self, table, klass):
-        self.__table_to_object__[table] = klass
-        #print 'Mapping ',repr(klass),'->',repr(table)
-        if True in [col.primary_key for col in table.columns]:
-            sqlalchemy.orm.mapper(klass,table)
-        else:
-            # if there's no primary key...
-            raise Exception("All tables need a primary key -- specify 'rowid'/Integer/Primary Key in table spec for %s" % table)
-
     @pluggable_method
     def setup_tables (self):
         """
