@@ -478,6 +478,29 @@ class RecData (Pluggable):
             sv_text = "%s.%s.%s"%(stored_info.version_super,stored_info.version_major,stored_info.version_minor)
             #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
             # Change from servings to yields! ( we use the plural to avoid a headache with keywords)
+            if stored_info.version_super == 0 and stored_info.version_major < 16:
+                print 'Database older than 0.16.0 -- updating',sv_text
+                from sqlalchemy.sql.expression import func
+                # We need to unpickle Booleans that have erroneously remained
+                # pickled during previous Metakit -> SQLite -> SQLAlchemy
+                # database migrations.
+                self.pantry_table.update().where(self.pantry_table.c.pantry
+                                                 =='I01\n.'
+                                                 ).values(pantry=True).execute()
+                self.pantry_table.update().where(self.pantry_table.c.pantry
+                                                 =='I00\n.'
+                                                 ).values(pantry=False).execute()
+                # Unpickling strings with SQLAlchemy is clearly more complicated:
+                self.shopcats_table.update().where(
+                    and_(self.shopcats_table.c.shopcategory.startswith("S'"),
+                         self.shopcats_table.c.shopcategory.endswith("'\np0\n."))
+                    ).values({self.shopcats_table.c.shopcategory:
+                              func.substr(self.shopcats_table.c.shopcategory,
+                                          3,
+                                          func.char_length(
+                                            self.shopcats_table.c.shopcategory
+                                          )-8)
+                             }).execute()
             if (stored_info.version_super == 0 and ((stored_info.version_major <= 14 and stored_info.version_minor <= 7)
                                                     or
                                                     (stored_info.version_major < 14)
