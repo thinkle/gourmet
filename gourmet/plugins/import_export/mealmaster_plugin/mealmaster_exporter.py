@@ -10,10 +10,7 @@ class mealmaster_exporter (exporter_mult):
         self.add_to_instructions=""
         self.conv = conv
         mmf2mk = mealmaster_importer.mmf_constants()
-        uc_orig=mmf2mk.unit_conv
-        self.uc={}
-        for k,v in uc_orig.items():
-            self.uc[v]=k
+        self.uc=mmf2mk.unit_convr
         recattrs_orig=mmf2mk.recattrs
         self.recattrs={}
         for k,v in recattrs_orig.items():
@@ -22,6 +19,15 @@ class mealmaster_exporter (exporter_mult):
         exporter_mult.__init__(self, rd, r, out,
                                conv=conv,
                                order=['attr','ings','text'],
+                               attr_order=['title',
+                                           'cuisine',
+                                           'category',
+                                           'yields',
+                                           'cooktime',
+                                           'preptime',
+                                           'rating',
+                                           'source',
+                                           'link'],
                                convert_attnames=False,
                                change_units=change_units,
                                mult=mult)
@@ -38,7 +44,7 @@ class mealmaster_exporter (exporter_mult):
             else:
                 self.categories=text
             return
-        if label=='servings' and self.categories:
+        if label=='yields' and self.categories:
             # categories go before servings
             self.write_categories()
 	#Mealmaster pukes at the preptime line so this removes it    
@@ -50,11 +56,11 @@ class mealmaster_exporter (exporter_mult):
                     label=self.recattrs[label]
                 else:
                     label=label.capitalize()
-                label=self.pad(label,12)
+                label=self.pad(label,8)
 		self.out.write("%s: %s\n"%(label, text))
 
     def write_categories (self):
-        self.out.write("%s: %s\n"%(self.pad("Categories",12),self.categories))
+        self.out.write("%s: %s\n"%(self.pad("Categories",8),self.categories))
         self.categories = ""
 
     def write_attr_foot (self):
@@ -99,11 +105,20 @@ class mealmaster_exporter (exporter_mult):
     def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):
         if type(amount)==type(1.0) or type(amount)==type(1):
   	    amount = convert.float_to_frac(amount)
-  	if not amount: amount = ""        
-        if self.conv.unit_dict.has_key(unit) and self.uc.has_key(self.conv.unit_dict[unit]):
-            unit=self.uc[self.conv.unit_dict[unit]] or ""
-        else:
-            # if we don't recognize the unit, we add it to
+  	if not amount: amount = ""
+        if not unit: unit = ""
+        unit_bad = False
+        if len(unit) > 2 or '.' in unit:
+            unit_bad = True
+            # Try to fix the unit
+            if self.conv.unit_dict.has_key(unit):
+                new_u = self.conv.unit_dict[unit]
+                if len(new_u) <= 2 and not '.' in new_u:
+                    unit = new_u; unit_bad = False
+                else:
+                    if self.uc.has_key(new_u):
+                        unit = self.uc[new_u]; unit_bad = False
+        if unit_bad: # If we couldn't fix the unit...  we add it to
             # the item
             if unit: item="%s %s"%(unit,item)
             unit=""

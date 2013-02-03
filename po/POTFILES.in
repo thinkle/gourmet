@@ -232,7 +232,7 @@ gourmet/shopEditor.py
 gourmet/shopgui.py
 gourmet/shopping.py
 gourmet/sound.py
-gourmet/sound_gnome.py
+gourmet/sound_gst.py
 gourmet/sound_windows.py
 gourmet/threadManager.py
 gourmet/timeScanner.py

@@ -107,7 +107,7 @@ class FieldEditor:
         
     def fieldChangedCB (self, combobox):
         name = cb.cb_get_active_text(combobox)
-        self.field = gglobals.NAME_TO_ATTR[name]
+        self.field = gglobals.NAME_TO_ATTR.get(name,name)
         self.populate_treeview()
         other_fields = self.fields[:]
         if self.field != 'category':
@@ -119,7 +119,7 @@ class FieldEditor:
 
     def otherFieldComboChangedCB (self, combobox):
         name = cb.cb_get_active_text(combobox)
-        self.other_field = gglobals.NAME_TO_ATTR[name]
+        self.other_field = gglobals.NAME_TO_ATTR.get(name,name)
         if self.other_field == 'category':
             self.otherValueBlurbLabel.hide()
         else:

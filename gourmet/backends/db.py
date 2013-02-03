@@ -27,6 +27,7 @@ except:
     from sqlalchemy import Binary as LargeBinary
 from sqlalchemy.sql import and_, or_, case 
 from sqlalchemy import func
+from sqlalchemy.interfaces import PoolListener
 
 def map_type_to_sqlalchemy (typ):
     """A convenience method -- take a string type and map it into a
@@ -173,15 +174,37 @@ class RecData (Pluggable):
         
         This should also set self.new_db accordingly"""
         debug('Initializing DB connection',1)
+        # Workaround to create REGEXP function in sqlite
+        # New way of adding custom function ensures we create a custom
+        # function for every connection created and fixes problems
+        # using regexp. Based on code found here:
+        # http://stackoverflow.com/questions/8076126/have-an-sqlalchemy-sqlite-create-function-issue-with-datetime-representation
+        listeners = []
+        #raise NotImplementedError
+        def regexp(expr, item):
+            if item:
+                return re.search(expr,item,re.IGNORECASE) is not None
+            else:
+                return False
+        def instr(s,subs): return s.lower().find(subs.lower())+1
+
+        if self.url.startswith('sqlite'):
+            class EnsureCustomFunctionWorksFactory (PoolListener):
+                def connect (self, dbapi_con, con_record):
+                    dbapi_con.create_function('REGEXP',2,regexp)
+            listeners = [EnsureCustomFunctionWorksFactory()]
+            
+        # End REGEXP workaround 
+
+        # Continue setting up connection...
         if self.filename:
             self.new_db = not os.path.exists(self.filename)
             #print 'Connecting to file ',self.filename,'new=',self.new_db
         else:
             self.new_db = True # ??? How will we do this now?
-        print self.url
         #self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal')
         #self.base_connection = self.db
-        self.db = sqlalchemy.create_engine(self.url)
+        self.db = sqlalchemy.create_engine(self.url,listeners=listeners)
         self.base_connection = self.db.connect()
         self.base_connection.begin()
         self.metadata = sqlalchemy.MetaData(self.db)
@@ -192,21 +215,7 @@ class RecData (Pluggable):
         except AttributeError:
             # older sqlalchemy support
             self.session = sqlalchemy.create_session()
-        #raise NotImplementedError
-        def regexp(expr, item):
-            if item:
-                return re.search(expr,item,re.IGNORECASE) is not None
-            else:
-                return False
-        def instr(s,subs): return s.lower().find(subs.lower())+1
-        # Workaround to create REGEXP function in sqlite
-        if self.url.startswith('sqlite'):
-            sqlite_connection = self.db.connect().connection
-            sqlite_connection.create_function('regexp',2,regexp)
-            #c = sqlite_connection.cursor()
-            #c.execute('select name from sqlite_master')
-            #sqlite_connection.create_function('instr',2,instr)
-        #self.base_connection.commit() # Somehow necessary to prevent "DB Locked" errors 
+
         debug('Done initializing DB connection',1)
 
     def save (self):
@@ -478,6 +487,29 @@ class RecData (Pluggable):
             sv_text = "%s.%s.%s"%(stored_info.version_super,stored_info.version_major,stored_info.version_minor)
             #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
             # Change from servings to yields! ( we use the plural to avoid a headache with keywords)
+            if stored_info.version_super == 0 and stored_info.version_major < 16:
+                print 'Database older than 0.16.0 -- updating',sv_text
+                from sqlalchemy.sql.expression import func
+                # We need to unpickle Booleans that have erroneously remained
+                # pickled during previous Metakit -> SQLite -> SQLAlchemy
+                # database migrations.
+                self.pantry_table.update().where(self.pantry_table.c.pantry
+                                                 =='I01\n.'
+                                                 ).values(pantry=True).execute()
+                self.pantry_table.update().where(self.pantry_table.c.pantry
+                                                 =='I00\n.'
+                                                 ).values(pantry=False).execute()
+                # Unpickling strings with SQLAlchemy is clearly more complicated:
+                self.shopcats_table.update().where(
+                    and_(self.shopcats_table.c.shopcategory.startswith("S'"),
+                         self.shopcats_table.c.shopcategory.endswith("'\np0\n."))
+                    ).values({self.shopcats_table.c.shopcategory:
+                              func.substr(self.shopcats_table.c.shopcategory,
+                                          3,
+                                          func.char_length(
+                                            self.shopcats_table.c.shopcategory
+                                          )-8)
+                             }).execute()
             if (stored_info.version_super == 0 and ((stored_info.version_major <= 14 and stored_info.version_minor <= 7)
                                                     or
                                                     (stored_info.version_major < 14)
@@ -1185,7 +1217,16 @@ class RecData (Pluggable):
             cats = dic['category'].split(', ')
             del dic['category']
         if dic.has_key('servings'):
-            dic['servings'] = float(dic['servings'])
+            if dic.has_key('yields'):
+                del dic['yields']
+            else:
+                try:
+                    dic['servings'] = float(dic['servings'])
+                    dic['yields'] = dic['servings']
+                    dic['yield_unit'] = 'servings'
+                    del dic['servings']
+                except:
+                    del dic['servings']
         if not dic.has_key('deleted'): dic['deleted']=False
         self.validate_recdic(dic)
         try:
@@ -1793,8 +1834,8 @@ class RecipeManager (RecData):
 
     def parse_ingredient (self, s, conv=None, get_key=True):
         """Handed a string, we hand back a dictionary representing a parsed ingredient (sans recipe ID)"""
-        if conv:
-            print 'parse_ingredient: conv argument is now ignored'
+        #if conv:
+        #    print 'parse_ingredient: conv argument is now ignored'
         debug('ingredient_parser handed: %s'%s,0)
         # Strip whitespace and bullets...
         d={}

@@ -2,7 +2,7 @@ import gtk
 import databaseGrabber
 import os, os.path, time
 import gourmet.gtk_extras.dialog_extras as de
-from gourmet.gglobals import datad
+from gourmet.gglobals import data_dir
 from gettext import gettext as _
 
 class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
@@ -35,7 +35,7 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
                                             pause=self.pausecb,
                                             stop=self.stopcb)
         self.progdialog.show()
-        self.grab_data(datad)
+        self.grab_data(data_dir)
         self.show_progress(1,_('Nutritonal database import complete!'))
         self.progdialog.set_response_sensitive(gtk.RESPONSE_OK,True)
         self.progdialog.hide()

@@ -1,3 +1,65 @@
+2013-02-03  Thomas Mills Hinkle  <tom@pebble>
+
+	* gourmet/convert.py (integerp): Restore NUMBER_END_NO_RANGE_REGEXP
+	(integerp): Quick fix to NumberEnry
+
+	* gourmet/backends/db.py (regexp): Fix sqlite custom function
+	error -- regexp searching now works. This closes #691. This bug
+	was caused by a change in SQLAlchemy behavior 0.6->0.7.
+	
+
+2013-02-02  Thomas Mills Hinkle  <tom@pebble>
+
+	* gourmet/plugins/import_export/mealmaster_plugin/mealmaster_importer.py (mmf_constants.__init__): servings->yields
+
+	* gourmet/plugins/import_export/krecipe_plugin/krecipe_importer.py (KrecHandler): servingsyields->
+
+	* gourmet/importers/importer.py (Importer.commit_rec): Update servings->yields.
+
+	* gourmet/backends/db.py (RecData.add_rec): Update servings/yields
+	code.
+
+	* gourmet/exporters/exportManager.py
+	(ExportManager.offer_multiple_export): Fix bug #234, #691.
+
+2013-01-29  Thomas Mills Hinkle  <tom@pebble>
+
+	* gourmet/plugins/nutritional_information/nutrition.py
+	(NutritionData.get_matches): Make sure get_matches returns a list
+	as expected, not None.
+	(NutritionData.get_nutinfo_for_item): Handle empty units correctly.
+	(NutritionData.get_conversion_for_amt): Handle empty units correctly.
+
+	* gourmet/plugins/import_export/mealmaster_plugin/mealmaster_exporter.py (mealmaster_exporter.__init__): Fix boneheaded typo.
+	(mealmaster_exporter.write_attr): Update servings-->yields
+	(mealmaster_exporter.write_attr): Reduce padding to conform to MMF standard
+	(mealmaster_exporter.write_categories): Reduce padding to conform to MMF standard
+	(mealmaster_exporter.write_ing): Allow for empty units (fix boneheaded error)
+
+	* gourmet/plugins/import_export/html_plugin/html_exporter.py
+	(html_exporter.write_text): Fix NAME_TO_ATTR lookup issue w/
+	plugins.
+
+	* gourmet/plugins/field_editor/fieldEditor.py
+	(FieldEditor.fieldChangedCB): Fix possible issue with NAME_TO_ATTR
+	lookups and plugins searching for attributes that don't exist
+	there.
+
+	* gourmet/plugins/import_export/mealmaster_plugin/mealmaster_importer.py
+	(mmf_constants.__init__): Respect new Gourmet norms regarding
+	standard ingredient abbreviations (remove periods, mostly)
+	* gourmet/plugins/import_export/mealmaster_plugin/mealmaster_exporter.py
+	(mealmaster_exporter.__init__): Make sure category comes first as
+	per mealmaster specs.
+	(mealmaster_exporter.__init__): Remove redundant/stupid code
+	(mealmaster_exporter.write_ing): Fix ingredient code and make more
+	robust against future changes in defaults.
+
+2013-01-12  Thomas Mills Hinkle  <tom@pebble>
+
+	* gourmet/importers/importManager.py: gettext fix
+	
+
 2013-01-06  Thomas Mills Hinkle  <tom@pebble>
 
 	* gourmet/GourmetRecipeManager.py (RecGui.setup_main_window): Make sure search entry has focus.

@@ -88,7 +88,7 @@ class NutritionData:
         if result:
             return [(r.desc,r.ndbno) for r in result]
         else:
-            return None
+            return []
             
     def _get_key (self, key):
         """Handed an ingredient key, get our nutritional Database equivalent
@@ -128,7 +128,7 @@ class NutritionData:
         ni=self.get_nutinfo(key)
         if not amt:
             amt = 1
-        if ni:
+        if ni and unit:
             c=self.get_conversion_for_amt(amt,unit,key=key,row=ni.__rowref__)
             if c:
                 return NutritionInfo(ni,mult=c,ingObject=ingObject)
@@ -191,6 +191,7 @@ class NutritionData:
         get_conversion_for_amt(amt,unit,key) * 100 will give us the
         number of grams this AMOUNT converts to.
         """
+        if not unit: return
         densities,gramweights = self.get_conversions(key,row)
         if gramweights.has_key(unit):
             mass = gramweights[unit] * amt

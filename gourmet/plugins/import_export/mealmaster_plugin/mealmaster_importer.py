@@ -17,28 +17,28 @@ class mmf_constants:
                        'Servings':'servings',
                        'Source':'source',
                        'Recipe by':'source',
-                       'Yield':'servings',
+                       'Yield':'yields',
                        'Preparation Time':'preptime',
                        }
         
-        self.unit_conv = {'ts':'tsp.',
-                          'tb':'tbs.',
+        self.unit_conv = {'ts':'tsp',
+                          'tb':'Tbs',
                           'sm':'small',
                           'md':'medium',
                           'ea':'',
                           'lg':'large',
-                          'c':'c.',
+                          'c':'c',
                           'pn':'pinch',
                           'ds':'dash',
-                          'T' : 'tbs.',
-                          't' : 'tsp.',
+                          'T' : 'tbs',
+                          't' : 'tsp',
                           'pk' : 'package',
                           'x' : '',
                           'ea' : '',
-                          't' : 'tsp.',
-                          'pt' : 'pt.',
-                          'qt' : 'qt.',
-                          'oz' : 'oz.'
+                          't' : 'tsp',
+                          'pt' : 'pt',
+                          'qt' : 'qt',
+                          'oz' : 'oz'
                           }
         self.unit_convr = {}
         for k,v in self.unit_conv.items():
@@ -283,7 +283,6 @@ class mmf_importer (plaintext_importer.TextImporter):
         """Start a new ingredient group."""
         testtimer = TimeAction('mealmaster_importer.handle_group',10)
         debug("start handle_group",10)
-        print 'handle_group',groupm,groupm.groups()
         # the only group of the match will contain
         # the name of the group. We'll put it into
         # a more sane title case (MealMaster defaults
