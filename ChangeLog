@@ -1,3 +1,13 @@
+2013-02-03  Thomas Mills Hinkle  <tom@pebble>
+
+	* gourmet/convert.py (integerp): Restore NUMBER_END_NO_RANGE_REGEXP
+	(integerp): Quick fix to NumberEnry
+
+	* gourmet/backends/db.py (regexp): Fix sqlite custom function
+	error -- regexp searching now works. This closes #691. This bug
+	was caused by a change in SQLAlchemy behavior 0.6->0.7.
+	
+
 2013-02-02  Thomas Mills Hinkle  <tom@pebble>
 
 	* gourmet/plugins/import_export/mealmaster_plugin/mealmaster_importer.py (mmf_constants.__init__): servings->yields

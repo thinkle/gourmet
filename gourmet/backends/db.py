@@ -27,6 +27,7 @@ except:
     from sqlalchemy import Binary as LargeBinary
 from sqlalchemy.sql import and_, or_, case 
 from sqlalchemy import func
+from sqlalchemy.interfaces import PoolListener
 
 def map_type_to_sqlalchemy (typ):
     """A convenience method -- take a string type and map it into a
@@ -173,15 +174,37 @@ class RecData (Pluggable):
         
         This should also set self.new_db accordingly"""
         debug('Initializing DB connection',1)
+        # Workaround to create REGEXP function in sqlite
+        # New way of adding custom function ensures we create a custom
+        # function for every connection created and fixes problems
+        # using regexp. Based on code found here:
+        # http://stackoverflow.com/questions/8076126/have-an-sqlalchemy-sqlite-create-function-issue-with-datetime-representation
+        listeners = []
+        #raise NotImplementedError
+        def regexp(expr, item):
+            if item:
+                return re.search(expr,item,re.IGNORECASE) is not None
+            else:
+                return False
+        def instr(s,subs): return s.lower().find(subs.lower())+1
+
+        if self.url.startswith('sqlite'):
+            class EnsureCustomFunctionWorksFactory (PoolListener):
+                def connect (self, dbapi_con, con_record):
+                    dbapi_con.create_function('REGEXP',2,regexp)
+            listeners = [EnsureCustomFunctionWorksFactory()]
+            
+        # End REGEXP workaround 
+
+        # Continue setting up connection...
         if self.filename:
             self.new_db = not os.path.exists(self.filename)
             #print 'Connecting to file ',self.filename,'new=',self.new_db
         else:
             self.new_db = True # ??? How will we do this now?
-        print self.url
         #self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal')
         #self.base_connection = self.db
-        self.db = sqlalchemy.create_engine(self.url)
+        self.db = sqlalchemy.create_engine(self.url,listeners=listeners)
         self.base_connection = self.db.connect()
         self.base_connection.begin()
         self.metadata = sqlalchemy.MetaData(self.db)
@@ -192,21 +215,7 @@ class RecData (Pluggable):
         except AttributeError:
             # older sqlalchemy support
             self.session = sqlalchemy.create_session()
-        #raise NotImplementedError
-        def regexp(expr, item):
-            if item:
-                return re.search(expr,item,re.IGNORECASE) is not None
-            else:
-                return False
-        def instr(s,subs): return s.lower().find(subs.lower())+1
-        # Workaround to create REGEXP function in sqlite
-        if self.url.startswith('sqlite'):
-            sqlite_connection = self.db.connect().connection
-            sqlite_connection.create_function('regexp',2,regexp)
-            #c = sqlite_connection.cursor()
-            #c.execute('select name from sqlite_master')
-            #sqlite_connection.create_function('instr',2,instr)
-        #self.base_connection.commit() # Somehow necessary to prevent "DB Locked" errors 
+
         debug('Done initializing DB connection',1)
 
     def save (self):
