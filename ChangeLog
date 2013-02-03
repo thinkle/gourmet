@@ -1,3 +1,17 @@
+2013-02-02  Thomas Mills Hinkle  <tom@pebble>
+
+	* gourmet/plugins/import_export/mealmaster_plugin/mealmaster_importer.py (mmf_constants.__init__): servings->yields
+
+	* gourmet/plugins/import_export/krecipe_plugin/krecipe_importer.py (KrecHandler): servingsyields->
+
+	* gourmet/importers/importer.py (Importer.commit_rec): Update servings->yields.
+
+	* gourmet/backends/db.py (RecData.add_rec): Update servings/yields
+	code.
+
+	* gourmet/exporters/exportManager.py
+	(ExportManager.offer_multiple_export): Fix bug #234, #691.
+
 2013-01-29  Thomas Mills Hinkle  <tom@pebble>
 
 	* gourmet/plugins/nutritional_information/nutrition.py

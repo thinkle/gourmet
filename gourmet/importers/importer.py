@@ -180,8 +180,8 @@ class Importer (SuspendableThread):
         if self.rec.has_key('servings'):
             servs=self.convert_str_to_num(self.rec['servings'])
             if servs != None:
-                self.rec['servings'] = str(servs)
-                self.rec['yields'] = servs
+                #self.rec['servings'] = str(servs)
+                self.rec['yields'] = float(servs)
                 self.rec['yield_unit'] = gettext.ngettext('serving',
                                                           'servings',
                                                           servs)

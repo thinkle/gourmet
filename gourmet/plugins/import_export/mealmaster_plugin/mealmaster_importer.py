@@ -17,7 +17,7 @@ class mmf_constants:
                        'Servings':'servings',
                        'Source':'source',
                        'Recipe by':'source',
-                       'Yield':'servings',
+                       'Yield':'yields',
                        'Preparation Time':'preptime',
                        }
         
@@ -283,7 +283,6 @@ class mmf_importer (plaintext_importer.TextImporter):
         """Start a new ingredient group."""
         testtimer = TimeAction('mealmaster_importer.handle_group',10)
         debug("start handle_group",10)
-        print 'handle_group',groupm,groupm.groups()
         # the only group of the match will contain
         # the name of the group. We'll put it into
         # a more sane title case (MealMaster defaults

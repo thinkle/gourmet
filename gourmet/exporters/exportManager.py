@@ -89,7 +89,13 @@ class ExportManager (plugin_loader.Pluggable):
         Return the exporter class capable of doing this and a
         dictionary of arguments for the progress dialog.
         """
-        self.app.rd.include_linked_recipes(recs)
+        if len(recs) < 950:
+            # inelegantly avoid bug that happens when this code runs
+            # on large numbers of recipes. The good news is that this
+            # that that will almost only ever happen when we're
+            # exporting all recipes, which makes this code irrelevant
+            # anyway.
+            self.app.rd.include_linked_recipes(recs)
         ext = prefs.get('save_recipes_as','%sxml'%os.path.extsep)
         exp_directory = prefs.get('rec_exp_directory',
                                   get_user_special_dir(USER_DIRECTORY_DOCUMENTS)

@@ -1185,7 +1185,16 @@ class RecData (Pluggable):
             cats = dic['category'].split(', ')
             del dic['category']
         if dic.has_key('servings'):
-            dic['servings'] = float(dic['servings'])
+            if dic.has_key('yields'):
+                del dic['yields']
+            else:
+                try:
+                    dic['servings'] = float(dic['servings'])
+                    dic['yields'] = dic['servings']
+                    dic['yield_unit'] = 'servings'
+                    del dic['servings']
+                except:
+                    del dic['servings']
         if not dic.has_key('deleted'): dic['deleted']=False
         self.validate_recdic(dic)
         try:
@@ -1793,8 +1802,8 @@ class RecipeManager (RecData):
 
     def parse_ingredient (self, s, conv=None, get_key=True):
         """Handed a string, we hand back a dictionary representing a parsed ingredient (sans recipe ID)"""
-        if conv:
-            print 'parse_ingredient: conv argument is now ignored'
+        #if conv:
+        #    print 'parse_ingredient: conv argument is now ignored'
         debug('ingredient_parser handed: %s'%s,0)
         # Strip whitespace and bullets...
         d={}
