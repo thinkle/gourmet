@@ -1,7 +1,7 @@
 gourmet (0.16.0-1) unstable; urgency=low
 
   [ Bernhard Reiter ]
-  * New upstream release (Closes: #530403).
+  * New upstream release (Closes: #530403, LP: #1010659).
   * debian/control:
     - Bump Standards-Version to 3.9.4.
     - Remove XS-Python-Version line.
