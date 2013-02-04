@@ -7,7 +7,7 @@ import types
 import os.path
 from gettext import gettext as _
 from gourmet.gdebug import debug, TimeAction, debug_decorator
-import re, pickle, string, os.path, string, time
+import re, string, os.path, string, time
 from gettext import gettext as _
 import gourmet.gglobals as gglobals
 from gourmet import Undo, keymanager, convert
@@ -1934,8 +1934,7 @@ class DatabaseConverter(convert.Converter):
     ## calls to DatabaseConverter
 
     def create_conv_table (self):
-        self.conv_table = dbDic('ckey','value',self.db.convtable_table, self.db,
-                                pickle_key=True)
+        self.conv_table = dbDic('ckey','value',self.db.convtable_table, self.db)
         for k,v in defaults.CONVERTER_TABLE.items():
             if not self.conv_table.has_key(k):
                 self.conv_table[k]=v
@@ -1964,10 +1963,8 @@ class DatabaseConverter(convert.Converter):
                 self.unit_dict[v] = key
                 
 class dbDic:
-    def __init__ (self, keyprop, valprop, view, db, pickle_key=False, pickle_val=True):
+    def __init__ (self, keyprop, valprop, view, db):
         """Create a dictionary interface to a database table."""
-        self.pickle_key = pickle_key
-        self.pickle_val = pickle_val
         self.vw = view
         self.kp = keyprop
         self.vp = valprop
@@ -1986,10 +1983,7 @@ class dbDic:
                 return False
         
     def __setitem__ (self, k, v):
-        if self.pickle_key:
-            k=pickle.dumps(k)
-        if self.pickle_val: store_v=pickle.dumps(v)
-        else: store_v = v
+        store_v = v
         row = self.db.fetch_one(self.vw,**{self.kp:k})
         if row:
             self.db.do_modify(self.vw, row, {self.vp:store_v},id_col=self.kp)
@@ -2000,30 +1994,15 @@ class dbDic:
 
     def __getitem__ (self, k):
         if self.just_got.has_key(k): return self.just_got[k]
-        if self.pickle_key:
-            k=pickle.dumps(k)
         v = getattr(self.db.fetch_one(self.vw,**{self.kp:k}),self.vp)
-        if v and self.pickle_val:
-            try:
-                return pickle.loads(v)
-            except:
-                print "Problem unpickling ",v
-                raise
-        else:
-            return v
+        return v
     
     def __repr__ (self):
         retstr = "<dbDic> {"
         #for i in self.vw:
-        #    if self.pickle_key:
-        #        retstr += "%s"%pickle.loads(getattr(i,self.kp))
-        #    else:
-        #        retstr += getattr(i,self.kp)
+        #    retstr += getattr(i,self.kp)
         #    retstr += ":"
-        #    if self.pickle_val:
-        #        retstr += "%s"%pickle.loads(getattr(i,self.vp))
-        #    else:
-        #        retstr += "%s"%getattr(i,self.vp)
+        #    retstr += "%s"%getattr(i,self.vp)
         #    retstr += ", "
         retstr += "}"
         return retstr
@@ -2036,12 +2015,9 @@ class dbDic:
         '''
         dics = []
         for k in d:
-            if self.pickle_val:
-                store_v = pickle.dumps(d[k])
-            else:
-                store_v = d[k]
-                if type(store_v) in types.StringTypes:
-                    store_v = unicode(store_v)
+            store_v = d[k]
+            if type(store_v) in types.StringTypes:
+                store_v = unicode(store_v)
             if type(k) in types.StringTypes:
                 k = unicode(k)
             dics.append({self.kp:k,self.vp:store_v})
@@ -2057,7 +2033,6 @@ class dbDic:
         ret = []
         for i in self.db.fetch_all(self.vw):
             val = getattr(i,self.vp)
-            if val and self.pickle_val: val = pickle.loads(val)
             ret.append(val)
         return ret
 
@@ -2073,18 +2048,6 @@ class dbDic:
                 import traceback; traceback.print_exc()
                 print 'IGNORING'
                 continue
-            if key and self.pickle_key:
-                try:
-                    key = pickle.loads(key)
-                except:
-                    print 'Problem unpickling key ',key
-                    raise
-            if val and self.pickle_val:
-                try:
-                    val = pickle.loads(val)
-                except:
-                    print 'Problem unpickling value ',val, ' for key ',key
-                    raise 
             ret.append((key,val))
         return ret
 
