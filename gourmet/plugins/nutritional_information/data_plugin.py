@@ -8,7 +8,7 @@ import parser_data
 class NutritionDataPlugin (DatabasePlugin):
 
     name = 'nutritondata'
-    version = 2
+    version = 3
 
     def setup_usda_weights_table (self):
         self.db.usda_weights_table = Table('usda_weights',self.db.metadata,
@@ -31,6 +31,18 @@ class NutritionDataPlugin (DatabasePlugin):
         class NutritionConversion (object): pass
         self.db._setup_object_for_table(self.db.nutritionconversions_table, NutritionConversion)
 
+    def setup_nutritionaliases_table (self):
+        self.db.nutritionaliases_table = Table('nutritionaliases',self.db.metadata,
+                                            Column('id',Integer(),primary_key=True),
+                                            Column('ingkey',Text()),
+                                            Column('ndbno',Integer,ForeignKey('nutrition.ndbno')),
+                                            Column('density_equivalent',Text(length=20)))
+        class NutritionAlias (object): pass
+        self.db._setup_object_for_table(self.db.nutritionaliases_table, NutritionAlias)
+
+    def do_add_nutrition (self, d):
+        return self.db.do_add_and_return_item(self.db.nutrition_table,d,id_prop='ndbno')
+
     def create_tables (self, *args):
         #print 'nutritional_information.data_plugin.create_tables()'
         cols = [Column(name,gourmet.backends.db.map_type_to_sqlalchemy(typ),**(name=='ndbno' and {'primary_key':True} or {}))
@@ -45,20 +57,10 @@ class NutritionDataPlugin (DatabasePlugin):
         self.db._setup_object_for_table(self.db.nutrition_table, Nutrition)
         
         self.setup_usda_weights_table()
-
-        self.db.nutritionaliases_table = Table('nutritionaliases',self.db.metadata,
-                                            Column('ingkey',Text(),**{'primary_key':True}),
-                                            Column('ndbno',Integer,ForeignKey('nutrition.ndbno'),**{}),
-                                            Column('density_equivalent',Text(length=20),**{}),)
-        class NutritionAlias (object): pass
-        self.db._setup_object_for_table(self.db.nutritionaliases_table, NutritionAlias)
+        self.setup_nutritionaliases_table()
         self.setup_nutrition_conversions_table()
         self.db.do_add_nutrition = self.do_add_nutrition
 
-    def do_add_nutrition (self, d):
-        return self.db.do_add_and_return_item(self.db.nutrition_table,d,id_prop='ndbno')
-        
-        
     def update_version (self, gourmet_stored, plugin_stored, gourmet_current, plugin_current):
         if ((gourmet_stored[0] == 0 and gourmet_stored[1] < 14)
             or
@@ -75,6 +77,10 @@ class NutritionDataPlugin (DatabasePlugin):
                                          gourmet.backends.db.map_type_to_sqlalchemy('float'),
                                          {})
                                         )
+        if plugin_stored in ['1','2']:
+            # Add a primary key Integer column named id.
+            self.db.alter_table('nutritionaliases',self.setup_nutritionaliases_table,
+                 {},['ingkey','ndbno','density_equivalent'])
 
             
                                         

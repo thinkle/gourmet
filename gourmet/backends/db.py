@@ -401,43 +401,54 @@ class RecData (Pluggable):
         class Pantry (object): pass
         self._setup_object_for_table(self.pantry_table, Pantry)
 
-    def setup_shopper_tables (self):
-
-        self.setup_keylookup_table()
-        self.setup_shopcats_table()
-        self.setup_shopcatsorder_table()
-        self.setup_pantry_table()
-
+    def setup_density_table (self):
         # Keep track of the density of items...
         self.density_table = Table('density',self.metadata,
-                                   Column('dkey',String(length=150),**{'primary_key':True}),
-                                   Column('value',String(length=150),**{})
+                                   Column('id',Integer(),primary_key=True),
+                                   Column('dkey',String(length=150)),
+                                   Column('value',String(length=150))
                                    )
         class Density (object): pass
         self._setup_object_for_table(self.density_table, Density)
-        
-        self.crossunitdict_table = Table('crossunitdict',self.metadata,                                         
-                                         Column('cukey',String(length=150),**{'primary_key':True}),
-                                         Column('value',String(length=150),**{}),
+
+    def setup_crossunitdict_table (self):
+        self.crossunitdict_table = Table('crossunitdict',self.metadata,
+                                         Column('id',Integer(),primary_key=True),
+                                         Column('cukey',String(length=150)),
+                                         Column('value',String(length=150)),
                                          )
         class CrossUnit (object): pass
         self._setup_object_for_table(self.crossunitdict_table,CrossUnit)
         
+    def setup_unitdict_table (self):
         self.unitdict_table = Table('unitdict',self.metadata,
-                                    Column('ukey',String(length=150),**{'primary_key':True}),
-                                    Column('value',String(length=150),**{}),
+                                    Column('id',Integer(),primary_key=True),
+                                    Column('ukey',String(length=150)),
+                                    Column('value',String(length=150)),
                                     )
         class Unitdict (object):
             pass
         self._setup_object_for_table(self.unitdict_table, Unitdict)
-        
+
+    def setup_convtable_table (self):
         self.convtable_table = Table('convtable',self.metadata,
-                                     Column('ckey',String(length=150),**{'primary_key':True}),
-                                     Column('value',String(length=150),**{})
+                                     Column('id',Integer(),primary_key=True),
+                                     Column('ckey',String(length=150)),
+                                     Column('value',String(length=150))
                                      )
         class Convtable (object):
             pass
         self._setup_object_for_table(self.convtable_table, Convtable)
+
+    def setup_shopper_tables (self):
+        self.setup_keylookup_table()
+        self.setup_shopcats_table()
+        self.setup_shopcatsorder_table()
+        self.setup_pantry_table()
+        self.setup_density_table()
+        self.setup_crossunitdict_table()
+        self.setup_unitdict_table()
+        self.setup_convtable_table()
 
     def backup_db (self):
         """Make a backup copy of the DB -- this ensures experimental
@@ -532,6 +543,14 @@ class RecData (Pluggable):
                                  {},['shopcategory','position'])
                 self.alter_table('pantry',self.setup_pantry_table,
                                  {},['ingkey','pantry'])
+                self.alter_table('density',self.setup_density_table,
+                                 {},['dkey','value'])
+                self.alter_table('crossunitdict',self.setup_crossunitdict_table,
+                                 {},['cukey','value'])
+                self.alter_table('unitdict',self.setup_unitdict_table,
+                                 {},['ukey','value'])
+                self.alter_table('convtable',self.setup_convtable_table,
+                                 {},['ckey','value'])
             if (stored_info.version_super == 0 and ((stored_info.version_major <= 14 and stored_info.version_minor <= 7)
                                                     or
                                                     (stored_info.version_major < 14)
