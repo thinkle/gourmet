@@ -78,8 +78,8 @@ Install
 =======
 
 Under Linux and Unix systems, running `sudo python setup.py install` will
-install gourmet to locations specified in the [install] section of setup.cfg,
-which by default are subdirectories of /usr/local.
+install gourmet to locations that can be specified in the [install] section 
+of setup.cfg, it defaults to your current python enviorment.
 
 That should be all you need, and will create an entry in your launcher menu.
 Alternatively, you can now run gourmet by issuing
