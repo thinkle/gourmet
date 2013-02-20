@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-12 09:46-0500\n"
+"POT-Creation-Date: 2013-02-20 15:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr ""
 msgid "_New Recipe"
 msgstr ""
 
-#: ../ui/app.ui.h:3 ../gourmet/gglobals.py:261
+#: ../ui/app.ui.h:3 ../gourmet/gglobals.py:264
 msgid "Add to _Shopping List"
 msgstr ""
 
@@ -227,7 +227,7 @@ msgstr ""
 msgid "_Browse"
 msgstr ""
 
-#: ../ui/databaseChooser.ui.h:22 ../gourmet/gglobals.py:242
+#: ../ui/databaseChooser.ui.h:22 ../gourmet/gglobals.py:245
 #: ../gourmet/gtk_extras/dialog_extras.py:810
 #: ../gourmet/gtk_extras/dialog_extras.py:1160
 msgid "_Details"
@@ -344,7 +344,7 @@ msgstr ""
 #. renderer.set_property('editable',True)
 #. renderer.connect('edited',tst)
 #: ../ui/recCardDescriptionEditor.ui.h:6
-#: ../gourmet/exporters/rtf_exporter.py:79 ../gourmet/gglobals.py:147
+#: ../gourmet/exporters/rtf_exporter.py:79 ../gourmet/gglobals.py:150
 #: ../gourmet/shopgui.py:750
 msgid "Title"
 msgstr ""
@@ -371,11 +371,11 @@ msgstr ""
 msgid "rating"
 msgstr ""
 
-#: ../ui/recCardDescriptionEditor.ui.h:17 ../gourmet/gglobals.py:153
+#: ../ui/recCardDescriptionEditor.ui.h:17 ../gourmet/gglobals.py:156
 msgid "Yield"
 msgstr ""
 
-#: ../ui/recCardDescriptionEditor.ui.h:18 ../gourmet/gglobals.py:154
+#: ../ui/recCardDescriptionEditor.ui.h:18 ../gourmet/gglobals.py:157
 msgid "Yield Unit"
 msgstr ""
 
@@ -550,7 +550,7 @@ msgstr ""
 msgid "<i>Search Options</i>"
 msgstr ""
 
-#: ../ui/shopCatEditor.ui.h:1 ../gourmet/gglobals.py:148
+#: ../ui/shopCatEditor.ui.h:1 ../gourmet/gglobals.py:151
 msgid "Category"
 msgstr ""
 
@@ -1044,22 +1044,22 @@ msgstr ""
 msgid "Choose Database File"
 msgstr ""
 
-#: ../gourmet/backends/db.py:437 ../gourmet/backends/db.py:438
+#: ../gourmet/backends/db.py:466 ../gourmet/backends/db.py:467
 msgid "Upgrading database"
 msgstr ""
 
-#: ../gourmet/backends/db.py:439
+#: ../gourmet/backends/db.py:468
 msgid ""
 "Depending on the size of your database, this may be an intensive process and "
 "may take  some time. Your data has been automatically backed up in case "
 "something goes wrong."
 msgstr ""
 
-#: ../gourmet/backends/db.py:440 ../gourmet/threadManager.py:315
+#: ../gourmet/backends/db.py:469 ../gourmet/threadManager.py:315
 msgid "Details"
 msgstr ""
 
-#: ../gourmet/backends/db.py:440
+#: ../gourmet/backends/db.py:469
 #, python-format
 msgid ""
 "A backup has been made in %s in case something goes wrong. If this upgrade "
@@ -1067,7 +1067,7 @@ msgid ""
 "use with older Gourmet."
 msgstr ""
 
-#: ../gourmet/backends/db.py:1427
+#: ../gourmet/backends/db.py:1504
 #: ../gourmet/importers/interactive_importer.py:96
 #: ../gourmet/legacy_db/db_08/rdatabase.py:446
 #: ../gourmet/legacy_db/db_085/rdatabase.py:447
@@ -1168,14 +1168,14 @@ msgstr ""
 msgid " "
 msgstr ""
 
-#: ../gourmet/convert.py:740
+#: ../gourmet/convert.py:741
 msgid "and"
 msgstr ""
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
 #. show up sometimes.
-#: ../gourmet/convert.py:762
+#: ../gourmet/convert.py:763
 msgid "to"
 msgstr ""
 
@@ -1200,43 +1200,43 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: ../gourmet/exporters/exportManager.py:36
+#: ../gourmet/exporters/exportManager.py:40
 msgid "Save recipe as..."
 msgstr ""
 
-#: ../gourmet/exporters/exportManager.py:45
+#: ../gourmet/exporters/exportManager.py:51
 #, python-format
 msgid "Gourmet cannot export file of type \"%s\""
 msgstr ""
 
-#: ../gourmet/exporters/exportManager.py:75
+#: ../gourmet/exporters/exportManager.py:81
 msgid "Export complete!"
 msgstr ""
 
-#: ../gourmet/exporters/exportManager.py:76
+#: ../gourmet/exporters/exportManager.py:82
 #, python-format
 msgid "Recipe exported to %s"
 msgstr ""
 
-#: ../gourmet/exporters/exportManager.py:89
+#: ../gourmet/exporters/exportManager.py:103
 msgid "Export recipes"
 msgstr ""
 
-#: ../gourmet/exporters/exportManager.py:90
+#: ../gourmet/exporters/exportManager.py:106
 msgid "recipes"
 msgstr ""
 
-#: ../gourmet/exporters/exportManager.py:101
+#: ../gourmet/exporters/exportManager.py:118
 #, python-format
 msgid "Unable to export: unknown filetype \"%s\""
 msgstr ""
 
-#: ../gourmet/exporters/exportManager.py:102
+#: ../gourmet/exporters/exportManager.py:119
 msgid ""
 "Please make sure to select a filetype from the dropdown menu when saving."
 msgstr ""
 
-#: ../gourmet/exporters/exportManager.py:150
+#: ../gourmet/exporters/exportManager.py:167
 msgid "Export"
 msgstr ""
 
@@ -1319,62 +1319,62 @@ msgid ""
 "an attachment."
 msgstr ""
 
-#: ../gourmet/gglobals.py:149
+#: ../gourmet/gglobals.py:152
 msgid "Cuisine"
 msgstr ""
 
-#: ../gourmet/gglobals.py:150 ../gourmet/gtk_extras/ratingWidget.py:326
+#: ../gourmet/gglobals.py:153 ../gourmet/gtk_extras/ratingWidget.py:326
 msgid "Rating"
 msgstr ""
 
-#: ../gourmet/gglobals.py:151
+#: ../gourmet/gglobals.py:154
 msgid "Source"
 msgstr ""
 
-#: ../gourmet/gglobals.py:152
+#: ../gourmet/gglobals.py:155
 msgid "Website"
 msgstr ""
 
-#: ../gourmet/gglobals.py:155
+#: ../gourmet/gglobals.py:158
 msgid "Preparation Time"
 msgstr ""
 
-#: ../gourmet/gglobals.py:156
+#: ../gourmet/gglobals.py:159
 msgid "Cooking Time"
 msgstr ""
 
-#: ../gourmet/gglobals.py:161 ../gourmet/gglobals.py:166
+#: ../gourmet/gglobals.py:164 ../gourmet/gglobals.py:169
 #: ../gourmet/reccard.py:1654
 msgid "Instructions"
 msgstr ""
 
-#: ../gourmet/gglobals.py:162 ../gourmet/gglobals.py:167
+#: ../gourmet/gglobals.py:165 ../gourmet/gglobals.py:170
 #: ../gourmet/reccard.py:1660
 msgid "Notes"
 msgstr ""
 
-#: ../gourmet/gglobals.py:168
+#: ../gourmet/gglobals.py:171
 msgid "Modifications"
 msgstr ""
 
 #. print dir(err)
-#: ../gourmet/gglobals.py:234
+#: ../gourmet/gglobals.py:237
 msgid "Unable to open URL"
 msgstr ""
 
-#: ../gourmet/gglobals.py:235
+#: ../gourmet/gglobals.py:238
 msgid "Unable to launch mail reader."
 msgstr ""
 
-#: ../gourmet/gglobals.py:236
+#: ../gourmet/gglobals.py:239
 msgid "Unable to open website."
 msgstr ""
 
-#: ../gourmet/gglobals.py:237
+#: ../gourmet/gglobals.py:240
 msgid "Unable to open file."
 msgstr ""
 
-#: ../gourmet/gglobals.py:243
+#: ../gourmet/gglobals.py:246
 #, python-format
 msgid "There was an error launching the url: %s"
 msgstr ""
@@ -1399,27 +1399,27 @@ msgid "Do you really want to do this"
 msgstr ""
 
 #: ../gourmet/gtk_extras/dialog_extras.py:741
-#: ../gourmet/importers/importer.py:466
+#: ../gourmet/importers/importer.py:468
 msgid "excellent"
 msgstr ""
 
 #: ../gourmet/gtk_extras/dialog_extras.py:742
-#: ../gourmet/importers/importer.py:467
+#: ../gourmet/importers/importer.py:469
 msgid "great"
 msgstr ""
 
 #: ../gourmet/gtk_extras/dialog_extras.py:743
-#: ../gourmet/importers/importer.py:468
+#: ../gourmet/importers/importer.py:470
 msgid "good"
 msgstr ""
 
 #: ../gourmet/gtk_extras/dialog_extras.py:744
-#: ../gourmet/importers/importer.py:469
+#: ../gourmet/importers/importer.py:471
 msgid "fair"
 msgstr ""
 
 #: ../gourmet/gtk_extras/dialog_extras.py:745
-#: ../gourmet/importers/importer.py:471
+#: ../gourmet/importers/importer.py:473
 msgid "poor"
 msgstr ""
 
@@ -1576,18 +1576,18 @@ msgstr ""
 msgid "All importable files"
 msgstr ""
 
-#: ../gourmet/importers/importer.py:185
+#: ../gourmet/importers/importer.py:187
 msgid "serving"
 msgid_plural "servings"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../gourmet/importers/importer.py:266
+#: ../gourmet/importers/importer.py:268
 #, python-format
 msgid "Imported %s of %s recipes."
 msgstr ""
 
-#: ../gourmet/importers/importer.py:470
+#: ../gourmet/importers/importer.py:472
 msgid "okay"
 msgstr ""
 

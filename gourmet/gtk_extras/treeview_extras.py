@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from gourmet.gdebug import *
 import gtk, gobject
 

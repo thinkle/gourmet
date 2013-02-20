@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import os,stat,re,time,StringIO
 from gourmet import keymanager, convert, ImageExtras
 from gourmet.gdebug import debug, TimeAction, print_timer_info, debug_decorator
