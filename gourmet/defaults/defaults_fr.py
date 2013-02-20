@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # we set up default information for our locale.
 # Translators should use this file as the basis of their translation.
