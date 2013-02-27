@@ -14,7 +14,6 @@ gourmet.desktop.in
 gourmet/GourmetRecipeManager.py
 gourmet/ImageExtras.py
 gourmet/OptionParser.py
-gourmet/PngImagePluginUpToDate.py
 gourmet/Undo.py
 gourmet/__init__.py
 gourmet/backends/DatabaseChooser.py
