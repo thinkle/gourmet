@@ -236,7 +236,7 @@ class RecIndex:
                                           order=self.prefs.get('rectree_column_order',{}))
         self.rectree_conf.apply_column_order()
         self.rectree_conf.apply_visibility()
-        self.rectree.connect("row-activated",self.rec_tree_select_rec)#self.rec_tree_select_rec)
+        self.rectree.connect("row-activated",self.rec_tree_select_rec)
         self.rectree.connect('key-press-event',self.tree_keypress_cb)        
         self.rectree.get_selection().connect("changed",self.selection_changedCB)
         self.rectree.set_property('rules-hint',True) # stripes!
