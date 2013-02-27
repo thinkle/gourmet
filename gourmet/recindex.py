@@ -429,8 +429,7 @@ class RecIndex:
         txt = self.srchentry.get_text()
         searchBy = cb.cb_get_active_text(self.rSearchByMenu)
         searchBy = self.searchByDic[unicode(searchBy)]
-	if txt and self.limitButton: self.limitButton.set_sensitive(True)
-        elif self.limitButton: self.limitButton.set_sensitive(False)
+	if self.limitButton: self.limitButton.set_sensitive(txt!='')
         if self.make_search_dic(txt,searchBy) == self.last_search:
             debug("Same search!",1)
             return
