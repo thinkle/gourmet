@@ -74,7 +74,6 @@ gourmet/importers/imageBrowser.py
 gourmet/importers/importManager.py
 gourmet/importers/importer.py
 gourmet/importers/interactive_importer.py
-gourmet/importers/mealmaster_importer.py
 gourmet/importers/plaintext_importer.py
 gourmet/importers/rezkonv_importer.py
 gourmet/importers/webextras.py
