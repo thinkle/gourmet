@@ -509,6 +509,7 @@ class RecData (Pluggable):
             # Change from servings to yields! ( we use the plural to avoid a headache with keywords)
             if stored_info.version_super == 0 and stored_info.version_major < 16:
                 print 'Database older than 0.16.0 -- updating',sv_text
+                self.backup_db()
                 from sqlalchemy.sql.expression import func
                 # We need to unpickle Booleans that have erroneously remained
                 # pickled during previous Metakit -> SQLite -> SQLAlchemy
