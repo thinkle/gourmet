@@ -185,7 +185,7 @@ class RecIndex:
     def search_entry_activate_cb (self, *args):
         if self.rmodel._get_length_()==1:
             self.rec_tree_select_rec()
-        else:
+        elif self.srchentry.get_text():
             if not self.search_as_you_type:
                 self.search()
                 gobject.idle_add(lambda *args: self.limit_search())
