@@ -6,9 +6,7 @@
 
 override_dh_auto_install:
 	dh_auto_install -- --prefix=/usr
-
-override_dh_install:
-	dh_install --exclude=LICENSE
+	rm debian/gourmet/usr/share/doc/gourmet/LICENSE
 
 override_dh_installchangelogs:
 	dh_installchangelogs CHANGES ChangeLog
