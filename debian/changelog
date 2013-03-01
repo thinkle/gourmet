@@ -11,7 +11,7 @@ gourmet (0.16.0-1) unstable; urgency=low
     - Depends: Drop python-glade2, increase python-gtk2 version (>= 2.22.0),
       version depend on python-sqlalchemy (>= 0.7), add python-elib.intl.
     - Recommends: Drop python-gnome2, add python-gst0.10, python-beautifulsoup.
-    - Description: Drop article.
+    - Description: Update to reflect contents of gourmet/version.py.
   * debian/copyright:
     - Switch to packaging-manuals/copyright-format/1.0 format.
     - Add contributors as of gourmet/version.py.

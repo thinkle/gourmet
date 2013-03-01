@@ -14,9 +14,15 @@ Depends: ${misc:Depends}, ${python:Depends}, python-imaging, python-elib.intl,
  python-gtk2 (>= 2.22.0), python-reportlab, python-sqlalchemy (>= 0.7),
  python-poppler
 Recommends: python-gst0.10, python-gtkspell, python-beautifulsoup
-Description: gtk-based recipe organizer and shopping list generator
- Gourmet Recipe Manager is a gtk-based recipe organizer and shopping list
- generator intended for the GNOME desktop environment (though it does not
- need all the GNOME libraries). Gourmet can import Mealmaster(tm) files and
- can export recipes in a number of formats, including text, RTF and web
- pages. Gourmet also can calculate nutritional information for recipes.
+Description: recipe organizer and shopping list generator
+ Gourmet Recipe Manager is a gtk-based application to store, organize and
+ search recipes.
+ .
+ Features:
+  * Makes it easy to create shopping lists from recipes.
+  * Imports recipes from a number of sources, including MealMaster and
+    MasterCook archives and several popular websites.
+  * Exports recipes as PDF files, plain text, MealMaster files, HTML web pages,
+    and a custom XML format for exchange with other Gourmet users.
+  * Supports linking images with recipes.
+  * Can calculate nutritional information for recipes based on the ingredients.
