@@ -1,0 +1,15 @@
+Description: Point code to Debian's system GPL-2 text location.
+ This is necessary as we're removing upstream's LICENSE file as required by
+ Debian policy.
+Author: Bernhard Reiter <ockham@raz.or.at>
+--- a/gourmet/GourmetRecipeManager.py
++++ b/gourmet/GourmetRecipeManager.py
+@@ -386,7 +386,7 @@
+ 
+         # load LICENSE text file
+         try:
+-            h = open(os.path.join(doc_base,'LICENSE'),'r')
++            h = open('/usr/share/common-licenses/GPL-2','r')
+             s = h.readlines()
+         except IOError, err:
+             print "IO Error %s" % err

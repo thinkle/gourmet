@@ -17,8 +17,10 @@ gourmet (0.16.0-1) unstable; urgency=low
     - Add contributors as of gourmet/version.py.
   * debian/dirs: Remove, as obsolete.
   * debian/docs: s/README/README.md
-  * debian/patches/01_fix_raise_str.diff, debian/patches/series:
+  * debian/patches/01_fix_raise_str.diff:
     Drop (fixed upstream).
+  * debian/patches/license-location, debian/patches/series:
+    Add patch to change the location used to look for the license.
   * debian/rules: Switch to tiny dh style, xz compression.
 
  -- Bernhard Reiter <ockham@raz.or.at>  Mon, 26 Nov 2012 12:34:12 +0100
