@@ -7,7 +7,7 @@ import types
 import os.path
 from gettext import gettext as _
 from gourmet.gdebug import debug, TimeAction, debug_decorator
-import re, pickle, string, os.path, string, time
+import re, string, os.path, string, time
 from gettext import gettext as _
 import gourmet.gglobals as gglobals
 from gourmet import Undo, keymanager, convert
@@ -369,66 +369,86 @@ class RecData (Pluggable):
         class KeyLookup (object): pass
         self._setup_object_for_table(self.keylookup_table, KeyLookup)
 
-    def setup_shopper_tables (self):
-        
-        self.setup_keylookup_table()
-
+    def setup_shopcats_table (self):
         # shopcats - Keep track of which shoppin category ingredients are in...
         self.shopcats_table = Table('shopcats',self.metadata,
-                                    Column('ingkey',Text(),**{'primary_key':True}),
-                                    Column('shopcategory',Text(),**{}),
-                                    Column('position',Integer(),**{}),
+                                    Column('id',Integer(),primary_key=True),
+                                    Column('ingkey',Text(32)),
+                                    Column('shopcategory',Text()),
+                                    Column('position',Integer()),
                                     )
         class ShopCat (object): pass
         self._setup_object_for_table(self.shopcats_table, ShopCat)
         
+    def setup_shopcatsorder_table (self):
         # shopcatsorder - Keep track of the order of shopping categories
         self.shopcatsorder_table = Table('shopcatsorder',self.metadata,
-                                         Column('shopcategory',Text(),**{'primary_key':True}),
-                                         Column('position',Integer(),**{}),
+                                         Column('id',Integer(),primary_key=True),
+                                         Column('shopcategory',Text(32)),
+                                         Column('position',Integer()),
                                          )
         class ShopCatOrder (object): pass
         self._setup_object_for_table(self.shopcatsorder_table, ShopCatOrder)
         
+    def setup_pantry_table (self):
         # pantry table -- which items are in the "pantry" (i.e. not to
         # be added to the shopping list)
         self.pantry_table = Table('pantry',self.metadata,
-                                  Column('ingkey',Text(),**{'primary_key':True}),
-                                  Column('pantry',Boolean(),**{}),
+                                  Column('id',Integer(),primary_key=True),
+                                  Column('ingkey',Text(32)),
+                                  Column('pantry',Boolean()),
                                   )
         class Pantry (object): pass
         self._setup_object_for_table(self.pantry_table, Pantry)
 
+    def setup_density_table (self):
         # Keep track of the density of items...
         self.density_table = Table('density',self.metadata,
-                                   Column('dkey',String(length=150),**{'primary_key':True}),
-                                   Column('value',String(length=150),**{})
+                                   Column('id',Integer(),primary_key=True),
+                                   Column('dkey',String(length=150)),
+                                   Column('value',String(length=150))
                                    )
         class Density (object): pass
         self._setup_object_for_table(self.density_table, Density)
-        
-        self.crossunitdict_table = Table('crossunitdict',self.metadata,                                         
-                                         Column('cukey',String(length=150),**{'primary_key':True}),
-                                         Column('value',String(length=150),**{}),
+
+    def setup_crossunitdict_table (self):
+        self.crossunitdict_table = Table('crossunitdict',self.metadata,
+                                         Column('id',Integer(),primary_key=True),
+                                         Column('cukey',String(length=150)),
+                                         Column('value',String(length=150)),
                                          )
         class CrossUnit (object): pass
         self._setup_object_for_table(self.crossunitdict_table,CrossUnit)
         
+    def setup_unitdict_table (self):
         self.unitdict_table = Table('unitdict',self.metadata,
-                                    Column('ukey',String(length=150),**{'primary_key':True}),
-                                    Column('value',String(length=150),**{}),
+                                    Column('id',Integer(),primary_key=True),
+                                    Column('ukey',String(length=150)),
+                                    Column('value',String(length=150)),
                                     )
         class Unitdict (object):
             pass
         self._setup_object_for_table(self.unitdict_table, Unitdict)
-        
+
+    def setup_convtable_table (self):
         self.convtable_table = Table('convtable',self.metadata,
-                                     Column('ckey',String(length=150),**{'primary_key':True}),
-                                     Column('value',String(length=150),**{})
+                                     Column('id',Integer(),primary_key=True),
+                                     Column('ckey',String(length=150)),
+                                     Column('value',String(length=150))
                                      )
         class Convtable (object):
             pass
         self._setup_object_for_table(self.convtable_table, Convtable)
+
+    def setup_shopper_tables (self):
+        self.setup_keylookup_table()
+        self.setup_shopcats_table()
+        self.setup_shopcatsorder_table()
+        self.setup_pantry_table()
+        self.setup_density_table()
+        self.setup_crossunitdict_table()
+        self.setup_unitdict_table()
+        self.setup_convtable_table()
 
     def backup_db (self):
         """Make a backup copy of the DB -- this ensures experimental
@@ -489,6 +509,7 @@ class RecData (Pluggable):
             # Change from servings to yields! ( we use the plural to avoid a headache with keywords)
             if stored_info.version_super == 0 and stored_info.version_major < 16:
                 print 'Database older than 0.16.0 -- updating',sv_text
+                self.backup_db()
                 from sqlalchemy.sql.expression import func
                 # We need to unpickle Booleans that have erroneously remained
                 # pickled during previous Metakit -> SQLite -> SQLAlchemy
@@ -510,6 +531,27 @@ class RecData (Pluggable):
                                             self.shopcats_table.c.shopcategory
                                           )-8)
                              }).execute()
+
+                # The following tables had Text columns as primary keys,
+                # which, when used with MySQL, requires an extra parameter
+                # specifying the length of the substring that MySQL is
+                # supposed to use for the key. Thus, we're adding columns
+                # named id of type Integer and make them the new primary keys
+                # instead.
+                self.alter_table('shopcats',self.setup_shopcats_table,
+                                 {},['ingkey','shopcategory','position'])
+                self.alter_table('shopcatsorder',self.setup_shopcatsorder_table,
+                                 {},['shopcategory','position'])
+                self.alter_table('pantry',self.setup_pantry_table,
+                                 {},['ingkey','pantry'])
+                self.alter_table('density',self.setup_density_table,
+                                 {},['dkey','value'])
+                self.alter_table('crossunitdict',self.setup_crossunitdict_table,
+                                 {},['cukey','value'])
+                self.alter_table('unitdict',self.setup_unitdict_table,
+                                 {},['ukey','value'])
+                self.alter_table('convtable',self.setup_convtable_table,
+                                 {},['ckey','value'])
             if (stored_info.version_super == 0 and ((stored_info.version_major <= 14 and stored_info.version_minor <= 7)
                                                     or
                                                     (stored_info.version_major < 14)
@@ -927,12 +969,7 @@ class RecData (Pluggable):
         column, following the format for new tables.
         """
         name = table.name; new_col = column_spec[0]; coltyp = column_spec[1]
-        if hasattr(coltyp ,'dialect_impl'):
-            try:
-                coltyp = coltyp.dialect_impl(self.db.dialect).get_col_spec()
-            except AttributeError:
-                # SQL 0.6
-                coltyp = coltyp.compile(dialect=self.db.dialect)
+        coltyp = coltyp.compile(dialect=self.db.dialect)
         sql = 'ALTER TABLE %(name)s ADD %(new_col)s %(coltyp)s;'%locals()
         try:
             self.db.execute(sql)
@@ -946,7 +983,7 @@ class RecData (Pluggable):
 
         table is the table object. table_name is the table
         name. setup_function is a function that will setup our correct
-        table. cols_to_change is a list of columns that are changing
+        table. cols_to_change is a dictionary of columns that are changing
         names (key=orig, val=new). cols_to_keep is a list of columns
         that should be copied over as is.
 
@@ -1934,8 +1971,7 @@ class DatabaseConverter(convert.Converter):
     ## calls to DatabaseConverter
 
     def create_conv_table (self):
-        self.conv_table = dbDic('ckey','value',self.db.convtable_table, self.db,
-                                pickle_key=True)
+        self.conv_table = dbDic('ckey','value',self.db.convtable_table, self.db)
         for k,v in defaults.CONVERTER_TABLE.items():
             if not self.conv_table.has_key(k):
                 self.conv_table[k]=v
@@ -1964,10 +2000,8 @@ class DatabaseConverter(convert.Converter):
                 self.unit_dict[v] = key
                 
 class dbDic:
-    def __init__ (self, keyprop, valprop, view, db, pickle_key=False, pickle_val=True):
+    def __init__ (self, keyprop, valprop, view, db):
         """Create a dictionary interface to a database table."""
-        self.pickle_key = pickle_key
-        self.pickle_val = pickle_val
         self.vw = view
         self.kp = keyprop
         self.vp = valprop
@@ -1986,10 +2020,7 @@ class dbDic:
                 return False
         
     def __setitem__ (self, k, v):
-        if self.pickle_key:
-            k=pickle.dumps(k)
-        if self.pickle_val: store_v=pickle.dumps(v)
-        else: store_v = v
+        store_v = v
         row = self.db.fetch_one(self.vw,**{self.kp:k})
         if row:
             self.db.do_modify(self.vw, row, {self.vp:store_v},id_col=self.kp)
@@ -2000,30 +2031,15 @@ class dbDic:
 
     def __getitem__ (self, k):
         if self.just_got.has_key(k): return self.just_got[k]
-        if self.pickle_key:
-            k=pickle.dumps(k)
         v = getattr(self.db.fetch_one(self.vw,**{self.kp:k}),self.vp)
-        if v and self.pickle_val:
-            try:
-                return pickle.loads(v)
-            except:
-                print "Problem unpickling ",v
-                raise
-        else:
-            return v
+        return v
     
     def __repr__ (self):
         retstr = "<dbDic> {"
         #for i in self.vw:
-        #    if self.pickle_key:
-        #        retstr += "%s"%pickle.loads(getattr(i,self.kp))
-        #    else:
-        #        retstr += getattr(i,self.kp)
+        #    retstr += getattr(i,self.kp)
         #    retstr += ":"
-        #    if self.pickle_val:
-        #        retstr += "%s"%pickle.loads(getattr(i,self.vp))
-        #    else:
-        #        retstr += "%s"%getattr(i,self.vp)
+        #    retstr += "%s"%getattr(i,self.vp)
         #    retstr += ", "
         retstr += "}"
         return retstr
@@ -2036,12 +2052,9 @@ class dbDic:
         '''
         dics = []
         for k in d:
-            if self.pickle_val:
-                store_v = pickle.dumps(d[k])
-            else:
-                store_v = d[k]
-                if type(store_v) in types.StringTypes:
-                    store_v = unicode(store_v)
+            store_v = d[k]
+            if type(store_v) in types.StringTypes:
+                store_v = unicode(store_v)
             if type(k) in types.StringTypes:
                 k = unicode(k)
             dics.append({self.kp:k,self.vp:store_v})
@@ -2057,7 +2070,6 @@ class dbDic:
         ret = []
         for i in self.db.fetch_all(self.vw):
             val = getattr(i,self.vp)
-            if val and self.pickle_val: val = pickle.loads(val)
             ret.append(val)
         return ret
 
@@ -2073,18 +2085,6 @@ class dbDic:
                 import traceback; traceback.print_exc()
                 print 'IGNORING'
                 continue
-            if key and self.pickle_key:
-                try:
-                    key = pickle.loads(key)
-                except:
-                    print 'Problem unpickling key ',key
-                    raise
-            if val and self.pickle_val:
-                try:
-                    val = pickle.loads(val)
-                except:
-                    print 'Problem unpickling value ',val, ' for key ',key
-                    raise 
             ret.append((key,val))
         return ret
 

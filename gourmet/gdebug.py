@@ -1,4 +1,3 @@
-#!/usr/bin/python
 from OptionParser import options
 import time,traceback
 

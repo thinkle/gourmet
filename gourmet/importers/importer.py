@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import os,stat,re,time,StringIO
 from gourmet import keymanager, convert, ImageExtras
 from gourmet.gdebug import debug, TimeAction, print_timer_info, debug_decorator
@@ -153,7 +152,9 @@ class Importer (SuspendableThread):
         sure we don't lose data this way."""
         # We add e.g. "Servings: lots" to instructions -- REC_ATTR_DIC
         # gets us the properly i18n'd name
-        text_to_add = gourmet.gglobals.REC_ATTR_DIC[attr]+': '+recdic[attr]
+        text_to_add = gourmet.gglobals.REC_ATTR_DIC['yields' if attr=='servings'
+                                                    else attr] \
+                      +': '+recdic[attr]
         if not recdic.has_key('instructions'):
             recdic['instructions']=text_to_add
         else:

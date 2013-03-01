@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Copyright (c) 2004, 2005 Tom Hinkle
 # You may use and distribute this software under the terms of the
 # GNU General Public License, version 2 or later

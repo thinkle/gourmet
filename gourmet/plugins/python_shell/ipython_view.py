@@ -1,4 +1,3 @@
-#!/usr/bin/python
 '''
 Provides IPython console widget.
 

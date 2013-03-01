@@ -185,7 +185,7 @@ class RecIndex:
     def search_entry_activate_cb (self, *args):
         if self.rmodel._get_length_()==1:
             self.rec_tree_select_rec()
-        else:
+        elif self.srchentry.get_text():
             if not self.search_as_you_type:
                 self.search()
                 gobject.idle_add(lambda *args: self.limit_search())
@@ -236,7 +236,7 @@ class RecIndex:
                                           order=self.prefs.get('rectree_column_order',{}))
         self.rectree_conf.apply_column_order()
         self.rectree_conf.apply_visibility()
-        self.rectree.connect("row-activated",self.rec_tree_select_rec)#self.rec_tree_select_rec)
+        self.rectree.connect("row-activated",self.rec_tree_select_rec)
         self.rectree.connect('key-press-event',self.tree_keypress_cb)        
         self.rectree.get_selection().connect("changed",self.selection_changedCB)
         self.rectree.set_property('rules-hint',True) # stripes!
@@ -429,8 +429,7 @@ class RecIndex:
         txt = self.srchentry.get_text()
         searchBy = cb.cb_get_active_text(self.rSearchByMenu)
         searchBy = self.searchByDic[unicode(searchBy)]
-	if txt and self.limitButton: self.limitButton.set_sensitive(True)
-        elif self.limitButton: self.limitButton.set_sensitive(False)
+	if self.limitButton: self.limitButton.set_sensitive(txt!='')
         if self.make_search_dic(txt,searchBy) == self.last_search:
             debug("Same search!",1)
             return

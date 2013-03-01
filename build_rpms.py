@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 import os,os.path,shutil,glob,string
 
 class RPMBuilder:

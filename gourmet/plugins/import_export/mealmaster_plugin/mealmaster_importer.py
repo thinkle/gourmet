@@ -1,4 +1,3 @@
-#!/usr/bin/python
 from gourmet.importers import importer, plaintext_importer
 import re, os.path, string, array
 from gourmet import convert, check_encodings

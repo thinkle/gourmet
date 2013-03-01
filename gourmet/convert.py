@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import re, locale, math
 from defaults.defaults import lang as defaults
 from gettext import gettext as _

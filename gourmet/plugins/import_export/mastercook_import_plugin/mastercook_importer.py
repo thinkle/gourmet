@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import gourmet.importers.importer as importer
 import xml.sax, re, os.path
 from gourmet.gdebug import debug

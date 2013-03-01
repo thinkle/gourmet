@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import settings
 from gettext import gettext as _
 # To have strings from .ui files (gtk.Builder) translated on all platforms,

@@ -77,27 +77,12 @@ def create_thumbnail (path, thumbpath, uri, type="large"):
     info['Software']='Gourmet Recipe Manager'
     info['URI']=str(uri)
     # now we must create our image guy
-    try:
-        import PngImagePlugin
-        pnginfo = PngImagePlugin.PngInfo()
-        use_our_png=False
-    except AttributeError:
-        from PngImagePluginUpToDate import _save, PngInfo
-        pnginfo = PngInfo()
-        # in this case, we'd better make sure our image is a PNG
-        # so we can call our own local stuff more easily and add
-        # key info
-        s = StringIO.StringIO()
-        im.save(s,'PNG')
-        s.seek(0)
-        im = Image.open(s)
-        use_our_png=True
+    import PngImagePlugin
+    pnginfo = PngImagePlugin.PngInfo()
+
     for k,v in info.items():
         pnginfo.add_text(k,v)
-    if use_our_png:
-        _save(im,open(thumbpath,'wb'),thumbpath,pnginfo=pnginfo)
-    else:
-        im.save(thumbpath, pnginfo=pnginfo)
+    im.save(thumbpath, pnginfo=pnginfo)
     # we must make all thumbnails permissions 700
     os.chmod(thumbpath,0700)
     return thumbpath

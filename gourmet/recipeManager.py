@@ -30,28 +30,22 @@ class DatabaseShopper (shopping.Shopper):
             self.cnv = convert.get_converter()
     
     def init_orgdic (self):
-        self.orgdic = dbDic('ingkey','shopcategory',self.db.shopcats_table,db=self.db,pickle_key=False,
-                            pickle_val=False)
+        self.orgdic = dbDic('ingkey','shopcategory',self.db.shopcats_table,db=self.db)
         if len(self.orgdic.items())==0:
             dic = shopping.setup_default_orgdic()
             self.orgdic.initialize(dic)
 
     def init_ingorder_dic (self):
-        self.ingorder_dic = dbDic('ingkey','position',self.db.shopcats_table,db=self.db,
-                                  pickle_key=False,pickle_val=False)
+        self.ingorder_dic = dbDic('ingkey','position',self.db.shopcats_table,db=self.db)
 
     def init_catorder_dic (self):
         self.catorder_dic = dbDic('shopcategory',
                                   'position',
                                   self.db.shopcatsorder_table,
-                                  db=self.db,
-                                  pickle_key=False,
-                                  pickle_val=False)
+                                  db=self.db)
 
     def init_pantry (self):
-        self.pantry = dbDic('ingkey','pantry',self.db.pantry_table,db=self.db,
-                            pickle_key=False,
-                            pickle_val=False)
+        self.pantry = dbDic('ingkey','pantry',self.db.pantry_table,db=self.db)
         if len(self.pantry.items())==0:
             self.pantry.initialize(dict([(i,True) for i in self.default_pantry]))
 
@@ -64,8 +58,7 @@ class DatabaseConverter(convert.Converter):
     ## calls to rmetakit.DatabaseConverter
 
     def create_conv_table (self):
-        self.conv_table = dbDic('ckey','value',self.db.convtable_table, self.db,
-                                pickle_key=True)
+        self.conv_table = dbDic('ckey','value',self.db.convtable_table, self.db)
         for k,v in defaults.CONVERTER_TABLE.items():
             if not self.conv_table.has_key(k):
                 self.conv_table[k]=v
