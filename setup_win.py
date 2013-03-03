@@ -26,31 +26,13 @@ includes = ["atk",
             "tarfile",
             ]
 
-dll_excludes = ["libpangocairo-1.0-0.dll",
-                "libpangowin32-1.0-0.dll",
-                "libcairo-2.dll","libfontconfig-1.dll",
-                "libpango-1.0-0.dll",
-                "libpangoft2-1.0-0.dll",
-                "libgtk-win32-2.0-0.dll",
-                "iconv.dll",
-                "libglib-2.0-0.dll",
-                "intl.dll",
-                "libatk-1.0-0.dll",
-                "libgdk-win32-2.0-0.dll",
-                "libgobject-2.0-0.dll",
-                "libxml2.dll",
-                "libgmodule-2.0-0.dll",
-                "libgthread-2.0-0.dll",
-                "libgdk_pixbuf-2.0-0.dll",
-                "zlib1.dll",
-                "libglade-2.0-0.dll",
-                "libpango-1.0-0.dll",
+dll_excludes = [
                 # see http://stackoverflow.com/questions/1979486/py2exe-win32api-pyc-importerror-dll-load-failed
                 "mswsock.dll",
                 "powrprof.dll"
                 ]
 
-packages = ["xml.dom","cairo","pangocairo","sqlalchemy",
+packages = ["gio","xml.dom","cairo","pangocairo","sqlalchemy",
             "reportlab", # for PDF and Printing export
             #"enchant", # for the spellcheck plugin; crashes gourmet
             #"gtkspell", # for the spellcheck plugin; cannot find libenchant.dll
@@ -75,7 +57,7 @@ setup(
                           # create a compressed zip archive
                           "compressed": 1,
                           "optimize": 2,
-                          "bundle_files": 1,
+                          "bundle_files": 3,
                           "dist_dir": os.path.join(srcpath,'dist'),
                           "includes": includes,
                           "dll_excludes": dll_excludes,
