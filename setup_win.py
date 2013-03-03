@@ -12,7 +12,8 @@ import py2exe
 
 #do the following imports to get the version number
 import sys, os, glob
-sys.path.append(os.path.join(os.path.split(__file__)[0],'gourmet'))
+srcpath = os.path.split(__file__)[0]
+sys.path.append(os.path.join(srcpath, 'gourmet'))
 import version
 
 includes = ["atk",
@@ -75,8 +76,7 @@ setup(
                           "compressed": 1,
                           "optimize": 2,
                           "bundle_files": 1,
-                          "dist_dir": os.path.join(sys.exec_prefix, 'dist'),
-#choose another target for the dist dir instead of ./dist.
+                          "dist_dir": os.path.join(srcpath,'dist'),
                           "includes": includes,
                           "dll_excludes": dll_excludes,
                           "packages" : packages
@@ -87,14 +87,14 @@ setup(
     # targets to build
     console = [
         {
-            "script": os.path.join(sys.exec_prefix, 'Scripts','GourmetDebug.pyw'),
+            "script": os.path.join(srcpath, 'windows','GourmetDebug.pyw'),
             "dest_base": "Gourmet_debug"
         }
     ],
 
     windows = [
        {
-           "script": os.path.join(sys.exec_prefix, 'Scripts','Gourmet.pyw'),
+           "script": os.path.join(srcpath, 'windows','Gourmet.pyw'),
            "dest_base": "Gourmet"
        }
     ],
