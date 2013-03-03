@@ -76,7 +76,7 @@ setup(
 
     windows = [
        {
-           "script": os.path.join(srcpath, 'windows','Gourmet.pyw'),
+           "script": os.path.join(srcpath, 'bin','gourmet'),
            "dest_base": "Gourmet"
        }
     ],
