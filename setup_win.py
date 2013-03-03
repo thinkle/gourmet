@@ -12,7 +12,7 @@ import py2exe
 
 #do the following imports to get the version number
 import sys, os, glob
-sys.path.append(os.path.join('.', 'src', 'lib'))
+sys.path.append(os.path.join(os.path.split(__file__)[0],'gourmet'))
 import version
 
 includes = ["atk",
