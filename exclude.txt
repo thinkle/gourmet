@@ -1,5 +1,0 @@
-.cvsignore
-CVS
-debian
-exclude.txt
-	
