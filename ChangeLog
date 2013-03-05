@@ -1,3 +1,61 @@
+2013-03-06  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Update Gourmet and Python version in windows/gourmet-installer.nsi.
+	* Update *.po files to match current source.
+	* Update *.po files from Launchpad Translations.
+	* Add author_email field to setup.py.
+	* Update MANIFEST.in.
+	* Remove windows/Gourmet.pyw from po/POTFILES.in.
+
+2013-03-04  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Remove obsolete files.
+	* Update LICENSE (new FSF address).
+	* Remove windows/Gourmet.pyw as it's obsoleted by bin/gourmet.
+	* Fix some py2exe parameters.
+
+2013-03-03  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Fix directory locations in setup_win.py.
+	* Fix import path in setup_win.py
+
+2013-02-27  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Backup when upgrading the DB to v0.16.
+	* Remove obsolete comment.
+	* Remove obsolete file gourmet/PngImagePluginUpToDate.py.
+	* Simplify a conditional expression.
+	* Avoid a KeyError when pressing Enter on an empty search entry.
+	* Remove gourmet/importers/mealmaster_importer.py from po/POTFILES.in.
+
+2013-02-20  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Remove gourmet/importers/mealmaster_importer.py as it's obsolete.
+	  That file lives now in gourmet/plugins/import_export/mealmaster_plugin/.
+	* Remove shebangs from non-executable files.
+	* Change wording of README.md a bit.
+	* Merge pull request #694 from MrShark/master
+	  Make working in a virtualenv easier
+
+2013-02-14  jens persson  <jens@persson.cx>
+
+	* Update documentation
+	* changed /usr/bin/python to /usr/bin/env python to alow usage in virtualenvs
+	* Remove hardcoded install path
+
+2013-02-06  Bernhard Reiter  <ockham@raz.or.at>
+
+	Fix #288.
+
+2013-02-05  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Remove some clauses that checked for SQLALchemy < 0.6 as we're relying on >= 0.7 anyway now.
+	* Add Integer primary key columns (named 'id') to all remaining tables.
+
+2013-02-04  Bernhard Reiter  <ockham@raz.or.at>
+
+	Remove pickle_key and pickle_val options from dbDic.
+
 2013-02-03  Thomas Mills Hinkle  <tom@pebble>
 
 	* gourmet/convert.py (integerp): Restore NUMBER_END_NO_RANGE_REGEXP
@@ -21,6 +79,25 @@
 
 	* gourmet/exporters/exportManager.py
 	(ExportManager.offer_multiple_export): Fix bug #234, #691.
+
+2013-02-01  Bernhard Reiter  <ockham@raz.or.at>
+
+	Unpickle Booleans and Strings that have erroneously remained pickled in the
+	database during previous Metakit -> SQLite -> SQLAlchemy database migrations.
+
+	Fixes #678.
+
+2013-01-30  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Rename gourmet/sound_gnome.py to gourmet/sound_gst.py.
+	* Restructure directory layout once again.
+	  Move images, icons, sound, and style directories to data/;
+	  this is in preparation of a possible future move to DistutilExtra's
+	  auto setup (see #679).
+	* Install FAQ and LICENSE to share/doc/gourmet/.
+	* Prepend chromium-browser to list of *.html document launchers.
+	* Prepend libreoffice to list of *.rtf document launchers.
+	* When exporting, point Save as dialog to user's Documents directory by default.
 
 2013-01-29  Thomas Mills Hinkle  <tom@pebble>
 
@@ -55,10 +132,54 @@
 	(mealmaster_exporter.write_ing): Fix ingredient code and make more
 	robust against future changes in defaults.
 
+2013-01-25  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Mention BeautifulSoup in the Extra Requirements section of README.md.
+	* Merge pull request #689 from jraber/unbundleBeautifulSoup
+	  Removed bundled (old) versions of BeautifulSoup.py
+	* Change back perms for bin/gourmet to 755.
+
+2013-01-17  Jeff Raber  <jeff.raber@gmail.com>
+
+	Removed bundled (old) versions of BeautifulSoup.py
+
+	BeautifulSoup.py seems to be available in the common linux distros. Otherwise, it can
+	be installed with 'pip install BeautifulSoup'
+
+	Fixes: https://bugzilla.redhat.com/show_bug.cgi?id=895228
+
+2013-01-15  Bernhard Reiter  <ockham@raz.or.at>
+
+	Add slogan to README.md ;-)
+
 2013-01-12  Thomas Mills Hinkle  <tom@pebble>
 
 	* gourmet/importers/importManager.py: gettext fix
-	
+
+2013-01-12  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Add new Integer primary keys to the shopcats, shopcatsorder, and pantry tables.
+	  Those tables had Text columns as primary keys, which, when used with MySQL,
+	  requires an extra parameter specifying the length of the substring that MySQL
+	  is supposed to use for the key. Thus, we're adding columns named id of type
+	  Integer and make them the new primary keys instead.
+	  Fixes #681.
+
+	* Move *.gourmet-plugin files to plugins/, install to share/gourmet/plugins.
+	  This is required for python-distutils-extra to be able
+	  to translate and install *.gourmet-plugin files properly.
+
+2013-01-09  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Change data/recipe.dtd perms from 755 to 644.
+	* .gitignore: Remove obsolete lines, add .pydevproject. .cvsignore: Delete.
+
+2013-01-07  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Enable building of *.mo and *.gourmet-plugin files during development.
+	  Furthermore, update CODING with instructions, and remove
+	  bin/gourmet_in_place as it's now obsolete.
+	* Modify file locations in built settings.py, not the one in the source tree.
 
 2013-01-06  Thomas Mills Hinkle  <tom@pebble>
 
@@ -70,9 +191,110 @@
 
 	* gourmet/plugins/import_export/pdf_plugin/print_plugin.py: Fix gettext
 
-2012-02-10  Thomas M. Hinkle  <tom@pebble>
+2013-01-06  Bernhard Reiter  <ockham@raz.or.at>
 
-	* src/lib/defaults/defaults_en.py: Fix sugar density.
+	* Remove obsolete cruft from windows/ directory.
+	* Update website, download link and Tom's email address in NSIS script.
+	* In the HTML output, don't translate class names.
+
+	  Otherwise, this would require CSS selectors to be also localized and would
+	  not work across languages. That's obviously not how it should be done.
+	* Remove modules_check and other cruft from setup.py
+	  This hasn't been used or updated for a while, and as it isn't really
+	  supported by distutils, it has been more a source of redundancy (read
+	  confusion and maintenance burden) in conjunction with dependencies
+	  listed in our README.
+	* Rename README to README.md, and use Markdown to style it.
+	* Remove bin/__init__.py as it's obsolete now.
+	* Minor line layout fix.
+	* Replace our custom tools/gourmet_distutils.py by a python-distutils-extra dependency.
+	* Update po/POTFILES.in and po/gourmet.pot.
+
+2013-01-05  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Replace some wildcard imports.
+	* Remove some cruft from gourmet/__init__.py.
+
+2013-01-02  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Update requirements in the README file.
+	* Update setup.cfg to at least somewhat reflect current RPM based distributions.
+	* Remove rpm/gourmet.fedora.spec and rpm_build.sh.
+	  This stuff was severely outdated, duplicates information from setup.py and
+	  setup.cfg (if we're really going to keep providing RPMs which hasn't been done
+	  during the past releases), and is maintained better at Fedora anyway.
+	* Change more URLS from Sourceforge to GitHub.
+
+2013-01-01  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Change old SourceForge URLs to new GitHub ones where applicable.
+	* Move practically all program information to version.py and import it from there into setup.py and setup_win.py.
+	* Fix some install locations.
+	* Add back toolbar, with an option in the preferences dialog to hide it.
+	* Don't fall back to version = 0.11.0 in setup.py.
+	* Simplify some code.
+
+2012-12-31  Bernhard Reiter  <ockham@raz.or.at>
+
+	Remove BUG_URL link from gglobals.py as its both outdated and not used anywhere.
+
+2012-12-30  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Don't use Gtk.InfoBar yet as it requires pyGtk >= 2.22. We'll keep this in a branch for now.
+	* Remove obsolete line from gglobals.py
+	* Move info.py contents back into version.py as we got rid of the critical circular dependency with OptionParser.py.
+	* Remove checks for gtk.CellRendererCombo as it has been part of GTK since v2.6.
+	* Determine location of installed files properly.
+	* Another stylesheet path fix in html_exporter.py.
+
+2012-12-28  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Add *.html pattern to html_exporter_plugin.py's saveas_filters.
+	* Fix default.css location in HTML exporter plugin.
+	* Remove custom file type widget from FileSelectorDialog.
+	* Remove FileChooserSaveAs.py as it has long been obsoleted by gtk_extras/dialog_extras.py.
+
+2012-12-25  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Let tools.gourmet_distutils.py take care of translation and installation of gourmet.desktop.
+	* Install png and svg icons to locations that enable desktop environments to pick proper file.
+	  See http://standards.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.html#directory_layout
+
+2012-12-19  Bernhard Reiter  <ockham@raz.or.at>
+
+	Remove obsolete GourmetFauxThreads.py and GourmetThreads.py.
+
+2012-12-17  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Fix db.py to allow (dev) version suffices like 0.16.0-dev.
+	* Add patch to include schema.org metadata for HTML exporter by SF user freedo.
+	  See https://sourceforge.net/tracker/?func=detail&aid=3519632&group_id=108118&atid=649654
+	  and http://www.schema.org/Recipe, respectively.
+	* Add plurals handling fix by A. Katz.
+	  "Just a quick patch to fix a bug in default.py.
+	  The function for converting a plural to a singular unit had two issues.
+	  a) WORD_TO_SING_PLUR_PAIR keys are lowercase but the word being handed to the function could be in any case
+	  b) if the word is not in WORD_TO_SING_PLUR_PAIR it does nothing, this patch tries lang.guess_singulars before
+	  giving up."
+	  See https://sourceforge.net/tracker/?func=detail&aid=3420657&group_id=108118&atid=649654
+
+2012-11-27  Bernhard Reiter  <ockham@raz.or.at>
+
+	Remove obsolete line from setup.py
+
+2012-11-26  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Fix gourmet/backends/db.py so it works with SQLAlchemy >= 0.7.
+	* Remove po/*/LC_MESSAGES/gourmet.mo files as they are generated at build time from po/*.po files.
+
+2012-11-22  Bernhard Reiter  <ockham@raz.or.at>
+
+	Remove obsolete file (now in gourmet/plugins/import_export/mastercook_import_plugin/)
+
+2012-05-25  Thomas Hinkle  <tmhinkle@gmail.com>
+
+	* Fixed conflict
+	* ++gettext
 
 2012-04-27  Tom  <tom@localhost6.localdomain6>
 
@@ -98,6 +320,224 @@
 
 	* gourmet/plugin_loader.py (Pluggable.get_plugin_by_module): Add
 	convenience function for grabbing plugin instances.
+
+2012-04-22  Bernhard Reiter  <ockham@raz.or.at>
+
+	Bump version number to 0.16.0-dev
+
+2012-03-06  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Remove gettext_setup.py as its logic has been split in settings.py and gglobals.py (and info.py)
+	* Remove some obsolete logic from setup.py.
+	* Move localized stuff from version.py to newly created info.py to avoid circular dependencies.
+	* Move logic that searches for the data files path from gglobals.py to newly created settings.py.
+	* Wrap the path finding stuff in bin/_preamble.py in a function
+	* Add __init__.py to the bin/ directory so we can import it as a module.
+	* Rename --data-directory cmdline option to --gourmet-base.
+	* Fix occurrences of HELP_FILE constant.
+
+2012-02-27  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Remove --image-directory and --ui-directory cmd line options, as those are now subdirectories of --data-directory.
+	* Replace custom inquiry if existing file should be overwritten by GTK one.
+
+2012-02-26  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Replace create_manifest.py by MANIFEST.in
+	* Remove some more duplicates
+
+2012-02-20  Bernhard Reiter  <ockham@raz.or.at>
+
+	Minor setup.py fix
+
+2012-02-16  Bernhard Reiter  <ockham@raz.or.at>
+
+	Remove tools/gourmet_distutils as it's unused (there's still tools/gourmet_distutils.py)
+
+2012-02-12  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Move website URL from GRM.py to version.py
+	* Replace old splash screen by new one
+	* Change directory layout once more. Looks good now, but still a lot of code fixes ahead.
+
+2012-02-11  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Un-hardwire intltool's path under windows in setup.py
+	* Fix FAQ and LICENSE locations in code
+	* Update setup.cfg, mostly to use .bz2 compression
+	* Restructure data/ directory
+	* Add images/gourmet.svg, and remove a couple of outdated images.
+	* Rename glade/ directory to ui/
+	* Restructure directory layout to comply more to
+	  http://as.ynchrono.us/2007/12/filesystem-structure-of-python-project_21.html
+
+2012-02-10  Thomas Hinkle  <tmhinkle@gmail.com>
+
+	* Fixed density of sugar (I think I'd used the density from a chemistry,
+	  rather than a cooking, site, which didn't account for the air between
+	  the sugar crystals when you measure it)
+	* Don't fail if elib.intl isn't present -- print a warning instead.
+	* Glade-->UI
+
+2012-02-09  Bernhard Reiter  <ockham@raz.or.at>
+
+	Rename i18n/ directory to po/ so intltool-update --maintain will work
+
+2012-02-08  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Images cleanup
+	* Remove a stray .po file
+	* Rename gladed command line option to uid
+	* Rename some more methods from glade to ui (or builder)
+	* s/gladebase/uibase/g
+	* Use updated i18n/de.po from Launchpad
+
+2012-02-07  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Replace custom hack in setup_gettext.py by elib.intl module
+	* Add Lauchpad header to i18n/de.po
+
+2012-02-06  Bernhard Reiter  <ockham@raz.or.at>
+
+	Update i18n/gourmet.pot translation template
+
+2012-02-05  Bernhard Reiter  <ockham@raz.or.at>
+
+	* New German translations by nobody (at) t4b.me
+	* i18n string unification fixes by nobody (at) t4b.me
+	* Another i18n fix
+
+2012-02-01  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Yet another (somewhat prominent) i18n fix.
+	* Internationalize src/lib/plugins/import_export/archive_plugin/zip_importer_plugin.py
+	* s/ = /=/ in the *.gourmet-plugin.in files, which previously impeded
+	  localization, as intltool-merge can't deal with whitespaces on the wrong places.
+
+2012-01-31  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Fix i18n/POTFILES.in to properly include .gourmet-plugin.in files
+	* Add Russian localization files i18n/ru.po and src/lib/defaults/defaults_ru.py
+	  by Alexander Prokoudine, from our Sourceforge patch tracker: see 
+	  https://sourceforge.net/tracker/?func=detail&aid=2858486&group_id=108118&atid=649654
+	  and https://sourceforge.net/tracker/?func=detail&aid=2858485&group_id=108118&atid=649654
+	* Fix sort of a typo
+	* Replace occurrences of .props.someproperty by {g|s}et_property('someproperty') to fix bug #3480177
+	* Replace occurrences of .props.someproperty by {g|s}et_property('someproperty') to fix bug #3480177
+	* Another fix to make i18n work.
+
+2012-01-30  Bernhard Reiter  <ockham@raz.or.at>
+
+	Small i18n related fix.
+
+2012-01-29  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Add domain=gourmet attribute to the interface tag in the .ui files
+	* Update i18n/POTFILES.in to reflect .glade -> .ui file conversion
+	* Add [type: gettext/glade] prefix to .ui files in i18n/POTFILES.in
+	  so that they're actually searched for strings by intltool.
+	* Add locale.bindtextdomain('gourmet',DIR) so that the strings from
+	  our .ui (and glade) files are actually translated -- which they previously weren't.
+
+2012-01-21  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Add i18n/generate_mo.sh as i18n/generate_mo.py doesn't seem to work for me.
+	* In src/lib/version.py, import gettext_setup so trings get translated.
+	* Make ImageSelectorDialog open the user's Pictures directory when launching it.
+
+2012-01-19  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Remove obsolete cmd line options documentation from gourmet.1
+	* Move LICENSE displaying logic from version.py to GourmetRecipeManager.py
+	  as it requires some imports; and add LICENSE to setup.py
+
+2012-01-17  Bernhard Reiter  <ockham@raz.or.at>
+
+	Add LICENSE to MANIFEST as it's needed by the About dialog.
+
+2012-01-12  Bernhard Reiter  <ockham@raz.or.at>
+
+	Comment out an obsolete windows workaround.
+
+2012-01-11  Bernhard Reiter  <ockham@raz.or.at>
+
+	Remove a stray file that had sneaked into MANIFEST and i18n/POTFILES.in
+
+2012-01-10  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Regenerate i18n/gourmet.pot and i18n/*.po files by running i18n/grab_strings.sh
+	* Update i18n/POTFILES.in based on MANIFEST contents
+	* Update MANIFEST
+	* Update POTFILES, translation template (gourmet.pot), and merge into individual *.po files
+	* Fix Nutritional Information plugin
+
+2012-01-07  Bernhard Reiter  <ockham@raz.or.at>
+
+	Remove make_star_button and make_star_image functions as they aren't needed anymore.
+
+2012-01-06  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Replace gnome.sound_* stuff with gstreamer (gst) stuff.
+	  This should conclude our removal of (python-)gnome dependencies.
+	  We now need pygtk >= 2.16 and (py)gst instead (which is much less heavy-weight than gnome).
+	* Remove gnome stuff from the pdf_exporter.py test code.
+	* Replace gnome-open by the cross-desktop xdg-open command.
+	* Remove gnomeprint import from gglobals.py
+	* Remove obsolete 'printer' command line option.
+	* Remove call to gnome.url_show as we can assume gtk.show_uri to exist in PyGTK >= 2.16
+
+2011-12-30  Bernhard Reiter  <ockham@raz.or.at>
+
+	Replace gnome.ui.About dialog by gtk.AboutDialog
+
+2011-12-27  Bernhard Reiter  <ockham@raz.or.at>
+
+	Use an InfoBar to display deletion warning message
+
+2011-12-19  Bernhard Reiter  <ockham@raz.or.at>
+
+	Add alignment objects to recCardDisplay.ui as that information got lost during gtk.Builder migration.
+
+2011-12-17  Bernhard Reiter  <ockham@raz.or.at>
+
+	Add NutritionLabel widget back to nut_recipe_card_display.ui which got lost in the migration to gtk.Builder
+
+2011-12-16  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Fix a signal handler related bug due to gtk.Builder migration
+	* Remove import gtk.glade statements everywhere.
+	* Remove custom_handlers stuff as it's obsolete now after migrating to gtk.Builder.
+	* Migrate even the faux stuff to gtk.Builder
+	* Remove references to *.glade files in setup.py and create_manifest.py; recreate MANIFEST.
+	* Migrate the Nutritional Information plugin to gtk.Builder. This requires still some polishing.
+	* Change NumberEntry's default_to_fractions argument default value to False
+	  (as that's what it's set to practically everywhere, and it will make migration to gtk.Builder easier).
+	* Forgot to add keyeditor.ui and remove keyeditor.glade
+	* Migrate recipeMerger.py to gtk.Builder
+	* Migrate keyEditor.py to gtk.Builder
+	* Remove app.glade (in favor of app.gui)
+	* Migrate chooserNotebook.py to gtk.Builder (though currently unused)
+	* Remove recipeMerger.py from src/lib as it's now in a plugin subdirectory
+	* Replace remaining glade.XML occurrences in GRM.py by gtk.Builder equivalents.
+	* Migration to gtk.Builder: Add app.ui and change remaining occurrences of app.glade to app.ui
+	* Replace checks for app.glade by checks for app.ui
+	* Remove an unnecessary import from src/lib/reccard.py
+	* Migrate batchEditor from glade to gtk.Builder
+	* Remove glade/keyeditor.glade as that files is already in src/lib/plugins/key_editor/
+	* Remove glade/*.glade and glade/*.gladep files for which conversion to *.ui is complete.
+	* Migrate recipe card to gtk.Builder
+
+2011-12-15  Bernhard Reiter  <ockham@raz.or.at>
+
+	* Fix reccard.py after migration to gtk.Builder; plus two fixes to ratingWidget.py
+	* Add a README to glade/catalog
+	* More recCardDisplay to gtk.Builder fixes
+	* Properly migrate recCardDisplay to gtk.Builder
+	* Create gourmetwidgets catalog for glade, adapt widgets code.
+
+2011-12-13  Bernhard Reiter  <ockham@raz.or.at>
+
+	Start migrating recCardDisplay to gtk.Builder
 
 2011-07-01  Tom  <tom@localhost6.localdomain6>
 
