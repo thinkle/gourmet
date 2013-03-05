@@ -237,5 +237,4 @@ gourmet/timeScanner.py
 gourmet/timer.py
 gourmet/upgradeHandler.py
 gourmet/version.py
-windows/Gourmet.pyw
 windows/GourmetDebug.pyw
