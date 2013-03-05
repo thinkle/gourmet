@@ -1,13 +1,10 @@
-include ChangeLog CHANGES FAQ gourmet.1 gourmet.desktop.in LICENSE MANIFEST.in README TODO TESTS setup.cfg setup.py setup_win.py test_tarball.sh
+include ChangeLog CHANGES FAQ gourmet.1 gourmet.desktop.in LICENSE MANIFEST.in README.md TODO TESTS setup.cfg setup.py setup_win.py test_tarball.sh
 include bin/gourmet
 recursive-include data *
-recursive-include gourmet *.py *.gourmet-plugin.in *.gourmet-plugin *.ui *.mk *.mx2 *.mmf *.kreml *.db *.sh
-recursive-include images *.png *.ico *.svg
+recursive-include gourmet *.py *.ui *.mk *.mx2 *.mmf *.kreml *.db *.sh
+recursive-include plugins *.gourmet-plugin.in *.gourmet-plugin
 recursive-include po *.pot *.po *.mo *.py *.sh *.in
-recursive-include sound *
-include style/default.css
 recursive-include tools *.py
 recursive-include ui *.ui
-recursive-include windows *.pyw *.bat *.iss *.nsi *nsh
-include windows/gtkrc
+recursive-include windows *.pyw *.nsi *nsh
 
