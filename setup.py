@@ -152,6 +152,7 @@ result = setup(
     #             }],
     description = version.description,
     author = version.author,
+    author_email = version.author_email,
     url = version.website,
     license = version.license,
     data_files = data_files(),
