@@ -1,5 +1,7 @@
 2013-03-06  Bernhard Reiter  <ockham@raz.or.at>
 
+	* Remove translation scripts from po/ as they're obsoleted
+	  by distutils-extra (see CODING file).
 	* Replace 'import Image' by 'try: from PIL import Image
 	  except ImportError: import Image'.
 	  Rationale: http://lists.debian.org/debian-python/2013/02/msg00017.html
