@@ -1,5 +1,7 @@
 2013-03-06  Bernhard Reiter  <ockham@raz.or.at>
 
+	* Remove bin/gourmet-importer and bin/gourmet-importer-profile.
+	  Both are apparently unused, unmaintained and severely outdated.
 	* Remove translation scripts from po/ as they're obsoleted
 	  by distutils-extra (see CODING file).
 	* Replace 'import Image' by 'try: from PIL import Image
