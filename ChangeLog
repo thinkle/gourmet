@@ -1,5 +1,8 @@
 2013-03-06  Bernhard Reiter  <ockham@raz.or.at>
 
+	* Replace 'import Image' by 'try: from PIL import Image
+	  except ImportError: import Image'.
+	  Rationale: http://lists.debian.org/debian-python/2013/02/msg00017.html
 	* Update Gourmet and Python version in windows/gourmet-installer.nsi.
 	* Update *.po files to match current source.
 	* Update *.po files from Launchpad Translations.

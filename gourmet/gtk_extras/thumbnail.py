@@ -1,5 +1,9 @@
-import Image, urllib, hashlib, os.path, os, StringIO
+import urllib, hashlib, os.path, os, StringIO
 from gourmet.gdebug import debug
+try:
+    from PIL import Image
+except ImportError:
+    import Image
 
 MAX_THUMBSIZE=10000000
 

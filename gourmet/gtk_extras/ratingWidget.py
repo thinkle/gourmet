@@ -1,9 +1,14 @@
 import gtk, gtk.gdk
 import gobject
 import gourmet.gglobals as gglobals
-import Image, os.path
+import os.path
 from gettext import gettext as _
 import tempfile
+
+try:
+    from PIL import Image
+except ImportError:
+    import Image
 
 PLUS_ONE_KEYS = ['plus',
                  'greater',

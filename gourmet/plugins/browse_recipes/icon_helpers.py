@@ -1,5 +1,9 @@
 import gtk.gdk, os.path
-from PIL import Image, ImageDraw # mentioning PIL explicitly helps py2exe
+# mentioning PIL explicitly helps py2exe
+try:
+    from PIL import Image, ImageDraw
+except ImportError:
+    import Image, ImageDraw
 from gourmet.ImageExtras import get_pixbuf_from_jpg
 from gourmet.gtk_extras.ratingWidget import star_generator
 
