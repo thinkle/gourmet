@@ -6,7 +6,7 @@ gourmet (0.16.0-1) unstable; urgency=low
     - Bump Standards-Version to 3.9.4.
     - Remove XS-Python-Version line.
     - Build-Depends: Remove quilt, add python-all.
-    - Build-Depends-Indep: Remove python-gtk2-dev.
+    - Build-Depends-Indep: Remove python-gtk2-dev, add python-distutils-extra.
     - Add Pre-Depends: dpkg (>= 1.15.6~) (for xz compression).
     - Depends: Drop python-glade2, increase python-gtk2 version (>= 2.22.0),
       version depend on python-sqlalchemy (>= 0.7), add python-elib.intl.
