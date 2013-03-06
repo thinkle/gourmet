@@ -1,23 +1,22 @@
-# English (Australia) translation for grecipe-manager
-# Copyright (c) (c) 2005 Canonical Ltd, and Rosetta Contributors 2005
+# Macedonian translation for grecipe-manager
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the grecipe-manager package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2005.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-02-06 23:43+0100\n"
-"PO-Revision-Date: 2012-06-20 00:25+0000\n"
-"Last-Translator: Vincent Lhote <Unknown>\n"
-"Language-Team: English (Australia) <en_AU@li.org>\n"
+"PO-Revision-Date: 2011-10-01 22:43+0000\n"
+"Last-Translator: pyropingvin <pyropingvin@yahoo.com>\n"
+"Language-Team: Macedonian <mk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2013-03-06 00:05+0000\n"
+"Plural-Forms: nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;\n"
+"X-Launchpad-Export-Date: 2013-03-06 00:04+0000\n"
 "X-Generator: Launchpad (build 16514)\n"
-"X-Rosetta-Version: 0.1\n"
 
 #: ../glade/app.ui.h:1 ../glade/recipe_index.ui.h:2
 msgid "A_dd Search Criteria"
@@ -25,7 +24,7 @@ msgstr ""
 
 #: ../glade/app.ui.h:2 ../src/lib/gglobals.py:348
 msgid "Add to _Shopping List"
-msgstr "Add to Shopping List"
+msgstr ""
 
 #: ../glade/app.ui.h:3 ../glade/recipe_index.ui.h:10
 msgid "Limiting Search to:"
@@ -759,7 +758,7 @@ msgstr ""
 
 #: ../gourmet.desktop.in.h:1 ../src/lib/version.py:4
 msgid "Gourmet Recipe Manager"
-msgstr ""
+msgstr "Gourmet менаџер на рецепти"
 
 #: ../gourmet.desktop.in.h:2
 msgid ""
@@ -770,7 +769,7 @@ msgstr ""
 #: ../src/lib/FileChooserSaveAs.py:153
 #: ../src/lib/gtk_extras/dialog_extras.py:1032
 msgid "Select File_type"
-msgstr ""
+msgstr "Одберете _тип на датотека"
 
 #: ../src/lib/FileChooserSaveAs.py:223
 #: ../src/lib/gtk_extras/dialog_extras.py:1123
@@ -791,11 +790,12 @@ msgstr ""
 msgid ""
 "Importing recipe data from a previous version of Gourmet into new database."
 msgstr ""
+"Увоз на рецепти од претходната верзија на Gourmet во нова база на податоци."
 
 #. Convenience method for showing progress dialogs for import/export/deletion
 #: ../src/lib/GourmetRecipeManager.py:168
 msgid "Import paused"
-msgstr ""
+msgstr "Увозот на податоци е паузиран"
 
 #: ../src/lib/GourmetRecipeManager.py:169
 msgid "Stop import"
@@ -804,31 +804,30 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:252
 #: ../src/lib/GourmetRecipeManager.py:1100
 msgid "Recipe _Index"
-msgstr ""
+msgstr "_Индекс на рецепти"
 
 #: ../src/lib/GourmetRecipeManager.py:253
 msgid "Shopping _List"
-msgstr ""
+msgstr "шопинг _листа"
 
 #: ../src/lib/GourmetRecipeManager.py:272 ../src/lib/reccard.py:213
 msgid "_Go"
-msgstr ""
+msgstr "_Оди"
 
 #: ../src/lib/GourmetRecipeManager.py:391
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Vincent Lhote https://launchpad.net/~vincent.lhote\n"
-"  jamie edgar https://launchpad.net/~jolt76"
+"  pyropingvin https://launchpad.net/~pyropingvin"
 
 #: ../src/lib/GourmetRecipeManager.py:451
 msgid "Saved!"
-msgstr ""
+msgstr "Зачувано!"
 
 #: ../src/lib/GourmetRecipeManager.py:461
 #, python-format
 msgid "Save your edits to %s"
-msgstr ""
+msgstr "Зачувајте ги вашите промени во %s"
 
 #: ../src/lib/GourmetRecipeManager.py:472
 msgid "An import is in progress."
@@ -858,7 +857,7 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:542
 #: ../src/lib/GourmetRecipeManager.py:557
 msgid "Trash"
-msgstr ""
+msgstr "Отпадоци"
 
 #: ../src/lib/GourmetRecipeManager.py:557
 msgid "Browse, permanently delete or undelete deleted recipes"
@@ -1451,7 +1450,7 @@ msgstr ""
 
 #: ../src/lib/gglobals.py:237
 msgid "Website"
-msgstr ""
+msgstr "Веб-локација"
 
 #: ../src/lib/gglobals.py:240
 msgid "Preparation Time"
@@ -2165,7 +2164,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
 msgid "Mealmaster (tm) Export"
-msgstr "Mealmaster™ Export"
+msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py:22

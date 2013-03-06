@@ -1,23 +1,22 @@
-# English (Australia) translation for grecipe-manager
-# Copyright (c) (c) 2005 Canonical Ltd, and Rosetta Contributors 2005
+# Indonesian translation for grecipe-manager
+# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
 # This file is distributed under the same license as the grecipe-manager package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2005.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-02-06 23:43+0100\n"
-"PO-Revision-Date: 2012-06-20 00:25+0000\n"
-"Last-Translator: Vincent Lhote <Unknown>\n"
-"Language-Team: English (Australia) <en_AU@li.org>\n"
+"PO-Revision-Date: 2009-11-17 20:30+0000\n"
+"Last-Translator: reza <edja_kun@yahoo.co.uk>\n"
+"Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2013-03-06 00:05+0000\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Launchpad-Export-Date: 2013-03-06 00:04+0000\n"
 "X-Generator: Launchpad (build 16514)\n"
-"X-Rosetta-Version: 0.1\n"
 
 #: ../glade/app.ui.h:1 ../glade/recipe_index.ui.h:2
 msgid "A_dd Search Criteria"
@@ -25,7 +24,7 @@ msgstr ""
 
 #: ../glade/app.ui.h:2 ../src/lib/gglobals.py:348
 msgid "Add to _Shopping List"
-msgstr "Add to Shopping List"
+msgstr "Tambah ke _Shopping List"
 
 #: ../glade/app.ui.h:3 ../glade/recipe_index.ui.h:10
 msgid "Limiting Search to:"
@@ -59,7 +58,7 @@ msgstr ""
 #: ../glade/app.ui.h:9 ../glade/generic_importer.ui.h:4
 #: ../src/lib/importers/interactive_importer.py:143
 msgid "_New Recipe"
-msgstr ""
+msgstr "Resep _baru"
 
 #: ../glade/app.ui.h:10 ../glade/recipe_index.ui.h:24
 #: ../src/lib/plugins/key_editor/keyeditor.ui.h:11
@@ -370,7 +369,7 @@ msgstr ""
 #: ../src/lib/shopgui.py:544 ../src/lib/shopgui.py:848
 #: ../src/lib/shopgui.py:997
 msgid "Shopping List"
-msgstr ""
+msgstr "Daftar Belanja"
 
 #: ../glade/preferenceDialog.ui.h:12
 msgid "Use fractions when possible for display"
@@ -690,7 +689,7 @@ msgstr ""
 
 #: ../glade/timerDialog.ui.h:6 ../src/lib/timer.py:140 ../src/lib/timer.py:141
 msgid "Timer"
-msgstr ""
+msgstr "timer"
 
 #: ../glade/timerDialog.ui.h:7
 msgid ""
@@ -759,7 +758,7 @@ msgstr ""
 
 #: ../gourmet.desktop.in.h:1 ../src/lib/version.py:4
 msgid "Gourmet Recipe Manager"
-msgstr ""
+msgstr "Gourmet Recipe Manager"
 
 #: ../gourmet.desktop.in.h:2
 msgid ""
@@ -770,18 +769,18 @@ msgstr ""
 #: ../src/lib/FileChooserSaveAs.py:153
 #: ../src/lib/gtk_extras/dialog_extras.py:1032
 msgid "Select File_type"
-msgstr ""
+msgstr "Pilih tipe_berkas"
 
 #: ../src/lib/FileChooserSaveAs.py:223
 #: ../src/lib/gtk_extras/dialog_extras.py:1123
 #, python-format
 msgid "A file named %s already exists."
-msgstr ""
+msgstr "Sebuah file bernama %s sudah ada."
 
 #: ../src/lib/FileChooserSaveAs.py:224
 #: ../src/lib/gtk_extras/dialog_extras.py:1124
 msgid "Do you want to replace it with the one you are saving?"
-msgstr ""
+msgstr "Apakah anda ingin menimpa ini dengan yang anda simpan?"
 
 #: ../src/lib/GourmetRecipeManager.py:66
 msgid "Importing old recipe data"
@@ -795,11 +794,11 @@ msgstr ""
 #. Convenience method for showing progress dialogs for import/export/deletion
 #: ../src/lib/GourmetRecipeManager.py:168
 msgid "Import paused"
-msgstr ""
+msgstr "Impor di-pause"
 
 #: ../src/lib/GourmetRecipeManager.py:169
 msgid "Stop import"
-msgstr ""
+msgstr "Hentikan impor"
 
 #: ../src/lib/GourmetRecipeManager.py:252
 #: ../src/lib/GourmetRecipeManager.py:1100
@@ -818,37 +817,36 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Vincent Lhote https://launchpad.net/~vincent.lhote\n"
-"  jamie edgar https://launchpad.net/~jolt76"
+"  reza https://launchpad.net/~edja-kun"
 
 #: ../src/lib/GourmetRecipeManager.py:451
 msgid "Saved!"
-msgstr ""
+msgstr "Tersimpan!"
 
 #: ../src/lib/GourmetRecipeManager.py:461
 #, python-format
 msgid "Save your edits to %s"
-msgstr ""
+msgstr "Sumpan suntingan anda ke %s"
 
 #: ../src/lib/GourmetRecipeManager.py:472
 msgid "An import is in progress."
-msgstr ""
+msgstr "Impor dalam proses"
 
 #: ../src/lib/GourmetRecipeManager.py:473
 msgid "An export is in progress."
-msgstr ""
+msgstr "Expor dalam proses"
 
 #: ../src/lib/GourmetRecipeManager.py:474
 msgid "A delete is in progress."
-msgstr ""
+msgstr "Penghapusan dalam proses"
 
 #: ../src/lib/GourmetRecipeManager.py:476
 msgid "Exit program anyway?"
-msgstr ""
+msgstr "Keluar program?"
 
 #: ../src/lib/GourmetRecipeManager.py:478
 msgid "Don't exit!"
-msgstr ""
+msgstr "Jangan Keluar!"
 
 #: ../src/lib/GourmetRecipeManager.py:524
 #, python-format
@@ -866,7 +864,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:609
 msgid "Undeleted recipes "
-msgstr ""
+msgstr "Resep yang takdihapus "
 
 #: ../src/lib/GourmetRecipeManager.py:679
 msgid "Gourmet Recipe Manager starting up..."
@@ -884,7 +882,7 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:787
 #, python-format
 msgid "Multiply %s by:"
-msgstr ""
+msgstr "Multplikasikan %s dengan:"
 
 #: ../src/lib/GourmetRecipeManager.py:807
 #, python-format
@@ -930,7 +928,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1042
 msgid "Delete selected recipes"
-msgstr ""
+msgstr "Hapus resep-resep yang dipilh"
 
 #: ../src/lib/GourmetRecipeManager.py:1043
 msgid "Edit recipe"
@@ -1100,11 +1098,11 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1258
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
-msgstr ""
+msgstr "Apakah anda yakin ingin menghapus %s resep yang dipilih?"
 
 #: ../src/lib/GourmetRecipeManager.py:1260
 msgid "See recipes"
-msgstr ""
+msgstr "Lihat resep"
 
 #: ../src/lib/GourmetRecipeManager.py:1268
 msgid "Delete Recipes"
@@ -1113,20 +1111,20 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1295
 #, python-format
 msgid "Deleted recipe %s"
-msgstr ""
+msgstr "Hapus resep %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1335
 msgid "Export succeeded"
-msgstr ""
+msgstr "Export berhasil"
 
 #: ../src/lib/GourmetRecipeManager.py:1338
 msgid "webpage"
-msgstr ""
+msgstr "webpage"
 
 #: ../src/lib/GourmetRecipeManager.py:1339
 #, python-format
 msgid "Exported %s to %s"
-msgstr ""
+msgstr "Ekspor %s ke %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1399
 msgid "Done!"
@@ -1134,7 +1132,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1407
 msgid "Importing..."
-msgstr ""
+msgstr "Mengimpor..."
 
 #: ../src/lib/GourmetThreads.py:42
 #, python-format
@@ -1201,7 +1199,7 @@ msgstr ""
 #: ../src/lib/legacy_db/db_085/rdatabase.py:447
 #: ../src/lib/legacy_db/db_09/rdatabase.py:508 ../src/lib/reccard.py:939
 msgid "New Recipe"
-msgstr ""
+msgstr "Resep baru"
 
 #: ../src/lib/check_encodings.py:92
 msgid "Select encoding"
@@ -1243,7 +1241,7 @@ msgstr[1] ""
 #. hrs = abbreviation for hours
 #: ../src/lib/convert.py:67
 msgid "hrs."
-msgstr ""
+msgstr "Jam."
 
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:563
 msgid "hour"
@@ -1305,7 +1303,7 @@ msgstr ""
 #. show up sometimes.
 #: ../src/lib/convert.py:762
 msgid "to"
-msgstr ""
+msgstr "untuk"
 
 #: ../src/lib/convertGui.py:107
 #: ../src/lib/plugins/unit_converter/convertGui.py:114
@@ -1316,11 +1314,11 @@ msgstr ""
 #: ../src/lib/convertGui.py:109
 #: ../src/lib/plugins/unit_converter/convertGui.py:116
 msgid "Need density information."
-msgstr ""
+msgstr "Membutuhkan informasi yang detail."
 
 #: ../src/lib/exporters/exportManager.py:36
 msgid "Save recipe as..."
-msgstr ""
+msgstr "Simpan resep sebagai..."
 
 #: ../src/lib/exporters/exportManager.py:45
 #, python-format
@@ -1393,8 +1391,7 @@ msgstr ""
 #, python-format
 msgid "Print %s recipe"
 msgid_plural "Print %s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Cetak resep %s"
 
 #: ../src/lib/exporters/printer.py:80
 msgid "Well this is embarassing. Something went wrong printing your recipe."
@@ -1405,7 +1402,7 @@ msgstr ""
 #: ../src/lib/plugins/email_plugin/recipe_emailer.py:48
 #: ../src/lib/plugins/key_editor/keyEditor.py:115 ../src/lib/reccard.py:3055
 msgid "Recipes"
-msgstr ""
+msgstr "Resep-resep"
 
 #: ../src/lib/exporters/recipe_emailer.py:119
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
@@ -1447,7 +1444,7 @@ msgstr ""
 
 #: ../src/lib/gglobals.py:236
 msgid "Source"
-msgstr ""
+msgstr "Sumber"
 
 #: ../src/lib/gglobals.py:237
 msgid "Website"
@@ -1455,11 +1452,11 @@ msgstr ""
 
 #: ../src/lib/gglobals.py:240
 msgid "Preparation Time"
-msgstr ""
+msgstr "Waktu persiapan"
 
 #: ../src/lib/gglobals.py:241
 msgid "Cooking Time"
-msgstr ""
+msgstr "Waktu memasak"
 
 #: ../src/lib/gglobals.py:246 ../src/lib/gglobals.py:251
 #: ../src/lib/reccard.py:1654
@@ -1473,29 +1470,29 @@ msgstr ""
 
 #: ../src/lib/gglobals.py:253
 msgid "Modifications"
-msgstr ""
+msgstr "Modifikasi"
 
 #. print dir(err)
 #: ../src/lib/gglobals.py:319
 msgid "Unable to open URL"
-msgstr ""
+msgstr "Tidak dapat membuka URL"
 
 #: ../src/lib/gglobals.py:320
 msgid "Unable to launch mail reader."
-msgstr ""
+msgstr "Tidak dapat meluncurkan surat pembaca"
 
 #: ../src/lib/gglobals.py:321
 msgid "Unable to open website."
-msgstr ""
+msgstr "Tidak dapat membuka website"
 
 #: ../src/lib/gglobals.py:322
 msgid "Unable to open file."
-msgstr ""
+msgstr "Tidak dapat membuka berkas."
 
 #: ../src/lib/gglobals.py:328
 #, python-format
 msgid "There was an error launching the url: %s"
-msgstr ""
+msgstr "Ada kesalahan pada peluncuran URL: %s"
 
 #. setup pause button
 #: ../src/lib/gtk_extras/dialog_extras.py:405
@@ -1514,17 +1511,17 @@ msgstr ""
 
 #: ../src/lib/gtk_extras/dialog_extras.py:529
 msgid "Do you really want to do this"
-msgstr ""
+msgstr "Apakah anda yakin untuk melakukan ini"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:741
 #: ../src/lib/importers/importer.py:466
 msgid "excellent"
-msgstr ""
+msgstr "Bagus sekali"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:742
 #: ../src/lib/importers/importer.py:467
 msgid "great"
-msgstr ""
+msgstr "Hebat"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:743
 #: ../src/lib/importers/importer.py:468
@@ -1563,11 +1560,11 @@ msgstr ""
 
 #: ../src/lib/gtk_extras/dialog_extras.py:1109
 msgid "No file selected"
-msgstr ""
+msgstr "Tidak ada berkas yang dipilih"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:1110
 msgid "No file was selected, so the action has been cancelled"
-msgstr ""
+msgstr "Tidak ada file yang dipilih, maka aksi dibatalkan"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:1225
 #, python-format
@@ -1575,6 +1572,8 @@ msgid ""
 "I'm sorry, I can't understand\n"
 "the amount \"%s\"."
 msgstr ""
+"Maafkan saya, Saya tidak mengerti\n"
+"Jumlah \"%s\""
 
 #: ../src/lib/gtk_extras/dialog_extras.py:1227
 msgid ""
@@ -1598,11 +1597,11 @@ msgstr ""
 #: ../src/lib/gtk_extras/numberEntry.py:29
 #: ../src/lib/gtk_extras/timeEntry.py:56 ../src/lib/gtk_extras/timeEntry.py:66
 msgid "Invalid input."
-msgstr ""
+msgstr "Input tidak valid."
 
 #: ../src/lib/gtk_extras/numberEntry.py:29
 msgid "Not a number."
-msgstr ""
+msgstr "Bukan nomor"
 
 #: ../src/lib/gtk_extras/timeEntry.py:41
 msgid ""
@@ -1612,7 +1611,7 @@ msgstr ""
 
 #: ../src/lib/gtk_extras/timeEntry.py:57 ../src/lib/gtk_extras/timeEntry.py:67
 msgid "Time must be expressed in hours, minutes, seconds, etc."
-msgstr ""
+msgstr "Waktu harus diekspresikan dalam jam, menit, detik, dll."
 
 #: ../src/lib/importers/generic_recipe_parser.py:130
 msgid "yield"
@@ -1622,12 +1621,12 @@ msgstr ""
 #: ../src/lib/importers/webextras.py:21 ../src/lib/importers/webextras.py:79
 #, python-format
 msgid "Retrieving %s"
-msgstr ""
+msgstr "Medapatkan kembali %s"
 
 #: ../src/lib/importers/html_importer.py:44
 #: ../src/lib/importers/webextras.py:82
 msgid "Retrieving file"
-msgstr ""
+msgstr "Medapatkan kembali berkas"
 
 #. Interactive we go...
 #: ../src/lib/importers/html_importer.py:487
@@ -1637,15 +1636,15 @@ msgstr ""
 #: ../src/lib/importers/html_importer.py:498
 #: ../src/lib/importers/html_importer.py:567
 msgid "Import complete."
-msgstr ""
+msgstr "Impor selesai."
 
 #: ../src/lib/importers/html_importer.py:519
 msgid "Importing recipe"
-msgstr ""
+msgstr "Mengimpor resep"
 
 #: ../src/lib/importers/html_importer.py:525
 msgid "Processing ingredients"
-msgstr ""
+msgstr "Memproses bahan-bahan dasar"
 
 #: ../src/lib/importers/html_importer.py:549
 msgid "Processing ingredients."
@@ -1653,7 +1652,7 @@ msgstr ""
 
 #: ../src/lib/importers/importManager.py:54
 msgid "Enter the URL of a recipe archive or recipe website."
-msgstr ""
+msgstr "Masukkan URL dari sebuah arsip resep atau website resep"
 
 #: ../src/lib/importers/importManager.py:55
 msgid "Enter website address"
@@ -1661,7 +1660,7 @@ msgstr ""
 
 #: ../src/lib/importers/importManager.py:57
 msgid "Enter URL:"
-msgstr ""
+msgstr "Masukkan URL:"
 
 #: ../src/lib/importers/importManager.py:58
 msgid "Enter the address of a website or recipe archive."
@@ -1692,7 +1691,7 @@ msgstr ""
 
 #: ../src/lib/importers/importManager.py:242
 msgid "All importable files"
-msgstr ""
+msgstr "semua Berkas-berkas yang dapat diimpor"
 
 #: ../src/lib/importers/importer.py:185
 msgid "serving"
@@ -1711,7 +1710,7 @@ msgstr ""
 
 #: ../src/lib/importers/interactive_importer.py:37
 msgid "Servings"
-msgstr ""
+msgstr "Pelayanan"
 
 #: ../src/lib/importers/interactive_importer.py:39
 msgid "Ingredient Subgroup"
@@ -1835,7 +1834,7 @@ msgstr ""
 
 #: ../src/lib/plugin_gui.py:134 ../src/lib/recindex.py:452
 msgid "or"
-msgstr ""
+msgstr "atau"
 
 #: ../src/lib/plugin_gui.py:138
 msgid "An error occurred activating plugin."
@@ -2053,7 +2052,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/archive_plugin/zip_readers.py:44
 msgid "Loading zip archive"
-msgstr ""
+msgstr "Memuat arsip zip"
 
 #: ../src/lib/plugins/import_export/archive_plugin/zip_readers.py:59
 msgid "Unzipping zip archive"
@@ -2072,11 +2071,11 @@ msgstr ""
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:7
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_importer_plugin.py:61
 msgid "Gourmet XML File"
-msgstr ""
+msgstr "berkas Gourmet XML"
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:46
 msgid "Gourmet XML Export"
-msgstr ""
+msgstr "Ekspor Gourmet XML"
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:47
 #, python-format
@@ -2107,7 +2106,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:5
 msgid "HTML Web Page"
-msgstr ""
+msgstr "halaman Web HTML"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:9
 msgid "Exporting Webpage"
@@ -2137,7 +2136,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer.py:116
 msgid "Mastercook import finished."
-msgstr ""
+msgstr "Impor Mastercook selesai"
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer.py:249
 msgid "Tidying up XML"
@@ -2165,12 +2164,12 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
 msgid "Mealmaster (tm) Export"
-msgstr "Mealmaster™ Export"
+msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py:22
 msgid "MealMaster file"
-msgstr ""
+msgstr "berkas MealMaster"
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:9
 msgid "MealMaster Export"
@@ -2318,7 +2317,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:9
 msgid "PDF Export"
-msgstr ""
+msgstr "Ekspor PDF"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:10
 #, python-format
@@ -2336,7 +2335,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/print_plugin.py:116
 msgid "Print Recipes"
-msgstr ""
+msgstr "Cetak resep"
 
 #: ../src/lib/plugins/import_export/plaintext.gourmet-plugin.in.h:1
 msgid ""
@@ -2354,7 +2353,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:9
 msgid "Text Export"
-msgstr ""
+msgstr "Ekspor teks"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:10
 #, python-format
@@ -2425,7 +2424,7 @@ msgstr ""
 #: ../src/lib/plugins/key_editor/keyEditor.py:262
 #: ../src/lib/plugins/key_editor/keyEditor.py:538
 msgid "item"
-msgstr ""
+msgstr "barang"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:87
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:36
@@ -2434,20 +2433,20 @@ msgstr ""
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:112
 msgid "Field"
-msgstr ""
+msgstr "Bagian"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:113
 msgid "Value"
-msgstr ""
+msgstr "Nilai"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:114
 msgid "Count"
-msgstr ""
+msgstr "Hitung"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:159
 #, python-format
 msgid "Change all keys \"%s\" to \"%s\"?"
-msgstr ""
+msgstr "Ubah semua kunci \"%s\" ke \"%s\":"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:160
 #, python-format
@@ -2456,11 +2455,14 @@ msgid ""
 "the key \"%s\", you won't be able to distinguish between those items and the "
 "items you are changing now."
 msgstr ""
+"Anda tidak akan dapat kembali ke aksi ini. Jika sudah ada bahan dasar dengan "
+"kunci \"%s\", anda tidak akan dapat membedakan antara barang-barang tersebut "
+"dan Barang-barang yang anda ubah sekarang."
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:172
 #, python-format
 msgid "Change all items \"%s\" to \"%s\"?"
-msgstr ""
+msgstr "Ubah semua barang \"%s\" ke \"%s\"?"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:173
 #, python-format
@@ -2469,11 +2471,14 @@ msgid ""
 "the item \"%s\", you won't be able to distinguish between those items and "
 "the items you are changing now."
 msgstr ""
+"Anda tidak akan dapat kembali ke aksi ini. Jika sudah ada bahan dasar dengan "
+"barang \"%s\", anda tidak akan dapat membedakan antara barang-barang "
+"tersebut dan Barang-barang yang anda ubah sekarang."
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:184
 #, python-format
 msgid "Change _all instances of \"%(unit)s\" to \"%(text)s\""
-msgstr ""
+msgstr "Ubah semua instansi dari \"%(unit)s\" ke \"%(text)s\""
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:185
 #, python-format
@@ -2545,8 +2550,7 @@ msgstr ""
 #, python-format
 msgid "%s ingredient"
 msgid_plural "%s ingredients"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s bahan dasar"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
@@ -2572,7 +2576,7 @@ msgstr ""
 #: ../src/lib/plugins/key_editor/keyEditor.py:515
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:7
 msgid "Amount"
-msgstr ""
+msgstr "Jumlah"
 
 #: ../src/lib/plugins/key_editor/keyEditorPlugin.py:16
 msgid "Ingredient _Key Editor"
@@ -2726,7 +2730,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionDisplay.py:132
 msgid "100 grams"
-msgstr ""
+msgstr "100 gram"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:1
 msgid "<b>Choose a Density</b>"
@@ -2830,7 +2834,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:94
 msgid "Any food group"
-msgstr ""
+msgstr "ada Grup makanan"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:269
 msgid "selection"
@@ -2882,7 +2886,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:806
 msgid "Change unit"
-msgstr ""
+msgstr "Ubah unit"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:808
 #, python-format
@@ -2904,6 +2908,8 @@ msgstr ""
 msgid ""
 "To apply nutritional information, Gourmet needs a valid amount and unit."
 msgstr ""
+"Untuk mengapikasikan informasi nutrisional, Gourmet membutuhkan sebuah "
+"jumlah yang valid dan unit"
 
 #. filename=None
 #. if de.getBoolean(
@@ -2921,12 +2927,12 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionGrabberGui.py:40
 msgid "Nutritonal database import complete!"
-msgstr ""
+msgstr "impor Basis data nutrisional selesai!"
 
 #: ../src/lib/plugins/nutritional_information/nutritionGrabberGui.py:59
 #, python-format
 msgid "Fetching nutritional database from zip archive %s"
-msgstr ""
+msgstr "Mengambil basis sata nutrisional dari arsip zip %s"
 
 #: ../src/lib/plugins/nutritional_information/nutritionGrabberGui.py:63
 #, python-format
@@ -2961,11 +2967,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:11
 msgid "Calories"
-msgstr ""
+msgstr "Kalori"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:14
 msgid "Total Fat"
-msgstr ""
+msgstr "Lemak Total"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:16
 msgid "Saturated Fat"
@@ -2993,43 +2999,43 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:28
 msgid "Protein"
-msgstr ""
+msgstr "Protein"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:33
 msgid "Alpha-carotene"
-msgstr ""
+msgstr "Alpha-carotene"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:35
 msgid "Ash"
-msgstr ""
+msgstr "Debu"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:37
 msgid "Beta-carotene"
-msgstr ""
+msgstr "Beta-carotene"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:39
 msgid "Beta Cryptoxanthin"
-msgstr ""
+msgstr "Beta Cryptoxanthin"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:41
 msgid "Calcium"
-msgstr ""
+msgstr "Kalsium"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:43
 msgid "Copper"
-msgstr ""
+msgstr "Tembaga"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:45
 msgid "Folate Total"
-msgstr ""
+msgstr "Total Folat"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:47
 msgid "Folic acid"
-msgstr ""
+msgstr "Asam Folic"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:49
 msgid "Food Folate"
-msgstr ""
+msgstr "Food Folate"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:51
 msgid "Dietary folate equivalents"
@@ -3073,59 +3079,59 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:71
 msgid "Vitamin A"
-msgstr ""
+msgstr "Vitamin A"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:73
 msgid "Retinol"
-msgstr ""
+msgstr "Retinol"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:75
 msgid "Riboflavin"
-msgstr ""
+msgstr "Riboflavin"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:77
 msgid "Selenium"
-msgstr ""
+msgstr "Selenium"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:79
 msgid "Thiamin"
-msgstr ""
+msgstr "Thiamin"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:81
 msgid "Vitamin A (IU)"
-msgstr ""
+msgstr "Vitamin A (IU)"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:83
 msgid "Vitamin A (RAE)"
-msgstr ""
+msgstr "Vitamin A (RAE)"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:85
 msgid "Vitamin B6"
-msgstr ""
+msgstr "Vitamin B6"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:87
 msgid "Vitamin B12"
-msgstr ""
+msgstr "Vitamin B12"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:89
 msgid "Vitamin C"
-msgstr ""
+msgstr "Vitamin C"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:91
 msgid "Vitamin E"
-msgstr ""
+msgstr "Vitamin E"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:93
 msgid "Vitamin K"
-msgstr ""
+msgstr "Vitamin K"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:95
 msgid "Zinc"
-msgstr ""
+msgstr "SEng"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:207
 msgid "Vitamins and minerals"
-msgstr ""
+msgstr "Vitamin dan mineral"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:315
 #, python-format
@@ -3136,7 +3142,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:331
 msgid "% _Daily Value"
-msgstr ""
+msgstr "% _nilai harian"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:376
 #, python-format
@@ -3144,6 +3150,8 @@ msgid ""
 "Percentage of recommended daily value based on %i calories per day. Click to "
 "edit number of calories per day."
 msgstr ""
+"Persentase dari nilai harian yang direkomendasikan berdasarkan pada %i "
+"kalori per hari. Klik untuk menyunting jumlah kalori per hari"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:466
 #, python-format
@@ -3152,7 +3160,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:468
 msgid "Amount per recipe"
-msgstr ""
+msgstr "Jumlah per resep"
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:9
 msgid "Ingredient"
@@ -3193,43 +3201,43 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:18
 msgid "g fiber"
-msgstr ""
+msgstr "g fiber"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:19
 msgid "g sugar"
-msgstr ""
+msgstr "g gula"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:20
 msgid "mg calcium"
-msgstr ""
+msgstr "g kalsium"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:21
 msgid "mg iron"
-msgstr ""
+msgstr "mg besi"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:22
 msgid "mg magnesium"
-msgstr ""
+msgstr "mg magnesium"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:23
 msgid "mg phosphorus"
-msgstr ""
+msgstr "mg fosfor"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:24
 msgid "mg potassium"
-msgstr ""
+msgstr "mg potassium"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:25
 msgid "mg sodium"
-msgstr ""
+msgstr "mg sodium"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:26
 msgid "mg zinc"
-msgstr ""
+msgstr "mg seng"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:27
 msgid "mg copper"
-msgstr ""
+msgstr "mg tembaga"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:28
 msgid "mg manganese"
@@ -3273,7 +3281,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:38
 msgid "microgram Food Folate"
-msgstr ""
+msgstr "mikrogram Food Folate"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:39
 msgid "microgram dietary folate equivalents"
@@ -3285,11 +3293,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:41
 msgid "microgram Vitamin B12"
-msgstr ""
+msgstr "mikrogram Vitamin B12"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:42
 msgid "Vitamin A IU"
-msgstr ""
+msgstr "Vitamin A IU"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:43
 msgid "Vitamin A (microgram Retinal Activity Equivalents"
@@ -3297,15 +3305,15 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:44
 msgid "microgram Retinol"
-msgstr ""
+msgstr "mikrogram Retinol"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:45
 msgid "microgram Alpha-carotene"
-msgstr ""
+msgstr "mikrogram Alpha-carotene"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:46
 msgid "microgram Beta-carotene"
-msgstr ""
+msgstr "mikrogram Beta-carotene"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:47
 msgid "microgram Beta Cryptoxanthin"
@@ -3321,11 +3329,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:50
 msgid "mg Vitamin E"
-msgstr ""
+msgstr "mg Vitamin E"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:51
 msgid "mg Vitamin K"
-msgstr ""
+msgstr "mg Vitamin K"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:52
 msgid "g Saturated Fatty Acid"
@@ -3356,39 +3364,39 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:338
 msgid "Spices & Herbs"
-msgstr ""
+msgstr "Rempah-rempah dan herbal"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:339
 msgid "Baby Foods"
-msgstr ""
+msgstr "Makanan bayi"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:340
 msgid "Fats and Oils"
-msgstr ""
+msgstr "Lemak dan minyak"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:341
 msgid "Poultry"
-msgstr ""
+msgstr "Poultry"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:342
 msgid "Soups & Sauces"
-msgstr ""
+msgstr "Sup dan Saus"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:343
 msgid "Sausages & Lunch Meats"
-msgstr ""
+msgstr "Sosis dan Daging"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:344
 msgid "Breakfast Cereals"
-msgstr ""
+msgstr "Sereal sarapan"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:345
 msgid "Fruits & Fruit Juices"
-msgstr ""
+msgstr "Buah dan jus buah"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:346
 msgid "Pork"
-msgstr ""
+msgstr "Babi"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:347
 msgid "Vegetables"
@@ -3432,7 +3440,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:357
 msgid "Fast Foods"
-msgstr ""
+msgstr "Makanan cepat saji"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:358
 msgid "Meals, Entrees, and Sidedishes"
@@ -3440,11 +3448,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:359
 msgid "Snacks"
-msgstr ""
+msgstr "Makanan ringan"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:360
 msgid "Ethnic Foods"
-msgstr ""
+msgstr "Makanan Etnis"
 
 #: ../src/lib/plugins/nutritional_information/reccard_plugin.py:15
 msgid "Nutrition"
@@ -3491,7 +3499,7 @@ msgstr ""
 #: ../src/lib/plugins/shopping_associations/shopping_key_editor_plugin.py:9
 #: ../src/lib/reccard.py:2285
 msgid "Shopping Category"
-msgstr ""
+msgstr "Kategori belanja"
 
 #: ../src/lib/plugins/spellcheck.gourmet-plugin.in.h:1
 msgid ""
@@ -3569,7 +3577,7 @@ msgstr ""
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:25
 #: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
 msgid "title"
-msgstr ""
+msgstr "Judul"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:26
 #: ../src/lib/recindex.py:39 ../src/lib/recindex.py:49
@@ -3584,7 +3592,7 @@ msgstr ""
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:28
 #: ../src/lib/recindex.py:41 ../src/lib/recindex.py:55
 msgid "notes"
-msgstr ""
+msgstr "Catatan"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:30
 #: ../src/lib/recindex.py:43 ../src/lib/recindex.py:51
@@ -3632,7 +3640,7 @@ msgstr ""
 #. None,None,self.email_cb),
 #: ../src/lib/reccard.py:240
 msgid "Print recipe"
-msgstr ""
+msgstr "Cetak Resep"
 
 #: ../src/lib/reccard.py:243
 msgid "Forget remembered optional ingredients"
@@ -3650,7 +3658,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:608
 msgid "You have unsaved changes."
-msgstr ""
+msgstr "Anda tidak menyimpan perubahan"
 
 #: ../src/lib/reccard.py:609
 msgid "Apply changes before printing?"
@@ -3658,7 +3666,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:700 ../src/lib/recipeIdentifier.py:93
 msgid "(Optional)"
-msgstr ""
+msgstr "(Opsional)"
 
 #: ../src/lib/reccard.py:755
 #, python-format
@@ -3667,7 +3675,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:847
 msgid "Edit Recipe:"
-msgstr ""
+msgstr "Sunting Resep:"
 
 #: ../src/lib/reccard.py:868
 msgid "Save edits to database"
@@ -3726,7 +3734,7 @@ msgstr ""
 #. FIXME
 #: ../src/lib/reccard.py:1204
 msgid "Choose a file containing your ingredient list."
-msgstr ""
+msgstr "Pilih berkas yang berisi daftar bahan dasar anda:"
 
 #: ../src/lib/reccard.py:1389
 #, python-format
@@ -3749,16 +3757,16 @@ msgstr ""
 #: ../src/lib/reccard.py:2623
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
-msgstr ""
+msgstr "dikonversi: %(amt)s %(unit)s"
 
 #: ../src/lib/reccard.py:2625
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
-msgstr ""
+msgstr "Tidak dikonversi: %(amt)s %(unit)s"
 
 #: ../src/lib/reccard.py:2629
 msgid "Changed unit."
-msgstr ""
+msgstr "Ubah unit"
 
 #: ../src/lib/reccard.py:2630
 #, python-format
@@ -3775,11 +3783,11 @@ msgstr ""
 #: ../src/lib/reccard.py:2653
 #, python-format
 msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
-msgstr ""
+msgstr "Tidak dapat mengkonversi dari %(old_unit)s ke %(new_unit)s"
 
 #: ../src/lib/reccard.py:2708
 msgid "Adding Ingredient Group"
-msgstr ""
+msgstr "Menambahkan grup bahan dasar"
 
 #: ../src/lib/reccard.py:2709
 msgid "Enter a name for new subgroup of ingredients"
@@ -3834,8 +3842,7 @@ msgstr ""
 #, python-format
 msgid "%s recipe"
 msgid_plural "%s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s resep"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
@@ -3903,24 +3910,24 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:211
 msgid "Already Have (_Pantry Items)"
-msgstr ""
+msgstr "Sudah punya(barang_Pantry)"
 
 #: ../src/lib/shopgui.py:472
 msgid "Enter Category"
-msgstr ""
+msgstr "Masukkan kategori"
 
 #: ../src/lib/shopgui.py:473
 #, python-format
 msgid "Category to add %s to"
-msgstr ""
+msgstr "Kategori untuk menambah %s ke"
 
 #: ../src/lib/shopgui.py:474
 msgid "Category:"
-msgstr ""
+msgstr "Kategori:"
 
 #: ../src/lib/shopgui.py:587
 msgid "_Recipes"
-msgstr ""
+msgstr "_Resep"
 
 #: ../src/lib/shopgui.py:610
 msgid "_Add items:"
@@ -3949,6 +3956,7 @@ msgstr ""
 #: ../src/lib/shopgui.py:836
 msgid "No recipes selected. Do you want to clear the entire list?"
 msgstr ""
+"Tidak ada resep yang dipilih. Anda ingin membersihkan seluruh daftar?"
 
 #: ../src/lib/shopgui.py:846
 msgid "Save Shopping List As..."
@@ -3966,15 +3974,15 @@ msgstr ""
 
 #: ../src/lib/shopping.py:18
 msgid "flour, all purpose"
-msgstr ""
+msgstr "Tepung, untuk apa saja"
 
 #: ../src/lib/shopping.py:18
 msgid "sugar"
-msgstr ""
+msgstr "gula"
 
 #: ../src/lib/shopping.py:18
 msgid "salt"
-msgstr ""
+msgstr "garam"
 
 #: ../src/lib/shopping.py:19
 msgid "black pepper, ground"
@@ -3998,12 +4006,12 @@ msgstr ""
 
 #: ../src/lib/shopping.py:328
 msgid "Recipe calls for itself as an ingredient."
-msgstr ""
+msgstr "Resep Menyebut dirinya sebagai bahan dasar"
 
 #: ../src/lib/shopping.py:329
 #, python-format
 msgid "Ingredient %s will be ignored."
-msgstr ""
+msgstr "Bahan dasar %s akan diacuhkan"
 
 #: ../src/lib/shopping.py:375 ../src/lib/shopping.py:390
 #, python-format
@@ -4082,7 +4090,7 @@ msgstr ""
 
 #: ../src/lib/timer.py:194
 msgid "Stop _timer"
-msgstr ""
+msgstr "hentikan _timer"
 
 #: ../src/lib/timer.py:194
 msgid "_Keep timing"
@@ -4113,7 +4121,7 @@ msgstr ""
 
 #: ../src/lib/version.py:11
 msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
-msgstr ""
+msgstr "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
 
 #: ../src/lib/version.py:12
 msgid "Richard Ferguson (improvements to Unit Converter interface)"

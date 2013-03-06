@@ -3,732 +3,408 @@
 # This file is distributed under the same license as the Gourmet Recipe Manager package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2005.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Gourmet Recipe Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 23:17+0100\n"
-"PO-Revision-Date: 2006-03-12 15:04+0000\n"
-"Last-Translator: gilad <gilad.rozenberg@gmail.com>\n"
+"POT-Creation-Date: 2012-02-06 23:43+0100\n"
+"PO-Revision-Date: 2011-12-10 16:02+0000\n"
+"Last-Translator: Dror Mor <Unknown>\n"
 "Language-Team: Hebrew <he@li.org>\n"
-"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2013-03-06 00:04+0000\n"
+"X-Generator: Launchpad (build 16514)\n"
 "X-Rosetta-Version: 0.1\n"
-"Plural-Forms: nplurals=2; plural=n != 1\n"
 
-#: ../glade/app.glade.h:1 ../glade/recipe_index.glade.h:2
+#: ../glade/app.ui.h:1 ../glade/recipe_index.ui.h:2
 msgid "A_dd Search Criteria"
-msgstr "ה_וסף קריטריון חיפוש"
+msgstr ""
 
-#: ../glade/app.glade.h:2 ../glade/recipe_index.glade.h:3
-msgid "Add recipe to shopping list"
-msgstr "הוסף מתכון לרשימת הקניות"
-
-#: ../glade/app.glade.h:3
-msgid "Add selected recipe to a shopping list."
-msgstr "הוסף את המתכון שנבחר לרשימת קניות"
-
-#: ../glade/app.glade.h:4 ../glade/recipe_index.glade.h:4
-msgid "Add to _Pantry"
-msgstr "הוסף ל_מזווה"
-
-#: ../glade/app.glade.h:5 ../src/lib/gglobals.py:367
+#: ../glade/app.ui.h:2 ../src/lib/gglobals.py:348
 msgid "Add to _Shopping List"
 msgstr "הוסף לרשימת _הקניות"
 
-#: ../glade/app.glade.h:6 ../glade/recipe_index.glade.h:5
-msgid "Add to _shopping list"
-msgstr "הוסף לרשימת _הקניות"
-
-#: ../glade/app.glade.h:7
-msgid "Adva_nced Search"
-msgstr "חיפוש מת_קדם"
-
-#: ../glade/app.glade.h:8
-msgid "Create a new recipe"
-msgstr "צור מתכון חדש"
-
-#: ../glade/app.glade.h:9 ../glade/recipe_index.glade.h:6
-msgid "Delete selected recipe"
-msgstr "מחק את המתכון הנבחר"
-
-#: ../glade/app.glade.h:10 ../src/lib/GourmetRecipeManager.py:1020
-msgid "Delete selected recipes"
-msgstr "מחק מתכונים שנבחרו"
-
-#: ../glade/app.glade.h:11
-msgid "E-_mail selected recipes"
-msgstr "_שלח בדואר את המתכונים שנבחרו"
-
-#: ../glade/app.glade.h:12 ../glade/recipe_index.glade.h:7
-msgid "E-mail selected recipe"
-msgstr "שלח בדואל את המתכון הנבחר"
-
-#: ../glade/app.glade.h:13
-msgid "E-mail selected recipes"
-msgstr "שלח בדואל את המתכונים הנבחרים"
-
-#: ../glade/app.glade.h:14 ../glade/recipe_index.glade.h:8
-#, fuzzy
-msgid "Edit attributes of selected recipes"
-msgstr "הדפס מתכונים נבחרים"
-
-#: ../glade/app.glade.h:15
-msgid "Edit ingredient keys and nutritional information"
-msgstr ""
-
-#: ../glade/app.glade.h:16
-msgid "Edit values for fields across several recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:17
-msgid "Export A_ll Recipes"
-msgstr "ייצא את כ_ל המתכונים"
-
-#: ../glade/app.glade.h:18
-msgid "Export selected recipes"
-msgstr "ייצא מתכונים שנבחרו"
-
-#: ../glade/app.glade.h:19
-msgid "Find and eliminate duplicate recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:20
-msgid "Import _Webpage"
-msgstr "ייבא _עמוד אינטרנט"
-
-#: ../glade/app.glade.h:21 ../glade/recipe_index.glade.h:9
-msgid "Jump to recipe in Recipe Card vew"
-msgstr "עבור למתכון במצג כרטיס מתכון"
-
-#: ../glade/app.glade.h:22 ../glade/recipe_index.glade.h:10
+#: ../glade/app.ui.h:3 ../glade/recipe_index.ui.h:10
 msgid "Limiting Search to:"
 msgstr ""
 
-#: ../glade/app.glade.h:23 ../glade/recipe_index.glade.h:11
-msgid ""
-"Never buy this item. When called for in a recipe, it will show up in a "
-"\"pantry\" section of the list as a reminder that you need it, but it won't "
-"be included when you save or print the list unless you tell me you need to "
-"buy it."
-msgstr ""
-"אל תקנה את מוצר זה, כאשר מתכון ידרוש אותו, הוא יוצג בסעיף ה\"מזווה\" "
-"כתזכורת, אבל הוא לא יכלל כאשר תשמור או תדפיס את הרשימה, אלא אם כן תרצה לרוכשו"
-
-#: ../glade/app.glade.h:24
-msgid "Open a timer"
-msgstr ""
-
-#: ../glade/app.glade.h:25 ../glade/recipe_index.glade.h:12
-msgid "Print selected recipe"
-msgstr "הדפס מתכון נבחר"
-
-#: ../glade/app.glade.h:26
-msgid "Print selected recipes"
-msgstr "הדפס מתכונים נבחרים"
-
-#: ../glade/app.glade.h:27
-msgid "Re_apply changes"
-msgstr "ה_חל מחדש שינויים"
-
-#: ../glade/app.glade.h:28
+#: ../glade/app.ui.h:4
 msgid "Recipe Index"
-msgstr "אינדקס מתכונים"
-
-#: ../glade/app.glade.h:29
-msgid "Recipe _Card"
-msgstr "_כרטיס מתכון"
-
-#: ../glade/app.glade.h:30
-msgid "Recipe _List"
-msgstr "_רשימת מתכונים"
-
-#: ../glade/app.glade.h:31 ../glade/keyeditor.glade.h:4
-#: ../glade/recipe_index.glade.h:13
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:3
-msgid "Search _Results"
-msgstr "_תוצאות חיפוש"
-
-#: ../glade/app.glade.h:32
-msgid "Search as _you type"
-msgstr "חפש בזמן _הקלדה"
-
-#: ../glade/app.glade.h:33 ../glade/recipe_index.glade.h:16
-msgid "Search by other critera within the current search results."
-msgstr "חפש לפי קריטריון נוסף בתוצאות החיפוש"
-
-#: ../glade/app.glade.h:34 ../glade/keyeditor.glade.h:6
-#: ../glade/recipe_index.glade.h:17 ../glade/shopCatEditor.glade.h:9
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:5
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:14
-msgid "Search for recipes as you type"
-msgstr "חפש מתכונים בזמן שאתה מקליד"
-
-#: ../glade/app.glade.h:35 ../glade/recipe_index.glade.h:19
-msgid "View Re_cipe"
-msgstr "_הצג מתכון"
-
-#: ../glade/app.glade.h:36
-msgid "View Recipe _Card"
-msgstr "הצג _כרטיס מתכון"
-
-#: ../glade/app.glade.h:37
-msgid "View selected recipe"
-msgstr "הצג מתכון נבחר"
-
-#: ../glade/app.glade.h:38 ../src/lib/GourmetRecipeManager.py:1042
-msgid "_About"
-msgstr "_אודות"
-
-#: ../glade/app.glade.h:39 ../src/lib/GourmetRecipeManager.py:1039
-msgid "_Actions"
-msgstr "_פעולות"
-
-#: ../glade/app.glade.h:40 ../glade/recipe_index.glade.h:20
-#, fuzzy
-msgid "_Batch edit recipes"
-msgstr "_הצג מתכונים שנמחקו"
-
-#: ../glade/app.glade.h:41
-msgid "_Delete"
-msgstr "_מחק"
-
-#. saveEdits
-#: ../glade/app.glade.h:42 ../glade/recipe_index.glade.h:21
-#: ../src/lib/reccard.py:878
-msgid "_Delete Recipe"
-msgstr "_מחק מתכון"
-
-#: ../glade/app.glade.h:43
-msgid "_Duplicate Finder"
 msgstr ""
 
-#: ../glade/app.glade.h:44 ../glade/recipe_index.glade.h:22
-msgid "_E-Mail recipe"
-msgstr "_שלח מתכון"
+#: ../glade/app.ui.h:5 ../glade/recipe_index.ui.h:13
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:3
+msgid "Search _Results"
+msgstr ""
 
-#: ../glade/app.glade.h:45 ../src/lib/GourmetRecipeManager.py:1038
-#: ../src/lib/reccard.py:214 ../src/lib/reccard.py:873
-#: ../src/lib/shopgui.py:653
-msgid "_Edit"
-msgstr "_ערוך"
+#: ../glade/app.ui.h:6 ../glade/recipe_index.ui.h:16
+msgid "Search by other critera within the current search results."
+msgstr ""
 
-#: ../glade/app.glade.h:46
-msgid "_Empty trash"
-msgstr "_רוקן פח מחזור"
+#: ../glade/app.ui.h:7 ../glade/recipe_index.ui.h:17
+#: ../glade/shopCatEditor.ui.h:9
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:5
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:20
+msgid "Search for recipes as you type"
+msgstr ""
 
-#: ../glade/app.glade.h:47
-msgid "_Export selected recipes"
-msgstr "ייצא מתכונים נבחרים"
-
-#: ../glade/app.glade.h:48
-#, fuzzy
-msgid "_Field Editor"
-msgstr "עורך מפתחות"
-
-#: ../glade/app.glade.h:49 ../glade/databaseChooser.glade.h:16
-#: ../src/lib/GourmetRecipeManager.py:1037 ../src/lib/shopgui.py:675
-msgid "_File"
-msgstr "_קובץ"
-
-#: ../glade/app.glade.h:50 ../src/lib/GourmetRecipeManager.py:1041
-#: ../src/lib/GourmetRecipeManager.py:1046 ../src/lib/reccard.py:216
-#: ../src/lib/reccard.py:227 ../src/lib/reccard.py:875
-#: ../src/lib/shopgui.py:676 ../src/lib/shopgui.py:678
-msgid "_Help"
-msgstr "_עזרה"
-
-#: ../glade/app.glade.h:51
-msgid "_Import File"
-msgstr "_ייבא קובץ"
-
-#: ../glade/app.glade.h:52
-msgid "_Ingredient Editor"
-msgstr "_עורך מרכיבים"
+#: ../glade/app.ui.h:8 ../glade/recipe_index.ui.h:19
+msgid "View Re_cipe"
+msgstr ""
 
 #. Set up hard-coded functional buttons...
-#: ../glade/app.glade.h:53 ../glade/generic_importer.glade.h:4
+#: ../glade/app.ui.h:9 ../glade/generic_importer.ui.h:4
 #: ../src/lib/importers/interactive_importer.py:143
 msgid "_New Recipe"
 msgstr "מתכון _חדש"
 
-#: ../glade/app.glade.h:54 ../src/lib/GourmetRecipeManager.py:1027
-msgid "_Print"
-msgstr "_הדפס"
-
-#: ../glade/app.glade.h:55 ../glade/recipe_index.glade.h:23
-msgid "_Print recipe"
-msgstr "_הדפס מתכון"
-
-#: ../glade/app.glade.h:56
-msgid "_Redo"
-msgstr "_חזור"
-
-#: ../glade/app.glade.h:57 ../glade/recipe_index.glade.h:24
-msgid "_Search for"
-msgstr "_חפש לפי"
-
-#: ../glade/app.glade.h:58 ../src/lib/shopgui.py:210
-msgid "_Shopping List"
-msgstr "רשימת _קניות"
-
-#: ../glade/app.glade.h:59
-msgid "_Show deleted recipes"
-msgstr "_הצג מתכונים שנמחקו"
-
-#: ../glade/app.glade.h:60 ../src/lib/GourmetRecipeManager.py:1072
-msgid "_Timer"
+#: ../glade/app.ui.h:10 ../glade/recipe_index.ui.h:24
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:11
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:33
+msgid "_Search for:"
 msgstr ""
 
-#: ../glade/app.glade.h:61 ../src/lib/GourmetRecipeManager.py:1071
-msgid "_Tools"
-msgstr "_כלים"
-
-#: ../glade/app.glade.h:62
-msgid "_Undo"
-msgstr "_בטל"
-
-#: ../glade/app.glade.h:63 ../src/lib/plugins/unit_converter/__init__.py:15
-msgid "_Unit Converter"
-msgstr "המרת _יחידות"
-
-#: ../glade/app.glade.h:64
-msgid "_View"
-msgstr "_הצג"
-
-#: ../glade/app.glade.h:65 ../glade/keyeditor.glade.h:14
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:13
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:22
+#: ../glade/app.ui.h:11 ../src/lib/plugins/key_editor/keyeditor.ui.h:13
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:35
 msgid "_in"
-msgstr "_בתוך"
-
-#: ../glade/batchEditor.glade.h:1
-msgid ""
-"<span size=\"large\" weight=\"bold\">Set Recipe Fields for selected recipes</"
-"span>"
 msgstr ""
 
-#: ../glade/batchEditor.glade.h:2 ../glade/recCardDescriptionEditor.glade.h:1
-msgid "C_uisine:"
-msgstr "מ_טבח:"
+#: ../glade/batchEditor.ui.h:1
+msgid ""
+"<span size=\"large\" weight=\"bold\">Set Recipe Fields for selected "
+"recipes</span>"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:3 ../glade/recCardDescriptionEditor.glade.h:2
+#: ../glade/batchEditor.ui.h:2 ../glade/recCardDescriptionEditor.ui.h:1
+msgid "C_uisine:"
+msgstr ""
+
+#: ../glade/batchEditor.ui.h:3 ../glade/recCardDescriptionEditor.ui.h:2
 msgid "Coo_king Time:"
 msgstr ""
 
-#: ../glade/batchEditor.glade.h:4 ../glade/recCardDescriptionEditor.glade.h:3
+#: ../glade/batchEditor.ui.h:4 ../glade/recCardDescriptionEditor.ui.h:3
 msgid "Image:"
 msgstr ""
 
-#: ../glade/batchEditor.glade.h:5 ../glade/recCardDescriptionEditor.glade.h:5
+#: ../glade/batchEditor.ui.h:5 ../glade/recCardDescriptionEditor.ui.h:5
 msgid "S_ource:"
-msgstr "מ_קור:"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:6
-#, fuzzy
+#: ../glade/batchEditor.ui.h:6
 msgid "Set Fields for Selected Recipes"
-msgstr "מחק מתכונים שנבחרו"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:7
-#, fuzzy
+#: ../glade/batchEditor.ui.h:7
 msgid "Set all values for _all selected recipes"
-msgstr "מחק מתכונים שנבחרו"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:8 ../glade/recCardDescriptionEditor.glade.h:9
+#: ../glade/batchEditor.ui.h:8 ../glade/recCardDescriptionEditor.ui.h:9
 msgid "_Add Image"
-msgstr "_הוסף תמונה"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:9 ../glade/recCardDescriptionEditor.glade.h:10
+#: ../glade/batchEditor.ui.h:9 ../glade/recCardDescriptionEditor.ui.h:10
 msgid "_Category:"
 msgstr ""
 
-#: ../glade/batchEditor.glade.h:10
+#: ../glade/batchEditor.ui.h:10
 msgid "_Only set values where field is currently blank"
 msgstr ""
 
-#: ../glade/batchEditor.glade.h:11
-#, fuzzy
+#: ../glade/batchEditor.ui.h:11
 msgid "_Preparation Time:"
-msgstr "זמן הכנה"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:12
-#: ../glade/recCardDescriptionEditor.glade.h:11
+#: ../glade/batchEditor.ui.h:12 ../glade/recCardDescriptionEditor.ui.h:11
 msgid "_Rating:"
-msgstr "_דירוג:"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:13
-#: ../glade/recCardDescriptionEditor.glade.h:12
+#: ../glade/batchEditor.ui.h:13 ../glade/recCardDescriptionEditor.ui.h:12
 msgid "_Remove Image"
-msgstr "_הסר תמונה"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:14
-#, fuzzy
+#: ../glade/batchEditor.ui.h:14
 msgid "_Servings"
-msgstr "מנות"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:15
-#: ../glade/recCardDescriptionEditor.glade.h:14
-#, fuzzy
+#: ../glade/batchEditor.ui.h:15 ../glade/recCardDescriptionEditor.ui.h:14
 msgid "_Webpage:"
-msgstr "ייבא _עמוד אינטרנט"
+msgstr ""
 
-#: ../glade/converter.glade.h:1 ../glade/converter_new.glade.h:1
-#: ../glade/converter_old.glade.h:1 ../glade/databaseChooser.glade.h:1
-#: ../glade/shopCatEditor.glade.h:1
-#: ../src/lib/plugins/unit_converter/converter.glade.h:1
+#: ../glade/converter.ui.h:1 ../glade/databaseChooser.ui.h:1
+#: ../glade/shopCatEditor.ui.h:1
+#: ../src/lib/plugins/unit_converter/converter.ui.h:1
 msgid "*"
-msgstr "*"
+msgstr ""
 
-#: ../glade/converter.glade.h:2 ../glade/converter_new.glade.h:2
-#: ../src/lib/plugins/unit_converter/converter.glade.h:2
+#: ../glade/converter.ui.h:2
+#: ../src/lib/plugins/unit_converter/converter.ui.h:2
 msgid "1"
-msgstr "1"
+msgstr ""
 
-#: ../glade/converter.glade.h:3 ../glade/converter_new.glade.h:3
-#: ../src/lib/plugins/unit_converter/converter.glade.h:3
+#: ../glade/converter.ui.h:3
+#: ../src/lib/plugins/unit_converter/converter.ui.h:3
 msgid "<b>From</b>"
-msgstr "<b>מאת</b>"
+msgstr ""
 
-#: ../glade/converter.glade.h:4 ../glade/converter_new.glade.h:4
-#: ../src/lib/plugins/unit_converter/converter.glade.h:4
+#: ../glade/converter.ui.h:4
+#: ../src/lib/plugins/unit_converter/converter.ui.h:4
 msgid "<b>To</b>"
-msgstr "<b>אל</b>"
+msgstr ""
 
-#: ../glade/converter.glade.h:5 ../glade/converter_new.glade.h:5
-#: ../glade/converter_old.glade.h:3
-#: ../src/lib/plugins/unit_converter/converter.glade.h:5
+#: ../glade/converter.ui.h:5
+#: ../src/lib/plugins/unit_converter/converter.ui.h:5
 msgid "?"
-msgstr "?"
+msgstr ""
 
-#: ../glade/converter.glade.h:6 ../glade/converter_new.glade.h:6
-#: ../src/lib/plugins/unit_converter/converter.glade.h:6
+#: ../glade/converter.ui.h:6
+#: ../src/lib/plugins/unit_converter/converter.ui.h:6
 msgid "Density _Information"
-msgstr "_מידע על צפיפות"
+msgstr ""
 
-#: ../glade/converter.glade.h:7 ../glade/converter_new.glade.h:7
-#: ../src/lib/plugins/unit_converter/converter.glade.h:7
+#: ../glade/converter.ui.h:7
+#: ../src/lib/plugins/unit_converter/converter.ui.h:7
 msgid "I_tem:"
-msgstr "פ_ריט:"
+msgstr ""
 
-#: ../glade/converter.glade.h:8 ../glade/converter_new.glade.h:8
-#: ../glade/converter_old.glade.h:6 ../src/lib/convertGui.py:153
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:432
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:489
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:553
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:579
+#: ../glade/converter.ui.h:8 ../src/lib/convertGui.py:153
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:433
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:490
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:554
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:580
 #: ../src/lib/plugins/unit_converter/convertGui.py:160
-#: ../src/lib/plugins/unit_converter/converter.glade.h:8
+#: ../src/lib/plugins/unit_converter/converter.ui.h:8
 msgid "None"
 msgstr "כלום"
 
-#: ../glade/converter.glade.h:9 ../glade/converter_new.glade.h:9
-#: ../glade/converter_old.glade.h:7
-#: ../src/lib/plugins/unit_converter/converter.glade.h:9
+#: ../glade/converter.ui.h:9
+#: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/unit_converter/converter.ui.h:9
 msgid "Unit Converter"
-msgstr "ממיר יחידות"
-
-#: ../glade/converter.glade.h:10 ../glade/converter_new.glade.h:10
-#: ../glade/keyeditor.glade.h:9
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:8
-#: ../src/lib/plugins/unit_converter/converter.glade.h:10
-msgid "_Amount:"
-msgstr "_כמות:"
-
-#: ../glade/converter.glade.h:11 ../glade/converter_new.glade.h:11
-#: ../src/lib/plugins/unit_converter/converter.glade.h:11
-msgid "_Density:"
-msgstr "_צפיפות:"
-
-#: ../glade/converter.glade.h:12 ../glade/converter_new.glade.h:12
-#: ../src/lib/plugins/unit_converter/converter.glade.h:12
-msgid "_Result:"
-msgstr "_תוצאה:"
-
-#: ../glade/converter.glade.h:13 ../glade/converter_new.glade.h:13
-#: ../glade/keyeditor.glade.h:13
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:12
-#: ../src/lib/plugins/unit_converter/converter.glade.h:13
-msgid "_Unit:"
-msgstr "_יחידה:"
-
-#: ../glade/converter_old.glade.h:2
-msgid "="
 msgstr ""
 
-#: ../glade/converter_old.glade.h:4
-#: ../src/lib/plugins/key_editor/keyEditor.py:514
-#: ../src/lib/plugins/nutritional_information/nutritionModel.py:7
-msgid "Amount"
-msgstr "כמות"
+#: ../glade/converter.ui.h:10 ../src/lib/plugins/key_editor/keyeditor.ui.h:8
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:26
+#: ../src/lib/plugins/unit_converter/converter.ui.h:10
+msgid "_Amount:"
+msgstr ""
 
-#: ../glade/converter_old.glade.h:5
-#, fuzzy
-msgid "I_tem: "
-msgstr "פ_ריט:"
+#: ../glade/converter.ui.h:11
+#: ../src/lib/plugins/unit_converter/converter.ui.h:11
+msgid "_Density:"
+msgstr ""
 
-#: ../glade/converter_old.glade.h:8
-#, fuzzy
-msgid "Use Density _Information"
-msgstr "_מידע על צפיפות"
+#: ../glade/converter.ui.h:12
+#: ../src/lib/plugins/unit_converter/converter.ui.h:12
+msgid "_Result:"
+msgstr ""
 
-#: ../glade/converter_old.glade.h:9
-#, fuzzy
-msgid "_Amount"
-msgstr "_כמות:"
+#: ../glade/converter.ui.h:13 ../src/lib/plugins/key_editor/keyeditor.ui.h:12
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:34
+#: ../src/lib/plugins/unit_converter/converter.ui.h:13
+msgid "_Unit:"
+msgstr ""
 
-#: ../glade/converter_old.glade.h:10
-#, fuzzy
-msgid "_Density: "
-msgstr "_צפיפות:"
-
-#: ../glade/converter_old.glade.h:11
-#, fuzzy
-msgid "_Unit"
-msgstr "_יחידה:"
-
-#: ../glade/databaseChooser.glade.h:2
+#: ../glade/databaseChooser.ui.h:2
 msgid "<b>Choose Database System for Gourmet to Use</b>"
 msgstr ""
 
-#: ../glade/databaseChooser.glade.h:3
+#: ../glade/databaseChooser.ui.h:3
 msgid "Choose Database"
-msgstr "בחר בסיס נתונים"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:4
+#: ../glade/databaseChooser.ui.h:4
 msgid "Database _Name:"
-msgstr "_שם מסד נתונים:"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:5
+#: ../glade/databaseChooser.ui.h:5
 msgid ""
 "Hostname of the system where your database server is running. If your "
 "database server is running on your local system, use localhost."
 msgstr ""
 
-#: ../glade/databaseChooser.glade.h:6
-msgid ""
-"Metakit (default, stored in a local file)\n"
-"SQLite (stored in a local file)\n"
-"MySQL (requires connection to a database)"
+#: ../glade/databaseChooser.ui.h:6
+msgid "Metakit (default, stored in a local file)"
 msgstr ""
 
-#: ../glade/databaseChooser.glade.h:9
+#: ../glade/databaseChooser.ui.h:7
+msgid "MySQL (requires connection to a database)"
+msgstr ""
+
+#: ../glade/databaseChooser.ui.h:8
 msgid ""
 "Name of the database in which Gourmet should store its information. Gourmet "
 "will try to create this database if it does not already exist."
 msgstr ""
 
-#: ../glade/databaseChooser.glade.h:10
+#: ../glade/databaseChooser.ui.h:9
 msgid "Password for your username on the database."
-msgstr "הסיסמא למאגר הנתונים."
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:11
+#: ../glade/databaseChooser.ui.h:10
+msgid "SQLite (stored in a local file)"
+msgstr ""
+
+#: ../glade/databaseChooser.ui.h:11
 msgid ""
 "Save the password for next time. This means the password will be stored "
 "insecurely in your configuration file."
 msgstr ""
-"זכור את הסיסמא לפעם הבאה. הסיסמא תישמר לא מוצפנת בקובץ הקונפיגורציה של "
-"התוכנה."
 
-#: ../glade/databaseChooser.glade.h:12
+#: ../glade/databaseChooser.ui.h:12
 msgid "Your username on the database."
-msgstr "שם המשתמש למאגר הנתונים."
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:13
+#: ../glade/databaseChooser.ui.h:13
 msgid "_Browse"
-msgstr "_דפדף"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:14
+#: ../glade/databaseChooser.ui.h:14
 msgid "_Database System"
-msgstr "_בסיס נתונים"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:15 ../src/lib/gglobals.py:346
-#: ../src/lib/gtk_extras/dialog_extras.py:809
-#: ../src/lib/gtk_extras/dialog_extras.py:1226
+#: ../glade/databaseChooser.ui.h:15 ../src/lib/gglobals.py:327
+#: ../src/lib/gtk_extras/dialog_extras.py:810
+#: ../src/lib/gtk_extras/dialog_extras.py:1228
 msgid "_Details"
 msgstr "_פרטים"
 
-#: ../glade/databaseChooser.glade.h:17
+#: ../glade/databaseChooser.ui.h:16 ../src/lib/GourmetRecipeManager.py:1059
+#: ../src/lib/shopgui.py:675
+msgid "_File"
+msgstr "_קובץ"
+
+#: ../glade/databaseChooser.ui.h:17
 msgid "_Host:"
-msgstr "_מארח:"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:18
+#: ../glade/databaseChooser.ui.h:18
 msgid "_Password:"
-msgstr "_סיסמא:"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:19
+#: ../glade/databaseChooser.ui.h:19
 msgid "_Save Password"
-msgstr "_שמור סיסמא"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:20
+#: ../glade/databaseChooser.ui.h:20
 msgid "_Username:"
-msgstr "_שם משתמש:"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:21
+#: ../glade/databaseChooser.ui.h:21
 msgid "localhost"
-msgstr "localhost"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:22
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:274
+#: ../glade/databaseChooser.ui.h:22
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:269
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:15
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:55
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:56
 msgid "recipe"
 msgstr "מתכון"
 
-#: ../glade/generic_importer.glade.h:1
+#: ../glade/generic_importer.ui.h:1
 msgid ""
 "<i>Select text from the raw recipe and categorize it by labelling which part "
 "of the recipe it is (choose from the recipe elements on the right).</i>"
 msgstr ""
 
-#: ../glade/generic_importer.glade.h:2
+#: ../glade/generic_importer.ui.h:2
 msgid ""
 "Start new recipe (use this if the file you're importing contains more than "
 "one recipe)"
 msgstr ""
 
-#: ../glade/generic_importer.glade.h:3
+#: ../glade/generic_importer.ui.h:3
 msgid "_Label"
-msgstr "_תג"
+msgstr ""
 
-#: ../glade/generic_importer.glade.h:5
-#, fuzzy
-msgctxt "yes"
+#: ../glade/generic_importer.ui.h:5
 msgid "_Raw recipe:"
-msgstr "_מתכונים"
-
-#: ../glade/keyeditor.glade.h:1
-msgid "<b>Change selected ingredients</b>"
 msgstr ""
 
-#: ../glade/keyeditor.glade.h:2
-#, fuzzy
-msgid "Edit _Nutritional Information"
-msgstr "_מידע על צפיפות"
-
-#: ../glade/keyeditor.glade.h:3
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:2
-msgid "Key Editor"
-msgstr "עורך מפתחות"
-
-#: ../glade/keyeditor.glade.h:5
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:4
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:13
-msgid "Search as you t_ype"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:7 ../glade/shopCatEditor.glade.h:10
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:6
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:17
-msgid "Use regular expressions"
-msgstr "השתמש בביטויים רגילים"
-
-#: ../glade/keyeditor.glade.h:8
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:7
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:18
-msgid "_Advanced Search"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:10
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:9
-msgid "_Item:"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:11
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:10
-msgid "_Key:"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:12
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:11
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:21
-msgid "_Search for:"
-msgstr ""
-
-#: ../glade/preferenceDialog.glade.h:1
+#: ../glade/preferenceDialog.ui.h:1
 msgid "<b>Card View Preferences</b>"
-msgstr "<b>העדפות צפייה בכרטיסייה</b>"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:2
+#: ../glade/preferenceDialog.ui.h:2
 msgid "<b>Index View Preferences</b>"
-msgstr "<b>העדפות צפייה באינדקס</b>"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:3
+#: ../glade/preferenceDialog.ui.h:3
 msgid "<b>Shopping List Preferences</b>"
-msgstr "<b>העדפות רשימת קניות</b>"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:4
+#: ../glade/preferenceDialog.ui.h:4
 msgid "<i>Configure which columns are included in the recipe index view.</i>"
-msgstr "<i>הגדר אילו עמודות יופיעו באינדקס הצפיה במתכונים</i>"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:5
+#: ../glade/preferenceDialog.ui.h:5
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
-msgstr "<i>הסר פריטים שאינך רוצה להשתמש בהם בכרטיס המתכון.</i>"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:6
+#: ../glade/preferenceDialog.ui.h:6
 msgid ""
 "<i>What should Gourmet do with Optional Ingredients when adding recipes to "
 "the shopping list?</i>"
 msgstr ""
-"<i>איך המערכת צריכה להתייחס לרכיבי מתכון שאינם חובה בהוספה לרשימת קניות?</i>"
 
-#: ../glade/preferenceDialog.glade.h:7
+#: ../glade/preferenceDialog.ui.h:7
 msgid "As_k whether to include optional ingredients"
-msgstr "_בקש אישור להוספת מרכיבים שאינם חובה"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:8
+#: ../glade/preferenceDialog.ui.h:8
 msgid "Card View"
-msgstr "תצוגת כרטיס"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:9
+#: ../glade/preferenceDialog.ui.h:9
 msgid "Gourmet Recipe Manager Preferences"
-msgstr "העדפות תוכנת גורמה"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:10
+#: ../glade/preferenceDialog.ui.h:10
 msgid "Index View"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:11 ../src/lib/shopgui.py:147
+#: ../glade/preferenceDialog.ui.h:11 ../src/lib/shopgui.py:147
 #: ../src/lib/shopgui.py:544 ../src/lib/shopgui.py:848
 #: ../src/lib/shopgui.py:997
 msgid "Shopping List"
-msgstr ""
+msgstr "רשימת קניות"
 
-#: ../glade/preferenceDialog.glade.h:12
+#: ../glade/preferenceDialog.ui.h:12
 msgid "Use fractions when possible for display"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:13
+#: ../glade/preferenceDialog.ui.h:13
 msgid "_Allow units to change when multiplying"
-msgstr "_אפשר ליחידות להשתנות בהכפלה"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:14
+#: ../glade/preferenceDialog.ui.h:14
 msgid "_Always add optional ingredients"
-msgstr "_תמיד הוסף רכיבים אופציונליים"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:15
+#: ../glade/preferenceDialog.ui.h:15
 msgid "_Clear remembered optional ingredients"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:16
+#: ../glade/preferenceDialog.ui.h:16
 msgid "_Never add optional ingredients"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:17
+#: ../glade/preferenceDialog.ui.h:17
 msgid "_Recipes per page:"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:18
+#: ../glade/preferenceDialog.ui.h:18
 msgid "_Remember user selections by default"
-msgstr "_זכור העדפות משתמש כברירת מחדל"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:19
+#: ../glade/preferenceDialog.ui.h:19
 msgid "_Use fractions"
 msgstr ""
 
-#: ../glade/recCardDescriptionEditor.glade.h:4
+#: ../glade/recCardDescriptionEditor.ui.h:4
 msgid "Pre_paration Time:"
 msgstr ""
 
@@ -741,574 +417,656 @@ msgstr ""
 #. import GourmetFauxThreads as gt
 #. renderer.set_property('editable',True)
 #. renderer.connect('edited',tst)
-#: ../glade/recCardDescriptionEditor.glade.h:6
-#: ../src/lib/exporters/rtf_exporter.py:79 ../src/lib/gglobals.py:251
+#: ../glade/recCardDescriptionEditor.ui.h:6
+#: ../src/lib/exporters/rtf_exporter.py:79 ../src/lib/gglobals.py:232
 #: ../src/lib/shopgui.py:750
 msgid "Title"
 msgstr "כותרת"
 
-#: ../glade/recCardDescriptionEditor.glade.h:7 ../src/lib/gglobals.py:257
+#: ../glade/recCardDescriptionEditor.ui.h:7 ../src/lib/gglobals.py:238
 msgid "Yield"
-msgstr ""
+msgstr "תנובה"
 
-#: ../glade/recCardDescriptionEditor.glade.h:8 ../src/lib/gglobals.py:258
+#: ../glade/recCardDescriptionEditor.ui.h:8 ../src/lib/gglobals.py:239
 msgid "Yield Unit"
-msgstr ""
+msgstr "יחידת תנובה"
 
-#: ../glade/recCardDescriptionEditor.glade.h:13
+#: ../glade/recCardDescriptionEditor.ui.h:13
 msgid "_Title:"
 msgstr ""
 
-#: ../glade/recCardDescriptionEditor.glade.h:15
+#: ../glade/recCardDescriptionEditor.ui.h:15
 msgid "_Yield:"
 msgstr ""
 
-#: ../glade/recCardDescriptionEditor.glade.h:16
+#: ../glade/recCardDescriptionEditor.ui.h:16
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:29
 #: ../src/lib/recindex.py:42 ../src/lib/recindex.py:50
 msgid "category"
 msgstr "קטגוריה"
 
-#: ../glade/recCardDescriptionEditor.glade.h:17
+#: ../glade/recCardDescriptionEditor.ui.h:17
 msgid "rating"
-msgstr "דירוג"
+msgstr ""
 
-#: ../glade/recCardDescriptionEditor.glade.h:18
+#: ../glade/recCardDescriptionEditor.ui.h:18
 msgid "servings"
-msgstr "מנות"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:1
+#: ../glade/recCardDisplay.ui.h:1
 msgid "<b>Category:</b>"
-msgstr "<b>קטגוריה:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:2
+#: ../glade/recCardDisplay.ui.h:2
 msgid "<b>Cooking Time:</b>"
-msgstr "<b>זמן בישול:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:3
+#: ../glade/recCardDisplay.ui.h:3
 msgid "<b>Cuisine:</b>"
-msgstr "<b>מטבח:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:4
+#: ../glade/recCardDisplay.ui.h:4
 msgid "<b>Ingredients</b>"
-msgstr "<b>רכיבים</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:5
+#: ../glade/recCardDisplay.ui.h:5
 msgid "<b>Instructions</b>"
-msgstr "<b>אופן הכנה</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:6
+#: ../glade/recCardDisplay.ui.h:6
 msgid "<b>Notes</b>"
-msgstr "<b>רשימות</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:7
+#: ../glade/recCardDisplay.ui.h:7
 msgid "<b>Preparation Time:</b>"
-msgstr "<b>זמן הכנה:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:8
+#: ../glade/recCardDisplay.ui.h:8
 msgid "<b>Rating:</b>"
-msgstr "<b>דירוג:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:9
+#: ../glade/recCardDisplay.ui.h:9
 msgid "<b>Source:</b>"
-msgstr "<b>מקור:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:10
-#, fuzzy
+#: ../glade/recCardDisplay.ui.h:10
 msgid "<b>Webpage:</b>"
-msgstr "<b>דירוג:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:11
+#: ../glade/recCardDisplay.ui.h:11
 msgid "<b>_Multiply by:</b>"
 msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:12
-#, fuzzy
+#: ../glade/recCardDisplay.ui.h:12
 msgid "<b>_Yields:</b>"
-msgstr "<b>_רשימות:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:13
+#: ../glade/recCardDisplay.ui.h:13
 msgid "<span underline=\"single\" color=\"blue\">Link</span>"
 msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:14
+#: ../glade/recCardDisplay.ui.h:14
 msgid "Edit _description"
 msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:15
+#: ../glade/recCardDisplay.ui.h:15
 msgid "Edit _ingredients"
 msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:16
+#: ../glade/recCardDisplay.ui.h:16
 msgid "Edit _instructions"
 msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:17
+#: ../glade/recCardDisplay.ui.h:17
 msgid "Edit _notes"
 msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:18 ../src/lib/exporters/exporter.py:606
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:482
+#: ../glade/recCardDisplay.ui.h:18 ../src/lib/exporters/exporter.py:606
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:483
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:63
 msgid "Recipe"
+msgstr "מתכון"
+
+#: ../glade/recCardDisplay.ui.h:19
+msgid "_Shop"
 msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:19
-#, fuzzy
-msgid "_Shop"
-msgstr "_עצור"
-
-#: ../glade/recCardIngredientsEditor.glade.h:1
+#: ../glade/recCardIngredientsEditor.ui.h:1
 msgid "Add _ingredient:"
 msgstr ""
 
-#: ../glade/recCardIngredientsEditor.glade.h:2
+#: ../glade/recCardIngredientsEditor.ui.h:2
 #: ../src/lib/exporters/exporter.py:251
 #: ../src/lib/importers/interactive_importer.py:38
 #: ../src/lib/importers/interactive_importer.py:53
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:477
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:479
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:507
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:478
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:480
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:508
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:100
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:598
-#: ../src/lib/reccard.py:1080
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:601
+#: ../src/lib/reccard.py:1074
 msgid "Ingredients"
 msgstr "מרכיבים"
 
-#: ../glade/recipe_index.glade.h:1
-#, fuzzy
+#: ../glade/recipe_index.ui.h:1
 msgid "<i>Search Options</i>"
-msgstr "<b>אופן הכנה</b>"
+msgstr ""
 
-#: ../glade/recipe_index.glade.h:14
-#, fuzzy
-msgid "Search _in"
-msgstr "_חפש לפי"
+#: ../glade/recipe_index.ui.h:3
+msgid "Add recipe to shopping list"
+msgstr ""
 
-#: ../glade/recipe_index.glade.h:15
-#, fuzzy
-msgid "Search as you _type"
-msgstr "חפש בזמן הקלדה"
+#: ../glade/recipe_index.ui.h:4
+msgid "Add to _Pantry"
+msgstr ""
 
-#: ../glade/recipe_index.glade.h:18
-#, fuzzy
-msgid "Show _Options"
-msgstr "_אופציונלי"
+#: ../glade/recipe_index.ui.h:5
+msgid "Add to _shopping list"
+msgstr ""
 
-#: ../glade/recipe_index.glade.h:25
-#, fuzzy
-msgid "_Use regular expressions (advanced searching)"
-msgstr "השתמש בביטויים רגולריים לחיפוש"
+#: ../glade/recipe_index.ui.h:6
+msgid "Delete selected recipe"
+msgstr ""
 
-#: ../glade/shopCatEditor.glade.h:2
-#, fuzzy
-msgid "Add Category: "
-msgstr "קטגוריה"
+#: ../glade/recipe_index.ui.h:7
+msgid "E-mail selected recipe"
+msgstr ""
 
-#: ../glade/shopCatEditor.glade.h:3
-msgid "Advanced Search"
-msgstr "חיפוש מתקדם"
+#: ../glade/recipe_index.ui.h:8
+msgid "Edit attributes of selected recipes"
+msgstr ""
 
-#: ../glade/shopCatEditor.glade.h:4
-#, fuzzy
+#: ../glade/recipe_index.ui.h:9
+msgid "Jump to recipe in Recipe Card vew"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:11
 msgid ""
-"Category\n"
-"Key"
+"Never buy this item. When called for in a recipe, it will show up in a "
+"\"pantry\" section of the list as a reminder that you need it, but it won't "
+"be included when you save or print the list unless you tell me you need to "
+"buy it."
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:12
+msgid "Print selected recipe"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:14
+msgid "Search _in"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:15
+msgid "Search as you _type"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:18
+msgid "Show _Options"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:20
+msgid "_Batch edit recipes"
+msgstr ""
+
+#. saveEdits
+#: ../glade/recipe_index.ui.h:21 ../src/lib/reccard.py:869
+msgid "_Delete Recipe"
+msgstr "_מחק מתכון"
+
+#: ../glade/recipe_index.ui.h:22
+msgid "_E-Mail recipe"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:23
+msgid "_Print recipe"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:25
+msgid "_Use regular expressions (advanced searching)"
+msgstr ""
+
+#: ../glade/shopCatEditor.ui.h:2
+msgid "Add Category: "
+msgstr ""
+
+#: ../glade/shopCatEditor.ui.h:3
+msgid "Advanced Search"
+msgstr ""
+
+#: ../glade/shopCatEditor.ui.h:4 ../src/lib/gglobals.py:233
+msgid "Category"
 msgstr "קטגוריה"
 
-#: ../glade/shopCatEditor.glade.h:6
-#, fuzzy
+#: ../glade/shopCatEditor.ui.h:5
 msgid "Category Editor"
-msgstr "עורך מפתחות"
+msgstr ""
 
-#: ../glade/shopCatEditor.glade.h:7 ../src/lib/recindex.py:155
+#. __gsignals__ = {
+#. 'view-changed':(gobject.SIGNAL_RUN_LAST,
+#. gobject.TYPE_NONE,
+#. ()),
+#. }
+#: ../glade/shopCatEditor.ui.h:6
+#: ../src/lib/plugins/key_editor/keyEditor.py:512
+#: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:108
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:188
+#: ../src/lib/reccard.py:2140 ../src/lib/reccard.py:2199
+msgid "Key"
+msgstr ""
+
+#: ../glade/shopCatEditor.ui.h:7 ../src/lib/recindex.py:155
 msgid "Search as you type"
-msgstr "חפש בזמן הקלדה"
+msgstr ""
 
-#: ../glade/shopCatEditor.glade.h:8
+#: ../glade/shopCatEditor.ui.h:8
 msgid "Search by"
-msgstr "חפש לפי"
+msgstr ""
 
-#: ../glade/timerDialog.glade.h:1
+#: ../glade/shopCatEditor.ui.h:10
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:6
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:24
+msgid "Use regular expressions"
+msgstr ""
+
+#: ../glade/timerDialog.ui.h:1
 msgid "<b><span size=\"larger\">Timer</span></b>"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:2
+#: ../glade/timerDialog.ui.h:2
 msgid "<i>Timer Finished!</i>"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:3
+#: ../glade/timerDialog.ui.h:3
 msgid "Re_peat alarm until I turn it off"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:4
+#: ../glade/timerDialog.ui.h:4
 msgid "S_ound"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:5
+#: ../glade/timerDialog.ui.h:5
 msgid "Set _Timer: "
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:6 ../src/lib/timer.py:140
-#: ../src/lib/timer.py:141
+#: ../glade/timerDialog.ui.h:6 ../src/lib/timer.py:140 ../src/lib/timer.py:141
 msgid "Timer"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:7
+#: ../glade/timerDialog.ui.h:7
 msgid ""
 "Timer will continue to go off until you close this dialog or reset the timer."
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:8
+#: ../glade/timerDialog.ui.h:8
 msgid "_Note"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:9
+#: ../glade/timerDialog.ui.h:9
 msgid "_Reset"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:10
+#: ../glade/timerDialog.ui.h:10
 msgid "_Settings"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:11
+#: ../glade/timerDialog.ui.h:11
 msgid "_Start"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:1
+#: ../glade/valueEditor.ui.h:1
 msgid "<b>Edit fields throughout database</b>"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:2
+#: ../glade/valueEditor.ui.h:2
 msgid "<i>New value will be added to the end of any existing text</i>"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:3
+#: ../glade/valueEditor.ui.h:3
 msgid "<i>New value will replace any existing value</i>"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:4
+#: ../glade/valueEditor.ui.h:4
 msgid "C_hange value to: "
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:5
+#: ../glade/valueEditor.ui.h:5
 msgid "Change _other field:"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:6
+#: ../glade/valueEditor.ui.h:6
 msgid "Field to _Edit:"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:7
-#, fuzzy
+#: ../glade/valueEditor.ui.h:7
 msgid "For each selected value:"
-msgstr "לא נבחר קובץ"
+msgstr ""
 
-#: ../glade/valueEditor.glade.h:8
-#, fuzzy
+#: ../glade/valueEditor.ui.h:8
 msgid "_Delete value"
-msgstr "_מחק"
+msgstr ""
 
-#: ../glade/valueEditor.glade.h:9
-#, fuzzy
+#: ../glade/valueEditor.ui.h:9
 msgid "_Field:"
-msgstr "_קובץ"
+msgstr ""
 
-#: ../glade/valueEditor.glade.h:10
+#: ../glade/valueEditor.ui.h:10
 msgid "_Leave value as is"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:11
-#, fuzzy
+#: ../glade/valueEditor.ui.h:11
 msgid "_Value:"
-msgstr "_הפסק"
-
-#: ../gourmet.desktop.in.h:1 ../src/lib/version.py:3
-msgid "Gourmet Recipe Manager"
 msgstr ""
+
+#: ../gourmet.desktop.in.h:1 ../src/lib/version.py:4
+msgid "Gourmet Recipe Manager"
+msgstr "מנהל המתכונים גורמה"
 
 #: ../gourmet.desktop.in.h:2
 msgid ""
 "Organize recipes, create shopping lists, calculate nutritional information, "
 "and more."
-msgstr ""
+msgstr "סידור מתכונים, עריכת רשימת קניות, חישובי ערכים תזונתיים, ועוד."
 
 #: ../src/lib/FileChooserSaveAs.py:153
-#: ../src/lib/gtk_extras/dialog_extras.py:1031
+#: ../src/lib/gtk_extras/dialog_extras.py:1032
 msgid "Select File_type"
 msgstr "בחר סוג_קובץ"
 
 #: ../src/lib/FileChooserSaveAs.py:223
-#: ../src/lib/gtk_extras/dialog_extras.py:1122
+#: ../src/lib/gtk_extras/dialog_extras.py:1123
 #, python-format
 msgid "A file named %s already exists."
-msgstr ""
+msgstr "קיים קובץ עם השם %s."
 
 #: ../src/lib/FileChooserSaveAs.py:224
-#: ../src/lib/gtk_extras/dialog_extras.py:1123
+#: ../src/lib/gtk_extras/dialog_extras.py:1124
 msgid "Do you want to replace it with the one you are saving?"
-msgstr ""
+msgstr "האם ברצונך להחליפו עם הקובץ שהינך שומרת כעת?"
 
-#: ../src/lib/GourmetRecipeManager.py:62
+#: ../src/lib/GourmetRecipeManager.py:66
 msgid "Importing old recipe data"
-msgstr ""
+msgstr "ייבא נתוני-מתכונים ישנים"
 
-#: ../src/lib/GourmetRecipeManager.py:63
+#: ../src/lib/GourmetRecipeManager.py:67
 msgid ""
 "Importing recipe data from a previous version of Gourmet into new database."
-msgstr ""
+msgstr "ייבוא נתוני-מתכונים מגירסא קודמת של גורמה אל מסד-הנתונים."
 
 #. Convenience method for showing progress dialogs for import/export/deletion
-#: ../src/lib/GourmetRecipeManager.py:164
+#: ../src/lib/GourmetRecipeManager.py:168
 msgid "Import paused"
 msgstr "ייבוא הופסק"
 
-#: ../src/lib/GourmetRecipeManager.py:165
+#: ../src/lib/GourmetRecipeManager.py:169
 msgid "Stop import"
 msgstr "עצור ייבוא"
 
-#: ../src/lib/GourmetRecipeManager.py:248
-#: ../src/lib/GourmetRecipeManager.py:1078
+#: ../src/lib/GourmetRecipeManager.py:252
+#: ../src/lib/GourmetRecipeManager.py:1100
 msgid "Recipe _Index"
-msgstr "_אינדקס מתכונים"
+msgstr "אינדקס_מתכונים"
 
-#: ../src/lib/GourmetRecipeManager.py:249
+#: ../src/lib/GourmetRecipeManager.py:253
 msgid "Shopping _List"
 msgstr "רשימת_קניות"
 
-#: ../src/lib/GourmetRecipeManager.py:268 ../src/lib/reccard.py:215
+#: ../src/lib/GourmetRecipeManager.py:272 ../src/lib/reccard.py:213
 msgid "_Go"
-msgstr ""
+msgstr "_עבור"
 
-#: ../src/lib/GourmetRecipeManager.py:387
+#: ../src/lib/GourmetRecipeManager.py:391
 msgid "translator-credits"
 msgstr ""
+"Launchpad Contributions:\n"
+"  Baruch Even https://launchpad.net/~baruch-ev-en\n"
+"  Dror Mor https://launchpad.net/~insanelyhappy\n"
+"  Oren Segal https://launchpad.net/~tintys\n"
+"  Penguincsc https://launchpad.net/~amichai\n"
+"  Pichirichi https://launchpad.net/~launchpad-pichirichi\n"
+"  Shalom Craimer https://launchpad.net/~scraimer\n"
+"  jarondl https://launchpad.net/~jarondl\n"
+"  matt1988 https://launchpad.net/~matt1988-nana"
 
-#: ../src/lib/GourmetRecipeManager.py:433
+#: ../src/lib/GourmetRecipeManager.py:451
 msgid "Saved!"
-msgstr ""
+msgstr "נשמר!"
 
-#: ../src/lib/GourmetRecipeManager.py:443
+#: ../src/lib/GourmetRecipeManager.py:461
 #, python-format
 msgid "Save your edits to %s"
-msgstr ""
+msgstr "שמור את השנויים ל-%s"
 
-#: ../src/lib/GourmetRecipeManager.py:454
+#: ../src/lib/GourmetRecipeManager.py:472
 msgid "An import is in progress."
 msgstr "תהליך ייבוא בביצוע."
 
-#: ../src/lib/GourmetRecipeManager.py:455
+#: ../src/lib/GourmetRecipeManager.py:473
 msgid "An export is in progress."
 msgstr "תהליך ייצוא בביצוע."
 
-#: ../src/lib/GourmetRecipeManager.py:456
+#: ../src/lib/GourmetRecipeManager.py:474
 msgid "A delete is in progress."
-msgstr ""
+msgstr "מחיקה מתבצעת."
 
-#: ../src/lib/GourmetRecipeManager.py:458
+#: ../src/lib/GourmetRecipeManager.py:476
 msgid "Exit program anyway?"
-msgstr ""
+msgstr "לצאת מהתוכנה בכל זאת?"
 
-#: ../src/lib/GourmetRecipeManager.py:460
+#: ../src/lib/GourmetRecipeManager.py:478
 msgid "Don't exit!"
-msgstr ""
+msgstr "לא לצאת!"
 
-#: ../src/lib/GourmetRecipeManager.py:506
-#, fuzzy, python-format
+#: ../src/lib/GourmetRecipeManager.py:524
+#, python-format
 msgid "Permanently deleted %s of %s recipes"
-msgstr "הדפס מתכונים נבחרים"
+msgstr "מתכונים %s מתוך %s נמחקו לצמיתות"
 
-#: ../src/lib/GourmetRecipeManager.py:523
-#: ../src/lib/GourmetRecipeManager.py:538
+#: ../src/lib/GourmetRecipeManager.py:542
+#: ../src/lib/GourmetRecipeManager.py:557
 msgid "Trash"
-msgstr ""
+msgstr "השלכה לאשפה"
 
-#: ../src/lib/GourmetRecipeManager.py:538
+#: ../src/lib/GourmetRecipeManager.py:557
 msgid "Browse, permanently delete or undelete deleted recipes"
-msgstr ""
+msgstr "עיון, מחיקה לצמיתות וביטול מחיקה של מתכונים שנמחקו"
 
-#: ../src/lib/GourmetRecipeManager.py:590
+#: ../src/lib/GourmetRecipeManager.py:609
 msgid "Undeleted recipes "
-msgstr ""
+msgstr "ביטול מחיקת מתכונים "
 
-#: ../src/lib/GourmetRecipeManager.py:660
+#: ../src/lib/GourmetRecipeManager.py:679
 msgid "Gourmet Recipe Manager starting up..."
-msgstr ""
+msgstr "מנהל המתכונים גורמה מאתחל..."
 
-#: ../src/lib/GourmetRecipeManager.py:669
+#: ../src/lib/GourmetRecipeManager.py:688
 msgid "Starting gourmet..."
-msgstr ""
+msgstr "מפעיל את גורמה..."
 
-#: ../src/lib/GourmetRecipeManager.py:756
+#: ../src/lib/GourmetRecipeManager.py:775
 #, python-format
 msgid "Number of %(unit)s of %(title)s to shop for"
 msgstr ""
 
-#: ../src/lib/GourmetRecipeManager.py:768
+#: ../src/lib/GourmetRecipeManager.py:787
 #, python-format
 msgid "Multiply %s by:"
-msgstr ""
+msgstr "הכפל %s ב:"
 
-#: ../src/lib/GourmetRecipeManager.py:788
+#: ../src/lib/GourmetRecipeManager.py:807
 #, python-format
 msgid "Set %(attributes)s for %(num)s selected recipe?"
 msgid_plural "Set %(attributes)s for %(num)s selected recipes?"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/lib/GourmetRecipeManager.py:795
+#: ../src/lib/GourmetRecipeManager.py:814
 msgid "Any previously existing values will not be changed."
-msgstr ""
+msgstr "ערכים קיימים לא ישונו."
 
-#: ../src/lib/GourmetRecipeManager.py:797
+#: ../src/lib/GourmetRecipeManager.py:816
 msgid "The new values will overwrite any previously existing values."
-msgstr ""
+msgstr "הערכים החדשים יחליפו ערכים קיימים."
 
-#: ../src/lib/GourmetRecipeManager.py:798
+#: ../src/lib/GourmetRecipeManager.py:817
 msgid "This change cannot be undone."
-msgstr ""
+msgstr "שינוי זה לא ניתן לבטל."
 
-#: ../src/lib/GourmetRecipeManager.py:799
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:818
 msgid "Set values for selected recipes"
-msgstr "מחק מתכונים שנבחרו"
+msgstr "קביעת ערכים עבור המתכונים שנבחרו"
 
-#: ../src/lib/GourmetRecipeManager.py:985
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1007
 msgid "Search recipes"
-msgstr "בחר מתכון"
+msgstr "חיפוש מתכונים"
 
-#: ../src/lib/GourmetRecipeManager.py:1014
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1036
 msgid "Open recipe"
-msgstr "מתכון"
+msgstr "פתח מתכון"
 
-#: ../src/lib/GourmetRecipeManager.py:1015
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1037
 msgid "Open selected recipe"
-msgstr "הצג מתכון נבחר"
+msgstr "פתח את המתכון שנבחר"
 
 #. We no longer bind "Delete" here -- instead, we'll do it
 #. at the TreeView level to prevent the delete key
 #. elsewhere (e.g. in search box) from muddling up users.
-#: ../src/lib/GourmetRecipeManager.py:1019
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1041
 msgid "Delete recipe"
-msgstr "_מחק מתכון"
+msgstr "מחק מתכון"
 
-#: ../src/lib/GourmetRecipeManager.py:1021
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1042
+msgid "Delete selected recipes"
+msgstr "מחק מתכונים שנבחרו"
+
+#: ../src/lib/GourmetRecipeManager.py:1043
 msgid "Edit recipe"
-msgstr "_הדפס מתכון"
+msgstr "ערוך מתכון"
 
-#: ../src/lib/GourmetRecipeManager.py:1022
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1044
 msgid "Open selected recipes in recipe editor view"
-msgstr "עבור למתכון במצג כרטיס מתכון"
+msgstr "פתח את המתכונים שנבחרו בתצוגת עורך-המתכונים"
 
-#: ../src/lib/GourmetRecipeManager.py:1024
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1046
 msgid "E_xport selected recipes"
-msgstr "ייצא מתכונים שנבחרו"
+msgstr "יי_צא את המכונים שנבחרו"
 
-#: ../src/lib/GourmetRecipeManager.py:1025
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1047
 msgid "Export selected recipes to file"
-msgstr "ייצא מתכונים שנבחרו"
+msgstr "מייצא את המתכונים שנבחרו לקובץ"
+
+#: ../src/lib/GourmetRecipeManager.py:1049
+msgid "_Print"
+msgstr "_הדפס"
 
 #. ('Email', None, _('E-_mail recipes'),
 #. None,None,self.email_recs),
-#: ../src/lib/GourmetRecipeManager.py:1031
-#, fuzzy
-msgid "Batch _edit recipes"
-msgstr "_הדפס מתכון"
-
-#: ../src/lib/GourmetRecipeManager.py:1040
-#, fuzzy
-msgid "Setti_ngs"
-msgstr "מנות"
-
-#: ../src/lib/GourmetRecipeManager.py:1044
-#, fuzzy
-msgid "_New"
-msgstr "_הצג"
-
-#: ../src/lib/GourmetRecipeManager.py:1048
-#, fuzzy
-msgid "_Import file"
-msgstr "_ייבא קובץ"
-
-#: ../src/lib/GourmetRecipeManager.py:1049
-#, fuzzy
-msgid "Import recipe from file"
-msgstr "מייבא רכיבים מקובץ טקסט."
-
-#: ../src/lib/GourmetRecipeManager.py:1050
-#, fuzzy
-msgid "Import _webpage"
-msgstr "ייבא _עמוד אינטרנט"
-
-#: ../src/lib/GourmetRecipeManager.py:1051
-#, fuzzy
-msgid "Import recipe from webpage"
-msgstr "ייבא _עמוד אינטרנט"
-
-#: ../src/lib/GourmetRecipeManager.py:1052
-#, fuzzy
-msgid "Export _all recipes"
-msgstr "ייצא את כ_ל המתכונים"
-
 #: ../src/lib/GourmetRecipeManager.py:1053
-#, fuzzy
+msgid "Batch _edit recipes"
+msgstr "ערוך קבוצת מתכונים _בו-זמנית"
+
+#: ../src/lib/GourmetRecipeManager.py:1060 ../src/lib/reccard.py:212
+#: ../src/lib/reccard.py:864 ../src/lib/shopgui.py:653
+msgid "_Edit"
+msgstr "_ערוך"
+
+#: ../src/lib/GourmetRecipeManager.py:1061
+msgid "_Actions"
+msgstr "_פעולות"
+
+#: ../src/lib/GourmetRecipeManager.py:1062
+msgid "Setti_ngs"
+msgstr "ה_גדרות"
+
+#: ../src/lib/GourmetRecipeManager.py:1063
+#: ../src/lib/GourmetRecipeManager.py:1068 ../src/lib/reccard.py:214
+#: ../src/lib/reccard.py:225 ../src/lib/reccard.py:866
+#: ../src/lib/shopgui.py:676 ../src/lib/shopgui.py:678
+msgid "_Help"
+msgstr "_עזרה"
+
+#: ../src/lib/GourmetRecipeManager.py:1064
+msgid "_About"
+msgstr "_אודות"
+
+#: ../src/lib/GourmetRecipeManager.py:1066
+msgid "_New"
+msgstr "_חדש"
+
+#: ../src/lib/GourmetRecipeManager.py:1070
+msgid "_Import file"
+msgstr "יי_בא קובץ"
+
+#: ../src/lib/GourmetRecipeManager.py:1071
+msgid "Import recipe from file"
+msgstr "ייבא מתכון מתוך קובץ"
+
+#: ../src/lib/GourmetRecipeManager.py:1072
+msgid "Import _webpage"
+msgstr "ייבא _דף אינטרנט"
+
+#: ../src/lib/GourmetRecipeManager.py:1073
+msgid "Import recipe from webpage"
+msgstr "ייבא מתכון מדף אינטרנט"
+
+#: ../src/lib/GourmetRecipeManager.py:1074
+msgid "Export _all recipes"
+msgstr "ייצא את _כל המתכונים"
+
+#: ../src/lib/GourmetRecipeManager.py:1075
 msgid "Export all recipes to file"
-msgstr "ייצא מתכון זה כקובץ טקסט."
+msgstr "מייצא את כל המתכונים לקובץ"
 
-#: ../src/lib/GourmetRecipeManager.py:1054
+#: ../src/lib/GourmetRecipeManager.py:1076
 msgid "_Plugins"
-msgstr ""
+msgstr "תו_ספים"
 
-#: ../src/lib/GourmetRecipeManager.py:1055
+#: ../src/lib/GourmetRecipeManager.py:1077
 msgid "Manage plugins which add extra functionality to Gourmet."
-msgstr ""
+msgstr "נהל תוספים המוסיפים עוד יכולות לגורמה."
 
-#: ../src/lib/GourmetRecipeManager.py:1057
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1079
 msgid "_Preferences"
-msgstr "העדפות דואל"
+msgstr "_העדפות"
 
 #. ('Redo',gtk.STOCK_REDO,_('_Redo'),
 #. None,None),
 #. ('Undo',gtk.STOCK_UNDO,_('_Undo'),
 #. None,None),
-#: ../src/lib/GourmetRecipeManager.py:1063
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1085
 msgid "_Quit"
-msgstr "_ערוך"
+msgstr "י_ציאה"
 
-#: ../src/lib/GourmetRecipeManager.py:1065
+#: ../src/lib/GourmetRecipeManager.py:1087
 msgid "Open _Trash"
-msgstr ""
+msgstr "פתח את פ_ח האשפה"
 
-#: ../src/lib/GourmetRecipeManager.py:1073
+#: ../src/lib/GourmetRecipeManager.py:1093
+msgid "_Tools"
+msgstr "_כלים"
+
+#: ../src/lib/GourmetRecipeManager.py:1094
+msgid "_Timer"
+msgstr "_טיימר"
+
+#: ../src/lib/GourmetRecipeManager.py:1095
 msgid "Show timer"
-msgstr ""
+msgstr "הצג טיימר"
 
-#: ../src/lib/GourmetRecipeManager.py:1079
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1101
 msgid "Searchable index of recipes in the database."
-msgstr "מחק את המתכון ממאגר הנתונים."
+msgstr "אינדקס בר-חיפוש של מתכונים במסד-הנתונים."
 
-#: ../src/lib/GourmetRecipeManager.py:1189
+#: ../src/lib/GourmetRecipeManager.py:1211
 #, python-format
 msgid "Delete %s?"
-msgstr ""
-
-#: ../src/lib/GourmetRecipeManager.py:1190
-#, python-format
-msgid "You have unsaved changes to %s. Are you sure you want to delete?"
-msgstr ""
+msgstr "מחק %s?"
 
 #: ../src/lib/GourmetRecipeManager.py:1212
+#, python-format
+msgid "You have unsaved changes to %s. Are you sure you want to delete?"
+msgstr "יש לך שינויים שלא נשמרו אל %s. האם ברצונך למחוק?"
+
+#: ../src/lib/GourmetRecipeManager.py:1234
 #, python-format
 msgid ""
 "You just moved %s recipe to the trash. You can recover this recipe or "
@@ -1317,114 +1075,116 @@ msgid_plural ""
 "You just moved %s recipes to the trash. You can recover these recipes or "
 "permanently delete them at any time by clicking Tools->Open Trash"
 msgstr[0] ""
+"כרגע העברת %s מתכון לאשפה. ניתן לאחזר את המתכון, או למחוק אותו לצמיתות, על-"
+"ידי לחצה על כלים->פתח אשפה."
 msgstr[1] ""
+"כרגע העברת %s מתכונים לאשפה. ניתן לאחזר את המתכון, או למחוק אותו לצמיתות, על-"
+"ידי לחצה על כלים->פתח אשפה."
 
-#: ../src/lib/GourmetRecipeManager.py:1219
+#: ../src/lib/GourmetRecipeManager.py:1241
 msgid "Deleted"
-msgstr ""
+msgstr "נמחק"
 
-#: ../src/lib/GourmetRecipeManager.py:1219
+#: ../src/lib/GourmetRecipeManager.py:1241
 #: ../src/lib/importers/interactive_importer.py:471
 msgid "Untitled"
-msgstr ""
+msgstr "ללא כותרת"
 
-#: ../src/lib/GourmetRecipeManager.py:1227
+#: ../src/lib/GourmetRecipeManager.py:1249
 msgid "Permanently delete recipes?"
-msgstr ""
+msgstr "האם למחוק את המתכונים לצמיתות?"
 
-#: ../src/lib/GourmetRecipeManager.py:1229
+#: ../src/lib/GourmetRecipeManager.py:1251
 msgid "Permanently delete recipe?"
-msgstr ""
+msgstr "האם למחוק את המתכון לצמיתות?"
 
-#: ../src/lib/GourmetRecipeManager.py:1230
+#: ../src/lib/GourmetRecipeManager.py:1252
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
-msgstr ""
+msgstr "הינך בטוח/ה שברצונך למחוק את המתכון <i>%s</i>"
 
-#: ../src/lib/GourmetRecipeManager.py:1232
+#: ../src/lib/GourmetRecipeManager.py:1254
 msgid "Are you sure you want to delete the following recipes?"
-msgstr ""
+msgstr "הינך בטוח/ה שברצונך למחוק את המתכונים להלן?"
 
-#: ../src/lib/GourmetRecipeManager.py:1236
+#: ../src/lib/GourmetRecipeManager.py:1258
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
-msgstr ""
+msgstr "הינך בטוח/ה שברצונך למחוק את %s המתכונים שנבחרו?"
 
-#: ../src/lib/GourmetRecipeManager.py:1238
+#: ../src/lib/GourmetRecipeManager.py:1260
 msgid "See recipes"
-msgstr ""
+msgstr "ראיית מתכונים"
 
-#: ../src/lib/GourmetRecipeManager.py:1246
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1268
 msgid "Delete Recipes"
-msgstr "_מחק מתכון"
+msgstr "מחיקת מתכונים"
 
-#: ../src/lib/GourmetRecipeManager.py:1273
+#: ../src/lib/GourmetRecipeManager.py:1295
 #, python-format
 msgid "Deleted recipe %s"
-msgstr ""
+msgstr "מחיקת מתכון %s"
 
-#: ../src/lib/GourmetRecipeManager.py:1307
+#: ../src/lib/GourmetRecipeManager.py:1335
 msgid "Export succeeded"
-msgstr ""
+msgstr "הייצוא הצליח"
 
-#: ../src/lib/GourmetRecipeManager.py:1310
+#: ../src/lib/GourmetRecipeManager.py:1338
 msgid "webpage"
-msgstr ""
+msgstr "דף אינטרנט"
 
-#: ../src/lib/GourmetRecipeManager.py:1311
+#: ../src/lib/GourmetRecipeManager.py:1339
 #, python-format
 msgid "Exported %s to %s"
-msgstr ""
+msgstr "%s יוצא אל %s"
 
-#: ../src/lib/GourmetRecipeManager.py:1371
+#: ../src/lib/GourmetRecipeManager.py:1399
 msgid "Done!"
-msgstr ""
+msgstr "בוצע!"
 
-#: ../src/lib/GourmetRecipeManager.py:1379
+#: ../src/lib/GourmetRecipeManager.py:1407
 msgid "Importing..."
-msgstr ""
+msgstr "מייבא..."
 
 #: ../src/lib/GourmetThreads.py:42
 #, python-format
 msgid "%s stopped."
-msgstr ""
+msgstr "%s עצר."
 
 #: ../src/lib/GourmetThreads.py:43
 #, python-format
 msgid "%s was interrupted by user request."
-msgstr ""
+msgstr "%s נעצר באמצע עקב בקשת המשתמש."
 
 #: ../src/lib/GourmetThreads.py:50
 #, python-format
 msgid "%s interrupted"
-msgstr ""
+msgstr "%s נעצר באמצע."
 
 #: ../src/lib/GourmetThreads.py:51
 #, python-format
 msgid "There was an error during %s."
-msgstr ""
+msgstr "הייתה שגיאה במהלך %s."
 
 #: ../src/lib/GourmetThreads.py:107
 #, python-format
 msgid "Deleting recipes from database... (%s of %s deleted)"
-msgstr ""
+msgstr "מוחק מתכונים ממסד-הנתונים... (%s מתוך %s נמחקו)"
 
 #: ../src/lib/GourmetThreads.py:111
 #, python-format
 msgid "Deleted %s recipe"
 msgid_plural "Deleted %s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "נמחק מתכון %s"
+msgstr[1] "נמחקו %s מתכונים"
 
 #: ../src/lib/backends/DatabaseChooser.py:105
-#, fuzzy
 msgid "Choose Database File"
-msgstr "בחר בסיס נתונים"
+msgstr "יש לבחור את קובץ מסד-הנתונים"
 
 #: ../src/lib/backends/db.py:437 ../src/lib/backends/db.py:438
 msgid "Upgrading database"
-msgstr ""
+msgstr "משדרג את מסד-הנתונים"
 
 #: ../src/lib/backends/db.py:439
 msgid ""
@@ -1432,11 +1192,12 @@ msgid ""
 "may take  some time. Your data has been automatically backed up in case "
 "something goes wrong."
 msgstr ""
+"ייתכן והתהליך יהיה מסובך ויקח זמן, תלוי בגודל מסד-הנתונים שלך. המידע שלך "
+"מגובה אוטומטית, על כל מקרה שיהיה."
 
 #: ../src/lib/backends/db.py:440 ../src/lib/threadManager.py:315
-#, fuzzy
 msgid "Details"
-msgstr "_פרטים"
+msgstr "פרטים"
 
 #: ../src/lib/backends/db.py:440
 #, python-format
@@ -1445,68 +1206,71 @@ msgid ""
 "fails, you can manually rename your backup file recipes.db to recover it for "
 "use with older Gourmet."
 msgstr ""
+"נעשה גיבוי אל %s על כל מקרה שיהיה. במידה והשידרוג נכשל, יש ביכולתך לשנות את "
+"שם קובץ הגיבוי ל-recipes.db על מנת לשחזר אותו לשימוש עם גירסה ישנה של גורמה."
 
 #: ../src/lib/backends/db.py:1426
 #: ../src/lib/importers/interactive_importer.py:95
 #: ../src/lib/legacy_db/db_08/rdatabase.py:446
 #: ../src/lib/legacy_db/db_085/rdatabase.py:447
-#: ../src/lib/legacy_db/db_09/rdatabase.py:508 ../src/lib/reccard.py:948
+#: ../src/lib/legacy_db/db_09/rdatabase.py:508 ../src/lib/reccard.py:939
 msgid "New Recipe"
-msgstr ""
+msgstr "מתכון חדש"
 
 #: ../src/lib/check_encodings.py:92
 msgid "Select encoding"
-msgstr ""
+msgstr "בחירת קידוד"
 
 #: ../src/lib/check_encodings.py:93
 msgid ""
 "Cannot determine proper encoding. Please select the correct encoding from "
 "the following list."
 msgstr ""
+"אין ביכולתי לזהות את הקידוד הנכון. יש לבחור את הקידוד המתאים מהרשימת להלן."
 
 #: ../src/lib/check_encodings.py:94
 msgid "See _file with encoding"
-msgstr ""
+msgstr "צפייה בקובץ עם _קידוד"
 
 #. this is a bit of a hackish attempt to make a matcher for all
 #. plural forms of time units. We use range(5) since as far as I
 #. can see, enumerating the forms for 0 through 5 should give you
 #. all possible forms in all languages.
-#.
+#. 
 #. See http://www.sbin.org/doc/glibc/libc_8.html
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:565
 msgid "second"
 msgid_plural "seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "שנייה"
+msgstr[1] "שניות"
 
 #. min. = abbreviation for minutes
 #: ../src/lib/convert.py:65
 msgid "min"
-msgstr ""
+msgstr "דק'"
 
 #: ../src/lib/convert.py:65 ../src/lib/convert.py:564
 msgid "minute"
 msgid_plural "minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "דקה"
+msgstr[1] "דקות"
 
 #. hrs = abbreviation for hours
 #: ../src/lib/convert.py:67
 msgid "hrs."
-msgstr ""
+msgstr "ש'"
 
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:563
 msgid "hour"
 msgid_plural "hours"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "שעה"
+msgstr[1] "שעות"
 
 #: ../src/lib/convert.py:68 ../src/lib/convert.py:562
 msgid "day"
 msgid_plural "days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "יום"
+msgstr[1] "ימים"
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
@@ -1514,20 +1278,20 @@ msgstr[1] ""
 #: ../src/lib/convert.py:69 ../src/lib/convert.py:559
 msgid "year"
 msgid_plural "years"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "שנה"
+msgstr[1] "שנים"
 
 #: ../src/lib/convert.py:560
 msgid "month"
 msgid_plural "months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "חודש"
+msgstr[1] "חודשים"
 
 #: ../src/lib/convert.py:561
 msgid "week"
 msgid_plural "weeks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "שבוע"
+msgstr[1] "שבועות"
 
 #. Translators... this is a messay way of concatenating
 #. lists. In English we do lists this way: 1, 2, 3, 4, 5
@@ -1537,19 +1301,19 @@ msgstr[1] ""
 #. ", " and " and " with the same string.
 #: ../src/lib/convert.py:608
 msgid " and "
-msgstr ""
+msgstr " ו "
 
 #: ../src/lib/convert.py:608
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../src/lib/convert.py:610
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/lib/convert.py:740
 msgid "and"
-msgstr ""
+msgstr "וגם"
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
@@ -1567,61 +1331,59 @@ msgstr "לא יכול להמיר %s ל %s"
 #: ../src/lib/convertGui.py:109
 #: ../src/lib/plugins/unit_converter/convertGui.py:116
 msgid "Need density information."
-msgstr ""
+msgstr "חסר מידע על משקל סגולי."
 
 #: ../src/lib/exporters/exportManager.py:36
 msgid "Save recipe as..."
-msgstr ""
+msgstr "שמור מתכון בשם..."
 
 #: ../src/lib/exporters/exportManager.py:45
 #, python-format
 msgid "Gourmet cannot export file of type \"%s\""
-msgstr ""
+msgstr "גורמה לא יכול לייצא קבצים מסוג \"%s\""
 
 #: ../src/lib/exporters/exportManager.py:75
-#, fuzzy
 msgid "Export complete!"
-msgstr "_ייצא מתכון"
+msgstr "הייצוא הושלם!"
 
 #: ../src/lib/exporters/exportManager.py:76
 #, python-format
 msgid "Recipe exported to %s"
-msgstr ""
+msgstr "מתכון ייוצא אל %s"
 
 #: ../src/lib/exporters/exportManager.py:89
 msgid "Export recipes"
-msgstr ""
+msgstr "ייצוא מתכונים"
 
 #: ../src/lib/exporters/exportManager.py:90
 msgid "recipes"
-msgstr ""
+msgstr "מתכונים"
 
 #: ../src/lib/exporters/exportManager.py:101
 #, python-format
 msgid "Unable to export: unknown filetype \"%s\""
-msgstr ""
+msgstr "לא ניתן לייצא: סוג הקובץ \"%s\" לא מוכר"
 
 #: ../src/lib/exporters/exportManager.py:102
 msgid ""
 "Please make sure to select a filetype from the dropdown menu when saving."
-msgstr ""
+msgstr "יש לוודא בעת השמירה שבחרת את סוג הקובץ מתוך הרשימה."
 
 #: ../src/lib/exporters/exportManager.py:150
-#, fuzzy
 msgid "Export"
-msgstr "_יצא"
+msgstr "ייצוא"
 
 #: ../src/lib/exporters/exporter.py:209 ../src/lib/exporters/exporter.py:211
 #: ../src/lib/exporters/exporter.py:515 ../src/lib/exporters/exporter.py:517
 msgid "stars"
-msgstr ""
+msgstr "כוכבים"
 
 #: ../src/lib/exporters/exporter.py:378 ../src/lib/exporters/exporter.py:463
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:153
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:626
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:639
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:629
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:642
 msgid "optional"
-msgstr ""
+msgstr "לא מחייב"
 
 #: ../src/lib/exporters/exporter.py:558
 #, python-format
@@ -1630,35 +1392,37 @@ msgstr ""
 
 #: ../src/lib/exporters/exporter.py:578
 msgid "Export complete."
-msgstr ""
+msgstr "הייצוא הסתיים."
 
 #: ../src/lib/exporters/printer.py:12 ../src/lib/exporters/printer.py:22
 msgid "Unable to print: no print plugins are active!"
-msgstr ""
+msgstr "לא ניתן להדפיס: אין תוספי-הדפסה פעילים!"
 
 #: ../src/lib/exporters/printer.py:13 ../src/lib/exporters/printer.py:23
 msgid ""
 "To print, activate a plugin that provides printing support, such as the "
 "'Printing & PDF export' plugin."
 msgstr ""
+"על מנת להדפיס, יש להפעיל תוסף המספק תמיכה בהדפסה, כדוגמת התוסף 'Printing & "
+"PDF export'."
 
 #: ../src/lib/exporters/printer.py:68
 #, python-format
 msgid "Print %s recipe"
 msgid_plural "Print %s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "הדפס מתכון %s"
+msgstr[1] "הדפסת %s מתכונים"
 
 #: ../src/lib/exporters/printer.py:80
 msgid "Well this is embarassing. Something went wrong printing your recipe."
-msgstr ""
+msgstr "אני נבוך להודות, אבל משהו השתבש בהדפסת המתכון שלך."
 
 #: ../src/lib/exporters/recipe_emailer.py:55
 #: ../src/lib/plugins/email_plugin/recipe_emailer.py:29
 #: ../src/lib/plugins/email_plugin/recipe_emailer.py:48
-#: ../src/lib/plugins/key_editor/keyEditor.py:114 ../src/lib/reccard.py:3066
+#: ../src/lib/plugins/key_editor/keyEditor.py:115 ../src/lib/reccard.py:3055
 msgid "Recipes"
-msgstr ""
+msgstr "מתכונים"
 
 #: ../src/lib/exporters/recipe_emailer.py:119
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
@@ -1669,9 +1433,8 @@ msgid "E-mail Recipe as HTML Attachment"
 msgstr "שלח מתכון כקובץ HTML"
 
 #: ../src/lib/exporters/recipe_emailer.py:121
-#, fuzzy
 msgid "E-mail Recipe as PDF Attachment"
-msgstr "שלח מתכון כקובץ HTML"
+msgstr "שליחת המתכון כדבוקת PDF בדואר אלקטרוני"
 
 #: ../src/lib/exporters/recipe_emailer.py:138
 msgid "Email Options"
@@ -1691,158 +1454,154 @@ msgid ""
 "an attachment."
 msgstr "לא בחרת לצרף את המתכון בגוף ההודעה או כקובץ נילווה להודעה."
 
-#: ../src/lib/gglobals.py:252
-msgid "Category"
-msgstr "קטגוריה"
-
-#: ../src/lib/gglobals.py:253
+#: ../src/lib/gglobals.py:234
 msgid "Cuisine"
 msgstr "מטבח"
 
-#: ../src/lib/gglobals.py:254 ../src/lib/gtk_extras/ratingWidget.py:333
+#: ../src/lib/gglobals.py:235 ../src/lib/gtk_extras/ratingWidget.py:326
 msgid "Rating"
 msgstr "דירוג"
 
-#: ../src/lib/gglobals.py:255
+#: ../src/lib/gglobals.py:236
 msgid "Source"
 msgstr "מקור"
 
-#: ../src/lib/gglobals.py:256
-#, fuzzy
+#: ../src/lib/gglobals.py:237
 msgid "Website"
-msgstr ""
-"\n"
-"אתר: %s"
+msgstr "אתר אינטרנט"
 
-#: ../src/lib/gglobals.py:259
+#: ../src/lib/gglobals.py:240
 msgid "Preparation Time"
 msgstr "זמן הכנה"
 
-#: ../src/lib/gglobals.py:260
+#: ../src/lib/gglobals.py:241
 msgid "Cooking Time"
 msgstr "זמן בישול"
 
-#: ../src/lib/gglobals.py:265 ../src/lib/gglobals.py:270
-#: ../src/lib/reccard.py:1666
+#: ../src/lib/gglobals.py:246 ../src/lib/gglobals.py:251
+#: ../src/lib/reccard.py:1654
 msgid "Instructions"
 msgstr "הוראות"
 
-#: ../src/lib/gglobals.py:266 ../src/lib/gglobals.py:271
-#: ../src/lib/reccard.py:1672
+#: ../src/lib/gglobals.py:247 ../src/lib/gglobals.py:252
+#: ../src/lib/reccard.py:1660
 msgid "Notes"
 msgstr "רשימות"
 
-#: ../src/lib/gglobals.py:272
+#: ../src/lib/gglobals.py:253
 msgid "Modifications"
 msgstr "שינויים"
 
 #. print dir(err)
-#: ../src/lib/gglobals.py:338
+#: ../src/lib/gglobals.py:319
 msgid "Unable to open URL"
-msgstr ""
+msgstr "לא ניתן לפתוח את הכתובת"
 
-#: ../src/lib/gglobals.py:339
+#: ../src/lib/gglobals.py:320
 msgid "Unable to launch mail reader."
-msgstr ""
+msgstr "לא ניתן להריץ תוכנת דואר."
 
-#: ../src/lib/gglobals.py:340
+#: ../src/lib/gglobals.py:321
 msgid "Unable to open website."
-msgstr ""
+msgstr "לא ניתן לפתוח את האתר."
 
-#: ../src/lib/gglobals.py:341
+#: ../src/lib/gglobals.py:322
 msgid "Unable to open file."
-msgstr ""
+msgstr "לא ניתן לפתוח את הקובץ."
 
-#: ../src/lib/gglobals.py:347
+#: ../src/lib/gglobals.py:328
 #, python-format
 msgid "There was an error launching the url: %s"
-msgstr ""
+msgstr "חלה שגיאה בעת הפעלת הכתובת: %s"
 
 #. setup pause button
-#: ../src/lib/gtk_extras/dialog_extras.py:404
+#: ../src/lib/gtk_extras/dialog_extras.py:405
 msgid "_Pause"
 msgstr "_הפסק"
 
 #. setup stop button
-#: ../src/lib/gtk_extras/dialog_extras.py:416
+#: ../src/lib/gtk_extras/dialog_extras.py:417
 msgid "_Stop"
 msgstr "_עצור"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:472
-#: ../src/lib/gtk_extras/dialog_extras.py:562
+#: ../src/lib/gtk_extras/dialog_extras.py:473
+#: ../src/lib/gtk_extras/dialog_extras.py:563
 msgid "Don't ask me this again."
 msgstr "אל תשאל שוב בעתיד."
 
-#: ../src/lib/gtk_extras/dialog_extras.py:528
+#: ../src/lib/gtk_extras/dialog_extras.py:529
 msgid "Do you really want to do this"
-msgstr ""
-
-#: ../src/lib/gtk_extras/dialog_extras.py:740
-#: ../src/lib/importers/importer.py:466
-msgid "excellent"
-msgstr ""
+msgstr "האם באמת ברצונך לעשות זאת"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:741
-#: ../src/lib/importers/importer.py:467
-msgid "great"
-msgstr ""
+#: ../src/lib/importers/importer.py:466
+msgid "excellent"
+msgstr "מצויין"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:742
-#: ../src/lib/importers/importer.py:468
-msgid "good"
-msgstr ""
+#: ../src/lib/importers/importer.py:467
+msgid "great"
+msgstr "טוב מאוד"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:743
-#: ../src/lib/importers/importer.py:469
-msgid "fair"
-msgstr ""
+#: ../src/lib/importers/importer.py:468
+msgid "good"
+msgstr "טוב"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:744
+#: ../src/lib/importers/importer.py:469
+msgid "fair"
+msgstr "פחות טוב"
+
+#: ../src/lib/gtk_extras/dialog_extras.py:745
 #: ../src/lib/importers/importer.py:471
 msgid "poor"
-msgstr ""
-
-#: ../src/lib/gtk_extras/dialog_extras.py:756
-msgid "Convert ratings to 5 star scale."
-msgstr ""
+msgstr "גרוע"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:757
-msgid "Convert ratings."
-msgstr ""
+msgid "Convert ratings to 5 star scale."
+msgstr "המר ציונים לטווח של 5 כוכבים."
 
 #: ../src/lib/gtk_extras/dialog_extras.py:758
+msgid "Convert ratings."
+msgstr "המרת ציונים."
+
+#: ../src/lib/gtk_extras/dialog_extras.py:759
 msgid "Please give each of the ratings an equivalent on a scale of 1 to 5"
-msgstr ""
+msgstr "יש לתת לכל ציון ערך מקביל בתחום 1 עד 5"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:771
+#: ../src/lib/gtk_extras/dialog_extras.py:772
 msgid "Current Rating"
-msgstr ""
+msgstr "ציון נוכחי"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:776
+#: ../src/lib/gtk_extras/dialog_extras.py:777
 msgid "Rating out of 5 Stars"
-msgstr ""
+msgstr "ציון מתוך 5 כוכבים"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1108
+#: ../src/lib/gtk_extras/dialog_extras.py:1109
 msgid "No file selected"
 msgstr "לא נבחר קובץ"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1109
+#: ../src/lib/gtk_extras/dialog_extras.py:1110
 msgid "No file was selected, so the action has been cancelled"
-msgstr ""
+msgstr "הפעולה בוצעה, כיוון שלא נבחר קובץ."
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1223
+#: ../src/lib/gtk_extras/dialog_extras.py:1225
 #, python-format
 msgid ""
 "I'm sorry, I can't understand\n"
 "the amount \"%s\"."
 msgstr ""
+"אני מתנצל, אבל איני מבין את משמעות\n"
+"הכמות \"%s\"."
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1225
+#: ../src/lib/gtk_extras/dialog_extras.py:1227
 msgid ""
 "Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
 msgstr ""
+"כמויות מוכרחות להיות מספרים (שברים או עשרוניים), טווחי מספרים, או ריקות."
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1227
+#: ../src/lib/gtk_extras/dialog_extras.py:1229
 msgid ""
 "\n"
 "The \"unit\" must be in the \"unit\" field by itself.\n"
@@ -1853,88 +1612,96 @@ msgid ""
 "To enter a range of numbers, use a \"-\" to separate them.\n"
 "For example, you could enter 2-4 or 1 1/2 - 3 1/2.\n"
 msgstr ""
+"\n"
+"על ה\"יחידה\" להיות הערך היחיד בשדה ה\"יחידה\".\n"
+"לדוגמה, אם ברצונך להזין אחד וחצי כוסות,\n"
+"על שדה הכמות להכיל \"1.5\" או \"1 1/2\". \"כוסות\"\n"
+"צריך להיות בנפרד בשדה ה\"יחידה\".\n"
+"\n"
+"על מנת להזין טווח של ערכים, יש להשתמש בסימן \"-\"\n"
+"להפריד ביניהם. לדוגמא, ניתן להזין 2-4 או 1 1/2 - 3 1/2.\n"
 
 #. self._hide_warning_slowly()
 #. return
-#: ../src/lib/gtk_extras/numberEntry.py:28
-#: ../src/lib/gtk_extras/timeEntry.py:55 ../src/lib/gtk_extras/timeEntry.py:65
+#: ../src/lib/gtk_extras/numberEntry.py:29
+#: ../src/lib/gtk_extras/timeEntry.py:56 ../src/lib/gtk_extras/timeEntry.py:66
 msgid "Invalid input."
-msgstr ""
+msgstr "קלט שגוי."
 
-#: ../src/lib/gtk_extras/numberEntry.py:28
+#: ../src/lib/gtk_extras/numberEntry.py:29
 msgid "Not a number."
-msgstr ""
+msgstr "לא מספר."
 
-#: ../src/lib/gtk_extras/timeEntry.py:40
+#: ../src/lib/gtk_extras/timeEntry.py:41
 msgid ""
 "Time must begin with a number or fraction followed by a unit (minutes, "
 "hours, etc.)."
-msgstr ""
+msgstr "זמן חייב להתחיל במספר או שבר שאחריו יחידה (דקות, שעות, וכו')."
 
-#: ../src/lib/gtk_extras/timeEntry.py:56 ../src/lib/gtk_extras/timeEntry.py:66
+#: ../src/lib/gtk_extras/timeEntry.py:57 ../src/lib/gtk_extras/timeEntry.py:67
 msgid "Time must be expressed in hours, minutes, seconds, etc."
-msgstr ""
+msgstr "זמן מוכרח להתבטא בשעות, דקות, שניות, וכו'."
 
 #: ../src/lib/importers/generic_recipe_parser.py:130
 msgid "yield"
-msgstr ""
+msgstr "תנובה"
 
 #: ../src/lib/importers/html_importer.py:41
 #: ../src/lib/importers/webextras.py:21 ../src/lib/importers/webextras.py:79
 #, python-format
 msgid "Retrieving %s"
-msgstr ""
+msgstr "מאחזר %s"
 
 #: ../src/lib/importers/html_importer.py:44
 #: ../src/lib/importers/webextras.py:82
 msgid "Retrieving file"
-msgstr ""
+msgstr "מאחזר קובץ"
 
 #. Interactive we go...
 #: ../src/lib/importers/html_importer.py:487
 msgid "Don't recognize this webpage. Using generic importer..."
-msgstr ""
+msgstr "דף האינטרנט לא מזוהה. משתמש במייבא כללי..."
 
 #: ../src/lib/importers/html_importer.py:498
 #: ../src/lib/importers/html_importer.py:567
 msgid "Import complete."
-msgstr ""
+msgstr "הייבוא הושלם."
 
 #: ../src/lib/importers/html_importer.py:519
 msgid "Importing recipe"
-msgstr ""
+msgstr "מייבא מתכון"
 
 #: ../src/lib/importers/html_importer.py:525
 msgid "Processing ingredients"
-msgstr ""
+msgstr "מעבד רשימת מרכיבים"
 
 #: ../src/lib/importers/html_importer.py:549
 msgid "Processing ingredients."
-msgstr ""
+msgstr "מעבד רשימת מרכיבים."
 
 #: ../src/lib/importers/importManager.py:54
 msgid "Enter the URL of a recipe archive or recipe website."
-msgstr ""
+msgstr "יש להזין את הכתובת של ארכיון המתכונים או אתר דף המתכון."
 
 #: ../src/lib/importers/importManager.py:55
 msgid "Enter website address"
-msgstr ""
+msgstr "יש להזין את כתובת אתר האינטרנט"
 
 #: ../src/lib/importers/importManager.py:57
 msgid "Enter URL:"
-msgstr ""
+msgstr "הזנ/י כתובת:"
 
 #: ../src/lib/importers/importManager.py:58
 msgid "Enter the address of a website or recipe archive."
-msgstr ""
+msgstr "יש להזין את כתובת האתר או ארכיון המתכונים."
 
 #: ../src/lib/importers/importManager.py:93
 msgid "Unable to import URL"
-msgstr ""
+msgstr "לא ניתן לייבא את הכתובת"
 
 #: ../src/lib/importers/importManager.py:94
 msgid "Gourmet does not have a plugin capable of importing URL"
-msgstr ""
+msgstr "אין לגורמה תוסף המסוגל לייבא את הכתובת"
 
 #: ../src/lib/importers/importManager.py:95
 #, python-format
@@ -1944,72 +1711,66 @@ msgid ""
 msgstr ""
 
 #: ../src/lib/importers/importManager.py:110
-#, fuzzy
 msgid "Open recipe..."
-msgstr "מתכון"
+msgstr "פותח מתכון..."
 
 #: ../src/lib/importers/importManager.py:172
-#, fuzzy
 msgid "Import"
-msgstr "_ייבא קובץ"
+msgstr "ייבוא"
 
 #: ../src/lib/importers/importManager.py:242
 msgid "All importable files"
-msgstr ""
+msgstr "כל הקבצים שניתן לייבא"
 
 #: ../src/lib/importers/importer.py:185
-#, fuzzy
 msgid "serving"
 msgid_plural "servings"
-msgstr[0] "מנות"
+msgstr[0] "מנה"
 msgstr[1] "מנות"
 
 #: ../src/lib/importers/importer.py:266
 #, python-format
 msgid "Imported %s of %s recipes."
-msgstr ""
+msgstr "יובאו %s מתוך %s מתכונים."
 
 #: ../src/lib/importers/importer.py:470
 msgid "okay"
-msgstr ""
+msgstr "בסדר"
 
 #: ../src/lib/importers/interactive_importer.py:37
 msgid "Servings"
 msgstr "מנות"
 
 #: ../src/lib/importers/interactive_importer.py:39
-#, fuzzy
 msgid "Ingredient Subgroup"
-msgstr "הוסף _קבוצת מרכיבים"
+msgstr "תת-רשימת מרכיבים"
 
 #: ../src/lib/importers/interactive_importer.py:40
 msgid "Hide"
-msgstr ""
+msgstr "הסתר"
 
-#: ../src/lib/importers/interactive_importer.py:46 ../src/lib/reccard.py:1315
+#: ../src/lib/importers/interactive_importer.py:46 ../src/lib/reccard.py:1310
 msgid "Description"
-msgstr ""
+msgstr "תיאור"
 
 #: ../src/lib/importers/interactive_importer.py:52
 msgid "Text"
-msgstr ""
+msgstr "מלל"
 
 #: ../src/lib/importers/interactive_importer.py:54
-#, fuzzy
 msgid "Actions"
-msgstr "_פעולות"
+msgstr "פעולות"
 
 #: ../src/lib/importers/interactive_importer.py:102
-#, fuzzy
 msgid "Import recipe"
-msgstr "_ייצא מתכון"
+msgstr "ייבא מתכון"
 
 #: ../src/lib/importers/interactive_importer.py:145
 msgid "Clear _Tags"
-msgstr ""
+msgstr "מחק תגיות"
 
 #. for t in self.tags:
-#.
+#. 
 #. self.action_model.append([self.labels_by_tag[t],t])
 #. tag_button = gtk.Button('_'+self.labels_by_tag[t])
 #. tag_button.connect('clicked',
@@ -2017,20 +1778,19 @@ msgstr ""
 #. self.labels_by_tag[t])
 #. self.action_area.pack_start(tag_button,expand=False,fill=False,padding=6)
 #. tag_button.show()
-#.
+#. 
 #: ../src/lib/importers/interactive_importer.py:192
-#, fuzzy
 msgid "Import Recipe"
-msgstr "_ייצא מתכון"
+msgstr "יבא מתכון"
 
 #: ../src/lib/importers/interactive_importer.py:470
 msgid "Select recipe image"
-msgstr ""
+msgstr "בחירת תמונה למתכון"
 
 #: ../src/lib/importers/interactive_importer.py:471
 #, python-format
 msgid "Select image for recipe \"%s\""
-msgstr ""
+msgstr "בחירת תמונה למתכון \"%s\""
 
 #: ../src/lib/importers/interactive_importer.py:472
 msgid ""
@@ -2038,21 +1798,23 @@ msgid ""
 "images that are of the recipe, or don't select anything if you don't want "
 "any of these images."
 msgstr ""
+"להלן כל התמונות שנמצאו בדף שהינך מייבא/ת. יש לבחור את כל התמונות של המתכון, "
+"או לא לבחור אף תמונה אם אינך רוצה את התמונות הללו."
 
 #: ../src/lib/importers/plaintext_importer.py:34
 #, python-format
 msgid "Imported %s recipes."
-msgstr ""
+msgstr "יובאו %s מתכונים."
 
 #: ../src/lib/importers/webextras.py:14
 #, python-format
 msgid "Downloading %s"
-msgstr ""
+msgstr "מתבצעת הורדת %s"
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:17
 #: ../src/lib/legacy_db/db_09/rmetakit.py:17
 msgid "Database format has changed"
-msgstr ""
+msgstr "פורמט מסד-הנתונים השתנה"
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:18
 #: ../src/lib/legacy_db/db_09/rmetakit.py:18
@@ -2062,6 +1824,9 @@ msgid ""
 "database will no longer work with older versions of %(progname)s.  A backup "
 "has been saved in %(backupfile)s"
 msgstr ""
+"גירסה %(version)s של %(progname)s שינתה את פורמט מסד-הנתונים שלה. מסד-"
+"הנתונים שלך כבר לא תואם עם גירסאות ישנות של %(progname)s. נשמר עותק בקובץ "
+"%(backupfile)s."
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:548
 #: ../src/lib/legacy_db/db_09/rmetakit.py:593
@@ -2069,104 +1834,144 @@ msgstr ""
 msgid ""
 "In case anything goes wrong, a backup copy of your recipe database is being "
 "exported to %s"
-msgstr ""
+msgstr "על כל מקרה, עותק של מסד-הנתונים של המתכונים שלך מיוצא כעת אל %s"
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:550
 #: ../src/lib/legacy_db/db_09/rmetakit.py:595
 msgid "Transferring data to new database format"
-msgstr ""
+msgstr "מעביר את הנתונים לפורמט החדש של מסד-הנתונים"
 
 #: ../src/lib/plugin_gui.py:30
 msgid "Plugins"
+msgstr "תוספים"
+
+#: ../src/lib/plugin_gui.py:33
+msgid "Plugins add extra functionality to Gourmet."
 msgstr ""
 
 #: ../src/lib/plugin_gui.py:115
 msgid "Plugin is needed for other plugins. Deactivate plugin anyway?"
-msgstr ""
+msgstr "תוסף זה נחוץ עבור תוספים אחרים. לכבות את התוסף בכל-זאת?"
 
 #: ../src/lib/plugin_gui.py:116
 #, python-format
 msgid "The following plugins require %s:"
-msgstr ""
+msgstr "%s נחוץ עבור התוספים להלן:"
 
 #: ../src/lib/plugin_gui.py:119
 msgid "Deactivate anyway"
-msgstr ""
+msgstr "לכבות בכל-זאת"
 
 #: ../src/lib/plugin_gui.py:120
 msgid "Keep plugin active"
-msgstr ""
+msgstr "אפשר לתוסף להמשיך לפעול"
 
 #: ../src/lib/plugin_gui.py:134 ../src/lib/recindex.py:452
 msgid "or"
-msgstr ""
+msgstr "או"
 
 #: ../src/lib/plugin_gui.py:138
 msgid "An error occurred activating plugin."
-msgstr ""
+msgstr "שגיאה בעת הפעלת התוסף."
 
 #: ../src/lib/plugin_gui.py:142
 msgid "An error occurred deactivating plugin."
+msgstr "שגיאה בעת כיבוי התוסף."
+
+#: ../src/lib/plugins/browse_plugin.gourmet-plugin.in.h:1
+msgid "Browse Recipes"
+msgstr ""
+
+#: ../src/lib/plugins/browse_plugin.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/email.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/nutritional_information.gourmet-plugin.in.h:2
+msgid "Main"
+msgstr ""
+
+#: ../src/lib/plugins/browse_plugin.gourmet-plugin.in.h:3
+msgid "Selecting recipes by browsing by category, cuisine, etc."
 msgstr ""
 
 #: ../src/lib/plugins/browse_recipes/browser.py:116
 msgid "Stars"
+msgstr "כוכבים"
+
+#: ../src/lib/plugins/duplicate_finder.gourmet-plugin.in.h:1
+msgid "A wizard to find and remove or merge duplicate recipes."
 msgstr ""
 
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:1
-msgid "_Auto-merge"
+#: ../src/lib/plugins/duplicate_finder.gourmet-plugin.in.h:2
+msgid "Find duplicate recipes"
 msgstr ""
 
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:2
-msgctxt "yes"
-msgid "<b><span size=\"large\">Duplicate recipes</span></b>"
-msgstr ""
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:3
-#, fuzzy
-msgctxt "yes"
-msgid "<b>Merge recipes</b>"
-msgstr "<b>רכיבים</b>"
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:4
-#, fuzzy
-msgctxt "yes"
-msgid "<i>_Showing:</i>"
-msgstr "<b>_מנות:</b>"
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:5
-msgctxt "yes"
-msgid "Merge _all duplicates"
-msgstr ""
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:6
-msgctxt "yes"
-msgid "Recipes with similar recipe information"
-msgstr ""
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:7
-msgctxt "yes"
-msgid "_Include recipes in trash"
+#: ../src/lib/plugins/duplicate_finder.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/field_editor.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/key_editor.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/listsaver.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:28
+#: ../src/lib/plugins/python_shell.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/shopping_associations.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/spellcheck.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/unit_display_prefs.gourmet-plugin.in.h:2
+msgid "Tools"
 msgstr ""
 
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:29
 #, python-format
 msgid "%s ago"
-msgstr ""
+msgstr "לפני %s"
 
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:229
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:230
 msgid "Auto-Merge recipes"
-msgstr ""
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:231
-#, fuzzy
-msgid "Always use newest recipe"
-msgstr "השתמש _תמיד בהגדרות אלו"
+msgstr "מזג מתכונים אוטומטית"
 
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:232
-#, fuzzy
+msgid "Always use newest recipe"
+msgstr "תמיד השתמש במתכון החדש ביותר"
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:233
 msgid "Always use oldest recipe"
-msgstr "השתמש _תמיד בהגדרות אלו"
+msgstr "תמיד השתמש במתכון הישן ביותר"
+
+#. dups = rd.find_complete_duplicates()
+#. for d in dups[5:]:
+#. test_merger(rd,d)
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:1
+msgid "<b><span size=\"large\">Duplicate recipes</span></b>"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:2
+msgid "<b>Merge recipes</b>"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:3
+msgid "<i>_Showing:</i>"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:4
+msgid "Merge _all duplicates"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:5
+msgid "Recipes with similar ingredients"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:6
+msgid "Recipes with similar recipe information"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:7
+msgid "Recipes with similar recipe information and ingredients"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:8
+msgid "_Auto-merge"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:9
+msgid "_Include recipes in trash"
+msgstr ""
 
 #: ../src/lib/plugins/duplicate_finder/recipeMergerPlugin.py:21
 #: ../src/lib/plugins/duplicate_finder/recipeMergerPlugin.py:56
@@ -2174,91 +1979,135 @@ msgid ""
 "Some of the imported recipes appear to be duplicates. You can merge them "
 "here, or close this dialog to leave them as they are."
 msgstr ""
+"ככל הנראה יש כפילויות במתכונים המיובאים. באפשרותך למזג אותם כאן, או לסגור את "
+"החלון ולהשאירת כמות-שהם."
 
 #: ../src/lib/plugins/duplicate_finder/recipeMergerPlugin.py:63
-#, fuzzy
 msgid "Find _duplicate recipes"
-msgstr "הדפס מתכונים נבחרים"
+msgstr "ח_פש מתכונים כפולים"
 
 #: ../src/lib/plugins/duplicate_finder/recipeMergerPlugin.py:64
 msgid "Find and remove duplicate recipes"
+msgstr "חפש והסר מתכונים כפולים"
+
+#: ../src/lib/plugins/email.gourmet-plugin.in.h:1
+msgid "Email recipes from Gourmet"
+msgstr ""
+
+#: ../src/lib/plugins/email.gourmet-plugin.in.h:3
+msgid "Send to Email"
 msgstr ""
 
 #: ../src/lib/plugins/email_plugin/emailer_plugin.py:21
-#: ../src/lib/plugins/email_plugin/emailer_plugin.py:41
-#, fuzzy
+#: ../src/lib/plugins/email_plugin/emailer_plugin.py:45
 msgid "Email recipes"
-msgstr "שלח מתכון בדואל"
+msgstr "שלח מתכונים באימייל"
 
 #: ../src/lib/plugins/email_plugin/emailer_plugin.py:22
 msgid "Email all selected recipes (or all recipes if no recipes are selected"
-msgstr ""
+msgstr "שלח באימייל את כל המתכונים המסומנים (או כל המתכונים, אם לא סומנו"
 
 #. only called for l>20, so fancy gettext methods
 #. shouldn't be necessary if my knowledge of
 #. linguistics serves me
-#: ../src/lib/plugins/email_plugin/emailer_plugin.py:45
+#: ../src/lib/plugins/email_plugin/emailer_plugin.py:49
 #, python-format
 msgid "Do you really want to email all %s selected recipes?"
-msgstr ""
+msgstr "האם ברצונך לשלוח באימייל את כל %s המתכונים שסומנו?"
 
-#: ../src/lib/plugins/email_plugin/emailer_plugin.py:46
+#: ../src/lib/plugins/email_plugin/emailer_plugin.py:50
 msgid "Yes, e_mail them"
-msgstr ""
+msgstr "_כן, שלח אותם"
 
-#: ../src/lib/plugins/field_editor/__init__.py:15
-#, fuzzy
-msgid "Field Editor"
-msgstr "עורך מפתחות"
-
+#: ../src/lib/plugins/field_editor.gourmet-plugin.in.h:1
 #: ../src/lib/plugins/field_editor/__init__.py:16
 msgid "Edit fields across multiple recipes at a time."
-msgstr ""
+msgstr "ערוך שדות בכמה מתכונים בו-זמנית"
+
+#: ../src/lib/plugins/field_editor.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/field_editor/__init__.py:15
+msgid "Field Editor"
+msgstr "עורך השדות"
 
 #. len(vals)==0
 #: ../src/lib/plugins/field_editor/fieldEditor.py:99
-#, fuzzy
 msgid "For each selected value"
-msgstr "לא נבחר קובץ"
+msgstr "עבור כל ערך שנבחר"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:103
 #, python-format
 msgid "Where %(field)s is %(value)s"
-msgstr ""
+msgstr "כאשר %(field)s הינו %(value)s"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:161
 #, python-format
 msgid "Change will affect %s recipe"
 msgid_plural "Change will affect %s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "השינוי ישפיע על %s מתכון"
+msgstr[1] "השינוי ישפיע על %s מתכונים"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:165
 #, python-format
 msgid "Delete %s where it is %s?"
-msgstr ""
+msgstr "למחוק את %s כאשר הוא %s?"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:168
 #, python-format
 msgid "Change %s from %s to \"%s\"?"
-msgstr ""
+msgstr "לשנות את %s מ-%s להיות \"%s\"?"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:174
 msgid "<i>This change is not reversable.</i>"
+msgstr "<i>שינוי זה הינו בלתי-הפיך.</i>"
+
+#: ../src/lib/plugins/import_export/archive.gourmet-plugin.in.h:1
+msgid "Import recipes from zip and tar archives"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/archive.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/gxml.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/import_export/html.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/pdf.gourmet-plugin.in.h:1
+#: ../src/lib/plugins/import_export/plaintext.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/webimport.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/website_import.gourmet-plugin.in.h:1
+#: ../src/lib/plugins/utf16.gourmet-plugin.in.h:3
+msgid "Importer/Exporter"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/archive.gourmet-plugin.in.h:3
+msgid "Zip, Gzip, and Tarball support"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/archive_plugin/zip_importer_plugin.py:10
+msgid "Archive (zip, tarball)"
 msgstr ""
 
 #: ../src/lib/plugins/import_export/archive_plugin/zip_readers.py:44
 msgid "Loading zip archive"
-msgstr ""
+msgstr "טוען קובץ zip"
 
 #: ../src/lib/plugins/import_export/archive_plugin/zip_readers.py:59
 msgid "Unzipping zip archive"
+msgstr "פותח קובץ zip"
+
+#: ../src/lib/plugins/import_export/gxml.gourmet-plugin.in.h:1
+msgid "Gourmet XML Import and Export"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/gxml.gourmet-plugin.in.h:2
+msgid ""
+"Import and Export recipes as Gourmet XML files, suitable for backup or "
+"exchange with other Gourmet users."
 msgstr ""
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:7
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_importer_plugin.py:61
 msgid "Gourmet XML File"
-msgstr ""
+msgstr "קובץ XML של גורמט"
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:46
 msgid "Gourmet XML Export"
@@ -2267,191 +2116,235 @@ msgstr "גורמה ייצוא XML"
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:47
 #, python-format
 msgid "Exporting recipes to Gourmet XML file %(file)s."
-msgstr ""
+msgstr "מייצא מתכונים אל קובץ XML של גורמט %(file)s."
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:48
 #, python-format
 msgid "Recipe saved in Gourmet XML file %(file)s."
-msgstr ""
+msgstr "המתכון נשמר בקובץ XML של גורמט %(file)s."
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_importer_plugin.py:74
-#, fuzzy
 msgid "Gourmet XML File (Obsolete)"
-msgstr "גורמה ייצוא XML"
+msgstr "קובץ XML של גורמט (מיושן)"
+
+#: ../src/lib/plugins/import_export/html.gourmet-plugin.in.h:1
+msgid "Create recipe webpages from recipes."
+msgstr ""
+
+#: ../src/lib/plugins/import_export/html.gourmet-plugin.in.h:2
+msgid "HTML Export"
+msgstr ""
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:118
 #, python-format
 msgid "Original Page from %s"
-msgstr ""
+msgstr "הדף המקורי מתוך %s"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:5
 msgid "HTML Web Page"
-msgstr ""
+msgstr "דף HTML"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:9
 msgid "Exporting Webpage"
-msgstr ""
+msgstr "מייצא דף אינטרנט"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:10
 #, python-format
 msgid "Exporting recipes to HTML files in directory %(file)s"
-msgstr ""
+msgstr "מייצא מתכונים לקבצי HTML בספריה %(file)s"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:11
 #, python-format
 msgid "Recipe saved as HTML file %(file)s"
+msgstr "המתכון נשמר כקובץ HTML %(file)s"
+
+#: ../src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:1
+msgid "Import files from the Krecipe program."
+msgstr ""
+
+#: ../src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:3
+msgid "KRecipe import"
 msgstr ""
 
 #: ../src/lib/plugins/import_export/krecipe_plugin/krecipe_importer_plugin.py:9
-#, fuzzy
 msgid "KRecipe XML File"
-msgstr "_רשימת מתכונים"
+msgstr "קובץ XML של KRecipe"
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer.py:116
 msgid "Mastercook import finished."
-msgstr ""
+msgstr "הייבוא מ-Mastercook הסתיים."
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer.py:249
 msgid "Tidying up XML"
-msgstr ""
+msgstr "מנקה XML"
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer_plugin.py:8
 msgid "Mastercook XML File"
-msgstr ""
+msgstr "קובץ XML של Mastercook"
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer_plugin.py:21
 msgid "Mastercook Text File"
+msgstr "קובץ טקסט של Mastercook"
+
+#: ../src/lib/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:1
+msgid "Import files from the Mastercook program."
+msgstr ""
+
+#: ../src/lib/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:3
+msgid "Mastercook import"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:1
+msgid "Export recipes as mealmaster text files"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
+msgid "Mealmaster (tm) Export"
 msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py:22
 msgid "MealMaster file"
-msgstr ""
+msgstr "קובץ MealMaster"
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:9
 msgid "MealMaster Export"
-msgstr ""
+msgstr "ייצוא MealMaster"
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:10
 #, python-format
 msgid "Exporting recipes to MealMaster file %(file)s."
-msgstr ""
+msgstr "מייצא מתכונים לקובץ MealMaster %(file)s"
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:11
 #, python-format
 msgid "Recipe saved as MealMaster file %(file)s"
+msgstr "המתכון נשמר כקובץ MealMaster %(file)s"
+
+#: ../src/lib/plugins/import_export/pdf.gourmet-plugin.in.h:2
+msgid ""
+"Print recipes or export them as PDF; this plugin allows a variety of page "
+"layouts."
 msgstr ""
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:709
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:822
-msgid "Letter"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:710
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:841
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:964
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:995
-msgid "Portrait"
+#: ../src/lib/plugins/import_export/pdf.gourmet-plugin.in.h:3
+msgid "Printing & PDF Export"
 msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:712
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:834
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:956
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:825
+msgid "Letter"
+msgstr "מכתב"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:713
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:844
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:967
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:998
+msgid "Portrait"
+msgstr "דיוקן"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:715
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:837
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:959
 msgid "Plain"
-msgstr ""
+msgstr "רגיל"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:726
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:746
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:747
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:729
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:749
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:750
 msgid "cm"
-msgstr ""
+msgstr "ס״מ"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:727
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:730
 msgid "points"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:817
-msgid "11x17\""
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:818
-msgid "Index Card (3.5x5\")"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:819
-msgid "Index Card (4x6\")"
-msgstr ""
+msgstr "נקודות"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:820
-msgid "Index Card (5x8\")"
-msgstr ""
+msgid "11x17\""
+msgstr "11x17 אינצ'ים"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:821
-msgid "Index Card (A7)"
-msgstr ""
+msgid "Index Card (3.5x5\")"
+msgstr "דף כרטסת (3.5x5 אינצ'ים)"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:822
+msgid "Index Card (4x6\")"
+msgstr "דף כרטסת (4x6 אינצ'ים)"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:823
+msgid "Index Card (5x8\")"
+msgstr "דף כרטסת (5x8 אינצ'ים)"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:824
+msgid "Index Card (A7)"
+msgstr "דף כרטסת (A4)"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:826
 msgid "Legal"
-msgstr ""
+msgstr "דף Legal"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:829
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:835
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:832
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:838
 msgid "Index Cards (3.5x5)"
-msgstr ""
+msgstr "דף כרטסת (3.5x5)"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:830
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:836
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:833
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:839
 msgid "Index Cards (4x6)"
-msgstr ""
+msgstr "דף כרטסת (4x6)"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:831
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:837
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:834
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:840
 msgid "Index Cards (A7)"
-msgstr ""
+msgstr "דף כרטסת (A7)"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:842
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:942
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:993
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:845
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:945
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:996
 msgid "Landscape"
-msgstr ""
+msgstr "לרוחב"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:853
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:856
 #, python-format
 msgid "%s Column"
 msgid_plural "%s Columns"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s עמודה"
+msgstr[1] "%s עמודות"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:868
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:871
 msgid "Paper _Size"
-msgstr ""
+msgstr "גו_דל נייר"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:870
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:873
 msgid "_Orientation"
-msgstr ""
+msgstr "_כיוון הדפסה"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:872
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:875
 msgid "_Font Size"
-msgstr ""
+msgstr "_גודל הגופן"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:874
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:877
 msgid "Page _Layout"
 msgstr ""
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:877
-msgid "Left Margin"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:878
-msgid "Right Margin"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:879
-msgid "Top Margin"
-msgstr ""
-
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:880
+msgid "Left Margin"
+msgstr "שוליים שמאליים"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:881
+msgid "Right Margin"
+msgstr "שוליים ימניים"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:882
+msgid "Top Margin"
+msgstr "שוליים עליונים"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:883
 msgid "Bottom Margin"
+msgstr "שוליים תחתונים"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:904
+msgid "PDF Options"
 msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:5
@@ -2460,54 +2353,62 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:9
 msgid "PDF Export"
-msgstr ""
+msgstr "ייצוא PDF"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:10
 #, python-format
 msgid "Exporting recipes to PDF %(file)s."
-msgstr ""
+msgstr "מייצא את המתכונים לקובץ PDF %(file)s."
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:11
 #, python-format
 msgid "Recipe saved as PDF %(file)s"
-msgstr ""
+msgstr "המתכון נשמר בקובץ PDF %(file)s"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/print_plugin.py:28
 msgid "Page Layout"
-msgstr ""
+msgstr "פריסת העמוד"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/print_plugin.py:116
 msgid "Print Recipes"
+msgstr "הדפסת מתכונים"
+
+#: ../src/lib/plugins/import_export/plaintext.gourmet-plugin.in.h:1
+msgid ""
+"Help user mark up and import plain text. Also provides plain text export."
+msgstr ""
+
+#: ../src/lib/plugins/import_export/plaintext.gourmet-plugin.in.h:3
+msgid "Plain Text Guided Import"
 msgstr ""
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:37
 msgid "Plain Text file"
-msgstr ""
+msgstr "קובץ טקסט רגיל"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:9
 msgid "Text Export"
-msgstr ""
+msgstr "ייצוא טקסט"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:10
-#, fuzzy, python-format
+#, python-format
 msgid "Exporting recipes to text file %(file)s."
-msgstr "ייצא מתכון זה כקובץ טקסט."
+msgstr "מייצא מתכונים לקובץ טקסט %(file)s."
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:11
-#, fuzzy, python-format
+#, python-format
 msgid "Recipe saved as plain text file %(file)s"
-msgstr "המתקון נשמר כקובץ RTF %(file)s"
+msgstr "המתכונים נשמרו בקובץ טקסט רגיל %(file)s."
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:24
-#, fuzzy
 msgid "Big File"
-msgstr "_קובץ"
+msgstr "קובץ גדול"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:25
 #, python-format
 msgid "File %s is too big to import"
-msgstr ""
+msgstr "הקובץ %s גדול מכדי לייבא"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:26
 #, python-format
@@ -2516,139 +2417,173 @@ msgid ""
 "mean to import it anyway. If you really do want to import this file, use a "
 "text editor to split it into smaller files and try importing again."
 msgstr ""
+"הקובץ שלך גדול מעבר לאורך המקסימלי של %s תוים. בטח לא התכוונת לייבא אותו. אם "
+"באמת רצית לייבא את הקובץ הזה, יש להשתמש בעורך טקסט על מנת לפצל את הקובץ "
+"לקבצים יותר קטנים, ולנסות שוב."
 
 #: ../src/lib/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py:8
-#, fuzzy
 msgid "Webpage"
-msgstr "ייבא _עמוד אינטרנט"
+msgstr "דף אינרטנט"
+
+#: ../src/lib/plugins/import_export/webimport.gourmet-plugin.in.h:1
+msgid "Import recipes from the web."
+msgstr ""
+
+#: ../src/lib/plugins/import_export/webimport.gourmet-plugin.in.h:3
+msgid "Webpage import"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/website_import.gourmet-plugin.in.h:2
+msgid "Importers for about.com, www.foodnetwork.com, and others"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/website_import.gourmet-plugin.in.h:3
+msgid "Website Importers"
+msgstr ""
+
+#: ../src/lib/plugins/key_editor.gourmet-plugin.in.h:1
+msgid ""
+"Assign and edit ingredient keys (unique identifiers for ingredients, used "
+"for consolidating items on shopping lists)."
+msgstr ""
+
+#: ../src/lib/plugins/key_editor.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:2
+msgid "Key Editor"
+msgstr ""
 
 #. to set our regexp_toggled variable
-#: ../src/lib/plugins/key_editor/keyEditor.py:64
-#: ../src/lib/plugins/key_editor/keyEditor.py:86
-#: ../src/lib/plugins/key_editor/keyEditor.py:265
+#: ../src/lib/plugins/key_editor/keyEditor.py:65
+#: ../src/lib/plugins/key_editor/keyEditor.py:87
+#: ../src/lib/plugins/key_editor/keyEditor.py:266
 msgid "key"
-msgstr ""
+msgstr "מפתח"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:86
-#: ../src/lib/plugins/key_editor/keyEditor.py:261
-#: ../src/lib/plugins/key_editor/keyEditor.py:537
+#: ../src/lib/plugins/key_editor/keyEditor.py:87
+#: ../src/lib/plugins/key_editor/keyEditor.py:262
+#: ../src/lib/plugins/key_editor/keyEditor.py:538
 msgid "item"
-msgstr ""
+msgstr "פריט"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:86
+#: ../src/lib/plugins/key_editor/keyEditor.py:87
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:36
 msgid "unit"
-msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:111
-msgid "Field"
-msgstr ""
+msgstr "יחידה"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:112
-msgid "Value"
-msgstr ""
+msgid "Field"
+msgstr "שדה"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:113
-msgid "Count"
-msgstr ""
+msgid "Value"
+msgstr "ערך"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:158
-#, python-format
-msgid "Change all keys \"%s\" to \"%s\"?"
-msgstr ""
+#: ../src/lib/plugins/key_editor/keyEditor.py:114
+msgid "Count"
+msgstr "ספירה"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:159
+#, python-format
+msgid "Change all keys \"%s\" to \"%s\"?"
+msgstr "לשנות את כל המפתחות \"%s\" להיות \"%s\"?"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:160
 #, python-format
 msgid ""
 "You won't be able to undo this action. If there are already ingredients with "
 "the key \"%s\", you won't be able to distinguish between those items and the "
 "items you are changing now."
 msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:171
-#, python-format
-msgid "Change all items \"%s\" to \"%s\"?"
-msgstr ""
+"לא תוכל/י לבטל פעולה זו. אם יש כבר רכיבים פעילים עם המפתח \"%s\", לא תוכל/י "
+"להבחין בינם לבין הפריטים שאת/ה משנה כעת."
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:172
+#, python-format
+msgid "Change all items \"%s\" to \"%s\"?"
+msgstr "לשנות את כל הפריטים \"%s\" להיות \"%s\"?"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:173
 #, python-format
 msgid ""
 "You won't be able to undo this action. If there are already ingredients with "
 "the item \"%s\", you won't be able to distinguish between those items and "
 "the items you are changing now."
 msgstr ""
+"לא תוכל/י לבטל פעולה זו. אם יש כבר רכיבים פעילים עם הפריט \"%s\", לא תוכל/י "
+"להבחין בינם לבין הפריטים שאת/ה משנה כעת."
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:183
+#: ../src/lib/plugins/key_editor/keyEditor.py:184
 #, python-format
 msgid "Change _all instances of \"%(unit)s\" to \"%(text)s\""
 msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:184
+#: ../src/lib/plugins/key_editor/keyEditor.py:185
 #, python-format
 msgid ""
 "Change \"%(unit)s\" to \"%(text)s\" only for _ingredients \"%(item)s\" with "
 "key \"%(key)s\""
 msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:209
+#: ../src/lib/plugins/key_editor/keyEditor.py:210
 #, python-format
 msgid "Change _all instances of \"%(amount)s\" %(unit)s to %(text)s %(unit)s"
 msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:210
+#: ../src/lib/plugins/key_editor/keyEditor.py:211
 #, python-format
 msgid ""
 "Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only _where the "
 "ingredient key is %(key)s"
 msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:211
+#: ../src/lib/plugins/key_editor/keyEditor.py:212
 #, python-format
 msgid ""
 "Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only where the "
 "ingredient key is %(key)s _and where the item is %(item)s"
 msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:356
+#: ../src/lib/plugins/key_editor/keyEditor.py:357
 msgid "Change all selected rows?"
 msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:357
+#: ../src/lib/plugins/key_editor/keyEditor.py:358
 #, python-format
 msgid ""
 "This action will not be undoable. Are you that for all %s selected rows, you "
 "want to set the following values:"
 msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:358
+#: ../src/lib/plugins/key_editor/keyEditor.py:359
 #, python-format
 msgid ""
 "\n"
 "Key to %s"
 msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:359
+#: ../src/lib/plugins/key_editor/keyEditor.py:360
 #, python-format
 msgid ""
 "\n"
 "Item to %s"
 msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:360
+#: ../src/lib/plugins/key_editor/keyEditor.py:361
 #, python-format
 msgid ""
 "\n"
 "Unit to %s"
 msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:361
+#: ../src/lib/plugins/key_editor/keyEditor.py:362
 #, python-format
 msgid ""
 "\n"
 "Amount to %s"
 msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:494
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:163
+#: ../src/lib/plugins/key_editor/keyEditor.py:495
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:164
 #, python-format
 msgid "%s ingredient"
 msgid_plural "%s ingredients"
@@ -2657,57 +2592,64 @@ msgstr[1] ""
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
-#: ../src/lib/plugins/key_editor/keyEditor.py:498
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:167
+#: ../src/lib/plugins/key_editor/keyEditor.py:499
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:168
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
 msgstr ""
 
-#. __gsignals__ = {
-#. 'view-changed':(gobject.SIGNAL_RUN_LAST,
-#. gobject.TYPE_NONE,
-#. ()),
-#. }
-#: ../src/lib/plugins/key_editor/keyEditor.py:511
-#: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:108
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:187
-#: ../src/lib/reccard.py:2152 ../src/lib/reccard.py:2211
-msgid "Key"
-msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:512
+#: ../src/lib/plugins/key_editor/keyEditor.py:513
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:100
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:188
-#: ../src/lib/reccard.py:2151 ../src/lib/reccard.py:2179
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:189
+#: ../src/lib/reccard.py:2139 ../src/lib/reccard.py:2167
 msgid "Item"
 msgstr "פריט"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:513
+#: ../src/lib/plugins/key_editor/keyEditor.py:514
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:8
-#: ../src/lib/reccard.py:2150 ../src/lib/reccard.py:2178
+#: ../src/lib/reccard.py:2138 ../src/lib/reccard.py:2166
 msgid "Unit"
 msgstr "יחידה"
 
+#: ../src/lib/plugins/key_editor/keyEditor.py:515
+#: ../src/lib/plugins/nutritional_information/nutritionModel.py:7
+msgid "Amount"
+msgstr "כמות"
+
 #: ../src/lib/plugins/key_editor/keyEditorPlugin.py:16
-#, fuzzy
 msgid "Ingredient _Key Editor"
-msgstr "עורך קודי _רכיבים"
+msgstr ""
 
 #: ../src/lib/plugins/key_editor/keyEditorPlugin.py:17
-#, fuzzy
 msgid "Edit ingredient keys en masse"
-msgstr "ערוך מפתח רכיבים"
+msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:1
-#, fuzzy
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:1
 msgid "<b>_Change selected ingredients</b>"
-msgstr "מחק רכיבים שנבחרו."
+msgstr ""
+
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:4
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:19
+msgid "Search as you t_ype"
+msgstr ""
+
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:7
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:25
+msgid "_Advanced Search"
+msgstr ""
+
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:9
+msgid "_Item:"
+msgstr ""
+
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:10
+msgid "_Key:"
+msgstr ""
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:14
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:37
-#, fuzzy
 msgid "Ingredient Keys"
-msgstr "ערוך מפתח רכיבים"
+msgstr ""
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:38
 msgid ""
@@ -2733,17 +2675,20 @@ msgstr ""
 msgid "Edit associations with key and other attributes in database"
 msgstr ""
 
+#: ../src/lib/plugins/listsaver.gourmet-plugin.in.h:1
+msgid "Save shopping lists as recipes for future use."
+msgstr ""
+
+#: ../src/lib/plugins/listsaver.gourmet-plugin.in.h:2
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:23
-#, fuzzy
 msgid "Shopping List Saver"
-msgstr "רשימת _קניות"
+msgstr ""
 
 #. name
 #. stock
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:30
-#, fuzzy
 msgid "Save List as Recipe"
-msgstr "בחר מתכון"
+msgstr ""
 
 #. text
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:31
@@ -2763,6 +2708,21 @@ msgstr ""
 
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:45
 msgid "Menu"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information.gourmet-plugin.in.h:1
+msgid "Calculate nutritional information for recipes."
+msgstr ""
+
+#. name
+#. stock
+#: ../src/lib/plugins/nutritional_information.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/nutritional_information/main_plugin.py:12
+#: ../src/lib/plugins/nutritional_information/nutPrefsPlugin.py:10
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:18
+#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:31
+#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:67
+msgid "Nutritional Information"
 msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/databaseGrabber.py:145
@@ -2797,23 +2757,12 @@ msgstr ""
 msgid "Nutritional information is missing for %s ingredients: %s"
 msgstr ""
 
-#. name
-#. stock
-#: ../src/lib/plugins/nutritional_information/main_plugin.py:12
-#: ../src/lib/plugins/nutritional_information/nutPrefsPlugin.py:10
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:12
-#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:31
-#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:67
-#, fuzzy
-msgid "Nutritional Information"
-msgstr "_מידע על צפיפות"
-
-#: ../src/lib/plugins/nutritional_information/nut_recipe_card_display.glade.h:1
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:4
+#: ../src/lib/plugins/nutritional_information/nut_recipe_card_display.ui.h:1
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:4
 msgid "<b>Nutritional Information</b>"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nut_recipe_card_display.glade.h:2
+#: ../src/lib/plugins/nutritional_information/nut_recipe_card_display.ui.h:2
 msgid "Edit _nutritional info"
 msgstr ""
 
@@ -2821,217 +2770,170 @@ msgstr ""
 msgid "100 grams"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:1
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:1
 msgid "<b>Choose a Density</b>"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:2
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:2
 msgid "<b>Ingredient Key: </b>"
-msgstr "<b>רכיבים</b>"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:3
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:3
 msgid "<b>Known Nutritonal Information</b>"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:5
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:5
 msgid "<b>USDA Item: </b>"
-msgstr "<b>מקור:</b>"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:6
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:6
 msgid "<i>Enter nutritional information for </i>"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:7
-msgid "<i>or</i>"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:8
-msgid "Custom equivalents:"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:9
-#, fuzzy
-msgid "Density:"
-msgstr "_צפיפות:"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:10
-msgid "Edit _USDA Association"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:11
-#, fuzzy
-msgid "Edit _information"
-msgstr "_מידע על צפיפות"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:15
-msgid "Show only food in _group:"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:16
-msgid "USDA equivalents:"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:19
-#, fuzzy
-msgid "_Density Information"
-msgstr "_מידע על צפיפות"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:20
-#, fuzzy
-msgid "_Nutritional Information"
-msgstr "_מידע על צפיפות"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:23
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:7
 msgid "<i>From:</i>"
-msgstr "<b>מאת</b>"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:24
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:8
 msgid "<i>Search _results:</i>"
-msgstr "_תוצאות חיפוש"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:25
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:9
 msgid "<i>Select equivalent of</i>"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:26
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:10
 msgid "<i>To:</i>"
-msgstr "<b>_מנות:</b>"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:27
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:11
 msgid "<i>from USDA database</i>"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:28
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:12
+msgid "<i>or</i>"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:13
+msgid "Custom equivalents:"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:14
+msgid "Density:"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:15
+msgid "Edit _USDA Association"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:16
+msgid "Edit _information"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:17
 msgid "I_gnore"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:29
-#, fuzzy
-msgctxt "yes"
-msgid "Search as you t_ype"
-msgstr "חפש בזמן הקלדה"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:21
+msgid "Show only food in _group:"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:30
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:22
+msgid "USDA equivalents:"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:23
 msgid "Unit:"
-msgstr "_יחידה:"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:31
-#, fuzzy
-msgctxt "yes"
-msgid "_Amount:"
-msgstr "_כמות:"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:32
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:27
 msgid "_Change ingredient"
-msgstr "צור קטוגריה חדשה"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:33
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:28
 msgid "_Change unit"
-msgstr "צור קטוגריה חדשה"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:34
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:29
+msgid "_Density Information"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:30
+msgid "_Nutritional Information"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:31
 msgid "_Save new unit"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:35
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:32
 msgid "_Search USDA Ingredient Database:"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:36
-#, fuzzy
-msgctxt "yes"
-msgid "_Unit:"
-msgstr "_יחידה:"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:37
-msgctxt "yes"
-msgid "unit"
 msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:94
 msgid "Any food group"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:274
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:269
 msgid "selection"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:426
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:421
 msgid "ml"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:674
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:669
 #, python-format
 msgid "Convert unit for %s"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:677
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:672
 #, python-format
 msgid ""
 "In order to calculate nutritional information, Gourmet needs you to help it "
 "convert \"%s\" into a unit it understands."
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:759
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:773
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:754
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:768
 msgid "Change ingredient key"
-msgstr "צור קטוגריה חדשה"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:761
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:756
 #, python-format
 msgid ""
 "Change ingredient key from %(old_key)s to %(new_key)s everywhere or just in "
 "the recipe %(title)s?"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:766
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:819
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:761
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:814
 msgid "Change _everywhere"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:767
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:820
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:762
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:815
 #, python-format
 msgid "_Just in recipe %s"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:774
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:769
 #, python-format
 msgid "Change ingredient key from %(old_key)s to %(new_key)s everywhere?"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:811
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:806
 msgid "Change unit"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:813
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:808
 #, python-format
 msgid ""
 "Change unit from %(old_unit)s to %(new_unit)s for all ingredients %(ingkey)s "
 "or just in the recipe %(title)s?"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:844
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:839
 #, python-format
 msgid ""
 "In order to calculate nutritional information for \"%(amount)s %(unit)s "
@@ -3040,7 +2942,7 @@ msgid ""
 "select the correct one below."
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:1017
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:1012
 msgid ""
 "To apply nutritional information, Gourmet needs a valid amount and unit."
 msgstr ""
@@ -3073,31 +2975,29 @@ msgstr ""
 msgid "Extracting %s from zip archive."
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:65
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:66
 msgid "entire database"
-msgstr "בחר בסיס נתונים"
-
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:79
-#, fuzzy
-msgid "Ingredient Key"
-msgstr "ערוך מפתח רכיבים"
+msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:80
-msgid "USDA ID Number"
+msgid "Ingredient Key"
 msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:81
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:190
-msgid "USDA Item Description"
+msgid "USDA ID Number"
 msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:82
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:191
+msgid "USDA Item Description"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:83
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:192
 msgid "Density Equivalent"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:189
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:190
 msgid "USDA ID#"
 msgstr ""
 
@@ -3265,34 +3165,34 @@ msgstr ""
 msgid "Zinc"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:205
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:207
 msgid "Vitamins and minerals"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:310
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:315
 #, python-format
 msgid ""
 "Missing nutritional information\n"
 "for %(missing)s of %(total)s ingredients."
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:326
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:331
 msgid "% _Daily Value"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:371
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:376
 #, python-format
 msgid ""
 "Percentage of recommended daily value based on %i calories per day. Click to "
 "edit number of calories per day."
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:461
-#, fuzzy, python-format
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:466
+#, python-format
 msgid "Amount per %s"
-msgstr "כמות"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:463
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:468
 msgid "Amount per recipe"
 msgstr ""
 
@@ -3592,11 +3492,6 @@ msgstr ""
 msgid "Nutrition"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:28
-#, fuzzy
-msgid "Tools"
-msgstr "_כלים"
-
 #. label
 #. key-command
 #: ../src/lib/plugins/nutritional_information/shopping_plugin.py:33
@@ -3604,9 +3499,18 @@ msgid "Get nutritional information for current list"
 msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/shopping_plugin.py:82
-#, fuzzy
 msgid "Amount for Shopping List"
-msgstr "_הסר מרשימת הקניות"
+msgstr ""
+
+#: ../src/lib/plugins/python_shell.gourmet-plugin.in.h:1
+msgid ""
+"Allows programmers to access an interactive shell with access to Gourmet's "
+"internals."
+msgstr ""
+
+#: ../src/lib/plugins/python_shell.gourmet-plugin.in.h:2
+msgid "Python Shell"
+msgstr ""
 
 #: ../src/lib/plugins/python_shell/__init__.py:14
 msgid "_Python Console"
@@ -3616,13 +3520,49 @@ msgstr ""
 msgid "Show python console (provides access to current gourmet instance)"
 msgstr ""
 
+#: ../src/lib/plugins/shopping_associations.gourmet-plugin.in.h:1
+msgid ""
+"Assign and edit shopping categories for ingredients from within the recipe "
+"editor."
+msgstr ""
+
+#: ../src/lib/plugins/shopping_associations.gourmet-plugin.in.h:2
+msgid "Shopping Category Editor"
+msgstr ""
+
 #: ../src/lib/plugins/shopping_associations/shopping_key_editor_plugin.py:9
-#: ../src/lib/reccard.py:2297
+#: ../src/lib/reccard.py:2285
 msgid "Shopping Category"
 msgstr "קטגוריית קניות"
 
+#: ../src/lib/plugins/spellcheck.gourmet-plugin.in.h:1
+msgid ""
+"Adds spell checking to paragraph length text boxes in recipe entry "
+"(Instructions, Notes)."
+msgstr ""
+
+#: ../src/lib/plugins/spellcheck.gourmet-plugin.in.h:2
+msgid "Spell Checking"
+msgstr ""
+
+#: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:1
+msgid "Provides a simple unit calculator."
+msgstr ""
+
+#: ../src/lib/plugins/unit_converter/__init__.py:15
+msgid "_Unit Converter"
+msgstr "המרת _יחידות"
+
 #: ../src/lib/plugins/unit_converter/__init__.py:16
 msgid "Calculate unit conversions"
+msgstr ""
+
+#: ../src/lib/plugins/unit_display_prefs.gourmet-plugin.in.h:1
+msgid "Allows you to always use metric (or imperial) units for display."
+msgstr ""
+
+#: ../src/lib/plugins/unit_display_prefs.gourmet-plugin.in.h:3
+msgid "Unit Display Preferences"
 msgstr ""
 
 #: ../src/lib/plugins/unit_display_prefs/__init__.py:26
@@ -3649,6 +3589,17 @@ msgstr ""
 
 #: ../src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py:18
 msgid "Automatically adjust units"
+msgstr ""
+
+#: ../src/lib/plugins/utf16.gourmet-plugin.in.h:1
+msgid "Check for Unicode-16 in text files"
+msgstr ""
+
+#: ../src/lib/plugins/utf16.gourmet-plugin.in.h:2
+msgid ""
+"Enable this if your utf-16 text files aren't importing cleanly into Gourmet. "
+"Disable this if you never use UTF16 and you're constantly being annoyed by "
+"the 'Encoding' dialog when you import files."
 msgstr ""
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:24
@@ -3690,242 +3641,224 @@ msgid "source"
 msgstr "מקור"
 
 #. menus
-#: ../src/lib/reccard.py:213 ../src/lib/reccard.py:872
+#: ../src/lib/reccard.py:211 ../src/lib/reccard.py:863
 msgid "_Recipe"
 msgstr ""
 
-#: ../src/lib/reccard.py:217
-#, fuzzy
+#: ../src/lib/reccard.py:215
 msgid "Export recipe"
-msgstr "_ייצא מתכון"
+msgstr ""
+
+#: ../src/lib/reccard.py:216
+msgid "Export selected recipe (save to file)"
+msgstr ""
 
 #: ../src/lib/reccard.py:218
-#, fuzzy
-msgid "Export selected recipe (save to file)"
-msgstr "ייצא מתכונים שנבחרו"
-
-#: ../src/lib/reccard.py:220
-#, fuzzy
 msgid "_Delete recipe"
-msgstr "_מחק מתכון"
+msgstr ""
 
-#: ../src/lib/reccard.py:221
-#, fuzzy
+#: ../src/lib/reccard.py:219
 msgid "Delete this recipe"
-msgstr "מחק את המתכון הנבחר"
+msgstr ""
+
+#: ../src/lib/reccard.py:230
+msgid "Adjust units when multiplying"
+msgstr ""
 
 #: ../src/lib/reccard.py:232
-#, fuzzy
-msgid "Adjust units when multiplying"
-msgstr "_אפשר ליחידות להשתנות בהכפלה"
-
-#: ../src/lib/reccard.py:234
 msgid ""
 "Change units to make them more readable where possible when multiplying."
 msgstr ""
 
 #. ('Email',None,_('E-_mail recipe'),
 #. None,None,self.email_cb),
-#: ../src/lib/reccard.py:242
+#: ../src/lib/reccard.py:240
 msgid "Print recipe"
+msgstr "הדפס מתכון"
+
+#: ../src/lib/reccard.py:243
+msgid "Forget remembered optional ingredients"
 msgstr ""
 
-#: ../src/lib/reccard.py:245
-#, fuzzy
-msgid "Forget remembered optional ingredients"
-msgstr "_תמיד הוסף רכיבים אופציונליים"
-
-#: ../src/lib/reccard.py:246
+#: ../src/lib/reccard.py:244
 msgid ""
 "Before adding to shopping list, ask about all optional ingredients, even "
 "ones you previously wanted remembered"
 msgstr ""
 
-#: ../src/lib/reccard.py:248
-#, fuzzy
+#: ../src/lib/reccard.py:246
 msgid "Export Recipe"
-msgstr "_ייצא מתכון"
+msgstr ""
 
-#: ../src/lib/reccard.py:617
+#: ../src/lib/reccard.py:608
 msgid "You have unsaved changes."
 msgstr ""
 
-#: ../src/lib/reccard.py:618
+#: ../src/lib/reccard.py:609
 msgid "Apply changes before printing?"
 msgstr ""
 
-#: ../src/lib/reccard.py:709 ../src/lib/recipeIdentifier.py:93
+#: ../src/lib/reccard.py:700 ../src/lib/recipeIdentifier.py:93
 msgid "(Optional)"
 msgstr ""
 
-#: ../src/lib/reccard.py:764
+#: ../src/lib/reccard.py:755
 #, python-format
 msgid "Unable to find recipe %s in database."
 msgstr ""
 
-#: ../src/lib/reccard.py:856
+#: ../src/lib/reccard.py:847
 msgid "Edit Recipe:"
 msgstr ""
 
-#: ../src/lib/reccard.py:877
+#: ../src/lib/reccard.py:868
 msgid "Save edits to database"
 msgstr ""
 
 #. show_pref_dialog
-#: ../src/lib/reccard.py:886
+#: ../src/lib/reccard.py:877
 msgid "View Recipe Card"
 msgstr ""
 
-#: ../src/lib/reccard.py:948
-#, fuzzy
+#: ../src/lib/reccard.py:939
 msgid "Edit"
-msgstr "_ערוך"
+msgstr ""
 
-#: ../src/lib/reccard.py:1052 ../src/lib/reccard.py:1053
-#, fuzzy, python-format
+#: ../src/lib/reccard.py:1046 ../src/lib/reccard.py:1047
+#, python-format
 msgid "Save changes to %s"
-msgstr "שמור שינויים"
+msgstr ""
 
-#: ../src/lib/reccard.py:1142
-#, fuzzy
+#: ../src/lib/reccard.py:1137
 msgid "Add ingredient"
-msgstr "_הוסף מרכיב"
+msgstr ""
 
-#: ../src/lib/reccard.py:1144
-#, fuzzy
+#: ../src/lib/reccard.py:1139
 msgid "Add group"
-msgstr "הוסף _קבוצה"
+msgstr ""
+
+#: ../src/lib/reccard.py:1141
+msgid "Paste ingredients"
+msgstr ""
+
+#: ../src/lib/reccard.py:1143
+msgid "Import from file"
+msgstr ""
+
+#: ../src/lib/reccard.py:1145
+msgid "Add _recipe"
+msgstr ""
 
 #: ../src/lib/reccard.py:1146
-#, fuzzy
-msgid "Paste ingredients"
-msgstr "מרכיב"
-
-#: ../src/lib/reccard.py:1148
-#, fuzzy
-msgid "Import from file"
-msgstr "_ייבא קובץ"
+msgid "Add another recipe as an ingredient in this recipe"
+msgstr ""
 
 #: ../src/lib/reccard.py:1150
-#, fuzzy
-msgid "Add _recipe"
-msgstr "מתכון"
-
-#: ../src/lib/reccard.py:1151
-#, fuzzy
-msgid "Add another recipe as an ingredient in this recipe"
-msgstr "הוסף עוד מתכון כמרכיב"
-
-#: ../src/lib/reccard.py:1155
-#, fuzzy
 msgid "Delete"
-msgstr "_מחק"
+msgstr ""
 
-#: ../src/lib/reccard.py:1161
+#: ../src/lib/reccard.py:1156
 msgid "Up"
 msgstr ""
 
-#: ../src/lib/reccard.py:1163
+#: ../src/lib/reccard.py:1158
 msgid "Down"
 msgstr ""
 
 #. FIXME
-#: ../src/lib/reccard.py:1209
+#: ../src/lib/reccard.py:1204
 msgid "Choose a file containing your ingredient list."
 msgstr ""
 
-#: ../src/lib/reccard.py:1401
+#: ../src/lib/reccard.py:1389
 #, python-format
 msgid "Couldn't make sense of %s as number of yields"
 msgstr ""
 
-#: ../src/lib/reccard.py:2149 ../src/lib/reccard.py:2177
+#: ../src/lib/reccard.py:2137 ../src/lib/reccard.py:2165
 msgid "Amt"
 msgstr ""
 
-#: ../src/lib/reccard.py:2153 ../src/lib/reccard.py:2180
+#: ../src/lib/reccard.py:2141 ../src/lib/reccard.py:2168
 msgid "Optional"
 msgstr ""
 
-#: ../src/lib/reccard.py:2314
+#: ../src/lib/reccard.py:2302
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
 msgstr ""
 
-#: ../src/lib/reccard.py:2635
+#: ../src/lib/reccard.py:2623
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
 msgstr ""
 
-#: ../src/lib/reccard.py:2637
+#: ../src/lib/reccard.py:2625
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
 msgstr ""
 
-#: ../src/lib/reccard.py:2641
+#: ../src/lib/reccard.py:2629
 msgid "Changed unit."
 msgstr ""
 
-#: ../src/lib/reccard.py:2642
+#: ../src/lib/reccard.py:2630
 #, python-format
 msgid ""
 "You have changed the unit for %(item)s from %(old)s to %(new)s. Would you "
 "like the amount converted or not?"
 msgstr ""
 
-#: ../src/lib/reccard.py:2653
+#: ../src/lib/reccard.py:2641
 #, python-format
 msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
 msgstr ""
 
-#: ../src/lib/reccard.py:2665
+#: ../src/lib/reccard.py:2653
 #, python-format
 msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
 msgstr ""
 
-#: ../src/lib/reccard.py:2720
+#: ../src/lib/reccard.py:2708
 msgid "Adding Ingredient Group"
 msgstr ""
 
-#: ../src/lib/reccard.py:2721
+#: ../src/lib/reccard.py:2709
 msgid "Enter a name for new subgroup of ingredients"
 msgstr ""
 
-#: ../src/lib/reccard.py:2722
+#: ../src/lib/reccard.py:2710
 msgid "Name of group:"
 msgstr ""
 
-#: ../src/lib/reccard.py:2987
-#, fuzzy
+#: ../src/lib/reccard.py:2976
 msgid "Choose recipe"
-msgstr "מתכון"
+msgstr ""
 
-#: ../src/lib/reccard.py:3024
+#: ../src/lib/reccard.py:3013
 msgid "Recipe cannot call itself as an ingredient!"
 msgstr ""
 
-#: ../src/lib/reccard.py:3025 ../src/lib/shopping.py:329
+#: ../src/lib/reccard.py:3014 ../src/lib/shopping.py:329
 msgid "Infinite recursion is not allowed in recipes!"
 msgstr ""
 
-#: ../src/lib/reccard.py:3046
+#: ../src/lib/reccard.py:3035
 msgid "You haven't selected any recipes!"
 msgstr ""
 
-#: ../src/lib/reccard.py:3058
+#: ../src/lib/reccard.py:3047
 #, python-format
 msgid "How much of %(title)s does your recipe call for?"
 msgstr ""
 
 #: ../src/lib/recindex.py:152
-#, fuzzy
 msgid "Use regular expressions in search"
-msgstr "השתמש בביטויים רגולריים לחיפוש"
+msgstr ""
 
 #: ../src/lib/recindex.py:153
-#, fuzzy
 msgid "Use regular expressions (an advanced search language) in text search"
-msgstr "השתמש בביטויים רגולריים לחיפוש"
+msgstr ""
 
 #: ../src/lib/recindex.py:156
 msgid "Search as you type (turn off if search is too slow)."
@@ -3959,24 +3892,20 @@ msgid "%s in %s"
 msgstr ""
 
 #: ../src/lib/shopgui.py:122 ../src/lib/shopgui.py:129
-#, fuzzy
 msgid "Change _Category"
-msgstr "קטגוריית קניות"
+msgstr ""
 
 #: ../src/lib/shopgui.py:123
-#, fuzzy
 msgid "Create new category"
-msgstr "צור מתכון חדש"
+msgstr ""
 
 #: ../src/lib/shopgui.py:131
-#, fuzzy
 msgid "Change the category of the currently selected item"
-msgstr "שנה מפתח לפריטים שנבחרו: "
+msgstr ""
 
 #: ../src/lib/shopgui.py:137
-#, fuzzy
 msgid "Pantry"
-msgstr "הוסף ל_מזווה"
+msgstr ""
 
 #. name
 #. stock
@@ -3992,9 +3921,8 @@ msgstr ""
 #. name
 #. stock
 #: ../src/lib/shopgui.py:150
-#, fuzzy
 msgid "Move to _pantry"
-msgstr "הוסף ל_מזווה"
+msgstr ""
 
 #. text
 #: ../src/lib/shopgui.py:151
@@ -4003,14 +3931,17 @@ msgstr ""
 
 #. key-command
 #: ../src/lib/shopgui.py:152
-#, fuzzy
 msgid "Remove from shopping list"
-msgstr "_הסר מרשימת הקניות"
+msgstr ""
 
 #: ../src/lib/shopgui.py:173
-#, fuzzy, python-format
+#, python-format
 msgid "Move selected items into %s"
-msgstr "הזז רכיבים מסומנים למעלה"
+msgstr ""
+
+#: ../src/lib/shopgui.py:210
+msgid "_Shopping List"
+msgstr "רשימת _קניות"
 
 #: ../src/lib/shopgui.py:211
 msgid "Already Have (_Pantry Items)"
@@ -4050,9 +3981,8 @@ msgid "Add items"
 msgstr ""
 
 #: ../src/lib/shopgui.py:685
-#, fuzzy
 msgid "Add arbitrary items to shopping list"
-msgstr "הוסף פריטים נוספים לרשימת הקניות."
+msgstr ""
 
 #: ../src/lib/shopgui.py:751
 msgid "x"
@@ -4067,9 +3997,8 @@ msgid "Save Shopping List As..."
 msgstr ""
 
 #: ../src/lib/shopgui.py:899
-#, fuzzy
 msgid "Select optional ingredients"
-msgstr "_תמיד הוסף רכיבים אופציונליים"
+msgstr ""
 
 #: ../src/lib/shopgui.py:900
 msgid ""
@@ -4133,19 +4062,16 @@ msgid " x%s"
 msgstr ""
 
 #: ../src/lib/threadManager.py:225
-#, fuzzy
 msgid "Paused"
-msgstr "_הפסק"
+msgstr ""
 
 #: ../src/lib/threadManager.py:239
-#, fuzzy
 msgid "Gourmet Import/Export"
-msgstr "גורמה ייצוא XML"
+msgstr ""
 
 #: ../src/lib/threadManager.py:258
-#, fuzzy
 msgid "Pause"
-msgstr "_הפסק"
+msgstr ""
 
 #: ../src/lib/threadManager.py:300
 msgid "Done"
@@ -4204,14 +4130,14 @@ msgstr ""
 msgid "_Keep timing"
 msgstr ""
 
-#: ../src/lib/version.py:4
+#: ../src/lib/version.py:5
 msgid ""
 "Copyright (c) 2004,2005,2006,2007,2008,2009,2010,2011 Thomas M. Hinkle. GNU "
 "GPL v2"
 msgstr ""
 
 #. repeated in setup.cfg
-#: ../src/lib/version.py:7
+#: ../src/lib/version.py:8
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
@@ -4223,250 +4149,41 @@ msgid ""
 "based on the ingredients."
 msgstr ""
 
-#: ../src/lib/version.py:9
+#: ../src/lib/version.py:10
 msgid "Roland Duhaime (Windows porting assistance)"
 msgstr ""
 
-#: ../src/lib/version.py:10
-msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
-msgstr ""
-
 #: ../src/lib/version.py:11
-msgid "Richard Ferguson (improvements to Unit Converter interface)"
-msgstr ""
+msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
+msgstr "דניאל פולקשטיין  <nanotube@gmail.com> (תוכנת התקנה בחלונות)"
 
 #: ../src/lib/version.py:12
-msgid "R.S. Born (improvements to Mealmaster export)"
-msgstr ""
+msgid "Richard Ferguson (improvements to Unit Converter interface)"
+msgstr "ריצ'רד פרגסון (שיפורים לממשק המרת היחידות)"
 
 #: ../src/lib/version.py:13
-msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
-msgstr ""
+msgid "R.S. Born (improvements to Mealmaster export)"
+msgstr "ר. ס. בורן (שיפורים לייצוא ל-Mealmaster)"
 
 #: ../src/lib/version.py:14
-msgid "Yula Zubritsky (nutrition and add-to-shopping list icons)"
-msgstr ""
+msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
+msgstr "ixat <ixat.deviantart.com> (לוגו ותמונת פתיחה"
 
 #: ../src/lib/version.py:15
+msgid "Yula Zubritsky (nutrition and add-to-shopping list icons)"
+msgstr "יולה זובריצקי (צלמיות עבור תזונה והוספה-לרשימת-קניות)"
+
+#: ../src/lib/version.py:16
 msgid ""
 "Simon Darlington <simon.darlington@gmx.net> (improvements to "
 "internationalization, assorted bugfixes)"
 msgstr ""
+"סיימון דארלינגטון <simon.darlington@gmx.net> (שיפורים לתמיכה בבינלאומיות, "
+"תיקוני-באגים אחרים)"
 
-#: ../src/lib/version.py:16
+#: ../src/lib/version.py:17
 msgid ""
 "Bernhard Reiter <ockham@raz.or.at> (Windows version maintenance and website "
 "re-design)"
 msgstr ""
-
-#~ msgid "<b>Email Preferences</b>"
-#~ msgstr "<b>העדפות דואל</b>"
-
-#~ msgid "<i>Preferences for use when sending a recipe in an email.</i>"
-#~ msgstr "<i>העדפות משתמש בשליחת מתכון בדואל.</i>"
-
-#~ msgid "Email Preferences"
-#~ msgstr "העדפות דואל"
-
-#~ msgid "Include Recipe as an _HTML Attachment to the E-mail"
-#~ msgstr "צרף מתכון במתכונת _HTML לדואל"
-
-#~ msgid "Include Recipe in _Body of E-mail (A good idea no matter what)"
-#~ msgstr "כלול מתכון _בגוף הדואל (מומלץ בחום)"
-
-#~ msgid "_Always use these settings"
-#~ msgstr "השתמש _תמיד בהגדרות אלו"
-
-#~ msgid "Enter print command"
-#~ msgstr "הכנס פקודת הדפסה"
-
-#~ msgid "Unable to find command \"%s\"."
-#~ msgstr "לא ניתן למצוא את הפקודה \"%s\""
-
-#~ msgid "Please enter the command you would like to use to print."
-#~ msgstr "אנא הגדר את פקודת ההדפסה."
-
-#~ msgid "Printing via %s"
-#~ msgstr "הדפס דרך %s"
-
-#~ msgid ""
-#~ "\n"
-#~ "Website: %s"
-#~ msgstr ""
-#~ "\n"
-#~ "אתר: %s"
-
-#, fuzzy
-#~ msgid "Translated by"
-#~ msgstr ""
-#~ "\n"
-#~ "תורגם על ידי: %s"
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-
-#~ msgid "<b>_Instructions:</b>"
-#~ msgstr "<b>_הוראות:</b>"
-
-#~ msgid ""
-#~ "Add _Recipe\n"
-#~ "as Ingredient"
-#~ msgstr "הוסף _מתכון↵כמרכיב"
-
-#~ msgid "Add _recipe as ingredient"
-#~ msgstr "הוסף _מתכון כמרכיב"
-
-#~ msgid "Add group for ingredients (such as \"Sauce\" or \"Crust\")"
-#~ msgstr "הוסף קבוצה למרכיבים (למשל \"רוטב\" או \"קלתית\")"
-
-#~ msgid "Delete selected ingredient"
-#~ msgstr "מחק רכיבים שנבחרו"
-
-#~ msgid "Delete this recipe permanently."
-#~ msgstr "מחק מתכון זה לצמיתות."
-
-#~ msgid "Ingredient (_key):"
-#~ msgstr "מרכיב (_מפתח):"
-
-#~ msgid "Ingredient Key _Editor"
-#~ msgstr "_עורך מפתח רכיבים"
-
-#~ msgid "Move ingredient do_wn"
-#~ msgstr "הזז רכיב למ_טה"
-
-#~ msgid "Move selected ingredients down"
-#~ msgstr "הזז רכיבים מסומנים למטה"
-
-#~ msgid "Recipe Card"
-#~ msgstr "כרטיס מתכון"
-
-#~ msgid "Standardized name for ingredient (to be used in shopping lists)."
-#~ msgstr "שם אחיד לרכיב (לשימוש ברשימת קניות)"
-
-#~ msgid "_Import Ingredients"
-#~ msgstr "_יבא מרכיבים"
-
-#~ msgid "_Import ingredient list"
-#~ msgstr "_יבא רשימת מרכיבים"
-
-#~ msgid "_Ingredient:"
-#~ msgstr "_מרכיב:"
-
-#~ msgid "_Italic"
-#~ msgstr "_נטוי"
-
-#~ msgid "_Save"
-#~ msgstr "_שמור"
-
-#~ msgid "_Underline"
-#~ msgstr "_קו תחתון"
-
-#~ msgid "_Undelete"
-#~ msgstr "_שחזר"
-
-#~ msgid "Select Recipe to include in Ingredient List"
-#~ msgstr "בחר מתכון להוספה לרשימת המרכיבים"
-
-#~ msgid "Add Items to Shopping List"
-#~ msgstr "הוסף לרשימת קניות"
-
-#~ msgid "Move selected items from pantry list to shopping list"
-#~ msgstr "העבר פריטים נבחרים מרשימת המזווה לרשימת הקניות"
-
-#~ msgid "Move selected items from shopping list to pantry list."
-#~ msgstr "העבר פריטים נבחרים מרשימת הקניות לרשימת המזווה."
-
-#~ msgid ""
-#~ "Move selected items from shopping list to pantry list. (You can also move "
-#~ "items by dragging them.)"
-#~ msgstr ""
-#~ "העבר פריטים נבחרים מרשימת הקניות לרשימת המזווה. (ניתן להעביר את הפריטים "
-#~ "גם על ידי גרירה.)"
-
-#~ msgid ""
-#~ "Move selected items from your pantry list back to your shopping list (you "
-#~ "can also move items by dragging them.)"
-#~ msgstr ""
-#~ "העבר פריטים נבחרים מרשימת המזווה לרשימת הקניות. (ניתן להעביר את הפריטים "
-#~ "גם על ידי גרירה.)"
-
-#~ msgid "_Add New Items to Shopping List"
-#~ msgstr "_הוסף פריט חדש לרשימת הקניות"
-
-#~ msgid "_Remove from shopping list (move to pantry)"
-#~ msgstr "_הסר מרשימת הקניות (החזר למזווה)"
-
-#~ msgid "RTF Export"
-#~ msgstr "ייצוא קובץ RTF"
-
-#~ msgid "Limiting Search to: "
-#~ msgstr "מגביל חיפוש ל: "
-
-#~ msgid "<b>Title</b>"
-#~ msgstr "<b>כותרת</b>"
-
-#~ msgid "Add this recipe to a shopping list"
-#~ msgstr "הוסף מתכון לרשימת קניות"
-
-#~ msgid "Image: "
-#~ msgstr "תמונה: "
-
-#~ msgid "Ins_tructions"
-#~ msgstr "הור_אות"
-
-#~ msgid "Pre_paration Time: "
-#~ msgstr "זמן הכ_נה: "
-
-#~ msgid "S_hopping Category: "
-#~ msgstr "קטגוריית ק_נייה: "
-
-#~ msgid "_Ingredients"
-#~ msgstr "_מרכיבים"
-
-#~ msgid "_New Ingredient"
-#~ msgstr "מרכיב _חדש"
-
-#~ msgid "_Notes"
-#~ msgstr "_רשימות"
-
-#~ msgid "_Servings: "
-#~ msgstr "_מנות: "
-
-#~ msgid "_Title: "
-#~ msgstr "_כותרת: "
-
-#~ msgid "_Unit: "
-#~ msgstr "_יחידה: "
-
-#~ msgid "Advanced"
-#~ msgstr "מתקדם"
-
-#~ msgid "Limit search by this term"
-#~ msgstr "הגבל חיפוש למונח"
-
-#~ msgid ""
-#~ "Key\n"
-#~ "Item"
-#~ msgstr ""
-#~ "מפתח\n"
-#~ "פריט"
-
-#~ msgid "Command: "
-#~ msgstr "פקודה: "
-
-#~ msgid "Shopping list for: "
-#~ msgstr "רשימת קניות ל: "
-
-#~ msgid "Printing not supported"
-#~ msgstr "הדפסה לא נתמכת"
-
-#~ msgid ""
-#~ "To print recipes, first export them, then print from another program. If "
-#~ "you install wxWindows, you can print directly from Gourmet."
-#~ msgstr ""
-#~ "כדי להדפיס מתכונים, יש ליצא אותם ואז להדפיס אותם מתוכנית אחרת. במידה "
-#~ "ותתקין wxWindows תוכל להדפיס ישירות מגורמה."
+"ברנארד רייטר <ockham@raz.or.at> (תחזוקת גירסאת חלונות ועיצוב מחדש של האתר)"

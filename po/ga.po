@@ -1,23 +1,22 @@
-# English (Australia) translation for grecipe-manager
-# Copyright (c) (c) 2005 Canonical Ltd, and Rosetta Contributors 2005
+# Irish translation for grecipe-manager
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the grecipe-manager package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2005.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-02-06 23:43+0100\n"
-"PO-Revision-Date: 2012-06-20 00:25+0000\n"
-"Last-Translator: Vincent Lhote <Unknown>\n"
-"Language-Team: English (Australia) <en_AU@li.org>\n"
+"PO-Revision-Date: 2011-05-06 00:35+0000\n"
+"Last-Translator: Seanan <Unknown>\n"
+"Language-Team: Irish <ga@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2013-03-06 00:05+0000\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n==2 ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2013-03-06 00:04+0000\n"
 "X-Generator: Launchpad (build 16514)\n"
-"X-Rosetta-Version: 0.1\n"
 
 #: ../glade/app.ui.h:1 ../glade/recipe_index.ui.h:2
 msgid "A_dd Search Criteria"
@@ -25,7 +24,7 @@ msgstr ""
 
 #: ../glade/app.ui.h:2 ../src/lib/gglobals.py:348
 msgid "Add to _Shopping List"
-msgstr "Add to Shopping List"
+msgstr ""
 
 #: ../glade/app.ui.h:3 ../glade/recipe_index.ui.h:10
 msgid "Limiting Search to:"
@@ -59,7 +58,7 @@ msgstr ""
 #: ../glade/app.ui.h:9 ../glade/generic_importer.ui.h:4
 #: ../src/lib/importers/interactive_importer.py:143
 msgid "_New Recipe"
-msgstr ""
+msgstr "_Oideas Nua"
 
 #: ../glade/app.ui.h:10 ../glade/recipe_index.ui.h:24
 #: ../src/lib/plugins/key_editor/keyeditor.ui.h:11
@@ -178,7 +177,7 @@ msgstr ""
 #: ../src/lib/plugins/unit_converter/convertGui.py:160
 #: ../src/lib/plugins/unit_converter/converter.ui.h:8
 msgid "None"
-msgstr ""
+msgstr "Dada"
 
 #: ../glade/converter.ui.h:9
 #: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:3
@@ -270,12 +269,12 @@ msgstr ""
 #: ../src/lib/gtk_extras/dialog_extras.py:810
 #: ../src/lib/gtk_extras/dialog_extras.py:1228
 msgid "_Details"
-msgstr ""
+msgstr "_Sonraí"
 
 #: ../glade/databaseChooser.ui.h:16 ../src/lib/GourmetRecipeManager.py:1059
 #: ../src/lib/shopgui.py:675
 msgid "_File"
-msgstr ""
+msgstr "Comhad"
 
 #: ../glade/databaseChooser.ui.h:17
 msgid "_Host:"
@@ -302,7 +301,7 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:15
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:56
 msgid "recipe"
-msgstr ""
+msgstr "oideas"
 
 #: ../glade/generic_importer.ui.h:1
 msgid ""
@@ -421,7 +420,7 @@ msgstr ""
 #: ../src/lib/exporters/rtf_exporter.py:79 ../src/lib/gglobals.py:232
 #: ../src/lib/shopgui.py:750
 msgid "Title"
-msgstr ""
+msgstr "Teideal"
 
 #: ../glade/recCardDescriptionEditor.ui.h:7 ../src/lib/gglobals.py:238
 msgid "Yield"
@@ -525,7 +524,7 @@ msgstr ""
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:483
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:63
 msgid "Recipe"
-msgstr ""
+msgstr "Oideas"
 
 #: ../glade/recCardDisplay.ui.h:19
 msgid "_Shop"
@@ -546,7 +545,7 @@ msgstr ""
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:601
 #: ../src/lib/reccard.py:1074
 msgid "Ingredients"
-msgstr ""
+msgstr "Comhábhair"
 
 #: ../glade/recipe_index.ui.h:1
 msgid "<i>Search Options</i>"
@@ -611,7 +610,7 @@ msgstr ""
 #. saveEdits
 #: ../glade/recipe_index.ui.h:21 ../src/lib/reccard.py:869
 msgid "_Delete Recipe"
-msgstr ""
+msgstr "_Scrios an tOideas"
 
 #: ../glade/recipe_index.ui.h:22
 msgid "_E-Mail recipe"
@@ -635,7 +634,7 @@ msgstr ""
 
 #: ../glade/shopCatEditor.ui.h:4 ../src/lib/gglobals.py:233
 msgid "Category"
-msgstr ""
+msgstr "Aicme"
 
 #: ../glade/shopCatEditor.ui.h:5
 msgid "Category Editor"
@@ -656,7 +655,7 @@ msgstr ""
 
 #: ../glade/shopCatEditor.ui.h:7 ../src/lib/recindex.py:155
 msgid "Search as you type"
-msgstr ""
+msgstr "Cuardaigh agus tú ag clóscríobh"
 
 #: ../glade/shopCatEditor.ui.h:8
 msgid "Search by"
@@ -690,7 +689,7 @@ msgstr ""
 
 #: ../glade/timerDialog.ui.h:6 ../src/lib/timer.py:140 ../src/lib/timer.py:141
 msgid "Timer"
-msgstr ""
+msgstr "Uaineadóir"
 
 #: ../glade/timerDialog.ui.h:7
 msgid ""
@@ -759,7 +758,7 @@ msgstr ""
 
 #: ../gourmet.desktop.in.h:1 ../src/lib/version.py:4
 msgid "Gourmet Recipe Manager"
-msgstr ""
+msgstr "Bainisteoir Oidis Gourmet"
 
 #: ../gourmet.desktop.in.h:2
 msgid ""
@@ -804,7 +803,7 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:252
 #: ../src/lib/GourmetRecipeManager.py:1100
 msgid "Recipe _Index"
-msgstr ""
+msgstr "Treorán na nOideas"
 
 #: ../src/lib/GourmetRecipeManager.py:253
 msgid "Shopping _List"
@@ -812,14 +811,13 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:272 ../src/lib/reccard.py:213
 msgid "_Go"
-msgstr ""
+msgstr "_Téigh"
 
 #: ../src/lib/GourmetRecipeManager.py:391
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Vincent Lhote https://launchpad.net/~vincent.lhote\n"
-"  jamie edgar https://launchpad.net/~jolt76"
+"  Seanan https://launchpad.net/~seananoc-gmail"
 
 #: ../src/lib/GourmetRecipeManager.py:451
 msgid "Saved!"
@@ -848,7 +846,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:478
 msgid "Don't exit!"
-msgstr ""
+msgstr "Ná scoir!"
 
 #: ../src/lib/GourmetRecipeManager.py:524
 #, python-format
@@ -858,7 +856,7 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:542
 #: ../src/lib/GourmetRecipeManager.py:557
 msgid "Trash"
-msgstr ""
+msgstr "Bosca Bruscair"
 
 #: ../src/lib/GourmetRecipeManager.py:557
 msgid "Browse, permanently delete or undelete deleted recipes"
@@ -866,15 +864,15 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:609
 msgid "Undeleted recipes "
-msgstr ""
+msgstr "Oidis nár scriosadh "
 
 #: ../src/lib/GourmetRecipeManager.py:679
 msgid "Gourmet Recipe Manager starting up..."
-msgstr ""
+msgstr "Tá Bainisteoir Oidis Gourmet ag tosú..."
 
 #: ../src/lib/GourmetRecipeManager.py:688
 msgid "Starting gourmet..."
-msgstr ""
+msgstr "Ag tosú gourmet..."
 
 #: ../src/lib/GourmetRecipeManager.py:775
 #, python-format
@@ -907,34 +905,34 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:818
 msgid "Set values for selected recipes"
-msgstr ""
+msgstr "Socraigh luachanna do oidis roghnaithe"
 
 #: ../src/lib/GourmetRecipeManager.py:1007
 msgid "Search recipes"
-msgstr ""
+msgstr "Cuardaigh oidis"
 
 #: ../src/lib/GourmetRecipeManager.py:1036
 msgid "Open recipe"
-msgstr ""
+msgstr "Oscail oideas"
 
 #: ../src/lib/GourmetRecipeManager.py:1037
 msgid "Open selected recipe"
-msgstr ""
+msgstr "Oscail an t-oideas roghnaithe"
 
 #. We no longer bind "Delete" here -- instead, we'll do it
 #. at the TreeView level to prevent the delete key
 #. elsewhere (e.g. in search box) from muddling up users.
 #: ../src/lib/GourmetRecipeManager.py:1041
 msgid "Delete recipe"
-msgstr ""
+msgstr "Scrios oideas"
 
 #: ../src/lib/GourmetRecipeManager.py:1042
 msgid "Delete selected recipes"
-msgstr ""
+msgstr "Scrios na hoidis roghnaithe"
 
 #: ../src/lib/GourmetRecipeManager.py:1043
 msgid "Edit recipe"
-msgstr ""
+msgstr "Cuir oideas in eagar"
 
 #: ../src/lib/GourmetRecipeManager.py:1044
 msgid "Open selected recipes in recipe editor view"
@@ -950,7 +948,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1049
 msgid "_Print"
-msgstr ""
+msgstr "_Clóbhuail"
 
 #. ('Email', None, _('E-_mail recipes'),
 #. None,None,self.email_recs),
@@ -961,30 +959,30 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1060 ../src/lib/reccard.py:212
 #: ../src/lib/reccard.py:864 ../src/lib/shopgui.py:653
 msgid "_Edit"
-msgstr ""
+msgstr "Cuir in _Eagar"
 
 #: ../src/lib/GourmetRecipeManager.py:1061
 msgid "_Actions"
-msgstr ""
+msgstr "_Gníomhartha"
 
 #: ../src/lib/GourmetRecipeManager.py:1062
 msgid "Setti_ngs"
-msgstr ""
+msgstr "Socruithe"
 
 #: ../src/lib/GourmetRecipeManager.py:1063
 #: ../src/lib/GourmetRecipeManager.py:1068 ../src/lib/reccard.py:214
 #: ../src/lib/reccard.py:225 ../src/lib/reccard.py:866
 #: ../src/lib/shopgui.py:676 ../src/lib/shopgui.py:678
 msgid "_Help"
-msgstr ""
+msgstr "Cab_hair"
 
 #: ../src/lib/GourmetRecipeManager.py:1064
 msgid "_About"
-msgstr ""
+msgstr "_Maidir Leis"
 
 #: ../src/lib/GourmetRecipeManager.py:1066
 msgid "_New"
-msgstr ""
+msgstr "_Nua"
 
 #: ../src/lib/GourmetRecipeManager.py:1070
 msgid "_Import file"
@@ -1012,7 +1010,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1076
 msgid "_Plugins"
-msgstr ""
+msgstr "_Breiseáin"
 
 #: ../src/lib/GourmetRecipeManager.py:1077
 msgid "Manage plugins which add extra functionality to Gourmet."
@@ -1020,7 +1018,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1079
 msgid "_Preferences"
-msgstr ""
+msgstr "_Sainroghanna"
 
 #. ('Redo',gtk.STOCK_REDO,_('_Redo'),
 #. None,None),
@@ -1028,7 +1026,7 @@ msgstr ""
 #. None,None),
 #: ../src/lib/GourmetRecipeManager.py:1085
 msgid "_Quit"
-msgstr ""
+msgstr "_Scoir"
 
 #: ../src/lib/GourmetRecipeManager.py:1087
 msgid "Open _Trash"
@@ -1036,15 +1034,15 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1093
 msgid "_Tools"
-msgstr ""
+msgstr "_Uirlísí"
 
 #: ../src/lib/GourmetRecipeManager.py:1094
 msgid "_Timer"
-msgstr ""
+msgstr "_Uaineadóir"
 
 #: ../src/lib/GourmetRecipeManager.py:1095
 msgid "Show timer"
-msgstr ""
+msgstr "Taispeáin uaineadóir"
 
 #: ../src/lib/GourmetRecipeManager.py:1101
 msgid "Searchable index of recipes in the database."
@@ -1053,7 +1051,7 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1211
 #, python-format
 msgid "Delete %s?"
-msgstr ""
+msgstr "Scrios %s?"
 
 #: ../src/lib/GourmetRecipeManager.py:1212
 #, python-format
@@ -1073,47 +1071,49 @@ msgstr[1] ""
 
 #: ../src/lib/GourmetRecipeManager.py:1241
 msgid "Deleted"
-msgstr ""
+msgstr "Scriosta"
 
 #: ../src/lib/GourmetRecipeManager.py:1241
 #: ../src/lib/importers/interactive_importer.py:471
 msgid "Untitled"
-msgstr ""
+msgstr "Gan Teideal"
 
 #: ../src/lib/GourmetRecipeManager.py:1249
 msgid "Permanently delete recipes?"
-msgstr ""
+msgstr "Scrios na hoidis go buan?"
 
 #: ../src/lib/GourmetRecipeManager.py:1251
 msgid "Permanently delete recipe?"
-msgstr ""
+msgstr "Scrios an t-oideas go buan?"
 
 #: ../src/lib/GourmetRecipeManager.py:1252
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
-msgstr ""
+msgstr "An bhfuil tú cinnte gur mian leat an t-oideas <i>%s</i> a scriosadh?"
 
 #: ../src/lib/GourmetRecipeManager.py:1254
 msgid "Are you sure you want to delete the following recipes?"
 msgstr ""
+"An bhfuil tú cinnte gur mian leat na hoidis seo a leanas a scriosadh?"
 
 #: ../src/lib/GourmetRecipeManager.py:1258
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
 msgstr ""
+"An bhfuil tú cinnte gur mian leat na  %s (h)oidis roghnaithe a scriosadh?"
 
 #: ../src/lib/GourmetRecipeManager.py:1260
 msgid "See recipes"
-msgstr ""
+msgstr "Féach ar oidis"
 
 #: ../src/lib/GourmetRecipeManager.py:1268
 msgid "Delete Recipes"
-msgstr ""
+msgstr "Srios na hOidis"
 
 #: ../src/lib/GourmetRecipeManager.py:1295
 #, python-format
 msgid "Deleted recipe %s"
-msgstr ""
+msgstr "Oideas scriosta %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1335
 msgid "Export succeeded"
@@ -1121,7 +1121,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1338
 msgid "webpage"
-msgstr ""
+msgstr "leathanach gréasáin"
 
 #: ../src/lib/GourmetRecipeManager.py:1339
 #, python-format
@@ -1130,7 +1130,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1399
 msgid "Done!"
-msgstr ""
+msgstr "Déanta!"
 
 #: ../src/lib/GourmetRecipeManager.py:1407
 msgid "Importing..."
@@ -1139,7 +1139,7 @@ msgstr ""
 #: ../src/lib/GourmetThreads.py:42
 #, python-format
 msgid "%s stopped."
-msgstr ""
+msgstr "% stadtha."
 
 #: ../src/lib/GourmetThreads.py:43
 #, python-format
@@ -1170,11 +1170,11 @@ msgstr[1] ""
 
 #: ../src/lib/backends/DatabaseChooser.py:105
 msgid "Choose Database File"
-msgstr ""
+msgstr "Roghnaigh Comhad Bhunachair Shonraí"
 
 #: ../src/lib/backends/db.py:437 ../src/lib/backends/db.py:438
 msgid "Upgrading database"
-msgstr ""
+msgstr "Ag feabhsú an bunachar sonraí"
 
 #: ../src/lib/backends/db.py:439
 msgid ""
@@ -1185,7 +1185,7 @@ msgstr ""
 
 #: ../src/lib/backends/db.py:440 ../src/lib/threadManager.py:315
 msgid "Details"
-msgstr ""
+msgstr "Sonraí"
 
 #: ../src/lib/backends/db.py:440
 #, python-format
@@ -1201,7 +1201,7 @@ msgstr ""
 #: ../src/lib/legacy_db/db_085/rdatabase.py:447
 #: ../src/lib/legacy_db/db_09/rdatabase.py:508 ../src/lib/reccard.py:939
 msgid "New Recipe"
-msgstr ""
+msgstr "Oideas Nuas"
 
 #: ../src/lib/check_encodings.py:92
 msgid "Select encoding"
@@ -1226,19 +1226,17 @@ msgstr ""
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:565
 msgid "second"
 msgid_plural "seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "soicind"
 
 #. min. = abbreviation for minutes
 #: ../src/lib/convert.py:65
 msgid "min"
-msgstr ""
+msgstr "nóim"
 
 #: ../src/lib/convert.py:65 ../src/lib/convert.py:564
 msgid "minute"
 msgid_plural "minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "nóiméad"
 
 #. hrs = abbreviation for hours
 #: ../src/lib/convert.py:67
@@ -1248,14 +1246,16 @@ msgstr ""
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:563
 msgid "hour"
 msgid_plural "hours"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "uair"
+msgstr[1] "uair"
+msgstr[2] "huaire"
 
 #: ../src/lib/convert.py:68 ../src/lib/convert.py:562
 msgid "day"
 msgid_plural "days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "lá"
+msgstr[1] "lá"
+msgstr[2] "lá"
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
@@ -1263,14 +1263,16 @@ msgstr[1] ""
 #: ../src/lib/convert.py:69 ../src/lib/convert.py:559
 msgid "year"
 msgid_plural "years"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "bhliain"
+msgstr[1] "bhliain"
+msgstr[2] "bliana"
 
 #: ../src/lib/convert.py:560
 msgid "month"
 msgid_plural "months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "mhí"
+msgstr[1] "mhí"
+msgstr[2] "mhí"
 
 #: ../src/lib/convert.py:561
 msgid "week"
@@ -1290,28 +1292,28 @@ msgstr ""
 
 #: ../src/lib/convert.py:608
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../src/lib/convert.py:610
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/lib/convert.py:740
 msgid "and"
-msgstr ""
+msgstr "agus"
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
 #. show up sometimes.
 #: ../src/lib/convert.py:762
 msgid "to"
-msgstr ""
+msgstr "go"
 
 #: ../src/lib/convertGui.py:107
 #: ../src/lib/plugins/unit_converter/convertGui.py:114
 #, python-format
 msgid "Cannot convert %s to %s"
-msgstr ""
+msgstr "Ní féidir %s a thiontú go %s"
 
 #: ../src/lib/convertGui.py:109
 #: ../src/lib/plugins/unit_converter/convertGui.py:116
@@ -1342,7 +1344,7 @@ msgstr ""
 
 #: ../src/lib/exporters/exportManager.py:90
 msgid "recipes"
-msgstr ""
+msgstr "oidis"
 
 #: ../src/lib/exporters/exportManager.py:101
 #, python-format
@@ -1361,14 +1363,14 @@ msgstr ""
 #: ../src/lib/exporters/exporter.py:209 ../src/lib/exporters/exporter.py:211
 #: ../src/lib/exporters/exporter.py:515 ../src/lib/exporters/exporter.py:517
 msgid "stars"
-msgstr ""
+msgstr "réalta"
 
 #: ../src/lib/exporters/exporter.py:378 ../src/lib/exporters/exporter.py:463
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:153
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:629
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:642
 msgid "optional"
-msgstr ""
+msgstr "roghnach"
 
 #: ../src/lib/exporters/exporter.py:558
 #, python-format
@@ -1405,7 +1407,7 @@ msgstr ""
 #: ../src/lib/plugins/email_plugin/recipe_emailer.py:48
 #: ../src/lib/plugins/key_editor/keyEditor.py:115 ../src/lib/reccard.py:3055
 msgid "Recipes"
-msgstr ""
+msgstr "Oidis"
 
 #: ../src/lib/exporters/recipe_emailer.py:119
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
@@ -1413,23 +1415,23 @@ msgstr ""
 
 #: ../src/lib/exporters/recipe_emailer.py:120
 msgid "E-mail Recipe as HTML Attachment"
-msgstr ""
+msgstr "Seol an t-oideas mar iatán HTML"
 
 #: ../src/lib/exporters/recipe_emailer.py:121
 msgid "E-mail Recipe as PDF Attachment"
-msgstr ""
+msgstr "Seol an t-oideas mar iatán PDF"
 
 #: ../src/lib/exporters/recipe_emailer.py:138
 msgid "Email Options"
-msgstr ""
+msgstr "Roghanna ríomhphoist"
 
 #: ../src/lib/exporters/recipe_emailer.py:141
 msgid "Don't ask before sending e-mail."
-msgstr ""
+msgstr "Ná fiafraigh roimh an ríomhphost a sheoladh."
 
 #: ../src/lib/exporters/recipe_emailer.py:160
 msgid "E-mail not sent"
-msgstr ""
+msgstr "Níor seoladh an ríomhphost"
 
 #: ../src/lib/exporters/recipe_emailer.py:161
 msgid ""
@@ -1439,46 +1441,46 @@ msgstr ""
 
 #: ../src/lib/gglobals.py:234
 msgid "Cuisine"
-msgstr ""
+msgstr "Cócaireacht"
 
 #: ../src/lib/gglobals.py:235 ../src/lib/gtk_extras/ratingWidget.py:326
 msgid "Rating"
-msgstr ""
+msgstr "Measúnú"
 
 #: ../src/lib/gglobals.py:236
 msgid "Source"
-msgstr ""
+msgstr "Foinse"
 
 #: ../src/lib/gglobals.py:237
 msgid "Website"
-msgstr ""
+msgstr "Suíomh Idirlín"
 
 #: ../src/lib/gglobals.py:240
 msgid "Preparation Time"
-msgstr ""
+msgstr "Am ullmhúcháin"
 
 #: ../src/lib/gglobals.py:241
 msgid "Cooking Time"
-msgstr ""
+msgstr "Am cócaireachta"
 
 #: ../src/lib/gglobals.py:246 ../src/lib/gglobals.py:251
 #: ../src/lib/reccard.py:1654
 msgid "Instructions"
-msgstr ""
+msgstr "Treoracha"
 
 #: ../src/lib/gglobals.py:247 ../src/lib/gglobals.py:252
 #: ../src/lib/reccard.py:1660
 msgid "Notes"
-msgstr ""
+msgstr "Nótaí"
 
 #: ../src/lib/gglobals.py:253
 msgid "Modifications"
-msgstr ""
+msgstr "Mionathruithe"
 
 #. print dir(err)
 #: ../src/lib/gglobals.py:319
 msgid "Unable to open URL"
-msgstr ""
+msgstr "Ní féidir an tURL a oscailt"
 
 #: ../src/lib/gglobals.py:320
 msgid "Unable to launch mail reader."
@@ -1486,11 +1488,11 @@ msgstr ""
 
 #: ../src/lib/gglobals.py:321
 msgid "Unable to open website."
-msgstr ""
+msgstr "Ní féidir an suíomh idirlín a oscailt."
 
 #: ../src/lib/gglobals.py:322
 msgid "Unable to open file."
-msgstr ""
+msgstr "Ní féidir an comhad a oscailt."
 
 #: ../src/lib/gglobals.py:328
 #, python-format
@@ -1500,46 +1502,46 @@ msgstr ""
 #. setup pause button
 #: ../src/lib/gtk_extras/dialog_extras.py:405
 msgid "_Pause"
-msgstr ""
+msgstr "_Cur ar sos"
 
 #. setup stop button
 #: ../src/lib/gtk_extras/dialog_extras.py:417
 msgid "_Stop"
-msgstr ""
+msgstr "_Stad"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:473
 #: ../src/lib/gtk_extras/dialog_extras.py:563
 msgid "Don't ask me this again."
-msgstr ""
+msgstr "Ná fiafraigh seo orm arís."
 
 #: ../src/lib/gtk_extras/dialog_extras.py:529
 msgid "Do you really want to do this"
-msgstr ""
+msgstr "An bhfuil tú cinnte gur mian leat seo a dhéanamh"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:741
 #: ../src/lib/importers/importer.py:466
 msgid "excellent"
-msgstr ""
+msgstr "ar fheabhas"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:742
 #: ../src/lib/importers/importer.py:467
 msgid "great"
-msgstr ""
+msgstr "iontach"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:743
 #: ../src/lib/importers/importer.py:468
 msgid "good"
-msgstr ""
+msgstr "maith"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:744
 #: ../src/lib/importers/importer.py:469
 msgid "fair"
-msgstr ""
+msgstr "measartha"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:745
 #: ../src/lib/importers/importer.py:471
 msgid "poor"
-msgstr ""
+msgstr "dona"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:757
 msgid "Convert ratings to 5 star scale."
@@ -1563,11 +1565,11 @@ msgstr ""
 
 #: ../src/lib/gtk_extras/dialog_extras.py:1109
 msgid "No file selected"
-msgstr ""
+msgstr "Níl comhad roghnaithe"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:1110
 msgid "No file was selected, so the action has been cancelled"
-msgstr ""
+msgstr "Níor roghnaíodh comhad, mar sin cuireadh an gníomh ar ceal"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:1225
 #, python-format
@@ -1575,6 +1577,8 @@ msgid ""
 "I'm sorry, I can't understand\n"
 "the amount \"%s\"."
 msgstr ""
+"Is dona liom, ní thuigim\n"
+"an méad \"%s\"."
 
 #: ../src/lib/gtk_extras/dialog_extras.py:1227
 msgid ""
@@ -1602,7 +1606,7 @@ msgstr ""
 
 #: ../src/lib/gtk_extras/numberEntry.py:29
 msgid "Not a number."
-msgstr ""
+msgstr "Ní uimhir í sin."
 
 #: ../src/lib/gtk_extras/timeEntry.py:41
 msgid ""
@@ -1622,12 +1626,12 @@ msgstr ""
 #: ../src/lib/importers/webextras.py:21 ../src/lib/importers/webextras.py:79
 #, python-format
 msgid "Retrieving %s"
-msgstr ""
+msgstr "Ag aisghabháil %s"
 
 #: ../src/lib/importers/html_importer.py:44
 #: ../src/lib/importers/webextras.py:82
 msgid "Retrieving file"
-msgstr ""
+msgstr "Ag aisghabháil comhad"
 
 #. Interactive we go...
 #: ../src/lib/importers/html_importer.py:487
@@ -1657,11 +1661,11 @@ msgstr ""
 
 #: ../src/lib/importers/importManager.py:55
 msgid "Enter website address"
-msgstr ""
+msgstr "Cuir isteach seoladh an tsuímh"
 
 #: ../src/lib/importers/importManager.py:57
 msgid "Enter URL:"
-msgstr ""
+msgstr "Cuir isteach URL:"
 
 #: ../src/lib/importers/importManager.py:58
 msgid "Enter the address of a website or recipe archive."
@@ -1684,7 +1688,7 @@ msgstr ""
 
 #: ../src/lib/importers/importManager.py:110
 msgid "Open recipe..."
-msgstr ""
+msgstr "Oscail oideas..."
 
 #: ../src/lib/importers/importManager.py:172
 msgid "Import"
@@ -1707,7 +1711,7 @@ msgstr ""
 
 #: ../src/lib/importers/importer.py:470
 msgid "okay"
-msgstr ""
+msgstr "Tá go maith"
 
 #: ../src/lib/importers/interactive_importer.py:37
 msgid "Servings"
@@ -1719,19 +1723,19 @@ msgstr ""
 
 #: ../src/lib/importers/interactive_importer.py:40
 msgid "Hide"
-msgstr ""
+msgstr "Folaigh"
 
 #: ../src/lib/importers/interactive_importer.py:46 ../src/lib/reccard.py:1310
 msgid "Description"
-msgstr ""
+msgstr "Cur síos"
 
 #: ../src/lib/importers/interactive_importer.py:52
 msgid "Text"
-msgstr ""
+msgstr "Téacs"
 
 #: ../src/lib/importers/interactive_importer.py:54
 msgid "Actions"
-msgstr ""
+msgstr "Gníomhartha"
 
 #: ../src/lib/importers/interactive_importer.py:102
 msgid "Import recipe"
@@ -1739,7 +1743,7 @@ msgstr ""
 
 #: ../src/lib/importers/interactive_importer.py:145
 msgid "Clear _Tags"
-msgstr ""
+msgstr "Glan na Clibeanna"
 
 #. for t in self.tags:
 #. 
@@ -1757,12 +1761,12 @@ msgstr ""
 
 #: ../src/lib/importers/interactive_importer.py:470
 msgid "Select recipe image"
-msgstr ""
+msgstr "Roghnaigh íomhá an oidis"
 
 #: ../src/lib/importers/interactive_importer.py:471
 #, python-format
 msgid "Select image for recipe \"%s\""
-msgstr ""
+msgstr "Roghnaigh íomhá don oideas \"%s\""
 
 #: ../src/lib/importers/interactive_importer.py:472
 msgid ""
@@ -1779,7 +1783,7 @@ msgstr ""
 #: ../src/lib/importers/webextras.py:14
 #, python-format
 msgid "Downloading %s"
-msgstr ""
+msgstr "Ag íosluchtú %s"
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:17
 #: ../src/lib/legacy_db/db_09/rmetakit.py:17
@@ -1810,7 +1814,7 @@ msgstr ""
 
 #: ../src/lib/plugin_gui.py:30
 msgid "Plugins"
-msgstr ""
+msgstr "Breiseáin"
 
 #: ../src/lib/plugin_gui.py:33
 msgid "Plugins add extra functionality to Gourmet."
@@ -1831,11 +1835,11 @@ msgstr ""
 
 #: ../src/lib/plugin_gui.py:120
 msgid "Keep plugin active"
-msgstr ""
+msgstr "Coinnigh an breiseán gníomhach"
 
 #: ../src/lib/plugin_gui.py:134 ../src/lib/recindex.py:452
 msgid "or"
-msgstr ""
+msgstr "nó"
 
 #: ../src/lib/plugin_gui.py:138
 msgid "An error occurred activating plugin."
@@ -1861,7 +1865,7 @@ msgstr ""
 
 #: ../src/lib/plugins/browse_recipes/browser.py:116
 msgid "Stars"
-msgstr ""
+msgstr "Réalta"
 
 #: ../src/lib/plugins/duplicate_finder.gourmet-plugin.in.h:1
 msgid "A wizard to find and remove or merge duplicate recipes."
@@ -1887,7 +1891,7 @@ msgstr ""
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:29
 #, python-format
 msgid "%s ago"
-msgstr ""
+msgstr "%s ó shin"
 
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:230
 msgid "Auto-Merge recipes"
@@ -1895,11 +1899,11 @@ msgstr ""
 
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:232
 msgid "Always use newest recipe"
-msgstr ""
+msgstr "Bain feidhm as an oideas is úire i gcónaí"
 
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:233
 msgid "Always use oldest recipe"
-msgstr ""
+msgstr "Bain feidhm as an oideas is sine i gcónaí"
 
 #. dups = rd.find_complete_duplicates()
 #. for d in dups[5:]:
@@ -1966,7 +1970,7 @@ msgstr ""
 #: ../src/lib/plugins/email_plugin/emailer_plugin.py:21
 #: ../src/lib/plugins/email_plugin/emailer_plugin.py:45
 msgid "Email recipes"
-msgstr ""
+msgstr "Seol oidis i ríomhphost"
 
 #: ../src/lib/plugins/email_plugin/emailer_plugin.py:22
 msgid "Email all selected recipes (or all recipes if no recipes are selected"
@@ -1978,11 +1982,11 @@ msgstr ""
 #: ../src/lib/plugins/email_plugin/emailer_plugin.py:49
 #, python-format
 msgid "Do you really want to email all %s selected recipes?"
-msgstr ""
+msgstr "An bhfuil tú cinnte gur mian leat na %s oidis roghnaithe a sheoladh?"
 
 #: ../src/lib/plugins/email_plugin/emailer_plugin.py:50
 msgid "Yes, e_mail them"
-msgstr ""
+msgstr "Cinnte, seol iad"
 
 #: ../src/lib/plugins/field_editor.gourmet-plugin.in.h:1
 #: ../src/lib/plugins/field_editor/__init__.py:16
@@ -1992,17 +1996,17 @@ msgstr ""
 #: ../src/lib/plugins/field_editor.gourmet-plugin.in.h:2
 #: ../src/lib/plugins/field_editor/__init__.py:15
 msgid "Field Editor"
-msgstr ""
+msgstr "Eagarthóir Réimse"
 
 #. len(vals)==0
 #: ../src/lib/plugins/field_editor/fieldEditor.py:99
 msgid "For each selected value"
-msgstr ""
+msgstr "Do gach luach roghnaithe"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:103
 #, python-format
 msgid "Where %(field)s is %(value)s"
-msgstr ""
+msgstr "San áit a bhfuil %(field)s %(value)s"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:161
 #, python-format
@@ -2014,7 +2018,7 @@ msgstr[1] ""
 #: ../src/lib/plugins/field_editor/fieldEditor.py:165
 #, python-format
 msgid "Delete %s where it is %s?"
-msgstr ""
+msgstr "Scrios %s san áit a bhfuil sé %s?"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:168
 #, python-format
@@ -2023,7 +2027,7 @@ msgstr ""
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:174
 msgid "<i>This change is not reversable.</i>"
-msgstr ""
+msgstr "<i>Ní féidir an t-athrú seo a chealú.</i>"
 
 #: ../src/lib/plugins/import_export/archive.gourmet-plugin.in.h:1
 msgid "Import recipes from zip and tar archives"
@@ -2103,7 +2107,7 @@ msgstr ""
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:118
 #, python-format
 msgid "Original Page from %s"
-msgstr ""
+msgstr "Leathanac Bunaidh ó %s"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:5
 msgid "HTML Web Page"
@@ -2165,7 +2169,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
 msgid "Mealmaster (tm) Export"
-msgstr "Mealmaster™ Export"
+msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py:22
@@ -2199,75 +2203,75 @@ msgstr ""
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:712
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:825
 msgid "Letter"
-msgstr ""
+msgstr "Litir"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:713
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:844
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:967
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:998
 msgid "Portrait"
-msgstr ""
+msgstr "Portráid"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:715
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:837
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:959
 msgid "Plain"
-msgstr ""
+msgstr "Gnáth"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:729
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:749
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:750
 msgid "cm"
-msgstr ""
+msgstr "cm"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:730
 msgid "points"
-msgstr ""
+msgstr "poncanna"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:820
 msgid "11x17\""
-msgstr ""
+msgstr "11x17\""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:821
 msgid "Index Card (3.5x5\")"
-msgstr ""
+msgstr "Cárta Treoráin (3.5x5\")"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:822
 msgid "Index Card (4x6\")"
-msgstr ""
+msgstr "Cárta Treoráin (4x6\")"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:823
 msgid "Index Card (5x8\")"
-msgstr ""
+msgstr "Cárta Treoráin (5x8\")"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:824
 msgid "Index Card (A7)"
-msgstr ""
+msgstr "Cárta Treoráin (A7)"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:826
 msgid "Legal"
-msgstr ""
+msgstr "Dlí"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:832
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:838
 msgid "Index Cards (3.5x5)"
-msgstr ""
+msgstr "Cártaí Treoráin (3.5x5)"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:833
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:839
 msgid "Index Cards (4x6)"
-msgstr ""
+msgstr "Cártaí Treoráin (4X6)"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:834
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:840
 msgid "Index Cards (A7)"
-msgstr ""
+msgstr "Cártaí Treoráin (A7)"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:845
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:945
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:996
 msgid "Landscape"
-msgstr ""
+msgstr "Tírdhreach"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:856
 #, python-format
@@ -2278,35 +2282,35 @@ msgstr[1] ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:871
 msgid "Paper _Size"
-msgstr ""
+msgstr "Méid an Pháipéir"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:873
 msgid "_Orientation"
-msgstr ""
+msgstr "_Treoshuíomh"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:875
 msgid "_Font Size"
-msgstr ""
+msgstr "_Méid na Clófhoirne"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:877
 msgid "Page _Layout"
-msgstr ""
+msgstr "Leagan Amach an Leathanaigh"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:880
 msgid "Left Margin"
-msgstr ""
+msgstr "Imeall ar chlé"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:881
 msgid "Right Margin"
-msgstr ""
+msgstr "Imeall ar dheis"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:882
 msgid "Top Margin"
-msgstr ""
+msgstr "Imeall ag an mbarr"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:883
 msgid "Bottom Margin"
-msgstr ""
+msgstr "Imeall ag an mbun"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:904
 msgid "PDF Options"
@@ -2332,11 +2336,11 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/print_plugin.py:28
 msgid "Page Layout"
-msgstr ""
+msgstr "Leagan Amach Leathanaigh"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/print_plugin.py:116
 msgid "Print Recipes"
-msgstr ""
+msgstr "Clóbhuail Oidis"
 
 #: ../src/lib/plugins/import_export/plaintext.gourmet-plugin.in.h:1
 msgid ""
@@ -2368,7 +2372,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:24
 msgid "Big File"
-msgstr ""
+msgstr "Comhad Mór"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:25
 #, python-format
@@ -2425,24 +2429,24 @@ msgstr ""
 #: ../src/lib/plugins/key_editor/keyEditor.py:262
 #: ../src/lib/plugins/key_editor/keyEditor.py:538
 msgid "item"
-msgstr ""
+msgstr "mír"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:87
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:36
 msgid "unit"
-msgstr ""
+msgstr "aonad"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:112
 msgid "Field"
-msgstr ""
+msgstr "Réimse"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:113
 msgid "Value"
-msgstr ""
+msgstr "Luach"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:114
 msgid "Count"
-msgstr ""
+msgstr "Líon"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:159
 #, python-format
@@ -2460,7 +2464,7 @@ msgstr ""
 #: ../src/lib/plugins/key_editor/keyEditor.py:172
 #, python-format
 msgid "Change all items \"%s\" to \"%s\"?"
-msgstr ""
+msgstr "Athraigh gach mír \"%s\" go \"%s\"?"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:173
 #, python-format
@@ -2503,7 +2507,7 @@ msgstr ""
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:357
 msgid "Change all selected rows?"
-msgstr ""
+msgstr "Athraigh gach sraith roghnaithe?"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:358
 #, python-format
@@ -2525,6 +2529,8 @@ msgid ""
 "\n"
 "Item to %s"
 msgstr ""
+"\n"
+"Mír go %s"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:361
 #, python-format
@@ -2532,6 +2538,8 @@ msgid ""
 "\n"
 "Unit to %s"
 msgstr ""
+"\n"
+"Aonad go %s"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:362
 #, python-format
@@ -2539,6 +2547,8 @@ msgid ""
 "\n"
 "Amount to %s"
 msgstr ""
+"\n"
+"Méid go %s"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:495
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:164
@@ -2561,18 +2571,18 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:189
 #: ../src/lib/reccard.py:2139 ../src/lib/reccard.py:2167
 msgid "Item"
-msgstr ""
+msgstr "Mír"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:514
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:8
 #: ../src/lib/reccard.py:2138 ../src/lib/reccard.py:2166
 msgid "Unit"
-msgstr ""
+msgstr "Aonad"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:515
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:7
 msgid "Amount"
-msgstr ""
+msgstr "Méid"
 
 #: ../src/lib/plugins/key_editor/keyEditorPlugin.py:16
 msgid "Ingredient _Key Editor"
@@ -2651,7 +2661,7 @@ msgstr ""
 #. text
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:31
 msgid "<Ctrl><Shift>S"
-msgstr ""
+msgstr "<Ctrl><Shift>S"
 
 #. key-command
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:32
@@ -2662,11 +2672,11 @@ msgstr ""
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:44
 #, python-format
 msgid "Menu for %s"
-msgstr ""
+msgstr "Oideas do %s"
 
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:45
 msgid "Menu"
-msgstr ""
+msgstr "Biachlár"
 
 #: ../src/lib/plugins/nutritional_information.gourmet-plugin.in.h:1
 msgid "Calculate nutritional information for recipes."
@@ -2681,7 +2691,7 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/shopping_plugin.py:31
 #: ../src/lib/plugins/nutritional_information/shopping_plugin.py:67
 msgid "Nutritional Information"
-msgstr ""
+msgstr "Faisnéis Bheathaithe"
 
 #: ../src/lib/plugins/nutritional_information/databaseGrabber.py:145
 msgid "Parsing nutritional data..."
@@ -2726,7 +2736,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionDisplay.py:132
 msgid "100 grams"
-msgstr ""
+msgstr "100 graim"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:1
 msgid "<b>Choose a Density</b>"
@@ -2834,16 +2844,16 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:269
 msgid "selection"
-msgstr ""
+msgstr "roghnúchán"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:421
 msgid "ml"
-msgstr ""
+msgstr "ml"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:669
 #, python-format
 msgid "Convert unit for %s"
-msgstr ""
+msgstr "Tiontaigh an t-aonad do %s"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:672
 #, python-format
@@ -2867,13 +2877,13 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:761
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:814
 msgid "Change _everywhere"
-msgstr ""
+msgstr "Athraigh gach áit"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:762
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:815
 #, python-format
 msgid "_Just in recipe %s"
-msgstr ""
+msgstr "_San oideas %s amháin"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:769
 #, python-format
@@ -2882,7 +2892,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:806
 msgid "Change unit"
-msgstr ""
+msgstr "Athraigh an t-aonad"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:808
 #, python-format
@@ -2961,11 +2971,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:11
 msgid "Calories"
-msgstr ""
+msgstr "Calraí"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:14
 msgid "Total Fat"
-msgstr ""
+msgstr "Saill Iomlán"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:16
 msgid "Saturated Fat"
@@ -2973,11 +2983,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:18
 msgid "Cholesterol"
-msgstr ""
+msgstr "Colaistéaról"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:20
 msgid "Sodium"
-msgstr ""
+msgstr "Sóidiam"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:22
 msgid "Total Carbohydrate"
@@ -2989,7 +2999,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:26
 msgid "Sugars"
-msgstr ""
+msgstr "Siúcraí"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:28
 msgid "Protein"
@@ -3017,7 +3027,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:43
 msgid "Copper"
-msgstr ""
+msgstr "Copar"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:45
 msgid "Folate Total"
@@ -3037,7 +3047,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:53
 msgid "Iron"
-msgstr ""
+msgstr "Iarann"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:55
 msgid "Lycopene"
@@ -3049,11 +3059,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:59
 msgid "Magnesium"
-msgstr ""
+msgstr "Maignéisiam"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:61
 msgid "Manganese"
-msgstr ""
+msgstr "Mangainéis"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:63
 msgid "Niacin"
@@ -3065,11 +3075,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:67
 msgid "Phosphorus"
-msgstr ""
+msgstr "Fosfar"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:69
 msgid "Potassium"
-msgstr ""
+msgstr "Potaisiam"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:71
 msgid "Vitamin A"
@@ -3085,7 +3095,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:77
 msgid "Selenium"
-msgstr ""
+msgstr "Seiléiniam"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:79
 msgid "Thiamin"
@@ -3121,7 +3131,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:95
 msgid "Zinc"
-msgstr ""
+msgstr "Sinc"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:207
 msgid "Vitamins and minerals"
@@ -3136,7 +3146,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:331
 msgid "% _Daily Value"
-msgstr ""
+msgstr "% _Luach Laethúil"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:376
 #, python-format
@@ -3148,15 +3158,15 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:466
 #, python-format
 msgid "Amount per %s"
-msgstr ""
+msgstr "Méad an %s"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:468
 msgid "Amount per recipe"
-msgstr ""
+msgstr "Méad i ngach oideas"
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:9
 msgid "Ingredient"
-msgstr ""
+msgstr "Comhábhar"
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:10
 msgid "USDA Database Equivalent"
@@ -3165,11 +3175,11 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:11
 #: ../src/lib/shopping.py:139 ../src/lib/shopping.py:159
 msgid "Unknown"
-msgstr ""
+msgstr "Anaithnid"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:12
 msgid "Water"
-msgstr ""
+msgstr "Uisce"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:13
 msgid "Kilocalories"
@@ -3197,7 +3207,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:19
 msgid "g sugar"
-msgstr ""
+msgstr "g siúcra"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:20
 msgid "mg calcium"
@@ -3617,7 +3627,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:219
 msgid "Delete this recipe"
-msgstr ""
+msgstr "Scrios an t-oideas seo"
 
 #: ../src/lib/reccard.py:230
 msgid "Adjust units when multiplying"
@@ -3632,7 +3642,7 @@ msgstr ""
 #. None,None,self.email_cb),
 #: ../src/lib/reccard.py:240
 msgid "Print recipe"
-msgstr ""
+msgstr "Clóbhuail an t-oideas"
 
 #: ../src/lib/reccard.py:243
 msgid "Forget remembered optional ingredients"
@@ -3654,11 +3664,11 @@ msgstr ""
 
 #: ../src/lib/reccard.py:609
 msgid "Apply changes before printing?"
-msgstr ""
+msgstr "Cuir na hathruithe i bhfeidhm roimh é a chlóbhualadh?"
 
 #: ../src/lib/reccard.py:700 ../src/lib/recipeIdentifier.py:93
 msgid "(Optional)"
-msgstr ""
+msgstr "(Roghnach)"
 
 #: ../src/lib/reccard.py:755
 #, python-format
@@ -3676,11 +3686,11 @@ msgstr ""
 #. show_pref_dialog
 #: ../src/lib/reccard.py:877
 msgid "View Recipe Card"
-msgstr ""
+msgstr "Féach an Cárta Oidis"
 
 #: ../src/lib/reccard.py:939
 msgid "Edit"
-msgstr ""
+msgstr "Cuir in Eagar"
 
 #: ../src/lib/reccard.py:1046 ../src/lib/reccard.py:1047
 #, python-format
@@ -3689,7 +3699,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:1137
 msgid "Add ingredient"
-msgstr ""
+msgstr "Cuir comhábhar leis"
 
 #: ../src/lib/reccard.py:1139
 msgid "Add group"
@@ -3697,7 +3707,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:1141
 msgid "Paste ingredients"
-msgstr ""
+msgstr "Greamaigh comhábhair"
 
 #: ../src/lib/reccard.py:1143
 msgid "Import from file"
@@ -3705,7 +3715,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:1145
 msgid "Add _recipe"
-msgstr ""
+msgstr "Cuir oideas leis"
 
 #: ../src/lib/reccard.py:1146
 msgid "Add another recipe as an ingredient in this recipe"
@@ -3713,15 +3723,15 @@ msgstr ""
 
 #: ../src/lib/reccard.py:1150
 msgid "Delete"
-msgstr ""
+msgstr "Scrios"
 
 #: ../src/lib/reccard.py:1156
 msgid "Up"
-msgstr ""
+msgstr "Suas"
 
 #: ../src/lib/reccard.py:1158
 msgid "Down"
-msgstr ""
+msgstr "Síos"
 
 #. FIXME
 #: ../src/lib/reccard.py:1204
@@ -3735,11 +3745,11 @@ msgstr ""
 
 #: ../src/lib/reccard.py:2137 ../src/lib/reccard.py:2165
 msgid "Amt"
-msgstr ""
+msgstr "Méid"
 
 #: ../src/lib/reccard.py:2141 ../src/lib/reccard.py:2168
 msgid "Optional"
-msgstr ""
+msgstr "Roghnach"
 
 #: ../src/lib/reccard.py:2302
 #, python-format
@@ -3749,16 +3759,16 @@ msgstr ""
 #: ../src/lib/reccard.py:2623
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
-msgstr ""
+msgstr "Tiontaithe: %(amt)s %(unit)s"
 
 #: ../src/lib/reccard.py:2625
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
-msgstr ""
+msgstr "Gan tiontú: %(amt)s %(unit)s"
 
 #: ../src/lib/reccard.py:2629
 msgid "Changed unit."
-msgstr ""
+msgstr "Athraíodh an t-aonad."
 
 #: ../src/lib/reccard.py:2630
 #, python-format
@@ -3775,7 +3785,7 @@ msgstr ""
 #: ../src/lib/reccard.py:2653
 #, python-format
 msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
-msgstr ""
+msgstr "Ní féidir tiontú ó %(old_unit)s go %(new_unit)s"
 
 #: ../src/lib/reccard.py:2708
 msgid "Adding Ingredient Group"
@@ -3791,7 +3801,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:2976
 msgid "Choose recipe"
-msgstr ""
+msgstr "Roghnaigh oideas"
 
 #: ../src/lib/reccard.py:3013
 msgid "Recipe cannot call itself as an ingredient!"
@@ -3803,7 +3813,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:3035
 msgid "You haven't selected any recipes!"
-msgstr ""
+msgstr "Níl oidis roghnaithe agat!"
 
 #: ../src/lib/reccard.py:3047
 #, python-format
@@ -3824,7 +3834,7 @@ msgstr ""
 
 #: ../src/lib/recindex.py:161
 msgid "Show Search _Options"
-msgstr ""
+msgstr "Taispeáin Roghanna Cuardaigh"
 
 #: ../src/lib/recindex.py:163
 msgid "Show advanced searching options"
@@ -3834,8 +3844,9 @@ msgstr ""
 #, python-format
 msgid "%s recipe"
 msgid_plural "%s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s recipe"
+msgstr[1] "%s oideas"
+msgstr[2] "%s n-oidis"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
@@ -3847,23 +3858,23 @@ msgstr ""
 #: ../src/lib/recindex.py:482
 #, python-format
 msgid "%s in %s"
-msgstr ""
+msgstr "%s i %s"
 
 #: ../src/lib/shopgui.py:122 ../src/lib/shopgui.py:129
 msgid "Change _Category"
-msgstr ""
+msgstr "Athraigh an _Aicme"
 
 #: ../src/lib/shopgui.py:123
 msgid "Create new category"
-msgstr ""
+msgstr "Cruthaigh aicme nua"
 
 #: ../src/lib/shopgui.py:131
 msgid "Change the category of the currently selected item"
-msgstr ""
+msgstr "Athraigh an aicme ina bhfuil an ní roghnaithe reatha"
 
 #: ../src/lib/shopgui.py:137
 msgid "Pantry"
-msgstr ""
+msgstr "Cuile"
 
 #. name
 #. stock
@@ -3874,7 +3885,7 @@ msgstr ""
 #. text
 #: ../src/lib/shopgui.py:141
 msgid "<Ctrl>B"
-msgstr ""
+msgstr "<Ctrl>B"
 
 #. name
 #. stock
@@ -3885,7 +3896,7 @@ msgstr ""
 #. text
 #: ../src/lib/shopgui.py:151
 msgid "<Ctrl>D"
-msgstr ""
+msgstr "<Ctrl>D"
 
 #. key-command
 #: ../src/lib/shopgui.py:152
@@ -3895,7 +3906,7 @@ msgstr ""
 #: ../src/lib/shopgui.py:173
 #, python-format
 msgid "Move selected items into %s"
-msgstr ""
+msgstr "Bog na nithe roghnaithe isteach go %s"
 
 #: ../src/lib/shopgui.py:210
 msgid "_Shopping List"
@@ -3907,7 +3918,7 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:472
 msgid "Enter Category"
-msgstr ""
+msgstr "Cuir Isteach Aicme"
 
 #: ../src/lib/shopgui.py:473
 #, python-format
@@ -3916,11 +3927,11 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:474
 msgid "Category:"
-msgstr ""
+msgstr "Aicme:"
 
 #: ../src/lib/shopgui.py:587
 msgid "_Recipes"
-msgstr ""
+msgstr "_Oidis"
 
 #: ../src/lib/shopgui.py:610
 msgid "_Add items:"
@@ -3928,7 +3939,7 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:648
 msgid "Remove Recipes"
-msgstr ""
+msgstr "Bain Oidis"
 
 #: ../src/lib/shopgui.py:649
 msgid "Remove recipes from shopping list"
@@ -3936,7 +3947,7 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:683
 msgid "Add items"
-msgstr ""
+msgstr "Cuir nithe leis"
 
 #: ../src/lib/shopgui.py:685
 msgid "Add arbitrary items to shopping list"
@@ -3944,7 +3955,7 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:751
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: ../src/lib/shopgui.py:836
 msgid "No recipes selected. Do you want to clear the entire list?"
@@ -3956,7 +3967,7 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:899
 msgid "Select optional ingredients"
-msgstr ""
+msgstr "Roghnaigh comhábhair roghnacha"
 
 #: ../src/lib/shopgui.py:900
 msgid ""
@@ -3966,35 +3977,35 @@ msgstr ""
 
 #: ../src/lib/shopping.py:18
 msgid "flour, all purpose"
-msgstr ""
+msgstr "plúr bán"
 
 #: ../src/lib/shopping.py:18
 msgid "sugar"
-msgstr ""
+msgstr "siúcra"
 
 #: ../src/lib/shopping.py:18
 msgid "salt"
-msgstr ""
+msgstr "salann"
 
 #: ../src/lib/shopping.py:19
 msgid "black pepper, ground"
-msgstr ""
+msgstr "piobar dubh, meilte"
 
 #: ../src/lib/shopping.py:20
 msgid "ice"
-msgstr ""
+msgstr "oighear"
 
 #: ../src/lib/shopping.py:20
 msgid "water"
-msgstr ""
+msgstr "uisce"
 
 #: ../src/lib/shopping.py:21
 msgid "oil, vegetable"
-msgstr ""
+msgstr "ola, phlándúil"
 
 #: ../src/lib/shopping.py:22
 msgid "oil, olive"
-msgstr ""
+msgstr "ola, ológach"
 
 #: ../src/lib/shopping.py:328
 msgid "Recipe calls for itself as an ingredient."
@@ -4003,7 +4014,7 @@ msgstr ""
 #: ../src/lib/shopping.py:329
 #, python-format
 msgid "Ingredient %s will be ignored."
-msgstr ""
+msgstr "Déanfar neamhaird den comhábhar %s."
 
 #: ../src/lib/shopping.py:375 ../src/lib/shopping.py:390
 #, python-format
@@ -4012,16 +4023,16 @@ msgstr ""
 
 #: ../src/lib/shopping.py:376 ../src/lib/shopping.py:391
 msgid "For the following recipes:"
-msgstr ""
+msgstr "Do na hoidis seo a leanas:"
 
 #: ../src/lib/shopping.py:381 ../src/lib/shopping.py:395
 #, python-format
 msgid " x%s"
-msgstr ""
+msgstr " x%s"
 
 #: ../src/lib/threadManager.py:225
 msgid "Paused"
-msgstr ""
+msgstr "Curtha ar sos"
 
 #: ../src/lib/threadManager.py:239
 msgid "Gourmet Import/Export"
@@ -4029,29 +4040,29 @@ msgstr ""
 
 #: ../src/lib/threadManager.py:258
 msgid "Pause"
-msgstr ""
+msgstr "Cuir ar Shos"
 
 #: ../src/lib/threadManager.py:300
 msgid "Done"
-msgstr ""
+msgstr "Déanta"
 
 #: ../src/lib/threadManager.py:314
 #, python-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Botún: %s"
 
 #: ../src/lib/threadManager.py:324
 msgid "cancelled"
-msgstr ""
+msgstr "cealaithe"
 
 #: ../src/lib/threadManager.py:357
 msgid "Error"
-msgstr ""
+msgstr "Botún"
 
 #: ../src/lib/threadManager.py:358
 #, python-format
 msgid "Error %s: %s"
-msgstr ""
+msgstr "Botún %s: %s"
 
 #: ../src/lib/threadManager.py:359
 msgid "Traceback"
@@ -4071,7 +4082,7 @@ msgstr ""
 
 #: ../src/lib/timer.py:192
 msgid "Stop timer?"
-msgstr ""
+msgstr "Stad an t-uaineadóir?"
 
 #: ../src/lib/timer.py:193
 msgid ""
@@ -4113,7 +4124,7 @@ msgstr ""
 
 #: ../src/lib/version.py:11
 msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
-msgstr ""
+msgstr "Daniel Folkinshteyn <nanotube@gmail.com> (Suiteálaí Windows)"
 
 #: ../src/lib/version.py:12
 msgid "Richard Ferguson (improvements to Unit Converter interface)"

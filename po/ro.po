@@ -1,23 +1,23 @@
-# English (Australia) translation for grecipe-manager
-# Copyright (c) (c) 2005 Canonical Ltd, and Rosetta Contributors 2005
+# Romanian translation for grecipe-manager
+# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
 # This file is distributed under the same license as the grecipe-manager package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2005.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-02-06 23:43+0100\n"
-"PO-Revision-Date: 2012-06-20 00:25+0000\n"
-"Last-Translator: Vincent Lhote <Unknown>\n"
-"Language-Team: English (Australia) <en_AU@li.org>\n"
+"PO-Revision-Date: 2011-03-13 08:16+0000\n"
+"Last-Translator: Bădilă Alin-Petrişor <demon981@gmail.com>\n"
+"Language-Team: Romanian <ro@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2013-03-06 00:05+0000\n"
+"Plural-Forms: nplurals=3; plural=(n == 1 ? 0: (((n % 100 > 19) || ((n % 100 "
+"== 0) && (n != 0))) ? 2: 1));\n"
+"X-Launchpad-Export-Date: 2013-03-06 00:04+0000\n"
 "X-Generator: Launchpad (build 16514)\n"
-"X-Rosetta-Version: 0.1\n"
 
 #: ../glade/app.ui.h:1 ../glade/recipe_index.ui.h:2
 msgid "A_dd Search Criteria"
@@ -25,7 +25,7 @@ msgstr ""
 
 #: ../glade/app.ui.h:2 ../src/lib/gglobals.py:348
 msgid "Add to _Shopping List"
-msgstr "Add to Shopping List"
+msgstr "Adăugați în li_sta de cumpărături"
 
 #: ../glade/app.ui.h:3 ../glade/recipe_index.ui.h:10
 msgid "Limiting Search to:"
@@ -59,7 +59,7 @@ msgstr ""
 #: ../glade/app.ui.h:9 ../glade/generic_importer.ui.h:4
 #: ../src/lib/importers/interactive_importer.py:143
 msgid "_New Recipe"
-msgstr ""
+msgstr "Reteta _Noua"
 
 #: ../glade/app.ui.h:10 ../glade/recipe_index.ui.h:24
 #: ../src/lib/plugins/key_editor/keyeditor.ui.h:11
@@ -178,7 +178,7 @@ msgstr ""
 #: ../src/lib/plugins/unit_converter/convertGui.py:160
 #: ../src/lib/plugins/unit_converter/converter.ui.h:8
 msgid "None"
-msgstr ""
+msgstr "Niciunul"
 
 #: ../glade/converter.ui.h:9
 #: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:3
@@ -270,12 +270,12 @@ msgstr ""
 #: ../src/lib/gtk_extras/dialog_extras.py:810
 #: ../src/lib/gtk_extras/dialog_extras.py:1228
 msgid "_Details"
-msgstr ""
+msgstr "_Detalii"
 
 #: ../glade/databaseChooser.ui.h:16 ../src/lib/GourmetRecipeManager.py:1059
 #: ../src/lib/shopgui.py:675
 msgid "_File"
-msgstr ""
+msgstr "_Fişier"
 
 #: ../glade/databaseChooser.ui.h:17
 msgid "_Host:"
@@ -611,7 +611,7 @@ msgstr ""
 #. saveEdits
 #: ../glade/recipe_index.ui.h:21 ../src/lib/reccard.py:869
 msgid "_Delete Recipe"
-msgstr ""
+msgstr "Ș_tergere rețeta"
 
 #: ../glade/recipe_index.ui.h:22
 msgid "_E-Mail recipe"
@@ -759,13 +759,15 @@ msgstr ""
 
 #: ../gourmet.desktop.in.h:1 ../src/lib/version.py:4
 msgid "Gourmet Recipe Manager"
-msgstr ""
+msgstr "Administrator rețete culinare Gourmet"
 
 #: ../gourmet.desktop.in.h:2
 msgid ""
 "Organize recipes, create shopping lists, calculate nutritional information, "
 "and more."
 msgstr ""
+"Organizați rețete culinare, creați liste de cumpărături, calculați "
+"informații nutriționale și altele."
 
 #: ../src/lib/FileChooserSaveAs.py:153
 #: ../src/lib/gtk_extras/dialog_extras.py:1032
@@ -785,41 +787,45 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:66
 msgid "Importing old recipe data"
-msgstr ""
+msgstr "Se încarcă reţete existente"
 
 #: ../src/lib/GourmetRecipeManager.py:67
 msgid ""
 "Importing recipe data from a previous version of Gourmet into new database."
 msgstr ""
+"Se importă reţete dintr-o versiune anterioară Gourmet în noua bază de date."
 
 #. Convenience method for showing progress dialogs for import/export/deletion
 #: ../src/lib/GourmetRecipeManager.py:168
 msgid "Import paused"
-msgstr ""
+msgstr "Importul oprit momentan"
 
 #: ../src/lib/GourmetRecipeManager.py:169
 msgid "Stop import"
-msgstr ""
+msgstr "Opriți importul"
 
 #: ../src/lib/GourmetRecipeManager.py:252
 #: ../src/lib/GourmetRecipeManager.py:1100
 msgid "Recipe _Index"
-msgstr ""
+msgstr "_Index reţete"
 
 #: ../src/lib/GourmetRecipeManager.py:253
 msgid "Shopping _List"
-msgstr ""
+msgstr "_Lista de cumpărături"
 
 #: ../src/lib/GourmetRecipeManager.py:272 ../src/lib/reccard.py:213
 msgid "_Go"
-msgstr ""
+msgstr "_Du-te"
 
 #: ../src/lib/GourmetRecipeManager.py:391
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Vincent Lhote https://launchpad.net/~vincent.lhote\n"
-"  jamie edgar https://launchpad.net/~jolt76"
+"  Bădilă Alin-Petrişor https://launchpad.net/~demon981\n"
+"  Claudia Cotună https://launchpad.net/~special4ti\n"
+"  Memo https://launchpad.net/~memo-cj-ro\n"
+"  Paperkite https://launchpad.net/~ub2l\n"
+"  SERGUY https://launchpad.net/~serguy-the-seeker"
 
 #: ../src/lib/GourmetRecipeManager.py:451
 msgid "Saved!"
@@ -858,7 +864,7 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:542
 #: ../src/lib/GourmetRecipeManager.py:557
 msgid "Trash"
-msgstr ""
+msgstr "Coș de gunoi"
 
 #: ../src/lib/GourmetRecipeManager.py:557
 msgid "Browse, permanently delete or undelete deleted recipes"
@@ -930,7 +936,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1042
 msgid "Delete selected recipes"
-msgstr ""
+msgstr "Ștergeți rețetele selectate"
 
 #: ../src/lib/GourmetRecipeManager.py:1043
 msgid "Edit recipe"
@@ -961,11 +967,11 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1060 ../src/lib/reccard.py:212
 #: ../src/lib/reccard.py:864 ../src/lib/shopgui.py:653
 msgid "_Edit"
-msgstr ""
+msgstr "_Editează"
 
 #: ../src/lib/GourmetRecipeManager.py:1061
 msgid "_Actions"
-msgstr ""
+msgstr "_Acțiuni"
 
 #: ../src/lib/GourmetRecipeManager.py:1062
 msgid "Setti_ngs"
@@ -976,11 +982,11 @@ msgstr ""
 #: ../src/lib/reccard.py:225 ../src/lib/reccard.py:866
 #: ../src/lib/shopgui.py:676 ../src/lib/shopgui.py:678
 msgid "_Help"
-msgstr ""
+msgstr "_Ajutor"
 
 #: ../src/lib/GourmetRecipeManager.py:1064
 msgid "_About"
-msgstr ""
+msgstr "_Despre"
 
 #: ../src/lib/GourmetRecipeManager.py:1066
 msgid "_New"
@@ -1036,11 +1042,11 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1093
 msgid "_Tools"
-msgstr ""
+msgstr "Unelte"
 
 #: ../src/lib/GourmetRecipeManager.py:1094
 msgid "_Timer"
-msgstr ""
+msgstr "Cronometru"
 
 #: ../src/lib/GourmetRecipeManager.py:1095
 msgid "Show timer"
@@ -2165,7 +2171,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
 msgid "Mealmaster (tm) Export"
-msgstr "Mealmaster™ Export"
+msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py:22
@@ -3509,7 +3515,7 @@ msgstr ""
 
 #: ../src/lib/plugins/unit_converter/__init__.py:15
 msgid "_Unit Converter"
-msgstr ""
+msgstr "Convertor _unitati de masura"
 
 #: ../src/lib/plugins/unit_converter/__init__.py:16
 msgid "Calculate unit conversions"
@@ -3899,7 +3905,7 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:210
 msgid "_Shopping List"
-msgstr ""
+msgstr "_Lista cumparaturi"
 
 #: ../src/lib/shopgui.py:211
 msgid "Already Have (_Pantry Items)"

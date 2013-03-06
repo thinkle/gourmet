@@ -1,23 +1,24 @@
-# English (Australia) translation for grecipe-manager
-# Copyright (c) (c) 2005 Canonical Ltd, and Rosetta Contributors 2005
+# translation of po_gourmet-oc.po to Occitan (lengadocian)
+# Occitan (post 1500) translation for grecipe-manager
+# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
 # This file is distributed under the same license as the grecipe-manager package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2005.
 #
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
+# Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: grecipe-manager\n"
+"Project-Id-Version: po_gourmet-oc\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-02-06 23:43+0100\n"
-"PO-Revision-Date: 2012-06-20 00:25+0000\n"
-"Last-Translator: Vincent Lhote <Unknown>\n"
-"Language-Team: English (Australia) <en_AU@li.org>\n"
+"PO-Revision-Date: 2010-10-22 19:15+0000\n"
+"Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
+"Language-Team: Occitan (lengadocian) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2013-03-06 00:05+0000\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Launchpad-Export-Date: 2013-03-06 00:04+0000\n"
 "X-Generator: Launchpad (build 16514)\n"
-"X-Rosetta-Version: 0.1\n"
 
 #: ../glade/app.ui.h:1 ../glade/recipe_index.ui.h:2
 msgid "A_dd Search Criteria"
@@ -25,7 +26,7 @@ msgstr ""
 
 #: ../glade/app.ui.h:2 ../src/lib/gglobals.py:348
 msgid "Add to _Shopping List"
-msgstr "Add to Shopping List"
+msgstr "Apondre a la lista de _crompas"
 
 #: ../glade/app.ui.h:3 ../glade/recipe_index.ui.h:10
 msgid "Limiting Search to:"
@@ -59,7 +60,7 @@ msgstr ""
 #: ../glade/app.ui.h:9 ../glade/generic_importer.ui.h:4
 #: ../src/lib/importers/interactive_importer.py:143
 msgid "_New Recipe"
-msgstr ""
+msgstr "Recèpta _novèla"
 
 #: ../glade/app.ui.h:10 ../glade/recipe_index.ui.h:24
 #: ../src/lib/plugins/key_editor/keyeditor.ui.h:11
@@ -178,7 +179,7 @@ msgstr ""
 #: ../src/lib/plugins/unit_converter/convertGui.py:160
 #: ../src/lib/plugins/unit_converter/converter.ui.h:8
 msgid "None"
-msgstr ""
+msgstr "Pas cap"
 
 #: ../glade/converter.ui.h:9
 #: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:3
@@ -270,12 +271,12 @@ msgstr ""
 #: ../src/lib/gtk_extras/dialog_extras.py:810
 #: ../src/lib/gtk_extras/dialog_extras.py:1228
 msgid "_Details"
-msgstr ""
+msgstr "_Detalhs"
 
 #: ../glade/databaseChooser.ui.h:16 ../src/lib/GourmetRecipeManager.py:1059
 #: ../src/lib/shopgui.py:675
 msgid "_File"
-msgstr ""
+msgstr "_Fichièr"
 
 #: ../glade/databaseChooser.ui.h:17
 msgid "_Host:"
@@ -302,7 +303,7 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:15
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:56
 msgid "recipe"
-msgstr ""
+msgstr "recèpta"
 
 #: ../glade/generic_importer.ui.h:1
 msgid ""
@@ -370,7 +371,7 @@ msgstr ""
 #: ../src/lib/shopgui.py:544 ../src/lib/shopgui.py:848
 #: ../src/lib/shopgui.py:997
 msgid "Shopping List"
-msgstr ""
+msgstr "Lista de crompas"
 
 #: ../glade/preferenceDialog.ui.h:12
 msgid "Use fractions when possible for display"
@@ -421,15 +422,15 @@ msgstr ""
 #: ../src/lib/exporters/rtf_exporter.py:79 ../src/lib/gglobals.py:232
 #: ../src/lib/shopgui.py:750
 msgid "Title"
-msgstr ""
+msgstr "Títol"
 
 #: ../glade/recCardDescriptionEditor.ui.h:7 ../src/lib/gglobals.py:238
 msgid "Yield"
-msgstr ""
+msgstr "Rendament"
 
 #: ../glade/recCardDescriptionEditor.ui.h:8 ../src/lib/gglobals.py:239
 msgid "Yield Unit"
-msgstr ""
+msgstr "Rendament unitari"
 
 #: ../glade/recCardDescriptionEditor.ui.h:13
 msgid "_Title:"
@@ -443,7 +444,7 @@ msgstr ""
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:29
 #: ../src/lib/recindex.py:42 ../src/lib/recindex.py:50
 msgid "category"
-msgstr ""
+msgstr "categoria"
 
 #: ../glade/recCardDescriptionEditor.ui.h:17
 msgid "rating"
@@ -525,7 +526,7 @@ msgstr ""
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:483
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:63
 msgid "Recipe"
-msgstr ""
+msgstr "Recèpta"
 
 #: ../glade/recCardDisplay.ui.h:19
 msgid "_Shop"
@@ -546,7 +547,7 @@ msgstr ""
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:601
 #: ../src/lib/reccard.py:1074
 msgid "Ingredients"
-msgstr ""
+msgstr "Ingredients"
 
 #: ../glade/recipe_index.ui.h:1
 msgid "<i>Search Options</i>"
@@ -611,7 +612,7 @@ msgstr ""
 #. saveEdits
 #: ../glade/recipe_index.ui.h:21 ../src/lib/reccard.py:869
 msgid "_Delete Recipe"
-msgstr ""
+msgstr "_Suprimir la recèpta"
 
 #: ../glade/recipe_index.ui.h:22
 msgid "_E-Mail recipe"
@@ -635,7 +636,7 @@ msgstr ""
 
 #: ../glade/shopCatEditor.ui.h:4 ../src/lib/gglobals.py:233
 msgid "Category"
-msgstr ""
+msgstr "Categoria"
 
 #: ../glade/shopCatEditor.ui.h:5
 msgid "Category Editor"
@@ -652,11 +653,11 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:188
 #: ../src/lib/reccard.py:2140 ../src/lib/reccard.py:2199
 msgid "Key"
-msgstr ""
+msgstr "Clau"
 
 #: ../glade/shopCatEditor.ui.h:7 ../src/lib/recindex.py:155
 msgid "Search as you type"
-msgstr ""
+msgstr "Recercar al moment de la picada"
 
 #: ../glade/shopCatEditor.ui.h:8
 msgid "Search by"
@@ -690,7 +691,7 @@ msgstr ""
 
 #: ../glade/timerDialog.ui.h:6 ../src/lib/timer.py:140 ../src/lib/timer.py:141
 msgid "Timer"
-msgstr ""
+msgstr "Cronomètre"
 
 #: ../glade/timerDialog.ui.h:7
 msgid ""
@@ -759,13 +760,15 @@ msgstr ""
 
 #: ../gourmet.desktop.in.h:1 ../src/lib/version.py:4
 msgid "Gourmet Recipe Manager"
-msgstr ""
+msgstr "Gestionari de recèptas Gourmet"
 
 #: ../gourmet.desktop.in.h:2
 msgid ""
 "Organize recipes, create shopping lists, calculate nutritional information, "
 "and more."
 msgstr ""
+"Organizar de recèptas, crear de listas de corsas, calcular de "
+"caracteristicas nutricionalas, e plan mai de causas encara."
 
 #: ../src/lib/FileChooserSaveAs.py:153
 #: ../src/lib/gtk_extras/dialog_extras.py:1032
@@ -795,35 +798,37 @@ msgstr ""
 #. Convenience method for showing progress dialogs for import/export/deletion
 #: ../src/lib/GourmetRecipeManager.py:168
 msgid "Import paused"
-msgstr ""
+msgstr "Importacion en pausa"
 
 #: ../src/lib/GourmetRecipeManager.py:169
 msgid "Stop import"
-msgstr ""
+msgstr "Arrestar l'importacion"
 
 #: ../src/lib/GourmetRecipeManager.py:252
 #: ../src/lib/GourmetRecipeManager.py:1100
 msgid "Recipe _Index"
-msgstr ""
+msgstr "_Indèx de las recèptas"
 
 #: ../src/lib/GourmetRecipeManager.py:253
 msgid "Shopping _List"
-msgstr ""
+msgstr "_Lista de crompas"
 
 #: ../src/lib/GourmetRecipeManager.py:272 ../src/lib/reccard.py:213
 msgid "_Go"
-msgstr ""
+msgstr "_Anar"
 
 #: ../src/lib/GourmetRecipeManager.py:391
 msgid "translator-credits"
 msgstr ""
+"Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>\n"
+"\n"
 "Launchpad Contributions:\n"
-"  Vincent Lhote https://launchpad.net/~vincent.lhote\n"
-"  jamie edgar https://launchpad.net/~jolt76"
+"  Cédric VALMARY (Tot en òc) https://launchpad.net/~cvalmary\n"
+"  Yannig MARCHEGAY (Kokoyaya) https://launchpad.net/~yannick-marchegay"
 
 #: ../src/lib/GourmetRecipeManager.py:451
 msgid "Saved!"
-msgstr ""
+msgstr "Salvat !"
 
 #: ../src/lib/GourmetRecipeManager.py:461
 #, python-format
@@ -832,23 +837,23 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:472
 msgid "An import is in progress."
-msgstr ""
+msgstr "Importacion en cors."
 
 #: ../src/lib/GourmetRecipeManager.py:473
 msgid "An export is in progress."
-msgstr ""
+msgstr "Exportacion en cors."
 
 #: ../src/lib/GourmetRecipeManager.py:474
 msgid "A delete is in progress."
-msgstr ""
+msgstr "Supression en cors."
 
 #: ../src/lib/GourmetRecipeManager.py:476
 msgid "Exit program anyway?"
-msgstr ""
+msgstr "Quitar l'aplicacion malgrat tot ?"
 
 #: ../src/lib/GourmetRecipeManager.py:478
 msgid "Don't exit!"
-msgstr ""
+msgstr "Quitar pas !"
 
 #: ../src/lib/GourmetRecipeManager.py:524
 #, python-format
@@ -858,7 +863,7 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:542
 #: ../src/lib/GourmetRecipeManager.py:557
 msgid "Trash"
-msgstr ""
+msgstr "Escobilhièr"
 
 #: ../src/lib/GourmetRecipeManager.py:557
 msgid "Browse, permanently delete or undelete deleted recipes"
@@ -874,17 +879,17 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:688
 msgid "Starting gourmet..."
-msgstr ""
+msgstr "Aviada de Gourmet..."
 
 #: ../src/lib/GourmetRecipeManager.py:775
 #, python-format
 msgid "Number of %(unit)s of %(title)s to shop for"
-msgstr ""
+msgstr "Nombre de %(unit)s de %(title)s de crompar"
 
 #: ../src/lib/GourmetRecipeManager.py:787
 #, python-format
 msgid "Multiply %s by:"
-msgstr ""
+msgstr "Multiplicar %s per :"
 
 #: ../src/lib/GourmetRecipeManager.py:807
 #, python-format
@@ -911,11 +916,11 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1007
 msgid "Search recipes"
-msgstr ""
+msgstr "Cercar de recèptas"
 
 #: ../src/lib/GourmetRecipeManager.py:1036
 msgid "Open recipe"
-msgstr ""
+msgstr "Dobrir una recèpta"
 
 #: ../src/lib/GourmetRecipeManager.py:1037
 msgid "Open selected recipe"
@@ -926,11 +931,11 @@ msgstr ""
 #. elsewhere (e.g. in search box) from muddling up users.
 #: ../src/lib/GourmetRecipeManager.py:1041
 msgid "Delete recipe"
-msgstr ""
+msgstr "Suprimir la recèpta"
 
 #: ../src/lib/GourmetRecipeManager.py:1042
 msgid "Delete selected recipes"
-msgstr ""
+msgstr "Suprimir las recèptas seleccionadas"
 
 #: ../src/lib/GourmetRecipeManager.py:1043
 msgid "Edit recipe"
@@ -950,7 +955,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1049
 msgid "_Print"
-msgstr ""
+msgstr "_Estampar"
 
 #. ('Email', None, _('E-_mail recipes'),
 #. None,None,self.email_recs),
@@ -961,34 +966,34 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1060 ../src/lib/reccard.py:212
 #: ../src/lib/reccard.py:864 ../src/lib/shopgui.py:653
 msgid "_Edit"
-msgstr ""
+msgstr "_Edicion"
 
 #: ../src/lib/GourmetRecipeManager.py:1061
 msgid "_Actions"
-msgstr ""
+msgstr "_Accions"
 
 #: ../src/lib/GourmetRecipeManager.py:1062
 msgid "Setti_ngs"
-msgstr ""
+msgstr "Preferé_ncias"
 
 #: ../src/lib/GourmetRecipeManager.py:1063
 #: ../src/lib/GourmetRecipeManager.py:1068 ../src/lib/reccard.py:214
 #: ../src/lib/reccard.py:225 ../src/lib/reccard.py:866
 #: ../src/lib/shopgui.py:676 ../src/lib/shopgui.py:678
 msgid "_Help"
-msgstr ""
+msgstr "_Ajuda"
 
 #: ../src/lib/GourmetRecipeManager.py:1064
 msgid "_About"
-msgstr ""
+msgstr "_A prepaus"
 
 #: ../src/lib/GourmetRecipeManager.py:1066
 msgid "_New"
-msgstr ""
+msgstr "_Novèl"
 
 #: ../src/lib/GourmetRecipeManager.py:1070
 msgid "_Import file"
-msgstr ""
+msgstr "_Importar un fichièr"
 
 #: ../src/lib/GourmetRecipeManager.py:1071
 msgid "Import recipe from file"
@@ -996,11 +1001,11 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1072
 msgid "Import _webpage"
-msgstr ""
+msgstr "Importar una pagina _web"
 
 #: ../src/lib/GourmetRecipeManager.py:1073
 msgid "Import recipe from webpage"
-msgstr ""
+msgstr "Importer une recette depuis une page web"
 
 #: ../src/lib/GourmetRecipeManager.py:1074
 msgid "Export _all recipes"
@@ -1012,7 +1017,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1076
 msgid "_Plugins"
-msgstr ""
+msgstr "Em_peutons"
 
 #: ../src/lib/GourmetRecipeManager.py:1077
 msgid "Manage plugins which add extra functionality to Gourmet."
@@ -1020,7 +1025,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1079
 msgid "_Preferences"
-msgstr ""
+msgstr "_Preferéncias"
 
 #. ('Redo',gtk.STOCK_REDO,_('_Redo'),
 #. None,None),
@@ -1028,7 +1033,7 @@ msgstr ""
 #. None,None),
 #: ../src/lib/GourmetRecipeManager.py:1085
 msgid "_Quit"
-msgstr ""
+msgstr "_Quitar"
 
 #: ../src/lib/GourmetRecipeManager.py:1087
 msgid "Open _Trash"
@@ -1036,11 +1041,11 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1093
 msgid "_Tools"
-msgstr ""
+msgstr "_Aisinas"
 
 #: ../src/lib/GourmetRecipeManager.py:1094
 msgid "_Timer"
-msgstr ""
+msgstr "Minu_tador"
 
 #: ../src/lib/GourmetRecipeManager.py:1095
 msgid "Show timer"
@@ -1053,7 +1058,7 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1211
 #, python-format
 msgid "Delete %s?"
-msgstr ""
+msgstr "Suprimir %s ?"
 
 #: ../src/lib/GourmetRecipeManager.py:1212
 #, python-format
@@ -1073,12 +1078,12 @@ msgstr[1] ""
 
 #: ../src/lib/GourmetRecipeManager.py:1241
 msgid "Deleted"
-msgstr ""
+msgstr "Suprimit"
 
 #: ../src/lib/GourmetRecipeManager.py:1241
 #: ../src/lib/importers/interactive_importer.py:471
 msgid "Untitled"
-msgstr ""
+msgstr "Sens títol"
 
 #: ../src/lib/GourmetRecipeManager.py:1249
 msgid "Permanently delete recipes?"
@@ -1121,7 +1126,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1338
 msgid "webpage"
-msgstr ""
+msgstr "Pagina internet"
 
 #: ../src/lib/GourmetRecipeManager.py:1339
 #, python-format
@@ -1130,16 +1135,16 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1399
 msgid "Done!"
-msgstr ""
+msgstr "Acabat !"
 
 #: ../src/lib/GourmetRecipeManager.py:1407
 msgid "Importing..."
-msgstr ""
+msgstr "Importacion..."
 
 #: ../src/lib/GourmetThreads.py:42
 #, python-format
 msgid "%s stopped."
-msgstr ""
+msgstr "%s arrestat..."
 
 #: ../src/lib/GourmetThreads.py:43
 #, python-format
@@ -1149,7 +1154,7 @@ msgstr ""
 #: ../src/lib/GourmetThreads.py:50
 #, python-format
 msgid "%s interrupted"
-msgstr ""
+msgstr "%s interromput"
 
 #: ../src/lib/GourmetThreads.py:51
 #, python-format
@@ -1185,7 +1190,7 @@ msgstr ""
 
 #: ../src/lib/backends/db.py:440 ../src/lib/threadManager.py:315
 msgid "Details"
-msgstr ""
+msgstr "Detalhs"
 
 #: ../src/lib/backends/db.py:440
 #, python-format
@@ -1226,36 +1231,36 @@ msgstr ""
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:565
 msgid "second"
 msgid_plural "seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "segonda"
+msgstr[1] "segondas"
 
 #. min. = abbreviation for minutes
 #: ../src/lib/convert.py:65
 msgid "min"
-msgstr ""
+msgstr "min"
 
 #: ../src/lib/convert.py:65 ../src/lib/convert.py:564
 msgid "minute"
 msgid_plural "minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "minuta"
+msgstr[1] "minutas"
 
 #. hrs = abbreviation for hours
 #: ../src/lib/convert.py:67
 msgid "hrs."
-msgstr ""
+msgstr "oras"
 
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:563
 msgid "hour"
 msgid_plural "hours"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "ora"
+msgstr[1] "oras"
 
 #: ../src/lib/convert.py:68 ../src/lib/convert.py:562
 msgid "day"
 msgid_plural "days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "jorn"
+msgstr[1] "jorns"
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
@@ -1263,20 +1268,20 @@ msgstr[1] ""
 #: ../src/lib/convert.py:69 ../src/lib/convert.py:559
 msgid "year"
 msgid_plural "years"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "annada"
+msgstr[1] "annadas"
 
 #: ../src/lib/convert.py:560
 msgid "month"
 msgid_plural "months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "mes"
+msgstr[1] "meses"
 
 #: ../src/lib/convert.py:561
 msgid "week"
 msgid_plural "weeks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "setmana"
+msgstr[1] "setmanas"
 
 #. Translators... this is a messay way of concatenating
 #. lists. In English we do lists this way: 1, 2, 3, 4, 5
@@ -1286,32 +1291,32 @@ msgstr[1] ""
 #. ", " and " and " with the same string.
 #: ../src/lib/convert.py:608
 msgid " and "
-msgstr ""
+msgstr " e "
 
 #: ../src/lib/convert.py:608
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../src/lib/convert.py:610
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/lib/convert.py:740
 msgid "and"
-msgstr ""
+msgstr "e"
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
 #. show up sometimes.
 #: ../src/lib/convert.py:762
 msgid "to"
-msgstr ""
+msgstr "cap a"
 
 #: ../src/lib/convertGui.py:107
 #: ../src/lib/plugins/unit_converter/convertGui.py:114
 #, python-format
 msgid "Cannot convert %s to %s"
-msgstr ""
+msgstr "Impossible de convertir %s en %s"
 
 #: ../src/lib/convertGui.py:109
 #: ../src/lib/plugins/unit_converter/convertGui.py:116
@@ -1329,7 +1334,7 @@ msgstr ""
 
 #: ../src/lib/exporters/exportManager.py:75
 msgid "Export complete!"
-msgstr ""
+msgstr "Exportacion acabada"
 
 #: ../src/lib/exporters/exportManager.py:76
 #, python-format
@@ -1342,7 +1347,7 @@ msgstr ""
 
 #: ../src/lib/exporters/exportManager.py:90
 msgid "recipes"
-msgstr ""
+msgstr "recèptas"
 
 #: ../src/lib/exporters/exportManager.py:101
 #, python-format
@@ -1356,19 +1361,19 @@ msgstr ""
 
 #: ../src/lib/exporters/exportManager.py:150
 msgid "Export"
-msgstr ""
+msgstr "Exportar"
 
 #: ../src/lib/exporters/exporter.py:209 ../src/lib/exporters/exporter.py:211
 #: ../src/lib/exporters/exporter.py:515 ../src/lib/exporters/exporter.py:517
 msgid "stars"
-msgstr ""
+msgstr "estelas"
 
 #: ../src/lib/exporters/exporter.py:378 ../src/lib/exporters/exporter.py:463
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:153
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:629
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:642
 msgid "optional"
-msgstr ""
+msgstr "opcional"
 
 #: ../src/lib/exporters/exporter.py:558
 #, python-format
@@ -1377,7 +1382,7 @@ msgstr ""
 
 #: ../src/lib/exporters/exporter.py:578
 msgid "Export complete."
-msgstr ""
+msgstr "Exportacion acabada."
 
 #: ../src/lib/exporters/printer.py:12 ../src/lib/exporters/printer.py:22
 msgid "Unable to print: no print plugins are active!"
@@ -1393,8 +1398,8 @@ msgstr ""
 #, python-format
 msgid "Print %s recipe"
 msgid_plural "Print %s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Estampar %s recèpta"
+msgstr[1] "Estampar %s recèptas"
 
 #: ../src/lib/exporters/printer.py:80
 msgid "Well this is embarassing. Something went wrong printing your recipe."
@@ -1405,7 +1410,7 @@ msgstr ""
 #: ../src/lib/plugins/email_plugin/recipe_emailer.py:48
 #: ../src/lib/plugins/key_editor/keyEditor.py:115 ../src/lib/reccard.py:3055
 msgid "Recipes"
-msgstr ""
+msgstr "Recèptas"
 
 #: ../src/lib/exporters/recipe_emailer.py:119
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
@@ -1443,19 +1448,19 @@ msgstr ""
 
 #: ../src/lib/gglobals.py:235 ../src/lib/gtk_extras/ratingWidget.py:326
 msgid "Rating"
-msgstr ""
+msgstr "Classificacion"
 
 #: ../src/lib/gglobals.py:236
 msgid "Source"
-msgstr ""
+msgstr "Font"
 
 #: ../src/lib/gglobals.py:237
 msgid "Website"
-msgstr ""
+msgstr "Site web"
 
 #: ../src/lib/gglobals.py:240
 msgid "Preparation Time"
-msgstr ""
+msgstr "Temps de preparacion"
 
 #: ../src/lib/gglobals.py:241
 msgid "Cooking Time"
@@ -1464,21 +1469,21 @@ msgstr ""
 #: ../src/lib/gglobals.py:246 ../src/lib/gglobals.py:251
 #: ../src/lib/reccard.py:1654
 msgid "Instructions"
-msgstr ""
+msgstr "Instruccions"
 
 #: ../src/lib/gglobals.py:247 ../src/lib/gglobals.py:252
 #: ../src/lib/reccard.py:1660
 msgid "Notes"
-msgstr ""
+msgstr "Nòtas"
 
 #: ../src/lib/gglobals.py:253
 msgid "Modifications"
-msgstr ""
+msgstr "Modificacions"
 
 #. print dir(err)
 #: ../src/lib/gglobals.py:319
 msgid "Unable to open URL"
-msgstr ""
+msgstr "Impossible de dobrir l'URL"
 
 #: ../src/lib/gglobals.py:320
 msgid "Unable to launch mail reader."
@@ -1486,11 +1491,11 @@ msgstr ""
 
 #: ../src/lib/gglobals.py:321
 msgid "Unable to open website."
-msgstr ""
+msgstr "Impossible de dobrir lo siti web."
 
 #: ../src/lib/gglobals.py:322
 msgid "Unable to open file."
-msgstr ""
+msgstr "Impossible de dobrir lo fichièr."
 
 #: ../src/lib/gglobals.py:328
 #, python-format
@@ -1500,12 +1505,12 @@ msgstr ""
 #. setup pause button
 #: ../src/lib/gtk_extras/dialog_extras.py:405
 msgid "_Pause"
-msgstr ""
+msgstr "_Pausa"
 
 #. setup stop button
 #: ../src/lib/gtk_extras/dialog_extras.py:417
 msgid "_Stop"
-msgstr ""
+msgstr "_Arrestar"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:473
 #: ../src/lib/gtk_extras/dialog_extras.py:563
@@ -1563,7 +1568,7 @@ msgstr ""
 
 #: ../src/lib/gtk_extras/dialog_extras.py:1109
 msgid "No file selected"
-msgstr ""
+msgstr "Pas de fichièr seleccionat"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:1110
 msgid "No file was selected, so the action has been cancelled"
@@ -1711,7 +1716,7 @@ msgstr ""
 
 #: ../src/lib/importers/interactive_importer.py:37
 msgid "Servings"
-msgstr ""
+msgstr "Cobèrts"
 
 #: ../src/lib/importers/interactive_importer.py:39
 msgid "Ingredient Subgroup"
@@ -1835,7 +1840,7 @@ msgstr ""
 
 #: ../src/lib/plugin_gui.py:134 ../src/lib/recindex.py:452
 msgid "or"
-msgstr ""
+msgstr "o"
 
 #: ../src/lib/plugin_gui.py:138
 msgid "An error occurred activating plugin."
@@ -2165,7 +2170,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
 msgid "Mealmaster (tm) Export"
-msgstr "Mealmaster™ Export"
+msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py:22
@@ -2199,20 +2204,20 @@ msgstr ""
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:712
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:825
 msgid "Letter"
-msgstr ""
+msgstr "Letra"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:713
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:844
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:967
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:998
 msgid "Portrait"
-msgstr ""
+msgstr "Retrach"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:715
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:837
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:959
 msgid "Plain"
-msgstr ""
+msgstr "Simpla"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:729
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:749
@@ -2267,14 +2272,14 @@ msgstr ""
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:945
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:996
 msgid "Landscape"
-msgstr ""
+msgstr "Païsatge"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:856
 #, python-format
 msgid "%s Column"
 msgid_plural "%s Columns"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s colomna"
+msgstr[1] "%s colomnas"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:871
 msgid "Paper _Size"
@@ -2282,7 +2287,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:873
 msgid "_Orientation"
-msgstr ""
+msgstr "_Orientacion"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:875
 msgid "_Font Size"
@@ -2419,30 +2424,30 @@ msgstr ""
 #: ../src/lib/plugins/key_editor/keyEditor.py:87
 #: ../src/lib/plugins/key_editor/keyEditor.py:266
 msgid "key"
-msgstr ""
+msgstr "clau"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:87
 #: ../src/lib/plugins/key_editor/keyEditor.py:262
 #: ../src/lib/plugins/key_editor/keyEditor.py:538
 msgid "item"
-msgstr ""
+msgstr "element"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:87
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:36
 msgid "unit"
-msgstr ""
+msgstr "unitat"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:112
 msgid "Field"
-msgstr ""
+msgstr "Zòna"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:113
 msgid "Value"
-msgstr ""
+msgstr "Valor"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:114
 msgid "Count"
-msgstr ""
+msgstr "Comptar"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:159
 #, python-format
@@ -2561,18 +2566,18 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:189
 #: ../src/lib/reccard.py:2139 ../src/lib/reccard.py:2167
 msgid "Item"
-msgstr ""
+msgstr "Element"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:514
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:8
 #: ../src/lib/reccard.py:2138 ../src/lib/reccard.py:2166
 msgid "Unit"
-msgstr ""
+msgstr "Unitat"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:515
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:7
 msgid "Amount"
-msgstr ""
+msgstr "Quantitat"
 
 #: ../src/lib/plugins/key_editor/keyEditorPlugin.py:16
 msgid "Ingredient _Key Editor"
@@ -2726,7 +2731,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionDisplay.py:132
 msgid "100 grams"
-msgstr ""
+msgstr "100 grames"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:1
 msgid "<b>Choose a Density</b>"
@@ -3001,7 +3006,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:35
 msgid "Ash"
-msgstr ""
+msgstr "Ash"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:37
 msgid "Beta-carotene"
@@ -3156,7 +3161,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:9
 msgid "Ingredient"
-msgstr ""
+msgstr "Ingredient"
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:10
 msgid "USDA Database Equivalent"
@@ -3165,11 +3170,11 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:11
 #: ../src/lib/shopping.py:139 ../src/lib/shopping.py:159
 msgid "Unknown"
-msgstr ""
+msgstr "Desconegut"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:12
 msgid "Water"
-msgstr ""
+msgstr "Aiga"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:13
 msgid "Kilocalories"
@@ -3569,7 +3574,7 @@ msgstr ""
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:25
 #: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
 msgid "title"
-msgstr ""
+msgstr "títol"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:26
 #: ../src/lib/recindex.py:39 ../src/lib/recindex.py:49
@@ -3579,12 +3584,12 @@ msgstr ""
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:27
 #: ../src/lib/recindex.py:40 ../src/lib/recindex.py:54
 msgid "instructions"
-msgstr ""
+msgstr "instruccions"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:28
 #: ../src/lib/recindex.py:41 ../src/lib/recindex.py:55
 msgid "notes"
-msgstr ""
+msgstr "nòtas"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:30
 #: ../src/lib/recindex.py:43 ../src/lib/recindex.py:51
@@ -3601,7 +3606,7 @@ msgstr ""
 #. menus
 #: ../src/lib/reccard.py:211 ../src/lib/reccard.py:863
 msgid "_Recipe"
-msgstr ""
+msgstr "_Recèpta"
 
 #: ../src/lib/reccard.py:215
 msgid "Export recipe"
@@ -3632,7 +3637,7 @@ msgstr ""
 #. None,None,self.email_cb),
 #: ../src/lib/reccard.py:240
 msgid "Print recipe"
-msgstr ""
+msgstr "Estampar la recèpta"
 
 #: ../src/lib/reccard.py:243
 msgid "Forget remembered optional ingredients"
@@ -3739,7 +3744,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:2141 ../src/lib/reccard.py:2168
 msgid "Optional"
-msgstr ""
+msgstr "Opcional"
 
 #: ../src/lib/reccard.py:2302
 #, python-format
@@ -3899,7 +3904,7 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:210
 msgid "_Shopping List"
-msgstr ""
+msgstr "Lista de las cr_ompas"
 
 #: ../src/lib/shopgui.py:211
 msgid "Already Have (_Pantry Items)"
@@ -3916,11 +3921,11 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:474
 msgid "Category:"
-msgstr ""
+msgstr "Categoria :"
 
 #: ../src/lib/shopgui.py:587
 msgid "_Recipes"
-msgstr ""
+msgstr "_Recèptas"
 
 #: ../src/lib/shopgui.py:610
 msgid "_Add items:"
@@ -3944,7 +3949,7 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:751
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: ../src/lib/shopgui.py:836
 msgid "No recipes selected. Do you want to clear the entire list?"
@@ -3986,7 +3991,7 @@ msgstr ""
 
 #: ../src/lib/shopping.py:20
 msgid "water"
-msgstr ""
+msgstr "aiga"
 
 #: ../src/lib/shopping.py:21
 msgid "oil, vegetable"
@@ -4071,7 +4076,7 @@ msgstr ""
 
 #: ../src/lib/timer.py:192
 msgid "Stop timer?"
-msgstr ""
+msgstr "Arrestar lo minutador ?"
 
 #: ../src/lib/timer.py:193
 msgid ""
@@ -4082,11 +4087,11 @@ msgstr ""
 
 #: ../src/lib/timer.py:194
 msgid "Stop _timer"
-msgstr ""
+msgstr "Arrestar lo minutador"
 
 #: ../src/lib/timer.py:194
 msgid "_Keep timing"
-msgstr ""
+msgstr "_Conservar lo minutatge"
 
 #: ../src/lib/version.py:5
 msgid ""
@@ -4109,11 +4114,11 @@ msgstr ""
 
 #: ../src/lib/version.py:10
 msgid "Roland Duhaime (Windows porting assistance)"
-msgstr ""
+msgstr "Roland Duhaime (assisténcia de portatge Windows)"
 
 #: ../src/lib/version.py:11
 msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
-msgstr ""
+msgstr "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
 
 #: ../src/lib/version.py:12
 msgid "Richard Ferguson (improvements to Unit Converter interface)"
@@ -4125,7 +4130,7 @@ msgstr ""
 
 #: ../src/lib/version.py:14
 msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
-msgstr ""
+msgstr "ixat <ixat.deviantart.com> (lògo e vidèo d'aviada)"
 
 #: ../src/lib/version.py:15
 msgid "Yula Zubritsky (nutrition and add-to-shopping list icons)"
