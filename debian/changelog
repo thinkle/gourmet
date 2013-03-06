@@ -2,6 +2,8 @@ gourmet (0.16.0-1) unstable; urgency=low
 
   [ Bernhard Reiter ]
   * New upstream release (Closes: #530403, LP: #1010659).
+    This also fixes PIL imports as requested by
+    http://lists.debian.org/debian-python/2013/02/msg00017.html
   * debian/control:
     - Bump Standards-Version to 3.9.4.
     - Remove XS-Python-Version line.
