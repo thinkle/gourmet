@@ -1,2 +1,2 @@
 version=3
-opts="uversionmangle=s/recipe-manager-?//" http://sf.net/grecipe-manager/gourmet-(.+)\.tar\.gz
+https://launchpad.net/gourmet/+download https://launchpad.net/gourmet/main/.*/\+download/gourmet-(.+)\.tar\.bz2

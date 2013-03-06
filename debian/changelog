@@ -26,6 +26,7 @@ gourmet (0.16.0-1) unstable; urgency=low
   * debian/patches/license-location, debian/patches/series:
     Add patch to change the location used to look for the license.
   * debian/rules: Switch to tiny dh style, xz compression.
+  * debian/watch: Update to new location of releases on Launchpad.
 
  -- Bernhard Reiter <ockham@raz.or.at>  Fri, 01 Mar 2013 00:16:00 +0100
 
