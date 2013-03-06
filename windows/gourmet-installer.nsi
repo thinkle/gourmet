@@ -29,7 +29,7 @@
     !define UNINSTALL_REGKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall"
 
     !define GOURMET_NAME "Gourmet Recipe Manager"
-    !define GOURMET_VERSION "0.15.6-alpha" ;TODO: Read from src/lib/version.py
+    !define GOURMET_VERSION "0.16.0" ;TODO: Read from src/lib/version.py
     !define GOURMET_PUBLISHER "Thomas M. Hinkle"
     !define GOURMET_WEB_SITE "http://thinkle.github.com/gourmet/"
     !define GOURMET_DOWNLOAD_SITE "https://launchpad.net/gourmet/+download"
@@ -37,7 +37,7 @@
     !define GOURMET_UNINSTALL_KEY "${UNINSTALL_REGKEY}\${GOURMET_NAME}"
     !define GOURMET_STARTMENU_REGVAL "NSIS:StartMenuDir"
 
-    !define PYTHON_PATH "C:\Program Files\Python26"
+    !define PYTHON_PATH "C:\Program Files\Python27"
 
     !define GOURMET_NSIS_INCLUDE_PATH           ".\nsis"
 
