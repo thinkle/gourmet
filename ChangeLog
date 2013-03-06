@@ -1,5 +1,6 @@
 2013-03-06  Bernhard Reiter  <ockham@raz.or.at>
 
+	* Add .project to .gitignore.
 	* Remove gourmet/.gitignore as omission of *.pyc files is recursively
 	  covered by our root .gitignore
 	* Remove bin/gourmet-importer and bin/gourmet-importer-profile.

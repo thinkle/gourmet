@@ -3,6 +3,7 @@
 *.desktop
 *~
 *#*
+.project
 .pydevproject
 dist/
 build
