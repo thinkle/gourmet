@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Christian Marillat <marillat@debian.org>
 Homepage: http://grecipe-manager.sf.net/
 Standards-Version: 3.9.4
-Build-Depends: debhelper (>= 7), python-all
+Build-Depends: debhelper (>= 7.0.50~), python-all
 Build-Depends-Indep: intltool, python-distutils-extra
 
 Package: gourmet
