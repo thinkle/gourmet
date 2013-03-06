@@ -23,6 +23,8 @@ gourmet (0.16.0-1) unstable; urgency=low
   * debian/manpages: Add.
   * debian/patches/01_fix_raise_str.diff:
     Drop (fixed upstream).
+  * debian/patches/lc-all-c, debian/patches/series:
+    Fix a bug that caused gourmet to fail when LC_ALL=C.
   * debian/patches/license-location, debian/patches/series:
     Add patch to change the location used to look for the license.
   * debian/rules: Switch to tiny dh style, xz compression.

@@ -1,0 +1,15 @@
+Description: Fix a bug that caused gourmet to fail when LC_ALL=C.
+Origin: https://github.com/thinkle/gourmet/commit/c6c721af68c06262b2db44b97c70988347c8284a
+Author: Bernhard Reiter <ockham@raz.or.at>
+
+--- a/gourmet/plugin_loader.py
++++ b/gourmet/plugin_loader.py
+@@ -283,7 +283,7 @@
+                 key,val = line.split('=')
+                 key = key.strip(); val = val.strip()
+                 key = key.strip('_')
+-                if '[' in key:
++                if (loc is not None) and ('[' in key):
+                     key,locale = key.strip(']').split('[')
+                     if locale==loc:
+                         self.props[key] = val
