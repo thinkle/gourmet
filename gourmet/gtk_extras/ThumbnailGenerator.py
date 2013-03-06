@@ -12,7 +12,11 @@ import re
 import imghdr
 from getopt import getopt
 from StringIO import StringIO
-from PIL import Image # Require PIL module.
+# Require PIL module.
+try:
+    from PIL import Image
+except ImportError:
+    import Image
 
 class ThumbnailGenerator:
     "Thumbnail image generator."
