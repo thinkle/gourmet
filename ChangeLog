@@ -1,5 +1,8 @@
 2013-03-06  Bernhard Reiter  <ockham@raz.or.at>
 
+	* Update MANIFEST.in.
+	  Running "python setup.py sdist" will now exactly reproduce
+	  the current git state.
 	* Add .project to .gitignore.
 	* Remove gourmet/.gitignore as omission of *.pyc files is recursively
 	  covered by our root .gitignore
