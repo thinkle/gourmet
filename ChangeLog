@@ -1,5 +1,6 @@
 2013-03-06  Bernhard Reiter  <ockham@raz.or.at>
 
+	* Remove -dev suffix from version in gourmet/version.py.
 	* Update MANIFEST.in.
 	  Running "python setup.py sdist" will now exactly reproduce
 	  the current git state.
