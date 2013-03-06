@@ -7,721 +7,406 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gourmet Recipe Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 23:17+0100\n"
-"PO-Revision-Date: 2005-08-08 08:50+0000\n"
-"Last-Translator: Rostislav Raykov <nostalgiafed@gmail.com>\n"
+"POT-Creation-Date: 2012-02-06 23:43+0100\n"
+"PO-Revision-Date: 2011-01-30 10:06+0000\n"
+"Last-Translator: George Karavasilev <motorslav@gmail.com>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
-"Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2013-03-06 00:04+0000\n"
+"X-Generator: Launchpad (build 16514)\n"
+"X-Poedit-Country: BULGARIA\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
-#: ../glade/app.glade.h:1 ../glade/recipe_index.glade.h:2
+#: ../glade/app.ui.h:1 ../glade/recipe_index.ui.h:2
 msgid "A_dd Search Criteria"
-msgstr "Добав_яне на критерий за търсене"
+msgstr ""
 
-#: ../glade/app.glade.h:2 ../glade/recipe_index.glade.h:3
-msgid "Add recipe to shopping list"
-msgstr "Добавяне на рецептата в списъка за пазаруване"
-
-#: ../glade/app.glade.h:3
-msgid "Add selected recipe to a shopping list."
-msgstr "Добавяне на избрана рецепта в списъка за пазаруване"
-
-#: ../glade/app.glade.h:4 ../glade/recipe_index.glade.h:4
-msgid "Add to _Pantry"
-msgstr "Добавяне към _килера"
-
-#: ../glade/app.glade.h:5 ../src/lib/gglobals.py:367
+#: ../glade/app.ui.h:2 ../src/lib/gglobals.py:348
 msgid "Add to _Shopping List"
 msgstr "Добавяне към _списъка за пазаруване"
 
-#: ../glade/app.glade.h:6 ../glade/recipe_index.glade.h:5
-msgid "Add to _shopping list"
-msgstr "Добавяне към _списъка за пазаруване"
-
-#: ../glade/app.glade.h:7
-msgid "Adva_nced Search"
-msgstr "Подробно търсене"
-
-#: ../glade/app.glade.h:8
-msgid "Create a new recipe"
-msgstr "Създаване на нова рецепта"
-
-#: ../glade/app.glade.h:9 ../glade/recipe_index.glade.h:6
-msgid "Delete selected recipe"
-msgstr "Изтриване на избрана рецепта"
-
-#: ../glade/app.glade.h:10 ../src/lib/GourmetRecipeManager.py:1020
-msgid "Delete selected recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:11
-msgid "E-_mail selected recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:12 ../glade/recipe_index.glade.h:7
-msgid "E-mail selected recipe"
-msgstr "Изпращане на избрана рецепта по ел. поща"
-
-#: ../glade/app.glade.h:13
-msgid "E-mail selected recipes"
-msgstr "Изпращане на избрани рецепти по ел. поща"
-
-#: ../glade/app.glade.h:14 ../glade/recipe_index.glade.h:8
-#, fuzzy
-msgid "Edit attributes of selected recipes"
-msgstr "Изпращане на избрани рецепти по ел. поща"
-
-#: ../glade/app.glade.h:15
-msgid "Edit ingredient keys and nutritional information"
-msgstr ""
-
-#: ../glade/app.glade.h:16
-msgid "Edit values for fields across several recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:17
-msgid "Export A_ll Recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:18
-msgid "Export selected recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:19
-msgid "Find and eliminate duplicate recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:20
-msgid "Import _Webpage"
-msgstr "Внасяне на _интернет страница"
-
-#: ../glade/app.glade.h:21 ../glade/recipe_index.glade.h:9
-msgid "Jump to recipe in Recipe Card vew"
-msgstr "Отиване към рецепта при картовия изглед"
-
-#: ../glade/app.glade.h:22 ../glade/recipe_index.glade.h:10
+#: ../glade/app.ui.h:3 ../glade/recipe_index.ui.h:10
 msgid "Limiting Search to:"
 msgstr ""
 
-#: ../glade/app.glade.h:23 ../glade/recipe_index.glade.h:11
-msgid ""
-"Never buy this item. When called for in a recipe, it will show up in a "
-"\"pantry\" section of the list as a reminder that you need it, but it won't "
-"be included when you save or print the list unless you tell me you need to "
-"buy it."
-msgstr ""
-
-#: ../glade/app.glade.h:24
-msgid "Open a timer"
-msgstr ""
-
-#: ../glade/app.glade.h:25 ../glade/recipe_index.glade.h:12
-msgid "Print selected recipe"
-msgstr "Разпечатване на избрана рецепта"
-
-#: ../glade/app.glade.h:26
-msgid "Print selected recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:27
-msgid "Re_apply changes"
-msgstr "Прилагане наново на промените"
-
-#: ../glade/app.glade.h:28
+#: ../glade/app.ui.h:4
 msgid "Recipe Index"
-msgstr "Индекс на рецептите"
+msgstr ""
 
-#: ../glade/app.glade.h:29
-msgid "Recipe _Card"
-msgstr "Карта с рецепта"
-
-#: ../glade/app.glade.h:30
-msgid "Recipe _List"
-msgstr "Списък с рецептите"
-
-#: ../glade/app.glade.h:31 ../glade/keyeditor.glade.h:4
-#: ../glade/recipe_index.glade.h:13
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:3
+#: ../glade/app.ui.h:5 ../glade/recipe_index.ui.h:13
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:3
 msgid "Search _Results"
-msgstr "_Резултати от търсенето"
+msgstr ""
 
-#: ../glade/app.glade.h:32
-msgid "Search as _you type"
-msgstr "Търсене при писането"
-
-#: ../glade/app.glade.h:33 ../glade/recipe_index.glade.h:16
+#: ../glade/app.ui.h:6 ../glade/recipe_index.ui.h:16
 msgid "Search by other critera within the current search results."
-msgstr "Търсене по друг критерий измежду върнатите резултати"
+msgstr ""
 
-#: ../glade/app.glade.h:34 ../glade/keyeditor.glade.h:6
-#: ../glade/recipe_index.glade.h:17 ../glade/shopCatEditor.glade.h:9
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:5
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:14
+#: ../glade/app.ui.h:7 ../glade/recipe_index.ui.h:17
+#: ../glade/shopCatEditor.ui.h:9
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:5
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:20
 msgid "Search for recipes as you type"
-msgstr "Търсене за рецепти още при писането"
+msgstr ""
 
-#: ../glade/app.glade.h:35 ../glade/recipe_index.glade.h:19
+#: ../glade/app.ui.h:8 ../glade/recipe_index.ui.h:19
 msgid "View Re_cipe"
-msgstr "Преглед на рецепта"
-
-#: ../glade/app.glade.h:36
-msgid "View Recipe _Card"
-msgstr "Преглед на карта с рецепта"
-
-#: ../glade/app.glade.h:37
-msgid "View selected recipe"
-msgstr "Преглед на избрана рецепта"
-
-#: ../glade/app.glade.h:38 ../src/lib/GourmetRecipeManager.py:1042
-msgid "_About"
-msgstr "_Относно"
-
-#: ../glade/app.glade.h:39 ../src/lib/GourmetRecipeManager.py:1039
-msgid "_Actions"
-msgstr "_Действия"
-
-#: ../glade/app.glade.h:40 ../glade/recipe_index.glade.h:20
-#, fuzzy
-msgid "_Batch edit recipes"
-msgstr "_Показване на изтрити рецепти"
-
-#: ../glade/app.glade.h:41
-msgid "_Delete"
-msgstr "_Изтриване"
-
-#. saveEdits
-#: ../glade/app.glade.h:42 ../glade/recipe_index.glade.h:21
-#: ../src/lib/reccard.py:878
-msgid "_Delete Recipe"
-msgstr "_Изтриване на рецепта"
-
-#: ../glade/app.glade.h:43
-msgid "_Duplicate Finder"
 msgstr ""
-
-#: ../glade/app.glade.h:44 ../glade/recipe_index.glade.h:22
-msgid "_E-Mail recipe"
-msgstr "И_зпращане на рецепта по ел. поща"
-
-#: ../glade/app.glade.h:45 ../src/lib/GourmetRecipeManager.py:1038
-#: ../src/lib/reccard.py:214 ../src/lib/reccard.py:873
-#: ../src/lib/shopgui.py:653
-msgid "_Edit"
-msgstr "_Редактиране"
-
-#: ../glade/app.glade.h:46
-msgid "_Empty trash"
-msgstr "_Изпразване на кошчето"
-
-#: ../glade/app.glade.h:47
-msgid "_Export selected recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:48
-#, fuzzy
-msgid "_Field Editor"
-msgstr "Редактор на ключове"
-
-#: ../glade/app.glade.h:49 ../glade/databaseChooser.glade.h:16
-#: ../src/lib/GourmetRecipeManager.py:1037 ../src/lib/shopgui.py:675
-msgid "_File"
-msgstr "_Файл"
-
-#: ../glade/app.glade.h:50 ../src/lib/GourmetRecipeManager.py:1041
-#: ../src/lib/GourmetRecipeManager.py:1046 ../src/lib/reccard.py:216
-#: ../src/lib/reccard.py:227 ../src/lib/reccard.py:875
-#: ../src/lib/shopgui.py:676 ../src/lib/shopgui.py:678
-msgid "_Help"
-msgstr "_Помощ"
-
-#: ../glade/app.glade.h:51
-msgid "_Import File"
-msgstr "_Внасяне на файл"
-
-#: ../glade/app.glade.h:52
-msgid "_Ingredient Editor"
-msgstr "_Редактор на съставки"
 
 #. Set up hard-coded functional buttons...
-#: ../glade/app.glade.h:53 ../glade/generic_importer.glade.h:4
+#: ../glade/app.ui.h:9 ../glade/generic_importer.ui.h:4
 #: ../src/lib/importers/interactive_importer.py:143
 msgid "_New Recipe"
 msgstr "_Нова рецепта"
 
-#: ../glade/app.glade.h:54 ../src/lib/GourmetRecipeManager.py:1027
-msgid "_Print"
+#: ../glade/app.ui.h:10 ../glade/recipe_index.ui.h:24
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:11
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:33
+msgid "_Search for:"
 msgstr ""
 
-#: ../glade/app.glade.h:55 ../glade/recipe_index.glade.h:23
-msgid "_Print recipe"
-msgstr "_Разпечатване на рецепта"
-
-#: ../glade/app.glade.h:56
-msgid "_Redo"
-msgstr "_Повтаряне на действие"
-
-#: ../glade/app.glade.h:57 ../glade/recipe_index.glade.h:24
-msgid "_Search for"
-msgstr "_Търсене за"
-
-#: ../glade/app.glade.h:58 ../src/lib/shopgui.py:210
-msgid "_Shopping List"
-msgstr "_Списък за пазаруване"
-
-#: ../glade/app.glade.h:59
-msgid "_Show deleted recipes"
-msgstr "_Показване на изтрити рецепти"
-
-#: ../glade/app.glade.h:60 ../src/lib/GourmetRecipeManager.py:1072
-msgid "_Timer"
-msgstr ""
-
-#: ../glade/app.glade.h:61 ../src/lib/GourmetRecipeManager.py:1071
-msgid "_Tools"
-msgstr "Инструмен_ти"
-
-#: ../glade/app.glade.h:62
-msgid "_Undo"
-msgstr "_Връщане"
-
-#: ../glade/app.glade.h:63 ../src/lib/plugins/unit_converter/__init__.py:15
-msgid "_Unit Converter"
-msgstr "Прео_бразуване на единици"
-
-#: ../glade/app.glade.h:64
-msgid "_View"
-msgstr "_Преглед"
-
-#: ../glade/app.glade.h:65 ../glade/keyeditor.glade.h:14
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:13
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:22
+#: ../glade/app.ui.h:11 ../src/lib/plugins/key_editor/keyeditor.ui.h:13
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:35
 msgid "_in"
-msgstr "_в"
-
-#: ../glade/batchEditor.glade.h:1
-msgid ""
-"<span size=\"large\" weight=\"bold\">Set Recipe Fields for selected recipes</"
-"span>"
 msgstr ""
 
-#: ../glade/batchEditor.glade.h:2 ../glade/recCardDescriptionEditor.glade.h:1
+#: ../glade/batchEditor.ui.h:1
+msgid ""
+"<span size=\"large\" weight=\"bold\">Set Recipe Fields for selected "
+"recipes</span>"
+msgstr ""
+
+#: ../glade/batchEditor.ui.h:2 ../glade/recCardDescriptionEditor.ui.h:1
 msgid "C_uisine:"
-msgstr "На_ционална кухня:"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:3 ../glade/recCardDescriptionEditor.glade.h:2
+#: ../glade/batchEditor.ui.h:3 ../glade/recCardDescriptionEditor.ui.h:2
 msgid "Coo_king Time:"
-msgstr "_Време за готвене:"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:4 ../glade/recCardDescriptionEditor.glade.h:3
+#: ../glade/batchEditor.ui.h:4 ../glade/recCardDescriptionEditor.ui.h:3
 msgid "Image:"
 msgstr ""
 
-#: ../glade/batchEditor.glade.h:5 ../glade/recCardDescriptionEditor.glade.h:5
+#: ../glade/batchEditor.ui.h:5 ../glade/recCardDescriptionEditor.ui.h:5
 msgid "S_ource:"
-msgstr "_Източник:"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:6
-#, fuzzy
+#: ../glade/batchEditor.ui.h:6
 msgid "Set Fields for Selected Recipes"
-msgstr "Изтриване на избрана рецепта"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:7
-#, fuzzy
+#: ../glade/batchEditor.ui.h:7
 msgid "Set all values for _all selected recipes"
-msgstr "Изтриване на избрана рецепта"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:8 ../glade/recCardDescriptionEditor.glade.h:9
+#: ../glade/batchEditor.ui.h:8 ../glade/recCardDescriptionEditor.ui.h:9
 msgid "_Add Image"
-msgstr "_Добавяне на снимка"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:9 ../glade/recCardDescriptionEditor.glade.h:10
+#: ../glade/batchEditor.ui.h:9 ../glade/recCardDescriptionEditor.ui.h:10
 msgid "_Category:"
-msgstr "_Категория:"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:10
+#: ../glade/batchEditor.ui.h:10
 msgid "_Only set values where field is currently blank"
 msgstr ""
 
-#: ../glade/batchEditor.glade.h:11
-#, fuzzy
+#: ../glade/batchEditor.ui.h:11
 msgid "_Preparation Time:"
-msgstr "Време за приготвяне"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:12
-#: ../glade/recCardDescriptionEditor.glade.h:11
+#: ../glade/batchEditor.ui.h:12 ../glade/recCardDescriptionEditor.ui.h:11
 msgid "_Rating:"
-msgstr "_Оценка:"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:13
-#: ../glade/recCardDescriptionEditor.glade.h:12
+#: ../glade/batchEditor.ui.h:13 ../glade/recCardDescriptionEditor.ui.h:12
 msgid "_Remove Image"
-msgstr "Премах_ване на снимка"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:14
-#, fuzzy
+#: ../glade/batchEditor.ui.h:14
 msgid "_Servings"
-msgstr "Порции"
+msgstr ""
 
-#: ../glade/batchEditor.glade.h:15
-#: ../glade/recCardDescriptionEditor.glade.h:14
-#, fuzzy
+#: ../glade/batchEditor.ui.h:15 ../glade/recCardDescriptionEditor.ui.h:14
 msgid "_Webpage:"
-msgstr "интернет страница"
+msgstr ""
 
-#: ../glade/converter.glade.h:1 ../glade/converter_new.glade.h:1
-#: ../glade/converter_old.glade.h:1 ../glade/databaseChooser.glade.h:1
-#: ../glade/shopCatEditor.glade.h:1
-#: ../src/lib/plugins/unit_converter/converter.glade.h:1
+#: ../glade/converter.ui.h:1 ../glade/databaseChooser.ui.h:1
+#: ../glade/shopCatEditor.ui.h:1
+#: ../src/lib/plugins/unit_converter/converter.ui.h:1
 msgid "*"
-msgstr "*"
+msgstr ""
 
-#: ../glade/converter.glade.h:2 ../glade/converter_new.glade.h:2
-#: ../src/lib/plugins/unit_converter/converter.glade.h:2
+#: ../glade/converter.ui.h:2
+#: ../src/lib/plugins/unit_converter/converter.ui.h:2
 msgid "1"
-msgstr "1"
+msgstr ""
 
-#: ../glade/converter.glade.h:3 ../glade/converter_new.glade.h:3
-#: ../src/lib/plugins/unit_converter/converter.glade.h:3
+#: ../glade/converter.ui.h:3
+#: ../src/lib/plugins/unit_converter/converter.ui.h:3
 msgid "<b>From</b>"
-msgstr "<b>От</b>"
+msgstr ""
 
-#: ../glade/converter.glade.h:4 ../glade/converter_new.glade.h:4
-#: ../src/lib/plugins/unit_converter/converter.glade.h:4
+#: ../glade/converter.ui.h:4
+#: ../src/lib/plugins/unit_converter/converter.ui.h:4
 msgid "<b>To</b>"
-msgstr "<b>До</b>"
+msgstr ""
 
-#: ../glade/converter.glade.h:5 ../glade/converter_new.glade.h:5
-#: ../glade/converter_old.glade.h:3
-#: ../src/lib/plugins/unit_converter/converter.glade.h:5
+#: ../glade/converter.ui.h:5
+#: ../src/lib/plugins/unit_converter/converter.ui.h:5
 msgid "?"
-msgstr "?"
+msgstr ""
 
-#: ../glade/converter.glade.h:6 ../glade/converter_new.glade.h:6
-#: ../src/lib/plugins/unit_converter/converter.glade.h:6
+#: ../glade/converter.ui.h:6
+#: ../src/lib/plugins/unit_converter/converter.ui.h:6
 msgid "Density _Information"
-msgstr "_Информация за плътността"
+msgstr ""
 
-#: ../glade/converter.glade.h:7 ../glade/converter_new.glade.h:7
-#: ../src/lib/plugins/unit_converter/converter.glade.h:7
+#: ../glade/converter.ui.h:7
+#: ../src/lib/plugins/unit_converter/converter.ui.h:7
 msgid "I_tem:"
 msgstr ""
 
-#: ../glade/converter.glade.h:8 ../glade/converter_new.glade.h:8
-#: ../glade/converter_old.glade.h:6 ../src/lib/convertGui.py:153
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:432
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:489
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:553
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:579
+#: ../glade/converter.ui.h:8 ../src/lib/convertGui.py:153
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:433
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:490
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:554
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:580
 #: ../src/lib/plugins/unit_converter/convertGui.py:160
-#: ../src/lib/plugins/unit_converter/converter.glade.h:8
+#: ../src/lib/plugins/unit_converter/converter.ui.h:8
 msgid "None"
 msgstr "Няма"
 
-#: ../glade/converter.glade.h:9 ../glade/converter_new.glade.h:9
-#: ../glade/converter_old.glade.h:7
-#: ../src/lib/plugins/unit_converter/converter.glade.h:9
+#: ../glade/converter.ui.h:9
+#: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/unit_converter/converter.ui.h:9
 msgid "Unit Converter"
-msgstr "Преобразуване на единици"
-
-#: ../glade/converter.glade.h:10 ../glade/converter_new.glade.h:10
-#: ../glade/keyeditor.glade.h:9
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:8
-#: ../src/lib/plugins/unit_converter/converter.glade.h:10
-msgid "_Amount:"
-msgstr "_Количество:"
-
-#: ../glade/converter.glade.h:11 ../glade/converter_new.glade.h:11
-#: ../src/lib/plugins/unit_converter/converter.glade.h:11
-msgid "_Density:"
-msgstr "П_лътност:"
-
-#: ../glade/converter.glade.h:12 ../glade/converter_new.glade.h:12
-#: ../src/lib/plugins/unit_converter/converter.glade.h:12
-msgid "_Result:"
-msgstr "_Резултат:"
-
-#: ../glade/converter.glade.h:13 ../glade/converter_new.glade.h:13
-#: ../glade/keyeditor.glade.h:13
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:12
-#: ../src/lib/plugins/unit_converter/converter.glade.h:13
-msgid "_Unit:"
-msgstr "_Единица:"
-
-#: ../glade/converter_old.glade.h:2
-msgid "="
 msgstr ""
 
-#: ../glade/converter_old.glade.h:4
-#: ../src/lib/plugins/key_editor/keyEditor.py:514
-#: ../src/lib/plugins/nutritional_information/nutritionModel.py:7
-msgid "Amount"
-msgstr "Количество"
+#: ../glade/converter.ui.h:10 ../src/lib/plugins/key_editor/keyeditor.ui.h:8
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:26
+#: ../src/lib/plugins/unit_converter/converter.ui.h:10
+msgid "_Amount:"
+msgstr ""
 
-#: ../glade/converter_old.glade.h:5
-#, fuzzy
-msgid "I_tem: "
-msgstr "_Заглавие: "
+#: ../glade/converter.ui.h:11
+#: ../src/lib/plugins/unit_converter/converter.ui.h:11
+msgid "_Density:"
+msgstr ""
 
-#: ../glade/converter_old.glade.h:8
-#, fuzzy
-msgid "Use Density _Information"
-msgstr "_Информация за плътността"
+#: ../glade/converter.ui.h:12
+#: ../src/lib/plugins/unit_converter/converter.ui.h:12
+msgid "_Result:"
+msgstr ""
 
-#: ../glade/converter_old.glade.h:9
-#, fuzzy
-msgid "_Amount"
-msgstr "_Количество:"
+#: ../glade/converter.ui.h:13 ../src/lib/plugins/key_editor/keyeditor.ui.h:12
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:34
+#: ../src/lib/plugins/unit_converter/converter.ui.h:13
+msgid "_Unit:"
+msgstr ""
 
-#: ../glade/converter_old.glade.h:10
-#, fuzzy
-msgid "_Density: "
-msgstr "П_лътност:"
-
-#: ../glade/converter_old.glade.h:11
-#, fuzzy
-msgid "_Unit"
-msgstr "_Единица:"
-
-#: ../glade/databaseChooser.glade.h:2
+#: ../glade/databaseChooser.ui.h:2
 msgid "<b>Choose Database System for Gourmet to Use</b>"
 msgstr ""
 
-#: ../glade/databaseChooser.glade.h:3
+#: ../glade/databaseChooser.ui.h:3
 msgid "Choose Database"
 msgstr ""
 
-#: ../glade/databaseChooser.glade.h:4
+#: ../glade/databaseChooser.ui.h:4
 msgid "Database _Name:"
-msgstr "_Име на базата данни:"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:5
+#: ../glade/databaseChooser.ui.h:5
 msgid ""
 "Hostname of the system where your database server is running. If your "
 "database server is running on your local system, use localhost."
 msgstr ""
 
-#: ../glade/databaseChooser.glade.h:6
-msgid ""
-"Metakit (default, stored in a local file)\n"
-"SQLite (stored in a local file)\n"
-"MySQL (requires connection to a database)"
+#: ../glade/databaseChooser.ui.h:6
+msgid "Metakit (default, stored in a local file)"
 msgstr ""
 
-#: ../glade/databaseChooser.glade.h:9
+#: ../glade/databaseChooser.ui.h:7
+msgid "MySQL (requires connection to a database)"
+msgstr ""
+
+#: ../glade/databaseChooser.ui.h:8
 msgid ""
 "Name of the database in which Gourmet should store its information. Gourmet "
 "will try to create this database if it does not already exist."
 msgstr ""
 
-#: ../glade/databaseChooser.glade.h:10
+#: ../glade/databaseChooser.ui.h:9
 msgid "Password for your username on the database."
-msgstr "Парола за Вашето потребителско име за базата данни"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:11
+#: ../glade/databaseChooser.ui.h:10
+msgid "SQLite (stored in a local file)"
+msgstr ""
+
+#: ../glade/databaseChooser.ui.h:11
 msgid ""
 "Save the password for next time. This means the password will be stored "
 "insecurely in your configuration file."
 msgstr ""
 
-#: ../glade/databaseChooser.glade.h:12
+#: ../glade/databaseChooser.ui.h:12
 msgid "Your username on the database."
-msgstr "Потребителското Ви име за базата данни."
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:13
+#: ../glade/databaseChooser.ui.h:13
 msgid "_Browse"
-msgstr "_Разглеждане"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:14
+#: ../glade/databaseChooser.ui.h:14
 msgid "_Database System"
-msgstr "_Система на базата данни"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:15 ../src/lib/gglobals.py:346
-#: ../src/lib/gtk_extras/dialog_extras.py:809
-#: ../src/lib/gtk_extras/dialog_extras.py:1226
+#: ../glade/databaseChooser.ui.h:15 ../src/lib/gglobals.py:327
+#: ../src/lib/gtk_extras/dialog_extras.py:810
+#: ../src/lib/gtk_extras/dialog_extras.py:1228
 msgid "_Details"
 msgstr "По_дробности"
 
-#: ../glade/databaseChooser.glade.h:17
+#: ../glade/databaseChooser.ui.h:16 ../src/lib/GourmetRecipeManager.py:1059
+#: ../src/lib/shopgui.py:675
+msgid "_File"
+msgstr "_Файл"
+
+#: ../glade/databaseChooser.ui.h:17
 msgid "_Host:"
-msgstr "_Хост"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:18
+#: ../glade/databaseChooser.ui.h:18
 msgid "_Password:"
-msgstr "_Парола:"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:19
+#: ../glade/databaseChooser.ui.h:19
 msgid "_Save Password"
-msgstr "_Запазване на парола"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:20
+#: ../glade/databaseChooser.ui.h:20
 msgid "_Username:"
-msgstr "_Потребителско име:"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:21
+#: ../glade/databaseChooser.ui.h:21
 msgid "localhost"
-msgstr "локален хост"
+msgstr ""
 
-#: ../glade/databaseChooser.glade.h:22
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:274
+#: ../glade/databaseChooser.ui.h:22
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:269
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:15
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:55
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:56
 msgid "recipe"
 msgstr "рецепта"
 
-#: ../glade/generic_importer.glade.h:1
+#: ../glade/generic_importer.ui.h:1
 msgid ""
 "<i>Select text from the raw recipe and categorize it by labelling which part "
 "of the recipe it is (choose from the recipe elements on the right).</i>"
 msgstr ""
 
-#: ../glade/generic_importer.glade.h:2
+#: ../glade/generic_importer.ui.h:2
 msgid ""
 "Start new recipe (use this if the file you're importing contains more than "
 "one recipe)"
 msgstr ""
 
-#: ../glade/generic_importer.glade.h:3
+#: ../glade/generic_importer.ui.h:3
 msgid "_Label"
 msgstr ""
 
-#: ../glade/generic_importer.glade.h:5
-#, fuzzy
-msgctxt "yes"
+#: ../glade/generic_importer.ui.h:5
 msgid "_Raw recipe:"
-msgstr "_Рецепти"
-
-#: ../glade/keyeditor.glade.h:1
-msgid "<b>Change selected ingredients</b>"
 msgstr ""
 
-#: ../glade/keyeditor.glade.h:2
-#, fuzzy
-msgid "Edit _Nutritional Information"
-msgstr "_Информация за плътността"
-
-#: ../glade/keyeditor.glade.h:3
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:2
-msgid "Key Editor"
-msgstr "Редактор на ключове"
-
-#: ../glade/keyeditor.glade.h:5
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:4
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:13
-msgid "Search as you t_ype"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:7 ../glade/shopCatEditor.glade.h:10
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:6
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:17
-msgid "Use regular expressions"
-msgstr "Използване на стандартни изрази"
-
-#: ../glade/keyeditor.glade.h:8
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:7
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:18
-msgid "_Advanced Search"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:10
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:9
-msgid "_Item:"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:11
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:10
-msgid "_Key:"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:12
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:11
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:21
-msgid "_Search for:"
-msgstr ""
-
-#: ../glade/preferenceDialog.glade.h:1
+#: ../glade/preferenceDialog.ui.h:1
 msgid "<b>Card View Preferences</b>"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:2
+#: ../glade/preferenceDialog.ui.h:2
 msgid "<b>Index View Preferences</b>"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:3
+#: ../glade/preferenceDialog.ui.h:3
 msgid "<b>Shopping List Preferences</b>"
-msgstr "<b>Настройки на списъка за пазаруване</b>"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:4
+#: ../glade/preferenceDialog.ui.h:4
 msgid "<i>Configure which columns are included in the recipe index view.</i>"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:5
+#: ../glade/preferenceDialog.ui.h:5
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:6
+#: ../glade/preferenceDialog.ui.h:6
 msgid ""
 "<i>What should Gourmet do with Optional Ingredients when adding recipes to "
 "the shopping list?</i>"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:7
+#: ../glade/preferenceDialog.ui.h:7
 msgid "As_k whether to include optional ingredients"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:8
+#: ../glade/preferenceDialog.ui.h:8
 msgid "Card View"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:9
+#: ../glade/preferenceDialog.ui.h:9
 msgid "Gourmet Recipe Manager Preferences"
-msgstr "Настройки на Gourmet Recipe Manager"
+msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:10
+#: ../glade/preferenceDialog.ui.h:10
 msgid "Index View"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:11 ../src/lib/shopgui.py:147
+#: ../glade/preferenceDialog.ui.h:11 ../src/lib/shopgui.py:147
 #: ../src/lib/shopgui.py:544 ../src/lib/shopgui.py:848
 #: ../src/lib/shopgui.py:997
 msgid "Shopping List"
 msgstr "Списък за пазаруване"
 
-#: ../glade/preferenceDialog.glade.h:12
+#: ../glade/preferenceDialog.ui.h:12
 msgid "Use fractions when possible for display"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:13
+#: ../glade/preferenceDialog.ui.h:13
 msgid "_Allow units to change when multiplying"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:14
+#: ../glade/preferenceDialog.ui.h:14
 msgid "_Always add optional ingredients"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:15
+#: ../glade/preferenceDialog.ui.h:15
 msgid "_Clear remembered optional ingredients"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:16
+#: ../glade/preferenceDialog.ui.h:16
 msgid "_Never add optional ingredients"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:17
+#: ../glade/preferenceDialog.ui.h:17
 msgid "_Recipes per page:"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:18
+#: ../glade/preferenceDialog.ui.h:18
 msgid "_Remember user selections by default"
 msgstr ""
 
-#: ../glade/preferenceDialog.glade.h:19
+#: ../glade/preferenceDialog.ui.h:19
 msgid "_Use fractions"
 msgstr ""
 
-#: ../glade/recCardDescriptionEditor.glade.h:4
+#: ../glade/recCardDescriptionEditor.ui.h:4
 msgid "Pre_paration Time:"
 msgstr ""
 
@@ -734,574 +419,663 @@ msgstr ""
 #. import GourmetFauxThreads as gt
 #. renderer.set_property('editable',True)
 #. renderer.connect('edited',tst)
-#: ../glade/recCardDescriptionEditor.glade.h:6
-#: ../src/lib/exporters/rtf_exporter.py:79 ../src/lib/gglobals.py:251
+#: ../glade/recCardDescriptionEditor.ui.h:6
+#: ../src/lib/exporters/rtf_exporter.py:79 ../src/lib/gglobals.py:232
 #: ../src/lib/shopgui.py:750
 msgid "Title"
 msgstr "Заглавие"
 
-#: ../glade/recCardDescriptionEditor.glade.h:7 ../src/lib/gglobals.py:257
+#: ../glade/recCardDescriptionEditor.ui.h:7 ../src/lib/gglobals.py:238
 msgid "Yield"
-msgstr ""
+msgstr "Порция"
 
-#: ../glade/recCardDescriptionEditor.glade.h:8 ../src/lib/gglobals.py:258
+#: ../glade/recCardDescriptionEditor.ui.h:8 ../src/lib/gglobals.py:239
 msgid "Yield Unit"
-msgstr ""
+msgstr "Мерна единица на порцията"
 
-#: ../glade/recCardDescriptionEditor.glade.h:13
+#: ../glade/recCardDescriptionEditor.ui.h:13
 msgid "_Title:"
 msgstr ""
 
-#: ../glade/recCardDescriptionEditor.glade.h:15
+#: ../glade/recCardDescriptionEditor.ui.h:15
 msgid "_Yield:"
 msgstr ""
 
-#: ../glade/recCardDescriptionEditor.glade.h:16
+#: ../glade/recCardDescriptionEditor.ui.h:16
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:29
 #: ../src/lib/recindex.py:42 ../src/lib/recindex.py:50
 msgid "category"
 msgstr "категория"
 
-#: ../glade/recCardDescriptionEditor.glade.h:17
+#: ../glade/recCardDescriptionEditor.ui.h:17
 msgid "rating"
-msgstr "оценка"
+msgstr ""
 
-#: ../glade/recCardDescriptionEditor.glade.h:18
+#: ../glade/recCardDescriptionEditor.ui.h:18
 msgid "servings"
-msgstr "порции"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:1
+#: ../glade/recCardDisplay.ui.h:1
 msgid "<b>Category:</b>"
-msgstr "<b>Категория:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:2
+#: ../glade/recCardDisplay.ui.h:2
 msgid "<b>Cooking Time:</b>"
-msgstr "<b>Време за готвене:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:3
+#: ../glade/recCardDisplay.ui.h:3
 msgid "<b>Cuisine:</b>"
-msgstr "<b>Национална кухня:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:4
+#: ../glade/recCardDisplay.ui.h:4
 msgid "<b>Ingredients</b>"
-msgstr "<b>Съставки</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:5
+#: ../glade/recCardDisplay.ui.h:5
 msgid "<b>Instructions</b>"
-msgstr "<b>Инструкции</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:6
+#: ../glade/recCardDisplay.ui.h:6
 msgid "<b>Notes</b>"
-msgstr "<b>Бележки</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:7
+#: ../glade/recCardDisplay.ui.h:7
 msgid "<b>Preparation Time:</b>"
-msgstr "<b>Време за приготвяне:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:8
+#: ../glade/recCardDisplay.ui.h:8
 msgid "<b>Rating:</b>"
-msgstr "<b>Оценка:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:9
+#: ../glade/recCardDisplay.ui.h:9
 msgid "<b>Source:</b>"
-msgstr "<b>Източник:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:10
-#, fuzzy
+#: ../glade/recCardDisplay.ui.h:10
 msgid "<b>Webpage:</b>"
-msgstr "<b>Оценка:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:11
+#: ../glade/recCardDisplay.ui.h:11
 msgid "<b>_Multiply by:</b>"
-msgstr "<b>_Умножаване по:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:12
-#, fuzzy
+#: ../glade/recCardDisplay.ui.h:12
 msgid "<b>_Yields:</b>"
-msgstr "<b>_Бележки:</b>"
+msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:13
+#: ../glade/recCardDisplay.ui.h:13
 msgid "<span underline=\"single\" color=\"blue\">Link</span>"
 msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:14
+#: ../glade/recCardDisplay.ui.h:14
 msgid "Edit _description"
 msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:15
+#: ../glade/recCardDisplay.ui.h:15
 msgid "Edit _ingredients"
 msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:16
+#: ../glade/recCardDisplay.ui.h:16
 msgid "Edit _instructions"
 msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:17
+#: ../glade/recCardDisplay.ui.h:17
 msgid "Edit _notes"
 msgstr ""
 
-#: ../glade/recCardDisplay.glade.h:18 ../src/lib/exporters/exporter.py:606
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:482
+#: ../glade/recCardDisplay.ui.h:18 ../src/lib/exporters/exporter.py:606
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:483
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:63
 msgid "Recipe"
 msgstr "Рецепта"
 
-#: ../glade/recCardDisplay.glade.h:19
-#, fuzzy
+#: ../glade/recCardDisplay.ui.h:19
 msgid "_Shop"
-msgstr "_Спиране"
+msgstr ""
 
-#: ../glade/recCardIngredientsEditor.glade.h:1
+#: ../glade/recCardIngredientsEditor.ui.h:1
 msgid "Add _ingredient:"
 msgstr ""
 
-#: ../glade/recCardIngredientsEditor.glade.h:2
+#: ../glade/recCardIngredientsEditor.ui.h:2
 #: ../src/lib/exporters/exporter.py:251
 #: ../src/lib/importers/interactive_importer.py:38
 #: ../src/lib/importers/interactive_importer.py:53
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:477
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:479
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:507
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:478
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:480
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:508
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:100
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:598
-#: ../src/lib/reccard.py:1080
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:601
+#: ../src/lib/reccard.py:1074
 msgid "Ingredients"
 msgstr "Съставки"
 
-#: ../glade/recipe_index.glade.h:1
-#, fuzzy
+#: ../glade/recipe_index.ui.h:1
 msgid "<i>Search Options</i>"
-msgstr "<b>Инструкции</b>"
+msgstr ""
 
-#: ../glade/recipe_index.glade.h:14
-#, fuzzy
-msgid "Search _in"
-msgstr "Търсене по"
+#: ../glade/recipe_index.ui.h:3
+msgid "Add recipe to shopping list"
+msgstr ""
 
-#: ../glade/recipe_index.glade.h:15
-msgid "Search as you _type"
-msgstr "Търсене при писане"
+#: ../glade/recipe_index.ui.h:4
+msgid "Add to _Pantry"
+msgstr ""
 
-#: ../glade/recipe_index.glade.h:18
-#, fuzzy
-msgid "Show _Options"
-msgstr "Опции за електронната поща"
+#: ../glade/recipe_index.ui.h:5
+msgid "Add to _shopping list"
+msgstr ""
 
-#: ../glade/recipe_index.glade.h:25
-#, fuzzy
-msgid "_Use regular expressions (advanced searching)"
-msgstr "Използване на стандартни изрази"
+#: ../glade/recipe_index.ui.h:6
+msgid "Delete selected recipe"
+msgstr ""
 
-#: ../glade/shopCatEditor.glade.h:2
-#, fuzzy
-msgid "Add Category: "
-msgstr "Категория: "
+#: ../glade/recipe_index.ui.h:7
+msgid "E-mail selected recipe"
+msgstr ""
 
-#: ../glade/shopCatEditor.glade.h:3
-msgid "Advanced Search"
-msgstr "Разширено търсене"
+#: ../glade/recipe_index.ui.h:8
+msgid "Edit attributes of selected recipes"
+msgstr ""
 
-#: ../glade/shopCatEditor.glade.h:4
-#, fuzzy
+#: ../glade/recipe_index.ui.h:9
+msgid "Jump to recipe in Recipe Card vew"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:11
 msgid ""
-"Category\n"
-"Key"
+"Never buy this item. When called for in a recipe, it will show up in a "
+"\"pantry\" section of the list as a reminder that you need it, but it won't "
+"be included when you save or print the list unless you tell me you need to "
+"buy it."
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:12
+msgid "Print selected recipe"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:14
+msgid "Search _in"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:15
+msgid "Search as you _type"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:18
+msgid "Show _Options"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:20
+msgid "_Batch edit recipes"
+msgstr ""
+
+#. saveEdits
+#: ../glade/recipe_index.ui.h:21 ../src/lib/reccard.py:869
+msgid "_Delete Recipe"
+msgstr "_Изтриване на рецепта"
+
+#: ../glade/recipe_index.ui.h:22
+msgid "_E-Mail recipe"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:23
+msgid "_Print recipe"
+msgstr ""
+
+#: ../glade/recipe_index.ui.h:25
+msgid "_Use regular expressions (advanced searching)"
+msgstr ""
+
+#: ../glade/shopCatEditor.ui.h:2
+msgid "Add Category: "
+msgstr ""
+
+#: ../glade/shopCatEditor.ui.h:3
+msgid "Advanced Search"
+msgstr ""
+
+#: ../glade/shopCatEditor.ui.h:4 ../src/lib/gglobals.py:233
+msgid "Category"
 msgstr "Категория"
 
-#: ../glade/shopCatEditor.glade.h:6
-#, fuzzy
+#: ../glade/shopCatEditor.ui.h:5
 msgid "Category Editor"
-msgstr "Редактор на ключове"
+msgstr ""
 
-#: ../glade/shopCatEditor.glade.h:7 ../src/lib/recindex.py:155
+#. __gsignals__ = {
+#. 'view-changed':(gobject.SIGNAL_RUN_LAST,
+#. gobject.TYPE_NONE,
+#. ()),
+#. }
+#: ../glade/shopCatEditor.ui.h:6
+#: ../src/lib/plugins/key_editor/keyEditor.py:512
+#: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:108
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:188
+#: ../src/lib/reccard.py:2140 ../src/lib/reccard.py:2199
+msgid "Key"
+msgstr "Ключ"
+
+#: ../glade/shopCatEditor.ui.h:7 ../src/lib/recindex.py:155
 msgid "Search as you type"
-msgstr "Търсене още при въвеждането"
+msgstr "Търсене по време на въвеждане"
 
-#: ../glade/shopCatEditor.glade.h:8
+#: ../glade/shopCatEditor.ui.h:8
 msgid "Search by"
-msgstr "Търсене по"
+msgstr ""
 
-#: ../glade/timerDialog.glade.h:1
+#: ../glade/shopCatEditor.ui.h:10
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:6
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:24
+msgid "Use regular expressions"
+msgstr ""
+
+#: ../glade/timerDialog.ui.h:1
 msgid "<b><span size=\"larger\">Timer</span></b>"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:2
+#: ../glade/timerDialog.ui.h:2
 msgid "<i>Timer Finished!</i>"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:3
+#: ../glade/timerDialog.ui.h:3
 msgid "Re_peat alarm until I turn it off"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:4
+#: ../glade/timerDialog.ui.h:4
 msgid "S_ound"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:5
+#: ../glade/timerDialog.ui.h:5
 msgid "Set _Timer: "
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:6 ../src/lib/timer.py:140
-#: ../src/lib/timer.py:141
+#: ../glade/timerDialog.ui.h:6 ../src/lib/timer.py:140 ../src/lib/timer.py:141
 msgid "Timer"
-msgstr ""
+msgstr "Таймер"
 
-#: ../glade/timerDialog.glade.h:7
+#: ../glade/timerDialog.ui.h:7
 msgid ""
 "Timer will continue to go off until you close this dialog or reset the timer."
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:8
+#: ../glade/timerDialog.ui.h:8
 msgid "_Note"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:9
+#: ../glade/timerDialog.ui.h:9
 msgid "_Reset"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:10
+#: ../glade/timerDialog.ui.h:10
 msgid "_Settings"
 msgstr ""
 
-#: ../glade/timerDialog.glade.h:11
+#: ../glade/timerDialog.ui.h:11
 msgid "_Start"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:1
+#: ../glade/valueEditor.ui.h:1
 msgid "<b>Edit fields throughout database</b>"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:2
+#: ../glade/valueEditor.ui.h:2
 msgid "<i>New value will be added to the end of any existing text</i>"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:3
+#: ../glade/valueEditor.ui.h:3
 msgid "<i>New value will replace any existing value</i>"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:4
+#: ../glade/valueEditor.ui.h:4
 msgid "C_hange value to: "
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:5
+#: ../glade/valueEditor.ui.h:5
 msgid "Change _other field:"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:6
+#: ../glade/valueEditor.ui.h:6
 msgid "Field to _Edit:"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:7
-#, fuzzy
+#: ../glade/valueEditor.ui.h:7
 msgid "For each selected value:"
-msgstr "Няма избран файл"
+msgstr ""
 
-#: ../glade/valueEditor.glade.h:8
-#, fuzzy
+#: ../glade/valueEditor.ui.h:8
 msgid "_Delete value"
-msgstr "_Изтриване"
+msgstr ""
 
-#: ../glade/valueEditor.glade.h:9
-#, fuzzy
+#: ../glade/valueEditor.ui.h:9
 msgid "_Field:"
-msgstr "_Файл"
+msgstr ""
 
-#: ../glade/valueEditor.glade.h:10
+#: ../glade/valueEditor.ui.h:10
 msgid "_Leave value as is"
 msgstr ""
 
-#: ../glade/valueEditor.glade.h:11
-#, fuzzy
+#: ../glade/valueEditor.ui.h:11
 msgid "_Value:"
-msgstr "_Пауза"
+msgstr ""
 
-#: ../gourmet.desktop.in.h:1 ../src/lib/version.py:3
+#: ../gourmet.desktop.in.h:1 ../src/lib/version.py:4
 msgid "Gourmet Recipe Manager"
-msgstr "Gourmet Recipe Manager"
+msgstr "Gourmet мениджър на рецепти"
 
 #: ../gourmet.desktop.in.h:2
 msgid ""
 "Organize recipes, create shopping lists, calculate nutritional information, "
 "and more."
 msgstr ""
+"Организиране на рецепти, създаване на списъци за покупки, изчисляване на "
+"хранителна информация и още."
 
 #: ../src/lib/FileChooserSaveAs.py:153
-#: ../src/lib/gtk_extras/dialog_extras.py:1031
+#: ../src/lib/gtk_extras/dialog_extras.py:1032
 msgid "Select File_type"
 msgstr "Избор на _вид файл"
 
 #: ../src/lib/FileChooserSaveAs.py:223
-#: ../src/lib/gtk_extras/dialog_extras.py:1122
+#: ../src/lib/gtk_extras/dialog_extras.py:1123
 #, python-format
 msgid "A file named %s already exists."
-msgstr ""
+msgstr "Файла именован %s вече съществува"
 
 #: ../src/lib/FileChooserSaveAs.py:224
-#: ../src/lib/gtk_extras/dialog_extras.py:1123
+#: ../src/lib/gtk_extras/dialog_extras.py:1124
 msgid "Do you want to replace it with the one you are saving?"
-msgstr ""
+msgstr "Искаш ли да заместиш с това което запазваш?"
 
-#: ../src/lib/GourmetRecipeManager.py:62
+#: ../src/lib/GourmetRecipeManager.py:66
 msgid "Importing old recipe data"
-msgstr ""
+msgstr "Импортиране на стара информация за рецепта"
 
-#: ../src/lib/GourmetRecipeManager.py:63
+#: ../src/lib/GourmetRecipeManager.py:67
 msgid ""
 "Importing recipe data from a previous version of Gourmet into new database."
 msgstr ""
+"Внасяне на данни за рецептата от по-стара версия на Gourmet в новата база "
+"данни."
 
 #. Convenience method for showing progress dialogs for import/export/deletion
-#: ../src/lib/GourmetRecipeManager.py:164
+#: ../src/lib/GourmetRecipeManager.py:168
 msgid "Import paused"
-msgstr "Внасянето е паузирано"
+msgstr "Внасянето е на пауза"
 
-#: ../src/lib/GourmetRecipeManager.py:165
+#: ../src/lib/GourmetRecipeManager.py:169
 msgid "Stop import"
 msgstr "Спиране на внасянето"
 
-#: ../src/lib/GourmetRecipeManager.py:248
-#: ../src/lib/GourmetRecipeManager.py:1078
+#: ../src/lib/GourmetRecipeManager.py:252
+#: ../src/lib/GourmetRecipeManager.py:1100
 msgid "Recipe _Index"
-msgstr "Показале_ц на рецептите"
+msgstr "_Индекс на рецептите"
 
-#: ../src/lib/GourmetRecipeManager.py:249
+#: ../src/lib/GourmetRecipeManager.py:253
 msgid "Shopping _List"
 msgstr "Списък за п_азаруване"
 
-#: ../src/lib/GourmetRecipeManager.py:268 ../src/lib/reccard.py:215
+#: ../src/lib/GourmetRecipeManager.py:272 ../src/lib/reccard.py:213
 msgid "_Go"
-msgstr ""
+msgstr "_Отиване"
 
-#: ../src/lib/GourmetRecipeManager.py:387
+#: ../src/lib/GourmetRecipeManager.py:391
 msgid "translator-credits"
 msgstr ""
-"Ростислав \"zbrox\" Райков <zbrox@i-space.org>Проектът за превод на GNOME "
-"има нужда от подкрепа.Научете повече за нас на http://gnome.cult."
-"bgДокладвайте за грешки на http://gnome.cult.bg/bugs"
+"Launchpad Contributions:\n"
+"  George Karavasilev https://launchpad.net/~kokoto-java\n"
+"  Registry Administrators https://launchpad.net/~registry\n"
+"  Rostislav Raykov https://launchpad.net/~zbrox\n"
+"  SKSS team https://launchpad.net/~skss\n"
+"  Svetoslav Stefanov https://launchpad.net/~svetlisashkov\n"
+"  Yasen Pramatarov https://launchpad.net/~yasen\n"
+"  usmiv4o https://launchpad.net/~usmiv4o"
 
-#: ../src/lib/GourmetRecipeManager.py:433
+#: ../src/lib/GourmetRecipeManager.py:451
 msgid "Saved!"
 msgstr "Запазено!"
 
-#: ../src/lib/GourmetRecipeManager.py:443
+#: ../src/lib/GourmetRecipeManager.py:461
 #, python-format
 msgid "Save your edits to %s"
-msgstr ""
+msgstr "Запазва вашите редакции в %s"
 
-#: ../src/lib/GourmetRecipeManager.py:454
+#: ../src/lib/GourmetRecipeManager.py:472
 msgid "An import is in progress."
-msgstr ""
+msgstr "Извършва се внасяне."
 
-#: ../src/lib/GourmetRecipeManager.py:455
+#: ../src/lib/GourmetRecipeManager.py:473
 msgid "An export is in progress."
-msgstr ""
+msgstr "Извършва се изнасяне."
 
-#: ../src/lib/GourmetRecipeManager.py:456
+#: ../src/lib/GourmetRecipeManager.py:474
 msgid "A delete is in progress."
-msgstr ""
+msgstr "Извършва се изтриване."
 
-#: ../src/lib/GourmetRecipeManager.py:458
+#: ../src/lib/GourmetRecipeManager.py:476
 msgid "Exit program anyway?"
-msgstr ""
+msgstr "Изход от програмата въпреки това?"
 
-#: ../src/lib/GourmetRecipeManager.py:460
+#: ../src/lib/GourmetRecipeManager.py:478
 msgid "Don't exit!"
-msgstr ""
+msgstr "Не излизай!"
 
-#: ../src/lib/GourmetRecipeManager.py:506
-#, fuzzy, python-format
+#: ../src/lib/GourmetRecipeManager.py:524
+#, python-format
 msgid "Permanently deleted %s of %s recipes"
-msgstr "Разпечатване на избрана рецепта"
+msgstr "Окончателно са изтрити %s от общо %s рецепти"
 
-#: ../src/lib/GourmetRecipeManager.py:523
-#: ../src/lib/GourmetRecipeManager.py:538
+#: ../src/lib/GourmetRecipeManager.py:542
+#: ../src/lib/GourmetRecipeManager.py:557
 msgid "Trash"
-msgstr ""
+msgstr "Кошче"
 
-#: ../src/lib/GourmetRecipeManager.py:538
+#: ../src/lib/GourmetRecipeManager.py:557
 msgid "Browse, permanently delete or undelete deleted recipes"
 msgstr ""
+"Разглеждане, окончателно изтриване или възстановяване на изтрити рецепти"
 
-#: ../src/lib/GourmetRecipeManager.py:590
+#: ../src/lib/GourmetRecipeManager.py:609
 msgid "Undeleted recipes "
-msgstr "Връщане на изтрити рецепти "
+msgstr "Възстановени рецепти "
 
-#: ../src/lib/GourmetRecipeManager.py:660
+#: ../src/lib/GourmetRecipeManager.py:679
 msgid "Gourmet Recipe Manager starting up..."
 msgstr "Стартира се Gourmet Recipe Manager..."
 
-#: ../src/lib/GourmetRecipeManager.py:669
+#: ../src/lib/GourmetRecipeManager.py:688
 msgid "Starting gourmet..."
 msgstr "Стартиране на Gourmet..."
 
-#: ../src/lib/GourmetRecipeManager.py:756
+#: ../src/lib/GourmetRecipeManager.py:775
 #, python-format
 msgid "Number of %(unit)s of %(title)s to shop for"
-msgstr ""
+msgstr "Номер %(unit)s от %(title)s които да купите"
 
-#: ../src/lib/GourmetRecipeManager.py:768
+#: ../src/lib/GourmetRecipeManager.py:787
 #, python-format
 msgid "Multiply %s by:"
-msgstr ""
+msgstr "Умножаване %s по:"
 
-#: ../src/lib/GourmetRecipeManager.py:788
+#: ../src/lib/GourmetRecipeManager.py:807
 #, python-format
 msgid "Set %(attributes)s for %(num)s selected recipe?"
 msgid_plural "Set %(attributes)s for %(num)s selected recipes?"
-msgstr[0] ""
+msgstr[0] "Задаване на %(attributes)s за %(num)s избрана рецепта?"
+msgstr[1] "Задаване на %(attributes)s за %(num)s избрани рецепти?"
 
-#: ../src/lib/GourmetRecipeManager.py:795
+#: ../src/lib/GourmetRecipeManager.py:814
 msgid "Any previously existing values will not be changed."
-msgstr ""
+msgstr "Всякакви по-рано съществуващи стойности няма да бъдат променени."
 
-#: ../src/lib/GourmetRecipeManager.py:797
+#: ../src/lib/GourmetRecipeManager.py:816
 msgid "The new values will overwrite any previously existing values."
 msgstr ""
+"Новите стойности ще презапишат всякакви по-рано съществуващи стойности."
 
-#: ../src/lib/GourmetRecipeManager.py:798
+#: ../src/lib/GourmetRecipeManager.py:817
 msgid "This change cannot be undone."
-msgstr ""
+msgstr "Тази промяна не може да бъде отменена."
 
-#: ../src/lib/GourmetRecipeManager.py:799
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:818
 msgid "Set values for selected recipes"
-msgstr "Изтриване на избрана рецепта"
+msgstr "Задаване на стойности за избраните рецепти"
 
-#: ../src/lib/GourmetRecipeManager.py:985
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1007
 msgid "Search recipes"
-msgstr "Преглед на рецептите"
+msgstr "Търсене на рецепти"
 
-#: ../src/lib/GourmetRecipeManager.py:1014
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1036
 msgid "Open recipe"
-msgstr "Преглед на рецептите"
+msgstr "Отваряне на рецепта"
 
-#: ../src/lib/GourmetRecipeManager.py:1015
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1037
 msgid "Open selected recipe"
-msgstr "Преглед на избрана рецепта"
+msgstr "Отваряне на избраната рецепта"
 
 #. We no longer bind "Delete" here -- instead, we'll do it
 #. at the TreeView level to prevent the delete key
 #. elsewhere (e.g. in search box) from muddling up users.
-#: ../src/lib/GourmetRecipeManager.py:1019
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1041
 msgid "Delete recipe"
-msgstr "_Изтриване на рецепта"
+msgstr "Изтриване на рецепта"
 
-#: ../src/lib/GourmetRecipeManager.py:1021
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1042
+msgid "Delete selected recipes"
+msgstr "Изтриване на избраните рецепти"
+
+#: ../src/lib/GourmetRecipeManager.py:1043
 msgid "Edit recipe"
-msgstr "_Разпечатване на рецепта"
+msgstr "Редактиране на рецепта"
 
-#: ../src/lib/GourmetRecipeManager.py:1022
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1044
 msgid "Open selected recipes in recipe editor view"
-msgstr "Отиване към рецепта при картовия изглед"
+msgstr "Отваряне на избраната рецепта в редактора на рецепти"
 
-#: ../src/lib/GourmetRecipeManager.py:1024
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1046
 msgid "E_xport selected recipes"
-msgstr "Разпечатване на избрана рецепта"
+msgstr "_Изнасяне на избраните рецепти"
 
-#: ../src/lib/GourmetRecipeManager.py:1025
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1047
 msgid "Export selected recipes to file"
-msgstr "Разпечатване на избрана рецепта"
+msgstr "Изнасяне на избраните рецепти във файл"
+
+#: ../src/lib/GourmetRecipeManager.py:1049
+msgid "_Print"
+msgstr "_Печат"
 
 #. ('Email', None, _('E-_mail recipes'),
 #. None,None,self.email_recs),
-#: ../src/lib/GourmetRecipeManager.py:1031
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1053
 msgid "Batch _edit recipes"
-msgstr "_Разпечатване на рецепта"
+msgstr "Пакетно _редактиране на рецепти"
 
-#: ../src/lib/GourmetRecipeManager.py:1040
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1060 ../src/lib/reccard.py:212
+#: ../src/lib/reccard.py:864 ../src/lib/shopgui.py:653
+msgid "_Edit"
+msgstr "_Редактиране"
+
+#: ../src/lib/GourmetRecipeManager.py:1061
+msgid "_Actions"
+msgstr "_Действия"
+
+#: ../src/lib/GourmetRecipeManager.py:1062
 msgid "Setti_ngs"
-msgstr "Порции"
+msgstr "_Настройки"
 
-#: ../src/lib/GourmetRecipeManager.py:1044
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1063
+#: ../src/lib/GourmetRecipeManager.py:1068 ../src/lib/reccard.py:214
+#: ../src/lib/reccard.py:225 ../src/lib/reccard.py:866
+#: ../src/lib/shopgui.py:676 ../src/lib/shopgui.py:678
+msgid "_Help"
+msgstr "_Помощ"
+
+#: ../src/lib/GourmetRecipeManager.py:1064
+msgid "_About"
+msgstr "_Относно"
+
+#: ../src/lib/GourmetRecipeManager.py:1066
 msgid "_New"
-msgstr "_Преглед"
+msgstr "_Нов"
 
-#: ../src/lib/GourmetRecipeManager.py:1048
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1070
 msgid "_Import file"
 msgstr "_Внасяне на файл"
 
-#: ../src/lib/GourmetRecipeManager.py:1049
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1071
 msgid "Import recipe from file"
-msgstr "Внасяне на рецепти от %s"
+msgstr "Внасяне на рецепта от файл"
 
-#: ../src/lib/GourmetRecipeManager.py:1050
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1072
 msgid "Import _webpage"
-msgstr "Внасяне на _интернет страница"
+msgstr "Внасяне на уебстраница"
 
-#: ../src/lib/GourmetRecipeManager.py:1051
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1073
 msgid "Import recipe from webpage"
-msgstr "Внасяне на рецепти от %s"
+msgstr "Внасяне на рецепта от уебстраница"
 
-#: ../src/lib/GourmetRecipeManager.py:1052
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1074
 msgid "Export _all recipes"
-msgstr "Изнасяне на рецепти"
+msgstr "Изнасяне на вси_чки рецепти"
 
-#: ../src/lib/GourmetRecipeManager.py:1053
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1075
 msgid "Export all recipes to file"
-msgstr "Изнасяне на рецепти"
+msgstr "Изнасяне на всички рецепти във файл"
 
-#: ../src/lib/GourmetRecipeManager.py:1054
+#: ../src/lib/GourmetRecipeManager.py:1076
 msgid "_Plugins"
-msgstr ""
+msgstr "_Приставки"
 
-#: ../src/lib/GourmetRecipeManager.py:1055
+#: ../src/lib/GourmetRecipeManager.py:1077
 msgid "Manage plugins which add extra functionality to Gourmet."
 msgstr ""
+"Управление на приставки, осигуряващи допълнителни възможности на Gourmet."
 
-#: ../src/lib/GourmetRecipeManager.py:1057
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1079
 msgid "_Preferences"
-msgstr "Настройки на изпращането"
+msgstr "_Предпочитания"
 
 #. ('Redo',gtk.STOCK_REDO,_('_Redo'),
 #. None,None),
 #. ('Undo',gtk.STOCK_UNDO,_('_Undo'),
 #. None,None),
-#: ../src/lib/GourmetRecipeManager.py:1063
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1085
 msgid "_Quit"
-msgstr "_Редактиране"
+msgstr "Из_ход"
 
-#: ../src/lib/GourmetRecipeManager.py:1065
+#: ../src/lib/GourmetRecipeManager.py:1087
 msgid "Open _Trash"
-msgstr ""
+msgstr "Отваряне на _кошчето"
 
-#: ../src/lib/GourmetRecipeManager.py:1073
+#: ../src/lib/GourmetRecipeManager.py:1093
+msgid "_Tools"
+msgstr "Инструмен_ти"
+
+#: ../src/lib/GourmetRecipeManager.py:1094
+msgid "_Timer"
+msgstr "_Таймер"
+
+#: ../src/lib/GourmetRecipeManager.py:1095
 msgid "Show timer"
-msgstr ""
+msgstr "Показване на таймера"
 
-#: ../src/lib/GourmetRecipeManager.py:1079
+#: ../src/lib/GourmetRecipeManager.py:1101
 msgid "Searchable index of recipes in the database."
-msgstr ""
+msgstr "Индескс за търсене на рецепти в базата данни."
 
-#: ../src/lib/GourmetRecipeManager.py:1189
+#: ../src/lib/GourmetRecipeManager.py:1211
 #, python-format
 msgid "Delete %s?"
-msgstr ""
+msgstr "Изтриване на %s?"
 
-#: ../src/lib/GourmetRecipeManager.py:1190
+#: ../src/lib/GourmetRecipeManager.py:1212
 #, python-format
 msgid "You have unsaved changes to %s. Are you sure you want to delete?"
 msgstr ""
+"Имате незапазени промени на %s. Сигурен ли си че искаш да го изтриеш?"
 
-#: ../src/lib/GourmetRecipeManager.py:1212
+#: ../src/lib/GourmetRecipeManager.py:1234
 #, python-format
 msgid ""
 "You just moved %s recipe to the trash. You can recover this recipe or "
@@ -1310,87 +1084,93 @@ msgid_plural ""
 "You just moved %s recipes to the trash. You can recover these recipes or "
 "permanently delete them at any time by clicking Tools->Open Trash"
 msgstr[0] ""
+"Току що преместихте %s рецепта в кошчето. По всяко време можете да я "
+"възстановите или изтриете за постоянно, като изберете Иструменти - Отваряне "
+"на кошчето."
+msgstr[1] ""
+"Току що преместихте %s рецепти в кошчето. По всяко време можете да ги "
+"възстановите или изтриете за постоянно, като изберете Иструменти - Отваряне "
+"на кошчето."
 
-#: ../src/lib/GourmetRecipeManager.py:1219
+#: ../src/lib/GourmetRecipeManager.py:1241
 msgid "Deleted"
-msgstr ""
+msgstr "Изтрито"
 
-#: ../src/lib/GourmetRecipeManager.py:1219
+#: ../src/lib/GourmetRecipeManager.py:1241
 #: ../src/lib/importers/interactive_importer.py:471
 msgid "Untitled"
-msgstr ""
+msgstr "Неозаглавено"
 
-#: ../src/lib/GourmetRecipeManager.py:1227
+#: ../src/lib/GourmetRecipeManager.py:1249
 msgid "Permanently delete recipes?"
-msgstr ""
+msgstr "Окончателно изтриване на рецептите?"
 
-#: ../src/lib/GourmetRecipeManager.py:1229
+#: ../src/lib/GourmetRecipeManager.py:1251
 msgid "Permanently delete recipe?"
-msgstr ""
+msgstr "Окончателно изтриване на рецептата?"
 
-#: ../src/lib/GourmetRecipeManager.py:1230
+#: ../src/lib/GourmetRecipeManager.py:1252
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
-msgstr ""
+msgstr "сигурен ли си че искаш да изтриеш рецептата <i>%s</i>"
 
-#: ../src/lib/GourmetRecipeManager.py:1232
+#: ../src/lib/GourmetRecipeManager.py:1254
 msgid "Are you sure you want to delete the following recipes?"
-msgstr ""
+msgstr "Сигурен ли си че искаш да изтриеш следните рецепти?"
 
-#: ../src/lib/GourmetRecipeManager.py:1236
+#: ../src/lib/GourmetRecipeManager.py:1258
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
-msgstr ""
+msgstr "Сигурен ли си че искаш да изтриеш %s избрани рецепти?"
 
-#: ../src/lib/GourmetRecipeManager.py:1238
+#: ../src/lib/GourmetRecipeManager.py:1260
 msgid "See recipes"
 msgstr "Преглед на рецептите"
 
-#: ../src/lib/GourmetRecipeManager.py:1246
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1268
 msgid "Delete Recipes"
-msgstr "_Изтриване на рецепта"
+msgstr "Изтриване на рецептите"
 
-#: ../src/lib/GourmetRecipeManager.py:1273
+#: ../src/lib/GourmetRecipeManager.py:1295
 #, python-format
 msgid "Deleted recipe %s"
-msgstr ""
+msgstr "Рецептата %s е изтрита"
 
-#: ../src/lib/GourmetRecipeManager.py:1307
+#: ../src/lib/GourmetRecipeManager.py:1335
 msgid "Export succeeded"
 msgstr "Изнасянето беше успешно"
 
-#: ../src/lib/GourmetRecipeManager.py:1310
+#: ../src/lib/GourmetRecipeManager.py:1338
 msgid "webpage"
-msgstr "интернет страница"
+msgstr "уебстраница"
 
-#: ../src/lib/GourmetRecipeManager.py:1311
+#: ../src/lib/GourmetRecipeManager.py:1339
 #, python-format
 msgid "Exported %s to %s"
-msgstr ""
+msgstr "%s е изнесено към %s"
 
-#: ../src/lib/GourmetRecipeManager.py:1371
+#: ../src/lib/GourmetRecipeManager.py:1399
 msgid "Done!"
 msgstr "Готово!"
 
-#: ../src/lib/GourmetRecipeManager.py:1379
+#: ../src/lib/GourmetRecipeManager.py:1407
 msgid "Importing..."
-msgstr "Внася се..."
+msgstr "Внасяне..."
 
 #: ../src/lib/GourmetThreads.py:42
 #, python-format
 msgid "%s stopped."
-msgstr ""
+msgstr "%s спря."
 
 #: ../src/lib/GourmetThreads.py:43
 #, python-format
 msgid "%s was interrupted by user request."
-msgstr ""
+msgstr "%s бе прекъснат по искане на потребителя"
 
 #: ../src/lib/GourmetThreads.py:50
 #, python-format
 msgid "%s interrupted"
-msgstr ""
+msgstr "%s прекъснат"
 
 #: ../src/lib/GourmetThreads.py:51
 #, python-format
@@ -1400,21 +1180,22 @@ msgstr "Имаше грешка по време на %s."
 #: ../src/lib/GourmetThreads.py:107
 #, python-format
 msgid "Deleting recipes from database... (%s of %s deleted)"
-msgstr ""
+msgstr "Изтрива рецептите от базата данни (%s oт %s изтрити)"
 
 #: ../src/lib/GourmetThreads.py:111
 #, python-format
 msgid "Deleted %s recipe"
 msgid_plural "Deleted %s recipes"
-msgstr[0] ""
+msgstr[0] "Изтрита %s рецепта"
+msgstr[1] "Изтрити %s рецепти"
 
 #: ../src/lib/backends/DatabaseChooser.py:105
 msgid "Choose Database File"
-msgstr "Избро на файл на база данни"
+msgstr "Избор на файл с база данни"
 
 #: ../src/lib/backends/db.py:437 ../src/lib/backends/db.py:438
 msgid "Upgrading database"
-msgstr ""
+msgstr "Надграждане на базата данни"
 
 #: ../src/lib/backends/db.py:439
 msgid ""
@@ -1422,11 +1203,13 @@ msgid ""
 "may take  some time. Your data has been automatically backed up in case "
 "something goes wrong."
 msgstr ""
+"В зависимост от размера на вашата база данни, това може да интензивен "
+"процес, отнемащ известно време. На вашите данни бе създадено резервно копие, "
+"в случай че нещо се обърка."
 
 #: ../src/lib/backends/db.py:440 ../src/lib/threadManager.py:315
-#, fuzzy
 msgid "Details"
-msgstr "По_дробности"
+msgstr "Подробности"
 
 #: ../src/lib/backends/db.py:440
 #, python-format
@@ -1435,64 +1218,73 @@ msgid ""
 "fails, you can manually rename your backup file recipes.db to recover it for "
 "use with older Gourmet."
 msgstr ""
+"В %s беше направено резервно копие, в случай, че нещо се обърка. Ако това "
+"надграждане се провали, можете ръчно да преименувате файла recipes.db, за да "
+"го възстановите за използване с по-стара версия на програмата."
 
 #: ../src/lib/backends/db.py:1426
 #: ../src/lib/importers/interactive_importer.py:95
 #: ../src/lib/legacy_db/db_08/rdatabase.py:446
 #: ../src/lib/legacy_db/db_085/rdatabase.py:447
-#: ../src/lib/legacy_db/db_09/rdatabase.py:508 ../src/lib/reccard.py:948
+#: ../src/lib/legacy_db/db_09/rdatabase.py:508 ../src/lib/reccard.py:939
 msgid "New Recipe"
 msgstr "Нова рецепта"
 
 #: ../src/lib/check_encodings.py:92
 msgid "Select encoding"
-msgstr "Избор на кодираща таблица"
+msgstr "Избор на кодова таблица"
 
 #: ../src/lib/check_encodings.py:93
 msgid ""
 "Cannot determine proper encoding. Please select the correct encoding from "
 "the following list."
 msgstr ""
+"Не може да се определи правилното кодиране. Моля изберете правилното "
+"кодиране от следния списък."
 
 #: ../src/lib/check_encodings.py:94
 msgid "See _file with encoding"
-msgstr ""
+msgstr "Виж _файл с кодиране"
 
 #. this is a bit of a hackish attempt to make a matcher for all
 #. plural forms of time units. We use range(5) since as far as I
 #. can see, enumerating the forms for 0 through 5 should give you
 #. all possible forms in all languages.
-#.
+#. 
 #. See http://www.sbin.org/doc/glibc/libc_8.html
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:565
 msgid "second"
 msgid_plural "seconds"
-msgstr[0] ""
+msgstr[0] "секунда"
+msgstr[1] "секунди"
 
 #. min. = abbreviation for minutes
 #: ../src/lib/convert.py:65
 msgid "min"
-msgstr ""
+msgstr "мин"
 
 #: ../src/lib/convert.py:65 ../src/lib/convert.py:564
 msgid "minute"
 msgid_plural "minutes"
-msgstr[0] ""
+msgstr[0] "минута"
+msgstr[1] "минути"
 
 #. hrs = abbreviation for hours
 #: ../src/lib/convert.py:67
 msgid "hrs."
-msgstr ""
+msgstr "ч."
 
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:563
 msgid "hour"
 msgid_plural "hours"
-msgstr[0] ""
+msgstr[0] "час"
+msgstr[1] "часа"
 
 #: ../src/lib/convert.py:68 ../src/lib/convert.py:562
 msgid "day"
 msgid_plural "days"
-msgstr[0] ""
+msgstr[0] "ден"
+msgstr[1] "дни"
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
@@ -1500,17 +1292,20 @@ msgstr[0] ""
 #: ../src/lib/convert.py:69 ../src/lib/convert.py:559
 msgid "year"
 msgid_plural "years"
-msgstr[0] ""
+msgstr[0] "година"
+msgstr[1] "години"
 
 #: ../src/lib/convert.py:560
 msgid "month"
 msgid_plural "months"
-msgstr[0] ""
+msgstr[0] "месец"
+msgstr[1] "месеца"
 
 #: ../src/lib/convert.py:561
 msgid "week"
 msgid_plural "weeks"
-msgstr[0] ""
+msgstr[0] "седмица"
+msgstr[1] "седмици"
 
 #. Translators... this is a messay way of concatenating
 #. lists. In English we do lists this way: 1, 2, 3, 4, 5
@@ -1520,19 +1315,19 @@ msgstr[0] ""
 #. ", " and " and " with the same string.
 #: ../src/lib/convert.py:608
 msgid " and "
-msgstr ""
+msgstr " и "
 
 #: ../src/lib/convert.py:608
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../src/lib/convert.py:610
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/lib/convert.py:740
 msgid "and"
-msgstr ""
+msgstr "и"
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
@@ -1545,7 +1340,7 @@ msgstr "до"
 #: ../src/lib/plugins/unit_converter/convertGui.py:114
 #, python-format
 msgid "Cannot convert %s to %s"
-msgstr ""
+msgstr "Не може да конвертира %s в %s"
 
 #: ../src/lib/convertGui.py:109
 #: ../src/lib/plugins/unit_converter/convertGui.py:116
@@ -1554,22 +1349,21 @@ msgstr "Нужна е информацията за плътността."
 
 #: ../src/lib/exporters/exportManager.py:36
 msgid "Save recipe as..."
-msgstr "Запазване на рецепта като..."
+msgstr "Запазване на рецептата като..."
 
 #: ../src/lib/exporters/exportManager.py:45
 #, python-format
 msgid "Gourmet cannot export file of type \"%s\""
-msgstr ""
+msgstr "Gourmet не може да изнесе файл от вида \"%s\""
 
 #: ../src/lib/exporters/exportManager.py:75
-#, fuzzy
 msgid "Export complete!"
-msgstr "Изнасянето завърши."
+msgstr "Изнасянето завърши!"
 
 #: ../src/lib/exporters/exportManager.py:76
 #, python-format
 msgid "Recipe exported to %s"
-msgstr ""
+msgstr "Рецептата е изнесена в %s"
 
 #: ../src/lib/exporters/exportManager.py:89
 msgid "Export recipes"
@@ -1582,34 +1376,34 @@ msgstr "рецепти"
 #: ../src/lib/exporters/exportManager.py:101
 #, python-format
 msgid "Unable to export: unknown filetype \"%s\""
-msgstr ""
+msgstr "Не може да се изнесе: непознат вид на файла \"%s\""
 
 #: ../src/lib/exporters/exportManager.py:102
 msgid ""
 "Please make sure to select a filetype from the dropdown menu when saving."
 msgstr ""
+"Моля уверете се, че при запазване сте избрали вид на файла от падащото меню."
 
 #: ../src/lib/exporters/exportManager.py:150
-#, fuzzy
 msgid "Export"
-msgstr "_Изнасяне"
+msgstr "Изнасяне"
 
 #: ../src/lib/exporters/exporter.py:209 ../src/lib/exporters/exporter.py:211
 #: ../src/lib/exporters/exporter.py:515 ../src/lib/exporters/exporter.py:517
 msgid "stars"
-msgstr ""
+msgstr "звезди"
 
 #: ../src/lib/exporters/exporter.py:378 ../src/lib/exporters/exporter.py:463
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:153
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:626
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:639
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:629
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:642
 msgid "optional"
-msgstr ""
+msgstr "незадължително"
 
 #: ../src/lib/exporters/exporter.py:558
 #, python-format
 msgid "Exported %(number)s of %(total)s recipes"
-msgstr ""
+msgstr "Експортирани %(number)s от %(total)s рецепти"
 
 #: ../src/lib/exporters/exporter.py:578
 msgid "Export complete."
@@ -1617,42 +1411,46 @@ msgstr "Изнасянето завърши."
 
 #: ../src/lib/exporters/printer.py:12 ../src/lib/exporters/printer.py:22
 msgid "Unable to print: no print plugins are active!"
-msgstr ""
+msgstr "Невъзможност за печат: няма активни приставки за печат!"
 
 #: ../src/lib/exporters/printer.py:13 ../src/lib/exporters/printer.py:23
 msgid ""
 "To print, activate a plugin that provides printing support, such as the "
 "'Printing & PDF export' plugin."
 msgstr ""
+"За да печатите, задействайте приставка, осигуряваща поддръжка на печат, като "
+"приставката 'Печат и изнасяне в PDF'."
 
 #: ../src/lib/exporters/printer.py:68
 #, python-format
 msgid "Print %s recipe"
 msgid_plural "Print %s recipes"
-msgstr[0] "Печат на рецептата %s"
+msgstr[0] "Печат на %s рецепта"
+msgstr[1] "Печат на %s рецепти"
 
 #: ../src/lib/exporters/printer.py:80
 msgid "Well this is embarassing. Something went wrong printing your recipe."
 msgstr ""
+"Това е неприятно. Нещо се обърка при отпечатването на вашата рецепта."
 
 #: ../src/lib/exporters/recipe_emailer.py:55
 #: ../src/lib/plugins/email_plugin/recipe_emailer.py:29
 #: ../src/lib/plugins/email_plugin/recipe_emailer.py:48
-#: ../src/lib/plugins/key_editor/keyEditor.py:114 ../src/lib/reccard.py:3066
+#: ../src/lib/plugins/key_editor/keyEditor.py:115 ../src/lib/reccard.py:3055
 msgid "Recipes"
 msgstr "Рецепти"
 
 #: ../src/lib/exporters/recipe_emailer.py:119
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
-msgstr ""
+msgstr "Включване на рецептата в тялото на e-писмото (добра идея)"
 
 #: ../src/lib/exporters/recipe_emailer.py:120
 msgid "E-mail Recipe as HTML Attachment"
-msgstr ""
+msgstr "Изпращане на е-писмо с рецептата като прикачен HTML файл"
 
 #: ../src/lib/exporters/recipe_emailer.py:121
 msgid "E-mail Recipe as PDF Attachment"
-msgstr ""
+msgstr "Изпращане на е-писмо с рецептата като прикачен PDF файл"
 
 #: ../src/lib/exporters/recipe_emailer.py:138
 msgid "Email Options"
@@ -1660,7 +1458,7 @@ msgstr "Опции за електронната поща"
 
 #: ../src/lib/exporters/recipe_emailer.py:141
 msgid "Don't ask before sending e-mail."
-msgstr ""
+msgstr "Не питай преди изпращане на e-поща."
 
 #: ../src/lib/exporters/recipe_emailer.py:160
 msgid "E-mail not sent"
@@ -1671,159 +1469,158 @@ msgid ""
 "You have not chosen to include the recipe in the body of the message or as "
 "an attachment."
 msgstr ""
+"Не избрахте да включите рецептата в тялото на съобщението или като прикачен "
+"файл."
 
-#: ../src/lib/gglobals.py:252
-msgid "Category"
-msgstr "Категория"
-
-#: ../src/lib/gglobals.py:253
+#: ../src/lib/gglobals.py:234
 msgid "Cuisine"
 msgstr "Национална кухня"
 
-#: ../src/lib/gglobals.py:254 ../src/lib/gtk_extras/ratingWidget.py:333
+#: ../src/lib/gglobals.py:235 ../src/lib/gtk_extras/ratingWidget.py:326
 msgid "Rating"
 msgstr "Оценка"
 
-#: ../src/lib/gglobals.py:255
+#: ../src/lib/gglobals.py:236
 msgid "Source"
 msgstr "Източник"
 
-#: ../src/lib/gglobals.py:256
-#, fuzzy
+#: ../src/lib/gglobals.py:237
 msgid "Website"
-msgstr ""
-"\n"
-"Интернет страница: %s"
+msgstr "Уебстраница"
 
-#: ../src/lib/gglobals.py:259
+#: ../src/lib/gglobals.py:240
 msgid "Preparation Time"
 msgstr "Време за приготвяне"
 
-#: ../src/lib/gglobals.py:260
+#: ../src/lib/gglobals.py:241
 msgid "Cooking Time"
 msgstr "Време за готвене"
 
-#: ../src/lib/gglobals.py:265 ../src/lib/gglobals.py:270
-#: ../src/lib/reccard.py:1666
+#: ../src/lib/gglobals.py:246 ../src/lib/gglobals.py:251
+#: ../src/lib/reccard.py:1654
 msgid "Instructions"
 msgstr "Инструкции"
 
-#: ../src/lib/gglobals.py:266 ../src/lib/gglobals.py:271
-#: ../src/lib/reccard.py:1672
+#: ../src/lib/gglobals.py:247 ../src/lib/gglobals.py:252
+#: ../src/lib/reccard.py:1660
 msgid "Notes"
 msgstr "Бележки"
 
-#: ../src/lib/gglobals.py:272
+#: ../src/lib/gglobals.py:253
 msgid "Modifications"
 msgstr "Промени"
 
 #. print dir(err)
-#: ../src/lib/gglobals.py:338
+#: ../src/lib/gglobals.py:319
 msgid "Unable to open URL"
-msgstr ""
+msgstr "Адресът не може да се отвори"
 
-#: ../src/lib/gglobals.py:339
+#: ../src/lib/gglobals.py:320
 msgid "Unable to launch mail reader."
-msgstr "Неуспех при стартирането на пощенската програма"
+msgstr "Неуспех при пускането на Пощенската програма"
 
-#: ../src/lib/gglobals.py:340
+#: ../src/lib/gglobals.py:321
 msgid "Unable to open website."
-msgstr ""
+msgstr "Неуспех при отварянето на сайта."
 
-#: ../src/lib/gglobals.py:341
+#: ../src/lib/gglobals.py:322
 msgid "Unable to open file."
-msgstr ""
+msgstr "Не може да отвори файла."
 
-#: ../src/lib/gglobals.py:347
+#: ../src/lib/gglobals.py:328
 #, python-format
 msgid "There was an error launching the url: %s"
-msgstr ""
+msgstr "Грешка при зареждане на адреса: %s"
 
 #. setup pause button
-#: ../src/lib/gtk_extras/dialog_extras.py:404
+#: ../src/lib/gtk_extras/dialog_extras.py:405
 msgid "_Pause"
 msgstr "_Пауза"
 
 #. setup stop button
-#: ../src/lib/gtk_extras/dialog_extras.py:416
+#: ../src/lib/gtk_extras/dialog_extras.py:417
 msgid "_Stop"
 msgstr "_Спиране"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:472
-#: ../src/lib/gtk_extras/dialog_extras.py:562
+#: ../src/lib/gtk_extras/dialog_extras.py:473
+#: ../src/lib/gtk_extras/dialog_extras.py:563
 msgid "Don't ask me this again."
-msgstr ""
+msgstr "Не ме питай отново."
 
-#: ../src/lib/gtk_extras/dialog_extras.py:528
+#: ../src/lib/gtk_extras/dialog_extras.py:529
 msgid "Do you really want to do this"
-msgstr ""
-
-#: ../src/lib/gtk_extras/dialog_extras.py:740
-#: ../src/lib/importers/importer.py:466
-msgid "excellent"
-msgstr ""
+msgstr "Наистина ли желаете да направите това"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:741
-#: ../src/lib/importers/importer.py:467
-msgid "great"
-msgstr ""
+#: ../src/lib/importers/importer.py:466
+msgid "excellent"
+msgstr "отлично"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:742
-#: ../src/lib/importers/importer.py:468
-msgid "good"
-msgstr ""
+#: ../src/lib/importers/importer.py:467
+msgid "great"
+msgstr "велико"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:743
-#: ../src/lib/importers/importer.py:469
-msgid "fair"
-msgstr ""
+#: ../src/lib/importers/importer.py:468
+msgid "good"
+msgstr "добро"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:744
+#: ../src/lib/importers/importer.py:469
+msgid "fair"
+msgstr "безпристрастно"
+
+#: ../src/lib/gtk_extras/dialog_extras.py:745
 #: ../src/lib/importers/importer.py:471
 msgid "poor"
-msgstr ""
-
-#: ../src/lib/gtk_extras/dialog_extras.py:756
-msgid "Convert ratings to 5 star scale."
-msgstr ""
+msgstr "слабо"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:757
-msgid "Convert ratings."
-msgstr ""
+msgid "Convert ratings to 5 star scale."
+msgstr "Конвертиране на рейтинга към петзвездна скала."
 
 #: ../src/lib/gtk_extras/dialog_extras.py:758
+msgid "Convert ratings."
+msgstr "Конвертиране на рейтингите."
+
+#: ../src/lib/gtk_extras/dialog_extras.py:759
 msgid "Please give each of the ratings an equivalent on a scale of 1 to 5"
-msgstr ""
+msgstr "Моля дайте на всеки от рейтингите еквивалент по скалата от 1 до 5"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:771
+#: ../src/lib/gtk_extras/dialog_extras.py:772
 msgid "Current Rating"
-msgstr ""
+msgstr "Текущ рейтинг"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:776
+#: ../src/lib/gtk_extras/dialog_extras.py:777
 msgid "Rating out of 5 Stars"
-msgstr ""
+msgstr "Рейтинг от 5 звезди"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1108
+#: ../src/lib/gtk_extras/dialog_extras.py:1109
 msgid "No file selected"
 msgstr "Няма избран файл"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1109
+#: ../src/lib/gtk_extras/dialog_extras.py:1110
 msgid "No file was selected, so the action has been cancelled"
 msgstr "Нямаше избран файл, затова действието беше прекъснато"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1223
+#: ../src/lib/gtk_extras/dialog_extras.py:1225
 #, python-format
 msgid ""
 "I'm sorry, I can't understand\n"
 "the amount \"%s\"."
 msgstr ""
+"Съжалявам, не мога да разбера\n"
+"количеството \"%s\"."
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1225
+#: ../src/lib/gtk_extras/dialog_extras.py:1227
 msgid ""
 "Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
 msgstr ""
+"Количеството трябва да е цифра (дроб или десетична), област от номера, или "
+"празно"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1227
+#: ../src/lib/gtk_extras/dialog_extras.py:1229
 msgid ""
 "\n"
 "The \"unit\" must be in the \"unit\" field by itself.\n"
@@ -1834,90 +1631,100 @@ msgid ""
 "To enter a range of numbers, use a \"-\" to separate them.\n"
 "For example, you could enter 2-4 or 1 1/2 - 3 1/2.\n"
 msgstr ""
+"\n"
+"\"Бройка\" трябва да е само в полето за \"бройки\"\n"
+"Например, ако искате да въведете 1 и половина чаши,\n"
+"полето за количество трябва да съдържа \"1.5\" или \"1 1/2\". \"Чаши\"\n"
+"трябва да отиде в отделно полети за \"бройки\".\n"
+"\n"
+"За да въведете голямо количество номера използвайте \"-\" за да ги "
+"разделите.\n"
+"На пример можете да въведете 2-4 или 1 1/2 - 3 1/2.\n"
 
 #. self._hide_warning_slowly()
 #. return
-#: ../src/lib/gtk_extras/numberEntry.py:28
-#: ../src/lib/gtk_extras/timeEntry.py:55 ../src/lib/gtk_extras/timeEntry.py:65
+#: ../src/lib/gtk_extras/numberEntry.py:29
+#: ../src/lib/gtk_extras/timeEntry.py:56 ../src/lib/gtk_extras/timeEntry.py:66
 msgid "Invalid input."
-msgstr ""
+msgstr "Грешно въвеждане."
 
-#: ../src/lib/gtk_extras/numberEntry.py:28
+#: ../src/lib/gtk_extras/numberEntry.py:29
 msgid "Not a number."
-msgstr ""
+msgstr "Не е номер"
 
-#: ../src/lib/gtk_extras/timeEntry.py:40
+#: ../src/lib/gtk_extras/timeEntry.py:41
 msgid ""
 "Time must begin with a number or fraction followed by a unit (minutes, "
 "hours, etc.)."
 msgstr ""
+"Времето трябва да започва с номер ии част следвана от мерна единица (минути, "
+"часове, и т.н.)"
 
-#: ../src/lib/gtk_extras/timeEntry.py:56 ../src/lib/gtk_extras/timeEntry.py:66
+#: ../src/lib/gtk_extras/timeEntry.py:57 ../src/lib/gtk_extras/timeEntry.py:67
 msgid "Time must be expressed in hours, minutes, seconds, etc."
-msgstr ""
+msgstr "Времето трябва да бъде изразено в часове, минути, секунди и т. н."
 
 #: ../src/lib/importers/generic_recipe_parser.py:130
 msgid "yield"
-msgstr ""
+msgstr "порция"
 
 #: ../src/lib/importers/html_importer.py:41
 #: ../src/lib/importers/webextras.py:21 ../src/lib/importers/webextras.py:79
 #, python-format
 msgid "Retrieving %s"
-msgstr ""
+msgstr "Получаване на %s"
 
 #: ../src/lib/importers/html_importer.py:44
 #: ../src/lib/importers/webextras.py:82
 msgid "Retrieving file"
-msgstr ""
+msgstr "Получаване на файла"
 
 #. Interactive we go...
 #: ../src/lib/importers/html_importer.py:487
 msgid "Don't recognize this webpage. Using generic importer..."
 msgstr ""
+"Тази уебстраница не е разпозната. Използва се обикновеното внасяне..."
 
 #: ../src/lib/importers/html_importer.py:498
 #: ../src/lib/importers/html_importer.py:567
 msgid "Import complete."
-msgstr ""
+msgstr "Внасянето завърши."
 
 #: ../src/lib/importers/html_importer.py:519
 msgid "Importing recipe"
-msgstr ""
+msgstr "Внасяне на рецепта"
 
 #: ../src/lib/importers/html_importer.py:525
 msgid "Processing ingredients"
-msgstr ""
+msgstr "Обработване на съставките"
 
 #: ../src/lib/importers/html_importer.py:549
 msgid "Processing ingredients."
-msgstr ""
+msgstr "Обработване на съставките."
 
 #: ../src/lib/importers/importManager.py:54
 msgid "Enter the URL of a recipe archive or recipe website."
-msgstr ""
+msgstr "Въведете адрес на архива на рецептата или страницата на рецептата."
 
 #: ../src/lib/importers/importManager.py:55
-#, fuzzy
 msgid "Enter website address"
-msgstr "Въведете адреса на интернет страницата."
+msgstr "Въведете адреса на сайта"
 
 #: ../src/lib/importers/importManager.py:57
 msgid "Enter URL:"
-msgstr ""
+msgstr "Въведете адрес:"
 
 #: ../src/lib/importers/importManager.py:58
 msgid "Enter the address of a website or recipe archive."
-msgstr ""
+msgstr "Въведете адреса на сайта или архива с резепти."
 
 #: ../src/lib/importers/importManager.py:93
-#, fuzzy
 msgid "Unable to import URL"
-msgstr "Неуспех при внасянето"
+msgstr "Адресът не може да се внесе"
 
 #: ../src/lib/importers/importManager.py:94
 msgid "Gourmet does not have a plugin capable of importing URL"
-msgstr ""
+msgstr "Gourmet не разполага с приставка за внясане на URL"
 
 #: ../src/lib/importers/importManager.py:95
 #, python-format
@@ -1925,74 +1732,70 @@ msgid ""
 "Unable to import URL %(url)s of mimetype %(type)s. File saved to temporary "
 "location %(fn)s"
 msgstr ""
+"Неуспешна импортация на URL %(url)s от файлов тип%(type)s. Файловете са "
+"запазени във временно местонахождение %(fn)s"
 
 #: ../src/lib/importers/importManager.py:110
-#, fuzzy
 msgid "Open recipe..."
-msgstr "Запазване на рецепта като..."
+msgstr "Отваряне на рецепта..."
 
 #: ../src/lib/importers/importManager.py:172
-#, fuzzy
 msgid "Import"
-msgstr "_Внасяне на файл"
+msgstr "Внасяне"
 
 #: ../src/lib/importers/importManager.py:242
 msgid "All importable files"
 msgstr "Всички възможни за внасяне файлове"
 
 #: ../src/lib/importers/importer.py:185
-#, fuzzy
 msgid "serving"
 msgid_plural "servings"
-msgstr[0] "порции"
+msgstr[0] "порция"
+msgstr[1] "порции"
 
 #: ../src/lib/importers/importer.py:266
 #, python-format
 msgid "Imported %s of %s recipes."
-msgstr ""
+msgstr "Внесени са %s от общо %s рецепти."
 
 #: ../src/lib/importers/importer.py:470
 msgid "okay"
-msgstr ""
+msgstr "добре"
 
 #: ../src/lib/importers/interactive_importer.py:37
 msgid "Servings"
 msgstr "Порции"
 
 #: ../src/lib/importers/interactive_importer.py:39
-#, fuzzy
 msgid "Ingredient Subgroup"
-msgstr "Добавяне на група съставки"
+msgstr "Подгрупа на съставката"
 
 #: ../src/lib/importers/interactive_importer.py:40
 msgid "Hide"
-msgstr ""
+msgstr "Скриване"
 
-#: ../src/lib/importers/interactive_importer.py:46 ../src/lib/reccard.py:1315
-#, fuzzy
+#: ../src/lib/importers/interactive_importer.py:46 ../src/lib/reccard.py:1310
 msgid "Description"
-msgstr "Оп_исания"
+msgstr "Описание"
 
 #: ../src/lib/importers/interactive_importer.py:52
 msgid "Text"
-msgstr ""
+msgstr "Текст"
 
 #: ../src/lib/importers/interactive_importer.py:54
-#, fuzzy
 msgid "Actions"
-msgstr "_Действия"
+msgstr "Действия"
 
 #: ../src/lib/importers/interactive_importer.py:102
-#, fuzzy
 msgid "Import recipe"
-msgstr "Внасяне на рецепти"
+msgstr "Внасяне на рецепта"
 
 #: ../src/lib/importers/interactive_importer.py:145
 msgid "Clear _Tags"
-msgstr ""
+msgstr "Изчистване на _етикетите"
 
 #. for t in self.tags:
-#.
+#. 
 #. self.action_model.append([self.labels_by_tag[t],t])
 #. tag_button = gtk.Button('_'+self.labels_by_tag[t])
 #. tag_button.connect('clicked',
@@ -2000,20 +1803,19 @@ msgstr ""
 #. self.labels_by_tag[t])
 #. self.action_area.pack_start(tag_button,expand=False,fill=False,padding=6)
 #. tag_button.show()
-#.
+#. 
 #: ../src/lib/importers/interactive_importer.py:192
-#, fuzzy
 msgid "Import Recipe"
-msgstr "Внасяне на рецепти"
+msgstr "Внасяне на рецепта"
 
 #: ../src/lib/importers/interactive_importer.py:470
 msgid "Select recipe image"
-msgstr ""
+msgstr "Изберете изображение за рецептата"
 
 #: ../src/lib/importers/interactive_importer.py:471
-#, fuzzy, python-format
+#, python-format
 msgid "Select image for recipe \"%s\""
-msgstr "%s рецепти са изтрити."
+msgstr "Изберете изображение за рецептата \"%s\""
 
 #: ../src/lib/importers/interactive_importer.py:472
 msgid ""
@@ -2021,21 +1823,24 @@ msgid ""
 "images that are of the recipe, or don't select anything if you don't want "
 "any of these images."
 msgstr ""
+"По-долу са всички рецепти, намерени на внасяната страница. Изберете "
+"изображенията, който са на рецептата или не избирайте нищо, ако не желаете "
+"тези изображения."
 
 #: ../src/lib/importers/plaintext_importer.py:34
 #, python-format
 msgid "Imported %s recipes."
-msgstr ""
+msgstr "Внесени са %s рецепти"
 
 #: ../src/lib/importers/webextras.py:14
 #, python-format
 msgid "Downloading %s"
-msgstr ""
+msgstr "Изтегляне на %s"
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:17
 #: ../src/lib/legacy_db/db_09/rmetakit.py:17
 msgid "Database format has changed"
-msgstr ""
+msgstr "Форматът на базата данни е променен"
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:18
 #: ../src/lib/legacy_db/db_09/rmetakit.py:18
@@ -2045,6 +1850,9 @@ msgid ""
 "database will no longer work with older versions of %(progname)s.  A backup "
 "has been saved in %(backupfile)s"
 msgstr ""
+"Програмата %(progname)s %(version)s е променила формата на своята база "
+"данни. Вашата база данни повече няма да работи с по-стари версии на "
+"%(progname)s.  В %(backupfile)s беше запазено резервно копие."
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:548
 #: ../src/lib/legacy_db/db_09/rmetakit.py:593
@@ -2053,104 +1861,145 @@ msgid ""
 "In case anything goes wrong, a backup copy of your recipe database is being "
 "exported to %s"
 msgstr ""
+"В случай, че нещо се обърка, в %s се запазва резервно копие на базата данни"
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:550
 #: ../src/lib/legacy_db/db_09/rmetakit.py:595
 msgid "Transferring data to new database format"
-msgstr ""
+msgstr "Прехвърляне на данните към новия формат на базата данни"
 
 #: ../src/lib/plugin_gui.py:30
 msgid "Plugins"
+msgstr "Приставки"
+
+#: ../src/lib/plugin_gui.py:33
+msgid "Plugins add extra functionality to Gourmet."
 msgstr ""
 
 #: ../src/lib/plugin_gui.py:115
 msgid "Plugin is needed for other plugins. Deactivate plugin anyway?"
 msgstr ""
+"Приставката е необходима за други приставки. Да се изключи ли въпреки това?"
 
 #: ../src/lib/plugin_gui.py:116
 #, python-format
 msgid "The following plugins require %s:"
-msgstr ""
+msgstr "Следните приставки изискват %s:"
 
 #: ../src/lib/plugin_gui.py:119
 msgid "Deactivate anyway"
-msgstr ""
+msgstr "Изключване въпреки това"
 
 #: ../src/lib/plugin_gui.py:120
 msgid "Keep plugin active"
-msgstr ""
+msgstr "Задържане на приставката активна"
 
 #: ../src/lib/plugin_gui.py:134 ../src/lib/recindex.py:452
 msgid "or"
-msgstr ""
+msgstr "или"
 
 #: ../src/lib/plugin_gui.py:138
 msgid "An error occurred activating plugin."
-msgstr ""
+msgstr "Възникна грешка при включването на приставката."
 
 #: ../src/lib/plugin_gui.py:142
 msgid "An error occurred deactivating plugin."
+msgstr "Възникна грешка при изключването на приставката."
+
+#: ../src/lib/plugins/browse_plugin.gourmet-plugin.in.h:1
+msgid "Browse Recipes"
+msgstr ""
+
+#: ../src/lib/plugins/browse_plugin.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/email.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/nutritional_information.gourmet-plugin.in.h:2
+msgid "Main"
+msgstr ""
+
+#: ../src/lib/plugins/browse_plugin.gourmet-plugin.in.h:3
+msgid "Selecting recipes by browsing by category, cuisine, etc."
 msgstr ""
 
 #: ../src/lib/plugins/browse_recipes/browser.py:116
 msgid "Stars"
+msgstr "Оценка"
+
+#: ../src/lib/plugins/duplicate_finder.gourmet-plugin.in.h:1
+msgid "A wizard to find and remove or merge duplicate recipes."
 msgstr ""
 
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:1
-msgid "_Auto-merge"
+#: ../src/lib/plugins/duplicate_finder.gourmet-plugin.in.h:2
+msgid "Find duplicate recipes"
 msgstr ""
 
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:2
-msgctxt "yes"
-msgid "<b><span size=\"large\">Duplicate recipes</span></b>"
-msgstr ""
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:3
-#, fuzzy
-msgctxt "yes"
-msgid "<b>Merge recipes</b>"
-msgstr "<b>Съставки</b>"
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:4
-#, fuzzy
-msgctxt "yes"
-msgid "<i>_Showing:</i>"
-msgstr "<b>_Порции:</b>"
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:5
-msgctxt "yes"
-msgid "Merge _all duplicates"
-msgstr ""
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:6
-msgctxt "yes"
-msgid "Recipes with similar recipe information"
-msgstr ""
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:7
-msgctxt "yes"
-msgid "_Include recipes in trash"
-msgstr ""
+#: ../src/lib/plugins/duplicate_finder.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/field_editor.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/key_editor.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/listsaver.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:28
+#: ../src/lib/plugins/python_shell.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/shopping_associations.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/spellcheck.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/unit_display_prefs.gourmet-plugin.in.h:2
+msgid "Tools"
+msgstr "Инструменти"
 
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:29
 #, python-format
 msgid "%s ago"
-msgstr ""
+msgstr "преди %s"
 
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:229
-#, fuzzy
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:230
 msgid "Auto-Merge recipes"
-msgstr "Преглед на рецептите"
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:231
-#, fuzzy
-msgid "Always use newest recipe"
-msgstr "Създаване на нова рецепта"
+msgstr "Автоматично сливане на рецепти"
 
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:232
-#, fuzzy
+msgid "Always use newest recipe"
+msgstr "Винаги да се използва най-новата рецепта"
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:233
 msgid "Always use oldest recipe"
-msgstr "Преглед на избрана рецепта"
+msgstr "Винаги да се използва най-старата рецепта"
+
+#. dups = rd.find_complete_duplicates()
+#. for d in dups[5:]:
+#. test_merger(rd,d)
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:1
+msgid "<b><span size=\"large\">Duplicate recipes</span></b>"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:2
+msgid "<b>Merge recipes</b>"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:3
+msgid "<i>_Showing:</i>"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:4
+msgid "Merge _all duplicates"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:5
+msgid "Recipes with similar ingredients"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:6
+msgid "Recipes with similar recipe information"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:7
+msgid "Recipes with similar recipe information and ingredients"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:8
+msgid "_Auto-merge"
+msgstr ""
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:9
+msgid "_Include recipes in trash"
+msgstr ""
 
 #: ../src/lib/plugins/duplicate_finder/recipeMergerPlugin.py:21
 #: ../src/lib/plugins/duplicate_finder/recipeMergerPlugin.py:56
@@ -2158,84 +2007,132 @@ msgid ""
 "Some of the imported recipes appear to be duplicates. You can merge them "
 "here, or close this dialog to leave them as they are."
 msgstr ""
+"Изглежда, че някои от внесените рецепти се повтарят. Може да ги слеете тук "
+"или да затворите този прозорец и да ги оставите както са си."
 
 #: ../src/lib/plugins/duplicate_finder/recipeMergerPlugin.py:63
-#, fuzzy
 msgid "Find _duplicate recipes"
-msgstr "Разпечатване на избрана рецепта"
+msgstr "Откриване на _повтарящи се рецепти"
 
 #: ../src/lib/plugins/duplicate_finder/recipeMergerPlugin.py:64
 msgid "Find and remove duplicate recipes"
+msgstr "Откриване и премахване на повтарящи се рецепти"
+
+#: ../src/lib/plugins/email.gourmet-plugin.in.h:1
+msgid "Email recipes from Gourmet"
+msgstr ""
+
+#: ../src/lib/plugins/email.gourmet-plugin.in.h:3
+msgid "Send to Email"
 msgstr ""
 
 #: ../src/lib/plugins/email_plugin/emailer_plugin.py:21
-#: ../src/lib/plugins/email_plugin/emailer_plugin.py:41
-#, fuzzy
+#: ../src/lib/plugins/email_plugin/emailer_plugin.py:45
 msgid "Email recipes"
-msgstr "Изпращане на рецепти по _ел. поща"
+msgstr "Изпращане на рецептите по е-поща"
 
 #: ../src/lib/plugins/email_plugin/emailer_plugin.py:22
 msgid "Email all selected recipes (or all recipes if no recipes are selected"
 msgstr ""
+"Изпращане по е-поща на всички избрани рецепти (или на всички, ако няма "
+"избрани)"
 
 #. only called for l>20, so fancy gettext methods
 #. shouldn't be necessary if my knowledge of
 #. linguistics serves me
-#: ../src/lib/plugins/email_plugin/emailer_plugin.py:45
+#: ../src/lib/plugins/email_plugin/emailer_plugin.py:49
 #, python-format
 msgid "Do you really want to email all %s selected recipes?"
 msgstr ""
+"Наистина ли желаете да изпратите по е-поща всички %s избрани рецепти?"
 
-#: ../src/lib/plugins/email_plugin/emailer_plugin.py:46
+#: ../src/lib/plugins/email_plugin/emailer_plugin.py:50
 msgid "Yes, e_mail them"
-msgstr ""
+msgstr "Изпращане"
 
-#: ../src/lib/plugins/field_editor/__init__.py:15
-#, fuzzy
-msgid "Field Editor"
-msgstr "Редактор на ключове"
-
+#: ../src/lib/plugins/field_editor.gourmet-plugin.in.h:1
 #: ../src/lib/plugins/field_editor/__init__.py:16
 msgid "Edit fields across multiple recipes at a time."
-msgstr ""
+msgstr "Едновременно редактиране на полета на множество рецепти"
+
+#: ../src/lib/plugins/field_editor.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/field_editor/__init__.py:15
+msgid "Field Editor"
+msgstr "Редактор на полета"
 
 #. len(vals)==0
 #: ../src/lib/plugins/field_editor/fieldEditor.py:99
-#, fuzzy
 msgid "For each selected value"
-msgstr "Няма избран файл"
+msgstr "За всяка избрана стойност"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:103
 #, python-format
 msgid "Where %(field)s is %(value)s"
-msgstr ""
+msgstr "Където %(field)s е %(value)s"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:161
-#, fuzzy, python-format
+#, python-format
 msgid "Change will affect %s recipe"
 msgid_plural "Change will affect %s recipes"
-msgstr[0] "%s рецепти са изтрити."
+msgstr[0] "Промяната ще се отрази на %s рецепта"
+msgstr[1] "Промяната ще се отрази на %s рецепти"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:165
-#, fuzzy, python-format
+#, python-format
 msgid "Delete %s where it is %s?"
-msgstr "%s рецепти са изтрити."
+msgstr "Изтриване на %s, където е %s?"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:168
-#, fuzzy, python-format
+#, python-format
 msgid "Change %s from %s to \"%s\"?"
-msgstr "за \"%s\" от \"%s\""
+msgstr "Промяна на %s от %s на \"%s\"?"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:174
 msgid "<i>This change is not reversable.</i>"
+msgstr "<i>Тази промяна е необратима.</i>"
+
+#: ../src/lib/plugins/import_export/archive.gourmet-plugin.in.h:1
+msgid "Import recipes from zip and tar archives"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/archive.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/gxml.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/import_export/html.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/pdf.gourmet-plugin.in.h:1
+#: ../src/lib/plugins/import_export/plaintext.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/webimport.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/website_import.gourmet-plugin.in.h:1
+#: ../src/lib/plugins/utf16.gourmet-plugin.in.h:3
+msgid "Importer/Exporter"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/archive.gourmet-plugin.in.h:3
+msgid "Zip, Gzip, and Tarball support"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/archive_plugin/zip_importer_plugin.py:10
+msgid "Archive (zip, tarball)"
 msgstr ""
 
 #: ../src/lib/plugins/import_export/archive_plugin/zip_readers.py:44
 msgid "Loading zip archive"
-msgstr ""
+msgstr "Зареждане на zip архив"
 
 #: ../src/lib/plugins/import_export/archive_plugin/zip_readers.py:59
 msgid "Unzipping zip archive"
+msgstr "Разархивиране на zip архива"
+
+#: ../src/lib/plugins/import_export/gxml.gourmet-plugin.in.h:1
+msgid "Gourmet XML Import and Export"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/gxml.gourmet-plugin.in.h:2
+msgid ""
+"Import and Export recipes as Gourmet XML files, suitable for backup or "
+"exchange with other Gourmet users."
 msgstr ""
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:7
@@ -2245,68 +2142,96 @@ msgstr "XML файл на Gourmet"
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:46
 msgid "Gourmet XML Export"
-msgstr ""
+msgstr "Gourmet XML изнасяне"
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:47
 #, python-format
 msgid "Exporting recipes to Gourmet XML file %(file)s."
-msgstr ""
+msgstr "Изнасяне на рецепти към XML файл на Gourmet %(file)s."
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:48
 #, python-format
 msgid "Recipe saved in Gourmet XML file %(file)s."
-msgstr ""
+msgstr "Рецептата е запазена в Gourmet XML file %(file)s."
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_importer_plugin.py:74
-#, fuzzy
 msgid "Gourmet XML File (Obsolete)"
-msgstr "XML файл на Gourmet"
+msgstr "XML файл на Gourmet (остарял)"
+
+#: ../src/lib/plugins/import_export/html.gourmet-plugin.in.h:1
+msgid "Create recipe webpages from recipes."
+msgstr ""
+
+#: ../src/lib/plugins/import_export/html.gourmet-plugin.in.h:2
+msgid "HTML Export"
+msgstr ""
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:118
 #, python-format
 msgid "Original Page from %s"
-msgstr ""
+msgstr "Оригинална страница от %s"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:5
 msgid "HTML Web Page"
-msgstr "HTML интернет страница"
+msgstr "HTML уебстраница"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:9
 msgid "Exporting Webpage"
-msgstr ""
+msgstr "Изнасяне на уебстраница"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:10
 #, python-format
 msgid "Exporting recipes to HTML files in directory %(file)s"
-msgstr ""
+msgstr "Изнасяне на рецептите към HTML файлове в папката %(file)s"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:11
 #, python-format
 msgid "Recipe saved as HTML file %(file)s"
+msgstr "Рецептата е запазена като HTML файл %(file)s"
+
+#: ../src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:1
+msgid "Import files from the Krecipe program."
+msgstr ""
+
+#: ../src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:3
+msgid "KRecipe import"
 msgstr ""
 
 #: ../src/lib/plugins/import_export/krecipe_plugin/krecipe_importer_plugin.py:9
-#, fuzzy
 msgid "KRecipe XML File"
-msgstr "KRecipes файл"
+msgstr "XML файл на KRecipe"
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer.py:116
 msgid "Mastercook import finished."
-msgstr ""
+msgstr "Mastercook внасянето завърши."
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer.py:249
 msgid "Tidying up XML"
 msgstr "Подреждане на XML кода"
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer_plugin.py:8
-#, fuzzy
 msgid "Mastercook XML File"
-msgstr "XML файл на MasterCook"
+msgstr "XML файл на Mastercook"
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer_plugin.py:21
-#, fuzzy
 msgid "Mastercook Text File"
-msgstr "MasterCook файл"
+msgstr "Текстов файл на Mastercook"
+
+#: ../src/lib/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:1
+msgid "Import files from the Mastercook program."
+msgstr ""
+
+#: ../src/lib/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:3
+msgid "Mastercook import"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:1
+msgid "Export recipes as mealmaster text files"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
+msgid "Mealmaster (tm) Export"
+msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py:22
@@ -2315,160 +2240,183 @@ msgstr "MealMaster файл"
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:9
 msgid "MealMaster Export"
-msgstr ""
+msgstr "Изнасяне в MealMaster"
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:10
 #, python-format
 msgid "Exporting recipes to MealMaster file %(file)s."
-msgstr ""
+msgstr "Изнасяне на рецептите във файл за MealMaster %(file)s."
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:11
 #, python-format
 msgid "Recipe saved as MealMaster file %(file)s"
+msgstr "Рецептата е запазена като файл за MealMaster %(file)s"
+
+#: ../src/lib/plugins/import_export/pdf.gourmet-plugin.in.h:2
+msgid ""
+"Print recipes or export them as PDF; this plugin allows a variety of page "
+"layouts."
 msgstr ""
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:709
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:822
-msgid "Letter"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:710
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:841
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:964
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:995
-msgid "Portrait"
+#: ../src/lib/plugins/import_export/pdf.gourmet-plugin.in.h:3
+msgid "Printing & PDF Export"
 msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:712
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:834
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:956
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:825
+msgid "Letter"
+msgstr "Letter"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:713
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:844
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:967
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:998
+msgid "Portrait"
+msgstr "Портрет"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:715
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:837
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:959
 msgid "Plain"
-msgstr ""
+msgstr "Обикновен"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:726
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:746
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:747
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:729
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:749
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:750
 msgid "cm"
-msgstr ""
+msgstr "см"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:727
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:730
 msgid "points"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:817
-msgid "11x17\""
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:818
-msgid "Index Card (3.5x5\")"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:819
-msgid "Index Card (4x6\")"
-msgstr ""
+msgstr "точки"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:820
-msgid "Index Card (5x8\")"
-msgstr ""
+msgid "11x17\""
+msgstr "11x17\""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:821
-msgid "Index Card (A7)"
-msgstr ""
+msgid "Index Card (3.5x5\")"
+msgstr "Index Card (3.5x5\")"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:822
+msgid "Index Card (4x6\")"
+msgstr "Index Card (4x6\")"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:823
+msgid "Index Card (5x8\")"
+msgstr "Index Card (5x8\")"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:824
+msgid "Index Card (A7)"
+msgstr "Index Card (A7)"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:826
 msgid "Legal"
-msgstr ""
+msgstr "Нормален"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:829
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:835
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:832
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:838
 msgid "Index Cards (3.5x5)"
-msgstr ""
+msgstr "Индекс на карти (3.5x5)"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:830
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:836
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:833
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:839
 msgid "Index Cards (4x6)"
-msgstr ""
+msgstr "Индекс на карти (4x6)"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:831
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:837
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:834
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:840
 msgid "Index Cards (A7)"
-msgstr ""
+msgstr "Индекс на карти (A7)"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:842
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:942
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:993
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:845
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:945
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:996
 msgid "Landscape"
-msgstr ""
+msgstr "Ширина"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:853
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:856
 #, python-format
 msgid "%s Column"
 msgid_plural "%s Columns"
-msgstr[0] ""
+msgstr[0] "%s Колона"
+msgstr[1] "%s Колони"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:868
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:871
 msgid "Paper _Size"
-msgstr ""
+msgstr "Размер на хартията"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:870
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:873
 msgid "_Orientation"
-msgstr ""
+msgstr "_Ориентация"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:872
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:875
 msgid "_Font Size"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:874
-msgid "Page _Layout"
-msgstr ""
+msgstr "_Размер на шрифта"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:877
-msgid "Left Margin"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:878
-msgid "Right Margin"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:879
-msgid "Top Margin"
-msgstr ""
+msgid "Page _Layout"
+msgstr "Граници на _страницата"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:880
+msgid "Left Margin"
+msgstr "Поле отляво"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:881
+msgid "Right Margin"
+msgstr "Поле отдясно"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:882
+msgid "Top Margin"
+msgstr "Поле отгоре"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:883
 msgid "Bottom Margin"
+msgstr "Поле отдолу"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:904
+msgid "PDF Options"
 msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:5
 msgid "PDF (Portable Document Format)"
-msgstr ""
+msgstr "PDF (формат за преносими документи)"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:9
 msgid "PDF Export"
-msgstr ""
+msgstr "PDF експорт"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:10
 #, python-format
 msgid "Exporting recipes to PDF %(file)s."
-msgstr ""
+msgstr "Експортиране на рецептите към PDF %(file)s."
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:11
 #, python-format
 msgid "Recipe saved as PDF %(file)s"
-msgstr ""
+msgstr "Рецептата е запазена като PDF %(file)s."
 
 #: ../src/lib/plugins/import_export/pdf_plugin/print_plugin.py:28
 msgid "Page Layout"
-msgstr ""
+msgstr "Ориентация на страницата"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/print_plugin.py:116
 msgid "Print Recipes"
 msgstr "Разпечатване на рецепти"
 
+#: ../src/lib/plugins/import_export/plaintext.gourmet-plugin.in.h:1
+msgid ""
+"Help user mark up and import plain text. Also provides plain text export."
+msgstr ""
+
+#: ../src/lib/plugins/import_export/plaintext.gourmet-plugin.in.h:3
+msgid "Plain Text Guided Import"
+msgstr ""
+
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:37
-#, fuzzy
 msgid "Plain Text file"
-msgstr "Прост текст"
+msgstr "Обикновен текстов файл"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:9
 msgid "Text Export"
@@ -2477,22 +2425,21 @@ msgstr "Изнасяне към текст"
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:10
 #, python-format
 msgid "Exporting recipes to text file %(file)s."
-msgstr ""
+msgstr "Изнасяне на рецептите в текстов файл %(file)s."
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:11
 #, python-format
 msgid "Recipe saved as plain text file %(file)s"
-msgstr ""
+msgstr "Рецептата е запазена като обикновен текстов файл %(file)s"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:24
-#, fuzzy
 msgid "Big File"
-msgstr "_Файл"
+msgstr "Голям файл"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:25
 #, python-format
 msgid "File %s is too big to import"
-msgstr ""
+msgstr "Файлът %s е прекалено голям за внасяне"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:26
 #, python-format
@@ -2501,212 +2448,279 @@ msgid ""
 "mean to import it anyway. If you really do want to import this file, use a "
 "text editor to split it into smaller files and try importing again."
 msgstr ""
+"Вашият файл надхвърля максималната дължина от %s знака. Вероятно и без това "
+"не сте искали да го внасяте. Ако наистина искате да го направите, "
+"използвайте текстов редактор за да го разделите на по-малки части и опитайте "
+"да ги внесете повторно."
 
 #: ../src/lib/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py:8
-#, fuzzy
 msgid "Webpage"
-msgstr "интернет страница"
+msgstr "Уеб страница"
+
+#: ../src/lib/plugins/import_export/webimport.gourmet-plugin.in.h:1
+msgid "Import recipes from the web."
+msgstr ""
+
+#: ../src/lib/plugins/import_export/webimport.gourmet-plugin.in.h:3
+msgid "Webpage import"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/website_import.gourmet-plugin.in.h:2
+msgid "Importers for about.com, www.foodnetwork.com, and others"
+msgstr ""
+
+#: ../src/lib/plugins/import_export/website_import.gourmet-plugin.in.h:3
+msgid "Website Importers"
+msgstr ""
+
+#: ../src/lib/plugins/key_editor.gourmet-plugin.in.h:1
+msgid ""
+"Assign and edit ingredient keys (unique identifiers for ingredients, used "
+"for consolidating items on shopping lists)."
+msgstr ""
+
+#: ../src/lib/plugins/key_editor.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:2
+msgid "Key Editor"
+msgstr ""
 
 #. to set our regexp_toggled variable
-#: ../src/lib/plugins/key_editor/keyEditor.py:64
-#: ../src/lib/plugins/key_editor/keyEditor.py:86
-#: ../src/lib/plugins/key_editor/keyEditor.py:265
+#: ../src/lib/plugins/key_editor/keyEditor.py:65
+#: ../src/lib/plugins/key_editor/keyEditor.py:87
+#: ../src/lib/plugins/key_editor/keyEditor.py:266
 msgid "key"
-msgstr ""
+msgstr "ключ"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:86
-#: ../src/lib/plugins/key_editor/keyEditor.py:261
-#: ../src/lib/plugins/key_editor/keyEditor.py:537
+#: ../src/lib/plugins/key_editor/keyEditor.py:87
+#: ../src/lib/plugins/key_editor/keyEditor.py:262
+#: ../src/lib/plugins/key_editor/keyEditor.py:538
 msgid "item"
-msgstr ""
+msgstr "артикул"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:86
+#: ../src/lib/plugins/key_editor/keyEditor.py:87
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:36
 msgid "unit"
-msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:111
-msgid "Field"
-msgstr ""
+msgstr "единица"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:112
-msgid "Value"
-msgstr ""
+msgid "Field"
+msgstr "Поле"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:113
-msgid "Count"
-msgstr ""
+msgid "Value"
+msgstr "Стойност"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:158
-#, python-format
-msgid "Change all keys \"%s\" to \"%s\"?"
-msgstr ""
+#: ../src/lib/plugins/key_editor/keyEditor.py:114
+msgid "Count"
+msgstr "Брой"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:159
+#, python-format
+msgid "Change all keys \"%s\" to \"%s\"?"
+msgstr "Промяна на всички ключове \"%s\"  на \"%s\"?"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:160
 #, python-format
 msgid ""
 "You won't be able to undo this action. If there are already ingredients with "
 "the key \"%s\", you won't be able to distinguish between those items and the "
 "items you are changing now."
 msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:171
-#, python-format
-msgid "Change all items \"%s\" to \"%s\"?"
-msgstr ""
+"Няма да можете да отмените това действие. Ако вече има съставки с артикула "
+"\"%s\", няма да можете да направите разлика между тях и тези, които в "
+"момента променяте."
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:172
+#, python-format
+msgid "Change all items \"%s\" to \"%s\"?"
+msgstr "Промяна на всички артикули \"%s\" на \"%s\"?"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:173
 #, python-format
 msgid ""
 "You won't be able to undo this action. If there are already ingredients with "
 "the item \"%s\", you won't be able to distinguish between those items and "
 "the items you are changing now."
 msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:183
-#, python-format
-msgid "Change _all instances of \"%(unit)s\" to \"%(text)s\""
-msgstr ""
+"Няма да можете да отмените това действие. Ако вече има съставки с артикула "
+"\"%s\", няма да можете да направите разлика между тях и тези, които в "
+"момента променяте."
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:184
+#, python-format
+msgid "Change _all instances of \"%(unit)s\" to \"%(text)s\""
+msgstr "Промени _всички случаи от \"%(unit)s\" на \"%(text)s\""
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:185
 #, python-format
 msgid ""
 "Change \"%(unit)s\" to \"%(text)s\" only for _ingredients \"%(item)s\" with "
 "key \"%(key)s\""
 msgstr ""
+"Промяна на \"%(unit)s\" на \"%(text)s\" само за _съставките \"%(item)s\" с "
+"ключа \"%(key)s\""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:209
+#: ../src/lib/plugins/key_editor/keyEditor.py:210
 #, python-format
 msgid "Change _all instances of \"%(amount)s\" %(unit)s to %(text)s %(unit)s"
 msgstr ""
+"Промяна на  _всички инстанции на \"%(amount)s\" %(unit)s на %(text)s %(unit)s"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:210
+#: ../src/lib/plugins/key_editor/keyEditor.py:211
 #, python-format
 msgid ""
 "Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only _where the "
 "ingredient key is %(key)s"
 msgstr ""
+"Смени \"%(amount)s\" %(unit)s на \"%(text)s\" %(unit)s само _където ключа на "
+"съставките е %(key)s"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:211
+#: ../src/lib/plugins/key_editor/keyEditor.py:212
 #, python-format
 msgid ""
 "Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only where the "
 "ingredient key is %(key)s _and where the item is %(item)s"
 msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:356
-msgid "Change all selected rows?"
-msgstr ""
+"Смени \"%(amount)s\" %(unit)s на \"%(text)s\" %(unit)s само където ключа на "
+"съставките е %(key)s _и където артикула е %(item)s"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:357
+msgid "Change all selected rows?"
+msgstr "Промяна на всички избрани редове?"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:358
 #, python-format
 msgid ""
 "This action will not be undoable. Are you that for all %s selected rows, you "
 "want to set the following values:"
 msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:358
-#, python-format
-msgid ""
-"\n"
-"Key to %s"
-msgstr ""
+"Това действие не може да бъде отменено. Сигурни ли сте, че за всички избрани "
+"%s реда, желаете да зададете следните стойности:"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:359
 #, python-format
 msgid ""
 "\n"
-"Item to %s"
+"Key to %s"
 msgstr ""
+"\n"
+"Ключ към %s"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:360
 #, python-format
 msgid ""
 "\n"
-"Unit to %s"
+"Item to %s"
 msgstr ""
+"\n"
+"Артикул на %s"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:361
 #, python-format
 msgid ""
 "\n"
+"Unit to %s"
+msgstr ""
+"\n"
+"Единици към %s"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:362
+#, python-format
+msgid ""
+"\n"
 "Amount to %s"
 msgstr ""
+"\n"
+"Количество към %s"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:494
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:163
+#: ../src/lib/plugins/key_editor/keyEditor.py:495
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:164
 #, python-format
 msgid "%s ingredient"
 msgid_plural "%s ingredients"
-msgstr[0] ""
+msgstr[0] "%s съставка"
+msgstr[1] "%s съставки"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
-#: ../src/lib/plugins/key_editor/keyEditor.py:498
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:167
+#: ../src/lib/plugins/key_editor/keyEditor.py:499
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:168
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
-msgstr ""
-
-#. __gsignals__ = {
-#. 'view-changed':(gobject.SIGNAL_RUN_LAST,
-#. gobject.TYPE_NONE,
-#. ()),
-#. }
-#: ../src/lib/plugins/key_editor/keyEditor.py:511
-#: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:108
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:187
-#: ../src/lib/reccard.py:2152 ../src/lib/reccard.py:2211
-msgid "Key"
-msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:512
-#: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:100
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:188
-#: ../src/lib/reccard.py:2151 ../src/lib/reccard.py:2179
-msgid "Item"
-msgstr ""
+msgstr "Показва  съставки %(bottom)s към %(top)s от %(total)s"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:513
+#: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:100
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:189
+#: ../src/lib/reccard.py:2139 ../src/lib/reccard.py:2167
+msgid "Item"
+msgstr "Артикул"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:514
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:8
-#: ../src/lib/reccard.py:2150 ../src/lib/reccard.py:2178
+#: ../src/lib/reccard.py:2138 ../src/lib/reccard.py:2166
 msgid "Unit"
-msgstr ""
+msgstr "Единица"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:515
+#: ../src/lib/plugins/nutritional_information/nutritionModel.py:7
+msgid "Amount"
+msgstr "Количество"
 
 #: ../src/lib/plugins/key_editor/keyEditorPlugin.py:16
-#, fuzzy
 msgid "Ingredient _Key Editor"
-msgstr "_Редактор на съставки"
+msgstr "Редактор на ключове на съставки"
 
 #: ../src/lib/plugins/key_editor/keyEditorPlugin.py:17
 msgid "Edit ingredient keys en masse"
+msgstr "Редактирай ключовете за съставки в маса"
+
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:1
+msgid "<b>_Change selected ingredients</b>"
 msgstr ""
 
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:1
-#, fuzzy
-msgid "<b>_Change selected ingredients</b>"
-msgstr "<b>Съставки</b>"
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:4
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:19
+msgid "Search as you t_ype"
+msgstr ""
+
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:7
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:25
+msgid "_Advanced Search"
+msgstr ""
+
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:9
+msgid "_Item:"
+msgstr ""
+
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:10
+msgid "_Key:"
+msgstr ""
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:14
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:37
-#, fuzzy
 msgid "Ingredient Keys"
-msgstr "Съставки"
+msgstr "Ключове за съставки"
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:38
 msgid ""
 "Ingredient Keys are normalized ingredient names used for shopping lists and "
 "for calculations."
 msgstr ""
+"Ключове за съставки са нормализирани имена на съставки използвани за лист за "
+"пазаруване и калкулации."
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:84
 msgid "Guess keys"
-msgstr ""
+msgstr "Познаване на ключовете"
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:85
 msgid ""
 "Guess best values for all ingredient keys based on values already in your "
 "database"
 msgstr ""
+"Опитва се да познае най-добрите стойности за всички ключове на съставки "
+"базирани на стойности, които вече са във вашата база от данни."
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:89
 msgid "Edit Key Associations"
@@ -2716,50 +2730,69 @@ msgstr ""
 msgid "Edit associations with key and other attributes in database"
 msgstr ""
 
+#: ../src/lib/plugins/listsaver.gourmet-plugin.in.h:1
+msgid "Save shopping lists as recipes for future use."
+msgstr ""
+
+#: ../src/lib/plugins/listsaver.gourmet-plugin.in.h:2
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:23
-#, fuzzy
 msgid "Shopping List Saver"
-msgstr "Списък за пазаруване"
+msgstr "Запазване на списък за пазаруване"
 
 #. name
 #. stock
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:30
-#, fuzzy
 msgid "Save List as Recipe"
-msgstr "Избор на рецепта"
+msgstr "Заразване на списък като рецепта"
 
 #. text
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:31
 msgid "<Ctrl><Shift>S"
-msgstr ""
+msgstr "<Ctrl><Shift>S"
 
 #. key-command
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:32
 msgid "Save current shopping list as a recipe for future use"
 msgstr ""
+"Запазване на текущия списък за пазаруване като рецепта за бъдещо използване"
 
 #. print rr
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:44
 #, python-format
 msgid "Menu for %s"
-msgstr ""
+msgstr "Меню за %s"
 
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:45
 msgid "Menu"
+msgstr "Меню"
+
+#: ../src/lib/plugins/nutritional_information.gourmet-plugin.in.h:1
+msgid "Calculate nutritional information for recipes."
 msgstr ""
+
+#. name
+#. stock
+#: ../src/lib/plugins/nutritional_information.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/nutritional_information/main_plugin.py:12
+#: ../src/lib/plugins/nutritional_information/nutPrefsPlugin.py:10
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:18
+#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:31
+#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:67
+msgid "Nutritional Information"
+msgstr "Хранителна информация"
 
 #: ../src/lib/plugins/nutritional_information/databaseGrabber.py:145
 msgid "Parsing nutritional data..."
-msgstr ""
+msgstr "Обработка на данните за храненето..."
 
 #: ../src/lib/plugins/nutritional_information/databaseGrabber.py:162
 #, python-format
 msgid "Reading nutritional data: imported %s of %s entries."
-msgstr ""
+msgstr "Прочитане на данните за храненео: внесени са %s от %s елемента."
 
 #: ../src/lib/plugins/nutritional_information/databaseGrabber.py:185
 msgid "Parsing weight data..."
-msgstr ""
+msgstr "Обработка на информацията за теглото"
 
 #: ../src/lib/plugins/nutritional_information/databaseGrabber.py:194
 #, python-format
@@ -2773,249 +2806,192 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/export_plugin.py:34
 msgid "Nutritional information reflects amounts for entire recipe"
-msgstr ""
+msgstr "Хранителната информация е сумарна за цялата рецепта"
 
 #: ../src/lib/plugins/nutritional_information/export_plugin.py:38
 #, python-format
 msgid "Nutritional information is missing for %s ingredients: %s"
-msgstr ""
+msgstr "Липсва хранителна информация за %s съставки: %s"
 
-#. name
-#. stock
-#: ../src/lib/plugins/nutritional_information/main_plugin.py:12
-#: ../src/lib/plugins/nutritional_information/nutPrefsPlugin.py:10
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:12
-#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:31
-#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:67
-#, fuzzy
-msgid "Nutritional Information"
-msgstr "_Информация за плътността"
-
-#: ../src/lib/plugins/nutritional_information/nut_recipe_card_display.glade.h:1
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:4
+#: ../src/lib/plugins/nutritional_information/nut_recipe_card_display.ui.h:1
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:4
 msgid "<b>Nutritional Information</b>"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nut_recipe_card_display.glade.h:2
+#: ../src/lib/plugins/nutritional_information/nut_recipe_card_display.ui.h:2
 msgid "Edit _nutritional info"
 msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionDisplay.py:132
 msgid "100 grams"
-msgstr ""
+msgstr "100 грама"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:1
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:1
 msgid "<b>Choose a Density</b>"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:2
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:2
 msgid "<b>Ingredient Key: </b>"
-msgstr "<b>Съставки</b>"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:3
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:3
 msgid "<b>Known Nutritonal Information</b>"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:5
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:5
 msgid "<b>USDA Item: </b>"
-msgstr "<b>Източник:</b>"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:6
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:6
 msgid "<i>Enter nutritional information for </i>"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:7
-msgid "<i>or</i>"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:8
-msgid "Custom equivalents:"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:9
-#, fuzzy
-msgid "Density:"
-msgstr "П_лътност:"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:10
-msgid "Edit _USDA Association"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:11
-#, fuzzy
-msgid "Edit _information"
-msgstr "_Информация за плътността"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:15
-msgid "Show only food in _group:"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:16
-msgid "USDA equivalents:"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:19
-#, fuzzy
-msgid "_Density Information"
-msgstr "_Информация за плътността"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:20
-#, fuzzy
-msgid "_Nutritional Information"
-msgstr "_Информация за плътността"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:23
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:7
 msgid "<i>From:</i>"
-msgstr "<b>От</b>"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:24
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:8
 msgid "<i>Search _results:</i>"
-msgstr "_Резултати от търсенето"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:25
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:9
 msgid "<i>Select equivalent of</i>"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:26
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:10
 msgid "<i>To:</i>"
-msgstr "<b>_Порции:</b>"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:27
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:11
 msgid "<i>from USDA database</i>"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:28
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:12
+msgid "<i>or</i>"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:13
+msgid "Custom equivalents:"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:14
+msgid "Density:"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:15
+msgid "Edit _USDA Association"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:16
+msgid "Edit _information"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:17
 msgid "I_gnore"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:29
-#, fuzzy
-msgctxt "yes"
-msgid "Search as you t_ype"
-msgstr "Търсене още при въвеждането"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:21
+msgid "Show only food in _group:"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:30
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:22
+msgid "USDA equivalents:"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:23
 msgid "Unit:"
-msgstr "_Единица:"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:31
-#, fuzzy
-msgctxt "yes"
-msgid "_Amount:"
-msgstr "_Количество:"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:32
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:27
 msgid "_Change ingredient"
-msgstr "Създаване на нова съставка"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:33
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:28
 msgid "_Change unit"
-msgstr "Променена единица."
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:34
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:29
+msgid "_Density Information"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:30
+msgid "_Nutritional Information"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:31
 msgid "_Save new unit"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:35
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:32
 msgid "_Search USDA Ingredient Database:"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:36
-#, fuzzy
-msgctxt "yes"
-msgid "_Unit:"
-msgstr "_Единица:"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:37
-msgctxt "yes"
-msgid "unit"
 msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:94
 msgid "Any food group"
-msgstr ""
+msgstr "Всяка хранителна група"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:274
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:269
 msgid "selection"
-msgstr "Спиране на изтриването"
+msgstr "избор"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:426
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:421
 msgid "ml"
-msgstr ""
+msgstr "мл"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:674
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:669
 #, python-format
 msgid "Convert unit for %s"
-msgstr ""
+msgstr "Конвертиране на единица за %s"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:677
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:672
 #, python-format
 msgid ""
 "In order to calculate nutritional information, Gourmet needs you to help it "
 "convert \"%s\" into a unit it understands."
 msgstr ""
+"За да изчисли хранителната информация, Gourmet се нуждае от помощта ви за "
+"превръщане на \"%s\" в известна на програмата единица."
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:759
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:773
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:754
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:768
 msgid "Change ingredient key"
-msgstr "Създаване на нова съставка"
+msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:761
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:756
 #, python-format
 msgid ""
 "Change ingredient key from %(old_key)s to %(new_key)s everywhere or just in "
 "the recipe %(title)s?"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:766
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:819
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:761
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:814
 msgid "Change _everywhere"
-msgstr ""
+msgstr "Промяна _навсякъде"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:767
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:820
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:762
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:815
 #, python-format
 msgid "_Just in recipe %s"
-msgstr ""
+msgstr "_Само в рецептата %s"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:774
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:769
 #, python-format
 msgid "Change ingredient key from %(old_key)s to %(new_key)s everywhere?"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:811
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:806
 msgid "Change unit"
-msgstr ""
+msgstr "Промяна на единицата"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:813
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:808
 #, python-format
 msgid ""
 "Change unit from %(old_unit)s to %(new_unit)s for all ingredients %(ingkey)s "
 "or just in the recipe %(title)s?"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:844
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:839
 #, python-format
 msgid ""
 "In order to calculate nutritional information for \"%(amount)s %(unit)s "
@@ -3024,10 +3000,12 @@ msgid ""
 "select the correct one below."
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:1017
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:1012
 msgid ""
 "To apply nutritional information, Gourmet needs a valid amount and unit."
 msgstr ""
+"За да приложи хранителна информация, Gourmet се нуждае от валидно количество "
+"и единица."
 
 #. filename=None
 #. if de.getBoolean(
@@ -3041,109 +3019,107 @@ msgstr ""
 #. )
 #: ../src/lib/plugins/nutritional_information/nutritionGrabberGui.py:35
 msgid "Loading Nutritional Data"
-msgstr ""
+msgstr "Зареждане на хранителната информация"
 
 #: ../src/lib/plugins/nutritional_information/nutritionGrabberGui.py:40
 msgid "Nutritonal database import complete!"
-msgstr ""
+msgstr "Завърши въвеждането на хранителните качества в базата данни!"
 
 #: ../src/lib/plugins/nutritional_information/nutritionGrabberGui.py:59
 #, python-format
 msgid "Fetching nutritional database from zip archive %s"
-msgstr ""
+msgstr "Получаване на хранителната база данни от zip архива %s"
 
 #: ../src/lib/plugins/nutritional_information/nutritionGrabberGui.py:63
 #, python-format
 msgid "Extracting %s from zip archive."
-msgstr ""
+msgstr "Разархивиране %s от zip архив."
 
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:65
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:66
 msgid "entire database"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:79
-#, fuzzy
-msgid "Ingredient Key"
-msgstr "Съставки"
+msgstr "цялата база данни"
 
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:80
-msgid "USDA ID Number"
+msgid "Ingredient Key"
 msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:81
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:190
-#, fuzzy
-msgid "USDA Item Description"
-msgstr "Оп_исания"
+msgid "USDA ID Number"
+msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:82
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:191
+msgid "USDA Item Description"
+msgstr ""
+
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:83
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:192
 msgid "Density Equivalent"
 msgstr ""
 
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:189
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:190
 msgid "USDA ID#"
 msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:11
 msgid "Calories"
-msgstr ""
+msgstr "Калории"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:14
 msgid "Total Fat"
-msgstr ""
+msgstr "Общо мазнини"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:16
 msgid "Saturated Fat"
-msgstr ""
+msgstr "Наситени мазнини"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:18
 msgid "Cholesterol"
-msgstr ""
+msgstr "Холестерол"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:20
 msgid "Sodium"
-msgstr ""
+msgstr "Натрий"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:22
 msgid "Total Carbohydrate"
-msgstr ""
+msgstr "Общо Карбонхидрат"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:24
 msgid "Dietary Fiber"
-msgstr ""
+msgstr "Диетични влакна"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:26
 msgid "Sugars"
-msgstr ""
+msgstr "Захари"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:28
 msgid "Protein"
-msgstr ""
+msgstr "Протеин"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:33
 msgid "Alpha-carotene"
-msgstr ""
+msgstr "Алфа-Каротин"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:35
 msgid "Ash"
-msgstr ""
+msgstr "Пепел"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:37
 msgid "Beta-carotene"
-msgstr ""
+msgstr "Бета-каротин"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:39
 msgid "Beta Cryptoxanthin"
-msgstr ""
+msgstr "Бета Криптоксантин"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:41
 msgid "Calcium"
-msgstr ""
+msgstr "Калций"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:43
 msgid "Copper"
-msgstr ""
+msgstr "Мед"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:45
 msgid "Folate Total"
@@ -3151,7 +3127,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:47
 msgid "Folic acid"
-msgstr ""
+msgstr "Фолиева киселина"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:49
 msgid "Food Folate"
@@ -3163,130 +3139,134 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:53
 msgid "Iron"
-msgstr ""
+msgstr "Желязо"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:55
 msgid "Lycopene"
-msgstr ""
+msgstr "Ликопен"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:57
 msgid "Lutein+Zeazanthin"
-msgstr ""
+msgstr "Лутеин+Зеаксантин"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:59
 msgid "Magnesium"
-msgstr ""
+msgstr "Магнезий"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:61
 msgid "Manganese"
-msgstr ""
+msgstr "Манган"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:63
 msgid "Niacin"
-msgstr ""
+msgstr "Ниацин"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:65
 msgid "Pantothenic Acid"
-msgstr ""
+msgstr "Калциев пантотенат"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:67
 msgid "Phosphorus"
-msgstr ""
+msgstr "Фосфор"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:69
 msgid "Potassium"
-msgstr ""
+msgstr "Сода"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:71
 msgid "Vitamin A"
-msgstr ""
+msgstr "Витамин А"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:73
 msgid "Retinol"
-msgstr ""
+msgstr "Ретинол"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:75
 msgid "Riboflavin"
-msgstr ""
+msgstr "Рибофлавин"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:77
 msgid "Selenium"
-msgstr ""
+msgstr "Селен"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:79
 msgid "Thiamin"
-msgstr ""
+msgstr "Тиамин"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:81
 msgid "Vitamin A (IU)"
-msgstr ""
+msgstr "Витамин А (IU)"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:83
 msgid "Vitamin A (RAE)"
-msgstr ""
+msgstr "Витамин А (RAE)"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:85
 msgid "Vitamin B6"
-msgstr ""
+msgstr "Витамин B6"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:87
 msgid "Vitamin B12"
-msgstr ""
+msgstr "Витамин B12"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:89
 msgid "Vitamin C"
-msgstr ""
+msgstr "Витамин С"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:91
 msgid "Vitamin E"
-msgstr ""
+msgstr "Витамин Е"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:93
 msgid "Vitamin K"
-msgstr ""
+msgstr "Витамин К"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:95
 msgid "Zinc"
-msgstr ""
+msgstr "Цинк"
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:205
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:207
 msgid "Vitamins and minerals"
-msgstr ""
+msgstr "Витамини и минерали"
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:310
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:315
 #, python-format
 msgid ""
 "Missing nutritional information\n"
 "for %(missing)s of %(total)s ingredients."
 msgstr ""
+"Липсва хранителна информация за\n"
+" %(missing)s на %(total)s съставки"
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:326
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:331
 msgid "% _Daily Value"
-msgstr ""
+msgstr "% _Дневна стойност"
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:371
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:376
 #, python-format
 msgid ""
 "Percentage of recommended daily value based on %i calories per day. Click to "
 "edit number of calories per day."
 msgstr ""
+"Процент от препоръчителна дневна доза, на база %i калории дневно. Натиснете, "
+"за да редактирате дневния обем калории."
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:461
-#, fuzzy, python-format
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:466
+#, python-format
 msgid "Amount per %s"
-msgstr "Коли_чество: "
+msgstr "Количество %s"
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:463
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:468
 msgid "Amount per recipe"
-msgstr ""
+msgstr "Количество за рецепта"
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:9
 msgid "Ingredient"
-msgstr ""
+msgstr "Съставка"
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:10
 msgid "USDA Database Equivalent"
-msgstr ""
+msgstr "USDA Еквивалент на базата данни"
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:11
 #: ../src/lib/shopping.py:139 ../src/lib/shopping.py:159
@@ -3295,99 +3275,99 @@ msgstr "Непознато"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:12
 msgid "Water"
-msgstr ""
+msgstr "Вода"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:13
 msgid "Kilocalories"
-msgstr ""
+msgstr "Килокалории"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:14
 msgid "g protein"
-msgstr ""
+msgstr "гр протеин"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:15
 msgid "g lipid"
-msgstr ""
+msgstr "гр липид"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:16
 msgid "g ash"
-msgstr ""
+msgstr "гр пепел"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:17
 msgid "g carbohydrates"
-msgstr ""
+msgstr "гр карбохидрати"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:18
 msgid "g fiber"
-msgstr ""
+msgstr "гр влакна"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:19
 msgid "g sugar"
-msgstr ""
+msgstr "гр захар"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:20
 msgid "mg calcium"
-msgstr ""
+msgstr "мг калций"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:21
 msgid "mg iron"
-msgstr ""
+msgstr "мг желязо"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:22
 msgid "mg magnesium"
-msgstr ""
+msgstr "мг магнезий"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:23
 msgid "mg phosphorus"
-msgstr ""
+msgstr "мг фосфор"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:24
 msgid "mg potassium"
-msgstr ""
+msgstr "мг калий"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:25
 msgid "mg sodium"
-msgstr ""
+msgstr "мг натрий"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:26
 msgid "mg zinc"
-msgstr ""
+msgstr "мг цинк"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:27
 msgid "mg copper"
-msgstr ""
+msgstr "мг селен"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:28
 msgid "mg manganese"
-msgstr ""
+msgstr "мг манган"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:29
 msgid "microgram selenium"
-msgstr ""
+msgstr "микрограм селен"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:30
 msgid "mg vitamin c"
-msgstr ""
+msgstr "мг витамин C"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:31
 msgid "mg thiamin"
-msgstr ""
+msgstr "мг тиарин"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:32
 msgid "mg riboflavin"
-msgstr ""
+msgstr "мг рибофлавин"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:33
 msgid "mg niacin"
-msgstr ""
+msgstr "мг риацин"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:34
 msgid "mg pantothenic acid"
-msgstr ""
+msgstr "мг калциев пантотенат"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:35
 msgid "mg vitamin B6"
-msgstr ""
+msgstr "мг витамин B6"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:36
 msgid "microgram Folate Total"
@@ -3395,7 +3375,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:37
 msgid "microgram Folic acid"
-msgstr ""
+msgstr "микрограма Фолиева Киселина"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:38
 msgid "microgram Food Folate"
@@ -3407,15 +3387,15 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:40
 msgid "Choline, total"
-msgstr ""
+msgstr "Холин, общо"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:41
 msgid "microgram Vitamin B12"
-msgstr ""
+msgstr "микрограма Витамин B12"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:42
 msgid "Vitamin A IU"
-msgstr ""
+msgstr "Витамин A IU"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:43
 msgid "Vitamin A (microgram Retinal Activity Equivalents"
@@ -3423,223 +3403,279 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:44
 msgid "microgram Retinol"
-msgstr ""
+msgstr "микрограма Ретинол"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:45
 msgid "microgram Alpha-carotene"
-msgstr ""
+msgstr "микрограма Алфа-каротин"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:46
 msgid "microgram Beta-carotene"
-msgstr ""
+msgstr "микрограма Бета-каротин"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:47
 msgid "microgram Beta Cryptoxanthin"
-msgstr ""
+msgstr "микрограма Бета Криптоксантин"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:48
 msgid "microgram Lycopene"
-msgstr ""
+msgstr "микрограма Ликопен"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:49
 msgid "microgram Lutein+Zeazanthin"
-msgstr ""
+msgstr "микрограма Лутеин+Зеаксантин"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:50
 msgid "mg Vitamin E"
-msgstr ""
+msgstr "мг витамин Е"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:51
 msgid "mg Vitamin K"
-msgstr ""
+msgstr "мг Витамин К"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:52
 msgid "g Saturated Fatty Acid"
-msgstr ""
+msgstr "грама Наситена мастна киселина"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:53
 msgid "g Monounsaturated Fatty Acids"
-msgstr ""
+msgstr "грама Мононенаситени мастни киселини"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:54
 msgid "g Polyunsaturated Fatty Acids"
-msgstr ""
+msgstr "грама Полиненаситени мастни киселини"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:55
 msgid "mg Cholesterol"
-msgstr ""
+msgstr "мг Холестерол"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:60
 msgid "Percent refuse"
-msgstr ""
+msgstr "Процент откази"
 
 #. the DB Food Group Numbers seem to be inline with the group IDs
 #. (numbers > 1000 are in group 100, etc.)
 #. Since that's true, we can use the following table to properly add groups.
 #: ../src/lib/plugins/nutritional_information/parser_data.py:337
 msgid "Dairy & Egg Products"
-msgstr ""
+msgstr "Млечни и яйчени продукти"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:338
 msgid "Spices & Herbs"
-msgstr ""
+msgstr "Подправки и билки"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:339
 msgid "Baby Foods"
-msgstr ""
+msgstr "Бебешка храна"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:340
 msgid "Fats and Oils"
-msgstr ""
+msgstr "Масла и мазнини"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:341
 msgid "Poultry"
-msgstr ""
+msgstr "Домашни птици"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:342
 msgid "Soups & Sauces"
-msgstr ""
+msgstr "Супи и Сосове"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:343
 msgid "Sausages & Lunch Meats"
-msgstr ""
+msgstr "Сосове и Обедни менюта"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:344
 msgid "Breakfast Cereals"
-msgstr ""
+msgstr "Зърнени закуски"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:345
 msgid "Fruits & Fruit Juices"
-msgstr ""
+msgstr "Плодове и плодови сокове"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:346
 msgid "Pork"
-msgstr ""
+msgstr "Свинско"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:347
 msgid "Vegetables"
-msgstr ""
+msgstr "Зеленчуци"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:348
 msgid "Nuts & Seeds"
-msgstr ""
+msgstr "Ядки и семена"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:349
 msgid "Beef"
-msgstr ""
+msgstr "Говеждо"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:350
 msgid "Beverages"
-msgstr ""
+msgstr "Напитки"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:351
 msgid "Fish & Shellfish"
-msgstr ""
+msgstr "Риба и Ракообразни"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:352
 msgid "Legumes"
-msgstr ""
+msgstr "Зеленчуци"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:353
 msgid "Lamb, Veal & Game"
-msgstr ""
+msgstr "Агнешко, телешко и дивеч"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:354
 msgid "Baked Products"
-msgstr ""
+msgstr "Печени продукти"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:355
 msgid "Sweets"
-msgstr ""
+msgstr "Сладки неща"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:356
 msgid "Grains and Pasta"
-msgstr ""
+msgstr "Зърнени и паста"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:357
 msgid "Fast Foods"
-msgstr ""
+msgstr "Бързи храни"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:358
 msgid "Meals, Entrees, and Sidedishes"
-msgstr ""
+msgstr "Основни, предястия и гарнитури"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:359
 msgid "Snacks"
-msgstr ""
+msgstr "Снакове"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:360
 msgid "Ethnic Foods"
-msgstr ""
+msgstr "Национална кухня"
 
 #: ../src/lib/plugins/nutritional_information/reccard_plugin.py:15
 msgid "Nutrition"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:28
-#, fuzzy
-msgid "Tools"
-msgstr "Инструмен_ти"
+msgstr "Хранене"
 
 #. label
 #. key-command
 #: ../src/lib/plugins/nutritional_information/shopping_plugin.py:33
 msgid "Get nutritional information for current list"
-msgstr ""
+msgstr "Получаване на хранителната информация за текущия списък"
 
 #: ../src/lib/plugins/nutritional_information/shopping_plugin.py:82
-#, fuzzy
 msgid "Amount for Shopping List"
-msgstr "Добавяне към _списъка за пазаруване"
+msgstr "Количество за списъка за пазаруване"
+
+#: ../src/lib/plugins/python_shell.gourmet-plugin.in.h:1
+msgid ""
+"Allows programmers to access an interactive shell with access to Gourmet's "
+"internals."
+msgstr ""
+
+#: ../src/lib/plugins/python_shell.gourmet-plugin.in.h:2
+msgid "Python Shell"
+msgstr ""
 
 #: ../src/lib/plugins/python_shell/__init__.py:14
 msgid "_Python Console"
-msgstr ""
+msgstr "_Конзола на Python"
 
 #: ../src/lib/plugins/python_shell/__init__.py:15
 msgid "Show python console (provides access to current gourmet instance)"
 msgstr ""
+"Показване на конзола на python (осигурява достъп до текущото копие на "
+"gourmet)"
+
+#: ../src/lib/plugins/shopping_associations.gourmet-plugin.in.h:1
+msgid ""
+"Assign and edit shopping categories for ingredients from within the recipe "
+"editor."
+msgstr ""
+
+#: ../src/lib/plugins/shopping_associations.gourmet-plugin.in.h:2
+msgid "Shopping Category Editor"
+msgstr ""
 
 #: ../src/lib/plugins/shopping_associations/shopping_key_editor_plugin.py:9
-#: ../src/lib/reccard.py:2297
+#: ../src/lib/reccard.py:2285
 msgid "Shopping Category"
+msgstr "Категория за пазаруване"
+
+#: ../src/lib/plugins/spellcheck.gourmet-plugin.in.h:1
+msgid ""
+"Adds spell checking to paragraph length text boxes in recipe entry "
+"(Instructions, Notes)."
 msgstr ""
+
+#: ../src/lib/plugins/spellcheck.gourmet-plugin.in.h:2
+msgid "Spell Checking"
+msgstr ""
+
+#: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:1
+msgid "Provides a simple unit calculator."
+msgstr ""
+
+#: ../src/lib/plugins/unit_converter/__init__.py:15
+msgid "_Unit Converter"
+msgstr "Прео_бразуване на единици"
 
 #: ../src/lib/plugins/unit_converter/__init__.py:16
 msgid "Calculate unit conversions"
+msgstr "Конвертиране на единици"
+
+#: ../src/lib/plugins/unit_display_prefs.gourmet-plugin.in.h:1
+msgid "Allows you to always use metric (or imperial) units for display."
+msgstr ""
+
+#: ../src/lib/plugins/unit_display_prefs.gourmet-plugin.in.h:3
+msgid "Unit Display Preferences"
 msgstr ""
 
 #: ../src/lib/plugins/unit_display_prefs/__init__.py:26
 msgid "Set _unit display preferences"
-msgstr ""
+msgstr "Задаване на предпочитания за показване на _мерните единици"
 
 #: ../src/lib/plugins/unit_display_prefs/__init__.py:27
 msgid ""
 "Automatically convert units to preferred system (metric, imperial, etc.) "
 "where possible."
 msgstr ""
+"Автоматично конвертиране на единици към предпочитана система (метрична, "
+"имперска и т. н.), където е възможно."
 
 #: ../src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py:8
 msgid "Display units as written for each recipe (no change)"
 msgstr ""
+"Показване на единиците както са записани за всяка рецепта (без промяна)"
 
 #: ../src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py:9
 msgid "Always display U.S. units"
-msgstr ""
+msgstr "Винаги да се показвата американски единици"
 
 #: ../src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py:10
 msgid "Always display metric units"
-msgstr ""
+msgstr "Винаги да се показват метрични единици"
 
 #: ../src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py:18
 msgid "Automatically adjust units"
+msgstr "Автоматично нагаждане на единиците"
+
+#: ../src/lib/plugins/utf16.gourmet-plugin.in.h:1
+msgid "Check for Unicode-16 in text files"
+msgstr ""
+
+#: ../src/lib/plugins/utf16.gourmet-plugin.in.h:2
+msgid ""
+"Enable this if your utf-16 text files aren't importing cleanly into Gourmet. "
+"Disable this if you never use UTF16 and you're constantly being annoyed by "
+"the 'Encoding' dialog when you import files."
 msgstr ""
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:24
 #: ../src/lib/recindex.py:37 ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:481
 msgid "anywhere"
-msgstr ""
+msgstr "навсякъде"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:25
 #: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
@@ -3674,327 +3710,320 @@ msgid "source"
 msgstr "източник"
 
 #. menus
-#: ../src/lib/reccard.py:213 ../src/lib/reccard.py:872
+#: ../src/lib/reccard.py:211 ../src/lib/reccard.py:863
 msgid "_Recipe"
-msgstr ""
+msgstr "_Рецепта"
 
-#: ../src/lib/reccard.py:217
-#, fuzzy
+#: ../src/lib/reccard.py:215
 msgid "Export recipe"
-msgstr "Изнасяне на рецепти"
+msgstr "Изнасяне на рецепта"
+
+#: ../src/lib/reccard.py:216
+msgid "Export selected recipe (save to file)"
+msgstr "Изнасяне на избраната рецепта (запис във файл)"
 
 #: ../src/lib/reccard.py:218
-#, fuzzy
-msgid "Export selected recipe (save to file)"
-msgstr "Разпечатване на избрана рецепта"
-
-#: ../src/lib/reccard.py:220
-#, fuzzy
 msgid "_Delete recipe"
-msgstr "_Изтриване на рецепта"
+msgstr "_Изтриване на рецептата"
 
-#: ../src/lib/reccard.py:221
-#, fuzzy
+#: ../src/lib/reccard.py:219
 msgid "Delete this recipe"
-msgstr "_Изтриване на тази рецепта"
+msgstr "Изтриване на тази рецепта"
+
+#: ../src/lib/reccard.py:230
+msgid "Adjust units when multiplying"
+msgstr "Нагаждане на единиците при умножаване"
 
 #: ../src/lib/reccard.py:232
-msgid "Adjust units when multiplying"
-msgstr ""
-
-#: ../src/lib/reccard.py:234
 msgid ""
 "Change units to make them more readable where possible when multiplying."
 msgstr ""
+"Промяна на единиците, за да се направят по-четими, където е възможно, при "
+"умножаване."
 
 #. ('Email',None,_('E-_mail recipe'),
 #. None,None,self.email_cb),
-#: ../src/lib/reccard.py:242
+#: ../src/lib/reccard.py:240
 msgid "Print recipe"
-msgstr ""
+msgstr "Печат на рецепта"
 
-#: ../src/lib/reccard.py:245
-#, fuzzy
+#: ../src/lib/reccard.py:243
 msgid "Forget remembered optional ingredients"
-msgstr "Създаване на нова подгрупа съставки"
+msgstr "Забравяне на запомнените допълнителни съставки"
 
-#: ../src/lib/reccard.py:246
+#: ../src/lib/reccard.py:244
 msgid ""
 "Before adding to shopping list, ask about all optional ingredients, even "
 "ones you previously wanted remembered"
 msgstr ""
+"Преди добавяне в списъка за пазаруване, питане за всички допълнителни "
+"съставки, дори и за предишно запомнените"
 
-#: ../src/lib/reccard.py:248
-#, fuzzy
+#: ../src/lib/reccard.py:246
 msgid "Export Recipe"
-msgstr "Из_насяне на рецепта"
+msgstr "Изнасяне на рецептата"
 
-#: ../src/lib/reccard.py:617
+#: ../src/lib/reccard.py:608
 msgid "You have unsaved changes."
-msgstr ""
+msgstr "Имаш незашпазени промени."
 
-#: ../src/lib/reccard.py:618
+#: ../src/lib/reccard.py:609
 msgid "Apply changes before printing?"
-msgstr ""
+msgstr "Да приложа ли промените преди печат?"
 
-#: ../src/lib/reccard.py:709 ../src/lib/recipeIdentifier.py:93
+#: ../src/lib/reccard.py:700 ../src/lib/recipeIdentifier.py:93
 msgid "(Optional)"
-msgstr ""
+msgstr "(Допълнително)"
 
-#: ../src/lib/reccard.py:764
+#: ../src/lib/reccard.py:755
 #, python-format
 msgid "Unable to find recipe %s in database."
-msgstr ""
+msgstr "Рецептата %s не може да бъде открита в базата данни."
 
-#: ../src/lib/reccard.py:856
+#: ../src/lib/reccard.py:847
 msgid "Edit Recipe:"
-msgstr ""
+msgstr "Редактирай рецепта:"
 
-#: ../src/lib/reccard.py:877
+#: ../src/lib/reccard.py:868
 msgid "Save edits to database"
-msgstr ""
+msgstr "Запазване на редактиранията в базата данни"
 
 #. show_pref_dialog
-#: ../src/lib/reccard.py:886
+#: ../src/lib/reccard.py:877
 msgid "View Recipe Card"
-msgstr ""
+msgstr "Преглед на картата за рецептата"
 
-#: ../src/lib/reccard.py:948
-#, fuzzy
+#: ../src/lib/reccard.py:939
 msgid "Edit"
-msgstr "_Редактиране"
+msgstr "Редактиране"
 
-#: ../src/lib/reccard.py:1052 ../src/lib/reccard.py:1053
-#, fuzzy, python-format
+#: ../src/lib/reccard.py:1046 ../src/lib/reccard.py:1047
+#, python-format
 msgid "Save changes to %s"
-msgstr "Запазване на промените"
+msgstr "Запазване на промените в %s"
 
-#: ../src/lib/reccard.py:1142
-#, fuzzy
+#: ../src/lib/reccard.py:1137
 msgid "Add ingredient"
-msgstr "_Добавяне на съставка"
+msgstr "Добавяне на съставка"
 
-#: ../src/lib/reccard.py:1144
-#, fuzzy
+#: ../src/lib/reccard.py:1139
 msgid "Add group"
-msgstr "Добавяне на _група"
+msgstr "Добавяне на група"
+
+#: ../src/lib/reccard.py:1141
+msgid "Paste ingredients"
+msgstr "Поставяне на съставки"
+
+#: ../src/lib/reccard.py:1143
+msgid "Import from file"
+msgstr "Внасяне от файл"
+
+#: ../src/lib/reccard.py:1145
+msgid "Add _recipe"
+msgstr "Добавяне на  _рецепта"
 
 #: ../src/lib/reccard.py:1146
-#, fuzzy
-msgid "Paste ingredients"
-msgstr "Преглед на съставките"
-
-#: ../src/lib/reccard.py:1148
-#, fuzzy
-msgid "Import from file"
-msgstr "_Внасяне на файл"
+msgid "Add another recipe as an ingredient in this recipe"
+msgstr "Добавяне на друга рецепта като съставка на тази"
 
 #: ../src/lib/reccard.py:1150
-#, fuzzy
-msgid "Add _recipe"
-msgstr "рецепта"
-
-#: ../src/lib/reccard.py:1151
-msgid "Add another recipe as an ingredient in this recipe"
-msgstr ""
-
-#: ../src/lib/reccard.py:1155
-#, fuzzy
 msgid "Delete"
-msgstr "_Изтриване"
+msgstr "Изтриване"
 
-#: ../src/lib/reccard.py:1161
+#: ../src/lib/reccard.py:1156
 msgid "Up"
-msgstr ""
+msgstr "Нагоре"
 
-#: ../src/lib/reccard.py:1163
-#, fuzzy
+#: ../src/lib/reccard.py:1158
 msgid "Down"
-msgstr "Готово!"
+msgstr "Надолу"
 
 #. FIXME
-#: ../src/lib/reccard.py:1209
+#: ../src/lib/reccard.py:1204
 msgid "Choose a file containing your ingredient list."
 msgstr "Изберете файл съдържащ списъка със съставки."
 
-#: ../src/lib/reccard.py:1401
+#: ../src/lib/reccard.py:1389
 #, python-format
 msgid "Couldn't make sense of %s as number of yields"
 msgstr ""
 
-#: ../src/lib/reccard.py:2149 ../src/lib/reccard.py:2177
+#: ../src/lib/reccard.py:2137 ../src/lib/reccard.py:2165
 msgid "Amt"
-msgstr ""
+msgstr "Количество"
 
-#: ../src/lib/reccard.py:2153 ../src/lib/reccard.py:2180
+#: ../src/lib/reccard.py:2141 ../src/lib/reccard.py:2168
 msgid "Optional"
-msgstr ""
+msgstr "Незадължителни"
 
-#: ../src/lib/reccard.py:2314
+#: ../src/lib/reccard.py:2302
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
-msgstr ""
+msgstr "Рецептата %s (ID %s) не е в нашата база данни."
 
-#: ../src/lib/reccard.py:2635
+#: ../src/lib/reccard.py:2623
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
-msgstr ""
+msgstr "Конвертирани %(amt)s %(unit)s"
 
-#: ../src/lib/reccard.py:2637
+#: ../src/lib/reccard.py:2625
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
-msgstr ""
+msgstr "Неконвертирани %(amt)s %(unit)s"
 
-#: ../src/lib/reccard.py:2641
+#: ../src/lib/reccard.py:2629
 msgid "Changed unit."
 msgstr "Променена единица."
 
-#: ../src/lib/reccard.py:2642
+#: ../src/lib/reccard.py:2630
 #, python-format
 msgid ""
 "You have changed the unit for %(item)s from %(old)s to %(new)s. Would you "
 "like the amount converted or not?"
 msgstr ""
+"Вие променихте единицата за %(item)s от %(old)s на %(new)s. Желаете ли да се "
+"конвертира количеството или не?"
+
+#: ../src/lib/reccard.py:2641
+#, python-format
+msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
+msgstr "Конвертирано %(old_amt)s %(old_unit)s в %(new_amt)s %(new_unit)s"
 
 #: ../src/lib/reccard.py:2653
 #, python-format
-msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
-msgstr ""
-
-#: ../src/lib/reccard.py:2665
-#, python-format
 msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
-msgstr ""
+msgstr "Не може да се конвертира от %(old_unit)s в %(new_unit)s"
 
-#: ../src/lib/reccard.py:2720
+#: ../src/lib/reccard.py:2708
 msgid "Adding Ingredient Group"
 msgstr "Добавяне на група съставки"
 
-#: ../src/lib/reccard.py:2721
+#: ../src/lib/reccard.py:2709
 msgid "Enter a name for new subgroup of ingredients"
 msgstr "Въведете име за новата подгрупа съставки"
 
-#: ../src/lib/reccard.py:2722
+#: ../src/lib/reccard.py:2710
 msgid "Name of group:"
-msgstr ""
+msgstr "Име на групата:"
 
-#: ../src/lib/reccard.py:2987
-#, fuzzy
+#: ../src/lib/reccard.py:2976
 msgid "Choose recipe"
-msgstr "Преглед на рецептите"
+msgstr "Изберете рецепта"
 
-#: ../src/lib/reccard.py:3024
+#: ../src/lib/reccard.py:3013
 msgid "Recipe cannot call itself as an ingredient!"
-msgstr ""
+msgstr "Рецептата не може да се използва себе си като съставка"
 
-#: ../src/lib/reccard.py:3025 ../src/lib/shopping.py:329
+#: ../src/lib/reccard.py:3014 ../src/lib/shopping.py:329
 msgid "Infinite recursion is not allowed in recipes!"
-msgstr ""
+msgstr "Безкрайните рекурсии не са разрешени в рецептите!"
 
-#: ../src/lib/reccard.py:3046
+#: ../src/lib/reccard.py:3035
 msgid "You haven't selected any recipes!"
 msgstr "Не сте избрали нито една рецепта!"
 
-#: ../src/lib/reccard.py:3058
+#: ../src/lib/reccard.py:3047
 #, python-format
 msgid "How much of %(title)s does your recipe call for?"
-msgstr ""
+msgstr "От колко %(title)s се нуждае рецептата ви?"
 
 #: ../src/lib/recindex.py:152
-#, fuzzy
 msgid "Use regular expressions in search"
-msgstr "Използване на стандартни изрази"
+msgstr "Използване на регулярни изрази в търсенето"
 
 #: ../src/lib/recindex.py:153
 msgid "Use regular expressions (an advanced search language) in text search"
 msgstr ""
+"Използване на регулярни изрази (разширен език за търсене) в търсенето на "
+"текст"
 
 #: ../src/lib/recindex.py:156
 msgid "Search as you type (turn off if search is too slow)."
 msgstr ""
+"Търсене при въвеждане (изключете го, ако търсенето е прекалено бавно)."
 
 #: ../src/lib/recindex.py:161
 msgid "Show Search _Options"
-msgstr ""
+msgstr "Показване на _настройките за търсене"
 
 #: ../src/lib/recindex.py:163
 msgid "Show advanced searching options"
-msgstr ""
+msgstr "Показване на разширени настройки за търсене"
 
 #: ../src/lib/recindex.py:252
 #, python-format
 msgid "%s recipe"
 msgid_plural "%s recipes"
-msgstr[0] ""
+msgstr[0] "%s рецепта"
+msgstr[1] "%s рецепти"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
 #: ../src/lib/recindex.py:260
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
-msgstr ""
+msgstr "покажи рецепти %(bottom)s до %(top)s от %(total)s"
 
 #: ../src/lib/recindex.py:482
-#, fuzzy, python-format
+#, python-format
 msgid "%s in %s"
-msgstr " %s съдържа %s"
+msgstr "%s в %s"
 
 #: ../src/lib/shopgui.py:122 ../src/lib/shopgui.py:129
-#, fuzzy
 msgid "Change _Category"
-msgstr "Въведете категория"
+msgstr "Промяна на _категорията"
 
 #: ../src/lib/shopgui.py:123
-#, fuzzy
 msgid "Create new category"
-msgstr "Създаване на нова рецепта"
+msgstr "Създаване на нова категория"
 
 #: ../src/lib/shopgui.py:131
 msgid "Change the category of the currently selected item"
-msgstr ""
+msgstr "Промяна на категорията на текущо избрания артикул"
 
 #: ../src/lib/shopgui.py:137
-#, fuzzy
 msgid "Pantry"
-msgstr "Добавяне към _килера"
+msgstr "Провизии"
 
 #. name
 #. stock
 #: ../src/lib/shopgui.py:140
 msgid "Move to _Shopping List"
-msgstr ""
+msgstr "Премести в Списъка за _Пазар"
 
 #. text
 #: ../src/lib/shopgui.py:141
 msgid "<Ctrl>B"
-msgstr ""
+msgstr "<Ctrl>B"
 
 #. name
 #. stock
 #: ../src/lib/shopgui.py:150
-#, fuzzy
 msgid "Move to _pantry"
-msgstr "Добавяне към _килера"
+msgstr "Преместване при провизиите"
 
 #. text
 #: ../src/lib/shopgui.py:151
 msgid "<Ctrl>D"
-msgstr ""
+msgstr "<Ctrl>D"
 
 #. key-command
 #: ../src/lib/shopgui.py:152
-#, fuzzy
 msgid "Remove from shopping list"
-msgstr "Добавяне към _списъка за пазаруване"
+msgstr "Премахване от списъка за пазаруване"
 
 #: ../src/lib/shopgui.py:173
 #, python-format
 msgid "Move selected items into %s"
-msgstr ""
+msgstr "Преместване на избраните артикули в %s"
+
+#: ../src/lib/shopgui.py:210
+msgid "_Shopping List"
+msgstr "_Списък за пазаруване"
 
 #: ../src/lib/shopgui.py:211
 msgid "Already Have (_Pantry Items)"
-msgstr ""
+msgstr "Вече го има (_Провизии)"
 
 #: ../src/lib/shopgui.py:472
 msgid "Enter Category"
@@ -4007,7 +4036,7 @@ msgstr "Категория, към която да се добави %s"
 
 #: ../src/lib/shopgui.py:474
 msgid "Category:"
-msgstr ""
+msgstr "Категория:"
 
 #: ../src/lib/shopgui.py:587
 msgid "_Recipes"
@@ -4015,24 +4044,23 @@ msgstr "_Рецепти"
 
 #: ../src/lib/shopgui.py:610
 msgid "_Add items:"
-msgstr ""
+msgstr "_Добавяне на артикули:"
 
 #: ../src/lib/shopgui.py:648
 msgid "Remove Recipes"
-msgstr ""
+msgstr "Махни рецептите"
 
 #: ../src/lib/shopgui.py:649
 msgid "Remove recipes from shopping list"
-msgstr ""
+msgstr "Махни рецептите от пазарския лист"
 
 #: ../src/lib/shopgui.py:683
 msgid "Add items"
-msgstr ""
+msgstr "Добавяне на артикули"
 
 #: ../src/lib/shopgui.py:685
-#, fuzzy
 msgid "Add arbitrary items to shopping list"
-msgstr "Добавяне на рецептата в списъка за пазаруване"
+msgstr ""
 
 #: ../src/lib/shopgui.py:751
 msgid "x"
@@ -4040,22 +4068,23 @@ msgstr "x"
 
 #: ../src/lib/shopgui.py:836
 msgid "No recipes selected. Do you want to clear the entire list?"
-msgstr ""
+msgstr "Не са избрани рецепти, да изтрия ли целия лист?"
 
 #: ../src/lib/shopgui.py:846
 msgid "Save Shopping List As..."
 msgstr "Запазване на списъка за пазаруване като..."
 
 #: ../src/lib/shopgui.py:899
-#, fuzzy
 msgid "Select optional ingredients"
-msgstr "Преглед на съставките"
+msgstr "Избиране на допълнителни съставки"
 
 #: ../src/lib/shopgui.py:900
 msgid ""
 "Please specify which of the following optional ingredients you'd like to "
 "include on your shopping list."
 msgstr ""
+"Моля посочете кои от следните допълнителни съставки бихте желали да включите "
+"в списъка си за пазаруване."
 
 #: ../src/lib/shopping.py:18
 msgid "flour, all purpose"
@@ -4091,7 +4120,7 @@ msgstr "зехтин"
 
 #: ../src/lib/shopping.py:328
 msgid "Recipe calls for itself as an ingredient."
-msgstr ""
+msgstr "Рецептата търси себе си като съставка."
 
 #: ../src/lib/shopping.py:329
 #, python-format
@@ -4101,11 +4130,11 @@ msgstr "Съставката %s ще бъде игнорирана."
 #: ../src/lib/shopping.py:375 ../src/lib/shopping.py:390
 #, python-format
 msgid "Shopping list for %s"
-msgstr ""
+msgstr "Лист за пазаруване за %s"
 
 #: ../src/lib/shopping.py:376 ../src/lib/shopping.py:391
 msgid "For the following recipes:"
-msgstr ""
+msgstr "За следните рецепти:"
 
 #: ../src/lib/shopping.py:381 ../src/lib/shopping.py:395
 #, python-format
@@ -4113,61 +4142,58 @@ msgid " x%s"
 msgstr " x%s"
 
 #: ../src/lib/threadManager.py:225
-#, fuzzy
 msgid "Paused"
-msgstr "_Пауза"
+msgstr "На пауза"
 
 #: ../src/lib/threadManager.py:239
 msgid "Gourmet Import/Export"
-msgstr ""
+msgstr "Gourmet внасяне/изнасяне"
 
 #: ../src/lib/threadManager.py:258
-#, fuzzy
 msgid "Pause"
-msgstr "_Пауза"
+msgstr "На пауза"
 
 #: ../src/lib/threadManager.py:300
-#, fuzzy
 msgid "Done"
-msgstr "Готово!"
+msgstr "Готово"
 
 #: ../src/lib/threadManager.py:314
 #, python-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Грешка: %s"
 
 #: ../src/lib/threadManager.py:324
 msgid "cancelled"
-msgstr ""
+msgstr "отказан"
 
 #: ../src/lib/threadManager.py:357
 msgid "Error"
-msgstr ""
+msgstr "Грешка"
 
 #: ../src/lib/threadManager.py:358
 #, python-format
 msgid "Error %s: %s"
-msgstr ""
+msgstr "Грешка %s: %s"
 
 #: ../src/lib/threadManager.py:359
 msgid "Traceback"
-msgstr ""
+msgstr "Проследяване"
 
 #: ../src/lib/timer.py:99 ../src/lib/timer.py:121
 msgid "Ringing Sound"
-msgstr ""
+msgstr "Звук за звънене"
 
 #: ../src/lib/timer.py:100
 msgid "Warning Sound"
-msgstr ""
+msgstr "Звук за предупреждение"
 
 #: ../src/lib/timer.py:101
 msgid "Error Sound"
-msgstr ""
+msgstr "Звук за грешка"
 
 #: ../src/lib/timer.py:192
 msgid "Stop timer?"
-msgstr ""
+msgstr "Спиране на таймера?"
 
 #: ../src/lib/timer.py:193
 msgid ""
@@ -4178,21 +4204,20 @@ msgstr ""
 
 #: ../src/lib/timer.py:194
 msgid "Stop _timer"
-msgstr ""
+msgstr "Спиране на  _таймера"
 
 #: ../src/lib/timer.py:194
 msgid "_Keep timing"
-msgstr ""
+msgstr "_Запазване на времето"
 
-#: ../src/lib/version.py:4
-#, fuzzy
+#: ../src/lib/version.py:5
 msgid ""
 "Copyright (c) 2004,2005,2006,2007,2008,2009,2010,2011 Thomas M. Hinkle. GNU "
 "GPL v2"
-msgstr "Всички права запазени (c) 2004,2005 Thomas M. Hinkle. GNU GPL"
+msgstr ""
 
 #. repeated in setup.cfg
-#: ../src/lib/version.py:7
+#: ../src/lib/version.py:8
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
@@ -4204,292 +4229,38 @@ msgid ""
 "based on the ingredients."
 msgstr ""
 
-#: ../src/lib/version.py:9
+#: ../src/lib/version.py:10
 msgid "Roland Duhaime (Windows porting assistance)"
 msgstr "Roland Duhaime (помощ при портването към Windows)"
 
-#: ../src/lib/version.py:10
+#: ../src/lib/version.py:11
 msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
 msgstr "Daniel Folkinshteyn <nanotube@gmail.com> (Windows инсталатор)"
 
-#: ../src/lib/version.py:11
+#: ../src/lib/version.py:12
 msgid "Richard Ferguson (improvements to Unit Converter interface)"
 msgstr "Richard Ferguson (подобрения по интерфейса на конвертора на единици)"
 
-#: ../src/lib/version.py:12
+#: ../src/lib/version.py:13
 msgid "R.S. Born (improvements to Mealmaster export)"
 msgstr "R.S. Born (подобрения към изнасянето в Mealmaster формат)"
 
-#: ../src/lib/version.py:13
-msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
-msgstr ""
-
 #: ../src/lib/version.py:14
+msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
+msgstr "ixat <ixat.deviantart.com> (logo and splash screen)"
+
+#: ../src/lib/version.py:15
 msgid "Yula Zubritsky (nutrition and add-to-shopping list icons)"
 msgstr ""
 
-#: ../src/lib/version.py:15
+#: ../src/lib/version.py:16
 msgid ""
 "Simon Darlington <simon.darlington@gmx.net> (improvements to "
 "internationalization, assorted bugfixes)"
 msgstr ""
 
-#: ../src/lib/version.py:16
+#: ../src/lib/version.py:17
 msgid ""
 "Bernhard Reiter <ockham@raz.or.at> (Windows version maintenance and website "
 "re-design)"
 msgstr ""
-
-#~ msgid "<b>Email Preferences</b>"
-#~ msgstr "<b>Настройки на изпращането</b>"
-
-#~ msgid "Email Preferences"
-#~ msgstr "Настройки на изпращането"
-
-#~ msgid "Print"
-#~ msgstr "Печат"
-
-#~ msgid "_Current"
-#~ msgstr "_Текуща"
-
-#~ msgid "_Range"
-#~ msgstr "_Диапазон"
-
-#~ msgid "Printing via %s"
-#~ msgstr "Разпечатване през %s"
-
-#~ msgid ""
-#~ "\n"
-#~ "Website: %s"
-#~ msgstr ""
-#~ "\n"
-#~ "Интернет страница: %s"
-
-#, fuzzy
-#~ msgid "Translated by"
-#~ msgstr ""
-#~ "\n"
-#~ "Преведено от: %s"
-
-#~ msgid "Print Recipe %s"
-#~ msgstr "Разпечатване на рецептата %s"
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-
-#~ msgid "<b>_Instructions:</b>"
-#~ msgstr "<b>_Инструкции:</b>"
-
-#~ msgid "Recipe Card"
-#~ msgstr "Карта на рецепта"
-
-#~ msgid "_Bold"
-#~ msgstr "_Удебелено"
-
-#~ msgid "_Close"
-#~ msgstr "З_атваряне"
-
-#~ msgid "_Delete ingredient"
-#~ msgstr "_Изтриване на съставка"
-
-#~ msgid "_E-mail recipe"
-#~ msgstr "_Изпращане на рецепта"
-
-#~ msgid "_Import Ingredients"
-#~ msgstr "_Внасяне на съставки"
-
-#~ msgid "_Import ingredient list"
-#~ msgstr "_Внасяне на списък със съставки"
-
-#~ msgid "_Ingredient:"
-#~ msgstr "_Съставка:"
-
-#~ msgid "_Italic"
-#~ msgstr "Нак_лонено"
-
-#~ msgid "_Save"
-#~ msgstr "_Запазване"
-
-#~ msgid "_Underline"
-#~ msgstr "П_одчертано"
-
-#~ msgid "_Undelete"
-#~ msgstr "_Връщане на изтриване"
-
-#~ msgid "Deletion paused"
-#~ msgstr "Изтриването е паузирано"
-
-#~ msgid "Export Paused"
-#~ msgstr "Изнасянето е паузирано"
-
-#~ msgid "Stop export"
-#~ msgstr "Спиране на изнасянето"
-
-#~ msgid "Unable to unzip"
-#~ msgstr "Неуспех при разархивирането"
-
-#~ msgid "Cannot import file."
-#~ msgid_plural "Cannot import files."
-#~ msgstr[0] "Не може да се внесе файлът."
-
-#~ msgid "Importing Recipes"
-#~ msgstr "Внасят се рецепти"
-
-#~ msgid "Add new ingredient to the list."
-#~ msgstr "Добавяне на нова съставка към списъка."
-
-#~ msgid "Abandon your edits to %s?"
-#~ msgstr "Изоставяне на редакциите по %s?"
-
-#~ msgid "Are you sure you want to abandon your changes?"
-#~ msgstr "Сигурни ли сте, че искате да отхвърлите промените?"
-
-#~ msgid "There are no unsaved changes."
-#~ msgstr "Няма незапазени промени."
-
-#~ msgid "New Category"
-#~ msgstr "Нова категория"
-
-#~ msgid "Enter Password"
-#~ msgstr "Въведете парола"
-
-#~ msgid "<i>Importing %s</i>"
-#~ msgstr "<i>Внася се %s</i>"
-
-#~ msgid "Beginning import"
-#~ msgstr "Започване на внасянето"
-
-#~ msgid "RTF"
-#~ msgstr "RTF"
-
-#~ msgid "RTF Export"
-#~ msgstr "Изнасяне към RTF"
-
-#~ msgid "Limiting Search to: "
-#~ msgstr "Ограничаване на търсенето до: "
-
-#~ msgid "<b>Title</b>"
-#~ msgstr "<b>Заглавие</b>"
-
-#~ msgid "Image: "
-#~ msgstr "Снимка: "
-
-#~ msgid "Ins_tructions"
-#~ msgstr "Инс_трукции"
-
-#~ msgid "Pre_paration Time: "
-#~ msgstr "Време за _приготвяне: "
-
-#~ msgid "S_hopping Category: "
-#~ msgstr "Категори_я за пазаруване: "
-
-#~ msgid "_Delete Ingredient"
-#~ msgstr "_Изтриване на съставка"
-
-#~ msgid "_Ingredients"
-#~ msgstr "_Съставки"
-
-#~ msgid "_New Ingredient"
-#~ msgstr "_Нова съставка"
-
-#~ msgid "_Notes"
-#~ msgstr "_Бележки"
-
-#~ msgid "_Servings: "
-#~ msgstr "_Порции: "
-
-#~ msgid "_Unit: "
-#~ msgstr "_Единица: "
-
-#~ msgid "Advanced"
-#~ msgstr "Допълнителни"
-
-#~ msgid "Deleted "
-#~ msgstr "Изтрито "
-
-#~ msgid "Multiply %s by: "
-#~ msgstr "Умножаване на %s по: "
-
-#~ msgid "Enter URL: "
-#~ msgstr "Въвеждане на URL: "
-
-#~ msgid "Source: "
-#~ msgstr "Източник: "
-
-#~ msgid "Deleted 1 recipe."
-#~ msgstr "Една рецепта е изтрита."
-
-#~ msgid "Are you sure you want to change the "
-#~ msgstr "Сигурни ли сте, че искате да промените "
-
-#~ msgid " from \"%s\" "
-#~ msgstr " от \"%s\" "
-
-#~ msgid " to \"%s\""
-#~ msgstr " до \"%s\""
-
-#~ msgid "You haven't entered a key!"
-#~ msgstr "Не сте въвели ключ!"
-
-#~ msgid "Recipe Card: "
-#~ msgstr "Карта с рецепта: "
-
-#~ msgid "Choose an image to insert in instructions... "
-#~ msgstr "Избор на снимка, която да се вмъкне в инструкциите... "
-
-#~ msgid "Name of group: "
-#~ msgstr "Име на група: "
-
-#~ msgid "Are you sure you want to delete %s"
-#~ msgstr "Сигурни ли сте, че искате да изтриете %s"
-
-#~ msgid "Delete it."
-#~ msgid_plural "Delete them."
-#~ msgstr[0] "Изтрийте я."
-
-#~ msgid "Move it."
-#~ msgid_plural "Move them."
-#~ msgstr[0] "Преместете я."
-
-#~ msgid "%s Recipes"
-#~ msgstr "%s рецепти"
-
-#~ msgid ", %s contains %s"
-#~ msgstr ", %s съдържа %s"
-
-#~ msgid "Password: "
-#~ msgstr "Парола: "
-
-#~ msgid "seconds"
-#~ msgstr "секунди"
-
-#~ msgid "minutes"
-#~ msgstr "минути"
-
-#~ msgid "hours"
-#~ msgstr "часове"
-
-#~ msgid "days"
-#~ msgstr "дни"
-
-#~ msgid "weeks"
-#~ msgstr "седмици"
-
-#~ msgid "months"
-#~ msgstr "месеци"
-
-#~ msgid "Command: "
-#~ msgstr "Команда: "
-
-#~ msgid "Shopping list for: "
-#~ msgstr "Списък за пазаруване за: "
-
-#~ msgid "Printing not supported"
-#~ msgstr "Разпечатването не се поддържа"
-
-#~ msgid "_Limit Search"
-#~ msgstr "_Ограничаване на търсенето"

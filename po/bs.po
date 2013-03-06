@@ -1,23 +1,23 @@
-# English (Australia) translation for grecipe-manager
-# Copyright (c) (c) 2005 Canonical Ltd, and Rosetta Contributors 2005
+# Bosnian translation for grecipe-manager
+# Copyright (c) 2006 Rosetta Contributors and Canonical Ltd 2006
 # This file is distributed under the same license as the grecipe-manager package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2005.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-02-06 23:43+0100\n"
-"PO-Revision-Date: 2012-06-20 00:25+0000\n"
-"Last-Translator: Vincent Lhote <Unknown>\n"
-"Language-Team: English (Australia) <en_AU@li.org>\n"
+"PO-Revision-Date: 2009-11-08 08:38+0000\n"
+"Last-Translator: Kenan Hadžiavdić <kenanh@gmail.com>\n"
+"Language-Team: Bosnian <bs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2013-03-06 00:05+0000\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2013-03-06 00:04+0000\n"
 "X-Generator: Launchpad (build 16514)\n"
-"X-Rosetta-Version: 0.1\n"
 
 #: ../glade/app.ui.h:1 ../glade/recipe_index.ui.h:2
 msgid "A_dd Search Criteria"
@@ -25,7 +25,7 @@ msgstr ""
 
 #: ../glade/app.ui.h:2 ../src/lib/gglobals.py:348
 msgid "Add to _Shopping List"
-msgstr "Add to Shopping List"
+msgstr "Dodaj u listu za _kupovinu"
 
 #: ../glade/app.ui.h:3 ../glade/recipe_index.ui.h:10
 msgid "Limiting Search to:"
@@ -59,7 +59,7 @@ msgstr ""
 #: ../glade/app.ui.h:9 ../glade/generic_importer.ui.h:4
 #: ../src/lib/importers/interactive_importer.py:143
 msgid "_New Recipe"
-msgstr ""
+msgstr "_Novi recept"
 
 #: ../glade/app.ui.h:10 ../glade/recipe_index.ui.h:24
 #: ../src/lib/plugins/key_editor/keyeditor.ui.h:11
@@ -178,7 +178,7 @@ msgstr ""
 #: ../src/lib/plugins/unit_converter/convertGui.py:160
 #: ../src/lib/plugins/unit_converter/converter.ui.h:8
 msgid "None"
-msgstr ""
+msgstr "Nijedan"
 
 #: ../glade/converter.ui.h:9
 #: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:3
@@ -270,12 +270,12 @@ msgstr ""
 #: ../src/lib/gtk_extras/dialog_extras.py:810
 #: ../src/lib/gtk_extras/dialog_extras.py:1228
 msgid "_Details"
-msgstr ""
+msgstr "_Detalji"
 
 #: ../glade/databaseChooser.ui.h:16 ../src/lib/GourmetRecipeManager.py:1059
 #: ../src/lib/shopgui.py:675
 msgid "_File"
-msgstr ""
+msgstr "_Datoteka"
 
 #: ../glade/databaseChooser.ui.h:17
 msgid "_Host:"
@@ -302,7 +302,7 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:15
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:56
 msgid "recipe"
-msgstr ""
+msgstr "recepti"
 
 #: ../glade/generic_importer.ui.h:1
 msgid ""
@@ -421,7 +421,7 @@ msgstr ""
 #: ../src/lib/exporters/rtf_exporter.py:79 ../src/lib/gglobals.py:232
 #: ../src/lib/shopgui.py:750
 msgid "Title"
-msgstr ""
+msgstr "Naslov"
 
 #: ../glade/recCardDescriptionEditor.ui.h:7 ../src/lib/gglobals.py:238
 msgid "Yield"
@@ -443,7 +443,7 @@ msgstr ""
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:29
 #: ../src/lib/recindex.py:42 ../src/lib/recindex.py:50
 msgid "category"
-msgstr ""
+msgstr "kategorija"
 
 #: ../glade/recCardDescriptionEditor.ui.h:17
 msgid "rating"
@@ -525,7 +525,7 @@ msgstr ""
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:483
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:63
 msgid "Recipe"
-msgstr ""
+msgstr "Recept"
 
 #: ../glade/recCardDisplay.ui.h:19
 msgid "_Shop"
@@ -546,7 +546,7 @@ msgstr ""
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:601
 #: ../src/lib/reccard.py:1074
 msgid "Ingredients"
-msgstr ""
+msgstr "Sastojci"
 
 #: ../glade/recipe_index.ui.h:1
 msgid "<i>Search Options</i>"
@@ -611,7 +611,7 @@ msgstr ""
 #. saveEdits
 #: ../glade/recipe_index.ui.h:21 ../src/lib/reccard.py:869
 msgid "_Delete Recipe"
-msgstr ""
+msgstr "_Izbriši recept"
 
 #: ../glade/recipe_index.ui.h:22
 msgid "_E-Mail recipe"
@@ -635,7 +635,7 @@ msgstr ""
 
 #: ../glade/shopCatEditor.ui.h:4 ../src/lib/gglobals.py:233
 msgid "Category"
-msgstr ""
+msgstr "Kategorija"
 
 #: ../glade/shopCatEditor.ui.h:5
 msgid "Category Editor"
@@ -652,7 +652,7 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:188
 #: ../src/lib/reccard.py:2140 ../src/lib/reccard.py:2199
 msgid "Key"
-msgstr ""
+msgstr "Ključ"
 
 #: ../glade/shopCatEditor.ui.h:7 ../src/lib/recindex.py:155
 msgid "Search as you type"
@@ -795,11 +795,11 @@ msgstr ""
 #. Convenience method for showing progress dialogs for import/export/deletion
 #: ../src/lib/GourmetRecipeManager.py:168
 msgid "Import paused"
-msgstr ""
+msgstr "Uvoz pauziran"
 
 #: ../src/lib/GourmetRecipeManager.py:169
 msgid "Stop import"
-msgstr ""
+msgstr "Zaustavi uvoz"
 
 #: ../src/lib/GourmetRecipeManager.py:252
 #: ../src/lib/GourmetRecipeManager.py:1100
@@ -818,12 +818,14 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Vincent Lhote https://launchpad.net/~vincent.lhote\n"
-"  jamie edgar https://launchpad.net/~jolt76"
+"  Kenan Hadžiavdić https://launchpad.net/~kenanh\n"
+"  Miro Glavić https://launchpad.net/~klek\n"
+"  Sanel https://launchpad.net/~sanel-bih\n"
+"  medina https://launchpad.net/~manija843"
 
 #: ../src/lib/GourmetRecipeManager.py:451
 msgid "Saved!"
-msgstr ""
+msgstr "Spremljeno!"
 
 #: ../src/lib/GourmetRecipeManager.py:461
 #, python-format
@@ -832,11 +834,11 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:472
 msgid "An import is in progress."
-msgstr ""
+msgstr "Uvoz je u toku."
 
 #: ../src/lib/GourmetRecipeManager.py:473
 msgid "An export is in progress."
-msgstr ""
+msgstr "Izvoz  je u toku."
 
 #: ../src/lib/GourmetRecipeManager.py:474
 msgid "A delete is in progress."
@@ -884,7 +886,7 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:787
 #, python-format
 msgid "Multiply %s by:"
-msgstr ""
+msgstr "Pomnoži %s sa:"
 
 #: ../src/lib/GourmetRecipeManager.py:807
 #, python-format
@@ -930,7 +932,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1042
 msgid "Delete selected recipes"
-msgstr ""
+msgstr "Obrisati izabrane recepte"
 
 #: ../src/lib/GourmetRecipeManager.py:1043
 msgid "Edit recipe"
@@ -950,7 +952,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1049
 msgid "_Print"
-msgstr ""
+msgstr "Š_tampaj"
 
 #. ('Email', None, _('E-_mail recipes'),
 #. None,None,self.email_recs),
@@ -961,11 +963,11 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1060 ../src/lib/reccard.py:212
 #: ../src/lib/reccard.py:864 ../src/lib/shopgui.py:653
 msgid "_Edit"
-msgstr ""
+msgstr "_Izmijeni"
 
 #: ../src/lib/GourmetRecipeManager.py:1061
 msgid "_Actions"
-msgstr ""
+msgstr "_Radnje"
 
 #: ../src/lib/GourmetRecipeManager.py:1062
 msgid "Setti_ngs"
@@ -976,11 +978,11 @@ msgstr ""
 #: ../src/lib/reccard.py:225 ../src/lib/reccard.py:866
 #: ../src/lib/shopgui.py:676 ../src/lib/shopgui.py:678
 msgid "_Help"
-msgstr ""
+msgstr "_Pomoć"
 
 #: ../src/lib/GourmetRecipeManager.py:1064
 msgid "_About"
-msgstr ""
+msgstr "_O"
 
 #: ../src/lib/GourmetRecipeManager.py:1066
 msgid "_New"
@@ -1036,11 +1038,11 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1093
 msgid "_Tools"
-msgstr ""
+msgstr "_Alati"
 
 #: ../src/lib/GourmetRecipeManager.py:1094
 msgid "_Timer"
-msgstr ""
+msgstr "Š_toperica"
 
 #: ../src/lib/GourmetRecipeManager.py:1095
 msgid "Show timer"
@@ -1053,7 +1055,7 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1211
 #, python-format
 msgid "Delete %s?"
-msgstr ""
+msgstr "Obriši %s?"
 
 #: ../src/lib/GourmetRecipeManager.py:1212
 #, python-format
@@ -1073,12 +1075,12 @@ msgstr[1] ""
 
 #: ../src/lib/GourmetRecipeManager.py:1241
 msgid "Deleted"
-msgstr ""
+msgstr "Obrisano"
 
 #: ../src/lib/GourmetRecipeManager.py:1241
 #: ../src/lib/importers/interactive_importer.py:471
 msgid "Untitled"
-msgstr ""
+msgstr "Bez naslova"
 
 #: ../src/lib/GourmetRecipeManager.py:1249
 msgid "Permanently delete recipes?"
@@ -1104,7 +1106,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1260
 msgid "See recipes"
-msgstr ""
+msgstr "Pogledajte recepte"
 
 #: ../src/lib/GourmetRecipeManager.py:1268
 msgid "Delete Recipes"
@@ -1113,15 +1115,15 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1295
 #, python-format
 msgid "Deleted recipe %s"
-msgstr ""
+msgstr "Obriši recept %s"
 
 #: ../src/lib/GourmetRecipeManager.py:1335
 msgid "Export succeeded"
-msgstr ""
+msgstr "Uspješan Izvoz"
 
 #: ../src/lib/GourmetRecipeManager.py:1338
 msgid "webpage"
-msgstr ""
+msgstr "web stranica"
 
 #: ../src/lib/GourmetRecipeManager.py:1339
 #, python-format
@@ -1130,16 +1132,16 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1399
 msgid "Done!"
-msgstr ""
+msgstr "Gotovo!"
 
 #: ../src/lib/GourmetRecipeManager.py:1407
 msgid "Importing..."
-msgstr ""
+msgstr "Uvoz..."
 
 #: ../src/lib/GourmetThreads.py:42
 #, python-format
 msgid "%s stopped."
-msgstr ""
+msgstr "%s zaustavljen."
 
 #: ../src/lib/GourmetThreads.py:43
 #, python-format
@@ -1149,7 +1151,7 @@ msgstr ""
 #: ../src/lib/GourmetThreads.py:50
 #, python-format
 msgid "%s interrupted"
-msgstr ""
+msgstr "%s prekinut"
 
 #: ../src/lib/GourmetThreads.py:51
 #, python-format
@@ -1201,7 +1203,7 @@ msgstr ""
 #: ../src/lib/legacy_db/db_085/rdatabase.py:447
 #: ../src/lib/legacy_db/db_09/rdatabase.py:508 ../src/lib/reccard.py:939
 msgid "New Recipe"
-msgstr ""
+msgstr "Novi Recept"
 
 #: ../src/lib/check_encodings.py:92
 msgid "Select encoding"
@@ -1226,36 +1228,40 @@ msgstr ""
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:565
 msgid "second"
 msgid_plural "seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "sekunda"
+msgstr[1] "sekunde"
+msgstr[2] "sekundi"
 
 #. min. = abbreviation for minutes
 #: ../src/lib/convert.py:65
 msgid "min"
-msgstr ""
+msgstr "min"
 
 #: ../src/lib/convert.py:65 ../src/lib/convert.py:564
 msgid "minute"
 msgid_plural "minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "minuta"
+msgstr[1] "minute"
+msgstr[2] "minuta"
 
 #. hrs = abbreviation for hours
 #: ../src/lib/convert.py:67
 msgid "hrs."
-msgstr ""
+msgstr "sati"
 
 #: ../src/lib/convert.py:67 ../src/lib/convert.py:563
 msgid "hour"
 msgid_plural "hours"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "sat"
+msgstr[1] "sata"
+msgstr[2] "sati"
 
 #: ../src/lib/convert.py:68 ../src/lib/convert.py:562
 msgid "day"
 msgid_plural "days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "dan"
+msgstr[1] "dana"
+msgstr[2] "dana"
 
 #. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
 #. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
@@ -1263,20 +1269,23 @@ msgstr[1] ""
 #: ../src/lib/convert.py:69 ../src/lib/convert.py:559
 msgid "year"
 msgid_plural "years"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "godina"
+msgstr[1] "godine"
+msgstr[2] "godina"
 
 #: ../src/lib/convert.py:560
 msgid "month"
 msgid_plural "months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "mjesec"
+msgstr[1] "mjeseca"
+msgstr[2] "mjeseci"
 
 #: ../src/lib/convert.py:561
 msgid "week"
 msgid_plural "weeks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "nedjelja"
+msgstr[1] "nedjelje"
+msgstr[2] "nedjelja"
 
 #. Translators... this is a messay way of concatenating
 #. lists. In English we do lists this way: 1, 2, 3, 4, 5
@@ -1286,26 +1295,26 @@ msgstr[1] ""
 #. ", " and " and " with the same string.
 #: ../src/lib/convert.py:608
 msgid " and "
-msgstr ""
+msgstr " i "
 
 #: ../src/lib/convert.py:608
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../src/lib/convert.py:610
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/lib/convert.py:740
 msgid "and"
-msgstr ""
+msgstr "i"
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
 #. show up sometimes.
 #: ../src/lib/convert.py:762
 msgid "to"
-msgstr ""
+msgstr "do"
 
 #: ../src/lib/convertGui.py:107
 #: ../src/lib/plugins/unit_converter/convertGui.py:114
@@ -1320,7 +1329,7 @@ msgstr ""
 
 #: ../src/lib/exporters/exportManager.py:36
 msgid "Save recipe as..."
-msgstr ""
+msgstr "Spremi recept kao..."
 
 #: ../src/lib/exporters/exportManager.py:45
 #, python-format
@@ -1338,11 +1347,11 @@ msgstr ""
 
 #: ../src/lib/exporters/exportManager.py:89
 msgid "Export recipes"
-msgstr ""
+msgstr "Izvezi recepte"
 
 #: ../src/lib/exporters/exportManager.py:90
 msgid "recipes"
-msgstr ""
+msgstr "recepti"
 
 #: ../src/lib/exporters/exportManager.py:101
 #, python-format
@@ -1361,14 +1370,14 @@ msgstr ""
 #: ../src/lib/exporters/exporter.py:209 ../src/lib/exporters/exporter.py:211
 #: ../src/lib/exporters/exporter.py:515 ../src/lib/exporters/exporter.py:517
 msgid "stars"
-msgstr ""
+msgstr "zvjezdice"
 
 #: ../src/lib/exporters/exporter.py:378 ../src/lib/exporters/exporter.py:463
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:153
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:629
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:642
 msgid "optional"
-msgstr ""
+msgstr "opcionalno"
 
 #: ../src/lib/exporters/exporter.py:558
 #, python-format
@@ -1377,7 +1386,7 @@ msgstr ""
 
 #: ../src/lib/exporters/exporter.py:578
 msgid "Export complete."
-msgstr ""
+msgstr "Izvoz završen."
 
 #: ../src/lib/exporters/printer.py:12 ../src/lib/exporters/printer.py:22
 msgid "Unable to print: no print plugins are active!"
@@ -1405,7 +1414,7 @@ msgstr ""
 #: ../src/lib/plugins/email_plugin/recipe_emailer.py:48
 #: ../src/lib/plugins/key_editor/keyEditor.py:115 ../src/lib/reccard.py:3055
 msgid "Recipes"
-msgstr ""
+msgstr "Recepti"
 
 #: ../src/lib/exporters/recipe_emailer.py:119
 msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
@@ -1421,15 +1430,15 @@ msgstr ""
 
 #: ../src/lib/exporters/recipe_emailer.py:138
 msgid "Email Options"
-msgstr ""
+msgstr "Posalji opcije e-mailom"
 
 #: ../src/lib/exporters/recipe_emailer.py:141
 msgid "Don't ask before sending e-mail."
-msgstr ""
+msgstr "Nepitaj prije slanja e-maila"
 
 #: ../src/lib/exporters/recipe_emailer.py:160
 msgid "E-mail not sent"
-msgstr ""
+msgstr "E-mail nije poslat"
 
 #: ../src/lib/exporters/recipe_emailer.py:161
 msgid ""
@@ -1443,11 +1452,11 @@ msgstr ""
 
 #: ../src/lib/gglobals.py:235 ../src/lib/gtk_extras/ratingWidget.py:326
 msgid "Rating"
-msgstr ""
+msgstr "Ocjena"
 
 #: ../src/lib/gglobals.py:236
 msgid "Source"
-msgstr ""
+msgstr "Izvor"
 
 #: ../src/lib/gglobals.py:237
 msgid "Website"
@@ -1455,30 +1464,30 @@ msgstr ""
 
 #: ../src/lib/gglobals.py:240
 msgid "Preparation Time"
-msgstr ""
+msgstr "Vrijeme Pripreme"
 
 #: ../src/lib/gglobals.py:241
 msgid "Cooking Time"
-msgstr ""
+msgstr "Vrijeme Kuhanja"
 
 #: ../src/lib/gglobals.py:246 ../src/lib/gglobals.py:251
 #: ../src/lib/reccard.py:1654
 msgid "Instructions"
-msgstr ""
+msgstr "Instrukcije"
 
 #: ../src/lib/gglobals.py:247 ../src/lib/gglobals.py:252
 #: ../src/lib/reccard.py:1660
 msgid "Notes"
-msgstr ""
+msgstr "Bilješke"
 
 #: ../src/lib/gglobals.py:253
 msgid "Modifications"
-msgstr ""
+msgstr "Izmjene"
 
 #. print dir(err)
 #: ../src/lib/gglobals.py:319
 msgid "Unable to open URL"
-msgstr ""
+msgstr "Nije moguće otvoriti URL"
 
 #: ../src/lib/gglobals.py:320
 msgid "Unable to launch mail reader."
@@ -1490,7 +1499,7 @@ msgstr ""
 
 #: ../src/lib/gglobals.py:322
 msgid "Unable to open file."
-msgstr ""
+msgstr "Nije moguće otvoriti datoteku."
 
 #: ../src/lib/gglobals.py:328
 #, python-format
@@ -1500,46 +1509,46 @@ msgstr ""
 #. setup pause button
 #: ../src/lib/gtk_extras/dialog_extras.py:405
 msgid "_Pause"
-msgstr ""
+msgstr "_Pauza"
 
 #. setup stop button
 #: ../src/lib/gtk_extras/dialog_extras.py:417
 msgid "_Stop"
-msgstr ""
+msgstr "_Stop"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:473
 #: ../src/lib/gtk_extras/dialog_extras.py:563
 msgid "Don't ask me this again."
-msgstr ""
+msgstr "Ne pitaj me ovo ponovo."
 
 #: ../src/lib/gtk_extras/dialog_extras.py:529
 msgid "Do you really want to do this"
-msgstr ""
+msgstr "Da li stvarno hoćeš da ovo uradiš"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:741
 #: ../src/lib/importers/importer.py:466
 msgid "excellent"
-msgstr ""
+msgstr "fantastično"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:742
 #: ../src/lib/importers/importer.py:467
 msgid "great"
-msgstr ""
+msgstr "odlično"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:743
 #: ../src/lib/importers/importer.py:468
 msgid "good"
-msgstr ""
+msgstr "dobro"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:744
 #: ../src/lib/importers/importer.py:469
 msgid "fair"
-msgstr ""
+msgstr "prolazno"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:745
 #: ../src/lib/importers/importer.py:471
 msgid "poor"
-msgstr ""
+msgstr "slabo"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:757
 msgid "Convert ratings to 5 star scale."
@@ -1563,7 +1572,7 @@ msgstr ""
 
 #: ../src/lib/gtk_extras/dialog_extras.py:1109
 msgid "No file selected"
-msgstr ""
+msgstr "Nije odabrana nijedna datoteka"
 
 #: ../src/lib/gtk_extras/dialog_extras.py:1110
 msgid "No file was selected, so the action has been cancelled"
@@ -1598,11 +1607,11 @@ msgstr ""
 #: ../src/lib/gtk_extras/numberEntry.py:29
 #: ../src/lib/gtk_extras/timeEntry.py:56 ../src/lib/gtk_extras/timeEntry.py:66
 msgid "Invalid input."
-msgstr ""
+msgstr "Nevažeći unos."
 
 #: ../src/lib/gtk_extras/numberEntry.py:29
 msgid "Not a number."
-msgstr ""
+msgstr "Nije broj."
 
 #: ../src/lib/gtk_extras/timeEntry.py:41
 msgid ""
@@ -1637,19 +1646,19 @@ msgstr ""
 #: ../src/lib/importers/html_importer.py:498
 #: ../src/lib/importers/html_importer.py:567
 msgid "Import complete."
-msgstr ""
+msgstr "Uvoz završen."
 
 #: ../src/lib/importers/html_importer.py:519
 msgid "Importing recipe"
-msgstr ""
+msgstr "Uvoz recepta"
 
 #: ../src/lib/importers/html_importer.py:525
 msgid "Processing ingredients"
-msgstr ""
+msgstr "Obrada sastojaka"
 
 #: ../src/lib/importers/html_importer.py:549
 msgid "Processing ingredients."
-msgstr ""
+msgstr "Obrada sastojaka."
 
 #: ../src/lib/importers/importManager.py:54
 msgid "Enter the URL of a recipe archive or recipe website."
@@ -1661,7 +1670,7 @@ msgstr ""
 
 #: ../src/lib/importers/importManager.py:57
 msgid "Enter URL:"
-msgstr ""
+msgstr "Unesi URL:"
 
 #: ../src/lib/importers/importManager.py:58
 msgid "Enter the address of a website or recipe archive."
@@ -1703,11 +1712,11 @@ msgstr[1] ""
 #: ../src/lib/importers/importer.py:266
 #, python-format
 msgid "Imported %s of %s recipes."
-msgstr ""
+msgstr "Uveženo %s od %s recepata."
 
 #: ../src/lib/importers/importer.py:470
 msgid "okay"
-msgstr ""
+msgstr "u redu"
 
 #: ../src/lib/importers/interactive_importer.py:37
 msgid "Servings"
@@ -1757,7 +1766,7 @@ msgstr ""
 
 #: ../src/lib/importers/interactive_importer.py:470
 msgid "Select recipe image"
-msgstr ""
+msgstr "Izaberi sliku recepta"
 
 #: ../src/lib/importers/interactive_importer.py:471
 #, python-format
@@ -1835,7 +1844,7 @@ msgstr ""
 
 #: ../src/lib/plugin_gui.py:134 ../src/lib/recindex.py:452
 msgid "or"
-msgstr ""
+msgstr "ili"
 
 #: ../src/lib/plugin_gui.py:138
 msgid "An error occurred activating plugin."
@@ -2072,11 +2081,11 @@ msgstr ""
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:7
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_importer_plugin.py:61
 msgid "Gourmet XML File"
-msgstr ""
+msgstr "Gourmet XML Datoteka"
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:46
 msgid "Gourmet XML Export"
-msgstr ""
+msgstr "Gourmet XML Izvoz"
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:47
 #, python-format
@@ -2107,7 +2116,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:5
 msgid "HTML Web Page"
-msgstr ""
+msgstr "HTML Web Stranica"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:9
 msgid "Exporting Webpage"
@@ -2165,7 +2174,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
 msgid "Mealmaster (tm) Export"
-msgstr "Mealmaster™ Export"
+msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py:22
@@ -2199,20 +2208,20 @@ msgstr ""
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:712
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:825
 msgid "Letter"
-msgstr ""
+msgstr "Pismo"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:713
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:844
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:967
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:998
 msgid "Portrait"
-msgstr ""
+msgstr "Portret"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:715
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:837
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:959
 msgid "Plain"
-msgstr ""
+msgstr "Običan"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:729
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:749
@@ -2226,7 +2235,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:820
 msgid "11x17\""
-msgstr ""
+msgstr "11x17\""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:821
 msgid "Index Card (3.5x5\")"
@@ -2267,7 +2276,7 @@ msgstr ""
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:945
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:996
 msgid "Landscape"
-msgstr ""
+msgstr "Pejzaž"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:856
 #, python-format
@@ -2282,11 +2291,11 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:873
 msgid "_Orientation"
-msgstr ""
+msgstr "_Orientacija"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:875
 msgid "_Font Size"
-msgstr ""
+msgstr "Veličina _Slova"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:877
 msgid "Page _Layout"
@@ -2294,19 +2303,19 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:880
 msgid "Left Margin"
-msgstr ""
+msgstr "Lijeva Margina"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:881
 msgid "Right Margin"
-msgstr ""
+msgstr "Desna Margina"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:882
 msgid "Top Margin"
-msgstr ""
+msgstr "Gornja Margina"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:883
 msgid "Bottom Margin"
-msgstr ""
+msgstr "Donja Margina"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:904
 msgid "PDF Options"
@@ -2318,7 +2327,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:9
 msgid "PDF Export"
-msgstr ""
+msgstr "PDF Izvoz"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:10
 #, python-format
@@ -2336,7 +2345,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/print_plugin.py:116
 msgid "Print Recipes"
-msgstr ""
+msgstr "Štampaj Recepte"
 
 #: ../src/lib/plugins/import_export/plaintext.gourmet-plugin.in.h:1
 msgid ""
@@ -2354,7 +2363,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:9
 msgid "Text Export"
-msgstr ""
+msgstr "Izvoz Teksta"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:10
 #, python-format
@@ -2419,30 +2428,30 @@ msgstr ""
 #: ../src/lib/plugins/key_editor/keyEditor.py:87
 #: ../src/lib/plugins/key_editor/keyEditor.py:266
 msgid "key"
-msgstr ""
+msgstr "ključ"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:87
 #: ../src/lib/plugins/key_editor/keyEditor.py:262
 #: ../src/lib/plugins/key_editor/keyEditor.py:538
 msgid "item"
-msgstr ""
+msgstr "stavka"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:87
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:36
 msgid "unit"
-msgstr ""
+msgstr "Jedinica:"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:112
 msgid "Field"
-msgstr ""
+msgstr "Polje"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:113
 msgid "Value"
-msgstr ""
+msgstr "Vrijednost"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:114
 msgid "Count"
-msgstr ""
+msgstr "Broj"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:159
 #, python-format
@@ -2545,8 +2554,9 @@ msgstr ""
 #, python-format
 msgid "%s ingredient"
 msgid_plural "%s ingredients"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s sastojak"
+msgstr[1] "%s sastojaka"
+msgstr[2] "%s sastojaka"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
@@ -2567,12 +2577,12 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:8
 #: ../src/lib/reccard.py:2138 ../src/lib/reccard.py:2166
 msgid "Unit"
-msgstr ""
+msgstr "Jedinica"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:515
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:7
 msgid "Amount"
-msgstr ""
+msgstr "Količina"
 
 #: ../src/lib/plugins/key_editor/keyEditorPlugin.py:16
 msgid "Ingredient _Key Editor"
@@ -2726,7 +2736,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionDisplay.py:132
 msgid "100 grams"
-msgstr ""
+msgstr "100 grama"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:1
 msgid "<b>Choose a Density</b>"
@@ -2867,13 +2877,13 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:761
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:814
 msgid "Change _everywhere"
-msgstr ""
+msgstr "Promijeni _svugdje"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:762
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:815
 #, python-format
 msgid "_Just in recipe %s"
-msgstr ""
+msgstr "_Samo u receptu %s"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:769
 #, python-format
@@ -2961,11 +2971,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:11
 msgid "Calories"
-msgstr ""
+msgstr "Kalorije"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:14
 msgid "Total Fat"
-msgstr ""
+msgstr "Ukupno Masti"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:16
 msgid "Saturated Fat"
@@ -2973,7 +2983,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:18
 msgid "Cholesterol"
-msgstr ""
+msgstr "Holesterol"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:20
 msgid "Sodium"
@@ -2981,7 +2991,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:22
 msgid "Total Carbohydrate"
-msgstr ""
+msgstr "Ukupno Karbohidrata"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:24
 msgid "Dietary Fiber"
@@ -2989,11 +2999,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:26
 msgid "Sugars"
-msgstr ""
+msgstr "Šećer"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:28
 msgid "Protein"
-msgstr ""
+msgstr "Proteini"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:33
 msgid "Alpha-carotene"
@@ -3013,11 +3023,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:41
 msgid "Calcium"
-msgstr ""
+msgstr "Kalcijum"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:43
 msgid "Copper"
-msgstr ""
+msgstr "Bakar"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:45
 msgid "Folate Total"
@@ -3037,7 +3047,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:53
 msgid "Iron"
-msgstr ""
+msgstr "Željezo"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:55
 msgid "Lycopene"
@@ -3049,11 +3059,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:59
 msgid "Magnesium"
-msgstr ""
+msgstr "Magnezijum"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:61
 msgid "Manganese"
-msgstr ""
+msgstr "Mangan"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:63
 msgid "Niacin"
@@ -3065,7 +3075,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:67
 msgid "Phosphorus"
-msgstr ""
+msgstr "Fosfor"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:69
 msgid "Potassium"
@@ -3073,7 +3083,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:71
 msgid "Vitamin A"
-msgstr ""
+msgstr "Vitamin A"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:73
 msgid "Retinol"
@@ -3093,39 +3103,39 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:81
 msgid "Vitamin A (IU)"
-msgstr ""
+msgstr "Vitamin A (IU)"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:83
 msgid "Vitamin A (RAE)"
-msgstr ""
+msgstr "Vitamin A (RAE)"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:85
 msgid "Vitamin B6"
-msgstr ""
+msgstr "Vitamin B6"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:87
 msgid "Vitamin B12"
-msgstr ""
+msgstr "Vitamin B12"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:89
 msgid "Vitamin C"
-msgstr ""
+msgstr "Vitamin C"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:91
 msgid "Vitamin E"
-msgstr ""
+msgstr "Vitamin E"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:93
 msgid "Vitamin K"
-msgstr ""
+msgstr "Vitamin K"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:95
 msgid "Zinc"
-msgstr ""
+msgstr "Cink"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:207
 msgid "Vitamins and minerals"
-msgstr ""
+msgstr "Vitamini i Minerali"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:315
 #, python-format
@@ -3136,7 +3146,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:331
 msgid "% _Daily Value"
-msgstr ""
+msgstr "% _Dnevna Vrijednost"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:376
 #, python-format
@@ -3152,11 +3162,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:468
 msgid "Amount per recipe"
-msgstr ""
+msgstr "Količina po receptu"
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:9
 msgid "Ingredient"
-msgstr ""
+msgstr "Sastojak"
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:10
 msgid "USDA Database Equivalent"
@@ -3165,23 +3175,23 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:11
 #: ../src/lib/shopping.py:139 ../src/lib/shopping.py:159
 msgid "Unknown"
-msgstr ""
+msgstr "Nepoznat"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:12
 msgid "Water"
-msgstr ""
+msgstr "Voda"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:13
 msgid "Kilocalories"
-msgstr ""
+msgstr "Kilokalorije"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:14
 msgid "g protein"
-msgstr ""
+msgstr "g proteina"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:15
 msgid "g lipid"
-msgstr ""
+msgstr "g lipid"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:16
 msgid "g ash"
@@ -3189,7 +3199,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:17
 msgid "g carbohydrates"
-msgstr ""
+msgstr "g karbohidrata"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:18
 msgid "g fiber"
@@ -3197,23 +3207,23 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:19
 msgid "g sugar"
-msgstr ""
+msgstr "g šećera"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:20
 msgid "mg calcium"
-msgstr ""
+msgstr "mg kalcijuma"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:21
 msgid "mg iron"
-msgstr ""
+msgstr "mg željeza"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:22
 msgid "mg magnesium"
-msgstr ""
+msgstr "mg magnezijuma"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:23
 msgid "mg phosphorus"
-msgstr ""
+msgstr "mg fosfora"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:24
 msgid "mg potassium"
@@ -3225,15 +3235,15 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:26
 msgid "mg zinc"
-msgstr ""
+msgstr "mg cinka"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:27
 msgid "mg copper"
-msgstr ""
+msgstr "mg bakra"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:28
 msgid "mg manganese"
-msgstr ""
+msgstr "mg mangana"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:29
 msgid "microgram selenium"
@@ -3241,7 +3251,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:30
 msgid "mg vitamin c"
-msgstr ""
+msgstr "mg vitamina c"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:31
 msgid "mg thiamin"
@@ -3261,7 +3271,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:35
 msgid "mg vitamin B6"
-msgstr ""
+msgstr "mg vitamina B6"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:36
 msgid "microgram Folate Total"
@@ -3285,11 +3295,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:41
 msgid "microgram Vitamin B12"
-msgstr ""
+msgstr "mikrograma Vitamina B12"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:42
 msgid "Vitamin A IU"
-msgstr ""
+msgstr "Vitamin A IU"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:43
 msgid "Vitamin A (microgram Retinal Activity Equivalents"
@@ -3321,11 +3331,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:50
 msgid "mg Vitamin E"
-msgstr ""
+msgstr "mg Vitamina E"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:51
 msgid "mg Vitamin K"
-msgstr ""
+msgstr "mg Vitamina K"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:52
 msgid "g Saturated Fatty Acid"
@@ -3341,7 +3351,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:55
 msgid "mg Cholesterol"
-msgstr ""
+msgstr "mg Kolesterola"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:60
 msgid "Percent refuse"
@@ -3360,19 +3370,19 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:339
 msgid "Baby Foods"
-msgstr ""
+msgstr "Hrana za Bebe"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:340
 msgid "Fats and Oils"
-msgstr ""
+msgstr "Masti i Ulja"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:341
 msgid "Poultry"
-msgstr ""
+msgstr "Piletina"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:342
 msgid "Soups & Sauces"
-msgstr ""
+msgstr "Supe i Sosovi"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:343
 msgid "Sausages & Lunch Meats"
@@ -3384,15 +3394,15 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:345
 msgid "Fruits & Fruit Juices"
-msgstr ""
+msgstr "Voće i Voćni Sokovi"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:346
 msgid "Pork"
-msgstr ""
+msgstr "Svinjetina"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:347
 msgid "Vegetables"
-msgstr ""
+msgstr "Povrće"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:348
 msgid "Nuts & Seeds"
@@ -3400,11 +3410,11 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:349
 msgid "Beef"
-msgstr ""
+msgstr "Govedina"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:350
 msgid "Beverages"
-msgstr ""
+msgstr "Napitci"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:351
 msgid "Fish & Shellfish"
@@ -3416,7 +3426,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:353
 msgid "Lamb, Veal & Game"
-msgstr ""
+msgstr "Jagnjetina, Teletina i Divljač"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:354
 msgid "Baked Products"
@@ -3424,7 +3434,7 @@ msgstr ""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:355
 msgid "Sweets"
-msgstr ""
+msgstr "Slatkiši"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:356
 msgid "Grains and Pasta"
@@ -3509,7 +3519,7 @@ msgstr ""
 
 #: ../src/lib/plugins/unit_converter/__init__.py:15
 msgid "_Unit Converter"
-msgstr ""
+msgstr "_Pretvarač mjernih jedinica"
 
 #: ../src/lib/plugins/unit_converter/__init__.py:16
 msgid "Calculate unit conversions"
@@ -3569,39 +3579,39 @@ msgstr ""
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:25
 #: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
 msgid "title"
-msgstr ""
+msgstr "naslov"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:26
 #: ../src/lib/recindex.py:39 ../src/lib/recindex.py:49
 msgid "ingredient"
-msgstr ""
+msgstr "sastojak"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:27
 #: ../src/lib/recindex.py:40 ../src/lib/recindex.py:54
 msgid "instructions"
-msgstr ""
+msgstr "instrukcije"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:28
 #: ../src/lib/recindex.py:41 ../src/lib/recindex.py:55
 msgid "notes"
-msgstr ""
+msgstr "bilješke"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:30
 #: ../src/lib/recindex.py:43 ../src/lib/recindex.py:51
 msgid "cuisine"
-msgstr ""
+msgstr "kuhinja"
 
 #. _('rating'):'rating',
 #. _('rating'),
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:31
 #: ../src/lib/recindex.py:45 ../src/lib/recindex.py:53
 msgid "source"
-msgstr ""
+msgstr "izvor"
 
 #. menus
 #: ../src/lib/reccard.py:211 ../src/lib/reccard.py:863
 msgid "_Recipe"
-msgstr ""
+msgstr "_Recept"
 
 #: ../src/lib/reccard.py:215
 msgid "Export recipe"
@@ -3650,11 +3660,11 @@ msgstr ""
 
 #: ../src/lib/reccard.py:608
 msgid "You have unsaved changes."
-msgstr ""
+msgstr "Imate nespremljene promjene."
 
 #: ../src/lib/reccard.py:609
 msgid "Apply changes before printing?"
-msgstr ""
+msgstr "Primijeni promjene prije štampanja?"
 
 #: ../src/lib/reccard.py:700 ../src/lib/recipeIdentifier.py:93
 msgid "(Optional)"
@@ -3735,11 +3745,11 @@ msgstr ""
 
 #: ../src/lib/reccard.py:2137 ../src/lib/reccard.py:2165
 msgid "Amt"
-msgstr ""
+msgstr "Kol."
 
 #: ../src/lib/reccard.py:2141 ../src/lib/reccard.py:2168
 msgid "Optional"
-msgstr ""
+msgstr "Opcionalno"
 
 #: ../src/lib/reccard.py:2302
 #, python-format
@@ -3749,12 +3759,12 @@ msgstr ""
 #: ../src/lib/reccard.py:2623
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
-msgstr ""
+msgstr "Pretvoreno: %(amt)s %(unit)s"
 
 #: ../src/lib/reccard.py:2625
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
-msgstr ""
+msgstr "Nije pretvoreno: %(amt)s %(unit)s"
 
 #: ../src/lib/reccard.py:2629
 msgid "Changed unit."
@@ -3787,7 +3797,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:2710
 msgid "Name of group:"
-msgstr ""
+msgstr "Naziv grupe"
 
 #: ../src/lib/reccard.py:2976
 msgid "Choose recipe"
@@ -3803,7 +3813,7 @@ msgstr ""
 
 #: ../src/lib/reccard.py:3035
 msgid "You haven't selected any recipes!"
-msgstr ""
+msgstr "Niste izabrali nijedan recept!"
 
 #: ../src/lib/reccard.py:3047
 #, python-format
@@ -3834,8 +3844,9 @@ msgstr ""
 #, python-format
 msgid "%s recipe"
 msgid_plural "%s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s recept"
+msgstr[1] "%s recepta"
+msgstr[2] "%s recepata"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
@@ -3899,7 +3910,7 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:210
 msgid "_Shopping List"
-msgstr ""
+msgstr "_Lista za kupovinu"
 
 #: ../src/lib/shopgui.py:211
 msgid "Already Have (_Pantry Items)"
@@ -3907,7 +3918,7 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:472
 msgid "Enter Category"
-msgstr ""
+msgstr "Unesite Kategoriju"
 
 #: ../src/lib/shopgui.py:473
 #, python-format
@@ -3916,11 +3927,11 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:474
 msgid "Category:"
-msgstr ""
+msgstr "Kategorija:"
 
 #: ../src/lib/shopgui.py:587
 msgid "_Recipes"
-msgstr ""
+msgstr "_Recepti"
 
 #: ../src/lib/shopgui.py:610
 msgid "_Add items:"
@@ -3944,7 +3955,7 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:751
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: ../src/lib/shopgui.py:836
 msgid "No recipes selected. Do you want to clear the entire list?"
@@ -3966,35 +3977,35 @@ msgstr ""
 
 #: ../src/lib/shopping.py:18
 msgid "flour, all purpose"
-msgstr ""
+msgstr "brašno, višenamjensko"
 
 #: ../src/lib/shopping.py:18
 msgid "sugar"
-msgstr ""
+msgstr "šećer"
 
 #: ../src/lib/shopping.py:18
 msgid "salt"
-msgstr ""
+msgstr "sol"
 
 #: ../src/lib/shopping.py:19
 msgid "black pepper, ground"
-msgstr ""
+msgstr "crni biber, mljeveni"
 
 #: ../src/lib/shopping.py:20
 msgid "ice"
-msgstr ""
+msgstr "led"
 
 #: ../src/lib/shopping.py:20
 msgid "water"
-msgstr ""
+msgstr "voda"
 
 #: ../src/lib/shopping.py:21
 msgid "oil, vegetable"
-msgstr ""
+msgstr "ulje, biljno"
 
 #: ../src/lib/shopping.py:22
 msgid "oil, olive"
-msgstr ""
+msgstr "ulje, maslinovo"
 
 #: ../src/lib/shopping.py:328
 msgid "Recipe calls for itself as an ingredient."
@@ -4012,12 +4023,12 @@ msgstr ""
 
 #: ../src/lib/shopping.py:376 ../src/lib/shopping.py:391
 msgid "For the following recipes:"
-msgstr ""
+msgstr "Za slijedeće recepte:"
 
 #: ../src/lib/shopping.py:381 ../src/lib/shopping.py:395
 #, python-format
 msgid " x%s"
-msgstr ""
+msgstr " x%s"
 
 #: ../src/lib/threadManager.py:225
 msgid "Paused"

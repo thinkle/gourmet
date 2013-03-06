@@ -3,782 +3,419 @@
 # This file is distributed under the same license as the grecipe-manager package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2005.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 23:17+0100\n"
-"PO-Revision-Date: 2006-03-30 17:20+0000\n"
-"Last-Translator: Jaro Larnos <jaro.larnos@pp.inet.fi>\n"
+"POT-Creation-Date: 2012-02-06 23:43+0100\n"
+"PO-Revision-Date: 2012-05-07 22:46+0000\n"
+"Last-Translator: Samuli Seppänen <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2013-03-06 00:04+0000\n"
+"X-Generator: Launchpad (build 16514)\n"
 "X-Rosetta-Version: 0.1\n"
-"Plural-Forms: nplurals=2; plural=n != 1\n"
 
-#: ../glade/app.glade.h:1 ../glade/recipe_index.glade.h:2
-#, fuzzy
+#: ../glade/app.ui.h:1 ../glade/recipe_index.ui.h:2
 msgid "A_dd Search Criteria"
-msgstr "Lisää hakukriteeri"
+msgstr "Hakuehdot"
 
-#: ../glade/app.glade.h:2 ../glade/recipe_index.glade.h:3
-msgid "Add recipe to shopping list"
-msgstr "Lisää resepti ostoslistalle"
-
-#: ../glade/app.glade.h:3
-msgid "Add selected recipe to a shopping list."
-msgstr "Lisää valittu resepti ostoslistalle"
-
-#: ../glade/app.glade.h:4 ../glade/recipe_index.glade.h:4
-#, fuzzy
-msgid "Add to _Pantry"
-msgstr "Lisää ruokakaappiin"
-
-#: ../glade/app.glade.h:5 ../src/lib/gglobals.py:367
-#, fuzzy
+#: ../glade/app.ui.h:2 ../src/lib/gglobals.py:348
 msgid "Add to _Shopping List"
-msgstr "Lisää ostoslistalle"
+msgstr "Lisää ostoslistaan"
 
-#: ../glade/app.glade.h:6 ../glade/recipe_index.glade.h:5
-msgid "Add to _shopping list"
-msgstr "Lisää ostoslistalle"
-
-#: ../glade/app.glade.h:7
-#, fuzzy
-msgid "Adva_nced Search"
-msgstr "Tarkennettu haku"
-
-#: ../glade/app.glade.h:8
-msgid "Create a new recipe"
-msgstr "Luo uusi resepti"
-
-#: ../glade/app.glade.h:9 ../glade/recipe_index.glade.h:6
-msgid "Delete selected recipe"
-msgstr "Poista valittu resepti"
-
-#: ../glade/app.glade.h:10 ../src/lib/GourmetRecipeManager.py:1020
-msgid "Delete selected recipes"
-msgstr "Poista valitut reseptit"
-
-#: ../glade/app.glade.h:11
-#, fuzzy
-msgid "E-_mail selected recipes"
-msgstr "Lähetä valitut reseptit sähköpostitse"
-
-#: ../glade/app.glade.h:12 ../glade/recipe_index.glade.h:7
-msgid "E-mail selected recipe"
-msgstr "Lähetä valittu resepti sähköpostitse"
-
-#: ../glade/app.glade.h:13
-msgid "E-mail selected recipes"
-msgstr "Lähetä valitut reseptit sähköpostitse"
-
-#: ../glade/app.glade.h:14 ../glade/recipe_index.glade.h:8
-#, fuzzy
-msgid "Edit attributes of selected recipes"
-msgstr "Tulosta valitut reseptit"
-
-#: ../glade/app.glade.h:15
-#, fuzzy
-msgid "Edit ingredient keys and nutritional information"
-msgstr "<i>Anna ravintotiedot kohteelle </i>"
-
-#: ../glade/app.glade.h:16
-msgid "Edit values for fields across several recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:17
-msgid "Export A_ll Recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:18
-#, fuzzy
-msgid "Export selected recipes"
-msgstr "Tulosta valitut reseptit"
-
-#: ../glade/app.glade.h:19
-msgid "Find and eliminate duplicate recipes"
-msgstr ""
-
-#: ../glade/app.glade.h:20
-#, fuzzy
-msgid "Import _Webpage"
-msgstr "Tuo web-sivu"
-
-#: ../glade/app.glade.h:21 ../glade/recipe_index.glade.h:9
-msgid "Jump to recipe in Recipe Card vew"
-msgstr "Hyppää reseptiin"
-
-#: ../glade/app.glade.h:22 ../glade/recipe_index.glade.h:10
+#: ../glade/app.ui.h:3 ../glade/recipe_index.ui.h:10
 msgid "Limiting Search to:"
-msgstr ""
+msgstr "Hakutuloksten rajoitus:"
 
-#: ../glade/app.glade.h:23 ../glade/recipe_index.glade.h:11
-#, fuzzy
-msgid ""
-"Never buy this item. When called for in a recipe, it will show up in a "
-"\"pantry\" section of the list as a reminder that you need it, but it won't "
-"be included when you save or print the list unless you tell me you need to "
-"buy it."
-msgstr ""
-"Älä koskaan osta tätä ainesosaa. Kun ainesosa mainitaan reseptissä, se "
-"näytetään listan \"ruokakaappissa\" muistutuksen vuoksi, mutta sitä ei "
-"sisällytetä tallennettuun tai tulostettuun listaan ellet erikseen kerro että "
-"sinun tarvitsee ostaa sitä."
-
-#: ../glade/app.glade.h:24
-msgid "Open a timer"
-msgstr ""
-
-#: ../glade/app.glade.h:25 ../glade/recipe_index.glade.h:12
-msgid "Print selected recipe"
-msgstr "Tulosta valittu resepti"
-
-#: ../glade/app.glade.h:26
-msgid "Print selected recipes"
-msgstr "Tulosta valitut reseptit"
-
-#: ../glade/app.glade.h:27
-msgid "Re_apply changes"
-msgstr "Toista muutokset"
-
-#: ../glade/app.glade.h:28
+#: ../glade/app.ui.h:4
 msgid "Recipe Index"
-msgstr "Reseptihakemisto"
+msgstr "Reseptiluettelo"
 
-#: ../glade/app.glade.h:29
-msgid "Recipe _Card"
-msgstr "Reseptikortti"
-
-#: ../glade/app.glade.h:30
-msgid "Recipe _List"
-msgstr "Reseptilista"
-
-#: ../glade/app.glade.h:31 ../glade/keyeditor.glade.h:4
-#: ../glade/recipe_index.glade.h:13
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:3
-#, fuzzy
+#: ../glade/app.ui.h:5 ../glade/recipe_index.ui.h:13
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:3
 msgid "Search _Results"
-msgstr "Haun tulokset"
+msgstr "Hakutulokset"
 
-#: ../glade/app.glade.h:32
-#, fuzzy
-msgid "Search as _you type"
-msgstr "Hae kirjoittaessa"
-
-#: ../glade/app.glade.h:33 ../glade/recipe_index.glade.h:16
-#, fuzzy
+#: ../glade/app.ui.h:6 ../glade/recipe_index.ui.h:16
 msgid "Search by other critera within the current search results."
-msgstr "Etsi uusilla hakuehdoilla nykyisen haun tuloksista."
+msgstr "Hae hakutuloksista"
 
-#: ../glade/app.glade.h:34 ../glade/keyeditor.glade.h:6
-#: ../glade/recipe_index.glade.h:17 ../glade/shopCatEditor.glade.h:9
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:5
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:14
+#: ../glade/app.ui.h:7 ../glade/recipe_index.ui.h:17
+#: ../glade/shopCatEditor.ui.h:9
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:5
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:20
 msgid "Search for recipes as you type"
-msgstr "Hae reseptejä kirjoittaessasi"
+msgstr "Etsi reseptejä kirjoitettaessa"
 
-#: ../glade/app.glade.h:35 ../glade/recipe_index.glade.h:19
+#: ../glade/app.ui.h:8 ../glade/recipe_index.ui.h:19
 msgid "View Re_cipe"
 msgstr "Näytä resepti"
 
-#: ../glade/app.glade.h:36
-msgid "View Recipe _Card"
-msgstr "Näytä reseptikortti"
-
-#: ../glade/app.glade.h:37
-msgid "View selected recipe"
-msgstr "Näytä valittu resepti"
-
-#: ../glade/app.glade.h:38 ../src/lib/GourmetRecipeManager.py:1042
-msgid "_About"
-msgstr "Tietoja"
-
-#: ../glade/app.glade.h:39 ../src/lib/GourmetRecipeManager.py:1039
-msgid "_Actions"
-msgstr "Toiminnot"
-
-#: ../glade/app.glade.h:40 ../glade/recipe_index.glade.h:20
-#, fuzzy
-msgid "_Batch edit recipes"
-msgstr "Näytä poistetut reseptit"
-
-#: ../glade/app.glade.h:41
-msgid "_Delete"
-msgstr "Poista"
-
-#. saveEdits
-#: ../glade/app.glade.h:42 ../glade/recipe_index.glade.h:21
-#: ../src/lib/reccard.py:878
-msgid "_Delete Recipe"
-msgstr "Poista resepti"
-
-#: ../glade/app.glade.h:43
-msgid "_Duplicate Finder"
-msgstr ""
-
-#: ../glade/app.glade.h:44 ../glade/recipe_index.glade.h:22
-msgid "_E-Mail recipe"
-msgstr "Lähetä resepti sähköpostitse"
-
-#: ../glade/app.glade.h:45 ../src/lib/GourmetRecipeManager.py:1038
-#: ../src/lib/reccard.py:214 ../src/lib/reccard.py:873
-#: ../src/lib/shopgui.py:653
-msgid "_Edit"
-msgstr "Muokkaa"
-
-#: ../glade/app.glade.h:46
-msgid "_Empty trash"
-msgstr "Tyhjennä roskakori"
-
-#: ../glade/app.glade.h:47
-#, fuzzy
-msgid "_Export selected recipes"
-msgstr "Vie valitut reseptit"
-
-#: ../glade/app.glade.h:48
-#, fuzzy
-msgid "_Field Editor"
-msgstr "Avainten muokkain"
-
-#: ../glade/app.glade.h:49 ../glade/databaseChooser.glade.h:16
-#: ../src/lib/GourmetRecipeManager.py:1037 ../src/lib/shopgui.py:675
-msgid "_File"
-msgstr "Tiedosto"
-
-#: ../glade/app.glade.h:50 ../src/lib/GourmetRecipeManager.py:1041
-#: ../src/lib/GourmetRecipeManager.py:1046 ../src/lib/reccard.py:216
-#: ../src/lib/reccard.py:227 ../src/lib/reccard.py:875
-#: ../src/lib/shopgui.py:676 ../src/lib/shopgui.py:678
-msgid "_Help"
-msgstr "Ohje"
-
-#: ../glade/app.glade.h:51
-msgid "_Import File"
-msgstr "Tuo tiedosto"
-
-#: ../glade/app.glade.h:52
-msgid "_Ingredient Editor"
-msgstr "Ainesmuokkain"
-
 #. Set up hard-coded functional buttons...
-#: ../glade/app.glade.h:53 ../glade/generic_importer.glade.h:4
+#: ../glade/app.ui.h:9 ../glade/generic_importer.ui.h:4
 #: ../src/lib/importers/interactive_importer.py:143
 msgid "_New Recipe"
 msgstr "Uusi resepti"
 
-#: ../glade/app.glade.h:54 ../src/lib/GourmetRecipeManager.py:1027
-#, fuzzy
-msgid "_Print"
-msgstr "Tulostus"
+#: ../glade/app.ui.h:10 ../glade/recipe_index.ui.h:24
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:11
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:33
+msgid "_Search for:"
+msgstr "Hakusana:"
 
-#: ../glade/app.glade.h:55 ../glade/recipe_index.glade.h:23
-msgid "_Print recipe"
-msgstr "Tulosta resepti"
-
-#: ../glade/app.glade.h:56
-msgid "_Redo"
-msgstr "Toista"
-
-#: ../glade/app.glade.h:57 ../glade/recipe_index.glade.h:24
-#, fuzzy
-msgid "_Search for"
-msgstr "Etsi"
-
-#: ../glade/app.glade.h:58 ../src/lib/shopgui.py:210
-msgid "_Shopping List"
-msgstr "Ostoslista"
-
-#: ../glade/app.glade.h:59
-msgid "_Show deleted recipes"
-msgstr "Näytä poistetut reseptit"
-
-#: ../glade/app.glade.h:60 ../src/lib/GourmetRecipeManager.py:1072
-msgid "_Timer"
-msgstr ""
-
-#: ../glade/app.glade.h:61 ../src/lib/GourmetRecipeManager.py:1071
-msgid "_Tools"
-msgstr "Työkalut"
-
-#: ../glade/app.glade.h:62
-msgid "_Undo"
-msgstr "Kumoa"
-
-#: ../glade/app.glade.h:63 ../src/lib/plugins/unit_converter/__init__.py:15
-msgid "_Unit Converter"
-msgstr "Mittayksikkömuunnin"
-
-#: ../glade/app.glade.h:64
-msgid "_View"
-msgstr "Näytä"
-
-#: ../glade/app.glade.h:65 ../glade/keyeditor.glade.h:14
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:13
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:22
+#: ../glade/app.ui.h:11 ../src/lib/plugins/key_editor/keyeditor.ui.h:13
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:35
 msgid "_in"
 msgstr ""
 
-#: ../glade/batchEditor.glade.h:1
+#: ../glade/batchEditor.ui.h:1
 msgid ""
-"<span size=\"large\" weight=\"bold\">Set Recipe Fields for selected recipes</"
-"span>"
+"<span size=\"large\" weight=\"bold\">Set Recipe Fields for selected "
+"recipes</span>"
 msgstr ""
+"<span size=\"large\" weight=\"bold\">Määritä valittujen reseptien näkyvät "
+"kentät</span>"
 
-#: ../glade/batchEditor.glade.h:2 ../glade/recCardDescriptionEditor.glade.h:1
+#: ../glade/batchEditor.ui.h:2 ../glade/recCardDescriptionEditor.ui.h:1
 msgid "C_uisine:"
-msgstr "Keittiö:"
+msgstr "Tyyppi:"
 
-#: ../glade/batchEditor.glade.h:3 ../glade/recCardDescriptionEditor.glade.h:2
+#: ../glade/batchEditor.ui.h:3 ../glade/recCardDescriptionEditor.ui.h:2
 msgid "Coo_king Time:"
-msgstr "Keittoaika:"
+msgstr "Kypsymisaika"
 
-#: ../glade/batchEditor.glade.h:4 ../glade/recCardDescriptionEditor.glade.h:3
+#: ../glade/batchEditor.ui.h:4 ../glade/recCardDescriptionEditor.ui.h:3
 msgid "Image:"
-msgstr ""
+msgstr "Kuva:"
 
-#: ../glade/batchEditor.glade.h:5 ../glade/recCardDescriptionEditor.glade.h:5
+#: ../glade/batchEditor.ui.h:5 ../glade/recCardDescriptionEditor.ui.h:5
 msgid "S_ource:"
 msgstr "Lähde:"
 
-#: ../glade/batchEditor.glade.h:6
-#, fuzzy
+#: ../glade/batchEditor.ui.h:6
 msgid "Set Fields for Selected Recipes"
-msgstr "Poista valitut reseptit"
+msgstr "Aseta valittujen reseptien kentät"
 
-#: ../glade/batchEditor.glade.h:7
-#, fuzzy
+#: ../glade/batchEditor.ui.h:7
 msgid "Set all values for _all selected recipes"
-msgstr "Poista valitut reseptit"
+msgstr "Aseta valittujen reseptien kaikki arvot"
 
-#: ../glade/batchEditor.glade.h:8 ../glade/recCardDescriptionEditor.glade.h:9
+#: ../glade/batchEditor.ui.h:8 ../glade/recCardDescriptionEditor.ui.h:9
 msgid "_Add Image"
 msgstr "Lisää kuva"
 
-#: ../glade/batchEditor.glade.h:9 ../glade/recCardDescriptionEditor.glade.h:10
+#: ../glade/batchEditor.ui.h:9 ../glade/recCardDescriptionEditor.ui.h:10
 msgid "_Category:"
-msgstr "Luokka:"
+msgstr "_Luokka:"
 
-#: ../glade/batchEditor.glade.h:10
+#: ../glade/batchEditor.ui.h:10
 msgid "_Only set values where field is currently blank"
-msgstr ""
+msgstr "Aseta arvot vain tyhjille kentille"
 
-#: ../glade/batchEditor.glade.h:11
-#, fuzzy
+#: ../glade/batchEditor.ui.h:11
 msgid "_Preparation Time:"
-msgstr "Valmistusaika"
+msgstr "Valmisteluaika:"
 
-#: ../glade/batchEditor.glade.h:12
-#: ../glade/recCardDescriptionEditor.glade.h:11
+#: ../glade/batchEditor.ui.h:12 ../glade/recCardDescriptionEditor.ui.h:11
 msgid "_Rating:"
-msgstr "Arvosana:"
+msgstr "_Arvostelu:"
 
-#: ../glade/batchEditor.glade.h:13
-#: ../glade/recCardDescriptionEditor.glade.h:12
+#: ../glade/batchEditor.ui.h:13 ../glade/recCardDescriptionEditor.ui.h:12
 msgid "_Remove Image"
 msgstr "Poista kuva"
 
-#: ../glade/batchEditor.glade.h:14
-#, fuzzy
+#: ../glade/batchEditor.ui.h:14
 msgid "_Servings"
-msgstr "Annosmäärä"
+msgstr "Annoksia"
 
-#: ../glade/batchEditor.glade.h:15
-#: ../glade/recCardDescriptionEditor.glade.h:14
-#, fuzzy
+#: ../glade/batchEditor.ui.h:15 ../glade/recCardDescriptionEditor.ui.h:14
 msgid "_Webpage:"
-msgstr "sivusto"
+msgstr "Verkkosivu:"
 
-#: ../glade/converter.glade.h:1 ../glade/converter_new.glade.h:1
-#: ../glade/converter_old.glade.h:1 ../glade/databaseChooser.glade.h:1
-#: ../glade/shopCatEditor.glade.h:1
-#: ../src/lib/plugins/unit_converter/converter.glade.h:1
+#: ../glade/converter.ui.h:1 ../glade/databaseChooser.ui.h:1
+#: ../glade/shopCatEditor.ui.h:1
+#: ../src/lib/plugins/unit_converter/converter.ui.h:1
 msgid "*"
 msgstr "*"
 
-#: ../glade/converter.glade.h:2 ../glade/converter_new.glade.h:2
-#: ../src/lib/plugins/unit_converter/converter.glade.h:2
+#: ../glade/converter.ui.h:2
+#: ../src/lib/plugins/unit_converter/converter.ui.h:2
 msgid "1"
 msgstr "1"
 
-#: ../glade/converter.glade.h:3 ../glade/converter_new.glade.h:3
-#: ../src/lib/plugins/unit_converter/converter.glade.h:3
+#: ../glade/converter.ui.h:3
+#: ../src/lib/plugins/unit_converter/converter.ui.h:3
 msgid "<b>From</b>"
-msgstr "<b>Lähettäjä</b>"
+msgstr "<b>Mistä</b>"
 
-#: ../glade/converter.glade.h:4 ../glade/converter_new.glade.h:4
-#: ../src/lib/plugins/unit_converter/converter.glade.h:4
+#: ../glade/converter.ui.h:4
+#: ../src/lib/plugins/unit_converter/converter.ui.h:4
 msgid "<b>To</b>"
-msgstr "<b>Vastaanottaja</b>"
+msgstr "<b>Mihin</b>"
 
-#: ../glade/converter.glade.h:5 ../glade/converter_new.glade.h:5
-#: ../glade/converter_old.glade.h:3
-#: ../src/lib/plugins/unit_converter/converter.glade.h:5
+#: ../glade/converter.ui.h:5
+#: ../src/lib/plugins/unit_converter/converter.ui.h:5
 msgid "?"
 msgstr "?"
 
-#: ../glade/converter.glade.h:6 ../glade/converter_new.glade.h:6
-#: ../src/lib/plugins/unit_converter/converter.glade.h:6
-#, fuzzy
+#: ../glade/converter.ui.h:6
+#: ../src/lib/plugins/unit_converter/converter.ui.h:6
 msgid "Density _Information"
-msgstr "Tiheystieto"
+msgstr "Tiheystiedot"
 
-#: ../glade/converter.glade.h:7 ../glade/converter_new.glade.h:7
-#: ../src/lib/plugins/unit_converter/converter.glade.h:7
+#: ../glade/converter.ui.h:7
+#: ../src/lib/plugins/unit_converter/converter.ui.h:7
 msgid "I_tem:"
-msgstr "Tarvike:"
+msgstr "Ainesosa:"
 
-#: ../glade/converter.glade.h:8 ../glade/converter_new.glade.h:8
-#: ../glade/converter_old.glade.h:6 ../src/lib/convertGui.py:153
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:432
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:489
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:553
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:579
+#: ../glade/converter.ui.h:8 ../src/lib/convertGui.py:153
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:433
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:490
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:554
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:580
 #: ../src/lib/plugins/unit_converter/convertGui.py:160
-#: ../src/lib/plugins/unit_converter/converter.glade.h:8
+#: ../src/lib/plugins/unit_converter/converter.ui.h:8
 msgid "None"
 msgstr "Ei mikään"
 
-#: ../glade/converter.glade.h:9 ../glade/converter_new.glade.h:9
-#: ../glade/converter_old.glade.h:7
-#: ../src/lib/plugins/unit_converter/converter.glade.h:9
+#: ../glade/converter.ui.h:9
+#: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/unit_converter/converter.ui.h:9
 msgid "Unit Converter"
 msgstr "Yksikkömuunnin"
 
-#: ../glade/converter.glade.h:10 ../glade/converter_new.glade.h:10
-#: ../glade/keyeditor.glade.h:9
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:8
-#: ../src/lib/plugins/unit_converter/converter.glade.h:10
+#: ../glade/converter.ui.h:10 ../src/lib/plugins/key_editor/keyeditor.ui.h:8
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:26
+#: ../src/lib/plugins/unit_converter/converter.ui.h:10
 msgid "_Amount:"
-msgstr "Määrä:"
+msgstr "_Määrä:"
 
-#: ../glade/converter.glade.h:11 ../glade/converter_new.glade.h:11
-#: ../src/lib/plugins/unit_converter/converter.glade.h:11
+#: ../glade/converter.ui.h:11
+#: ../src/lib/plugins/unit_converter/converter.ui.h:11
 msgid "_Density:"
 msgstr "Tiheys:"
 
-#: ../glade/converter.glade.h:12 ../glade/converter_new.glade.h:12
-#: ../src/lib/plugins/unit_converter/converter.glade.h:12
+#: ../glade/converter.ui.h:12
+#: ../src/lib/plugins/unit_converter/converter.ui.h:12
 msgid "_Result:"
 msgstr "Tulos:"
 
-#: ../glade/converter.glade.h:13 ../glade/converter_new.glade.h:13
-#: ../glade/keyeditor.glade.h:13
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:12
-#: ../src/lib/plugins/unit_converter/converter.glade.h:13
+#: ../glade/converter.ui.h:13 ../src/lib/plugins/key_editor/keyeditor.ui.h:12
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:34
+#: ../src/lib/plugins/unit_converter/converter.ui.h:13
 msgid "_Unit:"
-msgstr "Yksikkö:"
+msgstr "_Yksikkö:"
 
-#: ../glade/converter_old.glade.h:2
-msgid "="
-msgstr ""
-
-#: ../glade/converter_old.glade.h:4
-#: ../src/lib/plugins/key_editor/keyEditor.py:514
-#: ../src/lib/plugins/nutritional_information/nutritionModel.py:7
-msgid "Amount"
-msgstr "Määrä"
-
-#: ../glade/converter_old.glade.h:5
-#, fuzzy
-msgid "I_tem: "
-msgstr "Tarvike:"
-
-#: ../glade/converter_old.glade.h:8
-#, fuzzy
-msgid "Use Density _Information"
-msgstr "Tiheystieto"
-
-#: ../glade/converter_old.glade.h:9
-#, fuzzy
-msgid "_Amount"
-msgstr "Määrä:"
-
-#: ../glade/converter_old.glade.h:10
-#, fuzzy
-msgid "_Density: "
-msgstr "Tiheys:"
-
-#: ../glade/converter_old.glade.h:11
-#, fuzzy
-msgid "_Unit"
-msgstr "Yksikkö:"
-
-#: ../glade/databaseChooser.glade.h:2
+#: ../glade/databaseChooser.ui.h:2
 msgid "<b>Choose Database System for Gourmet to Use</b>"
-msgstr "<b>Valitse Gourmet'lle tietokantajärjestelmä</b>"
+msgstr "<b>Valitse Gourmetin käyttämä tietokantajärjestelmä</b>"
 
-#: ../glade/databaseChooser.glade.h:3
+#: ../glade/databaseChooser.ui.h:3
 msgid "Choose Database"
 msgstr "Valitse tietokanta"
 
-#: ../glade/databaseChooser.glade.h:4
+#: ../glade/databaseChooser.ui.h:4
 msgid "Database _Name:"
-msgstr "Tietokannan _nimi:"
+msgstr "Tietokannan nimi:"
 
-#: ../glade/databaseChooser.glade.h:5
+#: ../glade/databaseChooser.ui.h:5
 msgid ""
 "Hostname of the system where your database server is running. If your "
 "database server is running on your local system, use localhost."
 msgstr ""
-"Tietokantapalvelimen nimi. Jos tietokantapalvelimena toimii oma koneesi, "
-"käytä arvoa \"localhost\"."
+"Tietokantapalvelimen IP-osoite. Jos tietokantapalvelin on paikallisella "
+"koneella, valitse \"localhost\"."
 
-#: ../glade/databaseChooser.glade.h:6
-msgid ""
-"Metakit (default, stored in a local file)\n"
-"SQLite (stored in a local file)\n"
-"MySQL (requires connection to a database)"
-msgstr ""
-"Metakit (oletusarvo, paikallinen tiedosto)\n"
-"SQLite (paikallinen tiedosto)\n"
-"MySQL (vaatii tietokantayhteyden)"
+#: ../glade/databaseChooser.ui.h:6
+msgid "Metakit (default, stored in a local file)"
+msgstr "Metakit (oletus, tallennus paikalliseen tiedostoon)"
 
-#: ../glade/databaseChooser.glade.h:9
+#: ../glade/databaseChooser.ui.h:7
+msgid "MySQL (requires connection to a database)"
+msgstr "MySQL (vaatii tietokantayhteyden)"
+
+#: ../glade/databaseChooser.ui.h:8
 msgid ""
 "Name of the database in which Gourmet should store its information. Gourmet "
 "will try to create this database if it does not already exist."
 msgstr ""
-"Gourmet'n  käyttämän tietokannan nimi. Gourmet yrittää luoda tietokannan, "
-"ellei se ole olemassa."
+"Gourmetin käyttämän tietokannan nimi. Jos sitä ei ole olemassa, Gourmet luo "
+"sen automaattisesti."
 
-#: ../glade/databaseChooser.glade.h:10
+#: ../glade/databaseChooser.ui.h:9
 msgid "Password for your username on the database."
-msgstr "Tietokantayhteyden salasana."
+msgstr "Tietokantakäyttäjän salasana"
 
-#: ../glade/databaseChooser.glade.h:11
+#: ../glade/databaseChooser.ui.h:10
+msgid "SQLite (stored in a local file)"
+msgstr "SQLite (tallennus paikalliseen tiedostoon)"
+
+#: ../glade/databaseChooser.ui.h:11
 msgid ""
 "Save the password for next time. This means the password will be stored "
 "insecurely in your configuration file."
-msgstr ""
-"Talleta salasana seuraavia käyttökertoja varten. Salasana talletetaan "
-"asetustiedostoon salaamattomana."
+msgstr "Tallenna salasana tiedostoon (ei turvallista)"
 
-#: ../glade/databaseChooser.glade.h:12
+#: ../glade/databaseChooser.ui.h:12
 msgid "Your username on the database."
-msgstr "Tietokannan käyttäjätunnus"
+msgstr "Tietokantakäyttäjän käyttäjänimi"
 
-#: ../glade/databaseChooser.glade.h:13
+#: ../glade/databaseChooser.ui.h:13
 msgid "_Browse"
 msgstr "Selaa"
 
-#: ../glade/databaseChooser.glade.h:14
+#: ../glade/databaseChooser.ui.h:14
 msgid "_Database System"
-msgstr "Tietokanta"
+msgstr "Tietokantajärjestelmä"
 
-#: ../glade/databaseChooser.glade.h:15 ../src/lib/gglobals.py:346
-#: ../src/lib/gtk_extras/dialog_extras.py:809
-#: ../src/lib/gtk_extras/dialog_extras.py:1226
+#: ../glade/databaseChooser.ui.h:15 ../src/lib/gglobals.py:327
+#: ../src/lib/gtk_extras/dialog_extras.py:810
+#: ../src/lib/gtk_extras/dialog_extras.py:1228
 msgid "_Details"
 msgstr "Yksityiskohdat"
 
-#: ../glade/databaseChooser.glade.h:17
+#: ../glade/databaseChooser.ui.h:16 ../src/lib/GourmetRecipeManager.py:1059
+#: ../src/lib/shopgui.py:675
+msgid "_File"
+msgstr "Tiedosto"
+
+#: ../glade/databaseChooser.ui.h:17
 msgid "_Host:"
-msgstr "Palvelin:"
+msgstr "_Verkkonimi:"
 
-#: ../glade/databaseChooser.glade.h:18
+#: ../glade/databaseChooser.ui.h:18
 msgid "_Password:"
-msgstr "Salasana:"
+msgstr "_Salasana:"
 
-#: ../glade/databaseChooser.glade.h:19
+#: ../glade/databaseChooser.ui.h:19
 msgid "_Save Password"
 msgstr "Tallenna salasana"
 
-#: ../glade/databaseChooser.glade.h:20
+#: ../glade/databaseChooser.ui.h:20
 msgid "_Username:"
-msgstr "Käyttäjätunnus:"
+msgstr "_Käyttäjätunnus:"
 
-#: ../glade/databaseChooser.glade.h:21
+#: ../glade/databaseChooser.ui.h:21
 msgid "localhost"
 msgstr "localhost"
 
-#: ../glade/databaseChooser.glade.h:22
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:274
+#: ../glade/databaseChooser.ui.h:22
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:269
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:15
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:55
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:56
 msgid "recipe"
 msgstr "resepti"
 
-#: ../glade/generic_importer.glade.h:1
-#, fuzzy
+#: ../glade/generic_importer.ui.h:1
 msgid ""
 "<i>Select text from the raw recipe and categorize it by labelling which part "
 "of the recipe it is (choose from the recipe elements on the right).</i>"
 msgstr ""
-"<i>Valitse teksti reseptin raakaversiosta ja luokittele nimiöimällä, mistä "
-"kohtaa reseptiä se on (valitse reseptielementeistä oikealla).</i>"
+"<i>Valitse tekstiä raakareseptistä ja luokittele sen osat oikealla näkyviä "
+"merkintöjä käyttäen</i>"
 
-#: ../glade/generic_importer.glade.h:2
-#, fuzzy
+#: ../glade/generic_importer.ui.h:2
 msgid ""
 "Start new recipe (use this if the file you're importing contains more than "
 "one recipe)"
 msgstr ""
-"Aloita uusi resepti (käytä tätä, jos tuomassasi tiedostossa on enemmän kuin "
-"yksi resepti)"
+"Luo uusi resepti (käytä tätä jos tuotavassa reseptissä on useita reseptejä)"
 
-#: ../glade/generic_importer.glade.h:3
-#, fuzzy
+#: ../glade/generic_importer.ui.h:3
 msgid "_Label"
-msgstr "Nimiö"
+msgstr "_Merkintä"
 
-#: ../glade/generic_importer.glade.h:5
-#, fuzzy
-msgctxt "yes"
+#: ../glade/generic_importer.ui.h:5
 msgid "_Raw recipe:"
-msgstr "Reseptin raakaversio"
+msgstr "Raakaresepti:"
 
-#: ../glade/keyeditor.glade.h:1
-msgid "<b>Change selected ingredients</b>"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:2
-#, fuzzy
-msgid "Edit _Nutritional Information"
-msgstr "<b>Ravintoarvot</b>"
-
-#: ../glade/keyeditor.glade.h:3
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:2
-msgid "Key Editor"
-msgstr "Avainten muokkain"
-
-#: ../glade/keyeditor.glade.h:5
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:4
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:13
-#, fuzzy
-msgid "Search as you t_ype"
-msgstr "Etsi k_irjoittaessasi"
-
-#: ../glade/keyeditor.glade.h:7 ../glade/shopCatEditor.glade.h:10
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:6
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:17
-msgid "Use regular expressions"
-msgstr "Käytä säännöllisiä lausekkeita"
-
-#: ../glade/keyeditor.glade.h:8
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:7
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:18
-#, fuzzy
-msgid "_Advanced Search"
-msgstr "Edistynyt haku"
-
-#: ../glade/keyeditor.glade.h:10
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:9
-msgid "_Item:"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:11
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:10
-msgid "_Key:"
-msgstr ""
-
-#: ../glade/keyeditor.glade.h:12
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:11
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:21
-#, fuzzy
-msgid "_Search for:"
-msgstr "Etsitään:"
-
-#: ../glade/preferenceDialog.glade.h:1
+#: ../glade/preferenceDialog.ui.h:1
 msgid "<b>Card View Preferences</b>"
-msgstr "<b>Korttinäytön asetukset</b>"
+msgstr "<b>Reseptinäkymän asetukset</b>"
 
-#: ../glade/preferenceDialog.glade.h:2
-#, fuzzy
+#: ../glade/preferenceDialog.ui.h:2
 msgid "<b>Index View Preferences</b>"
-msgstr "<b>Hakemistonäytön asetukset</b>"
+msgstr "<b>Luettelonäkymän asetukset</b>"
 
-#: ../glade/preferenceDialog.glade.h:3
+#: ../glade/preferenceDialog.ui.h:3
 msgid "<b>Shopping List Preferences</b>"
 msgstr "<b>Ostoslistan asetukset</b>"
 
-#: ../glade/preferenceDialog.glade.h:4
-#, fuzzy
+#: ../glade/preferenceDialog.ui.h:4
 msgid "<i>Configure which columns are included in the recipe index view.</i>"
-msgstr "<i>Aseta mitkä palstat näytetään reseptihakemiston näytössä.</i>"
+msgstr "<i>Määritä luettelonäkymässä näkyvät palstat</i>"
 
-#: ../glade/preferenceDialog.glade.h:5
-#, fuzzy
+#: ../glade/preferenceDialog.ui.h:5
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
-msgstr "<i>Poista kohteet, joita ei käytetä Reseptikortti-rajapinnassa.</i>"
+msgstr "<i>Poista käyttämättömät kohdat reseptinäkymästä</i>"
 
-#: ../glade/preferenceDialog.glade.h:6
-#, fuzzy
+#: ../glade/preferenceDialog.ui.h:6
 msgid ""
 "<i>What should Gourmet do with Optional Ingredients when adding recipes to "
 "the shopping list?</i>"
-msgstr ""
-"<i>Mitä Gourmet'n pitäisi tehdä valinnaisten ainesten kanssa lisätessään "
-"reseptejä kauppalistaan?</i>"
+msgstr "<i>Valinnaisten ainesosien käsittely ostoslistaa luodessa</i>"
 
-#: ../glade/preferenceDialog.glade.h:7
-#, fuzzy
+#: ../glade/preferenceDialog.ui.h:7
 msgid "As_k whether to include optional ingredients"
-msgstr "Kysy lisätäänkö valinnaiset ainekset"
+msgstr "Kysy lisätäänkö valinnaiset ainesosat"
 
-#: ../glade/preferenceDialog.glade.h:8
+#: ../glade/preferenceDialog.ui.h:8
 msgid "Card View"
-msgstr "Korttinäkymä"
+msgstr "Reseptinäkymä"
 
-#: ../glade/preferenceDialog.glade.h:9
-#, fuzzy
+#: ../glade/preferenceDialog.ui.h:9
 msgid "Gourmet Recipe Manager Preferences"
-msgstr "Gourmet Reseptinhallinnan asetukset"
+msgstr "Gourmetin asetukset"
 
-#: ../glade/preferenceDialog.glade.h:10
-#, fuzzy
+#: ../glade/preferenceDialog.ui.h:10
 msgid "Index View"
-msgstr "Hakemistonäyttö"
+msgstr "Luettelonäkymä"
 
-#: ../glade/preferenceDialog.glade.h:11 ../src/lib/shopgui.py:147
+#: ../glade/preferenceDialog.ui.h:11 ../src/lib/shopgui.py:147
 #: ../src/lib/shopgui.py:544 ../src/lib/shopgui.py:848
 #: ../src/lib/shopgui.py:997
 msgid "Shopping List"
 msgstr "Ostoslista"
 
-#: ../glade/preferenceDialog.glade.h:12
+#: ../glade/preferenceDialog.ui.h:12
 msgid "Use fractions when possible for display"
-msgstr ""
+msgstr "Näytä määrät murtolukuina jos mahdollista"
 
-#: ../glade/preferenceDialog.glade.h:13
-#, fuzzy
+#: ../glade/preferenceDialog.ui.h:13
 msgid "_Allow units to change when multiplying"
-msgstr "Anna yksiköiden vaihtua annosmääriä kasvatettaessa"
+msgstr "Salli yksikkömuunnokset annoskokoa muutettaessa"
 
-#: ../glade/preferenceDialog.glade.h:14
-#, fuzzy
+#: ../glade/preferenceDialog.ui.h:14
 msgid "_Always add optional ingredients"
-msgstr "Lisää aina valinnaiset ainekset"
+msgstr "Lisää  aina valinnaiset ainesosat"
 
-#: ../glade/preferenceDialog.glade.h:15
-#, fuzzy
+#: ../glade/preferenceDialog.ui.h:15
 msgid "_Clear remembered optional ingredients"
-msgstr "Pyyhi muistetut valinnaiset ainekset"
+msgstr "Tyhjennä muistissa olevat valinnaiset ainesosat"
 
-#: ../glade/preferenceDialog.glade.h:16
-#, fuzzy
+#: ../glade/preferenceDialog.ui.h:16
 msgid "_Never add optional ingredients"
-msgstr "Älä lisää valinnaisia aineksia"
+msgstr "Älä lisää valinnaisia ainesosia ikinä"
 
-#: ../glade/preferenceDialog.glade.h:17
+#: ../glade/preferenceDialog.ui.h:17
 msgid "_Recipes per page:"
-msgstr ""
+msgstr "Reseptejä sivulla:"
 
-#: ../glade/preferenceDialog.glade.h:18
-#, fuzzy
+#: ../glade/preferenceDialog.ui.h:18
 msgid "_Remember user selections by default"
-msgstr "Muista käyttäjän valinnat oletusarvoisesti"
+msgstr "Muista käyttäjän valinnat"
 
-#: ../glade/preferenceDialog.glade.h:19
+#: ../glade/preferenceDialog.ui.h:19
 msgid "_Use fractions"
-msgstr ""
+msgstr "Käytä murtolukuja"
 
-#: ../glade/recCardDescriptionEditor.glade.h:4
+#: ../glade/recCardDescriptionEditor.ui.h:4
 msgid "Pre_paration Time:"
-msgstr ""
+msgstr "Valmisteluaika:"
 
 #. use_threads = False
 #. if use_threads:
@@ -789,581 +426,665 @@ msgstr ""
 #. import GourmetFauxThreads as gt
 #. renderer.set_property('editable',True)
 #. renderer.connect('edited',tst)
-#: ../glade/recCardDescriptionEditor.glade.h:6
-#: ../src/lib/exporters/rtf_exporter.py:79 ../src/lib/gglobals.py:251
+#: ../glade/recCardDescriptionEditor.ui.h:6
+#: ../src/lib/exporters/rtf_exporter.py:79 ../src/lib/gglobals.py:232
 #: ../src/lib/shopgui.py:750
 msgid "Title"
 msgstr "Nimi"
 
-#: ../glade/recCardDescriptionEditor.glade.h:7 ../src/lib/gglobals.py:257
+#: ../glade/recCardDescriptionEditor.ui.h:7 ../src/lib/gglobals.py:238
 msgid "Yield"
-msgstr ""
+msgstr "Määrä"
 
-#: ../glade/recCardDescriptionEditor.glade.h:8 ../src/lib/gglobals.py:258
+#: ../glade/recCardDescriptionEditor.ui.h:8 ../src/lib/gglobals.py:239
 msgid "Yield Unit"
-msgstr ""
+msgstr "Määrän yksikkö"
 
-#: ../glade/recCardDescriptionEditor.glade.h:13
+#: ../glade/recCardDescriptionEditor.ui.h:13
 msgid "_Title:"
-msgstr ""
+msgstr "_Nimi:"
 
-#: ../glade/recCardDescriptionEditor.glade.h:15
+#: ../glade/recCardDescriptionEditor.ui.h:15
 msgid "_Yield:"
-msgstr ""
+msgstr "Määrä"
 
-#: ../glade/recCardDescriptionEditor.glade.h:16
+#: ../glade/recCardDescriptionEditor.ui.h:16
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:29
 #: ../src/lib/recindex.py:42 ../src/lib/recindex.py:50
 msgid "category"
 msgstr "luokka"
 
-#: ../glade/recCardDescriptionEditor.glade.h:17
+#: ../glade/recCardDescriptionEditor.ui.h:17
 msgid "rating"
-msgstr "arvosana"
+msgstr "arvostelu"
 
-#: ../glade/recCardDescriptionEditor.glade.h:18
-#, fuzzy
+#: ../glade/recCardDescriptionEditor.ui.h:18
 msgid "servings"
-msgstr "annosluku"
+msgstr "annoksia"
 
-#: ../glade/recCardDisplay.glade.h:1
+#: ../glade/recCardDisplay.ui.h:1
 msgid "<b>Category:</b>"
 msgstr "<b>Luokka:</b>"
 
-#: ../glade/recCardDisplay.glade.h:2
+#: ../glade/recCardDisplay.ui.h:2
 msgid "<b>Cooking Time:</b>"
-msgstr "<b>Keittoaika:</b>"
+msgstr "<b>Kypsennysaika:</b>"
 
-#: ../glade/recCardDisplay.glade.h:3
+#: ../glade/recCardDisplay.ui.h:3
 msgid "<b>Cuisine:</b>"
-msgstr "<b>Keittiö:</b>"
+msgstr "<b>Tyyppi:</b>"
 
-#: ../glade/recCardDisplay.glade.h:4
+#: ../glade/recCardDisplay.ui.h:4
 msgid "<b>Ingredients</b>"
 msgstr "<b>Ainesosat</b>"
 
-#: ../glade/recCardDisplay.glade.h:5
+#: ../glade/recCardDisplay.ui.h:5
 msgid "<b>Instructions</b>"
 msgstr "<b>Ohjeet</b>"
 
-#: ../glade/recCardDisplay.glade.h:6
+#: ../glade/recCardDisplay.ui.h:6
 msgid "<b>Notes</b>"
-msgstr "<b>Huomautukset</b>"
+msgstr "Muistiinpanot"
 
-#: ../glade/recCardDisplay.glade.h:7
+#: ../glade/recCardDisplay.ui.h:7
 msgid "<b>Preparation Time:</b>"
-msgstr "<b>Valmistusaika:</b>"
+msgstr "<b>Valmisteluaika:</b>"
 
-#: ../glade/recCardDisplay.glade.h:8
+#: ../glade/recCardDisplay.ui.h:8
 msgid "<b>Rating:</b>"
-msgstr "<b>Arvosana:</b>"
+msgstr "<b>Arvostelu:</b>"
 
-#: ../glade/recCardDisplay.glade.h:9
+#: ../glade/recCardDisplay.ui.h:9
 msgid "<b>Source:</b>"
 msgstr "<b>Lähde:</b>"
 
-#: ../glade/recCardDisplay.glade.h:10
-#, fuzzy
+#: ../glade/recCardDisplay.ui.h:10
 msgid "<b>Webpage:</b>"
-msgstr "<b>Arvosana:</b>"
+msgstr "<b>Verkkosivu</b>"
 
-#: ../glade/recCardDisplay.glade.h:11
-#, fuzzy
+#: ../glade/recCardDisplay.ui.h:11
 msgid "<b>_Multiply by:</b>"
-msgstr "<b>Kerrottava:</b>"
+msgstr "<b>Kerro luvulla:</b>"
 
-#: ../glade/recCardDisplay.glade.h:12
-#, fuzzy
+#: ../glade/recCardDisplay.ui.h:12
 msgid "<b>_Yields:</b>"
-msgstr "<b>Huomautuksia:</b>"
+msgstr "<b>Määrä:</b>"
 
-#: ../glade/recCardDisplay.glade.h:13
+#: ../glade/recCardDisplay.ui.h:13
 msgid "<span underline=\"single\" color=\"blue\">Link</span>"
-msgstr ""
+msgstr "<span underline=\"single\" color=\"blue\">Linkki</span>"
 
-#: ../glade/recCardDisplay.glade.h:14
+#: ../glade/recCardDisplay.ui.h:14
 msgid "Edit _description"
-msgstr ""
+msgstr "Muokkaa kuvausta"
 
-#: ../glade/recCardDisplay.glade.h:15
+#: ../glade/recCardDisplay.ui.h:15
 msgid "Edit _ingredients"
-msgstr ""
+msgstr "Muokkaa ainesosia"
 
-#: ../glade/recCardDisplay.glade.h:16
+#: ../glade/recCardDisplay.ui.h:16
 msgid "Edit _instructions"
-msgstr ""
+msgstr "Muokkaa ohjeita"
 
-#: ../glade/recCardDisplay.glade.h:17
+#: ../glade/recCardDisplay.ui.h:17
 msgid "Edit _notes"
-msgstr ""
+msgstr "Muokkaa muistiinpanoja"
 
-#: ../glade/recCardDisplay.glade.h:18 ../src/lib/exporters/exporter.py:606
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:482
+#: ../glade/recCardDisplay.ui.h:18 ../src/lib/exporters/exporter.py:606
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:483
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:63
 msgid "Recipe"
 msgstr "Resepti"
 
-#: ../glade/recCardDisplay.glade.h:19
-#, fuzzy
+#: ../glade/recCardDisplay.ui.h:19
 msgid "_Shop"
-msgstr "Pysäytä"
+msgstr "Ostokset"
 
-#: ../glade/recCardIngredientsEditor.glade.h:1
+#: ../glade/recCardIngredientsEditor.ui.h:1
 msgid "Add _ingredient:"
-msgstr "Lisää ainesosa:"
+msgstr "Lisää ainesoa:"
 
-#: ../glade/recCardIngredientsEditor.glade.h:2
+#: ../glade/recCardIngredientsEditor.ui.h:2
 #: ../src/lib/exporters/exporter.py:251
 #: ../src/lib/importers/interactive_importer.py:38
 #: ../src/lib/importers/interactive_importer.py:53
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:477
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:479
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:507
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:478
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:480
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:508
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:100
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:598
-#: ../src/lib/reccard.py:1080
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:601
+#: ../src/lib/reccard.py:1074
 msgid "Ingredients"
 msgstr "Ainekset"
 
-#: ../glade/recipe_index.glade.h:1
-#, fuzzy
+#: ../glade/recipe_index.ui.h:1
 msgid "<i>Search Options</i>"
-msgstr "<i>Haun _tulokset:</i>"
+msgstr "<i>Hakuasetukset</i>"
 
-#: ../glade/recipe_index.glade.h:14
-#, fuzzy
+#: ../glade/recipe_index.ui.h:3
+msgid "Add recipe to shopping list"
+msgstr "Lisää resepti ostoslistaan"
+
+#: ../glade/recipe_index.ui.h:4
+msgid "Add to _Pantry"
+msgstr "Lisää ruokakomeroon"
+
+#: ../glade/recipe_index.ui.h:5
+msgid "Add to _shopping list"
+msgstr "Lisää ostoslistaan"
+
+#: ../glade/recipe_index.ui.h:6
+msgid "Delete selected recipe"
+msgstr "Poista valittu resepti"
+
+#: ../glade/recipe_index.ui.h:7
+msgid "E-mail selected recipe"
+msgstr "Lähetä valittu resepti sähköpostilla"
+
+#: ../glade/recipe_index.ui.h:8
+msgid "Edit attributes of selected recipes"
+msgstr "Muokkaa valittujen reseptien ominaisuuksia"
+
+#: ../glade/recipe_index.ui.h:9
+msgid "Jump to recipe in Recipe Card vew"
+msgstr "Siirry reseptinäkymässä olevaan reseptiin"
+
+#: ../glade/recipe_index.ui.h:11
+msgid ""
+"Never buy this item. When called for in a recipe, it will show up in a "
+"\"pantry\" section of the list as a reminder that you need it, but it won't "
+"be included when you save or print the list unless you tell me you need to "
+"buy it."
+msgstr ""
+"Älä ikinä osta tätä aineosaa. Jos sitä tarvitaan jossakin reseptissä, se "
+"näytetään ainoastaan \"Ruokakomero\"-kohdassa, ellei sitä erikseen lisätä "
+"ostoslistaan."
+
+#: ../glade/recipe_index.ui.h:12
+msgid "Print selected recipe"
+msgstr "Tulosta valittu resepti"
+
+#: ../glade/recipe_index.ui.h:14
 msgid "Search _in"
-msgstr "Hae ehdoilla"
+msgstr "Etsi kohteesta"
 
-#: ../glade/recipe_index.glade.h:15
+#: ../glade/recipe_index.ui.h:15
 msgid "Search as you _type"
-msgstr "Hae kirjoittaessasi"
+msgstr "Etsi kirjoitettaessa"
 
-#: ../glade/recipe_index.glade.h:18
-#, fuzzy
+#: ../glade/recipe_index.ui.h:18
 msgid "Show _Options"
-msgstr "Valinnainen"
+msgstr "Näytä valinnat"
 
-#: ../glade/recipe_index.glade.h:25
-#, fuzzy
+#: ../glade/recipe_index.ui.h:20
+msgid "_Batch edit recipes"
+msgstr "Reseptien massamuokkaus"
+
+#. saveEdits
+#: ../glade/recipe_index.ui.h:21 ../src/lib/reccard.py:869
+msgid "_Delete Recipe"
+msgstr "Poista resepti"
+
+#: ../glade/recipe_index.ui.h:22
+msgid "_E-Mail recipe"
+msgstr "Lähetä resepti sähköpostilla"
+
+#: ../glade/recipe_index.ui.h:23
+msgid "_Print recipe"
+msgstr "Tulosta resepti"
+
+#: ../glade/recipe_index.ui.h:25
 msgid "_Use regular expressions (advanced searching)"
-msgstr "Käytä säännöllisiä lausekkeita (edistynyt hakutapa)"
+msgstr "Käytä säännöllisiä lausekkeita (tarkennettu haku)"
 
-#: ../glade/shopCatEditor.glade.h:2
-#, fuzzy
+#: ../glade/shopCatEditor.ui.h:2
 msgid "Add Category: "
-msgstr "Luokka: "
+msgstr "Lisää luokka: "
 
-#: ../glade/shopCatEditor.glade.h:3
+#: ../glade/shopCatEditor.ui.h:3
 msgid "Advanced Search"
 msgstr "Tarkennettu haku"
 
-#: ../glade/shopCatEditor.glade.h:4
-#, fuzzy
-msgid ""
-"Category\n"
-"Key"
+#: ../glade/shopCatEditor.ui.h:4 ../src/lib/gglobals.py:233
+msgid "Category"
 msgstr "Luokka"
 
-#: ../glade/shopCatEditor.glade.h:6
-#, fuzzy
+#: ../glade/shopCatEditor.ui.h:5
 msgid "Category Editor"
-msgstr "Avainten muokkain"
+msgstr "Luokkien muokkaus"
 
-#: ../glade/shopCatEditor.glade.h:7 ../src/lib/recindex.py:155
+#. __gsignals__ = {
+#. 'view-changed':(gobject.SIGNAL_RUN_LAST,
+#. gobject.TYPE_NONE,
+#. ()),
+#. }
+#: ../glade/shopCatEditor.ui.h:6
+#: ../src/lib/plugins/key_editor/keyEditor.py:512
+#: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:108
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:188
+#: ../src/lib/reccard.py:2140 ../src/lib/reccard.py:2199
+msgid "Key"
+msgstr "Avain"
+
+#: ../glade/shopCatEditor.ui.h:7 ../src/lib/recindex.py:155
 msgid "Search as you type"
-msgstr "Hae kirjoittaessa"
+msgstr "Etsi kirjoitettaessa"
 
-#: ../glade/shopCatEditor.glade.h:8
-#, fuzzy
+#: ../glade/shopCatEditor.ui.h:8
 msgid "Search by"
-msgstr "Hae"
+msgstr "Hakuperuste"
 
-#: ../glade/timerDialog.glade.h:1
+#: ../glade/shopCatEditor.ui.h:10
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:6
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:24
+msgid "Use regular expressions"
+msgstr "Käytä säännöllisiä lausekkeita"
+
+#: ../glade/timerDialog.ui.h:1
 msgid "<b><span size=\"larger\">Timer</span></b>"
-msgstr ""
+msgstr "<b><span size=\"larger\">Ajastin</span></b>"
 
-#: ../glade/timerDialog.glade.h:2
+#: ../glade/timerDialog.ui.h:2
 msgid "<i>Timer Finished!</i>"
-msgstr ""
+msgstr "<i>Ajastin valmis!</i>"
 
-#: ../glade/timerDialog.glade.h:3
+#: ../glade/timerDialog.ui.h:3
 msgid "Re_peat alarm until I turn it off"
-msgstr ""
+msgstr "Toista hälytys kunnes se poistetaan käytöstä"
 
-#: ../glade/timerDialog.glade.h:4
+#: ../glade/timerDialog.ui.h:4
 msgid "S_ound"
-msgstr ""
+msgstr "Ääni"
 
-#: ../glade/timerDialog.glade.h:5
+#: ../glade/timerDialog.ui.h:5
 msgid "Set _Timer: "
-msgstr ""
+msgstr "Aseta ajastin: "
 
-#: ../glade/timerDialog.glade.h:6 ../src/lib/timer.py:140
-#: ../src/lib/timer.py:141
+#: ../glade/timerDialog.ui.h:6 ../src/lib/timer.py:140 ../src/lib/timer.py:141
 msgid "Timer"
-msgstr ""
+msgstr "Ajastin"
 
-#: ../glade/timerDialog.glade.h:7
+#: ../glade/timerDialog.ui.h:7
 msgid ""
 "Timer will continue to go off until you close this dialog or reset the timer."
 msgstr ""
+"Ajastin hälyttää kunnes tämä valintaikkuna suljetaan tai ajastin nollataan."
 
-#: ../glade/timerDialog.glade.h:8
+#: ../glade/timerDialog.ui.h:8
 msgid "_Note"
-msgstr ""
+msgstr "Muistiinpano"
 
-#: ../glade/timerDialog.glade.h:9
+#: ../glade/timerDialog.ui.h:9
 msgid "_Reset"
-msgstr ""
+msgstr "Tyhjennä"
 
-#: ../glade/timerDialog.glade.h:10
+#: ../glade/timerDialog.ui.h:10
 msgid "_Settings"
-msgstr ""
+msgstr "Asetukset"
 
-#: ../glade/timerDialog.glade.h:11
+#: ../glade/timerDialog.ui.h:11
 msgid "_Start"
-msgstr ""
+msgstr "_Käynnistä"
 
-#: ../glade/valueEditor.glade.h:1
+#: ../glade/valueEditor.ui.h:1
 msgid "<b>Edit fields throughout database</b>"
-msgstr ""
+msgstr "<b>Muokka kaikkia tietokannan kenttiä</b>"
 
-#: ../glade/valueEditor.glade.h:2
+#: ../glade/valueEditor.ui.h:2
 msgid "<i>New value will be added to the end of any existing text</i>"
-msgstr ""
+msgstr "<i>Uusi arvo lisätään olemassa olevan tekstin loppuun</i>"
 
-#: ../glade/valueEditor.glade.h:3
+#: ../glade/valueEditor.ui.h:3
 msgid "<i>New value will replace any existing value</i>"
-msgstr ""
+msgstr "<i>Uusi arvo korvaa olemassa olevan arvon</i>"
 
-#: ../glade/valueEditor.glade.h:4
-#, fuzzy
+#: ../glade/valueEditor.ui.h:4
 msgid "C_hange value to: "
-msgstr "Vaihda yksikkö"
+msgstr "Muuta arvoksi: "
 
-#: ../glade/valueEditor.glade.h:5
+#: ../glade/valueEditor.ui.h:5
 msgid "Change _other field:"
-msgstr ""
+msgstr "Muuta toinen kenttä:"
 
-#: ../glade/valueEditor.glade.h:6
+#: ../glade/valueEditor.ui.h:6
 msgid "Field to _Edit:"
-msgstr ""
+msgstr "Muokattava kenttä:"
 
-#: ../glade/valueEditor.glade.h:7
-#, fuzzy
+#: ../glade/valueEditor.ui.h:7
 msgid "For each selected value:"
-msgstr "Ei tiedostoa valittuna"
+msgstr "Jokaiselle valitulle arvolle:"
 
-#: ../glade/valueEditor.glade.h:8
-#, fuzzy
+#: ../glade/valueEditor.ui.h:8
 msgid "_Delete value"
-msgstr "Poista"
+msgstr "Poista arvo"
 
-#: ../glade/valueEditor.glade.h:9
-#, fuzzy
+#: ../glade/valueEditor.ui.h:9
 msgid "_Field:"
-msgstr "Tiedosto"
+msgstr "_Kenttä:"
 
-#: ../glade/valueEditor.glade.h:10
+#: ../glade/valueEditor.ui.h:10
 msgid "_Leave value as is"
-msgstr ""
+msgstr "Älä muuta arvoa"
 
-#: ../glade/valueEditor.glade.h:11
-#, fuzzy
+#: ../glade/valueEditor.ui.h:11
 msgid "_Value:"
-msgstr "Tauko"
+msgstr "_Arvo:"
 
-#: ../gourmet.desktop.in.h:1 ../src/lib/version.py:3
+#: ../gourmet.desktop.in.h:1 ../src/lib/version.py:4
 msgid "Gourmet Recipe Manager"
-msgstr "Gourmet-reseptinhallinta"
+msgstr "Gourmet-reseptienhallinta"
 
 #: ../gourmet.desktop.in.h:2
 msgid ""
 "Organize recipes, create shopping lists, calculate nutritional information, "
 "and more."
-msgstr ""
+msgstr "Järjestä reseptejä, luo ostoslistoja, laske ravintoarvoja ja muuta."
 
 #: ../src/lib/FileChooserSaveAs.py:153
-#: ../src/lib/gtk_extras/dialog_extras.py:1031
+#: ../src/lib/gtk_extras/dialog_extras.py:1032
 msgid "Select File_type"
 msgstr "Valitse tiedoston tyyppi"
 
 #: ../src/lib/FileChooserSaveAs.py:223
-#: ../src/lib/gtk_extras/dialog_extras.py:1122
+#: ../src/lib/gtk_extras/dialog_extras.py:1123
 #, python-format
 msgid "A file named %s already exists."
 msgstr "Tiedosto %s on jo olemassa."
 
 #: ../src/lib/FileChooserSaveAs.py:224
-#: ../src/lib/gtk_extras/dialog_extras.py:1123
+#: ../src/lib/gtk_extras/dialog_extras.py:1124
 msgid "Do you want to replace it with the one you are saving?"
 msgstr "Kirjoitetaanko sen päälle?"
 
-#: ../src/lib/GourmetRecipeManager.py:62
+#: ../src/lib/GourmetRecipeManager.py:66
 msgid "Importing old recipe data"
-msgstr ""
+msgstr "Tuo vanhat reseptitiedostot"
 
-#: ../src/lib/GourmetRecipeManager.py:63
+#: ../src/lib/GourmetRecipeManager.py:67
 msgid ""
 "Importing recipe data from a previous version of Gourmet into new database."
 msgstr ""
+"Tuodaan reseptitietoja vanhasta Gourmet:n versiosta uuteen tietokantaan..."
 
 #. Convenience method for showing progress dialogs for import/export/deletion
-#: ../src/lib/GourmetRecipeManager.py:164
+#: ../src/lib/GourmetRecipeManager.py:168
 msgid "Import paused"
 msgstr "Tuonti pysäytetty"
 
-#: ../src/lib/GourmetRecipeManager.py:165
+#: ../src/lib/GourmetRecipeManager.py:169
 msgid "Stop import"
 msgstr "Peruuta tuonti"
 
-#: ../src/lib/GourmetRecipeManager.py:248
-#: ../src/lib/GourmetRecipeManager.py:1078
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:252
+#: ../src/lib/GourmetRecipeManager.py:1100
 msgid "Recipe _Index"
 msgstr "Reseptihakemisto"
 
-#: ../src/lib/GourmetRecipeManager.py:249
+#: ../src/lib/GourmetRecipeManager.py:253
 msgid "Shopping _List"
 msgstr "Ostoslista"
 
-#: ../src/lib/GourmetRecipeManager.py:268 ../src/lib/reccard.py:215
+#: ../src/lib/GourmetRecipeManager.py:272 ../src/lib/reccard.py:213
 msgid "_Go"
-msgstr ""
+msgstr "_Siirry"
 
-#: ../src/lib/GourmetRecipeManager.py:387
+#: ../src/lib/GourmetRecipeManager.py:391
 msgid "translator-credits"
-msgstr "kääntäjät"
+msgstr ""
+"kääntäjät\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Eetu Huisman https://launchpad.net/~eh\n"
+"  Jaro Larnos https://launchpad.net/~ambyr00\n"
+"  Miia Ranta https://launchpad.net/~myrtti\n"
+"  Samuli Seppänen https://launchpad.net/~samuli-seppanen\n"
+"  Tuomas Lähteenmäki https://launchpad.net/~lahtis\n"
+"  aijoovai https://launchpad.net/~aijoovai\n"
+"  hpiili https://launchpad.net/~harri-piili\n"
+"  raula https://launchpad.net/~lauraputkivaara"
 
-#: ../src/lib/GourmetRecipeManager.py:433
+#: ../src/lib/GourmetRecipeManager.py:451
 msgid "Saved!"
 msgstr "Tallennettu!"
 
-#: ../src/lib/GourmetRecipeManager.py:443
+#: ../src/lib/GourmetRecipeManager.py:461
 #, python-format
 msgid "Save your edits to %s"
 msgstr "Tallenna muutoksesi %s:aan"
 
-#: ../src/lib/GourmetRecipeManager.py:454
+#: ../src/lib/GourmetRecipeManager.py:472
 msgid "An import is in progress."
 msgstr "Tuonti on käynnissä."
 
-#: ../src/lib/GourmetRecipeManager.py:455
+#: ../src/lib/GourmetRecipeManager.py:473
 msgid "An export is in progress."
 msgstr "Vienti on käynnissä."
 
-#: ../src/lib/GourmetRecipeManager.py:456
+#: ../src/lib/GourmetRecipeManager.py:474
 msgid "A delete is in progress."
 msgstr "Poisto on käynnissä."
 
-#: ../src/lib/GourmetRecipeManager.py:458
+#: ../src/lib/GourmetRecipeManager.py:476
 msgid "Exit program anyway?"
 msgstr "Poistu silti?"
 
-#: ../src/lib/GourmetRecipeManager.py:460
+#: ../src/lib/GourmetRecipeManager.py:478
 msgid "Don't exit!"
 msgstr "Älä poistu!"
 
-#: ../src/lib/GourmetRecipeManager.py:506
-#, fuzzy, python-format
+#: ../src/lib/GourmetRecipeManager.py:524
+#, python-format
 msgid "Permanently deleted %s of %s recipes"
-msgstr "Poista reseptit pysyvästi?"
+msgstr "Poistettiin pysyvästi %s/%s reseptiä"
 
-#: ../src/lib/GourmetRecipeManager.py:523
-#: ../src/lib/GourmetRecipeManager.py:538
+#: ../src/lib/GourmetRecipeManager.py:542
+#: ../src/lib/GourmetRecipeManager.py:557
 msgid "Trash"
-msgstr ""
+msgstr "Roskakori"
 
-#: ../src/lib/GourmetRecipeManager.py:538
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:557
 msgid "Browse, permanently delete or undelete deleted recipes"
-msgstr "Poista reseptit pysyvästi?"
+msgstr "Selaa, poista pysyvästi tai palauta tuhottuja reseptejä"
 
-#: ../src/lib/GourmetRecipeManager.py:590
+#: ../src/lib/GourmetRecipeManager.py:609
 msgid "Undeleted recipes "
-msgstr "Reseptit, joiden poisto on peruutettu "
+msgstr "Palautetut reseptit "
 
-#: ../src/lib/GourmetRecipeManager.py:660
+#: ../src/lib/GourmetRecipeManager.py:679
 msgid "Gourmet Recipe Manager starting up..."
-msgstr "Gourmet reseptinhallinta käynnistyy..."
+msgstr "Gourmet-reseptienhallinta käynnistyy..."
 
-#: ../src/lib/GourmetRecipeManager.py:669
+#: ../src/lib/GourmetRecipeManager.py:688
 msgid "Starting gourmet..."
 msgstr "Käynnistetään Gourmet..."
 
-#: ../src/lib/GourmetRecipeManager.py:756
-#, fuzzy, python-format
+#: ../src/lib/GourmetRecipeManager.py:775
+#, python-format
 msgid "Number of %(unit)s of %(title)s to shop for"
-msgstr "Annoksia %s:sta, joita varten tehdään ostoksia"
+msgstr "Ostettavana on %(unit)s tavaraa %(title)s"
 
-#: ../src/lib/GourmetRecipeManager.py:768
+#: ../src/lib/GourmetRecipeManager.py:787
 #, python-format
 msgid "Multiply %s by:"
-msgstr ""
+msgstr "Kerro %s arvolla:"
 
-#: ../src/lib/GourmetRecipeManager.py:788
+#: ../src/lib/GourmetRecipeManager.py:807
 #, python-format
 msgid "Set %(attributes)s for %(num)s selected recipe?"
 msgid_plural "Set %(attributes)s for %(num)s selected recipes?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Aseta %(attributes)s %(num)s valittuun reseptiin?"
+msgstr[1] "Aseta %(attributes)s %(num)s valittuihin resepteihin?"
 
-#: ../src/lib/GourmetRecipeManager.py:795
+#: ../src/lib/GourmetRecipeManager.py:814
 msgid "Any previously existing values will not be changed."
-msgstr ""
+msgstr "Olemassa olevia arvoja ei muuteta"
 
-#: ../src/lib/GourmetRecipeManager.py:797
+#: ../src/lib/GourmetRecipeManager.py:816
 msgid "The new values will overwrite any previously existing values."
-msgstr ""
+msgstr "Uudet arvot korvaavat jo olemassa olevat"
 
-#: ../src/lib/GourmetRecipeManager.py:798
+#: ../src/lib/GourmetRecipeManager.py:817
 msgid "This change cannot be undone."
-msgstr ""
+msgstr "Tätä muutosta ei pysty peruuttamaan"
 
-#: ../src/lib/GourmetRecipeManager.py:799
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:818
 msgid "Set values for selected recipes"
-msgstr "Poista valitut reseptit"
+msgstr "Aseta arvot valituille resepteille"
 
-#: ../src/lib/GourmetRecipeManager.py:985
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1007
 msgid "Search recipes"
-msgstr "Näytä reseptit"
+msgstr "Etsi reseptejä"
 
-#: ../src/lib/GourmetRecipeManager.py:1014
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1036
 msgid "Open recipe"
-msgstr "Näytä reseptit"
+msgstr "Avaa resepti"
 
-#: ../src/lib/GourmetRecipeManager.py:1015
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1037
 msgid "Open selected recipe"
-msgstr "Näytä valittu resepti"
+msgstr "Avaa valittu resepti"
 
 #. We no longer bind "Delete" here -- instead, we'll do it
 #. at the TreeView level to prevent the delete key
 #. elsewhere (e.g. in search box) from muddling up users.
-#: ../src/lib/GourmetRecipeManager.py:1019
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1041
 msgid "Delete recipe"
 msgstr "Poista resepti"
 
-#: ../src/lib/GourmetRecipeManager.py:1021
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1042
+msgid "Delete selected recipes"
+msgstr "Poista valitut reseptit"
+
+#: ../src/lib/GourmetRecipeManager.py:1043
 msgid "Edit recipe"
-msgstr "Tulosta resepti"
+msgstr "Muokkaa reseptiä"
 
-#: ../src/lib/GourmetRecipeManager.py:1022
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1044
 msgid "Open selected recipes in recipe editor view"
-msgstr "Hyppää reseptiin"
+msgstr "Avaa valitut reseptit reseptien muokkausnäkymässä"
 
-#: ../src/lib/GourmetRecipeManager.py:1024
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1046
 msgid "E_xport selected recipes"
-msgstr "Tulosta valitut reseptit"
+msgstr "_Vie valitut reseptit"
 
-#: ../src/lib/GourmetRecipeManager.py:1025
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1047
 msgid "Export selected recipes to file"
-msgstr "Tulosta valitut reseptit"
+msgstr "Vie valitut reseptit tiedostoon"
+
+#: ../src/lib/GourmetRecipeManager.py:1049
+msgid "_Print"
+msgstr "_Tulosta"
 
 #. ('Email', None, _('E-_mail recipes'),
 #. None,None,self.email_recs),
-#: ../src/lib/GourmetRecipeManager.py:1031
-#, fuzzy
-msgid "Batch _edit recipes"
-msgstr "Tulosta resepti"
-
-#: ../src/lib/GourmetRecipeManager.py:1040
-#, fuzzy
-msgid "Setti_ngs"
-msgstr "Annosmäärä"
-
-#: ../src/lib/GourmetRecipeManager.py:1044
-#, fuzzy
-msgid "_New"
-msgstr "Näytä"
-
-#: ../src/lib/GourmetRecipeManager.py:1048
-#, fuzzy
-msgid "_Import file"
-msgstr "Tuo tiedosto"
-
-#: ../src/lib/GourmetRecipeManager.py:1049
-#, fuzzy
-msgid "Import recipe from file"
-msgstr "Reseptejä tuodaan %s:sta"
-
-#: ../src/lib/GourmetRecipeManager.py:1050
-#, fuzzy
-msgid "Import _webpage"
-msgstr "Tuo web-sivu"
-
-#: ../src/lib/GourmetRecipeManager.py:1051
-#, fuzzy
-msgid "Import recipe from webpage"
-msgstr "Reseptejä tuodaan %s:sta"
-
-#: ../src/lib/GourmetRecipeManager.py:1052
-#, fuzzy
-msgid "Export _all recipes"
-msgstr "Vie reseptejä"
-
 #: ../src/lib/GourmetRecipeManager.py:1053
-#, fuzzy
+msgid "Batch _edit recipes"
+msgstr "Reseptien massamuokkaus"
+
+#: ../src/lib/GourmetRecipeManager.py:1060 ../src/lib/reccard.py:212
+#: ../src/lib/reccard.py:864 ../src/lib/shopgui.py:653
+msgid "_Edit"
+msgstr "Muokkaa"
+
+#: ../src/lib/GourmetRecipeManager.py:1061
+msgid "_Actions"
+msgstr "Toiminnot"
+
+#: ../src/lib/GourmetRecipeManager.py:1062
+msgid "Setti_ngs"
+msgstr "_Asetukset"
+
+#: ../src/lib/GourmetRecipeManager.py:1063
+#: ../src/lib/GourmetRecipeManager.py:1068 ../src/lib/reccard.py:214
+#: ../src/lib/reccard.py:225 ../src/lib/reccard.py:866
+#: ../src/lib/shopgui.py:676 ../src/lib/shopgui.py:678
+msgid "_Help"
+msgstr "_Ohje"
+
+#: ../src/lib/GourmetRecipeManager.py:1064
+msgid "_About"
+msgstr "_Tietoja"
+
+#: ../src/lib/GourmetRecipeManager.py:1066
+msgid "_New"
+msgstr "_Uusi"
+
+#: ../src/lib/GourmetRecipeManager.py:1070
+msgid "_Import file"
+msgstr "_Tuo tiedosto"
+
+#: ../src/lib/GourmetRecipeManager.py:1071
+msgid "Import recipe from file"
+msgstr "Tuo resepti tiedostosta"
+
+#: ../src/lib/GourmetRecipeManager.py:1072
+msgid "Import _webpage"
+msgstr "Tuo _verkkosivu"
+
+#: ../src/lib/GourmetRecipeManager.py:1073
+msgid "Import recipe from webpage"
+msgstr "Tuo resepti verkkosivulta"
+
+#: ../src/lib/GourmetRecipeManager.py:1074
+msgid "Export _all recipes"
+msgstr "Vie _kaikki reseptit"
+
+#: ../src/lib/GourmetRecipeManager.py:1075
 msgid "Export all recipes to file"
-msgstr "Vie resepti tekstitiedostoon."
+msgstr "Vie kaikki reseptit tiedostoon"
 
-#: ../src/lib/GourmetRecipeManager.py:1054
+#: ../src/lib/GourmetRecipeManager.py:1076
 msgid "_Plugins"
-msgstr ""
+msgstr "_Liitännäiset"
 
-#: ../src/lib/GourmetRecipeManager.py:1055
+#: ../src/lib/GourmetRecipeManager.py:1077
 msgid "Manage plugins which add extra functionality to Gourmet."
-msgstr ""
+msgstr "Hallitse Gourmetin liitännäisiä"
 
-#: ../src/lib/GourmetRecipeManager.py:1057
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1079
 msgid "_Preferences"
-msgstr "Sähköpostiasetukset"
+msgstr "_Asetukset"
 
 #. ('Redo',gtk.STOCK_REDO,_('_Redo'),
 #. None,None),
 #. ('Undo',gtk.STOCK_UNDO,_('_Undo'),
 #. None,None),
-#: ../src/lib/GourmetRecipeManager.py:1063
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1085
 msgid "_Quit"
-msgstr "yksikkö"
+msgstr "_Lopeta"
 
-#: ../src/lib/GourmetRecipeManager.py:1065
+#: ../src/lib/GourmetRecipeManager.py:1087
 msgid "Open _Trash"
-msgstr ""
+msgstr "Avaa _Roskalaatikko"
 
-#: ../src/lib/GourmetRecipeManager.py:1073
+#: ../src/lib/GourmetRecipeManager.py:1093
+msgid "_Tools"
+msgstr "Ty_ökalut"
+
+#: ../src/lib/GourmetRecipeManager.py:1094
+msgid "_Timer"
+msgstr "_Ajastin"
+
+#: ../src/lib/GourmetRecipeManager.py:1095
 msgid "Show timer"
-msgstr ""
+msgstr "Näytä ajastin"
 
-#: ../src/lib/GourmetRecipeManager.py:1079
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1101
 msgid "Searchable index of recipes in the database."
-msgstr "Poista tämä resepti tietokannasta."
+msgstr "Reseptien sisällysluettelo hakutoiminnolla"
 
-#: ../src/lib/GourmetRecipeManager.py:1189
-#, fuzzy, python-format
+#: ../src/lib/GourmetRecipeManager.py:1211
+#, python-format
 msgid "Delete %s?"
 msgstr "Poista %s?"
 
-#: ../src/lib/GourmetRecipeManager.py:1190
-#, fuzzy, python-format
+#: ../src/lib/GourmetRecipeManager.py:1212
+#, python-format
 msgid "You have unsaved changes to %s. Are you sure you want to delete?"
 msgstr ""
 "Sinulla on tallentamattomia muutoksia tiedostoon %s. Oletko varma että "
 "haluat poistaa sen?"
 
-#: ../src/lib/GourmetRecipeManager.py:1212
+#: ../src/lib/GourmetRecipeManager.py:1234
 #, python-format
 msgid ""
 "You just moved %s recipe to the trash. You can recover this recipe or "
@@ -1372,71 +1093,74 @@ msgid_plural ""
 "You just moved %s recipes to the trash. You can recover these recipes or "
 "permanently delete them at any time by clicking Tools->Open Trash"
 msgstr[0] ""
+"Siirsit %s reseptiä roskiin. Voit palauttaa tämän reseptin tai hävittää sen "
+"pysyvasti valitsemalla Työkalut->Avaa roskalaatikko."
 msgstr[1] ""
+"Siirsit %s reseptiä roskiin. Voit palauttaa tämän reseptit tai hävittää ne "
+"pysyvasti valitsemalla Työkalut->Avaa roskalaatikko."
 
-#: ../src/lib/GourmetRecipeManager.py:1219
+#: ../src/lib/GourmetRecipeManager.py:1241
 msgid "Deleted"
-msgstr ""
+msgstr "Poistettu"
 
-#: ../src/lib/GourmetRecipeManager.py:1219
+#: ../src/lib/GourmetRecipeManager.py:1241
 #: ../src/lib/importers/interactive_importer.py:471
 msgid "Untitled"
-msgstr ""
+msgstr "Nimetön"
 
-#: ../src/lib/GourmetRecipeManager.py:1227
+#: ../src/lib/GourmetRecipeManager.py:1249
 msgid "Permanently delete recipes?"
 msgstr "Poista reseptit pysyvästi?"
 
-#: ../src/lib/GourmetRecipeManager.py:1229
+#: ../src/lib/GourmetRecipeManager.py:1251
 msgid "Permanently delete recipe?"
 msgstr "Poista resepti pysyvästi?"
 
-#: ../src/lib/GourmetRecipeManager.py:1230
+#: ../src/lib/GourmetRecipeManager.py:1252
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
 msgstr "Haluatko varmasti poistaa reseptin <i>%s</i>"
 
-#: ../src/lib/GourmetRecipeManager.py:1232
+#: ../src/lib/GourmetRecipeManager.py:1254
 msgid "Are you sure you want to delete the following recipes?"
 msgstr "Haluatko varmasti poistaa seuraavat reseptit?"
 
-#: ../src/lib/GourmetRecipeManager.py:1236
+#: ../src/lib/GourmetRecipeManager.py:1258
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
 msgstr "Haluatko varmasti poistaa %s valittua reseptiä?"
 
-#: ../src/lib/GourmetRecipeManager.py:1238
+#: ../src/lib/GourmetRecipeManager.py:1260
 msgid "See recipes"
 msgstr "Näytä reseptit"
 
-#: ../src/lib/GourmetRecipeManager.py:1246
-#, fuzzy
+#: ../src/lib/GourmetRecipeManager.py:1268
 msgid "Delete Recipes"
-msgstr "Poista resepti"
+msgstr "Poista reseptit"
 
-#: ../src/lib/GourmetRecipeManager.py:1273
+#: ../src/lib/GourmetRecipeManager.py:1295
 #, python-format
 msgid "Deleted recipe %s"
 msgstr "Poista resepti %s"
 
-#: ../src/lib/GourmetRecipeManager.py:1307
+#: ../src/lib/GourmetRecipeManager.py:1335
 msgid "Export succeeded"
 msgstr "Vienti onnistui"
 
-#: ../src/lib/GourmetRecipeManager.py:1310
+#: ../src/lib/GourmetRecipeManager.py:1338
 msgid "webpage"
 msgstr "sivusto"
 
-#: ../src/lib/GourmetRecipeManager.py:1311
+#: ../src/lib/GourmetRecipeManager.py:1339
 #, python-format
 msgid "Exported %s to %s"
 msgstr "%s viety %s:ään."
 
-#: ../src/lib/GourmetRecipeManager.py:1371
+#: ../src/lib/GourmetRecipeManager.py:1399
 msgid "Done!"
 msgstr "Valmis!"
 
-#: ../src/lib/GourmetRecipeManager.py:1379
+#: ../src/lib/GourmetRecipeManager.py:1407
 msgid "Importing..."
 msgstr "Tuodaan..."
 
@@ -1469,17 +1193,16 @@ msgstr "Poistetaan reseptejä tietokannasta... (%s/%s poistettu)"
 #, python-format
 msgid "Deleted %s recipe"
 msgid_plural "Deleted %s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Poista %s resepti"
+msgstr[1] "Poista %s reseptiä"
 
 #: ../src/lib/backends/DatabaseChooser.py:105
 msgid "Choose Database File"
-msgstr "Valitse tiedokantatiedosto"
+msgstr "Valitse tietokantatiedosto"
 
 #: ../src/lib/backends/db.py:437 ../src/lib/backends/db.py:438
-#, fuzzy
 msgid "Upgrading database"
-msgstr "Ladataan reseptitietokantaa..."
+msgstr "Päivitetään tietokantaa"
 
 #: ../src/lib/backends/db.py:439
 msgid ""
@@ -1487,6 +1210,9 @@ msgid ""
 "may take  some time. Your data has been automatically backed up in case "
 "something goes wrong."
 msgstr ""
+"Tietokantasi koosta riippuen, tämä saattaa olla raskas operaatio ja voi "
+"ottaa jonkin aikaa. Tietosi on automaattisesti varmistettu siltä varalta, "
+"että jotain menee vikaan."
 
 #: ../src/lib/backends/db.py:440 ../src/lib/threadManager.py:315
 msgid "Details"
@@ -1499,22 +1225,23 @@ msgid ""
 "fails, you can manually rename your backup file recipes.db to recover it for "
 "use with older Gourmet."
 msgstr ""
+"Siltä varalta että jotain menee vikaan, ohjelma on tehnyt varmuuskopion "
+"polkuun %s. Jos päivitys epäonnistuu, voit nimetä ksäin varmuustiedoston "
+"nimelle recipes.db käyttääksesi sitä vanhemman Gourmet:n kanssa."
 
 #: ../src/lib/backends/db.py:1426
 #: ../src/lib/importers/interactive_importer.py:95
 #: ../src/lib/legacy_db/db_08/rdatabase.py:446
 #: ../src/lib/legacy_db/db_085/rdatabase.py:447
-#: ../src/lib/legacy_db/db_09/rdatabase.py:508 ../src/lib/reccard.py:948
+#: ../src/lib/legacy_db/db_09/rdatabase.py:508 ../src/lib/reccard.py:939
 msgid "New Recipe"
 msgstr "Uusi resepti"
 
 #: ../src/lib/check_encodings.py:92
-#, fuzzy
 msgid "Select encoding"
 msgstr "Valitse merkistökoodaus"
 
 #: ../src/lib/check_encodings.py:93
-#, fuzzy
 msgid ""
 "Cannot determine proper encoding. Please select the correct encoding from "
 "the following list."
@@ -1523,7 +1250,6 @@ msgstr ""
 "merkistökoodaus listasta."
 
 #: ../src/lib/check_encodings.py:94
-#, fuzzy
 msgid "See _file with encoding"
 msgstr "Näytä tiedosto merkistökoodauksella"
 
@@ -1531,7 +1257,7 @@ msgstr "Näytä tiedosto merkistökoodauksella"
 #. plural forms of time units. We use range(5) since as far as I
 #. can see, enumerating the forms for 0 through 5 should give you
 #. all possible forms in all languages.
-#.
+#. 
 #. See http://www.sbin.org/doc/glibc/libc_8.html
 #: ../src/lib/convert.py:63 ../src/lib/convert.py:565
 msgid "second"
@@ -1542,7 +1268,7 @@ msgstr[1] "sekuntia"
 #. min. = abbreviation for minutes
 #: ../src/lib/convert.py:65
 msgid "min"
-msgstr ""
+msgstr "min."
 
 #: ../src/lib/convert.py:65 ../src/lib/convert.py:564
 msgid "minute"
@@ -1608,13 +1334,12 @@ msgstr " "
 
 #: ../src/lib/convert.py:740
 msgid "and"
-msgstr ""
+msgstr "ja"
 
 #. Note: the order matters on this range regular expression in order
 #. for it to properly split things like 1 - to - 3, which really do
 #. show up sometimes.
 #: ../src/lib/convert.py:762
-#, fuzzy
 msgid "to"
 msgstr "-"
 
@@ -1639,14 +1364,13 @@ msgid "Gourmet cannot export file of type \"%s\""
 msgstr "Gourmet ei voi viedä tiedostotyyppiin \"%s\""
 
 #: ../src/lib/exporters/exportManager.py:75
-#, fuzzy
 msgid "Export complete!"
-msgstr "Vienti valmis."
+msgstr "Vienti on valmis!"
 
 #: ../src/lib/exporters/exportManager.py:76
-#, fuzzy, python-format
+#, python-format
 msgid "Recipe exported to %s"
-msgstr "%s viety %s:ään."
+msgstr "Resepti viety polkuun %s"
 
 #: ../src/lib/exporters/exportManager.py:89
 msgid "Export recipes"
@@ -1657,29 +1381,30 @@ msgid "recipes"
 msgstr "reseptit"
 
 #: ../src/lib/exporters/exportManager.py:101
-#, fuzzy, python-format
+#, python-format
 msgid "Unable to export: unknown filetype \"%s\""
-msgstr "Gourmet ei voi viedä tiedostotyyppiin \"%s\""
+msgstr "Vienti epäonnisti: tuntematon tiedostotyyppi \"%s\""
 
 #: ../src/lib/exporters/exportManager.py:102
 msgid ""
 "Please make sure to select a filetype from the dropdown menu when saving."
 msgstr ""
+"Olen hyvä ja varmista, että olet valinnut tiedostotyypin alasvetovalikosta "
+"tallennuksen yhteydessä."
 
 #: ../src/lib/exporters/exportManager.py:150
-#, fuzzy
 msgid "Export"
-msgstr "Vie"
+msgstr "Vienti"
 
 #: ../src/lib/exporters/exporter.py:209 ../src/lib/exporters/exporter.py:211
 #: ../src/lib/exporters/exporter.py:515 ../src/lib/exporters/exporter.py:517
 msgid "stars"
-msgstr ""
+msgstr "tähteä"
 
 #: ../src/lib/exporters/exporter.py:378 ../src/lib/exporters/exporter.py:463
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:153
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:626
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:639
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:629
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:642
 msgid "optional"
 msgstr "valinnainen"
 
@@ -1694,13 +1419,15 @@ msgstr "Vienti valmis."
 
 #: ../src/lib/exporters/printer.py:12 ../src/lib/exporters/printer.py:22
 msgid "Unable to print: no print plugins are active!"
-msgstr ""
+msgstr "En pystynyt tulostamaan: tulostuksen lisäosia ei ole aktiivisena!"
 
 #: ../src/lib/exporters/printer.py:13 ../src/lib/exporters/printer.py:23
 msgid ""
 "To print, activate a plugin that provides printing support, such as the "
 "'Printing & PDF export' plugin."
 msgstr ""
+"Jotta voisit tulostaa, aktivoi lisäosa, joka tarjoaa tulostustoiminnon, "
+"kuten lisäosa \"Printing & PDF export\"."
 
 #: ../src/lib/exporters/printer.py:68
 #, python-format
@@ -1711,12 +1438,12 @@ msgstr[1] "Tulosta %s reseptiä"
 
 #: ../src/lib/exporters/printer.py:80
 msgid "Well this is embarassing. Something went wrong printing your recipe."
-msgstr ""
+msgstr "Tämä on hieman noloa. Jotain meni pieleen reseptin tulostuksessa."
 
 #: ../src/lib/exporters/recipe_emailer.py:55
 #: ../src/lib/plugins/email_plugin/recipe_emailer.py:29
 #: ../src/lib/plugins/email_plugin/recipe_emailer.py:48
-#: ../src/lib/plugins/key_editor/keyEditor.py:114 ../src/lib/reccard.py:3066
+#: ../src/lib/plugins/key_editor/keyEditor.py:115 ../src/lib/reccard.py:3055
 msgid "Recipes"
 msgstr "Reseptit"
 
@@ -1729,9 +1456,8 @@ msgid "E-mail Recipe as HTML Attachment"
 msgstr "Lähetä resepti HTML-liitteenä"
 
 #: ../src/lib/exporters/recipe_emailer.py:121
-#, fuzzy
 msgid "E-mail Recipe as PDF Attachment"
-msgstr "Lähetä resepti HTML-liitteenä"
+msgstr "Lähetä resepti sähköpostin PDF liitteenä"
 
 #: ../src/lib/exporters/recipe_emailer.py:138
 msgid "Email Options"
@@ -1752,170 +1478,154 @@ msgid ""
 msgstr ""
 "Reseptiä ei ole valittu sisällytettäväksi itse viestiin eikä sen liitteeksi."
 
-#: ../src/lib/gglobals.py:252
-msgid "Category"
-msgstr "Luokka"
-
-#: ../src/lib/gglobals.py:253
+#: ../src/lib/gglobals.py:234
 msgid "Cuisine"
 msgstr "Keittiö"
 
-#: ../src/lib/gglobals.py:254 ../src/lib/gtk_extras/ratingWidget.py:333
+#: ../src/lib/gglobals.py:235 ../src/lib/gtk_extras/ratingWidget.py:326
 msgid "Rating"
 msgstr "Arvosana"
 
-#: ../src/lib/gglobals.py:255
+#: ../src/lib/gglobals.py:236
 msgid "Source"
 msgstr "Lähde"
 
-#: ../src/lib/gglobals.py:256
-#, fuzzy
+#: ../src/lib/gglobals.py:237
 msgid "Website"
-msgstr ""
-"\n"
-"Kotisivut: %s"
+msgstr "Verkkosivu"
 
-#: ../src/lib/gglobals.py:259
+#: ../src/lib/gglobals.py:240
 msgid "Preparation Time"
 msgstr "Valmistusaika"
 
-#: ../src/lib/gglobals.py:260
+#: ../src/lib/gglobals.py:241
 msgid "Cooking Time"
 msgstr "Keittoaika"
 
-#: ../src/lib/gglobals.py:265 ../src/lib/gglobals.py:270
-#: ../src/lib/reccard.py:1666
+#: ../src/lib/gglobals.py:246 ../src/lib/gglobals.py:251
+#: ../src/lib/reccard.py:1654
 msgid "Instructions"
 msgstr "Ohjeet"
 
-#: ../src/lib/gglobals.py:266 ../src/lib/gglobals.py:271
-#: ../src/lib/reccard.py:1672
-#, fuzzy
+#: ../src/lib/gglobals.py:247 ../src/lib/gglobals.py:252
+#: ../src/lib/reccard.py:1660
 msgid "Notes"
-msgstr "Muistiinpanot"
+msgstr "Huomautukset"
 
-#: ../src/lib/gglobals.py:272
+#: ../src/lib/gglobals.py:253
 msgid "Modifications"
 msgstr "Muutokset"
 
 #. print dir(err)
-#: ../src/lib/gglobals.py:338
+#: ../src/lib/gglobals.py:319
 msgid "Unable to open URL"
 msgstr "URL:n avaaminen epäonnistui"
 
-#: ../src/lib/gglobals.py:339
+#: ../src/lib/gglobals.py:320
 msgid "Unable to launch mail reader."
 msgstr "Sähköpostiohjelman avaaminen epäonnistui."
 
-#: ../src/lib/gglobals.py:340
+#: ../src/lib/gglobals.py:321
 msgid "Unable to open website."
 msgstr "Sivuston avaaminen epäonnistui."
 
-#: ../src/lib/gglobals.py:341
+#: ../src/lib/gglobals.py:322
 msgid "Unable to open file."
 msgstr "Tiedoston avaaminen epäonnistui."
 
-#: ../src/lib/gglobals.py:347
+#: ../src/lib/gglobals.py:328
 #, python-format
 msgid "There was an error launching the url: %s"
 msgstr "URL:n %s avaaminen epäonnistui"
 
 #. setup pause button
-#: ../src/lib/gtk_extras/dialog_extras.py:404
-#, fuzzy
+#: ../src/lib/gtk_extras/dialog_extras.py:405
 msgid "_Pause"
 msgstr "Tauko"
 
 #. setup stop button
-#: ../src/lib/gtk_extras/dialog_extras.py:416
-#, fuzzy
+#: ../src/lib/gtk_extras/dialog_extras.py:417
 msgid "_Stop"
-msgstr "Pysäytä"
+msgstr "_Lopeta"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:472
-#: ../src/lib/gtk_extras/dialog_extras.py:562
-#, fuzzy
+#: ../src/lib/gtk_extras/dialog_extras.py:473
+#: ../src/lib/gtk_extras/dialog_extras.py:563
 msgid "Don't ask me this again."
-msgstr "Älä kysy tätä minulta uudestaan."
+msgstr "Älä kysy uudestaan."
 
-#: ../src/lib/gtk_extras/dialog_extras.py:528
+#: ../src/lib/gtk_extras/dialog_extras.py:529
 msgid "Do you really want to do this"
 msgstr "Haluatko varmasti tehdä tämän"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:740
+#: ../src/lib/gtk_extras/dialog_extras.py:741
 #: ../src/lib/importers/importer.py:466
 msgid "excellent"
 msgstr "erinomainen"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:741
+#: ../src/lib/gtk_extras/dialog_extras.py:742
 #: ../src/lib/importers/importer.py:467
-#, fuzzy
 msgid "great"
 msgstr "mainio"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:742
+#: ../src/lib/gtk_extras/dialog_extras.py:743
 #: ../src/lib/importers/importer.py:468
 msgid "good"
 msgstr "hyvä"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:743
+#: ../src/lib/gtk_extras/dialog_extras.py:744
 #: ../src/lib/importers/importer.py:469
 msgid "fair"
 msgstr "kohtalainen"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:744
+#: ../src/lib/gtk_extras/dialog_extras.py:745
 #: ../src/lib/importers/importer.py:471
-#, fuzzy
 msgid "poor"
 msgstr "huono"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:756
-#, fuzzy
+#: ../src/lib/gtk_extras/dialog_extras.py:757
 msgid "Convert ratings to 5 star scale."
 msgstr "Muunna arvosanat viiden tähden asteikkoon."
 
-#: ../src/lib/gtk_extras/dialog_extras.py:757
-#, fuzzy
+#: ../src/lib/gtk_extras/dialog_extras.py:758
 msgid "Convert ratings."
 msgstr "Muunna arvosanat."
 
-#: ../src/lib/gtk_extras/dialog_extras.py:758
-#, fuzzy
+#: ../src/lib/gtk_extras/dialog_extras.py:759
 msgid "Please give each of the ratings an equivalent on a scale of 1 to 5"
 msgstr ""
 "Ole hyvä ja anna jokaiselle arvosanalle vastine asteikolla yhdestä viiteen."
 
-#: ../src/lib/gtk_extras/dialog_extras.py:771
-#, fuzzy
+#: ../src/lib/gtk_extras/dialog_extras.py:772
 msgid "Current Rating"
 msgstr "Tämänhetkinen arvosana"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:776
+#: ../src/lib/gtk_extras/dialog_extras.py:777
 msgid "Rating out of 5 Stars"
-msgstr ""
+msgstr "Arvostelu viiden tähden asteikolla"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1108
+#: ../src/lib/gtk_extras/dialog_extras.py:1109
 msgid "No file selected"
 msgstr "Ei tiedostoa valittuna"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1109
-#, fuzzy
+#: ../src/lib/gtk_extras/dialog_extras.py:1110
 msgid "No file was selected, so the action has been cancelled"
 msgstr "Tiedostoa ei ollut valittu, joten toiminto peruutettiin."
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1223
+#: ../src/lib/gtk_extras/dialog_extras.py:1225
 #, python-format
 msgid ""
 "I'm sorry, I can't understand\n"
 "the amount \"%s\"."
 msgstr "Virheellinen määrä: %s"
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1225
+#: ../src/lib/gtk_extras/dialog_extras.py:1227
 msgid ""
 "Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
 msgstr ""
+"Määrien täytyy olla numeroita (murto- tai desimaalilukuja), lukualueita "
+"(esim. 1-5) tai tyhjiä."
 
-#: ../src/lib/gtk_extras/dialog_extras.py:1227
+#: ../src/lib/gtk_extras/dialog_extras.py:1229
 msgid ""
 "\n"
 "The \"unit\" must be in the \"unit\" field by itself.\n"
@@ -1926,89 +1636,98 @@ msgid ""
 "To enter a range of numbers, use a \"-\" to separate them.\n"
 "For example, you could enter 2-4 or 1 1/2 - 3 1/2.\n"
 msgstr ""
+"\n"
+"Attribuutti \"yksikkö\" täytyy kirjoittaa \"yksikkö\" kentään yksinään.\n"
+"Jos esimerkiksi haluat kirjoittaa yksi puoli kuppia, \n"
+"lukumäärä kentän tulisi olla \"1.5\" tai \"1 1/2\". \"kuppi\"\n"
+"laitetaan erilliseen \"yksikkö\" kenttään.\n"
+"\n"
+"To enter a range of numbers, use a \"-\" to separate them.\n"
+"For example, you could enter 2-4 or 1 1/2 - 3 1/2.\n"
 
 #. self._hide_warning_slowly()
 #. return
-#: ../src/lib/gtk_extras/numberEntry.py:28
-#: ../src/lib/gtk_extras/timeEntry.py:55 ../src/lib/gtk_extras/timeEntry.py:65
+#: ../src/lib/gtk_extras/numberEntry.py:29
+#: ../src/lib/gtk_extras/timeEntry.py:56 ../src/lib/gtk_extras/timeEntry.py:66
 msgid "Invalid input."
-msgstr ""
+msgstr "Virheellinen syöte."
 
-#: ../src/lib/gtk_extras/numberEntry.py:28
+#: ../src/lib/gtk_extras/numberEntry.py:29
 msgid "Not a number."
-msgstr ""
+msgstr "Ei ole numero."
 
-#: ../src/lib/gtk_extras/timeEntry.py:40
+#: ../src/lib/gtk_extras/timeEntry.py:41
 msgid ""
 "Time must begin with a number or fraction followed by a unit (minutes, "
 "hours, etc.)."
 msgstr ""
+"Ajan pitää alkaa numerolla tai murtoluvulla ja sitä pitää seurata yksikkö "
+"(minuutti, tunti, jne.)."
 
-#: ../src/lib/gtk_extras/timeEntry.py:56 ../src/lib/gtk_extras/timeEntry.py:66
+#: ../src/lib/gtk_extras/timeEntry.py:57 ../src/lib/gtk_extras/timeEntry.py:67
 msgid "Time must be expressed in hours, minutes, seconds, etc."
-msgstr ""
+msgstr "Aika pitää ilmaista tunneissa, minuuteissa tai sekunneissa."
 
 #: ../src/lib/importers/generic_recipe_parser.py:130
 msgid "yield"
-msgstr ""
+msgstr "saanti"
 
 #: ../src/lib/importers/html_importer.py:41
 #: ../src/lib/importers/webextras.py:21 ../src/lib/importers/webextras.py:79
 #, python-format
 msgid "Retrieving %s"
-msgstr ""
+msgstr "Haetaan %s:ää..."
 
 #: ../src/lib/importers/html_importer.py:44
 #: ../src/lib/importers/webextras.py:82
 msgid "Retrieving file"
-msgstr ""
+msgstr "Haetaan tiedostoa"
 
 #. Interactive we go...
 #: ../src/lib/importers/html_importer.py:487
 msgid "Don't recognize this webpage. Using generic importer..."
-msgstr ""
+msgstr "En tunnista tätä verkkosivua. Käytän yleistä tuontisuodatinta..."
 
 #: ../src/lib/importers/html_importer.py:498
 #: ../src/lib/importers/html_importer.py:567
 msgid "Import complete."
-msgstr ""
+msgstr "Tuonti valmis."
 
 #: ../src/lib/importers/html_importer.py:519
 msgid "Importing recipe"
-msgstr ""
+msgstr "Tuodaan reseptiä"
 
 #: ../src/lib/importers/html_importer.py:525
 msgid "Processing ingredients"
-msgstr ""
+msgstr "Käsitellään ainesosia (???)"
 
 #: ../src/lib/importers/html_importer.py:549
 msgid "Processing ingredients."
-msgstr ""
+msgstr "Käsittelen raaka-aineita."
 
 #: ../src/lib/importers/importManager.py:54
 msgid "Enter the URL of a recipe archive or recipe website."
-msgstr ""
+msgstr "Syötä reseptiarkiston tai reseptisivuston internet-osoite (URL)."
 
 #: ../src/lib/importers/importManager.py:55
 msgid "Enter website address"
-msgstr ""
+msgstr "Kirjoita sivuston osoite"
 
 #: ../src/lib/importers/importManager.py:57
 msgid "Enter URL:"
-msgstr ""
+msgstr "Syötä verkko-osoite (URL):"
 
 #: ../src/lib/importers/importManager.py:58
 msgid "Enter the address of a website or recipe archive."
-msgstr ""
+msgstr "Kirjoita sivuston tai reseptiarkiston osoite."
 
 #: ../src/lib/importers/importManager.py:93
-#, fuzzy
 msgid "Unable to import URL"
-msgstr "URL:n avaaminen epäonnistui"
+msgstr "Osoitetta ei pysty tuomaan sisään"
 
 #: ../src/lib/importers/importManager.py:94
 msgid "Gourmet does not have a plugin capable of importing URL"
-msgstr ""
+msgstr "Goumet:ssa ei ole lisäosaa osoitteen sisään tuomiseen"
 
 #: ../src/lib/importers/importManager.py:95
 #, python-format
@@ -2016,27 +1735,26 @@ msgid ""
 "Unable to import URL %(url)s of mimetype %(type)s. File saved to temporary "
 "location %(fn)s"
 msgstr ""
+"En pysty tuomaan osoitetta %(url)s tyyppiä %(type)s. Tiedosto talletettu "
+"väliaikaiseen paikkaan %(fn)s"
 
 #: ../src/lib/importers/importManager.py:110
-#, fuzzy
 msgid "Open recipe..."
-msgstr "Tallenna resepti nimellä..."
+msgstr "Avaa resepti..."
 
 #: ../src/lib/importers/importManager.py:172
-#, fuzzy
 msgid "Import"
-msgstr "Tuo tiedosto"
+msgstr "Tuonti"
 
 #: ../src/lib/importers/importManager.py:242
 msgid "All importable files"
 msgstr "Kaikki tuotavissa olevat tiedostot"
 
 #: ../src/lib/importers/importer.py:185
-#, fuzzy
 msgid "serving"
 msgid_plural "servings"
-msgstr[0] "annosluku"
-msgstr[1] "annosluku"
+msgstr[0] "annos"
+msgstr[1] "annoksia"
 
 #: ../src/lib/importers/importer.py:266
 #, python-format
@@ -2045,47 +1763,42 @@ msgstr "Tuotiin %s/%s reseptiä"
 
 #: ../src/lib/importers/importer.py:470
 msgid "okay"
-msgstr ""
+msgstr "ok"
 
 #: ../src/lib/importers/interactive_importer.py:37
-#, fuzzy
 msgid "Servings"
 msgstr "Annosmäärä"
 
 #: ../src/lib/importers/interactive_importer.py:39
-#, fuzzy
 msgid "Ingredient Subgroup"
-msgstr "Lisää aineosaryhmä"
+msgstr "Raaka-aineiden alaryhmä"
 
 #: ../src/lib/importers/interactive_importer.py:40
 msgid "Hide"
-msgstr ""
+msgstr "Piilota"
 
-#: ../src/lib/importers/interactive_importer.py:46 ../src/lib/reccard.py:1315
-#, fuzzy
+#: ../src/lib/importers/interactive_importer.py:46 ../src/lib/reccard.py:1310
 msgid "Description"
-msgstr "Kuvaukset"
+msgstr "Kuvaus"
 
 #: ../src/lib/importers/interactive_importer.py:52
 msgid "Text"
-msgstr ""
+msgstr "Teksti"
 
 #: ../src/lib/importers/interactive_importer.py:54
-#, fuzzy
 msgid "Actions"
 msgstr "Toiminnot"
 
 #: ../src/lib/importers/interactive_importer.py:102
-#, fuzzy
 msgid "Import recipe"
-msgstr "Tuo reseptejä"
+msgstr "Tuo resepti"
 
 #: ../src/lib/importers/interactive_importer.py:145
 msgid "Clear _Tags"
-msgstr ""
+msgstr "Tyhjennä _Tagit"
 
 #. for t in self.tags:
-#.
+#. 
 #. self.action_model.append([self.labels_by_tag[t],t])
 #. tag_button = gtk.Button('_'+self.labels_by_tag[t])
 #. tag_button.connect('clicked',
@@ -2093,20 +1806,19 @@ msgstr ""
 #. self.labels_by_tag[t])
 #. self.action_area.pack_start(tag_button,expand=False,fill=False,padding=6)
 #. tag_button.show()
-#.
+#. 
 #: ../src/lib/importers/interactive_importer.py:192
-#, fuzzy
 msgid "Import Recipe"
-msgstr "Tuo reseptejä"
+msgstr "Tuo resepti"
 
 #: ../src/lib/importers/interactive_importer.py:470
 msgid "Select recipe image"
-msgstr ""
+msgstr "Valitse reseptin kuva"
 
 #: ../src/lib/importers/interactive_importer.py:471
-#, fuzzy, python-format
+#, python-format
 msgid "Select image for recipe \"%s\""
-msgstr "Poista resepti %s"
+msgstr "Valitse kuva reseptille \"%s\""
 
 #: ../src/lib/importers/interactive_importer.py:472
 msgid ""
@@ -2114,21 +1826,24 @@ msgid ""
 "images that are of the recipe, or don't select anything if you don't want "
 "any of these images."
 msgstr ""
+"Alla on listattu kuvat, jotka löytyvät tuomastasi sivusta. Valitse kuvat, "
+"jotka kuvaavat reseptiä tai älä valitse mitään jos et halua näitä kuvia "
+"liitettäväksi."
 
 #: ../src/lib/importers/plaintext_importer.py:34
 #, python-format
 msgid "Imported %s recipes."
-msgstr ""
+msgstr "Tuotiin %s reseptiä."
 
 #: ../src/lib/importers/webextras.py:14
 #, python-format
 msgid "Downloading %s"
-msgstr ""
+msgstr "Noudetaan %s"
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:17
 #: ../src/lib/legacy_db/db_09/rmetakit.py:17
 msgid "Database format has changed"
-msgstr ""
+msgstr "Tietokannan muoto on muuttunut"
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:18
 #: ../src/lib/legacy_db/db_09/rmetakit.py:18
@@ -2138,6 +1853,9 @@ msgid ""
 "database will no longer work with older versions of %(progname)s.  A backup "
 "has been saved in %(backupfile)s"
 msgstr ""
+"%(progname)s %(version)s on muuttanut tietokannan muotoa. Tietokantasi ei "
+"enää toimi ohjelman %(progname)s vanhempien versioiden kanssa. Varmuuskopio "
+"on tehty tiedoston %(backupfile)s"
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:548
 #: ../src/lib/legacy_db/db_09/rmetakit.py:593
@@ -2146,104 +1864,147 @@ msgid ""
 "In case anything goes wrong, a backup copy of your recipe database is being "
 "exported to %s"
 msgstr ""
+"Siltä varalta, että jotain menee pieleen, reseptitietokannan varmuuskopio on "
+"viety tiedostoon %s"
 
 #: ../src/lib/legacy_db/db_08/rmetakit.py:550
 #: ../src/lib/legacy_db/db_09/rmetakit.py:595
 msgid "Transferring data to new database format"
-msgstr ""
+msgstr "Muunnetaan tietokantaa uuteen tiedostomuotoon"
 
 #: ../src/lib/plugin_gui.py:30
 msgid "Plugins"
-msgstr ""
+msgstr "Lisäosat"
+
+#: ../src/lib/plugin_gui.py:33
+msgid "Plugins add extra functionality to Gourmet."
+msgstr "Liitännäiset lisäävät Gourmetiin toiminnallisuutta"
 
 #: ../src/lib/plugin_gui.py:115
 msgid "Plugin is needed for other plugins. Deactivate plugin anyway?"
 msgstr ""
+"Lisäosaa tarvitaan muissa lisäosissa. Haluatko poistaa lisäosan tästä "
+"huolimatta käytöstä?"
 
 #: ../src/lib/plugin_gui.py:116
-#, fuzzy, python-format
+#, python-format
 msgid "The following plugins require %s:"
-msgstr "Seuraaville resepteille:"
+msgstr "Seuraavat lisäosat vaativat %s:"
 
 #: ../src/lib/plugin_gui.py:119
 msgid "Deactivate anyway"
-msgstr ""
+msgstr "Poista päältä kuitenkin"
 
 #: ../src/lib/plugin_gui.py:120
 msgid "Keep plugin active"
-msgstr ""
+msgstr "Pidä lisäosa aktiivisena"
 
 #: ../src/lib/plugin_gui.py:134 ../src/lib/recindex.py:452
 msgid "or"
-msgstr ""
+msgstr "tai"
 
 #: ../src/lib/plugin_gui.py:138
 msgid "An error occurred activating plugin."
-msgstr ""
+msgstr "Lisäosan aktivoinnissa tapahtui virhe."
 
 #: ../src/lib/plugin_gui.py:142
 msgid "An error occurred deactivating plugin."
-msgstr ""
+msgstr "Lisäosan käytöstä poistamisessa tapahtui virhe."
+
+#: ../src/lib/plugins/browse_plugin.gourmet-plugin.in.h:1
+msgid "Browse Recipes"
+msgstr "Selaa reseptejä"
+
+#: ../src/lib/plugins/browse_plugin.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/email.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/nutritional_information.gourmet-plugin.in.h:2
+msgid "Main"
+msgstr "Pääikkuna"
+
+#: ../src/lib/plugins/browse_plugin.gourmet-plugin.in.h:3
+msgid "Selecting recipes by browsing by category, cuisine, etc."
+msgstr "Valitaan reseptejä luokan, tyypin, yms. mukaan"
 
 #: ../src/lib/plugins/browse_recipes/browser.py:116
 msgid "Stars"
-msgstr ""
+msgstr "Tähtiä"
 
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:1
-msgid "_Auto-merge"
-msgstr ""
+#: ../src/lib/plugins/duplicate_finder.gourmet-plugin.in.h:1
+msgid "A wizard to find and remove or merge duplicate recipes."
+msgstr "Ohjattu toiminto reseptien kaksoiskappaleiden käsittelyyn"
 
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:2
-msgctxt "yes"
-msgid "<b><span size=\"large\">Duplicate recipes</span></b>"
-msgstr ""
+#: ../src/lib/plugins/duplicate_finder.gourmet-plugin.in.h:2
+msgid "Find duplicate recipes"
+msgstr "Etsi reseptien kaksoiskappaleita"
 
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:3
-#, fuzzy
-msgctxt "yes"
-msgid "<b>Merge recipes</b>"
-msgstr "<b>Ainesosat</b>"
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:4
-#, fuzzy
-msgctxt "yes"
-msgid "<i>_Showing:</i>"
-msgstr "<b>Annoksia:</b>"
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:5
-msgctxt "yes"
-msgid "Merge _all duplicates"
-msgstr ""
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:6
-msgctxt "yes"
-msgid "Recipes with similar recipe information"
-msgstr ""
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.glade.h:7
-msgctxt "yes"
-msgid "_Include recipes in trash"
-msgstr ""
+#: ../src/lib/plugins/duplicate_finder.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/field_editor.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/key_editor.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/listsaver.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:28
+#: ../src/lib/plugins/python_shell.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/shopping_associations.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/spellcheck.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/unit_display_prefs.gourmet-plugin.in.h:2
+msgid "Tools"
+msgstr "Työkalut"
 
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:29
 #, python-format
 msgid "%s ago"
-msgstr ""
+msgstr "%s sitten"
 
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:229
-#, fuzzy
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:230
 msgid "Auto-Merge recipes"
-msgstr "Näytä reseptit"
-
-#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:231
-#, fuzzy
-msgid "Always use newest recipe"
-msgstr "Käytä aina näitä asetuksia"
+msgstr "Yhdistä reseptit automaattisesti"
 
 #: ../src/lib/plugins/duplicate_finder/recipeMerger.py:232
-#, fuzzy
+msgid "Always use newest recipe"
+msgstr "Käytä aina uusinta reseptiä"
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.py:233
 msgid "Always use oldest recipe"
-msgstr "Käytä aina näitä asetuksia"
+msgstr "Käytä aina vanhinta reseptiä"
+
+#. dups = rd.find_complete_duplicates()
+#. for d in dups[5:]:
+#. test_merger(rd,d)
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:1
+msgid "<b><span size=\"large\">Duplicate recipes</span></b>"
+msgstr "<b><span size=\"large\">Reseptien kaksoiskappaleet</span></b>"
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:2
+msgid "<b>Merge recipes</b>"
+msgstr "<b>Yhdistä reseptit</b>"
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:3
+msgid "<i>_Showing:</i>"
+msgstr "<i>Näytetään:</i>"
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:4
+msgid "Merge _all duplicates"
+msgstr "Yhdistä kaikki kaksoiskappaleet"
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:5
+msgid "Recipes with similar ingredients"
+msgstr "Reseptit, joissa on samankaltaisia ainesosia"
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:6
+msgid "Recipes with similar recipe information"
+msgstr "Reseptit, joissa on samankaltaisia ohjeita"
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:7
+msgid "Recipes with similar recipe information and ingredients"
+msgstr "Reseptit, joissa on samankaltaisia ainesosia ja ohjeita"
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:8
+msgid "_Auto-merge"
+msgstr "Automaattinen yhdistäminen"
+
+#: ../src/lib/plugins/duplicate_finder/recipeMerger.ui.h:9
+msgid "_Include recipes in trash"
+msgstr "Huomioi roskakorissa olevat reseptit"
 
 #: ../src/lib/plugins/duplicate_finder/recipeMergerPlugin.py:21
 #: ../src/lib/plugins/duplicate_finder/recipeMergerPlugin.py:56
@@ -2251,89 +2012,134 @@ msgid ""
 "Some of the imported recipes appear to be duplicates. You can merge them "
 "here, or close this dialog to leave them as they are."
 msgstr ""
+"Osa tuoduista resepteistä näyttävät olevan päällekäisiä. Voit yhdistää ne "
+"tässä yhteydessä tai sulkea ruudun ja jättää ne ennalleen."
 
 #: ../src/lib/plugins/duplicate_finder/recipeMergerPlugin.py:63
-#, fuzzy
 msgid "Find _duplicate recipes"
-msgstr "Tulosta valitut reseptit"
+msgstr "Etsi _päällekkäiset reseptit"
 
 #: ../src/lib/plugins/duplicate_finder/recipeMergerPlugin.py:64
 msgid "Find and remove duplicate recipes"
-msgstr ""
+msgstr "Etsi ja poista päällekkäiset reseptit"
+
+#: ../src/lib/plugins/email.gourmet-plugin.in.h:1
+msgid "Email recipes from Gourmet"
+msgstr "Lähetä reseptit sähköpostilla"
+
+#: ../src/lib/plugins/email.gourmet-plugin.in.h:3
+msgid "Send to Email"
+msgstr "Lähetä sähköpostiosoitteeseen"
 
 #: ../src/lib/plugins/email_plugin/emailer_plugin.py:21
-#: ../src/lib/plugins/email_plugin/emailer_plugin.py:41
-#, fuzzy
+#: ../src/lib/plugins/email_plugin/emailer_plugin.py:45
 msgid "Email recipes"
-msgstr "Lähetä reseptit sähköpostitse"
+msgstr "Lähetä reseptejä sähköpostilla"
 
 #: ../src/lib/plugins/email_plugin/emailer_plugin.py:22
-#, fuzzy
 msgid "Email all selected recipes (or all recipes if no recipes are selected"
 msgstr ""
-"Poista valittu resepti ostoslistalta (tai poista kaikki tarvikkeet, jos "
-"yhtään reseptiä ei ole valittu)."
+"Lähetä sähköpostilla valitut reseptit (tai kaikki reseptit jos mitään ei ole "
+"valittuna"
 
 #. only called for l>20, so fancy gettext methods
 #. shouldn't be necessary if my knowledge of
 #. linguistics serves me
-#: ../src/lib/plugins/email_plugin/emailer_plugin.py:45
-#, fuzzy, python-format
+#: ../src/lib/plugins/email_plugin/emailer_plugin.py:49
+#, python-format
 msgid "Do you really want to email all %s selected recipes?"
-msgstr "Haluatko varmasti poistaa %s valittua reseptiä?"
+msgstr "Haluatko todella lähettää sähköpostilla kaikki %s valittua reseptiä?"
 
-#: ../src/lib/plugins/email_plugin/emailer_plugin.py:46
+#: ../src/lib/plugins/email_plugin/emailer_plugin.py:50
 msgid "Yes, e_mail them"
-msgstr ""
+msgstr "Kyllä, _lähetä ne"
 
-#: ../src/lib/plugins/field_editor/__init__.py:15
-#, fuzzy
-msgid "Field Editor"
-msgstr "Avainten muokkain"
-
+#: ../src/lib/plugins/field_editor.gourmet-plugin.in.h:1
 #: ../src/lib/plugins/field_editor/__init__.py:16
 msgid "Edit fields across multiple recipes at a time."
-msgstr ""
+msgstr "Muokkaa kenttiä useassa reseptissä yhtä aikaa."
+
+#: ../src/lib/plugins/field_editor.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/field_editor/__init__.py:15
+msgid "Field Editor"
+msgstr "Kenttä editori"
 
 #. len(vals)==0
 #: ../src/lib/plugins/field_editor/fieldEditor.py:99
-#, fuzzy
 msgid "For each selected value"
-msgstr "Ei tiedostoa valittuna"
+msgstr "Jokaiselle valitulle arvolle"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:103
 #, python-format
 msgid "Where %(field)s is %(value)s"
-msgstr ""
+msgstr "Jossa %(field)s:llä on arvo %(value)s"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:161
-#, fuzzy, python-format
+#, python-format
 msgid "Change will affect %s recipe"
 msgid_plural "Change will affect %s recipes"
-msgstr[0] "Poistettiin %s reseptiä"
-msgstr[1] "Poistettiin %s reseptiä"
+msgstr[0] "Muutos vaikuttaa %s reseptiin"
+msgstr[1] "Muutos vaikuttaa %s reseptiin"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:165
-#, fuzzy, python-format
+#, python-format
 msgid "Delete %s where it is %s?"
-msgstr "Poistettiin %s reseptiä"
+msgstr "Poista %s missä arvo on %s?"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:168
-#, fuzzy, python-format
+#, python-format
 msgid "Change %s from %s to \"%s\"?"
-msgstr "%s:lle %s:sta"
+msgstr "Muuta %s arvosta %s arvoon \"%s\"?"
 
 #: ../src/lib/plugins/field_editor/fieldEditor.py:174
 msgid "<i>This change is not reversable.</i>"
-msgstr ""
+msgstr "<i>Tämä muutos ei ole peruttavissa.</i>"
+
+#: ../src/lib/plugins/import_export/archive.gourmet-plugin.in.h:1
+msgid "Import recipes from zip and tar archives"
+msgstr "Tuo reseptit zip- tai tar-arkistoista"
+
+#: ../src/lib/plugins/import_export/archive.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/gxml.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/import_export/html.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/pdf.gourmet-plugin.in.h:1
+#: ../src/lib/plugins/import_export/plaintext.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/webimport.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/import_export/website_import.gourmet-plugin.in.h:1
+#: ../src/lib/plugins/utf16.gourmet-plugin.in.h:3
+msgid "Importer/Exporter"
+msgstr "Tuonti/Vienti"
+
+#: ../src/lib/plugins/import_export/archive.gourmet-plugin.in.h:3
+msgid "Zip, Gzip, and Tarball support"
+msgstr "Zip, Gzip ja Tar-tuki"
+
+#: ../src/lib/plugins/import_export/archive_plugin/zip_importer_plugin.py:10
+msgid "Archive (zip, tarball)"
+msgstr "Arkisto (zip, tar)"
 
 #: ../src/lib/plugins/import_export/archive_plugin/zip_readers.py:44
 msgid "Loading zip archive"
-msgstr ""
+msgstr "Ladataan pakattua zip-arkistotiedostoa..."
 
 #: ../src/lib/plugins/import_export/archive_plugin/zip_readers.py:59
 msgid "Unzipping zip archive"
+msgstr "Puretaan pakattua zip-arkistotiedostoa..."
+
+#: ../src/lib/plugins/import_export/gxml.gourmet-plugin.in.h:1
+msgid "Gourmet XML Import and Export"
+msgstr "Gourmetin XML tuonti ja vienti"
+
+#: ../src/lib/plugins/import_export/gxml.gourmet-plugin.in.h:2
+msgid ""
+"Import and Export recipes as Gourmet XML files, suitable for backup or "
+"exchange with other Gourmet users."
 msgstr ""
+"Tuo ja vie reseptejä Gourmetin XML-muodossa. Käytännöllinen "
+"varmuuskopioidessa tai siirrettäessä reseptejä toisille Gourmet-käyttäjille."
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:7
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_importer_plugin.py:61
@@ -2355,14 +2161,21 @@ msgid "Recipe saved in Gourmet XML file %(file)s."
 msgstr "Resepti tallennettu Gourmet XML -tiedostoon %(file)s."
 
 #: ../src/lib/plugins/import_export/gxml_plugin/gxml_importer_plugin.py:74
-#, fuzzy
 msgid "Gourmet XML File (Obsolete)"
-msgstr "Gourmet XML -tiedosto (vanhentunut, < v.0.8.2)"
+msgstr "Gourmet XML tiedosto (Vanhentunut)"
+
+#: ../src/lib/plugins/import_export/html.gourmet-plugin.in.h:1
+msgid "Create recipe webpages from recipes."
+msgstr "Luo resepteistä verkkosivut."
+
+#: ../src/lib/plugins/import_export/html.gourmet-plugin.in.h:2
+msgid "HTML Export"
+msgstr "HTML-vienti"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter.py:118
 #, python-format
 msgid "Original Page from %s"
-msgstr ""
+msgstr "Alkuperäinen sivu kohteesta %s"
 
 #: ../src/lib/plugins/import_export/html_plugin/html_exporter_plugin.py:5
 msgid "HTML Web Page"
@@ -2382,10 +2195,17 @@ msgstr "Viedään reseptejä HTML-tiedostoihin hakemistossa %(file)s"
 msgid "Recipe saved as HTML file %(file)s"
 msgstr "Resepti tallennettu HTML-tiedostoon %(file)s"
 
+#: ../src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:1
+msgid "Import files from the Krecipe program."
+msgstr "Tuo tiedostoja KRecipe-ohjelmasta."
+
+#: ../src/lib/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:3
+msgid "KRecipe import"
+msgstr "KRecipe-tuonti"
+
 #: ../src/lib/plugins/import_export/krecipe_plugin/krecipe_importer_plugin.py:9
-#, fuzzy
 msgid "KRecipe XML File"
-msgstr "KRecipes-tiedosto"
+msgstr "KRecipe XML tiedosto"
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer.py:116
 msgid "Mastercook import finished."
@@ -2396,203 +2216,240 @@ msgid "Tidying up XML"
 msgstr "XML:ää siivotaan"
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer_plugin.py:8
-#, fuzzy
 msgid "Mastercook XML File"
-msgstr "MasterCook XML -tiedosto"
+msgstr "Mastercook XML tiedosto"
 
 #: ../src/lib/plugins/import_export/mastercook_import_plugin/mastercook_importer_plugin.py:21
-#, fuzzy
 msgid "Mastercook Text File"
-msgstr "MasterCook-tiedosto"
+msgstr "Mastercook Text tiedosto"
+
+#: ../src/lib/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:1
+msgid "Import files from the Mastercook program."
+msgstr "Tuo tiedostoja Mastercook-ohjelmasta"
+
+#: ../src/lib/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:3
+msgid "Mastercook import"
+msgstr "Mastercook-tuonti"
+
+#: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:1
+msgid "Export recipes as mealmaster text files"
+msgstr "Vie reseptit mealmaster-tekstitiedostoiksi"
+
+#: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
+msgid "Mealmaster (tm) Export"
+msgstr "Mealmaster(tm) -vienti"
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py:22
-#, fuzzy
 msgid "MealMaster file"
-msgstr "Mealmaster-tiedosto"
+msgstr "MealMaster tiedosto"
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:9
-#, fuzzy
 msgid "MealMaster Export"
-msgstr "Mealmaster-vienti"
+msgstr "MealMaster Vientitiedosto"
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:10
-#, fuzzy, python-format
+#, python-format
 msgid "Exporting recipes to MealMaster file %(file)s."
-msgstr "Viedään reseptejä MealMaster(tm) -tiedostoon %(file)s."
+msgstr "Vien reseptit MealMaster tiedostoon %(file)s."
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:11
-#, fuzzy, python-format
+#, python-format
 msgid "Recipe saved as MealMaster file %(file)s"
-msgstr "Resepti tallennettu MealMaster(tm) -tiedostoon %(file)s"
+msgstr "Resepti tallennettu MealMaster tiedostoksi %(file)s"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:709
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:822
-msgid "Letter"
+#: ../src/lib/plugins/import_export/pdf.gourmet-plugin.in.h:2
+msgid ""
+"Print recipes or export them as PDF; this plugin allows a variety of page "
+"layouts."
 msgstr ""
+"Tulosta reseptit tai vie ne PDF-tiedoina haluttuja  sivuasetteluja käyttäen"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:710
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:841
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:964
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:995
-msgid "Portrait"
-msgstr ""
+#: ../src/lib/plugins/import_export/pdf.gourmet-plugin.in.h:3
+msgid "Printing & PDF Export"
+msgstr "Tulostus ja PDF-vienti"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:712
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:834
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:956
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:825
+msgid "Letter"
+msgstr "Letter (8x11\")"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:713
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:844
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:967
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:998
+msgid "Portrait"
+msgstr "Pystysuora"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:715
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:837
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:959
 msgid "Plain"
-msgstr ""
+msgstr "Raaka (tekstistä)"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:726
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:746
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:747
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:729
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:749
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:750
 msgid "cm"
-msgstr ""
+msgstr "cm"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:727
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:730
 msgid "points"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:817
-msgid "11x17\""
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:818
-msgid "Index Card (3.5x5\")"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:819
-msgid "Index Card (4x6\")"
-msgstr ""
+msgstr "pistettä"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:820
-msgid "Index Card (5x8\")"
-msgstr ""
+msgid "11x17\""
+msgstr "11x17\""
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:821
-msgid "Index Card (A7)"
-msgstr ""
+msgid "Index Card (3.5x5\")"
+msgstr "Indeksikortti (3.5x5\")"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:822
+msgid "Index Card (4x6\")"
+msgstr "Indeksikortti (10x15 cm)"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:823
+msgid "Index Card (5x8\")"
+msgstr "Indeksikortti (13x20 cm)"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:824
+msgid "Index Card (A7)"
+msgstr "Indeksikortti (A7)"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:826
 msgid "Legal"
-msgstr ""
+msgstr "Legal/USA"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:829
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:835
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:832
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:838
 msgid "Index Cards (3.5x5)"
-msgstr ""
+msgstr "Indeksikortit (9x13 cm)"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:830
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:836
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:833
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:839
 msgid "Index Cards (4x6)"
-msgstr ""
+msgstr "Indeksikortit (10x15 cm)"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:831
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:837
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:834
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:840
 msgid "Index Cards (A7)"
-msgstr ""
+msgstr "Indeksikortit (A7)"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:842
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:942
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:993
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:845
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:945
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:996
 msgid "Landscape"
-msgstr ""
+msgstr "Vaakasuora"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:853
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:856
 #, python-format
 msgid "%s Column"
 msgid_plural "%s Columns"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s Sarake"
+msgstr[1] "%s Sarakkeet"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:868
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:871
 msgid "Paper _Size"
-msgstr ""
+msgstr "_Paperikoko"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:870
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:873
 msgid "_Orientation"
-msgstr ""
+msgstr "Si_vun suunta"
 
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:872
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:875
 msgid "_Font Size"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:874
-msgid "Page _Layout"
-msgstr ""
+msgstr "_Kirjasinkoko"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:877
-msgid "Left Margin"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:878
-msgid "Right Margin"
-msgstr ""
-
-#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:879
-msgid "Top Margin"
-msgstr ""
+msgid "Page _Layout"
+msgstr "Sivun ase_mointi"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:880
+msgid "Left Margin"
+msgstr "Vasen marginaali"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:881
+msgid "Right Margin"
+msgstr "Oikea marginaali"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:882
+msgid "Top Margin"
+msgstr "Ylämarginaali"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:883
 msgid "Bottom Margin"
-msgstr ""
+msgstr "Alamariginaali"
+
+#: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py:904
+msgid "PDF Options"
+msgstr "PDF-valinnat"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:5
 msgid "PDF (Portable Document Format)"
-msgstr ""
+msgstr "PDF (Portable Document Format)"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:9
 msgid "PDF Export"
 msgstr ""
+"???: Muunna PDF:ksi (tai Tallenna PDF-muotoon - tai Vie PDF:ksi, tai PDF "
+"vienti... tai jotain. Riippuen onko valikossa vai missä...)"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:10
 #, python-format
 msgid "Exporting recipes to PDF %(file)s."
-msgstr ""
+msgstr "???: Tallennetaan reseptejä PDF-tiedostoksi %(file)s."
 
 #: ../src/lib/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:11
 #, python-format
 msgid "Recipe saved as PDF %(file)s"
-msgstr ""
+msgstr "Resepti tallennettu PDF-tiedostoksi %(file)s"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/print_plugin.py:28
 msgid "Page Layout"
-msgstr ""
+msgstr "Sivun asettelu"
 
 #: ../src/lib/plugins/import_export/pdf_plugin/print_plugin.py:116
 msgid "Print Recipes"
 msgstr "Tulosta reseptit"
 
+#: ../src/lib/plugins/import_export/plaintext.gourmet-plugin.in.h:1
+msgid ""
+"Help user mark up and import plain text. Also provides plain text export."
+msgstr ""
+"Helpottaa tekstitiedostojen tuontia. Tukee myös vientiä tekstitiedostoina."
+
+#: ../src/lib/plugins/import_export/plaintext.gourmet-plugin.in.h:3
+msgid "Plain Text Guided Import"
+msgstr "Tekstitiedostojen ohjattu tuonti"
+
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:37
-#, fuzzy
 msgid "Plain Text file"
-msgstr "Tekstitiedosto"
+msgstr "Tavallinen tekstitiedosto"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:9
 msgid "Text Export"
 msgstr "Tekstivienti"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:10
-#, fuzzy, python-format
+#, python-format
 msgid "Exporting recipes to text file %(file)s."
-msgstr "Viedään reseptejä tekstitiedostoon %(file)s."
+msgstr "Vien reseptit tekstiedostoon %(file)s."
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:11
-#, fuzzy, python-format
+#, python-format
 msgid "Recipe saved as plain text file %(file)s"
-msgstr "Resepti tallennettu tekstitiedostoon %(file)s"
+msgstr "Resepti talletettu tekstitiedostoon %(file)s"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:24
-#, fuzzy
 msgid "Big File"
-msgstr "Tiedosto"
+msgstr "Iso tiedosto"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:25
 #, python-format
 msgid "File %s is too big to import"
-msgstr ""
+msgstr "Tiedosto %s on liian iso sisään tuotavaksi"
 
 #: ../src/lib/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:26
 #, python-format
@@ -2601,535 +2458,552 @@ msgid ""
 "mean to import it anyway. If you really do want to import this file, use a "
 "text editor to split it into smaller files and try importing again."
 msgstr ""
+"Tiedostosi ylittää suurimman sallitun pituuden %s merkkiä. Uskon, ettet "
+"todella halunnut tuoda sitä sisään. Jos todella tarkoitit tuoda tämän "
+"tiedoston, voisit pilkkoa sen pienempiin tiedostoihin ja yrittää uudelleen."
 
 #: ../src/lib/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py:8
-#, fuzzy
 msgid "Webpage"
-msgstr "sivusto"
+msgstr "Sivusto"
+
+#: ../src/lib/plugins/import_export/webimport.gourmet-plugin.in.h:1
+msgid "Import recipes from the web."
+msgstr "Tuo reseptejä verkosta"
+
+#: ../src/lib/plugins/import_export/webimport.gourmet-plugin.in.h:3
+msgid "Webpage import"
+msgstr "Verkkosivujen tuonti"
+
+#: ../src/lib/plugins/import_export/website_import.gourmet-plugin.in.h:2
+msgid "Importers for about.com, www.foodnetwork.com, and others"
+msgstr "Ohjattu tuonti mm. sivustoilta about.com ja www.foodnetwork.com"
+
+#: ../src/lib/plugins/import_export/website_import.gourmet-plugin.in.h:3
+msgid "Website Importers"
+msgstr "Verkkosivujen ohjattu tuonti"
+
+#: ../src/lib/plugins/key_editor.gourmet-plugin.in.h:1
+msgid ""
+"Assign and edit ingredient keys (unique identifiers for ingredients, used "
+"for consolidating items on shopping lists)."
+msgstr ""
+"Määritä ja muokkaa ainesosien avaimia, joita käytetään yhdistämään samat "
+"ainesosat toisiinsa."
+
+#: ../src/lib/plugins/key_editor.gourmet-plugin.in.h:2
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:2
+msgid "Key Editor"
+msgstr "Avainten muokkaus"
 
 #. to set our regexp_toggled variable
-#: ../src/lib/plugins/key_editor/keyEditor.py:64
-#: ../src/lib/plugins/key_editor/keyEditor.py:86
-#: ../src/lib/plugins/key_editor/keyEditor.py:265
+#: ../src/lib/plugins/key_editor/keyEditor.py:65
+#: ../src/lib/plugins/key_editor/keyEditor.py:87
+#: ../src/lib/plugins/key_editor/keyEditor.py:266
 msgid "key"
 msgstr "avaimen"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:86
-#: ../src/lib/plugins/key_editor/keyEditor.py:261
-#: ../src/lib/plugins/key_editor/keyEditor.py:537
+#: ../src/lib/plugins/key_editor/keyEditor.py:87
+#: ../src/lib/plugins/key_editor/keyEditor.py:262
+#: ../src/lib/plugins/key_editor/keyEditor.py:538
 msgid "item"
 msgstr "tarvikkeen"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:86
+#: ../src/lib/plugins/key_editor/keyEditor.py:87
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:36
 msgid "unit"
 msgstr "yksikkö"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:111
-msgid "Field"
-msgstr ""
-
 #: ../src/lib/plugins/key_editor/keyEditor.py:112
-msgid "Value"
-msgstr ""
+msgid "Field"
+msgstr "Kenttä"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:113
+msgid "Value"
+msgstr "Arvo"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:114
 msgid "Count"
 msgstr "Lukumäärä"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:158
+#: ../src/lib/plugins/key_editor/keyEditor.py:159
 #, python-format
 msgid "Change all keys \"%s\" to \"%s\"?"
-msgstr ""
+msgstr "Muuta kaikki \"%s\" avaimet \"%s\":ksi?"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:159
+#: ../src/lib/plugins/key_editor/keyEditor.py:160
 #, python-format
 msgid ""
 "You won't be able to undo this action. If there are already ingredients with "
 "the key \"%s\", you won't be able to distinguish between those items and the "
 "items you are changing now."
 msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:171
-#, python-format
-msgid "Change all items \"%s\" to \"%s\"?"
-msgstr ""
+"Et pysty peruttamaan tätä toimintoa. Jos on jo olemassa resepti avaimella "
+"\"%s\", et pysty erottamaan tuloksia toisistaan."
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:172
+#, python-format
+msgid "Change all items \"%s\" to \"%s\"?"
+msgstr "Muuta kaikki \"%s\" kohteet \"%s\":ksi?"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:173
 #, python-format
 msgid ""
 "You won't be able to undo this action. If there are already ingredients with "
 "the item \"%s\", you won't be able to distinguish between those items and "
 "the items you are changing now."
 msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:183
-#, python-format
-msgid "Change _all instances of \"%(unit)s\" to \"%(text)s\""
-msgstr ""
+"Et pysty peruttamaan tätä toimintoa. Jos on jo olemassa aines \"%s\", et "
+"pysty erottamaan tuloksia toisistaan."
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:184
+#, python-format
+msgid "Change _all instances of \"%(unit)s\" to \"%(text)s\""
+msgstr "Muuta kaikki \"%(unit)s\" esiintymät arvoksi \"%(text)s\""
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:185
 #, python-format
 msgid ""
 "Change \"%(unit)s\" to \"%(text)s\" only for _ingredients \"%(item)s\" with "
 "key \"%(key)s\""
 msgstr ""
+"Muuta \"%(unit)s\" arvoon \"%(text)s\" vain aineksille \"%(item)s\" "
+"avaimella \"%(key)s\""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:209
+#: ../src/lib/plugins/key_editor/keyEditor.py:210
 #, python-format
 msgid "Change _all instances of \"%(amount)s\" %(unit)s to %(text)s %(unit)s"
 msgstr ""
+"Muuta kaikki esiintymät \"%(amount)s\" %(unit)s arvoon %(text)s %(unit)s"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:210
+#: ../src/lib/plugins/key_editor/keyEditor.py:211
 #, python-format
 msgid ""
 "Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only _where the "
 "ingredient key is %(key)s"
 msgstr ""
+"Muuta \"%(amount)s\" %(unit)s arvoon \"%(text)s\" %(unit)s vain aineksille "
+"joilla avaimella  arvo \"%(key)s\""
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:211
+#: ../src/lib/plugins/key_editor/keyEditor.py:212
 #, python-format
 msgid ""
 "Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only where the "
 "ingredient key is %(key)s _and where the item is %(item)s"
 msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:356
-msgid "Change all selected rows?"
-msgstr ""
+"Muuta \"%(amount)s\" %(unit)s arvoon \"%(text)s\" %(unit)s vain aineksilla "
+"%(key)s ja esiintymillä %(item)s"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:357
+msgid "Change all selected rows?"
+msgstr "Haluatko muuttaa kaikki valitut rivit?"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:358
 #, python-format
 msgid ""
 "This action will not be undoable. Are you that for all %s selected rows, you "
 "want to set the following values:"
 msgstr ""
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:358
-#, python-format
-msgid ""
-"\n"
-"Key to %s"
-msgstr ""
+"Tätä toimintoa ei voi peruuttaa. Oletko varma, että %s valitulle riville "
+"haluat arvot:"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:359
 #, python-format
 msgid ""
 "\n"
-"Item to %s"
+"Key to %s"
 msgstr ""
+"\n"
+"Avain arvoon %s"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:360
 #, python-format
 msgid ""
 "\n"
-"Unit to %s"
+"Item to %s"
 msgstr ""
+"\n"
+"Esiintymä arvoon %s"
 
 #: ../src/lib/plugins/key_editor/keyEditor.py:361
 #, python-format
 msgid ""
 "\n"
+"Unit to %s"
+msgstr ""
+"\n"
+"Yksikkö arvoon %s"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:362
+#, python-format
+msgid ""
+"\n"
 "Amount to %s"
 msgstr ""
+"\n"
+"Lukumäärä arvoon %s"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:494
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:163
+#: ../src/lib/plugins/key_editor/keyEditor.py:495
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:164
 #, python-format
 msgid "%s ingredient"
 msgid_plural "%s ingredients"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s aines"
+msgstr[1] "%s ainekset"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
-#: ../src/lib/plugins/key_editor/keyEditor.py:498
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:167
+#: ../src/lib/plugins/key_editor/keyEditor.py:499
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:168
 #, python-format
 msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
-msgstr ""
+msgstr "Näytetään aineksia %(bottom)s - %(top)s  / %(total)s"
 
-#. __gsignals__ = {
-#. 'view-changed':(gobject.SIGNAL_RUN_LAST,
-#. gobject.TYPE_NONE,
-#. ()),
-#. }
-#: ../src/lib/plugins/key_editor/keyEditor.py:511
-#: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:108
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:187
-#: ../src/lib/reccard.py:2152 ../src/lib/reccard.py:2211
-msgid "Key"
-msgstr "Avain"
-
-#: ../src/lib/plugins/key_editor/keyEditor.py:512
+#: ../src/lib/plugins/key_editor/keyEditor.py:513
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:100
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:188
-#: ../src/lib/reccard.py:2151 ../src/lib/reccard.py:2179
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:189
+#: ../src/lib/reccard.py:2139 ../src/lib/reccard.py:2167
 msgid "Item"
 msgstr "Tarvike"
 
-#: ../src/lib/plugins/key_editor/keyEditor.py:513
+#: ../src/lib/plugins/key_editor/keyEditor.py:514
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:8
-#: ../src/lib/reccard.py:2150 ../src/lib/reccard.py:2178
-#, fuzzy
+#: ../src/lib/reccard.py:2138 ../src/lib/reccard.py:2166
 msgid "Unit"
-msgstr "Yksikkö"
+msgstr "Mittayksikkö"
+
+#: ../src/lib/plugins/key_editor/keyEditor.py:515
+#: ../src/lib/plugins/nutritional_information/nutritionModel.py:7
+msgid "Amount"
+msgstr "Määrä"
 
 #: ../src/lib/plugins/key_editor/keyEditorPlugin.py:16
-#, fuzzy
 msgid "Ingredient _Key Editor"
-msgstr "Ainesosa-avainten muokkain"
+msgstr "Ainesavainten Editori"
 
 #: ../src/lib/plugins/key_editor/keyEditorPlugin.py:17
-#, fuzzy
 msgid "Edit ingredient keys en masse"
-msgstr "Muokkaa ainesosia"
+msgstr "Muokkaa ainesavaimia massana"
 
-#: ../src/lib/plugins/key_editor/keyeditor.glade.h:1
-#, fuzzy
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:1
 msgid "<b>_Change selected ingredients</b>"
-msgstr "Poista valitut ainekset."
+msgstr "<b>Muuta valitut ainesosat</b>"
+
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:4
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:19
+msgid "Search as you t_ype"
+msgstr "Etsi kirjoitettaessa"
+
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:7
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:25
+msgid "_Advanced Search"
+msgstr "Tarkennettu haku"
+
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:9
+msgid "_Item:"
+msgstr "Kohta:"
+
+#: ../src/lib/plugins/key_editor/keyeditor.ui.h:10
+msgid "_Key:"
+msgstr "Avain:"
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:14
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:37
-#, fuzzy
 msgid "Ingredient Keys"
-msgstr "Muokkaa ainesosia"
+msgstr "Ainesavaimet"
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:38
 msgid ""
 "Ingredient Keys are normalized ingredient names used for shopping lists and "
 "for calculations."
 msgstr ""
+"Ainesavaimet ovat normalisoituja aineksien nimiä, joita käytetään "
+"ostoslistojen ja laskelmien tekemiseen."
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:84
 msgid "Guess keys"
-msgstr ""
+msgstr "Arvaa avaimet"
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:85
 msgid ""
 "Guess best values for all ingredient keys based on values already in your "
 "database"
 msgstr ""
+"Arvaa parhaat arvot aineksien avaimille tietokannassa jo olevan sisällön "
+"perusteella"
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:89
 msgid "Edit Key Associations"
-msgstr ""
+msgstr "Muokkaa avainten yhteyksiä"
 
 #: ../src/lib/plugins/key_editor/recipeEditorPlugin.py:90
 msgid "Edit associations with key and other attributes in database"
-msgstr ""
+msgstr "Muokkaa avainten ja muiden attribuuttien yhteyksiä tietokannassa"
 
+#: ../src/lib/plugins/listsaver.gourmet-plugin.in.h:1
+msgid "Save shopping lists as recipes for future use."
+msgstr "Tallenna ostoslistat resepteinä tulevaa käyttöä varten."
+
+#: ../src/lib/plugins/listsaver.gourmet-plugin.in.h:2
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:23
-#, fuzzy
 msgid "Shopping List Saver"
-msgstr "Ostoslista"
+msgstr "Ostoslista Tallennin"
 
 #. name
 #. stock
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:30
-#, fuzzy
 msgid "Save List as Recipe"
-msgstr "Valitse resepti"
+msgstr "Tallenna lista reseptiksi"
 
 #. text
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:31
 msgid "<Ctrl><Shift>S"
-msgstr ""
+msgstr "<Ctrl><Shift>S"
 
 #. key-command
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:32
 msgid "Save current shopping list as a recipe for future use"
-msgstr ""
+msgstr "Tallenna nykyinen ostoslista reseptiksi tulevaa käyttöä varten"
 
 #. print rr
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:44
 #, python-format
 msgid "Menu for %s"
-msgstr ""
+msgstr "%s:n menu"
 
 #: ../src/lib/plugins/listsaver/shoppingSaverPlugin.py:45
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
+
+#: ../src/lib/plugins/nutritional_information.gourmet-plugin.in.h:1
+msgid "Calculate nutritional information for recipes."
+msgstr "Laske reseptien ravintoarvot"
+
+#. name
+#. stock
+#: ../src/lib/plugins/nutritional_information.gourmet-plugin.in.h:3
+#: ../src/lib/plugins/nutritional_information/main_plugin.py:12
+#: ../src/lib/plugins/nutritional_information/nutPrefsPlugin.py:10
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:18
+#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:31
+#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:67
+msgid "Nutritional Information"
+msgstr "Ravinnetiedot"
 
 #: ../src/lib/plugins/nutritional_information/databaseGrabber.py:145
 msgid "Parsing nutritional data..."
-msgstr ""
+msgstr "Jäsentää (käsittelee) ravitsemustietoja..."
 
 #: ../src/lib/plugins/nutritional_information/databaseGrabber.py:162
 #, python-format
 msgid "Reading nutritional data: imported %s of %s entries."
-msgstr ""
+msgstr "Luetaan ravintoaine tietoja: tuotu %s / %s tiedosta."
 
 #: ../src/lib/plugins/nutritional_information/databaseGrabber.py:185
 msgid "Parsing weight data..."
-msgstr ""
+msgstr "Jäsentää (käsittelee) painotietoja..."
 
 #: ../src/lib/plugins/nutritional_information/databaseGrabber.py:194
 #, python-format
 msgid "Reading weight data for nutritional items: imported %s of %s entries"
-msgstr ""
+msgstr "Luetaan ravintoaineiden painotietoja: tuotu %s / %s tiedosta"
 
 #: ../src/lib/plugins/nutritional_information/export_plugin.py:32
-#, fuzzy, python-format
+#, python-format
 msgid "Nutritional information reflects amount per %s."
-msgstr "<i>Anna ravintotiedot kohteelle </i>"
+msgstr "Ravintosisältö heijastaa määrä per %s."
 
 #: ../src/lib/plugins/nutritional_information/export_plugin.py:34
 msgid "Nutritional information reflects amounts for entire recipe"
-msgstr ""
+msgstr "Ravitsemuksellisia tietoja heijastavat määrät koko reseptissä"
 
 #: ../src/lib/plugins/nutritional_information/export_plugin.py:38
 #, python-format
 msgid "Nutritional information is missing for %s ingredients: %s"
-msgstr ""
+msgstr "Ravinnetieto puuttuu %s ainekselle : %s"
 
-#. name
-#. stock
-#: ../src/lib/plugins/nutritional_information/main_plugin.py:12
-#: ../src/lib/plugins/nutritional_information/nutPrefsPlugin.py:10
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:12
-#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:31
-#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:67
-#, fuzzy
-msgid "Nutritional Information"
-msgstr "<b>Ravintoarvot</b>"
-
-#: ../src/lib/plugins/nutritional_information/nut_recipe_card_display.glade.h:1
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:4
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nut_recipe_card_display.ui.h:1
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:4
 msgid "<b>Nutritional Information</b>"
-msgstr "<b>Ravintoarvot</b>"
+msgstr "<b>Ravintoarvo</b>"
 
-#: ../src/lib/plugins/nutritional_information/nut_recipe_card_display.glade.h:2
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nut_recipe_card_display.ui.h:2
 msgid "Edit _nutritional info"
-msgstr "<i>Anna ravintotiedot kohteelle </i>"
+msgstr "Muokkaa ravintoarvoja"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDisplay.py:132
 msgid "100 grams"
-msgstr ""
+msgstr "100 grammaa"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:1
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:1
 msgid "<b>Choose a Density</b>"
-msgstr ""
+msgstr "<b>Valitse tiheys</b>"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:2
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:2
 msgid "<b>Ingredient Key: </b>"
-msgstr "<b>Ainesosat</b>"
+msgstr "<b>Ainesosan avain</b>"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:3
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:3
 msgid "<b>Known Nutritonal Information</b>"
-msgstr "<b>Ravintoarvot</b>"
+msgstr "<b>Tunnetut ravintoarvot</b>"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:5
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:5
 msgid "<b>USDA Item: </b>"
-msgstr "<b>Lähde:</b>"
+msgstr "<b>USDA-nimike:</b>"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:6
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:6
 msgid "<i>Enter nutritional information for </i>"
-msgstr "<i>Anna ravintotiedot kohteelle </i>"
+msgstr "<i>Määritä ravintoarvo kohteelle </i>"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:7
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:7
+msgid "<i>From:</i>"
+msgstr "<i>Lähettäjä:</i>"
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:8
+msgid "<i>Search _results:</i>"
+msgstr "<i>Hakutulokset:</i>"
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:9
+msgid "<i>Select equivalent of</i>"
+msgstr "<i>Valitse vastaava kuin</i>"
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:10
+msgid "<i>To:</i>"
+msgstr "<i>Vastaanottaja:</i>"
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:11
+msgid "<i>from USDA database</i>"
+msgstr "<i>USDA-tietokannasta</i>"
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:12
 msgid "<i>or</i>"
 msgstr "<i>tai</i>"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:8
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:13
 msgid "Custom equivalents:"
-msgstr ""
+msgstr "Omat vastaavuudet:"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:9
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:14
 msgid "Density:"
 msgstr "Tiheys:"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:10
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:15
 msgid "Edit _USDA Association"
-msgstr ""
+msgstr "Muokkaa USDA-liitäntää"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:11
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:16
 msgid "Edit _information"
-msgstr "Tiheystieto"
+msgstr "Muokkaa tietoja"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:15
-msgid "Show only food in _group:"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:16
-msgid "USDA equivalents:"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:19
-#, fuzzy
-msgid "_Density Information"
-msgstr "Tiheystieto"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:20
-#, fuzzy
-msgid "_Nutritional Information"
-msgstr "<b>Ravintoarvot</b>"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:23
-#, fuzzy
-msgctxt "yes"
-msgid "<i>From:</i>"
-msgstr "<b>Lähettäjä</b>"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:24
-#, fuzzy
-msgctxt "yes"
-msgid "<i>Search _results:</i>"
-msgstr "<i>Haun _tulokset:</i>"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:25
-#, fuzzy
-msgctxt "yes"
-msgid "<i>Select equivalent of</i>"
-msgstr "<i>Valitse samankaltainen kuin </i>"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:26
-#, fuzzy
-msgctxt "yes"
-msgid "<i>To:</i>"
-msgstr "<i>tai</i>"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:27
-#, fuzzy
-msgctxt "yes"
-msgid "<i>from USDA database</i>"
-msgstr "<i>USDA tietokannasta</i>"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:28
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:17
 msgid "I_gnore"
-msgstr "O_hita"
+msgstr "Ohita"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:29
-#, fuzzy
-msgctxt "yes"
-msgid "Search as you t_ype"
-msgstr "Etsi k_irjoittaessasi"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:21
+msgid "Show only food in _group:"
+msgstr "Näytä vain ruoat ryhmässä:"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:30
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:22
+msgid "USDA equivalents:"
+msgstr "USDA-vastaavuudet:"
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:23
 msgid "Unit:"
 msgstr "Yksikkö:"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:31
-#, fuzzy
-msgctxt "yes"
-msgid "_Amount:"
-msgstr "Määrä:"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:32
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:27
 msgid "_Change ingredient"
-msgstr "Vaihda ainesosa"
+msgstr "Muuta ainesosa"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:33
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:28
 msgid "_Change unit"
-msgstr "Vaihda yksikkö"
+msgstr "Muuta yksikkö"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:34
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:29
+msgid "_Density Information"
+msgstr "TIheystiedot"
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:30
+msgid "_Nutritional Information"
+msgstr "Ravintoarvot"
+
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:31
 msgid "_Save new unit"
 msgstr "Tallenna uusi yksikkö"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:35
-#, fuzzy
-msgctxt "yes"
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.ui.h:32
 msgid "_Search USDA Ingredient Database:"
-msgstr "Etsi USDA ainestietokannasta:"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:36
-#, fuzzy
-msgctxt "yes"
-msgid "_Unit:"
-msgstr "Yksikkö:"
-
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.glade.h:37
-#, fuzzy
-msgctxt "yes"
-msgid "unit"
-msgstr "yksikkö"
+msgstr "Etsi USDA-ainesosatietokannasta"
 
 #: ../src/lib/plugins/nutritional_information/nutritionDruid.py:94
 msgid "Any food group"
-msgstr ""
+msgstr "Mikä tahansa ruokaryhmä"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:274
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:269
 msgid "selection"
-msgstr "sekunti"
+msgstr "valinta"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:426
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:421
 msgid "ml"
-msgstr ""
+msgstr "ml"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:674
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:669
 #, python-format
 msgid "Convert unit for %s"
-msgstr ""
+msgstr "Muunna yksikkö %s:ksi"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:677
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:672
 #, python-format
 msgid ""
 "In order to calculate nutritional information, Gourmet needs you to help it "
 "convert \"%s\" into a unit it understands."
 msgstr ""
+"Gourmet tarvitsee apuasi muuttamaan \"%s\" (mitta)yksiköksi, jota ohjelma "
+"ymmärtää, että ravitsemustiedot voidaan laskea."
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:759
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:773
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:754
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:768
 msgid "Change ingredient key"
-msgstr "Vaihda ainesosa"
+msgstr "Muuta aineksen avainta"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:761
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:756
 #, python-format
 msgid ""
 "Change ingredient key from %(old_key)s to %(new_key)s everywhere or just in "
 "the recipe %(title)s?"
 msgstr ""
+"Muuta aineksen %(old_key)s avain avroon %(new_key)s kaikkialla tai vain "
+"reseptissä %(title)s?"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:766
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:819
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:761
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:814
 msgid "Change _everywhere"
-msgstr ""
+msgstr "Muuta kaikkialla"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:767
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:820
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:762
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:815
 #, python-format
 msgid "_Just in recipe %s"
-msgstr ""
+msgstr "Vain reseptissä %s"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:774
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:769
 #, python-format
 msgid "Change ingredient key from %(old_key)s to %(new_key)s everywhere?"
-msgstr ""
+msgstr "Muuta aines %(old_key)s arvoon %(new_key)s kaikkialla?"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:811
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:806
 msgid "Change unit"
-msgstr ""
+msgstr "Muuta (mitta)yksikkö"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:813
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:808
 #, python-format
 msgid ""
 "Change unit from %(old_unit)s to %(new_unit)s for all ingredients %(ingkey)s "
 "or just in the recipe %(title)s?"
 msgstr ""
+"Muuta yksikkö %(old_unit)s arvoon %(new_unit)s kaikille aineksille "
+"%(ingkey)s tai vain reseptissä %(title)s?"
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:844
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:839
 #, python-format
 msgid ""
 "In order to calculate nutritional information for \"%(amount)s %(unit)s "
@@ -3137,11 +3011,16 @@ msgid ""
 "has several descriptions of this food with different densities. Please "
 "select the correct one below."
 msgstr ""
+"Laskeaksesi ravinnetiedot \"%(amount)s %(unit)s %(ingkey)s\", Gourmet "
+"tarvitsee aineen tiheyden. Ravinnetietokannassamme on useita kuvauksia tälle "
+"ruoalle eri tiheyksille. Ole hyvä ja valitse oikea alla olevasta listasta."
 
-#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:1017
+#: ../src/lib/plugins/nutritional_information/nutritionDruid.py:1012
 msgid ""
 "To apply nutritional information, Gourmet needs a valid amount and unit."
 msgstr ""
+"Ottaakseen käyttöön ravinnetiedot, Gourmet tarvitsee oikean määrän ja "
+"yksikön."
 
 #. filename=None
 #. if de.getBoolean(
@@ -3155,253 +3034,254 @@ msgstr ""
 #. )
 #: ../src/lib/plugins/nutritional_information/nutritionGrabberGui.py:35
 msgid "Loading Nutritional Data"
-msgstr ""
+msgstr "Lataan Ravinnetietoja"
 
 #: ../src/lib/plugins/nutritional_information/nutritionGrabberGui.py:40
 msgid "Nutritonal database import complete!"
-msgstr ""
+msgstr "Ravitsemustietotietokannan tuonti valmis!"
 
 #: ../src/lib/plugins/nutritional_information/nutritionGrabberGui.py:59
 #, python-format
 msgid "Fetching nutritional database from zip archive %s"
-msgstr ""
+msgstr "Puran ravinnetietokantaa zip paketista %s"
 
 #: ../src/lib/plugins/nutritional_information/nutritionGrabberGui.py:63
 #, python-format
 msgid "Extracting %s from zip archive."
-msgstr ""
+msgstr "Puran tiedoston %s zip paketista."
 
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:65
-#, fuzzy
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:66
 msgid "entire database"
-msgstr "Valitse tietokanta"
-
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:79
-#, fuzzy
-msgid "Ingredient Key"
-msgstr "Muokkaa ainesosia"
+msgstr "koko tietokanta"
 
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:80
-msgid "USDA ID Number"
-msgstr ""
+msgid "Ingredient Key"
+msgstr "Ainesavain"
 
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:81
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:190
-#, fuzzy
-msgid "USDA Item Description"
-msgstr "Kuvaukset"
+msgid "USDA ID Number"
+msgstr "USDA ID numero"
 
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:82
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:191
-msgid "Density Equivalent"
-msgstr ""
+msgid "USDA Item Description"
+msgstr "USDA aines kuvaus"
 
-#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:189
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:83
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:192
+msgid "Density Equivalent"
+msgstr "Vastaava tiheys"
+
+#: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:190
 msgid "USDA ID#"
-msgstr ""
+msgstr "USDA ID#"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:11
 msgid "Calories"
-msgstr ""
+msgstr "Kaloreita"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:14
 msgid "Total Fat"
-msgstr ""
+msgstr "Rasvaa yhteensä"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:16
 msgid "Saturated Fat"
-msgstr ""
+msgstr "Tyydyttynyttä rasvaa"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:18
 msgid "Cholesterol"
-msgstr ""
+msgstr "Kolesterolia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:20
 msgid "Sodium"
-msgstr ""
+msgstr "Natriumia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:22
 msgid "Total Carbohydrate"
-msgstr ""
+msgstr "Hiilihydraatteja yhteensä"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:24
 msgid "Dietary Fiber"
-msgstr ""
+msgstr "Ravintokuituja"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:26
 msgid "Sugars"
-msgstr ""
+msgstr "Sokereita"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:28
 msgid "Protein"
-msgstr ""
+msgstr "Proteiinia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:33
 msgid "Alpha-carotene"
-msgstr ""
+msgstr "Alfa-karoteenia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:35
 msgid "Ash"
-msgstr ""
+msgstr "Tuhkaa"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:37
 msgid "Beta-carotene"
-msgstr ""
+msgstr "Beta-karoteenia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:39
 msgid "Beta Cryptoxanthin"
-msgstr ""
+msgstr "Beta Cryptoxanthin"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:41
 msgid "Calcium"
-msgstr ""
+msgstr "Kalsiumia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:43
 msgid "Copper"
-msgstr ""
+msgstr "Kupari"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:45
 msgid "Folate Total"
-msgstr ""
+msgstr "Folaatit yhteensä"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:47
 msgid "Folic acid"
-msgstr ""
+msgstr "Foolihappo"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:49
 msgid "Food Folate"
-msgstr ""
+msgstr "Ruoan folaatit"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:51
 msgid "Dietary folate equivalents"
-msgstr ""
+msgstr "Ruokavalion vastineet"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:53
 msgid "Iron"
-msgstr ""
+msgstr "Rautaa"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:55
 msgid "Lycopene"
-msgstr ""
+msgstr "Lykopeeneja"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:57
 msgid "Lutein+Zeazanthin"
-msgstr ""
+msgstr "Luteiini+Zeazanthin"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:59
 msgid "Magnesium"
-msgstr ""
+msgstr "Magnesiumia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:61
 msgid "Manganese"
-msgstr ""
+msgstr "Mangaania"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:63
 msgid "Niacin"
-msgstr ""
+msgstr "Niasiini"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:65
 msgid "Pantothenic Acid"
-msgstr ""
+msgstr "Pantoteenihappo"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:67
 msgid "Phosphorus"
-msgstr ""
+msgstr "Fosforia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:69
 msgid "Potassium"
-msgstr ""
+msgstr "Kalium"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:71
 msgid "Vitamin A"
-msgstr ""
+msgstr "A-vitamiinia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:73
 msgid "Retinol"
-msgstr ""
+msgstr "Retinolia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:75
 msgid "Riboflavin"
-msgstr ""
+msgstr "Riboflavinia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:77
 msgid "Selenium"
-msgstr ""
+msgstr "Seleeniä"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:79
 msgid "Thiamin"
-msgstr ""
+msgstr "Tiamiiniä"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:81
 msgid "Vitamin A (IU)"
-msgstr ""
+msgstr "A-vitamiinia (IU)"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:83
 msgid "Vitamin A (RAE)"
-msgstr ""
+msgstr "A-vitamiinia (RAE)"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:85
 msgid "Vitamin B6"
-msgstr ""
+msgstr "B6-vitamiinia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:87
 msgid "Vitamin B12"
-msgstr ""
+msgstr "B12-vitamiinia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:89
 msgid "Vitamin C"
-msgstr ""
+msgstr "C-vitamiinia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:91
 msgid "Vitamin E"
-msgstr ""
+msgstr "E-vitamiinia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:93
 msgid "Vitamin K"
-msgstr ""
+msgstr "K-vitamiinia"
 
 #: ../src/lib/plugins/nutritional_information/nutritionLabel.py:95
 msgid "Zinc"
-msgstr ""
+msgstr "Sinkkiä"
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:205
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:207
 msgid "Vitamins and minerals"
-msgstr ""
+msgstr "Vitamiineja ja mineraaleja"
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:310
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:315
 #, python-format
 msgid ""
 "Missing nutritional information\n"
 "for %(missing)s of %(total)s ingredients."
 msgstr ""
+"Ravitsemustietoja puuttuu\n"
+"%(missing)s/%(total)s aineksesta."
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:326
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:331
 msgid "% _Daily Value"
-msgstr ""
+msgstr "% päivittäisestä tarpeesta"
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:371
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:376
 #, python-format
 msgid ""
 "Percentage of recommended daily value based on %i calories per day. Click to "
 "edit number of calories per day."
 msgstr ""
+"Prosenttiosuus päivittäisestä tarpeesta perustuu %i kalorin päivädiettiin. "
+"Klikkaa (napauta) muuttaaksesi päivittäistä kalorimäärää."
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:461
-#, fuzzy, python-format
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:466
+#, python-format
 msgid "Amount per %s"
-msgstr "Määrä: "
+msgstr "Määrä per %s"
 
-#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:463
+#: ../src/lib/plugins/nutritional_information/nutritionLabel.py:468
 msgid "Amount per recipe"
-msgstr ""
+msgstr "Määrä per resepti"
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:9
 msgid "Ingredient"
-msgstr ""
+msgstr "Aines"
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:10
 msgid "USDA Database Equivalent"
-msgstr ""
+msgstr "USDA tietokannan vasttaavuudet"
 
 #: ../src/lib/plugins/nutritional_information/nutritionModel.py:11
 #: ../src/lib/shopping.py:139 ../src/lib/shopping.py:159
@@ -3410,359 +3290,419 @@ msgstr "Tuntematon"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:12
 msgid "Water"
-msgstr ""
+msgstr "Vesi"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:13
 msgid "Kilocalories"
-msgstr ""
+msgstr "Kilokalori"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:14
 msgid "g protein"
-msgstr ""
+msgstr "g proteiinia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:15
 msgid "g lipid"
-msgstr ""
+msgstr "g lipidejä"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:16
 msgid "g ash"
-msgstr ""
+msgstr "g tuhkaa"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:17
 msgid "g carbohydrates"
-msgstr ""
+msgstr "g hiilihydraatteja"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:18
 msgid "g fiber"
-msgstr ""
+msgstr "g kuituja"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:19
 msgid "g sugar"
-msgstr ""
+msgstr "g sokeria"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:20
 msgid "mg calcium"
-msgstr ""
+msgstr "mg kalsiumia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:21
 msgid "mg iron"
-msgstr ""
+msgstr "mg rautaa"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:22
 msgid "mg magnesium"
-msgstr ""
+msgstr "mg magnesiumia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:23
 msgid "mg phosphorus"
-msgstr ""
+msgstr "mg fosforia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:24
 msgid "mg potassium"
-msgstr ""
+msgstr "mg potassiumia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:25
 msgid "mg sodium"
-msgstr ""
+msgstr "mg natriumia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:26
 msgid "mg zinc"
-msgstr ""
+msgstr "mg sinkkiä"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:27
 msgid "mg copper"
-msgstr ""
+msgstr "mg kuparia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:28
 msgid "mg manganese"
-msgstr ""
+msgstr "mg mangaania"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:29
 msgid "microgram selenium"
-msgstr ""
+msgstr "mikrogrammaa seleeniä"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:30
 msgid "mg vitamin c"
-msgstr ""
+msgstr "mg C-vitamiinia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:31
 msgid "mg thiamin"
-msgstr ""
+msgstr "mg tiamiinia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:32
 msgid "mg riboflavin"
-msgstr ""
+msgstr "mg riboflavafiinia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:33
 msgid "mg niacin"
-msgstr ""
+msgstr "mg niasiinia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:34
 msgid "mg pantothenic acid"
-msgstr ""
+msgstr "mg pantoteenihappoa"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:35
 msgid "mg vitamin B6"
-msgstr ""
+msgstr "mg B6-vitamiinia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:36
 msgid "microgram Folate Total"
-msgstr ""
+msgstr "mikrogrammaa Folaatteja yhteensä"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:37
 msgid "microgram Folic acid"
-msgstr ""
+msgstr "mikrogrammaa foolihappoja"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:38
 msgid "microgram Food Folate"
-msgstr ""
+msgstr "mikrogrammaa Folaatteja ruoasta"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:39
 msgid "microgram dietary folate equivalents"
-msgstr ""
+msgstr "mikrogrammaa ruokavalion foolihapon vastineista"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:40
 msgid "Choline, total"
-msgstr ""
+msgstr "Choline, koko"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:41
 msgid "microgram Vitamin B12"
-msgstr ""
+msgstr "mikrogrammaa B12-vitamiinia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:42
 msgid "Vitamin A IU"
-msgstr ""
+msgstr "Vitamiini A"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:43
 msgid "Vitamin A (microgram Retinal Activity Equivalents"
-msgstr ""
+msgstr "Vitamiini A (mikrogrammoiksi muutettuna)"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:44
 msgid "microgram Retinol"
-msgstr ""
+msgstr "mikrogrammaa Retinolin"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:45
 msgid "microgram Alpha-carotene"
-msgstr ""
+msgstr "mikrogrammaa Alpha-karoteenia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:46
 msgid "microgram Beta-carotene"
-msgstr ""
+msgstr "mikrogrammaa beta-karoteenia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:47
 msgid "microgram Beta Cryptoxanthin"
-msgstr ""
+msgstr "mikrogrammaa beta kryptoksantiinia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:48
 msgid "microgram Lycopene"
-msgstr ""
+msgstr "mikrogrammaa lykopeenejä"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:49
 msgid "microgram Lutein+Zeazanthin"
-msgstr ""
+msgstr "mikrogrammaa Luteiini+Zeazanthin"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:50
 msgid "mg Vitamin E"
-msgstr ""
+msgstr "mg Vitamiinia E"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:51
 msgid "mg Vitamin K"
-msgstr ""
+msgstr "mg Vitamiinia K"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:52
 msgid "g Saturated Fatty Acid"
-msgstr ""
+msgstr "g tyydyttyneitä rasvahappoja"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:53
 msgid "g Monounsaturated Fatty Acids"
-msgstr ""
+msgstr "g (kerta)tyydyttymättömiä rasvahappoja"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:54
 msgid "g Polyunsaturated Fatty Acids"
-msgstr ""
+msgstr "g monityydyttymättömiä rasvahappoja"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:55
 msgid "mg Cholesterol"
-msgstr ""
+msgstr "mg kolesterolia"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:60
 msgid "Percent refuse"
-msgstr ""
+msgstr "Prosenttijäte"
 
 #. the DB Food Group Numbers seem to be inline with the group IDs
 #. (numbers > 1000 are in group 100, etc.)
 #. Since that's true, we can use the following table to properly add groups.
 #: ../src/lib/plugins/nutritional_information/parser_data.py:337
 msgid "Dairy & Egg Products"
-msgstr ""
+msgstr "Maitotuotteet ja munatuotteet"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:338
 msgid "Spices & Herbs"
-msgstr ""
+msgstr "Mausteet ja yrtit"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:339
 msgid "Baby Foods"
-msgstr ""
+msgstr "Lasten ruoat"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:340
 msgid "Fats and Oils"
-msgstr ""
+msgstr "Rasvat ja öljyt"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:341
 msgid "Poultry"
-msgstr ""
+msgstr "Siipikarja"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:342
 msgid "Soups & Sauces"
-msgstr ""
+msgstr "Keitot ja kastikkeet"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:343
 msgid "Sausages & Lunch Meats"
-msgstr ""
+msgstr "Makkarat ja \"lounaslihat\""
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:344
 msgid "Breakfast Cereals"
-msgstr ""
+msgstr "Murot ja puurot"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:345
 msgid "Fruits & Fruit Juices"
-msgstr ""
+msgstr "Hedelmät ja hedelmämehut"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:346
 msgid "Pork"
-msgstr ""
+msgstr "Sianliha"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:347
 msgid "Vegetables"
-msgstr ""
+msgstr "Vihannekset (ja juurekset)"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:348
 msgid "Nuts & Seeds"
-msgstr ""
+msgstr "Pähkinät ja siemenet"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:349
 msgid "Beef"
-msgstr ""
+msgstr "Naudanliha"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:350
 msgid "Beverages"
-msgstr ""
+msgstr "Juomat"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:351
 msgid "Fish & Shellfish"
-msgstr ""
+msgstr "Kalat & Äyriäiset"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:352
 msgid "Legumes"
-msgstr ""
+msgstr "Palkokasvit"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:353
 msgid "Lamb, Veal & Game"
-msgstr ""
+msgstr "Lammas, Nauta & Riista"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:354
 msgid "Baked Products"
-msgstr ""
+msgstr "Leivotut tuotteet"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:355
 msgid "Sweets"
-msgstr ""
+msgstr "Makeiset"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:356
 msgid "Grains and Pasta"
-msgstr ""
+msgstr "Viljat ja Pasta"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:357
 msgid "Fast Foods"
-msgstr ""
+msgstr "Pikaruoat"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:358
 msgid "Meals, Entrees, and Sidedishes"
-msgstr ""
+msgstr "Ateriat, pääruoat ja höysteet (eli lisukkeet)"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:359
 msgid "Snacks"
-msgstr ""
+msgstr "Välipalat"
 
 #: ../src/lib/plugins/nutritional_information/parser_data.py:360
 msgid "Ethnic Foods"
-msgstr ""
+msgstr "Etniset ruoat"
 
 #: ../src/lib/plugins/nutritional_information/reccard_plugin.py:15
 msgid "Nutrition"
-msgstr ""
-
-#: ../src/lib/plugins/nutritional_information/shopping_plugin.py:28
-#, fuzzy
-msgid "Tools"
-msgstr "Työkalut"
+msgstr "Ravinteet"
 
 #. label
 #. key-command
 #: ../src/lib/plugins/nutritional_information/shopping_plugin.py:33
-#, fuzzy
 msgid "Get nutritional information for current list"
-msgstr "<i>Anna ravintotiedot kohteelle </i>"
+msgstr "Hae ravinnetiedot nykyiselle listalle"
 
 #: ../src/lib/plugins/nutritional_information/shopping_plugin.py:82
-#, fuzzy
 msgid "Amount for Shopping List"
-msgstr "Poista ostoslistalta"
+msgstr "Määrä ostoslistaa varten"
+
+#: ../src/lib/plugins/python_shell.gourmet-plugin.in.h:1
+msgid ""
+"Allows programmers to access an interactive shell with access to Gourmet's "
+"internals."
+msgstr ""
+"Mahdollistaa pääsyn Gourmetin vuorovaikutteiseen komentotulkkiin, jolla voi "
+"muokata Gourmetin sisäistä toimintaa."
+
+#: ../src/lib/plugins/python_shell.gourmet-plugin.in.h:2
+msgid "Python Shell"
+msgstr "Python-komentotulkki"
 
 #: ../src/lib/plugins/python_shell/__init__.py:14
 msgid "_Python Console"
-msgstr ""
+msgstr "_Python-konsoli"
 
 #: ../src/lib/plugins/python_shell/__init__.py:15
 msgid "Show python console (provides access to current gourmet instance)"
 msgstr ""
+"Näytä python-konsoli (mahdollistaa pääsyn nykyiseen Gourmet instanssiin)"
+
+#: ../src/lib/plugins/shopping_associations.gourmet-plugin.in.h:1
+msgid ""
+"Assign and edit shopping categories for ingredients from within the recipe "
+"editor."
+msgstr ""
+"Määritä ja muokkaa ostoslistan ainesosien luokkia suoraan reseptien "
+"muokkausnäkymästä"
+
+#: ../src/lib/plugins/shopping_associations.gourmet-plugin.in.h:2
+msgid "Shopping Category Editor"
+msgstr "Ostoslistojen luokkien muokkausnäkymä"
 
 #: ../src/lib/plugins/shopping_associations/shopping_key_editor_plugin.py:9
-#: ../src/lib/reccard.py:2297
-#, fuzzy
+#: ../src/lib/reccard.py:2285
 msgid "Shopping Category"
-msgstr "Ostosluokka"
+msgstr ""
+"... Ostoslistan luokka ... tai ostoslistan kategoria (miten muualla on "
+"käytetty?)..."
+
+#: ../src/lib/plugins/spellcheck.gourmet-plugin.in.h:1
+msgid ""
+"Adds spell checking to paragraph length text boxes in recipe entry "
+"(Instructions, Notes)."
+msgstr "Lisää oikoluvun reseptien ohjeisiin ja muistiinpanoihin"
+
+#: ../src/lib/plugins/spellcheck.gourmet-plugin.in.h:2
+msgid "Spell Checking"
+msgstr "Oikoluku"
+
+#: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:1
+msgid "Provides a simple unit calculator."
+msgstr "Lisää yksinkertaisen yksikkömuuntimen"
+
+#: ../src/lib/plugins/unit_converter/__init__.py:15
+msgid "_Unit Converter"
+msgstr "Mittayksikkömuunnin"
 
 #: ../src/lib/plugins/unit_converter/__init__.py:16
 msgid "Calculate unit conversions"
-msgstr ""
+msgstr "Laske yksiköiden muunnokset"
+
+#: ../src/lib/plugins/unit_display_prefs.gourmet-plugin.in.h:1
+msgid "Allows you to always use metric (or imperial) units for display."
+msgstr "Sallii yksiköiden näyttämisen aina halutussa mittajärjestelmässä"
+
+#: ../src/lib/plugins/unit_display_prefs.gourmet-plugin.in.h:3
+msgid "Unit Display Preferences"
+msgstr "Yksiköiden näyttöasetukset"
 
 #: ../src/lib/plugins/unit_display_prefs/__init__.py:26
 msgid "Set _unit display preferences"
-msgstr ""
+msgstr "Aseta yksiköiden näyttöasetukset"
 
 #: ../src/lib/plugins/unit_display_prefs/__init__.py:27
 msgid ""
 "Automatically convert units to preferred system (metric, imperial, etc.) "
 "where possible."
 msgstr ""
+"Muunna automaattisesti yksiköt valittuun mittajärjestelmään (metrinen, "
+"imperial tms.) kun mahdollista."
 
 #: ../src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py:8
 msgid "Display units as written for each recipe (no change)"
-msgstr ""
+msgstr "Näytä yksiköt niin kuin ne on reseptiin kirjoitettu (ei muunnoksia)"
 
 #: ../src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py:9
 msgid "Always display U.S. units"
-msgstr ""
+msgstr "Näytä aina U.S. yksiköt"
 
 #: ../src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py:10
 msgid "Always display metric units"
-msgstr ""
+msgstr "Näytä aina metriset yksiköt"
 
 #: ../src/lib/plugins/unit_display_prefs/unit_prefs_dialog.py:18
 msgid "Automatically adjust units"
+msgstr "Säädä automaattisesti yksiköitä"
+
+#: ../src/lib/plugins/utf16.gourmet-plugin.in.h:1
+msgid "Check for Unicode-16 in text files"
+msgstr "Tarkista, onko tekstitiedostoissa Unicode-16-merkkejä"
+
+#: ../src/lib/plugins/utf16.gourmet-plugin.in.h:2
+msgid ""
+"Enable this if your utf-16 text files aren't importing cleanly into Gourmet. "
+"Disable this if you never use UTF16 and you're constantly being annoyed by "
+"the 'Encoding' dialog when you import files."
 msgstr ""
+"Ota tämä käyttöön, jos Gourmet ei saa tuotua utf-16 -tekstitiedostoja "
+"oikein. Ota tämä pois käytöstä, jos UTF-16 ei ole käytössä, etkä halua nähdä "
+"merkkikoodaus-valintaikkunaa joka kerta tiedostoja tuotaessa."
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:24
 #: ../src/lib/recindex.py:37 ../src/lib/recindex.py:47
 #: ../src/lib/recindex.py:481
 msgid "anywhere"
-msgstr ""
+msgstr "missä vain"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:25
 #: ../src/lib/recindex.py:38 ../src/lib/recindex.py:48
-#, fuzzy
 msgid "title"
-msgstr "nimi"
+msgstr "otsikko"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:26
 #: ../src/lib/recindex.py:39 ../src/lib/recindex.py:49
@@ -3776,9 +3716,8 @@ msgstr "ohjeet"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:28
 #: ../src/lib/recindex.py:41 ../src/lib/recindex.py:55
-#, fuzzy
 msgid "notes"
-msgstr "Huomautukset"
+msgstr "huomautukset"
 
 #: ../src/lib/plugins/web_plugin/gourmetweb/recview/views.py:30
 #: ../src/lib/recindex.py:43 ../src/lib/recindex.py:51
@@ -3793,185 +3732,172 @@ msgid "source"
 msgstr "lähde"
 
 #. menus
-#: ../src/lib/reccard.py:213 ../src/lib/reccard.py:872
+#: ../src/lib/reccard.py:211 ../src/lib/reccard.py:863
 msgid "_Recipe"
-msgstr ""
+msgstr "_Resepti"
 
-#: ../src/lib/reccard.py:217
-#, fuzzy
+#: ../src/lib/reccard.py:215
 msgid "Export recipe"
-msgstr "Vie reseptejä"
+msgstr "Vie resepti"
+
+#: ../src/lib/reccard.py:216
+msgid "Export selected recipe (save to file)"
+msgstr "Vie ulos valittu resepti (talleta tiedostoon)"
 
 #: ../src/lib/reccard.py:218
-#, fuzzy
-msgid "Export selected recipe (save to file)"
-msgstr "Tulosta valitut reseptit"
-
-#: ../src/lib/reccard.py:220
-#, fuzzy
 msgid "_Delete recipe"
-msgstr "Poista resepti"
+msgstr "_Poista resepti"
 
-#: ../src/lib/reccard.py:221
-#, fuzzy
+#: ../src/lib/reccard.py:219
 msgid "Delete this recipe"
 msgstr "Poista tämä resepti"
 
-#: ../src/lib/reccard.py:232
-#, fuzzy
+#: ../src/lib/reccard.py:230
 msgid "Adjust units when multiplying"
-msgstr "Anna yksiköiden vaihtua annosmääriä kasvatettaessa"
+msgstr "Muunna yksiköitä, kun suurennat reseptejä"
 
-#: ../src/lib/reccard.py:234
+#: ../src/lib/reccard.py:232
 msgid ""
 "Change units to make them more readable where possible when multiplying."
 msgstr ""
+"Kun suurennat reseptien määriä, muuta yksiköitä luettavampaan muotoon jos "
+"mahdollista."
 
 #. ('Email',None,_('E-_mail recipe'),
 #. None,None,self.email_cb),
-#: ../src/lib/reccard.py:242
+#: ../src/lib/reccard.py:240
 msgid "Print recipe"
 msgstr "Tulosta resepti"
 
-#: ../src/lib/reccard.py:245
-#, fuzzy
+#: ../src/lib/reccard.py:243
 msgid "Forget remembered optional ingredients"
-msgstr "Poista muistista valinnaiset ainekset"
+msgstr "Poista muistista vapaaehtoiset ainekset"
 
-#: ../src/lib/reccard.py:246
+#: ../src/lib/reccard.py:244
 msgid ""
 "Before adding to shopping list, ask about all optional ingredients, even "
 "ones you previously wanted remembered"
 msgstr ""
+"Ennen ostoslistalle lisäämistä, kysy kaikista vapaaehtoisista aineiksista, "
+"myös niistä, jotka halusit mukaa aikaisemmin"
 
-#: ../src/lib/reccard.py:248
-#, fuzzy
+#: ../src/lib/reccard.py:246
 msgid "Export Recipe"
 msgstr "Vie resepti"
 
-#: ../src/lib/reccard.py:617
+#: ../src/lib/reccard.py:608
 msgid "You have unsaved changes."
 msgstr "Muutoksia on tallentamatta."
 
-#: ../src/lib/reccard.py:618
+#: ../src/lib/reccard.py:609
 msgid "Apply changes before printing?"
 msgstr "Toteuta muutokset ennen tulostamista?"
 
-#: ../src/lib/reccard.py:709 ../src/lib/recipeIdentifier.py:93
+#: ../src/lib/reccard.py:700 ../src/lib/recipeIdentifier.py:93
 msgid "(Optional)"
 msgstr "(Valinnainen)"
 
-#: ../src/lib/reccard.py:764
+#: ../src/lib/reccard.py:755
 #, python-format
 msgid "Unable to find recipe %s in database."
-msgstr ""
+msgstr "Reseptiä %s ei löytynyt tietokannasta."
 
-#: ../src/lib/reccard.py:856
+#: ../src/lib/reccard.py:847
 msgid "Edit Recipe:"
-msgstr ""
+msgstr "Muokkaa reseptiä:"
 
-#: ../src/lib/reccard.py:877
-#, fuzzy
+#: ../src/lib/reccard.py:868
 msgid "Save edits to database"
-msgstr "Tallenna muutoksesi %s:aan"
+msgstr "Talleta muutokset tietokantaan"
 
 #. show_pref_dialog
-#: ../src/lib/reccard.py:886
+#: ../src/lib/reccard.py:877
 msgid "View Recipe Card"
-msgstr ""
+msgstr "Katso reseptikorttia"
 
-#: ../src/lib/reccard.py:948
-#, fuzzy
+#: ../src/lib/reccard.py:939
 msgid "Edit"
 msgstr "Muokkaa"
 
-#: ../src/lib/reccard.py:1052 ../src/lib/reccard.py:1053
-#, fuzzy, python-format
+#: ../src/lib/reccard.py:1046 ../src/lib/reccard.py:1047
+#, python-format
 msgid "Save changes to %s"
-msgstr "Tallenna muutokset"
+msgstr "Talleta muutokset kohteeseen %s"
 
-#: ../src/lib/reccard.py:1142
-#, fuzzy
+#: ../src/lib/reccard.py:1137
 msgid "Add ingredient"
 msgstr "Lisää aines"
 
-#: ../src/lib/reccard.py:1144
-#, fuzzy
+#: ../src/lib/reccard.py:1139
 msgid "Add group"
 msgstr "Lisää ryhmä"
 
-#: ../src/lib/reccard.py:1146
-#, fuzzy
+#: ../src/lib/reccard.py:1141
 msgid "Paste ingredients"
-msgstr "Näytä ainesosat"
+msgstr "Liitä aines"
 
-#: ../src/lib/reccard.py:1148
-#, fuzzy
+#: ../src/lib/reccard.py:1143
 msgid "Import from file"
-msgstr "Tuo tiedosto"
+msgstr "Tuo tiedostosta"
+
+#: ../src/lib/reccard.py:1145
+msgid "Add _recipe"
+msgstr "Lisää _resepti"
+
+#: ../src/lib/reccard.py:1146
+msgid "Add another recipe as an ingredient in this recipe"
+msgstr "Lisää toinen resepti tämän reseptin ainekseksi"
 
 #: ../src/lib/reccard.py:1150
-#, fuzzy
-msgid "Add _recipe"
-msgstr "resepti"
-
-#: ../src/lib/reccard.py:1151
-#, fuzzy
-msgid "Add another recipe as an ingredient in this recipe"
-msgstr "Lisää toinen resepti \"ainesosaksi\" nykyiseen reseptiin."
-
-#: ../src/lib/reccard.py:1155
-#, fuzzy
 msgid "Delete"
 msgstr "Poista"
 
-#: ../src/lib/reccard.py:1161
+#: ../src/lib/reccard.py:1156
 msgid "Up"
-msgstr ""
+msgstr "Ylös"
 
-#: ../src/lib/reccard.py:1163
-#, fuzzy
+#: ../src/lib/reccard.py:1158
 msgid "Down"
-msgstr "Valmis!"
+msgstr "Alas"
 
 #. FIXME
-#: ../src/lib/reccard.py:1209
+#: ../src/lib/reccard.py:1204
 msgid "Choose a file containing your ingredient list."
 msgstr "Valitse  ainesosaluettelon sisältävä tiedosto."
 
-#: ../src/lib/reccard.py:1401
-#, fuzzy, python-format
+#: ../src/lib/reccard.py:1389
+#, python-format
 msgid "Couldn't make sense of %s as number of yields"
-msgstr "%s on virheellinen annosmäärä"
+msgstr "En saanut selvää %s määristä annoksina"
 
-#: ../src/lib/reccard.py:2149 ../src/lib/reccard.py:2177
+#: ../src/lib/reccard.py:2137 ../src/lib/reccard.py:2165
 msgid "Amt"
 msgstr "Määrä"
 
-#: ../src/lib/reccard.py:2153 ../src/lib/reccard.py:2180
+#: ../src/lib/reccard.py:2141 ../src/lib/reccard.py:2168
 msgid "Optional"
 msgstr "Valinnainen"
 
-#: ../src/lib/reccard.py:2314
+#: ../src/lib/reccard.py:2302
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
 msgstr "Reseptiä %s (ID %s) ei löydy tietokannasta."
 
-#: ../src/lib/reccard.py:2635
+#: ../src/lib/reccard.py:2623
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
 msgstr "Muunnettu: %(amt)s %(unit)s"
 
-#: ../src/lib/reccard.py:2637
+#: ../src/lib/reccard.py:2625
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
 msgstr "Ei muunnettu: %(amt)s %(unit)s"
 
-#: ../src/lib/reccard.py:2641
+#: ../src/lib/reccard.py:2629
 msgid "Changed unit."
 msgstr "Yksikkö vaihdettu."
 
-#: ../src/lib/reccard.py:2642
+#: ../src/lib/reccard.py:2630
 #, python-format
 msgid ""
 "You have changed the unit for %(item)s from %(old)s to %(new)s. Would you "
@@ -3979,149 +3905,147 @@ msgid ""
 msgstr ""
 "Vaihdoit %(item)s:n yksikön %(old)s:sta %(new)s:ksi. Haluatko muuntaa määrän?"
 
-#: ../src/lib/reccard.py:2653
+#: ../src/lib/reccard.py:2641
 #, python-format
 msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
 msgstr "%(old_amt)s %(old_unit)s muunnettu %(new_amt)s:ksi %(new_unit)s:ksi"
 
-#: ../src/lib/reccard.py:2665
+#: ../src/lib/reccard.py:2653
 #, python-format
 msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
 msgstr "Muunnos epäonnistui: %(old_unit)s -> %(new_unit)s"
 
-#: ../src/lib/reccard.py:2720
+#: ../src/lib/reccard.py:2708
 msgid "Adding Ingredient Group"
 msgstr "Ainesosaryhmän lisääminen"
 
-#: ../src/lib/reccard.py:2721
+#: ../src/lib/reccard.py:2709
 msgid "Enter a name for new subgroup of ingredients"
 msgstr "Anna uuden ainesosaryhmän nimi"
 
-#: ../src/lib/reccard.py:2722
+#: ../src/lib/reccard.py:2710
 msgid "Name of group:"
-msgstr ""
+msgstr "Ryhmän nimi:"
 
-#: ../src/lib/reccard.py:2987
-#, fuzzy
+#: ../src/lib/reccard.py:2976
 msgid "Choose recipe"
-msgstr "Näytä reseptit"
+msgstr "Valitse resepti"
 
-#: ../src/lib/reccard.py:3024
+#: ../src/lib/reccard.py:3013
 msgid "Recipe cannot call itself as an ingredient!"
 msgstr "Resepti ei voi sisältää itseään ainesosana!"
 
-#: ../src/lib/reccard.py:3025 ../src/lib/shopping.py:329
+#: ../src/lib/reccard.py:3014 ../src/lib/shopping.py:329
 msgid "Infinite recursion is not allowed in recipes!"
 msgstr "Resepteissä ei sallita päättymätöntä rekursiota!"
 
-#: ../src/lib/reccard.py:3046
+#: ../src/lib/reccard.py:3035
 msgid "You haven't selected any recipes!"
 msgstr "Reseptejä ei ole valittuna!"
 
-#: ../src/lib/reccard.py:3058
+#: ../src/lib/reccard.py:3047
 #, python-format
 msgid "How much of %(title)s does your recipe call for?"
-msgstr ""
+msgstr "Kuinka monta ainesta %(title)s reseptisi tarvitsee?"
 
 #: ../src/lib/recindex.py:152
-#, fuzzy
 msgid "Use regular expressions in search"
-msgstr "Käytä haussa säännöllisiä lausekkeita"
+msgstr "Käytä säännöllisiä lausekkeita haussa"
 
 #: ../src/lib/recindex.py:153
-#, fuzzy
 msgid "Use regular expressions (an advanced search language) in text search"
-msgstr "Käytä säännöllisiä lausekkeita (edistynyt hakutapa)"
+msgstr ""
+"Käytä säännöllisiä lausekkeita (edistynyt merkintätapa, hakukieli) "
+"tekstihakujen kanssa"
 
 #: ../src/lib/recindex.py:156
 msgid "Search as you type (turn off if search is too slow)."
-msgstr ""
+msgstr "Hae kirjoittaessasi (poista päältä, jos haku on liian hidas)."
 
 #: ../src/lib/recindex.py:161
 msgid "Show Search _Options"
-msgstr ""
+msgstr "Näytä _hakuasetukset"
 
 #: ../src/lib/recindex.py:163
 msgid "Show advanced searching options"
-msgstr ""
+msgstr "Näytä edistyneet hakuasetukset"
 
 #: ../src/lib/recindex.py:252
 #, python-format
 msgid "%s recipe"
 msgid_plural "%s recipes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s resepti"
+msgstr[1] "%s reseptit"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
 #: ../src/lib/recindex.py:260
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
-msgstr ""
+msgstr "Näytetään reseptiä %(bottom)s - %(top)s / %(total)s"
 
 #: ../src/lib/recindex.py:482
-#, fuzzy, python-format
+#, python-format
 msgid "%s in %s"
-msgstr " %s sisältää %s"
+msgstr "%s yhteensä %s:tä"
 
 #: ../src/lib/shopgui.py:122 ../src/lib/shopgui.py:129
-#, fuzzy
 msgid "Change _Category"
-msgstr "Syötä luokka"
+msgstr "Muuta _Kategoriaa"
 
 #: ../src/lib/shopgui.py:123
-#, fuzzy
 msgid "Create new category"
-msgstr "Luo uusi resepti"
+msgstr "Tee uusi kategoria"
 
 #: ../src/lib/shopgui.py:131
-#, fuzzy
 msgid "Change the category of the currently selected item"
-msgstr "Vaihda valittujen tarvikkeiden avaimeksi: "
+msgstr "Muuta valityn kohteen kategoriaa"
 
 #: ../src/lib/shopgui.py:137
-#, fuzzy
 msgid "Pantry"
-msgstr "Lisää ruokakaappiin"
+msgstr "Ruokakomero"
 
 #. name
 #. stock
 #: ../src/lib/shopgui.py:140
-#, fuzzy
 msgid "Move to _Shopping List"
 msgstr "Siirrä ostoslistalle."
 
 #. text
 #: ../src/lib/shopgui.py:141
 msgid "<Ctrl>B"
-msgstr ""
+msgstr "<Ctrl>B"
 
 #. name
 #. stock
 #: ../src/lib/shopgui.py:150
-#, fuzzy
 msgid "Move to _pantry"
-msgstr "Lisää ruokakaappiin"
+msgstr "Siirrä _ruokakomeroon"
 
 #. text
 #: ../src/lib/shopgui.py:151
 msgid "<Ctrl>D"
-msgstr ""
+msgstr "<Ctrl>D"
 
 #. key-command
 #: ../src/lib/shopgui.py:152
-#, fuzzy
 msgid "Remove from shopping list"
-msgstr "Poista ostoslistalta"
+msgstr "Poista ostoslistasta"
 
 #: ../src/lib/shopgui.py:173
-#, fuzzy, python-format
+#, python-format
 msgid "Move selected items into %s"
-msgstr "Siirrä valittuja aineksia ylöspäin"
+msgstr "Siirrä valittu kohde %s:ään"
+
+#: ../src/lib/shopgui.py:210
+msgid "_Shopping List"
+msgstr "Ostoslista"
 
 #: ../src/lib/shopgui.py:211
 msgid "Already Have (_Pantry Items)"
 msgstr ""
+"Ruokakaapissa olevat ainekset (? tarvitseeko olla sama muoto kuin "
+"englanniksi ?)"
 
 #: ../src/lib/shopgui.py:472
 msgid "Enter Category"
@@ -4134,7 +4058,7 @@ msgstr "Luokka, johon %s lisätään"
 
 #: ../src/lib/shopgui.py:474
 msgid "Category:"
-msgstr ""
+msgstr "Kategoria (vai Luokka??):"
 
 #: ../src/lib/shopgui.py:587
 msgid "_Recipes"
@@ -4142,25 +4066,23 @@ msgstr "Reseptit"
 
 #: ../src/lib/shopgui.py:610
 msgid "_Add items:"
-msgstr ""
+msgstr "_Lisää kohteet:"
 
 #: ../src/lib/shopgui.py:648
 msgid "Remove Recipes"
-msgstr ""
+msgstr "Poista reseptit"
 
 #: ../src/lib/shopgui.py:649
 msgid "Remove recipes from shopping list"
-msgstr ""
+msgstr "Poista reseptit ostoslistalta"
 
 #: ../src/lib/shopgui.py:683
-#, fuzzy
 msgid "Add items"
-msgstr "tarvikkeen"
+msgstr "Lisää kohteet"
 
 #: ../src/lib/shopgui.py:685
-#, fuzzy
 msgid "Add arbitrary items to shopping list"
-msgstr "Lisää ylimääräisiä tarvikkeita ostoslistallesi."
+msgstr "Lisää mielivaltaiset kohteet ostoslistaan"
 
 #: ../src/lib/shopgui.py:751
 msgid "x"
@@ -4175,9 +4097,8 @@ msgid "Save Shopping List As..."
 msgstr "Tallenna ostoslista nimellä..."
 
 #: ../src/lib/shopgui.py:899
-#, fuzzy
 msgid "Select optional ingredients"
-msgstr "Valitse valinnaiset ainesosat."
+msgstr "Valitse valinnaiset ainekset"
 
 #: ../src/lib/shopgui.py:900
 msgid ""
@@ -4242,62 +4163,58 @@ msgid " x%s"
 msgstr " x%s"
 
 #: ../src/lib/threadManager.py:225
-#, fuzzy
 msgid "Paused"
-msgstr "Tauko"
+msgstr "Pysäytetty"
 
 #: ../src/lib/threadManager.py:239
-#, fuzzy
 msgid "Gourmet Import/Export"
-msgstr "Gourmet XML -vienti"
+msgstr "Gourmet Tuonti/Vienti"
 
 #: ../src/lib/threadManager.py:258
-#, fuzzy
 msgid "Pause"
-msgstr "Tauko"
+msgstr "Pysäytä"
 
 #: ../src/lib/threadManager.py:300
-#, fuzzy
 msgid "Done"
-msgstr "Valmis!"
+msgstr "Valmis"
 
 #: ../src/lib/threadManager.py:314
 #, python-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Virhe: %s"
 
 #: ../src/lib/threadManager.py:324
 msgid "cancelled"
-msgstr ""
+msgstr "peruttu"
 
 #: ../src/lib/threadManager.py:357
 msgid "Error"
-msgstr ""
+msgstr "Virhe"
 
 #: ../src/lib/threadManager.py:358
 #, python-format
 msgid "Error %s: %s"
-msgstr ""
+msgstr "Virhe %s: %s"
 
 #: ../src/lib/threadManager.py:359
 msgid "Traceback"
-msgstr ""
+msgstr "Jäljitä"
 
 #: ../src/lib/timer.py:99 ../src/lib/timer.py:121
 msgid "Ringing Sound"
-msgstr ""
+msgstr "Hälytysääni (? riippuen siitä mikä käyttöyhteys ?)"
 
 #: ../src/lib/timer.py:100
 msgid "Warning Sound"
-msgstr ""
+msgstr "Varoitusääni"
 
 #: ../src/lib/timer.py:101
 msgid "Error Sound"
-msgstr ""
+msgstr "Virheääni"
 
 #: ../src/lib/timer.py:192
 msgid "Stop timer?"
-msgstr ""
+msgstr "Pysäytä ajastin?"
 
 #: ../src/lib/timer.py:193
 msgid ""
@@ -4305,24 +4222,28 @@ msgid ""
 "timer, or you can just close the window. If you close the window, it will "
 "reappear when your timer goes off."
 msgstr ""
+"Olet pyytänyt sulkemaan ikkunan, jossa on aktiivinen ajastin. Voit pysäyttää "
+"ajastimen tai voit vain sulkea ikkunan. Jos suljet ikkunan, se tulee "
+"talaksin, kun ajastin hälyyttää."
 
 #: ../src/lib/timer.py:194
 msgid "Stop _timer"
-msgstr ""
+msgstr "Pysäytä  _ajastin"
 
 #: ../src/lib/timer.py:194
 msgid "_Keep timing"
-msgstr ""
+msgstr "Jatka _ajastusta"
 
-#: ../src/lib/version.py:4
-#, fuzzy
+#: ../src/lib/version.py:5
 msgid ""
 "Copyright (c) 2004,2005,2006,2007,2008,2009,2010,2011 Thomas M. Hinkle. GNU "
 "GPL v2"
-msgstr "Copyright (c) 2004, Thomas M. Hinkle. GNU GPL"
+msgstr ""
+"Copyright (c) 2004,2005,2006,2007,2008,2009,2010,2011 Thomas M. Hinkle. GNU "
+"GPL v2"
 
 #. repeated in setup.cfg
-#: ../src/lib/version.py:7
+#: ../src/lib/version.py:8
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes. Gourmet also makes it easy to create shopping lists from recipes. "
@@ -4333,595 +4254,53 @@ msgid ""
 "recipes. Gourmet can also calculate nutritional information for recipes "
 "based on the ingredients."
 msgstr ""
+"Gourmet Recipe Manager on ohjelma, joka säilöö, järjestää ja etsii "
+"reseptejä. Gourmet tekee myös puolestasi ostoslistat reseptien pohjalta. "
+"Voit tuoda ja viedä (import/export) reseptejä ohjelmaan ja ohjelmasta "
+"monessa muodossa. Gourmet osaa mm. tuoda reseptejä monilta suosituilta "
+"reseptisivustoista kuten MealMaster ja MasterCook -arkistoista sekä "
+"Epicurious.comista. Gourmesta voit viedä (export) reseptejä mm. tekstinä, "
+"MealMaster-tiedostoina, HTML-verkkosivuina sekä XML:nä, mikä mahdollistaa "
+"tietojen vaihdon esimerkiksi muiden Gourmet-käyttäjien kanssa. Ohjelma tukee "
+"myös kuvien linkittämistä resepteihin ja se osaa laskea reseptien "
+"ravintotiedot sen ainesosien perusteella."
 
-#: ../src/lib/version.py:9
+#: ../src/lib/version.py:10
 msgid "Roland Duhaime (Windows porting assistance)"
 msgstr "Roland Duhaime (apu Windows-käännöksessä)"
 
-#: ../src/lib/version.py:10
-msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
-msgstr ""
-
 #: ../src/lib/version.py:11
+msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
+msgstr "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
+
+#: ../src/lib/version.py:12
 msgid "Richard Ferguson (improvements to Unit Converter interface)"
 msgstr "Richard Ferguson (parannuksia yksikkömuuntimen käyttöliittymään)"
 
-#: ../src/lib/version.py:12
+#: ../src/lib/version.py:13
 msgid "R.S. Born (improvements to Mealmaster export)"
 msgstr "R.S. Born (parannuksia Mealmaster-vientiin)"
 
-#: ../src/lib/version.py:13
-msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
-msgstr ""
-
 #: ../src/lib/version.py:14
-msgid "Yula Zubritsky (nutrition and add-to-shopping list icons)"
-msgstr ""
+msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
+msgstr "ixat <ixat.deviantart.com> (logo ja splash screen)"
 
 #: ../src/lib/version.py:15
+msgid "Yula Zubritsky (nutrition and add-to-shopping list icons)"
+msgstr "Yula Zubritsky (ravitsemus- ja lisää ostoslistalle -ikonit)"
+
+#: ../src/lib/version.py:16
 msgid ""
 "Simon Darlington <simon.darlington@gmx.net> (improvements to "
 "internationalization, assorted bugfixes)"
 msgstr ""
+"Simon Darlington <simon.darlington@gmx.net> (parannukset ohjelman "
+"kansainvälistämiseen sekä sekalaiset ohjelmavirheiden korjaukset (bugfixes))"
 
-#: ../src/lib/version.py:16
+#: ../src/lib/version.py:17
 msgid ""
 "Bernhard Reiter <ockham@raz.or.at> (Windows version maintenance and website "
 "re-design)"
 msgstr ""
-
-#~ msgid "<b>Email Preferences</b>"
-#~ msgstr "<b>Sähköpostiasetukset</b>"
-
-#, fuzzy
-#~ msgid "<i>Preferences for use when sending a recipe in an email.</i>"
-#~ msgstr "<i>Reseptin sähköpostilähetysasetukset.</i>"
-
-#~ msgid "Email Preferences"
-#~ msgstr "Sähköpostiasetukset"
-
-#, fuzzy
-#~ msgid "Include Recipe as an _HTML Attachment to the E-mail"
-#~ msgstr "Lisää resepti sähköpostiviestiin HTML-liitteenä"
-
-#, fuzzy
-#~ msgid "Include Recipe in _Body of E-mail (A good idea no matter what)"
-#~ msgstr "Lisää resepti sähköpostin runkoon (Hyvä idea!)"
-
-#, fuzzy
-#~ msgid "_Always use these settings"
-#~ msgstr "Käytä aina näitä asetuksia"
-
-#~ msgid "Print"
-#~ msgstr "Tulosta"
-
-#~ msgid "_Current"
-#~ msgstr "Nykyinen"
-
-#~ msgid "_Range"
-#~ msgstr "Väli"
-
-#~ msgid "Enter print command"
-#~ msgstr "Anna tulostuskomento"
-
-#~ msgid "Unable to find command \"%s\"."
-#~ msgstr "Komentoa %s ei löydy."
-
-#~ msgid "Please enter the command you would like to use to print."
-#~ msgstr "Anna komento, jota haluat käyttää tulostuksessa."
-
-#~ msgid "Printing via %s"
-#~ msgstr "Tulostetaan %s:n avulla"
-
-#~ msgid ""
-#~ "If you install python-gnome, you will be able to print with a much more "
-#~ "attractive interface."
-#~ msgstr ""
-#~ "Jos asennat python-gnome:n, voit tulostaa miellyttävämmän käyttöliittymän "
-#~ "avulla."
-
-#~ msgid ""
-#~ "\n"
-#~ "Website: %s"
-#~ msgstr ""
-#~ "\n"
-#~ "Kotisivut: %s"
-
-#, fuzzy
-#~ msgid "Translated by"
-#~ msgstr ""
-#~ "\n"
-#~ "Kääntäjä(t): %s"
-
-#~ msgid "Print Recipe %s"
-#~ msgstr "Tulosta resepti %s"
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-
-#, fuzzy
-#~ msgid "<b>_Instructions:</b>"
-#~ msgstr "<b>Ohjeet:</b>"
-
-#~ msgid ""
-#~ "Add _Recipe\n"
-#~ "as Ingredient"
-#~ msgstr ""
-#~ "Lisää resepti\n"
-#~ "ainesosaksi"
-
-#~ msgid "Add _recipe as ingredient"
-#~ msgstr "Lisää resepti ainesosaksi"
-
-#~ msgid "Add another recipe as an ingredient."
-#~ msgstr "Lisää toinen resepti ainesosaksi."
-
-#~ msgid "Add group for ingredients (such as \"Sauce\" or \"Crust\")"
-#~ msgstr "Lisää ryhmä ainesosille (esim. \"kastike\" tai \"kuorrutus\")"
-
-#, fuzzy
-#~ msgid ""
-#~ "Ask user which items to add to the shopping list rather than using saved "
-#~ "settings."
-#~ msgstr ""
-#~ "Kysy käyttäjältä mitkä kohteet lisätään ostoslistalle tallennettujen "
-#~ "asetusten sijaan."
-
-#~ msgid "Delete selected ingredient"
-#~ msgstr "Poista valittu ainesosa"
-
-#~ msgid "Delete this recipe permanently."
-#~ msgstr "Poista tämä resepti pysyvästi."
-
-#~ msgid "Import ingredients from a plain text file."
-#~ msgstr "Tuo ainekset tekstitiedostosta."
-
-#~ msgid "Ingredient (_key):"
-#~ msgstr "Aines (avain):"
-
-#~ msgid "Ingredient Key _Editor"
-#~ msgstr "Ainesavainten muokkain"
-
-#~ msgid "Move ingredient _up"
-#~ msgstr "Siirrä ainesta ylöspäin"
-
-#~ msgid "Move ingredient do_wn"
-#~ msgstr "Siirrä ainesta alaspäin"
-
-#~ msgid "Move selected ingredients down"
-#~ msgstr "Siirrä valittuja aineksia alaspäin"
-
-#~ msgid "Paste ingredient list from the clipboard."
-#~ msgstr "Liitä aineslista leikepöydältä."
-
-#~ msgid "Recipe Card"
-#~ msgstr "Reseptikortti"
-
-#~ msgid "Standardized name for ingredient (to be used in shopping lists)."
-#~ msgstr "Aineksen vakionimi (ostoslistoja varten)."
-
-#~ msgid ""
-#~ "When multiplying recipe, automatically change units to keep amounts as "
-#~ "useable as possible."
-#~ msgstr ""
-#~ "Vaihda yksiköitä automaattisesti suurempia annosmääriä tehtäessä "
-#~ "lukumäärien käyttökelpoisuuden vuoksi."
-
-#~ msgid "_Bold"
-#~ msgstr "Lihavoitu"
-
-#~ msgid "_Close"
-#~ msgstr "Sulje"
-
-#~ msgid "_Delete ingredient"
-#~ msgstr "Poista aines"
-
-#~ msgid "_E-mail recipe"
-#~ msgstr "Lähetä resepti sähköpostitse"
-
-#~ msgid "_Import Ingredients"
-#~ msgstr "Tuo ainekset"
-
-#~ msgid "_Import ingredient list"
-#~ msgstr "Tuo aineslista"
-
-#~ msgid "_Ingredient:"
-#~ msgstr "Aines:"
-
-#~ msgid "_Italic"
-#~ msgstr "Kursivoitu"
-
-#~ msgid "_Save"
-#~ msgstr "Tallenna"
-
-#, fuzzy
-#~ msgid "_Underline"
-#~ msgstr "Alleviivattu"
-
-#~ msgid "_Undelete"
-#~ msgstr "Kumoa poisto"
-
-#~ msgid "Select Recipe to include in Ingredient List"
-#~ msgstr "Valitse aineslistaan sisällytettävä resepti"
-
-#~ msgid "Add Items to Shopping List"
-#~ msgstr "Lisää tarvikkeet ostoslistalle"
-
-#, fuzzy
-#~ msgid "Move selected items from pantry list to shopping list"
-#~ msgstr "Siirrä valitut tarvikkeet ruokakomeron listalta ostoslistalle."
-
-#, fuzzy
-#~ msgid "Move selected items from shopping list to pantry list."
-#~ msgstr "Siirrä valitut tarvikkeet ostoslistalta ruokakomeron listalle."
-
-#, fuzzy
-#~ msgid ""
-#~ "Move selected items from shopping list to pantry list. (You can also move "
-#~ "items by dragging them.)"
-#~ msgstr ""
-#~ "Siirrä valitut tarvikkeet ostoslistalta ruokakomeron listalle. (Voit "
-#~ "siirtää tarvikkeita myös 'raahaamalla'.)"
-
-#, fuzzy
-#~ msgid ""
-#~ "Move selected items from your pantry list back to your shopping list (you "
-#~ "can also move items by dragging them.)"
-#~ msgstr ""
-#~ "Siirrä valitut tarvikkeet ruokakomeron listalta takaisin ostoslistallesi. "
-#~ "(Voit siirtää tarvikkeita myös 'raahaamalla'.)"
-
-#, fuzzy
-#~ msgid "Re_turn to Shopping List"
-#~ msgstr "Palauta ostoslistaan"
-
-#~ msgid ""
-#~ "Remove this item from the shopping list. It will show up in the \"pantry"
-#~ "\" list as a reminder that you need it, but it won't be included when you "
-#~ "save or print your shopping list."
-#~ msgstr ""
-#~ "Poista tarvike ostoslistalta. Tarvike näytetään ruokakaapin listalla "
-#~ "muistutuksena siitä, että tarvitset sitä, mutta sitä ei sisällytetä "
-#~ "tallennettuun tai tulostettuun ostoslistaan."
-
-#~ msgid "Return Item to Shopping List"
-#~ msgstr "Palauta tarvike ostoslistalle"
-
-#~ msgid "Return selected items to your shopping list"
-#~ msgstr "Palauta valitut tarvikkeet ostoslistallesi"
-
-#, fuzzy
-#~ msgid "_Add Items to Shopping List"
-#~ msgstr "Lisää tarvikkeet ostoslistalle"
-
-#, fuzzy
-#~ msgid "_Add New Items to Shopping List"
-#~ msgstr "Lisää uusia tarvikkeita ostoslistalle"
-
-#, fuzzy
-#~ msgid "_Remove from shopping list (move to pantry)"
-#~ msgstr "Poista ostoslistalta (siirrä ruokakaapin listalle)"
-
-#~ msgid "Loading window preferences..."
-#~ msgstr "Ladataan ikkunan ominaisuuksia..."
-
-#~ msgid "Loading graphical interface..."
-#~ msgstr "Ladataan käyttöliittymää..."
-
-#, fuzzy
-#~ msgid "Setting up recipe index..."
-#~ msgstr "Luodaan reseptihakemistoa..."
-
-#~ msgid "An import, export or deletion is running"
-#~ msgstr "Tuonti, vienti tai poisto on käynnissä"
-
-#, fuzzy
-#~ msgid "Please wait until it is finished to delete recipes."
-#~ msgstr "Odota kunnes se on valmis, ennenkuin aloitat reseptien poiston."
-
-#~ msgid "Deletion paused"
-#~ msgstr "Poisto pysäytetty"
-
-#~ msgid "Stop deletion"
-#~ msgstr "Peruuta poisto"
-
-#~ msgid "The recipes will be deleted once the other process is finished."
-#~ msgstr "Reseptit poistetaan, kun toiminto on valmis."
-
-#~ msgid "Please wait until it is finished to start your export."
-#~ msgstr "Odota kunnes se on lopettanut, ennenkuin aloitat viennin."
-
-#~ msgid "Export Paused"
-#~ msgstr "Vienti pysäytetty"
-
-#~ msgid "Stop export"
-#~ msgstr "Peruuta vienti"
-
-#~ msgid "Your export will start once the other process is finished."
-#~ msgstr "Vientisi alkaa, kun toinen toiminto on valmis."
-
-#~ msgid "Please wait until it is finished to start your import."
-#~ msgstr "Odota kunnes se on valmis, ennenkuin aloitat tuonnin."
-
-#~ msgid "Default source for recipes imported from %s"
-#~ msgstr "%s:sta tuotujen reseptien vakiolähde"
-
-#~ msgid "Importing Recipes"
-#~ msgstr "Reseptejä tuodaan"
-
-#~ msgid "Your import will start once the other process is finished."
-#~ msgstr "Tuonti alkaa, kun toinen toiminto on valmis."
-
-#~ msgid "Add new ingredient to the list."
-#~ msgstr "Lisää uusi ainesosa listaan."
-
-#~ msgid "Create new subgroup of ingredients."
-#~ msgstr "Lisää uusi ainesosaryhmä."
-
-#~ msgid "Import list of ingredients from text file."
-#~ msgstr "Tuo ainesosalista tekstitiedostosta."
-
-#~ msgid "Paste list of ingredients from clipboard."
-#~ msgstr "Liitä ainesosalista leikepöydältä."
-
-#~ msgid "Move selected ingredient up."
-#~ msgstr "Siirrä valittua ainesosaa ylöspäin."
-
-#~ msgid "Move selected ingredient down."
-#~ msgstr "Siirrä valittua ainesosaa alaspäin."
-
-#~ msgid "Abandon your edits to %s?"
-#~ msgstr "Hylkää %s:aan tekemäsi muutokset?"
-
-#~ msgid "Are you sure you want to abandon your changes?"
-#~ msgstr "Haluatko varmasti hylätä tekemäsi muutokset?"
-
-#~ msgid "Unable to save %s"
-#~ msgstr "Tallennus epäonnistui: %s"
-
-#~ msgid "There was an error during export."
-#~ msgstr "Vienti epäonnistui."
-
-#~ msgid "There are no unsaved changes."
-#~ msgstr "Muutoksia ei ole tallentamatta."
-
-#~ msgid "Save edits to %s before closing?"
-#~ msgstr "Tallenna muutokset ennen sulkemista (%s)?"
-
-#~ msgid "Apply changes before e-mailing?"
-#~ msgstr "Toteuta muutokset ennen sähköpostin lähettämistä?"
-
-#~ msgid "New Category"
-#~ msgstr "Uusi luokka"
-
-#~ msgid "Assuming you wanted item equal to key %s"
-#~ msgstr "Oletetaan, että halusit saman tarvikkeen kuin avaimessa %s"
-
-#~ msgid ""
-#~ "You forgot an item. Assuming you meant \"%s\" as an item and not a unit."
-#~ msgstr ""
-#~ "Unohdit tarvikkeen. Oletetaan, että tarkoitit %s:n tarkoittavan "
-#~ "tarviketta yksikön sijaan."
-
-#~ msgid "An ingredient must have an item!"
-#~ msgstr "Ainesosan täytyy sisältää tarvike!"
-
-#~ msgid "Enter Password"
-#~ msgstr "Syötä salasana"
-
-#~ msgid ""
-#~ "Please enter your password for user %s of the MySQL database at host %s"
-#~ msgstr "Syötä käyttäjän %s salasana palvelimen %s MySQL-tietokannassa"
-
-#~ msgid "<i>Importing %s</i>"
-#~ msgstr "<i>Tuodaan: %s</i>"
-
-#~ msgid "Imported %(number)s recipes from %(file)s (%(total)s total)"
-#~ msgstr ""
-#~ "Tuotiin %(number)s reseptiä tiedostosta %(file)s (yhteensä: %(total)s)"
-
-#~ msgid "Beginning import"
-#~ msgstr "Aloitetaan tuonti"
-
-#~ msgid "RTF"
-#~ msgstr "RTF"
-
-#~ msgid "Exporting recipes to Plain Text file %(file)s."
-#~ msgstr "Viedään reseptejä tekstitiedostoon %(file)s."
-
-#, fuzzy
-#~ msgid "RTF Export"
-#~ msgstr "Tekstivienti"
-
-#, fuzzy
-#~ msgid "Recipe saved as Rich Text file %(file)s"
-#~ msgstr "Resepti tallennettu tekstitiedostoon %(file)s"
-
-#~ msgid "Limiting Search to: "
-#~ msgstr "Haku rajoitettu: "
-
-#, fuzzy
-#~ msgid "<b>Title</b>"
-#~ msgstr "<b>Nimi</b>"
-
-#~ msgid "Add this recipe to a shopping list"
-#~ msgstr "Lisää tämä resepti ostoslistalle"
-
-#~ msgid "Create new ingredient"
-#~ msgstr "Luo uusi ainesosa"
-
-#, fuzzy
-#~ msgid "Image: "
-#~ msgstr "Kuva: "
-
-#, fuzzy
-#~ msgid "Ins_tructions"
-#~ msgstr "Ohjeet"
-
-#~ msgid "Pre_paration Time: "
-#~ msgstr "Valmistusaika: "
-
-#~ msgid "S_hopping Category: "
-#~ msgstr "Ostosryhmä: "
-
-#~ msgid "_Delete Ingredient"
-#~ msgstr "Poista aines"
-
-#, fuzzy
-#~ msgid "_Descriptions"
-#~ msgstr "Kuvaukset"
-
-#~ msgid "_Ingredients"
-#~ msgstr "Ainekset"
-
-#~ msgid "_New Ingredient"
-#~ msgstr "Uusi aines"
-
-#, fuzzy
-#~ msgid "_Notes"
-#~ msgstr "Huomautukset"
-
-#~ msgid "_Servings: "
-#~ msgstr "Annoksia: "
-
-#, fuzzy
-#~ msgid "_Title: "
-#~ msgstr "Nimi: "
-
-#~ msgid "_Unit: "
-#~ msgstr "Yksikkö: "
-
-#~ msgid "Advanced"
-#~ msgstr "Tarkennettu"
-
-#~ msgid "Limit search by this term"
-#~ msgstr "Rajoita haku koskemaan tätä sanaa"
-
-#~ msgid ""
-#~ "Key\n"
-#~ "Item"
-#~ msgstr ""
-#~ "Avain\n"
-#~ "Tarvike"
-
-#~ msgid "Deleted "
-#~ msgstr "Poistettu "
-
-#~ msgid "Multiply %s by: "
-#~ msgstr "%s:n kerroin: "
-
-#~ msgid "Source: "
-#~ msgstr "Lähde: "
-
-#~ msgid "Deleted 1 recipe."
-#~ msgstr "Poistettiin 1 resepti."
-
-#~ msgid "Are you sure you want to change the "
-#~ msgstr "Haluatko varmasti vaihtaa "
-
-#~ msgid " from \"%s\" "
-#~ msgstr " %s:sta "
-
-#~ msgid " to \"%s\""
-#~ msgstr " %s:ksi"
-
-#~ msgid "Don't ask me before changing keys and items."
-#~ msgstr "Älä kysy ennen avainten ja tarvikkeiden vaihtamista."
-
-#~ msgid "You haven't entered a key!"
-#~ msgstr "Anna avain!"
-
-#~ msgid ""
-#~ "Are you sure you want the keys\n"
-#~ " for all %s selections set to\n"
-#~ " \"%s\""
-#~ msgstr ""
-#~ "Haluatko varmasti asettaa kaikkien \n"
-#~ "%s:n valinnan avaimiksi \"%s\":n"
-
-#~ msgid "Recipe Card: "
-#~ msgstr "Reseptikortti: "
-
-#~ msgid "Choose an image to insert in instructions... "
-#~ msgstr "Valitse ohjeisiin lisättävä kuva... "
-
-#~ msgid "Changes to ingredients saved automatically."
-#~ msgstr "Ainesosien muutokset talletettu automaattisesti."
-
-#~ msgid "Name of group: "
-#~ msgstr "Ryhmän nimi: "
-
-#~ msgid "Are you sure you want to delete %s"
-#~ msgstr "Haluatko varmasti poistaa %s:n"
-
-#~ msgid "Shall I delete the item contained in %s or move it out of the group?"
-#~ msgid_plural ""
-#~ "Shall I delete the items contained in %s or just move them out of the "
-#~ "group?"
-#~ msgstr[0] ""
-#~ "Poistetaanko %s:n sisältämä tarvike, vai siirretäänkö se vain ryhmän "
-#~ "ulkopuolelle?"
-#~ msgstr[1] ""
-#~ "Poistetaanko %s:n sisältämät tarvikkeet, vai siirretäänkö ne vain ryhmän "
-#~ "ulkopuolelle?"
-
-#~ msgid "Delete it."
-#~ msgid_plural "Delete them."
-#~ msgstr[0] "Poista."
-#~ msgstr[1] "Poista."
-
-#~ msgid "Move it."
-#~ msgid_plural "Move them."
-#~ msgstr[0] "Siirrä."
-#~ msgstr[1] "Siirrä."
-
-#~ msgid "%s Recipes"
-#~ msgstr "%s reseptiä"
-
-#~ msgid ", %s contains %s"
-#~ msgstr ", %s sisältää %s"
-
-#~ msgid "Password: "
-#~ msgstr "Salasana: "
-
-#~ msgid "seconds"
-#~ msgstr "sekuntia"
-
-#~ msgid "minutes"
-#~ msgstr "minuuttia"
-
-#~ msgid "hours"
-#~ msgstr "tuntia"
-
-#~ msgid "days"
-#~ msgstr "päivää"
-
-#~ msgid "weeks"
-#~ msgstr "viikkoa"
-
-#~ msgid "months"
-#~ msgstr "kuukautta"
-
-#~ msgid "Command: "
-#~ msgstr "Komento: "
-
-#~ msgid "Shopping list for: "
-#~ msgstr "Ostoslista: "
-
-#~ msgid "Printing not supported"
-#~ msgstr "Tulostustoiminto ei ole tuettu Windowsissa."
-
-#~ msgid ""
-#~ "To print recipes, first export them, then print from another program. If "
-#~ "you install wxWindows, you can print directly from Gourmet."
-#~ msgstr ""
-#~ "Jos haluat tulostaa reseptejä, vie ne ensin tiedostoon ja tulosta "
-#~ "toisesta sovelluksesta. Jos asennat wxWidgetsin, voit tulostaa suoraan "
-#~ "Gourmet'sta."
-
-#~ msgid "_Limit Search"
-#~ msgstr "Rajoita hakua"
+"Bernhard Reiter <ockham@raz.or.at> (Windows version ylläpito ja sivuston "
+"uudelleen suunnittelu)"

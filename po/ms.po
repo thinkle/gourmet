@@ -1,23 +1,22 @@
-# English (Australia) translation for grecipe-manager
-# Copyright (c) (c) 2005 Canonical Ltd, and Rosetta Contributors 2005
+# Malay translation for grecipe-manager
+# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
 # This file is distributed under the same license as the grecipe-manager package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2005.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-02-06 23:43+0100\n"
-"PO-Revision-Date: 2012-06-20 00:25+0000\n"
-"Last-Translator: Vincent Lhote <Unknown>\n"
-"Language-Team: English (Australia) <en_AU@li.org>\n"
+"PO-Revision-Date: 2009-11-13 22:11+0000\n"
+"Last-Translator: Shaiffulnizam Mohamad <Unknown>\n"
+"Language-Team: Malay <ms@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2013-03-06 00:05+0000\n"
+"X-Launchpad-Export-Date: 2013-03-06 00:04+0000\n"
 "X-Generator: Launchpad (build 16514)\n"
-"X-Rosetta-Version: 0.1\n"
 
 #: ../glade/app.ui.h:1 ../glade/recipe_index.ui.h:2
 msgid "A_dd Search Criteria"
@@ -25,7 +24,7 @@ msgstr ""
 
 #: ../glade/app.ui.h:2 ../src/lib/gglobals.py:348
 msgid "Add to _Shopping List"
-msgstr "Add to Shopping List"
+msgstr "Tambah ke _Senarai Pembelian"
 
 #: ../glade/app.ui.h:3 ../glade/recipe_index.ui.h:10
 msgid "Limiting Search to:"
@@ -59,7 +58,7 @@ msgstr ""
 #: ../glade/app.ui.h:9 ../glade/generic_importer.ui.h:4
 #: ../src/lib/importers/interactive_importer.py:143
 msgid "_New Recipe"
-msgstr ""
+msgstr "Resipi _Baru"
 
 #: ../glade/app.ui.h:10 ../glade/recipe_index.ui.h:24
 #: ../src/lib/plugins/key_editor/keyeditor.ui.h:11
@@ -178,7 +177,7 @@ msgstr ""
 #: ../src/lib/plugins/unit_converter/convertGui.py:160
 #: ../src/lib/plugins/unit_converter/converter.ui.h:8
 msgid "None"
-msgstr ""
+msgstr "Tiada"
 
 #: ../glade/converter.ui.h:9
 #: ../src/lib/plugins/unit_converter.gourmet-plugin.in.h:3
@@ -270,12 +269,12 @@ msgstr ""
 #: ../src/lib/gtk_extras/dialog_extras.py:810
 #: ../src/lib/gtk_extras/dialog_extras.py:1228
 msgid "_Details"
-msgstr ""
+msgstr "_Keterangan"
 
 #: ../glade/databaseChooser.ui.h:16 ../src/lib/GourmetRecipeManager.py:1059
 #: ../src/lib/shopgui.py:675
 msgid "_File"
-msgstr ""
+msgstr "_Fail"
 
 #: ../glade/databaseChooser.ui.h:17
 msgid "_Host:"
@@ -302,7 +301,7 @@ msgstr ""
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:15
 #: ../src/lib/plugins/nutritional_information/nutritionInfoEditor.py:56
 msgid "recipe"
-msgstr ""
+msgstr "resipi"
 
 #: ../glade/generic_importer.ui.h:1
 msgid ""
@@ -611,7 +610,7 @@ msgstr ""
 #. saveEdits
 #: ../glade/recipe_index.ui.h:21 ../src/lib/reccard.py:869
 msgid "_Delete Recipe"
-msgstr ""
+msgstr "_Hapus Resipi"
 
 #: ../glade/recipe_index.ui.h:22
 msgid "_E-Mail recipe"
@@ -818,8 +817,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Vincent Lhote https://launchpad.net/~vincent.lhote\n"
-"  jamie edgar https://launchpad.net/~jolt76"
+"  Shaiffulnizam Mohamad https://launchpad.net/~shaifful-md"
 
 #: ../src/lib/GourmetRecipeManager.py:451
 msgid "Saved!"
@@ -930,7 +928,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1042
 msgid "Delete selected recipes"
-msgstr ""
+msgstr "Hapus Resipi yang Dipilih"
 
 #: ../src/lib/GourmetRecipeManager.py:1043
 msgid "Edit recipe"
@@ -950,7 +948,7 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1049
 msgid "_Print"
-msgstr ""
+msgstr "_Cetak"
 
 #. ('Email', None, _('E-_mail recipes'),
 #. None,None,self.email_recs),
@@ -961,11 +959,11 @@ msgstr ""
 #: ../src/lib/GourmetRecipeManager.py:1060 ../src/lib/reccard.py:212
 #: ../src/lib/reccard.py:864 ../src/lib/shopgui.py:653
 msgid "_Edit"
-msgstr ""
+msgstr "_Edit"
 
 #: ../src/lib/GourmetRecipeManager.py:1061
 msgid "_Actions"
-msgstr ""
+msgstr "_Tindakan"
 
 #: ../src/lib/GourmetRecipeManager.py:1062
 msgid "Setti_ngs"
@@ -976,11 +974,11 @@ msgstr ""
 #: ../src/lib/reccard.py:225 ../src/lib/reccard.py:866
 #: ../src/lib/shopgui.py:676 ../src/lib/shopgui.py:678
 msgid "_Help"
-msgstr ""
+msgstr "_Bantuan"
 
 #: ../src/lib/GourmetRecipeManager.py:1064
 msgid "_About"
-msgstr ""
+msgstr "_Perihal"
 
 #: ../src/lib/GourmetRecipeManager.py:1066
 msgid "_New"
@@ -1036,11 +1034,11 @@ msgstr ""
 
 #: ../src/lib/GourmetRecipeManager.py:1093
 msgid "_Tools"
-msgstr ""
+msgstr "_Alatan"
 
 #: ../src/lib/GourmetRecipeManager.py:1094
 msgid "_Timer"
-msgstr ""
+msgstr "_Pemasa"
 
 #: ../src/lib/GourmetRecipeManager.py:1095
 msgid "Show timer"
@@ -2165,7 +2163,7 @@ msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
 msgid "Mealmaster (tm) Export"
-msgstr "Mealmaster™ Export"
+msgstr ""
 
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:5
 #: ../src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py:22
@@ -3509,7 +3507,7 @@ msgstr ""
 
 #: ../src/lib/plugins/unit_converter/__init__.py:15
 msgid "_Unit Converter"
-msgstr ""
+msgstr "Penukar _Unit"
 
 #: ../src/lib/plugins/unit_converter/__init__.py:16
 msgid "Calculate unit conversions"
@@ -3899,7 +3897,7 @@ msgstr ""
 
 #: ../src/lib/shopgui.py:210
 msgid "_Shopping List"
-msgstr ""
+msgstr "_Senarai Pembelian"
 
 #: ../src/lib/shopgui.py:211
 msgid "Already Have (_Pantry Items)"
