@@ -3,6 +3,7 @@
 *.desktop
 *~
 *#*
+.project
 .pydevproject
 debian
 dist/
