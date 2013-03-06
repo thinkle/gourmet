@@ -17,6 +17,7 @@ gourmet (0.16.0-1) unstable; urgency=low
     - Add contributors as of gourmet/version.py.
   * debian/dirs: Remove, as obsolete.
   * debian/docs: s/README/README.md
+  * debian/manpages: Add.
   * debian/patches/01_fix_raise_str.diff:
     Drop (fixed upstream).
   * debian/patches/license-location, debian/patches/series:
