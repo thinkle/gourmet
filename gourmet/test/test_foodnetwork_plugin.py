@@ -1,7 +1,7 @@
 # encoding: utf-8
 import os.path
 import unittest
-import BeautifulSoup
+import bs4
 
 from gourmet.plugins.import_export.website_import_plugins import foodnetwork_plugin
 
@@ -36,16 +36,14 @@ class TestFoodnetworkPlugin(unittest.TestCase):
     def test_parse(self):
         # Setup
         parser = self.plugin.get_importer(DummyImporter)()
-        parser.soup = BeautifulSoup.BeautifulSoup(self.text,
-                            convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
-                        )
+        parser.soup = bs4.BeautifulSoup(self.text)
         # Do the parsing
         parser.preparse()
         # Pick apart results
         result = parser.preparsed_elements
 
         ingredients = [r for r in result if r[1] == "ingredients"][0][0]
-        ingredients = [i for i in ingredients if type(i) == BeautifulSoup.Tag]
+        ingredients = [i for i in ingredients if type(i) == bs4.Tag]
         name = [r for r in result if r[1] == "title"][0][0][0].text
         instructions = [r for r in result if r[1] == "recipe"][0][0].text
 

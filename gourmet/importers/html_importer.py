@@ -1,6 +1,6 @@
 import urllib, re, tempfile, os.path
 import importer
-import BeautifulSoup
+from bs4 import BeautifulSoup
 import socket
 from gourmet.gdebug import debug
 from gettext import gettext as _
@@ -43,7 +43,7 @@ def get_url (url, progress):
         sock = url
         return read_socket_w_progress(sock,progress,_('Retrieving file'))
 
-class MyBeautifulSoup (BeautifulSoup.ICantBelieveItsBeautifulSoup):
+class MyBeautifulSoup (BeautifulSoup):
 
     def __init__ (self, *args, **kwargs):
         # Avoid invalid doctype decls of the type
@@ -56,7 +56,7 @@ class MyBeautifulSoup (BeautifulSoup.ICantBelieveItsBeautifulSoup):
              )
             )
         kwargs['avoidParserProblems']=True
-        BeautifulSoup.ICantBelieveItsBeautifulSoup.__init__(self,*args,**kwargs)
+        BeautifulSoup.__init__(self,*args,**kwargs)
 
     
     def handle_comment (self, text): pass

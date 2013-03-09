@@ -1,7 +1,7 @@
 # encoding: utf-8
 import os.path
 import unittest
-import BeautifulSoup
+import bs4
 
 from gourmet.plugins.import_export.website_import_plugins import ica_se_plugin
 
@@ -43,9 +43,7 @@ class TestIcaPlugin(unittest.TestCase):
     def test_parse(self):
         # Setup
         parser = self.plugin.get_importer(DummyImporter)()
-        parser.soup = BeautifulSoup.BeautifulSoup(self.text,
-                            convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
-                        )
+        parser.soup = bs4.BeautifulSoup(self.text)
         # Do the parsing
         parser.preparse()
         # Pick apart results

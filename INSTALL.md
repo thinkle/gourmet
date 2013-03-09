@@ -111,25 +111,25 @@ To sign your installer, run
 
 from the source directory.
 
-Requirements                               |Debian                |MacPorts            |Windows
--------------------------------------------|----------------------|--------------------|---------------
-Python 2.7                                 |python                |python27            |http://www.python.org/
-PyGTK                                      |python-gtk2           |py27-gtk            |[all-in-one installer](http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/). Make sure to install PyGTK, PyGObject, PyCairo, and intltool.
-SQLAlchemy                                 |python-sqlalchemy     |py27-sqlalchemy     |http://www.sqlalchemy.org/download.html
-Pillow 2.x (Python Imaging Library Fork)   |python-imaging        |py27-Pillow         |https://pypi.python.org/pypi/Pillow/
-elib.intl                                  |python-elib.intl      |py27-elib.intl      |http://github.com/dieterv/elib.intl/zipball/master
-*Build Requirements*                       |                      |                    |
-setuptools (*Windows only!*)               |                      |                    |
-intltool                                   |intltool              |intltool            |*included in PyGTK installer*
-python-distutils-extra                     |python-distutils-extra|py27-distutils-extra|https://launchpad.net/python-distutils-extra/
-*Extra Requirements*                       |                      |
-Python Reportlab (for printing/PDF export) |python-reportlab      |py27-reportlab      |http://www.reportlab.com/ftp/
-pypoppler (for printing and PDF export)    |python-poppler        |py27-poppler        |
-PyGTKSpell (for the spell checking plugin) |python-gtkspell       |py27-gtkspell       |(N/A)
-python-gst0.10 (for sound)                 |python-gst0.10        |py27-gst-python     |*not required*
-BeautifulSoup (for the Web import plugin)  |python-beautifulsoup  |py27-beautifulsoup  |http://www.crummy.com/software/BeautifulSoup/#Download
-IPython 0.12.1 (interactive shell plugin)  |ipython               |py27-ipython        |https://pypi.python.org/pypi/ipython/0.12.1#downloads
-*Windows only*                             |                      |                    |
-Perl (needed to run intltool)              |                      |                    |http://strawberryperl.com/
-cx_Freeze (only needed to build installer) |                      |                    |http://cx-freeze.sourceforge.net/
+Requirements                                      |Debian                |MacPorts            |Windows
+--------------------------------------------------|----------------------|--------------------|---------------
+Python 2.7                                        |python                |python27            |http://www.python.org/
+PyGTK                                             |python-gtk2           |py27-gtk            |[all-in-one installer](http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/). Make sure to install PyGTK, PyGObject, PyCairo, and intltool.
+SQLAlchemy                                        |python-sqlalchemy     |py27-sqlalchemy     |http://www.sqlalchemy.org/download.html
+Pillow 2.x (Python Imaging Library Fork)          |python-imaging        |py27-Pillow         |https://pypi.python.org/pypi/Pillow/
+elib.intl                                         |python-elib.intl      |py27-elib.intl      |http://github.com/dieterv/elib.intl/zipball/master
+*Build Requirements*                              |                      |                    |
+setuptools (*Windows only!*)                      |                      |                    |
+intltool                                          |intltool              |intltool            |*included in PyGTK installer*
+python-distutils-extra                            |python-distutils-extra|py27-distutils-extra|https://launchpad.net/python-distutils-extra/
+*Extra Requirements*                              |                      |
+Python Reportlab (for printing/PDF export)        |python-reportlab      |py27-reportlab      |http://www.reportlab.com/ftp/
+pypoppler (for printing and PDF export)           |python-poppler        |py27-poppler        |
+PyGTKSpell (for the spell checking plugin)        |python-gtkspell       |py27-gtkspell       |(N/A)
+python-gst0.10 (for sound)                        |python-gst0.10        |py27-gst-python     |*not required*
+BeautifulSoup>=4.3.0 (for the Web import plugin)  |python-bs4            |py27-beautifulsoup4 |http://www.crummy.com/software/BeautifulSoup/bs4/download/
+IPython 0.12.1 (interactive shell plugin)         |ipython               |py27-ipython        |https://pypi.python.org/pypi/ipython/0.12.1#downloads
+*Windows only*                                    |                      |                    |
+Perl (needed to run intltool)                     |                      |                    |http://strawberryperl.com/
+cx_Freeze (only needed to build installer)        |                      |                    |http://cx-freeze.sourceforge.net/
 

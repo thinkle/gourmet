@@ -1,5 +1,5 @@
 # This is a basic
-import BeautifulSoup
+import bs4
 from gourmet.importers.generic_recipe_parser import RecipeParser
 from gourmet.importers.interactive_importer import InteractiveImporter
 import gourmet.importers.importer
@@ -20,10 +20,10 @@ class WebParser (InteractiveImporter):
     TAB = '  '
     JOINABLE = ['instructions','notes','recipe','ignore','ingredients','include',None]
     INVISIBLE_TYPES = [
-        BeautifulSoup.CData,
-        BeautifulSoup.Comment,
-        BeautifulSoup.Declaration,
-        BeautifulSoup.ProcessingInstruction]
+        bs4.CData,
+        bs4.Comment,
+        bs4.Declaration,
+        bs4.ProcessingInstruction]
 
     do_postparse = True
     imageexcluders = None # This could be a list of compiled regexps which would
@@ -35,9 +35,7 @@ class WebParser (InteractiveImporter):
         #self.name = 'Web Parser'
         print "HERE's the data we got:", data
         print "END DATA"
-        self.soup = BeautifulSoup.BeautifulSoup(data,
-                                                convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
-                                                )
+        self.soup = bs4.BeautifulSoup(data)
         InteractiveImporter.__init__(self)
         #self.generic_parser = RecipeParser()
         self.preparse()
@@ -150,7 +148,7 @@ class WebParser (InteractiveImporter):
             to_add = to_add[lws:]
             self.parsed.append((pre_add,None))
         # Do extra substitution of MS Characters -- shouldn't be necessary...
-        for char,tup in BeautifulSoup.UnicodeDammit.MS_CHARS.items():
+        for char,tup in bs4.UnicodeDammit.MS_CHARS.items():
             char = char.decode('iso-8859-1').encode('utf-8')
             if to_add.find(char) >= 0:
                 to_add = to_add.replace(char,unichr(long(tup[1],16)))
