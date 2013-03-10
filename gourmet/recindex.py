@@ -66,7 +66,7 @@ class RecIndex:
 
     def setup_widgets (self):
         self.srchentry=self.ui.get_object('rlistSearchbox')
-	self.limitButton = self.ui.get_object('rlAddButton')
+        self.limitButton = self.ui.get_object('rlAddButton')
         # Don't # allow for special keybindings
         #self.srchentry.connect('key_press_event',self.srchentry_keypressCB)        
         self.SEARCH_MENU_KEY = "b"
@@ -707,14 +707,3 @@ class RecipeModel (pageable_store.PageableViewStore):
                 debug('updated row -- breaking',3)
                 break
 
-    #def make_categories (self):
-    #    # This is ugly, terrible, no good code. Among other things,
-    #    # this is rather specifically metakit hackery which will have
-    #    # to be reworked should another backend ever be implemented.
-    #    #sorted_categories_table = self.rd.categories_table.sort('category')
-    #    #if self.rd.__class__.__module__.find('rmetakit')>=0:
-    #    #    for r in sorted_categories_table:
-    #    #        if r and r.category:
-    #    #            self.rd.modify_rec(r,
-    #    #                               {'categoryname':r.category})
-    #    #self.made_categories=True
