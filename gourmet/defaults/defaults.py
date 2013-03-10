@@ -103,9 +103,11 @@ def get_pluralized_form (word, n):
         forms = list(WORD_TO_SING_PLUR_PAIR[lword])
         forms += [n]
         return ngettext(*forms)
-    elif  lang.guess_singulars(lword):
-        forms = lang.guess_singulars(lword)
-        forms +=[lword]
+    elif lang.guess_singulars(lword):
+        # Arbitrarily use the first item in the list returned by
+        # lang.guess_singulars().
+        forms = lang.guess_singulars(lword)[0:1]
+        forms += [lword]
         forms += [n]
         return ngettext(*forms)
     else:
