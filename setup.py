@@ -18,7 +18,8 @@ from DistUtilsExtra.command import *
 
 # grab the version from our "version" module
 # first we have to extend our path to include gourmet/
-sys.path.append(os.path.join(os.path.split(__file__)[0],'gourmet'))
+srcpath = os.path.split(__file__)[0]
+sys.path.append(os.path.join(srcpath, 'gourmet'))
 import version
 
 class build_py(_build_py):
@@ -104,6 +105,87 @@ class build_scripts(_build_scripts):
 
                 print line,
 
+if 'py2exe' in sys.argv:
+    import py2exe
+
+    kwargs = dict(console=[{'script': os.path.join(srcpath, 'windows','GourmetDebug.pyw'),
+                            'dest_base': "Gourmet_debug"}],
+                  windows=[{'script': os.path.join(srcpath, 'bin','gourmet'),
+                            'dest_base': 'Gourmet'}],
+                  options={'py2exe': dict(packages=['gourmet','sqlalchemy'],
+                                          includes=['cairo', 'gio', 'pango', 'pangocairo', 'atk', 'PIL.ImageDraw', 'BeautifulSoup'],
+                                          optimize=2,
+                                          compressed=1,
+                                          # see http://stackoverflow.com/questions/1979486/py2exe-win32api-pyc-importerror-dll-load-failed
+                                          dll_excludes=["mswsock.dll","powrprof.dll"])
+                           }
+                  )
+else:
+    kwargs = dict(scripts=[os.path.join('bin','gourmet')])
+
+#gtk file inclusion
+import gtk
+# The runtime dir is in the same directory as the module:
+GTK_RUNTIME_DIR = os.path.join(
+    os.path.split(os.path.dirname(gtk.__file__))[0], "runtime")
+
+assert os.path.exists(GTK_RUNTIME_DIR), "Cannot find GTK runtime data"
+
+GTK_THEME_DEFAULT = os.path.join("share", "themes", "Default")
+GTK_THEME_WINDOWS = os.path.join("share", "themes", "MS-Windows")
+GTK_GTKRC_DIR = os.path.join("etc", "gtk-2.0")
+GTK_GTKRC = "gtkrc"
+GTK_WIMP_DIR = os.path.join("lib", "gtk-2.0", "2.10.0", "engines")
+GTK_WIMP_DLL = "libwimp.dll"
+
+#If you want the Tango icons:
+GTK_ICONS = os.path.join("share", "icons")
+
+#There is also localisation data (which I omit, but you might not want to):
+GTK_LOCALE_DATA = os.path.join("share", "locale")
+
+def generate_data_files(prefix, tree, file_filter=None):
+    """
+    Walk the filesystem starting at "prefix" + "tree", producing a list of files
+    suitable for the data_files option to setup(). The prefix will be omitted
+    from the path given to setup(). For example, if you have
+
+        C:\Python26\Lib\site-packages\gtk-2.0\runtime\etc\...
+
+    ...and you want your "dist\" dir to contain "etc\..." as a subdirectory,
+    invoke the function as
+
+        generate_data_files(
+            r"C:\Python26\Lib\site-packages\gtk-2.0\runtime",
+            r"etc")
+
+    If, instead, you want it to contain "runtime\etc\..." use:
+
+        generate_data_files(
+            r"C:\Python26\Lib\site-packages\gtk-2.0",
+            r"runtime\etc")
+
+    Empty directories are omitted.
+
+    file_filter(root, fl) is an optional function called with a containing
+    directory and filename of each file. If it returns False, the file is
+    omitted from the results.
+    """
+    data_files = []
+    for root, dirs, files in os.walk(os.path.join(prefix, tree)):
+        to_dir = os.path.relpath(root, prefix)
+
+        if file_filter is not None:
+            file_iter = (fl for fl in files if file_filter(root, fl))
+        else:
+            file_iter = files
+
+        data_files.append((to_dir, [os.path.join(root, fl) for fl in file_iter]))
+
+    non_empties = [(to, fro) for (to, fro) in data_files if fro]
+
+    return non_empties
+
 def data_files():
     '''Build list of data files to be installed'''
     data_files = []
@@ -121,17 +203,31 @@ def data_files():
     files.extend([(os.path.join(base,'ui'), glob.glob(os.path.join('ui','*.ui')))])
     files.extend([(os.path.join('share','doc','gourmet'), ['FAQ', 'LICENSE'])])
     #print 'DATA FILES:',files
-    return files
 
-if os.name == 'nt':
-    script = [os.path.join('windows','Gourmet.pyw'),
-              os.path.join('windows','GourmetDebug.pyw')]
-else:
-    script = [os.path.join('bin','gourmet')]
-    # Run upgrade pre script
-    # Importing runs the actual script...
-    #import tools.upgrade_pre_script
-    #tools.upgrade_pre_script.dump_old_data()
+    if 'py2exe' in sys.argv:
+        files.extend(
+            generate_data_files(GTK_RUNTIME_DIR, GTK_THEME_DEFAULT) +
+            generate_data_files(GTK_RUNTIME_DIR, GTK_THEME_WINDOWS) +
+            generate_data_files(GTK_RUNTIME_DIR, GTK_ICONS) +
+
+            # ...or include single files manually
+            [
+                (GTK_GTKRC_DIR, [
+                    os.path.join(GTK_RUNTIME_DIR,
+                        GTK_GTKRC_DIR,
+                        GTK_GTKRC)
+                ]),
+
+                (GTK_WIMP_DIR, [
+                    os.path.join(
+                        GTK_RUNTIME_DIR,
+                        GTK_WIMP_DIR,
+                        GTK_WIMP_DLL)
+                ])
+            ]
+                     )
+
+    return files
 
 plugins = []
 
@@ -148,8 +244,6 @@ crawl('gourmet/plugins', 'gourmet.plugins')
 result = setup(
     name = version.name,
     version = version.version,
-    #windows = [ {'script':os.path.join('bin','gourmet'),
-    #             }],
     description = version.description,
     author = version.author,
     author_email = version.author_email,
@@ -168,12 +262,12 @@ result = setup(
                 'gourmet.plugins',
                 ] + plugins,
     package_data = {'gourmet': ['plugins/*/*.ui', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
-    scripts = script,
     cmdclass={'build' : build_extra.build_extra,
               'build_i18n' :  build_i18n.build_i18n,
               'build_icons' :  build_icons.build_icons,
               'build_py' : build_py,
               'build_scripts' : build_scripts,
              },
+    **kwargs
     )
 
