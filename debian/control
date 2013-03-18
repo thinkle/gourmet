@@ -1,7 +1,8 @@
 Source: gourmet
 Section: gnome
 Priority: optional
-Maintainer: Christian Marillat <marillat@debian.org>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Christian Marillat <marillat@debian.org>
 Homepage: http://grecipe-manager.sf.net/
 Standards-Version: 3.9.4
 Build-Depends: debhelper (>= 7.0.50~), python-all

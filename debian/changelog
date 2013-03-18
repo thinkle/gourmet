@@ -1,4 +1,4 @@
-gourmet (0.16.0-1) unstable; urgency=low
+gourmet (0.16.0-0ubuntu1) raring; urgency=low
 
   [ Bernhard Reiter ]
   * New upstream release (Closes: #530403, LP: #1010659).
