@@ -1,9 +1,5 @@
 #!/usr/bin/env python
 import os.path, time, os, sys, re, threading, StringIO, pango, string
-try:
-    from PIL import Image
-except ImportError:
-    import Image
 import gtk, gobject, gtk.gdk, traceback
 import batchEditor
 import recipeManager
