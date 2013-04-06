@@ -101,6 +101,9 @@ gourmet/plugins/import_export/__init__.py
 gourmet/plugins/import_export/archive_plugin/__init__.py
 gourmet/plugins/import_export/archive_plugin/zip_importer_plugin.py
 gourmet/plugins/import_export/archive_plugin/zip_readers.py
+[type: gettext/ini]gourmet/plugins/import_export/cairo.gourmet-plugin.in
+gourmet/plugins/import_export/cairo_plugin/__init__.py
+gourmet/plugins/import_export/cairo_plugin/cairo_print_plugin.py
 [type: gettext/ini]gourmet/plugins/import_export/gxml.gourmet-plugin.in
 gourmet/plugins/import_export/gxml_plugin/__init__.py
 gourmet/plugins/import_export/gxml_plugin/gxml2_exporter.py
