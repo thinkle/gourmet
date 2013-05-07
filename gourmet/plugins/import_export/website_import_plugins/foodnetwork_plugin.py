@@ -8,13 +8,14 @@ class FoodNetworkPlugin (PluginPlugin):
     def test_url (self, url, data):
         if 'foodnetwork.com' in url:
             return 5
+        return 0
 
     def get_importer (self, webpage_importer):
 
         class FoodNetworkParser (webpage_importer.MenuAndAdStrippingWebParser):
 
             imageexcluders = [re.compile('foodnetworkstore|googlead|ft-|banner')]
-            
+
             def preparse (self):
                 headm = re.compile('rcp-head.*')
                 textm = re.compile('body-text.*')
@@ -51,4 +52,3 @@ class FoodNetworkPlugin (PluginPlugin):
                     webpage_importer.MenuAndAdStrippingWebParser.preparse(self)
 
         return FoodNetworkParser
-        
