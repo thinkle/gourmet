@@ -510,9 +510,6 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
             self.missingLabel.hide()
         self.emit('ingredients-changed')
 
-if gtk.pygtk_version[1]<8:
-    gobject.type_register(NutritionLabel)
-
 if __name__ == '__main__':
     import random
     class fakenut:

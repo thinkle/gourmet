@@ -91,9 +91,6 @@ class TimeEntry (validatingEntry.ValidatingEntry):
 
     def get_value (self):
         return self.conv.timestring_to_seconds(self.entry.get_text())
-
-
-if gtk.pygtk_version[1] < 8: gobject.type_register(TimeEntry)
         
 def make_time_entry():
     te=TimeEntry()

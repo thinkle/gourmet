@@ -688,9 +688,6 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                 titles.append(rec.title)
         return ", ".join(titles)
 
-if gtk.pygtk_version[1]<8:
-    gobject.type_register(KeyStore)    
-
 if __name__ == '__main__':
     import recipeManager
     rm = recipeManager.default_rec_manager()

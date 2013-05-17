@@ -134,5 +134,3 @@ class ValidatingEntry (gtk.VBox, gobject.GObject):
         This will be called when the user has finished typing.
         """
         raise NotImplementedError
-        
-if gtk.pygtk_version[1] < 8: gobject.type_register(ValidatingEntry)
