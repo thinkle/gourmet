@@ -47,7 +47,6 @@ gourmet/exporters/rtf_exporter.py
 gourmet/exporters/xml_exporter.py
 gourmet/gdebug.py
 gourmet/gglobals.py
-gourmet/gtk_extras/FauxActionGroups.py
 gourmet/gtk_extras/LinkedTextView.py
 gourmet/gtk_extras/TextBufferMarkup.py
 gourmet/gtk_extras/ThumbnailGenerator.py
