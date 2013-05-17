@@ -13,7 +13,6 @@ from gtk_extras import dialog_extras as de
 from gtk_extras.dialog_extras import show_amount_error
 from gtk_extras import treeview_extras as te
 from gtk_extras import cb_extras as cb
-from gtk_extras import chooserNotebook
 from exporters.printer import get_print_manager
 from gdebug import *
 from gglobals import *
