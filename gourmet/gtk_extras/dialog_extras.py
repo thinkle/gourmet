@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import gtk, gobject, os.path, optionTable, thumbnail, cb_extras, fnmatch,  re
+import gtk, gobject, os.path, optionTable, thumbnail, fnmatch,  re
 import pango
 import xml.sax.saxutils
 from gettext import gettext as _

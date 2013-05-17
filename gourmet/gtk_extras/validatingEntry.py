@@ -17,7 +17,7 @@
 ### USA 
 
 import gobject
-import gtk, re, cb_extras, gobject, time
+import gtk, time
 
 TIME_TO_READ = 1000
 
