@@ -55,7 +55,6 @@ gourmet/gtk_extras/__init__.py
 gourmet/gtk_extras/cb_extras.py
 gourmet/gtk_extras/chooserNotebook.py
 gourmet/gtk_extras/dialog_extras.py
-gourmet/gtk_extras/fauxDruid.py
 gourmet/gtk_extras/mnemonic_manager.py
 gourmet/gtk_extras/numberEntry.py
 gourmet/gtk_extras/optionTable.py
