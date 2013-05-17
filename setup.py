@@ -123,26 +123,27 @@ if 'py2exe' in sys.argv:
 else:
     kwargs = dict(scripts=[os.path.join('bin','gourmet')])
 
-#gtk file inclusion
-import gtk
-# The runtime dir is in the same directory as the module:
-GTK_RUNTIME_DIR = os.path.join(
-    os.path.split(os.path.dirname(gtk.__file__))[0], "runtime")
+if 'py2exe' in sys.argv:
+    #gtk file inclusion
+    import gtk
+    # The runtime dir is in the same directory as the module:
+    GTK_RUNTIME_DIR = os.path.join(
+        os.path.split(os.path.dirname(gtk.__file__))[0], "runtime")
 
-assert os.path.exists(GTK_RUNTIME_DIR), "Cannot find GTK runtime data"
+    assert os.path.exists(GTK_RUNTIME_DIR), "Cannot find GTK runtime data"
 
-GTK_THEME_DEFAULT = os.path.join("share", "themes", "Default")
-GTK_THEME_WINDOWS = os.path.join("share", "themes", "MS-Windows")
-GTK_GTKRC_DIR = os.path.join("etc", "gtk-2.0")
-GTK_GTKRC = "gtkrc"
-GTK_WIMP_DIR = os.path.join("lib", "gtk-2.0", "2.10.0", "engines")
-GTK_WIMP_DLL = "libwimp.dll"
+    GTK_THEME_DEFAULT = os.path.join("share", "themes", "Default")
+    GTK_THEME_WINDOWS = os.path.join("share", "themes", "MS-Windows")
+    GTK_GTKRC_DIR = os.path.join("etc", "gtk-2.0")
+    GTK_GTKRC = "gtkrc"
+    GTK_WIMP_DIR = os.path.join("lib", "gtk-2.0", "2.10.0", "engines")
+    GTK_WIMP_DLL = "libwimp.dll"
 
-#If you want the Tango icons:
-GTK_ICONS = os.path.join("share", "icons")
+    #If you want the Tango icons:
+    GTK_ICONS = os.path.join("share", "icons")
 
-#There is also localisation data (which I omit, but you might not want to):
-GTK_LOCALE_DATA = os.path.join("share", "locale")
+    #There is also localisation data (which I omit, but you might not want to):
+    GTK_LOCALE_DATA = os.path.join("share", "locale")
 
 def generate_data_files(prefix, tree, file_filter=None):
     """
