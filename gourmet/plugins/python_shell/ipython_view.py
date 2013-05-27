@@ -381,7 +381,7 @@ class ConsoleView(gtk.TextView):
       for tag in ansi_tags:
         i = segments.index(tag)
         self.text_buffer.insert_with_tags_by_name(self.text_buffer.get_end_iter(),
-                                             segments[i+1], tag)
+                                             segments[i+1], str(tag))
         segments.pop(i)
     if not editable:
       self.text_buffer.apply_tag_by_name('notouch',
