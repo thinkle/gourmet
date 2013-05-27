@@ -85,14 +85,21 @@ class IterableIPShell:
     self.iter_more = 0
     self.history_level = 0
     self.complete_sep =  re.compile('[\s\{\}\[\]\(\)]')
+    self.updateNamespace({'exit':lambda:None})
+    self.updateNamespace({'quit':lambda:None})
 
   def execute(self):
     '''
     Executes the current line provided by the shell object.
     '''
     self.history_level = 0
+
     orig_stdout = sys.stdout
     sys.stdout = IPython.Shell.Term.cout
+
+    orig_stdin = sys.stdin
+    sys.stdin = StringIO()
+
     try:
       line = self.IP.raw_input(None, self.iter_more)
       if self.IP.autoindent:
@@ -119,7 +126,9 @@ class IterableIPShell:
         self.IP.readline_startup_hook(self.IP.pre_readline)
     else:
       self.prompt = str(self.IP.outputcache.prompt1).strip()
+
     sys.stdout = orig_stdout
+    sys.stdin = orig_stdin
 
   def historyBack(self):
     '''
