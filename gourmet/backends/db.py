@@ -977,11 +977,6 @@ class RecData (Pluggable):
     # convenience DB access functions for working with ingredients,
     # recipes, etc.
 
-    def delete_ing (self, ing):
-        """Delete ingredient permanently."""
-        self.delete_by_criteria(self.ingredients_table,
-                                {'id':ing.id})
-
     def modify_rec (self, rec, dic):
         """Modify recipe based on attributes/values in dictionary.
 
@@ -1680,19 +1675,7 @@ class RecData (Pluggable):
             if make_visible: make_visible(ing,orig_dic)
         obj = Undo.UndoableObject(do_action,undo_action,history)
         obj.perform()
-        
-    def undoable_delete_ings (self, ings, history, make_visible=None):
-        """Delete ingredients in list ings and add to our undo history."""
-        def do_delete():
-            modded_ings = [self.modify_ing(i,{'deleted':True}) for i in ings]
-            if make_visible:
-                make_visible(modded_ings)
-        def undo_delete ():
-            modded_ings = [self.modify_ing(i,{'deleted':False}) for i in ings]
-            if make_visible: make_visible(modded_ings)
-        obj = Undo.UndoableObject(do_delete,undo_delete,history)
-        obj.perform()
-    
+
     def get_default_values (self, colname):
         try:
             return defaults.fields[colname]

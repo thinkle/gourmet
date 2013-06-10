@@ -40,8 +40,8 @@ class testIngBasics (DBTest):
         self.assertEqual(ing.amount,2)
         ing = self.db.modify_ing(ing,{'unit':'cup'})    
         self.assertEqual(ing.unit,'cup')
-        self.db.delete_ing(ing)
-        self.db.delete_ing(ing2)
+        #self.db.delete_ing(ing)
+        #self.db.delete_ing(ing2)
         self.assertEqual(self.db.fetch_len(self.db.ingredients_table),0)
         self.db.add_ings([
                 {'rangeamount': None, 'item': 'water', 'recipe_id': rid, 'position': 1, 'ingkey': u'water'},                
