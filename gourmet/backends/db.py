@@ -895,14 +895,6 @@ class RecData (Pluggable):
         self.db.execute(stmt)        
         self.db.execute('DROP TABLE %s_temp'%table_name)
 
-    # Metakit has no AUTOINCREMENT, so it has to do special magic here
-    def increment_field (self, table, field):
-        """Increment field in table, or return None if the DB will do
-        this automatically.
-        """
-        return None
-
-
     def row_equal (self, r1, r2):
         """Test whether two row references are the same.
 

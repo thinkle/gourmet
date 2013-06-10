@@ -339,8 +339,6 @@ class NutritionData:
 
     def add_custom_nutrition_info (self, nutrition_dictionary):
         """Add custom nutritional information."""
-        #new_ndbno = self.db.increment_field(self.db.nutrition_table,'ndbno')
-        #if new_ndbno: nutrition_dictionary['ndbno']=new_ndbno
         return self.db.do_add_nutrition(nutrition_dictionary).ndbno
         
                     
