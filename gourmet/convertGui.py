@@ -2,7 +2,7 @@ import convert
 import gtk
 from gglobals import *
 from gdebug import *
-from gtk_extras.cb_extras import *
+from gtk_extras.cb_extras import cb_get_active_text, cb_set_active_text, setup_typeahead
 from gettext import gettext as _
 
 class ConvGui:

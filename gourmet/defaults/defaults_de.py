@@ -35,7 +35,7 @@ LANG_PROPERTIES={'hasAccents':True, 'capitalisedNouns':True,'useFractions':False
 # with what users in your locale are likely to be familiar with.
 
 fields={'cuisine': ['deutsch', 'amerikanisch','italienisch','französisch',
-		    'mexikanisch','asiatisch','griechisch','vegetarisch'],
+		    'mexikanisch','asiatisch','indisch','griechisch','vegetarisch'],
 
         'rating' : ['5 - ausgezeichnet','4 - lecker',
 		    '3 - OK','2 - mittelmäßig','1 - vergiss es!',

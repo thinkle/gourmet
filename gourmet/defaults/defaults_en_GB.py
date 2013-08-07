@@ -7,7 +7,7 @@
 
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!
 fields={'cuisine': ['English','Scottish','Welsh','Irish','American',
-                    'Italian','Mexican','Indian',
+                    'Italian','French','Mexican','Indian',
                     'Southwestern','Asian/Thai','Asian/Vietnamese',
                     'Asian/Chinese','Asian/Japanese',],
         'rating' : ['Excellent','Great','Good','Fair','Poor'],

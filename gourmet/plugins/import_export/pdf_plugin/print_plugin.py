@@ -1,5 +1,3 @@
-import sys
-sys.path.append('/usr/share/gourmet/')
 import gtk
 import poppler
 import os.path

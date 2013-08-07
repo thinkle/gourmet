@@ -14,7 +14,7 @@ CREDITS="Thomas M. Hinkle"
 
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!
 fields={'cuisine': ['Español','Mejicano','Cubano','Argentino','Brazileño','Italiano','Griego',
-                   'Chino','Francés','Vasco'],
+                   'Chino','Francés','Vasco','Indio'],
         'rating' : ['Excelente','Muy Bueno','Bueno','Así Así','Malo'],
         'source' : [],
         'category' : ['Postre','Aperitivo','Ensalada','Sopa',

@@ -1,10 +1,12 @@
 *.pyc
+*.pyo
 *.gourmet-plugin
 *.desktop
 *~
 *#*
 .project
 .pydevproject
+.settings/
 dist/
 build
 build-stamp

@@ -144,11 +144,6 @@ class OptionTable (gtk.Table):
             widget,get_method,set_method=self.widgets[n]
             self.options[n][1]=getattr(widget,get_method)()
 
-if gtk.pygtk_version[1] < 8:
-    gobject.type_register(OptionTable)
-        
-
-
 if __name__ == '__main__':
     w=gtk.Window()
     ot=OptionTable(options=(["_Toggle Option",True],

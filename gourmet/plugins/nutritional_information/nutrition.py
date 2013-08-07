@@ -578,8 +578,6 @@ class NutritionInfoList (list, NutritionInfo):
         return n
             
 if __name__ == '__main__':
-    import sys
-    sys.path.append('/usr/share/')
     import gourmet.recipeManager as rm
     db=rm.RecipeManager(**rm.dbargs)
     import gourmet.convert

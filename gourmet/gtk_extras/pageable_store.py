@@ -371,12 +371,7 @@ class PageableViewStore (PageableListStore):
         # have more fine-grained control of when it happens. 
         # if self.page != 0:
         #     self.page = 0
-        #     self.emit('page-changed')                
-
-if gtk.pygtk_version[1]<8:
-    gobject.type_register(PageableListStore)
-    gobject.type_register(PageableViewStore)
-    gobject.type_register(PageableTreeStore)    
+        #     self.emit('page-changed')
 
 if __name__ == '__main__':
     pts=PageableTreeStore([str,str],parent_args=[[str(n),str(30-n)] for n in range(30)])
