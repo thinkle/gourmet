@@ -1,3 +1,9 @@
+gourmet (0.17.0-2) UNRELEASED; urgency=low
+
+  * New upstream release (LP: #1157969).
+
+ -- Bernhard Reiter <ockham@raz.or.at>  Wed, 07 Aug 2013 14:10:26 +0200
+
 gourmet (0.16.0-1) unstable; urgency=low
 
   [ Bernhard Reiter ]
