@@ -9,7 +9,6 @@ Build-Depends-Indep: intltool, python-distutils-extra
 
 Package: gourmet
 Architecture: all
-Pre-Depends: dpkg (>= 1.15.6~)
 Depends: ${misc:Depends}, ${python:Depends}, python-imaging, python-elib.intl,
  python-gtk2 (>= 2.22.0), python-reportlab, python-sqlalchemy (>= 0.7),
  python-poppler
