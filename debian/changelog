@@ -1,9 +1,12 @@
 gourmet (0.17.0-2) UNRELEASED; urgency=low
 
   * New upstream release (LP: #1157969).
-  * debian/control: Drop Pre-Depends: dpkg (>= 1.15.6~) as it's obsolete now
-    that Ubuntu 12.04 LTS was released and 10.04 LTS Desktop edition has
-    reached EOL.
+  * debian/compat: Bump to 9.
+  * debian/control:
+    - Bump debhelper Build-Depends to (>= 9).
+    - Drop Pre-Depends: dpkg (>= 1.15.6~) as it's obsolete now
+      that Ubuntu 12.04 LTS was released and 10.04 LTS Desktop edition has
+      reached EOL.
   * debian/rules: Remove xz compression from override_dh_builddeb section
     as that is default with current versions of dpkg.
 
