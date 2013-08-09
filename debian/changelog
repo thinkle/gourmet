@@ -7,6 +7,7 @@ gourmet (0.17.0-2) UNRELEASED; urgency=low
     - Drop Pre-Depends: dpkg (>= 1.15.6~) as it's obsolete now
       that Ubuntu 12.04 LTS was released and 10.04 LTS Desktop edition has
       reached EOL.
+  * debian/copyright: s/thinkle.github.com/thinkle.github.io/
   * debian/rules: Remove xz compression from override_dh_builddeb section
     as that is default with current versions of dpkg.
 

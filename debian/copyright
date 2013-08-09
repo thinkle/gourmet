@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: Gourmet Recipe Manager
-Source: https://thinkle.github.com/gourmet/
+Source: https://thinkle.github.io/gourmet/
 
 Files: *
 Copyright: 2004-2012 Thomas Mills Hinkle <Thomas_Hinkle@alumni.brown.edu>
