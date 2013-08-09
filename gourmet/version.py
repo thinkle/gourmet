@@ -13,7 +13,7 @@ name= 'gourmet'
 appname = _("Gourmet Recipe Manager")
 copyright = _("Copyright (c) 2004,2005,2006,2007,2008,2009,2010,2011 Thomas M. Hinkle. GNU GPL v2")
 version = "0.16.0"
-website = "http://thinkle.github.com/gourmet/"
+website = "http://thinkle.github.io/gourmet/"
 description = "Recipe Organizer and Shopping List Generator"
 long_description = _("""\
 Gourmet Recipe Manager is an application to store, organize and search recipes.

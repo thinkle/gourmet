@@ -31,7 +31,7 @@
     !define GOURMET_NAME "Gourmet Recipe Manager"
     !define GOURMET_VERSION "0.16.0" ;TODO: Read from src/lib/version.py
     !define GOURMET_PUBLISHER "Thomas M. Hinkle"
-    !define GOURMET_WEB_SITE "http://thinkle.github.com/gourmet/"
+    !define GOURMET_WEB_SITE "http://thinkle.github.io/gourmet/"
     !define GOURMET_DOWNLOAD_SITE "https://launchpad.net/gourmet/+download"
     !define GOURMET_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Gourmet.exe"
     !define GOURMET_UNINSTALL_KEY "${UNINSTALL_REGKEY}\${GOURMET_NAME}"
