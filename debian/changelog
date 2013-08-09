@@ -1,6 +1,8 @@
 gourmet (0.17.0-2) UNRELEASED; urgency=low
 
   * New upstream release (LP: #1157969).
+  * debian/rules: Remove xz compression from override_dh_builddeb section
+    as that is default with current versions of dpkg.
 
  -- Bernhard Reiter <ockham@raz.or.at>  Wed, 07 Aug 2013 14:10:26 +0200
 
