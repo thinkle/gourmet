@@ -254,7 +254,7 @@ class PdfWriter:
         elif mode[0] == 'index_cards':
             frames = self.setup_multiple_index_cards(mode[1])
         else:
-            raise("WTF - mode = %s"%str(mode))
+            raise Exception("WTF - mode = %s" % str(mode))
         return frames
 
     def scale_stylesheet (self, perc):
