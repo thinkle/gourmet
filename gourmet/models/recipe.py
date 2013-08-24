@@ -4,6 +4,8 @@ from sqlalchemy.event import listen
 
 from gourmet.models import Base
 
+from time import time
+
 class Recipe (Base):
     __tablename__ = 'recipe'
 
@@ -36,3 +38,17 @@ class Recipe (Base):
     link = Column(Text) # A field for a URL -- we ought to know about URLs
     last_modified =  Column(Integer)
 
+    @staticmethod
+    def update_last_modified(mapper, connection, target):
+        target.last_modified = time()
+
+    @classmethod
+    def __declare_last__(cls):
+        # get called after mappings are completed
+        # http://docs.sqlalchemy.org/en/rel_0_7/orm/extensions/declarative.html#declare-last
+        listen(cls, 'before_insert', cls.update_last_modified)
+        listen(cls, 'before_update', cls.update_last_modified)
+
+#    If we converted our last_modified column type to DateTime, we could use
+#    SQL instead of python to produce the timestamp:
+#    last_modified =  Column(DateTime, server_default=func.now(), onupdate=func.current_timestamp())
