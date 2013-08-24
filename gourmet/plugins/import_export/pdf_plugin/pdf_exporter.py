@@ -577,8 +577,14 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         if attr=='link':
             trimmed = text.strip()
             if len(trimmed)>32:
-                trimmed=trimmed[:29]+'&#8230;'
+                trimmed=trimmed[:29]+'&#8230;' # ellipsis dots
             self.attributes.append(self.make_paragraph('%s: <link href="%s">%s</link>'%(label,text,trimmed)))
+            return
+        if attr=='source':
+            trimmed = text.strip()
+            if len(trimmed)>32:
+                trimmed=trimmed[:29]+'&#8230;' # ellipsis dots
+            self.attributes.append(self.make_paragraph('%s: %s'%(label,trimmed)))
             return
         # If nothing else has returned...
         self.attributes.append(self.make_paragraph("%s: %s"%(label,text)))
