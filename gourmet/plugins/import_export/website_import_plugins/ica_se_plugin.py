@@ -6,7 +6,7 @@ import re
 
 class Excluder(object):
     def __init__(self, url):
-        self.url=url
+        self.url = url
     def search(self, other_url):
         return not (other_url.endswith(self.url))
 
@@ -19,6 +19,7 @@ class IcaSePlugin (PluginPlugin):
         "Is this url from ica.se"
         if 'ica.se' in url:
             return 5
+        return 0
 
     def get_importer (self, webpage_importer):
 
