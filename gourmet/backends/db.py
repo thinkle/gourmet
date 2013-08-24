@@ -1303,13 +1303,6 @@ class RecData (Pluggable):
         self.delete_by_criteria(self.ingredients_table,{'recipe_id':rec})
         debug('deleted recipe ID %s'%rec,0)
 
-    def new_rec (self):
-        """Create and return a new, empty recipe"""
-        blankdict = {'title':_('New Recipe'),
-                     #'servings':'4'}
-                     }
-        return self.add_rec(blankdict)
-
     def new_id (self):
         #raise NotImplementedError("WARNING: NEW_ID IS NO LONGER FUNCTIONAL, FIND A NEW WAY AROUND THE PROBLEM")
         #rec = self.new_rec()

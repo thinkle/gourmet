@@ -1,5 +1,6 @@
 import tempfile, unittest
 import db
+from gourmet.models import Recipe
 
 class DBTest (unittest.TestCase):
     def setUp (self):
@@ -11,7 +12,7 @@ class testRecBasics (DBTest):
         self.assertEqual(self.db.fetch_len(self.db.recipe_table),0)        
         rec = self.db.add_rec({'title':'Fooboo'})
         self.assertEqual(rec.title,'Fooboo')
-        rec2 = self.db.new_rec()
+        rec2 = Recipe(title=_('New Recipe'))
         rec2 = self.db.modify_rec(rec2,{'title':'Foo','cuisine':'Bar'})
         self.assertEqual(rec2.title,'Foo')
         self.assertEqual(rec2.cuisine,'Bar')
@@ -22,7 +23,9 @@ class testRecBasics (DBTest):
 class testIngBasics (DBTest):
 
     def testAddIngs (self):
-        rid = self.db.new_rec().id
+        #rid = self.db.new_rec().id
+        #FIXME
+        recipe = Recipe(title=_('New Recipe'))
         ing = self.db.add_ing({'amount':1,
                           'unit':'c.',
                           'item':'Carrot juice',

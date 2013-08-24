@@ -31,6 +31,7 @@ from plugin import RecEditorModule, ToolPlugin, RecDisplayPlugin, RecEditorPlugi
 import plugin_loader
 import timeScanner
 import defaults
+from gourmet.models.recipe import Recipe
 
 # TODO
 #
@@ -65,7 +66,7 @@ class RecCard (object):
         self.conf = []
         self.new = False
         if not recipe:
-            recipe = self.rg.rd.new_rec()
+            recipe = Recipe(title=_('New Recipe'))
             self.new = True
         self.current_rec = recipe
         if not manual_show:
@@ -856,7 +857,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
             #self.updateRecipe(recipe,show=False)
             self.new = False
         elif not recipe:
-            recipe=self.rg.rd.new_rec()
+            recipe = Recipe(title=_('New Recipe'))
         self.set_edited(False)
         plugin_loader.Pluggable.__init__(self,[ToolPlugin,RecEditorPlugin])
         self.mm = mnemonic_manager.MnemonicManager()
