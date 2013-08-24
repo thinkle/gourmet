@@ -17,9 +17,8 @@ import sqlalchemy, sqlalchemy.orm
 from sqlalchemy import Integer, LargeBinary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
 from sqlalchemy.sql import and_, or_, case 
 from sqlalchemy import event, func
-from sqlalchemy.ext.declarative import declarative_base
+from gourmet.models import Base, Recipe, Ingredient
 
-Base = declarative_base()
 Session = sqlalchemy.orm.sessionmaker()
 
 def map_type_to_sqlalchemy (typ):
@@ -334,38 +333,6 @@ class RecData (Pluggable):
         self.plugin_info_table = PluginInfo.__table__
 
     def setup_recipe_table (self):
-        class Recipe (Base):
-            __tablename__ = 'recipe'
-
-            id = Column(Integer, primary_key=True)
-            title = Column(Text)
-            instructions = Column(Text)
-            modifications = Column(Text)
-            cuisine = Column(Text)
-            rating = Column(Integer)
-            description = Column(Text)
-            source = Column(Text)
-            preptime = Column(Integer)
-            cooktime = Column(Integer)
-            # Note: we're leaving servings
-            # around as a legacy column... it is
-            # replaced by yields/yield_unit, but
-            # update is much easier if it's
-            # here, and it doesn't do much harm
-            # to have it around.
-            servings = Column(Float)
-            yields = Column(Float)
-            yield_unit = Column(String(32))
-            image = Column(LargeBinary)
-            thumb = Column(LargeBinary)
-            deleted = Column(Boolean)
-            # A hash for uniquely identifying a recipe (based on title etc)
-            recipe_hash = Column(String(32))
-            # A hash for uniquely identifying a recipe (based on ingredients)
-            ingredient_hash = Column(String(32))
-            link = Column(Text) # A field for a URL -- we ought to know about URLs
-            last_modified = Column(Integer)
-
         self.recipe_table = Recipe.__table__
 
     def setup_category_table (self):
@@ -379,24 +346,6 @@ class RecData (Pluggable):
         self.categories_table = Category.__table__
 
     def setup_ingredient_table (self):
-        class Ingredient (Base):
-            __tablename__ = 'ingredients'
-
-            id = Column(Integer, primary_key=True)
-            recipe_id = Column(Integer, ForeignKey('recipe.id'))
-            refid = Column(Integer, ForeignKey('recipe.id'))
-            unit = Column(Text)
-            amount = Column(Float)
-            rangeamount = Column(Float)
-            item = Column(Text)
-            ingkey = Column(Text)
-            optional = Column(Boolean)
-            #Integer so we can distinguish unset from False
-            shopoptional = Column(Integer)
-            inggroup = Column(Text)
-            position = Column(Integer)
-            deleted = Column(Boolean)
-
         self.ingredients_table = Ingredient.__table__
 
     def setup_keylookup_table (self):
