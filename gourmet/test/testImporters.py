@@ -1,16 +1,14 @@
-import test # Get our path set so we work...
 import sys
-sys.argv.append('--gourmet-directory=/tmp/')
-import gourmet.recipeManager as rm
+from .. import recipeManager as rm
 import time
 import os,os.path,re
 import tempfile
 import traceback
 import unittest
-from gourmet.importers.importManager import ImportManager, ImportFileList
-from gourmet.recipeManager import get_recipe_manager
+from ..importers.importManager import ImportManager, ImportFileList
+from ..recipeManager import get_recipe_manager
 
-TEST_FILE_DIRECTORY = 'recipe_files'
+TEST_FILE_DIRECTORY = os.path.join(os.path.dirname(__file__), 'recipe_files')
 
 times = []
 def time_me (f):
@@ -154,7 +152,7 @@ class ImportTest:
     @time_me
     def setup_db (self):
         self.im = get_im()
-        self.db = get_recipe_manager()
+        self.db = get_recipe_manager(custom_url='sqlite:///:memory:')
         
     @time_me
     def test_import (self,filename):
@@ -186,18 +184,18 @@ class ImportTestCase (unittest.TestCase):
         ge=gxml_exporter(self.it.db,self.it.db.fetch_all(self.it.db.recipe_table,deleted=False),'/tmp/gourmet_import_test_%s.grmt'%n)
         ge.run()
         # Trash all our recipes so they don't contaminate the next test...
-        self.it.db.recipe_table.update().execute({'deleted':True}); self.it.db.db.commit()
+        self.it.db.recipe_table.update().execute({'deleted':True}) #; self.it.db.db.commit()
 
-    def testArchive (self):
-        self.it.run_test({
-                'filename' : 'mealmaster_recs.zip',
-                'test' : {'title':'Almond Mushroom Pate'},
-                }
-                         )
-        self.it.run_test({
-                'filename' : 'recipes.tar.bz2',
-                }
-                         )
+#    def testArchive (self):
+#        self.it.run_test({
+#                'filename' : 'mealmaster_recs.zip',
+#                'test' : {'title':'Almond Mushroom Pate'},
+#                }
+#                         )
+#        self.it.run_test({
+#                'filename' : 'recipes.tar.bz2',
+#                }
+#                         )
 
     def testMastercookXML (self):
         self.it.run_test({'filename':'athenos1.mx2',
@@ -255,7 +253,5 @@ class ImportTestCase (unittest.TestCase):
 
 
 if __name__ == '__main__':
-    sys.argv.remove('--gourmet-directory=/tmp/')
-    test.remove_sysargs()
     unittest.main()
     
