@@ -54,10 +54,13 @@ class TestIcaPlugin(unittest.TestCase):
         ingredients = [r for r in result if r[1] == "ingredients"]
         name = [r for r in result if r[1] == "recipe"][0][0].text
         instructions = [r for r in result if r[1] == "instructions"][0][0].text
+        cooktime = [r for r in result if r[1] == "cooktime"][0][0].text
+
         # Check results
         self.assertEqual(len(ingredients), 9)
 
         self.assertTrue('Grillad kyckling med melon' in name)
+        self.assertTrue('Tid: Under 45 min' in cooktime)
 
         print type(instructions)
         self.assertTrue('Dela varje kycklinglårfilé i 2 bitar.' in instructions,
