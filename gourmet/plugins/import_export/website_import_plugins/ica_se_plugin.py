@@ -16,8 +16,15 @@ class IcaSePlugin (PluginPlugin):
         return 0
 
     def get_importer (self, webpage_importer):
-        IcaSeParser = schema_org_parser.generate(webpage_importer.WebParser)
+        IcaSeParserBase = schema_org_parser.generate(webpage_importer.WebParser)
         #ica.se doesn't specify cookTime, so we use totalTime instead
-        IcaSeParser.schema_org_mappings['totalTime'] = 'cooktime'
+        IcaSeParserBase.schema_org_mappings['totalTime'] = 'cooktime'
+
+        class IcaSeParser(IcaSeParserBase):
+            def preparse (self):
+                IcaSeParserBase.preparse(self)
+                yields = self.soup.find(id='servings')
+                self.preparsed_elements.append((yields,'yields'))
+
         return IcaSeParser
 
