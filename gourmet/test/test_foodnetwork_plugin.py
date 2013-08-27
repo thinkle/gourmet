@@ -7,7 +7,8 @@ from gourmet.plugins.import_export.website_import_plugins import foodnetwork_plu
 
 class DummyImporter(object):
     class MenuAndAdStrippingWebParser(object):
-        pass
+        def preparse(dummy):
+            pass
 
 
 class TestFoodnetworkPlugin(unittest.TestCase):
