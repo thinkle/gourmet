@@ -1,4 +1,5 @@
 # encoding: utf-8
+import os.path
 import unittest
 import BeautifulSoup
 
@@ -23,7 +24,9 @@ class TestIcaPlugin(unittest.TestCase):
     url = "http://www.ica.se/recept/grillad-kyckling-med-melon-712641/"
 
     def _read_html(self):
-        filename = __file__.rsplit(".", 1)[0]+".html"
+        filename = os.path.join(os.path.dirname(__file__),
+                                'recipe_files',
+                                (os.path.splitext(os.path.basename(__file__))[0])[5:-7]+".html")
         return (open(filename).read())
 
     def setUp(self):

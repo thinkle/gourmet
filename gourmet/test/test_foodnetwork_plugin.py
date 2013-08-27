@@ -1,4 +1,5 @@
 # encoding: utf-8
+import os.path
 import unittest
 import BeautifulSoup
 
@@ -14,7 +15,9 @@ class TestFoodnetworkPlugin(unittest.TestCase):
     url = "http://www.foodnetwork.com/recipes/ask-aida/pan-roasted-chicken-with-oranges-and-rosemary-recipe/index.html"
 
     def _read_html(self):
-        filename = __file__.rsplit(".", 1)[0]+".html"
+        filename = os.path.join(os.path.dirname(__file__),
+                        'recipe_files',
+                        (os.path.splitext(os.path.basename(__file__))[0])[5:-7]+".html")
         return (open(filename).read())
 
     def setUp(self):
