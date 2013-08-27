@@ -30,7 +30,7 @@ class IcaSePlugin (PluginPlugin):
             def preparse (self):
                 self.preparsed_elements = []
                 for tag in self.soup.findAll(itemprop=True):
-                    itemprop = tag.attrMap["itemprop"]
+                    itemprop = tag["itemprop"]
                     if itemprop == "name":
                         self.preparsed_elements.append((tag,'recipe'))
                     elif itemprop == "totalTime":
@@ -40,7 +40,7 @@ class IcaSePlugin (PluginPlugin):
                     elif itemprop == "recipeInstructions":
                         self.preparsed_elements.append((tag,'instructions'))
                     elif itemprop == "image":
-                        self.imageexcluders.append(Excluder(tag.attrMap["src"]))
+                        self.imageexcluders.append(Excluder(tag["src"]))
 
                 if self.preparsed_elements:
                     self.ignore_unparsed = True
