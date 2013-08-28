@@ -1,4 +1,8 @@
-import os, os.path, tempfile, gtk, Image, StringIO
+import os, os.path, tempfile, gtk, StringIO
+try:
+    from PIL import Image
+except ImportError:
+    import Image
 from gdebug import *
 
 TMPFILE = tempfile.mktemp(prefix='gourmet_tempfile_')
