@@ -2,14 +2,8 @@
 A plugin that tries to import recipes from the ica.se site
 """
 from gourmet.plugin import PluginPlugin
-import re
-
-class Excluder(object):
-    def __init__(self, url):
-        self.url=url
-    def search(self, other_url):
-        return not (other_url.endswith(self.url))
-
+import schema_org_parser
+from schema_org_parser import Excluder
 
 class IcaSePlugin (PluginPlugin):
 
@@ -19,32 +13,18 @@ class IcaSePlugin (PluginPlugin):
         "Is this url from ica.se"
         if 'ica.se' in url:
             return 5
+        return 0
 
     def get_importer (self, webpage_importer):
+        IcaSeParserBase = schema_org_parser.generate(webpage_importer.WebParser)
+        #ica.se doesn't specify cookTime, so we use totalTime instead
+        IcaSeParserBase.schema_org_mappings['totalTime'] = 'cooktime'
 
-        class IcaSeParser (webpage_importer.WebParser):
-
-            imageexcluders = []
-
+        class IcaSeParser(IcaSeParserBase):
             def preparse (self):
-                self.preparsed_elements = []
-                for tag in self.soup.findAll(itemprop=True):
-                    itemprop = tag.attrMap["itemprop"]
-                    if itemprop == "name":
-                        self.preparsed_elements.append((tag,'recipe'))
-                    elif itemprop == "totalTime":
-                        self.preparsed_elements.append((tag,'cooktime'))
-                    elif itemprop == "ingredients":
-                        self.preparsed_elements.append((tag,'ingredients'))
-                    elif itemprop == "recipeInstructions":
-                        self.preparsed_elements.append((tag,'instructions'))
-                    elif itemprop == "image":
-                        self.imageexcluders.append(Excluder(tag.attrMap["src"]))
-
-                if self.preparsed_elements:
-                    self.ignore_unparsed = True
-                else:
-                    webpage_importer.WebParser.preparse(self)
+                IcaSeParserBase.preparse(self)
+                yields = self.soup.find(id='servings')
+                self.preparsed_elements.append((yields,'yields'))
 
         return IcaSeParser
 

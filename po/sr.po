@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-06 01:52+0100\n"
+"POT-Creation-Date: 2013-08-29 00:05+0200\n"
 "PO-Revision-Date: 2012-11-17 12:46+0000\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
@@ -186,8 +186,8 @@ msgstr "*"
 msgid "Database _Name:"
 msgstr "Назив _базе података:"
 
-#: ../ui/databaseChooser.ui.h:13 ../gourmet/GourmetRecipeManager.py:1052
-#: ../gourmet/shopgui.py:675
+#: ../ui/databaseChooser.ui.h:13 ../gourmet/GourmetRecipeManager.py:1051
+#: ../gourmet/shopgui.py:674
 msgid "_File"
 msgstr "_Датотека"
 
@@ -349,9 +349,9 @@ msgstr "_Увек додај додатне састојке"
 msgid "_Never add optional ingredients"
 msgstr "_Никада не додај додатне састојке"
 
-#: ../ui/preferenceDialog.ui.h:20 ../gourmet/shopgui.py:147
-#: ../gourmet/shopgui.py:544 ../gourmet/shopgui.py:848
-#: ../gourmet/shopgui.py:997
+#: ../ui/preferenceDialog.ui.h:20 ../gourmet/shopgui.py:146
+#: ../gourmet/shopgui.py:543 ../gourmet/shopgui.py:847
+#: ../gourmet/shopgui.py:996
 msgid "Shopping List"
 msgstr "Списак за куповину"
 
@@ -363,7 +363,7 @@ msgstr "служење"
 #. renderer.connect('edited',tst)
 #: ../ui/recCardDescriptionEditor.ui.h:6
 #: ../gourmet/exporters/rtf_exporter.py:79 ../gourmet/gglobals.py:151
-#: ../gourmet/shopgui.py:750
+#: ../gourmet/shopgui.py:749
 msgid "Title"
 msgstr "Назив"
 
@@ -461,9 +461,9 @@ msgstr "<b>Напомене</b>"
 msgid "Edit _notes"
 msgstr "Уреди _напомене"
 
-#: ../ui/recCardDisplay.ui.h:17 ../gourmet/exporters/exporter.py:606
+#: ../ui/recCardDisplay.ui.h:17 ../gourmet/exporters/exporter.py:610
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:483
-#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:63
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:67
 msgid "Recipe"
 msgstr "Рецепт"
 
@@ -479,15 +479,15 @@ msgstr "Уреди _састојке"
 msgid "Add _ingredient:"
 msgstr "Додај _састојак:"
 
-#: ../ui/recCardIngredientsEditor.ui.h:2 ../gourmet/exporters/exporter.py:251
+#: ../ui/recCardIngredientsEditor.ui.h:2 ../gourmet/exporters/exporter.py:255
 #: ../gourmet/importers/interactive_importer.py:39
 #: ../gourmet/importers/interactive_importer.py:54
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:478
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:480
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:508
-#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:100
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:598
-#: ../gourmet/reccard.py:1074
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:104
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:604
+#: ../gourmet/reccard.py:1075
 msgid "Ingredients"
 msgstr "Састојци"
 
@@ -508,7 +508,7 @@ msgid "Delete selected recipe"
 msgstr "Обриши изабрани рецепт"
 
 #. saveEdits
-#: ../ui/recipe_index.ui.h:6 ../gourmet/reccard.py:869
+#: ../ui/recipe_index.ui.h:6 ../gourmet/reccard.py:870
 msgid "_Delete Recipe"
 msgstr "_Обриши рецепт"
 
@@ -584,7 +584,7 @@ msgstr "Категорија"
 #: ../ui/shopCatEditor.ui.h:2 ../gourmet/plugins/key_editor/keyEditor.py:512
 #: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:109
 #: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:188
-#: ../gourmet/reccard.py:2140 ../gourmet/reccard.py:2197
+#: ../gourmet/reccard.py:2141 ../gourmet/reccard.py:2198
 msgid "Key"
 msgstr "Кључ"
 
@@ -716,39 +716,39 @@ msgstr ""
 "Организујте рецепте, направите спискове за куповину, израчунајте хранљиве "
 "вредности и још много тога."
 
-#: ../gourmet/GourmetRecipeManager.py:49
+#: ../gourmet/GourmetRecipeManager.py:48
 msgid "Importing old recipe data"
 msgstr "Увозим податке старог рецепта"
 
-#: ../gourmet/GourmetRecipeManager.py:50
+#: ../gourmet/GourmetRecipeManager.py:49
 msgid ""
 "Importing recipe data from a previous version of Gourmet into new database."
 msgstr ""
 "Увозим податке рецепта из претходног издања Гурманка у нову базу података."
 
 #. Convenience method for showing progress dialogs for import/export/deletion
-#: ../gourmet/GourmetRecipeManager.py:150
+#: ../gourmet/GourmetRecipeManager.py:149
 msgid "Import paused"
 msgstr "Увоз је заустављен"
 
-#: ../gourmet/GourmetRecipeManager.py:151
+#: ../gourmet/GourmetRecipeManager.py:150
 msgid "Stop import"
 msgstr "Заустави увоз"
 
-#: ../gourmet/GourmetRecipeManager.py:234
-#: ../gourmet/GourmetRecipeManager.py:1093
+#: ../gourmet/GourmetRecipeManager.py:233
+#: ../gourmet/GourmetRecipeManager.py:1092
 msgid "Recipe _Index"
 msgstr "Попис _рецепта"
 
-#: ../gourmet/GourmetRecipeManager.py:235
+#: ../gourmet/GourmetRecipeManager.py:234
 msgid "Shopping _List"
 msgstr "Списак за _куповину"
 
-#: ../gourmet/GourmetRecipeManager.py:254 ../gourmet/reccard.py:213
+#: ../gourmet/GourmetRecipeManager.py:253 ../gourmet/reccard.py:214
 msgid "_Go"
 msgstr "_Иди"
 
-#: ../gourmet/GourmetRecipeManager.py:373
+#: ../gourmet/GourmetRecipeManager.py:372
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
@@ -757,72 +757,72 @@ msgstr ""
 "  homoludens https://launchpad.net/~marko-homoludens\n"
 "  Мирослав Николић https://launchpad.net/~lipek"
 
-#: ../gourmet/GourmetRecipeManager.py:433
+#: ../gourmet/GourmetRecipeManager.py:432
 msgid "Saved!"
 msgstr "Сачувано је!"
 
-#: ../gourmet/GourmetRecipeManager.py:443
+#: ../gourmet/GourmetRecipeManager.py:442
 #, python-format
 msgid "Save your edits to %s"
 msgstr "Сачувајте измене у %s"
 
-#: ../gourmet/GourmetRecipeManager.py:454
+#: ../gourmet/GourmetRecipeManager.py:453
 msgid "An import is in progress."
 msgstr "Један увоз је у току."
 
-#: ../gourmet/GourmetRecipeManager.py:455
+#: ../gourmet/GourmetRecipeManager.py:454
 msgid "An export is in progress."
 msgstr "Један извоз је у току."
 
-#: ../gourmet/GourmetRecipeManager.py:456
+#: ../gourmet/GourmetRecipeManager.py:455
 msgid "A delete is in progress."
 msgstr "Брисање је у току."
 
-#: ../gourmet/GourmetRecipeManager.py:458
+#: ../gourmet/GourmetRecipeManager.py:457
 msgid "Exit program anyway?"
 msgstr "Да ипак изађем из програма?"
 
-#: ../gourmet/GourmetRecipeManager.py:460
+#: ../gourmet/GourmetRecipeManager.py:459
 msgid "Don't exit!"
 msgstr "Не излази!"
 
-#: ../gourmet/GourmetRecipeManager.py:506
+#: ../gourmet/GourmetRecipeManager.py:505
 #, python-format
 msgid "Permanently deleted %s of %s recipes"
 msgstr "За стално је обрисано %s од %s рецепта"
 
-#: ../gourmet/GourmetRecipeManager.py:524
-#: ../gourmet/GourmetRecipeManager.py:539
+#: ../gourmet/GourmetRecipeManager.py:523
+#: ../gourmet/GourmetRecipeManager.py:538
 msgid "Trash"
 msgstr "Смеће"
 
-#: ../gourmet/GourmetRecipeManager.py:539
+#: ../gourmet/GourmetRecipeManager.py:538
 msgid "Browse, permanently delete or undelete deleted recipes"
 msgstr "Разгледајте, трајно обришите или повратите обрисане рецепте"
 
-#: ../gourmet/GourmetRecipeManager.py:591
+#: ../gourmet/GourmetRecipeManager.py:590
 msgid "Undeleted recipes "
 msgstr "Необрисани рецепти "
 
-#: ../gourmet/GourmetRecipeManager.py:661
+#: ../gourmet/GourmetRecipeManager.py:660
 msgid "Gourmet Recipe Manager starting up..."
 msgstr "Управник рецепта Гурманко се покреће..."
 
-#: ../gourmet/GourmetRecipeManager.py:670
+#: ../gourmet/GourmetRecipeManager.py:669
 msgid "Starting gourmet..."
 msgstr "Покрећем гурманка..."
 
-#: ../gourmet/GourmetRecipeManager.py:757
+#: ../gourmet/GourmetRecipeManager.py:756
 #, python-format
 msgid "Number of %(unit)s of %(title)s to shop for"
 msgstr "Укупно %(unit)s %(title)s за куповину"
 
-#: ../gourmet/GourmetRecipeManager.py:769
+#: ../gourmet/GourmetRecipeManager.py:768
 #, python-format
 msgid "Multiply %s by:"
 msgstr "Помножи %s са:"
 
-#: ../gourmet/GourmetRecipeManager.py:789
+#: ../gourmet/GourmetRecipeManager.py:788
 #, python-format
 msgid "Set %(attributes)s for %(num)s selected recipe?"
 msgid_plural "Set %(attributes)s for %(num)s selected recipes?"
@@ -830,132 +830,132 @@ msgstr[0] "Да поставим %(attributes)s за %(num)s изабрани р
 msgstr[1] "Да поставим %(attributes)s за %(num)s изабрана рецепта?"
 msgstr[2] "Да поставим %(attributes)s за %(num)s изабраних рецепата?"
 
-#: ../gourmet/GourmetRecipeManager.py:796
+#: ../gourmet/GourmetRecipeManager.py:795
 msgid "Any previously existing values will not be changed."
 msgstr "Било која претходно постојећа вредност неће бити измењена."
 
-#: ../gourmet/GourmetRecipeManager.py:798
+#: ../gourmet/GourmetRecipeManager.py:797
 msgid "The new values will overwrite any previously existing values."
 msgstr "Нове вредности ће преписати било коју претходно постојећу вредност."
 
-#: ../gourmet/GourmetRecipeManager.py:799
+#: ../gourmet/GourmetRecipeManager.py:798
 msgid "This change cannot be undone."
 msgstr "Ова измена не може бити поништена."
 
-#: ../gourmet/GourmetRecipeManager.py:800
+#: ../gourmet/GourmetRecipeManager.py:799
 msgid "Set values for selected recipes"
 msgstr "Постави вредности за изабране рецепте"
 
-#: ../gourmet/GourmetRecipeManager.py:999
+#: ../gourmet/GourmetRecipeManager.py:998
 msgid "Search recipes"
 msgstr "Потражите рецепте"
 
-#: ../gourmet/GourmetRecipeManager.py:1029
+#: ../gourmet/GourmetRecipeManager.py:1028
 msgid "Open recipe"
 msgstr "Отвори рецепт"
 
-#: ../gourmet/GourmetRecipeManager.py:1030
+#: ../gourmet/GourmetRecipeManager.py:1029
 msgid "Open selected recipe"
 msgstr "Отворите изабрани рецепт"
 
 #. We no longer bind "Delete" here -- instead, we'll do it
 #. at the TreeView level to prevent the delete key
 #. elsewhere (e.g. in search box) from muddling up users.
-#: ../gourmet/GourmetRecipeManager.py:1034
+#: ../gourmet/GourmetRecipeManager.py:1033
 msgid "Delete recipe"
 msgstr "Обриши рецепт"
 
-#: ../gourmet/GourmetRecipeManager.py:1035
+#: ../gourmet/GourmetRecipeManager.py:1034
 msgid "Delete selected recipes"
 msgstr "Обришите изабране рецепте"
 
-#: ../gourmet/GourmetRecipeManager.py:1036
+#: ../gourmet/GourmetRecipeManager.py:1035
 msgid "Edit recipe"
 msgstr "Уреди рецепт"
 
-#: ../gourmet/GourmetRecipeManager.py:1037
+#: ../gourmet/GourmetRecipeManager.py:1036
 msgid "Open selected recipes in recipe editor view"
 msgstr "Отворите изабране рецепте у прегледу уређивача рецепта"
 
-#: ../gourmet/GourmetRecipeManager.py:1039
+#: ../gourmet/GourmetRecipeManager.py:1038
 msgid "E_xport selected recipes"
 msgstr "_Извези изабране рецепте"
 
-#: ../gourmet/GourmetRecipeManager.py:1040
+#: ../gourmet/GourmetRecipeManager.py:1039
 msgid "Export selected recipes to file"
 msgstr "Извезите изабране рецепте у датотеку"
 
-#: ../gourmet/GourmetRecipeManager.py:1042
+#: ../gourmet/GourmetRecipeManager.py:1041
 msgid "_Print"
 msgstr "_Штампај"
 
 #. ('Email', None, _('E-_mail recipes'),
 #. None,None,self.email_recs),
-#: ../gourmet/GourmetRecipeManager.py:1046
+#: ../gourmet/GourmetRecipeManager.py:1045
 msgid "Batch _edit recipes"
 msgstr "Групно _уреди рецепте"
 
-#: ../gourmet/GourmetRecipeManager.py:1053 ../gourmet/reccard.py:212
-#: ../gourmet/reccard.py:864 ../gourmet/shopgui.py:653
+#: ../gourmet/GourmetRecipeManager.py:1052 ../gourmet/reccard.py:213
+#: ../gourmet/reccard.py:865 ../gourmet/shopgui.py:652
 msgid "_Edit"
 msgstr "_Уреди"
 
-#: ../gourmet/GourmetRecipeManager.py:1054
+#: ../gourmet/GourmetRecipeManager.py:1053
 msgid "_Actions"
 msgstr "_Радње"
 
-#: ../gourmet/GourmetRecipeManager.py:1055
+#: ../gourmet/GourmetRecipeManager.py:1054
 msgid "Setti_ngs"
 msgstr "_Подешавања"
 
-#: ../gourmet/GourmetRecipeManager.py:1056
-#: ../gourmet/GourmetRecipeManager.py:1061 ../gourmet/reccard.py:214
-#: ../gourmet/reccard.py:225 ../gourmet/reccard.py:866
-#: ../gourmet/shopgui.py:676 ../gourmet/shopgui.py:678
+#: ../gourmet/GourmetRecipeManager.py:1055
+#: ../gourmet/GourmetRecipeManager.py:1060 ../gourmet/reccard.py:215
+#: ../gourmet/reccard.py:226 ../gourmet/reccard.py:867
+#: ../gourmet/shopgui.py:675 ../gourmet/shopgui.py:677
 msgid "_Help"
 msgstr "По_моћ"
 
-#: ../gourmet/GourmetRecipeManager.py:1057
+#: ../gourmet/GourmetRecipeManager.py:1056
 msgid "_About"
 msgstr "_О програму"
 
-#: ../gourmet/GourmetRecipeManager.py:1059
+#: ../gourmet/GourmetRecipeManager.py:1058
 msgid "_New"
 msgstr "_Нови"
 
-#: ../gourmet/GourmetRecipeManager.py:1063
+#: ../gourmet/GourmetRecipeManager.py:1062
 msgid "_Import file"
 msgstr "_Увези датотеку"
 
-#: ../gourmet/GourmetRecipeManager.py:1064
+#: ../gourmet/GourmetRecipeManager.py:1063
 msgid "Import recipe from file"
 msgstr "Увезите рецепт из датотеке"
 
-#: ../gourmet/GourmetRecipeManager.py:1065
+#: ../gourmet/GourmetRecipeManager.py:1064
 msgid "Import _webpage"
 msgstr "Увези _веб страницу"
 
-#: ../gourmet/GourmetRecipeManager.py:1066
+#: ../gourmet/GourmetRecipeManager.py:1065
 msgid "Import recipe from webpage"
 msgstr "Увезите рецепт са веб странице"
 
-#: ../gourmet/GourmetRecipeManager.py:1067
+#: ../gourmet/GourmetRecipeManager.py:1066
 msgid "Export _all recipes"
 msgstr "Извези _све рецепте"
 
-#: ../gourmet/GourmetRecipeManager.py:1068
+#: ../gourmet/GourmetRecipeManager.py:1067
 msgid "Export all recipes to file"
 msgstr "Извезите све рецепте у датотеку"
 
-#: ../gourmet/GourmetRecipeManager.py:1069
+#: ../gourmet/GourmetRecipeManager.py:1068
 msgid "_Plugins"
 msgstr "_Прикључци"
 
-#: ../gourmet/GourmetRecipeManager.py:1070
+#: ../gourmet/GourmetRecipeManager.py:1069
 msgid "Manage plugins which add extra functionality to Gourmet."
 msgstr "Управљајте прикључцима који Гурманку додају посебне функције."
 
-#: ../gourmet/GourmetRecipeManager.py:1072
+#: ../gourmet/GourmetRecipeManager.py:1071
 msgid "_Preferences"
 msgstr "_Поставке"
 
@@ -963,42 +963,42 @@ msgstr "_Поставке"
 #. None,None),
 #. ('Undo',gtk.STOCK_UNDO,_('_Undo'),
 #. None,None),
-#: ../gourmet/GourmetRecipeManager.py:1078
+#: ../gourmet/GourmetRecipeManager.py:1077
 msgid "_Quit"
 msgstr "_Изађи"
 
-#: ../gourmet/GourmetRecipeManager.py:1080
+#: ../gourmet/GourmetRecipeManager.py:1079
 msgid "Open _Trash"
 msgstr "_Отвори смеће"
 
-#: ../gourmet/GourmetRecipeManager.py:1086
+#: ../gourmet/GourmetRecipeManager.py:1085
 msgid "_Tools"
 msgstr "_Алати"
 
-#: ../gourmet/GourmetRecipeManager.py:1087
+#: ../gourmet/GourmetRecipeManager.py:1086
 msgid "_Timer"
 msgstr "_Одбројавач"
 
-#: ../gourmet/GourmetRecipeManager.py:1088
+#: ../gourmet/GourmetRecipeManager.py:1087
 msgid "Show timer"
 msgstr "Прикажите одбројавач"
 
-#: ../gourmet/GourmetRecipeManager.py:1094
+#: ../gourmet/GourmetRecipeManager.py:1093
 msgid "Searchable index of recipes in the database."
 msgstr "Претраживи попис рецепта у бази података."
 
-#: ../gourmet/GourmetRecipeManager.py:1204
+#: ../gourmet/GourmetRecipeManager.py:1203
 #, python-format
 msgid "Delete %s?"
 msgstr "Да обришем %s?"
 
-#: ../gourmet/GourmetRecipeManager.py:1205
+#: ../gourmet/GourmetRecipeManager.py:1204
 #, python-format
 msgid "You have unsaved changes to %s. Are you sure you want to delete?"
 msgstr ""
 "Имате несачуваних измена у %s. Да ли сте сигурни да желите да обришете?"
 
-#: ../gourmet/GourmetRecipeManager.py:1227
+#: ../gourmet/GourmetRecipeManager.py:1226
 #, python-format
 msgid ""
 "You just moved %s recipe to the trash. You can recover this recipe or "
@@ -1016,68 +1016,68 @@ msgstr[2] ""
 "Управо сте преместили %s рецепaта у смеће. Можете да повратите те рецепте "
 "или да их трајно обришете у било које време кликом на „Алати—>Отвори смеће“."
 
-#: ../gourmet/GourmetRecipeManager.py:1234
+#: ../gourmet/GourmetRecipeManager.py:1233
 msgid "Deleted"
 msgstr "Обрисан"
 
-#: ../gourmet/GourmetRecipeManager.py:1234
+#: ../gourmet/GourmetRecipeManager.py:1233
 #: ../gourmet/importers/interactive_importer.py:472
 msgid "Untitled"
 msgstr "Неименован"
 
-#: ../gourmet/GourmetRecipeManager.py:1242
+#: ../gourmet/GourmetRecipeManager.py:1241
 msgid "Permanently delete recipes?"
 msgstr "Да ли трајно да обришем рецепте?"
 
-#: ../gourmet/GourmetRecipeManager.py:1244
+#: ../gourmet/GourmetRecipeManager.py:1243
 msgid "Permanently delete recipe?"
 msgstr "Да ли трајно да обришем рецепт?"
 
-#: ../gourmet/GourmetRecipeManager.py:1245
+#: ../gourmet/GourmetRecipeManager.py:1244
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
 msgstr "Да ли сте сигурни да желите да обришете рецепт <i>%s</i>"
 
-#: ../gourmet/GourmetRecipeManager.py:1247
+#: ../gourmet/GourmetRecipeManager.py:1246
 msgid "Are you sure you want to delete the following recipes?"
 msgstr "Да ли сте сигурни да желите да обришете следеће рецепте?"
 
-#: ../gourmet/GourmetRecipeManager.py:1251
+#: ../gourmet/GourmetRecipeManager.py:1250
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
 msgstr "Да ли сте сигурни да желите да обришете %s изабрана рецепта?"
 
-#: ../gourmet/GourmetRecipeManager.py:1253
+#: ../gourmet/GourmetRecipeManager.py:1252
 msgid "See recipes"
 msgstr "Види рецепте"
 
-#: ../gourmet/GourmetRecipeManager.py:1261
+#: ../gourmet/GourmetRecipeManager.py:1260
 msgid "Delete Recipes"
 msgstr "Обриши рецепте"
 
-#: ../gourmet/GourmetRecipeManager.py:1288
+#: ../gourmet/GourmetRecipeManager.py:1287
 #, python-format
 msgid "Deleted recipe %s"
 msgstr "Обрисан рецепт %s"
 
-#: ../gourmet/GourmetRecipeManager.py:1322
+#: ../gourmet/GourmetRecipeManager.py:1321
 msgid "Export succeeded"
 msgstr "Извоз је успео"
 
-#: ../gourmet/GourmetRecipeManager.py:1325
+#: ../gourmet/GourmetRecipeManager.py:1324
 msgid "webpage"
 msgstr "веб страница"
 
-#: ../gourmet/GourmetRecipeManager.py:1326
+#: ../gourmet/GourmetRecipeManager.py:1325
 #, python-format
 msgid "Exported %s to %s"
 msgstr "Извезох %s у %s"
 
-#: ../gourmet/GourmetRecipeManager.py:1386
+#: ../gourmet/GourmetRecipeManager.py:1385
 msgid "Done!"
 msgstr "Готово!"
 
-#: ../gourmet/GourmetRecipeManager.py:1394
+#: ../gourmet/GourmetRecipeManager.py:1393
 msgid "Importing..."
 msgstr "Увозим..."
 
@@ -1118,7 +1118,7 @@ msgstr ""
 #: ../gourmet/importers/interactive_importer.py:96
 #: ../gourmet/legacy_db/db_08/rdatabase.py:446
 #: ../gourmet/legacy_db/db_085/rdatabase.py:447
-#: ../gourmet/legacy_db/db_09/rdatabase.py:508 ../gourmet/reccard.py:939
+#: ../gourmet/legacy_db/db_09/rdatabase.py:508 ../gourmet/reccard.py:940
 msgid "New Recipe"
 msgstr "Нови рецепт"
 
@@ -1255,66 +1255,66 @@ msgstr "Треба ми податак о густини."
 msgid "None"
 msgstr "Ништа"
 
-#: ../gourmet/exporters/exportManager.py:40
+#: ../gourmet/exporters/exportManager.py:41
 msgid "Save recipe as..."
 msgstr "Сачувај рецепт као..."
 
-#: ../gourmet/exporters/exportManager.py:51
+#: ../gourmet/exporters/exportManager.py:52
 #, python-format
 msgid "Gourmet cannot export file of type \"%s\""
 msgstr "Гурманко не може да извезе датотеку „%s“ врсте"
 
-#: ../gourmet/exporters/exportManager.py:81
+#: ../gourmet/exporters/exportManager.py:82
 msgid "Export complete!"
 msgstr "Извоз је завршен!"
 
-#: ../gourmet/exporters/exportManager.py:82
+#: ../gourmet/exporters/exportManager.py:83
 #, python-format
 msgid "Recipe exported to %s"
 msgstr "Рецепт је извезен у %s"
 
-#: ../gourmet/exporters/exportManager.py:103
+#: ../gourmet/exporters/exportManager.py:104
 msgid "Export recipes"
 msgstr "Извези рецепте"
 
-#: ../gourmet/exporters/exportManager.py:106
+#: ../gourmet/exporters/exportManager.py:107
 msgid "recipes"
 msgstr "рецепти"
 
-#: ../gourmet/exporters/exportManager.py:118
+#: ../gourmet/exporters/exportManager.py:119
 #, python-format
 msgid "Unable to export: unknown filetype \"%s\""
 msgstr "Не могу да извезем: непозната врста датотеке „%s“"
 
-#: ../gourmet/exporters/exportManager.py:119
+#: ../gourmet/exporters/exportManager.py:120
 msgid ""
 "Please make sure to select a filetype from the dropdown menu when saving."
 msgstr ""
 "Уверите се да сте изабрали врсту датотеке из падајућег изборника приликом "
 "чувања."
 
-#: ../gourmet/exporters/exportManager.py:167
+#: ../gourmet/exporters/exportManager.py:168
 msgid "Export"
 msgstr "Извези"
 
-#: ../gourmet/exporters/exporter.py:209 ../gourmet/exporters/exporter.py:211
-#: ../gourmet/exporters/exporter.py:515 ../gourmet/exporters/exporter.py:517
+#: ../gourmet/exporters/exporter.py:213 ../gourmet/exporters/exporter.py:215
+#: ../gourmet/exporters/exporter.py:519 ../gourmet/exporters/exporter.py:521
 msgid "stars"
 msgstr "звездице"
 
-#: ../gourmet/exporters/exporter.py:378 ../gourmet/exporters/exporter.py:463
-#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:178
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:626
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:639
+#: ../gourmet/exporters/exporter.py:382 ../gourmet/exporters/exporter.py:467
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:182
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:632
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:645
 msgid "optional"
 msgstr "необавезно"
 
-#: ../gourmet/exporters/exporter.py:558
+#: ../gourmet/exporters/exporter.py:562
 #, python-format
 msgid "Exported %(number)s of %(total)s recipes"
 msgstr "Извезох %(number)s од %(total)s рецепта"
 
-#: ../gourmet/exporters/exporter.py:578
+#: ../gourmet/exporters/exporter.py:582
 msgid "Export complete."
 msgstr "Извоз је завршен."
 
@@ -1346,7 +1346,7 @@ msgstr ""
 #: ../gourmet/exporters/recipe_emailer.py:55
 #: ../gourmet/plugins/email_plugin/recipe_emailer.py:29
 #: ../gourmet/plugins/email_plugin/recipe_emailer.py:48
-#: ../gourmet/plugins/key_editor/keyEditor.py:115 ../gourmet/reccard.py:3032
+#: ../gourmet/plugins/key_editor/keyEditor.py:115 ../gourmet/reccard.py:3033
 msgid "Recipes"
 msgstr "Рецепти"
 
@@ -1384,7 +1384,7 @@ msgstr "Нисте изабрали да укључите рецепт у тел
 msgid "Cuisine"
 msgstr "Кухиња"
 
-#: ../gourmet/gglobals.py:154 ../gourmet/gtk_extras/ratingWidget.py:326
+#: ../gourmet/gglobals.py:154 ../gourmet/gtk_extras/ratingWidget.py:331
 msgid "Rating"
 msgstr "Пласман"
 
@@ -1405,12 +1405,12 @@ msgid "Cooking Time"
 msgstr "Време кувања"
 
 #: ../gourmet/gglobals.py:165 ../gourmet/gglobals.py:170
-#: ../gourmet/reccard.py:1654
+#: ../gourmet/reccard.py:1655
 msgid "Instructions"
 msgstr "Упутства"
 
 #: ../gourmet/gglobals.py:166 ../gourmet/gglobals.py:171
-#: ../gourmet/reccard.py:1660
+#: ../gourmet/reccard.py:1661
 msgid "Notes"
 msgstr "Белешке"
 
@@ -1552,7 +1552,7 @@ msgstr ""
 #. self._hide_warning_slowly()
 #. return
 #: ../gourmet/gtk_extras/numberEntry.py:29
-#: ../gourmet/gtk_extras/timeEntry.py:56 ../gourmet/gtk_extras/timeEntry.py:66
+#: ../gourmet/gtk_extras/timeEntry.py:55 ../gourmet/gtk_extras/timeEntry.py:65
 msgid "Invalid input."
 msgstr "Неисправан улаз."
 
@@ -1560,7 +1560,7 @@ msgstr "Неисправан улаз."
 msgid "Not a number."
 msgstr "Није број."
 
-#: ../gourmet/gtk_extras/timeEntry.py:41
+#: ../gourmet/gtk_extras/timeEntry.py:40
 msgid ""
 "Time must begin with a number or fraction followed by a unit (minutes, "
 "hours, etc.)."
@@ -1568,11 +1568,11 @@ msgstr ""
 "Време мора да почне бројем или разломком за којим следи јединица (минути, "
 "сати, итд.)."
 
-#: ../gourmet/gtk_extras/timeEntry.py:57 ../gourmet/gtk_extras/timeEntry.py:67
+#: ../gourmet/gtk_extras/timeEntry.py:56 ../gourmet/gtk_extras/timeEntry.py:66
 msgid "Time must be expressed in hours, minutes, seconds, etc."
 msgstr "Време мора бити изражено у сатима, минутима, секундама, итд."
 
-#: ../gourmet/importers/generic_recipe_parser.py:130
+#: ../gourmet/importers/generic_recipe_parser.py:129
 msgid "yield"
 msgstr "принос"
 
@@ -1682,7 +1682,7 @@ msgstr "Подгрупа састојка"
 msgid "Hide"
 msgstr "Сакриј"
 
-#: ../gourmet/importers/interactive_importer.py:47 ../gourmet/reccard.py:1310
+#: ../gourmet/importers/interactive_importer.py:47 ../gourmet/reccard.py:1311
 msgid "Description"
 msgstr "Опис"
 
@@ -2076,7 +2076,7 @@ msgstr "Извоз у ХТМЛ"
 msgid "Create recipe webpages from recipes."
 msgstr "Направите веб страницу рецепта из рецепта."
 
-#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:122
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:126
 #, python-format
 msgid "Original Page from %s"
 msgstr "Оригинална страница из %s"
@@ -2174,80 +2174,80 @@ msgstr ""
 "Штампајте рецепте или их извезите као ПДФ; овај прикључак омогућава "
 "разноврсне распореде странице."
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:709
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:822
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:715
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:828
 msgid "Letter"
 msgstr "Писмо"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:710
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:841
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:964
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:995
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:716
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:847
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:970
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:1001
 msgid "Portrait"
 msgstr "Портрет"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:712
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:834
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:956
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:718
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:840
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:962
 msgid "Plain"
 msgstr "Равно"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:726
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:746
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:747
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:732
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:752
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:753
 msgid "cm"
 msgstr "цм"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:727
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:733
 msgid "points"
 msgstr "тачака"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:817
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:823
 msgid "11x17\""
 msgstr "11x17\""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:818
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:824
 msgid "Index Card (3.5x5\")"
 msgstr "Пописна картица (3.5x5\")"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:819
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:825
 msgid "Index Card (4x6\")"
 msgstr "Пописна картица (4x6\")"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:820
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:826
 msgid "Index Card (5x8\")"
 msgstr "Пописна картица (5x8\")"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:821
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:827
 msgid "Index Card (A7)"
 msgstr "Пописна картица (A7)"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:823
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:829
 msgid "Legal"
 msgstr "Правни"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:829
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:835
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:841
 msgid "Index Cards (3.5x5)"
 msgstr "Пописне картице (3.5x5)"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:830
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:836
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:842
 msgid "Index Cards (4x6)"
 msgstr "Пописне картице (4x6)"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:831
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:837
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:843
 msgid "Index Cards (A7)"
 msgstr "Пописне картице (A7)"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:842
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:942
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:993
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:848
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:948
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:999
 msgid "Landscape"
 msgstr "Положено"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:853
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:859
 #, python-format
 msgid "%s Column"
 msgid_plural "%s Columns"
@@ -2255,39 +2255,39 @@ msgstr[0] "%s колона"
 msgstr[1] "%s колоне"
 msgstr[2] "%s колона"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:868
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:874
 msgid "Paper _Size"
 msgstr "Величина _папира"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:870
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:876
 msgid "_Orientation"
 msgstr "_Усмерење"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:872
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:878
 msgid "_Font Size"
 msgstr "_Величина слова"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:874
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:880
 msgid "Page _Layout"
 msgstr "Распоред _странице"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:877
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:883
 msgid "Left Margin"
 msgstr "Лева маргина"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:878
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:884
 msgid "Right Margin"
 msgstr "Десна маргина"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:879
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:885
 msgid "Top Margin"
 msgstr "Горња маргина"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:880
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:886
 msgid "Bottom Margin"
 msgstr "Доња маргина"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:901
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:907
 msgid "PDF Options"
 msgstr "Опције ПДФ‑а"
 
@@ -2309,11 +2309,11 @@ msgstr "Извозим рецепте у ПДФ %(file)s."
 msgid "Recipe saved as PDF %(file)s"
 msgstr "Рецепт је сачуван као ПДФ %(file)s"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:29
+#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:27
 msgid "Page Layout"
 msgstr "Распоред странице"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:117
+#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:115
 msgid "Print Recipes"
 msgstr "Штампај рецепт"
 
@@ -2569,13 +2569,13 @@ msgstr "Приказујем састојке %(bottom)s на %(top)s од %(tot
 #: ../gourmet/plugins/key_editor/keyEditor.py:513
 #: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:101
 #: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:189
-#: ../gourmet/reccard.py:2139 ../gourmet/reccard.py:2166
+#: ../gourmet/reccard.py:2140 ../gourmet/reccard.py:2167
 msgid "Item"
 msgstr "Ставка"
 
 #: ../gourmet/plugins/key_editor/keyEditor.py:514
 #: ../gourmet/plugins/nutritional_information/nutritionModel.py:8
-#: ../gourmet/reccard.py:2138 ../gourmet/reccard.py:2165
+#: ../gourmet/reccard.py:2139 ../gourmet/reccard.py:2166
 msgid "Unit"
 msgstr "Јединица"
 
@@ -2750,7 +2750,7 @@ msgstr "<b>Хранљиве вредности</b>"
 msgid "Edit _nutritional info"
 msgstr "Уреди податке о _хранљивсти"
 
-#: ../gourmet/plugins/nutritional_information/nutritionDisplay.py:132
+#: ../gourmet/plugins/nutritional_information/nutritionDisplay.py:130
 msgid "100 grams"
 msgstr "100 грама"
 
@@ -3689,31 +3689,31 @@ msgid "source"
 msgstr "извору"
 
 #. menus
-#: ../gourmet/reccard.py:211 ../gourmet/reccard.py:863
+#: ../gourmet/reccard.py:212 ../gourmet/reccard.py:864
 msgid "_Recipe"
 msgstr "_Рецепт"
 
-#: ../gourmet/reccard.py:215
+#: ../gourmet/reccard.py:216
 msgid "Export recipe"
 msgstr "Извези рецепт"
 
-#: ../gourmet/reccard.py:216
+#: ../gourmet/reccard.py:217
 msgid "Export selected recipe (save to file)"
 msgstr "Извези изабране рецепте (сачувај у датотеку)"
 
-#: ../gourmet/reccard.py:218
+#: ../gourmet/reccard.py:219
 msgid "_Delete recipe"
 msgstr "_Обриши рецепт"
 
-#: ../gourmet/reccard.py:219
+#: ../gourmet/reccard.py:220
 msgid "Delete this recipe"
 msgstr "Обришите овај рецепт"
 
-#: ../gourmet/reccard.py:230
+#: ../gourmet/reccard.py:231
 msgid "Adjust units when multiplying"
 msgstr "Дотерај јединице приликом множења"
 
-#: ../gourmet/reccard.py:232
+#: ../gourmet/reccard.py:233
 msgid ""
 "Change units to make them more readable where possible when multiplying."
 msgstr ""
@@ -3721,15 +3721,15 @@ msgstr ""
 
 #. ('Email',None,_('E-_mail recipe'),
 #. None,None,self.email_cb),
-#: ../gourmet/reccard.py:240
+#: ../gourmet/reccard.py:241
 msgid "Print recipe"
 msgstr "Штампај рецепт"
 
-#: ../gourmet/reccard.py:243
+#: ../gourmet/reccard.py:244
 msgid "Forget remembered optional ingredients"
 msgstr "Заборави упамћене додатне састојке"
 
-#: ../gourmet/reccard.py:244
+#: ../gourmet/reccard.py:245
 msgid ""
 "Before adding to shopping list, ask about all optional ingredients, even "
 "ones you previously wanted remembered"
@@ -3737,123 +3737,123 @@ msgstr ""
 "Пре додавања на списак за куповину, питаће о свим додатним састојцима, чак и "
 "онима које сте претходно заборавили"
 
-#: ../gourmet/reccard.py:246
+#: ../gourmet/reccard.py:247
 msgid "Export Recipe"
 msgstr "Извези рецепт"
 
-#: ../gourmet/reccard.py:608
+#: ../gourmet/reccard.py:609
 msgid "You have unsaved changes."
 msgstr "Имате несачуване измене."
 
-#: ../gourmet/reccard.py:609
+#: ../gourmet/reccard.py:610
 msgid "Apply changes before printing?"
 msgstr "Да применим измене пре штампања?"
 
-#: ../gourmet/reccard.py:700 ../gourmet/recipeIdentifier.py:93
+#: ../gourmet/reccard.py:701 ../gourmet/recipeIdentifier.py:93
 msgid "(Optional)"
 msgstr "(Необавезно)"
 
-#: ../gourmet/reccard.py:755
+#: ../gourmet/reccard.py:756
 #, python-format
 msgid "Unable to find recipe %s in database."
 msgstr "Не могу да пронађем рецепт „%s“ у бази података."
 
-#: ../gourmet/reccard.py:847
+#: ../gourmet/reccard.py:848
 msgid "Edit Recipe:"
 msgstr "Уреди рецепт:"
 
-#: ../gourmet/reccard.py:868
+#: ../gourmet/reccard.py:869
 msgid "Save edits to database"
 msgstr "Сачувај измене у базу података"
 
 #. show_pref_dialog
-#: ../gourmet/reccard.py:877
+#: ../gourmet/reccard.py:878
 msgid "View Recipe Card"
 msgstr "Прикажи картицу рецепта"
 
-#: ../gourmet/reccard.py:939
+#: ../gourmet/reccard.py:940
 msgid "Edit"
 msgstr "Уреди"
 
-#: ../gourmet/reccard.py:1046 ../gourmet/reccard.py:1047
+#: ../gourmet/reccard.py:1047 ../gourmet/reccard.py:1048
 #, python-format
 msgid "Save changes to %s"
 msgstr "Сачувај измене у „%s“"
 
-#: ../gourmet/reccard.py:1137
+#: ../gourmet/reccard.py:1138
 msgid "Add ingredient"
 msgstr "Додај састојак"
 
-#: ../gourmet/reccard.py:1139
+#: ../gourmet/reccard.py:1140
 msgid "Add group"
 msgstr "Додај групу"
 
-#: ../gourmet/reccard.py:1141
+#: ../gourmet/reccard.py:1142
 msgid "Paste ingredients"
 msgstr "Убаци састојак"
 
-#: ../gourmet/reccard.py:1143
+#: ../gourmet/reccard.py:1144
 msgid "Import from file"
 msgstr "Увези из датотеке"
 
-#: ../gourmet/reccard.py:1145
+#: ../gourmet/reccard.py:1146
 msgid "Add _recipe"
 msgstr "Додај _рецепт"
 
-#: ../gourmet/reccard.py:1146
+#: ../gourmet/reccard.py:1147
 msgid "Add another recipe as an ingredient in this recipe"
 msgstr "Додајте још један рецепт као састојак овом рецепту"
 
-#: ../gourmet/reccard.py:1150
+#: ../gourmet/reccard.py:1151
 msgid "Delete"
 msgstr "Обриши"
 
-#: ../gourmet/reccard.py:1156
+#: ../gourmet/reccard.py:1157
 msgid "Up"
 msgstr "Горе"
 
-#: ../gourmet/reccard.py:1158
+#: ../gourmet/reccard.py:1159
 msgid "Down"
 msgstr "Доле"
 
 #. FIXME
-#: ../gourmet/reccard.py:1204
+#: ../gourmet/reccard.py:1205
 msgid "Choose a file containing your ingredient list."
 msgstr "Изаберите датотеку која садржи ваш списак састојака."
 
-#: ../gourmet/reccard.py:1389
+#: ../gourmet/reccard.py:1390
 #, python-format
 msgid "Couldn't make sense of %s as number of yields"
 msgstr "Не могу да осмислим %s као број приноса"
 
-#: ../gourmet/reccard.py:2137 ../gourmet/reccard.py:2164
+#: ../gourmet/reccard.py:2138 ../gourmet/reccard.py:2165
 msgid "Amt"
 msgstr "Кол"
 
-#: ../gourmet/reccard.py:2141 ../gourmet/reccard.py:2167
+#: ../gourmet/reccard.py:2142 ../gourmet/reccard.py:2168
 msgid "Optional"
 msgstr "Необавезно"
 
-#: ../gourmet/reccard.py:2279
+#: ../gourmet/reccard.py:2280
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
 msgstr "Рецепт „%s“ (ИБ %s) није у нашој бази података."
 
-#: ../gourmet/reccard.py:2600
+#: ../gourmet/reccard.py:2601
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
 msgstr "Претворени: %(amt)s %(unit)s"
 
-#: ../gourmet/reccard.py:2602
+#: ../gourmet/reccard.py:2603
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
 msgstr "Нису претворени: %(amt)s %(unit)s"
 
-#: ../gourmet/reccard.py:2606
+#: ../gourmet/reccard.py:2607
 msgid "Changed unit."
 msgstr "Измени јединицу."
 
-#: ../gourmet/reccard.py:2607
+#: ../gourmet/reccard.py:2608
 #, python-format
 msgid ""
 "You have changed the unit for %(item)s from %(old)s to %(new)s. Would you "
@@ -3862,45 +3862,45 @@ msgstr ""
 "Изменили сте јединицу за „%(item)s“ из %(old)s у %(new)s. Да ли желите да "
 "претворите и количину или не?"
 
-#: ../gourmet/reccard.py:2618
+#: ../gourmet/reccard.py:2619
 #, python-format
 msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
 msgstr "Претворио сам %(old_amt)s %(old_unit)s у %(new_amt)s %(new_unit)s"
 
-#: ../gourmet/reccard.py:2630
+#: ../gourmet/reccard.py:2631
 #, python-format
 msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
 msgstr "Не могу да претворим из %(old_unit)s у %(new_unit)s"
 
-#: ../gourmet/reccard.py:2685
+#: ../gourmet/reccard.py:2686
 msgid "Adding Ingredient Group"
 msgstr "Додавање групе састојака"
 
-#: ../gourmet/reccard.py:2686
+#: ../gourmet/reccard.py:2687
 msgid "Enter a name for new subgroup of ingredients"
 msgstr "Унесите назив за нову подгрупу састојака"
 
-#: ../gourmet/reccard.py:2687
+#: ../gourmet/reccard.py:2688
 msgid "Name of group:"
 msgstr "Назив групе:"
 
-#: ../gourmet/reccard.py:2953
+#: ../gourmet/reccard.py:2954
 msgid "Choose recipe"
 msgstr "Изабери рецепт"
 
-#: ../gourmet/reccard.py:2990
+#: ../gourmet/reccard.py:2991
 msgid "Recipe cannot call itself as an ingredient!"
 msgstr "Рецепт не може сам себе да позове као састојак!"
 
-#: ../gourmet/reccard.py:2991 ../gourmet/shopping.py:329
+#: ../gourmet/reccard.py:2992 ../gourmet/shopping.py:329
 msgid "Infinite recursion is not allowed in recipes!"
 msgstr "Неограничено дубачење није дозвољено у рецептима!"
 
-#: ../gourmet/reccard.py:3012
+#: ../gourmet/reccard.py:3013
 msgid "You haven't selected any recipes!"
 msgstr "Нисте изабрали ниједан рецепт!"
 
-#: ../gourmet/reccard.py:3024
+#: ../gourmet/reccard.py:3025
 #, python-format
 msgid "How much of %(title)s does your recipe call for?"
 msgstr "Колико „%(title)s“ ваш рецепт позива?"
@@ -3945,116 +3945,116 @@ msgstr "Приказујем рецепте %(bottom)s до %(top)s од %(total
 msgid "%s in %s"
 msgstr "%s у %s"
 
-#: ../gourmet/shopgui.py:122 ../gourmet/shopgui.py:129
+#: ../gourmet/shopgui.py:121 ../gourmet/shopgui.py:128
 msgid "Change _Category"
 msgstr "Промени _категорију"
 
-#: ../gourmet/shopgui.py:123
+#: ../gourmet/shopgui.py:122
 msgid "Create new category"
 msgstr "Направите нову категорију"
 
-#: ../gourmet/shopgui.py:131
+#: ../gourmet/shopgui.py:130
 msgid "Change the category of the currently selected item"
 msgstr "Измените категорију тренутно изабране ставке"
 
-#: ../gourmet/shopgui.py:137
+#: ../gourmet/shopgui.py:136
 msgid "Pantry"
 msgstr "Шпајз"
 
 #. name
 #. stock
-#: ../gourmet/shopgui.py:140
+#: ../gourmet/shopgui.py:139
 msgid "Move to _Shopping List"
 msgstr "Премести на _списак за куповину"
 
 #. text
-#: ../gourmet/shopgui.py:141
+#: ../gourmet/shopgui.py:140
 msgid "<Ctrl>B"
 msgstr "<Ктрл>Б"
 
 #. name
 #. stock
-#: ../gourmet/shopgui.py:150
+#: ../gourmet/shopgui.py:149
 msgid "Move to _pantry"
 msgstr "Премести у _шпајз"
 
 #. text
-#: ../gourmet/shopgui.py:151
+#: ../gourmet/shopgui.py:150
 msgid "<Ctrl>D"
 msgstr "<Ктрл>Д"
 
 #. key-command
-#: ../gourmet/shopgui.py:152
+#: ../gourmet/shopgui.py:151
 msgid "Remove from shopping list"
 msgstr "Уклони са списка за куповину"
 
-#: ../gourmet/shopgui.py:173
+#: ../gourmet/shopgui.py:172
 #, python-format
 msgid "Move selected items into %s"
 msgstr "Премести изабране ставке у %s"
 
-#: ../gourmet/shopgui.py:210
+#: ../gourmet/shopgui.py:209
 msgid "_Shopping List"
 msgstr "_Списак за куповину"
 
-#: ../gourmet/shopgui.py:211
+#: ../gourmet/shopgui.py:210
 msgid "Already Have (_Pantry Items)"
 msgstr "Већ имам (Ставке у _шпајзу)"
 
-#: ../gourmet/shopgui.py:472
+#: ../gourmet/shopgui.py:471
 msgid "Enter Category"
 msgstr "Унеси категорију"
 
-#: ../gourmet/shopgui.py:473
+#: ../gourmet/shopgui.py:472
 #, python-format
 msgid "Category to add %s to"
 msgstr "Категорија у коју додати „%s“"
 
-#: ../gourmet/shopgui.py:474
+#: ../gourmet/shopgui.py:473
 msgid "Category:"
 msgstr "Категорија:"
 
-#: ../gourmet/shopgui.py:587
+#: ../gourmet/shopgui.py:586
 msgid "_Recipes"
 msgstr "_Рецепти"
 
-#: ../gourmet/shopgui.py:610
+#: ../gourmet/shopgui.py:609
 msgid "_Add items:"
 msgstr "_Додај ставке:"
 
-#: ../gourmet/shopgui.py:648
+#: ../gourmet/shopgui.py:647
 msgid "Remove Recipes"
 msgstr "Уклони рецепте"
 
-#: ../gourmet/shopgui.py:649
+#: ../gourmet/shopgui.py:648
 msgid "Remove recipes from shopping list"
 msgstr "Уклоните рецепте са списка за куповину"
 
-#: ../gourmet/shopgui.py:683
+#: ../gourmet/shopgui.py:682
 msgid "Add items"
 msgstr "Додај ставке"
 
-#: ../gourmet/shopgui.py:685
+#: ../gourmet/shopgui.py:684
 msgid "Add arbitrary items to shopping list"
 msgstr "Додај произвољне ставке на списак за куповину"
 
-#: ../gourmet/shopgui.py:751
+#: ../gourmet/shopgui.py:750
 msgid "x"
 msgstr "количина"
 
-#: ../gourmet/shopgui.py:836
+#: ../gourmet/shopgui.py:835
 msgid "No recipes selected. Do you want to clear the entire list?"
 msgstr "Није изабран ниједан рецепт. Да ли желите да очистите читав списак?"
 
-#: ../gourmet/shopgui.py:846
+#: ../gourmet/shopgui.py:845
 msgid "Save Shopping List As..."
 msgstr "Сачувај списак за куповину као..."
 
-#: ../gourmet/shopgui.py:899
+#: ../gourmet/shopgui.py:898
 msgid "Select optional ingredients"
 msgstr "Изабери додатне састојке"
 
-#: ../gourmet/shopgui.py:900
+#: ../gourmet/shopgui.py:899
 msgid ""
 "Please specify which of the following optional ingredients you'd like to "
 "include on your shopping list."

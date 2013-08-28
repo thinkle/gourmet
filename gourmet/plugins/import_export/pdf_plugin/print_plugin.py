@@ -138,7 +138,7 @@ class PDFRecipePrinter (PDFPrinter):
         print summary
         print traceback
         self.printing_error = True
-        raise
+        raise Exception('There was an error generating a PDF to print')
 
 def setup_printer (pp):
     po = gtk.PrintOperation()
