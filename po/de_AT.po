@@ -1263,7 +1263,7 @@ msgstr "wahlweise"
 #: ../gourmet/exporters/exporter.py:558
 #, python-format
 msgid "Exported %(number)s of %(total)s recipes"
-msgstr "%(number) von %(total) Rezepten exportiert"
+msgstr "%(number)s von %(total)s Rezepten exportiert"
 
 #: ../gourmet/exporters/exporter.py:578
 msgid "Export complete."
@@ -3856,7 +3856,7 @@ msgstr "Kategorie eingeben"
 #: ../gourmet/shopgui.py:473
 #, python-format
 msgid "Category to add %s to"
-msgstr "Kategorie % hinzufügen"
+msgstr "Kategorie, zu der %s hinzugefügt werden soll"
 
 #: ../gourmet/shopgui.py:474
 msgid "Category:"
