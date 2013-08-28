@@ -1,4 +1,4 @@
-gourmet (0.17.0-2) UNRELEASED; urgency=low
+gourmet (0.16.1-1) UNRELEASED; urgency=low
 
   * New upstream release (LP: #1157969).
   * debian/compat: Bump to 9.
@@ -11,7 +11,7 @@ gourmet (0.17.0-2) UNRELEASED; urgency=low
   * debian/rules: Remove xz compression from override_dh_builddeb section
     as that is default with current versions of dpkg.
 
- -- Bernhard Reiter <ockham@raz.or.at>  Wed, 07 Aug 2013 14:10:26 +0200
+ -- Bernhard Reiter <ockham@raz.or.at>  Wed, 28 Aug 2013 22:08:17 +0200
 
 gourmet (0.16.0-1) unstable; urgency=low
 
