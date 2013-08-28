@@ -7,7 +7,10 @@ gourmet (0.16.1-1) UNRELEASED; urgency=low
     - Drop Pre-Depends: dpkg (>= 1.15.6~) as it's obsolete now
       that Ubuntu 12.04 LTS was released and 10.04 LTS Desktop edition has
       reached EOL.
-  * debian/copyright: s/thinkle.github.com/thinkle.github.io/
+  * debian/copyright:
+    - Add copyright and license info for
+      gourmet/plugins/python_shell/ipython_view.py
+    - s/thinkle.github.com/thinkle.github.io/
   * debian/rules: Remove xz compression from override_dh_builddeb section
     as that is default with current versions of dpkg.
   * debian/watch: Update to reflect new releases location on Github.
