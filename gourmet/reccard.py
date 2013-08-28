@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 import gc
-import gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
+import gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, StringIO, pango, string
+try:
+    from PIL import Image
+except ImportError:
+    import Image
 import types
 import xml.sax.saxutils, pango
 import exporters.exportManager
