@@ -228,7 +228,7 @@ class ImportTestCase (unittest.TestCase):
 
     # AllRecipes import is broken as of 1/2/07
     #def testAllRecipes (self):
-    #    self.it.run_test({'url':'http://beef.allrecipes.com/az/AsianBeefWithSnowPeas.asp',
+    #    self.it.run_test({'url':'http://allrecipes.com/recipe/asian-beef-with-snow-peas/',
     #
     #                 'test':{'title':'Asian Beef with Snow Peas',
     #                         'all_ings_have_amounts':True,
