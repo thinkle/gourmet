@@ -1,5 +1,3 @@
-import sys
-sys.path.append('/usr/share/gourmet/')
 import gtk
 import poppler
 import os.path
@@ -140,7 +138,7 @@ class PDFRecipePrinter (PDFPrinter):
         print summary
         print traceback
         self.printing_error = True
-        raise
+        raise Exception('There was an error generating a PDF to print')
 
 def setup_printer (pp):
     po = gtk.PrintOperation()

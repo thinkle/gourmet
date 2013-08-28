@@ -16,11 +16,10 @@
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 ### USA 
 
-import gtk, re, gobject, time
+import gtk
 from gettext import gettext as _
 import gourmet.convert as convert
-import gobject
-import cb_extras, validatingEntry
+import validatingEntry
 
 TIME_TO_READ = 1000
 
@@ -91,9 +90,6 @@ class TimeEntry (validatingEntry.ValidatingEntry):
 
     def get_value (self):
         return self.conv.timestring_to_seconds(self.entry.get_text())
-
-
-if gtk.pygtk_version[1] < 8: gobject.type_register(TimeEntry)
         
 def make_time_entry():
     te=TimeEntry()

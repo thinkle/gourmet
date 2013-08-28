@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 import gc
-import gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, Image, StringIO, pango, string
+import gtk, gobject, os.path, time, os, sys, re, threading, gtk.gdk, StringIO, pango, string
+try:
+    from PIL import Image
+except ImportError:
+    import Image
 import types
 import xml.sax.saxutils, pango
 import exporters.exportManager
@@ -13,7 +17,6 @@ from gtk_extras import dialog_extras as de
 from gtk_extras.dialog_extras import show_amount_error
 from gtk_extras import treeview_extras as te
 from gtk_extras import cb_extras as cb
-from gtk_extras import chooserNotebook
 from exporters.printer import get_print_manager
 from gdebug import *
 from gglobals import *
@@ -21,9 +24,7 @@ from gettext import gettext as _
 from gettext import ngettext
 import ImageExtras as ie
 from importers.importer import parse_range
-from gtk_extras.FauxActionGroups import ActionManager
 from gtk_extras import mnemonic_manager
-from gtk_extras import LinkedTextView
 from gtk_extras import fix_action_group_importance
 from gtk_extras.dialog_extras import UserCancelledError
 from plugin import RecDisplayModule, RecEditorModule, ToolPlugin, RecDisplayPlugin, RecEditorPlugin, IngredientControllerPlugin

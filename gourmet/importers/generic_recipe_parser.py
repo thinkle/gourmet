@@ -1,4 +1,3 @@
-import gtk
 import re
 import gourmet.convert as convert
 import unittest

@@ -11,7 +11,6 @@ from gglobals import *
 from gettext import gettext as _
 #from nutrition.nutritionLabel import NutritionLabel
 #from nutrition.nutrition import NutritionInfoList
-from gtk_extras.FauxActionGroups import ActionManager
 import plugin_loader, plugin
 from shopping import ShoppingList
 

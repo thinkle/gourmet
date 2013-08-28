@@ -239,21 +239,40 @@ kg. to 1 liter.
 When you print from Gourmet, you can choose a variety of useful settings under
 the "Page Layout" tab of the print dialog.   This will allow you to choose the format you want to print in (index cards, columns, etc.) and the base font size you would like to use.
 
-11. Further Questions
+11. Where does Gourmet store its data (including my recipes)?
 
-11.a. What if I have a good idea for how to improve Gourmet?
+On Linux, Gourmet stores its data by default in ~/.gourmet (i.e. a hidden
+subfolder of your home directory named .gourmet -- mind the dot).
+On Windows, the gourmet directory (without the dot) is buried somewhere
+in your user directory (normally <UserDir>\AppData\Roaming\gourmet).
+If you can't find it, use Windows Explorer to search it within your user
+directory.
+
+You can change that location by use of the `--gourmet-directory` command
+line option. (Try `gourmet --help` for a list of all available options.)
+
+Also note the `--database-url` option which allows specifying an
+[SQLAlchemy-style database URL](http://docs.sqlalchemy.org/en/rel_0_8/core/engines.html#database-urls)
+(which by default is something like `sqlite:///~/.gourmet/recipes.db`, but
+could also be e.g. `mysql://gourmetrecipe:password@localhost/gourmetrecipe`
+if you're using a MySQL database, which by the way could also reside on some
+remote server.)
+
+12. Further Questions
+
+12.a. What if I have a good idea for how to improve Gourmet?
 
 Please submit a an issue tagged with the 'feature-request' label (and possibly
 other applicable labels) at the following website:
 https://github.com/thinkle/gourmet/issues
 
-11.b. What if I find a bug?
+12.b. What if I find a bug?
 
 Please submit an issue tagged with the 'bug' label (and possibly other
 applicable labels)  at the following website:
 https://github.com/thinkle/gourmet/issues
 
-11.c. What if I have a question not answered here?
+12.c. What if I have a question not answered here?
 
 Post your question in the Gourmet Help Forum here:
 https://answers.launchpad.net/gourmet

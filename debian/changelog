@@ -1,3 +1,23 @@
+gourmet (0.16.1-0ubuntu1) saucy; urgency=low
+
+  * New upstream release (LP: #1157969).
+  * debian/compat: Bump to 9.
+  * debian/control:
+    - Bump debhelper Build-Depends to (>= 9).
+    - Drop Pre-Depends: dpkg (>= 1.15.6~) as it's obsolete now
+      that Ubuntu 12.04 LTS was released and 10.04 LTS Desktop edition has
+      reached EOL.
+  * debian/copyright:
+    - Add copyright and license info for
+      gourmet/plugins/python_shell/ipython_view.py
+    - s/thinkle.github.com/thinkle.github.io/
+  * debian/rules: Remove xz compression from override_dh_builddeb section
+    as that is default with current versions of dpkg.
+  * debian/patches/lc-all-c, debian/patches/series: Remove (fixed upstream).
+  * debian/watch: Update to reflect new releases location on Github.
+
+ -- Bernhard Reiter <ockham@raz.or.at>  Wed, 28 Aug 2013 22:08:17 +0200
+
 gourmet (0.16.0-0ubuntu1) raring; urgency=low
 
   [ Bernhard Reiter ]

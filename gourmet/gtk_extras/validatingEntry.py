@@ -17,7 +17,7 @@
 ### USA 
 
 import gobject
-import gtk, re, cb_extras, gobject, time
+import gtk, time
 
 TIME_TO_READ = 1000
 
@@ -134,5 +134,3 @@ class ValidatingEntry (gtk.VBox, gobject.GObject):
         This will be called when the user has finished typing.
         """
         raise NotImplementedError
-        
-if gtk.pygtk_version[1] < 8: gobject.type_register(ValidatingEntry)

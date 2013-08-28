@@ -62,10 +62,6 @@ def show_timer_cb (tv,l,note,c):
     """Callback that expects a widget, a time string, and a converter instance"""
     timer.show_timer(c.timestring_to_seconds(l),
                note)
-    
-
-if gtk.pygtk_version[1] < 8:
-    gobject.type_register(LinkedTimeView)    
 
 if __name__ == '__main__':
     

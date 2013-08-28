@@ -523,7 +523,7 @@ if __name__ == '__main__':
     ii.w.connect('delete-event',gtk.main_quit)
     ii.w.show_all()
     if True:
-        ii.images = ['http://thinkle.github.com/gourmet/images/screenshots/CardView.png']
+        ii.images = ['http://thinkle.github.io/gourmet/images/screenshots/CardView.png']
         ii.set_text(
         u"""
 Quick Pesto Dinner

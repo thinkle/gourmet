@@ -32,7 +32,7 @@ CREDITS = "Luc Charest"
 
 fields={'cuisine': ['Américaine','Italienne','Mexicaine'
                     'Américaine/sud-ouest','Asiatique/thaïlandaise','Asiatique/vietnamienne',
-                    'Asiatique/chinoise','Asiatique/japonaise','Canadienne'
+                    'Asiatique/chinoise','Asiatique/japonaise','Asiatique/indienne','Canadienne'
 		    'Canadienne/québécoise','Grecque','Française'],
         'rating' : ['5 - Excellent','4 - Très bon','3 - Bon','2 - Moyen','1 - Mauvais','(non-testé)'],
         'source' : [],

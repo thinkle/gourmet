@@ -8,7 +8,7 @@ import parser_data
 class NutritionDataPlugin (DatabasePlugin):
 
     name = 'nutritondata'
-    version = 3
+    version = 4
 
     def setup_usda_weights_table (self):
         self.db.usda_weights_table = Table('usda_weights',self.db.metadata,
@@ -23,8 +23,8 @@ class NutritionDataPlugin (DatabasePlugin):
     def setup_nutrition_conversions_table (self):
         self.db.nutritionconversions_table = Table('nutritionconversions',self.db.metadata,
                                                 Column('id',Integer(),primary_key=True),
-                                                Column('ingkey',String(length=None),**{}),
-                                                Column('unit',String(length=None),**{}), 
+                                                Column('ingkey',String(length=255),**{}),
+                                                Column('unit',String(length=255),**{}), 
                                                 Column('factor',Float(),**{}), # Factor is the amount we multiply
                                                 # from unit to get 100 grams
                                                 ) # NUTRITION_CONVERSIONS
@@ -82,5 +82,7 @@ class NutritionDataPlugin (DatabasePlugin):
             self.db.alter_table('nutritionaliases',self.setup_nutritionaliases_table,
                  {},['ingkey','ndbno','density_equivalent'])
 
-            
-                                        
+        if plugin_stored in ['1','2','3']:
+            # Set the length parameter of the ingkey and unit Strings to 255.
+            self.db.alter_table('nutritionconversions',self.setup_nutritionconversions_table,
+                 {},['id','factor'])

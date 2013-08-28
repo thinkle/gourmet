@@ -1,4 +1,4 @@
-import htmllib, urllib, re, StringIO, tempfile, os, os.path
+import urllib, re, tempfile, os.path
 import importer
 import BeautifulSoup
 import socket

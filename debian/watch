@@ -1,2 +1,3 @@
 version=3
-https://launchpad.net/gourmet/+download https://launchpad.net/gourmet/main/.*/\+download/gourmet-(.+)\.tar\.bz2
+http://github.com/thinkle/gourmet/tags \
+/thinkle/gourmet/archive/(\d\S*)\.tar\.gz

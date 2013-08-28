@@ -2,7 +2,7 @@ import gourmet.convert as convert
 import gtk
 from gourmet.gglobals import *
 from gourmet.gdebug import *
-from gourmet.gtk_extras.cb_extras import *
+from gourmet.gtk_extras.cb_extras import cb_get_active_text, cb_set_active_text, setup_typeahead
 import gourmet.GourmetRecipeManager
 from gettext import gettext as _
 import os

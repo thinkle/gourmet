@@ -29,9 +29,9 @@
 # Feel free to change the number or content of categories to be consistent
 # with what users in your locale are likely to be familiar with.
 
-fields={'cuisine': ['American','Italian','Mexican',
+fields={'cuisine': ['American','Italian','French','Mexican',
                     'Southwestern','Asian/Thai','Asian/Vietnamese',
-                    'Asian/Chinese','Asian/Japanese',],
+                    'Asian/Chinese','Asian/Japanese','Asian/Indian'],
         'rating' : ['Excellent','Great','Good','Fair','Poor'],
         'source' : [],
         'category' : ['Dessert','Entree','Salad','Soup',

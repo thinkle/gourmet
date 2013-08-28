@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import sys
-sys.path.append('/usr/share/gourmet') # for debian
 
 from django.core.management import execute_manager
 try:

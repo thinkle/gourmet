@@ -120,8 +120,6 @@ class RangeEntry (NumberEntry):
         if len(split)>2: return None
         else:
             return tuple([convert.frac_to_float(t) for t in split])
-        
-if gtk.pygtk_version[1] < 8: gobject.type_register(NumberEntry)
 
 if __name__ == '__main__':
     w = gtk.Window()

@@ -1,4 +1,4 @@
-include ChangeLog CHANGES CODING FAQ build_rpms.py gourmet.1 gourmet.desktop.in LICENSE MANIFEST.in README.md TODO TESTS setup.cfg setup.py setup_win.py test_deb.sh test_tarball.sh
+include ChangeLog CHANGES CODING FAQ build_rpms.py gourmet.1 gourmet.desktop.in INSTALL.md LICENSE MANIFEST.in README.md README.windows.md TODO TESTS setup.cfg setup.py test_deb.sh test_tarball.sh
 include bin/gourmet
 recursive-include data *
 recursive-include gourmet *.py *.ui *.mk *.mx2 *.mmf *.kreml *.db *.sh *.html *.css *.js *.grmt guiprefs

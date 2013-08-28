@@ -19,6 +19,8 @@ fields={'cuisine': [
                     'Čínska pekingská',
                     'Čínska sečuánska',
                     'Česká',
+                    'Francouzská',
+                    'Indická',
                     'Japonská',
                     'Juhozápadná',
                     'Maďarská',

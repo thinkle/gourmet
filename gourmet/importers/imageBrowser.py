@@ -4,7 +4,7 @@ from gourmet.gtk_extras.thumbnail import check_for_thumbnail,fetched_uris
 from gourmet.gtk_extras.dialog_extras import ModalDialog
 import unittest
 from gourmet.gdebug import debug,TimeAction
-import threading, Queue, time
+import threading, time
 
 def grab_thumbnail (uri, type, iqueue, pqueue, progress_portion=1, progress_start_at=0):
     #print 'GRAB THUMBNAIL',uri,type,progress_portion,progress_start_at
@@ -44,8 +44,6 @@ class ImageBrowser (gtk.IconView):
         self.set_selection_mode(gtk.SELECTION_SINGLE)
         self.set_model(self.model)
         self.set_pixbuf_column(0)
-        #self.image_queue = Queue.Queue()
-        #self.progress_queue = Queue.Queue()
         self.image_queue = []
         self.progress_queue = []
         self.to_add_lock = threading.Lock()
@@ -117,7 +115,6 @@ class ImageBrowser (gtk.IconView):
             self.prog = progress,text
             self.set_progress(float(progress),text)
             #print 'UPDATE_PROGRESS',time.time(),progress,text
-        #except Queue.Empty:
         except IndexError:
             if not self.adding and hasattr(self,'progressbar'):
                 self.progressbar.hide()

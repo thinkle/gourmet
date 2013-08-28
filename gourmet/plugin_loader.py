@@ -283,7 +283,7 @@ class PluginSet:
                 key,val = line.split('=')
                 key = key.strip(); val = val.strip()
                 key = key.strip('_')
-                if '[' in key:
+                if (loc is not None) and ('[' in key):
                     key,locale = key.strip(']').split('[')
                     if locale==loc:
                         self.props[key] = val
