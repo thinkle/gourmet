@@ -13,6 +13,8 @@ gourmet (0.16.1-1) UNRELEASED; urgency=low
     - s/thinkle.github.com/thinkle.github.io/
   * debian/rules: Remove xz compression from override_dh_builddeb section
     as that is default with current versions of dpkg.
+  * debian/patches/changelog, debian/patches/series:
+    Add upstream changelog entries since 0.16.0
   * debian/patches/lc-all-c, debian/patches/series: Remove (fixed upstream).
   * debian/watch: Update to reflect new releases location on Github.
 

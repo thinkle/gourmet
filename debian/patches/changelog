@@ -1,0 +1,178 @@
+Description: Add upstream changelog entries since 0.16.0.
+Origin: https://github.com/thinkle/gourmet/commit/76ca4925a5f4e98de741cb5c014ae8b5f7663842
+Author: Bernhard Reiter <ockham@raz.or.at>
+--- a/ChangeLog
++++ b/ChangeLog
+@@ -1,3 +1,172 @@
++2013-08-29  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Update version to 0.16.1 in gourmet/version.py.
++    * Update MANIFEST.in.
++    * Update translation files.
++
++2013-08-28  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Little schema.org parser improvement.
++    * Properly raise an exception in print_plugin.py.
++    * Fix a translation bug in po/de_AT.po.
++    * Update allrecipes.com test recipe URL.
++      In (commented out and still dysfunctional part of) testImporters.py.
++
++2013-08-27  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Merge pull request #724 from sappjw/master
++      Replace more 'Image' imports with Pillow-compatible blocks
++    * Fix allrecipes.com importer, by extending our newly created schema_org_parser.
++      Also add a test gourmet/test/test_allrecipes_com_plugin.py which is capable of
++      testing the importer offline, using gourmet/test/recipe_files/allrecipes_com.html.
++      (Trying to integrate such an offline test into the existing, commented-out
++      allrecipes.com test in gourmet/test/testImporters.py proved a nightmare as
++      the importer code is tightly interwoven with the web page download and interactive
++      importer functions.)
++      Fixes #261
++    * Make ica.se importer aware of a recipe's yields property.
++    * Scrap more schema.org/Recipe fields.
++    * Remove obsolete gtk import from gourmet/importers/generic_recipe_parser.py.
++    * Have ica_se tests check for presence of category field.
++    * Factor schema.org parsing out of ica_se_plugin.py into a newly created schema_org_parser.py.
++    * Have gourmet/test/test_ica_se_plugin.py also test for cooktime parsing.
++    * Small fix for more a expressive test result.
++    * Small fix, mainly for future BeautifulSoup4 compliance.
++    * Move foodnetwork and ica.se importer tests to gourmet/test/.
++
++2013-08-27  Joe Sapp  <joe@babyjoe>
++
++    * Replace more 'Image' imports with Pillow-compatible blocks
++
++2013-08-25  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Fix testImporters.py.
++      Among other things, use a temporary in-memory SQLite database for testing.
++
++2013-08-24  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Truncate Source field in PDF export.
++      Fixes #721
++
++2013-08-10  Bernhard Reiter  <ockham@raz.or.at>
++
++    * One more string exception to fix.
++
++2013-08-09  Bernhard Reiter  <ockham@raz.or.at>
++
++    * s/thinkle.github.com/thinkle.github.io/
++
++2013-08-06  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Merge pull request #723 from gyp/master
++      importing gettext in exportManager as it has localized strings
++
++2013-08-06  Peter Gyongyosi  <gyp@balabit.hu>
++
++    * importing gettext in exportManager as it has localized strings
++      This fixes https://bugs.launchpad.net/gourmet/+bug/1157969
++
++2013-08-04  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Add INSTALL.md.
++
++2013-07-30  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Add db upgrade logic for the fix introduced with the previous commit.
++      Fixes #711.
++    * Merge pull request #722 from rleibman/master
++      Fixing issue with mysql, VARCHAR requires a length
++
++2013-07-30  Roberto Leibman  <roberto@leibmanland.com>
++
++    * Fixing issue with mysql, VARCHAR requires a length, I figure 255 is probably good enough
++
++2013-06-01  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Remove obsolete tools/upgrade_pre_script.py.
++    * Remove hardwired sys.path.append('/usr/share/gourmet') lines.
++
++2013-05-27  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Additional fix for plugins/python_shell/ipython_view.py.
++    * Fix interactive shell plugin to work with current IPython versions.
++      Achieved by updating plugins/python_shell/ipython_view.py
++      (which was taken from the Accerciser project)
++      to the commit before Accerciser's Python3 migration [1],
++      reverting their previous PyGI migration [2].
++      [1] https://git.gnome.org/browse/accerciser/commit/?id=b9bb2f48eebbf9f21ca633b6ecd6a58d6befe04a
++      [2] https://git.gnome.org/browse/accerciser/commit/?id=48b8c06d598f84943ab7a0af1259408b7409484d
++    * Prepare plugins/python_shell/ipython_view.py for update.
++
++2013-05-17  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Remove a bunch of unused imports.
++    * Fix setup.py so it works on non-Windows platforms again.
++    * Remove obsolete checks for PyGTK version < 2.8.
++    * Remove obsolete gtk_extras/ThumbnailGenerator.py.
++    * Remove obsolete gtk_extras/chooserNotebook.py.
++    * Remove obsolete gtk_extras/fauxDruid.py.
++    * Remove obsolete gtk_extras/FauxActionGroups.py.
++
++2013-05-07  jens persson  <jens@persson.cx>
++
++    * Buglet found with tests and som whitespace triming in foodnetwork plugin
++    * Add tests for foodnetwork plugin
++    * Fix buglet discovered due to tests
++    * Add tests for ica.se plugin
++
++2013-04-20  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Merge pull request #715 from MrShark/master
++      An importer for ica.se (Swedish storechain)
++
++2013-04-11  jens persson  <jens@persson.cx>
++
++    * First shot on an importer for ica.se
++
++2013-04-06  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Revert "Add back gnomeprinter.py." (Accidental commit, meant to be in a new branch.)
++      This reverts commit acad0d848f7c0567bf553dae27d7e6bbd3fe67a4.
++    * Add FAQ item about Gourmet's data storage location.
++    * Add back gnomeprinter.py.
++    * Remove obsolete PIL import.
++    * Add 'Francouzská' and 'Indická' (French and Indian) to defaults_sk.py
++    * Add "French" and "Asian/Indian" to Cuisine defaults.
++      Fixes #713.
++
++2013-03-25  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Add Development Tools section (taken from the Wiki).
++    * Move Windows version warning to README.windows.md.
++
++2013-03-23  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Fix a bug in defaults_ru.py
++
++2013-03-12  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Merge setup_win.py into setup.py.
++      Also add some extra functionality to include required Gtk+ Theme files.
++    * Add __init__.py to web_plugin to turn it into a module.
++      Otherwise, there's an error with py2exe.
++
++2013-03-10  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Add (Eclipse's) .settings/ dir to .gitignore
++    * Fix a bug in get_pluralized_form.
++
++2013-03-09  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Remove some obsolete imports from gourmet/importers/html_importer.py.
++    * Remove obsolete Queue import from gourmet/importers/imageBrowser.py.
++      This was causing problems with py2exe.
++    * Add *.pyo files to .gitignore.
++
++2013-03-06  Bernhard Reiter  <ockham@raz.or.at>
++
++    * Fix a bug that caused gourmet to fail when LC_ALL=C
++
+ 2013-03-06  Bernhard Reiter  <ockham@raz.or.at>
+ 
+ 	* Remove -dev suffix from version in gourmet/version.py.
