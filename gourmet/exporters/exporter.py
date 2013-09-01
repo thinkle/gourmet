@@ -1,8 +1,4 @@
 import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap, types
-try:
-    from PIL import Image
-except ImportError:
-    import Image
 from gourmet import gglobals, convert
 from gourmet.gdebug import *
 from gettext import gettext as _
