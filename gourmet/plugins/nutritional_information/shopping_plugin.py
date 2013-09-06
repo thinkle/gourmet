@@ -8,7 +8,7 @@ from gettext import gettext as _
 
 class ShoppingNutritionalInfoPlugin (ShoppingListPlugin):
 
-    ui = '''<ui>
+    ui_string = '''<ui>
     <menubar name="ShoppingListMenuBar">
       <menu name="Tools" action="Tools">
           <menuitem action="ShoppingNutritionalInfo"/>

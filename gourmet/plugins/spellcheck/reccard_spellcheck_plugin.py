@@ -6,7 +6,7 @@ class SpellPlugin (RecEditorPlugin, UIPlugin):
 
     main = None
 
-    ui = '''
+    ui_string = '''
     '''
 
     def activate (self, recEditor):

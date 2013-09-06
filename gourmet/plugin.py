@@ -267,7 +267,7 @@ class DatabasePlugin (StandardPlugin):
         pass
 
 class UIModule:
-    ui = '' # an XML UI description for merging with the target UIManager
+    ui_string = '' # an XML UI description for merging with the target UIManager
     name = '' # the name of this module (not i18n'd)
     label = '' # The label of the tab where this interface goes. (should be i18n'd)
     
@@ -309,7 +309,7 @@ class UIPlugin (StandardPlugin, UIModule):
             uimanager.remove_ui(merge_id)
     
     def add_to_uimanager (self, uimanager):
-        merge_id = uimanager.add_ui_from_string(self.ui)
+        merge_id = uimanager.add_ui_from_string(self.ui_string)
         action_ids = []
         for ag in self.action_groups:
             fix_action_group_importance(ag)
@@ -326,7 +326,7 @@ class ToolPlugin (UIPlugin):
     menu_bars = ['RecipeDisplayMenuBar','RecipeEditorMenuBar','RecipeIndexMenuBar']
 
     def __init__ (self):
-        self.ui = '\n'.join('''<menubar name="%(mb)s">
+        self.ui_string = '\n'.join('''<menubar name="%(mb)s">
         <menu name="Tools" action="Tools">
         %(menu_items)s
         </menu>
@@ -541,7 +541,7 @@ class IngredientControllerPlugin (StandardPlugin):
 
 class ShoppingListPlugin (UIPlugin):
 
-    ui = ''
+    ui_string = ''
 
     def __init__ (self):
         UIPlugin.__init__(self)
