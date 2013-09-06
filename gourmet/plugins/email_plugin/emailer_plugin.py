@@ -6,7 +6,7 @@ from gettext import gettext as _
 
 class EmailRecipePlugin (MainPlugin, UIPlugin):
 
-    ui = '''
+    ui_string = '''
    <menubar name="RecipeIndexMenuBar">
          <menu name="Tools" action="Tools">
        <placeholder name="StandaloneTool">

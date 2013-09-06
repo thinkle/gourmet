@@ -2,7 +2,7 @@ from gourmet.plugin import ToolPlugin
 from gourmet.prefs import get_prefs
 
 class EnableUTF16Plugin (ToolPlugin):
-    ui = ''
+    ui_string = ''
 
     def activate (self, pluggable):
         get_prefs()['utf-16'] = True

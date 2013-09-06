@@ -13,7 +13,7 @@ class IngredientKeyEditor (RecEditorModule):
 
     name = 'keyeditor'
     label = _('Ingredient Keys')
-    ui = '''
+    ui_string = '''
     <menubar name="RecipeEditorMenuBar">
       <menu name="Edit" action="Edit">
         <placeholder name="EditActions">

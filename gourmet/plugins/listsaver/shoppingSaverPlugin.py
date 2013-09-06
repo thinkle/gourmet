@@ -5,7 +5,7 @@ from gettext import gettext as _
 
 class ShoppingListSaver (ShoppingListPlugin):
 
-    ui = '''<ui>
+    ui_string = '''<ui>
     <menubar name="ShoppingListMenuBar">
       <menu name="File" action="File">
         <placeholder name="ExtraFileStuff">

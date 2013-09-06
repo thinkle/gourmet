@@ -14,7 +14,7 @@ from gettext import gettext as _
 import plugin_loader, plugin
 from shopping import ShoppingList
 
-ui = '''
+ui_string = '''
 <ui>
   <menubar name="ShoppingListMenuBar">
     <menu name="File" action="File">
@@ -111,7 +111,7 @@ class IngredientAndPantryList:
 
     def setup_ui_manager (self):
 	self.ui_manager = gtk.UIManager()
-	self.ui_manager.add_ui_from_string(ui)
+	self.ui_manager.add_ui_from_string(ui_string)
 
     def setup_actions (self):
 	self.pantryActions = gtk.ActionGroup('PantryActions')
@@ -574,7 +574,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
     
     def setup_ui_manager (self):
         self.ui_manager = gtk.UIManager()
-        self.ui_manager.add_ui_from_string(ui)
+        self.ui_manager.add_ui_from_string(ui_string)
 
     def setup_main (self):
         mb = self.ui_manager.get_widget('/ShoppingListMenuBar')
