@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-29 00:05+0200\n"
+"POT-Creation-Date: 2013-09-09 21:53+0200\n"
 "PO-Revision-Date: 2012-12-31 23:31+0000\n"
 "Last-Translator: Panagiotis Ligopsychakis <panligo@gmail.com>\n"
 "Language-Team: Greek, Modern (1453-) <el@li.org>\n"
@@ -125,15 +125,20 @@ msgstr "_Ιστοσελίδα"
 msgid "Image:"
 msgstr "Εικόνα:"
 
-#: ../ui/batchEditor.ui.h:13
-msgid "_Servings"
+#: ../ui/batchEditor.ui.h:13 ../ui/recCardDescriptionEditor.ui.h:8
+msgid "_Yield:"
 msgstr "_Μερίδες"
 
 #: ../ui/batchEditor.ui.h:14
+#, fuzzy
+msgid "_Yield Unit:"
+msgstr "Μονάδα Μέτρησης Μερίδας"
+
+#: ../ui/batchEditor.ui.h:15
 msgid "_Only set values where field is currently blank"
 msgstr "Καθορισμός _τιμών μόνο σε κενά πεδία"
 
-#: ../ui/batchEditor.ui.h:15
+#: ../ui/batchEditor.ui.h:16
 msgid "Set all values for _all selected recipes"
 msgstr "Καθορισμός όλων των τιμών για _όλες τις επιλεγμένες συνταγές"
 
@@ -187,7 +192,7 @@ msgstr "*"
 msgid "Database _Name:"
 msgstr "Όνομα _Βάσης Δεδομένων:"
 
-#: ../ui/databaseChooser.ui.h:13 ../gourmet/GourmetRecipeManager.py:1051
+#: ../ui/databaseChooser.ui.h:13 ../gourmet/GourmetRecipeManager.py:1057
 #: ../gourmet/shopgui.py:674
 msgid "_File"
 msgstr "_Αρχείο"
@@ -378,17 +383,13 @@ msgstr "Τίτλος"
 msgid "_Title:"
 msgstr "_Τίτλος:"
 
-#: ../ui/recCardDescriptionEditor.ui.h:8
-msgid "_Yield:"
-msgstr "_Μερίδες"
-
 #: ../ui/recCardDescriptionEditor.ui.h:10
 msgid "Pre_paration Time:"
 msgstr "Χρόνος _Προετοιμασίας:"
 
 #: ../ui/recCardDescriptionEditor.ui.h:15
 #: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:29
-#: ../gourmet/recindex.py:42 ../gourmet/recindex.py:50
+#: ../gourmet/recindex.py:41 ../gourmet/recindex.py:49
 msgid "category"
 msgstr "κατηγορία"
 
@@ -468,9 +469,9 @@ msgstr "<b>Σημειώσεις</b>"
 msgid "Edit _notes"
 msgstr "Επεξεργασία Σ_ημειώσεων"
 
-#: ../ui/recCardDisplay.ui.h:17 ../gourmet/exporters/exporter.py:610
+#: ../ui/recCardDisplay.ui.h:17 ../gourmet/exporters/exporter.py:606
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:483
-#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:67
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:63
 msgid "Recipe"
 msgstr "Συνταγή"
 
@@ -486,13 +487,13 @@ msgstr "Επεξεργασία _Συστατικών"
 msgid "Add _ingredient:"
 msgstr "Προσθήκη _Συστατικού:"
 
-#: ../ui/recCardIngredientsEditor.ui.h:2 ../gourmet/exporters/exporter.py:255
+#: ../ui/recCardIngredientsEditor.ui.h:2 ../gourmet/exporters/exporter.py:251
 #: ../gourmet/importers/interactive_importer.py:39
 #: ../gourmet/importers/interactive_importer.py:54
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:478
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:480
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:508
-#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:104
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:100
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:604
 #: ../gourmet/reccard.py:1075
 msgid "Ingredients"
@@ -603,7 +604,7 @@ msgstr "Επεξεργαστής Κατηγοριών"
 msgid "Search by"
 msgstr "Αναζήτηση με"
 
-#: ../ui/shopCatEditor.ui.h:7 ../gourmet/recindex.py:155
+#: ../ui/shopCatEditor.ui.h:7 ../gourmet/recindex.py:154
 msgid "Search as you type"
 msgstr "Αναζήτηση κατά την πληκτρολόγηση"
 
@@ -744,7 +745,7 @@ msgid "Stop import"
 msgstr "Διακοπή εισαγωγής"
 
 #: ../gourmet/GourmetRecipeManager.py:233
-#: ../gourmet/GourmetRecipeManager.py:1092
+#: ../gourmet/GourmetRecipeManager.py:1098
 msgid "Recipe _Index"
 msgstr "Κατάλογος Συνταγών"
 
@@ -865,117 +866,117 @@ msgstr "Αυτή η αλλαγή δεν αναιρείται"
 msgid "Set values for selected recipes"
 msgstr "Ορισμός τιμών για τις επιλεγμένες συνταγές"
 
-#: ../gourmet/GourmetRecipeManager.py:998
+#: ../gourmet/GourmetRecipeManager.py:1004
 msgid "Search recipes"
 msgstr "Αναζήτηση συνταγών"
 
-#: ../gourmet/GourmetRecipeManager.py:1028
+#: ../gourmet/GourmetRecipeManager.py:1034
 msgid "Open recipe"
 msgstr "Άνοιγμα συνταγής"
 
-#: ../gourmet/GourmetRecipeManager.py:1029
+#: ../gourmet/GourmetRecipeManager.py:1035
 msgid "Open selected recipe"
 msgstr "Άνοιγμα της επιλεγμένης συνταγής"
 
 #. We no longer bind "Delete" here -- instead, we'll do it
 #. at the TreeView level to prevent the delete key
 #. elsewhere (e.g. in search box) from muddling up users.
-#: ../gourmet/GourmetRecipeManager.py:1033
+#: ../gourmet/GourmetRecipeManager.py:1039
 msgid "Delete recipe"
 msgstr "Διαγραφή συνταγής"
 
-#: ../gourmet/GourmetRecipeManager.py:1034
+#: ../gourmet/GourmetRecipeManager.py:1040
 msgid "Delete selected recipes"
 msgstr "Διαγραφή επιλεγμένων Συνταγών"
 
-#: ../gourmet/GourmetRecipeManager.py:1035
+#: ../gourmet/GourmetRecipeManager.py:1041
 msgid "Edit recipe"
 msgstr "Επεξεργασία συνταγής"
 
-#: ../gourmet/GourmetRecipeManager.py:1036
+#: ../gourmet/GourmetRecipeManager.py:1042
 msgid "Open selected recipes in recipe editor view"
 msgstr "Άνοιγμα επιλεγμένων συνταγών στον επεξεργαστή συνταγών"
 
-#: ../gourmet/GourmetRecipeManager.py:1038
+#: ../gourmet/GourmetRecipeManager.py:1044
 msgid "E_xport selected recipes"
 msgstr "Ε_ξαγωγή επιλεγμένων συνταγών"
 
-#: ../gourmet/GourmetRecipeManager.py:1039
+#: ../gourmet/GourmetRecipeManager.py:1045
 msgid "Export selected recipes to file"
 msgstr "Εξαγωγή των επιλεγμένων συνταγών σε αρχείο"
 
-#: ../gourmet/GourmetRecipeManager.py:1041
+#: ../gourmet/GourmetRecipeManager.py:1047
 msgid "_Print"
 msgstr "Εκτύπωση"
 
 #. ('Email', None, _('E-_mail recipes'),
 #. None,None,self.email_recs),
-#: ../gourmet/GourmetRecipeManager.py:1045
+#: ../gourmet/GourmetRecipeManager.py:1051
 msgid "Batch _edit recipes"
 msgstr "Ομα_δική επεξεργασία συνταγών"
 
-#: ../gourmet/GourmetRecipeManager.py:1052 ../gourmet/reccard.py:213
+#: ../gourmet/GourmetRecipeManager.py:1058 ../gourmet/reccard.py:213
 #: ../gourmet/reccard.py:865 ../gourmet/shopgui.py:652
 msgid "_Edit"
 msgstr "Επεξεργασία"
 
-#: ../gourmet/GourmetRecipeManager.py:1053
+#: ../gourmet/GourmetRecipeManager.py:1059
 msgid "_Actions"
 msgstr "Ενέργειες"
 
-#: ../gourmet/GourmetRecipeManager.py:1054
+#: ../gourmet/GourmetRecipeManager.py:1060
 msgid "Setti_ngs"
 msgstr "Ρυ_θμίσεις"
 
-#: ../gourmet/GourmetRecipeManager.py:1055
-#: ../gourmet/GourmetRecipeManager.py:1060 ../gourmet/reccard.py:215
+#: ../gourmet/GourmetRecipeManager.py:1061
+#: ../gourmet/GourmetRecipeManager.py:1066 ../gourmet/reccard.py:215
 #: ../gourmet/reccard.py:226 ../gourmet/reccard.py:867
 #: ../gourmet/shopgui.py:675 ../gourmet/shopgui.py:677
 msgid "_Help"
 msgstr "Βοήθεια"
 
-#: ../gourmet/GourmetRecipeManager.py:1056
+#: ../gourmet/GourmetRecipeManager.py:1062
 msgid "_About"
 msgstr "Περί"
 
-#: ../gourmet/GourmetRecipeManager.py:1058
+#: ../gourmet/GourmetRecipeManager.py:1064
 msgid "_New"
 msgstr "_Νέο"
 
-#: ../gourmet/GourmetRecipeManager.py:1062
+#: ../gourmet/GourmetRecipeManager.py:1068
 msgid "_Import file"
 msgstr "_Εισαγωγή αρχείου"
 
-#: ../gourmet/GourmetRecipeManager.py:1063
+#: ../gourmet/GourmetRecipeManager.py:1069
 msgid "Import recipe from file"
 msgstr "Εισαγωγή συνταγής από αρχείο"
 
-#: ../gourmet/GourmetRecipeManager.py:1064
+#: ../gourmet/GourmetRecipeManager.py:1070
 msgid "Import _webpage"
 msgstr "Εισα_γωγή Ιστοσελίδας"
 
-#: ../gourmet/GourmetRecipeManager.py:1065
+#: ../gourmet/GourmetRecipeManager.py:1071
 msgid "Import recipe from webpage"
 msgstr "Εισαγωγή συνταγής από Ιστοσελίδα"
 
-#: ../gourmet/GourmetRecipeManager.py:1066
+#: ../gourmet/GourmetRecipeManager.py:1072
 msgid "Export _all recipes"
 msgstr "Ε_ξαγωγή όλων των συνταγών"
 
-#: ../gourmet/GourmetRecipeManager.py:1067
+#: ../gourmet/GourmetRecipeManager.py:1073
 msgid "Export all recipes to file"
 msgstr "Εξαγωγή όλων των συνταγών σε αρχείο"
 
-#: ../gourmet/GourmetRecipeManager.py:1068
+#: ../gourmet/GourmetRecipeManager.py:1074
 msgid "_Plugins"
 msgstr "_Πρόσθετα"
 
-#: ../gourmet/GourmetRecipeManager.py:1069
+#: ../gourmet/GourmetRecipeManager.py:1075
 msgid "Manage plugins which add extra functionality to Gourmet."
 msgstr ""
 "Διαχείριση προσθέτων που πρσθέτουν επιπλέον λειτουργικότητα στο Gourmet"
 
-#: ../gourmet/GourmetRecipeManager.py:1071
+#: ../gourmet/GourmetRecipeManager.py:1077
 msgid "_Preferences"
 msgstr "Π_ροτιμήσεις"
 
@@ -983,42 +984,42 @@ msgstr "Π_ροτιμήσεις"
 #. None,None),
 #. ('Undo',gtk.STOCK_UNDO,_('_Undo'),
 #. None,None),
-#: ../gourmet/GourmetRecipeManager.py:1077
+#: ../gourmet/GourmetRecipeManager.py:1083
 msgid "_Quit"
 msgstr "Έ_ξοδος"
 
-#: ../gourmet/GourmetRecipeManager.py:1079
+#: ../gourmet/GourmetRecipeManager.py:1085
 msgid "Open _Trash"
 msgstr "Άνοιγμα Α_πορριμάτων"
 
-#: ../gourmet/GourmetRecipeManager.py:1085
+#: ../gourmet/GourmetRecipeManager.py:1091
 msgid "_Tools"
 msgstr "Εργαλεία"
 
-#: ../gourmet/GourmetRecipeManager.py:1086
+#: ../gourmet/GourmetRecipeManager.py:1092
 msgid "_Timer"
 msgstr "Χρονόμετρο"
 
-#: ../gourmet/GourmetRecipeManager.py:1087
+#: ../gourmet/GourmetRecipeManager.py:1093
 msgid "Show timer"
 msgstr "Εμφάνιση χρονομέτρου"
 
-#: ../gourmet/GourmetRecipeManager.py:1093
+#: ../gourmet/GourmetRecipeManager.py:1099
 msgid "Searchable index of recipes in the database."
 msgstr "Δείκτες συνταγών που μπορούν να αναζητηθούν στη βάση δεδομένων."
 
-#: ../gourmet/GourmetRecipeManager.py:1203
+#: ../gourmet/GourmetRecipeManager.py:1209
 #, python-format
 msgid "Delete %s?"
 msgstr "Να διαγραφεί %s;"
 
-#: ../gourmet/GourmetRecipeManager.py:1204
+#: ../gourmet/GourmetRecipeManager.py:1210
 #, python-format
 msgid "You have unsaved changes to %s. Are you sure you want to delete?"
 msgstr ""
 "Έχετε μη σωθείσες αλλαγές στο %s. Είστε σίγουρος ότι θέλετε να το διαγράψετε;"
 
-#: ../gourmet/GourmetRecipeManager.py:1226
+#: ../gourmet/GourmetRecipeManager.py:1232
 #, python-format
 msgid ""
 "You just moved %s recipe to the trash. You can recover this recipe or "
@@ -1035,68 +1036,68 @@ msgstr[1] ""
 "συνταγές ή να τις διαγράψετε μόνιμα όποτε θέλετε πατώντας Εργαλεία-> Άνοιγμα "
 "Απορριμάτων."
 
-#: ../gourmet/GourmetRecipeManager.py:1233
+#: ../gourmet/GourmetRecipeManager.py:1239
 msgid "Deleted"
 msgstr "Διαγράφηκε"
 
-#: ../gourmet/GourmetRecipeManager.py:1233
+#: ../gourmet/GourmetRecipeManager.py:1239
 #: ../gourmet/importers/interactive_importer.py:472
 msgid "Untitled"
 msgstr "Χωρίς Τίτλο"
 
-#: ../gourmet/GourmetRecipeManager.py:1241
+#: ../gourmet/GourmetRecipeManager.py:1247
 msgid "Permanently delete recipes?"
 msgstr "Διαγραφή των συνταγών για πάντα;"
 
-#: ../gourmet/GourmetRecipeManager.py:1243
+#: ../gourmet/GourmetRecipeManager.py:1249
 msgid "Permanently delete recipe?"
 msgstr "Διαγραφή της συνταγής για πάντα;"
 
-#: ../gourmet/GourmetRecipeManager.py:1244
+#: ../gourmet/GourmetRecipeManager.py:1250
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
 msgstr "Είσαι σίγουρος ότι θές να διαγράψεις τη <i>%s</i> συνταγή"
 
-#: ../gourmet/GourmetRecipeManager.py:1246
+#: ../gourmet/GourmetRecipeManager.py:1252
 msgid "Are you sure you want to delete the following recipes?"
 msgstr "Είσαι σίγουρος ότι θες να διαγράψεις τις ακόλουθες συνταγές;"
 
-#: ../gourmet/GourmetRecipeManager.py:1250
+#: ../gourmet/GourmetRecipeManager.py:1256
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
 msgstr "Είσαι σίγουρος ότι θες να διαγράψεις τις %s επιλεγμένες συνταγές;"
 
-#: ../gourmet/GourmetRecipeManager.py:1252
+#: ../gourmet/GourmetRecipeManager.py:1258
 msgid "See recipes"
 msgstr "Προβολή Συνταγών"
 
-#: ../gourmet/GourmetRecipeManager.py:1260
+#: ../gourmet/GourmetRecipeManager.py:1266
 msgid "Delete Recipes"
 msgstr "Διαγραφή Συνταγών"
 
-#: ../gourmet/GourmetRecipeManager.py:1287
+#: ../gourmet/GourmetRecipeManager.py:1293
 #, python-format
 msgid "Deleted recipe %s"
 msgstr "Διαγραφή συνταγής %s"
 
-#: ../gourmet/GourmetRecipeManager.py:1321
+#: ../gourmet/GourmetRecipeManager.py:1327
 msgid "Export succeeded"
 msgstr "Η εξαγωγή ήταν επιτυχής"
 
-#: ../gourmet/GourmetRecipeManager.py:1324
+#: ../gourmet/GourmetRecipeManager.py:1330
 msgid "webpage"
 msgstr "ιστοσελίδα"
 
-#: ../gourmet/GourmetRecipeManager.py:1325
+#: ../gourmet/GourmetRecipeManager.py:1331
 #, python-format
 msgid "Exported %s to %s"
 msgstr "Εγινε εξαγωγή από %s σε %s"
 
-#: ../gourmet/GourmetRecipeManager.py:1385
+#: ../gourmet/GourmetRecipeManager.py:1391
 msgid "Done!"
 msgstr "Ολοκληρώθηκε!"
 
-#: ../gourmet/GourmetRecipeManager.py:1393
+#: ../gourmet/GourmetRecipeManager.py:1399
 msgid "Importing..."
 msgstr "Εισαγωγή..."
 
@@ -1310,24 +1311,24 @@ msgstr ""
 msgid "Export"
 msgstr "Εξαγωγή"
 
-#: ../gourmet/exporters/exporter.py:213 ../gourmet/exporters/exporter.py:215
-#: ../gourmet/exporters/exporter.py:519 ../gourmet/exporters/exporter.py:521
+#: ../gourmet/exporters/exporter.py:209 ../gourmet/exporters/exporter.py:211
+#: ../gourmet/exporters/exporter.py:515 ../gourmet/exporters/exporter.py:517
 msgid "stars"
 msgstr "Αστέρια"
 
-#: ../gourmet/exporters/exporter.py:382 ../gourmet/exporters/exporter.py:467
-#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:182
+#: ../gourmet/exporters/exporter.py:378 ../gourmet/exporters/exporter.py:463
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:178
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:632
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:645
 msgid "optional"
 msgstr "προαιρετικό"
 
-#: ../gourmet/exporters/exporter.py:562
+#: ../gourmet/exporters/exporter.py:558
 #, python-format
 msgid "Exported %(number)s of %(total)s recipes"
 msgstr "Εξαχθείσες %(number)s από %(total)s Συνταγές"
 
-#: ../gourmet/exporters/exporter.py:582
+#: ../gourmet/exporters/exporter.py:578
 msgid "Export complete."
 msgstr "Η εξαγωγή ολοκληρώθηκε."
 
@@ -1821,7 +1822,7 @@ msgstr "Απενεργοποίηση οπωσδήποτε"
 msgid "Keep plugin active"
 msgstr "Κράτησε το πρόσθετο ενεργό"
 
-#: ../gourmet/plugin_gui.py:135 ../gourmet/recindex.py:451
+#: ../gourmet/plugin_gui.py:135 ../gourmet/recindex.py:438
 msgid "or"
 msgstr "ή"
 
@@ -2096,7 +2097,7 @@ msgstr "Εξαγωγή HTML"
 msgid "Create recipe webpages from recipes."
 msgstr "Δημιουργία ιστοσελίδων συνταγών από συνταγές."
 
-#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:126
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:122
 #, python-format
 msgid "Original Page from %s"
 msgstr "Πρωτότυπη Σελίδα από %s"
@@ -3683,40 +3684,40 @@ msgstr ""
 "εισάγετε αρχεία."
 
 #: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:24
-#: ../gourmet/recindex.py:37 ../gourmet/recindex.py:47
-#: ../gourmet/recindex.py:480
+#: ../gourmet/recindex.py:36 ../gourmet/recindex.py:46
+#: ../gourmet/recindex.py:467
 msgid "anywhere"
 msgstr "οπουδήποτε"
 
 #: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:25
-#: ../gourmet/recindex.py:38 ../gourmet/recindex.py:48
+#: ../gourmet/recindex.py:37 ../gourmet/recindex.py:47
 msgid "title"
 msgstr "Τίτλος"
 
 #: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:26
-#: ../gourmet/recindex.py:39 ../gourmet/recindex.py:49
+#: ../gourmet/recindex.py:38 ../gourmet/recindex.py:48
 msgid "ingredient"
 msgstr "Συστατικό"
 
 #: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:27
-#: ../gourmet/recindex.py:40 ../gourmet/recindex.py:54
+#: ../gourmet/recindex.py:39 ../gourmet/recindex.py:53
 msgid "instructions"
 msgstr "Οδηγίες"
 
 #: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:28
-#: ../gourmet/recindex.py:41 ../gourmet/recindex.py:55
+#: ../gourmet/recindex.py:40 ../gourmet/recindex.py:54
 msgid "notes"
 msgstr "σημειώσεις"
 
 #: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:30
-#: ../gourmet/recindex.py:43 ../gourmet/recindex.py:51
+#: ../gourmet/recindex.py:42 ../gourmet/recindex.py:50
 msgid "cuisine"
 msgstr "Κουζίνα"
 
 #. _('rating'):'rating',
 #. _('rating'),
 #: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:31
-#: ../gourmet/recindex.py:45 ../gourmet/recindex.py:53
+#: ../gourmet/recindex.py:44 ../gourmet/recindex.py:52
 msgid "source"
 msgstr "πηγή"
 
@@ -3938,31 +3939,31 @@ msgstr "Δεν έχεις επιλέξει καμμία συνταγή!"
 msgid "How much of %(title)s does your recipe call for?"
 msgstr "Πόσους από %(title)s καλεί η συνταγή σας;"
 
-#: ../gourmet/recindex.py:152
+#: ../gourmet/recindex.py:151
 msgid "Use regular expressions in search"
 msgstr "Χρήση κανονικών παραστάσεων κατά την αναζήτηση"
 
-#: ../gourmet/recindex.py:153
+#: ../gourmet/recindex.py:152
 msgid "Use regular expressions (an advanced search language) in text search"
 msgstr ""
 "Χρήση κανονικών παραστάσεων (μια προχωρημένη γλώσσα αναζήτησης) για "
 "αναζήτηση κειμένου"
 
-#: ../gourmet/recindex.py:156
+#: ../gourmet/recindex.py:155
 msgid "Search as you type (turn off if search is too slow)."
 msgstr ""
 "Αναζήτηση κατά την πληκτρολόγηση (απενεργοποιείστε αν η αναζήτηση είναι πολύ "
 "αργή)."
 
-#: ../gourmet/recindex.py:161
+#: ../gourmet/recindex.py:160
 msgid "Show Search _Options"
 msgstr "Εμφάνιση _Επιλογών Αναζήτησης"
 
-#: ../gourmet/recindex.py:163
+#: ../gourmet/recindex.py:162
 msgid "Show advanced searching options"
 msgstr "Εμφανίζει προχωρημένες επιλογές αναζήτησης"
 
-#: ../gourmet/recindex.py:252
+#: ../gourmet/recindex.py:251
 #, python-format
 msgid "%s recipe"
 msgid_plural "%s recipes"
@@ -3971,12 +3972,12 @@ msgstr[1] "%s συναταγές"
 
 #. Do not translate bottom, top and total -- I use these fancy formatting
 #. strings in case your language needs the order changed!
-#: ../gourmet/recindex.py:260
+#: ../gourmet/recindex.py:259
 #, python-format
 msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
 msgstr "Παρουσίαση Συνταγών %(bottom)s έως %(top)s από %(total)s"
 
-#: ../gourmet/recindex.py:481
+#: ../gourmet/recindex.py:468
 #, python-format
 msgid "%s in %s"
 msgstr "%s σε %s"
@@ -4315,6 +4316,9 @@ msgstr ""
 #: ../gourmet/version.py:43
 msgid "Kati Pregartner (splash screen image)"
 msgstr ""
+
+#~ msgid "_Servings"
+#~ msgstr "_Μερίδες"
 
 #~ msgid "Select File_type"
 #~ msgstr "Επιλογή Τύπου _Αρχείου"
