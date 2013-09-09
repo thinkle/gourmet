@@ -1,17 +1,16 @@
 #!/usr/bin/env python
-import gtk, time, re, gtk.gdk, gobject, pango
-from gtk_extras import WidgetSaver, ratingWidget
 from ImageExtras import get_pixbuf_from_jpg
-from gtk_extras import dialog_extras as de
-from gtk_extras import treeview_extras as te
-from gtk_extras import cb_extras as cb
-import convert, Undo
-from gglobals import *
 from gdebug import debug
-from gtk_extras import mnemonic_manager
-from gtk_extras import pageable_store
-from gettext import gettext as _
-from gettext import ngettext
+from gettext import gettext as _, ngettext
+from gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
+from gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
+    mnemonic_manager, pageable_store, treeview_extras as te
+import convert
+import Undo
+import gobject
+import gtk
+import gtk.gdk
+import pango
 
 class RecIndex:
     """We handle the 'index view' of recipes, which puts
