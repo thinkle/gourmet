@@ -16,7 +16,7 @@ import sqlalchemy, sqlalchemy.orm
 from sqlalchemy import Integer, LargeBinary, String, Float, Boolean, Numeric, Column, ForeignKey, Text
 from sqlalchemy.sql import and_, or_, case 
 from sqlalchemy import event, func
-from gourmet.models import Base, Recipe, Ingredient, VersionInfo, PluginInfo
+from gourmet.models import Base, Recipe, Ingredient, VersionInfo, PluginInfo, Category
 
 Session = sqlalchemy.orm.sessionmaker()
 
@@ -254,13 +254,6 @@ class RecData (Pluggable):
         self.recipe_table = Recipe.__table__
 
     def setup_category_table (self):
-        class Category (Base):
-            __tablename__ = 'categories'
-
-            id = Column(Integer, primary_key=True)
-            recipe_id = Column(Integer, ForeignKey('recipe.id')) #recipe ID
-            category = Column(Text) # Category ID
-
         self.categories_table = Category.__table__
 
     def setup_ingredient_table (self):
