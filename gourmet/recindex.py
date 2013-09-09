@@ -270,13 +270,6 @@ class RecIndex:
         col.set_min_width(-1)
         self.rectree.append_column(col)
         n = 2
-        crc = True
-        if not hasattr(gtk,'CellRendererCombo'):
-            print 'CellRendererCombo not yet supported'
-            print 'Update pygtk/gtk for lovely comboboxes'
-            print 'in your treemodels!'
-            print '(but don\'t worry, Gourmet will still work'
-            print 'fine with what you have)'
         _title_to_num_ = {}
         for c in self.rtcols:
             if c=='rating':
@@ -348,15 +341,10 @@ class RecIndex:
                 if c=='link':
                     renderer.set_property('ellipsize',pango.ELLIPSIZE_END)
                 else:
-                    # If we have gtk > 2.8, set up text-wrapping
-                    try:
-                        renderer.get_property('wrap-width')
-                    except TypeError:
-                        pass
-                    else:
-                        renderer.set_property('wrap-mode',pango.WRAP_WORD)
-                        if c == 'title': renderer.set_property('wrap-width',200)
-                        else: renderer.set_property('wrap-width',150)
+                    renderer.get_property('wrap-width')
+                    renderer.set_property('wrap-mode',pango.WRAP_WORD)
+                    if c == 'title': renderer.set_property('wrap-width',200)
+                    else: renderer.set_property('wrap-width',150)
             renderer.set_property('editable',self.editable)
             renderer.connect('edited',self.rtree_edited_cb,n, c)
             titl = self.rtcolsdic[c]
