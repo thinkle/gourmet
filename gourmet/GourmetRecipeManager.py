@@ -799,15 +799,21 @@ class StuffThatShouldBePlugins:
             if de.getBoolean(label=_('Set values for selected recipes'),sublabel=msg,cancel=False,
                              custom_yes=gtk.STOCK_OK,custom_no=gtk.STOCK_CANCEL,):
                 for r in recs:
+                    # Need to copy in case we're dealing with
+                    # categories as they would get messed up by
+                    # modify_rec
+                    changes = self.batchEditor.values.copy()
                     if only_where_blank:
-                        changes = self.batchEditor.values.copy()
                         for attribute in changes.keys():
-                            if hasattr(r,attribute) and getattr(r,attribute):
+                            if (attribute == 'category' and \
+                                self.rd.get_cats(r)) or \
+                                (hasattr(r, attribute) and \
+                                getattr(r, attribute)):
                                 del changes[attribute]
                         if changes:
                             self.rd.modify_rec(r,changes)
                     else:
-                        self.rd.modify_rec(r,self.batchEditor.values)
+                        self.rd.modify_rec(r,changes)
                     self.rmodel.update_recipe(r)
             else:
                 print 'Cancelled'
