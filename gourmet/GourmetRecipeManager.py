@@ -784,7 +784,7 @@ class StuffThatShouldBePlugins:
         if self.batchEditor.values:
             changes = self.batchEditor.values
             only_where_blank = self.batchEditor.setFieldWhereBlank
-            attributes = ', '.join(changes.keys())
+            attributes = ', '.join([_(k) for k in changes.keys()])
             msg = ngettext('Set %(attributes)s for %(num)s selected recipe?',
                                    'Set %(attributes)s for %(num)s selected recipes?',
                                    len(recs))%{'attributes':attributes,
