@@ -1,20 +1,19 @@
+from gettext import gettext as _
+from gourmet import ImageExtras, Undo, keymanager, convert
+from gourmet.defaults import lang as defaults
+from gourmet.gdebug import debug, TimeAction, debug_decorator
+from gourmet.plugin import DatabasePlugin
+from gourmet.plugin_loader import Pluggable, pluggable_method
+import StringIO
+import gourmet.gglobals as gglobals
+import gourmet.recipeIdentifier as recipeIdentifier
+import gourmet.version
+import re, string, os.path, time
 import shutil
 import types
-from gourmet.gdebug import debug, TimeAction, debug_decorator
-import re, string, os.path, time
-from gettext import gettext as _
-import gourmet.gglobals as gglobals
-from gourmet import Undo, keymanager, convert
-from gourmet.defaults import lang as defaults
-import StringIO
-from gourmet import ImageExtras
-import gourmet.version
-import gourmet.recipeIdentifier as recipeIdentifier
-from gourmet.plugin_loader import Pluggable, pluggable_method
-from gourmet.plugin import DatabasePlugin
 
 import sqlalchemy, sqlalchemy.orm
-from sqlalchemy import Integer, LargeBinary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
+from sqlalchemy import Integer, LargeBinary, String, Float, Boolean, Numeric, Column, ForeignKey, Text
 from sqlalchemy.sql import and_, or_, case 
 from sqlalchemy import event, func
 from gourmet.models import Base, Recipe, Ingredient
