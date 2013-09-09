@@ -5,4 +5,4 @@ In Ubuntu, Glade 3.8 is in the glade-gtk2 package, so you need to install that.
 
 Then, from the root source directory do:
 
-GLADE_CATALOG_PATH=glade/catalog/ glade-gtk2
+GLADE_CATALOG_PATH=ui/catalog/ glade-gtk2
