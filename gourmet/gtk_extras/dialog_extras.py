@@ -1096,7 +1096,9 @@ class ImageSelectorDialog (FileSelectorDialog):
                   buttons=None
                   ):
         FileSelectorDialog.__init__(self, title, filename, filters, action, set_filter, buttons)
-        self.fsd.set_current_folder(get_user_special_dir(USER_DIRECTORY_PICTURES))
+        pictures_dir = get_user_special_dir(USER_DIRECTORY_PICTURES)
+        if not pictures_dir == None:
+            self.fsd.set_current_folder(pictures_dir)
 
     def post_dialog (self):
         self.preview = gtk.Image()
