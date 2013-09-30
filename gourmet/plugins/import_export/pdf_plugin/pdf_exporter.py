@@ -568,6 +568,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         if attr=='title':
             self.txt.append(Bookmark(self.r.title,'r'+str(self.r.id)))
             self.write_paragraph(text,style=self.styleSheet['Heading1'])
+            return
         if attr=='rating':
             from gourmet.importers.importer import string_to_rating
             val = string_to_rating(text)
