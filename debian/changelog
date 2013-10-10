@@ -1,3 +1,9 @@
+gourmet (0.16.2-1) UNRELEASED; urgency=low
+
+  * debian/patches/changelog, debian/patches/series: Remove (fixed upstream).
+
+ -- Bernhard Reiter <ockham@raz.or.at>  Thu, 10 Oct 2013 20:44:20 +0200
+
 gourmet (0.16.1-1) unstable; urgency=low
 
   * New upstream release (LP: #1157969).
