@@ -1,4 +1,4 @@
-gourmet (0.16.1-1) UNRELEASED; urgency=low
+gourmet (0.16.1-1) unstable; urgency=low
 
   * New upstream release (LP: #1157969).
   * debian/compat: Bump to 9.
