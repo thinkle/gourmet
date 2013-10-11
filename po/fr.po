@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gourmet Recipe Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-09 21:53+0200\n"
+"POT-Creation-Date: 2013-10-11 18:46+0200\n"
 "PO-Revision-Date: 2013-02-26 18:05+0000\n"
 "Last-Translator: Eliovir <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -191,7 +191,7 @@ msgstr "*"
 msgid "Database _Name:"
 msgstr "Nom de la base de données"
 
-#: ../ui/databaseChooser.ui.h:13 ../gourmet/GourmetRecipeManager.py:1057
+#: ../ui/databaseChooser.ui.h:13 ../gourmet/GourmetRecipeManager.py:1022
 #: ../gourmet/shopgui.py:674
 msgid "_File"
 msgstr "_Fichier"
@@ -247,7 +247,7 @@ msgstr "_Parcourir"
 
 #: ../ui/databaseChooser.ui.h:22 ../gourmet/gglobals.py:246
 #: ../gourmet/gtk_extras/dialog_extras.py:810
-#: ../gourmet/gtk_extras/dialog_extras.py:1160
+#: ../gourmet/gtk_extras/dialog_extras.py:1162
 msgid "_Details"
 msgstr "_Détails"
 
@@ -493,8 +493,8 @@ msgstr "Ajouter un _ingrédient :"
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:480
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:508
 #: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:100
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:604
-#: ../gourmet/reccard.py:1075
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:605
+#: ../gourmet/reccard.py:1072
 msgid "Ingredients"
 msgstr "Ingrédients"
 
@@ -515,7 +515,7 @@ msgid "Delete selected recipe"
 msgstr "Supprimer la recette sélectionnée"
 
 #. saveEdits
-#: ../ui/recipe_index.ui.h:6 ../gourmet/reccard.py:870
+#: ../ui/recipe_index.ui.h:6 ../gourmet/reccard.py:867
 msgid "_Delete Recipe"
 msgstr "_Supprimer la recette"
 
@@ -592,7 +592,7 @@ msgstr "Catégorie"
 #: ../ui/shopCatEditor.ui.h:2 ../gourmet/plugins/key_editor/keyEditor.py:512
 #: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:109
 #: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:188
-#: ../gourmet/reccard.py:2141 ../gourmet/reccard.py:2198
+#: ../gourmet/reccard.py:2138 ../gourmet/reccard.py:2195
 msgid "Key"
 msgstr "Clef"
 
@@ -724,40 +724,29 @@ msgstr ""
 "Organiser des recettes, créer des listes de courses, calculer des "
 "informations nutritionnelles, et bien d’autres choses."
 
-#: ../gourmet/GourmetRecipeManager.py:48
-msgid "Importing old recipe data"
-msgstr "Importer une ancienne recette"
-
-#: ../gourmet/GourmetRecipeManager.py:49
-msgid ""
-"Importing recipe data from a previous version of Gourmet into new database."
-msgstr ""
-"Importer une recette d’une ancienne version de Gourmet dans une nouvelle "
-"base de donnée"
-
 #. Convenience method for showing progress dialogs for import/export/deletion
-#: ../gourmet/GourmetRecipeManager.py:149
+#: ../gourmet/GourmetRecipeManager.py:115
 msgid "Import paused"
 msgstr "Importation en pause"
 
-#: ../gourmet/GourmetRecipeManager.py:150
+#: ../gourmet/GourmetRecipeManager.py:116
 msgid "Stop import"
 msgstr "Arrêter l’importation"
 
-#: ../gourmet/GourmetRecipeManager.py:233
-#: ../gourmet/GourmetRecipeManager.py:1098
+#: ../gourmet/GourmetRecipeManager.py:198
+#: ../gourmet/GourmetRecipeManager.py:1063
 msgid "Recipe _Index"
 msgstr "_Index des recettes"
 
-#: ../gourmet/GourmetRecipeManager.py:234
+#: ../gourmet/GourmetRecipeManager.py:199
 msgid "Shopping _List"
 msgstr "_Liste de courses"
 
-#: ../gourmet/GourmetRecipeManager.py:253 ../gourmet/reccard.py:214
+#: ../gourmet/GourmetRecipeManager.py:218 ../gourmet/reccard.py:211
 msgid "_Go"
 msgstr "_Aller"
 
-#: ../gourmet/GourmetRecipeManager.py:372
+#: ../gourmet/GourmetRecipeManager.py:337
 msgid "translator-credits"
 msgstr ""
 "Traducteurs\n"
@@ -832,205 +821,205 @@ msgstr ""
 "  triaubaral https://launchpad.net/~aurelien-tricoire\n"
 "  typimousse https://launchpad.net/~pierre-gautier"
 
-#: ../gourmet/GourmetRecipeManager.py:432
+#: ../gourmet/GourmetRecipeManager.py:397
 msgid "Saved!"
 msgstr "Enregistré !"
 
-#: ../gourmet/GourmetRecipeManager.py:442
+#: ../gourmet/GourmetRecipeManager.py:407
 #, python-format
 msgid "Save your edits to %s"
 msgstr "Enregistrer vos éditions dans %s"
 
-#: ../gourmet/GourmetRecipeManager.py:453
+#: ../gourmet/GourmetRecipeManager.py:418
 msgid "An import is in progress."
 msgstr "Importation en cours."
 
-#: ../gourmet/GourmetRecipeManager.py:454
+#: ../gourmet/GourmetRecipeManager.py:419
 msgid "An export is in progress."
 msgstr "Exportation en cours."
 
-#: ../gourmet/GourmetRecipeManager.py:455
+#: ../gourmet/GourmetRecipeManager.py:420
 msgid "A delete is in progress."
 msgstr "Suppression en cours."
 
-#: ../gourmet/GourmetRecipeManager.py:457
+#: ../gourmet/GourmetRecipeManager.py:422
 msgid "Exit program anyway?"
 msgstr "Quitter l’application quand même ?"
 
-#: ../gourmet/GourmetRecipeManager.py:459
+#: ../gourmet/GourmetRecipeManager.py:424
 msgid "Don't exit!"
 msgstr "Ne pas quitter !"
 
-#: ../gourmet/GourmetRecipeManager.py:505
+#: ../gourmet/GourmetRecipeManager.py:470
 #, python-format
 msgid "Permanently deleted %s of %s recipes"
 msgstr "%s des %s recettes ont été supprimées définitivement"
 
-#: ../gourmet/GourmetRecipeManager.py:523
-#: ../gourmet/GourmetRecipeManager.py:538
+#: ../gourmet/GourmetRecipeManager.py:488
+#: ../gourmet/GourmetRecipeManager.py:503
 msgid "Trash"
 msgstr "Corbeille"
 
-#: ../gourmet/GourmetRecipeManager.py:538
+#: ../gourmet/GourmetRecipeManager.py:503
 msgid "Browse, permanently delete or undelete deleted recipes"
 msgstr ""
 "Explorer, supprimer définitivement ou annuler la suppression de recettes."
 
-#: ../gourmet/GourmetRecipeManager.py:590
+#: ../gourmet/GourmetRecipeManager.py:555
 msgid "Undeleted recipes "
 msgstr "Recettes récupérées après effacement "
 
-#: ../gourmet/GourmetRecipeManager.py:660
+#: ../gourmet/GourmetRecipeManager.py:625
 msgid "Gourmet Recipe Manager starting up..."
 msgstr "Le gestionnaire de recettes Gourmet démarre…"
 
-#: ../gourmet/GourmetRecipeManager.py:669
+#: ../gourmet/GourmetRecipeManager.py:634
 msgid "Starting gourmet..."
 msgstr "Démarrage de Gourmet…"
 
-#: ../gourmet/GourmetRecipeManager.py:756
+#: ../gourmet/GourmetRecipeManager.py:721
 #, python-format
 msgid "Number of %(unit)s of %(title)s to shop for"
 msgstr "Nombre de %(unit)s de %(title)s à acheter"
 
-#: ../gourmet/GourmetRecipeManager.py:768
+#: ../gourmet/GourmetRecipeManager.py:733
 #, python-format
 msgid "Multiply %s by:"
 msgstr "Multiplier %s par :"
 
-#: ../gourmet/GourmetRecipeManager.py:788
+#: ../gourmet/GourmetRecipeManager.py:753
 #, python-format
 msgid "Set %(attributes)s for %(num)s selected recipe?"
 msgid_plural "Set %(attributes)s for %(num)s selected recipes?"
 msgstr[0] "Assigner %(attributes)s pour %(num)s recette sélectionnée ?"
 msgstr[1] "Assigner %(attributes)s pour %(num)s recettes sélectionnées ?"
 
-#: ../gourmet/GourmetRecipeManager.py:795
+#: ../gourmet/GourmetRecipeManager.py:760
 msgid "Any previously existing values will not be changed."
 msgstr "Aucune des valeurs déjà existantes ne seront modifiées."
 
-#: ../gourmet/GourmetRecipeManager.py:797
+#: ../gourmet/GourmetRecipeManager.py:762
 msgid "The new values will overwrite any previously existing values."
 msgstr "Les nouvelles valeurs écraseront les valeurs existantes."
 
-#: ../gourmet/GourmetRecipeManager.py:798
+#: ../gourmet/GourmetRecipeManager.py:763
 msgid "This change cannot be undone."
 msgstr "Cette modification ne pourra pas être annulée."
 
-#: ../gourmet/GourmetRecipeManager.py:799
+#: ../gourmet/GourmetRecipeManager.py:764
 msgid "Set values for selected recipes"
 msgstr "Compléter les valeurs des recettes sélectionnées"
 
-#: ../gourmet/GourmetRecipeManager.py:1004
+#: ../gourmet/GourmetRecipeManager.py:969
 msgid "Search recipes"
 msgstr "Chercher des recettes"
 
-#: ../gourmet/GourmetRecipeManager.py:1034
+#: ../gourmet/GourmetRecipeManager.py:999
 msgid "Open recipe"
 msgstr "Ouvrir une recette"
 
-#: ../gourmet/GourmetRecipeManager.py:1035
+#: ../gourmet/GourmetRecipeManager.py:1000
 msgid "Open selected recipe"
 msgstr "Ouvrir la recette sélectionnée"
 
 #. We no longer bind "Delete" here -- instead, we'll do it
 #. at the TreeView level to prevent the delete key
 #. elsewhere (e.g. in search box) from muddling up users.
-#: ../gourmet/GourmetRecipeManager.py:1039
+#: ../gourmet/GourmetRecipeManager.py:1004
 msgid "Delete recipe"
 msgstr "Supprimer la recette"
 
-#: ../gourmet/GourmetRecipeManager.py:1040
+#: ../gourmet/GourmetRecipeManager.py:1005
 msgid "Delete selected recipes"
 msgstr "Effacer les recettes sélectionnées"
 
-#: ../gourmet/GourmetRecipeManager.py:1041
+#: ../gourmet/GourmetRecipeManager.py:1006
 msgid "Edit recipe"
 msgstr "Éditer la recette"
 
-#: ../gourmet/GourmetRecipeManager.py:1042
+#: ../gourmet/GourmetRecipeManager.py:1007
 msgid "Open selected recipes in recipe editor view"
 msgstr "Ouvrir les recettes sélectionnées dans l’éditeur"
 
-#: ../gourmet/GourmetRecipeManager.py:1044
+#: ../gourmet/GourmetRecipeManager.py:1009
 msgid "E_xport selected recipes"
 msgstr "E_xporter les recettes sélectionnées"
 
-#: ../gourmet/GourmetRecipeManager.py:1045
+#: ../gourmet/GourmetRecipeManager.py:1010
 msgid "Export selected recipes to file"
 msgstr "Exporter les recettes sélectionnées dans un fichier"
 
-#: ../gourmet/GourmetRecipeManager.py:1047
+#: ../gourmet/GourmetRecipeManager.py:1012
 msgid "_Print"
 msgstr "Im_primer"
 
 #. ('Email', None, _('E-_mail recipes'),
 #. None,None,self.email_recs),
-#: ../gourmet/GourmetRecipeManager.py:1051
+#: ../gourmet/GourmetRecipeManager.py:1016
 msgid "Batch _edit recipes"
 msgstr "Modifi_er des recettes par lot"
 
-#: ../gourmet/GourmetRecipeManager.py:1058 ../gourmet/reccard.py:213
-#: ../gourmet/reccard.py:865 ../gourmet/shopgui.py:652
+#: ../gourmet/GourmetRecipeManager.py:1023 ../gourmet/reccard.py:210
+#: ../gourmet/reccard.py:862 ../gourmet/shopgui.py:652
 msgid "_Edit"
 msgstr "_Édition"
 
-#: ../gourmet/GourmetRecipeManager.py:1059
+#: ../gourmet/GourmetRecipeManager.py:1024
 msgid "_Actions"
 msgstr "_Actions"
 
-#: ../gourmet/GourmetRecipeManager.py:1060
+#: ../gourmet/GourmetRecipeManager.py:1025
 msgid "Setti_ngs"
 msgstr "Préfére_nces"
 
-#: ../gourmet/GourmetRecipeManager.py:1061
-#: ../gourmet/GourmetRecipeManager.py:1066 ../gourmet/reccard.py:215
-#: ../gourmet/reccard.py:226 ../gourmet/reccard.py:867
+#: ../gourmet/GourmetRecipeManager.py:1026
+#: ../gourmet/GourmetRecipeManager.py:1031 ../gourmet/reccard.py:212
+#: ../gourmet/reccard.py:223 ../gourmet/reccard.py:864
 #: ../gourmet/shopgui.py:675 ../gourmet/shopgui.py:677
 msgid "_Help"
 msgstr "_Aide"
 
-#: ../gourmet/GourmetRecipeManager.py:1062
+#: ../gourmet/GourmetRecipeManager.py:1027
 msgid "_About"
 msgstr "_À propos"
 
-#: ../gourmet/GourmetRecipeManager.py:1064
+#: ../gourmet/GourmetRecipeManager.py:1029
 msgid "_New"
 msgstr "_Nouveau"
 
-#: ../gourmet/GourmetRecipeManager.py:1068
+#: ../gourmet/GourmetRecipeManager.py:1033
 msgid "_Import file"
 msgstr "_Importer un fichier"
 
-#: ../gourmet/GourmetRecipeManager.py:1069
+#: ../gourmet/GourmetRecipeManager.py:1034
 msgid "Import recipe from file"
 msgstr "Importer une recette depuis un fichier"
 
-#: ../gourmet/GourmetRecipeManager.py:1070
+#: ../gourmet/GourmetRecipeManager.py:1035
 msgid "Import _webpage"
 msgstr "Importer une page sur la _toile"
 
-#: ../gourmet/GourmetRecipeManager.py:1071
+#: ../gourmet/GourmetRecipeManager.py:1036
 msgid "Import recipe from webpage"
 msgstr "Importer une recette depuis une page sur la toile"
 
-#: ../gourmet/GourmetRecipeManager.py:1072
+#: ../gourmet/GourmetRecipeManager.py:1037
 msgid "Export _all recipes"
 msgstr "Exporter _toutes les recettes"
 
-#: ../gourmet/GourmetRecipeManager.py:1073
+#: ../gourmet/GourmetRecipeManager.py:1038
 msgid "Export all recipes to file"
 msgstr "Exporter toutes les recettes dans un fichier"
 
-#: ../gourmet/GourmetRecipeManager.py:1074
+#: ../gourmet/GourmetRecipeManager.py:1039
 msgid "_Plugins"
 msgstr "_Extensions"
 
-#: ../gourmet/GourmetRecipeManager.py:1075
+#: ../gourmet/GourmetRecipeManager.py:1040
 msgid "Manage plugins which add extra functionality to Gourmet."
 msgstr "Gérer les modules qui ajoutent des fonctionnalités à Gourmet."
 
-#: ../gourmet/GourmetRecipeManager.py:1077
+#: ../gourmet/GourmetRecipeManager.py:1042
 msgid "_Preferences"
 msgstr "_Préférences"
 
@@ -1038,43 +1027,43 @@ msgstr "_Préférences"
 #. None,None),
 #. ('Undo',gtk.STOCK_UNDO,_('_Undo'),
 #. None,None),
-#: ../gourmet/GourmetRecipeManager.py:1083
+#: ../gourmet/GourmetRecipeManager.py:1048
 msgid "_Quit"
 msgstr "_Quitter"
 
-#: ../gourmet/GourmetRecipeManager.py:1085
+#: ../gourmet/GourmetRecipeManager.py:1050
 msgid "Open _Trash"
 msgstr "Ouvrir la _corbeille"
 
-#: ../gourmet/GourmetRecipeManager.py:1091
+#: ../gourmet/GourmetRecipeManager.py:1056
 msgid "_Tools"
 msgstr "_Outils"
 
-#: ../gourmet/GourmetRecipeManager.py:1092
+#: ../gourmet/GourmetRecipeManager.py:1057
 msgid "_Timer"
 msgstr "_Minuteur"
 
-#: ../gourmet/GourmetRecipeManager.py:1093
+#: ../gourmet/GourmetRecipeManager.py:1058
 msgid "Show timer"
 msgstr "Afficher le minuteur"
 
-#: ../gourmet/GourmetRecipeManager.py:1099
+#: ../gourmet/GourmetRecipeManager.py:1064
 msgid "Searchable index of recipes in the database."
 msgstr "Index de recherche des recettes dans la base de données."
 
-#: ../gourmet/GourmetRecipeManager.py:1209
+#: ../gourmet/GourmetRecipeManager.py:1174
 #, python-format
 msgid "Delete %s?"
 msgstr "Supprimer %s ?"
 
-#: ../gourmet/GourmetRecipeManager.py:1210
+#: ../gourmet/GourmetRecipeManager.py:1175
 #, python-format
 msgid "You have unsaved changes to %s. Are you sure you want to delete?"
 msgstr ""
 "Des modifications de %s n’ont pas été enregistrées. Êtes-vous sûr de vouloir "
 "supprimer ?"
 
-#: ../gourmet/GourmetRecipeManager.py:1232
+#: ../gourmet/GourmetRecipeManager.py:1197
 #, python-format
 msgid ""
 "You just moved %s recipe to the trash. You can recover this recipe or "
@@ -1091,68 +1080,68 @@ msgstr[1] ""
 "recettes ou les supprimer définitivement à tout moment en cliquant sur Outil "
 "▸ Ouvrir la corbeille"
 
-#: ../gourmet/GourmetRecipeManager.py:1239
+#: ../gourmet/GourmetRecipeManager.py:1204
 msgid "Deleted"
 msgstr "Supprimé"
 
-#: ../gourmet/GourmetRecipeManager.py:1239
+#: ../gourmet/GourmetRecipeManager.py:1204
 #: ../gourmet/importers/interactive_importer.py:472
 msgid "Untitled"
 msgstr "Sans titre"
 
-#: ../gourmet/GourmetRecipeManager.py:1247
+#: ../gourmet/GourmetRecipeManager.py:1212
 msgid "Permanently delete recipes?"
 msgstr "Supprimer définitivement les recettes ?"
 
-#: ../gourmet/GourmetRecipeManager.py:1249
+#: ../gourmet/GourmetRecipeManager.py:1214
 msgid "Permanently delete recipe?"
 msgstr "Supprimer définitivement la recette ?"
 
-#: ../gourmet/GourmetRecipeManager.py:1250
+#: ../gourmet/GourmetRecipeManager.py:1215
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
 msgstr "Êtes-vous sûr de vouloir supprimer la recette <i>%s</i>"
 
-#: ../gourmet/GourmetRecipeManager.py:1252
+#: ../gourmet/GourmetRecipeManager.py:1217
 msgid "Are you sure you want to delete the following recipes?"
 msgstr "Êtes-vous sûr de vouloir supprimer les recettes suivantes ?"
 
-#: ../gourmet/GourmetRecipeManager.py:1256
+#: ../gourmet/GourmetRecipeManager.py:1221
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
 msgstr "Êtes-vous sûr de vouloir supprimer les %s recettes sélectionnées ?"
 
-#: ../gourmet/GourmetRecipeManager.py:1258
+#: ../gourmet/GourmetRecipeManager.py:1223
 msgid "See recipes"
 msgstr "Voir les recettes"
 
-#: ../gourmet/GourmetRecipeManager.py:1266
+#: ../gourmet/GourmetRecipeManager.py:1231
 msgid "Delete Recipes"
 msgstr "Supprimer les recettes"
 
-#: ../gourmet/GourmetRecipeManager.py:1293
+#: ../gourmet/GourmetRecipeManager.py:1258
 #, python-format
 msgid "Deleted recipe %s"
 msgstr "Supprimer la recette %s"
 
-#: ../gourmet/GourmetRecipeManager.py:1327
+#: ../gourmet/GourmetRecipeManager.py:1292
 msgid "Export succeeded"
 msgstr "Exportation réussie"
 
-#: ../gourmet/GourmetRecipeManager.py:1330
+#: ../gourmet/GourmetRecipeManager.py:1295
 msgid "webpage"
 msgstr "Page sur la toile"
 
-#: ../gourmet/GourmetRecipeManager.py:1331
+#: ../gourmet/GourmetRecipeManager.py:1296
 #, python-format
 msgid "Exported %s to %s"
 msgstr "Exporté %s vers %s"
 
-#: ../gourmet/GourmetRecipeManager.py:1391
+#: ../gourmet/GourmetRecipeManager.py:1356
 msgid "Done!"
 msgstr "Terminé !"
 
-#: ../gourmet/GourmetRecipeManager.py:1399
+#: ../gourmet/GourmetRecipeManager.py:1364
 msgid "Importing..."
 msgstr "Importation…"
 
@@ -1190,10 +1179,7 @@ msgstr ""
 "l’utiliser avec un ancien Gourmet."
 
 #: ../gourmet/backends/db.py:1505
-#: ../gourmet/importers/interactive_importer.py:96
-#: ../gourmet/legacy_db/db_08/rdatabase.py:446
-#: ../gourmet/legacy_db/db_085/rdatabase.py:447
-#: ../gourmet/legacy_db/db_09/rdatabase.py:508 ../gourmet/reccard.py:940
+#: ../gourmet/importers/interactive_importer.py:96 ../gourmet/reccard.py:937
 msgid "New Recipe"
 msgstr "Nouvelle recette"
 
@@ -1373,8 +1359,8 @@ msgstr "étoiles"
 
 #: ../gourmet/exporters/exporter.py:378 ../gourmet/exporters/exporter.py:463
 #: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:178
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:632
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:645
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:633
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:646
 msgid "optional"
 msgstr "optionelle"
 
@@ -1415,7 +1401,7 @@ msgstr ""
 #: ../gourmet/exporters/recipe_emailer.py:55
 #: ../gourmet/plugins/email_plugin/recipe_emailer.py:29
 #: ../gourmet/plugins/email_plugin/recipe_emailer.py:48
-#: ../gourmet/plugins/key_editor/keyEditor.py:115 ../gourmet/reccard.py:3033
+#: ../gourmet/plugins/key_editor/keyEditor.py:115 ../gourmet/reccard.py:3030
 msgid "Recipes"
 msgstr "Recettes"
 
@@ -1476,12 +1462,12 @@ msgid "Cooking Time"
 msgstr "Temps de cuisson"
 
 #: ../gourmet/gglobals.py:165 ../gourmet/gglobals.py:170
-#: ../gourmet/reccard.py:1655
+#: ../gourmet/reccard.py:1652
 msgid "Instructions"
 msgstr "Instructions"
 
 #: ../gourmet/gglobals.py:166 ../gourmet/gglobals.py:171
-#: ../gourmet/reccard.py:1661
+#: ../gourmet/reccard.py:1658
 msgid "Notes"
 msgstr "Notes"
 
@@ -1584,7 +1570,7 @@ msgstr "Aucun fichier sélectionné"
 msgid "No file was selected, so the action has been cancelled"
 msgstr "Aucun fichier n’a été sélectionné, l’action a donc été annulée"
 
-#: ../gourmet/gtk_extras/dialog_extras.py:1157
+#: ../gourmet/gtk_extras/dialog_extras.py:1159
 #, python-format
 msgid ""
 "I'm sorry, I can't understand\n"
@@ -1593,14 +1579,14 @@ msgstr ""
 "Désolé, je ne comprends pas\n"
 "la quantité « %s »."
 
-#: ../gourmet/gtk_extras/dialog_extras.py:1159
+#: ../gourmet/gtk_extras/dialog_extras.py:1161
 msgid ""
 "Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
 msgstr ""
 "Les quantités doivent êtres des nombres (fractions ou décimales), plages de "
 "valeurs ou rien."
 
-#: ../gourmet/gtk_extras/dialog_extras.py:1161
+#: ../gourmet/gtk_extras/dialog_extras.py:1163
 msgid ""
 "\n"
 "The \"unit\" must be in the \"unit\" field by itself.\n"
@@ -1754,7 +1740,7 @@ msgstr "Sous-catégorie d’ingrédients."
 msgid "Hide"
 msgstr "Masquer"
 
-#: ../gourmet/importers/interactive_importer.py:47 ../gourmet/reccard.py:1311
+#: ../gourmet/importers/interactive_importer.py:47 ../gourmet/reccard.py:1308
 msgid "Description"
 msgstr "Description"
 
@@ -1816,38 +1802,6 @@ msgstr "%s recettes importées."
 #, python-format
 msgid "Downloading %s"
 msgstr "Téléchargement de %s"
-
-#: ../gourmet/legacy_db/db_08/rmetakit.py:17
-#: ../gourmet/legacy_db/db_09/rmetakit.py:17
-msgid "Database format has changed"
-msgstr "Le format de base de données a changé."
-
-#: ../gourmet/legacy_db/db_08/rmetakit.py:18
-#: ../gourmet/legacy_db/db_09/rmetakit.py:18
-#, python-format
-msgid ""
-"%(progname)s %(version)s has changed the format of its database. Your "
-"database will no longer work with older versions of %(progname)s.  A backup "
-"has been saved in %(backupfile)s"
-msgstr ""
-"%(progname)s %(version)s a changé le format de sa base de donnée. Votre base "
-"de donnée ne fonctionnera plus avec des versions antérieures de "
-"%(progname)s. Une copie de sauvegarde a été enregistrée dans %(backupfile)s"
-
-#: ../gourmet/legacy_db/db_08/rmetakit.py:548
-#: ../gourmet/legacy_db/db_09/rmetakit.py:593
-#, python-format
-msgid ""
-"In case anything goes wrong, a backup copy of your recipe database is being "
-"exported to %s"
-msgstr ""
-"Au cas où quelque chose tourne mal, une copie de sauvegarde de votre base de "
-"données de recettes est exporté vers %s"
-
-#: ../gourmet/legacy_db/db_08/rmetakit.py:550
-#: ../gourmet/legacy_db/db_09/rmetakit.py:595
-msgid "Transferring data to new database format"
-msgstr "Transfert des données vers le nouveau format"
 
 #: ../gourmet/plugin_gui.py:31
 msgid "Plugins"
@@ -2250,119 +2204,119 @@ msgstr ""
 "Imprimer des recettes ou les exporter comme PDF ; ce module propose de "
 "nombreuses options de mise en page."
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:715
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:828
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:716
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:829
 msgid "Letter"
 msgstr "Lettre"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:716
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:847
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:970
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:1001
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:717
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:848
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:971
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:1002
 msgid "Portrait"
 msgstr "Portrait"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:718
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:840
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:962
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:719
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:841
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:963
 msgid "Plain"
 msgstr "Brut"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:732
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:752
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:733
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:753
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:754
 msgid "cm"
 msgstr "cm"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:733
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:734
 msgid "points"
 msgstr "points"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:823
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:824
 msgid "11x17\""
 msgstr "11×17″"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:824
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:825
 msgid "Index Card (3.5x5\")"
 msgstr "Fiche d’index (3½×5″)"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:825
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:826
 msgid "Index Card (4x6\")"
 msgstr "Fiche d’index (4×6″)"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:826
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:827
 msgid "Index Card (5x8\")"
 msgstr "Fiche d’index (5×8″)"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:827
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:828
 msgid "Index Card (A7)"
 msgstr "Fiche d’index (A7)"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:829
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:830
 msgid "Legal"
 msgstr "Légal"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:835
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:841
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:836
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:842
 msgid "Index Cards (3.5x5)"
 msgstr "Fiche d’index (3½×5)"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:836
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:842
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:837
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:843
 msgid "Index Cards (4x6)"
 msgstr "Fiche d’index (4×6)"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:837
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:843
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:838
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:844
 msgid "Index Cards (A7)"
 msgstr "Fiche d’index (A7)"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:848
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:948
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:999
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:849
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:949
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:1000
 msgid "Landscape"
 msgstr "Paysage"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:859
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:860
 #, python-format
 msgid "%s Column"
 msgid_plural "%s Columns"
 msgstr[0] "%s colonne"
 msgstr[1] "%s colonnes"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:874
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:875
 msgid "Paper _Size"
 msgstr "_Taille du papier"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:876
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:877
 msgid "_Orientation"
 msgstr "_Orientation"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:878
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:879
 msgid "_Font Size"
 msgstr "Taille de la _police"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:880
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:881
 msgid "Page _Layout"
 msgstr "Mise en page"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:883
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:884
 msgid "Left Margin"
 msgstr "Marge de gauche"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:884
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:885
 msgid "Right Margin"
 msgstr "Marge de droite"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:885
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:886
 msgid "Top Margin"
 msgstr "Marge du haut"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:886
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:887
 msgid "Bottom Margin"
 msgstr "Marge du bas"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:907
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:908
 msgid "PDF Options"
 msgstr "Options PDF"
 
@@ -2646,13 +2600,13 @@ msgstr "Montrer les ingrédients %(bottom)s à %(top)s de %(total)s"
 #: ../gourmet/plugins/key_editor/keyEditor.py:513
 #: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:101
 #: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:189
-#: ../gourmet/reccard.py:2140 ../gourmet/reccard.py:2167
+#: ../gourmet/reccard.py:2137 ../gourmet/reccard.py:2164
 msgid "Item"
 msgstr "Élément"
 
 #: ../gourmet/plugins/key_editor/keyEditor.py:514
 #: ../gourmet/plugins/nutritional_information/nutritionModel.py:8
-#: ../gourmet/reccard.py:2139 ../gourmet/reccard.py:2166
+#: ../gourmet/reccard.py:2136 ../gourmet/reccard.py:2163
 msgid "Unit"
 msgstr "Unité"
 
@@ -3776,46 +3730,46 @@ msgid "source"
 msgstr "source"
 
 #. menus
-#: ../gourmet/reccard.py:212 ../gourmet/reccard.py:864
+#: ../gourmet/reccard.py:209 ../gourmet/reccard.py:861
 msgid "_Recipe"
 msgstr "_Recette"
 
-#: ../gourmet/reccard.py:216
+#: ../gourmet/reccard.py:213
 msgid "Export recipe"
 msgstr "Exporter la recette"
 
-#: ../gourmet/reccard.py:217
+#: ../gourmet/reccard.py:214
 msgid "Export selected recipe (save to file)"
 msgstr "Exporter la recette sélectionnée (enregistrer dans un fichier)"
 
-#: ../gourmet/reccard.py:219
+#: ../gourmet/reccard.py:216
 msgid "_Delete recipe"
 msgstr "_Supprimer la recette"
 
-#: ../gourmet/reccard.py:220
+#: ../gourmet/reccard.py:217
 msgid "Delete this recipe"
 msgstr "Supprimer cette recette"
 
-#: ../gourmet/reccard.py:231
+#: ../gourmet/reccard.py:228
 msgid "Adjust units when multiplying"
 msgstr "Ajuster les unités après multiplication"
 
-#: ../gourmet/reccard.py:233
+#: ../gourmet/reccard.py:230
 msgid ""
 "Change units to make them more readable where possible when multiplying."
 msgstr "Changer les unités pour les rendre plus lisibles après multiplication."
 
 #. ('Email',None,_('E-_mail recipe'),
 #. None,None,self.email_cb),
-#: ../gourmet/reccard.py:241
+#: ../gourmet/reccard.py:238
 msgid "Print recipe"
 msgstr "Imprimer la recette"
 
-#: ../gourmet/reccard.py:244
+#: ../gourmet/reccard.py:241
 msgid "Forget remembered optional ingredients"
 msgstr "Oublier les ingrédients optionels"
 
-#: ../gourmet/reccard.py:245
+#: ../gourmet/reccard.py:242
 msgid ""
 "Before adding to shopping list, ask about all optional ingredients, even "
 "ones you previously wanted remembered"
@@ -3823,123 +3777,123 @@ msgstr ""
 "Avant d’ajouter à la liste de courses, vérifier tous les ingrédients "
 "optionels, même ceux dont vous vouliez précédemment vous rappeler"
 
-#: ../gourmet/reccard.py:247
+#: ../gourmet/reccard.py:244
 msgid "Export Recipe"
 msgstr "Exporter la recette"
 
-#: ../gourmet/reccard.py:609
+#: ../gourmet/reccard.py:606
 msgid "You have unsaved changes."
 msgstr "Vous avez des changements non enregistrés."
 
-#: ../gourmet/reccard.py:610
+#: ../gourmet/reccard.py:607
 msgid "Apply changes before printing?"
 msgstr "Appliquer les modifications avant l’impression ?"
 
-#: ../gourmet/reccard.py:701 ../gourmet/recipeIdentifier.py:93
+#: ../gourmet/reccard.py:698 ../gourmet/recipeIdentifier.py:93
 msgid "(Optional)"
 msgstr "(Falcutatif)"
 
-#: ../gourmet/reccard.py:756
+#: ../gourmet/reccard.py:753
 #, python-format
 msgid "Unable to find recipe %s in database."
 msgstr "Impossible de trouver la recette %s dans la base de donnée."
 
-#: ../gourmet/reccard.py:848
+#: ../gourmet/reccard.py:845
 msgid "Edit Recipe:"
 msgstr "Modifier la recette :"
 
-#: ../gourmet/reccard.py:869
+#: ../gourmet/reccard.py:866
 msgid "Save edits to database"
 msgstr "Enregisrer les modifications apportées à la base de données"
 
 #. show_pref_dialog
-#: ../gourmet/reccard.py:878
+#: ../gourmet/reccard.py:875
 msgid "View Recipe Card"
 msgstr "Voir la fiche recette"
 
-#: ../gourmet/reccard.py:940
+#: ../gourmet/reccard.py:937
 msgid "Edit"
 msgstr "Éditer"
 
-#: ../gourmet/reccard.py:1047 ../gourmet/reccard.py:1048
+#: ../gourmet/reccard.py:1044 ../gourmet/reccard.py:1045
 #, python-format
 msgid "Save changes to %s"
 msgstr "Enregistrer les changements vers %s"
 
-#: ../gourmet/reccard.py:1138
+#: ../gourmet/reccard.py:1135
 msgid "Add ingredient"
 msgstr "Ajouter un ingrédient"
 
-#: ../gourmet/reccard.py:1140
+#: ../gourmet/reccard.py:1137
 msgid "Add group"
 msgstr "Ajouter un groupe"
 
-#: ../gourmet/reccard.py:1142
+#: ../gourmet/reccard.py:1139
 msgid "Paste ingredients"
 msgstr "Coller les ingrédients"
 
-#: ../gourmet/reccard.py:1144
+#: ../gourmet/reccard.py:1141
 msgid "Import from file"
 msgstr "Importer depuis un fichier"
 
-#: ../gourmet/reccard.py:1146
+#: ../gourmet/reccard.py:1143
 msgid "Add _recipe"
 msgstr "Ajouter une _recette"
 
-#: ../gourmet/reccard.py:1147
+#: ../gourmet/reccard.py:1144
 msgid "Add another recipe as an ingredient in this recipe"
 msgstr "Ajouter une autre recette comme ingrédient de cette recette"
 
-#: ../gourmet/reccard.py:1151
+#: ../gourmet/reccard.py:1148
 msgid "Delete"
 msgstr "Supprimer"
 
-#: ../gourmet/reccard.py:1157
+#: ../gourmet/reccard.py:1154
 msgid "Up"
 msgstr "Vers le haut"
 
-#: ../gourmet/reccard.py:1159
+#: ../gourmet/reccard.py:1156
 msgid "Down"
 msgstr "Vers le bas"
 
 #. FIXME
-#: ../gourmet/reccard.py:1205
+#: ../gourmet/reccard.py:1202
 msgid "Choose a file containing your ingredient list."
 msgstr "Choisir un fichier contenant votre liste d’ingrédients."
 
-#: ../gourmet/reccard.py:1390
+#: ../gourmet/reccard.py:1387
 #, python-format
 msgid "Couldn't make sense of %s as number of yields"
 msgstr "Impossible de comprendre %s comme nombre d’un rendement"
 
-#: ../gourmet/reccard.py:2138 ../gourmet/reccard.py:2165
+#: ../gourmet/reccard.py:2135 ../gourmet/reccard.py:2162
 msgid "Amt"
 msgstr "Qté"
 
-#: ../gourmet/reccard.py:2142 ../gourmet/reccard.py:2168
+#: ../gourmet/reccard.py:2139 ../gourmet/reccard.py:2165
 msgid "Optional"
 msgstr "Optionnel"
 
-#: ../gourmet/reccard.py:2280
+#: ../gourmet/reccard.py:2277
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
 msgstr "La recette %s (ID %s) n’est pas dans notre base de données."
 
-#: ../gourmet/reccard.py:2601
+#: ../gourmet/reccard.py:2598
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
 msgstr "Converti : %(amt)s %(unit)s"
 
-#: ../gourmet/reccard.py:2603
+#: ../gourmet/reccard.py:2600
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
 msgstr "Non converti : %(amt)s %(unit)s"
 
-#: ../gourmet/reccard.py:2607
+#: ../gourmet/reccard.py:2604
 msgid "Changed unit."
 msgstr "Unité changée."
 
-#: ../gourmet/reccard.py:2608
+#: ../gourmet/reccard.py:2605
 #, python-format
 msgid ""
 "You have changed the unit for %(item)s from %(old)s to %(new)s. Would you "
@@ -3948,45 +3902,45 @@ msgstr ""
 "Vous avez changé l’unité de l’ingrédient %(item)s de %(old)s à %(new)s. "
 "Voulez-vous une conversion de la quantité ?"
 
-#: ../gourmet/reccard.py:2619
+#: ../gourmet/reccard.py:2616
 #, python-format
 msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
 msgstr "%(old_amt)s %(old_unit)s converti en %(new_amt)s %(new_unit)s"
 
-#: ../gourmet/reccard.py:2631
+#: ../gourmet/reccard.py:2628
 #, python-format
 msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
 msgstr "Impossible de convertir des %(old_unit)s en %(new_unit)s"
 
-#: ../gourmet/reccard.py:2686
+#: ../gourmet/reccard.py:2683
 msgid "Adding Ingredient Group"
 msgstr "Ajouter un groupe d’ingrédients"
 
-#: ../gourmet/reccard.py:2687
+#: ../gourmet/reccard.py:2684
 msgid "Enter a name for new subgroup of ingredients"
 msgstr "Entrer un nom pour le nouveau sous-groupe d’ingrédients"
 
-#: ../gourmet/reccard.py:2688
+#: ../gourmet/reccard.py:2685
 msgid "Name of group:"
 msgstr "Nom du groupe :"
 
-#: ../gourmet/reccard.py:2954
+#: ../gourmet/reccard.py:2951
 msgid "Choose recipe"
 msgstr "Choisir une recette"
 
-#: ../gourmet/reccard.py:2991
+#: ../gourmet/reccard.py:2988
 msgid "Recipe cannot call itself as an ingredient!"
 msgstr "Une recette ne peut pas servir d’ingrédient à elle-même !"
 
-#: ../gourmet/reccard.py:2992 ../gourmet/shopping.py:329
+#: ../gourmet/reccard.py:2989 ../gourmet/shopping.py:329
 msgid "Infinite recursion is not allowed in recipes!"
 msgstr "La récursion infinie n’est pas autorisée dans les recettes !"
 
-#: ../gourmet/reccard.py:3013
+#: ../gourmet/reccard.py:3010
 msgid "You haven't selected any recipes!"
 msgstr "Vous n’avez pas sélectionné de recette !"
 
-#: ../gourmet/reccard.py:3025
+#: ../gourmet/reccard.py:3022
 #, python-format
 msgid "How much of %(title)s does your recipe call for?"
 msgstr "De combien de %(title)s votre recette a-t-elle besoin ?"
@@ -4358,6 +4312,39 @@ msgstr ""
 #: ../gourmet/version.py:43
 msgid "Kati Pregartner (splash screen image)"
 msgstr ""
+
+#~ msgid "Importing old recipe data"
+#~ msgstr "Importer une ancienne recette"
+
+#~ msgid ""
+#~ "Importing recipe data from a previous version of Gourmet into new "
+#~ "database."
+#~ msgstr ""
+#~ "Importer une recette d’une ancienne version de Gourmet dans une nouvelle "
+#~ "base de donnée"
+
+#~ msgid "Database format has changed"
+#~ msgstr "Le format de base de données a changé."
+
+#~ msgid ""
+#~ "%(progname)s %(version)s has changed the format of its database. Your "
+#~ "database will no longer work with older versions of %(progname)s.  A "
+#~ "backup has been saved in %(backupfile)s"
+#~ msgstr ""
+#~ "%(progname)s %(version)s a changé le format de sa base de donnée. Votre "
+#~ "base de donnée ne fonctionnera plus avec des versions antérieures de "
+#~ "%(progname)s. Une copie de sauvegarde a été enregistrée dans %(backupfile)"
+#~ "s"
+
+#~ msgid ""
+#~ "In case anything goes wrong, a backup copy of your recipe database is "
+#~ "being exported to %s"
+#~ msgstr ""
+#~ "Au cas où quelque chose tourne mal, une copie de sauvegarde de votre base "
+#~ "de données de recettes est exporté vers %s"
+
+#~ msgid "Transferring data to new database format"
+#~ msgstr "Transfert des données vers le nouveau format"
 
 #~ msgid "_Servings"
 #~ msgstr "_Portions"
