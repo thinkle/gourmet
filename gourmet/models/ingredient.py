@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Float, LargeBinary, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, Text, Float, Boolean, ForeignKey
 
 from gourmet.models import Base
 

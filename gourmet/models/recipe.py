@@ -1,5 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Float, LargeBinary, Boolean, DateTime
-from sqlalchemy.orm import validates
+from sqlalchemy import Column, Integer, String, Text, Float, LargeBinary, Boolean
 from sqlalchemy.event import listen
 
 from gourmet.models import Base

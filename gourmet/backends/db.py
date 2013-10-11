@@ -16,7 +16,9 @@ import sqlalchemy, sqlalchemy.orm
 from sqlalchemy import Integer, LargeBinary, String, Float, Boolean, Numeric, Column, ForeignKey, Text
 from sqlalchemy.sql import and_, or_, case 
 from sqlalchemy import event, func
-from gourmet.models import Base, Recipe, Ingredient, VersionInfo, PluginInfo, Category
+from gourmet.models import Base, Category, Convtable, CrossUnit, Density, \
+    Ingredient, KeyLookup, Pantry, PluginInfo, Recipe, ShopCat, ShopCatOrder, \
+    Unitdict, VersionInfo
 
 Session = sqlalchemy.orm.sessionmaker()
 
@@ -260,92 +262,27 @@ class RecData (Pluggable):
         self.ingredients_table = Ingredient.__table__
 
     def setup_keylookup_table (self):
-        # Keylookup table - for speedy keylookup
-        class KeyLookup (Base):
-            __tablename__ = 'keylookup'
-
-            id = Column(Integer, primary_key=True)
-            word = Column(Text)
-            item = Column(Text)
-            ingkey = Column(Text)
-            count = Column(Integer)
-
         self.keylookup_table = KeyLookup.__table__
 
     def setup_shopcats_table (self):
-        # shopcats - Keep track of which shoppin category ingredients are in...
-        class ShopCat (Base):
-            __tablename__ = 'shopcats'
-
-            id = Column(Integer, primary_key=True)
-            ingkey = Column(Text(32))
-            shopcategory = Column(Text)
-            position = Column(Integer)
-
         self.shopcats_table = ShopCat.__table__
 
     def setup_shopcatsorder_table (self):
-        # shopcatsorder - Keep track of the order of shopping categories
-        class ShopCatOrder (Base):
-            __tablename__ = 'shopcatsorder'
-
-            id = Column(Integer, primary_key=True)
-            shopcategory = Column(Text(32))
-            position = Column(Integer)
-
         self.shopcatsorder_table = ShopCatOrder.__table__
 
     def setup_pantry_table (self):
-        # pantry table -- which items are in the "pantry" (i.e. not to
-        # be added to the shopping list)
-        class Pantry (Base):
-            __tablename__ = 'pantry'
-
-            id = Column(Integer, primary_key=True)
-            ingkey = Column(Text(32))
-            pantry = Column(Boolean)
-
         self.pantry_table = Pantry.__table__
 
     def setup_density_table (self):
-        # Keep track of the density of items...
-        class Density (Base):
-            __tablename__ = 'density'
-
-            id = Column(Integer, primary_key=True)
-            dkey = Column(String(150))
-            value = Column(String(150))
-
         self.density_table = Density.__table__
 
     def setup_crossunitdict_table (self):
-        class CrossUnit (Base):
-            __tablename__ = 'crossunitdict'
-
-            id = Column(Integer, primary_key=True)
-            cukey = Column(String(150))
-            value = Column(String(150))
-
         self.crossunitdict_table = CrossUnit.__table__
 
     def setup_unitdict_table (self):
-        class Unitdict (Base):
-            __tablename__ = 'unitdict'
-
-            id = Column(Integer, primary_key=True)
-            ukey = Column(String(150))
-            value = Column(String(150))
-
         self.unitdict_table = Unitdict.__table__
 
     def setup_convtable_table (self):
-        class Convtable (Base):
-            __tablename__ = 'convtable'
-
-            id = Column(Integer, primary_key=True)
-            ckey = Column(String(150))
-            value = Column(String(150))
-
         self.convtable_table = Convtable.__table__
 
     def setup_shopper_tables (self):
