@@ -74,16 +74,6 @@ gourmet/importers/rezkonv_importer.py
 gourmet/importers/webextras.py
 gourmet/importers/xml_importer.py
 gourmet/keymanager.py
-gourmet/legacy_db/__init__.py
-gourmet/legacy_db/db_08/__init__.py
-gourmet/legacy_db/db_08/rdatabase.py
-gourmet/legacy_db/db_08/rmetakit.py
-gourmet/legacy_db/db_085/__init__.py
-gourmet/legacy_db/db_085/rdatabase.py
-gourmet/legacy_db/db_085/rmetakit.py
-gourmet/legacy_db/db_09/__init__.py
-gourmet/legacy_db/db_09/rdatabase.py
-gourmet/legacy_db/db_09/rmetakit.py
 gourmet/plugin.py
 gourmet/plugin_gui.py
 gourmet/plugin_loader.py
@@ -231,6 +221,5 @@ gourmet/sound_windows.py
 gourmet/threadManager.py
 gourmet/timeScanner.py
 gourmet/timer.py
-gourmet/upgradeHandler.py
 gourmet/version.py
 windows/GourmetDebug.pyw

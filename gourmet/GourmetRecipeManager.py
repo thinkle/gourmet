@@ -31,36 +31,6 @@ except ImportError:
     debug('No RTF support',0)
     rtf=False
 
-def check_for_data_to_import (rm):
-    if rm.fetch_len(rm.recipe_table)==0:
-        try:
-            import legacy_db
-        except ImportError:
-            #print "Not trying to update."
-            #print "We had an import error."
-            #import traceback; traceback.print_exc()
-            pass
-        else:
-            pd = de.ProgressDialog(label=_('Importing old recipe data'),
-                                   sublabel=_('Importing recipe data from a previous version of Gourmet into new database.'),
-                                   )
-            def set_prog (p,msg=None):
-                p=float(p)
-                pd.set_progress(p,msg)
-                while gtk.events_pending():
-                    gtk.main_iteration()
-            legacy_db.backup_legacy_data(gourmetdir, pd, set_prog)
-            backup_file = os.path.join(gourmetdir,'GOURMET_DATA_DUMP')
-            if os.path.exists(backup_file):
-                import upgradeHandler        
-                pd.show()
-                upgradeHandler.import_backup_file(
-                    rm,backup_file,set_prog
-                    )
-                os.rename(backup_file,backup_file+'.ALREADY_LOADED')
-                pd.hide()
-                pd.destroy()
-
 class GourmetApplication:
     """The main Gourmet Application.
 
@@ -183,7 +153,6 @@ class GourmetApplication:
         we display the traceback to the user so they can send it out for debugging
         (or possibly make sense of it themselves!)."""
         self.rd = recipeManager.default_rec_manager()
-        check_for_data_to_import(self.rd)
         # initiate autosave stuff autosave every 3 minutes
         # (milliseconds * 1000 milliseconds/second * 60
         # seconds/minute)
