@@ -536,8 +536,6 @@ class RecIndex:
                                         get_current_rec_method=lambda *args: self.get_selected_recs_from_rec_tree()[0],
                                         )
             self.update_modified_recipe(rec,attribute,text)
-        # for metakit, which isn't autocomitting very nicely...        
-        #self.rmodel.row_changed(path,iter)
         self.rmodel.update_iter(iter)
         self.rd.save()
 

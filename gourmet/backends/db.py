@@ -126,7 +126,7 @@ class RecData (Pluggable):
 
     """RecData is our base class for handling database connections.
 
-    Subclasses implement specific backends, such as metakit, sqlite, etc."""
+    Subclasses implement specific backends, such as sqlite, etc."""
 
     # constants for determining how to get amounts when there are ranges.
     AMT_MODE_LOW = 0

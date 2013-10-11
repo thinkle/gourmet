@@ -10,12 +10,11 @@ class DatabaseChooser:
     def __init__ (self, okcb=lambda x: debug(x,0), modal=True):
         self._okcb = okcb
         self.modal = modal
-        self.possible_dbs = ['metakit','sqlite','mysql']
+        self.possible_dbs = ['sqlite','mysql']
         self.need_connection_info = ['mysql']
-        self.need_file_info = ['metakit','sqlite']
+        self.need_file_info = ['sqlite']
         self.default_file_directory = gglobals.gourmetdir
-        self.default_files = {'metakit': 'recipes.mk',
-                              'sqlite':'recipes.db'
+        self.default_files = {'sqlite':'recipes.db'
                               }
         uifile = os.path.join(gglobals.uibase,'databaseChooser.ui')
         self.ui = gtk.Builder()

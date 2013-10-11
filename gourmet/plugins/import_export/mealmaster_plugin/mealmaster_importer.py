@@ -561,8 +561,8 @@ if __name__ == '__main__':
     from gourmet.OptionParser import *
     print 'Testing MealMaster import'
     tmpfile = tempfile.mktemp()
-    import backends.rmetakit
-    rd = backends.rmetakit.RecipeManager(tmpfile)
+    import backends.db
+    rd = backends.db.RecipeManager(tmpfile)
     if not args: args = ['/home/tom/Projects/recipe/Data/200_Recipes.mmf']
     for a in args:
         profi = os.path.join(tempfile.tempdir,'MMI_PROFILE')
