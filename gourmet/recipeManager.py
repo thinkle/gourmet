@@ -49,43 +49,6 @@ class DatabaseShopper (shopping.Shopper):
         if len(self.pantry.items())==0:
             self.pantry.initialize(dict([(i,True) for i in self.default_pantry]))
 
-class DatabaseConverter(convert.Converter):
-    def __init__ (self, db):
-        self.db = db
-        convert.Converter.__init__(self)
-    ## still need to finish this class and then
-    ## replace calls to convert.Converter with
-    ## calls to rmetakit.DatabaseConverter
-
-    def create_conv_table (self):
-        self.conv_table = dbDic('ckey','value',self.db.convtable_table, self.db)
-        for k,v in defaults.CONVERTER_TABLE.items():
-            if not self.conv_table.has_key(k):
-                self.conv_table[k]=v
-
-    def create_density_table (self):
-        self.density_table = dbDic('dkey','value',
-                                   self.db.density_table,self.db)
-        for k,v in defaults.DENSITY_TABLE.items():
-            if not self.density_table.has_key(k):
-                self.density_table[k]=v
-
-    def create_cross_unit_table (self):
-        self.cross_unit_table=dbDic('cukey','value',self.db.crossunitdict_table,self.db)
-        for k,v in defaults.CROSS_UNIT_TABLE:
-            if not self.cross_unit_table.has_key(k):
-                self.cross_unit_table[k]=v
-
-    def create_unit_dict (self):
-        self.units = defaults.UNITS
-        self.unit_dict=dbDic('ukey','value',self.db.unitdict_table,self.db)
-        for itm in self.units:
-            key = itm[0]
-            variations = itm[1]
-            self.unit_dict[key] = key
-            for v in variations:
-                self.unit_dict[v] = key
-                
 # A simple CLI for mucking about our DB without firing up gourmet proper
 class SimpleCLI:
     def __init__  (self, rmclass=None, rmargs=None):
