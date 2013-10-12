@@ -1054,33 +1054,7 @@ if __name__ == '__main__':
     from tempfile import tempdir
     import os.path
     #opts = get_pdf_prefs(); print opts
-    sw = PdfWriter()
-    f = file(os.path.join(tempdir,'foo.pdf'),'wb')
-    sw.setup_document(f,
-                      mode=('index_cards',(5*inch,3.5*inch)),
-                      pagesize='letter',
-                      pagemode='landscape',
-                      left_margin=0.25*inch,right_margin=0.25*inch,
-                      top_margin=0.25*inch,bottom_margin=0.25*inch,
-                      base_font_size=8,
-                      )
-    #sw.write_header('Heading')
-    #sw.write_subheader('This is a subheading')
-    for n in range(5):
-        sw.write_header(
-            u"This is a header"
-            )
-        #sw.write_subheader(
-        #    u"This is a subheader"
-        #    )
-        sw.write_paragraph(
-            u"%s: These are some sentences.  Hopefully some of these will be quite long sentences.  Some of this text includes unicode -- 45\u00b0F, for example... \u00bfHow's that?"%n*10
-            )
-    #sw.write_paragraph('This is a <i>paragraph</i> with <b>some</b> <u>markup</u>.')
-    #sw.write_paragraph(u"This is some text with unicode - 45\u00b0, \u00bfHow's that?".encode('iso-8859-1'))
-    #sw.write_paragraph(u"This is some text with a unicode object - 45\u00b0, \u00bfHow's that?")
-    sw.close()
-    f.close()
+    test_3_x_5()
     
     #star_file = file(os.path.join(tempdir,'star.pdf'),'wb')
     #sw = PdfWriter()
@@ -1140,13 +1114,21 @@ if __name__ == '__main__':
                           top_margin=0.25*inch,bottom_margin=0.25*inch,
                           base_font_size=8,
                           )
+        #sw.write_header('Heading')
+        #sw.write_subheader('This is a subheading')
         for n in range(5):
             sw.write_header(
                 u"This is a header"
                 )
+            #sw.write_subheader(
+            #    u"This is a subheader"
+            #    )
             sw.write_paragraph(
                 u"%s: These are some sentences.  Hopefully some of these will be quite long sentences.  Some of this text includes unicode -- 45\u00b0F, for example... \u00bfHow's that?"%n*10
                 )
+        #sw.write_paragraph('This is a <i>paragraph</i> with <b>some</b> <u>markup</u>.')
+        #sw.write_paragraph(u"This is some text with unicode - 45\u00b0, \u00bfHow's that?".encode('iso-8859-1'))
+        #sw.write_paragraph(u"This is some text with a unicode object - 45\u00b0, \u00bfHow's that?")
         sw.close()
         f.close()
         return os.path.join(tempdir,'foo.pdf')
