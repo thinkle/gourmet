@@ -27,7 +27,7 @@ from gourmet.OptionParser import psyco, thread_debug, thread_debug_interval
 
 # Extra imports...
 import gourmet.defaults_en,gourmet.defaults_en_GB,gourmet.defaults_es #stuff imported with __import__
-import gourmet.prefs, gourmet.shopgui, gourmet.reccard, gourmet.convertGui, fnmatch
+import gourmet.prefs, gourmet.shopgui, gourmet.reccard, fnmatch
 import gourmet.exporters, gourmet.importers
 import gourmet.convert, gourmet.WidgetSaver, gourmet.version
 from gettext import gettext as _

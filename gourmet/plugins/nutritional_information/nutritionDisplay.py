@@ -153,10 +153,11 @@ if __name__ == '__main__':
     from gourmet.recipeManager import RecipeManager,dbargs
     dbargs['file']='/tmp/fdsa/recipes.mk'
     db=RecipeManager(**dbargs)
-    import gourmet.convertGui, gourmet.convert
+    from gourmet.GourmetRecipeManager import UnitModel
+    import gourmet.convert
     #inginfo = gourmet.reccard.IngInfo(db)
     conv=gourmet.convert.converter()
-    umod = gourmet.convertGui.UnitModel(conv)
+    umod = UnitModel(conv)
     import nutritionGrabberGui
     try:
         nutritionGrabberGui.check_for_db(db)

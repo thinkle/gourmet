@@ -23,7 +23,6 @@ gourmet/batchEditor.py
 gourmet/check_encodings.py
 gourmet/clockDB.py
 gourmet/convert.py
-gourmet/convertGui.py
 gourmet/defaults/__init__.py
 gourmet/defaults/defaults.py
 gourmet/defaults/defaults_de.py
