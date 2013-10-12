@@ -41,7 +41,26 @@ def set_attribute (xmlDoc, element, attribute, value):
     element.setAttributeNode(a)
     element.setAttribute(attribute,value)
 
-class EdfgXml(exporter.exporter_mult):
+class EdfgXmlBase:
+    def write_header (self):
+        a = self.xmlDoc.createAttribute('xmlns')
+        self.top_element.setAttributeNode(a)
+        self.top_element.setAttribute('xmlns',
+            'http://www.eatdrinkfeelgood.org/1.1/ns')
+        a = self.xmlDoc.createAttribute('xmlns:dc')
+        self.top_element.setAttributeNode(a)
+        self.top_element.setAttribute('xmlns:dc',
+            'http://purl.org/dc/elements/1.1')
+        a = self.xmlDoc.createAttribute('xmlns:xlink')
+        self.top_element.setAttributeNode(a)
+        self.top_element.setAttribute('xmlns:xlink',
+            'http://www.w3.org/1999/xlink')
+        a = self.xmlDoc.createAttribute('xmlns:xi')
+        self.top_element.setAttributeNode(a)
+        self.top_element.setAttribute('xmlns:xi',
+            'http://www.w3.org/2001/XInclude')
+
+class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
 
     """ An XML exported for the eatdrinkfeelgood dtd """
 
@@ -65,24 +84,7 @@ class EdfgXml(exporter.exporter_mult):
             doctype = impl.createDocumentType("eatdrinkfeelgood",
                 "-//Aaron Straup Cope//DTD Eatdrinkfeelgood 1.2//EN//XML",
                 "./eatdrinkfeelgood.dtd")
-            self.xmlDoc = impl.createDocument(None, "eatdrinkfeelgood", doctype)
-            self.top_element = self.xmlDoc.documentElement
-            a = self.xmlDoc.createAttribute('xmlns')
-            self.top_element.setAttributeNode(a)
-            self.top_element.setAttribute('xmlns',
-                'http://www.eatdrinkfeelgood.org/1.1/ns')
-            a = self.xmlDoc.createAttribute('xmlns:dc')
-            self.top_element.setAttributeNode(a)
-            self.top_element.setAttribute('xmlns:dc',
-                'http://purl.org/dc/elements/1.1')
-            a = self.xmlDoc.createAttribute('xmlns:xlink')
-            self.top_element.setAttributeNode(a)
-            self.top_element.setAttribute('xmlns:xlink',
-                'http://www.w3.org/1999/xlink')
-            a = self.xmlDoc.createAttribute('xmlns:xi')
-            self.top_element.setAttributeNode(a)
-            self.top_element.setAttribute('xmlns:xi',
-                'http://www.w3.org/2001/XInclude')
+            self.write_header()
 
         exporter.exporter_mult.__init__(self, rd,r,out, use_ml=True,
                                         order=['attr','image','ings','text'],
@@ -279,7 +281,7 @@ class EdfgXml(exporter.exporter_mult):
         return e_n
         
 
-class EdfgXmlM(exporter.ExporterMultirec):
+class EdfgXmlM(exporter.ExporterMultirec, EdfgXmlBase):
     def __init__ (self, rd, recipe_table, out, one_file=True, progress_func=None,
         change_units=False, mult=1):
         self.rd=rd
@@ -297,24 +299,6 @@ class EdfgXmlM(exporter.ExporterMultirec):
                              'xmlDoc':self.xmlDoc
                              }
             )
-
-    def write_header (self):
-        a = self.xmlDoc.createAttribute('xmlns')
-        self.top_element.setAttributeNode(a) 
-        self.top_element.setAttribute('xmlns',
-            'http://www.eatdrinkfeelgood.org/1.1/ns') 
-        a = self.xmlDoc.createAttribute('xmlns:dc')
-        self.top_element.setAttributeNode(a) 
-        self.top_element.setAttribute('xmlns:dc', 
-            'http://purl.org/dc/elements/1.1') 
-        a = self.xmlDoc.createAttribute('xmlns:xlink')
-        self.top_element.setAttributeNode(a) 
-        self.top_element.setAttribute('xmlns:xlink', 
-            'http://www.w3.org/1999/xlink') 
-        a = self.xmlDoc.createAttribute('xmlns:xi')
-        self.top_element.setAttributeNode(a) 
-        self.top_element.setAttribute('xmlns:xi', 
-            'http://www.w3.org/2001/XInclude')
 
     def write_footer (self):
         self.xmlDoc.writexml(self.ofi, newl = '\n', addindent = "\t", 
