@@ -20,7 +20,7 @@ class NutritionDataPlugin (DatabasePlugin):
             pass
         self.db._setup_object_for_table(self.db.usda_weights_table, UsdaWeight)
     
-    def setup_nutrition_conversions_table (self):
+    def setup_nutritionconversions_table (self):
         self.db.nutritionconversions_table = Table('nutritionconversions',self.db.metadata,
                                                 Column('id',Integer(),primary_key=True),
                                                 Column('ingkey',String(length=255),**{}),
@@ -58,7 +58,7 @@ class NutritionDataPlugin (DatabasePlugin):
         
         self.setup_usda_weights_table()
         self.setup_nutritionaliases_table()
-        self.setup_nutrition_conversions_table()
+        self.setup_nutritionconversions_table()
         self.db.do_add_nutrition = self.do_add_nutrition
 
     def update_version (self, gourmet_stored, plugin_stored, gourmet_current, plugin_current):
@@ -68,7 +68,7 @@ class NutritionDataPlugin (DatabasePlugin):
             print 'RECREATE USDA WEIGHTS TABLE'
             self.db.alter_table('usda_weights',self.setup_usda_weights_table,{},
                              [name for lname,name,typ in parser_data.WEIGHT_FIELDS])
-            self.db.alter_table('nutritionconversions',self.setup_nutrition_conversions_table,{},
+            self.db.alter_table('nutritionconversions',self.setup_nutritionconversions_table,{},
                              ['ingkey','unit','factor'])
         if plugin_stored == '1':
             # Add choline
