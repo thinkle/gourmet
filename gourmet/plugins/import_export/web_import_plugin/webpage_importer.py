@@ -257,50 +257,6 @@ class WebParserTester (WebParser):
         author = self.soup('i')
         self.preparsed_elements.append((author[0],'source'))
 
-class AboutDotComWebParser (MenuAndAdStrippingWebParser):
-
-    def preparse (self):
-        includes = [('rInt','instructions'),
-                    ('rIng','ingredients'),
-                    ('rPrp','instructions')]
-        self.preparsed_elements = []
-        for i,t in includes:
-            for el in self.soup(id=i):
-                self.preparsed_elements.append((el,t))
-        if self.preparsed_elements:
-            self.ignore_unparsed = True
-            self.preparsed_elements.append((self.soup('title')[0],'title'))
-            # Now get rid of the annoying "More... recipes..."
-            try:
-                boldyLinks = self.soup(id='rPrp')[0]('b')
-                boldyLinks.extend(self.soup(id='rPrp')[0]('a'))
-            except IndexError:
-                pass
-            else:
-                regexp = re.compile('More.*|.*Recipes.*')
-                for bold in boldyLinks:
-                    if bold(text=regexp):
-                        self.preparsed_elements.append((bold,'ignore'))
-        else:
-            MenuAndAdStrippingWebParser.preparse(self)
-    
-    def cut_sponsored_links (self):
-        for sl in self.soup(text=re.compile('.*(Sponsored Links|Advertisement|Cooking Ads).*')):
-            addiv = sl.findParent('div')
-            self.preparsed_elements.append((addiv,'ignore'))
-        MenuAndAdStrippingWebParser.cut_sponsored_links(self)
-        
-    def cut_menus (self):
-        for mi in self.soup(text=re.compile('.*(Most Popular|Must Reads|By Category|iGoogle|More from About.com).*')):
-            mendiv = mi.findParent('div')
-            self.preparsed_elements.append((mendiv,'ignore'))        
-        for mi in self.soup(text='Email'):
-            mendiv = mi.findParent('div')
-            self.preparsed_elements.append((mendiv,'ignore'))
-        for div in self.soup('div',attrs={'class':'hlist'}):
-            self.preparsed_elements.append((div,'ignore'))
-        MenuAndAdStrippingWebParser.cut_menus(self)
-
 def test_parser ():
     txt = '''<html><h1>Recipe</h1><p>This is my recipe<p><i>by Joe Shmoe</i></p><ul><li>1 cup sugar</li><li>2 cups flour</li><li>1 cup water</li>'''
     parser = WebParserTester('http://www.foo.bar',txt,None)
@@ -313,7 +269,11 @@ def test_parser ():
 def test_webpage ():
     ifi = file('/tmp/test_recipe.htm','r')
     test = ifi.read(); ifi.close()
-    parser = AboutDotComWebParser('http://www.foo.bar',test,None)
+    from gourmet.plugins.import_export.website_import_plugins.about_dot_com_plugin import AboutDotComPlugin
+    import sys
+    aboutdotcom_plugin = AboutDotComPlugin()
+    parser_type = aboutdotcom_plugin.get_importer(sys.modules[__name__])
+    parser =  parser_type('http://www.foo.bar',test,None)
     parsed = parser.parse_webpage()
     for p,lab in parsed:
         if lab=='ignore': continue
