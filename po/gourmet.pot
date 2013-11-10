@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-08 23:44+0100\n"
+"POT-Creation-Date: 2014-02-19 21:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -443,7 +443,7 @@ msgstr ""
 msgid "Edit _notes"
 msgstr ""
 
-#: ../ui/recCardDisplay.ui.h:17 ../gourmet/exporters/exporter.py:606
+#: ../ui/recCardDisplay.ui.h:17 ../gourmet/exporters/exporter.py:603
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:483
 #: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:61
 msgid "Recipe"
@@ -461,14 +461,15 @@ msgstr ""
 msgid "Add _ingredient:"
 msgstr ""
 
-#: ../ui/recCardIngredientsEditor.ui.h:2 ../gourmet/exporters/exporter.py:251
+#: ../ui/recCardIngredientsEditor.ui.h:2 ../gourmet/exporters/exporter.py:248
 #: ../gourmet/importers/interactive_importer.py:39
 #: ../gourmet/importers/interactive_importer.py:54
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:478
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:480
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:508
+#: ../gourmet/plugins/import_export/cairo_plugin/cairo_print_plugin.py:407
 #: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:98
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:605
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:600
 #: ../gourmet/reccard.py:1072
 msgid "Ingredients"
 msgstr ""
@@ -1035,22 +1036,22 @@ msgstr ""
 msgid "Choose Database File"
 msgstr ""
 
-#: ../gourmet/backends/db.py:466 ../gourmet/backends/db.py:467
+#: ../gourmet/backends/db.py:456 ../gourmet/backends/db.py:457
 msgid "Upgrading database"
 msgstr ""
 
-#: ../gourmet/backends/db.py:468
+#: ../gourmet/backends/db.py:458
 msgid ""
 "Depending on the size of your database, this may be an intensive process and "
 "may take  some time. Your data has been automatically backed up in case "
 "something goes wrong."
 msgstr ""
 
-#: ../gourmet/backends/db.py:469 ../gourmet/threadManager.py:315
+#: ../gourmet/backends/db.py:459 ../gourmet/threadManager.py:315
 msgid "Details"
 msgstr ""
 
-#: ../gourmet/backends/db.py:469
+#: ../gourmet/backends/db.py:459
 #, python-format
 msgid ""
 "A backup has been made in %s in case something goes wrong. If this upgrade "
@@ -1058,7 +1059,7 @@ msgid ""
 "use with older Gourmet."
 msgstr ""
 
-#: ../gourmet/backends/db.py:1505
+#: ../gourmet/backends/db.py:1495
 #: ../gourmet/importers/interactive_importer.py:96 ../gourmet/reccard.py:937
 msgid "New Recipe"
 msgstr ""
@@ -1207,24 +1208,25 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: ../gourmet/exporters/exporter.py:209 ../gourmet/exporters/exporter.py:211
-#: ../gourmet/exporters/exporter.py:515 ../gourmet/exporters/exporter.py:517
+#: ../gourmet/exporters/exporter.py:206 ../gourmet/exporters/exporter.py:208
+#: ../gourmet/exporters/exporter.py:512 ../gourmet/exporters/exporter.py:514
 msgid "stars"
 msgstr ""
 
-#: ../gourmet/exporters/exporter.py:378 ../gourmet/exporters/exporter.py:463
+#: ../gourmet/exporters/exporter.py:375 ../gourmet/exporters/exporter.py:460
+#: ../gourmet/plugins/import_export/cairo_plugin/cairo_print_plugin.py:424
 #: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:176
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:633
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:646
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:628
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:641
 msgid "optional"
 msgstr ""
 
-#: ../gourmet/exporters/exporter.py:558
+#: ../gourmet/exporters/exporter.py:555
 #, python-format
 msgid "Exported %(number)s of %(total)s recipes"
 msgstr ""
 
-#: ../gourmet/exporters/exporter.py:578
+#: ../gourmet/exporters/exporter.py:575
 msgid "Export complete."
 msgstr ""
 
@@ -1865,6 +1867,7 @@ msgid "Import recipes from zip and tar archives"
 msgstr ""
 
 #: ../gourmet/plugins/import_export/archive.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/cairo.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/gxml.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/html.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:3
@@ -1888,6 +1891,27 @@ msgstr ""
 
 #: ../gourmet/plugins/import_export/archive_plugin/zip_readers.py:59
 msgid "Unzipping zip archive"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/cairo.gourmet-plugin.in.h:1
+msgid "Printing & PDF Export (Cairo)"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/cairo.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/import_export/pdf.gourmet-plugin.in.h:2
+msgid ""
+"Print recipes or export them as PDF; this plugin allows a variety of page "
+"layouts."
+msgstr ""
+
+#: ../gourmet/plugins/import_export/cairo_plugin/cairo_print_plugin.py:292
+#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:115
+msgid "Print Recipes"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/cairo_plugin/cairo_print_plugin.py:315
+#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:27
+msgid "Page Layout"
 msgstr ""
 
 #: ../gourmet/plugins/import_export/gxml.gourmet-plugin.in.h:1
@@ -2021,125 +2045,119 @@ msgstr ""
 msgid "Printing & PDF Export"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf.gourmet-plugin.in.h:2
-msgid ""
-"Print recipes or export them as PDF; this plugin allows a variety of page "
-"layouts."
-msgstr ""
-
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:716
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:829
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:711
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:824
 msgid "Letter"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:717
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:848
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:969
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:1000
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:712
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:843
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:964
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:995
 msgid "Portrait"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:719
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:841
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:961
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:714
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:836
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:956
 msgid "Plain"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:733
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:753
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:754
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:728
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:748
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:749
 msgid "cm"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:734
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:729
 msgid "points"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:824
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:819
 msgid "11x17\""
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:825
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:820
 msgid "Index Card (3.5x5\")"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:826
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:821
 msgid "Index Card (4x6\")"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:827
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:822
 msgid "Index Card (5x8\")"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:828
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:823
 msgid "Index Card (A7)"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:830
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:825
 msgid "Legal"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:836
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:842
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:831
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:837
 msgid "Index Cards (3.5x5)"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:837
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:843
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:832
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:838
 msgid "Index Cards (4x6)"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:838
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:844
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:833
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:839
 msgid "Index Cards (A7)"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:849
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:947
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:998
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:844
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:942
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:993
 msgid "Landscape"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:860
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:855
 #, python-format
 msgid "%s Column"
 msgid_plural "%s Columns"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:875
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:870
 msgid "Paper _Size"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:877
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:872
 msgid "_Orientation"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:879
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:874
 msgid "_Font Size"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:880
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:875
 msgid "Page _Layout"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:882
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:877
 msgid "Left Margin"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:883
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:878
 msgid "Right Margin"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:884
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:879
 msgid "Top Margin"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:885
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:880
 msgid "Bottom Margin"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:906
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:901
 msgid "PDF Options"
 msgstr ""
 
@@ -2159,14 +2177,6 @@ msgstr ""
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:11
 #, python-format
 msgid "Recipe saved as PDF %(file)s"
-msgstr ""
-
-#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:27
-msgid "Page Layout"
-msgstr ""
-
-#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:115
-msgid "Print Recipes"
 msgstr ""
 
 #: ../gourmet/plugins/import_export/plaintext.gourmet-plugin.in.h:1
