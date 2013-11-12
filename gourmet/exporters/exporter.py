@@ -1,6 +1,6 @@
 import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap, types
 from gourmet import gglobals, convert
-from gourmet.gdebug import *
+from gourmet.gdebug import TimeAction, debug, print_timer_info
 from gettext import gettext as _
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import BaseExporterPlugin, BaseExporterMultiRecPlugin

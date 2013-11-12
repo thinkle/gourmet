@@ -1,7 +1,5 @@
 import gourmet.exporters.exporter as exporter
 import sys, xml.sax.saxutils, base64
-from gourmet.gdebug import *
-from gourmet.gglobals import *
 from gourmet.exporters.xml_exporter import XmlExporter
 
 class rec_to_xml (XmlExporter):

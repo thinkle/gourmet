@@ -2,7 +2,7 @@ import urllib, re, tempfile, os.path
 import importer
 import BeautifulSoup
 import socket
-from gourmet.gdebug import *
+from gourmet.gdebug import debug
 from gettext import gettext as _
 import traceback
 

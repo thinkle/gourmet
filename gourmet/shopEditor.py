@@ -1,5 +1,5 @@
 import gtk, gobject, backends.db, re, pickle
-from gglobals import *
+from gglobals import uibase
 from gtk_extras import WidgetSaver
 from gtk_extras import cb_extras as cb
 from gtk_extras import dialog_extras as de
@@ -13,7 +13,7 @@ class ShopEditor:
     
     def __init__ (self, rd=backends.db.recipeManager(), rg=None):
         self.ui = gtk.Builder()
-        self.ui.add_from_file(os.path.join(gglobals.uibase,'shopCatEditor.ui'))
+        self.ui.add_from_file(os.path.join(uibase,'shopCatEditor.ui'))
         self.rd = rd
         self.rg = rg
         self.prefs = self.rg.prefs        

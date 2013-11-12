@@ -6,8 +6,7 @@ from gtk_extras import dialog_extras as de
 from gtk_extras import treeview_extras as te
 from gtk_extras import fix_action_group_importance
 from exporters.printer import get_print_manager
-from gdebug import *
-from gglobals import *
+from gdebug import debug
 from gettext import gettext as _
 #from nutrition.nutritionLabel import NutritionLabel
 #from nutrition.nutrition import NutritionInfoList

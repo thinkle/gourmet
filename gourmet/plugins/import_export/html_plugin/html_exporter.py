@@ -1,9 +1,7 @@
 import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
 from gettext import gettext as _
 from gourmet import convert,gglobals
-from gourmet.gdebug import *
-from gourmet.exporters.exporter import *
-
+from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
 
 HTML_HEADER_START = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
@@ -254,7 +252,7 @@ class website_exporter (ExporterMultirec):
         self.indexf.write('<body>')
         self.indexf.write('<div class="index"><table class="index">\n<tr>')
         for r in self.index_rows:
-            self.indexf.write('<th class="%s">%s</th>'%(r,REC_ATTR_DIC[r]))
+            self.indexf.write('<th class="%s">%s</th>'%(r,gglobals.REC_ATTR_DIC[r]))
         self.indexf.write('</tr>\n')    
 
     def recipe_hook (self, rec, filename, exporter):

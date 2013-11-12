@@ -558,7 +558,6 @@ def find_columns (strings, char=" "):
 if __name__ == '__main__':
     import gourmet.recipeManager as recipeManager
     import tempfile, sys, profile, os.path
-    from gourmet.OptionParser import *
     print 'Testing MealMaster import'
     tmpfile = tempfile.mktemp()
     import backends.db

@@ -1,8 +1,8 @@
 import sys
 import urllib, zipfile, tempfile, os.path, re, string
 from gettext import gettext as _
-from parser_data import *
-from gourmet.gdebug import *
+from parser_data import ABBREVS, ABBREVS_STRT, FOOD_GROUPS, NUTRITION_FIELDS, WEIGHT_FIELDS
+from gourmet.gdebug import TimeAction
 expander_regexp = None
 
 def compile_expander_regexp ():    

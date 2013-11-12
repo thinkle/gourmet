@@ -22,7 +22,7 @@
 import pango,gtk,gobject
 import re, xml.sax.saxutils
 from TextBufferMarkup import PangoBuffer
-from gourmet.gdebug import *
+from gourmet.gdebug import debug
 
 class LinkedPangoBuffer (PangoBuffer):
 

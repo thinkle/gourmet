@@ -1,8 +1,7 @@
 import xml.sax, xml.sax.saxutils, re, sys
 import importer
-from gourmet.gdebug import *
+from gourmet.gdebug import TimeAction
 from gourmet.recipeManager import get_recipe_manager # for getting out database...
-from gourmet.gglobals import *
 from gourmet.threadManager import SuspendableThread
 
 def unquoteattr (str):

@@ -1,6 +1,6 @@
 import exporter, PyRTF, types
 from gourmet import convert
-from gourmet.gdebug import *
+from gourmet.gdebug import debug
 from gourmet.ImageExtras import write_image_tempfile
 from gettext import gettext as _
 

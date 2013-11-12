@@ -1,7 +1,7 @@
 import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
 from gourmet import gglobals,  convert
-from gourmet.exporters.exporter import *
-from gourmet.gdebug import *
+from gourmet.exporters.exporter import exporter_mult
+from gourmet.gdebug import debug
 from gettext import gettext as _
 
 class mealmaster_exporter (exporter_mult):
@@ -49,7 +49,7 @@ class mealmaster_exporter (exporter_mult):
             self.write_categories()
 	#Mealmaster pukes at the preptime line so this removes it    
 	elif label=='preparation time' or label=='rating' or label=='source':
-	    self.add_to_instructions += "\n\n%s: %s"%(REC_ATTR_DIC[label],text)
+	    self.add_to_instructions += "\n\n%s: %s"%(gglobals.REC_ATTR_DIC[label],text)
 	else:
             if label and text:
                 if self.recattrs.has_key(label):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import mealmaster_importer, plaintext_importer, re
 import gourmet.convert as convert
-from gourmet.gdebug import *
+from gourmet.gdebug import debug, TimeAction
 
 class rezconf_constants (mealmaster_importer.mmf_constants):
     def __init__ (self):

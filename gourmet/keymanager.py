@@ -1,7 +1,7 @@
 import string, re, time, sys
 from defaults.defaults import lang as defaults
 from defaults.defaults import langProperties as langProperties
-from gdebug import *
+from gdebug import debug, TimeAction
 
 note_separator_regexp = '(;|\s+-\s+|--)'
 note_separator_matcher = re.compile(note_separator_regexp)

@@ -19,8 +19,8 @@ from gtk_extras.dialog_extras import show_amount_error
 from gtk_extras import treeview_extras as te
 from gtk_extras import cb_extras as cb
 from exporters.printer import get_print_manager
-from gdebug import *
-from gglobals import *
+from gdebug import debug
+from gglobals import FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC, REC_ATTRS, uibase, imagedir
 from gettext import gettext as _
 import ImageExtras as ie
 from importers.importer import parse_range

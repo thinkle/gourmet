@@ -2,7 +2,7 @@ import zipfile, StringIO, tempfile, os, os.path
 import tarfile, gzip
 from gourmet.importers.webextras import read_socket_w_progress
 from gourmet.importers.importer import add_to_fn
-from gourmet.gdebug import *
+from gourmet.gdebug import debug
 
 # This is simply a convenience. We read a zipfile, and then hand out a
 # list of files which we can use to import from using our other

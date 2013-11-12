@@ -17,7 +17,7 @@
 ### USA 
 
 import pango,gtk, xml.sax.saxutils
-from gourmet.gdebug import *
+from gourmet.gdebug import debug
 
 class PangoBuffer (gtk.TextBuffer):
     desc_to_attr_table = {

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import gtk.gdk
 import os
-from gourmet.gdebug import *
+from gourmet.gdebug import debug
 
 class WidgetSaver:
 

@@ -38,8 +38,6 @@ except:
     # 'capitalisedNouns' means that you don't want to use lower() anyway, cos it's
     #  ungramatical e.g. in the german Language, Nouns are written with Capital-Letters.
 
-#from lang.__name__ import *
-
 # NOW WE DO AUTOMATED STUFF
 def add_itm (kd, k, v):
     if kd.has_key(k):

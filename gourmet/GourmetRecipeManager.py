@@ -13,8 +13,8 @@ from gtk_extras import fix_action_group_importance
 from gtk_extras import ratingWidget, WidgetSaver, mnemonic_manager
 from gtk_extras import dialog_extras as de
 from gtk_extras import treeview_extras as te
-from gdebug import *
-from gglobals import *
+from gdebug import debug
+from gglobals import DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base, icondir, imagedir, launch_url, uibase
 from recindex import RecIndex
 from gettext import gettext as _
 from gettext import ngettext

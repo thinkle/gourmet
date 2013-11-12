@@ -1,8 +1,6 @@
 import xml.sax, re, sys, xml.sax.saxutils
 import base64
 from gourmet.importers import xml_importer
-from gourmet.gdebug import *
-from gourmet.gglobals import *
 
 class KrecHandler (xml_importer.RecHandler):
     ADD = 1

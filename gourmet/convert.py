@@ -2,7 +2,7 @@ import re, locale, math
 from defaults.defaults import lang as defaults
 from gettext import gettext as _
 from gettext import ngettext
-from gdebug import *
+from gdebug import debug
 
 FRACTIONS_ALL = 1
 FRACTIONS_NORMAL = 0

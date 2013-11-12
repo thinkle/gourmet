@@ -1,7 +1,7 @@
 import exporter
 import sys, xml.sax.saxutils
-from gourmet.gdebug import *
-from gourmet.gglobals import *
+from gourmet.gdebug import debug
+from gourmet.gglobals import NAME_TO_ATTR
 import base64
 
 class rec_to_xml (exporter.exporter):

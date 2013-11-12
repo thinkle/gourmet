@@ -1,4 +1,4 @@
-from gourmet.gdebug import *
+from gourmet.gdebug import debug
 import gtk, gobject
 
 def print_tree (mod):

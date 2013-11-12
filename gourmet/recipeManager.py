@@ -14,7 +14,7 @@ if OptionParser.options.db_url:
     dbargs['custom_url'] = OptionParser.options.db_url
     
 
-from backends.db import *
+from backends.db import RecData, RecipeManager, dbDic
 
 class DatabaseShopper (shopping.Shopper):
     """We are a Shopper class that conveniently saves our key dictionaries

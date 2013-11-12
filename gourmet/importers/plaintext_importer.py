@@ -1,6 +1,6 @@
 import importer, re, string
 from gourmet import check_encodings
-from gourmet.gdebug import *
+from gourmet.gdebug import debug
 from gettext import gettext as _
 
 class TextImporter (importer.Importer):

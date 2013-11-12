@@ -23,8 +23,8 @@
 from gourmet.exporters import exporter
 import xml.dom
 import sys, xml.sax.saxutils, base64
-from gourmet.gdebug import *
-from gourmet.gglobals import *
+from gourmet.gdebug import debug
+from gourmet.gglobals import NAME_TO_ATTR
 import gourmet.convert as convert
 import unittest
 
