@@ -81,7 +81,10 @@ def create_thumbnail (path, thumbpath, uri, type="large"):
     info['Software']='Gourmet Recipe Manager'
     info['URI']=str(uri)
     # now we must create our image guy
-    import PngImagePlugin
+    try:
+        from PIL import PngImagePlugin
+    except ImportError:
+        import PngImagePlugin
     pnginfo = PngImagePlugin.PngInfo()
 
     for k,v in info.items():
