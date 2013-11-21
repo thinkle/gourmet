@@ -9,9 +9,9 @@ dbargs = {}
 
 if not dbargs.has_key('file'):
     dbargs['file']=os.path.join(gglobals.gourmetdir,'recipes.db')
-if OptionParser.options.db_url:
-    print 'We have a db_url and it is,',OptionParser.options.db_url
-    dbargs['custom_url'] = OptionParser.options.db_url
+if OptionParser.args.db_url:
+    print 'We have a db_url and it is,',OptionParser.args.db_url
+    dbargs['custom_url'] = OptionParser.args.db_url
     
 
 from backends.db import RecData, RecipeManager, dbDic

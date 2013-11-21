@@ -10,7 +10,7 @@ Fortunately for Linux users, at least most of the software Gourmet requires come
 
 Windows
 ------
-To run Gourmet from source on Windows takes a bit of doing, since Windows does not come with a lot of development tools by default. So first, you will need to download and install a few open-source development packages. Most of them are just usual *.msi or *.exe installers which should be easy to install; if multiple options are given, make sure to download the one that matches your architecture (32 vs 64 bits) and Python version (preferrably 2.7).
+To run Gourmet from source on Windows takes a bit of doing, since Windows does not come with a lot of development tools by default. So first, you will need to download and install a few open-source development packages. Most of them are just usual *.msi or *.exe installers which should be easy to install; if multiple options are given, make sure to download the one that matches your architecture (32 vs 64 bits) and Python version.
 
 In the more complicated cases, you need to download a .zip, .gz or .tar.gz file, which you will then have to extract.
 If you have trouble extracting .gz or .tar.gz files (which may not be supported by e.g. WinZip), get [7-Zip](http://sourceforge.net/projects/sevenzip/) - an excellent open source compression utility that supports multiple formats.
@@ -21,7 +21,7 @@ python setup.py install
 
 Requirements                               |Debian                |MacPorts          |Windows
 -------------------------------------------|----------------------|------------------|---------------
-Python 2.6 or 2.7                          |python                |python27          |http://www.python.org/
+Python 2.7                                 |python                |python27          |http://www.python.org/
 PyGTK                                      |python-gtk2           |py27-gtk          |[all-in-one installer](http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/). Make sure to install PyGTK, PyGObject, PyCairo, and intltool.
 SQLAlchemy                                 |python-sqlalchemy     |py27-sqlalchemy   |http://www.sqlalchemy.org/download.html
 Python Imaging Library (PIL)               |python-imaging        |py27-pil          |http://www.pythonware.com/products/pil/index.htm
