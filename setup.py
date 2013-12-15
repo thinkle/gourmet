@@ -10,7 +10,6 @@ import fileinput
 import string
 from types import StringType, ListType, TupleType
 
-from distutils.core import setup
 from distutils.command.build_py import build_py as _build_py
 from distutils.command.build_scripts import build_scripts as _build_scripts
 from distutils.util import convert_path
@@ -105,32 +104,7 @@ class build_scripts(_build_scripts):
 
                 print line,
 
-if 'py2exe' in sys.argv:
-    import py2exe
-
-    kwargs = dict(console=[{'script': os.path.join(srcpath, 'windows','GourmetDebug.pyw'),
-                            'dest_base': "Gourmet_debug"}],
-                  windows=[{'script': os.path.join(srcpath, 'bin','gourmet'),
-                            'dest_base': 'Gourmet'}],
-                  options={'py2exe': dict(packages=['gourmet',
-                                                    'sqlalchemy',
-                                                    'reportlab',
-                                                    'reportlab.graphics',
-                                                    'reportlab.lib',
-                                                    'reportlab.pdfbase',
-                                                    'reportlab.pdfgen',
-                                                    'reportlab.platypus'],
-                                          includes=['cairo', 'gio', 'pango', 'pangocairo', 'atk', 'PIL.ImageDraw', 'BeautifulSoup'],
-                                          optimize=2,
-                                          compressed=1,
-                                          # see http://stackoverflow.com/questions/1979486/py2exe-win32api-pyc-importerror-dll-load-failed
-                                          dll_excludes=["mswsock.dll","powrprof.dll"])
-                           }
-                  )
-else:
-    kwargs = dict(scripts=[os.path.join('bin','gourmet')])
-
-if 'py2exe' in sys.argv:
+if sys.platform == "win32":
     #gtk file inclusion
     import gtk
     # The runtime dir is in the same directory as the module:
@@ -152,48 +126,6 @@ if 'py2exe' in sys.argv:
     #There is also localisation data (which I omit, but you might not want to):
     GTK_LOCALE_DATA = os.path.join("share", "locale")
 
-def generate_data_files(prefix, tree, file_filter=None):
-    """
-    Walk the filesystem starting at "prefix" + "tree", producing a list of files
-    suitable for the data_files option to setup(). The prefix will be omitted
-    from the path given to setup(). For example, if you have
-
-        C:\Python26\Lib\site-packages\gtk-2.0\runtime\etc\...
-
-    ...and you want your "dist\" dir to contain "etc\..." as a subdirectory,
-    invoke the function as
-
-        generate_data_files(
-            r"C:\Python26\Lib\site-packages\gtk-2.0\runtime",
-            r"etc")
-
-    If, instead, you want it to contain "runtime\etc\..." use:
-
-        generate_data_files(
-            r"C:\Python26\Lib\site-packages\gtk-2.0",
-            r"runtime\etc")
-
-    Empty directories are omitted.
-
-    file_filter(root, fl) is an optional function called with a containing
-    directory and filename of each file. If it returns False, the file is
-    omitted from the results.
-    """
-    data_files = []
-    for root, dirs, files in os.walk(os.path.join(prefix, tree)):
-        to_dir = os.path.relpath(root, prefix)
-
-        if file_filter is not None:
-            file_iter = (fl for fl in files if file_filter(root, fl))
-        else:
-            file_iter = files
-
-        data_files.append((to_dir, [os.path.join(root, fl) for fl in file_iter]))
-
-    non_empties = [(to, fro) for (to, fro) in data_files if fro]
-
-    return non_empties
-
 def data_files():
     '''Build list of data files to be installed'''
     data_files = []
@@ -210,32 +142,114 @@ def data_files():
     files.extend(data_files)
     files.extend([(os.path.join(base,'ui'), glob.glob(os.path.join('ui','*.ui')))])
     files.extend([(os.path.join('share','doc','gourmet'), ['FAQ', 'LICENSE'])])
-    #print 'DATA FILES:',files
-
-    if 'py2exe' in sys.argv:
-        files.extend(
-            generate_data_files(GTK_RUNTIME_DIR, GTK_THEME_DEFAULT) +
-            generate_data_files(GTK_RUNTIME_DIR, GTK_THEME_WINDOWS) +
-            generate_data_files(GTK_RUNTIME_DIR, GTK_ICONS) +
-
-            # ...or include single files manually
-            [
-                (GTK_GTKRC_DIR, [
-                    os.path.join(GTK_RUNTIME_DIR,
-                        GTK_GTKRC_DIR,
-                        GTK_GTKRC)
-                ]),
-
-                (GTK_WIMP_DIR, [
-                    os.path.join(
-                        GTK_RUNTIME_DIR,
-                        GTK_WIMP_DIR,
-                        GTK_WIMP_DLL)
-                ])
-            ]
-                     )
 
     return files
+
+if sys.platform == "win32":
+    from cx_Freeze import setup, Executable, build as build_cxf
+    import msilib
+
+    class build(build_extra.build_extra, build_cxf):
+        def __init__(self, dist):
+            build_extra.build_extra.__init__(self, dist)
+            build_cxf.__init__(self, dist)
+
+        def get_sub_comands(self):
+            build_cxf.sub_commands(self)
+
+        def initialize_options(self):
+            build_extra.build_extra.initialize_options(self)
+            build_cxf.initialize_options(self)
+
+        def finalize_options(self):
+            build_extra.build_extra.finalize_options(self)
+            build_cxf.finalize_options(self)
+
+    include_files = []
+    for i in data_files():
+        for j in i[1]:
+            include_files.append((j, i[0]))
+
+    icon_table = [
+        ('GourmetIco', msilib.Binary('data/icons/gourmet.ico'))
+        ]
+
+    property_table = [
+        ('ARPPRODUCTICON', 'GourmetIco'),
+        ]
+
+    msi_data = {
+        'Icon': icon_table,
+        'Property': property_table,
+        }
+
+    kwargs = dict(name="Gourmet Recipe Manager",
+                  executables=[Executable(
+                                          os.path.join(srcpath, 'bin','gourmet'),
+                                          base="Win32GUI",
+                                          icon="data/icons/gourmet.ico",
+                                          shortcutName="Gourmet Recipe Manager",
+                                          shortcutDir="ProgramMenuFolder"
+                                          )
+                               ],
+                  options={
+                           'build_exe':
+                            {
+                             'packages': [
+                                       'gourmet',
+                                       'sqlalchemy',
+                                       'reportlab',
+                                       'reportlab.graphics',
+                                       'reportlab.lib',
+                                       'reportlab.pdfbase',
+                                       'reportlab.pdfgen',
+                                       'reportlab.platypus'
+                                      ],
+                             'includes': [
+                                      'cairo',
+                                      'gio',
+                                      'pango',
+                                      'pangocairo',
+                                      'atk',
+                                      'BeautifulSoup'
+                                      ],
+                            'include_files': [
+                                              ('data', '.'),
+                                              ('ui', 'ui'),
+                                              ('LICENSE', os.path.join('doc', 'LICENSE')),
+                                              ('FAQ', os.path.join('doc', 'FAQ')),
+                                              (os.path.join(GTK_RUNTIME_DIR, GTK_THEME_DEFAULT), GTK_THEME_DEFAULT),
+                                              (os.path.join(GTK_RUNTIME_DIR, GTK_THEME_WINDOWS), GTK_THEME_WINDOWS),
+                                              #(os.path.join(GTK_RUNTIME_DIR, GTK_ICONS), GTK_ICONS),
+                                              (os.path.join(GTK_RUNTIME_DIR, GTK_GTKRC_DIR, GTK_GTKRC), os.path.join(GTK_GTKRC_DIR, GTK_GTKRC)),
+                                              (os.path.join(GTK_RUNTIME_DIR, GTK_WIMP_DIR, GTK_WIMP_DLL), os.path.join(GTK_WIMP_DIR, GTK_WIMP_DLL)),
+                                              (os.path.join('build', 'mo'), 'locale'),
+                                              (os.path.join("build", "share", "gourmet"), '.'),
+                                              (os.path.join("gourmet", 'plugins'), 'plugins')
+                                              ],
+                            'excludes': ['plugins','Tkinter','wx'],
+                            'optimize': 2,
+                            'compressed':1,
+                            'include_msvcr': True,
+                            # see http://stackoverflow.com/questions/1979486/py2exe-win32api-pyc-importerror-dll-load-failed
+                            # libgcc_s_dw2-1.dll, if present, would crash Gourmet 
+                            'bin_excludes': ["mswsock.dll", "powrprof.dll","libgcc_s_dw2-1.dll"],
+                            },
+                           'bdist_msi':
+                           {
+                            'upgrade_code': '{D19B9EC6-DF39-4C83-BF87-A67776D087FA}',
+                            'data': msi_data
+                            }
+                           }
+                  )
+else:
+    from distutils.core import setup
+    build = build_extra.build_extra
+    kwargs = dict(
+                  name=version.name,
+                  data_files=data_files(),
+                  scripts=[os.path.join('bin','gourmet')]
+                  )
 
 plugins = []
 
@@ -250,14 +264,12 @@ def crawl (base, basename):
 crawl('gourmet/plugins', 'gourmet.plugins')
 
 result = setup(
-    name = version.name,
     version = version.version,
     description = version.description,
     author = version.author,
     author_email = version.author_email,
     url = version.website,
     license = version.license,
-    data_files = data_files(),
     packages = ['gourmet',
                 'gourmet.backends',
                 'gourmet.defaults',
@@ -267,7 +279,7 @@ result = setup(
                 'gourmet.plugins',
                 ] + plugins,
     package_data = {'gourmet': ['plugins/*/*.ui', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
-    cmdclass={'build' : build_extra.build_extra,
+    cmdclass={'build' : build,
               'build_i18n' :  build_i18n.build_i18n,
               'build_icons' :  build_icons.build_icons,
               'build_py' : build_py,
@@ -275,4 +287,3 @@ result = setup(
              },
     **kwargs
     )
-
