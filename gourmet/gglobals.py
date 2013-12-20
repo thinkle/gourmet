@@ -112,7 +112,7 @@ use_threads = args.threads
 
 # note: this stuff must be kept in sync with changes in setup.py
 import settings
-base = os.path.join(settings.base_dir,'gourmet')
+uibase = os.path.join(settings.ui_base)
 lib_dir = os.path.join(settings.lib_dir,'gourmet')
 
 # To have strings from .ui files (gtk.Builder) translated on all platforms,
@@ -129,7 +129,6 @@ data_dir = settings.data_dir
 imagedir = os.path.join(settings.data_dir,'images')
 style_dir = os.path.join(settings.data_dir,'style')
 
-uibase = os.path.join(base,'ui')
 icondir = os.path.join(settings.icon_base,"48x48","apps")
 doc_base = settings.doc_base
 plugin_base = settings.plugin_base
