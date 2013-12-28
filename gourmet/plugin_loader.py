@@ -91,10 +91,11 @@ class MasterLoader:
                 try:
                     self.active_plugins.extend(self.available_plugin_sets[p].plugins)
                 except:
+                    import logging
                     import traceback
                     print 'WARNING: Failed to load plugin %s'%p
                     self.errors[p] = traceback.format_exc()
-                    traceback.print_exc()
+                    logging.exception('')
             else:
                 print 'Plugin ',p,'not found'
     
