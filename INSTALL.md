@@ -36,7 +36,7 @@ pypoppler (for printing and PDF export)    |python-poppler        |*manually*   
 PyGTKSpell (for the spell checking plugin) |python-gtkspell       |py27-gtkspell     |(N/A)
 python-gst0.10 (for sound)                 |python-gst0.10        |py27-gst-python   |*not required*
 BeautifulSoup (for the Web import plugin)  |python-beautifulsoup  |py27-beautifulsoup|http://www.crummy.com/software/BeautifulSoup/#Download
-IPython (for the interactive shell plugin) |ipython               |py27-ipython      |http://ipython.org/download.html
+IPython 0.12.1 (interactive shell plugin)  |ipython               |py27-ipython      |https://pypi.python.org/pypi/ipython/0.12.1#downloads
 *Windows only*                             |                      |                  |
 Perl (needed to run intltool)              |                      |                  |http://strawberryperl.com/
 
