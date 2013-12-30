@@ -22,7 +22,6 @@
     <property name="title">Recipe Card</property>
     <property name="default_width">730</property>
     <property name="default_height">550</property>
-    <signal name="delete-event" handler="rcHide" swapped="no"/>
     <child>
       <object class="GtkVBox" id="recipeDisplayMain">
         <property name="width_request">600</property>

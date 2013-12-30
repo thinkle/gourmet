@@ -235,7 +235,6 @@
                             <accessibility>
                               
                             </accessibility>
-                            <signal handler="rcEdited" name="changed"/>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="a11y-titleBox1">
                                 <property name="AtkObject::accessible-name" translatable="yes">Title</property>
@@ -493,7 +492,6 @@
                                 <accessibility>
                                   
                                 </accessibility>
-                                <signal handler="rcEdited" name="changed"/>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="a11y-yieldsBox1">
                                     <property name="AtkObject::accessible-name" translatable="yes">Yield</property>
