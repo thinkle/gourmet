@@ -12,9 +12,9 @@ if os.name == 'posix':
 
 # Windows locales are named differently, e.g. German_Austria instead of de_AT
 # Fortunately, we can find the POSIX-like type using a different method.
-elif os.name == 'nt': 
-    import win32api
-    locid = win32api.GetUserDefaultLangID()
+elif os.name == 'nt':
+    from ctypes import windll
+    locid = windll.kernel32.GetUserDefaultLangID()
     loc = locale.windows_locale[locid]
 
 if loc:
