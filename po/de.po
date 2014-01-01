@@ -3566,7 +3566,7 @@ msgstr "Einheitenumrechnung berechnen"
 
 #: ../gourmet/plugins/unit_converter/converter.ui.h:3
 msgid "<b>From</b>"
-msgstr "<b>Von</B>"
+msgstr "<b>Von</b>"
 
 #: ../gourmet/plugins/unit_converter/converter.ui.h:6
 msgid "1"
