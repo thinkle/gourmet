@@ -38,6 +38,5 @@ python-gst0.10 (for sound)                 |python-gst0.10        |py27-gst-pyth
 BeautifulSoup (for the Web import plugin)  |python-beautifulsoup  |py27-beautifulsoup|http://www.crummy.com/software/BeautifulSoup/#Download
 IPython (for the interactive shell plugin) |ipython               |py27-ipython      |http://ipython.org/download.html
 *Windows only*                             |                      |                  |
-Python Win32 Extensions                    |                      |                  |http://starship.python.net/crew/mhammond/win32/Downloads.html
 Perl (needed to run intltool)              |                      |                  |http://strawberryperl.com/
 

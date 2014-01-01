@@ -290,7 +290,6 @@
                         <property name="label" translatable="yes">_Delete value</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
-                        <signal handler="on_deleteValueButton_toggled" name="toggled"/>
                       </object>
                       <packing>
                         <property name="top_attach">1</property>

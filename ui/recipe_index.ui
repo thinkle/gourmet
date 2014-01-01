@@ -12,7 +12,6 @@
             <property name="name">add_to_shopping_list1</property>
             <property name="tooltip" translatable="yes">Add recipe to shopping list</property>
             <property name="label" translatable="yes">Add to _shopping list</property>
-            <signal handler="rl_shoprec" name="activate"/>
           </object>
         </child>
         <child>
@@ -20,7 +19,6 @@
             <property name="name">view_recipe1</property>
             <property name="tooltip" translatable="yes">Jump to recipe in Recipe Card vew</property>
             <property name="label" translatable="yes">View Re_cipe</property>
-            <signal handler="rl_viewrec" name="activate"/>
           </object>
         </child>
         <child>
@@ -29,7 +27,6 @@
             <property name="name">delete_recipe1</property>
             <property name="tooltip" translatable="yes">Delete selected recipe</property>
             <property name="label" translatable="yes">_Delete Recipe</property>
-            <signal handler="rl_delrec" name="activate"/>
           </object>
         </child>
         <child>
@@ -38,7 +35,6 @@
             <property name="name">batch_edit_recipe1</property>
             <property name="tooltip" translatable="yes">Edit attributes of selected recipes</property>
             <property name="label" translatable="yes">_Batch edit recipes</property>
-            <signal handler="batch_edit" name="activate"/>
           </object>
         </child>
         <child>
@@ -46,7 +42,6 @@
             <property name="name">e-mail_recipe1</property>
             <property name="tooltip" translatable="yes">E-mail selected recipe</property>
             <property name="label" translatable="yes">_E-Mail recipe</property>
-            <signal handler="email" name="activate"/>
           </object>
         </child>
         <child>
@@ -55,7 +50,6 @@
             <property name="name">print_recipe1</property>
             <property name="tooltip" translatable="yes">Print selected recipe</property>
             <property name="label" translatable="yes">_Print recipe</property>
-            <signal handler="print" name="activate"/>
           </object>
         </child>
       </object>
@@ -80,13 +74,11 @@
             <property name="name">add_to_pantry1</property>
             <property name="tooltip" translatable="yes">Never buy this item. When called for in a recipe, it will show up in a "pantry" section of the list as a reminder that you need it, but it won't be included when you save or print the list unless you tell me you need to buy it.</property>
             <property name="label" translatable="yes">Add to _Pantry</property>
-            <signal handler="ingmen_pantry" name="activate"/>
           </object>
         </child>
         <child>
           <object class="GtkAction" id="clear5">
             <property name="name">clear5</property>
-            <signal handler="ingmen_clear" name="activate"/>
           </object>
         </child>
       </object>

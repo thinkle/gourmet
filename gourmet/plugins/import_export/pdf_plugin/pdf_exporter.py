@@ -876,10 +876,8 @@ class PdfPrefGetter:
                                   self.size_strings)],
             [_('_Orientation')+':',(defaults.get('orientation',PDF_PREF_DEFAULT['orientation']),
                                     self.page_modes.keys())],
-            [_('_Font Size')+':',int(defaults.get('font_size',PDF_PREF_DEFAULT['font_size']))]
-            ,
+            [_('_Font Size')+':',int(defaults.get('font_size',PDF_PREF_DEFAULT['font_size']))],
             [_('Page _Layout'),(defaults.get('page_layout',PDF_PREF_DEFAULT['page_layout']),
-
                                 self.layout_strings)],
             [_('Left Margin')+':',margin_widgets[0]],
             [_('Right Margin')+':',margin_widgets[1]],

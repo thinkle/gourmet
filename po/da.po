@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-11 18:46+0200\n"
+"POT-Creation-Date: 2014-01-01 13:48+0100\n"
 "PO-Revision-Date: 2013-02-19 18:18+0000\n"
 "Last-Translator: Tine Bisballe Nyeng <tine@aasimon.org>\n"
 "Language-Team: Danish <da@li.org>\n"
@@ -191,7 +191,7 @@ msgid "Database _Name:"
 msgstr "Database _Navn"
 
 #: ../ui/databaseChooser.ui.h:13 ../gourmet/GourmetRecipeManager.py:1022
-#: ../gourmet/shopgui.py:674
+#: ../gourmet/shopgui.py:673
 msgid "_File"
 msgstr "_Fil"
 
@@ -351,9 +351,9 @@ msgstr "_Tilføj altid valgfrie ingredienser"
 msgid "_Never add optional ingredients"
 msgstr "_Tilføj aldrig valgfrie ingredienser"
 
-#: ../ui/preferenceDialog.ui.h:20 ../gourmet/shopgui.py:146
-#: ../gourmet/shopgui.py:543 ../gourmet/shopgui.py:847
-#: ../gourmet/shopgui.py:996
+#: ../ui/preferenceDialog.ui.h:20 ../gourmet/shopgui.py:145
+#: ../gourmet/shopgui.py:542 ../gourmet/shopgui.py:846
+#: ../gourmet/shopgui.py:995
 msgid "Shopping List"
 msgstr "Indkøbsliste"
 
@@ -365,7 +365,7 @@ msgstr "portioner"
 #. renderer.connect('edited',tst)
 #: ../ui/recCardDescriptionEditor.ui.h:6
 #: ../gourmet/exporters/rtf_exporter.py:79 ../gourmet/gglobals.py:151
-#: ../gourmet/shopgui.py:749
+#: ../gourmet/shopgui.py:748
 msgid "Title"
 msgstr "Titel"
 
@@ -461,7 +461,7 @@ msgstr "Rediger _noter"
 
 #: ../ui/recCardDisplay.ui.h:17 ../gourmet/exporters/exporter.py:606
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:483
-#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:63
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:61
 msgid "Recipe"
 msgstr "Opskrift"
 
@@ -483,7 +483,7 @@ msgstr "Tilføj _ingrediens:"
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:478
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:480
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:508
-#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:100
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:98
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:605
 #: ../gourmet/reccard.py:1072
 msgid "Ingredients"
@@ -897,7 +897,7 @@ msgid "Batch _edit recipes"
 msgstr "Batch-_rediger opskrifter"
 
 #: ../gourmet/GourmetRecipeManager.py:1023 ../gourmet/reccard.py:210
-#: ../gourmet/reccard.py:862 ../gourmet/shopgui.py:652
+#: ../gourmet/reccard.py:862 ../gourmet/shopgui.py:651
 msgid "_Edit"
 msgstr "_Rediger"
 
@@ -912,7 +912,7 @@ msgstr "I_ndstillinger"
 #: ../gourmet/GourmetRecipeManager.py:1026
 #: ../gourmet/GourmetRecipeManager.py:1031 ../gourmet/reccard.py:212
 #: ../gourmet/reccard.py:223 ../gourmet/reccard.py:864
-#: ../gourmet/shopgui.py:675 ../gourmet/shopgui.py:677
+#: ../gourmet/shopgui.py:674 ../gourmet/shopgui.py:676
 msgid "_Help"
 msgstr "_Hjælp"
 
@@ -1081,7 +1081,7 @@ msgstr "Færdig!"
 msgid "Importing..."
 msgstr "Importerer..."
 
-#: ../gourmet/backends/DatabaseChooser.py:105
+#: ../gourmet/backends/DatabaseChooser.py:104
 msgid "Choose Database File"
 msgstr "Vælg database-fil"
 
@@ -1225,27 +1225,6 @@ msgstr "og"
 msgid "to"
 msgstr "til"
 
-#: ../gourmet/convertGui.py:107
-#: ../gourmet/plugins/unit_converter/convertGui.py:114
-#, python-format
-msgid "Cannot convert %s to %s"
-msgstr "Kan ikke konvertere %s til %s"
-
-#: ../gourmet/convertGui.py:109
-#: ../gourmet/plugins/unit_converter/convertGui.py:116
-msgid "Need density information."
-msgstr "Behøver densitetsinformation."
-
-#: ../gourmet/convertGui.py:153
-#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:433
-#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:490
-#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:554
-#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:580
-#: ../gourmet/plugins/unit_converter/convertGui.py:160
-#: ../gourmet/plugins/unit_converter/converter.ui.h:1
-msgid "None"
-msgstr "Ingen"
-
 #: ../gourmet/exporters/exportManager.py:41
 msgid "Save recipe as..."
 msgstr "Gem opskrift som..."
@@ -1292,7 +1271,7 @@ msgid "stars"
 msgstr "stjerner"
 
 #: ../gourmet/exporters/exporter.py:378 ../gourmet/exporters/exporter.py:463
-#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:178
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:176
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:633
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:646
 msgid "optional"
@@ -1770,17 +1749,17 @@ msgstr "Der opstod en fejl ved aktiveringen af udvidelsen."
 msgid "An error occurred deactivating plugin."
 msgstr "Der opstod en fejl ved deaktivéringen af udvidelsen."
 
-#: ../plugins/browse_plugin.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/browse_plugin.gourmet-plugin.in.h:1
 msgid "Browse Recipes"
 msgstr "Gennemse Opskrifter"
 
-#: ../plugins/browse_plugin.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/browse_plugin.gourmet-plugin.in.h:2
 msgid "Selecting recipes by browsing by category, cuisine, etc."
 msgstr ""
 
-#: ../plugins/browse_plugin.gourmet-plugin.in.h:3
-#: ../plugins/email.gourmet-plugin.in.h:3
-#: ../plugins/nutritional_information.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/browse_plugin.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/email.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/nutritional_information.gourmet-plugin.in.h:3
 msgid "Main"
 msgstr "Hjem"
 
@@ -1788,26 +1767,26 @@ msgstr "Hjem"
 msgid "Stars"
 msgstr "Stjerner"
 
-#: ../plugins/duplicate_finder.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/duplicate_finder.gourmet-plugin.in.h:1
 msgid "Find duplicate recipes"
 msgstr "Find ens opskrifter"
 
-#: ../plugins/duplicate_finder.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/duplicate_finder.gourmet-plugin.in.h:2
 msgid "A wizard to find and remove or merge duplicate recipes."
 msgstr ""
 "En guide til finde og fjerne eller sammenslå dobbelte forekomster af "
 "opskrifter."
 
-#: ../plugins/duplicate_finder.gourmet-plugin.in.h:3
-#: ../plugins/field_editor.gourmet-plugin.in.h:3
-#: ../plugins/key_editor.gourmet-plugin.in.h:3
-#: ../plugins/listsaver.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/duplicate_finder.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/field_editor.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/key_editor.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/listsaver.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/nutritional_information/shopping_plugin.py:28
-#: ../plugins/python_shell.gourmet-plugin.in.h:3
-#: ../plugins/shopping_associations.gourmet-plugin.in.h:3
-#: ../plugins/spellcheck.gourmet-plugin.in.h:3
-#: ../plugins/unit_converter.gourmet-plugin.in.h:3
-#: ../plugins/unit_display_prefs.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/python_shell.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/shopping_associations.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/spellcheck.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/unit_converter.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/unit_display_prefs.gourmet-plugin.in.h:3
 msgid "Tools"
 msgstr "Værktøjer"
 
@@ -1827,6 +1806,15 @@ msgstr "Brug altid nyeste opskrift"
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:233
 msgid "Always use oldest recipe"
 msgstr "Brug altid ældste opskrift"
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:433
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:490
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:554
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:580
+#: ../gourmet/plugins/unit_converter/convertGui.py:159
+#: ../gourmet/plugins/unit_converter/converter.ui.h:1
+msgid "None"
+msgstr "Ingen"
 
 #. dups = rd.find_complete_duplicates()
 #. for d in dups[5:]:
@@ -1884,11 +1872,11 @@ msgstr "Find_duplikat opskrifter"
 msgid "Find and remove duplicate recipes"
 msgstr "Find og fjern duplikat opskrifter"
 
-#: ../plugins/email.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/email.gourmet-plugin.in.h:1
 msgid "Send to Email"
 msgstr "Send til Email"
 
-#: ../plugins/email.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/email.gourmet-plugin.in.h:2
 msgid "Email recipes from Gourmet"
 msgstr "Email opskrifter fra Gourmet"
 
@@ -1915,12 +1903,12 @@ msgstr "Ønsker du at e-maile alle %s valgte opskrifter?"
 msgid "Yes, e_mail them"
 msgstr "Ja, e-_mail dem"
 
-#: ../plugins/field_editor.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/field_editor.gourmet-plugin.in.h:1
 #: ../gourmet/plugins/field_editor/__init__.py:16
 msgid "Field Editor"
 msgstr "Felt Redigering"
 
-#: ../plugins/field_editor.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/field_editor.gourmet-plugin.in.h:2
 #: ../gourmet/plugins/field_editor/__init__.py:17
 msgid "Edit fields across multiple recipes at a time."
 msgstr "Rediger felter på flere opskrifter på én gang."
@@ -1956,25 +1944,25 @@ msgstr "Ændre %s fra %s til \"%s\"?"
 msgid "<i>This change is not reversable.</i>"
 msgstr "<i>Denne ændring er ikke reversibel.</i>"
 
-#: ../plugins/import_export/archive.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/import_export/archive.gourmet-plugin.in.h:1
 msgid "Zip, Gzip, and Tarball support"
 msgstr "Zip, Gzip og Tarball understøttelse"
 
-#: ../plugins/import_export/archive.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/import_export/archive.gourmet-plugin.in.h:2
 msgid "Import recipes from zip and tar archives"
 msgstr "Importér opskrifter fra zip og tar arkiver"
 
-#: ../plugins/import_export/archive.gourmet-plugin.in.h:3
-#: ../plugins/import_export/gxml.gourmet-plugin.in.h:3
-#: ../plugins/import_export/html.gourmet-plugin.in.h:3
-#: ../plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:3
-#: ../plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:3
-#: ../plugins/import_export/mealmaster.gourmet-plugin.in.h:3
-#: ../plugins/import_export/pdf.gourmet-plugin.in.h:3
-#: ../plugins/import_export/plaintext.gourmet-plugin.in.h:3
-#: ../plugins/import_export/webimport.gourmet-plugin.in.h:3
-#: ../plugins/import_export/website_import.gourmet-plugin.in.h:3
-#: ../plugins/utf16.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/archive.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/gxml.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/html.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/pdf.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/plaintext.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/webimport.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/website_import.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/utf16.gourmet-plugin.in.h:3
 msgid "Importer/Exporter"
 msgstr "Importér/Eksportér"
 
@@ -1990,11 +1978,11 @@ msgstr "Indlæser zip-arkiv"
 msgid "Unzipping zip archive"
 msgstr "Udpakker zip-arkiv"
 
-#: ../plugins/import_export/gxml.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/import_export/gxml.gourmet-plugin.in.h:1
 msgid "Gourmet XML Import and Export"
 msgstr "Gourmet XML Import og Eksport"
 
-#: ../plugins/import_export/gxml.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/import_export/gxml.gourmet-plugin.in.h:2
 msgid ""
 "Import and Export recipes as Gourmet XML files, suitable for backup or "
 "exchange with other Gourmet users."
@@ -2025,15 +2013,15 @@ msgstr "Opskrift gemt i Gourmet XML-fil %(file)s."
 msgid "Gourmet XML File (Obsolete)"
 msgstr "Gourmet XML-fil (Forældet)"
 
-#: ../plugins/import_export/html.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/import_export/html.gourmet-plugin.in.h:1
 msgid "HTML Export"
 msgstr "HTML Eksport"
 
-#: ../plugins/import_export/html.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/import_export/html.gourmet-plugin.in.h:2
 msgid "Create recipe webpages from recipes."
 msgstr "Opret opskrift-webside fra opskrifter."
 
-#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:122
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:120
 #, python-format
 msgid "Original Page from %s"
 msgstr "Original Side fra %s"
@@ -2056,11 +2044,11 @@ msgstr "Eksporterer opskrifter til HTML-filer i %(file)s biblioteket"
 msgid "Recipe saved as HTML file %(file)s"
 msgstr "Opskrift gemt som HTML-fil %(file)s"
 
-#: ../plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:1
 msgid "KRecipe import"
 msgstr "KRecipe importering"
 
-#: ../plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:2
 msgid "Import files from the Krecipe program."
 msgstr "Importér filer fra Krecipe programmet."
 
@@ -2084,19 +2072,19 @@ msgstr "Mastercook XML-fil"
 msgid "Mastercook Text File"
 msgstr "Mastercook Tekstfil"
 
-#: ../plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:1
 msgid "Mastercook import"
 msgstr "Mastercook importering"
 
-#: ../plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:2
 msgid "Import files from the Mastercook program."
 msgstr "Importér filer fra Mastercook programmet."
 
-#: ../plugins/import_export/mealmaster.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:1
 msgid "Mealmaster (tm) Export"
 msgstr "Mealmaster (tm) Eksportering"
 
-#: ../plugins/import_export/mealmaster.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:2
 msgid "Export recipes as mealmaster text files"
 msgstr "Eksportér opskrifter som mealmaster tekstfiler"
 
@@ -2119,11 +2107,11 @@ msgstr "Eksporterer opskrifter til MealMaster(tm)-fil %(file)s."
 msgid "Recipe saved as MealMaster file %(file)s"
 msgstr "Opskrift gemt som MealMaster(tm)-fil %(file)s."
 
-#: ../plugins/import_export/pdf.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/import_export/pdf.gourmet-plugin.in.h:1
 msgid "Printing & PDF Export"
 msgstr "Udskrivning & PDF Eksportering"
 
-#: ../plugins/import_export/pdf.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/import_export/pdf.gourmet-plugin.in.h:2
 msgid ""
 "Print recipes or export them as PDF; this plugin allows a variety of page "
 "layouts."
@@ -2273,11 +2261,11 @@ msgstr "Sideopsætning"
 msgid "Print Recipes"
 msgstr "Print Opskrifter"
 
-#: ../plugins/import_export/plaintext.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/import_export/plaintext.gourmet-plugin.in.h:1
 msgid "Plain Text Guided Import"
 msgstr "Standard Tekstguided Importering"
 
-#: ../plugins/import_export/plaintext.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/import_export/plaintext.gourmet-plugin.in.h:2
 msgid ""
 "Help user mark up and import plain text. Also provides plain text export."
 msgstr ""
@@ -2328,28 +2316,28 @@ msgstr ""
 msgid "Webpage"
 msgstr "Webside"
 
-#: ../plugins/import_export/webimport.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/import_export/webimport.gourmet-plugin.in.h:1
 msgid "Webpage import"
 msgstr "Internetside importering"
 
-#: ../plugins/import_export/webimport.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/import_export/webimport.gourmet-plugin.in.h:2
 msgid "Import recipes from the web."
 msgstr "Importér opskrifter fra internettet."
 
-#: ../plugins/import_export/website_import.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/import_export/website_import.gourmet-plugin.in.h:1
 msgid "Website Importers"
 msgstr "Hjemmeside-importværktøjer"
 
-#: ../plugins/import_export/website_import.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/import_export/website_import.gourmet-plugin.in.h:2
 msgid "Importers for about.com, www.foodnetwork.com, and others"
 msgstr "Importværktøjer til about.com, www.foodnetwork.com, med flere"
 
-#: ../plugins/key_editor.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/key_editor.gourmet-plugin.in.h:1
 #: ../gourmet/plugins/key_editor/keyeditor.ui.h:1
 msgid "Key Editor"
 msgstr "Nøgleredigering"
 
-#: ../plugins/key_editor.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/key_editor.gourmet-plugin.in.h:2
 msgid ""
 "Assign and edit ingredient keys (unique identifiers for ingredients, used "
 "for consolidating items on shopping lists)."
@@ -2615,12 +2603,12 @@ msgstr "Rediger Nøgle Sammenslutninger"
 msgid "Edit associations with key and other attributes in database"
 msgstr "Rediger sammenslutninger med nøgle og andre attributter i databasen"
 
-#: ../plugins/listsaver.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/listsaver.gourmet-plugin.in.h:1
 #: ../gourmet/plugins/listsaver/shoppingSaverPlugin.py:23
 msgid "Shopping List Saver"
 msgstr "Indkøbsseddel Gemmer"
 
-#: ../plugins/listsaver.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/listsaver.gourmet-plugin.in.h:2
 msgid "Save shopping lists as recipes for future use."
 msgstr "Gem indkøbslister som opskrifter til fremtidig brug."
 
@@ -2652,7 +2640,7 @@ msgstr "Menu"
 
 #. name
 #. stock
-#: ../plugins/nutritional_information.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/nutritional_information.gourmet-plugin.in.h:1
 #: ../gourmet/plugins/nutritional_information/main_plugin.py:13
 #: ../gourmet/plugins/nutritional_information/nutPrefsPlugin.py:11
 #: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:35
@@ -2661,7 +2649,7 @@ msgstr "Menu"
 msgid "Nutritional Information"
 msgstr "Ernæringsmæssige Oplysninger"
 
-#: ../plugins/nutritional_information.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/nutritional_information.gourmet-plugin.in.h:2
 msgid "Calculate nutritional information for recipes."
 msgstr "Udregn ernæringsmæssig information i opskrifterne."
 
@@ -2707,7 +2695,7 @@ msgstr "<b>Ernæringsmæssig Information</b>"
 msgid "Edit _nutritional info"
 msgstr "Redigér _ernærings info"
 
-#: ../gourmet/plugins/nutritional_information/nutritionDisplay.py:130
+#: ../gourmet/plugins/nutritional_information/nutritionDisplay.py:129
 msgid "100 grams"
 msgstr "100 gram"
 
@@ -3459,11 +3447,11 @@ msgstr "Få ernæringsmæssig information for nuværende liste"
 msgid "Amount for Shopping List"
 msgstr "Mængde for Indkøbsseddel"
 
-#: ../plugins/python_shell.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/python_shell.gourmet-plugin.in.h:1
 msgid "Python Shell"
 msgstr "Python Shell"
 
-#: ../plugins/python_shell.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/python_shell.gourmet-plugin.in.h:2
 msgid ""
 "Allows programmers to access an interactive shell with access to Gourmet's "
 "internals."
@@ -3479,11 +3467,11 @@ msgstr "_Python-konsol"
 msgid "Show python console (provides access to current gourmet instance)"
 msgstr "Vis Python-konsol (giver adgang til nuværende gourmet eksempel)"
 
-#: ../plugins/shopping_associations.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/shopping_associations.gourmet-plugin.in.h:1
 msgid "Shopping Category Editor"
 msgstr "Indkøbs Kategoriredigering"
 
-#: ../plugins/shopping_associations.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/shopping_associations.gourmet-plugin.in.h:2
 msgid ""
 "Assign and edit shopping categories for ingredients from within the recipe "
 "editor."
@@ -3495,11 +3483,11 @@ msgstr ""
 msgid "Shopping Category"
 msgstr "Handlekategori"
 
-#: ../plugins/spellcheck.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/spellcheck.gourmet-plugin.in.h:1
 msgid "Spell Checking"
 msgstr "Stavekontrol"
 
-#: ../plugins/spellcheck.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/spellcheck.gourmet-plugin.in.h:2
 msgid ""
 "Adds spell checking to paragraph length text boxes in recipe entry "
 "(Instructions, Notes)."
@@ -3507,12 +3495,12 @@ msgstr ""
 "Tilføjer stavekontrol til tekstfelter af afsnitslængde i "
 "opskriftsredigeringen (Instruktioner, Noter)."
 
-#: ../plugins/unit_converter.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/unit_converter.gourmet-plugin.in.h:1
 #: ../gourmet/plugins/unit_converter/converter.ui.h:2
 msgid "Unit Converter"
 msgstr "Enhedskonvertering"
 
-#: ../plugins/unit_converter.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/unit_converter.gourmet-plugin.in.h:2
 msgid "Provides a simple unit calculator."
 msgstr "Giver en simpel enhedsudregner."
 
@@ -3523,6 +3511,15 @@ msgstr "_Enhedskonvertering"
 #: ../gourmet/plugins/unit_converter/__init__.py:16
 msgid "Calculate unit conversions"
 msgstr "Beregn enhedskonverteringer"
+
+#: ../gourmet/plugins/unit_converter/convertGui.py:113
+#, python-format
+msgid "Cannot convert %s to %s"
+msgstr "Kan ikke konvertere %s til %s"
+
+#: ../gourmet/plugins/unit_converter/convertGui.py:115
+msgid "Need density information."
+msgstr "Behøver densitetsinformation."
 
 #: ../gourmet/plugins/unit_converter/converter.ui.h:3
 msgid "<b>From</b>"
@@ -3556,11 +3553,11 @@ msgstr "_Resultat:"
 msgid "?"
 msgstr "?"
 
-#: ../plugins/unit_display_prefs.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/unit_display_prefs.gourmet-plugin.in.h:1
 msgid "Unit Display Preferences"
 msgstr "Enhedsvisnings-opsætning"
 
-#: ../plugins/unit_display_prefs.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/unit_display_prefs.gourmet-plugin.in.h:2
 msgid "Allows you to always use metric (or imperial) units for display."
 msgstr ""
 
@@ -3592,11 +3589,11 @@ msgstr "Vis altid metriske enheder"
 msgid "Automatically adjust units"
 msgstr "Justér automatisk enheder"
 
-#: ../plugins/utf16.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/utf16.gourmet-plugin.in.h:1
 msgid "Check for Unicode-16 in text files"
 msgstr "Tjek for Unicode-16 i tekstfiler"
 
-#: ../plugins/utf16.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/utf16.gourmet-plugin.in.h:2
 msgid ""
 "Enable this if your utf-16 text files aren't importing cleanly into Gourmet. "
 "Disable this if you never use UTF16 and you're constantly being annoyed by "
@@ -3901,116 +3898,116 @@ msgstr "Viser opskrifter %(bottom)s til %(top)s af %(total)s"
 msgid "%s in %s"
 msgstr "%s i %s"
 
-#: ../gourmet/shopgui.py:121 ../gourmet/shopgui.py:128
+#: ../gourmet/shopgui.py:120 ../gourmet/shopgui.py:127
 msgid "Change _Category"
 msgstr "Skift _Kategori"
 
-#: ../gourmet/shopgui.py:122
+#: ../gourmet/shopgui.py:121
 msgid "Create new category"
 msgstr "Opret ny kategori"
 
-#: ../gourmet/shopgui.py:130
+#: ../gourmet/shopgui.py:129
 msgid "Change the category of the currently selected item"
 msgstr "Ændre kategorien på den i øjeblikket valgte post"
 
-#: ../gourmet/shopgui.py:136
+#: ../gourmet/shopgui.py:135
 msgid "Pantry"
 msgstr "Spisekammer"
 
 #. name
 #. stock
-#: ../gourmet/shopgui.py:139
+#: ../gourmet/shopgui.py:138
 msgid "Move to _Shopping List"
 msgstr "Flyt til Indkøbslisten"
 
 #. text
-#: ../gourmet/shopgui.py:140
+#: ../gourmet/shopgui.py:139
 msgid "<Ctrl>B"
 msgstr "<Ctrl>B"
 
 #. name
 #. stock
-#: ../gourmet/shopgui.py:149
+#: ../gourmet/shopgui.py:148
 msgid "Move to _pantry"
 msgstr "Flyt til _spisekammer"
 
 #. text
-#: ../gourmet/shopgui.py:150
+#: ../gourmet/shopgui.py:149
 msgid "<Ctrl>D"
 msgstr "<Ctrl>D"
 
 #. key-command
-#: ../gourmet/shopgui.py:151
+#: ../gourmet/shopgui.py:150
 msgid "Remove from shopping list"
 msgstr "Fjern fra indkøbsseddel"
 
-#: ../gourmet/shopgui.py:172
+#: ../gourmet/shopgui.py:171
 #, python-format
 msgid "Move selected items into %s"
 msgstr "Flyt valgte post ind i %s"
 
-#: ../gourmet/shopgui.py:209
+#: ../gourmet/shopgui.py:208
 msgid "_Shopping List"
 msgstr "_Indkøbsliste"
 
-#: ../gourmet/shopgui.py:210
+#: ../gourmet/shopgui.py:209
 msgid "Already Have (_Pantry Items)"
 msgstr "Har allerede (\"Fadeburs\"-emne)"
 
-#: ../gourmet/shopgui.py:471
+#: ../gourmet/shopgui.py:470
 msgid "Enter Category"
 msgstr "Skriv Kategori"
 
-#: ../gourmet/shopgui.py:472
+#: ../gourmet/shopgui.py:471
 #, python-format
 msgid "Category to add %s to"
 msgstr "Kategori at tilføje %s til"
 
-#: ../gourmet/shopgui.py:473
+#: ../gourmet/shopgui.py:472
 msgid "Category:"
 msgstr "Kategori:"
 
-#: ../gourmet/shopgui.py:586
+#: ../gourmet/shopgui.py:585
 msgid "_Recipes"
 msgstr "Opskrifter"
 
-#: ../gourmet/shopgui.py:609
+#: ../gourmet/shopgui.py:608
 msgid "_Add items:"
 msgstr "_Tilføj poster:"
 
-#: ../gourmet/shopgui.py:647
+#: ../gourmet/shopgui.py:646
 msgid "Remove Recipes"
 msgstr "Fjern opskrift"
 
-#: ../gourmet/shopgui.py:648
+#: ../gourmet/shopgui.py:647
 msgid "Remove recipes from shopping list"
 msgstr "Fjern opskrifter fra indkøbsliste"
 
-#: ../gourmet/shopgui.py:682
+#: ../gourmet/shopgui.py:681
 msgid "Add items"
 msgstr "Tilføj poster"
 
-#: ../gourmet/shopgui.py:684
+#: ../gourmet/shopgui.py:683
 msgid "Add arbitrary items to shopping list"
 msgstr "Tilføj vilkårlige poster til indkøbsseddel"
 
-#: ../gourmet/shopgui.py:750
+#: ../gourmet/shopgui.py:749
 msgid "x"
 msgstr "x"
 
-#: ../gourmet/shopgui.py:835
+#: ../gourmet/shopgui.py:834
 msgid "No recipes selected. Do you want to clear the entire list?"
 msgstr "Ingen opskrifter er valgt. Vil du tømme hele listen?"
 
-#: ../gourmet/shopgui.py:845
+#: ../gourmet/shopgui.py:844
 msgid "Save Shopping List As..."
 msgstr "Gem indkøbsliste som..."
 
-#: ../gourmet/shopgui.py:898
+#: ../gourmet/shopgui.py:897
 msgid "Select optional ingredients"
 msgstr "Vælg valgfrie ingredienser"
 
-#: ../gourmet/shopgui.py:899
+#: ../gourmet/shopgui.py:898
 msgid ""
 "Please specify which of the following optional ingredients you'd like to "
 "include on your shopping list."
