@@ -5,5 +5,3 @@ recursive-include gourmet *.py *.ui *.mk *.mx2 *.mmf *.kreml *.db *.sh *.html *.
 recursive-include po POTFILES.in *.pot *.po
 recursive-include tools *.py
 recursive-include ui *.ui
-recursive-include windows *.pyw *.nsi *.nsh
-
