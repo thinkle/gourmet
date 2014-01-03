@@ -29,6 +29,8 @@ Features:
 """)
 author = 'Thomas Mills Hinkle'
 author_email = 'Thomas_Hinkle@alumni.brown.edu'
+maintainer = 'Bernhard Reiter'
+maintainer_email = 'ockham@raz.or.at'
 authors = ["Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>",
            _("Roland Duhaime (Windows porting assistance)"),
            _("Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"),
@@ -37,7 +39,7 @@ authors = ["Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>",
            _("ixat <ixat.deviantart.com> (logo and splash screen)"),
            _("Yula Zubritsky (nutrition and add-to-shopping list icons)"),
            _("Simon Darlington <simon.darlington@gmx.net> (improvements to internationalization, assorted bugfixes)"),
-           _("Bernhard Reiter <ockham@raz.or.at> (Windows version maintenance and website re-design)"),
+           _("Bernhard Reiter <ockham@raz.or.at> (maintenance since 0.16.0, website re-design)"),
            ]
 artists = [_("Nyall Dawson (cookie icon)"),
            _("Kati Pregartner (splash screen image)")]
