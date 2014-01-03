@@ -1,3 +1,93 @@
+2014-01-01  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Replace PIL by Pillow requirement.
+        * Move *.gourmet-plugin.in files to gourmet/plugins/.
+        * Remove an obsolete line.
+        * Replace pywin32 requirement by a ctypes function call.
+        * Small whitespace fix.
+        * Remove missing signal handlers.
+        * Bump version to 0.17.0.
+        * Fix a translation bug in po/de.po.
+
+2013-12-15  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Add reportlab packages to setup.py so py2exe includes them.
+
+2013-11-19  Bernhard Reiter  <ockham@raz.or.at>
+
+        * De-dupe AboutDotComWebParser class.
+        * Move duplicate code into a common base class member.
+        * Remove some redundant code.
+        * Remove obsolete KeyManagerOldSchool class.
+        * Remove duplicate code from gourmet/recipeManager.py.
+        * Remove duplicate file gourmet/convertGui.py.
+
+2013-11-15  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Fix wildcard imports.
+
+2013-11-13  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Fix another PIL import.
+
+2013-11-02  Joe Sapp  <joe@babyjoe>
+
+        * Remove "Application" from desktop entry
+
+2013-01-11  Bernhard Reiter  <ockham@raz.or.at>
+
+        * s/options/args/ to make bin/gourmet launch.
+
+2013-01-11  Jeff Raber  <jeff.raber@gmail.com>
+
+        * Replace deprecated optparse with argparse, per issue 683 [1]
+
+2013-10-12  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Fix a typo that broke the nutritional information plugin DB upgrade.
+
+2013-10-11  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Remove some more metakit remnants.
+        * Update po[t] files.
+        * Remove legacy_db (i.e. metakit) stuff.
+
+2013-10-10  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Clean up recindex.py.
+        * Clean up GourmetRecipeManager.py.
+        * Clean up reccard.py
+
+2013-09-30  Bernhard Reiter  <ockham@raz.or.at>
+
+        * In PDF export, print title only once (as heading).
+
+2013-09-20  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Only set_current_folder if get_user_special_dir(USER_DIRECTORY_PICTURES) isn't None.
+
+2013-09-09  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Update *.po[t] files.
+        * Fix batch editing of categories.
+        * Translate attributes in batch editor's confirmation message box.
+        * In Batch Editor, replace "Servings" by "Yield" and "Yield Unit" rows.
+        * Small fix to ui/catalog/README.
+        * Remove some obsolete code checking for old gtk versions.
+        * Remove some spurious imports from recindex.py.
+
+2013-09-06  Bernhard Reiter  <ockham@raz.or.at>
+
+        * s/ui/ui_string/ fix in a couple of files.
+
+2013-09-01  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Remove some spurious Image (i.e. PIL) imports.
+
+2013-08-30  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Update Changelog.
+
 2013-08-29  Bernhard Reiter  <ockham@raz.or.at>
 
     * Update version to 0.16.1 in gourmet/version.py.
@@ -14,6 +104,10 @@
 
 2013-08-27  Bernhard Reiter  <ockham@raz.or.at>
 
+    * Drop Python version 2.6 in INSTALL.md.
+    * Add PYTHON_ARGCOMPLETE_OK string to bin/gourmet.
+    * Remove some obsolete imports from gourmet/importers/html_importer.py.
+    * Fix testImporters.py.
     * Merge pull request #724 from sappjw/master
       Replace more 'Image' imports with Pillow-compatible blocks
     * Fix allrecipes.com importer, by extending our newly created schema_org_parser.
