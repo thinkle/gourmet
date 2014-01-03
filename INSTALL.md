@@ -1,6 +1,6 @@
 Installation
 ===========
-We'll assume you're reading this document because you want to install Gourmet manually. Please note that if you're using a Linux distribution, chances are that they're is a Gourmet package available in your system's software repository that lets you install Gourmet much easier than described below. For Windows, our installer (found at https://launchpad.net/gourmet/+download) is currently also outdated (version 0.15.4), so if you'd like to try out the up-to-date version without having to wait for us to release a new installer, also follow these steps.
+We'll assume you're reading this document because you want to install Gourmet manually. Please note that if you're using a Linux distribution, chances are that there is a Gourmet package available in your system's software repository that lets you install Gourmet much easier than described below. For Windows, our installer (found at https://launchpad.net/gourmet/+download) is currently also outdated (version 0.15.4), so if you'd like to try out the up-to-date version without having to wait for us to release a new installer, also follow these steps.
 
 Required Packages
 ===============
