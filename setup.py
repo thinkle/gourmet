@@ -227,6 +227,10 @@ if sys.platform == "win32":
                                               (os.path.join("build", "share", "gourmet"), '.'),
                                               (os.path.join("gourmet", 'plugins'), 'plugins')
                                               ],
+                             # We're excluding the plugins module from being added to library.zip
+                             # and add it via include_files instead in order to faciliate
+                             # handling *.gourmet-plugin and extra files (such as *.ui files
+                             # and images).
                             'excludes': ['plugins','Tkinter','wx'],
                             'optimize': 2,
                             'compressed':1,
