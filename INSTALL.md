@@ -19,6 +19,20 @@ Once extracted, open a command prompt (on Windows Vista and later: with administ
 python setup.py install
 ```
 
+After installing all dependencies, open a (non-administrator) command prompt, cd to the directory to which you extracted (or git-cloned) Gourmet's source code,
+and run gourmet by entering
+```
+python bin/gourmet
+```
+
+You might also want to build loccalization files as described in the CODING file so you can run Gourmet in your language.
+
+Finally, you can freeze Gourmet for deployment by running
+```
+python setup.py bdist_msi
+```
+which will create an .msi installer file in the dist/ subdirectory of Gourmet's source code folder. 
+
 Requirements                               |Debian                |MacPorts          |Windows
 -------------------------------------------|----------------------|------------------|---------------
 Python 2.7                                 |python                |python27          |http://www.python.org/
