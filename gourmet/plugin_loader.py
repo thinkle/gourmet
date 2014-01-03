@@ -133,14 +133,15 @@ class MasterLoader:
         """
         depending_on_me = []
         for module in self.active_plugin_sets:
-            ps = self.available_plugin_sets[module]
-            if ps.dependencies:
-                try:
-                    if plugin_set.module in ps.dependencies:
-                        depending_on_me.append(ps)
-                except:
-                    print 'Problem checking dependencies of ',ps,ps.Dependencies
-                    raise
+            if module in self.available_plugin_sets:
+                ps = self.available_plugin_sets[module]
+                if ps.dependencies:
+                    try:
+                        if plugin_set.module in ps.dependencies:
+                            depending_on_me.append(ps)
+                    except:
+                        print 'Problem checking dependencies of ',ps,ps.Dependencies
+                        raise
         return depending_on_me
 
     def activate_plugin_set (self, plugin_set):
