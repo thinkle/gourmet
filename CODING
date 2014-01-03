@@ -16,7 +16,8 @@ Style
 The style used in Gourmet can be rather varied. However, new code
 should adhere to style guidelines old code should be updated to meet
 them. Generally, we try to follow the python style guidelines set out
-by Mr. Guido Van Russom.
+by Mr. Guido Van Russom, as formalized by
+[PEP 8](http://www.python.org/dev/peps/pep-0008/).
 
 The following conventions are not strictly followed in Gourmet, but
 I'd like to follow them from here on out for greater consistency.
@@ -36,4 +37,22 @@ If you want to work from within an IDE, you might want to use [Eclipse](http://w
 * EclipseNSIS
  * if you want to produce a windows installer package; download location: http://eclipsensis.sourceforge.net/update
 
-Wit EGit installed, go to File > Import... > Git > Git repository and enter either of the URIs found in the "Getting the Source" section, depending on your privileges. The rest of the importing process should be fairly intuitive.
+With EGit installed, go to File > Import... > Git > Git repository and enter the URI found in the "Getting the Source" section. The rest of the importing process should be fairly intuitive.
+
+As a supplement or an alternative to Eclipse and the plugins listed above,
+we can recommend [GitHub for Windows](http://windows.github.com/) as the
+Windows Git client; it features both command-line tools (and a dedicated prompt
+called Git Shell) and a nifty GUI.
+
+Getting the Source
+==================
+
+Gourmet's source code is hosted at [GitHub](https://github.com/thinkle/gourmet).
+You can clone it by opening a command prompt and typing
+```
+git clone https://github.com/thinkle/gourmet.git
+```
+
+If you don't have any previous experience with Git, you might want to take a
+look at the [official Git tutorial](http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html),
+or the [GitHub Help pages](http://help.github.com/).
