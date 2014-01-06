@@ -1,14 +1,11 @@
 import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap, types
-from gourmet import gglobals, convert
+from gourmet import convert
+from gourmet.gglobals import REC_ATTR_DIC, DEFAULT_ATTR_ORDER, DEFAULT_TEXT_ATTR_ORDER, TEXT_ATTR_DIC, use_threads
 from gourmet.gdebug import TimeAction, debug, print_timer_info
 from gettext import gettext as _
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import BaseExporterPlugin, BaseExporterMultiRecPlugin
 from gourmet.threadManager import SuspendableThread
-
-REC_ATTR_DIC = gglobals.REC_ATTR_DIC
-DEFAULT_ATTR_ORDER = gglobals.DEFAULT_ATTR_ORDER
-DEFAULT_TEXT_ATTR_ORDER = gglobals.DEFAULT_TEXT_ATTR_ORDER
 
 class exporter (SuspendableThread, Pluggable):
     """A base exporter class.
@@ -27,7 +24,7 @@ class exporter (SuspendableThread, Pluggable):
                   conv=None,
                   imgcount=1,
                   order=['image','attr','ings','text'],
-		  attr_order=DEFAULT_ATTR_ORDER,
+                  attr_order=DEFAULT_ATTR_ORDER,
                   text_attr_order = DEFAULT_TEXT_ATTR_ORDER,
                   do_markup=True,
                   use_ml=False,
@@ -130,7 +127,7 @@ class exporter (SuspendableThread, Pluggable):
                         txt=self.handle_markup(s)
                     if not self.use_ml: txt = xml.sax.saxutils.unescape(s)
                     if self.convert_attnames:
-                        out_a = gglobals.TEXT_ATTR_DIC.get(a,a)
+                        out_a = TEXT_ATTR_DIC.get(a,a)
                     else:
                         out_a = a
                     # Goodness this is an ugly way to pass the
@@ -152,7 +149,7 @@ class exporter (SuspendableThread, Pluggable):
                 #else: print 'exporter: do_markup=False'
                 if not self.use_ml: txt = xml.sax.saxutils.unescape(txt)
                 if self.convert_attnames:
-                    self.write_text(gglobals.TEXT_ATTR_DIC.get(a,a),txt)
+                    self.write_text(TEXT_ATTR_DIC.get(a,a),txt)
                 else:
                     self.write_text(a,txt)
 
@@ -415,7 +412,7 @@ class exporter_mult (exporter):
 
     @pluggable_method
     def write_attr (self, label, text):
-        #attr = gglobals.NAME_TO_ATTR[label]
+        #attr = NAME_TO_ATTR[label]
         self.out.write("%s: %s\n"%(label, text))
 
     def _grab_attr_ (self, obj, attr):
@@ -638,7 +635,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
             if self.terminated:
                 debug('Thread Terminated!',0)
                 raise Exception("Exporter Terminated!")
-            if gglobals.use_threads:
+            if use_threads:
                 time.sleep(1)
             else:
                 time.sleep(0.1)
