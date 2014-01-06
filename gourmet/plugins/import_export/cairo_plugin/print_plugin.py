@@ -109,6 +109,7 @@ class GtkPrintOperationWriter:
         po = gtk.PrintOperation()
         po.connect('draw_page',self.draw_page)
         po.connect('begin-print',self.begin_print)
+        po.connect('end-print',self.end_print)
         po.connect('create-custom-widget',self.create_custom_widget)
         po.props.custom_tab_label = _('Page Layout')
         po.connect('custom-widget-apply',self.custom_widget_apply)
@@ -146,6 +147,10 @@ class GtkPrintOperationWriter:
         r = RecWriter(self.rd, self.recs[0], self.print_writer, change_units=self.change_units, mult=self.mult)
         r.do_run()
         operation.set_n_pages(len(self.print_writer.positions))
+
+    def end_print (self, operation, context):
+        print "end_print"
+        self.print_writer.close()
 
     def handle_error (self,obj,errno, summary, traceback):
         print 'There was an error generating a PDF to print.'
