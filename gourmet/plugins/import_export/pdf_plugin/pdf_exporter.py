@@ -25,8 +25,6 @@ import tempfile, os.path
 import math
 from page_drawer import PageDrawer
 
-PASS_REPORTLAB_UNICODE = (reportlab.Version.find('2')==0)
-
 DEFAULT_PDF_ARGS = {'bottom_margin': 72, 'pagesize': 'letter', 'right_margin': 72, 'top_margin': 72, 'left_margin': 72, 'pagemode': 'portrait', 'base_font_size': 10, 'mode': ('column', 1)}
 
 # Code for MCLine from:
@@ -334,10 +332,7 @@ class PdfWriter:
             xmltxt = '<para>%s</para>'%txt
         if not style: style = self.styleSheet['Normal']
         try:
-            if PASS_REPORTLAB_UNICODE:
-                return platypus.Paragraph(unicode(xmltxt),style)
-            else:
-                return platypus.Paragraph(unicode(xmltxt).encode('iso-8859-1','replace'),style)
+            return platypus.Paragraph(unicode(xmltxt),style)
         except UnicodeDecodeError:
             try:
                 #print 'WORK AROUND UNICODE ERROR WITH ',txt[:20]
