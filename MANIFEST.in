@@ -3,5 +3,4 @@ include bin/gourmet
 recursive-include data *
 recursive-include gourmet *.py *.ui *.mk *.mx2 *.mmf *.kreml *.db *.sh *.html *.css *.js *.grmt *.gourmet-plugin.in guiprefs
 recursive-include po POTFILES.in *.pot *.po
-recursive-include tools *.py
 recursive-include ui *.ui
