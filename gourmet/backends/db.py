@@ -20,6 +20,8 @@ from sqlalchemy import event, func
 
 Session = sqlalchemy.orm.sessionmaker()
 
+Session = sqlalchemy.orm.sessionmaker()
+
 def map_type_to_sqlalchemy (typ):
     """A convenience method -- take a string type and map it into a
     sqlalchemy type.
@@ -112,6 +114,32 @@ class DBObject:
 # CHANGES SINCE PREVIOUS VERSIONS...
 # categories_table: id -> recipe_id, category_entry_id -> id
 # ingredients_table: ingredient_id -> id, id -> recipe_id
+
+class VersionInfo (object):
+    def __init__(self, version_super, version_major, version_minor,
+                 last_access=None, rowid=None):
+        self.version_super = version_super
+        self.version_major = version_major
+        self.version_minor = version_minor
+        self.last_access = last_access
+        self.rowid = rowid
+
+    def __repr__(self):
+        return "<VersionInfo(version='%s, %s, %s, %s, %s')>" % (self.version_super,
+                                                         self.version_major,
+                                                         self.version_minor,
+                                                         self.last_access,
+                                                         self.rowid)
+
+    def __str__(self):
+        return "%s.%s.%s" % (self.version_super,
+                             self.version_major,
+                             self.version_minor)
+
+    def __cmp__(self, other):
+        return 100*100*(self.version_super - other.version_super) + \
+                   100*(self.version_major - other.version_major) + \
+                       (self.version_minor - other.version_minor)
 
 class RecData (Pluggable): 
 
@@ -244,7 +272,7 @@ class RecData (Pluggable):
         """
         Subclasses should do any necessary adjustments/tweaking before calling
         this function."""
-        # Info table - for versioning info
+        # VersionInfo table - for versioning info
         self.__table_to_object__ = {}
         self.setup_base_tables()
         self.setup_shopper_tables() # could one day be part of a plugin
@@ -263,9 +291,8 @@ class RecData (Pluggable):
                                 Column('last_access',Integer(),**{}),
                                 Column('rowid',Integer(),**{'primary_key':True})
                                 )
-        class Info (object):
-            pass
-        self._setup_object_for_table(self.info_table, Info)
+
+        self._setup_object_for_table(self.info_table, VersionInfo)
         self.plugin_info_table = Table('plugin_info',self.metadata,
                                        Column('plugin',Text(),**{}),
                                        # three part version numbers
@@ -464,218 +491,56 @@ class RecData (Pluggable):
 
         If necessary, we'll do some version-dependent updates to the GUI
         """
-        stored_info = self.fetch_one(self.info_table)
-        version = [s for s in version_string.split('-')[0].split('.')]
-        current_super = int(version[0])
-        current_major = int(version[1])
-        current_minor = int(version[2])
-        if not stored_info or not stored_info.version_major:
-            # Default info -- the last version before we added the
-            # version tracker...
-            default_info = {'version_super':0,
-                             'version_major':11,
-                             'version_minor':0}
-            if not stored_info:
-                if not self.new_db:
-                    self.do_add(self.info_table,
-                                default_info)
-                else:
-                    self.do_add(self.info_table,
-                                {'version_super':current_super,
-                                 'version_major':current_major,
-                                 'version_minor':current_minor,}
-                                )
+        version = [int(s) for s in version_string.split('-')[0].split('.')]
+        current_info=VersionInfo(*version)
+        session = Session()
+        try:
+            stored_info = session.query(VersionInfo).one()
+        except sqlalchemy.orm.exc.NoResultFound:
+            if not self.new_db:
+                # Default info -- the last version before we added the
+                # version tracker...
+                session.add(VersionInfo(0, 11, 0))
             else:
-                self.do_modify(
-                    self.info_table,
-                    stored_info,
-                    default_info)
-            stored_info = self.fetch_one(self.info_table)            
-    
+                session.add(current_info)
+
+            session.commit()
+            stored_info = session.query(VersionInfo).one()
+        else:
+            if not stored_info.version_major:
+                stored_info = session.merge(VersionInfo(0, 11, 0,
+                                                         rowid=stored_info.rowid))
+
         ### Code for updates between versions...
-        if not self.new_db:
-            sv_text = "%s.%s.%s"%(stored_info.version_super,stored_info.version_major,stored_info.version_minor)
-            #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
-            # Change from servings to yields! ( we use the plural to avoid a headache with keywords)
-            if stored_info.version_super == 0 and stored_info.version_major < 16:
-                print 'Database older than 0.16.0 -- updating',sv_text
-                self.backup_db()
-                from sqlalchemy.sql.expression import func
-                # We need to unpickle Booleans that have erroneously remained
-                # pickled during previous Metakit -> SQLite -> SQLAlchemy
-                # database migrations.
-                self.pantry_table.update().where(self.pantry_table.c.pantry
-                                                 =='I01\n.'
-                                                 ).values(pantry=True).execute()
-                self.pantry_table.update().where(self.pantry_table.c.pantry
-                                                 =='I00\n.'
-                                                 ).values(pantry=False).execute()
-                # Unpickling strings with SQLAlchemy is clearly more complicated:
-                self.shopcats_table.update().where(
-                    and_(self.shopcats_table.c.shopcategory.startswith("S'"),
-                         self.shopcats_table.c.shopcategory.endswith("'\np0\n."))
-                    ).values({self.shopcats_table.c.shopcategory:
-                              func.substr(self.shopcats_table.c.shopcategory,
-                                          3,
-                                          func.char_length(
-                                            self.shopcats_table.c.shopcategory
-                                          )-8)
-                             }).execute()
-
-                # The following tables had Text columns as primary keys,
-                # which, when used with MySQL, requires an extra parameter
-                # specifying the length of the substring that MySQL is
-                # supposed to use for the key. Thus, we're adding columns
-                # named id of type Integer and make them the new primary keys
-                # instead.
-                self.alter_table('shopcats',self.setup_shopcats_table,
-                                 {},['ingkey','shopcategory','position'])
-                self.alter_table('shopcatsorder',self.setup_shopcatsorder_table,
-                                 {},['shopcategory','position'])
-                self.alter_table('pantry',self.setup_pantry_table,
-                                 {},['ingkey','pantry'])
-                self.alter_table('density',self.setup_density_table,
-                                 {},['dkey','value'])
-                self.alter_table('crossunitdict',self.setup_crossunitdict_table,
-                                 {},['cukey','value'])
-                self.alter_table('unitdict',self.setup_unitdict_table,
-                                 {},['ukey','value'])
-                self.alter_table('convtable',self.setup_convtable_table,
-                                 {},['ckey','value'])
-            if (stored_info.version_super == 0 and ((stored_info.version_major <= 14 and stored_info.version_minor <= 7)
-                                                    or
-                                                    (stored_info.version_major < 14)
-                                                    )):
-                print 'Database older than 0.14.7 -- updating',sv_text
-                # Don't change the table defs here without changing them
-                # above as well (for new users) - sorry for the stupid
-                # repetition of code.
-                self.add_column_to_table(self.recipe_table,('yields',Float(),{}))
-                self.add_column_to_table(self.recipe_table,('yield_unit',String(length=32),{}))
-                #self.db.execute('''UPDATE recipes SET yield = servings, yield_unit = "servings" WHERE EXISTS servings''')
-                self.recipe_table.update(whereclause=self.recipe_table.c.servings
-                                       ).values({
-                        self.recipe_table.c.yield_unit:'servings',
-                        self.recipe_table.c.yields:self.recipe_table.c.servings
-                        }
-                                                ).execute()
-            if stored_info.version_super == 0 and stored_info.version_major < 14:
-                print 'Database older than 0.14.0 -- updating',sv_text
-                self.backup_db()
-                # Name changes to make working with IDs make more sense
-                # (i.e. the column named 'id' should always be a unique
-                # identifier for a given table -- it should not be used to
-                # refer to the IDs from *other* tables
-                print 'Upgrade from < 0.14',sv_text
-                self.alter_table('categories',self.setup_category_table,
-                                 {'id':'recipe_id'},['category'])
-                # Testing whether somehow recipe_id already exists
-                # (apparently the version info here may be off? Not
-                # sure -- this is coming from an odd bug report by a
-                # user reported at...
-                # https://sourceforge.net/projects/grecipe-manager/forums/forum/371768/topic/3630545?message=8205906
-                try:
-                    self.db.connect().execute('select recipe_id from ingredients')
-                except sqlalchemy.exc.OperationalError:
-                    self.alter_table('ingredients',self.setup_ingredient_table,
-                                     {'id':'recipe_id'},
-                                     ['refid', 'unit', 'amount', 'rangeamount',
-                                      'item', 'ingkey', 'optional', 'shopoptional',
-                                      'inggroup', 'position', 'deleted'])
-                else:
-                    print 'Odd -- recipe_id seems to already exist'
-                self.alter_table('keylookup',self.setup_keylookup_table,
-                                 {},['word','item','ingkey','count'])
-            # Add recipe_hash, ingredient_hash and link fields
-            # (These all get added in 0.13.0)
-            if stored_info.version_super == 0 and stored_info.version_major <= 12:
-                self.backup_db()                
-                print 'UPDATE FROM < 0.13.0...',sv_text
-                # Don't change the table defs here without changing them
-                # above as well (for new users) - sorry for the stupid
-                # repetition of code.
-                self.add_column_to_table(self.recipe_table,('last_modified',Integer(),{}))
-                self.add_column_to_table(self.recipe_table,('recipe_hash',String(length=32),{}))
-                self.add_column_to_table(self.recipe_table,('ingredient_hash',String(length=32),{}))
-                # Add a link field...
-                self.add_column_to_table(self.recipe_table,('link',Text(),{}))
-                print 'Searching for links in old recipe fields...',sv_text
-                URL_SOURCES = ['instructions','source','modifications']
-                recs = self.search_recipes(
-                    [
-                    {'column':col,
-                     'operator':'LIKE',
-                     'search':'%://%',
-                     'logic':'OR'
-                     }
-                    for col in URL_SOURCES
-                    ])
-                for r in recs:
-                    rec_url = ''
-                    for src in URL_SOURCES:
-                        blob = getattr(r,src)
-                        url = None
-                        if blob:
-                            m = re.search('\w+://[^ ]*',blob)
-                            if m:
-                                rec_url = blob[m.start():m.end()]
-                                if rec_url[-1] in ['.',')',',',';',':']:
-                                    # Strip off trailing punctuation on
-                                    # the assumption this is part of a
-                                    # sentence -- this will break some
-                                    # URLs, but hopefully rarely enough it
-                                    # won't harm (m)any users.
-                                    rec_url = rec_url[:-1]
-                                break
-                    if rec_url:
-                        if r.source==rec_url:
-                            new_source = rec_url.split('://')[1]
-                            new_source = new_source.split('/')[0]
-                            self.do_modify_rec(
-                                r,
-                                {'link':rec_url,
-                                 'source':new_source,
-                                 }
-                                )
-                        else:
-                            self.do_modify_rec(
-                                r,
-                                {'link':rec_url,}
-                                )
-                # Add hash values to identify all recipes...
-                for r in self.fetch_all(self.recipe_table): self.update_hashes(r)
-
-            if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
-                print 'version older than 0.11.4 -- doing update',sv_text
-                self.backup_db()
-                print 'Fixing broken ingredient-key view from earlier versions.'
-                # Drop keylookup_table table, which wasn't being properly kept up
-                # to date...
-                self.delete_by_criteria(self.keylookup_table,{}) 
-                # And update it in accord with current ingredients (less
-                # than an ideal decision, alas)
-                for ingredient in self.fetch_all(self.ingredients_table,deleted=False):
-                    self.add_ing_to_keydic(ingredient.item,ingredient.ingkey)
+        import pkgutil
+        import importlib
+        import gourmet.migration.versions
+        package = gourmet.migration.versions
+        if not self.new_db and not stored_info == current_info:
+            backup = False
+            for _, modname, _ in pkgutil.iter_modules(package.__path__):
+                target_version = VersionInfo(*[int(s) for s in modname[1:].split('_')],
+                                             rowid=stored_info.rowid)
+                if stored_info < target_version:
+                    if not backup:
+                        self.backup_db()
+                        backup = True
+                    print 'Updating database from %s to %s version layout' % \
+                          (stored_info, target_version)
+                    upgrade_module = importlib.import_module('gourmet.migration.versions.' + modname)
+                    upgrade_module.upgrade(self)
+                    stored_info = session.merge(target_version)
+                    session.commit()
 
             for plugin in self.plugins:
                 self.update_plugin_version(plugin,
-                                           (current_super,current_major,current_minor)
+                                           (current_super, current_major, current_minor)
                                            )
+            current_info.rowid = stored_info.rowid
+            stored_info = session.merge(current_info)
+            session.commit()
+
         ### End of code for updates between versions...
-        if (current_super!=stored_info.version_super
-            or
-            current_major!=stored_info.version_major
-            or
-            current_minor!=stored_info.version_minor
-            ):
-            self.do_modify(
-                self.info_table,
-                stored_info,
-                {'version_super':current_super,
-                 'version_major':current_major,
-                 'version_minor':current_minor,},
-                id_col=None
-                )
 
     def update_plugin_version (self, plugin, current_version=None):
         if current_version:
