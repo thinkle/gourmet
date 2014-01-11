@@ -889,20 +889,23 @@ def float_to_metric(n, approx=0.01):
         format_string = "%."+str(decimals_to_preserve)+"f"
     else:
         format_string = "%i"
-    if int(n) != n:
-        if (n - int(n) < approx) or ((n - int(n) + approx) > 1):
-            rounded = round(n)
-            if rounded == 0:
-                return float_to_metric(n,approx*.01)
-            return locale.format("%i",int(rounded),True)
-        else:
-            rounded = round(n,decimals_to_preserve)
-            if rounded == 0:
-                return float_to_metric(n,approx*.01)
-            return locale.format("%."+str(decimals_to_preserve)+"f",rounded,True) # format(formatstring, number, use_thousands_separator)
+    if n is not None:
+     if int(n) != n:
+         if (n - int(n) < approx) or ((n - int(n) + approx) > 1):
+             rounded = round(n)
+             if rounded == 0:
+                 return float_to_metric(n,approx*.01)
+             return locale.format("%i",int(rounded),True)
+         else:
+             rounded = round(n,decimals_to_preserve)
+             if rounded == 0:
+                 return float_to_metric(n,approx*.01)
+             return locale.format("%."+str(decimals_to_preserve)+"f",rounded,True) # format(formatstring, number, use_thousands_separator)
+     else:
+         return locale.format("%i",n,True)
     else:
-        return locale.format("%i",n,True)
-    
+         return ""
+
 def float_string (s):
     """Convert string to a float, assuming it is some sort of decimal number
 
