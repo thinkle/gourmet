@@ -336,7 +336,7 @@ class GourmetApplication:
         debug("show_about (self, *args):",5)
         translator=_("translator-credits")
         # translators should translate the string 'translator-credits'
-        # If we're not using a translatino, then this isn't shown
+        # If we're not using a translation, then this isn't shown
         if translator == "translator-credits":
             translator = None
         # Grab CREDITS from our defaults_LANG file too!
