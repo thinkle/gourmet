@@ -1,32 +1,3 @@
-#try:
-#    import gnomevfs
-#    import AASOIUQWE
-#    # Okay, actually gnomevfs sucks so we'll put this off for
-#    # now. Among other problems, gnomevfs Handlers don't really behave
-#    # like proper file objects.
-#except ImportError:
-vfs_available = False
-open = open
-import os.path; os
-exists = os.path.exists
-makedirs = os.makedirs
-#else:
-#    vfs_available = True
-#    def exists (fn):
-#        return gnomevfs.exists(fn)
-#    def open (fn, mode='r'):
-#        if mode and mode[0]=='w':
-#            if not exists(fn):
-#                return gnomevfs.create(fn,gnomevfs.OPEN_WRITE)
-#            else:
-#                return gnomevfs.open(fn,gnomevfs.OPEN_WRITE)
-#        else:
-#            if mode != 'r':
-#                print 'WARNING, treating open mode %s as gnomevfs OPEN_READ'%mode
-#            return gnomevfs.open(fn,gnomevfs.OPEN_READ)
-#    def makedirs (path):
-#        gnomevfs.make_directory(path,gnomevfs.PERM_USER_ALL)
-    
 import os, os.path, gobject, re, gtk
 import tempfile
 from gdebug import debug
@@ -39,45 +10,7 @@ if args.gourmetdir:
     debug("User specified gourmetdir %s"%gourmetdir,0)
 else:
     if os.name =='nt':
-        # default to APPDATA, if available. If not, use ~/Application Data/gourmet/
-        # Try APPDATA environmental variable, falling back to whatever python does with ~
         APPDATA = os.environ.get('APPDATA',None)
-        if not APPDATA:
-            # On win98, reading the registry should give us the proper dir...
-            # (this code is from Dan F.)
-            import _winreg
-            try:
-                x=_winreg.ConnectRegistry(None,_winreg.HKEY_CURRENT_USER)
-                y= _winreg.OpenKey(
-                    x,
-                    r"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders"
-                    )
-                #we dont need to use datatype, but it returns it
-                APPDATA,datatype=_winreg.QueryValueEx(y,
-                                                      'Personal')
-                _winreg.CloseKey(y)
-            except EnvironmentError:
-                # maybe key doesn't exist... anyway, we have other fallback...
-                pass
-        # If we still haven't found where to put things, we'll try
-        # some more environmental variables and fallback to C:\My
-        # Documents\ if necessary... don't you love windows?
-        if not APPDATA:
-            # More attempts to figure out where to put things if our
-            # previous efforts have failed us
-            VARS_TO_TRY = ['USERPROFILE',
-                           'HOMEPATH',]            
-            for v in VARS_TO_TRY:
-                if os.environ.has_key(v):
-                    APPDATA = os.environ[v]
-                    break
-            if not APPDATA:
-                WINDIR = os.environ.get('windir',None)
-                if WINDIR:
-                    FALLBACK_DRIVE = os.path.split(WINDIR)[0]
-                else:
-                    FALLBACK_DRIVE = "C:"
-                APPDATA = os.path.join(FALLBACK_DRIVE,'My Documents')
         gourmetdir = os.path.join(APPDATA,'gourmet')
     else:
         gourmetdir = os.path.join(os.path.expanduser('~'),'.gourmet')

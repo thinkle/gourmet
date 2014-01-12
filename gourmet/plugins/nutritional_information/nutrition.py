@@ -128,7 +128,7 @@ class NutritionData:
         ni=self.get_nutinfo(key)
         if not amt:
             amt = 1
-        if ni and unit:
+        if ni: # We *can* have conversions w/ no units!
             c=self.get_conversion_for_amt(amt,unit,key=key,row=ni.__rowref__)
             if c:
                 return NutritionInfo(ni,mult=c,ingObject=ingObject)
@@ -191,7 +191,7 @@ class NutritionData:
         get_conversion_for_amt(amt,unit,key) * 100 will give us the
         number of grams this AMOUNT converts to.
         """
-        if not unit: return
+        if not unit: unit = ''
         densities,gramweights = self.get_conversions(key,row)
         if gramweights.has_key(unit):
             mass = gramweights[unit] * amt

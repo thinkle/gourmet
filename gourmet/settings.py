@@ -12,12 +12,9 @@ doc_base = os.path.join(base_dir, "gourmet")
 locale_base = os.path.join(base_dir, "gourmet", "build", "mo")
 plugin_base = os.path.join(base_dir, "gourmet", "build", "share", "gourmet")
 
-if getattr(sys, 'frozen', False):
-    base_dir = os.path.dirname(sys.executable)
-    data_dir = base_dir
-    ui_base = os.path.join(base_dir, 'ui')
-    doc_base = os.path.join(base_dir, 'doc')
-    locale_base = os.path.join(base_dir, "locale")
-    plugin_base = os.path.join(base_dir)
-
+# Apologies for the formatting -- something in the build process is
+# getting rid of indentations in this file which throws a syntax error
+# on install
+if getattr(sys, 'frozen', False): base_dir = os.path.dirname(sys.executable); data_dir = base_dir; ui_base = os.path.join(base_dir, 'ui'); doc_base = os.path.join(base_dir, 'doc');locale_base = os.path.join(base_dir, "locale"); plugin_base = os.path.join(base_dir)
+    
 icon_base = os.path.join(data_dir, "icons")
