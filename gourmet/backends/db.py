@@ -141,6 +141,38 @@ class VersionInfo (object):
                    100*(self.version_major - other.version_major) + \
                        (self.version_minor - other.version_minor)
 
+class PluginInfo (object):
+    def __init__(self, plugin,
+                 version_super, version_major, version_minor,
+                 plugin_version=None, id=None):
+        self.plugin = plugin
+        self.id = id
+        self.version_super = version_super
+        self.version_major = version_major
+        self.version_minor = version_minor
+        self.plugin_version = plugin_version
+
+    def __repr__(self):
+        return "<PluginInfo(plugin='%s', id='%s', version='%s, %s, %s', plugin_version='%s')>" % \
+                (self.plugin,
+                 self.id,
+                 self.version_super,
+                 self.version_major,
+                 self.version_minor,
+                 self.plugin_version)
+
+    def __str__(self):
+        return "%s.%s.%s - %s v%s" % (self.version_super,
+                                      self.version_major,
+                                      self.version_minor,
+                                      self.plugin,
+                                      self.plugin_version)
+
+    def __cmp__(self, other):
+        return 100*100*(self.version_super - other.version_super) + \
+                   100*(self.version_major - other.version_major) + \
+                       (self.version_minor - other.version_minor)
+
 class RecData (Pluggable): 
 
     """RecData is our base class for handling database connections.
@@ -306,8 +338,7 @@ class RecData (Pluggable):
                                        Column('version_minor',Integer(),**{}),
                                        # Stores the last time the plugin was used...
                                        Column('plugin_version',String(length=32),**{}))
-        class PluginInfo (object):
-            pass
+
         self._setup_object_for_table(self.plugin_info_table, PluginInfo)
 
     def setup_recipe_table (self):
@@ -533,9 +564,8 @@ class RecData (Pluggable):
                     session.commit()
 
             for plugin in self.plugins:
-                self.update_plugin_version(plugin,
-                                           (current_super, current_major, current_minor)
-                                           )
+                self.update_plugin_version(plugin, current_info)
+
             current_info.rowid = stored_info.rowid
             stored_info = session.merge(current_info)
             session.commit()
@@ -543,49 +573,31 @@ class RecData (Pluggable):
         ### End of code for updates between versions...
 
     def update_plugin_version (self, plugin, current_version=None):
-        if current_version:
-            current_super,current_major,current_minor = current_version
-        else:
-            i = self.fetch_one(self.info_table)
-            current_super,current_major,current_minor = (i.version_super,
-                                                         i.version_major,
-                                                         i.version_minor)
-        existing = self.fetch_one(self.plugin_info_table,
-                                  plugin=plugin.name)
-        if existing:
-            sup,maj,minor,plugin_version = (existing.version_super,
-                                            existing.version_major,
-                                            existing.version_minor,
-                                            existing.plugin_version)
-        else:
+        session = Session()
+        if not current_version:
+            current_version = session.query(VersionInfo).one()
+
+        current = PluginInfo(plugin.name, *current_version,
+                             plugin_version=plugin.version)
+        stored = session.query(PluginInfo).\
+                    filter_by(plugin==plugin.name).first()
+
+        if not stored:
             # Default to the version before our plugin system existed
-            sup,maj,minor = 0,13,9
-            plugin_version = 0
+            stored = PluginInfo(plugin.name, None, 0, 13, 9, 0)
         try:
-            plugin.update_version(
-                gourmet_stored=(sup,maj,minor),
-                plugin_stored = plugin_version,
-                gourmet_current=(current_super,current_major,current_minor),
-                plugin_current = plugin.version,
-                )
+            plugin.update_version(stored, current)
         except:
             print 'Problem updating plugin',plugin,plugin.name
             raise
         # Now we store the information so we know we've done an update
-        info = {
-            'plugin':plugin.name,
-            'version_super':current_super,
-            'version_major':current_major,
-            'version_minor':current_minor,
-            'plugin_version':plugin.version}
-        if existing and (
-            current_minor != minor or
-            current_major != maj or
-            current_super != sup or
-            plugin.version != plugin_version):
-            self.do_modify(self.plugin_info_table,existing,info)
+        if stored:
+            current.id = stored.id
+            stored = session.merge(current)
         else:
-            self.do_add(self.plugin_info_table,info)
+            session.add(current)
+
+        session.commit()
 
     def run_hooks (self, hooks, *args):
         """A basic hook-running function. We use hooks to allow parts of the application

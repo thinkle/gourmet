@@ -61,28 +61,28 @@ class NutritionDataPlugin (DatabasePlugin):
         self.setup_nutritionconversions_table()
         self.db.do_add_nutrition = self.do_add_nutrition
 
-    def update_version (self, gourmet_stored, plugin_stored, gourmet_current, plugin_current):
-        if ((gourmet_stored[0] == 0 and gourmet_stored[1] < 14)
+    def update_version (self, stored_plugin_version, current_plugin_version):
+        if (stored_plugin_version < PluginInfo(0, 14, 0))
             or
-            (plugin_stored < 1)):
+            (stored_plugin_version.plugin_version < 1)):
             print 'RECREATE USDA WEIGHTS TABLE'
             self.db.alter_table('usda_weights',self.setup_usda_weights_table,{},
                              [name for lname,name,typ in parser_data.WEIGHT_FIELDS])
             self.db.alter_table('nutritionconversions',self.setup_nutritionconversions_table,{},
                              ['ingkey','unit','factor'])
-        if plugin_stored == '1':
+        if stored_plugin_version.plugin_version == '1':
             # Add choline
             self.db.add_column_to_table(self.db.nutrition_table,
                                         ('choline',
                                          gourmet.backends.db.map_type_to_sqlalchemy('float'),
                                          {})
                                         )
-        if plugin_stored in ['1','2']:
+        if stored_plugin_version.plugin_version in ['1','2']:
             # Add a primary key Integer column named id.
             self.db.alter_table('nutritionaliases',self.setup_nutritionaliases_table,
                  {},['ingkey','ndbno','density_equivalent'])
 
-        if plugin_stored in ['1','2','3']:
+        if stored_plugin_version.plugin_version in ['1','2','3']:
             # Set the length parameter of the ingkey and unit Strings to 255.
             self.db.alter_table('nutritionconversions',self.setup_nutritionconversions_table,
                  {},['id','factor'])

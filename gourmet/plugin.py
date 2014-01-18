@@ -253,16 +253,11 @@ class DatabasePlugin (StandardPlugin):
         """
         pass
     
-    def update_version (self, gourmet_stored, plugin_stored,
-                        gourmet_current, plugin_current):
+    def update_version (self, stored_plugin_version, current_plugin_version):
         """Given the old version number, perform any updates to the
         database as necessary.
 
-        The Gourmet version #s are tuples with version_super, version_major
-        and version_minor.
-
-        The plugin version numbers are single numbers corresponding to
-        the version attribute of your your plugin class.
+        The version arguments are objects of the PluginInfo class.
         """
         pass
 
