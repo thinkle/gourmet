@@ -1327,6 +1327,7 @@ class RecData (Pluggable):
 
     @pluggable_method
     def add_ing_to_keydic (self, item, key):
+        session = Session()
         #print 'add ',item,key,'to keydic'
         # Make sure we have unicode...
         if type(item)==str: item = unicode(item)
@@ -1335,19 +1336,25 @@ class RecData (Pluggable):
         else:
             if item: item = unicode(item)
             if key: key = unicode(key)
-        row = self.fetch_one(self.keylookup_table, item=item, ingkey=key)
-        if row:
-            self.do_modify(self.keylookup_table,row,{'count':row.count+1})
+        ing = session.query(KeyLookup).\
+              filter(KeyLookup.item == item, KeyLookup.ingkey == key).first()
+        if ing:
+            ing.count += 1
         else:
-            self.do_add(self.keylookup_table,{'item':item,'ingkey':key,'count':1})
+            session.add(KeyLookup(item=item, ingkey=key, count=1))
+
         # The below code should move to a plugin for users who care about ingkeys...
         for w in item.split():
             w=str(w.decode('utf8').lower())
-            row = self.fetch_one(self.keylookup_table,word=unicode(w),ingkey=unicode(key))
-            if row:
-                self.do_modify(self.keylookup_table,row,{'count':row.count+1})
+            ing = session.query(KeyLookup).\
+                        filter(KeyLookup.word == unicode(w),
+                               KeyLookup.ingkey == unicode(key)).first()
+            if ing:
+                ing.count += 1
             else:
-                self.do_add(self.keylookup_table,{'word':unicode(w),'ingkey':unicode(key),'count':1})
+                session.add(KeyLookup(word=unicode(w), ingkey=unicode(key), count=1))
+
+        session.commit()
 
     def remove_ing_from_keydic (self, item, key):
         #print 'remove ',item,key,'to keydic'        
