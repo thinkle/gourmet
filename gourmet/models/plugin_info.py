@@ -18,8 +18,9 @@ class PluginInfo (Base):
     # Stores the last time the plugin was used...
     plugin_version = Column(String(32))
 
-    def __init__(self, plugin, id=None, version_super, version_major, version_minor,
-                 plugin_version=None):
+    def __init__(self, plugin,
+                 version_super, version_major, version_minor,
+                 plugin_version=None, id=None):
         self.plugin = plugin
         self.id = id
         self.version_super = version_super
@@ -37,9 +38,11 @@ class PluginInfo (Base):
                  self.plugin_version)
 
     def __str__(self):
-        return "%s.%s.%s" % (self.version_super,
-                             self.version_major,
-                             self.version_minor)
+        return "%s.%s.%s - %s v%s" % (self.version_super,
+                                      self.version_major,
+                                      self.version_minor,
+                                      self.plugin,
+                                      self.plugin_version)
 
     def __cmp__(self, other):
         return 100*100*(self.version_super - other.version_super) + \
