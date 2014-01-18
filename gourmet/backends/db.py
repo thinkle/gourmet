@@ -212,25 +212,14 @@ class RecData (Pluggable):
 
     def save (self):
         """Save our database (if we have a separate 'save' concept)"""
-        row = self.fetch_one(self.info_table)
-        if row:
-            self.do_modify(
-                self.info_table,
-                row,
-                {'last_access':time.time()},
-                id_col = None
-                )
-        else:
-            self.do_add(
-                self.info_table,
-                {'last_access':time.time()}
-                )
-        try:
-            #self.base_connection.commit()
-            pass
-        except IndexError:
-            print 'Ignoring sqlalchemy problem'
-            import traceback; traceback.print_exc()
+        session = Session()
+        stored_info = session.query(VersionInfo).one()
+        if stored_info:
+            stored_info.last_access = time.time()
+            stored_info = session.merge(stored_info)
+        else: # This shouldn't really happen
+            session.add(VersionInfo(last_access=time.time()))
+        session.commit()
 
     @pluggable_method
     def setup_tables (self):
