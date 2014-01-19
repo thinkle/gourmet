@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, Float, LargeBinary, Boolean
 from sqlalchemy.event import listen
+from sqlalchemy.orm import deferred
 
 from gourmet.models import Base
 
@@ -27,7 +28,7 @@ class Recipe (Base):
     servings = Column(Float)
     yields = Column(Float)
     yield_unit = Column(String(32))
-    image = Column(LargeBinary)
+    image = deferred(Column(LargeBinary))
     thumb = Column(LargeBinary)
     deleted = Column(Boolean)
     # A hash for uniquely identifying a recipe (based on title etc)
