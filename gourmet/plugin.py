@@ -372,7 +372,7 @@ class MainPlugin (StandardPlugin):
         self.main = pluggable
 
     def deactivate (self, pluggable):
-        for t in added_tabs:
+        for t in self.added_tabs:
             pluggable.main_notebook.remove_page(t)
         if pluggable.main_notebook.get_n_pages() <= 1:
             pluggable.main_notebook.set_show_tabs(False)

@@ -172,6 +172,11 @@ class MasterLoader:
             print 'Odd',plugin_set.module,'is not listed as active.'
         if plugin_set.get_module():
             for plugin in plugin_set.plugins:
+                for klass in self.pluggables_by_class.keys():
+                    if issubclass(plugin,klass):
+                        for pluggable in self.pluggables_by_class[klass]:
+                            plugin().deactivate(pluggable)
+
                 if self.instantiated_plugins.has_key(plugin):
                     self.instantiated_plugins[plugin].remove()
                 self.active_plugins.remove(plugin)
