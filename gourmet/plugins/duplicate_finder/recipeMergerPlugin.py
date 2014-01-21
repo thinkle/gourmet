@@ -37,7 +37,8 @@ class RecipeMergerPlugin (ToolPlugin):
         pluggable.add_hook(PRE,'import_cleanup',self.import_cleanup_hook)
 
     def deactivate (self, pluggable):
-        pluggable.remove_hook(PRE,'import_cleanup',self.import_clenaup_hook)
+        if hasattr(self,'pluggable'):
+            pluggable.remove_hook(PRE,'import_cleanup',self.import_cleanup_hook)
 
     def remove (self):
         if hasattr(self,'pluggable'):
