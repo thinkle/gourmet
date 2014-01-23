@@ -70,7 +70,7 @@ class KeyEditorPlugin (PluginPlugin):
         tv = tvc.get_tree_view()
         model = tv.get_model()
         row = model[path]
-        ingkey = row[ingkey_row]
+        ingkey = row[ingkey_row].decode('utf-8')
         renderer.set_property('text',new_text)
         self.ingkeys_to_change[ingkey]=new_text
         if instant_apply:
