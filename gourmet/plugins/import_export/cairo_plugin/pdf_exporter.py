@@ -48,8 +48,8 @@ class CairoRenderer:
         para.set_justify(True)
         para.set_width(int(self.right-self.left)*pango.SCALE)
         para.set_markup(markup)
+        if space: para.set_spacing(1)
         x,y=para.get_pixel_size()
-        if space: y += 1
         print 'paragraph of size ',x,y
         botpos = self.positions[-1][-1][1] + y
         print 'moves bottom to ',botpos, ' bottom at %s'%self.bottom
