@@ -435,7 +435,7 @@ msgstr "<b>_Aantallen:</b>"
 
 #: ../ui/recCardDisplay.ui.h:9
 msgid "<span underline=\"single\" color=\"blue\">Link</span>"
-msgstr "<span underline=\"enkele\" kleur=\"blauw\">Link</span>"
+msgstr "<span underline=\"single\" color=\"blue\">Link</span>"
 
 #: ../ui/recCardDisplay.ui.h:10
 msgid "<b>Source:</b>"
