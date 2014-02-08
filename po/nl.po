@@ -463,7 +463,7 @@ msgstr "<b>Notities</b>"
 
 #: ../ui/recCardDisplay.ui.h:16
 msgid "Edit _notes"
-msgstr "_Notiities bewerken"
+msgstr "_Notities bewerken"
 
 #: ../ui/recCardDisplay.ui.h:17 ../gourmet/exporters/exporter.py:606
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:483
