@@ -1083,7 +1083,7 @@ msgid ""
 "fails, you can manually rename your backup file recipes.db to recover it for "
 "use with older Gourmet."
 msgstr ""
-"V primeru, da gre kaj narobe, je bila narejena arhivska kopija v %s. \r\n"
+"V primeru, da gre kaj narobe, je bila narejena arhivska kopija v %s. \n"
 "Če posodobitev ne uspe, lahko ročno preimenujete arhivsko datoteko recipes."
 "db in jo obnovite za uporabo s starejšim Gurmanom."
 
