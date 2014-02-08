@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gourmet Recipe Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-01 13:48+0100\n"
+"POT-Creation-Date: 2014-02-08 23:44+0100\n"
 "PO-Revision-Date: 2012-06-25 13:42+0000\n"
 "Last-Translator: emol007 <emol007@gmail.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -31,7 +31,7 @@ msgstr "Lista Przepisów"
 msgid "_New Recipe"
 msgstr "_Nowy Przepis"
 
-#: ../ui/app.ui.h:3 ../gourmet/gglobals.py:265
+#: ../ui/app.ui.h:3 ../gourmet/gglobals.py:197
 msgid "Add to _Shopping List"
 msgstr "Dodaj do li_sty zakupów"
 
@@ -129,7 +129,7 @@ msgstr "W_ydajność:"
 
 #: ../ui/batchEditor.ui.h:14
 #, fuzzy
-msgid "_Yield Unit:"
+msgid "Yield U_nit:"
 msgstr "Jednostka wydajności"
 
 #: ../ui/batchEditor.ui.h:15
@@ -242,7 +242,7 @@ msgstr "Nazwa użytkownika w bazie danych."
 msgid "_Browse"
 msgstr "_Przeglądaj"
 
-#: ../ui/databaseChooser.ui.h:22 ../gourmet/gglobals.py:246
+#: ../ui/databaseChooser.ui.h:22 ../gourmet/gglobals.py:178
 #: ../gourmet/gtk_extras/dialog_extras.py:810
 #: ../gourmet/gtk_extras/dialog_extras.py:1162
 msgid "_Details"
@@ -364,7 +364,7 @@ msgstr "porcji"
 #. renderer.set_property('editable',True)
 #. renderer.connect('edited',tst)
 #: ../ui/recCardDescriptionEditor.ui.h:6
-#: ../gourmet/exporters/rtf_exporter.py:79 ../gourmet/gglobals.py:151
+#: ../gourmet/exporters/rtf_exporter.py:79 ../gourmet/gglobals.py:83
 #: ../gourmet/shopgui.py:748
 msgid "Title"
 msgstr "Tytuł"
@@ -387,11 +387,11 @@ msgstr "kategoria"
 msgid "rating"
 msgstr "ocena"
 
-#: ../ui/recCardDescriptionEditor.ui.h:17 ../gourmet/gglobals.py:157
+#: ../ui/recCardDescriptionEditor.ui.h:17 ../gourmet/gglobals.py:89
 msgid "Yield"
 msgstr "Wydajność"
 
-#: ../ui/recCardDescriptionEditor.ui.h:18 ../gourmet/gglobals.py:158
+#: ../ui/recCardDescriptionEditor.ui.h:18 ../gourmet/gglobals.py:90
 msgid "Yield Unit"
 msgstr "Jednostka wydajności"
 
@@ -566,7 +566,7 @@ msgstr ""
 msgid "<i>Search Options</i>"
 msgstr "<i>Opcje Wyszukiwania</i>"
 
-#: ../ui/shopCatEditor.ui.h:1 ../gourmet/gglobals.py:152
+#: ../ui/shopCatEditor.ui.h:1 ../gourmet/gglobals.py:84
 msgid "Category"
 msgstr "Kategoria"
 
@@ -1361,62 +1361,62 @@ msgid ""
 msgstr ""
 "Nie wybrałeś aby dołączyć przepis jako treść wiadomości lub jako załącznik"
 
-#: ../gourmet/gglobals.py:153
+#: ../gourmet/gglobals.py:85
 msgid "Cuisine"
 msgstr "Kuchnia"
 
-#: ../gourmet/gglobals.py:154 ../gourmet/gtk_extras/ratingWidget.py:331
+#: ../gourmet/gglobals.py:86 ../gourmet/gtk_extras/ratingWidget.py:331
 msgid "Rating"
 msgstr "Ocena"
 
-#: ../gourmet/gglobals.py:155
+#: ../gourmet/gglobals.py:87
 msgid "Source"
 msgstr "Źródło"
 
-#: ../gourmet/gglobals.py:156
+#: ../gourmet/gglobals.py:88
 msgid "Website"
 msgstr "Strona Internetowa"
 
-#: ../gourmet/gglobals.py:159
+#: ../gourmet/gglobals.py:91
 msgid "Preparation Time"
 msgstr "Czas Przygotowania"
 
-#: ../gourmet/gglobals.py:160
+#: ../gourmet/gglobals.py:92
 msgid "Cooking Time"
 msgstr "Czas Gotowania"
 
-#: ../gourmet/gglobals.py:165 ../gourmet/gglobals.py:170
+#: ../gourmet/gglobals.py:97 ../gourmet/gglobals.py:102
 #: ../gourmet/reccard.py:1652
 msgid "Instructions"
 msgstr "Instrukcje"
 
-#: ../gourmet/gglobals.py:166 ../gourmet/gglobals.py:171
+#: ../gourmet/gglobals.py:98 ../gourmet/gglobals.py:103
 #: ../gourmet/reccard.py:1658
 msgid "Notes"
 msgstr "Notatki"
 
-#: ../gourmet/gglobals.py:172
+#: ../gourmet/gglobals.py:104
 msgid "Modifications"
 msgstr "Modyfikacje"
 
 #. print dir(err)
-#: ../gourmet/gglobals.py:238
+#: ../gourmet/gglobals.py:170
 msgid "Unable to open URL"
 msgstr "Nie można otworzyć URL"
 
-#: ../gourmet/gglobals.py:239
+#: ../gourmet/gglobals.py:171
 msgid "Unable to launch mail reader."
 msgstr "Nie można uruchomić czytnika poczty."
 
-#: ../gourmet/gglobals.py:240
+#: ../gourmet/gglobals.py:172
 msgid "Unable to open website."
 msgstr "Nie można otworzyć strony www."
 
-#: ../gourmet/gglobals.py:241
+#: ../gourmet/gglobals.py:173
 msgid "Unable to open file."
 msgstr "Nie można otworzyć pliku."
 
-#: ../gourmet/gglobals.py:247
+#: ../gourmet/gglobals.py:179
 #, python-format
 msgid "There was an error launching the url: %s"
 msgstr "Wystąpił błąd podczas otwierania url: %s"
@@ -1866,7 +1866,7 @@ msgid "_Auto-merge"
 msgstr ""
 
 #: ../gourmet/plugins/duplicate_finder/recipeMergerPlugin.py:22
-#: ../gourmet/plugins/duplicate_finder/recipeMergerPlugin.py:57
+#: ../gourmet/plugins/duplicate_finder/recipeMergerPlugin.py:58
 msgid ""
 "Some of the imported recipes appear to be duplicates. You can merge them "
 "here, or close this dialog to leave them as they are."
@@ -1874,11 +1874,11 @@ msgstr ""
 "Niektóre z zaimportowanych przepisów mogą być duplikatami. Możesz je scalić "
 "tutaj, albo zamknąć to okno aby pozostawić je w takiej postaci."
 
-#: ../gourmet/plugins/duplicate_finder/recipeMergerPlugin.py:64
+#: ../gourmet/plugins/duplicate_finder/recipeMergerPlugin.py:65
 msgid "Find _duplicate recipes"
 msgstr "Znajdź _powtarzające się przepisy"
 
-#: ../gourmet/plugins/duplicate_finder/recipeMergerPlugin.py:65
+#: ../gourmet/plugins/duplicate_finder/recipeMergerPlugin.py:66
 msgid "Find and remove duplicate recipes"
 msgstr "Znajdź i usuń powtarzające się przepisy"
 
@@ -2135,14 +2135,14 @@ msgstr "List"
 
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:717
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:848
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:971
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:1002
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:969
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:1000
 msgid "Portrait"
 msgstr "Pionowo"
 
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:719
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:841
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:963
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:961
 msgid "Plain"
 msgstr "Zwykły"
 
@@ -2196,8 +2196,8 @@ msgid "Index Cards (A7)"
 msgstr "Strona indeksu (A7)"
 
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:849
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:949
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:1000
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:947
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:998
 msgid "Landscape"
 msgstr "Orientacja pozioma"
 
@@ -2221,27 +2221,27 @@ msgstr "_Orientacja"
 msgid "_Font Size"
 msgstr "Rozmiar _Czcionki"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:881
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:880
 msgid "Page _Layout"
 msgstr "_Układ Strony"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:884
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:882
 msgid "Left Margin"
 msgstr "Lewy Margines"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:885
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:883
 msgid "Right Margin"
 msgstr "Prawy Margines"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:886
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:884
 msgid "Top Margin"
 msgstr "Margines Górny"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:887
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:885
 msgid "Bottom Margin"
 msgstr "Margines Dolny"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:908
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:906
 msgid "PDF Options"
 msgstr ""
 
@@ -4145,8 +4145,8 @@ msgstr "_Odliczaj dalej"
 
 #: ../gourmet/version.py:14
 msgid ""
-"Copyright (c) 2004,2005,2006,2007,2008,2009,2010,2011 Thomas M. Hinkle. GNU "
-"GPL v2"
+"Copyright (c) 2004,2005,2006,2007,2008,2009,2010,2011,2012,2013 Thomas M. "
+"Hinkle. GNU GPL v2"
 msgstr ""
 
 #: ../gourmet/version.py:18
@@ -4176,33 +4176,33 @@ msgstr ""
 "Gourmet. Gourmet obsługuje dołączanie zdjęć do przepisów, potrafi także na "
 "podstawie składników obliczyć wartość odżywczą przepisów."
 
-#: ../gourmet/version.py:33
+#: ../gourmet/version.py:35
 msgid "Roland Duhaime (Windows porting assistance)"
 msgstr "Roland Duhaime (pomoc przy przenoszeniu na platoformę Windows)"
 
-#: ../gourmet/version.py:34
+#: ../gourmet/version.py:36
 msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
 msgstr ""
 "Daniel Folkinshteyn <nanotube@gmail.com>\n"
 "(instalator dla systemu Windows)"
 
-#: ../gourmet/version.py:35
+#: ../gourmet/version.py:37
 msgid "Richard Ferguson (improvements to Unit Converter interface)"
 msgstr "Richard Fergusin (ulepszenie interfejsu Konwertera Jednostek)"
 
-#: ../gourmet/version.py:36
+#: ../gourmet/version.py:38
 msgid "R.S. Born (improvements to Mealmaster export)"
 msgstr "R.S. Born (ulepszenie eksportu z Mealmastera)"
 
-#: ../gourmet/version.py:37
+#: ../gourmet/version.py:39
 msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
 msgstr "ixat <ixat.deviantart.com> (logo i splash screen)"
 
-#: ../gourmet/version.py:38
+#: ../gourmet/version.py:40
 msgid "Yula Zubritsky (nutrition and add-to-shopping list icons)"
 msgstr "Yula Zubritsky (dietetyka i ikony dodawania do listy zakupów)"
 
-#: ../gourmet/version.py:39
+#: ../gourmet/version.py:41
 msgid ""
 "Simon Darlington <simon.darlington@gmx.net> (improvements to "
 "internationalization, assorted bugfixes)"
@@ -4210,19 +4210,20 @@ msgstr ""
 "Simon Darlington <simon.darlington@gmx.net> (udoskonalenia w "
 "umiędzynarodowieniu, różnego rodzaju poprawki)"
 
-#: ../gourmet/version.py:40
+#: ../gourmet/version.py:42
+#, fuzzy
 msgid ""
-"Bernhard Reiter <ockham@raz.or.at> (Windows version maintenance and website "
-"re-design)"
+"Bernhard Reiter <ockham@raz.or.at> (maintenance since 0.16.0, website re-"
+"design)"
 msgstr ""
 "Bernhard Reiter <ockham@raz.or.at> (Windows version maintenance and website "
 "re-design)"
 
-#: ../gourmet/version.py:42
+#: ../gourmet/version.py:44
 msgid "Nyall Dawson (cookie icon)"
 msgstr ""
 
-#: ../gourmet/version.py:43
+#: ../gourmet/version.py:45
 msgid "Kati Pregartner (splash screen image)"
 msgstr ""
 

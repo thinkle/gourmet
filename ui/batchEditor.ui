@@ -585,7 +585,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="yield_unitCheckButton">
-                            <property name="label" translatable="yes">_Yield Unit:</property>
+                            <property name="label" translatable="yes">Yield U_nit:</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
