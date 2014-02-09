@@ -26,8 +26,7 @@ try:
 except:
     from sqlalchemy import Binary as LargeBinary
 from sqlalchemy.sql import and_, or_, case 
-from sqlalchemy import func
-from sqlalchemy.interfaces import PoolListener
+from sqlalchemy import event, func
 
 def map_type_to_sqlalchemy (typ):
     """A convenience method -- take a string type and map it into a
@@ -174,25 +173,7 @@ class RecData (Pluggable):
         
         This should also set self.new_db accordingly"""
         debug('Initializing DB connection',1)
-        # Workaround to create REGEXP function in sqlite
-        # New way of adding custom function ensures we create a custom
-        # function for every connection created and fixes problems
-        # using regexp. Based on code found here:
-        # http://stackoverflow.com/questions/8076126/have-an-sqlalchemy-sqlite-create-function-issue-with-datetime-representation
-        listeners = []
-        #raise NotImplementedError
-        def regexp(expr, item):
-            if item:
-                return re.search(expr,item,re.IGNORECASE) is not None
-            else:
-                return False
         def instr(s,subs): return s.lower().find(subs.lower())+1
-
-        if self.url.startswith('sqlite'):
-            class EnsureCustomFunctionWorksFactory (PoolListener):
-                def connect (self, dbapi_con, con_record):
-                    dbapi_con.create_function('REGEXP',2,regexp)
-            listeners = [EnsureCustomFunctionWorksFactory()]
             
         # End REGEXP workaround 
 
@@ -204,7 +185,24 @@ class RecData (Pluggable):
             self.new_db = True # ??? How will we do this now?
         #self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal')
         #self.base_connection = self.db
-        self.db = sqlalchemy.create_engine(self.url,listeners=listeners)
+        self.db = sqlalchemy.create_engine(self.url)
+
+        if self.url.startswith('sqlite'):
+            # Workaround to create REGEXP function in sqlite
+            # New way of adding custom function ensures we create a custom
+            # function for every connection created and fixes problems
+            # using regexp. Based on code found here:
+            # http://stackoverflow.com/questions/8076126/have-an-sqlalchemy-sqlite-create-function-issue-with-datetime-representation
+            def regexp(expr, item):
+                if item:
+                    return re.search(expr,item,re.IGNORECASE) is not None
+                else:
+                    return False
+
+            @event.listens_for(self.db, 'connect')
+            def on_connect (dbapi_con, con_record):
+                dbapi_con.create_function('REGEXP',2,regexp)
+
         self.base_connection = self.db.connect()
         self.base_connection.begin()
         self.metadata = sqlalchemy.MetaData(self.db)
