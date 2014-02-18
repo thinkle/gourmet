@@ -1,13 +1,7 @@
-## For testing - DELETE ME
-#import sys
-#sys.path.append('/usr/share/')
-## End for testing - DELETE ME
 import shutil
 import types
-import os.path
-from gettext import gettext as _
 from gourmet.gdebug import debug, TimeAction, debug_decorator
-import re, string, os.path, string, time
+import re, string, os.path, time
 from gettext import gettext as _
 import gourmet.gglobals as gglobals
 from gourmet import Undo, keymanager, convert
@@ -20,13 +14,11 @@ from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import DatabasePlugin
 
 import sqlalchemy, sqlalchemy.orm
-from sqlalchemy import Integer, Binary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
-try: 
-    from sqlalchemy import LargeBinary
-except:
-    from sqlalchemy import Binary as LargeBinary
+from sqlalchemy import Integer, LargeBinary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
 from sqlalchemy.sql import and_, or_, case 
 from sqlalchemy import event, func
+
+Session = sqlalchemy.orm.sessionmaker()
 
 def map_type_to_sqlalchemy (typ):
     """A convenience method -- take a string type and map it into a
@@ -213,12 +205,7 @@ class RecData (Pluggable):
         self.metadata = sqlalchemy.MetaData(self.db)
         # Be noisy... (uncomment for debugging/fiddling)
         # self.metadata.bind.echo = True
-        try:
-            self.session = sqlalchemy.orm.create_session()
-        except AttributeError:
-            # older sqlalchemy support
-            self.session = sqlalchemy.create_session()
-
+        Session.configure(bind=self.db)
         debug('Done initializing DB connection',1)
 
     def save (self):
