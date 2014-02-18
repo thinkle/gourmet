@@ -185,7 +185,12 @@ class RecData (Pluggable):
             self.new_db = True # ??? How will we do this now?
         #self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal')
         #self.base_connection = self.db
-        self.db = sqlalchemy.create_engine(self.url)
+
+        if self.url.startswith('mysql'):
+            self.db = sqlalchemy.create_engine(self.url,
+                                               connect_args = {'charset':'utf8'})
+        else:
+            self.db = sqlalchemy.create_engine(self.url)
 
         if self.url.startswith('sqlite'):
             # Workaround to create REGEXP function in sqlite
