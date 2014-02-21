@@ -350,17 +350,11 @@ class GourmetApplication:
 
         # load LICENSE text file
         try:
-            h = open(os.path.join(doc_base,'LICENSE'),'r')
-            s = h.readlines()
+            license_text = open(os.path.join(doc_base,'LICENSE'),'r').read()
         except IOError, err:
             print "IO Error %s" % err
         except:
             print "Unexpexted error"
-
-        license = ""
-        for line in s:
-            license += line
-        h.close()
 
         paypal_link = """https://www.paypal.com/cgi-bin/webscr?cmd=_donations
 &business=Thomas_Hinkle%40alumni%2ebrown%2eedu
@@ -374,7 +368,7 @@ class GourmetApplication:
         about.set_comments(version.description)
         about.set_copyright(version.copyright)
         #about.set_documenters(None)
-        about.set_license(license)
+        about.set_license(license_text)
         about.set_logo(logo)
         about.set_program_name(version.appname)
         about.set_translator_credits(translator)
