@@ -362,6 +362,12 @@ class GourmetApplication:
             license += line
         h.close()
 
+        paypal_link = """https://www.paypal.com/cgi-bin/webscr?cmd=_donations
+&business=Thomas_Hinkle%40alumni%2ebrown%2eedu
+&lc=US&item_name=Gourmet%20Recipe%20Manager%20Team&no_note=0&currency_code=USD
+&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest"""
+        gittip_link = "https://www.gittip.com/on/github/thinkle/"
+
         about = gtk.AboutDialog()
         about.set_artists(version.artists)
         about.set_authors(version.authors)
@@ -376,6 +382,25 @@ class GourmetApplication:
         #about.set_wrap_license(True)
         about.set_website(version.website)
         #about.set_website_label('Gourmet website')
+
+        donation_buttons = gtk.HButtonBox()
+        donation_buttons.set_layout(gtk.BUTTONBOX_SPREAD)
+        donations_label = gtk.Label(_("Please consider making a donation to "
+        "support our continued effort to fix bugs, implement features, "
+        "and help users!"))
+        donations_label.set_line_wrap(True)
+        donations_label.show()
+        paypal_button = gtk.LinkButton(paypal_link, _("Donate via PayPal"))
+        paypal_button.show()
+        gittip_button = gtk.LinkButton(gittip_link, _("Donate weekly via Gittip"))
+        gittip_button.show()
+        donation_buttons.add(paypal_button)
+        donation_buttons.add(gittip_button)
+        donation_buttons.show()
+        content = about.get_content_area()
+        content.add(donations_label)
+        content.add(donation_buttons)
+
         about.run()
         about.destroy()
 
