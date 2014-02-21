@@ -1,3 +1,89 @@
+2014-02-22  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Simplify loading of LICENSE file into About dialog.
+        * Add donations text and buttons to the About dialog.
+        * Update ChangeLog.
+
+2014-02-20  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Add 2014 to copyright years.
+
+2014-02-18  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Some gourmet/backends/db.py cleanup.
+        * When connecting to a MySQL database, force UTF-8 charset.
+
+2014-02-09  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Replace deprecated PoolListener by @event.listens_for decorator.
+
+2014-02-08  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Remove \r escape sequence from sl.po.
+        * Change Yield unit accelerator in batch editor, update po files.
+        * Fix a translation bug in nl.po.
+        * Fix bug in Dutch translation.
+
+2014-01-23  Bernhard Reiter  <ockham@raz.or.at>
+
+        * UTF-8-decode ingkey in shopping_key_editor_plugin.
+
+2014-01-21  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Fix a regression introduced by the last commit.
+
+2014-01-20  Bernhard Reiter  <ockham@raz.or.at>
+
+        * When de-activating Browse Recipes plugin, remove its tab.
+
+2014-01-12  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Fix a typo.
+
+2014-01-11  Lyra  <lyra2108@gmail.com>
+
+        * FIX: Create a shopping list even if one entry hasn't an amount
+
+2014-01-06  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Some cleanup.
+        * Clean up gourmet/exporters/exporter.py a bit.
+        * Update MANIFEST.in.
+        * Remove tools/ directory.
+        * Remove an obsolete reportlab version check and related code.
+
+2014-01-05  Thomas M. Hinkle <tmhinkle@gmail.com>
+
+        * Hackishly remove indents needed after if statement to workaround build error.
+        * Allow null units to be looked up. Otherwise, we can never get conversions for things like "3 eggs."
+        * Remove GourmetWindows.pyw
+
+2014-01-05  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Revert "Fix stupid mistake."
+
+2014-01-03  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Add myself as maintainer in setup.py.
+        * Add 2012, 2013 to copyright years.
+        * Add comment to setup.py.
+        * Remove obsolete README.windows.md.
+        * Fix stupid mistake.
+        * Fix a typo in INSTALL.md.
+        * Update TODO, rename to TODO.md.
+        * Update CODING.
+        * Add more Windows building instructions to INSTALL.md.
+        * Disable the PDFPrintPlugin under Windows as poppler doesn't work there.
+        * Use Python logging instead of printing a traceback.
+        * Migrate from py2exe to cx_Freeze.
+        * Set data_dir correctly if Gourmet is frozen.
+        * Update IPython requirement in INSTALL.md.
+        * Update ChangelLog.
+
+2014-01-02  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Remove NSIS related files.
+
 2014-01-01  Bernhard Reiter  <ockham@raz.or.at>
 
         * Replace PIL by Pillow requirement.
