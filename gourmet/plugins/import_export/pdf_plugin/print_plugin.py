@@ -1,5 +1,7 @@
 import gtk
-import poppler
+import sys
+if sys.platform != "win32":
+    import poppler
 import os.path
 import pdf_exporter
 import tempfile
@@ -15,6 +17,35 @@ rl2gtk_papersizes = {
     tuple([int(round(s)) for s in pagesizes.A4]):gtk.PAPER_NAME_A4,
     tuple([int(round(s)) for s in pagesizes.A3]):gtk.PAPER_NAME_A3,
     }
+
+class WindowsPDFPrinter:
+
+    def setup_printer (self, parent=None):
+        self.args = pdf_exporter.get_pdf_prefs()
+        self.begin_print(None, None)
+
+    def set_document (self, filename, operation,context):
+        try:
+            from subprocess import Popen
+            import _winreg
+            regPathKey = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
+                                         "Software\Microsoft\Windows\CurrentVersion\App Paths\AcroRd32.exe")
+            regPathValue, regPathType = _winreg.QueryValueEx(regPathKey, "")
+            if regPathType != _winreg.REG_SZ:
+                raise TypeError
+        except:
+            from gourmet.gtk_extras.dialog_extras import show_message
+            show_message(label=_("Could not find Adobe Reader on your system.\n\n"),
+                         sublabel=_("This version of Gourmet Recipe Manager "
+                         "requires Adobe Reader "
+                         "to be able to print; other PDF viewers will not work.\n"
+                         "Please install Adobe Reader from http://get.adobe.com/reader/. \n"
+                         "Alternatively, export your recipe(s) to PDF "
+                         "and print it with another PDF viewer."))
+        else:
+            # Launch a new instance (/n) of Adobe Reader with our temporary
+            # PDF to display the print dialog (/p).
+            Popen(regPathValue + " /n /p" + os.path.realpath(filename))
 
 class PDFPrinter:
 
@@ -70,6 +101,9 @@ class PDFPrinter:
     def custom_widget_apply (self, operation, widget):
         self.args = self.ppt.get_args_from_opts(self.opts)
 
+if sys.platform == "win32":
+    PDFPrinter = WindowsPDFPrinter
+
 def record_args (func):
     
     def _ (self, *args, **kwargs):
@@ -77,7 +111,7 @@ def record_args (func):
             (func.__name__,args,kwargs)
             )
     return _
-        
+
 class PDFSimpleWriter (PDFPrinter):
 
     def __init__ (self, dialog_parent=None):
