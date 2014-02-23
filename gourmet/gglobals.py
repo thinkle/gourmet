@@ -129,18 +129,6 @@ build_rec_attr_dic()
 DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
                           ['link','yields','yield_unit','preptime','cooktime']
                           ]
-
-launchers = [['.*',['xdg-open']],
-             ['rtf',['libreoffice','openoffice','abiword','ted','kword']],
-             ['txt',['gedit','kedit',]],
-             ['html?',['chromium-browser','firefox','mozilla',]]
-             ]
-
-
-def is_on_system (app):
-    p=os.popen('which %s'%app)
-    if p.read():
-        return app
     
 from gtk_extras import dialog_extras
 
@@ -150,21 +138,6 @@ def launch_url (url, ext=""):
     elif os.name == 'posix':
         try:
             gtk.show_uri(gtk.gdk.Screen(),url,0L)
-        except ImportError:
-            print 'gtk libraries not available, trying builtins'
-            if not ext: ext=os.path.splitext(url)
-            for regexp,l in launchers:
-                if regexp.match('\.?%s'%regexp, ext):
-                    if is_on_system(app):
-                        os.popen(app + " " + url)
-                        return
-            # if that fails...
-            print 'builtins failing, using python webbrowser functions'
-            try:
-                import webbrowser
-                webbrowser.open(url)
-            except ImportError:
-                dialog_extras.show_message("Unable to open",sublabel="Failed to launch URL: %s"%url)
         except gobject.GError, err:
             #print dir(err)
             label = _('Unable to open URL')
