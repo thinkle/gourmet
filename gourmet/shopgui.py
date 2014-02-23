@@ -8,6 +8,7 @@ from gtk_extras import fix_action_group_importance
 from exporters.printer import get_print_manager
 from gdebug import debug
 from gettext import gettext as _
+from gglobals import doc_base
 #from nutrition.nutritionLabel import NutritionLabel
 #from nutrition.nutrition import NutritionInfoList
 import plugin_loader, plugin
@@ -672,7 +673,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
              ),
             ('File',None,_('_File')),
             ('Help',gtk.STOCK_HELP,_('_Help'),None,None,
-             lambda *args: de.show_faq(os.path.join(base,'FAQ'),jump_to='Shopping')),
+             lambda *args: de.show_faq(os.path.join(doc_base,'FAQ'),jump_to='Shopping')),
             ('HelpMenu',None,_('_Help')),
 		])
 	self.mainActionGroup.add_toggle_actions([

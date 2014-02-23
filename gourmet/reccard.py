@@ -20,7 +20,7 @@ from gtk_extras import treeview_extras as te
 from gtk_extras import cb_extras as cb
 from exporters.printer import get_print_manager
 from gdebug import debug
-from gglobals import FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC, REC_ATTRS, uibase, imagedir
+from gglobals import FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC, REC_ATTRS, doc_base, uibase, imagedir
 from gettext import gettext as _
 import ImageExtras as ie
 from importers.importer import parse_range
@@ -221,7 +221,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
             ('Preferences',gtk.STOCK_PREFERENCES,None,
              None,None,self.preferences_cb),
             ('Help',gtk.STOCK_HELP,_('_Help'),
-             None,None,lambda *args: de.show_faq(os.path.join(base,'FAQ'),jump_to='Entering and Editing recipes')),
+             None,None,lambda *args: de.show_faq(os.path.join(doc_base,'FAQ'),jump_to='Entering and Editing recipes')),
             ]
                                                 )
         self.recipeDisplayActionGroup.add_toggle_actions([
