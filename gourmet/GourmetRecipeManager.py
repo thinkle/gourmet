@@ -631,6 +631,10 @@ def set_path_for_menuitem (mi, base='<main>'):
         sm.set_accel_path(path)
         for c in sm.get_children():
             set_path_for_menuitem(c,path)
+
+def launch_webbrowser(dialog, link, user_data):
+    import webbrowser
+    webbrowser.open_new_tab(link)
     
 def startGUI ():
     debug("startGUI ():",4)
@@ -664,6 +668,9 @@ def startGUI ():
     del pixmap
     splash.show()
     splash.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+    if os.name == 'nt':
+        gtk.link_button_set_uri_hook(launch_webbrowser, None)
+        gtk.about_dialog_set_url_hook(launch_webbrowser, None)
     #gtk.threads_enter()
     while gtk.events_pending():
         # show our GUI
