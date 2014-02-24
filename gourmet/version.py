@@ -11,7 +11,7 @@ except ImportError:
 
 name= 'gourmet'
 appname = _("Gourmet Recipe Manager")
-copyright = _("Copyright (c) 2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014 Thomas M. Hinkle. GNU GPL v2")
+copyright = _("Copyright (c) 2004-2014 Thomas M. Hinkle. GNU GPL v2")
 version = "0.17.0"
 website = "http://thinkle.github.io/gourmet/"
 description = "Recipe Organizer and Shopping List Generator"
