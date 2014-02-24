@@ -361,6 +361,7 @@ class GourmetApplication:
 &lc=US&item_name=Gourmet%20Recipe%20Manager%20Team&no_note=0&currency_code=USD
 &bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest"""
         gittip_link = "https://www.gittip.com/on/github/thinkle/"
+        flattr_link = "http://flattr.com/profile/Thomas_Hinkle/things"
 
         about = gtk.AboutDialog()
         about.set_artists(version.artists)
@@ -386,10 +387,13 @@ class GourmetApplication:
         donations_label.show()
         paypal_button = gtk.LinkButton(paypal_link, _("Donate via PayPal"))
         paypal_button.show()
+        flattr_button = gtk.LinkButton(flattr_link, _("Micro-donate via Flattr"))
+        flattr_button.show()
         gittip_button = gtk.LinkButton(gittip_link, _("Donate weekly via Gittip"))
         gittip_button.show()
         donation_buttons.add(paypal_button)
         donation_buttons.add(gittip_button)
+        donation_buttons.add(flattr_button)
         donation_buttons.show()
         content = about.get_content_area()
         content.add(donations_label)
