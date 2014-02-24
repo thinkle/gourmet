@@ -1,9 +1,12 @@
 [Desktop Entry]
-_Name=Gourmet Recipe Manager
+_Name=Gourmet
+_GenericName=Recipe Manager
+_X-GNOME-FullName=Gourmet Recipe Manager
 _Comment=Organize recipes, create shopping lists, calculate nutritional information, and more.
+_Keywords=recipes;cooking;nutrition;nutritional information;shopping lists;
 Exec=gourmet
 Terminal=false
 Type=Application
-Categories=GNOME;Utility;
+Categories=GTK;Utility;
 StartupNotify=true
 Icon=gourmet
