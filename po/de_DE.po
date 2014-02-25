@@ -556,7 +556,7 @@ msgstr ""
 
 #: ../ui/shopCatEditor.ui.h:1 ../gourmet/gglobals.py:84
 msgid "Category"
-msgstr "Kategory"
+msgstr "Kategorie"
 
 #. __gsignals__ = {
 #. 'view-changed':(gobject.SIGNAL_RUN_LAST,
