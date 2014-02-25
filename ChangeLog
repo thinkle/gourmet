@@ -1,3 +1,22 @@
+2014-02-25  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Remove redundant newlines from error message.
+        * Update *.po[t] files and add/fix some German and Austrian strings.
+        * Update ChangeLog.
+
+2014-02-24  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Update gourmet.desktop.in.
+        * Shorten years listing in copyright notice.
+        * Add Flattr donations button to About dialog.
+
+2014-02-23  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Fix loading of FAQ from recipe card and shopping UI.
+        * Fix web browser invocation from About dialog under Windows.
+        * Remove obsolete exception clause.
+        * Under Windows, use Adobe Reader to print reportlab created PDF.
+
 2014-02-22  Bernhard Reiter  <ockham@raz.or.at>
 
         * Simplify loading of LICENSE file into About dialog.
@@ -61,6 +80,10 @@
 2014-01-05  Bernhard Reiter  <ockham@raz.or.at>
 
         * Revert "Fix stupid mistake."
+
+2014-01-04  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Check if active_plugin is really there.
 
 2014-01-03  Bernhard Reiter  <ockham@raz.or.at>
 
