@@ -35,7 +35,7 @@ class WindowsPDFPrinter:
                 raise TypeError
         except:
             from gourmet.gtk_extras.dialog_extras import show_message
-            show_message(label=_("Could not find Adobe Reader on your system.\n\n"),
+            show_message(label=_("Could not find Adobe Reader on your system."),
                          sublabel=_("This version of Gourmet Recipe Manager "
                          "requires Adobe Reader "
                          "to be able to print; other PDF viewers will not work.\n"
