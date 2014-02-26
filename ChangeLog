@@ -1,8 +1,15 @@
+2014-02-26  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Fix a number of regressions in html_exporter.py.
+        * Update ChangeLog.
+
 2014-02-25  Bernhard Reiter  <ockham@raz.or.at>
 
         * Remove redundant newlines from error message.
         * Update *.po[t] files and add/fix some German and Austrian strings.
         * Update ChangeLog.
+        * Fix a translation bug in de_DE.po.
+        * Remove *.mo files that ware accidentally added to git.
 
 2014-02-24  Bernhard Reiter  <ockham@raz.or.at>
 
