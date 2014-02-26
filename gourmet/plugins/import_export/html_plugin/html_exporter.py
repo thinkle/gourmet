@@ -84,7 +84,7 @@ class html_exporter (exporter_mult):
             imgout = os.path.join(self.imagedir_absolute,"%s.jpg"%self.imgcount)
         if not os.path.isdir(self.imagedir_absolute):
             os.mkdir(self.imagedir_absolute)
-        o = gglobals.open(imgout,'wb')
+        o = open(imgout,'wb')
         o.write(image)
         o.close()
         # we use urllib here because os.path may fsck up slashes for urls.
@@ -207,10 +207,10 @@ class website_exporter (ExporterMultirec):
         if copy_css:
             styleout = os.path.join(out,'style.css')
             if not os.path.isdir(out):
-                gglobals.makedirs(out)
-            to_copy = gglobals.open(self.css,'r')
+                os.makedirs(out)
+            to_copy = open(self.css,'r')
             print 'writing css to ',styleout
-            to_paste = gglobals.open(styleout,'w')
+            to_paste = open(styleout,'w')
             to_paste.write(to_copy.read())
             to_copy.close(); to_paste.close()
             self.css = styleout
@@ -236,7 +236,7 @@ class website_exporter (ExporterMultirec):
         
     def write_header (self):
         self.indexfn = os.path.join(self.outdir,'index%s%s'%(os.path.extsep,self.ext))
-        self.indexf = gglobals.open(self.indexfn,'w')
+        self.indexf = open(self.indexfn,'w')
         self.indexf.write(HTML_HEADER_START)
         self.indexf.write("<title>Recipe Index</title>")
         if self.embed_css:
