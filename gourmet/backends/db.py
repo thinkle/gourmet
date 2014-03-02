@@ -1078,10 +1078,11 @@ class RecData (Pluggable):
             id=rec.id
         else:
             id=rec
-        return self.fetch_all(self.ingredients_table,recipe_id=id,deleted=False)
+        return session.query(Ingredient).filter(Ingredient.recipe_id == id, deleted == False).all()
+
 
     def get_cats (self, rec):
-        svw = self.fetch_all(self.categories_table,recipe_id=rec.id)
+        svw = session.query(Category).filter(Category.recipe_id == rec.id).all()
         cats =  [c.category or '' for c in svw]
         # hackery...
         while '' in cats:
