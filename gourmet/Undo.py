@@ -412,16 +412,7 @@ class UndoHistoryList (list):
             #import traceback; traceback.print_stack()
             #print 'No widget to sensitize',w,val
             return
-        try:
-            w.set_sensitive(val)
-            debug('%s.set_sensitive succeeded'%w,0)
-        except AttributeError:
-            # 2.6 will give gtk.Action a set_sensitive property, but for now...
-            #if type(w)==gtk.Action:
-            for p in w.get_proxies():
-                debug('setting %s sensitivity to %s'%(w,val),0)
-                #p.set_sensitive(val)
-                p.set_property('sensitive',val)
+        w.set_sensitive(val)
 
     def gui_update (self):
         debug('gui_update',0)
