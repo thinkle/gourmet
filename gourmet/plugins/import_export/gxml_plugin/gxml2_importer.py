@@ -1,6 +1,7 @@
 import xml.sax, re, sys, xml.sax.saxutils
 from gourmet.importers import xml_importer
 from gourmet.convert import NUMBER_FINDER
+from gourmet.gglobals import REC_ATTRS, TEXT_ATTR_DIC
 import base64
 from gettext import gettext as _
 
