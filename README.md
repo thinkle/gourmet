@@ -24,7 +24,7 @@ Requirements
 Minimum Requirements
 --------------------
 
-1. Python 2.6
+1. Python 2.7
 2. PyGTK (>=2.16)
 3. SQLalchemy (>= 0.7)
 4. Python Imaging Libraries (PIL)
