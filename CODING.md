@@ -1,6 +1,7 @@
 Getting Started
 ===============
-Make sure you have all the dependencies as listed in README.md installed.
+Make sure you have all the dependencies as listed in [INSTALL.md](INSTALL.md)
+installed.
 
 Before you start coding, you should first build localized *.mo and
 *.gourmet-plugin files within a build/ subdirectory of the source tree by
@@ -8,13 +9,13 @@ running
 
     python setup.py build_i18n -m
 
-Afterwards, you can just launch bin/gourmet from the source directory to test
-the program and see how changes to the source code affect it.
+Afterwards, you can just launch `bin/gourmet` from the source directory to
+test the program and see how changes to the source code affect it.
 
 Style
 =====
 The style used in Gourmet can be rather varied. However, new code
-should adhere to style guidelines old code should be updated to meet
+should adhere to style guidelines, and old code should be updated to meet
 them. Generally, we try to follow the python style guidelines set out
 by Mr. Guido Van Russom, as formalized by
 [PEP 8](http://www.python.org/dev/peps/pep-0008/).
