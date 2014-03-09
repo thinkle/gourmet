@@ -68,4 +68,5 @@ BeautifulSoup (for the Web import plugin)  |python-beautifulsoup  |py27-beautifu
 IPython 0.12.1 (interactive shell plugin)  |ipython               |py27-ipython      |https://pypi.python.org/pypi/ipython/0.12.1#downloads
 *Windows only*                             |                      |                  |
 Perl (needed to run intltool)              |                      |                  |http://strawberryperl.com/
+cx_Freeze (only needed to build installer) |                      |                  |http://cx-freeze.sourceforge.net/
 
