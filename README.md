@@ -18,54 +18,10 @@ This program aspires to meet the GNOME Human Interface
 Guidelines. Please let me know if you see any ways the interface could
 become more GNOME HIG compliant (or just improve in general).
 
-Requirements
-============
+Requirements and Installation
+=============================
 
-Minimum Requirements
---------------------
-
-1. Python 2.7
-2. PyGTK (>=2.16)
-3. SQLalchemy (>= 0.7)
-4. Python Imaging Libraries (PIL)
-5. elib.intl
-
-Build Requirements
-------------------
-
-1. intltool
-2. python-distutils-extra
-
-Extra Requirements
-------------------
-
-1. Python Reportlab (python-reportlab) - for PDF export.
-2. For RTF support, you will need the PyRTF library available
-   at http://pyrtf.sourceforge.net
-3. PyGTKSpell
-4. pypoppler
-5. python-gst0.10
-6. BeautifulSoup (for the Web import plugin)
-
-Install
-=======
-
-Under Linux and Unix systems, running `sudo python setup.py install` will
-install gourmet to your current python environment's default location
-(i.e. subdirectories of /usr/local for most Linux distributions. For
-information on how to customize these locations, run
-`sudo python setup.py --help`).
-
-That should be all you need, and will create an entry in your launcher menu.
-Alternatively, you can now run gourmet by issuing
-
-`gourmet`
-
-from the commandline.
-
-Gourmet also has commandline options, most of which should not be
-needed by an average user. Issuing `gourmet --help` will get you help
-for those options.
+See [INSTALL.md](INSTALL.md).
 
 Warning
 =======

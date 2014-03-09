@@ -1,12 +1,27 @@
 Installation
 ===========
-We'll assume you're reading this document because you want to install Gourmet manually. Please note that if you're using a Linux distribution, chances are that there is a Gourmet package available in your system's software repository that lets you install Gourmet much easier than described below. For Windows, our installer (found at https://launchpad.net/gourmet/+download) is currently also outdated (version 0.15.4), so if you'd like to try out the up-to-date version without having to wait for us to release a new installer, also follow these steps.
+We'll assume you're reading this document because you want to install Gourmet manually. Please note that for Windows, we provide an up-to-date installer at our [Releases](https://github.com/thinkle/gourmet/releases) web page which allows you to install Gourmet much easier than described below. Also, if you're using a Linux distribution, chances are that there is a Gourmet package available in your system's software repository that lets you install Gourmet easily. If you're still sure about installing Gourmet manually anyway, keep reading.
 
 Required Packages
 ===============
 Linux
 -----
 Fortunately for Linux users, at least most of the software Gourmet requires comes packaged with most Linux distributions. The table at the bottom of this document lists the dependencies, and the corresponding packages' names for some of the more popular distros.
+
+To install Gourmet from source -- i.e. from the tarball found at our [Releases](https://github.com/thinkle/gourmet/releases) web page -- just uncompress that tarball, cd into the resulting directory, and run `sudo python setup.py install`, which will
+install gourmet to your current python environment's default location (i.e. subdirectories of `/usr/local` for most Linux distributions. For information on how to customize these locations, run
+`sudo python setup.py --help`).
+
+That should be all you need, and will create an entry in your launcher menu.
+Alternatively, you can now run gourmet by issuing
+
+`gourmet`
+
+from the command line.
+
+Gourmet also has command line options, most of which should not be
+needed by an average user. Issuing `gourmet --help` will get you help
+for those options.
 
 Windows
 ------
