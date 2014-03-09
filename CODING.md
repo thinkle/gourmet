@@ -35,8 +35,6 @@ If you want to work from within an IDE, you might want to use [Eclipse](http://w
  * are for working with Git repositories, and GitHub issues integration into Eclipse, see http://eclipse.github.com; download locations: http://download.eclipse.org/egit/updates and http://download.eclipse.org/egit/github/updates
 * PyDev
  * is for Python development; its download location is http://pydev.org/updates
-* EclipseNSIS
- * if you want to produce a windows installer package; download location: http://eclipsensis.sourceforge.net/update
 
 With EGit installed, go to File > Import... > Git > Git repository and enter the URI found in the "Getting the Source" section. The rest of the importing process should be fairly intuitive.
 
