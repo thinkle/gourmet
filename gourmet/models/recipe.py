@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text, Float, LargeBinary, Boolean
 from sqlalchemy.event import listen
-from sqlalchemy.orm import deferred
+from sqlalchemy.orm import deferred, relationship, backref
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from gourmet.models import Base
 
@@ -37,6 +38,14 @@ class Recipe (Base):
     ingredient_hash = Column(String(32))
     link = Column(Text) # A field for a URL -- we ought to know about URLs
     last_modified =  Column(Integer)
+
+    categories = relationship("Category", order_by="Category.category",
+                              backref="recipe",
+                              cascade="all, delete, delete-orphan")
+
+    @hybrid_property
+    def categories_string(self):
+        return ", ".join(self.categories)
 
     @staticmethod
     def update_last_modified(mapper, connection, target):

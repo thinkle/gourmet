@@ -1082,7 +1082,7 @@ class RecData (Pluggable):
 
 
     def get_cats (self, rec):
-        svw = session.query(Category).filter(Category.recipe_id == rec.id).all()
+        svw = rec.categories_list #session.query(Category).filter(Category.recipe_id == rec.id).all()
         cats =  [c.category or '' for c in svw]
         # hackery...
         while '' in cats:
