@@ -45,7 +45,7 @@ class WindowsPDFPrinter:
         else:
             # Launch a new instance (/n) of Adobe Reader with our temporary
             # PDF to display the print dialog (/p).
-            Popen(regPathValue + " /n /p" + os.path.realpath(filename))
+            Popen(regPathValue + " /n /p " + os.path.realpath(filename))
 
 class PDFPrinter:
 
