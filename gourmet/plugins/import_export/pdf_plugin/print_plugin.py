@@ -57,7 +57,6 @@ class PDFPrinter:
         po.connect('create-custom-widget',self.create_custom_widget)
         po.props.custom_tab_label = _('Page Layout')
         po.connect('custom-widget-apply',self.custom_widget_apply)
-        po.set_export_filename('/tmp/foo.pdf')
         po.run(gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG, parent=parent)
 
     def set_document (self, filename, operation,context):
@@ -181,7 +180,6 @@ def setup_printer (pp):
     po.connect('begin-print',pp.begin_print)
     po.connect('create-custom-widget',pp.create_custom_widget)
     po.connect('custom-widget-apply',pp.custom_widget_apply)
-    po.set_export_filename('/tmp/foo.pdf')
     po.run(gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG)
     
 def print_pdf (pdf_filename):
