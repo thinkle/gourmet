@@ -1,3 +1,24 @@
+2014-03-16  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Bump version to 0.17.1.
+        * Remove build_rpms.py and related.
+        * Remove obsolete lines from print plugin code.
+        * Add space to command invoking Adobe reader.
+        * Update ChangeLog.
+
+2014-03-09  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Add cx_Freeze requirement to INSTALL.md.
+        * Remove EclipseNSIS paragraph from CODING.md.
+        * Update CODING, rename to CODING.md.
+        * Update README.md and INSTALL.md.
+
+2014-03-08  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Remove some obsolete code meant for PyGTK < 2.6.
+        * Require Python 2.7 in README.md.
+        * Add two imports to plugins/import_export/gxml_plugin/gxml2_importer.py.
+
 2014-02-26  Bernhard Reiter  <ockham@raz.or.at>
 
         * Fix a number of regressions in html_exporter.py.
