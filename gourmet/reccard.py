@@ -32,6 +32,7 @@ import plugin_loader
 import timeScanner
 import defaults
 from gourmet.models.recipe import Recipe
+from gourmet.backends.db import Session
 
 # TODO
 #
@@ -58,11 +59,12 @@ class RecRef:
 
 class RecCard (object):
     
-    def __init__ (self, rg=None, recipe=None, manual_show=False):
+    def __init__ (self, rg=None, recipe=None, manual_show=False, session=Session()):
         if not rg:
             from GourmetRecipeManager import get_application
             rg = get_application()
         self.rg = rg
+        self.session = session
         self.conf = []
         self.new = False
         if not recipe:
