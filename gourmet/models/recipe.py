@@ -37,15 +37,19 @@ class Recipe (Base):
     # A hash for uniquely identifying a recipe (based on ingredients)
     ingredient_hash = Column(String(32))
     link = Column(Text) # A field for a URL -- we ought to know about URLs
-    last_modified =  Column(Integer)
+    last_modified = Column(Integer)
 
     categories = relationship("Category", order_by="Category.category",
                               backref="recipe",
                               cascade="all, delete, delete-orphan")
 
+    ingredients = relationship("Ingredient", order_by="Ingredient.position",
+                              backref="recipe", foreign_keys="Ingredient.recipe_id",
+                              cascade="all, delete, delete-orphan")
+
     @hybrid_property
     def categories_string(self):
-        return ", ".join(self.categories)
+        return ', '.join(str(c) for c in self.categories)
 
     @staticmethod
     def update_last_modified(mapper, connection, target):
@@ -61,3 +65,9 @@ class Recipe (Base):
 #    If we converted our last_modified column type to DateTime, we could use
 #    SQL instead of python to produce the timestamp:
 #    last_modified =  Column(DateTime, server_default=func.now(), onupdate=func.current_timestamp())
+
+    def __repr__(self):
+        return "<Recipe(title='%s')>" % self.title
+
+    def __str__(self):
+        return self.title
