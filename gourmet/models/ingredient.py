@@ -19,3 +19,14 @@ class Ingredient (Base):
     inggroup = Column(Text)
     position = Column(Integer)
     deleted = Column(Boolean)
+
+    def __repr__(self):
+        return "<Ingredient(amount='%s', unit='%s', item='%s')>" % \
+                (self.amount, self.unit, self.item)
+
+    def __str__(self):
+        if self.rangeamount:
+            return "%s %s %s %s" % (self.amount, self.rangeamount, self.unit,
+                                    self.item)
+        else:
+            return "%s %s %s" % (self.amount, self.unit, self.item)
