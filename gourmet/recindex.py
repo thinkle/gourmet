@@ -213,7 +213,7 @@ class RecIndex:
         #self.do_search(None,None)
 
     def create_rmodel (self, vw):
-        self.rmodel = RecipeModel(vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
+        self.rmodel = pageable_store.RecModel(vw) #vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
         #self.set_reccount() # This will be called by the rmodel_page_changed_cb
     
     def setup_rectree (self):

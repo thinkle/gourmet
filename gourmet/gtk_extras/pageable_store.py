@@ -1,4 +1,94 @@
 import gtk, gobject
+from sqlalchemy.types import Boolean, Integer, String, Text, Float
+from gourmet.models import Recipe
+
+sqlalchemy_type_map = {Boolean: bool,
+                       Integer: int,
+                       String: str,
+                       Text: str,
+                       Float: float,
+                       }
+
+def map_sqlalchemy_type(saType):
+    for sa, py in sqlalchemy_type_map.iteritems():
+        if isinstance(saType, sa):
+            return py
+
+class RecModel(gtk.GenericTreeModel):
+
+    __gsignals__ = {
+        'page-changed':(gobject.SIGNAL_RUN_LAST,
+                        gobject.TYPE_NONE, #RETURN
+                        () # PARAMS
+                        ),
+        'view-changed':(gobject.SIGNAL_RUN_LAST,
+                         gobject.TYPE_NONE,
+                         ()
+                         ),
+        'view-sort':(gobject.SIGNAL_RUN_LAST,
+                     gobject.TYPE_PYOBJECT,
+                     (gobject.TYPE_PYOBJECT,)
+                     ),
+        }
+
+    page = 0
+
+    def __init__(self, recipes = list()):
+        #self.__gobject_init__()
+        gtk.GenericTreeModel.__init__(self)
+        self.recipes = recipes
+        #self.emit('page-changed')
+
+    def on_get_flags(self):
+        return gtk.TREE_MODEL_LIST_ONLY|gtk.TREE_MODEL_ITERS_PERSIST
+
+    def on_get_n_columns(self):
+        return len(Recipe.__table__.columns)
+
+    def on_get_column_type(self, index):
+        return map_sqlalchemy_type(list(Recipe.__table__.columns)[index].type)
+
+    # alternatively, we could use the recipe id
+    def on_get_iter(self, path):
+        return self.recipes[path[0]]
+
+    def on_get_path(self, rowref):
+        return self.recipes.index(rowref)
+
+    def on_get_value(self, rowref, column):
+        return getattr(rowref, list(Recipe.__table__._columns)[column].name)
+
+    def on_iter_next(self, rowref):
+        try:
+            i = self.recipes.index(rowref)+1
+            return self.recipes[i]
+        except IndexError:
+            return None
+
+    def on_iter_children(self, rowref):
+        if rowref:
+            return None
+        return self.recipes[0]
+
+    def on_iter_has_child(self, rowref):
+        return False
+
+    def on_iter_n_children(self, rowref):
+        if rowref:
+            return 0
+        return len(self.recipes)
+
+    def on_iter_nth_child(self, rowref, n):
+        if rowref:
+            return None
+        try:
+            return self.recipes[n]
+        except IndexError:
+            return None
+
+    def on_iter_parent(self, child):
+        return None
+
 
 class PageableListStore (gtk.ListStore):
     """A ListStore designed to show bits of data at a time.
