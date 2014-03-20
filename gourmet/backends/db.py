@@ -12,15 +12,13 @@ import re, string, os.path, time
 import shutil
 import types
 
-import sqlalchemy, sqlalchemy.orm
+import sqlalchemy
 from sqlalchemy import Integer, LargeBinary, String, Float, Boolean, Numeric, Column, ForeignKey, Text
 from sqlalchemy.sql import and_, or_, case 
 from sqlalchemy import event, func
 from gourmet.models import Base, Category, Convtable, CrossUnit, Density, \
-    Ingredient, KeyLookup, Pantry, PluginInfo, Recipe, ShopCat, ShopCatOrder, \
-    Unitdict, VersionInfo
-
-Session = sqlalchemy.orm.sessionmaker()
+    Ingredient, KeyLookup, Pantry, PluginInfo, Recipe, Session, ShopCat, \
+    ShopCatOrder, Unitdict, VersionInfo
 
 def map_type_to_sqlalchemy (typ):
     """A convenience method -- take a string type and map it into a

@@ -1,6 +1,8 @@
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
+Session = sessionmaker()
 
 from category import Category
 from convtable import Convtable
