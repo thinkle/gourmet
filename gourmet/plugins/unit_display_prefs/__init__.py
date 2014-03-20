@@ -1,5 +1,5 @@
 from gourmet.plugin import ToolPlugin, DatabasePlugin
-from gourmet.reccard import RecCardDisplay
+from gourmet.views.recipe.display import RecCardDisplay
 import gtk
 from gourmet.plugin_loader import PRE, POST
 import unit_prefs_dialog

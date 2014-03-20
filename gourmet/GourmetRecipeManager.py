@@ -4,7 +4,9 @@ import gtk, gobject, gtk.gdk
 import batchEditor
 import recipeManager
 from exporters.printer import get_print_manager
-import prefs, prefsGui, shopgui, reccard
+import prefs, prefsGui, shopgui
+from reccard import IngInfo
+from views.recipe.card import RecCard
 import exporters
 from exporters.exportManager import get_export_manager
 from importers.importManager import get_import_manager
@@ -173,7 +175,7 @@ class GourmetApplication:
         # that want a list of units.
         self.umodel = UnitModel(self.conv)
         self.attributeModels = []
-        self.inginfo = reccard.IngInfo(self.rd)
+        self.inginfo = IngInfo(self.rd)
 
     def setup_shopping (self):
         """Setup shopping related stuff"""
@@ -1121,7 +1123,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
     def new_rec_card (self, *args):
         self.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
         def show ():
-            rc=reccard.RecCard(self)
+            rc=RecCard(self)
             self.make_rec_visible(rc.current_rec)
             self.rc[rc.current_rec.id]=rc
             self.app.window.set_cursor(None)
@@ -1133,7 +1135,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             self.rc[rec.id].show()
         else:
             def show ():
-                w=reccard.RecCard(self, rec)
+                w=RecCard(self, rec)
                 self.rc[rec.id]=w
                 self.update_go_menu()
                 self.app.window.set_cursor(None)
@@ -1165,7 +1167,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                 self.rc[rec.id].show_edit()
             else:
                 def show ():
-                    w=reccard.RecCard(self, rec, manual_show=True)
+                    w=RecCard(self, rec, manual_show=True)
                     self.rc[rec.id]=w
                     self.update_go_menu()
                     w.show_edit()
