@@ -1,6 +1,7 @@
 2014-03-20  Bernhard Reiter  <ockham@raz.or.at>
 
         * Update ChangeLog.
+        * Add note about code signing .msi file to INSTALL.md.
         * Bump version to 0.17.2.
 
 2014-03-16  Bernhard Reiter  <ockham@raz.or.at>

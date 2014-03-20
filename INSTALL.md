@@ -46,7 +46,15 @@ Finally, you can freeze Gourmet for deployment by running
 ```
 python setup.py bdist_msi
 ```
-which will create an .msi installer file in the dist/ subdirectory of Gourmet's source code folder. 
+which will create an .msi installer file in the dist/ subdirectory of Gourmet's source code folder.
+
+If you intend to put your installer online for others to download, you should sign it. To that end, you need to have Microsoft's [SignTool.exe](http://msdn.microsoft.com/en-us/library/8s9b9yaz.aspx) program installed (which comes as part of their Windows platform SDKs) and have a code signing certificate.
+For instance, polish certification authority certum.eu offers [free code signing certificates](http://www.certum.eu/certum/cert,offer_en_open_source_cs.xml) to open source developers (limited to one year).
+To sign your installer, run
+
+```& 'C:\path\to\signtool.exe' sign /f C:\path\to\your\certificate.p12 /p yourpassword /t http://time.certum.pl /d "Gourmet Recipe Manager" '.\dist\Gourmet-x.y.z-win32.msi'```
+
+from the source directory.
 
 Requirements                               |Debian                |MacPorts          |Windows
 -------------------------------------------|----------------------|------------------|---------------
