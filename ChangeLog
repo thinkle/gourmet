@@ -1,10 +1,16 @@
+2014-03-20  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Update ChangeLog.
+        * Bump version to 0.17.2.
+
 2014-03-16  Bernhard Reiter  <ockham@raz.or.at>
 
+        * Remove a couple of spurious lines from setup.cfg.
+        * Update ChangeLog.
         * Bump version to 0.17.1.
         * Remove build_rpms.py and related.
         * Remove obsolete lines from print plugin code.
         * Add space to command invoking Adobe reader.
-        * Update ChangeLog.
 
 2014-03-09  Bernhard Reiter  <ockham@raz.or.at>
 
