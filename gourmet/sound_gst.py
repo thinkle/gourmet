@@ -4,7 +4,7 @@ import gst
 
 class Player:
     def __init__ (self):
-        self.player = gst.element_factory_make('playbin','player')
+        self.player = gst.element_factory_make('playbin2','player')
 
     def play_file (self,path):
         self.player.set_state(gst.STATE_NULL)
