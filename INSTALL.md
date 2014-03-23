@@ -23,8 +23,23 @@ Gourmet also has command line options, most of which should not be
 needed by an average user. Issuing `gourmet --help` will get you help
 for those options.
 
+Mac OS X
+--------
+### Using MacPorts
+
+To build gourmet from source, install the required dependencies as listed in the MacPorts column of the table below by running `sudo port install <dependencies>`. 
+
+Then, get gourmet's source, `cd` to its directory, and run
+
+    sudo /opt/local/bin/python setup.py install
+    sudo ln -s /opt/local/Library/Frameworks/Python.framework/Versions/2.7/share/gourmet/ gourmet
+
+You should then be able to launch gourmet by running
+
+    /opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin/gourmet
+
 Windows
-------
+-------
 To run Gourmet from source on Windows takes a bit of doing, since Windows does not come with a lot of development tools by default. So first, you will need to download and install a few open-source development packages. Most of them are just usual *.msi or *.exe installers which should be easy to install; if multiple options are given, make sure to download the one that matches your architecture (32 vs 64 bits) and Python version.
 
 In the more complicated cases, you need to download a .zip, .gz or .tar.gz file, which you will then have to extract.
@@ -56,25 +71,25 @@ To sign your installer, run
 
 from the source directory.
 
-Requirements                               |Debian                |MacPorts          |Windows
--------------------------------------------|----------------------|------------------|---------------
-Python 2.7                                 |python                |python27          |http://www.python.org/
-PyGTK                                      |python-gtk2           |py27-gtk          |[all-in-one installer](http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/). Make sure to install PyGTK, PyGObject, PyCairo, and intltool.
-SQLAlchemy                                 |python-sqlalchemy     |py27-sqlalchemy   |http://www.sqlalchemy.org/download.html
-Pillow 2.x (Python Imaging Library Fork)   |python-imaging        |py27-Pillow       |https://pypi.python.org/pypi/Pillow/
-elib.intl                                  |python-elib.intl      |*manually*        |http://github.com/dieterv/elib.intl/zipball/master
-*Build Requirements*                       |                      |                  |
-setuptools (*Windows only!*)               |                      |                  |
-intltool                                   |intltool              |intltool          |*included in PyGTK installer*
-python-distutils-extra                     |python-distutils-extra|*manually*        |https://launchpad.net/python-distutils-extra/
+Requirements                               |Debian                |MacPorts            |Windows
+-------------------------------------------|----------------------|--------------------|---------------
+Python 2.7                                 |python                |python27            |http://www.python.org/
+PyGTK                                      |python-gtk2           |py27-gtk            |[all-in-one installer](http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/). Make sure to install PyGTK, PyGObject, PyCairo, and intltool.
+SQLAlchemy                                 |python-sqlalchemy     |py27-sqlalchemy     |http://www.sqlalchemy.org/download.html
+Pillow 2.x (Python Imaging Library Fork)   |python-imaging        |py27-Pillow         |https://pypi.python.org/pypi/Pillow/
+elib.intl                                  |python-elib.intl      |py27-elib.intl      |http://github.com/dieterv/elib.intl/zipball/master
+*Build Requirements*                       |                      |                    |
+setuptools (*Windows only!*)               |                      |                    |
+intltool                                   |intltool              |intltool            |*included in PyGTK installer*
+python-distutils-extra                     |python-distutils-extra|py27-distutils-extra|https://launchpad.net/python-distutils-extra/
 *Extra Requirements*                       |                      |
-Python Reportlab (for printing/PDF export) |python-reportlab      |py27-reportlab    |
-pypoppler (for printing and PDF export)    |python-poppler        |*manually*        | 
-PyGTKSpell (for the spell checking plugin) |python-gtkspell       |py27-gtkspell     |(N/A)
-python-gst0.10 (for sound)                 |python-gst0.10        |py27-gst-python   |*not required*
-BeautifulSoup (for the Web import plugin)  |python-beautifulsoup  |py27-beautifulsoup|http://www.crummy.com/software/BeautifulSoup/#Download
-IPython 0.12.1 (interactive shell plugin)  |ipython               |py27-ipython      |https://pypi.python.org/pypi/ipython/0.12.1#downloads
-*Windows only*                             |                      |                  |
-Perl (needed to run intltool)              |                      |                  |http://strawberryperl.com/
-cx_Freeze (only needed to build installer) |                      |                  |http://cx-freeze.sourceforge.net/
+Python Reportlab (for printing/PDF export) |python-reportlab      |py27-reportlab      |
+pypoppler (for printing and PDF export)    |python-poppler        |py27-poppler        |
+PyGTKSpell (for the spell checking plugin) |python-gtkspell       |py27-gtkspell       |(N/A)
+python-gst0.10 (for sound)                 |python-gst0.10        |py27-gst-python     |*not required*
+BeautifulSoup (for the Web import plugin)  |python-beautifulsoup  |py27-beautifulsoup  |http://www.crummy.com/software/BeautifulSoup/#Download
+IPython 0.12.1 (interactive shell plugin)  |ipython               |py27-ipython        |https://pypi.python.org/pypi/ipython/0.12.1#downloads
+*Windows only*                             |                      |                    |
+Perl (needed to run intltool)              |                      |                    |http://strawberryperl.com/
+cx_Freeze (only needed to build installer) |                      |                    |http://cx-freeze.sourceforge.net/
 
