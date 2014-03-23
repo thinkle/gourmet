@@ -1,6 +1,12 @@
 Installation
 ===========
-We'll assume you're reading this document because you want to install Gourmet manually. Please note that for Windows, we provide an up-to-date installer at our [Releases](https://github.com/thinkle/gourmet/releases) web page which allows you to install Gourmet much easier than described below. Also, if you're using a Linux distribution, chances are that there is a Gourmet package available in your system's software repository that lets you install Gourmet easily. If you're still sure about installing Gourmet manually anyway, keep reading.
+We'll assume you're reading this document because you want to install Gourmet manually. 
+
+ * Please note that for *Windows*, we provide an up-to-date installer at our [Releases](https://github.com/thinkle/gourmet/releases) web page which allows you to install Gourmet much easier than described below. 
+ * Also, if you're using a *Linux* distribution, chances are that there is a Gourmet package available in your system's software repository that lets you install Gourmet easily.
+ * For *Mac OS X*, you can use MacPorts which provides an up-to-date ports file Gourmet to automatically install it.
+ 
+If you're still sure about installing Gourmet manually anyway, keep reading.
 
 Required Packages
 ===============
