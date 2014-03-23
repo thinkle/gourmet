@@ -7,7 +7,7 @@ import gourmet.ImageExtras as ie
 from gourmet.gdebug import debug
 
 from editor import RecEditor
-from gourmet.views.ingredient import IngredientDisplay
+from gourmet.views.ingredient.display import IngredientDisplay
 
 import gc
 import gtk

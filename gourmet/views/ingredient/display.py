@@ -27,15 +27,12 @@ class IngredientDisplay:
         self.ingredientsDisplay.set_wrap_mode(gtk.WRAP_WORD)
         
     def update_from_database (self):
-        print self.recipe_display.current_rec
-        print self.recipe_display.current_rec.ingredients
         self.ing_alist = order_ings(
                             self.recipe_display.current_rec.ingredients
                          )
 #         self.rg.rd.order_ings(
 #             self.rg.rd.get_ings(self.recipe_display.current_rec)
 #             )
-        print self.ing_alist
         self.display_ingredients()
 
     def display_ingredients (self):
