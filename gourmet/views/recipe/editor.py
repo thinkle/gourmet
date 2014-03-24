@@ -1,6 +1,28 @@
+from gourmet.gglobals import FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC, REC_ATTRS, doc_base, uibase, imagedir
+from gourmet.gdebug import debug
 from gourmet.plugin_loader import Pluggable
 from gourmet.plugin import RecEditorModule
-from gourmet.gtk_extras.WidgetSaver import WidgetPrefs
+from gourmet import prefs
+from gourmet import Undo
+from gourmet.gtk_extras import cb_extras as cb
+from gourmet.gtk_extras.WidgetSaver import WidgetPrefs, WindowSaver
+from gourmet.gtk_extras import fix_action_group_importance
+from gourmet import ImageExtras as ie
+from gourmet.views.ingredient.tree_ui import IngredientTreeUI
+from gourmet.controllers.ingredient import IngredientController
+
+import gtk
+import os.path
+
+def find_entry (w):
+    if isinstance(w,gtk.Entry):
+        return w
+    else:
+        if not hasattr(w,'get_children'):
+            return None
+        for child in w.get_children():
+            e = find_entry(child)
+            if e: return e
 
 # RECIPE EDITOR MODULES
 
@@ -187,7 +209,7 @@ class RecEditor (WidgetPrefs, Pluggable):
         self.window.set_title(title)
         self.window.connect('delete-event',
                             self.close_cb)
-        self.conf.append(WidgetSaver.WindowSaver(self.window,
+        self.conf.append(WindowSaver(self.window,
                                                  self.rg.prefs.get('rec_editor_window',
                                                                    {'window_size':(700,600)})
                                                  )
