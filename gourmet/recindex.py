@@ -5,6 +5,7 @@ from gettext import gettext as _, ngettext
 from gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
 from gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
     mnemonic_manager, pageable_store, treeview_extras as te
+from models import Recipe, Session
 import convert
 import Undo
 import gobject
@@ -21,7 +22,7 @@ class RecIndex:
 
     default_searches = [{'column':'deleted','operator':'=','search':False}]
     
-    def __init__ (self, ui, rd, rg, editable=False):
+    def __init__ (self, ui, rd, rg, editable=False, session=Session()):
         #self.visible = 1 # can equal 1 or 2
         self.editable=editable
         self.selected = True        
@@ -32,6 +33,7 @@ class RecIndex:
         self.ui = ui
         self.rd = rd
         self.rg = rg
+        self.session = session
         self.searchByDic = {
             unicode(_('anywhere')):'anywhere',
             unicode(_('title')):'title',
@@ -168,8 +170,9 @@ class RecIndex:
         self.last_search = {}
         #self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=False)
         self.searches = self.default_searches[0:]
+        self.search_ng = self.session.query(Recipe).filter_by(deleted=False)
         self.sort_by = []
-        self.rvw = self.rd.search_recipes(self.searches,sort_by=self.sort_by)
+        self.rvw = self.session.query(Recipe).filter_by(deleted=False).all() #self.rd.search_recipes(self.searches,sort_by=self.sort_by)
 
     def make_rec_visible (self, *args):
         """Make sure recipe REC shows up in our index."""
@@ -636,6 +639,10 @@ class RecIndex:
         self.rmodel.change_view(recipe_table)
         self.set_reccount()
 
+class ListWrapper(gobject.GObject):
+    def __init__(self, mylist):
+        self.mylist = mylist
+
 class RecipeModel (pageable_store.PageableViewStore):
     """A ListStore to hold our recipes in 'pages' so we don't load our
     whole database at a time.
@@ -649,6 +656,10 @@ class RecipeModel (pageable_store.PageableViewStore):
     for n in [r[0] for r in REC_ATTRS]:
         if n in INT_REC_ATTRS: columns_and_types.append((n,int))
         else: columns_and_types.append((n,str))
+
+    #columns_and_types.append(('ingredients',ListWrapper))
+    #columns_and_types.append(('categories',ListWrapper))
+    #columns_and_types.append(('categories_string',str))
     
     columns = [c[0] for c in columns_and_types]
     column_types = [c[1] for c in columns_and_types]
