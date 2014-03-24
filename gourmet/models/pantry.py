@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Text, Boolean
 
-from gourmet.models import Base
+from meta import Base
 
 # pantry table -- which items are in the "pantry" (i.e. not to
 # be added to the shopping list)

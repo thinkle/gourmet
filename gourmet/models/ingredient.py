@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Text, Float, Boolean, ForeignKey
 
-from gourmet.models import Base
+from meta import Base
 from gourmet.plugin_loader import pluggable_method
 from gourmet import convert
 from gourmet.defaults import lang as defaults

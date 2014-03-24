@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Text
 
-from gourmet.models import Base
+from meta import Base
 
 # shopcatsorder - Keep track of the order of shopping categories
 class ShopCatOrder (Base):

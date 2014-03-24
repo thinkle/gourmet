@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 
-from gourmet.models import Base
+from meta import Base
 
 class CrossUnit (Base):
     __tablename__ = 'crossunitdict'

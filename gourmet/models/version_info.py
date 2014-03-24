@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer
 
-from gourmet.models import Base
+from meta import Base
 
 class VersionInfo (Base):
     __tablename__ = 'info'

@@ -3,7 +3,7 @@ from sqlalchemy.event import listen
 from sqlalchemy.orm import deferred, relationship, backref
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from gourmet.models import Base
+from meta import Base
 
 from time import time
 

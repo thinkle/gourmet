@@ -16,9 +16,10 @@ import sqlalchemy
 from sqlalchemy import Integer, LargeBinary, String, Float, Boolean, Numeric, Column, ForeignKey, Text
 from sqlalchemy.sql import and_, or_, case 
 from sqlalchemy import event, func
-from gourmet.models import Base, Category, Convtable, CrossUnit, Density, \
-    Ingredient, KeyLookup, Pantry, PluginInfo, Recipe, Session, ShopCat, \
-    ShopCatOrder, Unitdict, VersionInfo
+from gourmet.models.meta import Base, Session
+from gourmet.models import Category, Convtable, CrossUnit, Density, \
+    Ingredient, KeyLookup, Pantry, PluginInfo, Recipe, ShopCat, ShopCatOrder, \
+    Unitdict, VersionInfo
 
 def map_type_to_sqlalchemy (typ):
     """A convenience method -- take a string type and map it into a

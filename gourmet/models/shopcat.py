@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Text
 
-from gourmet.models import Base
+from meta import Base
 
 # shopcats - Keep track of which shoppin category ingredients are in...
 class ShopCat (Base):

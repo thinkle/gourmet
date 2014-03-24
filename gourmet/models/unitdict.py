@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 
-from gourmet.models import Base
+from meta import Base
 
 class Unitdict (Base):
     __tablename__ = 'unitdict'

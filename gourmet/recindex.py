@@ -5,7 +5,8 @@ from gettext import gettext as _, ngettext
 from gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
 from gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
     mnemonic_manager, pageable_store, treeview_extras as te
-from models import Recipe, Session
+from models import Recipe
+from models.meta import Session
 import convert
 import Undo
 import gobject

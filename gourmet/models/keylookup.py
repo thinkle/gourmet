@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Text
 
-from gourmet.models import Base
+from meta import Base
 
 # Keylookup table - for speedy keylookup
 class KeyLookup (Base):

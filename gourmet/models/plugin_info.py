@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text
 
-from gourmet.models import Base
+from meta import Base
 
 class PluginInfo (Base):
     __tablename__ = 'plugin_info'

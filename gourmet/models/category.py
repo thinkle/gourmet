@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Text, ForeignKey
 
-from gourmet.models import Base
+from meta import Base
 
 
 class Category (Base):
