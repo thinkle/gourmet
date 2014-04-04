@@ -203,7 +203,8 @@ if sys.platform == "win32":
                                        'reportlab.lib',
                                        'reportlab.pdfbase',
                                        'reportlab.pdfgen',
-                                       'reportlab.platypus'
+                                       'reportlab.platypus',
+                                       'xml.dom'
                                       ],
                              'includes': [
                                       'cairo',
