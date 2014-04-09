@@ -993,7 +993,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.main.pack_start(mb,fill=False,expand=False)
         tb = self.ui_manager.get_widget('/RecipeIndexToolBar')
         self.main.pack_start(tb,fill=False,expand=False)
-        self.messagebox = gtk.HBox()
+        self.messagebox = gtk.VBox()
         self.main.pack_start(self.messagebox,fill=False,expand=False)
         self.main_notebook = gtk.Notebook()
         self.recipe_index_interface = self.ui.get_object('recipeIndexBox')
@@ -1346,21 +1346,32 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         if from_thread:
             gt.gtk_leave()
 
+    def _on_offer_url_bar_response(self, button, response_id, url):
+        if (response_id == 5):
+            launch_url(url)
+        self.messagebox.hide()
+
     def offer_url (self, label, sublabel, url, from_thread=False):
         if from_thread:
             gt.gtk_enter()
         if hasattr(self,'progress_dialog'):
-            self.hide_progress_dialog()            
-        d=de.MessageDialog(label=label,
-                           sublabel=sublabel,
-                           cancel=False,
-                           modal=False
-                           )
-        b = gtk.Button(stock=gtk.STOCK_JUMP_TO)
-        b.connect('clicked',lambda *args: launch_url(url))
-        d.vbox.pack_end(b,expand=False)
-        b.show()
-        d.run()
+            self.hide_progress_dialog()
+        # Clear existing messages...
+        for child in self.messagebox.get_children():
+            self.messagebox.remove(child)
+        # Add new message
+        l = gtk.Label(label + sublabel)
+        l.set_line_wrap(True)
+        l.show()
+        infobar = gtk.InfoBar()
+        infobar.set_message_type(gtk.MESSAGE_INFO)
+        infobar.get_content_area().add(l)
+        infobar.add_button(gtk.STOCK_JUMP_TO, 5)
+        infobar.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
+        infobar.connect('response', self._on_offer_url_bar_response, url)
+        infobar.show()
+        self.messagebox.pack_start(infobar)
+        self.messagebox.show()
         if from_thread:
             gt.gtk_leave()
 
