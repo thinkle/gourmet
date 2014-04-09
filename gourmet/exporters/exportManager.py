@@ -125,8 +125,8 @@ class ExportManager (plugin_loader.Pluggable):
             main_app =  gourmet.GourmetRecipeManager.get_application()
             print 'Connect',instance,'to show dialog when done'
             instance.connect('completed',
-                             lambda *args: main_app.offer_url('Export complete!',
-                                                              'Recipes exported to %s'%fn,
+                             lambda *args: main_app.offer_url(_('Export complete!'),
+                                                              _('Recipes exported to %s')%fn,
                                                               url='file:///%s'%fn))
             return instance
 
