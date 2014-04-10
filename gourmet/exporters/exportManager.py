@@ -51,9 +51,9 @@ class ExportManager (plugin_loader.Pluggable):
         if not exp_type or not self.can_export_type(exp_type):
             de.show_message(label=_('Gourmet cannot export file of type "%s"')%os.path.splitext(filename)[1])
             return
-        return self.do_single_export(rec, filename, exp_type, mult)
+        return self.do_single_export(rec, filename, exp_type, parent.get_child().get_children()[1], mult)
         
-    def do_single_export (self, rec, filename, exp_type, mult=1, extra_prefs=EXTRA_PREFS_AUTOMATIC):
+    def do_single_export (self, rec, filename, exp_type, messagebox, mult=1, extra_prefs=EXTRA_PREFS_AUTOMATIC):
         exporter_plugin = self.get_exporter(exp_type)
         extra_prefs = self.get_extra_prefs(exporter_plugin,extra_prefs)
         #extra_prefs = exporter_plugin.run_extra_prefs_dialog() or {}
@@ -79,9 +79,8 @@ class ExportManager (plugin_loader.Pluggable):
         outfi.close()
         import gourmet.GourmetRecipeManager
         main_app =  gourmet.GourmetRecipeManager.get_application()
-        main_app.offer_url(_('Export complete!'),
-                           _('Recipe exported to %s')%filename,
-                           url='file:///%s'%filename)
+        main_app.offer_url(_('Recipe successfully exported to %s')%filename,
+                           messagebox=messagebox, url='file:///%s'%filename)
         return filename
 
     def offer_multiple_export (self, recs, prefs, parent=None, prog=None):
@@ -125,9 +124,8 @@ class ExportManager (plugin_loader.Pluggable):
             main_app =  gourmet.GourmetRecipeManager.get_application()
             print 'Connect',instance,'to show dialog when done'
             instance.connect('completed',
-                             lambda *args: main_app.offer_url(_('Export complete!'),
-                                                              _('Recipes exported to %s')%fn,
-                                                              url='file:///%s'%fn))
+                             lambda *args: main_app.offer_url(_('Recipes successfully exported to %s')%fn,
+                                                              messagebox=main_app.messagebox, url='file:///%s'%fn))
             return instance
 
     def get_extra_prefs (self, myexp, extra_prefs):
@@ -165,7 +163,7 @@ class ExportManager (plugin_loader.Pluggable):
             tm.add_thread(exporterInstance)
             if setup_gui:
                 tmg = get_thread_manager_gui()
-                tmg.register_thread_with_dialog(_('Export')+'('+myexp.label+')',exporterInstance)
+                tmg.register_thread_with_dialog(_('Export')+' ('+myexp.label+')',exporterInstance)
                 tmg.show()
             print 'Return exporter instance'
             return exporterInstance        

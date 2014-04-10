@@ -1346,21 +1346,21 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         if from_thread:
             gt.gtk_leave()
 
-    def _on_offer_url_bar_response(self, button, response_id, url):
+    def _on_offer_url_bar_response(self, button, response_id, messagebox, url):
         if (response_id == 5):
             launch_url(url)
-        self.messagebox.hide()
+        messagebox.hide()
 
-    def offer_url (self, label, sublabel, url, from_thread=False):
+    def offer_url (self, label, url, messagebox, from_thread=False):
         if from_thread:
             gt.gtk_enter()
         if hasattr(self,'progress_dialog'):
             self.hide_progress_dialog()
         # Clear existing messages...
-        for child in self.messagebox.get_children():
-            self.messagebox.remove(child)
+        for child in messagebox.get_children():
+            messagebox.remove(child)
         # Add new message
-        l = gtk.Label(label + sublabel)
+        l = gtk.Label(label)
         l.set_line_wrap(True)
         l.show()
         infobar = gtk.InfoBar()
@@ -1368,10 +1368,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         infobar.get_content_area().add(l)
         infobar.add_button(gtk.STOCK_JUMP_TO, 5)
         infobar.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
-        infobar.connect('response', self._on_offer_url_bar_response, url)
+        infobar.connect('response', self._on_offer_url_bar_response, messagebox, url)
         infobar.show()
-        self.messagebox.pack_start(infobar)
-        self.messagebox.show()
+        messagebox.pack_start(infobar)
+        messagebox.show()
         if from_thread:
             gt.gtk_leave()
 

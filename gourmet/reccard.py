@@ -383,6 +383,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
         main_vb = gtk.VBox()
         menu = self.ui_manager.get_widget('/RecipeDisplayMenuBar')
         main_vb.pack_start(menu,fill=False,expand=False); menu.show()
+        self.messagebox = gtk.HBox()
+        main_vb.pack_start(self.messagebox,fill=False,expand=False)
         self.main = self.ui.get_object('recipeDisplayMain')
         self.main.unparent()
         main_vb.pack_start(self.main); self.main.show()
