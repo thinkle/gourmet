@@ -307,9 +307,14 @@ class RecipeMergerDialog:
         
     def show (self, label=None):
         if label:
-            l = self.ui.get_object('infoLabel')
-            l.set_markup('<span background="yellow" foreground="black"><b><i>%s</i></b></span>'%label)
-            l.show()
+            messagebox = self.ui.get_object('messagebox')
+            l = gtk.Label(label)
+            l.set_line_wrap(True)
+            infobar = gtk.InfoBar()
+            infobar.set_message_type(gtk.MESSAGE_INFO)
+            infobar.get_content_area().add(l)
+            infobar.show_all()
+            messagebox.pack_start(infobar, True, False)
         self.ui.get_object('window1').show()
 
     def close (self, *args):
