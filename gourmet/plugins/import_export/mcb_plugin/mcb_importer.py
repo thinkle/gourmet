@@ -18,12 +18,12 @@ class RecHandler (xml_importer.RecHandler):
              'preptime':('preptime',IS),
              'quantity':('yields',IS),
              'rating':('rating',IS),
-             'comments':('modifications',IS),
-             
+             'source':('source',IS),
              }
     RECIPE_TAG = 'recipe'
     ING_TAG = 'ingredient'
     INSTR_TAG = 'recipetext'
+    COMMENT_TAG = 'comments'
     
     current_section = ''
     
@@ -41,6 +41,8 @@ class RecHandler (xml_importer.RecHandler):
             self.current_section = 'ingredient'
         if name==self.INSTR_TAG:
             self.current_section = 'instruction'
+        if name==self.COMMENT_TAG:
+            self.current_section = 'comments'
             
     def endElement (self, name):
         key,method=None,None
@@ -58,6 +60,10 @@ class RecHandler (xml_importer.RecHandler):
             key = 'instructions'
             method = self.ADD
             obj = self.rec
+        if name=='li' and self.current_section=='comments':
+            key = 'modifications'
+            method = self.ADD
+            obj = self.rec
         if name == 'imagepath':
             obj = self.rec
             #get the temp directory and build the image path
@@ -68,8 +74,10 @@ class RecHandler (xml_importer.RecHandler):
             #try to import the image
             if os.path.isfile(pic_fullpath):
                 try:
+                    print 'pic_fullpath:'+pic_fullpath
                     im = Image.open(pic_fullpath)
                     obj['image'] = gourmet.ImageExtras.get_string_from_image(im)
+                    #obj['image'] = gourmet.ImageExtras.get_string_from_image(gourmet.ImageExtras.resize_image(im,60,60))
                 except Exception, e:
                     print 'Issue loading: '+pic_fullpath
                     print str(e)
@@ -84,9 +92,11 @@ class RecHandler (xml_importer.RecHandler):
         
         #other tags
         if name==self.ING_TAG:
-            self.current_section == ''
+            self.current_section = ''
         elif name==self.INSTR_TAG:
-            self.current_section == ''
+            self.current_section = ''
+        elif name==self.COMMENT_TAG:
+            self.current_section = ''
         elif self.RECTAGS.has_key(name):
             obj = self.rec
             key,method = self.RECTAGS[name]

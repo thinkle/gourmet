@@ -15,7 +15,6 @@ class rec_to_mcb (XmlExporter):
     doctype_desc = ''
     dtd_path = ''
     ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS = True
-    tempimagedirpath=''
     current_title = ''
     
     def write_head (self):
@@ -164,8 +163,6 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
     	# close and cleanup tempdir
         file.close()
         shutil.rmtree(tempfile.gettempdir())
-        
-        
         
 def quoteattr (str):
     return xml.sax.saxutils.quoteattr(xml.sax.saxutils.escape(str))

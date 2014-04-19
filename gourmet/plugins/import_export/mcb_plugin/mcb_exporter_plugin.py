@@ -13,7 +13,6 @@ class MCBExporterPlugin (ExporterPlugin):
     filetype_desc = MCB
     saveas_filters = [MCB,['application/zip'],['*.mcb','*.MCB']]
     saveas_single_filters = saveas_filters
-    picdirname = ''
 
     def get_multiple_exporter (self, args):
         
