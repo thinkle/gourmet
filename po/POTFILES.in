@@ -202,8 +202,8 @@ gourmet/plugins/unit_converter/convertGui.py
 gourmet/plugins/unit_display_prefs/__init__.py
 gourmet/plugins/unit_display_prefs/unit_prefs_dialog.py
 [type: gettext/ini]gourmet/plugins/utf16.gourmet-plugin.in
+gourmet/plugins/web_plugin/manage.py
 gourmet/plugins/web_plugin/gourmetweb/__init__.py
-gourmet/plugins/web_plugin/gourmetweb/manage.py
 gourmet/plugins/web_plugin/gourmetweb/recview/__init__.py
 gourmet/plugins/web_plugin/gourmetweb/recview/models.py
 gourmet/plugins/web_plugin/gourmetweb/recview/tests.py
