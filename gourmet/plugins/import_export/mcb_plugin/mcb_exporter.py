@@ -1,7 +1,6 @@
 import gourmet.exporters.exporter as exporter
-import sys, xml.sax.saxutils, base64
+import xml.sax.saxutils
 from gourmet.exporters.xml_exporter import XmlExporter
-from PIL import Image
 import os
 import tempfile
 import zipfile

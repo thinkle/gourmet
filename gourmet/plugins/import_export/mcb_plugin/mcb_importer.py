@@ -1,10 +1,9 @@
-import xml.sax, re, sys, xml.sax.saxutils
+import re
 from gourmet.importers import xml_importer
 from gourmet.gdebug import *
 from gourmet.gglobals import *
 from PIL import Image
 import gourmet.ImageExtras
-import re
 
 class RecHandler (xml_importer.RecHandler):
     ADD = 1
