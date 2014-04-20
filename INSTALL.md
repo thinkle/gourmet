@@ -4,7 +4,7 @@ We'll assume you're reading this document because you want to install Gourmet ma
 
  * Please note that for *Windows*, we provide an up-to-date installer at our [Releases](https://github.com/thinkle/gourmet/releases) web page which allows you to install Gourmet much easier than described below. 
  * Also, if you're using a *Linux* distribution, chances are that there is a Gourmet package available in your system's software repository that lets you install Gourmet easily.
- * For *Mac OS X*, you can use MacPorts which provides an up-to-date ports file Gourmet to automatically install it.
+ * For *Mac OS X*, you can use [MacPorts](https://www.macports.org/) or [Fink](http://www.finkproject.org/index.php?phpLang=en) which provide up-to-date packages to automatically install Gourmet.
  
 If you're still sure about installing Gourmet manually anyway, keep reading.
 
@@ -43,6 +43,40 @@ Then, get gourmet's source, `cd` to its directory, and run
 You should then be able to launch gourmet by running
 
     /opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin/gourmet
+
+### Using Fink
+
+The following instructions all assume you have fink installed and that you have a terminal set up with the proper paths to run executables in the fink directories (/sw/bin/, etc.).
+
+To create the fink package, you need a gourmet.info file. As a starting point, you can download the current one from the fink repository at http://pdb.finkproject.org/pdb/package.php/gourmet
+
+You then want to save that file to `/sw/fink/dists/local/main/finkinfo/gourmet.info`.
+
+Now, you can run:
+
+    $ fink validate
+    $ fink fetch gourmet
+    ...
+    $ fink -m --build-as-nobody rebuild gourmet
+    ...
+    Reading Package Lists... Done
+    Building Dependency Tree... Done
+    $
+
+Now you can install gourmet and run it to make sure it worked!
+
+    $ fink install gourmet
+    ...
+    Setting up gourmet (0.15.9-1) ...
+    $ gourmet
+    No gnome player
+    No windows player
+    Player is  gourmet.sound.Player
+    ...
+
+Further resources:
+* http://finkproject.org/doc/packaging/index.php
+* http://finkproject.org/doc/quick-start-pkg/index.php
 
 Windows
 -------
