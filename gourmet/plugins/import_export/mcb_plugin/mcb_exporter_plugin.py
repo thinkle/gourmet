@@ -13,7 +13,6 @@ class MCBExporterPlugin (ExporterPlugin):
     filetype_desc = MCB
     saveas_filters = [MCB,['application/zip'],['*.mcb','*.MCB']]
     saveas_single_filters = saveas_filters
-    picdirname = ''
 
     def get_multiple_exporter (self, args):
         
@@ -24,13 +23,13 @@ class MCBExporterPlugin (ExporterPlugin):
             )
 
     def do_single_export (self, args):
-        e = mcb_exporter.recipe_table_to_xml(args['rd'],
-                                      args['rec'],
-                                      args['out'],
-                                      mult=args['mult'],
-                                      change_units=args['change_units'],
-                                      conv=args['conv'],
-                                      )
+        e = mcb_exporter.recipe_table_to_xml(
+            args['rd'],
+            [args['rec']],
+            args['out'],
+            change_units=args['change_units'],
+            mult=args['mult']
+            )
         e.run()
 
     def run_extra_prefs_dialog (self):

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-25 13:51+0100\n"
+"POT-Creation-Date: 2014-04-20 14:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2208,7 +2208,7 @@ msgstr ""
 msgid "Page Layout"
 msgstr ""
 
-#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:149
+#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:148
 msgid "Print Recipes"
 msgstr ""
 

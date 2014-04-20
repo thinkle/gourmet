@@ -4,6 +4,7 @@ import mcb_importer
 import tempfile
 import zipfile
 from gettext import gettext as _
+from lxml import etree
 
 class MCBPlugin (ImporterPlugin):
 
@@ -35,7 +36,17 @@ class MCBPlugin (ImporterPlugin):
             #Get the path to the xml file to import it
             if filename.endswith(".xml"):
                 xmlfilename = os.path.join(tempdir, filename)
+                
+                #fix the xml file
+                parser = etree.XMLParser(recover=True)
+                tree = etree.parse(xmlfilename, parser)
+                fixedxmlfilename = xmlfilename+'fixed'
+                outFile = open(fixedxmlfilename, 'w')
+                tree.write(outFile, xml_declaration=True, encoding='utf-8', pretty_print=True)
+                outFile.close()
+                
+        zf.close()
         
-        return mcb_importer.Converter(xmlfilename)
+        return mcb_importer.Converter(fixedxmlfilename)
 
 

@@ -15,7 +15,6 @@ class rec_to_mcb (XmlExporter):
     doctype_desc = ''
     dtd_path = ''
     ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS = True
-    tempimagedirpath=''
     current_title = ''
     
     def write_head (self):
@@ -51,12 +50,12 @@ class rec_to_mcb (XmlExporter):
             attr = 'comments'
         
         if (attr == 'recipetext' or attr == 'comments'):
-			linelist = text.split('\n')
-			self.attrlist_el = self.xmlDoc.createElement(attr.replace(' ',''))
-			self.rec_el.appendChild(self.attrlist_el)
-			for l in linelist:
-				attr_el = self.create_text_element('li',l)
-				self.attrlist_el.appendChild(attr_el)
+            linelist = text.split('\n')
+            self.attrlist_el = self.xmlDoc.createElement(attr.replace(' ',''))
+            self.rec_el.appendChild(self.attrlist_el)
+            for l in linelist:
+                attr_el = self.create_text_element('li',l)
+                self.attrlist_el.appendChild(attr_el)
             
 
     def write_image (self, image):
@@ -114,17 +113,25 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
     
     def __init__ (self, rd, recipe_table, out, one_file=True, change_units=False,
                   mult=1):
-                      
-        self.out=out
+        
+        self.outputfilename = ''
+        
+        if type(out) is file:
+            self.out=out
+            self.outputfilename=str(out.name)
+        else:
+            self.outputfilename=out
+            self.out=open(out,'w')
         
         #prepare temp directory for images
+        self.ostempdir_bck = tempfile.tempdir
         dirname = tempfile.mkdtemp()
         tempfile.tempdir = dirname
         picdirname = os.path.join(dirname,'images')
         if os.path.isdir(picdirname):
             shutil.rmtree(picdirname)
         os.mkdir(picdirname, 0777 );
-                      
+        
         self.create_xmldoc()
         exporter.ExporterMultirec.__init__(
             self, rd, recipe_table, out, one_file=True, ext='mcb', exporter=rec_to_mcb,
@@ -147,24 +154,27 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
         self.xmlDoc.writexml(self.ofi, newl = '\n', addindent = "\t", encoding = "UTF-8")
         # flush to the disk
         self.ofi.close()
-        
+                
         # rename generated mcb file as xml file
-        xmlpath = self.out[:-3]+'xml'
-        os.rename(self.out,xmlpath)
+        xmlpath = self.outputfilename[:-3]+'xml'
+        os.rename(self.outputfilename,xmlpath)
         
         # add xml and images to the zip (mcb)
-        file = zipfile.ZipFile(self.out, "w")
-        file.write(xmlpath, os.path.basename(xmlpath), zipfile.ZIP_DEFLATED)
-        picdirname = os.path.join(tempfile.gettempdir(),'images')
-        for images in os.listdir(picdirname):
-    		full_image_path = os.path.join(picdirname, images)
-    		if os.path.isfile(full_image_path):
-    			file.write(full_image_path, os.path.join('images',os.path.basename(full_image_path)), zipfile.ZIP_DEFLATED)
-    			
-    	# close and cleanup tempdir
-        file.close()
-        shutil.rmtree(tempfile.gettempdir())
+        myfile = zipfile.ZipFile(self.outputfilename, mode='w')
+        try:
+            myfile.write(xmlpath, os.path.basename(xmlpath), zipfile.ZIP_DEFLATED)
+            picdirname = os.path.join(tempfile.gettempdir(),'images')
+            for images in os.listdir(picdirname):
+                full_image_path = os.path.join(picdirname, images)
+                if os.path.isfile(full_image_path):
+                    myfile.write(full_image_path, os.path.join('images',os.path.basename(full_image_path)), zipfile.ZIP_DEFLATED)
+        finally:
+            # close zipfile
+            myfile.close()
         
+        # cleanup temp dir
+        shutil.rmtree(tempfile.gettempdir())
+        tempfile.tempdir = self.ostempdir_bck
         
         
 def quoteattr (str):
