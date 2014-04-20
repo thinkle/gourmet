@@ -2,7 +2,10 @@ import re
 from gourmet.importers import xml_importer
 from gourmet.gdebug import *
 from gourmet.gglobals import *
-from PIL import Image
+try:
+    from PIL import Image
+except ImportError:
+    import Image
 import gourmet.ImageExtras
 
 class RecHandler (xml_importer.RecHandler):
