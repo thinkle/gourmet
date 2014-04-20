@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module=mcb_plugin
+Version=1.0
+API_Version=1.0
+_Name=My CookBook Import and Export
+_Comment=Import and Export recipes as My CookBook XML files, suitable for backup or exchange with other My CookBook users.
+_Category=Importer/Exporter
+Authors=MaadInfoServices
