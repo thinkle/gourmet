@@ -1,3 +1,44 @@
+2014-04-28  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Update ChangeLog.
+
+2014-04-20  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Wrap a PIL import.
+        * Add Fink section to INSTALL.md
+        * Change manage.py location and contents for Django 1.6.
+        * Remove a couple of spurious imports from the MCB plugin.
+        * Add MyCookbook plugin files to po/POTFILES.in.
+
+2014-04-20  thierry
+
+        * timestamp changed
+        * Add MyCookbook export plugin.
+
+2014-04-19  thierry
+
+        * fix segfault
+
+2014-04-14  Bernhard Reiter  <ockham@raz.or.at>
+
+        * In the web plugin, fix the link to the Gourmet website.
+        * Replace compressed jQuery v1.4.2 by uncompressed v1.11.0.
+
+2014-04-03  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Bump version to 0.17.3.
+        * Add xml.dom to packages included by cx_Freeze.
+
+2014-04-02  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Add FAQ item on setting display resolution.
+
+2014-03-23  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Use playbin2 instead of deprecated playbin for gst sound playback.
+        * More on OS X.
+        * Add MacPorts section to INSTALL.md
+
 2014-03-20  Bernhard Reiter  <ockham@raz.or.at>
 
         * Update ChangeLog.
