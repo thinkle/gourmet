@@ -4,6 +4,7 @@ from gourmet.exporters.xml_exporter import XmlExporter
 import os
 import tempfile
 import zipfile
+from gourmet import convert
 import gourmet.ImageExtras
 import shutil
 import unicodedata
@@ -98,7 +99,7 @@ class rec_to_mcb (XmlExporter):
         self.inglist_el.appendChild(ing_el)
         
     def write_grouphead (self, name):
-        write_ing(item=name)
+        self.write_ing(item=name)
         
     def write_groupfoot (self):
         pass
