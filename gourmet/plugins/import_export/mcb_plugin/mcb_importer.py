@@ -76,7 +76,6 @@ class RecHandler (xml_importer.RecHandler):
             #try to import the image
             if os.path.isfile(pic_fullpath):
                 try:
-                    print 'pic_fullpath:'+pic_fullpath
                     im = Image.open(pic_fullpath)
                     obj['image'] = gourmet.ImageExtras.get_string_from_image(im)
                     #obj['image'] = gourmet.ImageExtras.get_string_from_image(gourmet.ImageExtras.resize_image(im,60,60))
@@ -91,7 +90,7 @@ class RecHandler (xml_importer.RecHandler):
             self.elbuf = self.elbuf.replace('mn','min')
             if re.match('([0-9]*)min', self.elbuf):
                 self.elbuf = self.elbuf.replace('min',' min')
-        
+
         #other tags
         if name==self.ING_TAG:
             self.current_section = ''
@@ -104,7 +103,12 @@ class RecHandler (xml_importer.RecHandler):
             key,method = self.RECTAGS[name]
 
         if key:
-            if method == self.ADD and obj.has_key(key):
+            if key == 'rating':
+                # MyCookbook's rating range is integers from 1 to 5, while
+                # ours is from 1 to 10, so we have to multiply by 2 when
+                # importing.
+                obj['rating']=int(self.elbuf.strip()) * 2
+            elif method == self.ADD and obj.has_key(key):
                 obj[key]=obj[key]+"\n "+self.elbuf
             else:
                 obj[key]=self.elbuf

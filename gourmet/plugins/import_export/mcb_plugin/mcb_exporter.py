@@ -36,7 +36,14 @@ class rec_to_mcb (XmlExporter):
         if (attr == 'yields'):
             attr = 'quantity'
         if (attr == 'rating'):
-            attr = 'rating'
+            from gourmet.importers.importer import string_to_rating
+            val = string_to_rating(text)
+            if val:
+                # MyCookbook's rating range is integers from 1 to 5, while
+                # ours is from 1 to 10, so we have to floor divide by 2 when
+                # exporting.
+                self.rec_el.appendChild(self.create_text_element('rating', str(val//2)))
+                return
         if (attr == 'title'):
             self.current_title = text.replace(' ','_')
 
