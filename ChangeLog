@@ -1,3 +1,12 @@
+2014-05-04  Bernhard Reiter  <ockham@raz.or.at>
+
+        * MCB plugin: create XML in temporary directory.
+        * MCB plugin: Handle yields/servings properly.
+        * Add MCB plugin to default_active_plugin_sets.
+        * Add lxml dependencies to setup.py (required for MCB plugin on Windows).
+        * Rename mcb-plugin to mycookbook_plugin.
+        * Update ChangeLog.
+
 2014-05-03  Bernhard Reiter  <ockham@raz.or.at>
 
         * Fix rating export and import for the MCB plugin.
