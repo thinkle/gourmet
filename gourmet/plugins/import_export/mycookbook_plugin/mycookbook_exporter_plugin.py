@@ -1,6 +1,6 @@
 from gourmet.plugin import ExporterPlugin
 import gourmet.exporters.exporter as exporter
-import mcb_exporter
+import mycookbook_exporter
 from gettext import gettext as _
 
 MCB = _('My CookBook MCB File')
@@ -16,14 +16,14 @@ class MCBExporterPlugin (ExporterPlugin):
 
     def get_multiple_exporter (self, args):
         
-        return mcb_exporter.recipe_table_to_xml(
+        return mycookbook_exporter.recipe_table_to_xml(
             args['rd'],
             args['rv'],
             args['file'],
             )
 
     def do_single_export (self, args):
-        e = mcb_exporter.recipe_table_to_xml(
+        e = mycookbook_exporter.recipe_table_to_xml(
             args['rd'],
             [args['rec']],
             args['out'],

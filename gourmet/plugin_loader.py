@@ -43,7 +43,7 @@ class MasterLoader:
         'web_import_plugin',
         'website_import_plugins',
         'krecipe_plugin',
-        'mcb-plugin',
+        'mycookbook_plugin',
         ]
     active_plugin_filename = os.path.join(gglobals.gourmetdir,'active_plugins')
 

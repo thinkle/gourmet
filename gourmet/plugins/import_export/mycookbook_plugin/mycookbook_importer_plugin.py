@@ -1,6 +1,6 @@
 import os, os.path
 from gourmet.plugin import ImporterPlugin
-import mcb_importer
+import mycookbook_importer
 import tempfile
 import zipfile
 from gettext import gettext as _
@@ -47,6 +47,6 @@ class MCBPlugin (ImporterPlugin):
                 
         zf.close()
         
-        return mcb_importer.Converter(fixedxmlfilename)
+        return mycookbook_importer.Converter(fixedxmlfilename)
 
 

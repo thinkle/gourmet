@@ -1,5 +1,5 @@
 [Gourmet Plugin]
-Module=mcb_plugin
+Module=mycookbook_plugin
 Version=1.0
 API_Version=1.0
 _Name=My CookBook Import and Export
