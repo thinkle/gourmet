@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gourmet Recipe Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-25 13:51+0100\n"
+"POT-Creation-Date: 2014-05-04 18:28+0200\n"
 "PO-Revision-Date: 2011-01-30 10:06+0000\n"
 "Last-Translator: George Karavasilev <motorslav@gmail.com>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -1964,6 +1964,7 @@ msgstr ""
 #: ../gourmet/plugins/import_export/html.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/pdf.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/plaintext.gourmet-plugin.in.h:3
@@ -2084,6 +2085,40 @@ msgstr ""
 #: ../gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:2
 msgid "Import files from the Mastercook program."
 msgstr ""
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in.h:1
+msgid "My CookBook Import and Export"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in.h:2
+msgid ""
+"Import and Export recipes as My CookBook XML files, suitable for backup or "
+"exchange with other My CookBook users."
+msgstr ""
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:6
+msgid "My CookBook MCB File"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:10
+#, fuzzy
+msgid "MCB Export"
+msgstr "Изнасяне"
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:11
+#, fuzzy, python-format
+msgid "Exporting recipes to My CookBook MCB file %(file)s."
+msgstr "Изнасяне на рецепти към XML файл на Gourmet %(file)s."
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:12
+#, fuzzy, python-format
+msgid "Recipe saved in My CookBook MCB file %(file)s."
+msgstr "Рецептата е запазена в Gourmet XML file %(file)s."
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_importer_plugin.py:11
+#, fuzzy
+msgid "MCB File"
+msgstr "Голям файл"
 
 #: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:1
 msgid "Mealmaster (tm) Export"
@@ -2273,7 +2308,7 @@ msgstr ""
 msgid "Page Layout"
 msgstr "Ориентация на страницата"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:149
+#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:148
 msgid "Print Recipes"
 msgstr "Разпечатване на рецепти"
 
@@ -4061,14 +4096,19 @@ msgstr "Съставката %s ще бъде игнорирана."
 msgid "Shopping list for %s"
 msgstr "Лист за пазаруване за %s"
 
-#: ../gourmet/shopping.py:376 ../gourmet/shopping.py:391
-msgid "For the following recipes:"
+#: ../gourmet/shopping.py:376
+#, fuzzy
+msgid "For the following recipes:\n"
 msgstr "За следните рецепти:"
 
 #: ../gourmet/shopping.py:381 ../gourmet/shopping.py:395
 #, python-format
 msgid " x%s"
 msgstr " x%s"
+
+#: ../gourmet/shopping.py:391
+msgid "For the following recipes:"
+msgstr "За следните рецепти:"
 
 #: ../gourmet/threadManager.py:225
 msgid "Paused"

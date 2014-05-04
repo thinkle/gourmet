@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-25 13:51+0100\n"
+"POT-Creation-Date: 2014-05-04 18:28+0200\n"
 "PO-Revision-Date: 2012-05-07 22:46+0000\n"
 "Last-Translator: Samuli Seppänen <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -1972,6 +1972,7 @@ msgstr "Tuo reseptit zip- tai tar-arkistoista"
 #: ../gourmet/plugins/import_export/html.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/pdf.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/plaintext.gourmet-plugin.in.h:3
@@ -2094,6 +2095,44 @@ msgstr "Mastercook-tuonti"
 #: ../gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:2
 msgid "Import files from the Mastercook program."
 msgstr "Tuo tiedostoja Mastercook-ohjelmasta"
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in.h:1
+#, fuzzy
+msgid "My CookBook Import and Export"
+msgstr "Gourmetin XML tuonti ja vienti"
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in.h:2
+#, fuzzy
+msgid ""
+"Import and Export recipes as My CookBook XML files, suitable for backup or "
+"exchange with other My CookBook users."
+msgstr ""
+"Tuo ja vie reseptejä Gourmetin XML-muodossa. Käytännöllinen "
+"varmuuskopioidessa tai siirrettäessä reseptejä toisille Gourmet-käyttäjille."
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:6
+msgid "My CookBook MCB File"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:10
+#, fuzzy
+msgid "MCB Export"
+msgstr "HTML-vienti"
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:11
+#, fuzzy, python-format
+msgid "Exporting recipes to My CookBook MCB file %(file)s."
+msgstr "Viedään reseptejä Gourmet XML -tiedostoon %(file)s."
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:12
+#, fuzzy, python-format
+msgid "Recipe saved in My CookBook MCB file %(file)s."
+msgstr "Resepti tallennettu Gourmet XML -tiedostoon %(file)s."
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_importer_plugin.py:11
+#, fuzzy
+msgid "MCB File"
+msgstr "Iso tiedosto"
 
 #: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:1
 msgid "Mealmaster (tm) Export"
@@ -2286,7 +2325,7 @@ msgstr ""
 msgid "Page Layout"
 msgstr "Sivun asettelu"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:149
+#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:148
 msgid "Print Recipes"
 msgstr "Tulosta reseptit"
 
@@ -4087,14 +4126,19 @@ msgstr "Ainesosa %s jätetään huomioimatta."
 msgid "Shopping list for %s"
 msgstr "Ostoslista (%s)"
 
-#: ../gourmet/shopping.py:376 ../gourmet/shopping.py:391
-msgid "For the following recipes:"
+#: ../gourmet/shopping.py:376
+#, fuzzy
+msgid "For the following recipes:\n"
 msgstr "Seuraaville resepteille:"
 
 #: ../gourmet/shopping.py:381 ../gourmet/shopping.py:395
 #, python-format
 msgid " x%s"
 msgstr " x%s"
+
+#: ../gourmet/shopping.py:391
+msgid "For the following recipes:"
+msgstr "Seuraaville resepteille:"
 
 #: ../gourmet/threadManager.py:225
 msgid "Paused"

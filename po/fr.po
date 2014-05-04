@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gourmet Recipe Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-25 13:51+0100\n"
+"POT-Creation-Date: 2014-05-04 18:28+0200\n"
 "PO-Revision-Date: 2013-02-26 18:05+0000\n"
 "Last-Translator: Eliovir <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -2062,6 +2062,7 @@ msgstr "Importer des recettes depuis des archives zip et tar"
 #: ../gourmet/plugins/import_export/html.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/pdf.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/import_export/plaintext.gourmet-plugin.in.h:3
@@ -2184,6 +2185,44 @@ msgstr "Importation depuis Mastercook"
 #: ../gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:2
 msgid "Import files from the Mastercook program."
 msgstr "Importer des fichiers du logiciel Mastercook."
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in.h:1
+#, fuzzy
+msgid "My CookBook Import and Export"
+msgstr "Importer et exporter du XML Gourmet"
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in.h:2
+#, fuzzy
+msgid ""
+"Import and Export recipes as My CookBook XML files, suitable for backup or "
+"exchange with other My CookBook users."
+msgstr ""
+"Importer et exporter des recettes en tant que fichiers XML Gourmet, afin de "
+"les sauvegarder ou de les échanger avec d’autres utilisateurs Gourmet."
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:6
+msgid "My CookBook MCB File"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:10
+#, fuzzy
+msgid "MCB Export"
+msgstr "Exportation en HTML"
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:11
+#, fuzzy, python-format
+msgid "Exporting recipes to My CookBook MCB file %(file)s."
+msgstr "Exportation des recettes vers le fichier XML Gourmet %(file)s."
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:12
+#, fuzzy, python-format
+msgid "Recipe saved in My CookBook MCB file %(file)s."
+msgstr "Recette enregistrée dans le fichier XML Gourmet %(file)s."
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_importer_plugin.py:11
+#, fuzzy
+msgid "MCB File"
+msgstr "Gros fichier"
 
 #: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:1
 msgid "Mealmaster (tm) Export"
@@ -2375,7 +2414,7 @@ msgstr ""
 msgid "Page Layout"
 msgstr "Mise en page"
 
-#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:149
+#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:148
 msgid "Print Recipes"
 msgstr "Imprimer des recettes"
 
@@ -4192,14 +4231,19 @@ msgstr "L’ingrédient %s sera ignoré."
 msgid "Shopping list for %s"
 msgstr "Liste de courses pour %s"
 
-#: ../gourmet/shopping.py:376 ../gourmet/shopping.py:391
-msgid "For the following recipes:"
+#: ../gourmet/shopping.py:376
+#, fuzzy
+msgid "For the following recipes:\n"
 msgstr "Pour les recettes suivantes :"
 
 #: ../gourmet/shopping.py:381 ../gourmet/shopping.py:395
 #, python-format
 msgid " x%s"
 msgstr " x%s"
+
+#: ../gourmet/shopping.py:391
+msgid "For the following recipes:"
+msgstr "Pour les recettes suivantes :"
 
 #: ../gourmet/threadManager.py:225
 msgid "Paused"
@@ -4375,8 +4419,8 @@ msgstr ""
 #~ msgstr ""
 #~ "%(progname)s %(version)s a changé le format de sa base de donnée. Votre "
 #~ "base de donnée ne fonctionnera plus avec des versions antérieures de "
-#~ "%(progname)s. Une copie de sauvegarde a été enregistrée dans %(backupfile)"
-#~ "s"
+#~ "%(progname)s. Une copie de sauvegarde a été enregistrée dans "
+#~ "%(backupfile)s"
 
 #~ msgid ""
 #~ "In case anything goes wrong, a backup copy of your recipe database is "
