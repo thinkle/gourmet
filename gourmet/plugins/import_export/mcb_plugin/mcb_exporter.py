@@ -158,18 +158,23 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
         
 
     def write_footer (self, *args):
-        self.xmlDoc.writexml(self.ofi, newl = '\n', addindent = "\t", encoding = "UTF-8")
-        # flush to the disk
+        # The exporter has opened a file for us, which we're not going to use.
         self.ofi.close()
-                
-        # rename generated mcb file as xml file
-        xmlpath = self.outputfilename[:-3]+'xml'
-        os.rename(self.outputfilename,xmlpath)
+
+        # We save our correctly named XML to the temp dir so it won't collide
+        # with any files present in the user's selected export dir.
+        basename = os.path.basename(self.outputfilename)
+        xml_basename = os.path.splitext(basename)[0] +'.xml'
+        xml_path = os.path.join(tempfile.gettempdir(), xml_basename)
+        self.xml_ofi = open(xml_path,'wb')
+        self.xmlDoc.writexml(self.xml_ofi, newl = '\n', addindent = "\t", encoding = "UTF-8")
+        # flush to the disk
+        self.xml_ofi.close()
         
         # add xml and images to the zip (mcb)
         myfile = zipfile.ZipFile(self.outputfilename, mode='w')
         try:
-            myfile.write(xmlpath, os.path.basename(xmlpath), zipfile.ZIP_DEFLATED)
+            myfile.write(xml_path, xml_basename, zipfile.ZIP_DEFLATED)
             picdirname = os.path.join(tempfile.gettempdir(),'images')
             for images in os.listdir(picdirname):
                 full_image_path = os.path.join(picdirname, images)
