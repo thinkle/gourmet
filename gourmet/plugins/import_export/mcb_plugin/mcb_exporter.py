@@ -28,13 +28,14 @@ class rec_to_mcb (XmlExporter):
         if (attr == 'category'):
             attr = 'category'
         if (attr == 'servings'):
-            attr = 'serving'
+            attr = 'quantity'
         if (attr == 'cooktime'):
             attr = 'cooktime'
         if (attr == 'preptime'):
             attr = 'preptime'
         if (attr == 'yields'):
             attr = 'quantity'
+            text = text.split(' ')[0] # Remove units if present
         if (attr == 'rating'):
             from gourmet.importers.importer import string_to_rating
             val = string_to_rating(text)
