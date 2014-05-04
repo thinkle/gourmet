@@ -121,12 +121,12 @@ gourmet/plugins/import_export/mastercook_import_plugin/mastercook_importer.py
 gourmet/plugins/import_export/mastercook_import_plugin/mastercook_importer_plugin.py
 gourmet/plugins/import_export/mastercook_import_plugin/mastercook_plaintext_importer.py
 [type: gettext/ini]gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in
-[type: gettext/ini]gourmet/plugins/import_export/mcb-plugin.gourmet-plugin.in
-gourmet/plugins/import_export/mcb_plugin/__init__.py
-gourmet/plugins/import_export/mcb_plugin/mcb_exporter.py
-gourmet/plugins/import_export/mcb_plugin/mcb_exporter_plugin.py
-gourmet/plugins/import_export/mcb_plugin/mcb_importer.py
-gourmet/plugins/import_export/mcb_plugin/mcb_importer_plugin.py
+[type: gettext/ini]gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in
+gourmet/plugins/import_export/mycookbook_plugin/__init__.py
+gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter.py
+gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py
+gourmet/plugins/import_export/mycookbook_plugin/mycookbook_importer.py
+gourmet/plugins/import_export/mycookbook_plugin/mycookbook_importer_plugin.py
 [type: gettext/ini]gourmet/plugins/import_export/mealmaster.gourmet-plugin.in
 gourmet/plugins/import_export/mealmaster_plugin/__init__.py
 gourmet/plugins/import_export/mealmaster_plugin/mealmaster_exporter.py
