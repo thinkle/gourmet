@@ -204,7 +204,9 @@ if sys.platform == "win32":
                                        'reportlab.pdfbase',
                                        'reportlab.pdfgen',
                                        'reportlab.platypus',
-                                       'xml.dom'
+                                       'xml.dom',
+                                       'lxml.etree',
+                                       'lxml._elementpath'
                                       ],
                              'includes': [
                                       'cairo',
