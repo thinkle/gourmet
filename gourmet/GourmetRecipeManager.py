@@ -1261,7 +1261,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             tm = get_thread_manager()
             tmg = get_thread_manager_gui()
             tm.add_thread(deleterThread)
-            tmg.register_thread_with_dialog(_('Delete Recipes'),deleterThread)
+            tmg.register_thread_with_dialog(_('Delete Recipes'),_('Recipes deleted'),deleterThread)
             tmg.show()
         else:
             return True

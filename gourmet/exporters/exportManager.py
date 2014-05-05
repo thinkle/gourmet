@@ -121,12 +121,6 @@ class ExportManager (plugin_loader.Pluggable):
                     message_type=gtk.MESSAGE_ERROR,
                     )
                 return
-            import gourmet.GourmetRecipeManager
-            main_app =  gourmet.GourmetRecipeManager.get_application()
-            print 'Connect',instance,'to show dialog when done'
-            instance.connect('completed',
-                             lambda *args: main_app.offer_url(_('Recipes successfully exported to <a href="file:///%s">%s</a>')%(fn,fn),
-                                                              messagebox=main_app.messagebox, url='file:///%s'%fn))
             return instance
 
     def get_extra_prefs (self, myexp, extra_prefs):
@@ -164,7 +158,9 @@ class ExportManager (plugin_loader.Pluggable):
             tm.add_thread(exporterInstance)
             if setup_gui:
                 tmg = get_thread_manager_gui()
-                tmg.register_thread_with_dialog(_('Export')+' ('+myexp.label+')',exporterInstance)
+                tmg.register_thread_with_dialog(_('Export')+' ('+myexp.label+')',
+                                                _('Recipes successfully exported to <a href="file:///%s">%s</a>')%(fn,fn),
+                                                exporterInstance)
                 tmg.show()
             print 'Return exporter instance'
             return exporterInstance        

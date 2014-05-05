@@ -121,10 +121,12 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
     def setup_window (self):
         # set our parent...
         from gourmet.threadManager import get_thread_manager_gui
+        import gourmet.GourmetRecipeManager
         tmg = get_thread_manager_gui()
         self.w = gtk.Window();
         self.w.set_title(self.title)
-        self.w.set_transient_for(tmg.dialog)
+        main_app = gourmet.GourmetRecipeManager.get_application()
+        self.w.set_transient_for(main_app.window)
         self.w.set_destroy_with_parent(False)
         self.hb = gtk.HBox()
         self.w.add(self.hb)

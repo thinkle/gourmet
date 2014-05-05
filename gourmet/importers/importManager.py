@@ -170,7 +170,7 @@ class ImportManager (plugin_loader.Pluggable):
                 importer.run()
                 self.follow_up(None,importer)
             else:
-                label = _('Import') + '('+importer_plugin.name+')'
+                label = _('Import') + ' ('+importer_plugin.name+')'
                 self.setup_thread(importer, label)
             print 'do_importer returns importer:',importer
             return importer
@@ -187,6 +187,7 @@ class ImportManager (plugin_loader.Pluggable):
         tm.add_thread(importer)
         tmg = get_thread_manager_gui()
         tmg.register_thread_with_dialog(label,
+                                        _('Recipes successfully imported'),
                                         importer)
         tmg.show()
         if connect_follow_up:

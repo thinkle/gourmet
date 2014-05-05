@@ -223,65 +223,57 @@ class ThreadManagerGui:
 
     __single__ = None
     paused_text = ' (' + _('Paused') + ')'
+    PAUSE = 10
 
-    def __init__ (self, parent=None):
+    def __init__ (self, messagebox=None):
         if ThreadManagerGui.__single__:
             raise ThreadManagerGui.__single__
         else:
             ThreadManagerGui.__single__ = self
         self.tm = get_thread_manager()
         self.threads = {}
-        if not parent:
+
+        if not messagebox:
             from GourmetRecipeManager import get_application
-            parent = get_application().window
-        self.dialog = gtk.Dialog(parent=parent,
-                                 buttons=(gtk.STOCK_CLOSE,gtk.RESPONSE_CLOSE))
-        self.dialog.set_title(_('Gourmet Import/Export'))
-        self.dialog.connect('response',self.close)
-        self.dialog.connect('delete-event',self.delete_event_cb)
-        self.sw = gtk.ScrolledWindow()
-        self.pbtable = gtk.Table()
-        self.last_row = 0
-        self.sw.add_with_viewport(self.pbtable); self.pbtable.set_border_width(6)
-        self.sw.set_policy(gtk.POLICY_NEVER,gtk.POLICY_AUTOMATIC)
-        self.sw.show_all()
-        self.dialog.vbox.add(self.sw)
+            self.messagebox = get_application().messagebox
+        else:
+            self.messagebox = messagebox
+
         self.to_remove = [] # a list of widgets to remove when we close...
 
     def response (self, dialog, response):
         if response==gtk.RESPONSE_CLOSE:
             self.close()
         
-    def register_thread_with_dialog (self, description, thread):
-        pb = gtk.ProgressBar(); pb.set_ellipsize(pango.ELLIPSIZE_MIDDLE); pb.set_size_request(300,-1)
-        pause_button = gtk.ToggleButton();
-        lab = gtk.Label(_('Pause'))
-        pause_button.add(lab); pause_button.show_all()
-        dlab = gtk.Label(description); dlab.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
-        cancel_button = gtk.Button(stock=gtk.STOCK_CANCEL)
-        self.pbtable.attach(dlab,0,3,self.last_row,self.last_row+1,xoptions=gtk.FILL,yoptions=gtk.SHRINK)
-        self.pbtable.attach(pb,0,1,self.last_row+1,self.last_row+2,xoptions=gtk.FILL,yoptions=gtk.SHRINK)
-        self.pbtable.attach(cancel_button,1,2,self.last_row+1,self.last_row+2,xoptions=gtk.SHRINK,yoptions=gtk.SHRINK)
-        self.pbtable.attach(pause_button,2,3,self.last_row+1,self.last_row+2,xoptions=gtk.SHRINK,yoptions=gtk.SHRINK)
-        # Create an object for easy reference to our widgets in callbacks
-        class ThreadBox: pass
-        threadbox = ThreadBox()
-        threadbox.pb = pb
-        threadbox.buttons = [pause_button,cancel_button]
-        threadbox.label = dlab
-        threadbox.pb.show(); threadbox.label.show()
-        threadbox.widgets = [threadbox.pb, threadbox.label] + threadbox.buttons
-        threadbox.row = self.last_row
-        for b in threadbox.buttons: b.show()
+    def register_thread_with_dialog (self, description, done_msg, thread):
+        threadbox = gtk.InfoBar()
+        threadbox.set_message_type(gtk.MESSAGE_INFO)
+        pb = gtk.ProgressBar()
+        pb.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
+        pause_button = gtk.ToggleButton(label=_('Pause'))
+        threadbox.add_action_widget(pause_button, self.PAUSE)
+        dlab = gtk.Label(description)
+        dlab.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
+        cancel_button = threadbox.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+        vbox = gtk.VBox()
+        vbox.pack_start(dlab, expand=True, fill=True)
+        vbox.pack_start(pb, expand=True, fill=True)
+        threadbox.get_content_area().add(vbox)
+        threadbox.show_all()
+        self.messagebox.pack_start(threadbox)
+
+        # This is a somewhat dirty hack.
+        threadbox.done_msg = done_msg
+
+        #for b in threadbox.buttons: b.show()
         thread.connect('completed',self.thread_done,threadbox)
         thread.connect('error',self.thread_error,threadbox)
         thread.connect('stopped',self.thread_stopped,threadbox)        
         thread.connect('pause',self.thread_pause,threadbox)
         thread.connect('resume',self.thread_resume,threadbox)
-        thread.connect('progress',self.progress_update,threadbox.pb)        
+        thread.connect('progress',self.progress_update,pb)
         pause_button.connect('clicked',self.pause_cb,thread)
         cancel_button.connect('clicked',self.cancel_cb,thread)
-        self.last_row += 2
 
     def pause_cb (self, b, thread):
         if b.get_active():
@@ -293,14 +285,24 @@ class ThreadManagerGui:
         thread.terminate()
 
     def thread_done (self, thread, threadbox):
-        for b in threadbox.buttons: b.hide()
+        for b in threadbox.get_action_area().get_children(): b.hide()
+        threadbox.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
+        threadbox.connect('response', lambda ib, response_id: ib.hide())
         self.to_remove.append(threadbox)
-        txt = threadbox.pb.get_text()
+        pb = threadbox.get_content_area().get_children()[0].get_children()[1]
+        txt = pb.get_text()
         if txt:
-            threadbox.pb.set_text(txt + ' ('+_('Done')+')')
+            pb.set_text(txt + ' ('+_('Done')+')')
         else:
-            threadbox.pb.set_text('Done')
-        threadbox.pb.set_percentage(1)
+            pb.set_text('Done')
+        pb.set_percentage(1)
+        for widget in threadbox.get_content_area().get_children()[0]:
+            widget.hide()
+
+        l = gtk.Label()
+        l.set_markup(threadbox.done_msg)
+        l.show()
+        threadbox.get_content_area().add(l)
 
     def progress_update (self, thread, perc, txt, pb):
         if perc >= 0.0:
@@ -310,38 +312,38 @@ class ThreadManagerGui:
         pb.set_text(txt)
 
     def thread_error (self, thread, errno, errname, trace, threadbox):
-        for b in threadbox.buttons: b.hide()
-        threadbox.pb.set_text(_('Error: %s')%errname)
-        b = gtk.Button(_('Details'))
+        threadbox.get_action_area().get_children()[1].hide() # Pause button
+        pb = threadbox.get_content_area().get_children()[0].get_children()[1]
+        pb.set_text(_('Error: %s')%errname)
+        b = threadbox.add_button(_('Details'), 11)
         b.connect('clicked',self.show_traceback,errno,errname,trace)
-        self.pbtable.attach(b,2,3,threadbox.row+1,threadbox.row+2,xoptions=gtk.SHRINK,yoptions=gtk.SHRINK)
-        threadbox.widgets.append(b)
         b.show()
         self.to_remove.append(threadbox)
 
     def thread_stopped (self, thread, threadbox):
-        txt = threadbox.pb.get_text()
+        pb = threadbox.get_content_area().get_children()[0].get_children()[1]
+        txt = pb.get_text()
         txt += '(' + _('cancelled') + ')'
-        threadbox.pb.set_text(txt)
+        pb.set_text(txt)
 
     def thread_pause (self, thread, threadbox):
-        txt = threadbox.pb.get_text()
+        pb = threadbox.get_content_area().get_children()[0].get_children()[1]
+        txt = pb.get_text()
         txt += self.paused_text
-        threadbox.pb.set_text(txt)
+        pb.set_text(txt)
 
     def thread_resume (self, thread, threadbox):
-        txt = threadbox.pb.get_text()
+        pb = threadbox.get_content_area().get_children()[0].get_children()[1]
+        txt = pb.get_text()
         if txt.find(self.paused_text):
             txt = txt[:-len(self.paused_text)]
-            threadbox.pb.set_text(txt)
+            pb.set_text(txt)
         
     def show (self, *args):
-        self.dialog.set_size_request(475,
-                                     350)
-        self.dialog.present()
+        self.messagebox.show()
 
     def delete_event_cb (self, *args):
-        self.dialog.hide()
+        self.messagebox.hide()
         return True
 
     def close (self, *args):
@@ -350,7 +352,7 @@ class ThreadManagerGui:
             for w in box_to_remove.widgets:
                 w.hide()
                 self.pbtable.remove(w)
-        self.dialog.hide()
+        self.messagebox.hide()
 
     def show_traceback (self, button, errno, errname, traceback):
         import gourmet.gtk_extras.dialog_extras as de
