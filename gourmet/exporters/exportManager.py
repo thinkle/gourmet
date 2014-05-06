@@ -79,7 +79,8 @@ class ExportManager (plugin_loader.Pluggable):
         outfi.close()
         import gourmet.GourmetRecipeManager
         main_app =  gourmet.GourmetRecipeManager.get_application()
-        main_app.offer_url(_('Recipe successfully exported to %s')%filename,
+        main_app.offer_url(_('Recipe successfully exported to '
+                             '<a href="file:///%s">%s</a>')%(filename,filename),
                            messagebox=messagebox, url='file:///%s'%filename)
         return filename
 
@@ -124,7 +125,7 @@ class ExportManager (plugin_loader.Pluggable):
             main_app =  gourmet.GourmetRecipeManager.get_application()
             print 'Connect',instance,'to show dialog when done'
             instance.connect('completed',
-                             lambda *args: main_app.offer_url(_('Recipes successfully exported to %s')%fn,
+                             lambda *args: main_app.offer_url(_('Recipes successfully exported to <a href="file:///%s">%s</a>')%(fn,fn),
                                                               messagebox=main_app.messagebox, url='file:///%s'%fn))
             return instance
 

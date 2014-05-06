@@ -1346,11 +1346,6 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         if from_thread:
             gt.gtk_leave()
 
-    def _on_offer_url_bar_response(self, button, response_id, messagebox, url):
-        if (response_id == 5):
-            launch_url(url)
-        messagebox.hide()
-
     def offer_url (self, label, url, messagebox, from_thread=False):
         if from_thread:
             gt.gtk_enter()
@@ -1360,18 +1355,15 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         for child in messagebox.get_children():
             messagebox.remove(child)
         # Add new message
-        l = gtk.Label(label)
-        l.set_line_wrap(True)
-        l.show()
+        l = gtk.Label()
+        l.set_markup(label)
         infobar = gtk.InfoBar()
         infobar.set_message_type(gtk.MESSAGE_INFO)
         infobar.get_content_area().add(l)
-        infobar.add_button(gtk.STOCK_JUMP_TO, 5)
         infobar.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
-        infobar.connect('response', self._on_offer_url_bar_response, messagebox, url)
-        infobar.show()
+        infobar.connect('response', lambda ib, response_id: messagebox.hide())
         messagebox.pack_start(infobar)
-        messagebox.show()
+        messagebox.show_all()
         if from_thread:
             gt.gtk_leave()
 
