@@ -30,6 +30,88 @@ def find_entry (w):
             e = find_entry(child)
             if e: return e
 
+# Dialog for adding a recipe as an ingredient
+class RecSelector (RecIndex):
+    """Select a recipe and add it to RecCard's ingredient list"""
+    def __init__(self, recGui, ingEditor):
+        self.prefs = prefs.get_prefs()
+        self.ui=gtk.Builder()
+        self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
+        self.rg=recGui
+        self.ingEditor = ingEditor
+        self.re = self.ingEditor.re
+        self.setup_main_window()
+        RecIndex.__init__(self,
+                          self.ui,
+                          self.rg.rd,
+                          self.rg,
+                          editable=False
+                          )
+        self.dialog.run()
+
+    def setup_main_window (self):
+        d = gtk.Dialog(_("Choose recipe"),
+                       self.re.window,
+                       gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                       (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                        gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+        self.re.conf.append(
+            WidgetSaver.WindowSaver(d,
+                                    self.prefs.get('recselector',
+                                                   {'window_size':(800,600)})
+                                    )
+            )
+        d.set_default_size(*self.prefs.get('recselector')['window_size'])
+        self.recipe_index_interface = self.ui.get_object('recipeIndexBox')
+        self.recipe_index_interface.unparent()
+        d.vbox.add(self.recipe_index_interface)
+        d.connect('response',self.response_cb)
+        self.recipe_index_interface.show()
+        self.dialog = d
+
+    def response_cb (self, dialog, resp):
+        if resp==gtk.RESPONSE_ACCEPT:
+            self.ok()
+        else:
+            self.quit()
+
+    def quit (self):
+        self.dialog.destroy()
+
+    def rec_tree_select_rec (self, *args):
+        self.ok()
+
+    def ok (self,*args):
+        debug('ok',0)
+        pre_iter=self.ingEditor.ingtree_ui.get_selected_ing()
+        try:
+            for rec in self.get_selected_recs_from_rec_tree():
+                if rec.id == self.re.current_rec.id:
+                    de.show_message(label=_("Recipe cannot call itself as an ingredient!"),
+                                    sublabel=_('Infinite recursion is not allowed in recipes!')
+                                    )
+                    continue
+                if rec.yields:
+                    amount = getYieldSelection(rec,self.re.window)
+                else:
+                    amount = 1
+                ingdic={'amount':amount,
+                        'unit':'recipe',
+                        'item':rec.title,
+                        'refid':rec.id,
+                        }
+                debug('adding ing: %s'%ingdic,5)
+                iter=self.ingEditor.ingtree_ui.ingController.add_ingredient_from_kwargs(
+                    group_iter=pre_iter,
+                    **ingdic
+                    )
+                #path=self.reccard.imodel.get_path(iter)
+                #self.reccard.ss.add_selection(iter)
+            self.quit()
+        except:
+            de.show_message(label=_("You haven't selected any recipes!"))
+            raise
+
 # RECIPE EDITOR MODULES
 
 class RecEditor (WidgetPrefs, Pluggable):
