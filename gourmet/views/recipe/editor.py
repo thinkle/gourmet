@@ -16,6 +16,8 @@ from gourmet.controllers.ingredient import IngredientController
 from gourmet import convert, Undo
 from gourmet.gtk_extras.treeview_extras import selectionSaver, move_iter
 
+from index import RecIndex
+
 import gobject
 import gtk
 import os.path

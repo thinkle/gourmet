@@ -1,14 +1,14 @@
-#!/usr/bin/env python
-from ImageExtras import get_pixbuf_from_jpg
-from gdebug import debug
-from gettext import gettext as _, ngettext
-from gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
-from gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
+from gourmet.ImageExtras import get_pixbuf_from_jpg
+from gourmet.gdebug import debug
+from gourmet.gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
+from gourmet.gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
     mnemonic_manager, pageable_store, treeview_extras as te
-from models import Recipe
-from models.meta import Session
-import convert
-import Undo
+from gourmet.models import Recipe
+from gourmet.models.meta import Session
+from gourmet import convert
+from gourmet import Undo
+
+from gettext import gettext as _, ngettext
 import gobject
 import gtk
 import gtk.gdk
@@ -420,7 +420,7 @@ class RecIndex:
         txt = self.srchentry.get_text()
         searchBy = cb.cb_get_active_text(self.rSearchByMenu)
         searchBy = self.searchByDic[unicode(searchBy)]
-	if self.limitButton: self.limitButton.set_sensitive(txt!='')
+        if self.limitButton: self.limitButton.set_sensitive(txt!='')
         if self.make_search_dic(txt,searchBy) == self.last_search:
             debug("Same search!",1)
             return
@@ -640,6 +640,7 @@ class RecIndex:
         self.rmodel.change_view(recipe_table)
         self.set_reccount()
 
+
 class ListWrapper(gobject.GObject):
     def __init__(self, mylist):
         self.mylist = mylist
@@ -716,4 +717,3 @@ class RecipeModel (pageable_store.PageableViewStore):
                 self.update_iter(row.iter)
                 debug('updated row -- breaking',3)
                 break
-

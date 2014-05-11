@@ -16,7 +16,7 @@ from gtk_extras import dialog_extras as de
 from gtk_extras import treeview_extras as te
 from gdebug import debug
 from gglobals import DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base, icondir, imagedir, launch_url, uibase
-from recindex import RecIndex
+from views.recipe.index import RecIndex
 from gettext import gettext as _
 from gettext import ngettext
 from timer import show_timer
