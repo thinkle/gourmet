@@ -1,7 +1,8 @@
 from gourmet.plugin import RecEditorModule, RecEditorPlugin, IngredientControllerPlugin
 from gourmet.plugin_loader import PRE,POST
 import gtk, gobject, pango
-from gourmet.reccard import IngredientEditorModule, RecRef
+from gourmet.models.ingredient import RecRef
+from gourmet.views.recipe.editor import IngredientEditorModule
 import keyEditorPluggable
 from gettext import gettext as _
 

@@ -126,6 +126,12 @@ class Ingredient (Base):
             return convert.float_to_frac(amt,fractions=fractions,approx=approx)
         else: return ""
 
+class RecRef:
+    def __init__ (self, refid, title):
+        self.refid = refid
+        self.item = title
+        self.amount = 1
+
 # Convenience functions for dealing with ingredients
 
 def order_ings (ings):
