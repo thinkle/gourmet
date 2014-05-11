@@ -1,10 +1,13 @@
 from gourmet.plugin_loader import Pluggable
+from gourmet.plugin import ToolPlugin, RecDisplayPlugin
 from gourmet import prefs
 from gourmet.gglobals import imagedir, uibase
 from gourmet.gtk_extras import fix_action_group_importance
 from gourmet.gtk_extras.WidgetSaver import WindowSaver
+from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
 import gourmet.ImageExtras as ie
 from gourmet.gdebug import debug
+from gourmet import convert
 
 from editor import RecEditor
 from gourmet.views.ingredient.display import IngredientDisplay
@@ -64,9 +67,8 @@ class RecCardDisplay (Pluggable):
         self.ingredientDisplay = IngredientDisplay(self)
         self.modules = [self.ingredientDisplay]
         self.update_from_database()
-        plugin_loader.Pluggable.__init__(self,
-                                         [ToolPlugin,RecDisplayPlugin])
-        self.mm = mnemonic_manager.MnemonicManager()
+        Pluggable.__init__(self, [ToolPlugin,RecDisplayPlugin])
+        self.mm = MnemonicManager()
         self.mm.add_toplevel_widget(self.window)
         self.mm.fix_conflicts_peacefully()
         self.setup_style()

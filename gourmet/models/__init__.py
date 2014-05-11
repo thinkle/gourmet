@@ -23,7 +23,7 @@ import os.path
 
 # Basic setup functions
 
-def initialize_connection(filename, url):
+def initialize_connection(filename, url=None):
     """Initialize our database connection.
 
     This should also set new_db accordingly"""
@@ -46,6 +46,11 @@ def initialize_connection(filename, url):
         meta.new_db = True # ??? How will we do this now?
     #meta.engine = sqlalchemy.create_engine(self.url,strategy='threadlocal')
     #self.base_connection = meta.engine
+
+    if url:
+        filename = None
+    else:
+        url = 'sqlite:///' + filename
 
     if url.startswith('mysql'):
         meta.engine = sqlalchemy.create_engine(url,

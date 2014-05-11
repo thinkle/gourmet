@@ -1,4 +1,4 @@
-from gourmet.models import Session
+from gourmet.models.meta import Session
 
 from display import RecCardDisplay
 from editor import RecEditor

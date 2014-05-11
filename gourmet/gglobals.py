@@ -172,3 +172,7 @@ for filename,stock_id,label,modifier,keyval in [
     ('reccard_edit.png','edit-recipe-card',None,0,0),    
     ]:
     add_icon(os.path.join(imagedir,filename),stock_id,label,modifier,keyval)
+
+
+import models
+models.initialize_connection(os.path.join(gourmetdir,'recipes.db'), args.db_url)
