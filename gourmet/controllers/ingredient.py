@@ -1,6 +1,13 @@
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import IngredientControllerPlugin
 from gourmet.gdebug import debug
+from gourmet.models.ingredient import order_ings
+from gourmet.gtk_extras.treeview_extras import path_next, move_iter
+from gourmet.importers.importer import parse_range
+from gourmet import Undo
+import gtk
+import gobject
+import types
 
 class IngredientController (Pluggable):
 
@@ -33,7 +40,7 @@ class IngredientController (Pluggable):
         ings=self.rg.rd.get_ings(rec)
         ## now we continue with our regular business...
         debug("%s ings"%len(ings),3)
-        self.ing_alist=self.rg.rd.order_ings(ings)
+        self.ing_alist=order_ings(ings)
         self.imodel = gtk.TreeStore(gobject.TYPE_PYOBJECT,
                               gobject.TYPE_STRING,
                               gobject.TYPE_STRING,
@@ -151,7 +158,7 @@ class IngredientController (Pluggable):
         # Append our ingredient object to a list so that we will be able to notice if it has been deleted...
         if not is_undo: self.ingredient_objects.append(ing)
         iter = self._new_iter_(prev_iter=prev_iter,group_iter=group_iter,fallback_on_append=fallback_on_append)
-        amt = self.rg.rd.get_amount_as_string(i)
+        amt = i.get_amount_as_string()
         unit = i.unit
         self.imodel.set_value(iter, 0, i)
         self.imodel.set_value(iter, 1, amt)
@@ -185,7 +192,7 @@ class IngredientController (Pluggable):
         self.imodel.set_value(groupiter, 1, name)
         children_iters.reverse()
         for c in children_iters:
-            te.move_iter(self.imodel,c,None,parent=groupiter,direction='after')
+            move_iter(self.imodel,c,None,parent=groupiter,direction='after')
             #self.rg.rd.undoable_modify_ing(self.imodel.get_value(c,0),
             #                               {'inggroup':name},
             #                               self.history)
@@ -248,7 +255,7 @@ class IngredientController (Pluggable):
             else:
                 prev_path = tuple(path[:-1])
         else:
-            prev_path = te.path_next(path,-1)
+            prev_path = path_next(path,-1)
         return prev_path
 
     def _get_undo_info_for_iter_ (self, iter):
