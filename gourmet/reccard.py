@@ -2467,79 +2467,7 @@ class RecSelector (RecIndex):
             de.show_message(label=_("You haven't selected any recipes!"))
             raise
 
-class YieldSelector (de.ModalDialog):
 
-    def __init__ (self, rec, parent=None):
-        self.__in_update_from_yield = False
-        self.__in_update_from_rec = False
-        de.ModalDialog.__init__(
-            self,
-            okay=True,
-            default=1,parent=parent,
-            label=_('How much of %(title)s does your recipe call for?')%{'title':rec.title},
-            cancel=False
-                  )
-        self.rec = rec
-        table = gtk.Table()
-        self.vbox.add(table);
-        self.recButton,self.recAdj = self.make_spinny(val=1,lower=0,
-                                                      step_incr=0.5,page_incr=5)
-        recLabel = gtk.Label(_('Recipes') + ': ')
-        self.recAdj.connect('value_changed',self.update_from_rec)
-        self.recAdj.connect('changed',self.update_from_rec)                    
-        table.attach(recLabel,0,1,0,1); recLabel.show()
-        table.attach(self.recButton,1,2,0,1); self.recButton.show()
-        if rec.yields:
-            self.yieldsButton,self.yieldsAdj = self.make_spinny(val=self.rec.yields)
-            self.yieldsAdj.connect('value_changed',self.update_from_yield)
-            self.yieldsAdj.connect('changed',self.update_from_yield)            
-            yieldsLabel = gtk.Label(rec.yield_unit.title() + ': ')
-            table.attach(yieldsLabel,0,1,1,2); yieldsLabel.show()
-            table.attach(self.yieldsButton,1,2,1,2);  self.yieldsButton.show()
-        table.show()
-    
-    def make_spinny (self, val=1, lower=0, upper=10000, step_incr=1, page_incr=10,
-                     digits=2):
-        '''return adjustment, spinner widget
-        '''
-        adj = gtk.Adjustment(val,
-                             lower=lower,upper=upper,
-                             step_incr=step_incr,page_incr=page_incr,
-                             )
-        sb = gtk.SpinButton(adj)
-        sb.set_digits(digits)
-        return sb,adj
-
-    def update_from_yield (self, *args):
-        if self.__in_update_from_rec: return
-        self._in_update_from_yield = True
-        yield_val = self.yieldsAdj.get_value()
-        factor = yield_val / float(self.rec.yields)
-        self.recAdj.set_value(factor)
-        self.ret = factor
-        self._in_update_from_yield = False
-
-    def update_from_rec (self, *args):
-        if self.__in_update_from_yield: return
-        self.__in_update_from_rec = True
-        factor = self.recAdj.get_value()
-        if hasattr(self,'yieldsAdj'):
-            self.yieldsAdj.set_value(self.rec.yields * factor)
-        self.ret = factor
-        self.__in_update_from_rec = False        
-
-def getYieldSelection (rec, parent=None):
-    '''Given a recipe, return how much of that recipe we want.
-
-    We offer the user the choice to multiply the recipe or change the
-    yield amount. We return the factor to multiply the recipe by.
-    
-    '''
-    yd = YieldSelector(rec,parent)
-    try:
-        return yd.run()
-    except:
-        return 1
         
 if __name__ == '__main__':
     import GourmetRecipeManager
