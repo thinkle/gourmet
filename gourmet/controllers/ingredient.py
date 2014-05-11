@@ -1,7 +1,7 @@
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import IngredientControllerPlugin
 from gourmet.gdebug import debug
-from gourmet.models.ingredient import order_ings
+from gourmet.models.ingredient import order_ings, RecRef
 from gourmet.gtk_extras.treeview_extras import path_next, move_iter
 from gourmet.importers.importer import parse_range
 from gourmet import Undo

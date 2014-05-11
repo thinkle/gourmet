@@ -1156,7 +1156,7 @@ def get_ratings_conversion (*args,**kwargs):
 
 def show_amount_error (txt):
     """Show an error that explains how numeric amounts work."""
-    de.show_message(label=_("""I'm sorry, I can't understand
+    show_message(label=_("""I'm sorry, I can't understand
 the amount "%s".""")%txt,
                     sublabel=_("Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."),
                     expander=[_("_Details"),

@@ -5,7 +5,8 @@ from gourmet.gglobals import imagedir, uibase
 from gourmet.gtk_extras import fix_action_group_importance
 from gourmet.gtk_extras.WidgetSaver import WindowSaver
 from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
-import gourmet.ImageExtras as ie
+from gourmet.defaults import defaults
+from gourmet import ImageExtras as ie
 from gourmet.gdebug import debug
 from gourmet import convert
 
@@ -372,7 +373,7 @@ class RecCardDisplay (Pluggable):
                 if not widg or not widgLab:
                     raise Exception("There is no widget or label for  %s=%s, %s=%s" % (attr, widg, "label", widgLab))
                 if attr=='category':
-                    attval = self.current_rec.categories_string # ', '.join(self.rg.rd.get_cats(self.current_rec))
+                    attval = self.current_rec.categories_string() # ', '.join(self.rg.rd.get_cats(self.current_rec))
                 else:
                     attval = getattr(self.current_rec,attr)
                 if attval:
@@ -515,7 +516,7 @@ class RecCardDisplay (Pluggable):
             self.yield_unitDisplay.set_text(self.current_rec.yield_unit)
         if yields != self.current_rec.yields:
             # Consider pluralizing...
-            plur_form = defaults.defaults.get_pluralized_form(self.current_rec.yield_unit,yields)
+            plur_form = defaults.get_pluralized_form(self.current_rec.yield_unit,yields)
             if plur_form != self.yield_unitDisplay.get_text():
                 # Change text!
                 self.yield_unitDisplay.set_text(plur_form)

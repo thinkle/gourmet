@@ -11,7 +11,7 @@ from gourmet.gtk_extras import fix_action_group_importance
 from gourmet.gtk_extras import TextBufferMarkup
 from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
 from gourmet import ImageExtras as ie
-from gourmet.views.ingredient.tree_ui import IngredientTreeUI
+from gourmet.views.ingredient.tree_ui import IngredientTreeUI, UndoableTreeStuff
 from gourmet.controllers.ingredient import IngredientController
 from gourmet import convert, Undo
 from gourmet.gtk_extras.treeview_extras import selectionSaver, move_iter
@@ -29,96 +29,6 @@ def find_entry (w):
         for child in w.get_children():
             e = find_entry(child)
             if e: return e
-
-class UndoableTreeStuff:
-    def __init__ (self, ic):
-        self.ic = ic
-
-    def start_recording_additions (self):
-        debug('UndoableTreeStuff.start_recording_additiong',3)
-        self.added = []
-        self.pre_ss = selectionSaver(self.ic.ingredient_editor_module.ingtree_ui.ingTree)
-        self.connection = self.ic.imodel.connect('row-inserted',
-                                                 self.row_inserted_cb)
-        debug('UndoableTreeStuff.start_recording_additiong DONE',3)
-
-    def stop_recording_additions (self):
-        debug('UndoableTreeStuff.stop_recording_additiong',3)
-        self.added = [
-            # i.get_model().get_iter(i.get_path()) is how we get an
-            # iter from a TreeRowReference
-            self.ic.get_persistent_ref_from_iter(i.get_model().get_iter(i.get_path()))
-            for i in self.added
-            ]
-        self.ic.imodel.disconnect(self.connection)
-        debug('UndoableTreeStuff.stop_recording_additions DONE',3)
-
-    def undo_recorded_additions (self):
-        debug('UndoableTreeStuff.undo_recorded_additions',3)
-        self.ic.delete_iters(
-            *[self.ic.get_iter_from_persistent_ref(a) for a in self.added],
-            **{'is_undo':True}
-            )
-        debug('UndoableTreeStuff.undo_recorded_additions DONE',3)
-
-    def row_inserted_cb (self, tm, path, itr):
-        self.added.append(gtk.TreeRowReference(tm,tm.get_path(itr)))
-
-    def record_positions (self, iters):
-        debug('UndoableTreeStuff.record_positions',3)
-        self.pre_ss = selectionSaver(self.ic.ingredient_editor_module.ingtree_ui.ingTree)
-        self.positions = []
-        for i in iters:
-            path = self.ic.imodel.get_path(i)
-            if path[-1]==0:
-                parent = path[:-1] or None
-                sibling = None
-            else:
-                parent = None
-                sibling = path[:-1] + (path[-1]-1,)
-            sib_ref = sibling and self.ic.get_persistent_ref_from_path(sibling)
-            parent_ref = parent and self.ic.get_persistent_ref_from_path(parent)
-            ref = self.ic.get_persistent_ref_from_iter(i)
-            self.positions.append((ref,sib_ref,parent_ref))
-        debug('UndoableTreeStuff.record_positions DONE',3)
-
-    def restore_positions (self):
-        debug('UndoableTreeStuff.restore_positions',3)
-        for ref,sib_ref,parent_ref in self.positions:
-            move_iter(self.ic.imodel,
-                         self.ic.get_iter_from_persistent_ref(ref),
-                         sibling=sib_ref and self.ic.get_iter_from_persistent_ref(sib_ref),
-                         parent=parent_ref and self.ic.get_iter_from_persistent_ref(parent_ref),
-                         direction='after'
-                         )
-            self.pre_ss.restore_selections()
-        debug('UndoableTreeStuff.restore_positions DONE',3)
-
-class UndoableObjectWithInverseThatHandlesItsOwnUndo (Undo.UndoableObject):
-
-    """A class for an UndoableObject whose Undo method already makes
-    its own undo magic happen without need for our intervention.
-    """
-    # This is useful for making Undo's of "add"s -- we use the delete
-    # methods for our Undoing nwhich already do a good job handling all
-    # the Undo magic properly
-
-    def inverse (self):
-        self.history.remove(self)
-        self.inverse_action()
-
-def add_with_undo (rc,method):
-    uts = UndoableTreeStuff(rc.ingtree_ui.ingController)
-    def do_it ():
-        uts.start_recording_additions()
-        method()
-        uts.stop_recording_additions()
-    UndoableObjectWithInverseThatHandlesItsOwnUndo(
-        do_it,
-        uts.undo_recorded_additions,
-        rc.history,
-        widget=rc.ingtree_ui.ingController.imodel
-        ).perform()
 
 # RECIPE EDITOR MODULES
 
