@@ -9,6 +9,7 @@ from gourmet.defaults import defaults
 from gourmet import ImageExtras as ie
 from gourmet.gdebug import debug
 from gourmet import convert
+from gourmet import timeScanner
 
 from editor import RecEditor
 from gourmet.views.ingredient.display import IngredientDisplay

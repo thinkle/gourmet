@@ -8,7 +8,7 @@ from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras.WidgetSaver import WidgetPrefs, WindowSaver
 from gourmet.gtk_extras import fix_action_group_importance
-from gourmet.gtk_extras import TextBufferMarkup
+from gourmet.gtk_extras import TextBufferMarkup, timeEntry
 from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
 from gourmet import ImageExtras as ie
 from gourmet.views.ingredient.tree_ui import IngredientTreeUI, UndoableTreeStuff

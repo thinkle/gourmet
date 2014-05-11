@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import gtk, gobject, pango, sys, os.path, time, os, string
-import recipeManager, convert, reccard, prefs
+import recipeManager, convert, prefs
 from gtk_extras import WidgetSaver, mnemonic_manager
 from gtk_extras import dialog_extras as de
 from gtk_extras import treeview_extras as te
