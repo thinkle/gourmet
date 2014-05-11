@@ -5,7 +5,6 @@ import batchEditor
 import recipeManager
 from exporters.printer import get_print_manager
 import prefs, prefsGui, shopgui
-from reccard import IngInfo
 from views.recipe.card import RecCard
 import exporters
 from exporters.exportManager import get_export_manager
@@ -175,7 +174,6 @@ class GourmetApplication:
         # that want a list of units.
         self.umodel = UnitModel(self.conv)
         self.attributeModels = []
-        self.inginfo = IngInfo(self.rd)
 
     def setup_shopping (self):
         """Setup shopping related stuff"""

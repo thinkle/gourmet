@@ -155,7 +155,6 @@ if __name__ == '__main__':
     db=RecipeManager(**dbargs)
     from gourmet.GourmetRecipeManager import UnitModel
     import gourmet.convert
-    #inginfo = gourmet.reccard.IngInfo(db)
     conv=gourmet.convert.converter()
     umod = UnitModel(conv)
     import nutritionGrabberGui
