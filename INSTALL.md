@@ -123,7 +123,7 @@ setuptools (*Windows only!*)               |                      |             
 intltool                                   |intltool              |intltool            |*included in PyGTK installer*
 python-distutils-extra                     |python-distutils-extra|py27-distutils-extra|https://launchpad.net/python-distutils-extra/
 *Extra Requirements*                       |                      |
-Python Reportlab (for printing/PDF export) |python-reportlab      |py27-reportlab      |
+Python Reportlab (for printing/PDF export) |python-reportlab      |py27-reportlab      |http://www.reportlab.com/ftp/
 pypoppler (for printing and PDF export)    |python-poppler        |py27-poppler        |
 PyGTKSpell (for the spell checking plugin) |python-gtkspell       |py27-gtkspell       |(N/A)
 python-gst0.10 (for sound)                 |python-gst0.10        |py27-gst-python     |*not required*
