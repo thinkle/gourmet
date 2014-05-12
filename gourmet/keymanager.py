@@ -2,6 +2,8 @@ import string, re, time, sys
 from defaults.defaults import lang as defaults
 from defaults.defaults import langProperties as langProperties
 from gdebug import debug, TimeAction
+from models import KeyLookup, Ingredient
+from models.meta import Session
 
 note_separator_regexp = '(;|\s+-\s+|--)'
 note_separator_matcher = re.compile(note_separator_regexp)
@@ -20,7 +22,7 @@ class KeyManager:
 
     __single = None
 
-    def __init__ (self, kd={}, rm=None):
+    def __init__ (self, kd={}, rm=None, session=Session()):
         if KeyManager.__single:
             raise KeyManager.__single
         else:
@@ -30,12 +32,13 @@ class KeyManager:
             import recipeManager
             rm = recipeManager.default_rec_manager()
         self.rm = rm
+        self.session = session
         self.cooking_verbs=cooking_verbs
         # This needs to be made sane i18n-wise
         self.ignored = defaults.IGNORE
         self.ignored.extend(self.cooking_verbs)
         self.ignored_regexp = re.compile("[,; ]?(" + '|'.join(self.ignored) + ")[,; ]?")
-        if self.rm.fetch_len(self.rm.keylookup_table) == 0:
+        if self.session.query(KeyLookup).count() == 0:
             self.initialize_from_defaults()
         self.initialize_categories()
         
@@ -78,8 +81,10 @@ class KeyManager:
         should be flour, barley"""
         debug("Start initialize_categories",10)
         self.cats = []
-        for k in self.rm.get_unique_values('ingkey',self.rm.ingredients_table,deleted=False):
-            fnd=k.find(',')
+        for k in self.session.query(Ingredient.ingkey).\
+                              group_by(Ingredient.ingkey).\
+                              filter_by(deleted=False).all():
+            fnd=k[0].find(',')
             if fnd != -1:
                 self.cats.append(k[0:fnd])
         debug("End initialize_categories",10)
