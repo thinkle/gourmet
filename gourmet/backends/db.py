@@ -16,7 +16,7 @@ import sqlalchemy
 from sqlalchemy import Integer, LargeBinary, String, Float, Boolean, Numeric, Column, ForeignKey, Text
 from sqlalchemy.sql import and_, or_, case 
 from sqlalchemy import event, func
-from gourmet.models.meta import Base, Session
+from gourmet.models.meta import Base, Session, new_db
 from gourmet.models import Category, Convtable, CrossUnit, Density, \
     Ingredient, KeyLookup, Pantry, PluginInfo, Recipe, ShopCat, ShopCatOrder, \
     Unitdict, VersionInfo
@@ -151,10 +151,10 @@ class RecData (Pluggable):
         self.delete_hooks = []
         self.add_ing_hooks = []
         timer = TimeAction('initialize_connection + setup_tables',2)
-        self.initialize_connection()
+        #self.initialize_connection()
         Pluggable.__init__(self,[DatabasePlugin])            
         self.setup_tables()
-        Base.metadata.create_all(self.db)
+        #Base.metadata.create_all(self.db)
         self.update_version_info(gourmet.version.version)
         self._created = True
         timer.end()
@@ -332,7 +332,7 @@ class RecData (Pluggable):
         import importlib
         import gourmet.migration.versions
         package = gourmet.migration.versions
-        if not self.new_db and not stored_info == current_info:
+        if not new_db and not stored_info == current_info:
             backup = False
             for _, modname, _ in pkgutil.iter_modules(package.__path__):
                 target_version = VersionInfo(*[int(s) for s in modname[1:].split('_')],
