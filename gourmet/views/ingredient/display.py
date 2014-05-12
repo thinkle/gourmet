@@ -1,4 +1,4 @@
-from gourmet.backends.db import Session
+from gourmet.models.meta import Session
 from gourmet.models.ingredient import order_ings
 from gourmet import prefs
 
