@@ -403,9 +403,12 @@ class ShoppingList:
         debug("addRec (self, rec, mult, includes={}):",5)
         """Add recipe to our list, assuming it's not already there.
         includes is a dictionary of optional items we want to include/exclude."""
+        if rec.id in self.recs:
+            _, mult_already = self.recs[rec.id]
+            mult += mult_already
         self.recs[rec.id]=(rec,mult)
         self.includes[rec.id]=includes
-	self.reset()
+        self.reset()
 
     def reset (self):
         self.grabIngsFromRecs(self.recs.values(),self.extras)
