@@ -151,10 +151,10 @@ class RecData (Pluggable):
         self.delete_hooks = []
         self.add_ing_hooks = []
         timer = TimeAction('initialize_connection + setup_tables',2)
-        #self.initialize_connection()
+        self.initialize_connection()
         Pluggable.__init__(self,[DatabasePlugin])            
         self.setup_tables()
-        #Base.metadata.create_all(self.db)
+        Base.metadata.create_all(self.db)
         self.update_version_info(gourmet.version.version)
         self._created = True
         timer.end()
