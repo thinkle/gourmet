@@ -3,7 +3,7 @@ from gourmet.gdebug import debug
 from gourmet.gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
 from gourmet.gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
     mnemonic_manager, pageable_store, treeview_extras as te
-from gourmet.models import Recipe
+from gourmet.models import Recipe, Category
 from gourmet.models.meta import Session
 from gourmet import convert
 from gourmet import Undo
@@ -334,14 +334,16 @@ class RecIndex:
                 renderer = gtk.CellRendererCombo()
                 model = gtk.ListStore(str)
                 if c=='category':
-                    map(lambda i: model.append([i[0]), self.session.query(getattr(Category, c)).\
-                                                                          group_by(getattr(Category, c)).\
-                                                                          filter_by(deleted=False).all())
-                        )
+                    for i in self.session.query(Category.category).\
+                                                group_by(Category.category).\
+                                                filter_by(deleted=False).all():
+                        model.append([i[0]])
                 else:
-                    map(lambda i: model.append([i[0]]), self.session.query(getattr(Recipe, c)).\
-                                                                           group_by(getattr(Recipe, c)).\
-                                                                           filter_by(deleted=False).all())
+                    for i in self.session.query(getattr(Recipe, c)).\
+                                                group_by(getattr(Recipe, c)).\
+                                                filter_by(deleted=False).all():
+                        model.append([i[0]])
+
                 renderer.set_property('model',model)
                 renderer.set_property('text-column',0)
             else:
