@@ -227,7 +227,7 @@ class RecIndex:
         self.rmodel.connect('view-changed',self.rmodel_page_changed_cb)
         self.rmodel.connect('view-sort',self.rmodel_sort_cb)
         # and call our handler once to update our prev/next buttons + label
-        self.rmodel_page_changed_cb(self.rmodel)
+        #self.rmodel_page_changed_cb(self.rmodel)
         # and hook up our model
         self.rectree.set_model(self.rmodel)
         self.rectree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)

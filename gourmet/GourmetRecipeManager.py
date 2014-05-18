@@ -972,7 +972,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.rd.delete_hooks.append(
             lambda self,*args: (self.doing_multiple_deletions==False and self.redo_search())
             )
-        self.rd.modify_hooks.append(self.rmodel.update_recipe)
+#        self.rd.modify_hooks.append(self.rmodel.update_recipe)
 
     def selection_changed (self, selected=False):
         if selected != self.selected:
