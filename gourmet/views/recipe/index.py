@@ -334,10 +334,14 @@ class RecIndex:
                 renderer = gtk.CellRendererCombo()
                 model = gtk.ListStore(str)
                 if c=='category':
-                    map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c,self.rg.rd.categories_table)
+                    map(lambda i: model.append([i[0]), self.session.query(getattr(Category, c)).\
+                                                                          group_by(getattr(Category, c)).\
+                                                                          filter_by(deleted=False).all())
                         )
                 else:
-                    map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c))
+                    map(lambda i: model.append([i[0]]), self.session.query(getattr(Recipe, c)).\
+                                                                           group_by(getattr(Recipe, c)).\
+                                                                           filter_by(deleted=False).all())
                 renderer.set_property('model',model)
                 renderer.set_property('text-column',0)
             else:

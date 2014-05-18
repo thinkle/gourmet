@@ -296,12 +296,16 @@ class KeyDictionary:
             )
 
     def keys (self):
-        ll = self.rm.get_unique_values('item',self.rm.ingredients_table,deleted=False)
+        ll = [i[0] for i in self.session.query(Ingredient.item).\
+                                               group_by(Ingredient.item).\
+                                               filter_by(deleted=False).all()]
         ll.extend(self.default.keys())
         return ll
 
     def values (self):
-        ll = self.rm.get_unique_values('ingkey',self.rm.ingredients_table,deleted=False)
+        ll = [i[0] for i in self.session.query(Ingredient.ingkey).\
+                                               group_by(Ingredient.ingkey).\
+                                               filter_by(deleted=False).all()]
         ll.extend(self.default.values())
         return ll
 

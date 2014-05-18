@@ -24,6 +24,8 @@ from defaults.defaults import lang as defaults
 from defaults.defaults import get_pluralized_form
 import plugin_loader, plugin, plugin_gui
 from threadManager import get_thread_manager, get_thread_manager_gui, SuspendableThread
+from models import Recipe, Category
+from models.meta import Session
 
 UNDO = 1
 SHOW_TRASH = 2
@@ -308,9 +310,14 @@ class GourmetApplication:
         """Create a ListModel with unique values of attribute.
         """
         if attribute=='category':
-            slist = self.rg.rd.get_unique_values(attribute,self.rg.rd.categories_table)
+            slist = self.session.query(Category.category).\
+                                       group_by(Category.category).\
+                                       filter_by(deleted=False).all()
         else:
-            slist = self.rg.rd.get_unique_values(attribute,deleted=False)
+            slist = self.session.query(getattr(Recipe, attribute)).\
+                                       group_by(getattr(Recipe, attribute)).\
+                                       filter_by(deleted=False).all()
+        slist = [i[0] for i in slist]
         if not slist:
             slist = self.rg.rd.get_default_values(attribute)
         else:
