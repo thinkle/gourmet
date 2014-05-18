@@ -55,6 +55,9 @@ class RecModel(gtk.GenericTreeModel):
     def on_get_path(self, rowref):
         return self.recipes.index(rowref)
 
+    def get_column_names(self):
+        return [i.name for i in list(Recipe.__table__._columns)]
+
     def on_get_value(self, rowref, column):
         return getattr(rowref, list(Recipe.__table__._columns)[column].name)
 
