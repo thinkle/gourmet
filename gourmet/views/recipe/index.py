@@ -218,6 +218,8 @@ class RecIndex:
 
     def create_rmodel (self, vw):
         self.rmodel = pageable_store.RecModel(vw) #vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
+        #self.rtcols = self.rmodel.get_column_names()
+        print self.rtcols
         #self.set_reccount() # This will be called by the rmodel_page_changed_cb
     
     def setup_rectree (self):
@@ -356,7 +358,10 @@ class RecIndex:
                     else: renderer.set_property('wrap-width',150)
             renderer.set_property('editable',self.editable)
             renderer.connect('edited',self.rtree_edited_cb,n, c)
-            titl = self.rtcolsdic[c]
+            if c in self.rtcolsdic:
+                titl = self.rtcolsdic[c]
+            else:
+                titl = "N/A"
             col = gtk.TreeViewColumn('_%s'%titl,renderer, text=n)
             # Ensure that the columns aren't really narrow on initialising.
             #if c=='title':            # Adjust these two to be even bigger
@@ -371,7 +376,7 @@ class RecIndex:
             #col.connect('clicked', self.column_sort)
             self.rectree.append_column(col)
             cssu.set_sort_column_id(col,n)
-            debug("Column %s is %s->%s"%(n,c,self.rtcolsdic[c]),5)
+            #debug("Column %s is %s->%s"%(n,c,self.rtcolsdic[c]),5)
             n += 1
 
     def toggleTypeSearchCB (self, widget):
