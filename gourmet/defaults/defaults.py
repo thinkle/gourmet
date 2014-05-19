@@ -96,6 +96,8 @@ if hasattr(lang,'PLURALS'):
 
 def get_pluralized_form (word, n):
     from gettext import ngettext
+    if not word:
+        return ''
     lword=word.lower()
     if WORD_TO_SING_PLUR_PAIR.has_key(lword):
         forms = list(WORD_TO_SING_PLUR_PAIR[lword])
