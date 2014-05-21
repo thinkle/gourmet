@@ -20,7 +20,7 @@ from gtk_extras import treeview_extras as te
 from gtk_extras import cb_extras as cb
 from exporters.printer import get_print_manager
 from gdebug import debug
-from gglobals import FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC, REC_ATTRS, doc_base, uibase, imagedir
+from gglobals import FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC, REC_ATTRS, doc_base, uibase, imagedir, launch_url
 from gettext import gettext as _
 import ImageExtras as ie
 from importers.importer import parse_range
