@@ -84,9 +84,10 @@ class KeyManager:
         for k in self.session.query(Ingredient.ingkey).\
                               group_by(Ingredient.ingkey).\
                               filter_by(deleted=False).all():
-            fnd=k[0].find(',')
-            if fnd != -1:
-                self.cats.append(k[0:fnd])
+            if k[0]:
+                fnd=k[0].find(',')
+                if fnd != -1:
+                    self.cats.append(k[0:fnd])
         debug("End initialize_categories",10)
     
     def grab_ordered_key_list (self, str):
