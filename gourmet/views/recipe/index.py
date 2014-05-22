@@ -275,9 +275,13 @@ class RecIndex:
         col = gtk.TreeViewColumn("",renderer,pixbuf=1)
         col.set_min_width(-1)
         self.rectree.append_column(col)
+        column_names = self.rmodel.get_column_names()
         n = 2
         _title_to_num_ = {}
         for c in self.rtcols:
+            if c != 'category':
+                n = column_names.index(c)
+
             if c=='rating':
                 # special case -- for ratings we set up our lovely
                 # star widget
@@ -291,7 +295,6 @@ class RecIndex:
                                 'resizable':True},
                     )
                 cssu.set_sort_column_id(twsm.col,twsm.data_col)
-                n += 1
                 twsm.col.set_min_width(110)
                 continue
             # And we also special case our time column
@@ -330,7 +333,6 @@ class RecIndex:
                 cssu.set_sort_column_id(col,n)
                 col.set_property('reorderable',True)
                 col.set_property('resizable',True)
-                n+=1
                 continue
             elif self.editable and self.rtwidgdic[c]=='Combo':
                 renderer = gtk.CellRendererCombo()
@@ -377,7 +379,6 @@ class RecIndex:
             self.rectree.append_column(col)
             cssu.set_sort_column_id(col,n)
             #debug("Column %s is %s->%s"%(n,c,self.rtcolsdic[c]),5)
-            n += 1
 
     def toggleTypeSearchCB (self, widget):
         """Toggle search-as-you-type option."""
@@ -610,7 +611,7 @@ class RecIndex:
         def foreach(model,path,iter,recs):
             debug("foreach(model,path,iter,recs):",5)
             try:
-                recs.append(model[path][0])
+                recs.append(model.recipes[path[0]])
                 #recs.append(self.get_rec_from_iter(iter))
             except:
                 debug("DEBUG: There was a problem with iter: %s path: %s"%(iter,path),1)
