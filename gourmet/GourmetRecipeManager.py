@@ -1037,7 +1037,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('DeleteRec',gtk.STOCK_DELETE,_('Delete recipe'),
              None,_('Delete selected recipes'),self.rec_tree_delete_rec_cb),
             ('EditRec',gtk.STOCK_EDIT,_('Edit recipe'),
-             None,_('Open selected recipes in recipe editor view'),
+             '<Control>E',_('Open selected recipes in recipe editor view'),
              self.rec_tree_edit_rec),
             ('ExportSelected',None,_('E_xport selected recipes'),
              '<Control>T',_('Export selected recipes to file'),
@@ -1047,7 +1047,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             #('Email', None, _('E-_mail recipes'),
             #None,None,self.email_recs),
             ('BatchEdit',None,_('Batch _edit recipes'),
-             '<Control>E',None,self.batch_edit_recs),
+             '<Control><Shift>E',None,self.batch_edit_recs),
             ('ShopRec','add-to-shopping-list',None,None,None,self.shop_recs)
             ])
 
@@ -1064,11 +1064,11 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('Help',gtk.STOCK_HELP,_('_Help'),
              None,None,self.show_help),
             ('ImportFile',None,_('_Import file'),
-             '<Control>I',_('Import recipe from file'),self.do_import),
+             '<Control>M',_('Import recipe from file'),self.do_import),
             ('ImportWeb',None,_('Import _webpage'),
-             '<Control>W',_('Import recipe from webpage'),self.import_webpageg),
+             '<Control><Shift>M',_('Import recipe from webpage'),self.import_webpageg),
             ('ExportAll',None,_('Export _all recipes'),
-             '<Control>A',_('Export all recipes to file'),lambda *args: self.do_export(export_all=True)),
+             '<Control><Shift>T',_('Export all recipes to file'),lambda *args: self.do_export(export_all=True)),
             ('Plugins',None,_('_Plugins'),
              None,_('Manage plugins which add extra functionality to Gourmet.'),
              lambda *args: plugin_gui.show_plugin_chooser()),
