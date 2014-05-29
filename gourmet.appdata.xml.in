@@ -22,8 +22,9 @@
  </description>
  <screenshots>
   <screenshot type="default" width="1082" height="634">http://thinkle.github.io/gourmet/images/screenshots/SearchView.png</screenshot>
-  <screenshot width=width="736" height="634">http://thinkle.github.io/gourmet/images/screenshots/CardView.pngg</screenshot>
+  <screenshot width=width="736" height="634">http://thinkle.github.io/gourmet/images/screenshots/CardView.png</screenshot>
  </screenshots>
  <url type="homepage">http://thinkle.github.io/gourmet/</url>
  <updatecontact>https://github.com/thinkle/gourmet/issues</updatecontact>
 </application>
+
