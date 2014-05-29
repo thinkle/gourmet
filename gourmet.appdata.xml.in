@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2014 Thomas Hinkle <Thomas_Hinkle@alumni.brown.edu> -->
+<application>
+ <id type="desktop">gourmet.desktop</id>
+ <metadata_license>CC0-1.0</metadata_license>
+ <project_license>GPL-2.0</project_license>
+ <description>
+  <p>
+   Gourmet Recipe Manager is a recipe-organizer that allows you to collect, 
+   search, organize, and browse your recipes. Gourmet can also generate 
+   shopping lists and calculate nutritional information.
+  </p>
+  <p>
+   A simple index view allows you to look at all your recipes as a list 
+   and quickly search through them by ingredient, title, category, cuisine, rating, or instructions.
+  </p>
+  <p>
+   Individual recipes open in their own windows, just like recipe cards drawn out of a recipe box.
+   From the recipe card view, you can instantly multiply or divide a recipe, and Gourmet will 
+   adjust all ingredient amounts for you.
+  </p>
+ </description>
+ <screenshots>
+  <screenshot type="default" width="1082" height="634">http://thinkle.github.io/gourmet/images/screenshots/SearchView.png</screenshot>
+  <screenshot width=width="736" height="634">http://thinkle.github.io/gourmet/images/screenshots/CardView.png</screenshot>
+ </screenshots>
+ <url type="homepage">http://thinkle.github.io/gourmet/</url>
+ <updatecontact>https://github.com/thinkle/gourmet/issues</updatecontact>
+</application>
+
