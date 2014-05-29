@@ -10,6 +10,7 @@
 [type: gettext/glade]ui/shopCatEditor.ui
 [type: gettext/glade]ui/timerDialog.ui
 [type: gettext/glade]ui/valueEditor.ui
+gourmet.appdata.xml.in
 gourmet.desktop.in
 gourmet/GourmetRecipeManager.py
 gourmet/ImageExtras.py
