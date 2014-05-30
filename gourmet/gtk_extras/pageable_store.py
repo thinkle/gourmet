@@ -14,7 +14,7 @@ def map_sqlalchemy_type(saType):
         if isinstance(saType, sa):
             return py
 
-class RecModel(gtk.GenericTreeModel):
+class SqlaModel(gtk.GenericTreeModel):
 
     __gsignals__ = {
         'page-changed':(gobject.SIGNAL_RUN_LAST,
@@ -33,45 +33,45 @@ class RecModel(gtk.GenericTreeModel):
 
     page = 0
 
-    def __init__(self, recipes = list()):
-        #self.__gobject_init__()
+    def __init__(self, sqla_type, records = list()):
         gtk.GenericTreeModel.__init__(self)
-        self.recipes = recipes
+        self.columns = sqla_type.__table__.columns
+        self.records = records
         #self.emit('page-changed')
 
     def on_get_flags(self):
         return gtk.TREE_MODEL_LIST_ONLY|gtk.TREE_MODEL_ITERS_PERSIST
 
     def on_get_n_columns(self):
-        return len(Recipe.__table__.columns)
+        return len(self.columns)
 
     def on_get_column_type(self, index):
-        return map_sqlalchemy_type(list(Recipe.__table__.columns)[index].type)
+        return map_sqlalchemy_type(list(self.columns)[index].type)
 
     # alternatively, we could use the recipe id
     def on_get_iter(self, path):
-        return self.recipes[path[0]]
+        return self.records[path[0]]
 
     def on_get_path(self, rowref):
-        return self.recipes.index(rowref)
+        return self.records.index(rowref)
 
     def get_column_names(self):
-        return [i.name for i in list(Recipe.__table__._columns)]
+        return [i.name for i in list(self.columns)]
 
     def on_get_value(self, rowref, column):
-        return getattr(rowref, list(Recipe.__table__._columns)[column].name)
+        return getattr(rowref, list(self.columns)[column].name)
 
     def on_iter_next(self, rowref):
         try:
-            i = self.recipes.index(rowref)+1
-            return self.recipes[i]
+            i = self.records.index(rowref)+1
+            return self.records[i]
         except IndexError:
             return None
 
     def on_iter_children(self, rowref):
         if rowref:
             return None
-        return self.recipes[0]
+        return self.records[0]
 
     def on_iter_has_child(self, rowref):
         return False
@@ -79,13 +79,13 @@ class RecModel(gtk.GenericTreeModel):
     def on_iter_n_children(self, rowref):
         if rowref:
             return 0
-        return len(self.recipes)
+        return len(self.records)
 
     def on_iter_nth_child(self, rowref, n):
         if rowref:
             return None
         try:
-            return self.recipes[n]
+            return self.records[n]
         except IndexError:
             return None
 

@@ -217,7 +217,7 @@ class RecIndex:
         #self.do_search(None,None)
 
     def create_rmodel (self, vw):
-        self.rmodel = pageable_store.RecModel(vw) #vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
+        self.rmodel = pageable_store.SqlaModel(Recipe, vw) #vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
         #self.rtcols = self.rmodel.get_column_names()
         print self.rtcols
         #self.set_reccount() # This will be called by the rmodel_page_changed_cb
@@ -611,7 +611,7 @@ class RecIndex:
         def foreach(model,path,iter,recs):
             debug("foreach(model,path,iter,recs):",5)
             try:
-                recs.append(model.recipes[path[0]])
+                recs.append(model.records[path[0]])
                 #recs.append(self.get_rec_from_iter(iter))
             except:
                 debug("DEBUG: There was a problem with iter: %s path: %s"%(iter,path),1)
