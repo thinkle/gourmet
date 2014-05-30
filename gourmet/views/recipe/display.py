@@ -374,7 +374,7 @@ class RecCardDisplay (Pluggable):
                 if not widg or not widgLab:
                     raise Exception("There is no widget or label for  %s=%s, %s=%s" % (attr, widg, "label", widgLab))
                 if attr=='category':
-                    attval = self.current_rec.categories_string() # ', '.join(self.rg.rd.get_cats(self.current_rec))
+                    attval = self.current_rec.categories_string
                 else:
                     attval = getattr(self.current_rec,attr)
                 if attval:
