@@ -311,8 +311,7 @@ class GourmetApplication:
         """
         if attribute=='category':
             slist = self.session.query(Category.category).\
-                                       group_by(Category.category).\
-                                       filter_by(deleted=False).all()
+                                       group_by(Category.category).all()
         else:
             slist = self.session.query(getattr(Recipe, attribute)).\
                                        group_by(getattr(Recipe, attribute)).\

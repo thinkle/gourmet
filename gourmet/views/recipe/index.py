@@ -335,8 +335,7 @@ class RecIndex:
                 model = gtk.ListStore(str)
                 if c=='category':
                     for i in self.session.query(Category.category).\
-                                                group_by(Category.category).\
-                                                filter_by(deleted=False).all():
+                                                group_by(Category.category).all():
                         model.append([i[0]])
                 else:
                     for i in self.session.query(getattr(Recipe, c)).\
