@@ -1326,26 +1326,6 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     # end Extra Callbacks for actions on treeview
 
-    def after_dialog_offer_url (self, linktype, file):
-        url = "file:///%s"%file
-        label = _("Export succeeded")
-        if linktype == exporters.WEBPAGE:
-            url += '/index.htm'
-            linktype = _("webpage")
-        sublabel = _("Exported %s to %s")%(linktype,file)
-        def offerer (t):
-            if t.completed:
-                #self.idle_offer_url(label, sublabel, url, True)
-                self.offer_url(label, sublabel, url, True)
-        return offerer
-
-    def idle_offer_url (self, label, sublabl, url, from_thread):
-        if from_thread:
-            gt.gtk_enter()
-        gobject.idle_add(lambda *args: self.offer_url(label,sublabl,url,True))
-        if from_thread:
-            gt.gtk_leave()
-
     def offer_url (self, label, url, messagebox, from_thread=False):
         if from_thread:
             gt.gtk_enter()
