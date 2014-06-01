@@ -698,6 +698,7 @@ def guess_singulars (s):
     return rets
 
 def guess_plurals (s):
+    if not s: return []
     ret = [s+'s',s+'es']
     if s[-1]=='f': ret.append(s[0:-1]+'ves')
     return ret
