@@ -299,8 +299,10 @@ class ThreadManagerGui:
         for widget in threadbox.get_content_area().get_children()[0]:
             widget.hide()
 
+        from gourmet.gglobals import launch_url
         l = gtk.Label()
         l.set_markup(threadbox.done_msg)
+        l.connect('activate-link',lambda lbl, uri: launch_url(uri))
         l.show()
         threadbox.get_content_area().add(l)
 
