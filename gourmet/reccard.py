@@ -573,6 +573,10 @@ class RecCardDisplay (plugin_loader.Pluggable):
         opt = self.prefs.get('save_recipe_as','html')
         fn = exporters.exportManager.get_export_manager().offer_single_export(self.current_rec,self.prefs,parent=self.window,
                                                                               mult=self.mult)
+        if fn:
+            self.offer_url(_('Recipe successfully exported to '
+                             '<a href="file:///%s">%s</a>')%(fn,fn),
+                             url='file:///%s'%fn)
         
 
     def toggle_readable_units_cb (self, widget):
@@ -646,6 +650,27 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def forget_remembered_optional_ingredients (self):
         pass
+
+    def offer_url (self, label, url, from_thread=False):
+        if from_thread:
+            gt.gtk_enter()
+        if hasattr(self,'progress_dialog'):
+            self.hide_progress_dialog()
+        # Clear existing messages...
+        for child in self.messagebox.get_children():
+            self.messagebox.remove(child)
+        # Add new message
+        l = gtk.Label()
+        l.set_markup(label)
+        infobar = gtk.InfoBar()
+        infobar.set_message_type(gtk.MESSAGE_INFO)
+        infobar.get_content_area().add(l)
+        infobar.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
+        infobar.connect('response', lambda ib, response_id: self.messagebox.hide())
+        self.messagebox.pack_start(infobar)
+        self.messagebox.show_all()
+        if from_thread:
+            gt.gtk_leave()
 
 
 class IngredientDisplay:

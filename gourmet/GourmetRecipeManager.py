@@ -1326,27 +1326,6 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     # end Extra Callbacks for actions on treeview
 
-    def offer_url (self, label, url, messagebox, from_thread=False):
-        if from_thread:
-            gt.gtk_enter()
-        if hasattr(self,'progress_dialog'):
-            self.hide_progress_dialog()
-        # Clear existing messages...
-        for child in messagebox.get_children():
-            messagebox.remove(child)
-        # Add new message
-        l = gtk.Label()
-        l.set_markup(label)
-        infobar = gtk.InfoBar()
-        infobar.set_message_type(gtk.MESSAGE_INFO)
-        infobar.get_content_area().add(l)
-        infobar.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
-        infobar.connect('response', lambda ib, response_id: messagebox.hide())
-        messagebox.pack_start(infobar)
-        messagebox.show_all()
-        if from_thread:
-            gt.gtk_leave()
-
     # Methods to handle threading
     def pause_cb (self, button, *args):
         if button.get_active():

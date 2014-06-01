@@ -51,9 +51,9 @@ class ExportManager (plugin_loader.Pluggable):
         if not exp_type or not self.can_export_type(exp_type):
             de.show_message(label=_('Gourmet cannot export file of type "%s"')%os.path.splitext(filename)[1])
             return
-        return self.do_single_export(rec, filename, exp_type, parent.get_child().get_children()[1], mult)
+        return self.do_single_export(rec, filename, exp_type, mult)
         
-    def do_single_export (self, rec, filename, exp_type, messagebox, mult=1, extra_prefs=EXTRA_PREFS_AUTOMATIC):
+    def do_single_export (self, rec, filename, exp_type, mult=1, extra_prefs=EXTRA_PREFS_AUTOMATIC):
         exporter_plugin = self.get_exporter(exp_type)
         extra_prefs = self.get_extra_prefs(exporter_plugin,extra_prefs)
         #extra_prefs = exporter_plugin.run_extra_prefs_dialog() or {}
@@ -77,11 +77,6 @@ class ExportManager (plugin_loader.Pluggable):
             'extra_prefs':extra_prefs,
             })
         outfi.close()
-        import gourmet.GourmetRecipeManager
-        main_app =  gourmet.GourmetRecipeManager.get_application()
-        main_app.offer_url(_('Recipe successfully exported to '
-                             '<a href="file:///%s">%s</a>')%(filename,filename),
-                           messagebox=messagebox, url='file:///%s'%filename)
         return filename
 
     def offer_multiple_export (self, recs, prefs, parent=None, prog=None):
