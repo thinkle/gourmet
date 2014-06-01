@@ -662,6 +662,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
         # Add new message
         l = gtk.Label()
         l.set_markup(label)
+        l.connect('activate-link',lambda lbl, uri: launch_url(uri))
         infobar = gtk.InfoBar()
         infobar.set_message_type(gtk.MESSAGE_INFO)
         infobar.get_content_area().add(l)
