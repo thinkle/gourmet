@@ -41,7 +41,8 @@ class ShoppingListSaver (ShoppingListPlugin):
         rd = gourmet.recipeManager.get_recipe_manager()
         rg = gourmet.GourmetRecipeManager.get_application()
         #print rr
-        rec = rd.add_rec(dict(title=_('Menu for %s')%time.strftime('%x'),
+        rec = rd.add_rec(dict(title=_('Menu for %s (%s)')%(time.strftime('%x'),
+                                                         time.strftime('%X')),
                          category=_('Menu')))
         for recipe,mult in rr.values():
             # Add all recipes...
