@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-04 18:28+0200\n"
+"POT-Creation-Date: 2014-06-02 13:45+0200\n"
 "PO-Revision-Date: 2012-05-07 22:46+0000\n"
 "Last-Translator: Samuli Seppänen <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -26,7 +26,7 @@ msgstr "Reseptiluettelo"
 
 #. Set up hard-coded functional buttons...
 #: ../ui/app.ui.h:2 ../ui/generic_importer.ui.h:5
-#: ../gourmet/importers/interactive_importer.py:144
+#: ../gourmet/importers/interactive_importer.py:146
 msgid "_New Recipe"
 msgstr "Uusi resepti"
 
@@ -190,7 +190,7 @@ msgstr "*"
 msgid "Database _Name:"
 msgstr "Tietokannan nimi:"
 
-#: ../ui/databaseChooser.ui.h:13 ../gourmet/GourmetRecipeManager.py:1052
+#: ../ui/databaseChooser.ui.h:13 ../gourmet/GourmetRecipeManager.py:1055
 #: ../gourmet/shopgui.py:674
 msgid "_File"
 msgstr "Tiedosto"
@@ -457,7 +457,7 @@ msgid "Edit _notes"
 msgstr "Muokkaa muistiinpanoja"
 
 #: ../ui/recCardDisplay.ui.h:17 ../gourmet/exporters/exporter.py:603
-#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:483
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:488
 #: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:61
 msgid "Recipe"
 msgstr "Resepti"
@@ -477,12 +477,12 @@ msgstr "Lisää ainesoa:"
 #: ../ui/recCardIngredientsEditor.ui.h:2 ../gourmet/exporters/exporter.py:248
 #: ../gourmet/importers/interactive_importer.py:39
 #: ../gourmet/importers/interactive_importer.py:54
-#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:478
-#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:480
-#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:508
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:483
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:485
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:513
 #: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:98
 #: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:600
-#: ../gourmet/reccard.py:1072
+#: ../gourmet/reccard.py:1100
 msgid "Ingredients"
 msgstr "Ainekset"
 
@@ -503,7 +503,7 @@ msgid "Delete selected recipe"
 msgstr "Poista valittu resepti"
 
 #. saveEdits
-#: ../ui/recipe_index.ui.h:6 ../gourmet/reccard.py:867
+#: ../ui/recipe_index.ui.h:6 ../gourmet/reccard.py:895
 msgid "_Delete Recipe"
 msgstr "Poista resepti"
 
@@ -578,7 +578,7 @@ msgstr "Luokka"
 #: ../ui/shopCatEditor.ui.h:2 ../gourmet/plugins/key_editor/keyEditor.py:512
 #: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:109
 #: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:188
-#: ../gourmet/reccard.py:2138 ../gourmet/reccard.py:2195
+#: ../gourmet/reccard.py:2166 ../gourmet/reccard.py:2223
 msgid "Key"
 msgstr "Avain"
 
@@ -697,6 +697,27 @@ msgstr "Muuta arvoksi: "
 msgid "_Delete value"
 msgstr "Poista arvo"
 
+#: ../gourmet.appdata.xml.in.h:1
+msgid ""
+"Gourmet Recipe Manager is a recipe-organizer that allows you to collect, "
+"search, organize, and browse your recipes. Gourmet can also generate "
+"shopping lists and calculate nutritional information."
+msgstr ""
+
+#: ../gourmet.appdata.xml.in.h:2
+msgid ""
+"A simple index view allows you to look at all your recipes as a list and "
+"quickly search through them by ingredient, title, category, cuisine, rating, "
+"or instructions."
+msgstr ""
+
+#: ../gourmet.appdata.xml.in.h:3
+msgid ""
+"Individual recipes open in their own windows, just like recipe cards drawn "
+"out of a recipe box. From the recipe card view, you can instantly multiply "
+"or divide a recipe, and Gourmet will adjust all ingredient amounts for you."
+msgstr ""
+
 #: ../gourmet.desktop.in.h:1
 #, fuzzy
 msgid "Gourmet"
@@ -722,28 +743,28 @@ msgid "recipes;cooking;nutrition;nutritional information;shopping lists;"
 msgstr ""
 
 #. Convenience method for showing progress dialogs for import/export/deletion
-#: ../gourmet/GourmetRecipeManager.py:115
+#: ../gourmet/GourmetRecipeManager.py:118
 msgid "Import paused"
 msgstr "Tuonti pysäytetty"
 
-#: ../gourmet/GourmetRecipeManager.py:116
+#: ../gourmet/GourmetRecipeManager.py:119
 msgid "Stop import"
 msgstr "Peruuta tuonti"
 
-#: ../gourmet/GourmetRecipeManager.py:198
-#: ../gourmet/GourmetRecipeManager.py:1093
+#: ../gourmet/GourmetRecipeManager.py:201
+#: ../gourmet/GourmetRecipeManager.py:1096
 msgid "Recipe _Index"
 msgstr "Reseptihakemisto"
 
-#: ../gourmet/GourmetRecipeManager.py:199
+#: ../gourmet/GourmetRecipeManager.py:202
 msgid "Shopping _List"
 msgstr "Ostoslista"
 
-#: ../gourmet/GourmetRecipeManager.py:218 ../gourmet/reccard.py:211
+#: ../gourmet/GourmetRecipeManager.py:221 ../gourmet/reccard.py:211
 msgid "_Go"
 msgstr "_Siirry"
 
-#: ../gourmet/GourmetRecipeManager.py:337
+#: ../gourmet/GourmetRecipeManager.py:340
 msgid "translator-credits"
 msgstr ""
 "kääntäjät\n"
@@ -758,222 +779,222 @@ msgstr ""
 "  hpiili https://launchpad.net/~harri-piili\n"
 "  raula https://launchpad.net/~lauraputkivaara"
 
-#: ../gourmet/GourmetRecipeManager.py:383
+#: ../gourmet/GourmetRecipeManager.py:386
 msgid ""
 "Please consider making a donation to support our continued effort to fix "
 "bugs, implement features, and help users!"
 msgstr ""
 
-#: ../gourmet/GourmetRecipeManager.py:388
+#: ../gourmet/GourmetRecipeManager.py:391
 msgid "Donate via PayPal"
 msgstr ""
 
-#: ../gourmet/GourmetRecipeManager.py:390
+#: ../gourmet/GourmetRecipeManager.py:393
 msgid "Micro-donate via Flattr"
 msgstr ""
 
-#: ../gourmet/GourmetRecipeManager.py:392
+#: ../gourmet/GourmetRecipeManager.py:395
 msgid "Donate weekly via Gittip"
 msgstr ""
 
-#: ../gourmet/GourmetRecipeManager.py:420
+#: ../gourmet/GourmetRecipeManager.py:423
 msgid "Saved!"
 msgstr "Tallennettu!"
 
-#: ../gourmet/GourmetRecipeManager.py:430
+#: ../gourmet/GourmetRecipeManager.py:433
 #, python-format
 msgid "Save your edits to %s"
 msgstr "Tallenna muutoksesi %s:aan"
 
-#: ../gourmet/GourmetRecipeManager.py:441
+#: ../gourmet/GourmetRecipeManager.py:444
 msgid "An import is in progress."
 msgstr "Tuonti on käynnissä."
 
-#: ../gourmet/GourmetRecipeManager.py:442
+#: ../gourmet/GourmetRecipeManager.py:445
 msgid "An export is in progress."
 msgstr "Vienti on käynnissä."
 
-#: ../gourmet/GourmetRecipeManager.py:443
+#: ../gourmet/GourmetRecipeManager.py:446
 msgid "A delete is in progress."
 msgstr "Poisto on käynnissä."
 
-#: ../gourmet/GourmetRecipeManager.py:445
+#: ../gourmet/GourmetRecipeManager.py:448
 msgid "Exit program anyway?"
 msgstr "Poistu silti?"
 
-#: ../gourmet/GourmetRecipeManager.py:447
+#: ../gourmet/GourmetRecipeManager.py:450
 msgid "Don't exit!"
 msgstr "Älä poistu!"
 
-#: ../gourmet/GourmetRecipeManager.py:493
+#: ../gourmet/GourmetRecipeManager.py:496
 #, python-format
 msgid "Permanently deleted %s of %s recipes"
 msgstr "Poistettiin pysyvästi %s/%s reseptiä"
 
-#: ../gourmet/GourmetRecipeManager.py:511
-#: ../gourmet/GourmetRecipeManager.py:526
+#: ../gourmet/GourmetRecipeManager.py:514
+#: ../gourmet/GourmetRecipeManager.py:529
 msgid "Trash"
 msgstr "Roskakori"
 
-#: ../gourmet/GourmetRecipeManager.py:526
+#: ../gourmet/GourmetRecipeManager.py:529
 msgid "Browse, permanently delete or undelete deleted recipes"
 msgstr "Selaa, poista pysyvästi tai palauta tuhottuja reseptejä"
 
-#: ../gourmet/GourmetRecipeManager.py:578
+#: ../gourmet/GourmetRecipeManager.py:581
 msgid "Undeleted recipes "
 msgstr "Palautetut reseptit "
 
-#: ../gourmet/GourmetRecipeManager.py:652
+#: ../gourmet/GourmetRecipeManager.py:655
 msgid "Gourmet Recipe Manager starting up..."
 msgstr "Gourmet-reseptienhallinta käynnistyy..."
 
-#: ../gourmet/GourmetRecipeManager.py:661
+#: ../gourmet/GourmetRecipeManager.py:664
 msgid "Starting gourmet..."
 msgstr "Käynnistetään Gourmet..."
 
-#: ../gourmet/GourmetRecipeManager.py:751
+#: ../gourmet/GourmetRecipeManager.py:754
 #, python-format
 msgid "Number of %(unit)s of %(title)s to shop for"
 msgstr "Ostettavana on %(unit)s tavaraa %(title)s"
 
-#: ../gourmet/GourmetRecipeManager.py:763
+#: ../gourmet/GourmetRecipeManager.py:766
 #, python-format
 msgid "Multiply %s by:"
 msgstr "Kerro %s arvolla:"
 
-#: ../gourmet/GourmetRecipeManager.py:783
+#: ../gourmet/GourmetRecipeManager.py:786
 #, python-format
 msgid "Set %(attributes)s for %(num)s selected recipe?"
 msgid_plural "Set %(attributes)s for %(num)s selected recipes?"
 msgstr[0] "Aseta %(attributes)s %(num)s valittuun reseptiin?"
 msgstr[1] "Aseta %(attributes)s %(num)s valittuihin resepteihin?"
 
-#: ../gourmet/GourmetRecipeManager.py:790
+#: ../gourmet/GourmetRecipeManager.py:793
 msgid "Any previously existing values will not be changed."
 msgstr "Olemassa olevia arvoja ei muuteta"
 
-#: ../gourmet/GourmetRecipeManager.py:792
+#: ../gourmet/GourmetRecipeManager.py:795
 msgid "The new values will overwrite any previously existing values."
 msgstr "Uudet arvot korvaavat jo olemassa olevat"
 
-#: ../gourmet/GourmetRecipeManager.py:793
+#: ../gourmet/GourmetRecipeManager.py:796
 msgid "This change cannot be undone."
 msgstr "Tätä muutosta ei pysty peruuttamaan"
 
-#: ../gourmet/GourmetRecipeManager.py:794
+#: ../gourmet/GourmetRecipeManager.py:797
 msgid "Set values for selected recipes"
 msgstr "Aseta arvot valituille resepteille"
 
-#: ../gourmet/GourmetRecipeManager.py:999
+#: ../gourmet/GourmetRecipeManager.py:1002
 msgid "Search recipes"
 msgstr "Etsi reseptejä"
 
-#: ../gourmet/GourmetRecipeManager.py:1029
+#: ../gourmet/GourmetRecipeManager.py:1032
 msgid "Open recipe"
 msgstr "Avaa resepti"
 
-#: ../gourmet/GourmetRecipeManager.py:1030
+#: ../gourmet/GourmetRecipeManager.py:1033
 msgid "Open selected recipe"
 msgstr "Avaa valittu resepti"
 
 #. We no longer bind "Delete" here -- instead, we'll do it
 #. at the TreeView level to prevent the delete key
 #. elsewhere (e.g. in search box) from muddling up users.
-#: ../gourmet/GourmetRecipeManager.py:1034
+#: ../gourmet/GourmetRecipeManager.py:1037
 msgid "Delete recipe"
 msgstr "Poista resepti"
 
-#: ../gourmet/GourmetRecipeManager.py:1035
+#: ../gourmet/GourmetRecipeManager.py:1038
 msgid "Delete selected recipes"
 msgstr "Poista valitut reseptit"
 
-#: ../gourmet/GourmetRecipeManager.py:1036
+#: ../gourmet/GourmetRecipeManager.py:1039
 msgid "Edit recipe"
 msgstr "Muokkaa reseptiä"
 
-#: ../gourmet/GourmetRecipeManager.py:1037
+#: ../gourmet/GourmetRecipeManager.py:1040
 msgid "Open selected recipes in recipe editor view"
 msgstr "Avaa valitut reseptit reseptien muokkausnäkymässä"
 
-#: ../gourmet/GourmetRecipeManager.py:1039
+#: ../gourmet/GourmetRecipeManager.py:1042
 msgid "E_xport selected recipes"
 msgstr "_Vie valitut reseptit"
 
-#: ../gourmet/GourmetRecipeManager.py:1040
+#: ../gourmet/GourmetRecipeManager.py:1043
 msgid "Export selected recipes to file"
 msgstr "Vie valitut reseptit tiedostoon"
 
-#: ../gourmet/GourmetRecipeManager.py:1042
+#: ../gourmet/GourmetRecipeManager.py:1045
 msgid "_Print"
 msgstr "_Tulosta"
 
 #. ('Email', None, _('E-_mail recipes'),
 #. None,None,self.email_recs),
-#: ../gourmet/GourmetRecipeManager.py:1046
+#: ../gourmet/GourmetRecipeManager.py:1049
 msgid "Batch _edit recipes"
 msgstr "Reseptien massamuokkaus"
 
-#: ../gourmet/GourmetRecipeManager.py:1053 ../gourmet/reccard.py:210
-#: ../gourmet/reccard.py:862 ../gourmet/shopgui.py:652
+#: ../gourmet/GourmetRecipeManager.py:1056 ../gourmet/reccard.py:210
+#: ../gourmet/reccard.py:890 ../gourmet/shopgui.py:652
 msgid "_Edit"
 msgstr "Muokkaa"
 
-#: ../gourmet/GourmetRecipeManager.py:1054
+#: ../gourmet/GourmetRecipeManager.py:1057
 msgid "_Actions"
 msgstr "Toiminnot"
 
-#: ../gourmet/GourmetRecipeManager.py:1055
+#: ../gourmet/GourmetRecipeManager.py:1058
 msgid "Setti_ngs"
 msgstr "_Asetukset"
 
-#: ../gourmet/GourmetRecipeManager.py:1056
-#: ../gourmet/GourmetRecipeManager.py:1061 ../gourmet/reccard.py:212
-#: ../gourmet/reccard.py:223 ../gourmet/reccard.py:864
+#: ../gourmet/GourmetRecipeManager.py:1059
+#: ../gourmet/GourmetRecipeManager.py:1064 ../gourmet/reccard.py:212
+#: ../gourmet/reccard.py:223 ../gourmet/reccard.py:892
 #: ../gourmet/shopgui.py:675 ../gourmet/shopgui.py:677
 msgid "_Help"
 msgstr "_Ohje"
 
-#: ../gourmet/GourmetRecipeManager.py:1057
+#: ../gourmet/GourmetRecipeManager.py:1060
 msgid "_About"
 msgstr "_Tietoja"
 
-#: ../gourmet/GourmetRecipeManager.py:1059
+#: ../gourmet/GourmetRecipeManager.py:1062
 msgid "_New"
 msgstr "_Uusi"
 
-#: ../gourmet/GourmetRecipeManager.py:1063
+#: ../gourmet/GourmetRecipeManager.py:1066
 msgid "_Import file"
 msgstr "_Tuo tiedosto"
 
-#: ../gourmet/GourmetRecipeManager.py:1064
+#: ../gourmet/GourmetRecipeManager.py:1067
 msgid "Import recipe from file"
 msgstr "Tuo resepti tiedostosta"
 
-#: ../gourmet/GourmetRecipeManager.py:1065
+#: ../gourmet/GourmetRecipeManager.py:1068
 msgid "Import _webpage"
 msgstr "Tuo _verkkosivu"
 
-#: ../gourmet/GourmetRecipeManager.py:1066
+#: ../gourmet/GourmetRecipeManager.py:1069
 msgid "Import recipe from webpage"
 msgstr "Tuo resepti verkkosivulta"
 
-#: ../gourmet/GourmetRecipeManager.py:1067
+#: ../gourmet/GourmetRecipeManager.py:1070
 msgid "Export _all recipes"
 msgstr "Vie _kaikki reseptit"
 
-#: ../gourmet/GourmetRecipeManager.py:1068
+#: ../gourmet/GourmetRecipeManager.py:1071
 msgid "Export all recipes to file"
 msgstr "Vie kaikki reseptit tiedostoon"
 
-#: ../gourmet/GourmetRecipeManager.py:1069
+#: ../gourmet/GourmetRecipeManager.py:1072
 msgid "_Plugins"
 msgstr "_Liitännäiset"
 
-#: ../gourmet/GourmetRecipeManager.py:1070
+#: ../gourmet/GourmetRecipeManager.py:1073
 msgid "Manage plugins which add extra functionality to Gourmet."
 msgstr "Hallitse Gourmetin liitännäisiä"
 
-#: ../gourmet/GourmetRecipeManager.py:1072
+#: ../gourmet/GourmetRecipeManager.py:1075
 msgid "_Preferences"
 msgstr "_Asetukset"
 
@@ -981,43 +1002,43 @@ msgstr "_Asetukset"
 #. None,None),
 #. ('Undo',gtk.STOCK_UNDO,_('_Undo'),
 #. None,None),
-#: ../gourmet/GourmetRecipeManager.py:1078
+#: ../gourmet/GourmetRecipeManager.py:1081
 msgid "_Quit"
 msgstr "_Lopeta"
 
-#: ../gourmet/GourmetRecipeManager.py:1080
+#: ../gourmet/GourmetRecipeManager.py:1083
 msgid "Open _Trash"
 msgstr "Avaa _Roskalaatikko"
 
-#: ../gourmet/GourmetRecipeManager.py:1086
+#: ../gourmet/GourmetRecipeManager.py:1089
 msgid "_Tools"
 msgstr "Ty_ökalut"
 
-#: ../gourmet/GourmetRecipeManager.py:1087
+#: ../gourmet/GourmetRecipeManager.py:1090
 msgid "_Timer"
 msgstr "_Ajastin"
 
-#: ../gourmet/GourmetRecipeManager.py:1088
+#: ../gourmet/GourmetRecipeManager.py:1091
 msgid "Show timer"
 msgstr "Näytä ajastin"
 
-#: ../gourmet/GourmetRecipeManager.py:1094
+#: ../gourmet/GourmetRecipeManager.py:1097
 msgid "Searchable index of recipes in the database."
 msgstr "Reseptien sisällysluettelo hakutoiminnolla"
 
-#: ../gourmet/GourmetRecipeManager.py:1204
+#: ../gourmet/GourmetRecipeManager.py:1207
 #, python-format
 msgid "Delete %s?"
 msgstr "Poista %s?"
 
-#: ../gourmet/GourmetRecipeManager.py:1205
+#: ../gourmet/GourmetRecipeManager.py:1208
 #, python-format
 msgid "You have unsaved changes to %s. Are you sure you want to delete?"
 msgstr ""
 "Sinulla on tallentamattomia muutoksia tiedostoon %s. Oletko varma että "
 "haluat poistaa sen?"
 
-#: ../gourmet/GourmetRecipeManager.py:1227
+#: ../gourmet/GourmetRecipeManager.py:1230
 #, python-format
 msgid ""
 "You just moved %s recipe to the trash. You can recover this recipe or "
@@ -1032,68 +1053,64 @@ msgstr[1] ""
 "Siirsit %s reseptiä roskiin. Voit palauttaa tämän reseptit tai hävittää ne "
 "pysyvasti valitsemalla Työkalut->Avaa roskalaatikko."
 
-#: ../gourmet/GourmetRecipeManager.py:1234
+#: ../gourmet/GourmetRecipeManager.py:1237
 msgid "Deleted"
 msgstr "Poistettu"
 
-#: ../gourmet/GourmetRecipeManager.py:1234
-#: ../gourmet/importers/interactive_importer.py:472
+#: ../gourmet/GourmetRecipeManager.py:1237
+#: ../gourmet/importers/interactive_importer.py:474
 msgid "Untitled"
 msgstr "Nimetön"
 
-#: ../gourmet/GourmetRecipeManager.py:1242
+#: ../gourmet/GourmetRecipeManager.py:1245
 msgid "Permanently delete recipes?"
 msgstr "Poista reseptit pysyvästi?"
 
-#: ../gourmet/GourmetRecipeManager.py:1244
+#: ../gourmet/GourmetRecipeManager.py:1247
 msgid "Permanently delete recipe?"
 msgstr "Poista resepti pysyvästi?"
 
-#: ../gourmet/GourmetRecipeManager.py:1245
+#: ../gourmet/GourmetRecipeManager.py:1248
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
 msgstr "Haluatko varmasti poistaa reseptin <i>%s</i>"
 
-#: ../gourmet/GourmetRecipeManager.py:1247
+#: ../gourmet/GourmetRecipeManager.py:1250
 msgid "Are you sure you want to delete the following recipes?"
 msgstr "Haluatko varmasti poistaa seuraavat reseptit?"
 
-#: ../gourmet/GourmetRecipeManager.py:1251
+#: ../gourmet/GourmetRecipeManager.py:1254
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
 msgstr "Haluatko varmasti poistaa %s valittua reseptiä?"
 
-#: ../gourmet/GourmetRecipeManager.py:1253
+#: ../gourmet/GourmetRecipeManager.py:1256
 msgid "See recipes"
 msgstr "Näytä reseptit"
 
-#: ../gourmet/GourmetRecipeManager.py:1261
+#: ../gourmet/GourmetRecipeManager.py:1264
 msgid "Delete Recipes"
 msgstr "Poista reseptit"
 
-#: ../gourmet/GourmetRecipeManager.py:1288
+#: ../gourmet/GourmetRecipeManager.py:1264
+#, fuzzy
+msgid "Recipes deleted"
+msgstr "Reseptiluettelo"
+
+#: ../gourmet/GourmetRecipeManager.py:1291
 #, python-format
 msgid "Deleted recipe %s"
 msgstr "Poista resepti %s"
 
-#: ../gourmet/GourmetRecipeManager.py:1322
-msgid "Export succeeded"
-msgstr "Vienti onnistui"
+#: ../gourmet/GourmetRecipeManager.py:1318
+msgid "See Trash Now"
+msgstr ""
 
-#: ../gourmet/GourmetRecipeManager.py:1325
-msgid "webpage"
-msgstr "sivusto"
-
-#: ../gourmet/GourmetRecipeManager.py:1326
-#, python-format
-msgid "Exported %s to %s"
-msgstr "%s viety %s:ään."
-
-#: ../gourmet/GourmetRecipeManager.py:1386
+#: ../gourmet/GourmetRecipeManager.py:1357
 msgid "Done!"
 msgstr "Valmis!"
 
-#: ../gourmet/GourmetRecipeManager.py:1394
+#: ../gourmet/GourmetRecipeManager.py:1365
 msgid "Importing..."
 msgstr "Tuodaan..."
 
@@ -1115,7 +1132,7 @@ msgstr ""
 "ottaa jonkin aikaa. Tietosi on automaattisesti varmistettu siltä varalta, "
 "että jotain menee vikaan."
 
-#: ../gourmet/backends/db.py:459 ../gourmet/threadManager.py:315
+#: ../gourmet/backends/db.py:459 ../gourmet/threadManager.py:320
 msgid "Details"
 msgstr "Yksityiskohdat"
 
@@ -1131,7 +1148,7 @@ msgstr ""
 "nimelle recipes.db käyttääksesi sitä vanhemman Gourmet:n kanssa."
 
 #: ../gourmet/backends/db.py:1495
-#: ../gourmet/importers/interactive_importer.py:96 ../gourmet/reccard.py:937
+#: ../gourmet/importers/interactive_importer.py:96 ../gourmet/reccard.py:965
 msgid "New Recipe"
 msgstr "Uusi resepti"
 
@@ -1250,38 +1267,34 @@ msgstr "Tallenna resepti nimellä..."
 msgid "Gourmet cannot export file of type \"%s\""
 msgstr "Gourmet ei voi viedä tiedostotyyppiin \"%s\""
 
-#: ../gourmet/exporters/exportManager.py:82
-msgid "Export complete!"
-msgstr "Vienti on valmis!"
-
-#: ../gourmet/exporters/exportManager.py:83
-#, python-format
-msgid "Recipe exported to %s"
-msgstr "Resepti viety polkuun %s"
-
-#: ../gourmet/exporters/exportManager.py:104
+#: ../gourmet/exporters/exportManager.py:99
 msgid "Export recipes"
 msgstr "Vie reseptejä"
 
-#: ../gourmet/exporters/exportManager.py:107
+#: ../gourmet/exporters/exportManager.py:102
 msgid "recipes"
 msgstr "reseptit"
 
-#: ../gourmet/exporters/exportManager.py:119
+#: ../gourmet/exporters/exportManager.py:114
 #, python-format
 msgid "Unable to export: unknown filetype \"%s\""
 msgstr "Vienti epäonnisti: tuntematon tiedostotyyppi \"%s\""
 
-#: ../gourmet/exporters/exportManager.py:120
+#: ../gourmet/exporters/exportManager.py:115
 msgid ""
 "Please make sure to select a filetype from the dropdown menu when saving."
 msgstr ""
 "Olen hyvä ja varmista, että olet valinnut tiedostotyypin alasvetovalikosta "
 "tallennuksen yhteydessä."
 
-#: ../gourmet/exporters/exportManager.py:168
+#: ../gourmet/exporters/exportManager.py:156
 msgid "Export"
 msgstr "Vienti"
+
+#: ../gourmet/exporters/exportManager.py:157
+#, python-format
+msgid "Recipes successfully exported to <a href=\"file:///%s\">%s</a>"
+msgstr ""
 
 #: ../gourmet/exporters/exporter.py:206 ../gourmet/exporters/exporter.py:208
 #: ../gourmet/exporters/exporter.py:512 ../gourmet/exporters/exporter.py:514
@@ -1330,7 +1343,7 @@ msgstr "Tämä on hieman noloa. Jotain meni pieleen reseptin tulostuksessa."
 #: ../gourmet/exporters/recipe_emailer.py:55
 #: ../gourmet/plugins/email_plugin/recipe_emailer.py:29
 #: ../gourmet/plugins/email_plugin/recipe_emailer.py:48
-#: ../gourmet/plugins/key_editor/keyEditor.py:115 ../gourmet/reccard.py:3030
+#: ../gourmet/plugins/key_editor/keyEditor.py:115 ../gourmet/reccard.py:3058
 msgid "Recipes"
 msgstr "Reseptit"
 
@@ -1390,12 +1403,12 @@ msgid "Cooking Time"
 msgstr "Keittoaika"
 
 #: ../gourmet/gglobals.py:97 ../gourmet/gglobals.py:102
-#: ../gourmet/reccard.py:1652
+#: ../gourmet/reccard.py:1680
 msgid "Instructions"
 msgstr "Ohjeet"
 
 #: ../gourmet/gglobals.py:98 ../gourmet/gglobals.py:103
-#: ../gourmet/reccard.py:1658
+#: ../gourmet/reccard.py:1686
 msgid "Notes"
 msgstr "Huomautukset"
 
@@ -1633,7 +1646,12 @@ msgstr "Avaa resepti..."
 msgid "Import"
 msgstr "Tuonti"
 
-#: ../gourmet/importers/importManager.py:243
+#: ../gourmet/importers/importManager.py:190
+#, fuzzy
+msgid "Recipes successfully imported"
+msgstr "KRecipe-tuonti"
+
+#: ../gourmet/importers/importManager.py:244
 msgid "All importable files"
 msgstr "Kaikki tuotavissa olevat tiedostot"
 
@@ -1664,7 +1682,7 @@ msgstr "Raaka-aineiden alaryhmä"
 msgid "Hide"
 msgstr "Piilota"
 
-#: ../gourmet/importers/interactive_importer.py:47 ../gourmet/reccard.py:1308
+#: ../gourmet/importers/interactive_importer.py:47 ../gourmet/reccard.py:1336
 msgid "Description"
 msgstr "Kuvaus"
 
@@ -1680,7 +1698,7 @@ msgstr "Toiminnot"
 msgid "Import recipe"
 msgstr "Tuo resepti"
 
-#: ../gourmet/importers/interactive_importer.py:146
+#: ../gourmet/importers/interactive_importer.py:148
 msgid "Clear _Tags"
 msgstr "Tyhjennä _Tagit"
 
@@ -1694,20 +1712,20 @@ msgstr "Tyhjennä _Tagit"
 #. self.action_area.pack_start(tag_button,expand=False,fill=False,padding=6)
 #. tag_button.show()
 #.
-#: ../gourmet/importers/interactive_importer.py:193
+#: ../gourmet/importers/interactive_importer.py:195
 msgid "Import Recipe"
 msgstr "Tuo resepti"
 
-#: ../gourmet/importers/interactive_importer.py:471
+#: ../gourmet/importers/interactive_importer.py:473
 msgid "Select recipe image"
 msgstr "Valitse reseptin kuva"
 
-#: ../gourmet/importers/interactive_importer.py:472
+#: ../gourmet/importers/interactive_importer.py:474
 #, python-format
 msgid "Select image for recipe \"%s\""
 msgstr "Valitse kuva reseptille \"%s\""
 
-#: ../gourmet/importers/interactive_importer.py:473
+#: ../gourmet/importers/interactive_importer.py:475
 msgid ""
 "Below are all the images found for the page you are importing. Select any "
 "images that are of the recipe, or don't select anything if you don't want "
@@ -1822,10 +1840,10 @@ msgstr "Käytä aina uusinta reseptiä"
 msgid "Always use oldest recipe"
 msgstr "Käytä aina vanhinta reseptiä"
 
-#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:433
-#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:490
-#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:554
-#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:580
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:438
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:495
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:559
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:585
 #: ../gourmet/plugins/unit_converter/convertGui.py:159
 #: ../gourmet/plugins/unit_converter/converter.ui.h:1
 msgid "None"
@@ -2577,13 +2595,13 @@ msgstr "Näytetään aineksia %(bottom)s - %(top)s  / %(total)s"
 #: ../gourmet/plugins/key_editor/keyEditor.py:513
 #: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:101
 #: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:189
-#: ../gourmet/reccard.py:2137 ../gourmet/reccard.py:2164
+#: ../gourmet/reccard.py:2165 ../gourmet/reccard.py:2192
 msgid "Item"
 msgstr "Tarvike"
 
 #: ../gourmet/plugins/key_editor/keyEditor.py:514
 #: ../gourmet/plugins/nutritional_information/nutritionModel.py:8
-#: ../gourmet/reccard.py:2136 ../gourmet/reccard.py:2163
+#: ../gourmet/reccard.py:2164 ../gourmet/reccard.py:2191
 msgid "Unit"
 msgstr "Mittayksikkö"
 
@@ -2694,11 +2712,11 @@ msgstr "Tallenna nykyinen ostoslista reseptiksi tulevaa käyttöä varten"
 
 #. print rr
 #: ../gourmet/plugins/listsaver/shoppingSaverPlugin.py:44
-#, python-format
-msgid "Menu for %s"
+#, fuzzy, python-format
+msgid "Menu for %s (%s)"
 msgstr "%s:n menu"
 
-#: ../gourmet/plugins/listsaver/shoppingSaverPlugin.py:45
+#: ../gourmet/plugins/listsaver/shoppingSaverPlugin.py:46
 msgid "Menu"
 msgstr "Menu"
 
@@ -3705,7 +3723,7 @@ msgid "source"
 msgstr "lähde"
 
 #. menus
-#: ../gourmet/reccard.py:209 ../gourmet/reccard.py:861
+#: ../gourmet/reccard.py:209 ../gourmet/reccard.py:889
 msgid "_Recipe"
 msgstr "_Resepti"
 
@@ -3758,119 +3776,124 @@ msgstr ""
 msgid "Export Recipe"
 msgstr "Vie resepti"
 
-#: ../gourmet/reccard.py:606
+#: ../gourmet/reccard.py:577
+#, python-format
+msgid "Recipe successfully exported to <a href=\"file:///%s\">%s</a>"
+msgstr ""
+
+#: ../gourmet/reccard.py:612
 msgid "You have unsaved changes."
 msgstr "Muutoksia on tallentamatta."
 
-#: ../gourmet/reccard.py:607
+#: ../gourmet/reccard.py:613
 msgid "Apply changes before printing?"
 msgstr "Toteuta muutokset ennen tulostamista?"
 
-#: ../gourmet/reccard.py:698 ../gourmet/recipeIdentifier.py:93
+#: ../gourmet/reccard.py:726 ../gourmet/recipeIdentifier.py:93
 msgid "(Optional)"
 msgstr "(Valinnainen)"
 
-#: ../gourmet/reccard.py:753
+#: ../gourmet/reccard.py:781
 #, python-format
 msgid "Unable to find recipe %s in database."
 msgstr "Reseptiä %s ei löytynyt tietokannasta."
 
-#: ../gourmet/reccard.py:845
+#: ../gourmet/reccard.py:873
 msgid "Edit Recipe:"
 msgstr "Muokkaa reseptiä:"
 
-#: ../gourmet/reccard.py:866
+#: ../gourmet/reccard.py:894
 msgid "Save edits to database"
 msgstr "Talleta muutokset tietokantaan"
 
 #. show_pref_dialog
-#: ../gourmet/reccard.py:875
+#: ../gourmet/reccard.py:903
 msgid "View Recipe Card"
 msgstr "Katso reseptikorttia"
 
-#: ../gourmet/reccard.py:937
+#: ../gourmet/reccard.py:965
 msgid "Edit"
 msgstr "Muokkaa"
 
-#: ../gourmet/reccard.py:1044 ../gourmet/reccard.py:1045
+#: ../gourmet/reccard.py:1072 ../gourmet/reccard.py:1073
 #, python-format
 msgid "Save changes to %s"
 msgstr "Talleta muutokset kohteeseen %s"
 
-#: ../gourmet/reccard.py:1135
+#: ../gourmet/reccard.py:1163
 msgid "Add ingredient"
 msgstr "Lisää aines"
 
-#: ../gourmet/reccard.py:1137
+#: ../gourmet/reccard.py:1165
 msgid "Add group"
 msgstr "Lisää ryhmä"
 
-#: ../gourmet/reccard.py:1139
+#: ../gourmet/reccard.py:1167
 msgid "Paste ingredients"
 msgstr "Liitä aines"
 
-#: ../gourmet/reccard.py:1141
+#: ../gourmet/reccard.py:1169
 msgid "Import from file"
 msgstr "Tuo tiedostosta"
 
-#: ../gourmet/reccard.py:1143
+#: ../gourmet/reccard.py:1171
 msgid "Add _recipe"
 msgstr "Lisää _resepti"
 
-#: ../gourmet/reccard.py:1144
+#: ../gourmet/reccard.py:1172
 msgid "Add another recipe as an ingredient in this recipe"
 msgstr "Lisää toinen resepti tämän reseptin ainekseksi"
 
-#: ../gourmet/reccard.py:1148
+#: ../gourmet/reccard.py:1176
 msgid "Delete"
 msgstr "Poista"
 
-#: ../gourmet/reccard.py:1154
+#: ../gourmet/reccard.py:1182
 msgid "Up"
 msgstr "Ylös"
 
-#: ../gourmet/reccard.py:1156
+#: ../gourmet/reccard.py:1184
 msgid "Down"
 msgstr "Alas"
 
 #. FIXME
-#: ../gourmet/reccard.py:1202
+#: ../gourmet/reccard.py:1230
 msgid "Choose a file containing your ingredient list."
 msgstr "Valitse  ainesosaluettelon sisältävä tiedosto."
 
-#: ../gourmet/reccard.py:1387
+#: ../gourmet/reccard.py:1415
 #, python-format
 msgid "Couldn't make sense of %s as number of yields"
 msgstr "En saanut selvää %s määristä annoksina"
 
-#: ../gourmet/reccard.py:2135 ../gourmet/reccard.py:2162
+#: ../gourmet/reccard.py:2163 ../gourmet/reccard.py:2190
 msgid "Amt"
 msgstr "Määrä"
 
-#: ../gourmet/reccard.py:2139 ../gourmet/reccard.py:2165
+#: ../gourmet/reccard.py:2167 ../gourmet/reccard.py:2193
 msgid "Optional"
 msgstr "Valinnainen"
 
-#: ../gourmet/reccard.py:2277
+#: ../gourmet/reccard.py:2305
 #, python-format
 msgid "The recipe %s (ID %s) is not in our database."
 msgstr "Reseptiä %s (ID %s) ei löydy tietokannasta."
 
-#: ../gourmet/reccard.py:2598
+#: ../gourmet/reccard.py:2626
 #, python-format
 msgid "Converted: %(amt)s %(unit)s"
 msgstr "Muunnettu: %(amt)s %(unit)s"
 
-#: ../gourmet/reccard.py:2600
+#: ../gourmet/reccard.py:2628
 #, python-format
 msgid "Not Converted: %(amt)s %(unit)s"
 msgstr "Ei muunnettu: %(amt)s %(unit)s"
 
-#: ../gourmet/reccard.py:2604
+#: ../gourmet/reccard.py:2632
 msgid "Changed unit."
 msgstr "Yksikkö vaihdettu."
 
-#: ../gourmet/reccard.py:2605
+#: ../gourmet/reccard.py:2633
 #, python-format
 msgid ""
 "You have changed the unit for %(item)s from %(old)s to %(new)s. Would you "
@@ -3878,45 +3901,45 @@ msgid ""
 msgstr ""
 "Vaihdoit %(item)s:n yksikön %(old)s:sta %(new)s:ksi. Haluatko muuntaa määrän?"
 
-#: ../gourmet/reccard.py:2616
+#: ../gourmet/reccard.py:2644
 #, python-format
 msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
 msgstr "%(old_amt)s %(old_unit)s muunnettu %(new_amt)s:ksi %(new_unit)s:ksi"
 
-#: ../gourmet/reccard.py:2628
+#: ../gourmet/reccard.py:2656
 #, python-format
 msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
 msgstr "Muunnos epäonnistui: %(old_unit)s -> %(new_unit)s"
 
-#: ../gourmet/reccard.py:2683
+#: ../gourmet/reccard.py:2711
 msgid "Adding Ingredient Group"
 msgstr "Ainesosaryhmän lisääminen"
 
-#: ../gourmet/reccard.py:2684
+#: ../gourmet/reccard.py:2712
 msgid "Enter a name for new subgroup of ingredients"
 msgstr "Anna uuden ainesosaryhmän nimi"
 
-#: ../gourmet/reccard.py:2685
+#: ../gourmet/reccard.py:2713
 msgid "Name of group:"
 msgstr "Ryhmän nimi:"
 
-#: ../gourmet/reccard.py:2951
+#: ../gourmet/reccard.py:2979
 msgid "Choose recipe"
 msgstr "Valitse resepti"
 
-#: ../gourmet/reccard.py:2988
+#: ../gourmet/reccard.py:3016
 msgid "Recipe cannot call itself as an ingredient!"
 msgstr "Resepti ei voi sisältää itseään ainesosana!"
 
-#: ../gourmet/reccard.py:2989 ../gourmet/shopping.py:329
+#: ../gourmet/reccard.py:3017 ../gourmet/shopping.py:329
 msgid "Infinite recursion is not allowed in recipes!"
 msgstr "Resepteissä ei sallita päättymätöntä rekursiota!"
 
-#: ../gourmet/reccard.py:3010
+#: ../gourmet/reccard.py:3038
 msgid "You haven't selected any recipes!"
 msgstr "Reseptejä ei ole valittuna!"
 
-#: ../gourmet/reccard.py:3022
+#: ../gourmet/reccard.py:3050
 #, python-format
 msgid "How much of %(title)s does your recipe call for?"
 msgstr "Kuinka monta ainesta %(title)s reseptisi tarvitsee?"
@@ -4144,37 +4167,33 @@ msgstr "Seuraaville resepteille:"
 msgid "Paused"
 msgstr "Pysäytetty"
 
-#: ../gourmet/threadManager.py:239
-msgid "Gourmet Import/Export"
-msgstr "Gourmet Tuonti/Vienti"
-
-#: ../gourmet/threadManager.py:258
+#: ../gourmet/threadManager.py:253
 msgid "Pause"
 msgstr "Pysäytä"
 
-#: ../gourmet/threadManager.py:300
+#: ../gourmet/threadManager.py:295
 msgid "Done"
 msgstr "Valmis"
 
-#: ../gourmet/threadManager.py:314
+#: ../gourmet/threadManager.py:319
 #, python-format
 msgid "Error: %s"
 msgstr "Virhe: %s"
 
-#: ../gourmet/threadManager.py:324
+#: ../gourmet/threadManager.py:328
 msgid "cancelled"
 msgstr "peruttu"
 
-#: ../gourmet/threadManager.py:357
+#: ../gourmet/threadManager.py:361
 msgid "Error"
 msgstr "Virhe"
 
-#: ../gourmet/threadManager.py:358
+#: ../gourmet/threadManager.py:362
 #, python-format
 msgid "Error %s: %s"
 msgstr "Virhe %s: %s"
 
-#: ../gourmet/threadManager.py:359
+#: ../gourmet/threadManager.py:363
 msgid "Traceback"
 msgstr "Jäljitä"
 
@@ -4296,6 +4315,24 @@ msgstr ""
 #: ../gourmet/version.py:45
 msgid "Kati Pregartner (splash screen image)"
 msgstr ""
+
+#~ msgid "Export succeeded"
+#~ msgstr "Vienti onnistui"
+
+#~ msgid "webpage"
+#~ msgstr "sivusto"
+
+#~ msgid "Exported %s to %s"
+#~ msgstr "%s viety %s:ään."
+
+#~ msgid "Export complete!"
+#~ msgstr "Vienti on valmis!"
+
+#~ msgid "Recipe exported to %s"
+#~ msgstr "Resepti viety polkuun %s"
+
+#~ msgid "Gourmet Import/Export"
+#~ msgstr "Gourmet Tuonti/Vienti"
 
 #~ msgid "Importing old recipe data"
 #~ msgstr "Tuo vanhat reseptitiedostot"
