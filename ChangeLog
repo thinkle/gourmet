@@ -1,5 +1,9 @@
 2014-06-02  Bernhard Reiter  <ockham@raz.or.at>
 
+        * Merge translations.
+        * Use *.po files from Launchpad.
+        * Remove obsolete po/xx_XX.po files.
+        * Update po/.
         * When saving a shopping list as a menu, add the time in its title.
 
 2014-06-01  Bernhard Reiter  <ockham@raz.or.at>
