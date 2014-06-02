@@ -1,3 +1,63 @@
+2014-06-02  Bernhard Reiter  <ockham@raz.or.at>
+
+        * When saving a shopping list as a menu, add the time in its title.
+
+2014-06-01  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Fix links in InfoBars under Windows, also for threaded export/import.
+        * Fix links in InfoBars under Windows.
+        * Bump version to 0.17.4.
+        * Move offer_url() to reccard.py.
+        * Fix guess_singulars() in defaults_en_GB.py by copying it from defaults_en.py.
+        * Fix guess_plurals() in defaults_en_GB.py by copying it from defaults_en.py.
+        * Remove obsolete offer_url related functions.
+
+2014-05-29  Jessica Eccles <pounamu>
+
+        * fixed typo
+        * added appdata file Fixes #759
+
+2014-05-29  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Remove incorrect width and height attributes from gourmet.appdata.xml.in.
+        * Add gourmet.appdata.xml.in to po/POTFILES.in, MANIFEST.in, and setup.py.
+        * I18nize gourmet.appdata.xml.in.
+        * Fix error in gourmet.appdata.xml.in.
+
+2014-05-27  Jessica Eccles <pounamu>
+
+        * changed keyboard shortcuts as per Tom's comment Fixes #264
+        * added requested keyboard shortcuts Fixes #264
+
+2014-05-21  Bernhard Reiter  <ockham@raz.or.at>
+
+        * In reccard, import launch_url.
+        * Have xml_importer accept unicode filenames.
+
+2014-05-19  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Little fix in case get_pluralized_form is passed an empty string.
+        * When adding a recipe to the shopping list that's already there,
+          increase the amounts of ingredients accordingly.
+
+2014-05-11  Bernhard Reiter  <ockham@raz.or.at>
+
+        * INSTALL.md: add ReportLab download link.
+
+2014-05-10  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Use InfoBar for message in duplicate finder after website import.
+        * Move import/export progress bar to InfoBar.
+        * Replace Jump to button in successful export infobar by link to file.
+        * When exporting from recipe card, display InfoBar there.
+        * In offer_url(), use InfoBar instead of MessageDialog.
+
+2014-05-06  Bernhard Reiter  <ockham@raz.or.at>
+
+        * I18n offer_url parameters.
+        * Revert "Don't use Gtk.InfoBar yet as it requires pyGtk >= 2.22.
+          We'll keep this in a branch for now."
+
 2014-05-04  Bernhard Reiter  <ockham@raz.or.at>
 
         * MCB plugin: create XML in temporary directory.
