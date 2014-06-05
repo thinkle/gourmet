@@ -3,16 +3,16 @@ Installation
 We'll assume you're reading this document because you want to install Gourmet manually. 
 
  * Please note that for *Windows*, we provide an up-to-date installer at our [Releases](https://github.com/thinkle/gourmet/releases) web page which allows you to install Gourmet much easier than described below. 
- * Also, if you're using a *Linux* distribution, chances are that there is a Gourmet package available in your system's software repository that lets you install Gourmet easily.
+ * Also, if you're using a *Linux* or *Unix* distribution, chances are that there is a Gourmet package available in your system's software repository that lets you install Gourmet easily.
  * For *Mac OS X*, you can use [MacPorts](https://www.macports.org/) or [Fink](http://www.finkproject.org/index.php?phpLang=en) which provide up-to-date packages to automatically install Gourmet.
  
 If you're still sure about installing Gourmet manually anyway, keep reading.
 
 Required Packages
 ===============
-Linux
------
-Fortunately for Linux users, at least most of the software Gourmet requires comes packaged with most Linux distributions. The table at the bottom of this document lists the dependencies, and the corresponding packages' names for some of the more popular distros.
+Linux/Unix
+----------
+Fortunately for Linux and Unix users, at least most of the software Gourmet requires comes packaged with most Linux (and some Unix) distributions. The table at the bottom of this document lists the dependencies, and the corresponding packages' names for some of the more popular distros.
 
 To install Gourmet from source -- i.e. from the tarball found at our [Releases](https://github.com/thinkle/gourmet/releases) web page -- just uncompress that tarball, cd into the resulting directory, and run `sudo python setup.py install`, which will
 install gourmet to your current python environment's default location (i.e. subdirectories of `/usr/local` for most Linux distributions. For information on how to customize these locations, run
