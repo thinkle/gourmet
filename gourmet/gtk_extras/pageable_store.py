@@ -1,5 +1,6 @@
 import gtk, gobject
 from sqlalchemy.types import Boolean, Integer, String, Text, Float
+from sqlalchemy import inspect
 from gourmet.models import Recipe
 
 sqlalchemy_type_map = {Boolean: bool,
@@ -35,7 +36,7 @@ class SqlaModel(gtk.GenericTreeModel):
 
     def __init__(self, sqla_type, records = list()):
         gtk.GenericTreeModel.__init__(self)
-        self.columns = sqla_type.__table__.columns
+        self.columns = inspect(sqla_type).all_orm_descriptors #.__table__.columns
         self.records = records
         #self.emit('page-changed')
 
@@ -46,7 +47,10 @@ class SqlaModel(gtk.GenericTreeModel):
         return len(self.columns)
 
     def on_get_column_type(self, index):
-        return map_sqlalchemy_type(list(self.columns)[index].type)
+        if hasattr(list(self.columns)[index], 'type'):
+            return map_sqlalchemy_type(list(self.columns)[index].type)
+        else:
+            return str
 
     # alternatively, we could use the recipe id
     def on_get_iter(self, path):
@@ -56,10 +60,13 @@ class SqlaModel(gtk.GenericTreeModel):
         return self.records.index(rowref)
 
     def get_column_names(self):
-        return [i.name for i in list(self.columns)]
+        return [i.name if hasattr(i, 'name') else i.__name__ if hasattr(i, '__name__') else 'unnamed' for i in list(self.columns)]
 
     def on_get_value(self, rowref, column):
-        return getattr(rowref, list(self.columns)[column].name)
+        if hasattr(list(self.columns)[column], 'name'):
+            return getattr(rowref, list(self.columns)[column].name)
+        elif hasattr(list(self.columns)[column], '__name__'):
+            return getattr(rowref, list(self.columns)[column].__name__)
 
     def on_iter_next(self, rowref):
         try:
