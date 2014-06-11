@@ -778,12 +778,14 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
     def init_recipe_widgets (self):
         self.rw = {}
         self.recent = []
-        self.reccom = []        
+        self.reccom = []
+
         for a,l,w in REC_ATTRS:
             if w=='Entry': self.recent.append(a)
             elif w=='Combo': self.reccom.append(a)
             else: raise Exception("REC_ATTRS widget type %s not recognized" % w)
-        for a in self.reccom:
+
+        for a in self.reccom + self.recent:
             self.rw[a]=self.ui.get_object("%sBox"%a)
             try:
                 assert(self.rw[a])
@@ -795,20 +797,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             # Set up accessibility
             atk = (find_entry(self.rw[a]) or self.rw[a]).get_accessible()
             atk.set_name(REC_ATTR_DIC[a]+' Entry')
-            #self.rw[a].get_children()[0].connect('changed',self.changed_cb)
-        for a in self.recent:            
-            self.rw[a]=self.ui.get_object("%sBox"%a)
-            try:
-                assert(self.rw[a])
-            except:
-                print 'No recipe editing widget for',a
-                raise
-            self.edit_widgets.append(self.rw[a])            
-            self.rw[a].db_prop = a
-            # Set up accessibility
-            atk = (find_entry(self.rw[a]) or self.rw[a]).get_accessible()
-            atk.set_name(REC_ATTR_DIC[a]+' Entry')
-            #self.rw[a].connect('changed',self.changed_cb)
+
         self.update_from_database()
 
     def update_from_database (self):
