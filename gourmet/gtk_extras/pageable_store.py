@@ -37,6 +37,7 @@ class SqlaModel(gtk.GenericTreeModel):
     def __init__(self, sqla_type, records = list()):
         gtk.GenericTreeModel.__init__(self)
         self.columns = inspect(sqla_type).all_orm_descriptors #.__table__.columns
+        self.columns = list(self.columns)
         self.records = records
         #self.emit('page-changed')
 
@@ -47,8 +48,8 @@ class SqlaModel(gtk.GenericTreeModel):
         return len(self.columns)
 
     def on_get_column_type(self, index):
-        if hasattr(list(self.columns)[index], 'type'):
-            return map_sqlalchemy_type(list(self.columns)[index].type)
+        if hasattr(self.columns[index], 'type'):
+            return map_sqlalchemy_type(self.columns[index].type)
         else:
             return str
 
@@ -60,13 +61,13 @@ class SqlaModel(gtk.GenericTreeModel):
         return self.records.index(rowref)
 
     def get_column_names(self):
-        return [i.name if hasattr(i, 'name') else i.__name__ if hasattr(i, '__name__') else 'unnamed' for i in list(self.columns)]
+        return [i.name if hasattr(i, 'name') else i.__name__ if hasattr(i, '__name__') else 'unnamed' for i in self.columns]
 
     def on_get_value(self, rowref, column):
-        if hasattr(list(self.columns)[column], 'name'):
-            return getattr(rowref, list(self.columns)[column].name)
-        elif hasattr(list(self.columns)[column], '__name__'):
-            return getattr(rowref, list(self.columns)[column].__name__)
+        if hasattr(self.columns[column], 'name'):
+            return getattr(rowref, self.columns[column].name)
+        elif hasattr(self.columns[column], '__name__'):
+            return getattr(rowref, self.columns[column].__name__)
 
     def on_iter_next(self, rowref):
         try:
