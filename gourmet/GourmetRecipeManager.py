@@ -689,7 +689,7 @@ def startGUI ():
         # show our GUI
         gtk.main_iteration()
     try:
-        r=RecGui(splash_label=splash.label)
+        r=RecGui(splash_label=splash.label,session=Session())
     except RecGui, rg:
         r=rg
     except:
@@ -892,13 +892,14 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     __single = None
     
-    def __init__ (self, splash_label=None):
+    def __init__ (self, splash_label=None, session=Session()):
         if RecGui.__single:
             raise RecGui.__single
         else:
             RecGui.__single = self
         self.doing_multiple_deletions = False
         GourmetApplication.__init__(self, splash_label=splash_label)
+        self.session = session
         self.setup_index_columns()
         self.setup_hacks()
         self.ui=gtk.Builder()
@@ -908,7 +909,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                           ui=self.ui,
                           rd=self.rd,
                           rg=self,
-                          editable=False)
+                          editable=False,
+                          session=self.session)
         self.setup_database_hooks()        
         fix_action_group_importance(self.search_actions)
         self.ui_manager.insert_action_group(self.search_actions,0)
@@ -1139,7 +1141,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             self.rc[rec.id].show()
         else:
             def show ():
-                w=RecCard(self, rec)
+                w=RecCard(self, rec, session=self.session)
                 self.rc[rec.id]=w
                 self.update_go_menu()
                 self.app.window.set_cursor(None)

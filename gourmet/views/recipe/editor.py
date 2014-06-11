@@ -450,13 +450,12 @@ class RecEditor (WidgetPrefs, Pluggable):
         self.widgets_changed_since_save = {}
         self.mainRecEditActionGroup.get_action('ShowRecipeCard').set_sensitive(True)
         self.new = False
-        newdict = {'id': self.current_rec.id}
         for m in self.modules:
-            newdict = m.save(newdict)
-        self.current_rec = self.rg.rd.modify_rec(self.current_rec,newdict)
-        self.rg.rd.update_hashes(self.current_rec)
+            self.current_rec = m.save(self.current_rec)
+        #self.rg.rd.update_hashes(self.current_rec) #FIXME
+        self.reccard.session.commit()
         self.rg.rmodel.update_recipe(self.current_rec)
-        if newdict.has_key('title'):
+        if self.current_rec.title:
             self.window.set_title("%s %s"%(self.edit_title,self.current_rec.title.strip()))
         self.set_edited(False)
         self.reccard.new = False
@@ -826,7 +825,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             self.rw[c].set_text_column(0)
             cb.setup_completion(self.rw[c])
             if c=='category':
-                val = ', '.join(self.rg.rd.get_cats(self.current_rec))
+                val = self.current_rec.categories_string
             else:
                 val = getattr(self.current_rec,c)
             self.rw[c].entry.set_text(val or "")
@@ -856,19 +855,19 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
     def grab_focus (self):
         self.ui.get_object('titleBox').grab_focus()
         
-    def save (self, recdic):
+    def save (self, recipe):
         for c in self.reccom:
-            recdic[c]=unicode(self.rw[c].entry.get_text())
+            setattr(recipe, c, unicode(self.rw[c].entry.get_text()))
         for e in self.recent:
-            if e in INT_REC_ATTRS +  FLOAT_REC_ATTRS:
-                recdic[e]=self.rw[e].get_value()
+            if e in INT_REC_ATTRS + FLOAT_REC_ATTRS:
+                setattr(recipe, e, self.rw[e].get_value())
             else:
-                recdic[e]=unicode(self.rw[e].get_text())
+                setattr(recipe, e, unicode(self.rw[e].get_text()))
         if self.imageBox.edited:
-            recdic['image'],recdic['thumb']=self.imageBox.commit()
+            recipe.image, recipe.thumb = self.imageBox.commit()
             self.imageBox.edited=False
         self.emit('saved')
-        return recdic
+        return recipe
 
 class ImageBox: # used in DescriptionEditor for recipe image.
     def __init__ (self, RecCard):
@@ -1076,10 +1075,10 @@ class TextFieldEditor (TextEditor):
             txt = "".encode('utf8')
         self.tv.get_buffer().set_text(txt)
 
-    def save (self, recdic):
-        recdic[self.prop] = self.tv.get_buffer().get_text()
+    def save (self, recipe):
+        setattr(recipe, self.prop, self.tv.get_buffer().get_text())
         self.emit('saved')
-        return recdic
+        return recipe
 
 class InstructionsEditorModule (TextFieldEditor,RecEditorModule):
     name = 'instructions'
