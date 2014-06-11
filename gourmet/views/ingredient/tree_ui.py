@@ -15,7 +15,7 @@ class UndoableTreeStuff:
     def start_recording_additions (self):
         debug('UndoableTreeStuff.start_recording_additiong',3)
         self.added = []
-        self.pre_ss = selectionSaver(self.ic.ingredient_editor_module.ingtree_ui.ingTree)
+        self.pre_ss = te.selectionSaver(self.ic.ingredient_editor_module.ingtree_ui.ingTree)
         self.connection = self.ic.imodel.connect('row-inserted',
                                                  self.row_inserted_cb)
         debug('UndoableTreeStuff.start_recording_additiong DONE',3)
@@ -44,7 +44,7 @@ class UndoableTreeStuff:
 
     def record_positions (self, iters):
         debug('UndoableTreeStuff.record_positions',3)
-        self.pre_ss = selectionSaver(self.ic.ingredient_editor_module.ingtree_ui.ingTree)
+        self.pre_ss = te.selectionSaver(self.ic.ingredient_editor_module.ingtree_ui.ingTree)
         self.positions = []
         for i in iters:
             path = self.ic.imodel.get_path(i)
@@ -63,7 +63,7 @@ class UndoableTreeStuff:
     def restore_positions (self):
         debug('UndoableTreeStuff.restore_positions',3)
         for ref,sib_ref,parent_ref in self.positions:
-            move_iter(self.ic.imodel,
+            te.move_iter(self.ic.imodel,
                          self.ic.get_iter_from_persistent_ref(ref),
                          sibling=sib_ref and self.ic.get_iter_from_persistent_ref(sib_ref),
                          parent=parent_ref and self.ic.get_iter_from_persistent_ref(parent_ref),
