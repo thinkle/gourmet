@@ -290,7 +290,7 @@ class RecIndex:
                     self.rg.star_generator,
                     data_col=n,
                     col_title='_%s'%self.rtcolsdic[c],
-                    handlers=[self.star_change_cb],
+                    handlers=[],
                     properties={'reorderable':True,
                                 'resizable':True},
                     )
@@ -301,8 +301,6 @@ class RecIndex:
             elif c in ['preptime','cooktime']:
                 _title_to_num_[self.rtcolsdic[c]]=n
                 renderer=gtk.CellRendererText()
-                renderer.set_property('editable',True)
-                renderer.connect('edited',self.rtree_time_edited_cb,n,c)
                 def get_colnum (tc):
                     try:
                         t = tc.get_title()
@@ -343,8 +341,6 @@ class RecIndex:
                     renderer.set_property('wrap-mode',pango.WRAP_WORD)
                     if c == 'title': renderer.set_property('wrap-width',200)
                     else: renderer.set_property('wrap-width',150)
-            renderer.set_property('editable',self.editable)
-            renderer.connect('edited',self.rtree_edited_cb,n, c)
             if c in self.rtcolsdic:
                 titl = self.rtcolsdic[c]
             else:
@@ -483,56 +479,6 @@ class RecIndex:
         self.last_search={} # reset search so we redo it
         self.search()
 
-    def rtree_time_edited_cb (self, renderer, path_string, text, colnum, attribute):
-        if not text: secs = 0
-        else:
-            secs = self.rg.conv.timestring_to_seconds(text)
-            if not secs:
-                #self.message(_("Unable to recognize %s as a time."%text))
-                return
-        indices = path_string.split(':')
-        path = tuple( map(int, indices))
-        store = self.rectree.get_model()
-        iter = store.get_iter(path)
-        #self.rmodel.set_value(iter,colnum,secs)
-        rec = store.get_user_data(iter)
-        if convert.seconds_to_timestring(getattr(rec,attribute))!=text:
-            self.rd.undoable_modify_rec(rec,
-                                        {attribute:secs},
-                                        self.history,
-                                        get_current_rec_method=lambda *args: self.get_selected_recs_from_rec_tree()[0],
-                                        )
-            self.update_modified_recipe(rec,attribute,secs)
-        # Is this really stupid? I don't know, but I did it before so
-        # perhaps I had a reason.
-        #self.rmodel.row_changed(path,iter)
-        self.rmodel.update_iter(iter)
-        self.rd.save()
-
-    def rtree_edited_cb (self, renderer, path_string, text, colnum, attribute):
-        debug("rtree_edited_cb (self, renderer, path_string, text, colnum, attribute):",5)
-        indices = path_string.split(':')
-        path = tuple( map(int, indices))
-        store = self.rectree.get_model()
-        iter = store.get_iter(path)
-        if not iter: return
-        #self.rmodel.set_value(iter, colnum, text)
-        rec=store.get_user_data(iter)
-        if attribute=='category':
-            val = ", ".join(self.rd.get_cats(rec))
-        else:
-            val = "%s"%getattr(rec,attribute)
-        if val!=text:
-            # only bother with this if the value has actually changed!
-            self.rd.undoable_modify_rec(rec,
-                                        {attribute:text},
-                                        self.history,
-                                        get_current_rec_method=lambda *args: self.get_selected_recs_from_rec_tree()[0],
-                                        )
-            self.update_modified_recipe(rec,attribute,text)
-        self.rmodel.update_iter(iter)
-        self.rd.save()
-
     def tree_keypress_cb (self, widget, event):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname in ['Page_Up','Page_Down']:
@@ -559,21 +505,7 @@ class RecIndex:
             self.rmodel.goto_last_page()
             sb = self.sw.get_vscrollbar()
             sb.set_value(sb.get_adjustment().get_upper())
-            return True            
-        
-    def star_change_cb (self, value, model, treeiter, column_number):
-        #itr = model.convert_iter_to_child_iter(None,treeiter)
-        #self.rmodel.set_value(treeiter,column_number,value)
-        rec = model.get_user_data(treeiter)
-        if getattr(rec,'rating')!=value:
-            self.rd.undoable_modify_rec(
-                rec,
-                {'rating':value},
-                self.history,
-                get_current_rec_method = lambda *args: self.get_selected_recs_from_rec_tree()[0],
-                )
-            #self.rmodel.row_changed(self.rmodel.get_path(treeiter),treeiter)
-            self.rmodel.update_iter(treeiter)
+            return True
 
     def update_modified_recipe(self,rec,attribute,text):
         """Update a modified recipe.

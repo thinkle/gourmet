@@ -1257,39 +1257,6 @@ class RecData (Pluggable):
             orig_dic[k]=v
         return orig_dic
 
-    def undoable_modify_rec (self, rec, dic, history=[], get_current_rec_method=None,
-                             select_change_method=None):
-        """Modify our recipe and remember how to undo our modification using history."""
-        orig_dic = self.get_dict_for_obj(rec,dic.keys())
-        reundo_name = "Re_apply"
-        reapply_name = "Re_apply "
-        reundo_name += string.join(["%s <i>%s</i>"%(k,v) for k,v in orig_dic.items()])
-        reapply_name += string.join(["%s <i>%s</i>"%(k,v) for k,v in dic.items()])
-        redo,reundo=None,None
-        if get_current_rec_method:
-            def redo (*args):
-                r=get_current_rec_method()
-                odic = self.get_dict_for_obj(r,dic.keys())
-                return ([r,dic],[r,odic])
-            def reundo (*args):
-                r = get_current_rec_method()
-                odic = self.get_dict_for_obj(r,orig_dic.keys())
-                return ([r,orig_dic],[r,odic])
-
-        def action (*args,**kwargs):
-            """Our actual action allows for selecting changes after modifying"""
-            self.modify_rec(*args,**kwargs)
-            if select_change_method:
-                select_change_method(*args,**kwargs)
-                
-        obj = Undo.UndoableObject(action,action,history,
-                                  action_args=[rec,dic],undo_action_args=[rec,orig_dic],
-                                  get_reapply_action_args=redo,
-                                  get_reundo_action_args=reundo,
-                                  reapply_name=reapply_name,
-                                  reundo_name=reundo_name,)
-        obj.perform()
-
     def undoable_delete_recs (self, recs, history, make_visible=None):
         """Delete recipes by setting their 'deleted' flag to True and add to UNDO history."""
         def do_delete ():
