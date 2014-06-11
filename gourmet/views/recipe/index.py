@@ -334,21 +334,6 @@ class RecIndex:
                 col.set_property('reorderable',True)
                 col.set_property('resizable',True)
                 continue
-            elif self.editable and self.rtwidgdic[c]=='Combo':
-                renderer = gtk.CellRendererCombo()
-                model = gtk.ListStore(str)
-                if c=='category':
-                    for i in self.session.query(Category.category).\
-                                                group_by(Category.category).all():
-                        model.append([i[0]])
-                else:
-                    for i in self.session.query(getattr(Recipe, c)).\
-                                                group_by(getattr(Recipe, c)).\
-                                                filter_by(deleted=False).all():
-                        model.append([i[0]])
-
-                renderer.set_property('model',model)
-                renderer.set_property('text-column',0)
             else:
                 renderer = gtk.CellRendererText()
                 if c=='link':
