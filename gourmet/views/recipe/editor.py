@@ -11,10 +11,9 @@ from gourmet.gtk_extras import fix_action_group_importance
 from gourmet.gtk_extras import TextBufferMarkup, timeEntry
 from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
 from gourmet import ImageExtras as ie
-from gourmet.views.ingredient.tree_ui import IngredientTreeUI, UndoableTreeStuff
+from gourmet.views.ingredient.tree_ui import IngredientTreeUI, UndoableTreeStuff, add_with_undo
 from gourmet.controllers.ingredient import IngredientController
 from gourmet import convert, Undo
-from gourmet.gtk_extras.treeview_extras import selectionSaver, move_iter
 
 from index import RecIndex
 
