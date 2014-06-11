@@ -483,12 +483,6 @@ class RecIndex:
         self.last_search={} # reset search so we redo it
         self.search()
 
-    def get_rec_from_iter (self, iter):
-        debug("get_rec_from_iter (self, iter): %s"%iter,5)
-        obj=self.rectree.get_model().get_value(iter,0)
-        retval=self.rd.get_rec(obj.id)
-        return retval
-
     def rtree_time_edited_cb (self, renderer, path_string, text, colnum, attribute):
         if not text: secs = 0
         else:
@@ -501,7 +495,7 @@ class RecIndex:
         store = self.rectree.get_model()
         iter = store.get_iter(path)
         #self.rmodel.set_value(iter,colnum,secs)
-        rec = self.get_rec_from_iter(iter)
+        rec = store.get_user_data(iter)
         if convert.seconds_to_timestring(getattr(rec,attribute))!=text:
             self.rd.undoable_modify_rec(rec,
                                         {attribute:secs},
@@ -523,7 +517,7 @@ class RecIndex:
         iter = store.get_iter(path)
         if not iter: return
         #self.rmodel.set_value(iter, colnum, text)
-        rec=self.get_rec_from_iter(iter)
+        rec=store.get_user_data(iter)
         if attribute=='category':
             val = ", ".join(self.rd.get_cats(rec))
         else:
@@ -570,7 +564,7 @@ class RecIndex:
     def star_change_cb (self, value, model, treeiter, column_number):
         #itr = model.convert_iter_to_child_iter(None,treeiter)
         #self.rmodel.set_value(treeiter,column_number,value)
-        rec = self.get_rec_from_iter(treeiter)
+        rec = model.get_user_data(treeiter)
         if getattr(rec,'rating')!=value:
             self.rd.undoable_modify_rec(
                 rec,
@@ -596,8 +590,7 @@ class RecIndex:
         def foreach(model,path,iter,recs):
             debug("foreach(model,path,iter,recs):",5)
             try:
-                recs.append(model.records[path[0]])
-                #recs.append(self.get_rec_from_iter(iter))
+                recs.append(model.get_user_data(iter))
             except:
                 debug("DEBUG: There was a problem with iter: %s path: %s"%(iter,path),1)
         recs=[]
