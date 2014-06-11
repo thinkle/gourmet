@@ -269,10 +269,9 @@ class RecIndex:
 
     def setup_reccolumns (self):
         """Setup the columns of our recipe index TreeView"""
-        column_names = self.rmodel.get_column_names()
         renderer = gtk.CellRendererPixbuf()
         cssu=pageable_store.ColumnSortSetterUpper(self.rmodel)
-        col = gtk.TreeViewColumn("",renderer,pixbuf=column_names.index('thumb'))
+        col = gtk.TreeViewColumn("",renderer,pixbuf=self.rmodel.get_column_index('thumb'))
 
         def data_fun (col,renderer,mod,itr):
             thumb = mod.get_user_data(itr).thumb
@@ -287,9 +286,9 @@ class RecIndex:
         _title_to_num_ = {}
         for c in self.rtcols:
             if c == 'category':
-                n = column_names.index('categories_string')
+                n = self.rmodel.get_column_index('categories_string')
             else:
-                n = column_names.index(c)
+                n = self.rmodel.get_column_index(c)
 
             if c=='rating':
                 # special case -- for ratings we set up our lovely

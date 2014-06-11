@@ -36,20 +36,30 @@ class SqlaModel(gtk.GenericTreeModel):
 
     def __init__(self, sqla_type, records = list()):
         gtk.GenericTreeModel.__init__(self)
-        self.columns = inspect(sqla_type).all_orm_descriptors #.__table__.columns
-        self.columns = list(self.columns)
+        self.column_types = inspect(sqla_type).all_orm_descriptors
+        self.column_types = list(self.column_types)
+        self.column_names = [i.name if hasattr(i, 'name') else
+                             i.__name__ if hasattr(i, '__name__') else
+                             'unnamed'
+                             for i in self.column_types]
         self.records = records
         #self.emit('page-changed')
+
+    def get_column_names(self):
+        return self.column_names
+
+    def get_column_index(self, name):
+        return self.column_names.index(name)
 
     def on_get_flags(self):
         return gtk.TREE_MODEL_LIST_ONLY|gtk.TREE_MODEL_ITERS_PERSIST
 
     def on_get_n_columns(self):
-        return len(self.columns)
+        return len(self.column_types)
 
     def on_get_column_type(self, index):
-        if hasattr(self.columns[index], 'type'):
-            return map_sqlalchemy_type(self.columns[index].type)
+        if hasattr(self.column_types[index], 'type'):
+            return map_sqlalchemy_type(self.column_types[index].type)
         else:
             return str
 
@@ -60,14 +70,8 @@ class SqlaModel(gtk.GenericTreeModel):
     def on_get_path(self, rowref):
         return self.records.index(rowref)
 
-    def get_column_names(self):
-        return [i.name if hasattr(i, 'name') else i.__name__ if hasattr(i, '__name__') else 'unnamed' for i in self.columns]
-
     def on_get_value(self, rowref, column):
-        if hasattr(self.columns[column], 'name'):
-            return getattr(rowref, self.columns[column].name)
-        elif hasattr(self.columns[column], '__name__'):
-            return getattr(rowref, self.columns[column].__name__)
+        return getattr(rowref, self.column_names[column])
 
     def on_iter_next(self, rowref):
         try:
