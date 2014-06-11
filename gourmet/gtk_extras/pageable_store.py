@@ -104,6 +104,8 @@ class SqlaModel(gtk.GenericTreeModel):
     def on_iter_parent(self, child):
         return None
 
+    def update_recipe (self, recipe):
+        pass
 
 class PageableListStore (gtk.ListStore):
     """A ListStore designed to show bits of data at a time.
