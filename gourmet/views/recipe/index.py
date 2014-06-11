@@ -272,7 +272,16 @@ class RecIndex:
         column_names = self.rmodel.get_column_names()
         renderer = gtk.CellRendererPixbuf()
         cssu=pageable_store.ColumnSortSetterUpper(self.rmodel)
-        col = gtk.TreeViewColumn("",renderer,pixbuf=1)
+        col = gtk.TreeViewColumn("",renderer,pixbuf=column_names.index('thumb'))
+
+        def data_fun (col,renderer,mod,itr):
+            thumb = mod.get_user_data(itr).thumb
+            if thumb:
+                renderer.set_property('pixbuf', get_pixbuf_from_jpg(thumb))
+            else:
+                renderer.set_property('pixbuf', None)
+
+        col.set_cell_data_func(renderer, data_fun)
         col.set_min_width(-1)
         self.rectree.append_column(col)
         _title_to_num_ = {}
