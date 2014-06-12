@@ -14,6 +14,13 @@ import gtk
 import gtk.gdk
 import pango
 
+def paginate(model, it, interval):
+    lower, upper = interval
+    return lower <= model.get_path(it)[0] < upper
+
+def page(n, per_page):
+    return n * per_page, (n+1) * per_page
+
 class RecIndex:
     """We handle the 'index view' of recipes, which puts
     a recipe model into a tree and allows it to be searched
@@ -68,6 +75,8 @@ class RecIndex:
         self.setup_widgets()
 
     def setup_widgets (self):
+        self.per_page = self.prefs.get('recipes_per_page',12)
+        self.page = 0
         self.srchentry=self.ui.get_object('rlistSearchbox')
         self.limitButton = self.ui.get_object('rlAddButton')
         # Don't # allow for special keybindings
@@ -106,10 +115,10 @@ class RecIndex:
         self.contid = self.stat.get_context_id('main')
         self.setup_search_views()
         self.setup_rectree()
-        self.prev_button.connect('clicked',lambda *args: self.rmodel.prev_page())
-        self.next_button.connect('clicked',lambda *args: self.rmodel.next_page())
-        self.first_button.connect('clicked',lambda *args: self.rmodel.goto_first_page())
-        self.last_button.connect('clicked',lambda *args: self.rmodel.goto_last_page())
+        self.prev_button.connect('clicked',lambda *args: self.update_page(self.page - 1))
+        self.next_button.connect('clicked',lambda *args: self.update_page(self.page + 1))
+        self.first_button.connect('clicked',lambda *args: self.update_page(0))
+        self.last_button.connect('clicked',lambda *args: self.update_page(self.get_last_page()))
         self.ui.connect_signals({
             'rlistSearch': self.search_as_you_type,
             'ingredientSearch' : lambda *args: self.set_search_by('ingredient'),
@@ -147,6 +156,21 @@ class RecIndex:
         self.mm.add_builder(self.ui)
         self.mm.add_treeview(self.rectree)
         self.mm.fix_conflicts_peacefully()
+        self.page_changed_cb()
+
+    def update_page(self, n=0):
+        self.page = n
+        self.bottom, self.top = page(self.page, self.per_page)
+        self.recipes_on_page = self.all_recipes.filter_new()
+        self.recipes_on_page.set_visible_func(paginate, (self.bottom, self.top))
+        self.rectree.set_model(self.recipes_on_page)
+        self.page_changed_cb()
+
+    def get_last_page (self):
+        """Return the number of our last page."""
+        pages = (self.count / self.per_page) - 1
+        if self.count % self.per_page: pages+=1
+        return pages
 
     def setup_search_actions (self):
         self.search_actions = gtk.ActionGroup('SearchActions')
@@ -183,10 +207,10 @@ class RecIndex:
         #debug('make_rec_visible',0)
         #self.visible.append(rec.id)
         #if not self.rg.wait_to_filter:
-        #    self.rmodel_filter.refilter()
+        #    self.recipes_on_page_filter.refilter()
 
     def search_entry_activate_cb (self, *args):
-        if self.rmodel._get_length_()==1:
+        if self.recipes_on_page._get_length_()==1:
             self.rec_tree_select_rec()
         elif self.srchentry.get_text():
             if not self.search_as_you_type:
@@ -195,14 +219,14 @@ class RecIndex:
             else:
                 self.limit_search()
     
-    def rmodel_page_changed_cb (self, rmodel):
-        if rmodel.page==0:
+    def page_changed_cb (self):
+        if self.page==0:
             self.prev_button.set_sensitive(False)
             self.first_button.set_sensitive(False)
         else:
             self.prev_button.set_sensitive(True)
             self.first_button.set_sensitive(True)
-        if rmodel.get_last_page()==rmodel.page:
+        if self.page==self.get_last_page():
             self.next_button.set_sensitive(False)
             self.last_button.set_sensitive(False)
         else:
@@ -217,20 +241,18 @@ class RecIndex:
         #self.do_search(None,None)
 
     def create_rmodel (self, vw):
-        self.rmodel = pageable_store.SqlaModel(Recipe, vw) #vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
-        #self.rtcols = self.rmodel.get_column_names()
-        #self.set_reccount() # This will be called by the rmodel_page_changed_cb
+        self.all_recipes = pageable_store.SqlaModel(Recipe, vw)
+        self.count = self.all_recipes.iter_n_children(None)
+        self.update_page()
     
     def setup_rectree (self):
         """Create our recipe treemodel."""
         self.create_rmodel(self.rvw)
-        self.rmodel.connect('page-changed',self.rmodel_page_changed_cb)
-        self.rmodel.connect('view-changed',self.rmodel_page_changed_cb)
-        self.rmodel.connect('view-sort',self.rmodel_sort_cb)
+#        self.recipes_on_page.connect('page-changed',self.recipes_on_page_page_changed_cb)
+#        self.recipes_on_page.connect('view-changed',self.recipes_on_page_page_changed_cb)
+#        self.recipes_on_page.connect('view-sort',self.recipes_on_page_sort_cb)
         # and call our handler once to update our prev/next buttons + label
-        #self.rmodel_page_changed_cb(self.rmodel)
-        # and hook up our model
-        self.rectree.set_model(self.rmodel)
+        #self.recipes_on_page_page_changed_cb(self.recipes_on_page)
         self.rectree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.selection_changed()
         self.setup_reccolumns()
@@ -250,15 +272,16 @@ class RecIndex:
     def set_reccount (self, *args):
         """Display the count of currently visible recipes."""
         debug("set_reccount (self, *args):",5)
-        self.count = self.rmodel._get_length_()
-        bottom,top,total = self.rmodel.showing()
-        if top >= total and bottom==1:
-            lab = ngettext('%s recipe','%s recipes',top)%top
+        if self.top >= self.count and self.bottom==1:
+            lab = ngettext('%s recipe','%s recipes',self.top)%self.top
             for b in self.first_button,self.prev_button,self.next_button,self.last_button:
                 b.hide()
         else:
             for b in self.first_button,self.prev_button,self.next_button,self.last_button:
                 b.show()
+            bottom = self.bottom+1
+            top = min(self.top, self.count)
+            total = self.count
             # Do not translate bottom, top and total -- I use these fancy formatting
             # strings in case your language needs the order changed!
             lab = _('Showing recipes %(bottom)s to %(top)s of %(total)s')%locals()
@@ -270,11 +293,14 @@ class RecIndex:
     def setup_reccolumns (self):
         """Setup the columns of our recipe index TreeView"""
         renderer = gtk.CellRendererPixbuf()
-        cssu=pageable_store.ColumnSortSetterUpper(self.rmodel)
-        col = gtk.TreeViewColumn("",renderer,pixbuf=self.rmodel.get_column_index('thumb'))
+        cssu=pageable_store.ColumnSortSetterUpper(self.recipes_on_page)
+        col = gtk.TreeViewColumn("",renderer,pixbuf=self.all_recipes.get_column_index('thumb'))
 
         def data_fun (col,renderer,mod,itr):
-            thumb = mod.get_user_data(itr).thumb
+            # FIXME: We should use
+            # thumb = mod.get_value(itr, self.all_recipes.get_column_index('thumb'))
+            # instead, but passing images as strings truncates them wrongly.
+            thumb = self.all_recipes.get_user_data(mod.convert_iter_to_child_iter(itr)).thumb
             if thumb:
                 renderer.set_property('pixbuf', get_pixbuf_from_jpg(thumb))
             else:
@@ -286,9 +312,9 @@ class RecIndex:
         _title_to_num_ = {}
         for c in self.rtcols:
             if c == 'category':
-                n = self.rmodel.get_column_index('categories_string')
+                n = self.all_recipes.get_column_index('categories_string')
             else:
-                n = self.rmodel.get_column_index(c)
+                n = self.all_recipes.get_column_index(c)
 
             if c=='rating':
                 # special case -- for ratings we set up our lovely
@@ -496,21 +522,23 @@ class RecIndex:
             if keyname == 'Page_Up':
                 if val > 0:
                     return None
-                self.rmodel.prev_page()
+                if self.page > 0:
+                    self.update_page(self.page-1)
                 sb.set_value(upper)
                 return True
             if keyname == 'Page_Down':
                 if val < (upper - adj.page_size):
                     return None
-                self.rmodel.next_page()
+                if self.page < self.get_last_page():
+                    self.update_page(self.page+1)
                 sb.set_value(0)
                 return True
         if keyname == 'Home':
-            self.rmodel.goto_first_page()
+            self.update_page(0)
             self.sw.get_vscrollbar().set_value(0)
             return True            
         if keyname == 'End':
-            self.rmodel.goto_last_page()
+            self.update_page(self.get_last_page())
             sb = self.sw.get_vscrollbar()
             sb.set_value(sb.get_adjustment().get_upper())
             return True
@@ -530,7 +558,10 @@ class RecIndex:
         def foreach(model,path,iter,recs):
             debug("foreach(model,path,iter,recs):",5)
             try:
-                recs.append(model.get_user_data(iter))
+                # FIXME: Ideally, we should store the object in column 0
+                # and use model.get_value(iter, 0) to access it,
+                # but so far, this turned out to be buggy.
+                recs.append(self.all_recipes.get_user_data(model.convert_iter_to_child_iter(iter)))
             except:
                 debug("DEBUG: There was a problem with iter: %s path: %s"%(iter,path),1)
         recs=[]
@@ -566,7 +597,7 @@ class RecIndex:
             return False
 
     def update_rmodel (self, recipe_table):
-        self.rmodel.change_view(recipe_table)
+        self.recipes_on_page.change_view(recipe_table)
         self.set_reccount()
 
 

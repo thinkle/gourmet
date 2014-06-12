@@ -458,7 +458,6 @@ class RecEditor (WidgetPrefs, Pluggable):
             self.current_rec = m.save(self.current_rec)
 
         self.reccard.session.commit()
-        self.rg.rmodel.update_recipe(self.current_rec)
         if self.current_rec.title:
             self.window.set_title("%s %s"%(self.edit_title,self.current_rec.title.strip()))
         self.set_edited(False)
