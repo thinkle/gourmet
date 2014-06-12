@@ -70,10 +70,10 @@ def get_recipe_hash (recipe_object):
     m = hashlib.md5(recstring)
     return m.hexdigest()
 
-def hash_recipe (rec, rd, conv=None):
+def hash_recipe (rec, conv=None):
     if not conv: conv = convert.get_converter()
     rechash = get_recipe_hash(rec)
-    inghash = get_ingredient_hash(rd.get_ings(rec),conv)
+    inghash = get_ingredient_hash(rec.ingredients,conv)
     return rechash,inghash
 
 # Diff stuff

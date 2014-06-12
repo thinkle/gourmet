@@ -451,7 +451,7 @@ class RecEditor (WidgetPrefs, Pluggable):
         self.new = False
         for m in self.modules:
             self.current_rec = m.save(self.current_rec)
-        #self.rg.rd.update_hashes(self.current_rec) #FIXME
+
         self.reccard.session.commit()
         self.rg.rmodel.update_recipe(self.current_rec)
         if self.current_rec.title:

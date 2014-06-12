@@ -5,6 +5,8 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 from meta import Base
 
+from gourmet.recipeIdentifier import hash_recipe
+
 from time import time
 
 class Recipe (Base):
@@ -52,15 +54,16 @@ class Recipe (Base):
         return ', '.join(str(c) for c in self.categories)
 
     @staticmethod
-    def update_last_modified(mapper, connection, target):
+    def update_last_modified_and_hashes(mapper, connection, target):
         target.last_modified = time()
+        target.recipe_hash, target.ingredient_hash = hash_recipe(target)
 
     @classmethod
     def __declare_last__(cls):
         # get called after mappings are completed
         # http://docs.sqlalchemy.org/en/rel_0_7/orm/extensions/declarative.html#declare-last
-        listen(cls, 'before_insert', cls.update_last_modified)
-        listen(cls, 'before_update', cls.update_last_modified)
+        listen(cls, 'before_insert', cls.update_last_modified_and_hashes)
+        listen(cls, 'before_update', cls.update_last_modified_and_hashes)
 
 #    If we converted our last_modified column type to DateTime, we could use
 #    SQL instead of python to produce the timestamp:
