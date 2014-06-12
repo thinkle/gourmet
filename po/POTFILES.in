@@ -225,6 +225,7 @@ gourmet/sound_windows.py
 gourmet/threadManager.py
 gourmet/timeScanner.py
 gourmet/timer.py
+gourmet/trash.py
 gourmet/version.py
 gourmet/views/__init__.py
 gourmet/views/ingredient/__init__.py
