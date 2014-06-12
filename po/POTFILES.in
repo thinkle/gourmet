@@ -214,8 +214,6 @@ gourmet/plugins/web_plugin/gourmetweb/urls.py
 gourmet/prefs.py
 gourmet/prefsGui.py
 gourmet/profileImport.py
-gourmet/reccard.py
-gourmet/recindex.py
 gourmet/recipeIdentifier.py
 gourmet/recipeManager.py
 gourmet/shopEditor.py
@@ -228,4 +226,13 @@ gourmet/threadManager.py
 gourmet/timeScanner.py
 gourmet/timer.py
 gourmet/version.py
+gourmet/views/__init__.py
+gourmet/views/ingredient/__init__.py
+gourmet/views/ingredient/display.py
+gourmet/views/ingredient/tree_ui.py
+gourmet/views/recipe/__init__.py
+gourmet/views/recipe/card.py
+gourmet/views/recipe/display.py
+gourmet/views/recipe/editor.py
+gourmet/views/recipe/index.py
 
