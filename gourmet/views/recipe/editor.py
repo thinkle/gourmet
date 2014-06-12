@@ -21,6 +21,11 @@ import gobject
 import gtk
 import os.path
 
+try:
+    from PIL import Image
+except ImportError:
+    import Image
+
 def find_entry (w):
     if isinstance(w,gtk.Entry):
         return w
