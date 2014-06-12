@@ -14,6 +14,7 @@ from gtk_extras import fix_action_group_importance
 from gtk_extras import ratingWidget, WidgetSaver, mnemonic_manager
 from gtk_extras import dialog_extras as de
 from gtk_extras import treeview_extras as te
+from gtk_extras.dialogs.about import show_about
 from gdebug import debug
 from gglobals import DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base, icondir, imagedir, launch_url, uibase
 from views.recipe.index import RecIndex
@@ -340,77 +341,6 @@ class GourmetApplication:
         self.attributeModels.append((attribute,getattr(self,'%sModel'%attribute)))
         return getattr(self,'%sModel'%attribute)
 
-    # About/Help
-    def show_about (self, *args):
-        """Show information about ourselves."""
-        debug("show_about (self, *args):",5)
-        translator=_("translator-credits")
-        # translators should translate the string 'translator-credits'
-        # If we're not using a translation, then this isn't shown
-        if translator == "translator-credits":
-            translator = None
-        # Grab CREDITS from our defaults_LANG file too!
-        if hasattr(defaults,'CREDITS') and defaults.CREDITS:
-            if translator and translator.find(defaults.CREDITS) > -1:
-                translator += "\n%s"%defaults.CREDITS
-            else:
-                translator = defaults.CREDITS
-
-        logo=gtk.gdk.pixbuf_new_from_file(os.path.join(icondir,"gourmet.png"))
-
-        # load LICENSE text file
-        try:
-            license_text = open(os.path.join(doc_base,'LICENSE'),'r').read()
-        except IOError, err:
-            print "IO Error %s" % err
-        except:
-            print "Unexpexted error"
-
-        paypal_link = """https://www.paypal.com/cgi-bin/webscr?cmd=_donations
-&business=Thomas_Hinkle%40alumni%2ebrown%2eedu
-&lc=US&item_name=Gourmet%20Recipe%20Manager%20Team&no_note=0&currency_code=USD
-&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest"""
-        gittip_link = "https://www.gittip.com/on/github/thinkle/"
-        flattr_link = "http://flattr.com/profile/Thomas_Hinkle/things"
-
-        about = gtk.AboutDialog()
-        about.set_artists(version.artists)
-        about.set_authors(version.authors)
-        about.set_comments(version.description)
-        about.set_copyright(version.copyright)
-        #about.set_documenters(None)
-        about.set_license(license_text)
-        about.set_logo(logo)
-        about.set_program_name(version.appname)
-        about.set_translator_credits(translator)
-        about.set_version(version.version)
-        #about.set_wrap_license(True)
-        about.set_website(version.website)
-        #about.set_website_label('Gourmet website')
-
-        donation_buttons = gtk.HButtonBox()
-        donation_buttons.set_layout(gtk.BUTTONBOX_SPREAD)
-        donations_label = gtk.Label(_("Please consider making a donation to "
-        "support our continued effort to fix bugs, implement features, "
-        "and help users!"))
-        donations_label.set_line_wrap(True)
-        donations_label.show()
-        paypal_button = gtk.LinkButton(paypal_link, _("Donate via PayPal"))
-        paypal_button.show()
-        flattr_button = gtk.LinkButton(flattr_link, _("Micro-donate via Flattr"))
-        flattr_button.show()
-        gittip_button = gtk.LinkButton(gittip_link, _("Donate weekly via Gittip"))
-        gittip_button.show()
-        donation_buttons.add(paypal_button)
-        donation_buttons.add(gittip_button)
-        donation_buttons.add(flattr_button)
-        donation_buttons.show()
-        content = about.get_content_area()
-        content.add(donations_label)
-        content.add(donation_buttons)
-
-        about.run()
-        about.destroy()
 
     def show_help (self, *args):
         de.show_faq(os.path.join(doc_base,'FAQ'))
@@ -970,7 +900,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('Settings',None,_('Setti_ngs')),
             ('HelpMenu',None,_('_Help')),            
             ('About',gtk.STOCK_ABOUT,_('_About'),
-             None,None,self.show_about),
+             None,None,show_about),
             ('New',gtk.STOCK_NEW,_('_New'),
              None,None,self.new_rec_card),
             ('Help',gtk.STOCK_HELP,_('_Help'),
