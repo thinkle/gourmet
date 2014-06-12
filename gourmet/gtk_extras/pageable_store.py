@@ -17,23 +17,6 @@ def map_sqlalchemy_type(saType):
 
 class SqlaModel(gtk.GenericTreeModel):
 
-    __gsignals__ = {
-        'page-changed':(gobject.SIGNAL_RUN_LAST,
-                        gobject.TYPE_NONE, #RETURN
-                        () # PARAMS
-                        ),
-        'view-changed':(gobject.SIGNAL_RUN_LAST,
-                         gobject.TYPE_NONE,
-                         ()
-                         ),
-        'view-sort':(gobject.SIGNAL_RUN_LAST,
-                     gobject.TYPE_PYOBJECT,
-                     (gobject.TYPE_PYOBJECT,)
-                     ),
-        }
-
-    page = 0
-
     def __init__(self, sqla_type, records = list()):
         gtk.GenericTreeModel.__init__(self)
         self.column_types = inspect(sqla_type).all_orm_descriptors
