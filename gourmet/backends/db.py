@@ -1257,17 +1257,19 @@ class RecData (Pluggable):
             orig_dic[k]=v
         return orig_dic
 
-    def undoable_delete_recs (self, recs, history, make_visible=None):
+    def undoable_delete_recs (self, recs, history, make_visible=None, session=Session()):
         """Delete recipes by setting their 'deleted' flag to True and add to UNDO history."""
         def do_delete ():
             for rec in recs:
                 debug('rec %s deleted=True'%rec.id,1)
-                self.modify_rec(rec,{'deleted':True})
+                rec.deleted=True
+            session.commit()
             if make_visible: make_visible(recs)
         def undo_delete ():
             for rec in recs:
                 debug('rec %s deleted=False'%rec.id,1)
-                self.modify_rec(rec,{'deleted':False})
+                rec.deleted=False
+            session.commit()
             if make_visible: make_visible(recs)
         obj = Undo.UndoableObject(do_delete,undo_delete,history)
         obj.perform()

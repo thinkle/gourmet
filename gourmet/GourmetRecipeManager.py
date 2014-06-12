@@ -510,10 +510,12 @@ class RecTrash (RecIndex):
     
     def __init__ (self, rg):
         self.rg = rg
-        self.rmodel = self.rg.rmodel
+        #self.rmodel = self.rg.rmodel
         self.ui=gtk.Builder()
         self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
         RecIndex.__init__(self, self.ui, self.rg.rd, self.rg)
+        self.rvw = self.session.query(Recipe).filter_by(deleted=True).all()
+        self.create_rmodel(self.rvw)
         self.setup_main_window()
         
     def setup_main_window (self):
@@ -1230,9 +1232,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         if cancelled:
             for c in cancelled: recs.remove(c)
         self.rd.undoable_delete_recs(
-            [self.rd.get_rec(r.id) for r in recs],
+            recs,
             self.history,
-            make_visible=lambda *args: self.redo_search()
+            make_visible=lambda *args: self.redo_search(),
+            session=self.session
             )
         self.setup_delete_messagebox(
             ngettext('You just moved %s recipe to the trash. You can recover this recipe or permanently delete it at any time by clicking Tools->Open Trash.',
