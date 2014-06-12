@@ -41,7 +41,8 @@ class SqlaModel(gtk.GenericTreeModel):
         return len(self.column_types)
 
     def on_get_column_type(self, index):
-        if hasattr(self.column_types[index], 'type'):
+        if hasattr(self.column_types[index], 'type') and \
+           map_sqlalchemy_type(self.column_types[index].type):
             return map_sqlalchemy_type(self.column_types[index].type)
         else:
             return str
