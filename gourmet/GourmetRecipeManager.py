@@ -568,7 +568,9 @@ class ImporterExporter:
         if not hasattr(self,'exportManager'):
             self.exportManager = get_export_manager()
         if export_all:
-            recs = self.rd.fetch_all(self.rd.recipe_table,deleted=False,sort_by=[('title',1)])
+            recs = self.session.query(Recipe).\
+                                filter_by(deleted=False).\
+                                order_by(Recipe.title).all()
         else:
             recs = self.get_selected_recs_from_rec_tree()
         self.exportManager.offer_multiple_export(
