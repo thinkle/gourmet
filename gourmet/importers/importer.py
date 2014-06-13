@@ -134,13 +134,6 @@ class Importer (SuspendableThread):
             print 'Unadded ingredients: ',self.added_ings
         self.added_ings=[]
         self.group = None
-        if dict:
-            self.rec=dict
-        else:
-            self.rec = {}
-        #if not self.rec.has_key('id'):
-        #else:
-        #    self.rec['id']=self.rd.new_id()
         #debug('New Import\'s ID=%s'%self.rec['id'],0)
         timeaction.end()
 
@@ -164,8 +157,7 @@ class Importer (SuspendableThread):
     def commit_rec (self):
         timeaction = TimeAction('importer.commit_rec',10)
         for key in ['cuisine','category','title']:
-            if self.rec.has_key(key):
-                self.rec[key]=unicode(re.sub('\s+',' ',self.rec[key]).strip())
+            setattr(self.rec, key, unicode(re.sub('\s+',' ',self.rec[key]).strip()))
         # if yields/servings can't be recognized as a number, add them
         # to the instructions.
         if self.rec.has_key('yields'):
