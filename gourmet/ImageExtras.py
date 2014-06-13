@@ -61,11 +61,11 @@ def get_string_from_pixbuf (pb):
 def get_pixbuf_from_jpg (raw):
     """Given raw data of a jpeg file, we return a gtk.gdk.Pixbuf
     """
-    #o=open('/tmp/recimage.jpg','w')
-    fn=write_image_tempfile(raw,name=TMPFILE)
-    i=gtk.Image()
-    i.set_from_file(fn)
-    return i.get_pixbuf()
+    loader = gtk.gdk.PixbufLoader('jpeg')
+    loader.write(raw)
+    pb = loader.get_pixbuf()
+    loader.close()
+    return pb
 
 def write_image_tempfile (raw, name=None, ext=".jpg"):
     """Write a temporary image file.
