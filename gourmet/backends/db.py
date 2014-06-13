@@ -1116,16 +1116,11 @@ class RecData (Pluggable):
 
         Modifies the list in place.
         '''
-        import sqlalchemy
-        ids = [r.id for r in recs]
-        extra_ings = self.ingredients_table.select(and_(
-                self.ingredients_table.c.refid,
-                self.ingredients_table.c.recipe_id.in_(ids)
-                )
-                                                  ).execute().fetchall()
-        for i in extra_ings:
-            if i.refid not in ids:
-                recs.append(self.get_referenced_rec(i))
+        for r in recs:
+            for i in r.ingredients:
+                if i.recipe_ref and i.recipe_ref not in recs:
+                    recs.append(i.recipe_ref)
+                    #FIXME: see self.get_referenced_rec(i)
                 
     def get_rec (self, id, recipe_table=None):
         """Handed an ID, return a recipe object."""
