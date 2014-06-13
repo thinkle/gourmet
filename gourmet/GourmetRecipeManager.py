@@ -1076,6 +1076,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                              'You just moved %s recipes to the trash. You can recover these recipes or permanently delete them at any time by clicking Tools->Open Trash',
                              len(recs))%len(recs)
             )
+        self.all_recipes.refilter()
         self.set_reccount()
         if hasattr(self,'recTrash'):
             self.recTrash.update_from_db()

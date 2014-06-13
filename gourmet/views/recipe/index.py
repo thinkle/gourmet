@@ -193,11 +193,9 @@ class RecIndex:
     def setup_search_views (self):
         """Setup our views of the database."""
         self.last_search = {}
-        #self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=False)
         self.searches = self.default_searches[0:]
-        self.search_ng = self.session.query(Recipe).filter_by(deleted=False)
         self.sort_by = []
-        self.rvw = self.session.query(Recipe).filter_by(deleted=False).all() #self.rd.search_recipes(self.searches,sort_by=self.sort_by)
+        self.rvw = self.session.query(Recipe).all() #self.rd.search_recipes(self.searches,sort_by=self.sort_by)
 
     def make_rec_visible (self, *args):
         """Make sure recipe REC shows up in our index."""
@@ -241,7 +239,9 @@ class RecIndex:
         #self.do_search(None,None)
 
     def create_rmodel (self, vw):
-        self.all_recipes = pageable_store.SqlaModel(Recipe, vw)
+        self.really_all_recipes = pageable_store.SqlaModel(Recipe, vw)
+        self.all_recipes = self.really_all_recipes.filter_new()
+        self.all_recipes.set_visible_func(lambda mod, it: not mod.get_value(it, self.really_all_recipes.get_column_index('deleted')))
         self.count = self.all_recipes.iter_n_children(None)
         self.update_page()
     
@@ -297,7 +297,7 @@ class RecIndex:
         col = gtk.TreeViewColumn("", renderer)
 
         def data_fun (col,renderer,mod,itr):
-            thumb = mod.get_value(itr, self.all_recipes.get_column_index('thumb'))
+            thumb = mod.get_value(itr, self.really_all_recipes.get_column_index('thumb'))
             if thumb:
                 renderer.set_property('pixbuf', get_pixbuf_from_jpg(thumb))
             else:
@@ -309,9 +309,9 @@ class RecIndex:
         _title_to_num_ = {}
         for c in self.rtcols:
             if c == 'category':
-                n = self.all_recipes.get_column_index('categories_string')
+                n = self.really_all_recipes.get_column_index('categories_string')
             else:
-                n = self.all_recipes.get_column_index(c)
+                n = self.really_all_recipes.get_column_index(c)
 
             if c=='rating':
                 # special case -- for ratings we set up our lovely
@@ -589,7 +589,7 @@ class RecIndex:
             return False
 
     def update_rmodel (self, recipe_table):
-        self.recipes_on_page.change_view(recipe_table)
+        #self.recipes_on_page.change_view(recipe_table)
         self.set_reccount()
 
 
