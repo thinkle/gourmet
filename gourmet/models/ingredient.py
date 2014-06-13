@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, Text, Float, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 
 from meta import Base
 from gourmet.plugin_loader import pluggable_method
@@ -22,6 +23,8 @@ class Ingredient (Base):
     inggroup = Column(Text)
     position = Column(Integer)
     deleted = Column(Boolean)
+
+    recipe_ref = relationship("Recipe", foreign_keys=refid)
 
     #TODO: So far,
     # we did the following before persisting ingredient data to the DB:
