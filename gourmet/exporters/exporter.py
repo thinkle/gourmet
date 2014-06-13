@@ -6,6 +6,7 @@ from gettext import gettext as _
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import BaseExporterPlugin, BaseExporterMultiRecPlugin
 from gourmet.threadManager import SuspendableThread
+from gourmet.models.ingredient import order_ings
 
 class exporter (SuspendableThread, Pluggable):
     """A base exporter class.
@@ -161,7 +162,7 @@ class exporter (SuspendableThread, Pluggable):
         if not ingredients:
             return
         self.write_inghead()
-        for g,ings in self.rd.order_ings(ingredients):
+        for g,ings in order_ings(ingredients):
             if g:
                 self.write_grouphead(g)            
             for i in ings:
@@ -222,7 +223,7 @@ class exporter (SuspendableThread, Pluggable):
             return ret
 
     def _get_amount_and_unit_ (self, ing):
-        return self.rd.get_amount_and_unit(ing,fractions=self.fractions)
+        return ing.get_amount_and_unit(fractions=self.fractions)
 
     # Below are the images inherited exporters should
     # subclass. Subclasses overriding methods should make these
@@ -442,11 +443,11 @@ class exporter_mult (exporter):
 
     def _get_amount_and_unit_ (self, ing):
         if self.mult != 1 and self.change_units:
-            return self.rd.get_amount_and_unit(ing,mult=self.mult,conv=self.conv,
-                                               fractions=self.fractions)
+            return ing.get_amount_and_unit(mult=self.mult,conv=self.conv,
+                                           fractions=self.fractions)
         else:
-            return self.rd.get_amount_and_unit(ing,mult=self.mult,conv=self.conv,
-                                               fractions=self.fractions)
+            return ing.get_amount_and_unit(mult=self.mult,conv=self.conv,
+                                           fractions=self.fractions)
 
     @pluggable_method
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
