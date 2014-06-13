@@ -20,10 +20,13 @@ class RecTrash (RecIndex):
         self.ui=gtk.Builder()
         self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
         RecIndex.__init__(self, self.ui, self.rg.rd, self.rg)
-        self.rvw = self.session.query(Recipe).filter_by(deleted=True).all()
+        self.rvw = self.session.query(Recipe).all()
+        self.deleted_recipes = self.really_all_recipes.filter_new()
+        self.deleted_recipes.set_visible_func(lambda mod, it: not mod.get_value(it, self.really_all_recipes.get_column_index('deleted')))
+
         self.create_rmodel(self.rvw)
         self.setup_main_window()
-        
+
     def setup_main_window (self):
         self.window = gtk.Dialog(_("Trash"),
                                  self.rg.window,
@@ -62,11 +65,12 @@ class RecTrash (RecIndex):
             self.purge_all()
         else:
             self.dismiss()
+        self.all_recipes.refilter()
 
     def dismiss (self, *args):
         self.window.hide()
         return True
-    
+
     def show (self, *args, **kwargs):
         self.window.show(*args,**kwargs)
         self.srchentry.grab_focus()
@@ -76,6 +80,13 @@ class RecTrash (RecIndex):
     #    self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=True)
     #    self.searches = self.default_searches
     #    self.sort_by = []
+
+    def create_rmodel (self, vw):
+        self.really_all_recipes = self.load_recipes(self.rvw)
+        self.all_recipes = self.really_all_recipes.filter_new()
+        self.all_recipes.set_visible_column(self.really_all_recipes.get_column_index('deleted'))
+        self.count = self.all_recipes.iter_n_children(None)
+        self.update_page()
 
     def update_from_db (self):
         self.update_rmodel(self.rg.rd.fetch_all(
