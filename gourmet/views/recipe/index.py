@@ -294,13 +294,10 @@ class RecIndex:
         """Setup the columns of our recipe index TreeView"""
         renderer = gtk.CellRendererPixbuf()
         cssu=pageable_store.ColumnSortSetterUpper(self.recipes_on_page)
-        col = gtk.TreeViewColumn("",renderer,pixbuf=self.all_recipes.get_column_index('thumb'))
+        col = gtk.TreeViewColumn("", renderer)
 
         def data_fun (col,renderer,mod,itr):
-            # FIXME: We should use
-            # thumb = mod.get_value(itr, self.all_recipes.get_column_index('thumb'))
-            # instead, but passing images as strings truncates them wrongly.
-            thumb = self.all_recipes.get_user_data(mod.convert_iter_to_child_iter(itr)).thumb
+            thumb = mod.get_value(itr, self.all_recipes.get_column_index('thumb'))
             if thumb:
                 renderer.set_property('pixbuf', get_pixbuf_from_jpg(thumb))
             else:
@@ -557,13 +554,8 @@ class RecIndex:
         debug("get_selected_recs_from_rec_tree (self):",5)
         def foreach(model,path,iter,recs):
             debug("foreach(model,path,iter,recs):",5)
-            try:
-                # FIXME: Ideally, we should store the object in column 0
-                # and use model.get_value(iter, 0) to access it,
-                # but so far, this turned out to be buggy.
-                recs.append(self.all_recipes.get_user_data(model.convert_iter_to_child_iter(iter)))
-            except:
-                debug("DEBUG: There was a problem with iter: %s path: %s"%(iter,path),1)
+            recs.append(model.get_value(iter, 0))
+
         recs=[]
         sel = self.rectree.get_selection()
         if sel:

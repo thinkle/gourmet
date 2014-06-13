@@ -1,5 +1,5 @@
 import gtk, gobject
-from sqlalchemy.types import Boolean, Integer, String, Text, Float
+from sqlalchemy.types import Boolean, Integer, String, Text, Float, LargeBinary
 from sqlalchemy import inspect
 from gourmet.models import Recipe
 
@@ -8,6 +8,7 @@ sqlalchemy_type_map = {Boolean: bool,
                        String: str,
                        Text: str,
                        Float: float,
+                       LargeBinary: object
                        }
 
 def map_sqlalchemy_type(saType):
@@ -20,7 +21,7 @@ class SqlaModel(gtk.GenericTreeModel):
     def __init__(self, sqla_type, records = list()):
         gtk.GenericTreeModel.__init__(self)
         self.column_types = inspect(sqla_type).all_orm_descriptors
-        self.column_types = list(self.column_types)
+        self.column_types = [object] + list(self.column_types)
         self.column_names = [i.name if hasattr(i, 'name') else
                              i.__name__ if hasattr(i, '__name__') else
                              'unnamed'
@@ -41,6 +42,8 @@ class SqlaModel(gtk.GenericTreeModel):
         return len(self.column_types)
 
     def on_get_column_type(self, index):
+        if index == 0:
+            return self.column_types[0]
         if hasattr(self.column_types[index], 'type') and \
            map_sqlalchemy_type(self.column_types[index].type):
             return map_sqlalchemy_type(self.column_types[index].type)
@@ -55,6 +58,8 @@ class SqlaModel(gtk.GenericTreeModel):
         return self.records.index(rowref)
 
     def on_get_value(self, rowref, column):
+        if column == 0:
+            return rowref
         return getattr(rowref, self.column_names[column])
 
     def on_iter_next(self, rowref):
