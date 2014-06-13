@@ -552,14 +552,14 @@ class RecIndex:
 
     def get_selected_recs_from_rec_tree (self):
         debug("get_selected_recs_from_rec_tree (self):",5)
-        def foreach(model,path,iter,recs):
-            debug("foreach(model,path,iter,recs):",5)
-            recs.append(model.get_value(iter, 0))
-
         recs=[]
         sel = self.rectree.get_selection()
         if sel:
-            sel.selected_foreach(foreach,recs)
+            (model, pathlist) = sel.get_selected_rows()
+            for path in pathlist:
+                debug("for path in pathlist:",5)
+                recs.append(model.get_value(model.get_iter(path), 0))
+
             return recs
         else:
             return []
