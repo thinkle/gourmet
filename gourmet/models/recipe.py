@@ -32,7 +32,7 @@ class Recipe (Base):
     yields = Column(Float)
     yield_unit = Column(String(32))
     image = deferred(Column(LargeBinary))
-    thumb = Column(LargeBinary)
+    thumb = deferred(Column(LargeBinary))
     deleted = Column(Boolean)
     # A hash for uniquely identifying a recipe (based on title etc)
     recipe_hash = Column(String(32))
