@@ -26,6 +26,8 @@ class MCBPlugin (ImporterPlugin):
         tempdir = tempfile.mkdtemp('mcb_zip')
         for name in zf.namelist():
             (dirname, filename) = os.path.split(name)
+            if not filename:
+                continue
             fulldirpath = os.path.join(tempdir,dirname)
             #Create the images dir if not exists yet
             if not os.path.exists(fulldirpath):
