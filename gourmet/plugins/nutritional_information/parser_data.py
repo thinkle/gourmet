@@ -9,7 +9,7 @@ NUTRITION_FIELDS = [
     #[description abbrev type]
     ["Nutrient Databank Number","ndbno","int"],
     ["Short Description","desc","char(100)"],
-    [_("Water"),"water","float"],    
+    [_("Water"),"water","float"],
     [_("Kilocalories"),"kcal","float"],
     [_("g protein"),"protein","float"],
     [_("g lipid"),"lipid","float"],
@@ -48,7 +48,7 @@ NUTRITION_FIELDS = [
     [_("microgram Lycopene"),"lypocene","float"],
     [_("microgram Lutein+Zeazanthin"),"lutzea","float"],
     [_("mg Vitamin E"),"vite","float"],
-    [_("mg Vitamin K"),"vitk","float"],    
+    [_("mg Vitamin K"),"vitk","float"],
     [_("g Saturated Fatty Acid"),"fasat","float"],
     [_("g Monounsaturated Fatty Acids"),"famono","float"],
     [_("g Polyunsaturated Fatty Acids"),"fapoly","float"],
