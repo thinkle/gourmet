@@ -780,15 +780,15 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
 
     def init_recipe_widgets (self):
         self.rw = {}
-        self.recent = []
-        self.reccom = []
+        self.entries = []
+        self.combos = []
 
         for a,l,w in REC_ATTRS:
-            if w=='Entry': self.recent.append(a)
-            elif w=='Combo': self.reccom.append(a)
+            if w=='Entry': self.entries.append(a)
+            elif w=='Combo': self.combos.append(a)
             else: raise Exception("REC_ATTRS widget type %s not recognized" % w)
 
-        for a in self.reccom + self.recent:
+        for a in self.combos + self.entries:
             self.rw[a]=self.ui.get_object("%sBox"%a)
             try:
                 assert(self.rw[a])
@@ -810,7 +810,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             self.yields = None
             if hasattr(self.current_rec,'yields'):
                 debug(_("Couldn't make sense of %s as number of yields")%self.current_rec.yields,0)
-        for c in self.reccom:
+        for c in self.combos:
             debug("Widget for %s"%c,5)
             model = self.rg.get_attribute_model(c)
             self.rw[c].set_model(model)
@@ -827,7 +827,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             else:
                 # we still have to implement undo for regular old comboBoxen!
                 1
-        for e in self.recent:
+        for e in self.entries:
             if isinstance(self.rw[e],gtk.SpinButton):
                 try:
                     self.rw[e].set_value(float(getattr(self.current_rec,e)))
@@ -848,9 +848,9 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
         self.ui.get_object('titleBox').grab_focus()
         
     def save (self, recipe):
-        for c in self.reccom:
+        for c in self.combos:
             setattr(recipe, c, unicode(self.rw[c].entry.get_text()))
-        for e in self.recent:
+        for e in self.entries:
             if e in INT_REC_ATTRS + FLOAT_REC_ATTRS:
                 setattr(recipe, e, self.rw[e].get_value())
             else:
