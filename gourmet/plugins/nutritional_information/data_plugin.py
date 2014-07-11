@@ -40,7 +40,7 @@ class NutritionDataPlugin (DatabasePlugin):
         self.db.do_add_nutrition = self.do_add_nutrition
 
     def update_version (self, stored_plugin_version, current_plugin_version):
-        if (stored_plugin_version < PluginInfo(0, 14, 0))
+        if ((stored_plugin_version < PluginInfo(0, 14, 0))
             or
             (stored_plugin_version.plugin_version < 1)):
             print 'RECREATE USDA WEIGHTS TABLE'
