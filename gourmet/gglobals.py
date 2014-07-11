@@ -56,7 +56,8 @@ try:
 except ImportError:
     print 'elib.intl failed to load.'
     print 'IF YOU HAVE TROUBLE WITH TRANSLATIONS, MAKE SURE YOU HAVE THIS LIBRARY INSTALLED.'
-from gettext import gettext as _
+    import gettext
+    gettext.install('gourmet', settings.locale_base, unicode=True)
 
 data_dir = settings.data_dir
 imagedir = os.path.join(settings.data_dir,'images')
