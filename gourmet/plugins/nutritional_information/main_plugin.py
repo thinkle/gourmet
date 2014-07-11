@@ -11,6 +11,6 @@ class NutritionMainPlugin (MainPlugin):
         add_icon(os.path.join(os.path.split(__file__)[0],'images','Nutrition.png'),
          'nutritional-info',
          _('Nutritional Information'))
-        nutritionGrabberGui.check_for_db(pluggable.rd)
+        nutritionGrabberGui.check_for_db(pluggable.session)
         pluggable.nd = nutrition.NutritionData(pluggable.rd,pluggable.conv)
         pluggable.rd.nd = pluggable.nd

@@ -5,6 +5,10 @@ from parser_data import ABBREVS, ABBREVS_STRT, FOOD_GROUPS, NUTRITION_FIELDS, WE
 from gourmet.gdebug import TimeAction
 expander_regexp = None
 
+from sqlalchemy.types import Integer, Float
+
+from models import Nutrition, UsdaWeight
+
 def compile_expander_regexp ():    
     regexp = "(?<!\w)("
     regexp += string.join(ABBREVS.keys(),"|")
@@ -33,10 +37,10 @@ class DatabaseGrabber:
     WEIGHT_FILE_NAME = "WEIGHT.txt"
 
     def __init__ (self,
-                  db,
+                  session,
                   show_progress=None):
         self.show_progress=show_progress
-        self.db = db
+        self.session = session
         
     def get_zip_file (self):
         if hasattr(self,'zipfile'):
@@ -87,7 +91,6 @@ class DatabaseGrabber:
         wfi.close()
 
     def grab_data (self, directory=None):
-        self.db.changed = True
         self.get_groups((isinstance(directory,str)
                          and
                          os.path.join(directory,self.DESC_FILE_NAME)))
@@ -98,46 +101,46 @@ class DatabaseGrabber:
                          and
                          os.path.join(directory,self.WEIGHT_FILE_NAME)))
 
-    def parse_line (self, line, field_defs, split_on='^'):
-        """Handed a line and field definitions, return a dictionary of
-        the line parsed.
+    def parse_line (self, line, SqlaClass, split_on='^'):
+        """Handed a line and field definitions, return an SQLAlchemy object of
+        type SqlaClass for the line parsed.
 
         The line is a line with fields split on '^'
-
-        field_defs is a list of entries for each field in our data.
-        [(long_name,short_name,type),(long_name,short_name,type),...]
-
-        Our dictionary will be in the form:
-
-        {short_name : value,
-         short_name : value,
-         ...}
         """
-        d = {}
+        d = SqlaClass()
         fields = line.split("^")
+        field_defs = [(i.name, i.type) for i in SqlaClass.__table__.columns]
+
+        # If our SqlaClass adds an id field as first column (as UsdaWeight
+        # does), our parsing routine would get confused by it, so we need to
+        # remove it from field_defs first.
+        name_of_first, _ = field_defs[0]
+        if name_of_first != 'ndbno':
+            field_defs.pop(0)
+
         for n,fl in enumerate(fields):
             try:
-                lname,sname,typ = field_defs[n]
+                sname,typ = field_defs[n]
             except IndexError:
                 print n,fields[n],'has no definition in ',field_defs,len(field_defs)
                 print 'Ignoring problem and forging ahead!'
                 break
-            if fl and fl[0]=='~' and fl[-1]=='~':
-                d[sname]=fl[1:-1]
-            if typ=='float':
+
+            fl = fl.strip('~')
+
+            if isinstance(typ, Float):
                 try:
-                    d[sname]=float(d.get(sname,fl))
-                except:
-                    d[sname]=None
-            elif typ=='int':
+                    setattr(d, sname, float(fl))
+                except ValueError:
+                    pass
+            elif isinstance(typ, Integer):
                 try:
-                    d[sname]=int(float(d.get(sname,fl)))
-                except:
-                    if d.get(sname,fl):
-                        print d.get(sname,fl),'is not an integer'
-                        raise
-                    # If it's nothing, we don't bother...
-                    if d.has_key(sname): del d[sname]                    
+                    setattr(d, sname, int(float(fl)))
+                except ValueError:
+                    pass
+            else:
+                setattr(d, sname, fl)
+
         return d
 
     def parse_abbrevfile (self, abbrevfile):
@@ -151,34 +154,19 @@ class DatabaseGrabber:
             l = unicode(l.decode('latin_1'))
             tline=TimeAction('1 line iteration',2)
             t=TimeAction('split fields',2)
-            d = self.parse_line(l,NUTRITION_FIELDS)
-            fields = l.split("^")
-            d['desc']=expand_abbrevs(d['desc'])
-            d['foodgroup']=FOOD_GROUPS[
-                self.foodgroups_by_ndbno[d['ndbno']]
+            d = self.parse_line(l, Nutrition)
+            d.desc=expand_abbrevs(d.desc)
+            d.foodgroup=FOOD_GROUPS[
+                self.foodgroups_by_ndbno[d.ndbno]
                 ]
             t.end()
             if self.show_progress and n % 50 == 0:
                 self.show_progress(float(n)/tot,_('Reading nutritional data: imported %s of %s entries.')%(n,tot))
             t = TimeAction('append to db',3)
-            try:
-                self.db.do_add_fast(self.db.nutrition_table,d)
-            except:
-                try:
-                    SQL = 'UPDATE ' + self.db.nutrition_table.name + ' SET '
-                    args = d.copy(); del args['ndbno']
-                    SQL += ', '.join('%s = ?'%k for k in args)
-                    SQL += ' WHERE ndbno = %s'%d['ndbno']
-                    #if d['ndbno']==1123:
-                    #    print SQL,args.values()
-                    self.db.extra_connection.execute(SQL,args.values())
-                except:
-                    print 'Error appending to nutrition_table',d
-                    print 'Tried modifying table -- that failed too!'
-                    raise
+            self.session.add(d)
             t.end()                        
             tline.end()
-        self.db.commit_fast_adds()
+        self.session.commit()
 
     def parse_weightfile (self, weightfile):
         if self.show_progress:
@@ -193,14 +181,10 @@ class DatabaseGrabber:
                     float(n)/tot,
                     _('Reading weight data for nutritional items: imported %s of %s entries')%(n,tot)
                     )
-            d = self.parse_line(l,WEIGHT_FIELDS)
-            if d.has_key('stdev'): del d['stdev']
-            try:
-                self.db.do_add_fast(self.db.usda_weights_table,d)
-            except:
-                print "Error appending ",d,"to usda_weights_table"
-                raise
-        self.db.commit_fast_adds()
+            d = self.parse_line(l, UsdaWeight)
+            d.stdev = None
+            self.session.add(d)
+        self.session.commit()
             
 
 

@@ -5,9 +5,11 @@ import gourmet.gtk_extras.dialog_extras as de
 from gourmet.gglobals import data_dir
 from gettext import gettext as _
 
+from models import Nutrition
+
 class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
-    def __init__ (self, db):
-        databaseGrabber.DatabaseGrabber.__init__(self,db,self.show_progress)
+    def __init__ (self, session):
+        databaseGrabber.DatabaseGrabber.__init__(self,session,self.show_progress)
         self.paused=False
         self.terminated=False
 
@@ -62,19 +64,19 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
         self.show_progress(0.05,_('Extracting %s from zip archive.')%self.ABBREV_FILE_NAME)
         return databaseGrabber.DatabaseGrabber.get_abbrev_from_url(self)
     
-def check_for_db (db):
-    if db.fetch_len(db.nutrition_table) < 10:
+def check_for_db (session):
+    if session.query(Nutrition).count() < 10:
         print 'Grabbing nutrition database!'
-        dgg = DatabaseGrabberGui(db)        
+        dgg = DatabaseGrabberGui(session)
         dgg.load_db()
     # Check if we have choline in our DB... butter (1123) has choline...
-    elif not db.fetch_one(db.nutrition_table,ndbno=1123).choline:
-        dgg = DatabaseGrabberGui(db)
+    elif not session.query(Nutrition).filter_by(ndbno=1123).one().choline:
+        dgg = DatabaseGrabberGui(session)
         dgg.load_db()
         
 if __name__=='__main__':
     import gourmet.recipeManager
     print 'loading db'
-    db = gourmet.recipeManager.RecipeManager(**gourmet.recipeManager.dbargs)
+    session = gourmet.recipeManager.RecipeManager(**gourmet.recipeManager.sessionargs)
     print 'checking for nutrition_table'
-    check_for_db(db)
+    check_for_db(session)
