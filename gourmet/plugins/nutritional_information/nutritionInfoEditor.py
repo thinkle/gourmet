@@ -8,9 +8,11 @@ from gettext import ngettext
 import sqlalchemy
 import gourmet.backends.db
 
+from models import Nutrition, NutritionAlias
+
 class NutritionInfoIndex:
 
-    def __init__ (self, rd, prefs=None, ui=None,
+    def __init__ (self, session, prefs=None, ui=None,
                   ingredients=None,
                   in_string = _('recipe'),
                   ):
@@ -19,7 +21,7 @@ class NutritionInfoIndex:
         else:
             self.ui = gtk.Builder()
             self.ui.add_from_file(os.path.join(gglobals.uibase,'nutritionDruid.ui'))
-        self.rd = rd
+        self.session = session
         self.prefs = prefs
         # Initialize variables used for search
         self.search_string = ''
@@ -99,7 +101,7 @@ class NutritionInfoIndex:
             if n in sortable: cssu.set_sort_column_id(col,n)
         
     def makeTreeModel (self):
-        self.treeModel = NutStore(self.rd,per_page=12,ingredients=self.ingredients)
+        self.treeModel = NutStore(self.session,per_page=12,ingredients=self.ingredients)
         self.treeModel.connect('page-changed',self.model_changed_cb)
         self.treeModel.connect('view-changed',self.model_changed_cb)
 
@@ -200,17 +202,21 @@ class NutStore (pageable_store.PageableViewStore):
                   ]
 
     def __init__ (self,
-                  rd,
+                  session,
                   per_page=15,
                   ingredients=None
                   ):
-        self.rd = rd
+        self.session = session
+        self.query = self.session.query(NutritionAlias.ingkey,
+                                        NutritionAlias.density_equivalent,
+                                        Nutrition.desc,
+                                        Nutrition.ndbno)
         if ingredients:
-            self.limited_args = self.search_kwargs = {'ingkey':('in',ingredients)}
+            self.limited_query = self.search_query = self.query.filter(NutritionAlias.ingkey.in_(ingredients))
         else:
-            self.limited_args = self.search_kwargs = {}
+            self.limited_query = self.search_query = self.query
         self.ingredients = ingredients
-        vw = self.get_vw(self.search_kwargs)
+        vw = self.get_vw(self.search_query)
         pageable_store.PageableViewStore.__init__(self,
                                                   vw,
                                                   columns=self.columns,
@@ -218,7 +224,7 @@ class NutStore (pageable_store.PageableViewStore):
                                                   per_page=per_page
                                                   )
 
-    def get_vw (self, search_kwargs, search_extras_regexp=None):
+    def get_vw (self, query, search_extras_regexp=None):
         """Get a view for our model.
 
         Our model will consist of items found in our database + any
@@ -226,20 +232,11 @@ class NutStore (pageable_store.PageableViewStore):
         we'll list all ingredients that we're told about, whether
         they're in the nutrition aliases table or not.
 
-        search_kwargs are the arguments handed to our database search.
+        query is the query we'll perform on our database.
         search_extras_text is a regexp used to filter our "extras."
         """
-        select = sqlalchemy.select([self.rd.nutritionaliases_table.c.ingkey,self.rd.nutritionaliases_table.c.density_equivalent,
-                                    self.rd.nutrition_table.c.desc,self.rd.nutrition_table.c.ndbno],
-                                   *gourmet.backends.db.make_simple_select_arg(search_kwargs,
-                                                                               self.rd.nutrition_table,
-                                                                               self.rd.nutritionaliases_table),
-                                   **{'from_obj':[sqlalchemy.join(self.rd.nutrition_table,
-                                                                  self.rd.nutritionaliases_table)]
-                                      }
-                                   )
-        vw = select.execute().fetchall()
-        #vw = self.rd.fetch_join(self.rd.nutritionaliases_table,self.rd.nutrition_table,
+        vw = query.all()
+        #vw = self.session.fetch_join(self.session.nutritionaliases_table,self.session.nutrition_table,
         #                        'ndbno','ndbno',sort_by=[('ingkey',1)],
         #                        **search_kwargs)
         # We must show ingredients whether we have them or not...

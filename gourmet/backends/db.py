@@ -430,27 +430,6 @@ class RecData (Pluggable):
             *make_simple_select_arg(criteria,table1,table2)
             ).execute().fetchall()
 
-    def fetch_food_groups_for_search (self, words):
-        """Return food groups that match a given set of words."""
-        where_statement = or_(
-            *[self.nutrition_table.c.desc.like('%%%s%%'%w.lower())
-              for w in words]
-            )
-        return [r[0] for r in sqlalchemy.select(
-            [self.nutrition_table.c.foodgroup],
-            where_statement,
-            distinct=True).execute().fetchall()]
-
-    def search_nutrition (self, words, group=None):
-        """Search nutritional information for ingredient keys."""
-        where_statement = and_(
-            *[self.nutrition_table.c.desc.like('%%%s%%'%w)
-              for w in words])
-        if group:
-            where_statement = and_(self.nutrition_table.c.foodgroup==group,
-                                   where_statement)
-        return self.nutrition_table.select(where_statement).execute().fetchall()
-
     def __get_joins (self, searches):
         joins = []
         for s in searches:

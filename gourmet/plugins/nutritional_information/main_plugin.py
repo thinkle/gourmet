@@ -12,5 +12,5 @@ class NutritionMainPlugin (MainPlugin):
          'nutritional-info',
          _('Nutritional Information'))
         nutritionGrabberGui.check_for_db(pluggable.session)
-        pluggable.nd = nutrition.NutritionData(pluggable.rd,pluggable.conv)
+        pluggable.nd = nutrition.NutritionData(pluggable.session,pluggable.conv)
         pluggable.rd.nd = pluggable.nd

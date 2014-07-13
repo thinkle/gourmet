@@ -25,8 +25,7 @@ class NutritionDisplayModule (RecDisplayModule):
         self.update_from_database()
         
     def update_from_database (self):
-        self.nutinfo = self.recipe_display.rg.rd.nd.get_nutinfo_for_inglist(self.recipe_display.rg.rd.get_ings(self.recipe_display.current_rec),
-                                                                            self.recipe_display.rg.rd)
+        self.nutinfo = self.recipe_display.rg.rd.nd.get_nutinfo_for_inglist(self.recipe_display.current_rec.ingredients)
         #print 'Set servings',self.recipe_display.current_rec.servings,type(self.recipe_display.current_rec.servings)
         self.nutritionLabel.set_yields(
             self.recipe_display.current_rec.yields,

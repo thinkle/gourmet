@@ -15,6 +15,7 @@ from editor import RecEditor
 from gourmet.views.ingredient.display import IngredientDisplay
 
 import gc
+import gobject
 import gtk
 import os.path
 import xml.sax.saxutils

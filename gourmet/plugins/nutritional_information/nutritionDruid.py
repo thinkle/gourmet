@@ -14,6 +14,11 @@ import re
 import os,os.path
 from gettext import gettext as _
 
+from sqlalchemy import or_
+
+from models import Nutrition, NutritionConversion
+from gourmet.models import Ingredient
+
 try:
     current_path = os.path.split(os.path.join(os.getcwd(),__file__))[0]
 except:
@@ -93,8 +98,9 @@ class NutritionUSDAIndex:
 
     ALL_GROUPS = _('Any food group')
 
-    def __init__ (self, rd, prefs, widgets):
-        self.rd = rd; self.prefs = prefs
+    def __init__ (self, session, prefs, widgets):
+        self.session = session
+        self.prefs = prefs
         for name,w in widgets: setattr(self,name,w)
         self._setup_nuttree_()
         self.__last_search__ = ''
@@ -109,7 +115,7 @@ class NutritionUSDAIndex:
         self.usdaFindButton.connect('clicked',self.search_cb)
         self.usdaSearchAsYouTypeToggle.connect('toggled',self.toggle_saut)
         cb.set_model_from_list(self.foodGroupComboBox,
-                               [self.ALL_GROUPS]+self.rd.get_unique_values('foodgroup',self.rd.nutrition_table)
+                               [self.ALL_GROUPS]+self.session.query(Nutrition.foodgroup).group_by(Nutrition.foodgroup).all()
                                )
         cb.cb_set_active_text(self.foodGroupComboBox,self.ALL_GROUPS)        
         
@@ -124,18 +130,16 @@ class NutritionUSDAIndex:
         # always search raw if possible... (it gets us the real thing
         # vs. canned/frozen/soup/babyfood, etc.)
         if 'raw' not in words:
-            words += ['raw'] 
-        search_terms = []
-        search_in = self.rd.nutrition_table
+            words += ['raw']
         srch = []
         searchvw = None
         for w in words:
             if w in [',',' ',';','.']: continue
-            result = self.rd.search_nutrition(srch+[w])
+            result = self.session.query(Nutrition).filter(*[Nutrition.desc.like('%%%s%%'%w) for w in srch+[w]]).all()
             if result:
                 srch += [w]
                 searchvw = result
-        groups = self.rd.fetch_food_groups_for_search(srch)
+        groups = self.session.query(Nutrition.foodgroup).filter(or_(*[Nutrition.desc.like('%%%s%%'%w.lower()) for w in srch])).group_by(Nutrition.foodgroup).all()
         cur_active = cb.cb_get_active_text(self.foodGroupComboBox)
         groups = [self.ALL_GROUPS] + groups
         cb.set_model_from_list(self.foodGroupComboBox,groups)
@@ -143,7 +147,7 @@ class NutritionUSDAIndex:
         self.__override_search__ = True # turn off any handling of text insertion
         search_text = ' '.join(srch)
         self.usdaSearchEntry.set_text(search_text)
-        self.searchvw = searchvw or self.rd.fetch_all(self.rd.nutrition_table)        
+        self.searchvw = searchvw or self.session.query(Nutrition).all()
         self.nutrition_store.change_view(self.searchvw)
         self.__last_search__ = search_text
         self.__override_search__ = False # turn back on search handling!
@@ -158,7 +162,7 @@ class NutritionUSDAIndex:
 
     def _setup_nuttree_ (self):
         """Set up our treeview with USDA nutritional equivalents"""
-        self.nutrition_store = PageableNutritionStore(self.rd.fetch_all(self.rd.nutrition_table))
+        self.nutrition_store = PageableNutritionStore(self.session.query(Nutrition).all())
         self.usdaFirstButton.connect('clicked', lambda *args: self.nutrition_store.goto_first_page())
         self.usdaLastButton.connect('clicked', lambda *args: self.nutrition_store.goto_last_page())
         self.usdaForwardButton.connect('clicked', lambda *args: self.nutrition_store.next_page())
@@ -166,7 +170,7 @@ class NutritionUSDAIndex:
         self.nutrition_store.connect('page-changed',self.update_nuttree_showing)
         self.nutrition_store.connect('view-changed',self.update_nuttree_showing)        
         self.update_nuttree_showing()
-        self.searchvw = self.rd.nutrition_table
+        self.searchvw = self.session.query(Nutrition).all()
         self.usdaTreeview.set_model(self.nutrition_store)
         renderer = gtk.CellRendererText()
         col = gtk.TreeViewColumn('Item',renderer,text=1)
@@ -209,14 +213,14 @@ class NutritionUSDAIndex:
         if self.__last_search__ == txt and self.group == self.__last_group__:
             return
         words = re.split('\W+',txt)
-        groups = self.rd.fetch_food_groups_for_search(words)
+        groups = self.session.query(Nutrition.foodgroup).filter(or_(*[Nutrition.desc.like('%%%s%%'%w.lower()) for w in words])).group_by(Nutrition.foodgroup).all()
         cur_active = cb.cb_get_active_text(self.foodGroupComboBox)
         groups = [self.ALL_GROUPS] + groups
         if cur_active not in groups:
             groups += [cur_active]
         cb.set_model_from_list(self.foodGroupComboBox,groups)
         cb.cb_set_active_text(self.foodGroupComboBox,cur_active)        
-        self.searchvw = self.rd.search_nutrition(words,group=self.group)
+        self.searchvw = self.session.query(Nutrition).filter(Nutrition.foodgroup==self.group).filter(*[Nutrition.desc.like('%%%s%%'%w) for w in words]).all()
         self.__last_search__ = txt
         self.__last_group__ = self.group
         self.nutrition_store.change_view(self.searchvw)
@@ -267,7 +271,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.nd = nd
         self.rec = rec
         self.in_string = in_string or (rec and _('recipe') or _('selection'))
-        self.rd = self.nd.db
+        self.session = self.nd.session
         self.def_ingredient_amounts = {} # For default amounts for nutritional label...
         self.amounts = {} # List amounts by ingredient
         self.ing_to_index = {} # A way to keep track of the order of our ingredients...
@@ -318,7 +322,7 @@ class NutritionInfoDruid (gobject.GObject):
             if not getattr(self,widget_name): print "WIDGET: ",widget_name,"NOT FOUND."
             # make a list of all core control widgets
             if widget_name!='notebook': self.controls.append(getattr(self,widget_name))
-        self.usdaIndex = NutritionUSDAIndex(self.rd,
+        self.usdaIndex = NutritionUSDAIndex(self.session,
                                             prefs=self.prefs,
                                             widgets=[(w,getattr(self,w)) for w in self.widgets])
         self.ui.connect_signals(
@@ -366,7 +370,7 @@ class NutritionInfoDruid (gobject.GObject):
             self.add_ingredients([])
         if not hasattr(self,'nutInfoIndex'):
             self.nutInfoIndex = NutritionInfoIndex(
-                self.rd, prefs=self.prefs, ui=self.ui,
+                self.session, prefs=self.prefs, ui=self.ui,
                 ingredients=self.full_inglist,
                 in_string=self.in_string,
                 )
@@ -416,7 +420,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.infoOtherEquivalentsLabel.set_text(
             extra_units_text or 'None'
             )
-        others = self.rd.fetch_all(self.rd.nutritionconversions_table,ingkey=nutalias.ingkey)
+        others = self.session.query(NutritionConversion).filter_by(ingkey=nutalias.ingkey).all()
         other_label = '\n'.join(['%s: %.1f g'%(
             conv.unit or '100 %s'%_('ml'),1.0/conv.factor
             ) for conv in others])
@@ -466,8 +470,7 @@ class NutritionInfoDruid (gobject.GObject):
             MockObject(amount=amount,
                        unit=unit,
                        ingkey=nutalias.ingkey)
-            ],
-                                                  self.rd
+            ]
                                                   )
         if nutinfo._get_vapor():
             amount = self.DEFAULT_AMOUNT; unit = self.DEFAULT_UNIT
@@ -475,8 +478,7 @@ class NutritionInfoDruid (gobject.GObject):
             MockObject(amount=amount,
                        unit=unit,
                        ingkey=nutalias.ingkey)
-            ],
-                                                      self.rd
+            ]
                                                       )
 
         self.nutritionLabel.set_nutinfo(
@@ -491,7 +493,7 @@ class NutritionInfoDruid (gobject.GObject):
     def get_amounts_and_units_for_ingkey (self, ingkey):
         """Return a list of amounts and units present in database for ingkey"""
         amounts_and_units = []
-        ings = self.rd.fetch_all(self.rd.ingredients_table,ingkey=ingkey)        
+        ings = self.session.query(Ingredient).filter_by(ingkey=ingkey).all() 
         for i in ings:
             a,u = i.amount,i.unit
             if (a,u) not in amounts_and_units:
@@ -814,18 +816,11 @@ class NutritionInfoDruid (gobject.GObject):
             custom_no=_('Change _everywhere'),
             custom_yes=_('_Just in recipe %s')%self.rec.title
             ):
-            self.rd.update_by_criteria(self.rd.ingredients_table,
-                           {'ingkey':self.ingkey,
-                            'unit':old_from_unit,
-                            'recipe_id':self.rec.id},
-                           {'unit':from_unit}
-                           )
+            self.session.query(Ingredient).filter_by(ingkey=self.ingkey, unit=old_from_unit, recipe_id=self.rec.id).one().unit = from_unit
         else:
-            self.rd.update_by_criteria(self.rd.ingredients_table,
-                          {'ingkey':self.ingkey,
-                           'unit':old_from_unit},
-                          {'unit':from_unit}
-                          )
+            self.session.query(Ingredient).filter_by(ingkey=self.ingkey, unit=old_from_unit).one().unit = from_unit
+
+        self.session.commit()
         self.set_from_unit(self.fromUnitComboBoxEntry.get_children()[0].get_text())
         self.changeUnitAction.dehighlight_action()
         self.emit('unit-changed',((old_from_unit,self.ingkey),(from_unit,self.ingkey)))
@@ -890,7 +885,7 @@ class NutritionInfoDruid (gobject.GObject):
         if not full_inglist:
             if self.rec:
                 self.full_inglist = []
-                for i in self.rd.get_ings(self.rec):
+                for i in self.rec.ingredients:
                     self.full_inglist.append(i.ingkey)
                     self.def_ingredient_amounts[i.ingkey] = (i.amount,i.unit)
             else:

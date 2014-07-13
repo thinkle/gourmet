@@ -2,6 +2,10 @@ import re, string
 import sys
 from parser_data import SUMMABLE_FIELDS
 
+from sqlalchemy.orm.exc import NoResultFound
+
+from models import Nutrition, NutritionAlias, NutritionConversion, UsdaWeight
+
 # Our basic module for interaction with our nutritional information DB
 
 class NutritionData:
@@ -12,8 +16,8 @@ class NutritionData:
     ingredient-keys and our nutritional data.
     """
     
-    def __init__ (self, db, conv):
-        self.db = db
+    def __init__ (self, session, conv):
+        self.session = session
         self.conv = conv
         self.conv.density_table
         self.gramwght_regexp = re.compile("([0-9.]+)?( ?([^,]+))?(, (.*))?")
@@ -26,32 +30,28 @@ class NutritionData:
         #density=self.get_density(key,row)
         if row: self.row.ndbno=row.ndbno
         else:
-            self.db.do_add(self.db.nutritionaliases_table,
-                           {'ndbno':row.ndbno,
-                            'ingkey':key})
+            self.session.add(NutritionAlias(ndbno=row.ndbno, ingkey=key))
+            self.session.commit()
 
     def set_density_for_key (self, key, density_equivalent):
-        self.db.update_by_criteria(
-            self.db.nutritionaliases_table,
-            {'ingkey':key},
-            {'density_equivalent':density_equivalent}
-            )
+        self.session.query(NutritionAlias).filter_by(ingkey=key).one().\
+            density_equivalent=density_equivalent
+        self.session.commit()
 
     def set_key_from_ndbno (self, key, ndbno):
         """Create an automatic equivalence between ingredient key 'key' and ndbno
         ndbno is our nutritional database number."""
         if type(ndbno)!=int:
             ndbno = int(ndbno)
-        prev_association = self.db.fetch_one(self.db.nutritionaliases_table,ingkey=key)
-        if prev_association:
-            self.db.do_modify(self.db.nutritionaliases_table,
-                              prev_association,
-                              {'ndbno':ndbno},
-                              "ingkey")
+
+        try:
+            prev_association = self.session.query(NutritionAlias).filter_by(ingkey=key).one()
+        except NoResultFound:
+            self.session.add(NutritionAlias(ndbno=ndbno, ingkey=key))
         else:
-            self.db.do_add(self.db.nutritionaliases_table,{'ndbno':ndbno,
-                                                 'ingkey':key}
-                           )
+            prev_association.ndbno = ndbno
+        finally:
+            self.session.commit()
 
     def set_conversion (self, key, unit, factor):
         """Set conversion for ingredient key.
@@ -60,14 +60,15 @@ class NutritionData:
         """
         if self.conv.unit_dict.has_key(unit):
             unit = self.conv.unit_dict[unit]
-        prev_entry = self.db.fetch_one(self.db.nutritionconversions_table,
-                                       **{'ingkey':key,'unit':unit})
-        if prev_entry:
-            self.db.do_modify(self.db.nutritionconversions_table,
-                               prev_entry,
-                               {'factor':factor})
+
+        try:
+            prev_entry = self.session.query(NutritionConversion).filter_by(ingkey=key, unit=unit).one()
+        except NoResultFound:
+            self.session.add(NutritionConversion(ingkey=key, unit=unit, factor=factor))
         else:
-            self.db.do_add(self.db.nutritionconversions_table,{'ingkey':key,'unit':unit,'factor':factor})
+            prev_entry.factor = factor
+        finally:
+            self.session.commit()
 
     def get_matches (self, key, max=50):
         """Handed a string, get a list of likely USDA database matches.
@@ -81,10 +82,10 @@ class NutritionData:
         words=re.split("\W",key)
         words = filter(lambda w: w and not w in ['in','or','and','with'], words)
         #words += ['raw']
-        result =  self.db.search_nutrition(words)
+        result = self.session.query(Nutrition).filter(*[Nutrition.desc.like('%%%s%%'%w) for w in words]).all()
         while not result and len(words)>1:
             words = words[:-1]
-            result = self.db.search_nutrition(words)
+            result = self.session.query(Nutrition).filter(*[Nutrition.desc.like('%%%s%%'%w) for w in words]).all()
         if result:
             return [(r.desc,r.ndbno) for r in result]
         else:
@@ -93,16 +94,17 @@ class NutritionData:
     def _get_key (self, key):
         """Handed an ingredient key, get our nutritional Database equivalent
         if one exists."""
-        row=self.db.fetch_one(self.db.nutritionaliases_table,**{'ingkey':str(key)})
-        return row
+        try:
+            return self.session.query(NutritionAlias).filter_by(ingkey=str(key)).one()
+        except NoResultFound:
+            return None
 
-    def get_nutinfo_for_ing (self, ing, rd, multiplier=None):
+    def get_nutinfo_for_ing (self, ing, multiplier=None):
         """A convenience function that grabs the requisite items from
         an ingredient."""
-        if hasattr(ing,'refid') and ing.refid:
-            subrec = rd.get_referenced_rec(ing)
-            return self.get_nutinfo_for_inglist(rd.get_ings(subrec),rd,ingObject=ing,multiplier=ing.amount)
-        if hasattr(ing,'rangeamount') and ing.rangeamount:
+        if ing.recipe_ref:
+            return self.get_nutinfo_for_inglist(ing.recipe_ref.ingredients,ingObject=ing,multiplier=ing.amount)
+        if ing.rangeamount:
             # just average our amounts
             try:
                 amount = (ing.rangeamount + ing.amount)/2
@@ -113,13 +115,13 @@ class NutritionData:
             amount = ing.amount
         if not amount: amount=1
         if multiplier: amount = amount * multiplier
-        return  self.get_nutinfo_for_item(ing.ingkey,amount,ing.unit,ingObject=ing)
+        return self.get_nutinfo_for_item(ing.ingkey,amount,ing.unit,ingObject=ing)
 
-    def get_nutinfo_for_inglist (self, inglist, rd, ingObject=None, multiplier=None):
+    def get_nutinfo_for_inglist (self, inglist, ingObject=None, multiplier=None):
         """A convenience function to get NutritionInfoList for a list of
         ingredients.
         """
-        return NutritionInfoList([self.get_nutinfo_for_ing(i,rd, multiplier) for i in inglist],
+        return NutritionInfoList([self.get_nutinfo_for_ing(i, multiplier) for i in inglist],
                                  ingObject=ingObject)
 
     def get_nutinfo_for_item (self, key, amt, unit, ingObject=None):
@@ -139,14 +141,14 @@ class NutritionData:
                               ingObject=ingObject)
 
     def get_nutinfo_from_desc (self, desc):
-        nvrow = self.db.fetch_one(self.db.nutrition_table,**{'desc':desc})
-        if nvrow:
+        try:
+            nvrow = self.session.query(Nutrition).filter_by(desc=desc).one()
             return NutritionInfo(nvrow)
-        else:
+        except NoResultFound:
             matches = self.get_matches(desc)
             if len(matches) == 1:
                 ndbno = matches[0][1]
-                nvrow = self.db.fetch_one(self.db.nutrition_table,ndbno=ndbno)
+                nvrow = self.session.query(Nutrition).filter_by(ndbno=ndbno).one()
                 return NutritionInfo(nvrow)
         return None
     
@@ -156,9 +158,12 @@ class NutritionData:
         will be nutritional values.
         """
         aliasrow = self._get_key(key)
-        if aliasrow:
-            nvrow=self.db.fetch_one(self.db.nutrition_table,**{'ndbno':aliasrow.ndbno})
-            if nvrow: return NutritionInfo(nvrow)
+        if aliasrow: # FIXME: Use a relation instead.
+            try:
+                nvrow=self.session.query(Nutrition).filter_by(ndbno=aliasrow.ndbno).one()
+                return NutritionInfo(nvrow)
+            except NoResultFound:
+                return None
         else:
             # See if the key happens to match an existing description...
             ni = self.get_nutinfo_from_desc(key)
@@ -172,9 +177,11 @@ class NutritionData:
             return NutritionVapor(self,key)
 
     def get_ndbno (self, key):
-        aliasrow = self._get_key(key)
-        if aliasrow: return aliasrow.ndbno
-        else: return None
+        try:
+            aliasrow = self.session.query(NutritionAlias).filter_by(ingkey=str(key)).one()
+            return aliasrow.ndbno
+        except NoResultFound:
+            return None
 
     def convert_to_grams (self, amt, unit, key, row=None):
         conv = self.get_conversion_for_amt(amt,unit,key,row)
@@ -230,13 +237,13 @@ class NutritionData:
                 unit = self.conv.unit_dict[unit]
             elif not unit:
                 unit = ''
-            lookup = self.db.fetch_one(self.db.nutritionconversions_table,ingkey=key,unit=unit)
-            if lookup:
+            try:
+                lookup = self.session.query(NutritionConversion).filter_by(ingkey=key).filter_by(unit=unit).one()
                 cnv = lookup.factor
-            else:
+            except NoResultFound:
                 # otherwise, cycle through any units we have and see
                 # if we can get a conversion via those units...
-                for conv in self.db.fetch_all(self.db.nutritionconversions_table,ingkey=key):
+                for conv in self.session.query(NutritionConversion).filter_by(ingkey=key).all():
                     factor = self.conv.converter(unit,conv.unit)
                     if factor:
                         cnv = conv.factor*factor
@@ -298,7 +305,7 @@ class NutritionData:
         """Return a dictionary with gram weights.
         """
         ret = {}
-        nutweights = self.db.fetch_all(self.db.usda_weights_table,**{'ndbno':row.ndbno})
+        nutweights = self.session.query(UsdaWeight).filter_by(ndbno=row.ndbno).all()
         for nw in nutweights:
             mtch = self.wght_breaker.match(nw.unit)
             if not mtch:
