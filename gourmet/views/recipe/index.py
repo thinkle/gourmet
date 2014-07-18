@@ -469,10 +469,22 @@ class RecIndex:
                                          '|')
         else:
             srch['operator']='LIKE'
-            srch['search'] = '%' + txt.replace('%','%%')+'%'
+            srch['search'] = txt #'%' + txt.replace('%','%%')+'%'
         return srch
 
     def do_search (self, txt, searchBy):
+        def search_function(mod, it, data):
+            if data['column'] is not 'anywhere':
+                return data['search'] in mod.get_value(it, self.really_all_recipes.get_column_index(data['column']))
+            else:
+                retval = False
+                for column in ['categories_string','cuisine','title','instructions','modifications',
+                               'source','link']:
+                    field = mod.get_value(it, self.really_all_recipes.get_column_index(column))
+                    if field:
+                        retval = retval or (data['search'] in field)
+                return retval
+
         if txt and searchBy:
             srch = self.make_search_dic(txt,searchBy)
             self.last_search = srch.copy()
@@ -480,6 +492,11 @@ class RecIndex:
                 self.searches + [srch],
                 sort_by=self.sort_by)
                                )
+            self.all_recipes = self.really_all_recipes.filter_new()
+            self.all_recipes.set_visible_func(search_function, srch)
+            self.count = self.all_recipes.iter_n_children(None)
+            self.update_page()
+
         elif self.searches:
             self.update_rmodel(self.rd.search_recipes(
                 self.searches,
