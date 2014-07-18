@@ -158,11 +158,10 @@ class exporter (SuspendableThread, Pluggable):
     def _write_ings_ (self):
         """Write all of our ingredients.
         """
-        ingredients = self.rd.get_ings(self.r)
-        if not ingredients:
+        if not self.r.ingredients:
             return
         self.write_inghead()
-        for g,ings in order_ings(ingredients):
+        for g,ings in order_ings(self.r.ingredients):
             if g:
                 self.write_grouphead(g)            
             for i in ings:

@@ -208,7 +208,7 @@ class RecIndex:
         #    self.recipes_on_page_filter.refilter()
 
     def search_entry_activate_cb (self, *args):
-        if self.recipes_on_page._get_length_()==1:
+        if self.recipes_on_page.iter_n_children(None)==1:
             self.rec_tree_select_rec()
         elif self.srchentry.get_text():
             if not self.search_as_you_type:

@@ -295,7 +295,7 @@ class RecCardDisplay (Pluggable):
     def shop_for_recipe_cb (self, *args):
         print self,'shop_for_recipe_cb'
         try:
-            d = self.rg.sl.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
+            d = self.rg.sl.getOptionalIngDic(self.current_rec.ingredients,
                                              self.mult,
                                              self.prefs)
         except UserCancelledError:

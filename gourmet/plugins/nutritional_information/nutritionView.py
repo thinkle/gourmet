@@ -288,7 +288,7 @@ class NutritionCardView:
                                                 'fasat','famono','fapoly','cholestrl'])
             )
         self.nmodel.attach_treeview(self.rc.ui.get_object('nutTreeView'))
-        self.ings = self.rc.rg.rd.get_ings(self.rc.current_rec)
+        self.ings = self.rc.current_rec.ingredients
         for i in self.ings: self.nmodel.add_ingredient(i)
         NutritionCardViewOld(recCard) # initialize our old interface as well...
         
@@ -310,7 +310,7 @@ class NutritionCardViewOld:
     def __init__ (self, recCard):
         import nutritionGrabberGui        
         self.rc = recCard
-        self.ings = self.rc.rg.rd.get_ings(self.rc.current_rec)
+        self.ings = self.rc.current_rec.ingredients
         nutritionGrabberGui.check_for_db(self.rc.rg.rd)
         # grab our widgets
         self.treeview = self.rc.ui.get_object('nutritionTreeView')

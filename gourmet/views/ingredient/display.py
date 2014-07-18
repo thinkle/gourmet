@@ -30,9 +30,6 @@ class IngredientDisplay:
         self.ing_alist = order_ings(
                             self.recipe_display.current_rec.ingredients
                          )
-#         self.rg.rd.order_ings(
-#             self.rg.rd.get_ings(self.recipe_display.current_rec)
-#             )
         self.display_ingredients()
 
     def display_ingredients (self):
@@ -94,8 +91,7 @@ class IngredientDisplay:
 
     def create_ing_alist (self):
         """Create alist ing_alist based on ingredients in DB for current_rec"""
-        ings=self.rg.rd.get_ings(self.get_current_rec())
-        self.ing_alist = self.rg.rd.order_ings(ings)
+        self.ing_alist = order_ings(self.get_current_rec().ingredients)
         debug('self.ing_alist updated: %s'%self.ing_alist,1)
 
     # Callbacks

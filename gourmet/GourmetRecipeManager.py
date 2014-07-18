@@ -610,7 +610,7 @@ class StuffThatShouldBePlugins:
                                     digits=2)
                 if not mult:
                     mult = float(1)
-            d=self.sl.getOptionalIngDic(self.rd.get_ings(r),mult,self.prefs)
+            d=self.sl.getOptionalIngDic(r.ingredients,mult,self.prefs)
             self.sl.addRec(r,mult,d)
             self.sl.show()
 

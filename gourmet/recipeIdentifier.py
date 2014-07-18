@@ -14,7 +14,9 @@ functions.
 import convert, xml.sax.saxutils
 import hashlib, difflib, types, re
 from gettext import gettext as _
-from gglobals import REC_ATTRS,TEXT_ATTR_DIC,INT_REC_ATTRS
+from gglobals import REC_ATTRS,TEXT_ATTR_DIC
+
+from models.ingredient import order_ings
 
 IMAGE_ATTRS = ['image','thumb']
 ALL_ATTRS = [r[0] for r in REC_ATTRS] + TEXT_ATTR_DIC.keys() + IMAGE_ATTRS
@@ -79,13 +81,13 @@ def hash_recipe (rec, conv=None):
 # Diff stuff
 
 # Convenience methods
-def format_ing_text (ing_alist,rd,conv=None):
+def format_ing_text (ing_alist,conv=None):
     strings = []
     for g,ings in ing_alist:
         if g: strings.append('\n<u>'+g+'</u>')
         for i in ings:
             istring = []
-            a,u = rd.get_amount_and_unit(i,conv=conv)
+            a,u = i.get_amount_and_unit(conv=conv)
             if a: istring.append(a)
             if u: istring.append(u)
             if i.item: istring.append(i.item)
@@ -97,10 +99,8 @@ def format_ing_text (ing_alist,rd,conv=None):
     return '\n'.join(strings).strip()
             
 
-def format_ings (rec, rd):
-    ings = rd.get_ings(rec)
-    alist = rd.order_ings(ings)
-    return format_ing_text(alist,rd)
+def format_ings (rec):
+    return format_ing_text(order_ings(rec.ingredients))
 
 def apply_line_markup (line, markup):
     out = ''
@@ -158,17 +158,17 @@ def get_two_columns (s1,s2):
             right.append(line)
     return left,right
         
-def diff_ings (rd,rec1,rec2):
-    ings1 = format_ings(rec1,rd)
-    ings2 = format_ings(rec2,rd)
+def diff_ings (rec1,rec2):
+    ings1 = format_ings(rec1)
+    ings2 = format_ings(rec2)
     if ings1 != ings2:
         return get_two_columns(ings1.splitlines(),ings2.splitlines())
 
-def diff_recipes (rd,recs):
+def diff_recipes (recs):
     diffs = {}
     for attr in ALL_ATTRS:
         if attr == 'category':
-            vals = [', '.join(rd.get_cats(r)) for r in recs]
+            vals = [r.categories_string for r in recs]
         else:
             vals = [getattr(r,attr) for r in recs]
         # If all our values are identical, there is no
@@ -181,12 +181,12 @@ def diff_recipes (rd,recs):
             diffs[attr]=vals
     return diffs
 
-def merge_recipes (rd, recs):
+def merge_recipes (recs):
     """Return two dictionaries representing the differences between recs.
 
     The first dictionary contains items that are blank in one recipe
     but not the other. The second dictionary contains conflicts."""
-    diffs = diff_recipes(rd,recs)
+    diffs = diff_recipes(recs)
     my_recipe = {} 
     # Now we loop through the recipe and remove any attributes that
     # are blank in one recipe from diffs and put them instead into
@@ -250,7 +250,7 @@ def show_ing_diff (idiff):
 
 if __name__ == '__main__':
     import recipeManager, gtk
-    rd = recipeManager.default_rec_manager()
+#    rd = recipeManager.default_rec_manager()
     r1 = 33
     r2 = 241
     

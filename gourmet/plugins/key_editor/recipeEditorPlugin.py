@@ -179,7 +179,7 @@ class IngredientKeyEditor (RecEditorModule):
         self.model = gtk.ListStore(gobject.TYPE_PYOBJECT,str,str)
             
     def update_from_database (self):
-        ings = self.rg.rd.get_ings(self.current_rec)
+        ings = self.current_rec.ingredients
         self.setup_model()
         for i in ings:
             if i.refid:

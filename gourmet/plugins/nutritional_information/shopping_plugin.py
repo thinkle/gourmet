@@ -46,9 +46,7 @@ class ShoppingNutritionalInfoPlugin (ShoppingListPlugin):
         nutinfo = None
         # Add recipes...
         for rec in rr:
-            ings = rd.get_ings(rec)
-            ni = rd.nd.get_nutinfo_for_inglist(rd.get_ings(rec),
-                                               rd)
+            ni = rd.nd.get_nutinfo_for_inglist(rec.ingredients)
             if nutinfo:
                 nutinfo = nutinfo + ni
             else:

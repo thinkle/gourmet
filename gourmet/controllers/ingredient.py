@@ -37,10 +37,9 @@ class IngredientController (Pluggable):
     def create_imodel (self, rec):
         self.ingredient_objects = []        
         self.current_rec=rec
-        ings=self.rg.rd.get_ings(rec)
         ## now we continue with our regular business...
-        debug("%s ings"%len(ings),3)
-        self.ing_alist=order_ings(ings)
+        debug("%s ings"%len(rec.ingredients),3)
+        self.ing_alist=order_ings(rec.ingredients)
         self.imodel = gtk.TreeStore(gobject.TYPE_PYOBJECT,
                               gobject.TYPE_STRING,
                               gobject.TYPE_STRING,

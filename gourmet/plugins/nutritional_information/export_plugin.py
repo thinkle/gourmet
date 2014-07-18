@@ -19,12 +19,10 @@ class NutritionBaseExporterPlugin (BaseExporterPlugin):
         if not get_prefs().get('include_nutritional_info_in_export',True): return None
         txt = ''
         footnotes = ''
-        rd = default_rec_manager()
-        nd = rd.nd
-        nutinfo = nd.get_nutinfo_for_inglist(rd.get_ings(rec),rd)
-        ings = rd.get_ings(rec)
+        nd = default_rec_manager().nd
+        nutinfo = nd.get_nutinfo_for_inglist(rec.ingredients)
         vapor = nutinfo._get_vapor()
-        if len(vapor)==len(ings): return None
+        if len(vapor)==len(rec.ingredients): return None
         if len(vapor) >= 1 and not get_prefs().get('include_partial_nutritional_info',False):
             return None
         if rec.yields and rec.yield_unit:

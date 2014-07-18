@@ -131,7 +131,7 @@ class StressTester:
                          'modifications']:
                 getattr(recipe,prop)
             self.db.get_cats(recipe)
-            for i in self.db.get_ings(recipe):
+            for i in recipe.ingredients:
                 getattr(i,'amount')
                 getattr(i,'rangeamount')
                 getattr(i,'unit')

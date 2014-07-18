@@ -293,7 +293,7 @@ class ShoppingList:
         """We will need [[amt,un,key],[amt,un,key]]"""
         debug("grabIngFromRec (self, rec=%s, mult=%s):"%(rec,mult),5)
         # Grab all of our ingredients
-	ings = self.rd.get_ings(rec)
+	ings = rec.ingredients
         lst = []
         include_dic = self.includes.get(rec.id) or {}
         for i in ings:
@@ -311,8 +311,8 @@ class ShoppingList:
                         not include_dic[i.ingkey]):
                         # we ignore our ingredient (don't add it)
                         continue
-            if self.rd.get_amount(i):
-                amount=self.rd.get_amount(i,mult=mult)                
+            if i.get_amount():
+                amount=i.get_amount(mult=mult)
             else: amount=None            
             if refid:
                 ## a reference tells us to get another recipe
@@ -322,7 +322,7 @@ class ShoppingList:
                 ## output the recipe name
                 debug("Grabbing recipe as ingredient!",2)
                 # disallow recursion
-                subrec = self.rd.get_referenced_rec(i)
+                subrec = i.recipe_ref
                 if subrec.id == rec.id:
                     de.show_message(
                         label=_('Recipe calls for itself as an ingredient.'),
@@ -335,7 +335,7 @@ class ShoppingList:
                     if not amt: amount=amt
                     refmult=mult*amt
                     if not include_dic.has_key(subrec.id):
-                        d = self.getOptionalDic(self.rd.get_ings(subrec),
+                        d = self.getOptionalDic(subrec.ingredients,
                                                 refmult,
                                                 self.prefs,
                                                 )
