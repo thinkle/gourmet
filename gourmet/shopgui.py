@@ -517,20 +517,17 @@ class IngredientAndPantryList:
         the list of ingredient keys. If return_iters is True, we return the selected
         iters themselves as well (returning a list of [key,iter]s)"""
         debug("get_selected_ingredients (self):",5)
-        def foreach(model,path,iter,selected):
-            debug("foreach(model,path,iter,selected):",5)
-            selected.append(iter)
-        selected=[]
-        self.tv.get_selection().selected_foreach(foreach,selected)
-        debug("multiple selections = %s"%selected,3)
-        #ts,itera=self.tv.get_selection().get_selected()
         selected_keys=[]
-        for itera in selected:
-            key=self.tv.get_model().get_value(itera, 0)
+        (model, pathlist) = self.tv.get_selection().get_selected_rows()
+        for path in pathlist:
+            debug("for path in pathlist:",5)
+            it = model.get_iter(path)
+            key = model.get_value(it, 0)
             if return_iters:
-                selected_keys.append((key,itera))
+                selected_keys.append((key,it))
             else:
                 selected_keys.append(key)
+
         debug("get_selected_ingredients returns: %s"%selected_keys,3)
         return selected_keys
 
