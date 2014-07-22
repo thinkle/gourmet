@@ -157,14 +157,10 @@ class NutritionData:
         We return an object interfacing with our DB whose attributes
         will be nutritional values.
         """
-        aliasrow = self._get_key(key)
-        if aliasrow: # FIXME: Use a relation instead.
-            try:
-                nvrow=self.session.query(Nutrition).filter_by(ndbno=aliasrow.ndbno).one()
-                return NutritionInfo(nvrow)
-            except NoResultFound:
-                return None
-        else:
+        # FIXME: Use a relation instead.
+        try:
+            aliasrow = self.session.query(NutritionAlias).filter_by(ingkey=str(key)).one()
+        except NoResultFound:
             # See if the key happens to match an existing description...
             ni = self.get_nutinfo_from_desc(key)
             # if we don't have a nutritional db row, return a
@@ -175,6 +171,12 @@ class NutritionData:
             if ni:
                 return ni
             return NutritionVapor(self,key)
+        else:
+            try:
+                nvrow=self.session.query(Nutrition).filter_by(ndbno=aliasrow.ndbno).one()
+                return NutritionInfo(nvrow)
+            except NoResultFound:
+                return None
 
     def get_ndbno (self, key):
         try:
