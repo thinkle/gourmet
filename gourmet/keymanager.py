@@ -43,15 +43,11 @@ class KeyManager:
         self.initialize_categories()
         
     def initialize_from_defaults (self):
-        dics = []
         for key,items in defaults.keydic.items():
             for i in items:
-                dics.append(
-                    {'ingkey':unicode(key),
-                     'item':unicode(i),
-                     'count':1}
-                    )
-        self.rm.keylookup_table.insert().execute(dics)
+                k = KeyLookup(ingkey=unicode(key), item=unicode(i), count=1)
+                self.session.add(k)
+        self.session.commit()
 
     def make_regexp_for_strings (self, ignored):
         ret = "("

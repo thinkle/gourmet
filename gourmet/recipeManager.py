@@ -1,8 +1,9 @@
-from gettext import gettext as _
 import convert, shopping, os.path
 from OptionParser import args
 import gglobals
 from gtk_extras import dialog_extras as de
+
+from models import Pantry, ShopCat, ShopCatOrder
 
 # Follow commandline db specification if given
 dbargs = {}
@@ -14,13 +15,13 @@ if args.db_url:
     dbargs['custom_url'] = args.db_url
     
 
-from backends.db import RecData, RecipeManager, dbDic
+from backends.db import RecData, RecipeManager
 
 class DatabaseShopper (shopping.Shopper):
     """We are a Shopper class that conveniently saves our key dictionaries
     in our database"""
-    def __init__ (self, lst, db, conv=None):
-        self.db = db
+    def __init__ (self, lst, session, conv=None):
+        self.session = session
         self.cnv = conv
         shopping.Shopper.__init__(self,lst)
 
@@ -30,24 +31,26 @@ class DatabaseShopper (shopping.Shopper):
             self.cnv = convert.get_converter()
     
     def init_orgdic (self):
-        self.orgdic = dbDic('ingkey','shopcategory',self.db.shopcats_table,db=self.db)
-        if len(self.orgdic.items())==0:
-            dic = shopping.setup_default_orgdic()
-            self.orgdic.initialize(dic)
+        self.orgdic = self.session.query(ShopCat.ingkey, ShopCat.shopcategory).all()
+        if len(self.orgdic)==0:
+            for key, shop in shopping.setup_default_orgdic().items():
+                self.session.add(ShopCat(ingkey=key, shopcategory=shop))
+            self.session.commit()
+            self.orgdic = self.session.query(ShopCat.ingkey, ShopCat.shopcategory).all()
 
     def init_ingorder_dic (self):
-        self.ingorder_dic = dbDic('ingkey','position',self.db.shopcats_table,db=self.db)
+        self.ingorder_dic = self.session.query(ShopCat.ingkey, ShopCat.position).all()
 
     def init_catorder_dic (self):
-        self.catorder_dic = dbDic('shopcategory',
-                                  'position',
-                                  self.db.shopcatsorder_table,
-                                  db=self.db)
+        self.catorder_dic = self.session.query(ShopCatOrder.shopcategory, ShopCatOrder.position).all()
 
     def init_pantry (self):
-        self.pantry = dbDic('ingkey','pantry',self.db.pantry_table,db=self.db)
-        if len(self.pantry.items())==0:
-            self.pantry.initialize(dict([(i,True) for i in self.default_pantry]))
+        self.pantry = self.session.query(Pantry.ingkey, Pantry.pantry).all()
+        if len(self.pantry)==0:
+            for i in self.default_pantry:
+                self.session.add(Pantry(ingkey=unicode(i), pantry=True))
+            self.session.commit()
+            self.pantry = self.session.query(Pantry.ingkey, Pantry.pantry).all()
 
 # A simple CLI for mucking about our DB without firing up gourmet proper
 class SimpleCLI:

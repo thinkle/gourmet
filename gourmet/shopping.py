@@ -248,9 +248,11 @@ class Shopper:
     def get_orgcats (self):
         """Return a list of categories being used for our Shopper"""
         self.orgcats=[]
-        for v in self.orgdic.values():
-            if v and (v not in  self.orgcats):
-                self.orgcats.append(v)
+        for v in self.orgdic:
+            # FIXME: The following doesn't really find shopcats that aren't
+            # yet in self.orgcats.
+            if v.shopcategory and (v.shopcategory not in self.orgcats):
+                self.orgcats.append(v.shopcategory)
         self.orgcats.sort()
         return self.orgcats
 

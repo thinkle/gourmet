@@ -14,6 +14,8 @@ from gglobals import doc_base
 import plugin_loader, plugin
 from shopping import ShoppingList
 
+from models.meta import Session
+
 ui_string = '''
 <ui>
   <menubar name="ShoppingListMenuBar">
@@ -98,9 +100,9 @@ class IngredientAndPantryList:
 
     def __init__ (self):
         if hasattr(self,'rg'):
-            self.rd = self.rg.rd
+            self.rd = self.rg.session
         else:
-            self.rd = recipeManager.get_recipe_manager()
+            self.session = Session()
         # We need to keep track of including/excluding options...
         # Here's our solution: we have a dictionary where we can lookg
         # up ingredients by recipe by key
@@ -568,7 +570,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         self.create_popups()
 
     def get_shopper (self, lst):
-        return recipeManager.DatabaseShopper(lst, self.rd)
+        return recipeManager.DatabaseShopper(lst, self.session)
 
     # Create interface...
     

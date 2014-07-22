@@ -52,6 +52,8 @@ class SqlaModel(gtk.GenericTreeModel):
 
     # alternatively, we could use the recipe id
     def on_get_iter(self, path):
+        if len(self.records) == 0:
+            return None
         return self.records[path[0]]
 
     def on_get_path(self, rowref):
