@@ -25,7 +25,7 @@ from defaults.defaults import lang as defaults
 from defaults.defaults import get_pluralized_form
 import plugin_loader, plugin, plugin_gui
 from threadManager import get_thread_manager, get_thread_manager_gui, SuspendableThread
-from models import Recipe, Category
+from models import Recipe, Category, Ingredient
 from models.meta import Session
 from trash import RecTrash
 
@@ -412,7 +412,12 @@ class GourmetApplication:
         # Delete our deleted ingredient keys -- we don't need these
         # for posterity since there is no "trash" interface for
         # ingredients anyway.
-        self.rd.delete_by_criteria(self.rd.ingredients_table,{'deleted':True})
+        # FIXME: They might have been removed when deleting their recipe
+        # anyway, or maybe we even need some sort of cascade to set the
+        # ingredients to 'deleted' when moving the recipe to the trash.
+        self.session.query(Ingredient).filter_by(deleted=True).delete()
+        self.session.commit()
+
         # Save our recipe info...
         self.save()
         for r in self.rc.values():

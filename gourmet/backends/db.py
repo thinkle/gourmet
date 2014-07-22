@@ -20,6 +20,7 @@ from gourmet.models.meta import Base, Session, new_db
 from gourmet.models import Category, Convtable, CrossUnit, Density, \
     Ingredient, KeyLookup, Pantry, PluginInfo, Recipe, ShopCat, ShopCatOrder, \
     Unitdict, VersionInfo
+from sqlalchemy.orm.exc import NoResultFound
 
 def map_type_to_sqlalchemy (typ):
     """A convenience method -- take a string type and map it into a
@@ -151,10 +152,12 @@ class RecData (Pluggable):
         self.delete_hooks = []
         self.add_ing_hooks = []
         timer = TimeAction('initialize_connection + setup_tables',2)
-        self.initialize_connection()
         Pluggable.__init__(self,[DatabasePlugin])            
         self.setup_tables()
-        Base.metadata.create_all(self.db)
+        if self.filename:
+            self.new_db = not os.path.exists(self.filename)
+        else:
+            self.new_db = True # ??? How will we do this now?
         self.update_version_info(gourmet.version.version)
         self._created = True
         timer.end()
@@ -212,13 +215,14 @@ class RecData (Pluggable):
     def save (self):
         """Save our database (if we have a separate 'save' concept)"""
         session = Session()
-        stored_info = session.query(VersionInfo).one()
-        if stored_info:
-            stored_info.last_access = time.time()
-            stored_info = session.merge(stored_info)
-        else: # This shouldn't really happen
+        try:
+            stored_info = session.query(VersionInfo).one()
+        except NoResultFound:
             session.add(VersionInfo(last_access=time.time()))
-        session.commit()
+        else:
+            stored_info.last_access = time.time()
+        finally:
+            session.commit()
 
     @pluggable_method
     def setup_tables (self):
