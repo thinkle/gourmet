@@ -262,7 +262,7 @@ class ShoppingList:
 
     def __init__ (self):
         self.recs = {}; self.extras = []
-	self.includes = {}
+        self.includes = {}
         self.data,self.pantry=self.grabIngsFromRecs([])
         import backends.db
         self.rd = backends.db.get_database()
@@ -279,7 +279,7 @@ class ShoppingList:
         self.lst = start[0:]
         for rec,mult in recs:
             self.lst.extend(self.grabIngFromRec(rec,mult=mult))
-	return self.organize_list(self.lst)
+        return self.organize_list(self.lst)
 
     def organize_list (self, lst):
         self.sh = self.get_shopper(lst)
@@ -293,7 +293,7 @@ class ShoppingList:
         """We will need [[amt,un,key],[amt,un,key]]"""
         debug("grabIngFromRec (self, rec=%s, mult=%s):"%(rec,mult),5)
         # Grab all of our ingredients
-	ings = rec.ingredients
+        ings = rec.ingredients
         lst = []
         include_dic = self.includes.get(rec.id) or {}
         for i in ings:
