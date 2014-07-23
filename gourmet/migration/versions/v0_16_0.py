@@ -4,6 +4,9 @@ down_version = '0.14.8'
 from sqlalchemy.sql import and_
 from sqlalchemy.sql.expression import func
 
+from gourmet.models import Convtable, CrossUnit, Density, Pantry, ShopCat, \
+                           ShopCatOrder, Unitdict
+
 def upgrade(db):
     # We need to unpickle Booleans that have erroneously remained
     # pickled during previous Metakit -> SQLite -> SQLAlchemy
@@ -32,17 +35,10 @@ def upgrade(db):
     # supposed to use for the key. Thus, we're adding columns
     # named id of type Integer and make them the new primary keys
     # instead.
-    db.alter_table('shopcats',db.setup_shopcats_table,
-                     {},['ingkey','shopcategory','position'])
-    db.alter_table('shopcatsorder',db.setup_shopcatsorder_table,
-                     {},['shopcategory','position'])
-    db.alter_table('pantry',db.setup_pantry_table,
-                     {},['ingkey','pantry'])
-    db.alter_table('density',db.setup_density_table,
-                     {},['dkey','value'])
-    db.alter_table('crossunitdict',db.setup_crossunitdict_table,
-                     {},['cukey','value'])
-    db.alter_table('unitdict',db.setup_unitdict_table,
-                     {},['ukey','value'])
-    db.alter_table('convtable',db.setup_convtable_table,
-                     {},['ckey','value'])
+    db.alter_table(ShopCat.__table__, {},['ingkey','shopcategory','position'])
+    db.alter_table(ShopCatOrder.__table__, {},['shopcategory','position'])
+    db.alter_table(Pantry.__table__, {},['ingkey','pantry'])
+    db.alter_table(Density.__table__, {},['dkey','value'])
+    db.alter_table(CrossUnit.__table__, {},['cukey','value'])
+    db.alter_table(Unitdict.__table__, {},['ukey','value'])
+    db.alter_table(Convtable.__table__, {},['ckey','value'])

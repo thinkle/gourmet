@@ -613,14 +613,12 @@ class RecData (Pluggable):
             print 'Ignoring error in add_column_to_table'
             import traceback; traceback.print_exc()
 
-    def alter_table (self, table_name, setup_function, cols_to_change={}, cols_to_keep=[]):
+    def alter_table (self, table, cols_to_change={}, cols_to_keep=[]):
         """Change table, moving some columns.
 
-        table is the table object. table_name is the table
-        name. setup_function is a function that will setup our correct
-        table. cols_to_change is a dictionary of columns that are changing
-        names (key=orig, val=new). cols_to_keep is a list of columns
-        that should be copied over as is.
+        table is the table object. cols_to_change is a dictionary of
+        columns that are changing names (key=orig, val=new). cols_to_keep
+        is a list of columns that should be copied over as is.
 
         This works by renaming our table to a temporary name, then
         recreating our initial table. Finally, we copy over table
@@ -630,25 +628,23 @@ class RecData (Pluggable):
         will allow us to e.g. change/add primary key columns to sqlite
         tables
         """
-        print 'Attempting to alter ',table_name,setup_function,cols_to_change,cols_to_keep
+        print 'Attempting to alter ',table.name,cols_to_change,cols_to_keep
         try:
-            self.db.execute('ALTER TABLE %(t)s RENAME TO %(t)s_temp'%{'t':table_name})
+            self.db.execute('ALTER TABLE %(t)s RENAME TO %(t)s_temp'%{'t':table.name})
         except:
             do_raise = True
             import traceback; traceback.print_exc()
             try:
-                self.db.execute('DROP TABLE %(t)s_temp'%{'t':table_name})
+                self.db.execute('DROP TABLE %(t)s_temp'%{'t':table.name})
             except:
                 1
             else:
                 do_raise = False
-                self.db.execute('ALTER TABLE %(t)s RENAME TO %(t)s_temp'%{'t':table_name})
+                self.db.execute('ALTER TABLE %(t)s RENAME TO %(t)s_temp'%{'t':table.name})
             if do_raise:
                 raise 
-        # SQLAlchemy >= 0.7 doesn't allow: del self.metadata.tables[table_name]
-        Base.metadata._remove_table(table_name, Base.metadata.schema)
-        setup_function()
-        getattr(self,'%s_table'%table_name).create()
+
+        Base.metadata.create_all(None,[table],False)
         TO_COLS = cols_to_keep[:]
         FROM_COLS = cols_to_keep[:]
         for fro,to_ in cols_to_change.items():
@@ -656,12 +652,12 @@ class RecData (Pluggable):
             TO_COLS.append(to_)
         stmt = '''INSERT INTO %(t)s (%(to_cols)s)
         SELECT %(from_cols)s FROM %(t)s_temp
-        '''%{'t':table_name,
+        '''%{'t':table.name,
              'from_cols':', '.join(FROM_COLS),
              'to_cols':', '.join(TO_COLS),
              }
         self.db.execute(stmt)        
-        self.db.execute('DROP TABLE %s_temp'%table_name)
+        self.db.execute('DROP TABLE %s_temp'%table.name)
 
     def row_equal (self, r1, r2):
         """Test whether two row references are the same.
