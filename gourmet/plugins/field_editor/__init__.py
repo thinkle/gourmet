@@ -1,7 +1,6 @@
 from gourmet.plugin import ToolPlugin
 import fieldEditor
 import gtk
-from gettext import gettext as _
 
 class FieldEditorPlugin (ToolPlugin):
 

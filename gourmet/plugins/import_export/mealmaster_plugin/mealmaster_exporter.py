@@ -2,7 +2,6 @@ import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
 from gourmet import gglobals,  convert
 from gourmet.exporters.exporter import exporter_mult
 from gourmet.gdebug import debug
-from gettext import gettext as _
 
 class mealmaster_exporter (exporter_mult):
     def __init__ (self, rd, r, out, conv=None, change_units=True, mult=1):

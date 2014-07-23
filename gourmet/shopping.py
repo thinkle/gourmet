@@ -1,5 +1,4 @@
 import convert, sys
-from gettext import gettext as _
 from gdebug import debug
 import unittest, time
 

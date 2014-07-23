@@ -4,7 +4,6 @@ import gourmet.recipeManager, gourmet.GourmetRecipeManager
 from gourmet.prefs import get_prefs
 from nutritionLabel import NutritionLabel
 import os.path
-from gettext import gettext as _
 
 class ShoppingNutritionalInfoPlugin (ShoppingListPlugin):
 

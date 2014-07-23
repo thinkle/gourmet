@@ -3,7 +3,6 @@ import importer
 import BeautifulSoup
 import socket
 from gourmet.gdebug import debug
-from gettext import gettext as _
 import traceback
 
 DEFAULT_SOCKET_TIMEOUT=45.0

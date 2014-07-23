@@ -21,7 +21,6 @@ import validatingEntry
 import gtk, gobject
 import gourmet.convert as convert
 import re
-from gettext import gettext as _
 
 class NumberEntry (validatingEntry.ValidatingEntry):
     __gtype_name__ = 'NumberEntry'

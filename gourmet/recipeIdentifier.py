@@ -13,7 +13,6 @@ functions.
 
 import convert, xml.sax.saxutils
 import hashlib, difflib, types, re
-from gettext import gettext as _
 from gglobals import REC_ATTRS,TEXT_ATTR_DIC
 
 from models.ingredient import order_ings

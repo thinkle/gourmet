@@ -1,4 +1,3 @@
-from gettext import gettext as _
 from gourmet import ImageExtras, Undo, keymanager, convert
 from gourmet.defaults import lang as defaults
 from gourmet.gdebug import debug, TimeAction, debug_decorator

@@ -2,7 +2,6 @@ from gourmet.plugin import ImporterPlugin
 import mastercook_plaintext_importer
 import mastercook_importer
 import gourmet.importers.importer as importer
-from gettext import gettext as _
 
 class MastercookImporterPlugin (ImporterPlugin):
 

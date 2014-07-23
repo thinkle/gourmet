@@ -3,7 +3,6 @@ from gourmet.plugin import ImporterPlugin
 import mycookbook_importer
 import tempfile
 import zipfile
-from gettext import gettext as _
 from lxml import etree
 
 class MCBPlugin (ImporterPlugin):

@@ -1,5 +1,4 @@
 import gtk, pango, gobject
-from gettext import gettext as _
 import gourmet.defaults
 
 MAJOR = 0

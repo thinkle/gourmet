@@ -2,7 +2,6 @@ import plugin_loader
 import gtk, gobject
 import gtk_extras.dialog_extras as de
 from xml.sax.saxutils import escape
-from gettext import gettext as _
 
 class PluginChooser:
 

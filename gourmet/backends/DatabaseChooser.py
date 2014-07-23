@@ -3,7 +3,6 @@ from gourmet import gglobals
 from gourmet import cb_extras as cb
 from gourmet import dialog_extras as de
 from gourmet.gdebug import debug
-from gettext import gettext as _
 
 class DatabaseChooser:
     """This is a simple interface for getting database information from the user."""

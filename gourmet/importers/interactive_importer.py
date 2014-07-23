@@ -1,6 +1,5 @@
 import gtk, pango
 from xml.sax.saxutils import escape
-from gettext import gettext as _
 from generic_recipe_parser import RecipeParser
 import gourmet.gtk_extras.cb_extras as cb
 import gourmet.gglobals as gglobals
@@ -10,7 +9,6 @@ import gourmet.convert as convert
 from gourmet.threadManager import NotThreadSafe
 import imageBrowser
 import gourmet.ImageExtras as ImageExtras
-from gettext import gettext as _
 # TODO
 # 1. Make this interface actually import recipes...
 # 2. Add drop-down menu buttons in place of red labels to make it

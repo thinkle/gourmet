@@ -4,7 +4,6 @@ import gtk
 from gourmet.plugin_loader import PRE, POST
 import unit_prefs_dialog
 from gourmet.prefs import get_prefs
-from gettext import gettext as _
 
 class UnitDisplayPlugin (ToolPlugin):
     menu_items = '''<placeholder name="StandaloneTool">

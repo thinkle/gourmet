@@ -18,7 +18,6 @@ from gtk_extras.dialogs.about import show_about
 from gdebug import debug
 from gglobals import DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base, icondir, imagedir, launch_url, uibase
 from views.recipe.index import RecIndex
-from gettext import gettext as _
 from gettext import ngettext
 from timer import show_timer
 from defaults.defaults import lang as defaults

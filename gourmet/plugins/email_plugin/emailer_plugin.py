@@ -2,7 +2,6 @@ import gtk
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet.plugin import RecDisplayModule, UIPlugin, MainPlugin, ToolPlugin
 from recipe_emailer import RecipeEmailer
-from gettext import gettext as _
 
 class EmailRecipePlugin (MainPlugin, UIPlugin):
 

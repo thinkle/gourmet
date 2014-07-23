@@ -1,7 +1,6 @@
 from gourmet.plugin import ShoppingListPlugin
 import gtk
 import gourmet.recipeManager, gourmet.GourmetRecipeManager, time
-from gettext import gettext as _
 
 class ShoppingListSaver (ShoppingListPlugin):
 

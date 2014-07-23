@@ -9,7 +9,6 @@ import reportlab.lib.pagesizes as pagesizes
 import reportlab.lib.fonts as fonts
 import reportlab.lib.units as units
 import reportlab.lib.styles as styles
-from gettext import gettext as _
 from gettext import ngettext
 from gourmet import convert
 from gourmet import gglobals

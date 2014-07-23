@@ -25,7 +25,6 @@
 # processes.
 #
 #
-from gettext import gettext as _
 import threading, gtk, pango, gobject, time
 gobject.threads_init()
 

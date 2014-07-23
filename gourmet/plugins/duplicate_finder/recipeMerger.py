@@ -10,7 +10,6 @@ import gourmet.recipeIdentifier
 import gourmet.convert as convert
 import gourmet.gglobals as gglobals
 import gourmet.recipeManager
-from gettext import gettext as _
 
 NEWER = 1
 OLDER = 2

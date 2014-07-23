@@ -2,7 +2,6 @@ import gtk, gobject, time, gglobals, os
 import xml.sax.saxutils
 from sound import Player
 from gtk_extras import cb_extras as cb
-from gettext import gettext as _
 
 class TimeSpinnerUI:
 

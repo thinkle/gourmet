@@ -1,5 +1,4 @@
 import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
-from gettext import gettext as _
 from gourmet import convert,gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
 

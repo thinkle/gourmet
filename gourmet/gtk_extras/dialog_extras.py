@@ -2,7 +2,6 @@
 import gtk, gobject, os.path, optionTable, thumbnail, fnmatch,  re
 import pango
 import xml.sax.saxutils
-from gettext import gettext as _
 from gourmet.gdebug import debug
 from glib import get_user_special_dir, USER_DIRECTORY_PICTURES
 H_PADDING=12

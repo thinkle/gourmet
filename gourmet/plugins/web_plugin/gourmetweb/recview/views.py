@@ -1,4 +1,3 @@
-from gettext import gettext as _
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
 from django.shortcuts import render_to_response

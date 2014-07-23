@@ -3,7 +3,6 @@ import databaseGrabber
 import os, os.path, time
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet.gglobals import data_dir
-from gettext import gettext as _
 
 from models import Nutrition
 

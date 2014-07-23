@@ -2,7 +2,6 @@
 import urllib, StringIO, os.path
 import exporter, html_exporter, pdf_exporter
 from gourmet import gglobals
-from gettext import gettext as _
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet.gdebug import debug
 

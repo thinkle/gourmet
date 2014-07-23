@@ -2,7 +2,6 @@ import gtk, gtk.gdk
 import gobject
 import gourmet.gglobals as gglobals
 import os.path
-from gettext import gettext as _
 import tempfile
 
 try:

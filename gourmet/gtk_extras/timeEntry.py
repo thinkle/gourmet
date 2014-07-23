@@ -17,7 +17,6 @@
 ### USA 
 
 import gtk
-from gettext import gettext as _
 import gourmet.convert as convert
 import validatingEntry
 

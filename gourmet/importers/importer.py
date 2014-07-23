@@ -4,7 +4,6 @@ from gourmet.gdebug import debug, TimeAction, print_timer_info, debug_decorator
 import gourmet.gglobals
 from gourmet.recipeManager import get_recipe_manager # for getting out database...
 import xml.sax.saxutils
-from gettext import gettext as _
 import gettext
 import gourmet.gtk_extras.dialog_extras as de
 import re

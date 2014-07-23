@@ -4,7 +4,6 @@ import gtk, gobject, pango
 from gourmet.models.ingredient import RecRef
 from gourmet.views.recipe.editor import IngredientEditorModule
 import keyEditorPluggable
-from gettext import gettext as _
 
 ING = 0
 ITM = 1

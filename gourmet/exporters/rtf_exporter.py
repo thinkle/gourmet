@@ -2,7 +2,6 @@ import exporter, PyRTF, types
 from gourmet import convert
 from gourmet.gdebug import debug
 from gourmet.ImageExtras import write_image_tempfile
-from gettext import gettext as _
 
 class rtf_exporter_multidoc (exporter.ExporterMultirec):
     def __init__ (self, rd, recipe_table, out, conv=None, progress_func=None):

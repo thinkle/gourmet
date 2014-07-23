@@ -12,7 +12,6 @@ import gourmet.gtk_extras.dialog_extras as de
 import gourmet.gtk_extras.WidgetSaver as WidgetSaver
 import re
 import os,os.path
-from gettext import gettext as _
 
 from sqlalchemy import or_
 from sqlalchemy.types import Integer, Float

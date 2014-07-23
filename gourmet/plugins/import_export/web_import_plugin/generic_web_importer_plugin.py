@@ -1,7 +1,6 @@
 from gourmet.plugin import ImporterPlugin, PluginPlugin
 from gourmet.plugin_loader import Pluggable
 import webpage_importer
-from gettext import gettext as _
 
 class GenericWebImporter (ImporterPlugin, Pluggable):
 

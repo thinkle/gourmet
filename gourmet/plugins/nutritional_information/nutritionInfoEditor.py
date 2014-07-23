@@ -3,7 +3,6 @@ import gourmet.gtk_extras.pageable_store as pageable_store
 import gourmet.gglobals as gglobals
 import os, re
 import gourmet.gtk_extras.cb_extras as cb
-from gettext import gettext as _
 from gettext import ngettext
 import sqlalchemy
 import gourmet.backends.db

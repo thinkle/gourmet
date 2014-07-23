@@ -4,7 +4,6 @@ import gourmet.convert as convert
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
 from gettext import ngettext
-from gettext import gettext as _
 
 class FieldEditor:
     """A generic "value" editor for mucking about with the database.

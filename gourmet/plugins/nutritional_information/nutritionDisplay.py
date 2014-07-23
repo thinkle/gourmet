@@ -2,7 +2,6 @@ import gtk, re
 import parser_data
 import gourmet.cb_extras as cb
 import gourmet.dialog_extras as de
-from gettext import gettext as _
 
 from models import Nutrition
 

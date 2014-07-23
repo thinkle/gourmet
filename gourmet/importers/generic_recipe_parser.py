@@ -1,7 +1,6 @@
 import re
 import gourmet.convert as convert
 import unittest
-from gettext import gettext as _
 
 def parse_group (match, text, group_number, tag):
     start,end = match.span(group_number)

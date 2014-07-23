@@ -1,5 +1,4 @@
 import socket, gourmet.threadManager, urllib
-from gettext import gettext as _
 DEFAULT_SOCKET_TIMEOUT=45.0
 URLOPEN_SOCKET_TIMEOUT=15.0
 

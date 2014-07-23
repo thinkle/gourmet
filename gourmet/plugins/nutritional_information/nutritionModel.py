@@ -1,5 +1,4 @@
 import gtk, gobject
-from gettext import gettext as _
 
 class NutritionModel (gtk.TreeStore):
     """Handed ingredients and a nutritional database, display

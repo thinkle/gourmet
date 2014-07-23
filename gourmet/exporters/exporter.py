@@ -2,7 +2,6 @@ import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap, types
 from gourmet import convert
 from gourmet.gglobals import REC_ATTR_DIC, DEFAULT_ATTR_ORDER, DEFAULT_TEXT_ATTR_ORDER, TEXT_ATTR_DIC, use_threads
 from gourmet.gdebug import TimeAction, debug, print_timer_info
-from gettext import gettext as _
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import BaseExporterPlugin, BaseExporterMultiRecPlugin
 from gourmet.threadManager import SuspendableThread

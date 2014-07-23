@@ -7,7 +7,6 @@ from fnmatch import fnmatch
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui, NotThreadSafe
 from webextras import URLReader
 import tempfile
-from gettext import gettext as _
 
 class ImportFileList (Exception):
     """A special case error -- if an importer throws this error

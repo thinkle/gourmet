@@ -3,7 +3,6 @@ from gourmet import gglobals, convert
 from gourmet.gtk_extras import WidgetSaver, mnemonic_manager, pageable_store
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
-from gettext import gettext as _
 from gettext import ngettext
 import keyEditorPluggable
 #import nutrition.nutritionDruid as nutritionDruid

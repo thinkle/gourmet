@@ -1,7 +1,6 @@
 from gourmet.plugin import PluginPlugin
 from gourmet.recipeManager import get_recipe_manager
 import gtk
-from gettext import gettext as _
 
 class KeyEditorPlugin (PluginPlugin):
 

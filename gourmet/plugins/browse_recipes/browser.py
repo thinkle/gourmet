@@ -5,7 +5,6 @@ import gourmet.convert as convert
 from gourmet.gtk_extras.ratingWidget import star_generator
 from sqlalchemy.sql import and_, or_, not_
 from sqlalchemy import func
-from gettext import gettext as _
 from icon_helpers import attr_to_icon, get_recipe_image, get_time_slice, scale_pb
 
 curdir = os.path.split(__file__)[0]
