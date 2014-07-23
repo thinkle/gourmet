@@ -16,7 +16,7 @@ from gtk_extras import dialog_extras as de
 from gtk_extras import treeview_extras as te
 from gtk_extras.dialogs.about import show_about
 from gdebug import debug
-from gglobals import DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base, icondir, imagedir, launch_url, uibase
+from gglobals import DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, DEFAULT_ATTR_ORDER, doc_base, icondir, imagedir, launch_url, uibase
 from views.recipe.index import RecIndex
 from gettext import ngettext
 from timer import show_timer
@@ -808,7 +808,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         for a,l,w in REC_ATTRS:
             self.rtcolsdic[a]=l
             self.rtwidgdic[a]=w
-            self.rtcols = [r[0] for r in REC_ATTRS]        
+
+        # FIXME: Stupid hack.
+        self.rtcols = list(DEFAULT_ATTR_ORDER)
+        self.rtcols.insert(self.rtcols.index('yields')+1, 'yield_unit')
 
     def setup_database_hooks (self):
         self.rd.delete_hooks.append(

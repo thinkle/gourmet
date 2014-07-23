@@ -2,6 +2,7 @@ import os, os.path, gobject, re, gtk
 import tempfile
 from gdebug import debug
 from OptionParser import args
+from models.recipe import REC_ATTRS, INT_REC_ATTRS, FLOAT_REC_ATTRS, TEXT_ATTR_DIC, DEFAULT_ATTR_ORDER
 
 tmpdir = tempfile.gettempdir()
 
@@ -81,41 +82,11 @@ else:
                         os.path.join(html_plugin_dir,'RULES_TEMPLATE')
                         )
 
-REC_ATTRS = [('title',_('Title'),'Entry'),
-             ('category',_('Category'),'Combo'),
-             ('cuisine',_('Cuisine'),'Combo'),
-             ('rating',_('Rating'),'Entry'),
-             ('source',_('Source'),'Combo'),
-             ('link',_('Website'),'Entry'),
-             ('yields',_('Yield'),'Entry'),
-             ('yield_unit',_('Yield Unit'),'Combo'),             
-             ('preptime',_('Preparation Time'),'Entry'),
-             ('cooktime',_('Cooking Time'),'Entry'),
-             ]
-
-INT_REC_ATTRS = ['rating','preptime','cooktime']
-FLOAT_REC_ATTRS = ['yields']
-TEXT_ATTR_DIC = {'instructions':_('Instructions'),
-                 'modifications':_('Notes'),
-                 }
-
 REC_ATTR_DIC={}
 NAME_TO_ATTR = {_('Instructions'):'instructions',
                 _('Notes'):'modifications',
                 _('Modifications'):'modifications',
                 }
-
-DEFAULT_ATTR_ORDER = ['title',
-                      #'servings',
-                      'yields',
-                      'cooktime',
-                      'preptime',
-                      'category',
-                      'cuisine',
-                      'rating',
-                      'source',
-                      'link',
-                      ]
 
 DEFAULT_TEXT_ATTR_ORDER = ['instructions',
                            'modifications',]

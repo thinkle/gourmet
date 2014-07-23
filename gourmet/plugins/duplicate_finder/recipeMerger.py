@@ -161,7 +161,7 @@ class RecipeMergerDialog:
             #self.idt = IngDiffTable(self.rd,duplicate_recipes[0],duplicate_recipes[1])
             self.current_recs = [self.rd.get_rec(i) for i in duplicate_recipes]
             last_modified = {'last_modified':[r.last_modified for r in self.current_recs]}
-            self.current_diff_data = gourmet.recipeIdentifier.diff_recipes(self.rd,self.current_recs)
+            self.current_diff_data = gourmet.models.recipe.diff_recipes(self.rd,self.current_recs)
             last_modified.update(self.current_diff_data)            
             self.diff_table = DiffTable(last_modified,self.current_recs[0],parent=self.recipeDiffScrolledWindow)
             self.diff_table.add_ingblocks(self.rd, self.current_recs)
@@ -346,7 +346,7 @@ class RecipeMerger:
                 self.rd.delete_rec(r.id)
 
     def uiMergeRecipes (self, recs):
-        diffs = gourmet.recipeIdentifier.diff_recipes(self.rd,
+        diffs = gourmet.models.recipe.diff_recipes(self.rd,
                                               recs)
         idiffs = gourmet.recipeIdentifier.diff_ings(self.rd,r1,r2)
         if diffs:

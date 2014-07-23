@@ -13,12 +13,10 @@ functions.
 
 import convert, xml.sax.saxutils
 import hashlib, difflib, types, re
-from gglobals import REC_ATTRS,TEXT_ATTR_DIC
 
 from models.ingredient import order_ings
+from models.recipe import diff_recipes
 
-IMAGE_ATTRS = ['image','thumb']
-ALL_ATTRS = [r[0] for r in REC_ATTRS] + TEXT_ATTR_DIC.keys() + IMAGE_ATTRS
 REC_FIELDS = ['title',
               'instructions',
               ]
@@ -162,23 +160,6 @@ def diff_ings (rec1,rec2):
     ings2 = format_ings(rec2)
     if ings1 != ings2:
         return get_two_columns(ings1.splitlines(),ings2.splitlines())
-
-def diff_recipes (recs):
-    diffs = {}
-    for attr in ALL_ATTRS:
-        if attr == 'category':
-            vals = [r.categories_string for r in recs]
-        else:
-            vals = [getattr(r,attr) for r in recs]
-        # If all our values are identical, there is no
-        # difference. Also, if all of our values are bool->False, we
-        # don't care (i.e. we don't care about the difference between
-        # None and "" or between None and 0).
-        if vals != [vals[0]] * len(vals) and True in [bool(v) for v in vals]:
-            #if TEXT_ATTR_DIC.has_key(attr):
-            #    val1,val2 = 
-            diffs[attr]=vals
-    return diffs
 
 def merge_recipes (recs):
     """Return two dictionaries representing the differences between recs.
