@@ -2,62 +2,6 @@
 
 PER_100_GRAMS = ["kcal","protein","lipid","ash","carb","fiber","sugar","calcium","iron","magnesium","phosphorus","potassium","sodium","zinc","copper","manganese","selenium","vitaminc","thiamin","riboflavin","niacin","pantoacid","vitaminb6","folatetotal","folateacid","foodfolate","folatedfe","vitb12","vitaiu","vitarae","retinol","vite","vitk","alphac","betac","betacrypt","lypocene","famono","fapoly","lutzea","fasat","cholestrl"]
 
-# For the ABBREV FILE
-NUTRITION_FIELDS = [
-    #[description abbrev type]
-    ["Nutrient Databank Number","ndbno","int"],
-    ["Short Description","desc","char(100)"],
-    [_("Water"),"water","float"],
-    [_("Kilocalories"),"kcal","float"],
-    [_("g protein"),"protein","float"],
-    [_("g lipid"),"lipid","float"],
-    [_("g ash"),"ash","float"],
-    [_("g carbohydrates"),"carb","float"],
-    [_("g fiber"),"fiber","float"],
-    [_("g sugar"),"sugar","float"],
-    [_("mg calcium"),"calcium","float"],
-    [_("mg iron"),"iron","float"],
-    [_("mg magnesium"),"magnesium","float"],
-    [_("mg phosphorus"),"phosphorus","float"],
-    [_("mg potassium"),"potassium","float"],
-    [_("mg sodium"),"sodium","float"],
-    [_("mg zinc"),"zinc","float"],
-    [_("mg copper"),"copper","float"],
-    [_("mg manganese"),"manganese","float"],
-    [_("microgram selenium"),"selenium","float"],
-    [_("mg vitamin c"),"vitaminc","float"],
-    [_("mg thiamin"),"thiamin","float"],
-    [_("mg riboflavin"),"riboflavin","float"],
-    [_("mg niacin"),"niacin","float"],
-    [_("mg pantothenic acid"),"pantoacid","float"],
-    [_("mg vitamin B6"),"vitaminb6","float"],
-    [_("microgram Folate Total"),"folatetotal","float"],
-    [_("microgram Folic acid"),"folateacid","float"],
-    [_("microgram Food Folate"),"foodfolate","float"],
-    [_("microgram dietary folate equivalents"),"folatedfe","float"],
-    [_("Choline, total"),'choline','float'],
-    [_("microgram Vitamin B12"),"vitb12","float"],
-    [_("Vitamin A IU"),"vitaiu","float"],
-    [_("Vitamin A (microgram Retinal Activity Equivalents"),"vitarae","float"],
-    [_("microgram Retinol"),"retinol","float"],
-    [_("microgram Alpha-carotene"),"alphac","float"],
-    [_("microgram Beta-carotene"),"betac","float"],
-    [_("microgram Beta Cryptoxanthin"),"betacrypt","float"],
-    [_("microgram Lycopene"),"lypocene","float"],
-    [_("microgram Lutein+Zeazanthin"),"lutzea","float"],
-    [_("mg Vitamin E"),"vite","float"],
-    [_("mg Vitamin K"),"vitk","float"],
-    [_("g Saturated Fatty Acid"),"fasat","float"],
-    [_("g Monounsaturated Fatty Acids"),"famono","float"],
-    [_("g Polyunsaturated Fatty Acids"),"fapoly","float"],
-    [_("mg Cholesterol"),"cholestrl","float"],
-    ["Gram Weight 1","gramwt1","float"],
-    ["Gram Weight Description 1","gramdsc1","char(100)"],
-    ["Gram Weight 2","gramwt2","float"],
-    ["Gram Weight Description 2","gramdsc2","char(100)"],
-    [_("Percent refuse"),"refusepct","float"],
-    ]
-
 # List of fields that can be sensibly added, multiplied, etc.
 SUMMABLE_FIELDS = ['kcal',
                    'protein',
@@ -84,13 +28,6 @@ SUMMABLE_FIELDS = ['kcal',
                    'betac','lypocene',
                    'vitarae','vite','alphac','betacrypt','lutzea','famono',
                    'fapoly','fasat','sugar']
-
-# a convenient dictionary to move from shortname to longname,
-# for user interface.
-NUT_FIELDNAME_DICT = {}
-for longname,sname,field in NUTRITION_FIELDS:
-    NUT_FIELDNAME_DICT[sname]=longname
-    NUT_FIELDNAME_DICT[longname]=sname
 
 ABBREVS = {'ALLPURP':'All Purpose',
            'AL':'Aluminum',
@@ -398,12 +335,3 @@ FOOD_DESC_FIELDS = [["Nutrient Databank Number","ndbno","int"],
                     ['CHO_Factor','cfactor','float']
                     ]
 
-WEIGHT_FIELDS = [
-    ["Nutrient Databank Number","ndbno","int"],
-    ["Sequence Number",'seq','float'],
-    ["Amount",'amount','float'],
-    ['Measure Description','unit','char(80)'],
-    ['Gram Weight','gramwt','float'],
-    ['Data points','ndata','int'],
-    ['Standard Deviation','stdev','float'],
-    ]

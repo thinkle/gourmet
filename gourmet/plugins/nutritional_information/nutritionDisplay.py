@@ -4,6 +4,8 @@ import gourmet.cb_extras as cb
 import gourmet.dialog_extras as de
 from gettext import gettext as _
 
+from models import Nutrition
+
 class NutritionModel (gtk.TreeStore):
     TITLE_FIELD = 'desc'
     def __init__ (self, nvw):
@@ -34,9 +36,9 @@ class NutritionModel (gtk.TreeStore):
     def add_children_to_row (self,papa):
         desc = self.get_value(papa,0)
         row = self.nvw.select(**{self.TITLE_FIELD:desc})[0]
-        for lname,sname,typ in parser_data.NUTRITION_FIELDS:
-            if sname != self.TITLE_FIELD:
-                self.append(papa,[lname,"%s"%getattr(row,sname)])
+        for c in Nutrition.__table__.columns:
+            if c.name != self.TITLE_FIELD:
+                self.append(papa,[c.info['label'],"%s"%getattr(row,c.name)])
         
         
 class SimpleNutritionalDisplay:
@@ -117,8 +119,8 @@ class SimpleIngredientCalculator (de.mDialog):
             float(self.amtBox.get_value()),
             cb.cb_get_active_text(self.unitBox),
             self.itmBox.get_text(),
-            row)        
-        myfields = filter(lambda x: x[1] in self.fields, parser_data.NUTRITION_FIELDS)
+            row)
+        myfields = filter(lambda x: x.name in self.fields, Nutrition.__table__.columns)
         lab = ""
         for ln,f,typ in myfields:
             amt = getattr(row,f)

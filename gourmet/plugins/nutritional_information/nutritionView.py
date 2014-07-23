@@ -8,6 +8,8 @@ import gourmet.gglobals as gglobals
 import gourmet.convert as convert
 from gourmet.defaults import lang as defaults
 
+from models import Nutrition
+
 class NutritionTable:
     """Handed a table (so we can steal it from glade), we pack it full
     of nutritional information."""
@@ -49,7 +51,7 @@ class NutritionTable:
 
     def pack_table (self):        
         for n,f in enumerate(self.fields):
-            lname = parser_data.NUT_FIELDNAME_DICT[f]
+            lname = Nutrition.__table__.columns[n].info['label']
             label = gtk.Label()
             # we somewhat hackishly attempt to create a mnemonic
             lab = self.create_mnemonic(lname)

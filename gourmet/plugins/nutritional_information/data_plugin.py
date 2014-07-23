@@ -28,7 +28,7 @@ class NutritionDataPlugin (DatabasePlugin):
             (stored_plugin_version.plugin_version < 1)):
             print 'RECREATE USDA WEIGHTS TABLE'
             self.db.alter_table(UsdaWeight.__table__,{},
-                             [name for lname,name,typ in parser_data.WEIGHT_FIELDS])
+                             [c.name for c in UsdaWeight.__table__.columns[1:]])
             self.db.alter_table(NutritionConversion.__table__,{},
                              ['ingkey','unit','factor'])
         if stored_plugin_version.plugin_version == '1':
