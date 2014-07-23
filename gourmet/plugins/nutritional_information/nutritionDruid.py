@@ -229,7 +229,7 @@ class NutritionUSDAIndex:
         self.nutrition_store.set_page(0)
 
     def food_group_filter_changed_cb (self, fgcb):
-        food_group = cb.cb_get_active_text(fgcb)
+        food_group = unicode(cb.cb_get_active_text(fgcb))
         if food_group==self.ALL_GROUPS:
             self.group = None
         else:
