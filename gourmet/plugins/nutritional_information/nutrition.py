@@ -345,10 +345,6 @@ class NutritionData:
             unit = groups[2]
             extra = groups[4]
             return amt,unit,extra
-
-    def add_custom_nutrition_info (self, nutrition_dictionary):
-        """Add custom nutritional information."""
-        return self.db.do_add_nutrition(nutrition_dictionary).ndbno
         
                     
 class NutritionInfo:

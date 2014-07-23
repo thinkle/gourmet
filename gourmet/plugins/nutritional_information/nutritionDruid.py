@@ -15,6 +15,7 @@ import os,os.path
 from gettext import gettext as _
 
 from sqlalchemy import or_
+from sqlalchemy.types import Integer, Float
 
 from models import Nutrition, NutritionConversion
 from gourmet.models import Ingredient
@@ -115,7 +116,7 @@ class NutritionUSDAIndex:
         self.usdaFindButton.connect('clicked',self.search_cb)
         self.usdaSearchAsYouTypeToggle.connect('toggled',self.toggle_saut)
         cb.set_model_from_list(self.foodGroupComboBox,
-                               [self.ALL_GROUPS]+self.session.query(Nutrition.foodgroup).group_by(Nutrition.foodgroup).all()
+                               [self.ALL_GROUPS]+[f[0] for f in self.session.query(Nutrition.foodgroup).group_by(Nutrition.foodgroup).all()]
                                )
         cb.cb_set_active_text(self.foodGroupComboBox,self.ALL_GROUPS)        
         
@@ -140,6 +141,7 @@ class NutritionUSDAIndex:
                 srch += [w]
                 searchvw = result
         groups = self.session.query(Nutrition.foodgroup).filter(or_(*[Nutrition.desc.like('%%%s%%'%w.lower()) for w in srch])).group_by(Nutrition.foodgroup).all()
+        groups = [g[0] for g in groups]
         cur_active = cb.cb_get_active_text(self.foodGroupComboBox)
         groups = [self.ALL_GROUPS] + groups
         cb.set_model_from_list(self.foodGroupComboBox,groups)
@@ -214,6 +216,7 @@ class NutritionUSDAIndex:
             return
         words = re.split('\W+',txt)
         groups = self.session.query(Nutrition.foodgroup).filter(or_(*[Nutrition.desc.like('%%%s%%'%w.lower()) for w in words])).group_by(Nutrition.foodgroup).all()
+        groups = [g[0] for g in groups]
         cur_active = cb.cb_get_active_text(self.foodGroupComboBox)
         groups = [self.ALL_GROUPS] + groups
         if cur_active not in groups:
@@ -554,7 +557,8 @@ class NutritionInfoDruid (gobject.GObject):
             masses)
         cb.cb_set_active_text(self.massUnitComboBox,'g')
         self.customNutritionAmountEntry.set_value(100)
-        self.nutrition_info = {}
+        self.nutrition_info = Nutrition()
+        self.fat = None
         self.custom_box.add(t)
         self.changing_percent_internally = False
         self.changing_number_internally = False
@@ -593,7 +597,10 @@ class NutritionInfoDruid (gobject.GObject):
 
     def number_changed_cb (self, widget, name, percent_widget):
         v = widget.get_value()
-        self.nutrition_info[name]=v
+        if name is 'fat':
+            self.fat = v
+        else:
+            setattr(self.nutrition_info, name, v)
         if not v: return
         if self.changing_number_internally: return
         if percent_widget:
@@ -624,19 +631,23 @@ class NutritionInfoDruid (gobject.GObject):
             self.custom_factor = 1/(base_convert * amount)
 
     def apply_custom (self, *args):
-        nutinfo = self.nutrition_info.copy()
-        for k,v in nutinfo.items():
-            if type(v)==int or type(v)==float: nutinfo[k]=v*self.custom_factor
-            # Special case fat, which is listed as one item but is in
-            # fact a combination of 3. We'll have to fudge the info
-            # about mono- v. poly- unsaturated fats.
-            if k=='fat':
-                totfat = v * self.custom_factor
-                unsatfat = totfat - nutinfo.get('fasat',0)
-                del nutinfo['fat']
-                nutinfo['fapoly']=unsatfat # Fudge
-        nutinfo['desc']=self.ingkey
-        ndbno = self.nd.add_custom_nutrition_info(nutinfo)
+        for c in Nutrition.__table__.columns:
+            v = getattr(self.nutrition_info, c.name)
+            if v and (c is not Nutrition.__table__.primary_key) and \
+               (isinstance(c.type, Integer) or isinstance(c.type, Float)):
+                setattr(self.nutrition_info, c.name, v*self.custom_factor)
+
+        # Special case fat, which is listed as one item but is in
+        # fact a combination of 3. We'll have to fudge the info
+        # about mono- v. poly- unsaturated fats.
+        if self.fat:
+            totfat = self.fat * self.custom_factor
+            unsatfat = totfat - self.nutrition_info.fasat
+            self.nutrition_info.fapoly=unsatfat # Fudge
+
+        self.nutrition_info.desc=self.ingkey
+        self.session.add(self.nutrition_info)
+        self.session.commit()
 
     ### END METHODS FOR CUSTOM NUTRITIONAL INTERFACE 
 
@@ -645,7 +656,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.ingKeyEntry.set_text(txt)
         self.ingKeyLabel.set_markup('<i><b>'+txt+'</b></i>') # USDA Page
         self.ingKeyLabel2.set_markup('<i><b>'+txt+'</b></i>') # Custom Page
-        self.nutrition_info['desc']=txt
+        self.nutrition_info.desc=txt
         self.ingkey = txt
 
     ### BEGIN METHODS FOR SETTING UNIT EQUIVALENTS
