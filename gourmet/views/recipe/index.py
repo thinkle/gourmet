@@ -239,11 +239,8 @@ class RecIndex:
         self.search()
         #self.do_search(None,None)
 
-    def load_recipes(self, vw):
-        return SqlaModel(Recipe, vw)
-
     def create_rmodel (self, vw):
-        self.really_all_recipes = self.load_recipes(vw)
+        self.really_all_recipes = SqlaModel(Recipe, vw)
         self.all_recipes = self.really_all_recipes.filter_new()
         self.all_recipes.set_visible_func(lambda mod, it: not mod.get_value(it, self.really_all_recipes.get_column_index('deleted')))
         self.count = self.all_recipes.iter_n_children(None)
