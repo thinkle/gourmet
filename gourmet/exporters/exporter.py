@@ -420,22 +420,11 @@ class exporter_mult (exporter):
         Possibly manipulate the attribute we get to hand out export
         something readable.
         """        
-        if attr=='servings' or attr=='yields' and self.mult:
-            ret = getattr(obj,attr)
-            if type(ret) in [int,float]:
-                fl_ret = float(ret)
+        if attr=='yields' and self.mult:
+            if self.fractions:
+                return format(self.mult * obj.the_yield, 'q')
             else:
-                if ret is not None:
-                    print 'WARNING: IGNORING serving value ',ret
-                fl_ret = None
-            if fl_ret:
-                ret = convert.float_to_frac(fl_ret * self.mult,
-                                            fractions=self.fractions)
-                if attr=='yields' :
-                    yield_unit = self._grab_attr_(obj,'yield_unit')
-                    if yield_unit:
-                        ret = '%s %s'%(ret,yield_unit) # FIXME: i18n?
-                return ret
+                return unicode(self.mult * obj.the_yield)
         else:
             return exporter._grab_attr_(self,obj,attr)
 

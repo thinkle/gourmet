@@ -1,11 +1,12 @@
 from sqlalchemy import Column, Integer, String, Text, Float, LargeBinary, Boolean, inspect
 from sqlalchemy.event import listen
-from sqlalchemy.orm import deferred, relationship, backref
+from sqlalchemy.orm import deferred, relationship, composite
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from meta import Base
 
 from gourmet.recipeIdentifier import hash_recipe
+from gourmet.gtk_extras.classes.yields import Yield
 
 from time import time
 
@@ -49,6 +50,8 @@ class Recipe (Base):
     ingredients = relationship("Ingredient", order_by="Ingredient.position",
                               backref="recipe", foreign_keys="Ingredient.recipe_id",
                               cascade="all, delete, delete-orphan")
+
+    the_yield = composite(Yield, yields, yield_unit)
 
     @hybrid_property
     def categories_string(self):
