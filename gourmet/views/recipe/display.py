@@ -1,7 +1,7 @@
 from gourmet.plugin_loader import Pluggable
 from gourmet.plugin import ToolPlugin, RecDisplayPlugin
 from gourmet import prefs
-from gourmet.gglobals import imagedir, uibase
+from gourmet.gglobals import imagedir, uibase, launch_url
 from gourmet.gtk_extras import fix_action_group_importance
 from gourmet.gtk_extras.WidgetSaver import WindowSaver
 from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
@@ -10,6 +10,7 @@ from gourmet import ImageExtras as ie
 from gourmet.gdebug import debug
 from gourmet import convert
 from gourmet import timeScanner
+from gourmet.exporters.exportManager import get_export_manager
 
 from editor import RecEditor
 from gourmet.views.ingredient.display import IngredientDisplay
@@ -61,7 +62,7 @@ class RecCardDisplay (Pluggable):
     def __init__ (self, reccard, recGui, recipe=None):
         self.reccard = reccard; self.rg = recGui; self.current_rec = recipe
         self.mult = 1 # parameter
-        self.conf = [] #reccard.conf
+        self.conf = reccard.conf
         self.prefs = prefs.get_prefs()
         self.setup_ui()
         self.setup_uimanager()
@@ -82,14 +83,14 @@ class RecCardDisplay (Pluggable):
         self.setup_actions()
         for group in [
             self.recipeDisplayActionGroup,
-#            self.rg.toolActionGroup,
-#            self.rg.toolActionGroup
+            self.rg.toolActionGroup,
+            self.rg.toolActionGroup
             ]:
             fix_action_group_importance(group)
         self.ui_manager.insert_action_group(self.recipeDisplayActionGroup,0)
         self.ui_manager.insert_action_group(self.recipeDisplayFuturePluginActionGroup,0)
-#        self.ui_manager.insert_action_group(self.rg.toolActionGroup,0)
-#        self.rg.add_uimanager_to_manage(self.current_rec.id,self.ui_manager,'RecipeDisplayMenuBar')
+        self.ui_manager.insert_action_group(self.rg.toolActionGroup,0)
+        self.rg.add_uimanager_to_manage(self.current_rec.id,self.ui_manager,'RecipeDisplayMenuBar')
 
     def setup_actions (self):
         self.recipeDisplayActionGroup = gtk.ActionGroup('RecipeDisplayActions')
@@ -101,9 +102,9 @@ class RecCardDisplay (Pluggable):
             ('Export',gtk.STOCK_SAVE,_('Export recipe'),
              None,_('Export selected recipe (save to file)'),
              self.export_cb),
-#             ('Delete',gtk.STOCK_DELETE,_('_Delete recipe'),
-#              None,_('Delete this recipe'),self.reccard.delete
-#              ),
+            ('Delete',gtk.STOCK_DELETE,_('_Delete recipe'),
+             None,_('Delete this recipe'),self.reccard.delete
+             ),
             ('Close',gtk.STOCK_CLOSE,None,
              None,None,self.hide),
             ('Preferences',gtk.STOCK_PREFERENCES,None,
@@ -167,10 +168,10 @@ class RecCardDisplay (Pluggable):
             disp = getattr(self,d)
             disp.set_wrap_mode(gtk.WRAP_WORD)
             disp.set_editable(False)
-#             disp.connect('time-link-activated',
-#                          timeScanner.show_timer_cb,
-#                          self.rg.conv
-#                          )
+            disp.connect('time-link-activated',
+                         timeScanner.show_timer_cb,
+                         self.rg.conv
+                         )
         # link button
         self.linkDisplayButton = self.ui.get_object('linkDisplayButton')
         self.linkDisplayButton.connect('clicked',self.link_cb)
@@ -458,9 +459,34 @@ class RecCardDisplay (Pluggable):
 
     def export_cb (self, *args):
         opt = self.prefs.get('save_recipe_as','html')
-        fn = exporters.exportManager.get_export_manager().offer_single_export(self.current_rec,self.prefs,parent=self.window,
+        fn = get_export_manager().offer_single_export(self.current_rec,self.prefs,parent=self.window,
                                                                               mult=self.mult)
-        
+        if fn:
+            self.offer_url(_('Recipe successfully exported to '
+                            '<a href="file:///%s">%s</a>')%(fn,fn),
+                            url='file:///%s'%fn)
+
+    def offer_url (self, label, url, from_thread=False):
+        if from_thread:
+            gt.gtk_enter()
+        if hasattr(self,'progress_dialog'):
+            self.hide_progress_dialog()
+        # Clear existing messages...
+        for child in self.messagebox.get_children():
+            self.messagebox.remove(child)
+        # Add new message
+        l = gtk.Label()
+        l.set_markup(label)
+        l.connect('activate-link',lambda lbl, uri: launch_url(uri))
+        infobar = gtk.InfoBar()
+        infobar.set_message_type(gtk.MESSAGE_INFO)
+        infobar.get_content_area().add(l)
+        infobar.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
+        infobar.connect('response', lambda ib, response_id: self.messagebox.hide())
+        self.messagebox.pack_start(infobar)
+        self.messagebox.show_all()
+        if from_thread:
+            gt.gtk_leave()
 
     def toggle_readable_units_cb (self, widget):
         if widget.get_active():
@@ -475,7 +501,7 @@ class RecCardDisplay (Pluggable):
 
     def hide (self, *args):
         self.window.hide()
-#        self.reccard.hide()
+        #self.reccard.hide()
         return True
 
     # Future plugin callbacks
