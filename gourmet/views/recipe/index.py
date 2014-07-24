@@ -3,6 +3,7 @@ from gourmet.gdebug import debug
 from gourmet.gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
 from gourmet.gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
     mnemonic_manager, pageable_store, treeview_extras as te
+from gourmet.gtk_extras.sqlamodel import SqlaModel
 from gourmet.models import Recipe, Category
 from gourmet.models.meta import Session
 from gourmet import convert
@@ -239,7 +240,7 @@ class RecIndex:
         #self.do_search(None,None)
 
     def load_recipes(self, vw):
-        return pageable_store.SqlaModel(Recipe, vw)
+        return SqlaModel(Recipe, vw)
 
     def create_rmodel (self, vw):
         self.really_all_recipes = self.load_recipes(vw)
