@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, Float, LargeBinary, Boolea
 from sqlalchemy.event import listen
 from sqlalchemy.orm import deferred, relationship, composite
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from meta import Base
 
@@ -47,6 +48,8 @@ class Recipe (Base):
                               cascade="all, delete, delete-orphan",
                               info={'label': _('Category'), 'widget': 'Combo', 'order': 4})
 
+    categories = association_proxy('category', 'category')
+
     ingredients = relationship("Ingredient", order_by="Ingredient.position",
                               backref="recipe", foreign_keys="Ingredient.recipe_id",
                               cascade="all, delete, delete-orphan")
@@ -55,7 +58,7 @@ class Recipe (Base):
 
     @hybrid_property
     def categories_string(self):
-        return ', '.join(str(c) for c in self.category)
+        return ', '.join(c for c in self.categories)
 
     @staticmethod
     def update_last_modified_and_hashes(mapper, connection, target):
