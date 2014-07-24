@@ -15,7 +15,6 @@ import convert, xml.sax.saxutils
 import hashlib, difflib, types, re
 
 from models.ingredient import order_ings
-from models.recipe import diff_recipes
 
 REC_FIELDS = ['title',
               'instructions',
