@@ -43,7 +43,7 @@ class IngredientDisplay:
             for i in ings:
                 ing_strs = []
                 amt,unit = i.get_amount_and_unit(mult=self.recipe_display.mult,
-                                                 conv=(self.prefs.get('readableUnits',True)) # and self.rg.conv or None) # FIXME
+                                                 adjust_units=self.prefs.get('readableUnits',True) # and self.rg.conv or None) # FIXME
                                                  )
                 #if self.nutritional_highlighting and self.yields_orig:
                 #    amt,unit = self.rg.rd.get_amount_and_unit(i,
@@ -64,9 +64,7 @@ class IngredientDisplay:
                 istr = self.run_markup_ingredient_hooks(istr,i,
                                                         ing_index,
                                                         group_index)
-                labels.append(
-                    istr
-                    )                
+                labels.append(istr)
                 ing_index += 1
             group_strings.append('\n'.join(labels))
             group_index += 1
