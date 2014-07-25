@@ -816,10 +816,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             self.rw[c].set_model(model)
             self.rw[c].set_text_column(0)
             cb.setup_completion(self.rw[c])
-            if c=='category':
-                val = self.current_rec.categories_string
-            else:
-                val = getattr(self.current_rec,c)
+            val = getattr(self.current_rec,c)
             self.rw[c].entry.set_text(val or "")
             if isinstance(self.rw[c],gtk.ComboBoxEntry):
                 Undo.UndoableEntry(self.rw[c].get_child(),self.history)
@@ -849,10 +846,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
         
     def save (self, recipe):
         for c in self.combos:
-            if c == 'category':
-                recipe.categories_string = unicode(self.rw[c].entry.get_text())
-            else:
-                setattr(recipe, c, unicode(self.rw[c].entry.get_text()))
+            setattr(recipe, c, unicode(self.rw[c].entry.get_text()))
         for e in self.entries:
             if e in INT_REC_ATTRS + FLOAT_REC_ATTRS:
                 setattr(recipe, e, self.rw[e].get_value())

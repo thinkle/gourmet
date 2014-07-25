@@ -309,10 +309,7 @@ class RecIndex:
         self.rectree.append_column(col)
         _title_to_num_ = {}
         for c in self.rtcols:
-            if c == 'category':
-                n = self.really_all_recipes.get_column_index('categories_string')
-            else:
-                n = self.really_all_recipes.get_column_index(c)
+            n = self.really_all_recipes.get_column_index(c)
 
             if c=='rating':
                 # special case -- for ratings we set up our lovely
@@ -476,7 +473,7 @@ class RecIndex:
                 return data['search'] in mod.get_value(it, self.really_all_recipes.get_column_index(data['column']))
             else:
                 retval = False
-                for column in ['categories_string','cuisine','title','instructions','modifications',
+                for column in ['category','cuisine','title','instructions','modifications',
                                'source','link']:
                     field = mod.get_value(it, self.really_all_recipes.get_column_index(column))
                     if field:
@@ -631,7 +628,7 @@ class RecipeModel (pageable_store.PageableViewStore):
 
     #columns_and_types.append(('ingredients',ListWrapper))
     #columns_and_types.append(('categories',ListWrapper))
-    #columns_and_types.append(('categories_string',str))
+    #columns_and_types.append(('category',str))
     
     columns = [c[0] for c in columns_and_types]
     column_types = [c[1] for c in columns_and_types]

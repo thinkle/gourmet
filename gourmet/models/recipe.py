@@ -43,12 +43,11 @@ class Recipe (Base):
     link = Column(Text, info={'label': _('Website'), 'widget': 'Entry', 'order': 8}) # A field for a URL -- we ought to know about URLs
     last_modified = Column(Integer)
 
-    category = relationship("Category", order_by="Category.category",
+    _categories = relationship("Category", order_by="Category.category",
                               backref="recipe",
-                              cascade="all, delete, delete-orphan",
-                              info={'label': _('Category'), 'widget': 'Combo', 'order': 4})
+                              cascade="all, delete, delete-orphan")
 
-    categories = association_proxy('category', 'category')
+    categories = association_proxy('_categories', 'category')
 
     ingredients = relationship("Ingredient", order_by="Ingredient.position",
                               backref="recipe", foreign_keys="Ingredient.recipe_id",
@@ -57,12 +56,15 @@ class Recipe (Base):
     the_yield = composite(Yield, yields, yield_unit)
 
     @hybrid_property
-    def categories_string(self):
+    def category(self):
         return ', '.join(c for c in self.categories)
 
-    @categories_string.setter
-    def categories_string(self, catstr):
+    @category.setter
+    def category(self, catstr):
         self.categories = catstr.split(', ')
+
+    category.name='category'
+    category.info={'label': _('Category'), 'widget': 'Combo', 'order': 4}
 
     @staticmethod
     def update_last_modified_and_hashes(mapper, connection, target):
@@ -86,7 +88,7 @@ class Recipe (Base):
     def __str__(self):
         return self.title
 
-REC_ATTRS = [(c.property.key, c.info['label'], c.info['widget'])
+REC_ATTRS = [(c.name, c.info['label'], c.info['widget'])
              for c in inspect(Recipe).all_orm_descriptors \
              if (hasattr(c, 'info') and 'label' in c.info and 'widget' in c.info)]
 
@@ -98,17 +100,14 @@ FLOAT_REC_ATTRS = ['yields']
 IMAGE_ATTRS = ['image','thumb']
 ALL_ATTRS = [r[0] for r in REC_ATTRS] + TEXT_ATTR_DIC.keys() + IMAGE_ATTRS
 
-DEFAULT_ATTR_ORDER = sorted((c.property.key for c in inspect(Recipe).all_orm_descriptors \
+DEFAULT_ATTR_ORDER = sorted((c.name for c in inspect(Recipe).all_orm_descriptors \
                       if (hasattr(c, 'info') and 'order' in c.info)),
                       key=lambda c: getattr(inspect(Recipe).all_orm_descriptors[c], 'info')['order'])
 
 def diff_recipes (recs):
     diffs = {}
     for attr in ALL_ATTRS:
-        if attr == 'category':
-            vals = [r.categories_string for r in recs]
-        else:
-            vals = [getattr(r,attr) for r in recs]
+        vals = [getattr(r,attr) for r in recs]
         # If all our values are identical, there is no
         # difference. Also, if all of our values are bool->False, we
         # don't care (i.e. we don't care about the difference between
