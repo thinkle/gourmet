@@ -849,7 +849,10 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
         
     def save (self, recipe):
         for c in self.combos:
-            setattr(recipe, c, unicode(self.rw[c].entry.get_text()))
+            if c == 'category':
+                recipe.categories_string = unicode(self.rw[c].entry.get_text())
+            else:
+                setattr(recipe, c, unicode(self.rw[c].entry.get_text()))
         for e in self.entries:
             if e in INT_REC_ATTRS + FLOAT_REC_ATTRS:
                 setattr(recipe, e, self.rw[e].get_value())

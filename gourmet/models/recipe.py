@@ -60,6 +60,10 @@ class Recipe (Base):
     def categories_string(self):
         return ', '.join(c for c in self.categories)
 
+    @categories_string.setter
+    def categories_string(self, catstr):
+        self.categories = catstr.split(', ')
+
     @staticmethod
     def update_last_modified_and_hashes(mapper, connection, target):
         target.last_modified = time()
