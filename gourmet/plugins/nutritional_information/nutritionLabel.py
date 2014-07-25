@@ -1,6 +1,8 @@
 import gtk, pango, gobject
 import gourmet.defaults
 
+from models import Nutrition
+
 MAJOR = 0
 MINOR = 1
 TINY = 2
@@ -403,7 +405,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         A nutinfo object has attributes with our relevant data.
         """
         self.nutinfo = nutinfo
-        if len(self.nutinfo)==0:
+        if self.nutinfo==Nutrition():
             self.main_table.hide()
             self.nutexpander.hide()
             self.yieldLabel.hide()
@@ -411,13 +413,11 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
             self.missingLabel.hide()
         else:
             self.update_display()
-            vapor = self.nutinfo._get_vapor()
-            if vapor:
-                len(vapor)
+            if False: # FIXME: If there is missing nutritional information!
                 self.nutinfo.recursive_length()
                 self.set_missing_label_text(
-                    len(vapor),
-                    self.nutinfo.recursive_length()
+                    len(vapor), # FIXME: # of ingredients without nutritional info
+                    self.nutinfo.recursive_length() # FIXME: # of ingredients
                     )
                 self.missingLabel.show()
             else:
@@ -467,7 +467,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
             self.yieldLabel.set_markup('<b>'+_('Amount per recipe')+'</b>')
         
     def set_nutritional_info (self, info):
-        """Set nutrition from a NutritionInfo or NutritionInfoList object."""
+        """Set nutrition from a Nutrition object."""
         self.nutinfo = info
         self.update_display()
         

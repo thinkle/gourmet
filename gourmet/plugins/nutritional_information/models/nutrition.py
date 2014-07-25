@@ -57,3 +57,26 @@ class Nutrition (meta.Base):
     gramdsc2 = Column(String(100), info={'label': "Gram Weight Description 2"})
     refusepct = Column(Float, info={'label': _("Percent refuse")})
     foodgroup = Column(Text, info={'label': ''})
+
+    not_summable = ['refusepct', 'gramwt1', 'gramwt2']
+    # Not sure about gramwt1 and gramwt2...
+
+    def __add__ (self, other):
+        result = Nutrition()
+        for c in Nutrition.__table__.columns:
+            if isinstance (c.type, Float) and not c.name in self.not_summable:
+                self_col = getattr(self, c.name) or 0
+                other_col = getattr(other, c.name) or 0
+                setattr(result, c.name, self_col+other_col)
+        return result
+
+    def __mul__ (self, other):
+        result = Nutrition()
+        for c in Nutrition.__table__.columns:
+            if isinstance (c.type, Float) and not c.name in self.not_summable:
+                self_col = getattr(self, c.name) or 0
+                setattr(result, c.name, other*self_col)
+        return result
+
+    def __rmul__ (self, other):
+        return self.__mul__(other)

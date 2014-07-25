@@ -2,33 +2,6 @@
 
 PER_100_GRAMS = ["kcal","protein","lipid","ash","carb","fiber","sugar","calcium","iron","magnesium","phosphorus","potassium","sodium","zinc","copper","manganese","selenium","vitaminc","thiamin","riboflavin","niacin","pantoacid","vitaminb6","folatetotal","folateacid","foodfolate","folatedfe","vitb12","vitaiu","vitarae","retinol","vite","vitk","alphac","betac","betacrypt","lypocene","famono","fapoly","lutzea","fasat","cholestrl"]
 
-# List of fields that can be sensibly added, multiplied, etc.
-SUMMABLE_FIELDS = ['kcal',
-                   'protein',
-                   'lipid',
-                   'ash',
-                   'carb',
-                   'cholestrl',
-                   'fiber',
-                   'calcium',
-                   'iron',
-                   'magnesium',
-                   'phosphorus',
-                   'potassium',
-                   'sodium',
-                   'zinc',
-                   'manganese',
-                   'selenium',
-                   'copper',
-                   'vitaminc',
-                   'thiamin',
-                   'riboflavin','pantoacid','niacin','folatetotal','foodfolate',
-                   'vitb12',
-                   'vitaminb6','folateacid','folatedfe','vitaiu','vitk','retinol',
-                   'betac','lypocene',
-                   'vitarae','vite','alphac','betacrypt','lutzea','famono',
-                   'fapoly','fasat','sugar']
-
 ABBREVS = {'ALLPURP':'All Purpose',
            'AL':'Aluminum',
            '&':'And',

@@ -8,8 +8,6 @@ from gtk_extras import fix_action_group_importance
 from exporters.printer import get_print_manager
 from gdebug import debug
 from gglobals import doc_base
-#from nutrition.nutritionLabel import NutritionLabel
-#from nutrition.nutrition import NutritionInfoList
 import plugin_loader, plugin
 from shopping import ShoppingList
 

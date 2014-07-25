@@ -1,6 +1,5 @@
 import re, string
 import sys
-from parser_data import SUMMABLE_FIELDS
 
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -118,11 +117,12 @@ class NutritionData:
         return self.get_nutinfo_for_item(ing.ingkey,amount,ing.unit,ingObject=ing)
 
     def get_nutinfo_for_inglist (self, inglist, ingObject=None, multiplier=None):
-        """A convenience function to get NutritionInfoList for a list of
-        ingredients.
+        """A convenience function to get Nutrition for a list of ingredients.
         """
-        return NutritionInfoList([self.get_nutinfo_for_ing(i, multiplier) for i in inglist],
-                                 ingObject=ingObject)
+        result = Nutrition()
+        for i in inglist:
+            result += self.get_nutinfo_for_ing(i, multiplier)
+        return result
 
     def get_nutinfo_for_item (self, key, amt, unit, ingObject=None):
         """Handed a key, amount and unit, get out nutritional Database object.
@@ -131,25 +131,20 @@ class NutritionData:
         if not amt:
             amt = 1
         if ni: # We *can* have conversions w/ no units!
-            c=self.get_conversion_for_amt(amt,unit,key=key,row=ni.__rowref__)
+            c=self.get_conversion_for_amt(amt,unit,key=key,row=ni)
             if c:
-                return NutritionInfo(ni,mult=c,ingObject=ingObject)
-        return NutritionVapor(self,key,
-                              rowref=ni,
-                              amount=amt,
-                              unit=unit,
-                              ingObject=ingObject)
+                return c*ni
+        # FIXME: The following used to return NutritionVapor
+        return Nutrition()
 
     def get_nutinfo_from_desc (self, desc):
         try:
-            nvrow = self.session.query(Nutrition).filter_by(desc=desc).one()
-            return NutritionInfo(nvrow)
+            return self.session.query(Nutrition).filter_by(desc=desc).one()
         except NoResultFound:
             matches = self.get_matches(desc)
             if len(matches) == 1:
                 ndbno = matches[0][1]
-                nvrow = self.session.query(Nutrition).filter_by(ndbno=ndbno).one()
-                return NutritionInfo(nvrow)
+                return self.session.query(Nutrition).filter_by(ndbno=ndbno).one()
         return None
     
     def get_nutinfo (self, key):
@@ -163,18 +158,21 @@ class NutritionData:
         except NoResultFound:
             # See if the key happens to match an existing description...
             ni = self.get_nutinfo_from_desc(key)
+            if ni:
+                return ni
             # if we don't have a nutritional db row, return a
             # NutritionVapor instance which remembers our query and allows
             # us to redo it.  The idea here is that our callers will get
             # an object that can guarantee them the latest nutritional
             # information for a given item.
-            if ni:
-                return ni
-            return NutritionVapor(self,key)
+            # return NutritionVapor(self,key)
+            # FIXME: We should find a cleaner solution to the previous behavior
+            # Maybe by throwing exceptions? For now, we'll just return a null
+            # Nutrition object.
+            return Nutrition()
         else:
             try:
-                nvrow=self.session.query(Nutrition).filter_by(ndbno=aliasrow.ndbno).one()
-                return NutritionInfo(nvrow)
+                return self.session.query(Nutrition).filter_by(ndbno=aliasrow.ndbno).one()
             except NoResultFound:
                 return None
 
@@ -345,240 +343,7 @@ class NutritionData:
             unit = groups[2]
             extra = groups[4]
             return amt,unit,extra
-        
-                    
-class NutritionInfo:
-    """A multipliable way to reference an object.
 
-    Any attribute of object that can be mutiplied, will be returned
-    multiplied by mult.
-
-    We can also support various mathematical operators
-    n = NutritionInfo(obj, mult=2)
-    n * 2 -> NutritionInfo(obj,mult=4)
-    n2 = NutritionInfo(obj2, mult=3)
-    n2 + n -> NutritionInfoList([n2,n])
-
-    The result is that addition and multiplication 'makes sense' for
-    properties. For example, if we have nutrition info for 1 carrot,
-    we can multiply it or add it to the nutrition info for an
-    eggplant. The resulting object will reflect the appropriate
-    cumulative values.
-
-    Carrot = NutritionInfo(CarrotNutritionRow)
-    Eggplant = NutritionInfo(EggplantNutritionRow)
-
-    Carrot.kcal => 41
-    Eggplant.kcal => 24
-    (Carrot + Eggplant).kcal => 65
-    (Carrot * 3 + Eggplant).kcal => 147
-
-    This will be true for all numeric properties.
-
-    Non numeric properties return a somewhat not-useful string:
-    
-    (Carrot + Eggplant).desc => 'CARROTS,RAW, EGGPLANT,RAW'
-    """
-    def __init__ (self,rowref, mult=1, fudged=False, ingObject=None):
-        self.__rowref__ = rowref
-        self.__mult__ = mult
-        self.__fudged__ = fudged
-        self.__ingobject__ = ingObject
-
-    def __getattr__ (self, attr):
-        if attr[0]!='_':
-            ret = getattr(self.__rowref__, attr)
-            try:
-                if attr in SUMMABLE_FIELDS:
-                    return (ret or 0) * self.__mult__
-                else:
-                    return ret
-            except:
-                raise
-        else:
-            # somehow this magically gets us standard
-            # attribute handling...
-            raise AttributeError, attr
-
-    def __add__ (self, obj):
-        if isinstance(obj,NutritionInfo):
-            return NutritionInfoList([self,obj])
-        elif isinstance(obj,NutritionInfoList):
-            return NutritionInfoList([self]+obj.__nutinfos__)
-
-    def __mul__ (self, n):
-        return NutritionInfo(self.__rowref__, mult=self.__mult__ * n,
-                             fudged=self.__fudged__,ingObject=self.__ingobject__)
-
-KEY_VAPOR = 0 # when we don't have a key
-UNIT_VAPOR = 1 # when we can't interpret the unit
-DENSITY_VAPOR = 2 # when we don't have a density
-AMOUNT_VAPOR = 3 # when there is no amount, leaving us quite confused
-
-class NutritionVapor (NutritionInfo):
-    """An object to hold our nutritional information before we know it.
-
-    Basically, we have to behave like a NutritionInfo class that doesn't
-    actually return any data.
-
-    We also can return information about why we're still vapor
-    (whether we need density info, key info or what...).
-    """
-    def __init__ (self, nd, key,
-                  rowref=None,
-                  mult=None,
-                  amount=None,
-                  unit=None,
-                  ingObject=None):
-        self.__nd__ = nd
-        self.__rowref__ = rowref
-        self.__key__ = key
-        self.__mult__ = mult
-        self.__amt__ = amount
-        self.__unit__ = unit
-        self.__ingobject__ = ingObject
-
-    def _reset (self):
-        """Try to create matter from vapor and return it.
-
-        If we fail we return more vapor."""
-        if not self.__rowref__:
-            if self.__mult__:
-                ni = self.__nd__.get_nutinfo(self.__key__)
-                if not isinstance(ni,NutritionVapor): return ni * self.__mult__
-                else: return self
-            else:
-                return self.__nd__.get_nutinfo_for_item(self.__key__,
-                                                        self.__amt__,
-                                                        self.__unit__,
-                                                        ingObject=self.__ingobject__
-                                                        )
-        elif self.__amt__:
-            c=self.__nd__.get_conversion_for_amt(self.__amt__,self.__unit__,self.__key__,fudge=False)
-            if c:
-                self.__mult__ = c
-                return NutritionInfo(self.__rowref__,
-                                     self.__mult__)
-            else:
-                c=self.__nd__.get_conversion_for_amt(self.__amt__,self.__unit__,self.__key__,fudge=True)
-                if c:
-                    self.__mult__ = c
-                    return NutritionInfo(self.__rowref__,
-                                         self.__mult__,
-                                         ingObject=self.__ingobject__
-                                         )
-                else:
-                    return self
-        else: return self.__nd__.get_nutinfo_for_item(self.__key__,self.__amt__,self.__unit__,ingObject=self.__ingobject__)
-
-    def __getattr__ (self,attr):
-        """Return 0 for any requests for a non _ prefixed attribute."""
-        if attr[0]!='_':
-            return 0
-        else:
-            raise AttributeError,attr
-
-    def __repr__ (self):
-        return '<NutritionVapor %s>'%self.__key__
-    
-    def __nonzero__ (self):
-        """Vapor is always False."""
-        return False
-
-    def _wheres_the_vapor (self):
-        """Return a key as to why we're vapor."""
-        if not self.__rowref__: return KEY_VAPOR
-        elif not self.__amt__: return AMOUNT_VAPOR
-        else: return UNIT_VAPOR
-    
-class NutritionInfoList (list, NutritionInfo):
-    """A summable list of objects.
-
-    When we ask for numeric attributes of our members, we get the sum.
-    """
-    def __init__ (self,nutinfos, mult=1,ingObject=None):
-        self.__nutinfos__ = nutinfos
-        #self.__len__ = self.__nutinfos__.__len__
-        #self.__getitem__ = self.__nutinfos__.__getitem__
-        self.__mult__ = 1
-        self.__ingobject__ = ingObject
-
-    def __getattr__ (self, attr):
-        if attr[0]!='_':
-            alist = [getattr(ni,attr) for ni in self.__nutinfos__]
-            if attr in SUMMABLE_FIELDS:
-                if self.__mult__: alist = [n * self.__mult__ for n in alist]
-                return sum(alist)
-            else:
-                return ", ".join(map(str,alist))
-        else:
-            # somehow this magically gets us standard
-            # attribute handling...
-            raise AttributeError, attr
-
-    def _reset (self):
-        """See if we can turn any of our vapor into matter."""
-        for i in range(len(self.__nutinfos__)):
-            obj = self.__nutinfos__[i]
-            if isinstance(obj,NutritionVapor):
-                # try resetting
-                self.__nutinfos__[i]=obj._reset()
-
-    def _get_vapor (self):
-        """Return a list of nutritionVapor if there is any
-
-        In other words, tell us whether we are missing any nutritional
-        information."""
-        ret = []
-        for i in self.__nutinfos__:
-            if isinstance(i,NutritionVapor): ret.append(i)
-            if isinstance(i,NutritionInfoList):
-                ret.extend(i._get_vapor())
-        return ret
-
-    def _get_fudge (self):
-        """Return a list of fudged items
-        """
-        ret = []
-        for i in self.__nutinfos__:
-            if hasattr(i,'__fudged__') and i.__fudged__:
-                ret.append(i)
-        return ret
-        
-    def __add__ (self, obj):
-        if isinstance(obj,NutritionInfo):
-            return NutritionInfoList(self.__nutinfos__ + [obj])
-        elif isinstance(obj,NutritionInfoList):
-            return NutritionInfoList(self.__nutinfos__ + obj.__nutinfos__)
-
-    def __sub__ (self, obj):
-        copy = self.__nutinfos__[0:]
-        copy.remove(obj)
-        return NutritionInfoList(copy)
-
-    def __getslice__ (self, a, b):
-        return NutritionInfoList(self.__nutinfos__[a:b])
-
-    def __len__ (self): return len(self.__nutinfos__)
-    def __getitem__ (self,x): return self.__nutinfos__[x]
-
-    def __repr__ (self):
-        return '<NutritionInfoList>'
-
-    def __iter__ (self):
-        for i in self.__nutinfos__: yield i
-
-    def recursive_length (self):
-        """Return number of contained nutrition info objects, recursing any embedded lists.
-        """
-        n = 0
-        for x in range(len(self)):
-            obj = self[x]
-            if isinstance(obj,NutritionInfoList):
-                n += obj.recursive_length()
-            else:
-                n += 1
-        return n
             
 if __name__ == '__main__':
     import gourmet.recipeManager as rm
