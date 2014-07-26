@@ -386,7 +386,7 @@ class Converter:
         amt - our amount
         unit - our current unit
         item - the item (in case it makes a difference -- currently not implemented)
-        favor_current_item - a flag; if True (default) we give our current unit a slight
+        favor_current_unit - a flag; if True (default) we give our current unit a slight
                              preference, to avoid changing the unit if unnecessary.
         Here we do our best to provide readable units, so that the user is presented
         with 1/2 cup rather than 8 tablespoons, for example.
@@ -873,12 +873,11 @@ def float_to_frac (n, d=[2,3,4,5,6,8,10,16],approx=0.01,fractions=FRACTIONS_NORM
             else:
                 return "0"
         else:
-            flag = False
             for div in d:
                 f = fractify(rem,div,approx=approx,fractions=fractions)
                 if f:
                     return " ".join([i,f]).strip()
-             # use locale-specific metric formatting if fractions don't work
+            # use locale-specific metric formatting if fractions don't work
             return float_to_metric(n,approx)
 
 def float_to_metric(n, approx=0.01):
