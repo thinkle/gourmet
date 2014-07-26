@@ -1,6 +1,6 @@
 import tempfile, unittest
 #import db
-from gourmet.models import Base
+from gourmet.models.meta import Base
 from gourmet.models import Ingredient
 from gourmet.models import Recipe
 from sqlalchemy import create_engine
@@ -8,8 +8,6 @@ from sqlalchemy.orm import sessionmaker
 
 class DBTest (unittest.TestCase):
     def setUp (self):
-        #tmpfile = tempfile.mktemp()
-        #self.db = db.get_database(file=tmpfile)
         engine = create_engine('sqlite:///:memory:')
         Base.metadata.create_all(engine)
         self.Session = sessionmaker(bind=engine)
@@ -78,19 +76,23 @@ class testIngBasics (DBTest):
         self.assertEqual(ings[1].unit,'pound')
         self.assertEqual(ings[1].amount,0.5)        
 
-#     def testUnique (self):
-#         self.db.delete_by_criteria(self.db.ingredients_table,{}) # Clear out ingredients
-#         for i in ['juice, tomato',
-#                   'broccoli',
-#                   'spinach',
-#                   'spinach',
-#                   'spinach',]:
-#             self.db.add_ing({'amount':1,'unit':'c.','item':i,'ingkey':i})
-#         vv=self.db.get_unique_values('ingkey',self.db.ingredients_table)
-#         assert(len(vv)==3)
-#         cvw = self.db.fetch_count(self.db.ingredients_table,'ingkey',ingkey='spinach',sort_by=[('count',-1)])
-#         assert(cvw[0].count==3)    
-#         assert(cvw[0].ingkey=='spinach')
+    def testUnique (self):
+        session = self.Session()
+        for i in session.query(Ingredient).all():
+            i.delete()
+        for i in ['juice, tomato',
+                  'broccoli',
+                  'spinach',
+                  'spinach',
+                  'spinach',]:
+            session.add(Ingredient(amount=1,unit='c.',item=i,ingkey=i))
+        vw = session.query(Ingredient.ingkey).distinct().all()
+        assert(len(vw)==3)
+        q = session.query(Ingredient.ingkey).filter_by(ingkey='spinach')
+        vw = q.all()
+        cvw = q.count()
+        assert(cvw==3)
+        assert(vw[0].ingkey=='spinach')
 # 
 # class testSearch (DBTest):
 #     def runTest (self):
