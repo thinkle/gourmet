@@ -10,6 +10,7 @@ from gourmet.recipeIdentifier import hash_recipe
 from gourmet.util.yields import Yield
 
 from time import time
+from copy import copy
 
 class Recipe (Base):
     __tablename__ = 'recipe'
@@ -87,6 +88,21 @@ class Recipe (Base):
 
     def __str__(self):
         return self.title
+
+    def __mul__(self, other):
+        result = copy(self)
+        if result.the_yield:
+            result.the_yield *= other
+
+        # FIXME: The recipe's ingredients aren't actually multiplied.
+        result.ingredients = copy(self.ingredients)
+        for i in result.ingredients:
+            i = other*i
+
+        return result
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
 
 REC_ATTRS = [(c.name, c.info['label'], c.info['widget'])
              for c in inspect(Recipe).all_orm_descriptors \
