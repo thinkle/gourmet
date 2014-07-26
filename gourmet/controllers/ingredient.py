@@ -1,7 +1,7 @@
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import IngredientControllerPlugin
 from gourmet.gdebug import debug
-from gourmet.models.ingredient import order_ings, RecRef
+from gourmet.models.ingredient import order_ings, RecRef, Ingredient
 from gourmet.gtk_extras.treeview_extras import path_next, move_iter
 from gourmet.importers.importer import parse_range
 from gourmet import Undo
@@ -82,12 +82,12 @@ class IngredientController (Pluggable):
                                     placeholder=None, # An ingredient
                                                       # object count
                                                       # (number)
-                                    **ingdict):
+                                    ingredient=Ingredient()):
         iter = self._new_iter_(group_iter=group_iter,prev_iter=prev_iter,
                                fallback_on_append=fallback_on_append)
-        if ingdict.has_key('refid') and ingdict['refid']:
+        if ingredient.recipe_ref:
             self.imodel.set_value(iter,0,
-                                  RecRef(ingdict['refid'],ingdict.get('item',''))
+                                  RecRef(ingredient.recipe_ref,ingredient.item)
                                   )
         elif placeholder is not None:
             self.imodel.set_value(iter,0,placeholder)
@@ -95,7 +95,7 @@ class IngredientController (Pluggable):
             self.imodel.set_value(iter,0,self.new_item_count)
             self.new_item_count+=1
         self.update_ingredient_row(
-            iter,**ingdict
+            iter,ingredient.amt, ingredient.unit, ingredient.item, ingredient.optional
             )
         return iter
 
