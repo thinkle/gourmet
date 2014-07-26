@@ -152,11 +152,10 @@ class KeyManager:
         if len(main_txts)==1:
             main_txts.extend(defaults.guess_plurals(txt))
         for t in main_txts:
-            is_key = self.rm.fetch_one(self.rm.ingredients_table,ingkey=t)
+            is_key = self.session.query(Ingredient).filter_by(ingkey=t).first()
             if is_key>=0:
                 retvals[t]=.9
-            exact = self.rm.fetch_all(self.rm.keylookup_table,
-                                      item=t)
+            exact = self.session.query(KeyLookup).filter_by(item=t).all()
             if exact:
                 for o in exact:
                     k = o.ingkey
@@ -180,7 +179,7 @@ class KeyManager:
         for w in words:
             if not w:
                 continue
-            srch = self.rm.fetch_all(self.rm.keylookup_table,word=w)
+            srch = self.session.query(KeyLookup).filter_by(word=w).all()
             total_count = sum([m.count for m in srch])
             for m in srch:
                 ik = m.ingkey
