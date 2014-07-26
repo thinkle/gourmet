@@ -78,13 +78,14 @@ class ExportManager (plugin_loader.Pluggable):
         outfi.close()
         return filename
 
-    def offer_multiple_export (self, recs, prefs, parent=None, prog=None):
+    def offer_multiple_export (self, recs, prefs, parent=None, prog=None,
+                               export_all=False):
         """Offer user a chance to export multiple recipes at once.
 
         Return the exporter class capable of doing this and a
         dictionary of arguments for the progress dialog.
         """
-        if len(recs) < 950:
+        if export_all or len(recs) < 950:
             # inelegantly avoid bug that happens when this code runs
             # on large numbers of recipes. The good news is that this
             # that that will almost only ever happen when we're
