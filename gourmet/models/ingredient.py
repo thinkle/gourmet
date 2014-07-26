@@ -10,7 +10,7 @@ from gourmet import convert
 from gourmet.convert import FRACTIONS_NORMAL
 from gourmet.defaults import lang as defaults
 
-from gourmet.gtk_extras.classes.amount import Amount
+from gourmet.util.amount import Amount
 
 class Ingredient (Base):
     __tablename__ = 'ingredients'

@@ -7,7 +7,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from meta import Base
 
 from gourmet.recipeIdentifier import hash_recipe
-from gourmet.gtk_extras.classes.yields import Yield
+from gourmet.util.yields import Yield
 
 from time import time
 
