@@ -12,16 +12,24 @@ class Yield(object):
         return "Yield(yields=%s, yield_unit=%s)" % (self.yields, self.yield_unit)
 
     def __str__(self):
-        return unicode(self).encode('utf-8')
+        return self.__unicode__().encode('utf-8')
 
     def __unicode__(self):
         return self.__format__(None)
 
     def __format__(self, spec):
-        if spec == 'q':
-            return unicode(float_to_frac(self.yields)) + ' ' + self.yield_unit
-        else:
-            return unicode(self.yields) + ' ' + self.yield_unit
+        ret = ''
+        if self.yields:
+            if spec and spec == 'q':
+                ret += unicode(float_to_frac(self.yields))
+            else:
+                ret += unicode(self.yields)
+        if self.yields and self.yield_unit:
+            ret += ' '
+        if self.yield_unit:
+            ret += self.yield_unit
+
+        return ret
 
     def __eq__(self, other):
         return isinstance(other, Yield) and \
@@ -32,7 +40,10 @@ class Yield(object):
         return not self.__eq__(other)
 
     def __mul__(self, other):
-        return Yield(float(other)*self.yields, self.yield_unit)
+        if self.yields:
+            return Yield(float(other)*self.yields, self.yield_unit)
+        else:
+            return Yield(None, self.yield_unit)
 
     def __rmul__(self, other):
         return self.__mul__(other)
