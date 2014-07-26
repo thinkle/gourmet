@@ -164,21 +164,10 @@ class exporter (SuspendableThread, Pluggable):
             if g:
                 self.write_grouphead(g)            
             for i in ings:
-                amount,unit = self._get_amount_and_unit_(i)
                 if self._grab_attr_(i,'refid'):
-                    self.write_ingref(amount=amount,
-                                      unit=unit,
-                                      item=self._grab_attr_(i,'item'),
-                                      refid=self._grab_attr_(i,'refid'),
-                                      optional=self._grab_attr_(i,'optional')
-                                      )
+                    self.write_ingref(i)
                 else:
-                    self.write_ing(amount=amount,
-                                   unit=unit,
-                                   item=self._grab_attr_(i,'item'),
-                                   key=self._grab_attr_(i,'ingkey'),
-                                   optional=self._grab_attr_(i,'optional')
-                                   )
+                    self.write_ing(i)
             if g:
                 self.write_groupfoot()
         self.write_ingfoot()
@@ -219,9 +208,6 @@ class exporter (SuspendableThread, Pluggable):
                     print "oops:",ret,"doesn't look like unicode."
                     raise
             return ret
-
-    def _get_amount_and_unit_ (self, ing):
-        return ing.get_amount_and_unit(fractions=self.fractions)
 
     # Below are the images inherited exporters should
     # subclass. Subclasses overriding methods should make these
@@ -352,26 +338,17 @@ class exporter (SuspendableThread, Pluggable):
         pass
     
     @pluggable_method
-    def write_ingref (self, amount=1, unit=None,
-                      item=None, optional=False,
-                      refid=None):
+    def write_ingref (self, ingredient):
         """By default, we don't handle ingredients as recipes, but
         someone subclassing us may wish to do so..."""
-        self.write_ing(amount=amount,
-                       unit=unit, item=item,
-                       key=None, optional=optional)
+        self.write_ing(ingredient)
 
     @pluggable_method
-    def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
+    def write_ing (self, ingredient=None):
         """Write ingredient."""
-        if amount:
-            self.out.write("%s"%amount)
-        if unit:
-            self.out.write(" %s"%unit)
-        if item:
-            self.out.write(" %s"%item)
-        if optional:
-            self.out.write(" (%s)"%_("optional"))
+        ingstr = format(ingredient, "{'fractions': %s}"%self.fractions)
+        if ingstr:
+            self.out.write(ingstr)
         self.out.write("\n")
 
 class exporter_mult (exporter):
@@ -428,21 +405,13 @@ class exporter_mult (exporter):
         else:
             return exporter._grab_attr_(self,obj,attr)
 
-    def _get_amount_and_unit_ (self, ing):
-        return ing.get_amount_and_unit(mult=self.mult,conv=self.conv,
-                                       fractions=self.fractions)
-
     @pluggable_method
-    def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
-        if amount:
-            self.out.write("%s"%amount)
-        if unit:
-            self.out.write(" %s"%unit)
-        if item:
-            self.out.write(" %s"%item)
-        if optional:
-            self.out.write(" (%s)"%_("optional"))
-        self.out.write("\n")        
+    def write_ing (self, ingredient=None):
+        """Write ingredient."""
+        ingstr = format(ingredient, "{'fractions': %s}"%self.fractions)
+        if ingstr:
+            self.out.write(ingstr)
+        self.out.write("\n")
 
 class ExporterMultirec (SuspendableThread, Pluggable):
 
