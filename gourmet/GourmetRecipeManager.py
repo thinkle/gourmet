@@ -735,7 +735,8 @@ class ImporterExporter:
             recs,
             self.prefs,
             prog=self.set_progress_thr,
-            parent=self.app.get_toplevel())
+            parent=self.app.get_toplevel(),
+            export_all=True)
 
 
 class StuffThatShouldBePlugins:
