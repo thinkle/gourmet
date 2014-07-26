@@ -429,12 +429,8 @@ class exporter_mult (exporter):
             return exporter._grab_attr_(self,obj,attr)
 
     def _get_amount_and_unit_ (self, ing):
-        if self.mult != 1 and self.change_units:
-            return ing.get_amount_and_unit(mult=self.mult,conv=self.conv,
-                                           fractions=self.fractions)
-        else:
-            return ing.get_amount_and_unit(mult=self.mult,conv=self.conv,
-                                           fractions=self.fractions)
+        return ing.get_amount_and_unit(mult=self.mult,conv=self.conv,
+                                       fractions=self.fractions)
 
     @pluggable_method
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
