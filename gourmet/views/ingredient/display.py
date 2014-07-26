@@ -41,21 +41,7 @@ class IngredientDisplay:
             if g: labels.append("<u>%s</u>"%xml.sax.saxutils.escape(g))
             ing_index = 0
             for i in ings:
-                ing_strs = []
-                amt,unit = i.get_amount_and_unit(mult=self.recipe_display.mult,
-                                                 adjust_units=self.prefs.get('readableUnits',True) # and self.rg.conv or None) # FIXME
-                                                 )
-                #if self.nutritional_highlighting and self.yields_orig:
-                #    amt,unit = self.rg.rd.get_amount_and_unit(i,
-                #                                              mult = 1.0/self.yields_orig,
-                #                                              conv=(self.prefs.get('readableUnits',True) and self.rg.conv or None)
-                #                                              )
-                if amt: ing_strs.append(amt)
-                if unit: ing_strs.append(unit)
-                if i.item: ing_strs.append(i.item)
-                if i.optional:
-                    ing_strs.append(_('(Optional)'))
-                istr = xml.sax.saxutils.escape(' '.join(ing_strs))                
+                istr = format(self.recipe_display.mult*i,"{'adjust_units': %s}"%self.prefs.get('readableUnits',True))
                 if i.refid:
                     istr = ('<a href="%s:%s">'%(i.refid,
                                                 xml.sax.saxutils.escape(i.item))

@@ -157,10 +157,10 @@ class IngredientController (Pluggable):
         # Append our ingredient object to a list so that we will be able to notice if it has been deleted...
         if not is_undo: self.ingredient_objects.append(ing)
         iter = self._new_iter_(prev_iter=prev_iter,group_iter=group_iter,fallback_on_append=fallback_on_append)
-        amt = i.get_amount_as_string()
+        amt = i.amt
         unit = i.unit
         self.imodel.set_value(iter, 0, i)
-        self.imodel.set_value(iter, 1, amt)
+        self.imodel.set_value(iter, 1, unicode(amt))
         self.imodel.set_value(iter, 2, unit)
         self.imodel.set_value(iter, 3, i.item)
         if i.optional:

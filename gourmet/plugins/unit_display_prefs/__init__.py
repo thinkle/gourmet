@@ -34,6 +34,10 @@ class UnitDisplayPlugin (ToolPlugin):
         
 class UnitDisplayDatabasePlugin (DatabasePlugin):
 
+    # FIXME: The function to hook is no longer get_amount_and_unit but
+    # Ingredient._format_, and the preferred_unit_groups parameter must be
+    # passed to it inside a dict turned into a str.
+
     def activate (self, db):
         db.add_hook(PRE,'get_amount_and_unit',self.get_amount_and_unit_hook)
 

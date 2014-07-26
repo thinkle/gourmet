@@ -1,10 +1,16 @@
 from sqlalchemy import Column, Integer, Text, Float, Boolean, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, composite
+
+from copy import copy
+from ast import literal_eval
 
 from meta import Base
 #from gourmet.plugin_loader import pluggable_method
 from gourmet import convert
+from gourmet.convert import FRACTIONS_NORMAL
 from gourmet.defaults import lang as defaults
+
+from gourmet.gtk_extras.classes.amount import Amount
 
 class Ingredient (Base):
     __tablename__ = 'ingredients'
@@ -24,110 +30,76 @@ class Ingredient (Base):
     position = Column(Integer)
     deleted = Column(Boolean)
 
-    recipe_ref = relationship("Recipe", foreign_keys=refid)
+    recipe_ref = relationship("Recipe", foreign_keys=refid, uselist=False)
 
-    #TODO: So far,
-    # we did the following before persisting ingredient data to the DB:
-#     def validate_ingdic (self,dic):
-#         """Do any necessary validation and modification of ingredient dictionaries."""
-#         if not dic.has_key('deleted'): dic['deleted']=False
-#         self._force_unicode(dic)
-#
-#     def _force_unicode (self, dic):
-#        for k,v in dic.items():
-#             if type(v)==str and k not in ['image','thumb']:
-#                 # force unicode...
-#                 dic[k]=unicode(v)
+    amt = composite(Amount, amount, rangeamount)
 
-    def get_amount (self, mult=1):
-        """Given an ingredient object, return the amount for it.
+    def __mul__(self, other):
+        result = copy(self)
+        result.amt *= other
+        return result
 
-        Amount may be a tuple if the amount is a range, a float if
-        there is a single amount, or None"""
-        amt = self.amount
-        try:
-            ramt = self.rangeamount
-        except:
-            # this blanket exception is here for our lovely upgrade
-            # which requires a working export with an out-of-date DB
-            ramt = None
-        if mult != 1:
-            if amt: amt = amt * mult
-            if ramt: ramt = ramt * mult
-        if ramt:
-            return (amt,ramt)
+    def __rmul__(self, other):
+        return self.__mul__(other)
+
+    #@pluggable_method
+    def __format__(self, spec):
+        # We're currently abusing spec -- which should normally be a format
+        # string containing placeholders like %s and the like -- as a
+        # parameter to pass along a dict of options, for which we set the
+        # defaults in the following.
+        # TODO: Someday, we should come up with a proper Format Specification
+        # Mini-Language (see that section in the Python docs), comprising
+        # placeholders for range as fraction or fixed point, unit as passed or
+        # as preferred etc.
+
+        specdict = {'fractions': FRACTIONS_NORMAL,
+                    'adjust_units': False,
+                    'favor_current_unit': True,
+                    'preferred_unit_groups': []}
+        specdict.update(literal_eval(spec))
+        amountspec={'fractions': specdict['fractions']}
+
+        factor = 1
+        unit = self.unit
+
+        if spec:
+            if self.unit:
+                amountspec['approx'] = defaults.unit_rounding_guide.get(self.unit,0.01)
+            else:
+                amountspec['approx'] = 0.01
+
+            # TODO: Maybe we should move some of this logic into a Quantity
+            # class of its own which comprises both the amount (i.e. derives
+            # from the Amount class, or maybe just has a member of that class),
+            # and the unit.
+            if specdict['adjust_units'] or specdict['preferred_unit_groups']:
+                conv = convert.get_converter()
+                _,unit = conv.adjust_unit(self.amt.amount,self.unit,
+                                          favor_current_unit=specdict['favor_current_unit'],
+                                          preferred_unit_groups=specdict['preferred_unit_groups'])
+                if unit != self.unit:
+                    factor = conv.converter(self.unit, unit)
+
+        if unit:
+            ret = u"%s %s %s" % (format(factor*self.amt, str(amountspec)), unit, self.item)
         else:
-            return amt
+            ret = u"%s %s" % (format(factor*self.amt, str(amountspec)), self.item)
+
+        if self.optional:
+            ret += ' ' + _('(Optional)')
+        return ret
 
     def __repr__(self):
-        return "<Ingredient(amount='%s', unit='%s', item='%s')>" % \
-                (self.amount, self.unit, self.item)
+        return u"<Ingredient(amt='%s', unit='%s', item='%s')>" % \
+                (self.amt, self.unit, self.item)
+
+    def __unicode__(self):
+        return self.__format__('{}')
 
     def __str__(self):
-        if self.rangeamount:
-            return "%s %s %s %s" % (self.amount, self.rangeamount, self.unit,
-                                    self.item)
-        else:
-            return "%s %s %s" % (self.amount, self.unit, self.item)
+        return unicode(self).encode('utf-8')
 
-    #@pluggable_method #FIXME
-    def get_amount_and_unit (self, mult=1, conv=None, fractions=None, adjust_units=False,
-                             favor_current_unit=True,preferred_unit_groups=[]):
-        """Return a tuple of strings representing our amount and unit.
-
-        If we are handed a converter interface, we will adjust the
-        units to make them readable.
-        """
-        amt = self.get_amount(mult)
-        unit = self.unit
-        ramount = None
-        if type(amt)==tuple: amt,ramount = amt
-        if adjust_units or preferred_unit_groups:
-            if not conv:
-                conv = convert.get_converter()
-            amt,unit = conv.adjust_unit(amt,unit,
-                                        favor_current_unit=favor_current_unit,
-                                        preferred_unit_groups=preferred_unit_groups)
-            if ramount and unit != self.unit:
-                # if we're changing units... convert the upper range too
-                ramount = ramount * conv.converter(self.unit, unit)
-        if ramount: amt = (amt,ramount)
-        return (self._format_amount_string_from_amount(amt,fractions=fractions,unit=unit),unit)
-
-    def get_amount_as_string (self,
-                              mult=1,
-                              fractions=None,
-                              ):
-        """Return a string representing our amount.
-        If we have a multiplier, multiply the amount before returning it.
-        """
-        amt = self.get_amount(mult)
-        return self._format_amount_string_from_amount(amt, fractions=fractions)
-
-    def _format_amount_string_from_amount (self, amt, fractions=None, unit=None):
-        """Format our amount string given an amount tuple.
-
-        If fractions is None, we use the default setting from
-        convert.USE_FRACTIONS. Otherwise, we will override that
-        setting.
-
-        If you're thinking of using this function from outside, you
-        should probably just use a convenience function like
-        get_amount_as_string or get_amount_and_unit
-        """
-        if fractions is None:
-            # None means use the default value
-            fractions = convert.USE_FRACTIONS
-        if unit:
-            approx = defaults.unit_rounding_guide.get(unit,0.01)
-        else:
-            approx = 0.01
-        if type(amt)==tuple:
-            return "%s-%s"%(convert.float_to_frac(amt[0],fractions=fractions,approx=approx).strip(),
-                            convert.float_to_frac(amt[1],fractions=fractions,approx=approx).strip())
-        elif type(amt) in (float,int):
-            return convert.float_to_frac(amt,fractions=fractions,approx=approx)
-        else: return ""
 
 class RecRef:
     def __init__ (self, refid, title):
