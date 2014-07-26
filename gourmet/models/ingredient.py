@@ -75,7 +75,7 @@ class Ingredient (Base):
             # and the unit.
             if specdict['adjust_units'] or specdict['preferred_unit_groups']:
                 conv = convert.get_converter()
-                _,unit = conv.adjust_unit(self.amt.amount,self.unit,
+                amount,unit = conv.adjust_unit(self.amt.amount,self.unit,
                                           favor_current_unit=specdict['favor_current_unit'],
                                           preferred_unit_groups=specdict['preferred_unit_groups'])
                 if unit != self.unit:
