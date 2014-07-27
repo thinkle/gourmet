@@ -1,6 +1,7 @@
 import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
 from gourmet import convert,gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
+from gourmet.util.yields import Yield
 
 HTML_HEADER_START = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
@@ -56,7 +57,7 @@ class html_exporter (exporter_mult):
         return t
 
     def write_head (self):
-        title = self._grab_attr_(self.r,'title')
+        title = getattr(self.r,'title')
         if not title: title = _('Recipe')
         title=xml.sax.saxutils.escape(title)
         if self.start_html:
@@ -137,10 +138,17 @@ class html_exporter (exporter_mult):
                 itemprop = 'cookTime'
             elif attr == 'instructions':
                 itemprop = 'recipeInstructions'
+
             if itemprop:
-                self.out.write('<p class="%s"><span class="label">%s:</span> <span itemprop="%s">%s</span></p>\n' % (attr, label.capitalize(), itemprop, xml.sax.saxutils.escape(text)))
+                self.out.write('<p class="%s"><span class="label">%s:</span> '
+                               '<span itemprop="%s">%s</span></p>\n' %
+                               (attr, label.capitalize(), itemprop,
+                                xml.sax.saxutils.escape(unicode(text))))
             else:
-                self.out.write("<p class='%s'><span class='label'>%s:</span> %s</p>\n"%(attr, label.capitalize(), xml.sax.saxutils.escape(text)))
+                if isinstance(text, Yield):
+                    text=format(text, "{'fractions': %s}"%self.fractions)
+                self.out.write("<p class='%s'><span class='label'>%s:</span> %s</p>\n"%
+                               (attr, label.capitalize(), xml.sax.saxutils.escape(text)))
         
     def write_attr_foot (self):
         self.out.write("</div>")
@@ -264,10 +272,10 @@ class website_exporter (ExporterMultirec):
                    </td>"""%(self.index_rows[0],
                              #xml.sax.saxutils.escape(filename).replace(" ","%20"),
                              self.make_relative_link(filename),
-                             xml.sax.saxutils.escape(self._grab_attr_(rec,self.index_rows[0]))
+                             xml.sax.saxutils.escape(getattr(rec,self.index_rows[0]))
                              ))
         for r in self.index_rows[1:]:
-            self.indexf.write('<td class="%s">%s</td>'%(r,self._grab_attr_(rec,r)))
+            self.indexf.write('<td class="%s">%s</td>'%(r,getattr(rec,r)))
         self.indexf.write('</tr>')
         self.imgcount=exporter.imgcount
         self.added_dict[rec.id]=filename
