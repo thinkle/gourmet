@@ -2,7 +2,9 @@ import os, os.path, gobject, re, gtk
 import tempfile
 from gdebug import debug
 from OptionParser import args
-from models.recipe import REC_ATTRS, INT_REC_ATTRS, FLOAT_REC_ATTRS, TEXT_ATTR_DIC, DEFAULT_ATTR_ORDER
+from models.recipe import REC_ATTRS, INT_REC_ATTRS, FLOAT_REC_ATTRS, \
+                          TEXT_ATTR_DIC, DEFAULT_ATTR_ORDER, REC_ATTR_DIC, \
+                          NAME_TO_ATTR, DEFAULT_TEXT_ATTR_ORDER
 
 tmpdir = tempfile.gettempdir()
 
@@ -81,22 +83,6 @@ else:
             shutil.copy(template_file,
                         os.path.join(html_plugin_dir,'RULES_TEMPLATE')
                         )
-
-REC_ATTR_DIC={}
-NAME_TO_ATTR = {_('Instructions'):'instructions',
-                _('Notes'):'modifications',
-                _('Modifications'):'modifications',
-                }
-
-DEFAULT_TEXT_ATTR_ORDER = ['instructions',
-                           'modifications',]
-
-def build_rec_attr_dic ():
-    for attr, name, widget in REC_ATTRS:
-        REC_ATTR_DIC[attr]=name
-        NAME_TO_ATTR[name]=attr
-
-build_rec_attr_dic()
 
 DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
                           ['link','yields','yield_unit','preptime','cooktime']

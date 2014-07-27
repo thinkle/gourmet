@@ -67,6 +67,11 @@ class Recipe (Base):
     category.name='category'
     category.info={'label': _('Category'), 'widget': 'Combo', 'order': 4}
 
+    @hybrid_property
+    def stars(self):
+        if self.rating:
+            return "%g/5 %s"%(self.rating/2.0,_('stars'))
+
     @staticmethod
     def update_last_modified_and_hashes(mapper, connection, target):
         target.last_modified = time()
@@ -119,6 +124,28 @@ ALL_ATTRS = [r[0] for r in REC_ATTRS] + TEXT_ATTR_DIC.keys() + IMAGE_ATTRS
 DEFAULT_ATTR_ORDER = sorted((c.name for c in inspect(Recipe).all_orm_descriptors \
                       if (hasattr(c, 'info') and 'order' in c.info)),
                       key=lambda c: getattr(inspect(Recipe).all_orm_descriptors[c], 'info')['order'])
+
+REC_ATTR_DIC={}
+NAME_TO_ATTR = {_('Instructions'):'instructions',
+                _('Notes'):'modifications',
+                _('Modifications'):'modifications',
+                }
+
+DEFAULT_TEXT_ATTR_ORDER = ['instructions',
+                           'modifications',]
+
+def build_rec_attr_dic ():
+    for attr, name, widget in REC_ATTRS:
+        REC_ATTR_DIC[attr]=name
+        NAME_TO_ATTR[name]=attr
+
+build_rec_attr_dic()
+
+DEFAULT_OUTPUT_ATTR_ORDER = copy(DEFAULT_ATTR_ORDER)
+yield_index = DEFAULT_OUTPUT_ATTR_ORDER.index('yields')
+DEFAULT_OUTPUT_ATTR_ORDER[yield_index] = 'the_yield'
+rating_index = DEFAULT_OUTPUT_ATTR_ORDER.index('rating')
+DEFAULT_OUTPUT_ATTR_ORDER[rating_index] = 'stars'
 
 def diff_recipes (recs):
     diffs = {}
