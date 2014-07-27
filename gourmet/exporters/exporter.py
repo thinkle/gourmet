@@ -107,43 +107,6 @@ class exporter (SuspendableThread, Pluggable):
     def _write_text_ (self):
         #print 'exporter._write_text_',self.text_attr_order,'!'
         for a in self.text_attr_order:
-            # This code will never be called for Gourmet
-            # proper... here for convenience of symbiotic project...
-            if a=='step':
-                steps = self._grab_attr_(self.r,a)
-                if not steps: continue
-                for s in steps:
-                    if isinstance(s,dict):
-                        dct = s
-                        s = dct.get('text','')
-                        img = dct.get('image','')
-                        time = dct.get('time',0)
-                        #print 'Exporter sees step AS:'
-                        #print '  text:',s
-                        #print '  image:',img
-                        #print '  time:',time
-                    else:
-                        img = ''
-                    if self.do_markup:
-                        txt=self.handle_markup(s)
-                    if not self.use_ml: txt = xml.sax.saxutils.unescape(s)
-                    if self.convert_attnames:
-                        out_a = TEXT_ATTR_DIC.get(a,a)
-                    else:
-                        out_a = a
-                    # Goodness this is an ugly way to pass the
-                    # time as a parameter... we use try/except to
-                    # allow all gourmet exporters to ignore this
-                    # attribute.
-                    try: self.write_text(a,s,time=time)
-                    except:
-                        self.write_text(a,s)
-                        print 'Failed to export time=',time
-                        raise
-                    if img:
-                        self.write_image(img)
-                continue
-            # End of non-Gourmet code
             txt=self._grab_attr_(self.r,a)
             if txt and txt.strip():
                 if self.do_markup:  txt=self.handle_markup(txt)
