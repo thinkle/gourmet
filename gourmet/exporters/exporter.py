@@ -1,12 +1,16 @@
 import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap, types
 from gourmet import convert
-from gourmet.gglobals import REC_ATTR_DIC, DEFAULT_ATTR_ORDER, DEFAULT_TEXT_ATTR_ORDER, TEXT_ATTR_DIC, use_threads
+from gourmet.models.recipe import REC_ATTR_DIC, DEFAULT_ATTR_ORDER, \
+                                  DEFAULT_OUTPUT_ATTR_ORDER, \
+                                  DEFAULT_TEXT_ATTR_ORDER, TEXT_ATTR_DIC
+from gourmet.gglobals import use_threads
 from gourmet.gdebug import TimeAction, debug, print_timer_info
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import BaseExporterPlugin, BaseExporterMultiRecPlugin
 from gourmet.threadManager import SuspendableThread
 from gourmet.models.ingredient import order_ings
 from gourmet.models.meta import Session
+from gourmet.util.yields import Yield
 
 class exporter (SuspendableThread, Pluggable):
     """A base exporter class.
@@ -25,7 +29,7 @@ class exporter (SuspendableThread, Pluggable):
                   conv=None,
                   imgcount=1,
                   order=['image','attr','ings','text'],
-                  attr_order=DEFAULT_ATTR_ORDER,
+                  attr_order=DEFAULT_OUTPUT_ATTR_ORDER,
                   text_attr_order = DEFAULT_TEXT_ATTR_ORDER,
                   do_markup=True,
                   use_ml=False,
@@ -50,7 +54,7 @@ class exporter (SuspendableThread, Pluggable):
                          attribute name staying consistent for processing, since converting attnames
                          will produce locale specific strings.
         """
-	self.attr_order=attr_order
+        self.attr_order=attr_order
         self.text_attr_order = text_attr_order
         self.out = out
         self.session = Session()
@@ -71,7 +75,7 @@ class exporter (SuspendableThread, Pluggable):
         self.write_head()
         for task in self.order:
             if task=='image':
-                if self._grab_attr_(self.r,'image'):
+                if getattr(self.r,'image'):
                     self.write_image(self.r.image)
             if task=='attr':
                 self._write_attrs_()
@@ -88,7 +92,7 @@ class exporter (SuspendableThread, Pluggable):
     def _write_attrs_ (self):
         self.write_attr_head()
         for a in self.attr_order:
-            txt=self._grab_attr_(self.r,a)
+            txt=getattr(self.r,a)
             debug('_write_attrs_ writing %s=%s'%(a,txt),1)
             if txt and (
                 (type(txt) not in [str,unicode])
@@ -107,7 +111,7 @@ class exporter (SuspendableThread, Pluggable):
     def _write_text_ (self):
         #print 'exporter._write_text_',self.text_attr_order,'!'
         for a in self.text_attr_order:
-            txt=self._grab_attr_(self.r,a)
+            txt=getattr(self.r,a)
             if txt and txt.strip():
                 if self.do_markup:  txt=self.handle_markup(txt)
                 #else: print 'exporter: do_markup=False'
@@ -128,42 +132,13 @@ class exporter (SuspendableThread, Pluggable):
             if g:
                 self.write_grouphead(g)            
             for i in ings:
-                if self._grab_attr_(i,'refid'):
+                if getattr(i,'refid'):
                     self.write_ingref(i)
                 else:
                     self.write_ing(i)
             if g:
                 self.write_groupfoot()
         self.write_ingfoot()
-
-    def _grab_attr_ (self, obj, attr):
-        try:
-            ret = getattr(obj,attr)
-        except:
-            return None
-        else:
-            if attr in ['preptime','cooktime']:
-                # this 'if' ought to be unnecessary, but is kept around
-                # for db converting purposes -- e.g. so we can properly
-                # export an old DB
-                if ret and type(ret)!=str: 
-                    ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
-            elif attr=='rating' and ret and type(ret)!=str:
-                ret = "%g/5 %s"%(ret/2.0,_('stars'))
-            elif attr=='servings' and type(ret)!=str:
-                ret = convert.float_to_frac(ret,fractions=self.fractions)
-            elif attr=='yields':
-                ret = convert.float_to_frac(ret,fractions=self.fractions)
-                yield_unit = self._grab_attr_(obj,'yield_unit')
-                if yield_unit:
-                    ret = '%s %s'%(ret,yield_unit) # FIXME: i18n? (fix also below in exporter_mult)
-            if type(ret) in [str,unicode] and attr not in ['thumb','image']:
-                try:
-                    ret = ret.encode(self.DEFAULT_ENCODING)
-                except:
-                    print "oops:",ret,"doesn't look like unicode."
-                    raise
-            return ret
 
     # Below are the images inherited exporters should
     # subclass. Subclasses overriding methods should make these
@@ -204,7 +179,7 @@ class exporter (SuspendableThread, Pluggable):
         pass
 
     @pluggable_method
-    def write_attr (self, label, text):
+    def write_attr (self, label, item):
         """Write an attribute with label and text.
 
         If we've been initialized with convert_attnames=True, the
@@ -216,7 +191,9 @@ class exporter (SuspendableThread, Pluggable):
         attribute name, we need to set convert_attnames to False (and
         do any necessary i18n of the label name ourselves.
         """
-        self.out.write("%s: %s\n"%(label, text.strip()))
+        if isinstance(item, Yield):
+            text=format(item, "{'fractions': %s}"%self.fractions)
+        self.out.write("%s: %s\n"%(label, item))
 
     @pluggable_method
     def write_text (self, label, text):
@@ -300,7 +277,7 @@ class exporter (SuspendableThread, Pluggable):
         self.write_ing(ingredient)
 
     @pluggable_method
-    def write_ing (self, ingredient=None):
+    def write_ing (self, ingredient):
         """Write ingredient."""
         ingstr = format(ingredient, "{'fractions': %s}"%self.fractions)
         if ingstr:
@@ -315,7 +292,7 @@ class exporter_mult (exporter):
                   mult=1,
                   imgcount=1,
                   order=['image','attr','ings','text'],
-                  attr_order=DEFAULT_ATTR_ORDER,
+                  attr_order=DEFAULT_OUTPUT_ATTR_ORDER,
                   text_attr_order=DEFAULT_TEXT_ATTR_ORDER,
                   do_markup=True,
                   use_ml=False,
@@ -344,22 +321,9 @@ class exporter_mult (exporter):
 
     @pluggable_method
     def write_attr (self, label, text):
-        #attr = NAME_TO_ATTR[label]
+        if isinstance(text, Yield):
+            text=format(text, "{'fractions': %s}"%self.fractions)
         self.out.write("%s: %s\n"%(label, text))
-
-    def _grab_attr_ (self, obj, attr):
-        """Grab attribute attr of obj obj.
-
-        Possibly manipulate the attribute we get to hand out export
-        something readable.
-        """        
-        if attr=='yields' and self.mult:
-            if self.fractions:
-                return format(self.mult * obj.the_yield, 'q')
-            else:
-                return unicode(self.mult * obj.the_yield)
-        else:
-            return exporter._grab_attr_(self,obj,attr)
 
     @pluggable_method
     def write_ing (self, ingredient=None):
@@ -400,31 +364,6 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                                                   convert.FRACTIONS_ASCII)
         self.DEFAULT_ENCODING = self.exporter.DEFAULT_ENCODING
         self.one_file = one_file
-
-    def _grab_attr_ (self, obj, attr):
-        try:
-            ret = getattr(obj,attr)
-        except:
-            return None
-        else:
-            if attr in ['preptime','cooktime']:
-                # this 'if' ought to be unnecessary, but is kept around
-                # for db converting purposes -- e.g. so we can properly
-                # export an old DB
-                if ret and type(ret)!=str: 
-                    ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
-            elif attr=='rating' and ret and type(ret)!=str:
-                if ret/2==ret/2.0:
-                    ret = "%s/5 %s"%(ret/2,_('stars'))
-                else:
-                    ret = "%s/5 %s"%(ret/2.0,_('stars'))
-            if type(ret) in types.StringTypes and attr not in ['thumb','image']:
-                try:
-                    ret = ret.encode(self.DEFAULT_ENCODING)
-                except:
-                    print "oops:",ret,"doesn't look like unicode."
-                    raise
-            return ret
 
     def append_referenced_recipes (self):
         for r in self.recipes[:]:
