@@ -82,9 +82,8 @@ class mmf_importer (plaintext_importer.TextImporter):
     def __init__ (self,filename='Data/mealmaster.mmf',
                   prog=None, source=None,threaded=True,
                   two_col_minimum=38,conv=None):
-        """filename is the file to parse (or filename). rd is the recData instance
-        to start with.  prog is a function we tell about our
-        prog to (we hand it a single arg)."""
+        """filename is the file to parse (or filename). prog is a function we
+        tell about our prog to (we hand it a single arg)."""
 
         testtimer = TimeAction('mealmaster_importer.__init__',10)
         debug("mmf_importer start  __init__ ",5)
