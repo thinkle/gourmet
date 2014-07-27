@@ -6,6 +6,7 @@ from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import BaseExporterPlugin, BaseExporterMultiRecPlugin
 from gourmet.threadManager import SuspendableThread
 from gourmet.models.ingredient import order_ings
+from gourmet.models.meta import Session
 
 class exporter (SuspendableThread, Pluggable):
     """A base exporter class.
@@ -52,7 +53,8 @@ class exporter (SuspendableThread, Pluggable):
 	self.attr_order=attr_order
         self.text_attr_order = text_attr_order
         self.out = out
-        self.r = r
+        self.session = Session()
+        self.r = self.session.merge(r)
         self.rd=rd
         self.do_markup=do_markup
         self.fractions=fractions
@@ -173,11 +175,6 @@ class exporter (SuspendableThread, Pluggable):
         self.write_ingfoot()
 
     def _grab_attr_ (self, obj, attr):
-        # This is a bit ugly -- we allow exporting categories as if
-        # they were a single attribute even though we in fact allow
-        # multiple categories.
-        if attr=='category':
-            return ', '.join(self.rd.get_cats(obj))
         try:
             ret = getattr(obj,attr)
         except:
@@ -447,8 +444,6 @@ class ExporterMultirec (SuspendableThread, Pluggable):
         self.one_file = one_file
 
     def _grab_attr_ (self, obj, attr):
-        if attr=='category':
-            return ', '.join(self.rd.get_cats(obj))
         try:
             ret = getattr(obj,attr)
         except:
