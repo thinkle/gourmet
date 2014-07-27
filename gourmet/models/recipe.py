@@ -10,7 +10,7 @@ from gourmet.recipeIdentifier import hash_recipe
 from gourmet.util.yields import Yield
 
 from time import time
-from copy import copy
+from copy import copy, deepcopy
 
 class Recipe (Base):
     __tablename__ = 'recipe'
@@ -99,10 +99,13 @@ class Recipe (Base):
         if result.the_yield:
             result.the_yield *= other
 
-        # FIXME: The recipe's ingredients aren't actually multiplied.
+        result._categories = copy(self._categories)
+        for i, cat in enumerate(self._categories):
+            result._categories[i]=(copy(cat))
+
         result.ingredients = copy(self.ingredients)
-        for i in result.ingredients:
-            i = other*i
+        for i, ing in enumerate(self.ingredients):
+            result.ingredients[i]=(other*copy(ing))
 
         return result
 

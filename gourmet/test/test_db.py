@@ -3,6 +3,7 @@ import tempfile, unittest
 from gourmet.models.meta import Base
 from gourmet.models import Ingredient
 from gourmet.models import Recipe
+from gourmet.util.yields import Yield
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -23,9 +24,12 @@ class testRecBasics (DBTest):
         rec2 = Recipe(title=_('New Recipe'))
         rec2.title = 'Foo'
         rec2.cuisine = 'Bar'
+        rec2.categories.append('Spam')
+        rec2.categories.append('Eggs')
         session.add(rec2)
         self.assertEqual(rec2.title,'Foo')
         self.assertEqual(rec2.cuisine,'Bar')
+        self.assertEqual(rec2.category,'Spam, Eggs')
         self.assertEqual(session.query(Recipe).count(), 2)
         session.delete(rec)
         session.delete(rec2)
@@ -87,13 +91,49 @@ class testIngBasics (DBTest):
                   'spinach',]:
             session.add(Ingredient(amount=1,unit='c.',item=i,ingkey=i))
         vw = session.query(Ingredient.ingkey).distinct().all()
-        assert(len(vw)==3)
+        self.assertEqual(len(vw), 3)
         q = session.query(Ingredient.ingkey).filter_by(ingkey='spinach')
         vw = q.all()
         cvw = q.count()
-        assert(cvw==3)
-        assert(vw[0].ingkey=='spinach')
-# 
+        self.assertEqual(cvw, 3)
+        self.assertEqual(vw[0].ingkey, 'spinach')
+
+    def testMultiplication (self):
+        session = self.Session()
+        recipe = Recipe(title=_('New Recipe'), yields=0.5, yield_unit='servings')
+        ing = Ingredient(amount=1,
+                         unit='c.',
+                         item='Carrot juice',
+                         ingkey='juice, carrot',
+                        )
+        ing2 = Ingredient(amount=2,
+                          unit='c.',
+                          item='Tomato juice',
+                          ingkey='juice, tomato',
+                          )
+        recipe.ingredients = [ing, ing2]
+        recipe.categories = ['Juice mix']
+        recipe.cuisine = 'vegetarian'
+        session.add(recipe)
+        multiplied_recipe = 1.5 * recipe
+        multiplied_recipe.categories.append('Shake')
+        multiplied_recipe.cuisine = 'juicy'
+        self.assertEqual(multiplied_recipe.yields, 0.75)
+        self.assertEqual(multiplied_recipe.the_yield, Yield(0.75, 'servings'))
+        self.assertEqual(multiplied_recipe.ingredients[0].amount, 1.5)
+        self.assertEqual(multiplied_recipe.ingredients[1].amount, 3)
+        self.assertEqual(multiplied_recipe.category, 'Juice mix, Shake')
+        self.assertEqual(multiplied_recipe.cuisine, 'juicy')
+        # Check if the original recipe remains unchanged.
+        # Important, as multiplying child objects like yield and
+        # ingedients is non-trivial.
+        self.assertEqual(recipe.yields, 0.5)
+        self.assertEqual(recipe.the_yield, Yield(0.5, 'servings'))
+        self.assertEqual(recipe.ingredients[0].amount, 1)
+        self.assertEqual(recipe.ingredients[1].amount, 2)
+        self.assertEqual(recipe.category, 'Juice mix')
+        self.assertEqual(recipe.cuisine, 'vegetarian')
+
 # class testSearch (DBTest):
 #     def runTest (self):
 #         self.db.delete_by_criteria(self.db.ingredients_table,{}) # Clear out ingredients
