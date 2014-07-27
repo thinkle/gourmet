@@ -1,4 +1,5 @@
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import scoped_session
 from sqlalchemy import event
 import sqlalchemy
 
@@ -32,7 +33,8 @@ def initialize_connection(filename, url=None):
     if meta.Session is not None:
         return
 
-    meta.Session = sessionmaker()
+    session_factory = sessionmaker()
+    meta.Session = scoped_session(session_factory)
 
     def instr(s,subs): return s.lower().find(subs.lower())+1
 
