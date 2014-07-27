@@ -12,7 +12,7 @@ HTML_HEADER_CLOSE = """<meta http-equiv="Content-Style-Stype" content="text/css"
 
 
 class html_exporter (exporter_mult):
-    def __init__ (self, rd, r, out, conv=None,
+    def __init__ (self, r, out, conv=None,
                   css=os.path.join(gglobals.style_dir,"default.css"),
                   embed_css=True, start_html=True, end_html=True, imagedir="pics/", imgcount=1,
                   link_generator=None,
@@ -39,7 +39,7 @@ class html_exporter (exporter_mult):
         if not imagedir: imagedir = "" #make sure it's a string
         self.imagedir_absolute = os.path.join(os.path.split(out.name)[0],imagedir)
         self.imagedir = imagedir
-        exporter_mult.__init__(self, rd, r, out,
+        exporter_mult.__init__(self, r, out,
                                conv=conv,
                                imgcount=imgcount,
                                mult=mult,
@@ -193,7 +193,7 @@ class html_exporter (exporter_mult):
         return linkify(filename)
 
 class website_exporter (ExporterMultirec):
-    def __init__ (self, rd, recipe_table, out, conv=None, ext='htm', copy_css=True,
+    def __init__ (self, recipe_table, out, conv=None, ext='htm', copy_css=True,
                   css=os.path.join(gglobals.style_dir,'default.css'),
                   imagedir='pics' + os.path.sep,
                   index_rows=['title','category','cuisine','rating','yields'],
@@ -226,7 +226,7 @@ class website_exporter (ExporterMultirec):
                          'mult':mult}
         if conv:
             self.exportargs['conv']=conv
-        ExporterMultirec.__init__(self, rd, recipe_table, out,
+        ExporterMultirec.__init__(self, recipe_table, out,
                                   one_file=False,
                                   ext=self.ext,
                                   progress_func=progress_func,
@@ -280,6 +280,7 @@ class website_exporter (ExporterMultirec):
         if self.added_dict.has_key(id):
             return self.added_dict[id]
         else:
+            # FIXME
             rec = self.rd.get_rec(id)
             if rec:
                 return self.generate_filename(rec,self.ext,add_id=True)

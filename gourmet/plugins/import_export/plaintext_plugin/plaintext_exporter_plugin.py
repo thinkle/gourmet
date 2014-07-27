@@ -14,7 +14,6 @@ class PlainTextExporterPlugin (ExporterPlugin):
 
     def get_multiple_exporter (self, args):
         return exporter.ExporterMultirec(
-            args['rd'],
             args['rv'],
             args['file'],
             one_file=True,
@@ -22,8 +21,7 @@ class PlainTextExporterPlugin (ExporterPlugin):
             )
 
     def do_single_export (self, args)    :
-        e = exporter.exporter_mult(args['rd'],
-                                   args['rec'],
+        e = exporter.exporter_mult(args['rec'],
                                    args['out'],
                                    mult=args['mult'],
                                    change_units=args['change_units'],

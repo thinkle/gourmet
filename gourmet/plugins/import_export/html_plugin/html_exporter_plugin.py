@@ -14,7 +14,6 @@ class HtmlExporterPlugin (ExporterPlugin):
 
     def get_multiple_exporter (self, args):
         return html_exporter.website_exporter(
-            args['rd'], 
             args['rv'],
             args['file'],
             #args['conv'],
@@ -23,7 +22,6 @@ class HtmlExporterPlugin (ExporterPlugin):
 
     def do_single_export (self, args)    :
         he = html_exporter.html_exporter(
-            args['rd'],
             args['rec'],
             args['out'],
             change_units=args['change_units'],

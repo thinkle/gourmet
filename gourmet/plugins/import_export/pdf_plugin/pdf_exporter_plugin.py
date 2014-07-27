@@ -14,14 +14,12 @@ class PdfExporterPlugin (ExporterPlugin):
     mode = 'wb'
 
     def get_multiple_exporter (self, args):
-        return pdf_exporter.PdfExporterMultiDoc(args['rd'],
-                                                args['rv'],
+        return pdf_exporter.PdfExporterMultiDoc(args['rv'],
                                                 args['file'],
                                                 pdf_args=args['extra_prefs'],
                                                 )
     def do_single_export (self, args):
-        exp = pdf_exporter.PdfExporter(args['rd'],
-                                       args['rec'],
+        exp = pdf_exporter.PdfExporter(args['rec'],
                                        args['out'],
                                        change_units=args['change_units'],
                                        mult=args['mult'],

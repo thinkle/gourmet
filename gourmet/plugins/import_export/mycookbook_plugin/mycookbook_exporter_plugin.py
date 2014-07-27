@@ -16,14 +16,12 @@ class MCBExporterPlugin (ExporterPlugin):
     def get_multiple_exporter (self, args):
         
         return mycookbook_exporter.recipe_table_to_xml(
-            args['rd'],
             args['rv'],
             args['file'],
             )
 
     def do_single_export (self, args):
         e = mycookbook_exporter.recipe_table_to_xml(
-            args['rd'],
             [args['rec']],
             args['out'],
             change_units=args['change_units'],

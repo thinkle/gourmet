@@ -21,7 +21,7 @@ class exporter (SuspendableThread, Pluggable):
     name='exporter'
     ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS = True
     
-    def __init__ (self, rd, r, out,
+    def __init__ (self, r, out,
                   conv=None,
                   imgcount=1,
                   order=['image','attr','ings','text'],
@@ -55,7 +55,6 @@ class exporter (SuspendableThread, Pluggable):
         self.out = out
         self.session = Session()
         self.r = self.session.merge(r)
-        self.rd=rd
         self.do_markup=do_markup
         self.fractions=fractions
         self.use_ml=use_ml
@@ -350,7 +349,7 @@ class exporter (SuspendableThread, Pluggable):
 
 class exporter_mult (exporter):
     """A basic exporter class that can handle a multiplied recipe."""
-    def __init__ (self, rd, r, out,
+    def __init__ (self, r, out,
                   conv=None, 
                   change_units=True,
                   mult=1,
@@ -375,7 +374,7 @@ class exporter_mult (exporter):
         """
         self.mult = mult
         self.change_units = change_units
-        exporter.__init__(self, rd, r, out, conv, imgcount, order,
+        exporter.__init__(self, r, out, conv, imgcount, order,
                           attr_order=attr_order,
                           text_attr_order=text_attr_order,
                           use_ml=use_ml, do_markup=do_markup,
@@ -414,7 +413,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
 
     name = 'Exporter'
 
-    def __init__ (self, rd, recipes, out, one_file=True,
+    def __init__ (self, recipes, out, one_file=True,
                   ext='txt',
                   conv=None,
                   imgcount=1,
@@ -427,7 +426,6 @@ class ExporterMultirec (SuspendableThread, Pluggable):
         file. Otherwise, we treat 'out' as a directory and put
         individual recipe files within it."""
         self.timer=TimeAction('exporterMultirec.__init__()')
-        self.rd = rd
         self.recipes = recipes
         self.out = out
         self.padding=padding
@@ -504,7 +502,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                 self.ofi=open(fn,'wb')
             if self.padding and not first:
                 self.ofi.write(self.padding)
-            e=self.exporter(out=self.ofi, r=r, rd=self.rd, **self.exporter_kwargs)
+            e=self.exporter(out=self.ofi, r=r, **self.exporter_kwargs)
             self.connect_subthread(e)
             e.do_run()
             self.recipe_hook(r,fn,e)

@@ -52,14 +52,12 @@ class GourmetExporterPlugin (ExporterPlugin):
 
     def get_multiple_exporter (self, args):
         return gxml2_exporter.recipe_table_to_xml(
-            args['rd'],
             args['rv'],
             args['file'],
             )
 
     def do_single_export (self, args)    :
-        gxml2_exporter.recipe_table_to_xml(args['rd'],
-                                           [args['rec']],
+        gxml2_exporter.recipe_table_to_xml([args['rec']],
                                            args['out'],
                                            change_units=args['change_units'],
                                            mult=args['mult']

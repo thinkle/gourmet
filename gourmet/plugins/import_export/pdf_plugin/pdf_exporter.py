@@ -391,7 +391,7 @@ class PdfWriter:
         
 class PdfExporter (exporter.exporter_mult, PdfWriter):
 
-    def __init__ (self, rd, r, out,
+    def __init__ (self, r, out,
                   doc=None,
                   styleSheet=None,
                   txt=[],
@@ -416,7 +416,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             #    self.txt.append(MCLine(self.doc.frame_width*0.8))
         exporter.exporter_mult.__init__(
             self,
-            rd,r,
+            r,
             None, # exporter_mult has no business touching a file
             use_ml=True,
             order=['image','attr','ings','text'],
@@ -653,7 +653,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             return self.write_ing(amount,unit,item,optional=optional)
 
 class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
-    def __init__ (self, rd, recipes, out, progress_func=None, conv=None,
+    def __init__ (self, recipes, out, progress_func=None, conv=None,
                   pdf_args=DEFAULT_PDF_ARGS,
                   **kwargs):
         PdfWriter.__init__(self)
@@ -668,7 +668,7 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
         kwargs['all_recipes']=recipes
         exporter.ExporterMultirec.__init__(
             self,
-            rd, recipes, out,
+            recipes, out,
             one_file=True, ext='pdf',
             exporter=PdfExporter,
             conv=conv,

@@ -15,7 +15,6 @@ class MealmasterExporterPlugin (ExporterPlugin):
 
     def get_multiple_exporter (self, args):
         return exporter.ExporterMultirec(
-            args['rd'],
             args['rv'],
             args['file'],
             one_file=True,
@@ -23,8 +22,7 @@ class MealmasterExporterPlugin (ExporterPlugin):
             exporter=mealmaster_exporter.mealmaster_exporter)
 
     def do_single_export (self, args)    :
-        e = mealmaster_exporter.mealmaster_exporter(args['rd'],
-                                                       args['rec'],
+        e = mealmaster_exporter.mealmaster_exporter(args['rec'],
                                                        args['out'],
                                                        mult=args['mult'],
                                                        change_units=args['change_units'],

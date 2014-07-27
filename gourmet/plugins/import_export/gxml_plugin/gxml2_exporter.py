@@ -101,11 +101,11 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
     doctype_desc = ''
     dtd_path = ''
     
-    def __init__ (self, rd, recipe_table, out, one_file=True, change_units=False,
+    def __init__ (self, recipe_table, out, one_file=True, change_units=False,
                   mult=1):
         self.create_xmldoc()
         exporter.ExporterMultirec.__init__(
-            self, rd, recipe_table, out, one_file=True, ext='xml', exporter=rec_to_xml,
+            self, recipe_table, out, one_file=True, ext='xml', exporter=rec_to_xml,
             exporter_kwargs={'change_units':change_units,
                              'mult':mult,
                              'xmlDoc':self.xmlDoc,

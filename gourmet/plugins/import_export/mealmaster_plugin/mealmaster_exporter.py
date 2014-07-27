@@ -4,7 +4,7 @@ from gourmet.exporters.exporter import exporter_mult
 from gourmet.gdebug import debug
 
 class mealmaster_exporter (exporter_mult):
-    def __init__ (self, rd, r, out, conv=None, change_units=True, mult=1):
+    def __init__ (self, r, out, conv=None, change_units=True, mult=1):
         import mealmaster_importer
         self.add_to_instructions=""
         self.conv = conv
@@ -15,7 +15,7 @@ class mealmaster_exporter (exporter_mult):
         for k,v in recattrs_orig.items():
             self.recattrs[v]=k
         self.categories = ""
-        exporter_mult.__init__(self, rd, r, out,
+        exporter_mult.__init__(self, r, out,
                                conv=conv,
                                order=['attr','ings','text'],
                                attr_order=['title',
