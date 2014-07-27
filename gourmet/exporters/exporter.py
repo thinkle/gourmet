@@ -186,10 +186,7 @@ class exporter (SuspendableThread, Pluggable):
                 if ret and type(ret)!=str: 
                     ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
             elif attr=='rating' and ret and type(ret)!=str:
-                if ret/2==ret/2.0:
-                    ret = "%s/5 %s"%(ret/2,_('stars'))
-                else:
-                    ret = "%s/5 %s"%(ret/2.0,_('stars'))
+                ret = "%g/5 %s"%(ret/2.0,_('stars'))
             elif attr=='servings' and type(ret)!=str:
                 ret = convert.float_to_frac(ret,fractions=self.fractions)
             elif attr=='yields':
