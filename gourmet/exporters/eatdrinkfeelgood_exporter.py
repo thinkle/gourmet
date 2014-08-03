@@ -282,7 +282,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
         
 
 class EdfgXmlM(exporter.ExporterMultirec, EdfgXmlBase):
-    def __init__ (self, rd, recipe_table, out, one_file=True, progress_func=None,
+    def __init__ (self, rd, recipe_table, out, one_file=True,
         change_units=False, mult=1):
         self.rd=rd
         impl = xml.dom.getDOMImplementation()
@@ -293,7 +293,6 @@ class EdfgXmlM(exporter.ExporterMultirec, EdfgXmlBase):
         self.top_element = self.xmlDoc.documentElement
         exporter.ExporterMultirec.__init__(
             self, rd, recipe_table, out, one_file=True, ext='xml', exporter=EdfgXml,
-            progress_func=progress_func,
             exporter_kwargs={'change_units':change_units,
                              'mult':mult,
                              'xmlDoc':self.xmlDoc

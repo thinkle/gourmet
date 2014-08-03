@@ -205,7 +205,6 @@ class website_exporter (ExporterMultirec):
                   css=os.path.join(gglobals.style_dir,'default.css'),
                   imagedir='pics' + os.path.sep,
                   index_rows=['title','category','cuisine','rating','yields'],
-                  progress_func=None,
                   change_units=False,
                   mult=1):
         self.ext=ext
@@ -237,7 +236,6 @@ class website_exporter (ExporterMultirec):
         ExporterMultirec.__init__(self, recipe_table, out,
                                   one_file=False,
                                   ext=self.ext,
-                                  progress_func=progress_func,
                                   exporter=html_exporter,
                                   exporter_kwargs=self.exportargs)
         

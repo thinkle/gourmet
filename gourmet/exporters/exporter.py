@@ -341,7 +341,6 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                   ext='txt',
                   conv=None,
                   imgcount=1,
-                  progress_func=None,
                   exporter=exporter,
                   exporter_kwargs={},
                   padding=None):
@@ -356,7 +355,6 @@ class ExporterMultirec (SuspendableThread, Pluggable):
         self.one_file = one_file
         Pluggable.__init__(self,[BaseExporterMultiRecPlugin])
         SuspendableThread.__init__(self,self.name)
-        if progress_func: print 'Argument progress_func is obsolete and will be ignored:',progress_func
         self.ext = ext
         self.exporter = exporter
         self.exporter_kwargs = exporter_kwargs
