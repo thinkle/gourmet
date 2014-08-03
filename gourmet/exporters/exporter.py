@@ -59,9 +59,7 @@ class exporter (SuspendableThread, Pluggable):
         self.attr_order=attr_order
         self.text_attr_order = text_attr_order
         self.out = out
-        self.Session = scoped_session(session_factory)
-        self.session = self.Session()
-        self.r = self.session.merge(r)
+        self.r = r
         self.do_markup=do_markup
         self.fractions=fractions
         self.use_ml=use_ml
@@ -87,7 +85,6 @@ class exporter (SuspendableThread, Pluggable):
                 self._write_text_()
             elif task=='ings': self._write_ings_()
         self.write_foot()
-        self.Session.remove()
 
 
     # Internal methods -- ideally, subclasses should have no reason to
@@ -376,6 +373,8 @@ class ExporterMultirec (SuspendableThread, Pluggable):
         
     @pluggable_method
     def do_run (self):
+        self.Session = scoped_session(session_factory)
+        self.session = self.Session()
         self.rcount = 0
         self.rlen = len(self.recipes)        
         if not self.one_file:
@@ -403,10 +402,10 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                 self.ofi=open(fn,'wb')
             if self.padding and not first:
                 self.ofi.write(self.padding)
-            e=self.exporter(out=self.ofi, r=r, **self.exporter_kwargs)
+            e=self.exporter(out=self.ofi, r=self.session.merge(r), **self.exporter_kwargs)
             self.connect_subthread(e)
             e.do_run()
-            self.recipe_hook(r,fn,e)
+            self.recipe_hook(self.session.merge(r),fn,e)
             if not self.one_file:
                 self.ofi.close()
             self.rcount += 1
@@ -414,6 +413,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
         self.write_footer()
         if self.one_file:
             self.ofi.close()
+        self.Session.remove()
         self.timer.end()
         self.emit('progress',1,_("Export complete."))
         print_timer_info()
