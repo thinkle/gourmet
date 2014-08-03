@@ -20,12 +20,11 @@ class PlainTextExporterPlugin (ExporterPlugin):
             ext='txt',
             )
 
-    def do_single_export (self, args)    :
-        e = exporter.exporter_mult(args['rec'],
-                                   args['out'],
-                                   mult=args['mult'],
-                                   change_units=args['change_units'],
-                                   )
+    def do_single_export (self, args):
+        e = exporter.exporter(args['rec'],
+                              args['out'],
+                              change_units=args['change_units'],
+                              )
         e.run()
 
     def run_extra_prefs_dialog (self):

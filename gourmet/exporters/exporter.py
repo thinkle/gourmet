@@ -29,6 +29,7 @@ class exporter (SuspendableThread, Pluggable):
     
     def __init__ (self, r, out,
                   conv=None,
+                  change_units=True,
                   imgcount=1,
                   order=['image','attr','ings','text'],
                   attr_order=DEFAULT_OUTPUT_ATTR_ORDER,
@@ -42,6 +43,7 @@ class exporter (SuspendableThread, Pluggable):
         """Instantiate our exporter.
 
         conv is a preexisting convert.converter() class
+        change_units is a flag; if true, change units to keep them readable.
         imgcount is a number we use to start counting our exported images.
         order is a list of our core elements in order: 'image','attr','text' and 'ings'
         attr_order is a list of our attributes in the order we should export them:
@@ -60,6 +62,7 @@ class exporter (SuspendableThread, Pluggable):
         self.text_attr_order = text_attr_order
         self.out = out
         self.r = r
+        self.change_units = change_units # FIXME: Currently unused!
         self.do_markup=do_markup
         self.fractions=fractions
         self.use_ml=use_ml
@@ -285,54 +288,6 @@ class exporter (SuspendableThread, Pluggable):
             self.out.write(ingstr)
         self.out.write("\n")
 
-class exporter_mult (exporter):
-    """A basic exporter class that can handle a multiplied recipe."""
-    def __init__ (self, r, out,
-                  conv=None, 
-                  change_units=True,
-                  mult=1,
-                  imgcount=1,
-                  order=['image','attr','ings','text'],
-                  attr_order=DEFAULT_OUTPUT_ATTR_ORDER,
-                  text_attr_order=DEFAULT_TEXT_ATTR_ORDER,
-                  do_markup=True,
-                  use_ml=False,
-                  convert_attnames=True,
-                  fractions=convert.FRACTIONS_ASCII,
-                    ):
-        """Initiate an exporter class capable of multiplying the recipe.
-
-        We allow the same arguments as the base exporter class plus
-        the following
-
-        mult = number (multiply by this number)
-
-        change_units = True|False (whether to change units to keep
-        them readable when multiplying).
-        """
-        self.mult = mult
-        self.change_units = change_units
-        exporter.__init__(self, r, out, conv, imgcount, order,
-                          attr_order=attr_order,
-                          text_attr_order=text_attr_order,
-                          use_ml=use_ml, do_markup=do_markup,
-                          convert_attnames=convert_attnames,
-                          fractions=fractions,
-                          )
-
-    @pluggable_method
-    def write_attr (self, label, text):
-        if isinstance(text, Yield):
-            text=format(text, "{'fractions': %s}"%self.fractions)
-        self.out.write("%s: %s\n"%(label, text))
-
-    @pluggable_method
-    def write_ing (self, ingredient=None):
-        """Write ingredient."""
-        ingstr = format(ingredient, "{'fractions': %s}"%self.fractions)
-        if ingstr:
-            self.out.write(ingstr)
-        self.out.write("\n")
 
 class ExporterMultirec (SuspendableThread, Pluggable):
 

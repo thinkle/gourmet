@@ -1,6 +1,6 @@
 import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
 from gourmet import convert,gglobals
-from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
+from gourmet.exporters.exporter import ExporterMultirec, exporter
 from gourmet.util.yields import Yield
 
 HTML_HEADER_START = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -12,13 +12,11 @@ HTML_HEADER_CLOSE = """<meta http-equiv="Content-Style-Stype" content="text/css"
      </head>"""
 
 
-class html_exporter (exporter_mult):
+class html_exporter (exporter):
     def __init__ (self, r, out, conv=None,
                   css=os.path.join(gglobals.style_dir,"default.css"),
                   embed_css=True, start_html=True, end_html=True, imagedir="pics/", imgcount=1,
                   link_generator=None,
-                  # exporter_mult args
-                  mult=1,
                   change_units=True,
                   ):
         """We export web pages. We have a number of possible options
@@ -40,13 +38,12 @@ class html_exporter (exporter_mult):
         if not imagedir: imagedir = "" #make sure it's a string
         self.imagedir_absolute = os.path.join(os.path.split(out.name)[0],imagedir)
         self.imagedir = imagedir
-        exporter_mult.__init__(self, r, out,
-                               conv=conv,
-                               imgcount=imgcount,
-                               mult=mult,
-                               change_units=change_units,
-                               do_markup=True,
-                               use_ml=True)
+        exporter.__init__(self, r, out,
+                          conv=conv,
+                          imgcount=imgcount,
+                          change_units=change_units,
+                          do_markup=True,
+                          use_ml=True)
         
     def htmlify (self, text):
         t=text.strip()
@@ -203,8 +200,7 @@ class website_exporter (ExporterMultirec):
                   css=os.path.join(gglobals.style_dir,'default.css'),
                   imagedir='pics' + os.path.sep,
                   index_rows=['title','category','cuisine','rating','yields'],
-                  change_units=False,
-                  mult=1):
+                  change_units=False):
         self.ext=ext
         self.css=css
         self.embed_css = False
@@ -227,8 +223,7 @@ class website_exporter (ExporterMultirec):
                           'imgcount': self.imgcount,
                          'imagedir':self.imagedir,
                          'link_generator': self.generate_link,
-                         'change_units':change_units,
-                         'mult':mult}
+                         'change_units':change_units}
         if conv:
             self.exportargs['conv']=conv
         ExporterMultirec.__init__(self, recipe_table, out,

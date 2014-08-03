@@ -22,7 +22,6 @@ class PdfExporterPlugin (ExporterPlugin):
         exp = pdf_exporter.PdfExporter(args['rec'],
                                        args['out'],
                                        change_units=args['change_units'],
-                                       mult=args['mult'],
                                        pdf_args=args['extra_prefs'],
                                  )
         exp.run()

@@ -60,7 +60,6 @@ class GourmetExporterPlugin (ExporterPlugin):
         gxml2_exporter.recipe_table_to_xml([args['rec']],
                                            args['out'],
                                            change_units=args['change_units'],
-                                           mult=args['mult']
                                            ).run()
 
     def run_extra_prefs_dialog (self):

@@ -389,7 +389,7 @@ class PdfWriter:
             print 'Trouble building',t[:20]
             raise
         
-class PdfExporter (exporter.exporter_mult, PdfWriter):
+class PdfExporter (exporter.exporter, PdfWriter):
 
     def __init__ (self, r, out,
                   doc=None,
@@ -414,10 +414,10 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             # Put nice lines to separate multiple recipes out...
             #if pdf_args.get('mode',('columns',1))[0]=='columns':
             #    self.txt.append(MCLine(self.doc.frame_width*0.8))
-        exporter.exporter_mult.__init__(
+        exporter.exporter.__init__(
             self,
             r,
-            None, # exporter_mult has no business touching a file
+            None, # exporter has no business touching a file
             use_ml=True,
             order=['image','attr','ings','text'],
             do_markup=True,

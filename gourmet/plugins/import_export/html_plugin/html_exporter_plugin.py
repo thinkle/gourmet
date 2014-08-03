@@ -24,7 +24,6 @@ class HtmlExporterPlugin (ExporterPlugin):
             args['rec'],
             args['out'],
             change_units=args['change_units'],
-            mult=args['mult'],
             #conv=args['conv']
             )
         he.run()

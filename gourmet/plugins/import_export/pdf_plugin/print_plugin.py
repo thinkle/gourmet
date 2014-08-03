@@ -143,12 +143,10 @@ class PDFSimpleWriter (PDFPrinter):
         
 class PDFRecipePrinter (PDFPrinter):
 
-    def __init__ (self, recs,
-                  mult=1, dialog_title=_('Print Recipes'),
+    def __init__ (self, recs, dialog_title=_('Print Recipes'),
                   dialog_parent=None, change_units=True):
         self.printing_error = False
         self.change_units = change_units
-        self.mult = mult
         self.parent = dialog_parent
         self.recs = recs
         self.setup_printer(self.parent)
@@ -156,7 +154,7 @@ class PDFRecipePrinter (PDFPrinter):
     def begin_print (self, operation, context):
         fn = tempfile.mktemp()
         pe = pdf_exporter.PdfExporterMultiDoc(self.recs,fn,pdf_args=self.args,
-                                              change_units=self.change_units, mult=self.mult)
+                                              change_units=self.change_units)
         pe.connect('error',self.handle_error)
         pe.run()
         if self.printing_error:

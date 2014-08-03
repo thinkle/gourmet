@@ -119,8 +119,7 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
     dtd_path = ''
     dirname = ''
     
-    def __init__ (self, rd, recipe_table, out, one_file=True, change_units=False,
-                  mult=1):
+    def __init__ (self, recipe_table, out, one_file=True, change_units=False):
         
         self.outputfilename = ''
         
@@ -142,9 +141,8 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
         
         self.create_xmldoc()
         exporter.ExporterMultirec.__init__(
-            self, rd, recipe_table, out, one_file=True, ext='mcb', exporter=rec_to_mcb,
+            self, recipe_table, out, one_file=True, ext='mcb', exporter=rec_to_mcb,
             exporter_kwargs={'change_units':change_units,
-                             'mult':mult,
                              'xmlDoc':self.xmlDoc,
                              'attr_order':('title',
                                            'category','cuisine',

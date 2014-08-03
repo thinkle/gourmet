@@ -138,7 +138,6 @@ def rec (request, rec_id, mult=1):
          'cats':', '.join(rd.get_cats(rec)),
          'instructions':textify(rec.instructions),
          'notes':textify(rec.modifications),
-         'mult':mult,
          'yields':(rec.yields and rec.yields * mult or None),
          'is_adjusted': (mult!=1),
          'multiplier_form':mf,

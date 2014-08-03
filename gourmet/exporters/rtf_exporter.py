@@ -4,11 +4,10 @@ from gourmet.gdebug import debug
 from gourmet.ImageExtras import write_image_tempfile
 
 class rtf_exporter_multidoc (exporter.ExporterMultirec):
-    def __init__ (self, rd, recipe_table, out, conv=None):
+    def __init__ (self, recipe_table, out, conv=None):
         debug('rtf_exporter_multidoc starting!',5)
         self.doc = PyRTF.Document()
         exporter.ExporterMultirec.__init__(self,
-                                           rd,
                                            recipe_table,
                                            out,
                                            one_file=True, ext='rtf',
@@ -21,11 +20,10 @@ class rtf_exporter_multidoc (exporter.ExporterMultirec):
         renderer = PyRTF.Renderer()
         renderer.Write(self.doc,self.ofi)
         
-class rtf_exporter (exporter.exporter_mult):
-    def __init__ (self, rd, r, out,
+class rtf_exporter (exporter.exporter):
+    def __init__ (self, r, out,
                   conv=convert.Converter(),
                   imgcount=1,
-                  mult=1,
                   change_units=False,
                   order=['image','attr','ings','text'],
                   doc=None,
@@ -33,15 +31,14 @@ class rtf_exporter (exporter.exporter_mult):
                   ss=None):
         self.setup_document(doc,ss)
         self.multidoc=multidoc
-        exporter.exporter_mult.__init__(self, rd, r, out,
-                                        conv=conv,
-                                        imgcount=imgcount,
-                                        order=order,
-                                        change_units=change_units,
-                                        mult=mult,
-                                        fractions=convert.FRACTIONS_NORMAL, #1/2 1/4 3/4 fractions
-                                        do_markup=False #we'll handle this internally...
-                                        )
+        exporter.exporter.__init__(self, r, out,
+                                   conv=conv,
+                                   imgcount=imgcount,
+                                   order=order,
+                                   change_units=change_units,
+                                   fractions=convert.FRACTIONS_NORMAL, #1/2 1/4 3/4 fractions
+                                   do_markup=False #we'll handle this internally...
+                                   )
 
 
     def setup_document (self, doc=None, ss=None):

@@ -25,7 +25,7 @@ class ExportManager (plugin_loader.Pluggable):
         from gourmet.GourmetRecipeManager import get_application
         self.app = get_application()
 
-    def offer_single_export (self, rec, prefs, mult=1, parent=None):
+    def offer_single_export (self, rec, prefs, parent=None):
         """Offer to export a single file.
 
         Return the filename if we have in fact exported said file.
@@ -50,9 +50,9 @@ class ExportManager (plugin_loader.Pluggable):
         if not exp_type or not self.can_export_type(exp_type):
             de.show_message(label=_('Gourmet cannot export file of type "%s"')%os.path.splitext(filename)[1])
             return
-        return self.do_single_export(rec, filename, exp_type, mult)
+        return self.do_single_export(rec, filename, exp_type)
         
-    def do_single_export (self, rec, filename, exp_type, mult=1, extra_prefs=EXTRA_PREFS_AUTOMATIC):
+    def do_single_export (self, rec, filename, exp_type, extra_prefs=EXTRA_PREFS_AUTOMATIC):
         exporter_plugin = self.get_exporter(exp_type)
         extra_prefs = self.get_extra_prefs(exporter_plugin,extra_prefs)
         #extra_prefs = exporter_plugin.run_extra_prefs_dialog() or {}
@@ -72,7 +72,6 @@ class ExportManager (plugin_loader.Pluggable):
             'out':outfi,
             'conv':self.app.conv,
             'change_units':self.app.prefs.get('readableUnits',True),
-            'mult':mult,     
             'extra_prefs':extra_prefs,
             })
         outfi.close()

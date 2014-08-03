@@ -24,8 +24,7 @@ class MCBExporterPlugin (ExporterPlugin):
         e = mycookbook_exporter.recipe_table_to_xml(
             [args['rec']],
             args['out'],
-            change_units=args['change_units'],
-            mult=args['mult']
+            change_units=args['change_units']
             )
         e.run()
 

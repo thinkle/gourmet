@@ -14,6 +14,7 @@ from gourmet.exporters.exportManager import get_export_manager
 
 from editor import RecEditor
 from gourmet.views.ingredient.display import IngredientDisplay
+from gourmet.models.meta import Session
 
 import gc
 import gobject
@@ -456,8 +457,20 @@ class RecCardDisplay (Pluggable):
 
     def export_cb (self, *args):
         opt = self.prefs.get('save_recipe_as','html')
-        fn = get_export_manager().offer_single_export(self.current_rec,self.prefs,parent=self.window,
-                                                                              mult=self.mult)
+
+        # In the following, we multiply our recipe with self.mult.
+        # Unfortunately, this doesn't work via simple multiplication yet,
+        # so we copy our recipe and use the *= operator to multiply it by
+        # self.mult. We need to wrap all this in a session of its own that
+        # we roll back afterwards so the multiplication isn't persisted to
+        # the database.
+        session = Session()
+        multirec = self.current_rec
+        session.merge(self.current_rec)
+        multirec *= self.mult
+        fn = get_export_manager().offer_single_export(multirec,self.prefs,parent=self.window)
+        session.rollback()
+
         if fn:
             self.offer_url(_('Recipe successfully exported to '
                             '<a href="file:///%s">%s</a>')%(fn,fn),

@@ -1,15 +1,15 @@
-from exporter import exporter_mult
+from exporter import exporter
 import xml.dom
 import types
 # Base XML exporter class
 
-class XmlExporter (exporter_mult):
+class XmlExporter (exporter):
 
     #doc_element = 'rec'
     #doctype_desc = ''
     #dtd_path = ''
     
-    def __init__ (self, rd, r, out,
+    def __init__ (self, r, out,
                   order=['attr','image','ings','text'],
                   xmlDoc=None,
                   **kwargs):
@@ -19,12 +19,12 @@ class XmlExporter (exporter_mult):
             self.top_element = self.xmlDoc.childNodes[1]
         else:
             self.create_xmldoc()
-        exporter_mult.__init__(self, rd,r,out,
-                               use_ml=True,
-                               convert_attnames=False,
-                               do_markup=True,
-                               order=order,
-                               **kwargs)
+        exporter.__init__(self, r, out,
+                          use_ml=True,
+                          convert_attnames=False,
+                          do_markup=True,
+                          order=order,
+                          **kwargs)
 
     def create_xmldoc (self):
         self.i_created_this_document = True

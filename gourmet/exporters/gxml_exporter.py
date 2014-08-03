@@ -5,9 +5,9 @@ from gourmet.gglobals import NAME_TO_ATTR
 import base64
 
 class rec_to_xml (exporter.exporter):
-    def __init__ (self, rd, r, out,attdics={}):
+    def __init__ (self, r, out,attdics={}):
         self.attdics = attdics
-        exporter.exporter.__init__(self, rd,r,out, use_ml=True,
+        exporter.exporter.__init__(self, r, out, use_ml=True,
                                    order=['attr','text','ings'],
                                    do_markup=True)
 
@@ -78,13 +78,12 @@ class rec_to_xml (exporter.exporter):
         self.out.write(']]></image>')
 
 class recipe_table_to_xml (exporter.ExporterMultirec):
-    def __init__ (self, rd, recipe_table, out, one_file=True):
-        self.rd=rd
+    def __init__ (self, recipe_table, out, one_file=True):
         self.catDic = self.createDictionary('category')
         self.srcDic = self.createDictionary('source')
         self.cuiDic = self.createDictionary('cuisine')
         exporter.ExporterMultirec.__init__(
-            self, rd, recipe_table, out, one_file=True, ext='xml', exporter=rec_to_xml,
+            self, recipe_table, out, one_file=True, ext='xml', exporter=rec_to_xml,
             exporter_kwargs={'attdics':{'cuisine':self.cuiDic,
                                         'category':self.catDic,
                                         'source':self.srcDic,},

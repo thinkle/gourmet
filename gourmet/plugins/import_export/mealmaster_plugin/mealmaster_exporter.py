@@ -1,10 +1,10 @@
 import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
 from gourmet import gglobals,  convert
-from gourmet.exporters.exporter import exporter_mult
+from gourmet.exporters.exporter import exporter
 from gourmet.gdebug import debug
 
-class mealmaster_exporter (exporter_mult):
-    def __init__ (self, r, out, conv=None, change_units=True, mult=1):
+class mealmaster_exporter (exporter):
+    def __init__ (self, r, out, conv=None, change_units=True):
         import mealmaster_importer
         self.add_to_instructions=""
         self.conv = conv
@@ -15,21 +15,20 @@ class mealmaster_exporter (exporter_mult):
         for k,v in recattrs_orig.items():
             self.recattrs[v]=k
         self.categories = ""
-        exporter_mult.__init__(self, r, out,
-                               conv=conv,
-                               order=['attr','ings','text'],
-                               attr_order=['title',
-                                           'cuisine',
-                                           'category',
-                                           'yields',
-                                           'cooktime',
-                                           'preptime',
-                                           'rating',
-                                           'source',
-                                           'link'],
-                               convert_attnames=False,
-                               change_units=change_units,
-                               mult=mult)
+        exporter.__init__(self, r, out,
+                          conv=conv,
+                          order=['attr','ings','text'],
+                          attr_order=['title',
+                                      'cuisine',
+                                      'category',
+                                      'yields',
+                                      'cooktime',
+                                      'preptime',
+                                      'rating',
+                                      'source',
+                                      'link'],
+                          convert_attnames=False,
+                          change_units=change_units)
 
     def write_head (self):
         self.out.write("MMMMM----- Recipe via Meal-Master (tm)\n\n")

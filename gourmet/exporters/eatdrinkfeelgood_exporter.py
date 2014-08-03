@@ -60,7 +60,7 @@ class EdfgXmlBase:
         self.top_element.setAttribute('xmlns:xi',
             'http://www.w3.org/2001/XInclude')
 
-class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
+class EdfgXml(exporter.exporter, EdfgXmlBase):
 
     """ An XML exported for the eatdrinkfeelgood dtd """
 
@@ -70,8 +70,8 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
              'tablespoon','teaspoon','bushel',
              'peck','pound','dram','ounce']
     
-    def __init__ (self, rd, r, out, xmlDoc = None, conv = None, attdics={}, 
-            change_units=False, mult=1):
+    def __init__ (self, r, out, xmlDoc = None, conv = None, attdics={},
+            change_units=False):
         self.e_current_step = None
         self.e_directions = None
         if xmlDoc:
@@ -86,12 +86,10 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
                 "./eatdrinkfeelgood.dtd")
             self.write_header()
 
-        exporter.exporter_mult.__init__(self, rd,r,out, use_ml=True,
-                                        order=['attr','image','ings','text'],
-                                        do_markup=True,
-                                        change_units=change_units,
-                                        mult=mult)
-
+        exporter.exporter.__init__(self, r, out, use_ml=True,
+                                   order=['attr','image','ings','text'],
+                                   do_markup=True,
+                                   change_units=change_units)
 
     def write_head (self):
         e = self.xmlDoc.createElement('recipe')
@@ -283,7 +281,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
 
 class EdfgXmlM(exporter.ExporterMultirec, EdfgXmlBase):
     def __init__ (self, rd, recipe_table, out, one_file=True,
-        change_units=False, mult=1):
+        change_units=False):
         self.rd=rd
         impl = xml.dom.getDOMImplementation()
         doctype = impl.createDocumentType("eatdrinkfeelgood", 
@@ -294,7 +292,6 @@ class EdfgXmlM(exporter.ExporterMultirec, EdfgXmlBase):
         exporter.ExporterMultirec.__init__(
             self, rd, recipe_table, out, one_file=True, ext='xml', exporter=EdfgXml,
             exporter_kwargs={'change_units':change_units,
-                             'mult':mult,
                              'xmlDoc':self.xmlDoc
                              }
             )
