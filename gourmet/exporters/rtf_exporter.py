@@ -5,7 +5,7 @@ from gourmet.ImageExtras import write_image_tempfile
 from gettext import gettext as _
 
 class rtf_exporter_multidoc (exporter.ExporterMultirec):
-    def __init__ (self, rd, recipe_table, out, conv=None, progress_func=None):
+    def __init__ (self, rd, recipe_table, out, conv=None):
         debug('rtf_exporter_multidoc starting!',5)
         self.doc = PyRTF.Document()
         exporter.ExporterMultirec.__init__(self,
@@ -13,7 +13,6 @@ class rtf_exporter_multidoc (exporter.ExporterMultirec):
                                            recipe_table,
                                            out,
                                            one_file=True, ext='rtf',
-                                           progress_func=progress_func,
                                            exporter=rtf_exporter,
                                            exporter_kwargs={'doc':self.doc,
                                                             'multidoc':True})        

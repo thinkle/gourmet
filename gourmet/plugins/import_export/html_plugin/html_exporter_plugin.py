@@ -19,7 +19,6 @@ class HtmlExporterPlugin (ExporterPlugin):
             args['rv'],
             args['file'],
             #args['conv'],
-            #progress_func=args['prog']
             )
 
     def do_single_export (self, args)    :

@@ -654,8 +654,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             return self.write_ing(amount,unit,item,optional=optional)
 
 class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
-    def __init__ (self, rd, recipes, out, progress_func=None, conv=None,
-                  pdf_args=DEFAULT_PDF_ARGS,
+    def __init__ (self, rd, recipes, out, conv=None, pdf_args=DEFAULT_PDF_ARGS,
                   **kwargs):
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
@@ -673,7 +672,6 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
             one_file=True, ext='pdf',
             exporter=PdfExporter,
             conv=conv,
-            progress_func=progress_func,
             exporter_kwargs=kwargs,
             )
 

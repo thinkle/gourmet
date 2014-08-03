@@ -78,7 +78,7 @@ class rec_to_xml (exporter.exporter):
         self.out.write(']]></image>')
 
 class recipe_table_to_xml (exporter.ExporterMultirec):
-    def __init__ (self, rd, recipe_table, out, one_file=True, progress_func=None):
+    def __init__ (self, rd, recipe_table, out, one_file=True):
         self.rd=rd
         self.catDic = self.createDictionary('category')
         self.srcDic = self.createDictionary('source')
@@ -88,8 +88,8 @@ class recipe_table_to_xml (exporter.ExporterMultirec):
             exporter_kwargs={'attdics':{'cuisine':self.cuiDic,
                                         'category':self.catDic,
                                         'source':self.srcDic,},
-                             },
-            progress_func=progress_func)
+                             }
+                                           )
 
     def write_header (self):        
         #self.ofi.write('<!DOCTYPE recipeDoc PUBLIC "-//GOURMET//GOURMET RECIPE MANAGER XML//EN" "%s/recipe.dtd">'%datad)
