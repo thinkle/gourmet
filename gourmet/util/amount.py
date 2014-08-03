@@ -44,13 +44,16 @@ class Amount(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def __mul__(self, other):
+    def __imul__(self, other):
+        if self.amount:
+            self.amount *= float(other)
         if self.rangeamount:
-            return Amount(float(other)*self.amount, float(other)*self.rangeamount)
-        elif self.amount:
-            return Amount(float(other)*self.amount)
-        else:
-            return Amount()
+            self.rangeamount *= float(other)
+        return self
+
+    def __mul__(self, other):
+        result = self
+        return result.__imul__(other)
 
     def __rmul__(self, other):
         return self.__mul__(other)

@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, Text, Float, Boolean, ForeignKey
 from sqlalchemy.orm import relationship, composite
 
-from copy import copy
 from ast import literal_eval
 
 from meta import Base
@@ -34,10 +33,13 @@ class Ingredient (Base):
 
     amt = composite(Amount, amount, rangeamount)
 
+    def __imul__(self, other):
+        self.amt *= other
+        return self
+
     def __mul__(self, other):
-        result = copy(self)
-        result.amt *= other
-        return result
+        result = self
+        return result.__imul__(other)
 
     def __rmul__(self, other):
         return self.__mul__(other)

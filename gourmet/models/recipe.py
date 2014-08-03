@@ -94,20 +94,18 @@ class Recipe (Base):
     def __str__(self):
         return self.title
 
+    def __imul__(self, other):
+        if self.the_yield:
+            self.the_yield *= other
+
+        for ing in self.ingredients:
+            ing *= other
+
+        return self
+
     def __mul__(self, other):
-        result = copy(self)
-        if result.the_yield:
-            result.the_yield *= other
-
-        result._categories = copy(self._categories)
-        for i, cat in enumerate(self._categories):
-            result._categories[i]=(copy(cat))
-
-        result.ingredients = copy(self.ingredients)
-        for i, ing in enumerate(self.ingredients):
-            result.ingredients[i]=(other*copy(ing))
-
-        return result
+        result = deepcopy(self)
+        return result.__imul__(other)
 
     def __rmul__(self, other):
         return self.__mul__(other)
