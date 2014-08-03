@@ -9,8 +9,10 @@ from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import BaseExporterPlugin, BaseExporterMultiRecPlugin
 from gourmet.threadManager import SuspendableThread
 from gourmet.models.ingredient import order_ings
-from gourmet.models.meta import Session
+from gourmet.models.meta import session_factory
 from gourmet.util.yields import Yield
+
+from sqlalchemy.orm import scoped_session
 
 class exporter (SuspendableThread, Pluggable):
     """A base exporter class.
@@ -57,7 +59,8 @@ class exporter (SuspendableThread, Pluggable):
         self.attr_order=attr_order
         self.text_attr_order = text_attr_order
         self.out = out
-        self.session = Session()
+        self.Session = scoped_session(session_factory)
+        self.session = self.Session()
         self.r = self.session.merge(r)
         self.do_markup=do_markup
         self.fractions=fractions
@@ -84,6 +87,7 @@ class exporter (SuspendableThread, Pluggable):
                 self._write_text_()
             elif task=='ings': self._write_ings_()
         self.write_foot()
+        self.Session.remove()
 
 
     # Internal methods -- ideally, subclasses should have no reason to

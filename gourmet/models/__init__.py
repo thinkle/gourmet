@@ -33,8 +33,8 @@ def initialize_connection(filename, url=None):
     if meta.Session is not None:
         return
 
-    session_factory = sessionmaker()
-    meta.Session = scoped_session(session_factory)
+    meta.session_factory = sessionmaker()
+    meta.Session = scoped_session(meta.session_factory)
 
     def instr(s,subs): return s.lower().find(subs.lower())+1
 
