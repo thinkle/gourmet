@@ -63,11 +63,11 @@ class RecSelector (RecIndex):
                        (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
                         gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
         self.re.conf.append(
-            WidgetSaver.WindowSaver(d,
-                                    self.prefs.get('recselector',
-                                                   {'window_size':(800,600)})
-                                    )
-            )
+            WindowSaver(d,
+                        self.prefs.get('recselector',
+                                       {'window_size':(800,600)})
+                        )
+                            )
         d.set_default_size(*self.prefs.get('recselector')['window_size'])
         self.recipe_index_interface = self.ui.get_object('recipeIndexBox')
         self.recipe_index_interface.unparent()
