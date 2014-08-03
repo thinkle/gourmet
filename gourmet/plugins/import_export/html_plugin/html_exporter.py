@@ -159,10 +159,10 @@ class html_exporter (exporter_mult):
     def write_groupfoot (self):
         self.out.write("</ul></li>")
                             
-    def write_ingref (self, amount, unit, item, refid, optional):
+    def write_ingref (self, ingredient):
         link=False
         if self.link_generator:
-            link=self.link_generator(refid)
+            link=self.link_generator(ingredient.recipe_ref)
             if link:
                 self.out.write("<a href='")
                 self.out.write(
@@ -171,16 +171,14 @@ class html_exporter (exporter_mult):
                     #self.make_relative_link(link)
                     )
                 self.out.write("'>")
-        self.write_ing (amount, unit, item, optional=optional)
+        self.write_ing (ingredient)
         if link: self.out.write("</a>")
 
-    def write_ing (self, amount=1, unit=None,
-                   item=None, key=None, optional=False):
+    def write_ing (self, ingredient):
         self.out.write('<li class="ing" itemprop="ingredients">')
-        for o in [amount, unit, item]:
-            if o: self.out.write(xml.sax.saxutils.escape("%s "%o))
-        if optional:
-            self.out.write("(%s)"%_('optional'))
+        ingstr = format(ingredient, "{'fractions': %s}"%self.fractions)
+        if ingstr:
+            self.out.write(ingstr)
         self.out.write("</li>\n")
     
     def write_ingfoot (self):
@@ -282,12 +280,11 @@ class website_exporter (ExporterMultirec):
         self.indexf.write('</table></div></body></html>')
         self.indexf.close()
 
-    def generate_link (self, id):
-        if self.added_dict.has_key(id):
-            return self.added_dict[id]
+    def generate_link (self, rec):
+        if self.added_dict.has_key(rec.id):
+            return self.added_dict[rec.id]
         else:
             # FIXME
-            rec = self.rd.get_rec(id)
             if rec:
                 return self.generate_filename(rec,self.ext,add_id=True)
             else:
