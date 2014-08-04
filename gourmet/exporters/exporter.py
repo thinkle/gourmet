@@ -37,7 +37,6 @@ class exporter (SuspendableThread, Pluggable):
                   use_ml=False,
                   convert_attnames=True,
                   fractions=convert.FRACTIONS_ASCII,
-
                   ):
         """Instantiate our exporter.
 
@@ -139,77 +138,6 @@ class exporter (SuspendableThread, Pluggable):
                 self.write_groupfoot()
         self.write_ingfoot()
 
-    # Below are the images inherited exporters should
-    # subclass. Subclasses overriding methods should make these
-    # pluggable so that plugins can fiddle about with things as they
-    # see fit.
-
-    def write_image (self, image):
-        """Write image based on binary data for an image file (jpeg format)."""
-        pass
-
-
-    def write_head (self):
-        """Write any necessary header material at recipe start."""
-        pass
-
-    def write_foot (self):
-        """Write any necessary footer material at recipe end."""
-        pass
-
-    @pluggable_method
-    def write_inghead(self):
-        """Write any necessary markup before ingredients."""
-        self.out.write("\n---\n%s\n---\n"%_("Ingredients"))
-
-    @pluggable_method
-    def write_ingfoot(self):
-        """Write any necessary markup after ingredients."""
-        pass
-
-    @pluggable_method
-    def write_attr_head (self):
-        """Write any necessary markup before attributes."""
-        pass
-
-    @pluggable_method
-    def write_attr_foot (self):
-        """Write any necessary markup after attributes."""
-        pass
-
-    @pluggable_method
-    def write_attr (self, label, item):
-        """Write an attribute with label and text.
-
-        If we've been initialized with convert_attnames=True, the
-        label will already be translated to our current
-        locale. Otherwise, the label will be the same as it used
-        internally in our database.
-
-        So if your method needs to do something special based on the
-        attribute name, we need to set convert_attnames to False (and
-        do any necessary i18n of the label name ourselves.
-        """
-        if isinstance(item, Yield):
-            item=format(item, "{'fractions': %s}"%self.fractions)
-        self.out.write("%s: %s\n"%(label, item))
-
-    @pluggable_method
-    def write_text (self, label, text):
-        """Write a text chunk.
-
-        This could include markup if we've been initialized with
-        do_markup=False.  Otherwise, markup will be handled by the
-        handle_markup methods (handle_italic, handle_bold,
-        handle_underline).
-        """
-        self.out.write("\n---\n%s\n---\n"%label)
-        ll=text.split("\n")
-        for l in ll:
-            for wrapped_line in textwrap.wrap(l):
-                self.out.write("\n%s"%wrapped_line)
-        self.out.write('\n\n')
-
     def handle_markup (self, txt):
         """Handle markup inside of txt."""
         if txt == None:
@@ -246,42 +174,38 @@ class exporter (SuspendableThread, Pluggable):
             more=ai.next()
         return outtxt
 
-    def handle_italic (self,chunk):
-        """Make chunk italic, or the equivalent."""
-        return "*"+chunk+"*"
-    
-    def handle_bold (self,chunk):
-        """Make chunk bold, or the equivalent."""
-        return chunk.upper()
-    
-    def handle_underline (self,chunk):
-        """Make chunk underlined, or the equivalent of"""
-        return "_" + chunk + "_"
-
-    @pluggable_method
-    def write_grouphead (self, text):
-        """The start of group of ingredients named TEXT"""
-        self.out.write("\n%s:\n"%text.strip())
-
-    @pluggable_method
-    def write_groupfoot (self):
-        """Mark the end of a group of ingredients.
-        """
+    def write_image (self, image):
+        """Write image based on binary data for an image file (jpeg format)."""
         pass
-    
-    @pluggable_method
-    def write_ingref (self, ingredient):
-        """By default, we don't handle ingredients as recipes, but
-        someone subclassing us may wish to do so..."""
-        self.write_ing(ingredient)
+
+
+    def write_head (self):
+        """Write any necessary header material at recipe start."""
+        pass
+
+    def write_foot (self):
+        """Write any necessary footer material at recipe end."""
+        pass
 
     @pluggable_method
-    def write_ing (self, ingredient):
-        """Write ingredient."""
-        ingstr = format(ingredient, "{'fractions': %s}"%self.fractions)
-        if ingstr:
-            self.out.write(ingstr)
-        self.out.write("\n")
+    def write_inghead(self):
+        """Write any necessary markup before ingredients."""
+        self.out.write("\n---\n%s\n---\n"%_("Ingredients"))
+
+    @pluggable_method
+    def write_ingfoot(self):
+        """Write any necessary markup after ingredients."""
+        pass
+
+    @pluggable_method
+    def write_attr_head (self):
+        """Write any necessary markup before attributes."""
+        pass
+
+    @pluggable_method
+    def write_attr_foot (self):
+        """Write any necessary markup after attributes."""
+        pass
 
 
 class ExporterMultirec (SuspendableThread, Pluggable):

@@ -1,5 +1,5 @@
 from gourmet.plugin import ExporterPlugin
-import gourmet.exporters.exporter as exporter
+from plaintext_exporter import PlainTextExporter, PlainTextExporterMultirec
 
 TXT = _('Plain Text file')
 
@@ -13,15 +13,13 @@ class PlainTextExporterPlugin (ExporterPlugin):
     saveas_single_filters = [TXT,['text/plain'],['*.txt','*.TXT','']]
 
     def get_multiple_exporter (self, args):
-        return exporter.ExporterMultirec(
+        return PlainTextExporterMultirec(
             args['rv'],
-            args['file'],
-            one_file=True,
-            ext='txt',
+            args['file']
             )
 
     def do_single_export (self, args):
-        e = exporter.exporter(args['rec'],
+        e = PlainTextExporter(args['rec'],
                               args['out'],
                               change_units=args['change_units'],
                               )
