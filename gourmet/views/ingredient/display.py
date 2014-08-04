@@ -1,4 +1,5 @@
 from gourmet.models.meta import Session
+from gourmet.models import Recipe
 from gourmet import prefs
 
 import gtk
@@ -14,7 +15,6 @@ class IngredientDisplay:
         self.session = session
         self.prefs = prefs.get_prefs()
         self.setup_widgets()
-        self.rg = self.recipe_display.rg
         self.markup_ingredient_hooks = []
 
     def setup_widgets (self):
@@ -73,14 +73,11 @@ class IngredientDisplay:
 
     def show_recipe_link_cb (self, widg, link):
         rid,rname = link.split(':',1)
-        rec = self.rg.rd.get_rec(int(rid))
+        rec = self.session.query(Recipe).get(int(rid))
         if not rec:
-            rec = self.rg.rd.fetch_one(
-                self.rg.rd.recipe_table,
-                title=rname
-                )
+            rec = self.session.query(Recipe).filter_by(title=rname).first()
         if rec:
-            self.rg.open_rec_card(rec)
+            self.recipe_display.rg.open_rec_card(rec)
         else:
             de.show_message(parent=self.display_window,
                             label=_('Unable to find recipe %s in database.')%rname
