@@ -196,7 +196,7 @@ class exporter (SuspendableThread, Pluggable):
         do any necessary i18n of the label name ourselves.
         """
         if isinstance(item, Yield):
-            text=format(item, "{'fractions': %s}"%self.fractions)
+            item=format(item, "{'fractions': %s}"%self.fractions)
         self.out.write("%s: %s\n"%(label, item))
 
     @pluggable_method
