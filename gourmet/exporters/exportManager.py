@@ -25,6 +25,19 @@ class ExportManager (plugin_loader.Pluggable):
         from gourmet.GourmetRecipeManager import get_application
         self.app = get_application()
 
+
+    def include_linked_recipes (self, recs):
+        '''Handed a list of recipes, append any recipes that are
+        linked as ingredients in those recipes to the list.
+
+        Modifies the list in place.
+        '''
+        for r in recs:
+            for i in r.ingredients:
+                if i.recipe_ref and i.recipe_ref not in recs:
+                    recs.append(i.recipe_ref)
+                    #FIXME: see self.get_referenced_rec(i)
+
     def offer_single_export (self, rec, prefs, parent=None):
         """Offer to export a single file.
 
@@ -88,7 +101,7 @@ class ExportManager (plugin_loader.Pluggable):
             # that that will almost only ever happen when we're
             # exporting all recipes, which makes this code irrelevant
             # anyway.
-            self.app.rd.include_linked_recipes(recs)
+            self.include_linked_recipes(recs)
         ext = prefs.get('save_recipes_as','%sxml'%os.path.extsep)
         exp_directory = prefs.get('rec_exp_directory',
                                   get_user_special_dir(USER_DIRECTORY_DOCUMENTS)

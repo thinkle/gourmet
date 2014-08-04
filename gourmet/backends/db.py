@@ -1087,18 +1087,6 @@ class RecData (Pluggable):
                 return rec
             else:
                 print 'Very odd: no match for',ing,'refid:',ing.refid
-
-    def include_linked_recipes (self, recs):
-        '''Handed a list of recipes, append any recipes that are
-        linked as ingredients in those recipes to the list.
-
-        Modifies the list in place.
-        '''
-        for r in recs:
-            for i in r.ingredients:
-                if i.recipe_ref and i.recipe_ref not in recs:
-                    recs.append(i.recipe_ref)
-                    #FIXME: see self.get_referenced_rec(i)
                 
     def get_rec (self, id, recipe_table=None):
         """Handed an ID, return a recipe object."""
