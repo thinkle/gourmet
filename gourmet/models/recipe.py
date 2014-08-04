@@ -11,6 +11,7 @@ from gourmet.util.yields import Yield
 
 from time import time
 from copy import copy, deepcopy
+from itertools import groupby
 
 class Recipe (Base):
     __tablename__ = 'recipe'
@@ -71,6 +72,10 @@ class Recipe (Base):
     def stars(self):
         if self.rating:
             return "%g/5 %s"%(self.rating/2.0,_('stars'))
+
+    @hybrid_property
+    def the_ingredients(self):
+        return groupby(self.ingredients, lambda x: x.inggroup)
 
     @staticmethod
     def update_last_modified_and_hashes(mapper, connection, target):

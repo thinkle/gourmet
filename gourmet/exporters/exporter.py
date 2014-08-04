@@ -8,7 +8,6 @@ from gourmet.gdebug import TimeAction, debug, print_timer_info
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import BaseExporterPlugin, BaseExporterMultiRecPlugin
 from gourmet.threadManager import SuspendableThread
-from gourmet.models.ingredient import order_ings
 from gourmet.models.meta import session_factory
 from gourmet.util.yields import Yield
 
@@ -126,7 +125,7 @@ class exporter (SuspendableThread, Pluggable):
         if not self.r.ingredients:
             return
         self.write_inghead()
-        for g,ings in order_ings(self.r.ingredients):
+        for g,ings in self.r.the_ingredients:
             if g:
                 self.write_grouphead(g)            
             for i in ings:

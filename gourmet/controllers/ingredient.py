@@ -1,7 +1,7 @@
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import IngredientControllerPlugin
 from gourmet.gdebug import debug
-from gourmet.models.ingredient import order_ings, RecRef, Ingredient
+from gourmet.models.ingredient import RecRef, Ingredient
 from gourmet.gtk_extras.treeview_extras import path_next, move_iter
 from gourmet.importers.importer import parse_range
 from gourmet import Undo
@@ -39,7 +39,6 @@ class IngredientController (Pluggable):
         self.current_rec=rec
         ## now we continue with our regular business...
         debug("%s ings"%len(rec.ingredients),3)
-        self.ing_alist=order_ings(rec.ingredients)
         self.imodel = gtk.TreeStore(gobject.TYPE_PYOBJECT,
                               gobject.TYPE_STRING,
                               gobject.TYPE_STRING,
@@ -48,7 +47,7 @@ class IngredientController (Pluggable):
                                     #gobject.TYPE_STRING,
                                     #gobject.TYPE_STRING
                                     )
-        for g,ings in self.ing_alist:
+        for g,ings in rec.the_ingredients:
             if g:
                 g=self.add_group(g)
             for i in ings:

@@ -1,5 +1,4 @@
 from gourmet.models.meta import Session
-from gourmet.models.ingredient import order_ings
 from gourmet import prefs
 
 import gtk
@@ -15,7 +14,7 @@ class IngredientDisplay:
         self.session = session
         self.prefs = prefs.get_prefs()
         self.setup_widgets()
-        self.recipe_display = recipe_display; self.rg = self.recipe_display.rg
+        self.rg = self.recipe_display.rg
         self.markup_ingredient_hooks = []
 
     def setup_widgets (self):
@@ -27,16 +26,13 @@ class IngredientDisplay:
         self.ingredientsDisplay.set_wrap_mode(gtk.WRAP_WORD)
         
     def update_from_database (self):
-        self.ing_alist = order_ings(
-                            self.recipe_display.current_rec.ingredients
-                         )
         self.display_ingredients()
 
     def display_ingredients (self):
         group_strings = []
         group_index = 0
         nut_highlighted = False
-        for g,ings in self.ing_alist:
+        for g,ings in self.recipe_display.current_rec.the_ingredients:
             labels = []
             if g: labels.append("<u>%s</u>"%xml.sax.saxutils.escape(g))
             ing_index = 0
@@ -72,11 +68,6 @@ class IngredientDisplay:
             # ingredient string, ingredient object, ingredient index, group index
             ing_string = hook(ing_string, ing_obj, ing_index, group_index)
         return ing_string
-
-    def create_ing_alist (self):
-        """Create alist ing_alist based on ingredients in DB for current_rec"""
-        self.ing_alist = order_ings(self.get_current_rec().ingredients)
-        debug('self.ing_alist updated: %s'%self.ing_alist,1)
 
     # Callbacks
 

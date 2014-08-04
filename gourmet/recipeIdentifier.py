@@ -14,8 +14,6 @@ functions.
 import convert, xml.sax.saxutils
 import hashlib, difflib, types, re
 
-from models.ingredient import order_ings
-
 REC_FIELDS = ['title',
               'instructions',
               ]
@@ -96,7 +94,7 @@ def format_ing_text (ing_alist,conv=None):
             
 
 def format_ings (rec):
-    return format_ing_text(order_ings(rec.ingredients))
+    return format_ing_text(rec.the_ingredients)
 
 def apply_line_markup (line, markup):
     out = ''

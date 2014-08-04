@@ -8,7 +8,6 @@ from gourmet.gdebug import TimeAction, debug, print_timer_info
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import BaseExporterPlugin, BaseExporterMultiRecPlugin
 from gourmet.threadManager import SuspendableThread
-from gourmet.models.ingredient import order_ings
 from gourmet.models.meta import session_factory
 from gourmet.util.yields import Yield
 from gourmet.exporters.exporter import exporter, ExporterMultirec
