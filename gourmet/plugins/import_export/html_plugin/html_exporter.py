@@ -196,7 +196,7 @@ class html_exporter (exporter):
         return linkify(filename)
 
 class website_exporter (ExporterMultirec):
-    def __init__ (self, recipe_table, out, conv=None, ext='htm', copy_css=True,
+    def __init__ (self, recipe_table, out, conv=None, ext='html', copy_css=True,
                   css=os.path.join(gglobals.style_dir,'default.css'),
                   imagedir='pics' + os.path.sep,
                   index_rows=['title','category','cuisine','rating','yields'],
@@ -219,8 +219,8 @@ class website_exporter (ExporterMultirec):
         self.imgcount=1
         self.added_dict={}
         self.exportargs={'embed_css': False,
-                          'css': self.css,
-                          'imgcount': self.imgcount,
+                         'css': self.css,
+                         'imgcount': self.imgcount,
                          'imagedir':self.imagedir,
                          'link_generator': self.generate_link,
                          'change_units':change_units}

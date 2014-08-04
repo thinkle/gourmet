@@ -2,6 +2,8 @@ import gourmet.exporters.exporter as exporter
 import sys, xml.sax.saxutils, base64
 from gourmet.exporters.xml_exporter import XmlExporter
 
+from gourmet.util.yields import Yield
+
 class rec_to_xml (XmlExporter):
     """A vastly simplified recipe XML exporter.
 
@@ -23,8 +25,12 @@ class rec_to_xml (XmlExporter):
         self.rec_el = self.create_element_with_attrs("recipe",{'id':self.r.id})
         self.top_element.appendChild(self.rec_el)
 
-    def write_attr (self, attr, text):
-        self.rec_el.appendChild(self.create_text_element(attr.replace(' ',''),text))
+    def write_attr (self, attr, item):
+        if isinstance(item, Yield):
+            item=format(item, "{'fractions': %s}"%self.fractions)
+        else:
+            item=unicode(item)
+        self.rec_el.appendChild(self.create_text_element(attr.replace(' ',''),item))
         
     def write_text (self, attr, text):
         self.rec_el.appendChild(
@@ -52,36 +58,39 @@ class rec_to_xml (XmlExporter):
         self.top_inglist = self.inglist_el # because groups will let us nest...
         self.rec_el.appendChild(self.inglist_el)
 
-    def write_ingref (self, amount=1, unit=None, item=None, refid=None, optional=False):
+    def write_ingref (self, ingredient):
         self.inglist_el.appendChild(
             self.create_text_element('ingref',
-                                     item,
-                                     {'refid':str(refid),
-                                      'amount':amount}
+                                     ingredient.item,
+                                     {'refid':str(ingredient.refid),
+                                      'amount':ingredient.amount}
                                      )
             )
         
-    def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
-        if optional:
+    def write_ing (self, ingredient):
+        if ingredient.optional:
             ing_el = self.create_element_with_attrs('ingredient',{'optional':'yes'})
         else:
             ing_el = self.create_element_with_attrs('ingredient',{})
         self.inglist_el.appendChild(ing_el)
-        if amount:
+        if ingredient.amount:
             ing_el.appendChild(
-                self.create_text_element('amount',amount)
+                self.create_text_element('amount',
+                                         format(ingredient.amt,
+                                                "{'fractions': %s}"%
+                                                self.fractions))
                 )
-        if unit:
-           ing_el.appendChild(
-               self.create_text_element('unit',unit)
+        if ingredient.unit:
+            ing_el.appendChild(
+               self.create_text_element('unit',ingredient.unit)
                )
-        if item:
+        if ingredient.item:
             ing_el.appendChild(
-                self.create_text_element('item',item)
+                self.create_text_element('item',ingredient.item)
                 )
-        if key:
+        if ingredient.ingkey:
             ing_el.appendChild(
-                self.create_text_element('key',key)
+                self.create_text_element('key',ingredient.ingkey)
                 )
 
     def write_grouphead (self, name):

@@ -21,34 +21,34 @@ class rec_to_mcb (XmlExporter):
         self.rec_el = self.create_element_with_attrs("recipe",{'id':self.r.id})
         self.top_element.appendChild(self.rec_el)
         
-    def write_attr (self, attr, text):
+    def write_attr (self, attr, item):
         #attr mapping
         if (attr == 'link'):
             attr = 'url'
-        if (attr == 'category'):
+        elif (attr == 'category'):
             attr = 'category'
-        if (attr == 'servings'):
+        elif (attr == 'servings'):
             attr = 'quantity'
-        if (attr == 'cooktime'):
+        elif (attr == 'cooktime'):
             attr = 'cooktime'
-        if (attr == 'preptime'):
+            item = unicode(item)
+        elif (attr == 'preptime'):
             attr = 'preptime'
-        if (attr == 'yields'):
+            item = unicode(item)
+        elif (attr == 'yields'):
             attr = 'quantity'
-            text = text.split(' ')[0] # Remove units if present
-        if (attr == 'rating'):
-            from gourmet.importers.importer import string_to_rating
-            val = string_to_rating(text)
-            if val:
+            item = unicode(item)
+        elif (attr == 'rating'):
+            if item:
                 # MyCookbook's rating range is integers from 1 to 5, while
                 # ours is from 1 to 10, so we have to floor divide by 2 when
                 # exporting.
-                self.rec_el.appendChild(self.create_text_element('rating', str(val//2)))
+                self.rec_el.appendChild(self.create_text_element('rating', str(item//2)))
                 return
-        if (attr == 'title'):
-            self.current_title = text.replace(' ','_')
+        elif (attr == 'title'):
+            self.current_title = item.replace(' ','_')
 
-        self.rec_el.appendChild(self.create_text_element(attr.replace(' ',''),text))
+        self.rec_el.appendChild(self.create_text_element(attr.replace(' ',''),item))
         
     def write_text (self, attr, text):
         #attr mapping with li
@@ -90,20 +90,15 @@ class rec_to_mcb (XmlExporter):
         self.top_inglist = self.inglist_el # because groups will let us nest...
         self.rec_el.appendChild(self.inglist_el)
 
-    def write_ingref (self, amount=1, unit=None, item=None, refid=None, optional=False):
+    def write_ingref (self, ingredient):
         pass
         
-    def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
-        ing_txt=''
-        if type(amount)==type(1.0) or type(amount)==type(1):
-            amount = convert.float_to_frac(amount)
-        ing_txt = ing_txt + amount
-        if unit:
-            ing_txt = ing_txt + ' ' + unit
-        if item:
-            ing_txt = ing_txt + ' ' + item
-        
-        ing_el = self.create_text_element('li',ing_txt)
+    def write_ing (self, ingredient):
+        ing_txt = format(ingredient, "{'fractions': %s}"%self.fractions)
+        if ing_txt:
+            ing_el = self.create_text_element('li', ing_txt)
+        else:
+            ing_el = self.create_text_element('li', '')
         self.inglist_el.appendChild(ing_el)
         
     def write_grouphead (self, name):

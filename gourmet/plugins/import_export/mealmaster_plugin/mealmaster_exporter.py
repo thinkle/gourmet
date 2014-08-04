@@ -35,8 +35,8 @@ class mealmaster_exporter (exporter):
 
     def write_attr (self, label, text):
         #We must be getting the label already capitalized from an the exporter class
-	#this line is just to correct that without making a mess of the exporter class
-	if label=='category' or label=='cuisine':
+        #this line is just to correct that without making a mess of the exporter class
+        if label=='category' or label=='cuisine':
             if self.categories:
                 self.categories="%s, %s"%(self.categories,text)
             else:
@@ -45,30 +45,25 @@ class mealmaster_exporter (exporter):
         if label=='yields' and self.categories:
             # categories go before servings
             self.write_categories()
-	#Mealmaster pukes at the preptime line so this removes it    
-	elif label=='preparation time' or label=='rating' or label=='source':
-	    self.add_to_instructions += "\n\n%s: %s"%(gglobals.REC_ATTR_DIC[label],text)
-	else:
+        #Mealmaster pukes at the preptime line so this removes it
+        elif label=='preparation time' or label=='rating' or label=='source':
+            self.add_to_instructions += "\n\n%s: %s"%(gglobals.REC_ATTR_DIC[label],text)
+        else:
             if label and text:
                 if self.recattrs.has_key(label):
                     label=self.recattrs[label]
                 else:
                     label=label.capitalize()
-                label=self.pad(label,8)
-		self.out.write("%s: %s\n"%(label, text))
+                label='{:>8}'.format(label.strip())
+        self.out.write("%s: %s\n"%(label, text))
 
     def write_categories (self):
-        self.out.write("%s: %s\n"%(self.pad("Categories",8),self.categories))
+        self.out.write('{0}: {1}\n'.format('Categories', self.categories))
         self.categories = ""
 
     def write_attr_foot (self):
         if self.categories: self.write_categories() # if these haven't been written yet...
 
-    def pad (self, text, chars):
-        text=text.strip()
-        fill = chars - len(text)
-        return "%s%s"%(" "*fill,text)
-    
     def write_text (self, label, text):
         if label=='instructions' and self.add_to_instructions:
             text = text + self.add_to_instructions
@@ -100,11 +95,13 @@ class mealmaster_exporter (exporter):
     def write_groupfoot (self):
         self.ings = self.master_ings # back to master level
 
-    def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):
-        if type(amount)==type(1.0) or type(amount)==type(1):
-  	    amount = convert.float_to_frac(amount)
-  	if not amount: amount = ""
-        if not unit: unit = ""
+    def write_ing (self, ingredient):
+        amount = format(ingredient.amt, "{'fractions': %s}"%self.fractions)
+        item = ingredient.item
+        if not ingredient.unit:
+            unit = u""
+        else:
+            unit = unicode(ingredient.unit)
         unit_bad = False
         if len(unit) > 2 or '.' in unit:
             unit_bad = True
@@ -118,7 +115,7 @@ class mealmaster_exporter (exporter):
                         unit = self.uc[new_u]; unit_bad = False
         if unit_bad: # If we couldn't fix the unit...  we add it to
             # the item
-            if unit: item="%s %s"%(unit,item)
+            if unit: item="%s %s"%(unit,ingredient.item)
             unit=""
         if len(unit)>self.ulen:
             self.ulen=len(unit)
@@ -127,7 +124,7 @@ class mealmaster_exporter (exporter):
             #print "DEBUG: %s length %s"%(amount,self.amtlen)
         # we hold off writing ings until we know the lengths
         # of strings since we need to write out neat columns
-        if optional: item="%s (optional)"%item
+        if ingredient.optional: item="%s (optional)"%item
         self.ings.append([amount,unit,item])
 
     def write_ingfoot (self):
@@ -137,15 +134,7 @@ class mealmaster_exporter (exporter):
             # if we're a tuple, this is a group...
             if type(i)==type(()):
                 # write the group title first...
-                group = i[0]
-                width = 70
-                dashes = width - len(group)
-                left_side = dashes/2 - 5
-                right_side = dashes/2
-                self.out.write("-----%s%s%s\n"%(left_side * "-",
-                                           group.upper(),
-                                           right_side * "-")
-                          )
+                self.out.write('{:-^70}\n'.format(i[0].upper()))
                 map(self._write_ingredient,i[1])
                 self.out.write("\n") # extra newline at end of groups
             else:
@@ -155,11 +144,10 @@ class mealmaster_exporter (exporter):
                         
     def _write_ingredient (self, ing):
         a,u,i = ing
-        self.out.write("%s %s %s\n"%(self.pad(a,self.amtlen),
-                                     self.pad(u,self.ulen),
-                                     i))
+        self.out.write('{0:{align}{self.amtlen}} {1:{align}{self.ulen}} {2}\n'.
+                       format(a.strip(), u.strip(), i.strip(), align='>', self=self))
 
     def write_foot (self):
         self.out.write("\n\n")
-	self.out.write("MMMMM")
-	self.out.write("\n\n")
+        self.out.write("MMMMM")
+        self.out.write("\n\n")
