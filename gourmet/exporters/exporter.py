@@ -81,9 +81,8 @@ class exporter (SuspendableThread, Pluggable):
             if task=='image':
                 if getattr(self.r,'image'):
                     self.write_image(self.r.image)
-            if task=='attr':
+            elif task=='attr':
                 self._write_attrs_()
-
             elif task=='text':
                 self._write_text_()
             elif task=='ings': self._write_ings_()
