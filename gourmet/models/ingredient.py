@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, Text, Float, Boolean, ForeignKey
 from sqlalchemy.orm import relationship, composite
 
 from ast import literal_eval
+from copy import copy
 
 from meta import Base
 #from gourmet.plugin_loader import pluggable_method
@@ -38,7 +39,7 @@ class Ingredient (Base):
         return self
 
     def __mul__(self, other):
-        result = self
+        result = copy(self)
         return result.__imul__(other)
 
     def __rmul__(self, other):

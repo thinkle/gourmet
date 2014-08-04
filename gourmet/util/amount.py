@@ -2,6 +2,7 @@ from gourmet.convert import float_to_frac, \
     FRACTIONS_ALL, FRACTIONS_NORMAL, FRACTIONS_ASCII, FRACTIONS_OFF
 
 from ast import literal_eval
+from copy import copy
 
 class Amount(object):
     def __init__(self, amount=None, rangeamount=None):
@@ -52,7 +53,7 @@ class Amount(object):
         return self
 
     def __mul__(self, other):
-        result = self
+        result = copy(self)
         return result.__imul__(other)
 
     def __rmul__(self, other):

@@ -1,5 +1,7 @@
 from gourmet.convert import float_to_frac
 
+from copy import copy
+
 class Yield(object):
     def __init__(self, yields, yield_unit):
         self.yields = yields
@@ -45,7 +47,7 @@ class Yield(object):
         return self
 
     def __mul__(self, other):
-        result = self
+        result = copy(self)
         return result.__imul__(other)
 
     def __rmul__(self, other):
