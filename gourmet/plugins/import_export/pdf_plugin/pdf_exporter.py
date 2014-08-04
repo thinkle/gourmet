@@ -1,13 +1,7 @@
 import gtk, gobject
-import reportlab
-from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.units import inch,mm
-from reportlab.pdfgen import canvas
 import reportlab.platypus as platypus
-from reportlab.platypus.flowables import ParagraphAndImage
 import reportlab.lib.pagesizes as pagesizes
-import reportlab.lib.fonts as fonts
-import reportlab.lib.units as units
 import reportlab.lib.styles as styles
 from gettext import ngettext
 from gourmet import convert
@@ -19,7 +13,7 @@ from gourmet import ImageExtras
 from gourmet.prefs import get_prefs
 import xml.sax.saxutils
 import gourmet.exporters.exporter as exporter
-import types, re
+import types
 import tempfile, os.path
 import math
 from page_drawer import PageDrawer
@@ -653,7 +647,7 @@ class PdfExporter (exporter.exporter, PdfWriter):
             return self.write_ing(amount,unit,item,optional=optional)
 
 class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
-    def __init__ (self, recipes, out, conv=None, pdf_args=DEFAULT_PDF_ARGS,
+    def __init__ (self, recipes, out, pdf_args=DEFAULT_PDF_ARGS,
                   **kwargs):
         PdfWriter.__init__(self)
         if type(out) in types.StringTypes:
@@ -670,7 +664,6 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
             recipes, out,
             one_file=True, ext='pdf',
             exporter=PdfExporter,
-            conv=conv,
             exporter_kwargs=kwargs,
             )
 

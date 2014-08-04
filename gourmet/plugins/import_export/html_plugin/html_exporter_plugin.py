@@ -15,16 +15,14 @@ class HtmlExporterPlugin (ExporterPlugin):
     def get_multiple_exporter (self, args):
         return html_exporter.website_exporter(
             args['rv'],
-            args['file'],
-            #args['conv'],
+            args['file']
             )
 
     def do_single_export (self, args)    :
         he = html_exporter.html_exporter(
             args['rec'],
             args['out'],
-            change_units=args['change_units'],
-            #conv=args['conv']
+            change_units=args['change_units']
             )
         he.run()
 

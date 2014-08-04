@@ -1,4 +1,4 @@
-import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap, types
+import re, os.path, os, xml.sax.saxutils, time, textwrap
 from gourmet import convert
 from gourmet.models.recipe import REC_ATTR_DIC, DEFAULT_ATTR_ORDER, \
                                   DEFAULT_OUTPUT_ATTR_ORDER, \
@@ -28,7 +28,6 @@ class exporter (SuspendableThread, Pluggable):
     ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS = True
     
     def __init__ (self, r, out,
-                  conv=None,
                   change_units=True,
                   imgcount=1,
                   order=['image','attr','ings','text'],
@@ -42,7 +41,6 @@ class exporter (SuspendableThread, Pluggable):
                   ):
         """Instantiate our exporter.
 
-        conv is a preexisting convert.converter() class
         change_units is a flag; if true, change units to keep them readable.
         imgcount is a number we use to start counting our exported images.
         order is a list of our core elements in order: 'image','attr','text' and 'ings'
@@ -67,8 +65,6 @@ class exporter (SuspendableThread, Pluggable):
         self.fractions=fractions
         self.use_ml=use_ml
         self.convert_attnames = convert_attnames
-        if not conv: conv=convert.get_converter()
-        self.conv=conv
         self.imgcount=imgcount
         self.images = []
         self.order = order
@@ -294,7 +290,6 @@ class ExporterMultirec (SuspendableThread, Pluggable):
 
     def __init__ (self, recipes, out, one_file=True,
                   ext='txt',
-                  conv=None,
                   imgcount=1,
                   exporter=exporter,
                   exporter_kwargs={},

@@ -67,10 +67,8 @@ class ExportManager (plugin_loader.Pluggable):
                      export_file_mode)
         # this should write to our file...
         exporter_plugin.do_single_export({
-            'rd':self.app.rd,
             'rec':rec,
             'out':outfi,
-            'conv':self.app.conv,
             'change_units':self.app.prefs.get('readableUnits',True),
             'extra_prefs':extra_prefs,
             })
@@ -134,13 +132,10 @@ class ExportManager (plugin_loader.Pluggable):
             myexp = self.get_exporter(exp_type)
             extra_prefs = self.get_extra_prefs(myexp,extra_prefs)
             pd_args={'label':myexp.label,'sublabel':myexp.sublabel%{'file':fn}}
-            exporterInstance = myexp.get_multiple_exporter({'rd':self.app.rd,
-                                                         'rv': recs,
-                                                            #'conv':self.app.conv,
-                                                            #'prog':,
-                                                         'file':fn,
-                                                         'extra_prefs':extra_prefs,
-                                                         })        
+            exporterInstance = myexp.get_multiple_exporter({'rv': recs,
+                                                            'file':fn,
+                                                            'extra_prefs':extra_prefs,
+                                                            })
             return myexp, exporterInstance
         else:
             print 'WARNING: CANNOT EXPORT TYPE',exp_type        

@@ -4,7 +4,6 @@ from gourmet.exporters.xml_exporter import XmlExporter
 import os
 import tempfile
 import zipfile
-from gourmet import convert
 import gourmet.ImageExtras
 import shutil
 import unicodedata

@@ -1,4 +1,4 @@
-import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
+import re, os.path, os, xml.sax.saxutils
 from gourmet import convert,gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter
 from gourmet.util.yields import Yield
@@ -13,7 +13,7 @@ HTML_HEADER_CLOSE = """<meta http-equiv="Content-Style-Stype" content="text/css"
 
 
 class html_exporter (exporter):
-    def __init__ (self, r, out, conv=None,
+    def __init__ (self, r, out,
                   css=os.path.join(gglobals.style_dir,"default.css"),
                   embed_css=True, start_html=True, end_html=True, imagedir="pics/", imgcount=1,
                   link_generator=None,
@@ -39,7 +39,6 @@ class html_exporter (exporter):
         self.imagedir_absolute = os.path.join(os.path.split(out.name)[0],imagedir)
         self.imagedir = imagedir
         exporter.__init__(self, r, out,
-                          conv=conv,
                           imgcount=imgcount,
                           change_units=change_units,
                           do_markup=True,
@@ -196,7 +195,7 @@ class html_exporter (exporter):
         return linkify(filename)
 
 class website_exporter (ExporterMultirec):
-    def __init__ (self, recipe_table, out, conv=None, ext='html', copy_css=True,
+    def __init__ (self, recipe_table, out, ext='html', copy_css=True,
                   css=os.path.join(gglobals.style_dir,'default.css'),
                   imagedir='pics' + os.path.sep,
                   index_rows=['title','category','cuisine','rating','yields'],
@@ -224,8 +223,7 @@ class website_exporter (ExporterMultirec):
                          'imagedir':self.imagedir,
                          'link_generator': self.generate_link,
                          'change_units':change_units}
-        if conv:
-            self.exportargs['conv']=conv
+
         ExporterMultirec.__init__(self, recipe_table, out,
                                   one_file=False,
                                   ext=self.ext,

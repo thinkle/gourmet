@@ -1,5 +1,5 @@
 import gourmet.exporters.exporter as exporter
-import sys, xml.sax.saxutils, base64
+import xml.sax.saxutils, base64
 from gourmet.exporters.xml_exporter import XmlExporter
 
 from gourmet.util.yields import Yield

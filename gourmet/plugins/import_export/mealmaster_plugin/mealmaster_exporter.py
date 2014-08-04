@@ -1,13 +1,13 @@
-import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
-from gourmet import gglobals,  convert
+import textwrap
+from gourmet import gglobals, convert
 from gourmet.exporters.exporter import exporter
 from gourmet.gdebug import debug
 
 class mealmaster_exporter (exporter):
-    def __init__ (self, r, out, conv=None, change_units=True):
+    def __init__ (self, r, out, change_units=True):
         import mealmaster_importer
         self.add_to_instructions=""
-        self.conv = conv
+        self.conv = convert.get_converter()
         mmf2mk = mealmaster_importer.mmf_constants()
         self.uc=mmf2mk.unit_convr
         recattrs_orig=mmf2mk.recattrs
@@ -16,7 +16,6 @@ class mealmaster_exporter (exporter):
             self.recattrs[v]=k
         self.categories = ""
         exporter.__init__(self, r, out,
-                          conv=conv,
                           order=['attr','ings','text'],
                           attr_order=['title',
                                       'cuisine',

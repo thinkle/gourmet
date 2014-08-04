@@ -24,8 +24,7 @@ class MealmasterExporterPlugin (ExporterPlugin):
     def do_single_export (self, args)    :
         e = mealmaster_exporter.mealmaster_exporter(args['rec'],
                                                     args['out'],
-                                                    change_units=args['change_units'],
-                                                    conv=args['conv'])
+                                                    change_units=args['change_units'])
         e.run()
 
     def run_extra_prefs_dialog (self):
