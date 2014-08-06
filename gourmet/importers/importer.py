@@ -393,28 +393,6 @@ simple_matcher = re.compile(
     '(%(NUMBER_REGEXP)s+)\s*/\s*([\d]+)'%locals()
     )
 
-def parse_range (number_string):
-    """Parse a range and return a tuple with a low and high number as floats.
-
-    We will also parse regular numbers, in which case the tuple will
-    only have one item.
-    """
-    if type(number_string) in [int,float]:
-        return (float(number_string),None)
-    nums=convert.RANGE_MATCHER.split(number_string.strip())
-    if len(nums) > 2:
-        debug('WARNING: String %s does not appear to be a normal range.'%number_string,0)
-        retval = map(convert.frac_to_float,nums)
-        # filter any non-numbers before we take 1 and 3
-        retval = filter(lambda x: x, retval)        
-        if len(retval) > 2:
-            debug('Parsing range as %s-%s'%(retval[0],retval[-1]),0)
-            retval = retval[0],retval[-1]
-    else:
-        retval = map(convert.frac_to_float,nums)
-    if len(retval)==2: return tuple(retval)
-    elif len(retval)==1: return tuple(retval+[None])
-    else: return (None,None)
         
 class Tester:
     def __init__ (self, regexp):

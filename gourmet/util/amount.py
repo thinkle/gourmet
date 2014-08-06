@@ -1,10 +1,13 @@
-from gourmet.convert import float_to_frac, \
+from gourmet.convert import RANGE_MATCHER, frac_to_float, float_to_frac, \
     FRACTIONS_ALL, FRACTIONS_NORMAL, FRACTIONS_ASCII, FRACTIONS_OFF
+from gourmet.gdebug import debug
 
 from ast import literal_eval
 from copy import copy
 
-class Amount(object):
+from sqlalchemy.ext.mutable import MutableComposite
+
+class Amount(MutableComposite):
     def __init__(self, amount=None, rangeamount=None):
         self.amount = amount
         self.rangeamount = rangeamount
@@ -58,3 +61,25 @@ class Amount(object):
 
     def __rmul__(self, other):
         return self.__mul__(other)
+
+    @classmethod
+    def coerce(cls, key, value):
+        if type(value) in [int,float]:
+            return Amount(float(value))
+        if isinstance(value, tuple):
+            return Amount(*value)
+
+        nums = RANGE_MATCHER.split(value.strip())
+        if len(nums) > 2:
+            debug('WARNING: String %s does not appear to be a normal range.'%value,0)
+            retval = map(frac_to_float,nums)
+            # filter any non-numbers before we take 1 and 3
+            retval = filter(lambda x: x, retval)
+            if len(retval) > 2:
+                debug('Parsing range as %s-%s'%(retval[0],retval[-1]),0)
+                retval = Amount(retval[0],retval[-1])
+        else:
+            retval = map(frac_to_float,nums)
+        if len(retval)==2: return Amount(*retval)
+        elif len(retval)==1: return Amount(*(retval+[None]))
+        else: raise ValueError("parsable range expected")
