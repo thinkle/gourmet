@@ -6,8 +6,7 @@ from copy import copy
 
 from meta import Base
 #from gourmet.plugin_loader import pluggable_method
-from gourmet import convert
-from gourmet.convert import FRACTIONS_NORMAL
+from gourmet.convert import FRACTIONS_NORMAL, get_converter
 from gourmet.defaults import lang as defaults
 
 from gourmet.util.amount import Amount
@@ -77,7 +76,7 @@ class Ingredient (Base):
             # from the Amount class, or maybe just has a member of that class),
             # and the unit.
             if specdict['adjust_units'] or specdict['preferred_unit_groups']:
-                conv = convert.get_converter()
+                conv = get_converter()
                 amount,unit = conv.adjust_unit(self.amt.amount,self.unit,
                                           favor_current_unit=specdict['favor_current_unit'],
                                           preferred_unit_groups=specdict['preferred_unit_groups'])
