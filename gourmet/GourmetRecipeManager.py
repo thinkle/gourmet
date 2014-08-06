@@ -985,7 +985,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             self.rc[rec.id].show()
         else:
             def show ():
-                w=RecCard(self, rec, session=self.session)
+                w=RecCard(self, rec)
                 self.rc[rec.id]=w
                 self.update_go_menu()
                 self.app.window.set_cursor(None)

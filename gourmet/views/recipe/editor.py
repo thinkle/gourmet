@@ -12,6 +12,7 @@ from gourmet.gtk_extras import TextBufferMarkup, timeEntry
 from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
 from gourmet import ImageExtras as ie
 from gourmet.models import Ingredient
+from gourmet.models.meta import Session
 from gourmet.views.ingredient.tree_ui import IngredientTreeUI, UndoableTreeStuff, add_with_undo
 from gourmet.controllers.ingredient import IngredientController
 from gourmet import convert, Undo
@@ -247,6 +248,7 @@ class RecEditor (WidgetPrefs, Pluggable):
             InstructionsEditorModule,
             NotesEditorModule,
             ]
+        self.session = Session()
         self.reccard= reccard; self.rg = rg; self.recipe_display = recipe_display
         if self.recipe_display and not recipe:
             recipe = self.recipe_display.current_rec
@@ -458,7 +460,7 @@ class RecEditor (WidgetPrefs, Pluggable):
         for m in self.modules:
             self.current_rec = m.save(self.current_rec)
 
-        self.reccard.session.commit()
+        self.session.commit()
         if self.current_rec.title:
             self.window.set_title("%s %s"%(self.edit_title,self.current_rec.title.strip()))
         self.set_edited(False)

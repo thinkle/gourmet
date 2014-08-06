@@ -8,12 +8,11 @@ from editor import RecEditor
 
 class RecCard (object):
     
-    def __init__ (self, rg=None, recipe=None, manual_show=False, session=Session()):
+    def __init__ (self, rg=None, recipe=None, manual_show=False):
         if not rg:
             from GourmetRecipeManager import get_application
             rg = get_application()
         self.rg = rg
-        self.session = session
         self.conf = []
         self.new = False
         if not recipe:
