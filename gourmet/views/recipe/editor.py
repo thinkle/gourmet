@@ -11,7 +11,7 @@ from gourmet.gtk_extras import fix_action_group_importance
 from gourmet.gtk_extras import TextBufferMarkup, timeEntry
 from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
 from gourmet import ImageExtras as ie
-from gourmet.models import Ingredient
+from gourmet.models import Recipe, Ingredient
 from gourmet.models.meta import Session
 from gourmet.views.ingredient.tree_ui import IngredientTreeUI, UndoableTreeStuff, add_with_undo
 from gourmet.controllers.ingredient import IngredientController
@@ -240,7 +240,7 @@ class RecEditor (WidgetPrefs, Pluggable):
     </ui>
     '''    
 
-    def __init__ (self, reccard, rg, recipe=None, recipe_display=None, new=False):
+    def __init__ (self, reccard, rg, recipe=Recipe(title=_('New Recipe')), new=False):
         self.edited = False
         self.editor_module_classes = [
             DescriptionEditorModule,
@@ -248,11 +248,12 @@ class RecEditor (WidgetPrefs, Pluggable):
             InstructionsEditorModule,
             NotesEditorModule,
             ]
-        self.session = Session()
-        self.reccard= reccard; self.rg = rg; self.recipe_display = recipe_display
-        if self.recipe_display and not recipe:
-            recipe = self.recipe_display.current_rec
+        self.reccard = reccard
+        self.rg = rg
         self.current_rec = recipe
+        self.new = new
+
+        self.session = Session()
         self.setup_defaults()
         self.conf = reccard.conf
         self.setup_ui_manager()
@@ -264,12 +265,6 @@ class RecEditor (WidgetPrefs, Pluggable):
         #self.setEdited(False)
         # parameters for tracking what has changed
         self.widgets_changed_since_save = {}
-        self.new = True
-        if recipe and not new:
-            #self.updateRecipe(recipe,show=False)
-            self.new = False
-        elif not recipe:
-            recipe = Recipe(title=_('New Recipe'))
         self.set_edited(False)
         Pluggable.__init__(self,[ToolPlugin,RecEditorPlugin])
         self.mm = MnemonicManager()
