@@ -110,7 +110,7 @@ class RecSelector (RecIndex):
                                         refid=rec.id
                                         )
                 debug('adding ing: %s'%ingredient,5)
-                iter=self.ingEditor.ingtree_ui.ingController.add_ingredient_from_kwargs(
+                iter=self.ingEditor.ingtree_ui.ingController.add_new_ingredient(
                     group_iter=pre_iter,
                     ingredient=ingredient
                     )
@@ -605,7 +605,7 @@ class IngredientEditorModule (RecEditorModule):
         ingredient=parse_ingredient(line, known_units)
         if ingredient == Ingredient():
             ingredient.item = line
-        itr = self.ingtree_ui.ingController.add_ingredient_from_kwargs(prev_iter=prev_iter,
+        itr = self.ingtree_ui.ingController.add_new_ingredient(prev_iter=prev_iter,
                                                                        group_iter=group_iter,
                                                                        ingredient=ingredient)
         # If there is just one row selected...

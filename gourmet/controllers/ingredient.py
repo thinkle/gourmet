@@ -76,12 +76,10 @@ class IngredientController (Pluggable):
         return iter
     
     # Add recipe info...
-    def add_ingredient_from_kwargs (self, group_iter=None, prev_iter=None,
-                                    fallback_on_append=True, undoable=False,
-                                    placeholder=None, # An ingredient
-                                                      # object count
-                                                      # (number)
-                                    ingredient=Ingredient()):
+    def add_new_ingredient (self, group_iter=None, prev_iter=None,
+                            fallback_on_append=True, undoable=False,
+                            placeholder=None, # An ingredient object count (number)
+                            ingredient=Ingredient()):
         iter = self._new_iter_(group_iter=group_iter,prev_iter=prev_iter,
                                fallback_on_append=fallback_on_append)
         if ingredient.recipe_ref:
@@ -94,13 +92,6 @@ class IngredientController (Pluggable):
             self.imodel.set_value(iter,0,ingredient)
         self.update_ingredient_row(iter, ingredient)
         return iter
-
-    def add_new_ingredient (self,                            
-                            *args,
-                            **kwargs
-                            ):
-        ret = self.add_ingredient_from_kwargs(*args,**kwargs)
-        return ret
 
     def undoable_update_ingredient_row (self, ref, d):
         itr = self.ingredient_editor_module.ingtree_ui.ingController.get_iter_from_persistent_ref(ref)
@@ -270,7 +261,7 @@ class IngredientController (Pluggable):
             if ing_obj and type(ing_obj) in types.StringTypes:
                 itr = self.add_group(rowdic['amount'],prev_iter,fallback_on_append=False)
             elif type(ing_obj) == int or not ing_obj:        
-                itr = self.add_ingredient_from_kwargs(prev_iter=prev_iter,
+                itr = self.add_new_ingredient(prev_iter=prev_iter,
                                                       fallback_on_append=False,
                                                       placeholder=ing_obj,
                                                       **rowdic)
@@ -302,7 +293,7 @@ class IngredientController (Pluggable):
                                                   is_undo = True)
                         self.update_ingredient_row(itr,**rd)
                     else:
-                        itr = self.add_ingredient_from_kwargs(group_iter=gi,
+                        itr = self.add_new_ingredient(group_iter=gi,
                                                               prev_iter=pi,
                                                               fallback_on_append=False,
                                                               **rd)
