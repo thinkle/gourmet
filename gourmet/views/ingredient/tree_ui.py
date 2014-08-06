@@ -463,7 +463,7 @@ class IngredientTreeUI:
         strings=[]
         iters=[]
         tv.get_selection().selected_foreach(grab_selection,(strings,iters))
-        str=string.join(strings,"\n")
+        str='\n'.join(strings)
         selection.set('text/plain',0,str)
         selection.set('STRING',0,str)
         selection.set('GOURMET_INTERNAL',8,'blarg')
