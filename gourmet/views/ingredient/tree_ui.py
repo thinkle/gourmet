@@ -341,7 +341,7 @@ class IngredientTreeUI:
                 #if msg:
                 #    self.re.message(msg)
             elif attr=='item':
-                d.ingkey = unicode(self.rg.rd.km.get_key(text))
+                d.ingkey = unicode(self.rg.rd.km.get_key(unicode(text)))
             ref = self.ingController.get_persistent_ref_from_iter(iter)
             self.ingController.undoable_update_ingredient_row(ref,d)
 
@@ -445,27 +445,19 @@ class IngredientTreeUI:
         debug("done restoring selections.")        
 
     def dragIngsGetCB (self, tv, context, selection, info, timestamp):
-        def grab_selection (model, path, iter, args):
-            strings, iters = args            
-            str = ""
-            amt = model.get_value(iter,1)
-            if amt:
-                str="%s "%amt
-            unit = model.get_value(iter,2)
-            if unit:
-                str="%s%s "%(str,unit)
-            item = model.get_value(iter,3)
-            if item:
-                str="%s%s"%(str,item)
-            debug("Dragged string: %s, iter: %s"%(str,iter),3)
-            iters.append(iter)
-            strings.append(str)
-        strings=[]
+        ings=[]
         iters=[]
-        tv.get_selection().selected_foreach(grab_selection,(strings,iters))
-        str='\n'.join(strings)
-        selection.set('text/plain',0,str)
-        selection.set('STRING',0,str)
+        model, pathlist = tv.get_selection().get_selected_rows()
+        for path in pathlist:
+            it = model.get_iter(path)
+            ing_str = unicode(model.get_value(it,0))
+            debug("Dragged string: %s, iter: %s"%(ing_str,it),3)
+            iters.append(it)
+            ings.append(ing_str)
+
+        ing_str='\n'.join(ings)
+        selection.set('text/plain',0,ing_str)
+        selection.set('STRING',0,ing_str)
         selection.set('GOURMET_INTERNAL',8,'blarg')
         self.selected_iter=iters
 
