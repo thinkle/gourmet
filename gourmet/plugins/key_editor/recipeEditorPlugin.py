@@ -167,9 +167,10 @@ class IngredientKeyEditor (RecEditorModule):
 
     def treeselection_changed_cb (self, ts):
         keys = []
-        def do_foreach (tm, p, i):
-            keys.append(tm[p][2])
-        ts.selected_foreach(do_foreach)
+        model, pathlist = ts.get_selected_rows()
+        for path in pathlist:
+            keys.append(model[path][2])
+
         plugin_manager = keyEditorPluggable.get_key_editor_plugin_manager()
         for p in plugin_manager.plugins:
             p.selection_changed(keys)

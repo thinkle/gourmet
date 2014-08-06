@@ -171,10 +171,9 @@ class selectionSaver:
     def save_selections (self):
         self.selected = []
         self.expanded = {}        
-        self.selection.selected_foreach(self._add_to_selected)
-
-    def _add_to_selected (self, model, path, iter):
-        self.add_selection(iter)
+        model, pathlist = self.selection.get_selected_rows()
+        for path in pathlist:
+            self.add_selection(model.get_iter(path))
         
     def add_selection (self, itr):
         """Add iter to list of selected items"""

@@ -776,15 +776,17 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
     # Convenience methods for handling our data
     def getSelectedRecs (self):
         """Return each recipe in list"""
-        def foreach(model,path,iter,recs):
-            debug("foreach(model,path,iter,recs):",5)
+        recs=[]
+        model, pathlist = self.rectree.get_selection().get_selected_rows()
+        for path in pathlist:
+            debug("for path in pathlist:",5)
+            it = model.get_iter(path)
             try:
-                rec=model.get_value(iter,0)
+                rec=model.get_value(it,0)
                 recs.append(rec)
             except:
-                debug("DEBUG: There was a problem with iter: %s path: %s"%(iter,path),1)
-        recs=[]
-        self.rectree.get_selection().selected_foreach(foreach,recs)
+                debug("DEBUG: There was a problem with iter: %s path: %s"%(it,path),1)
+
         debug("%s selected recs: %s"%(len(recs),recs),3)
         return recs
 
