@@ -12,6 +12,7 @@ from gourmet.gtk_extras import TextBufferMarkup, timeEntry
 from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
 from gourmet import ImageExtras as ie
 from gourmet.models import Recipe, Ingredient
+from gourmet.models.ingredient import parse_ingredient
 from gourmet.models.meta import Session
 from gourmet.views.ingredient.tree_ui import IngredientTreeUI, UndoableTreeStuff, add_with_undo
 from gourmet.controllers.ingredient import IngredientController
@@ -599,12 +600,14 @@ class IngredientEditorModule (RecEditorModule):
 
     def add_ingredient_from_line (self, line, group_iter=None, prev_iter=None):
         """Add an ingredient to our list from a line of plain text"""
-        d=self.rg.rd.parse_ingredient(line, conv=self.rg.conv)
-        if d == Ingredient():
-            d.item = line
-            d.amount = None
-            d.unit = None
-        itr = self.ingtree_ui.ingController.add_ingredient_from_kwargs(prev_iter=prev_iter,group_iter=group_iter,ingredient=d)
+        session = Session()
+        known_units = [u[0] for u in session.query(Ingredient.unit).group_by(Ingredient.unit).all()]
+        ingredient=parse_ingredient(line, known_units)
+        if ingredient == Ingredient():
+            ingredient.item = line
+        itr = self.ingtree_ui.ingController.add_ingredient_from_kwargs(prev_iter=prev_iter,
+                                                                       group_iter=group_iter,
+                                                                       ingredient=ingredient)
         # If there is just one row selected...
         sel = self.ingtree_ui.ingTree.get_selection()
         if sel.count_selected_rows()==1:
