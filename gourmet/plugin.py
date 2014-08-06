@@ -479,11 +479,7 @@ class RecEditorModule (UIModule, gobject.GObject, object):
             elif hasattr(widget,'entry'): val = widget.entry.get_text()
             elif hasattr(widget,'get_buffer'): val = widget.get_buffer().get_text()
             else: raise TypeError("I don't know how to get the value from action %s widget %s"%(action,widget))
-            # HAVE TO HANDLE CATEGORIES
-            if prop=='category':
-                orig_value = ', '.join(self.rg.rd.get_cats(self.current_rec))
-            else:
-                orig_value = getattr(self.current_rec,prop)
+            orig_value = getattr(self.current_rec,prop)
             if type(orig_value) in types.StringTypes:
                 val = val.strip(); orig_value=orig_value.strip()
             else:

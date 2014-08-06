@@ -750,7 +750,7 @@ class RecData (Pluggable):
         if dic.has_key('category'):
             newcats = dic['category'].split(', ')
             newcats = filter(lambda x: x, newcats) # Make sure our categories are not blank
-            curcats = self.get_cats(rec)
+            curcats = rec.categories
             for c in curcats:
                 if c not in newcats:
                     self.delete_by_criteria(self.categories_table,{'recipe_id':rec.id,'category':c})
@@ -1059,17 +1059,6 @@ class RecData (Pluggable):
         return session.query(Ingredient).filter_by(recipe_id=id,
                                                    deleted=False).all()
 
-
-    def get_cats (self, rec):
-        #svw = rec.categories
-        session = Session()
-        svw = session.query(Category).filter_by(recipe_id=rec.id).all()
-        cats =  [c.category or '' for c in svw]
-        # hackery...
-        while '' in cats:
-            cats.remove('')
-        return cats
-
     def get_referenced_rec (self, ing):
         """Get recipe referenced by ingredient object."""
         if hasattr(ing,'refid') and ing.refid:
@@ -1211,10 +1200,7 @@ class RecData (Pluggable):
     def get_dict_for_obj (self, obj, keys):
         orig_dic = {}
         for k in keys:
-            if k=='category':
-                v = ", ".join(self.get_cats(obj))
-            else:
-                v=getattr(obj,k)
+            v=getattr(obj,k)
             orig_dic[k]=v
         return orig_dic
 

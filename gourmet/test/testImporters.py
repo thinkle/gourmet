@@ -136,7 +136,7 @@ class ImportTest:
                                                            test[non_blobby_attribute])
                                          )
         if test.get('categories',None):
-            cats = self.db.get_cats(rec)
+            cats = rec.categories
             for c in test.get('categories'):
                 try:
                     assert(c in cats)

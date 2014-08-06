@@ -650,9 +650,7 @@ class StuffThatShouldBePlugins:
                     changes = self.batchEditor.values.copy()
                     if only_where_blank:
                         for attribute in changes.keys():
-                            if (attribute == 'category' and \
-                                self.rd.get_cats(r)) or \
-                                (hasattr(r, attribute) and \
+                            if (hasattr(r, attribute) and \
                                 getattr(r, attribute)):
                                 del changes[attribute]
                         if changes:

@@ -52,7 +52,7 @@ def list_recs (view, default_search_values={},
         sf.fields[k].initial = v
     return render_to_response(
         template,
-        {'recs':[(rec,rd.get_cats(rec)) for rec in view],
+        {'recs':[(rec,rec.categories) for rec in view],
          'form':sf
         }
         )
@@ -135,7 +135,7 @@ def rec (request, rec_id, mult=1):
         {'rd':rd,
          'r':rec,
          'ings':formatted_ings,
-         'cats':', '.join(rd.get_cats(rec)),
+         'cats':rec.category,
          'instructions':textify(rec.instructions),
          'notes':textify(rec.modifications),
          'yields':(rec.yields and rec.yields * mult or None),

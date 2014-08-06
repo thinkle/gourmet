@@ -29,7 +29,7 @@ class TestConvenientImporter (unittest.TestCase):
         self.ci.commit_rec()
         rec = self.ci.added_recs[-1]
         self.assertEqual(rec.title,'Test')
-        cats = self.ci.rd.get_cats(rec)
+        cats = rec.categories
         cats.sort()
         self.assertEqual(len(cats),2)
         self.assertEqual(cats[0],'bar')

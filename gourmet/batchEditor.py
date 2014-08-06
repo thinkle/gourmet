@@ -49,8 +49,6 @@ class BatchEditor:
         for attribute,box in self.attribute_widgets.items():
             if hasattr(recipe,attribute):
                 val = getattr(recipe,attribute)
-            elif attribute == 'category':
-                val = ', '.join(self.rg.rd.get_cats(recipe))
             if val:
                 if hasattr(box,'set_value'):
                     box.set_value(val)

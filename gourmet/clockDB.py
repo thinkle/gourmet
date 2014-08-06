@@ -126,11 +126,10 @@ class StressTester:
     def test_fetch_recipe (self,min=0,max=10):
         for r in range(100):
             recipe = self.db.fetch_all(self.db.recipe_table)[random.randint(min,max)]
-            for prop in ['title','cuisine','source',
+            for prop in ['title','cuisine','category','source',
                          'preptime','cooktime','instructions',
                          'modifications']:
                 getattr(recipe,prop)
-            self.db.get_cats(recipe)
             for i in recipe.ingredients:
                 getattr(i,'amount')
                 getattr(i,'rangeamount')

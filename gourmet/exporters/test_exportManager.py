@@ -80,8 +80,8 @@ class SampleRecipeSetterUpper:
             self.db.add_ings(recdic['ingredients'])
         print 'done add_rec\n-------'
         rec = self.db.get_rec(recdic['recipe_id']); print rec
-        print self.db.get_cats(rec)
-        print self.db.get_ings(rec)
+        print rec.categories
+        print rec.ingredients
         print '^^^^^^^^^^^^^^^^^^^^'
     
 def setup_sample_recs ():
