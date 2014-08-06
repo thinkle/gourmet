@@ -12,7 +12,6 @@ from gourmet import convert
 from gourmet import timeScanner
 from gourmet.exporters.exportManager import get_export_manager
 
-from editor import RecEditor
 from gourmet.views.ingredient.display import IngredientDisplay
 from gourmet.models.meta import Session
 
