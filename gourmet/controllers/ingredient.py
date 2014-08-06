@@ -2,8 +2,8 @@ from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import IngredientControllerPlugin
 from gourmet.gdebug import debug
 from gourmet.models.ingredient import RecRef, Ingredient
+from gourmet.models.meta import Session
 from gourmet.gtk_extras.treeview_extras import path_next, move_iter
-from gourmet.importers.importer import parse_range
 from gourmet import Undo
 import gtk
 import gobject
@@ -24,10 +24,11 @@ class IngredientController (Pluggable):
     ITEM_COL = 3
     OPTIONAL_COL = 4
 
-    def __init__ (self, ingredient_editor_module):
+    def __init__ (self, ingredient_editor_module, session=Session()):
         self.ingredient_editor_module = ingredient_editor_module;
         self.rg = self.ingredient_editor_module.rg
         self.re = self.ingredient_editor_module.re
+        self.session = self.ingredient_editor_module.re.session
         self.new_item_count = 0
         self.commited_items_converter = {}
         Pluggable.__init__(self,
@@ -35,7 +36,7 @@ class IngredientController (Pluggable):
 
     # Setup methods
     def create_imodel (self, rec):
-        self.ingredient_objects = []        
+        self.ingredient_objects = []
         self.current_rec=rec
         ## now we continue with our regular business...
         debug("%s ings"%len(rec.ingredients),3)
@@ -93,9 +94,7 @@ class IngredientController (Pluggable):
         else:
             self.imodel.set_value(iter,0,self.new_item_count)
             self.new_item_count+=1
-        self.update_ingredient_row(
-            iter,ingredient.amt, ingredient.unit, ingredient.item, ingredient.optional
-            )
+        self.update_ingredient_row(iter, ingredient)
         return iter
 
     def add_new_ingredient (self,                            
@@ -107,28 +106,19 @@ class IngredientController (Pluggable):
 
     def undoable_update_ingredient_row (self, ref, d):
         itr = self.ingredient_editor_module.ingtree_ui.ingController.get_iter_from_persistent_ref(ref)
-        orig = self.ingredient_editor_module.ingtree_ui.ingController.get_rowdict(itr)
+        orig = self.ingredient_editor_module.ingtree_ui.ingController.get_ingredient(itr)
         Undo.UndoableObject(
-            lambda *args: self.update_ingredient_row(itr,**d),
-            lambda *args: self.update_ingredient_row(itr,**orig),
+            lambda *args: self.update_ingredient_row(itr,d),
+            lambda *args: self.update_ingredient_row(itr,orig),
             self.ingredient_editor_module.history,
             widget=self.imodel,
             ).perform()
 
-    def update_ingredient_row (self,iter,
-                               amount=None,
-                               unit=None,
-                               item=None,
-                               optional=None,
-                               ingkey=None,
-                               shop_cat=None,
-                               refid=None,
-                               undoable=False
-                               ):
-        if amount is not None: self.imodel.set_value(iter,1,amount)
-        if unit is not None: self.imodel.set_value(iter,2,unit)
-        if item is not None: self.imodel.set_value(iter,3,item)
-        if optional is not None: self.imodel.set_value(iter,4,optional)
+    def update_ingredient_row (self, iter, ingredient=None, undoable=False):
+        if ingredient.amt is not None: self.imodel.set_value(iter,1,ingredient.amt)
+        if ingredient.unit is not None: self.imodel.set_value(iter,2,ingredient.unit)
+        if ingredient.item is not None: self.imodel.set_value(iter,3,ingredient.item)
+        if ingredient.optional is not None: self.imodel.set_value(iter,4,ingredient.optional)
         #if ingkey is not None: self.imodel.set_value(iter,5,ingkey)
         #if shop_cat:
         #    self.imodel.set_value(iter,6,shop_cat)
@@ -160,8 +150,8 @@ class IngredientController (Pluggable):
         unit = i.unit
         self.imodel.set_value(iter, 0, i)
         self.imodel.set_value(iter, 1, unicode(amt))
-        self.imodel.set_value(iter, 2, unit)
-        self.imodel.set_value(iter, 3, i.item)
+        self.imodel.set_value(iter, 2, unicode(unit))
+        self.imodel.set_value(iter, 3, unicode(i.item))
         if i.optional:
             opt=True
         else:
@@ -257,7 +247,7 @@ class IngredientController (Pluggable):
         return prev_path
 
     def _get_undo_info_for_iter_ (self, iter):
-        deleted_dic = self.get_rowdict(iter)
+        deleted_dic = self.get_ingredient(iter)
         path = self.imodel.get_path(iter)
         prev_path = self._get_prev_path_(path)
         if prev_path:
@@ -320,28 +310,27 @@ class IngredientController (Pluggable):
             if expanded:
                 self.ingredient_editor_module.ingtree_ui.ingTree.expand_row(self.imodel.get_path(itr),True)
 
-    # Get a dictionary describing our current row
-    def get_rowdict (self, iter):
-        d = {}
-        for k,n in [('amount',1),
+    def get_ingredient (self, iter):
+        '''Get an Ingredient object from our current row'''
+        ingredient = self.imodel.get_value(iter,0)
+        for k,n in [('amt',1),
                     ('unit',2),
                     ('item',3),
                     ('optional',4),
                     ]:
-            d[k] = self.imodel.get_value(iter,n)
-        ing_obj = self.imodel.get_value(iter,0)
-        self.get_extra_ingredient_attributes(
-            ing_obj,
-            d)
-        return d
+            val = self.imodel.get_value(iter,n)
+            if isinstance(val, str):
+                setattr(ingredient, k, unicode(val))
+            else:
+                setattr(ingredient, k, val)
+        self.get_extra_ingredient_attributes(ingredient)
+        return ingredient
 
     @pluggable_method
-    def get_extra_ingredient_attributes (self, ing_obj, ingdict):
-        if not hasattr(ing_obj,'ingkey') or not ing_obj.ingkey:
-            if ingdict['item']:
-                ingdict['ingkey'] = ingdict['item'].split(';')[0]
-        else:
-            ingdict['ingkey'] = ing_obj.ingkey
+    def get_extra_ingredient_attributes (self, ingredient):
+        if not ingredient.ingkey:
+            if ingredient.item:
+                ingredient.ingkey = ingredient.item.split(';')[0]
 
     # Get persistent references to items easily
 
@@ -413,30 +402,18 @@ class IngredientController (Pluggable):
                 return pos
             # Otherwise, this is an ingredient...
             else:
-                d = self.get_rowdict(iter)
-                # Get the amount as amount and rangeamount
-                if d['amount']:
-                    amt,rangeamount = parse_range(d['amount'])
-                    d['amount']=amt
-                    if rangeamount: d['rangeamount']=rangeamount
-                else:
-                    d['amount']=None
+                ingredient = self.get_ingredient(iter)
                 # Get category info as necessary
-                if d.has_key('shop_cat'):
-                    self.rg.sl.orgdic[d['ingkey']] = d['shop_cat']
-                    del d['shop_cat']
-                d['position']=pos
-                d['inggroup']=group
+                #if ingredient.shop_cat:
+                #    self.rg.sl.orgdic[ingredient.ingkey] = ingredient.shop_cat
+                #    del ingredient.shop_cat
+                ingredient.position=pos
+                ingredient.inggroup=group
                 # If we are a recref...
                 if isinstance(ing,RecRef):
-                    d['refid'] = ing.refid
+                    ingredient.refid = ing.refid
                 # If we are a real, old ingredient
                 if type(ing) != int and not isinstance(ing,RecRef):
-                    for att in ['amount','unit','item','ingkey','position','inggroup','optional']:
-                        # Remove all unchanged attrs from dict...
-                        if hasattr(d,att):
-                            if getattr(ing,att)==d[att]:
-                                del d[att]
                     if ing in deleted:
                         # We have not been deleted...
                         deleted.remove(ing)
@@ -447,16 +424,16 @@ class IngredientController (Pluggable):
                         # Deleted us, saved, and then clicked undo,
                         # resulting in the trace object. In this case,
                         # we need to set ing.deleted to False
-                        d['deleted'] = False
+                        ingredient.deleted = False
                     if ing.deleted: # If somehow our object is
                                     # deleted... (shouldn't be
                                     # possible, but why not check!)
-                        d['deleted']=False
-                    if d:
-                        self.ingredient_editor_module.rg.rd.modify_ing_and_update_keydic(ing,d)
+                        ingredient.deleted=False
+                    if ingredient:
+                        self.session.commit()
                 else:
-                    d['recipe_id'] = self.ingredient_editor_module.current_rec.id
-                    self.commited_items_converter[ing] = self.rg.rd.add_ing_and_update_keydic(d)
+                    self.ingredient_editor_module.current_rec.ingredients.append(ingredient)
+                    self.commited_items_converter[ing] = ingredient
                     self.imodel.set_value(iter,0,self.commited_items_converter[ing])
                     # Add ourself to the list of ingredient objects so
                     # we will notice subsequent deletions.

@@ -3,7 +3,7 @@ from gourmet.gdebug import debug
 from gourmet import convert, Undo
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import treeview_extras as te
-from gourmet.importers.importer import parse_range
+from gourmet.models import Ingredient
 import types
 import gtk
 import pango
@@ -249,7 +249,7 @@ class IngredientTreeUI:
                                                                                           i.refid)
                                 )
         else:
-            d = self.ingController.get_rowdict(itr)
+            d = self.ingController.get_ingredient(itr)
             #self.re.ie.show(i,d)
             #self.re.ie.ieExpander.set_expanded(True)
 
@@ -267,7 +267,7 @@ class IngredientTreeUI:
         #    itr = self.get_selected_ing()
         #    if itr:
         #        i = self.ingController.imodel.get_value(itr,0)
-        #        d = self.ingController.get_rowdict(itr)
+        #        d = self.ingController.get_ingredient(itr)
         #        if i: self.re.ie.show(i,d)
         #        else: self.re.ie.new()
         return True
@@ -321,28 +321,27 @@ class IngredientTreeUI:
         store = self.ingTree.get_model()
         iter = store.get_iter(path)
         ing=store.get_value(iter,0)
-        d = {}
+        d = Ingredient()
         if type(ing) in [str,unicode]:
             debug('Changing group to %s'%text,2)
             self.change_group(iter, text)
             return
         else:       
             attr=self.head_to_att[head]
-            d[attr]=text
-            if attr=='amount':
-                try:
-                    parse_range(text)
-                except:
-                    de.show_amount_error(text)
-                    raise
-            elif attr=='unit':
-                amt,msg=self.changeUnit(text,self.ingController.get_rowdict(iter))
+            try:
+                setattr(d, attr, text)
+            except ValueError:
+                de.show_amount_error(text)
+                raise
+
+            if attr=='unit':
+                amt,msg=self.changeUnit(text,self.ingController.get_ingredient(iter))
                 if amt:
-                    d['amount']=amt
+                    d.amount = amt
                 #if msg:
                 #    self.re.message(msg)
             elif attr=='item':
-                d['ingkey']=self.rg.rd.km.get_key(text)
+                d.ingkey = self.rg.rd.km.get_key(text)
             ref = self.ingController.get_persistent_ref_from_iter(iter)
             self.ingController.undoable_update_ingredient_row(ref,d)
 
@@ -553,13 +552,13 @@ class IngredientTreeUI:
         return prev_iter,group_iter
 
     # Edit Callbacks
-    def changeUnit (self, new_unit, ingdict):
+    def changeUnit (self, new_unit, ingredient):
         """Handed a new unit and an ingredient, we decide whether to convert and return:
         None (don't convert) or Amount (new amount)
         Message (message for our user) or None (no message for our user)"""
-        key=ingdict['ingkey']
-        old_unit=ingdict['unit']
-        old_amt=ingdict['amount']
+        key=ingredient.ingkey
+        old_unit=ingredient.unit
+        old_amt=ingredient.amount
         if type(old_amt)==str:
             old_amt = convert.frac_to_float(old_amt)
         density=None
@@ -574,7 +573,7 @@ class IngredientTreeUI:
             DONT_CONVERT = 2
             choice = de.getRadio(label=_('Changed unit.'),
                                  sublabel=_('You have changed the unit for %(item)s from %(old)s to %(new)s. Would you like the amount converted or not?')%{
-                'item':ingdict['item'],
+                'item':ingredient.item,
                 'old':old_unit,
                 'new':new_unit},
                                  options=[(opt1,CONVERT),
