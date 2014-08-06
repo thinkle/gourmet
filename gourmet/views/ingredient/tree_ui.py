@@ -341,7 +341,7 @@ class IngredientTreeUI:
                 #if msg:
                 #    self.re.message(msg)
             elif attr=='item':
-                d.ingkey = self.rg.rd.km.get_key(text)
+                d.ingkey = unicode(self.rg.rd.km.get_key(text))
             ref = self.ingController.get_persistent_ref_from_iter(iter)
             self.ingController.undoable_update_ingredient_row(ref,d)
 

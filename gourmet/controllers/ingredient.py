@@ -29,7 +29,6 @@ class IngredientController (Pluggable):
         self.rg = self.ingredient_editor_module.rg
         self.re = self.ingredient_editor_module.re
         self.session = self.ingredient_editor_module.re.session
-        self.new_item_count = 0
         self.commited_items_converter = {}
         Pluggable.__init__(self,
                                          [IngredientControllerPlugin])
@@ -92,8 +91,7 @@ class IngredientController (Pluggable):
         elif placeholder is not None:
             self.imodel.set_value(iter,0,placeholder)
         else:
-            self.imodel.set_value(iter,0,self.new_item_count)
-            self.new_item_count+=1
+            self.imodel.set_value(iter,0,ingredient)
         self.update_ingredient_row(iter, ingredient)
         return iter
 
@@ -148,9 +146,11 @@ class IngredientController (Pluggable):
         iter = self._new_iter_(prev_iter=prev_iter,group_iter=group_iter,fallback_on_append=fallback_on_append)
         amt = i.amt
         unit = i.unit
+        if unit:
+            unit = unicode(unit)
         self.imodel.set_value(iter, 0, i)
         self.imodel.set_value(iter, 1, unicode(amt))
-        self.imodel.set_value(iter, 2, unicode(unit))
+        self.imodel.set_value(iter, 2, unit)
         self.imodel.set_value(iter, 3, unicode(i.item))
         if i.optional:
             opt=True
@@ -321,7 +321,7 @@ class IngredientController (Pluggable):
             val = self.imodel.get_value(iter,n)
             if isinstance(val, str):
                 setattr(ingredient, k, unicode(val))
-            else:
+            elif val is not None:
                 setattr(ingredient, k, val)
         self.get_extra_ingredient_attributes(ingredient)
         return ingredient
@@ -330,7 +330,7 @@ class IngredientController (Pluggable):
     def get_extra_ingredient_attributes (self, ingredient):
         if not ingredient.ingkey:
             if ingredient.item:
-                ingredient.ingkey = ingredient.item.split(';')[0]
+                ingredient.ingkey = unicode(ingredient.item.split(';')[0])
 
     # Get persistent references to items easily
 
@@ -408,7 +408,8 @@ class IngredientController (Pluggable):
                 #    self.rg.sl.orgdic[ingredient.ingkey] = ingredient.shop_cat
                 #    del ingredient.shop_cat
                 ingredient.position=pos
-                ingredient.inggroup=group
+                if group:
+                    ingredient.inggroup=unicode(group)
                 # If we are a recref...
                 if isinstance(ing,RecRef):
                     ingredient.refid = ing.refid
@@ -429,10 +430,13 @@ class IngredientController (Pluggable):
                                     # deleted... (shouldn't be
                                     # possible, but why not check!)
                         ingredient.deleted=False
+                    if ingredient not in self.ingredient_editor_module.current_rec.ingredients:
+                        self.ingredient_editor_module.current_rec.ingredients.append(ingredient)
                     if ingredient:
                         self.session.commit()
                 else:
-                    self.ingredient_editor_module.current_rec.ingredients.append(ingredient)
+                    # FIXME: Is this stuff even required?
+                    # self.commited_items_converter[ing] = self.rg.rd.add_ing_and_update_keydic(d)
                     self.commited_items_converter[ing] = ingredient
                     self.imodel.set_value(iter,0,self.commited_items_converter[ing])
                     # Add ourself to the list of ingredient objects so

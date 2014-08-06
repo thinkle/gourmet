@@ -104,15 +104,15 @@ class RecSelector (RecIndex):
                     amount = getYieldSelection(rec,self.re.window)
                 else:
                     amount = 1
-                ingdic={'amount':amount,
-                        'unit':'recipe',
-                        'item':rec.title,
-                        'refid':rec.id,
-                        }
-                debug('adding ing: %s'%ingdic,5)
+                ingredient = Ingredient(amount=amount,
+                                        unit='recipe',
+                                        item=rec.title,
+                                        refid=rec.id
+                                        )
+                debug('adding ing: %s'%ingredient,5)
                 iter=self.ingEditor.ingtree_ui.ingController.add_ingredient_from_kwargs(
                     group_iter=pre_iter,
-                    **ingdic
+                    ingredient=ingredient
                     )
                 #path=self.reccard.imodel.get_path(iter)
                 #self.reccard.ss.add_selection(iter)
