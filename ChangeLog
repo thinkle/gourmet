@@ -1,3 +1,24 @@
+2014-08-17  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Bump version to 0.17.5.
+
+2014-08-03  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Get rid of obsolete progress_func argument.
+
+2014-07-27  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Fix twisted logic of of this line's previous change.
+        * When exporting, don't check for linked reciped if all recipes are exported.
+
+2014-06-14  Steffen Pankratz  <kratz00>
+
+        * Fixed crash in MCB importer
+
+2014-06-05  Bernhard Reiter  <ockham@raz.or.at>
+
+        * Mention Unix distributions in INSTALL.md.
+
 2014-06-02  Bernhard Reiter  <ockham@raz.or.at>
 
         * Merge translations.
