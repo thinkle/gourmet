@@ -33,19 +33,15 @@ class mealmaster_exporter (exporter):
         self.out.write("MMMMM----- Recipe via Meal-Master (tm)\n\n")
 
     def write_attr (self, label, text):
-        #We must be getting the label already capitalized from an the exporter class
-        #this line is just to correct that without making a mess of the exporter class
         if label=='category' or label=='cuisine':
-            if self.categories:
-                self.categories="%s, %s"%(self.categories,text)
-            else:
+            if not self.categories:
                 self.categories=text
-            return
-        if label=='yields' and self.categories:
-            # categories go before servings
-            self.write_categories()
-        #Mealmaster pukes at the preptime line so this removes it
-        elif label=='preparation time' or label=='rating' or label=='source':
+                return
+            else:
+                self.categories="%s, %s"%(self.categories,text)
+                self.write_categories()
+        # Move attributes that MealMaster doesn't understand to the instructions
+        elif label=='preptime' or label=='rating' or label=='source':
             self.add_to_instructions += "\n\n%s: %s"%(gglobals.REC_ATTR_DIC[label],text)
         else:
             if label and text:
@@ -54,7 +50,7 @@ class mealmaster_exporter (exporter):
                 else:
                     label=label.capitalize()
                 label='{:>8}'.format(label.strip())
-        self.out.write("%s: %s\n"%(label, text))
+                self.out.write("%s: %s\n"%(label, text))
 
     def write_categories (self):
         self.out.write('{0}: {1}\n'.format('Categories', self.categories))
@@ -94,6 +90,7 @@ class mealmaster_exporter (exporter):
     def write_groupfoot (self):
         self.ings = self.master_ings # back to master level
 
+<<<<<<< HEAD
     def write_ing (self, ingredient):
         amount = format(ingredient.amt, "{'fractions': %s}"%self.fractions)
         item = ingredient.item
@@ -101,6 +98,13 @@ class mealmaster_exporter (exporter):
             unit = u""
         else:
             unit = unicode(ingredient.unit)
+=======
+    def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):
+        if type(amount)==type(1.0) or type(amount)==type(1):
+            amount = convert.float_to_frac(amount)
+            if not amount: amount = ""
+        if not unit: unit = ""
+>>>>>>> a5fdea8... Fix MealMaster exporter.
         unit_bad = False
         if len(unit) > 2 or '.' in unit:
             unit_bad = True
