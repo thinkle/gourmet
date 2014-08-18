@@ -1,8 +1,7 @@
-import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
+import textwrap
 from gourmet import gglobals,  convert
 from gourmet.exporters.exporter import exporter_mult
 from gourmet.gdebug import debug
-from gettext import gettext as _
 
 class mealmaster_exporter (exporter_mult):
     def __init__ (self, rd, r, out, conv=None, change_units=True, mult=1):
@@ -36,28 +35,24 @@ class mealmaster_exporter (exporter_mult):
         self.out.write("MMMMM----- Recipe via Meal-Master (tm)\n\n")
 
     def write_attr (self, label, text):
-        #We must be getting the label already capitalized from an the exporter class
-	#this line is just to correct that without making a mess of the exporter class
-	if label=='category' or label=='cuisine':
-            if self.categories:
-                self.categories="%s, %s"%(self.categories,text)
-            else:
+        if label=='category' or label=='cuisine':
+            if not self.categories:
                 self.categories=text
-            return
-        if label=='yields' and self.categories:
-            # categories go before servings
-            self.write_categories()
-	#Mealmaster pukes at the preptime line so this removes it    
-	elif label=='preparation time' or label=='rating' or label=='source':
-	    self.add_to_instructions += "\n\n%s: %s"%(gglobals.REC_ATTR_DIC[label],text)
-	else:
+                return
+            else:
+                self.categories="%s, %s"%(self.categories,text)
+                self.write_categories()
+        # Move attributes that MealMaster doesn't understand to the instructions
+        elif label=='preptime' or label=='rating' or label=='source':
+            self.add_to_instructions += "\n\n%s: %s"%(gglobals.REC_ATTR_DIC[label],text)
+        else:
             if label and text:
                 if self.recattrs.has_key(label):
                     label=self.recattrs[label]
                 else:
                     label=label.capitalize()
                 label=self.pad(label,8)
-		self.out.write("%s: %s\n"%(label, text))
+                self.out.write("%s: %s\n"%(label, text))
 
     def write_categories (self):
         self.out.write("%s: %s\n"%(self.pad("Categories",8),self.categories))
@@ -104,8 +99,8 @@ class mealmaster_exporter (exporter_mult):
 
     def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):
         if type(amount)==type(1.0) or type(amount)==type(1):
-  	    amount = convert.float_to_frac(amount)
-  	if not amount: amount = ""
+            amount = convert.float_to_frac(amount)
+            if not amount: amount = ""
         if not unit: unit = ""
         unit_bad = False
         if len(unit) > 2 or '.' in unit:
@@ -163,5 +158,5 @@ class mealmaster_exporter (exporter_mult):
 
     def write_foot (self):
         self.out.write("\n\n")
-	self.out.write("MMMMM")
-	self.out.write("\n\n")
+        self.out.write("MMMMM")
+        self.out.write("\n\n")
