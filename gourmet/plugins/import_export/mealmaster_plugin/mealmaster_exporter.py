@@ -1,12 +1,13 @@
 import textwrap
 from gourmet import gglobals,  convert
 from gourmet.exporters.exporter import exporter_mult
+from gourmet.plugin_loader import pluggable_method
 from gourmet.gdebug import debug
 
 class mealmaster_exporter (exporter_mult):
     def __init__ (self, rd, r, out, conv=None, change_units=True, mult=1):
         import mealmaster_importer
-        self.add_to_instructions=""
+        self.add_to_instructions=[]
         self.conv = conv
         mmf2mk = mealmaster_importer.mmf_constants()
         self.uc=mmf2mk.unit_convr
@@ -31,35 +32,29 @@ class mealmaster_exporter (exporter_mult):
                                change_units=change_units,
                                mult=mult)
 
+    @pluggable_method
+    def _write_attrs_ (self):
+        self.write_attr_head()
+        title = self._grab_attr_(self.r,'title')
+        if not title:
+            title = ''
+
+        categories = ', '.join([x for x in (self._grab_attr_(self.r,'cuisine'),
+                                          self._grab_attr_(self.r,'category')) if x])
+
+        yields = self._grab_attr_(self.r,'yields')
+        if not yields: # MealMaster format mandates numeric yield information
+            yields = _("%s serving"%str(1))
+
+        self.out.write("     Title: %s\r\n"%title)
+        self.out.write("Categories: %s\r\n"%categories)
+        self.out.write("     Yield: %s\r\n"%yields)
+
     def write_head (self):
-        self.out.write("MMMMM----- Recipe via Meal-Master (tm)\n\n")
-
-    def write_attr (self, label, text):
-        if label=='category' or label=='cuisine':
-            if not self.categories:
-                self.categories=text
-                return
-            else:
-                self.categories="%s, %s"%(self.categories,text)
-                self.write_categories()
-        # Move attributes that MealMaster doesn't understand to the instructions
-        elif label=='preptime' or label=='rating' or label=='source':
-            self.add_to_instructions += "\n\n%s: %s"%(gglobals.REC_ATTR_DIC[label],text)
-        else:
-            if label and text:
-                if self.recattrs.has_key(label):
-                    label=self.recattrs[label]
-                else:
-                    label=label.capitalize()
-                label=self.pad(label,8)
-                self.out.write("%s: %s\n"%(label, text))
-
-    def write_categories (self):
-        self.out.write("%s: %s\n"%(self.pad("Categories",8),self.categories))
-        self.categories = ""
+        self.out.write("MMMMM----- Recipe via Meal-Master (tm)\r\n\r\n")
 
     def write_attr_foot (self):
-        if self.categories: self.write_categories() # if these haven't been written yet...
+        pass
 
     def pad (self, text, chars):
         text=text.strip()
@@ -67,14 +62,23 @@ class mealmaster_exporter (exporter_mult):
         return "%s%s"%(" "*fill,text)
     
     def write_text (self, label, text):
-        if label=='instructions' and self.add_to_instructions:
-            text = text + self.add_to_instructions
-            self.add_to_instructions = ""
         ll=text.split("\n")
         for l in ll:
-            for wrapped_line in textwrap.wrap(l):
-                self.out.write("\n  %s"%wrapped_line)
-            self.out.write("\n  ")
+            if l == '':
+                self.out.write("\r\n")
+            else:
+                for wrapped_line in textwrap.wrap(l):
+                    self.out.write("  %s\r\n"%wrapped_line)
+
+        self.out.write("\r\n")
+
+        if label=='instructions':
+            for label in ['preptime', 'cooktime', 'source', 'rating']:
+                text = self._grab_attr_(self.r, label)
+                if text:
+                    self.out.write("  %s: %s\r\n"%(gglobals.REC_ATTR_DIC[label],text))
+
+            self.out.write("\r\n")
             
     def write_inghead (self):
         self.master_ings=[] # our big list
@@ -86,7 +90,7 @@ class mealmaster_exporter (exporter_mult):
         # to define an ingredient, our amtlen needs to be at
         # least 6 (there will be an extra space added
         self.amtlen=6
-        self.out.write("\n")
+        self.out.write("\r\n")
 
     def write_grouphead (self, name):
         debug('write_grouphead called with %s'%name,0)
@@ -139,24 +143,23 @@ class mealmaster_exporter (exporter_mult):
                 dashes = width - len(group)
                 left_side = dashes/2 - 5
                 right_side = dashes/2
-                self.out.write("-----%s%s%s\n"%(left_side * "-",
-                                           group.upper(),
-                                           right_side * "-")
+                self.out.write("-----%s%s%s\r\n"%(left_side * "-",
+                                                  group.upper(),
+                                                  right_side * "-")
                           )
                 map(self._write_ingredient,i[1])
-                self.out.write("\n") # extra newline at end of groups
+                self.out.write("\r\n") # extra newline at end of groups
             else:
                 self._write_ingredient(i)
         # we finish with an extra newline
-        self.out.write("\n")
+        self.out.write("\r\n")
                         
     def _write_ingredient (self, ing):
         a,u,i = ing
-        self.out.write("%s %s %s\n"%(self.pad(a,self.amtlen),
-                                     self.pad(u,self.ulen),
-                                     i))
+        self.out.write("%s %s %s\r\n"%(self.pad(a,self.amtlen),
+                                       self.pad(u,self.ulen),
+                                       i))
 
     def write_foot (self):
-        self.out.write("\n\n")
         self.out.write("MMMMM")
-        self.out.write("\n\n")
+        self.out.write("\r\n\r\n")
