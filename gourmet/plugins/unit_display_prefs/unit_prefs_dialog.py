@@ -15,11 +15,11 @@ class UnitPrefsDialog:
         self.prefs = get_prefs()
         
     def run (self):
+        old_pref = self.prefs.get('preferred_unit_groups',[])
         option = de.getRadio(label=_("Automatically adjust units"),
                              sublabel="Choose how you would like to adjust units for display and printing. The underlying ingredient data stored in the database will not be affected.",
                              options=self.options,
-                             default=self.prefs['preferred_unit_groups'])
-        old_pref = self.prefs.get('preferred_unit_groups',[])
+                             default=old_pref)
         self.prefs['preferred_unit_groups'] = option
         if option != old_pref:
             for rc in self.reccards:
