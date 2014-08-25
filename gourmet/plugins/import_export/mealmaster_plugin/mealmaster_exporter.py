@@ -1,4 +1,5 @@
 import textwrap
+from itertools import islice
 from gourmet import gglobals,  convert
 from gourmet.exporters.exporter import exporter_mult
 from gourmet.plugin_loader import pluggable_method
@@ -86,10 +87,8 @@ class mealmaster_exporter (exporter_mult):
         # this can change when we add groups
         self.ings = self.master_ings
         self.ulen=1
-        # since the specs we found suggest it takes 7 blanks
-        # to define an ingredient, our amtlen needs to be at
-        # least 6 (there will be an extra space added
-        self.amtlen=6
+        # the specs we found require 7 blanks to define an ingredient
+        self.amtlen=7
         self.out.write("\r\n")
 
     def write_grouphead (self, name):
@@ -156,9 +155,14 @@ class mealmaster_exporter (exporter_mult):
                         
     def _write_ingredient (self, ing):
         a,u,i = ing
+        itemstart = 11
+        inglen = 39
+        itemlines = textwrap.wrap(i, inglen-itemstart)
         self.out.write("%s %s %s\r\n"%(self.pad(a,self.amtlen),
                                        self.pad(u,self.ulen),
-                                       i))
+                                       itemlines[0]))
+        for l in islice(itemlines, 1, None):
+            self.out.write("%s-%s\r\n"%(' '*itemstart, l))
 
     def write_foot (self):
         self.out.write("MMMMM")
