@@ -52,7 +52,7 @@ class mealmaster_exporter (exporter_mult):
         self.out.write("     Yield: %s\r\n"%yields)
 
     def write_head (self):
-        self.out.write("MMMMM----- Recipe via Meal-Master (tm)\r\n\r\n")
+        self.out.write("MMMMM----- Meal-Master (tm) export from Gourmet Recipe Manager\r\n\r\n")
 
     def write_attr_foot (self):
         pass
