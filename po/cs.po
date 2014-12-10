@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gourmet 0.6.7\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-06-02 16:58+0200\n"
-"PO-Revision-Date: 2013-03-03 09:29+0000\n"
-"Last-Translator: Jaroslav Lichtblau <Unknown>\n"
+"PO-Revision-Date: 2014-12-10 15:31+0100\n"
+"Last-Translator: Michal Hrušecký <Michal@Hrusecky.net>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Launchpad-Export-Date: 2014-06-02 11:52+0000\n"
-"X-Generator: Launchpad (build 17031)\n"
+"X-Generator: Poedit 1.5.5\n"
 
 #: ../ui/app.ui.h:1
 msgid "Recipe Index"
-msgstr ""
+msgstr "Seznam receptů"
 
 #. Set up hard-coded functional buttons...
 #: ../ui/app.ui.h:2 ../ui/generic_importer.ui.h:5
@@ -36,41 +36,41 @@ msgstr "Přidat do nákupního _seznamu"
 
 #: ../ui/app.ui.h:4 ../ui/recipe_index.ui.h:4
 msgid "View Re_cipe"
-msgstr ""
+msgstr "Zobrazit re_cept"
 
 #: ../ui/app.ui.h:5 ../ui/recipe_index.ui.h:15
 #: ../gourmet/plugins/key_editor/keyeditor.ui.h:2
 #: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:31
 msgid "_Search for:"
-msgstr ""
+msgstr "Hleda_t"
 
 #: ../ui/app.ui.h:6 ../ui/recipe_index.ui.h:16 ../ui/shopCatEditor.ui.h:5
 #: ../gourmet/plugins/key_editor/keyeditor.ui.h:3
 #: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:32
 msgid "Search for recipes as you type"
-msgstr ""
+msgstr "Pište a vyhledávejte recepty"
 
 #: ../ui/app.ui.h:7 ../gourmet/plugins/key_editor/keyeditor.ui.h:4
 #: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:30
 msgid "_in"
-msgstr ""
+msgstr "_v"
 
 #: ../ui/app.ui.h:8 ../ui/recipe_index.ui.h:19
 msgid "Search by other critera within the current search results."
-msgstr ""
+msgstr "Vyhledávat podle jiných kritérií v současných výsledcích."
 
 #: ../ui/app.ui.h:9 ../ui/recipe_index.ui.h:20
 msgid "A_dd Search Criteria"
-msgstr ""
+msgstr "Přid_at vzhledávací criterium"
 
 #: ../ui/app.ui.h:10 ../ui/recipe_index.ui.h:24
 msgid "Limiting Search to:"
-msgstr ""
+msgstr "Omezit vyhledávání na:"
 
 #: ../ui/app.ui.h:11 ../ui/recipe_index.ui.h:25
 #: ../gourmet/plugins/key_editor/keyeditor.ui.h:8
 msgid "Search _Results"
-msgstr "Výsledky _hledání"
+msgstr "Vý_sledky hledání"
 
 #: ../ui/batchEditor.ui.h:1
 msgid "Set Fields for Selected Recipes"
@@ -84,43 +84,43 @@ msgstr ""
 
 #: ../ui/batchEditor.ui.h:3 ../ui/recCardDescriptionEditor.ui.h:3
 msgid "_Add Image"
-msgstr ""
+msgstr "Přid_at obrázek"
 
 #: ../ui/batchEditor.ui.h:4 ../ui/recCardDescriptionEditor.ui.h:5
 msgid "_Remove Image"
-msgstr ""
+msgstr "Odeb_rat obrázek"
 
 #: ../ui/batchEditor.ui.h:5 ../ui/recCardDescriptionEditor.ui.h:14
 msgid "S_ource:"
-msgstr ""
+msgstr "Zdr_oj:"
 
 #: ../ui/batchEditor.ui.h:6 ../ui/recCardDescriptionEditor.ui.h:13
 msgid "_Rating:"
-msgstr ""
+msgstr "_Hodnocení:"
 
 #: ../ui/batchEditor.ui.h:7 ../ui/recCardDescriptionEditor.ui.h:12
 msgid "C_uisine:"
-msgstr ""
+msgstr "K_uchyně:"
 
 #: ../ui/batchEditor.ui.h:8 ../ui/recCardDescriptionEditor.ui.h:9
 msgid "_Category:"
-msgstr ""
+msgstr "_Kategorie:"
 
 #: ../ui/batchEditor.ui.h:9
 msgid "_Preparation Time:"
-msgstr ""
+msgstr "Čas na _přípravu:"
 
 #: ../ui/batchEditor.ui.h:10 ../ui/recCardDescriptionEditor.ui.h:11
 msgid "Coo_king Time:"
-msgstr ""
+msgstr "Čas _vaření:"
 
 #: ../ui/batchEditor.ui.h:11 ../ui/recCardDescriptionEditor.ui.h:2
 msgid "_Webpage:"
-msgstr ""
+msgstr "_Web:"
 
 #: ../ui/batchEditor.ui.h:12 ../ui/recCardDescriptionEditor.ui.h:4
 msgid "Image:"
-msgstr ""
+msgstr "Obrázek:"
 
 #: ../ui/batchEditor.ui.h:13 ../ui/recCardDescriptionEditor.ui.h:8
 msgid "_Yield:"
@@ -141,27 +141,27 @@ msgstr ""
 
 #: ../ui/databaseChooser.ui.h:1
 msgid "Metakit (default, stored in a local file)"
-msgstr ""
+msgstr "Metakit (výchozí, uloženo v souboru)"
 
 #: ../ui/databaseChooser.ui.h:2
 msgid "SQLite (stored in a local file)"
-msgstr ""
+msgstr "SQLite (uloženo v souboru)"
 
 #: ../ui/databaseChooser.ui.h:3
 msgid "MySQL (requires connection to a database)"
-msgstr ""
+msgstr "MySQL (vyžaduje připojení k databázi)"
 
 #: ../ui/databaseChooser.ui.h:4
 msgid "Choose Database"
-msgstr ""
+msgstr "Vyberte databázi"
 
 #: ../ui/databaseChooser.ui.h:5
 msgid "<b>Choose Database System for Gourmet to Use</b>"
-msgstr ""
+msgstr "<b>Zvolte databázový systém který bude Gourmet používat</b>"
 
 #: ../ui/databaseChooser.ui.h:6
 msgid "_Database System"
-msgstr ""
+msgstr "_Databázový systém"
 
 #: ../ui/databaseChooser.ui.h:7
 msgid "_Host:"
@@ -169,20 +169,20 @@ msgstr ""
 
 #: ../ui/databaseChooser.ui.h:8
 msgid "_Username:"
-msgstr ""
+msgstr "_Uživatelské jméno"
 
 #: ../ui/databaseChooser.ui.h:9
 msgid "_Password:"
-msgstr ""
+msgstr "_Heslo"
 
 #: ../ui/databaseChooser.ui.h:10
 msgid "Password for your username on the database."
-msgstr ""
+msgstr "Heslo k uživatelskému jménu od databáze."
 
 #: ../ui/databaseChooser.ui.h:11 ../ui/shopCatEditor.ui.h:6
 #: ../gourmet/plugins/unit_converter/converter.ui.h:7
 msgid "*"
-msgstr ""
+msgstr "*"
 
 #: ../ui/databaseChooser.ui.h:12
 msgid "Database _Name:"
@@ -201,7 +201,7 @@ msgstr ""
 
 #: ../ui/databaseChooser.ui.h:15
 msgid "localhost"
-msgstr ""
+msgstr "localhost"
 
 #: ../ui/databaseChooser.ui.h:16
 msgid ""
@@ -232,7 +232,7 @@ msgstr ""
 
 #: ../ui/databaseChooser.ui.h:21
 msgid "_Browse"
-msgstr ""
+msgstr "_Procházet"
 
 #: ../ui/databaseChooser.ui.h:22 ../gourmet/gglobals.py:151
 #: ../gourmet/gtk_extras/dialog_extras.py:810
@@ -269,13 +269,12 @@ msgid "<b>Index View Preferences</b>"
 msgstr ""
 
 #: ../ui/preferenceDialog.ui.h:3
-#, fuzzy
 msgid "Show _toolbar"
-msgstr "Zobrazit časoměřič"
+msgstr "Zobrazi_t nástrojovou lištu"
 
 #: ../ui/preferenceDialog.ui.h:4
 msgid "_Recipes per page:"
-msgstr ""
+msgstr "_Receptů na stránku:"
 
 #: ../ui/preferenceDialog.ui.h:5
 msgid "<i>Configure which columns are included in the recipe index view.</i>"
@@ -283,11 +282,11 @@ msgstr ""
 
 #: ../ui/preferenceDialog.ui.h:6
 msgid "Index View"
-msgstr ""
+msgstr "Seznamový pohled"
 
 #: ../ui/preferenceDialog.ui.h:7
 msgid "<b>Card View Preferences</b>"
-msgstr ""
+msgstr "<b>Nastavení kartového pohledu</b>"
 
 #: ../ui/preferenceDialog.ui.h:8
 msgid "_Allow units to change when multiplying"
@@ -295,11 +294,11 @@ msgstr ""
 
 #: ../ui/preferenceDialog.ui.h:9
 msgid "_Use fractions"
-msgstr ""
+msgstr "Po_uživat zlomky"
 
 #: ../ui/preferenceDialog.ui.h:10
 msgid "Use fractions when possible for display"
-msgstr ""
+msgstr "Používat zlomky při zobrazení kdykoliv to je možné"
 
 #: ../ui/preferenceDialog.ui.h:11
 msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
@@ -307,11 +306,11 @@ msgstr ""
 
 #: ../ui/preferenceDialog.ui.h:12
 msgid "Card View"
-msgstr ""
+msgstr "Kartový pohled"
 
 #: ../ui/preferenceDialog.ui.h:13
 msgid "<b>Shopping List Preferences</b>"
-msgstr ""
+msgstr "<b>Možnosti nákupního seznamu</b>"
 
 #: ../ui/preferenceDialog.ui.h:14
 msgid ""
@@ -359,11 +358,11 @@ msgstr "Název"
 
 #: ../ui/recCardDescriptionEditor.ui.h:7
 msgid "_Title:"
-msgstr ""
+msgstr "Náze_v:"
 
 #: ../ui/recCardDescriptionEditor.ui.h:10
 msgid "Pre_paration Time:"
-msgstr ""
+msgstr "Čas _přípravy:"
 
 #: ../ui/recCardDescriptionEditor.ui.h:15
 #: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:29
@@ -373,7 +372,7 @@ msgstr "kategorie"
 
 #: ../ui/recCardDescriptionEditor.ui.h:16
 msgid "rating"
-msgstr ""
+msgstr "hodnocení"
 
 #: ../ui/recCardDescriptionEditor.ui.h:17 ../gourmet/gglobals.py:89
 msgid "Yield"
@@ -389,27 +388,27 @@ msgstr ""
 
 #: ../ui/recCardDisplay.ui.h:2
 msgid "Edit _description"
-msgstr ""
+msgstr "_Upravit popis"
 
 #: ../ui/recCardDisplay.ui.h:3
 msgid "<b>Cooking Time:</b>"
-msgstr ""
+msgstr "<b>Doba vaření:</b>"
 
 #: ../ui/recCardDisplay.ui.h:4
 msgid "<b>Preparation Time:</b>"
-msgstr ""
+msgstr "<b>Čas na přípravu:</b>"
 
 #: ../ui/recCardDisplay.ui.h:5
 msgid "<b>Cuisine:</b>"
-msgstr ""
+msgstr "<b>Kuchyně:</b>"
 
 #: ../ui/recCardDisplay.ui.h:6
 msgid "<b>Category:</b>"
-msgstr ""
+msgstr "<b>Kategorie:</b>"
 
 #: ../ui/recCardDisplay.ui.h:7
 msgid "<b>Webpage:</b>"
-msgstr ""
+msgstr "<b>Web:</b>"
 
 #: ../ui/recCardDisplay.ui.h:8
 msgid "<b>_Yields:</b>"
@@ -417,35 +416,35 @@ msgstr ""
 
 #: ../ui/recCardDisplay.ui.h:9
 msgid "<span underline=\"single\" color=\"blue\">Link</span>"
-msgstr ""
+msgstr "<span underline=\"single\" color=\"blue\">Odkaz</span>"
 
 #: ../ui/recCardDisplay.ui.h:10
 msgid "<b>Source:</b>"
-msgstr ""
+msgstr "<b>Zdroj:</b>"
 
 #: ../ui/recCardDisplay.ui.h:11
 msgid "<b>Rating:</b>"
-msgstr ""
+msgstr "<b>Hodnocení:</b>"
 
 #: ../ui/recCardDisplay.ui.h:12
 msgid "<b>_Multiply by:</b>"
-msgstr ""
+msgstr "<b>_Vynásobte:</b>"
 
 #: ../ui/recCardDisplay.ui.h:13
 msgid "<b>Instructions</b>"
-msgstr ""
+msgstr "<b>Instrukce</b>"
 
 #: ../ui/recCardDisplay.ui.h:14
 msgid "Edit _instructions"
-msgstr ""
+msgstr "Upravit _instrukce"
 
 #: ../ui/recCardDisplay.ui.h:15
 msgid "<b>Notes</b>"
-msgstr ""
+msgstr "<b>Poznámky</b>"
 
 #: ../ui/recCardDisplay.ui.h:16
 msgid "Edit _notes"
-msgstr ""
+msgstr "Upravit poz_námky"
 
 #: ../ui/recCardDisplay.ui.h:17 ../gourmet/exporters/exporter.py:603
 #: ../gourmet/plugins/duplicate_finder/recipeMerger.py:488
@@ -491,7 +490,7 @@ msgstr ""
 
 #: ../ui/recipe_index.ui.h:5
 msgid "Delete selected recipe"
-msgstr ""
+msgstr "Smazat vybrané recepty"
 
 #. saveEdits
 #: ../ui/recipe_index.ui.h:6 ../gourmet/reccard.py:895
@@ -516,7 +515,7 @@ msgstr ""
 
 #: ../ui/recipe_index.ui.h:11
 msgid "Print selected recipe"
-msgstr ""
+msgstr "Vytisknout vybrané recepty"
 
 #: ../ui/recipe_index.ui.h:12
 msgid "_Print recipe"
@@ -540,7 +539,7 @@ msgstr ""
 
 #: ../ui/recipe_index.ui.h:18
 msgid "Search _in"
-msgstr ""
+msgstr "Hledat _v"
 
 #: ../ui/recipe_index.ui.h:21
 msgid "_Use regular expressions (advanced searching)"
@@ -552,7 +551,7 @@ msgstr ""
 
 #: ../ui/recipe_index.ui.h:23
 msgid "<i>Search Options</i>"
-msgstr ""
+msgstr "<i>Možnosti vyhledávání</i>"
 
 #: ../ui/shopCatEditor.ui.h:1 ../gourmet/gglobals.py:84
 msgid "Category"
@@ -572,11 +571,11 @@ msgstr "Klíč"
 
 #: ../ui/shopCatEditor.ui.h:3
 msgid "Category Editor"
-msgstr ""
+msgstr "Editor ketegorií"
 
 #: ../ui/shopCatEditor.ui.h:4
 msgid "Search by"
-msgstr ""
+msgstr "Vyhledávat podle"
 
 #: ../ui/shopCatEditor.ui.h:7 ../gourmet/recindex.py:154
 msgid "Search as you type"
@@ -585,15 +584,15 @@ msgstr "Vyhledávat v průběhu psaní"
 #: ../ui/shopCatEditor.ui.h:8 ../gourmet/plugins/key_editor/keyeditor.ui.h:7
 #: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:33
 msgid "Use regular expressions"
-msgstr ""
+msgstr "Používat regulární výrazy"
 
 #: ../ui/shopCatEditor.ui.h:9
 msgid "Advanced Search"
-msgstr ""
+msgstr "Pokročilé vyhledávání"
 
 #: ../ui/shopCatEditor.ui.h:10
 msgid "Add Category: "
-msgstr ""
+msgstr "Přidat ketegorii:"
 
 #: ../ui/timerDialog.ui.h:1 ../gourmet/timer.py:140 ../gourmet/timer.py:141
 msgid "Timer"
@@ -706,14 +705,12 @@ msgid ""
 msgstr ""
 
 #: ../gourmet.desktop.in.h:1
-#, fuzzy
 msgid "Gourmet"
-msgstr "Soubor Gourmet XML"
+msgstr "Gourmet"
 
 #: ../gourmet.desktop.in.h:2
-#, fuzzy
 msgid "Recipe Manager"
-msgstr "Správce receptů Gourmet"
+msgstr "Správce receptů"
 
 #: ../gourmet.desktop.in.h:3 ../gourmet/version.py:13
 msgid "Gourmet Recipe Manager"
@@ -1082,9 +1079,8 @@ msgid "Delete Recipes"
 msgstr "Odstranit recepty"
 
 #: ../gourmet/GourmetRecipeManager.py:1264
-#, fuzzy
 msgid "Recipes deleted"
-msgstr "Seznam _receptů"
+msgstr "Recepty smazány"
 
 #: ../gourmet/GourmetRecipeManager.py:1291
 #, python-format
@@ -1775,7 +1771,7 @@ msgstr "Při ukončování zásuvného modulu nastala chyba."
 
 #: ../gourmet/plugins/browse_plugin.gourmet-plugin.in.h:1
 msgid "Browse Recipes"
-msgstr ""
+msgstr "Procházet recepty"
 
 #: ../gourmet/plugins/browse_plugin.gourmet-plugin.in.h:2
 msgid "Selecting recipes by browsing by category, cuisine, etc."
@@ -1988,7 +1984,7 @@ msgstr ""
 #: ../gourmet/plugins/import_export/website_import.gourmet-plugin.in.h:3
 #: ../gourmet/plugins/utf16.gourmet-plugin.in.h:3
 msgid "Importer/Exporter"
-msgstr ""
+msgstr "Importer/Exporter"
 
 #: ../gourmet/plugins/import_export/archive_plugin/zip_importer_plugin.py:10
 msgid "Archive (zip, tarball)"
@@ -2037,11 +2033,11 @@ msgstr "XML soubor Gourmetu (zastaralý)"
 
 #: ../gourmet/plugins/import_export/html.gourmet-plugin.in.h:1
 msgid "HTML Export"
-msgstr ""
+msgstr "HTML Export"
 
 #: ../gourmet/plugins/import_export/html.gourmet-plugin.in.h:2
 msgid "Create recipe webpages from recipes."
-msgstr ""
+msgstr "Vytvořit stránku s recepty z receptů."
 
 #: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:120
 #, python-format
@@ -2117,9 +2113,8 @@ msgid "My CookBook MCB File"
 msgstr ""
 
 #: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:10
-#, fuzzy
 msgid "MCB Export"
-msgstr "Export"
+msgstr "MCB Export"
 
 #: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:11
 #, fuzzy, python-format
@@ -2132,9 +2127,8 @@ msgid "Recipe saved in My CookBook MCB file %(file)s."
 msgstr "Recept uložen jako Gourmet XML soubor %(file)s."
 
 #: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_importer_plugin.py:11
-#, fuzzy
 msgid "MCB File"
-msgstr "Velký soubor"
+msgstr "MCB soubor"
 
 #: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:1
 msgid "Mealmaster (tm) Export"
@@ -2690,9 +2684,9 @@ msgstr "Uložit nákupní seznam pro využití do budoucna jako recept"
 
 #. print rr
 #: ../gourmet/plugins/listsaver/shoppingSaverPlugin.py:44
-#, fuzzy, python-format
+#, python-format
 msgid "Menu for %s (%s)"
-msgstr "Nabídka %s"
+msgstr "Nabídka %s (%s)"
 
 #: ../gourmet/plugins/listsaver/shoppingSaverPlugin.py:46
 msgid "Menu"
@@ -3549,11 +3543,11 @@ msgstr ""
 #: ../gourmet/plugins/unit_converter.gourmet-plugin.in.h:1
 #: ../gourmet/plugins/unit_converter/converter.ui.h:2
 msgid "Unit Converter"
-msgstr ""
+msgstr "Převodník mezi jednotkami"
 
 #: ../gourmet/plugins/unit_converter.gourmet-plugin.in.h:2
 msgid "Provides a simple unit calculator."
-msgstr ""
+msgstr "Nabízí jednoduchou jednotkovou kalkulačku."
 
 #: ../gourmet/plugins/unit_converter/__init__.py:15
 msgid "_Unit Converter"
@@ -3574,7 +3568,7 @@ msgstr "Doplňte informaci o hustotě."
 
 #: ../gourmet/plugins/unit_converter/converter.ui.h:3
 msgid "<b>From</b>"
-msgstr ""
+msgstr "<b>Od</b>"
 
 #: ../gourmet/plugins/unit_converter/converter.ui.h:6
 msgid "1"
@@ -4115,9 +4109,8 @@ msgid "Shopping list for %s"
 msgstr "Nákupní seznam pro %s"
 
 #: ../gourmet/shopping.py:376
-#, fuzzy
 msgid "For the following recipes:\n"
-msgstr "Pro následující recepty:"
+msgstr "Pro následující recepty:\n"
 
 #: ../gourmet/shopping.py:381 ../gourmet/shopping.py:395
 #, python-format
@@ -4200,7 +4193,6 @@ msgid "Copyright (c) 2004-2014 Thomas M. Hinkle. GNU GPL v2"
 msgstr ""
 
 #: ../gourmet/version.py:18
-#, fuzzy
 msgid ""
 "Gourmet Recipe Manager is an application to store, organize and search "
 "recipes.\n"
@@ -4218,13 +4210,17 @@ msgid ""
 "ingredients.\n"
 msgstr ""
 "Gourmet Správce Receptů je aplikace pro ukládání, organizování a vyhledávání "
-"receptů. Gourmet také dokáže jednoduše vytvářet nákupní seznamy z receptů. "
-"Gourmet umí importovat recepty z různých zdrojů jako jsou MealMaster a "
-"MasterCook archívy nebo některé populární webové stránky. Gourmet dokáže "
-"exportovat recepty jako text, MealMaster soubory, HTML stránky nebo "
-"uživatelský XML formát pro výměnu receptů s ostatními uživateli Gourmetu. "
-"Gourmet podporuje přidávání obrázků k receptům. Také dokáže vypočítat "
-"nutriční hodnoty receptu na základě přísad."
+"receptů.\n"
+"\n"
+"Vlastnosti:\n"
+"* Jednoduché vytváření nákupních seznamů z receptů.\n"
+"* Import receptů z různých zdrojů jako jsou MealMaster a MasterCook\n"
+"  archívy nebo některé populární webové stránky.\n"
+"* Export receptů jako PDF, text, MealMaster soubory, HTML stránky\n"
+"  nebo uživatelský XML formát pro výměnu receptů s ostatními uživateli "
+"Gourmetu.\n"
+"* Podporuje přidávání obrázků k receptům.\n"
+"* Dokáže vypočítat nutriční hodnoty receptu na základě přísad.\n"
 
 #: ../gourmet/version.py:35
 msgid "Roland Duhaime (Windows porting assistance)"
@@ -4260,13 +4256,12 @@ msgstr ""
 "opravy)"
 
 #: ../gourmet/version.py:42
-#, fuzzy
 msgid ""
 "Bernhard Reiter <ockham@raz.or.at> (maintenance since 0.16.0, website re-"
 "design)"
 msgstr ""
-"Bernhard Reiter <ockham@raz.or.at> (Udržování verze pro Windows a nový "
-"design webu)"
+"Bernhard Reiter <ockham@raz.or.at> (správce od verze 0.16.0 a nový design "
+"webu)"
 
 #: ../gourmet/version.py:44
 msgid "Nyall Dawson (cookie icon)"
