@@ -82,7 +82,7 @@ class ValidatingEntry (gtk.VBox, gobject.GObject):
         warned_for = time.time() - self.warned
         remaining = TIME_TO_READ - warned_for * 1000
         if remaining > 0:
-            gobject.timeout_add(remaining,self._hide_warning)
+            gobject.timeout_add(int(remaining),int(self._hide_warning))
         else:
             self._hide_warning()
 

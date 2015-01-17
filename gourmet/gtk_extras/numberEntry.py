@@ -31,7 +31,8 @@ class NumberEntry (validatingEntry.ValidatingEntry):
     in_progress_regexp = """
         ^ # start at
         %(NUMBER_START_REGEXP)s+ # a number
-        %(NUMBER_END_NO_RANGE_REGEXP)s*
+        %(NUMBER_MID_NO_RANGE_REGEXP)s*
+       %(NUMBER_END_NO_RANGE_REGEXP)s*
         $ # end
         """%convert.__dict__
 
@@ -77,9 +78,11 @@ class RangeEntry (NumberEntry):
     in_progress_regexp = """
         ^ # start at
         %(NUMBER_START_REGEXP)s+ # a number
+        %(NUMBER_MID_REGEXP)s*
         %(NUMBER_END_REGEXP)s*
         (%(RANGE_REGEXP)s|[Tt][Oo]?)?
         %(NUMBER_START_REGEXP)s*
+        %(NUMBER_MID_REGEXP)s*
         %(NUMBER_END_REGEXP)s*
         $ # end
         """%convert.__dict__
@@ -129,7 +132,7 @@ if __name__ == '__main__':
     l = gtk.Label('Number Entry:')
     l.show()
     hb.pack_start(l)
-    ne = NumberEntry(); ne.show()
+    ne = NumberEntry(default_to_fractions=True); ne.show()
     def foo (widget):
         print 'Changed!',widget,widget.get_value()
     ne.connect('changed',foo)
@@ -138,7 +141,7 @@ if __name__ == '__main__':
     hb2 = gtk.HBox()
     l = gtk.Label('Range Entry:'); l.show()
     hb2.pack_start(l)
-    rent = RangeEntry(); rent.show()
+    rent = RangeEntry(default_to_fractions=True); rent.show()
     hb2.pack_start(rent)
     hb2.show()
     vb.pack_start(hb, fill=False, expand=False)
