@@ -13,9 +13,9 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
     def __init__ (self, *args, **kwargs):
         Pluggable.__init__(self, [PluginPlugin])
 
-    #def activate (self, pluggable):
-    #    print 'activate GenericWebImporter for pluggable',pluggable
-    #    return ImporterPlugin.activate(self,pluggable)
+    def activate (self, pluggable):
+        print 'activate GenericWebImporter for pluggable',pluggable
+        return ImporterPlugin.activate(self,pluggable)
 
     def test_file (self, filename):
         '''Given a file name, test whether the file is of this type.'''
