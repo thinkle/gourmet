@@ -1061,7 +1061,7 @@ class FileSelectorDialog:
                         add_ext = self.name_to_ext[self.fsd.get_filter().get_name()]
                         if add_ext: fn += add_ext
             self.quit()
-            return fn
+            return unicode(fn, 'utf-8')
         else:
             self.quit()
             return None
