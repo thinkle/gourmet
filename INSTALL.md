@@ -95,7 +95,7 @@ and run gourmet by entering
 python bin/gourmet
 ```
 
-You might also want to build loccalization files as described in the CODING file so you can run Gourmet in your language.
+You might also want to build localization files as described in the CODING file so you can run Gourmet in your language.
 
 Finally, you can freeze Gourmet for deployment by running
 ```
