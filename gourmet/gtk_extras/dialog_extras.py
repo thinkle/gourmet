@@ -1039,16 +1039,23 @@ class FileSelectorDialog:
         """Run our dialog and return the filename or None"""
         response = self.fsd.run()
         if response == gtk.RESPONSE_OK:
+            # gtk.FileChooser by default returns a UTF-8 encoded string, see
+            # http://www.pygtk.org/pygtk2reference/class-gtkfilechooser.html#FileNamesAndEncodings
+            # Functions like Pillow's Image.open() (which is used for adding
+            # an image to a recipe) however require a unicode string.
+            # We need to do this as users wouldn't be able to e.g. add images with
+            # diacritics in their paths.
+
             if self.multiple:
                 #if vfs_available:
                 #    fn = self.fsd.get_uris()
                 #else:
-                fn = self.fsd.get_filenames()
+                fn = map(lambda f: unicode(f, 'utf-8'), self.fsd.get_filenames())
             else:
                 #if vfs_available:
                 #    fn = self.fsd.get_uri()
                 #else:
-                fn = self.fsd.get_filename()
+                fn = unicode(self.fsd.get_filename(), 'utf-8')
             if not fn:
                 show_message(label=_('No file selected'),
                              sublabel=_('No file was selected, so the action has been cancelled')
@@ -1061,7 +1068,7 @@ class FileSelectorDialog:
                         add_ext = self.name_to_ext[self.fsd.get_filter().get_name()]
                         if add_ext: fn += add_ext
             self.quit()
-            return unicode(fn, 'utf-8')
+            return fn
         else:
             self.quit()
             return None
