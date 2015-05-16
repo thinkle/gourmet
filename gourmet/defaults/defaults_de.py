@@ -15,7 +15,11 @@
 # Translator: 
 # Last-updated: 2005-01-15 (07/18/05)
 
-CREDITS = u""
+from gettext import gettext as _
+
+# TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!
+
+CREDITS = _("translator-credits")
 
 #The next line can be used to determine some things about how to handle this language
 LANG_PROPERTIES={'hasAccents':True, 'capitalisedNouns':True,'useFractions':False} 

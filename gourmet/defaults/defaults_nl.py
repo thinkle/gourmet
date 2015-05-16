@@ -4,8 +4,11 @@
 ## first, easy to maintain lists which can eventually be moved to
 ## files.
 
+from gettext import gettext as _
+
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!
-CREDITS = "Gregory"
+
+CREDITS = _("translator-credits")
 
 # only translate the items in the list [..] (and feel free to create categories
 # that make sense for your locale -- no need to translate these ones). DO NOT

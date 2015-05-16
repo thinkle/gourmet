@@ -7,7 +7,10 @@
 # Language: Spanish
 # Translator: Thomas M. Hinkle
 # Last-updated: 4/27/05
-CREDITS="Thomas M. Hinkle"
+
+from gettext import gettext as _
+
+CREDITS = _("translator-credits")
 
 ## first, easy to maintain lists which can eventually be moved to
 ## files.
