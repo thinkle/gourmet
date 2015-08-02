@@ -3,11 +3,11 @@ from gettext import gettext as _
 from gourmet import convert,gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
 
-HTML_HEADER_START = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+HTML_HEADER_START = """<!DOCTYPE html>
 <html>
   <head>
   """
-HTML_HEADER_CLOSE = """<meta http-equiv="Content-Style-Stype" content="text/css">
+HTML_HEADER_CLOSE = """<meta http-equiv="Content-Style-Type" content="text/css">
      <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
      </head>"""
 
@@ -88,7 +88,7 @@ class html_exporter (exporter_mult):
         o.write(image)
         o.close()
         # we use urllib here because os.path may fsck up slashes for urls.
-        self.out.write('<img src="%s" itemprop="image">'%self.make_relative_link("%s%s.jpg"%(self.imagedir,
+        self.out.write('<img src="%s" itemprop="image" alt="">'%self.make_relative_link("%s%s.jpg"%(self.imagedir,
                                                                             self.imgcount)
                                                                 )
                        )
