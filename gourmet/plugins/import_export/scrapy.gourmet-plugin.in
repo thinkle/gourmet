@@ -1,0 +1,8 @@
+[Gourmet Plugin]
+Module=scrapy_plugin
+Version=1.0
+API_Version=1.0
+_Name=Webpage Scrapy Import
+_Comment=Import recipes from the web using scrapy selectors.
+_Category=Importer/Exporter
+Authors=Sven Steckmann <spm_gourmet@steckmann.de>
