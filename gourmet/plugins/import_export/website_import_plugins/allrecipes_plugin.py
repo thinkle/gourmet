@@ -18,15 +18,7 @@ class AllRecipesPlugin (PluginPlugin):
 
         class AllRecipesParser(AllRecipesParserBase):
             def preparse (self):
-                AllRecipesParserBase.preparse(self)
-                instructions = self.soup.find(attrs={"class": "directLeft"}).find('ol')
-                self.preparsed_elements.append((instructions,'instructions'))
-                #for li in instructions.findAll('li'):
-                #    self.preparsed_elements.append((li,'instructions'))
-                preptime = self.soup.find(id='liPrep').find('span')
-                self.preparsed_elements.append((preptime,'preptime'))
-                cooktime = self.soup.find(id='liCook').find('span')
-                self.preparsed_elements.append((cooktime,'cooktime'))
+                AllRecipesParserBase.preparse(self, False)
 
         return AllRecipesParser
 

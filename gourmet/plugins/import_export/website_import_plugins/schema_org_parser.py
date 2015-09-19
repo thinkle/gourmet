@@ -33,11 +33,16 @@ def generate(BaseParser):
     
         imageexcluders = []
     
-        def preparse (self):
+        def preparse (self, scope=True):
             self.preparsed_elements = []
-            self.recipe_schema_scope = self.soup.find(itemscope = True,
-                                                      itemtype =
-                                                      'http://schema.org/Recipe')
+
+            if scope:
+                self.recipe_schema_scope = self.soup.find(itemscope = True,
+                                                          itemtype =
+                                                          'http://schema.org/Recipe')
+            else:
+                self.recipe_schema_scope = self.soup
+
             for tag in self.recipe_schema_scope.findAll(itemprop=True):
                 itemprop = tag["itemprop"]
                 for k, v in self.schema_org_mappings.iteritems():
