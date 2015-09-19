@@ -7,8 +7,7 @@ HTML_HEADER_START = """<!DOCTYPE html>
 <html>
   <head>
   """
-HTML_HEADER_CLOSE = """<meta http-equiv="Content-Style-Type" content="text/css">
-     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+HTML_HEADER_CLOSE = """<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
      </head>"""
 
 
