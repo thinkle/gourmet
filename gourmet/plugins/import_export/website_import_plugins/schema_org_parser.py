@@ -44,7 +44,7 @@ def generate(BaseParser):
                     if itemprop == k:
                         self.preparsed_elements.append((tag,v))
     
-                if itemprop == "image":
+                if itemprop == "image" and "src" in tag:
                     self.imageexcluders.append(Excluder(tag["src"]))
     
             if self.preparsed_elements:
