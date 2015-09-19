@@ -55,13 +55,15 @@ class html_exporter (exporter_mult):
         t=re.sub('\n','<br>',t)
         return t
 
-    def write_head (self):
+    def get_title (self):
         title = self._grab_attr_(self.r,'title')
         if not title: title = _('Recipe')
-        title=xml.sax.saxutils.escape(title)
+        return xml.sax.saxutils.escape(title)
+
+    def write_head (self):
         if self.start_html:
             self.out.write(HTML_HEADER_START)
-            self.out.write("<title>%s</title>"%title)
+            self.out.write("<title>%s</title>"%self.get_title())
             if self.css:
                 if self.embed_css:
                     self.out.write("<style type='text/css'><!--\n")
@@ -87,9 +89,12 @@ class html_exporter (exporter_mult):
         o.write(image)
         o.close()
         # we use urllib here because os.path may fsck up slashes for urls.
-        self.out.write('<img src="%s" itemprop="image" alt="">'%self.make_relative_link("%s%s.jpg"%(self.imagedir,
-                                                                            self.imgcount)
-                                                                )
+        self.out.write('<img src="%s" itemprop="image" alt="%s">'%(
+                                                                            self.make_relative_link("%s%s.jpg"%(self.imagedir,
+                                                                                    self.imgcount)
+                                                                            ),
+                                                                            self.get_title()
+                                                                  )
                        )
         self.images.append(imgout)
         
