@@ -8,7 +8,7 @@ If you'd like to contribute, it's best to follow established GitHub practices by
 
 You're also welcome to join our [Gourmet team on Launchpad](https://launchpad.net/~gourmet) and particularly to subscribe to our mailing list there. We'd kindly ask you to stick to a *one issue = one commit = one pull request* policy whenever possible, with an expressive commit message mentioning the issue it's supposed to fix on the last line (like so: "Fixes #123."). (That way, the corresponding issue gets closed automatically when merging the commit.)
 
-Our introductory material to the source code is currently rather sparse, but you still might want to check out the [Development](Development) wiki article and [CODING.md](../blob/master/CODING.md) file for starters.
+Our introductory material to the source code is currently rather sparse, but you still might want to check out the [Development](Development) wiki article and [CODING.md](CODING.md) file for starters.
 
 To get started, why not check out our list of [list of bugs tagged 'easy'](https://github.com/thinkle/gourmet/issues?labels=easy&page=1&state=open)?
 
