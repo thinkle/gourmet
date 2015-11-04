@@ -135,7 +135,7 @@ class StarGenerator:
         if is_rgba: rowstride = 4
         else: rowstride = 3
         pb=gtk.gdk.pixbuf_new_from_data(
-            image.tostring(),
+            image.tobytes(),
             gtk.gdk.COLORSPACE_RGB,
             is_rgba,
             8,
