@@ -13,8 +13,8 @@ CREDITS="Thomas M. Hinkle"
 ## files.
 
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!
-fields={'cuisine': ['Español','Mejicano','Cubano','Argentino','Brazileño','Italiano','Griego',
-                   'Chino','Francés','Vasco','Indio'],
+fields={'cuisine': ['Española','Mejicana','Cubana','Argentina','Brazileña','Italiana','Griega',
+                   'China','Francesa','Vasca','India', 'Inglesa'],
         'rating' : ['Excelente','Muy Bueno','Bueno','Así Así','Malo'],
         'source' : [],
         'category' : ['Postre','Aperitivo','Ensalada','Sopa',
@@ -282,7 +282,7 @@ INGREDIENT_DATA = [
 CONVERTER_TABLE = {
     ("tazas", "tbs."):16,
     ("libra", "onza"):16,
-    ("cuchara", "cucharilla"):3,
+    ("cucharada", "cucharadita"):3,
     ("pt.", "tazas"):2,
     ("qt.", "tazas"):4,
     ("galón", "quarto de galón"):4,
@@ -293,7 +293,7 @@ CONVERTER_TABLE = {
     ("onza", "g"):28.35,
     ("kg", "g"):1000,
     ("g", "mg"):1000,
-    ("cucharilla", "drop"):76,
+    ("cucharadita", "drop"):76,
     # Are there translations for these units?   Not really, they're english-imperial units, not adopted by Spain...  :-)
     # ("onza", "dram"):16,
     # ("dram", "grains"):27.34375,
@@ -321,8 +321,8 @@ UNIT_GROUPS = {
     ],
     'imperial volume':[
     #('drop',(0,10)),
-    ('cucharilla',(0.125,3)),
-    ('cuchara',(1,4)),
+    ('cucharadita',(0.125,3)),
+    ('cucharada',(1,4)),
     ('taza',(0.25,4)),
     # ('pt.',(1,1)),
     ('quarto de galón',(1,3)),
@@ -368,8 +368,8 @@ UNITS = [
     # ["bushel", ["bushel", "bushels", "bsh.", "bu.", "bu", "bsh", "bshl", "bshl."]],
     # ["grains", ["grain", "grains"]],
     # ["dram", ["dram", "drams"]],
-    ["cucharilla", ["cucharilla"]],
-    ["cuchara", ["cuchara","tbs", "tbsp","tbsp.", "tablespoon", "table spoon", "tbsps.", "tablespoons", "Tablespoon", "T"]],
+    ["cucharadita", ["cucharadita"]],
+    ["cucharada", ["cucharada","tbs", "tbsp","tbsp.", "tablespoon", "table spoon", "tbsps.", "tablespoons", "Tablespoon", "T"]],
     ["libra", ["libra","libras"]],
     ["onza", ["onza","onzas"]],
     ["taza", ["taza","tazas"]],
@@ -394,14 +394,14 @@ CROSS_UNIT_TABLE = {
     ## up in the dictionary referenced here (i.e. the density_table)
     ## currently, 'density' is the only keyword used
     ("pt.", "lb."):['density',1],
-    ("cuchara", "onza"):['density',0.5],
+    ("cucharada", "onza"):['density',0.5],
     ("taza", "onza"):['density',8],
     # ("pt.", "onza"):['density',16],
     ("ml", "g"):['density',1]}
 
 VOL_TO_MASS_TABLE = {
     ("pt.", "lb.") : 1,
-    ("cuchara", "onza") : 0.5,
+    ("cucharada", "onza") : 0.5,
     ("tazas", "onza") : 8,
     ("pt.", "onza") : 16,
     ("ml", "g") : 1,
