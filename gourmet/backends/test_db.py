@@ -3,6 +3,14 @@ import db
 
 class DBTest (unittest.TestCase):
     def setUp (self):
+        print 'Calling setUp'
+        # Remove all plugins for testing purposes
+        from gourmet.plugin_loader import get_master_loader
+        ml = get_master_loader()
+        ml.save_active_plugins = lambda *args: True; # Don't save anything we do to plugins
+        ml.active_plugins = []
+        ml.active_plugin_sets = []
+        # Done knocking out plugins...
         tmpfile = tempfile.mktemp()
         self.db = db.get_database(file=tmpfile)
 
