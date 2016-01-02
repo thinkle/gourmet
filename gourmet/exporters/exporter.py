@@ -464,7 +464,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
 
     name = 'Exporter'
 
-    def __init__ (self, rd, recipes, out, one_file=True,
+    def __init__ (self, rd, recipes, out, one_file=True, open_files = True,
                   ext='txt',
                   conv=None,
                   imgcount=1,
@@ -474,7 +474,16 @@ class ExporterMultirec (SuspendableThread, Pluggable):
         """Output all recipes in recipes into a document or multiple
         documents. if one_file, then everything is in one
         file. Otherwise, we treat 'out' as a directory and put
-        individual recipe files within it."""
+        individual recipe files within it.
+        
+        @param one_file If True works in one_file mode. For this the class will
+                    create the file which is accessible by self.ofi
+                    If this is set to False a directory will be created and the
+                    name of the directory will be passed via self.outdir and self.ofi 
+                    
+        @param open_files If this parameter is True the files will be created
+                    otherwise to create the file is up to the user.
+        """
         self.timer=TimeAction('exporterMultirec.__init__()')
         self.rd = rd
         self.recipes = recipes
@@ -490,6 +499,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                                                   convert.FRACTIONS_ASCII)
         self.DEFAULT_ENCODING = self.exporter.DEFAULT_ENCODING
         self.one_file = one_file
+        self.open_files = open_files
 
     def _grab_attr_ (self, obj, attr):
         if attr=='category':
@@ -540,7 +550,11 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                     self.outdir=self.unique_name(self.outdir)
                     os.makedirs(self.outdir)
             else: os.makedirs(self.outdir)
-        if self.one_file and type(self.out)==str:
+        
+        oneFileOpenByMyself = self.one_file and type(self.out)==str and self.open_files   
+        multiFileOpenByMyself = not self.one_file and self.open_files
+                    
+        if oneFileOpenByMyself:
             self.ofi=open(self.out,'wb')
         else: self.ofi = self.out
         self.write_header()
@@ -553,7 +567,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
             msg = _("Exported %(number)s of %(total)s recipes")%{'number':self.rcount,'total':self.rlen}
             self.emit('progress',float(self.rcount)/float(self.rlen), msg)
             fn=None
-            if not self.one_file:
+            if multiFileOpenByMyself:
                 fn=self.generate_filename(r,self.ext,add_id=True)
                 self.ofi=open(fn,'wb')
             if self.padding and not first:
@@ -562,12 +576,12 @@ class ExporterMultirec (SuspendableThread, Pluggable):
             self.connect_subthread(e)
             e.do_run()
             self.recipe_hook(r,fn,e)
-            if not self.one_file:
+            if multiFileOpenByMyself:
                 self.ofi.close()
             self.rcount += 1
             first = False
         self.write_footer()
-        if self.one_file:
+        if oneFileOpenByMyself:
             self.ofi.close()
         self.timer.end()
         self.emit('progress',1,_("Export complete."))

@@ -1,0 +1,15 @@
+div.recipe, div.index { font-style: Times, Serif; font-size: 12pt; margin-left: 7%; margin-right: 10%; padding: 1em; margin-top: 1em;}
+div.recipe img {float: right; padding: 1em}
+body {}
+span.label { font-weight: bold;min-width: 10em; display: inline-block;}
+p.title { font-size: 120%; text-align: center}
+p.title span.label {display: none}
+div.header p {margin-top: 0; margin-bottom: 0.2em}
+div.ing { padding: 1em; border: solid 1px; background-color: #eef}
+ul.ing { padding-left: 0.6em; }
+li.ing { list-style: none; border-top: 0.3em }
+div.ingamount{ display:inline-block; min-width:3em;}
+div.ingunit{ display:inline-block; min-width:3em;}
+img{ max-width: 90%; display: block; margin-left: auto; margin-right: auto; }
+div.header{margin-top: 1em; margin-bottom: 1em;}
+div.ing h2{margin-top: 0}
