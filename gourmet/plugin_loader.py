@@ -44,6 +44,7 @@ class MasterLoader:
         'website_import_plugins',
         'krecipe_plugin',
         'mycookbook_plugin',
+        'epub_plugin',
         ]
     active_plugin_filename = os.path.join(gglobals.gourmetdir,'active_plugins')
 
