@@ -172,20 +172,21 @@ class Importer (SuspendableThread):
             try:
                 self.rec['yields'] = float(self.rec['yields'])
             except:
-                yields = self.convert_str_to_num(self.rec['yields'])
+                yields,yield_unit = self.parse_yields(self.rec['yields'])
                 if not yields:
                     print 'Moving yields to instructions!'
                     self._move_to_instructions(self.rec,'yields')
                 else:
                     self.rec['yields'] = yields
+                    self.rec['yield_unit'] = yield_unit
         if self.rec.has_key('servings'):
             servs=self.convert_str_to_num(self.rec['servings'])
             if servs != None:
-                #self.rec['servings'] = str(servs)
                 self.rec['yields'] = float(servs)
                 self.rec['yield_unit'] = gettext.ngettext('serving',
                                                           'servings',
                                                           servs)
+                del self.rec['servings']
             else:
                 self._move_to_instructions(self.rec,'servings')
         # Check preptime and cooktime
@@ -267,6 +268,17 @@ class Importer (SuspendableThread):
                 _("Imported %s of %s recipes.")%(self.count,self.total)
                 )
                       
+    def parse_yields (self, str):
+        '''Parse number and field.'''
+        m = re.match("([0-9/. ]+)",str)
+        if m:
+            num = m.groups()[0]
+            num = convert.frac_to_float(num)
+            unit = str[m.end():].strip()
+            return num,unit
+        else:
+            return None,None
+
     def convert_str_to_num (self, str):
         """Return a numerical servings value"""
         timeaction = TimeAction('importer.convert_str_to_num',10)
