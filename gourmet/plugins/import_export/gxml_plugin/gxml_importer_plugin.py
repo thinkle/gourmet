@@ -15,7 +15,7 @@ test_dir = os.path.split(test_dir)[0] # one back... src/lib/plugins/import_expor
 test_dir = os.path.split(test_dir)[0] # one back... src/lib/plugins/
 test_dir = os.path.split(test_dir)[0] # one back... src/lib/
 test_dir = os.path.split(test_dir)[0] # one back... src/
-test_dir = os.path.join(test_dir,'tests','recipe_files')
+test_dir = os.path.join(test_dir,'test','recipe_files')
 
 class GxmlImportTester:
 
