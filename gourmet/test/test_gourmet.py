@@ -27,7 +27,7 @@ for desktop_file in glob.glob('../plugins/*plugin.in') + glob.glob('../plugins/*
     maybe_intltool(desktop_file)
 
 sys.path = ['../../'] + sys.path
-sys.argv.append('--gourmet-directory=%s'%os.path.abspath('/tmp/asdfqwer122'))
+sys.argv.append('--gourmet-directory=%s'%os.tempnam())
 # No longer necessary
 #sys.argv.append('--data-directory=%s'%os.path.abspath('../data/'))
 #sys.argv.append('--glade-directory=%s'%os.path.abspath('../glade/'))
@@ -45,6 +45,7 @@ import gourmet.exporters.test_exportManager
 import unittest
 testsuite = unittest.TestSuite()
 for module in [
+        
     gourmet.importers.test_importManager,    
     gourmet.exporters.test_exportManager,
     gourmet.importers.test_interactive_importer,
@@ -56,7 +57,9 @@ for module in [
             module
             )
         )
-#testsuite.addTest(gourmet.backends.test_db.suite)
+# We have to run the DB tests last as they kill all plugins
+testsuite.addTest(gourmet.backends.test_db.suite)
+
 tr = unittest.TestResult()
 testsuite.run(tr)
 if tr.wasSuccessful():
