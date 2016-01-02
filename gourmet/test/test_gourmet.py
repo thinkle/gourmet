@@ -23,25 +23,20 @@ def maybe_intltool (fname):
         ):
         os.system('intltool-merge -d i18n/ %s %s'%(fname, to_name))
 
-for desktop_file in glob.glob('lib/plugins/*plugin.in') + glob.glob('lib/plugins/*/*plugin.in'):
+for desktop_file in glob.glob('../plugins/*plugin.in') + glob.glob('../plugins/*/*plugin.in'):
     maybe_intltool(desktop_file)
 
-if os.path.exists('foo'):
-    os.remove('foo/gourmet')
-    os.rmdir('foo')
-
-os.mkdir('foo')
-os.symlink(os.path.abspath('lib'),'foo/gourmet')
-sys.path = [os.path.abspath('foo')] + sys.path
+sys.path = ['../../'] + sys.path
 sys.argv.append('--gourmet-directory=%s'%os.path.abspath('/tmp/asdfqwer122'))
-sys.argv.append('--data-directory=%s'%os.path.abspath('../data/'))
-sys.argv.append('--glade-directory=%s'%os.path.abspath('../glade/'))
-sys.argv.append('--image-directory=%s'%os.path.abspath('../images/'))
+# No longer necessary
+#sys.argv.append('--data-directory=%s'%os.path.abspath('../data/'))
+#sys.argv.append('--glade-directory=%s'%os.path.abspath('../glade/'))
+#sys.argv.append('--image-directory=%s'%os.path.abspath('../images/'))
+# End no longer necessary stuff
 import gourmet.gglobals
-sys.argv = sys.argv[:-4]
+sys.argv = sys.argv[:-1]
 import gourmet.backends.test_db
 
-#import gourmet.test_reccard
 import gourmet.importers.test_interactive_importer
 import gourmet.importers.test_importer
 import gourmet.importers.test_importManager
@@ -61,7 +56,7 @@ for module in [
             module
             )
         )
-testsuite.addTest(gourmet.backends.test_db.suite)
+#testsuite.addTest(gourmet.backends.test_db.suite)
 tr = unittest.TestResult()
 testsuite.run(tr)
 if tr.wasSuccessful():
