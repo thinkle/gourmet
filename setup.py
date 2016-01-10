@@ -279,6 +279,7 @@ result = setup(
     license = version.license,
     packages = ['gourmet',
                 'gourmet.backends',
+                'gourmet.util',
                 'gourmet.defaults',
                 'gourmet.gtk_extras',
                 'gourmet.importers',
