@@ -21,7 +21,14 @@ class EpubExporterPlugin (ExporterPlugin):
             )
 
     def do_single_export (self, args)    :
-        print "Single export not supported!"
+        e = epub_exporter.website_exporter(
+            args['rd'],
+            [args['rec']],
+            args['out'],
+            mult=args['mult'],
+            change_units=args['change_units'],
+            conv=args['conv'])
+        e.run()
 
     def run_extra_prefs_dialog (self):
         pass
