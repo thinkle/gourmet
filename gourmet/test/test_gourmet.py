@@ -56,7 +56,7 @@ for module in [
             module
             )
         )
-#testsuite.addTest(gourmet.backends.test_db.suite)
+testsuite.addTest(gourmet.backends.test_db.suite)
 tr = unittest.TestResult()
 testsuite.run(tr)
 if tr.wasSuccessful():
