@@ -2614,9 +2614,9 @@ class IngredientTreeUI:
         """Handed a new unit and an ingredient, we decide whether to convert and return:
         None (don't convert) or Amount (new amount)
         Message (message for our user) or None (no message for our user)"""
-        key=ingdict['ingkey']
-        old_unit=ingdict['unit']
-        old_amt=ingdict['amount']
+        key=ingdict.get('ingkey',None)
+        old_unit=ingdict.get('unit',None)
+        old_amt=ingdict.get('amount',None)
         if type(old_amt)==str:
             old_amt = convert.frac_to_float(old_amt)
         density=None
