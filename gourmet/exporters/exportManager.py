@@ -155,8 +155,9 @@ class ExportManager (plugin_loader.Pluggable):
             if setup_gui:
                 tmg = get_thread_manager_gui()
                 tmg.register_thread_with_dialog(_('Export')+' ('+myexp.label+')',
-                                                _('Recipes successfully exported to <a href="file:///%s">%s</a>')%(fn,fn),
                                                 exporterInstance)
+                exporterInstance.connect('completed', tmg.notification_thread_done,
+                    _('Recipes successfully exported to <a href="file:///%s">%s</a>')%(fn,fn))
                 tmg.show()
             print 'Return exporter instance'
             return exporterInstance        

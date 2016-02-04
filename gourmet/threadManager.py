@@ -244,8 +244,36 @@ class ThreadManagerGui:
     def response (self, dialog, response):
         if response==gtk.RESPONSE_CLOSE:
             self.close()
-        
-    def register_thread_with_dialog (self, description, done_msg, thread):
+
+    def importer_thread_done(self, thread):
+        # The following logic allows different messages to be displayed
+        # depending on if a recipe was actually imported or if the user
+        # cancelled the request.
+        if (len(thread.added_recs) >= 2):
+            done_message = _("Recipes successfully imported")
+        elif (len(thread.added_recs) == 1):
+            done_message = _("Recipe successfully imported")
+        elif (len(thread.added_recs) == 0):
+            done_message = _("Import Unsuccessful")
+        self.notification_thread_done(thread, done_message)
+
+    def notification_thread_done(self, thread, message):
+        infobox = gtk.InfoBar()
+        infobox.set_message_type(gtk.MESSAGE_INFO)
+        infobox.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
+        infobox.connect('response', lambda ib, response_id: ib.hide())
+        infobox.show_all()
+        self.messagebox.pack_start(infobox)
+
+        from gourmet.gglobals import launch_url
+        l = gtk.Label()
+        l.set_markup(message)
+        l.connect('activate-link',lambda lbl, uri: launch_url(uri))
+        l.show()
+        infobox.get_content_area().add(l)
+        self.messagebox.show()
+
+    def register_thread_with_dialog (self, description, thread):
         threadbox = gtk.InfoBar()
         threadbox.set_message_type(gtk.MESSAGE_INFO)
         pb = gtk.ProgressBar()
@@ -261,9 +289,7 @@ class ThreadManagerGui:
         threadbox.get_content_area().add(vbox)
         threadbox.show_all()
         self.messagebox.pack_start(threadbox)
-
-        # This is a somewhat dirty hack.
-        threadbox.done_msg = done_msg
+        self.messagebox.show()
 
         #for b in threadbox.buttons: b.show()
         thread.connect('completed',self.thread_done,threadbox)
@@ -298,13 +324,7 @@ class ThreadManagerGui:
         pb.set_percentage(1)
         for widget in threadbox.get_content_area().get_children()[0]:
             widget.hide()
-
-        from gourmet.gglobals import launch_url
-        l = gtk.Label()
-        l.set_markup(threadbox.done_msg)
-        l.connect('activate-link',lambda lbl, uri: launch_url(uri))
-        l.show()
-        threadbox.get_content_area().add(l)
+        threadbox.hide()
 
     def progress_update (self, thread, perc, txt, pb):
         if perc >= 0.0:
