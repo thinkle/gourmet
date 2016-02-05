@@ -159,6 +159,7 @@ class ImportManager (plugin_loader.Pluggable):
         '''
         try:
             importer = getattr(importer_plugin,method)(*method_args)
+            self.setup_notification_message(importer)
         except ImportFileList, ifl:
             # recurse with new filelist...
             return self.import_filenames(ifl.filelist)
@@ -174,7 +175,11 @@ class ImportManager (plugin_loader.Pluggable):
                 self.setup_thread(importer, label)
             print 'do_importer returns importer:',importer
             return importer
-                
+
+    def setup_notification_message(self, importer):
+        tmg = get_thread_manager_gui()
+        importer.connect('completed',tmg.importer_thread_done)
+
     @plugin_loader.pluggable_method
     def follow_up (self, threadmanager, importer):
         if hasattr(importer,'post_run'):
@@ -187,9 +192,7 @@ class ImportManager (plugin_loader.Pluggable):
         tm.add_thread(importer)
         tmg = get_thread_manager_gui()
         tmg.register_thread_with_dialog(label,
-                                        _('Recipes successfully imported'),
                                         importer)
-        tmg.show()
         if connect_follow_up:
             importer.connect('completed',
                              self.follow_up,
