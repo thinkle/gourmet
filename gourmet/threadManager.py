@@ -26,6 +26,7 @@
 #
 #
 from gettext import gettext as _
+from gettext import ngettext
 import threading, gtk, pango, gobject, time
 gobject.threads_init()
 
@@ -249,10 +250,10 @@ class ThreadManagerGui:
         # The following logic allows different messages to be displayed
         # depending on if a recipe was actually imported or if the user
         # cancelled the request.
-        if (len(thread.added_recs) >= 2):
-            done_message = _("Recipes successfully imported")
-        elif (len(thread.added_recs) == 1):
-            done_message = _("Recipe successfully imported")
+        if (len(thread.added_recs) > 0):
+            done_message = ngettext("Recipe successfully imported",
+                                    "Recipes successfully imported",
+                                    len(thread.added_recs))
         elif (len(thread.added_recs) == 0):
             done_message = _("Import Unsuccessful")
         self.notification_thread_done(thread, done_message)
