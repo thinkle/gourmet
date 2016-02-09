@@ -63,7 +63,7 @@ class RecipeBrowserView (gtk.IconView):
         return attr_to_icon.get(itm,attr_to_icon['category'])
 
     def get_pixbuf (self, attr,val):
-        if attr=='category':            
+        if attr=='category':
             tbl = self.rd.recipe_table.join(self.rd.categories_table)
             col = self.rd.categories_table.c.category
             if hasattr(self,'category_images'):
@@ -142,7 +142,8 @@ class RecipeBrowserView (gtk.IconView):
                 searches.append({'column':attr,'search':val,'operator':'='})
             else:
                 searches.append({'column':attr,'search':val})
-        for recipe in self.rd.search_recipes(searches):
+        for recipe in sorted(self.rd.search_recipes(searches),
+                             key=lambda recipe_tuple: recipe_tuple[1].upper()):
             pb = get_recipe_image(recipe)
             m.append((recipe.id,recipe.title,pb,None))
 
