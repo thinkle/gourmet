@@ -366,7 +366,7 @@ class Pluggable:
     def remove_hook (self, type, name, hook):
         if type==PRE: hookdic = self.pre_hooks
         else: hookdic = self.post_hooks
-        del hookdic[name]
+        hookdic.pop(name, None)
 
     def get_plugin_by_module (self, module):
         for p in self.plugins:
