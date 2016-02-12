@@ -31,6 +31,7 @@
 import Undo, gtk, gobject, types
 import plugin_loader
 from gtk_extras import fix_action_group_importance
+import sqlalchemy
 
 class Plugin:
     pass
@@ -234,7 +235,10 @@ class DatabasePlugin (StandardPlugin):
         self.db = db
         if db._created:
             # For creation after DB is initialized...
-            self.create_tables()
+            try:
+                self.create_tables()
+            except sqlalchemy.exc.InvalidRequestError as error:
+                print("An InvalidRequestError was caught: {0}".format(error.args, error.message))
             
             self.db.metadata.create_all()
             db.update_plugin_version(self)
