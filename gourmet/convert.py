@@ -65,6 +65,8 @@ class Converter:
                   # hrs = abbreviation for hours
                   ('hours',[_('hrs.'),'hrs','hr','h'] + [ngettext('hour','hours',n) for n in range(5)]),
                   ('days',[ngettext('day','days',n) for n in range(5)]),
+                  ('weeks',[ngettext('week','weeks',n) for n in range(5)]),
+                  ('months',[ngettext('month','months',n) for n in range(5)]),
                   ('years',[ngettext('year','years',n) for n in range(5)]),
                   #('decades',[ngettext('decade','decades',n) for n in range(5)]),
                   #('centuries',[ngettext('century','centuries',n) for n in range(5)]),
