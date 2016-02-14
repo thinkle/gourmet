@@ -837,6 +837,8 @@ def fractify (decimal, divisor, approx=0.01, fractions=FRACTIONS_NORMAL):
     fraction. Otherwise, return False.
     """
     dividend = integerp(decimal*divisor)
+    if dividend == divisor:
+        return 1
     if dividend:
         if fractions==FRACTIONS_ASCII:
             return "%s/%s"%(dividend,divisor)
@@ -879,6 +881,9 @@ def float_to_frac (n, d=[2,3,4,5,6,8,10,16],approx=0.01,fractions=FRACTIONS_NORM
             flag = False
             for div in d:
                 f = fractify(rem,div,approx=approx,fractions=fractions)
+                if f==1:
+                    i = int(i) + 1
+                    return "%s.00" % i
                 if f:
                     return " ".join([i,f]).strip()
              # use locale-specific metric formatting if fractions don't work
