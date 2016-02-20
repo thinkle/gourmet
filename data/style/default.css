@@ -1,10 +1,19 @@
-div.recipe, div.index { font-style: Times, Serif; font-size: 12pt; margin-left: 7%; margin-right: 10%; background-color: #ffe; padding: 1em; margin-top: 1em;}
-div.recipe img {float: right; padding: 1em}
-body {background-color: #666}
+body {background-color: #3E2723; color: #fff}
+div.recipe, div.index { font-family: Times, serif; font-size: 10pt; margin: auto; max-width: 960px; background-color: #FFF8E1; padding: 1em; margin-top: 1em; color: rgba(0,0,0,0.7)}
+
+div.recipe img {border-radius: 10%; height: 200px; float: right;}
+div.recipe img:hover {border: 1px solid black;}
+foo {height: initial; position: absolute; top: 10px; left: 10px}
 span.label { font-weight: bold }
-p.title { font-size: 120%; text-align: center}
-p.title span.label {display: none}
+
+h3 {font-family: Calibri, Sans-Serif; font-size: 120%; font-weight: bold; color: #6d4c41; border-bottom: 1px solid #ffa000; margin-top: 0px; margin-bottom: 0px;}
+
+
 div.header p {margin-top: 0; margin-bottom: 0.2em}
-div.ing { padding: 1em; border: solid 1px; background-color: #eef}
-}
+div.ing { padding: 1em; background-color: #FFE57F}
+ul.ing { margin-top: 0px; padding-left: 0px; color: rgba(0,0,0,1); font-size: 100%;}
 li.ing { list-style: none; border-top: 0.3em }
+div.header p.title { font-family: Calibri, Sans-Serif; font-size: 35pt; font-weight: bold; color: #3E2723; border-bottom: 8px solid #ff6f00; min-height: 200px; vertical-align: bottom; margin-bottom: 20px; position: relative; padding-top: 30px}
+div.header p.title span.label {display: none}
+div.recipe div {margin-bottom: 20px;}
+div.recipe div p {margin-top: 0}
