@@ -270,11 +270,19 @@ class Importer (SuspendableThread):
                       
     def parse_yields (self, str):
         '''Parse number and field.'''
-        m = re.match("([0-9/. ]+)",str)
+        m = re.match("(?P<prefix>\w+\s+)?(?P<num>[0-9/. ]+)(?P<unit>\s*\w+)?",str)
         if m:
-            num = m.groups()[0]
+            num = m.group('num')
             num = convert.frac_to_float(num)
-            unit = str[m.end():].strip()
+            unit = (m.group('unit') or '').strip()
+            prefix = (m.group('prefix') or '').strip()
+            if not unit:
+                if prefix in ['Serves','Feeds']:
+                    unit = 'servings'
+            elif prefix:
+                if prefix not in ['Makes','Yields']:
+                    print 'Warning: parse_yields ignoring prefix, "%(prefix)s" in "%(str)s"'%locals()
+            if not unit: unit='servings' # default/fallback
             return num,unit
         else:
             return None,None
@@ -570,6 +578,22 @@ class RatingConverterTest (unittest.TestCase):
         assert(string_to_rating('4/5 stars')==8)
         assert(string_to_rating('3 1/2 / 5 stars')==7)
         assert(string_to_rating('4/10 stars')==4)
+
+class ImporterTest (unittest.TestCase):
+
+    def setUp (self):
+        self.importer = Importer()
+
+    def testParseSimpleYields (self):
+        assert(self.importer.parse_yields('3 cups')==(3, 'cups'))
+        assert(self.importer.parse_yields('7 servings')==(7,'servings'))
+        assert(self.importer.parse_yields('12 muffins')==(12,'muffins'))
+        assert(self.importer.parse_yields('10 loaves')==(10,'loaves'))
+
+    def testParseComplexYields (self):
+        assert(self.importer.parse_yields('Makes 12 muffins')==(12,'muffins'))
+        assert(self.importer.parse_yields('Makes 4 servings')==(4,'servings'))
+        assert(self.importer.parse_yields('Serves 7')==(7,'servings'))
 
 
 if __name__ == '__main__':
