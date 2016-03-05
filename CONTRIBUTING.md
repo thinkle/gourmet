@@ -36,6 +36,6 @@ Currently, our most pressing issues are:
  * Some way to donate would be also nice (PayPal, gittip.com, Flattr,...?)
 * Bug triaging. We have about [200 open issues](https://github.com/thinkle/gourmet/issues), and some of them are a couple of years old and have already been fixed. Some help in tagging, commenting, and ideally closing bugs is very welcome! (Note that to close a bug, you should really be sure it's okay to do so because you have tested Gourmet to work under the same conditions the bug reporter did.)
 
-Make sure to also check out our upcoming [milestones](https://github.com/thinkle/gourmet/issues/milestones).
+Make sure to also check out our upcoming [milestones](https://github.com/thinkle/gourmet/milestones).
 
 More nifty ideas can be found via the [gsoc-idea label](https://github.com/thinkle/gourmet/issues?labels=gsoc-idea&page=1&state=open).
