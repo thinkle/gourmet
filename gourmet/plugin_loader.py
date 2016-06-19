@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 PRE = 0
 POST = 1
 import gglobals, os.path, glob, sys
@@ -74,7 +76,8 @@ class MasterLoader:
                 debug('Found %s'%ppath,1)
                 plugin_set = PluginSet(ppath)
                 if self.available_plugin_sets.has_key(plugin_set.module):
-                    print 'Ignoring duplicate plugin ',plugin_set.module,'found in ',ppath
+                    print('Ignoring duplicate plugin ', plugin_set.module,
+                          'found in ', ppath)
                 else:
                     self.available_plugin_sets[plugin_set.module] = plugin_set
 
@@ -95,11 +98,11 @@ class MasterLoader:
                 except:
                     import logging
                     import traceback
-                    print 'WARNING: Failed to load plugin %s'%p
+                    print('WARNING: Failed to load plugin %s' % (p, ))
                     self.errors[p] = traceback.format_exc()
                     logging.exception('')
             else:
-                print 'Plugin ',p,'not found'
+                print('Plugin ', p, 'not found')
     
 
     def save_active_plugins (self):
@@ -117,7 +120,7 @@ class MasterLoader:
                 saved.append(plugin_set)
             ofi.close()
         #elif self.active_plugin_sets == self.default_active_plugin_sets:
-        #    print 'No change to plugins, nothing to save.'
+        #    print('No change to plugins, nothing to save.')
 
     def check_dependencies (self, plugin_set):
         if plugin_set.dependencies:
@@ -142,7 +145,8 @@ class MasterLoader:
                         if plugin_set.module in ps.dependencies:
                             depending_on_me.append(ps)
                     except:
-                        print 'Problem checking dependencies of ',ps,ps.Dependencies
+                        print('Problem checking dependencies of ', ps,
+                              ps.Dependencies)
                         raise
         return depending_on_me
 
@@ -172,7 +176,7 @@ class MasterLoader:
         if plugin_set.module in self.active_plugin_sets:
             self.active_plugin_sets.remove(plugin_set.module)
         else:
-            print 'Odd',plugin_set.module,'is not listed as active.'
+            print('Odd', plugin_set.module, 'is not listed as active.')
         if plugin_set.get_module():
             for plugin in plugin_set.plugins:
                 for klass in self.pluggables_by_class.keys():
@@ -204,11 +208,13 @@ class MasterLoader:
                     plugin_instance = self.get_instantiated_plugin(p)
                 except:
                     import traceback
-                    print 'WARNING: Failed to instantiate plugin %s of type %s'%(p,klass)
+                    print('WARNING: Failed to instantiate plugin '
+                          '%s of type %s' % (p, klass))
                     self.errors[p] = traceback.format_exc()                    
                     traceback.print_exc()
                 else:
-                    #print 'Instantiating plugin',p,plugin_instance,'of',klass
+                    # print('Instantiating plugin', p, plugin_instance, 'of',
+                    #       klass)
                     pluggable.plugin_plugin(plugin_instance)
 
     def unregister_pluggable (self, pluggable, klass):
@@ -258,11 +264,11 @@ class PluginSet:
 
             try:
                 self._loaded = __import__(self.module)
-                #print 'Loaded plugin set',self._loaded
-                #print 'plugins=',self._loaded.plugins
+                # print('Loaded plugin set', self._loaded)
+                # print('plugins=', self._loaded.plugins)
             except ImportError,ie:
-                print 'WARNING: Plugin module import failed'
-                print 'PATH:',sys.path
+                print('WARNING: Plugin module import failed')
+                print('PATH:', sys.path)
                 import traceback; traceback.print_exc()
                 self.error = ie
                 return None
@@ -300,7 +306,7 @@ class PluginSet:
                 else:
                     self.props[key]=val
             else:
-                print 'Ignoring line',line
+                print('Ignoring line', line)
         if self.dependencies:
             self.props['Dependencies'] = [d.strip() for d in self.dependencies.split(',')]
 
@@ -314,7 +320,7 @@ class Pluggable:
         A pluggable can take multiple types of sub-classes if it
         likes.
         """
-        #print 'Pluggable.__init__([',plugin_klasses,'])'
+        # print('Pluggable.__init__([',plugin_klasses,'])')
         self.pre_hooks = {} # stores hooks to be run before methods by
                             # method name
         self.post_hooks = {} # stores hooks to be run after methods by
@@ -323,7 +329,7 @@ class Pluggable:
         self.klasses = plugin_klasses
         self.plugins = []
         for klass in self.klasses:
-            #print 'register self ',self,'as pluggable for ',klass
+            # print('register self ', self, 'as pluggable for ', klass)
             self.loader.register_pluggable(self,klass)
 
     def plugin_plugin (self, plugin_instance):
@@ -331,7 +337,7 @@ class Pluggable:
             self.plugins.append(plugin_instance)
             plugin_instance.activate(self)
         except:
-            print 'WARNING: PLUGIN FAILED TO LOAD',plugin_instance
+            print('WARNING: PLUGIN FAILED TO LOAD', plugin_instance)
             import traceback; traceback.print_exc()
 
     def destroy (self):
@@ -346,7 +352,7 @@ class Pluggable:
                 assert(isinstance(args,tuple))
                 assert(isinstance(kwargs,dict))
             except:
-                print 'WARNING',hook,'did not return args,kwargs'
+                print('WARNING', hook, 'did not return args,kwargs')
             else:
                 args,kwargs = new_args,new_kwargs
         return args,kwargs
@@ -379,7 +385,7 @@ class DependencyError (Exception):
     def __init__ (self, pluginset, missing_dependencies):
         self.plugin_set = pluginset
         self.dependencies = missing_dependencies
-        print self.plugin_set,'requires but did not find',self.dependencies
+        print(self.plugin_set, 'requires but did not find', self.dependencies)
         
     def __repr__ (self):
         return ('<DependencyError '
@@ -400,9 +406,9 @@ def pluggable_method (f):
 if __name__ == '__main__':
     class TestPlugin (plugin.Plugin):
         def activate ():
-            print 'Activate!'
+            print('Activate!')
         def deactivate ():
-            print 'Deactivate!'
+            print('Deactivate!')
     
     class UniversalPluggable (Pluggable):
         def __init__ (self):
@@ -410,4 +416,4 @@ if __name__ == '__main__':
 
     up = UniversalPluggable()
     #up.loader.activate_plugin(
-    print up.plugins
+    print(up.plugins)

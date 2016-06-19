@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import PluginPlugin
 import schema_org_parser
 from schema_org_parser import Excluder

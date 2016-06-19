@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import print_function
+
 import gtk.gdk
 import os
 from gourmet.gdebug import debug
@@ -54,7 +56,7 @@ class WindowSaver (WidgetSaver):
             if self.dictionary.has_key(p) and self.dictionary[p]:
                 debug('applying %s %s'%(f,self.dictionary[p]),3)
                 #if os.name=='nt' and p=='position' and self.dictionary['position'][1]<20:
-                #    #print 'FIDDLING WITH WINDOW FOR WINDOWS'
+                #    print('FIDDLING WITH WINDOW FOR WINDOWS')
                 #    #self.dictionary[p] = self.dictionary[p][0],20
                 apply(f,self.dictionary[p])
         

@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import print_function
+
 import gtk, gobject, os.path, optionTable, thumbnail, fnmatch,  re
 import pango
 import xml.sax.saxutils
@@ -89,12 +91,12 @@ class ModalDialog (gtk.Dialog):
         self.connect('response',self.response_cb)
 
     def response_cb (self, dialog, response, *params):
-        #print 'response CB ',dialog,response,params
+        # print('response CB ', dialog, response, params)
         if self.responses.has_key(response):
-            #print 'we have a response!'
+            # print('we have a response!')
             self.responses[response]()
         else:
-            print 'WARNING, no response for ',response
+            print('WARNING, no response for ', response)
             
     def setup_expander (self, expander):
             label=expander[0]
@@ -604,7 +606,7 @@ class SimpleFaqDialog (ModalDialog):
                   jump_to = None,
                   parent=None,
                   modal=True):
-        #print faq_file
+        # print(faq_file)
         ModalDialog.__init__(self,title=title,parent=parent,modal=modal,cancel=False)
         self.set_default_size(950,500)        
         self.textview = gtk.TextView()
@@ -724,7 +726,7 @@ class SimpleFaqDialog (ModalDialog):
         if not itr:
             itr = self.textbuf.get_iter_at_offset(0)
         match_start,match_end=itr.forward_search(txt,gtk.TEXT_SEARCH_VISIBLE_ONLY)
-        #print 'match_start = ',match_start
+        # print('match_start = ', match_start)
         self.textview.scroll_to_iter(match_start,False,use_align=True,yalign=0.1)
         
 class RatingsConversionDialog (ModalDialog):
@@ -1179,7 +1181,7 @@ For example, you could enter 2-4 or 1 1/2 - 3 1/2.
 
 
 if __name__ == '__main__':
-    print 'Got',saveas_file('Saveas')
+    print('Got', saveas_file('Saveas'))
     w=gtk.Window()
     w.connect('delete_event',gtk.main_quit)
     b=gtk.Button("show dialog (modal)")
@@ -1194,12 +1196,12 @@ if __name__ == '__main__':
          pd.run()
     b.connect('clicked',run_prefs)
     def show_options (options):
-        print options
+        print(options)
     b2=gtk.Button("show dialog (not modal)")
     vb=gtk.VBox()
     def msg(*args):
         for a in args:
-            print a
+            print(a)
     char_measure = ""
     for n in range(10): char_measure="%s %s"%(char_measure,n)
     char_measure = char_measure * 50
@@ -1243,13 +1245,13 @@ if __name__ == '__main__':
                                             ['Web Page (HTML)',['text/html'],['*.htm','*.HTM','*.html','*.HTML']],
                                             ['Mealmaster File',['text/mmf'],['*.mmf','*.MMF']]]))],
         ]:
-        print b,f,s
+        print(b, f, s)
         b = gtk.Button(s)
         def wrap (f):
             def _ (*args,**kwargs):
-                print 'Doing ',f
-                print 'f returns:',f()
-                print 'Done'
+                print('Doing ', f)
+                print('f returns:', f())
+                print('Done')
             return _
         b.connect('clicked',wrap(f))
         vb.add(b)

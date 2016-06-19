@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, gobject
 import re, string
 from nutritionModel import NutritionModel

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.defaults import lang as defaults
 import gtk
 ingredients_to_check = defaults.keydic.keys()
@@ -35,7 +37,7 @@ rd.changed=True
 rd.save()
 
 ofi = '/tmp/locale_specific_nutritional_info.txt'
-print 'Writing data to ',ofi
+print('Writing data to ', ofi)
 outfi = file(ofi,'w')
 outfi.write('{')
 for k in ingredients_to_check:
@@ -46,7 +48,7 @@ for k in ingredients_to_check:
             outfi.write('("%s",%s),'%(conv.unit,conv.factor))
         outfi.write(']),\n')
     else:
-        print 'No information for ',k
+        print('No information for ', k)
 outfi.write('}')
 outfi.close()
 

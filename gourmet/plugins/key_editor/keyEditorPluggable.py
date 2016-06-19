@@ -3,6 +3,8 @@
 # key. This will be used to show info in both the key editor and
 # recipe card view and possibly to allow editing etc.
 
+from __future__ import print_function
+
 from gourmet.plugin_loader import Pluggable
 from gourmet.plugin import PluginPlugin
 from gourmet import gdebug

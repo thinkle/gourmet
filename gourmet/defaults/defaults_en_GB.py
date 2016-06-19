@@ -2,6 +2,8 @@
 #
 ## we set up default information.
 
+from __future__ import print_function
+
 ## first, easy to maintain lists which can eventually be moved to
 ## files.
 

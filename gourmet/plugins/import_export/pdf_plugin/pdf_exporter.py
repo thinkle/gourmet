@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, gobject
 import reportlab
 from reportlab.pdfbase import pdfmetrics
@@ -92,14 +94,15 @@ class Star (platypus.Flowable):
         p = canvas.beginPath()
         inner = False # Start on top
         is_origin = True
-        #print 'Drawing star with radius',outer_length,'(moving origin ',origin,')'
+        # print('Drawing star with radius', outer_length, '(moving origin ',
+        #       origin, ')')
         for theta in range(0,360,360/(points*2)):
             if 0 < theta < 180: continue
             if inner: r = inner_length
             else: r = outer_length
             x = (math.sin(math.radians(theta)) * r)
             y = (math.cos(math.radians(theta)) * r)
-            #print 'POINT:',x,y
+            # print('POINT:', x, y)
             if is_origin:
                 p.moveTo(x,y)
                 is_origin = False
@@ -119,13 +122,14 @@ class Star (platypus.Flowable):
         p = canvas.beginPath()
         inner = False # Start on top
         is_origin = True
-        #print 'Drawing star with radius',outer_length,'(moving origin ',origin,')'
+        # print('Drawing star with radius', outer_length, '(moving origin ',
+        #       origin, ')')
         for theta in range(0,360,360/(points*2)):
             if inner: r = inner_length
             else: r = outer_length
             x = (math.sin(math.radians(theta)) * r)
             y = (math.cos(math.radians(theta)) * r)
-            #print 'POINT:',x,y
+            # print('POINT:', x, y)
             if is_origin:
                 p.moveTo(x,y)
                 is_origin = False
@@ -173,8 +177,8 @@ class FiveStars (Star):
                 # Y coordinate
                 ((n < 1 and self.height* 0.5) or 0)
                 )
-            #print 'origin = ',#origin,'or',
-            #print origin[0]/self.height,origin[1]/self.height
+            # print('origin = ', origin, 'or', end='')
+            # print(origin[0] / self.height, origin[1] / self.height)
             #self.draw_circle(origin[0],origin[1],r)
             self.draw_star(points=5,origin=origin,inner_length=r/2,outer_length=r)
             if self.filled - n == 0.5:
@@ -335,15 +339,15 @@ class PdfWriter:
             return platypus.Paragraph(unicode(xmltxt),style)
         except UnicodeDecodeError:
             try:
-                #print 'WORK AROUND UNICODE ERROR WITH ',txt[:20]
+                # print('WORK AROUND UNICODE ERROR WITH ', txt[:20])
                 # This seems to be the standard on windows.
                 platypus.Paragraph(xmltxt,style)
             except:
-                print 'Trouble with ',xmltxt
+                print('Trouble with ', xmltxt)
                 raise
         except:
             # Try escaping text...
-            print 'TROUBLE WITH',txt[:20],'TRYING IT ESCAPED...'
+            print('TROUBLE WITH', txt[:20], 'TRYING IT ESCAPED...')
             return self.make_paragraph(xml.sax.saxutils.escape(txt),
                                 style,
                                 attributes,
@@ -387,7 +391,7 @@ class PdfWriter:
         t = self.txt[:]
         try: self.doc.build(self.txt)
         except:
-            print 'Trouble building',t[:20]
+            print('Trouble building', t[:20])
             raise
         
 class PdfExporter (exporter.exporter_mult, PdfWriter):
@@ -1020,7 +1024,9 @@ class PdfPrefTable (PdfPrefGetter):
         self.widg.show_all()
 
 def get_pdf_prefs (defaults=None):
-    if defaults: print 'WARNING: ignoring provided defaults and using prefs system instead'
+    if defaults:
+        print('WARNING: ignoring provided defaults and using prefs system '
+              'instead')
     pdf_pref_getter = PdfPrefGetter()
     return pdf_pref_getter.run()
             
@@ -1044,7 +1050,8 @@ if __name__ == '__main__':
     
     from tempfile import tempdir
     import os.path
-    #opts = get_pdf_prefs(); print opts
+    # opts = get_pdf_prefs()
+    # print(opts)
     test_3_x_5()
     
     #star_file = file(os.path.join(tempdir,'star.pdf'),'wb')
@@ -1093,7 +1100,7 @@ if __name__ == '__main__':
         return os.path.join(tempdir,'format.pdf')
 
     def test_3_x_5 ():
-        print 'Test 3x5 layout'
+        print('Test 3x5 layout')
         sw = PdfWriter()
         f = file(os.path.join(tempdir,'foo.pdf'),'wb')
         sw.setup_document(f,
@@ -1146,17 +1153,17 @@ if __name__ == '__main__':
     #    import gnome
     #    gnome.program_init('1.0','Gourmet PDF Exporter Test')
     #except ImportError:
-    #    print 'We must be on windows...'
+    #    print('We must be on windows...')
 
-    #print 'TEST 3x5'
+    # print('TEST 3x5')
     gglobals.launch_url('file://'+test_3_x_5())
     gglobals.launch_url('file://'+test_formatting())
-    #print 'END TEST'
-    #print 'TEST GRM'
+    # print('END TEST')
+    # print('TEST GRM')
     gglobals.launch_url('file://'+test_grm_export())
-    #print 'TEST CUSTOM GRM'
+    # print('TEST CUSTOM GRM')
     #gglobals.launch_url('file://'+test_grm_export(get_pdf_prefs({'page_size':_('A4'),'page_layout':'2 Columns'})))
     #ppg = PdfPrefGetter()
-    #print ppg.run()
-    #print 'END TEST'
+    # print(ppg.run())
+    # print('END TEST')
     

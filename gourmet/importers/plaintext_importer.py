@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import importer, re, string
 from gourmet import check_encodings
 from gourmet.gdebug import debug
@@ -22,7 +24,7 @@ class TextImporter (importer.Importer):
     def pre_run (self):
         self.lines = check_encodings.get_file(self.fn)
         self.total_lines = len(self.lines)
-        print 'we have ',self.total_lines,'lines in file',self.fn
+        print('we have ', self.total_lines, 'lines in file', self.fn)
         
     def do_run (self):
         if not hasattr(self,'lines'):

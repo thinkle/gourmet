@@ -3,7 +3,9 @@
 # we set up default information for our locale (Spanish)
 # Translators should use this file as the basis of their translation.
 # Copy this file and rename it for you locale.
-#
+
+from __future__ import print_function
+
 # Language: Spanish
 # Translator: Thomas M. Hinkle
 # Last-updated: 4/27/05

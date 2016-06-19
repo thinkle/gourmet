@@ -19,6 +19,8 @@
 # Largely based on hypertext.py example in pygtk docs by
 # Maik Hertha <maik.hertha@berlin.de>
 
+from __future__ import print_function
+
 import pango,gtk,gobject
 import re, xml.sax.saxutils
 from TextBufferMarkup import PangoBuffer
@@ -70,7 +72,9 @@ class LinkedPangoBuffer (PangoBuffer):
             tags = list(tags)
             tags.append(new_tag)
         elif match:
-            print 'Funny',text,'looks like a link, but is not in markup_dict',self.markup_dict
+            print('Funny', text,
+                  'looks like a link, but is not in markup_dict',
+                  self.markup_dict)
         PangoBuffer.insert_with_tags(self,itr,text,*tags)
 
 class LinkedTextView (gtk.TextView):
@@ -185,7 +189,7 @@ class LinkedTextView (gtk.TextView):
 
 if __name__ == '__main__':
     def print_link (tv,l):
-        print l
+        print(l)
     tv = LinkedTextView()
     tv.connect('link-activated',print_link)    
     w = gtk.Window()

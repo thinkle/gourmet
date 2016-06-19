@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, gobject, pango
 import gourmet.gtk_extras.pageable_store as pageable_store
 import gourmet.gglobals as gglobals
@@ -285,7 +287,7 @@ class NutStore (pageable_store.PageableViewStore):
         try:
             return [[r] + [self._get_value_(r,col) for col in self.columns[1:]] for r in self.view[bottom:top]]
         except:
-            print '_get_slice_ failed with',bottom,top
+            print('_get_slice_ failed with', bottom, top)
             raise
         
         

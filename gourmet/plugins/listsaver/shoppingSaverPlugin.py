@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import ShoppingListPlugin
 import gtk
 import gourmet.recipeManager, gourmet.GourmetRecipeManager, time
@@ -40,7 +42,7 @@ class ShoppingListSaver (ShoppingListPlugin):
         rr = sg.recs
         rd = gourmet.recipeManager.get_recipe_manager()
         rg = gourmet.GourmetRecipeManager.get_application()
-        #print rr
+        # print(rr)
         rec = rd.add_rec(dict(title=_('Menu for %s (%s)')%(time.strftime('%x'),
                                                          time.strftime('%X')),
                          category=_('Menu')))

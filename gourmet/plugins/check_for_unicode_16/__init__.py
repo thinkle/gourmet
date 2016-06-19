@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import ToolPlugin
 from gourmet.prefs import get_prefs
 

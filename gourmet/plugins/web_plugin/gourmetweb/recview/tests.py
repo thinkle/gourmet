@@ -5,6 +5,8 @@ unittest). These will both pass when you run "manage.py test".
 Replace these with more appropriate tests for your application.
 """
 
+from __future__ import print_function
+
 from django.test import TestCase
 
 class SimpleTest(TestCase):

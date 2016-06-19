@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, gobject, os.path
 import gourmet.gglobals as gglobals
 import gourmet.convert as convert

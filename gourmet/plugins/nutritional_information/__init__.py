@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import data_plugin, main_plugin, reccard_plugin, export_plugin, shopping_plugin
 import nutPrefsPlugin
 plugins = [

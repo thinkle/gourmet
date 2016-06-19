@@ -25,6 +25,9 @@
 # processes.
 #
 #
+
+from __future__ import print_function
+
 from gettext import gettext as _
 from gettext import ngettext
 import threading, gtk, pango, gobject, time
@@ -42,7 +45,8 @@ class _IdleObject(gobject.GObject):
         gobject.GObject.__init__(self)
 
     def emit(self, *args):
-        if args[0]!='progress': print 'emit',args
+        if args[0] != 'progress':
+            print('emit', args)
         gobject.idle_add(gobject.GObject.emit,self,*args)
 
 class Terminated (Exception):
@@ -171,7 +175,7 @@ class ThreadManager:
         try:
             assert(isinstance(thread,SuspendableThread))
         except AssertionError:
-            print 'Class',thread,type(thread),'is not a SuspendableThread'
+            print('Class', thread, type(thread), 'is not a SuspendableThread')
             raise
         if isinstance(thread,NotThreadSafe):
             raise TypeError("Thread %s is NotThreadSafe"%thread)

@@ -16,6 +16,7 @@
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 ### USA 
 
+from __future__ import print_function
 
 import validatingEntry
 import gtk, gobject
@@ -134,7 +135,7 @@ if __name__ == '__main__':
     hb.pack_start(l)
     ne = NumberEntry(default_to_fractions=True); ne.show()
     def foo (widget):
-        print 'Changed!',widget,widget.get_value()
+        print('Changed!', widget, widget.get_value())
     ne.connect('changed',foo)
     hb.pack_start(ne)
     hb.show()

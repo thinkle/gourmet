@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, gobject, os.path
 from gourmet.gglobals import DEFAULT_ATTR_ORDER, REC_ATTR_DIC
 from gourmet.ImageExtras import get_pixbuf_from_jpg

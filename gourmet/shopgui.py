@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import print_function
+
 import gtk, gobject, pango, sys, os.path, time, os, string
 import recipeManager, convert, reccard, prefs
 from gtk_extras import WidgetSaver, mnemonic_manager

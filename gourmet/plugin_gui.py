@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import plugin_loader
 import gtk, gobject
 import gtk_extras.dialog_extras as de
@@ -101,11 +103,11 @@ class PluginChooser:
                 try:
                     self.loader.check_dependencies(plugin_set)
                 except plugin_loader.DependencyError, dep_error:
-                    print 'Missing dependencies:',dep_error.dependencies
+                    print('Missing dependencies:', dep_error.dependencies)
                     for row in ls:
                         ps = row[1]
                         if ps.module in dep_error.dependencies and not row[0]:
-                            print 'Activate dependency ',ps.module
+                            print('Activate dependency ', ps.module)
                             self.do_change_plugin(ps,True, ls)
                             row[0] = True
                 self.loader.activate_plugin_set(plugin_set)

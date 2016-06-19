@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, gobject, backends.db, re, pickle
 from gglobals import uibase
 from gtk_extras import WidgetSaver
@@ -218,7 +220,7 @@ class ShopEditor:
         if search_by_str == 'Key':
             self.search_by = self.KEY_COL
         else:
-            #print self.treeModel[-1][self.ITEM_COL]
+            # print(self.treeModel[-1][self.ITEM_COL])
             self.search_by = self.CAT_COL
         self.filteredModel.refilter()
 

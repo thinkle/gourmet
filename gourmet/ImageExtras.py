@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os, os.path, tempfile, gtk, StringIO
 try:
     from PIL import Image
@@ -38,10 +40,10 @@ def get_image_from_string (raw):
     try:
         return Image.open(sfi)
     except:
-        print 'Trouble in image land.'
-        print 'We dumped the offending string here:'
-        print sfi
-        print "But we can't seem to load it..."
+        print('Trouble in image land.')
+        print('We dumped the offending string here:')
+        print(sfi)
+        print("But we can't seem to load it...")
 
 def get_string_from_image (image):
     """Convert an image into a string representing its JPEG self"""

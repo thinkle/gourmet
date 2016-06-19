@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import xml.sax
 
 class simpleHandler (xml.sax.ContentHandler):
@@ -39,7 +41,7 @@ class MarkupString (str):
         try:
             xml.sax.parseString("<foobar>%s</foobar>"%str(string),self.handler)
         except:
-            print 'Unable to parse "%s"'%string
+            print('Unable to parse "%s"' % (string, ))
             raise
         self.raw=self.handler.content
 

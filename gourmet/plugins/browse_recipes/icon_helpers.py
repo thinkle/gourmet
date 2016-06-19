@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk.gdk, os.path
 # mentioning PIL explicitly helps py2exe
 try:

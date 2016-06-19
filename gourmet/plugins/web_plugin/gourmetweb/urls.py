@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from django.conf.urls import patterns
 
 # Uncomment the next two lines to enable the admin:

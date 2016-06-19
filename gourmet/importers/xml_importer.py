@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import xml.sax, xml.sax.saxutils, re, sys
 import importer
 from gourmet.gdebug import TimeAction

@@ -1,5 +1,7 @@
 # Django settings for gourmetweb project.
 
+from __future__ import print_function
+
 import os.path
 
 DEBUG = True

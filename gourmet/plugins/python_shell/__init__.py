@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import ToolPlugin
 import gtk
 import ipython_view
@@ -32,7 +34,7 @@ class ConsolePlugin (ToolPlugin):
         v.set_wrap_mode(gtk.WRAP_CHAR)
         sw.add(v)
         def info ():
-            print """Welcome to the interactive shell. You have full access to
+            print("""Welcome to the interactive shell. You have full access to
             the current instance of Gourmet from here, which means of
             course you could really hose your system if you're not
             careful.
@@ -49,7 +51,7 @@ class ConsolePlugin (ToolPlugin):
 
             v - this IPythonView itself
 
-            consolePlugin - the plugin that gave you this tool."""
+            consolePlugin - the plugin that gave you this tool.""")
             
         v.updateNamespace({'app':app,
                            'rd':app.rd,

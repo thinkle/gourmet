@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import urllib, re, tempfile, os.path
 import importer
 import BeautifulSoup
@@ -217,14 +219,18 @@ class BeautifulSoupScraper:
                 if ind < len(ret):
                     return ret[ind]
                 else:
-                    print 'Problem following path.'
-                    print 'I am supposed to get item: ',ind
-                    print 'from: ',ret
-                    print 'instructions were : ',
-                    try: print 'base: ',base
-                    except UnicodeDecodeError: print '(ugly unicodeness)'
-                    try: print 'step: ',step
-                    except UnicodeDecodeError: print '(ugly unicodeness)'
+                    print('Problem following path.')
+                    print('I am supposed to get item: ', ind)
+                    print('from: ', ret)
+                    print('instructions were : ', end=' ')
+                    try:
+                        print('base: ', base)
+                    except UnicodeDecodeError:
+                        print('(ugly unicodeness)')
+                    try:
+                        print('step: ', step)
+                    except UnicodeDecodeError:
+                        print('(ugly unicodeness)')
 
     def store_tag (self, name, tag, method, post_processing=None):
         """Store our tag in our dictionary according to our method."""
@@ -310,14 +316,14 @@ class FancyTextGetter:
         try:
             return unicode(self.text,errors='ignore')
         except:
-            print 'Odd encoding problems with ',self.text
+            print('Odd encoding problems with ', self.text)
             return self.text
             
     def add_tag (self, t):
         for item in t.contents: self.get_text_fancy(item)
 
     def get_text_fancy (self, item):
-        #print 'get_text_fancy looking at:',item
+        # print('get_text_fancy looking at:', item)
         if self.text and hasattr(item,'name'):
             if item.name in self.IGNORE: return
             if item.name in self.IS_BREAK:
@@ -336,11 +342,12 @@ class FancyTextGetter:
                 s = item.string.encode('utf8','replace')
                 self.text += s
             except UnicodeDecodeError:
-                print 'UNICODE DECODING ERROR IN TAG',
+                print('UNICODE DECODING ERROR IN TAG', end=' ')
                 if hasattr(item,'name'):
-                    print item.name
+                    print(item.name)
                 if hasattr(item,'fetchParents'):
-                    print 'CHILD OF: ','<'.join([p.name for p in item.fetchParents()])
+                    print('CHILD OF: ',
+                          '<'.join(p.name for p in item.fetchParents()))
                 
 get_text = FancyTextGetter()
 
@@ -450,9 +457,10 @@ class WebPageImporter (importer.Importer):
         try:
             self.d = scrape_url(self.url, progress=self.prog)
         except:
-            print 'Trouble using default recipe filter to download %s'%self.url
+            print('Trouble using default recipe filter to download %s' % (
+                self.url))
             traceback.print_exc()
-            print 'We will use a generic importer instead.'
+            print('We will use a generic importer instead.')
             self.d = {}
         debug('Scraping url returned %s'%self.d,0)
         do_generic = not self.d
@@ -463,15 +471,15 @@ class WebPageImporter (importer.Importer):
             except:
                 if not self.interactive: raise
                 do_generic = True
-                print """Automated HTML Import failed
+                print("""Automated HTML Import failed
                 ***Falling back to generic import***
 
                 We were attempting to scrape using the following rules:
-                """
-                print self.d
-                print """The following exception was raised:"""
+                """)
+                print(self.d)
+                print("""The following exception was raised:""")
                 traceback.print_exc()
-                print """If you think automated import should have worked for the webpage you
+                print("""If you think automated import should have worked for the webpage you
                 were importing, copy the output starting at "Automated HTML Import failed" into
                 a bug report and submit it at the GitHub site
                 
@@ -479,7 +487,7 @@ class WebPageImporter (importer.Importer):
 
                 Sorry automated import didn't work. I hope you like
                 the new generic web importer!
-                """
+                """)
         if do_generic:
             if not self.interactive:
                 raise Exception("Unable to find importer for %s" % self.url)
@@ -556,12 +564,12 @@ class WebPageImporter (importer.Importer):
                 try:
                     if v: img = get_image_from_tag(v,self.url)
                 except:
-                    print 'Error retrieving image'
-                    print 'tried to retrieve image from %s'%v
+                    print('Error retrieving image')
+                    print('tried to retrieve image from %s' % (v, ))
                 else:
                     if img:
                         self.rec['image'] = img
             else: self.rec[k]=v
-        #print 'COMMITTING RECIPE',self.rec
+        # print('COMMITTING RECIPE', self.rec)
         self.commit_rec()
         if self.prog: self.prog(1,_('Import complete.'))

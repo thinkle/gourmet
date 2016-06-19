@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk
 
 class PageDrawer (gtk.DrawingArea):

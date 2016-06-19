@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import textwrap
 from itertools import islice
 from gourmet import gglobals,  convert
@@ -124,7 +126,7 @@ class mealmaster_exporter (exporter_mult):
             self.ulen=len(unit)
         if len(amount)>self.amtlen:
             self.amtlen=len(amount)
-            #print "DEBUG: %s length %s"%(amount,self.amtlen)
+            # print("DEBUG: %s length %s" % (amount, self.amtlen))
         # we hold off writing ings until we know the lengths
         # of strings since we need to write out neat columns
         if optional: item="%s (optional)"%item

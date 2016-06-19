@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import PluginPlugin
 import re
 
@@ -6,7 +8,7 @@ class AboutDotComPlugin (PluginPlugin):
     target_pluggable = 'webimport_plugin'
 
     def do_activate (self, pluggable):
-        #print 'Activating ',self,'for',pluggable
+        # print('Activating ', self, 'for', pluggable)
         pass
 
     def test_url (self, url, data):

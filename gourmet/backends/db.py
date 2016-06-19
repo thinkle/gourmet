@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import shutil
 import types
 from gourmet.gdebug import debug, TimeAction, debug_decorator
@@ -172,7 +174,7 @@ class RecData (Pluggable):
         # Continue setting up connection...
         if self.filename:
             self.new_db = not os.path.exists(self.filename)
-            #print 'Connecting to file ',self.filename,'new=',self.new_db
+            # print('Connecting to file ', self.filename, 'new=', self.new_db)
         else:
             self.new_db = True # ??? How will we do this now?
         #self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal')
@@ -227,12 +229,12 @@ class RecData (Pluggable):
             #self.base_connection.commit()
             pass
         except IndexError:
-            print 'Ignoring sqlalchemy problem'
+            print('Ignoring sqlalchemy problem')
             import traceback; traceback.print_exc()
 
     def _setup_object_for_table (self, table, klass):
         self.__table_to_object__[table] = klass
-        #print 'Mapping ',repr(klass),'->',repr(table)
+        # print('Mapping ', repr(klass), '->', repr(table))
         if True in [col.primary_key for col in table.columns]:
             sqlalchemy.orm.mapper(klass,table)
         else:
@@ -447,8 +449,8 @@ class RecData (Pluggable):
         backup_file_name = self.filename + '.backup-' + time.strftime('%d-%m-%y')
         while os.path.exists(backup_file_name):
             backup_file_name += 'I'
-        print 'Making a backup copy of DB in ',backup_file_name
-        print 'You can use it to restore if something ugly happens.'
+        print('Making a backup copy of DB in ', backup_file_name)
+        print('You can use it to restore if something ugly happens.')
         shutil.copy(self.filename,backup_file_name) # Make a backup...
         import gourmet.gtk_extras.dialog_extras as de
         import gtk
@@ -495,10 +497,11 @@ class RecData (Pluggable):
         ### Code for updates between versions...
         if not self.new_db:
             sv_text = "%s.%s.%s"%(stored_info.version_super,stored_info.version_major,stored_info.version_minor)
-            #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
+            # print('STORED_INFO:', stored_info.version_super,
+            #       stored_info.version_major, stored_info.version_minor)
             # Change from servings to yields! ( we use the plural to avoid a headache with keywords)
             if stored_info.version_super == 0 and stored_info.version_major < 16:
-                print 'Database older than 0.16.0 -- updating',sv_text
+                print('Database older than 0.16.0 -- updating', sv_text)
                 self.backup_db()
                 from sqlalchemy.sql.expression import func
                 # We need to unpickle Booleans that have erroneously remained
@@ -546,7 +549,7 @@ class RecData (Pluggable):
                                                     or
                                                     (stored_info.version_major < 14)
                                                     )):
-                print 'Database older than 0.14.7 -- updating',sv_text
+                print('Database older than 0.14.7 -- updating', sv_text)
                 # Don't change the table defs here without changing them
                 # above as well (for new users) - sorry for the stupid
                 # repetition of code.
@@ -560,13 +563,13 @@ class RecData (Pluggable):
                         }
                                                 ).execute()
             if stored_info.version_super == 0 and stored_info.version_major < 14:
-                print 'Database older than 0.14.0 -- updating',sv_text
+                print('Database older than 0.14.0 -- updating', sv_text)
                 self.backup_db()
                 # Name changes to make working with IDs make more sense
                 # (i.e. the column named 'id' should always be a unique
                 # identifier for a given table -- it should not be used to
                 # refer to the IDs from *other* tables
-                print 'Upgrade from < 0.14',sv_text
+                print('Upgrade from < 0.14', sv_text)
                 self.alter_table('categories',self.setup_category_table,
                                  {'id':'recipe_id'},['category'])
                 # Testing whether somehow recipe_id already exists
@@ -583,14 +586,14 @@ class RecData (Pluggable):
                                       'item', 'ingkey', 'optional', 'shopoptional',
                                       'inggroup', 'position', 'deleted'])
                 else:
-                    print 'Odd -- recipe_id seems to already exist'
+                    print('Odd -- recipe_id seems to already exist')
                 self.alter_table('keylookup',self.setup_keylookup_table,
                                  {},['word','item','ingkey','count'])
             # Add recipe_hash, ingredient_hash and link fields
             # (These all get added in 0.13.0)
             if stored_info.version_super == 0 and stored_info.version_major <= 12:
                 self.backup_db()                
-                print 'UPDATE FROM < 0.13.0...',sv_text
+                print('UPDATE FROM < 0.13.0...', sv_text)
                 # Don't change the table defs here without changing them
                 # above as well (for new users) - sorry for the stupid
                 # repetition of code.
@@ -599,7 +602,7 @@ class RecData (Pluggable):
                 self.add_column_to_table(self.recipe_table,('ingredient_hash',String(length=32),{}))
                 # Add a link field...
                 self.add_column_to_table(self.recipe_table,('link',Text(),{}))
-                print 'Searching for links in old recipe fields...',sv_text
+                print('Searching for links in old recipe fields...', sv_text)
                 URL_SOURCES = ['instructions','source','modifications']
                 recs = self.search_recipes(
                     [
@@ -646,9 +649,9 @@ class RecData (Pluggable):
                 for r in self.fetch_all(self.recipe_table): self.update_hashes(r)
 
             if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
-                print 'version older than 0.11.4 -- doing update',sv_text
+                print('version older than 0.11.4 -- doing update', sv_text)
                 self.backup_db()
-                print 'Fixing broken ingredient-key view from earlier versions.'
+                print('Fixing broken ingredient-key view from earlier versions.')
                 # Drop keylookup_table table, which wasn't being properly kept up
                 # to date...
                 self.delete_by_criteria(self.keylookup_table,{}) 
@@ -704,7 +707,7 @@ class RecData (Pluggable):
                 plugin_current = plugin.version,
                 )
         except:
-            print 'Problem updating plugin',plugin,plugin.name
+            print('Problem updating plugin', plugin, plugin.name)
             raise
         # Now we store the information so we know we've done an update
         info = {
@@ -883,7 +886,7 @@ class RecData (Pluggable):
         if criteria: criteria = make_simple_select_arg(criteria,table)[0]
         else: criteria=None
         if colname=='category' and table==self.recipe_table:
-            print 'WARNING: you are using a hack to access category values.'
+            print('WARNING: you are using a hack to access category values.')
             table = self.categories_table
             table = table.alias('ingrtable')
         retval = [r[0] for
@@ -946,12 +949,14 @@ class RecData (Pluggable):
                 new_values_dic[str(k)] = v
             table.update(*make_simple_select_arg(update_criteria,table)).execute(**new_values_dic)
         except:
-            print 'update_by_criteria error...'
-            print 'table:',table
-            print 'UPDATE_CRITERIA:'
-            for k,v in update_criteria.items(): print '','KEY:',k,'VAL:',v
-            print 'NEW_VALUES_DIC:'
-            for k,v in new_values_dic.items(): print '','KEY:',k,type(k),'VAL:',v
+            print('update_by_criteria error...')
+            print('table:',table)
+            print('UPDATE_CRITERIA:')
+            for k, v in update_criteria.items():
+                print('', 'KEY:', k, 'VAL:', v)
+            print('NEW_VALUES_DIC:')
+            for k, v in new_values_dic.items():
+                print('', 'KEY:', k, type(k), 'VAL:', v)
             raise
 
     def add_column_to_table (self, table, column_spec):
@@ -964,8 +969,8 @@ class RecData (Pluggable):
         try:
             self.db.execute(sql)
         except:
-            print 'FAILED TO EXECUTE',sql
-            print 'Ignoring error in add_column_to_table'
+            print('FAILED TO EXECUTE', sql)
+            print('Ignoring error in add_column_to_table')
             import traceback; traceback.print_exc()
 
     def alter_table (self, table_name, setup_function, cols_to_change={}, cols_to_keep=[]):
@@ -985,7 +990,8 @@ class RecData (Pluggable):
         will allow us to e.g. change/add primary key columns to sqlite
         tables
         """
-        print 'Attempting to alter ',table_name,setup_function,cols_to_change,cols_to_keep
+        print('Attempting to alter ', table_name, setup_function,
+              cols_to_change, cols_to_keep)
         try:
             self.db.execute('ALTER TABLE %(t)s RENAME TO %(t)s_temp'%{'t':table_name})
         except:
@@ -1150,11 +1156,11 @@ class RecData (Pluggable):
                 ofi.close()
             except:
                 del recdic['image']
-                print """Warning: gourmet couldn't recognize the image.
+                print("""Warning: gourmet couldn't recognize the image.
 
                 Proceding anyway, but here's the traceback should you
                 wish to investigate.
-                """
+                """)
                 import traceback
                 traceback.print_stack()
         for k,v in recdic.items():
@@ -1259,8 +1265,10 @@ class RecData (Pluggable):
         try:
             ret = self.do_add_rec(dic)
         except:
-            print 'Problem adding recipe with dictionary...'
-            for k,v in dic.items(): print 'KEY:',k,'of type',type(k),'VALUE:',v,'of type',type(v)
+            print('Problem adding recipe with dictionary...')
+            for k, v in dic.items():
+                print('KEY:', k, 'of type', type(k), 'VALUE:', v, 'of type',
+                      type(v))
             raise
         else:
             if type(ret)==int:
@@ -1283,7 +1291,7 @@ class RecData (Pluggable):
         try:          
             return self.do_add_ing(dic)
         except:
-            print 'Problem adding',dic
+            print('Problem adding', dic)
             raise
 
     def add_ings (self, dics):
@@ -1348,7 +1356,7 @@ class RecData (Pluggable):
         try:
             result_proxy = insert_statement.execute(**dic)
         except ValueError:
-            print 'Had to coerce types',table,dic
+            print('Had to coerce types', table, dic)
             self.coerce_types(table,dic)
             result_proxy = insert_statement.execute(**dic)
         return result_proxy
@@ -1410,9 +1418,9 @@ class RecData (Pluggable):
                 self._force_unicode(d)
                 qr = table.update(getattr(table.c,id_col)==getattr(row,id_col)).execute(**d)
             except:
-                print 'do_modify failed with args'
-                print 'table=',table,'row=',row
-                print 'd=',d,'id_col=',id_col
+                print('do_modify failed with args')
+                print('table=', table, 'row=', row)
+                print('d=', d, 'id_col=', id_col)
                 raise
             select = table.select(getattr(table.c,id_col)==getattr(row,id_col))
         else:
@@ -1454,7 +1462,7 @@ class RecData (Pluggable):
                 self.modify_ing(ing,{'refid':rec.id})
                 return rec
             else:
-                print 'Very odd: no match for',ing,'refid:',ing.refid
+                print('Very odd: no match for', ing, 'refid:', ing.refid)
 
     def include_linked_recipes (self, recs):
         '''Handed a list of recipes, append any recipes that are
@@ -1476,8 +1484,8 @@ class RecData (Pluggable):
     def get_rec (self, id, recipe_table=None):
         """Handed an ID, return a recipe object."""
         if recipe_table:
-            print 'handing get_rec an recipe_table is deprecated'
-            print 'Ignoring recipe_table handed to get_rec'
+            print('handing get_rec an recipe_table is deprecated')
+            print('Ignoring recipe_table handed to get_rec')
         recipe_table=self.recipe_table
         return self.fetch_one(self.recipe_table, id=id)
 
@@ -1523,7 +1531,7 @@ class RecData (Pluggable):
             if group == None:
                 group = n; n+=1
             if not hasattr(i,'position'):
-                print 'Bad: ingredient without position',i
+                print('Bad: ingredient without position', i)
                 i.position=defaultn
                 defaultn += 1
             if groups.has_key(group): 
@@ -1684,7 +1692,7 @@ class RecData (Pluggable):
 
     @pluggable_method
     def add_ing_to_keydic (self, item, key):
-        #print 'add ',item,key,'to keydic'
+        # print('add ', item, key, 'to keydic')
         # Make sure we have unicode...
         if type(item)==str: item = unicode(item)
         if type(key)==str: key = unicode(key)
@@ -1707,7 +1715,7 @@ class RecData (Pluggable):
                 self.do_add(self.keylookup_table,{'word':unicode(w),'ingkey':unicode(key),'count':1})
 
     def remove_ing_from_keydic (self, item, key):
-        #print 'remove ',item,key,'to keydic'        
+        # print('remove ', item, key, 'to keydic')
         row = self.fetch_one(self.keylookup_table,item=item,ingkey=key)
         if row:
             new_count = row.count - 1
@@ -1861,8 +1869,8 @@ class RecipeManager (RecData):
 
     def parse_ingredient (self, s, conv=None, get_key=True):
         """Handed a string, we hand back a dictionary representing a parsed ingredient (sans recipe ID)"""
-        #if conv:
-        #    print 'parse_ingredient: conv argument is now ignored'
+        # if conv:
+        #     print('parse_ingredient: conv argument is now ignored')
         debug('ingredient_parser handed: %s'%s,0)
         # Strip whitespace and bullets...
         d={}
@@ -2070,10 +2078,10 @@ class dbDic:
                 key = getattr(i,self.kp)
                 val = getattr(i,self.vp)
             except:
-                print 'TRYING TO GET',self.kp,self.vp,'from',self.vw
-                print 'ERROR!!!'
+                print('TRYING TO GET', self.kp, self.vp, 'from', self.vw)
+                print('ERROR!!!')
                 import traceback; traceback.print_exc()
-                print 'IGNORING'
+                print('IGNORING')
                 continue
             ret.append((key,val))
         return ret
@@ -2087,10 +2095,10 @@ class dbDic:
 def test_db ():
     import tempfile
     db = RecData(file=tempfile.mktemp())
-    print 'BEGIN TESTING'
+    print('BEGIN TESTING')
     from db_tests import test_db
     test_db(db)
-    print 'END TESTING'
+    print('END TESTING')
 
 def add_sample_recs ():
     for rec,ings in [[dict(title='Spaghetti',cuisine='Italian',category='Easy, Entree'),

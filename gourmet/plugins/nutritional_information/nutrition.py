@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import re, string
 import sys
 from parser_data import SUMMABLE_FIELDS
@@ -107,7 +109,7 @@ class NutritionData:
             try:
                 amount = (ing.rangeamount + ing.amount)/2
             except TypeError:
-                print 'Failed trying to add',ing.rangeamount,ing.amount
+                print('Failed trying to add', ing.rangeamount, ing.amount)
                 raise
         else:
             amount = ing.amount
@@ -199,7 +201,7 @@ class NutritionData:
         # Otherwise, we are trying to find our density...
         cnv = None
         if (',' in unit) or ('(' in unit): # Check for density in unit description...
-            print 'Checking for density in unit...','densities=',densities
+            print('Checking for density in unit...', 'densities=', densities)
             if ',' in unit:
                 unit,description = unit.split(',')
             if '(' in unit:
@@ -207,13 +209,13 @@ class NutritionData:
                 description = description.strip(')')
             description = description.strip()
             unit = unit.strip()
-            print 'description=',description
+            print('description=', description)
             if densities.has_key(description):
-                print 'We got a density!','unit=',unit
+                print('We got a density!', 'unit=', unit)
                 density = densities[description]
-                print density,type(density),'(unit=',unit,')'
+                print(density,type(density), '(unit=', unit, ')')
                 cnv = self.conv.converter('g.',unit,density=density)
-                print 'We got a conversion!',cnv
+                print('We got a conversion!', cnv)
         # our default is 100g
         if not cnv:
             # Check for convertible mass...
@@ -602,7 +604,7 @@ def foo ():
         def run (self):
             choices = self.ACTIONS.keys()
             for n,a in enumerate(choices):
-                print n,a
+                print(n, a)
             choice = None
             while not choice:
                 choice = raw_input('Enter number of choice: ')
@@ -630,7 +632,7 @@ def foo ():
             key=raw_input('Enter key for which we add info: ')
             matches = self.nd.get_matches(key,10)
             for n,m in enumerate(matches):
-                print n,'. ',m[0]
+                print(n, '. ', m[0])
             choice = None
             while not choice:
                 choice = raw_input('Enter number of choice: ')
@@ -643,16 +645,19 @@ def foo ():
         def print_info (self):
             att = raw_input('What information would you like (e.g. kcal): ')
             while not hasattr(self.ings,att):
-                print "I'm sorry, there is no information about ",att
+                print("I'm sorry, there is no information about ", att)
                 att = raw_input('What information would you like (e.g. kcal): ')
-            print att,":",getattr(self.ings,att)
+            print(att, ":", getattr(self.ings, att))
             vv = self.ings._get_vapor()
             if vv:
                 for v in vv:
                     explanation = v._wheres_the_vapor()
-                    if explanation==KEY_VAPOR: print 'No key'
-                    if explanation==UNIT_VAPOR: print "Can't handle unit ",v.__unit__
-                    if explanation==AMOUNT_VAPOR: print "What am I to do with the amount ",v.__amt__
+                    if explanation == KEY_VAPOR:
+                        print('No key')
+                    if explanation == UNIT_VAPOR:
+                        print("Can't handle unit ", v.__unit__)
+                    if explanation == AMOUNT_VAPOR:
+                        print("What am I to do with the amount ", v.__amt__)
                 
 
         def exit (self):
@@ -664,6 +669,6 @@ def foo ():
     #fake_key = "0"
     #while raw_input('Get another density?'):
     #    row=random.choice(db.nutrition_table)
-    #    print 'Information: ',row.desc, nd.get_conversions(row=row)
-    #    #print 'Gramweights: ',nd.get_gramweights(row)
-    #    #print 'Density of ',row.desc,' = ',nd.get_densities(row)
+    #    print('Information: ', row.desc, nd.get_conversions(row=row))
+    #    print('Gramweights: ', nd.get_gramweights(row))
+    #    print('Density of ', row.desc, ' = ', nd.get_densities(row))

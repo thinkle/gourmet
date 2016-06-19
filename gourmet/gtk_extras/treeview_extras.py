@@ -1,11 +1,13 @@
+from __future__ import print_function
+
 from gourmet.gdebug import debug
 import gtk, gobject
 
 def print_tree (mod):
     for row in mod:
-        print [col for col in row]
+        print([col for col in row])
         for child in row.iterchildren():
-            print '-> ',[col for col in child]
+            print('-> ', [col for col in child])
         
 def path_next (path, inc=1):
     """Return the path NEXT rows after PATH. Next can be negative, in

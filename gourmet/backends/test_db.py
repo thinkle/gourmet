@@ -1,9 +1,11 @@
+from __future__ import print_function
+
 import tempfile, unittest
 import db
 
 class DBTest (unittest.TestCase):
     def setUp (self):
-        print 'Calling setUp'
+        print('Calling setUp')
         # Remove all plugins for testing purposes
         from gourmet.plugin_loader import get_master_loader
         ml = get_master_loader()
@@ -167,9 +169,9 @@ class testIDReservation (DBTest):
         r3 = self.db.add_rec({'title':'reserved2','id':rid2})
         try: assert(r2.id==rid)
         except:
-            print 'reserved ID',rid
-            print 'fetched ID',r2.id
-            print 'intermittent ID',r1.id
+            print('reserved ID', rid)
+            print('fetched ID', r2.id)
+            print('intermittent ID', r1.id)
             raise
         for r in [r1,r1i,r12,r2,r3]: self.db.delete_rec(r)
 

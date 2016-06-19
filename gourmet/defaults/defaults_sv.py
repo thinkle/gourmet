@@ -16,6 +16,8 @@
 # Translator: jens persson (jens@persson.cx)
 # Last-updated: 2006-06-28
 
+from __future__ import print_function
+
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!
 
 # only translate the items in the list [..] (and feel free to create

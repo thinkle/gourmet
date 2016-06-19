@@ -1,4 +1,6 @@
 # encoding: utf-8
+from __future__ import print_function
+
 import os.path
 import unittest
 import BeautifulSoup
@@ -66,7 +68,7 @@ class TestIcaPlugin(unittest.TestCase):
         self.assertTrue('Tid: Under 45 min' in cooktime)
         self.assertEqual(yields, 'Portioner: 6')
 
-        print type(instructions)
+        print(type(instructions))
         self.assertTrue('Dela varje kycklinglårfilé i 2 bitar.' in instructions,
                 instructions)
         self.assertTrue('Ta upp dem och skölj ur pannan.' in instructions)

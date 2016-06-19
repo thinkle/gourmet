@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, os.path
 import gglobals
 from gtk_extras import optionTable
@@ -173,7 +175,7 @@ class PreferencesGui (plugin_loader.Pluggable):
             elif hasattr(widget,'get_text'):
                 get_method=lambda *args: float(widget.get_text())
             else:
-                print 'widget',widgetname,widget,'is not very numberlike!'
+                print('widget', widgetname, widget, 'is not very numberlike!')
                 return
             curval = self.prefs.get(pref_name,None)
             if curval:
@@ -234,7 +236,7 @@ class PreferencesGui (plugin_loader.Pluggable):
                 table.apply()
                 if cb: cb(table.options)
                 return
-        print "Oops: we couldn't handle widget %s"%widget
+        print("Oops: we couldn't handle widget %s" % (widget, ))
         
 if __name__ == '__main__':
     class FauxPrefs (dict):
@@ -243,17 +245,17 @@ if __name__ == '__main__':
             dict.__init__(self,*args,**kwargs)
 
         def __setitem__ (self,k,v):
-            print 'k:',k
-            print 'v:',v
+            print('k:', k)
+            print('v:', v)
             dict.__setitem__(self,k,v)
             for h in self.set_hooks:
-                print 'runnnig hook'
+                print('running hook')
                 h(k,v)
             
     gf='/home/tom/Projects/grm-db-experiments/glade/preferenceDialog.ui'
     import sys
     p=PreferencesGui(FauxPrefs(),gf)
-    def printstuff (*args): print args
+    def printstuff (*args): print(args)
     p.add_pref_table([["Toggle Option",True],
                       ["String Option","Hello"],
                       ["Integer Option",1],

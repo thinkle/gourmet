@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.prefs import get_prefs
 from gourmet.gtk_extras import dialog_extras as de
 from gettext import gettext as _

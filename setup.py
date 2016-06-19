@@ -2,6 +2,8 @@
 #
 # setup.py for Gourmet
 
+from __future__ import print_function
+
 import sys
 import glob
 import os.path
@@ -71,7 +73,7 @@ class build_py(_build_py):
                 elif "plugin_base = " in line:
                     line = "plugin_base = data_dir\n"
 
-                print line,
+                print(line, end=' ')
 
 class build_scripts(_build_scripts):
     """build_scripts command
@@ -102,7 +104,7 @@ class build_scripts(_build_scripts):
                 elif "data_dir = '.'" in line:
                     line = "data_dir = '%s'\n" % data_dir
 
-                print line,
+                print(line, end=' ')
 
 if sys.platform == "win32":
     #gtk file inclusion

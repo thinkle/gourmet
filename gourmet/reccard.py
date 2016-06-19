@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import print_function
+
 import gc
 import gobject, gtk, gtk.gdk
 import os.path, string
@@ -270,9 +272,11 @@ class RecCardDisplay (plugin_loader.Pluggable):
                 if attr not in ['title','yield_unit']: 
                     assert(getattr(self,'%sDisplayLabel'%attr))
             except:
-                print 'Failed to load all widgets for ',attr
-                print '%sDisplay'%attr,'->',getattr(self,'%sDisplay'%attr)
-                print '%sDisplayLabel'%attr,'->',getattr(self,'%sDisplayLabel'%attr)
+                print('Failed to load all widgets for ', attr)
+                print('%sDisplay' % (attr, ), '->',
+                      getattr(self, '%sDisplay' % (attr, )))
+                print('%sDisplayLabel' % (attr, ), '->',
+                      getattr(self, '%sDisplayLabel' % (attr, )))
                 raise
         # instructions & notes display
         for d in ['instructionsDisplay','modificationsDisplay']:
@@ -405,7 +409,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.left_notebook_pages[0] = self
 
     def shop_for_recipe_cb (self, *args):
-        print self,'shop_for_recipe_cb'
+        print(self, 'shop_for_recipe_cb')
         import shopgui
         try:
             d = self.rg.sl.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
@@ -470,7 +474,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
             try:
                 module.update_from_database()
             except:
-                print 'WARNING: Exception raised by %(module)s.update_from_database()'%locals()
+                print('WARNING: Exception raised by '
+                      '%(module)s.update_from_database()' % locals())
                 import traceback; traceback.print_exc()
         self.special_display_functions = {
             'yields':self.update_yields_display,
@@ -945,7 +950,9 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         else:
             for m in self.modules:
                 if m.edited:
-                    #print 'Strange,',module,'told us we are not edited, but ',m,'tells us we are...'
+                    # print('Strange,', module,
+                    #       'told us we are not edited, but ', m,
+                    #       'tells us we are...')
                     self.set_edited(True)
                     return
             self.set_edited(False)
@@ -1329,7 +1336,7 @@ class TextEditor:
         elif isinstance(widget,gtk.Editable):
             widget.paste_clipboard()
         else:
-            print 'What has focus?',widget
+            print('What has focus?', widget)
         
 class DescriptionEditorModule (TextEditor, RecEditorModule):
     name = 'description'
@@ -1383,7 +1390,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             try:
                 assert(self.rw[a])
             except:
-                print 'No recipe editing widget for',a
+                print('No recipe editing widget for', a)
                 raise
             self.edit_widgets.append(self.rw[a])
             self.rw[a].db_prop = a
@@ -1396,7 +1403,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             try:
                 assert(self.rw[a])
             except:
-                print 'No recipe editing widget for',a
+                print('No recipe editing widget for', a)
                 raise
             self.edit_widgets.append(self.rw[a])            
             self.rw[a].db_prop = a
@@ -1485,12 +1492,12 @@ class ImageBox: # used in DescriptionEditor for recipe image.
             try:
                 self.set_from_string(rec.image)
             except:
-                print 'Problem with image from recipe.'
-                print 'Moving ahead anyway.'
-                print 'Here is the traceback'
+                print('Problem with image from recipe.')
+                print('Moving ahead anyway.')
+                print('Here is the traceback')
                 import traceback; traceback.print_exc()
-                print "And for your debugging convenience, I'm dumping"
-                print "a copy of the faulty image in /tmp/bad_image.jpg"
+                print("And for your debugging convenience, I'm dumping")
+                print("a copy of the faulty image in /tmp/bad_image.jpg")
                 import tempfile
                 try:
                     dumpto = os.path.join(tempfile.tempdir,'bad_image.jpg')
@@ -1498,9 +1505,9 @@ class ImageBox: # used in DescriptionEditor for recipe image.
                     ofi.write(rec.image)
                     ofi.close()
                 except:
-                    print 'Nevermind -- I had a problem dumping the file.'
+                    print('Nevermind -- I had a problem dumping the file.')
                     traceback.print_exc()
-                    print '(Ignoring this traceback...)'
+                    print('(Ignoring this traceback...)')
         else:
             self.image=None
             self.hide()
@@ -1653,7 +1660,7 @@ class TextFieldEditor (TextEditor):
         self.tv.show()
         self.tv.db_prop = self.prop
         if not self.label:
-            print 'Odd,',self,'has no label'
+            print('Odd,', self, 'has no label')
         else:
             atk = self.tv.get_accessible()
             atk.set_name(self.label + ' Text')
@@ -1743,9 +1750,10 @@ class IngredientController (plugin_loader.Pluggable):
         if group_iter and not prev_iter:
             if type(self.imodel.get_value(group_iter, 0)) not in types.StringTypes:
                 prev_iter = group_iter
-                print 'fix this old code!'
+                print('fix this old code!')
                 import traceback; traceback.print_stack()
-                print '(not a real traceback, just a hint for fixing the old code)'
+                print('(not a real traceback, just a hint for fixing the old '
+                      'code)')
             else:
                 iter = self.imodel.append(group_iter)
         if prev_iter:
@@ -1886,9 +1894,9 @@ class IngredientController (plugin_loader.Pluggable):
         try:
             paths = [self.imodel.get_path(i) for i in iters]
         except TypeError:
-            print 'Odd we are failing to get_paths for ',iters
-            print 'Our undo stack looks like this...'
-            print self.ingredient_editor_module.history
+            print('Odd we are failing to get_paths for ', iters)
+            print('Our undo stack looks like this...')
+            print(self.ingredient_editor_module.history)
             raise
         for itr in iters:
             orig_ref = self.get_persistent_ref_from_iter(itr)
@@ -1950,8 +1958,10 @@ class IngredientController (plugin_loader.Pluggable):
     def do_delete_iters (self, iters):
         for ref in iters:
             i = self.get_iter_from_persistent_ref(ref)
-            if not i: print 'Failed to get reference from',i
-            else: self.imodel.remove(i)
+            if not i:
+                print('Failed to get reference from', i)
+            else:
+                self.imodel.remove(i)
 
     def do_undelete_iters (self, rowdicts_and_iters):
         for rowdic,prev_iter,ing_obj,children,expanded in rowdicts_and_iters:
@@ -2343,7 +2353,7 @@ class IngredientTreeUI:
         val = store.get_value(iter,colnum)
         obj = store.get_value(iter,0)
         if type(obj) in types.StringTypes and obj.find('GROUP')==0:
-            print 'Sorry, whole groups cannot be toggled to "optional"'
+            print('Sorry, whole groups cannot be toggled to "optional"')
             return
         newval = not val
         ref = self.ingController.get_persistent_ref_from_iter(iter)
@@ -2459,9 +2469,9 @@ class IngredientTreeUI:
                 for r in selected_iter_refs:
                     i = self.ingController.get_iter_from_persistent_ref(r)
                     if not i:
-                        print 'Odd - I get no iter for ref',r
+                        print('Odd - I get no iter for ref', r)
                         import traceback; traceback.print_stack()
-                        print 'Strange indeed! carry on...'                        
+                        print('Strange indeed! carry on...')
                     else:
                         self.ingTree.get_selection().select_iter(i)
                 debug('do_move - inside dragIngsRecCB - DONE',3)

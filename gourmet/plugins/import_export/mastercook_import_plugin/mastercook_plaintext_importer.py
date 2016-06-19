@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.importers import importer, plaintext_importer
 import re, string
 from gourmet import check_encodings

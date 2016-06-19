@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import sqlalchemy, sqlalchemy.orm
 from sqlalchemy import Integer, Binary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
 from sqlalchemy.sql import and_, or_
@@ -44,11 +46,11 @@ class NutritionDataPlugin (DatabasePlugin):
         return self.db.do_add_and_return_item(self.db.nutrition_table,d,id_prop='ndbno')
 
     def create_tables (self, *args):
-        #print 'nutritional_information.data_plugin.create_tables()'
+        # print('nutritional_information.data_plugin.create_tables()')
         cols = [Column(name,gourmet.backends.db.map_type_to_sqlalchemy(typ),**(name=='ndbno' and {'primary_key':True} or {}))
                  for lname,name,typ in parser_data.NUTRITION_FIELDS
                  ] + [Column('foodgroup',Text(),**{})]
-        #print 'nutrition cols:',cols
+        # print('nutrition cols:', cols)
         self.db.nutrition_table = Table('nutrition',self.db.metadata,
                                      *cols
                                      )
@@ -65,7 +67,7 @@ class NutritionDataPlugin (DatabasePlugin):
         if ((gourmet_stored[0] == 0 and gourmet_stored[1] < 14)
             or
             (plugin_stored < 1)):
-            print 'RECREATE USDA WEIGHTS TABLE'
+            print('RECREATE USDA WEIGHTS TABLE')
             self.db.alter_table('usda_weights',self.setup_usda_weights_table,{},
                              [name for lname,name,typ in parser_data.WEIGHT_FIELDS])
             self.db.alter_table('nutritionconversions',self.setup_nutritionconversions_table,{},

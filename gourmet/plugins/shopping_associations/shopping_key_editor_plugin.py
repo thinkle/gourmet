@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import PluginPlugin
 from gourmet.recipeManager import get_recipe_manager
 import gtk

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os,stat,re,time,StringIO
 from gourmet import keymanager, convert, ImageExtras
 from gourmet.gdebug import debug, TimeAction, print_timer_info, debug_decorator
@@ -59,9 +61,10 @@ class Importer (SuspendableThread):
         if prog or rd:
             import traceback; traceback.print_stack()
             if prog:
-                print 'WARNING: ',self,'handed obsolete parameter prog=',prog
+                print('WARNING: ', self, 'handed obsolete parameter prog=',
+                      prog)
             if rd:
-                print 'WARNING: ',self,'handed obsolete parameter rd=',rd
+                print('WARNING: ', self, 'handed obsolete parameter rd=', rd)
         self.do_markup=do_markup
         self.count = 0
         self.rd = get_recipe_manager()
@@ -130,8 +133,9 @@ class Importer (SuspendableThread):
         timeaction = TimeAction('importer.start_rec',10)
         self.check_for_sleep()
         if hasattr(self,'added_ings') and self.added_ings:
-            print 'WARNING: starting new rec, but we have ingredients that we never added!'
-            print 'Unadded ingredients: ',self.added_ings
+            print('WARNING: starting new rec, but we have ingredients that we '
+                  'never added!')
+            print('Unadded ingredients: ', self.added_ings)
         self.added_ings=[]
         self.group = None
         if dict:
@@ -174,7 +178,7 @@ class Importer (SuspendableThread):
             except:
                 yields,yield_unit = self.parse_yields(self.rec['yields'])
                 if not yields:
-                    print 'Moving yields to instructions!'
+                    print('Moving yields to instructions!')
                     self._move_to_instructions(self.rec,'yields')
                 else:
                     self.rec['yields'] = yields
@@ -225,8 +229,8 @@ class Importer (SuspendableThread):
                     # Make sure our image is properly formatted...
                     self.rec['image'] = ImageExtras.get_string_from_image(img)
                 else:
-                    print "ODD: we got no image from ",self.rec['image'][:100]
-                    print 'Deleting "image"'
+                    print("ODD: we got no image from ", self.rec['image'][:100])
+                    print('Deleting "image"')
                     del self.rec['image']
                     del self.rec['thumb']                    
         ## if we have an ID, we need to remember it for the converter
@@ -247,7 +251,7 @@ class Importer (SuspendableThread):
         # Add ingredients...
         for i in self.added_ings:
             if i.has_key('id'):
-                print 'WARNING: Ingredient has ID set -- ignoring value'
+                print('WARNING: Ingredient has ID set -- ignoring value')
                 del i['id']
             i['recipe_id'] = r.id
         self.rd.add_ings(self.added_ings)
@@ -304,7 +308,8 @@ class Importer (SuspendableThread):
         #if self.ing.has_key('id'):
         #    self.ing['recipe_id']=self.ing['id']
         #    del self.ing['id']
-        #    print 'WARNING: setting ingredients ID is deprecated. Assuming you mean to set recipe_id'
+        #    print('WARNING: setting ingredients ID is deprecated. Assuming '
+        #          'you mean to set recipe_id')
         #elif self.rec.has_key('id'):
         #    self.ing['recipe_id']=self.rec['id']
         #debug('ing ID %s, recipe ID %s'%(self.ing['recipe_id'],self.rec['id']),0)
@@ -522,7 +527,7 @@ class RatingConverter:
                     rating = rating.lower()
                 db.modify_rec(db.get_rec(id),{'rating':self.conversions[rating]})
             except:
-                print 'wtf... problem with rating ',rating,'for recipe',id
+                print('wtf... problem with rating ', rating, 'for recipe', id)
                 raise
 
 import unittest
@@ -549,9 +554,9 @@ class RatingConverterTest (unittest.TestCase):
             self.db.recs[n]['rating']=rating
         total = n
         rc.do_conversions(self.db)
-        print 'Conversions: '
+        print('Conversions: ')
         for n,rating in enumerate(tests):
-            print 'Converted',rating,'->',self.db.recs[n]['rating']
+            print('Converted', rating, '->', self.db.recs[n]['rating'])
 
     def testInteractiveConverter (self):
         rc = RatingConverter()
@@ -562,9 +567,9 @@ class RatingConverterTest (unittest.TestCase):
             self.db.recs[n]['rating']=rating
         total = n
         rc.do_conversions(self.db)
-        #print 'Conversions: '
-        #for n,rating in enumerate(tests):
-        #    print 'Converted',rating,'->',self.db.recs[n]['rating']
+        # print('Conversions: ')
+        # for n, rating in enumerate(tests):
+        #     print('Converted', rating, '->', self.db.recs[n]['rating'])
 
     def testStringToRatingConverter (self):
         assert(string_to_rating('4/5 stars')==8)

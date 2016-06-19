@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import print_function
+
 import os.path, os, re, threading, string
 import gtk, gobject, gtk.gdk
 import batchEditor
@@ -355,9 +357,9 @@ class GourmetApplication:
         try:
             license_text = open(os.path.join(doc_base,'LICENSE'),'r').read()
         except IOError, err:
-            print "IO Error %s" % err
+            print("IO Error %s" % err)
         except:
-            print "Unexpexted error"
+            print("Unexpexted error")
 
         paypal_link = """https://www.paypal.com/cgi-bin/webscr?cmd=_donations
 &business=Thomas_Hinkle%40alumni%2ebrown%2eedu
@@ -815,7 +817,7 @@ class StuffThatShouldBePlugins:
                         self.rd.modify_rec(r,changes)
                     self.rmodel.update_recipe(r)
             else:
-                print 'Cancelled'
+                print('Cancelled')
         self.batchEditor.dialog.hide()
         self.update_attribute_models()
 
@@ -1287,7 +1289,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                 if dbrec:
                     self.rd.delete_rec(dbrec)
                 else:
-                    print 'wtf?!?',rec,':',rec.id,' not real?'
+                    print('wtf?!?', rec, ':', rec.id, ' not real?')
             else: debug('no recipe to delete!?!',1)
             if not self.doing_multiple_deletions:
                 gt.gtk_enter()

@@ -4,6 +4,8 @@
 ## first, easy to maintain lists which can eventually be moved to
 ## files.
 
+from __future__ import print_function
+
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!
 CREDITS = "Branislav Brango Hanáček"
 

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import xml.sax, re, sys, xml.sax.saxutils
 import base64
 from gourmet.importers import xml_importer

@@ -11,6 +11,8 @@ functions.
 
 """
 
+from __future__ import print_function
+
 import convert, xml.sax.saxutils
 import hashlib, difflib, types, re
 from gettext import gettext as _
@@ -56,7 +58,7 @@ def get_ingredient_hash (ings, conv):
     ings.sort()
     ings = '\n'.join(ings)
     m = hashlib.md5(ings)
-    #print 'Hash',ings,m.hexdigest()
+    # print('Hash', ings, m.hexdigest())
     return m.hexdigest()
 
 def get_recipe_hash (recipe_object):
@@ -66,7 +68,7 @@ def get_recipe_hash (recipe_object):
     recstring = '\n'.join(recstrings)
     recstring = recstring.strip()
     recstring = recstring.lower()
-    #print 'hash',recstring
+    # print('hash', recstring)
     m = hashlib.md5(recstring)
     return m.hexdigest()
 
@@ -115,7 +117,7 @@ def apply_line_markup (line, markup):
         elif markup[n]=='-':
             tag = 'del'
         else:
-            #print "WARNING: don't recognize diff tag \"%s\""%markup[n]
+            # print("WARNING: don't recognize diff tag \"%s\"" % (markup[n], ))
             tag = None
         if tag != current_tag:
             if current_tag:
@@ -260,22 +262,25 @@ if __name__ == '__main__':
 #         count += 1
 #         rh,ih = hash_recipe(rec,rd)
 #         ch = rh+ih
-#         if count % 10 == 0: print count,rec.id,ch
-#         #print ch,rec.id
+#         if count % 10 == 0:
+#             print(count, rec.id, ch)
+#         print(ch, rec.id)
 #         if ir.has_key(ch):
-#             print rec.id,rec.title,'is a complete duplicate of',ir[ch].id,ir[ch].title
-#             print 'Merge would be: ',merge_recipes(rd,[rec,ir[ch]])
+#             print(rec.id, rec.title, 'is a complete duplicate of', ir[ch].id,
+#                   ir[ch].title)
+#             print('Merge would be: ', merge_recipes(rd, [rec, ir[ch]]))
 #         else:
 #             ir[ch]=rec
 #         if rr.has_key(rh):
-#             print rec.id,rec.title,'duplicates',rr[rh].id,rr[rh].title
+#             print(rec.id, rec.title, 'duplicates', rr[rh].id, rr[rh].title)
 #             rdiff = diff_recipes(rd,[rec,rr[rh]])
 #             idiff =  diff_ings(rd,rec,rr[rh])
 #             if (not rdiff) and (not idiff):
-#                 print 'PERFECT DUPS!'
+#                 print('PERFECT DUPS!')
 #             if rdiff:
-#                 print 'Rec Diff'
-#                 for k,v in rdiff.items(): print '%s: %s\t%s'%(k,v[0],v[1])
+#                 print('Rec Diff')
+#                 for k,v in rdiff.items():
+#                     print('%s: %s\t%s' % (k, v[0], v[1]))
 #             if idiff:
 #                 tv = show_ing_diff(idiff)
 #                 w = gtk.Window()
@@ -284,13 +289,14 @@ if __name__ == '__main__':
 #                 w.connect('delete-event',gtk.main_quit)
 #                 gtk.main()
 #                 left,right = idiff
-#                 print 'ING DIFF\n----------\n'
+#                 print('ING DIFF\n----------\n')
 #                 for n in range(len(left)):
-#                     print left[n],right[n]
+#                     print(left[n], right[n])
                 
 #         else:
 #             rr[rh]=rec
 #         if ii.has_key(ih) and ih != empty_hash:
-#             print rec.id,rec.title,'duplicates ings',ii[ih].id,ii[ih].title
+#             print(rec.id, rec.title, 'duplicates ings', ii[ih].id,
+#                   ii[ih].title)
 #         else:
 #             ii[ih]=rec

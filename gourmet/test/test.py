@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 # Convenience for importing gourmet stuff from our local directory...
 import sys, os, os.path, glob
 if os.path.exists('foo'):

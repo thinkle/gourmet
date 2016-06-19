@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import print_function
+
 import urllib, StringIO, os.path
 import exporter, html_exporter, pdf_exporter
 from gourmet import gglobals

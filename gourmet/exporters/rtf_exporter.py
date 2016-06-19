@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import exporter, PyRTF, types
 from gourmet import convert
 from gourmet.gdebug import debug
@@ -171,7 +173,7 @@ def encode_text (txt):
 if __name__ == '__main__':
     from __init__ import Tester,RTF
     t = Tester()
-    print 'Exporting test to /tmp/test_recs.rtf'
+    print('Exporting test to /tmp/test_recs.rtf')
     import sys
     t.run_export(**{'format':RTF,
                     'rv':t.rm.recipe_table[4:9],

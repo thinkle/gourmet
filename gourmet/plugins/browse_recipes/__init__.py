@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import MainPlugin
 import gtk
 import browser

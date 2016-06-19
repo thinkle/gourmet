@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk
 import os.path, tempfile
 from gourmet.GourmetRecipeManager import get_application
@@ -52,12 +54,12 @@ class RecipeEmailer (Emailer):
             self.attachments.append(fn)
             instance = em.do_multiple_export(self.recipes, fn)
             instance.connect('completed',self.attachment_complete,typ)
-            print 'Start thread to create ',typ,'!','->',fn
+            print('Start thread to create ', typ, '!', '->', fn)
     
     def attachment_complete (self, thread, typ):
         self.attachments_left.remove(typ)
         if not self.attachments_left:
-            print 'Attachments complete! Send email!'
+            print('Attachments complete! Send email!')
             self.send_email()
     
     def send_email_with_attachments (self, emailaddress=None):

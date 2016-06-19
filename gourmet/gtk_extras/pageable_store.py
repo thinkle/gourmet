@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, gobject
 
 class PageableListStore (gtk.ListStore):
@@ -154,12 +156,12 @@ class PageableListStore (gtk.ListStore):
         for row in self._get_slice_(int(start_at),int(end_at)):
             try: self.append(row)
             except TypeError:
-                print 'columns          : ',self.columns
-                print 'problem adding row ',row
+                print('columns          : ', self.columns)
+                print('problem adding row ', row)
                 raise
             except ValueError:
-                print 'columns          : ',self.columns
-                print 'problem adding row ',row
+                print('columns          : ', self.columns)
+                print('problem adding row ', row)
                 raise
     # Sorting functions
 

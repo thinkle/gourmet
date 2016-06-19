@@ -28,6 +28,8 @@
 # RecEditorPlugin - given an instance of the recipe editor.
 # DatabasePlugin - given an instance of the base database class.
 
+from __future__ import print_function
+
 import Undo, gtk, gobject, types
 import plugin_loader
 from gtk_extras import fix_action_group_importance
@@ -177,7 +179,7 @@ class BaseExporterPlugin (Plugin):
         '''
         if type==self.TEXT:
             def do_write (*args):
-                #print 'do_write received arguments',args
+                # print('do_write received arguments', args)
                 if position==plugin_loader.POST:
                     klass = args[1]
                 else:
@@ -191,7 +193,7 @@ class BaseExporterPlugin (Plugin):
             self.hooks_to_add.append((position,'_write_text_',do_write))
         else:
             def do_write (*args):
-                #print 'do_write received arguments',args                
+                # print('do_write received arguments', args)
                 if position==plugin_loader.POST:
                     klass = args[1]
                 else:
@@ -226,10 +228,10 @@ class DatabasePlugin (StandardPlugin):
 
     def activate (self, db):
         if self.active:
-            print 'Strange -- activate called twice'
-            print 'Activate plugin',self,db,'from:'
+            print('Strange -- activate called twice')
+            print('Activate plugin', self, db, 'from:')
             import traceback; traceback.print_stack()
-            print 'ignoring'
+            print('ignoring')
             return 
         self.db = db
         if db._created:

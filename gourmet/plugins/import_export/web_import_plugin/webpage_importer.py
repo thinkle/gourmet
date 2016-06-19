@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 # This is a basic
 import BeautifulSoup
 from gourmet.importers.generic_recipe_parser import RecipeParser
@@ -33,8 +35,8 @@ class WebParser (InteractiveImporter):
         self.ignore_unparsed = False
         self.url = url
         #self.name = 'Web Parser'
-        print "HERE's the data we got:", data
-        print "END DATA"
+        print("HERE's the data we got:", data)
+        print("END DATA")
         self.soup = BeautifulSoup.BeautifulSoup(data,
                                                 convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
                                                 )
@@ -98,8 +100,8 @@ class WebParser (InteractiveImporter):
         elif self.ignore_unparsed and not label:
             label = 'ignore'
         #elif not label:
-        #    print 'DONT IGNORE'
-        #print 'ID TAG',tag,'with',label            
+        #    print('DONT IGNORE')
+        # print('ID TAG', tag, 'with', label)
         if hasattr(tag,'contents') and tag.contents:
             for child in tag.contents:
                 self.crawl(child,label)
@@ -108,11 +110,11 @@ class WebParser (InteractiveImporter):
                 if self.buffer:
                     self.add_buffer_to_parsed()
                 self.last_label = label
-            #print 'ADD TO BUFFER:',tag.string
+            # print('ADD TO BUFFER:', tag.string)
             if hasattr(tag,'string'):
                 self.buffer += self.reduce_whitespace(tag.string or '')
             #else:
-            #    print 'Ignoring tag',tag
+            #    print('Ignoring tag', tag)
         if end_ws: self.buffer += end_ws
         return label
 
@@ -262,8 +264,8 @@ def test_parser ():
     parser = WebParserTester('http://www.foo.bar',txt,None)
     parsed = parser.parse_webpage()
     for p,lab in parsed:
-        print 'LABEL:',lab
-        print 'TEXT:',p
+        print('LABEL:', lab)
+        print('TEXT:', p)
     return parser
 
 def test_webpage ():
@@ -277,8 +279,8 @@ def test_webpage ():
     parsed = parser.parse_webpage()
     for p,lab in parsed:
         if lab=='ignore': continue
-        print 'LABEL:',lab
-        print 'TEXT:',p
+        print('LABEL:', lab)
+        print('TEXT:', p)
     return parser
 
 if __name__ == '__main__':
