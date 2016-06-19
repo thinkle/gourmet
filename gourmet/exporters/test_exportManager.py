@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+
 import unittest, tempfile, os
 import gourmet.gglobals
 tmpdir = tempfile.mktemp()
@@ -56,7 +58,7 @@ class SampleRecipeSetterUpper:
         }
     
     def __init__ (self):
-        print 'Instantiate SampleRecipeSetterUpper',self
+        print('Instantiate SampleRecipeSetterUpper', self)
         if SampleRecipeSetterUpper.__single: raise SampleRecipeSetterUpper.__single
         else: SampleRecipeSetterUpper.__single = self
         self.db = gourmet.backends.db.get_database()
@@ -66,29 +68,31 @@ class SampleRecipeSetterUpper:
     def add_rec (self, recdic):
         recdic['recipe']['deleted']=False
         r = self.db.add_rec(recdic['recipe'])
-        recid = r.id; print 'added rec',r.id
+        recid = r.id
+        print('added rec', r.id)
         recdic['recipe_id'] = r.id
         if recdic.has_key('categories'):
             for c in recdic['categories']:
-                print 'add categories',c
+                print('add categories', c)
                 self.db.do_add_cat({'recipe_id':recid,'category':c})
         if recdic.has_key('ingredients'):
-            print 'Add ingredients...'
+            print('Add ingredients...')
             for i in recdic['ingredients']:
                 i['recipe_id'] = recid; i['deleted']=False
-                print i
+                print(i)
             self.db.add_ings(recdic['ingredients'])
-        print 'done add_rec\n-------'
-        rec = self.db.get_rec(recdic['recipe_id']); print rec
-        print self.db.get_cats(rec)
-        print self.db.get_ings(rec)
-        print '^^^^^^^^^^^^^^^^^^^^'
+        print('done add_rec\n-------')
+        rec = self.db.get_rec(recdic['recipe_id'])
+        print(rec)
+        print(self.db.get_cats(rec))
+        print(self.db.get_ings(rec))
+        print('^^^^^^^^^^^^^^^^^^^^')
     
 def setup_sample_recs ():
     try:
         return SampleRecipeSetterUpper()
     except SampleRecipeSetterUpper, srsu:
-        print 'Returning single...'
+        print('Returning single...')
         return srsu
 
 class TestSetterUpper (unittest.TestCase):
@@ -143,7 +147,7 @@ class TestExports (unittest.TestCase):
                 self.em.do_single_export(rec,f,format,
                                          extra_prefs=exportManager.EXTRA_PREFS_DEFAULT)
                 if hasattr(plugin,'check_export'):
-                    print 'Checking export for ',plugin,rec,f
+                    print('Checking export for ', plugin, rec, f)
                     fi = open(f,'r')
                     try:
                         plugin.check_export(rec,fi)

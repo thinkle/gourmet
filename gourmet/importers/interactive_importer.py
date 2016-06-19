@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, pango
 from xml.sax.saxutils import escape
 from gettext import gettext as _
@@ -458,9 +460,9 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                 self.add_attribute('yield_unit','servings')
             else:
                 try:
-                    print 'UNKNOWN TAG',tag,text,label
+                    print('UNKNOWN TAG', tag, text, label)
                 except UnicodeError:
-                    print 'UNKNOWN TAG (unprintable)'
+                    print('UNKNOWN TAG (unprintable)')
         if started: self.commit_rec()
         if hasattr(self,'images') and self.images:
             # This is ugly -- we run the dialog once per recipe. This

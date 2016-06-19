@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gettext import gettext as _
 import convert, shopping, os.path
 from OptionParser import args
@@ -10,7 +12,7 @@ dbargs = {}
 if not dbargs.has_key('file'):
     dbargs['file']=os.path.join(gglobals.gourmetdir,'recipes.db')
 if args.db_url:
-    print 'We have a db_url and it is,',args.db_url
+    print('We have a db_url and it is,', args.db_url)
     dbargs['custom_url'] = args.db_url
     
 
@@ -59,22 +61,22 @@ class SimpleCLI:
         self.rm = self.rmclass(**self.args)
 
     def __call__ (self):
-        print """Welcome to GRM's handy debugging interface straight to our database.
+        print("""Welcome to GRM's handy debugging interface straight to our database.
         You are now in the midst of our caller class. You can access your recipeManager
         class through self.rm.
 
         One major limitation: You can only execute a single expression
         at a time (i.e. what you you could put in a lambda expression).
-        """
+        """)
         while True:
             inp = raw_input('GRM>')
             if inp == 'quit' or inp == '' or inp == '':
                 break
             else:                    
                 try:
-                    print 'result: %s'%eval(inp)
+                    print('result: %s' % (eval(inp), ))
                 except:
-                    print 'invalid input.'
+                    print('invalid input.')
 
 def get_recipe_manager (**args):
     if not args: args = dbargs

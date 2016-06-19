@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import test
 import os,os.path
 DIR = os.path.abspath(os.path.join(os.path.split(__file__)[0],'reference_setup/'))
@@ -103,7 +105,8 @@ class ExportTest:
                                        d['filename'])
             self.test_import(d['filename'])
         elif d.has_key('url'): self.test_web_import(d['url'])
-        else: print 'WTF: no test contained in ',d
+        else:
+            print('WTF: no test contained in ', d)
         if d.has_key('test'):
             self.do_test(d['test'])
 
@@ -124,7 +127,7 @@ class ExportTest:
                 
     
     def setup_db (self):
-        print 'rm.dbargs[file]=',rm.dbargs['file']
+        print('rm.dbargs[file]=', rm.dbargs['file'])
         self.db = rm.RecipeManager(**rm.dbargs)
         if self.db.fetch_len(self.db.recipe_table)==0:
             raise Exception("No recipes in database.")
@@ -146,12 +149,12 @@ class ExportTest:
                                     '.'.join([k,str(n)])
                                     )
         self.mult_export_args['file']=new_file
-        print 'Testing export ',k,'to',new_file,self.mult_export_args
+        print('Testing export ', k, 'to', new_file, self.mult_export_args)
         exporters.exporter_dict[k]['mult_exporter'](self.mult_export_args.copy()).run()
         if confirmation_tests.has_key(k):
-            print 'Running confirmation test on ',k
+            print('Running confirmation test on ', k)
             confirmation_tests[k](new_file) # Test!
-        print 'Done!'
+        print('Done!')
 
     def test_all_exports (self):
         for k in exporters.exporter_dict: self.test_export(k)
@@ -165,7 +168,7 @@ def add_export_test_cases (name, bases, attrs):
     for k in exporters.exporter_dict:
         method_name = 'test'+k.replace(' ','')
         attrs[method_name]= make_method(k)
-    print "Our class has attrs:",attrs
+    print("Our class has attrs:", attrs)
     return type(name,bases,attrs)
 
 et = None
@@ -177,14 +180,14 @@ class ExportTestCase (unittest.TestCase):
                                           # support
 
     def setUp (self):
-        print 'setUp'
+        print('setUp')
         global et
         if not et:
-            print 'Initialize DB'
+            print('Initialize DB')
             et = self.et = ExportTest()
             self.et.setup_db()
         else:
-            print 'Use previously initialized DB'
+            print('Use previously initialized DB')
             self.et = et
 
     #def testAllExports (self):

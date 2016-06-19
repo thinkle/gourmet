@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import print_function
+
 import os, os.path, pickle, gglobals
 
 class Prefs:
@@ -68,14 +70,14 @@ class Prefs:
                 self.config=pickle.load(ifi)
             except:
                 import traceback
-                print 'ERROR LOADING CONFIGURATION FILE'
-                print 'Saving a copy of broken configuration file saved as'
-                print '%s.broken'%self.file
+                print('ERROR LOADING CONFIGURATION FILE')
+                print('Saving a copy of broken configuration file saved as')
+                print('%s.broken' % (self.file, ))
                 ifi.seek(0)
                 ofi = file(self.file+'.broken','w')
                 ofi.write(ifi.read())
                 ofi.close()
-                print traceback.print_exc()
+                print(traceback.print_exc())
             else:
                 return True
         return False

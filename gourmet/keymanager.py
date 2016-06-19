@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import string, re, time, sys
 from defaults.defaults import lang as defaults
 from defaults.defaults import langProperties as langProperties
@@ -112,7 +114,7 @@ class KeyManager:
                                            )
             else: srch = None
         except:
-            print 'error seeking key for ',s
+            print('error seeking key for ', s)
             raise
         else:
             if srch: return srch[-1].ingkey
@@ -332,7 +334,7 @@ if __name__ == '__main__':
     def timef (f):
         t = time.time()
         f()
-        print time.time()-t
+        print(time.time() - t)
     import tempfile
     import recipeManager
     km = KeyManager(rm=recipeManager.RecipeManager(**recipeManager.dbargs))

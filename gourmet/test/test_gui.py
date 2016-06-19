@@ -4,6 +4,8 @@ so to speak. These tests cannot access Gourmet internals, but they can
 simulate actual user clicks, etc.
 
 '''
+from __future__ import print_function
+
 import unittest
 import time
 import tempfile
@@ -33,7 +35,7 @@ class BasicTestsBase:
         screenshot('import_dialog-%s-.png'%shortname)
         dp.keyCombo("Return")
         time.sleep(5) # wait for import to complete...
-        print 'DONE SLEEPING -- IMPORT SHOULD BE DONE!'
+        print('DONE SLEEPING -- IMPORT SHOULD BE DONE!')
         screenshot('import_done-%s.png'%shortname)
         dp.keyCombo("<Alt>C") # close dialog
         dp.focus.frame('Gourmet Recipe Manager')
@@ -47,7 +49,7 @@ class BasicTestsBase:
         dp.click('Import webpage')
         time.sleep(2)
         dp.focus.frame('Enter website address')
-        print 'TYPING URL!'
+        print('TYPING URL!')
         dp.type(url)
         dp.keyCombo("Return")
         time.sleep(1)
@@ -67,15 +69,15 @@ class BasicTestsBase:
         time.sleep(1)
 
     def do_tearDown (self):
-        print 'tearDown!'
+        print('tearDown!')
         # Quit application!
-        print 'Quit app!'
+        print('Quit app!')
         dp.focus.application(APPNAME)
         dp.focus.frame('Gourmet Recipe Manager')
         dp.keyCombo('<Ctrl>Q')
-        print 'Hit quit!'
+        print('Hit quit!')
         time.sleep(2)
-        print 'tearDown done!'
+        print('tearDown done!')
         os.system('killall gourmet_in_place') # Maek sure it's really dead...
 
     def focus_nth_recipe (self, n=0):
@@ -96,18 +98,18 @@ class BasicTests (
 
     def setUp (self):
         # Start application
-        print self,'set up!'
-        print 'running',GOURMET_APP_PATH,self.gdir
+        print(self, 'set up!')
+        print('running', GOURMET_APP_PATH, self.gdir)
         dp.run(GOURMET_APP_PATH,'--gourmet-directory=%s'%self.gdir,APPNAME)
-        print 'Done with run!'
+        print('Done with run!')
         if BasicTests.firstRun:
-            print 'first run, sleep a bit extra...'
+            print('first run, sleep a bit extra...')
             time.sleep(3)
             BasicTests.firstRun = False
         time.sleep(2)
-        print 'focus frame'
+        print('focus frame')
         dp.focus.application(APPNAME)
-        print 'setUp done!'
+        print('setUp done!')
 
 
     def testZippedImport (self):
@@ -183,14 +185,14 @@ class TestsWithBaseSet (
 
     def setUp (self):
         dp.run(GOURMET_APP_PATH,'--gourmet-directory=%s'%self.gdir,APPNAME)
-        print 'setUp -- first run?',self.firstRun
+        print('setUp -- first run?', self.firstRun)
         if TestsWithBaseSet.firstRun:
-            print 'first run, sleep a bit extra...'
+            print('first run, sleep a bit extra...')
             time.sleep(3)
         time.sleep(2)
-        print 'focus frame'
+        print('focus frame')
         dp.focus.application(APPNAME)
-        print 'setUp done!'
+        print('setUp done!')
         if TestsWithBaseSet.firstRun:
             self.do_testFileImport("/home/tom/Projects/grecipe-manager/src/tests/recipe_files/test_set.grmt")
             TestsWithBaseSet.firstRun = False
@@ -261,5 +263,5 @@ class TestsWithBaseSet (
 
 
 if __name__ == '__main__':
-    print 'unittest.main()'
+    print('unittest.main()')
     unittest.main()

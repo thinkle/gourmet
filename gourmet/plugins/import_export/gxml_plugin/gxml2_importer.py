@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import xml.sax, re, sys, xml.sax.saxutils
 from gourmet.importers import xml_importer
 from gourmet.convert import NUMBER_FINDER
@@ -63,7 +65,7 @@ class RecHandler (xml_importer.RecHandler):
             else:
                 self.rec['yields'] = 1
                 self.rec['yield_unit'] = unit
-                print 'Warning, recorded',txt,'as 1 ',unit
+                print('Warning, recorded',txt,'as 1 ', unit)
         elif name in self.REC_ATTRS:
             self.rec[str(name)]=xml.sax.saxutils.unescape(self.elbuf.strip())
         elif name in self.ING_ATTRS.keys():

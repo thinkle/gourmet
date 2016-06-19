@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 import gtk
 import gglobals
@@ -59,7 +61,8 @@ class BatchEditor:
                 elif hasattr(box.get_children()[0],'set_text'):
                     box.get_children()[0].set_text(val)
                 else:
-                    print "Can't figure out how to set value for ",attribute,box
+                    print("Can't figure out how to set value for ", attribute,
+                          box)
 
     def toggle_cb (self, widg, attr):
         box = self.attribute_widgets[attr]

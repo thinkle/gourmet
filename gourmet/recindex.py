@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import print_function
+
 from ImageExtras import get_pixbuf_from_jpg
 from gdebug import debug
 from gettext import gettext as _, ngettext
@@ -300,10 +302,10 @@ class RecIndex:
                         if t:
                             return _title_to_num_[t.replace('_','')]
                         else:
-                            print 'wtf, no title for ',tc
+                            print('wtf, no title for ', tc)
                             return -1
                     except:
-                        print 'problem with ',tc
+                        print('problem with ', tc)
                         raise
                     
                 ncols = self.rectree.insert_column_with_data_func(
@@ -666,7 +668,7 @@ class RecipeModel (pageable_store.PageableViewStore):
         try:
             return [[self._get_value_(r,col) for col in self.columns] for r in self.view[bottom:top]]
         except:
-            print '_get_slice_ failed with',bottom,top
+            print('_get_slice_ failed with', bottom, top)
             raise
 
     def _get_value_ (self, row, attr):

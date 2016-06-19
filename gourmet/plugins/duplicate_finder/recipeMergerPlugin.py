@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import ToolPlugin, ImportManagerPlugin
 import gtk
 import recipeMerger
@@ -12,9 +14,9 @@ class RecipeMergerImportManagerPlugin (ImportManagerPlugin):
         pluggable.add_hook(PRE,'follow_up',self.follow_up_pre_hook)
 
     def follow_up_pre_hook (self, importManager, threadmanager, importer):
-        print 'Running recipeMergerPlugin follow up post hook!'
+        print('Running recipeMergerPlugin follow up post hook!')
         if importer.added_recs:
-            print 'There are ',len(importer.added_recs),'added recs!'
+            print('There are ', len(importer.added_recs), 'added recs!')
             rmd = recipeMerger.RecipeMergerDialog(
                 in_recipes=importer.added_recs,
                 )

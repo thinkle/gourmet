@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os, os.path, gobject, re, gtk
 import tempfile
 from gdebug import debug
@@ -31,7 +33,7 @@ except OSError:
             debug("Creating .gourmet in working directory",0)
             os.makedirs(gourmetdir)
     except OSError:
-        print "Unable to create gourmet directory."
+        print("Unable to create gourmet directory.")
         raise
         import sys
         sys.exit()
@@ -59,8 +61,9 @@ try:
     import elib.intl
     elib.intl.install('gourmet', settings.locale_base)
 except ImportError:
-    print 'elib.intl failed to load.'
-    print 'IF YOU HAVE TROUBLE WITH TRANSLATIONS, MAKE SURE YOU HAVE THIS LIBRARY INSTALLED.'
+    print('elib.intl failed to load.')
+    print('IF YOU HAVE TROUBLE WITH TRANSLATIONS, MAKE SURE YOU HAVE THIS '
+          'LIBRARY INSTALLED.')
 from gettext import gettext as _
 
 data_dir = settings.data_dir
@@ -144,7 +147,7 @@ def launch_url (url, ext=""):
         try:
             gtk.show_uri(gtk.gdk.Screen(),url,0L)
         except gobject.GError, err:
-            #print dir(err)
+            # print(dir(err))
             label = _('Unable to open URL')
             for reg, msg in [('mailto:',_('Unable to launch mail reader.')),
                              ('http:',_('Unable to open website.')),

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, os.path
 from gourmet import gglobals
 from gourmet import cb_extras as cb
@@ -110,4 +112,4 @@ class DatabaseChooser:
         
 if __name__ == '__main__':
     d = DatabaseChooser(None,modal=True)
-    print d.run()
+    print(d.run())

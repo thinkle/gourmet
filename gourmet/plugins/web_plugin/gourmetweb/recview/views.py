@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gettext import gettext as _
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
@@ -49,7 +51,7 @@ def list_recs (view, default_search_values={},
                template='index.html'):
     sf = SearchForm()
     for k,v in default_search_values.items():
-        print 'Set',k,'to',v
+        print('Set', k, 'to', v)
         sf.fields[k].initial = v
     return render_to_response(
         template,
@@ -67,19 +69,19 @@ def sort (request, field):
 def do_search_xhr (request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
-        print 'Searching ',form.data['search_field']
+        print('Searching ', form.data['search_field'])
         return search(request,form.data['search_field'],template='list.html')
     else:
-        print 'Not a post!'
+        print('Not a post!')
 
 
 def do_search (request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
-        print 'Searching ',form.data['search_field']
+        print('Searching ', form.data['search_field'])
         return search(request,form.data['search_field'])
     else:
-        print 'Not a post!'
+        print('Not a post!')
 
 def search (request, term, template='index.html'):
     vw = rd.search_recipes(
@@ -90,7 +92,7 @@ def search (request, term, template='index.html'):
           }
          ]
         )
-    print 'We got ',len(vw),'for "%s"'%term
+    print('We got ', len(vw), 'for "%s"' % (term, ))
     return list_recs(vw, default_search_values={
         'search_field':term,
         'regexp_field':False,
@@ -122,14 +124,14 @@ def rec (request, rec_id, mult=1):
     formatted_ings = get_ings(rec_id,mult)
     def textify (t):
         if not t: return ''
-        print 'textifying "%s"'%t
+        print('textifying "%s"' % (t, ))
         return re.sub('\n','<br>',
                       re.sub('\n\n+','</p><p>','<p>%s</p>'%t.strip()))
     if rec.yields:
-        print 'WITH YIELDS'
+        print('WITH YIELDS')
         mf = MultiplierForm()
     else:
-        print 'WITHOUT YIELDS'
+        print('WITHOUT YIELDS')
         mf = NoYieldsMultiplierForm()
     return render_to_response(
         'rec.html',
@@ -152,7 +154,7 @@ def multiply_rec_xhr (request):
 
 def multiply_rec (request, xhr=None):
     # We can't do yields and multiplier in the same place!
-    print 'MULTIPLY!'
+    print('MULTIPLY!')
     if request.method == 'POST':
         form = MultiplierForm(request.POST)
         if form.is_valid():
@@ -193,9 +195,9 @@ def shop_remove (request, rec_id=None):
         if slist.recs.has_key(rec_id):
             del slist.recs[int(rec_id)]
         else:
-            print 'Odd, there is no ',rec_id,'on the shopping list'
+            print('Odd, there is no ', rec_id, 'on the shopping list')
     except TypeError:
-        print 'Odd, rec_id',rec_id,'is the wrong type'
+        print('Odd, rec_id', rec_id, 'is the wrong type')
         raise
     return shop(request)
 

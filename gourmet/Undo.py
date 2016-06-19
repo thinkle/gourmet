@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, difflib,re
 from gourmet.gdebug import debug
 
@@ -377,9 +379,9 @@ class UndoHistoryList (list):
                 index -= 1
         except IndexError:
             debug('All %s available action are .is_undo=True'%len(self),0)
-            print 'There is nothing to undo!'
-            print 'All %s actions are undos'%len(self)
-            print self,index
+            print('There is nothing to undo!')
+            print('All %d actions are undos' % (len(self), ))
+            print(self, index)
             raise
         action = self[index]
         action.inverse()
@@ -393,8 +395,8 @@ class UndoHistoryList (list):
                 index = index - 1
         except IndexError:
             debug('All %s available actions are is_undo=False'%len(self),0)
-            print 'There is nothing to redo!'
-            print 'All %s available actions are is_undo=False'%len(self)
+            print('There is nothing to redo!')
+            print('All %d available actions are is_undo=False' % (len(self), ))
             raise
         action = self[index]
         action.inverse()
@@ -410,7 +412,7 @@ class UndoHistoryList (list):
         debug('set_sensitive',0)
         if not w:
             #import traceback; traceback.print_stack()
-            #print 'No widget to sensitize',w,val
+            # print('No widget to sensitize', w, val)
             return
         w.set_sensitive(val)
 
@@ -588,9 +590,9 @@ if __name__ == '__main__':
     def show_changes (*args):
         for c in uhl:
             if hasattr(c,'initial_text'):
-                print c,' initial: ',c.initial_text,' current: ',c.text
+                print(c, ' initial: ', c.initial_text, ' current: ', c.text)
             else:
-                print c
+                print(c)
     ub.connect('clicked',lambda *args: debug('Undo clicked!',0))
     sc.connect('clicked',show_changes)
     rb.connect('clicked',lambda *args: debug('Redo clicked!',0))    

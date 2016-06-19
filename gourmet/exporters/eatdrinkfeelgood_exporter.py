@@ -20,6 +20,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 # USA.
 
+from __future__ import print_function
+
 from gourmet.exporters import exporter
 import xml.dom
 import sys, xml.sax.saxutils, base64
@@ -172,7 +174,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
 
     def write_ingref (self, amount=1, unit=None, item=None,
                       refid=None, optional=False):
-        print 'write_ingref not implemented yet'
+        print('write_ingref not implemented yet')
         
     def write_ing (self, amount=1, unit=None, item=None,
                    key=None, optional=False):
@@ -222,10 +224,10 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
                 e_parent.appendChild(e_usda)
 
     def write_grouphead (self, name):
-        print 'write_grouphead not implemented yet'
+        print('write_grouphead not implemented yet')
         
     def write_groupfoot (self):
-        print 'write_groupfoot not implemented yet'
+        print('write_groupfoot not implemented yet')
 
     def quantity_element (self, amount, unit):
         """Make a quantity element based on our amount and unit.

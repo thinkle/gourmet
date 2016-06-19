@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import xml.sax, re, sys, xml.sax.saxutils
 from gourmet.importers import xml_importer
 from gourmet.gdebug import debug
@@ -34,7 +36,7 @@ class RecHandler (xml_importer.RecHandler):
                         self.rec[att]=self.meta[att][raw]
                     else:
                         self.rec[att]=raw
-                        print "Warning: can't translate ",raw
+                        print("Warning: can't translate ", raw)
         if name=='image':
             self.in_mixed=0            
         if name=='inggroup':

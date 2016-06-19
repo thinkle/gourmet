@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk
 
 def collect_descendants (parent, descendants=None):
@@ -11,7 +13,7 @@ def collect_descendants (parent, descendants=None):
             if c not in descendants: descendants.append(c)
             collect_descendants(c,descendants)
     if hasattr(parent,'get_submenu'):
-        #print 'Getting submenu!'
+        # print('Getting submenu!')
         if parent.get_submenu():
             descendants.append(parent.get_submenu())
             collect_descendants(parent.get_submenu(),descendants)
@@ -92,17 +94,17 @@ class MnemonicManager:
         # handle menu items
         menus = filter(lambda x: isinstance(x,gtk.Menu),widgets)
         for menu in menus:
-            #print 'Create submenu for ',menu
+            # print('Create submenu for ', menu)
             self.sub_managers[menu] = MnemonicManager()
         menu_items = filter(lambda x: isinstance(x,gtk.MenuItem),widgets)
         for mi in menu_items:
-            #print 'Looking at menu item',mi,mi.get_children()
+            # print('Looking at menu item', mi, mi.get_children())
             widgets.remove(mi)
             children =  mi.get_children()
             if children and isinstance(children[0],gtk.Label):
                 lab = children[0]
             else:
-                #print 'Ignoring menu',mi,mi.get_children()
+                # print('Ignoring menu', mi, mi.get_children())
                 continue
             added.append(lab)
             if self.get_submanager(mi) == self:
@@ -155,10 +157,10 @@ class MnemonicManager:
         more_mnemonics = []
 
     def add_treeview (self, tv):
-        #print 'Mnemonic manager add TV'
+        # print('Mnemonic manager add TV')
         for c in tv.get_columns():
             t = c.get_title()
-            #print 'Column:',t
+            # print('Column:', t)
             if t.find('_')>-1:
                 widg = gtk.Label(t)
                 widg.set_use_underline(True)
@@ -177,7 +179,7 @@ class MnemonicManager:
                 if alts:
                     k = alts[0]
                     self.change_mnemonic(w,k)
-            #print 'Add untouchable key:',k,w
+            # print('Add untouchable key:', k, w)
             self.untouchable_accels.append(k)
             self.untouchable_widgs.append(w)
         if not self.mnemonics.has_key(k): self.mnemonics[k]=[]
@@ -229,10 +231,10 @@ class MnemonicManager:
         """
         to_reconcile = []
         changed = []
-        #print 'MNEMONICS: ',
-        #for k,v in self.mnemonics.items():
-        #    print k,[w.get_text() for w in v],
-        #print
+        # print('MNEMONICS: ', end='')
+        # for k, v in self.mnemonics.items():
+        #     print(k, [w.get_text() for w in v], end='')
+        # print()
         for k,v in self.mnemonics.items():
             if len(v)>1:
                 can_move = []
@@ -244,7 +246,8 @@ class MnemonicManager:
                     else:
                         alts = self.find_peaceful_alternatives(w)
                     if alts:
-                        #print 'Generated alternatives for ',w,w.get_text(),':',alts
+                        # print('Generated alternatives for ', w, w.get_text(),
+                        #       ':', alts)
                         can_move.append((w,alts))
                 if len(can_move)==len(v):
                     # If everything is movable, then we keep our first
@@ -253,18 +256,18 @@ class MnemonicManager:
                     can_move=can_move[1:]
                 # We extend our guys to move with to_move
                 for w,alts in can_move:
-                    #print 'Changing mnemonic',w,w.get_text(),alts[0]
+                    # print('Changing mnemonic', w, w.get_text(), alts[0])
                     self.change_mnemonic(w,alts[0])
                     changed.append(w)
         if changed:
-            #print '>>>Recursing...'
+            # print('>>>Recursing...')
             self.fix_conflicts_peacefully()
-            #print '<<<Done recursing'
+            # print('<<<Done recursing')
         if do_submenus:
             for mm in self.sub_managers.values():
-                #print '>>>>>Submenus...'
+                # print('>>>>>Submenus...')
                 mm.fix_conflicts_peacefully()
-                #print '<<<<<Done with submenus'
+                # print('<<<<<Done with submenus')
         # for each of our notebooks
         for nb in self.notebook_managers.values():
             # for each of our pages

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import unittest
 import tempfile
 import os
@@ -23,8 +25,8 @@ class Test (unittest.TestCase):
     def testDefaultPlugins (self):
         ml = get_master_loader()
         ml.load_active_plugins()
-        print 'active:',ml.active_plugins
-        print 'instantiated:',ml.instantiated_plugins
+        print('active:', ml.active_plugins)
+        print('instantiated:', ml.instantiated_plugins)
         assert(not ml.errors)
 
     def testAvailablePlugins (self):

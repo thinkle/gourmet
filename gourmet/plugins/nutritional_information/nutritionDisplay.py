@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, re
 import parser_data
 import gourmet.cb_extras as cb
@@ -162,7 +164,7 @@ if __name__ == '__main__':
     try:
         nutritionGrabberGui.check_for_db(db)
     except nutritionGrabberGui.Terminated:
-        print 'Nutrition import was cut short a bit'
+        print('Nutrition import was cut short a bit')
     def quit (*args):
         db.save()
         gtk.mainquit()

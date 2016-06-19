@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.importers import importer, plaintext_importer
 import re, os.path, string, array
 from gourmet import convert, check_encodings
@@ -558,7 +560,7 @@ def find_columns (strings, char=" "):
 if __name__ == '__main__':
     import gourmet.recipeManager as recipeManager
     import tempfile, sys, profile, os.path
-    print 'Testing MealMaster import'
+    print('Testing MealMaster import')
     tmpfile = tempfile.mktemp()
     import backends.db
     rd = backends.db.RecipeManager(tmpfile)

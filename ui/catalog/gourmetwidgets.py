@@ -1,7 +1,9 @@
+from __future__ import print_function
+
 #import os, sys
 #execpath = os.path.dirname(__file__)
 #sys.path.insert (0, os.path.join(execpath, "../../src/lib"))
-#print sys.path
+# print(sys.path)
 
 #from gtk_extras import timeEntry, ratingWidget, timeEntry
 #import timeScanner

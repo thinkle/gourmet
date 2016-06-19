@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import re, locale, math
 from defaults.defaults import lang as defaults
 from gettext import gettext as _
@@ -137,13 +139,13 @@ class Converter:
         if not table:
             table=self.conv_table
         #else:
-            #print "We were handed a table: ",table
+            # print("We were handed a table: ", table)
         for u1,u2 in filter(lambda x: len(x)==2, table.keys()):
             if u1 not in units: units.append(u1)
             if u2 not in units: units.append(u2)
-        #print 'done looping through list'
+        # print('done looping through list')
         for u in units:
-            #print 'grabbing possible conversions for ',u
+            # print('grabbing possible conversions for ', u)
             debug('unit=%s'%u)
             d=self.possible_conversions(u,dict=table)
             to_expand = d.keys()
@@ -581,7 +583,7 @@ def seconds_to_timestring (time, round_at=None, fractions=FRACTIONS_NORMAL):
             add_half = 0.5
             time_covered += 0.5
         if time_covered or add_half:
-            #print time_covered,'(rounds to ',round(time_covered),')'
+            # print(time_covered, '(rounds to ', round(time_covered), ')')
             if round_at and len(time_strings)+1>=round_at:
                 if not add_half: time_covered = int(round(float(time)/divisor))
                 time_strings.append(" ".join([
@@ -803,14 +805,14 @@ try:
  """
     ING_MATCHER_REGEXP = ING_MATCHER_REGEXP%locals()
 except:
-    print 'Failure with local vars...'
+    print('Failure with local vars...')
     for s in ['NUMBER_FINDER_REGEXP',
               'NUMBER_FINDER_REGEXP2',
               'RANGE_REGEXP',
               'MULTI_WORD_UNIT_REGEXP',]:
-        try: print 'DOUBLE CHECK',s,'%%(%s)s'%s%locals()
+        try: print('DOUBLE CHECK',s,'%%(%s)s'%s%locals())
         except:
-            print 'Failed with ',s,locals()[s]
+            print('Failed with ',s,locals()[s])
     raise
 
 ING_MATCHER = re.compile(ING_MATCHER_REGEXP,
@@ -923,7 +925,7 @@ def float_string (s):
     importing British recipes and viceversa.
     """
     if NUMBER_WORDS.has_key(s.lower()):
-        print 'We have key',s.lower()
+        print('We have key', s.lower())
         return NUMBER_WORDS[s.lower()]
     THOUSEP = locale.localeconv()['thousands_sep']
     DECSEP = locale.localeconv()['decimal_point']
@@ -945,7 +947,7 @@ def float_string (s):
     elif THOUSEP and s.find(THOUSEP)>-1:
         # otherwise, perhaps our thousand separator is really a
         # decimal separator (we're out of our locale...)
-        print 'Warning: assuming %s is a decimal point in %s'%(THOUSEP,s)
+        print('Warning: assuming %s is a decimal point in %s' % (THOUSEP, s))
         s = s.replace(DECSEP,'!!!')
         s = s.replace(THOUSEP,DECSEP)
         s = s.replace('!!!',THOUSEP) # and remove any commas for good measure
@@ -1006,13 +1008,14 @@ if __name__ == '__main__' and False:
                 self.offer_options()
             
         def offer_options (self):
-            print 'Choose one of the following actions:'
-            for k in self.options.keys(): print k
+            print('Choose one of the following actions:')
+            for k in self.options.keys():
+                print(k)
             choice = raw_input('Type your choice: ')
             if self.options.has_key(choice):
                 self.options[choice]()
             else:
-                print "I'm afraid I didn't understand your choice!"
+                print("I'm afraid I didn't understand your choice!")
                 self.return_to_continue()
                 self.offer_options()
                           
@@ -1022,18 +1025,18 @@ if __name__ == '__main__' and False:
                 return u
             elif u=='list':
                 for u in self.c.unit_dict.keys():
-                    print u,", ",
-                print ""
+                    print(u, ", ", end=' ')
+                print("")
                 return self.get_unit(prompt)
             else:
-                print u, 'Is not a unit I know about! Please try again.'
-                print '(Type "list" for a list of valid units)'
+                print(u, 'Is not a unit I know about! Please try again.')
+                print('(Type "list" for a list of valid units)')
                 return self.get_unit(prompt)
 
         def get_amount (self, prompt="Enter amount: "):
             amt = frac_to_float(raw_input(prompt))
             if not amt:
-                print "Please enter an amount!"
+                print("Please enter an amount!")
                 return self.get_amount(prompt)
             else:
                 return amt
@@ -1043,17 +1046,17 @@ if __name__ == '__main__' and False:
             amt = self.get_amount("Enter source amount: ")
             u2 = self.get_unit("Enter target unit: ")
             conv = self.c.converter(u1,u2)
-            print '%s %s = %s %s'%(amt,u1,conv*amt,u2)
+            print('%s %s = %s %s' % (amt, u1, conv * amt, u2))
             self.return_to_continue()
 
         def adjuster (self):
             u1 = self.get_unit('Original unit: ')
             a1 = self.get_amount('Original amount: ')
             a,u = self.c.adjust_unit(a1,u1)
-            print 'Most readable unit = %s %s'%(a,u)
+            print('Most readable unit = %s %s' % (a, u))
 
         def return_to_continue (self):
-            print 'Enter return to continue: '
+            print('Enter return to continue: ')
             raw_input()
 
         def adder (self):
@@ -1063,9 +1066,9 @@ if __name__ == '__main__' and False:
             a2 = self.get_amount('Enter amount 2: ')
             result = self.c.add_reasonably(a1,u1,a2,u2)
             if result:
-                print "%s %s + %s %s = %s"%(u1,a1,u2,a2,result)
+                print("%s %s + %s %s = %s" % (u1, a1, u2, a2, result))
             else:
-                print "I'm sorry, I couldn't add that together!"
+                print("I'm sorry, I couldn't add that together!")
             self.return_to_continue()
             
         def quit (self):

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gourmet.plugin_loader as plugin_loader
 from gourmet.plugin import ImporterPlugin, ImportManagerPlugin
 import gourmet.gtk_extras.dialog_extras as de
@@ -100,7 +102,7 @@ class ImportManager (plugin_loader.Pluggable):
                 },
                 )
         else:
-            print 'Doing import of',reader.url,plugin
+            print('Doing import of', reader.url, plugin)
             self.do_import(plugin,'get_web_importer',reader.url,reader.data,reader.content_type)
 
     def offer_import (self, parent=None):
@@ -137,21 +139,22 @@ class ImportManager (plugin_loader.Pluggable):
                             importers.append((fn,plugin))
                             found_plugin = True
                         else:
-                            print 'File ',fn,'appeared to match ',plugin,'but failed test.'
+                            print('File ', fn, 'appeared to match ', plugin,
+                                  'but failed test.')
                         break
                 if found_plugin: break
             if not found_plugin:
                 if fallback:
                     importers.append((fn,fallback))
                 else:
-                    print 'Warning, no plugin found for file ',fn
+                    print('Warning, no plugin found for file ', fn)
         ret_importers = [] # a list of importer instances to return
         for fn,importer_plugin in importers:
-            print 'Doing import for ',fn,importer_plugin
+            print('Doing import for ', fn, importer_plugin)
             ret_importers.append(
                 self.do_import(importer_plugin,'get_importer',fn)
                 )
-        print 'import_filenames returns',ret_importers
+        print('import_filenames returns', ret_importers)
         return ret_importers
 
     def do_import (self, importer_plugin, method, *method_args):
@@ -167,13 +170,13 @@ class ImportManager (plugin_loader.Pluggable):
             if hasattr(importer,'pre_run'):
                 importer.pre_run()
             if isinstance(importer,NotThreadSafe):
-                #print 'Running manually --- not threadsafe!'
+                # print('Running manually --- not threadsafe!')
                 importer.run()
                 self.follow_up(None,importer)
             else:
                 label = _('Import') + ' ('+importer_plugin.name+')'
                 self.setup_thread(importer, label)
-            print 'do_importer returns importer:',importer
+            print('do_importer returns importer:', importer)
             return importer
 
     def setup_notification_message(self, importer):
@@ -252,7 +255,8 @@ class ImportManager (plugin_loader.Pluggable):
         if isinstance(plugin,ImporterPlugin):
             name = plugin.name
             if self.plugins_by_name.has_key(name):
-                print 'WARNING','replacing',self.plugins_by_name[name],'with',plugin
+                print('WARNING', 'replacing', self.plugins_by_name[name],
+                      'with', plugin)
             self.plugins_by_name[name] = plugin
             self.learn_mimetype_extension_mappings(plugin)
             self.importer_plugins.append(plugin)
@@ -276,7 +280,8 @@ class ImportManager (plugin_loader.Pluggable):
                 del self.plugins_by_name[name]
                 self.plugins.remove(plugin)
             else:
-                print 'WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name
+                print('WARNING: unregistering ', plugin,
+                      'but there seems to be no plugin for ', name)
         else:
             self.plugins.remove(plugin)
     

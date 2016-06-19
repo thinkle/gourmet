@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
 from gettext import gettext as _
 from gourmet import convert,gglobals
@@ -212,7 +214,7 @@ class website_exporter (ExporterMultirec):
             if not os.path.isdir(out):
                 os.makedirs(out)
             to_copy = open(self.css,'r')
-            print 'writing css to ',styleout
+            print('writing css to ', styleout)
             to_paste = open(styleout,'w')
             to_paste.write(to_copy.read())
             to_copy.close(); to_paste.close()

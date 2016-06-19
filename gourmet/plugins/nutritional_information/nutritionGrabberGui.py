@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk
 import databaseGrabber
 import os, os.path, time
@@ -64,7 +66,7 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
     
 def check_for_db (db):
     if db.fetch_len(db.nutrition_table) < 10:
-        print 'Grabbing nutrition database!'
+        print('Grabbing nutrition database!')
         dgg = DatabaseGrabberGui(db)        
         dgg.load_db()
     # Check if we have choline in our DB... butter (1123) has choline...
@@ -74,7 +76,7 @@ def check_for_db (db):
         
 if __name__=='__main__':
     import gourmet.recipeManager
-    print 'loading db'
+    print('loading db')
     db = gourmet.recipeManager.RecipeManager(**gourmet.recipeManager.dbargs)
-    print 'checking for nutrition_table'
+    print('checking for nutrition_table')
     check_for_db(db)

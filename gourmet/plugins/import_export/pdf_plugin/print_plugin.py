@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk
 import sys
 if sys.platform != "win32":
@@ -162,14 +164,14 @@ class PDFRecipePrinter (PDFPrinter):
         pe.connect('error',self.handle_error)
         pe.run()
         if self.printing_error:
-            print 'PRINTING ERROR!'
+            print('PRINTING ERROR!')
             raise Exception("There was an error generating PDF")
         self.set_document(fn, operation,context)
 
     def handle_error (self,obj,errno, summary, traceback):
-        print 'There was an error generating a PDF to print.'
-        print summary
-        print traceback
+        print('There was an error generating a PDF to print.')
+        print(summary)
+        print(traceback)
         self.printing_error = True
         raise Exception('There was an error generating a PDF to print')
 

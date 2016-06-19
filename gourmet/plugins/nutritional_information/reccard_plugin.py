@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from nutritionLabel import NutritionLabel
 from nutrition import NutritionInfoList, NutritionVapor
 #from gourmet.gglobals import gladeCustomHandlers
@@ -27,7 +29,8 @@ class NutritionDisplayModule (RecDisplayModule):
     def update_from_database (self):
         self.nutinfo = self.recipe_display.rg.rd.nd.get_nutinfo_for_inglist(self.recipe_display.rg.rd.get_ings(self.recipe_display.current_rec),
                                                                             self.recipe_display.rg.rd)
-        #print 'Set servings',self.recipe_display.current_rec.servings,type(self.recipe_display.current_rec.servings)
+        # print('Set servings', self.recipe_display.current_rec.servings,
+        #       type(self.recipe_display.current_rec.servings))
         self.nutritionLabel.set_yields(
             self.recipe_display.current_rec.yields,
             self.recipe_display.current_rec.yield_unit
@@ -95,10 +98,11 @@ class NutritionDisplayModule (RecDisplayModule):
                     nutinfo_for_ing = ni
                     break
             if nutinfo_for_ing is None: # if something is wrong...
-                print 'Did not find nutritional info object for ingredient',ing
-                print 'We did have...'
+                print('Did not find nutritional info object for ingredient',
+                      ing)
+                print('We did have...')
                 for ni in self.nutinfo:
-                    print ni.__ingobject__
+                    print(ni.__ingobject__)
                 return istr
             if type(props)==str:
                 nut_amt = getattr(nutinfo_for_ing,props)

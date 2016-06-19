@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk
 from gdebug import debug
 from gtk_extras import dialog_extras as de
@@ -251,11 +253,11 @@ def getEncoding (*args,**kwargs):
         return result
 
 if __name__ == '__main__':
-    print 'grabbing dialog extras'
+    print('grabbing dialog extras')
     #import gtk_extras.dialog_extras as de
-    #print 'selecting file'
+    # print('selecting file')
     #fn=de.select_file('Select file to decode',filters=[['Plain Text',['text/plain'],'*txt']],)
-    #print 'fn = ',fn
-    print "Got file ", get_file('/tmp/foo.txt')[0:5]
+    # print('fn = ', fn)
+    print("Got file ", get_file('/tmp/foo.txt')[0:5])
 
 

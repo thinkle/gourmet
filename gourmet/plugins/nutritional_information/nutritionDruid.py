@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, gobject
 import gourmet.convert as convert
 import gourmet.gglobals as gglobals
@@ -315,7 +317,8 @@ class NutritionInfoDruid (gobject.GObject):
                          ]
         for widget_name in self.widgets:
             setattr(self,widget_name,self.ui.get_object(widget_name))
-            if not getattr(self,widget_name): print "WIDGET: ",widget_name,"NOT FOUND."
+            if not getattr(self, widget_name):
+                print("WIDGET: ", widget_name, "NOT FOUND.")
             # make a list of all core control widgets
             if widget_name!='notebook': self.controls.append(getattr(self,widget_name))
         self.usdaIndex = NutritionUSDAIndex(self.rd,
@@ -1118,9 +1121,9 @@ if __name__ == '__main__':
     nd=nutrition.NutritionData(rd,c)
     nid = NutritionInfoDruid(nd,{})
     def unit_handler (*args):
-        print 'CHANGE UNIT CALLBACK:',args
+        print('CHANGE UNIT CALLBACK:', args)
     def key_handler (*args):
-        print 'CHANGE KEY CALLBACK:',args
+        print('CHANGE KEY CALLBACK:', args)
     nid.connect('unit-changed',unit_handler)
     nid.connect('key-changed',key_handler)
     #nid.set_ingkey('black pepper')

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, gtk.gdk, gobject, pango
 from gourmet.ImageExtras import get_pixbuf_from_jpg
 from gourmet.gtk_extras.thumbnail import check_for_thumbnail,fetched_uris
@@ -7,35 +9,38 @@ from gourmet.gdebug import debug,TimeAction
 import threading, time
 
 def grab_thumbnail (uri, type, iqueue, pqueue, progress_portion=1, progress_start_at=0):
-    #print 'GRAB THUMBNAIL',uri,type,progress_portion,progress_start_at
+    # print('GRAB THUMBNAIL', uri, type, progress_portion, progress_start_at)
     def reporthook (block, blocksize, total):
-        #print 'REPORT HOOK',block,blocksize,total
+        # print('REPORT HOOK', block, blocksize, total)
         try:
             perc = progress_start_at + ((block*blocksize)/(float(total)) * progress_portion)
         except:
-            #print 'problem getting percent from'
-            #print "progress_start_at: %(progress_start_at)s, block: %(block)s, blocksize: %(blocksize)s, %(progress_portion)s progress_portion, %(total)s: total"%locals()
+            # print('problem getting percent from')
+            # print("progress_start_at: %(progress_start_at)s, "
+            #       "block: %(block)s, blocksize: %(blocksize)s, "
+            #       "%(progress_portion)s progress_portion, "
+            #       "%(total)s: total" % locals())
             raise
         #except:
         #    perc = -1
-        #print "REPORT:",uri,perc
+        # print("REPORT:", uri, perc)
         #pqueue.put_nowait(('Getting %s'%uri,perc))
         pqueue.append(('Getting %s'%uri,perc))
-    #print 'ADD Fetch starter to QUEUE'
+    # print('ADD Fetch starter to QUEUE')
     #pqueue.put_nowait(('Getting %s'%uri,0))
     pqueue.append(('Getting %s'%uri,0))
     import time
-    #print 'Fetching ',uri
+    # print('Fetching ', uri)
     try:
         fi = check_for_thumbnail(uri,type,reporthook)
     except:
-        print 'WARNING: Error on creating thumbnail - ignoring'
+        print('WARNING: Error on creating thumbnail - ignoring')
         import traceback; traceback.print_exc()
     else:
         iqueue.append((fi,uri))
-    #print 'Fetched'
-    #print 'Adding result to Queue'
-    #print 'Done'
+    # print('Fetched')
+    # print('Adding result to Queue')
+    # print('Done')
     
 class ImageBrowser (gtk.IconView):
     def __init__ (self,*args,**kwargs):
@@ -55,7 +60,7 @@ class ImageBrowser (gtk.IconView):
         #self.run_thread()
 
     def add_image_from_uri (self, u, progress_portion=1, progress_start_at=0):
-        #print 'ADD_IMAGE_FROM_URI',u,progress_portion,progress_start_at
+        # print('ADD_IMAGE_FROM_URI', u, progress_portion, progress_start_at)
         self.to_add_lock.acquire()
         self.adding.append({'url':u,
                             'progress_portion':progress_portion,
@@ -64,7 +69,7 @@ class ImageBrowser (gtk.IconView):
                            )
         self.to_add_lock.release()
         if not self.alive:
-            #print 'RUN THREAD!'
+            # print('RUN THREAD!')
             self.run_thread()
 
     def quit (self):
@@ -77,13 +82,13 @@ class ImageBrowser (gtk.IconView):
 
     def fetch_images (self):
         while self.alive:
-            #print 'FETCH_IMAGES',time.time()
+            # print('FETCH_IMAGES', time.time())
             if self.adding:
                 self.to_add_lock.acquire()
                 to_add = self.adding[0]; self.adding = self.adding[1:]
-                #print 'TO_ADD',to_add
+                # print('TO_ADD', to_add)
                 self.to_add_lock.release()
-                #print 'ADDING:',to_add,time.time()
+                # print('ADDING:', to_add, time.time())
                 grab_thumbnail(
                     to_add['url'],
                     'small',
@@ -92,7 +97,7 @@ class ImageBrowser (gtk.IconView):
                     progress_portion=to_add['progress_portion'],
                     progress_start_at=to_add['progress_start_at']
                     )
-                #print 'ADDED!'
+                # print('ADDED!')
             else:
                 time.sleep(0.1)
 
@@ -111,10 +116,10 @@ class ImageBrowser (gtk.IconView):
         try:
             #text,progress = self.progress_queue.get_nowait()
             text,progress = self.progress_queue.pop()
-            #print 'Set progress',progress,text
+            # print('Set progress', progress, text)
             self.prog = progress,text
             self.set_progress(float(progress),text)
-            #print 'UPDATE_PROGRESS',time.time(),progress,text
+            # print('UPDATE_PROGRESS', time.time(), progress, text)
         except IndexError:
             if not self.adding and hasattr(self,'progressbar'):
                 self.progressbar.hide()
@@ -122,7 +127,7 @@ class ImageBrowser (gtk.IconView):
             #    self.progressbar.pulse()
         else:
             if progress == 1:
-                print 'Done!'
+                print('Done!')
                 self.progressbar.hide()
                 return None
         return True
@@ -221,7 +226,7 @@ if __name__ == '__main__':
     try:
         # Make unit test not run from emacs C-c C-c into python shell...
         __file__
-        print 'UNITTEST'
+        print('UNITTEST')
         unittest.main()
     except:
         pass

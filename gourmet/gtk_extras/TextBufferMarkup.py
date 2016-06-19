@@ -16,6 +16,8 @@
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 ### USA 
 
+from __future__ import print_function
+
 import pango,gtk, xml.sax.saxutils
 from gourmet.gdebug import debug
 
@@ -76,7 +78,7 @@ class PangoBuffer (gtk.TextBuffer):
         try:
             self.parsed,self.txt,self.separator = pango.parse_markup(txt,u'\x00')
         except:
-            print 'Problem encountered escaping text: "%s"'%txt
+            print('Problem encountered escaping text: "%s"' % (txt, ))
             import traceback; traceback.print_exc()
             txt=xml.sax.saxutils.escape(txt)
             self.parsed,self.txt,self.separator = pango.parse_markup(txt,u'\x00')
@@ -136,12 +138,13 @@ class PangoBuffer (gtk.TextBuffer):
                     tags.append(self.tags[key])
                 if self.pango_translation_properties.has_key(a.type):
                     prop=self.pango_translation_properties[a.type]
-                    #print 'setting property %s of %s (type: %s)'%(prop,a,a.type)
+                    # print('setting property %s of %s (type: %s)' % (
+                    #     prop, a, a.type))
                     val=getattr(a,'value')
                     #tag.set_property(prop,val)
                     mval = val
                     if self.attval_to_markup.has_key(prop):
-                        #print 'converting ',prop,' in ',val
+                        # print('converting ', prop, ' in ', val)
                         if self.attval_to_markup[prop].has_key(val):
                             mval = self.attval_to_markup[prop][val]
                         else:
@@ -350,7 +353,7 @@ class InteractivePangoBuffer (PangoBuffer):
             # properties to apply...
             for tags,w in self.tag_widgets.items():
                 if w.get_active():
-                    #print 'apply tags...',tags
+                    # print('apply tags...', tags)
                     for t in tags: self.apply_tag(t,old_itr,insert_itr)
         
                     
@@ -405,7 +408,7 @@ class SimpleEditor:
         self.w.show_all()
 
     def print_markup (self,*args):
-        print self.ipb.get_text()
+        print(self.ipb.get_text())
         
 if __name__ == '__main__':
     se = SimpleEditor()

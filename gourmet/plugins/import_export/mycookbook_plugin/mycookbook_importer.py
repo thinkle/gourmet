@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import re
 from gourmet.importers import xml_importer
 from gourmet.gdebug import *
@@ -80,8 +82,8 @@ class RecHandler (xml_importer.RecHandler):
                     obj['image'] = gourmet.ImageExtras.get_string_from_image(im)
                     #obj['image'] = gourmet.ImageExtras.get_string_from_image(gourmet.ImageExtras.resize_image(im,60,60))
                 except Exception, e:
-                    print 'Issue loading: '+pic_fullpath
-                    print str(e)
+                    print('Issue loading: ' + pic_fullpath)
+                    print(str(e))
                     #dont stop if corrupted image file
                     pass
         

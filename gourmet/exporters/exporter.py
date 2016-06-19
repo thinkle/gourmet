@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap, types
 from gourmet import convert
 from gourmet.gglobals import REC_ATTR_DIC, DEFAULT_ATTR_ORDER, DEFAULT_TEXT_ATTR_ORDER, TEXT_ATTR_DIC, use_threads
@@ -104,7 +106,7 @@ class exporter (SuspendableThread, Pluggable):
 
     @pluggable_method
     def _write_text_ (self):
-        #print 'exporter._write_text_',self.text_attr_order,'!'
+        # print('exporter._write_text_', self.text_attr_order, '!')
         for a in self.text_attr_order:
             # This code will never be called for Gourmet
             # proper... here for convenience of symbiotic project...
@@ -117,10 +119,10 @@ class exporter (SuspendableThread, Pluggable):
                         s = dct.get('text','')
                         img = dct.get('image','')
                         time = dct.get('time',0)
-                        #print 'Exporter sees step AS:'
-                        #print '  text:',s
-                        #print '  image:',img
-                        #print '  time:',time
+                        # print('Exporter sees step AS:')
+                        # print('  text:', s)
+                        # print('  image:', img)
+                        # print('  time:', time)
                     else:
                         img = ''
                     if self.do_markup:
@@ -137,7 +139,7 @@ class exporter (SuspendableThread, Pluggable):
                     try: self.write_text(a,s,time=time)
                     except:
                         self.write_text(a,s)
-                        print 'Failed to export time=',time
+                        print('Failed to export time=', time)
                         raise
                     if img:
                         self.write_image(img)
@@ -146,7 +148,8 @@ class exporter (SuspendableThread, Pluggable):
             txt=self._grab_attr_(self.r,a)
             if txt and txt.strip():
                 if self.do_markup:  txt=self.handle_markup(txt)
-                #else: print 'exporter: do_markup=False'
+                # else:
+                #     print('exporter: do_markup=False')
                 if not self.use_ml: txt = xml.sax.saxutils.unescape(txt)
                 if self.convert_attnames:
                     self.write_text(TEXT_ATTR_DIC.get(a,a),txt)
@@ -217,7 +220,7 @@ class exporter (SuspendableThread, Pluggable):
                 try:
                     ret = ret.encode(self.DEFAULT_ENCODING)
                 except:
-                    print "oops:",ret,"doesn't look like unicode."
+                    print("oops:", ret, "doesn't look like unicode.")
                     raise
             return ret
 
@@ -296,7 +299,7 @@ class exporter (SuspendableThread, Pluggable):
     def handle_markup (self, txt):
         """Handle markup inside of txt."""
         if txt == None:
-            print 'Warning, handle_markup handed None'
+            print('Warning, handle_markup handed None')
             return ''
         import pango
         outtxt = ""
@@ -427,7 +430,7 @@ class exporter_mult (exporter):
                 fl_ret = float(ret)
             else:
                 if ret is not None:
-                    print 'WARNING: IGNORING serving value ',ret
+                    print('WARNING: IGNORING serving value ', ret)
                 fl_ret = None
             if fl_ret:
                 ret = convert.float_to_frac(fl_ret * self.mult,
@@ -524,7 +527,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                 try:
                     ret = ret.encode(self.DEFAULT_ENCODING)
                 except:
-                    print "oops:",ret,"doesn't look like unicode."
+                    print("oops:", ret, "doesn't look like unicode.")
                     raise
             return ret
 
@@ -536,7 +539,8 @@ class ExporterMultirec (SuspendableThread, Pluggable):
             for ref in reffed:
                 rec = self.rd.get_rec(ref.refid)
                 if not rec in self.recipes:
-                    print 'Appending recipe ',rec.title,'referenced in ',r.title
+                    print('Appending recipe ', rec.title, 'referenced in ',
+                          r.title)
                     self.recipes.append(rec)
         
     @pluggable_method

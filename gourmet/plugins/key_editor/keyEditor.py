@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, gtk.gdk, gobject, re, os, os.path, time
 from gourmet import gglobals, convert
 from gourmet.gtk_extras import WidgetSaver, mnemonic_manager, pageable_store
@@ -333,7 +335,7 @@ class KeyEditor:
             amount = value
             return {'ingkey':key,'item':item,'unit':unit,'amount':amount},'amount'
         else:
-            print 'WTF! WE SHOULD NEVER LAND HERE!',field,value
+            print('WTF! WE SHOULD NEVER LAND HERE!', field, value)
             raise Exception("WTF ERROR")
             
     def applyEntriesCB (self, *args):
@@ -350,7 +352,8 @@ class KeyEditor:
                 else:
                     newdic[k]=txt
         if not newdic:
-            print 'We called applyEntriesCB with no text -- that shouldn\'t be possible'
+            print("We called applyEntriesCB with no text -- that shouldn't be "
+                  "possible")
             return
         mod,rows = self.treeview.get_selection().get_selected_rows()
         if not de.getBoolean(
@@ -411,7 +414,7 @@ class KeyEditor:
                 parent = mod.iter_parent(itr)
             curkey = mod.get_value(itr,self.VALUE_COL)
             #if mod.get_value(itr,self.NUT_COL):
-            #    print "We can't yet edit nutritional information..."
+            #    print("We can't yet edit nutritional information...")
             #else:
             if True:
                 keys_to_update[curkey]=[]

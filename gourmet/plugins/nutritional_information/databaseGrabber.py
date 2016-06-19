@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import sys
 import urllib, zipfile, tempfile, os.path, re, string
 from gettext import gettext as _
@@ -119,8 +121,9 @@ class DatabaseGrabber:
             try:
                 lname,sname,typ = field_defs[n]
             except IndexError:
-                print n,fields[n],'has no definition in ',field_defs,len(field_defs)
-                print 'Ignoring problem and forging ahead!'
+                print(n, fields[n], 'has no definition in ', field_defs,
+                      len(field_defs))
+                print('Ignoring problem and forging ahead!')
                 break
             if fl and fl[0]=='~' and fl[-1]=='~':
                 d[sname]=fl[1:-1]
@@ -134,7 +137,7 @@ class DatabaseGrabber:
                     d[sname]=int(float(d.get(sname,fl)))
                 except:
                     if d.get(sname,fl):
-                        print d.get(sname,fl),'is not an integer'
+                        print(d.get(sname, fl), 'is not an integer')
                         raise
                     # If it's nothing, we don't bother...
                     if d.has_key(sname): del d[sname]                    
@@ -170,11 +173,11 @@ class DatabaseGrabber:
                     SQL += ', '.join('%s = ?'%k for k in args)
                     SQL += ' WHERE ndbno = %s'%d['ndbno']
                     #if d['ndbno']==1123:
-                    #    print SQL,args.values()
+                    #    print(SQL, args.values())
                     self.db.extra_connection.execute(SQL,args.values())
                 except:
-                    print 'Error appending to nutrition_table',d
-                    print 'Tried modifying table -- that failed too!'
+                    print('Error appending to nutrition_table', d)
+                    print('Tried modifying table -- that failed too!')
                     raise
             t.end()                        
             tline.end()
@@ -198,7 +201,7 @@ class DatabaseGrabber:
             try:
                 self.db.do_add_fast(self.db.usda_weights_table,d)
             except:
-                print "Error appending ",d,"to usda_weights_table"
+                print("Error appending ", d, "to usda_weights_table")
                 raise
         self.db.commit_fast_adds()
             
@@ -208,13 +211,14 @@ if __name__ == '__main__':
     tot_prog = 0
     def show_prog (perc, msg):
         perc = perc * 100
-        if perc - tot_prog: print "|" * int(perc - tot_prog)
-    print 'getting our recipe database'
+        if perc - tot_prog:
+            print("|" * int(perc - tot_prog))
+    print('getting our recipe database')
     import gourmet.recipeManager
     db = gourmet.recipeManager.RecipeManager(**gourmet.recipeManager.dbargs)
-    print 'getting our grabber ready'
+    print('getting our grabber ready')
     grabber = DatabaseGrabber(db,show_prog)
-    print 'grabbing recipes!'
+    print('grabbing recipes!')
     grabber.grab_data('/home/tom/Projects/grm/data/')
     #grabber.parse_weightfile(open('/home/tom/Projects/grm/data/WEIGHT.txt','r'))
     #grabber.get_weight('/home/tom/Projects/nutritional_data/WEIGHT.txt')    

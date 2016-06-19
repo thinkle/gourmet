@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import convert, sys
 from gettext import gettext as _
 from gdebug import debug
@@ -24,7 +26,7 @@ class Shopper:
         self.mypantry = {}
         for a,u,k in inglist:
             if self.pantry.has_key(k) and self.pantry[k]:
-                #print "%s is in pantry" %k
+                # print("%s is in pantry" % (k, ))
                 dic=self.mypantry
             else:
                 dic=self.dic
@@ -71,7 +73,7 @@ class Shopper:
                             amt=(amt,amt) 
                         if type(a) != tuple :
                             a=(a,a)
-                        #print 'amt:',amt,' unit:',unit,'a:',a,'u:',u
+                        # print('amt:', amt, ' unit:', unit, 'a:', a, 'u:', u)
                         add_low = self.cnv.add_reasonably(amt[0],unit,a[0],u,ing)
                         add_high = self.cnv.add_reasonably(amt[1],unit,a[1],u,ing)
                         if (not add_low) or (not add_high):
@@ -219,8 +221,8 @@ class Shopper:
 
     def add_org_itm (self, itm, cat):
         self.orgdic[itm]=cat
-        #for k,v in self.orgdic.items():
-            #print "%s:%s, "%(k,v)
+        # for k, v in self.orgdic.items():
+            # print("%s:%s, " % (k, v))
             
     def add_to_pantry (self, key):
         self.pantry[key]=True

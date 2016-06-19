@@ -3,6 +3,8 @@
 This module contains code for handling the 'merging' of duplicate
 recipes.
 """
+from __future__ import print_function
+
 import gtk, pango, os.path, time
 import gourmet.recipeIdentifier
 from gourmet.gtk_extras import ratingWidget, mnemonic_manager, dialog_extras
@@ -116,7 +118,7 @@ class RecipeMergerDialog:
     def populate_tree (self):
         """Populate treeview with duplicate recipes.
         """
-        #print 'CALL: populate_tree'
+        # print('CALL: populate_tree')
         search_mode =self.searchTypeCombo.get_active()
         include_deleted = self.includeDeletedRecipesCheckButton.get_active()
         if search_mode == self.RECIPE_DUP_MODE:
@@ -195,8 +197,9 @@ class RecipeMergerDialog:
                 self.rd.delete_rec(r)
         
     def apply_merge (self, *args):
-        #print "CALL: apply_merge"
-        #print 'Apply ',self.diff_table.selected_dic,'on ',self.diff_table.rec
+        # print("CALL: apply_merge")
+        # print('Apply ', self.diff_table.selected_dic, 'on ',
+        #       self.diff_table.rec)
         self.do_merge(self.diff_table.selected_dic,
                       self.current_recs,
                       to_keep=self.diff_table.rec)
@@ -207,7 +210,7 @@ class RecipeMergerDialog:
     def merge_selected (self, *args):
         """Merge currently selected row from treeview.
         """
-        #print "CALL: merge_selected"
+        # print("CALL: merge_selected")
         mod,rows = self.duplicateRecipeTreeView.get_selection().get_selected_rows()
         dup_indices = [mod[r][0] for r in rows]
         self.to_merge = []
@@ -318,7 +321,7 @@ class RecipeMergerDialog:
         self.ui.get_object('window1').show()
 
     def close (self, *args):
-        #print "CALL: close"
+        # print("CALL: close")
         w = self.ui.get_object('window1')
         w.hide()
         w.destroy()
@@ -450,7 +453,7 @@ class DiffTable (gtk.Table):
         self.selected_dic[attribute] = v
 
     def add_ingblocks (self, rd, recs):
-        #print 'add_ingblocks for ',[r.id for r in recs]
+        # print('add_ingblocks for ', [r.id for r in recs])
         self.rd = rd
         self.iblock_dic = {}
         if len(recs) == 1:
@@ -522,10 +525,10 @@ class DiffTable (gtk.Table):
 
     def ing_value_toggled (self, rb, block):
         if rb.get_active():
-            #print 'RB clicked',rb,'for block',block
-            #print 'ING TOGGLED - REC = ',
+            # print('RB clicked', rb, 'for block', block)
+            # print('ING TOGGLED - REC = ', end='')
             self.rec = self.iblock_dic[block]
-            #print self.rec
+            # print(self.rec)
 
     def get_ing_text_blobs (self, r1, r2):
         """Return an ing-blurb for r1 and r2 suitable for display."""
@@ -608,7 +611,7 @@ if __name__ == '__main__':
         t = DiffTable(test_data,test_rec)
         t.show()
         test_in_window(t)
-        print t.selected_dic
+        print(t.selected_dic)
 
     def test_merger (rd, conflicts):
         recs = [rd.get_rec(i) for i in conflicts]
@@ -618,11 +621,11 @@ if __name__ == '__main__':
             dt = rmerger.uiMergeRecipes(recs)
             dt.show()
             test_in_window(dt)
-            print dt.selected_dic
+            print(dt.selected_dic)
         elif to_fill:
-            print 'Differences in ',conflicts,'can be auto-filled with',to_fill
+            print('Differences in ', conflicts, 'can be auto-filled with', to_fill)
         else:
-            print 'No differences in ',conflicts
+            print('No differences in ', conflicts)
     import recipeManager
     rd = recipeManager.default_rec_manager()
     rmd = RecipeMergerDialog(rd)

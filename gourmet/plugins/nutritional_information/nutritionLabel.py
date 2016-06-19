@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, pango, gobject
 from gettext import gettext as _
 import gourmet.defaults
@@ -240,7 +242,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                 if name != 'kcal':
                     hb.pack_start(unit_label)
                 else:
-                    #print 'pack end'
+                    # print('pack end')
                     #hb.pack_end(unit_label,expand=True)
                     table.attach(unit_label,1,2,n+start_at,n+start_at+1,xoptions=gtk.FILL)
                     unit_label.set_alignment(1,0.5)
@@ -560,7 +562,7 @@ if __name__ == '__main__':
     #nl.set_yields(2)
     nl.set_nutinfo(ni)
     def display_info (w):
-        print w.active_name,w.active_unit,w.active_label
+        print(w.active_name, w.active_unit, w.active_label)
     nl.connect('label-changed',display_info)
     nl.show()
     w.show()
