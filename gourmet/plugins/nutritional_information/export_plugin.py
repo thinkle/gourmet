@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import BaseExporterPlugin
 from gourmet.recipeManager import default_rec_manager
 import gourmet.defaults

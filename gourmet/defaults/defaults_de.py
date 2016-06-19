@@ -15,6 +15,8 @@
 # Translator: 
 # Last-updated: 2005-01-15 (07/18/05)
 
+from __future__ import print_function
+
 CREDITS = u""
 
 #The next line can be used to determine some things about how to handle this language

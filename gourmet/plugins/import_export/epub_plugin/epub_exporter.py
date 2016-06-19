@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os, re
 import xml.sax.saxutils
 from gettext import gettext as _

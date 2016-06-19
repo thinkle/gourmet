@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gxml_exporter_plugin
 import gxml_importer_plugin
 

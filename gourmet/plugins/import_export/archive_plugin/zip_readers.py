@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import zipfile, StringIO, tempfile, os, os.path
 import tarfile, gzip
 from gourmet.importers.webextras import read_socket_w_progress

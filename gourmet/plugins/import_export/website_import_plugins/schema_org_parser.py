@@ -1,6 +1,8 @@
 """
 Parser for web pages that use the http://schema.org/Recipe microformat
 """
+from __future__ import print_function
+
 
 class Excluder(object):
     def __init__(self, url):

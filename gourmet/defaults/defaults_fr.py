@@ -15,6 +15,8 @@
 # Translator: Luc Charest.
 # Last-updated: 2005-07-18 (07/18/05)
 
+from __future__ import print_function
+
 CREDITS = "Luc Charest"
 
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!

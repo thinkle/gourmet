@@ -16,6 +16,8 @@
 # Translator: Alexandre Prokoudine <alexandre.prokoudine[NOSPAM]gmail.com
 # Last-updated: July 12, 2009
 
+from __future__ import print_function
+
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!
 
 # only translate the items in the list [..] (and feel free to create

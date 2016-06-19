@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import ctypes
 
 # From http://stackoverflow.com/questions/2608200/problems-with-umlauts-in-python-appdata-environvent-variable

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import urllib, hashlib, os.path, os, StringIO
 from gourmet.gdebug import debug
 try:

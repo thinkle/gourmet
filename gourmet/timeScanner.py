@@ -1,6 +1,8 @@
 """Scan text for time and show links that will pop up a timer if the
 user clicks on any time in the TextView."""
 
+from __future__ import print_function
+
 import convert, re, gtk, gobject
 from gtk_extras import LinkedTextView
 import timer

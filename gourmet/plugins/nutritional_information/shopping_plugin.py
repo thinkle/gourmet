@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import ShoppingListPlugin
 import gtk
 import gourmet.recipeManager, gourmet.GourmetRecipeManager

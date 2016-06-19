@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gourmet.exporters.exporter as exporter
 import sys, xml.sax.saxutils, base64
 from gourmet.exporters.xml_exporter import XmlExporter

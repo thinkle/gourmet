@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import ImporterPlugin
 import mastercook_plaintext_importer
 import mastercook_importer

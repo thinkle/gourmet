@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import mealmaster_exporter_plugin
 import mealmaster_importer_plugin
 plugins = [mealmaster_exporter_plugin.MealmasterExporterPlugin,

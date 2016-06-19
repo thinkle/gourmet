@@ -1,5 +1,7 @@
 # Copyright Thomas M. Hinkle - 2005,2006 GNU GPL V.2
 
+from __future__ import print_function
+
 from gettext import gettext as _
 
 PER_100_GRAMS = ["kcal","protein","lipid","ash","carb","fiber","sugar","calcium","iron","magnesium","phosphorus","potassium","sodium","zinc","copper","manganese","selenium","vitaminc","thiamin","riboflavin","niacin","pantoacid","vitaminb6","folatetotal","folateacid","foodfolate","folatedfe","vitb12","vitaiu","vitarae","retinol","vite","vitk","alphac","betac","betacrypt","lypocene","famono","fapoly","lutzea","fasat","cholestrl"]

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import about_dot_com_plugin
 import foodnetwork_plugin
 import allrecipes_plugin

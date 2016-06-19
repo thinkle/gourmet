@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk, gobject, time, gglobals, os
 import xml.sax.saxutils
 from sound import Player

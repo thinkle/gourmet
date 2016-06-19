@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import exporter
 import sys, xml.sax.saxutils
 from gourmet.gdebug import debug

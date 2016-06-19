@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gourmet.convert as convert
 import gtk
 from gourmet.gdebug import debug

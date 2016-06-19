@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import RecEditorModule, RecEditorPlugin, IngredientControllerPlugin
 from gourmet.plugin_loader import PRE,POST
 import gtk, gobject, pango

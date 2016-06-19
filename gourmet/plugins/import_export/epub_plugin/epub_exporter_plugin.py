@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import ExporterPlugin
 import epub_exporter
 from gettext import gettext as _

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from gourmet.plugin import ExporterPlugin
 import gourmet.exporters.exporter as exporter
 import mycookbook_exporter

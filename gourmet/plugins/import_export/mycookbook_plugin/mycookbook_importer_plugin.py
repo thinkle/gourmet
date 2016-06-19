@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os, os.path
 from gourmet.plugin import ImporterPlugin
 import mycookbook_importer

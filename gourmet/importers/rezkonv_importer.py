@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+
 import mealmaster_importer, plaintext_importer, re
 import gourmet.convert as convert
 from gourmet.gdebug import debug, TimeAction

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import gtk
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet.plugin import RecDisplayModule, UIPlugin, MainPlugin, ToolPlugin

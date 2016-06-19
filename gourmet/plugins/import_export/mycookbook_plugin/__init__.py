@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import mycookbook_exporter_plugin
 import mycookbook_importer_plugin
 
