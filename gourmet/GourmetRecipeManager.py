@@ -653,6 +653,7 @@ def startGUI ():
     splash.set_position(gtk.WIN_POS_CENTER)
     splash.set_icon_from_file(os.path.join(icondir,'gourmet.png'))
     splash.set_title(_('Gourmet Recipe Manager starting up...'))
+    splash.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_DIALOG);
     pixbuf=gtk.gdk.pixbuf_new_from_file(os.path.join(imagedir,'splash.png'))
     pixmap, mask = pixbuf.render_pixmap_and_mask()
     width, height = pixmap.get_size()
