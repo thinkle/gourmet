@@ -4,6 +4,7 @@
 *.desktop
 *~
 *#*
+*.swp
 .project
 .pydevproject
 .settings/
