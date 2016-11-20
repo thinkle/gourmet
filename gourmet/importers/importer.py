@@ -446,7 +446,7 @@ class Tester:
             # only compile our regexp when necessary
             self.matcher = re.compile(self.regexp)
         CLOSE=False
-        if type(filename)==str:
+        if type(filename) in [unicode, str]:
             self.ofi = open(filename,'r')
             CLOSE=True
         else: self.ofi=filename

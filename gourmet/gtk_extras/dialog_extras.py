@@ -659,7 +659,7 @@ class SimpleFaqDialog (ModalDialog):
         We parse index lines according to self.INDEX_MATCHER
         """
         CLOSE=False
-        if type(infile)==str:
+        if type(infile) in [unicode, str]:
             infile=open(infile)            
             CLOSE=True
         self.index_lines = []
