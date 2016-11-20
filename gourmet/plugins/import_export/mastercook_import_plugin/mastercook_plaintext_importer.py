@@ -218,7 +218,7 @@ class Tester (importer.Tester):
         if not hasattr(self,'matcher'):
             self.matcher=re.compile(self.regexp)
             self.not_matcher = re.compile(self.not_me)
-        if type(filename)==str:
+        if type(filename) in [unicode, str]:
             self.ofi = open(filename,'r')
             CLOSE = True
         else:

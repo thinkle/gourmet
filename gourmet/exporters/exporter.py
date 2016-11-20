@@ -551,7 +551,9 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                     os.makedirs(self.outdir)
             else: os.makedirs(self.outdir)
         
-        oneFileOpenByMyself = self.one_file and type(self.out)==str and self.open_files   
+        oneFileOpenByMyself = self.one_file \
+                and type(self.out) in [str,unicode] \
+                and self.open_files   
         multiFileOpenByMyself = not self.one_file and self.open_files
                     
         if oneFileOpenByMyself:
