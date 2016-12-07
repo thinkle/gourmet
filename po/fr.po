@@ -36,7 +36,7 @@ msgstr "Ajouter à la liste des courses"
 
 #: ../ui/app.ui.h:4 ../ui/recipe_index.ui.h:4
 msgid "View Re_cipe"
-msgstr "Voir la recette"
+msgstr "Voir la re_cette"
 
 #: ../ui/app.ui.h:5 ../ui/recipe_index.ui.h:15
 #: ../gourmet/plugins/key_editor/keyeditor.ui.h:2
@@ -1128,11 +1128,11 @@ msgid_plural ""
 "permanently delete them at any time by clicking Tools->Open Trash"
 msgstr[0] ""
 "Vous avez placé %s recette à la corbeille. Vous pouvez restaurer cette "
-"recette ou la supprimer définitivement à tout moment en cliquant sur Outil ▸ "
+"recette ou la supprimer définitivement à tout moment en cliquant sur Outils ▸ "
 "Ouvrir la corbeille"
 msgstr[1] ""
 "Vous avez placé %s recettes à la corbeille. Vous pouvez restaurer ces "
-"recettes ou les supprimer définitivement à tout moment en cliquant sur Outil "
+"recettes ou les supprimer définitivement à tout moment en cliquant sur Outils "
 "▸ Ouvrir la corbeille"
 
 #: ../gourmet/GourmetRecipeManager.py:1237
@@ -1186,7 +1186,7 @@ msgstr "Recette supprimée %s"
 
 #: ../gourmet/GourmetRecipeManager.py:1318
 msgid "See Trash Now"
-msgstr ""
+msgstr "Voir la corbeille"
 
 #: ../gourmet/GourmetRecipeManager.py:1357
 msgid "Done!"
