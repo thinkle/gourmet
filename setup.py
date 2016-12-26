@@ -285,6 +285,7 @@ result = setup(
                 'gourmet.importers',
                 'gourmet.exporters',
                 'gourmet.plugins',
+                'gourmet.util',
                 ] + plugins,
     package_data = {'gourmet': ['plugins/*/*.ui', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
     cmdclass={'build' : build,
