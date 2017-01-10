@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grecipe-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-09 15:59-0800\n"
+"POT-Creation-Date: 2017-01-09 17:34-0800\n"
 "PO-Revision-Date: 2014-05-08 12:18+0000\n"
 "Last-Translator: Chris Hand <chris.hand@neotel.co.za>\n"
 "Language-Team: Afrikaans <af@li.org>\n"
@@ -189,7 +189,7 @@ msgstr "*"
 msgid "Database _Name:"
 msgstr "_Databasis Naam:"
 
-#: ../ui/databaseChooser.ui.h:13 ../gourmet/GourmetRecipeManager.py:1056
+#: ../ui/databaseChooser.ui.h:13 ../gourmet/GourmetRecipeManager.py:1061
 #: ../gourmet/shopgui.py:674
 msgid "_File"
 msgstr "_Lêer"
@@ -756,250 +756,250 @@ msgid "recipes;cooking;nutrition;nutritional information;shopping lists;"
 msgstr ""
 
 #. Convenience method for showing progress dialogs for import/export/deletion
-#: ../gourmet/GourmetRecipeManager.py:118
+#: ../gourmet/GourmetRecipeManager.py:119
 msgid "Import paused"
 msgstr "Invoer tydelik gestaak"
 
-#: ../gourmet/GourmetRecipeManager.py:119
+#: ../gourmet/GourmetRecipeManager.py:120
 msgid "Stop import"
 msgstr "Beïndig invoer"
 
-#: ../gourmet/GourmetRecipeManager.py:201
-#: ../gourmet/GourmetRecipeManager.py:1097
+#: ../gourmet/GourmetRecipeManager.py:202
+#: ../gourmet/GourmetRecipeManager.py:1102
 msgid "Recipe _Index"
 msgstr "_Resep Indeks"
 
-#: ../gourmet/GourmetRecipeManager.py:202
+#: ../gourmet/GourmetRecipeManager.py:203
 msgid "Shopping _List"
 msgstr "_Inkopieslys"
 
-#: ../gourmet/GourmetRecipeManager.py:221 ../gourmet/reccard.py:211
+#: ../gourmet/GourmetRecipeManager.py:222 ../gourmet/reccard.py:211
 msgid "_Go"
 msgstr "_Gaan na"
 
-#: ../gourmet/GourmetRecipeManager.py:340
+#: ../gourmet/GourmetRecipeManager.py:341
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
 "  Chris Hand https://launchpad.net/~chris-hand\n"
 "  Marius Loots https://launchpad.net/~mloots"
 
-#: ../gourmet/GourmetRecipeManager.py:386
+#: ../gourmet/GourmetRecipeManager.py:387
 msgid ""
 "Please consider making a donation to support our continued effort to fix "
 "bugs, implement features, and help users!"
 msgstr ""
 
-#: ../gourmet/GourmetRecipeManager.py:391
+#: ../gourmet/GourmetRecipeManager.py:392
 msgid "Donate via PayPal"
 msgstr ""
 
-#: ../gourmet/GourmetRecipeManager.py:393
+#: ../gourmet/GourmetRecipeManager.py:394
 msgid "Micro-donate via Flattr"
 msgstr ""
 
-#: ../gourmet/GourmetRecipeManager.py:395
+#: ../gourmet/GourmetRecipeManager.py:396
 msgid "Donate weekly via Gratipay"
 msgstr ""
 
-#: ../gourmet/GourmetRecipeManager.py:423
+#: ../gourmet/GourmetRecipeManager.py:424
 msgid "Saved!"
 msgstr "Gestoor!"
 
-#: ../gourmet/GourmetRecipeManager.py:433
+#: ../gourmet/GourmetRecipeManager.py:434
 #, python-format
 msgid "Save your edits to %s"
 msgstr "Stoor u regie by %s"
 
-#: ../gourmet/GourmetRecipeManager.py:444
+#: ../gourmet/GourmetRecipeManager.py:445
 msgid "An import is in progress."
 msgstr "'n Invoer is aan die gang."
 
-#: ../gourmet/GourmetRecipeManager.py:445
+#: ../gourmet/GourmetRecipeManager.py:446
 msgid "An export is in progress."
 msgstr "'n Uitvoer is aan die gang."
 
-#: ../gourmet/GourmetRecipeManager.py:446
+#: ../gourmet/GourmetRecipeManager.py:447
 msgid "A delete is in progress."
 msgstr "'n Verwydering is aan die gang."
 
-#: ../gourmet/GourmetRecipeManager.py:448
+#: ../gourmet/GourmetRecipeManager.py:449
 msgid "Exit program anyway?"
 msgstr "Verlaat program in elk geval?"
 
-#: ../gourmet/GourmetRecipeManager.py:450
+#: ../gourmet/GourmetRecipeManager.py:451
 msgid "Don't exit!"
 msgstr "Moenie verlaat nie!"
 
-#: ../gourmet/GourmetRecipeManager.py:496
+#: ../gourmet/GourmetRecipeManager.py:497
 #, python-format
 msgid "Permanently deleted %s of %s recipes"
 msgstr "%s Van %s resepte permanent verwyder"
 
-#: ../gourmet/GourmetRecipeManager.py:514
-#: ../gourmet/GourmetRecipeManager.py:529
+#: ../gourmet/GourmetRecipeManager.py:515
+#: ../gourmet/GourmetRecipeManager.py:531
 msgid "Trash"
 msgstr "Asblik"
 
-#: ../gourmet/GourmetRecipeManager.py:529
+#: ../gourmet/GourmetRecipeManager.py:532
 msgid "Browse, permanently delete or undelete deleted recipes"
 msgstr "Blaai, permanent verwyder of herwin verwyderde resepte"
 
-#: ../gourmet/GourmetRecipeManager.py:581
+#: ../gourmet/GourmetRecipeManager.py:584
 msgid "Undeleted recipes "
 msgstr "Herwinde resepte "
 
-#: ../gourmet/GourmetRecipeManager.py:655
+#: ../gourmet/GourmetRecipeManager.py:660
 msgid "Gourmet Recipe Manager starting up..."
 msgstr "Gourmet Resep Betsuurder begin..."
 
-#: ../gourmet/GourmetRecipeManager.py:664
+#: ../gourmet/GourmetRecipeManager.py:669
 msgid "Starting gourmet..."
 msgstr "Gormet Begin..."
 
-#: ../gourmet/GourmetRecipeManager.py:755
+#: ../gourmet/GourmetRecipeManager.py:760
 #, python-format
 msgid "Number of %(unit)s of %(title)s to shop for"
 msgstr "Hoeveelheid van %(unit)s vir %(title)s om aan te koop"
 
-#: ../gourmet/GourmetRecipeManager.py:767
+#: ../gourmet/GourmetRecipeManager.py:772
 #, python-format
 msgid "Multiply %s by:"
 msgstr "Vermegigvuldig %s met:"
 
-#: ../gourmet/GourmetRecipeManager.py:787
+#: ../gourmet/GourmetRecipeManager.py:792
 #, python-format
 msgid "Set %(attributes)s for %(num)s selected recipe?"
 msgid_plural "Set %(attributes)s for %(num)s selected recipes?"
 msgstr[0] "Stel %(attributes)s vir %(num)s geselekteerde resep?"
 msgstr[1] "Stel %(attributes)s vir %(num)s geselekteerde resepte?"
 
-#: ../gourmet/GourmetRecipeManager.py:794
+#: ../gourmet/GourmetRecipeManager.py:799
 msgid "Any previously existing values will not be changed."
 msgstr "Enige vorige bestaande waardes sal nie verander word nie."
 
-#: ../gourmet/GourmetRecipeManager.py:796
+#: ../gourmet/GourmetRecipeManager.py:801
 msgid "The new values will overwrite any previously existing values."
 msgstr "Die nuwe waardes sal enige  vorige waardes oorskryf."
 
-#: ../gourmet/GourmetRecipeManager.py:797
+#: ../gourmet/GourmetRecipeManager.py:802
 msgid "This change cannot be undone."
 msgstr "Hierdie verandering kan nie herstel word nie."
 
-#: ../gourmet/GourmetRecipeManager.py:798
+#: ../gourmet/GourmetRecipeManager.py:803
 msgid "Set values for selected recipes"
 msgstr "Stel waardes vir geselekteerde resepte"
 
-#: ../gourmet/GourmetRecipeManager.py:1003
+#: ../gourmet/GourmetRecipeManager.py:1008
 msgid "Search recipes"
 msgstr "Soek resepte"
 
-#: ../gourmet/GourmetRecipeManager.py:1033
+#: ../gourmet/GourmetRecipeManager.py:1038
 msgid "Open recipe"
 msgstr "Maak resep oop"
 
-#: ../gourmet/GourmetRecipeManager.py:1034
+#: ../gourmet/GourmetRecipeManager.py:1039
 msgid "Open selected recipe"
 msgstr "Maak geselekteerde resep oop"
 
 #. We no longer bind "Delete" here -- instead, we'll do it
 #. at the TreeView level to prevent the delete key
 #. elsewhere (e.g. in search box) from muddling up users.
-#: ../gourmet/GourmetRecipeManager.py:1038
+#: ../gourmet/GourmetRecipeManager.py:1043
 msgid "Delete recipe"
 msgstr "Verwyder resep"
 
-#: ../gourmet/GourmetRecipeManager.py:1039
+#: ../gourmet/GourmetRecipeManager.py:1044
 msgid "Delete selected recipes"
 msgstr "Verwyder geselekteerde resepte"
 
-#: ../gourmet/GourmetRecipeManager.py:1040
+#: ../gourmet/GourmetRecipeManager.py:1045
 msgid "Edit recipe"
 msgstr "Redigeer resep"
 
-#: ../gourmet/GourmetRecipeManager.py:1041
+#: ../gourmet/GourmetRecipeManager.py:1046
 msgid "Open selected recipes in recipe editor view"
 msgstr "Maak geselekteerde resepte in resepredigeerder aansig oop"
 
-#: ../gourmet/GourmetRecipeManager.py:1043
+#: ../gourmet/GourmetRecipeManager.py:1048
 msgid "E_xport selected recipes"
 msgstr "_Voer geselekteerde resepte uit"
 
-#: ../gourmet/GourmetRecipeManager.py:1044
+#: ../gourmet/GourmetRecipeManager.py:1049
 msgid "Export selected recipes to file"
 msgstr "Voer geselekteerde resepte uit na lêer"
 
-#: ../gourmet/GourmetRecipeManager.py:1046
+#: ../gourmet/GourmetRecipeManager.py:1051
 msgid "_Print"
 msgstr "_Druk"
 
 #. ('Email', None, _('E-_mail recipes'),
 #. None,None,self.email_recs),
-#: ../gourmet/GourmetRecipeManager.py:1050
+#: ../gourmet/GourmetRecipeManager.py:1055
 msgid "Batch _edit recipes"
 msgstr "Redigeer resepte op grootmaat"
 
-#: ../gourmet/GourmetRecipeManager.py:1057 ../gourmet/reccard.py:210
+#: ../gourmet/GourmetRecipeManager.py:1062 ../gourmet/reccard.py:210
 #: ../gourmet/reccard.py:890 ../gourmet/shopgui.py:652
 msgid "_Edit"
 msgstr "_Redigeer"
 
-#: ../gourmet/GourmetRecipeManager.py:1058
+#: ../gourmet/GourmetRecipeManager.py:1063
 msgid "_Actions"
 msgstr "_Aksies"
 
-#: ../gourmet/GourmetRecipeManager.py:1059
+#: ../gourmet/GourmetRecipeManager.py:1064
 msgid "Setti_ngs"
 msgstr "_Stellings"
 
-#: ../gourmet/GourmetRecipeManager.py:1060
-#: ../gourmet/GourmetRecipeManager.py:1065 ../gourmet/reccard.py:212
+#: ../gourmet/GourmetRecipeManager.py:1065
+#: ../gourmet/GourmetRecipeManager.py:1070 ../gourmet/reccard.py:212
 #: ../gourmet/reccard.py:223 ../gourmet/reccard.py:892
 #: ../gourmet/shopgui.py:675 ../gourmet/shopgui.py:677
 msgid "_Help"
 msgstr "_Hulp"
 
-#: ../gourmet/GourmetRecipeManager.py:1061
+#: ../gourmet/GourmetRecipeManager.py:1066
 msgid "_About"
 msgstr "_Aangaande"
 
-#: ../gourmet/GourmetRecipeManager.py:1063
+#: ../gourmet/GourmetRecipeManager.py:1068
 msgid "_New"
 msgstr "_Nuut"
 
-#: ../gourmet/GourmetRecipeManager.py:1067
+#: ../gourmet/GourmetRecipeManager.py:1072
 msgid "_Import file"
 msgstr "_Voer lêer in"
 
-#: ../gourmet/GourmetRecipeManager.py:1068
+#: ../gourmet/GourmetRecipeManager.py:1073
 msgid "Import recipe from file"
 msgstr "Voer resep in van lêer"
 
-#: ../gourmet/GourmetRecipeManager.py:1069
+#: ../gourmet/GourmetRecipeManager.py:1074
 msgid "Import _webpage"
 msgstr "_Voer webblad in"
 
-#: ../gourmet/GourmetRecipeManager.py:1070
+#: ../gourmet/GourmetRecipeManager.py:1075
 msgid "Import recipe from webpage"
 msgstr "Voer resep in vanaf webblad"
 
-#: ../gourmet/GourmetRecipeManager.py:1071
+#: ../gourmet/GourmetRecipeManager.py:1076
 msgid "Export _all recipes"
 msgstr "_Voer alle resepte uit"
 
-#: ../gourmet/GourmetRecipeManager.py:1072
+#: ../gourmet/GourmetRecipeManager.py:1077
 msgid "Export all recipes to file"
 msgstr "Voer alle resepte uit na lêer"
 
-#: ../gourmet/GourmetRecipeManager.py:1073
+#: ../gourmet/GourmetRecipeManager.py:1078
 msgid "_Plugins"
 msgstr "_Aanvulprogramme"
 
-#: ../gourmet/GourmetRecipeManager.py:1074
+#: ../gourmet/GourmetRecipeManager.py:1079
 msgid "Manage plugins which add extra functionality to Gourmet."
 msgstr "Bestuur aanvulprogramme wat bykomende funksionaliteit gee aan Gourmet."
 
-#: ../gourmet/GourmetRecipeManager.py:1076
+#: ../gourmet/GourmetRecipeManager.py:1081
 msgid "_Preferences"
 msgstr "_Voorkeure"
 
@@ -1007,48 +1007,50 @@ msgstr "_Voorkeure"
 #. None,None),
 #. ('Undo',gtk.STOCK_UNDO,_('_Undo'),
 #. None,None),
-#: ../gourmet/GourmetRecipeManager.py:1082
+#: ../gourmet/GourmetRecipeManager.py:1087
 msgid "_Quit"
 msgstr "_Beëindig"
 
-#: ../gourmet/GourmetRecipeManager.py:1084
+#: ../gourmet/GourmetRecipeManager.py:1089
 msgid "Open _Trash"
 msgstr "_Maak Asblik Oop"
 
-#: ../gourmet/GourmetRecipeManager.py:1090
+#: ../gourmet/GourmetRecipeManager.py:1095
 msgid "_Tools"
 msgstr "_Gereedskap"
 
-#: ../gourmet/GourmetRecipeManager.py:1091
+#: ../gourmet/GourmetRecipeManager.py:1096
 msgid "_Timer"
 msgstr "_Tydsaanwyser"
 
-#: ../gourmet/GourmetRecipeManager.py:1092
+#: ../gourmet/GourmetRecipeManager.py:1097
 msgid "Show timer"
 msgstr "Wys tydsaanwyser"
 
-#: ../gourmet/GourmetRecipeManager.py:1098
+#: ../gourmet/GourmetRecipeManager.py:1103
 msgid "Searchable index of recipes in the database."
 msgstr "Opsoekbare indeks van resepte in die databasis"
 
-#: ../gourmet/GourmetRecipeManager.py:1208
+#: ../gourmet/GourmetRecipeManager.py:1213
 #, python-format
 msgid "Delete %s?"
 msgstr "Verwyder %s?"
 
-#: ../gourmet/GourmetRecipeManager.py:1209
+#: ../gourmet/GourmetRecipeManager.py:1214
 #, python-format
 msgid "You have unsaved changes to %s. Are you sure you want to delete?"
 msgstr "U het ongestoorde veranderings aan %s. Is u seker u wil dit verwyder?"
 
-#: ../gourmet/GourmetRecipeManager.py:1231
-#, python-format
+#: ../gourmet/GourmetRecipeManager.py:1236
+#, fuzzy, python-format
 msgid ""
 "You just moved %s recipe to the trash. You can recover this recipe or "
-"permanently delete it at any time by clicking Tools->Open Trash."
+"permanently                     delete it at any time by clicking Tools-"
+">Open Trash."
 msgid_plural ""
-"You just moved %s recipes to the trash. You can recover these recipes or "
-"permanently delete them at any time by clicking Tools->Open Trash"
+"You just moved %s recipes to the trash. You can recover these recipes "
+"or                                      permanently delete them at any time "
+"by clicking Tools->Open Trash"
 msgstr[0] ""
 "U het so pas %s resep na die asbllik geskyf. U kan hierdie resep enige tyd "
 "herwin or permanent verwyder deur om op 'Gereedskap->Maak Asblik Oop' te "
@@ -1058,64 +1060,64 @@ msgstr[1] ""
 "tyd herwin or permanent verwyder deur om op 'Gereedskap->Maak Asblik Oop' te "
 "kliek."
 
-#: ../gourmet/GourmetRecipeManager.py:1238
+#: ../gourmet/GourmetRecipeManager.py:1245
 msgid "Deleted"
 msgstr "Verwyder"
 
-#: ../gourmet/GourmetRecipeManager.py:1238
+#: ../gourmet/GourmetRecipeManager.py:1245
 #: ../gourmet/importers/interactive_importer.py:474
 msgid "Untitled"
 msgstr "Ongetiteld"
 
-#: ../gourmet/GourmetRecipeManager.py:1246
+#: ../gourmet/GourmetRecipeManager.py:1253
 msgid "Permanently delete recipes?"
 msgstr "Verwyder resepte permanent?"
 
-#: ../gourmet/GourmetRecipeManager.py:1248
+#: ../gourmet/GourmetRecipeManager.py:1255
 msgid "Permanently delete recipe?"
 msgstr "Verwyder resep permanent?"
 
-#: ../gourmet/GourmetRecipeManager.py:1249
+#: ../gourmet/GourmetRecipeManager.py:1256
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
 msgstr "Is u seker u wil die resep <i>%s</i> verwyder?"
 
-#: ../gourmet/GourmetRecipeManager.py:1251
+#: ../gourmet/GourmetRecipeManager.py:1258
 msgid "Are you sure you want to delete the following recipes?"
 msgstr "Is u seker u die volgende resepte wil verwyder?"
 
-#: ../gourmet/GourmetRecipeManager.py:1255
+#: ../gourmet/GourmetRecipeManager.py:1262
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
 msgstr "Is u seker u wil die %s geselekteerde resepte verwyder?"
 
-#: ../gourmet/GourmetRecipeManager.py:1257
+#: ../gourmet/GourmetRecipeManager.py:1264
 msgid "See recipes"
 msgstr "Sien resepte"
 
-#: ../gourmet/GourmetRecipeManager.py:1265
+#: ../gourmet/GourmetRecipeManager.py:1272
 msgid "Delete Recipes"
 msgstr "Verwyder Resepte"
 
-#: ../gourmet/GourmetRecipeManager.py:1267
+#: ../gourmet/GourmetRecipeManager.py:1274
 #, fuzzy
 msgid "Recipes deleted"
 msgstr "Resep Indeks"
 
-#: ../gourmet/GourmetRecipeManager.py:1294
+#: ../gourmet/GourmetRecipeManager.py:1301
 #, python-format
 msgid "Deleted recipe %s"
 msgstr "Resep %s verwyder"
 
-#: ../gourmet/GourmetRecipeManager.py:1321
+#: ../gourmet/GourmetRecipeManager.py:1328
 msgid "See Trash Now"
 msgstr ""
 
-#: ../gourmet/GourmetRecipeManager.py:1360
+#: ../gourmet/GourmetRecipeManager.py:1367
 msgid "Done!"
 msgstr "Klaar!"
 
-#: ../gourmet/GourmetRecipeManager.py:1368
+#: ../gourmet/GourmetRecipeManager.py:1375
 msgid "Importing..."
 msgstr "Besig om in te voer..."
 
