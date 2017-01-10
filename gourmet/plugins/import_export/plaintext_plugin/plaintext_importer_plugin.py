@@ -16,7 +16,7 @@ class PlainTextImporter (InteractiveImporter):
     def __init__ (self, filename):
         self.filename = filename
         InteractiveImporter.__init__(self)
-        
+
     def do_run (self):
         if os.path.getsize(self.filename) > MAX_PLAINTEXT_LENGTH*16:
             del data
@@ -50,7 +50,7 @@ class PlainTextImporterPlugin (ImporterPlugin):
 
     def get_importer (self, filename):
         return PlainTextImporter(filename=filename)
-                                                   
 
 
-    
+
+

@@ -14,7 +14,7 @@
 ### You should have received a copy of the GNU General Public License
 ### along with this library; if not, write to the Free Software
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
-### USA 
+### USA
 
 import gtk
 from gettext import gettext as _
@@ -31,7 +31,7 @@ class TimeEntry (validatingEntry.ValidatingEntry):
         else: self.conv = conv
         validatingEntry.ValidatingEntry.__init__(self)
         self.entry.get_value = self.get_value
-        self.entry.set_value = self.set_value        
+        self.entry.set_value = self.set_value
 
     def find_errors_in_progress (self, txt):
         if (not txt) or self.conv.timestring_to_seconds(txt):
@@ -90,7 +90,7 @@ class TimeEntry (validatingEntry.ValidatingEntry):
 
     def get_value (self):
         return self.conv.timestring_to_seconds(self.entry.get_text())
-        
+
 def make_time_entry():
     te=TimeEntry()
     te.show()
@@ -122,4 +122,4 @@ if __name__ == '__main__':
     w.show()
     w.connect('delete_event',gtk.main_quit)
     gtk.main()
-    
+

@@ -40,8 +40,8 @@ except OSError:
 if not os.access(gourmetdir,os.W_OK):
     debug('Cannot write to configuration directory, %s'%gourmetdir,-1)
     import sys
-    sys.exit()        
-    
+    sys.exit()
+
 debug('gourmetdir=%s'%gourmetdir,2)
 
 use_threads = args.threads
@@ -92,7 +92,7 @@ REC_ATTRS = [('title',_('Title'),'Entry'),
              ('source',_('Source'),'Combo'),
              ('link',_('Website'),'Entry'),
              ('yields',_('Yield'),'Entry'),
-             ('yield_unit',_('Yield Unit'),'Combo'),             
+             ('yield_unit',_('Yield Unit'),'Combo'),
              ('preptime',_('Preparation Time'),'Entry'),
              ('cooktime',_('Cooking Time'),'Entry'),
              ]
@@ -134,7 +134,7 @@ build_rec_attr_dic()
 DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
                           ['link','yields','yield_unit','preptime','cooktime']
                           ]
-    
+
 from gtk_extras import dialog_extras
 
 def launch_url (url, ext=""):
@@ -159,7 +159,7 @@ def launch_url (url, ext=""):
 
 # Set up custom STOCK items and ICONS!
 icon_factory = gtk.IconFactory()
-    
+
 def add_icon (file_name, stock_id, label=None, modifier=0, keyval=0):
     pb = gtk.gdk.pixbuf_new_from_file(file_name)
     iconset = gtk.IconSet(pb)
@@ -171,9 +171,9 @@ def add_icon (file_name, stock_id, label=None, modifier=0, keyval=0):
                     keyval,
                     "")])
 
-for filename,stock_id,label,modifier,keyval in [    
+for filename,stock_id,label,modifier,keyval in [
     ('AddToShoppingList.png','add-to-shopping-list',_('Add to _Shopping List'),gtk.gdk.CONTROL_MASK,gtk.gdk.keyval_from_name('l')),
     ('reccard.png','recipe-card',None,0,0),
-    ('reccard_edit.png','edit-recipe-card',None,0,0),    
+    ('reccard_edit.png','edit-recipe-card',None,0,0),
     ]:
     add_icon(os.path.join(imagedir,filename),stock_id,label,modifier,keyval)

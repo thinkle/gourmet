@@ -24,7 +24,7 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
         self.in_mods=False
         self.reccol_headers = False
         plaintext_importer.TextImporter.__init__(self,filename)
-        
+
     def compile_regexps (self):
         plaintext_importer.TextImporter.compile_regexps(self)
         self.rec_start_matcher = re.compile(MASTERCOOK_START_REGEXP)
@@ -46,7 +46,7 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
         self.mods_matcher = re.compile("^\s*NOTES\.*")
         attr_matcher = "\s*(" + string.join(self.ATTR_DICT.keys(),"|") + ")\s*:(.*)"
         self.attr_matcher = re.compile(attr_matcher)
-        
+
     def handle_line (self, line):
         if self.rec_start_matcher.match(line):
             debug('rec_start! %s'%line,0)
@@ -65,13 +65,13 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
             rcm = self.rec_col_underline_matcher.match(line)
             # if there is no underlining, use our headers themselves for fields
             if not rcm: rcm = self.reccol_headers
-            debug('Found ing columns',0)            
+            debug('Found ing columns',0)
             self.get_ing_cols(rcm)
             self.in_ings = True
             self.reccol_headers=False
-        
+
         if self.dash_matcher.match(line): return
-        
+
         rcm=self.rec_col_matcher.match(line)
         if rcm:
             self.reccol_headers = rcm
@@ -79,7 +79,7 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
             self.in_attrs=False
             self.last_attr = ""
             return
-        if self.blank_matcher.match(line):            
+        if self.blank_matcher.match(line):
             # blank line ends ingredients
             if self.in_ings:
                 debug('blank line, end of ings',0)
@@ -100,7 +100,7 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
         if self.in_ings:
             debug('handling ingredient line %s'%line,0)
             self.handle_ingline (line)
-            return        
+            return
         if self.in_attrs:
             debug('handing attrline %s'%line,0)
             self.handle_attribute(line)
@@ -137,7 +137,7 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
 
     def handle_attribute (self,line):
         m=self.attr_matcher.match(line)
-        if m:            
+        if m:
             attr,val = m.groups()
             SecndColMatch = self.attr_matcher.search(val)
             if SecndColMatch:
@@ -148,7 +148,7 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
             attr = attr.strip()
             self.last_attr = self.ATTR_DICT[attr]
             self.rec[self.ATTR_DICT[attr]]=val
-        else:            
+        else:
             if self.last_attr:
                 # attribute values can run over one line...
                 self.rec[self.last_attr]=', '.join([self.rec[self.last_attr],
@@ -204,11 +204,11 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
         self.ing = {}
 
     def commit_rec (self):
-        ll=self.instr.split('\n')        
+        ll=self.instr.split('\n')
         self.rec['instructions']=self.unwrap_lines(self.instr)
         self.rec['modifications']=self.unwrap_lines(self.mods)
         importer.Importer.commit_rec(self)
-        
+
 class Tester (importer.Tester):
     def __init__ (self):
         importer.Tester.__init__(self,regexp=MASTERCOOK_START_REGEXP)

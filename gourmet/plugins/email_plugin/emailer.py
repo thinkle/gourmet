@@ -20,13 +20,13 @@ class Emailer:
             self.url_append('body',self.body)
         for a in self.attachments:
             print 'Adding attachment',a
-            self.url_append('attachment',a)              
+            self.url_append('attachment',a)
         debug('launching URL %s'%self.url,0)
         gglobals.launch_url(self.url)
 
     def url_append (self, attr, value):
         self.url += "%s%s=%s"%(self.connector(),attr,urllib.quote(value.encode('utf-8','replace')))
-                                                                   
+
     def connector (self):
         retval = self.connector_string
         self.connector_string = "&"

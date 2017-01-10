@@ -32,6 +32,6 @@ class Test (unittest.TestCase):
         for st in ml.available_plugin_sets:
             if st not in ml.active_plugins:
                 ml.activate_plugin_set(st)
-                
+
 if __name__ == '__main__':
     unittest.main()

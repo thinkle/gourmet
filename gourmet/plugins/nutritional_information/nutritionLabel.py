@@ -7,7 +7,7 @@ MINOR = 1
 TINY = 2
 SEP = 3
 SHOW_PERCENT = True
-DONT_SHOW_PERCENT = False    
+DONT_SHOW_PERCENT = False
 MAIN_NUT_LAYOUT = [(_('Calories'),MAJOR,'kcal',
                 'kcal',DONT_SHOW_PERCENT,''),
                SEP,
@@ -37,7 +37,7 @@ DETAIL_NUT_LAYOUT = [
                (_('Beta-carotene'),TINY,'betac',
                 'betac',DONT_SHOW_PERCENT,u'\u00B5g'),
                (_('Beta Cryptoxanthin'),TINY,'betacrypt',
-                'betacrypt',DONT_SHOW_PERCENT,u'\u00B5g'),               
+                'betacrypt',DONT_SHOW_PERCENT,u'\u00B5g'),
                (_('Calcium'),TINY,'calcium',
                 'calcium',SHOW_PERCENT,'mg'),
                (_('Copper'),TINY,'copper',
@@ -49,7 +49,7 @@ DETAIL_NUT_LAYOUT = [
                (_('Food Folate'),TINY,'foodfolate',
                 'foodfolate',DONT_SHOW_PERCENT,u'\u00B5g'),
                (_('Dietary folate equivalents'),TINY,'folatedfe',
-                'folatedfe',DONT_SHOW_PERCENT,u'\u00B5g'),               
+                'folatedfe',DONT_SHOW_PERCENT,u'\u00B5g'),
                (_('Iron'),TINY,'iron',
                 'iron',SHOW_PERCENT,'mg'),
                (_('Lycopene'),TINY,'lypocene',
@@ -63,7 +63,7 @@ DETAIL_NUT_LAYOUT = [
                (_('Niacin'),TINY,'niacin',
                 'niacin',SHOW_PERCENT,'mg'),
                (_('Pantothenic Acid'),TINY,'pantoacid',
-                'pantoacid',SHOW_PERCENT,'mg'),               
+                'pantoacid',SHOW_PERCENT,'mg'),
                (_('Phosphorus'),TINY,'phosphorus',
                 'phosphorus',SHOW_PERCENT,'mg'),
                (_('Potassium'),TINY,'potassium',
@@ -87,7 +87,7 @@ DETAIL_NUT_LAYOUT = [
                (_('Vitamin B12'),TINY,'vitb12',
                 'vitb12',SHOW_PERCENT,u'\u00B5g'),
                (_('Vitamin C'),TINY,'vitaminc',
-                'vitaminc',SHOW_PERCENT,'mg'),               
+                'vitaminc',SHOW_PERCENT,'mg'),
                (_('Vitamin E'),TINY,'vite',
                 'vite',SHOW_PERCENT,'mg'),
                (_('Vitamin K'),TINY,'vitk',
@@ -145,7 +145,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
     tiny_font = pango.FontDescription()
     tiny_font.set_size(pango.SCALE*9)
     background = gtk.gdk.Color(255,0,0)
-    foreground = gtk.gdk.Color(255,255,255)    
+    foreground = gtk.gdk.Color(255,255,255)
 
     calories_per_day = 2000
 
@@ -299,7 +299,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
     def make_missing_label (self):
         hb = gtk.HBox()
         l=gtk.Label()
-        self.missingLabelLabel = l        
+        self.missingLabelLabel = l
         l.set_alignment(0,0.5)
         b = gtk.Button(stock=gtk.STOCK_EDIT)
         hb.pack_start(l)
@@ -321,10 +321,10 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         if missing==total: method = 'hide'
         else: method = 'show'
         getattr(self.main_table,method)()
-        getattr(self.nutexpander,method)()        
+        getattr(self.nutexpander,method)()
         getattr(self.yieldLabel,method)()
-        getattr(self.cal_per_day_box,method)()                
-            
+        getattr(self.cal_per_day_box,method)()
+
     def make_dv_boxes (self):
         dvLabel = gtk.Label()
         dvLabel.set_markup('<span weight="bold" size="small">' + \
@@ -343,7 +343,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         self.edit_button.set_alignment(1,0.5)
         hb.pack_end(self.edit_button,fill=False,expand=False,padding=6)
         self.edit_button.show_all()
-        self.set_edit_tip()        
+        self.set_edit_tip()
         self.edit_button.connect('clicked',self.toggle_edit_calories_per_day)
         hb.show_all()
         self.cpd_editor = gtk.HBox()
@@ -376,7 +376,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
             _("Percentage of recommended daily value based on %i calories per day. Click to edit number of calories per day.")%self.calories_per_day
             )
 
-    def toggle_edit_calories_per_day (self, b):        
+    def toggle_edit_calories_per_day (self, b):
         if b.get_active():
             self.cpd_sb.set_value(self.calories_per_day)
             self.cpd_editor.show_all()
@@ -387,7 +387,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
 
     def edit_calories_per_day (self, *args):
         self.cpd_sb.update()
-        self.calories_per_day = self.cpd_sb.get_value()        
+        self.calories_per_day = self.cpd_sb.get_value()
         self.update_display()
         self.set_edit_tip()
         self.emit('calories-changed')
@@ -427,7 +427,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                 self.yieldLabel.show()
                 self.cal_per_day_box.show()
                 self.missingLabel.hide()
-                
+
     def update_display (self):
         """Update the display of labels based on values in nutinfo,
         adjusted by yields and calories_per_day.
@@ -449,7 +449,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                     if itm['percent_label']: itm['percent_label'].hide()
                 else:
                     itm['box'].show()
-                    if itm['percent_label']: itm['percent_label'].show()                
+                    if itm['percent_label']: itm['percent_label'].show()
             if itm['unit_label']:
                 itm['unit_label'].set_text('%i%s'%(rawval,itm['unit']))
             if itm['usda_rec_per_cal'] and itm['percent_label']:
@@ -466,12 +466,12 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
             self.yieldLabel.set_markup('<b>'+_('Amount per %s'%singular_unit)+'</b>')
         else:
             self.yieldLabel.set_markup('<b>'+_('Amount per recipe')+'</b>')
-        
+
     def set_nutritional_info (self, info):
         """Set nutrition from a NutritionInfo or NutritionInfoList object."""
         self.nutinfo = info
         self.update_display()
-        
+
     def solidify_vapor_cb (self,*args):
         self.show_druid(fix_vapor=True)
 
@@ -498,7 +498,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         self.ndruid.connect('finish',
                             self.update_nutinfo)
         self.ndruid.show()
-        
+
     def update_nutinfo (self,*args):
         self.nutinfo._reset()
         self.update_display()
@@ -515,9 +515,9 @@ if __name__ == '__main__':
     class fakenut:
 
         __attdict__ = {}
-        
+
         def __len__ (self): return 7
-        
+
         def __getattr__ (self,n):
             if n=='has_vapor':
                 return self.has_vapor
@@ -541,8 +541,8 @@ if __name__ == '__main__':
             return [('black pepper',[(1,'tsp.')]),
                     ('red pepper',[(1,''),
                                    (2,'c.')])]
-        
-    
+
+
     ni = fakenut()
     w = gtk.Window()
     nl = NutritionLabel({})
@@ -566,5 +566,5 @@ if __name__ == '__main__':
     w.show()
     w.connect('delete-event',lambda *args: gtk.main_quit())
     gtk.main()
-    
-    
+
+

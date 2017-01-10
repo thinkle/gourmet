@@ -11,14 +11,14 @@ class TimeSpinnerUI:
         self.running = False
         self.hoursSpin = hoursSpin
         self.minutesSpin = minutesSpin
-        self.secondsSpin = secondsSpin        
+        self.secondsSpin = secondsSpin
         for s in [self.hoursSpin,self.minutesSpin,self.secondsSpin]:
             # This is set up to assure 2 digit entries... 00:00:00, etc.
             s.connect('changed',self.val_changed_cb)
             s.val_change_is_changing_entry = False
             s.set_width_chars(2)
             s.set_value(1)
-            s.set_value(0)            
+            s.set_value(0)
 
     def set_time (self, s):
         s = int(s)
@@ -35,7 +35,7 @@ class TimeSpinnerUI:
         if not widg.val_change_is_changing_entry:
             widg.val_change_is_changing_entry = True
             widg.set_text(self.pad_n(int(widg.get_value())))
-            widg.val_change_is_changing_entry = False            
+            widg.val_change_is_changing_entry = False
 
     def pad_n (self, int):
         s = str(int)
@@ -143,7 +143,7 @@ class TimerDialog:
         self.mainLabel.set_markup('<span weight="bold" size="larger">' + xml.sax.saxutils.escape(txt) + '</span>')
 
     def init_player (self):
-        self.player = Player()    
+        self.player = Player()
 
     def play_tune (self):
         sound_file = self.sounds_and_files[cb.cb_get_active_text(self.soundComboBox)]
@@ -164,9 +164,9 @@ class TimerDialog:
         self.timerBox.hide()
         self.expander1.hide()
         self.timerFinishedLabel.show()
-        self.resetTimerButton.show()                
+        self.resetTimerButton.show()
         if self.keep_annoying: self.keepAnnoyingLabel.show()
-        
+
 
     def stop_annoying (self):
         self.keep_annoying = False
@@ -180,7 +180,7 @@ class TimerDialog:
         self.timerBox.show()
         self.resetTimerButton.hide()
         self.expander1.show()
-    
+
     def response_cb (self, dialog, resp):
         if resp == gtk.RESPONSE_APPLY:
             self.refresh()

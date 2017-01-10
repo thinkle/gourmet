@@ -16,7 +16,7 @@ def check_for_thumbnail (uri, type="large",reporthook=None):
     if not uri:
         return ""
     m = hashlib.md5(uri)
-    name= os.path.join("~",".thumbnails",type,m.hexdigest() + ".png")    
+    name= os.path.join("~",".thumbnails",type,m.hexdigest() + ".png")
     name = os.path.expanduser(name)
     targetdir = os.path.split(name)[0]
     if not os.path.exists(targetdir):

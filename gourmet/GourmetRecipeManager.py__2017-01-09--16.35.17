@@ -86,8 +86,7 @@ class GourmetApplication:
         self.prefs = prefs.get_prefs()
         self.prefsGui = prefsGui.PreferencesGui(
             self.prefs,
-            buttons={'clear_remembered_optional_button':\
-                    lambda *args: self.forget_remembered_optional_ingredients()}
+            buttons={'clear_remembered_optional_button':lambda *args: self.forget_remembered_optional_ingredients()}
             )
         self.prefsGui.apply_prefs_dic['recipes_per_page'] = lambda p,v: getattr(getattr(self,'rmodel'),
                                                                                'change_items_per_page')(v)
@@ -527,9 +526,7 @@ class RecTrash (RecIndex):
         #self.window.vbox.add(a)
         self.window.vbox.add(box)
         top_label = gtk.Label(); top_label.set_alignment(0.0,0.5)
-        top_label.set_markup('<span weight="bold" size="large">'\
-                +_('Trash')+'</span>\n<i>'\
-                +_('Browse, permanently delete or undelete deleted recipes')+'</i>')
+        top_label.set_markup('<span weight="bold" size="large">'+_('Trash')+'</span>\n<i>'+_('Browse, permanently delete or undelete deleted recipes')+'</i>')
         box.pack_start(top_label,expand=False,fill=False);top_label.show()
         self.recipe_index_interface = self.ui.get_object('recipeIndexBox')
         self.recipe_index_interface.unparent()
@@ -602,7 +599,6 @@ class UnitModel (gtk.ListStore):
         self.conv = converter
         gtk.ListStore.__init__(self, str, str)
         # the first item of each conv.units
-        ## areckx: is there a reason why this is formatted this way?
         lst = map(lambda a: (a[1][0],a[0]), filter(lambda x: not (converter.unit_to_seconds.has_key(x[1][0])
                                                                   or
                                                                   converter.unit_to_seconds.has_key(x[0])
@@ -610,7 +606,6 @@ class UnitModel (gtk.ListStore):
                                                    ,
                                                    self.conv.units)
                   )
-        ##
         lst.sort()
         for ulong,ushort in lst:
             iter=self.append()
@@ -924,7 +919,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.window.show()
 
     def setup_hacks (self):
-        # These are properties that we need to set to test with our
+        # THese are properties that we need to set to test with our
         # current recindex class. However, each of these properties
         # should die with our redesign once done.
         self.act_on_row_widgets = []
@@ -1233,10 +1228,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             make_visible=lambda *args: self.redo_search()
             )
         self.setup_delete_messagebox(
-            ngettext('You just moved %s recipe to the trash. You can recover this recipe or permanently \
-                    delete it at any time by clicking Tools->Open Trash.',
-                             'You just moved %s recipes to the trash. You can recover these recipes or \
-                                     permanently delete them at any time by clicking Tools->Open Trash',
+            ngettext('You just moved %s recipe to the trash. You can recover this recipe or permanently delete it at any time by clicking Tools->Open Trash.',
+                             'You just moved %s recipes to the trash. You can recover these recipes or permanently delete them at any time by clicking Tools->Open Trash',
                              len(recs))%len(recs)
             )
         self.set_reccount()

@@ -63,7 +63,7 @@ def check_ings (check_dics,ings):
 def test_ing_editing (rc):
     """Handed a recipe card, test ingredient editing"""
     # Add some ingredients in a group...
-    rc.show_edit(tab=rc.NOTEBOOK_ING_PAGE)        
+    rc.show_edit(tab=rc.NOTEBOOK_ING_PAGE)
     g = rc.ingtree_ui.ingController.add_group('Foo bar')
     if VERBOSE: print "Testing ingredient editing - add 4 ingredients to a group."
     add_save_and_check(
@@ -83,13 +83,13 @@ def test_ing_editing (rc):
         )
     if VERBOSE: print "Ingredient editing successful"
     return g
-    
+
 def test_ing_undo (rc):
-    rc.show_edit(tab=rc.NOTEBOOK_ING_PAGE)        
+    rc.show_edit(tab=rc.NOTEBOOK_ING_PAGE)
     ings_groups_and_dcs = [
         # Just 1 ing -- more will require more undos
         ['1 c. oil',None,{'amount':1,'unit':'c.','item':'oil'}]
-        ] 
+        ]
     refs = add_save_and_check(
         rc,
         ings_groups_and_dcs
@@ -145,9 +145,9 @@ def test_ing_group_editing (rc):
     ings = rc.rd.get_ings(rc.current_rec)
     assert(ings[0].inggroup != 'New Foo') # Make sure our new group got un-done
     if VERBOSE: print 'Undo of group change worked.'
-    
+
 def test_undo_save_sensitivity (rc):
-    rc.show_edit(tab=rc.NOTEBOOK_ATTR_PAGE)        
+    rc.show_edit(tab=rc.NOTEBOOK_ATTR_PAGE)
     rc.saveEditsCB()
     assert_with_message(
         lambda : not rc.save.get_sensitive(),
@@ -171,12 +171,12 @@ def test_undo_save_sensitivity (rc):
             orig_value = rc.rw[widget].entry.get_text()
             rc.rw[widget].entry.set_text(value)
             get_method = rc.rw[widget].entry.get_text
-            if VERBOSE: print 'Set with entry.set_text(',value,')'            
+            if VERBOSE: print 'Set with entry.set_text(',value,')'
         else:
             orig_value = rc.rw[widget].get_text()
             rc.rw[widget].set_text(value)
             get_method = rc.rw[widget].get_text
-            if VERBOSE: print 'Set with set_text(',value,')'                        
+            if VERBOSE: print 'Set with set_text(',value,')'
         assert_with_message(
             lambda : get_method()==value,
             '''Value set properly for %s to %s (should be %s)'''%(
@@ -204,7 +204,7 @@ def test_undo_save_sensitivity (rc):
         rc.redo.emit('activate')
         if orig_value and type(value)!=int:
             if VERBOSE: print "(Hitting redo a second time for text...)"
-            rc.redo.emit('activate') # Blank text, then fill it        
+            rc.redo.emit('activate') # Blank text, then fill it
         assert_with_message(
             lambda : get_method()==value,
             'Value of %s set to %s (should be %s)'%(widget,
@@ -251,6 +251,6 @@ else:
     rec_card.hide()
     import sys
     sys.exit()
-    
-    
-    
+
+
+

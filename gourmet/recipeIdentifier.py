@@ -89,13 +89,13 @@ def format_ing_text (ing_alist,rd,conv=None):
             if a: istring.append(a)
             if u: istring.append(u)
             if i.item: istring.append(i.item)
-            if (type(i.optional)!=str and i.optional) or i.optional=='yes': 
+            if (type(i.optional)!=str and i.optional) or i.optional=='yes':
                     istring.append(_('(Optional)'))
             if i.refid: istring.append('=>%s'%i.refid)
             if i.ingkey: istring.append('key=%s'%i.ingkey)
             strings.append(xml.sax.saxutils.escape(' '.join(istring)))
     return '\n'.join(strings).strip()
-            
+
 
 def format_ings (rec, rd):
     ings = rd.get_ings(rec)
@@ -157,7 +157,7 @@ def get_two_columns (s1,s2):
             left.append(line)
             right.append(line)
     return left,right
-        
+
 def diff_ings (rd,rec1,rec2):
     ings1 = format_ings(rec1,rd)
     ings2 = format_ings(rec2,rd)
@@ -177,7 +177,7 @@ def diff_recipes (rd,recs):
         # None and "" or between None and 0).
         if vals != [vals[0]] * len(vals) and True in [bool(v) for v in vals]:
             #if TEXT_ATTR_DIC.has_key(attr):
-            #    val1,val2 = 
+            #    val1,val2 =
             diffs[attr]=vals
     return diffs
 
@@ -187,7 +187,7 @@ def merge_recipes (rd, recs):
     The first dictionary contains items that are blank in one recipe
     but not the other. The second dictionary contains conflicts."""
     diffs = diff_recipes(rd,recs)
-    my_recipe = {} 
+    my_recipe = {}
     # Now we loop through the recipe and remove any attributes that
     # are blank in one recipe from diffs and put them instead into
     # my_recipe.
@@ -253,7 +253,7 @@ if __name__ == '__main__':
     rd = recipeManager.default_rec_manager()
     r1 = 33
     r2 = 241
-    
+
     #empty_hash = get_ingredient_hash([],None)
     #rr = {}; ii = {}; ir = {}; count = 0
 #     for rec in rd.fetch_all(rd.recipe_table,deleted=False):
@@ -287,7 +287,7 @@ if __name__ == '__main__':
 #                 print 'ING DIFF\n----------\n'
 #                 for n in range(len(left)):
 #                     print left[n],right[n]
-                
+
 #         else:
 #             rr[rh]=rec
 #         if ii.has_key(ih) and ih != empty_hash:

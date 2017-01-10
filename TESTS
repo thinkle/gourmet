@@ -11,25 +11,25 @@ Index View Searching
 - Limited Searching
 
 Import
-- Webpage 
-- Zipped Archive 
-- Mealmaster 
-- Mastercook 
+- Webpage
+- Zipped Archive
+- Mealmaster
+- Mastercook
 - gourmet
 
 Export
-- html 
-- Gourmet (+ reimport) 
-- PDF 
+- html
+- Gourmet (+ reimport)
+- PDF
 
 Customization
-- Customize columns in Index View 
+- Customize columns in Index View
 - Hide recipe widgets
 
 Recipe Card View
-- Export from this view 
-- Multiply (+ print)  
-- Add image 
+- Export from this view
+- Multiply (+ print)
+- Add image
 
 Plugins
 - Test response to bug in plugin (shouldn't bring down app)

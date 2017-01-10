@@ -1,8 +1,8 @@
-# Export Gourmet recipes to eatdrinkfeelgood XML format 
-# Copyright (c) 2005 cozybit, Inc. 
+# Export Gourmet recipes to eatdrinkfeelgood XML format
+# Copyright (c) 2005 cozybit, Inc.
 #
 # Author: Javier Cardona <javier_AT_cozybit.com>
-# 
+#
 # Based on the Gourmet exporter interface developed by Thomas Hinkle
 #
 # This program is free software; you can redistribute it and/or
@@ -69,8 +69,8 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
              'quart','pint','gill','cup',
              'tablespoon','teaspoon','bushel',
              'peck','pound','dram','ounce']
-    
-    def __init__ (self, rd, r, out, xmlDoc = None, conv = None, attdics={}, 
+
+    def __init__ (self, rd, r, out, xmlDoc = None, conv = None, attdics={},
             change_units=False, mult=1):
         self.e_current_step = None
         self.e_directions = None
@@ -97,13 +97,13 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
         e = self.xmlDoc.createElement('recipe')
         self.xmlDoc.documentElement.appendChild(e)
         self.e_recipe = e
-        
+
 
     def write_attr (self, label, text):
         attr = NAME_TO_ATTR[label]
         e_parent = self.e_recipe
         if attr == 'title':
-            e = self.xmlDoc.createElement('name') 
+            e = self.xmlDoc.createElement('name')
             e_parent.appendChild(e)
             e_parent = e
             attr = 'common'
@@ -111,7 +111,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
         t = self.xmlDoc.createTextNode(xml.sax.saxutils.escape(text))
         e.appendChild(t)
         e_parent.appendChild(e)
-        
+
     def write_text (self, label, text, time=None):
         """write_text() is called for each 'step' in the recipe"""
         if not self.e_directions:
@@ -131,8 +131,8 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
             prep_element = self.xmlDoc.createElement('preparation')
             prep_element.appendChild(second_element)
             self.e_current_step.appendChild(prep_element)
-        
-        
+
+
 
     def write_image (self, image):
         e = self.xmlDoc.createElement('image')
@@ -151,7 +151,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
             self.e_current_step.appendChild(e)
         else:
             self.e_recipe.appendChild(e)
-    
+
     def handle_italic (self, chunk): return '&lt;i&gt;'+chunk+'&lt;/i&gt;'
     def handle_bold (self, chunk): return '&lt;b&gt;'+chunk+'&lt;/b&gt;'
     def handle_underline (self, chunk): return '&lt;u&gt;'+chunk+'&lt;/u&gt;'
@@ -173,7 +173,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
     def write_ingref (self, amount=1, unit=None, item=None,
                       refid=None, optional=False):
         print 'write_ingref not implemented yet'
-        
+
     def write_ing (self, amount=1, unit=None, item=None,
                    key=None, optional=False):
         # item's are the same as keys in cozyland...
@@ -197,7 +197,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
         e = self.xmlDoc.createElement('ing')
         e_parent.appendChild(e)
         e_parent = e
-        e_amount = self.xmlDoc.createElement('amount')        
+        e_amount = self.xmlDoc.createElement('amount')
         if gram_amount:
             if type(gram_amount) not in [tuple,list] or None not in gram_amount:
                 e_amount.appendChild(
@@ -223,7 +223,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
 
     def write_grouphead (self, name):
         print 'write_grouphead not implemented yet'
-        
+
     def write_groupfoot (self):
         print 'write_groupfoot not implemented yet'
 
@@ -255,7 +255,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
                             break
                 else:
                     e_qty.appendChild(self.n_element(amount))
-        # Now for the measure...        
+        # Now for the measure...
         if unit:
             e_msr = self.xmlDoc.createElement('measure')
             e_qty.appendChild(e_msr)
@@ -267,7 +267,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
             else:
                 e_unit = self.xmlDoc.createElement('unit')
                 set_attribute(self.xmlDoc,e_unit,'unit',unit)
-            e_msr.appendChild(e_unit)                
+            e_msr.appendChild(e_unit)
         return e_qty
 
     def n_element (self, n):
@@ -279,14 +279,14 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
         set_attribute(self.xmlDoc,e_n,'type',typ)
         set_attribute(self.xmlDoc,e_n,'value',str(n))
         return e_n
-        
+
 
 class EdfgXmlM(exporter.ExporterMultirec, EdfgXmlBase):
     def __init__ (self, rd, recipe_table, out, one_file=True,
         change_units=False, mult=1):
         self.rd=rd
         impl = xml.dom.getDOMImplementation()
-        doctype = impl.createDocumentType("eatdrinkfeelgood", 
+        doctype = impl.createDocumentType("eatdrinkfeelgood",
             "-//Aaron Straup Cope//DTD Eatdrinkfeelgood 1.2//EN//XML",
             "./eatdrinkfeelgood.dtd")
         self.xmlDoc = impl.createDocument(None, "eatdrinkfeelgood", doctype)
@@ -300,7 +300,7 @@ class EdfgXmlM(exporter.ExporterMultirec, EdfgXmlBase):
             )
 
     def write_footer (self):
-        self.xmlDoc.writexml(self.ofi, newl = '\n', addindent = "\t", 
+        self.xmlDoc.writexml(self.ofi, newl = '\n', addindent = "\t",
                 encoding = "UTF-8")
 
 class ExportTestCase (unittest.TestCase):

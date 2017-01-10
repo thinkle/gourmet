@@ -23,7 +23,7 @@ class NutritionDisplayModule (RecDisplayModule):
         self.setup_ui()
         self.setup_ingredient_display_hooks()
         self.update_from_database()
-        
+
     def update_from_database (self):
         self.nutinfo = self.recipe_display.rg.rd.nd.get_nutinfo_for_inglist(self.recipe_display.rg.rd.get_ings(self.recipe_display.current_rec),
                                                                             self.recipe_display.rg.rd)
@@ -34,7 +34,7 @@ class NutritionDisplayModule (RecDisplayModule):
                                        )
         self.nutritionLabel.set_nutinfo(self.nutinfo)
         self.nutritionLabel.rec = self.recipe_display.current_rec
-        
+
     def setup_ui (self):
         #if not NutritionDisplayModule._custom_handlers_setup:
         #    gladeCustomHandlers.add_custom_handler('makeNutritionLabel',
@@ -55,12 +55,12 @@ class NutritionDisplayModule (RecDisplayModule):
 
     def ingredients_changed_cb (self, *args):
         self.recipe_display.reccard.update_recipe(self.recipe_display.current_rec)
-        
+
     def nutrition_highlighting_label_changed (self, *args):
         self.nutritional_highlighting = True
         self.recipe_display.prefs['nutrition_to_highlight'] = self.nutritionLabel.active_name
         self.recipe_display.ingredientDisplay.display_ingredients()
-        
+
     def leave_page (self):
         self.nutritional_highlighting = False
         self.recipe_display.mult = self.mult_orig
@@ -131,7 +131,7 @@ class NutritionDisplayModule (RecDisplayModule):
                           NutritionVapor):
                 istr = '<span foreground="red">'+istr+'</span>'
         return istr
-        
+
 
 class NutritionDisplayPlugin (RecDisplayPlugin):
 

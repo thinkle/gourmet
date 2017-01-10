@@ -51,7 +51,7 @@ class LinkedTimeView (LinkedTextView.LinkedTextView):
             href = tag.get_data('href')
             if href:
                 start_sentence = iter.copy();
-                start_sentence.backward_sentence_start() 
+                start_sentence.backward_sentence_start()
                 end_sentence = iter.copy()
                 if not end_sentence.ends_sentence(): end_sentence.forward_sentence_end()
                 self.emit('time-link-activated',href,self.get_buffer().get_slice(start_sentence,end_sentence))
@@ -64,7 +64,7 @@ def show_timer_cb (tv,l,note,c):
                note)
 
 if __name__ == '__main__':
-    
+
     import gtk
     c = convert.get_converter()
     tv = LinkedTimeView()
@@ -81,10 +81,10 @@ if __name__ == '__main__':
         15-25 seconds.
         """
         )
-    
+
     w = gtk.Window()
     w.add(tv)
     w.connect('delete-event',lambda *args: gtk.main_quit())
     w.show_all()
     gtk.main()
-    
+

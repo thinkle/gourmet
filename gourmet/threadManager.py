@@ -86,7 +86,7 @@ class SuspendableThread (threading.Thread, _IdleObject):
         self.start()
 
     def connect_subthread (self, subthread):
-        '''For subthread subthread, connect to error and pause signals and 
+        '''For subthread subthread, connect to error and pause signals and
         and emit as if they were our own.'''
         subthread.connect('error',lambda st,enum,ename,strace: self.emit('error',enum,ename,strace))
         subthread.connect('stopped',lambda st: self.emit('stopped'))
@@ -112,7 +112,7 @@ class SuspendableThread (threading.Thread, _IdleObject):
         # Note that sub-classes need to call check_for_sleep
         # periodically, otherwise pausing & cancelling won't work
         raise NotImplementedError
-    
+
     def suspend (self):
         self.suspended = True
 
@@ -184,12 +184,12 @@ class ThreadManager:
             thread.initialize_thread()
         else:
             self.thread_queue.append(thread)
-        
+
     def register_thread_done (self, thread):
         if thread in self.threads:
             self.threads.remove(thread)
             self.active_count -= 1
-            self.start_queued_threads()        
+            self.start_queued_threads()
 
     def register_thread_paused (self, thread):
         self.active_count -= 1
@@ -204,7 +204,7 @@ class ThreadManager:
             self.active_count += 1
         else:
             self.thread_queue.append(thread)
-    
+
     def start_queued_threads (self):
         while self.active_count < self.max_concurrent_threads and self.thread_queue:
             thread_to_add = self.thread_queue.pop()
@@ -295,7 +295,7 @@ class ThreadManagerGui:
         #for b in threadbox.buttons: b.show()
         thread.connect('completed',self.thread_done,threadbox)
         thread.connect('error',self.thread_error,threadbox)
-        thread.connect('stopped',self.thread_stopped,threadbox)        
+        thread.connect('stopped',self.thread_stopped,threadbox)
         thread.connect('pause',self.thread_pause,threadbox)
         thread.connect('resume',self.thread_resume,threadbox)
         thread.connect('progress',self.progress_update,pb)
@@ -361,7 +361,7 @@ class ThreadManagerGui:
         if txt.find(self.paused_text):
             txt = txt[:-len(self.paused_text)]
             pb.set_text(txt)
-        
+
     def show (self, *args):
         self.messagebox.show()
 
@@ -408,7 +408,7 @@ if __name__ == '__main__':
                 if n==100: raise AttributeError("This is a phony error")
                 self.emit('progress',n/1000.0,'%s of 1000'%n)
                 self.check_for_sleep()
-                
+
 
     class TestInterminable (SuspendableThread):
 
@@ -417,7 +417,7 @@ if __name__ == '__main__':
                 time.sleep(0.1)
                 self.emit('progress',-1,'Working interminably')
                 self.check_for_sleep()
-                
+
     tm = get_thread_manager()
     tmg = get_thread_manager_gui()
     for desc,thread in [

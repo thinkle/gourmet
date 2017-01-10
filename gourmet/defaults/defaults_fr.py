@@ -46,7 +46,7 @@ fields={'cuisine': ['Américaine','Italienne','Mexicaine'
 # set this to:
 # SYNONYMS=[]
 
-# note from translator: some terms are not standard but used in common langugage, some are used in a fautive manner, 
+# note from translator: some terms are not standard but used in common langugage, some are used in a fautive manner,
 # I decided to put them in different sections so it is still clear what is a synonym and what should not be a synonym.
 SYNONYMS=[
     # the first item of each list is the default
@@ -54,7 +54,7 @@ SYNONYMS=[
     ["doliques à œil noir","haricot à œil noir"],
     ["gourganes","fèves des marais"],
     ["haricots de Lima","haricot de Siéva","haricot du Cap","haricot du Tchad","haricot de Madagascar"],
-    ["soya","soja"], 
+    ["soya","soja"],
     ["fruit à pain","fruit de l'arbre à pain"],
     ["chou pommé","chou cabus"],
     ["bette à carde","bette","poirée","carde","bette poirée","bette à côtes",
@@ -63,7 +63,7 @@ SYNONYMS=[
     ["mâche commune","mâche","doucette"],
     ["endive","chicorée de Bruxelles","chicon","witloof","chicorée witloof"],
     ["crosses de fougère","crosses de fougère-à-l'autruche","tête-de-violon"],
-    ["chou vert frisé","chou frisé"], 
+    ["chou vert frisé","chou frisé"],
     ["maïs","blé d'Inde","blé d'Espagne","blé de Turquie"],
     ["tétragone","épinard de la Nouvelle-Zélande","épinard d'été","tétragone cornue","tétragone étalée"],
     ["gombo","okra","ketmie comestible","ketmie-gombo","gombaud"],
@@ -76,7 +76,7 @@ SYNONYMS=[
     ["céleri-rave","céleri tubéreux","céleri rave"],
     ["daïkon","radis oriental","radis blanc","radis blanc chinois","radis de Satzouma",
 	"radis de Satsuma","radis du Japon","daikon","radis japonais"],
-    ["navet","rabiole"],					
+    ["navet","rabiole"],
     ["courge poivrée","courgeron","courge gland"],
     ["courgette","zucchini"],
     ["pâtisson","bonnet d'électeur","bonnet-d'électeur","bonnet-de-prêtre",
@@ -100,12 +100,12 @@ SYNONYMS=[
     ["groseille rouge à grappes","gadelle rouge"],
     ["cassis","groseille noire","gadelle noire"],
     ["groseille blanche à grappes","gadelle blanche"],
-    ["baie de sureau","sureau"], 
+    ["baie de sureau","sureau"],
     ["groseille à maquereau","groseille"],
     ["symphorine occidentale","graine de loup","symphorine du Nord-Ouest"],
     ["kaki","plaquemine","fruit de Sharon"],
     ["Shepherdie du Canada","Shépherdie du Canada","Shéferdie du Canada",
-	"Shéferdie argentée","graines de bœuf"], 
+	"Shéferdie argentée","graines de bœuf"],
     ["pitahaya","pitaya"],
     ["melon d'eau","pastèque"],
     ["raisin vert","raisin blanc"],
@@ -198,10 +198,10 @@ SYNONYMS=[
     ["vermicelle","vermicelli","capellini"],
 
     #fautive/discouraged usages
-    #["oignon vert","échalote"],   
+    #["oignon vert","échalote"],
     #["chile","piment du Chili"],
     #["poivron","piment"],
-    ["germes de haricot","fèves germées","haricots germés","pousses de soja","pousse de soya"], 
+    ["germes de haricot","fèves germées","haricots germés","pousses de soja","pousse de soya"],
     ["navet","navet blanc"],
     ["pommette","pomme sauvage"],
     ["amélanche","petite poire"],
@@ -214,7 +214,7 @@ SYNONYMS=[
     #["turbot de sable","sole","plie"],
     #["plie canadienne","sole"],
     ["vivaneau","dorade"],
-    ["espadon","poisson sabre","poisson épée"], 
+    ["espadon","poisson sabre","poisson épée"],
     ["mye","clam"],
     ["poulpe","pieuvre"],
     ["levure chimique","poudre à pâte"],
@@ -237,7 +237,7 @@ SYNONYMS=[
 AMBIGUOUS = {
     'chou-navet':['chou-navet blanc','rutabaga'],
     'chou navet':['chou-navet blanc','rutabaga'],
-    'patate':['pomme de terre','patate douce']  
+    'patate':['pomme de terre','patate douce']
     }
 
 
@@ -263,7 +263,7 @@ AMBIGUOUS = {
 # can send me a list of category headings and ingredients for your
 # locale and I'll do the necessary formatting <Thomas_Hinkle@alumni.brown.edu>
 
-INGREDIENT_DATA = [## l é g u m e s	   
+INGREDIENT_DATA = [## l é g u m e s
 		   ["luzerne","luzerne","fruits et légumes"],                 			#alfalfa sprouts
                    ["anis","anis","fruits et légumes"],                       			#anise
                    ["artichaut","artichaut","fruits et légumes"],				#artichoke
@@ -363,7 +363,7 @@ INGREDIENT_DATA = [## l é g u m e s
                    ["courge spaghetti","courge spaghetti","fruits et légumes"],			#spaghetti squash
                    #["tat soi","tat soi","fruits et légumes"],					#(unknown)
                    ["tomate","tomate","fruits et légumes"],					#tomato
-                   ["dolique bulbeux","dolique bulbeux","fruits et légumes"],			#jicama	
+                   ["dolique bulbeux","dolique bulbeux","fruits et légumes"],			#jicama
                    ["topinambour","topinambour","fruits et légumes"],				#jerusalem artichoke
                    ["pomme de terre","pomme de terre","fruits et légumes"],			#potato
                    ["patate douce","patate douce","fruits et légumes"],				#sweet potato
@@ -414,8 +414,8 @@ INGREDIENT_DATA = [## l é g u m e s
                    ["mûre de Boysen","mûre de Boysen","fruits et légumes"],			#boysenberry
                    ["framboise","framboise","fruits et légumes"],				#raspberry
                    ["framboise blanche","framboise blanche","fruits et légumes"], 		#(added)
-                   ["framboise pourpre","framboise pourpre","fruits et légumes"], 		#(added) 
-                   ["framboise orange","framboise orange","fruits et légumes"], 		#(added) 
+                   ["framboise pourpre","framboise pourpre","fruits et légumes"], 		#(added)
+                   ["framboise orange","framboise orange","fruits et légumes"], 		#(added)
                    ["framboise jaune","framboise jaune","fruits et légumes"], 			#(added)
                    ["chicouté","chicouté","fruits et légumes"],					#cloudberry
                    #["wineberry","wineberry","fruits et légumes"],				#(unknown)
@@ -423,7 +423,7 @@ INGREDIENT_DATA = [## l é g u m e s
                    ["myrtille","myrtille","fruits et légumes"],					#bilberry
                    ["bleuet","bleuet","fruits et légumes"],					#blueberry
                    ["canneberge","canneberge","fruits et légumes"],				#cranberry
-                   #["huckleberry","huckleberry","fruits et légumes"],				#(myrtille synonym) 
+                   #["huckleberry","huckleberry","fruits et légumes"],				#(myrtille synonym)
                    ["airelle","airelle","fruits et légumes"],					#lingonberry
                    #["barberry ","barberry ","fruits et légumes"],				#(unknown)
                    ["groseille rouge à grappes","groseille rouge à grappes","fruits et légumes"],#red currant
@@ -482,7 +482,7 @@ INGREDIENT_DATA = [## l é g u m e s
                    ["litchi","litchi","fruits et légumes"],					#lychee
                    ["fruit de la Passion","fruit de la Passion","fruits et légumes"],		#passion fruit
                    ["feijoa","feijoa","fruits et légumes"],					#(same)
-                   ["akée","akée","fruits et légumes"],						#akee 
+                   ["akée","akée","fruits et légumes"],						#akee
                    ["banane","banane","fruits et légumes"],					#banana
                    ["banane cavendish","banane cavendish","fruits et légumes"],			#(added)
                    ["banane gros michel","banane gros michel","fruits et légumes"],		#(added)
@@ -571,7 +571,7 @@ INGREDIENT_DATA = [## l é g u m e s
                    #["mushroom","mushroom","fruits et légumes"],				#(already in the list !)
                    #["shallot","shallot","fruits et légumes"],					#(already in the list !)
 		   #["bell red pepper","bell pepper, red","fruits et légumes"],			#(already in the list !)
-                   ## f r u i t s   d e   m e r 
+                   ## f r u i t s   d e   m e r
                    ["anchois","anchois","fruits de mer"],					#anchovy
                    ["achigan","achigan","fruits de mer"],					#bass
                    ["bar d'Amérique","bar d'Amérique","fruits de mer"],				#striped bass
@@ -747,7 +747,7 @@ INGREDIENT_DATA = [## l é g u m e s
 		   ["vermicelles","vermicelles","pâtes"],					#(added)
 		   ## p r o d u i t s   l a i t i e r s
                    ["beurre","beurre","produits laitiers"],					#butter
-                   ["margarine","margarine","produits laitiers"],				#(added)	
+                   ["margarine","margarine","produits laitiers"],				#(added)
                    ["œuf","œuf","produits laitiers"],						#egg
                    ["œufs","œufs","produits laitiers"],					        #eggs
                    #["flour tortillas","tortillas, flour","produits laitiers"],			#(unknown)
@@ -782,7 +782,7 @@ INGREDIENT_DATA = [## l é g u m e s
 		   ## v i n   &   s p i r i t u e u x
                    ["vin blanc","vin, blanc","vin & spiritueux"],				#white wine
                    ["vin rouge","vin, rouge","vin & spiritueux"],				#(added)
-                   ## t h i n g   y o u   s h o u l d   h a v e   a t   h o m e 
+                   ## t h i n g   y o u   s h o u l d   h a v e   a t   h o m e
                    ["eau","eau",""]								#water
                    ]
 
@@ -814,7 +814,7 @@ CONVERTER_TABLE = {
     ("bushel", "bucket"):2,
     ("lb.", "grains"):7000}
 
-### from translator : see note further... 
+### from translator : see note further...
 
 # # THESE ARE STANDARD UNIT CONVERSIONS. You can simply translate unit names where
 # # you know them. Eliminate entries that are untranslatable or don"t exist in your
@@ -998,12 +998,12 @@ VOL_TO_MASS_TABLE = {
     ("cl", "kg"): 0.01,
     ("cl", "g") : 10,
     ("dl", "kg") : 0.1,
-    ("dl", "g") : 100,    
+    ("dl", "g") : 100,
     ("l", "kg") : 1}
 
 ### From translator :
 ### FRENCH PART TO BE REVISED !!! US units != UK units != Canadian units !!!
-### I will work on these later... 
+### I will work on these later...
 
 # # Stand unit names and alternate unit names that might appear.  For
 # # example: "c." is our standard abbreviation for cup.  "cup","c." or
@@ -1019,10 +1019,10 @@ VOL_TO_MASS_TABLE = {
 #          #["grains", ["grain","grains"]],
 #          ["dram", ["dram","drams"]],									#(same)
 #          ["goutte", ["drop","goutte","gouttes"]],							#drop
-#          ["c. à thé", ["teaspoon","tsp","tsp.","tea spoon","tsps.","teaspoons","tea spoons","Teaspoon", 
+#          ["c. à thé", ["teaspoon","tsp","tsp.","tea spoon","tsps.","teaspoons","tea spoons","Teaspoon",
 # 	               "cuiller à thé","cuillers à thé","cuiller a the","cuillers a the","cuiller à th.",
-# 		       "cuillers a th.", "c. à th.","c. a th."]],					#tsp. 
-# 	 ["c. à table", ["tablespoon","tbs","tbsp","tbs.","tbsp.","table spoon","tbsps.","tablespoons", 
+# 		       "cuillers a th.", "c. à th.","c. a th."]],					#tsp.
+# 	 ["c. à table", ["tablespoon","tbs","tbsp","tbs.","tbsp.","table spoon","tbsps.","tablespoons",
 # 		         "Tablespoon", "cuillère à table","cuillères à table","cuillere a table","cuilleres a table",
 # 		         "cuillerée à soupe","cuillerées à soupe","cuilleree a soupe","cuillerees a soupe"]],	#tbs.
 #          ["lb", [ "pound","lb","lb.","lbs.","pounds","livre","livres"]],				#lb.
@@ -1102,7 +1102,7 @@ VOL_TO_MASS_TABLE = {
 #     ("cl","kg"): 0.01,
 #     ("cl","g") : 10,
 #     ("dl","kg") : 0.1,
-#     ("dl","g") : 100,    
+#     ("dl","g") : 100,
 #     ("l","kg") : 1}
 
 

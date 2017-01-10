@@ -166,7 +166,7 @@ class MnemonicManager:
                 widg.show()
                 self.add_widget_mnemonic(widg)
 
-    def add_widget_mnemonic (self, w, untouchable=False, fix_untouchables=False): 
+    def add_widget_mnemonic (self, w, untouchable=False, fix_untouchables=False):
         k = gtk.gdk.keyval_name(w.get_mnemonic_keyval())
         if w.get_text().lower().replace('_','') in self.sacred_cows:
             untouchable = True; fix_untouchables=False
@@ -219,7 +219,7 @@ class MnemonicManager:
 
     def find_peaceful_alternatives (self, w):
         return filter(lambda l: not self.mnemonics.has_key(l),self.find_alternatives(w))
-    
+
     def fix_conflicts_peacefully (self, do_submenus=True):
         """Remove all conflicts from mnemonics.
 
@@ -311,8 +311,8 @@ class MnemonicManager:
                 break
             found = txt.lower().find(new_mnemonic,index+1)
         widget.set_text_with_mnemonic(txt[0:index] + '_' + txt[index:])
-        
-        
+
+
 if __name__ == '__main__':
     from gourmet import gglobals
     import gtk
@@ -337,4 +337,4 @@ if __name__ == '__main__':
         ui.get_widget('app').connect('delete-event',gtk.main_quit)
         gtk.main()
     show()
-    
+

@@ -11,7 +11,7 @@ class NutritionData:
     We provide methods to set up equivalences between our
     ingredient-keys and our nutritional data.
     """
-    
+
     def __init__ (self, db, conv):
         self.db = db
         self.conv = conv
@@ -21,7 +21,7 @@ class NutritionData:
 
     def set_key (self, key, row):
         """Create an automatic equivalence for ingredient key 'key' and nutritional DB row ROW
-        """        
+        """
         if not row: row = self._get_key(key)
         #density=self.get_density(key,row)
         if row: self.row.ndbno=row.ndbno
@@ -89,7 +89,7 @@ class NutritionData:
             return [(r.desc,r.ndbno) for r in result]
         else:
             return []
-            
+
     def _get_key (self, key):
         """Handed an ingredient key, get our nutritional Database equivalent
         if one exists."""
@@ -149,7 +149,7 @@ class NutritionData:
                 nvrow = self.db.fetch_one(self.db.nutrition_table,ndbno=ndbno)
                 return NutritionInfo(nvrow)
         return None
-    
+
     def get_nutinfo (self, key):
         """Get our nutritional information for ingredient key 'key'
         We return an object interfacing with our DB whose attributes
@@ -273,7 +273,7 @@ class NutritionData:
                 gw = float(gw)
             if u: units[u]=gw
         return densities,units
-            
+
     def get_densities (self,key=None,row=None):
         """Handed key or nutrow, return dictionary with densities."""
         if not row: row = self._get_key(key)
@@ -281,7 +281,7 @@ class NutritionData:
         if self.conv.density_table.has_key(key):
             return {'':self.conv.density_table[key]}
         else:
-            densities = {}       
+            densities = {}
             for gd,gw in self.get_gramweights(row).items():
                 a,u,e = gd
                 if not a:
@@ -309,7 +309,7 @@ class NutritionData:
                 extra = mtch.groups()[2]
             ret[(nw.amount,unit,extra)]=nw.gramwt
         return ret
-    
+
     def get_density (self,key=None,row=None, fudge=True):
         densities = self.get_densities(key,row)
         if densities.has_key(''): densities[None]=densities['']
@@ -342,8 +342,8 @@ class NutritionData:
         #new_ndbno = self.db.increment_field(self.db.nutrition_table,'ndbno')
         #if new_ndbno: nutrition_dictionary['ndbno']=new_ndbno
         return self.db.do_add_nutrition(nutrition_dictionary).ndbno
-        
-                    
+
+
 class NutritionInfo:
     """A multipliable way to reference an object.
 
@@ -373,7 +373,7 @@ class NutritionInfo:
     This will be true for all numeric properties.
 
     Non numeric properties return a somewhat not-useful string:
-    
+
     (Carrot + Eggplant).desc => 'CARROTS,RAW, EGGPLANT,RAW'
     """
     def __init__ (self,rowref, mult=1, fudged=False, ingObject=None):
@@ -477,7 +477,7 @@ class NutritionVapor (NutritionInfo):
 
     def __repr__ (self):
         return '<NutritionVapor %s>'%self.__key__
-    
+
     def __nonzero__ (self):
         """Vapor is always False."""
         return False
@@ -487,7 +487,7 @@ class NutritionVapor (NutritionInfo):
         if not self.__rowref__: return KEY_VAPOR
         elif not self.__amt__: return AMOUNT_VAPOR
         else: return UNIT_VAPOR
-    
+
 class NutritionInfoList (list, NutritionInfo):
     """A summable list of objects.
 
@@ -541,7 +541,7 @@ class NutritionInfoList (list, NutritionInfo):
             if hasattr(i,'__fudged__') and i.__fudged__:
                 ret.append(i)
         return ret
-        
+
     def __add__ (self, obj):
         if isinstance(obj,NutritionInfo):
             return NutritionInfoList(self.__nutinfos__ + [obj])
@@ -576,7 +576,7 @@ class NutritionInfoList (list, NutritionInfo):
             else:
                 n += 1
         return n
-            
+
 if __name__ == '__main__':
     import gourmet.recipeManager as rm
     db=rm.RecipeManager(**rm.dbargs)
@@ -589,7 +589,7 @@ if __name__ == '__main__':
 def foo ():
     from gourmet import convert
     class SimpleInterface:
-        
+
         def __init__ (self, nd):
             self.ACTIONS = {'Add ingredient':self.add_ingredient,
                        'Add key info':self.add_key,
@@ -615,7 +615,7 @@ def foo ():
                 raise
             else:
                 self.run()
-                
+
 
         def add_ingredient (self):
             key=raw_input('Enter ingredient key: ')
@@ -653,7 +653,7 @@ def foo ():
                     if explanation==KEY_VAPOR: print 'No key'
                     if explanation==UNIT_VAPOR: print "Can't handle unit ",v.__unit__
                     if explanation==AMOUNT_VAPOR: print "What am I to do with the amount ",v.__amt__
-                
+
 
         def exit (self):
             import sys

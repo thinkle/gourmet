@@ -38,7 +38,7 @@ class ModalDialog (gtk.Dialog):
                           gtk.RESPONSE_CLOSE:self.cancelcb,
                           gtk.RESPONSE_DELETE_EVENT:self.cancelcb}
         if modal: self.set_modal(True)
-        else: self.set_modal(False)        
+        else: self.set_modal(False)
         if label:
             self.setup_label(label)
         if sublabel:
@@ -69,7 +69,7 @@ class ModalDialog (gtk.Dialog):
         self.label.set_justify(gtk.JUSTIFY_LEFT)
         self.label.set_use_markup(True)
         self.label.show()
-        
+
     def setup_sublabel (self,sublabel):
         self.sublabel = gtk.Label(sublabel)
         self.sublabel.set_selectable(True)
@@ -95,7 +95,7 @@ class ModalDialog (gtk.Dialog):
             self.responses[response]()
         else:
             print 'WARNING, no response for ',response
-            
+
     def setup_expander (self, expander):
             label=expander[0]
             body = expander[1]
@@ -110,7 +110,7 @@ class ModalDialog (gtk.Dialog):
             self.expander.show()
             self.expander_vbox.show_all()
             self.vbox.add(self.expander)
-            
+
     def _add_expander_item (self, item):
         if type(item)==type(""):
             l=gtk.Label(item)
@@ -123,7 +123,7 @@ class ModalDialog (gtk.Dialog):
             map(self._add_expander_item,item)
         else:
             self.expander_vbox.pack_start(item)
-            
+
     def run (self):
         self.show()
         if self.widget_that_grabs_focus: self.widget_that_grabs_focus.grab_focus()
@@ -142,7 +142,7 @@ class ModalDialog (gtk.Dialog):
 class MessageDialog (gtk.MessageDialog, ModalDialog):
 
     """A simple class for displaying messages to our users."""
-    
+
     def __init__ (self, title="", default=None, okay=True, cancel=True, label=False, sublabel=False,
                   expander=None, message_type=gtk.MESSAGE_INFO, parent=None, modal=True):
         self.message_type=message_type
@@ -167,8 +167,8 @@ class MessageDialog (gtk.MessageDialog, ModalDialog):
         #curtext += "\n%s"%sublabel
         #self.label.set_text(xml.sax.saxutils.escape(curtext))
         self.format_secondary_markup(sublabel)
-        
-                  
+
+
 class NumberDialog (ModalDialog):
 
     """A dialog to get a number from our user."""
@@ -203,8 +203,8 @@ class NumberDialog (ModalDialog):
         self.spinButton.get_adjustment().connect("changed",self.update_value)
         self.spinButton.show()
         self.spinButton.connect('activate',self.entry_activate_cb)
-        self.hbox.show()                
-        
+        self.hbox.show()
+
     def update_value (self, *args):
         self.ret=self.spinButton.get_value()
 
@@ -214,7 +214,7 @@ class NumberDialog (ModalDialog):
 class EntryDialog (ModalDialog):
 
     """A dialog to get some text from an Entry from our user."""
-    
+
     def __init__ (self, default=None,
                   label=None,
                   sublabel=None,
@@ -309,12 +309,12 @@ class RadioDialog (ModalDialog):
 class OptionDialog (ModalDialog):
 
     """A dialog to offer our user a choice between options using an option menu"""
-    
+
     def __init__ (self, default=None, label="Select Option", sublabel=None, options=[], parent=None, expander=None, cancel=True):
         """Options can be a simple option or can be a tuple or a list
         where the first item is the label and the second the value"""
         ModalDialog.__init__(self, okay=True, label=label, sublabel=sublabel, parent=parent, expander=expander, cancel=cancel)
-        self.menucb = self.get_option        
+        self.menucb = self.get_option
         self.optdic={}
         self.menu = gtk.Menu()
         # set the default value to the first item
@@ -349,7 +349,7 @@ class OptionDialog (ModalDialog):
 class ProgressDialog (ModalDialog):
 
     """A dialog to show a progress bar"""
-    
+
     def __init__ (self, title="", okay=True, label="", sublabel=False, parent=None,
                   cancel=False, stop=False, pause=False,modal=False):
         """stop,cancel,and pause will be given as callbacks to their prospective buttons."""
@@ -399,11 +399,11 @@ class ProgressDialog (ModalDialog):
             self.stop.set_property('visible',True)
         else:
             self.stop.set_property('visible',False)
-            
-    def setup_buttons (self, cancel, okay):                        
-        # setup pause button 
+
+    def setup_buttons (self, cancel, okay):
+        # setup pause button
         self.pause = gtk.ToggleButton(_('_Pause'))
-        self.pause.set_use_underline(True)        
+        self.pause.set_use_underline(True)
         self.action_area.pack_end(self.pause)
         # only show it/connect it if we want to...
         if self.custom_pausecb:
@@ -427,7 +427,7 @@ class ProgressDialog (ModalDialog):
         ModalDialog.setup_buttons(self,cancel,okay)
         if self.custom_cancelcb:
             self.cancelcb = self.custom_cancelcb
-            #self.cancel.connect('clicked',self.custom_cancelcb)            
+            #self.cancel.connect('clicked',self.custom_cancelcb)
 
     def set_progress (self, prog, message=None):
         if prog < 0:
@@ -441,13 +441,13 @@ class ProgressDialog (ModalDialog):
 class PreferencesDialog (ModalDialog):
 
     """A dialog to get preferences from a user and return user preferences as a list."""
-    
+
     def __init__ (self, options=([None,None]), option_label="Option",
                   value_label="Value", default=True, label=None,
                   apply_func=None, parent=None, dont_ask_cb=None,
                   dont_ask_custom_text=None):
         """Options is a tuple of tuples where each tuple is ('option', VALUE), handed to OptionTable
-        
+
         VALUE can be any of the following:
         a string (will be editable)
         a number (will be editable and returned as a number)
@@ -459,7 +459,7 @@ class PreferencesDialog (ModalDialog):
         if apply_func: modal=False
         else: modal=True
         self.apply_func = apply_func
-        self.options = options        
+        self.options = options
         ModalDialog.__init__(self, okay=True, label=label, parent=parent, modal=modal)
         self.table = optionTable.OptionTable(options=self.options,
                                              option_label=option_label,
@@ -494,7 +494,7 @@ class PreferencesDialog (ModalDialog):
 
     def revertcb (self, *args):
         self.table.revert()
-        
+
     def applycb (self, *args):
         self.table.apply()
         self.apply_func(self.table.options)
@@ -507,7 +507,7 @@ class PreferencesDialog (ModalDialog):
         else:
             gtk.main()
             return self.ret
-        
+
     def okcb (self, *args):
         if self.apply_func:
             if self.apply.get_property('sensitive'):
@@ -520,11 +520,11 @@ class PreferencesDialog (ModalDialog):
             self.ret = self.table.options
             self.hide()
             gtk.main_quit()
-                   
+
     def cancelcb (self, *args):
         self.hide()
         self.ret=None
-        
+
 class BooleanDialog (MessageDialog):
     def __init__ (self, title="", default=True, label=_("Do you really want to do this"),
                   sublabel=False, cancel=True,
@@ -561,7 +561,7 @@ class BooleanDialog (MessageDialog):
         if dont_ask_cb:
             if not dont_ask_custom_text:
                 dont_ask_custom_text=_("Don't ask me this again.")
-            self.dont_ask = gtk.CheckButton(dont_ask_custom_text)            
+            self.dont_ask = gtk.CheckButton(dont_ask_custom_text)
             self.dont_ask.connect('toggled',dont_ask_cb)
             self.vbox.add(self.dont_ask)
             self.dont_ask.show()
@@ -606,7 +606,7 @@ class SimpleFaqDialog (ModalDialog):
                   modal=True):
         #print faq_file
         ModalDialog.__init__(self,title=title,parent=parent,modal=modal,cancel=False)
-        self.set_default_size(950,500)        
+        self.set_default_size(950,500)
         self.textview = gtk.TextView()
         self.textview.set_editable(False)
         self.textview.set_wrap_mode(gtk.WRAP_WORD)
@@ -660,7 +660,7 @@ class SimpleFaqDialog (ModalDialog):
         """
         CLOSE=False
         if type(infile)==str:
-            infile=open(infile)            
+            infile=open(infile)
             CLOSE=True
         self.index_lines = []
         self.index_dic={}
@@ -726,7 +726,7 @@ class SimpleFaqDialog (ModalDialog):
         match_start,match_end=itr.forward_search(txt,gtk.TEXT_SEARCH_VISIBLE_ONLY)
         #print 'match_start = ',match_start
         self.textview.scroll_to_iter(match_start,False,use_align=True,yalign=0.1)
-        
+
 class RatingsConversionDialog (ModalDialog):
     """A dialog to allow the user to select the number of stars
     distinct ratings should convert to.
@@ -885,7 +885,7 @@ def get_type_for_filters (fname, filters):
 def select_image (title,
                   filename=None,
                   action=gtk.FILE_CHOOSER_ACTION_OPEN,
-                  buttons=None):    
+                  buttons=None):
     sfd=ImageSelectorDialog(title,filename=filename,action=action,buttons=buttons)
     return sfd.run()
 
@@ -951,7 +951,7 @@ class FileSelectorDialog:
                 self.buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK)
             else:
                 self.buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OK,gtk.RESPONSE_OK)
-    
+
     def setup_filters (self):
         """Create and set filters for the dialog."""
         self.extensions = []
@@ -997,7 +997,7 @@ class FileSelectorDialog:
         # we're going to simply check to see if the filename has changed with
         # an idle call.
         self.timeout = gobject.timeout_add(100, self.update_filetype_widget)
-        
+
     def update_filetype_widget (self, *args):
         fn=self.fsd.get_filename()
         if self.fn != fn:
@@ -1077,8 +1077,8 @@ class FileSelectorDialog:
         if hasattr(self,'timeout'):
             gobject.source_remove(self.timeout)
         self.fsd.destroy()
-        
-    
+
+
 class ImageSelectorDialog (FileSelectorDialog):
     IMAGE_FILTERS = [
         ['Image',
@@ -1128,10 +1128,10 @@ def getNumber (*args, **kwargs):
     the results."""
     d = NumberDialog(*args, **kwargs)
     return d.run()
-                     
+
 def getEntry (*args, **kwargs):
     """Run EntryDialog, passing along all args, waiting on input and passing along
-    the results."""    
+    the results."""
     d = EntryDialog(*args, **kwargs)
     return d.run()
 
@@ -1213,7 +1213,7 @@ if __name__ == '__main__':
         ['show FAQ',lambda *args: show_faq(jump_to='shopping')],
         ['show message',lambda *args: show_message('howdy',label='Hello there. This is a very long label for the top of a dialog.', sublabel='And this is a sub message.',message_type=gtk.MESSAGE_WARNING)],
         ['get entry', lambda *args: getEntry(label='Main label',sublabel='sublabel',entryLabel='Entry Label: ')],
-        ['get number', lambda *args: getNumber(label='Main label',sublabel='sublabel')],        
+        ['get number', lambda *args: getNumber(label='Main label',sublabel='sublabel')],
         ['get long entry', lambda *args: getEntry(label='Main label', sublabel=char_measure, entryLabel='Entry Label: ',default_character_width=75,entryTip='Enter something long here.')],
         ['show boolean', lambda *args: getBoolean()],
         ['show custom boolean', lambda *args: getBoolean(custom_yes='_Replace',
@@ -1257,5 +1257,5 @@ if __name__ == '__main__':
     vb.show_all()
     w.show_all()
     gtk.main()
-    
+
 

@@ -43,7 +43,7 @@ class RecipeMergerPlugin (ToolPlugin):
     def remove (self):
         if hasattr(self,'pluggable'):
             self.pluggable.remove_hook(PRE,'import_cleanup',self.import_cleanup_hook)
-        ToolPlugin.remove(self)                                     
+        ToolPlugin.remove(self)
 
     def import_cleanup_hook (self, rg, retval, *args, **kwargs):
         # Check for duplicates
@@ -58,7 +58,7 @@ class RecipeMergerPlugin (ToolPlugin):
                 label=_('Some of the imported recipes appear to be duplicates. You can merge them here, or close this dialog to leave them as they are.')
                 )
         #gt.gtk_leave()
-    
+
     def setup_action_groups (self):
         self.action_group = gtk.ActionGroup('RecipeMergerPluginActionGroup')
         self.action_group.add_actions([
@@ -75,4 +75,4 @@ class RecipeMergerPlugin (ToolPlugin):
             )
         rmd.populate_tree_if_possible()
         rmd.show()
-     
+

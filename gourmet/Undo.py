@@ -12,7 +12,7 @@ class UndoableObject:
     it can supply get_reapply_action_args, which will allow the action to be "reapplied" to new
     arguments (for example, if the action is setting a text attribute, reapply might set that attribute
     for the currently highlighted text)."""
-    
+
     def __init__ (self, action, inverse, history,
                   action_args=None,
                   undo_action_args=None,
@@ -140,10 +140,10 @@ class UndoableTextChange (UndoableObject):
                     if (
                         # Adding text to the end
                         (
-                        relative_cindex==cindex+(clen-relative_clen) 
+                        relative_cindex==cindex+(clen-relative_clen)
                         or
                         # Adding text to the beginning
-                        (relative_cindex==self.clen or relative_cindex==self.cindex) 
+                        (relative_cindex==self.clen or relative_cindex==self.cindex)
                         )
                         and
                         not self.blob_matcher.search(changed_text)
@@ -151,7 +151,7 @@ class UndoableTextChange (UndoableObject):
                         self.text = new_text
                         self.cindex,self.clen = self.find_change(new_text)
                         ## End here if we've worked
-                        return                
+                        return
             except TooManyChanges:
                 pass # We'll go to the end of the method & create a new action
         # If the mode has changed or we have too many changes to
@@ -203,7 +203,7 @@ class UndoableTextChange (UndoableObject):
                   self.text==obj.initial_text)
                  )
                 )
-    
+
 
 class UndoableTextContainer:
     def __init__ (self, container, history):
@@ -230,7 +230,7 @@ class UndoableTextContainer:
                                            txt_id=self.container)
             self.history.append(self.change)
         self.txt = txt
-        
+
     def setup_widgets (self): pass
     def get_text (self): raise NotImplementedError
 
@@ -269,16 +269,16 @@ class UndoableEntry (UndoableTextContainer):
         self.get_text = self.entry.get_text
         UndoableTextContainer.__init__(self,self.entry,history)
 
-    def setup_widgets (self): 
+    def setup_widgets (self):
         self.entry.connect('changed',
                            self.change_event_cb
                            )
-        
+
     def set_text (self, txt, cursor_index):
         self.entry.grab_focus()
         self.entry.set_text(txt)
         self.entry.set_position(cursor_index)
-        
+
 class UndoableGenericWidget:
     """Wrap a widget in an Undo class.
 
@@ -321,27 +321,27 @@ class UndoableGenericWidget:
                                )
             self.history.append(u)
             self.last_value=new_val
-        
+
 class UndoableTextView (UndoableTextContainer):
     def __init__ (self, textview, history):
         self.tv = textview
         UndoableTextContainer.__init__(self,self.tv,history)
-        
+
     def setup_widgets (self):
         self.buffer = self.tv.get_buffer()
         self.buffer.connect('changed',
                             self.change_event_cb)
         self.buffer.connect('apply-tag',self.change_event_cb)
         self.buffer.connect('remove-tag',self.change_event_cb)
-        
-    def set_text (self, text, cursor_index):        
+
+    def set_text (self, text, cursor_index):
         self.buffer.set_text(text)
         self.tv.grab_focus()
         self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_index))
 
     def get_text (self):
         return self.buffer.get_text(self.buffer.get_start_iter(),
-                                    self.buffer.get_end_iter())        
+                                    self.buffer.get_end_iter())
 
 class UndoHistoryList (list):
     """An UndoHistoryList."""
@@ -443,7 +443,7 @@ class UndoHistoryList (list):
             self.set_sensitive(self.redo_widget,False)
             self.set_sensitive(self.undo_widget,False)
             self.set_sensitive(self.reapply_widget,False)
-            
+
     def append (self,obj):
         debug('Appending %s'%obj,0)
         list.append(self,obj)
@@ -453,7 +453,7 @@ class UndoHistoryList (list):
         self.gui_update()
 
     def remove (self,obj):
-        debug('Removing %s'%obj,0)        
+        debug('Removing %s'%obj,0)
         list.remove(self,obj)
         self.gui_update()
 
@@ -474,7 +474,7 @@ class MultipleUndoLists:
             if self.undo_widget: self.undo_widget.connect(signal,self.undo)
             if self.redo_widget: self.redo_widget.connect(signal,self.redo)
             if self.reapply_widget: self.reapply_widget.connect(signal,self.reapply)
-        
+
         # attempts to implement the following programatically are failing me...
         # it feels awful to write each of these methods out here, but here goes...
 
@@ -523,7 +523,7 @@ class MultipleUndoLists:
 
     def undo (self,*args,**kwargs):
         return self.get_history().undo(*args,**kwargs)
-    
+
     def reapply (self,*args,**kwargs): return self.get_history().reapply(*args,**kwargs)
 
     def get_all_histories (self): return self.histories.values()
@@ -547,7 +547,7 @@ class MultipleUndoLists:
         # set sensitivity for current context
         debug('switching context...',0)
         self.get_history().gui_update()
-            
+
 if __name__ == '__main__':
     #txt = raw_input('Text: ')
     #history = []
@@ -593,7 +593,7 @@ if __name__ == '__main__':
                 print c
     ub.connect('clicked',lambda *args: debug('Undo clicked!',0))
     sc.connect('clicked',show_changes)
-    rb.connect('clicked',lambda *args: debug('Redo clicked!',0))    
+    rb.connect('clicked',lambda *args: debug('Redo clicked!',0))
     gtk.main()
 
 

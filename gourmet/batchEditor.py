@@ -4,8 +4,8 @@ import gglobals
 from gtk_extras import cb_extras
 
 class BatchEditor:
-    
-    def __init__ (self, rg):        
+
+    def __init__ (self, rg):
         self.rg = rg
         self.setup_ui()
 
@@ -16,7 +16,7 @@ class BatchEditor:
         self.setFieldWhereBlankButton = self.ui.get_object('setFieldWhereBlankButton')
         self.setup_boxes()
         self.dialog.connect('response',self.response_cb)
-        
+
     def setup_boxes (self):
         self.attribute_widgets = {}
         self.get_data_methods = {}
@@ -33,7 +33,7 @@ class BatchEditor:
                     # If this is a combo box, we'll get info via the child's get_text method...
                     self.get_data_methods[a] = (checkbutton,
                                                 getattr(self,'%sBox'%a).get_children()[0].get_text)
-                    
+
                     box.set_model(self.rg.get_attribute_model(a))
                     box.set_text_column(0)
                     cb_extras.setup_completion(box)
@@ -65,7 +65,7 @@ class BatchEditor:
         box = self.attribute_widgets[attr]
         if widg.get_active(): box.set_sensitive(True)
         else: box.set_sensitive(False)
-        
+
     def get_values (self):
         changed = {}
         for attribute in self.get_data_methods.keys():
@@ -74,7 +74,7 @@ class BatchEditor:
                 val = get_method()
                 changed[attribute]=val
         return changed
-    
+
     def response_cb (self, dialog, resp):
         if resp == gtk.RESPONSE_OK:
             self.setFieldWhereBlank = self.setFieldWhereBlankButton.get_active()
@@ -82,7 +82,7 @@ class BatchEditor:
         else:
             self.setFieldWhereBlank = None
             self.values = None
-        
+
 
 if __name__ == '__main__':
     import GourmetRecipeManager

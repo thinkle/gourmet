@@ -24,7 +24,7 @@ class PluginChooser:
             )
         self.window.set_default_size(375,400)
         self.window.connect('response',self.response_cb)
-        
+
     def add_labels (self):
         head = gtk.Label()
         head.set_markup(
@@ -36,7 +36,7 @@ class PluginChooser:
         self.window.vbox.pack_start(head,expand=False)
         self.window.vbox.pack_start(desc,expand=False)
         self.window.vbox.set_border_width(12)
-        head.show(); desc.show()        
+        head.show(); desc.show()
 
     def categorize_plugins (self):
         categorized = {}
@@ -48,7 +48,7 @@ class PluginChooser:
             if not categorized.has_key(cat): categorized[cat]=[]
             categorized[cat].append((module_name,plugin_set))
         return categorized
-    
+
     def make_list_store (self, plugin_list):
         ls = gtk.ListStore(bool, # activated
                            gobject.TYPE_PYOBJECT, # the plugin-set object with all other info
@@ -61,10 +61,10 @@ class PluginChooser:
         return ls
 
     def make_treeview (self, plugin_list):
-        tv = gtk.TreeView()        
+        tv = gtk.TreeView()
         toggle_renderer = gtk.CellRendererToggle()
         toggle_renderer.set_property('activatable',True)
-        toggle_renderer.set_property('sensitive',True)        
+        toggle_renderer.set_property('sensitive',True)
         toggle_renderer.connect('toggled',self.toggled_cb,tv)
         active_col = gtk.TreeViewColumn('Active',toggle_renderer,active=0)
         text_renderer = gtk.CellRendererText()
@@ -143,17 +143,17 @@ class PluginChooser:
                                 label=_('An error occurred deactivating plugin.'),
                                 sublabel=details
                                 )
-                
+
             raise
 
     def response_cb (self, window, response):
         if response==gtk.RESPONSE_CLOSE: self.window.hide()
-            
+
 def show_plugin_chooser ():
     pc = PluginChooser()
     pc.window.show()
     return pc
-    
+
 if __name__ == '__main__':
     pc = show_plugin_chooser()
     pc.window.connect('delete-event',gtk.main_quit)

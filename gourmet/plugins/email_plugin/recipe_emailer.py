@@ -53,18 +53,18 @@ class RecipeEmailer (Emailer):
             instance = em.do_multiple_export(self.recipes, fn)
             instance.connect('completed',self.attachment_complete,typ)
             print 'Start thread to create ',typ,'!','->',fn
-    
+
     def attachment_complete (self, thread, typ):
         self.attachments_left.remove(typ)
         if not self.attachments_left:
             print 'Attachments complete! Send email!'
             self.send_email()
-    
+
     def send_email_with_attachments (self, emailaddress=None):
         if emailaddress: self.emailaddress=emailaddress
         self.write_email_text()
         self.write_attachments()
-        
+
     #def send_email_html (self, emailaddress=None, include_plain_text=True):
     #    if include_plain_text: self.write_email_text()
     #   else: self.body = None
@@ -73,7 +73,7 @@ class RecipeEmailer (Emailer):
     #   self.send_email()
 
     def send_email_text (self, emailaddress=None):
-        if emailaddress: self.emailaddress=emailaddress 
+        if emailaddress: self.emailaddress=emailaddress
         self.write_email_text()
         self.send_email()
-        
+

@@ -36,21 +36,21 @@ class ConsolePlugin (ToolPlugin):
             the current instance of Gourmet from here, which means of
             course you could really hose your system if you're not
             careful.
-            
+
             The following local variables are defined for your convenience:
 
             app - the main GourmetApplication singleton
-            
+
             rd - the main recipeManager singleton (Gourmet's interface
                  to the DB)
-            
+
             db - the sqlalchemy interface to the DB (a level of
                  abstraction closer to sql)
 
             v - this IPythonView itself
 
             consolePlugin - the plugin that gave you this tool."""
-            
+
         v.updateNamespace({'app':app,
                            'rd':app.rd,
                            'db':app.rd.db,

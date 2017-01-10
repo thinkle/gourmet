@@ -85,8 +85,8 @@ class ShoppingNutritionalInfoPlugin (ShoppingListPlugin):
     def response_cb (self, *args):
         # We only allow one response -- closing the window!
         self.nutrition_window.hide()
-        
-        
 
-        
-             
+
+
+
+

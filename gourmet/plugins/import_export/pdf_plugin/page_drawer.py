@@ -11,7 +11,7 @@ class PageDrawer (gtk.DrawingArea):
 
         sub_areas are each (X1,Y1,WIDTH,HEIGHT) where the point defines
         the upper-left corner of the rectangle.
-        
+
         """
         self.xalign = xalign
         self.yalign = yalign
@@ -45,7 +45,7 @@ class PageDrawer (gtk.DrawingArea):
     def on_size_allocate(self, widget, allocation):
         self.width = allocation.width
         self.height = allocation.height
-        
+
     def on_expose_event(self, widget, event):
         if not hasattr(self,'xy_ratio'): return
         # This is where the drawing takes place

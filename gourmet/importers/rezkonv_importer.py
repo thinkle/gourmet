@@ -25,7 +25,7 @@ class rezkonv_importer (mealmaster_importer.mmf_importer):
     # of a block of text, so we'll shorten the length at which we assume
     # a short line means the end of a paragraph.
     end_paragraph_length = 45
-    
+
     def compile_regexps (self):
         """Compile our regular expressions for the rezkonv format.
         """
@@ -56,7 +56,7 @@ class rezkonv_importer (mealmaster_importer.mmf_importer):
         attrmatch="%s):\s*(.*)\s*$"%attrmatch[0:-1]
         self.attr_matcher = re.compile(attrmatch)
         testtimer.end()
-    
+
     def is_ingredient (self, l):
         """Return true if the line looks like an ingredient.
         """
@@ -65,4 +65,4 @@ class rezkonv_importer (mealmaster_importer.mmf_importer):
         if len(l) >= 5 and self.blank_matcher.match(l[0:2]):
             return True
 
-    
+

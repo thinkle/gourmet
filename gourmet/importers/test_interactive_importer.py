@@ -12,18 +12,18 @@ class TestConvenientImporter (unittest.TestCase):
         self.ci.add_attribute('category','foo')
         self.ci.add_attribute('category','bar')
         self.ci.add_ings_from_text(
-            '''6 garlic cloves, peeled 
-  1/2 pound linguine 
-  1/4 cup plus 1 tablespoon olive oil 
-  2 to 2 1/2 pounds small fresh squid (about 10), cleaned and cut into 3/4-inch thick rings, tentacles cut in half* 
-  1 1/2 teaspoons Baby Bam or Emeril's Original Essence, to taste 
-  1/4 cup chopped green onions 
-  1 teaspoon crushed red pepper, or to taste 
-  1/4 teaspoon salt 
-  1/4 cup fish stock, shrimp stock, or water 
-  2 tablespoons fresh lemon juice 
-  1 tablespoon unsalted butter 
-  1/4 cup chopped fresh parsley leaves 
+            '''6 garlic cloves, peeled
+  1/2 pound linguine
+  1/4 cup plus 1 tablespoon olive oil
+  2 to 2 1/2 pounds small fresh squid (about 10), cleaned and cut into 3/4-inch thick rings, tentacles cut in half*
+  1 1/2 teaspoons Baby Bam or Emeril's Original Essence, to taste
+  1/4 cup chopped green onions
+  1 teaspoon crushed red pepper, or to taste
+  1/4 teaspoon salt
+  1/4 cup fish stock, shrimp stock, or water
+  2 tablespoons fresh lemon juice
+  1 tablespoon unsalted butter
+  1/4 cup chopped fresh parsley leaves
   1/2 cup freshly grated Parmesan'''
             )
         self.ci.commit_rec()
@@ -38,7 +38,7 @@ class TestConvenientImporter (unittest.TestCase):
         self.assertEqual(len(ings),13)
         self.assertEqual(ings[1].amount,0.5)
         self.assertEqual(ings[1].unit,'pound')
-        self.assertEqual(ings[1].item,'linguine')                
+        self.assertEqual(ings[1].item,'linguine')
 
 if __name__ == '__main__':
     unittest.main()

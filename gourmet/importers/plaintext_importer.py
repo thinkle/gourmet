@@ -23,7 +23,7 @@ class TextImporter (importer.Importer):
         self.lines = check_encodings.get_file(self.fn)
         self.total_lines = len(self.lines)
         print 'we have ',self.total_lines,'lines in file',self.fn
-        
+
     def do_run (self):
         if not hasattr(self,'lines'):
             raise Exception("pre_run has not been run!")
@@ -49,7 +49,7 @@ class TextImporter (importer.Importer):
         # paragraph breaks.
         self.unwrap_matcher = re.compile('\n\W*\n')
         self.find_header_breaks_matcher = re.compile('\s+(?=[A-Z][A-Z][A-Z]+:.*)')
-        
+
     def unwrap_lines (self, blob):
         if blob.find("") >= 0:
             debug('Using built-in paragraph markers',1)
@@ -96,7 +96,7 @@ class TextImporter (importer.Importer):
             else:
                 newline = False
         return outblob
-        
+
 class Tester (importer.Tester):
     def __init__ (self):
         importer.Tester.__init__(self,regexp=MASTERCOOK_START_REGEXP)

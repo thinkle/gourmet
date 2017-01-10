@@ -14,7 +14,7 @@
 ### You should have received a copy of the GNU General Public License
 ### along with this library; if not, write to the Free Software
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
-### USA 
+### USA
 
 # Largely based on hypertext.py example in pygtk docs by
 # Maik Hertha <maik.hertha@berlin.de>
@@ -85,7 +85,7 @@ class LinkedTextView (gtk.TextView):
                           gobject.TYPE_STRING,
                           [gobject.TYPE_STRING]),
         }
-    
+
     def __init__ (self):
         gobject.GObject.__init__(self)
         gtk.TextView.__init__(self)
@@ -187,7 +187,7 @@ if __name__ == '__main__':
     def print_link (tv,l):
         print l
     tv = LinkedTextView()
-    tv.connect('link-activated',print_link)    
+    tv.connect('link-activated',print_link)
     w = gtk.Window()
     w.add(tv)
     tv.get_buffer().set_text(u"""This is some text
@@ -198,7 +198,7 @@ if __name__ == '__main__':
     <a href="123:foo">recipe link</a>
 
     <a href="456:boo">\xbc recipe boogoochooboo</a>
-    
+
     <b>Yeah!</b>
     """)
 

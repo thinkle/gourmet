@@ -148,12 +148,12 @@ class ImportTest:
             except:
                 raise AssertionError('Categories include %s not specified in %s'%(cats,test['categories']))
         print 'Passed test:',test
-    
+
     @time_me
     def setup_db (self):
         self.im = get_im()
         self.db = get_recipe_manager(custom_url='sqlite:///:memory:')
-        
+
     @time_me
     def test_import (self,filename):
         self.im.import_filenames([filename])
@@ -166,7 +166,7 @@ class ImportTest:
         pass
         #print int(10 * bar) * '|'
         #if bar == 1: print msg
-        
+
 
 class ImportTestCase (unittest.TestCase):
 
@@ -254,4 +254,4 @@ class ImportTestCase (unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    
+

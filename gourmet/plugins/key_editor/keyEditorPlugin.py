@@ -12,7 +12,7 @@ class KeyEditorPlugin (gourmet.plugin.ToolPlugin):
     '''
 
     def setup_action_groups (self):
-        self.action_group = gtk.ActionGroup('KeyEditorActionGroup')        
+        self.action_group = gtk.ActionGroup('KeyEditorActionGroup')
         self.action_group.add_actions([
             ('KeyEditor',None,_('Ingredient _Key Editor'),
              None,_('Edit ingredient keys en masse'),self.show_key_editor)

@@ -28,7 +28,7 @@ class URLReader (gourmet.threadManager.SuspendableThread):
         if hasattr(sock,'headers'):
             fs = int(sock.headers.get('content-length',-1)) # file size..
             self.content_type = sock.headers.get('content-type')
-            print 'CONTENT TYPE = ',self.content_type            
+            print 'CONTENT TYPE = ',self.content_type
         else:
             fs = -1
         block = sock.read(bs)
@@ -44,7 +44,7 @@ class URLReader (gourmet.threadManager.SuspendableThread):
             self.data += block
         sock.close()
         self.emit('progress',1, message)
-    
+
 def read_socket_w_progress (sock, suspendableThread=None, message=None):
     """Read piecemeal reporting progress via our suspendableThread
     instance (most likely an importer) as we go."""

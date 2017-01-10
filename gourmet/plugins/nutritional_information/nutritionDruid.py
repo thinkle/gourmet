@@ -84,7 +84,7 @@ class NutritionUSDAIndex:
 
     __last_group__ = None
     group = None
-    
+
     PACKAGED_FOODS = ['Soups, Sauces, and Gravies',
                       'Baked Products',
                       'Meals, Entrees, and Sidedishes',
@@ -98,7 +98,7 @@ class NutritionUSDAIndex:
         for name,w in widgets: setattr(self,name,w)
         self._setup_nuttree_()
         self.__last_search__ = ''
-        self.__override_search__ = False        
+        self.__override_search__ = False
         WidgetSaver.WidgetSaver(
             self.usdaSearchAsYouTypeToggle,
             self.prefs.get('sautTog',
@@ -111,8 +111,8 @@ class NutritionUSDAIndex:
         cb.set_model_from_list(self.foodGroupComboBox,
                                [self.ALL_GROUPS]+self.rd.get_unique_values('foodgroup',self.rd.nutrition_table)
                                )
-        cb.cb_set_active_text(self.foodGroupComboBox,self.ALL_GROUPS)        
-        
+        cb.cb_set_active_text(self.foodGroupComboBox,self.ALL_GROUPS)
+
     def set_search (self, txt):
         """Set the search to txt, ensuring there are results.
 
@@ -124,7 +124,7 @@ class NutritionUSDAIndex:
         # always search raw if possible... (it gets us the real thing
         # vs. canned/frozen/soup/babyfood, etc.)
         if 'raw' not in words:
-            words += ['raw'] 
+            words += ['raw']
         search_terms = []
         search_in = self.rd.nutrition_table
         srch = []
@@ -143,11 +143,11 @@ class NutritionUSDAIndex:
         self.__override_search__ = True # turn off any handling of text insertion
         search_text = ' '.join(srch)
         self.usdaSearchEntry.set_text(search_text)
-        self.searchvw = searchvw or self.rd.fetch_all(self.rd.nutrition_table)        
+        self.searchvw = searchvw or self.rd.fetch_all(self.rd.nutrition_table)
         self.nutrition_store.change_view(self.searchvw)
         self.__last_search__ = search_text
         self.__override_search__ = False # turn back on search handling!
-        
+
     def get_selected_usda_item (self):
         if len(self.searchvw)==1:
             nut = self.searchvw[0].ndbno
@@ -164,7 +164,7 @@ class NutritionUSDAIndex:
         self.usdaForwardButton.connect('clicked', lambda *args: self.nutrition_store.next_page())
         self.usdaBackButton.connect('clicked', lambda *args: self.nutrition_store.prev_page())
         self.nutrition_store.connect('page-changed',self.update_nuttree_showing)
-        self.nutrition_store.connect('view-changed',self.update_nuttree_showing)        
+        self.nutrition_store.connect('view-changed',self.update_nuttree_showing)
         self.update_nuttree_showing()
         self.searchvw = self.rd.nutrition_table
         self.usdaTreeview.set_model(self.nutrition_store)
@@ -215,7 +215,7 @@ class NutritionUSDAIndex:
         if cur_active not in groups:
             groups += [cur_active]
         cb.set_model_from_list(self.foodGroupComboBox,groups)
-        cb.cb_set_active_text(self.foodGroupComboBox,cur_active)        
+        cb.cb_set_active_text(self.foodGroupComboBox,cur_active)
         self.searchvw = self.rd.search_nutrition(words,group=self.group)
         self.__last_search__ = txt
         self.__last_group__ = self.group
@@ -228,8 +228,8 @@ class NutritionUSDAIndex:
             self.group = None
         else:
             self.group = food_group
-        gobject.idle_add(self.search)    
-    
+        gobject.idle_add(self.search)
+
 class NutritionInfoDruid (gobject.GObject):
 
     """A druid (or "wizard") to guide a user through helping Gourmet
@@ -272,12 +272,12 @@ class NutritionInfoDruid (gobject.GObject):
         self.amounts = {} # List amounts by ingredient
         self.ing_to_index = {} # A way to keep track of the order of our ingredients...
         self._setup_widgets_()
-        # keep track of pages/setups we've been on         
+        # keep track of pages/setups we've been on
         self.path = []
         self.curpage = 0
-        self.prevDruidButton.set_sensitive(False) 
+        self.prevDruidButton.set_sensitive(False)
         # Initiate our gobject-ness so we can emit signals.
-        gobject.GObject.__init__(self)                      
+        gobject.GObject.__init__(self)
         # Save our position with our widget saver...
         WidgetSaver.WindowSaver(self.ui.get_object('window'),
                                 self.prefs.get('nutritionDruid',{})
@@ -391,7 +391,7 @@ class NutritionInfoDruid (gobject.GObject):
             self.path.append(
                 (self.show_info_page,[nutalias])
                 )
-            
+
     def show_info_page (self, nutalias):
         self.infoIngredientKeyLabel.set_text(nutalias.ingkey)
         self.infoUSDALabel.set_text(nutalias.desc)
@@ -487,11 +487,11 @@ class NutritionInfoDruid (gobject.GObject):
             'amount':amount,
             'unit':unit,
             })
-    
+
     def get_amounts_and_units_for_ingkey (self, ingkey):
         """Return a list of amounts and units present in database for ingkey"""
         amounts_and_units = []
-        ings = self.rd.fetch_all(self.rd.ingredients_table,ingkey=ingkey)        
+        ings = self.rd.fetch_all(self.rd.ingredients_table,ingkey=ingkey)
         for i in ings:
             a,u = i.amount,i.unit
             if (a,u) not in amounts_and_units:
@@ -524,7 +524,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.toAmountEntry.set_text(convert.float_to_frac(amt_in_grams,
                                                           fractions=convert.FRACTIONS_ASCII
                                                           ))
-        
+
         # Hack to avoid adding ourselves to the path on a "back" event
         # -- if button is None, then we know we were called
         # artificially from previous_page_cb (not from a button press
@@ -600,7 +600,7 @@ class NutritionInfoDruid (gobject.GObject):
                 self.changing_percent_internally = True
                 percent_widget.set_value((float(v)/rda)*100)
                 self.changing_percent_internally = False
-        
+
     def percent_changed_cb (self, widget, name, number_widget):
         if self.changing_percent_internally: return
         v = widget.get_value()
@@ -636,7 +636,7 @@ class NutritionInfoDruid (gobject.GObject):
         nutinfo['desc']=self.ingkey
         ndbno = self.nd.add_custom_nutrition_info(nutinfo)
 
-    ### END METHODS FOR CUSTOM NUTRITIONAL INTERFACE 
+    ### END METHODS FOR CUSTOM NUTRITIONAL INTERFACE
 
     ### METHODS TO SET CURRENT ITEM AND UNIT INFO
     def set_ingkey (self, txt):
@@ -647,7 +647,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.ingkey = txt
 
     ### BEGIN METHODS FOR SETTING UNIT EQUIVALENTS
-        
+
     def set_from_unit (self, txt):
         if not self.ingkey:
             return
@@ -722,7 +722,7 @@ class NutritionInfoDruid (gobject.GObject):
     ### END METHODS FOR SETTING UNIT EQUIVALENTS
 
     ### BEGIN METHODS FOR SEARCHING USDA INDEX
-    
+
     def autosearch_ingkey (self):
         """Automatically do a search for our current ingkey.
 
@@ -740,11 +740,11 @@ class NutritionInfoDruid (gobject.GObject):
     ### END METHODS FOR SEARCHING USDA INDEX
 
     ### BEGIN CALLBACKS FOR QUICK-CHANGES OF INGREDIENT KEY / UNIT
-        
+
     def apply_ingkey (self,*args):
         key = self.ingKeyEntry.get_text()
         if key==self.ingkey:
-            self.changeIngKeyAction.dehighlight_action()            
+            self.changeIngKeyAction.dehighlight_action()
             return
         #ings = self.rd.fetch_all(self.rd.ingredients_table,ingkey=self.ingkey)
         #self.rd.modify_ings(ings,{'ingkey':key})
@@ -796,7 +796,7 @@ class NutritionInfoDruid (gobject.GObject):
             self.setup_to_units()
             self.check_next_amount()
         self.emit('key-changed',(old_key,key))
-    
+
     def save_unit_cb (self,*args):
         from_unit = self.fromUnitComboBoxEntry.get_children()[0].get_text()
         old_from_unit = self.fromUnit
@@ -829,11 +829,11 @@ class NutritionInfoDruid (gobject.GObject):
         self.set_from_unit(self.fromUnitComboBoxEntry.get_children()[0].get_text())
         self.changeUnitAction.dehighlight_action()
         self.emit('unit-changed',((old_from_unit,self.ingkey),(from_unit,self.ingkey)))
-        
+
     ### END CALLBACKS FOR QUICK-CHANGES OF INGREDIENT KEY / UNIT
 
     ### BEGIN METHODS FOR DENSITY-CHOOSING INTERFACE
-        
+
     def get_density (self,amount,unit):
         self.densityLabel.set_text(
             _("""In order to calculate nutritional information for "%(amount)s %(unit)s %(ingkey)s", Gourmet needs to know its density. Our nutritional database has several descriptions of this food with different densities. Please select the correct one below.""")%({'amount':amount,'unit':unit,'ingkey':self.ingkey})
@@ -908,7 +908,7 @@ class NutritionInfoDruid (gobject.GObject):
             self.finish()
             return
         ing = self.inglist[self.ing_index]
-        self.ing_index+=1    
+        self.ing_index+=1
         if not ing:
             return
         ingkey,amounts = ing
@@ -931,7 +931,7 @@ class NutritionInfoDruid (gobject.GObject):
         if desc:
             self.usdaIndex.set_search(desc)
         else:
-            self.autosearch_ingkey()        
+            self.autosearch_ingkey()
         self.goto_page_key_to_nut()
         ing_index = self.ing_to_index.get(ingkey,None)
         if ing_index: self.ing_index = ing_index
@@ -963,7 +963,7 @@ class NutritionInfoDruid (gobject.GObject):
             self.path.append((self.edit_units,
                               [amount,unit,self.ingkey,self.amount_index])
                              )
-    
+
     def edit_units (self, amount, unit, ingkey, indx=None):
         self.set_ingkey(ingkey)
         self.set_from_unit(unit)
@@ -1018,7 +1018,7 @@ class NutritionInfoDruid (gobject.GObject):
             self.check_next_amount()
         self.curpage += 1
         self.prevDruidButton.set_sensitive(True)
-    
+
     def ignore_cb (self, *args):
         page = self.notebook.get_current_page()
         self.curpage += 1
@@ -1033,17 +1033,17 @@ class NutritionInfoDruid (gobject.GObject):
     ### BEGIN CONVENIENCE METHODS FOR SWITCHING PAGES
     def goto_page_key_to_nut (self):
         for b in [self.applyButton,self.ignoreButton]: b.show()
-        for b in [self.editButton]: b.hide()        
+        for b in [self.editButton]: b.hide()
         self.notebook.set_current_page(self.NUT_PAGE)
 
     def goto_page_unit_convert(self):
         for b in [self.applyButton,self.ignoreButton]: b.show()
-        for b in [self.editButton]: b.hide()        
+        for b in [self.editButton]: b.hide()
         self.notebook.set_current_page(self.UNIT_PAGE)
 
     def goto_page_custom (self):
         for b in [self.applyButton,self.ignoreButton]: b.show()
-        for b in [self.editButton]: b.hide()        
+        for b in [self.editButton]: b.hide()
         self.notebook.set_current_page(self.CUSTOM_PAGE)
 
     def goto_page_density (self):
@@ -1065,9 +1065,9 @@ class NutritionInfoDruid (gobject.GObject):
     def custom_cb (self, *args): self.goto_page_custom()
 
     def usda_cb (self, *args): self.goto_page_key_to_nut()
-    
+
     ### BEGIN METHODS FOR STARTING AND FINISHING
-    
+
     def show (self):
         self.ui.get_object('window').show()
 
@@ -1083,16 +1083,16 @@ class NutritionInfoDruid (gobject.GObject):
         self.ui.get_object('window').hide()
         self.emit('finish')
         #self.ui.get_object('window').hide()
-        
+
     ### END METHODS FOR STARTING AND FINISHING
 
     ### END NutritionInfoDruid
-    
+
 class PageableNutritionStore (PageableViewStore):
     def __init__ (self, view, columns=['ndbno','desc',],column_types=[int,str]):
         PageableViewStore.__init__(self,view,columns,column_types)
-    
-                   
+
+
 if __name__ == '__main__':
     import nutrition
     from gourmet.recipeManager import RecipeManager,dbargs
@@ -1137,9 +1137,9 @@ if __name__ == '__main__':
         ('cauliflower',[(1,'head'),(3,'chunks')]),
         ('salt',[(3,'tsp'),]),
         ('1% milk',[(1,'c.')])
-        
+
         ])
-                         
+
     def quit (*args):
         rd.save()
         nid.ui.get_object('window').hide()

@@ -19,7 +19,7 @@ class exporter (SuspendableThread, Pluggable):
 
     name='exporter'
     ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS = True
-    
+
     def __init__ (self, rd, r, out,
                   conv=None,
                   imgcount=1,
@@ -163,7 +163,7 @@ class exporter (SuspendableThread, Pluggable):
         self.write_inghead()
         for g,ings in self.rd.order_ings(ingredients):
             if g:
-                self.write_grouphead(g)            
+                self.write_grouphead(g)
             for i in ings:
                 amount,unit = self._get_amount_and_unit_(i)
                 if self._grab_attr_(i,'refid'):
@@ -199,7 +199,7 @@ class exporter (SuspendableThread, Pluggable):
                 # this 'if' ought to be unnecessary, but is kept around
                 # for db converting purposes -- e.g. so we can properly
                 # export an old DB
-                if ret and type(ret)!=str: 
+                if ret and type(ret)!=str:
                     ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
             elif attr=='rating' and ret and type(ret)!=str:
                 if ret/2==ret/2.0:
@@ -332,11 +332,11 @@ class exporter (SuspendableThread, Pluggable):
     def handle_italic (self,chunk):
         """Make chunk italic, or the equivalent."""
         return "*"+chunk+"*"
-    
+
     def handle_bold (self,chunk):
         """Make chunk bold, or the equivalent."""
         return chunk.upper()
-    
+
     def handle_underline (self,chunk):
         """Make chunk underlined, or the equivalent of"""
         return "_" + chunk + "_"
@@ -351,7 +351,7 @@ class exporter (SuspendableThread, Pluggable):
         """Mark the end of a group of ingredients.
         """
         pass
-    
+
     @pluggable_method
     def write_ingref (self, amount=1, unit=None,
                       item=None, optional=False,
@@ -378,7 +378,7 @@ class exporter (SuspendableThread, Pluggable):
 class exporter_mult (exporter):
     """A basic exporter class that can handle a multiplied recipe."""
     def __init__ (self, rd, r, out,
-                  conv=None, 
+                  conv=None,
                   change_units=True,
                   mult=1,
                   imgcount=1,
@@ -420,7 +420,7 @@ class exporter_mult (exporter):
 
         Possibly manipulate the attribute we get to hand out export
         something readable.
-        """        
+        """
         if attr=='servings' or attr=='yields' and self.mult:
             ret = getattr(obj,attr)
             if type(ret) in [int,float]:
@@ -458,7 +458,7 @@ class exporter_mult (exporter):
             self.out.write(" %s"%item)
         if optional:
             self.out.write(" (%s)"%_("optional"))
-        self.out.write("\n")        
+        self.out.write("\n")
 
 class ExporterMultirec (SuspendableThread, Pluggable):
 
@@ -475,12 +475,12 @@ class ExporterMultirec (SuspendableThread, Pluggable):
         documents. if one_file, then everything is in one
         file. Otherwise, we treat 'out' as a directory and put
         individual recipe files within it.
-        
+
         @param one_file If True works in one_file mode. For this the class will
                     create the file which is accessible by self.ofi
                     If this is set to False a directory will be created and the
-                    name of the directory will be passed via self.outdir and self.ofi 
-                    
+                    name of the directory will be passed via self.outdir and self.ofi
+
         @param open_files If this parameter is True the files will be created
                     otherwise to create the file is up to the user.
         """
@@ -513,7 +513,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                 # this 'if' ought to be unnecessary, but is kept around
                 # for db converting purposes -- e.g. so we can properly
                 # export an old DB
-                if ret and type(ret)!=str: 
+                if ret and type(ret)!=str:
                     ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
             elif attr=='rating' and ret and type(ret)!=str:
                 if ret/2==ret/2.0:
@@ -538,11 +538,11 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                 if not rec in self.recipes:
                     print 'Appending recipe ',rec.title,'referenced in ',r.title
                     self.recipes.append(rec)
-        
+
     @pluggable_method
     def do_run (self):
         self.rcount = 0
-        self.rlen = len(self.recipes)        
+        self.rlen = len(self.recipes)
         if not self.one_file:
             self.outdir=self.out
             if os.path.exists(self.outdir):
@@ -550,10 +550,10 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                     self.outdir=self.unique_name(self.outdir)
                     os.makedirs(self.outdir)
             else: os.makedirs(self.outdir)
-        
-        oneFileOpenByMyself = self.one_file and type(self.out)==str and self.open_files   
+
+        oneFileOpenByMyself = self.one_file and type(self.out)==str and self.open_files
         multiFileOpenByMyself = not self.one_file and self.open_files
-                    
+
         if oneFileOpenByMyself:
             self.ofi=open(self.out,'wb')
         else: self.ofi = self.out
@@ -627,7 +627,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
         the rec is going to. This makes it trivial, for example, to build
         an index (written to a file specified in write_header."""
         pass
-    
+
     def unique_name (self, filename):
         if os.path.exists(filename):
             n=1

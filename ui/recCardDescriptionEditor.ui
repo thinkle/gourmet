@@ -233,7 +233,7 @@
                             <property name="has_default">True</property>
                             <property name="width_chars">40</property>
                             <accessibility>
-                              
+
                             </accessibility>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="a11y-titleBox1">
@@ -426,7 +426,7 @@
                           <object class="GtkComboBoxEntry" id="categoryBox">
                             <property name="visible">True</property>
                             <accessibility>
-                              
+
                             </accessibility>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="a11y-categoryBox1">
@@ -454,7 +454,7 @@
                                   <object class="StarButton" id="ratingBox">
                                     <property name="visible">True</property>
                                     <accessibility>
-                                      
+
                                     </accessibility>
                                     <child internal-child="accessible">
                                       <object class="AtkObject" id="a11y-ratingBox1">
@@ -490,7 +490,7 @@
                                 <property name="adjustment">adjustment1</property>
                                 <property name="climb_rate">1</property>
                                 <accessibility>
-                                  
+
                                 </accessibility>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="a11y-yieldsBox1">
@@ -508,7 +508,7 @@
                                 <property name="visible">True</property>
                                 <property name="focus_on_click">False</property>
                                 <accessibility>
-                                  
+
                                 </accessibility>
                                 <property name="model">model1</property>
                                 <child>

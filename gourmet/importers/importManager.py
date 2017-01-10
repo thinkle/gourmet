@@ -108,14 +108,14 @@ class ImportManager (plugin_loader.Pluggable):
 
         Begin the import if we can in a separate dialog.
         """
-        filenames = de.select_file(_('Open recipe...'),                                           
+        filenames = de.select_file(_('Open recipe...'),
                                    filters=self.get_filters(),
                                    parent=parent,
                                    select_multiple = True
                                    )
         if not filenames: return
         self.import_filenames(filenames)
-        
+
     def import_filenames (self, filenames):
         """Import list of filenames, filenames, based on our currently
         registered plugins.
@@ -185,7 +185,7 @@ class ImportManager (plugin_loader.Pluggable):
         if hasattr(importer,'post_run'):
             importer.post_run()
         if hasattr(self,'app'):
-            self.app.make_rec_visible()                        
+            self.app.make_rec_visible()
 
     def setup_thread (self, importer, label, connect_follow_up=True):
         tm = get_thread_manager()
@@ -198,7 +198,7 @@ class ImportManager (plugin_loader.Pluggable):
                              self.follow_up,
                              importer
                              )
-        
+
     def get_importer (self, name):
         return self.plugins_by_name[name]
 
@@ -229,7 +229,7 @@ class ImportManager (plugin_loader.Pluggable):
         else:
             import mimetypes
             return mimetypes.guess_extension(content_type)
-        
+
     def get_filters (self):
         all_importable_mimetypes = []
         all_importable_patterns = []
@@ -256,7 +256,7 @@ class ImportManager (plugin_loader.Pluggable):
             self.plugins_by_name[name] = plugin
             self.learn_mimetype_extension_mappings(plugin)
             self.importer_plugins.append(plugin)
-        
+
 
     def learn_mimetype_extension_mappings (self, plugin):
         for mt in plugin.mimetypes:
@@ -279,13 +279,13 @@ class ImportManager (plugin_loader.Pluggable):
                 print 'WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name
         else:
             self.plugins.remove(plugin)
-    
+
 def get_import_manager ():
     try:
         return ImportManager()
     except ImportManager, im:
         return im
-    
+
 if __name__ == '__main__':
     im = ImportManager()
     im.offer_import()

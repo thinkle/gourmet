@@ -22,7 +22,7 @@ class CheckEncoding:
                         'mac_cyrillic','mac_greek','mac_iceland','mac_latin2',
                         'mac_roman','mac_turkish','utf_16','utf_16_be',
                         'utf_16_le','utf_7','utf_8']
-    
+
     def __init__ (self, file, encodings=None):
         if get_prefs().get('utf-16',False):
             self.encodings.extend(['utf_16','utf_16_le','utf_16_be'])
@@ -48,7 +48,7 @@ class CheckEncoding:
             return encs
         else:
             return self.test_all_encodings(self.all_encodings)
-            
+
     def test_all_encodings (self,encodings=None):
         """Test all encodings and return a dictionary of possible encodings."""
         if not encodings: encodings=self.all_encodings
@@ -147,7 +147,7 @@ class EncodingDialog (de.OptionDialog):
         #self.setup_motion_buttons() # doesn't work yet
         self.evb.show_all()
         return self.expander_label,self.evb
-    
+
     def setup_buffers (self):
         self.encoding_buffers={}
         for k,t in self.encodings.items():
@@ -163,9 +163,9 @@ class EncodingDialog (de.OptionDialog):
             offset=ti.get_offset()
         self.tv.set_buffer(self.encoding_buffers[self.ret])
         self.buffer = self.encoding_buffers[self.ret]
-        debug('changed text to encoding %s'%self.ret,0)        
-        
-    def move_to_difference (self, forward=True):        
+        debug('changed text to encoding %s'%self.ret,0)
+
+    def move_to_difference (self, forward=True):
         dkeys = self.diff_lines.keys()
         dkeys.sort()
         if forward:
@@ -228,7 +228,7 @@ class EncodingDialog (de.OptionDialog):
         enc_rest = [e.splitlines() for e in encoded_buffers[1:]]
         for linenum, l in enumerate(enc1.splitlines()):
             other_lines = [len(e)>linenum and e[linenum] for e in enc_rest]
-            # Remove any Falses returned by above 
+            # Remove any Falses returned by above
             other_lines = filter(lambda x: type(x) != bool, other_lines)
             if False in [l==ol for ol in other_lines]:
                 ranges = []
@@ -239,7 +239,7 @@ class EncodingDialog (de.OptionDialog):
                         else:
                             ranges.append([chnum,chnum+1])
                 self.diff_lines[linenum]=ranges
-        
+
 def getEncoding (*args,**kwargs):
     d=EncodingDialog(*args,**kwargs)
     result = d.run()

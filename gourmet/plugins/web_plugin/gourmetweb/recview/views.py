@@ -19,7 +19,7 @@ class MultiplierForm (forms.Form):
 class NoYieldsMultiplierForm (forms.Form):
     multiplier = forms.FloatField(label='x',min_value=0,required=False)
     yields = None
-    
+
 class SearchForm (forms.Form):
     choices = {unicode(_('anywhere')):'anywhere',
                unicode(_('title')):'title',
@@ -42,7 +42,7 @@ class MyShoppingList (gourmet.shopping.ShoppingList):
 
     def get_shopper (self, lst):
         return gourmet.recipeManager.DatabaseShopper(lst, rd)
-    
+
 slist = MyShoppingList()
 
 def list_recs (view, default_search_values={},
@@ -174,7 +174,7 @@ def multiply_rec (request, xhr=None):
                     )
             else:
                 return HttpResponseRedirect('/rec/%s/%s'%(recid,multiplier))
-        
+
 def shop (request, rec_id=None, mult=1):
     mult = float(mult)
     if rec_id is not None:
@@ -183,7 +183,7 @@ def shop (request, rec_id=None, mult=1):
     data,pantry = slist.organize_list(slist.lst)
     #recs = [('foo',4),]
     #data = [('sugar','3 cups'),]
-    #pantry = [('sugar','3 cups'),]    
+    #pantry = [('sugar','3 cups'),]
     return render_to_response('shop.html',{'data':data,'pantry':pantry,
                                            'recs':recs})
 
@@ -205,7 +205,7 @@ def shop_to_pantry (request):
             if item != 'submit':
                 slist.sh.add_to_pantry(item)
         return HttpResponseRedirect('/shop/')
-    
+
 def shop_to_list (request):
     if request.method == 'POST':
         for item in request.POST:

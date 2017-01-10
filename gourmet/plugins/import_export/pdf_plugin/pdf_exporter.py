@@ -31,14 +31,14 @@ DEFAULT_PDF_ARGS = {'bottom_margin': 72, 'pagesize': 'letter', 'right_margin': 7
 # http://two.pairlist.net/pipermail/reportlab-users/2005-February/003695.html
 class MCLine(platypus.Flowable):
     """Line flowable --- draws a line in a flowable"""
-    
+
     def __init__(self,width):
         platypus.Flowable.__init__(self)
         self.width = width
-        
+
     def __repr__(self):
         return "Line(w=%s)" % self.width
-    
+
     def draw(self):
         self.canv.line(0,0,self.width,0)
 
@@ -51,13 +51,13 @@ class Star (platypus.Flowable):
         self.fillcolor, self.strokecolor = fillcolor, strokecolor
         self.size = size
         # normal size is 4 inches
-        
+
     def getSpaceBefore (self):
         return 6 # 6 points
 
     def getSpaceAfter (self):
         return 6 # 6 points
-        
+
     def wrap(self, availW, availH):
         if self.size > availW or self.size > availH:
             if availW > availH:
@@ -74,9 +74,9 @@ class Star (platypus.Flowable):
     def draw_circle (self, x, y, r):
         # Test...
         canvas = self.canv
-        canvas.setLineWidth(0)        
+        canvas.setLineWidth(0)
         canvas.setStrokeColor(colors.grey)
-        canvas.setFillColor(colors.grey)        
+        canvas.setFillColor(colors.grey)
         p = canvas.beginPath()
         p.circle(x,y,r)
         p.close()
@@ -148,7 +148,7 @@ class FiveStars (Star):
         self.filled_color = filled_color; self.unfilled_color = unfilled_color
         self.width = self.height * self.out_of + (self.height * 0.2 * (self.out_of-1)) # 20% padding
         self.ratio = self.height / 12 # 12 point is standard
-        
+
 
     def wrap (self, *args):
         return self.width,self.height
@@ -179,13 +179,13 @@ class FiveStars (Star):
             self.draw_star(points=5,origin=origin,inner_length=r/2,outer_length=r)
             if self.filled - n == 0.5:
                 # If we're a half star...
-                self.fillcolor,self.strokecolor = self.filled_color,self.filled_color                
+                self.fillcolor,self.strokecolor = self.filled_color,self.filled_color
                 self.draw_half_star(points=5,
                                     inner_length=self.height*0.25,
                                     outer_length=self.height*0.5,
                                     origin=(0,0)
                                     )
-            
+
 # Copied from http://two.pairlist.net/pipermail/reportlab-users/2004-April/002917.html
 # A convenience class for bookmarking
 class Bookmark(platypus.Flowable):
@@ -263,7 +263,7 @@ class PdfWriter:
                          'rightIndent',
                          'leading']:
                 setattr(sty,attr,int(perc*getattr(sty,attr)))
-        
+
     def setup_column_frames (self, n):
         COLUMN_SEPARATOR = 0.5 * inch
         x = self.pagesize[0]
@@ -296,7 +296,7 @@ class PdfWriter:
                 )
                              )
         x_spacer = (
-            # Extra space = 
+            # Extra space =
             fittable_x * # Number of cards times
             ((drawable_x/fittable_x) # space per card
              - card_size[0] ) # - space occupied by card
@@ -324,7 +324,7 @@ class PdfWriter:
                                    showBoundary=1)
                     )
         return frames
-    
+
     def make_paragraph (self, txt, style=None, attributes="",keep_with_next=False):
         if attributes:
             xmltxt = '<para %s>%s</para>'%(attributes,txt)
@@ -376,7 +376,7 @@ class PdfWriter:
 
         WARNING: If this is not followed by a call to our write_paragraph(...keep_with_next=False),
         the header won't necessarily be written.
-        """        
+        """
         self.write_paragraph(
             txt,
             style=self.styleSheet['Heading2'],
@@ -389,7 +389,7 @@ class PdfWriter:
         except:
             print 'Trouble building',t[:20]
             raise
-        
+
 class PdfExporter (exporter.exporter_mult, PdfWriter):
 
     def __init__ (self, rd, r, out,
@@ -438,16 +438,16 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             #    self.master_txt.append(platypus.KeepTogether(self.txt))
             #else:
             if self.master_txt:
-                self.master_txt.append(platypus.FrameBreak())            
+                self.master_txt.append(platypus.FrameBreak())
             self.master_txt.extend(self.txt)
             #self.master_txt.extend(self.txt)
 
     def handle_italic (self, chunk):
         return '<i>' + chunk + '</i>'
-    
+
     def handle_bold (self, chunk):
         return '<b>' + chunk + '</b>'
-    
+
     def handle_underline (self, chunk):
         return '<u>' + chunk + '</u>'
 
@@ -455,7 +455,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         # Platypus assumes image size is in points -- this appears to
         # be off by the amount below.
         if not proportion: proportion = inch/100 # we want 100 dots per image
-        image.drawHeight = image.drawHeight*proportion        
+        image.drawHeight = image.drawHeight*proportion
         image.drawWidth = image.drawWidth*proportion
 
     def write_image (self, data):
@@ -476,9 +476,9 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
 
     def write_attr_head (self):
         # just move .txt aside through the attrs -- this way we can
-        # use our regular methods to keep adding attribute elements 
+        # use our regular methods to keep adding attribute elements
         self.attributes = []
-        
+
     def write_attr_foot (self):
         # If we have 3 or fewer attributes and no images, we don't
         # need a table
@@ -522,7 +522,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             ('LEFTPADDING',(0,0),(0,-1),0),
             # for debugging
             #('INNERGRID',(0,0),(-1,-1),.25,colors.red),
-            #('BOX',(0,0),(-1,-1),.25,colors.red),            
+            #('BOX',(0,0),(-1,-1),.25,colors.red),
             ]
                                 )
             )
@@ -552,12 +552,12 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             ('VALIGN',(0,0),(0,0),'TOP'),
             # for debugging
             #('INNERGRID',(0,0),(-1,-1),.25,colors.black),
-            #('BOX',(0,0),(-1,-1),.25,colors.black),            
+            #('BOX',(0,0),(-1,-1),.25,colors.black),
              ]
                                 )
             )
         return t
-    
+
     def write_attr (self, label, text):
         attr = gglobals.NAME_TO_ATTR.get(label,label)
         if attr=='title':
@@ -640,7 +640,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
             txt = ""
             for blob in [amount,unit,item,(optional and _('optional') or '')]:
                 if blob == item:
-                    blob = '<link href="r%s">'%refid + blob + '</link>'  
+                    blob = '<link href="r%s">'%refid + blob + '</link>'
                 elif not blob:
                     continue
                 if txt: txt += " %s"%blob
@@ -713,7 +713,7 @@ PDF_PREF_DEFAULT={
     'left_margin':1.0*inch,
     'right_margin':1.0*inch,
     'top_margin':1.0*inch,
-    'bottom_margin':1.0*inch,    
+    'bottom_margin':1.0*inch,
     }
 
 class CustomUnitOption (optionTable.CustomOption):
@@ -767,7 +767,7 @@ class CustomUnitOption (optionTable.CustomOption):
 
     def set_unit (self, unit):
         cb_extras.cb_set_active_text(self.unit_combo,unit)
-        
+
     def unit_changed_cb (self, widget):
         new_unit = self.units[self.unit_combo.get_active_text()]
         get_prefs()['default_margin_unit'] = self.unit_combo.get_active_text()
@@ -796,10 +796,10 @@ class CustomUnitOption (optionTable.CustomOption):
             return ceiling
         else:
             return floor
-        
+
     def get_value (self):
         return self.last_unit * self.value_adjustment.get_value()
-        
+
     def set_value (self, value):
         self.value_adjustment.set_value(value/self.last_unit)
         if not self.__quiet__:
@@ -836,10 +836,10 @@ class PdfPrefGetter:
         _('Index Cards (4x6)'):('index_cards',(6*inch,4*inch)),
         _('Index Cards (A7)'):('index_cards',(105*mm,74*mm)),
         }
-    
+
     page_modes = {
         _('Portrait'):'portrait',
-        _('Landscape'):'landscape',      
+        _('Landscape'):'landscape',
         }
 
     OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = range(8)
@@ -851,7 +851,7 @@ class PdfPrefGetter:
         self.size_strings.sort()
         for n in range(2,5):
             self.layouts[ngettext('%s Column','%s Columns',n)%n]=('column',n)
-        self.make_reverse_dicts()        
+        self.make_reverse_dicts()
         self.layout_strings = self.layouts.keys()
         self.layout_strings.sort()
         margin_widgets = [
@@ -863,7 +863,7 @@ class PdfPrefGetter:
             for mm in margin_widgets:
                 if mm is not m:
                     m.sync_to_other_cuo(mm)
-            
+
         self.opts = [
             [_('Paper _Size')+':',(defaults.get('page_size',PDF_PREF_DEFAULT['page_size']),
                                   self.size_strings)],
@@ -877,8 +877,8 @@ class PdfPrefGetter:
             [_('Top Margin')+':',margin_widgets[2]],
             [_('Bottom Margin')+':',margin_widgets[3]],
             ]
-        
-        self.page_drawer = PdfPageDrawer(yalign=0.0)    
+
+        self.page_drawer = PdfPageDrawer(yalign=0.0)
         self.in_ccb = False
         self.setup_widgets()
         self.table.connect('changed',self.change_cb)
@@ -958,7 +958,7 @@ class PdfPrefGetter:
                     cb.remove_text(pos)
                 self.index_card_layouts_to_put_back.reverse()
             elif pagesize not in self.INDEX_CARDS and last_pagesize in self.INDEX_CARDS:
-                changed = True                
+                changed = True
                 option_table.set_option(self.OPT_PO,_('Portrait'))
                 for o in [self.OPT_LM,self.OPT_RM,self.OPT_BM,self.OPT_TM]:
                     option_table.set_option(o,1)
@@ -968,7 +968,7 @@ class PdfPrefGetter:
                 if hasattr(self,'index_card_layouts_to_put_back'):
                     for pos,txt in self.index_card_layouts_to_put_back:
                         cb.insert_text(pos,txt)
-    
+
         if (args['mode'][0] != self.page_drawer.last_kwargs.get('mode',('column',1))[0]
             or
             (args['mode'][0]=='index_cards'
@@ -993,7 +993,7 @@ class PdfPrefGetter:
                     option_table.set_option(self.OPT_PO,_('Portrait'))
             else:
                 # Otherwise it's columns...
-                option_table.set_option(self.OPT_FS,10) 
+                option_table.set_option(self.OPT_FS,10)
                 for o in [self.OPT_LM,self.OPT_RM,self.OPT_BM,self.OPT_TM]:
                     option_table.set_option(o,1)
         if changed:
@@ -1023,7 +1023,7 @@ def get_pdf_prefs (defaults=None):
     if defaults: print 'WARNING: ignoring provided defaults and using prefs system instead'
     pdf_pref_getter = PdfPrefGetter()
     return pdf_pref_getter.run()
-            
+
 if __name__ == '__main__':
     w = gtk.Window()
     cuo = CustomUnitOption(44)
@@ -1041,26 +1041,26 @@ if __name__ == '__main__':
     w.connect('delete_event',gtk.main_quit)
     gtk.main()
     raise Exception("Hell")
-    
+
     from tempfile import tempdir
     import os.path
     #opts = get_pdf_prefs(); print opts
     test_3_x_5()
-    
+
     #star_file = file(os.path.join(tempdir,'star.pdf'),'wb')
     #sw = PdfWriter()
     #sw.setup_document(star_file,mode='two_column')
     #for n in range(6,72,2):
     #    sw.write_paragraph("This is some text with a %s pt star"%n)
     #    sw.txt.append(FiveStars(n,filled=3.5))
-    #    
+    #
     #sw.close()
     #star_file.close()
     #import gnome
     #gnome.program_init('1.0','Gourmet PDF Exporter Test')
     #gglobals.launch_url('file:/os.path.join(tempdir,/star.pdf')
     #raise Exception("I don')t want to go any further")
-    
+
     if os.name == 'nt':
         base = 'C:\\grm\grm'
     else:
@@ -1159,4 +1159,4 @@ if __name__ == '__main__':
     #ppg = PdfPrefGetter()
     #print ppg.run()
     #print 'END TEST'
-    
+

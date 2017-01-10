@@ -121,7 +121,7 @@
   to bring you better results faster.
 * Many, many more bugfixes along the way.
 
- 
+
 ==== Version 0.9.0.3 changes since 0.9.0.1 ====
 * Fix email export
 * Improve recipe card interface.
@@ -202,7 +202,7 @@
   editor
 
 ==== Version 0.8.5.9 Changes since 0.8.5.8 ====
-* Fixed nasty segfault when deleting unedited recipe 
+* Fixed nasty segfault when deleting unedited recipe
 * Fixed problem with markup showing up in some dialogs.
 
 ==== Version 0.8.5.8 Changes since 0.8.5.7 ====
@@ -487,7 +487,7 @@ Import/Export
 ==== Version 0.6.1 Changes from 0.6.0 ====
 * Made sure HTML validates (fixed a number of small HTML bugs)
 * Added <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-  tag to specify correct encoding on HTML, following advice from 
+  tag to specify correct encoding on HTML, following advice from
   Fábio Mendes <niels_bohr@uol.com.br>
 * Fixed dialog_extras.py to properly give an "Okay" button
   when creating a file or folder and an "Open" button when
@@ -512,9 +512,9 @@ Import/Export
 * Added Key Manager interface to facilitate fixing keys en masse
   and pave road for possibly adding a nutritional information
   database.
-  
+
 * Simplified main App interface by removing import/export buttons
-  (these still 
+  (these still
 
 ==== Version 0.5.2 Changes from 0.5.1 ====
 

@@ -46,7 +46,7 @@ class html_exporter (exporter_mult):
                                change_units=change_units,
                                do_markup=True,
                                use_ml=True)
-        
+
     def htmlify (self, text):
         t=text.strip()
         #t=xml.sax.saxutils.escape(t)
@@ -77,7 +77,7 @@ class html_exporter (exporter_mult):
             self.out.write(HTML_HEADER_CLOSE)
             self.out.write('<body>')
         self.out.write('<div class="recipe" itemscope itemtype="http://schema.org/Recipe">')
-        
+
     def write_image (self, image):
         imgout = os.path.join(self.imagedir_absolute,"%s.jpg"%self.imgcount)
         while os.path.isfile(imgout):
@@ -97,7 +97,7 @@ class html_exporter (exporter_mult):
                                                                   )
                        )
         self.images.append(imgout)
-        
+
     def write_inghead (self):
         self.out.write('<div class="ing"><h3>%s</h3><ul class="ing">'%_('Ingredients'))
 
@@ -146,16 +146,16 @@ class html_exporter (exporter_mult):
                 self.out.write('<p class="%s"><span class="label">%s:</span> <span itemprop="%s">%s</span></p>\n' % (attr, label.capitalize(), itemprop, xml.sax.saxutils.escape(text)))
             else:
                 self.out.write("<p class='%s'><span class='label'>%s:</span> %s</p>\n"%(attr, label.capitalize(), xml.sax.saxutils.escape(text)))
-        
+
     def write_attr_foot (self):
         self.out.write("</div>")
-    
+
     def write_grouphead (self, name):
         self.out.write("<li class='inggroup'>%s:<ul class='ing'>"%name)
 
     def write_groupfoot (self):
         self.out.write("</ul></li>")
-                            
+
     def write_ingref (self, amount, unit, item, refid, optional):
         link=False
         if self.link_generator:
@@ -179,7 +179,7 @@ class html_exporter (exporter_mult):
         if optional:
             self.out.write("(%s)"%_('optional'))
         self.out.write("</li>\n")
-    
+
     def write_ingfoot (self):
         self.out.write('</ul>\n</div>\n')
 
@@ -235,7 +235,7 @@ class website_exporter (ExporterMultirec):
                                   ext=self.ext,
                                   exporter=html_exporter,
                                   exporter_kwargs=self.exportargs)
-        
+
     def write_header (self):
         self.indexfn = os.path.join(self.outdir,'index%s%s'%(os.path.extsep,self.ext))
         self.indexf = open(self.indexfn,'w')
@@ -255,12 +255,12 @@ class website_exporter (ExporterMultirec):
         self.indexf.write('<div class="index"><table class="index">\n<tr>')
         for r in self.index_rows:
             self.indexf.write('<th class="%s">%s</th>'%(r,gglobals.REC_ATTR_DIC[r]))
-        self.indexf.write('</tr>\n')    
+        self.indexf.write('</tr>\n')
 
     def recipe_hook (self, rec, filename, exporter):
         """Add index entry"""
         # we link from the first row
-        
+
         self.indexf.write(
             """<tr><td class="%s">
                      <a href="%s">%s</a>
@@ -301,4 +301,4 @@ def linkify (filename):
     ret = filename.replace('\\','/')
     ret = filename.replace(' ','%20')
     return xml.sax.saxutils.escape(filename)
-    
+

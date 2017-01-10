@@ -565,7 +565,7 @@ def guess_plurals (s):
     ret = [s+'s',s+'es']
     if s[-1]=='f': ret.append(s[0:-1]+'ves')
     return ret
-    
+
 IGNORE = ["and","with","of","for","cold","warm","finely","thinly","roughly","coarsely"]
 
 NUMBERS = {

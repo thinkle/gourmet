@@ -36,7 +36,7 @@ class Importer (SuspendableThread):
     for importers to use. Basically, the importer builds up a dictionary of properties inside of
     self.rec and then commits that dictionary with commit_rec(). Similarly, ingredients are built
     as self.ing and then committed with commit_ing()."""
-    
+
     def __init__ (self,
                   rd = None, # OBSOLETE
                   total=0,
@@ -98,12 +98,12 @@ class Importer (SuspendableThread):
         for i in self.added_ings:
             for h in self.rd_orig_ing_hooks:
                 h(i)
-        #debug('Running rec hooks',0)  
+        #debug('Running rec hooks',0)
         #for r in self._added_recs:
         #    for h in self.rd_orig_hooks:
         #        h(r)
         self.rd.add_ing_hooks = self.rd_orig_ing_hooks
-        #self.rd.add_hooks = self.rd_orig_hooks        
+        #self.rd.add_hooks = self.rd_orig_hooks
         #print_timer_info()
 
     def _run_cleanup_ (self):
@@ -204,7 +204,7 @@ class Importer (SuspendableThread):
         # A little strange, this is, but for UI reasons, we want to
         # keep track of any ratings that are not integers so that we
         # can ask the user how to convert them when we're all done
-        # with importing.              
+        # with importing.
         remembered_rating = None
         if self.rec.has_key('rating') and type(self.rec['rating']) not in [int,float]:
             if string_to_rating(self.rec['rating']):
@@ -228,10 +228,10 @@ class Importer (SuspendableThread):
                     print "ODD: we got no image from ",self.rec['image'][:100]
                     print 'Deleting "image"'
                     del self.rec['image']
-                    del self.rec['thumb']                    
+                    del self.rec['thumb']
         ## if we have an ID, we need to remember it for the converter
         if self.rec.has_key('id'):
-            id_to_convert = self.rec['id']            
+            id_to_convert = self.rec['id']
         else:
             id_to_convert = None
         if id_to_convert:
@@ -267,7 +267,7 @@ class Importer (SuspendableThread):
                 float(self.count)/self.total,
                 _("Imported %s of %s recipes.")%(self.count,self.total)
                 )
-                      
+
     def parse_yields (self, str):
         '''Parse number and field.'''
         m = re.match("([0-9/. ]+)",str)
@@ -296,7 +296,7 @@ class Importer (SuspendableThread):
                 except:
                     return convert.frac_to_float(num)
         timeaction.end()
-            
+
     def start_ing (self, **kwargs):
         timeaction = TimeAction('importer.start_ing',10)
         #gt.gtk_update()
@@ -357,7 +357,7 @@ class Importer (SuspendableThread):
         timeaction.end()
 
     commit_ing = finish_ing
-        
+
     def add_amt (self, amount):
         timeaction = TimeAction('importer.add_amt',10)
         """We should NEVER get non-numeric amounts.
@@ -376,12 +376,12 @@ class Importer (SuspendableThread):
         timeaction.end()
 
     def add_item (self, item):
-        timeaction = TimeAction('importer.add_item',10)        
+        timeaction = TimeAction('importer.add_item',10)
         itm=str(item.strip())
         itm=itm.replace("\n"," ")
         self.ing['item']=itm
         timeaction.end()
-        
+
     def add_unit (self, unit):
         timeaction = TimeAction('importer.add_unit',10)
         self.ing['unit']=str(unit.strip())
@@ -427,7 +427,7 @@ def parse_range (number_string):
         debug('WARNING: String %s does not appear to be a normal range.'%number_string,0)
         retval = map(convert.frac_to_float,nums)
         # filter any non-numbers before we take 1 and 3
-        retval = filter(lambda x: x, retval)        
+        retval = filter(lambda x: x, retval)
         if len(retval) > 2:
             debug('Parsing range as %s-%s'%(retval[0],retval[-1]),0)
             retval = retval[0],retval[-1]
@@ -436,7 +436,7 @@ def parse_range (number_string):
     if len(retval)==2: return tuple(retval)
     elif len(retval)==1: return tuple(retval+[None])
     else: return (None,None)
-        
+
 class Tester:
     def __init__ (self, regexp):
         self.regexp = regexp
@@ -460,7 +460,7 @@ class Tester:
             self.ofi.close()
         else:
             self.ofi.seek(0)
-            
+
 class RatingConverter:
 
     """A class to handle converting ratings from strings to integers.
@@ -469,7 +469,7 @@ class RatingConverter:
     the form of 'excellent' or some such, and we'll want to let our
     user convert those to stars as they see fit.
     """
-    
+
     conversions = {'excellent':10,
                    'great':8,
                    'good':6,
@@ -483,7 +483,7 @@ class RatingConverter:
                    _('okay').lower():4,
                    _('poor').lower():2,
                    }
-    
+
     def __init__ (self):
         self.to_convert = {}
         self.got_conversions = False
@@ -534,7 +534,7 @@ class RatingConverterTest (unittest.TestCase):
         class FakeDB:
 
             recs = dict([(n,{}) for n in range(20)])
-            
+
             def get_rec (self, n): return n
             def modify_rec (self, n, d):
                 for attr,val in d.items(): self.recs[n][attr]=val

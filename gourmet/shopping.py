@@ -14,7 +14,7 @@ class Shopper:
         ## First, we create a dictionary from our list (keyed by ingredient)
         ## each value in the dict. is a list of values. We'll try to add these
         ## as best as we can.
-        self.dic = {}        
+        self.dic = {}
         self.default_pantry=[_('flour, all purpose'),_('sugar'),_('salt'),
                              _('black pepper, ground'),
                              _('ice'), _('water'),
@@ -42,7 +42,7 @@ class Shopper:
         for ing,amts in self.dic.items():
             self.dic[ing]=self.combine_ingredient(ing,amts)
         for ing,amts in self.mypantry.items():
-            self.mypantry[ing]=self.combine_ingredient(ing,amts)        
+            self.mypantry[ing]=self.combine_ingredient(ing,amts)
         self.init_orgdic()
         self.init_ingorder_dic()
         self.init_catorder_dic()
@@ -68,7 +68,7 @@ class Shopper:
                         # we're adding ranges -- we'll force both
                         # our amounts to look like ranges to simplify the addition
                         if type(amt) != tuple :
-                            amt=(amt,amt) 
+                            amt=(amt,amt)
                         if type(a) != tuple :
                             a=(a,a)
                         #print 'amt:',amt,' unit:',unit,'a:',a,'u:',u
@@ -105,7 +105,7 @@ class Shopper:
                             add=self.cnv.adjust_unit(*add,**{'favor_current_unit':False})
                     # add_reasonably returns a nice a,u pair if successful
                     # Otherwise, it return False/None
-                    if add: 
+                    if add:
                         itms.pop(ind) # out with the old...
                         itms.append(add) # in with the new
                         flag = 1
@@ -221,15 +221,15 @@ class Shopper:
         self.orgdic[itm]=cat
         #for k,v in self.orgdic.items():
             #print "%s:%s, "%(k,v)
-            
+
     def add_to_pantry (self, key):
         self.pantry[key]=True
 
     def remove_from_pantry (self, key):
         self.pantry[key]=False
-    
+
     def init_orgdic (self):
-        """This allows those subclassing us to do something fancy... 
+        """This allows those subclassing us to do something fancy...
         as is, we just use a default dictionary."""
         self.default_orgdic = setup_default_orgdic()
         self.orgdic = self.default_orgdic
@@ -244,7 +244,7 @@ class Shopper:
         self.pantry={}
         for i in self.default_pantry:
             self.pantry[i]=True
-            
+
     def get_orgcats (self):
         """Return a list of categories being used for our Shopper"""
         self.orgcats=[]
@@ -270,7 +270,7 @@ class ShoppingList:
         self.prefs = prefs.get_prefs()
 
     def get_shopper (self, lst):
-        return Shopper(lst) 
+        return Shopper(lst)
 
     def grabIngsFromRecs (self, recs, start=[]):
         debug("grabIngsFromRecs (self, recs):",5)
@@ -312,8 +312,8 @@ class ShoppingList:
                         # we ignore our ingredient (don't add it)
                         continue
             if self.rd.get_amount(i):
-                amount=self.rd.get_amount(i,mult=mult)                
-            else: amount=None            
+                amount=self.rd.get_amount(i,mult=mult)
+            else: amount=None
             if refid:
                 ## a reference tells us to get another recipe
                 ## entirely.  it has two parts: i.item (regular name),
@@ -360,10 +360,10 @@ class ShoppingList:
 
         Alternatively, we return a boolean value, in which case that is
         the value for all ingredients.
-        
+
         The dictionary will tell us which ingredients to add to our shopping list.
         We look at prefs to see if 'shop_always_add_optional' is set, in which case
-        we don't ask our user."""    
+        we don't ask our user."""
         return True
 
     # Saving and printing
@@ -412,7 +412,7 @@ class ShoppingList:
 
     def reset (self):
         self.grabIngsFromRecs(self.recs.values(),self.extras)
-        
+
 
 class ShopperTestCase (unittest.TestCase):
     def testAddition (self):

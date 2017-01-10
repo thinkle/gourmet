@@ -19,7 +19,7 @@ class RecHandler (xml.sax.ContentHandler, importer.Importer):
         self.resume = parent_thread.resume
         self.suspend = parent_thread.suspend
         self.emit = parent_thread.emit
-        
+
     def characters (self, ch):
         self.elbuf += ch
 
@@ -28,7 +28,7 @@ class Converter (importer.Importer):
                   conv=None, name='XML Importer'):
 
         """Initialize an XML converter which will use recHandler to parse data.
-        
+
         filename - our file to parse (or the name of the file).
 
         rd - our recdata object.
@@ -54,7 +54,7 @@ class Converter (importer.Importer):
         importer.Importer.__init__(self,name=name)
 
     def do_run (self):
-        # count the recipes in the file        
+        # count the recipes in the file
         t = TimeAction("rxml_to_metakit.run counting lines",0)
         if isinstance(self.fn, basestring):
             f=file(self.fn,'rb')
@@ -72,5 +72,5 @@ class Converter (importer.Importer):
         self.added_recs = self.rh.added_recs
         importer.Importer._run_cleanup_(self.rh)
 
-        
-        
+
+

@@ -20,7 +20,7 @@
 <!ELEMENT ingredient-list ( ingredient | ingref | inggroup)* >
 
 <!ELEMENT ingref ( #PCDATA ) >
-<!ATTLIST ingref amount CDATA #REQUIRED 
+<!ATTLIST ingref amount CDATA #REQUIRED
           ingref refid NMTOKEN #REQUIRED >
 
 <!ELEMENT instructions ( #PCDATA ) >

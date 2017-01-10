@@ -36,7 +36,7 @@ class StarGenerator:
     """A convenient class that will give us a gtk.Pixbuf representing stars
     for any number.
 
-    set_image and unset_image must have the same width!""" 
+    set_image and unset_image must have the same width!"""
 
     def __init__ (self,
                     set_image=os.path.join(gglobals.imagedir,'gold_star.png'),
@@ -102,7 +102,7 @@ class StarGenerator:
         i.save(fi)
         self.image_files[(n,max,ext)]=fi
         return fi
-        
+
     def build_image (self, n, max=10):
         """Build an image representing n/max stars."""
         img=Image.new('RGBA',
@@ -144,7 +144,7 @@ class StarGenerator:
             (is_rgba and 4 or 3) * image.size[0] #rowstride
             )
         return pb
-    
+
 star_generator = StarGenerator()
 
 # StarImage is a class that allows easy setting of an image from a value.
@@ -170,7 +170,7 @@ class StarImage (gtk.Image):
         self.stars = star_gen
         self.upper = upper
         self.set_value(value)
-        
+
     def set_value (self, value):
 
         """Set value. Silently floor value at 0 and cap it at self.upper"""
@@ -183,7 +183,7 @@ class StarImage (gtk.Image):
         self.value=value
 
     def get_value (self): return self.value
-        
+
     def set_upper (self, value):
         """Change the upper number of stars allowed.
 
@@ -193,7 +193,7 @@ class StarImage (gtk.Image):
 
     def set_text (self, value): self.set_value(int(value))
     def get_text (self): return "%s"%self.get_value()
-        
+
 # Next is a Button type class that allows the user to set the value
 # via the mouse or the keyboard
 
@@ -242,7 +242,7 @@ class StarButton (gtk.Button):
         self.image = StarImage(star_gen, value=start_value, upper=upper)
         self.add(self.image)
         self.image.show()
-        # set up convenience methods        
+        # set up convenience methods
         self.get_value = self.image.get_value
         self.set_upper = self.image.set_upper
 
@@ -280,10 +280,10 @@ class StarButton (gtk.Button):
             # if we're clicking on a set icon, we want it to go away
             self.set_value(star-1)
         else:
-            # otherwise we want it to be filled            
+            # otherwise we want it to be filled
             self.set_value(star)
         return True
-        
+
     def keypress_cb (self, widget, event):
         name=gtk.gdk.keyval_name(event.keyval)
         if name in PLUS_ONE_KEYS:
@@ -348,7 +348,7 @@ class TreeWithStarMaker:
         # setup our column
         self.setup_column()
         self.setup_callbacks()
-        
+
     def connect_change_handler (self, handler): self.handlers.append(handler)
 
     def call_handlers (self, *params):
@@ -356,7 +356,7 @@ class TreeWithStarMaker:
             if handler(*params): break
 
     def setup_column (self):
-        self.cellrenderer = gtk.CellRendererPixbuf()        
+        self.cellrenderer = gtk.CellRendererPixbuf()
         tot_cols=self.tree.insert_column_with_data_func(
             self.col_position,
             self.col_title,
@@ -371,7 +371,7 @@ class TreeWithStarMaker:
         col.set_sort_column_id(self.data_col)
         for p,v in self.properties.items():
             col.set_property(p,v)
-        self.col = col        
+        self.col = col
 
     def setup_callbacks (self):
         self.tree.connect('button-press-event',self.tree_click_callback)
@@ -431,8 +431,8 @@ class TreeWithStarMaker:
                 #mod.set_value(itr,self.col_position,int(name))
                 self.call_handlers(int(name)*2, mod, itr, self.data_col)
                 return True
-        
-    
+
+
 # Next is a proof of concept making this work in a TreeView
 
 class Tree(gtk.TreeView):
@@ -458,7 +458,7 @@ class Tree(gtk.TreeView):
 
     def rating_change_handler (self, value, model, treeiter, colnum):
         model.set_value(treeiter,colnum,value)
-        
+
 if __name__ == '__main__':
     vb = gtk.VBox()
     s = StarGenerator()
@@ -477,6 +477,6 @@ if __name__ == '__main__':
     w.connect('delete-event',lambda *args: w.hide() or gtk.main_quit())
     w.show_all()
     gtk.main()
-        
-            
-    
+
+
+

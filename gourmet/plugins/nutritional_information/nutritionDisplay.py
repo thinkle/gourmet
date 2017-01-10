@@ -37,8 +37,8 @@ class NutritionModel (gtk.TreeStore):
         for lname,sname,typ in parser_data.NUTRITION_FIELDS:
             if sname != self.TITLE_FIELD:
                 self.append(papa,[lname,"%s"%getattr(row,sname)])
-        
-        
+
+
 class SimpleNutritionalDisplay:
     def __init__ (self,nutrition_data):
         self.w = gtk.Window()
@@ -96,9 +96,9 @@ class SimpleIngredientCalculator (de.mDialog):
         self.itmBox = gtk.Entry()
         self.nutBox = gtk.ComboBox()
         self.nutBox.pack_start(cell, True)
-        self.nutBox.add_attribute(cell,'text',0)        
+        self.nutBox.add_attribute(cell,'text',0)
         self.nutBox.connect('changed',self.nutBoxCB)
-        self.unitBox.connect('changed',self.nutBoxCB)        
+        self.unitBox.connect('changed',self.nutBoxCB)
         self.refreshButton = gtk.Button('Update Nutritional Items')
         self.refreshButton.connect('clicked',self.updateCombo)
         self.hbb.add(self.amtBox)
@@ -112,12 +112,12 @@ class SimpleIngredientCalculator (de.mDialog):
 
     def nutBoxCB (self, *args):
         txt=cb.cb_get_active_text(self.nutBox)
-        row=self.db.nutrition_table[self.db.nutrition_table.find({'desc':txt})]        
+        row=self.db.nutrition_table[self.db.nutrition_table.find({'desc':txt})]
         conversion =  self.nd.get_conversion_for_amt(
             float(self.amtBox.get_value()),
             cb.cb_get_active_text(self.unitBox),
             self.itmBox.get_text(),
-            row)        
+            row)
         myfields = filter(lambda x: x[1] in self.fields, parser_data.NUTRITION_FIELDS)
         lab = ""
         for ln,f,typ in myfields:
@@ -129,14 +129,14 @@ class SimpleIngredientCalculator (de.mDialog):
                     amt = "%s/%s"%(amt,_('100 grams'))
             lab += "\n%s: %s"%(ln,amt)
         self.nutLabel.set_text(lab)
-        
+
     def updateCombo (self, *args):
         self.txt = self.itmBox.get_text()
         indexvw = self.db.nutrition_table.filter(self.search_func)
         nvw = self.db.nutrition_table.remapwith(indexvw)
         mod = gtk.ListStore(str)
         map(lambda r: mod.append([r.desc]), nvw)
-        self.nutBox.set_model(mod)        
+        self.nutBox.set_model(mod)
 
     def search_func (self, row):
         desc = row.desc.lower()

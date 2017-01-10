@@ -57,7 +57,7 @@ def get_string_from_pixbuf (pb):
     pb.save(fn,'jpeg')
     s = file(fn,'r').read()
     return s
-    
+
 def get_pixbuf_from_jpg (raw):
     """Given raw data of a jpeg file, we return a gtk.gdk.Pixbuf
     """
@@ -81,4 +81,4 @@ def write_image_tempfile (raw, name=None, ext=".jpg"):
     o.write(raw)
     o.close()
     return fn
-    
+

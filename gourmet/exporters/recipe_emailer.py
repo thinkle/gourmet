@@ -32,13 +32,13 @@ class Emailer:
         if self.body:
             self.url_append('body',self.body)
         for a in self.attachments:
-            self.url_append('attachment',a)              
+            self.url_append('attachment',a)
         debug('launching URL %s'%self.url,0)
         gglobals.launch_url(self.url)
 
     def url_append (self, attr, value):
         self.url += "%s%s=%s"%(self.connector(),attr,urllib.quote(value.encode('utf-8','replace')))
-                                                                   
+
     def connector (self):
         retval = self.connector_string
         self.connector_string = "&"
@@ -109,7 +109,7 @@ class RecipeEmailer (Emailer):
         if emailaddress: self.emailaddress=emailaddress
         self.write_email_text()
         self.send_email()
-            
+
 class EmailerDialog (RecipeEmailer):
     def __init__ (self, recipes, rd, prefs, conv=None):
         RecipeEmailer.__init__(self, recipes, rd, conv=conv, change_units=prefs.get('readableUnits',True))
@@ -162,7 +162,7 @@ class EmailerDialog (RecipeEmailer):
                             )
         else:
             self.send_email()
-            
+
 
 if __name__ == '__main__':
     import gourmet.recipeManager
@@ -176,4 +176,4 @@ if __name__ == '__main__':
     #e.write_email_pdf()
     #e.write_email_html()
     #e.send_email()
-    
+

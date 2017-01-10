@@ -159,9 +159,9 @@ VOL_TO_MASS_TABLE = {
     ("cl", "kg"): 0.01,
     ("cl", "g") : 10,
     ("dl", "kg") : 0.1,
-    ("dl", "g") : 100,    
+    ("dl", "g") : 100,
     ("l", "kg") : 1}
-    
+
 
 
 # These functions are rather important! Our goal is simply to

@@ -13,7 +13,7 @@ class UnitPrefsDialog:
     def __init__ (self, reccards):
         self.reccards = reccards
         self.prefs = get_prefs()
-        
+
     def run (self):
         old_pref = self.prefs.get('preferred_unit_groups',[])
         option = de.getRadio(label=_("Automatically adjust units"),

@@ -38,12 +38,12 @@ class ConvGui:
         #self.unit2Model = self.unitModel.filter_new()
         self.unit1ComboBox.set_model(self.unitModel)
         self.unit1ComboBox.set_wrap_width(3)
-        self.unit2ComboBox.set_wrap_width(3)        
+        self.unit2ComboBox.set_wrap_width(3)
         #self.unit2Model.set_visible_func(self.unit_filter)
         #self.unit2ComboBox.set_model(self.unit2Model)
         self.unit2ComboBox.set_model(self.unitModel)
         for combobox in [self.unit1ComboBox, self.unit2ComboBox]:
-            cell = gtk.CellRendererText()            
+            cell = gtk.CellRendererText()
             combobox.pack_start(cell, True)
             combobox.add_attribute(cell, 'text', 1)
             setup_typeahead(combobox)
@@ -122,13 +122,13 @@ class ConvGui:
         self.resultLabel.set_line_wrap(True)
         self.messageLabel.set_text("<i>%s</i>"%message)
         self.messageLabel.set_use_markup(True)
-        
-        
+
+
 
     def message (self, msg):
         id=self.statusbar.get_context_id('main')
         self.statusbar.push(id,msg)
-        
+
     def unit_filter (self, mod, iter):
         u = mod.get_value(iter,0)
         if not self.possible_conversions:
@@ -145,7 +145,7 @@ class ConvGui:
         if density <= 0 or not self.expander1.get_expanded(): density = None
         u1 = cb_get_active_text(self.unit1ComboBox)
         self.possible_conversions = self.conv.get_all_conversions(u1,density=density)
-        
+
     def density_toggled (self, *args):
         sens =  self.useDensityCheckButton.get_active()
         self.densitySpinButton.set_sensitive(sens)
@@ -180,4 +180,4 @@ if __name__ == '__main__':
     uibase="/home/tom/Projects/gourmet/glade/"
     cg=ConvGui()
     gtk.main()
-    
+

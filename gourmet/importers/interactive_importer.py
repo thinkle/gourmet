@@ -30,7 +30,7 @@ for attr in gglobals.DEFAULT_ATTR_ORDER:
             # a bit of a hack -- we want to make 'yield unit' a button
             DEFAULT_TAGS.append('yield_unit')
             DEFAULT_TAGS.append('servings')
-            
+
 DEFAULT_TAGS.extend(gglobals.DEFAULT_TEXT_ATTR_ORDER)
 
 DEFAULT_TAGS.extend(['ingredients','inggroup','ignore'])
@@ -112,12 +112,12 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         self.setup_action_area()
         self.markup_marks = {}; self.markup_partners = {}
         self.anchors = []
-        self.midno = 0 # an ID counter for markup marks we insert 
+        self.midno = 0 # an ID counter for markup marks we insert
         self.labelled = []
         self.label_counts = {}
         self.modal = modal # If we're in an embedded gtk mainloop...
         ConvenientImporter.__init__(self)
-        
+
     def setup_window (self):
         # set our parent...
         from gourmet.threadManager import get_thread_manager_gui
@@ -157,7 +157,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             if r != 0:
                 blank = gtk.Label('')
                 action_table.attach(blank,0,2,r,r+1);blank.show()
-            r += 1                
+            r += 1
             l = gtk.Label(); l.set_markup('<b>'+label+'</b>')
             l.set_alignment(0.0,0.5)
             action_table.attach(l,0,2,r,r+1); l.show()
@@ -183,7 +183,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         action_table.set_row_spacings(3)
         action_table.set_col_spacings(3)
         #for t in self.tags:
-        #    
+        #
         #    self.action_model.append([self.labels_by_tag[t],t])
         #    tag_button = gtk.Button('_'+self.labels_by_tag[t])
         #    tag_button.connect('clicked',
@@ -211,8 +211,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         self.ignore_tag.set_property('invisible',True)
         self.ignore_tag.set_property('editable',False)
         self.tb.get_tag_table().add(self.markup_tag)
-        self.tb.get_tag_table().add(self.ignore_tag)        
-        
+        self.tb.get_tag_table().add(self.ignore_tag)
+
     def label_callback (self, button, label):
         self.label_selection(label)
 
@@ -296,7 +296,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         b = gtk.Button()
         i = gtk.Image(); i.set_from_stock(gtk.STOCK_REMOVE,gtk.ICON_SIZE_MENU)
         b.add(i); i.show()
-        itr = self.tb.get_iter_at_mark(emark)        
+        itr = self.tb.get_iter_at_mark(emark)
         anchor = self.insert_widget(itr,b)
         # Set up combo button...
         labelbutton = gtk.combo_box_new_text()
@@ -341,7 +341,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         # Start a new recipe at cursor
         itr = self.tb.get_iter_at_mark(self.tb.get_insert())
         self.label_range(itr,itr,self.NEW_REC_TEXT)
-        
+
     def insert_markup_text (self, itr, text, *tags):
         """Insert markup text into the buffer. We do this in such a
         way that we can remove it easily later.
@@ -364,8 +364,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
     def change_mark (self, cb, smark, emark, start_id, end_id):
 
         new_label = cb.get_active_text()
-        
-        
+
+
     def insert_widget (self, itr, widget):
         anchor = self.tb.create_child_anchor(itr)
         self.anchors.append(anchor)
@@ -381,7 +381,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         delete_to = anchor_iter.copy()
         delete_to.forward_char()
         self.tb.delete(anchor_iter,delete_to)
-        
+
     def remove_markup_text (self, idno):
         smark,emark = self.markup_marks[idno]
         sitr,eitr = (self.tb.get_iter_at_mark(smark),
@@ -417,7 +417,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             if e_offset > anchor_iter.get_offset() > st_offset:
                 self.anchors.remove(anchor)
                 self.remove_widget(anchor)
-        
+
     def commit_changes (self):
         def mark_sorter (a,b):
             a = self.tb.get_iter_at_mark(a[0]).get_offset()
@@ -433,7 +433,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             text = siter.get_text(eiter)
             name = smark.get_name()
             label = name.split('-')[0]
-            tag = self.tags_by_label[label]            
+            tag = self.tags_by_label[label]
             if tag in gglobals.TEXT_ATTR_DIC:
                 self.add_text(tag,text); started=True
             elif tag in gglobals.REC_ATTR_DIC:
@@ -509,7 +509,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                     self.labels_by_tag.get(tag,tag)
                     )
         #dbg_file.close()
-        
+
     def do_run (self):
         self.w.show_all()
         if self.modal:
@@ -517,9 +517,9 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             gtk.main()
         else:
             self.w.connect('delete-event',lambda *args: self.w.hide())
-        
-    
-            
+
+
+
 if __name__ == '__main__':
     ii = InteractiveImporter()
     ii.w.connect('delete-event',gtk.main_quit)
@@ -555,4 +555,4 @@ Toss spaghetti in pesto and tomatoes.
 Ignore: this
 """)
     gtk.main()
-    
+

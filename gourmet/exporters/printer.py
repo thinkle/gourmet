@@ -13,7 +13,7 @@ class NoRecRenderer ():
                      sublabel=_("To print, activate a plugin that provides printing support, such as the 'Printing & PDF export' plugin."),
                      )
         raise NotImplementedError
-    
+
 class NoSimpleWriter ():
 
     def __init__ (self, *args, **kwargs):
@@ -22,7 +22,7 @@ class NoSimpleWriter ():
             label=_('Unable to print: no print plugins are active!'),
             sublabel=_("To print, activate a plugin that provides printing support, such as the 'Printing & PDF export' plugin."),
             )
-        raise NotImplementedError        
+        raise NotImplementedError
 
 class PrintManager (plugin_loader.Pluggable):
 
@@ -44,12 +44,12 @@ class PrintManager (plugin_loader.Pluggable):
         assert(plugin.SimpleWriter)
         self.sws.append((plugin.simpleWriterPriority,plugin.SimpleWriter))
         assert(type(plugin.recWriterPriority)==int)
-        assert(plugin.RecWriter)        
+        assert(plugin.RecWriter)
         self.rrs.append((plugin.recWriterPriority,plugin.RecWriter))
 
     def unregister_plugin (self, plugin):
         self.sws.remove(plugin.simpleWriterPriority,plugin.SimpleWriter)
-        self.rrs.remove(plugin.recWriterPriority,plugin.RecWriter)        
+        self.rrs.remove(plugin.recWriterPriority,plugin.RecWriter)
 
     def get_simple_writer (self):
         self.sws.sort()
@@ -83,7 +83,7 @@ class PrintManager (plugin_loader.Pluggable):
     def show_error (self, *args):
         from gourmet.gtk_extras.dialog_extras import show_message
         show_message(sublabel='There was an error printing. Apologies')
-    
+
 def get_print_manager ():
     try:
         return PrintManager()

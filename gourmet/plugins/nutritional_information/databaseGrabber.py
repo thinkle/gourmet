@@ -5,7 +5,7 @@ from parser_data import ABBREVS, ABBREVS_STRT, FOOD_GROUPS, NUTRITION_FIELDS, WE
 from gourmet.gdebug import TimeAction
 expander_regexp = None
 
-def compile_expander_regexp ():    
+def compile_expander_regexp ():
     regexp = "(?<!\w)("
     regexp += string.join(ABBREVS.keys(),"|")
     regexp += ")(?!\w)"
@@ -37,7 +37,7 @@ class DatabaseGrabber:
                   show_progress=None):
         self.show_progress=show_progress
         self.db = db
-        
+
     def get_zip_file (self):
         if hasattr(self,'zipfile'):
             return self.zipfile
@@ -48,7 +48,7 @@ class DatabaseGrabber:
             tofi.seek(0)
             self.zipfile = zipfile.ZipFile(tofi,'r')
             return self.zipfile
-        
+
     def get_file_from_url (self, filename):
         zf = self.get_zip_file()
         tofi2 = tempfile.TemporaryFile()
@@ -137,7 +137,7 @@ class DatabaseGrabber:
                         print d.get(sname,fl),'is not an integer'
                         raise
                     # If it's nothing, we don't bother...
-                    if d.has_key(sname): del d[sname]                    
+                    if d.has_key(sname): del d[sname]
         return d
 
     def parse_abbrevfile (self, abbrevfile):
@@ -176,7 +176,7 @@ class DatabaseGrabber:
                     print 'Error appending to nutrition_table',d
                     print 'Tried modifying table -- that failed too!'
                     raise
-            t.end()                        
+            t.end()
             tline.end()
         self.db.commit_fast_adds()
 
@@ -201,7 +201,7 @@ class DatabaseGrabber:
                 print "Error appending ",d,"to usda_weights_table"
                 raise
         self.db.commit_fast_adds()
-            
+
 
 
 if __name__ == '__main__':
@@ -217,5 +217,5 @@ if __name__ == '__main__':
     print 'grabbing recipes!'
     grabber.grab_data('/home/tom/Projects/grm/data/')
     #grabber.parse_weightfile(open('/home/tom/Projects/grm/data/WEIGHT.txt','r'))
-    #grabber.get_weight('/home/tom/Projects/nutritional_data/WEIGHT.txt')    
-    
+    #grabber.get_weight('/home/tom/Projects/nutritional_data/WEIGHT.txt')
+

@@ -9,5 +9,5 @@ class EnableUTF16Plugin (ToolPlugin):
 
     def remove (self):
         get_prefs()['utf-16'] = False
-    
+
 plugins = [EnableUTF16Plugin]

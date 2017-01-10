@@ -85,7 +85,7 @@ confirmation_tests = {
     ],
                                                 f),
     # End RTF Tests
-    
+
     }
 
 
@@ -121,8 +121,8 @@ class ExportTest:
         if test.get('all_ings_have_units',False):
             for i in ings:
                 assert(i.unit)
-                
-    
+
+
     def setup_db (self):
         print 'rm.dbargs[file]=',rm.dbargs['file']
         self.db = rm.RecipeManager(**rm.dbargs)

@@ -63,7 +63,7 @@ class RecipeBrowserView (gtk.IconView):
         return attr_to_icon.get(itm,attr_to_icon['category'])
 
     def get_pixbuf (self, attr,val):
-        if attr=='category':            
+        if attr=='category':
             tbl = self.rd.recipe_table.join(self.rd.categories_table)
             col = self.rd.categories_table.c.category
             if hasattr(self,'category_images'):
@@ -129,7 +129,7 @@ class RecipeBrowserView (gtk.IconView):
                 if n == 0: continue
                 m.append((attribute+'>'+str(val),self.convert_val(attribute,val)+' (%s)'%n,
                           self.get_pixbuf(attribute,val),val))
-                          
+
     def build_recipe_model (self, path, val):
         m = self.models[path] = self.new_model()
         searches = [{'column':'deleted','operator':'=','search':False}]
@@ -218,7 +218,7 @@ class RecipeBrowser (gtk.VBox):
         for step in path.split('>'):
             self.append_button(so_far + step)
             so_far += step + '>'
-        
+
     def append_button (self, path):
         if '>' in path:
             txt = self.view.convert_val(*path.split('>'))
@@ -228,7 +228,7 @@ class RecipeBrowser (gtk.VBox):
         self.buttons[-1].connect('clicked',lambda *args: self.view.set_path(path))
         self.button_bar.pack_start(self.buttons[-1],expand=False,fill=False)
         self.buttons[-1].show()
-        
+
 
 def try_out ():
     import gourmet.recipeManager
@@ -242,6 +242,6 @@ def try_out ():
     w.set_size_request(800,500)
     w.connect('delete-event',gtk.main_quit)
     gtk.main()
-    
+
 if __name__ == '__main__':
     try_out()

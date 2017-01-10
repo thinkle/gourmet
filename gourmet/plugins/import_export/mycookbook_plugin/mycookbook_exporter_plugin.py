@@ -15,7 +15,7 @@ class MCBExporterPlugin (ExporterPlugin):
     saveas_single_filters = saveas_filters
 
     def get_multiple_exporter (self, args):
-        
+
         return mycookbook_exporter.recipe_table_to_xml(
             args['rd'],
             args['rv'],
@@ -34,5 +34,5 @@ class MCBExporterPlugin (ExporterPlugin):
 
     def run_extra_prefs_dialog (self):
         pass
-                
-        
+
+

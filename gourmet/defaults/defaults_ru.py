@@ -78,7 +78,7 @@ SYNONYMS=[
     ['black cod','sablefish'],
     ['chilean sea bass','patagonian toothfish'],
     ['flour, all purpose','flour, all-purpose','flour','white flour'],
-    ['sugar, granulated','sugar'],    
+    ['sugar, granulated','sugar'],
     ]
 
 # A DICTIONARY CONTAINING INGREDIENT KEYS AND NDBNO for the USDA
@@ -739,7 +739,7 @@ VOL_TO_MASS_TABLE = {
     ("cl", "kg"): 0.01,
     ("cl", "g") : 10,
     ("dl", "kg") : 0.1,
-    ("dl", "g") : 100,    
+    ("dl", "g") : 100,
     ("l", "kg") : 1}
 
 # TIME ABBREVIATIONS (this is new!)
@@ -782,7 +782,7 @@ def guess_plurals (s):
     ret = [s+'s',s+'es']
     if s[-1]=='f': ret.append(s[0:-1]+'ves')
     return ret
-    
+
 IGNORE = ["and","with","of","for","cold","warm","finely","thinly","roughly","coarsely"]
 
 NUMBERS = {

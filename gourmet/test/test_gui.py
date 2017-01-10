@@ -128,13 +128,13 @@ class BasicTests (
         dp.focus.frame(u'New Recipe (Edit)')
         dp.keyCombo('<Alt>l')
         dp.focus.widget('Title Entry')
-        time.sleep(1)        
+        time.sleep(1)
         dp.type('Testing!')
         dp.focus.widget('Preparation Time Entry')
-        time.sleep(1)                
+        time.sleep(1)
         dp.type('30 minutes')
         dp.focus.widget('Rating Entry')
-        time.sleep(1)                
+        time.sleep(1)
         dp.type('4')
         screenshot('Edited_recipe.png')
         #dp.keyCombo('<Ctrl>w')
@@ -156,7 +156,7 @@ class BasicTests (
     def testWebImport (self):
         self.do_testWebImport('file:///home/tom/Projects/grecipe-manager/src/tests/recipe_files/sample_site.html')
         self.search_and_open("Spaghetti")
-        screenshot('web_imported_recipe_card-sample_site.png')        
+        screenshot('web_imported_recipe_card-sample_site.png')
 
     def testFileImport (self):
         self.do_testFileImport("/home/tom/Projects/grecipe-manager/src/tests/recipe_files/test_set.grmt")
@@ -165,7 +165,7 @@ class BasicTests (
         self.do_testFileImport("/home/tom/Projects/grecipe-manager/src/tests/recipe_files/athenos1.mx2")
 
     def testMMFImport (self):
-        self.do_testFileImport("/home/tom/Projects/grecipe-manager/src/tests/recipe_files/mealmaster.mmf")            
+        self.do_testFileImport("/home/tom/Projects/grecipe-manager/src/tests/recipe_files/mealmaster.mmf")
 
 
 class TestsWithBaseSet (
@@ -229,7 +229,7 @@ class TestsWithBaseSet (
         dp.click('Recipe')
         dp.click("Add to Shopping List") # from menu
         dp.focus.frame('Shopping List')
-        screenshot('add-to-shopping-list-from-card-w-menu.png')        
+        screenshot('add-to-shopping-list-from-card-w-menu.png')
         screenshot('Adding Shopping List from Card')
         dp.keyCombo('<Ctrl>w')
         dp.focus.frame('')

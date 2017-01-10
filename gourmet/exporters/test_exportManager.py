@@ -23,7 +23,7 @@ class SampleRecipeSetterUpper:
                 {'amount':1,'unit':'cup','item':'water','ingkey':'water, municipal'},
                 {'amount':2,'unit':'cups','item':'atta flour','ingkey':'flour, atta (whole wheat)'},
                 {'amount':2,'unit':'Tbs','item':'salt','ingkey':'salt, table'},
-                {'amount':1,'unit':'tsp','item':'black pepper','ingkey':'pepper, black', 'optional':True},                
+                {'amount':1,'unit':'tsp','item':'black pepper','ingkey':'pepper, black', 'optional':True},
                 ],
             },
         'unicode': {
@@ -32,7 +32,7 @@ class SampleRecipeSetterUpper:
             'ingredients':[
                 {'amount':1,'unit':'cup','item':'water','ingkey':'water, municipal'},
                 {'amount':1,'unit':'lb','item':u'jalapeño','ingkey':'pepper, habañero'},
-                {'amount':2,'unit':u'más','item':u'habañeros','ingkey':u'pepper, habañero'},                
+                {'amount':2,'unit':u'más','item':u'habañeros','ingkey':u'pepper, habañero'},
                 ]
             },
         'formatting': {
@@ -48,13 +48,13 @@ class SampleRecipeSetterUpper:
             'ingredients':[
                 {'amount':1,'unit':'cup','item':'water','ingkey':'water, municipal'},
                 {'amount':1,'unit':'lb','item':u'jalapeño','ingkey':'pepper, habañero'},
-                {'amount':2,'unit':u'más','item':u'habañeros','ingkey':u'pepper, habañero'},                
+                {'amount':2,'unit':u'más','item':u'habañeros','ingkey':u'pepper, habañero'},
                 ]
             },
 
-        
+
         }
-    
+
     def __init__ (self):
         print 'Instantiate SampleRecipeSetterUpper',self
         if SampleRecipeSetterUpper.__single: raise SampleRecipeSetterUpper.__single
@@ -62,7 +62,7 @@ class SampleRecipeSetterUpper:
         self.db = gourmet.backends.db.get_database()
         for rec in self.recipes:
             self.add_rec(self.recipes[rec])
-    
+
     def add_rec (self, recdic):
         recdic['recipe']['deleted']=False
         r = self.db.add_rec(recdic['recipe'])
@@ -83,7 +83,7 @@ class SampleRecipeSetterUpper:
         print self.db.get_cats(rec)
         print self.db.get_ings(rec)
         print '^^^^^^^^^^^^^^^^^^^^'
-    
+
 def setup_sample_recs ():
     try:
         return SampleRecipeSetterUpper()
@@ -94,14 +94,14 @@ def setup_sample_recs ():
 class TestSetterUpper (unittest.TestCase):
      def setUp (self):
          setup_sample_recs()
-    
+
      def testSetup (self):
          from gourmet.GourmetRecipeManager import get_application, GourmetApplication
          #GourmetApplication.__single = None
          app = get_application(); app.window.show()
          import gtk
          gtk.main()
-    
+
 class TestExports (unittest.TestCase):
     def setUp (self):
         self.sample_recs = setup_sample_recs()
@@ -155,6 +155,6 @@ class TestExports (unittest.TestCase):
                                           )
                     finally:
                         fi.close()
-    
+
 if __name__ == '__main__':
     unittest.main()

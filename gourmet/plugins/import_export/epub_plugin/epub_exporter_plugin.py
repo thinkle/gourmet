@@ -14,7 +14,7 @@ class EpubExporterPlugin (ExporterPlugin):
 
     def get_multiple_exporter (self, args):
         return epub_exporter.website_exporter(
-            args['rd'], 
+            args['rd'],
             args['rv'],
             args['file'],
             #args['conv'],

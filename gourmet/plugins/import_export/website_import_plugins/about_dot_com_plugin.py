@@ -53,7 +53,7 @@ class AboutDotComPlugin (PluginPlugin):
             def cut_menus (self):
                 for mi in self.soup(text=re.compile('.*(Most Popular|Must Reads|By Category|iGoogle|More from About.com).*')):
                     mendiv = mi.findParent('div')
-                    self.preparsed_elements.append((mendiv,'ignore'))        
+                    self.preparsed_elements.append((mendiv,'ignore'))
                 for mi in self.soup(text='Email'):
                     mendiv = mi.findParent('div')
                     self.preparsed_elements.append((mendiv,'ignore'))
@@ -62,4 +62,4 @@ class AboutDotComPlugin (PluginPlugin):
                 webpage_importer.MenuAndAdStrippingWebParser.cut_menus(self)
 
         return AboutDotComWebParser
-        
+

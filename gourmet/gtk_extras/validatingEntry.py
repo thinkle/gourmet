@@ -14,7 +14,7 @@
 ### You should have received a copy of the GNU General Public License
 ### along with this library; if not, write to the Free Software
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
-### USA 
+### USA
 
 import gobject
 import gtk, time
@@ -91,7 +91,7 @@ class ValidatingEntry (gtk.VBox, gobject.GObject):
             self.warned = -1
             self.warning_box.hide()
             self.validating = False
-    
+
     def _show_warning_on_delay (self,delay):
         if not self.validating:
             gobject.timeout_add(CHECK_DELAY,lambda *args: not self.valid and self._show_warning())

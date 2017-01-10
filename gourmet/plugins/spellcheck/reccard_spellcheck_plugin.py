@@ -29,4 +29,4 @@ def harvest_textviews (widget):
         return tvs
 
 
-        
+

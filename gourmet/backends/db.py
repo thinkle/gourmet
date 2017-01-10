@@ -15,7 +15,7 @@ from gourmet.plugin import DatabasePlugin
 
 import sqlalchemy, sqlalchemy.orm
 from sqlalchemy import Integer, LargeBinary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
-from sqlalchemy.sql import and_, or_, case 
+from sqlalchemy.sql import and_, or_, case
 from sqlalchemy import event, func
 
 Session = sqlalchemy.orm.sessionmaker()
@@ -81,7 +81,7 @@ def make_simple_select_arg (criteria,*tables):
 
 def make_order_by (sort_by, table, count_by=None, join_tables=[]):
     ret = []
-    for col,direction in sort_by:        
+    for col,direction in sort_by:
         if col=='count' and not hasattr(table.c,'count'):
             col = sqlalchemy.func.count(getattr(table.c,count_by))
         else:
@@ -106,14 +106,14 @@ def make_order_by (sort_by, table, count_by=None, join_tables=[]):
         else:
             ret.append(sqlalchemy.desc(col))
     return ret
-    
+
 class DBObject:
     pass
 # CHANGES SINCE PREVIOUS VERSIONS...
 # categories_table: id -> recipe_id, category_entry_id -> id
 # ingredients_table: ingredient_id -> id, id -> recipe_id
 
-class RecData (Pluggable): 
+class RecData (Pluggable):
 
     """RecData is our base class for handling database connections.
 
@@ -151,7 +151,7 @@ class RecData (Pluggable):
         self.add_ing_hooks = []
         timer = TimeAction('initialize_connection + setup_tables',2)
         self.initialize_connection()
-        Pluggable.__init__(self,[DatabasePlugin])            
+        Pluggable.__init__(self,[DatabasePlugin])
         self.setup_tables()
         self.metadata.create_all()
         self.update_version_info(gourmet.version.version)
@@ -162,12 +162,12 @@ class RecData (Pluggable):
 
     def initialize_connection (self):
         """Initialize our database connection.
-        
+
         This should also set self.new_db accordingly"""
         debug('Initializing DB connection',1)
         def instr(s,subs): return s.lower().find(subs.lower())+1
-            
-        # End REGEXP workaround 
+
+        # End REGEXP workaround
 
         # Continue setting up connection...
         if self.filename:
@@ -253,8 +253,8 @@ class RecData (Pluggable):
         self.setup_info_table()
         self.setup_recipe_table()
         self.setup_category_table()
-        self.setup_ingredient_table()        
-        
+        self.setup_ingredient_table()
+
     def setup_info_table (self):
         self.info_table = Table('info',self.metadata,
                                 Column('version_super',Integer(),**{}), # three part version numbers 2.1.10, etc. 1.0.0
@@ -274,7 +274,7 @@ class RecData (Pluggable):
                                        # at the last time of
                                        # plugging-in
                                        Column('id',Integer(),**{'primary_key':True}),
-                                       Column('version_super',Integer(),**{}), 
+                                       Column('version_super',Integer(),**{}),
                                        Column('version_major',Integer(),**{}),
                                        Column('version_minor',Integer(),**{}),
                                        # Stores the last time the plugin was used...
@@ -301,8 +301,8 @@ class RecData (Pluggable):
                                   # update is much easier if it's
                                   # here, and it doesn't do much harm
                                   # to have it around.
-                                  Column('servings',Float(),**{}), 
-                                  Column('yields',Float(),**{}),                                  
+                                  Column('servings',Float(),**{}),
+                                  Column('yields',Float(),**{}),
                                   Column('yield_unit',String(length=32),**{}),
                                   Column('image',LargeBinary(),**{}),
                                   Column('thumb',LargeBinary(),**{}),
@@ -339,7 +339,7 @@ class RecData (Pluggable):
                                        Column('ingkey',Text(),**{}),
                                        Column('optional',Boolean(),**{}),
                                        #Integer so we can distinguish unset from False
-                                       Column('shopoptional',Integer(),**{}), 
+                                       Column('shopoptional',Integer(),**{}),
                                        Column('inggroup',Text(),**{}),
                                        Column('position',Integer(),**{}),
                                        Column('deleted',Boolean(),**{}),
@@ -369,7 +369,7 @@ class RecData (Pluggable):
                                     )
         class ShopCat (object): pass
         self._setup_object_for_table(self.shopcats_table, ShopCat)
-        
+
     def setup_shopcatsorder_table (self):
         # shopcatsorder - Keep track of the order of shopping categories
         self.shopcatsorder_table = Table('shopcatsorder',self.metadata,
@@ -379,7 +379,7 @@ class RecData (Pluggable):
                                          )
         class ShopCatOrder (object): pass
         self._setup_object_for_table(self.shopcatsorder_table, ShopCatOrder)
-        
+
     def setup_pantry_table (self):
         # pantry table -- which items are in the "pantry" (i.e. not to
         # be added to the shopping list)
@@ -409,7 +409,7 @@ class RecData (Pluggable):
                                          )
         class CrossUnit (object): pass
         self._setup_object_for_table(self.crossunitdict_table,CrossUnit)
-        
+
     def setup_unitdict_table (self):
         self.unitdict_table = Table('unitdict',self.metadata,
                                     Column('id',Integer(),primary_key=True),
@@ -454,7 +454,7 @@ class RecData (Pluggable):
         import gtk
         de.show_message(
             title=_("Upgrading database"),
-            label=_("Upgrading database"),            
+            label=_("Upgrading database"),
             sublabel=_("Depending on the size of your database, this may be an intensive process and may take  some time. Your data has been automatically backed up in case something goes wrong."),
             expander=(_("Details"),_("A backup has been made in %s in case something goes wrong. If this upgrade fails, you can manually rename your backup file recipes.db to recover it for use with older Gourmet.")%backup_file_name),
             message_type=gtk.MESSAGE_INFO)
@@ -490,8 +490,8 @@ class RecData (Pluggable):
                     self.info_table,
                     stored_info,
                     default_info)
-            stored_info = self.fetch_one(self.info_table)            
-    
+            stored_info = self.fetch_one(self.info_table)
+
         ### Code for updates between versions...
         if not self.new_db:
             sv_text = "%s.%s.%s"%(stored_info.version_super,stored_info.version_major,stored_info.version_minor)
@@ -589,7 +589,7 @@ class RecData (Pluggable):
             # Add recipe_hash, ingredient_hash and link fields
             # (These all get added in 0.13.0)
             if stored_info.version_super == 0 and stored_info.version_major <= 12:
-                self.backup_db()                
+                self.backup_db()
                 print 'UPDATE FROM < 0.13.0...',sv_text
                 # Don't change the table defs here without changing them
                 # above as well (for new users) - sorry for the stupid
@@ -651,7 +651,7 @@ class RecData (Pluggable):
                 print 'Fixing broken ingredient-key view from earlier versions.'
                 # Drop keylookup_table table, which wasn't being properly kept up
                 # to date...
-                self.delete_by_criteria(self.keylookup_table,{}) 
+                self.delete_by_criteria(self.keylookup_table,{})
                 # And update it in accord with current ingredients (less
                 # than an ideal decision, alas)
                 for ingredient in self.fetch_all(self.ingredients_table,deleted=False):
@@ -849,7 +849,7 @@ class RecData (Pluggable):
                 retval = self.recipe_table.c.id.in_(
                     sqlalchemy.select([subtable.c.recipe_id],retval)
                     )
-            
+
             return retval
 
     def search_recipes (self, searches, sort_by=[]):
@@ -910,7 +910,7 @@ class RecData (Pluggable):
                 **{'group_by':'ingkey',
                    'order_by':make_order_by([],self.ingredients_table,count_by='ingkey'),
                    }
-                ).execute().fetchall()                
+                ).execute().fetchall()
         else:
             result =  sqlalchemy.select(
                 [sqlalchemy.func.count(self.ingredients_table.c.ingkey).label('count'),
@@ -999,7 +999,7 @@ class RecData (Pluggable):
                 do_raise = False
                 self.db.execute('ALTER TABLE %(t)s RENAME TO %(t)s_temp'%{'t':table_name})
             if do_raise:
-                raise 
+                raise
         # SQLAlchemy >= 0.7 doesn't allow: del self.metadata.tables[table_name]
         self.metadata._remove_table(table_name, self.metadata.schema)
         setup_function()
@@ -1015,7 +1015,7 @@ class RecData (Pluggable):
              'from_cols':', '.join(FROM_COLS),
              'to_cols':', '.join(TO_COLS),
              }
-        self.db.execute(stmt)        
+        self.db.execute(stmt)
         self.db.execute('DROP TABLE %s_temp'%table_name)
 
     # Metakit has no AUTOINCREMENT, so it has to do special magic here
@@ -1074,7 +1074,7 @@ class RecData (Pluggable):
         """Find all duplicate recipes (by recipe_hash and ingredient_hash)."""
         args = []
         if not include_deleted: args.append(self.recipe_table.c.deleted==False)
-        
+
         ing_hashes,rec_hashes = [sqlalchemy.select([col],
                                                    *args,
                                                    **dict(having=sqlalchemy.func.count(col)>1,
@@ -1104,7 +1104,7 @@ class RecData (Pluggable):
             rec_ids = [r.id for r in recipes]
             results = filter(lambda reclist: True in [(rid in rec_ids) for rid in reclist], results)
         return results
-    
+
     # convenience DB access functions for working with ingredients,
     # recipes, etc.
 
@@ -1118,7 +1118,7 @@ class RecData (Pluggable):
 
         Return modified recipe.
         """
-        self.validate_recdic(dic)        
+        self.validate_recdic(dic)
         debug('validating dictionary',3)
         if dic.has_key('category'):
             newcats = dic['category'].split(', ')
@@ -1135,7 +1135,7 @@ class RecData (Pluggable):
         retval = self.do_modify_rec(rec,dic)
         self.update_hashes(rec)
         return retval
-    
+
     def validate_recdic (self, recdic):
         if not recdic.has_key('last_modified'):
             recdic['last_modified']=time.time()
@@ -1183,7 +1183,7 @@ class RecData (Pluggable):
                     ingdict.get('ingkey',ing.ingkey)
                     )
         return self.modify_ing(ing,ingdict)
-        
+
     def update_hashes (self, rec):
         rhash,ihash = recipeIdentifier.hash_recipe(rec,self)
         self.do_modify_rec(rec,{'recipe_hash':rhash,'ingredient_hash':ihash})
@@ -1226,7 +1226,7 @@ class RecData (Pluggable):
             else:
                 unmerged.append([recs,merge_dic,diffs])
         return unmerged
-    
+
     def modify_ing (self, ing, ingdict):
         self.validate_ingdic(ingdict)
         return self.do_modify_ing(ing,ingdict)
@@ -1265,7 +1265,7 @@ class RecData (Pluggable):
         else:
             if type(ret)==int:
                 ID = ret
-                ret = self.get_rec(ID) 
+                ret = self.get_rec(ID)
             else:
                 ID = ret.id
             for c in cats:
@@ -1277,10 +1277,10 @@ class RecData (Pluggable):
         if dic.has_key('item') and dic.has_key('ingkey') and dic['item'] and dic['ingkey']:
             self.add_ing_to_keydic(dic['item'],dic['ingkey'])
         return self.add_ing(dic)
-    
+
     def add_ing (self, dic):
         self.validate_ingdic(dic)
-        try:          
+        try:
             return self.do_add_ing(dic)
         except:
             print 'Problem adding',dic
@@ -1305,7 +1305,7 @@ class RecData (Pluggable):
             self.ingredients_table.insert().execute(*dics)
 
     # Lower level DB access functions -- hopefully subclasses can
-    # stick to implementing these    
+    # stick to implementing these
 
     def coerce_types (self, table, dic):
         """Modify dic to make sure types are correct for table.
@@ -1394,8 +1394,8 @@ class RecData (Pluggable):
        for k,v in dic.items():
             if type(v)==str and k not in ['image','thumb']:
                 # force unicode...
-                dic[k]=unicode(v) 
-                
+                dic[k]=unicode(v)
+
     def do_modify_rec (self, rec, dic):
         """This is what other DBs should subclass."""
         return self.do_modify(self.recipe_table,rec,dic)
@@ -1472,7 +1472,7 @@ class RecData (Pluggable):
         for i in extra_ings:
             if i.refid not in ids:
                 recs.append(self.get_referenced_rec(i))
-                
+
     def get_rec (self, id, recipe_table=None):
         """Handed an ID, return a recipe object."""
         if recipe_table:
@@ -1503,7 +1503,7 @@ class RecData (Pluggable):
         rec = self.do_add_rec({'deleted':1})
         self.new_ids.append(rec.id)
         return rec.id
-    
+
     # Convenience functions for dealing with ingredients
 
     def order_ings (self, ings):
@@ -1526,7 +1526,7 @@ class RecData (Pluggable):
                 print 'Bad: ingredient without position',i
                 i.position=defaultn
                 defaultn += 1
-            if groups.has_key(group): 
+            if groups.has_key(group):
                 groups[group].append(i)
                 # the position of the group is the smallest position of its members
                 # in other words, positions pay no attention to groups really.
@@ -1569,7 +1569,7 @@ class RecData (Pluggable):
         self.delete_by_criteria(self.ingredients_table,{'id':id})
         for ingd in ingdicts:
             self.add_ing(ingd)
-    
+
     def ingview_to_lst (self, view):
         """Handed a view of ingredient data, we output a useful list.
         The data we hand out consists of a list of tuples. Each tuple contains
@@ -1603,7 +1603,7 @@ class RecData (Pluggable):
     def get_amount_and_unit (self, ing, mult=1, conv=None, fractions=None, adjust_units=False,
                              favor_current_unit=True,preferred_unit_groups=[]):
         """Return a tuple of strings representing our amount and unit.
-        
+
         If we are handed a converter interface, we will adjust the
         units to make them readable.
         """
@@ -1622,14 +1622,14 @@ class RecData (Pluggable):
                 ramount = ramount * conv.converter(ing.unit, unit)
         if ramount: amt = (amt,ramount)
         return (self._format_amount_string_from_amount(amt,fractions=fractions,unit=unit),unit)
-        
+
     def get_amount_as_string (self,
                               ing,
                               mult=1,
                               fractions=None,
                               ):
         """Return a string representing our amount.
-        If we have a multiplier, multiply the amount before returning it.        
+        If we have a multiplier, multiply the amount before returning it.
         """
         amt = self.get_amount(ing,mult)
         return self._format_amount_string_from_amount(amt, fractions=fractions)
@@ -1640,7 +1640,7 @@ class RecData (Pluggable):
         If fractions is None, we use the default setting from
         convert.USE_FRACTIONS. Otherwise, we will override that
         setting.
-        
+
         If you're thinking of using this function from outside, you
         should probably just use a convenience function like
         get_amount_as_string or get_amount_and_unit
@@ -1707,7 +1707,7 @@ class RecData (Pluggable):
                 self.do_add(self.keylookup_table,{'word':unicode(w),'ingkey':unicode(key),'count':1})
 
     def remove_ing_from_keydic (self, item, key):
-        #print 'remove ',item,key,'to keydic'        
+        #print 'remove ',item,key,'to keydic'
         row = self.fetch_one(self.keylookup_table,item=item,ingkey=key)
         if row:
             new_count = row.count - 1
@@ -1728,7 +1728,7 @@ class RecData (Pluggable):
     def ing_shopper (self, view):
         return DatabaseShopper(self.ingview_to_lst(view))
 
-    # functions to undoably modify tables 
+    # functions to undoably modify tables
 
     def get_dict_for_obj (self, obj, keys):
         orig_dic = {}
@@ -1764,7 +1764,7 @@ class RecData (Pluggable):
             self.modify_rec(*args,**kwargs)
             if select_change_method:
                 select_change_method(*args,**kwargs)
-                
+
         obj = Undo.UndoableObject(action,action,history,
                                   action_args=[rec,dic],undo_action_args=[rec,orig_dic],
                                   get_reapply_action_args=redo,
@@ -1811,7 +1811,7 @@ class RecData (Pluggable):
             if make_visible: make_visible(ing,orig_dic)
         obj = Undo.UndoableObject(do_action,undo_action,history)
         obj.perform()
-        
+
     def undoable_delete_ings (self, ings, history, make_visible=None):
         """Delete ingredients in list ings and add to our undo history."""
         def do_delete():
@@ -1823,22 +1823,22 @@ class RecData (Pluggable):
             if make_visible: make_visible(modded_ings)
         obj = Undo.UndoableObject(do_delete,undo_delete,history)
         obj.perform()
-    
+
     def get_default_values (self, colname):
         try:
             return defaults.fields[colname]
         except:
             return []
 
-    
+
 class RecipeManager (RecData):
-    
+
     def __init__ (self,*args,**kwargs):
         debug('recipeManager.__init__()',3)
         RecData.__init__(self,*args,**kwargs)
         #self.km = keymanager.KeyManager(rm=self)
         self.km = keymanager.get_keymanager(rm=self)
-        
+
     def key_search (self, ing):
         """Handed a string, we search for keys that could match
         the ingredient."""
@@ -1913,7 +1913,7 @@ class RecipeManager (RecData):
             debug("Unable to parse %s"%s,0)
             d['item'] = s
             return d
-        
+
     ingredient_parser = parse_ingredient
 
     def ing_search (self, ing, keyed=None, recipe_table=None, use_regexp=True, exact=False):
@@ -1929,7 +1929,7 @@ class RecipeManager (RecData):
 
     def joined_search (self, table1, table2, search_by, search_str, use_regexp=True, exact=False, join_on='id'):
         raise NotImplementedError
-    
+
     def ings_search (self, ings, keyed=None, recipe_table=None, use_regexp=True, exact=False):
         """Search for multiple ingredients."""
         raise NotImplementedError
@@ -1988,7 +1988,7 @@ class DatabaseConverter(convert.Converter):
             self.unit_dict[key] = key
             for v in variations:
                 self.unit_dict[v] = key
-                
+
 class dbDic:
     def __init__ (self, keyprop, valprop, view, db):
         """Create a dictionary interface to a database table."""
@@ -2008,7 +2008,7 @@ class dbDic:
                 return True
             except:
                 return False
-        
+
     def __setitem__ (self, k, v):
         store_v = v
         row = self.db.fetch_one(self.vw,**{self.kp:k})
@@ -2023,7 +2023,7 @@ class dbDic:
         if self.just_got.has_key(k): return self.just_got[k]
         v = getattr(self.db.fetch_one(self.vw,**{self.kp:k}),self.vp)
         return v
-    
+
     def __repr__ (self):
         retstr = "<dbDic> {"
         #for i in self.vw:
