@@ -10,7 +10,7 @@ You're also welcome to join our [Gourmet team on Launchpad](https://launchpad.ne
 
 Our introductory material to the source code is currently rather sparse, but you still might want to check out the [Development](Development) wiki article and [CODING.md](CODING.md) file for starters.
 
-To get started, why not check out our list of [list of bugs tagged 'easy'](https://github.com/thinkle/gourmet/issues?labels=easy&page=1&state=open)?
+To get started, why not check out our [list of bugs tagged 'easy'](https://github.com/thinkle/gourmet/issues?labels=easy&page=1&state=open)?
 
 Currently, our most pressing issues are:
 * [Windows Printing](https://github.com/thinkle/gourmet/issues/708).
