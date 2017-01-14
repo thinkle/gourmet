@@ -15,9 +15,11 @@
 # Translator: Luc Charest.
 # Last-updated: 2005-07-18 (07/18/05)
 
-CREDITS = "Luc Charest"
+from gettext import gettext as _
 
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!
+
+CREDITS = _("translator-credits")
 
 # only translate the items in the list [..] (and feel free to create
 # categories that make sense for your locale -- no need to translate
