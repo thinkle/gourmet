@@ -10,6 +10,8 @@ try:
 except ImportError:
     import Image
 
+from gourmet.util import pillow3_compat
+
 PLUS_ONE_KEYS = ['plus',
                  'greater',
                  #'Up',
@@ -124,6 +126,7 @@ class StarGenerator:
                  self.height))
         return img
 
+    @pillow3_compat.patch_function
     def get_pixbuf_from_image (self, image, make_white_opaque=True):
 
         """Get a pixbuf from a PIL Image.

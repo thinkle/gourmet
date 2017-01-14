@@ -4,6 +4,9 @@ try:
     from PIL import Image, ImageDraw
 except ImportError:
     import Image, ImageDraw
+
+from gourmet.util import pillow3_compat
+
 from gourmet.ImageExtras import get_pixbuf_from_jpg
 from gourmet.gtk_extras.ratingWidget import star_generator
 
@@ -27,6 +30,7 @@ def scale_pb (pb, do_grow=True):
         target_w = int(target * (float(w)/h))
     return pb.scale_simple(target_w,target_h,gtk.gdk.INTERP_BILINEAR)
 
+@pillow3_compat.patch_function
 def get_pixbuf_from_image (image):
 
     """Get a pixbuf from a PIL Image.
