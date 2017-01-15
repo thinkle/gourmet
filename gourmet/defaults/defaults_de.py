@@ -126,7 +126,7 @@ NUTRITIONAL_INFO = {}
 #             }
 
 AMBIGUOUS = {
-    'Sellerie':['Sellerie','Straudensellerie'],
+    'Sellerie':['Sellerie','Staudensellerie'],
     }
 
 
