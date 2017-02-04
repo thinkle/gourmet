@@ -1,19 +1,184 @@
-body {background-color: #3E2723; color: #fff}
-div.recipe, div.index { font-family: Times, serif; font-size: 10pt; margin: auto; max-width: 760px; background-color: #FFF8E1; padding: 1em; margin-top: 1em; color: rgba(0,0,0,0.7)}
+body {
+    /*font-size: 160%;*/
+    font:160% Georgia, "Times New Roman", Times, serif;
+line-height: 1.6;
+}
 
-div.recipe img {border-radius: 10%; height: 200px; float: right;}
-div.recipe img:hover {border: 1px solid black;}
-foo {height: initial; position: absolute; top: 10px; left: 10px}
-span.label { font-weight: bold }
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    font-family: "georgia" serif;
+    text-transform: capitalize;
+    page-break-after: avoid;
+    -webkit-column-span: all;
+    /* Chrome, Safari, Opera */
+    column-span: all;
+    margin-bottom: 0;
+}
 
-h3 {font-family: Calibri, Sans-Serif; font-size: 120%; font-weight: bold; color: #6d4c41; border-bottom: 1px solid #ffa000; margin-top: 0px; margin-bottom: 0px;}
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.6rem;
+}
+
+h4 {
+    font-size: 1.4rem;
+}
+
+h5 {
+    font-size: 1.2rem;
+}
+
+h6 {
+    font-size: 1rem;
+}
+
+.instruction p+p, .modifications p+p {
+    text-indent: 2rem;
+}
+
+div.recipe, div.index {
+    font-size: 1rem;
+    max-width: 45rem;
+    margin: auto;
+    padding: 1em;
+    margin-top: 1em;
+}
 
 
-div.header p {margin-top: 0; margin-bottom: 0.2em}
-div.ing { padding: 1em; background-color: #FFE57F}
-ul.ing { margin-top: 0px; padding-left: 0px; color: rgba(0,0,0,1); font-size: 100%;}
-li.ing { list-style: none; border-top: 0.3em }
-div.header p.title { font-family: Calibri, Sans-Serif; font-size: 35pt; font-weight: bold; color: #3E2723; border-bottom: 8px solid #ff6f00; min-height: 200px; vertical-align: bottom; margin-bottom: 20px; position: relative; padding-top: 30px}
-div.header p.title span.label {display: none}
-div.recipe div {margin-bottom: 20px;}
-div.recipe div p {margin-top: 0}
+div.recipe img {
+    float: left;
+    padding: .5rem;
+    max-width: 30%;
+    height: auto;
+}
+
+span.label {
+    font-weight: bold;
+}
+
+p.title {
+    font-size: 180%;
+    text-align: center;
+    font-weight: 400;
+}
+
+p.title span.label {
+    /*display: none;*/
+     visibility: hidden;
+}
+
+div.header p {
+    margin-top: 0;
+    margin-bottom: 0.2em;
+}
+
+div.ing {
+    /*padding: 1rem;
+    margin: .5rem;*/
+    border-top: solid 2px;
+    border-bottom: solid 2px;
+    margin: 1rem 0;
+    padding: 1rem 0;
+
+}
+
+ul.ing {
+    margin: 0;
+    padding: 0;
+}
+
+li.ing {
+    list-style: none;
+    border-top: 0.3em;
+}
+
+ul li {
+    margin: 0;
+    padding: 0;
+    text-indent: 0;
+}
+
+.inggroup {
+    font-weight: bold;
+    list-style: none;
+}
+
+.ing {
+    font-weight: normal;
+}
+
+.ing .inggroup {
+    margin-left: 2rem
+}
+
+.ing .inggroup .ing {
+    margin-left: -1rem
+}
+
+div.header {
+    display: table;
+    text-align: center;
+}
+
+div.header p {
+    display: table-row;
+}
+
+div.header p span {
+    display: table-cell;
+    text-align: left;
+}
+
+div.header p span.label {
+    text-align: right;
+    padding-right: 1rem;
+}
+
+div.header p.title {
+    display:table-header-group;
+    width: 100%;
+}
+
+div.header p.title span {
+    display: inline-block;
+    width: 100%;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+}
+
+div.header p.title span.label {
+    width: 0%;
+    /*display: none;*/
+     visibility: hidden;
+     margin: 0; padding: 0;
+}
+
+@media print {
+    * {
+        color: black;
+        background-color: white;
+    }
+    div.recipe, div.index {
+        font-size: 10px;
+        max-width: 100%;
+    }
+    div.ing {
+        border: none;
+        margin: 0;
+        padding: 0;
+    }
+    div.recipe img {
+        max-width: 4.5cm;
+    }
+     a:link:after { content: " (" attr(href) ") "; }
+     @page {margin: 0.5cm;}
+
+}
