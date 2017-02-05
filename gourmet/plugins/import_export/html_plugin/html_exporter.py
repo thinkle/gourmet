@@ -6,6 +6,7 @@ from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
 HTML_HEADER_START = """<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
   """
 HTML_HEADER_CLOSE = """<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
      </head>"""
@@ -64,8 +65,7 @@ class html_exporter (exporter_mult):
         if self.start_html:
             self.out.write(HTML_HEADER_START)
             self.out.write("<title>%s</title>"%self.get_title())
-            # AR add html5shiv #
-	        self.out.write("<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->")
+	        # self.out.write('<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->') # AR want to add html5shiv but can't get it work :-( says indent error?
 
             if self.css:
                 if self.embed_css:
@@ -80,15 +80,16 @@ class html_exporter (exporter_mult):
             self.out.write(HTML_HEADER_CLOSE)
             self.out.write('<body>')
 
-            ########## AR we should set an IF statement: only if multi-page export + can the word 'Index' be translated to different languages?
+            ########## AR we should set an IF statement: only if multi-page export + can the word 'Index' be translated to different languages? Also we have to check if the ouput is correct: *.htm? *.html?
             self.out.write('<nav><a href="index.html">Index</a></nav>')
 
-
-        self.out.write('<article id="%s" class="recipe" itemscope itemtype="http://schema.org/Recipe">'%self.get_title()) ############ changed DIV to ARTICLE: does the software close the tags by its own? can't find the corresponding </div> + trying to set an ID matching the title but still we need to make shure it's unique for multi-recipe output !!!
+ ############ changed DIV to ARTICLE
+ # but we shall give it an unique ID  - how's the unique filename created?
+            self.out.write('<article class="recipe" itemscope itemtype="http://schema.org/Recipe">')
 
         ############# insert recipe title h1 ###############
-            def write_title (self):
-            self.out.write("<header><h1>%s</h1></header>"%self.get_title())
+        #    def write_title (self):
+            self.out.write('<header><h1  itemprop="name">%s</h1></header>'%self.get_title())
 
     def write_image (self, image):
         imgout = os.path.join(self.imagedir_absolute,"%s.jpg"%self.imgcount)
@@ -112,14 +113,14 @@ class html_exporter (exporter_mult):
         self.images.append(imgout)
 
     def write_inghead (self):
-        self.out.write('<section class="ing"><h3>%s</h3><ul class="ing">'%_('Ingredients')) # AR changed DIV to SECTION
+        self.out.write('<section class="ing"><h2>%s</h2><ul class="ing">'%_('Ingredients')) # AR changed DIV to SECTION
 
     def write_text (self, label, text):
         attr = gglobals.NAME_TO_ATTR.get(label,label)
         if attr == 'instructions':
-            self.out.write('<section class="%s"><h3 class="%s">%s</h3><div itemprop="recipeInstructions">%s</div></section>' % (attr,label,label,self.htmlify(text))) # AR changed DIV to SECTION
+            self.out.write('<section class="%s"><h2 class="%s">%s</h2><div itemprop="recipeInstructions">%s</div></section>' % (attr,label,label,self.htmlify(text))) # AR changed DIV to SECTION
         else:
-            self.out.write('<section class="%s"><h3 class="%s">%s</h3>%s</section>' % (attr,label,label,self.htmlify(text))) # AR changed DIV to SECTION
+            self.out.write('<section class="%s"><h2 class="%s">%s</h2>%s</section>' % (attr,label,label,self.htmlify(text))) # AR changed DIV to SECTION
 
     def handle_italic (self, chunk): return "<em>" + chunk + "</em>"
     def handle_bold (self, chunk): return "<strong>" + chunk + "</strong>"
@@ -139,11 +140,12 @@ class html_exporter (exporter_mult):
         elif attr == 'rating':
             rating, rest = text.split('/', 1)
             # AR with the TH tag we don't need the label class any more to style it. I leave it for compatibility with the CSS
-            # AR WISH -  change the rating numbers to stars, filled: &#x2605; and empty: &#x2606;
-            self.out.write('<tr class="%s" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"><th scope="row" class="label">%s:</th> <td><span itemprop="ratingValue">%s</span>/%s</td></tr>\n' % (attr, label.capitalize(), rating, rest))
+            # AR WISH -  change the rating numbers to stars (filled: &#x2605; and empty: &#x2606;)
+            # AR we have to fix itemprop="ratinCount" span to have only "5" and not the word "stars"
+            self.out.write('<tr class="%s" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"><th scope="row" class="label">%s:</th> <td><span itemprop="ratingValue">%s</span>/<span itemprop="ratingCount">%s</span></td></tr>\n' % (attr, label.capitalize(), rating, rest))
         else:
             itemprop = None
-            #if attr == 'title':         ############## AR removed (hopefully being moved to H1)
+            # if attr == 'title':         ############## AR how to COMPLETELY remove? (it has been moved to H1)
             #    itemprop = 'name'
             if attr == 'category':
                 itemprop = 'recipeCategory'
@@ -161,7 +163,7 @@ class html_exporter (exporter_mult):
                 # AR with the TH tag we don't need the label class any more to style it. I leave it for compatibility with the CSS
                 self.out.write('<tr class="%s"><th scope="row" class="label">%s:</th> <td itemprop="%s">%s</td></tr>\n' % (attr, label.capitalize(), itemprop, xml.sax.saxutils.escape(text)))
             else:
-                self.out.write("<tr class='%s'><th scope="row" class='label'>%s:</th> <td>%s</td></tr>\n"%(attr, label.capitalize(), xml.sax.saxutils.escape(text)))
+                self.out.write('<tr class="%s"><th scope="row" class="label">%s:</th> <td>%s</td></tr>\n'%(attr, label.capitalize(), xml.sax.saxutils.escape(text)))
 
     def write_attr_foot (self):
         self.out.write("</table></aside>")
@@ -191,7 +193,7 @@ class html_exporter (exporter_mult):
 			# 	<caption>Ingredienti</caption>           # multi-language
 			# 	<thead>
 			# 	<tr>
-			# 		<th scope="col">quantità</th>        # multi-language
+			# 		<th scope="col">quantita'</th>        # multi-language
 			# 		<th scope="col">ingrediente</th>     # multi-language
 			# 	</tr>
 			# </thead>
@@ -246,7 +248,7 @@ class html_exporter (exporter_mult):
         return linkify(filename)
 
 class website_exporter (ExporterMultirec):
-    def __init__ (self, rd, recipe_table, out, conv=None, ext='htm', copy_css=True,
+    def __init__ (self, rd, recipe_table, out, conv=None, ext='html', copy_css=True, # AR changed to *.html
                   css=os.path.join(gglobals.style_dir,'default.css'),
                   imagedir='pics' + os.path.sep,
                   index_rows=['title','category','cuisine','rating','yields'],
@@ -299,8 +301,8 @@ class website_exporter (ExporterMultirec):
         else:
             self.indexf.write("<link rel='stylesheet' href='%s' type='text/css'>"%self.make_relative_link(self.css))
         self.indexf.write(HTML_HEADER_CLOSE)
-        self.indexf.write('<body>')
-        self.indexf.write('<div class="index"><table class="index">\n<tr>')
+        self.indexf.write('<body class="index">')
+        self.indexf.write('<table class="index">\n<tr>') # removed the DIV and moved its class to BODY
         for r in self.index_rows:
             self.indexf.write('<th class="%s">%s</th>'%(r,gglobals.REC_ATTR_DIC[r]))
         self.indexf.write('</tr>\n')
@@ -324,7 +326,7 @@ class website_exporter (ExporterMultirec):
         self.added_dict[rec.id]=filename
 
     def write_footer (self):
-        self.indexf.write('</table></div></body></html>')
+        self.indexf.write('</table></body></html>')
         self.indexf.close()
 
     def generate_link (self, id):
