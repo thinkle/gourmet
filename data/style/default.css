@@ -1,7 +1,14 @@
+html {
+    background-color: #ccc
+}
+
 body {
     /*font-size: 160%;*/
-    font:160% Georgia, "Times New Roman", Times, serif;
-line-height: 1.6;
+    font: 160% Georgia, "Times New Roman", Times, serif;
+    line-height: 1.6;
+    max-width: 40rem;
+    margin: 0 auto;
+    background-color: #fff;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -20,39 +27,34 @@ h1 {
 }
 
 h2 {
-    font-size: 1.8rem;
-}
-
-h3 {
-    font-size: 1.6rem;
-}
-
-h4 {
     font-size: 1.4rem;
 }
 
-h5 {
+h3 {
     font-size: 1.2rem;
 }
 
-h6 {
-    font-size: 1rem;
+p {
+    margin: 0;
+    padding: 0;
 }
-
-.instruction p+p, .modifications p+p {
+p+p {
     text-indent: 2rem;
+    margin: 0;
+    padding: 0;
 }
 
-div.recipe, div.index {
-    font-size: 1rem;
+div.recipe, div.index {}
+
+article {
+    font-size: 1.2rem;
     max-width: 45rem;
     margin: auto;
-    padding: 1em;
-    margin-top: 1em;
+    padding: 1rem;
+    margin-top: 1rem;
 }
 
-
-div.recipe img {
+figure {
     float: left;
     padding: .5rem;
     max-width: 30%;
@@ -63,122 +65,162 @@ span.label {
     font-weight: bold;
 }
 
-p.title {
-    font-size: 180%;
-    text-align: center;
+
+/*INDEX button*/
+nav {
+    display: inline-block;
+    width: auto;
+    float: right;
+}
+nav a {
+    font-family: verdana, sans-serif;
+    font-size: .8em;
     font-weight: 400;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin: .5em;
+    padding: 0 .3em;
+    color: white;
+    -webkit-border-radius: .3em;
+    -moz-border-radius: .3em;
+    border-radius: .3em;
+    background-color: rgba(125, 125, 125, 0.5);
 }
 
-p.title span.label {
-    /*display: none;*/
-     visibility: hidden;
+nav a:visited {
+    background-color: rgba(125, 125, 125, 0.5);
 }
 
-div.header p {
-    margin-top: 0;
-    margin-bottom: 0.2em;
+nav a:hover, nav a:focus {
+    background-color: rgba(125, 0, 100, 0.5);
 }
 
-div.ing {
+header {
+    /*display: block;
+  width: 100%;
+  position: fixed;*/
+    z-index: 100;
+    padding: 1em;
+    background-color: rgba(255, 255, 125, 0.5);
+    text-align: left;
+}
+
+aside {
+    text-align: center;
+}
+aside table {
+  border-collapse: collapse;
+  width: auto;
+  margin: auto;
+  background-color: pink;
+}
+aside tr, aside td, aside th {
+  margin: 0;
+  padding: 0;
+}
+aside td {
+    text-align: left;
+}
+
+aside th {
+    text-align: right;
+    padding-right: 1rem;
+}
+
+
+/*INGREDIENTS*/
+
+section.ing {
     /*padding: 1rem;
     margin: .5rem;*/
     border-top: solid 2px;
     border-bottom: solid 2px;
     margin: 1rem 0;
     padding: 1rem 0;
-
 }
 
-ul.ing {
-    margin: 0;
-    padding: 0;
+.ing li:nth-child(odd) {
+    background-color: #eee;
 }
-
-li.ing {
-    list-style: none;
-    border-top: 0.3em;
+.ing li:nth-child(even) {
+    background-color: #fff;
 }
-
 ul li {
     margin: 0;
     padding: 0;
     text-indent: 0;
 }
-
-.inggroup {
-    font-weight: bold;
+li.ing {
     list-style: none;
+    border-top: 0.3em;
 }
-
-.ing {
-    font-weight: normal;
-}
-
-.ing .inggroup {
-    margin-left: 2rem
-}
-
-.ing .inggroup .ing {
-    margin-left: -1rem
-}
-
-div.header {
-    display: table;
-    text-align: center;
-}
-
-div.header p {
-    display: table-row;
-}
-
-div.header p span {
-    display: table-cell;
-    text-align: left;
-}
-
-div.header p span.label {
-    text-align: right;
-    padding-right: 1rem;
-}
-
-div.header p.title {
-    display:table-header-group;
-    width: 100%;
-}
-
-div.header p.title span {
-    display: inline-block;
-    width: 100%;
-    text-align: right;
+ul.ing {
     margin: 0;
     padding: 0;
 }
 
-div.header p.title span.label {
-    width: 0%;
-    /*display: none;*/
-     visibility: hidden;
-     margin: 0; padding: 0;
+/*SUBGROUP*/
+.inggroup {
+    font-weight: bold;
+    list-style: none;
+    text-indent: 2rem;
+    background-color: transparent !important;
 }
+.inggroup .ing {
+    font-weight: normal;
+}
+
+/*INDEX styles*/
+
+.index tr:nth-child(odd) {
+    background-color: #eee;
+}
+.index table {
+  border-collapse: collapse;
+  position: relative;
+}
+.index th {
+  position: fixed;
+  display: table-cell;
+  display: inline-block;
+}
+
+/*DEBUG*/
+
+/*figure {
+    display: none;
+}*/
 
 @media print {
     * {
         color: black;
         background-color: white;
     }
-    div.recipe, div.index {
-        font-size: 10px;
+    body {
+      font-size: 12pt;
+    }
+    nav {
+        display: none;
+    }
+    .recipe, .index {
+        font-size: 10pt;
         max-width: 100%;
     }
-    div.ing {
+    .ing {
         border: none;
         margin: 0;
         padding: 0;
     }
-    div.recipe img {
+    figure {
         max-width: 4.5cm;
     }
-     a:link:after { content: " (" attr(href) ") "; }
-     @page {margin: 0.5cm;}
-
+    a:link:after {
+        content: " (" attr(href) ") ";
+    }
+    .ing li::before {content: "☐ "}
+    li.inggroup::before {content: ""}
+    .inggroup .ing  li::before {content: "☐ "}
+    @page {
+        margin: 0.5cm;
+    }
 }
