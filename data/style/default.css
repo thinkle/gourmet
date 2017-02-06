@@ -2,9 +2,6 @@
 
 /* this stylesheet is designed to work with the modified "html5" html_exporter.py by andrearicci
     unluckilly all the @media print statement at the end doesn't work when the CSS is embedded (single recipe export)
-                                                         */
-
-html {}
 
 body {
     /*font-size: 160%;*/
@@ -35,7 +32,6 @@ h2 {
 h3 {
     font-size: 1.2rem;
 }
-
 p {
     margin: 0;
     padding: 0;
