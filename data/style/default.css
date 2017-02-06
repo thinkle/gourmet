@@ -1,14 +1,15 @@
-html {
-    background-color: #ccc
-}
+@charset "UTF-8";
+
+/* this stylesheet is designed to work with the modified "html5" html_exporter.py by andrearicci
+    unluckilly all the @media print statement at the end doesn't work when the CSS is embedded (single recipe export)
+                                                         */
+
+html {}
 
 body {
     /*font-size: 160%;*/
     font: 160% Georgia, "Times New Roman", Times, serif;
     line-height: 1.6;
-    max-width: 40rem;
-    margin: 0 auto;
-    background-color: #fff;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -24,6 +25,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     font-size: 2rem;
+    margin-top: 0;
 }
 
 h2 {
@@ -38,39 +40,114 @@ p {
     margin: 0;
     padding: 0;
 }
+
 p+p {
     text-indent: 2rem;
     margin: 0;
     padding: 0;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+    /*font-family: verdana,sans-serif;*/
+    display: inline-block;
+    width: 100%;
+    font-style: italic;
+}
+
+aside a {
+    font-size: 1rem;
+}
+
+a:hover {
+    color: #fff;
+    background-color: #666;
+}
+
 div.recipe, div.index {}
 
 article {
     font-size: 1.2rem;
-    max-width: 45rem;
+    max-width: 80%;
     margin: auto;
     padding: 1rem;
     margin-top: 1rem;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
+    display: flex;
+    /* NEW, Spec - Opera 12.1, Firefox 20+ */
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    align-content: -content: space-between;
 }
 
-figure {
-    float: left;
-    padding: .5rem;
-    max-width: 30%;
-    height: auto;
+
+/*flexbox elements*/
+
+header {
+    width: 100%;
+    margin-top: 0;
 }
 
+figure {}
+
+aside {}
+
+section {}
+
+
+/*section.ing {width: 100%;}*/
+
+section.instructions {
+    width: 100%;
+    -webkit-column-gap: 3em;
+    /* Chrome, Safari, Opera */
+    -moz-column-gap: 3em;
+    /* Firefox */
+    column-gap: 3em;
+    -webkit-column-rule: 1px solid silver;
+    /* Chrome, Safari, Opera */
+    -moz-column-rule: 1px solid silver;
+    /* Firefox */
+    column-rule: 1px solid silver;
+    page-break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    -webkit-columns: 30rem 3;
+    -moz-columns: 30rem 3;
+    columns: 30rem 3;
+}
+
+
+}
+section.modifications {
+    width: 100%;
+}
+
+/**** Styling *****/
+figure {}
 span.label {
     font-weight: bold;
 }
 
-
 /*INDEX button*/
 nav {
-    display: inline-block;
+    /*display: inline-block;*/
+
     width: auto;
     float: right;
+    position: fixed;
+    right: 0;
+    margin-right: .5rem;
 }
 nav a {
     font-family: verdana, sans-serif;
@@ -86,59 +163,51 @@ nav a {
     border-radius: .3em;
     background-color: rgba(125, 125, 125, 0.5);
 }
-
 nav a:visited {
     background-color: rgba(125, 125, 125, 0.5);
 }
-
 nav a:hover, nav a:focus {
     background-color: rgba(125, 0, 100, 0.5);
 }
-
 header {
-    /*display: block;
-  width: 100%;
-  position: fixed;*/
+    width: 100%;
     z-index: 100;
     padding: 1em;
-    background-color: rgba(255, 255, 125, 0.5);
     text-align: left;
 }
-
 aside {
     text-align: center;
 }
 aside table {
-  border-collapse: collapse;
-  width: auto;
-  margin: auto;
-  background-color: pink;
+    border-collapse: collapse;
+    width: auto;
+    margin: auto;
+    text-align: center;
 }
 aside tr, aside td, aside th {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 aside td {
     text-align: left;
+    vertical-align: baseline;
 }
-
 aside th {
     text-align: right;
+    font-size: .8rem;
     padding-right: 1rem;
+    vertical-align: baseline;
 }
-
 
 /*INGREDIENTS*/
-
 section.ing {
     /*padding: 1rem;
-    margin: .5rem;*/
+    margin: .5rem;
     border-top: solid 2px;
-    border-bottom: solid 2px;
-    margin: 1rem 0;
-    padding: 1rem 0;
+    border-bottom: solid 2px;*/
+    /*margin: 1rem 0;
+    padding: 1rem 0;*/
 }
-
 .ing li:nth-child(odd) {
     background-color: #eee;
 }
@@ -171,55 +240,134 @@ ul.ing {
 }
 
 /*INDEX styles*/
-
+body.index {
+    text-align: center;
+    background-color: #fff;
+}
+.index table {
+    font-size: 1.2rem;
+    border-collapse: collapse;
+    position: relative;
+    text-align: left;
+    margin: auto;
+}
 .index tr:nth-child(odd) {
     background-color: #eee;
 }
-.index table {
-  border-collapse: collapse;
-  position: relative;
+.index td {
+    padding: 0 .6em;
+    vertical-align: baseline;
 }
-.index th {
-  position: fixed;
-  display: table-cell;
-  display: inline-block;
+.index thead tr {
+    position: sticky;
+    background-color: #fff !important;
+    font-variant: small-caps;
+}
+.index .category, .index .cuisine, .index .rating, .index .yields {
+    font-size: .8rem;
+}
+.index a:hover {
+    margin-left: -.8rem;
+    padding-left: .8rem;
 }
 
 /*DEBUG*/
+@media all and (max-width: 1200px) {
+    article {
+        -webkit-flex-flow: column wrap;
+        flex-flow: column wrap;
+        max-width: 90%;
+        width: 90%;
+    }
 
-/*figure {
-    display: none;
-}*/
+    section.ing {
+        width: 90%;
+        border-top: 2px dotted silver;
+        border-bottom: 2px dotted silver;
+        margin-top: 1rem;
+    }
+}
+@media all and (max-width: 800px) {
+    article {
+        -webkit-flex-flow: column wrap;
+        flex-flow: column wrap;
+        max-width: 100%;
+        width: 100%;
+    }
 
+    section.ing {
+        width: 100%;
+    }
+}
+
+/*PRINT STYLES*/
 @media print {
     * {
         color: black;
         background-color: white;
     }
-    body {
-      font-size: 12pt;
+
+    h1, h2, h3, h4, h5, h6 {
+        break-after: avoid;
     }
+
+    section {
+        break-inside: avoid;
+        widows: 3;
+        orphans: 3;
+    }
+
+    body {
+        font-size: 12pt;
+    }
+
     nav {
         display: none;
     }
+
     .recipe, .index {
         font-size: 10pt;
         max-width: 100%;
     }
+
     .ing {
         border: none;
         margin: 0;
         padding: 0;
     }
+
     figure {
         max-width: 4.5cm;
     }
+
+    a {
+        text-decoration: none;
+    }
+
     a:link:after {
         content: " (" attr(href) ") ";
     }
-    .ing li::before {content: "☐ "}
-    li.inggroup::before {content: ""}
-    .inggroup .ing  li::before {content: "☐ "}
+
+    .ing li::before {
+        content: "☐ "
+    }
+
+    li.inggroup::before {
+        content: ""
+    }
+
+    .inggroup .ing li::before {
+        content: "☐ "
+    }
+
+    .index tr {
+        border-bottom: .1pt dotted silver
+    }
+
+    .index a:link:after {
+        content: "";
+    }
+
     @page {
         margin: 0.5cm;
     }
