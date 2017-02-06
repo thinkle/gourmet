@@ -52,8 +52,10 @@ class html_exporter (exporter_mult):
         t=text.strip()
         #t=xml.sax.saxutils.escape(t)
         t="<p>%s</p>"%t
-        t=re.sub('\n\n+','</p><p>',t)
-        t=re.sub('\n','<br>',t)
+        # AR I want P and not break
+        # t=re.sub('\n\n+','</p><p>',t)
+        # t=re.sub('\n','<br>',t)
+        t=re.sub('\n+','</p><p>',t)
         return t
 
     def get_title (self):
@@ -134,9 +136,9 @@ class html_exporter (exporter_mult):
         if attr=='link':
             webpage = text.strip('http://')
             webpage = webpage.split('/')[0]
-            self.out.write('<a href="%s">'%text +
+            self.out.write('<tr><td colspan="2"><a href="%s">'%text +
                            _('Original Page from %s')%webpage +
-                           '</a>\n')
+                           '</a></td></tr>\n')
         elif attr == 'rating':
             rating, rest = text.split('/', 1)
             # AR with the TH tag we don't need the label class any more to style it. I leave it for compatibility with the CSS
@@ -302,10 +304,10 @@ class website_exporter (ExporterMultirec):
             self.indexf.write("<link rel='stylesheet' href='%s' type='text/css'>"%self.make_relative_link(self.css))
         self.indexf.write(HTML_HEADER_CLOSE)
         self.indexf.write('<body class="index">')
-        self.indexf.write('<table class="index">\n<tr>') # removed the DIV and moved its class to BODY
+        self.indexf.write('<table class="index">\n<thead>\n<tr>') # removed the DIV and moved its class to BODY
         for r in self.index_rows:
             self.indexf.write('<th class="%s">%s</th>'%(r,gglobals.REC_ATTR_DIC[r]))
-        self.indexf.write('</tr>\n')
+        self.indexf.write('</tr></thead>\n<tbody>\n')
 
     def recipe_hook (self, rec, filename, exporter):
         """Add index entry"""
@@ -326,7 +328,7 @@ class website_exporter (ExporterMultirec):
         self.added_dict[rec.id]=filename
 
     def write_footer (self):
-        self.indexf.write('</table></body></html>')
+        self.indexf.write('</tbody></table></body></html>')
         self.indexf.close()
 
     def generate_link (self, id):
