@@ -14,4 +14,3 @@ class Player:
 if __name__ == '__main__':
     p = Player()
     p.play_file('../data/sound/phone.wav')
-    
