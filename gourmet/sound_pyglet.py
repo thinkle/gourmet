@@ -2,7 +2,7 @@ import pyglet
 
 class Player:
     def __init__ (self):
-	pass
+        pass
 
     def play_file (self,path):
         self.player = pyglet.media.Player()
