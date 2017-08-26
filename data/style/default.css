@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 /* this stylesheet is designed to work with the modified "html5" html_exporter.py by andrearicci
-    unluckilly all the @media print statement at the end doesn't work when the CSS is embedded (single recipe export)
+    unluckilly all the @media print statement at the end doesn't work when the CSS is embedded (single recipe export)*/
 
 body {
     /*font-size: 160%;*/
