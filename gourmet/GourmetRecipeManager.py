@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 import os.path, os, re, threading, string
+try:
+    from gi import pygtkcompat
+except ImportError:
+    pygtkcompat = None
+
+if pygtkcompat is not None:
+    pygtkcompat.enable() 
+    pygtkcompat.enable_gtk(version='3.0')
+
 import gtk, gobject, gtk.gdk
 import batchEditor
 import recipeManager
