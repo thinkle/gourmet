@@ -147,7 +147,10 @@ class WebParser (InteractiveImporter):
         for char,tup in BeautifulSoup.UnicodeDammit.MS_CHARS.items():
             char = char.decode('iso-8859-1').encode('utf-8')
             if to_add.find(char) >= 0:
-                to_add = to_add.replace(char,unichr(long(tup[1],16)))
+                try:
+                    to_add = to_add.replace(char,unichr(long(tup[1],16)))
+                except ValueError:
+                    print("ValueError caught in add_buffer_to_parsed")
         self.parsed.append((to_add,self.last_label))
 
     def format_tag_whitespace (self, tag):

@@ -393,11 +393,11 @@ msgstr "Bewertung"
 
 #: ../ui/recCardDescriptionEditor.ui.h:17 ../gourmet/gglobals.py:89
 msgid "Yield"
-msgstr "E_rtrag"
+msgstr "Ertrag"
 
 #: ../ui/recCardDescriptionEditor.ui.h:18 ../gourmet/gglobals.py:90
 msgid "Yield Unit"
-msgstr "Einhe_it des Ertrags"
+msgstr "Einheit des Ertrags"
 
 #: ../ui/recCardDisplay.ui.h:1
 msgid "_Shop"
