@@ -80,7 +80,7 @@ class OptionTable (gtk.Table):
                 w.connect('toggled',lambda *args: self.emit('changed'))
                 if self.changedcb:
                     w.connect('toggled',self.changedcb)
-            elif type(v)==type(""):
+            elif type(v) in [type(""),type(u'')]:
                 w=gtk.Entry()
                 w.set_text(v)
                 self.widgets.append([w, 'get_text', 'set_text'])
@@ -129,7 +129,7 @@ class OptionTable (gtk.Table):
     def set_option (self, n, val):
         widget,get_method,set_method=self.widgets[n]
         self.options[n][1]=val
-        if type(set_method)==str:
+        if type(set_method) in [str,unicode]:
             getattr(widget,set_method)(val)
         else:
             set_method(widget,val)
