@@ -56,11 +56,11 @@ def fix_colnames (dict, *tables):
 def make_simple_select_arg (criteria,*tables):
     args = []
     for k,v in fix_colnames(criteria,*tables).items():
-        if type(v)==str:
+        if type(v) in [str,unicode]:
             v = unicode(v)
         if type(v)==tuple:
             operator,value = v
-            if type(value)==str:
+            if type(value) in [str,unicode]:
                 value = unicode(value)
             if operator=='in':
                 args.append(k.in_(value))
@@ -938,7 +938,7 @@ class RecData (Pluggable):
         try:
             to_del = []
             for k in new_values_dic:
-                if type(k) != str:
+                if type(k) not in [str,unicode]:
                     to_del.append(k)
             for k in to_del:
                 v = new_values_dic[k]
@@ -1031,7 +1031,7 @@ class RecData (Pluggable):
 
         Return True if r1 and r2 reference the same row in the database.
         """
-        return r1==r2
+        return r1 in [r2,unicode]
 
     def find_duplicates (self, by='recipe',recipes=None, include_deleted=True):
         """Find all duplicate recipes by recipe or ingredient.

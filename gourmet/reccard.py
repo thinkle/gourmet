@@ -666,7 +666,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
         infobar = gtk.InfoBar()
         infobar.set_message_type(gtk.MESSAGE_INFO)
         infobar.get_content_area().add(l)
-        infobar.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
+        infobar.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
         infobar.connect('response', lambda ib, response_id: self.messagebox.hide())
         self.messagebox.pack_start(infobar)
         self.messagebox.show_all()
@@ -2617,7 +2617,7 @@ class IngredientTreeUI:
         key=ingdict.get('ingkey',None)
         old_unit=ingdict.get('unit',None)
         old_amt=ingdict.get('amount',None)
-        if type(old_amt)==str:
+        if type(old_amt) in [str,unicode]:
             old_amt = convert.frac_to_float(old_amt)
         density=None
         conversion = self.rg.conv.converter(old_unit,new_unit,key)

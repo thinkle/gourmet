@@ -233,7 +233,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
         customunit = unit not in self.units
         e_qty = self.xmlDoc.createElement('quantity')
         if amount:
-            if type(amount)==str and amount.find('-')>=0:
+            if type(amount) in [string,unicode] and amount.find('-')>=0:
                 amount = amount.split('-')
             if isinstance(amount,tuple) or isinstance(amount,list) and len(amount)==2:
                 e_rng = self.xmlDoc.createElement('range')
@@ -271,7 +271,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
         return e_qty
 
     def n_element (self, n):
-        if type(n)==str: typ = string_to_number_type(n)
+        if type(n) in [str,unicode]: typ = string_to_number_type(n)
         elif type(n)==int: typ = 'int'
         elif type(n)==float: typ = 'float'
         else: raise TypeError("%s is not a number"%n)

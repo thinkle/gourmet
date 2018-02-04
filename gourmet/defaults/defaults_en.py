@@ -703,18 +703,19 @@ UNIT_GROUPS = {
                        ('oz',(0.25,32)),
                        ('lb',(0.25,None)),
                        ],
-    'imperial volume':[('drop',(0,3)),
-                       ('tsp',(0.125,5.9)),
-                       ('Tbs',(1,4)),
-                       ('c',(0.25,6)),
-                       ('pt',(1,1)),
-                       ('qt',(1,3)),
-                       ('gallon',(1,None)),
-                       ('peck',(1,2)),
-                       ('bucket',(1,2)),
-                       ('bushel',(1,None)),
-                       ('fl oz',(1,None)),
-                       ]
+    'imperial volume':[
+        #('drop',(0,3)),
+        ('tsp',(0.125,5.9)),
+        ('Tbs',(1,4)),
+        ('c',(0.25,8)),
+        #('pt',(1,1)),
+        #('qt',(1,3)),
+        ('gallon',(1,None)),
+        #('peck',(1,2)),
+        #('bucket',(1,2)),
+        #('bushel',(1,None)),
+        ('fl oz',(1,None)),
+        ]
     }
 
 

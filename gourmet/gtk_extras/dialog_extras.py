@@ -443,7 +443,7 @@ class PreferencesDialog (ModalDialog):
     """A dialog to get preferences from a user and return user preferences as a list."""
 
     def __init__ (self, options=([None,None]), option_label="Option",
-                  value_label="Value", default=True, label=None,
+                  value_label="Value", default=True, label=None, sublabel=False,
                   apply_func=None, parent=None, dont_ask_cb=None,
                   dont_ask_custom_text=None):
         """Options is a tuple of tuples where each tuple is ('option', VALUE), handed to OptionTable
@@ -459,12 +459,20 @@ class PreferencesDialog (ModalDialog):
         if apply_func: modal=False
         else: modal=True
         self.apply_func = apply_func
-        self.options = options
-        ModalDialog.__init__(self, okay=True, label=label, parent=parent, modal=modal)
+        self.options = options        
+        ModalDialog.__init__(self, okay=True, label=label, sublabel=sublabel, parent=parent, modal=modal)
         self.table = optionTable.OptionTable(options=self.options,
                                              option_label=option_label,
                                              value_label=value_label,
                                              changedcb=self.changedcb)
+        for widget_info in self.table.widgets:
+            widget = widget_info[0]
+            # Activating any widget activates the dialog...
+            try:
+                widget.connect('activate',self.okcb)
+            except TypeError:
+                # not all widgets have a signal -- no biggy
+                pass
         self.hbox = gtk.HBox(); self.hbox.show()
         self.hbox.add(self.table)
         self.vbox.add(self.hbox)
@@ -659,8 +667,8 @@ class SimpleFaqDialog (ModalDialog):
         We parse index lines according to self.INDEX_MATCHER
         """
         CLOSE=False
-        if type(infile)==str:
-            infile=open(infile)
+        if type(infile) in [str,unicode]:
+            infile=open(infile)            
             CLOSE=True
         self.index_lines = []
         self.index_dic={}
@@ -1163,7 +1171,7 @@ def get_ratings_conversion (*args,**kwargs):
 
 def show_amount_error (txt):
     """Show an error that explains how numeric amounts work."""
-    de.show_message(label=_("""I'm sorry, I can't understand
+    show_message(label=_("""I'm sorry, I can't understand
 the amount "%s".""")%txt,
                     sublabel=_("Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."),
                     expander=[_("_Details"),
@@ -1176,6 +1184,16 @@ should go in the separate "unit" field.
 To enter a range of numbers, use a "-" to separate them.
 For example, you could enter 2-4 or 1 1/2 - 3 1/2.
 """)])
+
+def getUsernameAndPassword (username='',pw='',label='Enter password', sublabel=False):
+    pd = PreferencesDialog(
+        label=label, sublabel=sublabel,
+        value_label=False, option_label=False,
+        options=[[_('Username'),username],[_('Password'),pw]]
+        )
+    pd.table.widgets[1][0].set_visibility(False) # Hide password :-)
+    pd.run()
+    return pd.options[0][1],pd.options[1][1]
 
 
 if __name__ == '__main__':
@@ -1216,6 +1234,7 @@ if __name__ == '__main__':
         ['get number', lambda *args: getNumber(label='Main label',sublabel='sublabel')],
         ['get long entry', lambda *args: getEntry(label='Main label', sublabel=char_measure, entryLabel='Entry Label: ',default_character_width=75,entryTip='Enter something long here.')],
         ['show boolean', lambda *args: getBoolean()],
+            ['get password',lambda *args: getUsernameAndPassword()],
         ['show custom boolean', lambda *args: getBoolean(custom_yes='_Replace',
                                                          custom_no=gtk.STOCK_CANCEL,
                                                          cancel=False

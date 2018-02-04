@@ -114,7 +114,7 @@ from the source directory.
 Requirements                               |Debian                |MacPorts            |Windows
 -------------------------------------------|----------------------|--------------------|---------------
 Python 2.7                                 |python                |python27            |http://www.python.org/
-PyGTK                                      |python-gtk2           |py27-gtk            |[all-in-one installer](http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/). Make sure to install PyGTK, PyGObject, PyCairo, and intltool.
+PyGTK                                      |python-gtk2           |py27-pygtk          |[all-in-one installer](http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/). Make sure to install PyGTK, PyGObject, PyCairo, and intltool.
 SQLAlchemy                                 |python-sqlalchemy     |py27-sqlalchemy     |http://www.sqlalchemy.org/download.html
 Pillow 2.x (Python Imaging Library Fork)   |python-imaging        |py27-Pillow         |https://pypi.python.org/pypi/Pillow/
 elib.intl                                  |python-elib.intl      |py27-elib.intl      |http://github.com/dieterv/elib.intl/zipball/master

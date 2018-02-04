@@ -199,14 +199,14 @@ class exporter (SuspendableThread, Pluggable):
                 # this 'if' ought to be unnecessary, but is kept around
                 # for db converting purposes -- e.g. so we can properly
                 # export an old DB
-                if ret and type(ret)!=str:
+                if ret and type(ret) not in [str,unicode]:
                     ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
-            elif attr=='rating' and ret and type(ret)!=str:
+            elif attr=='rating' and ret and type(ret) not in [str,unicode]:
                 if ret/2==ret/2.0:
                     ret = "%s/5 %s"%(ret/2,_('stars'))
                 else:
                     ret = "%s/5 %s"%(ret/2.0,_('stars'))
-            elif attr=='servings' and type(ret)!=str:
+            elif attr=='servings' and type(ret) not in [str,unicode]:
                 ret = convert.float_to_frac(ret,fractions=self.fractions)
             elif attr=='yields':
                 ret = convert.float_to_frac(ret,fractions=self.fractions)
@@ -513,9 +513,9 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                 # this 'if' ought to be unnecessary, but is kept around
                 # for db converting purposes -- e.g. so we can properly
                 # export an old DB
-                if ret and type(ret)!=str:
+                if ret and type(ret) not in [str,unicode]:
                     ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
-            elif attr=='rating' and ret and type(ret)!=str:
+            elif attr=='rating' and ret and type(ret) not in [str,unicode]:
                 if ret/2==ret/2.0:
                     ret = "%s/5 %s"%(ret/2,_('stars'))
                 else:
@@ -531,7 +531,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
     def append_referenced_recipes (self):
         for r in self.recipes[:]:
             reffed = self.rd.db.execute(
-                'select * from ingredients where recipe_id=? and refid is not null',r.id
+                'select * from ingredients where recipe_id=%s and refid is not null' % r.id
                 )
             for ref in reffed:
                 rec = self.rd.get_rec(ref.refid)
@@ -550,10 +550,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                     self.outdir=self.unique_name(self.outdir)
                     os.makedirs(self.outdir)
             else: os.makedirs(self.outdir)
-
-        oneFileOpenByMyself = self.one_file and type(self.out)==str and self.open_files
-        multiFileOpenByMyself = not self.one_file and self.open_files
-
+        oneFileOpenByMyself = self.one_file and type(self.out) not in [str,unicode] and self.open_files
         if oneFileOpenByMyself:
             self.ofi=open(self.out,'wb')
         else: self.ofi = self.out

@@ -261,7 +261,7 @@ class ThreadManagerGui:
     def notification_thread_done(self, thread, message):
         infobox = gtk.InfoBar()
         infobox.set_message_type(gtk.MESSAGE_INFO)
-        infobox.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
+        infobox.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
         infobox.connect('response', lambda ib, response_id: ib.hide())
         infobox.show_all()
         self.messagebox.pack_start(infobox)
@@ -313,7 +313,7 @@ class ThreadManagerGui:
 
     def thread_done (self, thread, threadbox):
         for b in threadbox.get_action_area().get_children(): b.hide()
-        threadbox.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
+        threadbox.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
         threadbox.connect('response', lambda ib, response_id: ib.hide())
         self.to_remove.append(threadbox)
         pb = threadbox.get_content_area().get_children()[0].get_children()[1]
