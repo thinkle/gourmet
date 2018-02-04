@@ -1,4 +1,3 @@
-# This is a basic
 import BeautifulSoup
 from gourmet.importers.generic_recipe_parser import RecipeParser
 from gourmet.importers.interactive_importer import InteractiveImporter
@@ -9,7 +8,7 @@ import re, urllib
 class WebParser (InteractiveImporter):
 
     BREAK_AROUND = ['p','title','h1','h2','h3','h4','h5','h6',
-                    'table','p','blockquote','title','div']
+                    'table','p','blockquote','title','div','section','header','footer','nav']
     IS_BREAK = ['br']
     NESTED = {'tr':['table'],
               'li':['ol','ul'],
@@ -33,8 +32,6 @@ class WebParser (InteractiveImporter):
         self.ignore_unparsed = False
         self.url = url
         #self.name = 'Web Parser'
-        print "HERE's the data we got:", data
-        print "END DATA"
         self.soup = BeautifulSoup.BeautifulSoup(data,
                                                 convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
                                                 )
@@ -108,11 +105,8 @@ class WebParser (InteractiveImporter):
                 if self.buffer:
                     self.add_buffer_to_parsed()
                 self.last_label = label
-            #print 'ADD TO BUFFER:',tag.string
             if hasattr(tag,'string'):
                 self.buffer += self.reduce_whitespace(tag.string or '')
-            #else:
-            #    print 'Ignoring tag',tag
         if end_ws: self.buffer += end_ws
         return label
 
