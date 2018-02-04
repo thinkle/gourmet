@@ -36,7 +36,7 @@ msgstr "Ajouter à la liste des courses"
 
 #: ../ui/app.ui.h:4 ../ui/recipe_index.ui.h:4
 msgid "View Re_cipe"
-msgstr "Voir la recette"
+msgstr "Voir la re_cette"
 
 #: ../ui/app.ui.h:5 ../ui/recipe_index.ui.h:15
 #: ../gourmet/plugins/key_editor/keyeditor.ui.h:2
@@ -346,7 +346,7 @@ msgstr "Demander s’il faut inclure les ingrédients facultatifs"
 
 #: ../ui/preferenceDialog.ui.h:16
 msgid "_Remember user selections by default"
-msgstr "_Se souvenir des sélections de l’utilisateur par défaut"
+msgstr "_Se souvenir des sélections de l’utilisateur⋅trice par défaut"
 
 #: ../ui/preferenceDialog.ui.h:17
 msgid "_Clear remembered optional ingredients"
@@ -637,7 +637,7 @@ msgstr "<i>Temps écoulé !</i>"
 msgid ""
 "Timer will continue to go off until you close this dialog or reset the timer."
 msgstr ""
-"La minuterie continuera de sonner jusqu'à ce que vous fermiez ce dialogue ou "
+"Le minuteur continuera de sonner jusqu'à ce que vous fermiez ce dialogue ou "
 "que que vous redémarriez le minuteur."
 
 #: ../ui/timerDialog.ui.h:5
@@ -866,15 +866,15 @@ msgstr ""
 
 #: ../gourmet/GourmetRecipeManager.py:391
 msgid "Donate via PayPal"
-msgstr ""
+msgstr "Faire une donation avec Paypal"
 
 #: ../gourmet/GourmetRecipeManager.py:393
 msgid "Micro-donate via Flattr"
-msgstr ""
+msgstr "Faire une micro-donation avec Flattr"
 
 #: ../gourmet/GourmetRecipeManager.py:395
 msgid "Donate weekly via Gittip"
-msgstr ""
+msgstr "Faire une donation hebdomadaire avec Gittip"
 
 #: ../gourmet/GourmetRecipeManager.py:423
 msgid "Saved!"
@@ -1128,11 +1128,11 @@ msgid_plural ""
 "permanently delete them at any time by clicking Tools->Open Trash"
 msgstr[0] ""
 "Vous avez placé %s recette à la corbeille. Vous pouvez restaurer cette "
-"recette ou la supprimer définitivement à tout moment en cliquant sur Outil ▸ "
+"recette ou la supprimer définitivement à tout moment en cliquant sur Outils ▸ "
 "Ouvrir la corbeille"
 msgstr[1] ""
 "Vous avez placé %s recettes à la corbeille. Vous pouvez restaurer ces "
-"recettes ou les supprimer définitivement à tout moment en cliquant sur Outil "
+"recettes ou les supprimer définitivement à tout moment en cliquant sur Outils "
 "▸ Ouvrir la corbeille"
 
 #: ../gourmet/GourmetRecipeManager.py:1237
@@ -1155,16 +1155,16 @@ msgstr "Supprimer définitivement la recette ?"
 #: ../gourmet/GourmetRecipeManager.py:1248
 #, python-format
 msgid "Are you sure you want to delete the recipe <i>%s</i>"
-msgstr "Êtes-vous sûr de vouloir supprimer la recette <i>%s</i>"
+msgstr "Êtes-vous sûr⋅e de vouloir supprimer la recette <i>%s</i>"
 
 #: ../gourmet/GourmetRecipeManager.py:1250
 msgid "Are you sure you want to delete the following recipes?"
-msgstr "Êtes-vous sûr de vouloir supprimer les recettes suivantes ?"
+msgstr "Êtes-vous sûr⋅e de vouloir supprimer les recettes suivantes ?"
 
 #: ../gourmet/GourmetRecipeManager.py:1254
 #, python-format
 msgid "Are you sure you want to delete the %s selected recipes?"
-msgstr "Êtes-vous sûr de vouloir supprimer les %s recettes sélectionnées ?"
+msgstr "Êtes-vous sûr⋅e de vouloir supprimer les %s recettes sélectionnées ?"
 
 #: ../gourmet/GourmetRecipeManager.py:1256
 msgid "See recipes"
@@ -1177,16 +1177,16 @@ msgstr "Supprimer les recettes"
 #: ../gourmet/GourmetRecipeManager.py:1264
 #, fuzzy
 msgid "Recipes deleted"
-msgstr "Index des recettes"
+msgstr "Recettes supprimées"
 
 #: ../gourmet/GourmetRecipeManager.py:1291
 #, python-format
 msgid "Deleted recipe %s"
-msgstr "Supprimer la recette %s"
+msgstr "Recette supprimée %s"
 
 #: ../gourmet/GourmetRecipeManager.py:1318
 msgid "See Trash Now"
-msgstr ""
+msgstr "Voir la corbeille"
 
 #: ../gourmet/GourmetRecipeManager.py:1357
 msgid "Done!"
@@ -1609,7 +1609,7 @@ msgstr ""
 msgid ""
 "Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
 msgstr ""
-"Les quantités doivent êtres des nombres (fractions ou décimales), plages de "
+"Les quantités doivent être des nombres (fractions ou décimales), plages de "
 "valeurs ou rien."
 
 #: ../gourmet/gtk_extras/dialog_extras.py:1163
@@ -1663,7 +1663,7 @@ msgstr "rendement"
 #: ../gourmet/importers/webextras.py:21 ../gourmet/importers/webextras.py:83
 #, python-format
 msgid "Retrieving %s"
-msgstr "Chargement de  %s en cours"
+msgstr "Chargement de %s en cours"
 
 #: ../gourmet/importers/html_importer.py:44
 #: ../gourmet/importers/webextras.py:86
@@ -2446,7 +2446,7 @@ msgstr "Importation de fichier texte brut"
 msgid ""
 "Help user mark up and import plain text. Also provides plain text export."
 msgstr ""
-"Aide l’utilisateur à baliser et importer des fichiers au format texte brut. "
+"Aide l’utilisateur⋅trice à baliser et importer des fichiers au format texte brut. "
 "Permet aussi l’exportation en fichier texte brut."
 
 #: ../gourmet/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:5
@@ -3510,7 +3510,7 @@ msgstr "g d’acides gras mono-insaturés"
 
 #: ../gourmet/plugins/nutritional_information/parser_data.py:54
 msgid "g Polyunsaturated Fatty Acids"
-msgstr "g d’acides gras insaturés"
+msgstr "g d’acides gras poly-insaturés"
 
 #: ../gourmet/plugins/nutritional_information/parser_data.py:55
 msgid "mg Cholesterol"
@@ -3885,7 +3885,7 @@ msgstr "Exporter la recette"
 #: ../gourmet/reccard.py:577
 #, python-format
 msgid "Recipe successfully exported to <a href=\"file:///%s\">%s</a>"
-msgstr ""
+msgstr "Recette exportée vers <a href=\"file:///%s\">%s</a> avec succès"
 
 #: ../gourmet/reccard.py:612
 msgid "You have unsaved changes."
@@ -3897,7 +3897,7 @@ msgstr "Appliquer les modifications avant l’impression ?"
 
 #: ../gourmet/reccard.py:726 ../gourmet/recipeIdentifier.py:93
 msgid "(Optional)"
-msgstr "(Falcutatif)"
+msgstr "(Facultatif)"
 
 #: ../gourmet/reccard.py:781
 #, python-format
@@ -3970,7 +3970,7 @@ msgstr "Choisir un fichier contenant votre liste d’ingrédients."
 #: ../gourmet/reccard.py:1415
 #, python-format
 msgid "Couldn't make sense of %s as number of yields"
-msgstr "Impossible de comprendre %s comme nombre d’un rendement"
+msgstr "Impossible de comprendre %s comme étant un nombre de portions"
 
 #: ../gourmet/reccard.py:2163 ../gourmet/reccard.py:2190
 msgid "Amt"
@@ -4326,9 +4326,9 @@ msgid ""
 "timer, or you can just close the window. If you close the window, it will "
 "reappear when your timer goes off."
 msgstr ""
-"Vous allez fermer une fenêtre avec une minuterie actif. Vous pouvez arrêter "
-"la minuterie ou juste fermer la fenêtre. Si vous fermez la fenêtre, elle "
-"réapparaîtra quand la minuterie se terminera."
+"Vous allez fermer une fenêtre avec un minuteur actif. Vous pouvez arrêter "
+"le minuteur ou juste fermer la fenêtre. Si vous fermez la fenêtre, elle "
+"réapparaîtra quand le minuteur se terminera."
 
 #: ../gourmet/timer.py:194
 msgid "Stop _timer"
@@ -4389,7 +4389,7 @@ msgstr "R.S. Born (améliorations de l'exportation vers Mealmaster)"
 
 #: ../gourmet/version.py:39
 msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
-msgstr "ixat <ixat.deviantart.com> (logo et écran de démarage)"
+msgstr "ixat <ixat.deviantart.com> (logo et écran de démarrage)"
 
 #: ../gourmet/version.py:40
 msgid "Yula Zubritsky (nutrition and add-to-shopping list icons)"
@@ -4414,11 +4414,11 @@ msgstr ""
 
 #: ../gourmet/version.py:44
 msgid "Nyall Dawson (cookie icon)"
-msgstr ""
+msgstr "Nyall Dawson (icône du cookie)"
 
 #: ../gourmet/version.py:45
 msgid "Kati Pregartner (splash screen image)"
-msgstr ""
+msgstr "Kati Pregartner (image de démarrage)"
 
 #~ msgid "_Servings"
 #~ msgstr "_Portions"

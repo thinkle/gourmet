@@ -37,7 +37,7 @@ fields={'cuisine': ['Américaine','Italienne','Mexicaine'
         'rating' : ['5 - Excellent','4 - Très bon','3 - Bon','2 - Moyen','1 - Mauvais','(non-testé)'],
         'source' : [],
         'category' : ['Dessert','Entrée','Salade','Soupe',
-                      'Petit-déjeuné'],
+                      'Petit-déjeuner'],
                   }
 
 # In English, there are a heck of a lot of synonyms. This is a list
