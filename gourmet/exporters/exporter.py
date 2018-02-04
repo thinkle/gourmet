@@ -523,7 +523,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
     def append_referenced_recipes (self):
         for r in self.recipes[:]:
             reffed = self.rd.db.execute(
-                'select * from ingredients where recipe_id=? and refid is not null',r.id
+                'select * from ingredients where recipe_id=%s and refid is not null' % r.id
                 )
             for ref in reffed:
                 rec = self.rd.get_rec(ref.refid)
