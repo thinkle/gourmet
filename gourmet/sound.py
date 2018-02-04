@@ -1,6 +1,7 @@
 try:
     from sound_pyglet import Player
 except ImportError:
+    print 'No pyglet player'
     try:
         from sound_gst import Player
     except ImportError:
