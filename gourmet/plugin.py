@@ -60,6 +60,16 @@ class ImportManagerPlugin (StandardPlugin):
     
     In order to add importers, subclass ImporterPlugin, not this class.
     '''
+
+    url_needs_login_patterns = {
+        # Glob patterns for URLs w/ method that will do log in for us...
+        # i.e.
+        # '.*nytimes.com.*' : read_nytimes_url
+        # where do_nytimes_login is a function that takes the URL
+        # and does the login necessarily to grab it...
+    } 
+
+
     pass
     
 class ImporterPlugin (StandardPlugin): 
