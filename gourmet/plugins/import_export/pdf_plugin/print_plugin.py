@@ -1,6 +1,6 @@
 import gtk
 import sys
-if sys.platform != "win32":
+if sys.platform not in ["win32",'darwin']:
     import poppler
 import os.path
 import pdf_exporter
@@ -17,6 +17,17 @@ rl2gtk_papersizes = {
     tuple([int(round(s)) for s in pagesizes.A4]):gtk.PAPER_NAME_A4,
     tuple([int(round(s)) for s in pagesizes.A3]):gtk.PAPER_NAME_A3,
     }
+
+class OSXPDFPrinter:
+    def setup_printer (self, parent=None):
+        self.args = pdf_exporter.get_pdf_prefs()
+        self.begin_print(None, None)
+
+    def set_document (self, filename, operation,context):
+        import os
+        os.popen('open '+filename)
+
+
 
 class WindowsPDFPrinter:
 
@@ -102,6 +113,8 @@ class PDFPrinter:
 
 if sys.platform == "win32":
     PDFPrinter = WindowsPDFPrinter
+elif sys.platform == 'darwin':
+    PDFPrinter = OSXPDFPrinter
 
 def record_args (func):
     
