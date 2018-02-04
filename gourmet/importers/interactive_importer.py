@@ -89,7 +89,8 @@ class ConvenientImporter (importer.Importer):
         By default, there is one ingredient per line of text."""
         txt=txt.strip()
         for i in txt.split(break_at):
-            self.add_ing_from_text(i.strip())
+            if (i.strip()):
+                self.add_ing_from_text(i.strip())
 
 class InteractiveImporter (ConvenientImporter, NotThreadSafe):
 
