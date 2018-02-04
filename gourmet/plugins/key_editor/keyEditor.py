@@ -345,6 +345,8 @@ class KeyEditor:
                     try:
                         newdic[k]=convert.frac_to_float(txt)
                     except:
+                        print 'Problem with amount:',txt
+                        import traceback; traceback.print_exc()
                         de.show_amount_error(txt)
                         return
                 else:
