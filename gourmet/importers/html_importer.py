@@ -34,7 +34,7 @@ def read_socket_w_progress (socket, progress, message):
 
 def get_url (url, progress):
     """Return data from URL, possibly displaying progress."""
-    if type(url)==str:
+    if type(url) in [str,unicode]:
         socket.setdefaulttimeout(URLOPEN_SOCKET_TIMEOUT)
         sock = urllib.urlopen(url)
         socket.setdefaulttimeout(DEFAULT_SOCKET_TIMEOUT)
@@ -356,7 +356,7 @@ def get_image_from_tag (iurl, page_url):
     return retval
 
 def scrape_url (url, progress=None):
-    if type(url)==str: domain=url.split('/')[2]
+    if type(url) in [str,unicode]: domain=url.split('/')[2]
     if SUPPORTED_URLS.has_key(domain):
         bss = BeautifulSoupScraper(SUPPORTED_URLS[domain])
     else:
