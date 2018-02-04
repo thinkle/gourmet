@@ -122,7 +122,7 @@ class PreferencesGui (plugin_loader.Pluggable):
                 act,act_args=('set_active',value)
                 widg=action[1]
             # in the future, we can handle Entries, etc...
-            if type(widg)==str:
+            if type(widg) in [str,unicode]:
                 widg=self.ui.get_object(widg)
             getattr(widg,act)(act_args)
             self.update_sensitivity_for_pref(pref,value)
@@ -209,8 +209,8 @@ class PreferencesGui (plugin_loader.Pluggable):
 
     def add_widget (self, target_widget, child_widget):
         """Add child_widget to target_widget"""
-        if type(target_widget)==str: target_widget=self.ui.get_object(target_widget)
-        if type(child_widget)==str: child_widget=self.ui.get_object(child_widget)
+        if type(target_widget) in [str,unicode]: target_widget=self.ui.get_object(target_widget)
+        if type(child_widget) in [str,unicode]: child_widget=self.ui.get_object(child_widget)
         target_widget.add(child_widget)
         target_widget.show_all()
 
