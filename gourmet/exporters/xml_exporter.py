@@ -8,7 +8,7 @@ class XmlExporter (exporter_mult):
     #doc_element = 'rec'
     #doctype_desc = ''
     #dtd_path = ''
-    
+
     def __init__ (self, rd, r, out,
                   order=['attr','image','ings','text'],
                   xmlDoc=None,
@@ -42,7 +42,7 @@ class XmlExporter (exporter_mult):
         a = self.xmlDoc.createAttribute(attribute)
         element.setAttributeNode(a)
         element.setAttribute(attribute,value)
-        
+
     def append_text (self, element, text):
         try:
             assert(type(text) in types.StringTypes)
@@ -57,7 +57,7 @@ class XmlExporter (exporter_mult):
             print 'FAILED WHILE WORKING ON ',element
             print 'TRYING TO APPEND',text[:100]
             raise
-            
+
     def create_text_element (self, element_name, text, attrs={}):
         element = self.create_element_with_attrs(element_name,attrs)
         self.append_text(element,text)

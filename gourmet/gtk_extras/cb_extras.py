@@ -30,7 +30,7 @@ def cb_get_active_text (combobox):
     active = combobox.get_active()
     if active < 0:
         return None
-    return model[active][0] 
+    return model[active][0]
 
 def cb_set_active_text (combobox, text, col=0):
     """Set the active text of combobox to text. We fail
@@ -78,7 +78,7 @@ class setup_typeahead:
             if type(match) == type(0):
                 self.cb.set_active(match)
                 self.string = newstr
-        if type(match)==type(0): 
+        if type(match)==type(0):
             if self.last_timeout: gobject.source_remove(self.last_timeout)
             self.last_timeout=gobject.timeout_add(self.typeahead_timeout, self.reset_str)
 
@@ -93,7 +93,7 @@ class setup_typeahead:
             if modstr.lower().find(str.lower()) == 0:
                 return n
             n += 1
-            
+
 
 def setup_completion (cbe, col=0):
     """Setup an EntryCompletion on a ComboBoxEntry based on the
@@ -114,7 +114,7 @@ def make_completion (entry, model, col=0):
             print 'Using its child, ',entry,'instead.'
         else:
             print 'WARNING: ',entry,'is not a GTK Entry'
-            traceback.print_stack(limit=3)            
+            traceback.print_stack(limit=3)
             return
     completion = gtk.EntryCompletion()
     completion.set_model(model)
@@ -143,7 +143,7 @@ def set_model_from_list (cb, list, expand=True):
         model.append([l])
     cb.set_model(model)
     if type(cb) == gtk.ComboBoxEntry:
-        cb.set_text_column(0)        
+        cb.set_text_column(0)
         setup_completion(cb)
     elif type(cb) == gtk.ComboBox:
         cb.clear()
@@ -167,7 +167,7 @@ if __name__ == '__main__':
                               'Papaya','Plantain','Kiwi','Cherry',
                               'Bananas'])
     hbox.add(label)
-    hbox.add(cbe)    
+    hbox.add(cbe)
     vb.add(gtk.Label("""Here's an EntryCompletion widget automatically
     in sync with the ComboBoxEntry widget. Hitting return will select
     the first item in the EntryCompletion popup window."""))
@@ -196,5 +196,5 @@ if __name__ == '__main__':
     w.show_all()
     w.connect('destroy',lambda *args: gtk.main_quit())
     gtk.main()
-    
-    
+
+

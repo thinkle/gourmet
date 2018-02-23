@@ -56,7 +56,7 @@ class RecipeParser:
 
     ATTRIBUTES = ['servings',
                   'category',
-                  'cuisine',                  
+                  'cuisine',
                   'rating',
                   'source',
                   'ignore',
@@ -72,7 +72,7 @@ class RecipeParser:
                ('by','source'),
                ('yield','yields'),
                ('notes','modifications'),
-               ('note','modifications'),               
+               ('note','modifications'),
                ]
 
     IGNORE_ON_OWN = ['instructions','ingredients','directions']
@@ -85,7 +85,7 @@ class RecipeParser:
     def __init__ (self):
         self.title_parsed = False
         self.make_rules()
-    
+
     #INGREDIENT = 'ING'
     #INSTRUCTIONS = 'INSTRUCTIONS'
     #ATTRIBUTE = 'ATT'
@@ -130,7 +130,7 @@ class RecipeParser:
                     'num':convert.NUMBER_REGEXP
                     },re.IGNORECASE),
                 parse_yield
-                ]] + self.rules                    
+                ]] + self.rules
 
     def break_into_paras (self):
         self.long_lines = False
@@ -144,7 +144,7 @@ class RecipeParser:
             # Try to deal with wrapped lines reasonably...
             self.paras = []
             start_new_para = True
-            for l in self.txt.split('\n'):                
+            for l in self.txt.split('\n'):
                 if start_new_para or self.ing_matcher.match(l):
                     self.paras.append(l)
                     if len(l) > self.SHORT_LINE: start_new_para = False
@@ -181,7 +181,7 @@ class RecipeParser:
                                 proced = parse_group(
                                     m, p, postproc, attr
                                     )
-                                if not proced:                                    
+                                if not proced:
                                     continue
                             else:
                                 proced = postproc(m,p,attr)
@@ -240,7 +240,7 @@ This is a test recipe. I hope it is really good.
 This recipe serves 8
 Category: dessert, quick, snack
 Cuisine: Classic American!
-Yield: 2 cups        
+Yield: 2 cups
 
    1 tbs. milk
    3 tbs. unsweetened bakers chocolate
@@ -250,7 +250,7 @@ Yield: 2 cups
    1 c. milk
 
    2 tbs. whipped cream (for garnish)
-        
+
    Mix the first four ingredients together into a thick slurry.
    Add the milk. Heat and stir.
 

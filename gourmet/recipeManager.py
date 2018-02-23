@@ -12,7 +12,7 @@ if not dbargs.has_key('file'):
 if args.db_url:
     print 'We have a db_url and it is,',args.db_url
     dbargs['custom_url'] = args.db_url
-    
+
 
 from backends.db import RecData, RecipeManager, dbDic
 
@@ -28,7 +28,7 @@ class DatabaseShopper (shopping.Shopper):
         #self.cnv = DatabaseConverter(self.db)
         if not self.cnv:
             self.cnv = convert.get_converter()
-    
+
     def init_orgdic (self):
         self.orgdic = dbDic('ingkey','shopcategory',self.db.shopcats_table,db=self.db)
         if len(self.orgdic.items())==0:
@@ -70,7 +70,7 @@ class SimpleCLI:
             inp = raw_input('GRM>')
             if inp == 'quit' or inp == '' or inp == '':
                 break
-            else:                    
+            else:
                 try:
                     print 'result: %s'%eval(inp)
                 except:

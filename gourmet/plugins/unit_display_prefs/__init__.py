@@ -15,7 +15,7 @@ class UnitDisplayPlugin (ToolPlugin):
 
     def __init__ (self):
         ToolPlugin.__init__(self)
-    
+
     def activate (self, pluggable):
         if isinstance (pluggable, RecCardDisplay):
             self.reccards.append(pluggable)
@@ -32,7 +32,7 @@ class UnitDisplayPlugin (ToolPlugin):
 
     def show_converter_dialog (self, *args):
         unit_prefs_dialog.UnitPrefsDialog(self.reccards).run()
-        
+
 class UnitDisplayDatabasePlugin (DatabasePlugin):
 
     def activate (self, db):
@@ -42,5 +42,5 @@ class UnitDisplayDatabasePlugin (DatabasePlugin):
         kwargs['preferred_unit_groups'] = get_prefs().get('preferred_unit_groups',[])
         return args,kwargs
 
-    
+
 plugins = [UnitDisplayPlugin, UnitDisplayDatabasePlugin]

@@ -76,4 +76,4 @@ def tarball_to_filelist (fi, progress=None, name="zipfile"):
         fi_info = tb.next()
     debug('tarball_to_filelist returning %s'%filist,0)
     return filist
-        
+

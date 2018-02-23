@@ -20,7 +20,7 @@ class NutritionPrefs (PrefsPlugin):
         self.include_tb.set_active(self.prefs.get(includep,True))
         self.partial_tb.set_active(self.prefs.get(partialp,False))
         self.include_tb.connect('toggled',self.toggle_cb)
-        self.partial_tb.connect('toggled',self.toggle_cb)        
+        self.partial_tb.connect('toggled',self.toggle_cb)
         self.widget.pack_start(self.include_tb, expand=False, fill=False)
         self.widget.pack_start(self.partial_tb, expand=False, fill=False)
         self.widget.set_border_width(12)

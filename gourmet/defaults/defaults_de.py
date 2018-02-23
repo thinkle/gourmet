@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# we set up default information for our locale. 
+# we set up default information for our locale.
 # Translators should use this file as the basis of their translation.
 # Copy this file and rename it for you locale.
 #
@@ -12,13 +12,13 @@
 # Please fill in the below fields:
 
 # Language: Deutsch (German)
-# Translator: 
+# Translator:
 # Last-updated: 2005-01-15 (07/18/05)
 
 CREDITS = u""
 
 #The next line can be used to determine some things about how to handle this language
-LANG_PROPERTIES={'hasAccents':True, 'capitalisedNouns':True,'useFractions':False} 
+LANG_PROPERTIES={'hasAccents':True, 'capitalisedNouns':True,'useFractions':False}
 
 
 # TRANSLATOR WARNING: DO NOT TRANSLATE THE FIELD NAMES: ONLY THE VALUES!!!
@@ -55,7 +55,7 @@ fields={'cuisine': ['deutsch', 'amerikanisch','italienisch','französisch',
 # set this to:
 # SYNONYMS=[]
 
-# note from translator: some terms are not standard but used in common langugage, some are used in a fautive manner, 
+# note from translator: some terms are not standard but used in common langugage, some are used in a fautive manner,
 # I decided to put them in different sections so it is still clear what is a synonym and what should not be a synonym.
 SYNONYMS=[
     # the first item of each list is the default
@@ -78,8 +78,8 @@ SYNONYMS=[
     [u"Weizenmehl",u"Mehl, weiß"],
     [u"Soja-Milch",u"Sojamilch",u"Soya-Milch", u"Soja Milch"],
     [u"Soja-Sauce", u"sauce soja",u"sauce soya",u"Soya-Sauce",u"Sojasoße", u"Sojasosse"],
-    [u"Soja",u"Soya"], 
-    [u"Sojabohnen",u"Soyabohnen"], 
+    [u"Soja",u"Soya"],
+    [u"Sojabohnen",u"Soyabohnen"],
     [u"Püree",u"Kartoffelpüree"],
     [u"Müsli",u"Muesli"],
     [u"Nudeln",u"Pasta"],
@@ -91,7 +91,7 @@ SYNONYMS=[
     [u"Hühnerbouillon",u"Hühnerbrühe"],
     [u"Muskat",u"Muskatnuss",u"Muscat",u"Muscatnuss"],
     [u"Sesammus",u"Tahin"],
-    [u"Brokkoli", u"Broccoli"], 
+    [u"Brokkoli", u"Broccoli"],
     [u"Kräuter",u"gemischte Kräuter"],
     [u"Langkornreis",u"Reis"],
     [u"Eierschwammerl",u"Pfifferlinge"],
@@ -105,7 +105,7 @@ SYNONYMS=[
     [u"Eier",u"Ei"]
 
     #non-standard usage
- 
+
     #fautive/discouraged usages
      ]
 
@@ -152,7 +152,7 @@ AMBIGUOUS = {
 # can send me a list of category headings and ingredients for your
 # locale and I'll do the necessary formatting <Thomas_Hinkle@alumni.brown.edu>
 
-INGREDIENT_DATA = [  ## G e m ü s e  
+INGREDIENT_DATA = [  ## G e m ü s e
 		   [u"Alfaalfa",u"Alfalfa",u"Gemüse"],                 			#alfalfa sprouts
                    [u"Anis",u"Anis",u"Gemüse"],                       			#anise
                    [u"Artischocke",u"Artischocke",u"Gemüse"],				#artichoke
@@ -216,10 +216,10 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    [u"Kohlrübe",u"Kohlrübe",u"Gemüse"],					#turnip
                    [u"Fenchel",u"Fenchel",u"Gemüse"],					#fennel
 
-                   [u"Kopfsalat",u"Kopfsalat",u"Gemüse"],					#lettuce 
-                   [u"Rucolasalat",u"Rucolasalat",u"Gemüse"],				#rucola 
-                   [u"Friseesalat",u"Friseesalat",u"Gemüse"],				#open lettuce 
-                   [u"Feldsalat",u"Feldesalat",u"Gemüse"],				#lettuce 
+                   [u"Kopfsalat",u"Kopfsalat",u"Gemüse"],					#lettuce
+                   [u"Rucolasalat",u"Rucolasalat",u"Gemüse"],				#rucola
+                   [u"Friseesalat",u"Friseesalat",u"Gemüse"],				#open lettuce
+                   [u"Feldsalat",u"Feldesalat",u"Gemüse"],				#lettuce
 
                    [u"Saubohnen",u"Saubohnen",u"Gemüse"],					#broad beans
                    [u"Bobby Bohnen",u"Bobby Bohnen",u"Gemüse"],				#small green beans
@@ -331,7 +331,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    [u"Ananas",u"Ananas",u"Obst"],						#pineapple
                    [u"Tamarinde",u"Tamarinde",u"Obst"],					#tamarind
                    [u"Rhabarber",u"Rhabarber",u"Obst"],					#rhubarb
- 
+
 
                    ## M e e r e s f r ü c h t e
                    [u"Anchovis",u"Anchovis",u"Meeresfrüchte"],				#anchovy
@@ -373,8 +373,8 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    [u"Kammuschel",u"Kammuschel",u"Meeresfrüchte"],			#scallop
 
                    ## F l e i s c h
-                   [u"Speck",u"Speck",u"Fleisch"],						#chopped bacon 
-                   [u"Bacon",u"Bacon",u"Fleisch"],						#bacon 
+                   [u"Speck",u"Speck",u"Fleisch"],						#chopped bacon
+                   [u"Bacon",u"Bacon",u"Fleisch"],						#bacon
                    [u"Schinken",u"Schinken",u"Fleisch"],					#ham
                    [u"Hammel",u"Hammel",u"Fleisch"],					#mutton
                    [u"Lamm",u"Lamm",u"Fleisch"],						#lamb
@@ -402,7 +402,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
 
 		   ## L e b e n s m i t t e l
                    [u"Weizenmehl",u"Mehl, Weizen-",u"Lebensmittel"],			#all purpose flour
-                   [u"Vollkorn Weizenmehl",u"Mehl, Vollkorn Weizen-",u"Lebensmittel"],	#wholemeal flour 
+                   [u"Vollkorn Weizenmehl",u"Mehl, Vollkorn Weizen-",u"Lebensmittel"],	#wholemeal flour
                    [u"Hirsemehl",u"Mehl, Hirse-",u"Lebensmittel"],			#flour
                    [u"Roggenmischung",u"Mehl, Roggenmischung",u"Lebensmittel"],		#rye flour
                    [u"Backpulver",u"Backpulver",u"Lebensmittel"],				#baking powder
@@ -410,7 +410,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    [u"Schokolade",u"Schokolade",u"Lebensmittel"],				#chocolate
                    [u"Schokotröpfen",u"Schokotröpfen",u"Lebensmittel"],			#chocolate chips
                    [u"Zucker",u"Zucker",u"Lebensmittel"],					#suger
-		   [u"Süßstoff",u"Süßstoff",u"Lebensmittel"],				#artificial sweetner 
+		   [u"Süßstoff",u"Süßstoff",u"Lebensmittel"],				#artificial sweetner
                    [u"brauner Zucker",u" Zucker, braun",u"Lebensmittel"],			#brown suger
                    [u"weißer Zucker",u"Zucker, weiß",u"Lebensmittel"],			#white sugar
                    [u"Raffinade",u"Zucker, Raffinade",u"Lebensmittel"],			#castor sugar
@@ -562,12 +562,12 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    [u"Falafel",u"Falafel",u"International"],				#felafel
                    [u"Tofu",u"Tofu",u"International"],					#tofu
                    [u"Pak-choï",u"Pak-choï",u"Gemüse"],					#bok choy
-	
+
 		   ## M i l c h p r o d u k t e
                    [u"Milch",u"Milch",u"Milchprodukte"],					#milk, unspecified
                    [u"Käse",u"Käse, allgemeiner",u"Milchprodukte"],			#cheese, any
                    [u"Butter",u"Butter",u"Milchprodukte"],					#butter
-                   [u"Margarine",u"Margarine",u"Milchprodukte"],				#	
+                   [u"Margarine",u"Margarine",u"Milchprodukte"],				#
                    [u"Eier",u"Eier",u"Milchprodukte"],					#egg
                    [u"frische Milch",u"Milch, frische",u"Milchprodukte"],			#milk
                    [u"fettarme Milch",u"Milch, fettarme",u"Milchprodukte"],		#skimmed milk
@@ -630,7 +630,7 @@ INGREDIENT_DATA = [  ## G e m ü s e
                    [u"Weißwein",u"Wein, weiß",u"Flüssigkeiten"],				#white wine
                    [u"Rotwein",u"Wein, rot",u"Flüssigkeiten"],				#red wine
 
-                   ## t h i n g   y o u   s h o u l d   h a v e   a t   h o m e 
+                   ## t h i n g   y o u   s h o u l d   h a v e   a t   h o m e
                    [u"Wasser",u"Wasser",u"Flüssigkeiten"]					#water
 
                    ]
@@ -800,13 +800,13 @@ VOL_TO_MASS_TABLE = {
     (u"cl", u"kg"): 0.01,
     (u"cl", u"g") : 10,
     (u"dl", u"kg") : 0.1,
-    (u"dl", u"g") : 100,    
+    (u"dl", u"g") : 100,
     (u"l", u"kg") : 1
     }
 
 ### From translator :
 ### FRENCH PART TO BE REVISED !!! US units != UK units != Canadian units !!!
-### I will work on these later... 
+### I will work on these later...
 # VOL_TO_MASS_TABLE = {
 #     (u"chop",u"lb") : 1,					#(warning, might not be accurate, see below)
 #     (u"c. à table",u"oz") : 0.5,
@@ -818,7 +818,7 @@ VOL_TO_MASS_TABLE = {
 #     (u"cl",u"kg"): 0.01,
 #     (u"cl",u"g") : 10,
 #     (u"dl",u"kg") : 0.1,
-#     (u"dl",u"g") : 100,    
+#     (u"dl",u"g") : 100,
 #     (u"l",u"kg") : 1}
 
 # TIME ABBREVIATIONS (this is new!)
@@ -837,7 +837,7 @@ IGNORE = [u"und",u"mit",u"von",u"für",
 
 NUMBERS = {
     }
-                    
+
 # These functions are rather important! Our goal is simply to
 # facilitate look ups -- if the user types in u"tomatoes", we want to
 # find "tomato." Note that the strings these functions produce will
@@ -866,10 +866,10 @@ def guess_singulars (s):
 
     if (s[-1]=='r') & (s[-2]=='e'):
         ret.append(s[0:-2]) # try chopping off the 'er'
-    
+
     return ret
 
-def guess_plurals (s): 
+def guess_plurals (s):
     # Ditto above, assume this could also be an adjective, so try adding the common agreements
     return [s+'n', s+'en', s+'e', s+'er', s+'s', s+'es']
 

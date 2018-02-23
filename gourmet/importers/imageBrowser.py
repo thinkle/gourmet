@@ -36,7 +36,7 @@ def grab_thumbnail (uri, type, iqueue, pqueue, progress_portion=1, progress_star
     #print 'Fetched'
     #print 'Adding result to Queue'
     #print 'Done'
-    
+
 class ImageBrowser (gtk.IconView):
     def __init__ (self,*args,**kwargs):
         gtk.IconView.__init__(self,*args,**kwargs)
@@ -107,7 +107,7 @@ class ImageBrowser (gtk.IconView):
             pass
         return True
 
-    def update_progress (self):        
+    def update_progress (self):
         try:
             #text,progress = self.progress_queue.get_nowait()
             text,progress = self.progress_queue.pop()
@@ -159,7 +159,7 @@ class ImageBrowserDialog (ModalDialog):
     def okcb (self, *args,**kwargs):
         self.ib.quit()
         ModalDialog.okcb(self,*args,**kwargs)
-        
+
 
     def selection_changed_cb (self, iv):
         selected_paths = iv.get_selected_items()
@@ -191,7 +191,7 @@ class ImageBrowserTest (unittest.TestCase):
         self.sw.add(self.ib)
         self.sw.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
         self.w.add(self.sw)
-        
+
     #def testWindow (self):
     #    self.w.show_all()
     #    self.ib.show_all()
@@ -225,5 +225,5 @@ if __name__ == '__main__':
         unittest.main()
     except:
         pass
-    
-    
+
+

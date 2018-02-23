@@ -29,14 +29,14 @@ class rec_to_xml (exporter.exporter):
         # now we handle the title...
         if self.my_title:
             self.out.write("\n<title>%s</title>"%self.my_title)
-        
+
     def write_text (self, label, text):
         self.out.write("\n<%s>%s</%s>\n"%(NAME_TO_ATTR[label],text,NAME_TO_ATTR[label]))
 
     def handle_italic (self, chunk): return '&lt;i&gt;'+chunk+'&lt;/i&gt;'
-    def handle_bold (self, chunk): return '&lt;b&gt;'+chunk+'&lt;/b&gt;'    
-    def handle_underline (self, chunk): return '&lt;u&gt;'+chunk+'&lt;/u&gt;'    
-        
+    def handle_bold (self, chunk): return '&lt;b&gt;'+chunk+'&lt;/b&gt;'
+    def handle_underline (self, chunk): return '&lt;u&gt;'+chunk+'&lt;/u&gt;'
+
     def write_foot (self):
         self.out.write("</recipe>\n")
 
@@ -53,7 +53,7 @@ class rec_to_xml (exporter.exporter):
             quoteattr(amount.strip()),
             xml.sax.saxutils.escape(item))
                        )
-        
+
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
         self.out.write("<ingredient")
         if optional: self.out.write(" optional='yes'>")
@@ -68,7 +68,7 @@ class rec_to_xml (exporter.exporter):
 
     def write_grouphead (self, name):
         self.out.write('<inggroup name=%s>\n'%quoteattr(name))
-        
+
     def write_groupfoot (self):
         self.out.write('</inggroup>\n')
 
@@ -91,7 +91,7 @@ class recipe_table_to_xml (exporter.ExporterMultirec):
                              }
                                            )
 
-    def write_header (self):        
+    def write_header (self):
         #self.ofi.write('<!DOCTYPE recipeDoc PUBLIC "-//GOURMET//GOURMET RECIPE MANAGER XML//EN" "%s/recipe.dtd">'%datad)
         self.ofi.write("<recipeDoc>\n")
         self.ofi.write( "<recipeHead>\n")
@@ -100,10 +100,10 @@ class recipe_table_to_xml (exporter.ExporterMultirec):
         self.dic2decl("source",self.srcDic,self.ofi)
         self.ofi.write( "</recipeHead>\n")
         self.ofi.write( "<recipe-list>\n")
-        
+
     def write_footer (self):
         self.ofi.write("</recipe-list>\n")
-        self.ofi.write("</recipeDoc>\n")        
+        self.ofi.write("</recipeDoc>\n")
 
     def createDictionary(self,attr):
         dic = {}

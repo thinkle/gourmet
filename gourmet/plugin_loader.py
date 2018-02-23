@@ -100,7 +100,7 @@ class MasterLoader:
                     logging.exception('')
             else:
                 print 'Plugin ',p,'not found'
-    
+
 
     def save_active_plugins (self):
         # If we have not changed from the defaults and no
@@ -193,7 +193,7 @@ class MasterLoader:
                   1)
             self.instantiated_plugins[plugin] = plugin()
             return self.instantiated_plugins[plugin]
-            
+
     def register_pluggable (self, pluggable, klass):
         if not self.pluggables_by_class.has_key(klass):
             self.pluggables_by_class[klass] = []
@@ -205,7 +205,7 @@ class MasterLoader:
                 except:
                     import traceback
                     print 'WARNING: Failed to instantiate plugin %s of type %s'%(p,klass)
-                    self.errors[p] = traceback.format_exc()                    
+                    self.errors[p] = traceback.format_exc()
                     traceback.print_exc()
                 else:
                     #print 'Instantiating plugin',p,plugin_instance,'of',klass
@@ -216,11 +216,11 @@ class MasterLoader:
 
 def get_master_loader ():
     # Singleton design pattern lifted from:
-    # http://www.python.org/workshops/1997-10/proceedings/savikko.html    
+    # http://www.python.org/workshops/1997-10/proceedings/savikko.html
     try:
         return MasterLoader()
     except MasterLoader, ml:
-        return ml                
+        return ml
 
 class PluginSet:
     """A lazy-loading set of plugins.
@@ -233,7 +233,7 @@ class PluginSet:
     """
 
     _loaded = False
-    
+
     def __init__ (self, plugin_info_path):
         f = file(plugin_info_path,'r')
         self.load_plugin_file_data(f)
@@ -278,7 +278,7 @@ class PluginSet:
     def get_plugins (self):
         return self.get_module().plugins
 
-    def load_plugin_file_data (self,plugin_info_file):        
+    def load_plugin_file_data (self,plugin_info_file):
         # This should really use GKeyFile but there are no python
         # bindings that I can find atm. One possibility would be to
         # use this:
@@ -306,7 +306,7 @@ class PluginSet:
 
 class Pluggable:
     """A plugin-able class."""
-    
+
     def __init__ (self, plugin_klasses):
         """plugin_klasses is the list class of which each of our
         plugins should be a sub-class.
@@ -380,14 +380,14 @@ class DependencyError (Exception):
         self.plugin_set = pluginset
         self.dependencies = missing_dependencies
         print self.plugin_set,'requires but did not find',self.dependencies
-        
+
     def __repr__ (self):
         return ('<DependencyError '
                 + repr(self.plugin_set)
                 + ' missing required dependencies '
                 + repr(self.dependencies)
                 )
-    
+
 def pluggable_method (f):
     def _ (self, *args, **kwargs):
         '''Run hooks around method'''
@@ -403,7 +403,7 @@ if __name__ == '__main__':
             print 'Activate!'
         def deactivate ():
             print 'Deactivate!'
-    
+
     class UniversalPluggable (Pluggable):
         def __init__ (self):
             Pluggable.__init__(self,[plugin.Plugin])

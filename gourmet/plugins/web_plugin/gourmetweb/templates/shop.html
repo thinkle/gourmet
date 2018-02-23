@@ -27,7 +27,7 @@
 	   >
 	<h2 style="margin-bottom:0">Shopping List </h2>
 	<input type="submit" name="submit" value="Move checked items to Pantry List">
-	  
+
     {% for group, lst in data %}
     <h3>{{group}}</h3>
     {% for item, amt in lst %}
@@ -49,7 +49,7 @@
     {% for item, amt in lst %}
     <input type="checkbox" name="{{item}}">{{item}} {{amount}}<br></input>
     {% endfor %}
-    {% endfor %}    
+    {% endfor %}
       </td>
     </tr>
   </table>

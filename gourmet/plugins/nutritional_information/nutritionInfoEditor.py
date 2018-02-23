@@ -24,7 +24,7 @@ class NutritionInfoIndex:
         # Initialize variables used for search
         self.search_string = ''
         self.use_regexp = None
-        #self.search_by = 
+        #self.search_by =
         self.widget_names = ['treeview', 'searchByBox', 'searchEntry',
                              'searchButton', 'window',
                              'searchAsYouTypeToggle', 'regexpTog',
@@ -41,7 +41,7 @@ class NutritionInfoIndex:
         self.next_button.connect('clicked',lambda *args: self.treeModel.next_page())
         self.first_button.connect('clicked',lambda *args: self.treeModel.goto_first_page())
         self.last_button.connect('clicked',lambda *args: self.treeModel.goto_last_page())
-        self.set_limit(ingredients,in_string)                
+        self.set_limit(ingredients,in_string)
         self.ui.connect_signals({
             'iSearch':self.isearchCB,
             'search':self.searchCB,
@@ -73,7 +73,7 @@ class NutritionInfoIndex:
         else:
             self.treeModel.search_kwargs = {}
         self.reset()
-        
+
     def setupTreeView (self):
         cssu = pageable_store.ColumnSortSetterUpper(self.treeModel)
         sortable = [1,2]
@@ -97,7 +97,7 @@ class NutritionInfoIndex:
             col.set_resizable(True)
             self.treeview.append_column(col)
             if n in sortable: cssu.set_sort_column_id(col,n)
-        
+
     def makeTreeModel (self):
         self.treeModel = NutStore(self.rd,per_page=12,ingredients=self.ingredients)
         self.treeModel.connect('page-changed',self.model_changed_cb)
@@ -157,7 +157,7 @@ class NutritionInfoIndex:
             self.next_button.set_sensitive(True)
             self.last_button.set_sensitive(True)
         self.update_showing_label()
-        
+
     def update_showing_label (self):
         bottom,top,total = self.treeModel.showing()
         if top >= total and bottom==1:
@@ -171,7 +171,7 @@ class NutritionInfoIndex:
     def get_selected_ingredient (self, *args):
         mod,itr = self.treeview.get_selection().get_selected()
         return mod.get_value(itr,0)
-        
+
 
 class MockObject:
     def __init__ (self, **kwargs):
@@ -259,7 +259,7 @@ class NutStore (pageable_store.PageableViewStore):
                                              ndbno=0,desc='Not in database',density_equivalent=None)
                                   )
         return vw + extras
-        
+
 
     def limit  (self, txt, column='ingkey', search_options={}):
         if not txt:
@@ -287,8 +287,8 @@ class NutStore (pageable_store.PageableViewStore):
         except:
             print '_get_slice_ failed with',bottom,top
             raise
-        
-        
+
+
 if __name__ == '__main__':
     import gourmet.recipeManager as rm
     rd = rm.RecipeManager()

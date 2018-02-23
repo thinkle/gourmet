@@ -18,13 +18,13 @@ class IngredientKeyEditor (RecEditorModule):
       <menu name="Edit" action="Edit">
         <placeholder name="EditActions">
           <menuitem name="GuessKeys" action="GuessKeys"/>
-          <menuitem name="EditAssociations" action="EditAssociations"/>          
+          <menuitem name="EditAssociations" action="EditAssociations"/>
         </placeholder>
       </menu>
     </menubar>
     <toolbar name="RecipeEditorEditToolBar">
       <toolitem name="GuessKeys" action="GuessKeys"/>
-      <toolitem name="EditAssociations" action="EditAssociations"/>                
+      <toolitem name="EditAssociations" action="EditAssociations"/>
     </toolbar>
     '''
 
@@ -78,7 +78,7 @@ class IngredientKeyEditor (RecEditorModule):
             self.edit_associations_action.set_visible(True)
             apply_button.connect('clicked',
                                  lambda *args: self.tv.queue_draw())
-            
+
     def setup_action_groups(self):
         self.keyEditorActionGroup = gtk.ActionGroup('RecKeyEditorActionGroup')
         self.keyEditorActionGroup.add_actions([
@@ -94,7 +94,7 @@ class IngredientKeyEditor (RecEditorModule):
         self.edit_associations_action = self.keyEditorActionGroup.get_action('EditAssociations')
         self.edit_associations_action.set_visible(False)
         self.action_groups.append(self.keyEditorActionGroup)
-        
+
     def setup_tree (self):
         item_renderer = gtk.CellRendererText();
         item_renderer.set_property('editable',True)
@@ -133,10 +133,10 @@ class IngredientKeyEditor (RecEditorModule):
 
     def resize_event_cb (self, widget, event):
         self.auto_wrap_columns()
-        
+
     def tv_size_allocate_cb (self, widget, allocation):
         self.auto_wrap_columns()
-        
+
     def start_keyedit_cb (self, renderer, cbe, path_string):
         indices = path_string.split(':')
         path = tuple( map(int, indices))
@@ -173,10 +173,10 @@ class IngredientKeyEditor (RecEditorModule):
         plugin_manager = keyEditorPluggable.get_key_editor_plugin_manager()
         for p in plugin_manager.plugins:
             p.selection_changed(keys)
-        
+
     def setup_model (self):
         self.model = gtk.ListStore(gobject.TYPE_PYOBJECT,str,str)
-            
+
     def update_from_database (self):
         ings = self.rg.rd.get_ings(self.current_rec)
         self.setup_model()
@@ -201,7 +201,7 @@ class IngredientKeyEditor (RecEditorModule):
             self.extra_widget_table.show()
         else:
             self.extra_widget_table.hide()
-        
+
     def update_from_ingredient_editor_cb (self, ie, edited):
         #if not edited:
         #    self.update_from_database()
@@ -231,7 +231,7 @@ class IngredientKeyEditor (RecEditorModule):
                     self.model.append((row[0],item,ingkey))
             for row in ie.ingtree_ui.ingController.imodel:
                 process_row(row)
-                
+
     def save (self, recdic):
         # save...
         plugin_manager = keyEditorPluggable.get_key_editor_plugin_manager()

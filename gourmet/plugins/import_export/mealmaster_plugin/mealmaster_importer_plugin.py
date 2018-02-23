@@ -7,7 +7,7 @@ from gourmet.threadManager import get_thread_manager
 
 from gourmet.recipeManager import get_recipe_manager
 from gettext import gettext as _
-    
+
 test_dir = os.path.split(__file__)[0] # our directory src/lib/plugins/import_export/plugin/*/
 test_dir = os.path.split(test_dir)[0] # one back... src/lib/plugins/import_export/plugin/
 test_dir = os.path.split(test_dir)[0] # one back... src/lib/plugins/import_export/
@@ -29,7 +29,7 @@ class MealmasterImporterPlugin (ImporterPlugin):
 
     def get_importer (self, filename):
         return mealmaster_importer.mmf_importer(filename=filename)
-                                                   
+
     def get_import_tests (self):
         return [
             (os.path.join(test_dir,
@@ -55,7 +55,7 @@ def test_mmf (recs, filename):
     assert_equal(ings[1].item,'Finely chopped stuffed green olives') # test line-wrap
 
 def test_2_col (recs, filename):
-    rd = get_recipe_manager()    
+    rd = get_recipe_manager()
     assert len(recs) == 1,'Expected 1 recipes; got %s (%s)'%(len(recs),recs)
     chile_ings = rd.get_ings(recs[0])
     print 'chile_ings=',chile_ings

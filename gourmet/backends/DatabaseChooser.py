@@ -46,7 +46,7 @@ class DatabaseChooser:
         if self.modal:
             gtk.mainloop()
             return self.retdic
-        
+
     def ok_cb (self, *args):
         if not self.current_db:
             de.show_message(label='No database selected.',
@@ -74,8 +74,8 @@ class DatabaseChooser:
         self.window.hide()
         self.window.destroy()
         if self.modal: gtk.mainquit()
-        
-    
+
+
     def change_db_cb (self, *args):
         self.current_db = None
         text = cb.cb_get_active_text(self.dbComboBox)
@@ -106,8 +106,8 @@ class DatabaseChooser:
                             action=gtk.FILE_CHOOSER_ACTION_OPEN)
         if fi:
             self.fileEntry.set_text(fi)
-    
-        
+
+
 if __name__ == '__main__':
     d = DatabaseChooser(None,modal=True)
     print d.run()

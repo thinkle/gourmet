@@ -7,9 +7,9 @@ class AllRecipesPlugin (PluginPlugin):
 
     def do_activate (self, pluggable):
         pass
-    
+
     def test_url (self, url, data):
-        if 'allrecipes.com' in url: 
+        if 'allrecipes.com' in url:
             return 5
         return 0
 

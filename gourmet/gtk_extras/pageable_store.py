@@ -23,7 +23,7 @@ class PageableListStore (gtk.ListStore):
                         () # PARAMS
                         ),
         }
-    
+
     def __init__ (self, types, parent_args=[], parent_kwargs={}, per_page=15):
         """
         types is handed to ListStore.__init__ and should be a list of
@@ -89,7 +89,7 @@ class PageableListStore (gtk.ListStore):
         self.page = n
         self.update_tree()
         self.emit('page-changed')
-        
+
     def goto_first_page (self):
         if self.page!=0: self.set_page(0)
 
@@ -97,11 +97,11 @@ class PageableListStore (gtk.ListStore):
         last_page = self.get_last_page()
         if self.page != last_page:
             self.set_page(last_page)
-    
-    def next_page (self): 
+
+    def next_page (self):
         if (self.page+1)*self.per_page < self._get_length_():
             self.set_page(self.page + 1)
-            
+
     def prev_page (self):
         if self.page > 0: self.set_page(self.page - 1)
 
@@ -138,7 +138,7 @@ class PageableListStore (gtk.ListStore):
         args = []
         for num_and_col in enumerate(self._get_item_(indx)): args.extend(num_and_col)
         self.set(itr,*args)
-        
+
 
     def update_tree (self):
         """Update our tree based on current page, etc."""
@@ -241,7 +241,7 @@ class PageableTreeStore (gtk.TreeStore, PageableListStore):
         update_tree to get fancier.
         """
         self.__gobject_init__()
-        gtk.TreeStore.__init__(self, *types)        
+        gtk.TreeStore.__init__(self, *types)
         self.per_page = per_page
         self._setup_parent_(*parent_args,**parent_kwargs)
         self.update_tree()
@@ -270,7 +270,7 @@ class PageableTreeStore (gtk.TreeStore, PageableListStore):
 
     def _get_children_ (self, itr):
         return []
-    
+
 class ColumnSortSetterUpper:
     """Make tree-column setting up easy for our custom models.
 
@@ -282,7 +282,7 @@ class ColumnSortSetterUpper:
     where n is the model column sorted on and tree_view_column is the
     column.
 
-    This is necessary because sorting is a PITA with Custom models. 
+    This is necessary because sorting is a PITA with Custom models.
     """
     def __init__ (self, treemod):
         self.mod = treemod
@@ -291,7 +291,7 @@ class ColumnSortSetterUpper:
         """Replace the built-in tree_column method with magic."""
         #tree_column.set_sort_column_id(model_column)
         tree_column.connect('clicked',self.sort_by_column_callback,model_column)
-                                 
+
     def sort_by_column_callback (self,tree_column,model_column):
         toggle_to = self.mod.toggle_sort(model_column)
         if toggle_to==None:
@@ -368,7 +368,7 @@ class PageableViewStore (PageableListStore):
         # Don't change the page anymore... it screws up a lot of
         # things... if we want to change the page during a search for
         # "usability", then we should do this from higher up so we can
-        # have more fine-grained control of when it happens. 
+        # have more fine-grained control of when it happens.
         # if self.page != 0:
         #     self.page = 0
         #     self.emit('page-changed')
@@ -383,7 +383,7 @@ if __name__ == '__main__':
     cssu.set_sort_column_id(tvc,0)
     tv.append_column(tvc)
     tvc2=gtk.TreeViewColumn('first',renderer,text=1)
-    cssu.set_sort_column_id(tvc2,1)    
+    cssu.set_sort_column_id(tvc2,1)
     tv.append_column(tvc2)
     tv.set_model(pts)
     sw = gtk.ScrolledWindow()
@@ -407,8 +407,8 @@ if __name__ == '__main__':
     pb.connect('clicked',lambda *args: prv())
     vb.pack_start(pb,False)
 
-    
+
     w.show_all()
     w.connect('delete-event',lambda *args: gtk.main_quit())
     gtk.main()
-    
+

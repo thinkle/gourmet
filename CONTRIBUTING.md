@@ -10,15 +10,15 @@ You're also welcome to join our [Gourmet team on Launchpad](https://launchpad.ne
 
 Our introductory material to the source code is currently rather sparse, but you still might want to check out the [Development](Development) wiki article and [CODING.md](CODING.md) file for starters.
 
-To get started, why not check out our list of [list of bugs tagged 'easy'](https://github.com/thinkle/gourmet/issues?labels=easy&page=1&state=open)?
+To get started, why not check out our [list of bugs tagged 'easy'](https://github.com/thinkle/gourmet/issues?labels=easy&page=1&state=open)?
 
 Currently, our most pressing issues are:
 * [Windows Printing](https://github.com/thinkle/gourmet/issues/708).
 * [Release a mac version](https://github.com/thinkle/gourmet/issues/704).
 * Code cleanup.
- * This includes using [SQLAlchemy's ORM](https://github.com/thinkle/gourmet/issues/712), which is an ongoing effort in the `develop` branch, and scheduled for release woth version 0.18.0.
+ * This includes using [SQLAlchemy's ORM](https://github.com/thinkle/gourmet/issues/712), which is an ongoing effort in the `develop` branch, and scheduled for release with version 0.18.0.
  * Parts of Gourmet's source code are about ten years old, and technologies have evolved since development started. Hence, there are some things that were implemented differently back then and could be greatly simplified by using modern technologies available in the present-day versions of the toolkits used by Gourmet (such as Gtk components as in [gourmet/gtk_extras/dialog_extras.py](../blob/master/gourmet/gtk_extras/dialog_extras.py), database backends, etc).
- * Also, there are still large portions of commented-out code where something already got replaced by something else, 
+ * Also, there are still large portions of commented-out code where something already got replaced by something else,
  * or python modules that aren't actually imported anywhere else anymore (example: [3daaba2db](../commit/3daaba2dbb865272cb5b1b96d14eca3fe5deeaf7)).
  * Remove old logo images, file duplicates, obsolete plugins, etc.
  * Clean up files names which currently are a mixture of camelCaps and under\_scores, plus some rather obscure abbreviations.

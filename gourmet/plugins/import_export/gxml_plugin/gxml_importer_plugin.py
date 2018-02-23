@@ -45,7 +45,7 @@ class GxmlImportTester:
                                                                          type(sings[1].item)
                                                                          )
         self.is_markup_valid(sauce)
-        self.is_markup_valid(rice)        
+        self.is_markup_valid(rice)
         assert '<i>well' in sauce.instructions, 'value was %s'%sauce.instructions
         assert sauce.image
         assert sauce.thumb

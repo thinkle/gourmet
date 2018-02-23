@@ -23,10 +23,10 @@ ui_string = '''
       <separator/>
       <placeholder name="ExtraFileStuff"/>
       <separator/>
-      <menuitem action="Close"/>	
+      <menuitem action="Close"/>
     </menu>
     <menu name="Edit" action="Edit">
-      <menuitem action="AddNewItems"/>      
+      <menuitem action="AddNewItems"/>
       <menuitem action="RemoveRecipes"/>
       <separator/>
       <menuitem action="ItemToPantry"/>
@@ -157,7 +157,7 @@ class IngredientAndPantryList:
         fix_action_group_importance(self.shoppingActions)
 	self.ui_manager.insert_action_group(self.shoppingActions,0)
         fix_action_group_importance(self.pantryOrShoppingActions)
-	self.ui_manager.insert_action_group(self.pantryOrShoppingActions,0)	
+	self.ui_manager.insert_action_group(self.pantryOrShoppingActions,0)
 
     def setup_category_ui (self):
 	self.cats_setup = True
@@ -196,7 +196,7 @@ class IngredientAndPantryList:
 	</popup>
 	<popup name="ChangeCategoryPopup">
 	  %(ph)s
-	</popup>	
+	</popup>
 	</ui>'''%{'ph':catUI}
 	self.last_category_merge = self.ui_manager.add_ui_from_string(catUI)
 	self.ui_manager.ensure_update()
@@ -229,7 +229,7 @@ class IngredientAndPantryList:
             if event.button==3 or event.type == gtk.gdk._2BUTTON_PRESS:
                 self.popup_pan_menu(tv,event)
                 return True
-            
+
         self.pTree.connect('button-press-event',pTree_popup_cb)
 
     def create_slTree (self):
@@ -339,7 +339,7 @@ class IngredientAndPantryList:
 
     def on_drag_data_get (self, tv, context, selection, info, time):
         self.drag_selection=selection
-        
+
     def on_drag_data_received(self, tv, context,x,y,selection,info,time):
         debug("on_drag_data_received(self, tv,context,x,y,selection,info,time):",5)
         if str(selection.target) == 'GOURMET_SHOPPER_SW':
@@ -369,7 +369,7 @@ class IngredientAndPantryList:
                         self.sh.orgdic[sel]=cat
                 self.resetSL()
                 self.ssave.restore_selections(tv=self.slTree)
-                self.pssave.restore_selections(tv=self.pTree)        
+                self.pssave.restore_selections(tv=self.pTree)
             #except TypeError:
             else:
                 debug("Out of range!",0)
@@ -379,9 +379,9 @@ class IngredientAndPantryList:
                 self.add_selection_to_pantry()
             else:
                 self.rem_selection_from_pantry()
-        
+
     def on_drag_drop (self, tv, context, x, y, time):
-        debug("on_drag_drop (self, tv, context, x, y, time):",5)        
+        debug("on_drag_drop (self, tv, context, x, y, time):",5)
         #model = tv.get_model()
         otv,oselection=self.dragged
         if otv==self.pTree and tv==self.slTree:
@@ -402,7 +402,7 @@ class IngredientAndPantryList:
     # end drag-n-drop methods
 
     # ---- end TreeView callbacks
-    
+
     # -- End TreeView and TreeModel setup
 
     # Callbacks for moving data back and forth
@@ -432,7 +432,7 @@ class IngredientAndPantryList:
             self.sh.add_to_pantry(k)
         self.resetSL()
         self.ssave.restore_selections(tv=self.pTree)
-        
+
     def rem_selection_from_pantry (self, *args):
         """Add selected items to shopping list."""
         debug("rem_selection_from_pantry (self, *args):",5)
@@ -482,8 +482,8 @@ class IngredientAndPantryList:
             pssave=te.selectionSaver(self.pTree,1)
             self.resetSL()
             ssave.restore_selections(tv=self.slTree)
-            pssave.restore_selections(tv=self.slTree)        
-    
+            pssave.restore_selections(tv=self.slTree)
+
     # Popup methods...
     def popup_ing_menu (self, tv, event=None, *args):
         debug("popup_ing_menu (self, tv, *args):",5)
@@ -538,7 +538,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 	IngredientAndPantryList.__init__(self)
         ShoppingList.__init__(self)
 	self.prefs = prefs.get_prefs()
-	self.conf = []	
+	self.conf = []
         self.w = gtk.Window(); self.main = gtk.VBox()
 	self.w.set_title(_('Shopping List'))
 	self.w.set_default_size(800,600)
@@ -571,7 +571,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         return recipeManager.DatabaseShopper(lst, self.rd)
 
     # Create interface...
-    
+
     def setup_ui_manager (self):
         self.ui_manager = gtk.UIManager()
         self.ui_manager.add_ui_from_string(ui_string)
@@ -608,7 +608,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 	self.add_entry = gtk.Entry()
 	add_label = gtk.Label(_('_Add items:')); add_label.set_use_underline(True)
 	add_label.set_mnemonic_widget(self.add_entry)
-	self.add_box.pack_start(add_label,expand=False,fill=False); add_label.show()	
+	self.add_box.pack_start(add_label,expand=False,fill=False); add_label.show()
 	self.add_box.pack_start(self.add_entry); self.add_entry.show()
 	self.add_button = gtk.Button(stock=gtk.STOCK_ADD)
 	self.add_box.pack_start(self.add_button,expand=False,fill=False); self.add_button.show()
@@ -627,7 +627,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 	self.cat_cbe = gtk.ComboBoxEntry()
 	self.cat_cbe.set_model(self.get_catmodel())
 	self.cat_cbe.set_text_column(0)
-	self.cat_entry = self.cat_cbe.child	
+	self.cat_entry = self.cat_cbe.child
 	self.cat_button = gtk.Button(stock=gtk.STOCK_APPLY)
 	self.cat_label = gtk.Label('_Category: '); self.cat_label.set_use_underline(True)
 	self.cat_label.set_mnemonic_widget(self.cat_entry)
@@ -635,11 +635,11 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 	comp.set_model(self.get_catmodel()); comp.set_text_column(0)
 	self.cat_entry.set_completion(comp)
 	self.cat_box.pack_start(self.cat_label,expand=False,fill=False); self.cat_label.show()
-	self.cat_box.pack_start(self.cat_cbe); self.cat_cbe.show()	
+	self.cat_box.pack_start(self.cat_cbe); self.cat_cbe.show()
 	self.cat_box.pack_start(self.cat_button,expand=False,fill=False); self.cat_button.show()
 	self.cat_entry.connect('activate',self.category_changed)
 	self.cat_button.connect('clicked',self.category_changed)
-        
+
     def setup_actions (self):
         self.mainActionGroup = gtk.ActionGroup('MainActions')
         self.recipeListActions = gtk.ActionGroup('RecipeListActions')
@@ -704,10 +704,10 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 
         Alternatively, we return a boolean value, in which case that is
         the value for all ingredients.
-        
+
         The dictionary will tell us which ingredients to add to our shopping list.
         We look at prefs to see if 'shop_always_add_optional' is set, in which case
-        we don't ask our user."""    
+        we don't ask our user."""
         debug("getOptionalIngDic (ivw):",5)
         #vw = ivw.select(optional=True)
         vw = filter(lambda r: r.optional==True, ivw)
@@ -741,7 +741,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         self.rmodel = self.create_rmodel()
         self.rectree = gtk.TreeView(self.rmodel)
         #self.glade.signal_connect('ingmen_pantry',self.add_selection_to_pantry)
-        #self.glade.signal_connect('panmen_remove',self.rem_selection_from_pantry)        
+        #self.glade.signal_connect('panmen_remove',self.rem_selection_from_pantry)
         self.rectree.set_model(self.rmodel)
         renderer = gtk.CellRendererText()
         #renderer.set_property('editable',True)
@@ -757,7 +757,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         mult.set_clickable(True)
         mult.set_reorderable(True)
         self.rectree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
-	self.rectree.connect('row-activated',self.rectree_activated_cb)	
+	self.rectree.connect('row-activated',self.rectree_activated_cb)
         self.rectree.show()
 
     def create_rmodel (self):
@@ -820,7 +820,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
     def hide (self, *args):
 	self.w.hide()
         return True
-        
+
     def show (self, *args):
 	self.w.present()
 
@@ -835,11 +835,11 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         elif de.getBoolean(label=_("No recipes selected. Do you want to clear the entire list?")):
             self.recs = {}
             self.extras = []
-            self.reset()            
+            self.reset()
         else:
             debug("clear cancelled",2)
-	
-    
+
+
     def save (self, *args):
         debug("save (self, *args):",5)
         self.doSave(de.select_file(_("Save Shopping List As..."),
@@ -877,8 +877,8 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 	dct = self.rd.parse_ingredient(txt)
 	if not dct: dct = {'amount':None,'unit':None,'item':txt}
 	self.extras.append([dct.get('amount'),dct.get('unit'),dct.get('item')])
-        # Make sure it doesn't end up in the pantry...        
-        self.sh.remove_from_pantry(dct.get('item')) 
+        # Make sure it doesn't end up in the pantry...
+        self.sh.remove_from_pantry(dct.get('item'))
 	self.grabIngsFromRecs(self.recs.values(),self.extras)
 	self.resetSL()
 	self.add_entry.set_text('')
@@ -887,7 +887,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 	cat = self.cat_entry.get_text()
 	self.change_to_category(cat)
 	self.cat_entry.set_text('')
-    
+
 class OptionalIngDialog (de.ModalDialog):
     """A dialog to query the user about whether to use optional ingredients."""
     def __init__ (self,vw,prefs,mult=1,default=False):
@@ -910,7 +910,7 @@ class OptionalIngDialog (de.ModalDialog):
         alignment.show()
         self.cb.show()
 
-        
+
     def create_model (self):
         """Create the TreeModel to show optional ingredients."""
         debug("create_model (self):",5)
@@ -1004,7 +1004,7 @@ if __name__ == '__main__':
     for r,mult in recs:
 	sg.addRec(r,mult)
     gtk.main()
-	    
+
 
 
     #sg = ShopGui()

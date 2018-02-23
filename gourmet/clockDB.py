@@ -39,8 +39,8 @@ class StressTester:
             self.test_regexp_search()
             print 'ing search'
             self.test_ing_search()
-            #print 'like searches'            
-            #self.test_like_search()            
+            #print 'like searches'
+            #self.test_like_search()
             print 'committing...'
             self.commit_recs()
         print 'Done running tests!'
@@ -58,7 +58,7 @@ class StressTester:
     def add_1000_recipes (self):
         count = 0
         t = time.time()
-        # 4 * 
+        # 4 *
         for cat in ['Dessert','Entree','Salad','Appetizer']:
             # 5 = 20
             for cuisine in self.CUISINES:

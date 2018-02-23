@@ -18,7 +18,7 @@ class KeyEditor:
     """KeyEditor sets up a GUI to allow editing which keys correspond to which items throughout
     the recipe database. It is useful for corrections or changes to keys en masse.
     """
-    
+
     def __init__ (self, rd=None, rg=None):
         self.ui = gtk.Builder()
         self.ui.add_from_file(os.path.join(current_path,'keyeditor.ui'))
@@ -98,11 +98,11 @@ class KeyEditor:
             self.rg.prefs.get('regexpTog',
                            {'active':self.regexpTog.get_active()}),
             ['toggled']))
-                
+
     def dont_ask_cb (self, widget, *args):
         self.dont_ask=widget.get_active()
         self.rg.prefs['dontAskDeleteKey']=self.dont_ask
-    
+
     def setupTreeView (self):
         self.FIELD_COL = 1
         self.VALUE_COL = 2
@@ -176,7 +176,7 @@ class KeyEditor:
                     self.rd.ingredients_table,
                     curdic,
                     {'item':text}
-                    ) 
+                    )
         elif field=='unit':
             unit = curdic['unit']; key = curdic['ingkey']; item = curdic['item']
             val = de.getRadio(label='Change unit',
@@ -234,7 +234,7 @@ class KeyEditor:
         #self.orig_view = self.treeModel.view
         self.treeModel.connect('page-changed',self.model_changed_cb)
         self.treeModel.connect('view-changed',self.model_changed_cb)
-        
+
     def resetTree (self):
         self.search_string = 'NO ONE WOULD EVER SEARCH FOR THIS HACKISH STRING'
         curpage = self.treeModel.page
@@ -285,7 +285,7 @@ class KeyEditor:
             self.searchButton.hide()
         else: self.searchButton.show()
 
-    
+
     def clearEntriesCB (self, *args):
         for e in self.entries.values(): e.set_text('')
 
@@ -335,7 +335,7 @@ class KeyEditor:
         else:
             print 'WTF! WE SHOULD NEVER LAND HERE!',field,value
             raise Exception("WTF ERROR")
-            
+
     def applyEntriesCB (self, *args):
         newdic = {}
         for k,e in self.entries.items():
@@ -397,7 +397,7 @@ class KeyEditor:
             #self.update_iter(itr,newdic) # A recursive method that
             #                             # will set values for us and
             #                             # our children as necessary
-            #updated_iters.append(itr) 
+            #updated_iters.append(itr)
 
     def editNutritionalInfoCB (self, *args):
         nid = nutritionDruid.NutritionInfoDruid(self.rg.nd, self.rg.prefs)
@@ -437,7 +437,7 @@ class KeyEditor:
                 nid.add_ingredients(keys_to_update.items())
                 nid.connect('finish',self.update_nutinfo)
                 nid.show()
-            
+
     def update_nutinfo (self, *args):
         self.treeModel.reset_views()
 
@@ -456,7 +456,7 @@ class KeyEditor:
         while c:
             self.update_iter(c,newdic)
             c = self.treeModel.iter_next(c)
-        
+
     def entryChangedCB (self, *args):
         """Set sensitivity of apply and clear buttons.
 
@@ -490,7 +490,7 @@ class KeyEditor:
             self.next_button.set_sensitive(True)
             self.last_button.set_sensitive(True)
         self.update_showing_label()
-        
+
     def update_showing_label (self):
         bottom,top,total = self.treeModel.showing()
         if top >= total and bottom==1:
@@ -514,8 +514,8 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
     KEY = _('Key')+':'
     ITEM = _('Item')+':'
     UNIT = _('Unit')+':'
-    AMOUNT = _('Amount')+':'    
-    
+    AMOUNT = _('Amount')+':'
+
     columns = ['obj','ingkey','item','count','recipe']#,'ndbno']
     def __init__ (self, rd, per_page=15):
         self.__last_limit_text = ''
@@ -584,7 +584,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
             s = {'search':'%'+txt.replace('%','%%')+'%','operator':'LIKE'}
         s['column']=column
         self.change_view(self.rd.get_ingkeys_with_count(s))
-      
+
     def _get_length_ (self):
         return len(self.view)
 
@@ -595,7 +595,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
 
     def _get_item_ (self, path):
         return self.get_row(self.view[indx])
-        
+
     def get_row (self, row):
         return [row,
                 self.KEY,
@@ -636,7 +636,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                             '',
                             self.get_value(self.iter_parent(itr),3),
                             None,
-                            ])                
+                            ])
         elif field==self.UNIT:
             item = self.get_value(self.iter_parent(itr),2)
             ingkey = self.get_value(self.iter_parent(
@@ -668,7 +668,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                             self.get_value(self.iter_parent(itr),3),
                             None,
                             ])
-            
+
         return ret
         #row = row[0]
         #return [[subrow,

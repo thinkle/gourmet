@@ -23,11 +23,11 @@ class EmailRecipePlugin (MainPlugin, UIPlugin):
                  None,_('Email all selected recipes (or all recipes if no recipes are selected'),self.email_selected),
                 ])
         self.action_groups.append(self.actionGroup)
-    
+
     def activate (self, pluggable):
         self.rg = self.pluggable = pluggable
         self.add_to_uimanager(pluggable.ui_manager)
-    
+
     def get_selected_recs (self):
         recs = self.rg.get_selected_recs_from_rec_tree()
         if not recs:
@@ -50,6 +50,6 @@ class EmailRecipePlugin (MainPlugin, UIPlugin):
                 return
         re = RecipeEmailer(recs)
         re.send_email_with_attachments()
-        
 
-    
+
+

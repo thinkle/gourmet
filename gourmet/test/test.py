@@ -27,4 +27,4 @@ def profile (f):
     stats = hotshot.stats.load(os.path.join(tempfile.tempdir,'GOURMET_HOTSHOT_PROFILE'))
     stats.strip_dirs()
     stats.sort_stats('cumulative','calls').print_stats()
-        
+

@@ -63,7 +63,7 @@ class ShoppingListSaver (ShoppingListPlugin):
                 })
         rg.open_rec_card(rec)
 
-            
-            
-                   
-                   
+
+
+
+

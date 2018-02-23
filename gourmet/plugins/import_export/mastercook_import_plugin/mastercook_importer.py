@@ -16,7 +16,7 @@ class Mx2Cleaner:
         self.attr_regexp = '(<[^>]+?)\"([^=]+[\"<>][^=]+)\"'
         self.attr_regexp = re.compile(self.attr_regexp)
         self.encodings = ['cp1252','iso8859','ascii','latin_1','cp850','utf-8']
-        
+
     def cleanup (self, infile, outfile):
         infile = open(infile,'r')
         outfile = open(outfile,'w')
@@ -27,7 +27,7 @@ class Mx2Cleaner:
             outfile.write(l)
         infile.close()
         outfile.close()
-            
+
     def toss_regs (self, instr):
         m = self.toss_regexp.search(instr)
         if m:
@@ -59,7 +59,7 @@ class Mx2Cleaner:
                 debug('Could not decode as %s'%e,2)
                 pass
         raise Exception("Could not encode %s" % l)
-        
+
 class MastercookXMLHandler (xml_importer.RecHandler):
     """We handle MasterCook XML Files"""
     def __init__ (self, parent_thread=None,conv=None):
@@ -114,7 +114,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
 
     def endDocument (self):
         self.emit('progress',1,_("Mastercook import finished."))
-    
+
     def _get_handler (self, name):
         return getattr(self,'%s_handler'%name)
 
@@ -126,13 +126,13 @@ class MastercookXMLHandler (xml_importer.RecHandler):
         debug('adding to %s bufs: %s'%(len(self.bufs),ch),0)
         for buf in self.bufs:
             setattr(self,buf,getattr(self,buf)+ch)
-        
+
     def Nam_handler (self, start=False, end=False, attrs=None):
         if start:
             # we simply count recipes so that we can
             # indicate progress.
             self.total += 1
-    
+
     def RcpE_handler (self, start=False, end=False, attrs=None):
         if start:
             self.start_rec()
@@ -145,7 +145,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
                 self._add_to_instructions("\nYield: %s %s"%self.rec['yield'])
                 del self.rec['yield']
             self.commit_rec()
-        
+
     def RTxt_handler (self, start=False, end=False, attrs=None):
         if start:
             self.cdata_buf = ""
@@ -179,7 +179,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
             self.item = self.grabattr(attrs,'name')
             self.add_amt(self.grabattr(attrs,'qty'))
             self.ing['unit']=self.grabattr(attrs,'unit')
-            
+
         if end:
             if self.item.find("===")==0:
                 self.group = self.item[4:-4]
@@ -228,7 +228,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
         if end:
             self.item += "; %s"%xml.sax.saxutils.unescape(self.ipbuf.strip())
             self.bufs.remove('ipbuf')
-        
+
     def Srce_handler (self, start=False, end=False, attrs=None):
         if start:
             self.srcbuf = ""
@@ -236,7 +236,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
         if end:
             self.rec['source']=self.srcbuf.strip()
             self.bufs.remove('srcbuf')
-    
+
 class MastercookImporter (xml_importer.Converter):
     def __init__ (self, filename):
         xml_importer.Converter.__init__(self,

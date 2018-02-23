@@ -15,13 +15,13 @@ class rtf_exporter_multidoc (exporter.ExporterMultirec):
                                            one_file=True, ext='rtf',
                                            exporter=rtf_exporter,
                                            exporter_kwargs={'doc':self.doc,
-                                                            'multidoc':True})        
+                                                            'multidoc':True})
         debug('rtf_exporter_multidoc done!',5)
 
     def write_footer (self):
         renderer = PyRTF.Renderer()
         renderer.Write(self.doc,self.ofi)
-        
+
 class rtf_exporter (exporter.exporter_mult):
     def __init__ (self, rd, r, out,
                   conv=convert.Converter(),
@@ -46,7 +46,7 @@ class rtf_exporter (exporter.exporter_mult):
 
 
     def setup_document (self, doc=None, ss=None):
-        if doc: self.doc=doc        
+        if doc: self.doc=doc
         else: self.doc = PyRTF.Document()
         if ss: self.ss=ss
         else: self.ss = self.doc.StyleSheet
@@ -58,18 +58,18 @@ class rtf_exporter (exporter.exporter_mult):
                                       PyRTF.ParagraphPropertySet( space_before=240,
                                                                   space_after = 60),
                                       )
-            self.ss.ParagraphStyles.append( ps )        
+            self.ss.ParagraphStyles.append( ps )
 
-    def write_head (self):        
+    def write_head (self):
         self.recsection = PyRTF.Section(break_type=PyRTF.Section.PAGE)
         self.doc.Sections.append( self.recsection )
         self.add_paragraph("%s\n"%self.r.title,self.ss.ParagraphStyles.Heading1)
-        
+
     def write_foot (self):
         if not self.multidoc:
             renderer = PyRTF.Renderer()
             renderer.Write(self.doc,self.out)
-    
+
     def write_attr_head (self):
         #self.add_paragraph(" ")
         pass
@@ -77,7 +77,7 @@ class rtf_exporter (exporter.exporter_mult):
     def write_attr (self, label, text):
         if label!=_('Title'):
             self.add_paragraph("\n%s: %s"%(label,text))
-        
+
     def write_attr_foot (self):
         self.add_paragraph(" ")
 
@@ -129,7 +129,7 @@ class rtf_exporter (exporter.exporter_mult):
                       refid=None):
         ### DOES RTF SUPPORT LINKING? IF SO, WE SHOULD DO BETTER HERE...
         self.write_ing(amount,unit,item,None,optional)
-        
+
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
         txt = ""
         for p in amount, unit, item:
@@ -147,7 +147,7 @@ class rtf_exporter (exporter.exporter_mult):
             # If PyRTF has no attribute Image, this is an old version
             # and we can't do anything with images.
             pass
-    
+
     def add_paragraph (self, text, style=None):
         args = []
         if style: args.append(style)
@@ -167,7 +167,7 @@ def encode_text (txt):
             return txt.encode('cp1252','strict')
         except:
             return txt.encode('cp1252','replace')
-    
+
 if __name__ == '__main__':
     from __init__ import Tester,RTF
     t = Tester()
@@ -182,4 +182,4 @@ if __name__ == '__main__':
                     'prog':lambda *args,**kwargs: sys.stderr.write("%s%s"%(args,kwargs)),
                     'out':file('/tmp/test_rec.rtf','wb'),
                     })
-    
+

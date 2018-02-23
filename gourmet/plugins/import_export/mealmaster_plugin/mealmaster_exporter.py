@@ -61,7 +61,7 @@ class mealmaster_exporter (exporter_mult):
         text=text.strip()
         fill = chars - len(text)
         return "%s%s"%(" "*fill,text)
-    
+
     def write_text (self, label, text):
         ll=text.split("\n")
         for l in ll:
@@ -80,7 +80,7 @@ class mealmaster_exporter (exporter_mult):
                     self.out.write("  %s: %s\r\n"%(gglobals.REC_ATTR_DIC[label],text))
 
             self.out.write("\r\n")
-            
+
     def write_inghead (self):
         self.master_ings=[] # our big list
         # self.ings is what we add to
@@ -152,7 +152,7 @@ class mealmaster_exporter (exporter_mult):
                 self._write_ingredient(i)
         # we finish with an extra newline
         self.out.write("\r\n")
-                        
+
     def _write_ingredient (self, ing):
         a,u,i = ing
         itemstart = 11

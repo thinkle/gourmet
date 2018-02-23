@@ -18,16 +18,16 @@ class RecHandler (xml_importer.RecHandler):
         xml_importer.RecHandler.__init__(self,total,conv=conv, parent_thread=parent_thread)
         self.REC_ATTRS = [r[0] for r in REC_ATTRS]
         self.REC_ATTRS += [r for r in TEXT_ATTR_DIC.keys()]
-        
+
     def startElement(self, name, attrs):
-        self.elbuf = ""        
+        self.elbuf = ""
         if name=='recipe':
             id=attrs.get('id',None)
             if id:
                 self.start_rec(dict={'id':id})
             else:
                 self.start_rec()
-            
+
         if name=='ingredient':
             self.start_ing(recipe_id=self.rec['id'])
             if attrs.get('optional',False):
@@ -37,7 +37,7 @@ class RecHandler (xml_importer.RecHandler):
             self.start_ing(id=self.rec['id'])
             self.add_ref(unquoteattr(attrs.get('refid')))
             self.add_amt(unquoteattr(attrs.get('amount')))
-            
+
     def endElement (self, name):
         if name=='recipe':
             self.commit_rec()
@@ -71,13 +71,13 @@ class RecHandler (xml_importer.RecHandler):
 
 
 class Converter (xml_importer.Converter):
-    
+
     def __init__ (self, filename, conv=None):
         xml_importer.Converter.__init__(self,filename,RecHandler,
                                         recMarker="</recipe>",
                                         conv=conv,
                                         name='GXML2 Importer')
-        
+
 
 def unquoteattr (str):
     return xml.sax.saxutils.unescape(str).replace("_"," ")

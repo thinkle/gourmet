@@ -11,7 +11,7 @@ class PreferencesGui (plugin_loader.Pluggable):
 
     {'preference_name':lambda foo (name,val): bar(name,val)}
     """
-    
+
     INDEX_PAGE = 0
     CARD_PAGE = 1
     SHOP_PAGE = 2
@@ -36,14 +36,14 @@ class PreferencesGui (plugin_loader.Pluggable):
                         },
 
         number_options = {'recipes_per_page':'recipesPerPageSpinButton'},
-        
+
         buttons = {}
         #buttons = {'clear_remembered_optional_button':
         ):
         """Set up our PreferencesGui
 
         uifile points us to our UI file
-        
+
         radio_options is a dictionary of preferences controlled by radio buttons.
                       {preference_name: {radio_widget: value,
                                          radio_widget: value, ...}
@@ -52,7 +52,7 @@ class PreferencesGui (plugin_loader.Pluggable):
         toggle_options is a dictionary of preferences controlled by toggle buttons.
                       {preference_name: toggle_widget_name}
         buttons = {button_name : callback}
-                      
+
         """
 
         self.prefs = prefs
@@ -126,9 +126,9 @@ class PreferencesGui (plugin_loader.Pluggable):
                 widg=self.ui.get_object(widg)
             getattr(widg,act)(act_args)
             self.update_sensitivity_for_pref(pref,value)
-            
+
     def show_dialog (self, page=None):
-        """present our dialog."""        
+        """present our dialog."""
         self.d.present()
         if page:
             self.notebook.set_current_page(page)
@@ -149,7 +149,7 @@ class PreferencesGui (plugin_loader.Pluggable):
     def toggle_callback (self, button, pref_name):
         """Set preference 'pref_name' in response to toggle event on button."""
         self.set_pref(pref_name, button.get_active())
-        
+
     def connect_radio_buttons (self):
         """Connect radio button signals to properly set preferences on toggle."""
         for pref_name,pref_dic in self.radio_options.items():
@@ -205,7 +205,7 @@ class PreferencesGui (plugin_loader.Pluggable):
             for k,v in self.widget_sensitivity_dic[name][value].items():
                 self.ui.get_object(k).set_sensitive(v)
         except KeyError: pass
-            
+
 
     def add_widget (self, target_widget, child_widget):
         """Add child_widget to target_widget"""
@@ -235,7 +235,7 @@ class PreferencesGui (plugin_loader.Pluggable):
                 if cb: cb(table.options)
                 return
         print "Oops: we couldn't handle widget %s"%widget
-        
+
 if __name__ == '__main__':
     class FauxPrefs (dict):
         def __init__ (self,*args,**kwargs):
@@ -249,7 +249,7 @@ if __name__ == '__main__':
             for h in self.set_hooks:
                 print 'runnnig hook'
                 h(k,v)
-            
+
     gf='/home/tom/Projects/grm-db-experiments/glade/preferenceDialog.ui'
     import sys
     p=PreferencesGui(FauxPrefs(),gf)

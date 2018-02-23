@@ -629,7 +629,7 @@
 	* gourmet/backends/db.py (regexp): Fix sqlite custom function
 	error -- regexp searching now works. This closes #691. This bug
 	was caused by a change in SQLAlchemy behavior 0.6->0.7.
-	
+
 
 2013-02-02  Thomas Mills Hinkle  <tom@pebble>
 
@@ -983,7 +983,7 @@
 
 	* Fix i18n/POTFILES.in to properly include .gourmet-plugin.in files
 	* Add Russian localization files i18n/ru.po and src/lib/defaults/defaults_ru.py
-	  by Alexander Prokoudine, from our Sourceforge patch tracker: see 
+	  by Alexander Prokoudine, from our Sourceforge patch tracker: see
 	  https://sourceforge.net/tracker/?func=detail&aid=2858486&group_id=108118&atid=649654
 	  and https://sourceforge.net/tracker/?func=detail&aid=2858485&group_id=108118&atid=649654
 	* Fix sort of a typo
@@ -1148,7 +1148,7 @@
 
 2011-02-02  Tom  <Thomas_Hinkle@sf.net>
 
-	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer.py: 
+	* src/lib/plugins/import_export/mealmaster_plugin/mealmaster_importer.py:
 	Adapt mealmaster plugin to handle 'Windows Gourmet' file (who
 	knows what this program was, but we appreciate their name!). The
 	adaptations shouldn't do any harm to mealmaster, and may help with
@@ -1157,7 +1157,7 @@
 
 2011-01-05  Tom  <Thomas_Hinkle@sf.net>
 
-	* create_manifest.py: 
+	* create_manifest.py:
 	(write_lst_to_file): Include *.ui files!
 	* README: Remove obsolete material about Gnomeprint.
 	* src/lib/plugin.py (RecEditorModule.grab_focus): Add method for
@@ -1359,7 +1359,7 @@
 	delete-key-deletes-recipe behavior a callback on keypresses only
 	in treeview. This prevents users using the delete key in the
 	search box from accidentally deleting recipes. Also, let backspace
-	delete recipes as well for convenience. 
+	delete recipes as well for convenience.
 
 	* src/lib/backends/db.py (RecData.get_criteria): Make sure search
 	strings are proper unicode objects. Fixes bug #2948135.
@@ -1438,7 +1438,7 @@
 
 	* src/lib/backends/db.py (RecData.update_version_info): Fix update
 	from versions < 0.11.x
-	
+
 	* i18n/gourmet.pot: Update.
 
 	* i18n/POTFILES.in: Update to reflect current MANIFEST
@@ -1509,7 +1509,7 @@
 	* glade/preferenceDialog.glade: Remove hardcoded email
 	preferences (if we want them back, they belong in the email
 	plugin).
-	
+
 2009-11-22  Thomas M. Hinkle  <Thomas_Hinkle@sf.net>
 
 	* src/lib/plugins/import_export/pdf_plugin/pdf_exporter.py (CustomUnitOption):
@@ -2187,7 +2187,7 @@
 	Handle case where handle_markup is handed None
 
 	* Release 0.14.6 tarball and .deb to SF.net
-	
+
 	* src/lib/check_encodings.py (EncodingDialog): Fix type on encodings.
 	(EncodingDialog.diff_texts): Make sure we base our diffs on the
 	encoding with the most lines. Otherwise, utf-16 screws us up in
@@ -2517,7 +2517,7 @@
 	* src/lib/plugins/browse_recipes/images/cooktime_empty_clock.png:
 	Adjust pixel height so preptime and cooktime clock-pie-wedges can
 	be drawn with same size and position
-	
+
 	* src/lib/batchEditor.py (BatchEditor.setup_glade): Use new
 	gglobals-based custom handler system.
 
@@ -3138,7 +3138,7 @@ v	* setup.py (result): Add new plugins.
 2008-10-12  Thomas Mills Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/reccard.py (IngredientController.commit_ingredients.commit_iter):
-	Fix null amounts (they should be None, not the empty string). 
+	Fix null amounts (they should be None, not the empty string).
 
 2008-10-12  Thomas Mills HInkle  <thomas_hinkle@sf.net>
 
@@ -3286,7 +3286,7 @@ v	* setup.py (result): Add new plugins.
 2008-06-01  Thomas Hinkle   <tmhinkle@gmail.com>
 
 	* Release 0.14.0
-	
+
 	* src/lib/plugins/duplicate_finder/recipeMergerPlugin.py: Get rid
 	of all GourmetThreads calls (as we plan to delete that module).
 
@@ -3393,8 +3393,8 @@ v	* setup.py (result): Add new plugins.
 
 	* setup.py : Add calls to intltool to build desktop files. Add new
 	export_plugins.
-	
-	
+
+
 2008-01-26  Thomas Mills HInkle  <tmhinkle@gmail.com>
 
 	* src/lib/gglobals.py: Add our own icons as stock icons.
@@ -3480,17 +3480,17 @@ v	* setup.py (result): Add new plugins.
 	application.
 
 	* src/lib/Undo.py (UndoHistoryList.set_sensitive): Be less verbose.
-	(Module): 
+	(Module):
 
 	* src/lib/gglobals.py (GladeCustomHandlers): Add custom handler
 	code for glade here. Now anyone who needs a custom handler
 	registers it through the gladeCustomHandlers instance that's
 	instantiated in gglobals.
-	(Module): 
+	(Module):
 
 	* src/lib/plugin.py New plugin module. This provides the base
 	classes that plugins need to subclass.
-	(Module): 
+	(Module):
 
 	* src/lib/plugin_gui.py Dialog for turning plugins on and off.
 	* src/lib/plugin_loader.py Plugin management module. This provides
@@ -3506,9 +3506,9 @@ v	* setup.py (result): Add new plugins.
 
 2008-01-09  Thomas Mills HInkle  <tmhinkle@gmail.com>
 
-	* src/lib/convertGui.py: 
+	* src/lib/convertGui.py:
 
-	* src/lib/recipeMerger.py: 
+	* src/lib/recipeMerger.py:
 
 2008-01-06  Thomas Mills HInkle  <tmhinkle@gmail.com>
 
@@ -3613,15 +3613,15 @@ v	* setup.py (result): Add new plugins.
 	* src/lib/recindex.py (Module): Add "anywhere" to search options
 	-- this allows us to search for a string in any of the columns
 	without specifying! Also, fix search-as-you-type toggle.
-	
+
 	* src/lib/recipeManager.py (Module): Update to use new database.
 
 	* src/lib/timeScanner.py (Module): Update to use capitalized Converter class name.
 
 	* src/lib/upgradeHandler.py (Module): Fix import dialog_extras statement.
-	
+
 	* src/lib/backends/__init__.py (Module): Remove inaccurate comments
-	
+
 	* src/lib/backends/db.py (Module) - New database backend class
 	based on sqlalchemy. This provides at least the basis for support
 	for all sql dialects that sqlalchemy supports. You can try other
@@ -3638,7 +3638,7 @@ v	* setup.py (result): Add new plugins.
 	* src/lib/exporters/__init__.py (Module): Change rview_to_xml to
 	recipe_table_to_xml in accordance with our new freedom from
 	metakit semantics.
-	
+
 	* src/lib/importers/imageBrowser.py (Module): Fix gtk_extras import.
 
 	* src/lib/importers/importer.py (Module): Fix gtk_extras import.
@@ -3693,14 +3693,14 @@ v	* setup.py (result): Add new plugins.
 	* src/lib/exporters/html_exporter.py Actually apply the changes
 	logged on 8/25
 	* i18n/de_AT.po Updates from enfant_terrible
-	* i18n/de_DE.po Updates from enfant_terrible	
+	* i18n/de_DE.po Updates from enfant_terrible
 
 2007-08-25  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/exporters/html_exporter.py Make recipe links hyperlinks.
-	
+
 2007-08-25  Thomas M. Hinkle  <thomas_hinkle@sf.net>
-	
+
 	* RELEASE 0.13.7
 	* TODO Update todo list.
 	* glade/nutritionDruid.glade Fix reversion/bug introduced in UI
@@ -3729,7 +3729,7 @@ v	* setup.py (result): Add new plugins.
 	* src/tests/testExporters.py Update export tests.
 	* src/tests/reference_setup/recipes.db Add a webpage to export
 	test suite.
-	
+
 2007-08-20  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/defaults_en.py Call granulated sugar granulated sugar,
@@ -3740,7 +3740,7 @@ v	* setup.py (result): Add new plugins.
 	of any use (they're already lost to the UI--why keep them in the DB)
 	* src/lib/backends/sql_db.py Don't return deleted ingredients in
 	list of ingredient keys (in get_ingkeys_with_count)
-	
+
 2007-08-15  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/backends/sql_db.py Applied patch from Anthony Foglia to
@@ -3804,7 +3804,7 @@ v	* setup.py (result): Add new plugins.
 	* src/lib/recindex.py Use DEFAULT_HIDDEN_COLUMNS
 	variable. Ellipsize links when they are shown rather than wraping
 	them.
-	
+
 2007-07-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/gourmet Update copyright dates.
@@ -3854,7 +3854,7 @@ v	* setup.py (result): Add new plugins.
 	to work with a simpler stack model.
 	* src/lib/nutrition/nutritionLabel.py Add generic show_druid
 	method to show druid even when there is no vapor.
-	
+
 2007-06-28  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* nutritionDruid.py Clean up code for nutrition druid (part way to
@@ -3892,7 +3892,7 @@ v	* setup.py (result): Add new plugins.
 	text that says "An image" or "No image").
 
 	* src/lib/version.py Up version to 0.13.6
-	
+
 2007-06-18  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* MANIFEST Added recipeMerger stuff.
@@ -3915,7 +3915,7 @@ v	* setup.py (result): Add new plugins.
 2007-06-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/defaults_* Remove . from SI units (such as g, kg, etc.).
-	
+
 2007-05-19  Thomas Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/convert.py Fix bug in regexp in time parser that would
@@ -3943,8 +3943,8 @@ v	* setup.py (result): Add new plugins.
 	* src/lib/backends/rdatabase.py Add methods for finding duplicates
 	* src/lib/backends/sql_db.py Improve duplicate-finding SQL
 	* src/lib/exporters/recipe_emailer.py Allow e-mailing PDFs.
-	
-	
+
+
 2007-03-25  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/importers/rezkonv_importer.py Fix encoding on top. Also
@@ -3969,7 +3969,7 @@ v	* setup.py (result): Add new plugins.
 	* src/lib/importers/interactive_importer.py Fix bug where, when
 	unknown units are put into the item string, a space was omitted.
 
-	
+
 
 2007-02-11  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
@@ -3987,20 +3987,20 @@ v	* setup.py (result): Add new plugins.
 	us from properly updating if a version was not stored correctly.
 	* src/lib/recipeIdentifier.py Fix bug in standardize_ingredient
 	that threw an exception with g. or ml. and no amount
-	
+
 2007-01-20  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/shopgui.py Clarify logic around optional ingredient
 	adding.
 	* src/lib/recipeIdentifier.py Some more work toward a diff-ing
 	interface (not done)
-	
+
 2007-01-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/importers/html_importer.py Raise more useful error
 	message when a rule is malformed. If custom ingdic has ['text']
 	but not ['item'], make sure we end up with an item.
-	
+
 	* src/lib/importers/html_plugins/recipezaar.py Update importer
 	script for updated website. Add import for cuisine and category
 	and servings.
@@ -4008,7 +4008,7 @@ v	* setup.py (result): Add new plugins.
 2007-01-17  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* MANIFEST add batchEditor.py and batchEditor.glade
-	* glade/app.glade Add menu items for launching batch editor 
+	* glade/app.glade Add menu items for launching batch editor
 	* glade/recCard.glade Fix alignment of items on Recipe Details page.
 	* src/lib/GourmetRecipeManager.py Add batch editor. Create new
 	methods to store models for attributes (cuisine, category, etc) in
@@ -4022,7 +4022,7 @@ v	* setup.py (result): Add new plugins.
 	ingredient dictionaries, only use our own parsing to fill in gaps
 	(this allows html importer scripts to do some but not all parsing
 	on their own).
-	
+
 
 2007-01-11  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
@@ -4046,7 +4046,7 @@ v	* setup.py (result): Add new plugins.
 2007-01-04  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* glade/valueEditor.glade Create basic value editor for editing
-	values of e.g. categories throughout the database.	
+	values of e.g. categories throughout the database.
 	* src/lib/backends/sql_db.py Make get_unique_values() sort
 	results.  Allow new syntax for criteria for make_where_statement
 	whereby we can have a list of "and"/"or" values for a single
@@ -4084,7 +4084,7 @@ v	* setup.py (result): Add new plugins.
 	* src/tests/testRecCard.py Add a test for group editing. Exit when
 	tests complete successfully.
 
-	
+
 2007-01-01  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/convert.py Fix i18n related bug in new unit-parsing
@@ -4092,7 +4092,7 @@ v	* setup.py (result): Add new plugins.
 	will make us fail more verbosely if we haven't caught all such
 	bugs with our new unicode() call
 	* src/lib/defaults_es.py Fix some typos in Spanish defaults.
-	
+
 2006-12-29  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* glade/recCard.glade Move scrollbar inside of notebook so that
@@ -4128,7 +4128,7 @@ v	* setup.py (result): Add new plugins.
 	text we get from textbuffer. (This seems to prevent unicode
 	conversion errors elsewhere).
 	* src/lib/version.py Set version to 0.13.1
-	
+
 2006-12-26  Thomas M. Hinkle  <thomas_hinkle@sf.net>
 
 	* src/lib/backends/rdatabase.py Fix bug in new installations (this

@@ -10,7 +10,7 @@ class Excluder(object):
 
 def generate(BaseParser):
     class SchemaOrgParser (BaseParser):
-    
+
         schema_org_mappings = {# Properties from Thing (not all given)
                                'name': 'recipe',
                                'description': 'modifications',
@@ -30,9 +30,9 @@ def generate(BaseParser):
                                         'cookTime': 'cooktime',
                                         'prepTime': 'preptime'
                                         }
-    
+
         imageexcluders = []
-    
+
         def preparse (self, scope=True):
             self.preparsed_elements = []
 
@@ -48,10 +48,10 @@ def generate(BaseParser):
                 for k, v in self.schema_org_mappings.iteritems():
                     if itemprop == k:
                         self.preparsed_elements.append((tag,v))
-    
+
                 if itemprop == "image" and "src" in tag:
                     self.imageexcluders.append(Excluder(tag["src"]))
-    
+
             if self.preparsed_elements:
                 self.ignore_unparsed = True
             else:

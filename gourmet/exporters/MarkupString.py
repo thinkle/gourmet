@@ -2,7 +2,7 @@ import xml.sax
 
 class simpleHandler (xml.sax.ContentHandler):
     """A simple handler that provides us with indices of marked up content."""
-    def __init__ (self):        
+    def __init__ (self):
         self.elements = [] #this will contain a list of elements and their start/end indices
         self.open_elements = [] #this holds info on open elements while we wait for their close
         self.content = ""
@@ -33,7 +33,7 @@ class simpleHandler (xml.sax.ContentHandler):
 class MarkupString (str):
     """A simple class for dealing with marked up strings. When we are sliced, we return
     valid marked up strings, preserving markup."""
-    def __init__ (self, string):        
+    def __init__ (self, string):
         str.__init__(self,string)
         self.handler = simpleHandler()
         try:

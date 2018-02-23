@@ -42,7 +42,7 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
             test_val = p.test_url(url, data)
             if test_val and test_val > highest:
                 # pass the module as an arg... very awkward inheritance
-                importer = p.get_importer(webpage_importer) 
+                importer = p.get_importer(webpage_importer)
                 highest = test_val
         return importer(url,data,content_type)
 

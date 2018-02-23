@@ -58,14 +58,14 @@ class MyBeautifulSoup (BeautifulSoup.ICantBelieveItsBeautifulSoup):
         kwargs['avoidParserProblems']=True
         BeautifulSoup.ICantBelieveItsBeautifulSoup.__init__(self,*args,**kwargs)
 
-    
+
     def handle_comment (self, text): pass
     def handle_decl (self, data): pass
     def handle_pi (self, text): pass
 
 class BeautifulSoupScraper:
     """We take a set of rules and create a scraper using BeautifulSoup.
-    
+
     This will be quite wonderfully magical. Handed rules, we can
     customize a scraper for any set of data from any website.
 
@@ -76,7 +76,7 @@ class BeautifulSoupScraper:
     DIRECTIONS_TO_TAG is a list of instructions followed to find our
     tag. We can search by tagname and attributes or by text. By
     default, we drill down the structure each time.
-    
+
     METHOD_OF_STORAGE is either TEXT or MARKUP, depending what we want
     to store in our return dictionary.
 
@@ -153,7 +153,7 @@ class BeautifulSoupScraper:
             return post_processing(value,tag)
         else:
             return value
-            
+
     def get_tag_according_to_path (self, path):
         """Follow path to tag.
 
@@ -185,7 +185,7 @@ class BeautifulSoupScraper:
         if step.has_key('regexp'):
             ret = base.fetchText(re.compile(step['regexp']))
         elif step.has_key('string'):
-            ret = base.fetchText('string')        
+            ret = base.fetchText('string')
         else:
             get_to = None
             if ind:
@@ -211,7 +211,7 @@ class BeautifulSoupScraper:
                     if step.has_key(motion):
                         ret = [getattr(o,motion)(step[motion]) for o in ret]
                         break
-            if type(ind)==list or type(ind)==tuple:                 
+            if type(ind)==list or type(ind)==tuple:
                 return ret[ind[0]:ind[1]]
             else: #ind is an integer
                 if ind < len(ret):
@@ -234,7 +234,7 @@ class BeautifulSoupScraper:
         if method==self.TEXT:
             if tag: val = get_text(tag)
             else: val = ""
-        elif method==self.MARKUP: 
+        elif method==self.MARKUP:
             if tag: val = tag.prettify()
             else: val = ""
         else: #otherwise, we assume our method is an attribute name
@@ -295,7 +295,7 @@ class FancyTextGetter:
     LB_BEFORE = ['tr','li']
     TAB_BEFORE = ['td']
     IGNORE = ['script','meta','select']
-    
+
     def __call__ (self, top_tag, strip=True):
         self.text = ''
         if hasattr(top_tag,'contents'):
@@ -312,7 +312,7 @@ class FancyTextGetter:
         except:
             print 'Odd encoding problems with ',self.text
             return self.text
-            
+
     def add_tag (self, t):
         for item in t.contents: self.get_text_fancy(item)
 
@@ -341,7 +341,7 @@ class FancyTextGetter:
                     print item.name
                 if hasattr(item,'fetchParents'):
                     print 'CHILD OF: ','<'.join([p.name for p in item.fetchParents()])
-                
+
 get_text = FancyTextGetter()
 
 img_src_regexp = re.compile('<img[^>]+src=[\'\"]([^\'"]+)')
@@ -378,7 +378,7 @@ def add_to_fn (fn):
         return f + "%s%s"%(os.path.extsep,n) + e
     except:
         return f + "%s1"%os.path.extsep + e
-    
+
 def import_url (url, rd, progress=None, add_webpage_source=True, threaded=False,
                 interactive=True):
     """Import information from URL.
@@ -474,7 +474,7 @@ class WebPageImporter (importer.Importer):
                 print """If you think automated import should have worked for the webpage you
                 were importing, copy the output starting at "Automated HTML Import failed" into
                 a bug report and submit it at the GitHub site
-                
+
                 https://github.com/thinkle/gourmet/issues
 
                 Sorry automated import didn't work. I hope you like
@@ -497,7 +497,7 @@ class WebPageImporter (importer.Importer):
             ii.run()
             if self.prog: self.prog(1,_('Import complete.'))
             return
-        
+
     def get_url_based_on_template (self):
         """Get URL based on template stored in d
         """
@@ -521,7 +521,7 @@ class WebPageImporter (importer.Importer):
             if k=='ingredient_parsed':
                 if type(v) != list: v=[v]
                 for ingdic in v:
-                    
+
                     if self.prog: self.prog(-1,_('Processing ingredients'))
                     # we take a special keyword, "text", which gets
                     # parsed
@@ -551,7 +551,7 @@ class WebPageImporter (importer.Importer):
                     if dic:
                         self.start_ing(**dic)
                         self.commit_ing()
-                        
+
             elif k == 'image':
                 try:
                     if v: img = get_image_from_tag(v,self.url)

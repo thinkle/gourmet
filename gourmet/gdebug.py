@@ -44,10 +44,10 @@ class TimeAction:
     def __init__ (self, name, level=10):
         self.level = level
         if level <= debug_level:
-            self.name = name            
+            self.name = name
             self.start = time.time()
 
-    def end (self):   
+    def end (self):
         if self.level <= debug_level:
             end = time.time()
             t=end-self.start
@@ -71,7 +71,7 @@ def print_timer_info ():
         print "%s:"%n,
         for t in times: print "%.02e"%t,",",
         print ""
-    
+
 if __name__ == '__main__':
     t=TimeAction('this is a test',0)
     debug('This is a test',0)

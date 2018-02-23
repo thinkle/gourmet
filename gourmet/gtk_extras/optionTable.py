@@ -27,7 +27,7 @@ class OptionTable (gtk.Table):
                    gobject.TYPE_NONE,
                    []),
         }
-    
+
     def __init__ (self, options=([]), option_label=None, value_label=None,
                   changedcb=None, xpadding=5, ypadding=5):
         gobject.GObject.__init__(self)
@@ -45,7 +45,7 @@ class OptionTable (gtk.Table):
         gtk.Table.__init__(self, rows=rows, columns=cols)
         self.widgets = []
         self.createOptionWidgets()
-        
+
     def createOptionWidgets (self):
         n=0
         if self.option_label:
@@ -54,7 +54,7 @@ class OptionTable (gtk.Table):
             lab.set_text('<span weight="bold"><u>%s</u></span>'%self.option_label)
             lab.set_use_markup(True)
             lab.set_alignment(0.0,0.5)
-            lab.set_justify(gtk.JUSTIFY_LEFT)            
+            lab.set_justify(gtk.JUSTIFY_LEFT)
             self.attach(lab, 0, 1, 0, 1, xpadding=self.xpadding, ypadding=self.ypadding)
                         #xoptions=gtk.SHRINK, yoptions=gtk.SHRINK)
             lab.show()
@@ -125,7 +125,7 @@ class OptionTable (gtk.Table):
                         xoptions=gtk.FILL,yoptions=gtk.SHRINK)
             w.show()
             n += 1
-            
+
     def set_option (self, n, val):
         widget,get_method,set_method=self.widgets[n]
         self.options[n][1]=val
@@ -133,7 +133,7 @@ class OptionTable (gtk.Table):
             getattr(widget,set_method)(val)
         else:
             set_method(widget,val)
-        
+
     def revert (self):
         for n in range(len(self.options)):
             default_val=self.default_options[n][1]
@@ -159,4 +159,4 @@ if __name__ == '__main__':
     w.show()
     w.connect('delete_event',gtk.main_quit)
     gtk.main()
-    
+

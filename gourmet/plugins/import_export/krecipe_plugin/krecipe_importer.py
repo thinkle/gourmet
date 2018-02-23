@@ -23,7 +23,7 @@ class KrecHandler (xml_importer.RecHandler):
              }
     RECIPE_TAG = 'krecipes-recipe'
     ING_TAG = 'ingredient'
-    
+
     def __init__ (self, total=None, conv=None, parent_thread=None):
         self.in_mixed = 0
         self.rec={}
@@ -38,7 +38,7 @@ class KrecHandler (xml_importer.RecHandler):
             self.start_ing()
         if name=='ingredient-group':
             self.group=attrs.get('name','')
-            
+
     def endElement (self, name):
         key,method=None,None
         # krecipe-recipe marks a recipe end!
@@ -66,10 +66,10 @@ class KrecHandler (xml_importer.RecHandler):
             else:
                 obj[key]=self.elbuf
 
-    
+
 class Converter (xml_importer.Converter):
     def __init__ (self, filename):
         xml_importer.Converter.__init__(self,filename,KrecHandler,
                               recMarker="</krecipe-recipe>"
                               )
-        
+

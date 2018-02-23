@@ -10,13 +10,13 @@ class ShopEditor:
     categories correspond to which items throughout the recipe
     database. It is useful for corrections or changes to category info
     en masse and for reordering shopping categories."""
-    
+
     def __init__ (self, rd=backends.db.recipeManager(), rg=None):
         self.ui = gtk.Builder()
         self.ui.add_from_file(os.path.join(uibase,'shopCatEditor.ui'))
         self.rd = rd
         self.rg = rg
-        self.prefs = self.rg.prefs        
+        self.prefs = self.rg.prefs
         self.widget_names = ['treeview', 'searchByBox', 'searchEntry', 'searchButton', 'window',
                              'searchAsYouTypeToggle', 'regexpTog', 'deleteCatButton', 'addCatEntry',
                              'addCatButton']
@@ -59,7 +59,7 @@ class ShopEditor:
             self.prefs.get('regexpTog',
                            {'active':self.regexpTog.get_active()}),
             ['toggled']))
-                
+
     def dont_ask_cb (self, widget, *args):
         self.dont_ask=widget.get_active()
 
@@ -91,7 +91,7 @@ class ShopEditor:
         if compare: return 1
         # iter2 precedes iter1
         else: return 1
-    
+
     def filter_visibility_fun (self, mod, iter):
         if not self.search_string:
             return True
@@ -110,7 +110,7 @@ class ShopEditor:
         else:
             if str.find(self.search_string) >= 0:
                 return True
-        
+
     def setupTreeView (self):
         self.CAT_COL = 1
         self.KEY_COL = 2
@@ -167,8 +167,8 @@ class ShopEditor:
         while child:
             self.treeModel.set_value(child, self.KEY_COL, new_key)
             nn += 1
-            child = self.treeModel.iter_nth_child(iter,nn)        
-        
+            child = self.treeModel.iter_nth_child(iter,nn)
+
     def changeItem (self, key, item=None, new_key=None, new_item=None):
         if item:
             vw=self.rd.ingredients_table.select(key=key,item=item)
@@ -177,11 +177,11 @@ class ShopEditor:
         for i in vw:
             if new_key:
                 i.ingkey=new_key
-                self.rd.changed=True                
+                self.rd.changed=True
             if new_item:
                 i.item=new_item
-                self.rd.changed=True                
-        
+                self.rd.changed=True
+
     def makeTreeModel (self):
         self.treeModel = gtk.TreeStore(gobject.TYPE_PYOBJECT, str, str)
         unique_cat_vw = self.rd.shopcats_table.groupby(self.rd.shopcats_table.category, 'groupvw')
@@ -233,7 +233,7 @@ class ShopEditor:
         if self.searchAsYouTypeToggle.get_active():
             self.searchButton.hide()
         else: self.searchButton.show()
-            
+
     def addCatEntryChangedCB (self, *args):
         if self.addCatEntry.get_text():
             self.addCatButton.set_sensitive(True)
@@ -242,17 +242,17 @@ class ShopEditor:
 
     def catUpCB (self, *args):
         pass
-    
+
     def catDownCB (self, *args):
         pass
-    
+
     def catTopCB (self, *args):
         pass
-    
+
     def catBottomCB (self, *args):
         pass
 
-            
+
 if __name__ == '__main__':
     ke=ShopEditor()
     gtk.main()

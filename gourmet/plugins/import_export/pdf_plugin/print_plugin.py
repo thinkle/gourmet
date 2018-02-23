@@ -11,7 +11,7 @@ from gettext import gettext as _
 
 rl2gtk_papersizes = {
     tuple([int(round(s)) for s in pagesizes.letter]) : gtk.PAPER_NAME_LETTER,
-    tuple([int(round(s)) for s in pagesizes.legal]) : gtk.PAPER_NAME_LEGAL,    
+    tuple([int(round(s)) for s in pagesizes.legal]) : gtk.PAPER_NAME_LEGAL,
     tuple([int(round(s)) for s in pagesizes.B5]):gtk.PAPER_NAME_B5,
     tuple([int(round(s)) for s in pagesizes.A5]):gtk.PAPER_NAME_A5,
     tuple([int(round(s)) for s in pagesizes.A4]):gtk.PAPER_NAME_A4,
@@ -93,7 +93,7 @@ class PDFPrinter:
             ps = gtk.paper_size_new_custom('','',w,h,gtk.UNIT_POINTS)
         page_setup.set_paper_size(ps)
         operation.set_default_page_setup(page_setup)
-        
+
     def draw_page (self,operation, context, page_num):
         page = self.d.get_page(page_num)
         w,h = page.get_size()
@@ -107,7 +107,7 @@ class PDFPrinter:
         self.opts = self.ppt.opts
         self.args = self.ppt.get_args_from_opts(self.opts)
         return self.ppt.widg
-        
+
     def custom_widget_apply (self, operation, widget):
         self.args = self.ppt.get_args_from_opts(self.opts)
 
@@ -117,7 +117,7 @@ elif sys.platform == 'darwin':
     PDFPrinter = OSXPDFPrinter
 
 def record_args (func):
-    
+
     def _ (self, *args, **kwargs):
         self.export_commands.append(
             (func.__name__,args,kwargs)
@@ -142,7 +142,7 @@ class PDFSimpleWriter (PDFPrinter):
     def close (self, *args, **kwargs):
         self.export_commands.append(('close',[],{}))
         self.setup_printer(self.parent)
-    
+
     def begin_print (self, operation, context):
         fn = tempfile.mktemp()
         writer = pdf_exporter.PdfWriter()
@@ -154,7 +154,7 @@ class PDFSimpleWriter (PDFPrinter):
         # And now we trust the documents been written...
         self.set_document(fn,operation,context)
 
-        
+
 class PDFRecipePrinter (PDFPrinter):
 
     def __init__ (self, rd, recs,
@@ -167,7 +167,7 @@ class PDFRecipePrinter (PDFPrinter):
         self.rd = rd
         self.recs = recs
         self.setup_printer(self.parent)
-        
+
     def begin_print (self, operation, context):
         fn = tempfile.mktemp()
         pe = pdf_exporter.PdfExporterMultiDoc(self.rd,self.recs,fn,pdf_args=self.args,
@@ -194,7 +194,7 @@ def setup_printer (pp):
     po.connect('create-custom-widget',pp.create_custom_widget)
     po.connect('custom-widget-apply',pp.custom_widget_apply)
     po.run(gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG)
-    
+
 def print_pdf (pdf_filename):
     if not pdf_filename.startswith('file'):
         pdf_filename = 'file://' + os.path.realpath(pdf_filename)
@@ -217,6 +217,6 @@ class PDFPrintPlugin (PrinterPlugin):
     simpleWriterPriority = 1
     RecWriter = PDFRecipePrinter
     recWriterPriority = 1
-    
+
 if __name__ == '__main__':
     test_simplewriter()

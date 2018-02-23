@@ -69,7 +69,7 @@ class WebParser (InteractiveImporter):
                         break
                 if exclude: continue
             self.images.append(img_url)
-        
+
     def parse (self, tag=None):
         if not tag: tag = self.soup
         self.parsed = []
@@ -79,7 +79,7 @@ class WebParser (InteractiveImporter):
         if self.buffer:
             self.add_buffer_to_parsed()
         return self.parsed
-    
+
     def crawl (self, tag, parent_label=None):
         formatting = self.format_tag_whitespace(tag)
         if formatting == -1:
@@ -88,7 +88,7 @@ class WebParser (InteractiveImporter):
         else:
             start_ws,end_ws = formatting
             self.buffer += start_ws
-        label = self.identify_match(tag)        
+        label = self.identify_match(tag)
         if not label and parent_label:
             # inherit...
             label = parent_label
@@ -96,7 +96,7 @@ class WebParser (InteractiveImporter):
             label = 'ignore'
         #elif not label:
         #    print 'DONT IGNORE'
-        #print 'ID TAG',tag,'with',label            
+        #print 'ID TAG',tag,'with',label
         if hasattr(tag,'contents') and tag.contents:
             for child in tag.contents:
                 self.crawl(child,label)
@@ -121,7 +121,7 @@ class WebParser (InteractiveImporter):
                     '\n','',
                     s.count('\n')-2)
         return s
-    
+
     def add_buffer_to_parsed (self):
         if not self.buffer.strip(): return
         tws = 0 #tws = # of trailing whitespace characters
@@ -240,7 +240,7 @@ class MenuAndAdStrippingWebParser (WebParser):
         for spon in spons:
             if hasattr(spon,'name') and spon.name=='body': continue
             self.preparsed_elements.append((spon,'ignore'))
-        
+
 class WebParserTester (WebParser):
 
     def preparse (self):

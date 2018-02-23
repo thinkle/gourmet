@@ -7,7 +7,7 @@ class TestImporter (unittest.TestCase):
         self.i = importer.Importer()
 
     def _get_last_rec_ (self):
-        return self.i.added_recs[-1] 
+        return self.i.added_recs[-1]
 
     def testRecImport (self):
         self.i.start_rec()
@@ -18,7 +18,7 @@ class TestImporter (unittest.TestCase):
         rec = self._get_last_rec_()
         for att,val in attrs:
             self.assertEqual(getattr(rec,att),val)
-    
+
     def testIngredientImport (self):
         self.i.start_rec()
         self.i.rec['title']='Ingredient Import Test'

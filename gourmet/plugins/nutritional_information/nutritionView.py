@@ -47,7 +47,7 @@ class NutritionTable:
                 widgets[1].show()
                 widgets[0].hide()
 
-    def pack_table (self):        
+    def pack_table (self):
         for n,f in enumerate(self.fields):
             lname = parser_data.NUT_FIELDNAME_DICT[f]
             label = gtk.Label()
@@ -74,7 +74,7 @@ class NutritionTable:
         else:
             # if we must, go ahead and use the same mnemonic twice
             return "_" + txt
-                
+
 
 class NutritionItemView:
     def __init__ (self,
@@ -122,7 +122,7 @@ class NutritionItemView:
             if self.unitChoiceLabel: self.unitChoiceLabel.hide()
             if self.amountLabel: self.amountLabel.hide()
             self.set_desc_visibility(False)
-        
+
     def set_desc_visibility (self, visible):
         if visible:
             self.descChoiceWidget.show()
@@ -130,7 +130,7 @@ class NutritionItemView:
         else:
             self.descChoiceWidget.hide()
             if self.descChoiceLabel: self.descChoiceLabel.hide()
-            
+
     #def set_ingredient_from_keybox (self,*args):
     #    ing = self.ingredientWidget.get_text()
     #    self.set_ingredient(ing)
@@ -185,7 +185,7 @@ class NutritionItemView:
         for l in lst: self.usdaDict[l[0]]=l[1]
         self.choices[self.usdaChoiceWidget]=[x[0] for x in lst]
         self.setup_choices(self.choices[self.usdaChoiceWidget],self.usdaChoiceWidget)
-        
+
     def get_active_usda (self):
         return cb.cb_get_active_text(self.usdaChoiceWidget)
 
@@ -235,7 +235,7 @@ class NutritionItemView:
             self.currentAmountWidget.set_text("%s %s (? grams)"%(self.amount,self.unit))
         else:
             self.currentAmountWidget.set_text("%s %s (%s grams)"%(self.amount,self.unit,
-                                                                  multiplier*100))            
+                                                                  multiplier*100))
         self.infoTable.set_nutrition_object(self.nut,multiplier)
 
     def get_new_conversion (self, *args):
@@ -265,7 +265,7 @@ class NutritionItemView:
             cb.set_model_from_list(choiceWidget,choices,expand=False)
         else:
             cb.set_model_from_list(choiceWidget,[None])
-        
+
     def get_choice (self, choiceWidget):
         """Return the user's current choice from choiceWidget"""
         return cb.cb_get_active_text(choiceWidget)
@@ -277,7 +277,7 @@ class NutritionItemView:
 class NutritionCardView:
     def __init__ (self, recCard):
         self.rc = recCard
-        import nutritionGrabberGui        
+        import nutritionGrabberGui
         nutritionGrabberGui.check_for_db(self.rc.rg.rd)
         self.nmodel = NutritionTreeModel(
             self.get_nd(),
@@ -291,7 +291,7 @@ class NutritionCardView:
         self.ings = self.rc.rg.rd.get_ings(self.rc.current_rec)
         for i in self.ings: self.nmodel.add_ingredient(i)
         NutritionCardViewOld(recCard) # initialize our old interface as well...
-        
+
     def get_nd (self):
         if hasattr(self.rc.rg,'nutritionData'): return self.rc.rg.nutritionData
         else:
@@ -306,9 +306,9 @@ class NutritionCardViewOld:
     ING_COL = 0
     NUT_COL = 1
     STR_COL = 2
-    
+
     def __init__ (self, recCard):
-        import nutritionGrabberGui        
+        import nutritionGrabberGui
         self.rc = recCard
         self.ings = self.rc.rg.rd.get_ings(self.rc.current_rec)
         nutritionGrabberGui.check_for_db(self.rc.rg.rd)
@@ -361,7 +361,7 @@ class NutritionCardViewOld:
     def setup_nmodel (self):
         # make sure we have an ingredient list
         if not hasattr(self.rc,'ings'):
-            self.rc.create_ing_alist()        
+            self.rc.create_ing_alist()
         self.nmodel = gtk.ListStore(gobject.TYPE_PYOBJECT,
                                     gobject.TYPE_PYOBJECT,
                                     str)
@@ -373,7 +373,7 @@ class NutritionCardViewOld:
             else:
                 nut_row = None
             self.nmodel.append([i,nut_row,i.ingkey])
-        
+
 
     def setup_treeview_columns (self):
         for n in [self.STR_COL]:
@@ -382,7 +382,7 @@ class NutritionCardViewOld:
             col.set_reorderable(True)
             col.set_resizable(True)
             self.treeview.append_column(col)
-        
+
     def get_nd (self):
         if hasattr(self.rc.rg,'nutritionData'): return self.rc.rg.nutritionData
         else:
@@ -391,9 +391,9 @@ class NutritionCardViewOld:
             return self.rc.rg.nutritionData
 
     def selectionChangedCB (self, *args):
-        mod,itr = self.treeviewsel.get_selected()        
+        mod,itr = self.treeviewsel.get_selected()
         self.ing=mod.get_value(itr,self.ING_COL)
-        self.nut = mod.get_value(itr,self.NUT_COL)        
+        self.nut = mod.get_value(itr,self.NUT_COL)
         if not self.ing or self.nut:
             # then this is the recipe that's been selected!
             self.radioCalc.show()
@@ -402,19 +402,19 @@ class NutritionCardViewOld:
             return
         else:
             self.radioCalc.hide()
-            self.radioUSDA.show()            
+            self.radioUSDA.show()
             #if not self.nutcombo_set==self.ing:
             #    self.niv.setup_usda_choices(self.ing.ingkey)
             #    self.nutcombo_set=self.ing
             self.usdaExpander.set_expanded(True)
         if self.nut:
-            self.setup_usda_box()            
+            self.setup_usda_box()
             self.radioUSDA.set_active(True)
         else:
             self.radioManual.set_active(True)
-        self.keyBox.entry.set_text(self.ing.ingkey)        
-            
-    def setup_usda_box (self):          
+        self.keyBox.entry.set_text(self.ing.ingkey)
+
+    def setup_usda_box (self):
         self.niv.amount=self.ing.amount
         self.niv.unit=self.ing.unit
         self.niv.set_ingredient(self.ing.ingkey)
@@ -423,7 +423,7 @@ class NutritionCardViewOld:
 
     def setup_keybox (self, ing):
         self.keyBox.set_model(self.rc.rg.inginfo.key_model.filter_new())
-        self.keyBox.set_text_column(0)        
+        self.keyBox.set_text_column(0)
         curkey = self.keyBox.entry.get_text()
         keys = self.rc.rg.rd.key_search(ing.item)
         mod=self.keyBox.get_model()
@@ -447,14 +447,14 @@ class NutritionCardViewOld:
         if widget.get_active():
             self.usdaExpander.set_expanded(False)
             self.usdaExpander.set_sensitive(False)
-            self.nutTable.set_editable(True)            
+            self.nutTable.set_editable(True)
         else:
             self.usdaExpander.set_sensitive(True)
             self.setup_usda_box()
             self.usdaExpander.set_expanded(True)
             self.nutTable.set_editable(False)
-            
-            
+
+
     def applyCB (self,*args):
         # ADD SOMETHING HERE TO CALL A "SAVE" type method on our NIV
         # now update our model
@@ -491,7 +491,7 @@ class NutritionTreeModel (gtk.TreeStore):
         self.numerics = ['amount','grams']
         self.build_store()
         self.nutrition_fields = nutrition_fields
-        
+
     def build_store (self):
         n = self.ING_OBJECT_COLUMN
         self.ts_col_dic = {}
@@ -510,7 +510,7 @@ class NutritionTreeModel (gtk.TreeStore):
         text_renderer.set_property('editable',True)
         for col in self.columns:
             # not yet i18n'd
-            if col=='USDA':                
+            if col=='USDA':
                 rend = gtk.CellRendererCombo()
                 self.usda_model = gtk.ListStore(str,str)
                 rend.set_property('model',self.usda_model)
@@ -525,7 +525,7 @@ class NutritionTreeModel (gtk.TreeStore):
             col.set_resizable(True)
             self.tv.append_column(col)
         self.tv.connect('row-expanded',self.populateChild)
-        
+
     def add_ingredient (self, ing):
         base_list = [self.grab_attr(ing,name) for name in self.columns]
         itr=self.append(None,[ing]+base_list)
@@ -564,7 +564,7 @@ class NutritionTreeModel (gtk.TreeStore):
             amt = self.nd.get_conversion_for_amt(ing.amount,
                                                  ing.unit,
                                                  ing.ingkey
-                                                 
+
                                                  )
             if amt: return 100 * amt
             else:
@@ -574,8 +574,8 @@ class NutritionTreeModel (gtk.TreeStore):
         indices = path_string.split(':')
         path = tuple( map(int, indices))
         itr = self.get_iter(path)
-        ing = self.get_value(itr,self.ING_OBJECT_COLUMN)        
-        if isinstance(editable,gtk.ComboBoxEntry):            
+        ing = self.get_value(itr,self.ING_OBJECT_COLUMN)
+        if isinstance(editable,gtk.ComboBoxEntry):
             while len(self.usda_model)>0: del self.usda_model[0] # empty our liststore...
             usda_list=self.nd.get_usda_list_for_string(ing.ingkey)
             self.usdaDict={}
@@ -604,4 +604,4 @@ if __name__ == '__main__':
     vb.add(hb)
     t = gtk.Table()
     nt = gtk.NutritionTable(t, {}, True)
-    
+

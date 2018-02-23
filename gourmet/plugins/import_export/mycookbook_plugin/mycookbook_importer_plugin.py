@@ -17,7 +17,7 @@ class MCBPlugin (ImporterPlugin):
 
     def get_importer (self, filename):
         xmlfilename=''
-        
+
         #Unzip in a temporary directory
         try:
             zf = zipfile.ZipFile(filename)
@@ -38,7 +38,7 @@ class MCBPlugin (ImporterPlugin):
             #Get the path to the xml file to import it
             if filename.endswith(".xml"):
                 xmlfilename = os.path.join(tempdir, filename)
-                
+
                 #fix the xml file
                 parser = etree.XMLParser(recover=True)
                 tree = etree.parse(xmlfilename, parser)
@@ -46,9 +46,9 @@ class MCBPlugin (ImporterPlugin):
                 outFile = open(fixedxmlfilename, 'w')
                 tree.write(outFile, xml_declaration=True, encoding='utf-8', pretty_print=True)
                 outFile.close()
-                
+
         zf.close()
-        
+
         return mycookbook_importer.Converter(fixedxmlfilename)
 
 

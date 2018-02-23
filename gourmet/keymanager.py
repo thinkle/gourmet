@@ -38,7 +38,7 @@ class KeyManager:
         if self.rm.fetch_len(self.rm.keylookup_table) == 0:
             self.initialize_from_defaults()
         self.initialize_categories()
-        
+
     def initialize_from_defaults (self):
         dics = []
         for key,items in defaults.keydic.items():
@@ -83,7 +83,7 @@ class KeyManager:
             if fnd != -1:
                 self.cats.append(k[0:fnd])
         debug("End initialize_categories",10)
-    
+
     def grab_ordered_key_list (self, str):
         debug("Start grab_ordered_key_list",10)
         """We return a list of potential keys for string."""
@@ -187,7 +187,7 @@ class KeyManager:
                 # We have a lovely ratio.
                 #
                 # count      1
-                # _____   x ___ 
+                # _____   x ___
                 # total_count   words
                 #
                 # Where count is the number of times this word has
@@ -253,7 +253,7 @@ class KeyManager:
         m = self.ignored_regexp.match(words)
         while m:
             words = words[0:m.start()] + words[m.end():]
-            m = self.ignored_regexp.match(words)            
+            m = self.ignored_regexp.match(words)
         t.end()
         if stringp:
             return words
@@ -306,7 +306,7 @@ class KeyDictionary:
             lst.append((i, self.__getitem__(i)))
         lst.extend(self.default.items())
         return lst
-        
+
 cooking_verbs=["cored",
                "peeled",
                "sliced",
@@ -338,4 +338,4 @@ if __name__ == '__main__':
     km = KeyManager(rm=recipeManager.RecipeManager(**recipeManager.dbargs))
     recipeManager.dbargs['file']=tempfile.mktemp('.mk')
     fkm = KeyManager(rm=recipeManager.RecipeManager(**recipeManager.dbargs))
-    
+

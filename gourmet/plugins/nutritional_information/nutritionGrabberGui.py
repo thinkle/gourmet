@@ -19,7 +19,7 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
 
     def stopcb (self,*args):
         self.terminated=True
-        
+
     def load_db (self):
         #filename=None
         #if de.getBoolean(
@@ -47,7 +47,7 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
             time.sleep(0.1)
             self.gui_update()
         self.gui_update()
-        
+
     def gui_update (self):
         if self.terminated:
             raise Exception("Terminated!")
@@ -61,17 +61,17 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
     def get_abbrev_from_url (self):
         self.show_progress(0.05,_('Extracting %s from zip archive.')%self.ABBREV_FILE_NAME)
         return databaseGrabber.DatabaseGrabber.get_abbrev_from_url(self)
-    
+
 def check_for_db (db):
     if db.fetch_len(db.nutrition_table) < 10:
         print 'Grabbing nutrition database!'
-        dgg = DatabaseGrabberGui(db)        
+        dgg = DatabaseGrabberGui(db)
         dgg.load_db()
     # Check if we have choline in our DB... butter (1123) has choline...
     elif not db.fetch_one(db.nutrition_table,ndbno=1123).choline:
         dgg = DatabaseGrabberGui(db)
         dgg.load_db()
-        
+
 if __name__=='__main__':
     import gourmet.recipeManager
     print 'loading db'

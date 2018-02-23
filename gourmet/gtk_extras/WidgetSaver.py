@@ -29,7 +29,7 @@ class WidgetSaver:
         for p in self.dictionary.keys():
             self.dictionary[p]=self.w.get_property(p)
         return False # we don't handle any signals
-    
+
 class WindowSaver (WidgetSaver):
     def __init__ (self, widget, dictionary={},
                   signals=['configure-event','delete-event'],
@@ -42,8 +42,8 @@ class WindowSaver (WidgetSaver):
         # Window positioning is bad on Windows -- setting
         # GRAVITY_STATIC creates a nightmare for users, so we'll just
         # disable this whole thing
-        if os.name=='nt': return 
-        
+        if os.name=='nt': return
+
         widget.set_gravity(gtk.gdk.GRAVITY_STATIC)
         #widget.set_gravity(gtk.gdk.GRAVITY_NORTH_WEST)
         WidgetSaver.__init__(self, widget, dictionary, signals, show)
@@ -57,7 +57,7 @@ class WindowSaver (WidgetSaver):
                 #    #print 'FIDDLING WITH WINDOW FOR WINDOWS'
                 #    #self.dictionary[p] = self.dictionary[p][0],20
                 apply(f,self.dictionary[p])
-        
+
     def save_properties (self, *args):
         if os.name=='nt': return
         if self.w.window and not self.w.window.get_state()&gtk.gdk.WINDOW_STATE_MAXIMIZED:
@@ -70,14 +70,14 @@ class WindowSaver (WidgetSaver):
             #    #self.dictionary['position']=self.w.get_position()
             debug('Saved properties: %s'%self.dictionary,4)
         return False
-    
+
 class WidgetPrefs:
     def __init__ (self, prefs, glade=None, hideable_widgets=[], basename='hide_'):
         """hideable_widgets is a list of tuples:
         (widget_name, widget_desc)
         OR
         ([widget_name,widget_name],widget_desc)
-        
+
         widget_name is a string,  handed to glade: glade.get_widget(widget)
         Multiple widget_names are allowed so that we can hide things like widgets
         and labels in one fell swoop
@@ -133,10 +133,10 @@ class WidgetPrefs:
             self.apply_pref_dic[pref[0]]=w
             option_list.append(pref)
         return option_list
-    
+
     def show_pref_dialog (self,*args):
         import dialog_extras
         pd=dialog_extras.preferences_dialog(
             options=self.make_option_list(),
             apply_func=self.apply_option)
-        pd.run()        
+        pd.run()

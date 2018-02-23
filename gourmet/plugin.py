@@ -1,7 +1,7 @@
 # This module provides base classes for all of our plugins. Plugin
 # writers will subclass these plugins in their own modules. Thus, each
 # plugin module should start with
-# 
+#
 # from gourmet.plugin import ...
 #
 # The plugins should then sub-class the relevant class.
@@ -46,11 +46,11 @@ class StandardPlugin (Plugin):
 
     def deactivate (self, pluggable):
         """Called when plugin is deactivated.
-        
+
         Once each time the pluggable instance is destroyed.
         """
         pass
-    
+
     def remove (self):
         """Remove the plugin from the UI (the user has turned it off).
         """
@@ -58,7 +58,7 @@ class StandardPlugin (Plugin):
 
 class ImportManagerPlugin (StandardPlugin):
     '''A class for extending the methods of the ImportManager itself.
-    
+
     In order to add importers, subclass ImporterPlugin, not this class.
     '''
 
@@ -72,13 +72,13 @@ class ImportManagerPlugin (StandardPlugin):
 
 
     pass
-    
-class ImporterPlugin (StandardPlugin): 
+
+class ImporterPlugin (StandardPlugin):
 
     # Do we let users type in a source to associate with these
     # recipes.
     ask_user_for_source = False
-    
+
     name = None # The name of our importer
     patterns = [] # Glob patterns to match this filetype
     mimetypes = [] # mimetypes associated with this filetype
@@ -111,7 +111,7 @@ class ImporterPlugin (StandardPlugin):
         '''Get an importer for data data retrieved from url'''
         tempfilename = self.importManager.get_tempfilename(url,data,content_type)
         return self.get_importer(tempfilename)
-        
+
 
 
 
@@ -172,7 +172,7 @@ class BaseExporterPlugin (Plugin):
         '''Add a text field to our export.
 
         field_name is the name of the field.
-        
+
         field_fetcher is a function that is given the recipe object as
         its only argument and should return the text blurb.
 
@@ -202,7 +202,7 @@ class BaseExporterPlugin (Plugin):
             self.hooks_to_add.append((position,'_write_text_',do_write))
         else:
             def do_write (*args):
-                #print 'do_write received arguments',args                
+                #print 'do_write received arguments',args
                 if position==plugin_loader.POST:
                     klass = args[1]
                 else:
@@ -210,7 +210,7 @@ class BaseExporterPlugin (Plugin):
                 val = field_fetcher(klass.r)
                 if klass.do_markup:
                     val = klass.handle_markup(val)
-                if klass.ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS and (val or write_empty_field):                
+                if klass.ALLOW_PLUGINS_TO_WRITE_NEW_FIELDS and (val or write_empty_field):
                     klass.write_attr(field_name,val)
             self.hooks_to_add.append((position,'_write_attrs_',do_write))
 
@@ -241,7 +241,7 @@ class DatabasePlugin (StandardPlugin):
             print 'Activate plugin',self,db,'from:'
             import traceback; traceback.print_stack()
             print 'ignoring'
-            return 
+            return
         self.db = db
         if db._created:
             # For creation after DB is initialized...
@@ -249,24 +249,23 @@ class DatabasePlugin (StandardPlugin):
                 self.create_tables()
             except sqlalchemy.exc.InvalidRequestError as error:
                 print("An InvalidRequestError was caught: {0}".format(error.args, error.message))
-            
             self.db.metadata.create_all()
             db.update_plugin_version(self)
         else:
             db.add_hook(plugin_loader.POST,'setup_tables',self.create_tables)
         self.active = True
-        
+
     def remove (self):
         self.db.remove_hook(plugin_loader.POST,'setup_tables',self.create_tables)
         self.active = False
-        
+
     def create_tables (self):
         """Handed the database, create table definitions as necessary.
 
         This will happen at program initiation.
         """
         pass
-    
+
     def update_version (self, gourmet_stored, plugin_stored,
                         gourmet_current, plugin_current):
         """Given the old version number, perform any updates to the
@@ -284,7 +283,7 @@ class UIModule:
     ui_string = '' # an XML UI description for merging with the target UIManager
     name = '' # the name of this module (not i18n'd)
     label = '' # The label of the tab where this interface goes. (should be i18n'd)
-    
+
     def __init__ (self):
         self.action_groups = []
         self.added = []
@@ -321,7 +320,7 @@ class UIPlugin (StandardPlugin, UIModule):
             merge_id,action_ids = self.merged[uimanager]
             for ag in action_ids: uimanager.remove_action_group(ag)
             uimanager.remove_ui(merge_id)
-    
+
     def add_to_uimanager (self, uimanager):
         merge_id = uimanager.add_ui_from_string(self.ui_string)
         action_ids = []
@@ -329,7 +328,7 @@ class UIPlugin (StandardPlugin, UIModule):
             fix_action_group_importance(ag)
             uimanager.insert_action_group(ag,0)
             action_ids.append(ag)
-        self.merged[uimanager] = merge_id,action_ids    
+        self.merged[uimanager] = merge_id,action_ids
 
 class ToolPlugin (UIPlugin):
 
@@ -351,7 +350,7 @@ class ToolPlugin (UIPlugin):
 class RecDisplayPlugin (StandardPlugin):
 
     moduleKlass = None
-    
+
     def activate (self, pluggable):
         if not hasattr(self,'pluggables'): self.pluggables = []
         pluggable.add_plugin_to_left_notebook(self.moduleKlass)
@@ -397,14 +396,14 @@ class MainPlugin (StandardPlugin):
                           )
         widget.show()
         self.main.main_notebook.set_show_tabs(True)
-        
+
 
 class PluginPlugin (StandardPlugin):
     """This class is used for plugins that plugin to other plugins.
     """
 
     target_pluggable = None
-    
+
     def activate (self, pluggable):
         # Check whether we are actually intended for this pluggable,
         # then call do_activate, or remove ourselves from the plugins
@@ -415,7 +414,7 @@ class PluginPlugin (StandardPlugin):
         else:
             # nevermind... we're not for this pluggable
             pluggable.plugins.remove(self)
-            
+
     def do_activate (self, pluggable):
         pass
 
@@ -431,10 +430,10 @@ class RecEditorModule (UIModule, gobject.GObject, object):
         'saved':(gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,[]),
         'toggle-edited':(gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,[gobject.TYPE_BOOLEAN]),
         }
-    
+
     def __init__ (self, recEditor):
         gobject.GObject.__init__(self)
-        self.action_groups = [] # a list of ActionGroups to be inserted into the uimanager.        
+        self.action_groups = [] # a list of ActionGroups to be inserted into the uimanager.
         self.re = recEditor
         self.rg = self.re.rg
         self.current_rec = self.re.current_rec
@@ -467,7 +466,7 @@ class RecEditorModule (UIModule, gobject.GObject, object):
             self.undoActionGroup.get_action('Reapply')
             )
         self.history.add_action_hook(self.undo_action_callback)
-             
+
     def setup (self):
         pass
 
@@ -492,7 +491,7 @@ class RecEditorModule (UIModule, gobject.GObject, object):
             # Cuisine, etc.), we look at every change and compare with
             # the original value. If it has, we delete the change from
             # our dictionary of changes. If all changes have been set
-            # back to original value, we are no longer "Edited"            
+            # back to original value, we are no longer "Edited"
             if hasattr(widget,'get_value'): val = widget.get_value()
             elif hasattr(widget,'get_text'): val = widget.get_text()
             elif hasattr(widget,'entry'): val = widget.entry.get_text()
@@ -512,7 +511,7 @@ class RecEditorModule (UIModule, gobject.GObject, object):
                 if self.re.widgets_changed_since_save.has_key(prop):
                     del self.re.widgets_changed_since_save[prop]
             else:
-                self.re.widgets_changed_since_save[prop]=val  
+                self.re.widgets_changed_since_save[prop]=val
         else:
             # If we can't compare with original values, we keep a
             # dictionary of all changes made on a per-widget basis.
@@ -542,7 +541,7 @@ class RecEditorModule (UIModule, gobject.GObject, object):
             self.edited = True
         else:
             self.edited = False
-    
+
     def grab_focus (self):
         """Put focus on appropriate widget for editing."""
         pass
@@ -571,7 +570,7 @@ class PrinterPlugin (StandardPlugin):
     RecWriter = None # RecWriter class
     recWriterPriority = -2
     pass
-    
+
     def activate (self, pluggable):
         pluggable.register_plugin(self)
 
@@ -608,7 +607,7 @@ class PrefsPlugin (StandardPlugin):
     def remove (self):
         if self.notebook:
             self.notebook.remove_page(self.page_no)
-            
+
     def set_pref (self, name, value):
         self.prefsGui.set_pref(name,value)
-        
+

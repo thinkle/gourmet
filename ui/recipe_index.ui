@@ -91,17 +91,17 @@
     </ui>
   </object>
   <object class="GtkMenu" constructor="uimanager1" id="rlmen">
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
   </object>
   <object class="GtkMenu" constructor="uimanager2" id="ingmen">
-    
-    
+
+
   </object>
   <object class="GtkWindow" id="window1">
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>

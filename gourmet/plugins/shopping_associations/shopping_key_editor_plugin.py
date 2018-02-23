@@ -9,9 +9,9 @@ class KeyEditorPlugin (PluginPlugin):
     title = _('Shopping Category')
     tvcs = {}
     ingkeys_to_change = {}
-    
+
     selected_ingkeys = []
-    
+
     def setup_treeview_column (self, ike, key_col, instant_apply=False):
         '''Set up a treeview column to display your data.
 
@@ -33,15 +33,15 @@ class KeyEditorPlugin (PluginPlugin):
         for val in self.rd.get_unique_values('shopcategory',table=self.rd.shopcats_table):
             if val: self.shopcat_model.append([val])
         renderer.set_property('model',self.shopcat_model)
-        renderer.set_property('text-column',0)        
+        renderer.set_property('text-column',0)
         renderer.set_property('editable',True)
         renderer.set_property('mode',gtk.CELL_RENDERER_MODE_EDITABLE)
-        renderer.set_property('sensitive',True)        
+        renderer.set_property('sensitive',True)
         tvc = gtk.TreeViewColumn(self.title,renderer)
         tvc.set_cell_data_func(renderer,self.cell_data_func,key_col)
         self.tvcs[renderer] = tvc
         return tvc
-        
+
     def cell_data_func (self, col, renderer, model, itr, key_col):
         if self.ingkeys_to_change.has_key(model[itr][key_col]):
             cat = self.ingkeys_to_change[model[itr][key_col]]
@@ -53,7 +53,7 @@ class KeyEditorPlugin (PluginPlugin):
             else:
                 cat = ''
         renderer.set_property('text',cat)
-        
+
     def start_edit_cb (self, renderer, cbe, path_string):
         if isinstance(cbe,gtk.ComboBoxEntry):
             entry = cbe.child
@@ -94,7 +94,7 @@ class KeyEditorPlugin (PluginPlugin):
                             'shopcategory':val}
                            )
             return ingkey,None
-        
+
     def save (self):
         '''Save any data the user has entered in your treeview column.
         '''
@@ -105,7 +105,7 @@ class KeyEditorPlugin (PluginPlugin):
     def offers_edit_widget (self):
         '''Return True if this plugin provides an edit button for
         editing data in some other window (if you need more than an
-        editable cellrenderer to let users edit your data. 
+        editable cellrenderer to let users edit your data.
         '''
         return True
 
@@ -130,8 +130,8 @@ class KeyEditorPlugin (PluginPlugin):
         if val:
             for ingkey in self.selected_ingkeys:
                 self.apply_association(ingkey,val)
-                
-                
+
+
     def selection_changed (self, ingkeys):
         '''Selected ingkeys have changed -- currently ingkeys are
         selected (and should be acted on by our edit_widget

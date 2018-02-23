@@ -16,7 +16,7 @@ class DBTest (unittest.TestCase):
 
 class testRecBasics (DBTest):
     def runTest (self):
-        self.assertEqual(self.db.fetch_len(self.db.recipe_table),0)        
+        self.assertEqual(self.db.fetch_len(self.db.recipe_table),0)
         rec = self.db.add_rec({'title':'Fooboo'})
         self.assertEqual(rec.title,'Fooboo')
         rec2 = self.db.new_rec()
@@ -46,19 +46,19 @@ class testIngBasics (DBTest):
         self.assertEqual(len(self.db.get_ings(rid)),2)
         ing = self.db.modify_ing(ing,{'amount':2})
         self.assertEqual(ing.amount,2)
-        ing = self.db.modify_ing(ing,{'unit':'cup'})    
+        ing = self.db.modify_ing(ing,{'unit':'cup'})
         self.assertEqual(ing.unit,'cup')
         self.db.delete_ing(ing)
         self.db.delete_ing(ing2)
         self.assertEqual(self.db.fetch_len(self.db.ingredients_table),0)
         self.db.add_ings([
-                {'rangeamount': None, 'item': 'water', 'recipe_id': rid, 'position': 1, 'ingkey': u'water'},                
+                {'rangeamount': None, 'item': 'water', 'recipe_id': rid, 'position': 1, 'ingkey': u'water'},
                 {'rangeamount': None, 'item': 'linguine', 'amount': 0.5, 'recipe_id': rid, 'position': 1, 'ingkey': u'linguine', 'unit': 'pound'}
              ]
                          )
         ings = self.db.get_ings(rid)
         self.assertEqual(ings[1].unit,'pound')
-        self.assertEqual(ings[1].amount,0.5)        
+        self.assertEqual(ings[1].amount,0.5)
 
     def testUnique (self):
         self.db.delete_by_criteria(self.db.ingredients_table,{}) # Clear out ingredients
@@ -71,14 +71,14 @@ class testIngBasics (DBTest):
         vv=self.db.get_unique_values('ingkey',self.db.ingredients_table)
         assert(len(vv)==3)
         cvw = self.db.fetch_count(self.db.ingredients_table,'ingkey',ingkey='spinach',sort_by=[('count',-1)])
-        assert(cvw[0].count==3)    
+        assert(cvw[0].count==3)
         assert(cvw[0].ingkey=='spinach')
 
 class testSearch (DBTest):
     def runTest (self):
         self.db.delete_by_criteria(self.db.ingredients_table,{}) # Clear out ingredients
         self.db.delete_by_criteria(self.db.recipe_table,{}) # Clear out recipes
-        self.db.delete_by_criteria(self.db.categories_table,{}) # Clear out categories        
+        self.db.delete_by_criteria(self.db.categories_table,{}) # Clear out categories
         self.db.add_rec({'title':'Foo','cuisine':'Bar','source':'Z'})
         self.db.add_rec({'title':'Fooey','cuisine':'Bar','source':'Y'})
         self.db.add_rec({'title':'Fooey','cuisine':'Foo','source':'X'})
@@ -155,14 +155,14 @@ class testUnicode (DBTest):
             assert(getattr(ing,attr)==u'\xc1guila')
 
 
-class testIDReservation (DBTest):                                  
+class testIDReservation (DBTest):
 
     def runTest (self):
         rid = self.db.new_id()
         rid2 = self.db.new_id()
         r1 = self.db.add_rec({'title':'intermittent'})
         r1i = self.db.add_rec({'title':'intermittent2'})
-        r12 = self.db.add_rec({'title':'intermittent3'})    
+        r12 = self.db.add_rec({'title':'intermittent3'})
         r2 = self.db.add_rec({'title':'reserved','id':rid})
         r3 = self.db.add_rec({'title':'reserved2','id':rid2})
         try: assert(r2.id==rid)
@@ -184,7 +184,7 @@ class TestMoreDataStuff (DBTest):
         r = self.db.add_rec({'title':'Foo','cuisine':'Bar','source':'Z'})
         self.db.update_by_criteria(self.db.recipe_table,{'title':'Foo'},{'title':'Boo'})
         self.assertEqual(self.db.get_rec(r.id).title, 'Boo')
-    
+
     def test_modify_rec (self):
         orig_attrs = {'title':'Foo','cuisine':'Bar','yields':7,'yield_unit':'cups'}
         new_attrs =  {'title':'Foob','cuisine':'Baz','yields':4,'yield_unit':'servings'}
@@ -215,7 +215,7 @@ class TestMoreDataStuff (DBTest):
                     self.assertEqual(getattr(r,a),v,'Incorrect original vlaue for %s'%a)
             # Change back our ingredient...
             r = self.db.modify_ing(i,{attr:orig_attrs[attr]})
-            
+
 suite = unittest.TestSuite()
 suite.addTests([
         testRecBasics(),
@@ -225,11 +225,11 @@ suite.addTests([
         TestMoreDataStuff('test_image_data'),
         TestMoreDataStuff('test_update'),
         TestMoreDataStuff('test_modify_rec'),
-        TestMoreDataStuff('test_modify_ing'),                
+        TestMoreDataStuff('test_modify_ing'),
         ] + [
         testIngBasics(m) for m in ['testUnique','testAddIngs',]
         ]
                )
-    
+
 if __name__=='__main__':
     unittest.main()

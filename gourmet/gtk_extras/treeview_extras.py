@@ -6,7 +6,7 @@ def print_tree (mod):
         print [col for col in row]
         for child in row.iterchildren():
             print '-> ',[col for col in child]
-        
+
 def path_next (path, inc=1):
     """Return the path NEXT rows after PATH. Next can be negative, in
     which case we get previous paths."""
@@ -95,7 +95,7 @@ def remove_children (mod, iter):
     child = mod.iter_children(iter)
     while child:
         mod.remove(child)
-        child = mod.iter_children(iter)        
+        child = mod.iter_children(iter)
 
 def harvest_children (mod, iter):
     ret = []
@@ -106,7 +106,7 @@ def harvest_children (mod, iter):
         n += 1
         child = mod.iter_nth_child(iter, n)
     return ret
-            
+
 def path_compare (p1, p2):
     """Return 1 if p1 > p2, 0 if p1 = p2 and -1 if p1 < p2
     Greater than means comes after."""
@@ -136,7 +136,7 @@ def path_compare (p1, p2):
                 flag=False
         n += 1
     return retval
-        
+
 def get_row (mod, iter):
         """Grab all values in iter and return as a list suitable for
         feeding to 'row' argument of append/prepend/insert"""
@@ -167,15 +167,15 @@ class selectionSaver:
         self.model=self.tv.get_model()
         self.selection=self.tv.get_selection()
         self.save_selections()
-        
+
     def save_selections (self):
         self.selected = []
-        self.expanded = {}        
+        self.expanded = {}
         self.selection.selected_foreach(self._add_to_selected)
 
     def _add_to_selected (self, model, path, iter):
         self.add_selection(iter)
-        
+
     def add_selection (self, itr):
         """Add iter to list of selected items"""
         v = self.model.get_value(itr,self.uc)
@@ -184,7 +184,7 @@ class selectionSaver:
         expandedp = self.tv.row_expanded(pth)
         if expandedp:
             self.expanded[v] = expandedp
-        
+
     def rem_selection (self, itr):
         """Remove iter from list of selected items. Silently do nothing if
         handed an iter that wasn't selected in the first place."""
@@ -215,7 +215,7 @@ class selectionSaver:
                 if isinstance(v,unicode) and self.expanded.get(v):
                     self.tv.expand_row(self.model.get_path(itr),True)
                 new_paths.append(self.model.get_path(itr))
-            child = self.model.iter_children(itr)            
+            child = self.model.iter_children(itr)
             if child:
                 itr = child
             else:
@@ -228,7 +228,7 @@ class selectionSaver:
                         itr = self.model.iter_next(parent)
                     else:
                         itr = None
-            
+
 class TreeViewConf:
     """Handed a treeView and two configuration items, this class allows
     us to save user changes made to a treeView. Whoever calls us is responsible
@@ -239,7 +239,7 @@ class TreeViewConf:
         self.order=order
         self.hidden=hidden
         self.tv.connect("columns-changed",self.save_column_change_cb)
-        
+
     def apply_visibility (self):
         for c in self.tv.get_columns():
             t=c.get_title()
@@ -278,7 +278,7 @@ class TreeViewConf:
 
 class QuickTree (gtk.ScrolledWindow):
     def __init__ (self, rows, titles=None):
-        
+
         """Handed a list of data, we create a simple treeview.  The
         rules are simple. Each row can be a LIST in which case it is
         taken to be a list of columns (and each LIST is assumed to be
@@ -325,8 +325,8 @@ class QuickTree (gtk.ScrolledWindow):
                 row.append("")
             self.model[itr]=map(lambda i: str(i),row)
         self.tv.set_model(self.model)
-            
-            
+
+
 if __name__ == '__main__':
     vb = gtk.VBox()
     sw = QuickTree(

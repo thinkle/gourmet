@@ -26,9 +26,9 @@ class RecHandler (xml_importer.RecHandler):
     ING_TAG = 'ingredient'
     INSTR_TAG = 'recipetext'
     COMMENT_TAG = 'comments'
-    
+
     current_section = ''
-    
+
     def __init__ (self, total=None, conv=None, parent_thread=None):
         self.in_mixed = 0
         self.rec={}
@@ -45,7 +45,7 @@ class RecHandler (xml_importer.RecHandler):
             self.current_section = 'instruction'
         if name==self.COMMENT_TAG:
             self.current_section = 'comments'
-            
+
     def endElement (self, name):
         key,method=None,None
         if name==self.RECIPE_TAG:
@@ -72,7 +72,7 @@ class RecHandler (xml_importer.RecHandler):
             (dirname, filename) = os.path.split(self.parent_thread.fn)
             (pic_dirname, pic_filename) = os.path.split(self.elbuf.strip())
             pic_fullpath = os.path.join(dirname,'images',pic_filename)
-            
+
             #try to import the image
             if os.path.isfile(pic_fullpath):
                 try:
@@ -84,7 +84,7 @@ class RecHandler (xml_importer.RecHandler):
                     print str(e)
                     #dont stop if corrupted image file
                     pass
-        
+
         # times fixing
         if name == 'cooktime' or name == 'preptime':
             self.elbuf = self.elbuf.replace('mn','min')

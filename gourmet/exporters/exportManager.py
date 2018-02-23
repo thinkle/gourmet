@@ -52,7 +52,7 @@ class ExportManager (plugin_loader.Pluggable):
             de.show_message(label=_('Gourmet cannot export file of type "%s"')%os.path.splitext(filename)[1])
             return
         return self.do_single_export(rec, filename, exp_type, mult)
-        
+
     def do_single_export (self, rec, filename, exp_type, mult=1, extra_prefs=EXTRA_PREFS_AUTOMATIC):
         exporter_plugin = self.get_exporter(exp_type)
         extra_prefs = self.get_extra_prefs(exporter_plugin,extra_prefs)
@@ -73,7 +73,7 @@ class ExportManager (plugin_loader.Pluggable):
             'out':outfi,
             'conv':self.app.conv,
             'change_units':self.app.prefs.get('readableUnits',True),
-            'mult':mult,     
+            'mult':mult,
             'extra_prefs':extra_prefs,
             })
         outfi.close()
@@ -127,7 +127,7 @@ class ExportManager (plugin_loader.Pluggable):
         else:
             extra_prefs = extra_prefs
         return extra_prefs
-        
+
     def get_multiple_exporter (self, recs, fn, exp_type=None,
                                setup_gui=True, extra_prefs=EXTRA_PREFS_AUTOMATIC):
         if not exp_type:
@@ -142,10 +142,10 @@ class ExportManager (plugin_loader.Pluggable):
                                                             #'prog':,
                                                          'file':fn,
                                                          'extra_prefs':extra_prefs,
-                                                         })        
+                                                         })
             return myexp, exporterInstance
         else:
-            print 'WARNING: CANNOT EXPORT TYPE',exp_type        
+            print 'WARNING: CANNOT EXPORT TYPE',exp_type
 
     def do_multiple_export (self, recs, fn, exp_type=None,
                                            setup_gui=True, extra_prefs=EXTRA_PREFS_AUTOMATIC):
@@ -160,7 +160,7 @@ class ExportManager (plugin_loader.Pluggable):
                     _('Recipes successfully exported to <a href="file:///%s">%s</a>')%(fn,fn))
                 tmg.show()
             print 'Return exporter instance'
-            return exporterInstance        
+            return exporterInstance
 
     def can_export_type (self, name): return self.plugins_by_name.has_key(name)
 
@@ -191,7 +191,7 @@ class ExportManager (plugin_loader.Pluggable):
             del self.plugins_by_name[name]
         else:
             print 'WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name
-    
+
 def get_export_manager ():
     try:
         return ExportManager()

@@ -20,11 +20,11 @@ class RecIndex:
     dialog called from a recipe card."""
 
     default_searches = [{'column':'deleted','operator':'=','search':False}]
-    
+
     def __init__ (self, ui, rd, rg, editable=False):
         #self.visible = 1 # can equal 1 or 2
         self.editable=editable
-        self.selected = True        
+        self.selected = True
         self.rtcols=rg.rtcols
         self.rtcolsdic=rg.rtcolsdic
         self.rtwidgdic=rg.rtwidgdic
@@ -60,7 +60,7 @@ class RecIndex:
         #    "c":_("category"),
         #    "u":_("cuisine"),
         #    's':_("source"),
-        #    }        
+        #    }
         self.setup_search_actions()
         self.setup_widgets()
 
@@ -68,7 +68,7 @@ class RecIndex:
         self.srchentry=self.ui.get_object('rlistSearchbox')
         self.limitButton = self.ui.get_object('rlAddButton')
         # Don't # allow for special keybindings
-        #self.srchentry.connect('key_press_event',self.srchentry_keypressCB)        
+        #self.srchentry.connect('key_press_event',self.srchentry_keypressCB)
         self.SEARCH_MENU_KEY = "b"
         self.srchLimitBar = self.ui.get_object('srchLimitBar')
         assert(self.srchLimitBar)
@@ -97,7 +97,7 @@ class RecIndex:
         self.prev_button = self.ui.get_object('prevButton')
         self.next_button = self.ui.get_object('nextButton')
         self.first_button = self.ui.get_object('firstButton')
-        self.last_button = self.ui.get_object('lastButton')        
+        self.last_button = self.ui.get_object('lastButton')
         self.showing_label = self.ui.get_object('showingLabel')
         self.stat = self.ui.get_object('statusbar')
         self.contid = self.stat.get_context_id('main')
@@ -130,7 +130,7 @@ class RecIndex:
             self.regexpTog,
             self.prefs.get('regexpTog',
                            {'active':self.regexpTog.get_active()}),
-            ['toggled']))        
+            ['toggled']))
         # and we update our count with each deletion.
         self.rd.delete_hooks.append(self.set_reccount)
         # setup a history
@@ -190,7 +190,7 @@ class RecIndex:
                 gobject.idle_add(lambda *args: self.limit_search())
             else:
                 self.limit_search()
-    
+
     def rmodel_page_changed_cb (self, rmodel):
         if rmodel.page==0:
             self.prev_button.set_sensitive(False)
@@ -215,7 +215,7 @@ class RecIndex:
     def create_rmodel (self, vw):
         self.rmodel = RecipeModel(vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
         #self.set_reccount() # This will be called by the rmodel_page_changed_cb
-    
+
     def setup_rectree (self):
         """Create our recipe treemodel."""
         self.create_rmodel(self.rvw)
@@ -236,7 +236,7 @@ class RecIndex:
         self.rectree_conf.apply_column_order()
         self.rectree_conf.apply_visibility()
         self.rectree.connect("row-activated",self.rec_tree_select_rec)
-        self.rectree.connect('key-press-event',self.tree_keypress_cb)        
+        self.rectree.connect('key-press-event',self.tree_keypress_cb)
         self.rectree.get_selection().connect("changed",self.selection_changedCB)
         self.rectree.set_property('rules-hint',True) # stripes!
         self.rectree.expand_all()
@@ -305,7 +305,7 @@ class RecIndex:
                     except:
                         print 'problem with ',tc
                         raise
-                    
+
                 ncols = self.rectree.insert_column_with_data_func(
                     -1,
                     '_%s'%self.rtcolsdic[c],
@@ -410,7 +410,7 @@ class RecIndex:
     def redo_search (self, *args):
         self.last_search = {}
         self.search()
-    
+
     def search (self, *args):
         debug("search (self, *args):",5)
         txt = self.srchentry.get_text()
@@ -457,7 +457,7 @@ class RecIndex:
                                )
         else:
             self.update_rmodel(self.rd.fetch_all(self.recipe_table,deleted=False,sort_by=self.sort_by))
-    
+
     def limit_search (self, *args):
         debug("limit_search (self, *args):",5)
         self.search() # make sure we've done the search...
@@ -543,7 +543,7 @@ class RecIndex:
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname in ['Page_Up','Page_Down']:
             sb = self.sw.get_vscrollbar()
-            adj =  self.sw.get_vscrollbar().get_adjustment() 
+            adj =  self.sw.get_vscrollbar().get_adjustment()
             val = adj.get_value(); upper = adj.get_upper()
             if keyname == 'Page_Up':
                 if val > 0:
@@ -560,13 +560,13 @@ class RecIndex:
         if keyname == 'Home':
             self.rmodel.goto_first_page()
             self.sw.get_vscrollbar().set_value(0)
-            return True            
+            return True
         if keyname == 'End':
             self.rmodel.goto_last_page()
             sb = self.sw.get_vscrollbar()
             sb.set_value(sb.get_adjustment().get_upper())
-            return True            
-        
+            return True
+
     def star_change_cb (self, value, model, treeiter, column_number):
         #itr = model.convert_iter_to_child_iter(None,treeiter)
         #self.rmodel.set_value(treeiter,column_number,value)
@@ -649,7 +649,7 @@ class RecipeModel (pageable_store.PageableViewStore):
     for n in [r[0] for r in REC_ATTRS]:
         if n in INT_REC_ATTRS: columns_and_types.append((n,int))
         else: columns_and_types.append((n,str))
-    
+
     columns = [c[0] for c in columns_and_types]
     column_types = [c[1] for c in columns_and_types]
 
@@ -678,7 +678,7 @@ class RecipeModel (pageable_store.PageableViewStore):
             return row
         elif attr=='thumb':
             if row.thumb: return get_pixbuf_from_jpg(row.thumb)
-            else: return None        
+            else: return None
         elif attr in INT_REC_ATTRS:
             return getattr(row,attr) or 0
         else:
@@ -686,7 +686,7 @@ class RecipeModel (pageable_store.PageableViewStore):
             if val: return str(val)
             else: return None
         #else:
-        #    
+        #
         #    return str(getattr(row,attr))
 
     def update_recipe (self, recipe):

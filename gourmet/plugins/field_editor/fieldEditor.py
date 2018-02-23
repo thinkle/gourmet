@@ -26,7 +26,7 @@ class FieldEditor:
             'on_otherExpander_activate':self.otherChangeToggleCB,
             'on_otherFieldCombo_changed':self.otherFieldComboChangedCB,
             })
-        
+
     def __setup_widgets__ (self):
         for w in [
             'valueDialog',
@@ -45,7 +45,7 @@ class FieldEditor:
             self.newValueEntry,self.otherChangeCheckButton,
             self.leaveValueButton
             ]
-        # Set up the combo-widget at the top with the 
+        # Set up the combo-widget at the top with the
         self.fields = [gglobals.REC_ATTR_DIC[v] for v in self.values]
         cb.set_model_from_list(
             self.fieldToEditCombo,
@@ -104,7 +104,7 @@ class FieldEditor:
                                                       'field':self.field}
                 )
         self.valueDialog.set_response_sensitive(gtk.RESPONSE_APPLY,(vals and True or False))
-        
+
     def fieldChangedCB (self, combobox):
         name = cb.cb_get_active_text(combobox)
         self.field = gglobals.NAME_TO_ATTR.get(name,name)
@@ -130,7 +130,7 @@ class FieldEditor:
             self.otherNewValueComboBoxEntry.set_text_column(0)
         self.otherNewValueEntryCompletion.set_model(mod)
         self.otherNewValueEntryCompletion.set_text_column(0)
-        
+
 
     def populate_treeview (self):
         """Assume that self.field is set"""
@@ -147,10 +147,10 @@ class FieldEditor:
         mod = gtk.ListStore(str)
         for v in vals: mod.append((v,))
         return mod
-        
+
     def run (self): return self.valueDialog.run()
     def show (self): return self.valueDialog.show()
-    def hide (self): return self.valueDialog.hide()    
+    def hide (self): return self.valueDialog.hide()
 
     def dialog_response_cb (self, dialog, response_id):
         if response_id == gtk.RESPONSE_CLOSE:

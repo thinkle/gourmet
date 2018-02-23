@@ -9,7 +9,7 @@ FRACTIONS_NORMAL = 0
 FRACTIONS_ASCII = -1
 FRACTIONS_OFF = -2
 
-USE_FRACTIONS = FRACTIONS_NORMAL 
+USE_FRACTIONS = FRACTIONS_NORMAL
 
 class PossiblyCaseInsensitiveDictionary (dict):
 
@@ -34,7 +34,7 @@ class PossiblyCaseInsensitiveDictionary (dict):
                         return dict.__getitem__(self,nk)
         # Raise plain old error
         dict.__getitem__(self,k)
-        
+
 
 class Converter:
 
@@ -72,7 +72,7 @@ class Converter:
                   #('centuries',[ngettext('century','centuries',n) for n in range(5)]),
                   #('millenia',[ngettext('millenium','millenia',n) for n in range(5)]),
                   ]
-    
+
     def __init__(self):
         if Converter.__single: raise Converter.__single
         else: Converter.__single = self
@@ -91,7 +91,7 @@ class Converter:
 
     def add_time_table (self):
         for u,conv in self.unit_to_seconds.items():
-            self.conv_table[(u,'seconds')]=conv        
+            self.conv_table[(u,'seconds')]=conv
 
     def create_conv_table(self):
         self.conv_table = defaults.CONVERTER_TABLE.copy()
@@ -192,7 +192,7 @@ class Converter:
             else:
                 return None
         if self.v2m_table.has_key((u1,u2)):
-            conv = self.v2m_table[(u1,u2)]                
+            conv = self.v2m_table[(u1,u2)]
             return conv * density
         elif self.v2m_table.has_key((u2,u1)):
             conv = float(1) / float(self.v2m_table[(u2,u1)])
@@ -209,7 +209,7 @@ class Converter:
             if not v[0] in ret:
                 ret.append(v[0])
         return ret
-                
+
     def conv_dict_for_item (self, item=None, dictcu=None, mult=None):
         """item overrides mult"""
         if (not dictcu):
@@ -224,7 +224,7 @@ class Converter:
             conv = v[1]
             if item and dct.has_key(item):
                 mult = dct[item]
-            if mult: 
+            if mult:
                 ret[k] = conv * mult
         return ret
 
@@ -272,7 +272,7 @@ class Converter:
                 lst.extend(d.keys())
                 expanded.append(itm)
         return conversions
-    
+
     def possible_conversions(self, u, dict=0):
         """Return a dictionary of everything that unit u can convert to
         The keys are what it can convert to and the values are the conversion
@@ -288,7 +288,7 @@ class Converter:
                 ret[i2] = float(1) / item[1]
             elif u == i2:
                 ret[i1] = float(item[1])
-        return ret            
+        return ret
 
     def readability_score (self,amt,unit=None):
         """We rate the readability of a number and unit
@@ -401,7 +401,7 @@ class Converter:
         except KeyError:
             return amt,unit
         else:
-            units=defaults.UNIT_GROUPS[ugroup]                
+            units=defaults.UNIT_GROUPS[ugroup]
             if preferred_unit_groups:
                 if ugroup not in preferred_unit_groups:
                     for ug in preferred_unit_groups:
@@ -537,7 +537,7 @@ class Converter:
         num = []
         for n,w in enumerate(words):
             if NUMBER_MATCHER.match(w): num.append(w)
-            elif num and self.unit_dict.has_key(w):                
+            elif num and self.unit_dict.has_key(w):
                 conv = self.converter(w,'seconds')
                 if conv:
                     n = frac_to_float(" ".join(num))
@@ -564,14 +564,14 @@ time_formatters = {
     'hours':lambda hours: ngettext("hour","hours",hours),
     'minutes':lambda minutes: ngettext("minute","minutes",minutes),
     'seconds':lambda seconds: ngettext("second","seconds",seconds),
-    }    
+    }
 
 def seconds_to_timestring (time, round_at=None, fractions=FRACTIONS_NORMAL):
     time = int(time)
     time_strings = []
     units = Converter.unit_to_seconds.items()
     units.sort(lambda a,b: a[1]<b[1] and 1 or a[1]>b[1] and -1 or 0)
-    for unit,divisor in units:  
+    for unit,divisor in units:
         time_covered = time / int(divisor)
         # special case hours, which we English speakers anyway are
         # used to hearing in 1/2s -- i.e. 1/2 hour is better than 30
@@ -587,7 +587,7 @@ def seconds_to_timestring (time, round_at=None, fractions=FRACTIONS_NORMAL):
                 time_strings.append(" ".join([
                     float_to_frac(time_covered,fractions=fractions),
                     # round because 1/2 = 1 as far as plural formas are concerned
-                    time_formatters[unit](round(time_covered)) 
+                    time_formatters[unit](round(time_covered))
                     ])
                                     )
                 break
@@ -608,7 +608,7 @@ def seconds_to_timestring (time, round_at=None, fractions=FRACTIONS_NORMAL):
         # ", " and " and " with the same string.
         return _(" and ").join([_(", ").join(time_strings[0:-1]),time_strings[-1]])
     else:
-        return _(" ").join(time_strings)    
+        return _(" ").join(time_strings)
 
 def integerp (num, approx=0.01):
     """approx can be a decimal that is a guide to rounding.
@@ -649,7 +649,7 @@ FRACTION_WORD_REGEXP = '|'.join(filter(lambda n: NUMBER_WORDS[n]<1.0,
                                        all_number_words)
                                 ).replace(' ','\s+')
 
-NORMAL_FRACTIONS = [(1,2),(1,4),(3,4)] 
+NORMAL_FRACTIONS = [(1,2),(1,4),(3,4)]
 
 NUM_TO_FRACTIONS = {
     (1,2) : u'\u00BD',
@@ -705,7 +705,7 @@ SUB_DICT = {1:u'\u2081',
             8:u'\u2088',
             9:u'\u2089',
             }
-            
+
 # nonstandard integers (sub or sup) that may be used in fractions
 UNICODE_INTEGERS = {}
 for d in SUB_DICT,SUP_DICT:
@@ -749,7 +749,7 @@ if NUMBER_WORD_REGEXP:
                                                                        FRACTION_REGEXP,
                                                                        FRACTION_WORD_REGEXP
                                                                        )
-    
+
 else:
     NUM_AND_FRACTION_REGEXP = "((?P<int>%s)+\s+)?(?P<frac>%s)"%(NUMBER_START_REGEXP,FRACTION_REGEXP)
 
@@ -856,7 +856,7 @@ def fractify (decimal, divisor, approx=0.01, fractions=FRACTIONS_NORMAL):
                 return NUM_TO_FRACTIONS[(dividend,divisor)]
             else:
                 return "%s/%s"%(dividend,divisor)
-            
+
 def float_to_frac (n, d=[2,3,4,5,6,8,10,16],approx=0.01,fractions=FRACTIONS_NORMAL):
     """Take a number -- or anything that can become a float --
     and attempt to return a fraction with a denominator in the list `d'. We
@@ -890,7 +890,7 @@ def float_to_frac (n, d=[2,3,4,5,6,8,10,16],approx=0.01,fractions=FRACTIONS_NORM
             return float_to_metric(n,approx)
 
 def float_to_metric(n, approx=0.01):
-    """Returns a formatted string in metric format, using locale-specific formatting"""    
+    """Returns a formatted string in metric format, using locale-specific formatting"""
     decimals_to_preserve = int(round(math.log(float(1)/approx,10)))
     if decimals_to_preserve > 0:
         format_string = "%."+str(decimals_to_preserve)+"f"
@@ -958,7 +958,7 @@ def frac_to_float (s):
     """We assume fractions look like this (I )?N/D"""
     if NUMBER_WORDS.has_key(s): return NUMBER_WORDS[s]
     if hasattr(s,'lower') and NUMBER_WORDS.has_key(s.lower()):
-        return NUMBER_WORDS[s.lower()]    
+        return NUMBER_WORDS[s.lower()]
     s = unicode(s)
     m=FRACTION_MATCHER.match(s)
     if m:
@@ -988,7 +988,7 @@ def frac_to_float (s):
             None
 
 #class ConverterSingleton:
-#    
+#
 #    __impl == Converter
 #
 #    def __init__ (
@@ -1004,7 +1004,7 @@ if __name__ == '__main__' and False:
                             'Quit':self.quit}
             while 1:
                 self.offer_options()
-            
+
         def offer_options (self):
             print 'Choose one of the following actions:'
             for k in self.options.keys(): print k
@@ -1015,7 +1015,7 @@ if __name__ == '__main__' and False:
                 print "I'm afraid I didn't understand your choice!"
                 self.return_to_continue()
                 self.offer_options()
-                          
+
         def get_unit (self, prompt="Enter unit: "):
             u = raw_input(prompt).strip()
             if self.c.unit_dict.has_key(u):
@@ -1037,7 +1037,7 @@ if __name__ == '__main__' and False:
                 return self.get_amount(prompt)
             else:
                 return amt
-                
+
         def converter (self):
             u1 = self.get_unit("Enter source unit: ")
             amt = self.get_amount("Enter source amount: ")
@@ -1067,10 +1067,10 @@ if __name__ == '__main__' and False:
             else:
                 print "I'm sorry, I couldn't add that together!"
             self.return_to_continue()
-            
+
         def quit (self):
             import sys
             sys.exit()
-        
-    
+
+
     #i=InteractiveConverter()

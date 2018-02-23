@@ -76,7 +76,7 @@ def get_recipe_image (rec):
     big_side = ((pb.get_property('height') > pb.get_property('width') and pb.get_property('height')) or pb.get_property('width'))
     if rec.rating:
         #sg = get_star_generator()
-        sg = star_generator        
+        sg = star_generator
         ratingPB = sg.get_pixbuf(rec.rating)
         h = pb.get_height() - ratingPB.get_height() - 5
         w = pb.get_width() - ratingPB.get_width() - 5
@@ -152,7 +152,7 @@ class PiePixbufGenerator:
         else:
             return self.get_image(359, 'blue')
 
-    
+
 pie_generator = PiePixbufGenerator()
 make_pie_slice = pie_generator.get_image
 get_time_slice = pie_generator.get_time_image
@@ -163,14 +163,14 @@ def make_time_icon (text):
                     255 # background
                     )
     d = ImageDraw.Draw(img)
-    #Thosed.text(    
+    #Thosed.text(
 
 PREP = 1
 COOK = 2
 
 def make_preptime_icon (preptime):
     return make_time_icon(preptime,mode=PREP)
-    
+
 def make_cooktime_icon (cooktime):
     return make_time_icon(cooktime,mode=COOK)
 

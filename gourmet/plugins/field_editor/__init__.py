@@ -30,7 +30,7 @@ class FieldEditorPlugin (ToolPlugin):
         if r==gtk.RESPONSE_APPLY:
             self.app.update_attribute_models()
 
-    
-                                                           
+
+
 
 plugins = [FieldEditorPlugin]

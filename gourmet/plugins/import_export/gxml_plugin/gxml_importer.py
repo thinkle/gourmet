@@ -15,9 +15,9 @@ class RecHandler (xml_importer.RecHandler):
         self.meta['source']={}
         self.meta['category']={}
         #self.start_rec()
-        
+
     def startElement(self, name, attrs):
-        self.elbuf = ""        
+        self.elbuf = ""
         if name=='category' or name=='cuisine' or name=='source':
             self.in_mixed=0
             self.metaid=unquoteattr(attrs.get('id',""))
@@ -36,7 +36,7 @@ class RecHandler (xml_importer.RecHandler):
                         self.rec[att]=raw
                         print "Warning: can't translate ",raw
         if name=='image':
-            self.in_mixed=0            
+            self.in_mixed=0
         if name=='inggroup':
             self.in_mixed=0
             self.group=unquoteattr(attrs.get('name'))
@@ -67,7 +67,7 @@ class RecHandler (xml_importer.RecHandler):
         if name=='instructions' or name=='modifications':
             self.in_mixed = 1
             self.mixed = ""
-            
+
     def endElement (self, name):
         if name=='category' or name=='cuisine' or name=='source':
             self.meta[name][self.metaid]=xml.sax.saxutils.unescape(self.elbuf)

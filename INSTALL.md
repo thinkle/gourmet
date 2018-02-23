@@ -1,11 +1,11 @@
 Installation
 ===========
-We'll assume you're reading this document because you want to install Gourmet manually. 
+We'll assume you're reading this document because you want to install Gourmet manually.
 
- * Please note that for *Windows*, we provide an up-to-date installer at our [Releases](https://github.com/thinkle/gourmet/releases) web page which allows you to install Gourmet much easier than described below. 
+ * Please note that for *Windows*, we provide an up-to-date installer at our [Releases](https://github.com/thinkle/gourmet/releases) web page which allows you to install Gourmet much easier than described below.
  * Also, if you're using a *Linux* or *Unix* distribution, chances are that there is a Gourmet package available in your system's software repository that lets you install Gourmet easily.
  * For *Mac OS X*, you can use [MacPorts](https://www.macports.org/) or [Fink](http://www.finkproject.org/index.php?phpLang=en) which provide up-to-date packages to automatically install Gourmet.
- 
+
 If you're still sure about installing Gourmet manually anyway, keep reading.
 
 Required Packages
@@ -33,7 +33,7 @@ Mac OS X
 --------
 ### Using MacPorts
 
-To build gourmet from source, install the required dependencies as listed in the MacPorts column of the table below by running `sudo port install <dependencies>`. 
+To build gourmet from source, install the required dependencies as listed in the MacPorts column of the table below by running `sudo port install <dependencies>`.
 
 Then, get gourmet's source, `cd` to its directory, and run
 

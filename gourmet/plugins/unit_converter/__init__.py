@@ -27,5 +27,5 @@ class ConverterPlugin (ToolPlugin):
             except:
                 umodel = None
         convertGui.ConvGui(unitModel=umodel)
-        
+
 plugins = [ConverterPlugin]

@@ -23,7 +23,7 @@ import version
 
 class build_py(_build_py):
     """build_py command
-    
+
     This specific build_py command will modify module 'build_config' so that it
     contains information on installation prefixes afterwards.
     """
@@ -239,7 +239,7 @@ if sys.platform == "win32":
                             'compressed':1,
                             'include_msvcr': True,
                             # see http://stackoverflow.com/questions/1979486/py2exe-win32api-pyc-importerror-dll-load-failed
-                            # libgcc_s_dw2-1.dll, if present, would crash Gourmet 
+                            # libgcc_s_dw2-1.dll, if present, would crash Gourmet
                             'bin_excludes': ["mswsock.dll", "powrprof.dll","libgcc_s_dw2-1.dll"],
                             },
                            'bdist_msi':
