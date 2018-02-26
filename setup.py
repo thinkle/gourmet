@@ -46,8 +46,8 @@ class build_py(_build_py):
             lib_dir = iobj.install_lib
             base = iobj.install_data
             if (iobj.root):
-                lib_dir = lib_dir[len(iobj.root):]
-                base = base[len(iobj.root):]
+                lib_dir = lib_dir[len(iobj.root)-1:]
+                base = base[len(iobj.root)-1:]
             base = os.path.join(base, 'share')
             data_dir = os.path.join(base, 'gourmet')
 
@@ -59,6 +59,9 @@ class build_py(_build_py):
                     line = "lib_dir = '%s'\n" % lib_dir
                 elif "data_dir = " in line:
                     line = "data_dir = '%s'\n" % data_dir
+                elif "ui_base = " in line:
+                    line = "ui_base = '%s'\n" % \
+                        os.path.join(data_dir, 'ui')
                 elif "doc_base = " in line:
                     line = "doc_base = '%s'\n" % \
                         os.path.join(base, 'doc', 'gourmet')
