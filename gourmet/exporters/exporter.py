@@ -49,7 +49,7 @@ class exporter (SuspendableThread, Pluggable):
                          attribute name staying consistent for processing, since converting attnames
                          will produce locale specific strings.
         """
-	self.attr_order=attr_order
+        self.attr_order=attr_order
         self.text_attr_order = text_attr_order
         self.out = out
         self.r = r

@@ -2,7 +2,7 @@ import winsound
 
 class Player:
     def __init__ (self):
-	pass
+        pass
 
     def play_file (self,path):
         winsound.PlaySound(path,winsound.SND_FILENAME)

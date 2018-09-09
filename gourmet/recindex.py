@@ -22,7 +22,7 @@ class RecIndex:
     default_searches = [{'column':'deleted','operator':'=','search':False}]
 
     def __init__ (self, ui, rd, rg, editable=False):
-        #self.visible = 1 # can equal 1 or 2
+        # self.visible = 1  # can equal 1 or 2
         self.editable=editable
         self.selected = True
         self.rtcols=rg.rtcols
@@ -40,7 +40,7 @@ class RecIndex:
             unicode(_('notes')):'modifications',
             unicode(_('category')):'category',
             unicode(_('cuisine')):'cuisine',
-            #_('rating'):'rating',
+            # _('rating'):'rating',
             unicode(_('source')):'source',
             }
         self.searchByList = [_('anywhere'),
@@ -48,19 +48,19 @@ class RecIndex:
                              _('ingredient'),
                              _('category'),
                              _('cuisine'),
-                             #_('rating'),
+                             # _('rating'),
                              _('source'),
                              _('instructions'),
                              _('notes'),
                              ]
         # ACK, this breaks internationalization!
-        #self.SEARCH_KEY_DICT = {
-        #    "t":_("title"),
-        #    "i":_("ingredient"),
-        #    "c":_("category"),
-        #    "u":_("cuisine"),
-        #    's':_("source"),
-        #    }
+        # self.SEARCH_KEY_DICT = {
+        #     "t":_("title"),
+        #     "i":_("ingredient"),
+        #     "c":_("category"),
+        #     "u":_("cuisine"),
+        #     "s":_("source"),
+        # }
         self.setup_search_actions()
         self.setup_widgets()
 
@@ -68,7 +68,7 @@ class RecIndex:
         self.srchentry=self.ui.get_object('rlistSearchbox')
         self.limitButton = self.ui.get_object('rlAddButton')
         # Don't # allow for special keybindings
-        #self.srchentry.connect('key_press_event',self.srchentry_keypressCB)
+        # self.srchentry.connect('key_press_event',self.srchentry_keypressCB)
         self.SEARCH_MENU_KEY = "b"
         self.srchLimitBar = self.ui.get_object('srchLimitBar')
         assert(self.srchLimitBar)
@@ -140,7 +140,7 @@ class RecIndex:
         self.history = Undo.UndoHistoryList(self.uim,self.rim,self.raim)
         # Fix up our mnemonics with some heavenly magic
         self.mm = mnemonic_manager.MnemonicManager()
-        self.mm.sacred_cows.append("search for") # Don't touch _Search for:
+        self.mm.sacred_cows.append("search for")  # Don't touch _Search for:
         self.mm.add_builder(self.ui)
         self.mm.add_treeview(self.rectree)
         self.mm.fix_conflicts_peacefully()
@@ -166,20 +166,20 @@ class RecIndex:
     def setup_search_views (self):
         """Setup our views of the database."""
         self.last_search = {}
-        #self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=False)
+        # self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=False)
         self.searches = self.default_searches[0:]
         self.sort_by = []
         self.rvw = self.rd.search_recipes(self.searches,sort_by=self.sort_by)
 
     def make_rec_visible (self, *args):
         """Make sure recipe REC shows up in our index."""
-        #if not self.rg.wait_to_filter:
-        #self.setup_search_views()
+        # if not self.rg.wait_to_filter:
+        # self.setup_search_views()
         self.redo_search()
-        #debug('make_rec_visible',0)
-        #self.visible.append(rec.id)
-        #if not self.rg.wait_to_filter:
-        #    self.rmodel_filter.refilter()
+        # debug('make_rec_visible',0)
+        # self.visible.append(rec.id)
+        # if not self.rg.wait_to_filter:
+        #     self.rmodel_filter.refilter()
 
     def search_entry_activate_cb (self, *args):
         if self.rmodel._get_length_()==1:
@@ -210,11 +210,11 @@ class RecIndex:
         self.sort_by = sorts
         self.last_search = {}
         self.search()
-        #self.do_search(None,None)
+        # self.do_search(None,None)
 
     def create_rmodel (self, vw):
         self.rmodel = RecipeModel(vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
-        #self.set_reccount() # This will be called by the rmodel_page_changed_cb
+        # self.set_reccount()  # This will be called by the rmodel_page_changed_cb
 
     def setup_rectree (self):
         """Create our recipe treemodel."""
@@ -238,7 +238,7 @@ class RecIndex:
         self.rectree.connect("row-activated",self.rec_tree_select_rec)
         self.rectree.connect('key-press-event',self.tree_keypress_cb)
         self.rectree.get_selection().connect("changed",self.selection_changedCB)
-        self.rectree.set_property('rules-hint',True) # stripes!
+        self.rectree.set_property('rules-hint',True)  # stripes!
         self.rectree.expand_all()
         self.rectree.show()
 
@@ -350,16 +350,16 @@ class RecIndex:
             titl = self.rtcolsdic[c]
             col = gtk.TreeViewColumn('_%s'%titl,renderer, text=n)
             # Ensure that the columns aren't really narrow on initialising.
-            #if c=='title':            # Adjust these two to be even bigger
-            #    col.set_min_width(200)
-            #else:
-            #    col.set_min_width(60)
+            # if c=='title':            # Adjust these two to be even bigger
+            #     col.set_min_width(200)
+            # else:
+            #     col.set_min_width(60)
             if c=='title':
                 col.set_property('expand',True)
             col.set_reorderable(True)
             col.set_resizable(True)
             col.set_clickable(True)
-            #col.connect('clicked', self.column_sort)
+            # col.connect('clicked', self.column_sort)
             self.rectree.append_column(col)
             cssu.set_sort_column_id(col,n)
             debug("Column %s is %s->%s"%(n,c,self.rtcolsdic[c]),5)
@@ -376,10 +376,10 @@ class RecIndex:
 
     def toggleRegexpCB (self, widget):
         """Toggle search-with-regexp option."""
-        #if widget.get_active():
-        #    self.message('Advanced searching (regular expressions) turned on')
-        #else:
-        #    self.message('Advanced searching off')
+        # if widget.get_active():
+        #     self.message('Advanced searching (regular expressions) turned on')
+        # else:
+        #     self.message('Advanced searching off')
         pass
 
     def toggleShowSearchOptions (self, widget):
@@ -403,7 +403,7 @@ class RecIndex:
     def set_search_by (self, str):
         """Manually set the search by label to str"""
         debug('set_search_by',1)
-        #self.rSearchByMenu.get_children()[0].set_text(str)
+        # self.rSearchByMenu.get_children()[0].set_text(str)
         cb.cb_set_active_text(self.rSearchByMenu, str)
         self.search()
 
@@ -416,7 +416,7 @@ class RecIndex:
         txt = self.srchentry.get_text()
         searchBy = cb.cb_get_active_text(self.rSearchByMenu)
         searchBy = self.searchByDic[unicode(searchBy)]
-	if self.limitButton: self.limitButton.set_sensitive(txt!='')
+        if self.limitButton: self.limitButton.set_sensitive(txt!='')
         if self.make_search_dic(txt,searchBy) == self.last_search:
             debug("Same search!",1)
             return
@@ -435,7 +435,7 @@ class RecIndex:
         srch = {'column':searchBy}
         if self.regexpp():
             srch['operator'] = 'REGEXP'
-            srch['search'] = txt.replace(' %s '%_('or'), # or operator for searches
+            srch['search'] = txt.replace(' %s '%_('or'),  # or operator for searches
                                          '|')
         else:
             srch['operator']='LIKE'
@@ -460,7 +460,7 @@ class RecIndex:
 
     def limit_search (self, *args):
         debug("limit_search (self, *args):",5)
-        self.search() # make sure we've done the search...
+        self.search()  # make sure we've done the search...
         self.searches.append(self.last_search)
         last_col = self.last_search['column']
         self.srchLimitBar.show()
@@ -480,7 +480,7 @@ class RecIndex:
         self.srchLimitText=self.srchLimitDefaultText
         self.srchLimitBar.hide()
         self.searches = self.default_searches[0:]
-        self.last_search={} # reset search so we redo it
+        self.last_search={}  # reset search so we redo it
         self.search()
 
     def get_rec_from_iter (self, iter):
@@ -494,13 +494,13 @@ class RecIndex:
         else:
             secs = self.rg.conv.timestring_to_seconds(text)
             if not secs:
-                #self.message(_("Unable to recognize %s as a time."%text))
+                # self.message(_("Unable to recognize %s as a time."%text))
                 return
         indices = path_string.split(':')
         path = tuple( map(int, indices))
         store = self.rectree.get_model()
         iter = store.get_iter(path)
-        #self.rmodel.set_value(iter,colnum,secs)
+        # self.rmodel.set_value(iter,colnum,secs)
         rec = self.get_rec_from_iter(iter)
         if convert.seconds_to_timestring(getattr(rec,attribute))!=text:
             self.rd.undoable_modify_rec(rec,
@@ -511,7 +511,7 @@ class RecIndex:
             self.update_modified_recipe(rec,attribute,secs)
         # Is this really stupid? I don't know, but I did it before so
         # perhaps I had a reason.
-        #self.rmodel.row_changed(path,iter)
+        # self.rmodel.row_changed(path,iter)
         self.rmodel.update_iter(iter)
         self.rd.save()
 
@@ -522,7 +522,7 @@ class RecIndex:
         store = self.rectree.get_model()
         iter = store.get_iter(path)
         if not iter: return
-        #self.rmodel.set_value(iter, colnum, text)
+        # self.rmodel.set_value(iter, colnum, text)
         rec=self.get_rec_from_iter(iter)
         if attribute=='category':
             val = ", ".join(self.rd.get_cats(rec))
@@ -568,8 +568,8 @@ class RecIndex:
             return True
 
     def star_change_cb (self, value, model, treeiter, column_number):
-        #itr = model.convert_iter_to_child_iter(None,treeiter)
-        #self.rmodel.set_value(treeiter,column_number,value)
+        # itr = model.convert_iter_to_child_iter(None,treeiter)
+        # self.rmodel.set_value(treeiter,column_number,value)
         rec = self.get_rec_from_iter(treeiter)
         if getattr(rec,'rating')!=value:
             self.rd.undoable_modify_rec(
@@ -578,7 +578,7 @@ class RecIndex:
                 self.history,
                 get_current_rec_method = lambda *args: self.get_selected_recs_from_rec_tree()[0],
                 )
-            #self.rmodel.row_changed(self.rmodel.get_path(treeiter),treeiter)
+            # self.rmodel.row_changed(self.rmodel.get_path(treeiter),treeiter)
             self.rmodel.update_iter(treeiter)
 
     def update_modified_recipe(self,rec,attribute,text):
@@ -597,7 +597,7 @@ class RecIndex:
             debug("foreach(model,path,iter,recs):",5)
             try:
                 recs.append(model[path][0])
-                #recs.append(self.get_rec_from_iter(iter))
+                # recs.append(self.get_rec_from_iter(iter))
             except:
                 debug("DEBUG: There was a problem with iter: %s path: %s"%(iter,path),1)
         recs=[]
@@ -625,7 +625,7 @@ class RecIndex:
         try:
             if (model.get_value(iter,0) and
                 not model.get_value(iter,0).deleted and
-                model.get_value(iter, 0).id in self.visible):
+                    model.get_value(iter, 0).id in self.visible):
                 return True
             else: return False
         except:
@@ -685,14 +685,14 @@ class RecipeModel (pageable_store.PageableViewStore):
             val = getattr(row,attr)
             if val: return str(val)
             else: return None
-        #else:
+        # else:
         #
-        #    return str(getattr(row,attr))
+        #     return str(getattr(row,attr))
 
     def update_recipe (self, recipe):
         """Handed a recipe (or a recipe ID), we update its display if visible."""
         debug('Updating recipe %s'%recipe.title,3)
-        if type(recipe)!=int: recipe=recipe.id # make recipe == id
+        if type(recipe)!=int: recipe=recipe.id  # make recipe == id
         for n,row in enumerate(self):
             debug('Looking at row',3)
             if row[0].id==recipe:
