@@ -24,7 +24,7 @@ class Shopper:
         self.mypantry = {}
         for a,u,k in inglist:
             if self.pantry.has_key(k) and self.pantry[k]:
-                #print "%s is in pantry" %k
+                # print "%s is in pantry" %k
                 dic=self.mypantry
             else:
                 dic=self.dic
@@ -71,7 +71,7 @@ class Shopper:
                             amt=(amt,amt)
                         if type(a) != tuple :
                             a=(a,a)
-                        #print 'amt:',amt,' unit:',unit,'a:',a,'u:',u
+                        # print 'amt:',amt,' unit:',unit,'a:',a,'u:',u
                         add_low = self.cnv.add_reasonably(amt[0],unit,a[0],u,ing)
                         add_high = self.cnv.add_reasonably(amt[1],unit,a[1],u,ing)
                         if (not add_low) or (not add_high):
@@ -79,24 +79,24 @@ class Shopper:
                         else:
                             # Adjust units
                             add_low = self.cnv.adjust_unit(
-                                *add_low, #lowest+lowest
+                                *add_low,   # lowest+lowest
                                 **{'favor_current_unit':False}
                                 )
                             add_high = self.cnv.adjust_unit(
-                                *add_high, # highest+highest
+                                *add_high,  # highest+highest
                                 **{'favor_current_unit':False}
                                 )
                             if add_low:
                                 add_low = self.cnv.adjust_unit(*add_low,**{'favor_current_unit':False})
                             if add_high:
                                 add_high = self.cnv.adjust_unit(*add_high,**{'favor_current_unit':False})
-                            if add_low[1]==add_high[1]: #same unit...
+                            if add_low[1]==add_high[1]:  # same unit...
                                 add=((add_low[0],add_high[0]),add_low[1])
                             else:
                                 # otherwise, let's use our unit for add_high...
                                 u1_to_u2=self.cnv.converter(add_low[1],add_high[1])
-                                add=( (add_low[0]*u1_to_u2,add_high[0]), #amount tuple
-                                      add_high[1] #unit from add_high
+                                add=( (add_low[0]*u1_to_u2,add_high[0]),  # amount tuple
+                                      add_high[1]  # unit from add_high
                                       )
                     else:
                         add = self.cnv.add_reasonably(amt,unit,a,u,ing)
@@ -106,8 +106,8 @@ class Shopper:
                     # add_reasonably returns a nice a,u pair if successful
                     # Otherwise, it return False/None
                     if add:
-                        itms.pop(ind) # out with the old...
-                        itms.append(add) # in with the new
+                        itms.pop(ind)     # out with the old...
+                        itms.append(add)  # in with the new
                         flag = 1
                     else:
                         ind += 1
@@ -219,8 +219,8 @@ class Shopper:
 
     def add_org_itm (self, itm, cat):
         self.orgdic[itm]=cat
-        #for k,v in self.orgdic.items():
-            #print "%s:%s, "%(k,v)
+        # for k,v in self.orgdic.items():
+            # print "%s:%s, "%(k,v)
 
     def add_to_pantry (self, key):
         self.pantry[key]=True
@@ -262,7 +262,7 @@ class ShoppingList:
 
     def __init__ (self):
         self.recs = {}; self.extras = []
-	self.includes = {}
+        self.includes = {}
         self.data,self.pantry=self.grabIngsFromRecs([])
         import backends.db
         self.rd = backends.db.get_database()
@@ -279,7 +279,7 @@ class ShoppingList:
         self.lst = start[0:]
         for rec,mult in recs:
             self.lst.extend(self.grabIngFromRec(rec,mult=mult))
-	return self.organize_list(self.lst)
+        return self.organize_list(self.lst)
 
     def organize_list (self, lst):
         self.sh = self.get_shopper(lst)
@@ -293,7 +293,7 @@ class ShoppingList:
         """We will need [[amt,un,key],[amt,un,key]]"""
         debug("grabIngFromRec (self, rec=%s, mult=%s):"%(rec,mult),5)
         # Grab all of our ingredients
-	ings = self.rd.get_ings(rec)
+        ings = self.rd.get_ings(rec)
         lst = []
         include_dic = self.includes.get(rec.id) or {}
         for i in ings:
@@ -308,7 +308,7 @@ class ShoppingList:
                     # Then we have to look at the dictionary itself...
                     if ((not include_dic.has_key(i.ingkey))
                         or
-                        not include_dic[i.ingkey]):
+                            not include_dic[i.ingkey]):
                         # we ignore our ingredient (don't add it)
                         continue
             if self.rd.get_amount(i):
@@ -369,8 +369,8 @@ class ShoppingList:
     # Saving and printing
     def doSave (self, filename):
         debug("doSave (self, filename):",5)
-        #import exporters.lprprinter
-        #self._printList(exporters.lprprinter.SimpleWriter,file=filename,show_dialog=False)
+        # import exporters.lprprinter
+        # self._printList(exporters.lprprinter.SimpleWriter,file=filename,show_dialog=False)
         ofi = file(filename,'w')
         ofi.write(_("Shopping list for %s")%time.strftime("%x") + '\n\n')
         ofi.write(_("For the following recipes:"+'\n'))
@@ -418,25 +418,18 @@ class ShopperTestCase (unittest.TestCase):
     def testAddition (self):
         sh = Shopper([('1','tsp.','pepper'),
                       ('1','tsp.','pepper')])
-        assert(
-            sh.dic['pepper'][0][0] == 2
-            )
+        assert(sh.dic['pepper'][0][0] == 2)
 
     def testUnitConversion (self):
         sh = Shopper([('1','tsp.','pepper'),
                       ('1','tsp.','pepper'),
                       ('1','tsp.','pepper'),])
-        assert(
-            sh.dic['pepper'][0][0] == 1
-            )
-        assert(
-            sh.dic['pepper'][0][1] == 'tbs.'
-            )
+        assert(sh.dic['pepper'][0][0] == 1)
+        assert(sh.dic['pepper'][0][1] == 'tbs.')
 
     def testRangeAddition (self):
-        sh = Shopper([
-            ((1,2),'c.','milk'),
-            (1,'c.','milk')]
+        sh = Shopper([((1,2),'c.','milk'),
+                      (1,'c.','milk')]
                      )
         assert(sh.dic['milk'][0][0]==(2,3))
 

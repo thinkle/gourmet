@@ -14,18 +14,18 @@ def resize_image (image, width=None, height=None):
     iwidth,iheight=image.size
     resized=False
     if width and iwidth > width:
-	newheight=int((float(width)/float(iwidth)) * iheight)
-	if not height or newheight < height:
-	    retimage=image.resize((width, newheight))
-	    resised=True
+        newheight=int((float(width)/float(iwidth)) * iheight)
+        if not height or newheight < height:
+            retimage=image.resize((width, newheight))
+            resised=True
     if not resized and height and iheight > height:
-	newwidth = int((float(height)/float(iheight)) * iwidth)
-	retimage = image.resize((newwidth,height))
-	resized=True
+        newwidth = int((float(height)/float(iheight)) * iwidth)
+        retimage = image.resize((newwidth,height))
+        resized=True
     if resized:
-	return retimage
+        return retimage
     else:
-	return image
+        return image
 
 def get_image_from_string (raw):
     """Given raw image data, return an Image object."""
@@ -61,7 +61,7 @@ def get_string_from_pixbuf (pb):
 def get_pixbuf_from_jpg (raw):
     """Given raw data of a jpeg file, we return a gtk.gdk.Pixbuf
     """
-    #o=open('/tmp/recimage.jpg','w')
+    # o=open('/tmp/recimage.jpg','w')
     fn=write_image_tempfile(raw,name=TMPFILE)
     i=gtk.Image()
     i.set_from_file(fn)
@@ -81,4 +81,3 @@ def write_image_tempfile (raw, name=None, ext=".jpg"):
     o.write(raw)
     o.close()
     return fn
-
