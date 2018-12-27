@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2014 Thomas Hinkle <Thomas_Hinkle@alumni.brown.edu> -->
-<application>
- <id type="desktop">gourmet.desktop</id>
+<component type="desktop-application">
+ <id>com.github.gourmet</id>
  <metadata_license>CC0-1.0</metadata_license>
  <project_license>GPL-2.0</project_license>
+ <name>Gourmet</name>
+ <summary>Organize recipes, create shopping lists, calculate nutritional information, and more</summary>
  <description>
   <_p>
    Gourmet Recipe Manager is a recipe-organizer that allows you to collect,
@@ -21,9 +23,15 @@
   </_p>
  </description>
  <screenshots>
-  <screenshot type="default">http://thinkle.github.io/gourmet/images/screenshots/SearchView.png</screenshot>
-  <screenshot>http://thinkle.github.io/gourmet/images/screenshots/CardView.png</screenshot>
+  <screenshot type="default">
+   <image>https://thinkle.github.io/gourmet/images/screenshots/SearchView.png</image>
+  </screenshot>
+  <screenshot>
+   <image>https://thinkle.github.io/gourmet/images/screenshots/CardView.png</image>
+  </screenshot>
  </screenshots>
- <url type="homepage">http://thinkle.github.io/gourmet/</url>
- <updatecontact>https://github.com/thinkle/gourmet/issues</updatecontact>
-</application>
+ <launchable type="desktop-id">gourmet.desktop</launchable>
+ <url type="homepage">https://thinkle.github.io/gourmet/</url>
+ <url type="bugtracker">https://github.com/thinkle/gourmet/issues</url>
+ <update_contact>Thomas_Hinkle@alumni.brown.edu</update_contact>
+</component>
