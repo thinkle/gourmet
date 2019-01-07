@@ -287,7 +287,7 @@ class website_exporter (ExporterMultirec):
             self.exportargs['conv']=conv
         ExporterMultirec.__init__(self, rd, recipe_table, out,
                                   one_file=True,
-                                  open_files=False,
+                                  create_file=False,
                                   ext=self.ext,
                                   exporter=epub_exporter,
                                   exporter_kwargs=self.exportargs)
