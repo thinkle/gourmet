@@ -31,17 +31,29 @@ parser.add_argument('--disable-psyco',dest='psyco',action='store_false',help='Do
 
 group = parser.add_mutually_exclusive_group()
 group.add_argument('-q',action='store_const',const=-1,dest='debug',help='Don\'t print gourmet error messages')
-group.add_argument('-v',action='count',dest='debug',help='Be verbose (extra v\'s will increase the verbosity level')
+group.add_argument('-v',action='count',dest='debug',help='Be verbose (extra v\'s will increase the verbosity level)')
 
 if has_argcomplete:
     argcomplete.autocomplete(parser)
 
 try:
     args = parser.parse_args()
-except:
-    print 'Maybe using django?'
-    print 'Then you can ignore this :)'
+    print 'args1 = %s' % args
+except SystemExit as e:
     import sys
-    sys.argv = ['gourmet']
-    args = parser.parse_args()
 
+    exc = sys.exc_info()[1]
+    if e.code is 0:
+        # Normal system exit
+        exit(e.code)
+    else:
+        print "Exception code: ", exc
+        argv = str(sys.argv[0])
+
+        if argv == "manage.py":
+            print 'Ignore the error message. Launching gourmetweb Django server ...'
+            sys.argv = ['gourmet']
+            args = parser.parse_args()
+        else:
+            # unrecognized argument
+            exit(e.code)
