@@ -1,51 +1,53 @@
 <html>
-  <head>
-    <style type="text/css">
-      {%include "menu.css" %}
-    </style>
-    <style type="text/css">
-      .rowhead {background: #222; color: #eee}
-      .rowhead a {background: #222; color: #eef}
-      .row1 {background:#ddd}
-      .row2 {background:#bbb}
-      .small  .category {display: none}
-      .small  .cuisine {display: none}
-      .tiny .category {display: none}
-      .tiny  .cuisine {display: none}
-      .small .title {font-size: x-large}
-      .tiny .title {font-size: x-large}
-    </style>
-    <script type="text/javascript" src="/js/jquery.js"></script>
-    <script type="text/javascript" src="/js/detect_screensize.js"></script>
-    <script type="text/javascript">
-      function do_search (event) {
-	    $.ajax({
-	    type: "POST",
-	    url: "/rec/do_search_xhr/",
-	    dataType: "html",
-	    data: $("#search_form").serialize(),
-	    success: function (data){
-	    $("#reclist").html(data);
-	    }
-	    });
-      }
-      $(document).ready(function(event){
-	    $("#search_form").submit(function(event){
-              event.preventDefault();
-              do_search(event);
-              });
-            $("#id_search_field").keyup(do_search);
-      });
+   <head>
+      <meta charset="utf-8">
+      <title>Gourmet Recipe Manager - Web View</title>
+      <style type="text/css">
+         {%include "menu.css" %}
+      </style>
+      <style type="text/css">
+         .rowhead {background: #222; color: #eee}
+         .rowhead a {background: #222; color: #eef}
+         .row1 {background:#ddd}
+         .row2 {background:#bbb}
+         .small  .category {display: none}
+         .small  .cuisine {display: none}
+         .tiny .category {display: none}
+         .tiny  .cuisine {display: none}
+         .small .title {font-size: x-large}
+         .tiny .title {font-size: x-large}
+      </style>
+      <script type="text/javascript" src="/js/jquery.js"></script>
+      <script type="text/javascript" src="/js/detect_screensize.js"></script>
+      <script type="text/javascript">
+         function do_search (event) {
+         $.ajax({
+         type: "POST",
+         url: "/rec/do_search_xhr/",
+         dataType: "html",
+         data: $("#search_form").serialize(),
+         success: function (data){
+         $("#reclist").html(data);
+         }
+         });
+         }
+         $(document).ready(function(event){
+         $("#search_form").submit(function(event){
+                 event.preventDefault();
+                 do_search(event);
+                 });
+               $("#id_search_field").keyup(do_search);
+         });
 
-
-    </script>
-  <body>
-    {%include "menu.html"%}
-    <div id="main">
-    <form  id="search_form" action="/rec/do_search/" method="post">{{form.as_p}}
-<input type="submit" value="search">
-    </form>
-    <div id="reclist">{%include "list.html" %}</div>
-    </div>
-  </body>
+      </script>
+   </head>
+   <body>
+      {%include "menu.html"%}
+      <div id="main">
+         <form id="search_form" action="/rec/do_search/" method="post">{{form.as_p}}
+            <input type="submit" value="search">
+         </form>
+         <div id="reclist">{%include "list.html" %}</div>
+      </div>
+   </body>
 </html>
