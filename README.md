@@ -26,7 +26,7 @@ See [INSTALL.md](INSTALL.md).
 Warning
 =======
 
-No warantee, etc. Please inform me of bugs/problems/feature
+No warranty, etc. Please inform me of bugs/problems/feature
 requests and I'll respond as quickly as I can. I can be reached
 at Thomas_Hinkle@alumni.brown.edu
 
