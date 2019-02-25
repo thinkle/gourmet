@@ -1,58 +1,56 @@
 <html>
-  <head>
-    <script type="text/javascript" src="/js/jquery.js"></script>
-    <script type="text/javascript" src="/js/detect_screensize.js"></script>
-    <style type="text/css">
-      {%include "menu.css" %}
-      .small {color: red; background: yellow}
-      .tiny {color: yellow; background: black}
-    </style>
-  </head>
-<body>
-  {%include "menu.html"%}
-  <div id="main">
-  <div>
-    <h2>Shopping list for...</h2>
-    {% for rec, mult in recs %}
-    <br><a href="/rec/{{rec.id}}/">{{rec.title}}</a> x{{mult}} <a href="/shop/remove/{{rec.id}}/">(remove)</a>
-    {% endfor %}
-  </div>
-  <table width="85%">
-    <tr>
-      <td valign="top" width="50%">
-	<form
-	   id="shopping_list_form"
-	   action="/shop/to_pantry/"
-	   method="post"
-	   >
-	<h2 style="margin-bottom:0">Shopping List </h2>
-	<input type="submit" name="submit" value="Move checked items to Pantry List">
-
-    {% for group, lst in data %}
-    <h3>{{group}}</h3>
-    {% for item, amt in lst %}
-    <input type="checkbox" name="{{item}}">{{item}} {{amount}}</input><br>
-    {% endfor %}
-    {% endfor %}
-    </form>
-      </td>
-      <td valign="top" width="50%">
-	<form
-	   id="pantry_list_form"
-	   action="/shop/to_list/"
-	   method="post"
-	   >
-	<h2 style="margin-bottom:0">Pantry List</h2>
-	<input type="submit" name="submit" value="Move checked items to Shopping List">
-	{% for group, lst in pantry %}
-    <h3>{{group}}</h3>
-    {% for item, amt in lst %}
-    <input type="checkbox" name="{{item}}">{{item}} {{amount}}<br></input>
-    {% endfor %}
-    {% endfor %}
-      </td>
-    </tr>
-  </table>
-  </div>
-</body>
+   <head>
+      <meta charset="utf-8">
+      <title>Shopping List: Gourmet Recipe Manager - Web View</title>
+      <script type="text/javascript" src="/js/jquery.js"></script>
+      <script type="text/javascript" src="/js/detect_screensize.js"></script>
+      <style type="text/css">
+         {%include "menu.css" %}
+         .small {color: red; background: yellow}
+         .tiny {color: yellow; background: black}
+      </style>
+   </head>
+   <body>
+      {%include "menu.html"%}
+      <div id="main">
+         <div>
+            <h2>Shopping list for...</h2>
+            {% for rec, mult in recs %}
+            <br><a href="/rec/{{rec.id}}/">{{rec.title}}</a> x{{mult}} <a href="/shop/remove/{{rec.id}}/">(remove)</a>
+            {% endfor %}
+         </div>
+         <table width="85%">
+            <tr>
+               <td valign="top" width="50%">
+                  <form id="shopping_list_form"
+                     action="/shop/to_pantry/"
+                     method="post">
+                     <h2 style="margin-bottom:0">Shopping List </h2>
+                     <input type="submit" name="submit" value="Move checked items to Pantry List">
+                     {% for group, lst in data %}
+                     <h3>{{group}}</h3>
+                     {% for item, amt in lst %}
+                     <input type="checkbox" name="{{item}}">{{item}} {{amount}}</input><br>
+                     {% endfor %}
+                     {% endfor %}
+                  </form>
+               </td>
+               <td valign="top" width="50%">
+                  <form id="pantry_list_form"
+                     action="/shop/to_list/"
+                     method="post">
+                     <h2 style="margin-bottom:0">Pantry List</h2>
+                     <input type="submit" name="submit" value="Move checked items to Shopping List">
+                     {% for group, lst in pantry %}
+                     <h3>{{group}}</h3>
+                     {% for item, amt in lst %}
+                     <input type="checkbox" name="{{item}}">{{item}} {{amount}}<br></input>
+                     {% endfor %}
+                     {% endfor %}
+                  </form>
+               </td>
+            </tr>
+         </table>
+      </div>
+   </body>
 </html>
