@@ -1,0 +1,15 @@
+*.pyc
+*.pyo
+*.gourmet-plugin
+*.desktop
+*~
+*#*
+.project
+.pydevproject
+.settings/
+debian
+dist/
+build
+build-stamp
+configure-stamp
+MANIFEST
