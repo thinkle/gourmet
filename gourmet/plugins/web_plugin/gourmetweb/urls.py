@@ -1,32 +1,35 @@
-from django.conf.urls import patterns
+from django.conf.urls import url
+import django.views.static
+from recview import views as rv_views
+from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
-urlpatterns = patterns(
-    '',
-    (r'^$','gourmetweb.recview.views.index'),
-    (r'^sort/(?P<field>.*)/','gourmetweb.recview.views.sort'),
-    (r'^search/(?P<term>.*)','gourmetweb.recview.views.search'),
-    (r'^rec/do_search/','gourmetweb.recview.views.do_search'),
-    (r'^rec/do_search_xhr/','gourmetweb.recview.views.do_search_xhr'),
-    (r'^regexp/(?P<term>.*)','gourmetweb.recview.views.regexp'),
-    (r'^rec/$','gourmetweb.recview.views.index'),
-    (r'^rec/(?P<rec_id>\d*)/$','gourmetweb.recview.views.rec'),
-    (r'^rec/(?P<rec_id>\d*)/(?P<mult>[\d.]*)$','gourmetweb.recview.views.rec'),
-    (r'^shop/$','gourmetweb.recview.views.shop'),
-    (r'^shop/(?P<rec_id>\d*)/$','gourmetweb.recview.views.shop'),
-    (r'^shop/(?P<rec_id>\d*)/(?P<mult>[\d.]*)$','gourmetweb.recview.views.shop'),
-    (r'^shop/remove/(?P<rec_id>\d*)/$','gourmetweb.recview.views.shop_remove'),
-    (r'^shop/to_pantry/','gourmetweb.recview.views.shop_to_pantry'),
-    (r'^shop/to_list/','gourmetweb.recview.views.shop_to_list'),
-    (r'^rec/multiply/','gourmetweb.recview.views.multiply_rec'),
-    (r'^img/(?P<rec_id>\d*)/$','gourmetweb.recview.views.img'),
-    (r'^thumb/(?P<rec_id>\d*)/$','gourmetweb.recview.views.thumb'),
-    (r'^rec/multiply_xhr/','gourmetweb.recview.views.multiply_rec_xhr'),
-    (r'^js/(?P<path>.*)$','django.views.static.serve',{'document_root':'/home/tom/Projects/grecipe-manager/src/lib/plugins/web_plugin/gourmetweb/templates/'}),
-    #(r'^shop/(?P<rec_id>\d*)/(?P<mult>\d)/$','gourmetweb.recview.views.shop'),
+urlpatterns = [
+    url(r'^$', rv_views.index, name='index'),
+    url(r'^sort/(?P<field>.*)/', rv_views.sort),
+    url(r'^search/(?P<term>.*)', rv_views.search),
+    url(r'^rec/do_search/', rv_views.do_search),
+    url(r'^rec/do_search_xhr/', rv_views.do_search_xhr),
+    # url(r'^regexp/(?P<term>.*)', rv_views.regexp),  # regexp is not implemented in recview.views.regexp
+    url(r'^rec/$', rv_views.index),
+    url(r'^rec/(?P<rec_id>\d*)/$', rv_views.rec),
+    url(r'^rec/(?P<rec_id>\d*)/(?P<mult>[\d.]*)$', rv_views.rec),
+    url(r'^shop/$', rv_views.shop),
+    url(r'^shop/(?P<rec_id>\d*)/$', rv_views.shop),
+    url(r'^shop/(?P<rec_id>\d*)/(?P<mult>[\d.]*)$', rv_views.shop),
+    url(r'^shop/remove/(?P<rec_id>\d*)/$', rv_views.shop_remove),
+    url(r'^shop/to_pantry/', rv_views.shop_to_pantry),
+    url(r'^shop/to_list/', rv_views.shop_to_list),
+    url(r'^rec/multiply/', rv_views.multiply_rec),
+    url(r'^img/(?P<rec_id>\d*)/$', rv_views.img),
+    url(r'^thumb/(?P<rec_id>\d*)/$', rv_views.thumb),
+    url(r'^rec/multiply_xhr/', rv_views.multiply_rec_xhr),
+    url(r'^js/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.TEMPLATE_PATH}),
+    # url(r'^shop/(?P<rec_id>\d*)/(?P<mult>\d)/$', rv_views.shop),
+    url(r'^about/$', rv_views.about),
     # Example:
     # (r'^gourmet/', include('gourmet.foo.urls')),
 
@@ -36,4 +39,4 @@ urlpatterns = patterns(
 
     # Uncomment the next line to enable the admin:
     # (r'^admin/', include(admin.site.urls)),
-)
+]

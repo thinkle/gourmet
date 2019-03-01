@@ -31,7 +31,27 @@ for those options.
 
 Mac OS X
 --------
-### Using MacPorts
+### Installing with "Automatic Installation"
+#### Using MacPorts
+This guide will assume that the user does not already have any of the required packages installed. First, complete the following list of instructions to install MacPorts. These steps are reproduced from [MacPorts official instructions](https://www.macports.org/install.php).
+
+1. Install Xcode and the Xcode Command Line Tools, accept the license.
+    1. Download Xcode from the App Store: [Link to download](https://itunes.apple.com/us/app/xcode/id497799835)
+    2. Run the following commands in Terminal
+    
+            xcode-select --install
+            sudo xcodebuild -license
+2. Install MacPorts for your version of the Mac operating system:
+    * [macOS High Sierra v10.13](https://distfiles.macports.org/MacPorts/MacPorts-2.5.3-10.13-HighSierra.pkg)
+    * [macOS Sierra v10.12](https://distfiles.macports.org/MacPorts/MacPorts-2.5.3-10.12-Sierra.pkg)
+    * [OS X El Capitan v10.11](https://distfiles.macports.org/MacPorts/MacPorts-2.5.3-10.11-ElCapitan.pkg)
+    * [Older OS? See here.](https://www.macports.org/install.php#installing)
+        
+With MacPorts installed, the command to install Gourmet is
+
+        sudo port install gourmet
+### Installing From Source
+#### Using MacPorts
 
 To build gourmet from source, install the required dependencies as listed in the MacPorts column of the table below by running `sudo port install <dependencies>`.
 
@@ -44,7 +64,7 @@ You should then be able to launch gourmet by running
 
     /opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin/gourmet
 
-### Using Fink
+#### Using Fink
 
 The following instructions all assume you have fink installed and that you have a terminal set up with the proper paths to run executables in the fink directories (/sw/bin/, etc.).
 

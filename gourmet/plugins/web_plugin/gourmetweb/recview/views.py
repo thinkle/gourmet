@@ -2,13 +2,15 @@ from gettext import gettext as _
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
 from django.shortcuts import render_to_response
-from django.template import Context, loader
 import sys
+sys.path.append('../../../')
 import re
 import gourmet.backends.db
 import gourmet.shopping
 import gourmet.recipeManager
-from django.utils import simplejson
+import json
+
+from django.shortcuts import render
 
 
 class MultiplierForm (forms.Form):
@@ -80,6 +82,12 @@ def do_search (request):
         return search(request,form.data['search_field'])
     else:
         print 'Not a post!'
+
+
+def about(request):
+    return render(request, 'about.html')
+
+
 
 def search (request, term, template='index.html'):
     vw = rd.search_recipes(
@@ -169,8 +177,8 @@ def multiply_rec (request, xhr=None):
                      'ingredients':get_ings(recid,multiplier),
                      'multiplier':multiplier}
                 return HttpResponse(
-                    simplejson.dumps(d),
-                    mimetype='application/javascript'
+                    json.dumps(d),
+                    content_type='application/javascript'
                     )
             else:
                 return HttpResponseRedirect('/rec/%s/%s'%(recid,multiplier))
@@ -216,10 +224,10 @@ def shop_to_list (request):
 
 def thumb (request, rec_id):
     return HttpResponse(rd.get_rec(rec_id).thumb,
-                        mimetype='image/jpeg'
+                        content_type = 'image/jpeg'
                         )
 
 def img (request, rec_id):
     return HttpResponse(rd.get_rec(rec_id).image,
-                        mimetype='image/jpeg'
+                        content_type = 'image/jpeg'
                         )
