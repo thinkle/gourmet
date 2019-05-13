@@ -35,3 +35,8 @@ try:
     plugins.append(cooksillustrated_plugin.CooksIllustratedPlugin)
 except ImportError:
     pass
+try:
+    import chefkoch_de_plugin
+    plugins.append(chefkoch_de_plugin.ChefkochDePlugin)
+except ImportError:
+    pass
