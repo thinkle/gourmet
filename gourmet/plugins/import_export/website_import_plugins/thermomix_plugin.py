@@ -109,8 +109,12 @@ def parse_schema_recipe(soup, recipe):
             recipe['modifications'] = p.text.strip()
     categories = soup.find_all(id="recipesCatFilterLink")
     if categories:
-        text = ", ".join(cat.text for cat in categories)
-        recipe['modifications'] += "\n\n%s %s" % (_("Category:"), text)
+        cattext = ", ".join(cat.text.strip() for cat in categories)
+        text = "%s %s" % (_("Category:"), cattext)
+        if "modifications" in recipe:
+            recipe["modifications"] += "\n\n" + text
+        else:
+            recipe["modifications"] = text
 
 
 def get_alt_text(img):
