@@ -40,3 +40,8 @@ try:
     plugins.append(chefkoch_de_plugin.ChefkochDePlugin)
 except ImportError:
     pass
+try:
+    import thermomix_plugin
+    plugins.append(thermomix_plugin.ThermomixPlugin)
+except ImportError:
+    pass
