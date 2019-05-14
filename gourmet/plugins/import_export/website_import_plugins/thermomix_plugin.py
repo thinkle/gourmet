@@ -9,6 +9,7 @@ from gourmet.importers.webextras import getdatafromurl
 from collections import OrderedDict
 from bs4 import BeautifulSoup, Tag
 from fractions import Fraction
+from gettext import gettext as _
 import re
 
 
@@ -48,6 +49,15 @@ class ThermomixParser(ConvenientImporter):
 
 
 def parse_schema_recipe(soup, recipe):
+    """Fill given recipe dict with data from HTML.
+
+    @param soup: the parsed HTML data from BeautifulSoup
+    @ptype soup: BeautifulSoup.Tag
+    @param recipe: the gourmet recipe to fill
+    @ptype recipe: dict
+    @return: nothing, the recipe will be modified instead
+    @rtype: None
+    """
     nonempty = re.compile(r".+")
     tag = soup.find(itemprop="name", content=nonempty)
     if tag:
@@ -63,7 +73,7 @@ def parse_schema_recipe(soup, recipe):
     tag = soup.find(itemprop="image", src=nonempty)
     if tag:
         image = tag["src"]
-        recipe['image'], _ = getdatafromurl(image, content_type_check="image/")
+        recipe['image'], unused = getdatafromurl(image, content_type_check="image/")
     preptime = 0
     tag = soup.find(itemprop="performTime", content=nonempty)
     if tag:
@@ -97,6 +107,10 @@ def parse_schema_recipe(soup, recipe):
         p = tag.find("p")
         if p:
             recipe['modifications'] = p.text.strip()
+    categories = soup.find_all(id="recipesCatFilterLink")
+    if categories:
+        text = ", ".join(cat.text for cat in categories)
+        recipe['modifications'] += "\n\n%s %s" % (_("Category:"), text)
 
 
 def get_alt_text(img):
@@ -123,6 +137,13 @@ def get_alt_text(img):
 
 
 def parse_schema_ingredients(soup):
+    """Parse ingredient list with data from HTML.
+
+    @param soup: the parsed HTML data from BeautifulSoup
+    @ptype soup: BeautifulSoup.Tag
+    @return: the grouped ingredients {group: ingredients}
+    @rtype: OrderedDict {string, list}
+    """
     # the ingredients are grouped, and the order of groups is preserved
     ingredients = OrderedDict()
     group = None
@@ -142,11 +163,19 @@ def parse_schema_ingredients(soup):
 
 
 def has_css_class(tag, cssclass):
+    """Check if tag has given CSS class.
+    @param tag: the HTML tag to check
+    @ptype tag: BeautifulSoup.Tag
+    @param cssclass: the CSS class name to search for
+    @ptype cssclass: string
+    @return: True if the CSS class is used in the class attribute
+    @rtype: bool
+    """
     classes = tag.get("class")
     if not classes:
         return False
     if isinstance(classes, list):
-        return classes[0] == cssclass
+        return cssclass in classes
     return classes == cssclass
 
 
