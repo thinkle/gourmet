@@ -4,11 +4,11 @@ https://www.chefkoch.de/
 """
 from gourmet.plugin import PluginPlugin
 from gourmet.importers.interactive_importer import ConvenientImporter
-from gourmet.gdebug import debug, warn
+from gourmet.gdebug import warn
 from gourmet.isoduration_parser import parse_iso8601_duration
+from gourmet.importers.webextras import getdatafromurl
 from fractions import Fraction
 import re
-import urllib2
 import json
 
 
@@ -43,9 +43,8 @@ class ChefkochDeParser(ConvenientImporter):
             # start_rec() initializes self.rec to an empty recipe dict
             self.rec['source'] = 'Web'
             self.rec['link'] = self.url
-            ingredients = []
-            import_schema_recipe(json_data, self.rec, ingredients)
-            for txt in ingredients:
+            parse_schema_recipe(json_data, self.rec)
+            for txt in parse_schema_ingredients(json_data):
                 # add_ing_from_text(txt) uses self.db.parse_ingredient(txt)
                 self.add_ing_from_text(txt)
             self.commit_rec()
@@ -81,15 +80,13 @@ def parse_json_from_data(data, url):
     return None
 
 
-def import_schema_recipe(json_data, recipe, ingredients):
-    """Fill given recipe dict and ingredients list with data from JSON.
+def parse_schema_recipe(json_data, recipe):
+    """Fill given recipe dict with data from JSON.
     @param json_data: the parsed JSON recipe schema data
     @ptype json_data: dict (with various keys and values)
     @param recipe: the gourmet recipe to fill
     @ptype recipe: dict
-    @param ingredients: the ingredient list to fill
-    @ptype ingredients: list
-    @return: nothing, the recipe and ingredients will be modified instead
+    @return: nothing, the recipe will be modified instead
     @rtype: None
     """
     recipe['title'] = json_data['name']
@@ -124,11 +121,23 @@ def import_schema_recipe(json_data, recipe, ingredients):
         if isinstance(image, list):
             image = image[0]
         recipe['image'], _ = getdatafromurl(image, content_type_check="image/")
+
+
+def parse_schema_ingredients(json_data):
+    """Parse ingredient list with data from JSON.
+
+    @param json_data: the parsed JSON recipe schema data
+    @ptype json_data: dict (with various keys and values)
+    @return: the ingredient list
+    @rtype: list
+    """
+    ingredients = []
     for ing in json_data['recipeIngredient']:
-        ingredients.append(import_schema_ingredient(ing))
+        ingredients.append(parse_schema_ingredient(ing))
+    return ingredients
 
 
-def import_schema_ingredient(ing):
+def parse_schema_ingredient(ing):
     """Parse one chefkoch.de ingredient and return the corrected string
     suitable for ConvenientImporter.add_ing_from_text()
     Note that this parser has specific features only suitable for
@@ -168,32 +177,6 @@ def import_schema_ingredient(ing):
     return ing
 
 
-def getdatafromurl(url, content_type_check=None):
-    """Download data from URL.
-    @param url: the URL to download
-    @ptype url: string
-    @param content_type_check: if non-empty, only return data if the
-      Content-Type header starts with the given string
-    @ptype content_type_check: string
-    @return: URL data or None, and the url (which may be redirected
-      to a new URL)
-    @rtype: tuple (string, string) or (None, string)
-    """
-    data = None
-    try:
-        sock = urllib2.urlopen(url)
-        url = sock.geturl()
-        if content_type_check:
-            content_type = sock.info().get('content-type', 'application/octet-stream')
-            if content_type.lower().startswith(content_type_check):
-                data = sock.read()
-        else:
-            data = sock.read()
-    except urllib2.URLError as msg:
-        warn("could not get data from URL %r: %s" % (url, msg))
-    return data, url
-
-
 class ChefkochDePlugin(PluginPlugin):
     """This plugin matches for all URLs from chefkoch.de with path /rezepte/."""
 
@@ -210,18 +193,18 @@ class ChefkochDePlugin(PluginPlugin):
         return ChefkochDeParser
 
 
-def test_chefkoch_parser(url):
+def test_parser(url):
     """Try to parse a recipe for testing purposes."""
     from pprint import pprint
     data, url = getdatafromurl(url)
-    print url
+    pprint(url)
     json_data = parse_json_from_data(data, url)
     if json_data:
         recipe = {}
-        ingredients = []
-        import_schema_recipe(json_data, recipe, ingredients)
+        parse_schema_recipe(json_data, recipe)
         recipe['image'] = recipe['image'][:40] + '...'
         pprint(recipe, indent=2)
+        ingredients = parse_schema_ingredients(json_data)
         pprint(ingredients, indent=2)
     else:
         raise ValueError("error parsing %s with data %r" % (url, data))
@@ -230,4 +213,4 @@ def test_chefkoch_parser(url):
 if __name__ == '__main__':
     # the default URL is a random recipe
     url = "https://www.chefkoch.de/rezepte/zufallsrezept/"
-    test_chefkoch_parser(url)
+    test_parser(url)
