@@ -21,7 +21,7 @@ class URLReader (gourmet.threadManager.SuspendableThread):
     def read (self):
         message = _('Retrieving %s'%self.url)
         socket.setdefaulttimeout(URLOPEN_SOCKET_TIMEOUT)
-        sock = urllib.urlopen(self.url)
+        sock = urllib2.urlopen(self.url)
         socket.setdefaulttimeout(DEFAULT_SOCKET_TIMEOUT)
         bs = 1024 * 8 # bite size...
         # Get file size so we can update progress correctly...
@@ -79,7 +79,7 @@ def get_url (url, suspendableThread):
     """Return data from URL, possibly displaying progress."""
     if type(url) in [str,unicode]:
         socket.setdefaulttimeout(URLOPEN_SOCKET_TIMEOUT)
-        sock = urllib.urlopen(url)
+        sock = urllib2.urlopen(url)
         socket.setdefaulttimeout(DEFAULT_SOCKET_TIMEOUT)
         return read_socket_w_progress(sock,suspendableThread,_('Retrieving %s'%url))
     else:
