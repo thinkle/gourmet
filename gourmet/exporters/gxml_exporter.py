@@ -1,4 +1,4 @@
-import exporter
+from . import exporter
 import sys, xml.sax.saxutils
 from gourmet.gdebug import debug
 from gourmet.gglobals import NAME_TO_ATTR
@@ -20,7 +20,7 @@ class rec_to_xml (exporter.exporter):
             self.my_title=xml.sax.saxutils.escape(text)
         else:
             name = NAME_TO_ATTR[label]
-            if self.attdics.has_key(name):
+            if name in self.attdics:
                 text = self.attdics[name][text]
             self.out.write("\n %s=%s"%(name, quoteattr(text)))
 
@@ -110,14 +110,14 @@ class recipe_table_to_xml (exporter.ExporterMultirec):
         cnt = 1
         for r in self.rd.recipe_table:
             itm = getattr(r,attr)
-            if not dic.has_key(itm):
+            if itm not in dic:
                 dic[itm]="%s%s"%(attr,cnt)
                 cnt += 1
         return dic
 
     def dic2decl (self, name, dic, out=sys.stderr):
         out.write( "<%sDecl>\n"%name)
-        for itm,key in dic.items():
+        for itm,key in list(dic.items()):
             out.write( "<%s id=%s>%s</%s>\n"%(name,quoteattr(key),xml.sax.saxutils.escape(itm),name))
         out.write( "</%sDecl>\n"%name)
 

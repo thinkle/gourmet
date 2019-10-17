@@ -1,6 +1,6 @@
 from gourmet.plugin import ExporterPlugin
 import gourmet.exporters.exporter as exporter
-import mycookbook_exporter
+from . import mycookbook_exporter
 from gettext import gettext as _
 
 MCB = _('My CookBook MCB File')

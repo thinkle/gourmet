@@ -1,7 +1,7 @@
 import os
-import gtk
-import gglobals
-from gtk_extras import cb_extras
+from gi.repository import Gtk
+from . import gglobals
+from .gtk_extras import cb_extras
 
 class BatchEditor:
 
@@ -10,7 +10,7 @@ class BatchEditor:
         self.setup_ui()
 
     def setup_ui (self):
-        self.ui = gtk.Builder()
+        self.ui = Gtk.Builder()
         self.ui.add_from_file(os.path.join(gglobals.uibase,'batchEditor.ui'))
         self.dialog = self.ui.get_object('batchEditorDialog')
         self.setFieldWhereBlankButton = self.ui.get_object('setFieldWhereBlankButton')
@@ -46,7 +46,7 @@ class BatchEditor:
                                                 method)
 
     def set_values_from_recipe (self, recipe):
-        for attribute,box in self.attribute_widgets.items():
+        for attribute,box in list(self.attribute_widgets.items()):
             if hasattr(recipe,attribute):
                 val = getattr(recipe,attribute)
             elif attribute == 'category':
@@ -59,7 +59,7 @@ class BatchEditor:
                 elif hasattr(box.get_children()[0],'set_text'):
                     box.get_children()[0].set_text(val)
                 else:
-                    print "Can't figure out how to set value for ",attribute,box
+                    print("Can't figure out how to set value for ",attribute,box)
 
     def toggle_cb (self, widg, attr):
         box = self.attribute_widgets[attr]
@@ -68,7 +68,7 @@ class BatchEditor:
 
     def get_values (self):
         changed = {}
-        for attribute in self.get_data_methods.keys():
+        for attribute in list(self.get_data_methods.keys()):
             cb,get_method = self.get_data_methods[attribute]
             if cb.get_active():
                 val = get_method()
@@ -76,7 +76,7 @@ class BatchEditor:
         return changed
 
     def response_cb (self, dialog, resp):
-        if resp == gtk.RESPONSE_OK:
+        if resp == Gtk.ResponseType.OK:
             self.setFieldWhereBlank = self.setFieldWhereBlankButton.get_active()
             self.values =  self.get_values()
         else:
@@ -85,7 +85,7 @@ class BatchEditor:
 
 
 if __name__ == '__main__':
-    import GourmetRecipeManager
+    from . import GourmetRecipeManager
     rg = GourmetRecipeManager.RecGui()
     be=BatchEditor(rg)
     be.set_values_from_recipe(rg.rd.fetch_one(rg.rd.recipe_table))

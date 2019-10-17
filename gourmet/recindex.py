@@ -1,16 +1,17 @@
 #!/usr/bin/env python
-from ImageExtras import get_pixbuf_from_jpg
-from gdebug import debug
+from .ImageExtras import get_pixbuf_from_jpg
+from .gdebug import debug
 from gettext import gettext as _, ngettext
-from gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
-from gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
+from .gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
+from .gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
     mnemonic_manager, pageable_store, treeview_extras as te
-import convert
-import Undo
-import gobject
-import gtk
-import gtk.gdk
-import pango
+from . import convert
+from . import Undo
+from gi.repository import GObject
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import Pango
+from gi.repository import GdkPixbuf
 
 class RecIndex:
     """We handle the 'index view' of recipes, which puts
@@ -33,15 +34,15 @@ class RecIndex:
         self.rd = rd
         self.rg = rg
         self.searchByDic = {
-            unicode(_('anywhere')):'anywhere',
-            unicode(_('title')):'title',
-            unicode(_('ingredient')):'ingredient',
-            unicode(_('instructions')):'instructions',
-            unicode(_('notes')):'modifications',
-            unicode(_('category')):'category',
-            unicode(_('cuisine')):'cuisine',
+            str(_('anywhere')):'anywhere',
+            str(_('title')):'title',
+            str(_('ingredient')):'ingredient',
+            str(_('instructions')):'instructions',
+            str(_('notes')):'modifications',
+            str(_('category')):'category',
+            str(_('cuisine')):'cuisine',
             # _('rating'):'rating',
-            unicode(_('source')):'source',
+            str(_('source')):'source',
             }
         self.searchByList = [_('anywhere'),
                              _('title'),
@@ -84,13 +85,14 @@ class RecIndex:
         self.rSearchByMenu.set_active(0)
         self.rSearchByMenu.connect('changed',self.search_as_you_type)
         self.sautTog = self.ui.get_object('searchAsYouTypeToggle')
-        self.search_actions.get_action('toggleSearchAsYouType').connect_proxy(self.sautTog)
+        # help(self.search_actions.get_action('toggleSearchAsYouType'))
+        # self.search_actions.get_action('toggleSearchAsYouType').do_connect_proxy(self.search_actions.get_action('toggleSearchAsYouType'), self.sautTog)
         self.regexpTog = self.ui.get_object('regexpTog')
         self.searchOptionsBox = self.ui.get_object('searchOptionsBox')
-        self.search_actions.get_action('toggleShowSearchOptions').connect_proxy(
-            self.ui.get_object('searchOptionsToggle')
-            )
-        self.search_actions.get_action('toggleRegexp').connect_proxy(self.regexpTog)
+        # self.search_actions.get_action('toggleShowSearchOptions').connect_proxy(
+        #     self.ui.get_object('searchOptionsToggle')
+        #     )
+        # self.search_actions.get_action('toggleRegexp').connect_proxy(self.regexpTog)
         self.rectree = self.ui.get_object('recTree')
         self.sw = self.ui.get_object('scrolledwindow')
         self.rectree.connect('start-interactive-search',lambda *args: self.srchentry.grab_focus())
@@ -146,7 +148,7 @@ class RecIndex:
         self.mm.fix_conflicts_peacefully()
 
     def setup_search_actions (self):
-        self.search_actions = gtk.ActionGroup('SearchActions')
+        self.search_actions = Gtk.ActionGroup('SearchActions')
         self.search_actions.add_toggle_actions([
             ('toggleRegexp',None,_('Use regular expressions in search'),
              None,_('Use regular expressions (an advanced search language) in text search'),
@@ -187,7 +189,7 @@ class RecIndex:
         elif self.srchentry.get_text():
             if not self.search_as_you_type:
                 self.search()
-                gobject.idle_add(lambda *args: self.limit_search())
+                GObject.idle_add(lambda *args: self.limit_search())
             else:
                 self.limit_search()
 
@@ -226,7 +228,7 @@ class RecIndex:
         self.rmodel_page_changed_cb(self.rmodel)
         # and hook up our model
         self.rectree.set_model(self.rmodel)
-        self.rectree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        self.rectree.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
         self.selection_changed()
         self.setup_reccolumns()
         # this has to come after columns are added or else adding columns resets out column order!
@@ -264,9 +266,9 @@ class RecIndex:
 
     def setup_reccolumns (self):
         """Setup the columns of our recipe index TreeView"""
-        renderer = gtk.CellRendererPixbuf()
+        renderer = Gtk.CellRendererPixbuf()
         cssu=pageable_store.ColumnSortSetterUpper(self.rmodel)
-        col = gtk.TreeViewColumn("",renderer,pixbuf=1)
+        col = Gtk.TreeViewColumn("",renderer,pixbuf=1)
         col.set_min_width(-1)
         self.rectree.append_column(col)
         n = 2
@@ -291,7 +293,7 @@ class RecIndex:
             # And we also special case our time column
             elif c in ['preptime','cooktime']:
                 _title_to_num_[self.rtcolsdic[c]]=n
-                renderer=gtk.CellRendererText()
+                renderer=Gtk.CellRendererText()
                 renderer.set_property('editable',True)
                 renderer.connect('edited',self.rtree_time_edited_cb,n,c)
                 def get_colnum (tc):
@@ -300,10 +302,10 @@ class RecIndex:
                         if t:
                             return _title_to_num_[t.replace('_','')]
                         else:
-                            print 'wtf, no title for ',tc
+                            print('wtf, no title for ',tc)
                             return -1
                     except:
-                        print 'problem with ',tc
+                        print('problem with ',tc)
                         raise
 
                 ncols = self.rectree.insert_column_with_data_func(
@@ -327,28 +329,28 @@ class RecIndex:
                 n+=1
                 continue
             elif self.editable and self.rtwidgdic[c]=='Combo':
-                renderer = gtk.CellRendererCombo()
-                model = gtk.ListStore(str)
+                renderer = Gtk.CellRendererCombo()
+                model = Gtk.ListStore(str)
                 if c=='category':
-                    map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c,self.rg.rd.categories_table)
-                        )
+                    list(map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c,self.rg.rd.categories_table)
+                        ))
                 else:
-                    map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c))
+                    list(map(lambda i: model.append([i]),self.rg.rd.get_unique_values(c)))
                 renderer.set_property('model',model)
                 renderer.set_property('text-column',0)
             else:
-                renderer = gtk.CellRendererText()
+                renderer = Gtk.CellRendererText()
                 if c=='link':
-                    renderer.set_property('ellipsize',pango.ELLIPSIZE_END)
+                    renderer.set_property('ellipsize',Pango.EllipsizeMode.END)
                 else:
                     renderer.get_property('wrap-width')
-                    renderer.set_property('wrap-mode',pango.WRAP_WORD)
+                    renderer.set_property('wrap-mode',Pango.WrapMode.WORD)
                     if c == 'title': renderer.set_property('wrap-width',200)
                     else: renderer.set_property('wrap-width',150)
             renderer.set_property('editable',self.editable)
             renderer.connect('edited',self.rtree_edited_cb,n, c)
             titl = self.rtcolsdic[c]
-            col = gtk.TreeViewColumn('_%s'%titl,renderer, text=n)
+            col = Gtk.TreeViewColumn('_%s'%titl,renderer, text=n)
             # Ensure that the columns aren't really narrow on initialising.
             # if c=='title':            # Adjust these two to be even bigger
             #     col.set_min_width(200)
@@ -415,7 +417,7 @@ class RecIndex:
         debug("search (self, *args):",5)
         txt = self.srchentry.get_text()
         searchBy = cb.cb_get_active_text(self.rSearchByMenu)
-        searchBy = self.searchByDic[unicode(searchBy)]
+        searchBy = self.searchByDic[str(searchBy)]
         if self.limitButton: self.limitButton.set_sensitive(txt!='')
         if self.make_search_dic(txt,searchBy) == self.last_search:
             debug("Same search!",1)
@@ -423,13 +425,13 @@ class RecIndex:
         # Get window
         if self.srchentry:
             parent = self.srchentry.parent
-            while parent and not (isinstance(parent,gtk.Window)):
+            while parent and not (isinstance(parent,Gtk.Window)):
                 parent = parent.parent
-            parent.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+            parent.window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
             debug('Doing new search for %s, last search was %s'%(self.make_search_dic(txt,searchBy),self.last_search),1)
-            gobject.idle_add(lambda *args: (self.do_search(txt, searchBy) or parent.window.set_cursor(None)))
+            GObject.idle_add(lambda *args: (self.do_search(txt, searchBy) or parent.window.set_cursor(None)))
         else:
-            gobject.idle_add(lambda *args: self.do_search(txt, searchBy))
+            GObject.idle_add(lambda *args: self.do_search(txt, searchBy))
 
     def make_search_dic (self, txt, searchBy):
         srch = {'column':searchBy}
@@ -540,7 +542,7 @@ class RecIndex:
         self.rd.save()
 
     def tree_keypress_cb (self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = Gdk.keyval_name(event.keyval)
         if keyname in ['Page_Up','Page_Down']:
             sb = self.sw.get_vscrollbar()
             adj =  self.sw.get_vscrollbar().get_adjustment()
@@ -643,8 +645,8 @@ class RecipeModel (pageable_store.PageableViewStore):
     per_page = 12
     page = 0
 
-    columns_and_types = [('rec',gobject.TYPE_PYOBJECT,),
-                         ('thumb',gtk.gdk.Pixbuf),
+    columns_and_types = [('rec',GObject.TYPE_PYOBJECT,),
+                         ('thumb',GdkPixbuf.Pixbuf),
                          ]
     for n in [r[0] for r in REC_ATTRS]:
         if n in INT_REC_ATTRS: columns_and_types.append((n,int))
@@ -666,7 +668,7 @@ class RecipeModel (pageable_store.PageableViewStore):
         try:
             return [[self._get_value_(r,col) for col in self.columns] for r in self.view[bottom:top]]
         except:
-            print '_get_slice_ failed with',bottom,top
+            print('_get_slice_ failed with',bottom,top)
             raise
 
     def _get_value_ (self, row, attr):
@@ -704,4 +706,3 @@ class RecipeModel (pageable_store.PageableViewStore):
                 self.update_iter(row.iter)
                 debug('updated row -- breaking',3)
                 break
-

@@ -23,7 +23,7 @@ import gourmet.exporters.exporter as exporter
 import types, re
 import tempfile, os.path
 import math
-from page_drawer import PageDrawer
+from .page_drawer import PageDrawer
 
 DEFAULT_PDF_ARGS = {'bottom_margin': 72, 'pagesize': 'letter', 'right_margin': 72, 'top_margin': 72, 'left_margin': 72, 'pagemode': 'portrait', 'base_font_size': 10, 'mode': ('column', 1)}
 
@@ -242,7 +242,7 @@ class PdfWriter:
                         base_font_size=10):
         if type(mode)!=tuple:
             raise Exception("What is this mode! %s" % str(mode))
-        if type(pagesize) in types.StringTypes:
+        if type(pagesize) in (str,):
             self.pagesize = getattr(pagesizes,pagemode)(getattr(pagesizes,pagesize))
         else:
             self.pagesize = getattr(pagesizes,pagemode)(pagesize)
@@ -256,7 +256,7 @@ class PdfWriter:
         return frames
 
     def scale_stylesheet (self, perc):
-        for name,sty in self.styleSheet.byName.items():
+        for name,sty in list(self.styleSheet.byName.items()):
             for attr in ['firstLineIndent',
                          'fontSize',
                          'leftIndent',
@@ -332,18 +332,18 @@ class PdfWriter:
             xmltxt = '<para>%s</para>'%txt
         if not style: style = self.styleSheet['Normal']
         try:
-            return platypus.Paragraph(unicode(xmltxt),style)
+            return platypus.Paragraph(str(xmltxt),style)
         except UnicodeDecodeError:
             try:
                 #print 'WORK AROUND UNICODE ERROR WITH ',txt[:20]
                 # This seems to be the standard on windows.
                 platypus.Paragraph(xmltxt,style)
             except:
-                print 'Trouble with ',xmltxt
+                print('Trouble with ',xmltxt)
                 raise
         except:
             # Try escaping text...
-            print 'TROUBLE WITH',txt[:20],'TRYING IT ESCAPED...'
+            print('TROUBLE WITH',txt[:20],'TRYING IT ESCAPED...')
             return self.make_paragraph(xml.sax.saxutils.escape(txt),
                                 style,
                                 attributes,
@@ -387,7 +387,7 @@ class PdfWriter:
         t = self.txt[:]
         try: self.doc.build(self.txt)
         except:
-            print 'Trouble building',t[:20]
+            print('Trouble building',t[:20])
             raise
 
 class PdfExporter (exporter.exporter_mult, PdfWriter):
@@ -401,7 +401,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                   **kwargs):
         self.all_recipes = all_recipes
         PdfWriter.__init__(self)
-        if type(out) in types.StringTypes:
+        if type(out) in (str,):
             self.out = file(out,'wb')
         else:
             self.out = out
@@ -657,7 +657,7 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
     def __init__ (self, rd, recipes, out, conv=None, pdf_args=DEFAULT_PDF_ARGS,
                   **kwargs):
         PdfWriter.__init__(self)
-        if type(out) in types.StringTypes:
+        if type(out) in (str,):
             out = file(out,'wb')
         self.setup_document(out,**pdf_args)
         self.output_file = out
@@ -737,10 +737,10 @@ class CustomUnitOption (optionTable.CustomOption):
         }
 
     def __init__ (self, default_value = inch):
-        gobject.GObject.__init__(self)
-        gtk.HBox.__init__(self)
+        GObject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         self.__quiet__ = False
-        self.unit_combo = gtk.combo_box_new_text()
+        self.unit_combo = Gtk.ComboBoxText()
         for key in self.units:
             self.unit_combo.append_text(key)
         unit = get_prefs().get('default_margin_unit',_('cm'))
@@ -749,7 +749,7 @@ class CustomUnitOption (optionTable.CustomOption):
         cb_extras.setup_typeahead(self.unit_combo)
         cb_extras.cb_set_active_text(self.unit_combo,unit)
         self.unit_combo.connect('changed',self.unit_changed_cb)
-        self.value_adjustment = gtk.Adjustment(
+        self.value_adjustment = Gtk.Adjustment(
             value=self.adjust_to_unit(default_value),
             lower= self.min_val / self.last_unit,
             upper = self.max_val / self.last_unit,
@@ -759,11 +759,11 @@ class CustomUnitOption (optionTable.CustomOption):
         def emit_changed (*args):
             self.emit('changed')
         self.value_adjustment.connect('changed',emit_changed)
-        self.value_widget = gtk.SpinButton(self.value_adjustment,digits=2)
+        self.value_widget = Gtk.SpinButton(self.value_adjustment,digits=2)
         self.value_widget.connect('changed',emit_changed)
         self.value_widget.show(); self.unit_combo.show()
-        self.pack_start(self.value_widget)
-        self.pack_start(self.unit_combo)
+        self.pack_start(self.value_widget, True, True, 0)
+        self.pack_start(self.unit_combo, True, True, 0)
 
     def set_unit (self, unit):
         cb_extras.cb_set_active_text(self.unit_combo,unit)
@@ -842,17 +842,17 @@ class PdfPrefGetter:
         _('Landscape'):'landscape',
         }
 
-    OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = range(8)
+    OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = list(range(8))
 
     def __init__ (self,):
         self.prefs = get_prefs()
         defaults = self.prefs.get('PDF_EXP',PDF_PREF_DEFAULT)
-        self.size_strings = self.page_sizes.keys()
+        self.size_strings = list(self.page_sizes.keys())
         self.size_strings.sort()
         for n in range(2,5):
             self.layouts[ngettext('%s Column','%s Columns',n)%n]=('column',n)
         self.make_reverse_dicts()
-        self.layout_strings = self.layouts.keys()
+        self.layout_strings = list(self.layouts.keys())
         self.layout_strings.sort()
         margin_widgets = [
             CustomUnitOption(defaults.get(pref,PDF_PREF_DEFAULT[pref]))
@@ -868,7 +868,7 @@ class PdfPrefGetter:
             [_('Paper _Size')+':',(defaults.get('page_size',PDF_PREF_DEFAULT['page_size']),
                                   self.size_strings)],
             [_('_Orientation')+':',(defaults.get('orientation',PDF_PREF_DEFAULT['orientation']),
-                                    self.page_modes.keys())],
+                                    list(self.page_modes.keys()))],
             [_('_Font Size')+':',int(defaults.get('font_size',PDF_PREF_DEFAULT['font_size']))],
             [_('Page _Layout'),(defaults.get('page_layout',PDF_PREF_DEFAULT['page_layout']),
                                 self.layout_strings)],
@@ -892,7 +892,7 @@ class PdfPrefGetter:
             (self.page_sizes,self.page_sizes_r),
             (self.layouts,self.layouts_r),
             (self.page_modes,self.page_modes_r)]:
-            for k,v in dict.items(): dict_r[v]=k
+            for k,v in list(dict.items()): dict_r[v]=k
 
     def setup_widgets (self):
         self.pd = de.PreferencesDialog(self.opts,option_label=None,value_label=None,
@@ -907,7 +907,7 @@ class PdfPrefGetter:
 
     def get_args_from_opts (self, opts):
         args = {}
-        if not get_prefs().has_key('PDF_EXP'):
+        if 'PDF_EXP' not in get_prefs():
             get_prefs()['PDF_EXP'] = {}
         prefs = get_prefs()['PDF_EXP']
         args['pagesize'] = self.page_sizes[opts[self.OPT_PS][1]] # PAGE SIZE
@@ -1010,36 +1010,36 @@ class PdfPrefTable (PdfPrefGetter):
     # in a print preferences widget.
 
     def setup_widgets (self):
-        self.widg = gtk.HBox()
+        self.widg = Gtk.HBox()
         self.table = optionTable.OptionTable(options=self.opts,
                                              option_label=None,
                                              value_label=None,
                                              changedcb=None)
-        self.widg.pack_start(self.table)
+        self.widg.pack_start(self.table, True, True, 0)
         self.widg.pack_start(self.page_drawer,fill=True,expand=True)
         self.widg.show_all()
 
 def get_pdf_prefs (defaults=None):
-    if defaults: print 'WARNING: ignoring provided defaults and using prefs system instead'
+    if defaults: print('WARNING: ignoring provided defaults and using prefs system instead')
     pdf_pref_getter = PdfPrefGetter()
     return pdf_pref_getter.run()
 
 if __name__ == '__main__':
-    w = gtk.Window()
+    w = Gtk.Window()
     cuo = CustomUnitOption(44)
     cuo2 = CustomUnitOption(98)
     cuo.sync_to_other_cuo(cuo2)
     cuo2.sync_to_other_cuo(cuo)
-    vb = gtk.VBox()
-    l = gtk.Label('Hello World')
+    vb = Gtk.VBox()
+    l = Gtk.Label(label='Hello World')
     vb.add(l)
-    vb.pack_start(cuo)
-    vb.pack_start(cuo2)
+    vb.pack_start(cuo, True, True, 0)
+    vb.pack_start(cuo2, True, True, 0)
     w.add(vb)
     vb.show(); cuo.show(); cuo2.show()
     w.show()
-    w.connect('delete_event',gtk.main_quit)
-    gtk.main()
+    w.connect('delete_event',Gtk.main_quit)
+    Gtk.main()
     raise Exception("Hell")
 
     from tempfile import tempdir
@@ -1093,7 +1093,7 @@ if __name__ == '__main__':
         return os.path.join(tempdir,'format.pdf')
 
     def test_3_x_5 ():
-        print 'Test 3x5 layout'
+        print('Test 3x5 layout')
         sw = PdfWriter()
         f = file(os.path.join(tempdir,'foo.pdf'),'wb')
         sw.setup_document(f,
@@ -1109,13 +1109,13 @@ if __name__ == '__main__':
         #sw.write_subheader('This is a subheading')
         for n in range(5):
             sw.write_header(
-                u"This is a header"
+                "This is a header"
                 )
             #sw.write_subheader(
             #    u"This is a subheader"
             #    )
             sw.write_paragraph(
-                u"%s: These are some sentences.  Hopefully some of these will be quite long sentences.  Some of this text includes unicode -- 45\u00b0F, for example... \u00bfHow's that?"%n*10
+                "%s: These are some sentences.  Hopefully some of these will be quite long sentences.  Some of this text includes unicode -- 45\u00b0F, for example... \u00bfHow's that?"%n*10
                 )
         #sw.write_paragraph('This is a <i>paragraph</i> with <b>some</b> <u>markup</u>.')
         #sw.write_paragraph(u"This is some text with unicode - 45\u00b0, \u00bfHow's that?".encode('iso-8859-1'))

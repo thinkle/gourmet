@@ -2,7 +2,7 @@ from gourmet.plugin import BaseExporterPlugin
 from gourmet.recipeManager import default_rec_manager
 import gourmet.defaults
 from gourmet.prefs import get_prefs
-from nutritionLabel import MAIN_NUT_LAYOUT, MAJOR, MINOR, TINY, SEP, SHOW_PERCENT, DONT_SHOW_PERCENT, SEP
+from .nutritionLabel import MAIN_NUT_LAYOUT, MAJOR, MINOR, TINY, SEP, SHOW_PERCENT, DONT_SHOW_PERCENT, SEP
 from gettext import gettext as _
 from xml.sax.saxutils import escape
 

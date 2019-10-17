@@ -1,7 +1,7 @@
 from selenium import webdriver
 
 d = webdriver.Chrome('/home/thomas/Downloads/chromedriver')
-print 'got here :)'
+print('got here :)')
 d.get('https://www.cooksillustrated.com/sign_in/')
 un=d.find_element_by_xpath('//*[@name="user[email]"]')
 #un.send_keys('USERNAME')

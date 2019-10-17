@@ -5,7 +5,7 @@ from gourmet.recipeManager import default_rec_manager
 import os.path
 from fnmatch import fnmatch
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui, NotThreadSafe
-from webextras import URLReader
+from .webextras import URLReader
 import tempfile
 from gettext import gettext as _
 
@@ -74,9 +74,7 @@ class ImportManager (plugin_loader.Pluggable):
         # Filter by mimetype...
         if reader.content_type:
             base_content_type=reader.content_type.split(';')[0]
-            possible_plugins = filter(
-                lambda p: base_content_type in p.mimetypes,
-                self.importer_plugins)
+            possible_plugins = [p for p in self.importer_plugins if base_content_type in p.mimetypes]
         else:
             possible_plugins = self.importer_plugins
         fallback = None; plugin = None
@@ -100,7 +98,7 @@ class ImportManager (plugin_loader.Pluggable):
                 },
                 )
         else:
-            print 'Doing import of',reader.url,plugin
+            print('Doing import of',reader.url,plugin)
             self.do_import(plugin,'get_web_importer',reader.url,reader.data,reader.content_type)
 
     def offer_import (self, parent=None):
@@ -137,21 +135,21 @@ class ImportManager (plugin_loader.Pluggable):
                             importers.append((fn,plugin))
                             found_plugin = True
                         else:
-                            print 'File ',fn,'appeared to match ',plugin,'but failed test.'
+                            print('File ',fn,'appeared to match ',plugin,'but failed test.')
                         break
                 if found_plugin: break
             if not found_plugin:
                 if fallback:
                     importers.append((fn,fallback))
                 else:
-                    print 'Warning, no plugin found for file ',fn
+                    print('Warning, no plugin found for file ',fn)
         ret_importers = [] # a list of importer instances to return
         for fn,importer_plugin in importers:
-            print 'Doing import for ',fn,importer_plugin
+            print('Doing import for ',fn,importer_plugin)
             ret_importers.append(
                 self.do_import(importer_plugin,'get_importer',fn)
                 )
-        print 'import_filenames returns',ret_importers
+        print('import_filenames returns',ret_importers)
         return ret_importers
 
     def do_import (self, importer_plugin, method, *method_args):
@@ -160,7 +158,7 @@ class ImportManager (plugin_loader.Pluggable):
         try:
             importer = getattr(importer_plugin,method)(*method_args)
             self.setup_notification_message(importer)
-        except ImportFileList, ifl:
+        except ImportFileList as ifl:
             # recurse with new filelist...
             return self.import_filenames(ifl.filelist)
         else:
@@ -173,7 +171,7 @@ class ImportManager (plugin_loader.Pluggable):
             else:
                 label = _('Import') + ' ('+importer_plugin.name+')'
                 self.setup_thread(importer, label)
-            print 'do_importer returns importer:',importer
+            print('do_importer returns importer:',importer)
             return importer
 
     def setup_notification_message(self, importer):
@@ -203,7 +201,7 @@ class ImportManager (plugin_loader.Pluggable):
         return self.plugins_by_name[name]
 
     def get_tempfilename (self, url, data, content_type):
-        if self.tempfiles.has_key(url):
+        if url in self.tempfiles:
             return self.tempfiles[url]
         else:
             fn = url.split('/')[-1]
@@ -222,8 +220,8 @@ class ImportManager (plugin_loader.Pluggable):
         return self.tempfiles[url]
 
     def guess_extension (self, content_type):
-        if self.extensions_by_mimetype.has_key(content_type):
-            answers = self.extensions_by_mimetype[content_type].items()
+        if content_type in self.extensions_by_mimetype:
+            answers = list(self.extensions_by_mimetype[content_type].items())
             answers.sort(lambda a,b: cmp(a[1],b[1])) # sort by count...
             return answers[-1][0] # Return the most frequent
         else:
@@ -251,8 +249,8 @@ class ImportManager (plugin_loader.Pluggable):
         self.plugins.append(plugin)
         if isinstance(plugin,ImporterPlugin):
             name = plugin.name
-            if self.plugins_by_name.has_key(name):
-                print 'WARNING','replacing',self.plugins_by_name[name],'with',plugin
+            if name in self.plugins_by_name:
+                print('WARNING','replacing',self.plugins_by_name[name],'with',plugin)
             self.plugins_by_name[name] = plugin
             self.learn_mimetype_extension_mappings(plugin)
             self.importer_plugins.append(plugin)
@@ -260,7 +258,7 @@ class ImportManager (plugin_loader.Pluggable):
 
     def learn_mimetype_extension_mappings (self, plugin):
         for mt in plugin.mimetypes:
-            if not self.extensions_by_mimetype.has_key(mt):
+            if mt not in self.extensions_by_mimetype:
                 self.extensions_by_mimetype[mt] = {}
             for ptrn in plugin.patterns:
                 if ptrn.find('*.')==0:
@@ -272,21 +270,21 @@ class ImportManager (plugin_loader.Pluggable):
     def unregister_plugin (self, plugin):
         if isinstance(plugin,ImporterPlugin):
             name = plugin.name
-            if self.plugins_by_name.has_key(name):
+            if name in self.plugins_by_name:
                 del self.plugins_by_name[name]
                 self.plugins.remove(plugin)
             else:
-                print 'WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name
+                print('WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name)
         else:
             self.plugins.remove(plugin)
 
 def get_import_manager ():
     try:
         return ImportManager()
-    except ImportManager, im:
+    except ImportManager as im:
         return im
 
 if __name__ == '__main__':
     im = ImportManager()
     im.offer_import()
-    gtk.main()
+    Gtk.main()

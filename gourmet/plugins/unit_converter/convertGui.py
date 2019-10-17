@@ -1,5 +1,5 @@
 import gourmet.convert as convert
-import gtk
+from gi.repository import Gtk
 from gourmet.gdebug import debug
 from gourmet.gtk_extras.cb_extras import cb_get_active_text, cb_set_active_text, setup_typeahead
 import gourmet.GourmetRecipeManager
@@ -19,7 +19,7 @@ class ConvGui:
                   okcb=None
                   ):
         self.possible_conversions = None
-        self.ui = gtk.Builder()
+        self.ui = Gtk.Builder()
         self.ui.add_from_file(os.path.join(current_path,'converter.ui'))
         self.conv = converter
         self.changing_item = False
@@ -43,16 +43,16 @@ class ConvGui:
         #self.unit2ComboBox.set_model(self.unit2Model)
         self.unit2ComboBox.set_model(self.unitModel)
         for combobox in [self.unit1ComboBox, self.unit2ComboBox]:
-            cell = gtk.CellRendererText()
+            cell = Gtk.CellRendererText()
             combobox.pack_start(cell, True)
             combobox.add_attribute(cell, 'text', 1)
             setup_typeahead(combobox)
         #self.itemComboBox.append_text('None')
-        ikeys = self.conv.density_table.keys()
+        ikeys = list(self.conv.density_table.keys())
         ikeys.sort()
         for itm in ikeys:
             self.itemComboBox.append_text(itm)
-        if len(self.conv.density_table.keys()) > 8:
+        if len(list(self.conv.density_table.keys())) > 8:
             self.itemComboBox.set_wrap_width(3)
         setup_typeahead(self.itemComboBox)
         if amt1:
@@ -174,10 +174,10 @@ class ConvGui:
         if self.okcb:
             self.okcb(cb_get_active_text(self.unit2ComboBox),resultLabel.get_text())
         if __name__ == '__main__':
-            gtk.main_quit()
+            Gtk.main_quit()
 
 if __name__ == '__main__':
     uibase="/home/tom/Projects/gourmet/glade/"
     cg=ConvGui()
-    gtk.main()
+    Gtk.main()
 

@@ -1,7 +1,11 @@
-import gtk, gobject, time, gglobals, os
+from gi.repository import Gtk
+from gi.repository import GObject
+import time
+from . import gglobals
+import os
 import xml.sax.saxutils
-from sound import Player
-from gtk_extras import cb_extras as cb
+from .sound import Player
+from .gtk_extras import cb_extras as cb
 from gettext import gettext as _
 
 class TimeSpinnerUI:
@@ -64,7 +68,7 @@ class TimeSpinnerUI:
         if not self.running and self.get_time():
             self.running = time.time()
             self.orig_time = self.start_time = self.get_time()
-            gobject.timeout_add(1000,self.tick)
+            GObject.timeout_add(1000,self.tick)
 
     def pause_cb (self, *args):
         if self.running:
@@ -72,7 +76,7 @@ class TimeSpinnerUI:
         else:
             self.running = time.time()
             self.start_time = self.get_time()
-        if self.running: gobject.timeout_add(1000,self.tick)
+        if self.running: GObject.timeout_add(1000,self.tick)
 
     def reset_cb (self, *args):
         self.running = False
@@ -89,7 +93,7 @@ class TimeSpinnerUI:
         for h in self.timer_hooks: h()
 
 
-from gtk_extras import dialog_extras as de
+from .gtk_extras import dialog_extras as de
 
 class TimerDialog:
 
@@ -103,7 +107,7 @@ class TimerDialog:
 
     def __init__ (self):
         self.init_player()
-        self.ui = gtk.Builder()
+        self.ui = Gtk.Builder()
         self.ui.add_from_file(os.path.join(gglobals.uibase,'timerDialog.ui'))
         self.timer = TimeSpinnerUI(
             self.ui.get_object('hoursSpinButton'),
@@ -117,7 +121,7 @@ class TimerDialog:
                   'timerFinishedLabel','keepAnnoyingLabel'
                   ]:
             setattr(self,w,self.ui.get_object(w))
-        cb.set_model_from_list(self.soundComboBox,self.sounds_and_files.keys())
+        cb.set_model_from_list(self.soundComboBox,list(self.sounds_and_files.keys()))
         cb.cb_set_active_text(self.soundComboBox,_('Ringing Sound'))
         self.ui.connect_signals(
             {'reset_cb':self.timer.reset_cb,
@@ -160,7 +164,7 @@ class TimerDialog:
         self.play_tune()
         if self.repeatCheckButton.get_active():
             self.keep_annoying = True
-            gobject.timeout_add(3000,self.annoy_user)
+            GObject.timeout_add(3000,self.annoy_user)
         self.timerBox.hide()
         self.expander1.hide()
         self.timerFinishedLabel.show()
@@ -182,7 +186,7 @@ class TimerDialog:
         self.expander1.show()
 
     def response_cb (self, dialog, resp):
-        if resp == gtk.RESPONSE_APPLY:
+        if resp == Gtk.ResponseType.APPLY:
             self.refresh()
         else:
             self.close_cb()
@@ -212,10 +216,10 @@ def show_timer (time=600,
     td.show()
 
 if __name__ == '__main__':
-    w = gtk.Window()
-    b = gtk.Button('Show timer')
+    w = Gtk.Window()
+    b = Gtk.Button('Show timer')
     b.connect('clicked',lambda *args: show_timer())
     w.add(b)
-    w.connect('delete-event',lambda *args: gtk.main_quit())
+    w.connect('delete-event',lambda *args: Gtk.main_quit())
     w.show_all()
-    gtk.main()
+    Gtk.main()

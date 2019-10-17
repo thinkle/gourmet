@@ -49,14 +49,14 @@ class KrecHandler (xml_importer.RecHandler):
             self.group=None
         if name==self.ING_TAG:
             self.commit_ing()
-        elif self.RECTAGS.has_key(name):
+        elif name in self.RECTAGS:
             obj = self.rec
             key,method = self.RECTAGS[name]
-        elif self.INGTAGS.has_key(name):
+        elif name in self.INGTAGS:
             obj = self.ing
             key,method = self.INGTAGS[name]
         if key:
-            if method == self.ADD and obj.has_key(key):
+            if method == self.ADD and key in obj:
                 obj[key]=obj[key]+", "+self.elbuf
             elif method == self.AND:
                 for k in key:

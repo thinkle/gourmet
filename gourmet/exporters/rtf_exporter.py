@@ -93,9 +93,9 @@ class rtf_exporter (exporter.exporter_mult):
             # exporter.py (a bit dumb, I know...)
             import pango, xml.sax.saxutils
             try:
-                al,txt,sep = pango.parse_markup(par,u'\x00')
+                al,txt,sep = Pango.parse_markup(par,'\x00')
             except:
-                al,txt,sep = pango.parse_markup(xml.sax.saxutils.escape(par),u'\x00')
+                al,txt,sep = Pango.parse_markup(xml.sax.saxutils.escape(par),'\x00')
             ai = al.get_iterator()
             more = True
             while more:
@@ -104,18 +104,17 @@ class rtf_exporter (exporter.exporter_mult):
                 fields=fd.get_set_fields()
                 style_args = {'font':self.ss.Fonts.TimesNewRoman}
                 if fields != 0:
-                    if 'style' in fields.value_nicks and fd.get_style()==pango.STYLE_ITALIC:
+                    if 'style' in fields.value_nicks and fd.get_style()==Pango.Style.ITALIC:
                         style_args['italic']=True
-                    if 'weight' in fields.value_nicks and fd.get_weight()==pango.WEIGHT_BOLD:
+                    if 'weight' in fields.value_nicks and fd.get_weight()==Pango.Weight.BOLD:
                         style_args['bold']=True
-                if filter(lambda att: att.type==pango.ATTR_UNDERLINE and att.value==pango.UNDERLINE_SINGLE,
-                          atts):
+                if [att for att in atts if att.type==Pango.ATTR_UNDERLINE and att.value==Pango.Underline.SINGLE]:
                     style_args['underline']=True
                 p.append(
                          PyRTF.Elements.TEXT(encode_text(chunk),
                                              **style_args)
                          )
-                more = ai.next()
+                more = next(ai)
             self.recsection.append(p)
 
     def write_inghead (self):
@@ -169,9 +168,9 @@ def encode_text (txt):
             return txt.encode('cp1252','replace')
 
 if __name__ == '__main__':
-    from __init__ import Tester,RTF
+    from .__init__ import Tester,RTF
     t = Tester()
-    print 'Exporting test to /tmp/test_recs.rtf'
+    print('Exporting test to /tmp/test_recs.rtf')
     import sys
     t.run_export(**{'format':RTF,
                     'rv':t.rm.recipe_table[4:9],

@@ -1,8 +1,8 @@
 from gourmet.defaults import lang as defaults
-import gtk
-ingredients_to_check = defaults.keydic.keys()
-from nutritionDruid import NutritionInfoDruid
-from nutrition import NutritionData
+from gi.repository import Gtk
+ingredients_to_check = list(defaults.keydic.keys())
+from .nutritionDruid import NutritionInfoDruid
+from .nutrition import NutritionData
 import gourmet.convert
 from gourmet.recipeManager import RecipeManager,dbargs
 
@@ -11,7 +11,7 @@ from gourmet.recipeManager import RecipeManager,dbargs
 
 rd = RecipeManager(**dbargs)
 
-import nutritionGrabberGui
+from . import nutritionGrabberGui
 
 try:
     nutritionGrabberGui.check_for_db(rd)
@@ -25,17 +25,17 @@ nid.add_ingredients([(k,[(1,'')]) for k in ingredients_to_check])
 def quit (*args):
         rd.save()
         nid.ui.get_object('window1').hide()
-        gtk.main_quit()
+        Gtk.main_quit()
 nid.ui.get_object('window1').connect('delete-event',quit)
 nid.connect('finish',quit)
 nid.show()
-gtk.main()
+Gtk.main()
 
 rd.changed=True
 rd.save()
 
 ofi = '/tmp/locale_specific_nutritional_info.txt'
-print 'Writing data to ',ofi
+print('Writing data to ',ofi)
 outfi = file(ofi,'w')
 outfi.write('{')
 for k in ingredients_to_check:
@@ -46,7 +46,7 @@ for k in ingredients_to_check:
             outfi.write('("%s",%s),'%(conv.unit,conv.factor))
         outfi.write(']),\n')
     else:
-        print 'No information for ',k
+        print('No information for ',k)
 outfi.write('}')
 outfi.close()
 

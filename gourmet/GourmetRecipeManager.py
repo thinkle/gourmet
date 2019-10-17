@@ -1,43 +1,47 @@
 #!/usr/bin/env python
 import os.path, os, re, threading, string
 try:
-    from gi import pygtkcompat
+    from gi import gicompat
 except ImportError:
     pygtkcompat = None
 
 if pygtkcompat is not None:
-    pygtkcompat.enable() 
+    pygtkcompat.enable()
     pygtkcompat.enable_gtk(version='3.0')
 
-import gtk, gobject, gtk.gdk
-import batchEditor
-import recipeManager
-from exporters.printer import get_print_manager
-import prefs, prefsGui, shopgui, reccard
-import exporters
-from exporters.exportManager import get_export_manager
-from importers.importManager import get_import_manager
-import convert, version
-from gtk_extras import fix_action_group_importance
-from gtk_extras import ratingWidget, WidgetSaver, mnemonic_manager
-from gtk_extras import dialog_extras as de
-from gtk_extras import treeview_extras as te
-from gdebug import debug
-from gglobals import DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base, icondir, imagedir, launch_url, uibase
-from recindex import RecIndex
+from gi.repository import Gtk
+from gi.repository import GObject
+from gi.repository import Gdk
+from . import batchEditor
+from . import recipeManager
+from .exporters.printer import get_print_manager
+from . import prefs, prefsGui, shopgui, reccard
+from . import exporters
+from .exporters.exportManager import get_export_manager
+from .importers.importManager import get_import_manager
+from . import convert, version
+from .gtk_extras import fix_action_group_importance
+from .gtk_extras import ratingWidget, WidgetSaver, mnemonic_manager
+from .gtk_extras import dialog_extras as de
+from .gtk_extras import treeview_extras as te
+from .gdebug import debug
+from .gglobals import DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base, icondir, imagedir, launch_url, uibase
+from .recindex import RecIndex
 from gettext import gettext as _
 from gettext import ngettext
-from timer import show_timer
-from defaults.defaults import lang as defaults
-from defaults.defaults import get_pluralized_form
-import plugin_loader, plugin, plugin_gui
-from threadManager import get_thread_manager, get_thread_manager_gui, SuspendableThread
+from .timer import show_timer
+from .defaults.defaults import lang as defaults
+from .defaults.defaults import get_pluralized_form
+from . import plugin_loader, plugin, plugin_gui
+from .threadManager import get_thread_manager, get_thread_manager_gui, SuspendableThread
+from gi.repository import GdkPixbuf
+
 
 UNDO = 1
 SHOW_TRASH = 2
 
 try:
-    from exporters import rtf_exporter
+    from .exporters import rtf_exporter
     rtf=True
 except ImportError:
     debug('No RTF support',0)
@@ -121,8 +125,8 @@ class GourmetApplication:
         debug("Setting splash text: %s"%text,3)
         if not self.splash_label: return
         self.splash_label.set_text(text)
-        while gtk.events_pending():
-            gtk.main_iteration()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
 
     # Convenience method for showing progress dialogs for import/export/deletion
     def show_progress_dialog (self, thread, progress_dialog_kwargs={},message=_("Import paused"),
@@ -136,7 +140,7 @@ class GourmetApplication:
                     ('pause',self.pause_cb),
                     ('stop',self.stop_cb),
                     ('modal',False),]:
-            if not progress_dialog_kwargs.has_key(k):
+            if k not in progress_dialog_kwargs:
                 progress_dialog_kwargs[k]=v
         if not hasattr(self,'progress_dialog') or not self.progress_dialog:
             self.progress_dialog = de.ProgressDialog(**progress_dialog_kwargs)
@@ -173,7 +177,7 @@ class GourmetApplication:
             self.rd.save()
             return True
         AUTOSAVE_EACH_N_MINUTES = 2
-        gobject.timeout_add(1000*60*AUTOSAVE_EACH_N_MINUTES,autosave)
+        GObject.timeout_add(1000*60*AUTOSAVE_EACH_N_MINUTES,autosave)
         # connect hooks to modify our view whenever and
         # whenceever our recipes are updated...
         self.rd.modify_hooks.append(self.update_attribute_models)
@@ -194,12 +198,12 @@ class GourmetApplication:
     # Methods for keeping track of open recipe cards...
     def del_rc (self, id):
         """Forget about recipe card identified by id"""
-        if self.rc.has_key(id):
+        if id in self.rc:
             del self.rc[id]
         self.update_go_menu()
 
     def update_reccards (self, rec):
-        if self.rc.has_key(rec.id):
+        if rec.id in self.rc:
             rc=self.rc[rec.id]
             rc.updateRecipe(rec,show=False)
             self.update_go_menu()
@@ -207,10 +211,10 @@ class GourmetApplication:
     def go_menu (self):
         """Build a _View menu based on recipes currently
         opened in recipe cards."""
-        m=gtk.Menu()
-        ri=gtk.MenuItem(_('Recipe _Index'))
-        sh=gtk.MenuItem(_('Shopping _List'))
-        separator=gtk.MenuItem()
+        m=Gtk.Menu()
+        ri=Gtk.MenuItem(_('Recipe _Index'))
+        sh=Gtk.MenuItem(_('Shopping _List'))
+        separator=Gtk.MenuItem()
         ri.connect('activate',lambda *args: self.app.present())
         sh.connect('activate',self.sl.show)
         m.append(ri)
@@ -219,15 +223,15 @@ class GourmetApplication:
         sh.show()
         m.append(separator)
         separator.show()
-        for rc in self.rc.values():
-            i=gtk.MenuItem("_%s"%rc.current_rec.title)
+        for rc in list(self.rc.values()):
+            i=Gtk.MenuItem("_%s"%rc.current_rec.title)
             i.connect('activate',rc.show)
             m.append(i)
             i.show()
         return m
 
     def setup_go_menu (self):
-        self.goActionGroup = gtk.ActionGroup('GoActions')
+        self.goActionGroup = Gtk.ActionGroup('GoActions')
         self.goActionGroup.add_actions([('Go',None,_('_Go'))])
         self.uimanagers = {}
         self.merged_go_menus = {}
@@ -241,7 +245,7 @@ class GourmetApplication:
                                ]
 
     def update_action_group (self):
-        for rc in self.rc.values():
+        for rc in list(self.rc.values()):
             action_name = 'GoRecipe'+str(rc.current_rec.id)
             existing_action = self.goActionGroup.get_action(action_name)
             if not existing_action:
@@ -265,7 +269,7 @@ class GourmetApplication:
         add_uimanager_to_manage
         """
         uimanager,menu_root_name,merged_dic = self.uimanagers[id]
-        for rc in self.rc.values():
+        for rc in list(self.rc.values()):
             path = self.go_path%{'name':menu_root_name} + 'GoRecipe'+str(rc.current_rec.id)
             if not uimanager.get_widget(path):
                 actionName = 'GoRecipe'+str(rc.current_rec.id)
@@ -278,7 +282,7 @@ class GourmetApplication:
                 merged_dic[rc.current_rec.id] = merge_id
                 uimanager.ensure_update()
         for idkey in merged_dic:
-            if not self.rc.has_key(idkey):
+            if idkey not in self.rc:
                 uimanager.remove_ui(merged_dic[idkey])
 
     # Methods to keep one set of listmodels for each attribute for
@@ -337,7 +341,7 @@ class GourmetApplication:
         # save memory.
         # if not hasattr(self,'%sModel'%attribute):
         slist = self.create_attribute_list(attribute)
-        m = gtk.ListStore(str)
+        m = Gtk.ListStore(str)
         for i in slist: m.append([i])
         setattr(self,'%sModel'%attribute,m)
         self.attributeModels.append((attribute,getattr(self,'%sModel'%attribute)))
@@ -359,15 +363,15 @@ class GourmetApplication:
             else:
                 translator = defaults.CREDITS
 
-        logo=gtk.gdk.pixbuf_new_from_file(os.path.join(icondir,"gourmet.png"))
+        logo=GdkPixbuf.Pixbuf.new_from_file(os.path.join(icondir,"gourmet.png"))
 
         # load LICENSE text file
         try:
             license_text = open(os.path.join(doc_base,'LICENSE'),'r').read()
-        except IOError, err:
-            print "IO Error %s" % err
+        except IOError as err:
+            print("IO Error %s" % err)
         except:
-            print "Unexpexted error"
+            print("Unexpexted error")
 
         paypal_link = """https://www.paypal.com/cgi-bin/webscr?cmd=_donations
 &business=Thomas_Hinkle%40alumni%2ebrown%2eedu
@@ -376,7 +380,7 @@ class GourmetApplication:
         gratipay_link = "https://gratipay.com/on/github/thinkle/"
         flattr_link = "http://flattr.com/profile/Thomas_Hinkle/things"
 
-        about = gtk.AboutDialog()
+        about = Gtk.AboutDialog()
         about.set_artists(version.artists)
         about.set_authors(version.authors)
         about.set_comments(version.description)
@@ -391,18 +395,18 @@ class GourmetApplication:
         about.set_website(version.website)
         #about.set_website_label('Gourmet website')
 
-        donation_buttons = gtk.HButtonBox()
-        donation_buttons.set_layout(gtk.BUTTONBOX_SPREAD)
-        donations_label = gtk.Label(_("Please consider making a donation to "
+        donation_buttons = Gtk.HButtonBox()
+        donation_buttons.set_layout(Gtk.ButtonBoxStyle.SPREAD)
+        donations_label = Gtk.Label(_("Please consider making a donation to "
         "support our continued effort to fix bugs, implement features, "
         "and help users!"))
         donations_label.set_line_wrap(True)
         donations_label.show()
-        paypal_button = gtk.LinkButton(paypal_link, _("Donate via PayPal"))
+        paypal_button = Gtk.LinkButton(paypal_link, _("Donate via PayPal"))
         paypal_button.show()
-        flattr_button = gtk.LinkButton(flattr_link, _("Micro-donate via Flattr"))
+        flattr_button = Gtk.LinkButton(flattr_link, _("Micro-donate via Flattr"))
         flattr_button.show()
-        gratipay_button = gtk.LinkButton(gratipay_link, _("Donate weekly via Gratipay"))
+        gratipay_button = Gtk.LinkButton(gratipay_link, _("Donate weekly via Gratipay"))
         gratipay_button.show()
         donation_buttons.add(paypal_button)
         donation_buttons.add(gratipay_button)
@@ -436,7 +440,7 @@ class GourmetApplication:
     def quit (self):
         for c in self.conf:
             c.save_properties()
-        for r in self.rc.values():
+        for r in list(self.rc.values()):
             for c in r.conf:
                 c.save_properties()
             if r.edited and de.getBoolean(parent=self.app,
@@ -456,7 +460,7 @@ class GourmetApplication:
                 if "delete" in t.getName(): msg = _("A delete is in progress.")
             quit_anyway = de.getBoolean(label=msg,
                                         sublabel=_("Exit program anyway?"),
-                                        custom_yes=gtk.STOCK_QUIT,
+                                        custom_yes=Gtk.STOCK_QUIT,
                                         custom_no=_("Don't exit!"),
                                         cancel=False)
             if quit_anyway:
@@ -488,7 +492,7 @@ class GourmetApplication:
         self.rd.delete_by_criteria(self.rd.ingredients_table,{'deleted':True})
         # Save our recipe info...
         self.save()
-        for r in self.rc.values():
+        for r in list(self.rc.values()):
             r.hide()
 
 class SuspendableDeletions (SuspendableThread):
@@ -515,27 +519,27 @@ class RecTrash (RecIndex):
     def __init__ (self, rg):
         self.rg = rg
         self.rmodel = self.rg.rmodel
-        self.ui=gtk.Builder()
+        self.ui=Gtk.Builder()
         self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
         RecIndex.__init__(self, self.ui, self.rg.rd, self.rg)
         self.setup_main_window()
 
     def setup_main_window (self):
-        self.window = gtk.Dialog(_("Trash"),
+        self.window = Gtk.Dialog(_("Trash"),
                                  self.rg.window,
-                                 gtk.DIALOG_DESTROY_WITH_PARENT,
+                                 Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                  ("_Empty trash",self.RESPONSE_EMPTY_TRASH,
                                   "_Delete permanently",self.RESPONSE_DELETE_PERMANENTLY,
                                   "_Undelete",self.RESPONSE_UNDELETE,
-                                  gtk.STOCK_CLOSE,gtk.RESPONSE_CLOSE))
-        self.window.set_default_response(gtk.RESPONSE_CLOSE)
-        #a = gtk.Alignment(); a.set_padding(12,12,12,12)
-        box = gtk.VBox(); box.show()
+                                  Gtk.STOCK_CLOSE,Gtk.ResponseType.CLOSE))
+        self.window.set_default_response(Gtk.ResponseType.CLOSE)
+        #a = Gtk.Alignment.new(); a.set_padding(12,12,12,12)
+        box = Gtk.VBox(); box.show()
         box.set_border_width(12)
         #a.add(box); a.show();
         #self.window.vbox.add(a)
         self.window.vbox.add(box)
-        top_label = gtk.Label(); top_label.set_alignment(0.0,0.5)
+        top_label = Gtk.Label(); top_label.set_alignment(0.0,0.5)
         top_label.set_markup('<span weight="bold" size="large">'\
                 +_('Trash')+'</span>\n<i>'\
                 +_('Browse, permanently delete or undelete deleted recipes')+'</i>')
@@ -597,7 +601,7 @@ class RecTrash (RecIndex):
         sel = self.rectree.get_selection()
         if not sel: return
         mod,rr=sel.get_selected_rows()
-        recs = map(lambda path: mod[path][0],rr)
+        recs = [mod[path][0] for path in rr]
         self.rg.purge_rec_tree(recs,rr,mod)
         self.update_from_db()
 
@@ -605,38 +609,36 @@ class RecTrash (RecIndex):
         self.rg.purge_rec_tree(self.rvw)
         self.update_from_db()
 
-class UnitModel (gtk.ListStore):
+class UnitModel (Gtk.ListStore):
     def __init__ (self, converter):
         debug('UnitModel.__init__',5)
         self.conv = converter
-        gtk.ListStore.__init__(self, str, str)
+        # GObject.GObject.__init__(self, str, str)
+        GObject.GObject.__init__(self)
         # the first item of each conv.units
         ## areckx: is there a reason why this is formatted this way?
-        lst = map(lambda a: (a[1][0],a[0]), filter(lambda x: not (converter.unit_to_seconds.has_key(x[1][0])
+        lst = [(a[1][0],a[0]) for a in [x for x in self.conv.units if not (x[1][0] in converter.unit_to_seconds
                                                                   or
-                                                                  converter.unit_to_seconds.has_key(x[0])
-                                                                  )
-                                                   ,
-                                                   self.conv.units)
-                  )
+                                                                  x[0] in converter.unit_to_seconds
+                                                                  )]]
         ##
         lst.sort()
         for ulong,ushort in lst:
             iter=self.append()
-            self.set_value(iter,0,ushort)
+            # self.set_value(iter,0,ushort)
             if ulong != ushort:
                 ulong = "%s (%s)"%(ulong,ushort)
-            self.set_value(iter,1,"%s"%ulong)
+            # self.set_value(iter,1,"%s"%ulong)
 
 def set_accel_paths (ui, widgets, base='<main>'):
     """A convenience function. Hand us a function and set accel
     paths based on it."""
     for s in widgets:
         w=ui.get_object(s)
-        if type(w) == gtk.MenuItem: set_path_for_menuitem(w)
+        if type(w) == Gtk.MenuItem: set_path_for_menuitem(w)
         else:
             for c in w.get_children():
-                if type(c) == gtk.MenuItem:
+                if type(c) == Gtk.MenuItem:
                     set_path_for_menuitem(c,base)
                 else:
                     debug("Can't handle %s"%c,1)
@@ -661,55 +663,56 @@ def startGUI ():
     debug("startGUI ():",4)
     # show splash screen before we do anything...
     debug("showing splash screen...",1)
-    splash = gtk.Window()
+    splash = Gtk.Window()
     #splash.window_set_auto_startup_notification(False)
     splash.set_property('decorated',False)
-    splash.set_position(gtk.WIN_POS_CENTER)
+    splash.set_position(Gtk.WindowPosition.CENTER)
     splash.set_icon_from_file(os.path.join(icondir,'gourmet.png'))
     splash.set_title(_('Gourmet Recipe Manager starting up...'))
-    splash.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_DIALOG);
-    pixbuf=gtk.gdk.pixbuf_new_from_file(os.path.join(imagedir,'splash.png'))
-    pixmap, mask = pixbuf.render_pixmap_and_mask()
-    width, height = pixmap.get_size()
-    del pixbuf
+    splash.set_type_hint(Gdk.WindowTypeHint.DIALOG);
+    pixbuf=GdkPixbuf.Pixbuf.new_from_file(os.path.join(imagedir,'splash.png'))
+    # TODO: Fix this using cairo http://docs.adacore.com/live/wave/gtkada/html/gtkada_ug/transition.html#gdk-pixbuf
+    # pixmap, mask = pixbuf.render_pixmap_and_mask()
+    # width, height = pixmap.get_size()
+    # del pixbuf
     splash.set_app_paintable(True)
-    splash.resize(width, height)
+    # splash.resize(width, height)
     splash.realize()
-    splash.window.set_back_pixmap(pixmap, False)
-    splash.label = gtk.Label(_("Starting gourmet..."))
+    # splash.window.set_back_pixmap(pixmap, False)
+    splash.label = Gtk.Label(label=_("Starting gourmet..."))
     splash.label.set_alignment(0.5,1)
-    splash.label.set_justify(gtk.JUSTIFY_CENTER)
+    splash.label.set_justify(Gtk.Justification.CENTER)
     splash.label.set_line_wrap(True)
-    #pal = pango.AttrList()
-    #pal.insert(pango.AttrForeground(
+    #pal = Pango.AttrList()
+    #pal.insert(Pango.AttrForeground(
     #    255,255,128
     #    ))
     #splash.label.set_property('attributes',pal)
     splash.label.show()
     splash.add(splash.label)
-    del pixmap
+    # del pixmap
     splash.show()
-    splash.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+    # splash.window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
     if os.name == 'nt':
-        gtk.link_button_set_uri_hook(launch_webbrowser, None)
-        gtk.about_dialog_set_url_hook(launch_webbrowser, None)
-    #gtk.threads_enter()
-    while gtk.events_pending():
+        Gtk.link_button_set_uri_hook(launch_webbrowser, None)
+        Gtk.about_dialog_set_url_hook(launch_webbrowser, None)
+    #Gtk.threads_enter()
+    while Gtk.events_pending():
         # show our GUI
-        gtk.main_iteration()
+        Gtk.main_iteration()
     try:
         r=RecGui(splash_label=splash.label)
-    except RecGui, rg:
+    except RecGui as rg:
         r=rg
     except:
         splash.hide()
-        while gtk.events_pending():
-            gtk.main_iteration()
-        #gtk.main_quit()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        #Gtk.main_quit()
         raise
     debug('hiding splash screen.',1)
     splash.hide()
-    gtk.main()
+    Gtk.main()
 
 
 
@@ -798,7 +801,7 @@ class StuffThatShouldBePlugins:
         if self.batchEditor.values:
             changes = self.batchEditor.values
             only_where_blank = self.batchEditor.setFieldWhereBlank
-            attributes = ', '.join([_(k) for k in changes.keys()])
+            attributes = ', '.join([_(k) for k in list(changes.keys())])
             msg = ngettext('Set %(attributes)s for %(num)s selected recipe?',
                                    'Set %(attributes)s for %(num)s selected recipes?',
                                    len(recs))%{'attributes':attributes,
@@ -811,14 +814,14 @@ class StuffThatShouldBePlugins:
                 msg += _('The new values will overwrite any previously existing values.')+'\n'
             msg += '<i>'+_('This change cannot be undone.')+'</i>'
             if de.getBoolean(label=_('Set values for selected recipes'),sublabel=msg,cancel=False,
-                             custom_yes=gtk.STOCK_OK,custom_no=gtk.STOCK_CANCEL,):
+                             custom_yes=Gtk.STOCK_OK,custom_no=Gtk.STOCK_CANCEL,):
                 for r in recs:
                     # Need to copy in case we're dealing with
                     # categories as they would get messed up by
                     # modify_rec
                     changes = self.batchEditor.values.copy()
                     if only_where_blank:
-                        for attribute in changes.keys():
+                        for attribute in list(changes.keys()):
                             if (attribute == 'category' and \
                                 self.rd.get_cats(r)) or \
                                 (hasattr(r, attribute) and \
@@ -830,7 +833,7 @@ class StuffThatShouldBePlugins:
                         self.rd.modify_rec(r,changes)
                     self.rmodel.update_recipe(r)
             else:
-                print 'Cancelled'
+                print('Cancelled')
         self.batchEditor.dialog.hide()
         self.update_attribute_models()
 
@@ -898,7 +901,7 @@ ui_string = '''<ui>
 </ui>
 '''
 
-class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBePlugins, plugin_loader.Pluggable):
+class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBePlugins, plugin_loader.Pluggable, BaseException):
 
     __single = None
 
@@ -911,7 +914,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         GourmetApplication.__init__(self, splash_label=splash_label)
         self.setup_index_columns()
         self.setup_hacks()
-        self.ui=gtk.Builder()
+        self.ui=Gtk.Builder()
         self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
         self.setup_actions()
         RecIndex.__init__(self,
@@ -942,8 +945,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
     def setup_column_display_preferences (self, *args):
         already_hidden=self.prefs.get('rectree_hidden_columns',DEFAULT_HIDDEN_COLUMNS)
         if not already_hidden: already_hidden=[]
-        options=map(lambda i: self.rtcolsdic[i], self.rtcols)
-        options=map(lambda i: [i, i not in already_hidden], options)
+        options=[self.rtcolsdic[i] for i in self.rtcols]
+        options=[[i, i not in already_hidden] for i in options]
         #pd = de.preferences_dialog(options=options, option_label=None, value_label=_("Show in Index View"),
         #                           apply_func=self.configure_columns, parent=self.app)
         self.prefsGui.add_pref_table(options,
@@ -993,7 +996,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                 )
 
     def setup_main_window (self):
-        self.window = self.app = gtk.Window()
+        self.window = self.app = Gtk.Window()
         self.window.set_icon_from_file(os.path.join(icondir,'gourmet.png'))
         self.conf.append(WidgetSaver.WindowSaver(self.window,
                                                  self.prefs.get('app_window',
@@ -1002,20 +1005,20 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                          )
         self.window.set_default_size(*self.prefs.get('app_window')['window_size'])
         self.window.set_title(version.appname)
-        self.main = gtk.VBox()
+        self.main = Gtk.VBox()
         self.window.add(self.main)
         self.window.connect('delete-event',self.quit)
         mb = self.ui_manager.get_widget('/RecipeIndexMenuBar'); mb.show()
-        self.main.pack_start(mb,fill=False,expand=False)
+        self.main.pack_start(mb,False,False,0)
         tb = self.ui_manager.get_widget('/RecipeIndexToolBar')
-        self.main.pack_start(tb,fill=False,expand=False)
-        self.messagebox = gtk.VBox()
-        self.main.pack_start(self.messagebox,fill=False,expand=False)
-        self.main_notebook = gtk.Notebook()
+        self.main.pack_start(tb,False,False,0)
+        self.messagebox = Gtk.VBox()
+        self.main.pack_start(self.messagebox,False,False,0)
+        self.main_notebook = Gtk.Notebook()
         self.recipe_index_interface = self.ui.get_object('recipeIndexBox')
         self.recipe_index_interface.unparent()
         self.main_notebook.append_page(self.recipe_index_interface,
-                                       tab_label=gtk.Label(_('Search recipes')))
+                                       tab_label=Gtk.Label(label=_('Search recipes')))
         self.main.add(self.main_notebook)
         self.recipe_index_interface.show()
 
@@ -1040,25 +1043,25 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         return True
 
     def setup_actions (self):
-        self.ui_manager = gtk.UIManager()
+        self.ui_manager = Gtk.UIManager()
         self.ui_manager.add_ui_from_string(ui_string)
-        self.mainActionGroup = gtk.ActionGroup('MainActions')
-        self.onSelectedActionGroup = gtk.ActionGroup('IndexOnSelectedActions')
+        self.mainActionGroup = Gtk.ActionGroup('MainActions')
+        self.onSelectedActionGroup = Gtk.ActionGroup('IndexOnSelectedActions')
         self.onSelectedActionGroup.add_actions([
             ('OpenRec','recipe-card',_('Open recipe'),
              '<Control>O',_('Open selected recipe'),self.rec_tree_select_rec),
             # We no longer bind "Delete" here -- instead, we'll do it
             # at the TreeView level to prevent the delete key
             # elsewhere (e.g. in search box) from muddling up users.
-            ('DeleteRec',gtk.STOCK_DELETE,_('Delete recipe'),
+            ('DeleteRec',Gtk.STOCK_DELETE,_('Delete recipe'),
              None,_('Delete selected recipes'),self.rec_tree_delete_rec_cb),
-            ('EditRec',gtk.STOCK_EDIT,_('Edit recipe'),
+            ('EditRec',Gtk.STOCK_EDIT,_('Edit recipe'),
              '<Control>E',_('Open selected recipes in recipe editor view'),
              self.rec_tree_edit_rec),
             ('ExportSelected',None,_('E_xport selected recipes'),
              '<Control>T',_('Export selected recipes to file'),
              lambda *args: self.do_export(export_all=False)),
-            ('Print',gtk.STOCK_PRINT,_('_Print'),
+            ('Print',Gtk.STOCK_PRINT,_('_Print'),
              '<Control>P',None,self.print_recs),
             #('Email', None, _('E-_mail recipes'),
             #None,None,self.email_recs),
@@ -1073,11 +1076,11 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('Actions',None,_('_Actions')),
             ('Settings',None,_('Setti_ngs')),
             ('HelpMenu',None,_('_Help')),
-            ('About',gtk.STOCK_ABOUT,_('_About'),
+            ('About',Gtk.STOCK_ABOUT,_('_About'),
              None,None,self.show_about),
-            ('New',gtk.STOCK_NEW,_('_New'),
+            ('New',Gtk.STOCK_NEW,_('_New'),
              None,None,self.new_rec_card),
-            ('Help',gtk.STOCK_HELP,_('_Help'),
+            ('Help',Gtk.STOCK_HELP,_('_Help'),
              None,None,self.show_help),
             ('ImportFile',None,_('_Import file'),
              '<Control>M',_('Import recipe from file'),self.do_import),
@@ -1088,19 +1091,19 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('Plugins',None,_('_Plugins'),
              None,_('Manage plugins which add extra functionality to Gourmet.'),
              lambda *args: plugin_gui.show_plugin_chooser()),
-            ('Preferences',gtk.STOCK_PREFERENCES,_('_Preferences'),
+            ('Preferences',Gtk.STOCK_PREFERENCES,_('_Preferences'),
              None,None,self.show_preferences),
-            #('Redo',gtk.STOCK_REDO,_('_Redo'),
+            #('Redo',Gtk.STOCK_REDO,_('_Redo'),
             # None,None),
-            #('Undo',gtk.STOCK_UNDO,_('_Undo'),
+            #('Undo',Gtk.STOCK_UNDO,_('_Undo'),
             # None,None),
-            ('Quit',gtk.STOCK_QUIT,_('_Quit'),
+            ('Quit',Gtk.STOCK_QUIT,_('_Quit'),
              None,None,self.quit),
             ('ViewTrash',None,_('Open _Trash'),
              None,None,self.show_deleted_recs),
             ])
 
-        self.toolActionGroup = gtk.ActionGroup('ToolActions')
+        self.toolActionGroup = Gtk.ActionGroup('ToolActions')
         self.toolActionGroup.add_actions([
             ('Tools',None,_('_Tools')),
             ('Timer',None,_('_Timer'),
@@ -1125,7 +1128,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
     def message (self, msg):
         debug("message (self, msg): %s"%msg,5)
         self.stat.push(self.contid,msg)
-        gobject.timeout_add(1500,self.flush_messages)
+        GObject.timeout_add(1500,self.flush_messages)
 
     def flush_messages (self, ret=False):
         debug("flush_messages (self):",5)
@@ -1135,17 +1138,17 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     # Basic callbacks
     def new_rec_card (self, *args):
-        self.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+        self.app.window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
         def show ():
             rc=reccard.RecCard(self)
             self.make_rec_visible(rc.current_rec)
             self.rc[rc.current_rec.id]=rc
             self.app.window.set_cursor(None)
             self.update_go_menu()
-        gobject.idle_add(show)
+        GObject.idle_add(show)
 
     def open_rec_card (self, rec):
-        if self.rc.has_key(rec.id):
+        if rec.id in self.rc:
             self.rc[rec.id].show()
         else:
             def show ():
@@ -1153,8 +1156,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                 self.rc[rec.id]=w
                 self.update_go_menu()
                 self.app.window.set_cursor(None)
-            self.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-            gobject.idle_add(show)
+            self.app.window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
+            GObject.idle_add(show)
 
 
     # Extra callbacks for actions on our treeview
@@ -1177,7 +1180,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     def rec_tree_edit_rec (self, *args):
         for rec in self.get_selected_recs_from_rec_tree():
-            if self.rc.has_key(rec.id):
+            if rec.id in self.rc:
                 self.rc[rec.id].show_edit()
             else:
                 def show ():
@@ -1186,8 +1189,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                     self.update_go_menu()
                     w.show_edit()
                     self.app.window.set_cursor(None)
-                self.app.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-                gobject.idle_add(show)
+                self.app.window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
+                GObject.idle_add(show)
 
     # Deletion
     def show_deleted_recs (self, *args):
@@ -1198,7 +1201,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             self.recTrash.show()
 
     def rec_tree_keypress_cb (self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = Gdk.keyval_name(event.keyval)
         if keyname == 'Delete' or keyname == 'BackSpace':
             self.rec_tree_delete_rec_cb()
             return True
@@ -1215,15 +1218,15 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
         We return True if the user cancels deletion.
         """
-        if self.rc.has_key(rec.id):
+        if rec.id in self.rc:
             rc = self.rc[rec.id]
             if rc.edited:
                 rc.show_edit()
                 if not de.getBoolean(
                     label=_('Delete %s?'),
                     sublabel=_('You have unsaved changes to %s. Are you sure you want to delete?'),
-                    custom_yes=gtk.STOCK_DELETE,
-                    custom_no=gtk.STOCK_CANCEL,
+                    custom_yes=Gtk.STOCK_DELETE,
+                    custom_no=Gtk.STOCK_CANCEL,
                     cancel=False):
                     return True
             rc.hide()
@@ -1289,7 +1292,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
     def delete_rec (self, rec):
         debug("delete_rec (self, rec): %s"%rec,5)
         debug("does %s have %s"%(self.rc,rec.id),5)
-        if self.rc.has_key(rec.id):
+        if rec.id in self.rc:
             debug("Getting rid of open recipe card window.",2)
             w=self.rc[rec.id].widget
             self.rc[rec.id].hide()
@@ -1304,7 +1307,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                 if dbrec:
                     self.rd.delete_rec(dbrec)
                 else:
-                    print 'wtf?!?',rec,':',rec.id,' not real?'
+                    print('wtf?!?',rec,':',rec.id,' not real?')
             else: debug('no recipe to delete!?!',1)
             if not self.doing_multiple_deletions:
                 gt.gtk_enter()
@@ -1329,18 +1332,18 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         for child in self.messagebox.get_children():
             self.messagebox.remove(child)
         # Add new message
-        l = gtk.Label(msg)
+        l = Gtk.Label(label=msg)
         l.set_line_wrap(True)
         l.show()
-        infobar = gtk.InfoBar()
-        infobar.set_message_type(gtk.MESSAGE_INFO)
+        infobar = Gtk.InfoBar()
+        infobar.set_message_type(Gtk.MessageType.INFO)
         infobar.get_content_area().add(l)
         infobar.add_button(_('See Trash Now'), SHOW_TRASH)
-        infobar.add_button(gtk.STOCK_UNDO, UNDO)
-        infobar.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_CLOSE)
+        infobar.add_button(Gtk.STOCK_UNDO, UNDO)
+        infobar.add_button(Gtk.STOCK_DISCARD, Gtk.ResponseType.CLOSE)
         infobar.connect('response', self._on_bar_response)
         infobar.show()
-        self.messagebox.pack_start(infobar)
+        self.messagebox.pack_start(infobar, True, True, 0)
         self.messagebox.show()
     # end deletion
 
@@ -1352,10 +1355,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             debug('Suspending thread from pause_cb',0)
             self.thread.suspend()
             self.stat.push(self.pauseid, self.pause_message)
-            self.flusher = gobject.timeout_add(1000,lambda *args: self.flush_messages(True))
+            self.flusher = GObject.timeout_add(1000,lambda *args: self.flush_messages(True))
         else:
             self.stat.pop(self.pauseid)
-            gobject.source_remove(self.flusher)
+            GObject.source_remove(self.flusher)
             self.thread.resume()
 
     def stop_cb (self, *args):
@@ -1396,12 +1399,12 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
     def quit (self, *args):
         GourmetApplication.quit(self)
         self.window.destroy()
-        gtk.main_quit()
+        Gtk.main_quit()
 
 def get_application ():
     try:
         return RecGui()
-    except RecGui, rg:
+    except RecGui as rg:
         return rg
 
 if __name__ == '__main__':
@@ -1423,4 +1426,4 @@ if __name__ == '__main__':
 
 #elif __name__ == '__main__':
 #    rgn = RecGui()
-#    gtk.main()
+#    Gtk.main()

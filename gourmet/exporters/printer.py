@@ -87,7 +87,7 @@ class PrintManager (plugin_loader.Pluggable):
 def get_print_manager ():
     try:
         return PrintManager()
-    except PrintManager, pm:
+    except PrintManager as pm:
         return pm
 
 #printManager = get_print_manager()

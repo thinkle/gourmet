@@ -17,7 +17,7 @@ class NutritionInfoIndex:
         if ui:
             self.ui = ui
         else:
-            self.ui = gtk.Builder()
+            self.ui = Gtk.Builder()
             self.ui.add_from_file(os.path.join(gglobals.uibase,'nutritionDruid.ui'))
         self.rd = rd
         self.prefs = prefs
@@ -81,19 +81,19 @@ class NutritionInfoIndex:
                        [2,_('USDA ID Number')],
                        [3,_('USDA Item Description')],
                        [4,_('Density Equivalent')],]:
-            renderer = gtk.CellRendererText()
+            renderer = Gtk.CellRendererText()
             # If we have gtk > 2.8, set up text-wrapping
             try:
                 renderer.get_property('wrap-width')
             except TypeError:
                 pass
             else:
-                renderer.set_property('wrap-mode',pango.WRAP_WORD)
+                renderer.set_property('wrap-mode',Pango.WrapMode.WORD)
                 renderer.set_property('wrap-width',200)
             #if n==self.VALUE_COL:
             #    renderer.set_property('editable',True)
             #    renderer.connect('edited',self.tree_edited,n,head)
-            col = gtk.TreeViewColumn(head, renderer, text=n)
+            col = Gtk.TreeViewColumn(head, renderer, text=n)
             col.set_resizable(True)
             self.treeview.append_column(col)
             if n in sortable: cssu.set_sort_column_id(col,n)
@@ -175,13 +175,13 @@ class NutritionInfoIndex:
 
 class MockObject:
     def __init__ (self, **kwargs):
-        for k,v in kwargs.items(): setattr(self,k,v)
+        for k,v in list(kwargs.items()): setattr(self,k,v)
 
 class NutStore (pageable_store.PageableViewStore):
 
     #__gsignals__ = {
-    #    'view-changed':(gobject.SIGNAL_RUN_LAST,
-    #                    gobject.TYPE_NONE,
+    #    'view-changed':(GObject.SignalFlags.RUN_LAST,
+    #                    None,
     #                    ()),
     #    }
 
@@ -191,7 +191,7 @@ class NutStore (pageable_store.PageableViewStore):
     USDA_DESC = _('USDA Item Description')+':'
     DENSITY_EQUIVALENT = _('Density Equivalent')
     columns=['obj','ingkey','ndbno','desc','density_equivalent']
-    column_types=[gobject.TYPE_PYOBJECT, #row ref
+    column_types=[GObject.TYPE_PYOBJECT, #row ref
                   str, # key
                   int, # ID
                   str, # description
@@ -247,9 +247,8 @@ class NutStore (pageable_store.PageableViewStore):
         if self.ingredients:
             ings_to_add = self.ingredients[:]
             if search_extras_regexp:
-                ings_to_add = filter(lambda i: re.match(search_extras_regexp,
-                                                        i),
-                                     ings_to_add)
+                ings_to_add = [i for i in ings_to_add if re.match(search_extras_regexp,
+                                                        i)]
             for row in vw:
                 while row.ingkey in ings_to_add:
                     ings_to_add.remove(row.ingkey)
@@ -272,7 +271,7 @@ class NutStore (pageable_store.PageableViewStore):
                 s = ('LIKE','%'+txt.replace('%','%%')+'%')
                 extras_search = '.*'+re.escape(txt)+'.*'
             kwargs = self.search_kwargs.copy()
-            if kwargs.has_key(column):
+            if column in kwargs:
                 kwargs[column] = ('and',[kwargs[column],s])
             else:
                 kwargs[column]=s
@@ -285,7 +284,7 @@ class NutStore (pageable_store.PageableViewStore):
         try:
             return [[r] + [self._get_value_(r,col) for col in self.columns[1:]] for r in self.view[bottom:top]]
         except:
-            print '_get_slice_ failed with',bottom,top
+            print('_get_slice_ failed with',bottom,top)
             raise
 
 
@@ -294,6 +293,6 @@ if __name__ == '__main__':
     rd = rm.RecipeManager()
     nie = NutritionInfoIndex(rd,ingredients=['cilantro','tomato','basil','water','onion, red','onion, white','scallion','hare'])
     nie.window.show()
-    nie.window.connect('delete-event',gtk.main_quit)
+    nie.window.connect('delete-event',Gtk.main_quit)
     #nie.show_index_page()
-    gtk.main()
+    Gtk.main()

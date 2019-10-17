@@ -63,17 +63,17 @@ testsuite.addTest(gourmet.backends.test_db.suite)
 tr = unittest.TestResult()
 testsuite.run(tr)
 if tr.wasSuccessful():
-    print 'All ',tr.testsRun,'tests completed successfully!'
+    print('All ',tr.testsRun,'tests completed successfully!')
 else:
-    print 'Uh oh...'
-    print 'We had ',len(tr.failures),'failures in ',tr.testsRun,'tests'
+    print('Uh oh...')
+    print('We had ',len(tr.failures),'failures in ',tr.testsRun,'tests')
     for er,tb in tr.failures:
-        print '---'
-        print er,':',tb
-        print '---'
+        print('---')
+        print(er,':',tb)
+        print('---')
     if tr.errors:
-        print 'We had ',len(tr.errors),' errors in',tr.testsRun,'tests'
+        print('We had ',len(tr.errors),' errors in',tr.testsRun,'tests')
         for er,tb in tr.errors:
-            print '---'
-            print er,':',tb
-            print '---'
+            print('---')
+            print(er,':',tb)
+            print('---')

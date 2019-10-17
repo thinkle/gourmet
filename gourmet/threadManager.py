@@ -27,23 +27,27 @@
 #
 from gettext import gettext as _
 from gettext import ngettext
-import threading, gtk, pango, gobject, time
-gobject.threads_init()
+import threading
+from gi.repository import Gtk
+from gi.repository import Pango
+from gi.repository import GObject
+import time
+GObject.threads_init()
 
 # _IdleObject etc. based on example John Stowers
 # <john.stowers@gmail.com>
 
-class _IdleObject(gobject.GObject):
+class _IdleObject(GObject.GObject):
     """
-    Override gobject.GObject to always emit signals in the main thread
+    Override GObject.GObject to always emit signals in the main thread
     by emmitting on an idle handler
     """
     def __init__(self):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
     def emit(self, *args):
-        if args[0]!='progress': print 'emit',args
-        gobject.idle_add(gobject.GObject.emit,self,*args)
+        if args[0]!='progress': print('emit',args)
+        GObject.idle_add(GObject.GObject.emit,self,*args)
 
 class Terminated (Exception):
     def __init__ (self, value):
@@ -59,17 +63,17 @@ class SuspendableThread (threading.Thread, _IdleObject):
     """
 
     __gsignals__ = {
-        'completed' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
-        'progress' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                     [gobject.TYPE_FLOAT, gobject.TYPE_STRING]), #percent complete, progress bar text
-        'error' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [gobject.TYPE_INT, # error number
-                                                                gobject.TYPE_STRING, # error name
-                                                                gobject.TYPE_STRING # stack trace
+        'completed' : (GObject.SignalFlags.RUN_LAST, None, []),
+        'progress' : (GObject.SignalFlags.RUN_LAST, None,
+                     [GObject.TYPE_FLOAT, GObject.TYPE_STRING]), #percent complete, progress bar text
+        'error' : (GObject.SignalFlags.RUN_LAST, None, [GObject.TYPE_INT, # error number
+                                                                GObject.TYPE_STRING, # error name
+                                                                GObject.TYPE_STRING # stack trace
                                                                 ]),
-        'stopped': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []), # emitted when we are stopped
-        'pause': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []), # emitted when we pause
-        'resume': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []), # emitted when we resume
-        'done': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []), # emitted when/however we finish
+        'stopped': (GObject.SignalFlags.RUN_LAST, None, []), # emitted when we are stopped
+        'pause': (GObject.SignalFlags.RUN_LAST, None, []), # emitted when we pause
+        'resume': (GObject.SignalFlags.RUN_LAST, None, []), # emitted when we resume
+        'done': (GObject.SignalFlags.RUN_LAST, None, []), # emitted when/however we finish
         }
 
     def __init__(self, name=None):
@@ -171,7 +175,7 @@ class ThreadManager:
         try:
             assert(isinstance(thread,SuspendableThread))
         except AssertionError:
-            print 'Class',thread,type(thread),'is not a SuspendableThread'
+            print('Class',thread,type(thread),'is not a SuspendableThread')
             raise
         if isinstance(thread,NotThreadSafe):
             raise TypeError("Thread %s is NotThreadSafe"%thread)
@@ -217,7 +221,7 @@ class ThreadManager:
 def get_thread_manager ():
     try:
         return ThreadManager()
-    except ThreadManager, tm:
+    except ThreadManager as tm:
         return tm
 
 class ThreadManagerGui:
@@ -235,7 +239,7 @@ class ThreadManagerGui:
         self.threads = {}
 
         if not messagebox:
-            from GourmetRecipeManager import get_application
+            from .GourmetRecipeManager import get_application
             self.messagebox = get_application().messagebox
         else:
             self.messagebox = messagebox
@@ -243,7 +247,7 @@ class ThreadManagerGui:
         self.to_remove = [] # a list of widgets to remove when we close...
 
     def response (self, dialog, response):
-        if response==gtk.RESPONSE_CLOSE:
+        if response==Gtk.ResponseType.CLOSE:
             self.close()
 
     def importer_thread_done(self, thread):
@@ -259,15 +263,15 @@ class ThreadManagerGui:
         self.notification_thread_done(thread, done_message)
 
     def notification_thread_done(self, thread, message):
-        infobox = gtk.InfoBar()
-        infobox.set_message_type(gtk.MESSAGE_INFO)
-        infobox.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+        infobox = Gtk.InfoBar()
+        infobox.set_message_type(Gtk.MessageType.INFO)
+        infobox.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
         infobox.connect('response', lambda ib, response_id: ib.hide())
         infobox.show_all()
-        self.messagebox.pack_start(infobox)
+        self.messagebox.pack_start(infobox, True, True, 0)
 
         from gourmet.gglobals import launch_url
-        l = gtk.Label()
+        l = Gtk.Label()
         l.set_markup(message)
         l.connect('activate-link',lambda lbl, uri: launch_url(uri))
         l.show()
@@ -275,21 +279,21 @@ class ThreadManagerGui:
         self.messagebox.show()
 
     def register_thread_with_dialog (self, description, thread):
-        threadbox = gtk.InfoBar()
-        threadbox.set_message_type(gtk.MESSAGE_INFO)
-        pb = gtk.ProgressBar()
-        pb.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
-        pause_button = gtk.ToggleButton(label=_('Pause'))
+        threadbox = Gtk.InfoBar()
+        threadbox.set_message_type(Gtk.MessageType.INFO)
+        pb = Gtk.ProgressBar()
+        pb.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        pause_button = Gtk.ToggleButton(label=_('Pause'))
         threadbox.add_action_widget(pause_button, self.PAUSE)
-        dlab = gtk.Label(description)
-        dlab.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
-        cancel_button = threadbox.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
-        vbox = gtk.VBox()
+        dlab = Gtk.Label(label=description)
+        dlab.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        cancel_button = threadbox.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+        vbox = Gtk.VBox()
         vbox.pack_start(dlab, expand=True, fill=True)
         vbox.pack_start(pb, expand=True, fill=True)
         threadbox.get_content_area().add(vbox)
         threadbox.show_all()
-        self.messagebox.pack_start(threadbox)
+        self.messagebox.pack_start(threadbox, True, True, 0)
         self.messagebox.show()
 
         #for b in threadbox.buttons: b.show()
@@ -313,7 +317,7 @@ class ThreadManagerGui:
 
     def thread_done (self, thread, threadbox):
         for b in threadbox.get_action_area().get_children(): b.hide()
-        threadbox.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+        threadbox.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
         threadbox.connect('response', lambda ib, response_id: ib.hide())
         self.to_remove.append(threadbox)
         pb = threadbox.get_content_area().get_children()[0].get_children()[1]
@@ -387,11 +391,11 @@ class ThreadManagerGui:
 def get_thread_manager_gui ():
     try:
         return ThreadManagerGui()
-    except ThreadManagerGui, tmg:
+    except ThreadManagerGui as tmg:
         return tmg
 
 if __name__ == '__main__':
-    import gtk
+    from gi.repository import Gtk
     class TestThread (SuspendableThread):
 
         def do_run (self):
@@ -429,7 +433,7 @@ if __name__ == '__main__':
         ]:
         tm.add_thread(thread)
         tmg.register_thread_with_dialog(desc,thread)
-    def quit (*args): gtk.main_quit()
+    def quit (*args): Gtk.main_quit()
     tmg.dialog.connect('delete-event',quit)
     tmg.show()
-    gtk.main()
+    Gtk.main()

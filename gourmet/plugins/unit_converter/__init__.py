@@ -1,5 +1,5 @@
-import convertGui
-import gtk
+from . import convertGui
+from gi.repository import Gtk
 from gettext import gettext as _
 
 from gourmet.plugin import ToolPlugin
@@ -10,7 +10,7 @@ class ConverterPlugin (ToolPlugin):
     </placeholder>'''
 
     def setup_action_groups (self):
-        self.action_group = gtk.ActionGroup('ConverterPluginActionGroup')
+        self.action_group = Gtk.ActionGroup('ConverterPluginActionGroup')
         self.action_group.add_actions([
             ('UnitConverter',None,_('_Unit Converter'),
              None,_('Calculate unit conversions'),self.show_unit_converter)

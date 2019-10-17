@@ -95,5 +95,5 @@ class KeyEditorPluginManager (Pluggable):
 def get_key_editor_plugin_manager ():
     try:
         return KeyEditorPluginManager()
-    except KeyEditorPluginManager, kepm:
+    except KeyEditorPluginManager as kepm:
         return kepm

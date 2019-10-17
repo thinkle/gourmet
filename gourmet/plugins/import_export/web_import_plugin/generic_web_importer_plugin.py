@@ -1,6 +1,6 @@
 from gourmet.plugin import ImporterPlugin, PluginPlugin
 from gourmet.plugin_loader import Pluggable
-import webpage_importer
+from . import webpage_importer
 from gettext import gettext as _
 
 class GenericWebImporter (ImporterPlugin, Pluggable):
@@ -14,7 +14,7 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
         Pluggable.__init__(self, [PluginPlugin])
 
     def activate (self, pluggable):
-        print 'activate GenericWebImporter for pluggable',pluggable
+        print('activate GenericWebImporter for pluggable',pluggable)
         return ImporterPlugin.activate(self,pluggable)
 
     def test_file (self, filename):

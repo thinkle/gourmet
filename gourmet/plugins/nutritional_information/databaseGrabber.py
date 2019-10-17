@@ -1,20 +1,20 @@
 import sys
-import urllib, zipfile, tempfile, os.path, re, string
+import urllib.request, urllib.parse, urllib.error, zipfile, tempfile, os.path, re, string
 from gettext import gettext as _
-from parser_data import ABBREVS, ABBREVS_STRT, FOOD_GROUPS, NUTRITION_FIELDS, WEIGHT_FIELDS
+from .parser_data import ABBREVS, ABBREVS_STRT, FOOD_GROUPS, NUTRITION_FIELDS, WEIGHT_FIELDS
 from gourmet.gdebug import TimeAction
 expander_regexp = None
 
 def compile_expander_regexp ():
     regexp = "(?<!\w)("
-    regexp += string.join(ABBREVS.keys(),"|")
+    regexp += string.join(list(ABBREVS.keys()),"|")
     regexp += ")(?!\w)"
     return re.compile(regexp)
 
 def expand_abbrevs ( line ):
     """Expand standard abbreviations."""
     global expander_regexp
-    for k,v in ABBREVS_STRT.items():
+    for k,v in list(ABBREVS_STRT.items()):
         line = line.replace(k,v)
     if not expander_regexp:
         expander_regexp=compile_expander_regexp()
@@ -42,7 +42,7 @@ class DatabaseGrabber:
         if hasattr(self,'zipfile'):
             return self.zipfile
         else:
-            ofi = urllib.urlopen(self.USDA_ZIP_URL)
+            ofi = urllib.request.urlopen(self.USDA_ZIP_URL)
             tofi = tempfile.TemporaryFile()
             tofi.write(ofi.read())
             tofi.seek(0)
@@ -119,8 +119,8 @@ class DatabaseGrabber:
             try:
                 lname,sname,typ = field_defs[n]
             except IndexError:
-                print n,fields[n],'has no definition in ',field_defs,len(field_defs)
-                print 'Ignoring problem and forging ahead!'
+                print(n,fields[n],'has no definition in ',field_defs,len(field_defs))
+                print('Ignoring problem and forging ahead!')
                 break
             if fl and fl[0]=='~' and fl[-1]=='~':
                 d[sname]=fl[1:-1]
@@ -134,10 +134,10 @@ class DatabaseGrabber:
                     d[sname]=int(float(d.get(sname,fl)))
                 except:
                     if d.get(sname,fl):
-                        print d.get(sname,fl),'is not an integer'
+                        print(d.get(sname,fl),'is not an integer')
                         raise
                     # If it's nothing, we don't bother...
-                    if d.has_key(sname): del d[sname]
+                    if sname in d: del d[sname]
         return d
 
     def parse_abbrevfile (self, abbrevfile):
@@ -148,7 +148,7 @@ class DatabaseGrabber:
         tot=len(ll)
         n = 0
         for n,l in enumerate(ll):
-            l = unicode(l.decode('latin_1'))
+            l = str(l.decode('latin_1'))
             tline=TimeAction('1 line iteration',2)
             t=TimeAction('split fields',2)
             d = self.parse_line(l,NUTRITION_FIELDS)
@@ -171,10 +171,10 @@ class DatabaseGrabber:
                     SQL += ' WHERE ndbno = %s'%d['ndbno']
                     #if d['ndbno']==1123:
                     #    print SQL,args.values()
-                    self.db.extra_connection.execute(SQL,args.values())
+                    self.db.extra_connection.execute(SQL,list(args.values()))
                 except:
-                    print 'Error appending to nutrition_table',d
-                    print 'Tried modifying table -- that failed too!'
+                    print('Error appending to nutrition_table',d)
+                    print('Tried modifying table -- that failed too!')
                     raise
             t.end()
             tline.end()
@@ -187,18 +187,18 @@ class DatabaseGrabber:
         tot=len(ll)
         n=0
         for n,l in enumerate(ll):
-            l = unicode(l.decode('latin_1'))
+            l = str(l.decode('latin_1'))
             if self.show_progress and n % 50 == 0:
                 self.show_progress(
                     float(n)/tot,
                     _('Reading weight data for nutritional items: imported %s of %s entries')%(n,tot)
                     )
             d = self.parse_line(l,WEIGHT_FIELDS)
-            if d.has_key('stdev'): del d['stdev']
+            if 'stdev' in d: del d['stdev']
             try:
                 self.db.do_add_fast(self.db.usda_weights_table,d)
             except:
-                print "Error appending ",d,"to usda_weights_table"
+                print("Error appending ",d,"to usda_weights_table")
                 raise
         self.db.commit_fast_adds()
 
@@ -208,13 +208,13 @@ if __name__ == '__main__':
     tot_prog = 0
     def show_prog (perc, msg):
         perc = perc * 100
-        if perc - tot_prog: print "|" * int(perc - tot_prog)
-    print 'getting our recipe database'
+        if perc - tot_prog: print("|" * int(perc - tot_prog))
+    print('getting our recipe database')
     import gourmet.recipeManager
     db = gourmet.recipeManager.RecipeManager(**gourmet.recipeManager.dbargs)
-    print 'getting our grabber ready'
+    print('getting our grabber ready')
     grabber = DatabaseGrabber(db,show_prog)
-    print 'grabbing recipes!'
+    print('grabbing recipes!')
     grabber.grab_data('/home/tom/Projects/grm/data/')
     #grabber.parse_weightfile(open('/home/tom/Projects/grm/data/WEIGHT.txt','r'))
     #grabber.get_weight('/home/tom/Projects/nutritional_data/WEIGHT.txt')

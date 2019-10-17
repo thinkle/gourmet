@@ -105,7 +105,7 @@ class UndoableTextChange (UndoableObject):
         blocks = difflib.SequenceMatcher(None,initial_text,text2).get_matching_blocks()
         # we only are interested in similar blocks at different positions
         # (which tell us where the changes happened).
-        ch_blocks = filter(lambda x: x[0] != x[1] and x[2] != 0, blocks)
+        ch_blocks = [x for x in blocks if x[0] != x[1] and x[2] != 0]
         if ch_blocks and len(ch_blocks)>1:
             raise TooManyChanges("More than one block changed from '%s' to '%s': %s"%(initial_text,text2,ch_blocks))
         if ch_blocks:
@@ -377,9 +377,9 @@ class UndoHistoryList (list):
                 index -= 1
         except IndexError:
             debug('All %s available action are .is_undo=True'%len(self),0)
-            print 'There is nothing to undo!'
-            print 'All %s actions are undos'%len(self)
-            print self,index
+            print('There is nothing to undo!')
+            print('All %s actions are undos'%len(self))
+            print(self,index)
             raise
         action = self[index]
         action.inverse()
@@ -393,8 +393,8 @@ class UndoHistoryList (list):
                 index = index - 1
         except IndexError:
             debug('All %s available actions are is_undo=False'%len(self),0)
-            print 'There is nothing to redo!'
-            print 'All %s available actions are is_undo=False'%len(self)
+            print('There is nothing to redo!')
+            print('All %s available actions are is_undo=False'%len(self))
             raise
         action = self[index]
         action.inverse()
@@ -434,7 +434,7 @@ class UndoHistoryList (list):
                 debug('Sensitizing "reapply" widgets',0)
                 self.set_sensitive(self.reapply_widget,True)
                 if self[-1].reapply_name:
-                    if type(self.reapply_widget)==gtk.MenuItem:
+                    if type(self.reapply_widget)==Gtk.MenuItem:
                         alabel = self.reapply_widget.get_children()[0]
                         alabel.set_text_with_mnemonic(self[-1].reapply_name)
                         alabel.set_use_markup(True)
@@ -526,11 +526,11 @@ class MultipleUndoLists:
 
     def reapply (self,*args,**kwargs): return self.get_history().reapply(*args,**kwargs)
 
-    def get_all_histories (self): return self.histories.values()
+    def get_all_histories (self): return list(self.histories.values())
 
     def get_history (self):
         hid=self.get_current_id()
-        if self.histories.has_key(hid):
+        if hid in self.histories:
             #debug('Returning history %s for id %s'%([repr(i) for i in self.histories[hid]],hid),0)
             return self.histories[hid]
         else:
@@ -556,21 +556,21 @@ if __name__ == '__main__':
     #while txt:
     #    txt = raw_input('Text: ')
     #    history[-1].add_text(txt)
-    import gtk
-    w = gtk.Window()
-    e = gtk.Entry()
-    sb = gtk.SpinButton()
+    from gi.repository import Gtk
+    w = Gtk.Window()
+    e = Gtk.Entry()
+    sb = Gtk.SpinButton()
     adj = sb.get_adjustment()
     adj.upper=100
     adj.lower=-100
     adj.step_increment = 1
     adj.page_increment = 10
-    tv = gtk.TextView()
-    ub = gtk.Button(stock=gtk.STOCK_UNDO)
-    rb = gtk.Button(stock=gtk.STOCK_REDO)
-    sc = gtk.Button('show changes')
-    vb = gtk.VBox()
-    bb = gtk.HButtonBox()
+    tv = Gtk.TextView()
+    ub = Gtk.Button(stock=Gtk.STOCK_UNDO)
+    rb = Gtk.Button(stock=Gtk.STOCK_REDO)
+    sc = Gtk.Button('show changes')
+    vb = Gtk.VBox()
+    bb = Gtk.HButtonBox()
     bb.add(ub)
     bb.add(rb)
     bb.add(sc)
@@ -584,16 +584,16 @@ if __name__ == '__main__':
     UndoableEntry(e,uhl)
     UndoableGenericWidget(sb,uhl)
     w.show_all()
-    w.connect('delete-event',lambda *args:gtk.main_quit())
+    w.connect('delete-event',lambda *args:Gtk.main_quit())
     def show_changes (*args):
         for c in uhl:
             if hasattr(c,'initial_text'):
-                print c,' initial: ',c.initial_text,' current: ',c.text
+                print(c,' initial: ',c.initial_text,' current: ',c.text)
             else:
-                print c
+                print(c)
     ub.connect('clicked',lambda *args: debug('Undo clicked!',0))
     sc.connect('clicked',show_changes)
     rb.connect('clicked',lambda *args: debug('Redo clicked!',0))
-    gtk.main()
+    Gtk.main()
 
 

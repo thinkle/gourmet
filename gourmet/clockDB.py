@@ -1,4 +1,4 @@
-import recipeManager as rm
+from . import recipeManager as rm
 import time, random, tempfile
 
 class StressTester:
@@ -29,26 +29,26 @@ class StressTester:
 
     def run_tests (self):
         for n in range(3):
-            print 'Start',(n+1),'*1000','recipes'
+            print('Start',(n+1),'*1000','recipes')
             self.add_1000_recipes()
-            print 'fetching'
+            print('fetching')
             self.test_fetch_recipe()
-            print 'exact searches'
+            print('exact searches')
             self.test_exact_search()
-            print 'regexp searches'
+            print('regexp searches')
             self.test_regexp_search()
-            print 'ing search'
+            print('ing search')
             self.test_ing_search()
             #print 'like searches'
             #self.test_like_search()
-            print 'committing...'
+            print('committing...')
             self.commit_recs()
-        print 'Done running tests!'
-        print
-        print 'Method\t\tTime'
-        print '------\t\t----'
+        print('Done running tests!')
+        print()
+        print('Method\t\tTime')
+        print('------\t\t----')
         for t in self.times:
-            print t[0],"\t\t",t[1]
+            print(t[0],"\t\t",t[1])
 
     @time_method
     def commit_recs (self):
@@ -88,7 +88,7 @@ class StressTester:
                                     )
                         count += 1
                         if count % 100 == 0:
-                            print "At ",count,"recipes.",time.time()-t,'seconds'
+                            print("At ",count,"recipes.",time.time()-t,'seconds')
 
     def search (self,operator):
         for cuisine in random.sample(self.CUISINES,2):

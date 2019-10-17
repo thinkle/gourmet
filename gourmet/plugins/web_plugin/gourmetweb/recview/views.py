@@ -23,19 +23,19 @@ class NoYieldsMultiplierForm (forms.Form):
     yields = None
 
 class SearchForm (forms.Form):
-    choices = {unicode(_('anywhere')):'anywhere',
-               unicode(_('title')):'title',
-               unicode(_('ingredient')):'ingredient',
-               unicode(_('instructions')):'instructions',
-               unicode(_('notes')):'modifications',
-               unicode(_('category')):'category',
-               unicode(_('cuisine')):'cuisine',
-               unicode(_('source')):'source',}
+    choices = {str(_('anywhere')):'anywhere',
+               str(_('title')):'title',
+               str(_('ingredient')):'ingredient',
+               str(_('instructions')):'instructions',
+               str(_('notes')):'modifications',
+               str(_('category')):'category',
+               str(_('cuisine')):'cuisine',
+               str(_('source')):'source',}
     search_field = forms.CharField(max_length=100)
     regexp_field = forms.BooleanField(label='Use regexp')
     choice_field = forms.ChoiceField(label='Search in...',
                                      initial='anywhere',
-                                     choices=choices.items()
+                                     choices=list(choices.items())
                                      )
 
 rd = gourmet.backends.db.get_database()
@@ -50,8 +50,8 @@ slist = MyShoppingList()
 def list_recs (view, default_search_values={},
                template='index.html'):
     sf = SearchForm()
-    for k,v in default_search_values.items():
-        print 'Set',k,'to',v
+    for k,v in list(default_search_values.items()):
+        print('Set',k,'to',v)
         sf.fields[k].initial = v
     return render_to_response(
         template,
@@ -69,19 +69,19 @@ def sort (request, field):
 def do_search_xhr (request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
-        print 'Searching ',form.data['search_field']
+        print('Searching ',form.data['search_field'])
         return search(request,form.data['search_field'],template='list.html')
     else:
-        print 'Not a post!'
+        print('Not a post!')
 
 
 def do_search (request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
-        print 'Searching ',form.data['search_field']
+        print('Searching ',form.data['search_field'])
         return search(request,form.data['search_field'])
     else:
-        print 'Not a post!'
+        print('Not a post!')
 
 
 def about(request):
@@ -98,7 +98,7 @@ def search (request, term, template='index.html'):
           }
          ]
         )
-    print 'We got ',len(vw),'for "%s"'%term
+    print('We got ',len(vw),'for "%s"'%term)
     return list_recs(vw, default_search_values={
         'search_field':term,
         'regexp_field':False,
@@ -130,14 +130,14 @@ def rec (request, rec_id, mult=1):
     formatted_ings = get_ings(rec_id,mult)
     def textify (t):
         if not t: return ''
-        print 'textifying "%s"'%t
+        print('textifying "%s"'%t)
         return re.sub('\n','<br>',
                       re.sub('\n\n+','</p><p>','<p>%s</p>'%t.strip()))
     if rec.yields:
-        print 'WITH YIELDS'
+        print('WITH YIELDS')
         mf = MultiplierForm()
     else:
-        print 'WITHOUT YIELDS'
+        print('WITHOUT YIELDS')
         mf = NoYieldsMultiplierForm()
     return render_to_response(
         'rec.html',
@@ -160,7 +160,7 @@ def multiply_rec_xhr (request):
 
 def multiply_rec (request, xhr=None):
     # We can't do yields and multiplier in the same place!
-    print 'MULTIPLY!'
+    print('MULTIPLY!')
     if request.method == 'POST':
         form = MultiplierForm(request.POST)
         if form.is_valid():
@@ -187,7 +187,7 @@ def shop (request, rec_id=None, mult=1):
     mult = float(mult)
     if rec_id is not None:
         slist.addRec(rd.get_rec(rec_id),mult)
-    recs = slist.recs.values()
+    recs = list(slist.recs.values())
     data,pantry = slist.organize_list(slist.lst)
     #recs = [('foo',4),]
     #data = [('sugar','3 cups'),]
@@ -198,12 +198,12 @@ def shop (request, rec_id=None, mult=1):
 def shop_remove (request, rec_id=None):
     try:
         rec_id = int(rec_id)
-        if slist.recs.has_key(rec_id):
+        if rec_id in slist.recs:
             del slist.recs[int(rec_id)]
         else:
-            print 'Odd, there is no ',rec_id,'on the shopping list'
+            print('Odd, there is no ',rec_id,'on the shopping list')
     except TypeError:
-        print 'Odd, rec_id',rec_id,'is the wrong type'
+        print('Odd, rec_id',rec_id,'is the wrong type')
         raise
     return shop(request)
 

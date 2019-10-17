@@ -1,5 +1,5 @@
-import urllib, re, tempfile, os.path
-import importer
+import urllib.request, urllib.parse, urllib.error, re, tempfile, os.path
+from . import importer
 import BeautifulSoup
 import socket
 from gourmet.gdebug import debug
@@ -34,9 +34,9 @@ def read_socket_w_progress (socket, progress, message):
 
 def get_url (url, progress):
     """Return data from URL, possibly displaying progress."""
-    if type(url) in [str,unicode]:
+    if type(url) in [str,str]:
         socket.setdefaulttimeout(URLOPEN_SOCKET_TIMEOUT)
-        sock = urllib.urlopen(url)
+        sock = urllib.request.urlopen(url)
         socket.setdefaulttimeout(DEFAULT_SOCKET_TIMEOUT)
         return read_socket_w_progress(sock,progress,_('Retrieving %s'%url))
     else:
@@ -182,9 +182,9 @@ class BeautifulSoupScraper:
         """
         if not base: return # path ran out...
         ind=step.get('index',0)
-        if step.has_key('regexp'):
+        if 'regexp' in step:
             ret = base.fetchText(re.compile(step['regexp']))
-        elif step.has_key('string'):
+        elif 'string' in step:
             ret = base.fetchText('string')
         else:
             get_to = None
@@ -204,11 +204,11 @@ class BeautifulSoupScraper:
             # example, if we have step['moveto']='parent', we grab the
             # parents of each tag we would otherwise return. This can
             # also work for previousSibling, nextSibling, etc.
-            if step.has_key('moveto'):
+            if 'moveto' in step:
                 ret = [getattr(o,step['moveto']) for o in ret]
             else:
                 for motion in ['firstNext','firstPrevious','findParent']:
-                    if step.has_key(motion):
+                    if motion in step:
                         ret = [getattr(o,motion)(step[motion]) for o in ret]
                         break
             if type(ind)==list or type(ind)==tuple:
@@ -217,14 +217,14 @@ class BeautifulSoupScraper:
                 if ind < len(ret):
                     return ret[ind]
                 else:
-                    print 'Problem following path.'
-                    print 'I am supposed to get item: ',ind
-                    print 'from: ',ret
-                    print 'instructions were : ',
-                    try: print 'base: ',base
-                    except UnicodeDecodeError: print '(ugly unicodeness)'
-                    try: print 'step: ',step
-                    except UnicodeDecodeError: print '(ugly unicodeness)'
+                    print('Problem following path.')
+                    print('I am supposed to get item: ',ind)
+                    print('from: ',ret)
+                    print('instructions were : ', end=' ')
+                    try: print('base: ',base)
+                    except UnicodeDecodeError: print('(ugly unicodeness)')
+                    try: print('step: ',step)
+                    except UnicodeDecodeError: print('(ugly unicodeness)')
 
     def store_tag (self, name, tag, method, post_processing=None):
         """Store our tag in our dictionary according to our method."""
@@ -245,7 +245,7 @@ class BeautifulSoupScraper:
         if post_processing:
             val=self.post_process(post_processing, val, tag)
         if not val: return # don't store empty values
-        if self.dic.has_key(name):
+        if name in self.dic:
             curval = self.dic[name]
             if type(curval)==list: self.dic[name].append(val)
             else: self.dic[name]=[self.dic[name],val]
@@ -308,9 +308,9 @@ class FancyTextGetter:
             self.text = re.sub('\n\t','\n',self.text)
             self.text = re.sub('\n\s*\n\s+','\n\n',self.text)
         try:
-            return unicode(self.text,errors='ignore')
+            return str(self.text,errors='ignore')
         except:
-            print 'Odd encoding problems with ',self.text
+            print('Odd encoding problems with ',self.text)
             return self.text
 
     def add_tag (self, t):
@@ -336,11 +336,11 @@ class FancyTextGetter:
                 s = item.string.encode('utf8','replace')
                 self.text += s
             except UnicodeDecodeError:
-                print 'UNICODE DECODING ERROR IN TAG',
+                print('UNICODE DECODING ERROR IN TAG', end=' ')
                 if hasattr(item,'name'):
-                    print item.name
+                    print(item.name)
                 if hasattr(item,'fetchParents'):
-                    print 'CHILD OF: ','<'.join([p.name for p in item.fetchParents()])
+                    print('CHILD OF: ','<'.join([p.name for p in item.fetchParents()]))
 
 get_text = FancyTextGetter()
 
@@ -349,19 +349,19 @@ img_src_regexp = re.compile('<img[^>]+src=[\'\"]([^\'"]+)')
 def get_image_from_tag (iurl, page_url):
     if not iurl: return
     iurl = urllib.basejoin(page_url,iurl)
-    tmpfi,info=urllib.urlretrieve(iurl)
+    tmpfi,info=urllib.request.urlretrieve(iurl)
     ifi=file(tmpfi,'rb')
     retval=ifi.read()
     ifi.close()
     return retval
 
 def scrape_url (url, progress=None):
-    if type(url) in [str,unicode]: domain=url.split('/')[2]
-    if SUPPORTED_URLS.has_key(domain):
+    if type(url) in [str,str]: domain=url.split('/')[2]
+    if domain in SUPPORTED_URLS:
         bss = BeautifulSoupScraper(SUPPORTED_URLS[domain])
     else:
         bss = None
-        for regexp,v in SUPPORTED_URLS_REGEXPS.items():
+        for regexp,v in list(SUPPORTED_URLS_REGEXPS.items()):
             if re.match(regexp,domain):
                 bss=BeautifulSoupScraper(v)
                 break
@@ -390,7 +390,7 @@ def import_url (url, rd, progress=None, add_webpage_source=True, threaded=False,
     with gui-ness and it's just going to have to be ugly for now
     """
     if progress: progress(0.01,'Fetching webpage')
-    sock=urllib.urlopen(url)
+    sock=urllib.request.urlopen(url)
     header=sock.headers.get('content-type','text/html')
     if progress: progress(0.02, 'Reading headers')
     if header.find('html')>=0:
@@ -450,9 +450,9 @@ class WebPageImporter (importer.Importer):
         try:
             self.d = scrape_url(self.url, progress=self.prog)
         except:
-            print 'Trouble using default recipe filter to download %s'%self.url
+            print('Trouble using default recipe filter to download %s'%self.url)
             traceback.print_exc()
-            print 'We will use a generic importer instead.'
+            print('We will use a generic importer instead.')
             self.d = {}
         debug('Scraping url returned %s'%self.d,0)
         do_generic = not self.d
@@ -463,15 +463,15 @@ class WebPageImporter (importer.Importer):
             except:
                 if not self.interactive: raise
                 do_generic = True
-                print """Automated HTML Import failed
+                print("""Automated HTML Import failed
                 ***Falling back to generic import***
 
                 We were attempting to scrape using the following rules:
-                """
-                print self.d
-                print """The following exception was raised:"""
+                """)
+                print(self.d)
+                print("""The following exception was raised:""")
                 traceback.print_exc()
-                print """If you think automated import should have worked for the webpage you
+                print("""If you think automated import should have worked for the webpage you
                 were importing, copy the output starting at "Automated HTML Import failed" into
                 a bug report and submit it at the GitHub site
 
@@ -479,7 +479,7 @@ class WebPageImporter (importer.Importer):
 
                 Sorry automated import didn't work. I hope you like
                 the new generic web importer!
-                """
+                """)
         if do_generic:
             if not self.interactive:
                 raise Exception("Unable to find importer for %s" % self.url)
@@ -489,7 +489,7 @@ class WebPageImporter (importer.Importer):
             text,images = gs.scrape_url(self.url, progress=self.prog)
             if not text and not images:
                 raise Exception("Unable to obtain text or images from url %s" % self.url)
-            import interactive_importer
+            from . import interactive_importer
             ii = interactive_importer.InteractiveImporter(self.rd)
             ii.set_text(text)
             ii.add_attribute('link',self.url)
@@ -514,7 +514,7 @@ class WebPageImporter (importer.Importer):
             elif src: src = [src,add_str]
             else: src = domain # no parens if we're the only source
             self.d['source']=src
-        for k,v in self.d.items():
+        for k,v in list(self.d.items()):
             debug('processing %s:%s'%(k,v),1)
             if self.prog: self.prog(-1,_('Importing recipe'))
             # parsed ingredients...
@@ -525,13 +525,13 @@ class WebPageImporter (importer.Importer):
                     if self.prog: self.prog(-1,_('Processing ingredients'))
                     # we take a special keyword, "text", which gets
                     # parsed
-                    if ingdic.has_key('text'):
+                    if 'text' in ingdic:
                         d = self.rd.parse_ingredient(ingdic['text'],conv=self.conv)
                         if d:
-                            for dk,dv in d.items():
-                                if not ingdic.has_key(dk) or not ingdic[dk]:
+                            for dk,dv in list(d.items()):
+                                if dk not in ingdic or not ingdic[dk]:
                                     ingdic[dk]=dv
-                        elif not ingdic.has_key('item'):
+                        elif 'item' not in ingdic:
                             ingdic['item']=ingdic['text']
                         del ingdic['text']
                     self.start_ing(**ingdic)
@@ -556,8 +556,8 @@ class WebPageImporter (importer.Importer):
                 try:
                     if v: img = get_image_from_tag(v,self.url)
                 except:
-                    print 'Error retrieving image'
-                    print 'tried to retrieve image from %s'%v
+                    print('Error retrieving image')
+                    print('tried to retrieve image from %s'%v)
                 else:
                     if img:
                         self.rec['image'] = img

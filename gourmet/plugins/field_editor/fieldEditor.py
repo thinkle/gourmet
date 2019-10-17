@@ -15,7 +15,7 @@ class FieldEditor:
     def __init__ (self, rd, rg):
         self.field = None; self.other_field = None
         self.rd = rd; self.rg = rg
-        self.ui = gtk.Builder()
+        self.ui = Gtk.Builder()
         self.ui.add_from_file(os.path.join(gglobals.uibase,'valueEditor.ui'))
         self.__setup_widgets__()
         self.__setup_treeview__()
@@ -57,31 +57,31 @@ class FieldEditor:
             )
         self.newValueComboBoxEntry.set_sensitive(False)
         self.otherValueBlurbLabel.hide()
-        self.newValueEntryCompletion = gtk.EntryCompletion()
+        self.newValueEntryCompletion = Gtk.EntryCompletion()
         self.newValueEntry.set_completion(self.newValueEntryCompletion)
-        self.otherNewValueEntryCompletion = gtk.EntryCompletion()
+        self.otherNewValueEntryCompletion = Gtk.EntryCompletion()
         self.otherNewValueEntry.set_completion(
             self.otherNewValueEntryCompletion
             )
         self.valueDialog.connect('response',self.dialog_response_cb)
-        self.valueDialog.set_response_sensitive(gtk.RESPONSE_APPLY,False)
+        self.valueDialog.set_response_sensitive(Gtk.ResponseType.APPLY,False)
 
     def __setup_treeview__ (self):
-        renderer = gtk.CellRendererText()
+        renderer = Gtk.CellRendererText()
         # If we have gtk > 2.8, set up text-wrapping
         try:
             renderer.get_property('wrap-width')
         except TypeError:
             pass
         else:
-            renderer.set_property('wrap-mode',gtk.WRAP_WORD)
+            renderer.set_property('wrap-mode',Gtk.WrapMode.WORD)
             renderer.set_property('wrap-width',400)
-        col = gtk.TreeViewColumn('Value',
+        col = Gtk.TreeViewColumn('Value',
                            renderer,
                            text=0)
         self.treeview.append_column(col)
         self.treeview.get_selection().connect('changed',self.treeViewSelectionChanged)
-        self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        self.treeview.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
 
     def changeValueButtonToggledCB (self, tb):
         if tb.get_active():
@@ -103,7 +103,7 @@ class FieldEditor:
                 _('Where %(field)s is %(value)s')%{'value':val_string,
                                                       'field':self.field}
                 )
-        self.valueDialog.set_response_sensitive(gtk.RESPONSE_APPLY,(vals and True or False))
+        self.valueDialog.set_response_sensitive(Gtk.ResponseType.APPLY,(vals and True or False))
 
     def fieldChangedCB (self, combobox):
         name = cb.cb_get_active_text(combobox)
@@ -144,7 +144,7 @@ class FieldEditor:
 
     def make_model_for_field (self, field):
         vals = self.rd.get_unique_values(field)
-        mod = gtk.ListStore(str)
+        mod = Gtk.ListStore(str)
         for v in vals: mod.append((v,))
         return mod
 
@@ -153,9 +153,9 @@ class FieldEditor:
     def hide (self): return self.valueDialog.hide()
 
     def dialog_response_cb (self, dialog, response_id):
-        if response_id == gtk.RESPONSE_CLOSE:
+        if response_id == Gtk.ResponseType.CLOSE:
             self.valueDialog.hide()
-        if response_id == gtk.RESPONSE_APPLY:
+        if response_id == Gtk.ResponseType.APPLY:
             criteria,table = self.get_criteria_and_table()
             count = self.rd.fetch_len(table,**criteria)
             count_text = ngettext('Change will affect %s recipe',
@@ -163,7 +163,7 @@ class FieldEditor:
                                   count)%count
             if self.deleteValueButton.get_active():
                 label = _('Delete %s where it is %s?')%(self.field,self.val_string)
-                yes = gtk.STOCK_DELETE
+                yes = Gtk.STOCK_DELETE
             else:
                 label = _('Change %s from %s to "%s"?')%(self.field,self.val_string,
                                                                                 self.newValueEntry.get_text())
@@ -174,7 +174,7 @@ class FieldEditor:
                 _('<i>This change is not reversable.</i>')
                 ]),
                              custom_yes=yes,
-                             custom_no=gtk.STOCK_CANCEL,
+                             custom_no=Gtk.STOCK_CANCEL,
                              cancel=False):
 
                 self.apply_changes(criteria,table)
@@ -267,10 +267,10 @@ if __name__ == '__main__':
     rm = recipeManager.default_rec_manager()
     class DummyRG:
         def reset_search (): pass
-    w = gtk.Window()
-    b = gtk.Button('edit me now')
+    w = Gtk.Window()
+    b = Gtk.Button('edit me now')
     w.add(b); w.show_all()
     ve = FieldEditor(rm,DummyRG())
     b.connect('clicked',lambda *args: ve.run())
-    w.connect('delete-event',gtk.main_quit)
-    gtk.main()
+    w.connect('delete-event',Gtk.main_quit)
+    Gtk.main()

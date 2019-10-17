@@ -159,7 +159,7 @@ class epub_exporter (exporter_mult):
         """Returns the title of the book in an unescaped format"""
         title = self._grab_attr_(self.r,'title')
         if not title: title = _('Recipe')
-        return unicode(title)
+        return str(title)
 
     def write_head (self):
         self.preparedDocument.append(

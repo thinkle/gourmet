@@ -1,4 +1,4 @@
-import urllib, hashlib, os.path, os, StringIO
+import urllib.request, urllib.parse, urllib.error, hashlib, os.path, os, io
 from gourmet.gdebug import debug
 try:
     from PIL import Image
@@ -24,15 +24,15 @@ def check_for_thumbnail (uri, type="large",reporthook=None):
     if not os.path.isdir(targetdir):
         import tempfile
         name = tempfile.mktemp()
-    if fetched_uris.has_key(uri) and os.path.exists(fetched_uris[uri]):
+    if uri in fetched_uris and os.path.exists(fetched_uris[uri]):
         fn = fetched_uris[uri]
     else:
         try:
-            fn,headers = urllib.urlretrieve(uri,reporthook=reporthook)
+            fn,headers = urllib.request.urlretrieve(uri,reporthook=reporthook)
             fetched_uris[uri]=fn
         except UnicodeError:
             try:
-                fn,headers = urllib.urlretrieve(urllib.quote(uri),reporthook=reporthook)
+                fn,headers = urllib.request.urlretrieve(urllib.parse.quote(uri),reporthook=reporthook)
             except IOError:
                 return None
         except IOError:
@@ -43,7 +43,7 @@ def check_for_thumbnail (uri, type="large",reporthook=None):
         i=Image.open(name)
     except:
         return create_thumbnail(fn,name,uri,type)
-    if not i.info.has_key('Thumb::MTime'):
+    if 'Thumb::MTime' not in i.info:
         debug('Thumbnail has no time registered, creating a new one.',1)
         return create_thumbnail(fn,name,uri,type)
     mtime = i.info['Thumb::MTime']
@@ -54,7 +54,7 @@ def check_for_thumbnail (uri, type="large",reporthook=None):
         return create_thumbnail(fn,name,uri,type)
     # make sure permissions are correct
     # since previous Gourmet's may have mucked them up :)
-    os.chmod(name,0700)
+    os.chmod(name,0o700)
     return name
 
 def create_thumbnail (path, thumbpath, uri, type="large"):
@@ -87,10 +87,10 @@ def create_thumbnail (path, thumbpath, uri, type="large"):
         import PngImagePlugin
     pnginfo = PngImagePlugin.PngInfo()
 
-    for k,v in info.items():
+    for k,v in list(info.items()):
         pnginfo.add_text(k,v)
     im.save(thumbpath, pnginfo=pnginfo)
     # we must make all thumbnails permissions 700
-    os.chmod(thumbpath,0700)
+    os.chmod(thumbpath,0o700)
     return thumbpath
 

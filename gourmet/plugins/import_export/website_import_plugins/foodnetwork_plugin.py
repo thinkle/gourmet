@@ -30,13 +30,13 @@ class FoodNetworkPlugin (PluginPlugin):
                     self.preparsed_elements.append((el,'recipe'))
                 preptime = self.soup('dt',text='Prep')
                 if preptime:
-                    self.preparsed_elements.append((preptime[0].next,'preptime'))
+                    self.preparsed_elements.append((preptime[0].__next__,'preptime'))
                 cooktime = self.soup('dt',text='Cook')
                 if cooktime:
-                    self.preparsed_elements.append((cooktime[0].next,'cooktime'))
+                    self.preparsed_elements.append((cooktime[0].__next__,'cooktime'))
                 servings = self.soup(text='Yield')
                 if servings:
-                    self.preparsed_elements.append((servings[0].next,'servings'))
+                    self.preparsed_elements.append((servings[0].__next__,'servings'))
                 ingredients = self.soup(text='Ingredients')
                 if ingredients:
                     if ingredients[0].parent:

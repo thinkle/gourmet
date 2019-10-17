@@ -1,13 +1,13 @@
-import settings
+from . import settings
 from gettext import gettext as _
-# To have strings from .ui files (gtk.Builder) translated on all platforms,
+# To have strings from .ui files (Gtk.Builder) translated on all platforms,
 # we need the following module to enable localization on all platforms.
 try:
     import elib.intl
     elib.intl.install('gourmet', settings.locale_base)
 except ImportError:
-    print 'elib.intl failed to load.'
-    print 'IF YOU HAVE TROUBLE WITH TRANSLATIONS, MAKE SURE YOU HAVE THIS LIBRARY INSTALLED.'
+    print('elib.intl failed to load.')
+    print('IF YOU HAVE TROUBLE WITH TRANSLATIONS, MAKE SURE YOU HAVE THIS LIBRARY INSTALLED.')
 
 name= 'gourmet'
 appname = _("Gourmet Recipe Manager")

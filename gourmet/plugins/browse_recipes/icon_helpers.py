@@ -1,4 +1,4 @@
-import gtk.gdk, os.path
+import Gtk.gdk, os.path
 # mentioning PIL explicitly helps py2exe
 try:
     from PIL import Image, ImageDraw
@@ -25,7 +25,7 @@ def scale_pb (pb, do_grow=True):
     else:
         target_h = target
         target_w = int(target * (float(w)/h))
-    return pb.scale_simple(target_w,target_h,gtk.gdk.INTERP_BILINEAR)
+    return pb.scale_simple(target_w,target_h,GdkPixbuf.InterpType.BILINEAR)
 
 def get_pixbuf_from_image (image):
 
@@ -37,9 +37,9 @@ def get_pixbuf_from_image (image):
     is_rgba = image.mode=='RGBA'
     if is_rgba: rowstride = 4
     else: rowstride = 3
-    pb=gtk.gdk.pixbuf_new_from_data(
+    pb=GdkPixbuf.Pixbuf.new_from_data(
         image.tobytes(),
-        gtk.gdk.COLORSPACE_RGB,
+        GdkPixbuf.Colorspace.RGB,
         is_rgba,
         8,
         image.size[0],
@@ -49,15 +49,15 @@ def get_pixbuf_from_image (image):
     return pb
 
 
-generic_recipe_image = scale_pb(gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','generic_recipe.png')))
-preptime_image = gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','preptime.png'))
-preptime_empty_image = gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','preptime_empty_clock.png'))
-cooktime_image = gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','cooktime.png'))
-cooktime_empty_image = gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','cooktime_empty_clock.png'))
-cuisine_image = scale_pb(gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','cuisine.png')))
-rating_image =  scale_pb(gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','rating.png')))
-source_image =  scale_pb(gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','source.png')))
-category_image =  scale_pb(gtk.gdk.pixbuf_new_from_file(os.path.join(curdir,'images','generic_category.png')))
+generic_recipe_image = scale_pb(GdkPixbuf.Pixbuf.new_from_file(os.path.join(curdir,'images','generic_recipe.png')))
+preptime_image = GdkPixbuf.Pixbuf.new_from_file(os.path.join(curdir,'images','preptime.png'))
+preptime_empty_image = GdkPixbuf.Pixbuf.new_from_file(os.path.join(curdir,'images','preptime_empty_clock.png'))
+cooktime_image = GdkPixbuf.Pixbuf.new_from_file(os.path.join(curdir,'images','cooktime.png'))
+cooktime_empty_image = GdkPixbuf.Pixbuf.new_from_file(os.path.join(curdir,'images','cooktime_empty_clock.png'))
+cuisine_image = scale_pb(GdkPixbuf.Pixbuf.new_from_file(os.path.join(curdir,'images','cuisine.png')))
+rating_image =  scale_pb(GdkPixbuf.Pixbuf.new_from_file(os.path.join(curdir,'images','rating.png')))
+source_image =  scale_pb(GdkPixbuf.Pixbuf.new_from_file(os.path.join(curdir,'images','source.png')))
+category_image =  scale_pb(GdkPixbuf.Pixbuf.new_from_file(os.path.join(curdir,'images','generic_category.png')))
 
 attr_to_icon = {
     'category':category_image,
@@ -95,30 +95,30 @@ def get_recipe_image (rec):
             w, #offset_x,
             h, #offset_y
             SCALE,SCALE, #scale_x,scale_y
-            gtk.gdk.INTERP_BILINEAR,
+            GdkPixbuf.InterpType.BILINEAR,
             255 # overall_alpha
             )
     if rec.preptime:
         #prepPB = get_time_slice(rec.preptime)
         prepPB = make_preptime_icon(rec.preptime)
-        prepPB = prepPB.scale_simple(int(big_side*0.4),int(big_side*0.4),gtk.gdk.INTERP_BILINEAR)
+        prepPB = prepPB.scale_simple(int(big_side*0.4),int(big_side*0.4),GdkPixbuf.InterpType.BILINEAR)
         prepPB.composite(
             pb,
             pb.get_property('width')/2 + 5,5,
             prepPB.get_property('width'),prepPB.get_property('height'),
             pb.get_property('width')/2 + 5,5,
-            1,1,gtk.gdk.INTERP_BILINEAR,
+            1,1,GdkPixbuf.InterpType.BILINEAR,
             127 # alpha
             )
     if rec.cooktime:
         cookPB = make_cooktime_icon(rec.cooktime)
-        cookPB = cookPB.scale_simple(int(big_side*0.4),int(big_side*0.4),gtk.gdk.INTERP_BILINEAR)
+        cookPB = cookPB.scale_simple(int(big_side*0.4),int(big_side*0.4),GdkPixbuf.InterpType.BILINEAR)
         cookPB.composite(
             pb,
             pb.get_property('width')/2 + 5,pb.get_property('height')/2,
             cookPB.get_property('width'),cookPB.get_property('height'),
             pb.get_property('width')/2 + 5,pb.get_property('height')/2,
-            1,1,gtk.gdk.INTERP_BILINEAR,
+            1,1,GdkPixbuf.InterpType.BILINEAR,
             188 # alpha
             )
     return pb
@@ -132,7 +132,7 @@ class PiePixbufGenerator:
 
     def get_image (self, angle, color):
         angle = int(angle)
-        if self.slices.has_key((angle,color)): return self.slices[(angle,color)]
+        if (angle,color) in self.slices: return self.slices[(angle,color)]
         img = Image.new('RGBA',
                         (ICON_SIZE,ICON_SIZE),
                         255 # background
@@ -190,21 +190,21 @@ def make_time_icon (time, mode):
            W,H,
            LEFT_CORNER[0],
            LEFT_CORNER[1],
-           SCALE_X, SCALE_Y, gtk.gdk.INTERP_BILINEAR, 255)
+           SCALE_X, SCALE_Y, GdkPixbuf.InterpType.BILINEAR, 255)
     slice_pb.composite(*args)
     return icon_image
 
 if __name__ == '__main__':
     t = 60*60*6
-    hb = gtk.HBox()
+    hb = Gtk.HBox()
     pb = make_preptime_icon(t)
-    w = gtk.Window()
-    i = gtk.Image(); i.set_from_pixbuf(pb)
-    hb.pack_start(i)
+    w = Gtk.Window()
+    i = Gtk.Image(); i.set_from_pixbuf(pb)
+    hb.pack_start(i, True, True, 0)
     pb2 = get_time_slice(t)
-    i2 = gtk.Image(); i2.set_from_pixbuf(pb2)
-    hb.pack_start(i2)
+    i2 = Gtk.Image(); i2.set_from_pixbuf(pb2)
+    hb.pack_start(i2, True, True, 0)
     w.add(hb)
     w.show_all()
-    w.connect('delete-event',lambda *args: gtk.main_quit())
-    gtk.main()
+    w.connect('delete-event',lambda *args: Gtk.main_quit())
+    Gtk.main()

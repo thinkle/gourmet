@@ -106,10 +106,10 @@ class build_scripts(_build_scripts):
 
 if sys.platform == "win32":
     #gtk file inclusion
-    import gtk
+    from gi.repository import Gtk
     # The runtime dir is in the same directory as the module:
     GTK_RUNTIME_DIR = os.path.join(
-        os.path.split(os.path.dirname(gtk.__file__))[0], "runtime")
+        os.path.split(os.path.dirname(Gtk.__file__))[0], "runtime")
 
     assert os.path.exists(GTK_RUNTIME_DIR), "Cannot find GTK runtime data"
 

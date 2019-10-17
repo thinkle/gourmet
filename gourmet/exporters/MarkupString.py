@@ -39,7 +39,7 @@ class MarkupString (str):
         try:
             xml.sax.parseString("<foobar>%s</foobar>"%str(string),self.handler)
         except:
-            print 'Unable to parse "%s"'%string
+            print('Unable to parse "%s"'%string)
             raise
         self.raw=self.handler.content
 
@@ -49,10 +49,9 @@ class MarkupString (str):
     def __getslice__ (self, s, e):
         # only include relevant elements
         if not e or e > len(self.raw): e = len(self.raw)
-        elements = filter(lambda tp: (tp[0][1] >= s and # end after the start...
+        elements = [tp for tp in self.handler.elements if (tp[0][1] >= s and # end after the start...
                                       tp[0][0] <= e # and start before the end
-                                      ),
-                          self.handler.elements)
+                                      )]
         ends = {}
         starts = {}
         for el in elements:
@@ -63,7 +62,7 @@ class MarkupString (str):
             attrs = el[2]
             # write our start tag <stag att="val"...>
             stag = "<%s"%name
-            for k,v in attrs.items(): stag += " %s=%s"%(k,xml.sax.saxutils.quoteattr(v))
+            for k,v in list(attrs.items()): stag += " %s=%s"%(k,xml.sax.saxutils.quoteattr(v))
             stag += ">"
             etag = "</%s>"%name # simple end tag
             spos = pos[0]
@@ -71,21 +70,21 @@ class MarkupString (str):
             if spos < s: spos=s
             if epos > e: epos=e
             if epos != spos: # we don't care about tags that don't markup any text
-                if not starts.has_key(spos): starts[spos]=[]
+                if spos not in starts: starts[spos]=[]
                 starts[spos].append(stag)
-                if not ends.has_key(epos): ends[epos]=[]
+                if epos not in ends: ends[epos]=[]
                 ends[epos].append(etag)
         outbuf = "" # our actual output string
         for pos in range(s,e): # we move through positions
             char = self.raw[pos]
-            if ends.has_key(pos):  # if there are endtags to insert...
+            if pos in ends:  # if there are endtags to insert...
                 for et in ends[pos]: outbuf += et
-            if starts.has_key(pos): # if there are start tags to insert
+            if pos in starts: # if there are start tags to insert
                 mystarts = starts[pos]
                 # reverse these so the order works out,e.g. <i><b><u></u></b></i>
                 mystarts.reverse()
                 for st in mystarts: outbuf += st
             outbuf += char
-        if ends.has_key(e):
+        if e in ends:
             for et in ends[e]: outbuf+= et
         return MarkupString(str(outbuf)) # the str call is necessary to avoid unicode messiness

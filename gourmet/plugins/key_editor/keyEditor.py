@@ -1,11 +1,11 @@
-import gtk, gtk.gdk, gobject, re, os, os.path, time
+import gtk, Gtk.gdk, gobject, re, os, os.path, time
 from gourmet import gglobals, convert
 from gourmet.gtk_extras import WidgetSaver, mnemonic_manager, pageable_store
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
 from gettext import gettext as _
 from gettext import ngettext
-import keyEditorPluggable
+from . import keyEditorPluggable
 #import nutrition.nutritionDruid as nutritionDruid
 
 try:
@@ -20,7 +20,7 @@ class KeyEditor:
     """
 
     def __init__ (self, rd=None, rg=None):
-        self.ui = gtk.Builder()
+        self.ui = Gtk.Builder()
         self.ui.add_from_file(os.path.join(current_path,'keyeditor.ui'))
         self.rd = rd
         self.rg = rg
@@ -42,12 +42,12 @@ class KeyEditor:
         # setup entry callback to sensitize/desensitize apply
         self.applyEntriesButton.set_sensitive(False)
         self.clearEntriesButton.set_sensitive(False)
-        for e in self.entries.values():
+        for e in list(self.entries.values()):
             e.connect('changed',self.entryChangedCB)
         # Make our lovely model
         self.makeTreeModel()
         # setup completion in entry
-        model = gtk.ListStore(str)
+        model = Gtk.ListStore(str)
         for k in self.rd.get_unique_values('ingkey',table=self.rd.ingredients_table): model.append([k])
         cb.make_completion(self.changeKeyEntry,model)
         # Setup next/prev/first/last buttons for view
@@ -66,7 +66,7 @@ class KeyEditor:
         self.use_regexp=True
         self.setupTreeView()
         self.treeview.set_model(self.treeModel)
-        self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        self.treeview.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
         #self.treeview.set_model(self.treeModel)
         self.ui.connect_signals({
             'iSearch':self.isearchCB,
@@ -116,16 +116,16 @@ class KeyEditor:
                        #[self.NUT_COL, _('Nutritional Info')],
                        ]:
             if n == self.NUT_COL:
-                renderer = gtk.CellRendererToggle()
+                renderer = Gtk.CellRendererToggle()
             else:
-                renderer = gtk.CellRendererText()
+                renderer = Gtk.CellRendererText()
             # If we have gtk > 2.8, set up text-wrapping
             try:
                 renderer.get_property('wrap-width')
             except TypeError:
                 pass
             else:
-                renderer.set_property('wrap-mode',gtk.WRAP_WORD)
+                renderer.set_property('wrap-mode',Gtk.WrapMode.WORD)
                 if n == self.FIELD_COL:
                     renderer.set_property('wrap-width',60)
                 elif n in [self.VALUE_COL,self.REC_COL]: renderer.set_property('wrap-width',250)
@@ -134,9 +134,9 @@ class KeyEditor:
                 renderer.set_property('editable',True)
                 renderer.connect('edited',self.tree_edited,n,head)
             if n == self.NUT_COL:
-                col = gtk.TreeViewColumn(head, renderer, active=n, visible=n)
+                col = Gtk.TreeViewColumn(head, renderer, active=n, visible=n)
             else:
-                col = gtk.TreeViewColumn(head, renderer, text=n)
+                col = Gtk.TreeViewColumn(head, renderer, text=n)
             if n == self.VALUE_COL:
                 col.set_property('expand',True)
             col.set_resizable(True)
@@ -274,8 +274,8 @@ class KeyEditor:
 
     def isearchCB (self, *args):
         if self.searchAsYouTypeToggle.get_active():
-            self.window.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-            gobject.idle_add(lambda *args: (self.doSearch() or self.window.window.set_cursor(None)))
+            self.window.window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
+            GObject.idle_add(lambda *args: (self.doSearch() or self.window.window.set_cursor(None)))
 
     def searchCB (self, *args):
         self.doSearch()
@@ -287,7 +287,7 @@ class KeyEditor:
 
 
     def clearEntriesCB (self, *args):
-        for e in self.entries.values(): e.set_text('')
+        for e in list(self.entries.values()): e.set_text('')
 
     def get_dic_describing_iter (self, itr):
         """Handed an itr in our tree, return a dictionary describing
@@ -333,35 +333,35 @@ class KeyEditor:
             amount = value
             return {'ingkey':key,'item':item,'unit':unit,'amount':amount},'amount'
         else:
-            print 'WTF! WE SHOULD NEVER LAND HERE!',field,value
+            print('WTF! WE SHOULD NEVER LAND HERE!',field,value)
             raise Exception("WTF ERROR")
 
     def applyEntriesCB (self, *args):
         newdic = {}
-        for k,e in self.entries.items():
+        for k,e in list(self.entries.items()):
             txt = e.get_text()
             if txt:
                 if k=='amount':
                     try:
                         newdic[k]=convert.frac_to_float(txt)
                     except:
-                        print 'Problem with amount:',txt
+                        print('Problem with amount:',txt)
                         import traceback; traceback.print_exc()
                         de.show_amount_error(txt)
                         return
                 else:
                     newdic[k]=txt
         if not newdic:
-            print 'We called applyEntriesCB with no text -- that shouldn\'t be possible'
+            print('We called applyEntriesCB with no text -- that shouldn\'t be possible')
             return
         mod,rows = self.treeview.get_selection().get_selected_rows()
         if not de.getBoolean(
         label=_("Change all selected rows?"),
         sublabel=(_('This action will not be undoable. Are you that for all %s selected rows, you want to set the following values:')%len(rows)
-        + (newdic.has_key('ingkey') and _('\nKey to %s')%newdic['ingkey'] or '')
-        + (newdic.has_key('item') and _('\nItem to %s')%newdic['item'] or '')
-        + (newdic.has_key('unit') and _('\nUnit to %s')%newdic['unit'] or '')
-        + (newdic.has_key('amount') and _('\nAmount to %s')%newdic['amount'] or ''))):
+        + ('ingkey' in newdic and _('\nKey to %s')%newdic['ingkey'] or '')
+        + ('item' in newdic and _('\nItem to %s')%newdic['item'] or '')
+        + ('unit' in newdic and _('\nUnit to %s')%newdic['unit'] or '')
+        + ('amount' in newdic and _('\nAmount to %s')%newdic['amount'] or ''))):
             return
         # Now actually apply our lovely new logic...
         changed_iters = True
@@ -388,7 +388,7 @@ class KeyEditor:
                     curdic,
                     newdic,
                     )
-                if curdic.has_key('ingkey') and newdic.has_key('ingkey'):
+                if 'ingkey' in curdic and 'ingkey' in newdic:
                     self.rd.delete_by_criteria(
                         self.rd.keylookup_table,
                         {'ingkey':curdic['ingkey']}
@@ -434,7 +434,7 @@ class KeyEditor:
                             greatgrandchild = mod.iter_next(greatgrandchild)
                         grandchild = mod.iter_next(grandchild)
                     child = mod.iter_next(child)
-                nid.add_ingredients(keys_to_update.items())
+                nid.add_ingredients(list(keys_to_update.items()))
                 nid.connect('finish',self.update_nutinfo)
                 nid.show()
 
@@ -444,13 +444,13 @@ class KeyEditor:
     def update_iter (self, itr, newdic):
         """Update iter and its children based on values in newdic"""
         field = self.treeModel.get_value(itr,self.FIELD_COL)
-        if newdic.has_key('item') and field==self.treeModel.ITEM:
+        if 'item' in newdic and field==self.treeModel.ITEM:
             self.treeModel.set_value(itr,self.VALUE_COL,newdic['item'])
-        elif newdic.has_key('ingkey') and field==self.treeModel.KEY:
+        elif 'ingkey' in newdic and field==self.treeModel.KEY:
             self.treeModel.set_value(itr,self.VALUE_COL,newdic['ingkey'])
-        elif newdic.has_key('unit') and field==self.treeModel.UNIT:
+        elif 'unit' in newdic and field==self.treeModel.UNIT:
             self.treeModel.set_value(itr,self.VALUE_COL,newdic['unit'])
-        elif newdic.has_key('amount') and field==self.treeModel.AMOUNT:
+        elif 'amount' in newdic and field==self.treeModel.AMOUNT:
             self.treeModel.set_value(itr,self.VALUE_COL,newdic['amount'])
         c = self.treeModel.iter_children(itr)
         while c:
@@ -461,7 +461,7 @@ class KeyEditor:
         """Set sensitivity of apply and clear buttons.
 
         We are sensitive if we have text to apply or clear"""
-        for e in self.entries.values():
+        for e in list(self.entries.values()):
             if e.get_text():
                 self.applyEntriesButton.set_sensitive(True)
                 self.clearEntriesButton.set_sensitive(True)
@@ -506,8 +506,8 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
     """A ListStore to show our beautiful keys.
     """
     __gsignals__ = {
-        'view-changed':(gobject.SIGNAL_RUN_LAST,
-                        gobject.TYPE_NONE,
+        'view-changed':(GObject.SignalFlags.RUN_LAST,
+                        None,
                         ()),
         }
 
@@ -521,7 +521,7 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
         self.__last_limit_text = ''
         self.rd = rd
         pageable_store.PageableTreeStore.__init__(self,
-                                                  [gobject.TYPE_PYOBJECT, # row ref
+                                                  [GObject.TYPE_PYOBJECT, # row ref
                                                    str, # column
                                                    str, # value
                                                    int, # count
@@ -698,5 +698,5 @@ if __name__ == '__main__':
     import testExtras
     rg = testExtras.FakeRecGui(rm)
     ke=KeyEditor(rm,rg)
-    ke.window.connect('delete-event',gtk.main_quit)
-    gtk.main()
+    ke.window.connect('delete-event',Gtk.main_quit)
+    Gtk.main()

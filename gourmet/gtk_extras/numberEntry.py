@@ -17,7 +17,7 @@
 ### USA
 
 
-import validatingEntry
+from . import validatingEntry
 import gtk, gobject
 import gourmet.convert as convert
 import re
@@ -117,7 +117,7 @@ class RangeEntry (NumberEntry):
         NumberEntry.set_value(self,n)
 
     def get_value (self):
-        txt = gtk.get_text()
+        txt = Gtk.get_text()
         split = convert.RANGE_MATCHER.split(txt)
         if len(split)==1: return NumberEntry.get_value(self)
         if len(split)>2: return None
@@ -125,30 +125,30 @@ class RangeEntry (NumberEntry):
             return tuple([convert.frac_to_float(t) for t in split])
 
 if __name__ == '__main__':
-    w = gtk.Window()
-    hb = gtk.HBox()
-    w.connect('delete-event',lambda *args: gtk.main_quit())
-    vb = gtk.VBox(); vb.show()
-    l = gtk.Label('Number Entry:')
+    w = Gtk.Window()
+    hb = Gtk.HBox()
+    w.connect('delete-event',lambda *args: Gtk.main_quit())
+    vb = Gtk.VBox(); vb.show()
+    l = Gtk.Label(label='Number Entry:')
     l.show()
-    hb.pack_start(l)
+    hb.pack_start(l, True, True, 0)
     ne = NumberEntry(default_to_fractions=True); ne.show()
     def foo (widget):
-        print 'Changed!',widget,widget.get_value()
+        print('Changed!',widget,widget.get_value())
     ne.connect('changed',foo)
-    hb.pack_start(ne)
+    hb.pack_start(ne, True, True, 0)
     hb.show()
-    hb2 = gtk.HBox()
-    l = gtk.Label('Range Entry:'); l.show()
-    hb2.pack_start(l)
+    hb2 = Gtk.HBox()
+    l = Gtk.Label(label='Range Entry:'); l.show()
+    hb2.pack_start(l, True, True, 0)
     rent = RangeEntry(default_to_fractions=True); rent.show()
-    hb2.pack_start(rent)
+    hb2.pack_start(rent, True, True, 0)
     hb2.show()
     vb.pack_start(hb, fill=False, expand=False)
     vb.pack_start(hb2,fill=False,expand=False)
-    qb = gtk.Button(stock=gtk.STOCK_QUIT); qb.show()
-    qb.connect('clicked',lambda *args: w.hide() or gtk.main_quit())
+    qb = Gtk.Button(stock=Gtk.STOCK_QUIT); qb.show()
+    qb.connect('clicked',lambda *args: w.hide() or Gtk.main_quit())
     vb.pack_start(qb, fill=False, expand=False)
     w.add(vb)
     w.present()
-    gtk.main()
+    Gtk.main()

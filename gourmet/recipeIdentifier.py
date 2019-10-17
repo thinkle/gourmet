@@ -11,13 +11,14 @@ functions.
 
 """
 
-import convert, xml.sax.saxutils
+import xml.sax.saxutils
+from gourmet import convert
 import hashlib, difflib, types, re
 from gettext import gettext as _
-from gglobals import REC_ATTRS,TEXT_ATTR_DIC,INT_REC_ATTRS
+from .gglobals import REC_ATTRS,TEXT_ATTR_DIC,INT_REC_ATTRS
 
 IMAGE_ATTRS = ['image','thumb']
-ALL_ATTRS = [r[0] for r in REC_ATTRS] + TEXT_ATTR_DIC.keys() + IMAGE_ATTRS
+ALL_ATTRS = [r[0] for r in REC_ATTRS] + list(TEXT_ATTR_DIC.keys()) + IMAGE_ATTRS
 REC_FIELDS = ['title',
               'instructions',
               ]
@@ -191,7 +192,7 @@ def merge_recipes (rd, recs):
     # Now we loop through the recipe and remove any attributes that
     # are blank in one recipe from diffs and put them instead into
     # my_recipe.
-    for attr,vals in diffs.items():
+    for attr,vals in list(diffs.items()):
         value = None
         conflict = False
         for v in vals:
@@ -200,9 +201,9 @@ def merge_recipes (rd, recs):
             elif not value:
                 value = v
             elif (v != value):
-                if ((type(v) in types.StringTypes
+                if ((type(v) in (str,)
                      and
-                     type(value) in types.StringTypes)
+                     type(value) in (str,))
                     and v.lower()==value.lower()):
                     continue
                 else:
@@ -230,17 +231,17 @@ def format_ingdiff_line (s):
     return s
 
 def show_ing_diff (idiff):
-    import gtk
+    from gi.repository import Gtk
     left, right = idiff
-    ls = gtk.ListStore(str,str)
+    ls = Gtk.ListStore(str,str)
     for n in range(len(left)):
         ls.append([format_ingdiff_line(left[n]),
                   format_ingdiff_line(right[n])]
                   )
-    tv = gtk.TreeView()
-    r = gtk.CellRendererText()
-    tc = gtk.TreeViewColumn('Left',r,markup=0)
-    tc2 = gtk.TreeViewColumn('Right',r,markup=1)
+    tv = Gtk.TreeView()
+    r = Gtk.CellRendererText()
+    tc = Gtk.TreeViewColumn('Left',r,markup=0)
+    tc2 = Gtk.TreeViewColumn('Right',r,markup=1)
     tv.append_column(tc)
     tv.append_column(tc2)
     tv.set_model(ls)
@@ -278,11 +279,11 @@ if __name__ == '__main__':
 #                 for k,v in rdiff.items(): print '%s: %s\t%s'%(k,v[0],v[1])
 #             if idiff:
 #                 tv = show_ing_diff(idiff)
-#                 w = gtk.Window()
+#                 w = Gtk.Window()
 #                 w.add(tv)
 #                 w.show_all()
-#                 w.connect('delete-event',gtk.main_quit)
-#                 gtk.main()
+#                 w.connect('delete-event',Gtk.main_quit)
+#                 Gtk.main()
 #                 left,right = idiff
 #                 print 'ING DIFF\n----------\n'
 #                 for n in range(len(left)):

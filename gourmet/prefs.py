@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-import os, os.path, pickle, gglobals
+import os, os.path, pickle
+from gourmet import gglobals
 
-class Prefs:
+class Prefs(BaseException):
 
     __single = None
 
@@ -30,7 +31,7 @@ class Prefs:
         """
         # note: we no longer set the key to the default value as a side effect,
         # since this behavior was, well, stupid. 5/7/05
-        if not self.config.has_key(key):
+        if key not in self.config:
             # Except for dictionaries, because, well, we rely on some
             # of the stupid behavior. If our preference is a
             # modifiable object -- i.e. a dictionary or a list -- it
@@ -42,18 +43,22 @@ class Prefs:
         else: return self.config[key]
 
     def has_key (self, k):
-        return self.config.has_key(k)
+        return k in self.config
+
+    def __contains__(self, k):
+        return k in self.config
 
     def __setitem__ (self, k, v):
         self.config[k]=v
         for hook in self.set_hooks: hook(k,v)
 
     def __getitem__ (self, k):
+        print("~~~", k, self.config)
         return self.config[k]
 
-    def keys (self): return self.config.keys()
-    def values (self): return self.config.values()
-    def items (self): return self.config.items()
+    def keys (self): return list(self.config.keys())
+    def values (self): return list(self.config.values())
+    def items (self): return list(self.config.items())
 
     def save (self):
         if not os.path.exists(os.path.split(self.file)[0]):
@@ -63,19 +68,19 @@ class Prefs:
 
     def load (self):
         if os.path.isfile(self.file):
-            ifi=open(self.file,'r')
+            ifi=open(self.file,'rb')
             try:
                 self.config=pickle.load(ifi)
             except:
                 import traceback
-                print 'ERROR LOADING CONFIGURATION FILE'
-                print 'Saving a copy of broken configuration file saved as'
-                print '%s.broken'%self.file
+                print('ERROR LOADING CONFIGURATION FILE')
+                print('Saving a copy of broken configuration file saved as')
+                print('%s.broken'%self.file)
                 ifi.seek(0)
-                ofi = file(self.file+'.broken','w')
+                ofi = open(self.file+'.broken','w')
                 ofi.write(ifi.read())
                 ofi.close()
-                print traceback.print_exc()
+                print(traceback.print_exc())
             else:
                 return True
         return False
@@ -83,7 +88,7 @@ class Prefs:
 def get_prefs ():
     try:
         return Prefs()
-    except Prefs, p:
+    except Prefs as p:
         return p
 
 if __name__ == '__main__':

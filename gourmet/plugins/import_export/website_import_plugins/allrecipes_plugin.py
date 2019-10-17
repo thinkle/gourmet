@@ -1,6 +1,6 @@
 from gourmet.plugin import PluginPlugin
-import schema_org_parser
-from schema_org_parser import Excluder
+from . import schema_org_parser
+from .schema_org_parser import Excluder
 
 class AllRecipesPlugin (PluginPlugin):
     target_pluggable = 'webimport_plugin'

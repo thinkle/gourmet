@@ -19,12 +19,12 @@ elif os.name == 'nt':
 
 if loc:
     try:
-        lang = __import__('defaults_%s'%loc,globals(),locals())
+        lang = __import__('defaults_%s'%loc,globals(),locals(), level=1)
     except ImportError:
         try:
-            lang = __import__('defaults_%s'%loc[0:2],globals(),locals())
+            lang = __import__('defaults_%s'%loc[0:2],globals(),locals(), level=1)
         except ImportError:
-            lang = __import__('defaults_%s'%deflang,globals(),locals())
+            lang = __import__('defaults_%s'%deflang,globals(),locals(), level=1)
 
 if not lang: lang = __import__('defaults_%s'%deflang,globals(),locals())
 
@@ -40,7 +40,7 @@ except:
 
 # NOW WE DO AUTOMATED STUFF
 def add_itm (kd, k, v):
-    if kd.has_key(k):
+    if k in kd:
         kd[k].append(v)
     else:
         kd[k]=[v]
@@ -53,8 +53,8 @@ for lst in lang.SYNONYMS:
     for i in lst:
         add_itm(lang.keydic,k,i)
 
-for amb,lst in lang.AMBIGUOUS.items():
-    if lang.keydic.has_key(amb):
+for amb,lst in list(lang.AMBIGUOUS.items()):
+    if amb in lang.keydic:
         lang.keydic[amb] += lst
     else:
         lang.keydic[amb] = lst
@@ -82,7 +82,7 @@ if hasattr(lang,'unit_rounding_guide'):
 lang.unit_rounding_guide = unit_rounding_guide
 
 
-for group,v in lang.UNIT_GROUPS.items():
+for group,v in list(lang.UNIT_GROUPS.items()):
     n = 0
     for u,rng in v:
         lang.unit_group_lookup[u] = group,n
@@ -99,7 +99,7 @@ def get_pluralized_form (word, n):
     if not word:
         return ''
     lword=word.lower()
-    if WORD_TO_SING_PLUR_PAIR.has_key(lword):
+    if lword in WORD_TO_SING_PLUR_PAIR:
         forms = list(WORD_TO_SING_PLUR_PAIR[lword])
         forms += [n]
         return ngettext(*forms)
@@ -112,4 +112,3 @@ def get_pluralized_form (word, n):
         return ngettext(*forms)
     else:
         return word
-

@@ -4,8 +4,8 @@ import gourmet.gglobals as gglobals
 from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
 from gourmet.defaults import lang as defaults
 from gourmet.gtk_extras.pageable_store import PageableViewStore
-from nutritionLabel import NUT_LAYOUT, SEP, RECOMMENDED_INTAKE
-from nutritionInfoEditor import NutritionInfoIndex,MockObject
+from .nutritionLabel import NUT_LAYOUT, SEP, RECOMMENDED_INTAKE
+from .nutritionInfoEditor import NutritionInfoIndex,MockObject
 from gourmet.gtk_extras.numberEntry import NumberEntry
 import gourmet.gtk_extras.cb_extras as cb
 import gourmet.gtk_extras.dialog_extras as de
@@ -168,8 +168,8 @@ class NutritionUSDAIndex:
         self.update_nuttree_showing()
         self.searchvw = self.rd.nutrition_table
         self.usdaTreeview.set_model(self.nutrition_store)
-        renderer = gtk.CellRendererText()
-        col = gtk.TreeViewColumn('Item',renderer,text=1)
+        renderer = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn('Item',renderer,text=1)
         self.usdaTreeview.append_column(col)
 
     def update_nuttree_showing (self,*args):
@@ -202,7 +202,7 @@ class NutritionUSDAIndex:
 
     def search_cb (self, *args):
         if self.__override_search__: return
-        gobject.idle_add(self.search)
+        GObject.idle_add(self.search)
 
     def search (self):
         txt = self.usdaSearchEntry.get_text()
@@ -228,9 +228,9 @@ class NutritionUSDAIndex:
             self.group = None
         else:
             self.group = food_group
-        gobject.idle_add(self.search)
+        GObject.idle_add(self.search)
 
-class NutritionInfoDruid (gobject.GObject):
+class NutritionInfoDruid (GObject.GObject):
 
     """A druid (or "wizard") to guide a user through helping Gourmet
     calculate nutritional information for an ingredient.
@@ -251,14 +251,14 @@ class NutritionInfoDruid (gobject.GObject):
 
     __gsignals__ = {
         # The key callback will return a tuple (old_key,new_key)
-        'key-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_PYOBJECT,(gobject.TYPE_PYOBJECT,)),
+        'key-changed':(GObject.SignalFlags.RUN_LAST,GObject.TYPE_PYOBJECT,(GObject.TYPE_PYOBJECT,)),
         # The unit callback will return a tuple ((old_unit,old_key),(new_unit,new_key))
-        'unit-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_PYOBJECT,(gobject.TYPE_PYOBJECT,)),
-        'finish':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,())
+        'unit-changed':(GObject.SignalFlags.RUN_LAST,GObject.TYPE_PYOBJECT,(GObject.TYPE_PYOBJECT,)),
+        'finish':(GObject.SignalFlags.RUN_LAST,None,())
         }
 
     def __init__ (self, nd, prefs, rec=None, in_string=''):
-        self.ui = gtk.Builder()
+        self.ui = Gtk.Builder()
         self.ui.add_from_file(os.path.join(current_path,'nutritionDruid.ui'))
         self.mm = MnemonicManager()
         self.mm.add_builder(self.ui)
@@ -277,7 +277,7 @@ class NutritionInfoDruid (gobject.GObject):
         self.curpage = 0
         self.prevDruidButton.set_sensitive(False)
         # Initiate our gobject-ness so we can emit signals.
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         # Save our position with our widget saver...
         WidgetSaver.WindowSaver(self.ui.get_object('window'),
                                 self.prefs.get('nutritionDruid',{})
@@ -315,7 +315,7 @@ class NutritionInfoDruid (gobject.GObject):
                          ]
         for widget_name in self.widgets:
             setattr(self,widget_name,self.ui.get_object(widget_name))
-            if not getattr(self,widget_name): print "WIDGET: ",widget_name,"NOT FOUND."
+            if not getattr(self,widget_name): print("WIDGET: ",widget_name,"NOT FOUND.")
             # make a list of all core control widgets
             if widget_name!='notebook': self.controls.append(getattr(self,widget_name))
         self.usdaIndex = NutritionUSDAIndex(self.rd,
@@ -404,13 +404,13 @@ class NutritionInfoDruid (gobject.GObject):
     def set_density_info (self, nutalias):
         densities,extra_units = self.nd.get_conversions(nutalias.ingkey)
         density_texts = []
-        for k,v in densities.items():
+        for k,v in list(densities.items()):
             if not k:
                 density_texts = ['%.2f'%v] + density_texts
             else:
                 density_texts.append('%s: %.2f'%(k,v))
         self.infoDensityLabel.set_text('\n'.join(density_texts) or 'None')
-        eutexts = ['%s: %s g'%(k,v) for k,v in extra_units.items() ]
+        eutexts = ['%s: %s g'%(k,v) for k,v in list(extra_units.items()) ]
         eutexts.sort()
         extra_units_text = '\n'.join(eutexts)
         self.infoOtherEquivalentsLabel.set_text(
@@ -430,10 +430,10 @@ class NutritionInfoDruid (gobject.GObject):
         for c in self.infoCustomEquivalentsTable.get_children():
             self.infoCustomEquivalentsTable.remove(c); c.unparent()
         for n,eq in enumerate(equivalents):
-            lab = gtk.Label("%s: %.1f g"%(
+            lab = Gtk.Label("%s: %.1f g"%(
                 eq.unit or 'No unit', 1.0/eq.factor)
                             )
-            rembut = gtk.Button('C_hange'); rembut.set_use_underline(True)
+            rembut = Gtk.Button('C_hange'); rembut.set_use_underline(True)
             rembut.connect('clicked',
                            self.info_edit_equivalent,
                            eq)
@@ -445,8 +445,8 @@ class NutritionInfoDruid (gobject.GObject):
 
     def set_nutritional_label (self, nutalias):
         if not hasattr(self,'nutritionLabel'):
-            from nutritionLabel import NutritionLabel
-            self.nutritionAmountLabel = gtk.Label()
+            from .nutritionLabel import NutritionLabel
+            self.nutritionAmountLabel = Gtk.Label()
             self.nutritionLabel = NutritionLabel(self.prefs, custom_label=' ')
             self.nutritionLabelBox.pack_start(self.nutritionAmountLabel,
                                               fill=0,
@@ -544,7 +544,7 @@ class NutritionInfoDruid (gobject.GObject):
     def _setup_custom_box (self):
         """Setup the interface for entering custom nutritional information.
         """
-        t = gtk.Table()
+        t = Gtk.Table()
         masses = [i[0] for i in defaults.UNIT_GROUPS['metric mass']\
                   + defaults.UNIT_GROUPS['imperial weight']]
         cb.set_model_from_list(
@@ -556,28 +556,28 @@ class NutritionInfoDruid (gobject.GObject):
         self.custom_box.add(t)
         self.changing_percent_internally = False
         self.changing_number_internally = False
-        l=gtk.Label('%RDA'); l.show()
+        l=Gtk.Label(label='%RDA'); l.show()
         t.attach(l,2,3,0,1)
         for n,nutstuff in enumerate(NUT_LAYOUT):
             if nutstuff == SEP:
-                hs = gtk.HSeparator()
-                t.attach(hs,0,2,n+1,n+2,xoptions=gtk.FILL)
+                hs = Gtk.HSeparator()
+                t.attach(hs,0,2,n+1,n+2,xoptions=Gtk.AttachOptions.FILL)
                 hs.show()
                 continue
             label_txt,typ,name,properties,show_percent,unit = nutstuff
             if unit: label_txt += " (" + unit + ")"
-            label = gtk.Label(label_txt); label.show()
+            label = Gtk.Label(label=label_txt); label.show()
             label.set_alignment(0,0.5)
-            t.attach(label,0,1,n+1,n+2,xoptions=gtk.FILL)
+            t.attach(label,0,1,n+1,n+2,xoptions=Gtk.AttachOptions.FILL)
             entry = NumberEntry(default_to_fractions=False)
             entry.show()
-            t.attach(entry,1,2,n+1,n+2,xoptions=gtk.FILL)
+            t.attach(entry,1,2,n+1,n+2,xoptions=Gtk.AttachOptions.FILL)
             if show_percent:
                 percent_entry = NumberEntry(default_to_fractions=False,
                                             decimals=0)
                 percent_entry.entry.set_width_chars(4)
                 percent_entry.show()
-                percent_label = gtk.Label('%'); percent_label.show()
+                percent_label = Gtk.Label(label='%'); percent_label.show()
                 t.attach(percent_entry,2,3,n+1,n+2)
                 t.attach(percent_label,3,4,n+1,n+2)
                 percent_label.set_alignment(0,0.5)
@@ -623,7 +623,7 @@ class NutritionInfoDruid (gobject.GObject):
 
     def apply_custom (self, *args):
         nutinfo = self.nutrition_info.copy()
-        for k,v in nutinfo.items():
+        for k,v in list(nutinfo.items()):
             if type(v)==int or type(v)==float: nutinfo[k]=v*self.custom_factor
             # Special case fat, which is listed as one item but is in
             # fact a combination of 3. We'll have to fudge the info
@@ -681,7 +681,7 @@ class NutritionInfoDruid (gobject.GObject):
         volumes = [i[0] for i in  defaults.UNIT_GROUPS['metric volume'] + defaults.UNIT_GROUPS['imperial volume']]
         to_units = masses
         self.densities,self.extra_units = self.nd.get_conversions(self.ingkey)
-        for d in self.densities.keys():
+        for d in list(self.densities.keys()):
             if d:
                 to_units.extend(["%s (%s)"%(u,d) for u in volumes])
             else:
@@ -699,7 +699,7 @@ class NutritionInfoDruid (gobject.GObject):
         base_convert = self.nd.conv.converter('g',to_unit)
         if not base_convert:
             self.densities,self.extra_units = self.nd.get_conversions(self.ingkey)
-            if self.extra_units.has_key(to_unit):
+            if to_unit in self.extra_units:
                 base_convert = 1/self.extra_units[to_unit]
             else:
                 # this is a density, we hope...
@@ -708,7 +708,7 @@ class NutritionInfoDruid (gobject.GObject):
                     describer = describer[0:-1]
                     density = self.densities[describer]
                 else:
-                    if not self.densities.has_key(None):
+                    if None not in self.densities:
                         raise RuntimeError("Unable to make sense of conversion from %s %s"%(to_unit,self.ingkey))
                     density = self.densities[None]
                 base_convert = self.nd.conv.converter('g',to_unit,density=density)
@@ -844,8 +844,8 @@ class NutritionInfoDruid (gobject.GObject):
         group = None
         def density_callback (rb, name):
             self.custom_density = name
-        for d in self.densities.keys():
-            group = gtk.RadioButton(group,str(d)+' '+'(%.2f)'%self.densities[d])
+        for d in list(self.densities.keys()):
+            group = Gtk.RadioButton(group,str(d)+' '+'(%.2f)'%self.densities[d])
             group.connect('toggled',density_callback,d)
             self.densityBox.pack_start(group,expand=False,fill=False)
             group.show()
@@ -1094,7 +1094,7 @@ class PageableNutritionStore (PageableViewStore):
 
 
 if __name__ == '__main__':
-    import nutrition
+    from . import nutrition
     from gourmet.recipeManager import RecipeManager,dbargs
     dbargs['file']='/tmp/boofoo.db'
     rd=RecipeManager(**dbargs)
@@ -1107,7 +1107,7 @@ if __name__ == '__main__':
     rd.add_ing(dict(ingkey='1% milk',
                amount=1,
                unit='splash'))
-    import nutritionGrabberGui
+    from . import nutritionGrabberGui
     try:
         nutritionGrabberGui.check_for_db(rd)
     except nutritionGrabberGui.Terminated:
@@ -1118,9 +1118,9 @@ if __name__ == '__main__':
     nd=nutrition.NutritionData(rd,c)
     nid = NutritionInfoDruid(nd,{})
     def unit_handler (*args):
-        print 'CHANGE UNIT CALLBACK:',args
+        print('CHANGE UNIT CALLBACK:',args)
     def key_handler (*args):
-        print 'CHANGE KEY CALLBACK:',args
+        print('CHANGE KEY CALLBACK:',args)
     nid.connect('unit-changed',unit_handler)
     nid.connect('key-changed',key_handler)
     #nid.set_ingkey('black pepper')
@@ -1143,9 +1143,9 @@ if __name__ == '__main__':
     def quit (*args):
         rd.save()
         nid.ui.get_object('window').hide()
-        gtk.main_quit()
+        Gtk.main_quit()
     nid.ui.get_object('window').connect('delete-event',quit)
     nid.connect('finish',quit)
-    gtk.main()
+    Gtk.main()
     del rd
     del nid

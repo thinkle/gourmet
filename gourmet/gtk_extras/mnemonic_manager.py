@@ -1,4 +1,5 @@
-import gtk
+from gi.repository import Gtk
+from gi.repository import Gdk
 
 def collect_descendants (parent, descendants=None):
     """Return all descendants of parent widget.
@@ -24,14 +25,14 @@ class MnemonicManager:
     translators knowing which strings show up on the same page
     together in order to prevent collisions of mnemonics.
 
-    This class can collect all mnemonics from a gtk.Builder file or by
+    This class can collect all mnemonics from a Gtk.Builder file or by
     working down from a toplevel widget.
 
     mm = MnemonicManager()
 
     mm.add_toplevel_widget(widget)
     OR
-    mm.add_builder(gtk.Builder instance)
+    mm.add_builder(Gtk.Builder instance)
 
     mm.fix_conflicts_peacefully()
 
@@ -53,11 +54,11 @@ class MnemonicManager:
         self.untouchable_widgs = []
 
     def get_submanager (self, w):
-        p = w.parent
+        p = w.get_parent()
         while p:
-            if self.sub_managers.has_key(p):
+            if p in self.sub_managers:
                 return self.sub_managers[p]
-            p = p.parent
+            p = p.get_parent()
         return self
 
     def add_toplevel_widget (self, w):
@@ -65,20 +66,20 @@ class MnemonicManager:
         self.add_ui(widgets)
 
     def add_builder (self, ui=None, ui_file=None):
-        """Add all mnemonic widgets in gtk.Builder object.
+        """Add all mnemonic widgets in Gtk.Builder object.
 
-        We can be passed a gtk.Builder (.ui) file or a gtk.Builder object.
+        We can be passed a Gtk.Builder (.ui) file or a Gtk.Builder object.
         Realistically, though, you'll want to pass the object and keep
         a reference around to use. The file option's really just for
         testing :)
         """
         if not ui:
-            ui = gtk.Builder()
+            ui = Gtk.Builder()
             ui.add_from_file(ui_file)
         widgets=ui.get_objects() # get all widgets
         # Check if there are more than one window, in which case we
         # each window gets its own sub_handler
-        windows = filter(lambda w: isinstance(w,gtk.Window),widgets)
+        windows = [w for w in widgets if isinstance(w,Gtk.Window)]
         if len(windows)>0:
             for w in windows:
                 self.sub_managers[w]=MnemonicManager()
@@ -90,16 +91,16 @@ class MnemonicManager:
     def add_ui (self, widgets):
         added = []
         # handle menu items
-        menus = filter(lambda x: isinstance(x,gtk.Menu),widgets)
+        menus = [x for x in widgets if isinstance(x,Gtk.Menu)]
         for menu in menus:
             #print 'Create submenu for ',menu
             self.sub_managers[menu] = MnemonicManager()
-        menu_items = filter(lambda x: isinstance(x,gtk.MenuItem),widgets)
+        menu_items = [x for x in widgets if isinstance(x,Gtk.MenuItem)]
         for mi in menu_items:
             #print 'Looking at menu item',mi,mi.get_children()
             widgets.remove(mi)
             children =  mi.get_children()
-            if children and isinstance(children[0],gtk.Label):
+            if children and isinstance(children[0],Gtk.Label):
                 lab = children[0]
             else:
                 #print 'Ignoring menu',mi,mi.get_children()
@@ -110,43 +111,43 @@ class MnemonicManager:
             else:
                 self.get_submanager(mi).add_widget_mnemonic(lab)
         # handle other mnemonic labels we have
-        has_keyval = filter(lambda x: (hasattr(x,'get_mnemonic_keyval')
+        has_keyval = [x for x in widgets if (hasattr(x,'get_mnemonic_keyval')
                                        and
-                                       gtk.gdk.keyval_name(x.get_mnemonic_keyval())!='VoidSymbol'),
-                            widgets)
+                                       Gdk.keyval_name(x.get_mnemonic_keyval())!='VoidSymbol')]
         more_mnemonics = []
         for w in widgets:
             mm = w.list_mnemonic_labels()
             more_mnemonics.extend(mm)
-            if isinstance(w,gtk.TreeView):
+            if isinstance(w,Gtk.TreeView):
                 self.add_treeview(w)
         for l in more_mnemonics:
             if l not in has_keyval and l not in added: has_keyval.append(l)
         for w in has_keyval:
             # Are we in a notebook?
             nb = None
-            p = w.parent
+            # help(w)
+            p = w.get_parent()
             added_to_sub = False
             while p:
-                if isinstance(p.parent,gtk.Notebook):
+                if isinstance(p.get_parent(),Gtk.Notebook):
                     break
-                elif self.sub_managers.has_key(p.parent):
-                    self.sub_managers[p.parent].add_widget_mnemonic(w)
+                elif p.get_parent() in self.sub_managers:
+                    self.sub_managers[p.get_parent()].add_widget_mnemonic(w)
                     added_to_sub = True
                     break
                 else:
-                    p=p.parent
+                    p=p.get_parent()
             if added_to_sub: continue
-            if p and isinstance(p.parent,gtk.Notebook):
-                nb = p.parent
+            if p and isinstance(p.get_parent(),Gtk.Notebook):
+                nb = p.get_parent()
                 page = nb.page_num(p)
-                if not self.notebook_managers.has_key(nb):
+                if nb not in self.notebook_managers:
                     self.notebook_managers[nb]={}
-                if not self.notebook_managers[nb].has_key(page):
+                if page not in self.notebook_managers[nb]:
                     self.notebook_managers[nb][page]=MnemonicManager()
                 self.notebook_managers[nb][page].add_widget_mnemonic(w)
             else:
-                if isinstance(w.parent,gtk.Notebook):
+                if isinstance(w.get_parent(),Gtk.Notebook):
                     # make notebook tab labels (should be our only
                     # direct descendant labels) untouchable.
                     self.add_widget_mnemonic(w,untouchable=True,fix_untouchables=True)
@@ -160,14 +161,14 @@ class MnemonicManager:
             t = c.get_title()
             #print 'Column:',t
             if t.find('_')>-1:
-                widg = gtk.Label(t)
+                widg = Gtk.Label(label=t)
                 widg.set_use_underline(True)
                 c.set_widget(widg)
                 widg.show()
                 self.add_widget_mnemonic(widg)
 
     def add_widget_mnemonic (self, w, untouchable=False, fix_untouchables=False):
-        k = gtk.gdk.keyval_name(w.get_mnemonic_keyval())
+        k = Gdk.keyval_name(w.get_mnemonic_keyval())
         if w.get_text().lower().replace('_','') in self.sacred_cows:
             untouchable = True; fix_untouchables=False
         if untouchable:
@@ -180,13 +181,13 @@ class MnemonicManager:
             #print 'Add untouchable key:',k,w
             self.untouchable_accels.append(k)
             self.untouchable_widgs.append(w)
-        if not self.mnemonics.has_key(k): self.mnemonics[k]=[]
+        if k not in self.mnemonics: self.mnemonics[k]=[]
         if not w in self.mnemonics[k]:
             self.mnemonics[k].append(w)
 
     def generate_new_mnemonic (self, text):
         for c in text:
-            if not self.mnemonics.has_key(c.lower()):
+            if c.lower() not in self.mnemonics:
                 self.mnemonics[c.lower()]=[text]
                 n = text.find(c)
                 return text[0:n]+'_'+text[n:]
@@ -214,11 +215,11 @@ class MnemonicManager:
                 if l in list(' (),_[]:;,.!{}/=+'): continue
                 else: alts.append(l.lower())
         if filter_untouchables:
-            alts = filter(lambda l: l not in self.untouchable_accels, alts)
+            alts = [l for l in alts if l not in self.untouchable_accels]
         return alts
 
     def find_peaceful_alternatives (self, w):
-        return filter(lambda l: not self.mnemonics.has_key(l),self.find_alternatives(w))
+        return [l for l in self.find_alternatives(w) if l not in self.mnemonics]
 
     def fix_conflicts_peacefully (self, do_submenus=True):
         """Remove all conflicts from mnemonics.
@@ -233,7 +234,7 @@ class MnemonicManager:
         #for k,v in self.mnemonics.items():
         #    print k,[w.get_text() for w in v],
         #print
-        for k,v in self.mnemonics.items():
+        for k,v in list(self.mnemonics.items()):
             if len(v)>1:
                 can_move = []
                 for w in v:
@@ -249,7 +250,8 @@ class MnemonicManager:
                 if len(can_move)==len(v):
                     # If everything is movable, then we keep our first
                     # AccelLabel guy as it was and move the rest.
-                    can_move.sort(self.sort_movables)
+                    from functools import cmp_to_key
+                    can_move.sort(key=cmp_to_key(self.sort_movables))
                     can_move=can_move[1:]
                 # We extend our guys to move with to_move
                 for w,alts in can_move:
@@ -261,14 +263,14 @@ class MnemonicManager:
             self.fix_conflicts_peacefully()
             #print '<<<Done recursing'
         if do_submenus:
-            for mm in self.sub_managers.values():
+            for mm in list(self.sub_managers.values()):
                 #print '>>>>>Submenus...'
                 mm.fix_conflicts_peacefully()
                 #print '<<<<<Done with submenus'
         # for each of our notebooks
-        for nb in self.notebook_managers.values():
+        for nb in list(self.notebook_managers.values()):
             # for each of our pages
-            for pagemanager in nb.values():
+            for pagemanager in list(nb.values()):
                 self.merge_notebook(pagemanager)
                 pagemanager.fix_conflicts_peacefully()
 
@@ -278,15 +280,15 @@ class MnemonicManager:
         In other words, the notebook's manager will know to avoid
         other widgets in the containing context, but won't touch us.
         """
-        for ww in self.mnemonics.values():
+        for ww in list(self.mnemonics.values()):
             for w in ww:
                 notebook_manager.add_widget_mnemonic(w,untouchable=True)
 
     def sort_movables (self, moveable1, moveable2):
         widg,alts = moveable1
         widg2,alts2 = moveable2
-        al1 = isinstance(widg,gtk.AccelLabel)
-        al2 = isinstance(widg2,gtk.AccelLabel)
+        al1 = isinstance(widg,Gtk.AccelLabel)
+        al2 = isinstance(widg2,Gtk.AccelLabel)
         if al1 and not al2: return 1
         elif al2 and not al1: return -1
         else: return 0
@@ -296,10 +298,10 @@ class MnemonicManager:
 
     def change_mnemonic (self, widget, new_mnemonic):
         txt=widget.get_text()
-        old = gtk.gdk.keyval_name(widget.get_mnemonic_keyval())
-        if self.mnemonics.has_key(old) and widget in self.mnemonics[old]:
+        old = Gdk.keyval_name(widget.get_mnemonic_keyval())
+        if old in self.mnemonics and widget in self.mnemonics[old]:
             self.mnemonics[old].remove(widget)
-        if not self.mnemonics.has_key(new_mnemonic):
+        if new_mnemonic not in self.mnemonics:
             self.mnemonics[new_mnemonic]=[]
         self.mnemonics[new_mnemonic].append(widget)
         start = 0
@@ -315,26 +317,25 @@ class MnemonicManager:
 
 if __name__ == '__main__':
     from gourmet import gglobals
-    import gtk
+    from gi.repository import Gtk
     import os.path
     mm=MnemonicManager()
-    ui = gtk.Builder()
+    ui = Gtk.Builder()
     ui.add_from_file(os.path.join(gglobals.uibase,'app.ui'))
     mm.add_builder(ui)
     #tree = ui.get_widget('recTree')
-    #rend = gtk.CellRendererText()
+    #rend = Gtk.CellRendererText()
     #cols = ['Cuisine','Rating','Preparation Time','Cooking Time','Title','Servings']
     #for i,l in enumerate(cols):
-    #    col =  gtk.TreeViewColumn('_'+l,text=i)
+    #    col =  Gtk.TreeViewColumn('_'+l,text=i)
     #    tree.append_column(col)
-    #mod = gtk.ListStore(*[str]*(i+1))
+    #mod = Gtk.ListStore(*[str]*(i+1))
     #for n in range(10): mod.append(cols)
     #tree.set_model(mod)
     #mm.add_treeview(tree)
     mm.fix_conflicts_peacefully()
     def show ():
         ui.get_widget('app').show()
-        ui.get_widget('app').connect('delete-event',gtk.main_quit)
-        gtk.main()
+        ui.get_widget('app').connect('delete-event',Gtk.main_quit)
+        Gtk.main()
     show()
-

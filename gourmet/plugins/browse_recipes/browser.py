@@ -6,24 +6,24 @@ from gourmet.gtk_extras.ratingWidget import star_generator
 from sqlalchemy.sql import and_, or_, not_
 from sqlalchemy import func
 from gettext import gettext as _
-from icon_helpers import attr_to_icon, get_recipe_image, get_time_slice, scale_pb
+from .icon_helpers import attr_to_icon, get_recipe_image, get_time_slice, scale_pb
 
 curdir = os.path.split(__file__)[0]
 
-class RecipeBrowserView (gtk.IconView):
+class RecipeBrowserView (Gtk.IconView):
 
     __gsignals__ = {
-        'recipe-selected':(gobject.SIGNAL_RUN_LAST,
-                           gobject.TYPE_INT,[gobject.TYPE_INT]),
-        'path-selected':(gobject.SIGNAL_RUN_LAST,
-                         gobject.TYPE_STRING,[gobject.TYPE_STRING])
+        'recipe-selected':(GObject.SignalFlags.RUN_LAST,
+                           GObject.TYPE_INT,[GObject.TYPE_INT]),
+        'path-selected':(GObject.SignalFlags.RUN_LAST,
+                         GObject.TYPE_STRING,[GObject.TYPE_STRING])
         }
 
     def __init__ (self, rd):
         self.rd = rd
-        gobject.GObject.__init__(self)
-        gtk.IconView.__init__(self)
-        self.set_selection_mode(gtk.SELECTION_MULTIPLE)
+        GObject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
+        self.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
         self.models = {}
         self.set_model()
         self.set_text_column(1)
@@ -32,14 +32,14 @@ class RecipeBrowserView (gtk.IconView):
         self.switch_model('base')
         self.path = ['base']
 
-    def new_model (self): return gtk.ListStore(str, # path
+    def new_model (self): return Gtk.ListStore(str, # path
                                                str, # text
-                                               gtk.gdk.Pixbuf, # image
-                                               gobject.TYPE_PYOBJECT,
+                                               GdkPixbuf.Pixbuf, # image
+                                               GObject.TYPE_PYOBJECT,
                                                )
 
     def switch_model (self, path, val=None):
-        if not self.models.has_key(path):
+        if path not in self.models:
             self.build_model(path,val)
         self.set_model(self.models[path])
 
@@ -96,7 +96,7 @@ class RecipeBrowserView (gtk.IconView):
         else:
             #from gourmet.gglobals import imagedir
             path = os.path.join(curdir,'images','generic_category.png')
-            self.default_icon = scale_pb(gtk.gdk.pixbuf_new_from_file(path),do_grow=True)
+            self.default_icon = scale_pb(GdkPixbuf.Pixbuf.new_from_file(path),do_grow=True)
             return self.default_icon
 
 
@@ -175,7 +175,7 @@ class RecipeBrowserView (gtk.IconView):
                 return False
             else:
                 return True
-        recipes = filter(just_recs_filter,recipes)
+        recipes = list(filter(just_recs_filter,recipes))
         return [r for r in self.rd.recipe_table.select(self.rd.recipe_table.c.id.in_(recipes)).execute()]
 
     def reset_model (self):
@@ -187,20 +187,20 @@ class RecipeBrowserView (gtk.IconView):
             self.ahead = self.path.pop()
             self.switch_model(self.path[-1])
 
-class RecipeBrowser (gtk.VBox):
+class RecipeBrowser (Gtk.VBox):
 
     def __init__ (self, rd):
-        gtk.VBox.__init__(self)
+        GObject.GObject.__init__(self)
         self.view = RecipeBrowserView(rd)
         self.buttons = []
-        self.button_bar = gtk.HBox()
+        self.button_bar = Gtk.HBox()
         self.button_bar.set_spacing(6)
         self.pack_start(self.button_bar,expand=False)
-        sw = gtk.ScrolledWindow()
-        sw.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
+        sw = Gtk.ScrolledWindow()
+        sw.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
         sw.add(self.view)
-        self.pack_start(sw)
-        home_button = gtk.Button(stock=gtk.STOCK_HOME)
+        self.pack_start(sw, True, True, 0)
+        home_button = Gtk.Button(stock=Gtk.STOCK_HOME)
         self.button_bar.pack_start(home_button,expand=False,fill=False)
         home_button.connect('clicked',self.home); home_button.show()
         self.view.connect('path-selected',self.path_selected_cb)
@@ -224,7 +224,7 @@ class RecipeBrowser (gtk.VBox):
             txt = self.view.convert_val(*path.split('>'))
         else:
             txt = path
-        self.buttons.append(gtk.Button(REC_ATTR_DIC.get(txt,txt)))
+        self.buttons.append(Gtk.Button(REC_ATTR_DIC.get(txt,txt)))
         self.buttons[-1].connect('clicked',lambda *args: self.view.set_path(path))
         self.button_bar.pack_start(self.buttons[-1],expand=False,fill=False)
         self.buttons[-1].show()
@@ -233,15 +233,15 @@ class RecipeBrowser (gtk.VBox):
 def try_out ():
     import gourmet.recipeManager
     rb = RecipeBrowser(gourmet.recipeManager.get_recipe_manager())
-    vb = gtk.VBox()
-    vb.pack_start(rb)
+    vb = Gtk.VBox()
+    vb.pack_start(rb, True, True, 0)
     rb.show()
-    w = gtk.Window()
+    w = Gtk.Window()
     w.add(vb)
     w.show(); vb.show()
     w.set_size_request(800,500)
-    w.connect('delete-event',gtk.main_quit)
-    gtk.main()
+    w.connect('delete-event',Gtk.main_quit)
+    Gtk.main()
 
 if __name__ == '__main__':
     try_out()

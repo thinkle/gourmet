@@ -1,21 +1,21 @@
-import gtk
+from gi.repository import Gtk
 import sys
 if sys.platform not in ["win32",'darwin']:
     import poppler
 import os.path
-import pdf_exporter
+from . import pdf_exporter
 import tempfile
 import reportlab.lib.pagesizes as pagesizes
 from gourmet.plugin import PrinterPlugin
 from gettext import gettext as _
 
 rl2gtk_papersizes = {
-    tuple([int(round(s)) for s in pagesizes.letter]) : gtk.PAPER_NAME_LETTER,
-    tuple([int(round(s)) for s in pagesizes.legal]) : gtk.PAPER_NAME_LEGAL,
-    tuple([int(round(s)) for s in pagesizes.B5]):gtk.PAPER_NAME_B5,
-    tuple([int(round(s)) for s in pagesizes.A5]):gtk.PAPER_NAME_A5,
-    tuple([int(round(s)) for s in pagesizes.A4]):gtk.PAPER_NAME_A4,
-    tuple([int(round(s)) for s in pagesizes.A3]):gtk.PAPER_NAME_A3,
+    tuple([int(round(s)) for s in pagesizes.letter]) : Gtk.PAPER_NAME_LETTER,
+    tuple([int(round(s)) for s in pagesizes.legal]) : Gtk.PAPER_NAME_LEGAL,
+    tuple([int(round(s)) for s in pagesizes.B5]):Gtk.PAPER_NAME_B5,
+    tuple([int(round(s)) for s in pagesizes.A5]):Gtk.PAPER_NAME_A5,
+    tuple([int(round(s)) for s in pagesizes.A4]):Gtk.PAPER_NAME_A4,
+    tuple([int(round(s)) for s in pagesizes.A3]):Gtk.PAPER_NAME_A3,
     }
 
 class OSXPDFPrinter:
@@ -38,11 +38,11 @@ class WindowsPDFPrinter:
     def set_document (self, filename, operation,context):
         try:
             from subprocess import Popen
-            import _winreg
-            regPathKey = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
+            import winreg
+            regPathKey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
                                          "Software\Microsoft\Windows\CurrentVersion\App Paths\AcroRd32.exe")
-            regPathValue, regPathType = _winreg.QueryValueEx(regPathKey, "")
-            if regPathType != _winreg.REG_SZ:
+            regPathValue, regPathType = winreg.QueryValueEx(regPathKey, "")
+            if regPathType != winreg.REG_SZ:
                 raise TypeError
         except:
             from gourmet.gtk_extras.dialog_extras import show_message
@@ -61,14 +61,14 @@ class WindowsPDFPrinter:
 class PDFPrinter:
 
     def setup_printer (self, parent=None):
-        po = gtk.PrintOperation()
+        po = Gtk.PrintOperation()
         #po.set_n_pages(self.d.get_n_pages())
         po.connect('draw_page',self.draw_page)
         po.connect('begin-print',self.begin_print)
         po.connect('create-custom-widget',self.create_custom_widget)
         po.props.custom_tab_label = _('Page Layout')
         po.connect('custom-widget-apply',self.custom_widget_apply)
-        po.run(gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG, parent=parent)
+        po.run(Gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG, parent=parent)
 
     def set_document (self, filename, operation,context):
         if not filename.startswith('file'):
@@ -80,17 +80,17 @@ class PDFPrinter:
         w,h = page.get_size()
         if w > h:
             w,h = h,w
-            ori = gtk.PAGE_ORIENTATION_LANDSCAPE
+            ori = Gtk.PAGE_ORIENTATION_LANDSCAPE
         else:
-            ori = gtk.PAGE_ORIENTATION_PORTRAIT
-        page_setup = gtk.PageSetup()
+            ori = Gtk.PAGE_ORIENTATION_PORTRAIT
+        page_setup = Gtk.PageSetup()
         page_setup.set_orientation(ori)
         size = int(round(w)),int(round(h))
         gtk_size = rl2gtk_papersizes.get(size,None)
         if gtk_size:
-            ps = gtk.PaperSize(gtk_size)
+            ps = Gtk.PaperSize(gtk_size)
         else:
-            ps = gtk.paper_size_new_custom('','',w,h,gtk.UNIT_POINTS)
+            ps = Gtk.paper_size_new_custom('','',w,h,Gtk.UNIT_POINTS)
         page_setup.set_paper_size(ps)
         operation.set_default_page_setup(page_setup)
 
@@ -98,7 +98,7 @@ class PDFPrinter:
         page = self.d.get_page(page_num)
         w,h = page.get_size()
         #page_setup = context.get_page_setup()
-        #ps = gtk.paper_size_new_custom('','',w,h,gtk.UNIT_POINTS)
+        #ps = Gtk.paper_size_new_custom('','',w,h,Gtk.UNIT_POINTS)
         #page_setup.set_paper_size(ps)
         page.render_for_printing(context.get_cairo_context())
 
@@ -175,25 +175,25 @@ class PDFRecipePrinter (PDFPrinter):
         pe.connect('error',self.handle_error)
         pe.run()
         if self.printing_error:
-            print 'PRINTING ERROR!'
+            print('PRINTING ERROR!')
             raise Exception("There was an error generating PDF")
         self.set_document(fn, operation,context)
 
     def handle_error (self,obj,errno, summary, traceback):
-        print 'There was an error generating a PDF to print.'
-        print summary
-        print traceback
+        print('There was an error generating a PDF to print.')
+        print(summary)
+        print(traceback)
         self.printing_error = True
         raise Exception('There was an error generating a PDF to print')
 
 def setup_printer (pp):
-    po = gtk.PrintOperation()
+    po = Gtk.PrintOperation()
     po.set_n_pages(pp.d.get_n_pages())
     po.connect('draw_page',pp.draw_page)
     po.connect('begin-print',pp.begin_print)
     po.connect('create-custom-widget',pp.create_custom_widget)
     po.connect('custom-widget-apply',pp.custom_widget_apply)
-    po.run(gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG)
+    po.run(Gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG)
 
 def print_pdf (pdf_filename):
     if not pdf_filename.startswith('file'):

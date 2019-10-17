@@ -76,7 +76,7 @@ class NYTPlugin(PluginPlugin):
                             if not el.strip():
                                 return # Don't add empty strings or we screw things up royally
                             else:
-                                print 'we are adding navigable string: ',el,'with tag',tag
+                                print('we are adding navigable string: ',el,'with tag',tag)
                         self.preparsed_elements.append((el,tag))
 
 
@@ -123,7 +123,7 @@ class NYTPlugin(PluginPlugin):
                     stupid_icon = ct.parent.find('span')
                     if stupid_icon:
                         stupid_icon.extract()
-                    print 'Add cooktime',ct.parent
+                    print('Add cooktime',ct.parent)
                     self.maybe_add(
                         ct.parent,
                         'cooktime'

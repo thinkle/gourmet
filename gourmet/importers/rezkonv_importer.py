@@ -6,15 +6,15 @@ from gourmet.gdebug import debug, TimeAction
 class rezconf_constants (mealmaster_importer.mmf_constants):
     def __init__ (self):
         mealmaster_importer.mmf_constants.__init__(self)
-        for k,v in {'Titel':'title',
+        for k,v in list({'Titel':'title',
                     'Kategorien':'category',
                     'Menge':'servings',
-                    }.items():
+                    }.items()):
             self.recattrs[k]=v
-        for k,v in {}.items():
+        for k,v in list({}.items()):
             self.unit_conv[k]=v
         self.unit_convr = {}
-        for k,v in self.unit_conv.items():
+        for k,v in list(self.unit_conv.items()):
             self.unit_convr[v]=k
 
 rzc = rezconf_constants()
@@ -51,7 +51,7 @@ class rezkonv_importer (mealmaster_importer.mmf_importer):
         # this: ^\s*ATTRIBUTE: Some entry of some kind...$
         attrmatch="^\s*("
         self.mmf = rzc
-        for k in self.mmf.recattrs.keys():
+        for k in list(self.mmf.recattrs.keys()):
             attrmatch += "%s|"%re.escape(k)
         attrmatch="%s):\s*(.*)\s*$"%attrmatch[0:-1]
         self.attr_matcher = re.compile(attrmatch)

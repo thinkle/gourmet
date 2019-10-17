@@ -2,7 +2,7 @@ import BeautifulSoup
 from gourmet.importers.generic_recipe_parser import RecipeParser
 from gourmet.importers.interactive_importer import InteractiveImporter
 import gourmet.importers.importer
-import re, urllib
+import re, urllib.request, urllib.parse, urllib.error
 #import gourmet.plugin_loader
 
 class WebParser (InteractiveImporter):
@@ -144,11 +144,11 @@ class WebParser (InteractiveImporter):
             to_add = to_add[lws:]
             self.parsed.append((pre_add,None))
         # Do extra substitution of MS Characters -- shouldn't be necessary...
-        for char,tup in BeautifulSoup.UnicodeDammit.MS_CHARS.items():
+        for char,tup in list(BeautifulSoup.UnicodeDammit.MS_CHARS.items()):
             char = char.decode('iso-8859-1').encode('utf-8')
             if to_add.find(char) >= 0:
                 try:
-                    to_add = to_add.replace(char,unichr(long(tup[1],16)))
+                    to_add = to_add.replace(char,chr(int(tup[1],16)))
                 except ValueError:
                     print("ValueError caught in add_buffer_to_parsed")
         self.parsed.append((to_add,self.last_label))
@@ -259,8 +259,8 @@ def test_parser ():
     parser = WebParserTester('http://www.foo.bar',txt,None)
     parsed = parser.parse_webpage()
     for p,lab in parsed:
-        print 'LABEL:',lab
-        print 'TEXT:',p
+        print('LABEL:',lab)
+        print('TEXT:',p)
     return parser
 
 def test_webpage ():
@@ -274,8 +274,8 @@ def test_webpage ():
     parsed = parser.parse_webpage()
     for p,lab in parsed:
         if lab=='ignore': continue
-        print 'LABEL:',lab
-        print 'TEXT:',p
+        print('LABEL:',lab)
+        print('TEXT:',p)
     return parser
 
 if __name__ == '__main__':

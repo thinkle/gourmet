@@ -17,7 +17,7 @@ class RecHandler (xml_importer.RecHandler):
     def __init__ (self, total=None, conv=None, parent_thread=None):
         xml_importer.RecHandler.__init__(self,total,conv=conv, parent_thread=parent_thread)
         self.REC_ATTRS = [r[0] for r in REC_ATTRS]
-        self.REC_ATTRS += [r for r in TEXT_ATTR_DIC.keys()]
+        self.REC_ATTRS += [r for r in list(TEXT_ATTR_DIC.keys())]
 
     def startElement(self, name, attrs):
         self.elbuf = ""
@@ -63,10 +63,10 @@ class RecHandler (xml_importer.RecHandler):
             else:
                 self.rec['yields'] = 1
                 self.rec['yield_unit'] = unit
-                print 'Warning, recorded',txt,'as 1 ',unit
+                print('Warning, recorded',txt,'as 1 ',unit)
         elif name in self.REC_ATTRS:
             self.rec[str(name)]=xml.sax.saxutils.unescape(self.elbuf.strip())
-        elif name in self.ING_ATTRS.keys():
+        elif name in list(self.ING_ATTRS.keys()):
             self.ing[str(self.ING_ATTRS[name])]=xml.sax.saxutils.unescape(self.elbuf.strip())
 
 

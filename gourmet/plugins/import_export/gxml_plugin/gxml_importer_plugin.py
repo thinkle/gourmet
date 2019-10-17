@@ -6,7 +6,7 @@ from gourmet.plugin import ImporterPlugin
 from gourmet.importers.importer import Tester
 from gourmet.recipeManager import get_recipe_manager
 from gourmet.threadManager import get_thread_manager
-import gxml2_importer, gxml_importer
+from . import gxml2_importer, gxml_importer
 from gettext import gettext as _
 
 test_dir = os.path.split(__file__)[0] # our directory src/lib/plugins/import_export/plugin/*/
@@ -28,9 +28,9 @@ class GxmlImportTester:
             self.run_test_set_test(recipe_objects)
 
     def run_test_set_test (self, recs):
-        assert u'Amazing rice' in [r.title for r in recs], "Titles were: %s"%([r.title for r in recs])
+        assert 'Amazing rice' in [r.title for r in recs], "Titles were: %s"%([r.title for r in recs])
         rice = recs[0]
-        if rice.title != u'Amazing rice':
+        if rice.title != 'Amazing rice':
             rice = recs[1]
             sauce = recs[0]
         else:
@@ -41,7 +41,7 @@ class GxmlImportTester:
         assert ings[1].refid == sauce.id,'Ingredient reference did not export properly'
         sings = self.rm.get_ings(sauce)
         assert sings[1].inggroup == 'veggies','value was %s'%sings[0].inggroup
-        assert sings[1].item == u'jalapeño peppers','value was "%s",%s'%(sings[1].item,
+        assert sings[1].item == 'jalapeño peppers','value was "%s",%s'%(sings[1].item,
                                                                          type(sings[1].item)
                                                                          )
         self.is_markup_valid(sauce)
@@ -51,9 +51,9 @@ class GxmlImportTester:
         assert sauce.thumb
 
     def is_markup_valid (self, rec):
-        import pango
-        pango.parse_markup(rec.instructions or '')
-        pango.parse_markup(rec.modifications or '')
+        from gi.repository import Pango
+        Pango.parse_markup(rec.instructions or '')
+        Pango.parse_markup(rec.modifications or '')
 
 
 

@@ -1,8 +1,8 @@
 import re, locale, math
-from defaults.defaults import lang as defaults
+from .defaults.defaults import lang as defaults
 from gettext import gettext as _
 from gettext import ngettext
-from gdebug import debug
+from .gdebug import debug
 
 FRACTIONS_ALL = 1
 FRACTIONS_NORMAL = 0
@@ -36,7 +36,7 @@ class PossiblyCaseInsensitiveDictionary (dict):
         dict.__getitem__(self,k)
 
 
-class Converter:
+class Converter(BaseException):
 
     __single = None
 
@@ -90,7 +90,7 @@ class Converter:
         self.build_converter_dictionary(self.v2m_table,density=True)
 
     def add_time_table (self):
-        for u,conv in self.unit_to_seconds.items():
+        for u,conv in list(self.unit_to_seconds.items()):
             self.conv_table[(u,'seconds')]=conv
 
     def create_conv_table(self):
@@ -138,7 +138,7 @@ class Converter:
             table=self.conv_table
         #else:
             #print "We were handed a table: ",table
-        for u1,u2 in filter(lambda x: len(x)==2, table.keys()):
+        for u1,u2 in [x for x in list(table.keys()) if len(x)==2]:
             if u1 not in units: units.append(u1)
             if u2 not in units: units.append(u2)
         #print 'done looping through list'
@@ -146,7 +146,7 @@ class Converter:
             #print 'grabbing possible conversions for ',u
             debug('unit=%s'%u)
             d=self.possible_conversions(u,dict=table)
-            to_expand = d.keys()
+            to_expand = list(d.keys())
             # keep a list of what we've expanded
             expanded = []
             while len(to_expand) >= 1:
@@ -157,14 +157,14 @@ class Converter:
                     #debug('There are %s %s in a %s'%(factor,u,itm))
                     d2 = self.possible_conversions(itm)
                     if factor:
-                        for k,v in d2.items():
+                        for k,v in list(d2.items()):
                             if not convert(u,k):
                                 #debug('and there are %s %s in a %s'%(v,itm,k))
                                 conversion = float(v) * float(factor)
                                 # If we're doing density, we want to
                                 # make sure we always have our tuples
                                 # (volume,density)
-                                if density and itm not in [key[0] for key in table.keys()]:
+                                if density and itm not in [key[0] for key in list(table.keys())]:
                                     table[(u,k)]=float(1)/conversion
                                 else: table[(k,u)]= conversion
                             if k not in expanded and k not in to_expand and k != itm and k != u:
@@ -176,9 +176,9 @@ class Converter:
             return 1.0
         else:
             dict=self.conv_table
-            if dict.has_key((u1,u2)):
+            if (u1,u2) in dict:
                 return dict[(u1,u2)]
-            elif dict.has_key((u2,u1)):
+            elif (u2,u1) in dict:
                 return float(1) / float(dict[(u2,u1)])
             else:
                 return 0
@@ -187,14 +187,14 @@ class Converter:
         if u1 == u2:
             return 1.0
         if not density:
-            if self.density_table.has_key(item):
+            if item in self.density_table:
                 density=self.density_table[item]
             else:
                 return None
-        if self.v2m_table.has_key((u1,u2)):
+        if (u1,u2) in self.v2m_table:
             conv = self.v2m_table[(u1,u2)]
             return conv * density
-        elif self.v2m_table.has_key((u2,u1)):
+        elif (u2,u1) in self.v2m_table:
             conv = float(1) / float(self.v2m_table[(u2,u1)])
             return conv / density
         else:
@@ -203,7 +203,7 @@ class Converter:
     def list_of_cu_tables (self, dictcu=None):
         if (not dictcu):
             dictcu = self.cross_unit_table
-        values = dictcu.values()
+        values = list(dictcu.values())
         ret = []
         for v in values:
             if not v[0] in ret:
@@ -217,12 +217,12 @@ class Converter:
 #        tbls = self.list_of_cu_tables(dictcu)
 #        my_tbls = []
         ret = {}
-        for itm in dictcu.items():
+        for itm in list(dictcu.items()):
             k = itm[0]
             v = itm[1]
             dct = self.cross_unit_dicts[v[0]]
             conv = v[1]
-            if item and dct.has_key(item):
+            if item and item in dct:
                 mult = dct[item]
             if mult:
                 ret[k] = conv * mult
@@ -230,11 +230,11 @@ class Converter:
 
     def converter (self, u1, u2, item=None, density=None):
         ## Just a front end to convert_fancy that looks up units
-        if self.unit_dict.has_key(u1):
+        if u1 in self.unit_dict:
             unit1 = self.unit_dict[u1]
         else:
             unit1 = u1
-        if self.unit_dict.has_key(u2):
+        if u2 in self.unit_dict:
             unit2 = self.unit_dict[u2]
         else:
             unit2 = u2
@@ -261,7 +261,7 @@ class Converter:
     def get_all_conversions (self, u, item=None, density=None):
         dict = self.get_conversions(u, item, density)
         expanded = []
-        conversions = dict.keys()
+        conversions = list(dict.keys())
         lst = conversions[0:] # make another copy to chew up
         while len(lst) >= 1:
             itm = lst.pop()
@@ -269,7 +269,7 @@ class Converter:
                 conversions.append(itm)
             if not itm in expanded:
                 d = self.get_conversions(u,itm,density)
-                lst.extend(d.keys())
+                lst.extend(list(d.keys()))
                 expanded.append(itm)
         return conversions
 
@@ -280,7 +280,7 @@ class Converter:
         if (not dict):
             dict=self.conv_table
         ret = {}
-        entries = dict.items()
+        entries = list(dict.items())
         for item in entries:
             i1 = item[0][0]
             i2 = item[0][1]
@@ -521,7 +521,7 @@ class Converter:
         for num_start,num_end,section_end in numbers:
             num = frac_to_float(timestring[num_start:num_end])
             unit = timestring[num_end:section_end].strip()
-            if self.unit_dict.has_key(unit):
+            if unit in self.unit_dict:
                 conv = self.converter(unit,'seconds')
                 if conv and num:
                     secs += num * conv
@@ -537,7 +537,7 @@ class Converter:
         num = []
         for n,w in enumerate(words):
             if NUMBER_MATCHER.match(w): num.append(w)
-            elif num and self.unit_dict.has_key(w):
+            elif num and w in self.unit_dict:
                 conv = self.converter(w,'seconds')
                 if conv:
                     n = frac_to_float(" ".join(num))
@@ -548,7 +548,7 @@ class Converter:
 def get_converter ():
     try:
         return Converter()
-    except Converter, c:
+    except Converter as c:
         return c
 
 # Each of our time formatting functions takes two arguments, which
@@ -569,7 +569,7 @@ time_formatters = {
 def seconds_to_timestring (time, round_at=None, fractions=FRACTIONS_NORMAL):
     time = int(time)
     time_strings = []
-    units = Converter.unit_to_seconds.items()
+    units = list(Converter.unit_to_seconds.items())
     units.sort(lambda a,b: a[1]<b[1] and 1 or a[1]>b[1] and -1 or 0)
     for unit,divisor in units:
         time_covered = time / int(divisor)
@@ -636,85 +636,86 @@ def integerp (num, approx=0.01):
 
 NUMBER_WORDS = {}
 if hasattr(defaults,'NUMBERS'):
-    for n,words in defaults.NUMBERS.items():
+    for n,words in list(defaults.NUMBERS.items()):
         for w in words:
             NUMBER_WORDS[w] = n
-all_number_words = NUMBER_WORDS.keys()
+all_number_words = list(NUMBER_WORDS.keys())
+from functools import cmp_to_key
 all_number_words.sort(
-    lambda x,y: ((len(y)>len(x) and 1) or (len(x)>len(y) and -1) or 0)
-    )
+    key=cmp_to_key(
+        lambda x,y: ((len(y)>len(x) and 1) or (len(x)>len(y) and -1) or 0)
+    ))
 
 NUMBER_WORD_REGEXP = '|'.join(all_number_words).replace(' ','\s+')
-FRACTION_WORD_REGEXP = '|'.join(filter(lambda n: NUMBER_WORDS[n]<1.0,
-                                       all_number_words)
+FRACTION_WORD_REGEXP = '|'.join([n for n in all_number_words if NUMBER_WORDS[n]<1.0]
                                 ).replace(' ','\s+')
 
 NORMAL_FRACTIONS = [(1,2),(1,4),(3,4)]
 
 NUM_TO_FRACTIONS = {
-    (1,2) : u'\u00BD',
-    (1,4) : u'\u00BC',
-    (3,4) : u'\u00BE',
-    (1,3) : u'\u2153',
-    (2,3) : u'\u2154',
-    (1,5) : u'\u2155',
-    (2,5) : u'\u2156',
-    (3,5) : u'\u2157',
-    (4,5) : u'\u2158',
-    (1,6) : u'\u2159',
-    (5,6) : u'\u215A',
-    (1,8) : u'\u215B',
-    (3,8) : u'\u215C',
-    (5,8) : u'\u215D',
-    (7,8) : u'\u215E',
+    (1,2) : '\u00BD',
+    (1,4) : '\u00BC',
+    (3,4) : '\u00BE',
+    (1,3) : '\u2153',
+    (2,3) : '\u2154',
+    (1,5) : '\u2155',
+    (2,5) : '\u2156',
+    (3,5) : '\u2157',
+    (4,5) : '\u2158',
+    (1,6) : '\u2159',
+    (5,6) : '\u215A',
+    (1,8) : '\u215B',
+    (3,8) : '\u215C',
+    (5,8) : '\u215D',
+    (7,8) : '\u215E',
     }
 
 UNICODE_FRACTIONS = {
     # a dictionary of funky unicode numbers not recognized by standard
     # python float() and int() functions
-    u'\u00BD':1.0/2,
-    u'\u00BC':1.0/4,
-    u'\u00BE':3.0/4,
-    u'\u2153':1.0/3,
-    u'\u2154':2.0/3,
-    u'\u2155':1.0/5,
-    u'\u2156':2.0/5,
-    u'\u2157':3.0/5,
-    u'\u2158':4.0/5,
-    u'\u2159':1.0/6,
-    u'\u215A':5.0/6,
-    u'\u215B':1.0/8,
-    u'\u215C':3.0/8,
-    u'\u215D':5.0/8,
-    u'\u215E':7.0/8,
+    '\u00BD':1.0/2,
+    '\u00BC':1.0/4,
+    '\u00BE':3.0/4,
+    '\u2153':1.0/3,
+    '\u2154':2.0/3,
+    '\u2155':1.0/5,
+    '\u2156':2.0/5,
+    '\u2157':3.0/5,
+    '\u2158':4.0/5,
+    '\u2159':1.0/6,
+    '\u215A':5.0/6,
+    '\u215B':1.0/8,
+    '\u215C':3.0/8,
+    '\u215D':5.0/8,
+    '\u215E':7.0/8,
     }
 
-SUP_DICT = {1:u'\u00B9',
-            2:u'\u00B2',
-            3:u'\u00B3',
+SUP_DICT = {1:'\u00B9',
+            2:'\u00B2',
+            3:'\u00B3',
             }
 
-SLASH = u'\u2044'
-SUB_DICT = {1:u'\u2081',
-            2:u'\u2082',
-            3:u'\u2083',
-            4:u'\u2084',
-            5:u'\u2085',
-            6:u'\u2086',
-            7:u'\u2087',
-            8:u'\u2088',
-            9:u'\u2089',
+SLASH = '\u2044'
+SUB_DICT = {1:'\u2081',
+            2:'\u2082',
+            3:'\u2083',
+            4:'\u2084',
+            5:'\u2085',
+            6:'\u2086',
+            7:'\u2087',
+            8:'\u2088',
+            9:'\u2089',
             }
 
 # nonstandard integers (sub or sup) that may be used in fractions
 UNICODE_INTEGERS = {}
 for d in SUB_DICT,SUP_DICT:
-    for k,v in d.items():
+    for k,v in list(d.items()):
         UNICODE_INTEGERS[v]=k
 
 NUMBER_REGEXP = "[\d"
 #for k in UNICODE_INTEGERS.keys(): NUMBER_REGEXP+=k # COVERED by re.UNICODE
-for k in UNICODE_FRACTIONS.keys(): NUMBER_REGEXP+=k
+for k in list(UNICODE_FRACTIONS.keys()): NUMBER_REGEXP+=k
 NUMBER_START_REGEXP = NUMBER_REGEXP + ']'
 NUMBER_END_NO_RANGE_REGEXP = NUMBER_START_REGEXP # Is this right -- quick fix here.
 NUMBER_MID_REGEXP = NUMBER_REGEXP + ',.' + SLASH
@@ -731,11 +732,11 @@ else:
     NUMBER_NO_RANGE_REGEXP = NUMBER_START_REGEXP + '+'
 NUMBER_MATCHER = re.compile("^%s$"%NUMBER_REGEXP,re.UNICODE)
 
-UNICODE_FRACTION_REGEXP = "[" + "".join(UNICODE_FRACTIONS.keys()) + "]"
-DIVIDEND_REGEXP = "[0-9" + "".join(SUP_DICT.values()) + "]+"
+UNICODE_FRACTION_REGEXP = "[" + "".join(list(UNICODE_FRACTIONS.keys())) + "]"
+DIVIDEND_REGEXP = "[0-9" + "".join(list(SUP_DICT.values())) + "]+"
 SLASH_REGEXP = "[/" + SLASH + "]"
 SLASH_MATCHER = re.compile(SLASH_REGEXP)
-DIVISOR_REGEXP = "[0-9" + "".join(SUB_DICT.values()) + "]+"
+DIVISOR_REGEXP = "[0-9" + "".join(list(SUB_DICT.values())) + "]+"
 FRACTION_REGEXP = "(" + UNICODE_FRACTION_REGEXP + "|" + DIVIDEND_REGEXP + \
                           SLASH_REGEXP + DIVISOR_REGEXP + ")"
 
@@ -776,7 +777,7 @@ for canonical_name,other_names in defaults.UNITS:
     for n in other_names:
         if ' ' in n: multi_word_units.append(n)
 MULTI_WORD_UNIT_REGEXP = '(' + \
-                       '|'.join([re.escape(unicode(u)) for u in multi_word_units]) \
+                       '|'.join([re.escape(str(u)) for u in multi_word_units]) \
                        + ')'
 
 
@@ -803,14 +804,14 @@ try:
  """
     ING_MATCHER_REGEXP = ING_MATCHER_REGEXP%locals()
 except:
-    print 'Failure with local vars...'
+    print('Failure with local vars...')
     for s in ['NUMBER_FINDER_REGEXP',
               'NUMBER_FINDER_REGEXP2',
               'RANGE_REGEXP',
               'MULTI_WORD_UNIT_REGEXP',]:
-        try: print 'DOUBLE CHECK',s,'%%(%s)s'%s%locals()
+        try: print('DOUBLE CHECK',s,'%%(%s)s'%s%locals())
         except:
-            print 'Failed with ',s,locals()[s]
+            print('Failed with ',s,locals()[s])
     raise
 
 ING_MATCHER = re.compile(ING_MATCHER_REGEXP,
@@ -822,10 +823,10 @@ ING_MATCHER_ITEM_GROUP = 'item'
 
 def convert_fractions_to_ascii (s):
     """Convert all unicode-like fractions in string S with their ASCII equivalents"""
-    for nums,uni in NUM_TO_FRACTIONS.items():
+    for nums,uni in list(NUM_TO_FRACTIONS.items()):
         s=re.sub(uni,"%s/%s"%(nums[0],nums[1]),s)
     for d in SUB_DICT,SUP_DICT:
-        for num,uni in d.items():
+        for num,uni in list(d.items()):
             s=re.sub(uni,str(num),s)
     s=re.sub(SLASH,'/',s)
     return s
@@ -844,11 +845,11 @@ def fractify (decimal, divisor, approx=0.01, fractions=FRACTIONS_NORMAL):
             return "%s/%s"%(dividend,divisor)
         elif fractions==FRACTIONS_ALL:
             # otherwise, we have to do nice unicode magic
-            if NUM_TO_FRACTIONS.has_key((dividend,divisor)):
+            if (dividend,divisor) in NUM_TO_FRACTIONS:
                 return NUM_TO_FRACTIONS[(dividend,divisor)]
             else:
-                if SUP_DICT.has_key(dividend): dividend = SUP_DICT[dividend]
-                if SUB_DICT.has_key(divisor): divisor = SUB_DICT[divisor]
+                if dividend in SUP_DICT: dividend = SUP_DICT[dividend]
+                if divisor in SUB_DICT: divisor = SUB_DICT[divisor]
                 return '%s%s%s'%(dividend,SLASH,divisor)
         else: # fractions==FRACTIONS_NORMAL
             #fallback to "normal" fractions -- 1/4, 1/2, 3/4 are special
@@ -922,8 +923,8 @@ def float_string (s):
     Also, we recognize items outside of our locale, since e.g. American might well be
     importing British recipes and viceversa.
     """
-    if NUMBER_WORDS.has_key(s.lower()):
-        print 'We have key',s.lower()
+    if s.lower() in NUMBER_WORDS:
+        print('We have key',s.lower())
         return NUMBER_WORDS[s.lower()]
     THOUSEP = locale.localeconv()['thousands_sep']
     DECSEP = locale.localeconv()['decimal_point']
@@ -945,7 +946,7 @@ def float_string (s):
     elif THOUSEP and s.find(THOUSEP)>-1:
         # otherwise, perhaps our thousand separator is really a
         # decimal separator (we're out of our locale...)
-        print 'Warning: assuming %s is a decimal point in %s'%(THOUSEP,s)
+        print('Warning: assuming %s is a decimal point in %s'%(THOUSEP,s))
         s = s.replace(DECSEP,'!!!')
         s = s.replace(THOUSEP,DECSEP)
         s = s.replace('!!!',THOUSEP) # and remove any commas for good measure
@@ -956,19 +957,19 @@ def float_string (s):
 
 def frac_to_float (s):
     """We assume fractions look like this (I )?N/D"""
-    if NUMBER_WORDS.has_key(s): return NUMBER_WORDS[s]
-    if hasattr(s,'lower') and NUMBER_WORDS.has_key(s.lower()):
+    if s in NUMBER_WORDS: return NUMBER_WORDS[s]
+    if hasattr(s,'lower') and s.lower() in NUMBER_WORDS:
         return NUMBER_WORDS[s.lower()]
-    s = unicode(s)
+    s = str(s)
     m=FRACTION_MATCHER.match(s)
     if m:
         i = m.group('int')
         frac = m.group('frac')
         if i: i=float_string(i)
         else: i = 0
-        if UNICODE_FRACTIONS.has_key(frac):
+        if frac in UNICODE_FRACTIONS:
             return i+UNICODE_FRACTIONS[frac]
-        elif NUMBER_WORDS.has_key(frac):
+        elif frac in NUMBER_WORDS:
             return i+NUMBER_WORDS[frac]
         else:
             n,d = SLASH_MATCHER.split(frac)
@@ -1006,34 +1007,34 @@ if __name__ == '__main__' and False:
                 self.offer_options()
 
         def offer_options (self):
-            print 'Choose one of the following actions:'
-            for k in self.options.keys(): print k
-            choice = raw_input('Type your choice: ')
-            if self.options.has_key(choice):
+            print('Choose one of the following actions:')
+            for k in list(self.options.keys()): print(k)
+            choice = input('Type your choice: ')
+            if choice in self.options:
                 self.options[choice]()
             else:
-                print "I'm afraid I didn't understand your choice!"
+                print("I'm afraid I didn't understand your choice!")
                 self.return_to_continue()
                 self.offer_options()
 
         def get_unit (self, prompt="Enter unit: "):
-            u = raw_input(prompt).strip()
-            if self.c.unit_dict.has_key(u):
+            u = input(prompt).strip()
+            if u in self.c.unit_dict:
                 return u
             elif u=='list':
-                for u in self.c.unit_dict.keys():
-                    print u,", ",
-                print ""
+                for u in list(self.c.unit_dict.keys()):
+                    print(u,", ", end=' ')
+                print("")
                 return self.get_unit(prompt)
             else:
-                print u, 'Is not a unit I know about! Please try again.'
-                print '(Type "list" for a list of valid units)'
+                print(u, 'Is not a unit I know about! Please try again.')
+                print('(Type "list" for a list of valid units)')
                 return self.get_unit(prompt)
 
         def get_amount (self, prompt="Enter amount: "):
-            amt = frac_to_float(raw_input(prompt))
+            amt = frac_to_float(input(prompt))
             if not amt:
-                print "Please enter an amount!"
+                print("Please enter an amount!")
                 return self.get_amount(prompt)
             else:
                 return amt
@@ -1043,18 +1044,18 @@ if __name__ == '__main__' and False:
             amt = self.get_amount("Enter source amount: ")
             u2 = self.get_unit("Enter target unit: ")
             conv = self.c.converter(u1,u2)
-            print '%s %s = %s %s'%(amt,u1,conv*amt,u2)
+            print('%s %s = %s %s'%(amt,u1,conv*amt,u2))
             self.return_to_continue()
 
         def adjuster (self):
             u1 = self.get_unit('Original unit: ')
             a1 = self.get_amount('Original amount: ')
             a,u = self.c.adjust_unit(a1,u1)
-            print 'Most readable unit = %s %s'%(a,u)
+            print('Most readable unit = %s %s'%(a,u))
 
         def return_to_continue (self):
-            print 'Enter return to continue: '
-            raw_input()
+            print('Enter return to continue: ')
+            input()
 
         def adder (self):
             u1 = self.get_unit('Enter unit 1: ')
@@ -1063,9 +1064,9 @@ if __name__ == '__main__' and False:
             a2 = self.get_amount('Enter amount 2: ')
             result = self.c.add_reasonably(a1,u1,a2,u2)
             if result:
-                print "%s %s + %s %s = %s"%(u1,a1,u2,a2,result)
+                print("%s %s + %s %s = %s"%(u1,a1,u2,a2,result))
             else:
-                print "I'm sorry, I couldn't add that together!"
+                print("I'm sorry, I couldn't add that together!")
             self.return_to_continue()
 
         def quit (self):

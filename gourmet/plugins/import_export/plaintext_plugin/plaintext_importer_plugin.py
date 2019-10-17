@@ -25,7 +25,7 @@ class PlainTextImporter (InteractiveImporter):
             de.show_message(title=_('Big File'),
                             label=_('File %s is too big to import'%self.filename),
                             sublabel=_('Your file exceeds the maximum length of %s characters. You probably didn\'t mean to import it anyway. If you really do want to import this file, use a text editor to split it into smaller files and try importing again.')%MAX_PLAINTEXT_LENGTH,
-                            message_type=gtk.MESSAGE_ERROR)
+                            message_type=Gtk.MessageType.ERROR)
             return
         ifi = file(self.filename,'r')
         data = '\n'.join(check_encodings.get_file(ifi))

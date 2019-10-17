@@ -1,4 +1,4 @@
-import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap, types
+import re, os.path, os, xml.sax.saxutils, time, shutil, urllib.request, urllib.parse, urllib.error, textwrap, types
 from gourmet import convert
 from gourmet.gglobals import REC_ATTR_DIC, DEFAULT_ATTR_ORDER, DEFAULT_TEXT_ATTR_ORDER, TEXT_ATTR_DIC, use_threads
 from gourmet.gdebug import TimeAction, debug, print_timer_info
@@ -90,7 +90,7 @@ class exporter (SuspendableThread, Pluggable):
             txt=self._grab_attr_(self.r,a)
             debug('_write_attrs_ writing %s=%s'%(a,txt),1)
             if txt and (
-                (type(txt) not in [str,unicode])
+                (type(txt) not in [str,str])
                 or
                 txt.strip()
                 ):
@@ -137,7 +137,7 @@ class exporter (SuspendableThread, Pluggable):
                     try: self.write_text(a,s,time=time)
                     except:
                         self.write_text(a,s)
-                        print 'Failed to export time=',time
+                        print('Failed to export time=',time)
                         raise
                     if img:
                         self.write_image(img)
@@ -199,25 +199,25 @@ class exporter (SuspendableThread, Pluggable):
                 # this 'if' ought to be unnecessary, but is kept around
                 # for db converting purposes -- e.g. so we can properly
                 # export an old DB
-                if ret and type(ret) not in [str,unicode]:
+                if ret and type(ret) not in [str,str]:
                     ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
-            elif attr=='rating' and ret and type(ret) not in [str,unicode]:
+            elif attr=='rating' and ret and type(ret) not in [str,str]:
                 if ret/2==ret/2.0:
                     ret = "%s/5 %s"%(ret/2,_('stars'))
                 else:
                     ret = "%s/5 %s"%(ret/2.0,_('stars'))
-            elif attr=='servings' and type(ret) not in [str,unicode]:
+            elif attr=='servings' and type(ret) not in [str,str]:
                 ret = convert.float_to_frac(ret,fractions=self.fractions)
             elif attr=='yields':
                 ret = convert.float_to_frac(ret,fractions=self.fractions)
                 yield_unit = self._grab_attr_(obj,'yield_unit')
                 if yield_unit:
                     ret = '%s %s'%(ret,yield_unit) # FIXME: i18n? (fix also below in exporter_mult)
-            if type(ret) in [str,unicode] and attr not in ['thumb','image']:
+            if type(ret) in [str,str] and attr not in ['thumb','image']:
                 try:
                     ret = ret.encode(self.DEFAULT_ENCODING)
                 except:
-                    print "oops:",ret,"doesn't look like unicode."
+                    print("oops:",ret,"doesn't look like unicode.")
                     raise
             return ret
 
@@ -296,14 +296,14 @@ class exporter (SuspendableThread, Pluggable):
     def handle_markup (self, txt):
         """Handle markup inside of txt."""
         if txt == None:
-            print 'Warning, handle_markup handed None'
+            print('Warning, handle_markup handed None')
             return ''
-        import pango
+        from gi.repository import Pango
         outtxt = ""
         try:
-            al,txt,sep = pango.parse_markup(txt,u'\x00')
+            al,txt,sep = Pango.parse_markup(txt,'\x00')
         except:
-            al,txt,sep = pango.parse_markup(xml.sax.saxutils.escape(txt),u'\x00')
+            al,txt,sep = Pango.parse_markup(xml.sax.saxutils.escape(txt),'\x00')
         ai = al.get_iterator()
         more = True
         while more:
@@ -318,15 +318,15 @@ class exporter (SuspendableThread, Pluggable):
                 # So we define trailing_newline as a variable
                 if chunk and chunk[-1]=='\n':
                     trailing_newline = '\n'; chunk = chunk[:-1]
-                if 'style' in fields.value_nicks and fd.get_style()==pango.STYLE_ITALIC:
+                if 'style' in fields.value_nicks and fd.get_style()==Pango.Style.ITALIC:
                     chunk=self.handle_italic(chunk)
-                if 'weight' in fields.value_nicks and fd.get_weight()==pango.WEIGHT_BOLD:
+                if 'weight' in fields.value_nicks and fd.get_weight()==Pango.Weight.BOLD:
                     chunk=self.handle_bold(chunk)
             for att in atts:
-                if att.type==pango.ATTR_UNDERLINE and att.value==pango.UNDERLINE_SINGLE:
+                if att.type==Pango.ATTR_UNDERLINE and att.value==Pango.Underline.SINGLE:
                     chunk=self.handle_underline(chunk)
             outtxt += chunk + trailing_newline
-            more=ai.next()
+            more=next(ai)
         return outtxt
 
     def handle_italic (self,chunk):
@@ -427,7 +427,7 @@ class exporter_mult (exporter):
                 fl_ret = float(ret)
             else:
                 if ret is not None:
-                    print 'WARNING: IGNORING serving value ',ret
+                    print('WARNING: IGNORING serving value ',ret)
                 fl_ret = None
             if fl_ret:
                 ret = convert.float_to_frac(fl_ret * self.mult,
@@ -516,18 +516,18 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                 # this 'if' ought to be unnecessary, but is kept around
                 # for db converting purposes -- e.g. so we can properly
                 # export an old DB
-                if ret and type(ret) not in [str,unicode]:
+                if ret and type(ret) not in [str,str]:
                     ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
-            elif attr=='rating' and ret and type(ret) not in [str,unicode]:
+            elif attr=='rating' and ret and type(ret) not in [str,str]:
                 if ret/2==ret/2.0:
                     ret = "%s/5 %s"%(ret/2,_('stars'))
                 else:
                     ret = "%s/5 %s"%(ret/2.0,_('stars'))
-            if type(ret) in types.StringTypes and attr not in ['thumb','image']:
+            if type(ret) in (str,) and attr not in ['thumb','image']:
                 try:
                     ret = ret.encode(self.DEFAULT_ENCODING)
                 except:
-                    print "oops:",ret,"doesn't look like unicode."
+                    print("oops:",ret,"doesn't look like unicode.")
                     raise
             return ret
 
@@ -539,7 +539,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
             for ref in reffed:
                 rec = self.rd.get_rec(ref.refid)
                 if not rec in self.recipes:
-                    print 'Appending recipe ',rec.title,'referenced in ',r.title
+                    print('Appending recipe ',rec.title,'referenced in ',r.title)
                     self.recipes.append(rec)
 
     @pluggable_method
@@ -553,8 +553,8 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                     self.outdir=self.unique_name(self.outdir)
                     os.makedirs(self.outdir)
             else: os.makedirs(self.outdir)
-        create_one_file = self.one_file and type(self.out) in [str, unicode] and self.create_file
-        create_multi_file = not self.one_file and type(self.out) in [str, unicode]
+        create_one_file = self.one_file and type(self.out) in [str, str] and self.create_file
+        create_multi_file = not self.one_file and type(self.out) in [str, str]
         if create_one_file:
             self.ofi=open(self.out,'wb')
         else: self.ofi = self.out

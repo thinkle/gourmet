@@ -1,5 +1,5 @@
 import unittest
-import convert
+from . import convert
 
 class ConvertTest (unittest.TestCase):
 
@@ -14,15 +14,15 @@ class ConvertTest (unittest.TestCase):
          self.assertEqual(self.c.convert_w_density('ml','g',density=0.5),0.5)
 
     def testReadability (self):
-        self.failUnless(self.c.readability_score(1,'cup') > self.c.readability_score(0.8,'cups') )
-        self.failUnless(self.c.readability_score(1/3.0,'tsp.') > self.c.readability_score(0.123,'tsp.'))
+        self.assertTrue(self.c.readability_score(1,'cup') > self.c.readability_score(0.8,'cups') )
+        self.assertTrue(self.c.readability_score(1/3.0,'tsp.') > self.c.readability_score(0.123,'tsp.'))
 
     def testAdjustments (self):
         amt,unit = self.c.adjust_unit(12,'Tbs.','water')
         self.assertEqual(amt,.75)
 
     def testIntegerRounding (self):
-        self.failUnless(convert.integerp(0.99))
+        self.assertTrue(convert.integerp(0.99))
 
     def testFractionGenerator (self):
         for d in [2,3,4,5,6,8,10,16]:
@@ -51,7 +51,7 @@ class ConvertTest (unittest.TestCase):
             ('two cloves garlic', 'two','cloves','garlic'),
                         ]:
             match = convert.ING_MATCHER.match(s)
-            self.failUnless(match)
+            self.assertTrue(match)
             self.assertEqual(match.group(convert.ING_MATCHER_AMT_GROUP).strip(),a)
             self.assertEqual(match.group(convert.ING_MATCHER_UNIT_GROUP).strip(),u)
             self.assertEqual(match.group(convert.ING_MATCHER_ITEM_GROUP).strip(),i)

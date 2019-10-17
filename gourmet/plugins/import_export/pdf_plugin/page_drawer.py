@@ -1,6 +1,6 @@
-import gtk
+from gi.repository import Gtk
 
-class PageDrawer (gtk.DrawingArea):
+class PageDrawer (Gtk.DrawingArea):
 
     def __init__(self, page_width=None, page_height=None,
                  sub_areas=[],xalign=0.5,yalign=0.5
@@ -15,7 +15,7 @@ class PageDrawer (gtk.DrawingArea):
         """
         self.xalign = xalign
         self.yalign = yalign
-        gtk.DrawingArea.__init__(self)
+        GObject.GObject.__init__(self)
         self.gc = None  # initialized in realize-event handler
         self.width  = 0 # updated in size-allocate handler
         self.height = 0 # idem
@@ -39,8 +39,8 @@ class PageDrawer (gtk.DrawingArea):
 
     def on_realize(self, widget):
         self.gc = widget.window.new_gc()
-        #self.gc.set_line_attributes(3, gtk.gdk.LINE_ON_OFF_DASH,
-        #                            gtk.gdk.CAP_ROUND, gtk.gdk.JOIN_ROUND)
+        #self.gc.set_line_attributes(3, Gdk.LINE_ON_OFF_DASH,
+        #                            Gdk.CAP_ROUND, Gdk.JOIN_ROUND)
 
     def on_size_allocate(self, widget, allocation):
         self.width = allocation.width
@@ -58,14 +58,14 @@ class PageDrawer (gtk.DrawingArea):
         xpadding = int((self.width - width)*self.xalign)
         ypadding = int((self.height - height)*self.yalign)
         self.gc.set_line_attributes(3,
-                               gtk.gdk.LINE_SOLID,
-                               gtk.gdk.CAP_BUTT,
-                               gtk.gdk.JOIN_MITER)
+                               Gdk.LINE_SOLID,
+                               Gdk.CAP_BUTT,
+                               Gdk.JOIN_MITER)
         widget.window.draw_rectangle(self.gc, False,
                                      xpadding, ypadding, width, height)
         self.gc.set_line_attributes(1,
-                                    gtk.gdk.LINE_ON_OFF_DASH,
-                                    gtk.gdk.CAP_BUTT,gtk.gdk.JOIN_MITER)
+                                    Gdk.LINE_ON_OFF_DASH,
+                                    Gdk.CAP_BUTT,Gdk.JOIN_MITER)
         for sub_area in self.areas:
             x,y,w,h = sub_area
             self.window.draw_rectangle(
@@ -79,10 +79,10 @@ class PageDrawer (gtk.DrawingArea):
 
 
 if __name__ == '__main__':
-    w = gtk.Window()
+    w = Gtk.Window()
     w.add(PageDrawer(8.5,11,[(1,1,3,9.5),
                              (4.5,1,3,9.5),
                              ]))
     w.show_all()
-    w.connect('delete-event',lambda *args: gtk.main_quit())
-    gtk.main()
+    w.connect('delete-event',lambda *args: Gtk.main_quit())
+    Gtk.main()

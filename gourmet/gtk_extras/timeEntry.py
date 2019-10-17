@@ -16,10 +16,10 @@
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 ### USA
 
-import gtk
+from gi.repository import Gtk
 from gettext import gettext as _
 import gourmet.convert as convert
-import validatingEntry
+from . import validatingEntry
 
 TIME_TO_READ = 1000
 
@@ -47,7 +47,7 @@ class TimeEntry (validatingEntry.ValidatingEntry):
                 return None
             else:
                 partial_unit = words[-1]
-            for u in self.conv.unit_to_seconds.keys():
+            for u in list(self.conv.unit_to_seconds.keys()):
                 if u.lower().find(partial_unit.lower())==0:
                     return None
                     #self._hide_warning_slowly()
@@ -73,7 +73,7 @@ class TimeEntry (validatingEntry.ValidatingEntry):
                 return
             else:
                 partial_unit = words[-1]
-            for u in self.conv.unit_to_seconds.keys():
+            for u in list(self.conv.unit_to_seconds.keys()):
                 if u.lower().find(partial_unit.lower())==0:
                     self._hide_warning_slowly()
                     return
@@ -97,29 +97,29 @@ def make_time_entry():
     return te
 
 if __name__ == '__main__':
-    w=gtk.Window()
-    vb = gtk.VBox()
-    hb = gtk.HBox()
-    l=gtk.Label('_Label')
+    w=Gtk.Window()
+    vb = Gtk.VBox()
+    hb = Gtk.HBox()
+    l=Gtk.Label(label='_Label')
     l.set_use_underline(True)
     l.set_alignment(0,0.5)
-    hb.pack_start(l)
+    hb.pack_start(l, True, True, 0)
     te=TimeEntry()
     import sys
     te.connect('changed',lambda w: sys.stderr.write('Time value: %s'%w.get_value()))
     l.set_mnemonic_widget(te)
     hb.pack_start(te,expand=False,fill=False)
     vb.add(hb)
-    qb = gtk.Button(stock=gtk.STOCK_QUIT)
+    qb = Gtk.Button(stock=Gtk.STOCK_QUIT)
     vb.add(qb)
     l.show()
     hb.show()
     qb.show()
     te.show()
     vb.show()
-    qb.connect('clicked',lambda *args: w.hide() and gtk.main_quit() or gtk.main_quit())
+    qb.connect('clicked',lambda *args: w.hide() and Gtk.main_quit() or Gtk.main_quit())
     w.add(vb)
     w.show()
-    w.connect('delete_event',gtk.main_quit)
-    gtk.main()
+    w.connect('delete_event',Gtk.main_quit)
+    Gtk.main()
 

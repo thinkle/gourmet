@@ -16,12 +16,13 @@
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 ### USA
 
-import gobject
-import gtk, time
+from gi.repository import GObject
+from gi.repository import Gtk
+import time
 
 TIME_TO_READ = 1000
 
-class ValidatingEntry (gtk.VBox, gobject.GObject):
+class ValidatingEntry (Gtk.VBox, GObject.GObject):
 
     __gsignals__ = {
         #'activate':'override',
@@ -29,15 +30,15 @@ class ValidatingEntry (gtk.VBox, gobject.GObject):
         }
 
     def __init__ (self, conv=None):
-        gobject.GObject.__init__(self)
-        self.warning_box = gtk.HBox()
-        self.entry = gtk.Entry()
-        self.image = gtk.Image()
-        self.warning = gtk.Label()
+        GObject.GObject.__init__(self)
+        self.warning_box = Gtk.HBox()
+        self.entry = Gtk.Entry()
+        self.image = Gtk.Image()
+        self.warning = Gtk.Label()
         self.warning_box.add(self.image)
-        self.image.set_from_icon_name(gtk.STOCK_DIALOG_WARNING,gtk.ICON_SIZE_MENU)
+        self.image.set_from_icon_name(Gtk.STOCK_DIALOG_WARNING,Gtk.IconSize.MENU)
         self.warning_box.add(self.warning)
-        a = gtk.Alignment()
+        a = Gtk.Alignment.new()
         a.set_property('xalign',0)
         a.set_property('xscale',1)
         a.add(self.entry)
@@ -82,7 +83,7 @@ class ValidatingEntry (gtk.VBox, gobject.GObject):
         warned_for = time.time() - self.warned
         remaining = TIME_TO_READ - warned_for * 1000
         if remaining > 0:
-            gobject.timeout_add(int(remaining),int(self._hide_warning))
+            GObject.timeout_add(int(remaining),int(self._hide_warning))
         else:
             self._hide_warning()
 
@@ -94,7 +95,7 @@ class ValidatingEntry (gtk.VBox, gobject.GObject):
 
     def _show_warning_on_delay (self,delay):
         if not self.validating:
-            gobject.timeout_add(CHECK_DELAY,lambda *args: not self.valid and self._show_warning())
+            GObject.timeout_add(CHECK_DELAY,lambda *args: not self.valid and self._show_warning())
             self.validating = True
 
     def _validate (self, *args):

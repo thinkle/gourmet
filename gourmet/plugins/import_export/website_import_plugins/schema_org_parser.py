@@ -45,7 +45,7 @@ def generate(BaseParser):
 
             for tag in self.recipe_schema_scope.findAll(itemprop=True):
                 itemprop = tag["itemprop"]
-                for k, v in self.schema_org_mappings.iteritems():
+                for k, v in self.schema_org_mappings.items():
                     if itemprop == k:
                         self.preparsed_elements.append((tag,v))
 

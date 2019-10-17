@@ -1,9 +1,9 @@
 import tempfile, unittest
-import db
+from . import db
 
 class DBTest (unittest.TestCase):
     def setUp (self):
-        print 'Calling setUp'
+        print('Calling setUp')
         # Remove all plugins for testing purposes
         from gourmet.plugin_loader import get_master_loader
         ml = get_master_loader()
@@ -52,8 +52,8 @@ class testIngBasics (DBTest):
         self.db.delete_ing(ing2)
         self.assertEqual(self.db.fetch_len(self.db.ingredients_table),0)
         self.db.add_ings([
-                {'rangeamount': None, 'item': 'water', 'recipe_id': rid, 'position': 1, 'ingkey': u'water'},
-                {'rangeamount': None, 'item': 'linguine', 'amount': 0.5, 'recipe_id': rid, 'position': 1, 'ingkey': u'linguine', 'unit': 'pound'}
+                {'rangeamount': None, 'item': 'water', 'recipe_id': rid, 'position': 1, 'ingkey': 'water'},
+                {'rangeamount': None, 'item': 'linguine', 'amount': 0.5, 'recipe_id': rid, 'position': 1, 'ingkey': 'linguine', 'unit': 'pound'}
              ]
                          )
         ings = self.db.get_ings(rid)
@@ -136,23 +136,23 @@ class testSearch (DBTest):
 class testUnicode (DBTest):
 
     def runTest (self):
-        rec = self.db.add_rec({'title':u'Comida de \xc1guila',
-                          'source':u'C\xc6SAR',
-                          'category':u'C\xc6sar',
+        rec = self.db.add_rec({'title':'Comida de \xc1guila',
+                          'source':'C\xc6SAR',
+                          'category':'C\xc6sar',
                           })
-        assert(rec.title == u'Comida de \xc1guila')
-        assert(rec.source == u'C\xc6SAR')
-        rec = self.db.modify_rec(rec,{'title':u'\xc1 Comida de \xc1guila'})
-        assert(rec.title==u'\xc1 Comida de \xc1guila')
+        assert(rec.title == 'Comida de \xc1guila')
+        assert(rec.source == 'C\xc6SAR')
+        rec = self.db.modify_rec(rec,{'title':'\xc1 Comida de \xc1guila'})
+        assert(rec.title=='\xc1 Comida de \xc1guila')
         ing = self.db.add_ing_and_update_keydic({
                 'recipe_id':rec.id,
                 'amount':1.0,
-                'unit':u'\xc1guila',
-                'item':u'\xc1guila',
-                'ingkey':u'\xc1guila'
+                'unit':'\xc1guila',
+                'item':'\xc1guila',
+                'ingkey':'\xc1guila'
                 })
         for attr in 'unit','item','ingkey':
-            assert(getattr(ing,attr)==u'\xc1guila')
+            assert(getattr(ing,attr)=='\xc1guila')
 
 
 class testIDReservation (DBTest):
@@ -167,9 +167,9 @@ class testIDReservation (DBTest):
         r3 = self.db.add_rec({'title':'reserved2','id':rid2})
         try: assert(r2.id==rid)
         except:
-            print 'reserved ID',rid
-            print 'fetched ID',r2.id
-            print 'intermittent ID',r1.id
+            print('reserved ID',rid)
+            print('fetched ID',r2.id)
+            print('intermittent ID',r1.id)
             raise
         for r in [r1,r1i,r12,r2,r3]: self.db.delete_rec(r)
 
@@ -189,12 +189,12 @@ class TestMoreDataStuff (DBTest):
         orig_attrs = {'title':'Foo','cuisine':'Bar','yields':7,'yield_unit':'cups'}
         new_attrs =  {'title':'Foob','cuisine':'Baz','yields':4,'yield_unit':'servings'}
         r = self.db.add_rec(orig_attrs.copy())
-        for attr,val in new_attrs.items():
+        for attr,val in list(new_attrs.items()):
             r = self.db.modify_rec(r,{attr:val})
             # Make sure our value changed...
             self.assertEqual(getattr(r,attr),val,'Incorrect modified value for %s'%attr)
             # Make sure no other values changed
-            for a,v in orig_attrs.items():
+            for a,v in list(orig_attrs.items()):
                 if a != attr:
                     self.assertEqual(getattr(r,a),v,'Incorrect original value for %s'%a)
             # Change back our recipe
@@ -205,12 +205,12 @@ class TestMoreDataStuff (DBTest):
         orig_attrs = {'item':'Foo','ingkey':'Bar','amount':7,'unit':'cups','optional':True,'rangeamount':None,'recipe_id':r.id}
         new_attrs ={'item':'Fooz','ingkey':'Baz','amount':3,'unit':'ounces','optional':False,'rangeamount':2,}
         i = self.db.add_ing(orig_attrs.copy())
-        for attr,val in new_attrs.items():
+        for attr,val in list(new_attrs.items()):
             r = self.db.modify_ing(i,{attr:val})
             # Make sure our value changed...
             self.assertEqual(getattr(r,attr),val,'Incorrect modified value for %s'%attr)
             # Make sure no other values changed
-            for a,v in orig_attrs.items():
+            for a,v in list(orig_attrs.items()):
                 if a != attr:
                     self.assertEqual(getattr(r,a),v,'Incorrect original vlaue for %s'%a)
             # Change back our ingredient...

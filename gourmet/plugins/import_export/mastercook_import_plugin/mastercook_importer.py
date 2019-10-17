@@ -95,7 +95,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
 
     def startElement (self, name, attrs):
         self.in_mixed=0
-        if not self.elements.has_key(name):
+        if name not in self.elements:
             debug('Unhandled element: %s'%name,0)
             return
         else:
@@ -104,7 +104,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
             handler(start=True,attrs=attrs)
 
     def endElement (self, name):
-        if not self.elements.has_key(name):
+        if name not in self.elements:
             return
         else:
             self.current_elements.remove(name)
@@ -141,7 +141,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
             if attrs:
                 self.rec['title']=self.grabattr(attrs,'name')
         if end:
-            if self.rec.has_key('yield'):
+            if 'yield' in self.rec:
                 self._add_to_instructions("\nYield: %s %s"%self.rec['yield'])
                 del self.rec['yield']
             self.commit_rec()
@@ -168,7 +168,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
         if end:
             self.bufs.remove('catbuf')
             self.catbuf = self.catbuf.strip()
-            if self.rec.has_key('category'):
+            if 'category' in self.rec:
                 self.rec['category']=self.rec['category']+" "+self.catbuf
             else:
                 self.rec['category']=xml.sax.saxutils.unescape(self.catbuf)
@@ -193,7 +193,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
 
     def _add_to_instructions (self, buf):
         debug('adding to instructions: %s'%buf,0)
-        if self.rec.has_key('instructions'):
+        if 'instructions' in self.rec:
             self.rec['instructions'] = self.rec['instructions'] + "\n%s"%xml.sax.saxutils.unescape(buf)
         else:
             self.rec['instructions'] = xml.sax.saxutils.unescape(buf)
@@ -216,7 +216,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
         if end:
             self.bufs.remove('dbuf')
             buf = xml.sax.saxutils.unescape(self.dbuf.strip())
-            if self.rec.has_key('modifications'):
+            if 'modifications' in self.rec:
                 self.rec['modifications'] = self.rec['modifications'] + "\n%s"%buf
             else:
                 self.rec['modifications'] = buf

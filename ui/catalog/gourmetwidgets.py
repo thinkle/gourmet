@@ -6,18 +6,18 @@
 #from gtk_extras import timeEntry, ratingWidget, timeEntry
 #import timeScanner
 
-import gtk
+from gi.repository import Gtk
 
-class TimeEntry (gtk.Entry):
+class TimeEntry (Gtk.Entry):
     __gtype_name__ = 'TimeEntry'
 
-class StarButton (gtk.Button):
+class StarButton (Gtk.Button):
     __gtype_name__ = 'StarButton'
 
-class StarImage (gtk.Image):
+class StarImage (Gtk.Image):
     __gtype_name__ = 'StarImage'
 
-class LinkedTextView (gtk.TextView):
+class LinkedTextView (Gtk.TextView):
     __gtype_name__ = 'LinkedTextView'
 
 class LinkedTimeView (LinkedTextView):

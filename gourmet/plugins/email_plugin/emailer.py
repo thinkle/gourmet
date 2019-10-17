@@ -1,4 +1,4 @@
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from gourmet.gdebug import debug
 import gourmet.gglobals as gglobals
 
@@ -11,7 +11,7 @@ class Emailer:
         self.connector_string = "?"
 
     def send_email (self):
-        print 'send_email()'
+        print('send_email()')
         self.url = "mailto:"
         if self.emailaddress: self.url += self.emailaddress
         if self.subject:
@@ -19,13 +19,13 @@ class Emailer:
         if self.body:
             self.url_append('body',self.body)
         for a in self.attachments:
-            print 'Adding attachment',a
+            print('Adding attachment',a)
             self.url_append('attachment',a)
         debug('launching URL %s'%self.url,0)
         gglobals.launch_url(self.url)
 
     def url_append (self, attr, value):
-        self.url += "%s%s=%s"%(self.connector(),attr,urllib.quote(value.encode('utf-8','replace')))
+        self.url += "%s%s=%s"%(self.connector(),attr,urllib.parse.quote(value.encode('utf-8','replace')))
 
     def connector (self):
         retval = self.connector_string

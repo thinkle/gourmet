@@ -1,5 +1,5 @@
 import argparse
-import version
+from . import version
 try:
     import argcomplete
     has_argcomplete = True
@@ -38,7 +38,7 @@ if has_argcomplete:
 
 try:
     args = parser.parse_args()
-    print 'args1 = %s' % args
+    print('args1 = %s' % args)
 except SystemExit as e:
     import sys
 
@@ -47,11 +47,11 @@ except SystemExit as e:
         # Normal system exit
         exit(e.code)
     else:
-        print "Exception code: ", exc
+        print("Exception code: ", exc)
         argv = str(sys.argv[0])
 
         if argv == "manage.py":
-            print 'Ignore the error message. Launching gourmetweb Django server ...'
+            print('Ignore the error message. Launching gourmetweb Django server ...')
             sys.argv = ['gourmet']
             args = parser.parse_args()
         else:

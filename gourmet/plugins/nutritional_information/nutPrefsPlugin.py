@@ -1,6 +1,6 @@
 from gourmet.plugin import PrefsPlugin
 from gourmet.prefs import get_prefs
-import gtk
+from gi.repository import Gtk
 from gettext import gettext as _
 
 partialp = 'include_partial_nutritional_info'
@@ -12,11 +12,11 @@ class NutritionPrefs (PrefsPlugin):
 
     def __init__ (self, *args, **kwargs):
         # Create main widget
-        self.widget = gtk.VBox()
+        self.widget = Gtk.VBox()
         self.prefs = get_prefs()
-        label = gtk.Label('Hello world')
-        self.include_tb = gtk.CheckButton('Include nutritional information in print-outs and exports')
-        self.partial_tb = gtk.CheckButton('Include partial nutritional information in print-outs and exports?')
+        label = Gtk.Label(label='Hello world')
+        self.include_tb = Gtk.CheckButton('Include nutritional information in print-outs and exports')
+        self.partial_tb = Gtk.CheckButton('Include partial nutritional information in print-outs and exports?')
         self.include_tb.set_active(self.prefs.get(includep,True))
         self.partial_tb.set_active(self.prefs.get(partialp,False))
         self.include_tb.connect('toggled',self.toggle_cb)

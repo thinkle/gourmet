@@ -22,7 +22,7 @@ class TextImporter (importer.Importer):
     def pre_run (self):
         self.lines = check_encodings.get_file(self.fn)
         self.total_lines = len(self.lines)
-        print 'we have ',self.total_lines,'lines in file',self.fn
+        print('we have ',self.total_lines,'lines in file',self.fn)
 
     def do_run (self):
         if not hasattr(self,'lines'):
@@ -110,7 +110,7 @@ class Tester (importer.Tester):
         if not hasattr(self,'matcher'):
             self.matcher=re.compile(self.regexp)
             self.not_matcher = re.compile(self.not_me)
-        if type(self.ofi) in [str,unicode]: self.ofi = open(filename,'r')
+        if type(self.ofi) in [str,str]: self.ofi = open(filename,'r')
         l = self.ofi.readline()
         while l:
             if self.not_matcher.match(l):

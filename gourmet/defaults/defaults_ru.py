@@ -767,7 +767,7 @@ v_plural_matcher = re.compile('ves')
 def guess_singulars (s):
     if len(s)<3: return []
     rets = []
-    if irregular_plurals.has_key(s):
+    if s in irregular_plurals:
         rets.append(irregular_plurals[s])
     if two_digit_plural_matcher.search(s):
         wrd=s[0:-2]

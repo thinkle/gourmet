@@ -1,5 +1,5 @@
 from gourmet.plugin import ShoppingListPlugin
-import gtk
+from gi.repository import Gtk
 import gourmet.recipeManager, gourmet.GourmetRecipeManager, time
 from gettext import gettext as _
 
@@ -23,10 +23,10 @@ class ShoppingListSaver (ShoppingListPlugin):
     label = _('Shopping List Saver')
 
     def setup_action_groups (self):
-        self.shoppingListSaverActionGroup = gtk.ActionGroup('ShoppingListSaverActionGroup')
+        self.shoppingListSaverActionGroup = Gtk.ActionGroup('ShoppingListSaverActionGroup')
         self.shoppingListSaverActionGroup.add_actions([
             ('SaveAsRecipe',# name
-             gtk.STOCK_SAVE_AS,# stock
+             Gtk.STOCK_SAVE_AS,# stock
              _('Save List as Recipe'), # text
              _('<Ctrl><Shift>S'), # key-command
              _('Save current shopping list as a recipe for future use'), # tooltip
@@ -44,7 +44,7 @@ class ShoppingListSaver (ShoppingListPlugin):
         rec = rd.add_rec(dict(title=_('Menu for %s (%s)')%(time.strftime('%x'),
                                                          time.strftime('%X')),
                          category=_('Menu')))
-        for recipe,mult in rr.values():
+        for recipe,mult in list(rr.values()):
             # Add all recipes...
             rd.add_ing({
                 'amount':mult,

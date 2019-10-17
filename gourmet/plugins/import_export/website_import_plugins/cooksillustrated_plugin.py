@@ -9,7 +9,7 @@ from gettext import gettext as _
 import keyring
 
 global driver
-if not globals().has_key('driver'):
+if 'driver' not in globals():
     driver = None
 
 class LogInWebReader (gourmet.threadManager.SuspendableThread):
@@ -27,9 +27,9 @@ class LogInWebReader (gourmet.threadManager.SuspendableThread):
         self.read()
 
     def get_username_and_pw (self):
-        print 'Let us get a password...'
+        print('Let us get a password...')
         username = self.prefs.get('cooksillustrated-username','')
-        print 'Username=',username
+        print('Username=',username)
         if username:
             pw = keyring.get_password(
                 'http://www.cooksillustrated.com',
@@ -37,8 +37,8 @@ class LogInWebReader (gourmet.threadManager.SuspendableThread):
                 )
         else:
             pw = ''
-        print 'Initial password: ',pw
-        print 'Launch dialog...'
+        print('Initial password: ',pw)
+        print('Launch dialog...')
         #
         username, pw = de.getUsernameAndPassword(
             username=username,
@@ -46,7 +46,7 @@ class LogInWebReader (gourmet.threadManager.SuspendableThread):
             )
         # broken :( - temporary workaround?
         #username,pw = 'USERNAME','PASSWORD'
-        print 'Done with dialog'
+        print('Done with dialog')
         self.prefs['cooksillustrated-username'] = username
         keyring.set_password(
             'http://www.cooksillustrated.com',username,pw
@@ -62,17 +62,17 @@ class LogInWebReader (gourmet.threadManager.SuspendableThread):
         else:
             #self.d = webdriver.Chrome()
             self.d = webdriver.Firefox()
-            print 'Logging in...'
+            print('Logging in...')
             driver = self.d
             self.d.get('https://www.cooksillustrated.com/sign_in/')
             username,pw = self.get_username_and_pw()
             #un=self.d.find_element_by_xpath('//*[@name="user[email]"]')
             un=self.d.find_element_by_xpath('//*[@id="email"]')
-            print 'Got email element',un
+            print('Got email element',un)
             un.send_keys(username)
             #pw_el = self.d.find_element_by_xpath('//*[@name="user[password]"]')
             pw_el = self.d.find_element_by_xpath('//*[@id="password"]')
-            print 'Got password element',pw_el
+            print('Got password element',pw_el)
             pw_el.send_keys(pw+'\n')
         # Now get URL
         # First log in...
@@ -126,7 +126,7 @@ class CooksIllustratedPlugin (PluginPlugin):
                         for e in el:
                             self.maybe_add(e,tag,ignoreSlug)
                     else:
-                        if not unicode(el).strip():
+                        if not str(el).strip():
                                 return # Don't add empty strings or we screw things up royally
                         self.preparsed_elements.append((el,tag))
                         if ignoreSlug:

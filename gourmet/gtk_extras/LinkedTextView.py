@@ -19,9 +19,12 @@
 # Largely based on hypertext.py example in pygtk docs by
 # Maik Hertha <maik.hertha@berlin.de>
 
-import pango,gtk,gobject
+from gi.repository import Pango
+from gi.repository import Gtk
+from gi.repository import GObject
+from gi.repository import Gdk
 import re, xml.sax.saxutils
-from TextBufferMarkup import PangoBuffer
+from .TextBufferMarkup import PangoBuffer
 from gourmet.gdebug import debug
 
 class LinkedPangoBuffer (PangoBuffer):
@@ -30,8 +33,8 @@ class LinkedPangoBuffer (PangoBuffer):
 
     url_markup = 'underline="single" color="blue"'
 
-    url_props = [('underline',pango.UNDERLINE_SINGLE),
-                 ('foreground-gdk',gtk.gdk.color_parse('blue')),
+    url_props = [('underline',Pango.Underline.SINGLE),
+                 ('foreground-gdk',Gdk.color_parse('blue')),
                  ]
 
     markup_dict = {}
@@ -42,7 +45,7 @@ class LinkedPangoBuffer (PangoBuffer):
             while m:
                 href = m.groups()[0]
                 body = m.groups()[1]
-                if self.markup_dict.has_key(body) and self.markup_dict[body]!=href:
+                if body in self.markup_dict and self.markup_dict[body]!=href:
                     raise Exception("""Damn -- our not-so-clever implementation of <a href=""> parsing requires
                     that no two distinct links have the same text describing them!""")
                 self.markup_dict[body]=href
@@ -55,7 +58,7 @@ class LinkedPangoBuffer (PangoBuffer):
         for p,v in self.url_props:
             match = False
             for t in tags:
-                if isinstance(v,gtk.gdk.Color):
+                if isinstance(v,Gdk.Color):
                     c = t.get_property(p)
                     if v.red==c.red and v.blue==c.blue and v.green==c.green:
                         match=True
@@ -63,32 +66,32 @@ class LinkedPangoBuffer (PangoBuffer):
                     match=True
             if not match:
                 break
-        text = unicode(text)
-        if match and self.markup_dict.has_key(text):
+        text = str(text)
+        if match and text in self.markup_dict:
             new_tag = self.create_tag()
             new_tag.set_data('href',self.markup_dict[text])
             tags = list(tags)
             tags.append(new_tag)
         elif match:
-            print 'Funny',text,'looks like a link, but is not in markup_dict',self.markup_dict
+            print('Funny',text,'looks like a link, but is not in markup_dict',self.markup_dict)
         PangoBuffer.insert_with_tags(self,itr,text,*tags)
 
-class LinkedTextView (gtk.TextView):
+class LinkedTextView (Gtk.TextView):
     __gtype_name__ = 'LinkedTextView'
 
     hovering_over_link = False
-    hand_cursor = gtk.gdk.Cursor(gtk.gdk.HAND2)
-    regular_cursor = gtk.gdk.Cursor(gtk.gdk.XTERM)
+    hand_cursor = Gdk.Cursor.new(Gdk.CursorType.HAND2)
+    regular_cursor = Gdk.Cursor.new(Gdk.CursorType.XTERM)
 
     __gsignals__ = {
-        'link-activated':(gobject.SIGNAL_RUN_LAST,
-                          gobject.TYPE_STRING,
-                          [gobject.TYPE_STRING]),
+        'link-activated':(GObject.SignalFlags.RUN_LAST,
+                          GObject.TYPE_STRING,
+                          [GObject.TYPE_STRING]),
         }
 
     def __init__ (self):
-        gobject.GObject.__init__(self)
-        gtk.TextView.__init__(self)
+        GObject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         self.set_buffer(self.make_buffer())
         buf = self.get_buffer()
         self.set_text = buf.set_text
@@ -102,7 +105,7 @@ class LinkedTextView (gtk.TextView):
 
     # Links can be activated by pressing Enter.
     def key_press_event(self, text_view, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = Gdk.keyval_name(event.keyval)
         if keyname in ['Return','KP_Enter']:
             buffer = text_view.get_buffer()
             iter = buffer.get_iter_at_mark(buffer.get_insert())
@@ -110,7 +113,7 @@ class LinkedTextView (gtk.TextView):
         return False
     # Links can also be activated by clicking.
     def event_after(self, text_view, event):
-        if event.type != gtk.gdk.BUTTON_RELEASE:
+        if event.type != Gdk.BUTTON_RELEASE:
             return False
         if event.button != 1:
             return False
@@ -126,7 +129,7 @@ class LinkedTextView (gtk.TextView):
             if start.get_offset() != end.get_offset():
                 return False
 
-        x, y = text_view.window_to_buffer_coords(gtk.TEXT_WINDOW_WIDGET,
+        x, y = text_view.window_to_buffer_coords(Gtk.TextWindowType.WIDGET,
             int(event.x), int(event.y))
         iter = text_view.get_iter_at_location(x, y)
         self.follow_if_link(text_view, iter)
@@ -150,13 +153,13 @@ class LinkedTextView (gtk.TextView):
             self.hovering_over_link = hovering
 
         if self.hovering_over_link:
-            text_view.get_window(gtk.TEXT_WINDOW_TEXT).set_cursor(self.hand_cursor)
+            text_view.get_window(Gtk.TextWindowType.TEXT).set_cursor(self.hand_cursor)
         else:
-            text_view.get_window(gtk.TEXT_WINDOW_TEXT).set_cursor(self.regular_cursor)
+            text_view.get_window(Gtk.TextWindowType.TEXT).set_cursor(self.regular_cursor)
 
     # Update the cursor image if the pointer moved.
     def motion_notify_event(self, text_view, event):
-        x, y = text_view.window_to_buffer_coords(gtk.TEXT_WINDOW_WIDGET,
+        x, y = text_view.window_to_buffer_coords(Gtk.TextWindowType.WIDGET,
             int(event.x), int(event.y))
         self.set_cursor_if_appropriate(text_view, x, y)
         text_view.window.get_pointer()
@@ -166,7 +169,7 @@ class LinkedTextView (gtk.TextView):
     # (e.g. when a window covering it got iconified).
     def visibility_notify_event(self, text_view, event):
         wx, wy, mod = text_view.window.get_pointer()
-        bx, by = text_view.window_to_buffer_coords(gtk.TEXT_WINDOW_WIDGET, wx, wy)
+        bx, by = text_view.window_to_buffer_coords(Gtk.TextWindowType.WIDGET, wx, wy)
 
         self.set_cursor_if_appropriate (text_view, bx, by)
         return False
@@ -185,12 +188,12 @@ class LinkedTextView (gtk.TextView):
 
 if __name__ == '__main__':
     def print_link (tv,l):
-        print l
+        print(l)
     tv = LinkedTextView()
     tv.connect('link-activated',print_link)
-    w = gtk.Window()
+    w = Gtk.Window()
     w.add(tv)
-    tv.get_buffer().set_text(u"""This is some text
+    tv.get_buffer().set_text("""This is some text
     Some <i>fancy</i>, <u>fancy</u>, text.
     This is <a href="foo">a link</a>, a
     <a href="fancy_desc">fancy, fancy</a> link.
@@ -203,5 +206,5 @@ if __name__ == '__main__':
     """)
 
     w.show_all()
-    w.connect('delete-event',lambda *args: gtk.main_quit())
-    gtk.main()
+    w.connect('delete-event',lambda *args: Gtk.main_quit())
+    Gtk.main()

@@ -1,6 +1,6 @@
 import os.path
 
-import mealmaster_importer
+from . import mealmaster_importer
 from gourmet.plugin import ImporterPlugin
 from gourmet.importers.importer import Tester
 from gourmet.threadManager import get_thread_manager
@@ -58,14 +58,14 @@ def test_2_col (recs, filename):
     rd = get_recipe_manager()
     assert len(recs) == 1,'Expected 1 recipes; got %s (%s)'%(len(recs),recs)
     chile_ings = rd.get_ings(recs[0])
-    print 'chile_ings=',chile_ings
+    print('chile_ings=',chile_ings)
     assert_equal(chile_ings[0].amount, 2)
     assert_equal(chile_ings[1].amount, 1) # second column
     assert_equal_ignorecase(chile_ings[1].ingkey, 'eggs')
     assert_equal(chile_ings[1].item, 'Eggs; separated')
-    assert_equal_ignorecase(chile_ings[0].ingkey, u'Chiles, calif.')
+    assert_equal_ignorecase(chile_ings[0].ingkey, 'Chiles, calif.')
     assert_equal(recs[0].yields, 2)
     assert_equal(recs[0].yield_unit, 'servings')
-    assert_equal(recs[0].title, u'Chiles Rellenos de Queso')
+    assert_equal(recs[0].title, 'Chiles Rellenos de Queso')
     assert_equal(chile_ings[5].item, 'Tomatoes; peeled')
     assert_equal_ignorecase(chile_ings[5].inggroup, 'Tomato Sauce')

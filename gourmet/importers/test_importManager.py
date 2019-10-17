@@ -13,7 +13,7 @@ import gourmet.backends.db
 gourmet.backends.db.RecData.__single = None
 gourmet.GourmetRecipeManager.GourmetApplication.__single = None
 
-import importManager
+from . import importManager
 
 class TestImports (unittest.TestCase):
     def setUp (self):
@@ -21,15 +21,15 @@ class TestImports (unittest.TestCase):
 
     def testPlugins (self):
         for pi in self.im.importer_plugins:
-            print 'I wonder, is there a test for ',pi
+            print('I wonder, is there a test for ',pi)
             if hasattr(pi,'get_import_tests'):
                 for fn,test in pi.get_import_tests():
-                    print 'Testing ',test,fn
+                    print('Testing ',test,fn)
                     self.__runImporterTest(fn,test)
 
 
     def done_callback (self,*args):
-        print 'done!'
+        print('done!')
         self.done = True
 
     def __runImporterTest (self, fn, test):
@@ -38,7 +38,7 @@ class TestImports (unittest.TestCase):
         assert importer, 'import_filenames did not return an object'
         while not importer.done:
             time.sleep(0.2)
-        print 'Done!'
+        print('Done!')
         assert importer.added_recs,'Importer did not have any added_recs (%s,%s)'%(fn,test)
         try:
             test(importer.added_recs,fn)

@@ -60,7 +60,7 @@ class RecipeMergerDialog:
         self.in_recipes = in_recipes
         self.on_close_callback = on_close_callback
         self.to_merge = [] # Queue of recipes to be merged...
-        self.ui = gtk.Builder()
+        self.ui = Gtk.Builder()
         self.ui.add_from_file(os.path.join(current_path,'recipeMerger.ui'))
         self.get_widgets()
         self.searchTypeCombo.set_active(self.COMPLETE_DUP_MODE)
@@ -93,8 +93,8 @@ class RecipeMergerDialog:
         self.setup_treeview()
 
     def setup_treeview (self):
-        renderer = gtk.CellRendererText()
-        col = gtk.TreeViewColumn('Recipe',renderer,text=2)
+        renderer = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn('Recipe',renderer,text=2)
         self.duplicateRecipeTreeView.append_column(col)
         self.duplicateRecipeTreeView.insert_column_with_data_func(
             -1, # position
@@ -103,9 +103,9 @@ class RecipeMergerDialog:
              self.time_cell_data_func, # function
              3 # data column
              )
-        col = gtk.TreeViewColumn('Duplicates',renderer,text=4)
+        col = Gtk.TreeViewColumn('Duplicates',renderer,text=4)
         self.duplicateRecipeTreeView.append_column(col)
-        self.duplicateRecipeTreeView.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        self.duplicateRecipeTreeView.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
 
     def time_cell_data_func (self, tree_column, cell, model, titer, data_col):
         """Display time in treeview cell.
@@ -135,7 +135,7 @@ class RecipeMergerDialog:
         self.duplicateRecipeTreeView.set_model(self.treeModel)
 
     def setup_treemodel (self, dups):
-        self.treeModel = gtk.TreeStore(int,int,str,int,str) # dup_index, rec_id, rec_title, last_modified, number_of_duplicates
+        self.treeModel = Gtk.TreeStore(int,int,str,int,str) # dup_index, rec_id, rec_title, last_modified, number_of_duplicates
         for dup_index,duplicate_recipes in enumerate(dups):
             first = duplicate_recipes[0]
             others = duplicate_recipes[1:]
@@ -174,7 +174,7 @@ class RecipeMergerDialog:
                 self.recipeDiffScrolledWindow.remove(self.recipeDiffScrolledWindow.get_child())
             self.diff_table.show()
             #self.idt.show()
-            vb = gtk.VBox()
+            vb = Gtk.VBox()
             vb.add(self.diff_table)
             #vb.add(self.idt)
             vb.show()
@@ -221,7 +221,7 @@ class RecipeMergerDialog:
         """Merge all rows currently in treeview.
         """
         self.total_to_merge = len(self.dups)
-        self.to_merge = range(self.total_to_merge)
+        self.to_merge = list(range(self.total_to_merge))
         self.merge_next_recipe()
 
     def offer_auto_merge (self, *args):
@@ -245,14 +245,14 @@ class RecipeMergerDialog:
     def do_auto_merge (self, mode):
         if self.recipeDiffScrolledWindow.get_child():
             self.recipeDiffScrolledWindow.remove(self.recipeDiffScrolledWindow.get_child())
-        vb = gtk.VBox()
-        l = gtk.Label()
+        vb = Gtk.VBox()
+        l = Gtk.Label()
         l.set_markup('<u>Automatically merged recipes</u>')
         vb.pack_start(l,expand=False,fill=False); vb.show_all()
         self.recipeDiffScrolledWindow.add_with_viewport(vb)
         def do_auto_merge ():
             kept = self.auto_merge_current_rec(mode)
-            label = gtk.Label('%s'%kept.title)
+            label = Gtk.Label(label='%s'%kept.title)
             vb.pack_start(label,expand=False,fill=False); label.show()
         self.cancelMergeButton.hide()
         self.applyMergeButton.hide()
@@ -268,7 +268,7 @@ class RecipeMergerDialog:
             duplicate_recipes = self.dups[self.current_dup_index]
             self.current_recs = [self.rd.get_rec(i) for i in duplicate_recipes]
             do_auto_merge()
-            while gtk.events_pending(): gtk.main_iteration()
+            while Gtk.events_pending(): Gtk.main_iteration()
         self.mergeInfoLabel.set_text('Automatically merged %s recipes'%self.total_to_merge)
         self.closeMergeButton.set_sensitive(True)
 
@@ -308,10 +308,10 @@ class RecipeMergerDialog:
     def show (self, label=None):
         if label:
             messagebox = self.ui.get_object('messagebox')
-            l = gtk.Label(label)
+            l = Gtk.Label(label=label)
             l.set_line_wrap(True)
-            infobar = gtk.InfoBar()
-            infobar.set_message_type(gtk.MESSAGE_INFO)
+            infobar = Gtk.InfoBar()
+            infobar.set_message_type(Gtk.MessageType.INFO)
             infobar.get_content_area().add(l)
             infobar.show_all()
             messagebox.pack_start(infobar, True, False)
@@ -355,7 +355,7 @@ class RecipeMerger:
         else:
             return None
 
-class DiffTable (gtk.Table):
+class DiffTable (Gtk.Table):
 
     """A Table displaying differences in a recipe.
 
@@ -374,7 +374,7 @@ class DiffTable (gtk.Table):
                   dont_choose=[]):
         self.idiffs = []
         self.diff_dic = diff_dic
-        gtk.Table.__init__(self)
+        GObject.GObject.__init__(self)
         self.selected_dic = {}
         self.set_col_spacings(6)
         self.set_row_spacings(6)
@@ -383,13 +383,13 @@ class DiffTable (gtk.Table):
         for attr,name,typ in [('last_modified','Last Modified',None)] + gglobals.REC_ATTRS \
                 + [('image','Image',None)] \
                 + [(attr,gglobals.TEXT_ATTR_DIC[attr],None) for attr in gglobals.DEFAULT_TEXT_ATTR_ORDER]:
-            if diff_dic.has_key(attr):
+            if attr in diff_dic:
                 buttons = self.build_options(attr,self.diff_dic[attr])
-                label = gtk.Label('_'+name+':')
+                label = Gtk.Label(label='_'+name+':')
                 label.set_alignment(0.0,0.5)
                 label.set_use_underline(True)
                 label.show()
-                self.attach(label,0,1,self.row,self.row+1,xoptions=gtk.SHRINK|gtk.FILL,yoptions=gtk.SHRINK|gtk.FILL)
+                self.attach(label,0,1,self.row,self.row+1,xoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL,yoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL)
                 target = None
                 for col,b in enumerate(buttons):
                     self.setup_widget_size(b,in_col=True)
@@ -397,11 +397,11 @@ class DiffTable (gtk.Table):
                     if not target:
                         target = b
                         label.set_mnemonic_widget(target)
-                    self.attach(b,col+1,col+2,self.row,self.row+1,xoptions=gtk.SHRINK|gtk.FILL,yoptions=gtk.SHRINK|gtk.FILL)
+                    self.attach(b,col+1,col+2,self.row,self.row+1,xoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL,yoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL)
                     if col > self.max_cols: self.max_cols = col
                 self.row += 1
             elif recipe_object and hasattr(recipe_object,attr) and getattr(recipe_object,attr):
-                att_label = gtk.Label(name+':')
+                att_label = Gtk.Label(label=name+':')
                 att_label.set_use_underline(True)
                 att_label.set_alignment(0,0.5)
                 att_label.show()
@@ -411,8 +411,8 @@ class DiffTable (gtk.Table):
                 val_label.show()
                 self.setup_widget_size(val_label,False)
                 if hasattr(val_label,'set_alignment'): val_label.set_alignment(0,0.5)
-                self.attach(att_label,0,1,self.row,self.row+1,xoptions=gtk.SHRINK|gtk.FILL,yoptions=gtk.SHRINK|gtk.FILL)
-                self.attach(val_label,1,5,self.row,self.row+1,xoptions=gtk.SHRINK|gtk.FILL,yoptions=gtk.SHRINK|gtk.FILL)
+                self.attach(att_label,0,1,self.row,self.row+1,xoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL,yoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL)
+                self.attach(val_label,1,5,self.row,self.row+1,xoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL,yoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL)
                 self.row += 1
         self.mm = mnemonic_manager.MnemonicManager()
         self.mm.add_toplevel_widget(self)
@@ -430,12 +430,12 @@ class DiffTable (gtk.Table):
         group_rb = None
         make_widget = get_display_constructor(attribute)
         for v in values:
-            rb = gtk.RadioButton(group=group_rb)
+            rb = Gtk.RadioButton(group=group_rb)
             if not group_rb: group_rb = rb
             if v is not None:
                 rb.add(make_widget(v))
             else:
-                rb.add(gtk.Label(_("None")))
+                rb.add(Gtk.Label(label=_("None")))
             rb.show_all()
             buttons.append(rb)
             rb.connect('toggled',self.value_toggled,attribute,v)
@@ -482,9 +482,9 @@ class DiffTable (gtk.Table):
         group_rb = None
         name = _('Ingredients')
         if len(blocks) > 1:
-            lab = gtk.Label('_'+_("Ingredients")); lab.set_use_underline(True)
+            lab = Gtk.Label(label='_'+_("Ingredients")); lab.set_use_underline(True)
             for col,block in enumerate(blocks):
-                rb = gtk.RadioButton(
+                rb = Gtk.RadioButton(
                     label=_("Recipe")+ ' ' +'%i'%(col+1),
                     group=group_rb
                     )
@@ -492,33 +492,33 @@ class DiffTable (gtk.Table):
                     group_rb = rb
                     lab.set_mnemonic_widget(rb)
                 if not block:
-                    rb.add(gtk.Label(_("None")))
+                    rb.add(Gtk.Label(label=_("None")))
                 else:
                     for n,txt in enumerate(block):
-                        l = gtk.Label(txt)
+                        l = Gtk.Label(label=txt)
                         l.set_alignment(0.0,0.0)
                         l.set_use_markup(True)
-                        l.set_line_wrap(True); l.set_line_wrap_mode(pango.WRAP_WORD)
+                        l.set_line_wrap(True); l.set_line_wrap_mode(Pango.WrapMode.WORD)
                         l.show()
                         self.setup_widget_size(l,in_col=True)
                         self.attach(l,col+1,col+2,self.row+1+n,self.row+2+n,
-                                    xoptions=gtk.SHRINK|gtk.FILL,
-                                    yoptions=gtk.SHRINK|gtk.FILL)
+                                    xoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL,
+                                    yoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL)
                     #rb.add(l)
                 rb.connect('toggled',self.ing_value_toggled,block)
                 self.setup_widget_size(rb,in_col=True)
                 rb.show()
-                self.attach(rb,col+1,col+2,self.row,self.row+1,xoptions=gtk.SHRINK|gtk.FILL,yoptions=gtk.SHRINK|gtk.FILL)
+                self.attach(rb,col+1,col+2,self.row,self.row+1,xoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL,yoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL)
         else:
-            lab = gtk.Label(_("Ingredients")); lab.show()
-            l = gtk.Label(blocks[0])
+            lab = Gtk.Label(label=_("Ingredients")); lab.show()
+            l = Gtk.Label(label=blocks[0])
             l.set_alignment(0.0,0.0)
             l.set_use_markup(True)
-            l.set_line_wrap(True); l.set_line_wrap_mode(pango.WRAP_WORD)
+            l.set_line_wrap(True); l.set_line_wrap_mode(Pango.WrapMode.WORD)
             l.show()
-            self.attach(l,1,5,self.row,self.row+1,xoptions=gtk.SHRINK|gtk.FILL,yoptions=gtk.SHRINK|gtk.FILL)
+            self.attach(l,1,5,self.row,self.row+1,xoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL,yoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL)
         lab.set_alignment(0.0,0.0); lab.show()
-        self.attach(lab,0,1,self.row,self.row+1,xoptions=gtk.SHRINK|gtk.FILL,yoptions=gtk.SHRINK|gtk.FILL)
+        self.attach(lab,0,1,self.row,self.row+1,xoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL,yoptions=Gtk.AttachOptions.SHRINK|Gtk.AttachOptions.FILL)
 
     def ing_value_toggled (self, rb, block):
         if rb.get_active():
@@ -544,25 +544,25 @@ class DiffTable (gtk.Table):
             return None
 
 def put_text_in_scrolled_window (text):
-    sw = gtk.ScrolledWindow()
-    tv = gtk.TextView()
+    sw = Gtk.ScrolledWindow()
+    tv = Gtk.TextView()
     sw.add(tv)
     tv.get_buffer().set_text(text)
     tv.set_editable(False)
-    tv.set_wrap_mode(gtk.WRAP_WORD)
-    sw.set_policy(gtk.POLICY_NEVER,gtk.POLICY_AUTOMATIC)
+    tv.set_wrap_mode(Gtk.WrapMode.WORD)
+    sw.set_policy(Gtk.PolicyType.NEVER,Gtk.PolicyType.AUTOMATIC)
     tv.show()
     return sw
 
 def make_text_label (t, use_markup=False):
     if not t:
-        return gtk.Label(_('None'))
+        return Gtk.Label(label=_('None'))
     elif len(t) < 30:
-        return gtk.Label(t)
+        return Gtk.Label(label=t)
     elif len(t) < 250:
-        l = gtk.Label(t)
+        l = Gtk.Label(label=t)
         if use_markup: l.set_use_markup(use_markup)
-        l.set_line_wrap_mode(pango.WRAP_WORD)
+        l.set_line_wrap_mode(Pango.WrapMode.WORD)
         return l
     else:
         return put_text_in_scrolled_window(t)
@@ -574,25 +574,25 @@ def get_display_constructor (attribute):
             value=v,
             upper=10)
     elif attribute in ['preptime','cooktime']:
-        return lambda v: gtk.Label(convert.seconds_to_timestring(v))
+        return lambda v: Gtk.Label(label=convert.seconds_to_timestring(v))
     elif attribute=='image':
-        return lambda v: (v and gtk.Label("An Image") or gtk.Label("No Image"))
+        return lambda v: (v and Gtk.Label(label="An Image") or Gtk.Label(label="No Image"))
     elif attribute in gglobals.DEFAULT_TEXT_ATTR_ORDER:
         return make_text_label
     elif attribute == 'last_modified':
-        return lambda v: gtk.Label(time_to_text(v))
+        return lambda v: Gtk.Label(label=time_to_text(v))
     else:
-        return lambda v: v and gtk.Label(v) or gtk.Label(_('None'))
+        return lambda v: v and Gtk.Label(label=v) or Gtk.Label(label=_('None'))
 
 if __name__ == '__main__':
 
     def test_in_window (widget):
         """Put widget in window and show it"""
-        w = gtk.Window()
+        w = Gtk.Window()
         w.add(widget)
-        w.connect('delete-event',gtk.main_quit)
+        w.connect('delete-event',Gtk.main_quit)
         w.show()
-        gtk.main()
+        Gtk.main()
 
     def test_difftable ():
         class FakeRec:
@@ -608,7 +608,7 @@ if __name__ == '__main__':
         t = DiffTable(test_data,test_rec)
         t.show()
         test_in_window(t)
-        print t.selected_dic
+        print(t.selected_dic)
 
     def test_merger (rd, conflicts):
         recs = [rd.get_rec(i) for i in conflicts]
@@ -618,18 +618,18 @@ if __name__ == '__main__':
             dt = rmerger.uiMergeRecipes(recs)
             dt.show()
             test_in_window(dt)
-            print dt.selected_dic
+            print(dt.selected_dic)
         elif to_fill:
-            print 'Differences in ',conflicts,'can be auto-filled with',to_fill
+            print('Differences in ',conflicts,'can be auto-filled with',to_fill)
         else:
-            print 'No differences in ',conflicts
+            print('No differences in ',conflicts)
     import recipeManager
     rd = recipeManager.default_rec_manager()
     rmd = RecipeMergerDialog(rd)
     rmd.populate_tree()
     rmd.show()
-    rmd.ui.get_object('window1').connect('delete-event',gtk.main_quit)
-    gtk.main()
+    rmd.ui.get_object('window1').connect('delete-event',Gtk.main_quit)
+    Gtk.main()
     #dups = rd.find_complete_duplicates()
     #for d in dups[5:]:
     #    test_merger(rd,d)

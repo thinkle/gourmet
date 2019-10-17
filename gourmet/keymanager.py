@@ -1,7 +1,7 @@
 import string, re, time, sys
-from defaults.defaults import lang as defaults
-from defaults.defaults import langProperties as langProperties
-from gdebug import debug, TimeAction
+from .defaults.defaults import lang as defaults
+from .defaults.defaults import langProperties as langProperties
+from .gdebug import debug, TimeAction
 
 note_separator_regexp = '(;|\s+-\s+|--)'
 note_separator_matcher = re.compile(note_separator_regexp)
@@ -27,7 +27,7 @@ class KeyManager:
             KeyManager.__single = self
         self.kd = kd
         if not rm:
-            import recipeManager
+            from . import recipeManager
             rm = recipeManager.default_rec_manager()
         self.rm = rm
         self.cooking_verbs=cooking_verbs
@@ -41,11 +41,11 @@ class KeyManager:
 
     def initialize_from_defaults (self):
         dics = []
-        for key,items in defaults.keydic.items():
+        for key,items in list(defaults.keydic.items()):
             for i in items:
                 dics.append(
-                    {'ingkey':unicode(key),
-                     'item':unicode(i),
+                    {'ingkey':str(key),
+                     'item':str(i),
                      'count':1}
                     )
         self.rm.keylookup_table.insert().execute(dics)
@@ -112,7 +112,7 @@ class KeyManager:
                                            )
             else: srch = None
         except:
-            print 'error seeking key for ',s
+            print('error seeking key for ',s)
             raise
         else:
             if srch: return srch[-1].ingkey
@@ -158,7 +158,7 @@ class KeyManager:
             if exact:
                 for o in exact:
                     k = o.ingkey
-                    if not retvals.has_key(k):
+                    if k not in retvals:
                         retvals[k]=0
                     retvals[k]+=(float(o.count)/len(exact))*2
         # Part II -- look up individual words
@@ -182,7 +182,7 @@ class KeyManager:
             total_count = sum([m.count for m in srch])
             for m in srch:
                 ik = m.ingkey
-                if not retvals.has_key(ik):
+                if ik not in retvals:
                     retvals[ik]=0
                 # We have a lovely ratio.
                 #
@@ -200,7 +200,7 @@ class KeyManager:
                 retvals[ik]+=(float(m.count)/total_count)*(float(1)/(wordcount))
                 # Add some probability if our word shows up in the key
                 if ik.find(w)>=0: retvals[ik]+=0.1
-        retv = retvals.items()
+        retv = list(retvals.items())
         retv.sort(lambda a,b: a[1]<b[1] and 1 or a[1]>b[1] and -1 or 0)
         return retv
 
@@ -214,8 +214,8 @@ class KeyManager:
         # ii) the function 'lower()' doesn't appear to work correctly with umlauts.
         if (not langProperties['capitalisedNouns']):
             # We want to use unicode's lower() method
-            if not isinstance(ingr,unicode):
-                ingr = unicode(ingr.decode('utf8'))
+            if not isinstance(ingr,str):
+                ingr = str(ingr.decode('utf8'))
             ingr = ingr.lower()
         timer.end()
         timer = TimeAction('keymanager.generate_key 2',3)
@@ -270,7 +270,7 @@ class KeyDictionary:
     def has_key (self, k):
         debug('has_key testing for %s'%k,1)
         if self.rm.fetch_one(self.rm.ingredients_table,item=k): return True
-        elif self.default.has_key(k): return True
+        elif k in self.default: return True
         else: return False
 
     def srt_by_2nd (self, i1, i2):
@@ -292,19 +292,19 @@ class KeyDictionary:
 
     def keys (self):
         ll = self.rm.get_unique_values('item',self.rm.ingredients_table,deleted=False)
-        ll.extend(self.default.keys())
+        ll.extend(list(self.default.keys()))
         return ll
 
     def values (self):
         ll = self.rm.get_unique_values('ingkey',self.rm.ingredients_table,deleted=False)
-        ll.extend(self.default.values())
+        ll.extend(list(self.default.values()))
         return ll
 
     def items (self):
         lst = []
-        for i in self.keys():
+        for i in list(self.keys()):
             lst.append((i, self.__getitem__(i)))
-        lst.extend(self.default.items())
+        lst.extend(list(self.default.items()))
         return lst
 
 cooking_verbs=["cored",
@@ -324,7 +324,7 @@ cooking_verbs=["cored",
 def get_keymanager (*args, **kwargs):
     try:
         return KeyManager(*args,**kwargs)
-    except KeyManager, km:
+    except KeyManager as km:
         return km
 
 if __name__ == '__main__':
@@ -332,9 +332,9 @@ if __name__ == '__main__':
     def timef (f):
         t = time.time()
         f()
-        print time.time()-t
+        print(time.time()-t)
     import tempfile
-    import recipeManager
+    from . import recipeManager
     km = KeyManager(rm=recipeManager.RecipeManager(**recipeManager.dbargs))
     recipeManager.dbargs['file']=tempfile.mktemp('.mk')
     fkm = KeyManager(rm=recipeManager.RecipeManager(**recipeManager.dbargs))

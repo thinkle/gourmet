@@ -1,4 +1,4 @@
-from exporter import exporter_mult
+from .exporter import exporter_mult
 import xml.dom
 import types
 # Base XML exporter class
@@ -45,17 +45,17 @@ class XmlExporter (exporter_mult):
 
     def append_text (self, element, text):
         try:
-            assert(type(text) in types.StringTypes)
+            assert(type(text) in (str,))
         except:
-            print 'Text is not text'
-            print 'append_text received',element,text
+            print('Text is not text')
+            print('append_text received',element,text)
             raise TypeError(text+' is not a StringType')
         try:
             t = self.xmlDoc.createTextNode(text)
             element.appendChild(t)
         except:
-            print 'FAILED WHILE WORKING ON ',element
-            print 'TRYING TO APPEND',text[:100]
+            print('FAILED WHILE WORKING ON ',element)
+            print('TRYING TO APPEND',text[:100])
             raise
 
     def create_text_element (self, element_name, text, attrs={}):
@@ -65,7 +65,7 @@ class XmlExporter (exporter_mult):
 
     def create_element_with_attrs (self, element_name, attdic):
         element = self.xmlDoc.createElement(element_name)
-        for k,v in attdic.items():
+        for k,v in list(attdic.items()):
             self.set_attribute(element,k,str(v))
         return element
 

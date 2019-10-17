@@ -1,6 +1,6 @@
 from gourmet.plugin import PluginPlugin
 from gourmet.recipeManager import get_recipe_manager
-import gtk
+from gi.repository import Gtk
 from gettext import gettext as _
 
 class KeyEditorPlugin (PluginPlugin):
@@ -24,26 +24,26 @@ class KeyEditorPlugin (PluginPlugin):
         then apply them instantly; if False, apply them when this
         class\'s save method is called.
         '''
-        renderer = gtk.CellRendererCombo()
+        renderer = Gtk.CellRendererCombo()
         renderer.connect('editing-started',self.start_edit_cb)
         renderer.connect('edited',self.key_edited_cb,(ike,key_col,instant_apply))
         # Build shopcat model...
         self.rd = get_recipe_manager()
-        self.shopcat_model = gtk.ListStore(str)
+        self.shopcat_model = Gtk.ListStore(str)
         for val in self.rd.get_unique_values('shopcategory',table=self.rd.shopcats_table):
             if val: self.shopcat_model.append([val])
         renderer.set_property('model',self.shopcat_model)
         renderer.set_property('text-column',0)
         renderer.set_property('editable',True)
-        renderer.set_property('mode',gtk.CELL_RENDERER_MODE_EDITABLE)
+        renderer.set_property('mode',Gtk.CellRendererMode.EDITABLE)
         renderer.set_property('sensitive',True)
-        tvc = gtk.TreeViewColumn(self.title,renderer)
+        tvc = Gtk.TreeViewColumn(self.title,renderer)
         tvc.set_cell_data_func(renderer,self.cell_data_func,key_col)
         self.tvcs[renderer] = tvc
         return tvc
 
     def cell_data_func (self, col, renderer, model, itr, key_col):
-        if self.ingkeys_to_change.has_key(model[itr][key_col]):
+        if model[itr][key_col] in self.ingkeys_to_change:
             cat = self.ingkeys_to_change[model[itr][key_col]]
         else:
             shopcat_row = self.rd.fetch_one(self.rd.shopcats_table,
@@ -55,9 +55,9 @@ class KeyEditorPlugin (PluginPlugin):
         renderer.set_property('text',cat)
 
     def start_edit_cb (self, renderer, cbe, path_string):
-        if isinstance(cbe,gtk.ComboBoxEntry):
-            entry = cbe.child
-            completion = gtk.EntryCompletion()
+        if isinstance(cbe,Gtk.ComboBoxEntry):
+            entry = cbe.get_child()
+            completion = Gtk.EntryCompletion()
             completion.set_model(self.shopcat_model)
             completion.set_text_column(0)
             entry.set_completion(completion)
@@ -98,7 +98,7 @@ class KeyEditorPlugin (PluginPlugin):
     def save (self):
         '''Save any data the user has entered in your treeview column.
         '''
-        for ingkey,val in self.ingkeys_to_change.items():
+        for ingkey,val in list(self.ingkeys_to_change.items()):
             self.apply_association(ingkey,val)
         self.ingkeys_to_change = {}
 
@@ -112,18 +112,18 @@ class KeyEditorPlugin (PluginPlugin):
     def setup_edit_widget (self):
         '''Return an edit widget to let users edit your data.
         '''
-        self.cb = cb = gtk.ComboBoxEntry()
+        self.cb = cb = Gtk.ComboBoxEntry()
         cb.set_model(self.shopcat_model)
         cb.set_text_column(0)
-        entry = cb.child
-        completion = gtk.EntryCompletion()
+        entry = cb.get_child()
+        completion = Gtk.EntryCompletion()
         completion.set_model(self.shopcat_model)
         completion.set_text_column(0)
         entry.set_completion(completion)
         return cb
 
     def get_widget_val (self):
-        return self.cb.child.get_text()
+        return self.cb.get_child().get_text()
 
     def apply_widget_val (self):
         val = self.get_widget_val()

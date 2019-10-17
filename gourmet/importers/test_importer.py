@@ -1,5 +1,5 @@
 import unittest
-import importer
+from . import importer
 
 class TestImporter (unittest.TestCase):
 
@@ -25,7 +25,7 @@ class TestImporter (unittest.TestCase):
         self.i.start_ing()
         self.i.add_amt(2)
         self.i.add_unit('cups')
-        self.i.add_item(u'water')
+        self.i.add_item('water')
         self.i.commit_ing()
         self.i.commit_rec()
         ings = self.i.rd.get_ings(self._get_last_rec_())

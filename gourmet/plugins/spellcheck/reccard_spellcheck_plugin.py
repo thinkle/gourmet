@@ -17,7 +17,7 @@ class SpellPlugin (RecEditorPlugin, UIPlugin):
                 gtkspell.Spell(tv)
 
 def harvest_textviews (widget):
-    if isinstance(widget,gtk.TextView):
+    if isinstance(widget,Gtk.TextView):
         return [widget]
     else:
         tvs = []

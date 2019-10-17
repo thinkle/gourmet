@@ -1,7 +1,7 @@
-from OptionParser import args
+from .OptionParser import args
 import time,traceback
 
-debug_level=args.debug
+debug_level=args.debug or 0
 debug_file=args.debug_file
 timestamp=args.time
 
@@ -9,14 +9,14 @@ if debug_file:
     import re
     debug_file = re.compile(debug_file)
 
-if debug_level > 0: print 'DEBUG_LEVEL=',debug_level
-if debug_file: print 'DEBUG_FILE=',debug_file
+if debug_level > 0: print('DEBUG_LEVEL=',debug_level)
+if debug_file: print('DEBUG_FILE=',debug_file)
 
 def debug_decorator (f):
     def _ (*args, **kwargs):
-        print 'Calling ',f.__name__,'with ',args,kwargs
+        print('Calling ',f.__name__,'with ',args,kwargs)
         ret = f(*args,**kwargs)
-        print 'Returning:',ret
+        print('Returning:',ret)
         return ret
     return _
 
@@ -34,9 +34,9 @@ def debug (message, level=10):
             line = ""
         if args.debug_file:
             if debug_file.search(finame):
-                print "DEBUG: ",ts,"%s: %s"%(finame,line),message
+                print("DEBUG: ",ts,"%s: %s"%(finame,line),message)
         else:
-            print "DEBUG: ",ts,"%s: %s"%(finame,line),message
+            print("DEBUG: ",ts,"%s: %s"%(finame,line),message)
 
 timers = {}
 
@@ -61,16 +61,16 @@ class TimeAction:
                 finame = " ".join(stack)
                 line = ""
             if not args.debug_file or debug_file.search(finame):
-                print "DEBUG: %s TOOK %s SECONDS"%(self.name,t)
-                if not timers.has_key(self.name): timers[self.name]=[t]
+                print("DEBUG: %s TOOK %s SECONDS"%(self.name,t))
+                if self.name not in timers: timers[self.name]=[t]
                 else: timers[self.name].append(t)
 
 
 def print_timer_info ():
-    for n,times in timers.items():
-        print "%s:"%n,
-        for t in times: print "%.02e"%t,",",
-        print ""
+    for n,times in list(timers.items()):
+        print("%s:"%n, end=' ')
+        for t in times: print("%.02e"%t,",", end=' ')
+        print("")
 
 if __name__ == '__main__':
     t=TimeAction('this is a test',0)

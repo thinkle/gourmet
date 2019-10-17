@@ -1,8 +1,8 @@
-import gtk
-from gdebug import debug
-from gtk_extras import dialog_extras as de
+from gi.repository import Gtk
+from .gdebug import debug
+from .gtk_extras import dialog_extras as de
 from gettext import gettext as _
-from prefs import get_prefs
+from .prefs import get_prefs
 
 class CheckEncoding:
 
@@ -27,7 +27,7 @@ class CheckEncoding:
         if get_prefs().get('utf-16',False):
             self.encodings.extend(['utf_16','utf_16_le','utf_16_be'])
         if encodings: self.encodings = encodings
-        if type(file) in [str,unicode]:
+        if type(file) in [str,str]:
             file = open(file,'r')
         self.txt = file.read()
         file.close()
@@ -56,7 +56,7 @@ class CheckEncoding:
         for e in encodings:
             try:
                 d=self.txt.decode(e)
-                if d and (not d in self.possible_encodings.values()):
+                if d and (not d in list(self.possible_encodings.values())):
                     # if we don't already have this possibility, add
                     self.possible_encodings[e]=d.encode('utf8')
             except UnicodeDecodeError:
@@ -69,10 +69,10 @@ class GetFile (CheckEncoding):
         CheckEncoding.__init__(self,file,encodings)
         encs=self.get_encodings()
         if encs:
-            if len(encs.keys()) > 1:
+            if len(list(encs.keys())) > 1:
                 encoding = getEncoding(encodings=encs)
             else:
-                encoding = encs.keys()[0]
+                encoding = list(encs.keys())[0]
             self.enc = encoding
             self.lines = encs[self.enc].splitlines()
             debug('reading file %s as encoding %s'%(file, self.enc))
@@ -112,9 +112,9 @@ class EncodingDialog (de.OptionDialog):
         self.expander.set_expanded(True)
 
     def setup_motion_buttons (self):
-        self.hbb = gtk.HButtonBox()
-        self.fb = gtk.Button('Next Difference')
-        self.pb = gtk.Button('Previous Difference')
+        self.hbb = Gtk.HButtonBox()
+        self.fb = Gtk.Button('Next Difference')
+        self.pb = Gtk.Button('Previous Difference')
         self.pb.connect('clicked',lambda *args: self.move_to_difference(forward=False))
         self.fb.connect('clicked',lambda *args: self.move_to_difference(forward=True))
         self.hbb.add(self.pb)
@@ -127,7 +127,7 @@ class EncodingDialog (de.OptionDialog):
         self.change_encoding()
 
     def create_options (self):
-        options = self.encodings.keys()
+        options = list(self.encodings.keys())
         masterlist = CheckEncoding.encodings + CheckEncoding.all_encodings
         def comp (a,b):
             return cmp(masterlist.index(a),masterlist.index(b))
@@ -135,10 +135,10 @@ class EncodingDialog (de.OptionDialog):
         return options
 
     def create_expander (self):
-        self.evb = gtk.VBox()
-        self.sw = gtk.ScrolledWindow()
-        self.sw.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
-        self.tv = gtk.TextView()
+        self.evb = Gtk.VBox()
+        self.sw = Gtk.ScrolledWindow()
+        self.sw.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
+        self.tv = Gtk.TextView()
         self.tv.set_editable(False)
         self.buffer = self.tv.get_buffer()
         self.sw.add(self.tv)
@@ -150,8 +150,8 @@ class EncodingDialog (de.OptionDialog):
 
     def setup_buffers (self):
         self.encoding_buffers={}
-        for k,t in self.encodings.items():
-            self.encoding_buffers[k]=gtk.TextBuffer()
+        for k,t in list(self.encodings.items()):
+            self.encoding_buffers[k]=Gtk.TextBuffer()
             self.highlight_tags = [self.encoding_buffers[k].create_tag(background='yellow')]
             self.line_highlight_tags = [self.encoding_buffers[k].create_tag(background='green')]
             self.set_buffer_text(self.encoding_buffers[k],t)
@@ -166,7 +166,7 @@ class EncodingDialog (de.OptionDialog):
         debug('changed text to encoding %s'%self.ret,0)
 
     def move_to_difference (self, forward=True):
-        dkeys = self.diff_lines.keys()
+        dkeys = list(self.diff_lines.keys())
         dkeys.sort()
         if forward:
             self.current_error += 1
@@ -186,7 +186,7 @@ class EncodingDialog (de.OptionDialog):
         lines = text.splitlines()
         totl = len(lines)
         shown = []
-        for line,diffs in self.diff_lines.items():
+        for line,diffs in list(self.diff_lines.items()):
             if line in shown: continue
             start_at = line - self.context_lines
             if start_at < 0: start_at = 0
@@ -219,7 +219,7 @@ class EncodingDialog (de.OptionDialog):
 
     def diff_texts (self):
         """Look at our differently encoded buffers for characters where they differ."""
-        encoded_buffers = self.encodings.values()
+        encoded_buffers = list(self.encodings.values())
         def mycmp (a,b):
             '''Sort by number of newlines (most first)'''
             return cmp(len(b.splitlines()),len(a.splitlines()))
@@ -229,7 +229,7 @@ class EncodingDialog (de.OptionDialog):
         for linenum, l in enumerate(enc1.splitlines()):
             other_lines = [len(e)>linenum and e[linenum] for e in enc_rest]
             # Remove any Falses returned by above
-            other_lines = filter(lambda x: type(x) != bool, other_lines)
+            other_lines = [x for x in other_lines if type(x) != bool]
             if False in [l==ol for ol in other_lines]:
                 ranges = []
                 for chnum,ch in enumerate(l):
@@ -251,11 +251,11 @@ def getEncoding (*args,**kwargs):
         return result
 
 if __name__ == '__main__':
-    print 'grabbing dialog extras'
+    print('grabbing dialog extras')
     #import gtk_extras.dialog_extras as de
     #print 'selecting file'
     #fn=de.select_file('Select file to decode',filters=[['Plain Text',['text/plain'],'*txt']],)
     #print 'fn = ',fn
-    print "Got file ", get_file('/tmp/foo.txt')[0:5]
+    print("Got file ", get_file('/tmp/foo.txt')[0:5])
 
 

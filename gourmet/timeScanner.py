@@ -1,21 +1,24 @@
 """Scan text for time and show links that will pop up a timer if the
 user clicks on any time in the TextView."""
 
-import convert, re, gtk, gobject
-from gtk_extras import LinkedTextView
-import timer
+from . import convert
+import re
+from gi.repository import Gtk
+from gi.repository import GObject
+from .gtk_extras import LinkedTextView
+from . import timer
 import xml.sax.saxutils
 
 all_units = []
 for base,units in convert.Converter.time_units:
     for u in units:
-        u = re.escape(unicode(u))
+        u = re.escape(str(u))
         if u not in all_units: all_units.append(u)
 
 time_matcher = re.compile(
-    u'(?P<firstnum>'+convert.NUMBER_FINDER_REGEXP + u')(' + \
-    convert.RANGE_REGEXP + convert.NUMBER_FINDER_REGEXP.replace(u'int',u'int2').replace(u'frac',u'frac2') + u')?' \
-    + u'\s*' + u'(?P<unit>' + u'|'.join(all_units) + u')(?=$|\W)',
+    '(?P<firstnum>'+convert.NUMBER_FINDER_REGEXP + ')(' + \
+    convert.RANGE_REGEXP + convert.NUMBER_FINDER_REGEXP.replace('int','int2').replace('frac','frac2') + ')?' \
+    + '\s*' + '(?P<unit>' + '|'.join(all_units) + ')(?=$|\W)',
     re.UNICODE
     )
 
@@ -37,9 +40,9 @@ class LinkedTimeView (LinkedTextView.LinkedTextView):
     __gtype_name__ = 'LinkedTimeView'
 
     __gsignals__ = {
-        'time-link-activated':(gobject.SIGNAL_RUN_LAST,
-                          gobject.TYPE_STRING,
-                          [gobject.TYPE_STRING,gobject.TYPE_STRING]),
+        'time-link-activated':(GObject.SignalFlags.RUN_LAST,
+                          GObject.TYPE_STRING,
+                          [GObject.TYPE_STRING,GObject.TYPE_STRING]),
         }
 
     def make_buffer (self):
@@ -65,7 +68,7 @@ def show_timer_cb (tv,l,note,c):
 
 if __name__ == '__main__':
 
-    import gtk
+    from gi.repository import Gtk
     c = convert.get_converter()
     tv = LinkedTimeView()
     tv.connect('time-link-activated',show_timer_cb,c)
@@ -82,9 +85,8 @@ if __name__ == '__main__':
         """
         )
 
-    w = gtk.Window()
+    w = Gtk.Window()
     w.add(tv)
-    w.connect('delete-event',lambda *args: gtk.main_quit())
+    w.connect('delete-event',lambda *args: Gtk.main_quit())
     w.show_all()
-    gtk.main()
-
+    Gtk.main()

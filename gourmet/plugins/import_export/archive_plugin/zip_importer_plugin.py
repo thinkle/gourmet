@@ -1,6 +1,6 @@
 from gourmet.plugin import ImporterPlugin
 from gourmet.importers.importManager import ImportFileList
-from zip_readers import archive_to_filelist
+from .zip_readers import archive_to_filelist
 from gettext import gettext as _
 import fnmatch
 
@@ -22,6 +22,6 @@ class ArchiveImporterPlugin (ImporterPlugin):
 
     def get_importer (self, filename):
         flist = archive_to_filelist(filename)
-        print 'Filelist=',flist
+        print('Filelist=',flist)
         ifl = ImportFileList(flist)
         raise ifl

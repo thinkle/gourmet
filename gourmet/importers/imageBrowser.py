@@ -1,4 +1,4 @@
-import gtk, gtk.gdk, gobject, pango
+import gtk, Gtk.gdk, gobject, pango
 from gourmet.ImageExtras import get_pixbuf_from_jpg
 from gourmet.gtk_extras.thumbnail import check_for_thumbnail,fetched_uris
 from gourmet.gtk_extras.dialog_extras import ModalDialog
@@ -29,7 +29,7 @@ def grab_thumbnail (uri, type, iqueue, pqueue, progress_portion=1, progress_star
     try:
         fi = check_for_thumbnail(uri,type,reporthook)
     except:
-        print 'WARNING: Error on creating thumbnail - ignoring'
+        print('WARNING: Error on creating thumbnail - ignoring')
         import traceback; traceback.print_exc()
     else:
         iqueue.append((fi,uri))
@@ -37,11 +37,11 @@ def grab_thumbnail (uri, type, iqueue, pqueue, progress_portion=1, progress_star
     #print 'Adding result to Queue'
     #print 'Done'
 
-class ImageBrowser (gtk.IconView):
+class ImageBrowser (Gtk.IconView):
     def __init__ (self,*args,**kwargs):
-        gtk.IconView.__init__(self,*args,**kwargs)
-        self.model = gtk.ListStore(gtk.gdk.Pixbuf,str)
-        self.set_selection_mode(gtk.SELECTION_SINGLE)
+        GObject.GObject.__init__(self,*args,**kwargs)
+        self.model = Gtk.ListStore(GdkPixbuf.Pixbuf,str)
+        self.set_selection_mode(Gtk.SelectionMode.SINGLE)
         self.set_model(self.model)
         self.set_pixbuf_column(0)
         self.image_queue = []
@@ -50,8 +50,8 @@ class ImageBrowser (gtk.IconView):
         self.updating = False
         self.adding = []
         self.alive = False
-        gobject.timeout_add(100,self.update_progress)
-        gobject.timeout_add(100,self.add_image_from_queue)
+        GObject.timeout_add(100,self.update_progress)
+        GObject.timeout_add(100,self.add_image_from_queue)
         #self.run_thread()
 
     def add_image_from_uri (self, u, progress_portion=1, progress_start_at=0):
@@ -101,7 +101,7 @@ class ImageBrowser (gtk.IconView):
             #fi,u = self.image_queue.get_nowait()
             fi,u = self.image_queue.pop()
             if fi:
-                pb = gtk.gdk.pixbuf_new_from_file(fi)
+                pb = GdkPixbuf.Pixbuf.new_from_file(fi)
                 self.model.append([pb,u])
         except IndexError:
             pass
@@ -122,7 +122,7 @@ class ImageBrowser (gtk.IconView):
             #    self.progressbar.pulse()
         else:
             if progress == 1:
-                print 'Done!'
+                print('Done!')
                 self.progressbar.hide()
                 return None
         return True
@@ -147,14 +147,14 @@ class ImageBrowserDialog (ModalDialog):
         self.ib = ImageBrowser()
         self.ib.connect('selection-changed',self.selection_changed_cb)
         self.ib.connect('item-activated',self.okcb)
-        self.sw = gtk.ScrolledWindow()
-        self.pb = gtk.ProgressBar(); self.pb.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
-        self.vbox.pack_end(self.sw)
+        self.sw = Gtk.ScrolledWindow()
+        self.pb = Gtk.ProgressBar(); self.pb.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        self.vbox.pack_end(self.sw, True, True, 0)
         self.vbox.pack_end(self.pb,expand=False)
         self.ib.progressbar = self.pb
         self.sw.add(self.ib)
         self.sw.show_all()
-        self.sw.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
+        self.sw.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
 
     def okcb (self, *args,**kwargs):
         self.ib.quit()
@@ -186,10 +186,10 @@ class ImageBrowserTest (unittest.TestCase):
 
     def setUp (self):
         self.ib = ImageBrowser()
-        self.w = gtk.Window()
-        self.sw = gtk.ScrolledWindow()
+        self.w = Gtk.Window()
+        self.sw = Gtk.ScrolledWindow()
         self.sw.add(self.ib)
-        self.sw.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
+        self.sw.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
         self.w.add(self.sw)
 
     #def testWindow (self):
@@ -198,8 +198,8 @@ class ImageBrowserTest (unittest.TestCase):
     #    for image in ['Caneel beach.JPG','Cinnamon beach.JPG','dsc00258.jpg']:
     #        self.ib.add_image_from_uri('file:///home/tom/pictures/'+image)
     #    self.ib.add_image_from_uri('http://wikipes.com/wikipes-logo.gif')
-    #    self.w.connect('delete-event',lambda *args: gtk.main_quit())
-    #    gtk.main()
+    #    self.w.connect('delete-event',lambda *args: Gtk.main_quit())
+    #    Gtk.main()
 
     def testDialog (self):
         self.ibd = ImageBrowserDialog()
@@ -211,7 +211,7 @@ class ImageBrowserTest (unittest.TestCase):
         #    self.ibd.add_image_from_uri()
         import os
         if os.name!='nt':
-            gtk.threads_init()
+            Gtk.threads_init()
         self.ibd.run()
 
 def get_image_file (uri):
@@ -221,7 +221,7 @@ if __name__ == '__main__':
     try:
         # Make unit test not run from emacs C-c C-c into python shell...
         __file__
-        print 'UNITTEST'
+        print('UNITTEST')
         unittest.main()
     except:
         pass

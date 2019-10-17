@@ -6,7 +6,7 @@ from gettext import gettext as _
 import gourmet.gglobals as gglobals
 from gourmet import Undo, keymanager, convert
 from gourmet.defaults import lang as defaults
-import StringIO
+import io
 from gourmet import ImageExtras
 import gourmet.version
 import gourmet.recipeIdentifier as recipeIdentifier
@@ -41,7 +41,7 @@ def fix_colnames (dict, *tables):
     # names are handed around as strings. This converts them into the
     # object sqlalchemy prefers.
     newdict =  {}
-    for k,v in dict.items():
+    for k,v in list(dict.items()):
         got_prop = False
         for t in tables:
             try:
@@ -55,13 +55,13 @@ def fix_colnames (dict, *tables):
 
 def make_simple_select_arg (criteria,*tables):
     args = []
-    for k,v in fix_colnames(criteria,*tables).items():
-        if type(v) in [str,unicode]:
-            v = unicode(v)
+    for k,v in list(fix_colnames(criteria,*tables).items()):
+        if type(v) in [str,str]:
+            v = str(v)
         if type(v)==tuple:
             operator,value = v
-            if type(value) in [str,unicode]:
-                value = unicode(value)
+            if type(value) in [str,str]:
+                value = str(value)
             if operator=='in':
                 args.append(k.in_(value))
             elif hasattr(k,operator):
@@ -113,7 +113,7 @@ class DBObject:
 # categories_table: id -> recipe_id, category_entry_id -> id
 # ingredients_table: ingredient_id -> id, id -> recipe_id
 
-class RecData (Pluggable):
+class RecData (Pluggable, BaseException):
 
     """RecData is our base class for handling database connections.
 
@@ -131,7 +131,7 @@ class RecData (Pluggable):
         # hooks run after adding, modifying or deleting a recipe.
         # Each hook is handed the recipe, except for delete_hooks,
         # which is handed the ID (since the recipe has been deleted)
-        if RecData._singleton.has_key(file):
+        if file in RecData._singleton:
             raise RecData._singleton[file]
         else:
             RecData._singleton[file] = self
@@ -227,7 +227,7 @@ class RecData (Pluggable):
             #self.base_connection.commit()
             pass
         except IndexError:
-            print 'Ignoring sqlalchemy problem'
+            print('Ignoring sqlalchemy problem')
             import traceback; traceback.print_exc()
 
     def _setup_object_for_table (self, table, klass):
@@ -447,17 +447,17 @@ class RecData (Pluggable):
         backup_file_name = self.filename + '.backup-' + time.strftime('%d-%m-%y')
         while os.path.exists(backup_file_name):
             backup_file_name += 'I'
-        print 'Making a backup copy of DB in ',backup_file_name
-        print 'You can use it to restore if something ugly happens.'
+        print('Making a backup copy of DB in ',backup_file_name)
+        print('You can use it to restore if something ugly happens.')
         shutil.copy(self.filename,backup_file_name) # Make a backup...
         import gourmet.gtk_extras.dialog_extras as de
-        import gtk
+        from gi.repository import Gtk
         de.show_message(
             title=_("Upgrading database"),
             label=_("Upgrading database"),
             sublabel=_("Depending on the size of your database, this may be an intensive process and may take  some time. Your data has been automatically backed up in case something goes wrong."),
             expander=(_("Details"),_("A backup has been made in %s in case something goes wrong. If this upgrade fails, you can manually rename your backup file recipes.db to recover it for use with older Gourmet.")%backup_file_name),
-            message_type=gtk.MESSAGE_INFO)
+            message_type=Gtk.MessageType.INFO)
 
     def update_version_info (self, version_string):
         """Report our version to the database.
@@ -498,7 +498,7 @@ class RecData (Pluggable):
             #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
             # Change from servings to yields! ( we use the plural to avoid a headache with keywords)
             if stored_info.version_super == 0 and stored_info.version_major < 16:
-                print 'Database older than 0.16.0 -- updating',sv_text
+                print('Database older than 0.16.0 -- updating',sv_text)
                 self.backup_db()
                 from sqlalchemy.sql.expression import func
                 # We need to unpickle Booleans that have erroneously remained
@@ -546,7 +546,7 @@ class RecData (Pluggable):
                                                     or
                                                     (stored_info.version_major < 14)
                                                     )):
-                print 'Database older than 0.14.7 -- updating',sv_text
+                print('Database older than 0.14.7 -- updating',sv_text)
                 # Don't change the table defs here without changing them
                 # above as well (for new users) - sorry for the stupid
                 # repetition of code.
@@ -560,13 +560,13 @@ class RecData (Pluggable):
                         }
                                                 ).execute()
             if stored_info.version_super == 0 and stored_info.version_major < 14:
-                print 'Database older than 0.14.0 -- updating',sv_text
+                print('Database older than 0.14.0 -- updating',sv_text)
                 self.backup_db()
                 # Name changes to make working with IDs make more sense
                 # (i.e. the column named 'id' should always be a unique
                 # identifier for a given table -- it should not be used to
                 # refer to the IDs from *other* tables
-                print 'Upgrade from < 0.14',sv_text
+                print('Upgrade from < 0.14',sv_text)
                 self.alter_table('categories',self.setup_category_table,
                                  {'id':'recipe_id'},['category'])
                 # Testing whether somehow recipe_id already exists
@@ -583,14 +583,14 @@ class RecData (Pluggable):
                                       'item', 'ingkey', 'optional', 'shopoptional',
                                       'inggroup', 'position', 'deleted'])
                 else:
-                    print 'Odd -- recipe_id seems to already exist'
+                    print('Odd -- recipe_id seems to already exist')
                 self.alter_table('keylookup',self.setup_keylookup_table,
                                  {},['word','item','ingkey','count'])
             # Add recipe_hash, ingredient_hash and link fields
             # (These all get added in 0.13.0)
             if stored_info.version_super == 0 and stored_info.version_major <= 12:
                 self.backup_db()
-                print 'UPDATE FROM < 0.13.0...',sv_text
+                print('UPDATE FROM < 0.13.0...',sv_text)
                 # Don't change the table defs here without changing them
                 # above as well (for new users) - sorry for the stupid
                 # repetition of code.
@@ -599,7 +599,7 @@ class RecData (Pluggable):
                 self.add_column_to_table(self.recipe_table,('ingredient_hash',String(length=32),{}))
                 # Add a link field...
                 self.add_column_to_table(self.recipe_table,('link',Text(),{}))
-                print 'Searching for links in old recipe fields...',sv_text
+                print('Searching for links in old recipe fields...',sv_text)
                 URL_SOURCES = ['instructions','source','modifications']
                 recs = self.search_recipes(
                     [
@@ -646,9 +646,9 @@ class RecData (Pluggable):
                 for r in self.fetch_all(self.recipe_table): self.update_hashes(r)
 
             if stored_info.version_super == 0 and stored_info.version_major <= 11 and stored_info.version_minor <= 3:
-                print 'version older than 0.11.4 -- doing update',sv_text
+                print('version older than 0.11.4 -- doing update',sv_text)
                 self.backup_db()
-                print 'Fixing broken ingredient-key view from earlier versions.'
+                print('Fixing broken ingredient-key view from earlier versions.')
                 # Drop keylookup_table table, which wasn't being properly kept up
                 # to date...
                 self.delete_by_criteria(self.keylookup_table,{})
@@ -704,7 +704,7 @@ class RecData (Pluggable):
                 plugin_current = plugin.version,
                 )
         except:
-            print 'Problem updating plugin',plugin,plugin.name
+            print('Problem updating plugin',plugin,plugin.name)
             raise
         # Now we store the information so we know we've done an update
         info = {
@@ -836,9 +836,9 @@ class RecData (Pluggable):
                 subtable = None
                 col = getattr(self.recipe_table.c,crit['column'])
             # Make sure we're using unicode!
-            if (type(crit.get('search',u'')) != unicode
-                and type(crit.get('search',u'')) in types.StringTypes):
-                crit['search'] = unicode(crit['search'])
+            if (type(crit.get('search','')) != str
+                and type(crit.get('search','')) in (str,)):
+                crit['search'] = str(crit['search'])
             if crit.get('operator','LIKE')=='LIKE':
                 retval = (col.like(crit['search']))
             elif crit['operator']=='REGEXP':
@@ -883,13 +883,13 @@ class RecData (Pluggable):
         if criteria: criteria = make_simple_select_arg(criteria,table)[0]
         else: criteria=None
         if colname=='category' and table==self.recipe_table:
-            print 'WARNING: you are using a hack to access category values.'
+            print('WARNING: you are using a hack to access category values.')
             table = self.categories_table
             table = table.alias('ingrtable')
         retval = [r[0] for
                   r in sqlalchemy.select([getattr(table.c,colname)],distinct=True,whereclause=criteria).execute().fetchall()
                   ]
-        return filter(lambda x: x is not None, retval) # Don't return null values
+        return [x for x in retval if x is not None] # Don't return null values
 
     def get_ingkeys_with_count (self, search={}):
         """Get unique list of ingredient keys and counts for number of times they appear in the database.
@@ -928,7 +928,7 @@ class RecData (Pluggable):
         """
         criteria = fix_colnames(criteria,table)
         delete_args = []
-        for k,v in criteria.items():
+        for k,v in list(criteria.items()):
             delete_args.append(k==v)
         if len(delete_args) > 1:
             delete_args = [and_(*delete_args)]
@@ -938,7 +938,7 @@ class RecData (Pluggable):
         try:
             to_del = []
             for k in new_values_dic:
-                if type(k) not in [str,unicode]:
+                if type(k) not in [str,str]:
                     to_del.append(k)
             for k in to_del:
                 v = new_values_dic[k]
@@ -946,12 +946,12 @@ class RecData (Pluggable):
                 new_values_dic[str(k)] = v
             table.update(*make_simple_select_arg(update_criteria,table)).execute(**new_values_dic)
         except:
-            print 'update_by_criteria error...'
-            print 'table:',table
-            print 'UPDATE_CRITERIA:'
-            for k,v in update_criteria.items(): print '','KEY:',k,'VAL:',v
-            print 'NEW_VALUES_DIC:'
-            for k,v in new_values_dic.items(): print '','KEY:',k,type(k),'VAL:',v
+            print('update_by_criteria error...')
+            print('table:',table)
+            print('UPDATE_CRITERIA:')
+            for k,v in list(update_criteria.items()): print('','KEY:',k,'VAL:',v)
+            print('NEW_VALUES_DIC:')
+            for k,v in list(new_values_dic.items()): print('','KEY:',k,type(k),'VAL:',v)
             raise
 
     def add_column_to_table (self, table, column_spec):
@@ -964,8 +964,8 @@ class RecData (Pluggable):
         try:
             self.db.execute(sql)
         except:
-            print 'FAILED TO EXECUTE',sql
-            print 'Ignoring error in add_column_to_table'
+            print('FAILED TO EXECUTE',sql)
+            print('Ignoring error in add_column_to_table')
             import traceback; traceback.print_exc()
 
     def alter_table (self, table_name, setup_function, cols_to_change={}, cols_to_keep=[]):
@@ -985,7 +985,7 @@ class RecData (Pluggable):
         will allow us to e.g. change/add primary key columns to sqlite
         tables
         """
-        print 'Attempting to alter ',table_name,setup_function,cols_to_change,cols_to_keep
+        print('Attempting to alter ',table_name,setup_function,cols_to_change,cols_to_keep)
         try:
             self.db.execute('ALTER TABLE %(t)s RENAME TO %(t)s_temp'%{'t':table_name})
         except:
@@ -1006,7 +1006,7 @@ class RecData (Pluggable):
         getattr(self,'%s_table'%table_name).create()
         TO_COLS = cols_to_keep[:]
         FROM_COLS = cols_to_keep[:]
-        for fro,to_ in cols_to_change.items():
+        for fro,to_ in list(cols_to_change.items()):
             FROM_COLS.append(fro)
             TO_COLS.append(to_)
         stmt = '''INSERT INTO %(t)s (%(to_cols)s)
@@ -1031,7 +1031,7 @@ class RecData (Pluggable):
 
         Return True if r1 and r2 reference the same row in the database.
         """
-        return r1 in [r2,unicode]
+        return r1 in [r2,str]
 
     def find_duplicates (self, by='recipe',recipes=None, include_deleted=True):
         """Find all duplicate recipes by recipe or ingredient.
@@ -1061,13 +1061,13 @@ class RecData (Pluggable):
         recs_by_hash = {}
         for result in query.fetchall():
             rec_id = result[0]; hsh = result[1]
-            if not recs_by_hash.has_key(hsh):
+            if hsh not in recs_by_hash:
                 recs_by_hash[hsh] = []
             recs_by_hash[hsh].append(rec_id)
-        results = recs_by_hash.values()
+        results = list(recs_by_hash.values())
         if recipes:
             rec_ids = [r.id for r in recipes]
-            results = filter(lambda reclist: True in [(rid in rec_ids) for rid in reclist], results)
+            results = [reclist for reclist in results if True in [(rid in rec_ids) for rid in reclist]]
         return results
 
     def find_complete_duplicates (self, recipes=None, include_deleted=True):
@@ -1096,13 +1096,13 @@ class RecData (Pluggable):
         recs_by_hash = {}
         for result in query.fetchall():
             rec_id = result[0]; rhsh = result[1]; ihsh = result[2]
-            if not recs_by_hash.has_key((rhsh,ihsh)):
+            if (rhsh,ihsh) not in recs_by_hash:
                 recs_by_hash[(rhsh,ihsh)] = []
             recs_by_hash[(rhsh,ihsh)].append(rec_id)
-        results = recs_by_hash.values()
+        results = list(recs_by_hash.values())
         if recipes:
             rec_ids = [r.id for r in recipes]
-            results = filter(lambda reclist: True in [(rid in rec_ids) for rid in reclist], results)
+            results = [reclist for reclist in results if True in [(rid in rec_ids) for rid in reclist]]
         return results
 
     # convenience DB access functions for working with ingredients,
@@ -1120,9 +1120,9 @@ class RecData (Pluggable):
         """
         self.validate_recdic(dic)
         debug('validating dictionary',3)
-        if dic.has_key('category'):
+        if 'category' in dic:
             newcats = dic['category'].split(', ')
-            newcats = filter(lambda x: x, newcats) # Make sure our categories are not blank
+            newcats = [x for x in newcats if x] # Make sure our categories are not blank
             curcats = self.get_cats(rec)
             for c in curcats:
                 if c not in newcats:
@@ -1137,29 +1137,29 @@ class RecData (Pluggable):
         return retval
 
     def validate_recdic (self, recdic):
-        if not recdic.has_key('last_modified'):
+        if 'last_modified' not in recdic:
             recdic['last_modified']=time.time()
-        if recdic.has_key('image') and not recdic.has_key('thumb'):
+        if 'image' in recdic and 'thumb' not in recdic:
             # if we have an image but no thumbnail, we want to create the thumbnail.
             try:
                 img = ImageExtras.get_image_from_string(recdic['image'])
                 thumb = ImageExtras.resize_image(img,40,40)
-                ofi = StringIO.StringIO()
+                ofi = io.StringIO()
                 thumb.save(ofi,'JPEG')
                 recdic['thumb']=ofi.getvalue()
                 ofi.close()
             except:
                 del recdic['image']
-                print """Warning: gourmet couldn't recognize the image.
+                print("""Warning: gourmet couldn't recognize the image.
 
                 Proceding anyway, but here's the traceback should you
                 wish to investigate.
-                """
+                """)
                 import traceback
                 traceback.print_stack()
-        for k,v in recdic.items():
+        for k,v in list(recdic.items()):
             try:
-                recdic[k]=unicode(v.strip())
+                recdic[k]=str(v.strip())
             except:
                 pass
 
@@ -1240,11 +1240,11 @@ class RecData (Pluggable):
         method.
         """
         cats = []
-        if dic.has_key('category'):
+        if 'category' in dic:
             cats = dic['category'].split(', ')
             del dic['category']
-        if dic.has_key('servings'):
-            if dic.has_key('yields'):
+        if 'servings' in dic:
+            if 'yields' in dic:
                 del dic['yields']
             else:
                 try:
@@ -1254,13 +1254,13 @@ class RecData (Pluggable):
                     del dic['servings']
                 except:
                     del dic['servings']
-        if not dic.has_key('deleted'): dic['deleted']=False
+        if 'deleted' not in dic: dic['deleted']=False
         self.validate_recdic(dic)
         try:
             ret = self.do_add_rec(dic)
         except:
-            print 'Problem adding recipe with dictionary...'
-            for k,v in dic.items(): print 'KEY:',k,'of type',type(k),'VALUE:',v,'of type',type(v)
+            print('Problem adding recipe with dictionary...')
+            for k,v in list(dic.items()): print('KEY:',k,'of type',type(k),'VALUE:',v,'of type',type(v))
             raise
         else:
             if type(ret)==int:
@@ -1274,7 +1274,7 @@ class RecData (Pluggable):
             return ret
 
     def add_ing_and_update_keydic (self, dic):
-        if dic.has_key('item') and dic.has_key('ingkey') and dic['item'] and dic['ingkey']:
+        if 'item' in dic and 'ingkey' in dic and dic['item'] and dic['ingkey']:
             self.add_ing_to_keydic(dic['item'],dic['ingkey'])
         return self.add_ing(dic)
 
@@ -1283,7 +1283,7 @@ class RecData (Pluggable):
         try:
             return self.do_add_ing(dic)
         except:
-            print 'Problem adding',dic
+            print('Problem adding',dic)
             raise
 
     def add_ings (self, dics):
@@ -1316,7 +1316,7 @@ class RecData (Pluggable):
                           Boolean:bool,
                           Numeric:float,
                           }
-        for k,v in dic.copy().items():
+        for k,v in list(dic.copy().items()):
             column_obj = getattr(table.c,k)
             if column_obj.type.__class__ in type_to_pytype:
                 try:
@@ -1336,9 +1336,9 @@ class RecData (Pluggable):
             self.extra_connection = self.db.connect().connection
         try:
             tname = table.name
-            SQL = 'INSERT INTO ' + tname + '('+', '.join(dic.keys()) + ')'
+            SQL = 'INSERT INTO ' + tname + '('+', '.join(list(dic.keys())) + ')'
             SQL += ' VALUES (' +  ", ".join(['?']*len(dic)) + ')'
-            self.extra_connection.execute(SQL,dic.values())
+            self.extra_connection.execute(SQL,list(dic.values()))
         except:
             return self.do_add(table,dic)
 
@@ -1348,7 +1348,7 @@ class RecData (Pluggable):
         try:
             result_proxy = insert_statement.execute(**dic)
         except ValueError:
-            print 'Had to coerce types',table,dic
+            print('Had to coerce types',table,dic)
             self.coerce_types(table,dic)
             result_proxy = insert_statement.execute(**dic)
         return result_proxy
@@ -1367,9 +1367,9 @@ class RecData (Pluggable):
     def do_add_rec (self, rdict):
         """Add a recipe based on a dictionary of properties and values."""
         self.changed=True
-        if not rdict.has_key('deleted'):
+        if 'deleted' not in rdict:
             rdict['deleted']=0
-        if rdict.has_key('id'):
+        if 'id' in rdict:
             # If our dictionary has an id, then we assume we are a
             # reserved ID
             if rdict['id'] in self.new_ids:
@@ -1387,14 +1387,14 @@ class RecData (Pluggable):
 
     def validate_ingdic (self,dic):
         """Do any necessary validation and modification of ingredient dictionaries."""
-        if not dic.has_key('deleted'): dic['deleted']=False
+        if 'deleted' not in dic: dic['deleted']=False
         self._force_unicode(dic)
 
     def _force_unicode (self, dic):
-       for k,v in dic.items():
+       for k,v in list(dic.items()):
             if type(v)==str and k not in ['image','thumb']:
                 # force unicode...
-                dic[k]=unicode(v)
+                dic[k]=str(v)
 
     def do_modify_rec (self, rec, dic):
         """This is what other DBs should subclass."""
@@ -1410,9 +1410,9 @@ class RecData (Pluggable):
                 self._force_unicode(d)
                 qr = table.update(getattr(table.c,id_col)==getattr(row,id_col)).execute(**d)
             except:
-                print 'do_modify failed with args'
-                print 'table=',table,'row=',row
-                print 'd=',d,'id_col=',id_col
+                print('do_modify failed with args')
+                print('table=',table,'row=',row)
+                print('d=',d,'id_col=',id_col)
                 raise
             select = table.select(getattr(table.c,id_col)==getattr(row,id_col))
         else:
@@ -1454,7 +1454,7 @@ class RecData (Pluggable):
                 self.modify_ing(ing,{'refid':rec.id})
                 return rec
             else:
-                print 'Very odd: no match for',ing,'refid:',ing.refid
+                print('Very odd: no match for',ing,'refid:',ing.refid)
 
     def include_linked_recipes (self, recs):
         '''Handed a list of recipes, append any recipes that are
@@ -1476,8 +1476,8 @@ class RecData (Pluggable):
     def get_rec (self, id, recipe_table=None):
         """Handed an ID, return a recipe object."""
         if recipe_table:
-            print 'handing get_rec an recipe_table is deprecated'
-            print 'Ignoring recipe_table handed to get_rec'
+            print('handing get_rec an recipe_table is deprecated')
+            print('Ignoring recipe_table handed to get_rec')
         recipe_table=self.recipe_table
         return self.fetch_one(self.recipe_table, id=id)
 
@@ -1523,10 +1523,10 @@ class RecData (Pluggable):
             if group == None:
                 group = n; n+=1
             if not hasattr(i,'position'):
-                print 'Bad: ingredient without position',i
+                print('Bad: ingredient without position',i)
                 i.position=defaultn
                 defaultn += 1
-            if groups.has_key(group):
+            if group in groups:
                 groups[group].append(i)
                 # the position of the group is the smallest position of its members
                 # in other words, positions pay no attention to groups really.
@@ -1539,7 +1539,7 @@ class RecData (Pluggable):
             if group_order[x[0]] > group_order[y[0]]: return 1
             elif group_order[x[0]] == group_order[y[0]]: return 0
             else: return -1
-        alist=groups.items()
+        alist=list(groups.items())
         alist.sort(sort_groups)
         def sort_ings (x,y):
             if x.position > y.position: return 1
@@ -1686,12 +1686,12 @@ class RecData (Pluggable):
     def add_ing_to_keydic (self, item, key):
         #print 'add ',item,key,'to keydic'
         # Make sure we have unicode...
-        if type(item)==str: item = unicode(item)
-        if type(key)==str: key = unicode(key)
+        if type(item)==str: item = str(item)
+        if type(key)==str: key = str(key)
         if not item or not key: return
         else:
-            if item: item = unicode(item)
-            if key: key = unicode(key)
+            if item: item = str(item)
+            if key: key = str(key)
         row = self.fetch_one(self.keylookup_table, item=item, ingkey=key)
         if row:
             self.do_modify(self.keylookup_table,row,{'count':row.count+1})
@@ -1700,11 +1700,11 @@ class RecData (Pluggable):
         # The below code should move to a plugin for users who care about ingkeys...
         for w in item.split():
             w=str(w.decode('utf8').lower())
-            row = self.fetch_one(self.keylookup_table,word=unicode(w),ingkey=unicode(key))
+            row = self.fetch_one(self.keylookup_table,word=str(w),ingkey=str(key))
             if row:
                 self.do_modify(self.keylookup_table,row,{'count':row.count+1})
             else:
-                self.do_add(self.keylookup_table,{'word':unicode(w),'ingkey':unicode(key),'count':1})
+                self.do_add(self.keylookup_table,{'word':str(w),'ingkey':str(key),'count':1})
 
     def remove_ing_from_keydic (self, item, key):
         #print 'remove ',item,key,'to keydic'
@@ -1743,20 +1743,20 @@ class RecData (Pluggable):
     def undoable_modify_rec (self, rec, dic, history=[], get_current_rec_method=None,
                              select_change_method=None):
         """Modify our recipe and remember how to undo our modification using history."""
-        orig_dic = self.get_dict_for_obj(rec,dic.keys())
+        orig_dic = self.get_dict_for_obj(rec,list(dic.keys()))
         reundo_name = "Re_apply"
         reapply_name = "Re_apply "
-        reundo_name += string.join(["%s <i>%s</i>"%(k,v) for k,v in orig_dic.items()])
-        reapply_name += string.join(["%s <i>%s</i>"%(k,v) for k,v in dic.items()])
+        reundo_name += string.join(["%s <i>%s</i>"%(k,v) for k,v in list(orig_dic.items())])
+        reapply_name += string.join(["%s <i>%s</i>"%(k,v) for k,v in list(dic.items())])
         redo,reundo=None,None
         if get_current_rec_method:
             def redo (*args):
                 r=get_current_rec_method()
-                odic = self.get_dict_for_obj(r,dic.keys())
+                odic = self.get_dict_for_obj(r,list(dic.keys()))
                 return ([r,dic],[r,odic])
             def reundo (*args):
                 r = get_current_rec_method()
-                odic = self.get_dict_for_obj(r,orig_dic.keys())
+                odic = self.get_dict_for_obj(r,list(orig_dic.keys()))
                 return ([r,orig_dic],[r,odic])
 
         def action (*args,**kwargs):
@@ -1794,7 +1794,7 @@ class RecData (Pluggable):
         history is our undo history to be handed to Undo.UndoableObject
         make_visible is a function that will make our change (or the undo or our change) visible.
         """
-        orig_dic = self.get_dict_for_obj(ing,dic.keys())
+        orig_dic = self.get_dict_for_obj(ing,list(dic.keys()))
         key = dic.get('ingkey',None)
         item = key and dic.get('item',ing.item)
         def do_action ():
@@ -1849,12 +1849,12 @@ class RecipeManager (RecData):
             # look_for contains an alist of sorts... we just want the first
             # item of every cell.
             if len(result)>0 and result[0][1]>0.8:
-                return map(lambda a: a[0],result)
+                return [a[0] for a in result]
             else:
                 ## otherwise, we make a mad attempt to guess!
                 k=self.km.generate_key(ing)
                 l = [k]
-                l.extend(map(lambda a: a[0],result))
+                l.extend([a[0] for a in result])
                 return l
         else:
             return None
@@ -1867,8 +1867,8 @@ class RecipeManager (RecData):
         # Strip whitespace and bullets...
         d={}
         s = s.decode('utf8').strip(
-            u'\u2022\u2023\u2043\u204C\u204D\u2219\u25C9\u25D8\u25E6\u2619\u2765\u2767\u29BE\u29BF\n\t #*+-')
-        s = unicode(s)
+            '\u2022\u2023\u2043\u204C\u204D\u2219\u25C9\u25D8\u25E6\u2619\u2765\u2767\u29BE\u29BF\n\t #*+-')
+        s = str(s)
         option_m = re.match('\s*optional:?\s*',s,re.IGNORECASE)
         if option_m:
             s = s[option_m.end():]
@@ -1889,7 +1889,7 @@ class RecipeManager (RecData):
                     d['amount']=convert.frac_to_float(a.strip())
             if u:
                 conv = convert.get_converter()
-                if conv and conv.unit_dict.has_key(u.strip()):
+                if conv and u.strip() in conv.unit_dict:
                     # Don't convert units to our units!
                     d['unit']=u.strip()
                 else:
@@ -1962,21 +1962,21 @@ class DatabaseConverter(convert.Converter):
 
     def create_conv_table (self):
         self.conv_table = dbDic('ckey','value',self.db.convtable_table, self.db)
-        for k,v in defaults.CONVERTER_TABLE.items():
-            if not self.conv_table.has_key(k):
+        for k,v in list(defaults.CONVERTER_TABLE.items()):
+            if k not in self.conv_table:
                 self.conv_table[k]=v
 
     def create_density_table (self):
         self.density_table = dbDic('dkey','value',
                                    self.db.density_table,self.db)
-        for k,v in defaults.DENSITY_TABLE.items():
-            if not self.density_table.has_key(k):
+        for k,v in list(defaults.DENSITY_TABLE.items()):
+            if k not in self.density_table:
                 self.density_table[k]=v
 
     def create_cross_unit_table (self):
         self.cross_unit_table=dbDic('cukey','value',self.db.crossunitdict_table,self.db)
         for k,v in defaults.CROSS_UNIT_TABLE:
-            if not self.cross_unit_table.has_key(k):
+            if k not in self.cross_unit_table:
                 self.cross_unit_table[k]=v
 
     def create_unit_dict (self):
@@ -2020,7 +2020,7 @@ class dbDic:
         return v
 
     def __getitem__ (self, k):
-        if self.just_got.has_key(k): return self.just_got[k]
+        if k in self.just_got: return self.just_got[k]
         v = getattr(self.db.fetch_one(self.vw,**{self.kp:k}),self.vp)
         return v
 
@@ -2043,10 +2043,10 @@ class dbDic:
         dics = []
         for k in d:
             store_v = d[k]
-            if type(store_v) in types.StringTypes:
-                store_v = unicode(store_v)
-            if type(k) in types.StringTypes:
-                k = unicode(k)
+            if type(store_v) in (str,):
+                store_v = str(store_v)
+            if type(k) in (str,):
+                k = str(k)
             dics.append({self.kp:k,self.vp:store_v})
         self.vw.insert().execute(*dics)
 
@@ -2070,10 +2070,10 @@ class dbDic:
                 key = getattr(i,self.kp)
                 val = getattr(i,self.vp)
             except:
-                print 'TRYING TO GET',self.kp,self.vp,'from',self.vw
-                print 'ERROR!!!'
+                print('TRYING TO GET',self.kp,self.vp,'from',self.vw)
+                print('ERROR!!!')
                 import traceback; traceback.print_exc()
-                print 'IGNORING'
+                print('IGNORING')
                 continue
             ret.append((key,val))
         return ret
@@ -2087,10 +2087,10 @@ class dbDic:
 def test_db ():
     import tempfile
     db = RecData(file=tempfile.mktemp())
-    print 'BEGIN TESTING'
+    print('BEGIN TESTING')
     from db_tests import test_db
     test_db(db)
-    print 'END TESTING'
+    print('END TESTING')
 
 def add_sample_recs ():
     for rec,ings in [[dict(title='Spaghetti',cuisine='Italian',category='Easy, Entree'),
@@ -2117,7 +2117,7 @@ def add_sample_recs ():
 def get_database (*args,**kwargs):
     try:
         return RecData(*args,**kwargs)
-    except RecData, rd:
+    except RecData as rd:
         return rd
 
 if __name__ == '__main__':

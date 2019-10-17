@@ -1,4 +1,4 @@
-import re, os.path, os, xml.sax.saxutils, time, shutil, urllib, textwrap
+import re, os.path, os, xml.sax.saxutils, time, shutil, urllib.request, urllib.parse, urllib.error, textwrap
 from gettext import gettext as _
 from gourmet import convert,gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
@@ -212,7 +212,7 @@ class website_exporter (ExporterMultirec):
             if not os.path.isdir(out):
                 os.makedirs(out)
             to_copy = open(self.css,'r')
-            print 'writing css to ',styleout
+            print('writing css to ',styleout)
             to_paste = open(styleout,'w')
             to_paste.write(to_copy.read())
             to_copy.close(); to_paste.close()
@@ -280,7 +280,7 @@ class website_exporter (ExporterMultirec):
         self.indexf.close()
 
     def generate_link (self, id):
-        if self.added_dict.has_key(id):
+        if id in self.added_dict:
             return self.added_dict[id]
         else:
             rec = self.rd.get_rec(id)

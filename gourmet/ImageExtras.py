@@ -1,9 +1,9 @@
-import os, os.path, tempfile, gtk, StringIO
+import os, os.path, tempfile, gtk, io
 try:
     from PIL import Image
 except ImportError:
     import Image
-from gdebug import debug
+from .gdebug import debug
 
 TMPFILE = tempfile.mktemp(prefix='gourmet_tempfile_')
 
@@ -30,7 +30,7 @@ def resize_image (image, width=None, height=None):
 def get_image_from_string (raw):
     """Given raw image data, return an Image object."""
     if os.name =='posix':
-        sfi=StringIO.StringIO()
+        sfi=io.StringIO()
         sfi.write(raw)
         sfi.seek(0)
     else:
@@ -38,14 +38,14 @@ def get_image_from_string (raw):
     try:
         return Image.open(sfi)
     except:
-        print 'Trouble in image land.'
-        print 'We dumped the offending string here:'
-        print sfi
-        print "But we can't seem to load it..."
+        print('Trouble in image land.')
+        print('We dumped the offending string here:')
+        print(sfi)
+        print("But we can't seem to load it...")
 
 def get_string_from_image (image):
     """Convert an image into a string representing its JPEG self"""
-    ofi = StringIO.StringIO()
+    ofi = io.StringIO()
     image = image.convert('RGB')
     image.save(ofi,"JPEG")
     ret = ofi.getvalue()
@@ -59,11 +59,11 @@ def get_string_from_pixbuf (pb):
     return s
 
 def get_pixbuf_from_jpg (raw):
-    """Given raw data of a jpeg file, we return a gtk.gdk.Pixbuf
+    """Given raw data of a jpeg file, we return a GdkPixbuf.Pixbuf
     """
     # o=open('/tmp/recimage.jpg','w')
     fn=write_image_tempfile(raw,name=TMPFILE)
-    i=gtk.Image()
+    i=Gtk.Image()
     i.set_from_file(fn)
     return i.get_pixbuf()
 

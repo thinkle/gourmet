@@ -2,8 +2,8 @@
 A plugin that tries to import recipes from the ica.se site
 """
 from gourmet.plugin import PluginPlugin
-import schema_org_parser
-from schema_org_parser import Excluder
+from . import schema_org_parser
+from .schema_org_parser import Excluder
 
 class IcaSePlugin (PluginPlugin):
 

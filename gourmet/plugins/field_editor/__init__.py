@@ -1,6 +1,6 @@
 from gourmet.plugin import ToolPlugin
-import fieldEditor
-import gtk
+from . import fieldEditor
+from gi.repository import Gtk
 from gettext import gettext as _
 
 class FieldEditorPlugin (ToolPlugin):
@@ -11,7 +11,7 @@ class FieldEditorPlugin (ToolPlugin):
     '''
 
     def setup_action_groups (self):
-        self.action_group = gtk.ActionGroup('FieldEditorPluginActionGroup')
+        self.action_group = Gtk.ActionGroup('FieldEditorPluginActionGroup')
         self.action_group.add_actions([
             ('FieldEditor',None,_('Field Editor'),
              None,_('Edit fields across multiple recipes at a time.'),self.show_field_editor
@@ -27,7 +27,7 @@ class FieldEditorPlugin (ToolPlugin):
         self.field_editor.show()
 
     def response_cb (self, d, r):
-        if r==gtk.RESPONSE_APPLY:
+        if r==Gtk.ResponseType.APPLY:
             self.app.update_attribute_models()
 
 

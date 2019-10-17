@@ -1,6 +1,6 @@
 import os, os.path
 from gourmet.plugin import ImporterPlugin
-import mycookbook_importer
+from . import mycookbook_importer
 import tempfile
 import zipfile
 from gettext import gettext as _
@@ -31,7 +31,7 @@ class MCBPlugin (ImporterPlugin):
             fulldirpath = os.path.join(tempdir,dirname)
             #Create the images dir if not exists yet
             if not os.path.exists(fulldirpath):
-                os.mkdir(fulldirpath, 0775)
+                os.mkdir(fulldirpath, 0o775)
             outfile = open(os.path.join(tempdir, name), 'wb')
             outfile.write(zf.read(name))
             outfile.close()

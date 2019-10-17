@@ -1,8 +1,8 @@
 from gourmet.plugin import ToolPlugin, DatabasePlugin
 from gourmet.reccard import RecCardDisplay
-import gtk
+from gi.repository import Gtk
 from gourmet.plugin_loader import PRE, POST
-import unit_prefs_dialog
+from . import unit_prefs_dialog
 from gourmet.prefs import get_prefs
 from gettext import gettext as _
 
@@ -22,7 +22,7 @@ class UnitDisplayPlugin (ToolPlugin):
             self.add_to_uimanager(pluggable.ui_manager)
 
     def setup_action_groups (self):
-        self.action_group = gtk.ActionGroup('UnitAdjusterActionGroup')
+        self.action_group = Gtk.ActionGroup('UnitAdjusterActionGroup')
         self.action_group.add_actions([
             ('ShowUnitAdjusterDialog',None,_('Set _unit display preferences'),
              None,_('Automatically convert units to preferred system (metric, imperial, etc.) where possible.'),

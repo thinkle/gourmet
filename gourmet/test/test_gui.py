@@ -9,7 +9,7 @@ import time
 import tempfile
 import os.path
 
-import gtk
+from gi.repository import Gtk
 import dogtail
 import dogtail.procedural as dp
 from dogtail.utils import screenshot
@@ -33,7 +33,7 @@ class BasicTestsBase:
         screenshot('import_dialog-%s-.png'%shortname)
         dp.keyCombo("Return")
         time.sleep(5) # wait for import to complete...
-        print 'DONE SLEEPING -- IMPORT SHOULD BE DONE!'
+        print('DONE SLEEPING -- IMPORT SHOULD BE DONE!')
         screenshot('import_done-%s.png'%shortname)
         dp.keyCombo("<Alt>C") # close dialog
         dp.focus.frame('Gourmet Recipe Manager')
@@ -47,7 +47,7 @@ class BasicTestsBase:
         dp.click('Import webpage')
         time.sleep(2)
         dp.focus.frame('Enter website address')
-        print 'TYPING URL!'
+        print('TYPING URL!')
         dp.type(url)
         dp.keyCombo("Return")
         time.sleep(1)
@@ -67,15 +67,15 @@ class BasicTestsBase:
         time.sleep(1)
 
     def do_tearDown (self):
-        print 'tearDown!'
+        print('tearDown!')
         # Quit application!
-        print 'Quit app!'
+        print('Quit app!')
         dp.focus.application(APPNAME)
         dp.focus.frame('Gourmet Recipe Manager')
         dp.keyCombo('<Ctrl>Q')
-        print 'Hit quit!'
+        print('Hit quit!')
         time.sleep(2)
-        print 'tearDown done!'
+        print('tearDown done!')
         os.system('killall gourmet_in_place') # Maek sure it's really dead...
 
     def focus_nth_recipe (self, n=0):
@@ -96,18 +96,18 @@ class BasicTests (
 
     def setUp (self):
         # Start application
-        print self,'set up!'
-        print 'running',GOURMET_APP_PATH,self.gdir
+        print(self,'set up!')
+        print('running',GOURMET_APP_PATH,self.gdir)
         dp.run(GOURMET_APP_PATH,'--gourmet-directory=%s'%self.gdir,APPNAME)
-        print 'Done with run!'
+        print('Done with run!')
         if BasicTests.firstRun:
-            print 'first run, sleep a bit extra...'
+            print('first run, sleep a bit extra...')
             time.sleep(3)
             BasicTests.firstRun = False
         time.sleep(2)
-        print 'focus frame'
+        print('focus frame')
         dp.focus.application(APPNAME)
-        print 'setUp done!'
+        print('setUp done!')
 
 
     def testZippedImport (self):
@@ -125,7 +125,7 @@ class BasicTests (
         #dp.keyCombo('<Ctrl>n')
         dp.click('File')
         dp.click('New')
-        dp.focus.frame(u'New Recipe (Edit)')
+        dp.focus.frame('New Recipe (Edit)')
         dp.keyCombo('<Alt>l')
         dp.focus.widget('Title Entry')
         time.sleep(1)
@@ -145,7 +145,7 @@ class BasicTests (
         #dp.keyCombo('<Alt>C')
         dp.click("Cancel")
         #self.assertEqual(hasattr(rc,'recipe_editor'),True,'Cancelling save-changes did not work')
-        dp.focus.frame(u'New Recipe (Edit)')
+        dp.focus.frame('New Recipe (Edit)')
         time.sleep(3)
         dp.keyCombo('<Ctrl>w')
         time.sleep(3)
@@ -183,14 +183,14 @@ class TestsWithBaseSet (
 
     def setUp (self):
         dp.run(GOURMET_APP_PATH,'--gourmet-directory=%s'%self.gdir,APPNAME)
-        print 'setUp -- first run?',self.firstRun
+        print('setUp -- first run?',self.firstRun)
         if TestsWithBaseSet.firstRun:
-            print 'first run, sleep a bit extra...'
+            print('first run, sleep a bit extra...')
             time.sleep(3)
         time.sleep(2)
-        print 'focus frame'
+        print('focus frame')
         dp.focus.application(APPNAME)
-        print 'setUp done!'
+        print('setUp done!')
         if TestsWithBaseSet.firstRun:
             self.do_testFileImport("/home/tom/Projects/grecipe-manager/src/tests/recipe_files/test_set.grmt")
             TestsWithBaseSet.firstRun = False
@@ -261,5 +261,5 @@ class TestsWithBaseSet (
 
 
 if __name__ == '__main__':
-    print 'unittest.main()'
+    print('unittest.main()')
     unittest.main()

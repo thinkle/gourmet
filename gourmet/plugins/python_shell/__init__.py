@@ -1,6 +1,6 @@
 from gourmet.plugin import ToolPlugin
-import gtk
-import ipython_view
+from gi.repository import Gtk
+from . import ipython_view
 from gettext import gettext as _
 
 class ConsolePlugin (ToolPlugin):
@@ -10,7 +10,7 @@ class ConsolePlugin (ToolPlugin):
     </placeholder>'''
 
     def setup_action_groups (self):
-        self.action_group = gtk.ActionGroup('ConsolePluginActionGroup')
+        self.action_group = Gtk.ActionGroup('ConsolePluginActionGroup')
         self.action_group.add_actions([
             ('ShowConsole',None,_('_Python Console'),
              None,_('Show python console (provides access to current gourmet instance)'),self.show_console)
@@ -23,16 +23,16 @@ class ConsolePlugin (ToolPlugin):
         import sys, sqlalchemy
         sys.argv = []
         app = get_application()
-        w = gtk.Window(); w.set_title('Gourmet Console')
+        w = Gtk.Window(); w.set_title('Gourmet Console')
         w.set_default_size(800,600)
-        sw = gtk.ScrolledWindow()
+        sw = Gtk.ScrolledWindow()
         w.add(sw)
-        sw.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
+        sw.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
         v = ipython_view.IPythonView()
-        v.set_wrap_mode(gtk.WRAP_CHAR)
+        v.set_wrap_mode(Gtk.WrapMode.CHAR)
         sw.add(v)
         def info ():
-            print """Welcome to the interactive shell. You have full access to
+            print("""Welcome to the interactive shell. You have full access to
             the current instance of Gourmet from here, which means of
             course you could really hose your system if you're not
             careful.
@@ -49,7 +49,7 @@ class ConsolePlugin (ToolPlugin):
 
             v - this IPythonView itself
 
-            consolePlugin - the plugin that gave you this tool."""
+            consolePlugin - the plugin that gave you this tool.""")
 
         v.updateNamespace({'app':app,
                            'rd':app.rd,

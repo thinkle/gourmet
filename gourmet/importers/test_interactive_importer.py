@@ -1,5 +1,5 @@
 import unittest
-import interactive_importer
+from . import interactive_importer
 
 class TestConvenientImporter (unittest.TestCase):
 

@@ -68,7 +68,7 @@ class rec_to_mcb (XmlExporter):
 
     def write_image (self, image):
         # write image file to the temp directory
-        imageFilename = unicodedata.normalize('NFKD', unicode(self.current_title + '.png')).encode('ascii', 'ignore')
+        imageFilename = unicodedata.normalize('NFKD', str(self.current_title + '.png')).encode('ascii', 'ignore')
         pic_fullpath = os.path.join(tempfile.gettempdir(),'images',imageFilename)
         result = gourmet.ImageExtras.get_image_from_string(image)
         result.save(pic_fullpath)
@@ -138,7 +138,7 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
         picdirname = os.path.join(dirname,'images')
         if os.path.isdir(picdirname):
             shutil.rmtree(picdirname)
-        os.mkdir(picdirname, 0777 );
+        os.mkdir(picdirname, 0o777 );
 
         self.create_xmldoc()
         exporter.ExporterMultirec.__init__(

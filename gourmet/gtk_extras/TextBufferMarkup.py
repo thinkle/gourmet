@@ -16,73 +16,79 @@
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 ### USA
 
-import pango,gtk, xml.sax.saxutils
+from gi.repository import Pango
+from gi.repository import Gtk
+import xml.sax.saxutils
 from gourmet.gdebug import debug
 
-class PangoBuffer (gtk.TextBuffer):
-    desc_to_attr_table = {
-        'family':[pango.AttrFamily,""],
-        'style':[pango.AttrStyle,pango.STYLE_NORMAL],
-        'variant':[pango.AttrVariant,pango.VARIANT_NORMAL],
-        'weight':[pango.AttrWeight,pango.WEIGHT_NORMAL],
-        'stretch':[pango.AttrStretch,pango.STRETCH_NORMAL],
-        }
-    pango_translation_properties={
-            # pango ATTR TYPE : (pango attr property / tag property)
-            pango.ATTR_SIZE : 'size',
-            pango.ATTR_WEIGHT: 'weight',
-            pango.ATTR_UNDERLINE: 'underline',
-            pango.ATTR_STRETCH: 'stretch',
-            pango.ATTR_VARIANT: 'variant',
-            pango.ATTR_STYLE: 'style',
-            pango.ATTR_SCALE: 'scale',
-            pango.ATTR_STRIKETHROUGH: 'strikethrough',
-            pango.ATTR_RISE: 'rise',
-            }
-    attval_to_markup={
-            'underline':{pango.UNDERLINE_SINGLE:'single',
-                         pango.UNDERLINE_DOUBLE:'double',
-                         pango.UNDERLINE_LOW:'low',
-                         pango.UNDERLINE_NONE:'none'},
-            'stretch':{pango.STRETCH_ULTRA_EXPANDED:'ultraexpanded',
-                       pango.STRETCH_EXPANDED:'expanded',
-                       pango.STRETCH_EXTRA_EXPANDED:'extraexpanded',
-                       pango.STRETCH_EXTRA_CONDENSED:'extracondensed',
-                       pango.STRETCH_ULTRA_CONDENSED:'ultracondensed',
-                       pango.STRETCH_CONDENSED:'condensed',
-                       pango.STRETCH_NORMAL:'normal',
-                       },
-            'variant':{pango.VARIANT_NORMAL:'normal',
-                       pango.VARIANT_SMALL_CAPS:'smallcaps',
-                       },
-            'style':{pango.STYLE_NORMAL:'normal',
-                     pango.STYLE_OBLIQUE:'oblique',
-                     pango.STYLE_ITALIC:'italic',
-                     },
-            'stikethrough':{1:'true',
-                            True:'true',
-                            0:'false',
-                            False:'false'},
-            }
+class PangoBuffer (Gtk.TextBuffer):
+    # TODO: Fix this in 2to3
+    # desc_to_attr_table = {
+    #     'family':[Pango.AttrFamily,""],
+    #     'style':[Pango.AttrStyle,Pango.Style.NORMAL],
+    #     'variant':[Pango.AttrVariant,Pango.VARIANT_NORMAL],
+    #     'weight':[Pango.AttrWeight,Pango.Weight.NORMAL],
+    #     'stretch':[Pango.AttrStretch,Pango.STRETCH_NORMAL],
+    #     }
+    desc_to_attr_table = {}
+    pango_translation_properties={}
+    # pango_translation_properties={
+    #         # pango ATTR TYPE : (pango attr property / tag property)
+    #         Pango.ATTR_SIZE : 'size',
+    #         Pango.ATTR_WEIGHT: 'weight',
+    #         Pango.ATTR_UNDERLINE: 'underline',
+    #         Pango.ATTR_STRETCH: 'stretch',
+    #         Pango.ATTR_VARIANT: 'variant',
+    #         Pango.ATTR_STYLE: 'style',
+    #         Pango.ATTR_SCALE: 'scale',
+    #         Pango.ATTR_STRIKETHROUGH: 'strikethrough',
+    #         Pango.ATTR_RISE: 'rise',
+    #         }
+    attval_to_markup={}
+    # attval_to_markup={
+    #         'underline':{Pango.Underline.SINGLE:'single',
+    #                      Pango.Underline.DOUBLE:'double',
+    #                      Pango.Underline.LOW:'low',
+    #                      Pango.Underline.NONE:'none'},
+    #         'stretch':{Pango.STRETCH_ULTRA_EXPANDED:'ultraexpanded',
+    #                    Pango.STRETCH_EXPANDED:'expanded',
+    #                    Pango.STRETCH_EXTRA_EXPANDED:'extraexpanded',
+    #                    Pango.STRETCH_EXTRA_CONDENSED:'extracondensed',
+    #                    Pango.STRETCH_ULTRA_CONDENSED:'ultracondensed',
+    #                    Pango.STRETCH_CONDENSED:'condensed',
+    #                    Pango.STRETCH_NORMAL:'normal',
+    #                    },
+    #         'variant':{Pango.VARIANT_NORMAL:'normal',
+    #                    Pango.VARIANT_SMALL_CAPS:'smallcaps',
+    #                    },
+    #         'style':{Pango.Style.NORMAL:'normal',
+    #                  Pango.Style.OBLIQUE:'oblique',
+    #                  Pango.Style.ITALIC:'italic',
+    #                  },
+    #         'stikethrough':{1:'true',
+    #                         True:'true',
+    #                         0:'false',
+    #                         False:'false'},
+    #         }
     def __init__ (self):
         self.tagdict = {}
         self.tags = {}
         #self.buf = buf
         #self.set_text(txt)
-        gtk.TextBuffer.__init__(self)
+        GObject.GObject.__init__(self)
 
     def set_text (self, txt):
-        gtk.TextBuffer.set_text(self,"")
+        Gtk.TextBuffer.set_text(self,"")
         try:
-            self.parsed,self.txt,self.separator = pango.parse_markup(txt,u'\x00')
+            self.parsed,self.txt,self.separator = Pango.parse_markup(txt,'\x00')
         except:
-            print 'Problem encountered escaping text: "%s"'%txt
+            print('Problem encountered escaping text: "%s"'%txt)
             import traceback; traceback.print_exc()
             txt=xml.sax.saxutils.escape(txt)
-            self.parsed,self.txt,self.separator = pango.parse_markup(txt,u'\x00')
+            self.parsed,self.txt,self.separator = Pango.parse_markup(txt,'\x00')
         self.attrIter = self.parsed.get_iterator()
         self.add_iter_to_buffer()
-        while self.attrIter.next():
+        while next(self.attrIter):
             self.add_iter_to_buffer()
 
     def add_iter_to_buffer (self):
@@ -101,53 +107,53 @@ class PangoBuffer (gtk.TextBuffer):
             if fontattrs:
                 attrs.extend(fontattrs)
             if fontdesc and fontdesc!='Normal':
-                if not self.tags.has_key(font.to_string()):
+                if font.to_string() not in self.tags:
                     tag=self.create_tag()
                     tag.set_property('font-desc',font)
-                    if not self.tagdict.has_key(tag): self.tagdict[tag]={}
+                    if tag not in self.tagdict: self.tagdict[tag]={}
                     self.tagdict[tag]['font_desc']=font.to_string()
                     self.tags[font.to_string()]=tag
                 tags.append(self.tags[font.to_string()])
         if lang:
-            if not self.tags.has_key(lang):
+            if lang not in self.tags:
                 tag = self.create_tag()
                 tag.set_property('language',lang)
                 self.tags[lang]=tag
             tags.append(self.tags[lang])
         if attrs:
             for a in attrs:
-                if a.type == pango.ATTR_FOREGROUND:
+                if a.type == Pango.ATTR_FOREGROUND:
                     gdkcolor = self.pango_color_to_gdk(a.color)
                     key = 'foreground%s'%self.color_to_hex(gdkcolor)
-                    if not self.tags.has_key(key):
+                    if key not in self.tags:
                         self.tags[key]=self.create_tag()
                         self.tags[key].set_property('foreground-gdk',gdkcolor)
                         self.tagdict[self.tags[key]]={}
                         self.tagdict[self.tags[key]]['foreground']="#%s"%self.color_to_hex(gdkcolor)
                     tags.append(self.tags[key])
-                if a.type == pango.ATTR_BACKGROUND:
+                if a.type == Pango.ATTR_BACKGROUND:
                     gdkcolor = self.pango_color_to_gdk(a.color)
                     key = 'background%s'%self.color_to_hex(gdkcolor)
-                    if not self.tags.has_key(key):
+                    if key not in self.tags:
                         self.tags[key]=self.create_tag()
                         self.tags[key].set_property('background-gdk',gdkcolor)
                         self.tagdict[self.tags[key]]={}
                         self.tagdict[self.tags[key]]['background']="#%s"%self.color_to_hex(gdkcolor)
                     tags.append(self.tags[key])
-                if self.pango_translation_properties.has_key(a.type):
+                if a.type in self.pango_translation_properties:
                     prop=self.pango_translation_properties[a.type]
                     #print 'setting property %s of %s (type: %s)'%(prop,a,a.type)
                     val=getattr(a,'value')
                     #tag.set_property(prop,val)
                     mval = val
-                    if self.attval_to_markup.has_key(prop):
+                    if prop in self.attval_to_markup:
                         #print 'converting ',prop,' in ',val
-                        if self.attval_to_markup[prop].has_key(val):
+                        if val in self.attval_to_markup[prop]:
                             mval = self.attval_to_markup[prop][val]
                         else:
                             debug("hmmm, didn't know what to do with value %s"%val,0)
                     key="%s%s"%(prop,val)
-                    if not self.tags.has_key(key):
+                    if key not in self.tags:
                         self.tags[key]=self.create_tag()
                         self.tags[key].set_property(prop,val)
                         self.tagdict[self.tags[key]]={}
@@ -162,7 +168,7 @@ class PangoBuffer (gtk.TextBuffer):
         for pos in range(self.get_char_count()):
             iter=self.get_iter_at_offset(pos)
             for tag in iter.get_tags():
-                if tagdict.has_key(tag):
+                if tag in tagdict:
                     if tagdict[tag][-1][1] == pos - 1:
                         tagdict[tag][-1] = (tagdict[tag][-1][0],pos)
                     else:
@@ -175,23 +181,23 @@ class PangoBuffer (gtk.TextBuffer):
         tagdict=self.get_tags()
         if not start: start=self.get_start_iter()
         if not end: end=self.get_end_iter()
-        txt = unicode(gtk.TextBuffer.get_text(self,start,end))
+        txt = str(Gtk.TextBuffer.get_text(self,start,end))
         cuts = {}
-        for k,v in tagdict.items():
-            if not self.tagdict.has_key(k): continue
+        for k,v in list(tagdict.items()):
+            if k not in self.tagdict: continue
             stag,etag = self.tag_to_markup(k)
             for st,e in v:
-                if cuts.has_key(st): cuts[st].append(stag) #add start tags second
+                if st in cuts: cuts[st].append(stag) #add start tags second
                 else: cuts[st]=[stag]
-                if cuts.has_key(e+1): cuts[e+1]=[etag]+cuts[e+1] #add end tags first
+                if e+1 in cuts: cuts[e+1]=[etag]+cuts[e+1] #add end tags first
                 else: cuts[e+1]=[etag]
         last_pos = 0
         outbuff = ""
-        cut_indices = cuts.keys()
+        cut_indices = list(cuts.keys())
         cut_indices.sort()
         soffset = start.get_offset()
         eoffset = end.get_offset()
-        cut_indices = filter(lambda i: eoffset >= i >= soffset, cut_indices)
+        cut_indices = [i for i in cut_indices if eoffset >= i >= soffset]
         for c in cut_indices:
             if not last_pos==c:
                 outbuff += xml.sax.saxutils.escape(txt[last_pos:c])
@@ -203,7 +209,7 @@ class PangoBuffer (gtk.TextBuffer):
 
     def tag_to_markup (self, tag):
         stag = "<span"
-        for k,v in self.tagdict[tag].items():
+        for k,v in list(self.tagdict[tag].items()):
             stag += ' %s="%s"'%(k,v)
         stag += ">"
         return stag,"</span>"
@@ -212,7 +218,7 @@ class PangoBuffer (gtk.TextBuffer):
         nicks = font.get_set_fields().value_nicks
         attrs = []
         for n in nicks:
-            if self.desc_to_attr_table.has_key(n):
+            if n in self.desc_to_attr_table:
                 Attr,norm = self.desc_to_attr_table[n]
                 # create an attribute with our current value
                 attrs.append(Attr(getattr(font,'get_%s'%n)()))
@@ -221,7 +227,7 @@ class PangoBuffer (gtk.TextBuffer):
         return font,attrs
 
     def pango_color_to_gdk (self, pc):
-        return gtk.gdk.Color(pc.red,pc.green,pc.blue)
+        return Gdk.Color(pc.red,pc.green,pc.blue)
 
     def color_to_hex (self, color):
         hexstring = ""
@@ -240,9 +246,9 @@ class PangoBuffer (gtk.TextBuffer):
         for t in tags: self.remove_tag_from_selection(t)
 
     def setup_default_tags (self):
-        self.italics = self.get_tags_from_attrs(None,None,[pango.AttrStyle('italic')])[0]
-        self.bold = self.get_tags_from_attrs(None,None,[pango.AttrWeight('bold')])[0]
-        self.underline = self.get_tags_from_attrs(None,None,[pango.AttrUnderline('single')])[0]
+        self.italics = self.get_tags_from_attrs(None,None,[Pango.AttrStyle('italic')])[0]
+        self.bold = self.get_tags_from_attrs(None,None,[Pango.AttrWeight('bold')])[0]
+        self.underline = self.get_tags_from_attrs(None,None,[Pango.AttrUnderline('single')])[0]
 
     def get_selection (self):
         bounds = self.get_selection_bounds()
@@ -274,16 +280,16 @@ class PangoBuffer (gtk.TextBuffer):
     def remove_all_tags (self):
         selection = self.get_selection()
         if selection:
-            for t in self.tags.values():
+            for t in list(self.tags.values()):
                 self.remove_tag(t,*selection)
 
 class InteractivePangoBuffer (PangoBuffer):
     def __init__ (self,
                   normal_button=None,
                   toggle_widget_alist=[]):
-        """An interactive interface to allow marking up a gtk.TextBuffer.
+        """An interactive interface to allow marking up a Gtk.TextBuffer.
         txt is initial text, with markup.
-        buf is the gtk.TextBuffer
+        buf is the Gtk.TextBuffer
         normal_button is a widget whose clicked signal will make us normal
         toggle_widget_alist is a list that looks like this:
         [(widget, (font,attr)),
@@ -301,8 +307,8 @@ class InteractivePangoBuffer (PangoBuffer):
 
     def setup_widget_from_pango (self, widg, markupstring):
         """setup widget from a pango markup string"""
-        #font = pango.FontDescription(fontstring)
-        a,t,s = pango.parse_markup(markupstring,u'\x00')
+        #font = Pango.FontDescription(fontstring)
+        a,t,s = Pango.parse_markup(markupstring,'\x00')
         ai=a.get_iterator()
         font,lang,attrs=ai.get_font()
         return self.setup_widget(widg,font,attrs)
@@ -325,7 +331,7 @@ class InteractivePangoBuffer (PangoBuffer):
         if hasattr(self,'_in_mark_set') and self._in_mark_set: return
         self._in_mark_set = True
         if mark.get_name()=='insert':
-            for tags,widg in self.tag_widgets.items():
+            for tags,widg in list(self.tag_widgets.items()):
                 active = True
                 for t in tags:
                     if not iter.has_tag(t):
@@ -348,7 +354,7 @@ class InteractivePangoBuffer (PangoBuffer):
         if old_itr!=insert_itr:
             # Use the state of our widgets to determine what
             # properties to apply...
-            for tags,w in self.tag_widgets.items():
+            for tags,w in list(self.tag_widgets.items()):
                 if w.get_active():
                     #print 'apply tags...',tags
                     for t in tags: self.apply_tag(t,old_itr,insert_itr)
@@ -359,13 +365,13 @@ class InteractivePangoBuffer (PangoBuffer):
 
 class SimpleEditor:
     def __init__ (self):
-        self.w = gtk.Window()
-        self.vb = gtk.VBox()
-        self.editBox = gtk.HButtonBox()
-        self.nb = gtk.Button('Normal')
+        self.w = Gtk.Window()
+        self.vb = Gtk.VBox()
+        self.editBox = Gtk.HButtonBox()
+        self.nb = Gtk.Button('Normal')
         self.editBox.add(self.nb)
-        self.sw = gtk.ScrolledWindow()
-        self.tv = gtk.TextView()
+        self.sw = Gtk.ScrolledWindow()
+        self.tv = Gtk.TextView()
         self.sw.add(self.tv)
         self.ipb = InteractivePangoBuffer(
             normal_button=self.nb)
@@ -387,17 +393,17 @@ class SimpleEditor:
                                ('Blue',True,'<span foreground="blue">blue</span>'),
                                ('Red',False,'<span foreground="red">smallcaps</span>'),
                                ]:
-            button = gtk.ToggleButton(lab)
+            button = Gtk.ToggleButton(lab)
             self.editBox.add(button)
             if stock: button.set_use_stock(True)
             self.ipb.setup_widget_from_pango(button,font)
         self.vb.add(self.editBox)
         self.vb.add(self.sw)
-        self.actionBox = gtk.HButtonBox()
-        self.qb = gtk.Button(stock='quit')
-        self.pmbut = gtk.Button('Print markup')
+        self.actionBox = Gtk.HButtonBox()
+        self.qb = Gtk.Button(stock='quit')
+        self.pmbut = Gtk.Button('Print markup')
         self.pmbut.connect('clicked',self.print_markup)
-        self.qb.connect('clicked',lambda *args: self.w.destroy() or gtk.main_quit())
+        self.qb.connect('clicked',lambda *args: self.w.destroy() or Gtk.main_quit())
         self.actionBox.add(self.pmbut)
         self.actionBox.add(self.qb)
         self.vb.add(self.actionBox)
@@ -405,9 +411,9 @@ class SimpleEditor:
         self.w.show_all()
 
     def print_markup (self,*args):
-        print self.ipb.get_text()
+        print(self.ipb.get_text())
 
 if __name__ == '__main__':
     se = SimpleEditor()
-    se.w.connect('delete-event',lambda *args: gtk.main_quit())
-    gtk.main()
+    se.w.connect('delete-event',lambda *args: Gtk.main_quit())
+    Gtk.main()

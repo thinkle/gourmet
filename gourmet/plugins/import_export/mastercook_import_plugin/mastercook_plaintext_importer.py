@@ -44,7 +44,7 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
         self.ing_or_matcher = re.compile("\W*[Oo][Rr]\W*")
         self.ing_group_matcher = re.compile("\s*(\W)\\1*(.+?)(\\1+)")
         self.mods_matcher = re.compile("^\s*NOTES\.*")
-        attr_matcher = "\s*(" + string.join(self.ATTR_DICT.keys(),"|") + ")\s*:(.*)"
+        attr_matcher = "\s*(" + string.join(list(self.ATTR_DICT.keys()),"|") + ")\s*:(.*)"
         self.attr_matcher = re.compile(attr_matcher)
 
     def handle_line (self, line):
@@ -187,7 +187,7 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
             self.add_unit(unit)
             self.add_item(itm)
             return
-        elif self.ing and self.ing.has_key('item'):
+        elif self.ing and 'item' in self.ing:
             # otherwise, we assume we are a continuation and
             # add onto the previous item
             self.ing['item']=self.ing['item']+' '+itm.strip()
@@ -196,7 +196,7 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
             self.instr += "\n"+itm.strip()
 
     def commit_ing (self):
-        if not self.ing.has_key('item'):
+        if 'item' not in self.ing:
             return
         key_base = self.ing['item'].split('--')[0]
         self.ing['ingkey']=self.km.get_key_fast(key_base)

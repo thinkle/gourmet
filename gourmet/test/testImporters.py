@@ -24,19 +24,19 @@ def time_me (f):
 
 def old_time_me (f):
     def _ (*args,**kwargs):
-        print 'Running',f.__name__,args,kwargs
+        print('Running',f.__name__,args,kwargs)
         start = time.time()
         try:
             ret = f(*args,**kwargs)
         except:
             end = time.time()
             times.append((f.__name__,args,kwargs,start,end,end-start))
-            print 'Failed after ',end-start,'seconds.'
+            print('Failed after ',end-start,'seconds.')
             raise
         else:
             end = time.time()
             times.append((f.__name__,args,kwargs,start,end,end-start))
-            print 'Finished in ',end-start,'seconds.'
+            print('Finished in ',end-start,'seconds.')
             return ret
     return _
 
@@ -49,7 +49,7 @@ class ThreadlessImportManager (ImportManager):
         # No threading, for profiling purposes!
         try:
             importer = getattr(importer_plugin,method)(*method_args)
-        except ImportFileList, ifl:
+        except ImportFileList as ifl:
             # recurse with new filelist...
             self.import_filenames(ifl.filelist)
         else:
@@ -61,7 +61,7 @@ class ThreadlessImportManager (ImportManager):
 def get_im ():
     try:
         return ThreadlessImportManager()
-    except ThreadlessImportManager,im:
+    except ThreadlessImportManager as im:
         return im
 
 class ImportTest:
@@ -73,15 +73,15 @@ class ImportTest:
         for d in tests: self.run_test(d)
 
     def run_test (self, d):
-        if d.has_key('filename'):
+        if 'filename' in d:
             d['filename']=os.path.join(TEST_FILE_DIRECTORY,
                                        d['filename'])
             self.test_import(d['filename'])
-        elif d.has_key('url'):
+        elif 'url' in d:
             self.test_web_import(d['url'])
         else:
-            print 'WTF: no test contained in ',d
-        if d.has_key('test'):
+            print('WTF: no test contained in ',d)
+        if 'test' in d:
             self.do_test(d['test'])
 
     def do_test (self, test):
@@ -107,14 +107,14 @@ class ImportTest:
                 try:
                     assert(i.amount)
                 except:
-                    print i,i.amount,i.unit,i.item,'has no amount!'
+                    print(i,i.amount,i.unit,i.item,'has no amount!')
                     raise
         if test.get('all_ings_have_units',False):
             for i in ings:
                 try:
                     assert(i.unit)
                 except:
-                    print i,i.amount,i.unit,i.item,'has no unit'
+                    print(i,i.amount,i.unit,i.item,'has no unit')
                     raise
         for blobby_attribute in ['instructions','modifications']:
             if test.get(blobby_attribute,False):
@@ -147,7 +147,7 @@ class ImportTest:
                 assert(not cats)
             except:
                 raise AssertionError('Categories include %s not specified in %s'%(cats,test['categories']))
-        print 'Passed test:',test
+        print('Passed test:',test)
 
     @time_me
     def setup_db (self):
@@ -171,16 +171,16 @@ class ImportTest:
 class ImportTestCase (unittest.TestCase):
 
     def setUp (self):
-        print 'setUp'
+        print('setUp')
         self.it = ImportTest()
         self.it.setup_db()
 
     def tearDown (self):
-        print 'tearDown'
+        print('tearDown')
         from gourmet.plugins.import_export.gxml_plugin.gxml2_exporter import recipe_table_to_xml as gxml_exporter
         n = 1
         while os.path.exists('/tmp/gourmet_import_test_%s.grmt'%n): n+=1
-        print 'Saving export of imported files to /tmp/gourmet_import_test_%s.grmt'%n
+        print('Saving export of imported files to /tmp/gourmet_import_test_%s.grmt'%n)
         ge=gxml_exporter(self.it.db,self.it.db.fetch_all(self.it.db.recipe_table,deleted=False),'/tmp/gourmet_import_test_%s.grmt'%n)
         ge.run()
         # Trash all our recipes so they don't contaminate the next test...
