@@ -1,4 +1,4 @@
-import BeautifulSoup
+from bs4 import BeautifulSoup, CData, Comment, Declaration, ProcessingInstruction
 from gourmet.importers.generic_recipe_parser import RecipeParser
 from gourmet.importers.interactive_importer import InteractiveImporter
 import gourmet.importers.importer
@@ -19,10 +19,8 @@ class WebParser (InteractiveImporter):
     TAB = '  '
     JOINABLE = ['instructions','notes','recipe','ignore','ingredients','include',None]
     INVISIBLE_TYPES = [
-        BeautifulSoup.CData,
-        BeautifulSoup.Comment,
-        BeautifulSoup.Declaration,
-        BeautifulSoup.ProcessingInstruction]
+        CData, Comment, Declaration, ProcessingInstruction]
+        # BeautifulSoup.CData, BeautifulSoup.Comment, BeautifulSoup.Declaration, BeautifulSoup.ProcessingInstruction]
 
     do_postparse = True
     imageexcluders = None # This could be a list of compiled regexps which would

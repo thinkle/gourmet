@@ -2,7 +2,6 @@ PRE = 0
 POST = 1
 from gourmet import gglobals
 import os.path, glob, sys
-from gi.repository import GObject
 from . import plugin
 from .gdebug import debug
 from .defaults.defaults import loc
@@ -83,7 +82,7 @@ class MasterLoader(BaseException):
         """Activate plugins that have been activated on startup
         """
         if os.path.exists(self.active_plugin_filename):
-            infi = file(self.active_plugin_filename,'r')
+            infi = open(self.active_plugin_filename,'r')
             self.active_plugin_sets = [l.strip() for l in infi.readlines()]
         else:
             self.active_plugin_sets = self.default_active_plugin_sets[:]
@@ -109,7 +108,7 @@ class MasterLoader(BaseException):
         if ((self.active_plugin_sets != self.default_active_plugin_sets)
             or
             os.path.exists(self.active_plugin_filename)):
-            ofi = file(self.active_plugin_filename,'w')
+            ofi = open(self.active_plugin_filename,'w')
             saved = [] # keep track of what we've written to avoid
                        # saving a plugin twice
             for plugin_set in self.active_plugin_sets:
@@ -236,7 +235,7 @@ class PluginSet:
     _loaded = False
 
     def __init__ (self, plugin_info_path):
-        f = file(plugin_info_path,'r')
+        f = open(plugin_info_path,'r')
         self.load_plugin_file_data(f)
         f.close()
         self.curdir, plugin_info_file = os.path.split(plugin_info_path)

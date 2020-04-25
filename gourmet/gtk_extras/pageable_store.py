@@ -44,7 +44,7 @@ class PageableListStore (Gtk.ListStore):
         GObject.GObject.__init__(self)
         self.per_page = per_page
         self._setup_parent_(*parent_args,**parent_kwargs)
-        #self.grab_items()
+        # self.grab_items()
         # a dictionary for tracking our sorting
         self.sort_dict = {}
         self.update_tree()
@@ -154,12 +154,9 @@ class PageableListStore (Gtk.ListStore):
         if start_at > length: return # we're empty then...
         if end_at > length: end_at = length
         for row in self._get_slice_(int(start_at),int(end_at)):
-            try: self.append(row)
-            except TypeError:
-                print('columns          : ',self.columns)
-                print('problem adding row ',row)
-                raise
-            except ValueError:
+            try:
+                self.append(row)
+            except (TypeError, ValueError) as e:
                 print('columns          : ',self.columns)
                 print('problem adding row ',row)
                 raise

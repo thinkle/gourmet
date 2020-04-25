@@ -3,7 +3,7 @@
 This module contains code for handling the 'merging' of duplicate
 recipes.
 """
-import gtk, pango, os.path, time
+from gi.repository import Gtk
 import gourmet.recipeIdentifier
 from gourmet.gtk_extras import ratingWidget, mnemonic_manager, dialog_extras
 import gourmet.recipeIdentifier
@@ -11,6 +11,8 @@ import gourmet.convert as convert
 import gourmet.gglobals as gglobals
 import gourmet.recipeManager
 from gettext import gettext as _
+import os.path
+import time
 
 NEWER = 1
 OLDER = 2

@@ -1,9 +1,7 @@
-import gtk, Gtk.gdk, gobject, pango
-from gourmet.ImageExtras import get_pixbuf_from_jpg
+from gi.repository import Gtk
 from gourmet.gtk_extras.thumbnail import check_for_thumbnail,fetched_uris
 from gourmet.gtk_extras.dialog_extras import ModalDialog
 import unittest
-from gourmet.gdebug import debug,TimeAction
 import threading, time
 
 def grab_thumbnail (uri, type, iqueue, pqueue, progress_portion=1, progress_start_at=0):

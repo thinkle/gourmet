@@ -1,4 +1,5 @@
-import Gtk.gdk, os.path
+from gi.repository import Gtk, GdkPixbuf
+import os.path
 # mentioning PIL explicitly helps py2exe
 try:
     from PIL import Image, ImageDraw

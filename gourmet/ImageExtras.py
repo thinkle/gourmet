@@ -1,4 +1,7 @@
-import os, os.path, tempfile, gtk, io
+import os, os.path, tempfile, io
+
+from gi.repository import Gtk
+
 try:
     from PIL import Image
 except ImportError:

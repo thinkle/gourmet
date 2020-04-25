@@ -56,7 +56,7 @@ def get_ingredient_hash (ings, conv):
     ings = [standardize_ingredient(i,conv) for i in ings]
     ings.sort()
     ings = '\n'.join(ings)
-    m = hashlib.md5(ings)
+    m = hashlib.md5(ings.encode('utf8'))
     #print 'Hash',ings,m.hexdigest()
     return m.hexdigest()
 
@@ -68,7 +68,7 @@ def get_recipe_hash (recipe_object):
     recstring = recstring.strip()
     recstring = recstring.lower()
     #print 'hash',recstring
-    m = hashlib.md5(recstring)
+    m = hashlib.md5(recstring.encode('utf8'))
     return m.hexdigest()
 
 def hash_recipe (rec, rd, conv=None):

@@ -1,10 +1,10 @@
-import gtk, gobject, os.path
+from gi.repository import Gtk, GObject, GdkPixbuf
+import os.path
 from gourmet.gglobals import DEFAULT_ATTR_ORDER, REC_ATTR_DIC
 from gourmet.ImageExtras import get_pixbuf_from_jpg
 import gourmet.convert as convert
 from gourmet.gtk_extras.ratingWidget import star_generator
 from sqlalchemy.sql import and_, or_, not_
-from sqlalchemy import func
 from gettext import gettext as _
 from .icon_helpers import attr_to_icon, get_recipe_image, get_time_slice, scale_pb
 
@@ -195,13 +195,14 @@ class RecipeBrowser (Gtk.VBox):
         self.buttons = []
         self.button_bar = Gtk.HBox()
         self.button_bar.set_spacing(6)
-        self.pack_start(self.button_bar,expand=False)
+        # self.pack_start(self.button_bar,expand=False)
+        self.pack_start(self.button_bar, False, False, 0)
         sw = Gtk.ScrolledWindow()
         sw.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
         sw.add(self.view)
         self.pack_start(sw, True, True, 0)
         home_button = Gtk.Button(stock=Gtk.STOCK_HOME)
-        self.button_bar.pack_start(home_button,expand=False,fill=False)
+        self.button_bar.pack_start(home_button, False, False, 0)
         home_button.connect('clicked',self.home); home_button.show()
         self.view.connect('path-selected',self.path_selected_cb)
         self.view.show(); sw.show()
@@ -226,7 +227,7 @@ class RecipeBrowser (Gtk.VBox):
             txt = path
         self.buttons.append(Gtk.Button(REC_ATTR_DIC.get(txt,txt)))
         self.buttons[-1].connect('clicked',lambda *args: self.view.set_path(path))
-        self.button_bar.pack_start(self.buttons[-1],expand=False,fill=False)
+        self.button_bar.pack_start(self.buttons[-1], False, False, 0)
         self.buttons[-1].show()
 
 

@@ -1138,7 +1138,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     # Basic callbacks
     def new_rec_card (self, *args):
-        self.app.window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
+        self.app.get_window().set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
         def show ():
             rc=reccard.RecCard(self)
             self.make_rec_visible(rc.current_rec)

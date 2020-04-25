@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import os, os.path, pickle
 from gourmet import gglobals
 
@@ -63,7 +62,7 @@ class Prefs(BaseException):
     def save (self):
         if not os.path.exists(os.path.split(self.file)[0]):
             os.makedirs(os.path.split(self.file)[0])
-        ofi=open(self.file,'w')
+        ofi=open(self.file,'wb')
         pickle.dump(self.config,ofi)
 
     def load (self):

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from gi.repository import Gtk
 from gi.repository import GObject
 import os.path, fnmatch,  re
@@ -23,7 +22,8 @@ def is_markup (s):
         return False
 
 class ModalDialog (Gtk.Dialog):
-    def __init__ (self, default=None, title="", okay=True, label=False, sublabel=False, parent=None, cancel=True, modal=True, expander=None):
+    def __init__(self, default=None, title="", okay=True, label=False, sublabel=False, parent=None, cancel=True,
+                 modal=True, expander=None):
         """Our basic class. We allow for a label. Possibly an expander
         with extra information, and a simple Okay button.  The
         expander is are only fancy option. It should be a list ['Name
@@ -103,7 +103,8 @@ class ModalDialog (Gtk.Dialog):
     def setup_expander (self, expander):
             label=expander[0]
             body = expander[1]
-            self.expander = Gtk.Expander(label)
+            # self.expander = Gtk.Expander(label)
+            self.expander = Gtk.Expander()
             self.expander.set_use_underline(True)
             self.expander_vbox = Gtk.VBox()
             sw = Gtk.ScrolledWindow()
@@ -120,9 +121,7 @@ class ModalDialog (Gtk.Dialog):
             l=Gtk.Label(label=item)
             l.set_selectable(True)
             l.set_line_wrap_mode(Pango.WrapMode.WORD)
-            self.expander_vbox.pack_start(l,
-                                          expand=False,
-                                          fill=False)
+            self.expander_vbox.pack_start(l,False, False, 0)
         elif type(item)==[] or type(item)==():
             list(map(self._add_expander_item,item))
         else:
@@ -131,17 +130,19 @@ class ModalDialog (Gtk.Dialog):
     def run (self):
         self.show()
         if self.widget_that_grabs_focus: self.widget_that_grabs_focus.grab_focus()
-        if self.modal: Gtk.main()
+        if self.get_modal(): Gtk.main()
         return self.ret
 
     def okcb (self, *args):
         self.hide()
-        if self.modal: Gtk.main_quit()
+        if self.get_modal():
+            Gtk.main_quit()
 
     def cancelcb (self, *args):
         self.hide()
         self.ret=None
-        if self.modal: Gtk.main_quit()
+        if self.get_modal():
+            Gtk.main_quit()
 
 class MessageDialog (Gtk.MessageDialog, ModalDialog):
 

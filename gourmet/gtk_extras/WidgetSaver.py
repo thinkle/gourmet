@@ -1,7 +1,9 @@
-#!/usr/bin/env python
-from gi.repository import Gdk
 import os
+
+from gi.repository import Gdk, Gtk
+
 from gourmet.gdebug import debug
+
 
 class WidgetSaver:
 
@@ -60,7 +62,7 @@ class WindowSaver (WidgetSaver):
 
     def save_properties (self, *args):
         if os.name=='nt': return
-        if self.w.window and not self.w.window.get_state()&Gdk.WindowState.MAXIMIZED:
+        if isinstance(self.w, Gtk.Window) and not self.w.get_state()&Gdk.WindowState.MAXIMIZED:
             # ignore the maximized window when we save sizes
             self.dictionary['window_size']=self.w.get_size()
             self.dictionary['position']=self.w.get_position()

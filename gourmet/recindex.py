@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from .ImageExtras import get_pixbuf_from_jpg
 from .gdebug import debug
 from gettext import gettext as _, ngettext

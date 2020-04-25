@@ -2,7 +2,7 @@ from gourmet.plugin import PluginPlugin, ImportManagerPlugin
 from gourmet.gglobals import gourmetdir
 from gourmet.prefs import get_prefs
 from gourmet.gtk_extras import dialog_extras as de
-import BeautifulSoup
+from bs4 import BeautifulSoup
 import gourmet.threadManager
 from selenium import webdriver
 from gettext import gettext as _

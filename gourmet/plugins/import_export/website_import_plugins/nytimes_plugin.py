@@ -1,5 +1,5 @@
 from gourmet.plugin import PluginPlugin
-import BeautifulSoup
+from bs4 import BeautifulSoup
 
 NYT_CUISINES = [
     "African",
