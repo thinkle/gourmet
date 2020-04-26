@@ -6,7 +6,7 @@ Pillow
 pycairo
 pyenchant
 pygobject
-pygtkspellcheck
+# pygtkspellcheck
 reportlab
 selenium
 sqlalchemy
