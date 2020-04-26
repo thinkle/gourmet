@@ -3,9 +3,9 @@ ebooklib
 keyring
 lxml
 Pillow
-pycairo
+# pycairo
 pyenchant
-pygobject
+# pygobject
 # pygtkspellcheck
 reportlab
 selenium
