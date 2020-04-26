@@ -3,9 +3,16 @@ python:
   - "3.6"
 #  - "pypy3"
 
+# Travis uses separate virtualenv instances for each Python version
+# therefore we need to explicitly say venv to use system packages.
+# See the details here: https://docs.travis-ci.com/user/languages/python/#travis-ci-uses-isolated-virtualenvs
+virtualenv:
+  system_site_packages: true
+
 # command to install dependencies
 before_install:
   - sudo apt-get -y install python3-distutils-extra python3-gi python3-gi-cairo
+
 install:
   - pip install -r requirements.txt
   - pip install .
