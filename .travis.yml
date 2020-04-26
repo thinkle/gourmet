@@ -7,6 +7,7 @@ python:
 # Travis uses separate virtualenv instances for each Python version
 # therefore we need to explicitly say venv to use system packages.
 # See the details here: https://docs.travis-ci.com/user/languages/python/#travis-ci-uses-isolated-virtualenvs
+# unfortunately, this workaround works only for 3.6, but not for 3.7 and 3.8
 virtualenv:
   system_site_packages: true
 
@@ -16,6 +17,7 @@ before_install:
 
 install:
   - pip install -r requirements.txt
+  - pip install --upgrade keyrings.alt  # see here: https://bugs.launchpad.net/usd-importer/+bug/1794041
   - pip install .
 
 # command to run tests

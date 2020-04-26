@@ -1,4 +1,5 @@
-from . import settings
+from gourmet import settings
+
 from gettext import gettext as _
 # To have strings from .ui files (Gtk.Builder) translated on all platforms,
 # we need the following module to enable localization on all platforms.
