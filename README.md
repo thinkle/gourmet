@@ -23,6 +23,14 @@ Requirements and Installation
 
 See [INSTALL.md](INSTALL.md).
 
+Development  [![Build Status](https://travis-ci.org/kirienko/gourmet.svg?branch=python3)](https://travis-ci.org/kirienko/gourmet)
+===========
+This app has a very long development history. The latest release `0.17.*` is still based on 
+`python2` which is no longer supported (since 2020).
+
+This is an attempt to move to the `python3` to introduce better development
+practices, and to get rid of legacy code. Any help is really appreciated!
+
 Warning
 =======
 

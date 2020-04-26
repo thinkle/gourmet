@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.6"
+#  - "pypy3"
+
+# command to install dependencies
+install:
+#  - pip install -r requirements.txt
+  - pip install .
+
+# command to run tests
+script:
+- nosetests test/*
