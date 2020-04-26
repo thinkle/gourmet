@@ -5,7 +5,7 @@ python:
 
 # command to install dependencies
 before_install:
-  - sudo apt-get -y python3-distutils-extra
+  - sudo apt-get -y install python3-distutils-extra
 install:
   - pip install -r requirements.txt
   - pip install .
