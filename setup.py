@@ -8,7 +8,7 @@ import string
 from distutils.command.build_py import build_py as _build_py
 from distutils.command.build_scripts import build_scripts as _build_scripts
 from distutils.util import convert_path
-# FIXME: DistUtilsExtra is not available via pip3
+# XXX: DistUtilsExtra is not available via `pip3`, use `apt` or whatever your OS provides
 from DistUtilsExtra.command import build_extra, build_i18n, build_icons
 
 # grab the version from our "version" module
