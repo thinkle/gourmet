@@ -26,8 +26,6 @@ parser.add_argument('--debug-file',action='store',dest='debug_file',
                      help='Regular expression that matches filename(s) containing code for which we want to display debug messages.',
                      default='')
 parser.add_argument('--showtimes',action='store_true',dest='time',help='Print timestamps on debug statements.')
-parser.add_argument('--disable-psyco',dest='psyco',action='store_false',help='Do not use psyco if it is installed.',
-                     default=True)
 
 group = parser.add_mutually_exclusive_group()
 group.add_argument('-q',action='store_const',const=-1,dest='debug',help='Don\'t print gourmet error messages')

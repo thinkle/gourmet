@@ -3,7 +3,6 @@ import glob
 import os.path
 import os
 import fileinput
-import string
 
 from distutils.command.build_py import build_py as _build_py
 from distutils.command.build_scripts import build_scripts as _build_scripts
@@ -15,7 +14,7 @@ from DistUtilsExtra.command import build_extra, build_i18n, build_icons
 # first we have to extend our path to include gourmet/
 srcpath = os.path.split(__file__)[0]
 sys.path.append(os.path.join(srcpath, 'gourmet'))
-import version
+from gourmet import version
 
 class build_py(_build_py):
     """build_py command
@@ -28,7 +27,7 @@ class build_py(_build_py):
         _build_py.build_module(self, module, module_file, package)
 
         if type(package) is str:
-            package = string.split(package, '.')
+            package = package.split('.')
         elif type(package) not in (list, tuple):
             raise(TypeError, "'package' must be a string (dot-separated), list, or tuple")
 
