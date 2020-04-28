@@ -23,13 +23,15 @@ Requirements and Installation
 
 See [INSTALL.md](INSTALL.md).
 
-Development  [![Build Status](https://travis-ci.org/kirienko/gourmet.svg?branch=python3)](https://travis-ci.org/kirienko/gourmet)
+Development  ![Tests](https://github.com/kirienko/gourmet/workflows/Tests/badge.svg) ![Build](https://github.com/kirienko/gourmet/workflows/Build/badge.svg)
 ===========
 This app has a very long development history. The latest release `0.17.*` is still based on 
 `python2` which is no longer supported (since 2020).
 
-This is an attempt to move to the `python3` to introduce better development
-practices, and to get rid of legacy code. Any help is really appreciated!
+This fork is an attempt to make *Gourmet* compatible with `python3`. 
+Any help is really appreciated!
+
+Hopefully, one day a new release will be publish in the original repository.
 
 Warning
 =======
