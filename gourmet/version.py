@@ -1,7 +1,10 @@
-from . import settings
+from gourmet import settings
+
 from gettext import gettext as _
 # To have strings from .ui files (Gtk.Builder) translated on all platforms,
 # we need the following module to enable localization on all platforms.
+# FIXME: `elib.entl` is no longer maintained and is no available via pip
+# Source code:  https://github.com/dieterv/elib.intl)
 try:
     import elib.intl
     elib.intl.install('gourmet', settings.locale_base)

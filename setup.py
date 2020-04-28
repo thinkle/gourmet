@@ -1,25 +1,20 @@
-#!/bin/env python
-#
-# setup.py for Gourmet
-
 import sys
 import glob
 import os.path
 import os
 import fileinput
-import string
-from types import StringType, ListType, TupleType
 
 from distutils.command.build_py import build_py as _build_py
 from distutils.command.build_scripts import build_scripts as _build_scripts
 from distutils.util import convert_path
+# XXX: DistUtilsExtra is not available via `pip3`, use `apt` or whatever your OS provides
 from DistUtilsExtra.command import build_extra, build_i18n, build_icons
 
 # grab the version from our "version" module
 # first we have to extend our path to include gourmet/
 srcpath = os.path.split(__file__)[0]
 sys.path.append(os.path.join(srcpath, 'gourmet'))
-import version
+from gourmet import version
 
 class build_py(_build_py):
     """build_py command
@@ -31,11 +26,10 @@ class build_py(_build_py):
     def build_module (self, module, module_file, package):
         _build_py.build_module(self, module, module_file, package)
 
-        if type(package) is StringType:
-            package = string.split(package, '.')
-        elif type(package) not in (ListType, TupleType):
-            raise TypeError, \
-                  "'package' must be a string (dot-separated), list, or tuple"
+        if type(package) is str:
+            package = package.split('.')
+        elif type(package) not in (list, tuple):
+            raise(TypeError, "'package' must be a string (dot-separated), list, or tuple")
 
         if ( module == 'settings' and len(package) == 1
              and package[0] == 'gourmet'
@@ -71,7 +65,7 @@ class build_py(_build_py):
                 elif "plugin_base = " in line:
                     line = "plugin_base = data_dir\n"
 
-                print line,
+                print(line),
 
 class build_scripts(_build_scripts):
     """build_scripts command
@@ -102,7 +96,7 @@ class build_scripts(_build_scripts):
                 elif "data_dir = '.'" in line:
                     line = "data_dir = '%s'\n" % data_dir
 
-                print line,
+                print(line),
 
 if sys.platform == "win32":
     #gtk file inclusion
@@ -271,27 +265,27 @@ def crawl (base, basename):
 crawl('gourmet/plugins', 'gourmet.plugins')
 
 result = setup(
-    version = version.version,
-    description = version.description,
-    author = version.author,
-    author_email = version.author_email,
-    url = version.website,
-    license = version.license,
-    packages = ['gourmet',
-                'gourmet.backends',
-                'gourmet.util',
-                'gourmet.defaults',
-                'gourmet.gtk_extras',
-                'gourmet.importers',
-                'gourmet.exporters',
-                'gourmet.plugins',
-                ] + plugins,
-    package_data = {'gourmet': ['plugins/*/*.ui', 'plugins/*/images/*.png','plugins/*/*/images/*.png']},
-    cmdclass={'build' : build,
-              'build_i18n' :  build_i18n.build_i18n,
-              'build_icons' :  build_icons.build_icons,
-              'build_py' : build_py,
-              'build_scripts' : build_scripts,
-             },
+    version=version.version,
+    description=version.description,
+    author=version.author,
+    author_email=version.author_email,
+    url=version.website,
+    license=version.license,
+    packages=['gourmet',
+              'gourmet.backends',
+              'gourmet.util',
+              'gourmet.defaults',
+              'gourmet.gtk_extras',
+              'gourmet.importers',
+              'gourmet.exporters',
+              'gourmet.plugins',
+              ] + plugins,
+    package_data={'gourmet': ['plugins/*/*.ui', 'plugins/*/images/*.png', 'plugins/*/*/images/*.png']},
+    cmdclass={'build': build,
+              'build_i18n': build_i18n.build_i18n,
+              'build_icons': build_icons.build_icons,
+              'build_py': build_py,
+              'build_scripts': build_scripts,
+              },
     **kwargs
-    )
+)

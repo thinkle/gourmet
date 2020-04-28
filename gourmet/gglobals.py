@@ -61,6 +61,7 @@ lib_dir = os.path.join(settings.lib_dir)
 
 # To have strings from .ui files (Gtk.Builder) translated on all platforms,
 # we need the following module to enable localization on all platforms.
+# FIXME: `elib.entl` is no longer maintained and is no available via pip
 try:
     import elib.intl
     elib.intl.install('gourmet', settings.locale_base)

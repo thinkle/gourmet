@@ -1,0 +1,25 @@
+dist: bionic
+language: python
+python:
+  - "3.6"
+#  - "pypy3"
+
+# Travis uses separate virtualenv instances for each Python version
+# therefore we need to explicitly say venv to use system packages.
+# See the details here: https://docs.travis-ci.com/user/languages/python/#travis-ci-uses-isolated-virtualenvs
+# unfortunately, this workaround works only for 3.6, but not for 3.7 and 3.8
+virtualenv:
+  system_site_packages: true
+
+# command to install dependencies
+before_install:
+  - sudo apt-get -y install python3-distutils-extra python3-gi python3-gi-cairo gobject-introspection gir1.2-gtk-3.0
+
+install:
+  - pip install -r requirements.txt
+  - pip install --upgrade keyrings.alt  # see here: https://bugs.launchpad.net/usd-importer/+bug/1794041
+  - pip install .
+
+# command to run tests
+script:
+- nosetests gourmet/tests/test_*
