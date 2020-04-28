@@ -83,7 +83,7 @@ class StarGenerator:
             return pb
 
     def get_full_width (self, max=10):
-        return self.width*max/2
+        return self.width*max//2
 
     def get_image (self, *args, **kwargs):
         """Get an Image (PIL) object representing n/max stars
@@ -110,7 +110,7 @@ class StarGenerator:
                       (self.get_full_width(max),
                        self.height),
                       self.background)
-        for i in range(0,(max/2)):
+        for i in range(0,(max//2)):
             if i*2+2 <= n:
                 to_paste = self.set_region
             elif (i*2)+1 <= n:
@@ -301,7 +301,7 @@ class StarButton (Gtk.Button):
             return True
         elif name in ACTIVATE_KEYS:
             return True
-        elif name in [str(x) for x in range(self.image.upper/2 + 1)]:
+        elif name in [str(x) for x in range(self.image.upper//2 + 1)]:
             self.set_value(int(name)*2)
             return True
 
@@ -428,7 +428,7 @@ class TreeWithStarMaker:
                 #mod.set_value(itr,self.col_position,curval + 1)
                 self.call_handlers(curval + 1, mod, itr, self.data_col)
                 return True
-            elif name in [str(x) for x in range(self.upper/2 + 1)]:
+            elif name in [str(x) for x in range(self.upper//2 + 1)]:
                 #mod.set_value(itr,self.col_position,int(name))
                 self.call_handlers(int(name)*2, mod, itr, self.data_col)
                 return True
