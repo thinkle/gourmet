@@ -41,7 +41,7 @@ class PageableListStore (Gtk.ListStore):
         #GObject.GObject.__init__(self,*types)
         # self.__gobject_init__()
         # GObject.GObject.__init__(self, *types)
-        GObject.GObject.__init__(self)
+        Gtk.ListStore.__init__(self, *types)
         self.per_page = per_page
         self._setup_parent_(*parent_args,**parent_kwargs)
         # self.grab_items()
