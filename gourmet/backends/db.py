@@ -1746,8 +1746,8 @@ class RecData (Pluggable, BaseException):
         orig_dic = self.get_dict_for_obj(rec,list(dic.keys()))
         reundo_name = "Re_apply"
         reapply_name = "Re_apply "
-        reundo_name += string.join(["%s <i>%s</i>"%(k,v) for k,v in list(orig_dic.items())])
-        reapply_name += string.join(["%s <i>%s</i>"%(k,v) for k,v in list(dic.items())])
+        reundo_name += ''.join(["%s <i>%s</i>"%(k,v) for k,v in list(orig_dic.items())])
+        reapply_name += ''.join(["%s <i>%s</i>"%(k,v) for k,v in list(dic.items())])
         redo,reundo=None,None
         if get_current_rec_method:
             def redo (*args):

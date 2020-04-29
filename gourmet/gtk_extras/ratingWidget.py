@@ -1,5 +1,5 @@
 from gi.repository import Gtk
-from gi.repository import Gdk
+from gi.repository import Gdk, GdkPixbuf
 from gi.repository import GObject
 import gourmet.gglobals as gglobals
 import os.path
@@ -125,26 +125,25 @@ class StarGenerator:
                  self.height))
         return img
 
-    def get_pixbuf_from_image (self, image, make_white_opaque=True):
-
+    def get_pixbuf_from_image(self, image, make_white_opaque=True):
         """Get a pixbuf from a PIL Image.
 
         By default, turn all white pixels transparent.
         """
 
-        is_rgba = image.mode=='RGBA'
-        if is_rgba: rowstride = 4
-        else: rowstride = 3
-        pb=GdkPixbuf.Pixbuf.new_from_data(
+        is_rgba = image.mode == 'RGBA'
+        rowstride = 4 if is_rgba else 3
+
+        pb = GdkPixbuf.Pixbuf.new_from_data(
             image.tobytes(),
             GdkPixbuf.Colorspace.RGB,
             is_rgba,
             8,
             image.size[0],
             image.size[1],
-            (is_rgba and 4 or 3) * image.size[0] #rowstride
-            )
+            rowstride * image.size[0])
         return pb
+
 
 star_generator = StarGenerator()
 
