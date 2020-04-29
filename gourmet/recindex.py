@@ -423,12 +423,12 @@ class RecIndex:
             return
         # Get window
         if self.srchentry:
-            parent = self.srchentry.parent
+            parent = self.srchentry.get_parent()
             while parent and not (isinstance(parent,Gtk.Window)):
-                parent = parent.parent
-            parent.window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
+                parent = parent.get_parent()
+            parent.get_window().set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
             debug('Doing new search for %s, last search was %s'%(self.make_search_dic(txt,searchBy),self.last_search),1)
-            GObject.idle_add(lambda *args: (self.do_search(txt, searchBy) or parent.window.set_cursor(None)))
+            GObject.idle_add(lambda *args: (self.do_search(txt, searchBy) or parent.get_window().set_cursor(None)))
         else:
             GObject.idle_add(lambda *args: self.do_search(txt, searchBy))
 

@@ -1188,8 +1188,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                     self.rc[rec.id]=w
                     self.update_go_menu()
                     w.show_edit()
-                    self.app.window.set_cursor(None)
-                self.app.window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
+                    self.app.get_window().set_cursor(None)
+                self.app.get_window().set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
                 GObject.idle_add(show)
 
     # Deletion

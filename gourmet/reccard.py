@@ -499,7 +499,6 @@ class RecCardDisplay (plugin_loader.Pluggable):
                 if attval:
                     debug('showing attribute %s = %s'%(attr,attval),0)
                     if attr=='rating':
-                        print('moin!')
                         widg.set_value(attval)
                     elif attr in ['preptime','cooktime']:
                         widg.set_text(convert.seconds_to_timestring(attval))
