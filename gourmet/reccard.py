@@ -385,9 +385,11 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.window.set_default_size(*self.prefs.get('reccard_window_%s'%self.current_rec.id)['window_size'])
         main_vb = Gtk.VBox()
         menu = self.ui_manager.get_widget('/RecipeDisplayMenuBar')
-        main_vb.pack_start(menu,fill=False,expand=False); menu.show()
+        main_vb.pack_start(menu, fill=False, expand=False, padding=0)
+        menu.show()
         self.messagebox = Gtk.HBox()
-        main_vb.pack_start(self.messagebox,fill=False,expand=False)
+        main_vb.pack_start(self.messagebox, fill=False,
+                           expand=False, padding=0)
         self.main = self.ui.get_object('recipeDisplayMain')
         self.main.unparent()
         main_vb.pack_start(self.main, True, True, 0); self.main.show()
@@ -455,7 +457,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
             if hasattr(module,'enter_page'): module.enter_page()
             self._last_module = module
 
-    def update_from_database (self):
+    def update_from_database(self):
         # FIXME: remember to set sensitivity of remembered-optionals -
         # below is the old code to do so.  as long as we have the list
         # here, this is a good place to update the activity of our
@@ -497,6 +499,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
                 if attval:
                     debug('showing attribute %s = %s'%(attr,attval),0)
                     if attr=='rating':
+                        print('moin!')
                         widg.set_value(attval)
                     elif attr in ['preptime','cooktime']:
                         widg.set_text(convert.seconds_to_timestring(attval))

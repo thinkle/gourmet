@@ -1,4 +1,5 @@
-import gtk, difflib,re
+import difflib, re
+from gi.repository import Gtk
 from gourmet.gdebug import debug
 
 class TooManyChanges (Exception):
