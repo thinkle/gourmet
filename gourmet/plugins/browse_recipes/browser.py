@@ -67,12 +67,12 @@ class RecipeBrowserView (Gtk.IconView):
             tbl = self.rd.recipe_table.join(self.rd.categories_table)
             col = self.rd.categories_table.c.category
             if hasattr(self,'category_images'):
-                stment = and_(col==val,self.rd.recipe_table.c.image!=None,
-                              self.rd.recipe_table.c.image!='',
-                              not_(self.rd.recipe_table.c.title.in_(self.category_images))
-                              )
+                stment = and_(col == val.encode(), self.rd.recipe_table.c.image != None,
+                              self.rd.recipe_table.c.image != bytes(),
+                              not_(self.rd.recipe_table.c.title.in_(self.category_images)))
             else:
-                stment = and_(col==val,self.rd.recipe_table.c.image!=None,self.rd.recipe_table.c.image!='')
+                stment = and_(col == val.encode(), self.rd.recipe_table.c.image != None,
+                              self.rd.recipe_table.c.image != bytes())
             result = tbl.select(stment,limit=1).execute().fetchone()
             if not hasattr(self,'category_images'): self.category_images = []
             if result: self.category_images.append(result.title)
@@ -83,7 +83,8 @@ class RecipeBrowserView (Gtk.IconView):
         else:
             tbl = self.rd.recipe_table
             col = getattr(self.rd.recipe_table.c,attr)
-            stment = and_(col==val,self.rd.recipe_table.c.image!=None,self.rd.recipe_table.c.image!='')
+            stment = and_(col == val.encode(), self.rd.recipe_table.c.image != None,
+                          self.rd.recipe_table.c.image != bytes())
             result = tbl.select(stment,limit=1).execute().fetchone()
         if result and result.thumb:
             return scale_pb(get_pixbuf_from_jpg(result.image))
@@ -121,14 +122,17 @@ class RecipeBrowserView (Gtk.IconView):
     def build_first_level_model (self, attribute):
         m = self.models[attribute] = self.new_model()
         if attribute == 'category':
-            for n,val in self.rd.fetch_count(self.rd.categories_table,'category'):
-                # known bug here -- this includes deleted recs in the count
-                m.append((attribute+'>'+str(val),str(val)+' (%s)'%n,self.get_pixbuf(attribute,val),val))
+            for n, val in self.rd.fetch_count(self.rd.categories_table, 'category'):
+                # FIXME: known bug here -- this includes deleted recs in the count
+                to_add = (f"{attribute}>{val}", f"{val} ({n})", self.get_pixbuf(attribute, val), val)
+                m.append(to_add)
         else:
-            for n,val in self.rd.fetch_count(self.rd.recipe_table,attribute,deleted=False):
-                if n == 0: continue
-                m.append((attribute+'>'+str(val),self.convert_val(attribute,val)+' (%s)'%n,
-                          self.get_pixbuf(attribute,val),val))
+            for n, val in self.rd.fetch_count(self.rd.recipe_table, attribute, deleted=False):
+                if n == 0:
+                    continue
+                to_add = (f"{attribute}>{val}", f"{self.convert_val(attribute, val)} ({n})",
+                          self.get_pixbuf(attribute, val), val)
+                m.append(to_add)
 
     def build_recipe_model (self, path, val):
         m = self.models[path] = self.new_model()
@@ -144,7 +148,7 @@ class RecipeBrowserView (Gtk.IconView):
                 searches.append({'column':attr,'search':val})
         for recipe in self.rd.search_recipes(searches):
             pb = get_recipe_image(recipe)
-            m.append((recipe.id,recipe.title,pb,None))
+            m.append((str(recipe.id),recipe.title,pb,None))
 
     def set_path (self, path):
         self.path = ['base']
