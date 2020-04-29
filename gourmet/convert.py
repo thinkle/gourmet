@@ -1,4 +1,5 @@
 import re, locale, math
+import collections.abc
 from .defaults.defaults import lang as defaults
 from gettext import gettext as _
 from gettext import ngettext
@@ -11,29 +12,58 @@ FRACTIONS_OFF = -2
 
 USE_FRACTIONS = FRACTIONS_NORMAL
 
-class PossiblyCaseInsensitiveDictionary (dict):
+class PossiblyCaseInsensitiveDictionary(collections.abc.MutableMapping):
+    """
+    Maps all capitalisation variants of a key to a single value using str.casefold() where possible
 
-    transformations = ["lower","title","upper"]
+    Invariant 1: two keys that have a variant in common, map to the same value (__mapping)
+    Invariant 2: a key that is added can be recalled in its original (__orig)
+    Invariant 3: keys(__orig) == keys(__mapping)
+    """
 
-    def has_key (self, k):
-        if dict.has_key(self,k): return True
+    @staticmethod
+    def __normalization(x):
+        try:
+            return x.casefold()
+        except AttributeError:
+            return x
+
+    def __init__(self, *args, **kwargs):
+        constructor_dict = dict(*args, **kwargs)
+        self.__orig = {}
+        self.__mapping = {}
+        for k, v in constructor_dict.items():
+            self[k] = v
+
+    def __repr__(self):
+        return repr({self.__orig[k]:self.__mapping[k] for k in self.__mapping})
+
+    def __delitem__(self, key):
+        norm = self.__normalization(key)
+        if norm in self.__mapping:
+            del self.__orig[norm]
+            del self.__mapping[norm]
         else:
-            for t in self.transformations:
-                if hasattr(k,t):
-                    if dict.has_key(self,getattr(k,t)()): return True
-        return False
+            raise KeyError(key)
 
-    def __getitem__ (self, k):
-        if dict.has_key(self,k):
-            return dict.__getitem__(self,k)
+    def __getitem__(self, key):
+        norm = self.__normalization(key)
+        if norm in self.__mapping:
+            return self.__mapping[norm]
         else:
-            for t in self.transformations:
-                if hasattr(k,t):
-                    nk = getattr(k,t)()
-                    if dict.has_key(self,nk):
-                        return dict.__getitem__(self,nk)
-        # Raise plain old error
-        dict.__getitem__(self,k)
+            raise KeyError(key)
+
+    def __iter__(self):
+        # this does not return all items for which 'in' is true
+        return iter(self.__orig.values())
+
+    def __len__(self):
+        return len(self.__mapping)
+
+    def __setitem__(self, key, value):
+        norm = self.__normalization(key)
+        self.__orig[norm] = key
+        self.__mapping[norm] = value
 
 
 class Converter(BaseException):
