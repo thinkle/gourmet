@@ -19,5 +19,5 @@ sudo python setup.py install
 echo 'Testing gourmet'
 echo "Don't forget to run through the standard tests before releasing!"
 echo
-cat TESTS
+cat TEST_PLAN
 gourmet --gourmet-directory=/tmp/foobaz
