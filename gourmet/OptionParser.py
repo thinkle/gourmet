@@ -5,7 +5,6 @@ try:
     has_argcomplete = True
 except ImportError:
     has_argcomplete = False
-
 parser = argparse.ArgumentParser(prog='gourmet',description=version.description)
 parser.add_argument('--version',action='version',version=version.version)
 parser.add_argument('--database-url',action='store',dest='db_url',
@@ -35,8 +34,8 @@ if has_argcomplete:
     argcomplete.autocomplete(parser)
 
 try:
-    args = parser.parse_args()
-    print('args1 = %s' % args)
+    args = parser.parse_known_args()[0]
+    print(f"args = {args}")
 except SystemExit as e:
     import sys
 

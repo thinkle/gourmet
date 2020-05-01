@@ -1,13 +1,14 @@
-from . import test # get ../lib/ in path
-import gglobals
-import time, gtk
+from . import old_test  # get ../lib/ in path
+from gi.repository import Gtk
+
+from gourmet import gglobals
 gglobals.gourmetdir = '/tmp/'
 gglobals.dbargs['file'] = '/tmp/recipes.db'
 
 VERBOSE = True
 
-import GourmetRecipeManager
-from reccard import add_with_undo
+from gourmet import GourmetRecipeManager
+from gourmet.reccard import add_with_undo
 
 def assert_with_message (callable,
                          description):

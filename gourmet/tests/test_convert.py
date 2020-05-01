@@ -1,5 +1,5 @@
 import unittest
-from . import convert
+from gourmet import convert
 
 class ConvertTest (unittest.TestCase):
 

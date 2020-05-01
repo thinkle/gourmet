@@ -1,10 +1,8 @@
 import os, os.path, re
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GdkPixbuf
+from gi import require_version
+require_version('Gtk', '3.0')
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
+
 import tempfile
 from .gdebug import debug
 from .OptionParser import args

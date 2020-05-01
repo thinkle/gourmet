@@ -16,7 +16,7 @@ gourmet.backends.db.RecData.__single = None
 gourmet.GourmetRecipeManager.GourmetApplication.__single = None
 # end clearing out code
 
-from .plugin_loader import get_master_loader
+from gourmet.plugin_loader import get_master_loader
 
 class Test (unittest.TestCase):
 

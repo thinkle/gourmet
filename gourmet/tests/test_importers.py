@@ -1,9 +1,5 @@
-import sys
-from .. import recipeManager as rm
 import time
 import os,os.path,re
-import tempfile
-import traceback
 import unittest
 from ..importers.importManager import ImportManager, ImportFileList
 from ..recipeManager import get_recipe_manager

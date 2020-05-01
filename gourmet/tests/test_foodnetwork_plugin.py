@@ -1,7 +1,6 @@
-# encoding: utf-8
 import os.path
 import unittest
-import BeautifulSoup
+from bs4 import BeautifulSoup
 
 from gourmet.plugins.import_export.website_import_plugins import foodnetwork_plugin
 

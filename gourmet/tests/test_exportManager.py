@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import unittest, tempfile, os
 import gourmet.gglobals
 tmpdir = tempfile.mktemp()
@@ -8,7 +7,7 @@ import gourmet.GourmetRecipeManager
 import gourmet.backends.db
 gourmet.backends.db.RecData.__single = None
 gourmet.GourmetRecipeManager.GourmetApplication.__single = None
-from . import exportManager
+from gourmet.exporters import exportManager
 
 class SampleRecipeSetterUpper:
 

@@ -1,4 +1,4 @@
-from . import test
+from . import old_test
 import os,os.path
 DIR = os.path.abspath(os.path.join(os.path.split(__file__)[0],'reference_setup/'))
 TEST_FILE_DIRECTORY = os.path.join(DIR,'recipes.db')
@@ -7,9 +7,9 @@ import gourmet.gglobals as gglobals
 gglobals.gourmetdir = DIR
 gglobals.dbargs['file'] = TEST_FILE_DIRECTORY
 
-import recipeManager as rm
+from gourmet import recipeManager as rm
+from gourmet import exporters
 import time
-import exporters
 
 import tempfile
 import traceback
@@ -29,7 +29,8 @@ if os.path.exists(OUTPUT_DIRECTORY):
 if not os.path.exists(OUTPUT_DIRECTORY): os.makedirs(OUTPUT_DIRECTORY)
 
 def confirm_strings_are_in_file (ss, fi):
-    whole_file = file(fi,'r').read()
+    with open(fi, 'r') as fp:
+        whole_file = fp.read()
     for s in ss:
         try:
             assert(re.search(s,whole_file))

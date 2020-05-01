@@ -31,7 +31,6 @@
 from gourmet import Undo
 from gi.repository import Gtk
 from gi.repository import GObject
-import types
 from . import plugin_loader
 from .gtk_extras import fix_action_group_importance
 import sqlalchemy

@@ -1,11 +1,12 @@
 BeautifulSoup4
+dogtail
 ebooklib
 keyring
 lxml
 Pillow
-# pycairo
+pycairo
 pyenchant
-# pygobject
+pygobject
 # pygtkspelaplcheck
 reportlab
 selenium

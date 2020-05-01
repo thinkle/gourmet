@@ -19,12 +19,12 @@ def remove_sysargs ():
 
 
 def profile (f):
-    import profile, tempfile,os.path
-    import hotshot, hotshot.stats
+    import profile, pstats, tempfile, os.path
+    # FIXME: hotshot is a py2-library, one can use profile or whatever else instead
+    # import hotshot, hotshot.stats
     #profi = os.path.join(tempfile.tempdir,'GOURMET_PROFILE')
-    prof = hotshot.Profile(os.path.join(tempfile.tempdir,'GOURMET_HOTSHOT_PROFILE'))
+    prof = profile.Profile(os.path.join(tempfile.tempdir,'GOURMET_HOTSHOT_PROFILE'))
     prof.runcall(f)
-    stats = hotshot.stats.load(os.path.join(tempfile.tempdir,'GOURMET_HOTSHOT_PROFILE'))
+    stats = pstats.Stats.load_stats(os.path.join(tempfile.tempdir,'GOURMET_HOTSHOT_PROFILE'))
     stats.strip_dirs()
     stats.sort_stats('cumulative','calls').print_stats()
-

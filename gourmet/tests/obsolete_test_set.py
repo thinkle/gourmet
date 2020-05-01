@@ -33,24 +33,22 @@ sys.argv.append('--gourmet-directory=%s'%os.tempnam())
 #sys.argv.append('--glade-directory=%s'%os.path.abspath('../glade/'))
 #sys.argv.append('--image-directory=%s'%os.path.abspath('../images/'))
 # End no longer necessary stuff
-import gourmet.gglobals
 sys.argv = sys.argv[:-1]
-import gourmet.backends.test_db
+import gourmet.tests.test_db
 
-import gourmet.importers.test_interactive_importer
-import gourmet.importers.test_importer
-import gourmet.importers.test_importManager
-import gourmet.test_convert
-import gourmet.exporters.test_exportManager
+import gourmet.tests.test_interactive_importer
+import gourmet.tests.test_importManager
+import gourmet.tests.test_convert
+import gourmet.tests.test_exportManager
 import unittest
 testsuite = unittest.TestSuite()
 for module in [
 
-    gourmet.importers.test_importManager,
-    gourmet.exporters.test_exportManager,
-    gourmet.importers.test_interactive_importer,
-    gourmet.importers.test_importer,
-    gourmet.test_convert,
+    gourmet.tests.test_importManager,
+    gourmet.tests.test_exportManager,
+    gourmet.tests.test_interactive_importer,
+    gourmet.tests.test_importer,
+    gourmet.tests.test_convert,
     ]:
     testsuite.addTest(
         unittest.defaultTestLoader.loadTestsFromModule(
@@ -58,7 +56,7 @@ for module in [
             )
         )
 # We have to run the DB tests last as they kill all plugins
-testsuite.addTest(gourmet.backends.test_db.suite)
+testsuite.addTest(gourmet.tests.test_db.suite)
 
 tr = unittest.TestResult()
 testsuite.run(tr)

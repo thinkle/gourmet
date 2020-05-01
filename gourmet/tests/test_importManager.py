@@ -13,7 +13,7 @@ import gourmet.backends.db
 gourmet.backends.db.RecData.__single = None
 gourmet.GourmetRecipeManager.GourmetApplication.__single = None
 
-from . import importManager
+from gourmet.importers import importManager
 
 class TestImports (unittest.TestCase):
     def setUp (self):
