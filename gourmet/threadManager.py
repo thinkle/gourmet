@@ -28,11 +28,9 @@
 from gettext import gettext as _
 from gettext import ngettext
 import threading
-from gi.repository import Gtk
 from gi.repository import Pango
 from gi.repository import GObject
 import time
-GObject.threads_init()
 
 # _IdleObject etc. based on example John Stowers
 # <john.stowers@gmail.com>

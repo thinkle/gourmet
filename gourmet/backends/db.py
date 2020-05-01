@@ -1,6 +1,5 @@
 import shutil
-import types
-from gourmet.gdebug import debug, TimeAction, debug_decorator
+from gourmet.gdebug import debug, TimeAction
 import re, string, os.path, time
 from gettext import gettext as _
 import gourmet.gglobals as gglobals
@@ -616,7 +615,7 @@ class RecData (Pluggable, BaseException):
                         blob = getattr(r,src)
                         url = None
                         if blob:
-                            m = re.search('\w+://[^ ]*',blob)
+                            m = re.search(r'\w+://[^ ]*',blob)
                             if m:
                                 rec_url = blob[m.start():m.end()]
                                 if rec_url[-1] in ['.',')',',',';',':']:
@@ -1699,7 +1698,7 @@ class RecData (Pluggable, BaseException):
             self.do_add(self.keylookup_table,{'item':item,'ingkey':key,'count':1})
         # The below code should move to a plugin for users who care about ingkeys...
         for w in item.split():
-            w=str(w.decode('utf8').lower())
+            w=str(w.lower())
             row = self.fetch_one(self.keylookup_table,word=str(w),ingkey=str(key))
             if row:
                 self.do_modify(self.keylookup_table,row,{'count':row.count+1})
@@ -1869,7 +1868,7 @@ class RecipeManager (RecData):
         s = s.decode('utf8').strip(
             '\u2022\u2023\u2043\u204C\u204D\u2219\u25C9\u25D8\u25E6\u2619\u2765\u2767\u29BE\u29BF\n\t #*+-')
         s = str(s)
-        option_m = re.match('\s*optional:?\s*',s,re.IGNORECASE)
+        option_m = re.match(r'\s*optional:?\s*',s,re.IGNORECASE)
         if option_m:
             s = s[option_m.end():]
             d['optional']=True
@@ -1901,7 +1900,7 @@ class RecipeManager (RecData):
                         # otherwise, unit is not a unit
                         i = u + ' ' + i
             if i:
-                optmatch = re.search('\s+\(?[Oo]ptional\)?',i)
+                optmatch = re.search(r'\s+\(?[Oo]ptional\)?',i)
                 if optmatch:
                     d['optional']=True
                     i = i[0:optmatch.start()] + i[optmatch.end():]

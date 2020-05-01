@@ -13,7 +13,7 @@ def snip_notes (s):
     if ret: return ret
     else: return s
 
-class KeyManager:
+class KeyManager(Exception):
 
     MAX_MATCHES = 10
     word_splitter = re.compile('\W+')
