@@ -141,7 +141,6 @@ elib.intl                                  |python-elib.intl      |py27-elib.int
 *Build Requirements*                       |                      |                    |
 setuptools (*Windows only!*)               |                      |                    |
 intltool                                   |intltool              |intltool            |*included in PyGTK installer*
-python-distutils-extra                     |python-distutils-extra|py27-distutils-extra|https://launchpad.net/python-distutils-extra/
 *Extra Requirements*                       |                      |
 Python Reportlab (for printing/PDF export) |python-reportlab      |py27-reportlab      |http://www.reportlab.com/ftp/
 pypoppler (for printing and PDF export)    |python-poppler        |py27-poppler        |

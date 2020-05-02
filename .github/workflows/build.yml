@@ -34,3 +34,4 @@ jobs:
     - name: Build
       run: |
         pip install .
+        python setup.py sdist
