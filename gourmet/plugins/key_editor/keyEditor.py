@@ -394,10 +394,10 @@ class KeyEditor:
                         {'ingkey':curdic['ingkey']}
                         )
         self.resetTree()
-            #self.update_iter(itr,newdic) # A recursive method that
-            #                             # will set values for us and
-            #                             # our children as necessary
-            #updated_iters.append(itr)
+            # self.update_iter(itr,newdic) # A recursive method that
+            #                              # will set values for us and
+            #                              # our children as necessary
+            # updated_iters.append(itr)
 
     def editNutritionalInfoCB (self, *args):
         nid = nutritionDruid.NutritionInfoDruid(self.rg.nd, self.rg.prefs)

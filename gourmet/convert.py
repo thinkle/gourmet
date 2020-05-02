@@ -41,16 +41,16 @@ class Converter:
     __single = None
 
     unit_to_seconds = {
-    'seconds':1,
-    'minutes':60,
-    'hours':60*60,
-    'days':24*60*60,
-    'weeks':7*24*60*60,
-    'months':31*24*60*60,
-    'years':365.25*24*60*60,
-    #'decades':10*365.25*24*60*60,
-    #'centuries':100*365.25*24*60*60,
-    #'millenia':1000*365.25*24*60*60,
+        'seconds':1,
+        'minutes':60,
+        'hours':60*60,
+        'days':24*60*60,
+        'weeks':7*24*60*60,
+        'months':31*24*60*60,
+        'years':365.25*24*60*60,
+        # 'decades':10*365.25*24*60*60,
+        # 'centuries':100*365.25*24*60*60,
+        # 'millenia':1000*365.25*24*60*60,
     }
 
     # this is a bit of a hackish attempt to make a matcher for all
@@ -724,8 +724,8 @@ NUMBER_MID_REGEXP += "]"
 NUMBER_END_REGEXP = NUMBER_START_REGEXP
 NUMBER_REGEXP = "("+NUMBER_START_REGEXP+"*"+NUMBER_MID_REGEXP+"*"+NUMBER_END_REGEXP
 if NUMBER_WORD_REGEXP:
-     NUMBER_REGEXP = NUMBER_REGEXP + '|' + NUMBER_WORD_REGEXP + ')'
-     NUMBER_NO_RANGE_REGEXP = '(' + NUMBER_START_REGEXP + '+|' + NUMBER_WORD_REGEXP + ')'
+    NUMBER_REGEXP = NUMBER_REGEXP + '|' + NUMBER_WORD_REGEXP + ')'
+    NUMBER_NO_RANGE_REGEXP = '(' + NUMBER_START_REGEXP + '+|' + NUMBER_WORD_REGEXP + ')'
 else:
     NUMBER_REGEXP = NUMBER_REGEXP + ")"
     NUMBER_NO_RANGE_REGEXP = NUMBER_START_REGEXP + '+'
@@ -897,21 +897,21 @@ def float_to_metric(n, approx=0.01):
     else:
         format_string = "%i"
     if n is not None:
-     if int(n) != n:
-         if (n - int(n) < approx) or ((n - int(n) + approx) > 1):
-             rounded = round(n)
-             if rounded == 0:
-                 return float_to_metric(n,approx*.01)
-             return locale.format("%i",int(rounded),True)
-         else:
-             rounded = round(n,decimals_to_preserve)
-             if rounded == 0:
-                 return float_to_metric(n,approx*.01)
-             return locale.format("%."+str(decimals_to_preserve)+"f",rounded,True) # format(formatstring, number, use_thousands_separator)
-     else:
-         return locale.format("%i",n,True)
+        if int(n) != n:
+            if (n - int(n) < approx) or ((n - int(n) + approx) > 1):
+                rounded = round(n)
+                if rounded == 0:
+                    return float_to_metric(n,approx*.01)
+                return locale.format("%i",int(rounded),True)
+            else:
+                rounded = round(n,decimals_to_preserve)
+                if rounded == 0:
+                    return float_to_metric(n,approx*.01)
+                return locale.format("%."+str(decimals_to_preserve)+"f",rounded,True) # format(formatstring, number, use_thousands_separator)
+        else:
+            return locale.format("%i",n,True)
     else:
-         return ""
+        return ""
 
 def float_string (s):
     """Convert string to a float, assuming it is some sort of decimal number

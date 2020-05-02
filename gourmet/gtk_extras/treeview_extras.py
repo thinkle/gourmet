@@ -67,7 +67,7 @@ def move_iter (mod, iter, sibling=None, parent=None, direction="before"):
             else:
                 return mod.prepend(parent, rowdata)
         elif direction=="before":
-                return mod.insert_before(parent,sibling,rowdata)
+            return mod.insert_before(parent,sibling,rowdata)
         else:
             return mod.insert_after(parent,sibling,rowdata)
     # if the source is before the destination, we add then remove. otherwise, we remove then add.
@@ -138,18 +138,18 @@ def path_compare (p1, p2):
     return retval
 
 def get_row (mod, iter):
-        """Grab all values in iter and return as a list suitable for
-        feeding to 'row' argument of append/prepend/insert"""
-        n = 0
-        flag = True
-        row = []
-        while flag:
-            try:
-                row.append(mod.get_value(iter,n))
-            except:
-                flag=False
-            n += 1
-        return row
+    """Grab all values in iter and return as a list suitable for
+    feeding to 'row' argument of append/prepend/insert"""
+    n = 0
+    flag = True
+    row = []
+    while flag:
+        try:
+            row.append(mod.get_value(iter,n))
+        except:
+            flag=False
+        n += 1
+    return row
 
 class selectionSaver:
     """A class to save selections in a treeStore. This is implemented because it is too damned

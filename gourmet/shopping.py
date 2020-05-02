@@ -220,7 +220,7 @@ class Shopper:
     def add_org_itm (self, itm, cat):
         self.orgdic[itm]=cat
         # for k,v in self.orgdic.items():
-            # print "%s:%s, "%(k,v)
+        #     print "%s:%s, "%(k,v)
 
     def add_to_pantry (self, key):
         self.pantry[key]=True
