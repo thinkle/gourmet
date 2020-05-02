@@ -26,7 +26,9 @@ class TestIcaPlugin(unittest.TestCase):
         filename = os.path.join(os.path.dirname(__file__),
                                 'recipe_files',
                                 (os.path.splitext(os.path.basename(__file__))[0])[5:-7]+".html")
-        return (open(filename).read())
+        with open(filename, encoding="utf8") as infile:
+            data = infile.read()
+        return data
 
     def setUp(self):
         self.text = self._read_html()
@@ -42,7 +44,7 @@ class TestIcaPlugin(unittest.TestCase):
     def test_parse(self):
         # Setup
         parser = self.plugin.get_importer(DummyImporter)()
-        parser.soup = BeautifulSoup(self.text, convertEntities=BeautifulStoneSoup.XHTML_ENTITIES,)
+        parser.soup = BeautifulSoup(self.text, "lxml")
         # Do the parsing
         parser.preparse()
         # Pick apart results

@@ -18,7 +18,9 @@ class TestFoodnetworkPlugin(unittest.TestCase):
         filename = os.path.join(os.path.dirname(__file__),
                         'recipe_files',
                         (os.path.splitext(os.path.basename(__file__))[0])[5:-7]+".html")
-        return (open(filename).read())
+        with open(filename, encoding="utf8") as infile:
+            data = infile.read()
+        return data
 
     def setUp(self):
         self.text = self._read_html()
@@ -35,18 +37,18 @@ class TestFoodnetworkPlugin(unittest.TestCase):
     def test_parse(self):
         # Setup
         parser = self.plugin.get_importer(DummyImporter)()
-        parser.soup = BeautifulSoup.BeautifulSoup(self.text,
-                            convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
-                        )
+        parser.soup = BeautifulSoup(self.text, "lxml")
         # Do the parsing
         parser.preparse()
         # Pick apart results
         result = parser.preparsed_elements
 
-        ingredients = [r for r in result if r[1] == "ingredients"][0][0]
-        ingredients = [i for i in ingredients if type(i) == BeautifulSoup.Tag]
-        name = [r for r in result if r[1] == "title"][0][0][0].text
-        instructions = [r for r in result if r[1] == "recipe"][0][0].text
+        # Result is a list of tuples (text, keyword) and we are searching for the current
+        # keyword. On success we retrieve the text itself and add it to the list.
+        # For the name we create a list, but have only one text which we retrieve.
+        ingredients = [r[0] for r in result if r[1] == "ingredients"]
+        name = [r for r in result if r[1] == "title"][0][0]
+        instructions = [r[0] for r in result if r[1] == "recipe"]
 
         # Check results
         self.assertEqual(len(ingredients), 8)
@@ -54,7 +56,10 @@ class TestFoodnetworkPlugin(unittest.TestCase):
         self.assertTrue('Pan-Roasted Chicken with Oranges and Rosemary' in name)
 
         self.assertTrue('Heat oven to 450 degrees F and arrange rack in middle.' in instructions)
-        self.assertTrue('Let rest 5 minutes before serving.' in instructions)
+
+        # The text to check for is part of a list element, not the full list element.
+        # Therefore we are creating a single string with the instructions for this check.
+        self.assertTrue('Let rest 5 minutes before serving.' in "\n".join(instructions))
 
         self.assertFalse('You must be logged in to review this recipe.' in instructions)
 
