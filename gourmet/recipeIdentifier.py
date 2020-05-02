@@ -90,7 +90,7 @@ def format_ing_text (ing_alist,rd,conv=None):
             if u: istring.append(u)
             if i.item: istring.append(i.item)
             if (type(i.optional)!=str and i.optional) or i.optional=='yes':
-                    istring.append(_('(Optional)'))
+                istring.append(_('(Optional)'))
             if i.refid: istring.append('=>%s'%i.refid)
             if i.ingkey: istring.append('key=%s'%i.ingkey)
             strings.append(xml.sax.saxutils.escape(' '.join(istring)))

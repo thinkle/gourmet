@@ -70,19 +70,19 @@ class rec_to_xml (XmlExporter):
         if amount:
             ing_el.appendChild(
                 self.create_text_element('amount',amount)
-                )
+            )
         if unit:
-           ing_el.appendChild(
-               self.create_text_element('unit',unit)
-               )
+            ing_el.appendChild(
+                self.create_text_element('unit',unit)
+            )
         if item:
             ing_el.appendChild(
                 self.create_text_element('item',item)
-                )
+            )
         if key:
             ing_el.appendChild(
                 self.create_text_element('key',key)
-                )
+            )
 
     def write_grouphead (self, name):
         group_el = self.xmlDoc.createElement('inggroup')

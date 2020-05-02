@@ -92,8 +92,8 @@ def setup_sample_recs ():
         return srsu
 
 class TestSetterUpper (unittest.TestCase):
-     def setUp (self):
-         setup_sample_recs()
+    def setUp (self):
+        setup_sample_recs()
 
      def testSetup (self):
          from gourmet.GourmetRecipeManager import get_application, GourmetApplication

@@ -28,10 +28,10 @@ def make_time_links (s):
 class TimeBuffer (LinkedTextView.LinkedPangoBuffer):
 
     def set_text (self, txt):
-         LinkedTextView.LinkedPangoBuffer.set_text(
-             self,
-             make_time_links(txt)
-             )
+        LinkedTextView.LinkedPangoBuffer.set_text(
+            self,
+            make_time_links(txt)
+        )
 
 class LinkedTimeView (LinkedTextView.LinkedTextView):
     __gtype_name__ = 'LinkedTimeView'

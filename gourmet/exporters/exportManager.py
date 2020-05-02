@@ -98,12 +98,12 @@ class ExportManager (plugin_loader.Pluggable):
                                   get_user_special_dir(USER_DIRECTORY_DOCUMENTS)
                                   )
         fn,exp_type=de.saveas_file(_("Export recipes"),
-                                     filename="%s%s%s%s"%(exp_directory,
-                                                          os.path.sep,
-                                                          _('recipes'),
-                                                          ext),
-                                     parent=parent,
-                                     filters=self.get_multiple_filters())
+                                   filename="%s%s%s%s"%(exp_directory,
+                                                        os.path.sep,
+                                                        _('recipes'),
+                                                        ext),
+                                   parent=parent,
+                                   filters=self.get_multiple_filters())
         if fn:
             prefs['rec_exp_directory']=os.path.split(fn)[0]
             prefs['save_recipes_as']=os.path.splitext(fn)[1]
@@ -115,7 +115,7 @@ class ExportManager (plugin_loader.Pluggable):
                     label=_('Unable to export: unknown filetype "%s"'%fn),
                     sublabel=_('Please make sure to select a filetype from the dropdown menu when saving.'),
                     message_type=gtk.MESSAGE_ERROR,
-                    )
+                )
                 return
             return instance
 
@@ -148,17 +148,17 @@ class ExportManager (plugin_loader.Pluggable):
             print 'WARNING: CANNOT EXPORT TYPE',exp_type
 
     def do_multiple_export (self, recs, fn, exp_type=None,
-                                           setup_gui=True, extra_prefs=EXTRA_PREFS_AUTOMATIC):
+                            setup_gui=True, extra_prefs=EXTRA_PREFS_AUTOMATIC):
             myexp, exporterInstance = self.get_multiple_exporter(recs,fn,exp_type,setup_gui,extra_prefs)
             tm = get_thread_manager()
             tm.add_thread(exporterInstance)
             if setup_gui:
-                tmg = get_thread_manager_gui()
-                tmg.register_thread_with_dialog(_('Export')+' ('+myexp.label+')',
-                                                exporterInstance)
-                exporterInstance.connect('completed', tmg.notification_thread_done,
-                    _('Recipes successfully exported to <a href="file:///%s">%s</a>')%(fn,fn))
-                tmg.show()
+                    tmg = get_thread_manager_gui()
+                    tmg.register_thread_with_dialog(_('Export')+' ('+myexp.label+')',
+                                                    exporterInstance)
+                    exporterInstance.connect('completed', tmg.notification_thread_done,
+                                             _('Recipes successfully exported to <a href="file:///%s">%s</a>')%(fn,fn))
+                    tmg.show()
             print 'Return exporter instance'
             return exporterInstance
 

@@ -97,19 +97,19 @@ class ModalDialog (gtk.Dialog):
             print 'WARNING, no response for ',response
 
     def setup_expander (self, expander):
-            label=expander[0]
-            body = expander[1]
-            self.expander = gtk.Expander(label)
-            self.expander.set_use_underline(True)
-            self.expander_vbox = gtk.VBox()
-            sw = gtk.ScrolledWindow()
-            sw.add_with_viewport(self.expander_vbox)
-            sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-            self.expander.add(sw)
-            self._add_expander_item(body)
-            self.expander.show()
-            self.expander_vbox.show_all()
-            self.vbox.add(self.expander)
+        label=expander[0]
+        body = expander[1]
+        self.expander = gtk.Expander(label)
+        self.expander.set_use_underline(True)
+        self.expander_vbox = gtk.VBox()
+        sw = gtk.ScrolledWindow()
+        sw.add_with_viewport(self.expander_vbox)
+        sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.expander.add(sw)
+        self._add_expander_item(body)
+        self.expander.show()
+        self.expander_vbox.show_all()
+        self.vbox.add(self.expander)
 
     def _add_expander_item (self, item):
         if type(item)==type(""):
@@ -1209,7 +1209,7 @@ if __name__ == '__main__':
           )
     pd=PreferencesDialog(options=opts)
     def run_prefs (*args):
-         pd.run()
+        pd.run()
     b.connect('clicked',run_prefs)
     def show_options (options):
         print options
@@ -1234,7 +1234,7 @@ if __name__ == '__main__':
         ['get number', lambda *args: getNumber(label='Main label',sublabel='sublabel')],
         ['get long entry', lambda *args: getEntry(label='Main label', sublabel=char_measure, entryLabel='Entry Label: ',default_character_width=75,entryTip='Enter something long here.')],
         ['show boolean', lambda *args: getBoolean()],
-            ['get password',lambda *args: getUsernameAndPassword()],
+        ['get password',lambda *args: getUsernameAndPassword()],
         ['show custom boolean', lambda *args: getBoolean(custom_yes='_Replace',
                                                          custom_no=gtk.STOCK_CANCEL,
                                                          cancel=False
@@ -1246,22 +1246,22 @@ if __name__ == '__main__':
                                                               ('Third',3)]),],
         ['get image dialog',lambda *args: msg(select_image('Select Image'))],
         ['get file dialog',lambda *args: msg(select_file('Select File',
-                                                     filters=[['Plain Text',['text/plain'],['*.txt','*.TXT']],
-                                            ['PDF',['application/pdf'],['*.pdf','*.PDF']],
-                                            ['Postscript',['application/postscript'],['*.ps','*.PS']],
-                                            ['Web Page (HTML)',['text/html'],['*.htm','*.HTM','*.html','*.HTML']],
-                                            ['Mealmaster File',['text/mmf'],['*.mmf','*.MMF']]],
-                                                     select_multiple=True
-                                                     )),
+                                                         filters=[['Plain Text',['text/plain'],['*.txt','*.TXT']],
+                                                                  ['PDF',['application/pdf'],['*.pdf','*.PDF']],
+                                                                  ['Postscript',['application/postscript'],['*.ps','*.PS']],
+                                                                  ['Web Page (HTML)',['text/html'],['*.htm','*.HTM','*.html','*.HTML']],
+                                                                  ['Mealmaster File',['text/mmf'],['*.mmf','*.MMF']]],
+                                                         select_multiple=True
+                                                         )),
          ],
         ['save file with types',
          lambda *args: msg(saveas_file('export',filename='/tmp/test.mmf',
-                                   filters=[['Plain Text',['text/plain'],['*.txt','*.TXT']],
-                                            ['PDF',['application/pdf'],['*.pdf','*.PDF']],
-                                            ['Postscript',['application/postscript'],['*.ps','*.PS']],
-                                            ['Web Page (HTML)',['text/html'],['*.htm','*.HTM','*.html','*.HTML']],
-                                            ['Mealmaster File',['text/mmf'],['*.mmf','*.MMF']]]))],
-        ]:
+                                       filters=[['Plain Text',['text/plain'],['*.txt','*.TXT']],
+                                                ['PDF',['application/pdf'],['*.pdf','*.PDF']],
+                                                ['Postscript',['application/postscript'],['*.ps','*.PS']],
+                                                ['Web Page (HTML)',['text/html'],['*.htm','*.HTM','*.html','*.HTML']],
+                                                ['Mealmaster File',['text/mmf'],['*.mmf','*.MMF']]]))],
+    ]:
         print b,f,s
         b = gtk.Button(s)
         def wrap (f):
@@ -1276,5 +1276,3 @@ if __name__ == '__main__':
     vb.show_all()
     w.show_all()
     gtk.main()
-
-

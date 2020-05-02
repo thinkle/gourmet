@@ -1391,10 +1391,10 @@ class RecData (Pluggable):
         self._force_unicode(dic)
 
     def _force_unicode (self, dic):
-       for k,v in dic.items():
-            if type(v)==str and k not in ['image','thumb']:
-                # force unicode...
-                dic[k]=unicode(v)
+            for k,v in dic.items():
+                    if type(v)==str and k not in ['image','thumb']:
+                            # force unicode...
+                            dic[k]=unicode(v)
 
     def do_modify_rec (self, rec, dic):
         """This is what other DBs should subclass."""

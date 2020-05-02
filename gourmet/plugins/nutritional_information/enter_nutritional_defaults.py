@@ -23,9 +23,9 @@ nd = NutritionData(rd,c)
 nid = NutritionInfoDruid(nd,{})
 nid.add_ingredients([(k,[(1,'')]) for k in ingredients_to_check])
 def quit (*args):
-        rd.save()
-        nid.ui.get_object('window1').hide()
-        gtk.main_quit()
+    rd.save()
+    nid.ui.get_object('window1').hide()
+    gtk.main_quit()
 nid.ui.get_object('window1').connect('delete-event',quit)
 nid.connect('finish',quit)
 nid.show()
@@ -49,4 +49,3 @@ for k in ingredients_to_check:
         print 'No information for ',k
 outfi.write('}')
 outfi.close()
-

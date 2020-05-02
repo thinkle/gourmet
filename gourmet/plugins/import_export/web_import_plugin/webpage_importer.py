@@ -26,8 +26,8 @@ class WebParser (InteractiveImporter):
 
     do_postparse = True
     imageexcluders = None # This could be a list of compiled regexps which would
-                         # be used to search image URL strings for
-                         # potential ads, etc.
+                          # be used to search image URL strings for
+                          # potential ads, etc.
     def __init__ (self, url, data, content_type):
         self.ignore_unparsed = False
         self.url = url
@@ -117,9 +117,9 @@ class WebParser (InteractiveImporter):
 
     def cut_extra_whitespace (self, s):
         if s.count('\n')>2:
-                s = s.replace(
-                    '\n','',
-                    s.count('\n')-2)
+            s = s.replace(
+                '\n','',
+                s.count('\n')-2)
         return s
 
     def add_buffer_to_parsed (self):

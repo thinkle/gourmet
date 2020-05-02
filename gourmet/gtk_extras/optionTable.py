@@ -56,7 +56,7 @@ class OptionTable (gtk.Table):
             lab.set_alignment(0.0,0.5)
             lab.set_justify(gtk.JUSTIFY_LEFT)
             self.attach(lab, 0, 1, 0, 1, xpadding=self.xpadding, ypadding=self.ypadding)
-                        #xoptions=gtk.SHRINK, yoptions=gtk.SHRINK)
+                        # xoptions=gtk.SHRINK, yoptions=gtk.SHRINK)
             lab.show()
         if self.value_label:
             n=1

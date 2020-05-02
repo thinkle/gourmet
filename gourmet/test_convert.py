@@ -10,8 +10,8 @@ class ConvertTest (unittest.TestCase):
         self.assertEqual(self.c.convert_simple('c','c'),1)
 
     def testDensity (self):
-         self.assertEqual(self.c.convert_w_density('ml','g',item='water'),1)
-         self.assertEqual(self.c.convert_w_density('ml','g',density=0.5),0.5)
+        self.assertEqual(self.c.convert_w_density('ml','g',item='water'),1)
+        self.assertEqual(self.c.convert_w_density('ml','g',density=0.5),0.5)
 
     def testReadability (self):
         self.failUnless(self.c.readability_score(1,'cup') > self.c.readability_score(0.8,'cups') )
