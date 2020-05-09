@@ -113,7 +113,7 @@ class LinkedTextView (Gtk.TextView):
         return False
     # Links can also be activated by clicking.
     def event_after(self, text_view, event):
-        if event.type != Gdk.BUTTON_RELEASE:
+        if event.type != Gdk.EventType.BUTTON_RELEASE:
             return False
         if event.button != 1:
             return False

@@ -230,7 +230,7 @@ class IngredientAndPantryList:
         self.pTree_sel_changed_cb(self.pTree.get_selection())
         def pTree_popup_cb (tv, event):
             debug("pTree_popup_cb (tv, event):",5)
-            if event.button==3 or event.type == Gdk._2BUTTON_PRESS:
+            if event.button==3 or event.type == Gdk.EventType._2BUTTON_PRESS:
                 self.popup_pan_menu(tv,event)
                 return True
 
@@ -245,7 +245,7 @@ class IngredientAndPantryList:
         self.slTree.connect('popup-menu',self.popup_ing_menu)
         def slTree_popup_cb (tv, event):
             debug("slTree_popup_cb (tv, event):",5)
-            if event.button==3 or event.type == Gdk._2BUTTON_PRESS:
+            if event.button==3 or event.type == Gdk.EventType._2BUTTON_PRESS:
                 self.popup_ing_menu(tv,event)
                 return True
         self.slTree.connect('button-press-event',slTree_popup_cb)
