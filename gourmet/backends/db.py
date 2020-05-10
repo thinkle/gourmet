@@ -1,5 +1,6 @@
+from functools import cmp_to_key
 import shutil
-from gourmet.gdebug import debug, TimeAction
+from gourmet.gdebug import debug, TimeAction, debug_decorator
 import re, string, os.path, time
 from gettext import gettext as _
 import gourmet.gglobals as gglobals
@@ -615,7 +616,7 @@ class RecData (Pluggable, BaseException):
                         blob = getattr(r,src)
                         url = None
                         if blob:
-                            m = re.search(r'\w+://[^ ]*',blob)
+                            m = re.search('\w+://[^ ]*',blob)
                             if m:
                                 rec_url = blob[m.start():m.end()]
                                 if rec_url[-1] in ['.',')',',',';',':']:
@@ -1538,14 +1539,15 @@ class RecData (Pluggable, BaseException):
             if group_order[x[0]] > group_order[y[0]]: return 1
             elif group_order[x[0]] == group_order[y[0]]: return 0
             else: return -1
-        alist=list(groups.items())
-        alist.sort(sort_groups)
+
+        alist = list(sorted(groups.items(), key=cmp_to_key(sort_groups)))
+
         def sort_ings (x,y):
             if x.position > y.position: return 1
             elif x.position == y.position: return 0
             else: return -1
         for g,lst in alist:
-            lst.sort(sort_ings)
+            lst.sort(key=cmp_to_key(sort_ings))
         final_alist = []
         last_g = -1
         for g,ii in alist:
@@ -1698,7 +1700,7 @@ class RecData (Pluggable, BaseException):
             self.do_add(self.keylookup_table,{'item':item,'ingkey':key,'count':1})
         # The below code should move to a plugin for users who care about ingkeys...
         for w in item.split():
-            w=str(w.lower())
+            w = w.decode('utf8').casefold()
             row = self.fetch_one(self.keylookup_table,word=str(w),ingkey=str(key))
             if row:
                 self.do_modify(self.keylookup_table,row,{'count':row.count+1})
@@ -1867,8 +1869,7 @@ class RecipeManager (RecData):
         d={}
         s = s.decode('utf8').strip(
             '\u2022\u2023\u2043\u204C\u204D\u2219\u25C9\u25D8\u25E6\u2619\u2765\u2767\u29BE\u29BF\n\t #*+-')
-        s = str(s)
-        option_m = re.match(r'\s*optional:?\s*',s,re.IGNORECASE)
+        option_m = re.match('\s*optional:?\s*',s,re.IGNORECASE)
         if option_m:
             s = s[option_m.end():]
             d['optional']=True
@@ -1900,7 +1901,7 @@ class RecipeManager (RecData):
                         # otherwise, unit is not a unit
                         i = u + ' ' + i
             if i:
-                optmatch = re.search(r'\s+\(?[Oo]ptional\)?',i)
+                optmatch = re.search('\s+\(?[Oo]ptional\)?',i)
                 if optmatch:
                     d['optional']=True
                     i = i[0:optmatch.start()] + i[optmatch.end():]
