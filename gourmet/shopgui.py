@@ -630,9 +630,8 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
     def setup_cat_box (self):
         # Setup change-category widget
         self.cat_box = Gtk.HBox()  # ; self.cat_box.set_spacing(6)
-        self.cat_cbe = Gtk.ComboBox()
+        self.cat_cbe = Gtk.ComboBox.new_with_entry()
         self.cat_cbe.set_model(self.get_catmodel())
-        # help(self.cat_cbe)
         self.cat_cbe.set_entry_text_column(0)
         self.cat_entry = self.cat_cbe.get_child()
         self.cat_button = Gtk.Button(stock=Gtk.STOCK_APPLY)
@@ -640,12 +639,11 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         self.cat_label.set_mnemonic_widget(self.cat_entry)
         comp = Gtk.EntryCompletion()
         comp.set_model(self.get_catmodel()); comp.set_text_column(0)
-        # help(self.cat_entry)
-        # self.cat_entry.set_completion(comp)
+        self.cat_entry.set_completion(comp)
         self.cat_box.pack_start(self.cat_label,False,False,0); self.cat_label.show()
         self.cat_box.pack_start(self.cat_cbe, True, True, 0); self.cat_cbe.show()
         self.cat_box.pack_start(self.cat_button,False,False,0); self.cat_button.show()
-        # self.cat_entry.connect('activate',self.category_changed) TODO: fix this
+        self.cat_entry.connect('activate',self.category_changed)
         self.cat_button.connect('clicked',self.category_changed)
 
     def setup_actions (self):
