@@ -1,7 +1,6 @@
 import difflib, re
-import gi
-gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
+
 from gourmet.gdebug import debug
 
 class TooManyChanges (Exception):
@@ -209,11 +208,13 @@ class UndoableTextChange (UndoableObject):
 
 
 class UndoableTextContainer:
-    def __init__ (self, container, history):
+    def __init__ (self, container: Gtk.Widget, history):
         self.history = history
         self.container = container
         self.setup_widgets()
-        self.txt = self.get_text()
+        self.txt = None
+        if isinstance(container, Gtk.ComboBoxText):
+            self.txt = self.container.get_active_text()
         self._setting = False
 
     def change_event_cb (self,*args):
@@ -267,9 +268,12 @@ class UndoableTextContainer:
     def set_text (self,txt,cursor_index): raise NotImplementedError
 
 class UndoableEntry (UndoableTextContainer):
-    def __init__ (self, entry,history):
+    def __init__(self, entry: Gtk.Widget, history):
         self.entry = entry
-        self.get_text = self.entry.get_text
+        if isinstance(entry, Gtk.ComboBoxText):
+            self.get_text = entry.get_active_text()
+        elif isinstance(entry, Gtk.Entry):
+            self.get_text = entry.get_text()
         UndoableTextContainer.__init__(self,self.entry,history)
 
     def setup_widgets (self):
