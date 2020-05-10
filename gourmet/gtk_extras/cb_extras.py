@@ -5,7 +5,8 @@ from gourmet.gdebug import debug
 class FocusFixer:
     key = None
     def __init__ (self,cbe):
-        self.e=cbe.get_children()[0]
+        children = cbe.get_children()
+        self.e = children[0] if children else cbe
         self.e.connect('key-press-event',self.keypress_event_cb)
         self.e.connect('focus-out-event',self.focus_out_cb)
         self.e.connect('focus-in-event',self.focus_in_cb)
