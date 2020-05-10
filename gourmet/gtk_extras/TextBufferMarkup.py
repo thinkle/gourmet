@@ -181,7 +181,8 @@ class PangoBuffer (Gtk.TextBuffer):
         tagdict=self.get_tags()
         if not start: start=self.get_start_iter()
         if not end: end=self.get_end_iter()
-        txt = str(Gtk.TextBuffer.get_text(self,start,end))
+        txt = Gtk.TextBuffer.get_text(self, start, end,
+                                      include_hidden_chars=False)
         cuts = {}
         for k,v in list(tagdict.items()):
             if k not in self.tagdict: continue
