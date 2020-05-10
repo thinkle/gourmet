@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import gc
+import gi
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -312,7 +313,6 @@ class RecCardDisplay (plugin_loader.Pluggable):
     def reflow_on_allocate_cb (self, sw, allocation):
         hadj = sw.get_hadjustment()
         xsize = hadj.page_size
-        width = allocation.width
         for widget,perc in self.reflow_on_resize:
             widg_width = int(xsize * perc)
             widget.set_size_request(widg_width,-1)
@@ -978,9 +978,9 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
                          )
         self.window.set_default_size(*prefs.get_prefs().get('rec_editor_window')['window_size'])
         main_vb = Gtk.VBox()
-        main_vb.pack_start(self.ui_manager.get_widget('/RecipeEditorMenuBar', True, True, 0),expand=False,fill=False)
-        main_vb.pack_start(self.ui_manager.get_widget('/RecipeEditorToolBar', True, True, 0),expand=False,fill=False)
-        main_vb.pack_start(self.ui_manager.get_widget('/RecipeEditorEditToolBar', True, True, 0),expand=False,fill=False)
+        main_vb.pack_start(self.ui_manager.get_widget('/RecipeEditorMenuBar'),expand=False,fill=False, padding=0)
+        main_vb.pack_start(self.ui_manager.get_widget('/RecipeEditorToolBar'),expand=False,fill=False, padding=0)
+        main_vb.pack_start(self.ui_manager.get_widget('/RecipeEditorEditToolBar'),expand=False,fill=False, padding=0)
         self.notebook = Gtk.Notebook(); self.notebook.show()
         main_vb.pack_start(self.notebook, True, True, 0)
         self.window.add(main_vb)
@@ -1394,7 +1394,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             self.rw[a].db_prop = a
             # Set up accessibility
             atk = (find_entry(self.rw[a]) or self.rw[a]).get_accessible()
-            Atk.set_name(REC_ATTR_DIC[a]+' Entry')
+            atk.set_name(REC_ATTR_DIC[a]+' Entry')
             #self.rw[a].get_children()[0].connect('changed',self.changed_cb)
         for a in self.recent:
             self.rw[a]=self.ui.get_object("%sBox"%a)
@@ -1407,7 +1407,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             self.rw[a].db_prop = a
             # Set up accessibility
             atk = (find_entry(self.rw[a]) or self.rw[a]).get_accessible()
-            Atk.set_name(REC_ATTR_DIC[a]+' Entry')
+            atk.set_name(REC_ATTR_DIC[a]+' Entry')
             #self.rw[a].connect('changed',self.changed_cb)
         self.update_from_database()
 
@@ -1422,15 +1422,15 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
             debug("Widget for %s"%c,5)
             model = self.rg.get_attribute_model(c)
             self.rw[c].set_model(model)
-            self.rw[c].set_text_column(0)
+            self.rw[c].set_entry_text_column(0)
             cb.setup_completion(self.rw[c])
             if c=='category':
                 val = ', '.join(self.rg.rd.get_cats(self.current_rec))
             else:
                 val = getattr(self.current_rec,c)
-            self.rw[c].entry.set_text(val or "")
-            if isinstance(self.rw[c],Gtk.ComboBoxEntry):
-                Undo.UndoableEntry(self.rw[c].get_child(),self.history)
+            self.rw[c].insert_text(0, val or "")
+            if isinstance(self.rw[c],Gtk.ComboBoxText):
+                Undo.UndoableEntry(self.rw[c], self.history)
                 cb.FocusFixer(self.rw[c])
             else:
                 # we still have to implement undo for regular old comboBoxen!
@@ -1661,7 +1661,7 @@ class TextFieldEditor (TextEditor):
             print('Odd,',self,'has no label')
         else:
             atk = self.tv.get_accessible()
-            Atk.set_name(self.label + ' Text')
+            atk.set_name(self.label + ' Text')
         self.update_from_database()
         Undo.UndoableTextView(self.tv,self.history)
         self.setup_action_groups()

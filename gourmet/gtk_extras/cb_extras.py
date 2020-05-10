@@ -101,9 +101,11 @@ def setup_completion (cbe, col=0):
     """Setup an EntryCompletion on a ComboBoxEntry based on the
     items in the ComboBox's model"""
     model = cbe.get_model()
-    entry = cbe.get_children()[0]
-    cbe.entry = entry  # for convenience/backward compatability with Gtk.Combo
-    make_completion(entry, model, col)
+    children = cbe.get_children()
+    if children:
+        entry = children[0]
+        cbe.entry = entry  # for convenience/backward compatibility with Gtk.Combo
+        make_completion(entry, model, col)
 
 def make_completion (entry, model, col=0):
     """Setup completion for an entry based on model."""
