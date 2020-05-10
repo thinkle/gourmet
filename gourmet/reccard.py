@@ -1457,7 +1457,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
 
     def save (self, recdic):
         for c in self.reccom:
-            recdic[c]=str(self.rw[c].entry.get_text())
+            recdic[c]=str(self.rw[c].get_active_text())
         for e in self.recent:
             if e in INT_REC_ATTRS +  FLOAT_REC_ATTRS:
                 recdic[e]=self.rw[e].get_value()
