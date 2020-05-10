@@ -539,8 +539,8 @@ def find_columns (strings, char=" "):
     # we start with the columns in the first string
     if not strings:
         return None
-    strings=strings[0:]
-    strings.sort(lambda x,y: len(x)>len(y))
+    strings=list(strings)
+    strings.sort(key=len, reverse=True)
     columns = [match.start() for match in re.finditer(re.escape(char),strings[0])]
     if len(strings)==1:
         return columns

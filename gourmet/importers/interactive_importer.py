@@ -419,11 +419,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                 self.remove_widget(anchor)
 
     def commit_changes (self):
-        def mark_sorter (a,b):
-            a = self.tb.get_iter_at_mark(a[0]).get_offset()
-            b = self.tb.get_iter_at_mark(b[0]).get_offset()
-            return cmp(a,b)
-        self.labelled.sort(mark_sorter)
+        self.labelled.sort(key=lambda x: self.tb.get_iter_at_mark(x[0]).get_offset())
         if not self.labelled: return
         self.start_rec()
         started = False
