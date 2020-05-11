@@ -45,7 +45,7 @@ class TestAllRecipesPlugin(unittest.TestCase):
         # Setup
         parser = self.plugin.get_importer(DummyImporter)()
         parser.text = self.text
-        parser.soup = BeautifulSoup(self.text, features="lxml")
+        parser.soup = BeautifulSoup(self.text, "lxml")
         # Do the parsing
         parser.preparse()
         # Pick apart results
