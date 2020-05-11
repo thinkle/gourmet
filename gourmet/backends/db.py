@@ -1867,8 +1867,10 @@ class RecipeManager (RecData):
         debug('ingredient_parser handed: %s'%s,0)
         # Strip whitespace and bullets...
         d={}
-        s = s.decode('utf8').strip(
-            '\u2022\u2023\u2043\u204C\u204D\u2219\u25C9\u25D8\u25E6\u2619\u2765\u2767\u29BE\u29BF\n\t #*+-')
+        if isinstance(s, bytes):
+            s = s.decode('utf8')
+        s = s.strip(
+                '\u2022\u2023\u2043\u204C\u204D\u2219\u25C9\u25D8\u25E6\u2619\u2765\u2767\u29BE\u29BF\n\t #*+-')
         option_m = re.match('\s*optional:?\s*',s,re.IGNORECASE)
         if option_m:
             s = s[option_m.end():]

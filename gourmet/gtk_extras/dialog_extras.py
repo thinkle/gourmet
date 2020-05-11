@@ -67,7 +67,7 @@ class ModalDialog (Gtk.Dialog):
         self.label = Gtk.Label(label=label)
         self.label.set_line_wrap(True)
         self.label.set_selectable(True)
-        self.vbox.pack_start(self.label,expand=False)
+        self.vbox.pack_start(self.label, expand=False, fill=False, padding=0)
         self.label.set_padding(H_PADDING,Y_PADDING)
         self.label.set_alignment(0,0)
         self.label.set_justify(Gtk.Justification.LEFT)
