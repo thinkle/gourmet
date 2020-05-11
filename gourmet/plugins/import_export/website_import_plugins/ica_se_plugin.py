@@ -3,7 +3,7 @@ A plugin that tries to import recipes from the ica.se site
 """
 from gourmet.plugin import PluginPlugin
 from . import schema_org_parser
-from .schema_org_parser import Excluder
+
 
 class IcaSePlugin (PluginPlugin):
 
@@ -15,16 +15,37 @@ class IcaSePlugin (PluginPlugin):
             return 5
         return 0
 
-    def get_importer (self, webpage_importer):
+    def get_importer(self, webpage_importer):
         IcaSeParserBase = schema_org_parser.generate(webpage_importer.WebParser)
-        #ica.se doesn't specify cookTime, so we use totalTime instead
+        # ica.se doesn't specify cookTime, so we use totalTime instead
         IcaSeParserBase.schema_org_mappings['totalTime'] = 'cooktime'
 
         class IcaSeParser(IcaSeParserBase):
-            def preparse (self):
+
+            def preparse(self):
                 IcaSeParserBase.preparse(self)
-                yields = self.soup.find(id='servings')
-                self.preparsed_elements.append((yields,'yields'))
+
+                howto = self.soup.find("howto-steps")
+                modifications = howto.find("h2")
+                if modifications:
+                    if modifications.text == "Tips":
+                        text = modifications.next_sibling
+                        if text:
+                            self.preparsed_elements.append((text.strip(), "modifications"))
+                
+                if not self.recipe:
+                    return
+
+                if "nutrition" in self.recipe:
+                    entry = self.recipe["nutrition"]
+                    if "servingSize" in entry:
+                        value = entry["servingSize"]
+                        self.preparsed_elements.append((value, "yields"))
+
+                if "recipeCategory" in self.recipe:
+                    categories = self.recipe["recipeCategory"].split(",")
+                    for category in categories:
+                        self.preparsed_elements.append((category, "category"))
 
         return IcaSeParser
 

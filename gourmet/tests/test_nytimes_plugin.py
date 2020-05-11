@@ -2,7 +2,7 @@ import os.path
 import unittest
 from bs4 import BeautifulSoup
 
-from gourmet.plugins.import_export.website_import_plugins import foodnetwork_plugin
+from gourmet.plugins.import_export.website_import_plugins import nytimes_plugin
 
 class DummyImporter(object):
 
@@ -14,7 +14,7 @@ class DummyImporter(object):
 
 class TestFoodnetworkPlugin(unittest.TestCase):
 
-    url = "https://foodnetwork.co.uk/recipes/pan-roasted-chicken-thighs-grapes-and-olives/"
+    url = "https://cooking.nytimes.com/recipes/1020912-egg-curry"
 
     def _read_html(self, download=True):
         if download:
@@ -24,27 +24,27 @@ class TestFoodnetworkPlugin(unittest.TestCase):
 
         filename = os.path.join(os.path.dirname(__file__),
                                 "recipe_files",
-                                "foodnetwork.html")
+                                "nytimes.html")
         with open(filename, encoding="utf8") as f:
             data = f.read()
         return data
 
     def setUp(self):
         self.text = self._read_html(False)
-        self.plugin = foodnetwork_plugin.FoodNetworkPlugin()
+        self.plugin = nytimes_plugin.NYTPlugin()
 
     def test_url(self):
         self.assertEqual(self.plugin.test_url(self.url, self.text), 5)
-        self.assertEqual(self.plugin.test_url("http://www.foodnetwork.co.uk/recipes", self.text), 5)
-        self.assertEqual(self.plugin.test_url("http://foodnetwork.co.uk/recipes", self.text), 5)
-        self.assertEqual(self.plugin.test_url("http://www.foodnetwork.co.uk", self.text), 5)
-        self.assertEqual(self.plugin.test_url("http://www.foodnetwork.net", self.text), 0)
+        self.assertEqual(self.plugin.test_url("https://cooking.nytimes.com/recipes", self.text), 5)
+        self.assertEqual(self.plugin.test_url("http://cooking.nytimes.com", self.text), 5)
+        self.assertEqual(self.plugin.test_url("http://cooking.nytimes.net", self.text), 0)
         self.assertEqual(self.plugin.test_url("http://google.com", self.text), 0)
 
     def test_parse(self):
         # Setup
         parser = self.plugin.get_importer(DummyImporter)()
         parser.soup = BeautifulSoup(self.text, "lxml")
+        parser.text = self.text
         # Do the parsing
         parser.preparse()
         # Pick apart results
@@ -55,21 +55,21 @@ class TestFoodnetworkPlugin(unittest.TestCase):
         # For the name we create a list, but have only one text which we retrieve.
         ingredients = [r[0] for r in result if r[1] == "ingredients"]
         name = [r for r in result if r[1] == "title"][0][0]
-        instructions = [r[0] for r in result if r[1] == "recipe"]
-        preptime = [r for r in result if r[1] == "preptime"][0][0]
+        instructions = [r[0]["text"] for r in result if r[1] == "recipe"]
         cooktime = [r for r in result if r[1] == "cooktime"][0][0]
         yields = [r for r in result if r[1] == "yields"][0][0]
+        cuisine = [r for r in result if r[1] == "cuisine"][0][0]
 
         # Check results
-        self.assertEqual(len(ingredients), 11)
-        self.assertEqual(preptime, "15 mins")
-        self.assertTrue(cooktime, "25 mins")
-        self.assertEqual(yields, "4")
+        self.assertEqual(len(ingredients), 14)
+        self.assertEqual(cooktime, "1 h")
+        self.assertEqual(yields, "4 servings")
 
-        self.assertEqual(name, "Pan Roasted Chicken Thighs with Grapes and Olives")
+        self.assertEqual(name, "Egg Curry")
+        self.assertEqual(cuisine, "indian")
 
         self.assertTrue(
-            "Place the skillet underneath the broiler to crisp the chicken skin, about 2 minutes. Watch carefully to avoid burning." in instructions)
+            "Add the tomatoes, salt and 1 cup water. Cook, stirring occasionally, until the mixture thickens and the fat rises to the top, about 15 minutes. Stir in the garam masala and lower the heat. If the sauce isn’t runny, stir in 1/2 cup water." in instructions)
 
 
 if __name__ == '__main__':
