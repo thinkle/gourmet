@@ -1,9 +1,9 @@
-import string, re, time, sys
+import re, time, sys
 from .defaults.defaults import lang as defaults
 from .defaults.defaults import langProperties as langProperties
 from .gdebug import debug, TimeAction
 
-note_separator_regexp = '(;|\s+-\s+|--)'
+note_separator_regexp = r'(;|\s+-\s+|--)'
 note_separator_matcher = re.compile(note_separator_regexp)
 
 def snip_notes (s):
@@ -16,7 +16,7 @@ def snip_notes (s):
 class KeyManager(Exception):
 
     MAX_MATCHES = 10
-    word_splitter = re.compile('\W+')
+    word_splitter = re.compile(r'\W+')
 
     __single = None
 
@@ -56,9 +56,9 @@ class KeyManager(Exception):
 
     def regexp_for_all_words (self, txt):
         """Return a regexp to match any of the words in string."""
-        regexp="(^|\W)("
+        regexp=r"(^|\W)("
         count=0
-        for w in re.split("\W+",txt):
+        for w in self.word_splitter.split(txt):
             #for each keyword, we create a search term
             if w: #no blank strings!
                 count += 1
@@ -226,7 +226,7 @@ class KeyManager(Exception):
             words = ingr.split()
             if len(words) >= 2:
                 if self.cats.__contains__(words[-1]):
-                    ingr = "%s, %s" %(words[-1],string.join(words[0:-1]))
+                    ingr = "%s, %s" %(words[-1],''.join(words[0:-1]))
         #if len(str) > 32:
         #    str = str[0:32]
         debug("End generate_key",10)
@@ -247,7 +247,7 @@ class KeyManager(Exception):
         stringp=True
         if type(words)==type([]):
             stringp=False
-            words = string.join(words," ")
+            words = " ".join(words)
         words = words.split(';')[0] #we ignore everything after semicolon
         words = words.split("--")[0] # we ignore everything after double dashes too!
         m = self.ignored_regexp.match(words)

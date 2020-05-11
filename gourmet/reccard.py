@@ -4,7 +4,7 @@ import gi
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
-import os.path, string
+import os.path
 try:
     from PIL import Image
 except ImportError:
@@ -2526,9 +2526,9 @@ class IngredientTreeUI:
         strings=[]
         iters=[]
         tv.get_selection().selected_foreach(grab_selection,(strings,iters))
-        str=string.join(strings,"\n")
-        selection.set('text/plain',0,str)
-        selection.set('STRING',0,str)
+        ingredients="\n".join(strings)
+        selection.set('text/plain',0,ingredients)
+        selection.set('STRING',0,ingredients)
         selection.set('GOURMET_INTERNAL',8,'blarg')
         self.selected_iter=iters
 

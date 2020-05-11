@@ -1,5 +1,5 @@
 import sys
-import urllib.request, urllib.parse, urllib.error, zipfile, tempfile, os.path, re, string
+import urllib.request, urllib.parse, urllib.error, zipfile, tempfile, os.path, re
 from gettext import gettext as _
 from .parser_data import ABBREVS, ABBREVS_STRT, FOOD_GROUPS, NUTRITION_FIELDS, WEIGHT_FIELDS
 from gourmet.gdebug import TimeAction
@@ -7,7 +7,7 @@ expander_regexp = None
 
 def compile_expander_regexp ():
     regexp = "(?<!\w)("
-    regexp += string.join(list(ABBREVS.keys()),"|")
+    regexp += "|".join(list(ABBREVS.keys()))
     regexp += ")(?!\w)"
     return re.compile(regexp)
 
