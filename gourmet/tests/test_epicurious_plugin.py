@@ -55,8 +55,8 @@ class TestAllRecipesPlugin(unittest.TestCase):
         # keyword. On success we retrieve the text itself and add it to the list.
         # For the name we create a list, but have only one text which we retrieve.
         ingredients = [r[0] for r in result if r[1] == "ingredients"]
-        name = [r for r in result if r[1] == "recipe"][0][0]
-        instructions = [r[0] for r in result if r[1] == "instructions"]
+        name = [r for r in result if r[1] == "title"][0][0]
+        instructions = [r[0] for r in result if r[1] == "recipe"]
         modifications = [r[0] for r in result if r[1] == "modifications"]
         yields = [r for r in result if r[1] == "yields"][0][0]
         cooktime = [r for r in result if r[1] == "cooktime"][0][0]

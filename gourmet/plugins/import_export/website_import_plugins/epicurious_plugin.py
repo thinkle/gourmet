@@ -18,7 +18,7 @@ class EpicuriousPlugin(PluginPlugin):
 
                 name = self.soup.find("h1", itemprop="name")
                 if name:
-                    self.preparsed_elements.append((name.text.strip(), 'recipe'))
+                    self.preparsed_elements.append((name.text.strip(), 'title'))
 
                 preptime = self.soup.find('dd', class_='active-time')
                 if preptime:
@@ -49,10 +49,10 @@ class EpicuriousPlugin(PluginPlugin):
                 for li in directions_helpful:
                     if li.find('strong'):
                         # This is where direction sub-heading would be
-                        direction_list.append((li.find('strong').text.strip(), 'instructions'))
+                        direction_list.append((li.find('strong').text.strip(), 'recipe'))
                     triumph = li.find_all('li', 'preparation-step')
                     for other_li in triumph:
-                        direction_list.append((other_li.text.strip(), 'instructions'))
+                        direction_list.append((other_li.text.strip(), 'recipe'))
                 self.preparsed_elements.extend(direction_list)
 
                 rating = self.soup.find('span', class_='rating')
