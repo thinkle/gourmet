@@ -3,6 +3,8 @@ import unittest
 from bs4 import BeautifulSoup
 
 from gourmet.plugins.import_export.website_import_plugins import foodnetwork_plugin
+from gourmet.plugins.import_export.website_import_plugins.state import WebsiteTestState
+
 
 class DummyImporter(object):
 
@@ -16,11 +18,12 @@ class TestFoodnetworkPlugin(unittest.TestCase):
 
     url = "https://foodnetwork.co.uk/recipes/pan-roasted-chicken-thighs-grapes-and-olives/"
 
-    def _read_html(self, download=True):
+    @staticmethod
+    def _read_html(download=True):
         if download:
             with urllib.request.urlopen(self.url) as response:
-                self.text = response.read().decode("utf8")
-            return
+                data = response.read().decode("utf8")
+            return data
 
         filename = os.path.join(os.path.dirname(__file__),
                                 "recipe_files",
@@ -30,16 +33,16 @@ class TestFoodnetworkPlugin(unittest.TestCase):
         return data
 
     def setUp(self):
-        self.text = self._read_html(False)
+        self.text = TestFoodnetworkPlugin._read_html(False)
         self.plugin = foodnetwork_plugin.FoodNetworkPlugin()
 
     def test_url(self):
-        self.assertEqual(self.plugin.test_url(self.url, self.text), 5)
-        self.assertEqual(self.plugin.test_url("http://www.foodnetwork.co.uk/recipes", self.text), 5)
-        self.assertEqual(self.plugin.test_url("http://foodnetwork.co.uk/recipes", self.text), 5)
-        self.assertEqual(self.plugin.test_url("http://www.foodnetwork.co.uk", self.text), 5)
-        self.assertEqual(self.plugin.test_url("http://www.foodnetwork.net", self.text), 0)
-        self.assertEqual(self.plugin.test_url("http://google.com", self.text), 0)
+        self.assertEqual(self.plugin.test_url(self.url, self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("http://www.foodnetwork.co.uk/recipes", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("http://foodnetwork.co.uk/recipes", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("http://www.foodnetwork.co.uk", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("http://www.foodnetwork.net", self.text), WebsiteTestState.FAILED)
+        self.assertEqual(self.plugin.test_url("http://google.com", self.text), WebsiteTestState.FAILED)
 
     def test_parse(self):
         # Setup
@@ -63,13 +66,13 @@ class TestFoodnetworkPlugin(unittest.TestCase):
         # Check results
         self.assertEqual(len(ingredients), 11)
         self.assertEqual(preptime, "15 mins")
-        self.assertTrue(cooktime, "25 mins")
+        self.assertEqual(cooktime, "25 mins")
         self.assertEqual(yields, "4")
 
         self.assertEqual(name, "Pan Roasted Chicken Thighs with Grapes and Olives")
 
-        self.assertTrue(
-            "Place the skillet underneath the broiler to crisp the chicken skin, about 2 minutes. Watch carefully to avoid burning." in instructions)
+        self.assertIn(
+            "Place the skillet underneath the broiler to crisp the chicken skin, about 2 minutes. Watch carefully to avoid burning.", instructions)
 
 
 if __name__ == '__main__':

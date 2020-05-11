@@ -1,14 +1,17 @@
 from gourmet.plugin import PluginPlugin
 import re
 
+from .state import WebsiteTestState
+
+
 class FoodNetworkPlugin(PluginPlugin):
 
     target_pluggable = 'webimport_plugin'
 
     def test_url(self, url, data):
         if 'foodnetwork.co.uk' in url:
-            return 5
-        return 0
+            return WebsiteTestState.SUCCESS
+        return WebsiteTestState.FAILED
 
     def get_importer(self, webpage_importer):
 

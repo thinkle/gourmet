@@ -2,6 +2,7 @@ from gourmet.plugin import PluginPlugin
 from bs4 import BeautifulSoup
 
 from . import schema_org_parser
+from .state import WebsiteTestState
 
 
 NYT_CUISINES = [
@@ -62,8 +63,8 @@ class NYTPlugin(PluginPlugin):
 
     def test_url (self, url, data):
         if 'nytimes.com' in url:
-            return 5
-        return 0
+            return WebsiteTestState.SUCCESS
+        return WebsiteTestState.FAILED
 
     def get_importer(self, webpage_importer):
         NYTParserBase = schema_org_parser.generate(webpage_importer.WebParser)

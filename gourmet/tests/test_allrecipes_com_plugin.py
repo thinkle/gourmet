@@ -5,6 +5,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 
 from gourmet.plugins.import_export.website_import_plugins import allrecipes_plugin
+from gourmet.plugins.import_export.website_import_plugins.state import WebsiteTestState
 
 
 class DummyImporter(object):
@@ -17,11 +18,12 @@ class TestAllRecipesPlugin(unittest.TestCase):
 
     url = "https://allrecipes.com/recipe/asian-beef-with-snow-peas/"
 
-    def _read_html(self, download=True):
+    @staticmethod
+    def _read_html(download=True):
         if download:
             with urllib.request.urlopen(self.url) as response:
-                self.text = response.read().decode("utf8")
-            return
+                data = response.read().decode("utf8")
+            return data
 
         filename = os.path.join(os.path.dirname(__file__),
                                 "recipe_files",
@@ -31,15 +33,15 @@ class TestAllRecipesPlugin(unittest.TestCase):
         return data
 
     def setUp(self):
-        self.text = self._read_html(False)
+        self.text = TestAllRecipesPlugin._read_html(False)
         self.plugin = allrecipes_plugin.AllRecipesPlugin()
 
     def test_url(self):
-        self.assertEqual(self.plugin.test_url(self.url, self.text), 5)
-        self.assertEqual(self.plugin.test_url("https://www.allrecipes.com/recipe", self.text), 5)
-        self.assertEqual(self.plugin.test_url("https://allrecipes.com/recipe", self.text), 5)
-        self.assertEqual(self.plugin.test_url("https://allrecipes.net/", self.text), 0)
-        self.assertEqual(self.plugin.test_url("https://google.com", self.text), 0)
+        self.assertEqual(self.plugin.test_url(self.url, self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("https://www.allrecipes.com/recipe", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("https://allrecipes.com/recipe", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("https://allrecipes.net/", self.text), WebsiteTestState.FAILED)
+        self.assertEqual(self.plugin.test_url("https://google.com", self.text), WebsiteTestState.FAILED)
 
     def test_parse(self):
         # Setup
@@ -65,16 +67,16 @@ class TestAllRecipesPlugin(unittest.TestCase):
         # Check results
         self.assertEqual(len(ingredients), 9)
         self.assertEqual(preptime, "5 min")
-        self.assertTrue(cooktime, "10 min")
+        self.assertEqual(cooktime, "10 min")
         self.assertEqual(yields, "4 servings")
 
         self.assertEqual(name, "Asian Beef with Snow Peas")
-        self.assertTrue(
-            "Stir-fried beef in a light gingery sauce. Serve over steamed rice or hot egg noodles." in modifications)
-        self.assertTrue(
-            'In a small bowl, combine the soy sauce, rice wine, brown sugar and cornstarch. Set aside.' in instructions)
-        self.assertTrue(
-            'Heat oil in a wok or skillet over medium high heat. Stir-fry ginger and garlic for 30 seconds. Add the steak and stir-fry for 2 minutes or until evenly browned. Add the snow peas and stir-fry for an additional 3 minutes. Add the soy sauce mixture, bring to a boil, stirring constantly. Lower heat and simmer until the sauce is thick and smooth. Serve immediately.' in instructions)
+        self.assertIn(
+            "Stir-fried beef in a light gingery sauce. Serve over steamed rice or hot egg noodles.", modifications)
+        self.assertIn(
+            "In a small bowl, combine the soy sauce, rice wine, brown sugar and cornstarch. Set aside.", instructions)
+        self.assertIn(
+            "Heat oil in a wok or skillet over medium high heat. Stir-fry ginger and garlic for 30 seconds. Add the steak and stir-fry for 2 minutes or until evenly browned. Add the snow peas and stir-fry for an additional 3 minutes. Add the soy sauce mixture, bring to a boil, stirring constantly. Lower heat and simmer until the sauce is thick and smooth. Serve immediately.", instructions)
 
 
 if __name__ == '__main__':

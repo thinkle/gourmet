@@ -3,6 +3,8 @@ import unittest
 from bs4 import BeautifulSoup
 
 from gourmet.plugins.import_export.website_import_plugins import nytimes_plugin
+from gourmet.plugins.import_export.website_import_plugins.state import WebsiteTestState
+
 
 class DummyImporter(object):
 
@@ -12,15 +14,16 @@ class DummyImporter(object):
             pass
 
 
-class TestFoodnetworkPlugin(unittest.TestCase):
+class TestNytimesPlugin(unittest.TestCase):
 
     url = "https://cooking.nytimes.com/recipes/1020912-egg-curry"
 
-    def _read_html(self, download=True):
+    @staticmethod
+    def _read_html(download=True):
         if download:
             with urllib.request.urlopen(self.url) as response:
-                self.text = response.read().decode("utf8")
-            return
+                data = response.read().decode("utf8")
+            return data
 
         filename = os.path.join(os.path.dirname(__file__),
                                 "recipe_files",
@@ -30,15 +33,15 @@ class TestFoodnetworkPlugin(unittest.TestCase):
         return data
 
     def setUp(self):
-        self.text = self._read_html(False)
+        self.text = TestNytimesPlugin._read_html(False)
         self.plugin = nytimes_plugin.NYTPlugin()
 
     def test_url(self):
-        self.assertEqual(self.plugin.test_url(self.url, self.text), 5)
-        self.assertEqual(self.plugin.test_url("https://cooking.nytimes.com/recipes", self.text), 5)
-        self.assertEqual(self.plugin.test_url("http://cooking.nytimes.com", self.text), 5)
-        self.assertEqual(self.plugin.test_url("http://cooking.nytimes.net", self.text), 0)
-        self.assertEqual(self.plugin.test_url("http://google.com", self.text), 0)
+        self.assertEqual(self.plugin.test_url(self.url, self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("https://cooking.nytimes.com/recipes", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("http://cooking.nytimes.com", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("http://cooking.nytimes.net", self.text), WebsiteTestState.FAILED)
+        self.assertEqual(self.plugin.test_url("http://google.com", self.text), WebsiteTestState.FAILED)
 
     def test_parse(self):
         # Setup
@@ -68,8 +71,8 @@ class TestFoodnetworkPlugin(unittest.TestCase):
         self.assertEqual(name, "Egg Curry")
         self.assertEqual(cuisine, "indian")
 
-        self.assertTrue(
-            "Add the tomatoes, salt and 1 cup water. Cook, stirring occasionally, until the mixture thickens and the fat rises to the top, about 15 minutes. Stir in the garam masala and lower the heat. If the sauce isn’t runny, stir in 1/2 cup water." in instructions)
+        self.assertIn(
+            "Add the tomatoes, salt and 1 cup water. Cook, stirring occasionally, until the mixture thickens and the fat rises to the top, about 15 minutes. Stir in the garam masala and lower the heat. If the sauce isn’t runny, stir in 1/2 cup water.", instructions)
 
 
 if __name__ == '__main__':

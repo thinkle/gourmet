@@ -5,6 +5,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 
 from gourmet.plugins.import_export.website_import_plugins import epicurious_plugin
+from gourmet.plugins.import_export.website_import_plugins.state import WebsiteTestState
 
 
 class DummyImporter(object):
@@ -13,15 +14,16 @@ class DummyImporter(object):
         pass
 
 
-class TestAllRecipesPlugin(unittest.TestCase):
+class TestEpicuriousPlugin(unittest.TestCase):
 
     url = "https://www.epicurious.com/recipes/food/views/kiwi-lime-sorbet-233181"
 
-    def _read_html(self, download=True):
+    @staticmethod
+    def _read_html(download=True):
         if download:
             with urllib.request.urlopen(self.url) as response:
-                self.text = response.read().decode("utf8")
-            return
+                data = response.read().decode("utf8")
+            return data
 
         filename = os.path.join(os.path.dirname(__file__),
                                 "recipe_files",
@@ -31,15 +33,15 @@ class TestAllRecipesPlugin(unittest.TestCase):
         return data
 
     def setUp(self):
-        self.text = self._read_html(False)
+        self.text = TestEpicuriousPlugin._read_html(False)
         self.plugin = epicurious_plugin.EpicuriousPlugin()
 
     def test_url(self):
-        self.assertEqual(self.plugin.test_url(self.url, self.text), 5)
-        self.assertEqual(self.plugin.test_url("https://www.epicurious.com/recipes", self.text), 5)
-        self.assertEqual(self.plugin.test_url("https://epicurious.com/recipe", self.text), 5)
-        self.assertEqual(self.plugin.test_url("https://epicurious.net/", self.text), 0)
-        self.assertEqual(self.plugin.test_url("https://google.com", self.text), 0)
+        self.assertEqual(self.plugin.test_url(self.url, self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("https://www.epicurious.com/recipes", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("https://epicurious.com/recipe", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("https://epicurious.net/", self.text), WebsiteTestState.FAILED)
+        self.assertEqual(self.plugin.test_url("https://google.com", self.text), WebsiteTestState.FAILED)
 
     def test_parse(self):
         # Setup
@@ -67,10 +69,10 @@ class TestAllRecipesPlugin(unittest.TestCase):
         self.assertEqual(cooktime, "4 hours (includes churning, freezing, and softening time)")
 
         self.assertEqual(name, "Kiwi-Lime Sorbet")
-        self.assertTrue("A perfect ending to any Asian meal." in modifications)
-        self.assertTrue("Puree all ingredients in processor." in instructions)
-        self.assertTrue(
-            "Process in ice cream maker according to manufacturer's instructions. Transfer to container, cover, and freeze until solid, at least 3 hours. (Can be made 2 days ahead. Let stand at room temperature 30 minutes before serving.)" in instructions)
+        self.assertIn("A perfect ending to any Asian meal.", modifications)
+        self.assertIn("Puree all ingredients in processor.", instructions)
+        self.assertIn(
+            "Process in ice cream maker according to manufacturer's instructions. Transfer to container, cover, and freeze until solid, at least 3 hours. (Can be made 2 days ahead. Let stand at room temperature 30 minutes before serving.)", instructions)
 
 
 if __name__ == '__main__':

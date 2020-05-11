@@ -4,6 +4,8 @@ import unittest
 from bs4 import BeautifulSoup, BeautifulStoneSoup
 
 from gourmet.plugins.import_export.website_import_plugins import ica_se_plugin
+from gourmet.plugins.import_export.website_import_plugins.state import WebsiteTestState
+
 
 class DummyImporter(object):
 
@@ -15,11 +17,12 @@ class TestIcaPlugin(unittest.TestCase):
 
     url = "http://www.ica.se/recept/grillad-kyckling-med-melon-712641/"
 
-    def _read_html(self, download=True):
+    @staticmethod
+    def _read_html(download=True):
         if download:
             with urllib.request.urlopen(self.url) as response:
-                self.text = response.read().decode("utf8")
-            return
+                data = response.read().decode("utf8")
+            return data
 
         filename = os.path.join(os.path.dirname(__file__),
                                 "recipe_files",
@@ -29,15 +32,15 @@ class TestIcaPlugin(unittest.TestCase):
         return data
 
     def setUp(self):
-        self.text = self._read_html(False)
+        self.text = TestIcaPlugin._read_html(False)
         self.plugin = ica_se_plugin.IcaSePlugin()
 
     def test_url(self):
-        self.assertEqual(self.plugin.test_url(self.url, self.text), 5)
-        self.assertEqual(self.plugin.test_url("https://www.ica.se/rec", self.text), 5)
-        self.assertEqual(self.plugin.test_url("https://ica.se/rec", self.text), 5)
-        self.assertEqual(self.plugin.test_url("http://ica.com/", self.text), 0)
-        self.assertEqual(self.plugin.test_url("http://google.com", self.text), 0)
+        self.assertEqual(self.plugin.test_url(self.url, self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("https://www.ica.se/rec", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("https://ica.se/rec", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("http://ica.com/", self.text), WebsiteTestState.FAILED)
+        self.assertEqual(self.plugin.test_url("http://google.com", self.text), WebsiteTestState.FAILED)
 
     def test_parse(self):
         # Setup
@@ -63,15 +66,15 @@ class TestIcaPlugin(unittest.TestCase):
         # Check results
         self.assertEqual(len(ingredients), 9)
 
-        self.assertTrue(name, "Grillad kyckling med melon")
-        self.assertTrue("Huvudrätt" in category)
-        self.assertTrue(cooktime, "45 min")
+        self.assertEqual(name, "Grillad kyckling med melon")
+        self.assertIn("Huvudrätt", category)
+        self.assertEqual(cooktime, "45 min")
         self.assertEqual(yields, "6 Serving")
 
-        self.assertTrue(
-            "Dela varje kycklinglårfilé i 2 bitar. Blanda chilipulver och soja i en skål. Lägg ner kycklingen och blanda runt. Låt stå i kylen 30 minuter." in instructions)
-        self.assertTrue(
-            "Rätten passar bra till en buffé. Portionerna är beräknade för att passa buffébordet." in modifications)
+        self.assertIn(
+            "Dela varje kycklinglårfilé i 2 bitar. Blanda chilipulver och soja i en skål. Lägg ner kycklingen och blanda runt. Låt stå i kylen 30 minuter.", instructions)
+        self.assertIn(
+            "Rätten passar bra till en buffé. Portionerna är beräknade för att passa buffébordet.", modifications)
 
 
 if __name__ == '__main__':

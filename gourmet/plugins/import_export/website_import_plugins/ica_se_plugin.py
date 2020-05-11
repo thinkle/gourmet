@@ -3,6 +3,7 @@ A plugin that tries to import recipes from the ica.se site
 """
 from gourmet.plugin import PluginPlugin
 from . import schema_org_parser
+from .state import WebsiteTestState
 
 
 class IcaSePlugin (PluginPlugin):
@@ -12,8 +13,8 @@ class IcaSePlugin (PluginPlugin):
     def test_url (self, url, data):
         "Is this url from ica.se"
         if 'ica.se' in url:
-            return 5
-        return 0
+            return WebsiteTestState.SUCCESS
+        return WebsiteTestState.FAILED
 
     def get_importer(self, webpage_importer):
         IcaSeParserBase = schema_org_parser.generate(webpage_importer.WebParser)

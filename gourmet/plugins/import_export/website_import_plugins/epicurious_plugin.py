@@ -1,4 +1,6 @@
 from gourmet.plugin import PluginPlugin
+from .state import WebsiteTestState
+
 
 class EpicuriousPlugin(PluginPlugin):
 
@@ -6,8 +8,8 @@ class EpicuriousPlugin(PluginPlugin):
 
     def test_url (self, url, data):
         if 'epicurious.com' in url:
-            return 5
-        return 0
+            return WebsiteTestState.SUCCESS
+        return WebsiteTestState.FAILED
 
     def get_importer(self, webpage_importer):
 

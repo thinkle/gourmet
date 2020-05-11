@@ -1,5 +1,8 @@
 from gourmet.plugin import PluginPlugin
+
 from . import schema_org_parser
+from .state import WebsiteTestState
+
 
 class AllRecipesPlugin (PluginPlugin):
 
@@ -10,8 +13,8 @@ class AllRecipesPlugin (PluginPlugin):
 
     def test_url (self, url, data):
         if 'allrecipes.com' in url:
-            return 5
-        return 0
+            return WebsiteTestState.SUCCESS
+        return WebsiteTestState.FAILED
 
     def get_importer (self, webpage_importer):
         AllRecipesParserBase = schema_org_parser.generate(webpage_importer.WebParser)
