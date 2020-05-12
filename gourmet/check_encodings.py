@@ -129,9 +129,7 @@ class EncodingDialog (de.OptionDialog):
     def create_options (self):
         options = list(self.encodings.keys())
         masterlist = CheckEncoding.encodings + CheckEncoding.all_encodings
-        def comp (a,b):
-            return cmp(masterlist.index(a),masterlist.index(b))
-        options.sort(comp)
+        options.sort(key=lambda x: masterlist.index(x))
         return options
 
     def create_expander (self):
@@ -220,10 +218,8 @@ class EncodingDialog (de.OptionDialog):
     def diff_texts (self):
         """Look at our differently encoded buffers for characters where they differ."""
         encoded_buffers = list(self.encodings.values())
-        def mycmp (a,b):
-            '''Sort by number of newlines (most first)'''
-            return cmp(len(b.splitlines()),len(a.splitlines()))
-        encoded_buffers.sort(mycmp)
+        # Sort by number of newlines (most first)
+        encoded_buffers.sort(key=lambda x: len(x.splitlines()), reverse=True)
         enc1 = encoded_buffers[0]
         enc_rest = [e.splitlines() for e in encoded_buffers[1:]]
         for linenum, l in enumerate(enc1.splitlines()):

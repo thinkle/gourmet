@@ -167,17 +167,13 @@ class PageableListStore (Gtk.ListStore):
 
         Note -- to remove term we use direction=OFF
         """
+        assert(direction in (self.FORWARD, self.REVERSE, self.OFF))
 
         self.sort_dict[column]=direction
         if direction==self.OFF:
             self.parent_list = self.unsorted_parent
             return
-        if direction==self.FORWARD: shift_by = 1
-        elif direction==self.REVERSE: shift_by = -1
-        self.parent_list.sort(lambda r1,r2: ((r1[column]>r2[column] and 1*shift_by) or
-                                             (r1[column]<r2[column] and -1*shift_by) or
-                                             0)
-                              )
+        self.parent_list.sort(key=lambda x: x[column], reverse=(direction == self.REVERSE))
         self.update_tree()
 
     def toggle_sort (self, column):

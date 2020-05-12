@@ -222,8 +222,7 @@ class ImportManager (plugin_loader.Pluggable):
     def guess_extension (self, content_type):
         if content_type in self.extensions_by_mimetype:
             answers = list(self.extensions_by_mimetype[content_type].items())
-            answers.sort(lambda a,b: cmp(a[1],b[1])) # sort by count...
-            return answers[-1][0] # Return the most frequent
+            return max(answers, key=lambda x: x[1])[0] # Return the most frequent by count...
         else:
             import mimetypes
             return mimetypes.guess_extension(content_type)

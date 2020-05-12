@@ -201,7 +201,7 @@ class KeyManager(Exception):
                 # Add some probability if our word shows up in the key
                 if ik.find(w)>=0: retvals[ik]+=0.1
         retv = list(retvals.items())
-        retv.sort(lambda a,b: a[1]<b[1] and 1 or a[1]>b[1] and -1 or 0)
+        retv.sort(key=lambda x: x[1])
         return retv
 
     def generate_key(self, ingr):
