@@ -140,9 +140,8 @@ class LinkedTextView (Gtk.TextView):
     # typically used by web browsers.
     def set_cursor_if_appropriate(self, text_view, x, y):
         hovering = False
-        buffer = text_view.get_buffer()
-        _, iter = text_view.get_iter_at_location(x, y)
-        tags = iter.get_tags()
+        _, iter_ = text_view.get_iter_at_location(x, y)
+        tags = iter_.get_tags()
 
         for tag in tags:
             href = tag.get_data("href")
