@@ -1,6 +1,9 @@
 from gourmet.plugin import PluginPlugin
 import re
 
+from .state import WebsiteTestState
+
+
 class AboutDotComPlugin (PluginPlugin):
 
     target_pluggable = 'webimport_plugin'
@@ -11,7 +14,8 @@ class AboutDotComPlugin (PluginPlugin):
 
     def test_url (self, url, data):
         if 'about.com' in url:
-            return 5
+            return WebsiteTestState.SUCCESS
+        return WebsiteTestState.FAILED
 
     def get_importer (self, webpage_importer):
 

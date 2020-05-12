@@ -1,6 +1,10 @@
 from gourmet.plugin import PluginPlugin
 from bs4 import BeautifulSoup
 
+from . import schema_org_parser
+from .state import WebsiteTestState
+
+
 NYT_CUISINES = [
     "African",
     "American",
@@ -59,79 +63,31 @@ class NYTPlugin(PluginPlugin):
 
     def test_url (self, url, data):
         if 'nytimes.com' in url:
-            return 5
-        return 0
+            return WebsiteTestState.SUCCESS
+        return WebsiteTestState.FAILED
 
     def get_importer(self, webpage_importer):
+        NYTParserBase = schema_org_parser.generate(webpage_importer.WebParser)
+        # NYT doesn't specify cookTime, so we use totalTime instead
+        NYTParserBase.schema_org_mappings['totalTime'] = 'cooktime'
 
-        class NYTParser(webpage_importer.MenuAndAdStrippingWebParser):
+        class NYTParser(NYTParserBase):
 
-            def maybe_add (self, el, tag):
-                if el:
-                    if type(el) in [list,BeautifulSoup.ResultSet]:
-                        for e in el:
-                            self.maybe_add(e,tag)
-                    else:
-                        if hasattr(el,'strip') and callable(el.strip):
-                            if not el.strip():
-                                return # Don't add empty strings or we screw things up royally
-                            else:
-                                print('we are adding navigable string: ',el,'with tag',tag)
-                        self.preparsed_elements.append((el,tag))
+            def preparse(self):
+                NYTParserBase.preparse(self)
+                
+                if not self.recipe:
+                    return
 
+                if "author" in self.recipe:
+                    author = self.recipe["author"]["name"]
+                    self.preparsed_elements.append((author, "source"))
 
-            def preparse (self):
-                self.preparsed_elements = []
+                if "recipeCuisine" in self.recipe:
+                    cuisine = self.recipe["recipeCuisine"].capitalize()
+                    if cuisine in NYT_CUISINES:
+                        self.preparsed_elements.append((cuisine, "cuisine"))
 
-                self.maybe_add(
-                    self.soup.findAll(attrs={'itemprop':'description'}),
-                    'instructions'
-                    )
-                self.maybe_add(
-                    self.soup.findAll(attrs={'itemprop':'recipeIngredient'}),
-                    'ingredients')
-                for ingWrap in self.soup.findAll(attrs={'class':'recipe-ingredients-wrap'}):
-                    self.maybe_add(
-                        ingWrap.findAll(attrs={'class':'part-name'}),
-                        'inggroup'
-                        )
-                for tb in self.soup.findAll(attrs={'class':'special-diets tag-block'}):
-                    for a in tb.findAll('a'):
-                        if a.text in NYT_CUISINES:
-                            self.preparsed_elements.append((a,'cuisine'))
-                        else:
-                            self.preparsed_elements.append((a,'category'))
-                self.maybe_add(
-                    self.soup.findAll(attrs={'itemprop':'recipeInstructions'}),
-                    'instructions'
-                    )
-                self.maybe_add(
-                    self.soup.findAll('h1',attrs={'itemprop':'name'}),
-                    'title'
-                    )
-                self.maybe_add(
-                    self.soup.findAll(attrs={'class':'byline'}),
-                    'source'
-                    )
-                self.maybe_add(
-                    self.soup.findAll(attrs={'itemprop':'recipeYield'}),
-                    'yields'
-                    )
-                # Handle time and stupid icon we have to skip...
-                for ct in self.soup.findAll(attrs={'itemprop':'cookTime'}):
-                    # Delete stupid time icon thing
-                    stupid_icon = ct.parent.find('span')
-                    if stupid_icon:
-                        stupid_icon.extract()
-                    print('Add cooktime',ct.parent)
-                    self.maybe_add(
-                        ct.parent,
-                        'cooktime'
-                        )
-                if self.preparsed_elements:
-                    self.ignore_unparsed = True
-                else:
-                    webpage_importer.MenuAndAdStrippingWebParser.preparse(self)
 
         return NYTParser
 

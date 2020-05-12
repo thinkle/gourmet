@@ -1,21 +1,22 @@
-import html
 import os.path
 import unittest
-from bs4 import BeautifulSoup, BeautifulStoneSoup
+from bs4 import BeautifulSoup
 
-from gourmet.plugins.import_export.website_import_plugins import ica_se_plugin
+from gourmet.plugins.import_export.website_import_plugins import nytimes_plugin
 from gourmet.plugins.import_export.website_import_plugins.state import WebsiteTestState
 
 
 class DummyImporter(object):
 
     class WebParser(object):
-        pass
+
+        def preparse(dummy):
+            pass
 
 
-class TestIcaPlugin(unittest.TestCase):
+class TestNytimesPlugin(unittest.TestCase):
 
-    url = "http://www.ica.se/recept/grillad-kyckling-med-melon-712641/"
+    url = "https://cooking.nytimes.com/recipes/1020912-egg-curry"
 
     @staticmethod
     def _read_html(download=True):
@@ -26,20 +27,20 @@ class TestIcaPlugin(unittest.TestCase):
 
         filename = os.path.join(os.path.dirname(__file__),
                                 "recipe_files",
-                                "ica_se.html")
+                                "nytimes.html")
         with open(filename, encoding="utf8") as f:
             data = f.read()
         return data
 
     def setUp(self):
-        self.text = TestIcaPlugin._read_html(False)
-        self.plugin = ica_se_plugin.IcaSePlugin()
+        self.text = TestNytimesPlugin._read_html(False)
+        self.plugin = nytimes_plugin.NYTPlugin()
 
     def test_url(self):
         self.assertEqual(self.plugin.test_url(self.url, self.text), WebsiteTestState.SUCCESS)
-        self.assertEqual(self.plugin.test_url("https://www.ica.se/rec", self.text), WebsiteTestState.SUCCESS)
-        self.assertEqual(self.plugin.test_url("https://ica.se/rec", self.text), WebsiteTestState.SUCCESS)
-        self.assertEqual(self.plugin.test_url("http://ica.com/", self.text), WebsiteTestState.FAILED)
+        self.assertEqual(self.plugin.test_url("https://cooking.nytimes.com/recipes", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("http://cooking.nytimes.com", self.text), WebsiteTestState.SUCCESS)
+        self.assertEqual(self.plugin.test_url("http://cooking.nytimes.net", self.text), WebsiteTestState.FAILED)
         self.assertEqual(self.plugin.test_url("http://google.com", self.text), WebsiteTestState.FAILED)
 
     def test_parse(self):
@@ -51,30 +52,27 @@ class TestIcaPlugin(unittest.TestCase):
         parser.preparse()
         # Pick apart results
         result = parser.preparsed_elements
-        
+
         # Result is a list of tuples (text, keyword) and we are searching for the current
         # keyword. On success we retrieve the text itself and add it to the list.
         # For the name we create a list, but have only one text which we retrieve.
         ingredients = [r[0] for r in result if r[1] == "ingredients"]
         name = [r for r in result if r[1] == "title"][0][0]
-        instructions = [html.unescape(r[0]["text"]) for r in result if r[1] == "recipe"]
+        instructions = [r[0]["text"] for r in result if r[1] == "recipe"]
         cooktime = [r for r in result if r[1] == "cooktime"][0][0]
         yields = [r for r in result if r[1] == "yields"][0][0]
-        category = [r[0] for r in result if r[1] == "category"]
-        modifications = [r[0] for r in result if r[1] == "modifications"]
+        cuisine = [r for r in result if r[1] == "cuisine"][0][0]
 
         # Check results
-        self.assertEqual(len(ingredients), 9)
+        self.assertEqual(len(ingredients), 14)
+        self.assertEqual(cooktime, "1 h")
+        self.assertEqual(yields, "4 servings")
 
-        self.assertEqual(name, "Grillad kyckling med melon")
-        self.assertIn("Huvudrätt", category)
-        self.assertEqual(cooktime, "45 min")
-        self.assertEqual(yields, "6 Serving")
+        self.assertEqual(name, "Egg Curry")
+        self.assertEqual(cuisine, "indian")
 
         self.assertIn(
-            "Dela varje kycklinglårfilé i 2 bitar. Blanda chilipulver och soja i en skål. Lägg ner kycklingen och blanda runt. Låt stå i kylen 30 minuter.", instructions)
-        self.assertIn(
-            "Rätten passar bra till en buffé. Portionerna är beräknade för att passa buffébordet.", modifications)
+            "Add the tomatoes, salt and 1 cup water. Cook, stirring occasionally, until the mixture thickens and the fat rises to the top, about 15 minutes. Stir in the garam masala and lower the heat. If the sauce isn’t runny, stir in 1/2 cup water.", instructions)
 
 
 if __name__ == '__main__':
