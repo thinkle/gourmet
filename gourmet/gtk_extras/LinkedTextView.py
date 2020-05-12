@@ -141,7 +141,7 @@ class LinkedTextView (Gtk.TextView):
     def set_cursor_if_appropriate(self, text_view, x, y):
         hovering = False
         buffer = text_view.get_buffer()
-        iter = text_view.get_iter_at_location(x, y)
+        _, iter = text_view.get_iter_at_location(x, y)
         tags = iter.get_tags()
 
         for tag in tags:
@@ -168,7 +168,7 @@ class LinkedTextView (Gtk.TextView):
     # Also update the cursor image if the window becomes visible
     # (e.g. when a window covering it got iconified).
     def visibility_notify_event(self, text_view, event):
-        wx, wy, mod = text_view.window.get_pointer()
+        _, wx, wy, _ = text_view.get_window(Gtk.TextWindowType.WIDGET).get_pointer()
         bx, by = text_view.window_to_buffer_coords(Gtk.TextWindowType.WIDGET, wx, wy)
 
         self.set_cursor_if_appropriate (text_view, bx, by)
