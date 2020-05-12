@@ -312,7 +312,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def reflow_on_allocate_cb (self, sw, allocation):
         hadj = sw.get_hadjustment()
-        xsize = hadj.page_size
+        xsize = hadj.get_page_size()
         for widget,perc in self.reflow_on_resize:
             widg_width = int(xsize * perc)
             widget.set_size_request(widg_width,-1)
