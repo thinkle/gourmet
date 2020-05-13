@@ -1,4 +1,8 @@
-import re, time, sys
+from collections import defaultdict
+import re
+import time
+from typing import List, Tuple
+
 from .defaults.defaults import lang as defaults
 from .defaults.defaults import langProperties as langProperties
 from .gdebug import debug, TimeAction
@@ -135,55 +139,64 @@ class KeyManager(Exception):
         debug("End get_key",10)
         return k
 
-    def look_for_key (self, txt):
-        """handed a key, return a sorted ALIST of potential keys and
-        scores.
+    def look_for_key(self, txt: str) -> List[Tuple[str, float]]:
+        """Given a key, return a sorted list of potential matching known keys.
 
-        The higher the score, the more probable the match.
+        By using some heuristics to find spelling variations, look up the
+        database for similar entries.
+
+        These are then sorted according to their matching score.
+
+        A matching score is first established by giving a high score if a word
+        appears in the database, and further refined by the word's occurrences
+        relative to its other spellings.
         """
+        txt = txt.casefold()
+        retvals = defaultdict(float)
 
-        txt = txt.lower()
-        retvals = {}
-        # First look for matches for our full text (or full text +/- s
+        # First look for matches for our full text (or full text +/- s)
         main_txts = [txt]
         main_txts.extend(defaults.guess_singulars(txt))
-        if len(main_txts)==1:
+        if len(main_txts) == 1:
             main_txts.extend(defaults.guess_plurals(txt))
+
+        # Look up for an entry in the ingredient table where the term t is
+        # found in the value from the ingkey column.
+        # By doing so, it establishes a baseline for the accuracy of t
+        # being a useful keyword.
         for t in main_txts:
-            is_key = self.rm.fetch_one(self.rm.ingredients_table,ingkey=t)
-            if is_key>=0:
-                retvals[t]=.9
-            exact = self.rm.fetch_all(self.rm.keylookup_table,
-                                      item=t)
-            if exact:
-                for o in exact:
-                    k = o.ingkey
-                    if k not in retvals:
-                        retvals[k]=0
-                    retvals[k]+=(float(o.count)/len(exact))*2
+            entry = self.rm.fetch_one(self.rm.ingredients_table, ingkey=t)
+
+            if entry is not None:
+                retvals[t] = 0.9
+
+            exact = self.rm.fetch_all(self.rm.keylookup_table, item=t)
+            for o in exact:
+                retvals[o.ingkey] += (float(o.count) / len(exact)) * 2
+
         # Part II -- look up individual words
         words = self.word_splitter.split(txt)
         nwords = len(words)
         extra_words = []
-        # Include plural and singular variants
-        for w in words:
-            singulars = defaults.guess_singulars(w)
+
+        # use heuristic rules to include plural and singular spellings
+        for word in words:
+            singulars = defaults.guess_singulars(word)
             for s in singulars:
-                if not s in extra_words: extra_words.append(s)
-            if not singulars:
-                for p in defaults.guess_plurals(w):
-                    if not p in extra_words:
+                if s not in extra_words:
+                    extra_words.append(s)
+            if not singulars:  # the word was already singular
+                for p in defaults.guess_plurals(word):
+                    if p not in extra_words:
                         extra_words.append(p)
         words.extend(extra_words)
-        for w in words:
-            if not w:
+
+        for word in words:
+            if not word:  # TODO: remove this by returning early when txt == ''
                 continue
-            srch = self.rm.fetch_all(self.rm.keylookup_table,word=w)
+            srch = self.rm.fetch_all(self.rm.keylookup_table, word=word)
             total_count = sum([m.count for m in srch])
-            for m in srch:
-                ik = m.ingkey
-                if ik not in retvals:
-                    retvals[ik]=0
+            for match in srch:
                 # We have a lovely ratio.
                 #
                 # count      1
@@ -194,12 +207,15 @@ class KeyManager(Exception):
                 # resulted in this key, matches is the number of keys
                 # that match this word in all, and words is the number
                 # of words we're dealing with.
+                ik = match.ingkey
                 words_in_key = len(ik.split())
-                if words_in_key > nwords: wordcount = words_in_key
-                else: wordcount = nwords
-                retvals[ik]+=(float(m.count)/total_count)*(float(1)/(wordcount))
+                wordcount = words_in_key if words_in_key > nwords else nwords
+                retvals[ik] += (match.count / total_count) * (1.0 / wordcount)
+
                 # Add some probability if our word shows up in the key
-                if ik.find(w)>=0: retvals[ik]+=0.1
+                if word in ik:
+                    retvals[ik] += 0.1
+
         retv = list(retvals.items())
         retv.sort(key=lambda x: x[1])
         return retv
