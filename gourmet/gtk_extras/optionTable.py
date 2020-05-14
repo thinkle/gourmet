@@ -12,8 +12,8 @@ class CustomOption (Gtk.HBox):
         }
 
     def __init__ (self):
-        GObject.GObject.__init__(self)
-        GObject.GObject.__init__(self)
+        # GObject.GObject.__init__(self)
+        Gtk.HBox.__init__(self)
         raise NotImplementedError
 
     def get_value (self):
@@ -32,7 +32,7 @@ class OptionTable (Gtk.Table):
 
     def __init__ (self, options=([]), option_label=None, value_label=None,
                   changedcb=None, xpadding=5, ypadding=5):
-        GObject.GObject.__init__(self)
+        Gtk.Table.__init__(self)
         self.options=options
         self.defaults = options[0:]
         self.xpadding = xpadding

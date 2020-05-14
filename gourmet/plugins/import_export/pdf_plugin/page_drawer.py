@@ -15,7 +15,7 @@ class PageDrawer (Gtk.DrawingArea):
         """
         self.xalign = xalign
         self.yalign = yalign
-        GObject.GObject.__init__(self)
+        Gtk.DrawingArea.__init__(self)
         self.gc = None  # initialized in realize-event handler
         self.width  = 0 # updated in size-allocate handler
         self.height = 0 # idem

@@ -373,7 +373,7 @@ class DiffTable (Gtk.Table):
                   dont_choose=[]):
         self.idiffs = []
         self.diff_dic = diff_dic
-        GObject.GObject.__init__(self)
+        Gtk.Table.__init__(self)
         self.selected_dic = {}
         self.set_col_spacings(6)
         self.set_row_spacings(6)

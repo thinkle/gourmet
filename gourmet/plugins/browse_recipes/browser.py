@@ -21,8 +21,7 @@ class RecipeBrowserView (Gtk.IconView):
 
     def __init__ (self, rd):
         self.rd = rd
-        GObject.GObject.__init__(self)
-        GObject.GObject.__init__(self)
+        Gtk.IconView.__init__(self)
         self.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
         self.models = {}
         self.set_model()
@@ -194,7 +193,7 @@ class RecipeBrowserView (Gtk.IconView):
 class RecipeBrowser (Gtk.VBox):
 
     def __init__ (self, rd):
-        GObject.GObject.__init__(self)
+        Gtk.VBox.__init__(self)
         self.view = RecipeBrowserView(rd)
         self.buttons = []
         self.button_bar = Gtk.HBox()

@@ -166,7 +166,7 @@ class StarImage (Gtk.Image):
         If you want the user to be able to change the number of stars,
         use a StarButton.
         """
-        GObject.GObject.__init__(self)
+        Gtk.Image.__init__(self)
         self.stars = star_gen
         self.upper = upper
         self.set_value(value)
@@ -228,7 +228,8 @@ class StarButton (Gtk.Button):
         keyboard.
 
         """
-        self.__gobject_init__()
+        # self.__gobject_init__()
+        Gtk.Button.__init__(self)
         self.add_events(Gdk.EventMask.KEY_PRESS_MASK)
         self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self.connect('button-press-event',
@@ -444,7 +445,7 @@ class Tree(Gtk.TreeView):
         for i in range(10):
             for n in range(6):
                 self.store.append(['Test %s%s'%(i,n),n])
-        GObject.GObject.__init__(self)
+        Gtk.TreeView.__init__(self)
         self.set_size_request(300, 200)
         self.set_model(self.store)
         self.set_headers_visible(True)

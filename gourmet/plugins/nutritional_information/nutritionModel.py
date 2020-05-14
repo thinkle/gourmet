@@ -14,7 +14,7 @@ class NutritionModel (Gtk.TreeStore):
     ING_COL = 3
     USDA_COL = 4
     def __init__ (self, ings, nd):
-        GObject.GObject.__init__(self,GObject.TYPE_PYOBJECT,str,str,str,str)
+        Gtk.TreeStore.__init__(self,GObject.TYPE_PYOBJECT,str,str,str,str)
         self.nd = nd
         self.ings = ings
         list(map(self.add_ingredient,self.ings))

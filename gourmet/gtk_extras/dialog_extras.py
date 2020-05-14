@@ -57,7 +57,7 @@ class ModalDialog (Gtk.Dialog):
         self.vbox.show_all()
 
     def setup_dialog (self, *args, **kwargs):
-        GObject.GObject.__init__(self, *args, **kwargs)
+        Gtk.Dialog.__init__(self, *args, **kwargs)
 
     def setup_label (self, label):
         # we're going to add pango markup to our
@@ -158,7 +158,7 @@ class MessageDialog (Gtk.MessageDialog, ModalDialog):
         if 'title' in kwargs:
             title = kwargs['title']
             del kwargs['title']
-        GObject.GObject.__init__(self, *args, **kwargs)
+        Gtk.MessageDialog.__init__(self, *args, **kwargs)
         self.set_title(title)
 
     def setup_label (self, label):

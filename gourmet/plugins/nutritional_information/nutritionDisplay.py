@@ -8,7 +8,7 @@ class NutritionModel (Gtk.TreeStore):
     TITLE_FIELD = 'desc'
     def __init__ (self, nvw):
         self.nvw = nvw
-        GObject.GObject.__init__(self,str,str)
+        Gtk.TreeStore.__init__(self,str,str)
         self.populate_model()
 
     def connect_treeview_signals (self,tv):

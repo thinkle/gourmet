@@ -90,8 +90,8 @@ class LinkedTextView (Gtk.TextView):
         }
 
     def __init__ (self):
-        GObject.GObject.__init__(self)
-        GObject.GObject.__init__(self)
+        # GObject.GObject.__init__(self) # do we need both constructor calls?
+        Gtk.TextView.__init__(self)
         self.set_buffer(self.make_buffer())
         buf = self.get_buffer()
         self.set_text = buf.set_text

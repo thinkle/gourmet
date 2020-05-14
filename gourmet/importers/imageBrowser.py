@@ -37,7 +37,7 @@ def grab_thumbnail (uri, type, iqueue, pqueue, progress_portion=1, progress_star
 
 class ImageBrowser (Gtk.IconView):
     def __init__ (self,*args,**kwargs):
-        GObject.GObject.__init__(self,*args,**kwargs)
+        Gtk.IconView.__init__(self,*args,**kwargs)
         self.model = Gtk.ListStore(GdkPixbuf.Pixbuf,str)
         self.set_selection_mode(Gtk.SelectionMode.SINGLE)
         self.set_model(self.model)

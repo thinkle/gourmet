@@ -613,8 +613,7 @@ class UnitModel (Gtk.ListStore):
     def __init__ (self, converter):
         debug('UnitModel.__init__',5)
         self.conv = converter
-        # GObject.GObject.__init__(self, str, str)
-        GObject.GObject.__init__(self)
+        Gtk.ListStore.__init__(self, str, str)
         # the first item of each conv.units
         ## areckx: is there a reason why this is formatted this way?
         lst = [(a[1][0],a[0]) for a in [x for x in self.conv.units if not (x[1][0] in converter.unit_to_seconds
@@ -625,10 +624,10 @@ class UnitModel (Gtk.ListStore):
         lst.sort()
         for ulong,ushort in lst:
             iter=self.append()
-            # self.set_value(iter,0,ushort)
+            self.set_value(iter,0,ushort)
             if ulong != ushort:
                 ulong = "%s (%s)"%(ulong,ushort)
-            # self.set_value(iter,1,"%s"%ulong)
+            self.set_value(iter,1,"%s"%ulong)
 
 def set_accel_paths (ui, widgets, base='<main>'):
     """A convenience function. Hand us a function and set accel

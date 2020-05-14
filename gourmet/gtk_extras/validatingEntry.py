@@ -30,7 +30,7 @@ class ValidatingEntry (Gtk.VBox, GObject.GObject):
         }
 
     def __init__ (self, conv=None):
-        GObject.GObject.__init__(self)
+        Gtk.VBox.__init__(self)
         self.warning_box = Gtk.HBox()
         self.entry = Gtk.Entry()
         self.image = Gtk.Image()

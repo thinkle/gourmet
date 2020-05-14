@@ -737,8 +737,7 @@ class CustomUnitOption (optionTable.CustomOption):
         }
 
     def __init__ (self, default_value = inch):
-        GObject.GObject.__init__(self)
-        GObject.GObject.__init__(self)
+        Gtk.HBox.__init__(self) # do we really inherit from HBox?
         self.__quiet__ = False
         self.unit_combo = Gtk.ComboBoxText()
         for key in self.units:

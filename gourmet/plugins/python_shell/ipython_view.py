@@ -339,7 +339,7 @@ class ConsoleView(Gtk.TextView):
     '''
     Initialize console view.
     '''
-    GObject.GObject.__init__(self)
+    Gtk.TextView.__init__(self)
     self.modify_font(Pango.FontDescription('Mono'))
     self.set_cursor_visible(True)
     self.text_buffer = self.get_buffer()

@@ -235,8 +235,8 @@ class PageableTreeStore (Gtk.TreeStore, PageableListStore):
         We include all children by default -- subclasses can override
         update_tree to get fancier.
         """
-        self.__gobject_init__()
-        GObject.GObject.__init__(self, *types)
+        # self.__gobject_init__()
+        Gtk.TreeStore.__init__(self, *types)
         self.per_page = per_page
         self._setup_parent_(*parent_args,**parent_kwargs)
         self.update_tree()

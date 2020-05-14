@@ -287,7 +287,7 @@ class QuickTree (Gtk.ScrolledWindow):
         which case there is only one column. All items must produce a
         string with str(item)."""
         debug('QuickTree got rows: %s'%rows,0)
-        GObject.GObject.__init__(self)
+        Gtk.ScrolledWindow.__init__(self)
         self.tv=Gtk.TreeView()
         self.rows = rows
         self.titles=titles

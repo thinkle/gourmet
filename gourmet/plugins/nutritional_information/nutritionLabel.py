@@ -134,7 +134,7 @@ RECOMMENDED_INTAKE = {
         }
 
 
-class NutritionLabel (Gtk.VBox, GObject.GObject):
+class NutritionLabel (Gtk.VBox):
     """Provide a nutritional label that looks like standard FDA
     labels."""
 
@@ -171,8 +171,7 @@ class NutritionLabel (Gtk.VBox, GObject.GObject):
         self.prefs = prefs
         self.rec = rec
         start_at = 4
-        GObject.GObject.__init__(self)
-        GObject.GObject.__init__(self)
+        Gtk.VBox.__init__(self)
         #,2,len(NUT_LAYOUT)+start_at)
         self.show()
         self.tt = Gtk.Tooltips()
