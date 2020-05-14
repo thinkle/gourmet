@@ -13,6 +13,13 @@ class SampleRecipeSetterUpper:
 
     __single = None
 
+    @classmethod
+    def instance(cls):
+        if SampleRecipeSetterUpper.__single is None:
+            SampleRecipeSetterUpper.__single = cls()
+
+        return SampleRecipeSetterUpper.__single
+
     recipes = {
         'simple recipe' : {
             'recipe' : {'title':'Simple Test','cuisine':'Indian','instructions':'Cook as usual','modifications':'Unless you want to get fancy',
@@ -55,9 +62,6 @@ class SampleRecipeSetterUpper:
         }
 
     def __init__ (self):
-        print('Instantiate SampleRecipeSetterUpper',self)
-        if SampleRecipeSetterUpper.__single: raise SampleRecipeSetterUpper.__single
-        else: SampleRecipeSetterUpper.__single = self
         self.db = gourmet.backends.db.get_database()
         for rec in self.recipes:
             self.add_rec(self.recipes[rec])
@@ -84,11 +88,8 @@ class SampleRecipeSetterUpper:
         print('^^^^^^^^^^^^^^^^^^^^')
 
 def setup_sample_recs ():
-    try:
-        return SampleRecipeSetterUpper()
-    except SampleRecipeSetterUpper as srsu:
-        print('Returning single...')
-        return srsu
+    return SampleRecipeSetterUpper.instance()
+# FIXME: We're instantiating this class for side effects. Rethink that.
 
 class TestSetterUpper (unittest.TestCase):
      def setUp (self):

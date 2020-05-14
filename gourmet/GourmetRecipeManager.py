@@ -67,10 +67,14 @@ class GourmetApplication:
 
     __single = None
 
+    @classmethod
+    def instance(cls):
+        if GourmetApplication.__single is None:
+            GourmetApplication.__single = cls()
+
+        return GourmetApplication.__single
+
     def __init__ (self, splash_label=None):
-        if GourmetApplication.__single:
-            raise GourmetApplication.__single
-        GourmetApplication.__single = self
         # These first two items might be better handled using a
         # singleton design pattern...
         self.splash_label = splash_label
@@ -904,11 +908,14 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     __single = None
 
+    @classmethod
+    def instance(cls):
+        if RecGui.__single is None:
+            RecGui.__single = cls()
+
+        return RecGui.__single
+
     def __init__ (self, splash_label=None):
-        if RecGui.__single:
-            raise RecGui.__single
-        else:
-            RecGui.__single = self
         self.doing_multiple_deletions = False
         GourmetApplication.__init__(self, splash_label=splash_label)
         self.setup_index_columns()
@@ -1401,10 +1408,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         Gtk.main_quit()
 
 def get_application ():
-    try:
-        return RecGui()
-    except RecGui as rg:
-        return rg
+    return RecGui.instance()
 
 if __name__ == '__main__':
     if os.name!='nt':
