@@ -688,7 +688,7 @@ class IngredientDisplay:
         self.recipe_display = recipe_display
         self.prefs = prefs.get_prefs()
         self.setup_widgets()
-        self.recipe_display = recipe_display; self.rg = self.recipe_display.rg
+        self.rg = self.recipe_display.rg
         self.markup_ingredient_hooks = []
 
     def setup_widgets (self):
@@ -2854,16 +2854,20 @@ class UndoableObjectWithInverseThatHandlesItsOwnUndo (Undo.UndoableObject):
         self.inverse_action()
 
 def add_with_undo (rc,method):
-    uts = UndoableTreeStuff(rc.ingtree_ui.ingController)
+    idx = rc.recipe_editor.module_tab_by_name["ingredients"]
+    ing_controller = rc.recipe_editor.modules[idx].ingtree_ui.ingController
+    uts = UndoableTreeStuff(ing_controller)
+
     def do_it ():
         uts.start_recording_additions()
         method()
         uts.stop_recording_additions()
+
     UndoableObjectWithInverseThatHandlesItsOwnUndo(
         do_it,
         uts.undo_recorded_additions,
-        rc.history,
-        widget=rc.ingtree_ui.ingController.imodel
+        ing_controller.ingredient_editor_module.history,
+        widget=ing_controller.imodel
         ).perform()
 
 class IngInfo:
