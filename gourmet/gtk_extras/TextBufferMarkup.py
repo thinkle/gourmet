@@ -15,9 +15,11 @@
 ### along with this library; if not, write to the Free Software
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 ### USA
-
+import gi
+gi.require_versions({"Gtk": "3.0", "Pango": "1.0"})
 from gi.repository import Pango
 from gi.repository import Gtk
+from gi.repository import GObject
 import xml.sax.saxutils
 from gourmet.gdebug import debug
 
@@ -78,26 +80,40 @@ class PangoBuffer (Gtk.TextBuffer):
         Gtk.TextBuffer.__init__(self)
 
     def set_text (self, txt):
+        if isinstance(txt, bytes):
+            # data loaded from the database are bytes, not str
+            txt = txt.decode()
         Gtk.TextBuffer.set_text(self,"")
         try:
-            self.parsed,self.txt,self.separator = Pango.parse_markup(txt,'\x00')
-        except:
-            print('Problem encountered escaping text: "%s"'%txt)
+            self.parsed, attributes, self.txt, self.separator = Pango.parse_markup(txt, -1, '\x00')
+        except Exception as e:  # unescaped text (g-markup-error-quark), eg. contains &amp
+            print(f"Problem encountered escaping text: {txt}: {e}")
             import traceback; traceback.print_exc()
             txt=xml.sax.saxutils.escape(txt)
-            self.parsed,self.txt,self.separator = Pango.parse_markup(txt,'\x00')
-        self.attrIter = self.parsed.get_iterator()
-        self.add_iter_to_buffer()
-        while next(self.attrIter):
-            self.add_iter_to_buffer()
+            self.parsed, attributes, self.txt, self.separator = Pango.parse_markup(txt, -1, '\x00')
 
-    def add_iter_to_buffer (self):
-        range=self.attrIter.range()
-        font,lang,attrs = self.attrIter.get_font()
-        tags = self.get_tags_from_attrs(font,lang,attrs)
-        text = self.txt[range[0]:range[1]]
-        if tags: self.insert_with_tags(self.get_end_iter(),text,*tags)
-        else: self.insert_with_tags(self.get_end_iter(),text)
+        self.add_attributes_to_buffer(attributes)
+
+    def add_attributes_to_buffer(self, attributes: Pango.AttrList):
+        """Add html markup attributes to the text buffered in this object.
+
+        Given a list of text attributes, insert the markup tags around the text
+        delimited by the indices provided by each `item` attribute in the list.
+        """
+        attrs_iter = attributes.get_iterator()
+        while attrs_iter.next():
+            start, end = attrs_iter.range()
+            tags = []
+            ret = attrs_iter.get_font(Pango.FontDescription(), None, None)
+            if ret is not None:
+                font, lang, attrs = ret
+                tags = self.get_tags_from_attrs(font, lang, attrs)
+
+            text = self.txt[start:end]
+            item = self.get_end_attrs_iter()
+            self.insert_with_tags(item,text,*tags)
+
+        #  attrs_iter.destroy()  # TODO: check why calling destroy segfaults.
 
     def get_tags_from_attrs (self, font,lang,attrs):
         tags = []
@@ -254,7 +270,7 @@ class PangoBuffer (Gtk.TextBuffer):
     def get_selection (self):
         bounds = self.get_selection_bounds()
         if not bounds:
-            iter=self.get_iter_at_mark(self.insert)
+            iter=self.get_iter_at_mark(self.insert_)
             if iter.inside_word():
                 start_pos = iter.get_offset()
                 iter.forward_word_end()
@@ -300,7 +316,7 @@ class InteractivePangoBuffer (PangoBuffer):
         if normal_button: normal_button.connect('clicked',lambda *args: self.remove_all_tags())
         self.tag_widgets = {}
         self.internal_toggle = False
-        self.insert = self.get_insert()
+        self.insert_ = self.get_insert()
         self.connect('mark-set',self._mark_set_cb)
         self.connect('changed',self._changed_cb)
         for w,tup in toggle_widget_alist:
@@ -309,9 +325,13 @@ class InteractivePangoBuffer (PangoBuffer):
     def setup_widget_from_pango (self, widg, markupstring):
         """setup widget from a pango markup string"""
         #font = Pango.FontDescription(fontstring)
-        a,t,s = Pango.parse_markup(markupstring,'\x00')
+        _, a, t, s = Pango.parse_markup(markupstring, -1, '\x00')
         ai=a.get_iterator()
-        font,lang,attrs=ai.get_font()
+        ret = ai.get_font(Pango.FontDescription(), None, None)
+        if ret is not None:
+            font, _, attrs = ret
+        else:
+            font = attrs = None
         return self.setup_widget(widg,font,attrs)
 
     def setup_widget (self, widg, font, attr):
@@ -351,7 +371,7 @@ class InteractivePangoBuffer (PangoBuffer):
         # If our insertion point has a mark, we want to apply the tag
         # each time the user types...
         old_itr = self.get_iter_at_mark(self.last_mark)
-        insert_itr = self.get_iter_at_mark(self.insert)
+        insert_itr = self.get_iter_at_mark(self.insert_)
         if old_itr!=insert_itr:
             # Use the state of our widgets to determine what
             # properties to apply...
