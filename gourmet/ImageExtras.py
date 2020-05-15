@@ -2,7 +2,7 @@ import os, os.path, tempfile, io
 
 import gi
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
+from gi.repository import Gtk, GdkPixbuf
 
 try:
     from PIL import Image
@@ -32,11 +32,10 @@ def resize_image (image, width=None, height=None):
     else:
         return image
 
-def get_image_from_string (raw):
-    """Given raw image data, return an Image object."""
+def get_image_from_string(raw: bytes) -> Image.Image:
+    """Given raw image data (bytes), return an Image object."""
     if os.name =='posix':
-        sfi=io.StringIO()
-        sfi.write(raw)
+        sfi = io.BytesIO(raw)
         sfi.seek(0)
     else:
         sfi = write_image_tempfile(raw)
@@ -48,22 +47,20 @@ def get_image_from_string (raw):
         print(sfi)
         print("But we can't seem to load it...")
 
-def get_string_from_image (image):
+def get_string_from_image(image: Image.Image) -> bytes:
     """Convert an image into a string representing its JPEG self"""
-    ofi = io.StringIO()
+    ofi = io.BytesIO()
     image = image.convert('RGB')
     image.save(ofi,"JPEG")
-    ret = ofi.getvalue()
-    ofi.close()
-    return ret
+    return ofi.getvalue()
 
-def get_string_from_pixbuf (pb):
+def get_string_from_pixbuf(pb: GdkPixbuf.Pixbuf) -> bytes:
     fn = tempfile.mktemp('jpg')
     pb.save(fn,'jpeg')
-    s = file(fn,'r').read()
-    return s
+    with open(fn, 'rb') as f:
+        return f.read()
 
-def get_pixbuf_from_jpg (raw):
+def get_pixbuf_from_jpg(raw: bytes) -> GdkPixbuf.Pixbuf:
     """Given raw data of a jpeg file, we return a GdkPixbuf.Pixbuf
     """
     # o=open('/tmp/recimage.jpg','w')
@@ -82,7 +79,6 @@ def write_image_tempfile (raw, name=None, ext=".jpg"):
                             name + ext)
     else:
         fn = tempfile.mktemp(ext)
-    o=open(fn,'wb')
-    o.write(raw)
-    o.close()
+    with open(fn, 'wb') as o:
+        o.write(raw)
     return fn

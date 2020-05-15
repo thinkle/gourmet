@@ -1144,10 +1144,9 @@ class RecData (Pluggable, BaseException):
             try:
                 img = ImageExtras.get_image_from_string(recdic['image'])
                 thumb = ImageExtras.resize_image(img,40,40)
-                ofi = io.StringIO()
+                ofi = io.BytesIO()
                 thumb.save(ofi,'JPEG')
                 recdic['thumb']=ofi.getvalue()
-                ofi.close()
             except:
                 del recdic['image']
                 print("""Warning: gourmet couldn't recognize the image.
@@ -1158,10 +1157,8 @@ class RecData (Pluggable, BaseException):
                 import traceback
                 traceback.print_stack()
         for k,v in list(recdic.items()):
-            try:
-                recdic[k]=str(v.strip())
-            except:
-                pass
+            if isinstance(v, str):
+                recdic[k] = v.strip()
 
     def modify_ings (self, ings, ingdict):
         # allow for the possibility of doing a smarter job changing
@@ -1686,13 +1683,19 @@ class RecData (Pluggable, BaseException):
     @pluggable_method
     def add_ing_to_keydic (self, item, key):
         #print 'add ',item,key,'to keydic'
+        if not item or not key:
+            return
+
         # Make sure we have unicode...
-        if type(item)==str: item = str(item)
-        if type(key)==str: key = str(key)
-        if not item or not key: return
+        if isinstance(item, bytes):
+            item = item.decode('utf-8', 'replace')
         else:
-            if item: item = str(item)
-            if key: key = str(key)
+            item = str(item)
+        if isinstance(key, bytes):
+            key = key.decode('utf-8', 'replace')
+        else:
+            key = str(key)
+
         row = self.fetch_one(self.keylookup_table, item=item, ingkey=key)
         if row:
             self.do_modify(self.keylookup_table,row,{'count':row.count+1})
@@ -1700,7 +1703,7 @@ class RecData (Pluggable, BaseException):
             self.do_add(self.keylookup_table,{'item':item,'ingkey':key,'count':1})
         # The below code should move to a plugin for users who care about ingkeys...
         for w in item.split():
-            w = w.decode('utf8').casefold()
+            w = w.casefold()
             row = self.fetch_one(self.keylookup_table,word=str(w),ingkey=str(key))
             if row:
                 self.do_modify(self.keylookup_table,row,{'count':row.count+1})
