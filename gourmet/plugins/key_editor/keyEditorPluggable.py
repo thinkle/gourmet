@@ -71,14 +71,11 @@ class KeyEditorPluginManager (Pluggable):
 
     __single = None
 
-    @classmethod
-    def instance(cls):
-        if KeyEditorPluginManager.__single is None:
-            KeyEditorPluginManager.__single = cls()
-
-        return KeyEditorPluginManager.__single
-
     def __init__ (self):
+        if not KeyEditorPluginManager.__single:
+            KeyEditorPluginManager.__single = self
+        else:
+            raise KeyEditorPluginManager.__single
         Pluggable.__init__(self,[PluginPlugin])
 
     def get_treeview_columns (self, ike, key_col, instant_apply=False):
@@ -96,4 +93,7 @@ class KeyEditorPluginManager (Pluggable):
         return buttons
 
 def get_key_editor_plugin_manager ():
-    return KeyEditorPluginManager.instance()
+    try:
+        return KeyEditorPluginManager()
+    except KeyEditorPluginManager as kepm:
+        return kepm

@@ -26,14 +26,9 @@ class ImportManager (plugin_loader.Pluggable):
 
     __single = None
 
-    @classmethod
-    def instance(cls):
-        if ImportManager.__single is None:
-            ImportManager.__single = cls()
-
-        return ImportManager.__single
-
     def __init__ (self):
+        if ImportManager.__single: raise ImportManager.__single
+        else: ImportManager.__single = self
         self.tempfiles = {}
         self.extensions_by_mimetype = {}
         self.plugins_by_name = {}
@@ -283,9 +278,12 @@ class ImportManager (plugin_loader.Pluggable):
             self.plugins.remove(plugin)
 
 def get_import_manager ():
-    return ImportManager.instance()
+    try:
+        return ImportManager()
+    except ImportManager as im:
+        return im
 
 if __name__ == '__main__':
-    im = ImportManager.instance()
+    im = ImportManager()
     im.offer_import()
     Gtk.main()

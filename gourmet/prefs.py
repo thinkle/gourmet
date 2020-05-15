@@ -1,16 +1,9 @@
 import os, os.path, pickle
 from gourmet import gglobals
 
-class Prefs:
+class Prefs(BaseException):
 
     __single = None
-
-    @classmethod
-    def instance(cls):
-        if Prefs.__single is None:
-            Prefs.__single = cls()
-
-        return Prefs.__single
 
     def __init__ (self, file=os.path.join(gglobals.gourmetdir,'guiprefs')):
         """A basic class for handling preferences.
@@ -23,6 +16,10 @@ class Prefs:
         they will be called each time a preference is changed and
         handed the key and value as arguments: hook(key,value).
         """
+        if Prefs.__single:
+            raise Prefs.__single
+        else:
+            Prefs.__single = self
         self.file=file
         self.config = {}
         self.load()
@@ -88,7 +85,10 @@ class Prefs:
         return False
 
 def get_prefs ():
-    return Prefs.instance()
+    try:
+        return Prefs()
+    except Prefs as p:
+        return p
 
 if __name__ == '__main__':
     p = Prefs()

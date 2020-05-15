@@ -20,7 +20,7 @@ except:
 # pointing to the module (with the module parameter) and giving the
 # name and comment for the plugin.
 
-class MasterLoader:
+class MasterLoader(BaseException):
 
     # Singleton design pattern lifted from:
     # http://www.python.org/workshops/1997-10/proceedings/savikko.html
@@ -48,14 +48,10 @@ class MasterLoader:
         ]
     active_plugin_filename = os.path.join(gglobals.gourmetdir,'active_plugins')
 
-    @classmethod
-    def instance(cls):
-        if MasterLoader.__single is None:
-            MasterLoader.__single = MasterLoader()
-
-        return MasterLoader.__single
-
     def __init__ (self):
+        if MasterLoader.__single:
+            raise MasterLoader.__single
+        MasterLoader.__single = self
         self.plugin_directories = [os.path.join(gglobals.gourmetdir,'plugins'), # user plug-ins
                                    os.path.join(current_path,'plugins'), # pre-installed plugins
                                    os.path.join(current_path,'plugins','import_export'), # pre-installed exporter plugins
@@ -219,7 +215,12 @@ class MasterLoader:
         self.pluggables_by_class[klass].remove(pluggable)
 
 def get_master_loader ():
-    return MasterLoader.instance()
+    # Singleton design pattern lifted from:
+    # http://www.python.org/workshops/1997-10/proceedings/savikko.html
+    try:
+        return MasterLoader()
+    except MasterLoader as ml:
+        return ml
 
 class PluginSet:
     """A lazy-loading set of plugins.

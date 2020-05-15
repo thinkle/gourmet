@@ -16,14 +16,9 @@ class ExportManager (plugin_loader.Pluggable):
 
     __single = None
 
-    @classmethod
-    def instance(cls):
-        if not ExportManager.__single:
-            ExportManager.__single = ExportManager()
-
-        return ExportManager.__single
-
     def __init__ (self):
+        if ExportManager.__single: raise ExportManager.__single
+        else: ExportManager.__single = self
         self.plugins_by_name = {}
         plugin_loader.Pluggable.__init__(self,
                                          [ExporterPlugin]
@@ -198,4 +193,7 @@ class ExportManager (plugin_loader.Pluggable):
             print('WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name)
 
 def get_export_manager ():
-    return ExportManager.instance()
+    try:
+        return ExportManager()
+    except ExportManager as em:
+        return em
