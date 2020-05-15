@@ -1,6 +1,8 @@
 import locale, os
+from typing import Optional
+from .abstractLang import AbstractLanguage
 deflang = 'en'
-lang = None
+lang: AbstractLanguage
 
 if os.name == 'posix':
     try:
@@ -17,16 +19,20 @@ elif os.name == 'nt':
     locid = windll.kernel32.GetUserDefaultLangID()
     loc = locale.windows_locale[locid]
 
+importLang: Optional[AbstractLanguage] = None
 if loc:
     try:
-        lang = __import__('defaults_%s'%loc,globals(),locals(), level=1)
+        importLang = __import__('defaults_%s'%loc,globals(),locals(), level=1).Language
     except ImportError:
         try:
-            lang = __import__('defaults_%s'%loc[0:2],globals(),locals(), level=1)
+            importLang = __import__('defaults_%s'%loc[0:2],globals(),locals(), level=1).Language
         except ImportError:
-            lang = __import__('defaults_%s'%deflang,globals(),locals(), level=1)
+            importLang = __import__('defaults_%s'%deflang,globals(),locals(), level=1).Language
 
-if not lang: lang = __import__('defaults_%s'%deflang,globals(),locals())
+if not importLang:
+    lang = __import__('defaults_%s'%deflang,globals(),locals()).Language
+else:
+    lang = importLang
 
 # The next item is used to allow us to know some things about handling the language
 try:
@@ -76,7 +82,7 @@ unit_rounding_guide = {
     'c.':0.125,
     }
 
-if hasattr(lang,'unit_rounding_guide'):
+if hasattr(lang,'unit_rounding_guide') and lang.unit_rounding_guide:
     unit_rounding_guide.update(lang.unit_rounding_guide)
 
 lang.unit_rounding_guide = unit_rounding_guide
