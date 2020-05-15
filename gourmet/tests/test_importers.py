@@ -54,11 +54,6 @@ class ThreadlessImportManager (ImportManager):
             importer.run()
             self.follow_up(None,importer)
 
-def get_im ():
-    try:
-        return ThreadlessImportManager()
-    except ThreadlessImportManager as im:
-        return im
 
 class ImportTest:
 
@@ -147,7 +142,7 @@ class ImportTest:
 
     @time_me
     def setup_db (self):
-        self.im = get_im()
+        self.im = ThreadlessImportManager.instance()
         self.db = get_recipe_manager(custom_url='sqlite:///:memory:')
 
     @time_me
