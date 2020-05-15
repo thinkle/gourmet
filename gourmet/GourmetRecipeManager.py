@@ -737,13 +737,13 @@ class ImporterExporter:
             change_units=self.prefs.get('readableUnits',True)
             )
 
-    _import_manager = None
+    __import_manager = None
 
     @property
     def importManager(self):
-        if self._import_manager is None:
-            self._import_manager = get_import_manager()
-        return self._import_manager
+        if self.__import_manager is None:
+            self.__import_manager = get_import_manager()
+        return self.__import_manager
 
     def import_webpageg (self, *args):
         self.importManager.offer_web_import(parent=self.app.get_toplevel())
@@ -751,13 +751,13 @@ class ImporterExporter:
     def do_import (self, *args):
         self.importManager.offer_import(self.window)
 
-    _export_manager = None
+    __export_manager = None
 
     @property
     def exportManager(self):
-        if self._export_manager is None:
-            self._export_manager = get_export_manager()
-        return self._export_manager
+        if self.__export_manager is None:
+            self.__export_manager = get_export_manager()
+        return self.__export_manager
 
     def do_export (self, export_all=False):
         if export_all:
