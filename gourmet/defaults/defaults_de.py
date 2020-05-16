@@ -16,6 +16,7 @@
 # Last-updated: 2005-01-15 (07/18/05)
 
 from .abstractLang import AbstractLanguage
+from typing import Collection, Mapping, Any
 
 class Language(AbstractLanguage):
 
@@ -117,7 +118,7 @@ class Language(AbstractLanguage):
     # nutritional database. For these items, we will have nutritional
     # information by default.
 
-    NUTRITIONAL_INFO = {}
+    NUTRITIONAL_INFO: Mapping[str, Any] = {}
 
     # a dictionary for ambiguous words.
     # key=ambiguous word, value=list of possible non-ambiguous terms
@@ -833,7 +834,7 @@ class Language(AbstractLanguage):
               "dick","dicker","dicke","dickes","dicken"
               ]
 
-    NUMBERS = {
+    NUMBERS: Mapping[float, Collection[str]] = {
         }
 
     # These functions are rather important! Our goal is simply to

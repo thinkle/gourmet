@@ -17,6 +17,7 @@
 # Last-updated: 2006-06-28
 
 from .abstractLang import AbstractLanguage
+from typing import List, Mapping, Any
 
 class Language(AbstractLanguage):
 
@@ -64,7 +65,7 @@ class Language(AbstractLanguage):
     # nutritional database. For these items, we will have nutritional
     # information by default.
 
-    NUTRITIONAL_INFO = {}
+    NUTRITIONAL_INFO: Mapping[str, Any] = {}
 
     # a dictionary for ambiguous words.
     # key=ambiguous word, value=list of possible non-ambiguous terms
@@ -76,7 +77,7 @@ class Language(AbstractLanguage):
     #              'word':['meaning1','meaning2','meaning3'],
     #             }
 
-    AMBIGUOUS = {}
+    AMBIGUOUS: Mapping[str, List[str]] = {}
 
 
     # triplicates ITEM, KEY, SHOPPING CATEGORY

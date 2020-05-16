@@ -9,6 +9,7 @@
 # Last-updated: 4/27/05
 
 from .abstractLang import AbstractLanguage
+from typing import Collection, Mapping, List
 
 class Language(AbstractLanguage):
 
@@ -34,7 +35,7 @@ class Language(AbstractLanguage):
         ]
 
     # a dictionary key=ambiguous word, value=list of terms
-    AMBIGUOUS = {}
+    AMBIGUOUS: Mapping[str, List[str]] = {}
 
 
     # triplicates ITEM, KEY, SHOPPING CATEGORY
@@ -444,7 +445,7 @@ class Language(AbstractLanguage):
     def guess_plurals (s):
         return [s+'s',s+'es']
 
-    IGNORE = []
+    IGNORE: Collection[str] = []
 
     NUMBERS = {
         (1.0/8):['octavo','un octavo'],

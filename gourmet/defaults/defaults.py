@@ -1,4 +1,4 @@
-import locale, os
+import locale, os, sys
 from typing import Optional
 from .abstractLang import AbstractLanguage
 deflang = 'en'
@@ -14,7 +14,8 @@ if os.name == 'posix':
 
 # Windows locales are named differently, e.g. German_Austria instead of de_AT
 # Fortunately, we can find the POSIX-like type using a different method.
-elif os.name == 'nt':
+# sys.platform is the correct check per mypy convention (https://mypy.readthedocs.io/en/stable/common_issues.html?highlight=platform#python-version-and-system-platform-checks)
+elif sys.platform == "win32":
     from ctypes import windll
     locid = windll.kernel32.GetUserDefaultLangID()
     loc = locale.windows_locale[locid]

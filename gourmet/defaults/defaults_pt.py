@@ -5,6 +5,7 @@
 ## files.
 
 from .abstractLang import AbstractLanguage
+from typing import Collection, List, Mapping, Tuple
 
 class Language(AbstractLanguage):
 
@@ -29,12 +30,12 @@ class Language(AbstractLanguage):
     # If there are none of these that you can think of in your language, just
     # set this to:
     # SYNONYMS=[]
-    SYNONYMS=[
+    SYNONYMS: Collection[List[str]] = [
         # the first item of each list is the default
         ]
 
     # a dictionary key=ambiguous word, value=list of possible non-ambiguous terms
-    AMBIGUOUS = {}
+    AMBIGUOUS: Mapping[str, List[str]] = {}
 
 
     # triplicates ITEM, KEY, SHOPPING CATEGORY
@@ -42,7 +43,7 @@ class Language(AbstractLanguage):
     # standard for your locale, with whatever sensible default categories
     # you can think of (again, thinking of your locale, not simply translating
     # what I've done).
-    INGREDIENT_DATA = [
+    INGREDIENT_DATA: Collection[Tuple[str, str, str]] = [
                        # fruits, from wikipedia list
                        ## seafood, from wikipedia list
                        ## meats (garnered from wikipedia lists)
@@ -190,7 +191,7 @@ class Language(AbstractLanguage):
 
     def guess_plurals (s): return [s+'s',s+'es']
 
-    IGNORE=[]
+    IGNORE: Collection[str] = []
 
-    NUMBERS = {
+    NUMBERS: Mapping[float, Collection[str]] = {
         }

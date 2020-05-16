@@ -6,6 +6,7 @@
 ## files.
 
 from .abstractLang import AbstractLanguage
+from typing import List, Mapping
 
 class Language(AbstractLanguage):
 
@@ -57,7 +58,7 @@ class Language(AbstractLanguage):
         ]
 
     # a dictionary key=ambiguous word, value=list of terms
-    AMBIGUOUS = {}
+    AMBIGUOUS: Mapping[str, List[str]] = {}
 
 
     # triplicates ITEM, KEY, SHOPPING CATEGORY

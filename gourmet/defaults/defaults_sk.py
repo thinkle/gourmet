@@ -5,6 +5,7 @@
 ## files.
 
 from .abstractLang import AbstractLanguage
+from typing import Collection, List, Mapping
 
 class Language(AbstractLanguage):
 
@@ -79,10 +80,10 @@ class Language(AbstractLanguage):
     # for those synonyms.  ["preferred word","alternate word","alternate word"]
     # If there are none of these that you can think of in your language, just
     # set this to:
-    SYNONYMS=[]
+    SYNONYMS: Collection[List[str]] = []
 
     # a dictionary key=ambiguous word, value=list of possible non-ambiguous terms
-    AMBIGUOUS = {}
+    AMBIGUOUS: Mapping[str, List[str]] = {}
 
 
     # triplicates ITEM, KEY, SHOPPING CATEGORY
@@ -532,7 +533,7 @@ class Language(AbstractLanguage):
     def guess_singulars (s): return []
     def guess_plurals (s): return []
 
-    IGNORE=[]
+    IGNORE: Collection[str] = []
 
-    NUMBERS = {
+    NUMBERS: Mapping[float, Collection[str]] = {
         }

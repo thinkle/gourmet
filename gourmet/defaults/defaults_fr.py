@@ -16,6 +16,7 @@
 # Last-updated: 2005-07-18 (07/18/05)
 
 from .abstractLang import AbstractLanguage
+from typing import Collection, Mapping
 
 class Language(AbstractLanguage):
 
@@ -1135,5 +1136,5 @@ class Language(AbstractLanguage):
              "chaud","chaude","chauds","chaudes","finement","mince","minces",
              "approximativement","grosso modo","vulgairement"]
 
-    NUMBERS = {
+    NUMBERS: Mapping[float, Collection[str]] = {
         }
