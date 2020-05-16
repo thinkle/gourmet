@@ -1,6 +1,7 @@
 import locale, os, sys
 from typing import Optional
 from .abstractLang import AbstractLanguage
+from collections import defaultdict
 deflang = 'en'
 lang: AbstractLanguage
 
@@ -45,31 +46,19 @@ except:
     # 'capitalisedNouns' means that you don't want to use lower() anyway, cos it's
     #  ungramatical e.g. in the german Language, Nouns are written with Capital-Letters.
 
-# NOW WE DO AUTOMATED STUFF
-def add_itm (kd, k, v):
-    if k in kd:
-        kd[k].append(v)
-    else:
-        kd[k]=[v]
-
 ## now we set up our dictionaries
-lang.keydic = {}
-lang.shopdic = {}
-for lst in lang.SYNONYMS:
-    k = lst[0]
-    for i in lst:
-        add_itm(lang.keydic,k,i)
+lang.keydic = defaultdict(list)
+for variants in lang.SYNONYMS:
+    preferred = variants[0]
+    lang.keydic[preferred].extend(variants)
 
-for amb,lst in list(lang.AMBIGUOUS.items()):
-    if amb in lang.keydic:
-        lang.keydic[amb] += lst
-    else:
-        lang.keydic[amb] = lst
+for preferred, alternatives in lang.AMBIGUOUS.items():
+    lang.keydic[preferred].extend(alternatives)
 
-for row in lang.INGREDIENT_DATA:
-    name,key,shop=row
-    add_itm(lang.keydic,key,name)
-    lang.shopdic[key]=shop
+for itemname, key, _ in lang.INGREDIENT_DATA:
+    lang.keydic[key].append(itemname)
+
+lang.shopdic = {key: shoppingCategory for (_, key, shoppingCategory) in lang.INGREDIENT_DATA}
 
 lang.unit_group_lookup = {}
 
@@ -89,11 +78,9 @@ if hasattr(lang,'unit_rounding_guide') and lang.unit_rounding_guide:
 lang.unit_rounding_guide = unit_rounding_guide
 
 
-for group,v in list(lang.UNIT_GROUPS.items()):
-    n = 0
-    for u,rng in v:
-        lang.unit_group_lookup[u] = group,n
-        n += 1
+for groupname, magnitudes in lang.UNIT_GROUPS.items():
+    for no, (unit, _) in enumerate(magnitudes):
+        lang.unit_group_lookup[unit] = groupname, no
 
 WORD_TO_SING_PLUR_PAIR = {}
 if hasattr(lang,'PLURALS'):
