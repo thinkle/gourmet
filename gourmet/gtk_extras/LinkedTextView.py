@@ -161,7 +161,6 @@ class LinkedTextView (Gtk.TextView):
         x, y = text_view.window_to_buffer_coords(Gtk.TextWindowType.WIDGET,
             int(event.x), int(event.y))
         self.set_cursor_if_appropriate(text_view, x, y)
-        text_view.window.get_pointer()
         return False
 
     # Also update the cursor image if the window becomes visible
