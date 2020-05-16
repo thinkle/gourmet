@@ -190,7 +190,6 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.mm = mnemonic_manager.MnemonicManager()
         self.mm.add_toplevel_widget(self.window)
         self.mm.fix_conflicts_peacefully()
-        self.setup_style()
 
     def setup_uimanager (self):
         self.ui_manager = Gtk.UIManager()
@@ -350,27 +349,6 @@ class RecCardDisplay (plugin_loader.Pluggable):
             del pb
             self.imageDisplay.set_from_pixbuf(new_pb)
         gc.collect()
-
-    def setup_style (self,main=None):
-        """Modify style of widgets so we have a white background"""
-        if not main: main = self.main
-        new_style = main.get_style().copy()
-        cmap = main.get_colormap()
-        new_style.bg[Gtk.StateType.NORMAL]= cmap.alloc_color('white')
-        new_style.bg[Gtk.StateType.INSENSITIVE] = cmap.alloc_color('white')
-        new_style.fg[Gtk.StateType.NORMAL]= cmap.alloc_color('black')
-        new_style.fg[Gtk.StateType.INSENSITIVE] = cmap.alloc_color('black')
-        # define a function to walk our widgets recursively
-        def set_style (widg, styl):
-            if (not isinstance(widg,Gtk.Button) and
-                not isinstance(widg,Gtk.Entry) and
-                not isinstance(widg,Gtk.Notebook) and
-                not isinstance(widg,Gtk.Separator)
-                ): widg.set_style(styl)
-            if hasattr(widg,'get_children'):
-                for c in widg.get_children():
-                    set_style(c,styl)
-        set_style(main,new_style)
 
     # Main GUI setup
     def setup_main_window (self):
