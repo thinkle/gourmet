@@ -426,7 +426,10 @@ class Language(AbstractLanguage):
     # words as well as correct answers -- our goal is to generate a list
     # of possible hits rather than to get the plural/singular form "right".
 
+    @staticmethod
     def guess_singulars (s): return []
+
+    @staticmethod
     def guess_plurals (s):
         """This is a very lame attempt at Dutch grammar!
 

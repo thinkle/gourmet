@@ -433,6 +433,7 @@ class Language(AbstractLanguage):
     # words as well as correct answers -- our goal is to generate a list
     # of possible hits rather than to get the plural/singular form "right".
 
+    @staticmethod
     def guess_singulars (s):
         if len(s)<3: return []
         rets = []
@@ -442,6 +443,7 @@ class Language(AbstractLanguage):
                 rets.append(s[0:-2])
         return rets
 
+    @staticmethod
     def guess_plurals (s):
         return [s+'s',s+'es']
 

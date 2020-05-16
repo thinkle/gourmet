@@ -176,6 +176,7 @@ class Language(AbstractLanguage):
     # words as well as correct answers -- our goal is to generate a list
     # of possible hits rather than to get the plural/singular form "right".
 
+    @staticmethod
     def guess_singulars (s):
         """I don't really know portuguese, but I'm going to guess it's
         like English and Spanish with regard to plurals and try some basic
@@ -189,6 +190,7 @@ class Language(AbstractLanguage):
                 ret.append(s[0:-2]) # try chopping off 'es'
         return ret
 
+    @staticmethod
     def guess_plurals (s): return [s+'s',s+'es']
 
     IGNORE: Collection[str] = []

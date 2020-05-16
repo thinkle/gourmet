@@ -552,19 +552,22 @@ class Language(AbstractLanguage):
     one_digit_plural_matcher = re.compile("[^s]s$")
     v_plural_matcher = re.compile('ves')
 
+    @staticmethod
     def guess_singulars (s):
         if len(s)<3: return []
         rets = []
-        if s in irregular_plurals:
-            rets.append(irregular_plurals[s])
-        if two_digit_plural_matcher.search(s):
+        if s in Language.irregular_plurals:
+            rets.append(Language.irregular_plurals[s])
+        if Language.two_digit_plural_matcher.search(s):
             wrd=s[0:-2]
             if not wrd in rets: rets.append(wrd)
-        if v_plural_matcher.search(s):
+        if Language.v_plural_matcher.search(s):
             rets.append(s[0:-3]+'f')
-        if one_digit_plural_matcher.search(s): rets.append(s[0:-1])
+        if Language.one_digit_plural_matcher.search(s):
+            rets.append(s[0:-1])
         return rets
 
+    @staticmethod
     def guess_plurals (s):
         if not s: return []
         ret = [s+'s',s+'es']

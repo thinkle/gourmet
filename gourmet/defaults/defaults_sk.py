@@ -530,7 +530,10 @@ class Language(AbstractLanguage):
     # -- if it sees "Tomatoes" and believes that the word is "Tomato", it
     # won't bother trying to guess "Tomatoeses".
 
+    @staticmethod
     def guess_singulars (s): return []
+
+    @staticmethod
     def guess_plurals (s): return []
 
     IGNORE: Collection[str] = []

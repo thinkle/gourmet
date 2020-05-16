@@ -844,6 +844,7 @@ class Language(AbstractLanguage):
     # words as well as correct answers -- our goal is to generate a list
     # of possible hits rather than to get the plural/singular form "right".
 
+    @staticmethod
     def guess_singulars (s):
         # Note - German, here we're not only going to try to make nouns singular,
         # we could also get an adjective, so lets also take the adjectival endings off
@@ -868,6 +869,7 @@ class Language(AbstractLanguage):
 
         return ret
 
+    @staticmethod
     def guess_plurals (s):
         # Ditto above, assume this could also be an adjective, so try adding the common agreements
         return [s+'n', s+'en', s+'e', s+'er', s+'s', s+'es']
