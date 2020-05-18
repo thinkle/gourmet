@@ -67,10 +67,14 @@ class GourmetApplication:
 
     __single = None
 
+    @classmethod
+    def instance(cls):
+        if GourmetApplication.__single is None:
+            GourmetApplication.__single = cls()
+
+        return GourmetApplication.__single
+
     def __init__ (self, splash_label=None):
-        if GourmetApplication.__single:
-            raise GourmetApplication.__single
-        GourmetApplication.__single = self
         # These first two items might be better handled using a
         # singleton design pattern...
         self.splash_label = splash_label
@@ -84,8 +88,6 @@ class GourmetApplication:
         self.setup_shopping()
         self.setup_go_menu()
         self.rc={}
-        self.exportManager = get_export_manager()
-        self.importManager = get_import_manager()
 
     def setup_plugins (self):
         pass
@@ -735,15 +737,29 @@ class ImporterExporter:
             change_units=self.prefs.get('readableUnits',True)
             )
 
+    __import_manager = None
+
+    @property
+    def importManager(self):
+        if self.__import_manager is None:
+            self.__import_manager = get_import_manager()
+        return self.__import_manager
+
     def import_webpageg (self, *args):
         self.importManager.offer_web_import(parent=self.app.get_toplevel())
 
     def do_import (self, *args):
         self.importManager.offer_import(self.window)
 
+    __export_manager = None
+
+    @property
+    def exportManager(self):
+        if self.__export_manager is None:
+            self.__export_manager = get_export_manager()
+        return self.__export_manager
+
     def do_export (self, export_all=False):
-        if not hasattr(self,'exportManager'):
-            self.exportManager = get_export_manager()
         if export_all:
             recs = self.rd.fetch_all(self.rd.recipe_table,deleted=False,sort_by=[('title',1)])
         else:
@@ -904,11 +920,14 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     __single = None
 
+    @classmethod
+    def instance(cls):
+        if RecGui.__single is None:
+            RecGui.__single = cls()
+
+        return RecGui.__single
+
     def __init__ (self, splash_label=None):
-        if RecGui.__single:
-            raise RecGui.__single
-        else:
-            RecGui.__single = self
         self.doing_multiple_deletions = False
         GourmetApplication.__init__(self, splash_label=splash_label)
         self.setup_index_columns()
@@ -1401,10 +1420,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         Gtk.main_quit()
 
 def get_application ():
-    try:
-        return RecGui()
-    except RecGui as rg:
-        return rg
+    return RecGui.instance()
 
 if __name__ == '__main__':
     if os.name!='nt':

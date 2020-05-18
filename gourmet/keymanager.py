@@ -17,18 +17,21 @@ def snip_notes (s):
     if ret: return ret
     else: return s
 
-class KeyManager(Exception):
+class KeyManager:
 
     MAX_MATCHES = 10
     word_splitter = re.compile(r'\W+')
 
     __single = None
 
+    @classmethod
+    def instance(cls, *args, **kwargs):
+        if KeyManager.__single is None:
+            KeyManager.__single = cls(*args, **kwargs)
+
+        return KeyManager.__single
+
     def __init__ (self, kd={}, rm=None):
-        if KeyManager.__single:
-            raise KeyManager.__single
-        else:
-            KeyManager.__single = self
         self.kd = kd
         if not rm:
             from . import recipeManager
@@ -338,10 +341,7 @@ cooking_verbs=["cored",
                "chilled"]
 
 def get_keymanager (*args, **kwargs):
-    try:
-        return KeyManager(*args,**kwargs)
-    except KeyManager as km:
-        return km
+    return KeyManager.instance(*args,**kwargs)
 
 if __name__ == '__main__':
 

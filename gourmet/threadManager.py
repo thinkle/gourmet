@@ -160,9 +160,14 @@ class ThreadManager:
 
     __single = None
 
+    @classmethod
+    def instance(cls):
+        if ThreadManager.__single is None:
+            ThreadManager.__single = cls()
+
+        return ThreadManager.__single
+
     def __init__ (self, max_concurrent_threads = 2):
-        if ThreadManager.__single:
-            raise ThreadManager.__single
         self.max_concurrent_threads = max_concurrent_threads
         self.thread_queue = []
         self.count = 0
@@ -217,22 +222,23 @@ class ThreadManager:
                 thread_to_add.initialize_thread()
 
 def get_thread_manager ():
-    try:
-        return ThreadManager()
-    except ThreadManager as tm:
-        return tm
+    return ThreadManager.instance()
+
 
 class ThreadManagerGui:
 
-    __single__ = None
+    __single = None
     paused_text = ' (' + _('Paused') + ')'
     PAUSE = 10
 
+    @classmethod
+    def instance(cls):
+        if ThreadManagerGui.__single is None:
+            ThreadManagerGui.__single = cls()
+
+        return ThreadManagerGui.__single
+
     def __init__ (self, messagebox=None):
-        if ThreadManagerGui.__single__:
-            raise ThreadManagerGui.__single__
-        else:
-            ThreadManagerGui.__single__ = self
         self.tm = get_thread_manager()
         self.threads = {}
 
@@ -387,10 +393,8 @@ class ThreadManagerGui:
                         )
 
 def get_thread_manager_gui ():
-    try:
-        return ThreadManagerGui()
-    except ThreadManagerGui as tmg:
-        return tmg
+    return ThreadManagerGui.instance()
+
 
 if __name__ == '__main__':
     from gi.repository import Gtk
