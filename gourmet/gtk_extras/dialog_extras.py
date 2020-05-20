@@ -627,26 +627,31 @@ class SimpleFaqDialog (ModalDialog):
         self.textview.set_right_margin(18)
         self.textbuf = self.textview.get_buffer()
         self.boldtag = self.textbuf.create_tag()
-        from pango import WEIGHT_BOLD
-        self.boldtag.set_property('weight',WEIGHT_BOLD)
+        self.boldtag.set_property('weight', Pango.Weight.BOLD)
         self.textwin = Gtk.ScrolledWindow()
         self.textwin.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
         self.textwin.add(self.textview)
+
+        self.index_lines = []
+        self.index_dic = {}
+        self.text = ""
+
         self.parse_faq(faq_file)
         if self.index_lines:
-            self.hp = Gtk.HPaned()
+            self.paned = Gtk.Paned()
             self.indexView = Gtk.TreeView()
             self.indexWin = Gtk.ScrolledWindow()
             self.indexWin.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
             self.indexWin.add(self.indexView)
             self.setup_index()
-            self.hp.add1(self.indexWin)
-            self.hp.add2(self.textwin)
-            self.vbox.add(self.hp)
+            self.paned.add1(self.indexWin)
+            self.paned.add2(self.textwin)
+            self.vbox.add(self.paned)
             self.vbox.show_all()
-            self.hp.set_position(325)
+            self.paned.set_position(325)
+            self.paned.set_vexpand(True)
         else:
-            self.vbox.add(textwin)
+            self.vbox.add(self.textwin)
             self.vbox.show_all()
         if jump_to: self.jump_to_header(jump_to)
 
@@ -665,35 +670,34 @@ class SimpleFaqDialog (ModalDialog):
                 self.indexView.expand_row(mod.get_path(itr),True)
                 return
 
-    def parse_faq (self, infile):
+    def parse_faq(self, filename: str) -> None:
         """Parse file infile as our FAQ to display.
 
         infile can be a filename or a file-like object.
         We parse index lines according to self.INDEX_MATCHER
         """
-        CLOSE=False
-        if type(infile) in [str,str]:
-            infile=open(infile)
-            CLOSE=True
+
+        # Clear data
         self.index_lines = []
-        self.index_dic={}
+        self.index_dic = {}
         self.text = ""
-        for l in infile.readlines():
-            if self.INDEX_MATCHER.match(l):
-                self.index_lines.append(l.strip())
-                curiter = self.textbuf.get_iter_at_mark(self.textbuf.get_insert())
-                self.index_dic[l.strip()]=self.textbuf.create_mark(None,curiter,left_gravity=True)
-                self.textbuf.insert_with_tags(
-                    curiter,
-                    l.strip()+" ",
-                    self.boldtag)
-            # we unwrap lines (paragraphs in our source are
-            # separated by blank lines
-            elif l.strip():
-                self.textbuf.insert_at_cursor(l.strip()+" ")
-            else:
-                self.textbuf.insert_at_cursor("\n\n")
-        if CLOSE: infile.close()
+
+        with open(filename, 'r') as fin:
+            for l in fin.readlines():
+                line = l.strip()
+                if self.INDEX_MATCHER.match(line):  # it is a heading
+                    self.index_lines.append(line)
+                    curiter = self.textbuf.get_iter_at_mark(self.textbuf.get_insert())
+                    self.index_dic[line] = self.textbuf.create_mark(None,
+                                                                    curiter,
+                                                                    left_gravity=True)
+                    self.textbuf.insert_with_tags(curiter,
+                                                  line + " ",
+                                                  self.boldtag)
+                elif line:  # it is body content
+                    self.textbuf.insert_at_cursor(line + " ")
+                else:  # an empty line is a paragraph break
+                    self.textbuf.insert_at_cursor("\n\n")
 
     def setup_index (self):
         """Set up a clickable index view"""
@@ -730,14 +734,16 @@ class SimpleFaqDialog (ModalDialog):
     def index_selected_cb (self,*args):
         mod,itr = self.indexView.get_selection().get_selected()
         val=self.indexView.get_model().get_value(itr,0)
-        #self.jump_to_text(val)
-        self.textview.scroll_to_mark(self.index_dic[val],False,use_align=True,yalign=0.0)
+        self.textview.scroll_to_mark(mark=self.index_dic[val],
+                                     within_margin=0.1,
+                                     use_align=True,
+                                     xalign=0.5,
+                                     yalign=0.0)
 
     def jump_to_text (self, txt, itr=None):
         if not itr:
             itr = self.textbuf.get_iter_at_offset(0)
         match_start,match_end=itr.forward_search(txt,Gtk.TextSearchFlags.VISIBLE_ONLY)
-        #print 'match_start = ',match_start
         self.textview.scroll_to_iter(match_start,False,use_align=True,yalign=0.1)
 
 class RatingsConversionDialog (ModalDialog):
