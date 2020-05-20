@@ -92,15 +92,17 @@ def setup_sample_recs ():
 # FIXME: We're instantiating this class for side effects. Rethink that.
 
 class TestSetterUpper (unittest.TestCase):
-     def setUp (self):
-         setup_sample_recs()
+    def setUp (self):
+        setup_sample_recs()
 
-     def testSetup (self):
-         from gourmet.GourmetRecipeManager import get_application, GourmetApplication
-         #GourmetApplication.__single = None
-         app = get_application(); app.window.show()
-         from gi.repository import Gtk
-         Gtk.main()
+    # FIXME: What is this meant to test? It just opens the GUI and hangs.
+    @unittest.skip("GUI hangs tests")
+    def testSetup (self):
+        from gourmet.GourmetRecipeManager import get_application, GourmetApplication
+        #GourmetApplication.__single = None
+        app = get_application(); app.window.show()
+        from gi.repository import Gtk
+        Gtk.main()
 
 class TestExports (unittest.TestCase):
     def setUp (self):
