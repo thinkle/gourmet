@@ -545,10 +545,12 @@ class RecTrash (RecIndex):
         top_label.set_markup('<span weight="bold" size="large">'\
                 +_('Trash')+'</span>\n<i>'\
                 +_('Browse, permanently delete or undelete deleted recipes')+'</i>')
-        box.pack_start(top_label,expand=False,fill=False);top_label.show()
+        box.pack_start(top_label, expand=False, fill=False, padding=0)
+        top_label.show()
         self.recipe_index_interface = self.ui.get_object('recipeIndexBox')
         self.recipe_index_interface.unparent()
-        box.pack_start(self.recipe_index_interface,fill=True,expand=True)
+        box.pack_start(self.recipe_index_interface, fill=True,
+                       expand=True, padding=0)
         self.recipe_index_interface.show()
         self.rg.conf.append(WidgetSaver.WindowSaver(self.window,
                                                     self.prefs.get('trash_window',
