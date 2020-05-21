@@ -1,5 +1,5 @@
 import tempfile, unittest
-import db
+from gourmet.backends import db
 
 class DBTest (unittest.TestCase):
     def setUp (self):

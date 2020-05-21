@@ -8,7 +8,7 @@ import gourmet.GourmetRecipeManager
 import gourmet.backends.db
 gourmet.backends.db.RecData.__single = None
 gourmet.GourmetRecipeManager.GourmetApplication.__single = None
-import exportManager
+from gourmet.exporters import exportManager
 
 class SampleRecipeSetterUpper:
 
@@ -95,12 +95,13 @@ class TestSetterUpper (unittest.TestCase):
     def setUp (self):
         setup_sample_recs()
 
-     def testSetup (self):
-         from gourmet.GourmetRecipeManager import get_application, GourmetApplication
-         #GourmetApplication.__single = None
-         app = get_application(); app.window.show()
-         import gtk
-         gtk.main()
+    def testSetup(self):
+        from gourmet.GourmetRecipeManager import get_application, GourmetApplication
+        # GourmetApplication.__single = None
+        app = get_application()
+        app.window.show()
+        import gtk
+        gtk.main()
 
 class TestExports (unittest.TestCase):
     def setUp (self):
