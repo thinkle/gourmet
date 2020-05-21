@@ -1059,7 +1059,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     def rectree_popup (self, tv, event, *args):
         menu = self.ui_manager.get_widget("/RecipeIndexMenuBar/Actions/").get_submenu()
-        menu.popup(None,None,None,event.button,event.time)
+        menu.popup_at_pointer(None)
         return True
 
     def setup_actions (self):
