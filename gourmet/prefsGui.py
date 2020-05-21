@@ -117,7 +117,7 @@ class PreferencesGui (plugin_loader.Pluggable):
         """Update GUI to reflect value 'value' of preference 'pref'."""
         if pref in self.pref_dic:
             action=self.pref_dic[pref]
-            if type(action)== dict :
+            if isinstance(action, dict):
                 # we fail if action is no
                 widg=action[value]
                 act,act_args=('set_active',True)
@@ -125,7 +125,7 @@ class PreferencesGui (plugin_loader.Pluggable):
                 act,act_args=('set_active',value)
                 widg=action[1]
             # in the future, we can handle Entries, etc...
-            if type(widg) in [str,str]:
+            if isinstance(widg, str):
                 widg=self.ui.get_object(widg)
             getattr(widg,act)(act_args)
             self.update_sensitivity_for_pref(pref,value)
@@ -212,8 +212,10 @@ class PreferencesGui (plugin_loader.Pluggable):
 
     def add_widget (self, target_widget, child_widget):
         """Add child_widget to target_widget"""
-        if type(target_widget) in [str,str]: target_widget=self.ui.get_object(target_widget)
-        if type(child_widget) in [str,str]: child_widget=self.ui.get_object(child_widget)
+        if isinstance(target_widget, str):
+            target_widget = self.ui.get_object(target_widget)
+        if isinstance(child_widget, str):
+            child_widget = self.ui.get_object(child_widget)
         target_widget.add(child_widget)
         target_widget.show_all()
 

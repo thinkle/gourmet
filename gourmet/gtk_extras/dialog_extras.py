@@ -117,12 +117,12 @@ class ModalDialog (Gtk.Dialog):
             self.vbox.add(self.expander)
 
     def _add_expander_item (self, item):
-        if type(item)==type(""):
+        if isinstance(item, str):
             l=Gtk.Label(label=item)
             l.set_selectable(True)
             l.set_line_wrap_mode(Pango.WrapMode.WORD)
             self.expander_vbox.pack_start(l,False, False, 0)
-        elif type(item)==[] or type(item)==():
+        elif isinstance(item, (list, tuple)):
             list(map(self._add_expander_item,item))
         else:
             self.expander_vbox.pack_start(item, True, True, 0)
@@ -324,10 +324,12 @@ class OptionDialog (ModalDialog):
         self.menu = Gtk.Menu()
         # set the default value to the first item
         first = options[0]
-        if type(first)==type(""): self.ret=first
-        else: self.ret=first[1]
+        if isinstance(first, str):
+            self.ret = first
+        else:
+            self.ret = first[1]
         for o in options:
-            if type(o)==type(""):
+            if isinstance(o, str):
                 l=o
                 v=o
             else:

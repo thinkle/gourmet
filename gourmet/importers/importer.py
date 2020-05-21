@@ -191,7 +191,7 @@ class Importer (SuspendableThread):
                 self._move_to_instructions(self.rec,'servings')
         # Check preptime and cooktime
         for t in ['preptime','cooktime']:
-            if t in self.rec and type(self.rec[t])!=int:
+            if t in self.rec and not isinstance(self.rec[t], int):
                 secs = self.conv.timestring_to_seconds(self.rec[t])
                 if secs != None:
                     self.rec[t]=secs
@@ -206,7 +206,7 @@ class Importer (SuspendableThread):
         # can ask the user how to convert them when we're all done
         # with importing.
         remembered_rating = None
-        if 'rating' in self.rec and type(self.rec['rating']) not in [int,float]:
+        if 'rating' in self.rec and not isinstance(self.rec['rating'], (int, float)):
             if string_to_rating(self.rec['rating']):
                 self.rec['rating']=string_to_rating(self.rec['rating'])
             else:
@@ -428,7 +428,7 @@ def parse_range (number_string):
     We will also parse regular numbers, in which case the tuple will
     only have one item.
     """
-    if type(number_string) in [int,float]:
+    if isinstance(number_string, (int, float)):
         return (float(number_string),None)
     nums=convert.RANGE_MATCHER.split(number_string.strip())
     if len(nums) > 2:
@@ -454,7 +454,7 @@ class Tester:
             # only compile our regexp when necessary
             self.matcher = re.compile(self.regexp)
         CLOSE=False
-        if type(filename) in [str,str]:
+        if isinstance(filename, str):
             self.ofi = open(filename,'r')
             CLOSE=True
         else: self.ofi=filename
@@ -497,7 +497,7 @@ class RatingConverter:
         self.got_conversions = False
 
     def add (self, id, rating):
-        if type(rating)==int:
+        if isinstance(rating, int):
             raise Exception("Why do you need me? id: %(id)s rating: %(rating)s" % locals())
         self.to_convert[id]=rating
 

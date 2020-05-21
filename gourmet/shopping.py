@@ -32,7 +32,7 @@ class Shopper:
             try:
                 a = float(a)
             except:
-                if type(a) != tuple:
+                if not isinstance(a, tuple):
                     debug("Warning, can't make sense of amount %s; reading as None"%a,0)
                     a = None
             if k in dic:
@@ -65,12 +65,12 @@ class Shopper:
                 ind = 0
                 while not flag and len(itms) > ind:
                     amt,unit = itms[ind]
-                    if type(amt) == tuple or type(a)== tuple :
+                    if isinstance(amt, tuple) or isinstance(a, tuple):
                         # we're adding ranges -- we'll force both
                         # our amounts to look like ranges to simplify the addition
-                        if type(amt) != tuple :
+                        if not isinstance(amt, tuple):
                             amt=(amt,amt)
-                        if type(a) != tuple :
+                        if not isinstance(a, tuple):
                             a=(a,a)
                         # print 'amt:',amt,' unit:',unit,'a:',a,'u:',u
                         add_low = self.cnv.add_reasonably(amt[0],unit,a[0],u,ing)
@@ -306,7 +306,7 @@ class ShoppingList:
                 # handle boolean includes value which applies to ALL ingredients
                 if not include_dic:
                     continue
-                if type(include_dic) == dict :
+                if isinstance(include_dic, dict):
                     # Then we have to look at the dictionary itself...
                     if ((i.ingkey not in include_dic)
                         or

@@ -293,7 +293,7 @@ class QuickTree (Gtk.ScrolledWindow):
         self.titles=titles
         if self.rows:
             first = self.rows[0]
-            if type(first) != type(()) and type(first) != type([]):
+            if not isinstance(first, (tuple, list)):
                 debug('Mappifying!',0)
                 self.rows=[[x] for x in self.rows]
             self.setup_columns()

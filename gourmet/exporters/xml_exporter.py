@@ -45,7 +45,7 @@ class XmlExporter (exporter_mult):
 
     def append_text (self, element, text):
         try:
-            assert(type(text) in (str,))
+            assert isinstance(text, str)
         except:
             print('Text is not text')
             print('append_text received',element,text)

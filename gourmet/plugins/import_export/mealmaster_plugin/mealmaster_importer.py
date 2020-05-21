@@ -474,7 +474,7 @@ def fields_match (strings, fields, matcher):
 def field_match (strings, tup, matcher):
     testtimer = TimeAction('mealmaster_importer.field_match',10)
     debug("start field_match",10)
-    if type(matcher)==type(""):
+    if isinstance(matcher, str):
         matcher=re.compile(matcher)
     for f in [s[tup[0]:tup[1]] for s in strings]:
         #f=s[tup[0]:tup[1]]

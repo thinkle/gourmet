@@ -40,7 +40,7 @@ class NutritionData:
     def set_key_from_ndbno (self, key, ndbno):
         """Create an automatic equivalence between ingredient key 'key' and ndbno
         ndbno is our nutritional database number."""
-        if type(ndbno)!=int:
+        if not isinstance(ndbno, int):
             ndbno = int(ndbno)
         prev_association = self.db.fetch_one(self.db.nutritionaliases_table,ingkey=key)
         if prev_association:

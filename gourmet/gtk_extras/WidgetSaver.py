@@ -93,7 +93,8 @@ class WidgetPrefs:
         """Toggle the visibility of widget 'w'"""
         if val: method = 'hide'
         else: method = 'show'
-        if type(w)==type(""): w = [w]
+        if isinstance(w, str):
+            w = [w]
         for wn in w:
             widg = self.glade.get_widget(wn)
             if widg:
@@ -114,7 +115,8 @@ class WidgetPrefs:
         return self.prefs.get(self.keyname(w),False)
 
     def keyname (self, w):
-        if type(w)==type([]): w = w[0]
+        if isinstance(w, list):
+            w = w[0]
         return "%s%s"%(self.basename,w)
 
     def set_widget_pref (self,w,val):

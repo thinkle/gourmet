@@ -89,11 +89,7 @@ class exporter (SuspendableThread, Pluggable):
         for a in self.attr_order:
             txt=self._grab_attr_(self.r,a)
             debug('_write_attrs_ writing %s=%s'%(a,txt),1)
-            if txt and (
-                (type(txt) not in [str,str])
-                or
-                txt.strip()
-                ):
+            if txt and ((not isinstance(txt, str)) or txt.strip()):
                 if (a=='preptime' or a=='cooktime') and a.find("0 ")==0: pass
                 else:
                     if self.convert_attnames:
@@ -199,21 +195,21 @@ class exporter (SuspendableThread, Pluggable):
                 # this 'if' ought to be unnecessary, but is kept around
                 # for db converting purposes -- e.g. so we can properly
                 # export an old DB
-                if ret and type(ret) not in [str,str]:
+                if ret and not isinstance(ret, str):
                     ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
-            elif attr=='rating' and ret and type(ret) not in [str,str]:
+            elif attr=='rating' and ret and not isinstance(ret, str):
                 if ret/2==ret/2.0:
                     ret = "%s/5 %s"%(ret/2,_('stars'))
                 else:
                     ret = "%s/5 %s"%(ret/2.0,_('stars'))
-            elif attr=='servings' and type(ret) not in [str,str]:
+            elif attr=='servings' and not isinstance(ret, str):
                 ret = convert.float_to_frac(ret,fractions=self.fractions)
             elif attr=='yields':
                 ret = convert.float_to_frac(ret,fractions=self.fractions)
                 yield_unit = self._grab_attr_(obj,'yield_unit')
                 if yield_unit:
                     ret = '%s %s'%(ret,yield_unit) # FIXME: i18n? (fix also below in exporter_mult)
-            if type(ret) in [str,str] and attr not in ['thumb','image']:
+            if isinstance(ret, str) and attr not in ['thumb','image']:
                 try:
                     ret = ret.encode(self.DEFAULT_ENCODING)
                 except:
@@ -423,7 +419,7 @@ class exporter_mult (exporter):
         """
         if attr=='servings' or attr=='yields' and self.mult:
             ret = getattr(obj,attr)
-            if type(ret) in [int,float]:
+            if isinstance(ret, (int, float)):
                 fl_ret = float(ret)
             else:
                 if ret is not None:
@@ -516,14 +512,14 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                 # this 'if' ought to be unnecessary, but is kept around
                 # for db converting purposes -- e.g. so we can properly
                 # export an old DB
-                if ret and type(ret) not in [str,str]:
+                if ret and not isinstance(ret, str):
                     ret = convert.seconds_to_timestring(ret,fractions=self.fractions)
-            elif attr=='rating' and ret and type(ret) not in [str,str]:
+            elif attr=='rating' and ret and not isinstance(ret, str):
                 if ret/2==ret/2.0:
                     ret = "%s/5 %s"%(ret/2,_('stars'))
                 else:
                     ret = "%s/5 %s"%(ret/2.0,_('stars'))
-            if type(ret) in (str,) and attr not in ['thumb','image']:
+            if isinstance(ret, str) and attr not in ['thumb','image']:
                 try:
                     ret = ret.encode(self.DEFAULT_ENCODING)
                 except:
@@ -553,8 +549,8 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                     self.outdir=self.unique_name(self.outdir)
                     os.makedirs(self.outdir)
             else: os.makedirs(self.outdir)
-        create_one_file = self.one_file and type(self.out) in [str, str] and self.create_file
-        create_multi_file = not self.one_file and type(self.out) in [str, str]
+        create_one_file = self.one_file and isinstance(self.out, str) and self.create_file
+        create_multi_file = not self.one_file and isinstance(self.out, str)
         if create_one_file:
             self.ofi=open(self.out,'wb')
         else: self.ofi = self.out

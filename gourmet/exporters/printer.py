@@ -43,10 +43,10 @@ class PrintManager (plugin_loader.Pluggable):
                                          )
 
     def register_plugin (self, plugin):
-        assert(type(plugin.simpleWriterPriority)==int)
+        assert isinstance(plugin.simpleWriterPriority, int)
         assert(plugin.SimpleWriter)
         self.sws.append((plugin.simpleWriterPriority,plugin.SimpleWriter))
-        assert(type(plugin.recWriterPriority)==int)
+        assert isinstance(plugin.recWriterPriority, int)
         assert(plugin.RecWriter)
         self.rrs.append((plugin.recWriterPriority,plugin.RecWriter))
 

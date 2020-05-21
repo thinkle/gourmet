@@ -240,9 +240,9 @@ class PdfWriter:
                         top_margin=inch,
                         bottom_margin=inch,
                         base_font_size=10):
-        if type(mode)!=tuple:
+        if not isinstance(mode, tuple):
             raise Exception("What is this mode! %s" % str(mode))
-        if type(pagesize) in (str,):
+        if isinstance(pagesize, str):
             self.pagesize = getattr(pagesizes,pagemode)(getattr(pagesizes,pagesize))
         else:
             self.pagesize = getattr(pagesizes,pagemode)(pagesize)
@@ -532,9 +532,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
     def make_rating (self, label, val):
         """Make a pretty representation of our rating.
         """
-        try:
-            assert(type(val)==int)
-        except:
+        if not isinstance(val, int):
             raise TypeError("Rating %s is not an integer"%val)
         i = FiveStars(10, filled=(val/2.0)) # 12 point
         lwidth = len(label+': ')*4 # A very cheap approximation of width

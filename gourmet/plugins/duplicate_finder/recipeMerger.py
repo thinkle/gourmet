@@ -189,7 +189,7 @@ class RecipeMergerDialog:
     def do_merge (self, merge_dic, recs, to_keep=None):
         if not to_keep:
             to_keep = recs[0]
-        if type(to_keep)==int:
+        if isinstance(to_keep, int):
             to_keep = self.rd.get_rec(to_keep)
         self.rd.modify_rec(to_keep,merge_dic)
         for r in recs:

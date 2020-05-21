@@ -177,7 +177,7 @@ class RecipeParser:
                     m = regexp.search(p)
                     if m:
                         if postproc:
-                            if type(postproc)==int:
+                            if isinstance(postproc, int):
                                 proced = parse_group(
                                     m, p, postproc, attr
                                     )
