@@ -28,7 +28,7 @@ class CheckEncoding:
             self.encodings.extend(['utf_16','utf_16_le','utf_16_be'])
         if encodings: self.encodings = encodings
         if type(file) in [str,str]:
-            file = open(file,'r')
+            file = open(file, 'rb')
         self.txt = file.read()
         file.close()
 

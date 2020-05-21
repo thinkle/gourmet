@@ -69,19 +69,17 @@ class ExportManager (plugin_loader.Pluggable):
                 export_file_mode = 'w'
         else:
             export_file_mode = 'w'
-        outfi = file(filename,
-                     export_file_mode)
-        # this should write to our file...
-        exporter_plugin.do_single_export({
-            'rd':self.app.rd,
-            'rec':rec,
-            'out':outfi,
-            'conv':self.app.conv,
-            'change_units':self.app.prefs.get('readableUnits',True),
-            'mult':mult,
-            'extra_prefs':extra_prefs,
+        with open(filename, export_file_mode) as outfi:
+            # this should write to our file...
+            exporter_plugin.do_single_export({
+                'rd':self.app.rd,
+                'rec':rec,
+                'out':outfi,
+                'conv':self.app.conv,
+                'change_units':self.app.prefs.get('readableUnits',True),
+                'mult':mult,
+                'extra_prefs':extra_prefs,
             })
-        outfi.close()
         return filename
 
     def offer_multiple_export (self, recs, prefs, parent=None, prog=None,

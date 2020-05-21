@@ -1204,9 +1204,9 @@ class IngredientEditorModule (RecEditorModule):
         return itr
 
     def importIngredients (self, file):
-        ifi=file(file,'r')
-        for line in ifi:
-            self.ingtree_ui.add_ingredient_from_line(line)
+        with open(file, 'r') as ifi:
+            for line in ifi:
+                self.ingtree_ui.add_ingredient_from_line(line)
 
     def import_ingredients_cb (self, *args):
         debug('importIngredientsCB',5) #FIXME
@@ -1477,9 +1477,8 @@ class ImageBox: # used in DescriptionEditor for recipe image.
                 import tempfile
                 try:
                     dumpto = os.path.join(tempfile.tempdir,'bad_image.jpg')
-                    ofi = file(dumpto,'w')
-                    ofi.write(rec.image)
-                    ofi.close()
+                    with open(dumpto, 'wb') as ofi:
+                        ofi.write(rec.image)
                 except:
                     print('Nevermind -- I had a problem dumping the file.')
                     traceback.print_exc()

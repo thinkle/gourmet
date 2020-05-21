@@ -401,8 +401,8 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                   **kwargs):
         self.all_recipes = all_recipes
         PdfWriter.__init__(self)
-        if type(out) in (str,):
-            self.out = file(out,'wb')
+        if isinstance(out, str):
+            self.out = open(out, 'wb')
         else:
             self.out = out
         if not doc:
@@ -657,8 +657,8 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
     def __init__ (self, rd, recipes, out, conv=None, pdf_args=DEFAULT_PDF_ARGS,
                   **kwargs):
         PdfWriter.__init__(self)
-        if type(out) in (str,):
-            out = file(out,'wb')
+        if isinstance(out, str):
+            out = open(out, 'wb')
         self.setup_document(out,**pdf_args)
         self.output_file = out
         kwargs['doc'] = self.doc
@@ -1046,7 +1046,7 @@ if __name__ == '__main__':
     #opts = get_pdf_prefs(); print opts
     test_3_x_5()
 
-    #star_file = file(os.path.join(tempdir,'star.pdf'),'wb')
+    #star_file = open(os.path.join(tempdir,'star.pdf'),'wb')
     #sw = PdfWriter()
     #sw.setup_document(star_file,mode='two_column')
     #for n in range(6,72,2):
@@ -1068,7 +1068,7 @@ if __name__ == '__main__':
     #import gourmet.recipeManager as rm
     #rd = rm.RecipeManager(file=os.path.join(base,'src','tests','reference_setup','recipes.db'))
     #rd = rm.RecipeManager()
-    #ofi = file(os.path.join(tempdir,'test_rec.pdf'),'w')
+    #ofi = open(os.path.join(tempdir,'test_rec.pdf'),'w')
     #rr = []
     #for n,rec in enumerate(rd.fetch_all(rd.recipe_table,deleted=False)):
     #    if rec.image:
@@ -1080,47 +1080,45 @@ if __name__ == '__main__':
 
     def test_formatting ():
         sw = PdfWriter()
-        f = file(os.path.join(tempdir,'format.pdf'),'wb')
-        sw.setup_document(f)
-        sw.write_header('This is a header & isn\'t it nifty')
-        sw.write_paragraph('<i>This</i> is a <b>paragraph</b> with <u>formatting</u>!')
-        sw.write_header('<u>This is a formatted header &amp; it is also nifty &amp; cool</u>')
-        sw.write_paragraph('<i>This is another formatted paragraph</i>')
-        sw.write_paragraph('<span fg="\#f00">This is color</span>')
-        sw.close()
-        f.close()
+        with open(os.path.join(tempdir,'format.pdf'),'wb') as f:
+            sw.setup_document(f)
+            sw.write_header('This is a header & isn\'t it nifty')
+            sw.write_paragraph('<i>This</i> is a <b>paragraph</b> with <u>formatting</u>!')
+            sw.write_header('<u>This is a formatted header &amp; it is also nifty &amp; cool</u>')
+            sw.write_paragraph('<i>This is another formatted paragraph</i>')
+            sw.write_paragraph('<span fg="\#f00">This is color</span>')
+            sw.close()
         return os.path.join(tempdir,'format.pdf')
 
     def test_3_x_5 ():
         print('Test 3x5 layout')
         sw = PdfWriter()
-        f = file(os.path.join(tempdir,'foo.pdf'),'wb')
-        sw.setup_document(f,
-                          mode=('index_cards',(5*inch,3.5*inch)),
-                          #pagesize=(5*inch,3.5*inch),
-                          pagesize='letter',
-                          pagemode='landscape',
-                          left_margin=0.25*inch,right_margin=0.25*inch,
-                          top_margin=0.25*inch,bottom_margin=0.25*inch,
-                          base_font_size=8,
-                          )
-        #sw.write_header('Heading')
-        #sw.write_subheader('This is a subheading')
-        for n in range(5):
-            sw.write_header(
-                "This is a header"
-                )
-            #sw.write_subheader(
-            #    u"This is a subheader"
-            #    )
-            sw.write_paragraph(
-                "%s: These are some sentences.  Hopefully some of these will be quite long sentences.  Some of this text includes unicode -- 45\u00b0F, for example... \u00bfHow's that?"%n*10
-                )
-        #sw.write_paragraph('This is a <i>paragraph</i> with <b>some</b> <u>markup</u>.')
-        #sw.write_paragraph(u"This is some text with unicode - 45\u00b0, \u00bfHow's that?".encode('iso-8859-1'))
-        #sw.write_paragraph(u"This is some text with a unicode object - 45\u00b0, \u00bfHow's that?")
-        sw.close()
-        f.close()
+        with open(os.path.join(tempdir,'foo.pdf'), 'wb') as f:
+            sw.setup_document(f,
+                              mode=('index_cards',(5*inch,3.5*inch)),
+                              #pagesize=(5*inch,3.5*inch),
+                              pagesize='letter',
+                              pagemode='landscape',
+                              left_margin=0.25*inch,right_margin=0.25*inch,
+                              top_margin=0.25*inch,bottom_margin=0.25*inch,
+                              base_font_size=8,
+                              )
+            #sw.write_header('Heading')
+            #sw.write_subheader('This is a subheading')
+            for n in range(5):
+                sw.write_header(
+                    "This is a header"
+                    )
+                #sw.write_subheader(
+                #    u"This is a subheader"
+                #    )
+                sw.write_paragraph(
+                    "%s: These are some sentences.  Hopefully some of these will be quite long sentences.  Some of this text includes unicode -- 45\u00b0F, for example... \u00bfHow's that?"%n*10
+                    )
+            #sw.write_paragraph('This is a <i>paragraph</i> with <b>some</b> <u>markup</u>.')
+            #sw.write_paragraph(u"This is some text with unicode - 45\u00b0, \u00bfHow's that?".encode('iso-8859-1'))
+            #sw.write_paragraph(u"This is some text with a unicode object - 45\u00b0, \u00bfHow's that?")
+            sw.close()
         return os.path.join(tempdir,'foo.pdf')
 
     def test_grm_export (pdf_args=DEFAULT_PDF_ARGS):

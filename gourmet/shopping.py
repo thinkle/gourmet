@@ -373,19 +373,18 @@ class ShoppingList:
         debug("doSave (self, filename):",5)
         # import exporters.lprprinter
         # self._printList(exporters.lprprinter.SimpleWriter,file=filename,show_dialog=False)
-        ofi = file(filename,'w')
-        ofi.write(_("Shopping list for %s")%time.strftime("%x") + '\n\n')
-        ofi.write(_("For the following recipes:"+'\n'))
-        ofi.write('--------------------------------\n')
-        for r,mult in list(self.recs.values()):
-            itm = "%s"%r.title
-            if mult != 1:
-                itm += _(" x%s")%mult
-            ofi.write(itm+'\n')
-        write_itm = lambda a,i: ofi.write("%s %s"%(a,i) + '\n')
-        write_subh = lambda h: ofi.write('\n_%s_\n'%h)
-        self.sh.list_writer(write_subh,write_itm)
-        ofi.close()
+        with open(filename,'w') as ofi:
+            ofi.write(_("Shopping list for %s") % time.strftime("%x") + '\n\n')
+            ofi.write(_("For the following recipes:"+'\n'))
+            ofi.write('--------------------------------\n')
+            for r,mult in list(self.recs.values()):
+                itm = "%s"%r.title
+                if mult != 1:
+                    itm += _(" x%s")%mult
+                ofi.write(itm+'\n')
+            write_itm = lambda a,i: ofi.write("%s %s"%(a,i) + '\n')
+            write_subh = lambda h: ofi.write('\n_%s_\n'%h)
+            self.sh.list_writer(write_subh,write_itm)
 
     def _printList (self, printer, *args, **kwargs):
         w = printer(*args,**kwargs)

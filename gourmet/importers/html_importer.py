@@ -350,10 +350,8 @@ def get_image_from_tag (iurl, page_url):
     if not iurl: return
     iurl = urllib.basejoin(page_url,iurl)
     tmpfi,info=urllib.request.urlretrieve(iurl)
-    ifi=file(tmpfi,'rb')
-    retval=ifi.read()
-    ifi.close()
-    return retval
+    with open(tmpfi, 'rb') as ifi:
+        return ifi.read()
 
 def scrape_url (url, progress=None):
     if type(url) in [str,str]: domain=url.split('/')[2]
