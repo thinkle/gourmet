@@ -837,6 +837,8 @@ class RecData (Pluggable, BaseException):
                 subtable = None
                 col = getattr(self.recipe_table.c,crit['column'])
             # Make sure we're using unicode!
+            # FIXME: This used to convert bytes to unicode.
+            #  Is it still needed?
             if (type(crit.get('search','')) != str
                 and type(crit.get('search','')) in (str,)):
                 crit['search'] = str(crit['search'])
@@ -2054,6 +2056,8 @@ class dbDic:
         dics = []
         for k in d:
             store_v = d[k]
+            # FIXME: This used to convert bytes to unicode.
+            #  Is it still needed?
             if isinstance(store_v, str):
                 store_v = str(store_v)
             if isinstance(k, str):
