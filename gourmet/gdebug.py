@@ -24,19 +24,34 @@ def debug (message, level=10):
     if timestamp: ts= '%s:'%time.time()
     else: ts = ''
     if level <= debug_level:
-        stack = traceback.extract_stack()
-        if len(stack) >= 2:
-            caller=stack[-2]
-            finame=caller[0]
-            line = caller[1]
-        else:
-            finame = " ".join(stack)
-            line = ""
+        finame, line = extract_stack_info()
         if args.debug_file:
             if debug_file.search(finame):
                 print "DEBUG: ",ts,"%s: %s"%(finame,line),message
         else:
             print "DEBUG: ",ts,"%s: %s"%(finame,line),message
+
+
+def extract_stack_info():
+    """Get filename and linenumber of the calling function."""
+    stack = traceback.extract_stack()
+    if len(stack) >= 3:
+        caller=stack[-3]
+        finame=caller[0]
+        line = caller[1]
+    else:
+        finame = " ".join(stack)
+        line = ""
+    return finame, line
+
+
+def warn(message):
+    """Print warning to stdout."""
+    if timestamp: ts= '%s:'%time.time()
+    else: ts = ''
+    finame, line = extract_stack_info()
+    print "WARNING", ts, "%s:%s" % (finame,line), message
+
 
 timers = {}
 
