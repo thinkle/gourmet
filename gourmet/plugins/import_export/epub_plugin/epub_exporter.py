@@ -54,6 +54,8 @@ class EpubWriter():
 
         # This adds the field also known as keywords in some programs.
         self.ebook.add_metadata('DC', 'subject', "cooking")
+        self.prev_category = None
+        self.current_section = None
 
     def addRecipeCssFromFile(self, filename):
         """ Adds the CSS file from filename to the book. The style will be added
@@ -94,7 +96,13 @@ class EpubWriter():
         """
         return "recipe_%i%s" % (id,ext)
 
-    def addRecipeText(self, uniqueId, title, text):
+    def flush_toc_section(self):
+        if self.current_section:
+            self.toc.append( (epub.Section(self.prev_category),
+                              self.current_section) )
+            self.current_section = None
+
+    def addRecipeText(self, uniqueId, title, text, first_cat=None):
         """ Adds the recipe text as a chapter.
         """
         uniqueName = self.getFileForRecipeID(uniqueId, ext="")
@@ -108,13 +116,21 @@ class EpubWriter():
         # add chapter
         self.ebook.add_item(c1)
         self.spine.append(c1)
+        l = epub.Link(fileName, title, uniqueName)
 
-        # define Table Of Contents
-        self.toc.append( epub.Link(fileName, title, uniqueName) )
+        # Define Table Of Contents.  Collect entries per section and
+        # flush on section change.
+        if self.prev_category is None or (first_cat != self.prev_category and first_cat is not None):
+            self.flush_toc_section()
+            self.prev_category = first_cat
+            self.current_section = [l]
+        else:
+            self.current_section.append(l)
 
     def finish(self):
         """ Finish the book and writes it to the disk.
         """
+        self.flush_toc_section()
         self.ebook.toc = self.toc
 
         # add default NCX and Nav file
@@ -264,7 +280,14 @@ class epub_exporter (exporter_mult):
         self.preparedDocument.append(RECIPE_FOOT)
 
         self._grab_attr_(self.r,'id')
-        self.doc.addRecipeText(self._grab_attr_(self.r,'id'), self.get_title(), "".join(self.preparedDocument) )
+        cats = self.rd.get_cats(self.r)
+        first_cat = None
+        if cats:
+            first_cat = cats[0]
+        self.doc.addRecipeText(self._grab_attr_(self.r,'id'),
+                               self.get_title(),
+                               "".join(self.preparedDocument),
+                               first_cat=first_cat)
 
 class website_exporter (ExporterMultirec):
     def __init__ (self, rd, recipe_table, out, conv=None, ext='epub', copy_css=True,
@@ -285,12 +308,24 @@ class website_exporter (ExporterMultirec):
 
         if conv:
             self.exportargs['conv']=conv
+
+        # Sort by first category first so we can build chapters in the
+        # book, secondary by name.
+        recipe_table.sort(key = lambda x: (self._get_first_category(x, rd), x.title))
         ExporterMultirec.__init__(self, rd, recipe_table, out,
                                   one_file=True,
                                   create_file=False,
                                   ext=self.ext,
                                   exporter=epub_exporter,
                                   exporter_kwargs=self.exportargs)
+
+    @staticmethod
+    def _get_first_category(r, rd):
+        cats = rd.get_cats(r)
+        if cats:
+            return cats[0]
+        else:
+            return None
 
     def recipe_hook (self, rec, filename, exporter):
         """Add index entry"""
