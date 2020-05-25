@@ -2078,41 +2078,10 @@ class dbDic:
             ret.append((key,val))
         return ret
 
-# To change
+# TODO:
 # fetch_one -> use whatever syntax sqlalchemy uses throughout
 # fetch_all ->
-#recipe_table -> recipe_table
-# To eliminate
-
-def test_db ():
-    import tempfile
-    db = RecData(file=tempfile.mktemp())
-    print 'BEGIN TESTING'
-    from db_tests import test_db
-    test_db(db)
-    print 'END TESTING'
-
-def add_sample_recs ():
-    for rec,ings in [[dict(title='Spaghetti',cuisine='Italian',category='Easy, Entree'),
-                      [dict(amount=1,unit='jar',item='Marinara Sauce',ingkey='sauce, marinara'),
-                       dict(amount=0.25,unit='c.',item='Parmesan Cheese',ingkey='cheese, parmesan'),
-                       dict(amount=.5,unit='lb.',item='Spaghetti',ingkey='spaghetti, dried')]],
-                     [dict(title='Spaghetti w/ Meatballs',cuisine='Italian',category='Easy, Entree'),
-                      [dict(amount=1,unit='jar',item='Marinara Sauce',ingkey='sauce, marinara'),
-                       dict(amount=0.25,unit='c.',item='Parmesan Cheese',ingkey='cheese, parmesan'),
-                       dict(amount=.5,unit='lb.',item='Spaghetti',ingkey='spaghetti, dried'),
-                       dict(amount=0.5,unit='lb.',item='Meatballs',ingkey='Meatballs, prepared'),
-                       ]],
-                     [dict(title='Toasted cheese',cuisine='American',category='Sandwich, Easy',
-                           servings=2),
-                      [dict(amount=2,unit='slices',item='bread'),
-                       dict(amount=2,unit='slices',item='cheddar cheese'),
-                       dict(amount=2,unit='slices',item='tomato')]]
-                     ]:
-        r = db.add_rec(rec)
-        for i in ings:
-            i['recipe_id']=r.id
-            db.add_ing(i)
+# recipe_table -> recipe_table
 
 def get_database (*args,**kwargs):
     try:
