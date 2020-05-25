@@ -262,8 +262,8 @@ def test_parser ():
     return parser
 
 def test_webpage ():
-    ifi = file('/tmp/test_recipe.htm','r')
-    test = ifi.read(); ifi.close()
+    with open('/tmp/test_recipe.htm', 'r') as ifi:
+        test = ifi.read()
     from gourmet.plugins.import_export.website_import_plugins.about_dot_com_plugin import AboutDotComPlugin
     import sys
     aboutdotcom_plugin = AboutDotComPlugin()

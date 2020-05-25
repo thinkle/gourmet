@@ -34,7 +34,7 @@ def read_socket_w_progress (socket, progress, message):
 
 def get_url (url, progress):
     """Return data from URL, possibly displaying progress."""
-    if type(url) in [str,str]:
+    if isinstance(url, str):
         socket.setdefaulttimeout(URLOPEN_SOCKET_TIMEOUT)
         sock = urllib.request.urlopen(url)
         socket.setdefaulttimeout(DEFAULT_SOCKET_TIMEOUT)
@@ -142,7 +142,7 @@ class BeautifulSoupScraper:
         If force_match is True, return '' if there is no
         match. Otherwise, default to the unadulterated value.
         """
-        if type(post_processing) == tuple and len(post_processing)==2:
+        if isinstance(post_processing, tuple) and len(post_processing)==2:
             regexp=re.compile(post_processing[0],re.UNICODE)
             m=regexp.search(value)
             if m: return m.groups()[0]
@@ -162,7 +162,7 @@ class BeautifulSoupScraper:
         base = self.soup
         for step in path:
             base=self.follow_path(base,step)
-            if type(base)==list:
+            if isinstance(base, list):
                 # then we'd better be the last step
                 break
         return base
@@ -189,10 +189,14 @@ class BeautifulSoupScraper:
         else:
             get_to = None
             if ind:
-                if type(ind)==list: get_to=ind[-1]
-                elif type(ind)==int: get_to=ind
-                if not get_to or get_to < 0: get_to=None
-                else: get_to += 1
+                if isinstance(ind, list):
+                    get_to = ind[-1]
+                elif isinstance(ind, int):
+                    get_to=ind
+                if not get_to or get_to < 0:
+                    get_to = None
+                else:
+                    get_to += 1
             if get_to:
                 ret = base.fetch(step.get('tag'),
                                  step.get('attributes',{}),
@@ -211,7 +215,7 @@ class BeautifulSoupScraper:
                     if motion in step:
                         ret = [getattr(o,motion)(step[motion]) for o in ret]
                         break
-            if type(ind)==list or type(ind)==tuple:
+            if isinstance(ind, (list, tuple)):
                 return ret[ind[0]:ind[1]]
             else: #ind is an integer
                 if ind < len(ret):
@@ -228,7 +232,7 @@ class BeautifulSoupScraper:
 
     def store_tag (self, name, tag, method, post_processing=None):
         """Store our tag in our dictionary according to our method."""
-        if type(tag)==list:
+        if isinstance(tag, list):
             for t in tag: self.store_tag(name,t,method,post_processing)
             return
         if method==self.TEXT:
@@ -247,10 +251,12 @@ class BeautifulSoupScraper:
         if not val: return # don't store empty values
         if name in self.dic:
             curval = self.dic[name]
-            if type(curval)==list: self.dic[name].append(val)
-            else: self.dic[name]=[self.dic[name],val]
+            if isinstance(curval, list):
+                self.dic[name].append(val)
+            else:
+                self.dic[name] = [self.dic[name],val]
         else:
-            self.dic[name]=val
+            self.dic[name] = val
 
 class GenericScraper (BeautifulSoupScraper):
     """A very simple scraper.
@@ -282,7 +288,8 @@ class GenericScraper (BeautifulSoupScraper):
         dic = BeautifulSoupScraper.scrape(self)
         text = dic.get('title','')+'\n'+dic.get('text','')
         images = dic.get('images',[])
-        if type(images)!=list: images = [images]
+        if not isinstance(images, list):
+            images = [images]
         images = [urllib.basejoin(self.url,i) for i in images]
         return text,images
 
@@ -350,13 +357,12 @@ def get_image_from_tag (iurl, page_url):
     if not iurl: return
     iurl = urllib.basejoin(page_url,iurl)
     tmpfi,info=urllib.request.urlretrieve(iurl)
-    ifi=file(tmpfi,'rb')
-    retval=ifi.read()
-    ifi.close()
-    return retval
+    with open(tmpfi, 'rb') as ifi:
+        return ifi.read()
 
 def scrape_url (url, progress=None):
-    if type(url) in [str,str]: domain=url.split('/')[2]
+    if isinstance(url, str):
+        domain = url.split('/')[2]
     if domain in SUPPORTED_URLS:
         bss = BeautifulSoupScraper(SUPPORTED_URLS[domain])
     else:
@@ -510,16 +516,20 @@ class WebPageImporter (importer.Importer):
             domain = self.url.split('/')[2]
             src=self.d.get('source',None)
             add_str = '(%s)'%domain
-            if type(src)==list: src.append(add_str)
-            elif src: src = [src,add_str]
-            else: src = domain # no parens if we're the only source
+            if isinstance(src, list):
+                src.append(add_str)
+            elif src:
+                src = [src, add_str]
+            else:
+                src = domain # no parens if we're the only source
             self.d['source']=src
         for k,v in list(self.d.items()):
             debug('processing %s:%s'%(k,v),1)
             if self.prog: self.prog(-1,_('Importing recipe'))
             # parsed ingredients...
             if k=='ingredient_parsed':
-                if type(v) != list: v=[v]
+                if not isinstance(v, list):
+                    v = [v]
                 for ingdic in v:
 
                     if self.prog: self.prog(-1,_('Processing ingredients'))
@@ -539,7 +549,7 @@ class WebPageImporter (importer.Importer):
                 continue
 
             # Listy stuff...
-            elif type(v)==list:
+            elif isinstance(v, list):
                 if k in self.JOIN_AS_PARAGRAPHS: v = "\n".join(v)
                 else: v = " ".join(v)
 

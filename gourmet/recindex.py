@@ -692,7 +692,8 @@ class RecipeModel (pageable_store.PageableViewStore):
     def update_recipe (self, recipe):
         """Handed a recipe (or a recipe ID), we update its display if visible."""
         debug('Updating recipe %s'%recipe.title,3)
-        if type(recipe)!=int: recipe=recipe.id  # make recipe == id
+        if not isinstance(recipe, int):
+            recipe = recipe.id  # make recipe == id
         for n,row in enumerate(self):
             debug('Looking at row',3)
             if row[0].id==recipe:

@@ -56,11 +56,11 @@ def fix_colnames (dict, *tables):
 def make_simple_select_arg (criteria,*tables):
     args = []
     for k,v in list(fix_colnames(criteria,*tables).items()):
-        if type(v) in [str,str]:
+        if isinstance(v, str):
             v = str(v)
-        if type(v)==tuple:
+        if isinstance(v, tuple):
             operator,value = v
-            if type(value) in [str,str]:
+            if isinstance(value, str):
                 value = str(value)
             if operator=='in':
                 args.append(k.in_(value))
@@ -792,7 +792,7 @@ class RecData (Pluggable, BaseException):
     def __get_joins (self, searches):
         joins = []
         for s in searches:
-            if type(s)==tuple:
+            if isinstance(s, tuple):
                 joins.append(self.__get_joins(s[0]))
             else:
                 if s['column'] == 'category':
@@ -805,13 +805,14 @@ class RecData (Pluggable, BaseException):
         return joins
 
     def get_criteria (self,crit):
-        if type(crit)==tuple:
+        if isinstance(crit, tuple):
             criteria,logic = crit
             if logic=='and':
                 return and_(*[self.get_criteria(c) for c in criteria])
             elif logic=='or':
                 return or_(*[self.get_criteria(c) for c in criteria])
-        elif type(crit)!=dict: raise TypeError
+        elif not isinstance(crit, dict):
+            raise TypeError
         else:
             #join_crit = None # if we need to add an extra arg for a join
             if crit['column']=='category':
@@ -836,6 +837,8 @@ class RecData (Pluggable, BaseException):
                 subtable = None
                 col = getattr(self.recipe_table.c,crit['column'])
             # Make sure we're using unicode!
+            # FIXME: This used to convert bytes to unicode.
+            #  Is it still needed?
             if (type(crit.get('search','')) != str
                 and type(crit.get('search','')) in (str,)):
                 crit['search'] = str(crit['search'])
@@ -938,7 +941,7 @@ class RecData (Pluggable, BaseException):
         try:
             to_del = []
             for k in new_values_dic:
-                if type(k) not in [str,str]:
+                if not isinstance(k, str):
                     to_del.append(k)
             for k in to_del:
                 v = new_values_dic[k]
@@ -1260,7 +1263,7 @@ class RecData (Pluggable, BaseException):
             for k,v in list(dic.items()): print('KEY:',k,'of type',type(k),'VALUE:',v,'of type',type(v))
             raise
         else:
-            if type(ret)==int:
+            if isinstance(ret, int):
                 ID = ret
                 ret = self.get_rec(ID)
             else:
@@ -1389,9 +1392,11 @@ class RecData (Pluggable, BaseException):
 
     def _force_unicode (self, dic):
        for k,v in list(dic.items()):
-            if type(v)==str and k not in ['image','thumb']:
-                # force unicode...
-                dic[k]=str(v)
+           # FIXME: The translation to Python 3 has made this a no-op.
+           #  Is it still needed?
+           if isinstance(v, str) and k not in ['image','thumb']:
+               # force unicode...
+               dic[k]=str(v)
 
     def do_modify_rec (self, rec, dic):
         """This is what other DBs should subclass."""
@@ -1480,7 +1485,8 @@ class RecData (Pluggable, BaseException):
 
     def delete_rec (self, rec):
         """Delete recipe object rec from our database."""
-        if type(rec)!=int: rec=rec.id
+        if not isinstance(rec, int):
+            rec = rec.id
         debug('deleting recipe ID %s'%rec,0)
         self.delete_by_criteria(self.recipe_table,{'id':rec})
         self.delete_by_criteria(self.categories_table,{'recipe_id':rec})
@@ -1548,7 +1554,7 @@ class RecData (Pluggable, BaseException):
         final_alist = []
         last_g = -1
         for g,ii in alist:
-            if type(g)==int:
+            if isinstance(g, int):
                 if last_g == None:
                     final_alist[-1][1].extend(ii)
                 else:
@@ -1608,7 +1614,8 @@ class RecData (Pluggable, BaseException):
         amt = self.get_amount(ing,mult)
         unit = ing.unit
         ramount = None
-        if type(amt)==tuple: amt,ramount = amt
+        if isinstance(amt, tuple):
+            amt, ramount = amt
         if adjust_units or preferred_unit_groups:
             if not conv:
                 conv = convert.get_converter()
@@ -1650,12 +1657,13 @@ class RecData (Pluggable, BaseException):
             approx = defaults.unit_rounding_guide.get(unit,0.01)
         else:
             approx = 0.01
-        if type(amt)==tuple:
+        if isinstance(amt, tuple):
             return "%s-%s"%(convert.float_to_frac(amt[0],fractions=fractions,approx=approx).strip(),
                             convert.float_to_frac(amt[1],fractions=fractions,approx=approx).strip())
-        elif type(amt) in (float,int):
+        elif isinstance(amt, (float,int)):
             return convert.float_to_frac(amt,fractions=fractions,approx=approx)
-        else: return ""
+        else:
+            return ""
 
     def get_amount_as_float (self, ing, mode=1): #1 == self.AMT_MODE_AVERAGE
         """Return a float representing our amount.
@@ -1667,7 +1675,7 @@ class RecData (Pluggable, BaseException):
         self.AMT_MODE_HIGH means we take the high number.
         """
         amt = self.get_amount(ing)
-        if type(amt) in [float, int, type(None)]:
+        if isinstance(amt, (float, int, type(None))):
             return amt
         else:
             # otherwise we do our magic
@@ -1847,9 +1855,9 @@ class RecipeManager (RecData):
         """Handed a string, we search for keys that could match
         the ingredient."""
         result=self.km.look_for_key(ing)
-        if type(result)==type(""):
+        if isinstance(result, str):
             return [result]
-        elif type(result)==type([]):
+        elif isinstance(result, list):
             # look_for contains an alist of sorts... we just want the first
             # item of every cell.
             if len(result)>0 and result[0][1]>0.8:
@@ -2048,9 +2056,11 @@ class dbDic:
         dics = []
         for k in d:
             store_v = d[k]
-            if type(store_v) in (str,):
+            # FIXME: This used to convert bytes to unicode.
+            #  Is it still needed?
+            if isinstance(store_v, str):
                 store_v = str(store_v)
-            if type(k) in (str,):
+            if isinstance(k, str):
                 k = str(k)
             dics.append({self.kp:k,self.vp:store_v})
         self.vw.insert().execute(*dics)

@@ -199,7 +199,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
         e_parent = e
         e_amount = self.xmlDoc.createElement('amount')
         if gram_amount:
-            if type(gram_amount) not in [tuple,list] or None not in gram_amount:
+            if not isinstance(gram_amount, (tuple, list)) or None not in gram_amount:
                 e_amount.appendChild(
                     self.quantity_element(gram_amount,
                                           'gram')
@@ -233,7 +233,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
         customunit = unit not in self.units
         e_qty = self.xmlDoc.createElement('quantity')
         if amount:
-            if type(amount) in [string,str] and amount.find('-')>=0:
+            if isinstance(amount, str) and amount.find('-')>=0:
                 amount = amount.split('-')
             if isinstance(amount,tuple) or isinstance(amount,list) and len(amount)==2:
                 e_rng = self.xmlDoc.createElement('range')
@@ -243,7 +243,7 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
                     e_rng.appendChild(e)
                     e.appendChild(self.n_element(a))
             else:
-                if type(amount) in [list,tuple]:
+                if isinstance(amount, (list, tuple)):
                     # If we have a list here, something's gone a bit screwy...
                     for possible_n in amount:
                         try:
@@ -271,10 +271,14 @@ class EdfgXml(exporter.exporter_mult, EdfgXmlBase):
         return e_qty
 
     def n_element (self, n):
-        if type(n) in [str,str]: typ = string_to_number_type(n)
-        elif type(n)==int: typ = 'int'
-        elif type(n)==float: typ = 'float'
-        else: raise TypeError("%s is not a number"%n)
+        if isinstance(n, str):
+            typ = string_to_number_type(n)
+        elif isinstance(n, int):
+            typ = 'int'
+        elif isinstance(n, float):
+            typ = 'float'
+        else:
+            raise TypeError("%s is not a number"%n)
         e_n = self.xmlDoc.createElement('n')
         set_attribute(self.xmlDoc,e_n,'type',typ)
         set_attribute(self.xmlDoc,e_n,'value',str(n))

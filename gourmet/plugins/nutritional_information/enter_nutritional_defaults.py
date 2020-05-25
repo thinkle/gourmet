@@ -36,17 +36,16 @@ rd.save()
 
 ofi = '/tmp/locale_specific_nutritional_info.txt'
 print('Writing data to ',ofi)
-outfi = file(ofi,'w')
-outfi.write('{')
-for k in ingredients_to_check:
-    ndbno = nd.get_ndbno(k)
-    if ndbno:
-        outfi.write('"%s":(%s,['%(k,ndbno))
-        for conv in nd.db.nutritionconversions_table.select(ingkey=k):
-            outfi.write('("%s",%s),'%(conv.unit,conv.factor))
-        outfi.write(']),\n')
-    else:
-        print('No information for ',k)
-outfi.write('}')
-outfi.close()
+with open(ofi,'w') as outfi:
+    outfi.write('{')
+    for k in ingredients_to_check:
+        ndbno = nd.get_ndbno(k)
+        if ndbno:
+            outfi.write('"%s":(%s,['%(k,ndbno))
+            for conv in nd.db.nutritionconversions_table.select(ingkey=k):
+                outfi.write('("%s",%s),'%(conv.unit,conv.factor))
+            outfi.write(']),\n')
+        else:
+            print('No information for ',k)
+    outfi.write('}')
 

@@ -248,9 +248,9 @@ class build_py(distutils.command.build_py.build_py):
         distutils.command.build_py.build_py.build_module(self, module,
                                                          module_file, package)
 
-        if type(package) is str:
+        if isinstance(package, str):
             package = package.split('.')
-        elif type(package) not in (list, tuple):
+        elif not isinstance(package, (list, tuple)):
             msg = "'package' must be a string (dot-separated), list, or tuple"
             raise TypeError(msg)
 

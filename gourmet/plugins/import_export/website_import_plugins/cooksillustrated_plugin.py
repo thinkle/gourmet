@@ -125,7 +125,7 @@ class CooksIllustratedPlugin (PluginPlugin):
 
             def maybe_add (self, el, tag, ignoreSlug=False):
                 if el:
-                    if type(el) in [list,BeautifulSoup.ResultSet]:
+                    if isinstance(el, (list,BeautifulSoup.ResultSet)):
                         for e in el:
                             self.maybe_add(e,tag,ignoreSlug)
                     else:

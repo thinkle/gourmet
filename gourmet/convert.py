@@ -515,7 +515,7 @@ class Converter:
         We can also handle amounts handed to us as tuples (as ranges)!"""
         num = amt[0]
         un = amt[1]
-        if type(num)==tuple or type(num)==list:
+        if isinstance(num, (tuple, list)):
             nstring=float_to_frac(num[0],approx=approx).strip()
             if len(num)>1 and num[1]:
                 nstring += "-"

@@ -101,7 +101,7 @@ class mealmaster_exporter (exporter_mult):
         self.ings = self.master_ings # back to master level
 
     def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):
-        if type(amount)==type(1.0) or type(amount)==type(1):
+        if isinstance(amount, (float, int)):
             amount = convert.float_to_frac(amount)
             if not amount: amount = ""
         if not unit: unit = ""
@@ -135,7 +135,7 @@ class mealmaster_exporter (exporter_mult):
         ## where we actually write the ingredients...
         for i in self.master_ings:
             # if we're a tuple, this is a group...
-            if type(i)==type(()):
+            if isinstance(i, tuple):
                 # write the group title first...
                 group = i[0]
                 width = 70

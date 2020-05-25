@@ -179,6 +179,6 @@ if __name__ == '__main__':
                     'mode':'mult_exporter',
                     'file':'/tmp/test_recs.rtf',
                     'prog':lambda *args,**kwargs: sys.stderr.write("%s%s"%(args,kwargs)),
-                    'out':file('/tmp/test_rec.rtf','wb'),
+                    'out':open('/tmp/test_rec.rtf', 'wb'),
                     })
 

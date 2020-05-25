@@ -130,7 +130,7 @@ class PageableListStore (Gtk.ListStore):
         # This will only work with ListStores -- if we update to
         # accomodate TreeStores, this is one of the things that must
         # change
-        if type(itr)==tuple:
+        if isinstance(itr, tuple):
             path = itr
             itr=self.get_iter(path)
         else:

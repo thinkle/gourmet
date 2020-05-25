@@ -71,16 +71,16 @@ class setup_typeahead:
         if not newstr: return
         self.str += newstr
         match=self.match_string_in_combo(self.str)
-        if type(match) == type(0):
+        if isinstance(match, int):
             self.cb.set_active(match)
         ## otherwise, perhaps they didn't mean to combine strings
         else:
             self.str = ""
             match=self.match_string_in_combo(newstr)
-            if type(match) == type(0):
+            if isinstance(match, int):
                 self.cb.set_active(match)
                 self.string = newstr
-        if type(match)==type(0):
+        if isinstance(match, int):
             if self.last_timeout: GObject.source_remove(self.last_timeout)
             self.last_timeout=GObject.timeout_add(self.typeahead_timeout, self.reset_str)
 

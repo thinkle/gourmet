@@ -57,7 +57,7 @@ class Converter (importer.Importer):
         # count the recipes in the file
         t = TimeAction("rxml_to_metakit.run counting lines",0)
         if isinstance(self.fn, str):
-            f=file(self.fn,'rb')
+            f = open(self.fn, 'rb')
         else:
             f=self.fn
         recs = 0

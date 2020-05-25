@@ -36,7 +36,8 @@ def zipfile_to_filelist (fi, progress=None, name="zipfile"):
     manipulation to work (i.e. a urllib.urlopen() object).
     """
     # handle filename
-    if type(fi)==str: fi = open(fi,'rb')
+    if isinstance(fi, str):
+        fi = open(fi, 'rb')
     # handle unseekable
     elif not hasattr(fi,'seek'):
         # slurp up the file into a StringIO so we can seek within it

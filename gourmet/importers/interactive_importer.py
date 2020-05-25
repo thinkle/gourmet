@@ -473,8 +473,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                 for i in self.images: ibd.add_image_from_uri(i)
                 ibd.run()
                 if ibd.ret:
-                    ifi = file(imageBrowser.get_image_file(ibd.ret),'r')
-                    image_str = ifi.read(); ifi.close()
+                    with open(imageBrowser.get_image_file(ibd.ret), 'rb') as ifi:
+                        image_str = ifi.read()
                     image = ImageExtras.get_image_from_string(image_str)
                     # Adding image!
                     thumb = ImageExtras.resize_image(image,40,40)
@@ -492,7 +492,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         self.set_parsed(txt)
 
     def set_parsed (self, parsed):
-        #dbg_file = file('/tmp/out','w')
+        #dbg_file = open('/tmp/out','w')
         for chunk,tag in parsed:
             #dbg_file.write(chunk)
             if tag==None:

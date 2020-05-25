@@ -52,7 +52,7 @@ class NutritionBaseExporterPlugin (BaseExporterPlugin):
                     itm_text = label
                 if unit:
                     itm_text += ' (%s)'%unit
-                if type(properties) == list:
+                if isinstance(properties, list):
                     amts = [getattr(nutinfo,att) for att in properties]
                     amt = sum(amts)
                 else:

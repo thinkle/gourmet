@@ -100,7 +100,7 @@ class NutritionDisplayModule (RecDisplayModule):
                 for ni in self.nutinfo:
                     print(ni.__ingobject__)
                 return istr
-            if type(props)==str:
+            if isinstance(props, str):
                 nut_amt = getattr(nutinfo_for_ing,props)
                 tot_amt = getattr(self.nutinfo,props)
             else:

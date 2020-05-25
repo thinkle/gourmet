@@ -39,7 +39,7 @@ class Prefs:
             # modifiable object -- i.e. a dictionary or a list -- it
             # is likely the program relies on a modified default being
             # saved... 12/13/06
-            if type(default) in [ dict, list ] :
+            if isinstance(default, (dict, list)):
                 self.config[key]=default
             return default
         else: return self.config[key]

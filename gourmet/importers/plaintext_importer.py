@@ -112,7 +112,8 @@ class Tester (importer.Tester):
         if not hasattr(self,'matcher'):
             self.matcher=re.compile(self.regexp)
             self.not_matcher = re.compile(self.not_me)
-        if type(self.ofi) in [str,str]: self.ofi = open(filename,'r')
+        if isinstance(self.ofi, str):
+            self.ofi = open(filename,'r')
         l = self.ofi.readline()
         while l:
             if self.not_matcher.match(l):
