@@ -12,22 +12,20 @@ import unittest
 import tempfile
 from stat import ST_MTIME
 
-# from gourmet import gglobals
 import test_exportManager
 import test_importer
 import test_importManager
 import test_interactive_importer
-from gourmet import test_convert
+import test_convert
 import test_db
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-def maybe_intltool (fname):
-    '''Check whether the file at fname has been updated since
-    intltool-merge was last used on it. If it has, then use
-    intltool-merge to update the output file.
 
-    '''
+def maybe_intltool (fname):
+    """Check whether the file at fname has been updated since intltool-merge was last used on it. If it has, then use
+    intltool-merge to update the output file.
+    """
     to_name = fname[:-3]
     if (
         (not os.path.exists(to_name))
@@ -39,42 +37,43 @@ def maybe_intltool (fname):
 for desktop_file in glob.glob('../plugins/*plugin.in') + glob.glob('../plugins/*/*plugin.in'):
     maybe_intltool(desktop_file)
 
-# sys.path = ['../../'] + sys.path
-tmpfile = tempfile.mktemp()
+tmpfile = tempfile.mktemp()  # TODO: replace deprecated mktemp()
 sys.argv.append('--gourmet-directory=%s' % tmpfile)
 sys.argv = sys.argv[:-1]
 
-testsuite = unittest.TestSuite()
-for module in [
+def suite():
+    ts = unittest.TestSuite()
+    for module in [test_importManager,
+                   test_exportManager,
+                   test_interactive_importer,
+                   test_importer,
+                   test_convert]:
+        ts.addTest(unittest.defaultTestLoader.loadTestsFromModule(module))
 
-    # test_importManager,  # TODO: fix test_dir path
-    test_exportManager,
-    # test_interactive_importer,  # TODO: fix AttributeError: RecData instance has no attribute 'parse_ingredient'
-    test_importer,
-    test_convert,
-    ]:
-    testsuite.addTest(
-        unittest.defaultTestLoader.loadTestsFromModule(
-            module
-            )
-        )
-# We have to run the DB tests last as they kill all plugins
-testsuite.addTest(test_db.suite)
+    # The DB tests need to be run last as they kill all plugins
+    ts.addTest(test_db.suite)
+    return ts
 
-tr = unittest.TestResult()
-testsuite.run(tr)
-if tr.wasSuccessful():
-    print 'All ',tr.testsRun,'tests completed successfully!'
-else:
-    print 'Uh oh...'
-    print 'We had ',len(tr.failures),'failures in ',tr.testsRun,'tests'
-    for er,tb in tr.failures:
-        print '---'
-        print er,':',tb
-        print '---'
-    if tr.errors:
-        print 'We had ',len(tr.errors),' errors in',tr.testsRun,'tests'
-        for er,tb in tr.errors:
+
+if __name__ == '__main__':
+    # unittest.main()
+    runner = unittest.TextTestRunner(failfast=True)
+    ts = suite()
+    print "About to execute {} test cases".format(ts.countTestCases())
+    tr = runner.run(ts)
+
+    if tr.wasSuccessful():
+        print "All {} tests completed successfully!".format(tr.testsRun)
+    else:
+        print 'Uh oh...'
+        print "We had {} failures in {} tests".format(len(tr.failures), tr.testsRun)
+        for er, tb in tr.failures:
             print '---'
-            print er,':',tb
+            print "{}:{}".format(er, tb)
             print '---'
+        if tr.errors:
+            print 'We had {} errors in {} tests'. format(len(tr.errors), tr.testsRun)
+            for er, tb in tr.errors:
+                print '---'
+                print "{}:{}".format(er, tb)
+                print '---'
