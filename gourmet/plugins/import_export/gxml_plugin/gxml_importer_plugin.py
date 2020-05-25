@@ -1,21 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import os, os.path
-
 from gourmet.plugin import ImporterPlugin
 from gourmet.importers.importer import Tester
-from gourmet.recipeManager import get_recipe_manager
-from gourmet.threadManager import get_thread_manager
 import gxml2_importer, gxml_importer
 from gettext import gettext as _
 
-test_dir = os.path.split(__file__)[0] # our directory src/lib/plugins/import_export/plugin/*/
-test_dir = os.path.split(test_dir)[0] # one back... src/lib/plugins/import_export/plugin/
-test_dir = os.path.split(test_dir)[0] # one back... src/lib/plugins/import_export/
-test_dir = os.path.split(test_dir)[0] # one back... src/lib/plugins/
-test_dir = os.path.split(test_dir)[0] # one back... src/lib/
-test_dir = os.path.split(test_dir)[0] # one back... src/
-test_dir = os.path.join(test_dir,'test','recipe_files')
 
 class GxmlImportTester:
 
@@ -89,7 +78,4 @@ class GourmetXMLPlugin (ImporterPlugin):
 
         tester(recipe_objects, filename, rd)
         '''
-        return [
-            (os.path.join(test_dir,'test_set.grmt'),
-             GxmlImportTester().run_test),
-             ]
+        return [('test_set.grmt', GxmlImportTester().run_test)]

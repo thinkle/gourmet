@@ -21,11 +21,14 @@ class TestImports (unittest.TestCase):
 
     def testPlugins (self):
         for pi in self.im.importer_plugins:
-            print 'I wonder, is there a test for ',pi
-            if hasattr(pi,'get_import_tests'):
-                for fn,test in pi.get_import_tests():
-                    print 'Testing ',test,fn
-                    self.__runImporterTest(fn,test)
+            print 'I wonder, is there a test for ', pi
+            if hasattr(pi, 'get_import_tests'):
+                test_dir = os.path.split(__file__)[0]
+                test_dir = os.path.join(test_dir, 'recipe_files')
+                for fn, test in pi.get_import_tests():
+                    print 'Testing ', test, fn
+                    test_fn = os.path.join(test_dir, fn)
+                    self.__runImporterTest(test_fn, test)
 
 
     def done_callback (self,*args):
