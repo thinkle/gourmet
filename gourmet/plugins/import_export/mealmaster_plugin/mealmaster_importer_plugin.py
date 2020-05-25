@@ -1,20 +1,10 @@
-import os.path
-
 import mealmaster_importer
 from gourmet.plugin import ImporterPlugin
 from gourmet.importers.importer import Tester
-from gourmet.threadManager import get_thread_manager
 
 from gourmet.recipeManager import get_recipe_manager
 from gettext import gettext as _
 
-test_dir = os.path.split(__file__)[0] # our directory src/lib/plugins/import_export/plugin/*/
-test_dir = os.path.split(test_dir)[0] # one back... src/lib/plugins/import_export/plugin/
-test_dir = os.path.split(test_dir)[0] # one back... src/lib/plugins/import_export/
-test_dir = os.path.split(test_dir)[0] # one back... src/lib/plugins/
-test_dir = os.path.split(test_dir)[0] # one back... src/lib/
-test_dir = os.path.split(test_dir)[0] # one back... src/
-test_dir = os.path.join(test_dir,'test','recipe_files')
 
 class MealmasterImporterPlugin (ImporterPlugin):
 
@@ -31,14 +21,8 @@ class MealmasterImporterPlugin (ImporterPlugin):
         return mealmaster_importer.mmf_importer(filename=filename)
 
     def get_import_tests (self):
-        return [
-            (os.path.join(test_dir,
-                          'mealmaster_2_col.mmf'),
-             test_2_col),
-            (os.path.join(test_dir,
-                          'mealmaster.mmf'),
-             test_mmf)
-            ]
+        return [('mealmaster_2_col.mmf', test_2_col),
+                ('mealmaster.mmf', test_mmf)]
 
 def assert_equal (val1,val2):
     assert val1==val2, 'Value expected: %s, Actual value: %s'%(val2,val1)
