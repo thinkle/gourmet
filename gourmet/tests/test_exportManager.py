@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-import unittest, tempfile, os
+import unittest
+import tempfile
+import os
 import gourmet.gglobals
 tmpdir = tempfile.mktemp()
 os.makedirs(tmpdir)
-gourmet.gglobals.gourmetdir = tmpdir
-import gourmet.GourmetRecipeManager
-import gourmet.backends.db
-gourmet.backends.db.RecData.__single = None
-gourmet.GourmetRecipeManager.GourmetApplication.__single = None
+gourmet.gglobals.gourmetdir = tmpdir  # TODO: replace deprecated mktemp()
+from gourmet.GourmetRecipeManager import get_application, GourmetApplication
+from gourmet.backends import db
+db.RecData.__single = None
+GourmetApplication.__single = None
 from gourmet.exporters import exportManager
 
 class SampleRecipeSetterUpper:
@@ -59,7 +61,7 @@ class SampleRecipeSetterUpper:
         print 'Instantiate SampleRecipeSetterUpper',self
         if SampleRecipeSetterUpper.__single: raise SampleRecipeSetterUpper.__single
         else: SampleRecipeSetterUpper.__single = self
-        self.db = gourmet.backends.db.get_database()
+        self.db = db.get_database()
         for rec in self.recipes:
             self.add_rec(self.recipes[rec])
 
@@ -96,7 +98,6 @@ class TestSetterUpper (unittest.TestCase):
         setup_sample_recs()
 
     def testSetup(self):
-        from gourmet.GourmetRecipeManager import get_application, GourmetApplication
         # GourmetApplication.__single = None
         app = get_application()
         app.window.show()
@@ -108,7 +109,7 @@ class TestExports (unittest.TestCase):
         self.sample_recs = setup_sample_recs()
         self.recs = self.sample_recs.recipes
         self.em = exportManager.get_export_manager()
-        self.db = gourmet.backends.db.get_database()
+        self.db = db.get_database()
 
     def testMultipleExporters (self):
 
