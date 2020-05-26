@@ -1,17 +1,20 @@
-import tempfile, os, os.path, time
+import tempfile
+import os
+import os.path
+import time
 
 import unittest
 import gourmet.gglobals
 
-tmpdir = tempfile.mktemp()
+tmpdir = tempfile.mktemp()  # TODO: replace deprecated mktmp()
 os.makedirs(tmpdir)
 gourmet.gglobals.gourmetdir = tmpdir
 
-import gourmet.GourmetRecipeManager
-import gourmet.backends.db
+from gourmet.GourmetRecipeManager import GourmetApplication
+from gourmet.backends import db
 
-gourmet.backends.db.RecData.__single = None
-gourmet.GourmetRecipeManager.GourmetApplication.__single = None
+db.RecData.__single = None
+GourmetApplication.__single = None
 
 from gourmet.importers import importManager
 
@@ -52,3 +55,6 @@ class TestImports (unittest.TestCase):
                 traceback.format_exc()
                 )
                              )
+
+if __name__ == '__main__':
+    unittest.main()
