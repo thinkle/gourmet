@@ -891,9 +891,12 @@ class RecData (Pluggable):
                   ]
         return filter(lambda x: x is not None, retval) # Don't return null values
 
-    def get_ingkeys_with_count (self, search={}):
+    def get_ingkeys_with_count (self, search=None):
         """Get unique list of ingredient keys and counts for number of times they appear in the database.
         """
+        if search is None:  # replaced mutable default argument: search={}
+           search = {}
+
         if search:
             col = getattr(self.ingredients_table.c,search['column'])
             operator = search.get('operator','LIKE')
@@ -901,9 +904,11 @@ class RecData (Pluggable):
                 criteria = col.like(search['search'])
             elif operator=='REGEXP':
                 criteria = col.op('REGEXP')(search['search'])
+            elif operator == 'CONTAINS':
+                criteria = col.contains(search['search'])
             else:
-                criteria = col==crit['search']
-            result =  sqlalchemy.select(
+                criteria = (col == search['search'])
+            result = sqlalchemy.select(
                 [sqlalchemy.func.count(self.ingredients_table.c.ingkey).label('count'),
                  self.ingredients_table.c.ingkey],
                 criteria,
@@ -911,8 +916,8 @@ class RecData (Pluggable):
                    'order_by':make_order_by([],self.ingredients_table,count_by='ingkey'),
                    }
                 ).execute().fetchall()
-        else:
-            result =  sqlalchemy.select(
+        else:  # return all ingredient keys with counts
+            result = sqlalchemy.select(
                 [sqlalchemy.func.count(self.ingredients_table.c.ingkey).label('count'),
                  self.ingredients_table.c.ingkey],
                 **{'group_by':'ingkey',
