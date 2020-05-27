@@ -23,7 +23,7 @@ except:
 class MasterLoader:
 
     # Singleton design pattern lifted from:
-    # http://www.python.org/workshops/1997-10/proceedings/savikko.html
+    # https://legacy.python.org/workshops/1997-10/proceedings/savikko.html
     # to get an instance, use the convenience function
     # get_master_loader()
     __single = None
@@ -216,7 +216,7 @@ class MasterLoader:
 
 def get_master_loader ():
     # Singleton design pattern lifted from:
-    # http://www.python.org/workshops/1997-10/proceedings/savikko.html
+    # https://legacy.python.org/workshops/1997-10/proceedings/savikko.html
     try:
         return MasterLoader()
     except MasterLoader, ml:
@@ -282,7 +282,7 @@ class PluginSet:
         # This should really use GKeyFile but there are no python
         # bindings that I can find atm. One possibility would be to
         # use this:
-        # http://svn.async.com.br/cgi-bin/viewvc.cgi/kiwi/trunk/kiwi/desktopparser.py?revision=7336&view=markup
+        # https://github.com/stoq/kiwi/blob/master/kiwi/desktopparser.py
         self.props = dict([(k,None) for k in ['Name','Comment','Authors','Version','API_Version','Website','Copyright','Dependencies']])
 
         for line in plugin_info_file.readlines():
@@ -399,9 +399,9 @@ def pluggable_method (f):
 
 if __name__ == '__main__':
     class TestPlugin (plugin.Plugin):
-        def activate ():
+        def activate (self):
             print 'Activate!'
-        def deactivate ():
+        def deactivate (self):
             print 'Deactivate!'
 
     class UniversalPluggable (Pluggable):
