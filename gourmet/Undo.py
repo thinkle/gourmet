@@ -273,9 +273,9 @@ class UndoableEntry (UndoableTextContainer):
     def __init__(self, entry: Gtk.Widget, history):
         self.entry = entry
         if isinstance(entry, Gtk.ComboBoxText):
-            self.get_text = entry.get_active_text()
+            self.get_text = entry.get_active_text
         elif isinstance(entry, Gtk.Entry):
-            self.get_text = entry.get_text()
+            self.get_text = entry.get_text
         UndoableTextContainer.__init__(self,self.entry,history)
 
     def setup_widgets (self):
