@@ -183,17 +183,20 @@ class NumberDialog (ModalDialog):
         ModalDialog.__init__(self,default=default, parent=parent)
         self.hbox=Gtk.HBox()
         self.vbox.add(self.hbox)
-        #self.spinButton=Gtk.SpinButton(climb_rate=climb_rate,digits=digits)
+        self.spinButton = Gtk.SpinButton()
+
         if not default:
             val = 0
         else:
             val = float(default)
+
         self.adjustment=Gtk.Adjustment(val,
                                        lower=min,
                                        upper=max,
                                        step_incr=step_incr,
                                        page_incr=page_incr)
-        self.spinButton=Gtk.SpinButton(self.adjustment)
+        self.spinButton.set_adjustment(self.adjustment)
+
         if default:
             self.spinButton.set_value(default)
         if label:
