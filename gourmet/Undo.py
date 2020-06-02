@@ -1,9 +1,18 @@
 import difflib, re
+from enum import Enum
+from typing import Optional
+
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
 from gourmet.gdebug import debug
+
+
+class UndoMode(Enum):
+    ADD = "add"
+    DELETE = "delete"
+
 
 class TooManyChanges (Exception):
     def __init__ (self, value):
@@ -80,7 +89,7 @@ class UndoableTextChange (UndoableObject):
     def __init__ (self, set_text_action, history, initial_text="",text="",txt_id=None,is_undo=False):
         self.txt_id = txt_id
         self.blob_matcher = re.compile('\s+\S+\s+')
-        self.initial_text = initial_text
+        self.initial_text = initial_text if initial_text is not None else ""
         self.text = text
         self._set_text = set_text_action
         UndoableObject.__init__(self,lambda *args: self._set_text(self.text),lambda *args: self._set_text(self.initial_text),history,
@@ -92,19 +101,21 @@ class UndoableTextChange (UndoableObject):
             debug('Too many changes - assume 0,0',0)
             self.cindex,self.clen = 0,0
 
-    def determine_mode (self,text=None,initial_text=None):
-        if not text: text=self.text
-        if not initial_text: initial_text=self.initial_text
-        if len(text) > len(initial_text):
-            return 'add'
-        elif len(text) < len(initial_text):
-            return 'delete'
+    def determine_mode(self,
+                       current: Optional[str] = "",
+                       initial: Optional[str] = "") -> UndoMode:
+        current = current if current else self.text
+        initial = initial if initial else self.initial_text
+
+        if len(current) > len(initial):
+            return UndoMode.ADD
+        return UndoMode.DELETE
 
     def find_change (self, text2=None, initial_text=None):
         if initial_text is None: initial_text = self.initial_text
         if not self.mode:
             self.text = text2
-            self.determine_mode()
+            self.mode = self.determine_mode()
         if text2 is None: text2=self.text
         blocks = difflib.SequenceMatcher(None,initial_text,text2).get_matching_blocks()
         # we only are interested in similar blocks at different positions
@@ -118,9 +129,9 @@ class UndoableTextChange (UndoableObject):
             change_index = i
             return [change_index,change_length]
         else:
-            if self.mode=='delete':
+            if self.mode is UndoMode.DELETE:
                 return [len(initial_text),len(initial_text)-len(text2)]
-            else: #self.mode=='add', we presume
+            else:
                 return [len(initial_text),len(text2)-len(initial_text)]
 
     def add_text (self, new_text):
@@ -133,10 +144,11 @@ class UndoableTextChange (UndoableObject):
                 # could crop up as an error.
                 cindex,clen = self.find_change(new_text)
                 if ((cindex==self.cindex) or
-                    (self.mode=='add' and cindex==self.cindex) or
-                    (self.mode=='delete' and cindex==(self.cindex-clen))
+                    (self.mode == UndoMode.ADD and cindex == self.cindex) or
+                    (self.mode == UndoMode.DELETE and cindex == self.cindex-clen)
                     ):
-                    if self.mode=='add': changed_text = new_text[cindex:cindex+(self.clen+clen)]
+                    if self.mode == UndoMode.ADD:
+                        changed_text = new_text[cindex:cindex+(self.clen+clen)]
                     else: changed_text=''
                     # Now we make sure the addition is at the end or middle of our new text...
                     relative_cindex,relative_clen = self.find_change(new_text,self.text)
@@ -184,7 +196,7 @@ class UndoableTextChange (UndoableObject):
         self.history.append(self)
 
     def __repr__ (self):
-        return '<Undo.UndoableTextChange '+repr(self.mode)+' '+repr(self.txt_id)+\
+        return '<Undo.UndoableTextChange '+ self.mode.name +' '+repr(self.txt_id)+\
                repr(self.initial_text)+'=>'+repr(self.text)+'clen'+str(self.clen)+\
                'cindex'+str(self.cindex)+'>'
 
@@ -245,7 +257,7 @@ class UndoableTextContainer:
                              # callbacks
         orig = self.get_text() # Get current text for comparison
                                # (helps with placement of cursor)
-        if len(txt) > orig:         # If we're adding
+        if len(txt) > len(orig):  # If we're adding
             try:
                 index,length = self.change.find_change(txt,orig)
                 cursor_index = index+length

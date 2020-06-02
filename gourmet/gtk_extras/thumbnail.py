@@ -15,7 +15,7 @@ def check_for_thumbnail (uri, type="large",reporthook=None):
     None if no thumbnail can be made."""
     if not uri:
         return ""
-    m = hashlib.md5(uri)
+    m = hashlib.md5(uri.encode())
     name= os.path.join("~",".thumbnails",type,m.hexdigest() + ".png")
     name = os.path.expanduser(name)
     targetdir = os.path.split(name)[0]

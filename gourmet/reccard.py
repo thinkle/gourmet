@@ -1513,7 +1513,8 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         if self.image:
             self.win = self.imageW.get_parent_window()
             if self.win:
-                wwidth,wheight=self.win.get_size()
+                wwidth = self.win.get_width()
+                wheight = self.win.get_height()
                 wwidth=int(float(wwidth)/3)
                 wheight=int(float(wheight)/3)
             else:

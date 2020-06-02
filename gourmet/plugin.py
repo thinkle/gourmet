@@ -498,6 +498,8 @@ class RecEditorModule (UIModule, GObject.GObject, object):
             elif hasattr(widget,'get_text'): val = widget.get_text()
             elif hasattr(widget,'entry'): val = widget.entry.get_text()
             elif hasattr(widget,'get_buffer'): val = widget.get_buffer().get_text()
+            elif isinstance(widget, Gtk.ComboBoxText):
+                val = widget.get_active_text()
             else: raise TypeError("I don't know how to get the value from action %s widget %s"%(action,widget))
             # HAVE TO HANDLE CATEGORIES
             if prop=='category':

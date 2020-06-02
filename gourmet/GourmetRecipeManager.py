@@ -1163,7 +1163,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             rc=reccard.RecCard(self)
             self.make_rec_visible(rc.current_rec)
             self.rc[rc.current_rec.id]=rc
-            self.app.window.set_cursor(None)
+            self.app.get_window().set_cursor(None)
             self.update_go_menu()
         GObject.idle_add(show)
 
