@@ -556,8 +556,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def export_cb (self, *args):
         opt = self.prefs.get('save_recipe_as','html')
-        fn = exporters.exportManager.get_export_manager().offer_single_export(self.current_rec,self.prefs,parent=self.window,
-                                                                              mult=self.mult)
+        fn = exportManager.get_export_manager().offer_single_export(self.current_rec,self.prefs,parent=self.window,
+                                                                    mult=self.mult)
         if fn:
             self.offer_url(_('Recipe successfully exported to '
                              '<a href="file:///%s">%s</a>')%(fn,fn),
@@ -1545,14 +1545,18 @@ class ImageBox: # used in DescriptionEditor for recipe image.
 
     def set_from_fileCB (self, *args):
         debug("set_from_fileCB (self, *args):",5)
-        f=de.select_image("Select Image",action=Gtk.FileChooserAction.OPEN)
-        if f:
+        filenames = de.select_image("Select Image",action=Gtk.FileChooserAction.OPEN)
+        qty = len(filenames)
+        if qty == 1:
+            fname, = filenames  # unpack the filename
             Undo.UndoableObject(
-                lambda *args: self.set_from_file(f),
+                lambda *args: self.set_from_file(fname),
                 lambda *args: self.remove_image(),
                 self.rc.history,
                 widget=self.imageW).perform()
             self.edited=True
+        else:
+            raise ValueError(f"Expected 1 filename, but got {qty}", qty)
 
     def removeCB (self, *args):
         debug("removeCB (self, *args):",5)

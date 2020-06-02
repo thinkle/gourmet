@@ -1,3 +1,5 @@
+from typing import List
+
 from gi.repository import Gtk
 from gi.repository import GObject
 import os.path, fnmatch,  re
@@ -883,10 +885,16 @@ def saveas_file (title,
     sfd=FileSelectorDialog(title,filename=filename,filters=filters,
                            action=action,set_filter=set_filter,buttons=buttons,
                            show_filetype=show_filetype,parent=parent)
-    retval = sfd.run()
-    if not retval:
-        return None,None
-    exp_type = get_type_for_filters(retval, filters[:])
+    filenames = sfd.run()
+    qty = len(filenames)
+    if qty == 0:
+        return None, None
+    elif qty == 1:
+        fname, = filenames  # unpack the filename
+    else:
+        raise ValueError(f"Expected 1 filename, but got {qty}", qty)
+
+    exp_type = get_type_for_filters(fname, filters[:])
     if not exp_type:
         # If we don't have a type based on our regexps... then lets
         # just see what the combobox was set to...
@@ -894,7 +902,7 @@ def saveas_file (title,
             exp_type = filters[sfd.saveas.get_active()][0]
         except:
             pass
-    return retval, exp_type
+    return fname, exp_type
 
 def get_type_for_filters (fname, filters):
     base,ext = os.path.splitext(fname)
@@ -1059,32 +1067,19 @@ class FileSelectorDialog:
             if fnmatch.fnmatch(fn, e):
                 return True
 
-    def run (self):
-        """Run our dialog and return the filename or None"""
+    def run(self) -> List[str]:
+        """Run our dialog and return the filename(s)"""
         response = self.fsd.run()
         if response == Gtk.ResponseType.OK:
-            # Gtk.FileChooser by default returns a UTF-8 encoded string, see
-            # http://www.pyGtk.org/pygtk2reference/class-gtkfilechooser.html#FileNamesAndEncodings
-            # Functions like Pillow's Image.open() (which is used for adding
-            # an image to a recipe) however require a unicode string.
-            # We need to do this as users wouldn't be able to e.g. add images with
-            # diacritics in their paths.
-
             if self.multiple:
-                #if vfs_available:
-                #    fn = self.fsd.get_uris()
-                #else:
-                fn = [str(f, 'utf-8') for f in self.fsd.get_filenames()]
+                fn = self.fsd.get_filenames()
             else:
-                #if vfs_available:
-                #    fn = self.fsd.get_uri()
-                #else:
-                fn = str(self.fsd.get_filename(), 'utf-8')
+                fn = [self.fsd.get_filename()]
             if not fn:
                 show_message(label=_('No file selected'),
                              sublabel=_('No file was selected, so the action has been cancelled')
                              )
-                return None
+                return []
             if self.action==Gtk.FileChooserAction.SAVE:
                 # add the extension if need be...
                 if self.do_saveas and not self.is_extension_legal(fn):
@@ -1095,7 +1090,7 @@ class FileSelectorDialog:
             return fn
         else:
             self.quit()
-            return None
+            return []
 
     def quit (self, *args):
         if hasattr(self,'timeout'):
