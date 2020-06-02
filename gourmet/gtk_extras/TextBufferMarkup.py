@@ -15,6 +15,8 @@
 ### along with this library; if not, write to the Free Software
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 ### USA
+from typing import Union
+
 import gi
 gi.require_versions({"Gtk": "3.0", "Pango": "1.0"})
 from gi.repository import Pango
@@ -79,11 +81,11 @@ class PangoBuffer (Gtk.TextBuffer):
         #self.set_text(txt)
         Gtk.TextBuffer.__init__(self)
 
-    def set_text (self, txt):
+    def set_text (self, txt: Union[str, bytes]) -> None:
         if isinstance(txt, bytes):
             # data loaded from the database are bytes, not str
             txt = txt.decode()
-        Gtk.TextBuffer.set_text(self,"")
+        Gtk.TextBuffer.set_text(self, txt)   # TODO: should clear the buffer of text
         try:
             self.parsed, attributes, self.txt, self.separator = Pango.parse_markup(txt, -1, '\x00')
         except Exception as e:  # unescaped text (g-markup-error-quark), eg. contains &amp
@@ -110,7 +112,10 @@ class PangoBuffer (Gtk.TextBuffer):
                 tags = self.get_tags_from_attrs(font, lang, attrs)
 
             text = self.txt[start:end]
-            item = self.get_end_attrs_iter()
+            try:
+                item = self.get_end_attrs_iter()
+            except AttributeError:
+                item = self.get_end_iter()
             self.insert_with_tags(item,text,*tags)
 
         #  attrs_iter.destroy()  # TODO: check why calling destroy segfaults.

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import gc
+import webbrowser
+
 import gi
 from gi.repository import GObject
 from gi.repository import Gtk
@@ -24,7 +26,7 @@ from .gtk_extras import treeview_extras as te
 from .gtk_extras import cb_extras as cb
 from .exporters.printer import get_print_manager
 from .gdebug import debug
-from .gglobals import FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC, REC_ATTRS, doc_base, uibase, imagedir, launch_url
+from .gglobals import FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC, REC_ATTRS, doc_base, uibase, imagedir
 from gettext import gettext as _
 from . import ImageExtras as ie
 from .importers.importer import parse_range
@@ -602,7 +604,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
             change_units=self.prefs.get('readableUnits',True)
            )
 
-    def link_cb (self, *args): launch_url(self.link)
+    def link_cb (self, *args):
+        webbrowser.open_new_tab(self.link)
 
     def yields_change_cb (self, widg):
         self.update_yields_multiplier(widg.get_value())
@@ -645,7 +648,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
         # Add new message
         l = Gtk.Label()
         l.set_markup(label)
-        l.connect('activate-link',lambda lbl, uri: launch_url(uri))
+        l.connect('activate-link',lambda lbl, uri: webbrowser.open_new_tab(uri))
         infobar = Gtk.InfoBar()
         infobar.set_message_type(Gtk.MessageType.INFO)
         infobar.get_content_area().add(l)
@@ -1214,7 +1217,7 @@ class IngredientEditorModule (RecEditorModule):
         add_with_undo(self, lambda *args: self.importIngredients(f))
 
     def paste_ingredients_cb (self, *args):
-        self.cb = Gtk.clipboard_get()
+        self.cb = Gtk.Clipboard()
         def add_ings_from_clippy (cb,txt,data):
             if txt:
                 def do_add ():
@@ -2830,8 +2833,8 @@ class UndoableObjectWithInverseThatHandlesItsOwnUndo (Undo.UndoableObject):
         self.inverse_action()
 
 def add_with_undo (rc,method):
-    idx = rc.recipe_editor.module_tab_by_name["ingredients"]
-    ing_controller = rc.recipe_editor.modules[idx].ingtree_ui.ingController
+    idx = rc.re.module_tab_by_name["ingredients"]
+    ing_controller = rc.re.modules[idx].ingtree_ui.ingController
     uts = UndoableTreeStuff(ing_controller)
 
     def do_it ():
