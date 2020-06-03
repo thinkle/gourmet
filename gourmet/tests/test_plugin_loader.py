@@ -1,38 +1,48 @@
 import unittest
 import tempfile
 import os
+import shutil
 
 from gourmet import gglobals
 
-# clear out Gourmet's DB
-tmpdir = tempfile.mktemp()  # TODO: replace deprecated mktemp()
-os.makedirs(tmpdir)
-gglobals.gourmetdir = tmpdir
 
-from gourmet.GourmetRecipeManager import GourmetApplication
-from gourmet.backends import db
+class Test (unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # create a temporary directory for tests
+        cls.tmp_dir = tempfile.mktemp(".pl")  # TODO: replace deprecated mktemp()
+        os.makedirs(cls.tmp_dir)
+        gglobals.gourmetdir = cls.tmp_dir
 
-db.RecData.__single = None
-GourmetApplication.__single = None
-# end clearing out code
+        # continue to import with gourmetdir location set to tmp_dir
+        from gourmet.GourmetRecipeManager import GourmetApplication
+        from gourmet.backends import db
+        from gourmet.plugin_loader import get_master_loader
 
-from gourmet.plugin_loader import get_master_loader
+        db.RecData.__single = None
+        GourmetApplication.__single = None
+        cls.ml = get_master_loader()
 
-class TestPluginLoader(unittest.TestCase):
+    @classmethod
+    def tearDownClass(cls):
+        # delete temporary test database if there were no test errors
+        try:
+            shutil.rmtree(cls.tmp_dir)
+        except OSError as e:
+            print "Error: {} : {}".format(cls.tmp_dir, e.strerror)
 
     def testDefaultPlugins (self):
-        ml = get_master_loader()
-        ml.load_active_plugins()
-        self.assertEqual(len(ml.errors), 0)  # there should be 0 plugin errors
+        self.ml.load_active_plugins()
+        self.assertEqual(len(self.ml.errors), 0)  # there should be 0 plugin errors
 
     def testAvailablePlugins (self):
-        ml = get_master_loader()
         # search plugin directories for available plugins
-        for st in ml.available_plugin_sets:
-            # activate available plugins if not active
-            if st not in ml.active_plugins:
-                ml.activate_plugin_set(st)
-        self.assertEqual(len(ml.errors), 0)  # there should be 0 plugin errors
+        for plugin_name, plugin_instance in self.ml.available_plugin_sets.items():
+            if plugin_name not in self.ml.active_plugins:
+                self.ml.activate_plugin_set(plugin_instance)
+        self.ml.save_active_plugins()
+        self.assertTrue(os.path.exists(self.ml.active_plugin_filename))
+        self.assertEqual(len(self.ml.errors), 0)  # there should be 0 plugin errors
 
 if __name__ == '__main__':
     unittest.main()
