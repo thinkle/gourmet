@@ -175,6 +175,7 @@ class RecData (Pluggable):
             #print 'Connecting to file ',self.filename,'new=',self.new_db
         else:
             self.new_db = True # ??? How will we do this now?
+        print 'Connecting to file ', self.filename, 'new=', self.new_db  # SS added for debugging
         #self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal')
         #self.base_connection = self.db
 

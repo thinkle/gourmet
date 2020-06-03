@@ -4,12 +4,14 @@ import os.path
 import time
 
 import unittest
-import gourmet.gglobals
+from gourmet import gglobals
 
-tmpdir = tempfile.mktemp()  # TODO: replace deprecated mktmp()
-os.makedirs(tmpdir)
-gourmet.gglobals.gourmetdir = tmpdir
+# create a temporary directory for tests
+tmp_dir = tempfile.mktemp(".im")  # TODO: replace deprecated mktmp()
+os.makedirs(tmp_dir)
+gglobals.gourmetdir = tmp_dir
 
+# continue to import with gourmetdir location set to tmp_dir
 from gourmet.GourmetRecipeManager import GourmetApplication
 from gourmet.backends import db
 
