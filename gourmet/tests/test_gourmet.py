@@ -18,6 +18,7 @@ import test_importManager
 import test_interactive_importer
 import test_convert
 import test_db
+import test_plugin_loader
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
@@ -27,19 +28,11 @@ def maybe_intltool (fname):
     intltool-merge to update the output file.
     """
     to_name = fname[:-3]
-    if (
-        (not os.path.exists(to_name))
-        or
-        os.stat(to_name)[ST_MTIME] < os.stat(fname)[ST_MTIME]
-        ):
-        os.system('intltool-merge -d i18n/ %s %s'%(fname, to_name))
+    if ((not os.path.exists(to_name)) or os.stat(to_name)[ST_MTIME] < os.stat(fname)[ST_MTIME]):
+        os.system('intltool-merge -d i18n/ %s %s' % (fname, to_name))
 
 for desktop_file in glob.glob('../plugins/*plugin.in') + glob.glob('../plugins/*/*plugin.in'):
     maybe_intltool(desktop_file)
-
-tmpfile = tempfile.mktemp()  # TODO: replace deprecated mktemp()
-sys.argv.append('--gourmet-directory=%s' % tmpfile)
-sys.argv = sys.argv[:-1]
 
 def suite():
     ts = unittest.TestSuite()
@@ -47,7 +40,8 @@ def suite():
                    test_exportManager,
                    test_interactive_importer,
                    test_importer,
-                   test_convert]:
+                   test_convert,
+                   test_plugin_loader]:
         ts.addTest(unittest.defaultTestLoader.loadTestsFromModule(module))
 
     # The DB tests need to be run last as they kill all plugins

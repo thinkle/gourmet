@@ -2,10 +2,14 @@
 import unittest
 import tempfile
 import os
-import gourmet.gglobals
-tmpdir = tempfile.mktemp()
-os.makedirs(tmpdir)
-gourmet.gglobals.gourmetdir = tmpdir  # TODO: replace deprecated mktemp()
+from gourmet import gglobals
+
+# create a temporary directory for tests
+tmp_dir = tempfile.mktemp(".em")  # TODO replace deprecated mktemp()
+os.makedirs(tmp_dir)
+gglobals.gourmetdir = tmp_dir
+
+# continue to import with gourmetdir location set to tmp_dir
 from gourmet.GourmetRecipeManager import get_application, GourmetApplication
 from gourmet.backends import db
 db.RecData.__single = None
@@ -101,8 +105,8 @@ class TestSetterUpper (unittest.TestCase):
         # GourmetApplication.__single = None
         app = get_application()
         app.window.show()
-        import gtk
-        gtk.main()
+        # import gtk  # mute the GUI so that the test can run to completion without user intervention
+        # gtk.main()
 
 class TestExports (unittest.TestCase):
     def setUp (self):
