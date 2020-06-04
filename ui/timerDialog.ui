@@ -40,7 +40,6 @@
     <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
     <property name="focus_on_map">True</property>
     <property name="urgency_hint">False</property>
-    <property name="has_separator">True</property>
     <accelerator key="w" modifiers="GDK_CONTROL_MASK" signal="close"/>
     <accelerator key="Escape" modifiers="0" signal="close"/>
     <child internal-child="vbox">
