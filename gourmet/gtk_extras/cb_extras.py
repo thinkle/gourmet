@@ -1,4 +1,4 @@
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk
 from gi.repository import GObject
 from gourmet.gdebug import debug
 
