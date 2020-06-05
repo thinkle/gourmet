@@ -1,6 +1,6 @@
 import os
 import time
-from typing import Callable, Optional
+from typing import Callable, List, Optional, Union
 
 from gettext import gettext as _
 from gi.repository import Gtk, GObject
@@ -18,14 +18,14 @@ class TimeSpinnerUI:
                  hoursSpin: Gtk.SpinButton,
                  minutesSpin: Gtk.SpinButton,
                  secondsSpin: Gtk.SpinButton):
-        self.timer_hooks = []  # Actions to run when timer is over
-        self.is_running = False  # State flag
-        self.elapsed = 0  # The time already spent
-        self.previous_iter_time = None  # epoch stamp, used for loop ticks
-        self.orig_time = 0  # in seconds, the user input time, used for reset
-        self.hoursSpin = hoursSpin
-        self.minutesSpin = minutesSpin
-        self.secondsSpin = secondsSpin
+        self.timer_hooks: List[Callable] = []  # actions rand when timer over
+        self.is_running: bool = False  # State flag
+        self.previous_iter_time: Union[None, int] = None  # time, used for ticks
+        self.orig_time: int = 0  # in seconds, user input time
+
+        self.hoursSpin: Gtk.SpinButton = hoursSpin
+        self.minutesSpin: Gtk.SpinButton = minutesSpin
+        self.secondsSpin: Gtk.SpinButton = secondsSpin
 
         for spinner in (self.hoursSpin, self.minutesSpin, self.secondsSpin):
             # This is set up to assure 2 digit entries... 00:00:00, etc.
@@ -33,13 +33,13 @@ class TimeSpinnerUI:
             spinner.val_change_is_changing_entry = False
             spinner.set_width_chars(2)
 
-    def set_time(self, val: int) -> None:
+    def set_time(self, val: float) -> None:
         """Update the spinners on tick.
 
         Ran on every tick, the value is split into hours, minutes, seconds, and
         each spinner is set, to show the time going down.
         """
-        val = max(0, val)
+        val = max(0., val)
         self.hoursSpin.set_value(val // 3600)
         val = val % 3600
         self.minutesSpin.set_value(val // 60)
