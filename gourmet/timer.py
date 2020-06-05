@@ -36,14 +36,15 @@ class TimeSpinnerUI:
     def set_time(self, val: float) -> None:
         """Update the spinners on tick.
 
-        Ran on every tick, the value is split into hours, minutes, seconds, and
-        each spinner is set, to show the time going down.
+        Ran on every tick, the value, epoch stamp style, is split into hours,
+        minutes, and seconds, and their respective spinner are set, to show
+        time going down.
         """
-        val = max(0., val)
+        val = max(0, int(val))
         self.hoursSpin.set_value(val // 3600)
         val = val % 3600
         self.minutesSpin.set_value(val // 60)
-        self.secondsSpin.set_value(round(val % 60))
+        self.secondsSpin.set_value(val % 60)
 
     def get_time(self) -> int:
         """Get the time to run the timer for, in seconds"""
