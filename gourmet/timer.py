@@ -1,6 +1,6 @@
 import os
 import time
-from typing import Callable, List, Optional, Union
+from typing import Callable, List, Optional
 
 from gettext import gettext as _
 from gi.repository import Gtk, GObject
@@ -20,7 +20,7 @@ class TimeSpinnerUI:
                  secondsSpin: Gtk.SpinButton):
         self.timer_hooks: List[Callable] = []  # actions rand when timer over
         self.is_running: bool = False  # State flag
-        self.previous_iter_time: Union[None, int] = None  # time, used for ticks
+        self.previous_iter_time: Optional[float] = None  # time, used for ticks
         self.orig_time: int = 0  # in seconds, user input time
 
         self.hoursSpin: Gtk.SpinButton = hoursSpin
@@ -43,7 +43,7 @@ class TimeSpinnerUI:
         self.hoursSpin.set_value(val // 3600)
         val = val % 3600
         self.minutesSpin.set_value(val // 60)
-        self.secondsSpin.set_value(val % 60)
+        self.secondsSpin.set_value(round(val % 60))
 
     def get_time(self) -> int:
         """Get the time to run the timer for, in seconds"""
@@ -109,8 +109,8 @@ class TimeSpinnerUI:
         self.set_time(self.orig_time)
         self.previous_iter_time = 0
 
-    def connect_timer_hook (self, h: Callable,
-                            prepend: Optional[bool] = False) -> None:
+    def connect_timer_hook(self, h: Callable,
+                           prepend: Optional[bool] = False) -> None:
         if prepend:
             self.timer_hooks.insert(0, h)
         else:
@@ -121,7 +121,6 @@ class TimeSpinnerUI:
         self.previous_iter_time = None
         self.set_time(0)
         for h in self.timer_hooks: h()
-
 
 
 class TimerDialog:
