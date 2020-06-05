@@ -346,7 +346,7 @@ class OptionDialog (ModalDialog):
             self.optdic[i]=v
             self.menu.append(i)
         self.optionMenu=Gtk.OptionMenu()
-        self.vbox.pack_start(self.optionMenu,expand=False,fill=False)
+        self.vbox.pack_start(self.optionMenu, expand=False, fill=False, padding=0)
         self.optionMenu.set_menu(self.menu)
         self.optionMenu.show()
         self.menu.show()
