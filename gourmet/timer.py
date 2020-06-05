@@ -41,7 +41,7 @@ class TimeSpinnerUI:
     def val_changed_cb (self, widg):
         if not widg.val_change_is_changing_entry:
             widg.val_change_is_changing_entry = True
-            widg.set_text(self.pad_n(int(widg.get_value())))
+            widg.set_text(widg.get_text().zfill(2))
             widg.val_change_is_changing_entry = False
 
     def pad_n (self, int):
@@ -87,7 +87,7 @@ class TimeSpinnerUI:
 
     def connect_timer_hook (self, h, prepend=False):
         if prepend:
-            self.timer_hooks = [h] + self.timer_hooks
+            self.timer_hooks.insert(0, h)
         else:
             self.timer_hooks.append(h)
 
@@ -96,7 +96,6 @@ class TimeSpinnerUI:
         for h in self.timer_hooks: h()
 
 
-from .gtk_extras import dialog_extras as de
 
 class TimerDialog:
 
