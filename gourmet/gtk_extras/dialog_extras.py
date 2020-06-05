@@ -262,8 +262,7 @@ class EntryDialog (ModalDialog):
         if default:
             self.entry.set_text(default)
         if entryTip:
-            self.tt = Gtk.Tooltips()
-            self.tt.set_tip(self.entry,entryTip)
+            self.entry.set_tooltip_text(entryTip)
         self.entry.connect("changed",self.update_value)
         # Set the default value after connecting our handler so our
         # value gets updated!
