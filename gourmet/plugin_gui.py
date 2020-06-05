@@ -4,6 +4,7 @@ from gi.repository import GObject
 from .gtk_extras import dialog_extras as de
 from xml.sax.saxutils import escape
 from gettext import gettext as _
+from typing import Any, Optional
 
 class PluginChooser:
 
@@ -20,7 +21,7 @@ class PluginChooser:
         self.add_labels()
         self.window.vbox.add(self.notebook); self.notebook.show()
         self.window.add_buttons(
-            #Gtk.STOCK_ABOUT,1
+            #Gtk.STOCK_ABOUT,1, # TODO: find the description of plugins
             Gtk.STOCK_CLOSE,Gtk.ResponseType.CLOSE
             )
         self.window.set_default_size(375,400)
@@ -34,8 +35,8 @@ class PluginChooser:
         desc = Gtk.Label()
         desc.set_markup('<i>'+_('Plugins add extra functionality to Gourmet.')+'</i>')
         head.set_alignment(0.0,0.0); desc.set_alignment(0.0,0.0)
-        self.window.vbox.pack_start(head,expand=False)
-        self.window.vbox.pack_start(desc,expand=False)
+        self.window.vbox.pack_start(head, expand=False, fill=False, padding=0)
+        self.window.vbox.pack_start(desc, expand=False, fill=False, padding=0)
         self.window.vbox.set_border_width(12)
         head.show(); desc.show()
 
@@ -61,6 +62,17 @@ class PluginChooser:
                 )
         return ls
 
+    @staticmethod
+    def plugin_description_formatter(col: Gtk.TreeViewColumn, renderer: Gtk.CellRendererText,
+                                     mod: Gtk.ListStore, itr: Gtk.TreeIter, data: Any) -> None:
+        """ Format plugin name and description in the plugin window
+        """
+        plugin_set = mod[itr][1]
+        renderer.set_property('markup',
+                              ('<b>' + escape(plugin_set.name) + '</b>' +
+                               '\n<span size="smaller">' + escape(plugin_set.comment) + '</span>')
+                              )
+
     def make_treeview (self, plugin_list):
         tv = Gtk.TreeView()
         toggle_renderer = Gtk.CellRendererToggle()
@@ -71,20 +83,15 @@ class PluginChooser:
         text_renderer = Gtk.CellRendererText()
         text_renderer.set_property('wrap-width',350)
         plugin_col = Gtk.TreeViewColumn('Plugin',text_renderer)
-        def data_fun (col,renderer,mod,itr):
-            plugin_set = mod[itr][1]
-            renderer.set_property('markup',
-                                  ('<b>'+escape(plugin_set.name)+ '</b>' +
-                                   '\n<span size="smaller"><i>' + escape(plugin_set.comment) + '</i></span>')
-                                  )
-        plugin_col.set_cell_data_func(text_renderer,data_fun)
+        plugin_col.set_cell_data_func(text_renderer, self.plugin_description_formatter)
         plugin_col.set_property('expand',True)
         plugin_col.set_property('min-width',250)
         tv.append_column(plugin_col)
         tv.append_column(active_col)
         ls = self.make_list_store(plugin_list)
         tv.set_model(ls)
-        sw = Gtk.ScrolledWindow(); sw.set_policy(Gtk.PolicyType.NEVER,Gtk.PolicyType.AUTOMATIC)
+        sw = Gtk.ScrolledWindow()
+        sw.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
         sw.add(tv)
         return sw
 
