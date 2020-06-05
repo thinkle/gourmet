@@ -1,12 +1,15 @@
-from gi.repository import Gtk
-from gi.repository import GObject
-import time
-from . import gglobals
 import os
+import time
+
+from gettext import gettext as _
+from gi.repository import Gtk, GObject
 import xml.sax.saxutils
+
+from . import gglobals
 from .sound import Player
 from .gtk_extras import cb_extras as cb
-from gettext import gettext as _
+from .gtk_extras import dialog_extras as de
+
 
 class TimeSpinnerUI:
 
