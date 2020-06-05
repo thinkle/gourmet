@@ -29,7 +29,7 @@ from gettext import gettext as _
 from gettext import ngettext
 import threading
 from gi.repository import Pango
-from gi.repository import GObject
+from gi.repository import GObject, Gtk
 import time
 
 # _IdleObject etc. based on example John Stowers
@@ -293,8 +293,8 @@ class ThreadManagerGui:
         dlab.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
         cancel_button = threadbox.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         vbox = Gtk.VBox()
-        vbox.pack_start(dlab, expand=True, fill=True)
-        vbox.pack_start(pb, expand=True, fill=True)
+        vbox.pack_start(dlab, expand=True, fill=True, padding=0)
+        vbox.pack_start(pb, expand=True, fill=True, padding=0)
         threadbox.get_content_area().add(vbox)
         threadbox.show_all()
         self.messagebox.pack_start(threadbox, True, True, 0)
@@ -330,7 +330,7 @@ class ThreadManagerGui:
             pb.set_text(txt + ' ('+_('Done')+')')
         else:
             pb.set_text('Done')
-        pb.set_percentage(1)
+        pb.set_fraction(.01)
         for widget in threadbox.get_content_area().get_children()[0]:
             widget.hide()
         threadbox.hide()
