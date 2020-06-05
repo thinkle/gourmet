@@ -27,18 +27,28 @@ class TimeSpinnerUI:
             s.set_value(1)
             s.set_value(0)
 
-    def set_time (self, s):
-        s = int(s)
-        if s < 0: s = 0
-        #self.hoursSpin.set_text(self.pad_n(s / 3600))
-        self.hoursSpin.set_value(s / 3600)
-        s = s % 3600
-        #self.minutesSpin.set_text(self.pad_n(s / 60))
-        self.minutesSpin.set_value(s / 60)
-        #self.secondsSpin.set_text(self.pad_n(s % 60))
-        self.secondsSpin.set_value(s % 60)
+        Ran on every tick, the value is split into hours, minutes, seconds, and
+        each spinner is set, to show the time going down.
+        """
+        if val < 0:
+            val = 0
+        self.hoursSpin.set_value(val // 3600)
+        val = val % 3600
+        self.minutesSpin.set_value(val // 60)
+        self.secondsSpin.set_value(val % 60)
 
-    def val_changed_cb (self, widg):
+    def get_time(self) -> int:
+        """Get the time to run the timer for, in seconds"""
+        hours = self.hoursSpin.get_value()
+        hours *= 3600
+        minutes = self.minutesSpin.get_value()
+        minutes *= 60
+        seconds = self.secondsSpin.get_value()
+
+        return hours + minutes + seconds
+
+    def val_changed_cb(self, widg: Gtk.SpinButton) -> None:
+        """On input callback to set the values to be always two digits"""
         if not widg.val_change_is_changing_entry:
             widg.val_change_is_changing_entry = True
             widg.set_text(widg.get_text().zfill(2))
