@@ -205,7 +205,21 @@ class ImportManager (plugin_loader.Pluggable):
     def get_importer (self, name):
         return self.plugins_by_name[name]
 
-    def get_tempfilename (self, url, data, content_type):
+    def get_tempfilename(self, url: str,
+                         data: bytes,
+                         content_type: str) -> str:
+        """Get a temporary filename for the file to parse.
+
+        The url is a page where a recipe is found, for which Gourmet should have
+        a plugin.
+        data is the retrieved html document.
+        content_type is the mime-type string representation (eg. 'text/html')
+
+        The value returned is a string containing the temporary file path.
+
+        TODO: self.tempfiles could store pathlib.Path objects, and this function
+              return these.
+        """
         if url in self.tempfiles:
             return self.tempfiles[url]
         else:
@@ -219,9 +233,8 @@ class ImportManager (plugin_loader.Pluggable):
         else:
             tf = tempfile.mktemp()
         self.tempfiles[url] = tf
-        ofi = open(tf,'w')
-        ofi.write(data)
-        ofi. close()
+        with open(tf, "wb") as fout:
+            fout.write(data)
         return self.tempfiles[url]
 
     def guess_extension (self, content_type):
