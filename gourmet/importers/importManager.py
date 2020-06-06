@@ -216,6 +216,9 @@ class ImportManager (plugin_loader.Pluggable):
         content_type is the mime-type string representation (eg. 'text/html')
 
         The value returned is a string containing the temporary file path.
+
+        TODO: self.tempfiles could store pathlib.Path objects, and this function
+              return these.
         """
         if url in self.tempfiles:
             return self.tempfiles[url]
