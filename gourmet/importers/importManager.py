@@ -1,13 +1,13 @@
 import gourmet.plugin_loader as plugin_loader
 from gourmet.plugin import ImporterPlugin, ImportManagerPlugin
 import gourmet.gtk_extras.dialog_extras as de
-from gourmet.recipeManager import default_rec_manager
-import os.path
 from fnmatch import fnmatch
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui, NotThreadSafe
 from .webextras import URLReader
 import tempfile
 from gettext import gettext as _
+from urllib.parse import urlparse
+
 
 class ImportFileList (Exception):
     """A special case error -- if an importer throws this error
@@ -67,9 +67,14 @@ class ImportManager (plugin_loader.Pluggable):
         if not url: return
         else: return self.import_url(url)
 
-    def import_url (self, url):
-        if url.find('//')<0:
-            url = 'http://'+url
+    def import_url(self, url):
+        parsed_url = urlparse(url)
+        if parsed_url.scheme:
+            # there is an `http[s]` prefix
+            url = "{}://{}{}".format(parsed_url.scheme, parsed_url.netloc, parsed_url.path)
+        else:
+            # no `https` prefix, we add one
+            url = 'https://' + parsed_url.path
         reader = URLReader(url)
         reader.connect('completed',
                        self.finish_web_import)

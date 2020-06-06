@@ -1,4 +1,3 @@
-# import gtkspell   # TODO: cleanup
 from gi.repository import Gtk
 from gtkspellcheck import SpellChecker
 
@@ -16,7 +15,6 @@ class SpellPlugin (RecEditorPlugin, UIPlugin):
         for module in self.pluggable.modules:
             tvs = harvest_textviews(module.main)
             for tv in tvs:
-                # gtkspell.Spell(tv)
                 SpellChecker(tv)
 
 def harvest_textviews (widget):
@@ -30,6 +28,3 @@ def harvest_textviews (widget):
         elif hasattr(widget,'get_child'):
             tvs.extend(harvest_textviews(widget.get_child()))
         return tvs
-
-
-
