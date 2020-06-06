@@ -6,7 +6,7 @@ from gourmet.threadManager import get_thread_manager, get_thread_manager_gui, No
 from .webextras import URLReader
 import tempfile
 from gettext import gettext as _
-from urlparse import urlparse   # python3: from urllib.parse import urlparse
+from urllib.parse import urlparse
 
 
 class ImportFileList (Exception):
