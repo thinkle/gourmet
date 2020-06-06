@@ -1,9 +1,5 @@
 from gi.repository import Gtk
-
-try:
-    from gtkspell import Spell as Checker
-except ImportError:
-    from gtkspellcheck import SpellChecker as Checker
+from gtkspellcheck import SpellChecker
 
 from gourmet.plugin import RecEditorPlugin, UIPlugin
 
@@ -19,7 +15,7 @@ class SpellPlugin (RecEditorPlugin, UIPlugin):
         for module in self.pluggable.modules:
             tvs = harvest_textviews(module.main)
             for tv in tvs:
-                Checker(tv)
+                SpellChecker(tv)
 
 def harvest_textviews (widget):
     if isinstance(widget,Gtk.TextView):
