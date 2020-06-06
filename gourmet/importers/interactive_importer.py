@@ -1,4 +1,5 @@
 from gi.repository import Gtk
+from gi.repository import Pango
 from xml.sax.saxutils import escape
 from .generic_recipe_parser import RecipeParser
 import gourmet.gtk_extras.cb_extras as cb
@@ -224,11 +225,10 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             # Otherwise, there's no clear sane default... we'll just
             # select the current whole line
             cur_mark = self.tb.get_insert()
-            cur_pos=Gtk.TextBuffer.get_iter_at_mark(cur_pos)
+            cur_pos=Gtk.TextBuffer.get_iter_at_mark(cur_mark)
             cur_pos.backward_chars(
                 cur_pos.get_line_offset())
             st = cur_pos
-            end = cur_pos.copy()
             end = cur_pos.forward_line()
         self.label_range(st,end,label)
 
