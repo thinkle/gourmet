@@ -32,10 +32,10 @@ jobs:
         pip3 install .
     - name: Build source distribution
       run: |
-        python setup.py sdist
+        python3 setup.py sdist
     - name: Verify internationalization
       run: |
-          python setup.py build_i18n
+        python3 setup.py build_i18n
     - name: Verify icons packaging
       run: |
-          python setup.py build_icons
+        python3 setup.py build_icons

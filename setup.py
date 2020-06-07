@@ -269,7 +269,7 @@ class build_py(distutils.command.build_py.build_py):
             data_dir = op.join(base, 'gourmet')
 
             # abuse fileinput to replace two lines in bin/gourmet
-            for line in fileinput.input(outfile, inplace=1):
+            for line in fileinput.input(outfile, inplace=True):
                 if "base_dir = " in line:
                     line = "base_dir = '%s'\n" % base
                 elif "lib_dir = " in line:
@@ -287,8 +287,7 @@ class build_py(distutils.command.build_py.build_py):
                         op.join(base, 'locale')
                 elif "plugin_base = " in line:
                     line = "plugin_base = data_dir\n"
-
-                print(line),
+                print(line, end='')
 
 
 class build_scripts(distutils.command.build_scripts.build_scripts):
