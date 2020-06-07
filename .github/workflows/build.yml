@@ -33,6 +33,11 @@ jobs:
     - name: Build source distribution
       run: |
         python3 setup.py sdist
+    - name: Upload source distribution archive
+      uses: actions/upload-artifact@v2
+      with:
+        name: gourmet-current
+        path: dist/gourmet-0.17.5.tar.bz2
     - name: Verify internationalization
       run: |
         python3 setup.py build_i18n
