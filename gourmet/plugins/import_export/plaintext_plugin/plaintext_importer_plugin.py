@@ -1,3 +1,6 @@
+from gi import require_version
+require_version("Gtk", "3.0")
+from gi.repository import Gtk
 from gourmet.plugin import ImporterPlugin
 from gourmet.importers.importer import Tester
 from gourmet.threadManager import get_thread_manager

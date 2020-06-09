@@ -1,6 +1,8 @@
+from gi import require_version
+require_version("Gtk", "3.0")
+from gi.repository import GObject, Gtk, Pango
 from gourmet.plugin import RecEditorModule, RecEditorPlugin, IngredientControllerPlugin
 from gourmet.plugin_loader import PRE,POST
-import gtk, gobject, pango
 from gourmet.reccard import IngredientEditorModule, RecRef
 from . import keyEditorPluggable
 from gettext import gettext as _

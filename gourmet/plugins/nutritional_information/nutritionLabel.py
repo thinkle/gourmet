@@ -1,4 +1,6 @@
-import gtk, pango, gobject
+from gi import require_versions
+require_versions({"Gdk": "3.0", "Gtk": "3.0"})
+from gi.repository import Gdk, GObject, Gtk, Pango
 from gettext import gettext as _
 import gourmet.defaults
 

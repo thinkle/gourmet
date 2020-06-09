@@ -1,7 +1,7 @@
 from gourmet.plugin import MainPlugin
 from . import nutritionGrabberGui, nutrition
 from gourmet.gglobals import add_icon
-import os.path, gtk
+import os.path
 from gettext import gettext as _
 
 class NutritionMainPlugin (MainPlugin):

@@ -1,4 +1,6 @@
-import gtk, gobject
+from gi import require_version
+require_version("Gtk", "3.0")
+from gi.repository import GObject, Gtk
 import gourmet.convert as convert
 import gourmet.gglobals as gglobals
 from gourmet.gtk_extras.mnemonic_manager import MnemonicManager

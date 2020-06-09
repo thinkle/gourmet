@@ -1,4 +1,7 @@
-import gtk, gobject, os.path
+from gi import require_version
+require_version("Gtk", "3.0")
+from gi.repository import Gtk
+import os.path
 import gourmet.gglobals as gglobals
 import gourmet.convert as convert
 from gourmet.gtk_extras import cb_extras as cb
@@ -266,9 +269,9 @@ if __name__ == '__main__':
     import recipeManager
     rm = recipeManager.default_rec_manager()
     class DummyRG:
-        def reset_search (): pass
+        def reset_search (self): pass
     w = Gtk.Window()
-    b = Gtk.Button('edit me now')
+    b = Gtk.Button(label='edit me now')
     w.add(b); w.show_all()
     ve = FieldEditor(rm,DummyRG())
     b.connect('clicked',lambda *args: ve.run())
