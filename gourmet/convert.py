@@ -644,7 +644,8 @@ all_number_words.sort(
     lambda x,y: ((len(y)>len(x) and 1) or (len(x)>len(y) and -1) or 0)
     )
 
-NUMBER_WORD_REGEXP = '|'.join(all_number_words).replace(' ','\s+')
+#NUMBER_WORD_REGEXP = '|'.join(all_number_words).replace(' ','\s+')
+NUMBER_WORD_REGEXP = None
 FRACTION_WORD_REGEXP = '|'.join(filter(lambda n: NUMBER_WORDS[n]<1.0,
                                        all_number_words)
                                 ).replace(' ','\s+')

@@ -47,7 +47,7 @@ class TimeEntry (validatingEntry.ValidatingEntry):
                 return None
             else:
                 partial_unit = words[-1]
-            for u in self.conv.unit_to_seconds.keys():
+            for u in _(self.conv.unit_to_seconds.keys()):
                 if u.lower().find(partial_unit.lower())==0:
                     return None
                     #self._hide_warning_slowly()
