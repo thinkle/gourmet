@@ -44,7 +44,7 @@ class _IdleObject(GObject.GObject):
         GObject.GObject.__init__(self)
 
     def emit(self, *args):
-        if args[0]!='progress': print('emit',args)
+        if args[0]!='progress': print('emit', *args)
         GObject.idle_add(GObject.GObject.emit,self,*args)
 
 class Terminated (Exception):

@@ -167,10 +167,8 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
         basename = os.path.basename(self.outputfilename)
         xml_basename = os.path.splitext(basename)[0] +'.xml'
         xml_path = os.path.join(tempfile.gettempdir(), xml_basename)
-        self.xml_ofi = open(xml_path,'wb')
-        self.xmlDoc.writexml(self.xml_ofi, newl = '\n', addindent = "\t", encoding = "UTF-8")
-        # flush to the disk
-        self.xml_ofi.close()
+        with open(xml_path, 'w', encoding='utf-8') as xml_ofi:
+            self.xmlDoc.writexml(xml_ofi, newl = '\n', addindent = "\t", encoding = "UTF-8")
 
         # add xml and images to the zip (mcb)
         myfile = zipfile.ZipFile(self.outputfilename, mode='w')

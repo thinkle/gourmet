@@ -510,7 +510,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                 ]
         else:
             nattributes = len(self.attributes)
-            first_col_size = nattributes/2 + nattributes % 2
+            first_col_size = nattributes//2 + nattributes % 2
             first = self.attributes[:first_col_size]
             second = self.attributes[first_col_size:]
             table_data = []

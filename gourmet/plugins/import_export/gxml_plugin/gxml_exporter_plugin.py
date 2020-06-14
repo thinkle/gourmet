@@ -15,7 +15,6 @@ class GourmetExportChecker:
         self.check_attrs()
 
     def check_attrs (self):
-        self.txt = self.txt.decode('utf-8')
         for attr in ['title','cuisine',
                      'source','link']:
             if getattr(self.rec,attr):

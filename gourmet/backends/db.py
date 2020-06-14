@@ -1,4 +1,3 @@
-from functools import cmp_to_key
 import shutil
 from gourmet.gdebug import debug, TimeAction, debug_decorator
 import re, string, os.path, time
@@ -1531,32 +1530,27 @@ class RecData (Pluggable, BaseException):
                 group=i.inggroup
             if group == None:
                 group = n; n+=1
-            if not hasattr(i,'position'):
+
+            position = getattr(i, 'position', None)
+            if position is None:
                 print('Bad: ingredient without position',i)
-                i.position=defaultn
+                position = defaultn
                 defaultn += 1
             if group in groups:
                 groups[group].append(i)
                 # the position of the group is the smallest position of its members
                 # in other words, positions pay no attention to groups really.
-                if i.position < group_order[group]: group_order[group]=i.position
+                if position < group_order[group]:
+                    group_order[group] = position
             else:
-                groups[group]=[i]
-                group_order[group]=i.position
+                groups[group] = [i]
+                group_order[group] = position
         # now we just have to sort an i-listify
-        def sort_groups (x,y):
-            if group_order[x[0]] > group_order[y[0]]: return 1
-            elif group_order[x[0]] == group_order[y[0]]: return 0
-            else: return -1
 
-        alist = list(sorted(groups.items(), key=cmp_to_key(sort_groups)))
+        alist = list(sorted(groups.items(), key=lambda x: group_order[x[0]]))
 
-        def sort_ings (x,y):
-            if x.position > y.position: return 1
-            elif x.position == y.position: return 0
-            else: return -1
         for g,lst in alist:
-            lst.sort(key=cmp_to_key(sort_ings))
+            lst.sort(key=lambda x: x.position)
         final_alist = []
         last_g = -1
         for g,ii in alist:
