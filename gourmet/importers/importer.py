@@ -455,19 +455,23 @@ class Tester:
             self.matcher = re.compile(self.regexp)
         CLOSE=False
         if isinstance(filename, str):
-            self.ofi = open(filename,'r')
+            # Latin-1 can decode any bytes, letting us open ASCII-compatible
+            # text files and sniff their contents - e.g. for XML tags -
+            # without worrying too much about their real text encoding.
+            ofi = open(filename, 'r', encoding='latin1')
             CLOSE=True
-        else: self.ofi=filename
-        l = self.ofi.readline()
-        while l:
-            if self.matcher.match(l):
-                self.ofi.close()
-                return True
-            l = self.ofi.readline()
-        if CLOSE:
-            self.ofi.close()
         else:
-            self.ofi.seek(0)
+            ofi = filename
+
+        try:
+            for l in ofi:
+                if self.matcher.match(l):
+                    return True
+        finally:
+            if CLOSE:
+                ofi.close()
+            else:
+                ofi.seek(0)
 
 class RatingConverter:
 
