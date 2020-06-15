@@ -51,14 +51,15 @@ class CheckEncoding:
 
     def test_all_encodings (self,encodings=None):
         """Test all encodings and return a dictionary of possible encodings."""
-        if not encodings: encodings=self.all_encodings
+        if not encodings:
+            encodings=self.all_encodings
         self.possible_encodings = {}
         for e in encodings:
             try:
                 d=self.txt.decode(e)
-                if d and (not d in list(self.possible_encodings.values())):
+                if d and (d not in self.possible_encodings.values()):
                     # if we don't already have this possibility, add
-                    self.possible_encodings[e]=d.encode('utf8')
+                    self.possible_encodings[e] = d
             except UnicodeDecodeError:
                 pass
         return self.possible_encodings
@@ -76,7 +77,6 @@ class GetFile (CheckEncoding):
             self.enc = encoding
             self.lines = encs[self.enc].splitlines()
             debug('reading file %s as encoding %s'%(file, self.enc))
-            self.lines = [l.encode() for l in self.lines]
         else:
             raise Exception("Cannot decode file %s" % file)
 
