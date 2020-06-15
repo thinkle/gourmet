@@ -106,7 +106,7 @@ class EncodingDialog (de.OptionDialog):
         de.OptionDialog.__init__(self, default=default,label=label, sublabel=sublabel,
                                  options=self.options, expander=expander)
         self.set_default_size(700,500)
-        self.optionMenu.connect('activate',self.change_encoding)
+        self.combobox.connect('changed',self.change_encoding)
         self.change_encoding()
         self.created = False
         self.expander.set_expanded(True)
@@ -154,7 +154,7 @@ class EncodingDialog (de.OptionDialog):
             self.line_highlight_tags = [self.encoding_buffers[k].create_tag(background='green')]
             self.set_buffer_text(self.encoding_buffers[k],t)
 
-    def change_encoding (self):
+    def change_encoding (self, _widget=None):
         if self.cursor_already_set:
             im=self.buffer.get_insert()
             ti=self.buffer.get_iter_at_mark(im)

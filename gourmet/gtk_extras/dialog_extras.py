@@ -323,35 +323,27 @@ class OptionDialog (ModalDialog):
         """Options can be a simple option or can be a tuple or a list
         where the first item is the label and the second the value"""
         ModalDialog.__init__(self, okay=True, label=label, sublabel=sublabel, parent=parent, expander=expander, cancel=cancel)
-        self.menucb = self.get_option
-        self.optdic={}
-        self.menu = Gtk.Menu()
-        # set the default value to the first item
-        first = options[0]
-        if isinstance(first, str):
-            self.ret = first
-        else:
-            self.ret = first[1]
+
+        self.combobox = Gtk.ComboBoxText()
+        self.vbox.pack_start(
+            self.combobox, expand=False, fill=False, padding=0
+        )
+        self.option_values = []
         for o in options:
             if isinstance(o, str):
-                l=o
-                v=o
+                label = value = o
             else:
-                l=o[0]
-                v=o[1]
-            i = Gtk.MenuItem(l)
-            i.connect('activate',self.menucb)
-            i.show()
-            self.optdic[i]=v
-            self.menu.append(i)
-        self.optionMenu=Gtk.OptionMenu()
-        self.vbox.pack_start(self.optionMenu, expand=False, fill=False, padding=0)
-        self.optionMenu.set_menu(self.menu)
-        self.optionMenu.show()
-        self.menu.show()
+                label, value = o
+            self.combobox.append_text(label)
+            self.option_values.append(value)
+
+        # set the default value to the first item
+        self.ret = self.option_values[0]
+        self.combobox.connect('changed', self.get_option)
+        self.combobox.show()
 
     def get_option (self, widget):
-        self.ret=self.optdic[widget]
+        self.ret = self.option_values[self.combobox.get_active()]
         #return self.ret
 
     def set_value (self, value):
