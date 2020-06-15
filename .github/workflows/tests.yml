@@ -32,6 +32,8 @@ jobs:
         sudo pip3 install flake8 nose mypy
         sudo pip3 install --upgrade keyrings.alt
         if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
+    - name: Prepare plugins
+      run: python3 setup.py build
     - name: Test with nose
       run: |
         xvfb-run -a nosetests -v gourmet/tests/test_*
