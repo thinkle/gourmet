@@ -602,9 +602,9 @@ def seconds_to_timestring (time, round_at=None, fractions=FRACTIONS_NORMAL):
     time = int(time)
     time_strings = []
     units = list(Converter.unit_to_seconds.items())
-    units.sort(key=lambda x: x[1]) #old cmp-func: lambda a,b: a[1]<b[1] and 1 or a[1]>b[1] and -1 or 0
+    units.sort(key=lambda x: x[1], reverse=True)
     for unit,divisor in units:
-        time_covered = time / int(divisor)
+        time_covered = time // int(divisor)
         # special case hours, which we English speakers anyway are
         # used to hearing in 1/2s -- i.e. 1/2 hour is better than 30
         # minutes.
