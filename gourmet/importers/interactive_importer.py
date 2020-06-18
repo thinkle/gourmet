@@ -1,5 +1,4 @@
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import Gtk, Pango
 from xml.sax.saxutils import escape
 from .generic_recipe_parser import RecipeParser
 import gourmet.gtk_extras.cb_extras as cb

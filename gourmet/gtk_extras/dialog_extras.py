@@ -1,11 +1,8 @@
 from typing import List
-
-from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GObject, Gtk, Pango
 import os.path, fnmatch,  re
 from . import optionTable
 from . import thumbnail
-from gi.repository import Pango
 import xml.sax.saxutils
 from gettext import gettext as _
 from gourmet.gdebug import debug

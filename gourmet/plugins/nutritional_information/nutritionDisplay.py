@@ -1,4 +1,5 @@
-import gtk, re
+from gi.repository import Gtk
+import re
 from . import parser_data
 import gourmet.cb_extras as cb
 import gourmet.dialog_extras as de

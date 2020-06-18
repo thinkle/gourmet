@@ -3,10 +3,10 @@ import os.path
 import sys
 import tempfile
 
-import gi
 from gi.repository import Gtk
 if sys.platform not in ["win32",'darwin']:
-    gi.require_version('Poppler', '0.18')
+    from gi import require_version
+    require_version('Poppler', '0.18')
     from gi.repository import Poppler
 import reportlab.lib.pagesizes as pagesizes
 

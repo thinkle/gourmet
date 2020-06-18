@@ -2,8 +2,6 @@ import difflib, re
 from enum import Enum
 from typing import Optional
 
-import gi
-gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
 from gourmet.gdebug import debug

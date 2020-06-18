@@ -9,9 +9,7 @@ if pygtkcompat is not None:
     pygtkcompat.enable()
     pygtkcompat.enable_gtk(version='3.0')
 
-from gi.repository import Gtk
-from gi.repository import GObject
-from gi.repository import Gdk
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
 from . import batchEditor
 from . import recipeManager
 from .exporters.printer import get_print_manager
@@ -34,7 +32,6 @@ from .defaults.defaults import lang as defaults
 from .defaults.defaults import get_pluralized_form
 from . import plugin_loader, plugin, plugin_gui
 from .threadManager import get_thread_manager, get_thread_manager_gui, SuspendableThread
-from gi.repository import GdkPixbuf
 
 
 UNDO = 1

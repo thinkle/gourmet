@@ -11,6 +11,7 @@ functions.
 
 """
 
+from gi.repository import Gtk
 import xml.sax.saxutils
 from gourmet import convert
 import hashlib, difflib, types, re
@@ -229,7 +230,6 @@ def format_ingdiff_line (s):
     return s
 
 def show_ing_diff (idiff):
-    from gi.repository import Gtk
     left, right = idiff
     ls = Gtk.ListStore(str,str)
     for n in range(len(left)):
@@ -248,7 +248,7 @@ def show_ing_diff (idiff):
 
 
 if __name__ == '__main__':
-    import recipeManager, gtk
+    import recipeManager
     rd = recipeManager.default_rec_manager()
     r1 = 33
     r2 = 241

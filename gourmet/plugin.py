@@ -28,9 +28,8 @@
 # RecEditorPlugin - given an instance of the recipe editor.
 # DatabasePlugin - given an instance of the base database class.
 
+from gi.repository import GObject, Gtk
 from gourmet import Undo
-from gi.repository import Gtk
-from gi.repository import GObject
 from . import plugin_loader
 from .gtk_extras import fix_action_group_importance
 import sqlalchemy

@@ -3,8 +3,7 @@ user clicks on any time in the TextView."""
 
 from . import convert
 import re
-from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GObject, Gtk
 from .gtk_extras import LinkedTextView
 from . import timer
 import xml.sax.saxutils
@@ -67,8 +66,6 @@ def show_timer_cb (tv,l,note,c):
                note)
 
 if __name__ == '__main__':
-
-    from gi.repository import Gtk
     c = convert.get_converter()
     tv = LinkedTimeView()
     tv.connect('time-link-activated',show_timer_cb,c)

@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-from gi.repository import Gtk
-from gi.repository import GObject
-from gi.repository import Pango
-from gi.repository import Gdk
+from gi.repository import Gdk, GObject, Gtk
 import sys, os.path, time, os, string
 from . import recipeManager, convert, reccard, prefs
 from .gtk_extras import WidgetSaver, mnemonic_manager

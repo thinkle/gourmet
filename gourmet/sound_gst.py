@@ -1,5 +1,5 @@
-import pygst
-pyGst.require("0.10")
+from gi import require_version
+require_version('Gst', '1.0')
 from gi.repository import Gst
 
 class Player:

@@ -22,3 +22,10 @@
 # if args.thread_debug:
 #     import threading
 #     thread_debug()
+
+# specify the required GI namespaces version here.
+# 'require_version' only needs to be called once to ensures the namespace gets loaded with the given version
+from gi import require_version
+require_version("Gdk", "3.0")
+require_version("Gtk", "3.0")
+require_version("Pango", "1.0")

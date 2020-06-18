@@ -1,6 +1,4 @@
-from gi.repository import Gtk
-from gi.repository import Gdk, GdkPixbuf
-from gi.repository import GObject
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
 import gourmet.gglobals as gglobals
 import os.path
 from gettext import gettext as _

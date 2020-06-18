@@ -1,4 +1,4 @@
-import gtk, gobject
+from gi.repository import GObject, Gtk
 from gettext import gettext as _
 
 class NutritionModel (Gtk.TreeStore):

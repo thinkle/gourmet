@@ -1,4 +1,4 @@
-from gi.repository import Gtk, GdkPixbuf
+from gi.repository import GdkPixbuf, Gtk
 import os.path
 # mentioning PIL explicitly helps py2exe
 try:

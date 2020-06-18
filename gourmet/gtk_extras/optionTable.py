@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-from gi.repository import Gtk
+from gi.repository import GObject, Gtk
 from . import cb_extras
-from gi.repository import GObject
 
 class CustomOption (Gtk.HBox):
 

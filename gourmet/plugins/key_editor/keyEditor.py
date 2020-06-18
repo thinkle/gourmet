@@ -1,4 +1,5 @@
-import gtk, Gtk.gdk, gobject, re, os, os.path, time
+from gi.repository import Gdk, GObject, Gtk
+import re, os, os.path, time
 from gourmet import gglobals, convert
 from gourmet.gtk_extras import WidgetSaver, mnemonic_manager, pageable_store
 from gourmet.gtk_extras import cb_extras as cb

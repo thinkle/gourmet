@@ -1,3 +1,4 @@
+from gi.repository import Gtk
 import shutil
 from gourmet.gdebug import debug, TimeAction, debug_decorator
 import re, string, os.path, time
@@ -451,7 +452,6 @@ class RecData (Pluggable, BaseException):
         print('You can use it to restore if something ugly happens.')
         shutil.copy(self.filename,backup_file_name) # Make a backup...
         import gourmet.gtk_extras.dialog_extras as de
-        from gi.repository import Gtk
         de.show_message(
             title=_("Upgrading database"),
             label=_("Upgrading database"),
