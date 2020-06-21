@@ -29,9 +29,9 @@ class Test (unittest.TestCase):
 
     def testAvailablePlugins (self):
         ml = get_master_loader()
-        for st in ml.available_plugin_sets:
-            if st not in ml.active_plugins:
-                ml.activate_plugin_set(st)
+        for module_name, plugin_set in ml.available_plugin_sets.items():
+            if module_name not in ml.active_plugin_sets:
+                ml.activate_plugin_set(plugin_set)
 
 if __name__ == '__main__':
     unittest.main()
