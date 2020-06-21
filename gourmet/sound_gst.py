@@ -1,5 +1,9 @@
 from gi import require_version
-require_version('Gst', '1.0')
+try:
+    require_version('Gst', '1.0')
+except ValueError as e:
+    # gourmet.sound catches ImportError
+    raise ImportError("Gst not available") from e
 from gi.repository import Gst
 
 class Player:
