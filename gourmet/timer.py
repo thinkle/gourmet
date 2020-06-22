@@ -3,7 +3,7 @@ import time
 from typing import Callable, List, Optional
 
 from gettext import gettext as _
-from gi.repository import Gtk, GObject
+from gi.repository import GObject, Gtk
 import xml.sax.saxutils
 
 from . import gglobals

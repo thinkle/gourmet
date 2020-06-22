@@ -2,10 +2,7 @@
 import gc
 import webbrowser
 
-import gi
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Gdk, GdkPixbuf
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
 import os.path
 try:
     from PIL import Image

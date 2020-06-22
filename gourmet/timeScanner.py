@@ -3,8 +3,7 @@ user clicks on any time in the TextView."""
 
 from . import convert
 import re
-from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GObject, Gtk
 from .gtk_extras import LinkedTextView
 from . import timer
 import xml.sax.saxutils
@@ -18,14 +17,14 @@ for base,units in convert.Converter.time_units:
 time_matcher = re.compile(
     '(?P<firstnum>'+convert.NUMBER_FINDER_REGEXP + ')(' + \
     convert.RANGE_REGEXP + convert.NUMBER_FINDER_REGEXP.replace('int','int2').replace('frac','frac2') + ')?' \
-    + '\s*' + '(?P<unit>' + '|'.join(all_units) + ')(?=$|\W)',
+    + r'\s*' + '(?P<unit>' + '|'.join(all_units) + r')(?=$|\W)',
     re.UNICODE
     )
 
 
 
 def make_time_links (s):
-    return time_matcher.sub('<a href="\g<firstnum> \g<unit>">\g<0></a>',s)
+    return time_matcher.sub(r'<a href="\g<firstnum> \g<unit>">\g<0></a>',s)
 
 
 class TimeBuffer (LinkedTextView.LinkedPangoBuffer):
@@ -67,8 +66,6 @@ def show_timer_cb (tv,l,note,c):
                note)
 
 if __name__ == '__main__':
-
-    from gi.repository import Gtk
     c = convert.get_converter()
     tv = LinkedTimeView()
     tv.connect('time-link-activated',show_timer_cb,c)

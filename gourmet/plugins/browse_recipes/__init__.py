@@ -1,5 +1,4 @@
 from gourmet.plugin import MainPlugin
-from gi.repository import Gtk
 from . import browser
 from gourmet.plugin_loader import PRE, POST
 

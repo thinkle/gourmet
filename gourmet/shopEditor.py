@@ -1,4 +1,10 @@
-import gtk, gobject, backends.db, re, pickle
+import os
+import pickle
+import re
+
+from gi.repository import GObject, Gtk
+
+from .backends import db
 from .gglobals import uibase
 from .gtk_extras import WidgetSaver
 from .gtk_extras import cb_extras as cb
@@ -11,7 +17,7 @@ class ShopEditor:
     database. It is useful for corrections or changes to category info
     en masse and for reordering shopping categories."""
 
-    def __init__ (self, rd=backends.db.recipeManager(), rg=None):
+    def __init__ (self, rd=db.recipeManager(), rg=None):
         self.ui = Gtk.Builder()
         self.ui.add_from_file(os.path.join(uibase,'shopCatEditor.ui'))
         self.rd = rd

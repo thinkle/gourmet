@@ -18,18 +18,18 @@ class GourmetExportChecker:
         for attr in ['title','cuisine',
                      'source','link']:
             if getattr(self.rec,attr):
-                assert re.search('<%(attr)s>\s*%(val)s\s*</%(attr)s>'%{
+                assert re.search(r'<%(attr)s>\s*%(val)s\s*</%(attr)s>'%{
                     'attr':attr,
                     'val':getattr(self.rec,attr)
                     },
                                  self.txt), \
                                  'Did not find %s value %s'%(attr,getattr(self.rec,attr))
         if self.rec.yields:
-            assert re.search('<yields>\s*%s\s*%s\s*</yields>'%(
+            assert re.search(r'<yields>\s*%s\s*%s\s*</yields>'%(
                     self.rec.yields,
                     self.rec.yield_unit),
                              self.txt) or \
-                             re.search('<yields>\s*%s\s*%s\s*</yields>'%(
+                             re.search(r'<yields>\s*%s\s*%s\s*</yields>'%(
                                      float_to_frac(self.rec.yields),
                                      self.rec.yield_unit),
                                        self.txt), \
@@ -38,7 +38,7 @@ class GourmetExportChecker:
         for att in ['preptime','cooktime']:
             if getattr(self.rec,att):
                 tstr = seconds_to_timestring(getattr(self.rec,att))
-                assert re.search('<%(att)s>\s*%(tstr)s\s*</%(att)s>'%locals(),self.txt),\
+                assert re.search(r'<%(att)s>\s*%(tstr)s\s*</%(att)s>'%locals(),self.txt),\
                        'Did not find %s value %s'%(att,tstr)
 
 class GourmetExporterPlugin (ExporterPlugin):

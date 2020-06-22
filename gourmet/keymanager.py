@@ -70,7 +70,7 @@ class KeyManager:
             if w: #no blank strings!
                 count += 1
                 regexp="%s%s|"%(regexp,re.escape(w))
-        regex="%s)(?=\W|$)"%(regexp[0:-1]) #slice off extra |
+        regex=r"%s)(?=\W|$)"%(regexp[0:-1]) #slice off extra |
         if count:
             return re.compile(regex), count
         else:

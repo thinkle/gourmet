@@ -17,7 +17,7 @@ class NutritionData:
         self.conv = conv
         self.conv.density_table
         self.gramwght_regexp = re.compile("([0-9.]+)?( ?([^,]+))?(, (.*))?")
-        self.wght_breaker = re.compile('([^ ,]+)([, ]+\(?(.*)\)?)?$')
+        self.wght_breaker = re.compile(r'([^ ,]+)([, ]+\(?(.*)\)?)?$')
 
     def set_key (self, key, row):
         """Create an automatic equivalence for ingredient key 'key' and nutritional DB row ROW
@@ -78,7 +78,7 @@ class NutritionData:
         If max is not none, we cut our list off at max items (and hope our
         sorting algorithm succeeded in picking out the good matches!).
         """
-        words=re.split("\W",key)
+        words=re.split(r"\W",key)
         words = [w for w in words if w and not w in ['in','or','and','with']]
         #words += ['raw']
         result =  self.db.search_nutrition(words)

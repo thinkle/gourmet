@@ -2,8 +2,6 @@ import difflib, re
 from enum import Enum
 from typing import Optional
 
-import gi
-gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
 from gourmet.gdebug import debug
@@ -88,7 +86,7 @@ class UndoableObject:
 class UndoableTextChange (UndoableObject):
     def __init__ (self, set_text_action, history, initial_text="",text="",txt_id=None,is_undo=False):
         self.txt_id = txt_id
-        self.blob_matcher = re.compile('\s+\S+\s+')
+        self.blob_matcher = re.compile(r'\s+\S+\s+')
         self.initial_text = initial_text if initial_text is not None else ""
         self.text = text
         self._set_text = set_text_action

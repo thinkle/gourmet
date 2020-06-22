@@ -28,8 +28,7 @@
 from gettext import gettext as _
 from gettext import ngettext
 import threading
-from gi.repository import Pango
-from gi.repository import GObject, Gtk
+from gi.repository import GObject, Gtk, Pango
 import time
 
 # _IdleObject etc. based on example John Stowers

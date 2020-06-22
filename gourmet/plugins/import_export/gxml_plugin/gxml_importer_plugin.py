@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from gi.repository import Pango
 import os, os.path
 
 from gourmet.plugin import ImporterPlugin
@@ -51,7 +52,6 @@ class GxmlImportTester:
         assert sauce.thumb
 
     def is_markup_valid (self, rec):
-        from gi.repository import Pango
         Pango.parse_markup(rec.instructions or '')
         Pango.parse_markup(rec.modifications or '')
 

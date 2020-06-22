@@ -1,14 +1,17 @@
+import os.path
+
+from gettext import gettext as _
+from gi.repository.GLib import get_user_special_dir, UserDirectory
+from gi.repository import Gtk
+
 import gourmet.plugin_loader as plugin_loader
 from gourmet.plugin import ExporterPlugin
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui
-from gi.repository.GLib import (get_user_special_dir, USER_DIRECTORY_PICTURES,
-    USER_DIRECTORY_DOCUMENTS)
-from gettext import gettext as _
-import os.path
 
 EXTRA_PREFS_AUTOMATIC = -1
 EXTRA_PREFS_DEFAULT = 0
+
 
 class ExportManager (plugin_loader.Pluggable):
 
@@ -42,7 +45,7 @@ class ExportManager (plugin_loader.Pluggable):
         if default_extension and default_extension[0]=='.':
             default_extension = default_extension[1:]
         exp_directory = prefs.get('rec_exp_directory',
-                                  get_user_special_dir(USER_DIRECTORY_DOCUMENTS)
+                                  get_user_special_dir(UserDirectory.DIRECTORY_DOCUMENTS)
                                   )
         filename,exp_type = de.saveas_file(_('Save recipe as...'),
                                            filename='%s%s%s%s%s'%(exp_directory,
@@ -99,7 +102,7 @@ class ExportManager (plugin_loader.Pluggable):
             self.app.rd.include_linked_recipes(recs)
         ext = prefs.get('save_recipes_as','%sxml'%os.path.extsep)
         exp_directory = prefs.get('rec_exp_directory',
-                                  get_user_special_dir(USER_DIRECTORY_DOCUMENTS)
+                                  get_user_special_dir(UserDirectory.DIRECTORY_DOCUMENTS)
                                   )
         fn,exp_type=de.saveas_file(_("Export recipes"),
                                      filename="%s%s%s%s"%(exp_directory,

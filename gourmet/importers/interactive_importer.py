@@ -1,5 +1,4 @@
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import Gtk, Pango
 from xml.sax.saxutils import escape
 from .generic_recipe_parser import RecipeParser
 import gourmet.gtk_extras.cb_extras as cb
@@ -487,7 +486,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
 
     def set_text (self, txt):
         txt = str(txt) # convert to unicode for good measure
-        txt = re.sub('(\n\s*\n)+','\n\n',txt) # Take out extra newlines
+        txt = re.sub(r'(\n\s*\n)+','\n\n',txt) # Take out extra newlines
         txt = self.parser.parse(txt) # Parse
         self.set_parsed(txt)
 

@@ -1,5 +1,4 @@
-from gi.repository import Gtk
-from gi.repository import Gdk
+from gi.repository import Gdk, Gtk
 
 def collect_descendants (parent, descendants=None):
     """Return all descendants of parent widget.
@@ -317,7 +316,6 @@ class MnemonicManager:
 
 if __name__ == '__main__':
     from gourmet import gglobals
-    from gi.repository import Gtk
     import os.path
     mm=MnemonicManager()
     ui = Gtk.Builder()

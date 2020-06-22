@@ -1,5 +1,3 @@
-from gi import require_version
-require_version("Gtk", "3.0")
 from gi.repository import GObject, Gtk
 import gourmet.convert as convert
 import gourmet.gglobals as gglobals
@@ -124,7 +122,7 @@ class NutritionUSDAIndex:
         search for only some of the words in txt. If that fails, we'll
         set the search to blank.
         """
-        words = re.split('\W+',txt)
+        words = re.split(r'\W+',txt)
         # always search raw if possible... (it gets us the real thing
         # vs. canned/frozen/soup/babyfood, etc.)
         if 'raw' not in words:
@@ -212,7 +210,7 @@ class NutritionUSDAIndex:
         txt = self.usdaSearchEntry.get_text()
         if self.__last_search__ == txt and self.group == self.__last_group__:
             return
-        words = re.split('\W+',txt)
+        words = re.split(r'\W+',txt)
         groups = self.rd.fetch_food_groups_for_search(words)
         cur_active = cb.cb_get_active_text(self.foodGroupComboBox)
         groups = [self.ALL_GROUPS] + groups

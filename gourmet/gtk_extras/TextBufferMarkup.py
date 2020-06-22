@@ -17,11 +17,7 @@
 ### USA
 from typing import Union
 
-import gi
-gi.require_versions({"Gtk": "3.0", "Pango": "1.0"})
-from gi.repository import Pango
-from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import Gtk, Pango
 import xml.sax.saxutils
 from gourmet.gdebug import debug
 

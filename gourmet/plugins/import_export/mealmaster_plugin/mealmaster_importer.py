@@ -109,30 +109,30 @@ class mmf_importer (plaintext_importer.TextImporter):
         debug("start compile_regexps",5)
         plaintext_importer.TextImporter.compile_regexps(self)
         self.start_matcher = re.compile(mm_start_pattern)
-        self.end_matcher = re.compile("^[M-][M-][M-][M-][M-]\s*$")
-        self.group_matcher = re.compile("^\s*([M-][M-][M-][M-][M-])-*\s*([^-]+)\s*-*|^\s*---\s*([^-]+)\s*---\s*$",re.IGNORECASE)
-        self.ing_cont_matcher = re.compile("^\s*[-;]")
-        self.ing_opt_matcher = re.compile("(.+?)\s*\(?\s*optional\)?\s*$",re.IGNORECASE)
+        self.end_matcher = re.compile(r"^[M-][M-][M-][M-][M-]\s*$")
+        self.group_matcher = re.compile(r"^\s*([M-][M-][M-][M-][M-])-*\s*([^-]+)\s*-*|^\s*---\s*([^-]+)\s*---\s*$",re.IGNORECASE)
+        self.ing_cont_matcher = re.compile(r"^\s*[-;]")
+        self.ing_opt_matcher = re.compile(r"(.+?)\s*\(?\s*optional\)?\s*$",re.IGNORECASE)
         self.ing_or_matcher = re.compile("^[- ]*[Oo][Rr][- ]*$",re.IGNORECASE)
-        self.variation_matcher = re.compile("^\s*(VARIATION|HINT|NOTES?)(:.*)?",re.IGNORECASE)
+        self.variation_matcher = re.compile(r"^\s*(VARIATION|HINT|NOTES?)(:.*)?",re.IGNORECASE)
         # a crude ingredient matcher -- we look for two numbers,
         # intermingled with spaces followed by a space or more,
         # followed by a two digit unit (or spaces)
         c = convert.get_converter()
         self.ing_num_matcher = re.compile(
-            "^\s*%s+\s+([a-z ]{1,2}|%s)\s+.*\w+.*"%(
+            r"^\s*%s+\s+([a-z ]{1,2}|%s)\s+.*\w+.*"%(
                 convert.NUMBER_REGEXP,
                 '('+'|'.join([x for x in list(c.unit_dict.keys()) if x])+')'
                 ),
             re.IGNORECASE)
-        self.amt_field_matcher = re.compile("^(\s*%s\s*)$"%convert.NUMBER_REGEXP)
+        self.amt_field_matcher = re.compile(r"^(\s*%s\s*)$"%convert.NUMBER_REGEXP)
         # we build a regexp to match anything that looks like
         # this: ^\s*ATTRIBUTE: Some entry of some kind...$
         self.mmf = mmf
-        attrmatch="^\s*("
+        attrmatch=r"^\s*("
         for k in list(self.mmf.recattrs.keys()):
             attrmatch += "%s|"%re.escape(k)
-        attrmatch="%s):\s*(.*)\s*$"%attrmatch[0:-1]
+        attrmatch=r"%s):\s*(.*)\s*$"%attrmatch[0:-1]
         self.attr_matcher = re.compile(attrmatch)
         testtimer.end()
 

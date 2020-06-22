@@ -1,8 +1,5 @@
 import os, os.path, tempfile, io
-
-import gi
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GdkPixbuf
+from gi.repository import GdkPixbuf, Gtk
 
 try:
     from PIL import Image

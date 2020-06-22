@@ -1,4 +1,5 @@
-import gtk, os.path
+from gi.repository import Gtk
+import os.path
 from gourmet import gglobals
 from gourmet import cb_extras as cb
 from gourmet import dialog_extras as de

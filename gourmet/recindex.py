@@ -6,11 +6,7 @@ from .gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
     mnemonic_manager, pageable_store, treeview_extras as te
 from . import convert
 from . import Undo
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import Pango
-from gi.repository import GdkPixbuf
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
 
 class RecIndex:
     """We handle the 'index view' of recipes, which puts

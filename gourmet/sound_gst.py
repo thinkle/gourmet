@@ -1,5 +1,9 @@
-import pygst
-pyGst.require("0.10")
+from gi import require_version
+try:
+    require_version('Gst', '1.0')
+except ValueError as e:
+    # gourmet.sound catches ImportError
+    raise ImportError("Gst not available") from e
 from gi.repository import Gst
 
 class Player:

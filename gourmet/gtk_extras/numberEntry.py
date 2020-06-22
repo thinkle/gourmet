@@ -16,8 +16,7 @@
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 ### USA
 
-from gi import require_version
-require_version("Gtk", "3.0")
+
 from gi.repository import Gtk
 from . import validatingEntry
 import gourmet.convert as convert

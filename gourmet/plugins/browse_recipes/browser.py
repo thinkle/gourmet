@@ -1,4 +1,4 @@
-from gi.repository import Gtk, GObject, GdkPixbuf
+from gi.repository import GdkPixbuf, GObject, Gtk
 import os.path
 from gourmet.gglobals import DEFAULT_ATTR_ORDER, REC_ATTR_DIC
 from gourmet.ImageExtras import get_pixbuf_from_jpg

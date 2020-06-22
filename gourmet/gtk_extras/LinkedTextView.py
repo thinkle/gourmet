@@ -19,10 +19,7 @@
 # Largely based on hypertext.py example in pygtk docs by
 # Maik Hertha <maik.hertha@berlin.de>
 
-from gi.repository import Pango
-from gi.repository import Gtk
-from gi.repository import GObject
-from gi.repository import Gdk
+from gi.repository import Gdk, GObject, Gtk, Pango
 import re, xml.sax.saxutils
 from .TextBufferMarkup import PangoBuffer
 from gourmet.gdebug import debug
