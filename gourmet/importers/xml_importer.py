@@ -57,7 +57,10 @@ class Converter (importer.Importer):
         # count the recipes in the file
         t = TimeAction("rxml_to_metakit.run counting lines",0)
         if isinstance(self.fn, str):
-            f = open(self.fn, 'rb')
+            # Latin-1 can decode any bytes, letting us open ASCII-compatible
+            # text files and sniff their contents - e.g. for XML tags -
+            # without worrying about their real text encoding.
+            f = open(self.fn, 'r', encoding='latin1')
         else:
             f=self.fn
         recs = 0

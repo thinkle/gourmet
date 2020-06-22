@@ -51,14 +51,15 @@ class CheckEncoding:
 
     def test_all_encodings (self,encodings=None):
         """Test all encodings and return a dictionary of possible encodings."""
-        if not encodings: encodings=self.all_encodings
+        if not encodings:
+            encodings=self.all_encodings
         self.possible_encodings = {}
         for e in encodings:
             try:
                 d=self.txt.decode(e)
-                if d and (not d in list(self.possible_encodings.values())):
+                if d and (d not in self.possible_encodings.values()):
                     # if we don't already have this possibility, add
-                    self.possible_encodings[e]=d.encode('utf8')
+                    self.possible_encodings[e] = d
             except UnicodeDecodeError:
                 pass
         return self.possible_encodings
@@ -76,7 +77,6 @@ class GetFile (CheckEncoding):
             self.enc = encoding
             self.lines = encs[self.enc].splitlines()
             debug('reading file %s as encoding %s'%(file, self.enc))
-            self.lines = [l.encode() for l in self.lines]
         else:
             raise Exception("Cannot decode file %s" % file)
 
@@ -106,7 +106,7 @@ class EncodingDialog (de.OptionDialog):
         de.OptionDialog.__init__(self, default=default,label=label, sublabel=sublabel,
                                  options=self.options, expander=expander)
         self.set_default_size(700,500)
-        self.optionMenu.connect('activate',self.change_encoding)
+        self.combobox.connect('changed',self.change_encoding)
         self.change_encoding()
         self.created = False
         self.expander.set_expanded(True)
@@ -154,7 +154,7 @@ class EncodingDialog (de.OptionDialog):
             self.line_highlight_tags = [self.encoding_buffers[k].create_tag(background='green')]
             self.set_buffer_text(self.encoding_buffers[k],t)
 
-    def change_encoding (self):
+    def change_encoding (self, _widget=None):
         if self.cursor_already_set:
             im=self.buffer.get_insert()
             ti=self.buffer.get_iter_at_mark(im)
