@@ -4,6 +4,7 @@ import gourmet.gtk_extras.dialog_extras as de
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui
 from gi.repository.GLib import (get_user_special_dir, USER_DIRECTORY_PICTURES,
     USER_DIRECTORY_DOCUMENTS)
+from gi.repository import Gtk
 from gettext import gettext as _
 import os.path
 
