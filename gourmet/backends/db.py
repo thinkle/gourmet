@@ -616,7 +616,7 @@ class RecData (Pluggable, BaseException):
                         blob = getattr(r,src)
                         url = None
                         if blob:
-                            m = re.search('\w+://[^ ]*',blob)
+                            m = re.search(r'\w+://[^ ]*',blob)
                             if m:
                                 rec_url = blob[m.start():m.end()]
                                 if rec_url[-1] in ['.',')',',',';',':']:
@@ -1882,7 +1882,7 @@ class RecipeManager (RecData):
             s = s.decode('utf8')
         s = s.strip(
                 '\u2022\u2023\u2043\u204C\u204D\u2219\u25C9\u25D8\u25E6\u2619\u2765\u2767\u29BE\u29BF\n\t #*+-')
-        option_m = re.match('\s*optional:?\s*',s,re.IGNORECASE)
+        option_m = re.match(r'\s*optional:?\s*',s,re.IGNORECASE)
         if option_m:
             s = s[option_m.end():]
             d['optional']=True
@@ -1914,7 +1914,7 @@ class RecipeManager (RecData):
                         # otherwise, unit is not a unit
                         i = u + ' ' + i
             if i:
-                optmatch = re.search('\s+\(?[Oo]ptional\)?',i)
+                optmatch = re.search(r'\s+\(?[Oo]ptional\)?',i)
                 if optmatch:
                     d['optional']=True
                     i = i[0:optmatch.start()] + i[optmatch.end():]

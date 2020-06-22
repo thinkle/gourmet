@@ -7,7 +7,7 @@ from gettext import gettext as _
 
 class Mx2Cleaner:
     def __init__ (self):
-        self.regs_to_toss = ["<\?xml[^?]+\?>","<!DOCTYPE[^>]+>"]
+        self.regs_to_toss = [r"<\?xml[^?]+\?>","<!DOCTYPE[^>]+>"]
         self.toss_regexp = "("
         for r in self.regs_to_toss:
             self.toss_regexp = self.toss_regexp + r + "|"

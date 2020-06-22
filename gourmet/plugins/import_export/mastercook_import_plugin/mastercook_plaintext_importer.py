@@ -4,7 +4,7 @@ from gourmet import check_encodings
 from gourmet.gdebug import debug
 from gettext import gettext as _
 
-MASTERCOOK_START_REGEXP='\s*\*\s*Exported\s*from\s*MasterCook.*\*\s*'
+MASTERCOOK_START_REGEXP=r'\s*\*\s*Exported\s*from\s*MasterCook.*\*\s*'
 
 class MastercookPlaintextImporter (plaintext_importer.TextImporter):
     ATTR_DICT = {'Recipe By':'source',

@@ -486,7 +486,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
 
     def set_text (self, txt):
         txt = str(txt) # convert to unicode for good measure
-        txt = re.sub('(\n\s*\n)+','\n\n',txt) # Take out extra newlines
+        txt = re.sub(r'(\n\s*\n)+','\n\n',txt) # Take out extra newlines
         txt = self.parser.parse(txt) # Parse
         self.set_parsed(txt)
 

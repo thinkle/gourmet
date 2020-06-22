@@ -312,8 +312,8 @@ class FancyTextGetter:
         if strip:
             self.text = self.text.strip()
             # No more than two spaces!
-            self.text = re.sub('\n\t','\n',self.text)
-            self.text = re.sub('\n\s*\n\s+','\n\n',self.text)
+            self.text = re.sub(r'\n\t',r'\n',self.text)
+            self.text = re.sub(r'\n\s*\n\s+',r'\n\n',self.text)
         try:
             return str(self.text,errors='ignore')
         except:

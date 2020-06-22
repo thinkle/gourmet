@@ -33,27 +33,27 @@ class rezkonv_importer (mealmaster_importer.mmf_importer):
         debug("start compile_regexps",5)
         plaintext_importer.TextImporter.compile_regexps(self)
         self.start_matcher = re.compile(rzc_start_pattern)
-        self.end_matcher = re.compile("^[=M-][=M-][=M-][=M-][=M-]\s*$")
-        self.group_matcher = re.compile("^\s*([=M-][=M-][=M-][=M-][=M-]+)-*\s*([^-]+)\s*-*",re.IGNORECASE)
-        self.ing_cont_matcher = re.compile("^\s*[-;]")
-        self.ing_opt_matcher = re.compile("(.+?)\s*\(?\s*optional\)?\s*$",re.IGNORECASE)
+        self.end_matcher = re.compile(r"^[=M-][=M-][=M-][=M-][=M-]\s*$")
+        self.group_matcher = re.compile(r"^\s*([=M-][=M-][=M-][=M-][=M-]+)-*\s*([^-]+)\s*-*",re.IGNORECASE)
+        self.ing_cont_matcher = re.compile(r"^\s*[-;]")
+        self.ing_opt_matcher = re.compile(r"(.+?)\s*\(?\s*optional\)?\s*$",re.IGNORECASE)
         # or or the German, oder
-        self.ing_or_matcher = re.compile("^[-= ]*[Oo][dD]?[eE]?[Rr][-= ]*$",re.IGNORECASE)
-        self.variation_matcher = re.compile("^\s*(VARIATION|HINT|NOTES?|VERÄNDERUNG|VARIANTEN|TIPANMERKUNGEN)(:.*)?",re.IGNORECASE)
+        self.ing_or_matcher = re.compile(r"^[-= ]*[Oo][dD]?[eE]?[Rr][-= ]*$",re.IGNORECASE)
+        self.variation_matcher = re.compile(r"^\s*(VARIATION|HINT|NOTES?|VERÄNDERUNG|VARIANTEN|TIPANMERKUNGEN)(:.*)?",re.IGNORECASE)
         # a crude ingredient matcher -- we look for two numbers, intermingled with spaces
         # followed by a space or more, followed by a two digit unit (or spaces)
         self.ing_num_matcher = re.compile(
-            "^\s*%(top)s%(num)s+\s+[A-Za-z ][A-Za-z ]? .*"%{'top':convert.DIVIDEND_REGEXP,
+            r"^\s*%(top)s%(num)s+\s+[A-Za-z ][A-Za-z ]? .*"%{'top':convert.DIVIDEND_REGEXP,
                                                              'num':convert.NUMBER_REGEXP},
             re.IGNORECASE)
         self.amt_field_matcher = convert.NUMBER_MATCHER
         # we build a regexp to match anything that looks like
         # this: ^\s*ATTRIBUTE: Some entry of some kind...$
-        attrmatch="^\s*("
+        attrmatch=r"^\s*("
         self.mmf = rzc
         for k in list(self.mmf.recattrs.keys()):
             attrmatch += "%s|"%re.escape(k)
-        attrmatch="%s):\s*(.*)\s*$"%attrmatch[0:-1]
+        attrmatch=r"%s):\s*(.*)\s*$"%attrmatch[0:-1]
         self.attr_matcher = re.compile(attrmatch)
         testtimer.end()
 
