@@ -6,7 +6,7 @@ from . import thumbnail
 import xml.sax.saxutils
 from gettext import gettext as _
 from gourmet.gdebug import debug
-from gi.repository.GLib import get_user_special_dir, USER_DIRECTORY_PICTURES
+from gi.repository.GLib import get_user_special_dir, UserDirectory
 H_PADDING=12
 Y_PADDING=12
 
@@ -1118,7 +1118,7 @@ class ImageSelectorDialog (FileSelectorDialog):
                   buttons=None
                   ):
         FileSelectorDialog.__init__(self, title, filename, filters, action, set_filter, buttons)
-        pictures_dir = get_user_special_dir(USER_DIRECTORY_PICTURES)
+        pictures_dir = get_user_special_dir(UserDirectory.DIRECTORY_PICTURES)
         if not pictures_dir == None:
             self.fsd.set_current_folder(pictures_dir)
 
