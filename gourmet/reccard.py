@@ -73,8 +73,8 @@ class RecCard (object):
 
     def set_current_rec (self, rec):
         self.__current_rec = rec
-        if hasattr(self,'recipe_editor'):
-            self.recipe_editor.current_rec = rec
+        if self.re is not None:
+            self.re.current_rec = rec
         if hasattr(self,'recipe_display'):
             self.recipe_display.current_rec = rec
 
@@ -85,13 +85,15 @@ class RecCard (object):
                            set_current_rec,
                            None,
                            "Recipe in the recipe card")
-    def get_edited (self):
-        if hasattr(self,'recipe_editor') and self.recipe_editor.edited: return True
-        else: return False
+
+    def get_edited(self) -> bool:
+        if self.re is not None and self.re.edited:
+            return True
+        return False
 
     def set_edited (self, val):
-        if hasattr(self,'recipe_editor') and self.recipe_editor.edited:
-            self.recipe_editor.edited = bool(val)
+        if self.re is not None and self.re.edited:
+            self.re.edited = bool(val)
     edited = property(get_edited,set_edited)
 
     def show_display (self):
@@ -118,8 +120,8 @@ class RecCard (object):
         self.current_rec = recipe
         if hasattr(self,'recipe_display'):
             self.recipe_display.update_from_database()
-        if hasattr(self,'recipe_editor') and not self.recipe_editor.window.get_property('visible'):
-            delattr(self,'recipe_editor')
+        if self.re is not None and not self.re.window.is_visible():
+            self.re = None
 
     def show (self):
         if self.new:
@@ -130,7 +132,7 @@ class RecCard (object):
     def hide (self):
         if ((not (hasattr(self,'recipe_display') and self.recipe_display.window.get_property('visible')))
              and
-            (not (hasattr(self,'recipe_editor') and self.recipe_editor.window.get_property('visible')))):
+            (self.re is not None and not self.re.window.is_visible())):
             self.rg.del_rc(self.current_rec.id)
 
     # end RecCard
