@@ -35,10 +35,6 @@ from . import plugin_loader
 from . import timeScanner
 from . import defaults
 
-# TODO
-#
-# Redo white-coloring of widgets
-# Redo autowrapping of text fields
 
 def find_entry (w):
     if isinstance(w,Gtk.Entry):
@@ -1690,7 +1686,7 @@ class IngredientController (plugin_loader.Pluggable):
     OPTIONAL_COL = 4
 
     def __init__ (self, ingredient_editor_module):
-        self.ingredient_editor_module = ingredient_editor_module;
+        self.ingredient_editor_module = ingredient_editor_module
         self.rg = self.ingredient_editor_module.rg
         self.re = self.ingredient_editor_module.re
         self.new_item_count = 0
