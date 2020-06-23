@@ -1,14 +1,16 @@
-from gi.repository import Gtk, Pango
+from gettext import gettext as _
+import re
 from xml.sax.saxutils import escape
-from .generic_recipe_parser import RecipeParser
+
+from gi.repository import Gtk, Pango
+
 import gourmet.gtk_extras.cb_extras as cb
 import gourmet.gglobals as gglobals
-from . import importer
-import re
-from gourmet.threadManager import NotThreadSafe
-from . import imageBrowser
 import gourmet.ImageExtras as ImageExtras
-from gettext import gettext as _
+from gourmet.recipeManager import get_recipe_manager
+from gourmet.threadManager import NotThreadSafe
+from . import importer, imageBrowser
+from .generic_recipe_parser import RecipeParser
 
 # TODO
 # 1. Make this interface actually import recipes...
@@ -75,10 +77,7 @@ class ConvenientImporter (importer.Importer):
         self.group = txt.strip()
 
     def add_ing_from_text (self, txt):
-        if not hasattr(self,'db'):
-            import gourmet.backends.db as db
-            self.db = db.get_database()
-        parsed_dict = self.db.parse_ingredient(txt)
+        parsed_dict = get_recipe_manager().parse_ingredient(txt)
         self.ing = parsed_dict
         self.commit_ing()
 
