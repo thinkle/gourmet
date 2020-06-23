@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from typing import Callable, Optional
 import gc
 import webbrowser
 
@@ -8,7 +9,6 @@ try:
     from PIL import Image
 except ImportError:
     import Image
-import types
 import xml.sax.saxutils
 from gi.repository import Pango
 from .exporters import exportManager
@@ -61,6 +61,7 @@ class RecCard (object):
             from .GourmetRecipeManager import get_application
             rg = get_application()
         self.rg = rg
+        self.re: Optional[RecEditor] = None
         self.conf = []
         self.new = False
         if not recipe:
@@ -98,12 +99,16 @@ class RecCard (object):
             self.recipe_display = RecCardDisplay(self, self.rg,self.current_rec)
         self.recipe_display.window.present()
 
-    def show_edit (self, module=None):
-        if not hasattr(self,'recipe_editor'):
-            self.recipe_editor = RecEditor(self, self.rg,self.current_rec,new=self.new)
+    def show_edit(self, module: Optional[str] = None) -> None:
+        """Draw the recipe editor window.
+
+        `module` is the string definition of one of the RecEditor's tabs, as
+        defined in RecEditor.module_tab_by_name."""
+        if self.re is None:
+            self.re = RecEditor(self, self.rg, self.current_rec, new=self.new)
         if module:
-            self.recipe_editor.show_module(module)
-        self.recipe_editor.present()
+            self.re.show_module(module)
+        self.re.present()
 
 
     def delete (self, *args):
@@ -929,7 +934,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
                     return
             self.set_edited(False)
 
-    def show_module (self, module_name):
+    def show_module(self, module_name: str) -> None:
         """Show the part of our interface corresponding with module
         named module_name."""
         if module_name not in self.module_tab_by_name:
@@ -2152,7 +2157,8 @@ class IngredientTreeUI:
                    }
 
     def __init__ (self, ie, tree):
-        self.ingredient_editor_module =ie; self.rg = self.ingredient_editor_module.rg
+        self.ingredient_editor_module = ie
+        self.rg = self.ingredient_editor_module.rg
         self.ingController = IngredientController(self.ingredient_editor_module)
         self.ingTree = tree
         self.ingTree.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
@@ -2830,7 +2836,8 @@ class UndoableObjectWithInverseThatHandlesItsOwnUndo (Undo.UndoableObject):
         self.history.remove(self)
         self.inverse_action()
 
-def add_with_undo (rc,method):
+
+def add_with_undo(rc: 'RecCard', method: Callable):
     idx = rc.re.module_tab_by_name["ingredients"]
     ing_controller = rc.re.modules[idx].ingtree_ui.ingController
     uts = UndoableTreeStuff(ing_controller)
