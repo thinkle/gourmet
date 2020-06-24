@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from typing import Callable, Optional
 import gc
 import webbrowser
 
@@ -8,7 +9,6 @@ try:
     from PIL import Image
 except ImportError:
     import Image
-import types
 import xml.sax.saxutils
 from gi.repository import Pango
 from .exporters import exportManager
@@ -35,10 +35,6 @@ from . import plugin_loader
 from . import timeScanner
 from . import defaults
 
-# TODO
-#
-# Redo white-coloring of widgets
-# Redo autowrapping of text fields
 
 def find_entry (w):
     if isinstance(w,Gtk.Entry):
@@ -61,10 +57,11 @@ class RecRef:
 class RecCard (object):
 
     def __init__ (self, rg=None, recipe=None, manual_show=False):
-        if not rg:
+        if rg is None:
             from .GourmetRecipeManager import get_application
             rg = get_application()
         self.rg = rg
+        self.rec_editor: Optional[RecEditor] = None
         self.conf = []
         self.new = False
         if not recipe:
@@ -76,8 +73,8 @@ class RecCard (object):
 
     def set_current_rec (self, rec):
         self.__current_rec = rec
-        if hasattr(self,'recipe_editor'):
-            self.recipe_editor.current_rec = rec
+        if self.rec_editor is not None:
+            self.rec_editor.current_rec = rec
         if hasattr(self,'recipe_display'):
             self.recipe_display.current_rec = rec
 
@@ -88,13 +85,15 @@ class RecCard (object):
                            set_current_rec,
                            None,
                            "Recipe in the recipe card")
-    def get_edited (self):
-        if hasattr(self,'recipe_editor') and self.recipe_editor.edited: return True
-        else: return False
 
-    def set_edited (self, val):
-        if hasattr(self,'recipe_editor') and self.recipe_editor.edited:
-            self.recipe_editor.edited = bool(val)
+    def get_edited(self) -> bool:
+        if self.rec_editor is not None and self.rec_editor.edited:
+            return True
+        return False
+
+    def set_edited(self, val) -> None:
+        if self.rec_editor is not None and self.rec_editor.edited:
+            self.rec_editor.edited = bool(val)
     edited = property(get_edited,set_edited)
 
     def show_display (self):
@@ -102,12 +101,17 @@ class RecCard (object):
             self.recipe_display = RecCardDisplay(self, self.rg,self.current_rec)
         self.recipe_display.window.present()
 
-    def show_edit (self, module=None):
-        if not hasattr(self,'recipe_editor'):
-            self.recipe_editor = RecEditor(self, self.rg,self.current_rec,new=self.new)
+    def show_edit(self, module: Optional[str] = None) -> None:
+        """Draw the recipe editor window.
+
+        `module` is the string definition of one of the RecEditor's tabs, as
+        defined in RecEditor.module_tab_by_name."""
+        if self.rec_editor is None:
+            self.rec_editor = RecEditor(self, self.rg,
+                                        self.current_rec, new=self.new)
         if module:
-            self.recipe_editor.show_module(module)
-        self.recipe_editor.present()
+            self.rec_editor.show_module(module)
+        self.rec_editor.present()
 
 
     def delete (self, *args):
@@ -117,8 +121,9 @@ class RecCard (object):
         self.current_rec = recipe
         if hasattr(self,'recipe_display'):
             self.recipe_display.update_from_database()
-        if hasattr(self,'recipe_editor') and not self.recipe_editor.window.get_property('visible'):
-            delattr(self,'recipe_editor')
+        if (self.rec_editor is not None and
+            not self.rec_editor.window.is_visible()):
+            self.rec_editor = None
 
     def show (self):
         if self.new:
@@ -128,8 +133,9 @@ class RecCard (object):
 
     def hide (self):
         if ((not (hasattr(self,'recipe_display') and self.recipe_display.window.get_property('visible')))
-             and
-            (not (hasattr(self,'recipe_editor') and self.recipe_editor.window.get_property('visible')))):
+            and
+            (self.rec_editor is not None and
+             not self.rec_editor.window.is_visible())):
             self.rg.del_rc(self.current_rec.id)
 
     # end RecCard
@@ -933,7 +939,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
                     return
             self.set_edited(False)
 
-    def show_module (self, module_name):
+    def show_module(self, module_name: str) -> None:
         """Show the part of our interface corresponding with module
         named module_name."""
         if module_name not in self.module_tab_by_name:
@@ -1690,7 +1696,7 @@ class IngredientController (plugin_loader.Pluggable):
     OPTIONAL_COL = 4
 
     def __init__ (self, ingredient_editor_module):
-        self.ingredient_editor_module = ingredient_editor_module;
+        self.ingredient_editor_module = ingredient_editor_module
         self.rg = self.ingredient_editor_module.rg
         self.re = self.ingredient_editor_module.re
         self.new_item_count = 0
@@ -2156,7 +2162,8 @@ class IngredientTreeUI:
                    }
 
     def __init__ (self, ie, tree):
-        self.ingredient_editor_module =ie; self.rg = self.ingredient_editor_module.rg
+        self.ingredient_editor_module = ie
+        self.rg = self.ingredient_editor_module.rg
         self.ingController = IngredientController(self.ingredient_editor_module)
         self.ingTree = tree
         self.ingTree.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
@@ -2834,9 +2841,10 @@ class UndoableObjectWithInverseThatHandlesItsOwnUndo (Undo.UndoableObject):
         self.history.remove(self)
         self.inverse_action()
 
-def add_with_undo (rc,method):
-    idx = rc.re.module_tab_by_name["ingredients"]
-    ing_controller = rc.re.modules[idx].ingtree_ui.ingController
+
+def add_with_undo(editor_module: IngredientEditorModule, method: Callable):
+    idx = editor_module.re.module_tab_by_name["ingredients"]
+    ing_controller = editor_module.re.modules[idx].ingtree_ui.ingController
     uts = UndoableTreeStuff(ing_controller)
 
     def do_it ():
