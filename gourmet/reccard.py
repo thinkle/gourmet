@@ -57,11 +57,11 @@ class RecRef:
 class RecCard (object):
 
     def __init__ (self, rg=None, recipe=None, manual_show=False):
-        if not rg:
+        if rg is None:
             from .GourmetRecipeManager import get_application
             rg = get_application()
         self.rg = rg
-        self.re: Optional[RecEditor] = None
+        self.rec_editor: Optional[RecEditor] = None
         self.conf = []
         self.new = False
         if not recipe:
@@ -73,8 +73,8 @@ class RecCard (object):
 
     def set_current_rec (self, rec):
         self.__current_rec = rec
-        if self.re is not None:
-            self.re.current_rec = rec
+        if self.rec_editor is not None:
+            self.rec_editor.current_rec = rec
         if hasattr(self,'recipe_display'):
             self.recipe_display.current_rec = rec
 
@@ -87,13 +87,13 @@ class RecCard (object):
                            "Recipe in the recipe card")
 
     def get_edited(self) -> bool:
-        if self.re is not None and self.re.edited:
+        if self.rec_editor is not None and self.rec_editor.edited:
             return True
         return False
 
-    def set_edited (self, val):
-        if self.re is not None and self.re.edited:
-            self.re.edited = bool(val)
+    def set_edited(self, val) -> None:
+        if self.rec_editor is not None and self.rec_editor.edited:
+            self.rec_editor.edited = bool(val)
     edited = property(get_edited,set_edited)
 
     def show_display (self):
@@ -106,11 +106,12 @@ class RecCard (object):
 
         `module` is the string definition of one of the RecEditor's tabs, as
         defined in RecEditor.module_tab_by_name."""
-        if self.re is None:
-            self.re = RecEditor(self, self.rg, self.current_rec, new=self.new)
+        if self.rec_editor is None:
+            self.rec_editor = RecEditor(self, self.rg,
+                                        self.current_rec, new=self.new)
         if module:
-            self.re.show_module(module)
-        self.re.present()
+            self.rec_editor.show_module(module)
+        self.rec_editor.present()
 
 
     def delete (self, *args):
@@ -120,8 +121,9 @@ class RecCard (object):
         self.current_rec = recipe
         if hasattr(self,'recipe_display'):
             self.recipe_display.update_from_database()
-        if self.re is not None and not self.re.window.is_visible():
-            self.re = None
+        if (self.rec_editor is not None and
+            not self.rec_editor.window.is_visible()):
+            self.rec_editor = None
 
     def show (self):
         if self.new:
@@ -131,8 +133,9 @@ class RecCard (object):
 
     def hide (self):
         if ((not (hasattr(self,'recipe_display') and self.recipe_display.window.get_property('visible')))
-             and
-            (self.re is not None and not self.re.window.is_visible())):
+            and
+            (self.rec_editor is not None and
+             not self.rec_editor.window.is_visible())):
             self.rg.del_rc(self.current_rec.id)
 
     # end RecCard
@@ -2839,9 +2842,9 @@ class UndoableObjectWithInverseThatHandlesItsOwnUndo (Undo.UndoableObject):
         self.inverse_action()
 
 
-def add_with_undo(rc: 'RecCard', method: Callable):
-    idx = rc.re.module_tab_by_name["ingredients"]
-    ing_controller = rc.re.modules[idx].ingtree_ui.ingController
+def add_with_undo(editor_module: IngredientEditorModule, method: Callable):
+    idx = editor_module.re.module_tab_by_name["ingredients"]
+    ing_controller = editor_module.re.modules[idx].ingtree_ui.ingController
     uts = UndoableTreeStuff(ing_controller)
 
     def do_it ():
