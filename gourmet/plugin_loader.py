@@ -150,7 +150,7 @@ class MasterLoader:
                         raise
         return depending_on_me
 
-    def activate_plugin_set (self, plugin_set):
+    def activate_plugin_set (self, plugin_set: 'PluginSet'):
         """Activate a set of plugins.
         """
         if plugin_set in self.active_plugin_sets:
@@ -159,8 +159,9 @@ class MasterLoader:
         # plugin_set.get_module() returns None if there's been a
         # problem -- we want to raise that problem now.
         if plugin_set.get_module() is None:
-            self.errors[plugin_set]=plugin_set.error.__class__.__name__+': '+plugin_set.error.message
-            raise plugin_set.error
+            e = plugin_set.error
+            self.errors[plugin_set] = f"{type(e).__name__}: {e}"
+            raise e
         self.active_plugin_sets.append(plugin_set.module)
         self.active_plugins.extend(plugin_set.plugins)
         for plugin in plugin_set.plugins:
@@ -169,7 +170,7 @@ class MasterLoader:
                     for pluggable in self.pluggables_by_class[klass]:
                         pluggable.plugin_plugin(self.get_instantiated_plugin(plugin))
 
-    def deactivate_plugin_set (self, plugin_set):
+    def deactivate_plugin_set (self, plugin_set: 'PluginSet'):
         # Deactivate any plugin sets that depend upon us...
         for ps in self.check_if_depended_upon(plugin_set):
             self.deactivate_plugin_set(ps)
