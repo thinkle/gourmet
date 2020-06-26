@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from typing import Callable, Optional
+from typing import Callable, List, Optional
 import gc
 import webbrowser
 
@@ -52,91 +52,92 @@ class RecRef:
         self.item = title
         self.amount = 1
 
-# OVERARCHING RECIPE CARD CLASS - PROVIDES GLUE BETWEEN EDITING AND DISPLAY
 
-class RecCard (object):
+class RecCard:
+    """Overarching recipe card class.
+    Provides glue between editing and display.
+    """
+    def __init__(self,
+                 rec_gui: 'RecGui',
+                 recipe: Optional['RowProxy'] = None,
+                 manual_show: bool = False):
+        self.__rec_gui = rec_gui
+        self.__rec_editor: Optional[RecEditor] = None
+        self.__rec_display: Optional[RecCardDisplay] = None
+        self.__new: bool = True if recipe is None else False
+        self.__current_rec: 'RowProxy' = recipe if recipe else rec_gui.rd.new_rec()
 
-    def __init__ (self, rg=None, recipe=None, manual_show=False):
-        if rg is None:
-            from .GourmetRecipeManager import get_application
-            rg = get_application()
-        self.rg = rg
-        self.rec_editor: Optional[RecEditor] = None
-        self.conf = []
-        self.new = False
-        if not recipe:
-            recipe = self.rg.rd.new_rec()
-            self.new = True
-        self.current_rec = recipe
+        self.conf = []  # This list is unused, and should be refactored out
+
         if not manual_show:
             self.show()
 
-    def set_current_rec (self, rec):
-        self.__current_rec = rec
-        if self.rec_editor is not None:
-            self.rec_editor.current_rec = rec
-        if hasattr(self,'recipe_display'):
-            self.recipe_display.current_rec = rec
-
-    def get_current_rec (self):
+    @property
+    def current_rec(self) -> 'RowProxy':
         return self.__current_rec
 
-    current_rec = property(get_current_rec,
-                           set_current_rec,
-                           None,
-                           "Recipe in the recipe card")
+    @current_rec.setter
+    def current_rec(self, rec: 'RowProxy') -> None:
+        self.__current_rec = rec
+        if self.__rec_editor is not None:
+            self.__rec_editor.current_rec = rec
+        if self.__rec_display is not None:
+            self.__rec_display.current_rec = rec
 
-    def get_edited(self) -> bool:
-        if self.rec_editor is not None and self.rec_editor.edited:
+    @property
+    def edited(self) -> bool:
+        if self.__rec_editor is not None and self.__rec_editor.edited:
             return True
         return False
 
-    def set_edited(self, val) -> None:
-        if self.rec_editor is not None and self.rec_editor.edited:
-            self.rec_editor.edited = bool(val)
-    edited = property(get_edited,set_edited)
+    @edited.setter
+    def edited(self, val: bool) -> None:
+        if self.__rec_editor is not None and self.__rec_editor.edited:
+            self.__rec_editor.edited = val
 
-    def show_display (self):
-        if not hasattr(self,'recipe_display'):
-            self.recipe_display = RecCardDisplay(self, self.rg,self.current_rec)
-        self.recipe_display.window.present()
+    def show_display(self) -> None:
+        if self.__rec_display is None:
+            self.__rec_display = RecCardDisplay(self, self.__rec_gui,
+                                                self.current_rec)
+        self.__rec_display.window.present()
 
     def show_edit(self, module: Optional[str] = None) -> None:
         """Draw the recipe editor window.
 
         `module` is the string definition of one of the RecEditor's tabs, as
         defined in RecEditor.module_tab_by_name."""
-        if self.rec_editor is None:
-            self.rec_editor = RecEditor(self, self.rg,
-                                        self.current_rec, new=self.new)
+        if self.__rec_editor is None:
+            self.__rec_editor = RecEditor(self, self.__rec_gui,
+                                          self.current_rec, new=self.__new)
         if module:
-            self.rec_editor.show_module(module)
-        self.rec_editor.present()
+            self.__rec_editor.show_module(module)
+        self.__rec_editor.present()
 
-
-    def delete (self, *args):
-        self.rg.rec_tree_delete_recs([self.current_rec])
-
-    def update_recipe (self, recipe):
-        self.current_rec = recipe
-        if hasattr(self,'recipe_display'):
-            self.recipe_display.update_from_database()
-        if (self.rec_editor is not None and
-            not self.rec_editor.window.is_visible()):
-            self.rec_editor = None
-
-    def show (self):
-        if self.new:
+    def show(self) -> None:
+        if self.__new:
             self.show_edit()
         else:
             self.show_display()
 
-    def hide (self):
-        if ((not (hasattr(self,'recipe_display') and self.recipe_display.window.get_property('visible')))
-            and
-            (self.rec_editor is not None and
-             not self.rec_editor.window.is_visible())):
-            self.rg.del_rc(self.current_rec.id)
+    def delete(self, *args) -> None:
+        self.__rec_gui.rec_tree_delete_recs([self.current_rec])
+
+    def update_recipe(self, recipe: 'RowProxy') -> None:
+        self.current_rec = recipe
+        if self.__rec_display is not None:
+            self.__rec_display.update_from_database()
+
+        if (self.__rec_editor is not None and
+            not self.__rec_editor.window.is_visible()):
+            self.__rec_editor = None
+
+    def hide(self) -> None:
+        rec_displayed = (self.__rec_display is not None and
+                         self.__rec_display.window.is_visible())
+        rec_editor_displayed = (self.__rec_editor is not None and
+                                not self.__rec_editor.window.is_visible())
+        if rec_displayed and rec_editor_displayed:
+            self.__rec_gui.del_rc(self.current_rec.id)
 
     # end RecCard
 
@@ -181,7 +182,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
     def __init__ (self, reccard, recGui, recipe=None):
         self.reccard = reccard; self.rg = recGui; self.current_rec = recipe
         self.mult = 1 # parameter
-        self.conf = reccard.conf
+        self.conf: List[Gtk.Widget] = []
         self.prefs = prefs.get_prefs()
         self.setup_ui()
         self.setup_uimanager()
@@ -830,7 +831,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
             recipe = self.recipe_display.current_rec
         self.current_rec = recipe
         self.setup_defaults()
-        self.conf = reccard.conf
+        self.conf: List[Gtk.Widget] = []
         self.setup_ui_manager()
         #self.setup_undo()
         self.setup_main_interface()
