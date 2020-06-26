@@ -7,7 +7,7 @@ Pillow
 pycairo
 pyenchant
 pygobject
-# pygtkspellcheck
+pygtkspellcheck
 reportlab
 scrape-schema-recipe
 selenium
