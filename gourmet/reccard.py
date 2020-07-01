@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Tuple
 import gc
 import webbrowser
 
@@ -1055,7 +1055,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
     def delete_cb (self, *args):
         self.rg.rec_tree_delete_recs([self.current_rec])
 
-    def close_cb (self, *args):
+    def close_cb(self, *args: Tuple[Gtk.Window, Gdk.Event]) -> bool:
         if self.edited:
             try:
                 save_me = de.getBoolean(
@@ -1064,9 +1064,11 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
                     custom_yes=Gtk.STOCK_SAVE,
                     )
             except de.UserCancelledError:
-                return
+                return True  # keep the window open
+
             if save_me:
                 self.save_cb()
+
         self.window.hide()
         self.reccard.hide()
         if self.new:
