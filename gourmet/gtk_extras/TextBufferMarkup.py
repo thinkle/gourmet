@@ -15,263 +15,93 @@
 ### along with this library; if not, write to the Free Software
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 ### USA
-from typing import Union
+from typing import Any, Dict, List, Optional, Tuple, Union
+from gi.repository import Gdk, GLib, Gtk, Pango
 
-from gi.repository import Gtk, Pango
-import xml.sax.saxutils
-from gourmet.gdebug import debug
 
-class PangoBuffer (Gtk.TextBuffer):
-    # TODO: Fix this in 2to3
-    # desc_to_attr_table = {
-    #     'family':[Pango.AttrFamily,""],
-    #     'style':[Pango.AttrStyle,Pango.Style.NORMAL],
-    #     'variant':[Pango.AttrVariant,Pango.VARIANT_NORMAL],
-    #     'weight':[Pango.AttrWeight,Pango.Weight.NORMAL],
-    #     'stretch':[Pango.AttrStretch,Pango.STRETCH_NORMAL],
-    #     }
-    desc_to_attr_table = {}
-    pango_translation_properties={}
-    # pango_translation_properties={
-    #         # pango ATTR TYPE : (pango attr property / tag property)
-    #         Pango.ATTR_SIZE : 'size',
-    #         Pango.ATTR_WEIGHT: 'weight',
-    #         Pango.ATTR_UNDERLINE: 'underline',
-    #         Pango.ATTR_STRETCH: 'stretch',
-    #         Pango.ATTR_VARIANT: 'variant',
-    #         Pango.ATTR_STYLE: 'style',
-    #         Pango.ATTR_SCALE: 'scale',
-    #         Pango.ATTR_STRIKETHROUGH: 'strikethrough',
-    #         Pango.ATTR_RISE: 'rise',
-    #         }
-    attval_to_markup={}
-    # attval_to_markup={
-    #         'underline':{Pango.Underline.SINGLE:'single',
-    #                      Pango.Underline.DOUBLE:'double',
-    #                      Pango.Underline.LOW:'low',
-    #                      Pango.Underline.NONE:'none'},
-    #         'stretch':{Pango.STRETCH_ULTRA_EXPANDED:'ultraexpanded',
-    #                    Pango.STRETCH_EXPANDED:'expanded',
-    #                    Pango.STRETCH_EXTRA_EXPANDED:'extraexpanded',
-    #                    Pango.STRETCH_EXTRA_CONDENSED:'extracondensed',
-    #                    Pango.STRETCH_ULTRA_CONDENSED:'ultracondensed',
-    #                    Pango.STRETCH_CONDENSED:'condensed',
-    #                    Pango.STRETCH_NORMAL:'normal',
-    #                    },
-    #         'variant':{Pango.VARIANT_NORMAL:'normal',
-    #                    Pango.VARIANT_SMALL_CAPS:'smallcaps',
-    #                    },
-    #         'style':{Pango.Style.NORMAL:'normal',
-    #                  Pango.Style.OBLIQUE:'oblique',
-    #                  Pango.Style.ITALIC:'italic',
-    #                  },
-    #         'stikethrough':{1:'true',
-    #                         True:'true',
-    #                         0:'false',
-    #                         False:'false'},
-    #         }
-    def __init__ (self):
-        self.tagdict = {}
-        self.tags = {}
-        #self.buf = buf
-        #self.set_text(txt)
+class PangoBuffer(Gtk.TextBuffer):
+    """A supercharged Gtk.TextBuffer that handles HTML or Pango markup in its
+    content"""
+
+    def __init__(self):
         Gtk.TextBuffer.__init__(self)
 
-    def set_text (self, txt: Union[str, bytes]) -> None:
+    def set_text(self, txt: Union[str, bytes]) -> None:
         if isinstance(txt, bytes):
             # data loaded from the database are bytes, not str
-            txt = txt.decode()
-        Gtk.TextBuffer.set_text(self, txt)   # TODO: should clear the buffer of text
-        try:
-            self.parsed, attributes, self.txt, self.separator = Pango.parse_markup(txt, -1, '\x00')
-        except Exception as e:  # unescaped text (g-markup-error-quark), eg. contains &amp
-            print(f"Problem encountered escaping text: {txt}: {e}")
-            import traceback; traceback.print_exc()
-            txt=xml.sax.saxutils.escape(txt)
-            self.parsed, attributes, self.txt, self.separator = Pango.parse_markup(txt, -1, '\x00')
+            txt = txt.decode("utf-8")
+        self.insert_markup(self.get_start_iter(), txt, -1)
 
-        self.add_attributes_to_buffer(attributes)
+    def get_text(self,
+                 start: Optional[Gtk.TextIter] = None,
+                 end: Optional[Gtk.TextIter] = None) -> str:
+        """Return the content as html markup"""
+        if start is None:
+            start = self.get_start_iter()
+        if end is None:
+            end = self.get_end_iter()
 
-    def add_attributes_to_buffer(self, attributes: Pango.AttrList):
-        """Add html markup attributes to the text buffered in this object.
+        text = super().get_text(start, end, include_hidden_chars=False)
 
-        Given a list of text attributes, insert the markup tags around the text
-        delimited by the indices provided by each `item` attribute in the list.
-        """
-        attrs_iter = attributes.get_iterator()
-        while attrs_iter.next():
-            start, end = attrs_iter.range()
-            tags = []
-            ret = attrs_iter.get_font(Pango.FontDescription(), None, None)
-            if ret is not None:
-                font, lang, attrs = ret
-                tags = self.get_tags_from_attrs(font, lang, attrs)
+        # Iterate through the tags to find opening and closing.
+        # As tags were set automatically, they are anonymous (they do not have
+        # their `name` property set.)
+        # As such, we get the properties, and check their state later to find
+        # out what tags they are meant to be. There are only a few valid
+        # combinations: bold, italic, underlined, and time-link (underlined and
+        # blue text colour).
+        itr = start  # Same iterator, renamed to keep code easy to grok
+        tag_list: List[Tuple[int, int, Dict[str, Any]]] = []
+        while itr.forward_to_tag_toggle():  # move to opening of tags
+            open_pos = itr.get_offset()
+            tags = itr.get_tags()
 
-            text = self.txt[start:end]
-            try:
-                item = self.get_end_attrs_iter()
-            except AttributeError:
-                item = self.get_end_iter()
-            self.insert_with_tags(item,text,*tags)
+            # active_tags could have been a set, but Gtk.Color are not hashable
+            active_tags = {}
+            for tag in tags:
+                active_tags["style"] = tag.get_property("style")  # ie. italic
+                active_tags["underline"] = tag.get_property("underline")
+                active_tags["weight"] = tag.get_property("weight")  # ie. bold
+                active_tags["foreground"] = tag.get_property("foreground-gdk")
 
-        #  attrs_iter.destroy()  # TODO: check why calling destroy segfaults.
+            itr.forward_to_tag_toggle(tag)  # move to closing tags
+            close_pos = itr.get_offset()
 
-    def get_tags_from_attrs (self, font,lang,attrs):
-        tags = []
-        if font:
-            font,fontattrs = self.fontdesc_to_attrs(font)
-            fontdesc = font.to_string()
-            if fontattrs:
-                attrs.extend(fontattrs)
-            if fontdesc and fontdesc!='Normal':
-                if font.to_string() not in self.tags:
-                    tag=self.create_tag()
-                    tag.set_property('font-desc',font)
-                    if tag not in self.tagdict: self.tagdict[tag]={}
-                    self.tagdict[tag]['font_desc']=font.to_string()
-                    self.tags[font.to_string()]=tag
-                tags.append(self.tags[font.to_string()])
-        if lang:
-            if lang not in self.tags:
-                tag = self.create_tag()
-                tag.set_property('language',lang)
-                self.tags[lang]=tag
-            tags.append(self.tags[lang])
-        if attrs:
-            for a in attrs:
-                if a.type == Pango.ATTR_FOREGROUND:
-                    gdkcolor = self.pango_color_to_gdk(a.color)
-                    key = 'foreground%s'%self.color_to_hex(gdkcolor)
-                    if key not in self.tags:
-                        self.tags[key]=self.create_tag()
-                        self.tags[key].set_property('foreground-gdk',gdkcolor)
-                        self.tagdict[self.tags[key]]={}
-                        self.tagdict[self.tags[key]]['foreground']="#%s"%self.color_to_hex(gdkcolor)
-                    tags.append(self.tags[key])
-                if a.type == Pango.ATTR_BACKGROUND:
-                    gdkcolor = self.pango_color_to_gdk(a.color)
-                    key = 'background%s'%self.color_to_hex(gdkcolor)
-                    if key not in self.tags:
-                        self.tags[key]=self.create_tag()
-                        self.tags[key].set_property('background-gdk',gdkcolor)
-                        self.tagdict[self.tags[key]]={}
-                        self.tagdict[self.tags[key]]['background']="#%s"%self.color_to_hex(gdkcolor)
-                    tags.append(self.tags[key])
-                if a.type in self.pango_translation_properties:
-                    prop=self.pango_translation_properties[a.type]
-                    #print 'setting property %s of %s (type: %s)'%(prop,a,a.type)
-                    val=getattr(a,'value')
-                    #tag.set_property(prop,val)
-                    mval = val
-                    if prop in self.attval_to_markup:
-                        #print 'converting ',prop,' in ',val
-                        if val in self.attval_to_markup[prop]:
-                            mval = self.attval_to_markup[prop][val]
-                        else:
-                            debug("hmmm, didn't know what to do with value %s"%val,0)
-                    key="%s%s"%(prop,val)
-                    if key not in self.tags:
-                        self.tags[key]=self.create_tag()
-                        self.tags[key].set_property(prop,val)
-                        self.tagdict[self.tags[key]]={}
-                        self.tagdict[self.tags[key]][prop]=mval
-                    tags.append(self.tags[key])
-                else:
-                    debug("Don't know what to do with attr %s"%a,1)
-        return tags
+            tag_list.append((open_pos, close_pos, active_tags))
 
-    def get_tags (self):
-        tagdict = {}
-        for pos in range(self.get_char_count()):
-            iter=self.get_iter_at_offset(pos)
-            for tag in iter.get_tags():
-                if tag in tagdict:
-                    if tagdict[tag][-1][1] == pos - 1:
-                        tagdict[tag][-1] = (tagdict[tag][-1][0],pos)
-                    else:
-                        tagdict[tag].append((pos,pos))
-                else:
-                    tagdict[tag]=[(pos,pos)]
-        return tagdict
+        return self.to_html(text, tag_list)
 
-    def get_text (self, start=None, end=None, include_hidden_chars=True):
-        tagdict=self.get_tags()
-        if not start: start=self.get_start_iter()
-        if not end: end=self.get_end_iter()
-        txt = Gtk.TextBuffer.get_text(self, start, end,
-                                      include_hidden_chars=False)
-        cuts = {}
-        for k,v in list(tagdict.items()):
-            if k not in self.tagdict: continue
-            stag,etag = self.tag_to_markup(k)
-            for st,e in v:
-                if st in cuts: cuts[st].append(stag) #add start tags second
-                else: cuts[st]=[stag]
-                if e+1 in cuts: cuts[e+1]=[etag]+cuts[e+1] #add end tags first
-                else: cuts[e+1]=[etag]
-        last_pos = 0
-        outbuff = ""
-        cut_indices = list(cuts.keys())
-        cut_indices.sort()
-        soffset = start.get_offset()
-        eoffset = end.get_offset()
-        cut_indices = [i for i in cut_indices if eoffset >= i >= soffset]
-        for c in cut_indices:
-            if not last_pos==c:
-                outbuff += xml.sax.saxutils.escape(txt[last_pos:c])
-                last_pos = c
-            for tag in cuts[c]:
-                outbuff += tag
-        outbuff += xml.sax.saxutils.escape(txt[last_pos:])
-        return outbuff
+    @staticmethod
+    def to_html(text: str,
+                tag_list: List[Tuple[int, int, Dict[str, Any]]]) -> str:
+        blue = Gdk.Color(red=0, green=0, blue=65535)
 
-    def tag_to_markup (self, tag):
-        stag = "<span"
-        for k,v in list(self.tagdict[tag].items()):
-            stag += ' %s="%s"'%(k,v)
-        stag += ">"
-        return stag,"</span>"
+        for start, stop, tags in tag_list:
+            if tags["foreground"] == blue:  # it's a time link
+                text = (text[:start] + f'<a href="{text[start:stop]}">' +
+                        text[start:stop] + "</a>" + text[stop:])
+                continue  # skip handling the underscore here
+            if tags["weight"] == 400:  # FIXME: use the correct enum
+                text = (text[:start] +
+                        "<b>" + text[start:stop] + "</b>" +
+                        text[stop:])
+            if tags["underline"] is Pango.Underline.SINGLE:
+                text = (text[:start] +
+                        "<u>" + text[start:stop] + "</u>" +
+                        text[stop:])
+            if tags["style"] is Pango.Style.ITALIC:
+                text = (text[:start] +
+                        "<i>" + text[start:stop] + "</i>" +
+                        text[stop:])
+        return text
 
-    def fontdesc_to_attrs (self,font):
-        nicks = font.get_set_fields().value_nicks
-        attrs = []
-        for n in nicks:
-            if n in self.desc_to_attr_table:
-                Attr,norm = self.desc_to_attr_table[n]
-                # create an attribute with our current value
-                attrs.append(Attr(getattr(font,'get_%s'%n)()))
-                # unset our font's value
-                getattr(font,'set_%s'%n)(norm)
-        return font,attrs
-
-    def pango_color_to_gdk (self, pc):
-        return Gdk.Color(pc.red,pc.green,pc.blue)
-
-    def color_to_hex (self, color):
-        hexstring = ""
-        for col in 'red','green','blue':
-            hexfrag = hex(getattr(color,col)/(16*16)).split("x")[1]
-            if len(hexfrag)<2: hexfrag = "0" + hexfrag
-            hexstring += hexfrag
-        return hexstring
-
-    def apply_font_and_attrs (self, font, attrs):
-        tags = self.get_tags_from_attrs(font,None,attrs)
-        for t in tags: self.apply_tag_to_selection(t)
-
-    def remove_font_and_attrs (self, font, attrs):
-        tags = self.get_tags_from_attrs(font,None,attrs)
-        for t in tags: self.remove_tag_from_selection(t)
-
-    def setup_default_tags (self):
-        self.italics = self.get_tags_from_attrs(None,None,[Pango.AttrStyle('italic')])[0]
-        self.bold = self.get_tags_from_attrs(None,None,[Pango.AttrWeight('bold')])[0]
-        self.underline = self.get_tags_from_attrs(None,None,[Pango.AttrUnderline('single')])[0]
-
-    def get_selection (self):
+    def get_selection(self):
+        """A get_selection that returns the word where the cursor is at, if
+        there is no selection"""
         bounds = self.get_selection_bounds()
+
         if not bounds:
-            iter=self.get_iter_at_mark(self.insert_)
+            iter = self.get_iter_at_mark(self.insert_)
             if iter.inside_word():
                 start_pos = iter.get_offset()
                 iter.forward_word_end()
@@ -285,47 +115,47 @@ class PangoBuffer (Gtk.TextBuffer):
                 bounds = (iter,self.get_iter_at_offset(iter.get_offset()+1))
         return bounds
 
-    def apply_tag_to_selection (self, tag):
-        selection = self.get_selection()
-        if selection:
-            self.apply_tag(tag,*selection)
+    def apply_tag_to_selection(self, tag):
+        start, stop = self.get_selection()
+        self.apply_tag(tag, start, stop)
 
-    def remove_tag_from_selection (self, tag):
-        selection = self.get_selection()
-        if selection:
-            self.remove_tag(tag,*selection)
+    def remove_tag_from_selection(self, tag):
+        start, stop = self.get_selection()
+        self.remove_tag(tag, start, stop)
 
-    def remove_all_tags (self):
-        selection = self.get_selection()
-        if selection:
-            for t in list(self.tags.values()):
-                self.remove_tag(t,*selection)
+    def remove_all_tags(self):
+        start, stop = self.get_selection()
+        for tag in list(self.tags.values()):
+            self.remove_tag(tag, start, stop)
 
-class InteractivePangoBuffer (PangoBuffer):
+
+class InteractivePangoBuffer(PangoBuffer):
     def __init__ (self,
                   normal_button=None,
-                  toggle_widget_alist=[]):
+                  toggle_widget_alist: Optional[List] = None):
         """An interactive interface to allow marking up a Gtk.TextBuffer.
-        txt is initial text, with markup.
-        buf is the Gtk.TextBuffer
         normal_button is a widget whose clicked signal will make us normal
         toggle_widget_alist is a list that looks like this:
         [(widget, (font,attr)),
          (widget2, (font,attr))]
          """
         PangoBuffer.__init__(self)
-        if normal_button: normal_button.connect('clicked',lambda *args: self.remove_all_tags())
+        if normal_button is not None:
+            normal_button.connect('clicked', self.remove_all_tags)
         self.tag_widgets = {}
         self.internal_toggle = False
         self.insert_ = self.get_insert()
         self.connect('mark-set',self._mark_set_cb)
         self.connect('changed',self._changed_cb)
-        for w,tup in toggle_widget_alist:
-            self.setup_widget(w,*tup)
 
-    def setup_widget_from_pango (self, widg, markupstring):
+        if toggle_widget_alist is not None:
+            for w,tup in toggle_widget_alist:
+                self.setup_widget(w,*tup)
+
+    def setup_widget_from_pango(self,
+                                widget: Gtk.ToggleButton,
+                                markupstring: str):
         """setup widget from a pango markup string"""
-        #font = Pango.FontDescription(fontstring)
         _, a, t, s = Pango.parse_markup(markupstring, -1, '\x00')
         ai=a.get_iterator()
         ret = ai.get_font(Pango.FontDescription(), None, None)
@@ -333,14 +163,14 @@ class InteractivePangoBuffer (PangoBuffer):
             font, _, attrs = ret
         else:
             font = attrs = None
-        return self.setup_widget(widg,font,attrs)
+        return self.setup_widget(widget, font, attrs)
 
-    def setup_widget (self, widg, font, attr):
-        tags=self.get_tags_from_attrs(font,None,attr)
-        self.tag_widgets[tuple(tags)]=widg
-        return widg.connect('toggled',self._toggle,tags)
+    def setup_widget(self, widget, font, attr):
+        tags=self.get_tags_from_attrs(font, None, attr)
+        self.tag_widgets[tuple(tags)] = widget
+        return widget.connect('toggled', self._toggle, tags)
 
-    def _toggle (self, widget, tags):
+    def _toggle(self, widget: Gtk.ToggleButton, tags: List[Gtk.TextTag]):
         if self.internal_toggle: return
         if widget.get_active():
             for t in tags: self.apply_tag_to_selection(t)
@@ -382,31 +212,27 @@ class InteractivePangoBuffer (PangoBuffer):
                     for t in tags: self.apply_tag(t,old_itr,insert_itr)
 
 
-
-
-
 class SimpleEditor:
-    def __init__ (self):
+    """A demo of the TextBufferedMarkup class"""
+    def __init__(self):
         self.w = Gtk.Window()
         self.vb = Gtk.VBox()
         self.editBox = Gtk.HButtonBox()
-        self.nb = Gtk.Button('Normal')
+        self.nb = Gtk.Button()
+        self.nb.set_label("Normal")
         self.editBox.add(self.nb)
         self.sw = Gtk.ScrolledWindow()
         self.tv = Gtk.TextView()
         self.sw.add(self.tv)
         self.ipb = InteractivePangoBuffer(
             normal_button=self.nb)
+
         self.ipb.set_text("""<b>This is bold</b>. <i>This is italic</i>
             <b><i>This is bold, italic, and <u>underlined!</u></i></b>
             <span background="blue">This is a test of bg color</span>
             <span foreground="blue">This is a test of fg color</span>
             <span foreground="white" background="blue">This is a test of fg and bg color</span>
             """)
-        #    Here are some more: 1-2, 2-3, 3-4, 10-20, 30-40, 50-60
-        #    This is <span color="blue">blue</span>, <span color="red">red</span> and <span color="green">green</span>""")
-        #self.ipb.set_text("""This is a numerical range (three hundred and fifty to four hundred) 350-400 which may get messed up.
-        #Here are some more: 1-2, 2-3, 3-4, 10-20, 30-40, 50-60""")
 
         self.tv.set_buffer(self.ipb)
         for lab,stock,font in [('gtk-italic',True,'<i>italic</i>'),
@@ -432,8 +258,9 @@ class SimpleEditor:
         self.w.add(self.vb)
         self.w.show_all()
 
-    def print_markup (self,*args):
+    def print_markup(self, *args):
         print(self.ipb.get_text())
+
 
 if __name__ == '__main__':
     se = SimpleEditor()
