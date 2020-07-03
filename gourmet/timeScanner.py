@@ -1,18 +1,18 @@
 """Scan text for time and show links that will pop up a timer if the
 user clicks on any time in the TextView."""
-
-from . import convert
 import re
-from gi.repository import GObject, Gtk
-from .gtk_extras import LinkedTextView
-from . import timer
-import xml.sax.saxutils
+from typing import Union
 
-all_units = []
-for base,units in convert.Converter.time_units:
+from gi.repository import Gdk, GObject, Gtk
+
+from gourmet import convert, timer
+from gourmet.gtk_extras.LinkedTextView import LinkedPangoBuffer, LinkedTextView
+
+all_units = set()
+for base, units in convert.Converter.time_units:
     for u in units:
         u = re.escape(str(u))
-        if u not in all_units: all_units.append(u)
+        all_units.add(u)
 
 time_matcher = re.compile(
     '(?P<firstnum>'+convert.NUMBER_FINDER_REGEXP + ')(' + \
@@ -22,42 +22,54 @@ time_matcher = re.compile(
     )
 
 
+def make_time_links(s: str) -> re.Match:
+    return time_matcher.sub(r'<a href="\g<firstnum> \g<unit>">\g<0></a>', s)
 
-def make_time_links (s):
-    return time_matcher.sub(r'<a href="\g<firstnum> \g<unit>">\g<0></a>',s)
+
+class TimeBuffer(LinkedPangoBuffer):
+    def set_text(self, txt: Union[bytes, str]) -> None:
+        if isinstance(txt, bytes):
+            txt = txt.decode("utf-8")
+        super().set_text(make_time_links(txt))
 
 
-class TimeBuffer (LinkedTextView.LinkedPangoBuffer):
-
-    def set_text (self, txt):
-         LinkedTextView.LinkedPangoBuffer.set_text(
-             self,
-             make_time_links(txt)
-             )
-
-class LinkedTimeView (LinkedTextView.LinkedTextView):
+class LinkedTimeView(LinkedTextView):
     __gtype_name__ = 'LinkedTimeView'
 
     __gsignals__ = {
-        'time-link-activated':(GObject.SignalFlags.RUN_LAST,
-                          GObject.TYPE_STRING,
-                          [GObject.TYPE_STRING,GObject.TYPE_STRING]),
-        }
+        'time-link-activated': (GObject.SignalFlags.RUN_LAST,
+                                GObject.TYPE_STRING,
+                                [GObject.TYPE_STRING,GObject.TYPE_STRING]),
+    }
 
-    def make_buffer (self):
+    def make_buffer(self):
         return TimeBuffer()
 
-    def follow_if_link (self, text_view, iter):
-        tags = iter.get_tags()
+    def follow_if_link(self,
+                       text_view: 'LinkedTimeView',
+                       itr: Gtk.TextIter) -> bool:
+        """Looks at all tags covered by the TextIter position in the text view,
+           and if one of them is a time link, emit a signal to display the timer
+        """
+        tags = itr.get_tags()
         for tag in tags:
-            href = tag.get_data('href')
-            if href:
-                start_sentence = iter.copy();
+            if isinstance(tag.get_property('foreground-gdk'), Gdk.Color):
+                # By Gourmet convention, only links have color
+                start_sentence = itr.copy()
                 start_sentence.backward_sentence_start()
-                end_sentence = iter.copy()
-                if not end_sentence.ends_sentence(): end_sentence.forward_sentence_end()
-                self.emit('time-link-activated',href,self.get_buffer().get_slice(start_sentence,end_sentence))
+                end_sentence = itr.copy()
+
+                if not end_sentence.ends_sentence():
+                    end_sentence.forward_sentence_end()
+
+                content = self.get_buffer().get_slice(start_sentence,
+                                                      end_sentence,
+                                                      False)
+
+                self.emit('time-link-activated', 'unused', content)
                 return True
+
+        return False
 
 
 def show_timer_cb (tv,l,note,c):
