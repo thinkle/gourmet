@@ -81,11 +81,9 @@ class LinkedTextView(Gtk.TextView):
     hand_cursor = Gdk.Cursor.new(Gdk.CursorType.HAND2)
     text_cursor = Gdk.Cursor.new(Gdk.CursorType.XTERM)  # I-beam shaped
 
-    __gsignals__ = {
-        'link-activated':(GObject.SignalFlags.RUN_LAST,
-                          GObject.TYPE_STRING,
-                          [GObject.TYPE_STRING]),
-        }
+    __gsignals__ = {'link-activated': (GObject.SignalFlags.RUN_LAST,
+                                       GObject.TYPE_STRING,
+                                       [GObject.TYPE_STRING])}
 
     def __init__ (self):
         # GObject.GObject.__init__(self) # do we need both constructor calls?
@@ -98,22 +96,28 @@ class LinkedTextView(Gtk.TextView):
         self.connect('motion-notify-event',self.motion_notify_event)
         self.connect('visibility-notify-event',self.visibility_notify_event)
 
-    def make_buffer (self):
+    def make_buffer(self):
         return LinkedPangoBuffer()
 
-    # Links can be activated by pressing Enter.
-    def key_press_event(self, text_view, event):
+    def key_press_event(self,
+                        text_view: 'LinkedTextView',
+                        event: Gdk.Event) -> bool:
+        """Handle Enter key-press on time links."""
         keyname = Gdk.keyval_name(event.keyval)
-        if keyname in ['Return','KP_Enter']:
+        if keyname in ['Return', 'KP_Enter']:
             buffer = text_view.get_buffer()
-            iter = buffer.get_iter_at_mark(buffer.get_insert())
-            return self.follow_if_link(text_view, iter)
+            itr = buffer.get_iter_at_mark(buffer.get_insert())
+            return self.follow_if_link(text_view, itr)
         return False
-    # Links can also be activated by clicking.
-    def event_after(self, text_view, event):
+
+    def event_after(self,
+                    text_view: 'LinkedTextView',
+                    event: Gdk.Event) -> bool:
+        """Handle mouse clicks on time links."""
         if event.type != Gdk.EventType.BUTTON_RELEASE:
             return False
-        if event.button != 1:
+        _, button = event.get_button()
+        if button != 1:  # is not the left-button (as set by the system, not hw)
             return False
         buffer = text_view.get_buffer()
 
@@ -129,8 +133,8 @@ class LinkedTextView(Gtk.TextView):
 
         x, y = text_view.window_to_buffer_coords(Gtk.TextWindowType.WIDGET,
             int(event.x), int(event.y))
-        iter = text_view.get_iter_at_location(x, y)
-        self.follow_if_link(text_view, iter)
+        _, itr = text_view.get_iter_at_location(x, y)
+        self.follow_if_link(text_view, itr)
         return False
 
     def set_cursor_if_appropriate(self,
@@ -149,7 +153,7 @@ class LinkedTextView(Gtk.TextView):
 
         hovering_over_link = False
         for tag in tags:
-            if isinstance(tag.get_property('foreground-gdk'), Gtk.Color):
+            if isinstance(tag.get_property('foreground-gdk'), Gdk.Color):
                 hovering_over_link = True
                 break
 
@@ -174,17 +178,16 @@ class LinkedTextView(Gtk.TextView):
         self.set_cursor_if_appropriate (text_view, bx, by)
         return False
 
-    def follow_if_link (self, text_view, iter):
-        ''' Looks at all tags covering the position of iter in the text view,
+    def follow_if_link(self, text_view, itr) -> None:
+        """Looks at all tags covering the position of iter in the text view,
             and if one of them is a link, follow it by showing the page identified
             by the data attached to it.
-        '''
-        tags = iter.get_tags()
+        """
+        tags = itr.get_tags()
         for tag in tags:
-            href = tag.get_data('href')
-            if href:
-                self.emit('link-activated',href)
-                return True
+            if isinstance(tag.get_property('foreground-gdk'), Gdk.Color):
+                self.emit('link-activated',)
+                break
 
 if __name__ == '__main__':
     def print_link (tv,l):
