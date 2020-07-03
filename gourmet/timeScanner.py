@@ -5,11 +5,12 @@ from typing import Union
 
 from gi.repository import Gdk, GObject, Gtk
 
-from gourmet import convert, timer
+from gourmet import timer, convert
+from gourmet.convert import Converter
 from gourmet.gtk_extras.LinkedTextView import LinkedPangoBuffer, LinkedTextView
 
 all_units = set()
-for base, units in convert.Converter.time_units:
+for base, units in Converter.time_units:
     for u in units:
         u = re.escape(str(u))
         all_units.add(u)
@@ -39,7 +40,7 @@ class LinkedTimeView(LinkedTextView):
     __gsignals__ = {
         'time-link-activated': (GObject.SignalFlags.RUN_LAST,
                                 GObject.TYPE_STRING,
-                                [GObject.TYPE_STRING,GObject.TYPE_STRING]),
+                                [GObject.TYPE_STRING, GObject.TYPE_STRING]),
     }
 
     def make_buffer(self):
@@ -51,36 +52,43 @@ class LinkedTimeView(LinkedTextView):
         """Looks at all tags covered by the TextIter position in the text view,
            and if one of them is a time link, emit a signal to display the timer
         """
+        blue = Gdk.Color(red=0, green=0, blue=65535)
         tags = itr.get_tags()
         for tag in tags:
-            if isinstance(tag.get_property('foreground-gdk'), Gdk.Color):
+            if tag.get_property("foreground-gdk") == blue:
                 # By Gourmet convention, only links have color
                 start_sentence = itr.copy()
                 start_sentence.backward_sentence_start()
-                end_sentence = itr.copy()
 
+                end_sentence = itr.copy()
                 if not end_sentence.ends_sentence():
                     end_sentence.forward_sentence_end()
 
-                content = self.get_buffer().get_slice(start_sentence,
+                sentence = self.get_buffer().get_slice(start_sentence,
                                                       end_sentence,
                                                       False)
 
-                self.emit('time-link-activated', 'unused', content)
+                start_ts = itr.copy()
+                start_ts.backward_to_tag_toggle(tag)
+                itr.forward_to_tag_toggle(tag)
+                end_ts = itr.copy()
+                time_string = self.get_buffer().get_slice(start_ts,
+                                                          end_ts,
+                                                          False)
+                self.emit("time-link-activated", time_string, sentence)
                 return True
 
         return False
 
 
-def show_timer_cb (tv,l,note,c):
-    """Callback that expects a widget, a time string, and a converter instance"""
-    timer.show_timer(c.timestring_to_seconds(l),
-               note)
+def show_timer_cb(tv: LinkedTimeView, line: str, note: str) -> None:
+    """Callback that expects a widget, a time string, and a note to display"""
+    timer.show_timer(Converter.instance().timestring_to_seconds(line), note)
+
 
 if __name__ == '__main__':
-    c = convert.get_converter()
     tv = LinkedTimeView()
-    tv.connect('time-link-activated',show_timer_cb,c)
+    tv.connect('time-link-activated', show_timer_cb)
     tv.get_buffer().set_text(
         """Cook potatoes for 1/2 hour.
 
