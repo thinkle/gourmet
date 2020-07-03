@@ -74,10 +74,9 @@ class PangoBuffer(Gtk.TextBuffer):
     @staticmethod
     def to_html(text: str,
                 tag_list: List[Tuple[int, int, Dict[str, Any]]]) -> str:
-        blue = Gdk.Color(red=0, green=0, blue=65535)
 
         for start, stop, tags in tag_list:
-            if tags["foreground"] == blue:  # it's a time link
+            if isinstance(tags["foreground"], Gdk.Color):  # it's a time link
                 text = (text[:start] + f'<a href="{text[start:stop]}">' +
                         text[start:stop] + "</a>" + text[stop:])
                 continue  # skip handling the underscore here
