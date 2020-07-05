@@ -27,16 +27,12 @@ from gourmet.gtk_extras.TextBufferMarkup import PangoBuffer
 class LinkedPangoBuffer(PangoBuffer):
 
     href_regexp = re.compile(r"<a href=['\"]([^'\"]+)['\"][^>]*>(.*?)</a>")
-
     url_markup = 'underline="single" color="blue"'
-
-    url_props = [('underline',Pango.Underline.SINGLE),
-                 ('foreground-gdk',Gdk.color_parse('blue')),
-                 ]
-
+    url_props = [('underline', Pango.Underline.SINGLE),
+                 ('foreground-gdk', Gdk.color_parse('blue'))]
     markup_dict = {}
 
-    def set_text (self, txt):
+    def set_text(self, txt: str) -> None:
         m = self.href_regexp.search(txt)
         if m:
             while m:
@@ -48,30 +44,7 @@ class LinkedPangoBuffer(PangoBuffer):
                 self.markup_dict[body]=href
                 m = self.href_regexp.search(txt,m.end())
             txt = self.href_regexp.sub(r'<span %s>\2</span>'%self.url_markup,txt)
-        PangoBuffer.set_text(self,txt)
-
-    def insert_with_tags (self, itr, text, *tags):
-        match = True
-        for p,v in self.url_props:
-            match = False
-            for t in tags:
-                if isinstance(v,Gdk.Color):
-                    c = t.get_property(p)
-                    if v.red==c.red and v.blue==c.blue and v.green==c.green:
-                        match=True
-                elif t.get_property(p)==v:
-                    match=True
-            if not match:
-                break
-        text = str(text)
-        if match and text in self.markup_dict:
-            new_tag = self.create_tag()
-            new_tag.set_data('href',self.markup_dict[text])
-            tags = list(tags)
-            tags.append(new_tag)
-        elif match:
-            print('Funny',text,'looks like a link, but is not in markup_dict',self.markup_dict)
-        PangoBuffer.insert_with_tags(self,itr,text,*tags)
+        super().set_text(txt)
 
 
 class LinkedTextView(Gtk.TextView):
@@ -179,7 +152,9 @@ class LinkedTextView(Gtk.TextView):
         self.set_cursor_if_appropriate (text_view, bx, by)
         return False
 
-    def follow_if_link(self, text_view, itr) -> None:
+    def follow_if_link(self,
+                       text_view: 'LinkedTextView',
+                       itr: Gtk.TextIter) -> None:
         """Looks at all tags covering the position of iter in the text view,
             and if one of them is a link, follow it by showing the page identified
             by the data attached to it.
@@ -187,8 +162,18 @@ class LinkedTextView(Gtk.TextView):
         tags = itr.get_tags()
         for tag in tags:
             if isinstance(tag.get_property('foreground-gdk'), Gdk.Color):
-                self.emit('link-activated',)
+                begin = itr.copy()
+                begin.forward_to_tag_toggle(tag)
+
+                end = itr.copy()
+                end.backward_to_tag_toggle(tag)
+
+                link_text = text_view.get_buffer().get_text(begin, end)
+                target = text_view.get_buffer().markup_dict[link_text]
+
+                self.emit('link-activated', target)
                 break
+
 
 if __name__ == '__main__':
     def print_link (tv,l):
