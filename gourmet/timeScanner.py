@@ -52,10 +52,12 @@ class LinkedTimeView(LinkedTextView):
         """Looks at all tags covered by the TextIter position in the text view,
            and if one of them is a time link, emit a signal to display the timer
         """
-        blue = Gdk.Color(red=0, green=0, blue=65535)
+        blue = Gdk.RGBA(red=0., green=0, blue=1., alpha=1.)
+
         tags = itr.get_tags()
         for tag in tags:
-            if tag.get_property("foreground-gdk") == blue:
+            color = tag.get_property('foreground-rgba')
+            if color and color == blue:
                 # By Gourmet convention, only links have color
                 start_sentence = itr.copy()
                 start_sentence.backward_sentence_start()
