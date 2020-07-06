@@ -34,7 +34,8 @@ class PangoBuffer(Gtk.TextBuffer):
 
     def get_text(self,
                  start: Optional[Gtk.TextIter] = None,
-                 end: Optional[Gtk.TextIter] = None) -> str:
+                 end: Optional[Gtk.TextIter] = None,
+                 include_hidden_chars: bool = False) -> str:
         """Return the content as html markup"""
         if start is None:
             start = self.get_start_iter()
@@ -42,6 +43,9 @@ class PangoBuffer(Gtk.TextBuffer):
             end = self.get_end_iter()
 
         text = super().get_text(start, end, include_hidden_chars=False)
+
+        if include_hidden_chars is False:
+            return text
 
         # Iterate through the tags to find opening and closing.
         # As tags were set automatically, they are anonymous (they do not have
@@ -51,6 +55,7 @@ class PangoBuffer(Gtk.TextBuffer):
         # combinations: bold, italic, underlined, and time-link (underlined and
         # blue text colour).
         itr = start  # Same iterator, renamed to keep code easy to grok
+
         tag_list: List[Tuple[int, int, Dict[str, Any]]] = []
         while itr.forward_to_tag_toggle():  # move to opening of tags
             open_pos = itr.get_offset()
@@ -62,7 +67,7 @@ class PangoBuffer(Gtk.TextBuffer):
                 active_tags["style"] = tag.get_property("style")  # ie. italic
                 active_tags["underline"] = tag.get_property("underline")
                 active_tags["weight"] = tag.get_property("weight")  # ie. bold
-                active_tags["foreground"] = tag.get_property("foreground-gdk")
+                active_tags["foreground"] = tag.get_property("foreground-rgba")
 
             itr.forward_to_tag_toggle(tag)  # move to closing tags
             close_pos = itr.get_offset()
@@ -74,9 +79,10 @@ class PangoBuffer(Gtk.TextBuffer):
     @staticmethod
     def to_html(text: str,
                 tag_list: List[Tuple[int, int, Dict[str, Any]]]) -> str:
+        blue = Gdk.RGBA(red=0, green=0, blue=1., alpha=1.)
 
         for start, stop, tags in tag_list:
-            if isinstance(tags["foreground"], Gdk.Color):  # it's a time link
+            if tags["foreground"] == blue:
                 text = (text[:start] + f'<a href="{text[start:stop]}">' +
                         text[start:stop] + "</a>" + text[stop:])
                 continue  # skip handling the underscore here
