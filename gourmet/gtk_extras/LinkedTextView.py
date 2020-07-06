@@ -38,10 +38,10 @@ class LinkedPangoBuffer(PangoBuffer):
             while m:
                 href = m.groups()[0]
                 body = m.groups()[1]
-                if body in self.markup_dict and self.markup_dict[body]!=href:
-                    raise Exception("""Damn -- our not-so-clever implementation of <a href=""> parsing requires
-                    that no two distinct links have the same text describing them!""")
-                self.markup_dict[body]=href
+                if body in self.markup_dict and self.markup_dict[body] != href:
+                    raise ValueError("Cannot handle duplicated link bodies",
+                                     body, self.markup_dict[body], href)
+                self.markup_dict[body] = href
                 m = self.href_regexp.search(txt,m.end())
             txt = self.href_regexp.sub(r'<span %s>\2</span>'%self.url_markup,txt)
         super().set_text(txt)
