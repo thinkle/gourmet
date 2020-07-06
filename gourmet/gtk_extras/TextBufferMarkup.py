@@ -31,6 +31,7 @@ class PangoBuffer(Gtk.TextBuffer):
             # data loaded from the database are bytes, not str
             txt = txt.decode("utf-8")
         self.insert_markup(self.get_start_iter(), txt, -1)
+        print(self.get_text(include_hidden_chars=True))
 
     def get_text(self,
                  start: Optional[Gtk.TextIter] = None,
@@ -61,7 +62,7 @@ class PangoBuffer(Gtk.TextBuffer):
             open_pos = itr.get_offset()
             tags = itr.get_tags()
 
-            # active_tags could have been a set, but Gtk.Color are not hashable
+            # active_tags could have been a set, but Gtk.RGBA are not hashable
             active_tags = {}
             for tag in tags:
                 active_tags["style"] = tag.get_property("style")  # ie. italic
@@ -69,10 +70,10 @@ class PangoBuffer(Gtk.TextBuffer):
                 active_tags["weight"] = tag.get_property("weight")  # ie. bold
                 active_tags["foreground"] = tag.get_property("foreground-rgba")
 
-            itr.forward_to_tag_toggle(tag)  # move to closing tags
-            close_pos = itr.get_offset()
+                itr.forward_to_tag_toggle(tag)  # move to closing tags
+                close_pos = itr.get_offset()
 
-            tag_list.append((open_pos, close_pos, active_tags))
+                tag_list.append((open_pos, close_pos, active_tags))
 
         return self.to_html(text, tag_list)
 
@@ -82,7 +83,8 @@ class PangoBuffer(Gtk.TextBuffer):
         blue = Gdk.RGBA(red=0, green=0, blue=1., alpha=1.)
 
         for start, stop, tags in tag_list:
-            if tags["foreground"] == blue:
+            color = tags["foreground"]
+            if color is not None and color == blue:
                 text = (text[:start] + f'<a href="{text[start:stop]}">' +
                         text[start:stop] + "</a>" + text[stop:])
                 continue  # skip handling the underscore here
@@ -135,26 +137,21 @@ class PangoBuffer(Gtk.TextBuffer):
 
 
 class InteractivePangoBuffer(PangoBuffer):
-    def __init__ (self,
-                  normal_button=None,
-                  toggle_widget_alist: Optional[List] = None):
-        """An interactive interface to allow marking up a Gtk.TextBuffer.
-        normal_button is a widget whose clicked signal will make us normal
-        toggle_widget_alist is a list that looks like this:
-        [(widget, (font,attr)),
-         (widget2, (font,attr))]
-         """
-        PangoBuffer.__init__(self)
+    def __init__(self,
+                 normal_button=None,
+                 toggle_widget_alist: Optional[List] = None):
+        super().__init__()
+
         if normal_button is not None:
             normal_button.connect('clicked', self.remove_all_tags)
         self.tag_widgets = {}
         self.internal_toggle = False
         self.insert_ = self.get_insert()
-        self.connect('mark-set',self._mark_set_cb)
-        self.connect('changed',self._changed_cb)
+        self.connect('mark-set', self._mark_set_cb)
+        self.connect('changed', self._changed_cb)
 
         if toggle_widget_alist is not None:
-            for w,tup in toggle_widget_alist:
+            for w, tup in toggle_widget_alist:
                 self.setup_widget(w,*tup)
 
     def setup_widget_from_pango(self,
@@ -176,11 +173,14 @@ class InteractivePangoBuffer(PangoBuffer):
         return widget.connect('toggled', self._toggle, tags)
 
     def _toggle(self, widget: Gtk.ToggleButton, tags: List[Gtk.TextTag]):
-        if self.internal_toggle: return
+        if self.internal_toggle:
+            return
         if widget.get_active():
-            for t in tags: self.apply_tag_to_selection(t)
+            for t in tags:
+                self.apply_tag_to_selection(t)
         else:
-            for t in tags: self.remove_tag_from_selection(t)
+            for t in tags:
+                self.remove_tag_from_selection(t)
 
     def _mark_set_cb (self, buffer, iter, mark, *params):
         # Every time the cursor moves, update our widgets that reflect
