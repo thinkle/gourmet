@@ -25,12 +25,14 @@ class PangoBuffer(Gtk.TextBuffer):
 
     def __init__(self):
         Gtk.TextBuffer.__init__(self)
+        self.__raw_text: Optional[str] = None
 
-    def set_text(self, txt: Union[str, bytes]) -> None:
-        if isinstance(txt, bytes):
+    def set_text(self, text: Union[str, bytes]) -> None:
+        if isinstance(text, bytes):
             # data loaded from the database are bytes, not str
-            txt = txt.decode("utf-8")
-        self.insert_markup(self.get_start_iter(), txt, -1)
+            text = text.decode("utf-8")
+        self.insert_markup(self.get_start_iter(), text, -1)
+        self.__raw_text = text
         print(self.get_text(include_hidden_chars=True))
 
     def get_text(self,
@@ -43,64 +45,16 @@ class PangoBuffer(Gtk.TextBuffer):
         if end is None:
             end = self.get_end_iter()
 
-        text = super().get_text(start, end, include_hidden_chars=False)
-
         if include_hidden_chars is False:
+            text = super().get_text(start, end, include_hidden_chars=False)
             return text
 
-        # Iterate through the tags to find opening and closing.
-        # As tags were set automatically, they are anonymous (they do not have
-        # their `name` property set.)
-        # As such, we get the properties, and check their state later to find
-        # out what tags they are meant to be. There are only a few valid
-        # combinations: bold, italic, underlined, and time-link (underlined and
-        # blue text colour).
-        itr = start  # Same iterator, renamed to keep code easy to grok
-
-        tag_list: List[Tuple[int, int, Dict[str, Any]]] = []
-        while itr.forward_to_tag_toggle():  # move to opening of tags
-            open_pos = itr.get_offset()
-            tags = itr.get_tags()
-
-            # active_tags could have been a set, but Gtk.RGBA are not hashable
-            active_tags = {}
-            for tag in tags:
-                active_tags["style"] = tag.get_property("style")  # ie. italic
-                active_tags["underline"] = tag.get_property("underline")
-                active_tags["weight"] = tag.get_property("weight")  # ie. bold
-                active_tags["foreground"] = tag.get_property("foreground-rgba")
-
-                itr.forward_to_tag_toggle(tag)  # move to closing tags
-                close_pos = itr.get_offset()
-
-                tag_list.append((open_pos, close_pos, active_tags))
-
-        return self.to_html(text, tag_list)
-
-    @staticmethod
-    def to_html(text: str,
-                tag_list: List[Tuple[int, int, Dict[str, Any]]]) -> str:
-        blue = Gdk.RGBA(red=0, green=0, blue=1., alpha=1.)
-
-        for start, stop, tags in tag_list:
-            color = tags["foreground"]
-            if color is not None and color == blue:
-                text = (text[:start] + f'<a href="{text[start:stop]}">' +
-                        text[start:stop] + "</a>" + text[stop:])
-                continue  # skip handling the underscore here
-            if tags["weight"] == 400:  # FIXME: use the correct enum
-                text = (text[:start] +
-                        "<b>" + text[start:stop] + "</b>" +
-                        text[stop:])
-            if tags["underline"] is Pango.Underline.SINGLE:
-                text = (text[:start] +
-                        "<u>" + text[start:stop] + "</u>" +
-                        text[stop:])
-            if tags["style"] is Pango.Style.ITALIC:
-                text = (text[:start] +
-                        "<i>" + text[start:stop] + "</i>" +
-                        text[stop:])
-        return text
+        else:  # TODO: return the raw string, from the provided start and end
+            # Convert the start and end offset to the perspective of markup.
+            # To do so, get the offsets, and check if they are between '>' and
+            # '<', ie. within some tags.
+            # If it's the opposite, between '<' and '>', then
+            return self.__raw_text
 
     def get_selection(self):
         """A get_selection that returns the word where the cursor is at, if
@@ -108,18 +62,18 @@ class PangoBuffer(Gtk.TextBuffer):
         bounds = self.get_selection_bounds()
 
         if not bounds:
-            iter = self.get_iter_at_mark(self.insert_)
-            if iter.inside_word():
-                start_pos = iter.get_offset()
-                iter.forward_word_end()
-                word_end = iter.get_offset()
-                iter.backward_word_start()
-                word_start = iter.get_offset()
-                iter.set_offset(start_pos)
+            itr = self.get_iter_at_mark(self.insert_)
+            if itr.inside_word():
+                start_pos = itr.get_offset()
+                itr.forward_word_end()
+                word_end = itr.get_offset()
+                itr.backward_word_start()
+                word_start = itr.get_offset()
+                itr.set_offset(start_pos)
                 bounds = (self.get_iter_at_offset(word_start),
                           self.get_iter_at_offset(word_end+1))
             else:
-                bounds = (iter,self.get_iter_at_offset(iter.get_offset()+1))
+                bounds = (itr, self.get_iter_at_offset(itr.get_offset()+1))
         return bounds
 
     def apply_tag_to_selection(self, tag):
@@ -159,7 +113,7 @@ class InteractivePangoBuffer(PangoBuffer):
                                 markupstring: str):
         """setup widget from a pango markup string"""
         _, a, t, s = Pango.parse_markup(markupstring, -1, '\x00')
-        ai=a.get_iterator()
+        ai = a.get_iterator()
         ret = ai.get_font(Pango.FontDescription(), None, None)
         if ret is not None:
             font, _, attrs = ret
@@ -240,21 +194,44 @@ class SimpleEditor:
             """)
 
         self.tv.set_buffer(self.ipb)
-        for lab,stock,font in [('gtk-italic',True,'<i>italic</i>'),
-                               ('gtk-bold',True,'<b>bold</b>'),
-                               ('gtk-underline',True,'<u>underline</u>'),
-                               ('Blue',True,'<span foreground="blue">blue</span>'),
-                               ('Red',False,'<span foreground="red">smallcaps</span>'),
-                               ]:
-            button = Gtk.ToggleButton(lab)
-            self.editBox.add(button)
-            if stock: button.set_use_stock(True)
-            self.ipb.setup_widget_from_pango(button,font)
+
+        button_italic = Gtk.ToolButton()
+        button_italic.set_icon_name("format-text-italic-symbolic")
+        self.editBox.add(button_italic)
+
+        button_bold = Gtk.ToolButton()
+        button_bold.set_icon_name("format-text-bold-symbolic")
+        self.editBox.add(button_bold)
+
+        button_underline = Gtk.ToolButton()
+        button_underline.set_icon_name("format-text-underline-symbolic")
+        self.editBox.add(button_underline)
+
+        button_blue = Gtk.ToggleButton()
+        button_blue.set_label("Blue")
+        self.editBox.add(button_blue)
+
+        button_red = Gtk.ToggleButton()
+        button_red.set_label("Red")
+        self.editBox.add(button_red)
+
+        # for lab,stock,font in [('gtk-italic',True,'<i>italic</i>'),
+        #                        ('gtk-bold',True,'<b>bold</b>'),
+        #                        ('gtk-underline',True,'<u>underline</u>'),
+        #                        ('Blue',True,'<span foreground="blue">blue</span>'),
+        #                        ('Red',False,'<span foreground="red">smallcaps</span>'),
+        #                        ]:
+        #     button = Gtk.ToggleButton(lab)
+        #     self.editBox.add(button)
+        #     if stock: button.set_use_stock(True)
+        #     self.ipb.setup_widget_from_pango(button,font)
         self.vb.add(self.editBox)
         self.vb.add(self.sw)
         self.actionBox = Gtk.HButtonBox()
-        self.qb = Gtk.Button(stock='quit')
-        self.pmbut = Gtk.Button('Print markup')
+        self.qb = Gtk.Button()
+        self.qb.set_label('Quit')
+        self.pmbut = Gtk.Button()
+        self.pmbut.set_label('Print Markup')
         self.pmbut.connect('clicked',self.print_markup)
         self.qb.connect('clicked',lambda *args: self.w.destroy() or Gtk.main_quit())
         self.actionBox.add(self.pmbut)
@@ -264,7 +241,7 @@ class SimpleEditor:
         self.w.show_all()
 
     def print_markup(self, *args):
-        print(self.ipb.get_text())
+        print(self.ipb.get_text(include_hidden_chars=True))
 
 
 if __name__ == '__main__':
