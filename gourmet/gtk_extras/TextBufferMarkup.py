@@ -100,7 +100,7 @@ class InteractivePangoBuffer(PangoBuffer):
             normal_button.connect('clicked', self.remove_all_tags)
         self.tag_widgets = {}
         self.internal_toggle = False
-        self.insert_ = self.get_insert()
+        self.insert_: Gtk.TextMark = self.get_insert()
         self.connect('mark-set', self._mark_set_cb)
         self.connect('changed', self._changed_cb)
 
@@ -195,8 +195,12 @@ class SimpleEditor:
 
         self.tv.set_buffer(self.ipb)
 
+        self.tag_italic = self.ipb.create_tag("italic", style=Pango.Style.ITALIC)
         button_italic = Gtk.ToolButton()
         button_italic.set_icon_name("format-text-italic-symbolic")
+        button_italic.connect("clicked",
+                              self.on_button_clicked,
+                              self.tag_italic)
         self.editBox.add(button_italic)
 
         button_bold = Gtk.ToolButton()
@@ -215,36 +219,45 @@ class SimpleEditor:
         button_red.set_label("Red")
         self.editBox.add(button_red)
 
-        # for lab,stock,font in [('gtk-italic',True,'<i>italic</i>'),
-        #                        ('gtk-bold',True,'<b>bold</b>'),
-        #                        ('gtk-underline',True,'<u>underline</u>'),
-        #                        ('Blue',True,'<span foreground="blue">blue</span>'),
-        #                        ('Red',False,'<span foreground="red">smallcaps</span>'),
-        #                        ]:
-        #     button = Gtk.ToggleButton(lab)
-        #     self.editBox.add(button)
-        #     if stock: button.set_use_stock(True)
-        #     self.ipb.setup_widget_from_pango(button,font)
         self.vb.add(self.editBox)
         self.vb.add(self.sw)
         self.actionBox = Gtk.HButtonBox()
+
         self.qb = Gtk.Button()
         self.qb.set_label('Quit')
+
         self.pmbut = Gtk.Button()
         self.pmbut.set_label('Print Markup')
-        self.pmbut.connect('clicked',self.print_markup)
-        self.qb.connect('clicked',lambda *args: self.w.destroy() or Gtk.main_quit())
+        self.pmbut.connect('clicked', self.print_markup)
         self.actionBox.add(self.pmbut)
+
+        self.pselectbut = Gtk.Button()
+        self.pselectbut.set_label('Print Selection')
+        self.pselectbut.connect('clicked', self.print_selection)
+        self.actionBox.add(self.pselectbut)
+
+        self.qb.connect('clicked',
+                        lambda *args: self.w.destroy() or Gtk.main_quit())
         self.actionBox.add(self.qb)
+
         self.vb.add(self.actionBox)
         self.w.add(self.vb)
         self.w.show_all()
 
+    def on_button_clicked(self, widget, tag):
+        self.ipb.apply_tag_to_selection(tag)
+        # self.ipb.remove_tag_from_selection(tag)
+
     def print_markup(self, *args):
         print(self.ipb.get_text(include_hidden_chars=True))
+        print(self.ipb.serialize())
+
+    def print_selection(self, *args):
+        selection = self.ipb.get_selection()
+        print(self.ipb.get_text(*selection))
 
 
 if __name__ == '__main__':
     se = SimpleEditor()
-    se.w.connect('delete-event',lambda *args: Gtk.main_quit())
+    se.w.connect('delete-event', lambda *args: Gtk.main_quit())
     Gtk.main()
