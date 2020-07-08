@@ -15,8 +15,9 @@
 ### along with this library; if not, write to the Free Software
 ### Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 ### USA
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import List, Optional, Union
 from gi.repository import Gdk, GLib, Gtk, Pango
+from gourmet.gtk_extras.pango_html import Pango2Html
 
 
 class PangoBuffer(Gtk.TextBuffer):
@@ -25,36 +26,35 @@ class PangoBuffer(Gtk.TextBuffer):
 
     def __init__(self):
         Gtk.TextBuffer.__init__(self)
-        self.__raw_text: Optional[str] = None
 
     def set_text(self, text: Union[str, bytes]) -> None:
         if isinstance(text, bytes):
             # data loaded from the database are bytes, not str
             text = text.decode("utf-8")
         self.insert_markup(self.get_start_iter(), text, -1)
-        self.__raw_text = text
         print(self.get_text(include_hidden_chars=True))
 
     def get_text(self,
-                 start: Optional[Gtk.TextIter] = None,
+                 begin: Optional[Gtk.TextIter] = None,
                  end: Optional[Gtk.TextIter] = None,
                  include_hidden_chars: bool = False) -> str:
-        """Return the content as html markup"""
-        if start is None:
-            start = self.get_start_iter()
+        """Get the buffer content.
+
+        If `include_hidden_chars` is set, then the html markup content is
+        returned. If False, then the text only is returned."""
+        if begin is None:
+            begin = self.get_start_iter()
         if end is None:
             end = self.get_end_iter()
 
-        if include_hidden_chars is False:
-            text = super().get_text(start, end, include_hidden_chars=False)
-            return text
+        text = super().get_text(begin, end, include_hidden_chars=False)
 
-        else:  # TODO: return the raw string, from the provided start and end
-            # Convert the start and end offset to the perspective of markup.
-            # To do so, get the offsets, and check if they are between '>' and
-            # '<', ie. within some tags.
-            # If it's the opposite, between '<' and '>', then
-            return self.__raw_text
+        if include_hidden_chars is False:
+            return text
+        else:
+            format_ = self.register_serialize_tagset()
+            content = self.serialize(self, format_, begin, end)
+            return Pango2Html().feed(content)
 
     def get_selection(self):
         """A get_selection that returns the word where the cursor is at, if
@@ -186,8 +186,15 @@ class SimpleEditor:
         self.ipb = InteractivePangoBuffer(
             normal_button=self.nb)
 
+        # self.ipb.set_text("""<b>This is bold</b>. <i>This is italic</i>
+        #     <b><i>This is bold, italic, and <u>underlined!</u></i></b>
+        #     <span background="blue">This is a test of bg color</span>
+        #     <span foreground="blue">This is a test of fg color</span>
+        #     <span foreground="white" background="blue">This is a test of fg and bg color</span>
+        #     """)
+
         self.ipb.set_text("""<b>This is bold</b>. <i>This is italic</i>
-            <b><i>This is bold, italic, and <u>underlined!</u></i></b>
+            <i><b>This is bold, italic, and </b></i><i><b><u>underlined!</u></b></i>
             <span background="blue">This is a test of bg color</span>
             <span foreground="blue">This is a test of fg color</span>
             <span foreground="white" background="blue">This is a test of fg and bg color</span>
