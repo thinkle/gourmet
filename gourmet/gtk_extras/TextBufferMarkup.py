@@ -17,7 +17,7 @@
 ### USA
 from typing import List, Optional, Union
 from gi.repository import Gdk, GLib, Gtk, Pango
-from gourmet.gtk_extras.pango_html import Pango2Html
+from gourmet.gtk_extras.pango_html import PangoToHtml
 
 
 class PangoBuffer(Gtk.TextBuffer):
@@ -32,29 +32,26 @@ class PangoBuffer(Gtk.TextBuffer):
             # data loaded from the database are bytes, not str
             text = text.decode("utf-8")
         self.insert_markup(self.get_start_iter(), text, -1)
-        print(self.get_text(include_hidden_chars=True))
 
     def get_text(self,
-                 begin: Optional[Gtk.TextIter] = None,
+                 start: Optional[Gtk.TextIter] = None,
                  end: Optional[Gtk.TextIter] = None,
                  include_hidden_chars: bool = False) -> str:
         """Get the buffer content.
 
         If `include_hidden_chars` is set, then the html markup content is
         returned. If False, then the text only is returned."""
-        if begin is None:
-            begin = self.get_start_iter()
+        if start is None:
+            start = self.get_start_iter()
         if end is None:
             end = self.get_end_iter()
 
-        text = super().get_text(begin, end, include_hidden_chars=False)
-
         if include_hidden_chars is False:
-            return text
+            return super().get_text(start, end, include_hidden_chars=False)
         else:
             format_ = self.register_serialize_tagset()
-            content = self.serialize(self, format_, begin, end)
-            return Pango2Html().feed(content)
+            content = self.serialize(self, format_, start, end)
+            return PangoToHtml().feed(content)
 
     def get_selection(self):
         """A get_selection that returns the word where the cursor is at, if
@@ -257,7 +254,6 @@ class SimpleEditor:
 
     def print_markup(self, *args):
         print(self.ipb.get_text(include_hidden_chars=True))
-        print(self.ipb.serialize())
 
     def print_selection(self, *args):
         selection = self.ipb.get_selection()

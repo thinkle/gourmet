@@ -20,6 +20,7 @@
 # Maik Hertha <maik.hertha@berlin.de>
 
 import re
+from typing import Optional
 from gi.repository import Gdk, GObject, Gtk, Pango
 from gourmet.gtk_extras.TextBufferMarkup import PangoBuffer
 
@@ -45,6 +46,22 @@ class LinkedPangoBuffer(PangoBuffer):
                 m = self.href_regexp.search(txt,m.end())
             txt = self.href_regexp.sub(r'<span %s>\2</span>'%self.url_markup,txt)
         super().set_text(txt)
+
+    def get_text(self,
+                 start: Optional[Gtk.TextIter] = None,
+                 end: Optional[Gtk.TextIter] = None,
+                 include_hidden_chars: bool = False) -> str:
+        """Get the buffer content.
+
+        If `include_hidden_chars` is set, then the html markup content is
+        returned.
+        """
+        content = super().get_text(start, end, include_hidden_chars)
+
+        # TODO: Replace all colored and underlined text tags with links, if
+        # these are links
+        # if include_hidden_chars: ...
+        return content
 
 
 class LinkedTextView(Gtk.TextView):
@@ -124,10 +141,12 @@ class LinkedTextView(Gtk.TextView):
         """
         _, itr = text_view.get_iter_at_location(x, y)
         tags = itr.get_tags()
+        blue = Gdk.RGBA(0., 0., 1., 1.)
 
         hovering_over_link = False
         for tag in tags:
-            if isinstance(tag.get_property('foreground-gdk'), Gdk.Color):
+            color = tag.get_property("foreground-rgba")
+            if color is not None and color == blue:
                 hovering_over_link = True
                 break
 
@@ -160,8 +179,10 @@ class LinkedTextView(Gtk.TextView):
             by the data attached to it.
         """
         tags = itr.get_tags()
+        blue = Gdk.RGBA(red=0., green=0., blue=1., alpha=1.)
         for tag in tags:
-            if isinstance(tag.get_property('foreground-gdk'), Gdk.Color):
+            color = tag.get_property('foreground-rgba')
+            if color is not None and color == blue:
                 begin = itr.copy()
                 begin.forward_to_tag_toggle(tag)
 

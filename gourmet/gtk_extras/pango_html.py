@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from bs4.element import Tag
 
 
-class Pango2Html(HTMLParser):
+class PangoToHtml(HTMLParser):
     """Decode a subset of Pango markup and serialize it as HTML.
 
     Because Pango can only deserialize a subset of HTML, the encoding here uses
@@ -21,6 +21,14 @@ class Pango2Html(HTMLParser):
     This means that the HTML resulting from the conversion by this object may
     differ from the original that was fed to the caller.
     """
+    def __init__(self):
+        super().__init__()
+        self.markup_text: str = ''  # the resulting content
+        self.current_closing_tags: Optional[str] = None  # used during parsing
+
+        # The key is the Pango id of a tag, and the value is a tuple of opening
+        # and closing html tags for this id.
+        self.tags: Dict[str: Tuple[str, str]] = {}
 
     tag2html: Dict[str, Tuple[str, str]] = {
         "PANGO_STYLE_ITALIC": ("<i>", "</i>"),  # Pango doesn't do <em>
@@ -50,6 +58,7 @@ class Pango2Html(HTMLParser):
         Unlike an HTMLParser, the whole string must be passed at once, chunks
         are not supported.
         """
+
         # Remove the Pango header: it contains a length mark, which we don't
         # care about, but which does not necessarily decodes as valid char.
         header_end = data.find(b"<text_view_markup>")
@@ -74,10 +83,10 @@ class Pango2Html(HTMLParser):
 
         # We know that only a subset of HTML is handled in Gourmet:
         # italics, bold, underlined, normal, and links (coloured and underlined)
-        soup = BeautifulSoup(tags)
+        soup = BeautifulSoup(tags, features="lxml")
         tags = soup.find_all("tag")
 
-        tags_list: Dict[str: List[str]] = {}
+        tags_list = {}
         for tag in tags:
             opening_tags = ""
             closing_tags = ""
@@ -89,7 +98,7 @@ class Pango2Html(HTMLParser):
                 value = attribute['value']
                 name = attribute['name']
 
-                if vtype == "GdkColor":  # needs a specific way to handle that
+                if vtype == "GdkColor":  # Convert colours to html
                     if name in ['foreground-gdk', 'background-gdk']:
                         opening, closing = self.tag2html[name]
                         hex_color = self.pango_to_html_hex(value)
@@ -98,6 +107,7 @@ class Pango2Html(HTMLParser):
                         continue  # no idea!
                 else:
                     opening, closing = self.tag2html[value]
+
                 opening_tags += opening
                 closing_tags = closing + closing_tags   # closing tags are FILO
 
@@ -111,11 +121,11 @@ class Pango2Html(HTMLParser):
         # Create a single output string that will be sequentially appended to
         # during feeding of text. It can then be returned once we've parse all
         self.markup_text = ""
-        self.current_closing_tags: Optional[List[str]] = None
+        self.current_closing_tags = None
         super().feed(text)
         return self.markup_text
 
-    def handle_starttag(self, tag, attrs):
+    def handle_starttag(self, tag: str, attrs: List[str]) -> None:
         if tag == "apply_tag":
             id_ = dict(attrs).get('id')
             tags = self.tags.get(id_)
@@ -124,10 +134,10 @@ class Pango2Html(HTMLParser):
                 for t in tags[0]:
                     self.markup_text += t
 
-    def handle_data(self, data):
+    def handle_data(self, data: str) -> None:
         self.markup_text += data
 
-    def handle_endtag(self, tag):
+    def handle_endtag(self, tag: str) -> None:
         if tag == "apply_tag" and self.current_closing_tags is not None:
             for t in self.current_closing_tags:
                 self.markup_text += t
