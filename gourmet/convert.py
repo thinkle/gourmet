@@ -529,8 +529,8 @@ class Converter:
         else:
             return "%s"%nstring
 
-    def timestring_to_seconds (self, timestring):
-        """Take a timestring and parse it into seconds.
+    def timestring_to_seconds(self, timestring: str) -> int:
+        """Take a time string and parse it into seconds.
 
         We assume numbers come before time units - surely this will
         break some languages(?). We'll build the parameter in when the
@@ -582,7 +582,7 @@ class Converter:
                     num = []
         if seconds: return seconds
 
-def get_converter ():
+def get_converter():
     return Converter.instance()
 
 # Each of our time formatting functions takes two arguments, which

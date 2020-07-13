@@ -6,10 +6,10 @@ from gettext import gettext as _
 from gi.repository import GObject, Gtk
 import xml.sax.saxutils
 
-from . import gglobals
-from .sound import Player
-from .gtk_extras import cb_extras as cb
-from .gtk_extras.dialog_extras import getBoolean, UserCancelledError
+from gourmet import gglobals
+from gourmet.sound import Player
+from gourmet.gtk_extras import cb_extras as cb
+from gourmet.gtk_extras.dialog_extras import getBoolean, UserCancelledError
 
 
 class TimeSpinnerUI:
@@ -257,13 +257,14 @@ class TimerDialog:
     def run (self): self.timerDialog.run()
     def show (self): self.timerDialog.show()
 
-def show_timer (time=600,
-                note=''):
+
+def show_timer(seconds: int = 600, note: Optional[str] = None) -> None:
     td = TimerDialog()
-    td.set_time(time)
-    if note:
+    td.set_time(seconds)
+    if note is not None:
         td.noteEntry.set_text(note)
     td.show()
+
 
 if __name__ == '__main__':
     w = Gtk.Window()

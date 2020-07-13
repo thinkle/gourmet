@@ -27,16 +27,12 @@ from gourmet.gtk_extras.TextBufferMarkup import PangoBuffer
 class LinkedPangoBuffer(PangoBuffer):
 
     href_regexp = re.compile(r"<a href=['\"]([^'\"]+)['\"][^>]*>(.*?)</a>")
-
     url_markup = 'underline="single" color="blue"'
-
-    url_props = [('underline',Pango.Underline.SINGLE),
-                 ('foreground-gdk',Gdk.color_parse('blue')),
-                 ]
-
+    url_props = [('underline', Pango.Underline.SINGLE),
+                 ('foreground-gdk', Gdk.color_parse('blue'))]
     markup_dict = {}
 
-    def set_text (self, txt):
+    def set_text(self, txt: str) -> None:
         m = self.href_regexp.search(txt)
         if m:
             while m:
@@ -48,30 +44,7 @@ class LinkedPangoBuffer(PangoBuffer):
                 self.markup_dict[body]=href
                 m = self.href_regexp.search(txt,m.end())
             txt = self.href_regexp.sub(r'<span %s>\2</span>'%self.url_markup,txt)
-        PangoBuffer.set_text(self,txt)
-
-    def insert_with_tags (self, itr, text, *tags):
-        match = True
-        for p,v in self.url_props:
-            match = False
-            for t in tags:
-                if isinstance(v,Gdk.Color):
-                    c = t.get_property(p)
-                    if v.red==c.red and v.blue==c.blue and v.green==c.green:
-                        match=True
-                elif t.get_property(p)==v:
-                    match=True
-            if not match:
-                break
-        text = str(text)
-        if match and text in self.markup_dict:
-            new_tag = self.create_tag()
-            new_tag.set_data('href',self.markup_dict[text])
-            tags = list(tags)
-            tags.append(new_tag)
-        elif match:
-            print('Funny',text,'looks like a link, but is not in markup_dict',self.markup_dict)
-        PangoBuffer.insert_with_tags(self,itr,text,*tags)
+        super().set_text(txt)
 
 
 class LinkedTextView(Gtk.TextView):
@@ -81,11 +54,9 @@ class LinkedTextView(Gtk.TextView):
     hand_cursor = Gdk.Cursor.new(Gdk.CursorType.HAND2)
     text_cursor = Gdk.Cursor.new(Gdk.CursorType.XTERM)  # I-beam shaped
 
-    __gsignals__ = {
-        'link-activated':(GObject.SignalFlags.RUN_LAST,
-                          GObject.TYPE_STRING,
-                          [GObject.TYPE_STRING]),
-        }
+    __gsignals__ = {'link-activated': (GObject.SignalFlags.RUN_LAST,
+                                       GObject.TYPE_STRING,
+                                       [GObject.TYPE_STRING])}
 
     def __init__ (self):
         # GObject.GObject.__init__(self) # do we need both constructor calls?
@@ -98,39 +69,44 @@ class LinkedTextView(Gtk.TextView):
         self.connect('motion-notify-event',self.motion_notify_event)
         self.connect('visibility-notify-event',self.visibility_notify_event)
 
-    def make_buffer (self):
+    def make_buffer(self):
         return LinkedPangoBuffer()
 
-    # Links can be activated by pressing Enter.
-    def key_press_event(self, text_view, event):
+    def key_press_event(self,
+                        text_view: 'LinkedTextView',
+                        event: Gdk.Event) -> bool:
+        """Handle Enter key-press on time links."""
         keyname = Gdk.keyval_name(event.keyval)
-        if keyname in ['Return','KP_Enter']:
+        if keyname in ['Return', 'KP_Enter']:
             buffer = text_view.get_buffer()
-            iter = buffer.get_iter_at_mark(buffer.get_insert())
-            return self.follow_if_link(text_view, iter)
+            itr = buffer.get_iter_at_mark(buffer.get_insert())
+            return self.follow_if_link(text_view, itr)
         return False
-    # Links can also be activated by clicking.
-    def event_after(self, text_view, event):
-        if event.type != Gdk.EventType.BUTTON_RELEASE:
-            return False
-        if event.button != 1:
-            return False
-        buffer = text_view.get_buffer()
 
-        # we shouldn't follow a link if the user has selected something
-        try:
-            start, end = buffer.get_selection_bounds()
-        except ValueError:
-            # If there is nothing selected, None is return
-            pass
-        else:
-            if start.get_offset() != end.get_offset():
-                return False
+    def event_after(self,
+                    text_view: 'LinkedTextView',
+                    event: Gdk.Event) -> bool:
+        """Handle mouse clicks on time links."""
+        _, button = event.get_button()
 
-        x, y = text_view.window_to_buffer_coords(Gtk.TextWindowType.WIDGET,
-            int(event.x), int(event.y))
-        iter = text_view.get_iter_at_location(x, y)
-        self.follow_if_link(text_view, iter)
+        # Check for a left mouse click (as set by the system, not hardware).
+        if event.type == Gdk.EventType.BUTTON_RELEASE and button == 1:
+            buffer = text_view.get_buffer()
+
+            # we shouldn't follow a link if the user has selected something
+            try:
+                start, end = buffer.get_selection_bounds()
+            except ValueError:
+                # If there is nothing selected, None is return
+                pass
+            else:
+                if start.get_offset() != end.get_offset():
+                    return False
+
+            x, y = text_view.window_to_buffer_coords(Gtk.TextWindowType.WIDGET,
+                int(event.x), int(event.y))
+            _, itr = text_view.get_iter_at_location(x, y)
+            self.follow_if_link(text_view, itr)
         return False
 
     def set_cursor_if_appropriate(self,
@@ -148,8 +124,11 @@ class LinkedTextView(Gtk.TextView):
         tags = itr.get_tags()
 
         hovering_over_link = False
+
+        blue = Gdk.RGBA(red=0, green=0, blue=1., alpha=1.)
         for tag in tags:
-            if isinstance(tag.get_property('foreground-gdk'), Gtk.Color):
+            color = tag.get_property('foreground-rgba')
+            if color and color == blue:
                 hovering_over_link = True
                 break
 
@@ -172,17 +151,31 @@ class LinkedTextView(Gtk.TextView):
         self.set_cursor_if_appropriate (text_view, bx, by)
         return False
 
-    def follow_if_link (self, text_view, iter):
-        ''' Looks at all tags covering the position of iter in the text view,
+    def follow_if_link(self,
+                       text_view: 'LinkedTextView',
+                       itr: Gtk.TextIter) -> None:
+        """Looks at all tags covering the position of iter in the text view,
             and if one of them is a link, follow it by showing the page identified
             by the data attached to it.
-        '''
-        tags = iter.get_tags()
+        """
+        blue = Gdk.RGBA(red=0, green=0, blue=1., alpha=1.)
+
+        tags = itr.get_tags()
         for tag in tags:
-            href = tag.get_data('href')
-            if href:
-                self.emit('link-activated',href)
-                return True
+            color = tag.get_property('foreground-rgba')
+            if color and color == blue:
+                begin = itr.copy()
+                begin.forward_to_tag_toggle(tag)
+
+                end = itr.copy()
+                end.backward_to_tag_toggle(tag)
+
+                link_text = text_view.get_buffer().get_text(begin, end)
+                target = text_view.get_buffer().markup_dict[link_text]
+
+                self.emit('link-activated', target)
+                break
+
 
 if __name__ == '__main__':
     def print_link (tv,l):
@@ -204,5 +197,5 @@ if __name__ == '__main__':
     """)
 
     w.show_all()
-    w.connect('delete-event',lambda *args: Gtk.main_quit())
+    w.connect('delete-event', lambda *args: Gtk.main_quit())
     Gtk.main()

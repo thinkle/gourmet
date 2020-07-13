@@ -288,10 +288,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
             disp = getattr(self,d)
             disp.set_wrap_mode(Gtk.WrapMode.WORD)
             disp.set_editable(False)
-            disp.connect('time-link-activated',
-                         timeScanner.show_timer_cb,
-                         self.rg.conv
-                         )
+            disp.connect('time-link-activated', timeScanner.show_timer_cb)
         # link button
         self.linkDisplayButton = self.ui.get_object('linkDisplayButton')
         self.linkDisplayButton.connect('clicked',self.link_cb)
