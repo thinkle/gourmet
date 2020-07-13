@@ -19,12 +19,12 @@
 # Largely based on hypertext.py example in pygtk docs by
 # Maik Hertha <maik.hertha@berlin.de>
 
+import re
 from gi.repository import Gdk, GObject, Gtk, Pango
-import re, xml.sax.saxutils
-from .TextBufferMarkup import PangoBuffer
-from gourmet.gdebug import debug
+from gourmet.gtk_extras.TextBufferMarkup import PangoBuffer
 
-class LinkedPangoBuffer (PangoBuffer):
+
+class LinkedPangoBuffer(PangoBuffer):
 
     href_regexp = re.compile(r"<a href=['\"]([^'\"]+)['\"][^>]*>(.*?)</a>")
 
@@ -73,12 +73,13 @@ class LinkedPangoBuffer (PangoBuffer):
             print('Funny',text,'looks like a link, but is not in markup_dict',self.markup_dict)
         PangoBuffer.insert_with_tags(self,itr,text,*tags)
 
-class LinkedTextView (Gtk.TextView):
+
+class LinkedTextView(Gtk.TextView):
     __gtype_name__ = 'LinkedTextView'
 
     hovering_over_link = False
     hand_cursor = Gdk.Cursor.new(Gdk.CursorType.HAND2)
-    regular_cursor = Gdk.Cursor.new(Gdk.CursorType.XTERM)
+    text_cursor = Gdk.Cursor.new(Gdk.CursorType.XTERM)  # I-beam shaped
 
     __gsignals__ = {
         'link-activated':(GObject.SignalFlags.RUN_LAST,
@@ -132,26 +133,28 @@ class LinkedTextView (Gtk.TextView):
         self.follow_if_link(text_view, iter)
         return False
 
-    # Looks at all tags covering the position (x, y) in the text view,
-    # and if one of them is a link, change the cursor to the "hands" cursor
-    # typically used by web browsers.
-    def set_cursor_if_appropriate(self, text_view, x, y):
-        hovering = False
-        _, iter_ = text_view.get_iter_at_location(x, y)
-        tags = iter_.get_tags()
+    def set_cursor_if_appropriate(self,
+                                  text_view: 'LinkedTextView',
+                                  x: int,
+                                  y: int) -> None:
+        """Set the mouse cursor to be a hand when hovering over a time link.
 
+        Check each tag covering the position (x, y) within the text view.
+        If the text happens to be coloured, which only time links are allowed
+        to be in this application, then set the cursor to a hand.
+        If leaving the area of a time link, set the cursor to an I-beam.
+        """
+        _, itr = text_view.get_iter_at_location(x, y)
+        tags = itr.get_tags()
+
+        hovering_over_link = False
         for tag in tags:
-            href = tag.get_data("href")
-            if href:
-                hovering = True
+            if isinstance(tag.get_property('foreground-gdk'), Gtk.Color):
+                hovering_over_link = True
                 break
-        if hovering != self.hovering_over_link:
-            self.hovering_over_link = hovering
 
-        if self.hovering_over_link:
-            text_view.get_window(Gtk.TextWindowType.TEXT).set_cursor(self.hand_cursor)
-        else:
-            text_view.get_window(Gtk.TextWindowType.TEXT).set_cursor(self.regular_cursor)
+        cursor = self.hand_cursor if hovering_over_link else self.text_cursor
+        text_view.get_window(Gtk.TextWindowType.TEXT).set_cursor(cursor)
 
     # Update the cursor image if the pointer moved.
     def motion_notify_event(self, text_view, event):
