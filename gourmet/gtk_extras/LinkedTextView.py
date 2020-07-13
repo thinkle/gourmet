@@ -87,27 +87,26 @@ class LinkedTextView(Gtk.TextView):
                     text_view: 'LinkedTextView',
                     event: Gdk.Event) -> bool:
         """Handle mouse clicks on time links."""
-        if event.type != Gdk.EventType.BUTTON_RELEASE:
-            return False
         _, button = event.get_button()
-        if button != 1:  # is not the left-button (as set by the system, not hw)
-            return False
-        buffer = text_view.get_buffer()
 
-        # we shouldn't follow a link if the user has selected something
-        try:
-            start, end = buffer.get_selection_bounds()
-        except ValueError:
-            # If there is nothing selected, None is return
-            pass
-        else:
-            if start.get_offset() != end.get_offset():
-                return False
+        # Check for a left mouse click (as set by the system, not hardware).
+        if event.type == Gdk.EventType.BUTTON_RELEASE and button == 1:
+            buffer = text_view.get_buffer()
 
-        x, y = text_view.window_to_buffer_coords(Gtk.TextWindowType.WIDGET,
-            int(event.x), int(event.y))
-        _, itr = text_view.get_iter_at_location(x, y)
-        self.follow_if_link(text_view, itr)
+            # we shouldn't follow a link if the user has selected something
+            try:
+                start, end = buffer.get_selection_bounds()
+            except ValueError:
+                # If there is nothing selected, None is return
+                pass
+            else:
+                if start.get_offset() != end.get_offset():
+                    return False
+
+            x, y = text_view.window_to_buffer_coords(Gtk.TextWindowType.WIDGET,
+                int(event.x), int(event.y))
+            _, itr = text_view.get_iter_at_location(x, y)
+            self.follow_if_link(text_view, itr)
         return False
 
     def set_cursor_if_appropriate(self,
@@ -125,14 +124,15 @@ class LinkedTextView(Gtk.TextView):
         tags = itr.get_tags()
 
         hovering_over_link = False
+
+        blue = Gdk.RGBA(red=0, green=0, blue=1., alpha=1.)
         for tag in tags:
-            if isinstance(tag.get_property('foreground-gdk'), Gdk.Color):
+            color = tag.get_property('foreground-rgba')
+            if color and color == blue:
                 hovering_over_link = True
                 break
 
-        cursor = self.text_cursor
-        if hovering_over_link:
-            cursor = self.hand_cursor
+        cursor = self.hand_cursor if hovering_over_link else self.text_cursor
         text_view.get_window(Gtk.TextWindowType.TEXT).set_cursor(cursor)
 
     # Update the cursor image if the pointer moved.
@@ -197,5 +197,5 @@ if __name__ == '__main__':
     """)
 
     w.show_all()
-    w.connect('delete-event',lambda *args: Gtk.main_quit())
+    w.connect('delete-event', lambda *args: Gtk.main_quit())
     Gtk.main()

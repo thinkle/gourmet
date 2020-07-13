@@ -270,17 +270,13 @@ class StarButton (Gtk.Button):
         return True
 
     def buttonpress_cb (self, widget, event):
-        x,y = event.get_coords()
-        wx,wy = self.image.translate_coordinates(self.image,int(x),int(y))
+        x, y = event.get_coords()  # coordinates relative to widget
+        wx, wy = self.translate_coordinates(self.image, int(x), int(y))  # coordinates relative to star images
+        wx = min(self.image.get_pixbuf().get_width(), max(0, wx))  # clamp x values to star range
+        # clamping of pixel values is fine as the user can click outside the stars of the widget to get to 0 or 10
         self.star_width =  self.image.get_pixbuf().get_width() / self.image.upper
-        star = x / self.star_width + 1
-        star = int(star)
-        if self.image.value >= star:
-            # if we're clicking on a set icon, we want it to go away
-            self.set_value(star-1)
-        else:
-            # otherwise we want it to be filled
-            self.set_value(star)
+        star = x // self.star_width
+        self.set_value(star)
         return True
 
     def keypress_cb (self, widget, event):
@@ -398,14 +394,9 @@ class TreeWithStarMaker:
                 itr=mod.get_iter(path)
                 curval=mod.get_value(itr,0)
                 self.star_width = self.cellrenderer.get_property('pixbuf').get_width()/self.upper
-                starval = cellx / self.star_width + 1
+                starval = (cellx + 0.5 * self.star_width) // self.star_width  # we translate this half a half-star since you can't click before 0, as opposed to the method in the widget
                 curval = mod.get_value(itr,self.data_col)
-                if starval > curval:
-                    self.call_handlers(starval, mod, itr, self.data_col)
-                    #mod.set_value(itr,self.col_position,starval)
-                else:
-                    self.call_handlers(starval-1, mod, itr, self.data_col)
-                    #mod.set_value(itr,self.col_position,starval-1)
+                self.call_handlers(starval, mod, itr, self.data_col)
             self.curpath = path
 
     def tree_keypress_callback (self, tv, event):
@@ -463,7 +454,7 @@ if __name__ == '__main__':
     s = StarGenerator()
     for i in range(10):
         hb = Gtk.HBox()
-        hb.pack_start(StarButton(s,start_value=i),fill=False,expand=False)
+        hb.pack_start(StarButton(s,start_value=i),False,False,0)
         vb.add(hb)
     w=Gtk.Window()
     w.add(vb)
