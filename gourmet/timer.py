@@ -3,7 +3,7 @@ import time
 from typing import Callable, List, Optional
 
 from gettext import gettext as _
-from gi.repository import GObject, Gtk
+from gi.repository import GLib, Gtk
 import xml.sax.saxutils
 
 from gourmet import gglobals
@@ -101,7 +101,7 @@ class TimeSpinnerUI:
             self.remaining = None
             self.is_running = True
             self.orig_time = self.get_time()
-            GObject.timeout_add(100, self.tick)
+            GLib.timeout_add(100, self.tick)
 
     def pause_cb(self, *args) -> None:
         """The pause button callback, used to pausing and resuming"""
@@ -112,7 +112,7 @@ class TimeSpinnerUI:
         else:  # resuming
             self.is_running = True
         if self.is_running:
-            GObject.timeout_add(100, self.tick)
+            GLib.timeout_add(100, self.tick)
 
     def reset_cb(self, *args) -> None:
         """Resets the timer to the originally set value, after being started"""
@@ -205,7 +205,7 @@ class TimerDialog:
         self.play_tune()
         if self.repeatCheckButton.get_active():
             self.keep_annoying = True
-            GObject.timeout_add(3000,self.annoy_user)
+            GLib.timeout_add(3000, self.annoy_user)
         self.timerBox.hide()
         self.expander1.hide()
         self.timerFinishedLabel.show()
@@ -232,26 +232,34 @@ class TimerDialog:
         else:
             self.close_cb()
 
-    def close_cb (self,*args):
-        self.stop_annoying()
-        msg = ("You've requested to close a window with an active timer."
-               "You can stop the timer, or you can just close the window."
-               "If you close the window, it will reappear when your timer "
-               "goes off.")
-        try:
-            do_cancel = getBoolean(label=_('Stop timer?'),
-                                   sublabel=_(msg),
-                                   custom_yes=_('Stop _timer'),
-                                   custom_no=_('_Keep timing'))
-        except UserCancelledError:
-            return  # keep the timer window open
+    def close_cb(self, *args) -> None:
+        """Close a timer window.
 
-        if do_cancel or not self.timer.is_running:
+        There are three options: either the timer is not running, and it gets
+        closed, the timer is running and it gets cancelled and closed, or the
+        timer is running, and gets hidden ready to pop back up when finished.
+        """
+        self.stop_annoying()
+        do_cancel = True
+        if self.timer.is_running:
+            msg = ("You've requested to close a window with an active timer. "
+                   "You can stop the timer, or you can just close the window. "
+                   "If you close the window, it will reappear when your timer "
+                   "goes off.")
+            try:
+                do_cancel = getBoolean(label=_('Stop timer?'),
+                                       sublabel=_(msg),
+                                       custom_yes=_('Stop _timer'),
+                                       custom_no=_('_Keep timing'))
+            except UserCancelledError:
+                return  # keep the timer window open
+
+        if do_cancel:
             self.timer.is_running = False
             self.timerDialog.hide()
             self.timerDialog.destroy()
         else:
-            self.timer.connect_timer_hook(self.timerDialog.show,1)
+            self.timer.connect_timer_hook(self.timerDialog.show, 1)
             self.timerDialog.hide()
 
     def run (self): self.timerDialog.run()
@@ -268,7 +276,8 @@ def show_timer(seconds: int = 600, note: Optional[str] = None) -> None:
 
 if __name__ == '__main__':
     w = Gtk.Window()
-    b = Gtk.Button('Show timer')
+    b = Gtk.Button()
+    b.set_label('Show timer')
     b.connect('clicked',lambda *args: show_timer())
     w.add(b)
     w.connect('delete-event',lambda *args: Gtk.main_quit())
