@@ -1,0 +1,48 @@
+app-id: io.github.thinkle.Gourmet
+runtime: org.gnome.Platform
+runtime-version: '3.36'
+sdk: org.gnome.Sdk
+command: gourmet
+rename-desktop-file: gourmet.desktop
+# rename-icon: gourmet.png
+finish-args:
+  - --filesystem=host
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+modules:
+  - name: cpython
+    sources:
+      - type: archive
+        url:  https://www.python.org/ftp/python/3.8.4/Python-3.8.4.tar.xz
+        sha256:  5f41968a95afe9bc12192d7e6861aab31e80a46c46fa59d3d837def6a4cd4d37
+
+  - name: intltool
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url:  https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
+        sha256:  67c74d94196b153b774ab9f89b2fa6c6ba79352407037c8c14d5aeb334e959cd
+
+  - name: PrePipDependencies
+    buildsystem: simple
+    build-options:
+      build-args:
+        - --share=network
+    build-commands:
+      - pip3 install pyenchant sphinx pgi PyGObject gobject
+
+  - name: PipDependencies
+    buildsystem: simple
+    build-options:
+      build-args:
+        - --share=network
+    build-commands:
+      - pip3 install pygtkspellcheck reportlab lxml keyring dogtail scrape-schema-recipe ebooklib sqlalchemy Pillow gobject beautifulsoup4 pycairo pyglet giofile
+
+  - name: gourmet
+    buildsystem: simple
+    build-commands:
+      - python3 setup.py install --prefix=/app
+    sources:
+      - type: git
+        url:  https://github.com/kirienko/gourmet
