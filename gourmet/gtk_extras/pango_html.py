@@ -23,12 +23,19 @@ class PangoToHtml(HTMLParser):
     """
     def __init__(self):
         super().__init__()
-        self.markup_text: str = ''  # the resulting content
-        self.current_closing_tags: Optional[str] = None  # used during parsing
+        self.markup_text: str = ""  # the resulting content
+        self.current_opening_tags: str = ""  # used during parsing
+        self.current_closing_tags: str = ""  # used during parsing
 
         # The key is the Pango id of a tag, and the value is a tuple of opening
         # and closing html tags for this id.
         self.tags: Dict[str: Tuple[str, str]] = {}
+
+        # Optionally, links can be specified, in a {link text: target} format.
+        self.links: Dict[str, str] = {}
+
+        # Used as heuristics for parsing links, when applicable.
+        self.is_colored_and_underlined: bool = False
 
     tag2html: Dict[str, Tuple[str, str]] = {
         "PANGO_STYLE_ITALIC": ("<i>", "</i>"),  # Pango doesn't do <em>
@@ -52,12 +59,18 @@ class PangoToHtml(HTMLParser):
         blue = hex(255 * int(blue, base=16) // 65535)[2:].zfill(2)
         return f"#{red}{green}{blue}"
 
-    def feed(self, data: bytes) -> str:
+    def feed(self, data: bytes, links: Optional[Dict[str, str]] = None) -> str:
         """Convert a buffer (text and and the buffer's iterators to html string.
 
         Unlike an HTMLParser, the whole string must be passed at once, chunks
         are not supported.
+
+        Optionally, a dictionary of links, in the format {text: target}, can be
+        specified. Links will be inserted if some text in the markup will be
+        coloured, underlined, and matching an entry in the dictionary.
         """
+        if links is not None:
+            self.links = links
 
         # Remove the Pango header: it contains a length mark, which we don't
         # care about, but which does not necessarily decodes as valid char.
@@ -121,24 +134,36 @@ class PangoToHtml(HTMLParser):
         # Create a single output string that will be sequentially appended to
         # during feeding of text. It can then be returned once we've parse all
         self.markup_text = ""
-        self.current_closing_tags = None
+        self.current_opening_tags = ""
+        self.current_closing_tags = ""
+        self.is_colored_and_underlined = False
         super().feed(text)
         return self.markup_text
 
-    def handle_starttag(self, tag: str, attrs: List[str]) -> None:
+    def handle_starttag(self, tag: str, attrs: List[Tuple[str, str]]) -> None:
+        # The only tag in pango markup is "apply_tag". This could be ignored or
+        # made an assert, but we let our parser quietly handle nonsense.
         if tag == "apply_tag":
             id_ = dict(attrs).get('id')
             tags = self.tags.get(id_)
             if tags is not None:
-                self.current_closing_tags = tags[1]
-                for t in tags[0]:
-                    self.markup_text += t
+                self.current_opening_tags, self.current_closing_tags = tags
+
+        if 'foreground' and '<u>' in self.current_opening_tags:
+            self.is_colored_and_underlined = True
 
     def handle_data(self, data: str) -> None:
+        target = self.links.get(data)
+
+        if self.is_colored_and_underlined and target is not None:
+            # Replace the markup tags with a hyperlink target
+            data = f'<a href="{target}">{data}</a>'
+        else:
+            data = self.current_opening_tags + data + self.current_closing_tags
+
         self.markup_text += data
 
     def handle_endtag(self, tag: str) -> None:
-        if tag == "apply_tag" and self.current_closing_tags is not None:
-            for t in self.current_closing_tags:
-                self.markup_text += t
-            self.current_closing_tags = None
+        self.current_closing_tags = ""
+        self.current_opening_tags = ""
+        self.is_colored_and_underlined = False

@@ -23,6 +23,7 @@ import re
 from typing import Optional
 from gi.repository import Gdk, GObject, Gtk, Pango
 from gourmet.gtk_extras.TextBufferMarkup import PangoBuffer
+from gourmet.gtk_extras.pango_html import PangoToHtml
 
 
 class LinkedPangoBuffer(PangoBuffer):
@@ -56,12 +57,17 @@ class LinkedPangoBuffer(PangoBuffer):
         If `include_hidden_chars` is set, then the html markup content is
         returned.
         """
-        content = super().get_text(start, end, include_hidden_chars)
+        if start is None:
+            start = self.get_start_iter()
+        if end is None:
+            end = self.get_end_iter()
 
-        # TODO: Replace all colored and underlined text tags with links, if
-        # these are links
-        # if include_hidden_chars: ...
-        return content
+        if include_hidden_chars is False:
+            return super().get_text(start, end, include_hidden_chars)
+        else:
+            format_ = self.register_serialize_tagset()
+            pango_markup = self.serialize(self, format_, start, end)
+            return PangoToHtml().feed(pango_markup, self.markup_dict)
 
 
 class LinkedTextView(Gtk.TextView):
@@ -208,10 +214,12 @@ if __name__ == '__main__':
 
     <a href="123:foo">recipe link</a>
 
-    <a href="456:boo">\xbc recipe boogoochooboo</a>
+    <a href="456:boo">¼ recipe boogoochooboo</a>
 
     <b>Yeah!</b>
     """)
+
+    print(tv.get_buffer().get_text(include_hidden_chars=True))
 
     w.show_all()
     w.connect('delete-event', lambda *args: Gtk.main_quit())
