@@ -106,31 +106,24 @@ class LinkedTextView(Gtk.TextView):
             return self.follow_if_link(text_view, itr)
         return False
 
-    def event_after(self,
-                    text_view: 'LinkedTextView',
-                    event: Gdk.Event) -> bool:
+    def event_after(self, text_view: 'LinkedTextView', event: Gdk.Event) -> bool:
         """Handle mouse clicks on time links."""
         _, button = event.get_button()
 
+        # Check for selection
+        buffer = text_view.get_buffer()
+        selection = buffer.get_selection_bounds()
+        selecting = (len(selection) != 0 and
+                     (selection[0].get_offset() != selection[1].get_offset()))
+
         # Check for a left mouse click (as set by the system, not hardware).
-        if event.type == Gdk.EventType.BUTTON_RELEASE and button == 1:
-            buffer = text_view.get_buffer()
-
-            # we shouldn't follow a link if the user has selected something
-            try:
-                start, end = buffer.get_selection_bounds()
-            except ValueError:
-                # If there is nothing selected, None is returned
-                pass
-            else:
-                if start.get_offset() != end.get_offset():
-                    return False
-
+        if (event.type == Gdk.EventType.BUTTON_RELEASE and button == 1 and not selecting):
             x, y = text_view.window_to_buffer_coords(Gtk.TextWindowType.WIDGET,
-                int(event.x), int(event.y))
+                                                     int(event.x), int(event.y))
             _, itr = text_view.get_iter_at_location(x, y)
             self.follow_if_link(text_view, itr)
-        return False
+
+        return False  # Do not process the event further
 
     def set_cursor_if_appropriate(self,
                                   text_view: 'LinkedTextView',
