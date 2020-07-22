@@ -59,7 +59,7 @@ class PangoBuffer(Gtk.TextBuffer):
         bounds = self.get_selection_bounds()
 
         if not bounds:
-            itr = self.get_iter_at_mark(self.insert_)
+            itr = self.get_iter_at_mark(self.get_insert())
             if itr.inside_word():
                 start_pos = itr.get_offset()
                 itr.forward_word_end()
@@ -97,7 +97,6 @@ class InteractivePangoBuffer(PangoBuffer):
             normal_button.connect('clicked', self.remove_all_tags)
         self.tag_widgets = {}
         self.internal_toggle = False
-        self.insert_: Gtk.TextMark = self.get_insert()
         self.connect('mark-set', self._mark_set_cb)
         self.connect('changed', self._changed_cb)
 
@@ -158,7 +157,7 @@ class InteractivePangoBuffer(PangoBuffer):
         # If our insertion point has a mark, we want to apply the tag
         # each time the user types...
         old_itr = self.get_iter_at_mark(self.last_mark)
-        insert_itr = self.get_iter_at_mark(self.insert_)
+        insert_itr = self.get_iter_at_mark(self.get_insert())
         if old_itr!=insert_itr:
             # Use the state of our widgets to determine what
             # properties to apply...
