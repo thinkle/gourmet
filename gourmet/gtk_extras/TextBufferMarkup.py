@@ -182,15 +182,8 @@ class SimpleEditor:
         self.ipb = InteractivePangoBuffer(
             normal_button=self.nb)
 
-        # self.ipb.set_text("""<b>This is bold</b>. <i>This is italic</i>
-        #     <b><i>This is bold, italic, and <u>underlined!</u></i></b>
-        #     <span background="blue">This is a test of bg color</span>
-        #     <span foreground="blue">This is a test of fg color</span>
-        #     <span foreground="white" background="blue">This is a test of fg and bg color</span>
-        #     """)
-
         self.ipb.set_text("""<b>This is bold</b>. <i>This is italic</i>
-            <i><b>This is bold, italic, and </b></i><i><b><u>underlined!</u></b></i>
+            <i><b>This is bold, italic, and <u>underlined!</u></b></i>
             <span background="blue">This is a test of bg color</span>
             <span foreground="blue">This is a test of fg color</span>
             <span foreground="white" background="blue">This is a test of fg and bg color</span>
