@@ -1257,7 +1257,7 @@ class TextEditor:
             ('Cut',Gtk.STOCK_CUT,None,None,None,self.do_cut),
             ])
         self.cb = Gtk.Clipboard()
-        GObject.timeout_add(500,self.do_sensitize)
+        GObject.timeout_add(500,self.do_sensitize)  # FIXME: make event-driven
         self.action_groups.append(self.copyPasteActionGroup)
 
     def do_sensitize (self):
@@ -1640,7 +1640,7 @@ class TextFieldEditor (TextEditor):
         self.main.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
         self.tv = Gtk.TextView()
         self.main.add(self.tv)
-        buf = TextBufferMarkup.InteractivePangoBuffer()
+        buf = TextBufferMarkup.PangoBuffer()
         self.tv.set_wrap_mode(Gtk.WrapMode.WORD)
         self.tv.set_buffer(buf)
         self.tv.show()
