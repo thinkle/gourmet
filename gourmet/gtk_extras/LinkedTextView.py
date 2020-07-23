@@ -51,8 +51,11 @@ class LinkedTextView(Gtk.TextView):
     __gtype_name__ = 'LinkedTextView'
 
     hovering_over_link = False
-    hand_cursor = Gdk.Cursor.new(Gdk.CursorType.HAND2)
-    text_cursor = Gdk.Cursor.new(Gdk.CursorType.XTERM)  # I-beam shaped
+
+    hand_cursor = Gdk.Cursor(Gdk.Display.get_default(), Gdk.CursorType.HAND2)
+
+    # I-beam shaped
+    text_cursor = Gdk.Cursor(Gdk.Display.get_default(), Gdk.CursorType.XTERM)
 
     __gsignals__ = {'link-activated': (GObject.SignalFlags.RUN_LAST,
                                        GObject.TYPE_STRING,
