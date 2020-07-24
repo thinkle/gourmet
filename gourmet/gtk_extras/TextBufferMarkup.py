@@ -33,6 +33,7 @@ class PangoBuffer(Gtk.TextBuffer):
                                              underline=Pango.Underline.SINGLE)
 
     def set_text(self, text: Union[str, bytes]) -> None:
+        super().set_text('')  # Clear the widget
         if isinstance(text, bytes):
             # data loaded from the database are bytes, not str
             text = text.decode("utf-8")
@@ -79,7 +80,7 @@ class PangoBuffer(Gtk.TextBuffer):
         return bounds
 
     def on_markup_toggle(self,
-                         widget: Gtk.ToolButton,
+                         widget: Gtk.Action,
                          tag: Gtk.TextTag) -> None:
         """Apply or remove markup to selected text"""
         bounds = self.get_selection_bounds()
