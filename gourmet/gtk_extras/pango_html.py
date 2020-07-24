@@ -3,6 +3,7 @@ from typing import Dict, List, Optional, Tuple
 
 from bs4 import BeautifulSoup
 from bs4.element import Tag
+from gi.repository import Pango
 
 
 class PangoToHtml(HTMLParser):
@@ -38,9 +39,9 @@ class PangoToHtml(HTMLParser):
         self.is_colored_and_underlined: bool = False
 
     tag2html: Dict[str, Tuple[str, str]] = {
-        "PANGO_STYLE_ITALIC": ("<i>", "</i>"),  # Pango doesn't do <em>
-        "700": ("<b>", "</b>"),  # TODO: Use the proper enum
-        "PANGO_UNDERLINE_SINGLE": ("<u>", "</u>"),
+        Pango.Style.ITALIC.value_name: ("<i>", "</i>"),  # Pango doesn't do <em>
+        str(Pango.Weight.BOLD.real): ("<b>", "</b>"),
+        Pango.Underline.SINGLE.value_name: ("<u>", "</u>"),
         "foreground-gdk": (r'<span foreground="{}">', "</span>"),
         "background-gdk": (r'<span background="{}">', "</span>")
     }
