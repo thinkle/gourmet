@@ -1678,7 +1678,7 @@ class TextFieldEditor (TextEditor):
         self.tv.get_buffer().set_text(txt)
 
     def save (self, recdic):
-        recdic[self.prop] = self.tv.get_buffer().get_text()
+        recdic[self.prop] = self.tv.get_buffer().get_text(include_hidden_chars=True)
         self.emit('saved')
         return recdic
 
