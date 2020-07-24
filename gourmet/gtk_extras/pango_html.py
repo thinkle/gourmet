@@ -103,7 +103,10 @@ class PangoToHtml(HTMLParser):
         for tag in tags:
             opening_tags = ""
             closing_tags = ""
-            tag_name = tag.attrs['id']
+
+            # The tag may have a name, for named tags, or else an id
+            tag_name = tag.attrs.get('id')
+            tag_name = tag.attrs.get('name', tag_name)
 
             attributes = [c for c in tag.contents if isinstance(c, Tag)]
             for attribute in attributes:
@@ -144,8 +147,11 @@ class PangoToHtml(HTMLParser):
         # The only tag in pango markup is "apply_tag". This could be ignored or
         # made an assert, but we let our parser quietly handle nonsense.
         if tag == "apply_tag":
-            id_ = dict(attrs).get('id')
-            tags = self.tags.get(id_)
+            attrs = dict(attrs)
+            tag_name = attrs.get('id')  # A tag may have a name, or else an id
+            tag_name = attrs.get('name', tag_name)
+            tags = self.tags.get(tag_name)
+
             if tags is not None:
                 self.current_opening_tags, self.current_closing_tags = tags
 
