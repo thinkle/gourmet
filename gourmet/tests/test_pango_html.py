@@ -65,3 +65,22 @@ def test_pango_markup_to_html():
 
     ret = PangoToHtml().feed(pango_markup)
     assert ret == expected
+
+    links = {'1/2 hour': '1/2 hour', 'three days': 'three days',
+             '20 to 30 minutes': '20 minutes',
+             'two and a half hours': 'two and a half hours',
+             '25 seconds': '25 seconds'}
+    pango_markup = b'GTKTEXTBUFFERCONTENTS-0001\x00\x00\x07\x1c <text_view_markup>\n <tags>\n  <tag id="4" priority="7">\n  </tag>\n  <tag id="5" priority="8">\n   <attr name="foreground-gdk" type="GdkColor" value="0:0:ffff" />\n   <attr name="underline" type="PangoUnderline" value="PANGO_UNDERLINE_SINGLE" />\n  </tag>\n  <tag id="8" priority="11">\n  </tag>\n  <tag id="9" priority="12">\n   <attr name="foreground-gdk" type="GdkColor" value="0:0:ffff" />\n   <attr name="underline" type="PangoUnderline" value="PANGO_UNDERLINE_SINGLE" />\n  </tag>\n  <tag id="10" priority="13">\n  </tag>\n  <tag id="6" priority="9">\n  </tag>\n  <tag id="7" priority="10">\n   <attr name="foreground-gdk" type="GdkColor" value="0:0:ffff" />\n   <attr name="underline" type="PangoUnderline" value="PANGO_UNDERLINE_SINGLE" />\n  </tag>\n  <tag id="0" priority="3">\n  </tag>\n  <tag id="2" priority="5">\n  </tag>\n  <tag id="1" priority="4">\n   <attr name="foreground-gdk" type="GdkColor" value="0:0:ffff" />\n   <attr name="underline" type="PangoUnderline" value="PANGO_UNDERLINE_SINGLE" />\n  </tag>\n  <tag id="3" priority="6">\n   <attr name="foreground-gdk" type="GdkColor" value="0:0:ffff" />\n   <attr name="underline" type="PangoUnderline" value="PANGO_UNDERLINE_SINGLE" />\n  </tag>\n </tags>\n<text><apply_tag id="0">Cook potatoes for </apply_tag><apply_tag id="1">1/2 hour</apply_tag><apply_tag id="2">.\n\n        When you are finished, leave in the refrigerator for up to </apply_tag><apply_tag id="3">three days</apply_tag><apply_tag id="4">.\n\n        After that, boil onions for </apply_tag><apply_tag id="5">20 to 30 minutes</apply_tag><apply_tag id="6">.\n\n        When finished, bake everything for </apply_tag><apply_tag id="7">two and a half hours</apply_tag><apply_tag id="8">.\n\n        15-</apply_tag><apply_tag id="9">25 seconds</apply_tag><apply_tag id="10">.\n        </apply_tag></text>\n</text_view_markup>\n'  # noqa
+    expected = """Cook potatoes for 1/2 hour.
+
+        When you are finished, leave in the refrigerator for up to three days.
+
+        After that, boil onions for 20 to 30 minutes.
+
+        When finished, bake everything for two and a half hours.
+
+        15-25 seconds.
+        """
+
+    ret = PangoToHtml().feed(pango_markup, links, ignore_links=True)
+    assert ret == expected

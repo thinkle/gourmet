@@ -1,12 +1,12 @@
 """Scan text for time and show links that will pop up a timer if the
 user clicks on any time in the TextView."""
 import re
-from typing import Union
+from typing import Optional, Union
 
-from gi.repository import Gdk, GObject, Gtk
+from gi.repository import GObject, Gtk
 
-from gourmet import timer, convert
-from gourmet.convert import Converter
+from gourmet import timer
+from gourmet.convert import Converter, NUMBER_FINDER_REGEXP, RANGE_REGEXP
 from gourmet.gtk_extras.LinkedTextView import LinkedPangoBuffer, LinkedTextView
 
 all_units = set()
@@ -16,8 +16,8 @@ for base, units in Converter.time_units:
         all_units.add(u)
 
 time_matcher = re.compile(
-    '(?P<firstnum>'+convert.NUMBER_FINDER_REGEXP + ')(' + \
-    convert.RANGE_REGEXP + convert.NUMBER_FINDER_REGEXP.replace('int','int2').replace('frac','frac2') + ')?' \
+    '(?P<firstnum>'+NUMBER_FINDER_REGEXP + ')(' + RANGE_REGEXP +
+    NUMBER_FINDER_REGEXP.replace('int', 'int2').replace('frac', 'frac2') + ')?'
     + r'\s*' + '(?P<unit>' + '|'.join(all_units) + r')(?=$|\W)',
     re.UNICODE
     )
@@ -32,6 +32,19 @@ class TimeBuffer(LinkedPangoBuffer):
         if isinstance(txt, bytes):
             txt = txt.decode("utf-8")
         super().set_text(make_time_links(txt))
+
+    def get_text(self,
+                 start: Optional[Gtk.TextIter] = None,
+                 end: Optional[Gtk.TextIter] = None,
+                 include_hidden_chars: bool = False) -> str:
+        """Get the buffer content.
+
+        If `include_hidden_chars` is set, then the html markup content is
+        returned.
+        Time links are always stripped.
+        """
+        return super().get_text(start, end, include_hidden_chars,
+                                ignore_links=True)
 
 
 class LinkedTimeView(LinkedTextView):
@@ -78,7 +91,7 @@ class LinkedTimeView(LinkedTextView):
         if self.get_buffer().markup_dict.get(time_string) == time_string:
             self.emit("time-link-activated", time_string, sentence)
 
-        return False  # Do not process the signal further.
+        return False  # Do not process the event further.
 
 
 def show_timer_cb(tv: LinkedTimeView, line: str, note: str) -> None:
@@ -104,6 +117,6 @@ if __name__ == '__main__':
 
     w = Gtk.Window()
     w.add(tv)
-    w.connect('delete-event',lambda *args: Gtk.main_quit())
+    w.connect('delete-event', lambda *args: Gtk.main_quit())
     w.show_all()
     Gtk.main()

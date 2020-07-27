@@ -9,9 +9,8 @@ from gi.repository import Pango
 class PangoToHtml(HTMLParser):
     """Decode a subset of Pango markup and serialize it as HTML.
 
-    Because Pango can only deserialize a subset of HTML, the encoding here uses
-    a subset of HTML. Moreover, only the Pango markup used within Gourmet is
-    handled, although expanding it is not difficult.
+    Only the Pango markup used within Gourmet is handled, although expanding it
+    is not difficult.
 
     Due to the way that Pango attributes work, the HTML is not necessarily the
     simplest. For example italic tags may be closed early and reopened if other
@@ -26,7 +25,7 @@ class PangoToHtml(HTMLParser):
         super().__init__()
         self.markup_text: str = ""  # the resulting content
         self.current_opening_tags: str = ""  # used during parsing
-        self.current_closing_tags: str = ""  # used during parsing
+        self.current_closing_tags: List = []  # used during parsing
 
         # The key is the Pango id of a tag, and the value is a tuple of opening
         # and closing html tags for this id.
@@ -34,6 +33,10 @@ class PangoToHtml(HTMLParser):
 
         # Optionally, links can be specified, in a {link text: target} format.
         self.links: Dict[str, str] = {}
+
+        # If links are specified, it is possible to ignore them, as is done with
+        # time links.
+        self.ignore_links: bool = False
 
         # Used as heuristics for parsing links, when applicable.
         self.is_colored_and_underlined: bool = False
@@ -60,7 +63,10 @@ class PangoToHtml(HTMLParser):
         blue = hex(255 * int(blue, base=16) // 65535)[2:].zfill(2)
         return f"#{red}{green}{blue}"
 
-    def feed(self, data: bytes, links: Optional[Dict[str, str]] = None) -> str:
+    def feed(self,
+             data: bytes,
+             links: Optional[Dict[str, str]] = None,
+             ignore_links: Optional[bool] = False) -> str:
         """Convert a buffer (text and and the buffer's iterators to html string.
 
         Unlike an HTMLParser, the whole string must be passed at once, chunks
@@ -69,9 +75,14 @@ class PangoToHtml(HTMLParser):
         Optionally, a dictionary of links, in the format {text: target}, can be
         specified. Links will be inserted if some text in the markup will be
         coloured, underlined, and matching an entry in the dictionary.
+
+        If `ignore_links` is set, along with the `links` dictionary, then links
+        will be serialized as regular text, and the link targets will be lost.
         """
         if links is not None:
             self.links = links
+
+        self.ignore_links = ignore_links
 
         # Remove the Pango header: it contains a length mark, which we don't
         # care about, but which does not necessarily decodes as valid char.
@@ -165,7 +176,8 @@ class PangoToHtml(HTMLParser):
 
         if self.is_colored_and_underlined and target is not None:
             # Replace the markup tags with a hyperlink target
-            data = f'<a href="{target}">{data}</a>'
+            if not self.ignore_links:
+                data = f'<a href="{target}">{data}</a>'
             # Shortcut the closing tag
             self.current_closing_tags.pop()
         else:

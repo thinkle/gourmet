@@ -51,11 +51,14 @@ class LinkedPangoBuffer(PangoBuffer):
     def get_text(self,
                  start: Optional[Gtk.TextIter] = None,
                  end: Optional[Gtk.TextIter] = None,
-                 include_hidden_chars: bool = False) -> str:
+                 include_hidden_chars: bool = False,
+                 ignore_links: bool = False) -> str:
         """Get the buffer content.
 
         If `include_hidden_chars` is set, then the html markup content is
         returned.
+        If `ignore_links` is set, then links in the text will not be
+        serialised, and link targets will be lost.
         """
         if start is None:
             start = self.get_start_iter()
@@ -67,7 +70,8 @@ class LinkedPangoBuffer(PangoBuffer):
         else:
             format_ = self.register_serialize_tagset()
             pango_markup = self.serialize(self, format_, start, end)
-            return PangoToHtml().feed(pango_markup, self.markup_dict)
+            return PangoToHtml().feed(pango_markup, self.markup_dict,
+                                      ignore_links)
 
 
 class LinkedTextView(Gtk.TextView):
@@ -182,7 +186,7 @@ class LinkedTextView(Gtk.TextView):
 
         This is done by emitting the `link-activated` signal defined in
         this class.
-        Whether or not the it was a link, the click won't be processed further.
+        Whether or not it was a link, the click won't be processed further.
         """
         # Get the tags where the colours are set, marking the link text.
         begin = itr.copy()
