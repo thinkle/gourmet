@@ -132,22 +132,29 @@ class LinkedTextView(Gtk.TextView):
                                   y: int) -> None:
         """Set the mouse cursor to be a hand when hovering over a time link.
 
-        Check each tag covering the position (x, y) within the text view.
-        If the text happens to be coloured, which only time links are allowed
-        to be in this application, then set the cursor to a hand.
+        Check that the text at the position (x, y) within the text view, is
+        valid link content.
+        The link text is obtained by getting the content between the tag
+        preceding the cursor position, and the tag following it.
+
+        If it is valid link content, as kept in memory within the buffer's
+        `markup_dict`, then set the cursor to a hand.
         If leaving the area of a time link, set the cursor to an I-beam.
         """
         _, itr = text_view.get_iter_at_location(x, y)
-        tags = itr.get_tags()
-
         hovering_over_link = False
 
-        blue = Gdk.RGBA(red=0, green=0, blue=1., alpha=1.)
-        for tag in tags:
-            color = tag.get_property('foreground-rgba')
-            if color and color == blue:
-                hovering_over_link = True
-                break
+        # Get the tags surrounding the text at the cursor.
+        begin = itr.copy()
+        begin.forward_to_tag_toggle()
+
+        end = itr.copy()
+        end.backward_to_tag_toggle()
+
+        # Check if the text is the content of a link.
+        text = text_view.get_buffer().get_text(begin, end)
+        if text in text_view.get_buffer().markup_dict:
+            hovering_over_link = True
 
         cursor = self.hand_cursor if hovering_over_link else self.text_cursor
         text_view.get_window(Gtk.TextWindowType.TEXT).set_cursor(cursor)
