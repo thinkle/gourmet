@@ -139,7 +139,7 @@ class PangoToHtml(HTMLParser):
         # during feeding of text. It can then be returned once we've parse all
         self.markup_text = ""
         self.current_opening_tags = ""
-        self.current_closing_tags = ""
+        self.current_closing_tags = []  # Closing tags are FILO
         self.is_colored_and_underlined = False
         super().feed(text)
         return self.markup_text
@@ -154,7 +154,8 @@ class PangoToHtml(HTMLParser):
             tags = self.tags.get(tag_name)
 
             if tags is not None:
-                self.current_opening_tags, self.current_closing_tags = tags
+                self.current_opening_tags, closing_tag = tags
+                self.current_closing_tags.append(closing_tag)
 
         if 'foreground' and '<u>' in self.current_opening_tags:
             self.is_colored_and_underlined = True
@@ -165,12 +166,15 @@ class PangoToHtml(HTMLParser):
         if self.is_colored_and_underlined and target is not None:
             # Replace the markup tags with a hyperlink target
             data = f'<a href="{target}">{data}</a>'
+            # Shortcut the closing tag
+            self.current_closing_tags.pop()
         else:
-            data = self.current_opening_tags + data + self.current_closing_tags
+            data = self.current_opening_tags + data
 
         self.markup_text += data
 
     def handle_endtag(self, tag: str) -> None:
-        self.current_closing_tags = ""
+        if self.current_closing_tags:  # Can be empty due to pop in handle_data
+            self.markup_text += self.current_closing_tags.pop()
         self.current_opening_tags = ""
         self.is_colored_and_underlined = False

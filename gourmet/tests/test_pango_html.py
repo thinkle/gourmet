@@ -59,3 +59,9 @@ def test_pango_markup_to_html():
 
     ret = PangoToHtml().feed(pango_markup, links)
     assert ret == expected
+
+    pango_markup = b'GTKTEXTBUFFERCONTENTS-0001\x00\x00\x01i <text_view_markup>\n <tags>\n  <tag name="italic" priority="1">\n   <attr name="style" type="PangoStyle" value="PANGO_STYLE_ITALIC" />\n  </tag>\n  <tag name="bold" priority="0">\n   <attr name="weight" type="gint" value="700" />\n  </tag>\n </tags>\n<text>ddf<apply_tag name="bold">fd<apply_tag name="italic">df</apply_tag>fd</apply_tag>dff</text>\n</text_view_markup>\n'  # noqa
+    expected = 'ddf<b>fd<i>df</i>fd</b>dff'
+
+    ret = PangoToHtml().feed(pango_markup)
+    assert ret == expected
