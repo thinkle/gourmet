@@ -81,9 +81,8 @@ class LinkedTextView(Gtk.TextView):
                                        GObject.TYPE_STRING,
                                        [GObject.TYPE_STRING])}
 
-    def __init__ (self):
-        # GObject.GObject.__init__(self) # do we need both constructor calls?
-        Gtk.TextView.__init__(self)
+    def __init__(self):
+        super().__init__()
         self.set_buffer(self.make_buffer())
         buf = self.get_buffer()
         self.set_text = buf.set_text
@@ -113,11 +112,13 @@ class LinkedTextView(Gtk.TextView):
         # Check for selection
         buffer = text_view.get_buffer()
         selection = buffer.get_selection_bounds()
-        selecting = (len(selection) != 0 and
+        selecting = not (len(selection) != 0 and
                      (selection[0].get_offset() != selection[1].get_offset()))
 
         # Check for a left mouse click (as set by the system, not hardware).
-        if (event.type == Gdk.EventType.BUTTON_RELEASE and button == 1 and not selecting):
+        if (event.type == Gdk.EventType.BUTTON_RELEASE
+            and button == 1
+            and not selecting):
             x, y = text_view.window_to_buffer_coords(Gtk.TextWindowType.WIDGET,
                                                      int(event.x), int(event.y))
             _, itr = text_view.get_iter_at_location(x, y)
@@ -169,28 +170,29 @@ class LinkedTextView(Gtk.TextView):
 
     def follow_if_link(self,
                        text_view: 'LinkedTextView',
-                       itr: Gtk.TextIter) -> None:
-        """Looks at all tags covering the position of iter in the text view,
-            and if one of them is a link, follow it by showing the page identified
-            by the data attached to it.
+                       itr: Gtk.TextIter) -> bool:
+        """Retrieve the target of a link that was clicked.
+
+        This is done by emitting the `link-activated` signal defined in
+        this class.
+        Whether or not the it was a link, the click won't be processed further.
         """
-        blue = Gdk.RGBA(red=0, green=0, blue=1., alpha=1.)
+        # Get the tags where the colours are set, marking the link text.
+        begin = itr.copy()
+        begin.forward_to_tag_toggle()
 
-        tags = itr.get_tags()
-        for tag in tags:
-            color = tag.get_property('foreground-rgba')
-            if color is not None and color == blue:
-                begin = itr.copy()
-                begin.forward_to_tag_toggle(tag)
+        end = itr.copy()
+        end.backward_to_tag_toggle()
 
-                end = itr.copy()
-                end.backward_to_tag_toggle(tag)
+        # Get the target of the link from its text.
+        link_text = text_view.get_buffer().get_text(begin, end)
+        target = text_view.get_buffer().markup_dict.get(link_text)
 
-                link_text = text_view.get_buffer().get_text(begin, end)
-                target = text_view.get_buffer().markup_dict[link_text]
+        # Confirm that is is in the links dictionary.
+        if target is not None:
+            self.emit('link-activated', target)
 
-                self.emit('link-activated', target)
-                break
+        return False  # Do not process the signal further.
 
 
 if __name__ == '__main__':
