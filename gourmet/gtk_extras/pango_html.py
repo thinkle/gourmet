@@ -102,10 +102,7 @@ class PangoToHtml(HTMLParser):
 
         # The remaining is serialized Pango footer, which we don't need.
 
-        # Convert the tags to html. As our tags are anonymous, we must keep
-        # track of them by their ids. Although anonymous tags are integers, we
-        # still keep them as strings, would some changes elsewhere add str ids.
-
+        # Convert the tags to html.
         # We know that only a subset of HTML is handled in Gourmet:
         # italics, bold, underlined, normal, and links (coloured and underlined)
         soup = BeautifulSoup(tags, features="lxml")
@@ -152,7 +149,9 @@ class PangoToHtml(HTMLParser):
         self.current_opening_tags = ""
         self.current_closing_tags = []  # Closing tags are FILO
         self.is_colored_and_underlined = False
+
         super().feed(text)
+
         return self.markup_text
 
     def handle_starttag(self, tag: str, attrs: List[Tuple[str, str]]) -> None:
