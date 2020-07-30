@@ -1,0 +1,41 @@
+name: Create Flatpak and Build Repo
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  flatpak:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Flatpak
+      run: |
+        sudo apt install flatpak flatpak-builder
+
+    - name: Setup Flatpak
+      run: |
+        flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
+        flatpak install flathub org.gnome.Platform//3.36 org.gnome.Sdk//3.36 -y
+
+    - name: Build Flatpak
+      run: |
+        flatpak-builder build-dir io.github.thinkle.Gourmet.yml
+
+    - name: Build Repo
+      run: |
+        flatpak-builder --repo=repo --force-clean build-dir io.github.thinkle.Gourmet.yml
+
+    - name: Build Bundle
+      run: |
+        flatpak build-bundle repo gourmet.flatpak io.github.thinkle.Gourmet
+
+    - name: Upload Flatpak
+      uses: actions/upload-artifact@v2
+      with:
+        name: gourmet.flatpak
+        path: ./gourmet.flatpak
