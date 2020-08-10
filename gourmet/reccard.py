@@ -1209,15 +1209,16 @@ class IngredientEditorModule (RecEditorModule):
             )
         return itr
 
-    def importIngredients (self, file):
-        with open(file, 'r') as ifi:
+    def import_ingredients(self, filename: str) -> None:
+        with open(filename, 'r') as ifi:
             for line in ifi:
-                self.ingtree_ui.add_ingredient_from_line(line)
+                self.add_ingredient_from_line(line)
 
     def import_ingredients_cb (self, *args):
-        debug('importIngredientsCB',5) #FIXME
-        f=de.select_file(_("Choose a file containing your ingredient list."),action=Gtk.FileChooserAction.OPEN)
-        add_with_undo(self, lambda *args: self.importIngredients(f))
+        f = de.select_file(_("Choose a file containing your ingredient list."),
+                           action=Gtk.FileChooserAction.OPEN)
+        if f:  # knowingly work with only a single file
+            add_with_undo(self, lambda *args: self.import_ingredients(f[0]))
 
     def paste_ingredients_cb (self, *args):
         self.cb = Gtk.Clipboard()
