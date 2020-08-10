@@ -1257,7 +1257,7 @@ class TextEditor:
             ('Cut',Gtk.STOCK_CUT,None,None,None,self.do_cut),
             ])
         self.cb = Gtk.Clipboard()
-        GObject.timeout_add(500,self.do_sensitize)
+        GObject.timeout_add(500,self.do_sensitize)  # FIXME: make event-driven
         self.action_groups.append(self.copyPasteActionGroup)
 
     def do_sensitize (self):
@@ -1614,33 +1614,47 @@ class TextFieldEditor (TextEditor):
     '''
     prop = None
 
-    def setup (self): # Text Field Editor
-        self.images = [] # For inline images in text fields (future)
-        TextEditor.setup(self)
+    def setup_action_groups(self) -> None:
+        """Create and attach the rich text formatting buttons.
 
-    def setup_action_groups (self):
-        TextEditor.setup_action_groups(self)
-        self.richTextActionGroup = Gtk.ActionGroup('RichTextActionGroup')
-        self.richTextActionGroup.add_toggle_actions([
-            ('Bold',Gtk.STOCK_BOLD,None,'<Control>B',None,None),
-            ('Italic',Gtk.STOCK_ITALIC,None,'<Control>I',None,None),
-            ('Underline',Gtk.STOCK_UNDERLINE,None,'<Control>U',None,None),
-            ])
-        for action,markup in [('Bold','<b>b</b>'),
-                              ('Italic','<i>i</i>'),
-                              ('Underline','<u>u</u>')]:
-            self.tv.get_buffer().setup_widget_from_pango(
-                self.richTextActionGroup.get_action(action),
-                markup
-                )
-        self.action_groups.append(self.richTextActionGroup)
+        Gourmet supports three markup items: bold, italic, and underline. These
+        are created here.
+        """
+        super().setup_action_groups()  # Create Cut, Copy, Paste actions
+
+        # Create Formatting actions
+        buffer = self.tv.get_buffer()
+
+        group = Gtk.ActionGroup('RichTextActionGroup')
+        group.add_actions([
+            ('Bold', Gtk.STOCK_BOLD, None, '<Control>B', None, None),
+            ('Italic', Gtk.STOCK_ITALIC, None, '<Control>I', None, None),
+            ('Underline', Gtk.STOCK_UNDERLINE, None, '<Control>U', None, None),
+        ])
+
+        bold_action = group.get_action('Bold')
+        bold_action.connect('activate',
+                            buffer.on_markup_toggle,
+                            buffer.tag_bold)
+
+        italic_action = group.get_action('Italic')
+        italic_action.connect('activate',
+                              buffer.on_markup_toggle,
+                              buffer.tag_italic)
+
+        underline_action = group.get_action('Underline')
+        underline_action.connect('activate',
+                                 buffer.on_markup_toggle,
+                                 buffer.tag_underline)
+
+        self.action_groups.append(group)
 
     def setup_main_interface (self):
         self.main = Gtk.ScrolledWindow()
         self.main.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
         self.tv = Gtk.TextView()
         self.main.add(self.tv)
-        buf = TextBufferMarkup.InteractivePangoBuffer()
+        buf = TextBufferMarkup.PangoBuffer()
         self.tv.set_wrap_mode(Gtk.WrapMode.WORD)
         self.tv.set_buffer(buf)
         self.tv.show()
@@ -1664,7 +1678,7 @@ class TextFieldEditor (TextEditor):
         self.tv.get_buffer().set_text(txt)
 
     def save (self, recdic):
-        recdic[self.prop] = self.tv.get_buffer().get_text()
+        recdic[self.prop] = self.tv.get_buffer().get_text(include_hidden_chars=True)
         self.emit('saved')
         return recdic
 
