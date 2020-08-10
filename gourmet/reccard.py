@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from typing import Callable, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional, Tuple
 import gc
 import webbrowser
 
@@ -1343,8 +1343,12 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
       </toolbar>
     '''
 
-    def __init__ (self, *args):
-        RecEditorModule.__init__(self, *args)
+    def __init__(self, editor: RecEditor):
+        self.recent: List[str] = []  # Keep track of freely editable widgets
+        self.reccom: List[str] = []  # Keep track of ComboBoxText widgets
+        self.rw: Dict[str, Gtk.Widget] = {}  # Attribute names and their widgets
+
+        super().__init__(editor)
 
     def setup_main_interface (self):
         self.ui = Gtk.Builder()
@@ -1359,40 +1363,29 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
         self.main = self.ui.get_object('descriptionMainWidget')
         self.main.unparent()
 
-    def init_recipe_widgets (self):
-        self.rw = {}
-        self.recent = []
-        self.reccom = []
-        for a,l,w in REC_ATTRS:
-            if w=='Entry': self.recent.append(a)
-            elif w=='Combo': self.reccom.append(a)
-            else: raise Exception("REC_ATTRS widget type %s not recognized" % w)
-        for a in self.reccom:
-            self.rw[a]=self.ui.get_object("%sBox"%a)
-            try:
-                assert(self.rw[a])
-            except:
-                print('No recipe editing widget for',a)
-                raise
-            self.edit_widgets.append(self.rw[a])
-            self.rw[a].db_prop = a
+    def init_recipe_widgets(self) -> None:
+        for attribute, label, widget_type in REC_ATTRS:
+            if widget_type == 'Entry':
+                self.recent.append(attribute)
+            elif widget_type == 'Combo':
+                self.reccom.append(attribute)
+            else:
+                raise ValueError(f"{attribute} with {widget_type} not supported")
+
+        for attribute in self.reccom + self.recent:
+            widget = self.ui.get_object(f"{attribute}Box")
+
+            if widget is None:
+                raise ValueError(f"No widget for {attribute} available")
+
+            self.rw[attribute] = widget
+            self.edit_widgets.append(widget)
+            widget.db_prop = attribute
+
             # Set up accessibility
-            atk = (find_entry(self.rw[a]) or self.rw[a]).get_accessible()
-            atk.set_name(REC_ATTR_DIC[a]+' Entry')
-            #self.rw[a].get_children()[0].connect('changed',self.changed_cb)
-        for a in self.recent:
-            self.rw[a]=self.ui.get_object("%sBox"%a)
-            try:
-                assert(self.rw[a])
-            except:
-                print('No recipe editing widget for',a)
-                raise
-            self.edit_widgets.append(self.rw[a])
-            self.rw[a].db_prop = a
-            # Set up accessibility
-            atk = (find_entry(self.rw[a]) or self.rw[a]).get_accessible()
-            atk.set_name(REC_ATTR_DIC[a]+' Entry')
-            #self.rw[a].connect('changed',self.changed_cb)
+            atk = widget.get_accessible()
+            atk.set_name(REC_ATTR_DIC[attribute] + ' Entry')
+
         self.update_from_database()
 
     def update_from_database (self):
