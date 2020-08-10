@@ -1,4 +1,4 @@
-name: Create Flatpak and Build Repo
+name: Create Flatpak
 
 on:
   push:
@@ -24,11 +24,7 @@ jobs:
 
     - name: Build Flatpak
       run: |
-        flatpak-builder build-dir io.github.thinkle.Gourmet.yml
-
-    - name: Build Repo
-      run: |
-        flatpak-builder --repo=repo --force-clean build-dir io.github.thinkle.Gourmet.yml
+        flatpak-builder --repo=repo --force-clean build-dir .flatpak/io.github.thinkle.Gourmet.yml
 
     - name: Build Bundle
       run: |
