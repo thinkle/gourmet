@@ -536,12 +536,12 @@ class RecCardDisplay (plugin_loader.Pluggable):
             self.multiplyDisplayLabel.show()
             self.multiplyDisplaySpin.show()
 
-    def update_title_display (self):
-        titl = self.current_rec.title
-        if not titl: titl="Unitled"
-        self.window.set_title(titl)
-        titl = "<b><big>" + xml.sax.saxutils.escape(titl) + "</big></b>"
-        self.titleDisplay.set_label(titl)
+    def update_title_display(self) -> None:
+        title = self.current_rec.title
+        title = title if title is not None else "Untitled"
+        self.window.set_title(title)
+        title = "<b><big>" + xml.sax.saxutils.escape(title) + "</big></b>"
+        self.titleDisplay.set_label(title)
 
     def update_link_display (self):
         if self.current_rec.link:
