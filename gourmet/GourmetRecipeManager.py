@@ -1,13 +1,5 @@
 #!/usr/bin/env python
 import os.path, os, re, threading
-try:
-    from gi import gicompat
-except ImportError:
-    pygtkcompat = None
-
-if pygtkcompat is not None:
-    pygtkcompat.enable()
-    pygtkcompat.enable_gtk(version='3.0')
 
 from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
 from . import batchEditor
