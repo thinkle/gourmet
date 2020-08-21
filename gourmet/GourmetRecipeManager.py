@@ -243,18 +243,19 @@ class GourmetApplication:
                                {} # a dictionary of added menu items
                                ]
 
-    def update_action_group (self):
-        for rc in list(self.rc.values()):
-            action_name = 'GoRecipe'+str(rc.current_rec.id)
+    def update_action_group(self):
+        """Attach actions for this recipe, using its title."""
+        for rc in self.rc.values():
+            action_name = f'GoRecipe{rc.current_rec.id}'
+            title = rc.current_rec.title or 'Untitled'
+            title = f'_{title}'
+
             existing_action = self.goActionGroup.get_action(action_name)
             if not existing_action:
-                self.goActionGroup.add_actions(
-                    [(action_name,None,'_'+rc.current_rec.title,
-                      None,None,rc.show)]
-                    )
+                self.goActionGroup.add_actions([(action_name, None, title,
+                                                 None, None, rc.show)])
             else:
-                if existing_action.get_property('label') != '_'+rc.current_rec.title:
-                    existing_action.set_property('label','_'+rc.current_rec.title)
+                existing_action.set_property('label', title)
 
     def update_go_menu (self):
         self.update_action_group()
