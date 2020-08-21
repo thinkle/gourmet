@@ -1,43 +1,37 @@
-#!/usr/bin/env python
-from typing import Callable, Dict, List, Optional, Tuple
 import gc
+from typing import Callable, Dict, List, Optional, Tuple
+import os.path
 import webbrowser
 
-from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
-import os.path
-try:
-    from PIL import Image
-except ImportError:
-    import Image
-import xml.sax.saxutils
-from gi.repository import Pango
-from .exporters import exportManager
-from . import convert
-from .recindex import RecIndex
-from . import prefs
-from . import Undo
-from .gtk_extras import WidgetSaver, timeEntry, ratingWidget, TextBufferMarkup
-from .gtk_extras import dialog_extras as de
-from .gtk_extras.dialog_extras import show_amount_error
-from .gtk_extras import treeview_extras as te
-from .gtk_extras import cb_extras as cb
-from .exporters.printer import get_print_manager
-from .gdebug import debug
-from .gglobals import FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC, REC_ATTRS, doc_base, uibase, imagedir
 from gettext import gettext as _
-from . import ImageExtras as ie
-from .importers.importer import parse_range
-from .gtk_extras import mnemonic_manager
-from .gtk_extras import fix_action_group_importance
-from .gtk_extras.dialog_extras import UserCancelledError
-from .plugin import RecEditorModule, ToolPlugin, RecDisplayPlugin, RecEditorPlugin, IngredientControllerPlugin
-from . import plugin_loader
-from . import timeScanner
-from . import defaults
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
+from PIL import Image
+import xml.sax.saxutils
+
+from gourmet import convert, defaults, prefs, plugin_loader, timeScanner, Undo
+from gourmet import ImageExtras as ie
+from gourmet.exporters import exportManager
+from gourmet.exporters.printer import get_print_manager
+
+from gourmet.gdebug import debug
+from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
+                              REC_ATTRS, doc_base, uibase, imagedir)
+from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
+                                TextBufferMarkup, WidgetSaver)
+from gourmet.gtk_extras import dialog_extras as de
+from gourmet.gtk_extras.dialog_extras import (UserCancelledError,
+                                              show_amount_error)
+from gourmet.gtk_extras import treeview_extras as te
+from gourmet.gtk_extras import cb_extras as cb
+
+from gourmet.importers.importer import parse_range
+from gourmet.plugin import (IngredientControllerPlugin, RecDisplayPlugin,
+                            RecEditorModule, RecEditorPlugin, ToolPlugin)
+from gourmet.recindex import RecIndex
 
 
-def find_entry (w):
-    if isinstance(w,Gtk.Entry):
+def find_entry(w) -> Optional[Gtk.Entry]:
+    if isinstance(w, Gtk.Entry):
         return w
     else:
         if not hasattr(w,'get_children'):
@@ -178,6 +172,9 @@ class RecCardDisplay (plugin_loader.Pluggable):
         </menubar>
     </ui>
     '''
+    __display_items = ['title', 'rating', 'preptime', 'link', 'yields',
+                       'yield_unit', 'cooktime', 'source', 'cuisine',
+                       'category', 'instructions', 'modifications']
 
     def __init__ (self, reccard, recGui, recipe=None):
         self.reccard = reccard; self.rg = recGui; self.current_rec = recipe
@@ -267,11 +264,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.setup_widgets_from_ui()
 
     def setup_widgets_from_ui (self):
-        self.display_info = ['title','rating','preptime','link',
-                             'yields','yield_unit','cooktime','source',
-                             'cuisine','category','instructions',
-                             'modifications',]
-        for attr in self.display_info:
+        for attr in self.__display_items:
             setattr(self,'%sDisplay'%attr,self.ui.get_object('%sDisplay'%attr))
             setattr(self,'%sDisplayLabel'%attr,self.ui.get_object('%sDisplayLabel'%attr))
             try:
@@ -355,7 +348,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     # Main GUI setup
     def setup_main_window (self):
-        self.window = Gtk.Window();
+        self.window = Gtk.Window()
         self.window.set_icon_from_file(os.path.join(imagedir,'reccard.png'))
         self.window.connect('delete-event',self.hide)
         self.conf.append(WidgetSaver.WindowSaver(self.window,
@@ -458,16 +451,18 @@ class RecCardDisplay (plugin_loader.Pluggable):
             except:
                 print('WARNING: Exception raised by %(module)s.update_from_database()'%locals())
                 import traceback; traceback.print_exc()
-        self.special_display_functions = {
-            'yields':self.update_yields_display,
-            'yield_unit':self.update_yield_unit_display,
-            'title':self.update_title_display,
-            'link':self.update_link_display,
-            }
+
         self.update_image()
-        for attr in self.display_info:
-            if attr in self.special_display_functions:
-                self.special_display_functions[attr]()
+
+        special_display_functions = {
+            'yields': self.update_yields_display,
+            'yield_unit': self.update_yield_unit_display,
+            'title': self.update_title_display,
+            'link': self.update_link_display,
+            }
+        for attr in self.__display_items:
+            if attr in special_display_functions:
+                special_display_functions[attr]()
             else:
                 widg=getattr(self,'%sDisplay'%attr)
                 widgLab=getattr(self,'%sDisplayLabel'%attr)
@@ -498,7 +493,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def update_image (self):
         imagestring = self.current_rec.image
-        if not imagestring:
+        if imagestring is None:
             self.orig_pixbuf = None
             self.imageDisplay.hide()
         else:
@@ -3119,16 +3114,9 @@ def getYieldSelection (rec, parent=None):
         return 1
 
 if __name__ == '__main__':
-    from . import GourmetRecipeManager
+    from gourmet import GourmetRecipeManager
     rg = GourmetRecipeManager.RecGui()
-    import pdb
     rc = RecCard(rg,recipe=rg.rd.fetch_one(rg.rd.recipe_table,title='Asparagus Custard Tart'))
-    #import pdb
-    #pdb.runcall(rc.show_edit)
-    #rc.show()
-    #rc.show_display()
-    #re = RecEditor(rg,recipe=rg.rd.fetch_one(rg.rd.recipe_table))
-    #re.show()
     Gtk.main()
 
 if __name__ == '__main__' and False:
