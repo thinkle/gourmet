@@ -11,12 +11,7 @@ import distutils.command.build_scripts
 import distutils.core
 from distutils.util import convert_path
 
-# grab the version from our "version" module
-# first we have to extend our path to include gourmet/
-srcpath = op.split(__file__)[0]
-sys.path.append(op.join(srcpath, 'gourmet'))
-
-from gourmet import version  # noqa: import not a top of file
+from gourmet import version
 
 
 class build_extra(distutils.command.build.build):
