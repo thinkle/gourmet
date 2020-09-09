@@ -33,6 +33,7 @@ modules:
       - python3 setup.py install --prefix=/app
       - install -Dm644 .flatpak/io.github.thinkle.Gourmet.desktop -t /app/share/applications/
       - install -Dm644 .flatpak/io.github.thinkle.Gourmet.svg -t /app/share/icons/hicolor/scalable/apps/
+      - install -Dm644 gourmet/ui -t /app/share/
 
     sources:
       - type: git
