@@ -101,7 +101,7 @@ class build_i18n(distutils.cmd.Command):
         if self.domain is None:
             self.domain = self.distribution.metadata.name
         if self.po_dir is None:
-            self.po_dir = "po"
+            self.po_dir = os.path.join("gourmet", "po")
 
     def run(self):
         """

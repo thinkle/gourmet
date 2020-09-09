@@ -7,7 +7,7 @@ import sys
 base_dir = os.path.join(os.path.dirname(__file__), '..')
 lib_dir = os.path.join(base_dir, 'gourmet')
 data_dir = os.path.join(base_dir, 'data')
-ui_base = os.path.join(base_dir, 'ui')
+ui_base = os.path.join(os.path.dirname(__file__), 'ui')
 doc_base = os.path.join(base_dir)
 locale_base = os.path.join(base_dir, 'build', 'mo')
 plugin_base = os.path.join(base_dir, 'build', 'share', 'gourmet')
