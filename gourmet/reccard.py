@@ -16,8 +16,9 @@ from gourmet.exporters.printer import get_print_manager
 from gourmet.gdebug import debug
 from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
                               REC_ATTRS, doc_base, uibase, imagedir)
-from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
-                                TextBufferMarkup, WidgetSaver)
+from gourmet.gtk_extras import (  # noqa: imports needed for glade
+    fix_action_group_importance, mnemonic_manager, ratingWidget,
+    TextBufferMarkup, timeEntry, WidgetSaver)
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras.dialog_extras import (UserCancelledError,
                                               show_amount_error)
