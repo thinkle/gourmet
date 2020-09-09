@@ -212,7 +212,7 @@ class build_icons(distutils.cmd.Command):
 
     def finalize_options(self):
         if self.icon_dir is None:
-            self.icon_dir = os.path.join("data", "icons")
+            self.icon_dir = os.path.join("gourmet", "data", "icons")
 
     def run(self):
         data_files = self.distribution.data_files
@@ -519,7 +519,8 @@ result = setup(
               ] + plugins,
     package_data={'gourmet': ['plugins/*/*.ui',
                               'plugins/*/images/*.png',
-                              'plugins/*/*/images/*.png']
+                              'plugins/*/*/images/*.png',
+                              'data/*']
                   },
     cmdclass={'build': build,
               'build_i18n': build_i18n,
