@@ -10,6 +10,8 @@ import distutils.command.build_py
 import distutils.command.build_scripts
 import distutils.core
 from distutils.util import convert_path
+import setuptools  # noqa: enable wheels distribution
+
 
 from gourmet import version
 

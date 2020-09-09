@@ -2,3 +2,5 @@ dogtail
 flake8
 mypy
 nose
+setuptools
+wheel

@@ -26,6 +26,7 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         pip3 install --upgrade keyrings.alt
+        if [ -f development.txt ]; then pip3 install -r development.txt; fi
         if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
     - name: Build wheel and Install
       run: |
@@ -39,3 +40,13 @@ jobs:
     - name: Verify icons packaging
       run: |
         python3 setup.py build_icons
+
+    - name: Build wheel
+      run: |
+          python3 setup.py bdist_wheel
+
+    - name: Upload wheel
+      uses: actions/upload-artifact@v2
+      with:
+          name: gourmet.wheel
+          path: ./dist/gourmet-*-py3-none-any.whl
