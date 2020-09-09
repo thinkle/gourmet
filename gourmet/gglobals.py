@@ -141,6 +141,7 @@ DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
 from .gtk_extras import dialog_extras
 
 def launch_url (url, ext=""):
+    # TODO: deprecate this and make use of the webbrowser module
     if os.name == 'nt':
         os.startfile(url)
     elif os.name == 'posix':
