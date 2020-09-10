@@ -28,10 +28,10 @@ jobs:
 
     - name: Build Bundle
       run: |
-        flatpak build-bundle repo gourmet.flatpak io.github.thinkle.Gourmet
+        flatpak build-bundle repo gourmet-${GITHUB_SHA::8}.flatpak io.github.thinkle.Gourmet
 
     - name: Upload Flatpak
       uses: actions/upload-artifact@v2
       with:
         name: gourmet.flatpak
-        path: ./gourmet.flatpak
+        path: ./gourmet-*.flatpak
