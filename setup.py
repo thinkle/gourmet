@@ -201,37 +201,7 @@ WARNING: Intltool will use the values specified from the
                 data_files.append((target, files_merged))
 
 
-class build_icons(distutils.cmd.Command):
-
-    description = "select all icons for installation"
-
-    user_options = [('icon-dir=', 'i', 'icon directory of the source tree')]
-
-    def initialize_options(self):
-        self.icon_dir = None
-
-    def finalize_options(self):
-        if self.icon_dir is None:
-            self.icon_dir = os.path.join("gourmet", "data", "icons")
-
-    def run(self):
-        data_files = []  # TODO: What the heck is this method doing?
-
-        for size in glob.glob(os.path.join(self.icon_dir, "*")):
-            for category in glob.glob(os.path.join(size, "*")):
-                icons = []
-                for icon in glob.glob(os.path.join(category, "*")):
-                    if not os.path.islink(icon):
-                        icons.append(icon)
-                if icons:
-                    data_files.append(("share/icons/hicolor/%s/%s" %
-                                       (os.path.basename(size),
-                                        os.path.basename(category)),
-                                       icons))
-
-
 distutils.command.build.build.sub_commands.append(("build_i18n", None))
-distutils.command.build.build.sub_commands.append(("build_icons", None))
 
 
 class build_py(distutils.command.build_py.build_py):
@@ -520,7 +490,6 @@ setuptools.setup(
     include_package_data=True,
     cmdclass={'build': build_extra,
               'build_i18n': build_i18n,
-              'build_icons': build_icons,
               'build_py': build_py,
               'build_scripts': build_scripts,
               },
