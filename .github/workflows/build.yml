@@ -46,6 +46,7 @@ jobs:
     - name: Build wheel
       run: |
           python3 setup.py bdist_wheel
+          mv dist/gourmet-*-py3-none-any.whl dist/gourmet-${GITHUB_SHA::8}-py3-none-any.whl
 
     - name: Upload wheel
       uses: actions/upload-artifact@v2
