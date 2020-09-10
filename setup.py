@@ -40,11 +40,6 @@ class build_extra(distutils.command.build.build):
                    ("build_help" in self.distribution.cmdclass and not
                     self.help == "False")
 
-        def has_icons(command):
-            return self.icons == "True" or \
-                   ("build_icons" in self.distribution.cmdclass and not
-                    self.help == "False")
-
         def has_i18n(command):
             return self.i18n == "True" or \
                    ("build_i18n" in self.distribution.cmdclass and not
@@ -57,7 +52,6 @@ class build_extra(distutils.command.build.build):
 
         distutils.command.build.build.finalize_options(self)
         self.sub_commands.append(("build_i18n", has_i18n))
-        self.sub_commands.append(("build_icons", has_icons))
         self.sub_commands.append(("build_help", has_help))
 
         # must be run before build_py
@@ -203,58 +197,6 @@ WARNING: Intltool will use the values specified from the
 
 distutils.command.build.build.sub_commands.append(("build_i18n", None))
 
-
-class build_py(distutils.command.build_py.build_py):
-    """build_py command
-
-    This specific build_py command will modify module 'build_config' so that it
-    contains information on installation prefixes afterwards.
-    """
-
-    def build_module(self, module, module_file, package):
-        distutils.command.build_py.build_py.build_module(self, module,
-                                                         module_file, package)
-
-        if isinstance(package, str):
-            package = package.split('.')
-        elif not isinstance(package, (list, tuple)):
-            msg = "'package' must be a string (dot-separated), list, or tuple"
-            raise TypeError(msg)
-
-        if (module == 'settings' and len(package) == 1
-                and package[0] == 'gourmet'
-                and 'install' in self.distribution.command_obj):
-            outfile = self.get_module_outfile(self.build_lib, package, module)
-
-            iobj = self.distribution.command_obj['install']
-            lib_dir = iobj.install_lib
-            base = iobj.install_data
-            if (iobj.root):
-                lib_dir = lib_dir[len(iobj.root):]
-                base = base[len(iobj.root):]
-            base = op.join(base, 'share')
-            data_dir = op.join(base, 'gourmet')
-
-            # abuse fileinput to replace two lines in bin/gourmet
-            for line in fileinput.input(outfile, inplace=True):
-                if "base_dir = " in line:
-                    line = "base_dir = '%s'\n" % base
-                elif "lib_dir = " in line:
-                    line = "lib_dir = '%s'\n" % lib_dir
-                elif "data_dir = " in line:
-                    line = "data_dir = '%s'\n" % data_dir
-                elif "doc_base = " in line:
-                    line = "doc_base = '%s'\n" % \
-                        op.join(base, 'doc', 'gourmet')
-                elif "icon_base = " in line:
-                    line = "icon_base = '%s'\n" % \
-                        op.join(base, 'icons', 'hicolor')
-                elif "locale_base = " in line:
-                    line = "locale_base = '%s'\n" % \
-                        op.join(base, 'locale')
-                elif "plugin_base = " in line:
-                    line = "plugin_base = data_dir\n"
-                print(line, end='')
 
 
 class build_scripts(distutils.command.build_scripts.build_scripts):
@@ -490,7 +432,6 @@ setuptools.setup(
     include_package_data=True,
     cmdclass={'build': build_extra,
               'build_i18n': build_i18n,
-              'build_py': build_py,
               'build_scripts': build_scripts,
               },
 
