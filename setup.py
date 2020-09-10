@@ -1,4 +1,3 @@
-import fileinput
 import glob
 import os
 import os.path as op
@@ -9,7 +8,6 @@ import distutils.command.build
 import distutils.command.build_py
 import distutils.command.build_scripts
 import distutils.core
-from distutils.util import convert_path
 import setuptools
 
 
@@ -196,39 +194,6 @@ WARNING: Intltool will use the values specified from the
 
 
 distutils.command.build.build.sub_commands.append(("build_i18n", None))
-
-
-
-class build_scripts(distutils.command.build_scripts.build_scripts):
-    """build_scripts command
-
-    This specific build_scripts command will modify the bin/gourmet script
-    so that it contains information on installation prefixes afterwards.
-    """
-
-    def copy_scripts(self):
-        distutils.command.build_scripts.build_scripts.copy_scripts(self)
-
-        if "install" in self.distribution.command_obj:
-            iobj = self.distribution.command_obj["install"]
-            lib_dir = iobj.install_lib
-            data_dir = iobj.install_data
-
-            if iobj.root:
-                lib_dir = lib_dir[len(iobj.root):]
-                data_dir = data_dir[len(iobj.root):]
-
-            script = convert_path("bin/gourmet")
-            outfile = op.join(self.build_dir, op.basename(script))
-
-            # abuse fileinput to replace two lines in bin/gourmet
-            for line in fileinput.input(outfile, inplace=1):
-                if "lib_dir = '.'" in line:
-                    line = "lib_dir = '%s'\n" % lib_dir
-                elif "data_dir = '.'" in line:
-                    line = "data_dir = '%s'\n" % data_dir
-
-                print(line),
 
 
 if sys.platform == "win32":
@@ -432,8 +397,9 @@ setuptools.setup(
     include_package_data=True,
     cmdclass={'build': build_extra,
               'build_i18n': build_i18n,
-              'build_scripts': build_scripts,
               },
-
-    scripts=[op.join('bin', 'gourmet')],
+    entry_points={
+        "console_scripts": [
+            "gourmet = gourmet.GourmetRecipeManager:startGUI",
+        ]}
 )
