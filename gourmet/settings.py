@@ -4,9 +4,9 @@ import sys
 # The following lines are modified at installation time by setup.py so they
 # point to the actual data files installation paths.
 
-base_dir = op.join(op.dirname(__file__), '..')
+base_dir = op.abspath(op.join(op.dirname(__file__), '..'))
 lib_dir = op.join(base_dir, 'gourmet')
-data_dir = op.join(base_dir, 'data')
+data_dir = op.join(lib_dir, 'data')
 
 flatpak_ui = "/app/share/gourmet/ui"
 ui_base = op.join(op.dirname(__file__), 'ui')

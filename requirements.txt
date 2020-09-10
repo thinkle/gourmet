@@ -10,4 +10,5 @@ pygtkspellcheck
 reportlab
 scrape-schema-recipe
 selenium
+setuptools
 SQLAlchemy

@@ -28,7 +28,7 @@ jobs:
         pip3 install --upgrade keyrings.alt
         if [ -f development.txt ]; then pip3 install -r development.txt; fi
         if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
-    - name: Build wheel and Install
+    - name: Install
       run: |
         pip3 install .
     - name: Build source distribution
@@ -48,5 +48,5 @@ jobs:
     - name: Upload wheel
       uses: actions/upload-artifact@v2
       with:
-          name: gourmet.wheel
+          name: gourmet.whl
           path: ./dist/gourmet-*-py3-none-any.whl
