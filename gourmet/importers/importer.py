@@ -1,5 +1,5 @@
 import os,stat,re,time,io
-from gourmet import keymanager, convert, ImageExtras
+from gourmet import keymanager, convert, image_utils
 from gourmet.gdebug import debug, TimeAction, print_timer_info, debug_decorator
 import gourmet.gglobals
 from gourmet.recipeManager import get_recipe_manager # for getting out database...
@@ -218,12 +218,12 @@ class Importer (SuspendableThread):
         if self.rec.get('image',None) and not self.rec.get('thumb',None):
             if not self.rec['image']: del self.rec['image']
             else:
-                img = ImageExtras.bytes_to_image(self.rec['image'])
+                img = image_utils.bytes_to_image(self.rec['image'])
                 if img:
-                    thumb = ImageExtras.resize_image(img,40,40)
-                    self.rec['thumb'] = ImageExtras.image_to_bytes(thumb)
+                    thumb = image_utils.resize_image(img, 40, 40)
+                    self.rec['thumb'] = image_utils.image_to_bytes(thumb)
                     # Make sure our image is properly formatted...
-                    self.rec['image'] = ImageExtras.image_to_bytes(img)
+                    self.rec['image'] = image_utils.image_to_bytes(img)
                 else:
                     print("ODD: we got no image from ",self.rec['image'][:100])
                     print('Deleting "image"')

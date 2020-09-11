@@ -8,7 +8,7 @@ import gourmet.gglobals as gglobals
 from gourmet import Undo, keymanager, convert
 from gourmet.defaults import lang as defaults
 import io
-from gourmet import ImageExtras
+from gourmet import image_utils
 import gourmet.version
 import gourmet.recipeIdentifier as recipeIdentifier
 from gourmet.plugin_loader import Pluggable, pluggable_method
@@ -1160,8 +1160,8 @@ class RecData (Pluggable):
         if 'image' in recdic and 'thumb' not in recdic:
             # if we have an image but no thumbnail, we want to create the thumbnail.
             try:
-                img = ImageExtras.bytes_to_image(recdic['image'])
-                thumb = ImageExtras.resize_image(img,40,40)
+                img = image_utils.bytes_to_image(recdic['image'])
+                thumb = image_utils.resize_image(img, 40, 40)
                 ofi = io.BytesIO()
                 thumb.save(ofi,'JPEG')
                 recdic['thumb']=ofi.getvalue()

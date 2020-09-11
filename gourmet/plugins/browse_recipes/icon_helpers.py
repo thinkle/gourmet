@@ -5,7 +5,7 @@ try:
     from PIL import Image, ImageDraw
 except ImportError:
     import Image, ImageDraw
-from gourmet.ImageExtras import bytes_to_pixbuf
+from gourmet.image_utils import bytes_to_pixbuf
 from gourmet.gtk_extras.ratingWidget import star_generator
 
 curdir = os.path.split(__file__)[0]

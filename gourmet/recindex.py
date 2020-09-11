@@ -1,4 +1,4 @@
-from .ImageExtras import bytes_to_pixbuf
+from .image_utils import bytes_to_pixbuf
 from .gdebug import debug
 from gettext import gettext as _, ngettext
 from .gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
@@ -662,7 +662,8 @@ class RecipeModel (pageable_store.PageableViewStore):
         elif attr=='rec':
             return row
         elif attr=='thumb':
-            if row.thumb: return bytes_to_pixbuf(row.thumb)
+            if row.thumb:
+                return bytes_to_pixbuf(row.thumb)
             else: return None
         elif attr in INT_REC_ATTRS:
             return getattr(row,attr) or 0

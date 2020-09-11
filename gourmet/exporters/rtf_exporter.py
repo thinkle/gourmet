@@ -4,7 +4,7 @@ import PyRTF, types
 from . import exporter
 from gourmet import convert
 from gourmet.gdebug import debug
-from gourmet.ImageExtras import write_image_tempfile
+from gourmet.image_utils import write_image_tempfile
 from gettext import gettext as _
 
 class rtf_exporter_multidoc (exporter.ExporterMultirec):

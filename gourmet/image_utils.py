@@ -1,6 +1,7 @@
 import io
 
-from gi.repository import GdkPixbuf, Gio, GLib
+from gi.repository import Gio, GLib
+from gi.repository.GdkPixbuf import Pixbuf
 from PIL import Image
 
 from gourmet.gdebug import debug
@@ -27,11 +28,11 @@ def resize_image (image, width=None, height=None):
         return image
 
 
-def bytes_to_pixbuf(raw: bytes) -> GdkPixbuf.Pixbuf:
+def bytes_to_pixbuf(raw: bytes) -> Pixbuf:
     """Create a GdkPixbuf.Pixbuf from bytes"""
     glib_bytes = GLib.Bytes.new(raw)
     stream = Gio.MemoryInputStream.new_from_bytes(glib_bytes)
-    return GdkPixbuf.Pixbuf.new_from_stream(stream)
+    return Pixbuf.new_from_stream(stream)
 
 
 def bytes_to_image(raw: bytes) -> Image.Image:

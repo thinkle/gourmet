@@ -6,7 +6,7 @@ from gi.repository import Gtk, Pango
 
 import gourmet.gtk_extras.cb_extras as cb
 import gourmet.gglobals as gglobals
-import gourmet.ImageExtras as ImageExtras
+from gourmet.image_utils import bytes_to_image, image_to_bytes, resize_image
 from gourmet.recipeManager import get_recipe_manager
 from gourmet.threadManager import NotThreadSafe
 from . import importer, imageBrowser
@@ -473,11 +473,11 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                 if ibd.ret:
                     with open(imageBrowser.get_image_file(ibd.ret), 'rb') as ifi:
                         image_str = ifi.read()
-                    image = ImageExtras.bytes_to_image(image_str)
+                    image = bytes_to_image(image_str)
                     # Adding image!
-                    thumb = ImageExtras.resize_image(image,40,40)
-                    self.rd.modify_rec(rec,{'image':ImageExtras.image_to_bytes(image),
-                                            'thumb':ImageExtras.image_to_bytes(thumb),
+                    thumb = resize_image(image,40,40)
+                    self.rd.modify_rec(rec,{'image': image_to_bytes(image),
+                                            'thumb': image_to_bytes(thumb),
                                             })
         if self.modal:
             self.w.hide()
