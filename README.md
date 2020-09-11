@@ -14,14 +14,16 @@ nutritional information for any recipe. There are also a wide variety
 of import and export plugins that let Gourmet read and write recipes
 in various formats.
 
-This program aspires to meet the GNOME Human Interface
-Guidelines. Please let me know if you see any ways the interface could
-become more GNOME HIG compliant (or just improve in general).
-
 Requirements and Installation
 =============================
+**We strongly recommend that you make a backup of your recipe database.**
+As Gourmet is still in early stage of (re)development, make a backup of your
+recipe database, typically found under `$HOME/.gourmet/recipe.db`:
+```sh
+cp $HOME/.gourmet/recipes.db $HOME/.gourmet/recipes.db.bak
+```
 
-See [INSTALL.md](INSTALL.md).
+Installation instruction are found in [INSTALL.md](INSTALL.md).
 
 Development  ![Tests](https://github.com/kirienko/gourmet/workflows/Tests/badge.svg) ![Build](https://github.com/kirienko/gourmet/workflows/Build/badge.svg)
 ===========
@@ -30,17 +32,3 @@ This app has a very long development history. The latest release `0.17.*` is sti
 
 This fork is an attempt to make *Gourmet* compatible with `python3`. 
 Any help is really appreciated!
-
-Hopefully, one day a new release will be publish in the original repository.
-
-Warning
-=======
-
-No warranty, etc. Please inform me of bugs/problems/feature
-requests and I'll respond as quickly as I can. I can be reached
-at Thomas_Hinkle@alumni.brown.edu
-
-----
-
-If you find this program useful, or have any comments or questions,
-please e-mail to let me know at Thomas_Hinkle@alumni.brown.edu
