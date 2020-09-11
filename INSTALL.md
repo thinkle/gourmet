@@ -1,10 +1,10 @@
 
 # Installation
-Gourmet is currently available in the form of Flatpak and Python wheel.
-We recommend that you install it from the Flatpak.
+Gourmet is currently available in the form of Flatpak and Python wheel.  
+We recommend that you install it from the Flatpak.  
 In both cases, you will need an internet connection.
 
-**We strongly recommend that you make a backup of your recipe database.**
+**We strongly recommend that you make a backup of your recipe database.**  
 As Gourmet is still in early stage of (re)development, make a backup of your
 recipe database, typically found under `$HOME/.gourmet/recipe.db`:
 ```sh
@@ -16,9 +16,7 @@ The Flatpak contains the full environment, but depends on other flatpak
 packages, which will be installed automatically.
 
 As Gourmet is still under active development, the flatpak is not available from
-Flathub, and instead must be installed manually.
-
-[Download the Flatpak](https://github.com/kirienko/gourmet/releases/tag/v1-alpha1).
+Flathub, and instead must be [downloaded and installed manually](https://github.com/kirienko/gourmet/releases/tag/v1-alpha1).
 
 In a terminal, execute the following: 
 ```sh
@@ -50,9 +48,8 @@ flatpak remove io.github.thinkle.Gourmet
 
 ## Python Wheel
 
-[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1-alpha1)
-The python wheel does not provide a list of dependencies to be installed. They
-must be manually installed:
+[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1-alpha1)  
+Dependencies must be manually installed.
 
 ### Unbutu 20.04, Linux Mint 20
 Install the following packages from `apt`:

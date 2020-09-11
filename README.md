@@ -16,7 +16,7 @@ in various formats.
 
 Requirements and Installation
 =============================
-**We strongly recommend that you make a backup of your recipe database.**
+**We strongly recommend that you make a backup of your recipe database.**  
 As Gourmet is still in early stage of (re)development, make a backup of your
 recipe database, typically found under `$HOME/.gourmet/recipe.db`:
 ```sh
