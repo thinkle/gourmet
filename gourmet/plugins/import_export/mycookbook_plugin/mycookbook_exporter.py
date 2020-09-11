@@ -70,7 +70,7 @@ class rec_to_mcb (XmlExporter):
         # write image file to the temp directory
         imageFilename = unicodedata.normalize('NFKD', str(self.current_title + '.png')).encode('ascii', 'ignore')
         pic_fullpath = os.path.join(tempfile.gettempdir(),'images',imageFilename)
-        result = gourmet.ImageExtras.get_image_from_string(image)
+        result = gourmet.ImageExtras.bytes_to_image(image)
         result.save(pic_fullpath)
 
         # write imagepath in the xml

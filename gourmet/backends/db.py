@@ -1160,7 +1160,7 @@ class RecData (Pluggable):
         if 'image' in recdic and 'thumb' not in recdic:
             # if we have an image but no thumbnail, we want to create the thumbnail.
             try:
-                img = ImageExtras.get_image_from_string(recdic['image'])
+                img = ImageExtras.bytes_to_image(recdic['image'])
                 thumb = ImageExtras.resize_image(img,40,40)
                 ofi = io.BytesIO()
                 thumb.save(ofi,'JPEG')

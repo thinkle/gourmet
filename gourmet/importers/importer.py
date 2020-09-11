@@ -218,12 +218,12 @@ class Importer (SuspendableThread):
         if self.rec.get('image',None) and not self.rec.get('thumb',None):
             if not self.rec['image']: del self.rec['image']
             else:
-                img = ImageExtras.get_image_from_string(self.rec['image'])
+                img = ImageExtras.bytes_to_image(self.rec['image'])
                 if img:
                     thumb = ImageExtras.resize_image(img,40,40)
-                    self.rec['thumb'] = ImageExtras.get_string_from_image(thumb)
+                    self.rec['thumb'] = ImageExtras.image_to_bytes(thumb)
                     # Make sure our image is properly formatted...
-                    self.rec['image'] = ImageExtras.get_string_from_image(img)
+                    self.rec['image'] = ImageExtras.image_to_bytes(img)
                 else:
                     print("ODD: we got no image from ",self.rec['image'][:100])
                     print('Deleting "image"')

@@ -473,11 +473,11 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                 if ibd.ret:
                     with open(imageBrowser.get_image_file(ibd.ret), 'rb') as ifi:
                         image_str = ifi.read()
-                    image = ImageExtras.get_image_from_string(image_str)
+                    image = ImageExtras.bytes_to_image(image_str)
                     # Adding image!
                     thumb = ImageExtras.resize_image(image,40,40)
-                    self.rd.modify_rec(rec,{'image':ImageExtras.get_string_from_image(image),
-                                            'thumb':ImageExtras.get_string_from_image(thumb),
+                    self.rd.modify_rec(rec,{'image':ImageExtras.image_to_bytes(image),
+                                            'thumb':ImageExtras.image_to_bytes(thumb),
                                             })
         if self.modal:
             self.w.hide()

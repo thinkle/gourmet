@@ -1,13 +1,10 @@
-import os, os.path, tempfile, io
-from gi.repository import GdkPixbuf, Gtk
+import io
 
-try:
-    from PIL import Image
-except ImportError:
-    import Image
-from .gdebug import debug
+from gi.repository import GdkPixbuf, Gio, GLib
+from PIL import Image
 
-TMPFILE = tempfile.mktemp(prefix='gourmet_tempfile_')
+from gourmet.gdebug import debug
+
 
 def resize_image (image, width=None, height=None):
     debug("resize_image (self, image, width=None, height=None):",5)
@@ -29,53 +26,23 @@ def resize_image (image, width=None, height=None):
     else:
         return image
 
-def get_image_from_string(raw: bytes) -> Image.Image:
-    """Given raw image data (bytes), return an Image object."""
-    if os.name =='posix':
-        sfi = io.BytesIO(raw)
-        sfi.seek(0)
-    else:
-        sfi = write_image_tempfile(raw)
-    try:
-        return Image.open(sfi)
-    except:
-        print('Trouble in image land.')
-        print('We dumped the offending string here:')
-        print(sfi)
-        print("But we can't seem to load it...")
 
-def get_string_from_image(image: Image.Image) -> bytes:
-    """Convert an image into a string representing its JPEG self"""
+def bytes_to_pixbuf(raw: bytes) -> GdkPixbuf.Pixbuf:
+    """Create a GdkPixbuf.Pixbuf from bytes"""
+    glib_bytes = GLib.Bytes.new(raw)
+    stream = Gio.MemoryInputStream.new_from_bytes(glib_bytes)
+    return GdkPixbuf.Pixbuf.new_from_stream(stream)
+
+
+def bytes_to_image(raw: bytes) -> Image.Image:
+    """Given raw image data (bytes), return an Image object."""
+    sfi = io.BytesIO(raw)
+    sfi.seek(0)
+    return Image.open(sfi)
+
+
+def image_to_bytes(image: Image.Image) -> bytes:
     ofi = io.BytesIO()
     image = image.convert('RGB')
-    image.save(ofi,"JPEG")
+    image.save(ofi, 'jpeg')
     return ofi.getvalue()
-
-def get_string_from_pixbuf(pb: GdkPixbuf.Pixbuf) -> bytes:
-    fn = tempfile.mktemp('jpg')
-    pb.save(fn,'jpeg')
-    with open(fn, 'rb') as f:
-        return f.read()
-
-def get_pixbuf_from_jpg(raw: bytes) -> GdkPixbuf.Pixbuf:
-    """Given raw data of a jpeg file, we return a GdkPixbuf.Pixbuf
-    """
-    # o=open('/tmp/recimage.jpg','w')
-    fn=write_image_tempfile(raw,name=TMPFILE)
-    i=Gtk.Image()
-    i.set_from_file(fn)
-    return i.get_pixbuf()
-
-def write_image_tempfile (raw, name=None, ext=".jpg"):
-    """Write a temporary image file.
-
-    If not given a name, generate one.
-    """
-    if name:
-        fn = os.path.join(tempfile.gettempdir(),
-                            name + ext)
-    else:
-        fn = tempfile.mktemp(ext)
-    with open(fn, 'wb') as o:
-        o.write(raw)
-    return fn
