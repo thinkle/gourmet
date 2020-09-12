@@ -1,4 +1,5 @@
-import gtk, re
+from gi.repository import Gtk
+import re
 from . import parser_data
 import gourmet.cb_extras as cb
 import gourmet.dialog_extras as de
@@ -141,7 +142,7 @@ class SimpleIngredientCalculator (de.mDialog):
     def search_func (self, row):
         desc = row.desc.lower()
         txt=self.txt.lower()
-        words = re.split('\W',txt)
+        words = re.split(r'\W',txt)
         ret = True
         while ret and words:
             word=words.pop()

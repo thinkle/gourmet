@@ -1,4 +1,4 @@
-import gtk, pango, gobject
+from gi.repository import Gdk, GObject, Gtk, Pango
 from gettext import gettext as _
 import gourmet.defaults
 

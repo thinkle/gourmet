@@ -3,13 +3,13 @@ import time
 from typing import Callable, List, Optional
 
 from gettext import gettext as _
-from gi.repository import Gtk, GObject
+from gi.repository import GLib, Gtk
 import xml.sax.saxutils
 
-from . import gglobals
-from .sound import Player
-from .gtk_extras import cb_extras as cb
-from .gtk_extras.dialog_extras import getBoolean, UserCancelledError
+from gourmet import gglobals
+from gourmet.sound import Player
+from gourmet.gtk_extras import cb_extras as cb
+from gourmet.gtk_extras.dialog_extras import getBoolean, UserCancelledError
 
 
 class TimeSpinnerUI:
@@ -21,6 +21,7 @@ class TimeSpinnerUI:
         self.timer_hooks: List[Callable] = []  # actions rand when timer over
         self.is_running: bool = False  # State flag
         self.previous_iter_time: Optional[float] = None  # time, used for ticks
+        self.remaining: Optional[float] = None  # time left when timer active
         self.orig_time: int = 0  # in seconds, user input time
 
         self.hoursSpin: Gtk.SpinButton = hoursSpin
@@ -40,7 +41,7 @@ class TimeSpinnerUI:
         minutes, and seconds, and their respective spinner are set, to show
         time going down.
         """
-        val = max(0, int(val))
+        val = max(0., val)
         self.hoursSpin.set_value(val // 3600)
         val = val % 3600
         self.minutesSpin.set_value(val // 60)
@@ -48,7 +49,9 @@ class TimeSpinnerUI:
 
     def get_time(self) -> int:
         """Get the time to run the timer for, in seconds"""
-        return self.hoursSpin.get_value()*3600 + self.minutesSpin.get_value()*60 + self.secondsSpin.get_value()
+        return (self.hoursSpin.get_value() * 3600 +
+                self.minutesSpin.get_value() * 60 +
+                self.secondsSpin.get_value())
 
     def val_changed_cb(self, widg: Gtk.SpinButton) -> None:
         """On input callback to set the values to be always two digits"""
@@ -60,25 +63,31 @@ class TimeSpinnerUI:
     def tick(self) -> bool:
         """Run the timer
 
-        This is done in two steps: first we compute the time elapsed between two
-        ticks of the loop, and then we subtract it from the timer time, which is
-        then updated.
+        This is done in two steps: first we compute the time elapsed between
+        two ticks of the loop, and then we subtract it from the timer time,
+        which is then updated.
 
         Returns a bool to notify the event-loop on whether the timer is done.
         """
         if self.is_running:
-            if self.previous_iter_time is None:
+            if self.previous_iter_time is None or self.remaining is None:
+                # 1 second is removed from the remaining time, in order to have
+                # a smooth start of the timer.
+                # Without this subtraction, after `self.previous_iter_time` is
+                # set, the elapsed time for this initial iteration is
+                # calculated, but the difference too small, making the first
+                # timer second last two iterations (hence two actual seconds).
+                self.remaining = self.get_time() - 1
                 self.previous_iter_time = time.time()
 
             now = time.time()
             elapsed = now - self.previous_iter_time
             self.previous_iter_time = now
 
-            t = self.get_time()
-            remaining = t - elapsed
-            self.set_time(remaining)
+            self.remaining = self.remaining - elapsed
+            self.set_time(self.remaining)
 
-            if remaining <= 0:
+            if self.remaining <= 0:
                 self.finish_timer()
                 return False
             else:
@@ -89,26 +98,28 @@ class TimeSpinnerUI:
     def start_cb(self, *args) -> None:
         if not self.is_running:
             self.previous_iter_time = None
+            self.remaining = None
             self.is_running = True
             self.orig_time = self.get_time()
-            GObject.timeout_add(1000, self.tick)
+            GLib.timeout_add(100, self.tick)
 
     def pause_cb(self, *args) -> None:
         """The pause button callback, used to pausing and resuming"""
         if self.is_running:
             self.is_running = False
             self.previous_iter_time = None
+            self.remaining = None
         else:  # resuming
             self.is_running = True
         if self.is_running:
-            GObject.timeout_add(1000, self.tick)
+            GLib.timeout_add(100, self.tick)
 
     def reset_cb(self, *args) -> None:
-        """Resets the timer to the originally set value, after having started"""
+        """Resets the timer to the originally set value, after being started"""
         self.is_running = False
         self.previous_iter_time = None
+        self.remaining = None
         self.set_time(self.orig_time)
-        self.previous_iter_time = 0
 
     def connect_timer_hook(self, h: Callable,
                            prepend: Optional[bool] = False) -> None:
@@ -120,6 +131,7 @@ class TimeSpinnerUI:
     def finish_timer(self) -> None:
         self.is_running = False
         self.previous_iter_time = None
+        self.remaining = None
         self.set_time(0)
         for h in self.timer_hooks: h()
 
@@ -193,7 +205,7 @@ class TimerDialog:
         self.play_tune()
         if self.repeatCheckButton.get_active():
             self.keep_annoying = True
-            GObject.timeout_add(3000,self.annoy_user)
+            GLib.timeout_add(3000, self.annoy_user)
         self.timerBox.hide()
         self.expander1.hide()
         self.timerFinishedLabel.show()
@@ -220,42 +232,52 @@ class TimerDialog:
         else:
             self.close_cb()
 
-    def close_cb (self,*args):
-        self.stop_annoying()
-        msg = ("You've requested to close a window with an active timer."
-               "You can stop the timer, or you can just close the window."
-               "If you close the window, it will reappear when your timer "
-               "goes off.")
-        try:
-            do_cancel = getBoolean(label=_('Stop timer?'),
-                                   sublabel=_(msg),
-                                   custom_yes=_('Stop _timer'),
-                                   custom_no=_('_Keep timing'))
-        except UserCancelledError:
-            return  # keep the timer window open
+    def close_cb(self, *args) -> None:
+        """Close a timer window.
 
-        if do_cancel or not self.timer.is_running:
+        There are three options: either the timer is not running, and it gets
+        closed, the timer is running and it gets cancelled and closed, or the
+        timer is running, and gets hidden ready to pop back up when finished.
+        """
+        self.stop_annoying()
+        do_cancel = True
+        if self.timer.is_running:
+            msg = ("You've requested to close a window with an active timer. "
+                   "You can stop the timer, or you can just close the window. "
+                   "If you close the window, it will reappear when your timer "
+                   "goes off.")
+            try:
+                do_cancel = getBoolean(label=_('Stop timer?'),
+                                       sublabel=_(msg),
+                                       custom_yes=_('Stop _timer'),
+                                       custom_no=_('_Keep timing'))
+            except UserCancelledError:
+                return  # keep the timer window open
+
+        if do_cancel:
             self.timer.is_running = False
             self.timerDialog.hide()
             self.timerDialog.destroy()
         else:
-            self.timer.connect_timer_hook(self.timerDialog.show,1)
+            self.timer.connect_timer_hook(self.timerDialog.show, 1)
             self.timerDialog.hide()
 
     def run (self): self.timerDialog.run()
     def show (self): self.timerDialog.show()
 
-def show_timer (time=600,
-                note=''):
+
+def show_timer(seconds: int = 600, note: Optional[str] = None) -> None:
     td = TimerDialog()
-    td.set_time(time)
-    if note:
+    td.set_time(seconds)
+    if note is not None:
         td.noteEntry.set_text(note)
     td.show()
 
+
 if __name__ == '__main__':
     w = Gtk.Window()
-    b = Gtk.Button('Show timer')
+    b = Gtk.Button()
+    b.set_label('Show timer')
     b.connect('clicked',lambda *args: show_timer())
     w.add(b)
     w.connect('delete-event',lambda *args: Gtk.main_quit())

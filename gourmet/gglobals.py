@@ -1,6 +1,4 @@
 import os, os.path, re
-from gi import require_version
-require_version('Gtk', '3.0')
 from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
 
 import tempfile
@@ -143,6 +141,7 @@ DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
 from .gtk_extras import dialog_extras
 
 def launch_url (url, ext=""):
+    # TODO: deprecate this and make use of the webbrowser module
     if os.name == 'nt':
         os.startfile(url)
     elif os.name == 'posix':

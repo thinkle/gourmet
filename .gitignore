@@ -14,4 +14,4 @@ build
 build-stamp
 configure-stamp
 MANIFEST
-po/gourmet.pot
+gourmet/po/gourmet.pot

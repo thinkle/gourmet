@@ -1,6 +1,5 @@
 from gourmet.gdebug import debug
 from gi.repository import Gtk
-from gi.repository import GObject
 
 def print_tree (mod):
     for row in mod:

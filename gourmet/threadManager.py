@@ -28,8 +28,7 @@
 from gettext import gettext as _
 from gettext import ngettext
 import threading
-from gi.repository import Pango
-from gi.repository import GObject, Gtk
+from gi.repository import GObject, Gtk, Pango
 import time
 
 # _IdleObject etc. based on example John Stowers
@@ -44,7 +43,7 @@ class _IdleObject(GObject.GObject):
         GObject.GObject.__init__(self)
 
     def emit(self, *args):
-        if args[0]!='progress': print('emit',args)
+        if args[0]!='progress': print('emit', *args)
         GObject.idle_add(GObject.GObject.emit,self,*args)
 
 class Terminated (Exception):

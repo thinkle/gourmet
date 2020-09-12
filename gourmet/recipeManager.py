@@ -78,20 +78,11 @@ class SimpleCLI:
                 except:
                     print('invalid input.')
 
-def get_recipe_manager (**args):
-    if not args: args = dbargs
-    try:
-        return RecipeManager(**args)
-    except RecData as rd:
-        return rd
+def get_recipe_manager (**kwargs):
+    return RecipeManager.instance_for(**kwargs)
 
 def default_rec_manager ():
     return get_recipe_manager(**dbargs)
-    #try:
-    #    return RecipeManager(**dbargs)
-    #except RecData,rd:
-    #    return rd
-
 
 if __name__ == '__main__':
     #rm = RecipeManager(**dbargs)

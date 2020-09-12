@@ -1,5 +1,4 @@
 BeautifulSoup4
-dogtail
 ebooklib
 keyring
 lxml
@@ -7,8 +6,9 @@ Pillow
 pycairo
 pyenchant
 pygobject
-# pygtkspellcheck
+pygtkspellcheck
 reportlab
 scrape-schema-recipe
 selenium
-sqlalchemy
+setuptools
+SQLAlchemy

@@ -1,51 +1,45 @@
-#!/usr/bin/env python
-import os.path, os, re, threading
-try:
-    from gi import gicompat
-except ImportError:
-    pygtkcompat = None
+import os
+import os.path
+import re
+import threading
 
-if pygtkcompat is not None:
-    pygtkcompat.enable()
-    pygtkcompat.enable_gtk(version='3.0')
-
-from gi.repository import Gtk
-from gi.repository import GObject
-from gi.repository import Gdk
-from . import batchEditor
-from . import recipeManager
-from .exporters.printer import get_print_manager
-from . import prefs, prefsGui, shopgui, reccard
-from . import exporters
-from .exporters.exportManager import get_export_manager
-from .importers.importManager import get_import_manager
-from . import convert, version
-from .gtk_extras import fix_action_group_importance
-from .gtk_extras import ratingWidget, WidgetSaver, mnemonic_manager
-from .gtk_extras import dialog_extras as de
-from .gtk_extras import treeview_extras as te
-from .gdebug import debug
-from .gglobals import DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base, icondir, imagedir, launch_url, uibase
-from .recindex import RecIndex
 from gettext import gettext as _
 from gettext import ngettext
-from .timer import show_timer
-from .defaults.defaults import lang as defaults
-from .defaults.defaults import get_pluralized_form
-from . import plugin_loader, plugin, plugin_gui
-from .threadManager import get_thread_manager, get_thread_manager_gui, SuspendableThread
-from gi.repository import GdkPixbuf
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
+
+from gourmet import (
+    batchEditor, convert, plugin, plugin_gui, plugin_loader, prefs, prefsGui,
+    reccard, recipeManager, shopgui, version
+)
+
+from gourmet.defaults.defaults import lang as defaults
+from gourmet.defaults.defaults import get_pluralized_form
+
+from gourmet.exporters.exportManager import get_export_manager
+from gourmet.exporters.printer import get_print_manager
+
+from gourmet.gdebug import debug
+from gourmet.gglobals import (DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base,
+                              icondir, imagedir, uibase)
+from gourmet.importers.importManager import get_import_manager
+
+
+from gourmet.gtk_extras import (
+    fix_action_group_importance, mnemonic_manager, ratingWidget, WidgetSaver
+)
+
+from gourmet.gtk_extras import dialog_extras as de
+from gourmet.gtk_extras import treeview_extras as te
+
+from gourmet.recindex import RecIndex
+from gourmet.threadManager import (get_thread_manager, get_thread_manager_gui,
+                                   SuspendableThread)
+from gourmet.timer import show_timer
 
 
 UNDO = 1
 SHOW_TRASH = 2
 
-try:
-    from .exporters import rtf_exporter
-    rtf=True
-except ImportError:
-    debug('No RTF support',0)
-    rtf=False
 
 class GourmetApplication:
     """The main Gourmet Application.
@@ -246,18 +240,19 @@ class GourmetApplication:
                                {} # a dictionary of added menu items
                                ]
 
-    def update_action_group (self):
-        for rc in list(self.rc.values()):
-            action_name = 'GoRecipe'+str(rc.current_rec.id)
+    def update_action_group(self):
+        """Attach actions for this recipe, using its title."""
+        for rc in self.rc.values():
+            action_name = f'GoRecipe{rc.current_rec.id}'
+            title = rc.current_rec.title or 'Untitled'
+            title = f'_{title}'
+
             existing_action = self.goActionGroup.get_action(action_name)
             if not existing_action:
-                self.goActionGroup.add_actions(
-                    [(action_name,None,'_'+rc.current_rec.title,
-                      None,None,rc.show)]
-                    )
+                self.goActionGroup.add_actions([(action_name, None, title,
+                                                 None, None, rc.show)])
             else:
-                if existing_action.get_property('label') != '_'+rc.current_rec.title:
-                    existing_action.set_property('label','_'+rc.current_rec.title)
+                existing_action.set_property('label', title)
 
     def update_go_menu (self):
         self.update_action_group()
@@ -943,8 +938,6 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                           rg=self,
                           editable=False)
         self.setup_database_hooks()
-        fix_action_group_importance(self.search_actions)
-        self.ui_manager.insert_action_group(self.search_actions,0)
         self.setup_main_window()
         self.window.add_accel_group(self.ui_manager.get_accel_group())
         self.setup_column_display_preferences()
@@ -1425,22 +1418,4 @@ def get_application ():
     return RecGui.instance()
 
 if __name__ == '__main__':
-    if os.name!='nt':
-        import profile, tempfile,os.path
-        import hotshot, hotshot.stats
-        #profi = os.path.join(tempfile.tempdir,'GOURMET_PROFILE')
-        prof = hotshot.Profile(os.path.join(tempfile.tempdir,'GOURMET_HOTSHOT_PROFILE'))
-        prof.runcall(startGUI)
-        stats = hotshot.stats.load(os.path.join(tempfile.tempdir,'GOURMET_HOTSHOT_PROFILE'))
-        stats.strip_dirs()
-        stats.sort_stats('time','calls').print_stats()
-        #profile.run('startGUI()',profi)
-        #import pstats
-        #p=pstats.Stats(profi)
-        #p.strip_dirs().sort_stats('cumulative').print_stats()
-    else:
-        startGUI()
-
-#elif __name__ == '__main__':
-#    rgn = RecGui()
-#    Gtk.main()
+    startGUI()

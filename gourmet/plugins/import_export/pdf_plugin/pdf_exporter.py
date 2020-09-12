@@ -1,4 +1,4 @@
-import gtk, gobject
+from gi.repository import Gtk
 import reportlab
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.units import inch,mm
@@ -508,7 +508,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                 ]
         else:
             nattributes = len(self.attributes)
-            first_col_size = nattributes/2 + nattributes % 2
+            first_col_size = nattributes//2 + nattributes % 2
             first = self.attributes[:first_col_size]
             second = self.attributes[first_col_size:]
             table_data = []

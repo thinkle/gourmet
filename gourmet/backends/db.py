@@ -1,4 +1,4 @@
-from functools import cmp_to_key
+from gi.repository import Gtk
 import shutil
 from gourmet.gdebug import debug, TimeAction, debug_decorator
 import re, string, os.path, time
@@ -114,7 +114,15 @@ class DBObject:
 # categories_table: id -> recipe_id, category_entry_id -> id
 # ingredients_table: ingredient_id -> id, id -> recipe_id
 
-class RecData (Pluggable, BaseException):
+def db_url(file: Optional[str]=None, custom_url: Optional[str]=None) -> str:
+    if custom_url is not None:
+        return custom_url
+    else:
+        if file is None:
+            file = os.path.join(gglobals.gourmetdir, 'recipes.db')
+        return 'sqlite:///' + file
+
+class RecData (Pluggable):
 
     """RecData is our base class for handling database connections.
 
@@ -125,27 +133,29 @@ class RecData (Pluggable, BaseException):
     AMT_MODE_AVERAGE = 1
     AMT_MODE_HIGH = 2
 
-    _singleton = {}
+    _instance_by_db_url = {}
 
-    def __init__ (self, file=os.path.join(gglobals.gourmetdir,'recipes.db'),
-                  custom_url=None):
+    @classmethod
+    def instance_for(
+            cls, file: Optional[str]=None, custom_url: Optional[str]=None
+    ) -> 'RecData':
+        url = db_url(file, custom_url)
+
+        if url not in cls._instance_by_db_url:
+            cls._instance_by_db_url[url] = cls(file, url)
+
+        return cls._instance_by_db_url[url]
+
+    def __init__ (self, file: str, url: str):
         # hooks run after adding, modifying or deleting a recipe.
         # Each hook is handed the recipe, except for delete_hooks,
         # which is handed the ID (since the recipe has been deleted)
-        if file in RecData._singleton:
-            raise RecData._singleton[file]
-        else:
-            RecData._singleton[file] = self
         # We keep track of IDs we've handed out with new_id() in order
         # to prevent collisions
         self.new_ids = []
         self._created = False
-        if custom_url:
-            self.url = custom_url
-            self.filename = None
-        else:
-            self.filename = file
-            self.url = 'sqlite:///' + self.filename
+        self.filename = file
+        self.url = url
         self.add_hooks = []
         self.modify_hooks = []
         self.delete_hooks = []
@@ -452,7 +462,6 @@ class RecData (Pluggable, BaseException):
         print('You can use it to restore if something ugly happens.')
         shutil.copy(self.filename,backup_file_name) # Make a backup...
         import gourmet.gtk_extras.dialog_extras as de
-        from gi.repository import Gtk
         de.show_message(
             title=_("Upgrading database"),
             label=_("Upgrading database"),
@@ -617,7 +626,7 @@ class RecData (Pluggable, BaseException):
                         blob = getattr(r,src)
                         url = None
                         if blob:
-                            m = re.search('\w+://[^ ]*',blob)
+                            m = re.search(r'\w+://[^ ]*',blob)
                             if m:
                                 rec_url = blob[m.start():m.end()]
                                 if rec_url[-1] in ['.',')',',',';',':']:
@@ -1531,32 +1540,27 @@ class RecData (Pluggable, BaseException):
                 group=i.inggroup
             if group == None:
                 group = n; n+=1
-            if not hasattr(i,'position'):
+
+            position = getattr(i, 'position', None)
+            if position is None:
                 print('Bad: ingredient without position',i)
-                i.position=defaultn
+                position = defaultn
                 defaultn += 1
             if group in groups:
                 groups[group].append(i)
                 # the position of the group is the smallest position of its members
                 # in other words, positions pay no attention to groups really.
-                if i.position < group_order[group]: group_order[group]=i.position
+                if position < group_order[group]:
+                    group_order[group] = position
             else:
-                groups[group]=[i]
-                group_order[group]=i.position
+                groups[group] = [i]
+                group_order[group] = position
         # now we just have to sort an i-listify
-        def sort_groups (x,y):
-            if group_order[x[0]] > group_order[y[0]]: return 1
-            elif group_order[x[0]] == group_order[y[0]]: return 0
-            else: return -1
 
-        alist = list(sorted(groups.items(), key=cmp_to_key(sort_groups)))
+        alist = list(sorted(groups.items(), key=lambda x: group_order[x[0]]))
 
-        def sort_ings (x,y):
-            if x.position > y.position: return 1
-            elif x.position == y.position: return 0
-            else: return -1
         for g,lst in alist:
-            lst.sort(key=cmp_to_key(sort_ings))
+            lst.sort(key=lambda x: x.position)
         final_alist = []
         last_g = -1
         for g,ii in alist:
@@ -1849,13 +1853,36 @@ class RecData (Pluggable, BaseException):
             return []
 
 
-class RecipeManager (RecData):
+class RecipeManager:
+    _instance_by_db_url = {}
 
-    def __init__ (self,*args,**kwargs):
+    @classmethod
+    def instance_for(
+            cls, file: Optional[str]=None, custom_url: Optional[str]=None
+    ) -> 'RecipeManager':
+        url = db_url(file, custom_url)
+
+        if url not in cls._instance_by_db_url:
+            cls._instance_by_db_url[url] = cls(file, custom_url)
+
+        return cls._instance_by_db_url[url]
+
+    def __init__ (self, *args, **kwargs):
         debug('recipeManager.__init__()',3)
-        RecData.__init__(self,*args,**kwargs)
+        self.rd = get_database(*args, **kwargs)
         #self.km = keymanager.KeyManager(rm=self)
         self.km = keymanager.get_keymanager(rm=self)
+
+    def __getattr__(self, name):
+        # RecipeManager was previously a subclass of RecData.
+        # This was changed as they're both used as singletons, and there's
+        # no good way to have a subclassed singleton (unless the parent class
+        # is an abstract thing that's never used directly, which it wasn't).
+        # However, lots of code uses RecData methods on RecipeManager objects.
+        # This ensures that that code keeps working.
+        if name.startswith('_'):
+            raise AttributeError(name)
+        return getattr(self.rd, name)
 
     def key_search (self, ing):
         """Handed a string, we search for keys that could match
@@ -1888,7 +1915,7 @@ class RecipeManager (RecData):
             s = s.decode('utf8')
         s = s.strip(
                 '\u2022\u2023\u2043\u204C\u204D\u2219\u25C9\u25D8\u25E6\u2619\u2765\u2767\u29BE\u29BF\n\t #*+-')
-        option_m = re.match('\s*optional:?\s*',s,re.IGNORECASE)
+        option_m = re.match(r'\s*optional:?\s*',s,re.IGNORECASE)
         if option_m:
             s = s[option_m.end():]
             d['optional']=True
@@ -1913,14 +1940,14 @@ class RecipeManager (RecData):
                     d['unit']=u.strip()
                 else:
                     # has this unit been used
-                    prev_uses = self.fetch_all(self.ingredients_table,unit=u.strip())
+                    prev_uses = self.rd.fetch_all(self.rd.ingredients_table,unit=u.strip())
                     if prev_uses:
                         d['unit']=u
                     else:
                         # otherwise, unit is not a unit
                         i = u + ' ' + i
             if i:
-                optmatch = re.search('\s+\(?[Oo]ptional\)?',i)
+                optmatch = re.search(r'\s+\(?[Oo]ptional\)?',i)
                 if optmatch:
                     d['optional']=True
                     i = i[0:optmatch.start()] + i[optmatch.end():]
@@ -1937,10 +1964,25 @@ class RecipeManager (RecData):
 
     def ing_search (self, ing, keyed=None, recipe_table=None, use_regexp=True, exact=False):
         """Search for an ingredient."""
-        if not recipe_table: recipe_table = self.recipe_table
-        vw = self.joined_search(recipe_table,self.ingredients_table,'ingkey',ing,use_regexp=use_regexp,exact=exact)
+        if not recipe_table:
+            recipe_table = self.rd.recipe_table
+        vw = self.joined_search(
+            recipe_table,
+            self.rd.ingredients_table,
+            search_by='ingkey',
+            search_str=ing,
+            use_regexp=use_regexp,
+            exact=exact
+        )
         if not keyed:
-            vw2 = self.joined_search(recipe_table,self.ingredients_table,'item',ing,use_regexp=use_regexp,exact=exact)
+            vw2 = self.joined_search(
+                recipe_table,
+                self.rd.ingredients_table,
+                search_by='item',
+                search_str=ing,
+                use_regexp=use_regexp,
+                exact=exact
+            )
             if vw2 and vw:
                 vw = vw.union(vw2)
             else: vw = vw2
@@ -1962,14 +2004,14 @@ class RecipeManager (RecData):
         Otherwise, we clear *all* recipes.
         """
         if recipe:
-            vw = self.get_ings(recipe)
+            vw = self.rd.get_ings(recipe)
         else:
-            vw = self.ingredients_table
+            vw = self.rd.ingredients_table
         # this is ugly...
         vw1 = vw.select(shopoptional=1)
         vw2 = vw.select(shopoptional=2)
         for v in vw1,vw2:
-            for i in v: self.modify_ing(i,{'shopoptional':0})
+            for i in v: self.rd.modify_ing(i,{'shopoptional':0})
 
 class DatabaseConverter(convert.Converter):
     def __init__ (self, db):
@@ -2104,11 +2146,5 @@ class dbDic:
 # fetch_all ->
 #recipe_table -> recipe_table
 
-def get_database (*args,**kwargs):
-    try:
-        return RecData(*args,**kwargs)
-    except RecData as rd:
-        return rd
-
-if __name__ == '__main__':
-    db = RecData()
+def get_database (*args, **kwargs):
+    return RecData.instance_for(*args, **kwargs)

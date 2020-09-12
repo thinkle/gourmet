@@ -1,6 +1,5 @@
 from . import plugin_loader
-from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GObject, Gtk
 from .gtk_extras import dialog_extras as de
 from xml.sax.saxutils import escape
 from gettext import gettext as _

@@ -1,5 +1,4 @@
-from gi.repository import Gdk, Gtk
-from gi.repository import GObject
+from gi.repository import Gdk, GObject, Gtk
 from gourmet.gdebug import debug
 
 class FocusFixer:

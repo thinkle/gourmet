@@ -110,7 +110,8 @@ class ImportTest:
         for blobby_attribute in ['instructions','modifications']:
             if test.get(blobby_attribute,False):
                 match_text = test[blobby_attribute]
-                match_text = re.sub('\s+','\s+',match_text)
+                match_text = re.sub(r'\s+',r'\s+',match_text)
+
                 try:
                     assert(re.match(match_text,getattr(rec,blobby_attribute)))
                 except:

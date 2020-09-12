@@ -6,9 +6,9 @@ from gourmet.gdebug import TimeAction
 expander_regexp = None
 
 def compile_expander_regexp ():
-    regexp = "(?<!\w)("
+    regexp = r"(?<!\w)("
     regexp += "|".join(list(ABBREVS.keys()))
-    regexp += ")(?!\w)"
+    regexp += r")(?!\w)"
     return re.compile(regexp)
 
 def expand_abbrevs ( line ):

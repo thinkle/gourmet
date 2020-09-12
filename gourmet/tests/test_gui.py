@@ -9,7 +9,6 @@ import time
 import tempfile
 import os.path
 
-from gi.repository import Gtk
 import dogtail
 import dogtail.procedural as dp
 from dogtail.utils import screenshot

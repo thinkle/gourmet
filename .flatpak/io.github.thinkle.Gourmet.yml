@@ -1,0 +1,39 @@
+app-id: io.github.thinkle.Gourmet
+runtime: org.gnome.Platform
+runtime-version: '3.36'
+sdk: org.gnome.Sdk
+command: gourmet
+
+finish-args:
+  - --filesystem=host
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+modules:
+  - name: cpython
+    sources:
+      - type: archive
+        url:  https://www.python.org/ftp/python/3.8.4/Python-3.8.4.tar.xz
+        sha256:  5f41968a95afe9bc12192d7e6861aab31e80a46c46fa59d3d837def6a4cd4d37
+
+  - name: intltool
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url:  https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
+        sha256:  67c74d94196b153b774ab9f89b2fa6c6ba79352407037c8c14d5aeb334e959cd
+
+  - name: gourmet
+    buildsystem: simple
+    build-options:
+      build-args:
+        - --share=network
+    build-commands:
+      - pip3 install pyenchant pygobject
+      - pip3 install -r requirements.txt
+      - python3 setup.py install --prefix=/app
+      - install -Dm644 .flatpak/io.github.thinkle.Gourmet.desktop -t /app/share/applications/
+      - install -Dm644 .flatpak/io.github.thinkle.Gourmet.svg -t /app/share/icons/hicolor/scalable/apps/
+
+    sources:
+      - type: git
+        url:  https://github.com/kirienko/gourmet

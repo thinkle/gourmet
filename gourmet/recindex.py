@@ -6,11 +6,7 @@ from .gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
     mnemonic_manager, pageable_store, treeview_extras as te
 from . import convert
 from . import Undo
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import Pango
-from gi.repository import GdkPixbuf
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
 
 class RecIndex:
     """We handle the 'index view' of recipes, which puts
@@ -61,7 +57,6 @@ class RecIndex:
         #     "u":_("cuisine"),
         #     "s":_("source"),
         # }
-        self.setup_search_actions()
         self.setup_widgets()
 
     def setup_widgets (self):
@@ -82,15 +77,26 @@ class RecIndex:
         cb.set_model_from_list(self.rSearchByMenu, self.searchByList, expand=False)
         cb.setup_typeahead(self.rSearchByMenu)
         self.rSearchByMenu.set_active(0)
-        self.rSearchByMenu.connect('changed',self.search_as_you_type)
-        self.sautTog = self.ui.get_object('searchAsYouTypeToggle')
-        self.search_actions.get_action('toggleSearchAsYouType').do_connect_proxy(self.search_actions.get_action('toggleSearchAsYouType'), self.sautTog)
+        self.rSearchByMenu.connect('changed', self.search_as_you_type)
         self.regexpTog = self.ui.get_object('regexpTog')
         self.searchOptionsBox = self.ui.get_object('searchOptionsBox')
-        self.search_actions.get_action('toggleShowSearchOptions').do_connect_proxy(self.search_actions.get_action('toggleShowSearchOptions'),
-            self.ui.get_object('searchOptionsToggle')
-            )
-        self.search_actions.get_action('toggleRegexp').do_connect_proxy(self.search_actions.get_action('toggleRegexp'), self.regexpTog)
+
+        search_options_toggle_btn = self.ui.get_object('searchOptionsToggle')
+        search_options_toggle_btn.connect('toggled',
+                                          self.toggleShowSearchOptions)
+        tooltip = _('Show advanced searching options')
+        search_options_toggle_btn.set_tooltip_text(tooltip)
+
+        search_regex_toggle_btn = self.ui.get_object('regexpTog')
+        search_regex_toggle_btn.connect('toggled', self.toggleRegexpCB)
+        tooltip = _('Use regular expressions in search')
+        search_regex_toggle_btn.set_tooltip_text(tooltip)
+
+        search_typing_toggle_btn = self.ui.get_object('searchAsYouTypeToggle')
+        search_typing_toggle_btn.connect('toggled', self.toggleTypeSearchCB)
+        tooltip = _('Search as you type (turn off if search is too slow).')
+        search_typing_toggle_btn.set_tooltip_text(tooltip)
+
         self.rectree = self.ui.get_object('recTree')
         self.sw = self.ui.get_object('scrolledwindow')
         self.rectree.connect('start-interactive-search',lambda *args: self.srchentry.grab_focus())
@@ -119,12 +125,13 @@ class RecIndex:
             'rlistReset' : self.reset_search,
             'rlistLimit' : self.limit_search,
             'search_as_you_type_toggle' : self.toggleTypeSearchCB,})
-        self.toggleTypeSearchCB(self.sautTog)
-        # this has to come after the type toggle is connected!
+
+        # Save widget status across sessions
+        # This has to come after the widgets and signals are connected!
         self.rg.conf.append(WidgetSaver.WidgetSaver(
-            self.sautTog,
+            search_typing_toggle_btn,
             self.prefs.get('sautTog',
-                           {'active':self.sautTog.get_active()}),
+                           {'active': search_typing_toggle_btn.get_active()}),
             ['toggled']))
         self.rg.conf.append(WidgetSaver.WidgetSaver(
             self.regexpTog,
@@ -144,24 +151,6 @@ class RecIndex:
         self.mm.add_builder(self.ui)
         self.mm.add_treeview(self.rectree)
         self.mm.fix_conflicts_peacefully()
-
-    def setup_search_actions (self):
-        self.search_actions = Gtk.ActionGroup('SearchActions')
-        self.search_actions.add_toggle_actions([
-            ('toggleRegexp',None,_('Use regular expressions in search'),
-             None,_('Use regular expressions (an advanced search language) in text search'),
-             self.toggleRegexpCB,False),
-            ('toggleSearchAsYouType',None,_('Search as you type'),None,
-             _('Search as you type (turn off if search is too slow).'),
-             self.toggleTypeSearchCB, True
-             ),
-            ('toggleShowSearchOptions',
-             None,
-             _('Show Search _Options'),
-             None,
-             _('Show advanced searching options'),
-             self.toggleShowSearchOptions),
-            ])
 
     def setup_search_views (self):
         """Setup our views of the database."""
@@ -388,13 +377,6 @@ class RecIndex:
         else:
             self.searchOptionsBox.hide()
 
-    def regexpp (self):
-        """Return True if we're using regexps"""
-        if self.regexpTog.get_active():
-            return True
-        else:
-            return False
-
     def search_as_you_type (self, *args):
         """If we're searching-as-we-type, search."""
         if self.search_as_you_type:
@@ -433,7 +415,7 @@ class RecIndex:
 
     def make_search_dic (self, txt, searchBy):
         srch = {'column':searchBy}
-        if self.regexpp():
+        if self.ui.get_object('regexpTog').get_active():
             srch['operator'] = 'REGEXP'
             srch['search'] = txt.replace(' %s '%_('or'),  # or operator for searches
                                          '|')
@@ -567,9 +549,11 @@ class RecIndex:
             sb.set_value(sb.get_adjustment().get_upper())
             return True
 
-    def star_change_cb (self, value, model, treeiter, column_number):
-        # itr = model.convert_iter_to_child_iter(None,treeiter)
-        # self.rmodel.set_value(treeiter,column_number,value)
+    def star_change_cb (self,
+                        value: float,
+                        model: 'RecipeModel',
+                        treeiter: Gtk.TreeIter,
+                        column_number: int) -> None:
         rec = self.get_rec_from_iter(treeiter)
         if getattr(rec,'rating')!=value:
             self.rd.undoable_modify_rec(
@@ -578,8 +562,9 @@ class RecIndex:
                 self.history,
                 get_current_rec_method = lambda *args: self.get_selected_recs_from_rec_tree()[0],
                 )
-            # self.rmodel.row_changed(self.rmodel.get_path(treeiter),treeiter)
             self.rmodel.update_iter(treeiter)
+            model.set_value(treeiter, column_number, value)
+
 
     def update_modified_recipe(self,rec,attribute,text):
         """Update a modified recipe.

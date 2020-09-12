@@ -1,13 +1,17 @@
-from gi.repository import Gtk
-import sys
-if sys.platform not in ["win32",'darwin']:
-    import poppler
-import os.path
-from . import pdf_exporter
-import tempfile
-import reportlab.lib.pagesizes as pagesizes
-from gourmet.plugin import PrinterPlugin
 from gettext import gettext as _
+import os.path
+import sys
+import tempfile
+
+from gi.repository import Gtk
+if sys.platform not in ["win32",'darwin']:
+    from gi import require_version
+    require_version('Poppler', '0.18')
+    from gi.repository import Poppler
+import reportlab.lib.pagesizes as pagesizes
+
+from gourmet.plugin import PrinterPlugin
+from . import pdf_exporter
 
 rl2gtk_papersizes = {
     tuple([int(round(s)) for s in pagesizes.letter]) : Gtk.PAPER_NAME_LETTER,
@@ -59,7 +63,11 @@ class WindowsPDFPrinter:
             Popen(regPathValue + " /n /p " + os.path.realpath(filename))
 
 class PDFPrinter:
+    """Print an exported PDF
 
+    This class is for Linux & other free desktops.
+    There are separate implementations for Windows & Mac above.
+    """
     def setup_printer (self, parent=None):
         po = Gtk.PrintOperation()
         #po.set_n_pages(self.d.get_n_pages())
@@ -73,7 +81,7 @@ class PDFPrinter:
     def set_document (self, filename, operation,context):
         if not filename.startswith('file'):
             filename = 'file://' + os.path.realpath(filename)
-        self.d = poppler.document_new_from_file(filename,None)
+        self.d = Poppler.Document.new_from_file(filename, None)
         operation.set_n_pages(self.d.get_n_pages())
         # Assume all pages are same
         page = self.d.get_page(0)

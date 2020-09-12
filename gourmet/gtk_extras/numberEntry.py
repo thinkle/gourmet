@@ -17,8 +17,8 @@
 ### USA
 
 
+from gi.repository import Gtk
 from . import validatingEntry
-import gtk, gobject
 import gourmet.convert as convert
 import re
 from gettext import gettext as _

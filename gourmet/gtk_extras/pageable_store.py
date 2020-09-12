@@ -1,5 +1,4 @@
-from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GObject, Gtk
 
 class PageableListStore (Gtk.ListStore):
     """A ListStore designed to show bits of data at a time.

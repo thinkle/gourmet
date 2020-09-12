@@ -165,7 +165,7 @@ class Importer (SuspendableThread):
         timeaction = TimeAction('importer.commit_rec',10)
         for key in ['cuisine','category','title']:
             if key in self.rec:
-                self.rec[key]=str(re.sub('\s+',' ',self.rec[key]).strip())
+                self.rec[key]=str(re.sub(r'\s+',' ',self.rec[key]).strip())
         # if yields/servings can't be recognized as a number, add them
         # to the instructions.
         if 'yields' in self.rec:
@@ -270,7 +270,7 @@ class Importer (SuspendableThread):
 
     def parse_yields (self, str):
         '''Parse number and field.'''
-        m = re.match("(?P<prefix>\w+\s+)?(?P<num>[0-9/. ]+)(?P<unit>\s*\w+)?",str)
+        m = re.match(r"(?P<prefix>\w+\s+)?(?P<num>[0-9/. ]+)(?P<unit>\s*\w+)?",str)
         if m:
             num = m.group('num')
             num = convert.frac_to_float(num)
@@ -323,7 +323,7 @@ class Importer (SuspendableThread):
         # Strip whitespace...
         for key in ['item','ingkey','unit']:
             if key in self.ing:
-                self.ing[key]=re.sub('\s+',' ',self.ing[key]).strip()
+                self.ing[key]=re.sub(r'\s+',' ',self.ing[key]).strip()
         if not (
             ('refid' in self.ing and
              self.ing['refid'])
@@ -419,7 +419,7 @@ class Importer (SuspendableThread):
 
 NUMBER_REGEXP = convert.NUMBER_REGEXP
 simple_matcher = re.compile(
-    '(%(NUMBER_REGEXP)s+)\s*/\s*([\d]+)'%locals()
+    r'(%(NUMBER_REGEXP)s+)\s*/\s*([\d]+)'%locals()
     )
 
 def parse_range (number_string):
@@ -455,19 +455,23 @@ class Tester:
             self.matcher = re.compile(self.regexp)
         CLOSE=False
         if isinstance(filename, str):
-            self.ofi = open(filename,'r')
+            # Latin-1 can decode any bytes, letting us open ASCII-compatible
+            # text files and sniff their contents - e.g. for XML tags -
+            # without worrying too much about their real text encoding.
+            ofi = open(filename, 'r', encoding='latin1')
             CLOSE=True
-        else: self.ofi=filename
-        l = self.ofi.readline()
-        while l:
-            if self.matcher.match(l):
-                self.ofi.close()
-                return True
-            l = self.ofi.readline()
-        if CLOSE:
-            self.ofi.close()
         else:
-            self.ofi.seek(0)
+            ofi = filename
+
+        try:
+            for l in ofi:
+                if self.matcher.match(l):
+                    return True
+        finally:
+            if CLOSE:
+                ofi.close()
+            else:
+                ofi.seek(0)
 
 class RatingConverter:
 

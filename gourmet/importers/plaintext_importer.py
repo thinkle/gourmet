@@ -41,7 +41,7 @@ class TextImporter (importer.Importer):
             self.commit_rec()
         importer.Importer.do_run(self)
 
-    def handle_line (self):
+    def handle_line (self, l):
         raise NotImplementedError
 
     def compile_regexps (self):

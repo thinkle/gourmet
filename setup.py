@@ -1,4 +1,3 @@
-import fileinput
 import glob
 import os
 import os.path as op
@@ -9,14 +8,10 @@ import distutils.command.build
 import distutils.command.build_py
 import distutils.command.build_scripts
 import distutils.core
-from distutils.util import convert_path
+import setuptools
 
-# grab the version from our "version" module
-# first we have to extend our path to include gourmet/
-srcpath = op.split(__file__)[0]
-sys.path.append(op.join(srcpath, 'gourmet'))
 
-from gourmet import version  # noqa: import not a top of file
+from gourmet import version
 
 
 class build_extra(distutils.command.build.build):
@@ -43,11 +38,6 @@ class build_extra(distutils.command.build.build):
                    ("build_help" in self.distribution.cmdclass and not
                     self.help == "False")
 
-        def has_icons(command):
-            return self.icons == "True" or \
-                   ("build_icons" in self.distribution.cmdclass and not
-                    self.help == "False")
-
         def has_i18n(command):
             return self.i18n == "True" or \
                    ("build_i18n" in self.distribution.cmdclass and not
@@ -60,7 +50,6 @@ class build_extra(distutils.command.build.build):
 
         distutils.command.build.build.finalize_options(self)
         self.sub_commands.append(("build_i18n", has_i18n))
-        self.sub_commands.append(("build_icons", has_icons))
         self.sub_commands.append(("build_help", has_help))
 
         # must be run before build_py
@@ -106,7 +95,7 @@ class build_i18n(distutils.cmd.Command):
         if self.domain is None:
             self.domain = self.distribution.metadata.name
         if self.po_dir is None:
-            self.po_dir = "po"
+            self.po_dir = os.path.join("gourmet", "po")
 
     def run(self):
         """
@@ -204,122 +193,7 @@ WARNING: Intltool will use the values specified from the
                 data_files.append((target, files_merged))
 
 
-class build_icons(distutils.cmd.Command):
-
-    description = "select all icons for installation"
-
-    user_options = [('icon-dir=', 'i', 'icon directory of the source tree')]
-
-    def initialize_options(self):
-        self.icon_dir = None
-
-    def finalize_options(self):
-        if self.icon_dir is None:
-            self.icon_dir = os.path.join("data", "icons")
-
-    def run(self):
-        data_files = self.distribution.data_files
-
-        for size in glob.glob(os.path.join(self.icon_dir, "*")):
-            for category in glob.glob(os.path.join(size, "*")):
-                icons = []
-                for icon in glob.glob(os.path.join(category, "*")):
-                    if not os.path.islink(icon):
-                        icons.append(icon)
-                if icons:
-                    data_files.append(("share/icons/hicolor/%s/%s" %
-                                       (os.path.basename(size),
-                                        os.path.basename(category)),
-                                       icons))
-
-
 distutils.command.build.build.sub_commands.append(("build_i18n", None))
-distutils.command.build.build.sub_commands.append(("build_icons", None))
-
-
-class build_py(distutils.command.build_py.build_py):
-    """build_py command
-
-    This specific build_py command will modify module 'build_config' so that it
-    contains information on installation prefixes afterwards.
-    """
-
-    def build_module(self, module, module_file, package):
-        distutils.command.build_py.build_py.build_module(self, module,
-                                                         module_file, package)
-
-        if isinstance(package, str):
-            package = package.split('.')
-        elif not isinstance(package, (list, tuple)):
-            msg = "'package' must be a string (dot-separated), list, or tuple"
-            raise TypeError(msg)
-
-        if (module == 'settings' and len(package) == 1
-                and package[0] == 'gourmet'
-                and 'install' in self.distribution.command_obj):
-            outfile = self.get_module_outfile(self.build_lib, package, module)
-
-            iobj = self.distribution.command_obj['install']
-            lib_dir = iobj.install_lib
-            base = iobj.install_data
-            if (iobj.root):
-                lib_dir = lib_dir[len(iobj.root):]
-                base = base[len(iobj.root):]
-            base = op.join(base, 'share')
-            data_dir = op.join(base, 'gourmet')
-
-            # abuse fileinput to replace two lines in bin/gourmet
-            for line in fileinput.input(outfile, inplace=True):
-                if "base_dir = " in line:
-                    line = "base_dir = '%s'\n" % base
-                elif "lib_dir = " in line:
-                    line = "lib_dir = '%s'\n" % lib_dir
-                elif "data_dir = " in line:
-                    line = "data_dir = '%s'\n" % data_dir
-                elif "doc_base = " in line:
-                    line = "doc_base = '%s'\n" % \
-                        op.join(base, 'doc', 'gourmet')
-                elif "icon_base = " in line:
-                    line = "icon_base = '%s'\n" % \
-                        op.join(base, 'icons', 'hicolor')
-                elif "locale_base = " in line:
-                    line = "locale_base = '%s'\n" % \
-                        op.join(base, 'locale')
-                elif "plugin_base = " in line:
-                    line = "plugin_base = data_dir\n"
-                print(line, end='')
-
-
-class build_scripts(distutils.command.build_scripts.build_scripts):
-    """build_scripts command
-
-    This specific build_scripts command will modify the bin/gourmet script
-    so that it contains information on installation prefixes afterwards.
-    """
-
-    def copy_scripts(self):
-        distutils.command.build_scripts.build_scripts.copy_scripts(self)
-
-        if "install" in self.distribution.command_obj:
-            iobj = self.distribution.command_obj["install"]
-            lib_dir = iobj.install_lib
-            data_dir = iobj.install_data
-
-            if iobj.root:
-                lib_dir = lib_dir[len(iobj.root):]
-                data_dir = data_dir[len(iobj.root):]
-
-            script = convert_path("bin/gourmet")
-            outfile = op.join(self.build_dir, op.basename(script))
-
-            # abuse fileinput to replace two lines in bin/gourmet
-            for line in fileinput.input(outfile, inplace=1):
-                if "lib_dir = '.'" in line:
-                    line = "lib_dir = '%s'\n" % lib_dir
-                elif "data_dir = '.'" in line:
-                    line = "data_dir = '%s'\n" % data_dir
-
-                print(line),
 
 
 if sys.platform == "win32":
@@ -344,29 +218,6 @@ if sys.platform == "win32":
     # Localisation data path (which I omit, but you might not want to):
     # TODO: clarify what the above comment refers to
     GTK_LOCALE_DATA = op.join("share", "locale")
-
-
-def data_files():
-    """Build list of data files to be installed"""
-    data_files = []
-
-    for root, _, files in os.walk('data'):
-        if files:
-            files = [op.join(root, f) for f in files]
-            data_files.append((op.join('share',
-                                       'gourmet',
-                                       root[len('data')+1:]),
-                               files))
-
-    # files in /usr/share/X/ (not gourmet)
-    files = []
-    base = op.join('share', 'gourmet')
-
-    files.extend(data_files)
-    files.extend([(op.join(base, 'ui'), glob.glob(op.join('ui', '*.ui')))])
-    files.extend([(op.join('share', 'doc', 'gourmet'), ['FAQ', 'LICENSE'])])
-
-    return files
 
 
 if sys.platform == "win32":
@@ -480,31 +331,26 @@ if sys.platform == "win32":
                             }
                            }
                   )
-else:
-    from distutils.core import setup
-    build = build_extra
-    kwargs = dict(
-                  name=version.name,
-                  data_files=data_files(),
-                  scripts=[op.join('bin', 'gourmet')]
-                  )
+
 
 plugins = []
 
 
-def crawl(base, basename):
+def crawl_plugins(base, basename):
     bdir = base
     subdirs = filter(lambda x: op.isdir(op.join(bdir, x)),
                      os.listdir(bdir))
     for subd in subdirs:
         name = basename + '.' + subd
         plugins.append(name)
-        crawl(op.join(bdir, subd), name)
+        crawl_plugins(op.join(bdir, subd), name)
 
 
-crawl('gourmet/plugins', 'gourmet.plugins')
+crawl_plugins(op.join('gourmet', 'plugins'), 'gourmet.plugins')
 
-result = setup(
+
+setuptools.setup(
+    name=version.name,
     version=version.version,
     description=version.description,
     author=version.author,
@@ -522,13 +368,38 @@ result = setup(
               ] + plugins,
     package_data={'gourmet': ['plugins/*/*.ui',
                               'plugins/*/images/*.png',
-                              'plugins/*/*/images/*.png']
+                              'plugins/*/*/images/*.png',
+                              'ui/*.ui',
+                              'ui/catalog/*',
+                              'data/recipe.dtd',
+                              'data/WEIGHT.txt',
+                              'data/FOOD_DES.txt',
+                              'data/ABBREV.txt',
+                              'data/nutritional_data_sr_version',
+                              'data/images/no_star.png',
+                              'data/images/splash.png',
+                              'data/images/splash.svg',
+                              'data/images/reccard_edit.png',
+                              'data/images/AddToShoppingList.png',
+                              'data/images/half_gold_star.png',
+                              'data/images/gold_star.png',
+                              'data/images/reccard.png',
+                              'data/sound/phone.wav',
+                              'data/sound/warning.wav',
+                              'data/sound/error.wav',
+                              'data/icons/gourmet.ico',
+                              'data/icons/scalable/apps/gourmet.svg',
+                              'data/icons/48x48/apps/gourmet.png',
+                              'data/style/epubdefault.css',
+                              'data/style/default.css',
+                              ]
                   },
-    cmdclass={'build': build,
+    include_package_data=True,
+    cmdclass={'build': build_extra,
               'build_i18n': build_i18n,
-              'build_icons': build_icons,
-              'build_py': build_py,
-              'build_scripts': build_scripts,
               },
-    **kwargs
+    entry_points={
+        "console_scripts": [
+            "gourmet = gourmet.GourmetRecipeManager:startGUI",
+        ]}
 )

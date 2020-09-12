@@ -1,4 +1,4 @@
-import gtk, gobject, pango
+from gi.repository import GObject, Gtk, Pango
 import gourmet.gtk_extras.pageable_store as pageable_store
 import gourmet.gglobals as gglobals
 import os, re

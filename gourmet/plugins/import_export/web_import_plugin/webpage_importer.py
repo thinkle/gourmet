@@ -110,7 +110,7 @@ class WebParser (InteractiveImporter):
 
     def reduce_whitespace (self, s):
         if not hasattr(self,'__whitespace_regexp'):
-            self.__whitespace_regexp = re.compile('\s+')
+            self.__whitespace_regexp = re.compile(r'\s+')
         return self.__whitespace_regexp.sub(' ',s)
 
     def cut_extra_whitespace (self, s):
@@ -181,7 +181,7 @@ class WebParser (InteractiveImporter):
         '''
         new_parse = []
         for p,attr in parsed:
-            p = re.sub('(\n\s*\n)+','\n\n',p) # Take out extra newlines
+            p = re.sub(r'(\n\s*\n)+','\n\n',p) # Take out extra newlines
             if attr == None or attr == 'recipe':
                 new_parse.extend(
                     self.text_parser.parse(p)
@@ -225,7 +225,7 @@ class MenuAndAdStrippingWebParser (WebParser):
                 continue
             self.preparsed_elements.append((menu,'ignore'))
         menu_text_regexp = re.compile(
-            '.*sitemap.*|^\s-*about\s-*',re.IGNORECASE
+            r'.*sitemap.*|^\s-*about\s-*',re.IGNORECASE
             )
         for menu in self.soup(text=menu_text_regexp):
             if hasattr(menu,'name') and menu.name == 'body': continue

@@ -49,7 +49,7 @@ class XmlExporter (exporter_mult):
         except:
             print('Text is not text')
             print('append_text received',element,text)
-            raise TypeError(text+' is not a StringType')
+            raise TypeError('%r is not a StringType' % text)
         try:
             t = self.xmlDoc.createTextNode(text)
             element.appendChild(t)

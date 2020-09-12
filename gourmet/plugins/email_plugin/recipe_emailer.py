@@ -1,4 +1,3 @@
-from gi.repository import Gtk
 import os.path, tempfile
 from gourmet.GourmetRecipeManager import get_application
 from .emailer import Emailer

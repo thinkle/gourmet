@@ -1,3 +1,4 @@
+from gettext import gettext as _
 import textwrap
 from itertools import islice
 from gourmet import gglobals,  convert

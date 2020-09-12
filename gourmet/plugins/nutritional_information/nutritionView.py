@@ -1,4 +1,4 @@
-import gtk, gobject
+from gi.repository import GObject, Gtk
 import re, string
 from .nutritionModel import NutritionModel
 from . import parser_data

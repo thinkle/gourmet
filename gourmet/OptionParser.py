@@ -40,7 +40,7 @@ except SystemExit as e:
     import sys
 
     exc = sys.exc_info()[1]
-    if e.code is 0:
+    if e.code == 0:
         # Normal system exit
         exit(e.code)
     else:
