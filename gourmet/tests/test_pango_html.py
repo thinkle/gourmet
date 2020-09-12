@@ -84,3 +84,17 @@ def test_pango_markup_to_html():
 
     ret = PangoToHtml().feed(pango_markup, links, ignore_links=True)
     assert ret == expected
+
+
+    pango_markup = b'GTKTEXTBUFFERCONTENTS-0001\x00\x00\x01t <text_view_markup>\n <tags>\n  <tag name="bold" priority="0">\n   <attr name="weight" type="gint" value="700" />\n  </tag>\n  <tag name="underline" priority="2">\n   <attr name="underline" type="PangoUnderline" value="PANGO_UNDERLINE_SINGLE" />\n  </tag>\n </tags>\n<text><apply_tag name="underline"><apply_tag name="bold">Hello</apply_tag></apply_tag></text>\n</text_view_markup>\n'  # noqa
+    ret = PangoToHtml().feed(pango_markup)
+    assert ret == '<u><b>Hello</b></u>'
+
+
+def test_unsupported_pango_attributes():
+    # Check that unsupported attributes are ignored, such as typo highlighting
+    # ie. PANGO_UNDERLINE_ERROR
+    pango_markup = b'GTKTEXTBUFFERCONTENTS-0001\x00\x00\x01\x18 <text_view_markup>\n <tags>\n  <tag name="gtkspellchecker-misspelled" priority="4">\n   <attr name="underline" type="PangoUnderline" value="PANGO_UNDERLINE_ERROR" />\n  </tag>\n </tags>\n<text><apply_tag name="gtkspellchecker-misspelled">hel</apply_tag> lo </text>\n</text_view_markup>\n'  # noqa
+
+    ret = PangoToHtml().feed(pango_markup)
+    assert ret == 'hel lo '

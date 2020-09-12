@@ -24,8 +24,8 @@ class PangoToHtml(HTMLParser):
     def __init__(self):
         super().__init__()
         self.markup_text: str = ""  # the resulting content
-        self.current_opening_tags: str = ""  # used during parsing
-        self.current_closing_tags: List = []  # used during parsing
+        self.current_opening_tags: List[str] = []  # used during parsing
+        self.current_closing_tags: List[str] = []  # used during parsing
 
         # The key is the Pango id of a tag, and the value is a tuple of opening
         # and closing html tags for this id.
@@ -34,15 +34,15 @@ class PangoToHtml(HTMLParser):
         # Optionally, links can be specified, in a {link text: target} format.
         self.links: Dict[str, str] = {}
 
-        # If links are specified, it is possible to ignore them, as is done with
-        # time links.
+        # If links are specified, it is possible to ignore them, as is done
+        # with time links.
         self.ignore_links: bool = False
 
         # Used as heuristics for parsing links, when applicable.
         self.is_colored_and_underlined: bool = False
 
     tag2html: Dict[str, Tuple[str, str]] = {
-        Pango.Style.ITALIC.value_name: ("<i>", "</i>"),  # Pango doesn't do <em>
+        Pango.Style.ITALIC.value_name: ("<i>", "</i>"),  # No <em> in Pango
         str(Pango.Weight.BOLD.real): ("<b>", "</b>"),
         Pango.Underline.SINGLE.value_name: ("<u>", "</u>"),
         "foreground-gdk": (r'<span foreground="{}">', "</span>"),
@@ -95,16 +95,16 @@ class PangoToHtml(HTMLParser):
         tags = data[tags_begin:tags_end]
         data = data[tags_end:]
 
-        # Get the textual content
-        text_begin = data.index("<text>")
-        text_end = data.index("</text>") + len("</text>")
+        # Get the textual content, omitting the opening and closing text tags
+        text_begin = data.index("<text>") + len("<text>")
+        text_end = data.index("</text>")
         text = data[text_begin:text_end]
 
         # The remaining is serialized Pango footer, which we don't need.
 
         # Convert the tags to html.
-        # We know that only a subset of HTML is handled in Gourmet:
-        # italics, bold, underlined, normal, and links (coloured and underlined)
+        # We know that only a subset of HTML is handled in Gourmet: italics,
+        # bold, underlined, normal, and links (coloured and underlined)
         soup = BeautifulSoup(tags, features="lxml")
         tags = soup.find_all("tag")
 
@@ -131,7 +131,7 @@ class PangoToHtml(HTMLParser):
                     else:
                         continue  # no idea!
                 else:
-                    opening, closing = self.tag2html[value]
+                    opening, closing = self.tag2html.get(value, ('', ''))
 
                 opening_tags += opening
                 closing_tags = closing + closing_tags   # closing tags are FILO
@@ -146,12 +146,13 @@ class PangoToHtml(HTMLParser):
         # Create a single output string that will be sequentially appended to
         # during feeding of text. It can then be returned once we've parse all
         self.markup_text = ""
-        self.current_opening_tags = ""
-        self.current_closing_tags = []  # Closing tags are FILO
+        self.current_opening_tags = []
+        self.current_closing_tags = []
         self.is_colored_and_underlined = False
 
         super().feed(text)
 
+        print(text)
         return self.markup_text
 
     def handle_starttag(self, tag: str, attrs: List[Tuple[str, str]]) -> None:
@@ -164,11 +165,13 @@ class PangoToHtml(HTMLParser):
             tags = self.tags.get(tag_name)
 
             if tags is not None:
-                self.current_opening_tags, closing_tag = tags
+                opening_tag, closing_tag = tags
+                self.current_opening_tags.append(opening_tag)
                 self.current_closing_tags.append(closing_tag)
 
-        if 'foreground' and '<u>' in self.current_opening_tags:
-            self.is_colored_and_underlined = True
+        if self.current_opening_tags:
+            if 'foreground' and '<u>' in self.current_opening_tags[-1]:
+                self.is_colored_and_underlined = True
 
     def handle_data(self, data: str) -> None:
         target = self.links.get(data)
@@ -177,15 +180,16 @@ class PangoToHtml(HTMLParser):
             # Replace the markup tags with a hyperlink target
             if not self.ignore_links:
                 data = f'<a href="{target}">{data}</a>'
-            # Shortcut the closing tag
-            self.current_closing_tags.pop()
+            # Remove the tags that were substituted
+            self.current_closing_tags.pop()  # FILO
+            self.current_opening_tags.pop()
         else:
-            data = self.current_opening_tags + data
+            data = ''.join(self.current_opening_tags) + data
+            self.current_opening_tags.clear()
 
         self.markup_text += data
 
     def handle_endtag(self, tag: str) -> None:
         if self.current_closing_tags:  # Can be empty due to pop in handle_data
-            self.markup_text += self.current_closing_tags.pop()
-        self.current_opening_tags = ""
+            self.markup_text += self.current_closing_tags.pop()  # FILO
         self.is_colored_and_underlined = False
