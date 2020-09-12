@@ -9,7 +9,6 @@ from PIL import Image
 import xml.sax.saxutils
 
 from gourmet import convert, defaults, prefs, plugin_loader, timeScanner, Undo
-from gourmet import ImageExtras as ie
 from gourmet.exporters import exportManager
 from gourmet.exporters.printer import get_print_manager
 
@@ -25,6 +24,7 @@ from gourmet.gtk_extras.dialog_extras import (UserCancelledError,
 from gourmet.gtk_extras import treeview_extras as te
 from gourmet.gtk_extras import cb_extras as cb
 
+from gourmet import image_utils as iu
 from gourmet.importers.importer import parse_range
 from gourmet.plugin import (IngredientControllerPlugin, RecDisplayPlugin,
                             RecEditorModule, RecEditorPlugin, ToolPlugin)
@@ -498,7 +498,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
             self.orig_pixbuf = None
             self.imageDisplay.hide()
         else:
-            self.orig_pixbuf = ie.get_pixbuf_from_jpg(imagestring)
+            self.orig_pixbuf = iu.bytes_to_pixbuf(imagestring)
             self.imageDisplay.set_from_pixbuf(
                 self.orig_pixbuf
                 )
@@ -1495,7 +1495,7 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         """Return image and thumbnail data suitable for storage in the database"""
         if self.image:
             self.imageW.show()
-            return ie.get_string_from_image(self.image),ie.get_string_from_image(self.thumb)
+            return iu.image_to_bytes(self.image), iu.image_to_bytes(self.thumb)
         else:
             self.imageW.hide()
             return '',''
@@ -1512,9 +1512,9 @@ class ImageBox: # used in DescriptionEditor for recipe image.
                 wheight=int(float(wheight)/3)
             else:
                 wwidth,wheight=100,100
-            self.image=ie.resize_image(self.image,wwidth,wheight)
-            self.thumb=ie.resize_image(self.image,40,40)
-            self.set_from_string(ie.get_string_from_image(self.image))
+            self.image=iu.shrink_image(self.image, wwidth, wheight)
+            self.thumb=iu.shrink_image(self.image, 40, 40)
+            self.set_from_string(iu.image_to_bytes(self.image))
         else:
             self.hide()
 
@@ -1527,7 +1527,7 @@ class ImageBox: # used in DescriptionEditor for recipe image.
 
     def set_from_string (self, string):
         debug("set_from_string (self, string):",5)
-        pb=ie.get_pixbuf_from_jpg(string)
+        pb=iu.bytes_to_pixbuf(string)
         self.imageW.set_from_pixbuf(pb)
         self.orig_pixbuf = pb
         self.show_image()
@@ -1557,9 +1557,9 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         #if de.getBoolean(label="Are you sure you want to remove this image?",
         #                 parent=self.rc.widget):
         if self.image:
-            current_image = ie.get_string_from_image(self.image)
+            current_image = iu.image_to_bytes(self.image)
         else:
-            current_image = ie.get_string_from_pixbuf(self.orig_pixbuf)
+            current_image = self.orig_pixbuf.save_to_bufferv('jpeg', [], [])
         Undo.UndoableObject(
             lambda *args: self.remove_image(),
             lambda *args: self.set_from_string(current_image),

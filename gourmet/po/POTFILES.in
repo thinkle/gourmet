@@ -13,7 +13,6 @@
 gourmet.appdata.xml.in
 gourmet.desktop.in
 GourmetRecipeManager.py
-ImageExtras.py
 OptionParser.py
 Undo.py
 __init__.py

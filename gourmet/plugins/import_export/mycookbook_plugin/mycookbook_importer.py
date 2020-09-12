@@ -6,7 +6,7 @@ try:
     from PIL import Image
 except ImportError:
     import Image
-import gourmet.ImageExtras
+import gourmet.image_utils
 
 class RecHandler (xml_importer.RecHandler):
     ADD = 1
@@ -77,8 +77,7 @@ class RecHandler (xml_importer.RecHandler):
             if os.path.isfile(pic_fullpath):
                 try:
                     im = Image.open(pic_fullpath)
-                    obj['image'] = gourmet.ImageExtras.get_string_from_image(im)
-                    #obj['image'] = gourmet.ImageExtras.get_string_from_image(gourmet.ImageExtras.resize_image(im,60,60))
+                    obj['image'] = gourmet.image_utils.image_to_bytes(im)
                 except Exception as e:
                     print('Issue loading: '+pic_fullpath)
                     print(str(e))

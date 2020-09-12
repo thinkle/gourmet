@@ -1,13 +1,16 @@
-import os,stat,re,time,io
-from gourmet import keymanager, convert, ImageExtras
+import re
+import time
+import os
+
+import gettext
+from gettext import gettext as _
+import xml.sax.saxutils
+
+from gourmet import keymanager, convert, image_utils
 from gourmet.gdebug import debug, TimeAction, print_timer_info
 import gourmet.gglobals
-from gourmet.recipeManager import get_recipe_manager # for getting out database...
-import xml.sax.saxutils
-from gettext import gettext as _
-import gettext
 import gourmet.gtk_extras.dialog_extras as de
-import re
+from gourmet.recipeManager import get_recipe_manager  # Get hold of database
 from gourmet.threadManager import SuspendableThread, Terminated
 
 # Convenience functions
@@ -218,12 +221,12 @@ class Importer (SuspendableThread):
         if self.rec.get('image',None) and not self.rec.get('thumb',None):
             if not self.rec['image']: del self.rec['image']
             else:
-                img = ImageExtras.get_image_from_string(self.rec['image'])
+                img = image_utils.bytes_to_image(self.rec['image'])
                 if img:
-                    thumb = ImageExtras.resize_image(img,40,40)
-                    self.rec['thumb'] = ImageExtras.get_string_from_image(thumb)
+                    thumb = image_utils.shrink_image(img, 40, 40)
+                    self.rec['thumb'] = image_utils.image_to_bytes(thumb)
                     # Make sure our image is properly formatted...
-                    self.rec['image'] = ImageExtras.get_string_from_image(img)
+                    self.rec['image'] = image_utils.image_to_bytes(img)
                 else:
                     print("ODD: we got no image from ",self.rec['image'][:100])
                     print('Deleting "image"')

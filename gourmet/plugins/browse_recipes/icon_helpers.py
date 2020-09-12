@@ -5,7 +5,7 @@ try:
     from PIL import Image, ImageDraw
 except ImportError:
     import Image, ImageDraw
-from gourmet.ImageExtras import get_pixbuf_from_jpg
+from gourmet.image_utils import bytes_to_pixbuf
 from gourmet.gtk_extras.ratingWidget import star_generator
 
 curdir = os.path.split(__file__)[0]
@@ -34,6 +34,8 @@ def get_pixbuf_from_image (image):
 
     By default, turn all white pixels transparent.
     """
+
+    # TODO: This function should be moved to gourmet.image_extra.pixbuf_to_image
 
     is_rgba = image.mode=='RGBA'
     if is_rgba: rowstride = 4
@@ -71,7 +73,7 @@ attr_to_icon = {
 
 def get_recipe_image (rec):
     if rec.image:
-        pb = scale_pb(get_pixbuf_from_jpg(rec.image))
+        pb = scale_pb(bytes_to_pixbuf(rec.image))
     else:
         pb = generic_recipe_image.copy()
     big_side = ((pb.get_property('height') > pb.get_property('width') and pb.get_property('height')) or pb.get_property('width'))

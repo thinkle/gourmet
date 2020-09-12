@@ -1,7 +1,7 @@
 from gi.repository import GdkPixbuf, GObject, Gtk
 import os.path
 from gourmet.gglobals import DEFAULT_ATTR_ORDER, REC_ATTR_DIC
-from gourmet.ImageExtras import get_pixbuf_from_jpg
+from gourmet.image_utils import bytes_to_pixbuf
 import gourmet.convert as convert
 from gourmet.gtk_extras.ratingWidget import star_generator
 from sqlalchemy.sql import and_, or_, not_
@@ -86,7 +86,7 @@ class RecipeBrowserView (Gtk.IconView):
                           self.rd.recipe_table.c.image != bytes())
             result = tbl.select(stment,limit=1).execute().fetchone()
         if result and result.thumb:
-            return scale_pb(get_pixbuf_from_jpg(result.image))
+            return scale_pb(bytes_to_pixbuf(result.image))
         else:
             return self.get_base_icon(attr) or self.get_base_icon('category')
 

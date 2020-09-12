@@ -16,7 +16,7 @@ from gourmet import gglobals
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import optionTable
 from gourmet.gtk_extras import cb_extras
-from gourmet import ImageExtras
+from gourmet import image_utils
 from gourmet.prefs import get_prefs
 import xml.sax.saxutils
 import gourmet.exporters.exporter as exporter
@@ -459,7 +459,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         image.drawWidth = image.drawWidth*proportion
 
     def write_image (self, data):
-        fn = ImageExtras.write_image_tempfile(data)
+        fn = image_utils.write_image_tempfile(data)
         i = platypus.Image(fn)
         self.scale_image(i)
         factor = 1
