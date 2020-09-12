@@ -34,15 +34,15 @@ class PangoToHtml(HTMLParser):
         # Optionally, links can be specified, in a {link text: target} format.
         self.links: Dict[str, str] = {}
 
-        # If links are specified, it is possible to ignore them, as is done with
-        # time links.
+        # If links are specified, it is possible to ignore them, as is done
+        # with time links.
         self.ignore_links: bool = False
 
         # Used as heuristics for parsing links, when applicable.
         self.is_colored_and_underlined: bool = False
 
     tag2html: Dict[str, Tuple[str, str]] = {
-        Pango.Style.ITALIC.value_name: ("<i>", "</i>"),  # Pango doesn't do <em>
+        Pango.Style.ITALIC.value_name: ("<i>", "</i>"),  # No <em> in Pango
         str(Pango.Weight.BOLD.real): ("<b>", "</b>"),
         Pango.Underline.SINGLE.value_name: ("<u>", "</u>"),
         "foreground-gdk": (r'<span foreground="{}">', "</span>"),
@@ -103,8 +103,8 @@ class PangoToHtml(HTMLParser):
         # The remaining is serialized Pango footer, which we don't need.
 
         # Convert the tags to html.
-        # We know that only a subset of HTML is handled in Gourmet:
-        # italics, bold, underlined, normal, and links (coloured and underlined)
+        # We know that only a subset of HTML is handled in Gourmet: italics,
+        # bold, underlined, normal, and links (coloured and underlined)
         soup = BeautifulSoup(tags, features="lxml")
         tags = soup.find_all("tag")
 
@@ -131,7 +131,7 @@ class PangoToHtml(HTMLParser):
                     else:
                         continue  # no idea!
                 else:
-                    opening, closing = self.tag2html[value]
+                    opening, closing = self.tag2html.get(value, ('', ''))
 
                 opening_tags += opening
                 closing_tags = closing + closing_tags   # closing tags are FILO
