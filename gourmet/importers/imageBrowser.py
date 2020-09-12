@@ -1,4 +1,6 @@
 from gi.repository import Gtk
+
+# FIXME:  gtk_extra.thumbnail was deprecated and replaced by image_utils
 from gourmet.gtk_extras.thumbnail import check_for_thumbnail,fetched_uris
 from gourmet.gtk_extras.dialog_extras import ModalDialog
 import unittest

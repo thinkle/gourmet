@@ -2,10 +2,10 @@ from typing import List
 from gi.repository import GObject, Gtk, Pango
 import os.path, fnmatch,  re
 from . import optionTable
-from . import thumbnail
 import xml.sax.saxutils
 from gettext import gettext as _
 from gourmet.gdebug import debug
+from gourmet.image_utils import make_thumbnail
 from gi.repository.GLib import get_user_special_dir, UserDirectory
 H_PADDING=12
 Y_PADDING=12
@@ -1122,10 +1122,12 @@ class ImageSelectorDialog (FileSelectorDialog):
 
     def update_preview (self, *args):
         uri = self.fsd.get_uri()
-        # first, let's look for a large thumbnail
-        thumbpath = thumbnail.check_for_thumbnail(uri) #default size is large
-        if thumbpath:
-            self.preview.set_from_file(thumbpath)
+        thumbnail = None
+        if uri is not None:
+            thumbnail = make_thumbnail(uri)
+
+        if thumbnail is not None:
+            self.preview.set_from_pixbuf(thumbnail)
             self.preview.show()
         else:
             self.preview.hide()
