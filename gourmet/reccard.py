@@ -2038,7 +2038,6 @@ class IngredientController (plugin_loader.Pluggable):
                 itr
                 )
 
-    #@debug_decorator
     def get_iter_from_persistent_ref (self, ref):
         try:
             if ref in self.commited_items_converter:

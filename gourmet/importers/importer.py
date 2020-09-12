@@ -1,13 +1,16 @@
-import os,stat,re,time,io
-from gourmet import keymanager, convert, image_utils
-from gourmet.gdebug import debug, TimeAction, print_timer_info, debug_decorator
-import gourmet.gglobals
-from gourmet.recipeManager import get_recipe_manager # for getting out database...
-import xml.sax.saxutils
-from gettext import gettext as _
-import gettext
-import gourmet.gtk_extras.dialog_extras as de
 import re
+import time
+import os
+
+import gettext
+from gettext import gettext as _
+import xml.sax.saxutils
+
+from gourmet import keymanager, convert, image_utils
+from gourmet.gdebug import debug, TimeAction, print_timer_info
+import gourmet.gglobals
+import gourmet.gtk_extras.dialog_extras as de
+from gourmet.recipeManager import get_recipe_manager  # Get hold of database
 from gourmet.threadManager import SuspendableThread, Terminated
 
 # Convenience functions

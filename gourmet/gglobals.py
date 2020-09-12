@@ -54,16 +54,6 @@ use_threads = args.threads
 from . import settings
 uibase = os.path.join(settings.ui_base)
 lib_dir = os.path.join(settings.lib_dir)
-
-# To have strings from .ui files (Gtk.Builder) translated on all platforms,
-# we need the following module to enable localization on all platforms.
-# FIXME: `elib.entl` is no longer maintained and is no available via pip
-try:
-    import elib.intl
-    elib.intl.install('gourmet', settings.locale_base)
-except ImportError:
-    print('elib.intl failed to load.')
-    print('IF YOU HAVE TROUBLE WITH TRANSLATIONS, MAKE SURE YOU HAVE THIS LIBRARY INSTALLED.')
 from gettext import gettext as _
 
 data_dir = settings.data_dir
