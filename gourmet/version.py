@@ -1,18 +1,6 @@
-from gourmet import settings
-
 from gettext import gettext as _
-# To have strings from .ui files (Gtk.Builder) translated on all platforms,
-# we need the following module to enable localization on all platforms.
-# FIXME: `elib.entl` is no longer maintained and is no available via pip
-# Source code:  https://github.com/dieterv/elib.intl)
-try:
-    import elib.intl
-    elib.intl.install('gourmet', settings.locale_base)
-except ImportError:
-    print('elib.intl failed to load.')
-    print('IF YOU HAVE TROUBLE WITH TRANSLATIONS, MAKE SURE YOU HAVE THIS LIBRARY INSTALLED.')
 
-name= 'gourmet'
+name = 'gourmet'
 appname = _("Gourmet Recipe Manager")
 copyright = _("Copyright (c) 2004-2014 Thomas M. Hinkle. GNU GPL v2")
 version = "0.17.5"
