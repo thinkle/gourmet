@@ -50,5 +50,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-          name: gourmet.whl
+          name: gourmet
           path: ./dist/gourmet-*
