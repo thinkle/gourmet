@@ -1,7 +1,7 @@
 from collections import defaultdict
 import re
 import time
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 from .defaults.defaults import lang as defaults
 from .defaults.defaults import langProperties as langProperties
@@ -142,7 +142,7 @@ class KeyManager:
         debug("End get_key",10)
         return k
 
-    def look_for_key(self, txt: str) -> List[Tuple[str, float]]:
+    def look_for_key(self, txt: str) -> Optional[List[Tuple[str, float]]]:
         """Given a key, return a sorted list of potential matching known keys.
 
         By using some heuristics to find spelling variations, look up the
@@ -195,8 +195,8 @@ class KeyManager:
         words.extend(extra_words)
 
         for word in words:
-            if not word:  # TODO: remove this by returning early when txt == ''
-                continue
+            if not word:
+                return
             srch = self.rm.fetch_all(self.rm.keylookup_table, word=word)
             total_count = sum([m.count for m in srch])
             for match in srch:
