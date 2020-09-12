@@ -6,7 +6,7 @@ from gi.repository import Gtk, Pango
 
 import gourmet.gtk_extras.cb_extras as cb
 import gourmet.gglobals as gglobals
-from gourmet.image_utils import bytes_to_image, image_to_bytes, resize_image
+from gourmet.image_utils import bytes_to_image, image_to_bytes, shrink_image
 from gourmet.recipeManager import get_recipe_manager
 from gourmet.threadManager import NotThreadSafe
 from . import importer, imageBrowser
@@ -475,7 +475,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                         image_str = ifi.read()
                     image = bytes_to_image(image_str)
                     # Adding image!
-                    thumb = resize_image(image,40,40)
+                    thumb = shrink_image(image, 40, 40)
                     self.rd.modify_rec(rec,{'image': image_to_bytes(image),
                                             'thumb': image_to_bytes(thumb),
                                             })

@@ -1512,8 +1512,8 @@ class ImageBox: # used in DescriptionEditor for recipe image.
                 wheight=int(float(wheight)/3)
             else:
                 wwidth,wheight=100,100
-            self.image=iu.resize_image(self.image,wwidth,wheight)
-            self.thumb=iu.resize_image(self.image,40,40)
+            self.image=iu.shrink_image(self.image, wwidth, wheight)
+            self.thumb=iu.shrink_image(self.image, 40, 40)
             self.set_from_string(iu.image_to_bytes(self.image))
         else:
             self.hide()

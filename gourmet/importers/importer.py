@@ -220,7 +220,7 @@ class Importer (SuspendableThread):
             else:
                 img = image_utils.bytes_to_image(self.rec['image'])
                 if img:
-                    thumb = image_utils.resize_image(img, 40, 40)
+                    thumb = image_utils.shrink_image(img, 40, 40)
                     self.rec['thumb'] = image_utils.image_to_bytes(thumb)
                     # Make sure our image is properly formatted...
                     self.rec['image'] = image_utils.image_to_bytes(img)

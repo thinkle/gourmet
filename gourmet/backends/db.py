@@ -1161,7 +1161,7 @@ class RecData (Pluggable):
             # if we have an image but no thumbnail, we want to create the thumbnail.
             try:
                 img = image_utils.bytes_to_image(recdic['image'])
-                thumb = image_utils.resize_image(img, 40, 40)
+                thumb = image_utils.shrink_image(img, 40, 40)
                 ofi = io.BytesIO()
                 thumb.save(ofi,'JPEG')
                 recdic['thumb']=ofi.getvalue()
