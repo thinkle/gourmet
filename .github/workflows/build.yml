@@ -35,21 +35,20 @@ jobs:
       run: |
         pip3 install .
 
-    - name: Build source distribution
-      run: |
-        python3 setup.py sdist
-
     - name: Verify internationalization
       run: |
         python3 setup.py build_i18n
 
-    - name: Build wheel
+    - name: Create wheel and source distributions
       run: |
+          python3 setup.py sdist
+          mv dist/gourmet-*.tar.gz dist/gourmet-${GITHUB_SHA::8}.tar.gz
+
           python3 setup.py bdist_wheel
           mv dist/gourmet-*-py3-none-any.whl dist/gourmet-${GITHUB_SHA::8}-py3-none-any.whl
 
-    - name: Upload wheel
+    - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
           name: gourmet.whl
-          path: ./dist/gourmet-*-py3-none-any.whl
+          path: ./dist/gourmet-*
