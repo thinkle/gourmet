@@ -1,6 +1,6 @@
 import os,stat,re,time,io
 from gourmet import keymanager, convert, ImageExtras
-from gourmet.gdebug import debug, TimeAction, print_timer_info, debug_decorator
+from gourmet.gdebug import debug, TimeAction, print_timer_info
 import gourmet.gglobals
 from gourmet.recipeManager import get_recipe_manager # for getting out database...
 import xml.sax.saxutils

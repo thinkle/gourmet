@@ -1,6 +1,6 @@
 from gi.repository import Gtk
 import shutil
-from gourmet.gdebug import debug, TimeAction, debug_decorator
+from gourmet.gdebug import debug, TimeAction
 import re, string, os.path, time
 from typing import Mapping, Optional, List, Any, Tuple
 from gettext import gettext as _
