@@ -30,7 +30,7 @@ def shrink_image(original: ImageFile.ImageFile,
         new_width = int(height/iheight * iwidth)
         shrunk = original.resize((new_width, height))
         resized = True
-        
+
     return shrunk if resized else original
 
 
