@@ -1501,23 +1501,24 @@ class ImageBox: # used in DescriptionEditor for recipe image.
             self.imageW.hide()
             return '',''
 
-    def draw_image (self):
-        debug("draw_image (self):",5)
+    def draw_image(self):
         """Put image onto widget"""
-        if self.image:
-            self.win = self.imageW.get_parent_window()
-            if self.win:
-                wwidth = self.win.get_width()
-                wheight = self.win.get_height()
-                wwidth=int(float(wwidth)/3)
-                wheight=int(float(wheight)/3)
-            else:
-                wwidth,wheight=100,100
-            self.image=iu.shrink_image(self.image, wwidth, wheight)
-            self.thumb=iu.shrink_image(self.image, 40, 40)
-            self.set_from_string(iu.image_to_bytes(self.image))
-        else:
+        if not self.image:
             self.hide()
+            return
+
+        window = self.imageW.get_parent_window()
+        if window:
+            wwidth = window.get_width()
+            wheight = window.get_height()
+            size = (int(wwidth / 3), int(wheight / 3))
+        else:
+            size = (100, 100)
+
+        self.image.thumbnail(size)
+        self.thumb = self.image.copy()
+        self.thumb.thumbnail((40, 40))
+        self.set_from_string(iu.image_to_bytes(self.image))
 
     def show_image (self):
         debug("show_image (self):",5)
