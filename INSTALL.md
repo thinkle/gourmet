@@ -20,7 +20,7 @@ Flathub, and instead must be [downloaded and installed manually](https://github.
 
 In a terminal, execute the following: 
 ```sh
-sudo flatpak install gourmet-5ad619be.flatpakj
+sudo flatpak install gourmet-5ad618be.flatpak
 ```
 
 You will be prompted with a message regarding the runtime:
