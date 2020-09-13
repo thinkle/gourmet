@@ -1,6 +1,7 @@
 import gc
 from typing import Callable, Dict, List, Optional, Tuple
 import os.path
+from pathlib import Path
 import webbrowser
 
 from gettext import gettext as _
@@ -1500,23 +1501,24 @@ class ImageBox: # used in DescriptionEditor for recipe image.
             self.imageW.hide()
             return '',''
 
-    def draw_image (self):
-        debug("draw_image (self):",5)
+    def draw_image(self):
         """Put image onto widget"""
-        if self.image:
-            self.win = self.imageW.get_parent_window()
-            if self.win:
-                wwidth = self.win.get_width()
-                wheight = self.win.get_height()
-                wwidth=int(float(wwidth)/3)
-                wheight=int(float(wheight)/3)
-            else:
-                wwidth,wheight=100,100
-            self.image=iu.shrink_image(self.image, wwidth, wheight)
-            self.thumb=iu.shrink_image(self.image, 40, 40)
-            self.set_from_string(iu.image_to_bytes(self.image))
-        else:
+        if not self.image:
             self.hide()
+            return
+
+        window = self.imageW.get_parent_window()
+        if window:
+            wwidth = window.get_width()
+            wheight = window.get_height()
+            size = (int(wwidth / 3), int(wheight / 3))
+        else:
+            size = (100, 100)
+
+        self.image.thumbnail(size)
+        self.thumb = self.image.copy()
+        self.thumb.thumbnail((40, 40))
+        self.set_from_string(iu.image_to_bytes(self.image))
 
     def show_image (self):
         debug("show_image (self):",5)
@@ -1532,25 +1534,22 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         self.orig_pixbuf = pb
         self.show_image()
 
-    def set_from_file (self, file):
+    def set_from_file (self, filename: str):
         debug("set_from_file (self, file):",5)
-        self.image = Image.open(file)
+        self.image = Image.open(filename)
         self.draw_image()
 
-    def set_from_fileCB (self, *args):
-        debug("set_from_fileCB (self, *args):",5)
-        filenames = de.select_image("Select Image",action=Gtk.FileChooserAction.OPEN)
-        qty = len(filenames)
-        if qty == 1:
-            fname, = filenames  # unpack the filename
-            Undo.UndoableObject(
-                lambda *args: self.set_from_file(fname),
-                lambda *args: self.remove_image(),
-                self.rc.history,
-                widget=self.imageW).perform()
-            self.edited=True
-        else:
-            raise ValueError(f"Expected 1 filename, but got {qty}", qty)
+    def set_from_fileCB(self, widget: Gtk.Button):
+        filenames = de.select_image("Select Image",
+                                    action=Gtk.FileChooserAction.OPEN)
+        if filenames:
+            fname, *_ = filenames
+            fname = Path(fname)
+            Undo.UndoableObject(lambda *args: self.set_from_file(fname),
+                                lambda *args: self.remove_image(),
+                                self.rc.history,
+                                widget=self.imageW).perform()
+            self.edited = True
 
     def removeCB (self, *args):
         debug("removeCB (self, *args):",5)

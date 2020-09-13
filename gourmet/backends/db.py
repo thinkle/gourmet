@@ -1161,10 +1161,9 @@ class RecData (Pluggable):
             # if we have an image but no thumbnail, we want to create the thumbnail.
             try:
                 img = image_utils.bytes_to_image(recdic['image'])
-                thumb = image_utils.shrink_image(img, 40, 40)
-                ofi = io.BytesIO()
-                thumb.save(ofi,'JPEG')
-                recdic['thumb']=ofi.getvalue()
+                thumb = img.copy()
+                thumb.thumbnail((40, 40))
+                recdic['thumb'] = image_utils.image_to_bytes(thumb)
             except:
                 del recdic['image']
                 print("""Warning: gourmet couldn't recognize the image.

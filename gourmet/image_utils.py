@@ -1,37 +1,64 @@
-from typing import Optional
+from collections import defaultdict
+from enum import Enum
 import io
+from pathlib import Path
+from typing import Dict, Optional
+from urllib.parse import unquote, urlparse
 
 from gi.repository import Gio, GLib
 from gi.repository.GdkPixbuf import Pixbuf
-from PIL import Image, ImageFile
+from PIL import Image, UnidentifiedImageError
+
+MAX_THUMBSIZE = 10000000  # The maximum size, in bytes, of thumbnails we allow
 
 
-def shrink_image(original: ImageFile.ImageFile,
-                 width: Optional[int] = None,
-                 height: Optional[int] = None):
-    """Shrink an image to have a maximum given width or height.
+class ThumbnailSize(Enum):
+    SMALL = (128, 128)
+    LARGE = (256, 256)
 
-    This function is only called when creating a new recipe, and generating its
-    thumbnail and recipe card image, both of which will be stored in the
-    database.
+
+def cached(func):
+    """A decorator to keep previously created thumbnails.
+
+    This may be memory intensive. If it impedes usability, due to increased
+    memory usage, it should be removed.
     """
-    iwidth, iheight = original.size
-    resized = False
+    thumbnails: Dict[str, Dict[ThumbnailSize, Image.Image]] = defaultdict(dict)
 
-    # Shrink based on width
-    if width is not None and iwidth > width:
-        new_height = int(width/iwidth * iheight)
-        if height is None or new_height < height:
-            shrunk = original.resize((width, new_height))
-            resized = True
+    def wrapper(path, size=ThumbnailSize.LARGE):
+        if path in thumbnails and size in thumbnails[path]:
+            return thumbnails[path][size]
 
-    # Shrink base on height
-    if not resized and height is not None and iheight > height:
-        new_width = int(height/iheight * iwidth)
-        shrunk = original.resize((new_width, height))
-        resized = True
+        image = func(path, size)
 
-    return shrunk if resized else original
+        thumbnails[path][size] = image
+        return image
+
+    return wrapper
+
+
+@cached
+def make_thumbnail(path: str, size=ThumbnailSize.LARGE) -> Optional[Pixbuf]:
+    """Create an in-memory thumbnail from the given uri path.
+
+    This function is used when browsing images to add to a recipe: thumbnails
+    are displayed in the file chooser.
+    Aspect ratios are kept, thus thumbnails won't necessarily be squared.
+
+    The provided `path` is a str, provided by a Gtk.FileChooserDialog. As such,
+    it is first converted to a Path object.
+    """
+    path = Path(urlparse(unquote(path)).path)
+    if not path.is_file():
+        return
+
+    try:
+        image = Image.open(path)
+    except UnidentifiedImageError:
+        return
+
+    image.thumbnail(size.value)
+    return bytes_to_pixbuf(image_to_bytes(image))
 
 
 def bytes_to_pixbuf(raw: bytes) -> Pixbuf:
