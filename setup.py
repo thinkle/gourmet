@@ -246,6 +246,6 @@ setuptools.setup(
               },
     entry_points={
         "console_scripts": [
-            "gourmet = gourmet.GourmetRecipeManager:startGUI",
+            "gourmet = gourmet.GourmetRecipeManager:launch_app",
         ]}
 )
