@@ -25,8 +25,7 @@ from gourmet.importers.importManager import get_import_manager
 
 
 from gourmet.gtk_extras import (
-    fix_action_group_importance, mnemonic_manager, ratingWidget,
-    splash, WidgetSaver
+    fix_action_group_importance, mnemonic_manager, ratingWidget, WidgetSaver
 )
 
 from gourmet.gtk_extras import dialog_extras as de
@@ -69,10 +68,7 @@ class GourmetApplication:
 
         return GourmetApplication.__single
 
-    def __init__ (self, splash_label=None):
-        # These first two items might be better handled using a
-        # singleton design pattern...
-        self.splash_label = splash_label
+    def __init__ (self):
         self.conv = convert.get_converter()
         self.star_generator = ratingWidget.StarGenerator()
         # Setup methods...
@@ -115,15 +111,6 @@ class GourmetApplication:
                                        defaults.LANG_PROPERTIES['useFractions']
                                        )
                         )
-
-    # Splash convenience method for start-up splashscreen
-    def update_splash (self, text):
-        """Update splash screen on startup."""
-        debug("Setting splash text: %s"%text,3)
-        if not self.splash_label: return
-        self.splash_label.set_text(text)
-        while Gtk.events_pending():
-            Gtk.main_iteration()
 
     # Convenience method for showing progress dialogs for import/export/deletion
     def show_progress_dialog (self, thread, progress_dialog_kwargs={},message=_("Import paused"),
@@ -660,15 +647,7 @@ def launch_webbrowser(dialog, link, user_data):
 
 
 def launch_app():
-    sscreen = splash.Splash()
-    sscreen.show()
-
-    # Give the eventloop a chance to draw the sscreen
-    while Gtk.events_pending():
-        Gtk.main_iteration()
-
-    RecGui(splash_label=sscreen.label)
-    sscreen.destroy()
+    RecGui()
     Gtk.main()
 
 
@@ -882,9 +861,9 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
         return RecGui.__single
 
-    def __init__ (self, splash_label=None):
+    def __init__ (self):
         self.doing_multiple_deletions = False
-        GourmetApplication.__init__(self, splash_label=splash_label)
+        GourmetApplication.__init__(self)
         self.setup_index_columns()
         self.setup_hacks()
         self.ui=Gtk.Builder()

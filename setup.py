@@ -203,8 +203,6 @@ package_data = [
     'data/ABBREV.txt',
     'data/nutritional_data_sr_version',
     'data/images/no_star.png',
-    'data/images/splash.png',
-    'data/images/splash.svg',
     'data/images/reccard_edit.png',
     'data/images/AddToShoppingList.png',
     'data/images/half_gold_star.png',
