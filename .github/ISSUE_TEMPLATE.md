@@ -15,8 +15,8 @@
 ### Current Behavior
 <!--- If suggesting a change/improvement, explain the difference from current behavior -->
 <!--- If describing a bug:
-      - tell us what happens instead of the expected behavior
-      - paste any error messages seen on the console or in the Exaile log file
+      - tell us what happens instead of the expected behavior.
+      - paste any error messages seen on the console.
 -->
 
 ### Possible Solution
@@ -30,6 +30,8 @@
 
 ### Environment
 <!--- Include as many relevant details about the environment you experienced the bug in -->
+<!--- If Gourmet was downloaded from Github, you should have some funny alphanumeric characters
+      in the filename, such as the 5ad618be in gourmet-5ad618be-py3-none-any.whl -->
 * Operating System:
-* Version:
+* Version or commit id:
 * Installed as Flatpak or Python package?:
