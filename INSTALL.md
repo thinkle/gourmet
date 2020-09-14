@@ -1,4 +1,3 @@
-
 # Installation
 Gourmet is currently available in the form of Flatpak and Python wheel.  
 We recommend that you install it from the Flatpak.  
@@ -15,12 +14,18 @@ cp $HOME/.gourmet/recipes.db $HOME/.gourmet/recipes.db.bak
 The Flatpak contains the full environment, but depends on other flatpak
 packages, which will be installed automatically.
 
+Install Flatpak if it's not on your system already:
+```sh
+sudo apt-get install flatpak
+```
+
 As Gourmet is still under active development, the flatpak is not available from
 Flathub, and instead must be [downloaded and installed manually](https://github.com/kirienko/gourmet/releases/tag/v1-alpha1).
 
 In a terminal, execute the following: 
 ```sh
-sudo flatpak install gourmet-5ad618be.flatpak
+flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
+sudo flatpak install gourmet-5ad619be.flatpak
 ```
 
 You will be prompted with a message regarding the runtime:
