@@ -1,6 +1,6 @@
 import urllib.request, urllib.parse, urllib.error
+import webbrowser
 from gourmet.gdebug import debug
-import gourmet.gglobals as gglobals
 
 class Emailer:
     def __init__ (self, emailaddress=None, subject=None, body=None, attachments=[]):
@@ -22,7 +22,7 @@ class Emailer:
             print('Adding attachment',a)
             self.url_append('attachment',a)
         debug('launching URL %s'%self.url,0)
-        gglobals.launch_url(self.url)
+        webbrowser.open(self.url)
 
     def url_append (self, attr, value):
         self.url += "%s%s=%s"%(self.connector(),attr,urllib.parse.quote(value.encode('utf-8','replace')))

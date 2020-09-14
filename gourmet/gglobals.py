@@ -128,29 +128,6 @@ DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
                           ['link','yields','yield_unit','preptime','cooktime']
                           ]
 
-from .gtk_extras import dialog_extras
-
-def launch_url (url, ext=""):
-    # TODO: deprecate this and make use of the webbrowser module
-    if os.name == 'nt':
-        os.startfile(url)
-    elif os.name == 'posix':
-        try:
-            Gtk.show_uri(Gdk.Screen(),url,0)
-        except GObject.GError as err:
-            #print dir(err)
-            label = _('Unable to open URL')
-            for reg, msg in [('mailto:',_('Unable to launch mail reader.')),
-                             ('http:',_('Unable to open website.')),
-                             ('file:',_('Unable to open file.'))]:
-                if re.match(reg,url.lower()): label = msg
-            dialog_extras.show_message(
-                label=label,
-                sublabel=err.message,
-                expander=[_('_Details'),
-                          _("There was an error launching the url: %s"%url)]
-                )
-
 # Set up custom STOCK items and ICONS!
 icon_factory = Gtk.IconFactory()
 

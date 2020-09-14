@@ -25,11 +25,14 @@
 # processes.
 #
 #
+import threading
+import time
+import webbrowser
+
 from gettext import gettext as _
 from gettext import ngettext
-import threading
+
 from gi.repository import GObject, Gtk, Pango
-import time
 
 # _IdleObject etc. based on example John Stowers
 # <john.stowers@gmail.com>
@@ -273,10 +276,9 @@ class ThreadManagerGui:
         infobox.show_all()
         self.messagebox.pack_start(infobox, True, True, 0)
 
-        from gourmet.gglobals import launch_url
         l = Gtk.Label()
         l.set_markup(message)
-        l.connect('activate-link',lambda lbl, uri: launch_url(uri))
+        l.connect('activate-link',lambda lbl, uri: webbrowser.open(uri))
         l.show()
         infobox.get_content_area().add(l)
         self.messagebox.show()

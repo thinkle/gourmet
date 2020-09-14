@@ -24,6 +24,7 @@ import types, re
 import tempfile, os.path
 import math
 from .page_drawer import PageDrawer
+import webbrowser
 
 DEFAULT_PDF_ARGS = {'bottom_margin': 72, 'pagesize': 'letter', 'right_margin': 72, 'top_margin': 72, 'left_margin': 72, 'pagemode': 'portrait', 'base_font_size': 10, 'mode': ('column', 1)}
 
@@ -1055,7 +1056,6 @@ if __name__ == '__main__':
     #star_file.close()
     #import gnome
     #gnome.program_init('1.0','Gourmet PDF Exporter Test')
-    #gglobals.launch_url('file:/os.path.join(tempdir,/star.pdf')
     #raise Exception("I don')t want to go any further")
 
     if os.name == 'nt':
@@ -1136,7 +1136,6 @@ if __name__ == '__main__':
         pe.run()
         return fname
 
-    import gourmet.gglobals as gglobals
     #try:
     #    import gnome
     #    gnome.program_init('1.0','Gourmet PDF Exporter Test')
@@ -1144,13 +1143,12 @@ if __name__ == '__main__':
     #    print 'We must be on windows...'
 
     #print 'TEST 3x5'
-    gglobals.launch_url('file://'+test_3_x_5())
-    gglobals.launch_url('file://'+test_formatting())
+    webbrowser.open('file://'+test_3_x_5())
+    webbrowser.open('file://'+test_formatting())
     #print 'END TEST'
     #print 'TEST GRM'
-    gglobals.launch_url('file://'+test_grm_export())
+    webbrowser.open('file://'+test_grm_export())
     #print 'TEST CUSTOM GRM'
-    #gglobals.launch_url('file://'+test_grm_export(get_pdf_prefs({'page_size':_('A4'),'page_layout':'2 Columns'})))
     #ppg = PdfPrefGetter()
     #print ppg.run()
     #print 'END TEST'

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import urllib.request, urllib.parse, urllib.error, io, os.path
+import webbrowser
 import exporter, html_exporter, pdf_exporter
 from gourmet import gglobals
 from gettext import gettext as _
@@ -34,7 +35,7 @@ class Emailer:
         for a in self.attachments:
             self.url_append('attachment',a)
         debug('launching URL %s'%self.url,0)
-        gglobals.launch_url(self.url)
+        webbrowser.open(self.url)
 
     def url_append (self, attr, value):
         self.url += "%s%s=%s"%(self.connector(),attr,urllib.parse.quote(value.encode('utf-8','replace')))
