@@ -20,7 +20,7 @@ from gourmet.exporters.printer import get_print_manager
 
 from gourmet.gdebug import debug
 from gourmet.gglobals import (DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base,
-                              icondir, imagedir, uibase)
+                              icondir, uibase)
 from gourmet.importers.importManager import get_import_manager
 
 
@@ -68,10 +68,7 @@ class GourmetApplication:
 
         return GourmetApplication.__single
 
-    def __init__ (self, splash_label=None):
-        # These first two items might be better handled using a
-        # singleton design pattern...
-        self.splash_label = splash_label
+    def __init__ (self):
         self.conv = convert.get_converter()
         self.star_generator = ratingWidget.StarGenerator()
         # Setup methods...
@@ -114,15 +111,6 @@ class GourmetApplication:
                                        defaults.LANG_PROPERTIES['useFractions']
                                        )
                         )
-
-    # Splash convenience method for start-up splashscreen
-    def update_splash (self, text):
-        """Update splash screen on startup."""
-        debug("Setting splash text: %s"%text,3)
-        if not self.splash_label: return
-        self.splash_label.set_text(text)
-        while Gtk.events_pending():
-            Gtk.main_iteration()
 
     # Convenience method for showing progress dialogs for import/export/deletion
     def show_progress_dialog (self, thread, progress_dialog_kwargs={},message=_("Import paused"),
@@ -496,7 +484,7 @@ class SuspendableDeletions (SuspendableThread):
 
     def __init__ (self, recs, name=None):
         self.recs = recs
-        self.rg = get_application()
+        self.rg = RecGui.instance()
         SuspendableThread.__init__(self, name=name)
 
     def do_run (self):
@@ -657,61 +645,10 @@ def launch_webbrowser(dialog, link, user_data):
     import webbrowser
     webbrowser.open_new_tab(link)
 
-def startGUI ():
-    debug("startGUI ():",4)
-    # show splash screen before we do anything...
-    debug("showing splash screen...",1)
-    splash = Gtk.Window()
-    #splash.window_set_auto_startup_notification(False)
-    splash.set_property('decorated',False)
-    splash.set_position(Gtk.WindowPosition.CENTER)
-    splash.set_icon_from_file(os.path.join(icondir,'gourmet.png'))
-    splash.set_title(_('Gourmet Recipe Manager starting up...'))
-    splash.set_type_hint(Gdk.WindowTypeHint.DIALOG);
-    pixbuf=GdkPixbuf.Pixbuf.new_from_file(os.path.join(imagedir,'splash.png'))
-    # TODO: Fix this using cairo http://docs.adacore.com/live/wave/gtkada/html/gtkada_ug/transition.html#gdk-pixbuf
-    # pixmap, mask = pixbuf.render_pixmap_and_mask()
-    # width, height = pixmap.get_size()
-    # del pixbuf
-    splash.set_app_paintable(True)
-    # splash.resize(width, height)
-    splash.realize()
-    # splash.window.set_back_pixmap(pixmap, False)
-    splash.label = Gtk.Label(label=_("Starting gourmet..."))
-    splash.label.set_alignment(0.5,1)
-    splash.label.set_justify(Gtk.Justification.CENTER)
-    splash.label.set_line_wrap(True)
-    #pal = Pango.AttrList()
-    #pal.insert(Pango.AttrForeground(
-    #    255,255,128
-    #    ))
-    #splash.label.set_property('attributes',pal)
-    splash.label.show()
-    splash.add(splash.label)
-    # del pixmap
-    splash.show()
-    # splash.window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
-    if os.name == 'nt':
-        Gtk.link_button_set_uri_hook(launch_webbrowser, None)
-        Gtk.about_dialog_set_url_hook(launch_webbrowser, None)
-    #Gtk.threads_enter()
-    while Gtk.events_pending():
-        # show our GUI
-        Gtk.main_iteration()
-    try:
-        r=RecGui(splash_label=splash.label)
-    except RecGui as rg:
-        r=rg
-    except:
-        splash.hide()
-        while Gtk.events_pending():
-            Gtk.main_iteration()
-        #Gtk.main_quit()
-        raise
-    debug('hiding splash screen.',1)
-    splash.hide()
-    Gtk.main()
 
+def launch_app():
+    RecGui()
+    Gtk.main()
 
 
 class ImporterExporter:
@@ -924,9 +861,9 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
         return RecGui.__single
 
-    def __init__ (self, splash_label=None):
+    def __init__ (self):
         self.doing_multiple_deletions = False
-        GourmetApplication.__init__(self, splash_label=splash_label)
+        GourmetApplication.__init__(self)
         self.setup_index_columns()
         self.setup_hacks()
         self.ui=Gtk.Builder()
@@ -1414,8 +1351,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.window.destroy()
         Gtk.main_quit()
 
-def get_application ():
+
+def get_application():
+    # TODO: refactor this function away. All its calls can be replaced by:
     return RecGui.instance()
 
 if __name__ == '__main__':
-    startGUI()
+    launch_app()
