@@ -18,12 +18,13 @@ from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
                               REC_ATTRS, doc_base, uibase, imagedir)
 from gourmet.gtk_extras import (  # noqa: imports needed for glade
     fix_action_group_importance, mnemonic_manager, ratingWidget,
-    TextBufferMarkup, timeEntry, WidgetSaver)
+    timeEntry, WidgetSaver)
+from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras.dialog_extras import (UserCancelledError,
                                               show_amount_error)
+from gourmet.gtk_extra.pango_buffer import PangoBuffer
 from gourmet.gtk_extras import treeview_extras as te
-from gourmet.gtk_extras import cb_extras as cb
 
 from gourmet import image_utils as iu
 from gourmet.importers.importer import parse_range
@@ -1640,10 +1641,11 @@ class TextFieldEditor (TextEditor):
 
     def setup_main_interface (self):
         self.main = Gtk.ScrolledWindow()
-        self.main.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
+        self.main.set_policy(Gtk.PolicyType.AUTOMATIC,
+                             Gtk.PolicyType.AUTOMATIC)
         self.tv = Gtk.TextView()
         self.main.add(self.tv)
-        buf = TextBufferMarkup.PangoBuffer()
+        buf = PangoBuffer()
         self.tv.set_wrap_mode(Gtk.WrapMode.WORD)
         self.tv.set_buffer(buf)
         self.tv.show()

@@ -47,7 +47,6 @@ exporters/xml_exporter.py
 gdebug.py
 gglobals.py
 gtk_extras/LinkedTextView.py
-gtk_extras/TextBufferMarkup.py
 gtk_extras/WidgetSaver.py
 gtk_extras/__init__.py
 gtk_extras/cb_extras.py

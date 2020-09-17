@@ -22,7 +22,7 @@
 import re
 from typing import Optional
 from gi.repository import Gdk, GObject, Gtk, Pango
-from gourmet.gtk_extras.TextBufferMarkup import PangoBuffer
+from gourmet.gtk_extras.pango_buffer import PangoBuffer
 from gourmet.gtk_extras.pango_html import PangoToHtml
 
 

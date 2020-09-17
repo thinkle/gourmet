@@ -15,7 +15,7 @@
 # along with this library; if not, write to the Free Software
 # Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 from typing import Optional, Union
-from gi.repository import Gdk, GLib, Gtk, Pango
+from gi.repository import Gtk, Pango
 from gourmet.gtk_extras.pango_html import PangoToHtml
 
 
@@ -59,8 +59,9 @@ class PangoBuffer(Gtk.TextBuffer):
             return PangoToHtml().feed(content)
 
     def get_selection_bounds(self):
-        """A get_selection_bounds that returns the word where the cursor is at, if
-        there is no selection"""
+        """A get_selection_bounds that returns either the selection, or
+        the word where the cursor is at
+        """
         bounds = super().get_selection_bounds()
 
         if not bounds:
@@ -123,11 +124,11 @@ class SimpleEditor:
 
         self.pb = PangoBuffer()
         self.pb.set_text("""<b>This is bold</b>. <i>This is italic</i>
-            <i><b>This is bold, italic, and <u>underlined!</u></b></i>
-            <span background="blue">This is a test of bg color</span>
-            <span foreground="blue">This is a test of fg color</span>
-            <span foreground="white" background="blue">This is a test of fg and bg color</span>
-            """)
+<i><b>This is bold, italic, and <u>underlined!</u></b></i>
+<span background="blue">This is a test of bg color</span>
+<span foreground="blue">This is a test of fg color</span>
+<span foreground="white" background="blue">This is a test of fg and bg color</span>  # noqa
+""")
         tv.set_buffer(self.pb)
 
         edit_box = Gtk.HButtonBox()
@@ -183,7 +184,8 @@ class SimpleEditor:
 
         qb = Gtk.Button()
         qb.set_label('Quit')
-        qb.connect('clicked', lambda *args: self.w.destroy() or Gtk.main_quit())
+        qb.connect('clicked',
+                   lambda *args: self.w.destroy() or Gtk.main_quit())
         action_box.add(qb)
 
         vb.add(action_box)
