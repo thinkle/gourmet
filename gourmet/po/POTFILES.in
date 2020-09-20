@@ -210,7 +210,6 @@ plugins/web_plugin/gourmetweb/settings.py
 plugins/web_plugin/gourmetweb/urls.py
 prefs.py
 prefsGui.py
-profileImport.py
 reccard.py
 recindex.py
 recipeIdentifier.py
