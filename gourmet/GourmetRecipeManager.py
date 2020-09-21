@@ -862,6 +862,9 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         return RecGui.__single
 
     def __init__ (self):
+        self.ui_manager = Gtk.UIManager()
+        self.ui_manager.add_ui_from_string(ui_string)
+
         self.doing_multiple_deletions = False
         GourmetApplication.__init__(self)
         self.setup_index_columns()
@@ -875,6 +878,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                           rg=self,
                           editable=False)
         self.setup_database_hooks()
+
+        fix_action_group_importance(self.search_actions)
+        self.ui_manager.insert_action_group(self.search_actions, 0)
+
         self.setup_main_window()
         self.window.add_accel_group(self.ui_manager.get_accel_group())
         self.setup_column_display_preferences()
@@ -993,16 +1000,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         return True
 
     def setup_actions (self):
-        self.ui_manager = Gtk.UIManager()
-        self.ui_manager.add_ui_from_string(ui_string)
-        self.mainActionGroup = Gtk.ActionGroup('MainActions')
         self.onSelectedActionGroup = Gtk.ActionGroup('IndexOnSelectedActions')
         self.onSelectedActionGroup.add_actions([
             ('OpenRec','recipe-card',_('Open recipe'),
              '<Control>O',_('Open selected recipe'),self.rec_tree_select_rec),
-            # We no longer bind "Delete" here -- instead, we'll do it
-            # at the TreeView level to prevent the delete key
-            # elsewhere (e.g. in search box) from muddling up users.
             ('DeleteRec',Gtk.STOCK_DELETE,_('Delete recipe'),
              None,_('Delete selected recipes'),self.rec_tree_delete_rec_cb),
             ('EditRec',Gtk.STOCK_EDIT,_('Edit recipe'),
@@ -1020,37 +1021,35 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('ShopRec','add-to-shopping-list',None,None,None,self.shop_recs)
             ])
 
+        self.mainActionGroup = Gtk.ActionGroup('MainActions')
         self.mainActionGroup.add_actions([
             ('File',None,_('_File')),
-            ('Edit',None,_('_Edit')),
-            ('Actions',None,_('_Actions')),
-            ('Settings',None,_('Setti_ngs')),
-            ('HelpMenu',None,_('_Help')),
-            ('About',Gtk.STOCK_ABOUT,_('_About'),
-             None,None,self.show_about),
             ('New',Gtk.STOCK_NEW,_('_New'),
              None,None,self.new_rec_card),
-            ('Help',Gtk.STOCK_HELP,_('_Help'),
-             None,None,self.show_help),
             ('ImportFile',None,_('_Import file'),
              '<Control>M',_('Import recipe from file'),self.do_import),
             ('ImportWeb',None,_('Import _webpage'),
              '<Control><Shift>M',_('Import recipe from webpage'),self.import_webpageg),
             ('ExportAll',None,_('Export _all recipes'),
              '<Control><Shift>T',_('Export all recipes to file'),lambda *args: self.do_export(export_all=True)),
+            ('Quit', Gtk.STOCK_QUIT, _('_Quit'),
+             None, None, self.quit),
+
+            ('Actions',None,_('_Actions')),
+            ('Edit',None,_('_Edit')),
+
+            ('Preferences', Gtk.STOCK_PREFERENCES, _('_Preferences'),
+             None, None, self.show_preferences),
             ('Plugins',None,_('_Plugins'),
              None,_('Manage plugins which add extra functionality to Gourmet.'),
              lambda *args: plugin_gui.show_plugin_chooser()),
-            ('Preferences',Gtk.STOCK_PREFERENCES,_('_Preferences'),
-             None,None,self.show_preferences),
-            #('Redo',Gtk.STOCK_REDO,_('_Redo'),
-            # None,None),
-            #('Undo',Gtk.STOCK_UNDO,_('_Undo'),
-            # None,None),
-            ('Quit',Gtk.STOCK_QUIT,_('_Quit'),
-             None,None,self.quit),
-            ('ViewTrash',None,_('Open _Trash'),
-             None,None,self.show_deleted_recs),
+            ('Settings',None,_('Setti_ngs')),
+
+            ('HelpMenu',None,_('_Help')),
+            ('About',Gtk.STOCK_ABOUT,_('_About'),
+             None,None,self.show_about),
+            ('Help',Gtk.STOCK_HELP,_('_Help'),
+             None,None,self.show_help),
             ])
 
         self.toolActionGroup = Gtk.ActionGroup('ToolActions')
@@ -1060,11 +1059,11 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
              None,_('Show timer'),lambda *args: show_timer()),
             ])
 
-
         self.goActionGroup.add_actions([
             ('GoRecipeIndex',None,_('Recipe _Index'),
-             None,_('Searchable index of recipes in the database.'),self.present)]
-                                       )
+             None,_('Searchable index of recipes in the database.'),self.present)
+            ])
+
         fix_action_group_importance(self.onSelectedActionGroup)
         self.ui_manager.insert_action_group(self.onSelectedActionGroup,0)
         fix_action_group_importance(self.mainActionGroup)
@@ -1240,14 +1239,12 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             return True
 
     def delete_rec (self, rec):
-        debug("delete_rec (self, rec): %s"%rec,5)
-        debug("does %s have %s"%(self.rc,rec.id),5)
-        if rec.id in self.rc:
-            debug("Getting rid of open recipe card window.",2)
-            w=self.rc[rec.id].widget
+        if rec.id in self.rc:  # Close the related recipe card window
+            window = self.rc[rec.id].widget
             self.rc[rec.id].hide()
-            w.destroy()
+            window.destroy()
             self.update_go_menu()
+
         if hasattr(rec,'id') and rec.id:
             if rec:
                 titl = rec.title

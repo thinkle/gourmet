@@ -8,6 +8,7 @@ from . import convert
 from . import Undo
 from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
 
+
 class RecIndex:
     """We handle the 'index view' of recipes, which puts
     a recipe model into a tree and allows it to be searched
@@ -78,7 +79,6 @@ class RecIndex:
         cb.setup_typeahead(self.rSearchByMenu)
         self.rSearchByMenu.set_active(0)
         self.rSearchByMenu.connect('changed', self.search_as_you_type)
-        self.regexpTog = self.ui.get_object('regexpTog')
         self.searchOptionsBox = self.ui.get_object('searchOptionsBox')
 
         search_options_toggle_btn = self.ui.get_object('searchOptionsToggle')
@@ -97,9 +97,43 @@ class RecIndex:
         tooltip = _('Search as you type (turn off if search is too slow).')
         search_typing_toggle_btn.set_tooltip_text(tooltip)
 
+        self.search_actions = Gtk.ActionGroup('SearchActions')
+        self.search_actions.add_toggle_actions([
+             ('toggleRegexp',
+              None,
+              _('Use regular expressions in search'),
+              None,
+              _('Use regular expressions (an advanced search language) in text search'),
+              self.toggleRegexpCB,
+              False),
+             ('toggleSearchAsYouType',
+              None,
+              _('Search as you type'),
+              None,
+              _('Search as you type (turn off if search is too slow).'),
+              self.toggleTypeSearchCB,
+              True),
+             ('toggleShowSearchOptions',
+              None,
+              _('Show Search _Options'),
+              None,
+              _('Show advanced searching options'),
+              self.toggleShowSearchOptions),
+        ])
+
+        action = self.search_actions.get_action('toggleRegexp')
+        action.do_connect_proxy(action, search_regex_toggle_btn)
+
+        action = self.search_actions.get_action('toggleShowSearchOptions')
+        action.do_connect_proxy(action, search_options_toggle_btn)
+
+        action = self.search_actions.get_action('toggleSearchAsYouType')
+        action.do_connect_proxy(action, search_typing_toggle_btn)
+
         self.rectree = self.ui.get_object('recTree')
         self.sw = self.ui.get_object('scrolledwindow')
-        self.rectree.connect('start-interactive-search',lambda *args: self.srchentry.grab_focus())
+        self.rectree.connect('start-interactive-search',
+                             lambda *args: self.srchentry.grab_focus())
         self.prev_button = self.ui.get_object('prevButton')
         self.next_button = self.ui.get_object('nextButton')
         self.first_button = self.ui.get_object('firstButton')
@@ -134,9 +168,9 @@ class RecIndex:
                            {'active': search_typing_toggle_btn.get_active()}),
             ['toggled']))
         self.rg.conf.append(WidgetSaver.WidgetSaver(
-            self.regexpTog,
+            search_regex_toggle_btn,
             self.prefs.get('regexpTog',
-                           {'active':self.regexpTog.get_active()}),
+                           {'active': search_regex_toggle_btn.get_active()}),
             ['toggled']))
         # and we update our count with each deletion.
         self.rd.delete_hooks.append(self.set_reccount)
