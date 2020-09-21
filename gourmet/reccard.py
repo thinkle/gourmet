@@ -23,7 +23,7 @@ from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras.dialog_extras import (UserCancelledError,
                                               show_amount_error)
-from gourmet.gtk_extra.pango_buffer import PangoBuffer
+from gourmet.gtk_extras.pango_buffer import PangoBuffer
 from gourmet.gtk_extras import treeview_extras as te
 
 from gourmet import image_utils as iu

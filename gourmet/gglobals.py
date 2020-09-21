@@ -3,7 +3,7 @@ from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
 
 import tempfile
 from .gdebug import debug
-from .OptionParser import args
+from .optionparser import args
 from .util import windows
 
 tmpdir = tempfile.gettempdir()
