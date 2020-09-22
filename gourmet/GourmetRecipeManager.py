@@ -827,9 +827,8 @@ ui_string = '''<ui>
     <menuitem action="ViewTrash"/>
   </menu>
   <menu name="Settings" action="Settings">
-    <menuitem action="toggleRegexp"/>
-    <menuitem action="toggleSearchAsYouType"/>
-    <!--<menuitem action="toggleSearchBy"/>-->
+    <menuitem action="search_regex_toggle"/>
+    <menuitem action="search_typing_toggle"/>
     <separator/>
     <menuitem action="Preferences"/>
     <menuitem action="Plugins"/>

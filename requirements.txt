@@ -1,3 +1,4 @@
+argcomplete
 BeautifulSoup4
 ebooklib
 keyring

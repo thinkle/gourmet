@@ -192,6 +192,7 @@ def crawl_plugins(base, basename):
 plugins = crawl_plugins(op.join('gourmet', 'plugins'), 'gourmet.plugins')
 
 package_data = [
+    'backends/default.db',
     'plugins/*/*.ui',
     'plugins/*/images/*.png',
     'plugins/*/*/images/*.png',
@@ -216,6 +217,11 @@ package_data = [
     'data/icons/48x48/apps/gourmet.png',
     'data/style/epubdefault.css',
     'data/style/default.css',
+    'plugins/*/*.ui',
+    'plugins/*/images/*.png',
+    'plugins/*/*/images/*.png',
+    'ui/*.ui',
+    'ui/catalog/*',
     '../LICENSE',
     '../FAQ',
 ]
@@ -247,3 +253,4 @@ setuptools.setup(
             "gourmet = gourmet.GourmetRecipeManager:launch_app",
         ]}
 )
+

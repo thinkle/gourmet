@@ -1,4 +1,4 @@
-from .OptionParser import args
+from .optionparser import args
 import time,traceback
 
 debug_level=args.debug or 0

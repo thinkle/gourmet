@@ -1,23 +1,31 @@
-from gi.repository import Gtk
+import os.path
+from pathlib import Path
+import re
+import time
 import shutil
-from gourmet.gdebug import debug, TimeAction
-import re, string, os.path, time
 from typing import Mapping, Optional, List, Any, Tuple
+import io
+
 from gettext import gettext as _
+from gi.repository import Gtk
+
+import sqlalchemy
+import sqlalchemy.orm
+from sqlalchemy import (Integer, LargeBinary, String, Float, Boolean, Numeric,
+                        Table, Column, ForeignKey, Text)
+from sqlalchemy.sql import and_, or_, case
+from sqlalchemy import event, func
+
+from gourmet.gdebug import debug, TimeAction
 import gourmet.gglobals as gglobals
 from gourmet import Undo, keymanager, convert
 from gourmet.defaults import lang as defaults
-import io
 from gourmet import image_utils
 import gourmet.version
 import gourmet.recipeIdentifier as recipeIdentifier
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import DatabasePlugin
 
-import sqlalchemy, sqlalchemy.orm
-from sqlalchemy import Integer, LargeBinary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
-from sqlalchemy.sql import and_, or_, case
-from sqlalchemy import event, func
 
 Session = sqlalchemy.orm.sessionmaker()
 
@@ -182,12 +190,13 @@ class RecData (Pluggable):
 
         # Continue setting up connection...
         if self.filename:
-            self.new_db = not os.path.exists(self.filename)
-            #print 'Connecting to file ',self.filename,'new=',self.new_db
+            if not os.path.exists(self.filename):
+                print("First time? We're setting you up with yummy recipes.")
+                source_file = Path(__file__).parent.absolute() / 'default.db'
+                shutil.copyfile(source_file, self.filename)
+            self.new_db = False
         else:
-            self.new_db = True # ??? How will we do this now?
-        #self.db = sqlalchemy.create_engine(self.url,strategy='threadlocal')
-        #self.base_connection = self.db
+            self.new_db = True  # TODO: this bool can be refactored out.
 
         if self.url.startswith('mysql'):
             self.db = sqlalchemy.create_engine(self.url,
@@ -1869,7 +1878,6 @@ class RecipeManager:
     def __init__ (self, *args, **kwargs):
         debug('recipeManager.__init__()',3)
         self.rd = get_database(*args, **kwargs)
-        #self.km = keymanager.KeyManager(rm=self)
         self.km = keymanager.get_keymanager(rm=self)
 
     def __getattr__(self, name):

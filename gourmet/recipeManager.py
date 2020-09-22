@@ -2,7 +2,7 @@ from gettext import gettext as _
 import os.path
 from gourmet import convert
 from gourmet import shopping
-from .OptionParser import args
+from .optionparser import args
 from . import gglobals
 from .gtk_extras import dialog_extras as de
 
