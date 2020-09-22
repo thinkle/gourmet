@@ -13,7 +13,6 @@
 gourmet.appdata.xml.in
 gourmet.desktop.in
 GourmetRecipeManager.py
-OptionParser.py
 Undo.py
 __init__.py
 backends/DatabaseChooser.py
@@ -21,7 +20,6 @@ backends/__init__.py
 backends/db.py
 batchEditor.py
 check_encodings.py
-clockDB.py
 convert.py
 defaults/__init__.py
 defaults/defaults.py
