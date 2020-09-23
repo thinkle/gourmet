@@ -1,6 +1,6 @@
 from gourmet.plugin import PluginPlugin, ImportManagerPlugin
 from gourmet.gglobals import gourmetdir
-from gourmet.prefs import get_prefs
+from gourmet.prefs import Prefs
 from gourmet.gtk_extras import dialog_extras as de
 from bs4 import BeautifulSoup
 import gourmet.threadManager
@@ -16,10 +16,10 @@ if 'driver' not in globals():
     driver = None
 
 class LogInWebReader (gourmet.threadManager.SuspendableThread):
-    
+
     def __init__ (self, url):
         self.url = url
-        self.prefs = get_prefs()
+        self.prefs = Prefs.instance()
         self.logged_in = True
         gourmet.threadManager.SuspendableThread.__init__(
             self,
@@ -87,13 +87,13 @@ class LogInWebReader (gourmet.threadManager.SuspendableThread):
         self.data = self.d.page_source
 
 class WebImporterPlugin (ImportManagerPlugin):
-    
+
     url_needs_login_patterns = {
         'cooksillustrated.com' : LogInWebReader,
         'cookscountry.com' : LogInWebReader,
         'americastestkitchen.com' : LogInWebReader,
     }
-    
+
 class CooksIllustratedPlugin (PluginPlugin):
     target_pluggable = 'webimport_plugin'
 
@@ -113,7 +113,7 @@ class CooksIllustratedPlugin (PluginPlugin):
             return WebsiteTestState.SUCCESS_UNKNOWN
         if 'americastestkitchen.com' in data:
             return WebsiteTestState.SUCCESS_UNKNOWN
-        
+
         return WebsiteTestState.FAILED
 
     def get_importer (self, webpage_importer):
@@ -134,7 +134,7 @@ class CooksIllustratedPlugin (PluginPlugin):
                         self.preparsed_elements.append((el,tag))
                         if ignoreSlug:
                             self.maybe_add(el.findAll('h4',{'class':'section-slug'}),'ignore')
-                            
+
 
             def preparse (self):
                 self.preparsed_elements = []
@@ -143,7 +143,7 @@ class CooksIllustratedPlugin (PluginPlugin):
                 self.maybe_add(self.soup.find('h2',{'itemprop':'name'}),'title')
                 self.maybe_add(self.soup.find('h1'),'title')
                 self.maybe_add(self.soup.findAll('div',{'class':'ingredient'}), 'ingredients')
-                self.maybe_add(self.soup.findAll('section',{'class':'ingredients'}),'ingredients',ignoreSlug=True)                
+                self.maybe_add(self.soup.findAll('section',{'class':'ingredients'}),'ingredients',ignoreSlug=True)
                 for ingSection in self.soup.findAll('section',{'class':'ingredients'}):
                     self.maybe_add(ingSection.findAll('h5'),'inggroup')
                 contents = self.soup.findAll('div',{'class':'content'})
@@ -169,13 +169,13 @@ class CooksIllustratedPlugin (PluginPlugin):
                 self.maybe_add(self.soup.find('section',{'class':'serves'}), 'yields')
                 self.maybe_add(self.soup.find({'itemprop':'recipeYield'}), 'yields')
                 self.maybe_add(self.soup.find('span',{'class':'recipe__yield'}),'yields')
-                
+
                 # Do we use automatic settings or not...
                 if self.preparsed_elements:
                     self.ignore_unparsed = True
                 else:
                     self.ignore_unparsed = False
-                
+
         return CooksIllustratedParser
 
 if __name__ == '__main__':
@@ -191,7 +191,7 @@ if __name__ == '__main__':
     ciParser = cip.get_importer(webpage_importer)
     #ciParser = cip.get_importer(None)
     parser = ciParser(reader.url, reader.data, reader.content_type)
-    parser.do_run()    
+    parser.do_run()
     # parser.parse()
     # print 'Unmatched preparsed elements:'
     # for p in parser.preparsed_elements:
@@ -199,4 +199,4 @@ if __name__ == '__main__':
     #         print '<UNMATCHED>',p,'</UNMATCHED>'
     #     else:
     #         print '<MATCHED>',p,'</MATCHED>'
-    
+

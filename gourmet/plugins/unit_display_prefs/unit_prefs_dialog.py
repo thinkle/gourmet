@@ -1,4 +1,4 @@
-from gourmet.prefs import get_prefs
+from gourmet.prefs import Prefs
 from gourmet.gtk_extras import dialog_extras as de
 from gettext import gettext as _
 
@@ -12,7 +12,7 @@ class UnitPrefsDialog:
 
     def __init__ (self, reccards):
         self.reccards = reccards
-        self.prefs = get_prefs()
+        self.prefs = Prefs.instance()
 
     def run (self):
         old_pref = self.prefs.get('preferred_unit_groups',[])

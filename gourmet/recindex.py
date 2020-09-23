@@ -202,8 +202,8 @@ class RecIndex:
         # self.do_search(None,None)
 
     def create_rmodel (self, vw):
-        self.rmodel = RecipeModel(vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
-        # self.set_reccount()  # This will be called by the rmodel_page_changed_cb
+        recipes_per_page = self.prefs.get('recipes_per_page', 12)
+        self.rmodel = RecipeModel(vw,self.rd, per_page=recipes_per_page)
 
     def setup_rectree (self):
         """Create our recipe treemodel."""

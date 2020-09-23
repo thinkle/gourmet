@@ -183,7 +183,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.reccard = reccard; self.rg = recGui; self.current_rec = recipe
         self.mult = 1 # parameter
         self.conf: List[Gtk.Widget] = []
-        self.prefs = prefs.get_prefs()
+        self.prefs = prefs.Prefs.instance()
         self.setup_ui()
         self.setup_uimanager()
         self.setup_main_window()
@@ -666,7 +666,7 @@ class IngredientDisplay:
 
     def __init__ (self, recipe_display):
         self.recipe_display = recipe_display
-        self.prefs = prefs.get_prefs()
+        self.prefs = prefs.Prefs.instance()
         self.setup_widgets()
         self.rg = self.recipe_display.rg
         self.markup_ingredient_hooks = []
@@ -956,7 +956,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
                                                                    {'window_size':(700,600)})
                                                  )
                          )
-        self.window.set_default_size(*prefs.get_prefs().get('rec_editor_window')['window_size'])
+        self.window.set_default_size(*prefs.Prefs.instance().get('rec_editor_window')['window_size'])
         main_vb = Gtk.VBox()
         main_vb.pack_start(self.ui_manager.get_widget('/RecipeEditorMenuBar'),expand=False,fill=False, padding=0)
         main_vb.pack_start(self.ui_manager.get_widget('/RecipeEditorToolBar'),expand=False,fill=False, padding=0)
@@ -2961,7 +2961,7 @@ class IngInfo:
 class RecSelector (RecIndex):
     """Select a recipe and add it to RecCard's ingredient list"""
     def __init__(self, recGui, ingEditor):
-        self.prefs = prefs.get_prefs()
+        self.prefs = prefs.Prefs.instance()
         self.ui=Gtk.Builder()
         self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
         self.rg=recGui

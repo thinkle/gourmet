@@ -538,7 +538,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
     def __init__ (self):
         IngredientAndPantryList.__init__(self)
         ShoppingList.__init__(self)
-        self.prefs = prefs.get_prefs()
+        self.prefs = prefs.Prefs.instance()
         self.conf = []
         self.w = Gtk.Window(); self.main = Gtk.VBox()
         self.w.set_title(_('Shopping List'))

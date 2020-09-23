@@ -2,7 +2,7 @@ from gi.repository import Gtk
 from .gdebug import debug
 from .gtk_extras import dialog_extras as de
 from gettext import gettext as _
-from .prefs import get_prefs
+from .prefs import Prefs
 
 class CheckEncoding:
 
@@ -24,7 +24,7 @@ class CheckEncoding:
                         'utf_16_le','utf_7','utf_8']
 
     def __init__ (self, file, encodings=None):
-        if get_prefs().get('utf-16',False):
+        if Prefs.instance().get('utf-16',False):
             self.encodings.extend(['utf_16','utf_16_le','utf_16_be'])
         if encodings: self.encodings = encodings
         if isinstance(file, str):

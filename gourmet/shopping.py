@@ -269,7 +269,7 @@ class ShoppingList:
         from . import backends
         self.rd = backends.db.get_database()
         from . import prefs
-        self.prefs = prefs.get_prefs()
+        self.prefs = prefs.Prefs.instance()
 
     def get_shopper (self, lst):
         return Shopper(lst)

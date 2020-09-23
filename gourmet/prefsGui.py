@@ -178,16 +178,22 @@ class PreferencesGui (plugin_loader.Pluggable):
             else:
                 print('widget',widgetname,widget,'is not very numberlike!')
                 return
-            curval = self.prefs.get(pref_name,None)
+            curval = self.prefs.get(pref_name, None)
             if curval:
                 try:
                     widget.set_value(curval)
-                except:
+                except AttributeError:
                     widget.set_text(str(curval))
             if isinstance(widget,Gtk.SpinButton):
-                widget.get_adjustment().connect('value-changed',self.number_callback,pref_name,get_method)
+                widget.get_adjustment().connect('value-changed',
+                                                self.number_callback,
+                                                pref_name,
+                                                get_method)
             else:
-                widget.connect('changed',self.number_callback,pref_name,get_method)
+                widget.connect('changed',
+                               self.number_callback,
+                               pref_name,
+                               get_method)
 
     def number_callback (self, widget, pref_name, get_method='get_value'):
         self.set_pref(pref_name,getattr(widget,get_method)())

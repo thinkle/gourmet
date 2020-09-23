@@ -3,7 +3,7 @@ from gourmet.reccard import RecCardDisplay
 from gi.repository import Gtk
 from gourmet.plugin_loader import PRE, POST
 from . import unit_prefs_dialog
-from gourmet.prefs import get_prefs
+from gourmet.prefs import Prefs
 from gettext import gettext as _
 
 class UnitDisplayPlugin (ToolPlugin):
@@ -39,7 +39,7 @@ class UnitDisplayDatabasePlugin (DatabasePlugin):
         db.add_hook(PRE,'get_amount_and_unit',self.get_amount_and_unit_hook)
 
     def get_amount_and_unit_hook (self, db, *args, **kwargs):
-        kwargs['preferred_unit_groups'] = get_prefs().get('preferred_unit_groups',[])
+        kwargs['preferred_unit_groups'] = Prefs.instance()().get('preferred_unit_groups',[])
         return args,kwargs
 
 
