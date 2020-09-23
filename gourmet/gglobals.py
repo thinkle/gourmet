@@ -1,50 +1,23 @@
-import os, os.path, re
+import os
+import os.path
+from pathlib import Path
+
 from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
 
 import tempfile
-from .gdebug import debug
 from .optionparser import args
-from .util import windows
 
 tmpdir = tempfile.gettempdir()
 
+gourmetdir: Path = Path(os.environ['HOME']).absolute() / '.gourmet'
+if os.name == 'nt':
+    gourmetdir = Path(os.environ['APPDATA']).absolute() / 'gourmet'
+
 if args.gourmetdir:
-    gourmetdir = args.gourmetdir
-    debug("User specified gourmetdir %s"%gourmetdir,0)
-else:
-    if os.name =='nt':
-        # Under Windows, we cannot unfortunately just use os.environ, see
-        # http://stackoverflow.com/questions/2608200/problems-with-umlauts-in-python-appdata-environvent-variable
-        # We might drop this workaround with Python 3 (all strings are unicode)
-        # and/or GTK+ 3 (use Glib.get_home_dir()).
-        APPDATA = windows.getenv('APPDATA')
-        gourmetdir = os.path.join(APPDATA,'gourmet')
-    else:
-        gourmetdir = os.path.join(os.path.expanduser('~'),'.gourmet')
-try:
-    if not os.path.exists(gourmetdir):
-        debug('Creating %s'%gourmetdir,0)
-        os.makedirs(gourmetdir)
-except OSError:
-    try:
-        debug("Unable to create standard config directory in home directory. Looking for .gourmet in working directory instead.",0)
-        gourmetdir = '.gourmet'
-        if not os.path.exists(gourmetdir):
-            debug("Creating .gourmet in working directory",0)
-            os.makedirs(gourmetdir)
-    except OSError:
-        print("Unable to create gourmet directory.")
-        raise
-        import sys
-        sys.exit()
+    gourmetdir = Path(args.gourmetdir).absolute()
+    print(f'User specified gourmetdir {gourmetdir}')
 
-
-if not os.access(gourmetdir,os.W_OK):
-    debug('Cannot write to configuration directory, %s'%gourmetdir,-1)
-    import sys
-    sys.exit()
-
-debug('gourmetdir=%s'%gourmetdir,2)
+gourmetdir.mkdir(exist_ok=True)
 
 use_threads = args.threads
 # Uncomment the below to test FauxThreads
