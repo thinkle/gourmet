@@ -202,7 +202,9 @@ class RecIndex:
         # self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=False)
         self.searches = self.default_searches[0:]
         self.sort_by = []
-        self.rvw = self.rd.search_recipes(self.searches,sort_by=self.sort_by)
+        # List of entries in the `recipe` database table
+        self.rvw: List['RowProxy'] = self.rd.search_recipes(self.searches,
+                                                            sort_by=self.sort_by)
 
     def make_rec_visible (self, *args):
         """Make sure recipe REC shows up in our index."""
@@ -239,19 +241,16 @@ class RecIndex:
             self.last_button.set_sensitive(True)
         self.set_reccount()
 
-    def rmodel_sort_cb (self, rmodel, sorts):
+    def rmodel_sort_cb(self, rmodel, sorts):
         self.sort_by = sorts
         self.last_search = {}
         self.search()
-        # self.do_search(None,None)
 
-    def create_rmodel (self, vw):
-        self.rmodel = RecipeModel(vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
-        # self.set_reccount()  # This will be called by the rmodel_page_changed_cb
-
-    def setup_rectree (self):
+    def setup_rectree(self):
         """Create our recipe treemodel."""
-        self.create_rmodel(self.rvw)
+        recipes_per_page = self.prefs.get('recipes_per_page', 12)
+        self.rmodel = RecipeModel(self.rvw, self.rd, per_page=recipes_per_page)
+
         self.rmodel.connect('page-changed',self.rmodel_page_changed_cb)
         self.rmodel.connect('view-changed',self.rmodel_page_changed_cb)
         self.rmodel.connect('view-sort',self.rmodel_sort_cb)
@@ -719,9 +718,6 @@ class RecipeModel (pageable_store.PageableViewStore):
             val = getattr(row,attr)
             if val: return str(val)
             else: return None
-        # else:
-        #
-        #     return str(getattr(row,attr))
 
     def update_recipe (self, recipe):
         """Handed a recipe (or a recipe ID), we update its display if visible."""
