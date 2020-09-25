@@ -1,12 +1,17 @@
-from .image_utils import bytes_to_pixbuf
-from .gdebug import debug
+from typing import List, Union
+
 from gettext import gettext as _, ngettext
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
+
+from .backends.db import RecipeManager
+from . import convert
+from .gdebug import debug
 from .gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
 from .gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
     mnemonic_manager, pageable_store, treeview_extras as te
-from . import convert
+from .image_utils import bytes_to_pixbuf
 from . import Undo
-from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
+
 
 class RecIndex:
     """We handle the 'index view' of recipes, which puts
@@ -15,10 +20,14 @@ class RecIndex:
     program so that we can be created again (e.g. in the recSelector
     dialog called from a recipe card."""
 
-    default_searches = [{'column':'deleted','operator':'=','search':False}]
+    default_searches = [{'column': 'deleted',
+                         'operator': '=',
+                         'search': False}]
 
-    def __init__ (self, ui, rd, rg, editable=False):
-        # self.visible = 1  # can equal 1 or 2
+    def __init__ (self, ui: Gtk.Builder,
+                  rd: RecipeManager,
+                  rg: 'RecGui',
+                  editable: bool = False):
         self.editable=editable
         self.selected = True
         self.rtcols=rg.rtcols
@@ -36,7 +45,6 @@ class RecIndex:
             str(_('notes')):'modifications',
             str(_('category')):'category',
             str(_('cuisine')):'cuisine',
-            # _('rating'):'rating',
             str(_('source')):'source',
             }
         self.searchByList = [_('anywhere'),
@@ -44,62 +52,78 @@ class RecIndex:
                              _('ingredient'),
                              _('category'),
                              _('cuisine'),
-                             # _('rating'),
                              _('source'),
                              _('instructions'),
                              _('notes'),
                              ]
-        # ACK, this breaks internationalization!
-        # self.SEARCH_KEY_DICT = {
-        #     "t":_("title"),
-        #     "i":_("ingredient"),
-        #     "c":_("category"),
-        #     "u":_("cuisine"),
-        #     "s":_("source"),
-        # }
         self.setup_widgets()
 
-    def setup_widgets (self):
-        self.srchentry=self.ui.get_object('rlistSearchbox')
+    def setup_widgets(self):
+        self.srchentry = self.ui.get_object('rlistSearchbox')
         self.limitButton = self.ui.get_object('rlAddButton')
-        # Don't # allow for special keybindings
-        # self.srchentry.connect('key_press_event',self.srchentry_keypressCB)
         self.SEARCH_MENU_KEY = "b"
         self.srchLimitBar = self.ui.get_object('srchLimitBar')
         assert(self.srchLimitBar)
         self.srchLimitBar.hide()
-        self.srchLimitLabel=self.ui.get_object('srchLimitLabel')
+        self.srchLimitLabel = self.ui.get_object('srchLimitLabel')
         self.srchLimitClearButton = self.ui.get_object('srchLimitClear')
-        self.srchLimitText=self.srchLimitLabel.get_text()
-        self.srchLimitDefaultText=self.srchLimitText
+        self.srchLimitText = self.srchLimitLabel.get_text()
+        self.srchLimitDefaultText = self.srchLimitText
         self.searchButton = self.ui.get_object('searchButton')
         self.rSearchByMenu = self.ui.get_object('rlistSearchByMenu')
-        cb.set_model_from_list(self.rSearchByMenu, self.searchByList, expand=False)
+
+        cb.set_model_from_list(self.rSearchByMenu,
+                               self.searchByList,
+                               expand=False)
         cb.setup_typeahead(self.rSearchByMenu)
+
         self.rSearchByMenu.set_active(0)
         self.rSearchByMenu.connect('changed', self.search_as_you_type)
-        self.regexpTog = self.ui.get_object('regexpTog')
         self.searchOptionsBox = self.ui.get_object('searchOptionsBox')
 
-        search_options_toggle_btn = self.ui.get_object('searchOptionsToggle')
-        search_options_toggle_btn.connect('toggled',
-                                          self.toggleShowSearchOptions)
-        tooltip = _('Show advanced searching options')
-        search_options_toggle_btn.set_tooltip_text(tooltip)
+        self.search_options_tbtn = self.ui.get_object('searchOptionsToggle')
+        self.search_options_tbtn.connect('toggled',
+                                         self.search_options_toggle_callback)
+        self.search_regex_tbtn = self.ui.get_object('regexpTog')
+        self.search_regex_tbtn.connect('toggled',
+                                       self.search_regex_toggle_callback)
+        self.search_typing_tbtn = self.ui.get_object('searchAsYouTypeToggle')
+        self.search_typing_tbtn.connect('toggled',
+                                        self.search_typing_toggle_callback)
 
-        search_regex_toggle_btn = self.ui.get_object('regexpTog')
-        search_regex_toggle_btn.connect('toggled', self.toggleRegexpCB)
-        tooltip = _('Use regular expressions in search')
-        search_regex_toggle_btn.set_tooltip_text(tooltip)
+        self.search_actions = Gtk.ActionGroup('SearchActions')
+        self.search_actions.add_toggle_actions([
+             ('search_regex_toggle', None,
+              _('Use regular expressions in search'), None,
+              _('Use regular expressions (an advanced search language) in text search'),  # noqa
+              self.search_regex_toggle_callback, False),
 
-        search_typing_toggle_btn = self.ui.get_object('searchAsYouTypeToggle')
-        search_typing_toggle_btn.connect('toggled', self.toggleTypeSearchCB)
-        tooltip = _('Search as you type (turn off if search is too slow).')
-        search_typing_toggle_btn.set_tooltip_text(tooltip)
+             ('search_typing_toggle', None,
+              _('Search as you type'), None,
+              _('Search as you type (turn off if search is too slow).'),
+              self.search_typing_toggle_callback, True),
+
+             ('search_options_toggle', None,
+              _('Show Search _Options'), None,
+              _('Show advanced searching options'),
+              self.search_options_toggle_callback),
+        ])
+
+        action = self.search_actions.get_action('search_regex_toggle')
+        action.do_connect_proxy(action, self.search_regex_tbtn)
+        self.search_regex_action = action
+
+        action = self.search_actions.get_action('search_typing_toggle')
+        action.do_connect_proxy(action, self.search_typing_tbtn)
+        self.search_typing_action = action
+
+        action = self.search_actions.get_action('search_options_toggle')
+        action.do_connect_proxy(action, self.search_options_tbtn)
 
         self.rectree = self.ui.get_object('recTree')
         self.sw = self.ui.get_object('scrolledwindow')
-        self.rectree.connect('start-interactive-search',lambda *args: self.srchentry.grab_focus())
+        self.rectree.connect('start-interactive-search',
+                             lambda *args: self.srchentry.grab_focus())
         self.prev_button = self.ui.get_object('prevButton')
         self.next_button = self.ui.get_object('nextButton')
         self.first_button = self.ui.get_object('firstButton')
@@ -109,35 +133,55 @@ class RecIndex:
         self.contid = self.stat.get_context_id('main')
         self.setup_search_views()
         self.setup_rectree()
-        self.prev_button.connect('clicked',lambda *args: self.rmodel.prev_page())
-        self.next_button.connect('clicked',lambda *args: self.rmodel.next_page())
-        self.first_button.connect('clicked',lambda *args: self.rmodel.goto_first_page())
-        self.last_button.connect('clicked',lambda *args: self.rmodel.goto_last_page())
+
+        self.prev_button.connect('clicked',
+                                 lambda *args: self.rmodel.prev_page())
+        self.next_button.connect('clicked',
+                                 lambda *args: self.rmodel.next_page())
+        self.first_button.connect('clicked',
+                                  lambda *args: self.rmodel.goto_first_page())
+        self.last_button.connect('clicked',
+                                 lambda *args: self.rmodel.goto_last_page())
+
         self.ui.connect_signals({
             'rlistSearch': self.search_as_you_type,
-            'ingredientSearch' : lambda *args: self.set_search_by('ingredient'),
-            'titleSearch' : lambda *args: self.set_search_by('title'),
-            'ratingSearch' : lambda *args: self.set_search_by('rating'),
-            'categorySearch' : lambda *args: self.set_search_by('category'),
-            'cuisineSearch' : lambda *args: self.set_search_by('cuisine'),
-            'search' : self.search,
-            'searchBoxActivatedCB':self.search_entry_activate_cb,
-            'rlistReset' : self.reset_search,
-            'rlistLimit' : self.limit_search,
-            'search_as_you_type_toggle' : self.toggleTypeSearchCB,})
+            'ingredientSearch': lambda *args: self.set_search_by('ingredient'),
+            'titleSearch': lambda *args: self.set_search_by('title'),
+            'ratingSearch': lambda *args: self.set_search_by('rating'),
+            'categorySearch': lambda *args: self.set_search_by('category'),
+            'cuisineSearch': lambda *args: self.set_search_by('cuisine'),
+            'search': self.search,
+            'searchBoxActivatedCB': self.search_entry_activate_cb,
+            'rlistReset': self.reset_search,
+            'rlistLimit': self.limit_search,
+            'search_as_you_type_toggle': self.search_typing_toggle_callback,
+        })
 
-        # Save widget status across sessions
-        # This has to come after the widgets and signals are connected!
+        # Set up widget saver for status across sessions
         self.rg.conf.append(WidgetSaver.WidgetSaver(
-            search_typing_toggle_btn,
+            self.search_typing_tbtn,
             self.prefs.get('sautTog',
-                           {'active': search_typing_toggle_btn.get_active()}),
+                           {'active': self.search_typing_tbtn.get_active()}),
+            ['toggled']))
+
+        self.rg.conf.append(WidgetSaver.WidgetSaver(
+            self.search_typing_action,
+            self.prefs.get('sautTog',
+                           {'active': self.search_typing_action.get_active()}),
+            ['toggled'],
+            show=False))
+
+        self.rg.conf.append(WidgetSaver.WidgetSaver(
+            self.search_regex_tbtn,
+            self.prefs.get('regexpTog',
+                           {'active': self.search_regex_tbtn.get_active()}),
             ['toggled']))
         self.rg.conf.append(WidgetSaver.WidgetSaver(
-            self.regexpTog,
+            self.search_regex_action,
             self.prefs.get('regexpTog',
-                           {'active':self.regexpTog.get_active()}),
-            ['toggled']))
+                           {'active': self.search_regex_action.get_active()}),
+            ['toggled'],
+            show=False))
         # and we update our count with each deletion.
         self.rd.delete_hooks.append(self.set_reccount)
         # setup a history
@@ -158,7 +202,9 @@ class RecIndex:
         # self.rvw = self.rd.fetch_all(self.rd.recipe_table,deleted=False)
         self.searches = self.default_searches[0:]
         self.sort_by = []
-        self.rvw = self.rd.search_recipes(self.searches,sort_by=self.sort_by)
+        # List of entries in the `recipe` database table
+        self.rvw: List['RowProxy'] = self.rd.search_recipes(self.searches,
+                                                            sort_by=self.sort_by)
 
     def make_rec_visible (self, *args):
         """Make sure recipe REC shows up in our index."""
@@ -195,19 +241,16 @@ class RecIndex:
             self.last_button.set_sensitive(True)
         self.set_reccount()
 
-    def rmodel_sort_cb (self, rmodel, sorts):
+    def rmodel_sort_cb(self, rmodel, sorts):
         self.sort_by = sorts
         self.last_search = {}
         self.search()
-        # self.do_search(None,None)
 
-    def create_rmodel (self, vw):
-        self.rmodel = RecipeModel(vw,self.rd,per_page=self.prefs.get('recipes_per_page',12))
-        # self.set_reccount()  # This will be called by the rmodel_page_changed_cb
-
-    def setup_rectree (self):
+    def setup_rectree(self):
         """Create our recipe treemodel."""
-        self.create_rmodel(self.rvw)
+        recipes_per_page = self.prefs.get('recipes_per_page', 12)
+        self.rmodel = RecipeModel(self.rvw, self.rd, per_page=recipes_per_page)
+
         self.rmodel.connect('page-changed',self.rmodel_page_changed_cb)
         self.rmodel.connect('view-changed',self.rmodel_page_changed_cb)
         self.rmodel.connect('view-sort',self.rmodel_sort_cb)
@@ -354,39 +397,43 @@ class RecIndex:
             debug("Column %s is %s->%s"%(n,c,self.rtcolsdic[c]),5)
             n += 1
 
-    def toggleTypeSearchCB (self, widget):
+    def search_typing_toggle_callback(self, widget: Union[Gtk.ToggleAction, Gtk.CheckButton]):  # noqa
         """Toggle search-as-you-type option."""
-        if widget.get_active():
-            self.search_as_you_type=True
+        setting: bool = widget.get_active()
+
+        action = self.search_actions.get_action('search_typing_toggle')
+        action.set_active(setting)
+        self.search_typing_tbtn.set_active(setting)
+
+        if setting:
+            self.search_as_you_type = True
             self.searchButton.hide()
         else:
-            self.search_as_you_type=False
+            self.search_as_you_type = False
             self.searchButton.show()
 
-    def toggleRegexpCB (self, widget):
-        """Toggle search-with-regexp option."""
-        # if widget.get_active():
-        #     self.message('Advanced searching (regular expressions) turned on')
-        # else:
-        #     self.message('Advanced searching off')
-        pass
+    def search_regex_toggle_callback(self, widget: Union[Gtk.ToggleAction, Gtk.CheckButton]):  # noqa
+        """Update the other widget"""
+        setting: bool = widget.get_active()
 
-    def toggleShowSearchOptions (self, widget):
-        if widget.get_active():
+        action = self.search_actions.get_action('search_regex_toggle')
+        action.set_active(setting)
+        self.search_regex_tbtn.set_active(setting)
+
+    def search_options_toggle_callback(self, action: Gtk.ToggleAction):
+        if action.get_active():
             self.searchOptionsBox.show()
         else:
             self.searchOptionsBox.hide()
 
-    def search_as_you_type (self, *args):
+    def search_as_you_type(self, *args):
         """If we're searching-as-we-type, search."""
         if self.search_as_you_type:
             self.search()
 
-    def set_search_by (self, str):
+    def set_search_by(self, key: str):
         """Manually set the search by label to str"""
-        debug('set_search_by',1)
-        # self.rSearchByMenu.get_children()[0].set_text(str)
-        cb.cb_set_active_text(self.rSearchByMenu, str)
+        cb.cb_set_active_text(self.rSearchByMenu, key)
         self.search()
 
     def redo_search (self, *args):
@@ -671,9 +718,6 @@ class RecipeModel (pageable_store.PageableViewStore):
             val = getattr(row,attr)
             if val: return str(val)
             else: return None
-        # else:
-        #
-        #     return str(getattr(row,attr))
 
     def update_recipe (self, recipe):
         """Handed a recipe (or a recipe ID), we update its display if visible."""
