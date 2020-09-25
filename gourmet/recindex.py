@@ -1,14 +1,16 @@
-from typing import Union
+from typing import List, Union
 
-from .image_utils import bytes_to_pixbuf
-from .gdebug import debug
 from gettext import gettext as _, ngettext
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
+
+from .backends.db import RecipeManager
+from . import convert
+from .gdebug import debug
 from .gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
 from .gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
     mnemonic_manager, pageable_store, treeview_extras as te
-from . import convert
+from .image_utils import bytes_to_pixbuf
 from . import Undo
-from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
 
 
 class RecIndex:
@@ -18,10 +20,14 @@ class RecIndex:
     program so that we can be created again (e.g. in the recSelector
     dialog called from a recipe card."""
 
-    default_searches = [{'column':'deleted','operator':'=','search':False}]
+    default_searches = [{'column': 'deleted',
+                         'operator': '=',
+                         'search': False}]
 
-    def __init__ (self, ui, rd, rg, editable=False):
-        # self.visible = 1  # can equal 1 or 2
+    def __init__ (self, ui: Gtk.Builder,
+                  rd: RecipeManager,
+                  rg: 'RecGui',
+                  editable: bool = False):
         self.editable=editable
         self.selected = True
         self.rtcols=rg.rtcols
@@ -105,9 +111,11 @@ class RecIndex:
 
         action = self.search_actions.get_action('search_regex_toggle')
         action.do_connect_proxy(action, self.search_regex_tbtn)
+        self.search_regex_action = action
 
         action = self.search_actions.get_action('search_typing_toggle')
         action.do_connect_proxy(action, self.search_typing_tbtn)
+        self.search_typing_action = action
 
         action = self.search_actions.get_action('search_options_toggle')
         action.do_connect_proxy(action, self.search_options_tbtn)
@@ -149,7 +157,7 @@ class RecIndex:
             'search_as_you_type_toggle': self.search_typing_toggle_callback,
         })
 
-        # Save widget status across sessions
+        # Set up widget saver for status across sessions
         self.rg.conf.append(WidgetSaver.WidgetSaver(
             self.search_typing_tbtn,
             self.prefs.get('sautTog',
@@ -157,10 +165,23 @@ class RecIndex:
             ['toggled']))
 
         self.rg.conf.append(WidgetSaver.WidgetSaver(
+            self.search_typing_action,
+            self.prefs.get('sautTog',
+                           {'active': self.search_typing_action.get_active()}),
+            ['toggled'],
+            show=False))
+
+        self.rg.conf.append(WidgetSaver.WidgetSaver(
             self.search_regex_tbtn,
             self.prefs.get('regexpTog',
                            {'active': self.search_regex_tbtn.get_active()}),
             ['toggled']))
+        self.rg.conf.append(WidgetSaver.WidgetSaver(
+            self.search_regex_action,
+            self.prefs.get('regexpTog',
+                           {'active': self.search_regex_action.get_active()}),
+            ['toggled'],
+            show=False))
         # and we update our count with each deletion.
         self.rd.delete_hooks.append(self.set_reccount)
         # setup a history
