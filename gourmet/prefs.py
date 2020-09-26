@@ -27,12 +27,13 @@ class Prefs(dict):
     def save(self):
         self.filename.parent.mkdir(exist_ok=True)
         with open(self.filename, 'w') as fout:
-            toml.dump(self._config, fout)
+            toml.dump(self, fout)
 
     def load(self) -> bool:
         if self.filename.is_file():
             with open(self.filename) as fin:
-                self._config = toml.load(fin)
+                for k, v in toml.load(fin).items():
+                    self.__setitem__(k, v)
             return True
         return False
 

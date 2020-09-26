@@ -343,14 +343,6 @@ class PageableViewStore (PageableListStore):
             self.__sorts__.append((attr,-1))
         self.emit('view-sort',self.__sorts__)
 
-    #def _do_sort_ (self):
-    #    if self.__all_sorts__:
-    #        self.do_change_view(self.view.sortrev([getattr(self.view,a) for a in self.__all_sorts__],
-    #                                              [getattr(self.view,a) for a in self.__reverse_sorts__])
-    #                            )
-    #    else:
-    #        self.do_change_view(self.unsorted_view)
-
     def do_change_view (self, vw, length=None):
         self.parent_list = self.view = vw
         self.__length__ = None
