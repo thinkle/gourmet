@@ -17,7 +17,7 @@ from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import optionTable
 from gourmet.gtk_extras import cb_extras
 from gourmet import image_utils
-from gourmet.prefs import get_prefs
+from gourmet.prefs import Prefs
 import xml.sax.saxutils
 import gourmet.exporters.exporter as exporter
 import types, re
@@ -741,7 +741,7 @@ class CustomUnitOption (optionTable.CustomOption):
         self.unit_combo = Gtk.ComboBoxText()
         for key in self.units:
             self.unit_combo.append_text(key)
-        unit = get_prefs().get('default_margin_unit',_('cm'))
+        unit = Prefs.instance()().get('default_margin_unit',_('cm'))
         if unit not in self.units: unit = _('cm')
         self.last_unit = self.units[unit]
         cb_extras.setup_typeahead(self.unit_combo)
@@ -768,7 +768,7 @@ class CustomUnitOption (optionTable.CustomOption):
 
     def unit_changed_cb (self, widget):
         new_unit = self.units[self.unit_combo.get_active_text()]
-        get_prefs()['default_margin_unit'] = self.unit_combo.get_active_text()
+        Prefs.instance()()['default_margin_unit'] = self.unit_combo.get_active_text()
         old_val = self.value_adjustment.get_value() * self.last_unit
         self.last_unit = self.units[self.unit_combo.get_active_text()]
         new_val = self.adjust_to_unit(old_val)
@@ -843,7 +843,7 @@ class PdfPrefGetter:
     OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = list(range(8))
 
     def __init__ (self,):
-        self.prefs = get_prefs()
+        self.prefs = Prefs.instance()()
         defaults = self.prefs.get('PDF_EXP',PDF_PREF_DEFAULT)
         self.size_strings = list(self.page_sizes.keys())
         self.size_strings.sort()
@@ -905,9 +905,9 @@ class PdfPrefGetter:
 
     def get_args_from_opts (self, opts):
         args = {}
-        if 'PDF_EXP' not in get_prefs():
-            get_prefs()['PDF_EXP'] = {}
-        prefs = get_prefs()['PDF_EXP']
+        if 'PDF_EXP' not in Prefs.instance()():
+            Prefs.instance()()['PDF_EXP'] = {}
+        prefs = Prefs.instance()()['PDF_EXP']
         args['pagesize'] = self.page_sizes[opts[self.OPT_PS][1]] # PAGE SIZE
         prefs['page_size'] = self.page_sizes_r[args['pagesize']]
         args['pagemode'] = self.page_modes[opts[self.OPT_PO][1]] # PAGE MODE

@@ -10,6 +10,7 @@ from .gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
 from .gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
     mnemonic_manager, pageable_store, treeview_extras as te
 from .image_utils import bytes_to_pixbuf
+from .prefs import Prefs
 from . import Undo
 
 
@@ -33,7 +34,7 @@ class RecIndex:
         self.rtcols=rg.rtcols
         self.rtcolsdic=rg.rtcolsdic
         self.rtwidgdic=rg.rtwidgdic
-        self.prefs=rg.prefs
+        self.prefs = Prefs.instance()
         self.ui = ui
         self.rd = rd
         self.rg = rg

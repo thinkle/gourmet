@@ -237,7 +237,6 @@ setuptools.setup(
     license=version.license,
     packages=['gourmet',
               'gourmet.backends',
-              'gourmet.util',
               'gourmet.defaults',
               'gourmet.gtk_extras',
               'gourmet.importers',
@@ -253,4 +252,3 @@ setuptools.setup(
             "gourmet = gourmet.GourmetRecipeManager:launch_app",
         ]}
 )
-

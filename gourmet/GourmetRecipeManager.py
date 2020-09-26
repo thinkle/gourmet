@@ -89,7 +89,7 @@ class GourmetApplication:
     # Setup preferences system
     def setup_prefs (self):
         self.conf = []
-        self.prefs = prefs.get_prefs()
+        self.prefs = prefs.Prefs.instance()
         self.prefsGui = prefsGui.PreferencesGui(
             self.prefs,
             buttons={'clear_remembered_optional_button':\

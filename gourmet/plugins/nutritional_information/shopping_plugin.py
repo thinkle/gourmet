@@ -1,7 +1,7 @@
 from gourmet.plugin import ShoppingListPlugin
 from gi.repository import Gtk
 import gourmet.recipeManager, gourmet.GourmetRecipeManager
-from gourmet.prefs import get_prefs
+from gourmet.prefs import Prefs
 from .nutritionLabel import NutritionLabel
 import os.path
 from gettext import gettext as _
@@ -73,7 +73,7 @@ class ShoppingNutritionalInfoPlugin (ShoppingListPlugin):
             self.nutrition_window.render_icon('nutritional-info',
                                               Gtk.IconSize.MENU)
             )
-        self.nl = NutritionLabel(get_prefs())
+        self.nl = NutritionLabel(Prefs.instance())
         self.sw = Gtk.ScrolledWindow(); self.sw.set_policy(Gtk.PolicyType.NEVER,Gtk.PolicyType.AUTOMATIC)
         self.sw.add_with_viewport(self.nl); self.sw.show()
         self.nutrition_window.vbox.pack_start(self.sw, True, True, 0)

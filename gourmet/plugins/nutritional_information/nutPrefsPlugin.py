@@ -1,5 +1,5 @@
 from gourmet.plugin import PrefsPlugin
-from gourmet.prefs import get_prefs
+from gourmet.prefs import Prefs
 from gi.repository import Gtk
 from gettext import gettext as _
 
@@ -13,7 +13,7 @@ class NutritionPrefs (PrefsPlugin):
     def __init__ (self, *args, **kwargs):
         # Create main widget
         self.widget = Gtk.VBox()
-        self.prefs = get_prefs()
+        self.prefs = Prefs.instance()
         label = Gtk.Label(label='Hello world')
         self.include_tb = Gtk.CheckButton('Include nutritional information in print-outs and exports')
         self.partial_tb = Gtk.CheckButton('Include partial nutritional information in print-outs and exports?')
