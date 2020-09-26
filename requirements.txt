@@ -13,3 +13,4 @@ scrape-schema-recipe
 selenium
 setuptools
 SQLAlchemy
+toml
