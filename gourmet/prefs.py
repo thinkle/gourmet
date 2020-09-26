@@ -1,3 +1,4 @@
+from pathlib import Path
 import toml
 from gourmet.gglobals import gourmetdir
 
@@ -20,7 +21,7 @@ class Prefs(dict):
 
     def __init__(self, filename='guiprefs.toml'):
         super().__init__()
-        self.filename = gourmetdir / filename
+        self.filename = Path(gourmetdir) / filename
         self.set_hooks = []
         self.load()
 
@@ -36,6 +37,3 @@ class Prefs(dict):
                     self.__setitem__(k, v)
             return True
         return False
-
-    def __str__(self):
-        return toml.dumps(dict(self.items()))
