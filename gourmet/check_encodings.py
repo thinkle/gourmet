@@ -222,19 +222,25 @@ class EncodingDialog (de.OptionDialog):
         encoded_buffers.sort(key=lambda x: len(x.splitlines()), reverse=True)
         enc1 = encoded_buffers[0]
         enc_rest = [e.splitlines() for e in encoded_buffers[1:]]
+
         for linenum, l in enumerate(enc1.splitlines()):
             other_lines = [len(e)>linenum and e[linenum] for e in enc_rest]
             # Remove any Falses returned by above
             other_lines = [x for x in other_lines if not isinstance(x, bool)]
-            if False in [l==ol for ol in other_lines]:
+
+            # If not all lines are the same, create a diff marking where they
+            # differ.
+            if False in [l == ol for ol in other_lines]:
                 ranges = []
-                for chnum,ch in enumerate(l):
-                    if False in [len(line)>ch and ch == line[chnum] for line in other_lines]:
-                        if ranges and ranges[-1][1]==chnum:
-                            ranges[-1][1]=chnum+1
+                for chnum, ch in enumerate(l):
+                    # Check that the lines are the same. If not, mark where
+                    if not all([len(line) > chnum and ch == line[chnum]
+                                for line in other_lines]):
+                        if ranges and ranges[-1][1] == chnum:
+                            ranges[-1][1] = chnum+1
                         else:
-                            ranges.append([chnum,chnum+1])
-                self.diff_lines[linenum]=ranges
+                            ranges.append([chnum, chnum+1])
+                self.diff_lines[linenum] = ranges
 
 def getEncoding (*args,**kwargs):
     d=EncodingDialog(*args,**kwargs)
@@ -245,13 +251,3 @@ def getEncoding (*args,**kwargs):
         return 'ascii'
     else:
         return result
-
-if __name__ == '__main__':
-    print('grabbing dialog extras')
-    #import gtk_extras.dialog_extras as de
-    #print 'selecting file'
-    #fn=de.select_file('Select file to decode',filters=[['Plain Text',['text/plain'],'*txt']],)
-    #print 'fn = ',fn
-    print("Got file ", get_file('/tmp/foo.txt')[0:5])
-
-
