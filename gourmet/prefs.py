@@ -1,4 +1,6 @@
 from pathlib import Path
+from typing import Any, Optional
+
 import toml
 from gourmet.gglobals import gourmetdir
 
@@ -24,6 +26,11 @@ class Prefs(dict):
         self.filename = Path(gourmetdir) / filename
         self.set_hooks = []
         self.load()
+
+    def get(self, key: str, default: Optional[Any] = None) -> Optional[Any]:
+        if key not in self and default is not None:
+            self[key] = default
+        return super().get(key)
 
     def save(self):
         self.filename.parent.mkdir(exist_ok=True)
