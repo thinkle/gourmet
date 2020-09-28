@@ -1037,6 +1037,9 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('Actions',None,_('_Actions')),
             ('Edit',None,_('_Edit')),
 
+            ('ViewTrash', None, _('Open _Trash'), None, None,
+             self.show_deleted_recs),
+
             ('Preferences', Gtk.STOCK_PREFERENCES, _('_Preferences'),
              None, None, self.show_preferences),
             ('Plugins',None,_('_Plugins'),
