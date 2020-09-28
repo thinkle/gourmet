@@ -16,7 +16,7 @@ class DBTest (unittest.TestCase):
 
 class testRecBasics (DBTest):
     def runTest (self):
-        self.assertEqual(self.db.fetch_len(self.db.recipe_table),0)
+        self.assertEqual(self.db.fetch_len(self.db.recipe_table), 2)
         rec = self.db.add_rec({'title':'Fooboo'})
         self.assertEqual(rec.title,'Fooboo')
         rec2 = self.db.new_rec()
@@ -25,7 +25,7 @@ class testRecBasics (DBTest):
         self.assertEqual(rec2.cuisine,'Bar')
         self.db.delete_rec(rec)
         self.db.delete_rec(rec2)
-        self.assertEqual(self.db.fetch_len(self.db.recipe_table),0)
+        self.assertEqual(self.db.fetch_len(self.db.recipe_table), 2)
 
 class testIngBasics (DBTest):
 
@@ -50,7 +50,7 @@ class testIngBasics (DBTest):
         self.assertEqual(ing.unit,'cup')
         self.db.delete_ing(ing)
         self.db.delete_ing(ing2)
-        self.assertEqual(self.db.fetch_len(self.db.ingredients_table),0)
+        self.assertEqual(self.db.fetch_len(self.db.ingredients_table), 8)
         self.db.add_ings([
                 {'rangeamount': None, 'item': 'water', 'recipe_id': rid, 'position': 1, 'ingkey': 'water'},
                 {'rangeamount': None, 'item': 'linguine', 'amount': 0.5, 'recipe_id': rid, 'position': 1, 'ingkey': 'linguine', 'unit': 'pound'}
