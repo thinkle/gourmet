@@ -1048,12 +1048,14 @@ class FileSelectorDialog:
             debug('changing file extension for %s to %s'%(base, ext))
             self.fsd.set_current_name(base)
 
-    def is_extension_legal (self, fn):
-        if not fn: return
-        for e in self.extensions:
-            if not e: e=""
-            if fnmatch.fnmatch(fn, e):
-                return True
+    def is_extension_legal(self, filenames: List[str]) -> bool:
+        if filenames:
+            for extension in self.extensions:
+                if not extension:
+                    extension = ""
+                if fnmatch.fnmatch(filenames[0], extension):
+                    return True
+        return False
 
     def run(self) -> List[str]:
         """Run our dialog and return the filename(s)"""
@@ -1068,7 +1070,7 @@ class FileSelectorDialog:
                              sublabel=_('No file was selected, so the action has been cancelled')
                              )
                 return []
-            if self.action==Gtk.FileChooserAction.SAVE:
+            if self.action == Gtk.FileChooserAction.SAVE:
                 # add the extension if need be...
                 if self.do_saveas and not self.is_extension_legal(fn):
                     if self.fsd.get_filter().get_name() in self.name_to_ext:
