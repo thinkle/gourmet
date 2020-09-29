@@ -29,7 +29,7 @@ class PangoToHtml(HTMLParser):
 
         # The key is the Pango id of a tag, and the value is a tuple of opening
         # and closing html tags for this id.
-        self.tags: Dict[str: Tuple[str, str]] = {}
+        self.tags: Dict[str, Tuple[str, str]] = {}
 
         # Optionally, links can be specified, in a {link text: target} format.
         self.links: Dict[str, str] = {}

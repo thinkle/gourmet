@@ -951,15 +951,16 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
                 self.selected
                 )
 
-    def setup_main_window (self):
+    def setup_main_window(self):
         self.window = self.app = Gtk.Window()
-        self.window.set_icon_from_file(os.path.join(icondir,'gourmet.png'))
-        self.conf.append(WidgetSaver.WindowSaver(self.window,
-                                                 self.prefs.get('app_window',
-                                                                {'window_size':(800,600)}),
-                                                 )
-                         )
-        self.window.set_default_size(*self.prefs.get('app_window')['window_size'])
+        self.window.set_icon_from_file(os.path.join(icondir, 'gourmet.png'))
+        saver = WidgetSaver.WindowSaver(
+            self.window,
+            self.prefs.get('app_window', {'window_size': (800, 600)})
+        )
+        self.conf.append(saver)
+
+        self.window.set_default_size(*self.prefs['app_window']['window_size'])
         self.window.set_title(version.appname)
         self.main = Gtk.VBox()
         self.window.add(self.main)
