@@ -1,11 +1,15 @@
+import re
 import time
-from typing import Optional
+from typing import Optional, Tuple, Union
 
 from gettext import gettext as _
 from gi.repository import Gdk, GObject, Gtk
 
-from gourmet.convert import (Converter, FRACTIONS_ASCII,
-                             NUMBER_MATCHER, seconds_to_timestring)
+import gourmet.convert
+from gourmet.convert import (
+    Converter, float_to_frac, FRACTIONS_ASCII, frac_to_float, NUMBER_MATCHER,
+    RANGE_MATCHER, seconds_to_timestring)
+
 
 TIME_TO_READ = 1000
 
@@ -178,3 +182,111 @@ class TimeEntry(ValidatingEntry):
 
     def get_value(self):
         return self.conv.timestring_to_seconds(self.entry.get_text())
+
+
+class NumberEntry(ValidatingEntry):
+    __gtype_name__ = 'NumberEntry'
+
+    error_message = _('Invalid input.') + ' ' + _('Not a number.')
+
+    in_progress_regexp = """
+        ^ # start at
+        %(NUMBER_START_REGEXP)s+ # a number
+        %(NUMBER_MID_NO_RANGE_REGEXP)s*
+       %(NUMBER_END_NO_RANGE_REGEXP)s*
+        $ # end
+        """ % gourmet.convert.__dict__
+
+    def __init__(self,
+                 default_to_fractions: bool = False,
+                 decimals: int = 2):
+        """Decimals is the number of decimal places we set.
+
+        Set decimals to -1 for as many as we have.
+        """
+        self.default_to_fractions = default_to_fractions
+        self.decimals = decimals
+        self.in_progress_matcher = re.compile(self.in_progress_regexp,
+                                              re.VERBOSE | re.UNICODE)
+        super().__init__()
+        self.entry.get_value = self.get_value
+        self.entry.set_value = self.get_value
+
+    def find_errors_in_progress(self, text: str):
+        text = text.strip()
+        if not text:
+            return
+        if not self.in_progress_matcher.match(text):
+            return self.error_message
+
+    def find_completed_error(self, text: str):
+        if text and frac_to_float(text) is None:
+            return self.error_message
+
+    def set_value(self, number: int):
+        if self.default_to_fractions:
+            self.set_text(float_to_frac(number, fractions=FRACTIONS_ASCII))
+        else:
+            if self.decimals >= 0:
+                decimals = self.decimals
+                while number < 10 ** -decimals:
+                    decimals += 1
+                format_string = "%" + "." + "%i" % decimals + "f"
+                self.set_text(format_string % number)
+            else:
+                self.set_text(str(number))
+
+    def get_value(self) -> float:
+        return frac_to_float(self.get_text())
+
+
+class RangeEntry (NumberEntry):
+    in_progress_regexp = """
+        ^ # start at
+        %(NUMBER_START_REGEXP)s+ # a number
+        %(NUMBER_MID_REGEXP)s*
+        %(NUMBER_END_REGEXP)s*
+        (%(RANGE_REGEXP)s|[Tt][Oo]?)?
+        %(NUMBER_START_REGEXP)s*
+        %(NUMBER_MID_REGEXP)s*
+        %(NUMBER_END_REGEXP)s*
+        $ # end
+        """ % gourmet.convert.__dict__
+
+    def find_completed_errors(self, text: str) -> Optional[str]:
+        split = RANGE_MATCHER.split(text)
+        if len(split) == 1:
+            return super().find_completed_errors(self, text)
+        elif len(split) > 2:
+            return "A range can only have 2 items."
+        else:
+            error = super().find_completed_errors(self, split[0])
+            if error is not None:
+                return error
+            error = super().find_completed_errors(self, split[1])
+            if error is not None:
+                return error
+
+    def set_value(self, numbers: Union[Tuple, float]):
+        if isinstance(numbers, tuple):
+            if len(numbers) == 1:
+                numbers = numbers[0]
+            elif len(numbers) > 2:
+                raise ValueError
+            else:
+                text = float_to_frac(numbers[0], fractions=FRACTIONS_ASCII)
+                text += ' - '
+                text += float_to_frac(numbers[1], fractions=FRACTIONS_ASCII)
+                self.set_text(text)
+                return
+        super().set_value(numbers)
+
+    def get_value(self) -> Optional[Union[float, Tuple[float]]]:
+        txt = Gtk.get_text()
+        split = RANGE_MATCHER.split(txt)
+        if len(split) == 1:
+            return super().get_value()
+        if len(split) > 2:
+            return None
+        else:
+            return tuple([frac_to_float(t) for t in split])

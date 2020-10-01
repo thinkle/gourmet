@@ -50,7 +50,6 @@ gtk_extras/__init__.py
 gtk_extras/cb_extras.py
 gtk_extras/dialog_extras.py
 gtk_extras/mnemonic_manager.py
-gtk_extras/numberEntry.py
 gtk_extras/optionTable.py
 gtk_extras/pageable_store.py
 gtk_extras/ratingWidget.py
