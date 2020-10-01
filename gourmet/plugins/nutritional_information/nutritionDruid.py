@@ -6,7 +6,7 @@ from gourmet.defaults import lang as defaults
 from gourmet.gtk_extras.pageable_store import PageableViewStore
 from .nutritionLabel import NUT_LAYOUT, SEP, RECOMMENDED_INTAKE
 from .nutritionInfoEditor import NutritionInfoIndex,MockObject
-from gourmet.gtk_extras.numberEntry import NumberEntry
+from gourmet.gtk_extras.validation import NumberEntry
 import gourmet.gtk_extras.cb_extras as cb
 import gourmet.gtk_extras.dialog_extras as de
 import gourmet.gtk_extras.WidgetSaver as WidgetSaver
