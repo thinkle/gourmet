@@ -18,7 +18,7 @@ from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
                               REC_ATTRS, doc_base, uibase, imagedir)
 from gourmet.gtk_extras import (  # noqa: imports needed for glade
     fix_action_group_importance, mnemonic_manager, ratingWidget,
-    timeEntry, WidgetSaver)
+    time_entry, WidgetSaver)
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras.dialog_extras import (UserCancelledError,

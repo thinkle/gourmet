@@ -54,7 +54,7 @@ gtk_extras/numberEntry.py
 gtk_extras/optionTable.py
 gtk_extras/pageable_store.py
 gtk_extras/ratingWidget.py
-gtk_extras/timeEntry.py
+gtk_extras/time_entry.py
 gtk_extras/treeview_extras.py
 gtk_extras/validatingEntry.py
 importers/__init__.py
