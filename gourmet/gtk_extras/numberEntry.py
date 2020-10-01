@@ -18,12 +18,12 @@
 
 
 from gi.repository import Gtk
-from . import validatingEntry
+from .validation import ValidatingEntry
 import gourmet.convert as convert
 import re
 from gettext import gettext as _
 
-class NumberEntry (validatingEntry.ValidatingEntry):
+class NumberEntry (ValidatingEntry):
     __gtype_name__ = 'NumberEntry'
 
     error_message = _('Invalid input.') + ' ' + _('Not a number.')
@@ -45,7 +45,7 @@ class NumberEntry (validatingEntry.ValidatingEntry):
         self.decimals = decimals
         self.in_progress_matcher = re.compile(self.in_progress_regexp,
                                               re.VERBOSE|re.UNICODE)
-        validatingEntry.ValidatingEntry.__init__(self)
+        super().__init__()
         self.entry.get_value = self.get_value
         self.entry.set_value = self.get_value
 
