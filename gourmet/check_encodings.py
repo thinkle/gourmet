@@ -1,38 +1,39 @@
+from typing import Dict
 from gi.repository import Gtk
 from .gdebug import debug
 from .gtk_extras import dialog_extras as de
 from gettext import gettext as _
 from .prefs import Prefs
 
-class CheckEncoding:
 
+class CheckEncoding:
     """A class to read a file and guess the correct text encoding."""
 
-    encodings = ['iso8859','ascii','latin_1','cp850','cp1252','utf-8']
-    all_encodings= ['ascii','cp037','cp424',
-                        'cp437','cp500','cp737','cp775','cp850','cp852',
-                        'cp855','cp856','cp857','cp860','cp861','cp862',
-                        'cp863','cp864','cp865','cp869','cp874','cp875',
-                        'cp1006','cp1026','cp1140','cp1250','cp1251',
-                        'cp1252','cp1253','cp1254','cp1255','cp1256',
-                        'cp1258','latin_1','iso8859_2','iso8859_3',
-                        'iso8859_4','iso8859_5','iso8859_6','iso8859_7',
-                        'iso8859_8','iso8859_9','iso8859_10','iso8859_13',
-                        'iso8859_14','iso8859_15','koi8_r','koi8_u',
-                        'mac_cyrillic','mac_greek','mac_iceland','mac_latin2',
-                        'mac_roman','mac_turkish','utf_16','utf_16_be',
-                        'utf_16_le','utf_7','utf_8']
+    encodings = ['iso8859', 'ascii', 'latin_1', 'cp850', 'cp1252', 'utf-8']
+    all_encodings = ['ascii', 'cp037', 'cp424', 'cp437', 'cp500', 'cp737',
+                     'cp775', 'cp850', 'cp852', 'cp855', 'cp856', 'cp857',
+                     'cp860', 'cp861', 'cp862', 'cp863', 'cp864', 'cp865',
+                     'cp869', 'cp874', 'cp875', 'cp1006', 'cp1026', 'cp1140',
+                     'cp1250', 'cp1251', 'cp1252', 'cp1253', 'cp1254',
+                     'cp1255', 'cp1256', 'cp1258', 'latin_1', 'iso8859_2',
+                     'iso8859_3', 'iso8859_4', 'iso8859_5', 'iso8859_6',
+                     'iso8859_7', 'iso8859_8', 'iso8859_9', 'iso8859_10',
+                     'iso8859_13', 'iso8859_14', 'iso8859_15', 'koi8_r',
+                     'koi8_u', 'mac_cyrillic', 'mac_greek', 'mac_iceland',
+                     'mac_latin2', 'mac_roman', 'mac_turkish', 'utf_16',
+                     'utf_16_be', 'utf_16_le', 'utf_7', 'utf_8']
 
-    def __init__ (self, file, encodings=None):
-        if Prefs.instance().get('utf-16',False):
-            self.encodings.extend(['utf_16','utf_16_le','utf_16_be'])
-        if encodings: self.encodings = encodings
+    def __init__(self, file, encodings=None):
+        if Prefs.instance().get('utf-16', False):
+            self.encodings.extend(['utf_16', 'utf_16_le', 'utf_16_be'])
+        if encodings is not None:
+            self.encodings = encodings
         if isinstance(file, str):
             file = open(file, 'rb')
         self.txt = file.read()
         file.close()
 
-    def test_encodings (self):
+    def test_encodings(self):
         """Move through self.encodings one at a time and return the first
         encoding that decodes our text cleanly. We return a tuple (encoding,decoded_text)"""
         for e in self.encodings:
@@ -64,11 +65,11 @@ class CheckEncoding:
                 pass
         return self.possible_encodings
 
-class GetFile (CheckEncoding):
+class GetFile(CheckEncoding):
     """Handed a filename, return a list of lines."""
-    def __init__ (self,file,encodings=None):
-        CheckEncoding.__init__(self,file,encodings)
-        encs=self.get_encodings()
+    def __init__(self, file: str, encodings=None):
+        super().__init__(file, encodings)
+        encs: Dict[str, str] = self.get_encodings()
         if encs:
             if len(list(encs.keys())) > 1:
                 encoding = getEncoding(encodings=encs)
@@ -80,33 +81,34 @@ class GetFile (CheckEncoding):
         else:
             raise Exception("Cannot decode file %s" % file)
 
-def get_file (file, encodings=None):
+
+def get_file(file: str, encodings=None):
     gf = GetFile(file, encodings)
     return gf.lines
 
-class EncodingDialog (de.OptionDialog):
+
+class EncodingDialog(de.OptionDialog):
     """Create a dialog to allow user to select correct encoding for an input file."""
 
     context_lines = 2
 
-    def __init__ (self, default=None, label=_("Select encoding"),
-                  sublabel=_("Cannot determine proper encoding. Please select the correct encoding from the following list."),
-                  expander_label=_("See _file with encoding"),
-                  encodings={},
-                 ):
+    def __init__(self, default=None, label=_("Select encoding"),
+                 sublabel=_("Cannot determine proper encoding. Please select the correct encoding from the following list."),
+                 expander_label=_("See _file with encoding"),
+                 encodings=None):
         self.diff_lines = {}
         self.cursor_already_set = False
-        self.expander_label=expander_label
-        self.encodings = encodings
+        self.expander_label = expander_label
+        self.encodings = encodings if encodings is not None else {}
         self.current_error = 0
         self.diff_texts()
         self.options = self.create_options()
-        expander=self.create_expander()
+        expander = self.create_expander()
         self.setup_buffers()
-        de.OptionDialog.__init__(self, default=default,label=label, sublabel=sublabel,
-                                 options=self.options, expander=expander)
-        self.set_default_size(700,500)
-        self.combobox.connect('changed',self.change_encoding)
+        super().__init__(default=default, label=label, sublabel=sublabel,
+                         options=self.options, expander=expander)
+        self.set_default_size(700, 500)
+        self.combobox.connect('changed', self.change_encoding)
         self.change_encoding()
         self.created = False
         self.expander.set_expanded(True)
@@ -122,8 +124,8 @@ class EncodingDialog (de.OptionDialog):
         self.evb.add(self.hbb)
         self.hbb.show_all()
 
-    def get_option (self,widget):
-        de.OptionDialog.get_option(self,widget)
+    def get_option(self, widget):
+        super().get_option(widget)
         self.change_encoding()
 
     def create_options (self):
@@ -132,19 +134,14 @@ class EncodingDialog (de.OptionDialog):
         options.sort(key=lambda x: masterlist.index(x))
         return options
 
-    def create_expander (self):
-        self.evb = Gtk.VBox()
-        self.sw = Gtk.ScrolledWindow()
-        self.sw.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
+    def create_expander(self):
+        self.evb = Gtk.VBox(vexpand=True)
         self.tv = Gtk.TextView()
         self.tv.set_editable(False)
         self.buffer = self.tv.get_buffer()
-        self.sw.add(self.tv)
-        self.sw.show_all()
-        self.evb.add(self.sw)
-        #self.setup_motion_buttons() # doesn't work yet
+        self.evb.pack_start(self.tv, expand=True, fill=True, padding=0)
         self.evb.show_all()
-        return self.expander_label,self.evb
+        return self.expander_label, self.evb
 
     def setup_buffers (self):
         self.encoding_buffers={}
@@ -215,24 +212,24 @@ class EncodingDialog (de.OptionDialog):
                 else:
                     buffer.insert_with_tags(buffer.get_end_iter(),l)
 
-    def diff_texts (self):
-        """Look at our differently encoded buffers for characters where they differ."""
+    def diff_texts(self):
+        """Compare different encoding for characters where they differ."""
         encoded_buffers = list(self.encodings.values())
         # Sort by number of newlines (most first)
         encoded_buffers.sort(key=lambda x: len(x.splitlines()), reverse=True)
         enc1 = encoded_buffers[0]
         enc_rest = [e.splitlines() for e in encoded_buffers[1:]]
 
-        for linenum, l in enumerate(enc1.splitlines()):
-            other_lines = [len(e)>linenum and e[linenum] for e in enc_rest]
+        for linenum, line in enumerate(enc1.splitlines()):
+            other_lines = [len(e) > linenum and e[linenum] for e in enc_rest]
             # Remove any Falses returned by above
             other_lines = [x for x in other_lines if not isinstance(x, bool)]
 
             # If not all lines are the same, create a diff marking where they
             # differ.
-            if False in [l == ol for ol in other_lines]:
+            if not all(line == ol for ol in other_lines):
                 ranges = []
-                for chnum, ch in enumerate(l):
+                for chnum, ch in enumerate(line):
                     # Check that the lines are the same. If not, mark where
                     if not all([len(line) > chnum and ch == line[chnum]
                                 for line in other_lines]):
@@ -242,11 +239,12 @@ class EncodingDialog (de.OptionDialog):
                             ranges.append([chnum, chnum+1])
                 self.diff_lines[linenum] = ranges
 
-def getEncoding (*args,**kwargs):
-    d=EncodingDialog(*args,**kwargs)
-    result = d.run()
-    if (not result) and d.encodings:
-        return d.options[0]
+
+def getEncoding(*args, **kwargs):
+    dialog = EncodingDialog(*args, **kwargs)
+    result = dialog.run()
+    if (not result) and dialog.encodings:
+        return dialog.options[0]
     elif not result:
         return 'ascii'
     else:

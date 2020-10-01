@@ -337,6 +337,7 @@ class OptionDialog (ModalDialog):
         # set the default value to the first item
         self.ret = self.option_values[0]
         self.combobox.connect('changed', self.get_option)
+        self.combobox.set_active(0)
         self.combobox.show()
 
     def get_option (self, widget):
