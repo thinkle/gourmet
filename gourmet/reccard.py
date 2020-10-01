@@ -1218,13 +1218,14 @@ class IngredientEditorModule (RecEditorModule):
         if f:  # knowingly work with only a single file
             add_with_undo(self, lambda *args: self.import_ingredients(f[0]))
 
-    def paste_ingredients_cb (self, *args):
-        self.cb = Gtk.Clipboard()
-        def add_ings_from_clippy (cb,txt,data):
-            if txt:
-                def do_add ():
-                    for l in txt.split('\n'):
-                        if l.strip(): self.add_ingredient_from_line(l)
+    def paste_ingredients_cb(self, action: Gtk.Action):
+        self.cb = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+        def add_ings_from_clippy(cb, text):
+            if text:
+                def do_add():
+                    for l in text.split('\n'):
+                        if l.strip():
+                            self.add_ingredient_from_line(l)
                 add_with_undo(self, lambda *args: do_add())
         self.cb.request_text(add_ings_from_clippy)
 
@@ -1255,7 +1256,7 @@ class TextEditor:
             ('Paste',Gtk.STOCK_PASTE,None,None,None,self.do_paste),
             ('Cut',Gtk.STOCK_CUT,None,None,None,self.do_cut),
             ])
-        self.cb = Gtk.Clipboard()
+        self.cb = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
         GObject.timeout_add(500,self.do_sensitize)  # FIXME: make event-driven
         self.action_groups.append(self.copyPasteActionGroup)
 
@@ -1301,23 +1302,26 @@ class TextEditor:
             buf  = tv.get_buffer()
             buf.cut_clipboard(self.cb,tv.get_editable())
 
-    def do_paste (self, *args):
-        text = self.cb.wait_for_text()
+    def do_paste(self, action: Gtk.Action):
         if self.edit_widgets:
             widget = self.edit_widgets[0]
         else:
             widget = self.edit_textviews[0]
-        parent = widget.parent
-        while parent and not hasattr(parent,'focus_widget') :
-            parent = parent.parent
-        widget = parent.focus_widget
-        if isinstance(widget,Gtk.TextView):
+
+        while True:
+            parent = widget.get_parent()
+            if widget.has_focus() or parent is None:
+                break
+            widget = parent
+
+        if isinstance(widget, Gtk.TextView):
             buf = widget.get_buffer()
-            buf.paste_clipboard(self.cb,None,widget.get_editable())
-        elif isinstance(widget,Gtk.Editable):
+            buf.paste_clipboard(self.cb, None, widget.get_editable())
+        elif isinstance(widget, Gtk.Editable):
             widget.paste_clipboard()
         else:
-            print('What has focus?',widget)
+            print('Attempting to paste to', widget)
+
 
 class DescriptionEditorModule (TextEditor, RecEditorModule):
     name = 'description'
@@ -2519,8 +2523,8 @@ class IngredientTreeUI:
         iters=[]
         tv.get_selection().selected_foreach(grab_selection,(strings,iters))
         ingredients="\n".join(strings)
-        selection.set('text/plain',0,ingredients)
-        selection.set('STRING',0,ingredients)
+        selection.set('text/plain', 0, ingredients)
+        selection.set('STRING', 0, ingredients)
         selection.set('GOURMET_INTERNAL',8,'blarg')
         self.selected_iter=iters
 
