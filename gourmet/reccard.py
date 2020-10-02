@@ -3120,7 +3120,7 @@ def getYieldSelection (rec, parent=None):
 
 if __name__ == '__main__':
     from gourmet import GourmetRecipeManager
-    rg = GourmetRecipeManager.RecGui()
+    rg = GourmetRecipeManager.RecGui.instance()
     rc = RecCard(rg,recipe=rg.rd.fetch_one(rg.rd.recipe_table,title='Asparagus Custard Tart'))
     Gtk.main()
 

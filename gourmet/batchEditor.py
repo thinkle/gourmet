@@ -86,7 +86,7 @@ class BatchEditor:
 
 if __name__ == '__main__':
     from . import GourmetRecipeManager
-    rg = GourmetRecipeManager.RecGui()
+    rg = GourmetRecipeManager.RecGui.instance()
     be=BatchEditor(rg)
     be.set_values_from_recipe(rg.rd.fetch_one(rg.rd.recipe_table))
     be.dialog.run()

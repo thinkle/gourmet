@@ -34,6 +34,7 @@ from gettext import ngettext
 
 from gi.repository import GObject, Gtk, Pango
 
+
 # _IdleObject etc. based on example John Stowers
 # <john.stowers@gmail.com>
 
@@ -244,9 +245,10 @@ class ThreadManagerGui:
         self.tm = get_thread_manager()
         self.threads = {}
 
-        if not messagebox:
-            from .GourmetRecipeManager import get_application
-            self.messagebox = get_application().messagebox
+        if messagebox is None:
+            # import done here to avoid cycling imports
+            from gourmet.GourmetRecipeManager import RecGui
+            self.messagebox = RecGui.instance().messagebox
         else:
             self.messagebox = messagebox
 

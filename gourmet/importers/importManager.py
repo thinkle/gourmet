@@ -1,12 +1,16 @@
+from typing import Any, List, Optional, Tuple
+
+from fnmatch import fnmatch
+from gettext import gettext as _
+from gi.repository import Gtk
+import tempfile
+from urllib.parse import urlparse
+
 import gourmet.plugin_loader as plugin_loader
 from gourmet.plugin import ImporterPlugin, ImportManagerPlugin
 import gourmet.gtk_extras.dialog_extras as de
-from fnmatch import fnmatch
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui, NotThreadSafe
 from .webextras import URLReader
-import tempfile
-from gettext import gettext as _
-from urllib.parse import urlparse
 
 
 class ImportFileList (Exception):
@@ -111,7 +115,7 @@ class ImportManager (plugin_loader.Pluggable):
             print('Doing import of',reader.url,plugin)
             self.do_import(plugin,'get_web_importer',reader.url,reader.data,reader.content_type)
 
-    def offer_import (self, parent=None):
+    def offer_import(self, parent: Optional[Gtk.Window] = None):
         """Offer to import a file or group of files.
 
         Begin the import if we can in a separate dialog.
@@ -119,12 +123,12 @@ class ImportManager (plugin_loader.Pluggable):
         filenames = de.select_file(_('Open recipe...'),
                                    filters=self.get_filters(),
                                    parent=parent,
-                                   select_multiple = True
-                                   )
-        if not filenames: return
+                                   select_multiple=True)
+        if not filenames:
+            return
         self.import_filenames(filenames)
 
-    def import_filenames (self, filenames):
+    def import_filenames(self, filenames: List[str]) -> List[Any]:
         """Import list of filenames, filenames, based on our currently
         registered plugins.
 
@@ -162,19 +166,18 @@ class ImportManager (plugin_loader.Pluggable):
         print('import_filenames returns',ret_importers)
         return ret_importers
 
-    def do_import (self, importer_plugin, method, *method_args):
-        '''Import using importer_plugin.method(*method_args)
-        '''
+    def do_import(self, importer_plugin: Any,
+                  method: str, *method_args: Tuple[str]):
         try:
-            importer = getattr(importer_plugin,method)(*method_args)
+            importer = getattr(importer_plugin, method)(*method_args)
             self.setup_notification_message(importer)
         except ImportFileList as ifl:
             # recurse with new filelist...
             return self.import_filenames(ifl.filelist)
         else:
-            if hasattr(importer,'pre_run'):
+            if hasattr(importer, 'pre_run'):
                 importer.pre_run()
-            if isinstance(importer,NotThreadSafe):
+            if isinstance(importer, NotThreadSafe):
                 #print 'Running manually --- not threadsafe!'
                 importer.run()
                 self.follow_up(None,importer)
