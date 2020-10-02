@@ -21,7 +21,7 @@ from gourmet.exporters.printer import get_print_manager
 from gourmet.gdebug import debug
 from gourmet.gglobals import (DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base,
                               icondir, uibase)
-from gourmet.importers.importManager import get_import_manager
+from gourmet.importers.importManager import ImportManager
 
 
 from gourmet.gtk_extras import (
@@ -647,7 +647,7 @@ def launch_webbrowser(dialog, link, user_data):
 
 
 def launch_app():
-    RecGui()
+    RecGui.instance()
     Gtk.main()
 
 
@@ -676,14 +676,14 @@ class ImporterExporter:
     @property
     def importManager(self):
         if self.__import_manager is None:
-            self.__import_manager = get_import_manager()
+            self.__import_manager = ImportManager.instance()
         return self.__import_manager
 
-    def import_webpageg (self, *args):
+    def import_webpageg(self, action: Gtk.Action):
         self.importManager.offer_web_import(parent=self.app.get_toplevel())
 
-    def do_import (self, *args):
-        self.importManager.offer_import(self.window)
+    def do_import(self, action: Gtk.Action):
+        self.importManager.offer_import(parent=self.app.get_toplevel())
 
     __export_manager = None
 
@@ -860,7 +860,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
         return RecGui.__single
 
-    def __init__ (self):
+    def __init__(self):
         self.ui_manager = Gtk.UIManager()
         self.ui_manager.add_ui_from_string(ui_string)
 
