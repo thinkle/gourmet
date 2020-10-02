@@ -27,6 +27,7 @@
 #
 import threading
 import time
+from typing import Any
 import webbrowser
 
 from gettext import gettext as _
@@ -354,11 +355,8 @@ class ThreadManagerGui:
         b.show()
         self.to_remove.append(threadbox)
 
-    def thread_stopped (self, thread, threadbox):
-        pb = threadbox.get_content_area().get_children()[0].get_children()[1]
-        txt = pb.get_text()
-        txt += '(' + _('cancelled') + ')'
-        pb.set_text(txt)
+    def thread_stopped(self, thread: Any, threadbox: Gtk.InfoBar):
+        threadbox.hide()
 
     def thread_pause (self, thread, threadbox):
         pb = threadbox.get_content_area().get_children()[0].get_children()[1]
