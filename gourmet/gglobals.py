@@ -106,7 +106,7 @@ icon_factory = Gtk.IconFactory()
 
 def add_icon (file_name, stock_id, label=None, modifier=0, keyval=0):
     pb = GdkPixbuf.Pixbuf.new_from_file(file_name)
-    iconset = Gtk.IconSet(pb)
+    iconset = Gtk.IconSet.new_from_pixbuf(pb)
     icon_factory.add(stock_id,iconset)
     icon_factory.add_default()
     # TODO: fix adding icons
