@@ -373,6 +373,13 @@
                         <child>
                           <object class="GtkComboBoxText" id="sourceBox">
                             <property name="visible">True</property>
+                            <property name="has_entry">True</property>
+                                <child internal-child="entry">
+                                  <object class="GtkEntry">
+                                    <property name="can_focus">True</property>
+                                    <property name="input_hints">GTK_INPUT_HINT_WORD_COMPLETION</property>
+                                  </object>
+                                </child>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -386,6 +393,13 @@
                         <child>
                           <object class="GtkComboBoxText" id="cuisineBox">
                             <property name="visible">True</property>
+                            <property name="has_entry">True</property>
+                                <child internal-child="entry">
+                                  <object class="GtkEntry">
+                                    <property name="can_focus">True</property>
+                                    <property name="input_hints">GTK_INPUT_HINT_WORD_COMPLETION</property>
+                                  </object>
+                                </child>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -432,7 +446,7 @@
                                     <property name="input_hints">GTK_INPUT_HINT_WORD_COMPLETION</property>
                                   </object>
                                 </child>
-                             <accessibility>
+                              <accessibility>
 
                             </accessibility>
                             <child internal-child="accessible">
