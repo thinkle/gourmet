@@ -3,16 +3,15 @@
 This module contains code for handling the 'merging' of duplicate
 recipes.
 """
-from gi.repository import Gtk
-import gourmet.recipeIdentifier
-from gourmet.gtk_extras import ratingWidget, mnemonic_manager, dialog_extras
-import gourmet.recipeIdentifier
-import gourmet.convert as convert
-import gourmet.gglobals as gglobals
-import gourmet.recipeManager
-from gettext import gettext as _
 import os.path
 import time
+from typing import Union
+
+from gettext import gettext as _
+from gi.repository import Gtk, Pango
+
+from gourmet import convert, gglobals, recipeIdentifier, recipeManager
+from gourmet.gtk_extras import ratingWidget, mnemonic_manager, dialog_extras
 
 NEWER = 1
 OLDER = 2
@@ -58,7 +57,7 @@ class RecipeMergerDialog:
         if rd:
             self.rd = rd
         else:
-            self.rd = gourmet.recipeManager.get_recipe_manager()
+            self.rd = recipeManager.get_recipe_manager()
         self.in_recipes = in_recipes
         self.on_close_callback = on_close_callback
         self.to_merge = [] # Queue of recipes to be merged...
@@ -164,7 +163,7 @@ class RecipeMergerDialog:
             #self.idt = IngDiffTable(self.rd,duplicate_recipes[0],duplicate_recipes[1])
             self.current_recs = [self.rd.get_rec(i) for i in duplicate_recipes]
             last_modified = {'last_modified':[r.last_modified for r in self.current_recs]}
-            self.current_diff_data = gourmet.recipeIdentifier.diff_recipes(self.rd,self.current_recs)
+            self.current_diff_data = recipeIdentifier.diff_recipes(self.rd,self.current_recs)
             last_modified.update(self.current_diff_data)
             self.diff_table = DiffTable(last_modified,self.current_recs[0],parent=self.recipeDiffScrolledWindow)
             self.diff_table.add_ingblocks(self.rd, self.current_recs)
@@ -333,8 +332,7 @@ class RecipeMerger:
         self.rd = rd
 
     def autoMergeRecipes (self, recs):
-        to_fill,conflicts = gourmet.recipeIdentifier.merge_recipes(self.rd,
-                                                                   recs)
+        to_fill,conflicts = recipeIdentifier.merge_recipes(self.rd, recs)
         if conflicts:
             raise ConflictError(conflicts)
         else:
@@ -346,9 +344,8 @@ class RecipeMerger:
                 self.rd.delete_rec(r.id)
 
     def uiMergeRecipes (self, recs):
-        diffs = gourmet.recipeIdentifier.diff_recipes(self.rd,
-                                              recs)
-        idiffs = gourmet.recipeIdentifier.diff_ings(self.rd,r1,r2)
+        diffs = recipeIdentifier.diff_recipes(self.rd, recs)
+        idiffs = recipeIdentifier.diff_ings(self.rd, r1, r2)
         if diffs:
             return DiffTable(diffs,recs[0])
         else:
@@ -453,9 +450,7 @@ class DiffTable (Gtk.Table):
         self.rd = rd
         self.iblock_dic = {}
         if len(recs) == 1:
-            blocks = gourmet.recipeIdentifier.format_ingdiff_line(
-                gourmet.recipeIdentifier.format_ings(recs[0],self.rd)
-                )
+            blocks = recipeIdentifier.format_ingdiff_line(recipeIdentifier.format_ings(recs[0],self.rd))
             self.iblock_dic[blocks[0]] = recs[0]
         else:
             blocks = []
@@ -465,7 +460,7 @@ class DiffTable (Gtk.Table):
                 if not chunks and not blocks:
                     # If there is no diff, in other words, and we
                     # don't yet have any block...
-                    chunks = [gourmet.recipeIdentifier.format_ings(recs[0],self.rd)]
+                    chunks = [recipeIdentifier.format_ings(recs[0],self.rd)]
                 elif not chunks:
                     # Otherwise if there are no diffs we just continue
                     # our loop...
@@ -528,21 +523,19 @@ class DiffTable (Gtk.Table):
 
     def get_ing_text_blobs (self, r1, r2):
         """Return an ing-blurb for r1 and r2 suitable for display."""
-        idiff = gourmet.recipeIdentifier.diff_ings(self.rd,r1,r2)
+        idiff = recipeIdentifier.diff_ings(self.rd, r1, r2)
         if idiff: self.idiffs.append(idiff)
         def is_line (l):
             return not (l == '<diff/>')
         if idiff:
-            return [
-                tuple([gourmet.recipeIdentifier.format_ingdiff_line(i)
-                 for i in filter(is_line,igroup)
-                 ])
-                for igroup in idiff
-                ]
-        else:
-            return None
+            ret = []
+            for igroup in idiff:
+               ret.append((recipeIdentifier.format_ingdiff_line(i)
+                           for i in filter(is_line,igroup)))
+            return ret
 
-def put_text_in_scrolled_window (text):
+
+def put_text_in_scrolled_window(text: str) -> Gtk.ScrolledWindow:
     sw = Gtk.ScrolledWindow()
     tv = Gtk.TextView()
     sw.add(tv)
@@ -553,18 +546,20 @@ def put_text_in_scrolled_window (text):
     tv.show()
     return sw
 
-def make_text_label (t, use_markup=False):
-    if not t:
+
+def make_text_label(text: str, use_markup: bool = False) -> Union[Gtk.Label, Gtk.ScrolledWindow]:
+    if not text:
         return Gtk.Label(label=_('None'))
-    elif len(t) < 30:
-        return Gtk.Label(label=t)
-    elif len(t) < 250:
-        l = Gtk.Label(label=t)
-        if use_markup: l.set_use_markup(use_markup)
-        l.set_line_wrap_mode(Pango.WrapMode.WORD)
-        return l
+    elif len(text) < 30:
+        return Gtk.Label(label=text)
+    elif len(text) < 250:
+        label = Gtk.Label(label=text)
+        if use_markup:
+            label.set_use_markup(use_markup)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD)
+        return label
     else:
-        return put_text_in_scrolled_window(t)
+        return put_text_in_scrolled_window(text)
 
 def get_display_constructor (attribute):
     if attribute == 'rating':
@@ -612,7 +607,7 @@ if __name__ == '__main__':
     def test_merger (rd, conflicts):
         recs = [rd.get_rec(i) for i in conflicts]
         rmerger = RecipeMerger(rd)
-        to_fill,conflict_dic = gourmet.recipeIdentifier.merge_recipes(rd,recs)
+        to_fill,conflict_dic = recipeIdentifier.merge_recipes(rd,recs)
         if conflict_dic:
             dt = rmerger.uiMergeRecipes(recs)
             dt.show()
@@ -622,7 +617,6 @@ if __name__ == '__main__':
             print('Differences in ',conflicts,'can be auto-filled with',to_fill)
         else:
             print('No differences in ',conflicts)
-    import recipeManager
     rd = recipeManager.default_rec_manager()
     rmd = RecipeMergerDialog(rd)
     rmd.populate_tree()

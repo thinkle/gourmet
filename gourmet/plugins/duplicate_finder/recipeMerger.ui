@@ -21,7 +21,6 @@
   </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
-    <property name="extension_events">all</property>
     <property name="default_width">700</property>
     <property name="default_height">650</property>
     <property name="type_hint">dialog</property>
