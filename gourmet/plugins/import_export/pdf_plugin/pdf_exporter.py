@@ -1,3 +1,4 @@
+from io import BytesIO
 from gi.repository import Gtk
 import reportlab
 from reportlab.pdfbase import pdfmetrics
@@ -121,7 +122,7 @@ class Star (platypus.Flowable):
         inner = False # Start on top
         is_origin = True
         #print 'Drawing star with radius',outer_length,'(moving origin ',origin,')'
-        for theta in range(0,360,360/(points*2)):
+        for theta in range(0, 360, 360 // (points * 2)):
             if inner: r = inner_length
             else: r = outer_length
             x = (math.sin(math.radians(theta)) * r)
@@ -459,9 +460,9 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         image.drawHeight = image.drawHeight*proportion
         image.drawWidth = image.drawWidth*proportion
 
-    def write_image (self, data):
-        fn = image_utils.write_image_tempfile(data)
-        i = platypus.Image(fn)
+    def write_image(self, data: bytes):
+        buf = BytesIO(data)
+        i = platypus.Image(buf)
         self.scale_image(i)
         factor = 1
         MAX_WIDTH = self.doc.frame_width * 0.35
@@ -741,7 +742,7 @@ class CustomUnitOption (optionTable.CustomOption):
         self.unit_combo = Gtk.ComboBoxText()
         for key in self.units:
             self.unit_combo.append_text(key)
-        unit = Prefs.instance()().get('default_margin_unit',_('cm'))
+        unit = Prefs.instance().get('default_margin_unit', _('cm'))
         if unit not in self.units: unit = _('cm')
         self.last_unit = self.units[unit]
         cb_extras.setup_typeahead(self.unit_combo)
@@ -756,10 +757,13 @@ class CustomUnitOption (optionTable.CustomOption):
             )
         def emit_changed (*args):
             self.emit('changed')
-        self.value_adjustment.connect('changed',emit_changed)
-        self.value_widget = Gtk.SpinButton(self.value_adjustment,digits=2)
-        self.value_widget.connect('changed',emit_changed)
-        self.value_widget.show(); self.unit_combo.show()
+        self.value_adjustment.connect('changed', emit_changed)
+        self.value_widget = Gtk.SpinButton()
+        self.value_widget.set_adjustment(self.value_adjustment)
+        self.value_widget.set_digits(2)
+        self.value_widget.connect('changed', emit_changed)
+        self.value_widget.show()
+        self.unit_combo.show()
         self.pack_start(self.value_widget, True, True, 0)
         self.pack_start(self.unit_combo, True, True, 0)
 
@@ -768,7 +772,7 @@ class CustomUnitOption (optionTable.CustomOption):
 
     def unit_changed_cb (self, widget):
         new_unit = self.units[self.unit_combo.get_active_text()]
-        Prefs.instance()()['default_margin_unit'] = self.unit_combo.get_active_text()
+        Prefs.instance()['default_margin_unit'] = self.unit_combo.get_active_text()
         old_val = self.value_adjustment.get_value() * self.last_unit
         self.last_unit = self.units[self.unit_combo.get_active_text()]
         new_val = self.adjust_to_unit(old_val)
@@ -842,9 +846,9 @@ class PdfPrefGetter:
 
     OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = list(range(8))
 
-    def __init__ (self,):
-        self.prefs = Prefs.instance()()
-        defaults = self.prefs.get('PDF_EXP',PDF_PREF_DEFAULT)
+    def __init__(self):
+        self.prefs = Prefs.instance()
+        defaults = self.prefs.get('PDF_EXP', PDF_PREF_DEFAULT)
         self.size_strings = list(self.page_sizes.keys())
         self.size_strings.sort()
         for n in range(2,5):
@@ -896,7 +900,8 @@ class PdfPrefGetter:
         self.pd = de.PreferencesDialog(self.opts,option_label=None,value_label=None,
                                   label=_('PDF Options'),
                                   )
-        self.pd.hbox.pack_start(self.page_drawer,fill=True,expand=True)
+        self.pd.hbox.pack_start(self.page_drawer, fill=True, expand=True,
+                                padding=0)
         self.table = self.pd.table
 
     def run (self):
@@ -905,9 +910,7 @@ class PdfPrefGetter:
 
     def get_args_from_opts (self, opts):
         args = {}
-        if 'PDF_EXP' not in Prefs.instance()():
-            Prefs.instance()()['PDF_EXP'] = {}
-        prefs = Prefs.instance()()['PDF_EXP']
+        prefs = self.prefs.get('PDF_EXP', {})
         args['pagesize'] = self.page_sizes[opts[self.OPT_PS][1]] # PAGE SIZE
         prefs['page_size'] = self.page_sizes_r[args['pagesize']]
         args['pagemode'] = self.page_modes[opts[self.OPT_PO][1]] # PAGE MODE

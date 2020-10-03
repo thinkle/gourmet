@@ -53,6 +53,7 @@ class ModalDialog (Gtk.Dialog):
             self.set_resizable(True)
             self.setup_expander(expander)
         self.setup_buttons(cancel, okay)
+        self.vbox.set_vexpand(True)
         self.vbox.show_all()
 
     def setup_dialog (self, *args, **kwargs):
@@ -143,33 +144,31 @@ class ModalDialog (Gtk.Dialog):
         if self.get_modal():
             Gtk.main_quit()
 
-class MessageDialog (Gtk.MessageDialog, ModalDialog):
 
+class MessageDialog(Gtk.MessageDialog, ModalDialog):
     """A simple class for displaying messages to our users."""
 
-    def __init__ (self, title="", default=None, okay=True, cancel=True, label=False, sublabel=False,
-                  expander=None, message_type=Gtk.MessageType.INFO, parent=None, modal=True):
-        self.message_type=message_type
-        ModalDialog.__init__(self, title=title, default=default, okay=okay, cancel=cancel, label=label, sublabel=sublabel, parent=parent, expander=expander, modal=modal)
+    def __init__(self, title="", default=None, okay=True, cancel=True,
+                 label=False, sublabel=False, expander=None,
+                 message_type=Gtk.MessageType.INFO, parent=None, modal=True):
+        self.message_type = message_type
+        ModalDialog.__init__(self, title=title, default=default, okay=okay,
+                             cancel=cancel, label=label, sublabel=sublabel,
+                             parent=parent, expander=expander, modal=modal)
 
-    def setup_dialog (self, *args, **kwargs):
-        kwargs['type']=self.message_type
-        if 'title' in kwargs:
-            title = kwargs['title']
-            del kwargs['title']
-        Gtk.MessageDialog.__init__(self, *args, **kwargs)
+    def setup_dialog(self, *args, **kwargs):
+        kwargs['type'] = self.message_type
+        title = kwargs.pop('title', None)
+        super().__init__(self, *args, **kwargs)
         self.set_title(title)
 
-    def setup_label (self, label):
+    def setup_label(self, label: str):
         if not is_markup(label):
             label = xml.sax.saxutils.escape(label)
-        label = '<span weight="bold" size="larger">%s</span>'%label
+        label = f'<span weight="bold" size="larger">{label}</span>'
         self.set_markup(label)
 
-    def setup_sublabel (self, sublabel):
-        #curtext = self.label.get_text()
-        #curtext += "\n%s"%sublabel
-        #self.label.set_text(xml.sax.saxutils.escape(curtext))
+    def setup_sublabel(self, sublabel: str):
         self.format_secondary_markup(sublabel)
 
 
@@ -812,19 +811,17 @@ class RatingsConversionDialog (ModalDialog):
         self.ret[string]=value
         model.set_value(treeiter,colnum,value)
 
-def show_traceback (label="Error", sublabel=None):
+
+def show_traceback(label: str = "Error", sublabel: str = None):
     """Show an error dialog with a traceback viewable."""
     from io import StringIO
     import traceback
-    #f = StringIO()
-    #traceback.print_exc(file=f)
-    #f.getvalue()
-    error_mess =traceback.format_exc()
+    error_mess = traceback.format_exc()
     show_message(label=label,
                  sublabel=sublabel,
-                 expander=(_("_Details"),error_mess),
-                 message_type=Gtk.MessageType.ERROR
-                 )
+                 expander=(_("_Details"), error_mess),
+                 message_type=Gtk.MessageType.ERROR)
+
 
 def show_message (*args, **kwargs):
     """Show a message dialog.

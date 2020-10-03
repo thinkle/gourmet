@@ -17,7 +17,7 @@ from gourmet.defaults.defaults import lang as defaults
 from gourmet.defaults.defaults import get_pluralized_form
 
 from gourmet.exporters.exportManager import get_export_manager
-from gourmet.exporters.printer import get_print_manager
+from gourmet.exporters.printer import PrintManager
 
 from gourmet.gdebug import debug
 from gourmet.gglobals import (DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base,
@@ -672,7 +672,7 @@ class ImporterExporter:
     def print_recs (self, *args):
         debug('printing recipes',3)
         recs = self.get_selected_recs_from_rec_tree()
-        printManager = get_print_manager()
+        printManager = PrintManager.instance()
         printManager.print_recipes(
             self.rd,
             recs,

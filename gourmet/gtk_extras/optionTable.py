@@ -92,7 +92,9 @@ class OptionTable (Gtk.Table):
                 adj = Gtk.Adjustment(value=0, lower=0, upper=100*(v or 1), step_incr=(v or 1)*0.1, page_incr=(v or 1)*0.5)
                 if isinstance(v, int):
                     # if an integer...
-                    w=Gtk.SpinButton(adj, digits=0)
+                    w = Gtk.SpinButton()
+                    w.set_digits(0)
+                    w.set_adjustment(adj)
                     self.widgets.append([w,'get_value_as_int','set_value'])
                 else:
                     w=Gtk.SpinButton(adj, digits=2)

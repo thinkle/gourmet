@@ -11,7 +11,7 @@ import xml.sax.saxutils
 
 from gourmet import convert, defaults, prefs, plugin_loader, timeScanner, Undo
 from gourmet.exporters import exportManager
-from gourmet.exporters.printer import get_print_manager
+from gourmet.exporters.printer import PrintManager
 
 from gourmet.gdebug import debug
 from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
@@ -596,7 +596,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
             if de.getBoolean(label=_("You have unsaved changes."),
                              sublabel=_("Apply changes before printing?")):
                 self.saveEditsCB()
-        printManager = get_print_manager()
+        printManager = PrintManager.instance()
         printManager.print_recipes(
             self.rg.rd, [self.current_rec], mult=self.mult,
             parent=self.window,

@@ -6,7 +6,7 @@ from .gtk_extras import WidgetSaver, mnemonic_manager
 from .gtk_extras import dialog_extras as de
 from .gtk_extras import treeview_extras as te
 from .gtk_extras import fix_action_group_importance
-from .exporters.printer import get_print_manager
+from .exporters.printer import PrintManager
 from .gdebug import debug
 from gettext import gettext as _
 from .gglobals import doc_base
@@ -855,7 +855,8 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 
     def printList (self, *args):
         debug("printList (self, *args):",0)
-        self._printList(get_print_manager().get_simple_writer(),dialog_parent=self.w)
+        self._printList(PrintManager.instance().get_simple_writer(),
+                        dialog_parent=self.w)
 
     def add_item (self, toggleWidget):
         if toggleWidget.get_active():

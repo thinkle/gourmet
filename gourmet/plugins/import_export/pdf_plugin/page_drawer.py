@@ -22,8 +22,8 @@ class PageDrawer (Gtk.DrawingArea):
         if page_width and page_height:
             self.set_page_area(page_width,page_height,sub_areas)
         self.connect('size-allocate', self.on_size_allocate)
-        self.connect('expose-event',  self.on_expose_event)
-        self.connect('realize',       self.on_realize)
+        # self.connect('expose-event',  self.on_expose_event)
+        self.connect('realize', self.on_realize)
 
     def set_page_area (self, page_width, page_height, sub_areas=[]):
         self.xy_ratio = page_width/page_height
@@ -37,10 +37,12 @@ class PageDrawer (Gtk.DrawingArea):
                 (x,y,width,height)
                 )
 
-    def on_realize(self, widget):
-        self.gc = widget.window.new_gc()
+    def on_realize(self, widget: 'PdfPageDrawer'):
+        # TODO: refactor this function out
+        # self.gc = widget.window.new_gc()
         #self.gc.set_line_attributes(3, Gdk.LINE_ON_OFF_DASH,
         #                            Gdk.CAP_ROUND, Gdk.JOIN_ROUND)
+        pass
 
     def on_size_allocate(self, widget, allocation):
         self.width = allocation.width

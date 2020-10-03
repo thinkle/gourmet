@@ -1,5 +1,7 @@
 from gettext import gettext as _
 import gettext
+
+from gourmet.gtk_extras.dialog_extras import show_message, show_traceback
 import gourmet.plugin_loader as plugin_loader
 from gourmet.plugin import PrinterPlugin
 
@@ -85,15 +87,9 @@ class PrintManager(plugin_loader.Pluggable):
                      change_units=change_units,
                      **kwargs)
         except Exception:
-            from gourmet.gtk_extras.dialog_extras import show_traceback
             msg = ('Well this is embarassing.'
                    'Something went wrong printing your recipe.')
             show_traceback(label='Error printing', sublabel=_(msg))
 
     def show_error(self, *args):
-        from gourmet.gtk_extras.dialog_extras import show_message
         show_message(sublabel='There was an error printing. Apologies')
-
-
-def get_print_manager():
-    return PrintManager.instance()

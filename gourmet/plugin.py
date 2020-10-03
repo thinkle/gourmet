@@ -443,15 +443,16 @@ class RecEditorModule (UIModule, GObject.GObject, object):
         self.setup_main_interface()
 
     __edited = False
-    def get_edited (self):
+
+    @property
+    def edited(self):
         return self.__edited
 
-    def set_edited (self, val):
+    @edited.setter
+    def edited(self, val):
         self.__edited = val
-        self.emit('toggle-edited',val)
+        self.emit('toggle-edited', val)
         return val
-
-    edited = property(get_edited,set_edited)
 
     def setup_undo (self):
         self.undoActionGroup = Gtk.ActionGroup(self.name+'UndoActions')
