@@ -313,10 +313,7 @@ class RecIndex:
                     self.rg.star_generator,
                     data_col=n,
                     col_title='_%s'%self.rtcolsdic[c],
-                    handlers=[self.star_change_cb],
-                    properties={'reorderable':True,
-                                'resizable':True},
-                    )
+                    properties={'reorderable': True, 'resizable': True})
                 cssu.set_sort_column_id(twsm.col,twsm.data_col)
                 n += 1
                 twsm.col.set_min_width(110)
@@ -596,23 +593,6 @@ class RecIndex:
             sb = self.sw.get_vscrollbar()
             sb.set_value(sb.get_adjustment().get_upper())
             return True
-
-    def star_change_cb (self,
-                        value: float,
-                        model: 'RecipeModel',
-                        treeiter: Gtk.TreeIter,
-                        column_number: int) -> None:
-        rec = self.get_rec_from_iter(treeiter)
-        if getattr(rec,'rating')!=value:
-            self.rd.undoable_modify_rec(
-                rec,
-                {'rating':value},
-                self.history,
-                get_current_rec_method = lambda *args: self.get_selected_recs_from_rec_tree()[0],
-                )
-            self.rmodel.update_iter(treeiter)
-            model.set_value(treeiter, column_number, value)
-
 
     def update_modified_recipe(self,rec,attribute,text):
         """Update a modified recipe.
