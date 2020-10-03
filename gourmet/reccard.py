@@ -766,9 +766,8 @@ class IngredientDisplay:
                             label=_('Unable to find recipe %s in database.')%rname
                             )
 
-# RECIPE EDITOR MODULES
 
-class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
+class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     ui_string = '''
     <ui>
@@ -976,13 +975,7 @@ class RecEditor (WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
             # we'll need to look for the switch with an idle call
             GObject.idle_add(self.notebook_change_cb)
         self.notebook.connect('switch-page',hackish_notebook_switcher_handler)
-        ## The following workaround was necessary on Windows as long as
-        ## https://bugzilla.gnome.org/show_bug.cgi?id=552681
-        ## was not fixed, which it is with versions of Gtk+ that ship
-        ## with PyGTK 2.24.8
-        #if os.name == 'nt' or os.name == 'dos':
-        #    self.notebook.set_tab_pos(Gtk.PositionType.TOP)
-        #else:
+
         self.notebook.set_tab_pos(Gtk.PositionType.LEFT)
         self._last_module = None
         self.last_merged_ui = None
@@ -1355,13 +1348,13 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
 
     def setup_main_interface (self):
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recCardDescriptionEditor.ui'))
+        self.ui.add_from_file(os.path.join(uibase,
+                                           'recCardDescriptionEditor.ui'))
         self.imageBox = ImageBox(self)
         self.init_recipe_widgets()
-        # Set up wrapping callbacks...
         self.ui.connect_signals({
-            'setRecImage' : self.imageBox.set_from_fileCB,
-            'delRecImage' : self.imageBox.removeCB,
+            'setRecImage': self.imageBox.set_from_fileCB,
+            'delRecImage': self.imageBox.removeCB,
             })
         self.main = self.ui.get_object('descriptionMainWidget')
         self.main.unparent()
@@ -1391,30 +1384,35 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
 
         self.update_from_database()
 
-    def update_from_database (self):
+    def update_from_database(self):
         try:
             self.yields = float(self.current_rec.yields)
-        except:
+        except (TypeError, ValueError):
             self.yields = None
-            if hasattr(self.current_rec,'yields'):
-                debug(_("Couldn't make sense of %s as number of yields")%self.current_rec.yields,0)
+            if hasattr(self.current_rec, 'yields'):
+                msg = (f'Could not make sense of {self.current_rec.yields}'
+                        'as a number of yields')
+                debug(msg, 0)
+
         for c in self.reccom:
-            debug("Widget for %s"%c,5)
+            debug(f'Widget for {c}', 5)
+
             model = self.rg.get_attribute_model(c)
+
             self.rw[c].set_model(model)
             self.rw[c].set_entry_text_column(0)
+
             cb.setup_completion(self.rw[c])
-            if c=='category':
+            if c == 'category':
                 val = ', '.join(self.rg.rd.get_cats(self.current_rec))
             else:
-                val = getattr(self.current_rec,c)
-            self.rw[c].insert_text(0, val or "")
-            if isinstance(self.rw[c],Gtk.ComboBoxText):
+                val = getattr(self.current_rec, c)
+            self.rw[c].insert_text(0, val or '')
+            if isinstance(self.rw[c], Gtk.ComboBoxText):
+                # Insert here the existing value!
                 Undo.UndoableEntry(self.rw[c], self.history)
                 cb.FocusFixer(self.rw[c])
-            else:
-                # we still have to implement undo for regular old comboBoxen!
-                1
+
         for e in self.recent:
             if isinstance(self.rw[e],Gtk.SpinButton):
                 try:
@@ -3118,41 +3116,3 @@ def getYieldSelection (rec, parent=None):
     except:
         return 1
 
-if __name__ == '__main__':
-    from gourmet import GourmetRecipeManager
-    rg = GourmetRecipeManager.RecGui.instance()
-    rc = RecCard(rg,recipe=rg.rd.fetch_one(rg.rd.recipe_table,title='Asparagus Custard Tart'))
-    Gtk.main()
-
-if __name__ == '__main__' and False:
-
-    def test_ing_editing (rc):
-        rc.show_edit(module=rc.NOTEBOOK_ING_PAGE)
-        g = rc.ingtree_ui.ingController.add_group('Foo bar')
-        for l in ('''1 c. sugar
-        1 c. silly; chopped and sorted
-        1 lb. very silly
-        1 tbs. extraordinarily silly'''.split('\n')):
-            rc.add_ingredient_from_line(l,group_iter=g)
-        rc.ingtree_ui.ingController.delete_iters(g)
-        rc.undo.emit('activate')
-
-    from . import GourmetRecipeManager
-    rg = GourmetRecipeManager.RecGui()
-    Gtk.main()
-    rg.app.hide()
-    try:
-        rc = RecCard(rg,rg.rd.fetch_one(rg.rd.recipe_table,title='Black and White Cookies'))
-        rc.display_window.connect('delete-event',
-                                  lambda *args: Gtk.main_quit()
-                                  )
-        rc.edit_window.connect('delete-event',lambda *args: Gtk.main_quit())
-        #rc.show_edit()
-        #rc.rw['title'].set_text('Foo')
-
-        test_ing_editing(rc)
-    except:
-        rg.app.hide()
-        raise
-    else:
-        Gtk.main()

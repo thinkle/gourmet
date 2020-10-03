@@ -2,6 +2,7 @@ import os
 import os.path
 import re
 import threading
+from typing import Set
 
 from gettext import gettext as _
 from gettext import ngettext
@@ -270,16 +271,17 @@ class GourmetApplication:
             if idkey not in self.rc:
                 uimanager.remove_ui(merged_dic[idkey])
 
-    # Methods to keep one set of listmodels for each attribute for
-    # which we might want text completion or a dropdown...
-    def update_attribute_models (self):
-        for attr,mod in self.attributeModels:
+    def update_attribute_models(self):
+        """Methods to keep one set of listmodels for each attribute for
+           which we might want text completion or a dropdown...
+        """
+        for attr, mod in self.attributeModels:
             self.update_attribute_model(attr)
 
-    def update_attribute_model (self, attribute):
+    def update_attribute_model(self, attribute: str) -> Gtk.ListStore:
         slist = self.create_attribute_list(attribute)
-        model = getattr(self,'%sModel'%attribute)
-        for n,item in enumerate(slist):
+        model = getattr(self, f'{attribute}Model')
+        for n, item in enumerate(slist):
             if model[n][0] == item:
                 continue
             else:
@@ -303,34 +305,41 @@ class GourmetApplication:
 
             return model
 
-    def create_attribute_list (self, attribute):
+    def create_attribute_list(self, attribute: str) -> Set[str]:
         """Create a ListModel with unique values of attribute.
         """
-        if attribute=='category':
-            slist = self.rg.rd.get_unique_values(attribute,self.rg.rd.categories_table)
+        if attribute == 'category':
+            slist = self.rg.rd.get_unique_values(attribute,
+                                                 self.rg.rd.categories_table)
         else:
-            slist = self.rg.rd.get_unique_values(attribute,deleted=False)
+            slist = self.rg.rd.get_unique_values(attribute, deleted=False)
         if not slist:
             slist = self.rg.rd.get_default_values(attribute)
         else:
             for default_value in self.rg.rd.get_default_values(attribute):
-                if default_value not in slist: slist.append(default_value)
-        slist.sort()
+                if default_value not in slist:
+                    slist.append(default_value)
+
+        slist = sorted(slist)
+        if 'None' in slist:
+            slist.remove('None')
+        slist = set(slist)
         return slist
 
-    def get_attribute_model (self, attribute):
+    def get_attribute_model(self, attribute: str) -> Gtk.ListStore:
         """Return a ListModel with a unique list of values for attribute.
         """
         # This was stored here so that all the different comboboxes that
         # might need e.g. a list of categories can share 1 model and
         # save memory.
-        # if not hasattr(self,'%sModel'%attribute):
         slist = self.create_attribute_list(attribute)
-        m = Gtk.ListStore(str)
-        for i in slist: m.append([i])
-        setattr(self,'%sModel'%attribute,m)
-        self.attributeModels.append((attribute,getattr(self,'%sModel'%attribute)))
-        return getattr(self,'%sModel'%attribute)
+        store = Gtk.ListStore(str)
+        for element in slist:
+            store.append([element])
+
+        setattr(self, f'{attribute}Model', store)
+        self.attributeModels.append((attribute, store))
+        return store
 
     # About/Help
     def show_about (self, *args):
