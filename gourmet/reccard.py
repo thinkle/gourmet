@@ -1409,7 +1409,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
                 val = getattr(self.current_rec, c)
             self.rw[c].insert_text(0, val or '')
             if isinstance(self.rw[c], Gtk.ComboBoxText):
-                # Insert here the existing value!
+                self.rw[c].set_active(0)
                 Undo.UndoableEntry(self.rw[c], self.history)
                 cb.FocusFixer(self.rw[c])
 
