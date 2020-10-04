@@ -23,8 +23,8 @@ class Shopper:
                              _('oil, olive')]
         self.init_pantry()
         self.mypantry = {}
-        for a,u,k in inglist:
-            if k in self.pantry and self.pantry[k]:
+        for a, u, k in inglist:
+            if self.pantry.has_key(k) and self.pantry[k]:
                 # print "%s is in pantry" %k
                 dic=self.mypantry
             else:
@@ -154,7 +154,7 @@ class Shopper:
         if not dic:
             pass
         for i,a in list(dic.items()):
-            if i in self.orgdic and self.orgdic[i]:
+            if self.orgdic.has_key(i) and self.orgdic[i]:
                 c = self.orgdic[i]
             else:
                 c = _("Unknown")
