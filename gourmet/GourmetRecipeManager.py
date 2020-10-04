@@ -1207,12 +1207,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             make_visible=lambda *args: self.redo_search()
             )
         self.setup_delete_messagebox(
-            ngettext('You just moved %s recipe to the trash. You can recover this recipe or permanently \
-                    delete it at any time by clicking Tools->Open Trash.',
-                             'You just moved %s recipes to the trash. You can recover these recipes or \
-                                     permanently delete them at any time by clicking Tools->Open Trash',
-                             len(recs))%len(recs)
-            )
+            _((f'You just moved {len(recs)} recipe to the trash.\nYou can '
+               'recover this recipe or permanently delete it at any time by '
+               'clicking Tools->Open Trash.'))
+        )
         self.set_reccount()
         if hasattr(self,'recTrash'):
             self.recTrash.update_from_db()
