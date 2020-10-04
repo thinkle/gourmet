@@ -1,5 +1,5 @@
 import gc
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 import os.path
 from pathlib import Path
 import webbrowser
@@ -2025,7 +2025,7 @@ class IngredientController (plugin_loader.Pluggable):
 
     # Get persistent references to items easily
 
-    def get_persistent_ref_from_path (self, path):
+    def get_persistent_ref_from_path(self, path) -> 'RowProxy':
         return self.get_persistent_ref_from_iter(
             self.imodel.get_iter(path)
             )
@@ -2159,6 +2159,8 @@ class IngredientTreeUI:
     """Handle our ingredient treeview display, drag-n-drop, etc.
     """
 
+    GOURMET_INTERNAL = Gdk.Atom.intern('GOURMET_INTERNAL', False)
+
     head_to_att = {_('Amt'):'amount',
                    _('Unit'):'unit',
                    _('Item'):'item',
@@ -2181,6 +2183,8 @@ class IngredientTreeUI:
         self.ingTree.get_selection().connect("changed",self.selection_changed_cb)
         self.setup_drag_and_drop()
         self.ingTree.show()
+
+        self.selected_iters: List[str] = []
 
     # Basic setup methods
 
@@ -2405,55 +2409,61 @@ class IngredientTreeUI:
 
     # Drag-n-Drop Callbacks
 
-    def dragIngsRecCB (self, widget, context, x, y, selection, targetType,
-                         time):
+    def dragIngsRecCB(self, widget: Gtk.TreeView, context: Any,
+                      x: int, y: int, selection: Gtk.SelectionData,
+                      targetType: int, time: int):
         debug("dragIngsRecCB (self=%s, widget=%s, context=%s, x=%s, y=%s, selection=%s, targetType=%s, time=%s)"%(self, widget, context, x, y, selection, targetType, time),3)
-        drop_info=self.ingTree.get_dest_row_at_pos(x,y)
-        mod=self.ingTree.get_model()
+        drop_info = self.ingTree.get_dest_row_at_pos(x, y)
+        mod = self.ingTree.get_model()
+
         if drop_info:
             path, position = drop_info
             dref = self.ingController.get_persistent_ref_from_path(path)
-            dest_ing=mod.get_value(mod.get_iter(path),0)
+            dest_ing = mod.get_value(mod.get_iter(path), 0)
             group = isinstance(dest_ing, str)
         else:
             dref = None
             group = False
             position = None
-        if str(selection.target) == 'GOURMET_INTERNAL':
-            # if this is ours, we move it
+
+        if selection.get_target() == self.GOURMET_INTERNAL:
             uts = UndoableTreeStuff(self.ingController)
-            selected_iter_refs = [
-                self.ingController.get_persistent_ref_from_iter(i) for i in self.selected_iter
-                ]
-            def do_move ():
+
+            selected_iter_refs = []
+            for item in self.selected_iters:
+                ingredient = self.ingController.get_persistent_ref_from_iter(item)
+                selected_iter_refs.append(ingredient)
+
+            def do_move():
                 debug('do_move - inside dragIngsRecCB ',3)
                 debug('do_move - get selected_iters from - %s '%selected_iter_refs,3)
                 if dref:
                     diter = self.ingController.get_iter_from_persistent_ref(dref)
                 else:
                     diter = None
-                selected_iters = [
-                    self.ingController.get_iter_from_persistent_ref(r) for r in selected_iter_refs
-                    ]
-                uts.record_positions(selected_iters)
-                debug('do_move - we have selected_iters - %s '%selected_iters,3)
-                selected_iters.reverse()
-                if (group and
-                    (position==Gtk.TreeViewDropPosition.INTO_OR_BEFORE
-                     or
-                     position==Gtk.TreeViewDropPosition.INTO_OR_AFTER)
-                    ):
+
+                uts.record_positions(self.selected_iters)
+                selected_iters = reversed(self.selected_iters)
+
+                if (group and (position == Gtk.TreeViewDropPosition.INTO_OR_BEFORE or
+                               position == Gtk.TreeViewDropPosition.INTO_OR_AFTER)):
                     for i in selected_iters:
-                        te.move_iter(mod,i,direction="before",parent=diter)
-                elif (position==Gtk.TreeViewDropPosition.INTO_OR_BEFORE
-                      or
-                      position==Gtk.TreeViewDropPosition.BEFORE):
+                        te.move_iter(mod, i, direction="before", parent=diter)
+
+                elif (position == Gtk.TreeViewDropPosition.INTO_OR_BEFORE or
+                      position == Gtk.TreeViewDropPosition.BEFORE):  # Moving up from anywhere but bottom
                     for i in selected_iters:
-                        te.move_iter(mod,i,sibling=diter,direction="before")
-                else:
+                        te.move_iter(mod, i, sibling=diter, direction="before")
+
+                elif position == Gtk.TreeViewDropPosition.AFTER:  # Moving from the bottom up
                     for i in selected_iters:
-                        te.move_iter(mod,i,sibling=diter,direction="after")
-                debug('do_move - inside dragIngsRecCB - move selections',3)
+                        te.move_iter(mod, i, sibling=diter, direction="after")
+                else:  # position == None, pushed below the last item
+                    diter = te.get_last(mod)
+                    for i in selected_iters:
+                        te.move_iter(mod, i, sibling=diter, direction="after")
+
+                debug('do_move - inside dragIngsRecCB - move selections', 3)
                 self.ingTree.get_selection().unselect_all()
                 for r in selected_iter_refs:
                     i = self.ingController.get_iter_from_persistent_ref(r)
@@ -2464,12 +2474,10 @@ class IngredientTreeUI:
                     else:
                         self.ingTree.get_selection().select_iter(i)
                 debug('do_move - inside dragIngsRecCB - DONE',3)
-            Undo.UndoableObject(
-                do_move,
-                uts.restore_positions,
-                self.ingredient_editor_module.history,
-                widget=self.ingController.imodel).perform()
-               #self.ingTree.get_selection().select_iter(new_iter)
+
+            Undo.UndoableObject(do_move, uts.restore_positions,
+                                self.ingredient_editor_module.history,
+                                widget=self.ingController.imodel).perform()
         else:
             # if this is external, we copy
             debug('external drag!',2)
@@ -2501,7 +2509,9 @@ class IngredientTreeUI:
         debug("restoring selections.")
         debug("done restoring selections.")
 
-    def dragIngsGetCB (self, tv, context, selection, info, timestamp):
+    def dragIngsGetCB(self, tv: Gtk.TreeView, context: Any,
+                      selection: Gtk.SelectionData,
+                      info: int, timestamp: int):
         def grab_selection (model, path, iter, args):
             strings, iters = args
             str = ""
@@ -2517,14 +2527,10 @@ class IngredientTreeUI:
             debug("Dragged string: %s, iter: %s"%(str,iter),3)
             iters.append(iter)
             strings.append(str)
-        strings=[]
-        iters=[]
-        tv.get_selection().selected_foreach(grab_selection,(strings,iters))
-        ingredients="\n".join(strings)
-        selection.set('text/plain', 0, ingredients)
-        selection.set('STRING', 0, ingredients)
-        selection.set('GOURMET_INTERNAL',8,'blarg')
-        self.selected_iter=iters
+        strings = []
+        iters = []
+        tv.get_selection().selected_foreach(grab_selection, (strings, iters))
+        self.selected_iters = iters
 
     # Move-item callbacks
 
@@ -2815,7 +2821,7 @@ class UndoableTreeStuff:
                 sibling = None
             else:
                 parent = None
-                sibling = path[:-1] + (path[-1]-1,)
+                sibling = path[:-1] + [path[-1]-1]
             sib_ref = sibling and self.ic.get_persistent_ref_from_path(sibling)
             parent_ref = parent and self.ic.get_persistent_ref_from_path(parent)
             ref = self.ic.get_persistent_ref_from_iter(i)

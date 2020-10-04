@@ -1,3 +1,4 @@
+from typing import Optional
 from gourmet.gdebug import debug
 from gi.repository import Gtk
 
@@ -25,7 +26,22 @@ def get_unique_iter_from_value (mod, col, val):
         for rc in r.iterchildren():
             if rc[col]==val: return rc.iter
 
-def move_iter (mod, iter, sibling=None, parent=None, direction="before"):
+
+def get_last(model: Gtk.TreeStore) -> Optional[Gtk.TreeIter]:
+    """Return an TreeIter pointing to the last element in the model"""
+    current = model.get_iter_first()
+    iter = None
+    while current is not None:
+        iter = current
+        current = model.iter_next(current)
+    return iter
+
+
+def move_iter(mod: Gtk.TreeStore,
+              iter: Gtk.TreeIter,
+              sibling: Gtk.TreeIter = None,
+              parent: Gtk.TreeIter = None,
+              direction: str = 'before'):
     """move_iter will move iter relative to sibling or
     parent. Direction (before or after) tells us whether to
     insert_before or insert_after (with a sib) or to prepend or append
