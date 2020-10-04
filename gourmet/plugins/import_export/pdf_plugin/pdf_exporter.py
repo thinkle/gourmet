@@ -1017,7 +1017,7 @@ class PdfPrefTable (PdfPrefGetter):
                                              value_label=None,
                                              changedcb=None)
         self.widg.pack_start(self.table, True, True, 0)
-        self.widg.pack_start(self.page_drawer,fill=True,expand=True)
+        self.widg.pack_start(self.page_drawer, True, True, 0)
         self.widg.show_all()
 
 def get_pdf_prefs (defaults=None):

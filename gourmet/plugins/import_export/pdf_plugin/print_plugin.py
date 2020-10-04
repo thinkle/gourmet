@@ -62,21 +62,21 @@ class WindowsPDFPrinter:
             # PDF to display the print dialog (/p).
             Popen(regPathValue + " /n /p " + os.path.realpath(filename))
 
+
 class PDFPrinter:
     """Print an exported PDF
 
     This class is for Linux & other free desktops.
     There are separate implementations for Windows & Mac above.
     """
-    def setup_printer (self, parent=None):
+    def setup_printer(self, parent: Gtk.Window = None):
         po = Gtk.PrintOperation()
-        #po.set_n_pages(self.d.get_n_pages())
-        po.connect('draw_page',self.draw_page)
-        po.connect('begin-print',self.begin_print)
-        po.connect('create-custom-widget',self.create_custom_widget)
+        po.connect('draw_page', self.draw_page)
+        po.connect('begin-print', self.begin_print)
+        po.connect('create-custom-widget', self.create_custom_widget)
         po.props.custom_tab_label = _('Page Layout')
-        po.connect('custom-widget-apply',self.custom_widget_apply)
-        po.run(Gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG, parent=parent)
+        po.connect('custom-widget-apply', self.custom_widget_apply)
+        po.run(Gtk.PrintOperationAction.PRINT_DIALOG, parent=parent)
 
     def set_document (self, filename, operation,context):
         if not filename.startswith('file'):
@@ -87,10 +87,10 @@ class PDFPrinter:
         page = self.d.get_page(0)
         w,h = page.get_size()
         if w > h:
-            w,h = h,w
-            ori = Gtk.PAGE_ORIENTATION_LANDSCAPE
+            w, h = h, w
+            ori = Gtk.PageOrientation.LANDSCAPE
         else:
-            ori = Gtk.PAGE_ORIENTATION_PORTRAIT
+            ori = Gtk.PageOrientation.PORTRAIT
         page_setup = Gtk.PageSetup()
         page_setup.set_orientation(ori)
         size = int(round(w)),int(round(h))
