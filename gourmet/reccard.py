@@ -129,8 +129,8 @@ class RecCard:
             self.__rec_editor = None
 
     def hide(self) -> None:
-        rec_displayed = (self.__rec_display is not None and
-                         self.__rec_display.window.is_visible())
+        rec_displayed = not (self.__rec_display is not None and
+                             self.__rec_display.window.is_visible())
         rec_editor_displayed = (self.__rec_editor is not None and
                                 not self.__rec_editor.window.is_visible())
         if rec_displayed and rec_editor_displayed:
