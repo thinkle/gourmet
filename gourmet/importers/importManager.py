@@ -54,7 +54,7 @@ class ImportManager (plugin_loader.Pluggable):
         self.app = get_application()
         self.prefs = self.app.prefs
 
-    def offer_web_import (self, parent=None):
+    def offer_web_import(self, parent: Gtk.Window = None):
         """Offer to import a URL.
 
         Once the file is downloaded, it can be treated by any of our
@@ -68,8 +68,8 @@ class ImportManager (plugin_loader.Pluggable):
                           entryTip=_('Enter the address of a website or recipe archive.'),
                           default_character_width=60,
                           )
-        if not url: return
-        else: return self.import_url(url)
+        if url:
+            return self.import_url(url)
 
     def import_url(self, url):
         parsed_url = urlparse(url)

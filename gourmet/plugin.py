@@ -452,7 +452,6 @@ class RecEditorModule (UIModule, GObject.GObject, object):
     def edited(self, val):
         self.__edited = val
         self.emit('toggle-edited', val)
-        return val
 
     def setup_undo (self):
         self.undoActionGroup = Gtk.ActionGroup(self.name+'UndoActions')

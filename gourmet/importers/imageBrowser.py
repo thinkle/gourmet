@@ -1,46 +1,17 @@
-from gi.repository import Gtk
-
-# FIXME:  gtk_extra.thumbnail was deprecated and replaced by image_utils
-from gourmet.gtk_extras.thumbnail import check_for_thumbnail,fetched_uris
-from gourmet.gtk_extras.dialog_extras import ModalDialog
+import threading
+import time
 import unittest
-import threading, time
 
-def grab_thumbnail (uri, type, iqueue, pqueue, progress_portion=1, progress_start_at=0):
-    #print 'GRAB THUMBNAIL',uri,type,progress_portion,progress_start_at
-    def reporthook (block, blocksize, total):
-        #print 'REPORT HOOK',block,blocksize,total
-        try:
-            perc = progress_start_at + ((block*blocksize)/(float(total)) * progress_portion)
-        except:
-            #print 'problem getting percent from'
-            #print "progress_start_at: %(progress_start_at)s, block: %(block)s, blocksize: %(blocksize)s, %(progress_portion)s progress_portion, %(total)s: total"%locals()
-            raise
-        #except:
-        #    perc = -1
-        #print "REPORT:",uri,perc
-        #pqueue.put_nowait(('Getting %s'%uri,perc))
-        pqueue.append(('Getting %s'%uri,perc))
-    #print 'ADD Fetch starter to QUEUE'
-    #pqueue.put_nowait(('Getting %s'%uri,0))
-    pqueue.append(('Getting %s'%uri,0))
-    import time
-    #print 'Fetching ',uri
-    try:
-        fi = check_for_thumbnail(uri,type,reporthook)
-    except:
-        print('WARNING: Error on creating thumbnail - ignoring')
-        import traceback; traceback.print_exc()
-    else:
-        iqueue.append((fi,uri))
-    #print 'Fetched'
-    #print 'Adding result to Queue'
-    #print 'Done'
+from gi.repository import GdkPixbuf, Gtk, Pango
 
-class ImageBrowser (Gtk.IconView):
+from gourmet.image_utils import make_thumbnail
+from gourmet.gtk_extras.dialog_extras import ModalDialog
+
+
+class ImageBrowser(Gtk.IconView):
     def __init__ (self,*args,**kwargs):
         Gtk.IconView.__init__(self,*args,**kwargs)
-        self.model = Gtk.ListStore(GdkPixbuf.Pixbuf,str)
+        self.model = Gtk.ListStore(GdkPixbuf.Pixbuf, str)
         self.set_selection_mode(Gtk.SelectionMode.SINGLE)
         self.set_model(self.model)
         self.set_pixbuf_column(0)
@@ -52,10 +23,8 @@ class ImageBrowser (Gtk.IconView):
         self.alive = False
         GObject.timeout_add(100,self.update_progress)
         GObject.timeout_add(100,self.add_image_from_queue)
-        #self.run_thread()
 
     def add_image_from_uri (self, u, progress_portion=1, progress_start_at=0):
-        #print 'ADD_IMAGE_FROM_URI',u,progress_portion,progress_start_at
         self.to_add_lock.acquire()
         self.adding.append({'url':u,
                             'progress_portion':progress_portion,
@@ -64,7 +33,6 @@ class ImageBrowser (Gtk.IconView):
                            )
         self.to_add_lock.release()
         if not self.alive:
-            #print 'RUN THREAD!'
             self.run_thread()
 
     def quit (self):
@@ -77,28 +45,22 @@ class ImageBrowser (Gtk.IconView):
 
     def fetch_images (self):
         while self.alive:
-            #print 'FETCH_IMAGES',time.time()
             if self.adding:
                 self.to_add_lock.acquire()
                 to_add = self.adding[0]; self.adding = self.adding[1:]
-                #print 'TO_ADD',to_add
                 self.to_add_lock.release()
-                #print 'ADDING:',to_add,time.time()
-                grab_thumbnail(
-                    to_add['url'],
-                    'small',
-                    self.image_queue,
+                make_thumbnail(to_add['url'],
+                               'small',
+                               self.image_queue,
                     self.progress_queue,
                     progress_portion=to_add['progress_portion'],
                     progress_start_at=to_add['progress_start_at']
                     )
-                #print 'ADDED!'
             else:
                 time.sleep(0.1)
 
     def add_image_from_queue (self):
         try:
-            #fi,u = self.image_queue.get_nowait()
             fi,u = self.image_queue.pop()
             if fi:
                 pb = GdkPixbuf.Pixbuf.new_from_file(fi)
@@ -109,7 +71,6 @@ class ImageBrowser (Gtk.IconView):
 
     def update_progress (self):
         try:
-            #text,progress = self.progress_queue.get_nowait()
             text,progress = self.progress_queue.pop()
             #print 'Set progress',progress,text
             self.prog = progress,text
@@ -128,10 +89,11 @@ class ImageBrowser (Gtk.IconView):
         return True
 
     def set_progress (self, progress, text):
-        if hasattr(self,'progressbar'):
+        if hasattr(self, 'progressbar'):
             self.progressbar.show()
             self.progressbar.set_percentage(progress)
             self.progressbar.set_text(text)
+
 
 class ImageBrowserDialog (ModalDialog):
     def __init__ (self, default=None, title="Select Image",okay=True,
@@ -214,8 +176,6 @@ class ImageBrowserTest (unittest.TestCase):
             Gtk.threads_init()
         self.ibd.run()
 
-def get_image_file (uri):
-    return fetched_uris[uri]
 
 if __name__ == '__main__':
     try:
