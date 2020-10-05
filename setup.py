@@ -196,6 +196,8 @@ package_data = [
     'plugins/*/*.ui',
     'plugins/*/images/*.png',
     'plugins/*/*/images/*.png',
+    'plugins/*.gourmet-plugin',
+    'plugins/*/*.gourmet-plugin',
     'ui/*.ui',
     'ui/catalog/*',
     'data/recipe.dtd',
