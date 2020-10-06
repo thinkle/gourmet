@@ -31,13 +31,13 @@ jobs:
         if [ -f development.txt ]; then pip3 install -r development.txt; fi
         if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
 
-    - name: Install
-      run: |
-        pip3 install .
-
     - name: Verify internationalization
       run: |
         python3 setup.py build_i18n
+
+    - name: Install
+      run: |
+        pip3 install .
 
     - name: Create wheel and source distributions
       run: |
