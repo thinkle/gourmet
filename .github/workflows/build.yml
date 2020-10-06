@@ -33,7 +33,8 @@ jobs:
 
     - name: Verify internationalization
       run: |
-        python3 setup.py build_i18n
+          python3 setup.py build_i18n
+          find . | grep gourmet-plugin
 
     - name: Install
       run: |
