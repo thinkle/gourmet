@@ -206,7 +206,8 @@ class IngredientAndPantryList:
     def setup_paned_view (self):
         self.create_pTree()
         self.create_slTree()
-        hp =  Gtk.HPaned(); hp.set_position(400)
+        hp =  Gtk.HPaned()
+        hp.set_position(400)
         f1 = setup_frame_w_accel_label(_('_Shopping List'),self.slTree)
         f2 = setup_frame_w_accel_label(_('Already Have (_Pantry Items)'),self.pTree)
         f1.add(setup_sw(self.slTree)); f1.show_all()
@@ -265,7 +266,8 @@ class IngredientAndPantryList:
                    ('STRING',0,4),
                    ('COMPOUND_TEXT',0,5),
                    ('text/unicode',0,6),]
-        tree.drag_source_set(Gdk.ModifierType.BUTTON1_MASK, list(Gtk.TargetEntry(t) for t in targets),
+        tree.drag_source_set(Gdk.ModifierType.BUTTON1_MASK,
+                             list(Gtk.TargetEntry.new(*t) for t in targets),
                              Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
         tree.enable_model_drag_dest(targets,
                                     Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
@@ -597,7 +599,8 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         vb.pack_start(self.add_box,False,False,0)
         self.setup_cat_box()
         vb.pack_start(self.cat_box,False,False,0)
-        self.hp = self.setup_paned_view(); self.hp.show()
+        self.hp = self.setup_paned_view()
+        self.hp.show()
         vb.pack_start(self.hp, True, True, 0)
         self.main.pack_start(self.vp, True, True, 0); self.vp.show()
         vb.show()
