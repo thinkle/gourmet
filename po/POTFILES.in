@@ -162,7 +162,6 @@ gourmet/plugins/nutritional_information/data_plugin.py
 gourmet/plugins/nutritional_information/databaseGrabber.py
 gourmet/plugins/nutritional_information/enter_nutritional_defaults.py
 gourmet/plugins/nutritional_information/export_plugin.py
-gourmet/plugins/nutritional_information/images/Nutrition.png
 gourmet/plugins/nutritional_information/images/__init__.py
 gourmet/plugins/nutritional_information/main_plugin.py
 gourmet/plugins/nutritional_information/nutPrefsPlugin.py
@@ -220,4 +219,3 @@ gourmet/threadManager.py
 gourmet/timeScanner.py
 gourmet/timer.py
 gourmet/version.py
-
