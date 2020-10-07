@@ -8,7 +8,13 @@ __pycache__/
 /build/
 /dist/
 gourmet.pot
-
+gourmet.appdata.xml
+gourmet.desktop
+po/.intltool-merge-cache
 
 # Virtual environments
 /env/
+
+# Editors
+*.swp
+.idea/
