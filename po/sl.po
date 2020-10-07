@@ -1,0 +1,4406 @@
+# Slovenian translation for grecipe-manager
+# Copyright (c) (c) 2006 Canonical Ltd, and Rosetta Contributors 2006
+# This file is distributed under the same license as the grecipe-manager package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: grecipe-manager\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-06 12:52+0200\n"
+"PO-Revision-Date: 2013-12-08 23:53+0000\n"
+"Last-Translator: Kristijan <kiki.tkalec@gmail.com>\n"
+"Language-Team: Slovenian <sl@li.org>\n"
+"Language: sl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
+"%100==4 ? 3 : 0);\n"
+"X-Launchpad-Export-Date: 2014-06-02 11:52+0000\n"
+"X-Generator: Launchpad (build 17031)\n"
+
+#: ../gourmet/ui/app.ui.h:1
+msgid "Recipe Index"
+msgstr "Kazalo receptov"
+
+#. Set up hard-coded functional buttons...
+#: ../gourmet/ui/app.ui.h:2 ../gourmet/ui/generic_importer.ui.h:5
+#: ../gourmet/importers/interactive_importer.py:145
+msgid "_New Recipe"
+msgstr "_Nov Recept"
+
+#: ../gourmet/ui/app.ui.h:3 ../gourmet/gglobals.py:121
+msgid "Add to _Shopping List"
+msgstr "Dodaj v _Nakupovalni seznam"
+
+#: ../gourmet/ui/app.ui.h:4 ../gourmet/ui/recipe_index.ui.h:4
+msgid "View Re_cipe"
+msgstr "Pokaži recept"
+
+#: ../gourmet/ui/app.ui.h:5 ../gourmet/ui/recipe_index.ui.h:15
+#: ../gourmet/plugins/key_editor/keyeditor.ui.h:2
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:31
+msgid "_Search for:"
+msgstr "_Poišči:"
+
+#: ../gourmet/ui/app.ui.h:6 ../gourmet/ui/recipe_index.ui.h:16
+#: ../gourmet/ui/shopCatEditor.ui.h:5
+#: ../gourmet/plugins/key_editor/keyeditor.ui.h:3
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:32
+msgid "Search for recipes as you type"
+msgstr "Iskanje receptov med tipkanjem"
+
+#: ../gourmet/ui/app.ui.h:7 ../gourmet/plugins/key_editor/keyeditor.ui.h:4
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:30
+msgid "_in"
+msgstr "_v"
+
+#: ../gourmet/ui/app.ui.h:8 ../gourmet/ui/recipe_index.ui.h:19
+msgid "Search by other critera within the current search results."
+msgstr "Iskanje po drugih merilih, znotraj trenutnih rezultatih iskanja."
+
+#: ../gourmet/ui/app.ui.h:9 ../gourmet/ui/recipe_index.ui.h:20
+msgid "A_dd Search Criteria"
+msgstr "A_dd Iskalni kriterij"
+
+#: ../gourmet/ui/app.ui.h:10 ../gourmet/ui/recipe_index.ui.h:24
+msgid "Limiting Search to:"
+msgstr "Omejevanje iskanja na:"
+
+#: ../gourmet/ui/app.ui.h:11 ../gourmet/ui/recipe_index.ui.h:25
+#: ../gourmet/plugins/key_editor/keyeditor.ui.h:8
+msgid "Search _Results"
+msgstr "Iskanje _rezultati"
+
+#: ../gourmet/ui/batchEditor.ui.h:1
+msgid "Set Fields for Selected Recipes"
+msgstr "Nastavite polja za izbrane recepte"
+
+#: ../gourmet/ui/batchEditor.ui.h:2
+msgid ""
+"<span size=\"large\" weight=\"bold\">Set Recipe Fields for selected recipes</"
+"span>"
+msgstr ""
+
+#: ../gourmet/ui/batchEditor.ui.h:3
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:3
+msgid "_Add Image"
+msgstr "_Dodajte sliko"
+
+#: ../gourmet/ui/batchEditor.ui.h:4
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:5
+msgid "_Remove Image"
+msgstr "_Odstranite sliko"
+
+#: ../gourmet/ui/batchEditor.ui.h:5
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:14
+msgid "S_ource:"
+msgstr ""
+
+#: ../gourmet/ui/batchEditor.ui.h:6
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:13
+msgid "_Rating:"
+msgstr "_Ocena:"
+
+#: ../gourmet/ui/batchEditor.ui.h:7
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:12
+msgid "C_uisine:"
+msgstr ""
+
+#: ../gourmet/ui/batchEditor.ui.h:8
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:9
+msgid "_Category:"
+msgstr "_Kategorija:"
+
+#: ../gourmet/ui/batchEditor.ui.h:9
+msgid "_Preparation Time:"
+msgstr "_Čas priprave:"
+
+#: ../gourmet/ui/batchEditor.ui.h:10
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:11
+msgid "Coo_king Time:"
+msgstr ""
+
+#: ../gourmet/ui/batchEditor.ui.h:11
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:2
+msgid "_Webpage:"
+msgstr "_Spletna stran"
+
+#: ../gourmet/ui/batchEditor.ui.h:12
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:4
+msgid "Image:"
+msgstr "Slika:"
+
+#: ../gourmet/ui/batchEditor.ui.h:13
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:8
+msgid "_Yield:"
+msgstr ""
+
+#: ../gourmet/ui/batchEditor.ui.h:14
+#, fuzzy
+msgid "Yield U_nit:"
+msgstr "Enota izkoristka"
+
+#: ../gourmet/ui/batchEditor.ui.h:15
+msgid "_Only set values where field is currently blank"
+msgstr "_Samo določi vrednosti kjer je polje trenunto prazno"
+
+#: ../gourmet/ui/batchEditor.ui.h:16
+msgid "Set all values for _all selected recipes"
+msgstr "Nastavite vse vrednosti za _vse izbrane recepte"
+
+#: ../gourmet/ui/databaseChooser.ui.h:1
+msgid "Metakit (default, stored in a local file)"
+msgstr ""
+
+#: ../gourmet/ui/databaseChooser.ui.h:2
+msgid "SQLite (stored in a local file)"
+msgstr ""
+
+#: ../gourmet/ui/databaseChooser.ui.h:3
+msgid "MySQL (requires connection to a database)"
+msgstr ""
+
+#: ../gourmet/ui/databaseChooser.ui.h:4
+msgid "Choose Database"
+msgstr "Izberite podatkovno zbirko"
+
+#: ../gourmet/ui/databaseChooser.ui.h:5
+msgid "<b>Choose Database System for Gourmet to Use</b>"
+msgstr ""
+
+#: ../gourmet/ui/databaseChooser.ui.h:6
+msgid "_Database System"
+msgstr "_Sistem podatkovne zbirke"
+
+#: ../gourmet/ui/databaseChooser.ui.h:7
+msgid "_Host:"
+msgstr "_Gostitelj:"
+
+#: ../gourmet/ui/databaseChooser.ui.h:8
+msgid "_Username:"
+msgstr "_Uporabniško ime:"
+
+#: ../gourmet/ui/databaseChooser.ui.h:9
+msgid "_Password:"
+msgstr "_Geslo:"
+
+#: ../gourmet/ui/databaseChooser.ui.h:10
+msgid "Password for your username on the database."
+msgstr ""
+
+#: ../gourmet/ui/databaseChooser.ui.h:11 ../gourmet/ui/shopCatEditor.ui.h:6
+#: ../gourmet/plugins/unit_converter/converter.ui.h:7
+msgid "*"
+msgstr "*"
+
+#: ../gourmet/ui/databaseChooser.ui.h:12
+msgid "Database _Name:"
+msgstr ""
+
+#: ../gourmet/ui/databaseChooser.ui.h:13
+#: ../gourmet/GourmetRecipeManager.py:1035 ../gourmet/shopgui.py:677
+msgid "_File"
+msgstr "_Datoteka"
+
+#: ../gourmet/ui/databaseChooser.ui.h:14
+msgid ""
+"Hostname of the system where your database server is running. If your "
+"database server is running on your local system, use localhost."
+msgstr ""
+
+#: ../gourmet/ui/databaseChooser.ui.h:15
+msgid "localhost"
+msgstr ""
+
+#: ../gourmet/ui/databaseChooser.ui.h:16
+msgid ""
+"Save the password for next time. This means the password will be stored "
+"insecurely in your configuration file."
+msgstr ""
+
+#: ../gourmet/ui/databaseChooser.ui.h:17
+msgid "_Save Password"
+msgstr "_Shrani geslo"
+
+#: ../gourmet/ui/databaseChooser.ui.h:18
+msgid ""
+"Name of the database in which Gourmet should store its information. Gourmet "
+"will try to create this database if it does not already exist."
+msgstr ""
+
+#: ../gourmet/ui/databaseChooser.ui.h:19
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:271
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:15
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:56
+msgid "recipe"
+msgstr "recept"
+
+#: ../gourmet/ui/databaseChooser.ui.h:20
+msgid "Your username on the database."
+msgstr ""
+
+#: ../gourmet/ui/databaseChooser.ui.h:21
+msgid "_Browse"
+msgstr "_Brskanje"
+
+#: ../gourmet/ui/databaseChooser.ui.h:22
+#: ../gourmet/gtk_extras/dialog_extras.py:822
+#: ../gourmet/gtk_extras/dialog_extras.py:1178
+msgid "_Details"
+msgstr "_Podrobnosti"
+
+#: ../gourmet/ui/generic_importer.ui.h:1
+msgid ""
+"<i>Select text from the raw recipe and categorize it by labelling which part "
+"of the recipe it is (choose from the recipe elements on the right).</i>"
+msgstr ""
+
+#: ../gourmet/ui/generic_importer.ui.h:2
+msgid "_Raw recipe:"
+msgstr "_Surovi recept:"
+
+#: ../gourmet/ui/generic_importer.ui.h:3
+msgid "_Label"
+msgstr "_Oznaka"
+
+#: ../gourmet/ui/generic_importer.ui.h:4
+msgid ""
+"Start new recipe (use this if the file you're importing contains more than "
+"one recipe)"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:1
+msgid "Gourmet Recipe Manager Preferences"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:2
+msgid "<b>Index View Preferences</b>"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:3
+#, fuzzy
+msgid "Show _toolbar"
+msgstr "Prikaži odštevalnik časa"
+
+#: ../gourmet/ui/preferenceDialog.ui.h:4
+msgid "_Recipes per page:"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:5
+msgid "<i>Configure which columns are included in the recipe index view.</i>"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:6
+msgid "Index View"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:7
+msgid "<b>Card View Preferences</b>"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:8
+msgid "_Allow units to change when multiplying"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:9
+msgid "_Use fractions"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:10
+msgid "Use fractions when possible for display"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:11
+msgid "<i>Remove items you don't use from the Recipe Card interface.</i>"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:12
+msgid "Card View"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:13
+msgid "<b>Shopping List Preferences</b>"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:14
+msgid ""
+"<i>What should Gourmet do with Optional Ingredients when adding recipes to "
+"the shopping list?</i>"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:15
+msgid "As_k whether to include optional ingredients"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:16
+msgid "_Remember user selections by default"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:17
+msgid "_Clear remembered optional ingredients"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:18
+msgid "_Always add optional ingredients"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:19
+msgid "_Never add optional ingredients"
+msgstr ""
+
+#: ../gourmet/ui/preferenceDialog.ui.h:20 ../gourmet/shopgui.py:147
+#: ../gourmet/shopgui.py:544 ../gourmet/shopgui.py:850
+#: ../gourmet/shopgui.py:1000
+msgid "Shopping List"
+msgstr "Nakupovalni seznam"
+
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:1
+msgid "servings"
+msgstr ""
+
+#. renderer.set_property('editable',True)
+#. renderer.connect('edited',tst)
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:6
+#: ../gourmet/exporters/rtf_exporter.py:81 ../gourmet/gglobals.py:54
+#: ../gourmet/shopgui.py:752
+msgid "Title"
+msgstr "Ime"
+
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:7
+msgid "_Title:"
+msgstr ""
+
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:10
+msgid "Pre_paration Time:"
+msgstr ""
+
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:15
+#: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:31
+#: ../gourmet/recindex.py:47 ../gourmet/recindex.py:54
+msgid "category"
+msgstr "kategorija"
+
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:16
+msgid "rating"
+msgstr ""
+
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:17 ../gourmet/gglobals.py:60
+msgid "Yield"
+msgstr "Izkoristek"
+
+#: ../gourmet/ui/recCardDescriptionEditor.ui.h:18 ../gourmet/gglobals.py:61
+msgid "Yield Unit"
+msgstr "Enota izkoristka"
+
+#: ../gourmet/ui/recCardDisplay.ui.h:1
+msgid "_Shop"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:2
+msgid "Edit _description"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:3
+msgid "<b>Cooking Time:</b>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:4
+msgid "<b>Preparation Time:</b>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:5
+msgid "<b>Cuisine:</b>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:6
+msgid "<b>Category:</b>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:7
+msgid "<b>Webpage:</b>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:8
+msgid "<b>_Yields:</b>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:9
+msgid "<span underline=\"single\" color=\"blue\">Link</span>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:10
+msgid "<b>Source:</b>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:11
+msgid "<b>Rating:</b>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:12
+msgid "<b>_Multiply by:</b>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:13
+msgid "<b>Instructions</b>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:14
+msgid "Edit _instructions"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:15
+msgid "<b>Notes</b>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:16
+msgid "Edit _notes"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:17 ../gourmet/exporters/exporter.py:619
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:482
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:60
+msgid "Recipe"
+msgstr "Recept"
+
+#: ../gourmet/ui/recCardDisplay.ui.h:18
+msgid "<b>Ingredients</b>"
+msgstr ""
+
+#: ../gourmet/ui/recCardDisplay.ui.h:19
+msgid "Edit _ingredients"
+msgstr ""
+
+#: ../gourmet/ui/recCardIngredientsEditor.ui.h:1
+msgid "Add _ingredient:"
+msgstr ""
+
+#: ../gourmet/ui/recCardIngredientsEditor.ui.h:2
+#: ../gourmet/exporters/exporter.py:246
+#: ../gourmet/importers/interactive_importer.py:40
+#: ../gourmet/importers/interactive_importer.py:55
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:477
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:479
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:507
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:102
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:600
+#: ../gourmet/reccard.py:1080
+msgid "Ingredients"
+msgstr "Sestavine"
+
+#: ../gourmet/ui/recipe_index.ui.h:1
+msgid "Add recipe to shopping list"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:2
+msgid "Add to _shopping list"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:3
+msgid "Jump to recipe in Recipe Card vew"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:5
+msgid "Delete selected recipe"
+msgstr ""
+
+#. saveEdits
+#: ../gourmet/ui/recipe_index.ui.h:6 ../gourmet/reccard.py:879
+msgid "_Delete Recipe"
+msgstr "_Izbriši Recept"
+
+#: ../gourmet/ui/recipe_index.ui.h:7
+msgid "Edit attributes of selected recipes"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:8
+msgid "_Batch edit recipes"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:9
+msgid "E-mail selected recipe"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:10
+msgid "_E-Mail recipe"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:11
+msgid "Print selected recipe"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:12
+msgid "_Print recipe"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:13
+msgid ""
+"Never buy this item. When called for in a recipe, it will show up in a "
+"\"pantry\" section of the list as a reminder that you need it, but it won't "
+"be included when you save or print the list unless you tell me you need to "
+"buy it."
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:14
+msgid "Add to _Pantry"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:17
+msgid "Show _Options"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:18
+msgid "Search _in"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:21
+msgid "_Use regular expressions (advanced searching)"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:22
+msgid "Search as you _type"
+msgstr ""
+
+#: ../gourmet/ui/recipe_index.ui.h:23
+msgid "<i>Search Options</i>"
+msgstr ""
+
+#: ../gourmet/ui/shopCatEditor.ui.h:1 ../gourmet/gglobals.py:55
+msgid "Category"
+msgstr "Kategorija"
+
+#. __gsignals__ = {
+#. 'view-changed':(GObject.SignalFlags.RUN_LAST,
+#. None,
+#. ()),
+#. }
+#: ../gourmet/ui/shopCatEditor.ui.h:2
+#: ../gourmet/plugins/key_editor/keyEditor.py:515
+#: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:109
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:188
+#: ../gourmet/reccard.py:2167 ../gourmet/reccard.py:2227
+msgid "Key"
+msgstr "Ključ"
+
+#: ../gourmet/ui/shopCatEditor.ui.h:3
+msgid "Category Editor"
+msgstr ""
+
+#: ../gourmet/ui/shopCatEditor.ui.h:4
+msgid "Search by"
+msgstr ""
+
+#: ../gourmet/ui/shopCatEditor.ui.h:7 ../gourmet/recindex.py:103
+msgid "Search as you type"
+msgstr "Išči med tipkanjem"
+
+#: ../gourmet/ui/shopCatEditor.ui.h:8
+#: ../gourmet/plugins/key_editor/keyeditor.ui.h:7
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:33
+msgid "Use regular expressions"
+msgstr ""
+
+#: ../gourmet/ui/shopCatEditor.ui.h:9
+msgid "Advanced Search"
+msgstr ""
+
+#: ../gourmet/ui/shopCatEditor.ui.h:10
+msgid "Add Category: "
+msgstr ""
+
+#: ../gourmet/ui/timerDialog.ui.h:1 ../gourmet/timer.py:185
+#: ../gourmet/timer.py:186
+msgid "Timer"
+msgstr "Odštevalnik"
+
+#: ../gourmet/ui/timerDialog.ui.h:2
+msgid "<b><span size=\"larger\">Timer</span></b>"
+msgstr ""
+
+#: ../gourmet/ui/timerDialog.ui.h:3
+msgid "<i>Timer Finished!</i>"
+msgstr ""
+
+#: ../gourmet/ui/timerDialog.ui.h:4
+msgid ""
+"Timer will continue to go off until you close this dialog or reset the timer."
+msgstr ""
+
+#: ../gourmet/ui/timerDialog.ui.h:5
+msgid "Set _Timer: "
+msgstr ""
+
+#: ../gourmet/ui/timerDialog.ui.h:6
+msgid "_Reset"
+msgstr ""
+
+#: ../gourmet/ui/timerDialog.ui.h:7
+msgid "_Start"
+msgstr ""
+
+#: ../gourmet/ui/timerDialog.ui.h:8
+msgid "S_ound"
+msgstr ""
+
+#: ../gourmet/ui/timerDialog.ui.h:9
+msgid "_Note"
+msgstr ""
+
+#: ../gourmet/ui/timerDialog.ui.h:10
+msgid "Re_peat alarm until I turn it off"
+msgstr ""
+
+#: ../gourmet/ui/timerDialog.ui.h:11
+msgid "_Settings"
+msgstr ""
+
+#: ../gourmet/ui/valueEditor.ui.h:1
+msgid "<b>Edit fields throughout database</b>"
+msgstr ""
+
+#: ../gourmet/ui/valueEditor.ui.h:2
+msgid "Field to _Edit:"
+msgstr ""
+
+#: ../gourmet/ui/valueEditor.ui.h:3
+msgid "For each selected value:"
+msgstr ""
+
+#: ../gourmet/ui/valueEditor.ui.h:4
+msgid "_Leave value as is"
+msgstr ""
+
+#: ../gourmet/ui/valueEditor.ui.h:5
+msgid "<i>New value will be added to the end of any existing text</i>"
+msgstr ""
+
+#: ../gourmet/ui/valueEditor.ui.h:6
+msgid "<i>New value will replace any existing value</i>"
+msgstr ""
+
+#: ../gourmet/ui/valueEditor.ui.h:7
+msgid "_Field:"
+msgstr ""
+
+#: ../gourmet/ui/valueEditor.ui.h:8
+msgid "_Value:"
+msgstr ""
+
+#: ../gourmet/ui/valueEditor.ui.h:9
+msgid "Change _other field:"
+msgstr ""
+
+#: ../gourmet/ui/valueEditor.ui.h:10
+msgid "C_hange value to: "
+msgstr ""
+
+#: ../gourmet/ui/valueEditor.ui.h:11
+msgid "_Delete value"
+msgstr ""
+
+#: ../gourmet.appdata.xml.in.h:1
+msgid ""
+"Gourmet Recipe Manager is a recipe-organizer that allows you to collect, "
+"search, organize, and browse your recipes. Gourmet can also generate "
+"shopping lists and calculate nutritional information."
+msgstr ""
+
+#: ../gourmet.appdata.xml.in.h:2
+msgid ""
+"A simple index view allows you to look at all your recipes as a list and "
+"quickly search through them by ingredient, title, category, cuisine, rating, "
+"or instructions."
+msgstr ""
+
+#: ../gourmet.appdata.xml.in.h:3
+msgid ""
+"Individual recipes open in their own windows, just like recipe cards drawn "
+"out of a recipe box. From the recipe card view, you can instantly multiply "
+"or divide a recipe, and Gourmet will adjust all ingredient amounts for you."
+msgstr ""
+
+#: ../gourmet.desktop.in.h:1
+#, fuzzy
+msgid "Gourmet"
+msgstr "Gourmet XML datoteka"
+
+#: ../gourmet.desktop.in.h:2
+#, fuzzy
+msgid "Recipe Manager"
+msgstr "Gurman, upravljalnik receptov"
+
+#: ../gourmet.desktop.in.h:3 ../gourmet/version.py:4
+msgid "Gourmet Recipe Manager"
+msgstr "Gurman, upravljalnik receptov"
+
+#: ../gourmet.desktop.in.h:4
+msgid ""
+"Organize recipes, create shopping lists, calculate nutritional information, "
+"and more."
+msgstr ""
+"Organizirajte recepte, ustvarjajte nakupovalne sezname, izračunajte "
+"hranljive vrednosti in več."
+
+#: ../gourmet.desktop.in.h:5
+msgid "recipes;cooking;nutrition;nutritional information;shopping lists;"
+msgstr ""
+
+#. Convenience method for showing progress dialogs for import/export/deletion
+#: ../gourmet/GourmetRecipeManager.py:117
+msgid "Import paused"
+msgstr "Uvoz trenutno zaustavljen"
+
+#: ../gourmet/GourmetRecipeManager.py:118
+msgid "Stop import"
+msgstr "Ustavi uvoz"
+
+#: ../gourmet/GourmetRecipeManager.py:200
+#: ../gourmet/GourmetRecipeManager.py:1075
+msgid "Recipe _Index"
+msgstr "Seznam _Receptov"
+
+#: ../gourmet/GourmetRecipeManager.py:201
+msgid "Shopping _List"
+msgstr "Nakupovalni _Seznam"
+
+#: ../gourmet/GourmetRecipeManager.py:220 ../gourmet/reccard.py:220
+msgid "_Go"
+msgstr "Pojdi"
+
+#: ../gourmet/GourmetRecipeManager.py:348
+msgid "translator-credits"
+msgstr ""
+"Launchpad Contributions:\n"
+"  Anita Gorse https://launchpad.net/~anita-gorse\n"
+"  Kristijan https://launchpad.net/~lapor\n"
+"  debeli747 https://launchpad.net/~ales-visic\n"
+"  niko https://launchpad.net/~sajko\n"
+"  orto https://launchpad.net/~ortosplet"
+
+#: ../gourmet/GourmetRecipeManager.py:394
+msgid ""
+"Please consider making a donation to support our continued effort to fix "
+"bugs, implement features, and help users!"
+msgstr ""
+
+#: ../gourmet/GourmetRecipeManager.py:399
+msgid "Donate via PayPal"
+msgstr ""
+
+#: ../gourmet/GourmetRecipeManager.py:401
+msgid "Micro-donate via Flattr"
+msgstr ""
+
+#: ../gourmet/GourmetRecipeManager.py:403
+msgid "Donate weekly via Gratipay"
+msgstr ""
+
+#: ../gourmet/GourmetRecipeManager.py:431
+msgid "Saved!"
+msgstr "Shranjeno!"
+
+#: ../gourmet/GourmetRecipeManager.py:441
+#, python-format
+msgid "Save your edits to %s"
+msgstr "Shrani moje spremembe v %s"
+
+#: ../gourmet/GourmetRecipeManager.py:452
+msgid "An import is in progress."
+msgstr "Trenutno se izvaja uvoz."
+
+#: ../gourmet/GourmetRecipeManager.py:453
+msgid "An export is in progress."
+msgstr "Trenutno se izvaja izvoz."
+
+#: ../gourmet/GourmetRecipeManager.py:454
+msgid "A delete is in progress."
+msgstr "Trenutno se izvaja brisanje."
+
+#: ../gourmet/GourmetRecipeManager.py:456
+msgid "Exit program anyway?"
+msgstr "Vseeno končam program?"
+
+#: ../gourmet/GourmetRecipeManager.py:458
+msgid "Don't exit!"
+msgstr "Prekliči!"
+
+#: ../gourmet/GourmetRecipeManager.py:504
+#, python-format
+msgid "Permanently deleted %s of %s recipes"
+msgstr "Začasno je izbrisano %s od %s receptov"
+
+#: ../gourmet/GourmetRecipeManager.py:522
+#: ../gourmet/GourmetRecipeManager.py:538
+msgid "Trash"
+msgstr "Pošlji v Smeti"
+
+#: ../gourmet/GourmetRecipeManager.py:539
+msgid "Browse, permanently delete or undelete deleted recipes"
+msgstr "Preglej, trajno izbriši ali povrni izbrisane recepte"
+
+#: ../gourmet/GourmetRecipeManager.py:593
+msgid "Undeleted recipes "
+msgstr "Neizbrisani recepti "
+
+#: ../gourmet/GourmetRecipeManager.py:731
+#, python-format
+msgid "Number of %(unit)s of %(title)s to shop for"
+msgstr "Število %(unit)s od %(title)s nakupovanja"
+
+#: ../gourmet/GourmetRecipeManager.py:743
+#, python-format
+msgid "Multiply %s by:"
+msgstr "Pomnoži %s z:"
+
+#: ../gourmet/GourmetRecipeManager.py:763
+#, python-format
+msgid "Set %(attributes)s for %(num)s selected recipe?"
+msgid_plural "Set %(attributes)s for %(num)s selected recipes?"
+msgstr[0] "Nastavi %(attributes)s za %(num)s izbran recept?"
+msgstr[1] "Nastavi %(attributes)s za %(num)s izbrana recepta?"
+msgstr[2] "Nastavi %(attributes)s za %(num)s izbrane recepte?"
+msgstr[3] "Nastavi %(attributes)s za %(num)s izbranih receptov?"
+
+#: ../gourmet/GourmetRecipeManager.py:770
+msgid "Any previously existing values will not be changed."
+msgstr "Predhodno nastavljene vrednosti se ne bodo spremenile."
+
+#: ../gourmet/GourmetRecipeManager.py:772
+msgid "The new values will overwrite any previously existing values."
+msgstr "Stare obstoječe vrednosti bodo prepisane z novimi vrednostmil."
+
+#: ../gourmet/GourmetRecipeManager.py:773
+msgid "This change cannot be undone."
+msgstr "Te spremembe ne bo mogoče razveljaviti."
+
+#: ../gourmet/GourmetRecipeManager.py:774
+msgid "Set values for selected recipes"
+msgstr "Nastavi vrednosti za izbrane recepte."
+
+#: ../gourmet/GourmetRecipeManager.py:987
+msgid "Search recipes"
+msgstr "Brskaj po receptih"
+
+#: ../gourmet/GourmetRecipeManager.py:1014
+msgid "Open recipe"
+msgstr "Odpri recept"
+
+#: ../gourmet/GourmetRecipeManager.py:1015
+msgid "Open selected recipe"
+msgstr "Odpri izbran recept"
+
+#: ../gourmet/GourmetRecipeManager.py:1016
+msgid "Delete recipe"
+msgstr "Izbriši recept"
+
+#: ../gourmet/GourmetRecipeManager.py:1017
+msgid "Delete selected recipes"
+msgstr "Izbriši izbrane recepte"
+
+#: ../gourmet/GourmetRecipeManager.py:1018
+msgid "Edit recipe"
+msgstr "Uredi recept"
+
+#: ../gourmet/GourmetRecipeManager.py:1019
+msgid "Open selected recipes in recipe editor view"
+msgstr "Odpri izbrane recepte v urejevalniku"
+
+#: ../gourmet/GourmetRecipeManager.py:1021
+msgid "E_xport selected recipes"
+msgstr "I_zvozi izbrane recepte"
+
+#: ../gourmet/GourmetRecipeManager.py:1022
+msgid "Export selected recipes to file"
+msgstr "Izvozi izbrane recepte v datoteko"
+
+#: ../gourmet/GourmetRecipeManager.py:1024
+msgid "_Print"
+msgstr "_Natisni"
+
+#. ('Email', None, _('E-_mail recipes'),
+#. None,None,self.email_recs),
+#: ../gourmet/GourmetRecipeManager.py:1028
+msgid "Batch _edit recipes"
+msgstr "Uredi _več receptov hkrati"
+
+#: ../gourmet/GourmetRecipeManager.py:1036
+msgid "_New"
+msgstr "_Nov"
+
+#: ../gourmet/GourmetRecipeManager.py:1038
+msgid "_Import file"
+msgstr "_Uvozi datoteko"
+
+#: ../gourmet/GourmetRecipeManager.py:1039
+msgid "Import recipe from file"
+msgstr "Uvozi recept iz datoteke"
+
+#: ../gourmet/GourmetRecipeManager.py:1040
+msgid "Import _webpage"
+msgstr "Uvozi _spletno stran"
+
+#: ../gourmet/GourmetRecipeManager.py:1041
+msgid "Import recipe from webpage"
+msgstr "Uvozi recept s spletne strani"
+
+#: ../gourmet/GourmetRecipeManager.py:1042
+msgid "Export _all recipes"
+msgstr "Izvozi _vse recepte"
+
+#: ../gourmet/GourmetRecipeManager.py:1043
+msgid "Export all recipes to file"
+msgstr "Izvozi vse recepte v datoteko"
+
+#: ../gourmet/GourmetRecipeManager.py:1044
+msgid "_Quit"
+msgstr "_Izhod"
+
+#: ../gourmet/GourmetRecipeManager.py:1047
+msgid "_Actions"
+msgstr "_Dejanja"
+
+#: ../gourmet/GourmetRecipeManager.py:1048 ../gourmet/reccard.py:219
+#: ../gourmet/reccard.py:874 ../gourmet/shopgui.py:655
+msgid "_Edit"
+msgstr "_Uredi"
+
+#: ../gourmet/GourmetRecipeManager.py:1050
+msgid "Open _Trash"
+msgstr "Odpri _Koš"
+
+#: ../gourmet/GourmetRecipeManager.py:1053
+msgid "_Preferences"
+msgstr "_Nastavitve"
+
+#: ../gourmet/GourmetRecipeManager.py:1055
+msgid "_Plugins"
+msgstr "_Razširitve"
+
+#: ../gourmet/GourmetRecipeManager.py:1056
+msgid "Manage plugins which add extra functionality to Gourmet."
+msgstr "Upravljaj dodatke, ki dodajo Gurmanu funkcionalnost"
+
+#: ../gourmet/GourmetRecipeManager.py:1058
+msgid "Setti_ngs"
+msgstr "Nasta_vitve"
+
+#: ../gourmet/GourmetRecipeManager.py:1060
+#: ../gourmet/GourmetRecipeManager.py:1063 ../gourmet/reccard.py:221
+#: ../gourmet/reccard.py:232 ../gourmet/reccard.py:876
+#: ../gourmet/shopgui.py:678 ../gourmet/shopgui.py:680
+msgid "_Help"
+msgstr "_Pomoč"
+
+#: ../gourmet/GourmetRecipeManager.py:1061
+msgid "_About"
+msgstr "_O programu"
+
+#: ../gourmet/GourmetRecipeManager.py:1069
+msgid "_Tools"
+msgstr "_Orodja"
+
+#: ../gourmet/GourmetRecipeManager.py:1070
+msgid "_Timer"
+msgstr "_Odštevalnik časa"
+
+#: ../gourmet/GourmetRecipeManager.py:1071
+msgid "Show timer"
+msgstr "Prikaži odštevalnik časa"
+
+#: ../gourmet/GourmetRecipeManager.py:1076
+msgid "Searchable index of recipes in the database."
+msgstr "Iskalnik po receptih v datoteki"
+
+#: ../gourmet/GourmetRecipeManager.py:1187
+#, python-format
+msgid "Delete %s?"
+msgstr "Izbriši %s?"
+
+#: ../gourmet/GourmetRecipeManager.py:1188
+#, python-format
+msgid "You have unsaved changes to %s. Are you sure you want to delete?"
+msgstr "Imate neshranjene spremembe v %s. Ste prepričani, da želite izbrisati?"
+
+#: ../gourmet/GourmetRecipeManager.py:1217
+msgid "Deleted"
+msgstr "Izbrisano"
+
+#: ../gourmet/GourmetRecipeManager.py:1217
+#: ../gourmet/importers/interactive_importer.py:468
+msgid "Untitled"
+msgstr "Brez naslova"
+
+#: ../gourmet/GourmetRecipeManager.py:1225
+msgid "Permanently delete recipes?"
+msgstr "Dokončno izbrišem recepte?"
+
+#: ../gourmet/GourmetRecipeManager.py:1227
+msgid "Permanently delete recipe?"
+msgstr "Dokončno izbrišem recept?"
+
+#: ../gourmet/GourmetRecipeManager.py:1228
+#, python-format
+msgid "Are you sure you want to delete the recipe <i>%s</i>"
+msgstr "Ali res želite izbrisati recept <i>%s</i>"
+
+#: ../gourmet/GourmetRecipeManager.py:1230
+msgid "Are you sure you want to delete the following recipes?"
+msgstr "Ali res želite izbrisati naslednje recepte?"
+
+#: ../gourmet/GourmetRecipeManager.py:1234
+#, python-format
+msgid "Are you sure you want to delete the %s selected recipes?"
+msgstr "Ali res želite izbrisat %s izbranih receptov?"
+
+#: ../gourmet/GourmetRecipeManager.py:1236
+msgid "See recipes"
+msgstr "Poglej recepte"
+
+#: ../gourmet/GourmetRecipeManager.py:1244
+msgid "Delete Recipes"
+msgstr "Izbriši recepte"
+
+#: ../gourmet/GourmetRecipeManager.py:1246
+#, fuzzy
+msgid "Recipes deleted"
+msgstr "Kazalo receptov"
+
+#: ../gourmet/GourmetRecipeManager.py:1271
+#, python-format
+msgid "Deleted recipe %s"
+msgstr "Izbriši recept %s"
+
+#: ../gourmet/GourmetRecipeManager.py:1298
+msgid "See Trash Now"
+msgstr ""
+
+#: ../gourmet/GourmetRecipeManager.py:1337
+msgid "Done!"
+msgstr "Končano!"
+
+#: ../gourmet/GourmetRecipeManager.py:1345
+msgid "Importing..."
+msgstr "Uvažam..."
+
+#: ../gourmet/backends/DatabaseChooser.py:105
+msgid "Choose Database File"
+msgstr "Izberi datoteko iz zbirke podatkov"
+
+#: ../gourmet/backends/db.py:475 ../gourmet/backends/db.py:476
+msgid "Upgrading database"
+msgstr "Posodobitev zbirke podatkov"
+
+#: ../gourmet/backends/db.py:477
+msgid ""
+"Depending on the size of your database, this may be an intensive process and "
+"may take  some time. Your data has been automatically backed up in case "
+"something goes wrong."
+msgstr ""
+"Glede na velikost vaše datoteke lahko proces traja dalj časa. Vaši podatki "
+"so bili avtomatično shranjeni v arhivski kopiji, v primeru, da gre kaj "
+"narobe."
+
+#: ../gourmet/backends/db.py:478 ../gourmet/threadManager.py:353
+msgid "Details"
+msgstr "Podrobnosti"
+
+#: ../gourmet/backends/db.py:478
+#, python-format
+msgid ""
+"A backup has been made in %s in case something goes wrong. If this upgrade "
+"fails, you can manually rename your backup file recipes.db to recover it for "
+"use with older Gourmet."
+msgstr ""
+"V primeru, da gre kaj narobe, je bila narejena arhivska kopija v %s. \r\n"
+"Če posodobitev ne uspe, lahko ročno preimenujete arhivsko datoteko recipes."
+"db in jo obnovite za uporabo s starejšim Gurmanom."
+
+#: ../gourmet/backends/db.py:1521
+#: ../gourmet/importers/interactive_importer.py:95 ../gourmet/reccard.py:949
+msgid "New Recipe"
+msgstr "Nov Recept"
+
+#: ../gourmet/check_encodings.py:95
+msgid "Select encoding"
+msgstr "Izberi kodiranje"
+
+#: ../gourmet/check_encodings.py:96
+msgid ""
+"Cannot determine proper encoding. Please select the correct encoding from "
+"the following list."
+msgstr ""
+"Ne morem določiti pravilnega kodiranja. Prosim, izberite pravilno kodiranje "
+"iz naslednjega seznama."
+
+#: ../gourmet/check_encodings.py:97
+msgid "See _file with encoding"
+msgstr "Poglej _datoteko z naslednjim kodiranjem"
+
+#. this is a bit of a hackish attempt to make a matcher for all
+#. plural forms of time units. We use range(5) since as far as I
+#. can see, enumerating the forms for 0 through 5 should give you
+#. all possible forms in all languages.
+#.
+#. See http://www.sbin.org/doc/glibc/libc_8.html
+#: ../gourmet/convert.py:101 ../gourmet/convert.py:600
+msgid "second"
+msgid_plural "seconds"
+msgstr[0] "sekund"
+msgstr[1] "sekunda"
+msgstr[2] "sekundi"
+msgstr[3] "sekunde"
+
+#. min. = abbreviation for minutes
+#: ../gourmet/convert.py:103
+msgid "min"
+msgstr "min."
+
+#: ../gourmet/convert.py:103 ../gourmet/convert.py:599
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "minut"
+msgstr[1] "minuta"
+msgstr[2] "minut"
+msgstr[3] "minute"
+
+#. hrs = abbreviation for hours
+#: ../gourmet/convert.py:105
+msgid "hrs."
+msgstr "ur"
+
+#: ../gourmet/convert.py:105 ../gourmet/convert.py:598
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "ur"
+msgstr[1] "ura"
+msgstr[2] "ur"
+msgstr[3] "ure"
+
+#: ../gourmet/convert.py:106 ../gourmet/convert.py:597
+msgid "day"
+msgid_plural "days"
+msgstr[0] "dni"
+msgstr[1] "dan"
+msgstr[2] "dni"
+msgstr[3] "dnevi"
+
+#: ../gourmet/convert.py:107 ../gourmet/convert.py:596
+msgid "week"
+msgid_plural "weeks"
+msgstr[0] "tednov"
+msgstr[1] "teden"
+msgstr[2] "tedna"
+msgstr[3] "tedni"
+
+#: ../gourmet/convert.py:108 ../gourmet/convert.py:595
+msgid "month"
+msgid_plural "months"
+msgstr[0] "mesecev"
+msgstr[1] "mesec"
+msgstr[2] "meseca"
+msgstr[3] "meseci"
+
+#. 'millennia':lambda decades: ngettext("millenium","millenia",round(decades))
+#. 'centuries':lambda decades: ngettext("century","centuries",round(decades))
+#. 'decades':lambda decades: ngettext("decade","decades",round(decades))
+#: ../gourmet/convert.py:109 ../gourmet/convert.py:594
+msgid "year"
+msgid_plural "years"
+msgstr[0] "let"
+msgstr[1] "leto"
+msgstr[2] "leti"
+msgstr[3] "leta"
+
+#. Translators... this is a messay way of concatenating
+#. lists. In English we do lists this way: 1, 2, 3, 4, 5
+#. and 6. This set-up allows for variations of this system only.
+#. You can of course make your language only use commas or
+#. ands or spaces or whatever you like by translating both
+#. ", " and " and " with the same string.
+#: ../gourmet/convert.py:644
+msgid " and "
+msgstr " in "
+
+#: ../gourmet/convert.py:644
+msgid ", "
+msgstr ", "
+
+#: ../gourmet/convert.py:646
+msgid " "
+msgstr " "
+
+#: ../gourmet/convert.py:778
+msgid "and"
+msgstr "in"
+
+#. Note: the order matters on this range regular expression in order
+#. for it to properly split things like 1 - to - 3, which really do
+#. show up sometimes.
+#: ../gourmet/convert.py:800
+msgid "to"
+msgstr "do"
+
+#: ../gourmet/exporters/exportManager.py:50
+msgid "Save recipe as..."
+msgstr "Shrani recept kot..."
+
+#: ../gourmet/exporters/exportManager.py:61
+#, python-format
+msgid "Gourmet cannot export file of type \"%s\""
+msgstr "Gourmet ne more izvoziti datoteke tipa \"%s\""
+
+#: ../gourmet/exporters/exportManager.py:107
+msgid "Export recipes"
+msgstr "Izvozi recepte"
+
+#: ../gourmet/exporters/exportManager.py:110
+msgid "recipes"
+msgstr "recepti"
+
+#: ../gourmet/exporters/exportManager.py:122
+#, python-format
+msgid "Unable to export: unknown filetype \"%s\""
+msgstr "Izvoz ni mogoč: neznan tip datoteke \"%s\""
+
+#: ../gourmet/exporters/exportManager.py:123
+msgid ""
+"Please make sure to select a filetype from the dropdown menu when saving."
+msgstr "Prosim, izberite tip datoteke iz padajočega seznama, ko shranjujete."
+
+#: ../gourmet/exporters/exportManager.py:164
+msgid "Export"
+msgstr "Izvozi"
+
+#: ../gourmet/exporters/exportManager.py:167
+#, python-format
+msgid "Recipes successfully exported to <a href=\"file:///%s\">%s</a>"
+msgstr ""
+
+#: ../gourmet/exporters/exporter.py:209 ../gourmet/exporters/exporter.py:211
+#: ../gourmet/exporters/exporter.py:530 ../gourmet/exporters/exporter.py:532
+msgid "stars"
+msgstr "zvezdic"
+
+#: ../gourmet/exporters/exporter.py:382 ../gourmet/exporters/exporter.py:467
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:179
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:628
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:641
+msgid "optional"
+msgstr "po izbiri"
+
+#: ../gourmet/exporters/exporter.py:571
+#, python-format
+msgid "Exported %(number)s of %(total)s recipes"
+msgstr "Izvožene %(number)s od %(total)s receptov"
+
+#: ../gourmet/exporters/exporter.py:591
+msgid "Export complete."
+msgstr "Izvoz končan."
+
+#: ../gourmet/exporters/printer.py:17 ../gourmet/exporters/printer.py:26
+msgid "Unable to print: no print plugins are active!"
+msgstr "Tiskanje ni mogoče: aktiven ni noben dodatek za tiskanje!"
+
+#: ../gourmet/exporters/printer.py:80
+#, python-format
+msgid "Print %s recipe"
+msgid_plural "Print %s recipes"
+msgstr[0] "Natisni %s receptov"
+msgstr[1] "Natisni %s recept"
+msgstr[2] "Natisni %s recepta"
+msgstr[3] "Natisni %s recepte"
+
+#: ../gourmet/exporters/recipe_emailer.py:56
+#: ../gourmet/plugins/email_plugin/recipe_emailer.py:28
+#: ../gourmet/plugins/email_plugin/recipe_emailer.py:47
+#: ../gourmet/plugins/key_editor/keyEditor.py:116 ../gourmet/reccard.py:3068
+msgid "Recipes"
+msgstr "Recepti"
+
+#: ../gourmet/exporters/recipe_emailer.py:120
+msgid "Include Recipe in Body of E-mail (A good idea no matter what)"
+msgstr "Uporabi recept v tekstu E-pošte (Vedno dobra ideja)"
+
+#: ../gourmet/exporters/recipe_emailer.py:121
+msgid "E-mail Recipe as HTML Attachment"
+msgstr "Pošlji recept po elektronski pošti kot HTML priponko"
+
+#: ../gourmet/exporters/recipe_emailer.py:122
+msgid "E-mail Recipe as PDF Attachment"
+msgstr "Pošlji recept po elektronski pošti kot PDF priponko"
+
+#: ../gourmet/exporters/recipe_emailer.py:139
+msgid "Email Options"
+msgstr "Nastavitve elektronske pošte"
+
+#: ../gourmet/exporters/recipe_emailer.py:142
+msgid "Don't ask before sending e-mail."
+msgstr "Ne sprašuje pred pošiljanjem elektronske pošte."
+
+#: ../gourmet/exporters/recipe_emailer.py:161
+msgid "E-mail not sent"
+msgstr "Elektronska pošta ni bila poslana."
+
+#: ../gourmet/exporters/recipe_emailer.py:162
+msgid ""
+"You have not chosen to include the recipe in the body of the message or as "
+"an attachment."
+msgstr ""
+"Niste odločili, ali vključite recept v tekst elektronskega sporočila ali kot "
+"priponko."
+
+#: ../gourmet/gglobals.py:56
+msgid "Cuisine"
+msgstr "Kuhinja"
+
+#: ../gourmet/gglobals.py:57 ../gourmet/gtk_extras/ratingWidget.py:326
+msgid "Rating"
+msgstr "Ocena"
+
+#: ../gourmet/gglobals.py:58
+msgid "Source"
+msgstr "Izvor"
+
+#: ../gourmet/gglobals.py:59
+msgid "Website"
+msgstr "Spletna stran"
+
+#: ../gourmet/gglobals.py:62
+msgid "Preparation Time"
+msgstr "Čas priprave"
+
+#: ../gourmet/gglobals.py:63
+msgid "Cooking Time"
+msgstr "Čas kuhanja"
+
+#: ../gourmet/gglobals.py:68 ../gourmet/gglobals.py:73
+#: ../gourmet/reccard.py:1680
+msgid "Instructions"
+msgstr "Navodila"
+
+#: ../gourmet/gglobals.py:69 ../gourmet/gglobals.py:74
+#: ../gourmet/reccard.py:1686
+msgid "Notes"
+msgstr "Opombe"
+
+#: ../gourmet/gglobals.py:75
+msgid "Modifications"
+msgstr "Spremembe"
+
+#. setup pause button
+#: ../gourmet/gtk_extras/dialog_extras.py:405
+msgid "_Pause"
+msgstr "_Premor"
+
+#. setup stop button
+#: ../gourmet/gtk_extras/dialog_extras.py:417
+msgid "_Stop"
+msgstr "_Ustavi"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:481
+#: ../gourmet/gtk_extras/dialog_extras.py:571
+msgid "Don't ask me this again."
+msgstr "Ne sprešuj več tega."
+
+#: ../gourmet/gtk_extras/dialog_extras.py:537
+msgid "Do you really want to do this"
+msgstr "Ali želite to res storiti"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:755
+#: ../gourmet/importers/importer.py:495
+msgid "excellent"
+msgstr "odlično"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:756
+#: ../gourmet/importers/importer.py:496
+msgid "great"
+msgstr "zelo dobro"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:757
+#: ../gourmet/importers/importer.py:497
+msgid "good"
+msgstr "dobro"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:758
+#: ../gourmet/importers/importer.py:498
+msgid "fair"
+msgstr "v redu"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:759
+#: ../gourmet/importers/importer.py:500
+msgid "poor"
+msgstr "slabo"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:771
+msgid "Convert ratings to 5 star scale."
+msgstr "Pretvori ocene v petstopenjsko lestvico."
+
+#: ../gourmet/gtk_extras/dialog_extras.py:772
+msgid "Convert ratings."
+msgstr "Pretvori ocene."
+
+#: ../gourmet/gtk_extras/dialog_extras.py:773
+msgid "Please give each of the ratings an equivalent on a scale of 1 to 5"
+msgstr "Prosim, dodaj vsaki oceni ustreznik na lestvici od 1 do 5"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:786
+msgid "Current Rating"
+msgstr "Trenutna ocena"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:791
+msgid "Rating out of 5 Stars"
+msgstr "Ocena od 1-5"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:1067
+msgid "No file selected"
+msgstr "Izbrana ni nobena datoteka"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:1068
+msgid "No file was selected, so the action has been cancelled"
+msgstr "Dejanje je bilo preklicani, ker ni izbrana nobena datoteka."
+
+#: ../gourmet/gtk_extras/dialog_extras.py:1175
+#, python-format
+msgid ""
+"I'm sorry, I can't understand\n"
+"the amount \"%s\"."
+msgstr ""
+"Oprostite, ne razumem\n"
+"\n"
+"količine \"%s\"."
+
+#: ../gourmet/gtk_extras/dialog_extras.py:1177
+msgid ""
+"Amounts must be numbers (fractions or decimals), ranges of numbers, or blank."
+msgstr ""
+"Količine morajo biti številke (ulomki ali decimalke), skupine številk, ali "
+"prazno polje."
+
+#: ../gourmet/gtk_extras/dialog_extras.py:1179
+msgid ""
+"\n"
+"The \"unit\" must be in the \"unit\" field by itself.\n"
+"For example, if you want to enter one and a half cups,\n"
+"the amount field could contain \"1.5\" or \"1 1/2\". \"cups\"\n"
+"should go in the separate \"unit\" field.\n"
+"\n"
+"To enter a range of numbers, use a \"-\" to separate them.\n"
+"For example, you could enter 2-4 or 1 1/2 - 3 1/2.\n"
+msgstr ""
+"\n"
+"\"Enota\" mora biti v polju \"enota\".\n"
+"\n"
+"Na primer, če želite vstaviti ena in pol skodelice,\n"
+"\n"
+"mora količinsko polje vsebovati \"1.5\" ali \"1 1/2\". \"skodelice\"\n"
+"\n"
+"moramo dati v ločeno polje \"enota\".\n"
+"\n"
+"\n"
+"\n"
+"Za vpis več številk, uporabite\"-\" za ločevanje.\n"
+"\n"
+"Na primer, vpišete lahko 2-4 ali 1 1/2 - 3 1/2.\n"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:1193
+#, fuzzy
+msgid "Username"
+msgstr "_Uporabniško ime:"
+
+#: ../gourmet/gtk_extras/dialog_extras.py:1193
+#, fuzzy
+msgid "Password"
+msgstr "_Geslo:"
+
+#: ../gourmet/gtk_extras/validation.py:154
+msgid "Time must consist of a number and a unit."
+msgstr ""
+
+#: ../gourmet/gtk_extras/validation.py:190
+msgid "Invalid input."
+msgstr "Nepravilen vnos."
+
+#: ../gourmet/gtk_extras/validation.py:190
+msgid "Not a number."
+msgstr "Ni številka."
+
+#: ../gourmet/importers/generic_recipe_parser.py:129
+msgid "yield"
+msgstr "izkoristek"
+
+#: ../gourmet/importers/html_importer.py:41
+#: ../gourmet/importers/webextras.py:21 ../gourmet/importers/webextras.py:83
+#, python-format
+msgid "Retrieving %s"
+msgstr "Pridobivam %s"
+
+#: ../gourmet/importers/html_importer.py:44
+#: ../gourmet/importers/webextras.py:86
+msgid "Retrieving file"
+msgstr "Sprejemam datoteko"
+
+#. Interactive we go...
+#: ../gourmet/importers/html_importer.py:493
+msgid "Don't recognize this webpage. Using generic importer..."
+msgstr "Ne prepoznam te spletne strani. Uporaba splošnega uvoza..."
+
+#: ../gourmet/importers/html_importer.py:504
+#: ../gourmet/importers/html_importer.py:577
+msgid "Import complete."
+msgstr "Uvoz končan."
+
+#: ../gourmet/importers/html_importer.py:528
+msgid "Importing recipe"
+msgstr "Uvažam recept"
+
+#: ../gourmet/importers/html_importer.py:535
+msgid "Processing ingredients"
+msgstr "Obdelujem sestavine"
+
+#: ../gourmet/importers/html_importer.py:559
+msgid "Processing ingredients."
+msgstr "Obdelujem sestavine."
+
+#: ../gourmet/importers/importManager.py:64
+msgid "Enter the URL of a recipe archive or recipe website."
+msgstr "Vpišite URL naslov za arhiv receptov, oz. spletno stran z recepti."
+
+#: ../gourmet/importers/importManager.py:65
+msgid "Enter website address"
+msgstr "Vnesite naslov spletne strani"
+
+#: ../gourmet/importers/importManager.py:67
+msgid "Enter URL:"
+msgstr "Vnesite URL:"
+
+#: ../gourmet/importers/importManager.py:68
+msgid "Enter the address of a website or recipe archive."
+msgstr "Vnesite naslov spletne strani ali arhiva receptov."
+
+#: ../gourmet/importers/importManager.py:106
+msgid "Unable to import URL"
+msgstr "Ne morem uvoziti URL"
+
+#: ../gourmet/importers/importManager.py:107
+msgid "Gourmet does not have a plugin capable of importing URL"
+msgstr "Gurman nima dodatka, ki bi lahko uvozil URL"
+
+#: ../gourmet/importers/importManager.py:108
+#, python-format
+msgid ""
+"Unable to import URL %(url)s of mimetype %(type)s. File saved to temporary "
+"location %(fn)s"
+msgstr ""
+"Ne morem uvoziti URL %(url)s internetnega medijskega %(type)s. Datoteka je "
+"shranjena na začasno lokacijo %(fn)s"
+
+#: ../gourmet/importers/importManager.py:123
+msgid "Open recipe..."
+msgstr "Odpri recept..."
+
+#: ../gourmet/importers/importManager.py:185
+msgid "Import"
+msgstr "Uvoz"
+
+#: ../gourmet/importers/importManager.py:270
+msgid "All importable files"
+msgstr "Vse datoteke za uvoz"
+
+#: ../gourmet/importers/importer.py:189
+msgid "serving"
+msgid_plural "servings"
+msgstr[0] "Obrok"
+msgstr[1] "Obroka"
+msgstr[2] "Obroki"
+msgstr[3] "Obrokov"
+
+#: ../gourmet/importers/importer.py:272
+#, python-format
+msgid "Imported %s of %s recipes."
+msgstr "Uvoženo %s od %s receptov."
+
+#: ../gourmet/importers/importer.py:499
+msgid "okay"
+msgstr "v redu"
+
+#: ../gourmet/importers/interactive_importer.py:39
+msgid "Servings"
+msgstr "Število obrokov"
+
+#: ../gourmet/importers/interactive_importer.py:41
+msgid "Ingredient Subgroup"
+msgstr "Podskupina sestavin"
+
+#: ../gourmet/importers/interactive_importer.py:42
+msgid "Hide"
+msgstr "Skrij"
+
+#: ../gourmet/importers/interactive_importer.py:48 ../gourmet/reccard.py:1321
+msgid "Description"
+msgstr "Opis"
+
+#: ../gourmet/importers/interactive_importer.py:54
+msgid "Text"
+msgstr "Besedilo"
+
+#: ../gourmet/importers/interactive_importer.py:56
+msgid "Actions"
+msgstr "Dejanja"
+
+#: ../gourmet/importers/interactive_importer.py:102
+msgid "Import recipe"
+msgstr "Uvozi recept"
+
+#: ../gourmet/importers/interactive_importer.py:147
+msgid "Clear _Tags"
+msgstr "Počisti _Vnose"
+
+#. for t in self.tags:
+#.
+#. self.action_model.append([self.labels_by_tag[t],t])
+#. tag_button = Gtk.Button('_'+self.labels_by_tag[t])
+#. tag_button.connect('clicked',
+#. self.label_callback,
+#. self.labels_by_tag[t])
+#. self.action_area.pack_start(tag_button,expand=False,fill=False,padding=6)
+#. tag_button.show()
+#.
+#: ../gourmet/importers/interactive_importer.py:194
+msgid "Import Recipe"
+msgstr "Uvozi recept"
+
+#: ../gourmet/importers/interactive_importer.py:467
+msgid "Select recipe image"
+msgstr "Izberite sliko recepta"
+
+#: ../gourmet/importers/interactive_importer.py:468
+#, python-format
+msgid "Select image for recipe \"%s\""
+msgstr "Izberi sliko za recept \"%s\""
+
+#: ../gourmet/importers/interactive_importer.py:469
+msgid ""
+"Below are all the images found for the page you are importing. Select any "
+"images that are of the recipe, or don't select anything if you don't want "
+"any of these images."
+msgstr ""
+"Spodaj so najdene slike za stran ki jo uvažate. Izmerite sliko, ki je iz "
+"recepta ali pa ne izberite ničesar, če slik nočete."
+
+#: ../gourmet/importers/plaintext_importer.py:36
+#, python-format
+msgid "Imported %s recipes."
+msgstr "Uvoženo %s receptov"
+
+#: ../gourmet/importers/webextras.py:14
+#, python-format
+msgid "Downloading %s"
+msgstr "Prenašam %s"
+
+#: ../gourmet/plugin_gui.py:32
+msgid "Plugins"
+msgstr "Vtičniki"
+
+#: ../gourmet/plugin_gui.py:35
+msgid "Plugins add extra functionality to Gourmet."
+msgstr ""
+
+#: ../gourmet/plugin_gui.py:123
+msgid "Plugin is needed for other plugins. Deactivate plugin anyway?"
+msgstr ""
+"Ta vtičnik je nujen za delovanje ostalih vtičnikov. Ga želite vseeno "
+"izklopiti?"
+
+#: ../gourmet/plugin_gui.py:124
+#, python-format
+msgid "The following plugins require %s:"
+msgstr "Naslednji vtičniki zahtevajo %s:"
+
+#: ../gourmet/plugin_gui.py:127
+msgid "Deactivate anyway"
+msgstr "Vseeno izključi"
+
+#: ../gourmet/plugin_gui.py:128
+msgid "Keep plugin active"
+msgstr "Ne izključi vtičnika"
+
+#: ../gourmet/plugin_gui.py:142 ../gourmet/recindex.py:465
+msgid "or"
+msgstr "ali"
+
+#: ../gourmet/plugin_gui.py:146
+msgid "An error occurred activating plugin."
+msgstr "Ob izklopu vtičnika je prišlo do napake."
+
+#: ../gourmet/plugin_gui.py:150
+msgid "An error occurred deactivating plugin."
+msgstr "Ob vklopu vtičnika je prišlo do napake."
+
+#: ../gourmet/plugins/browse_plugin.gourmet-plugin.in.h:1
+msgid "Browse Recipes"
+msgstr ""
+
+#: ../gourmet/plugins/browse_plugin.gourmet-plugin.in.h:2
+msgid "Selecting recipes by browsing by category, cuisine, etc."
+msgstr ""
+
+#: ../gourmet/plugins/browse_plugin.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/email.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/nutritional_information.gourmet-plugin.in.h:3
+msgid "Main"
+msgstr ""
+
+#: ../gourmet/plugins/browse_recipes/browser.py:116
+msgid "Stars"
+msgstr "Zvezdice"
+
+#: ../gourmet/plugins/duplicate_finder.gourmet-plugin.in.h:1
+msgid "Find duplicate recipes"
+msgstr ""
+
+#: ../gourmet/plugins/duplicate_finder.gourmet-plugin.in.h:2
+msgid "A wizard to find and remove or merge duplicate recipes."
+msgstr ""
+
+#: ../gourmet/plugins/duplicate_finder.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/field_editor.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/key_editor.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/listsaver.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/nutritional_information/shopping_plugin.py:28
+#: ../gourmet/plugins/python_shell.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/shopping_associations.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/spellcheck.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/unit_converter.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/unit_display_prefs.gourmet-plugin.in.h:3
+msgid "Tools"
+msgstr "Orodja"
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:30
+#, python-format
+msgid "%s ago"
+msgstr "pred %s"
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:231
+msgid "Auto-Merge recipes"
+msgstr "Samodejno spoji recepte"
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:233
+msgid "Always use newest recipe"
+msgstr "Vedno uporabi najnovejši recept"
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:234
+msgid "Always use oldest recipe"
+msgstr "Vedno uporabi najstarejši recept"
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:434
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:489
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:552
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.py:579
+#: ../gourmet/plugins/unit_converter/convertGui.py:159
+#: ../gourmet/plugins/unit_converter/converter.ui.h:1
+msgid "None"
+msgstr "Brez"
+
+#. dups = rd.find_complete_duplicates()
+#. for d in dups[5:]:
+#. test_merger(rd,d)
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.ui.h:1
+msgid "Recipes with similar recipe information"
+msgstr ""
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.ui.h:2
+msgid "Recipes with similar ingredients"
+msgstr ""
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.ui.h:3
+msgid "Recipes with similar recipe information and ingredients"
+msgstr ""
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.ui.h:4
+msgid "<b><span size=\"large\">Duplicate recipes</span></b>"
+msgstr ""
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.ui.h:5
+msgid "_Include recipes in trash"
+msgstr ""
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.ui.h:6
+msgid "<i>_Showing:</i>"
+msgstr ""
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.ui.h:7
+msgid "Merge _all duplicates"
+msgstr ""
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.ui.h:8
+msgid "<b>Merge recipes</b>"
+msgstr ""
+
+#: ../gourmet/plugins/duplicate_finder/recipeMerger.ui.h:9
+msgid "_Auto-merge"
+msgstr ""
+
+#: ../gourmet/plugins/duplicate_finder/recipeMergerPlugin.py:22
+#: ../gourmet/plugins/duplicate_finder/recipeMergerPlugin.py:58
+msgid ""
+"Some of the imported recipes appear to be duplicates. You can merge them "
+"here, or close this dialog to leave them as they are."
+msgstr ""
+"Nekateri uvoženi recepti so morda podvojeni. Lahko jih spojite tukaj ali pa "
+"zaprete okno in jih pustite v trenutni obliki."
+
+#: ../gourmet/plugins/duplicate_finder/recipeMergerPlugin.py:65
+msgid "Find _duplicate recipes"
+msgstr "Najdi _podvojene recepte."
+
+#: ../gourmet/plugins/duplicate_finder/recipeMergerPlugin.py:66
+msgid "Find and remove duplicate recipes"
+msgstr "Najdi in izbriši podvojene recepte"
+
+#: ../gourmet/plugins/email.gourmet-plugin.in.h:1
+msgid "Send to Email"
+msgstr ""
+
+#: ../gourmet/plugins/email.gourmet-plugin.in.h:2
+msgid "Email recipes from Gourmet"
+msgstr ""
+
+#: ../gourmet/plugins/email_plugin/emailer_plugin.py:22
+#: ../gourmet/plugins/email_plugin/emailer_plugin.py:42
+msgid "Email recipes"
+msgstr "Pošlji recepte po e-pošti"
+
+#: ../gourmet/plugins/email_plugin/emailer_plugin.py:23
+msgid "Email all selected recipes (or all recipes if no recipes are selected"
+msgstr "Pošlji vse izbrane recepte (ali vse recepte, če ni izbran noben"
+
+#. only called for l>20, so fancy gettext methods
+#. shouldn't be necessary if my knowledge of
+#. linguistics serves me
+#: ../gourmet/plugins/email_plugin/emailer_plugin.py:46
+#, python-format
+msgid "Do you really want to email all %s selected recipes?"
+msgstr "Ali želite vse %s izbrane recepte poslati po e-pošti?"
+
+#: ../gourmet/plugins/email_plugin/emailer_plugin.py:47
+msgid "Yes, e_mail them"
+msgstr "Da, pošlji."
+
+#: ../gourmet/plugins/field_editor.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/field_editor/__init__.py:16
+msgid "Field Editor"
+msgstr "Urejevalnik polj"
+
+#: ../gourmet/plugins/field_editor.gourmet-plugin.in.h:2
+#: ../gourmet/plugins/field_editor/__init__.py:17
+msgid "Edit fields across multiple recipes at a time."
+msgstr "Uredi polja v več receptih hkrati"
+
+#. len(vals)==0
+#: ../gourmet/plugins/field_editor/fieldEditor.py:100
+msgid "For each selected value"
+msgstr "Za vsako izbrano vrednost"
+
+#: ../gourmet/plugins/field_editor/fieldEditor.py:104
+#, python-format
+msgid "Where %(field)s is %(value)s"
+msgstr "Kjer je %(field)s je %(value)s"
+
+#: ../gourmet/plugins/field_editor/fieldEditor.py:162
+#, python-format
+msgid "Change will affect %s recipe"
+msgid_plural "Change will affect %s recipes"
+msgstr[0] "Sprememba bo vplivala na %s recept"
+msgstr[1] "Sprememba bo vplivala na %s recepta"
+msgstr[2] "Sprememba bo vplivala na %s recepte"
+msgstr[3] "Sprememba bo vplivala na %s receptov"
+
+#: ../gourmet/plugins/field_editor/fieldEditor.py:166
+#, python-format
+msgid "Delete %s where it is %s?"
+msgstr "Izbrišem %s, če je %s?"
+
+#: ../gourmet/plugins/field_editor/fieldEditor.py:169
+#, python-format
+msgid "Change %s from %s to \"%s\"?"
+msgstr "Spremenim %s iz %s v \"%s\"?"
+
+#: ../gourmet/plugins/field_editor/fieldEditor.py:175
+msgid "<i>This change is not reversable.</i>"
+msgstr "<i>Ta sprememba je NEpovratna.</i>"
+
+#: ../gourmet/plugins/import_export/archive.gourmet-plugin.in.h:1
+msgid "Zip, Gzip, and Tarball support"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/archive.gourmet-plugin.in.h:2
+msgid "Import recipes from zip and tar archives"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/archive.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/gxml.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/html.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/pdf.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/plaintext.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/webimport.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/import_export/website_import.gourmet-plugin.in.h:3
+#: ../gourmet/plugins/utf16.gourmet-plugin.in.h:3
+msgid "Importer/Exporter"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/archive_plugin/zip_importer_plugin.py:10
+msgid "Archive (zip, tarball)"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/archive_plugin/zip_readers.py:45
+msgid "Loading zip archive"
+msgstr "Nalagam zip arhiv"
+
+#: ../gourmet/plugins/import_export/archive_plugin/zip_readers.py:60
+msgid "Unzipping zip archive"
+msgstr "Odpiram zip arhih"
+
+#: ../gourmet/plugins/import_export/gxml.gourmet-plugin.in.h:1
+msgid "Gourmet XML Import and Export"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/gxml.gourmet-plugin.in.h:2
+msgid ""
+"Import and Export recipes as Gourmet XML files, suitable for backup or "
+"exchange with other Gourmet users."
+msgstr ""
+
+#: ../gourmet/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:8
+#: ../gourmet/plugins/import_export/gxml_plugin/gxml_importer_plugin.py:60
+msgid "Gourmet XML File"
+msgstr "Gourmet XML datoteka"
+
+#: ../gourmet/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:46
+msgid "Gourmet XML Export"
+msgstr "Gourmet XML Izvoz"
+
+#: ../gourmet/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:47
+#, python-format
+msgid "Exporting recipes to Gourmet XML file %(file)s."
+msgstr "Izvažanje receptov v Gurman XML datoteko %(file)s."
+
+#: ../gourmet/plugins/import_export/gxml_plugin/gxml_exporter_plugin.py:48
+#, python-format
+msgid "Recipe saved in Gourmet XML file %(file)s."
+msgstr "Recept shranjen kot Gurmet XML datoteka %(file)s."
+
+#: ../gourmet/plugins/import_export/gxml_plugin/gxml_importer_plugin.py:73
+msgid "Gourmet XML File (Obsolete)"
+msgstr "Gurman XML datoteka (zastarela)"
+
+#: ../gourmet/plugins/import_export/html.gourmet-plugin.in.h:1
+msgid "HTML Export"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/html.gourmet-plugin.in.h:2
+msgid "Create recipe webpages from recipes."
+msgstr ""
+
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter.py:123
+#, python-format
+msgid "Original Page from %s"
+msgstr "Originalna stran iz %s"
+
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter_plugin.py:5
+msgid "HTML Web Page"
+msgstr "HTML spletna stran"
+
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter_plugin.py:9
+msgid "Exporting Webpage"
+msgstr "Izvažanje spletne strani"
+
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter_plugin.py:10
+#, python-format
+msgid "Exporting recipes to HTML files in directory %(file)s"
+msgstr "Izvažanje receptov v HTML datoteke v direktorij %(file)s"
+
+#: ../gourmet/plugins/import_export/html_plugin/html_exporter_plugin.py:11
+#, python-format
+msgid "Recipe saved as HTML file %(file)s"
+msgstr "Recept shranjen kot HTML datoteka %(file)s"
+
+#: ../gourmet/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:1
+msgid "KRecipe import"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/krecipe_plugin.gourmet-plugin.in.h:2
+msgid "Import files from the Krecipe program."
+msgstr ""
+
+#: ../gourmet/plugins/import_export/krecipe_plugin/krecipe_importer_plugin.py:9
+msgid "KRecipe XML File"
+msgstr "KRecipe XML File"
+
+#: ../gourmet/plugins/import_export/mastercook_import_plugin/mastercook_importer.py:117
+msgid "Mastercook import finished."
+msgstr "Mastercook uvoz končan."
+
+#: ../gourmet/plugins/import_export/mastercook_import_plugin/mastercook_importer.py:251
+msgid "Tidying up XML"
+msgstr "Sestavljam XML"
+
+#: ../gourmet/plugins/import_export/mastercook_import_plugin/mastercook_importer_plugin.py:9
+msgid "Mastercook XML File"
+msgstr "Mastercook XML datoteka"
+
+#: ../gourmet/plugins/import_export/mastercook_import_plugin/mastercook_importer_plugin.py:22
+msgid "Mastercook Text File"
+msgstr "Mastercook tekstovna datoteka"
+
+#: ../gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:1
+msgid "Mastercook import"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in.h:2
+msgid "Import files from the Mastercook program."
+msgstr ""
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in.h:1
+msgid "My CookBook Import and Export"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in.h:2
+msgid ""
+"Import and Export recipes as My CookBook XML files, suitable for backup or "
+"exchange with other My CookBook users."
+msgstr ""
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:6
+msgid "My CookBook MCB File"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:10
+#, fuzzy
+msgid "MCB Export"
+msgstr "Izvozi"
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:11
+#, fuzzy, python-format
+msgid "Exporting recipes to My CookBook MCB file %(file)s."
+msgstr "Izvažanje receptov v Gurman XML datoteko %(file)s."
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_exporter_plugin.py:12
+#, fuzzy, python-format
+msgid "Recipe saved in My CookBook MCB file %(file)s."
+msgstr "Recept shranjen kot Gurmet XML datoteka %(file)s."
+
+#: ../gourmet/plugins/import_export/mycookbook_plugin/mycookbook_importer_plugin.py:11
+#, fuzzy
+msgid "MCB File"
+msgstr "Velika datoteka"
+
+#: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:1
+msgid "Mealmaster (tm) Export"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/mealmaster.gourmet-plugin.in.h:2
+msgid "Export recipes as mealmaster text files"
+msgstr ""
+
+#. MealMaster format mandates numeric yield information
+#: ../gourmet/plugins/import_export/mealmaster_plugin/mealmaster_exporter.py:49
+#, fuzzy, python-format
+msgid "%s serving"
+msgstr "Obrok"
+
+#: ../gourmet/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:6
+#: ../gourmet/plugins/import_export/mealmaster_plugin/mealmaster_importer_plugin.py:22
+msgid "MealMaster file"
+msgstr "MealMaster datoteka"
+
+#: ../gourmet/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:10
+msgid "MealMaster Export"
+msgstr "MealMaster Izvoz"
+
+#: ../gourmet/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:11
+#, python-format
+msgid "Exporting recipes to MealMaster file %(file)s."
+msgstr "Izvažanje receptov v MealMaster datoteko %(file)s."
+
+#: ../gourmet/plugins/import_export/mealmaster_plugin/mealmaster_exporter_plugin.py:12
+#, python-format
+msgid "Recipe saved as MealMaster file %(file)s"
+msgstr "Recepti shranjeni kot MealMaster datoteka %(file)s"
+
+#: ../gourmet/plugins/import_export/pdf.gourmet-plugin.in.h:1
+msgid "Printing & PDF Export"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/pdf.gourmet-plugin.in.h:2
+msgid ""
+"Print recipes or export them as PDF; this plugin allows a variety of page "
+"layouts."
+msgstr ""
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:709
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:824
+msgid "Letter"
+msgstr "Črka"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:710
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:843
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:963
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:994
+msgid "Portrait"
+msgstr "Pokončno"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:712
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:836
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:955
+msgid "Plain"
+msgstr "Navadni"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:726
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:745
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:746
+msgid "cm"
+msgstr "cm"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:727
+msgid "points"
+msgstr "točke"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:819
+msgid "11x17\""
+msgstr "27,9x43,2 cm"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:820
+msgid "Index Card (3.5x5\")"
+msgstr "Kartica (8,9x7,6 cm)"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:821
+msgid "Index Card (4x6\")"
+msgstr "Kartica (10,2x15,2 cm)"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:822
+msgid "Index Card (5x8\")"
+msgstr "Kartica (12,7x20,3 cm)"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:823
+msgid "Index Card (A7)"
+msgstr "Kartica (A7)"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:825
+msgid "Legal"
+msgstr "legalno"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:831
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:837
+msgid "Index Cards (3.5x5)"
+msgstr "Kartica (8,9x7,6 cm)"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:832
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:838
+msgid "Index Cards (4x6)"
+msgstr "Kartica (10,2x15,2 cm)"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:833
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:839
+msgid "Index Cards (A7)"
+msgstr "Kartica (A7)"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:844
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:941
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:992
+msgid "Landscape"
+msgstr "Ležeče"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:855
+#, python-format
+msgid "%s Column"
+msgid_plural "%s Columns"
+msgstr[0] "%s stolpec"
+msgstr[1] "%s stolpca"
+msgstr[2] "%s stolpci"
+msgstr[3] "%s stolpcev"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:870
+msgid "Paper _Size"
+msgstr "Velikost papairja"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:872
+msgid "_Orientation"
+msgstr "Orientacija"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:874
+msgid "_Font Size"
+msgstr "Velikost pisave"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:875
+msgid "Page _Layout"
+msgstr "Izgled strani"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:877
+msgid "Left Margin"
+msgstr "Levi odmik"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:878
+msgid "Right Margin"
+msgstr "Desni odmik"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:879
+msgid "Top Margin"
+msgstr "Vrhnji rob"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:880
+msgid "Bottom Margin"
+msgstr "Spodnji rob"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter.py:901
+msgid "PDF Options"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:5
+msgid "PDF (Portable Document Format)"
+msgstr "PDF (Portable Document Format"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:9
+msgid "PDF Export"
+msgstr "Izvoz PDF"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:10
+#, python-format
+msgid "Exporting recipes to PDF %(file)s."
+msgstr "Izvažanje receptov v PDF %(file)s."
+
+#: ../gourmet/plugins/import_export/pdf_plugin/pdf_exporter_plugin.py:11
+#, python-format
+msgid "Recipe saved as PDF %(file)s"
+msgstr "Recept shranjen kot PDF %(file)s"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:53
+msgid "Could not find Adobe Reader on your system."
+msgstr ""
+
+#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:54
+msgid ""
+"This version of Gourmet Recipe Manager requires Adobe Reader to be able to "
+"print; other PDF viewers will not work.\n"
+"Please install Adobe Reader from http://get.adobe.com/reader/. \n"
+"Alternatively, export your recipe(s) to PDF and print it with another PDF "
+"viewer."
+msgstr ""
+
+#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:77
+msgid "Page Layout"
+msgstr "Podoba strani"
+
+#: ../gourmet/plugins/import_export/pdf_plugin/print_plugin.py:169
+msgid "Print Recipes"
+msgstr "Natisni Recepte"
+
+#: ../gourmet/plugins/import_export/plaintext.gourmet-plugin.in.h:1
+msgid "Plain Text Guided Import"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/plaintext.gourmet-plugin.in.h:2
+msgid ""
+"Help user mark up and import plain text. Also provides plain text export."
+msgstr ""
+
+#: ../gourmet/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:5
+#: ../gourmet/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:37
+msgid "Plain Text file"
+msgstr "Datoteka z neoblikovanim tekstom"
+
+#: ../gourmet/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:9
+msgid "Text Export"
+msgstr "Izvoz teksta"
+
+#: ../gourmet/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:10
+#, python-format
+msgid "Exporting recipes to text file %(file)s."
+msgstr "Izvažam recepte v besedilno datoeko %(file)s."
+
+#: ../gourmet/plugins/import_export/plaintext_plugin/plaintext_exporter_plugin.py:11
+#, python-format
+msgid "Recipe saved as plain text file %(file)s"
+msgstr "Recept je shranjen kot datoteka z neoblikovanim besedilom %(file)s"
+
+#: ../gourmet/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:25
+msgid "Big File"
+msgstr "Velika datoteka"
+
+#: ../gourmet/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:26
+#, python-format
+msgid "File %s is too big to import"
+msgstr "Datoteka %s je prevelika za uvoz"
+
+#: ../gourmet/plugins/import_export/plaintext_plugin/plaintext_importer_plugin.py:27
+#, python-format
+msgid ""
+"Your file exceeds the maximum length of %s characters. You probably didn't "
+"mean to import it anyway. If you really do want to import this file, use a "
+"text editor to split it into smaller files and try importing again."
+msgstr ""
+"Vaša datoteka presega maksimalno dolžino %s črk. Če jo res hočete uvoziti, "
+"uporabite urejevalnik teksta, jo razdelite v manjše datoteke in ponovno "
+"poskusite uvoziti."
+
+#: ../gourmet/plugins/import_export/web_import_plugin/generic_web_importer_plugin.py:8
+msgid "Webpage"
+msgstr "Spletna stran"
+
+#: ../gourmet/plugins/import_export/webimport.gourmet-plugin.in.h:1
+msgid "Webpage import"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/webimport.gourmet-plugin.in.h:2
+msgid "Import recipes from the web."
+msgstr ""
+
+#: ../gourmet/plugins/import_export/website_import.gourmet-plugin.in.h:1
+msgid "Website Importers"
+msgstr ""
+
+#: ../gourmet/plugins/import_export/website_import.gourmet-plugin.in.h:2
+msgid "Importers for about.com, www.foodnetwork.com, and others"
+msgstr ""
+
+#: ../gourmet/plugins/key_editor.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/key_editor/keyeditor.ui.h:1
+msgid "Key Editor"
+msgstr ""
+
+#: ../gourmet/plugins/key_editor.gourmet-plugin.in.h:2
+msgid ""
+"Assign and edit ingredient keys (unique identifiers for ingredients, used "
+"for consolidating items on shopping lists)."
+msgstr ""
+
+#. to set our regexp_toggled variable
+#: ../gourmet/plugins/key_editor/keyEditor.py:66
+#: ../gourmet/plugins/key_editor/keyEditor.py:88
+#: ../gourmet/plugins/key_editor/keyEditor.py:267
+msgid "key"
+msgstr "ključ"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:88
+#: ../gourmet/plugins/key_editor/keyEditor.py:263
+#: ../gourmet/plugins/key_editor/keyEditor.py:541
+msgid "item"
+msgstr "stvar"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:88
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:12
+msgid "unit"
+msgstr "enota"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:113
+msgid "Field"
+msgstr "Polje"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:114
+msgid "Value"
+msgstr "Vrednost"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:115
+msgid "Count"
+msgstr "Števec"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:160
+#, python-format
+msgid "Change all keys \"%s\" to \"%s\"?"
+msgstr "Spremenim vse ključe \"%s\" v \"%s\"?"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:161
+#, python-format
+msgid ""
+"You won't be able to undo this action. If there are already ingredients with "
+"the key \"%s\", you won't be able to distinguish between those items and the "
+"items you are changing now."
+msgstr ""
+"Tega dejanja ni možno razveljaviti. Če že obstajajo sestavine z ključem \"%s"
+"\", ne bo možno razlikovati med temi predmeti in predmeti, ki jih sedaj "
+"spreminjate."
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:173
+#, python-format
+msgid "Change all items \"%s\" to \"%s\"?"
+msgstr "Spremenim vse predmete \"%s\" v \"%s\"?"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:174
+#, python-format
+msgid ""
+"You won't be able to undo this action. If there are already ingredients with "
+"the item \"%s\", you won't be able to distinguish between those items and "
+"the items you are changing now."
+msgstr ""
+"Tega dejanja ni možno razveljaviti. Če že obstajajo sestavine z ključem \"%s"
+"\", ne bo možno razlikovati med temi predmeti in predmeti, ki jih sedaj "
+"spreminjate."
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:185
+#, python-format
+msgid "Change _all instances of \"%(unit)s\" to \"%(text)s\""
+msgstr "Spremeni _vse primere \"%(unit)s\" v \"%(text)s\""
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:186
+#, python-format
+msgid ""
+"Change \"%(unit)s\" to \"%(text)s\" only for _ingredients \"%(item)s\" with "
+"key \"%(key)s\""
+msgstr ""
+"Spremeni \"%(unit)s\" v \"%(text)s\" samo za _sestavine \"%(item)s\" z "
+"ključem \"%(key)s\""
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:211
+#, python-format
+msgid "Change _all instances of \"%(amount)s\" %(unit)s to %(text)s %(unit)s"
+msgstr "Spremeni _vse količine od \"%(amount)s\" %(unit)s do %(text)s %(unit)s"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:212
+#, python-format
+msgid ""
+"Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only _where the "
+"ingredient key is %(key)s"
+msgstr ""
+"Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only _where the "
+"ingredient key is %(key)s"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:213
+#, python-format
+msgid ""
+"Change \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only where the "
+"ingredient key is %(key)s _and where the item is %(item)s"
+msgstr ""
+"Spremeni \"%(amount)s\" %(unit)s to \"%(text)s\" %(unit)s only where the "
+"ingredient key is %(key)s _and where the item is %(item)s"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:360
+msgid "Change all selected rows?"
+msgstr "Spremenim vse označene vrste?"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:361
+#, python-format
+msgid ""
+"This action will not be undoable. Are you that for all %s selected rows, you "
+"want to set the following values:"
+msgstr ""
+"Tega dejanja se ne da povrniti. Ste prepričani, da želite za vse %s označene "
+"vrste dodati naslednje vrednosti:"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:362
+#, python-format
+msgid ""
+"\n"
+"Key to %s"
+msgstr ""
+"\n"
+"Ključi do %s"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:363
+#, python-format
+msgid ""
+"\n"
+"Item to %s"
+msgstr ""
+"\n"
+"Predmeti do %s"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:364
+#, python-format
+msgid ""
+"\n"
+"Unit to %s"
+msgstr ""
+"\n"
+"Enote do %s"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:365
+#, python-format
+msgid ""
+"\n"
+"Amount to %s"
+msgstr ""
+"\n"
+"Količine do %s"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:498
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:164
+#, python-format
+msgid "%s ingredient"
+msgid_plural "%s ingredients"
+msgstr[0] "%s sestavine"
+msgstr[1] "%s sestavina"
+msgstr[2] "%s sestavine"
+msgstr[3] "%s sestavine"
+
+#. Do not translate bottom, top and total -- I use these fancy formatting
+#. strings in case your language needs the order changed!
+#: ../gourmet/plugins/key_editor/keyEditor.py:502
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:168
+#, python-format
+msgid "Showing ingredients %(bottom)s to %(top)s of %(total)s"
+msgstr "Sestavine so prikazane od %(bottom)s do %(top)s od %(total)s"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:516
+#: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:101
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:189
+#: ../gourmet/reccard.py:2166 ../gourmet/reccard.py:2196
+msgid "Item"
+msgstr "Stvar"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:517
+#: ../gourmet/plugins/nutritional_information/nutritionModel.py:8
+#: ../gourmet/reccard.py:2165 ../gourmet/reccard.py:2195
+msgid "Unit"
+msgstr "Enota"
+
+#: ../gourmet/plugins/key_editor/keyEditor.py:518
+#: ../gourmet/plugins/nutritional_information/nutritionModel.py:7
+msgid "Amount"
+msgstr "Znesek"
+
+#: ../gourmet/plugins/key_editor/keyEditorPlugin.py:17
+msgid "Ingredient _Key Editor"
+msgstr "Urejevalnik _sestavin"
+
+#: ../gourmet/plugins/key_editor/keyEditorPlugin.py:18
+msgid "Edit ingredient keys en masse"
+msgstr "Uredi ključe sestavin po teži"
+
+#: ../gourmet/plugins/key_editor/keyeditor.ui.h:5
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:6
+msgid "Search as you t_ype"
+msgstr ""
+
+#: ../gourmet/plugins/key_editor/keyeditor.ui.h:6
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:34
+msgid "_Advanced Search"
+msgstr ""
+
+#: ../gourmet/plugins/key_editor/keyeditor.ui.h:9
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:10
+#: ../gourmet/plugins/unit_converter/converter.ui.h:4
+msgid "_Amount:"
+msgstr "_Količina:"
+
+#: ../gourmet/plugins/key_editor/keyeditor.ui.h:10
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:16
+#: ../gourmet/plugins/unit_converter/converter.ui.h:5
+msgid "_Unit:"
+msgstr "_Enota:"
+
+#: ../gourmet/plugins/key_editor/keyeditor.ui.h:11
+msgid "_Item:"
+msgstr ""
+
+#: ../gourmet/plugins/key_editor/keyeditor.ui.h:12
+msgid "_Key:"
+msgstr ""
+
+#: ../gourmet/plugins/key_editor/keyeditor.ui.h:13
+msgid "<b>_Change selected ingredients</b>"
+msgstr ""
+
+#: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:15
+#: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:38
+msgid "Ingredient Keys"
+msgstr "Ključi sestavin"
+
+#: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:39
+msgid ""
+"Ingredient Keys are normalized ingredient names used for shopping lists and "
+"for calculations."
+msgstr ""
+"Ključi sestavin so normalizirana imena sestavin, uporabljena za nakupovalni "
+"list in za izračune."
+
+#: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:85
+msgid "Guess keys"
+msgstr "Predstavi ključe"
+
+#: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:86
+msgid ""
+"Guess best values for all ingredient keys based on values already in your "
+"database"
+msgstr ""
+"Predstavi najboljše vrednosti za vse ključe sestavin, ki temeljijo na "
+"vrednostih v tvoji zbirki podatkov"
+
+#: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:90
+msgid "Edit Key Associations"
+msgstr "Uredi zveze ključev"
+
+#: ../gourmet/plugins/key_editor/recipeEditorPlugin.py:91
+msgid "Edit associations with key and other attributes in database"
+msgstr "Uredi zveze s ključi in ostalimi atributi v zbirki podatkov"
+
+#: ../gourmet/plugins/listsaver.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/listsaver/shoppingSaverPlugin.py:23
+msgid "Shopping List Saver"
+msgstr "Shranjevalnik nakupovalnega lista"
+
+#: ../gourmet/plugins/listsaver.gourmet-plugin.in.h:2
+msgid "Save shopping lists as recipes for future use."
+msgstr ""
+
+#. name
+#. stock
+#: ../gourmet/plugins/listsaver/shoppingSaverPlugin.py:30
+msgid "Save List as Recipe"
+msgstr "Shrani seznam kot recept"
+
+#. text
+#: ../gourmet/plugins/listsaver/shoppingSaverPlugin.py:31
+msgid "<Ctrl><Shift>S"
+msgstr "<Ctrl><Shift>S"
+
+#. key-command
+#: ../gourmet/plugins/listsaver/shoppingSaverPlugin.py:32
+msgid "Save current shopping list as a recipe for future use"
+msgstr "Shrani trenutni nakupovalni list kot recept za prihodnjo uporabo"
+
+#. print rr
+#: ../gourmet/plugins/listsaver/shoppingSaverPlugin.py:44
+#, fuzzy, python-format
+msgid "Menu for %s (%s)"
+msgstr "Meni za %s"
+
+#: ../gourmet/plugins/listsaver/shoppingSaverPlugin.py:46
+msgid "Menu"
+msgstr "Meni"
+
+#. name
+#. stock
+#: ../gourmet/plugins/nutritional_information.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/nutritional_information/main_plugin.py:13
+#: ../gourmet/plugins/nutritional_information/nutPrefsPlugin.py:11
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:35
+#: ../gourmet/plugins/nutritional_information/shopping_plugin.py:31
+#: ../gourmet/plugins/nutritional_information/shopping_plugin.py:67
+msgid "Nutritional Information"
+msgstr "Podatki o hranilni vrednosti"
+
+#: ../gourmet/plugins/nutritional_information.gourmet-plugin.in.h:2
+msgid "Calculate nutritional information for recipes."
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/databaseGrabber.py:145
+msgid "Parsing nutritional data..."
+msgstr "Obdelujem podatke o kalorični vrednosti"
+
+#: ../gourmet/plugins/nutritional_information/databaseGrabber.py:162
+#, python-format
+msgid "Reading nutritional data: imported %s of %s entries."
+msgstr "Berem podatke o kalorični vrednosti: uvoženo %s od %s vnosov"
+
+#: ../gourmet/plugins/nutritional_information/databaseGrabber.py:185
+msgid "Parsing weight data..."
+msgstr "Pridobivam podatke o teži..."
+
+#: ../gourmet/plugins/nutritional_information/databaseGrabber.py:194
+#, python-format
+msgid "Reading weight data for nutritional items: imported %s of %s entries"
+msgstr "Berem podatke o teži: uvoženo %s od %s vnosov"
+
+#: ../gourmet/plugins/nutritional_information/export_plugin.py:32
+#, python-format
+msgid "Nutritional information reflects amount per %s."
+msgstr "Podatki o hranilni vrednosti odražajo količino po %s."
+
+#: ../gourmet/plugins/nutritional_information/export_plugin.py:34
+msgid "Nutritional information reflects amounts for entire recipe"
+msgstr "Podatki o hranilni vrednosti odražajo količino za celoten recept"
+
+#: ../gourmet/plugins/nutritional_information/export_plugin.py:38
+#, python-format
+msgid "Nutritional information is missing for %s ingredients: %s"
+msgstr "Hranilni podatki manjkajo za %s sestavin: %s"
+
+#: ../gourmet/plugins/nutritional_information/nut_recipe_card_display.ui.h:1
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:22
+msgid "<b>Nutritional Information</b>"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nut_recipe_card_display.ui.h:2
+msgid "Edit _nutritional info"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDisplay.py:130
+msgid "100 grams"
+msgstr "100 gramov"
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:1
+msgid "<i>Select equivalent of</i>"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:2
+msgid "<i>from USDA database</i>"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:3
+msgid "_Change ingredient"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:4
+msgid "<i>or</i>"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:5
+msgid "_Search USDA Ingredient Database:"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:7
+msgid "Show only food in _group:"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:8
+msgid "<i>Search _results:</i>"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:9
+msgid "<i>From:</i>"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:11
+msgid "Unit:"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:13
+msgid "_Change unit"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:14
+msgid "_Save new unit"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:15
+msgid "<i>To:</i>"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:17
+msgid "<i>Enter nutritional information for </i>"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:18
+msgid "<b>Choose a Density</b>"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:19
+msgid "<b>Ingredient Key: </b>"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:20
+msgid "<b>USDA Item: </b>"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:21
+msgid "Edit _USDA Association"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:23
+msgid "Edit _information"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:24
+msgid "_Nutritional Information"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:25
+msgid "Density:"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:26
+msgid "USDA equivalents:"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:27
+msgid "Custom equivalents:"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:28
+msgid "_Density Information"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:29
+msgid "<b>Known Nutritonal Information</b>"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.ui.h:36
+msgid "I_gnore"
+msgstr ""
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:96
+msgid "Any food group"
+msgstr "Katerakoli skupina hrane"
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:271
+msgid "selection"
+msgstr "izbor"
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:423
+msgid "ml"
+msgstr "ml"
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:672
+#, python-format
+msgid "Convert unit for %s"
+msgstr "Spremeni enoto za %s"
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:675
+#, python-format
+msgid ""
+"In order to calculate nutritional information, Gourmet needs you to help it "
+"convert \"%s\" into a unit it understands."
+msgstr ""
+"Da lahko izračuna kalorično vrednost, potrebuje Gourmet vašo pomoč, da "
+"spremeni \"%s\" v enoto, ki jo pozna."
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:757
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:771
+msgid "Change ingredient key"
+msgstr "Spremeni ključ sestavin"
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:759
+#, python-format
+msgid ""
+"Change ingredient key from %(old_key)s to %(new_key)s everywhere or just in "
+"the recipe %(title)s?"
+msgstr ""
+"Spremeni ključ sestavine %(old_key)s do %(new_key)s vseposod ali samo v "
+"receptu %(title)s?"
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:764
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:817
+msgid "Change _everywhere"
+msgstr "Spremeni _vseposod"
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:765
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:818
+#, python-format
+msgid "_Just in recipe %s"
+msgstr "_samo v receptu %s"
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:772
+#, python-format
+msgid "Change ingredient key from %(old_key)s to %(new_key)s everywhere?"
+msgstr "Spremeni ključ sestavin od %(old_key)s v %(new_key)s povsod?"
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:809
+msgid "Change unit"
+msgstr "Spremeni enoto"
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:811
+#, python-format
+msgid ""
+"Change unit from %(old_unit)s to %(new_unit)s for all ingredients %(ingkey)s "
+"or just in the recipe %(title)s?"
+msgstr ""
+"Spremeni enoto od %(old_unit)s v %(new_unit)s za vse sestavine %(ingkey)s "
+"ali samo v receptu %(title)s?"
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:842
+#, python-format
+msgid ""
+"In order to calculate nutritional information for \"%(amount)s %(unit)s "
+"%(ingkey)s\", Gourmet needs to know its density. Our nutritional database "
+"has several descriptions of this food with different densities. Please "
+"select the correct one below."
+msgstr ""
+"Ida bi izračunali hranilne vrednosti za  \"%(amount)s %(unit)s %(ingkey)s\", "
+"potrebuje Gurman njihovo gostoto. Naša baza hranilnih vrednosti vsebuje več "
+"različnih opisov te hrane z različnimi gototami. Prosim, izberite ustrezno "
+"na spodnjem seznamu."
+
+#: ../gourmet/plugins/nutritional_information/nutritionDruid.py:1015
+msgid ""
+"To apply nutritional information, Gourmet needs a valid amount and unit."
+msgstr ""
+"Da bi apliciral podatke o hranilnih vrednostih, potrebuje Gurman pravilno "
+"količino in enoto."
+
+#. filename=None
+#. if de.getBoolean(
+#. label=_('Load nutritional database.'),
+#. sublabel=_("It looks like you haven\'t yet initialized your nutritional database. To do so, you'll need to download the USDA nutritional database for use with your program. If you are not currently online, but have already downloaded the USDA sr17 database, you can point Gourmet to the ABBREV.txt file now. If you are online, Gourmet can download the file automatically."),
+#. custom_yes=_('Browse for ABBREV.txt file'),
+#. custom_no=_('Download file automatically')):
+#. filename=de.select_file(
+#. 'Find ABBREV.txt file',
+#. filters=[['Plain Text',['text/plain'],['*txt']]]
+#. )
+#: ../gourmet/plugins/nutritional_information/nutritionGrabberGui.py:34
+msgid "Loading Nutritional Data"
+msgstr "Nalagam podatke o hranilni vrednosti"
+
+#: ../gourmet/plugins/nutritional_information/nutritionGrabberGui.py:39
+msgid "Nutritonal database import complete!"
+msgstr "Uvoz baze hranilnih podatkov je končan!"
+
+#: ../gourmet/plugins/nutritional_information/nutritionGrabberGui.py:58
+#, python-format
+msgid "Fetching nutritional database from zip archive %s"
+msgstr "Pridobivam bazo hranilnih podatkov iz zip arhiva %s"
+
+#: ../gourmet/plugins/nutritional_information/nutritionGrabberGui.py:62
+#, python-format
+msgid "Extracting %s from zip archive."
+msgstr "Pridobivam %s iz zip arhiva."
+
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:66
+msgid "entire database"
+msgstr "celotna baza"
+
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:80
+msgid "Ingredient Key"
+msgstr "Ključ sestavin"
+
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:81
+msgid "USDA ID Number"
+msgstr "identifikacija številka osebne izkaznice (ZDA)"
+
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:82
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:191
+msgid "USDA Item Description"
+msgstr "opis postavke ZDA"
+
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:83
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:192
+msgid "Density Equivalent"
+msgstr "ekvivalent gostote"
+
+#: ../gourmet/plugins/nutritional_information/nutritionInfoEditor.py:190
+msgid "USDA ID#"
+msgstr "ID za ZDA"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:11
+msgid "Calories"
+msgstr "kalorije"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:14
+msgid "Total Fat"
+msgstr "Skupna maščoba"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:16
+msgid "Saturated Fat"
+msgstr "Nasičene Maščobe"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:18
+msgid "Cholesterol"
+msgstr "Holesterol"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:20
+msgid "Sodium"
+msgstr "Natrij"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:22
+msgid "Total Carbohydrate"
+msgstr "Vsi Ogljikovi Hidrati"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:24
+msgid "Dietary Fiber"
+msgstr "Predpisane vlaknine"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:26
+msgid "Sugars"
+msgstr "Sladkorji"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:28
+msgid "Protein"
+msgstr "Proteini"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:33
+msgid "Alpha-carotene"
+msgstr "Alfa-karotin"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:35
+msgid "Ash"
+msgstr "Ash"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:37
+msgid "Beta-carotene"
+msgstr "Beta-karotin"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:39
+msgid "Beta Cryptoxanthin"
+msgstr "Beta Cryptoxanthin"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:41
+msgid "Calcium"
+msgstr "Kalcij"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:43
+msgid "Copper"
+msgstr "baker"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:45
+msgid "Folate Total"
+msgstr "Folate Total"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:47
+msgid "Folic acid"
+msgstr "Folna kislina"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:49
+msgid "Food Folate"
+msgstr "Food Folate"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:51
+msgid "Dietary folate equivalents"
+msgstr "Dietary folate equivalents"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:53
+msgid "Iron"
+msgstr "Železo"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:55
+msgid "Lycopene"
+msgstr "Lycopene"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:57
+msgid "Lutein+Zeazanthin"
+msgstr "Lutein+Zeazanthin"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:59
+msgid "Magnesium"
+msgstr "magnezij"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:61
+msgid "Manganese"
+msgstr "mangan"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:63
+msgid "Niacin"
+msgstr "vitamin B3"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:65
+msgid "Pantothenic Acid"
+msgstr "pantotenska kislina"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:67
+msgid "Phosphorus"
+msgstr "fosfor"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:69
+msgid "Potassium"
+msgstr "kalij"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:71
+msgid "Vitamin A"
+msgstr "Vitamin A"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:73
+msgid "Retinol"
+msgstr "vitamin A"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:75
+msgid "Riboflavin"
+msgstr "Vitamin B2"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:77
+msgid "Selenium"
+msgstr "selen"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:79
+msgid "Thiamin"
+msgstr "Tiamin"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:81
+msgid "Vitamin A (IU)"
+msgstr "Vitamin A (IU)"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:83
+msgid "Vitamin A (RAE)"
+msgstr "Vitamin A (RAE)"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:85
+msgid "Vitamin B6"
+msgstr "Vitamin B6"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:87
+msgid "Vitamin B12"
+msgstr "Vitamin B12"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:89
+msgid "Vitamin C"
+msgstr "Vitamin C"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:91
+msgid "Vitamin E"
+msgstr "Vitamin E"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:93
+msgid "Vitamin K"
+msgstr "Vitamin K"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:95
+msgid "Zinc"
+msgstr "Cink"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:206
+msgid "Vitamins and minerals"
+msgstr "Vitamini in minerali"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:314
+#, python-format
+msgid ""
+"Missing nutritional information\n"
+"for %(missing)s of %(total)s ingredients."
+msgstr ""
+"Manjka podatek o kalorični vrednosti\n"
+"\n"
+"za %(missing)s do %(total)s sestavin."
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:330
+msgid "% _Daily Value"
+msgstr "% _Dnevne Potrebe"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:375
+#, python-format
+msgid ""
+"Percentage of recommended daily value based on %i calories per day. Click to "
+"edit number of calories per day."
+msgstr ""
+"Procent priporočene količine po %i kalorijah na dan. Pritisni za spremembo "
+"kalorij na dan."
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:465
+#, python-format
+msgid "Amount per %s"
+msgstr "Količina za %s"
+
+#: ../gourmet/plugins/nutritional_information/nutritionLabel.py:467
+msgid "Amount per recipe"
+msgstr "Količina na recept"
+
+#: ../gourmet/plugins/nutritional_information/nutritionModel.py:9
+msgid "Ingredient"
+msgstr "Sestavina"
+
+#: ../gourmet/plugins/nutritional_information/nutritionModel.py:10
+msgid "USDA Database Equivalent"
+msgstr "ekvivalent USDA Bazi"
+
+#: ../gourmet/plugins/nutritional_information/nutritionModel.py:11
+#: ../gourmet/shopping.py:140 ../gourmet/shopping.py:160
+msgid "Unknown"
+msgstr "Neznano"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:12
+msgid "Water"
+msgstr "Voda"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:13
+msgid "Kilocalories"
+msgstr "Kilokalorije"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:14
+msgid "g protein"
+msgstr "g protein"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:15
+msgid "g lipid"
+msgstr "g lipid"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:16
+msgid "g ash"
+msgstr "g ash"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:17
+msgid "g carbohydrates"
+msgstr "g ogljikovi hidrati"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:18
+msgid "g fiber"
+msgstr "g vlaknine"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:19
+msgid "g sugar"
+msgstr "g sladkor"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:20
+msgid "mg calcium"
+msgstr "mg kalcija"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:21
+msgid "mg iron"
+msgstr "mg železo"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:22
+msgid "mg magnesium"
+msgstr "mg magnezij"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:23
+msgid "mg phosphorus"
+msgstr "mg fosfor"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:24
+msgid "mg potassium"
+msgstr "mg kalij"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:25
+msgid "mg sodium"
+msgstr "mg natrija"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:26
+msgid "mg zinc"
+msgstr "mg cinka"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:27
+msgid "mg copper"
+msgstr "mg bakra"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:28
+msgid "mg manganese"
+msgstr "mg mangana"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:29
+msgid "microgram selenium"
+msgstr "mikrogram selena"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:30
+msgid "mg vitamin c"
+msgstr "mg vitamina C"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:31
+msgid "mg thiamin"
+msgstr "mg vitamina B12"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:32
+msgid "mg riboflavin"
+msgstr "mg vitamina B2"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:33
+msgid "mg niacin"
+msgstr "mg niacina (nikotinske kisline)"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:34
+msgid "mg pantothenic acid"
+msgstr "mg pantotetske kisline"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:35
+msgid "mg vitamin B6"
+msgstr "mg vitamin B6"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:36
+msgid "microgram Folate Total"
+msgstr "mikrogram Folate Total"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:37
+msgid "microgram Folic acid"
+msgstr "mikrogram folne kisline"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:38
+msgid "microgram Food Folate"
+msgstr "mikrogram Food Folate"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:39
+msgid "microgram dietary folate equivalents"
+msgstr "mikrogram dietary folate equivalents"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:40
+msgid "Choline, total"
+msgstr "holin, skupno"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:41
+msgid "microgram Vitamin B12"
+msgstr "mikrogram Vitamin B12"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:42
+msgid "Vitamin A IU"
+msgstr "Vitamin A IU"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:43
+msgid "Vitamin A (microgram Retinal Activity Equivalents"
+msgstr "Vitamin A"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:44
+msgid "microgram Retinol"
+msgstr "mikrogram Retinol"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:45
+msgid "microgram Alpha-carotene"
+msgstr "mikrogram Alpha-carotene"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:46
+msgid "microgram Beta-carotene"
+msgstr "mikrogram Beta-carotene"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:47
+msgid "microgram Beta Cryptoxanthin"
+msgstr "mikrogram Beta Cryptoxanthin"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:48
+msgid "microgram Lycopene"
+msgstr "mikrogram Lycopene"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:49
+msgid "microgram Lutein+Zeazanthin"
+msgstr "microgram Lutein+Zeazanthin"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:50
+msgid "mg Vitamin E"
+msgstr "mg Vitamin E"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:51
+msgid "mg Vitamin K"
+msgstr "mg Vitamin K"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:52
+msgid "g Saturated Fatty Acid"
+msgstr "g Nasičenih Maščobnih Kislin"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:53
+msgid "g Monounsaturated Fatty Acids"
+msgstr "g Enoenasičenih Maščobnih Kislin"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:54
+msgid "g Polyunsaturated Fatty Acids"
+msgstr "g Polinenasičenih Maščobnih Kislin"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:55
+msgid "mg Cholesterol"
+msgstr "mg Holesterola"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:60
+msgid "Percent refuse"
+msgstr "Procent odklona"
+
+#. the DB Food Group Numbers seem to be inline with the group IDs
+#. (numbers > 1000 are in group 100, etc.)
+#. Since that's true, we can use the following table to properly add groups.
+#: ../gourmet/plugins/nutritional_information/parser_data.py:338
+msgid "Dairy & Egg Products"
+msgstr "Mlečni in Jačni Izdelki"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:339
+msgid "Spices & Herbs"
+msgstr "Začimbe in Zelišča"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:340
+msgid "Baby Foods"
+msgstr "Otroška Hrana"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:341
+msgid "Fats and Oils"
+msgstr "Maščobe in Olja"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:342
+msgid "Poultry"
+msgstr "Perutnina"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:343
+msgid "Soups & Sauces"
+msgstr "Juhe in Omake"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:344
+msgid "Sausages & Lunch Meats"
+msgstr "Klobasice in Meso za malico"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:345
+msgid "Breakfast Cereals"
+msgstr "Kosmiči"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:346
+msgid "Fruits & Fruit Juices"
+msgstr "Sadje in sadni sokovi"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:347
+msgid "Pork"
+msgstr "svinjina"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:348
+msgid "Vegetables"
+msgstr "zelenjava"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:349
+msgid "Nuts & Seeds"
+msgstr "oreščki & semena"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:350
+msgid "Beef"
+msgstr "govedina"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:351
+msgid "Beverages"
+msgstr "Pijače"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:352
+msgid "Fish & Shellfish"
+msgstr "Ribe & Morski sadeži"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:353
+msgid "Legumes"
+msgstr "stročnice"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:354
+msgid "Lamb, Veal & Game"
+msgstr "jagnetina, teletina & divjačina"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:355
+msgid "Baked Products"
+msgstr "Pekarski izdelki"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:356
+msgid "Sweets"
+msgstr "Sladkarije"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:357
+msgid "Grains and Pasta"
+msgstr "Testenine"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:358
+msgid "Fast Foods"
+msgstr "Hitropripravljena hrana"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:359
+msgid "Meals, Entrees, and Sidedishes"
+msgstr "Malice, Začetne jedi in Priloge"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:360
+msgid "Snacks"
+msgstr "Prigrizki"
+
+#: ../gourmet/plugins/nutritional_information/parser_data.py:361
+msgid "Ethnic Foods"
+msgstr "Etnična Hrana"
+
+#: ../gourmet/plugins/nutritional_information/reccard_plugin.py:15
+msgid "Nutrition"
+msgstr "vsebnost hranil"
+
+#. label
+#. key-command
+#: ../gourmet/plugins/nutritional_information/shopping_plugin.py:33
+msgid "Get nutritional information for current list"
+msgstr "Pridobi hranilne vrednost za trenuten seznam"
+
+#: ../gourmet/plugins/nutritional_information/shopping_plugin.py:82
+msgid "Amount for Shopping List"
+msgstr "Količina za nakupovalni seznam"
+
+#: ../gourmet/plugins/python_shell.gourmet-plugin.in.h:1
+msgid "Python Shell"
+msgstr ""
+
+#: ../gourmet/plugins/python_shell.gourmet-plugin.in.h:2
+msgid ""
+"Allows programmers to access an interactive shell with access to Gourmet's "
+"internals."
+msgstr ""
+
+#: ../gourmet/plugins/python_shell/__init__.py:15
+msgid "_Python Console"
+msgstr "Konzola _python"
+
+#: ../gourmet/plugins/python_shell/__init__.py:16
+msgid "Show python console (provides access to current gourmet instance)"
+msgstr ""
+"Pokaži python konzolo (omogoča dostop do trenutnega gurmanovega primera)"
+
+#: ../gourmet/plugins/shopping_associations.gourmet-plugin.in.h:1
+msgid "Shopping Category Editor"
+msgstr ""
+
+#: ../gourmet/plugins/shopping_associations.gourmet-plugin.in.h:2
+msgid ""
+"Assign and edit shopping categories for ingredients from within the recipe "
+"editor."
+msgstr ""
+
+#: ../gourmet/plugins/shopping_associations/shopping_key_editor_plugin.py:9
+msgid "Shopping Category"
+msgstr "Kategorija nakupa"
+
+#: ../gourmet/plugins/spellcheck.gourmet-plugin.in.h:1
+msgid "Spell Checking"
+msgstr ""
+
+#: ../gourmet/plugins/spellcheck.gourmet-plugin.in.h:2
+msgid ""
+"Adds spell checking to paragraph length text boxes in recipe entry "
+"(Instructions, Notes)."
+msgstr ""
+
+#: ../gourmet/plugins/unit_converter.gourmet-plugin.in.h:1
+#: ../gourmet/plugins/unit_converter/converter.ui.h:2
+msgid "Unit Converter"
+msgstr "Pretvornik enot"
+
+#: ../gourmet/plugins/unit_converter.gourmet-plugin.in.h:2
+msgid "Provides a simple unit calculator."
+msgstr ""
+
+#: ../gourmet/plugins/unit_converter/__init__.py:15
+msgid "_Unit Converter"
+msgstr "_Pretvornik Enot"
+
+#: ../gourmet/plugins/unit_converter/__init__.py:16
+msgid "Calculate unit conversions"
+msgstr "Izračunaj pretvorbe enot"
+
+#: ../gourmet/plugins/unit_converter/convertGui.py:113
+#, python-format
+msgid "Cannot convert %s to %s"
+msgstr "Ne morem pretvoriti %s v %s."
+
+#: ../gourmet/plugins/unit_converter/convertGui.py:115
+msgid "Need density information."
+msgstr "Potrebujem informacije o gostoti."
+
+#: ../gourmet/plugins/unit_converter/converter.ui.h:3
+msgid "<b>From</b>"
+msgstr ""
+
+#: ../gourmet/plugins/unit_converter/converter.ui.h:6
+msgid "1"
+msgstr "1"
+
+#: ../gourmet/plugins/unit_converter/converter.ui.h:8
+msgid "I_tem:"
+msgstr ""
+
+#: ../gourmet/plugins/unit_converter/converter.ui.h:9
+msgid "_Density:"
+msgstr "_Gostota:"
+
+#: ../gourmet/plugins/unit_converter/converter.ui.h:10
+msgid "Density _Information"
+msgstr "Informacija o gostoti"
+
+#: ../gourmet/plugins/unit_converter/converter.ui.h:11
+msgid "<b>To</b>"
+msgstr ""
+
+#: ../gourmet/plugins/unit_converter/converter.ui.h:12
+msgid "_Result:"
+msgstr "_Rezultat:"
+
+#: ../gourmet/plugins/unit_converter/converter.ui.h:13
+msgid "?"
+msgstr "?"
+
+#: ../gourmet/plugins/unit_display_prefs.gourmet-plugin.in.h:1
+msgid "Unit Display Preferences"
+msgstr ""
+
+#: ../gourmet/plugins/unit_display_prefs.gourmet-plugin.in.h:2
+msgid "Allows you to always use metric (or imperial) units for display."
+msgstr ""
+
+#: ../gourmet/plugins/unit_display_prefs/__init__.py:27
+msgid "Set _unit display preferences"
+msgstr "Nastavi _enotam izbirne prikaze"
+
+#: ../gourmet/plugins/unit_display_prefs/__init__.py:28
+msgid ""
+"Automatically convert units to preferred system (metric, imperial, etc.) "
+"where possible."
+msgstr ""
+"Avtomatično pretvori enote v nastavljeni sistem (metrični, imperialni, ipd), "
+"kjer je mogoče."
+
+#: ../gourmet/plugins/unit_display_prefs/unit_prefs_dialog.py:8
+msgid "Display units as written for each recipe (no change)"
+msgstr "Prikaži enote kot pisane za vsak recept (brez spremembe)"
+
+#: ../gourmet/plugins/unit_display_prefs/unit_prefs_dialog.py:9
+msgid "Always display U.S. units"
+msgstr "Vedno prikazuj enote ZDA"
+
+#: ../gourmet/plugins/unit_display_prefs/unit_prefs_dialog.py:10
+msgid "Always display metric units"
+msgstr "Vedno prikazuj metrične enote"
+
+#: ../gourmet/plugins/unit_display_prefs/unit_prefs_dialog.py:19
+msgid "Automatically adjust units"
+msgstr "Avtomatično prilagodi enote"
+
+#: ../gourmet/plugins/utf16.gourmet-plugin.in.h:1
+msgid "Check for Unicode-16 in text files"
+msgstr ""
+
+#: ../gourmet/plugins/utf16.gourmet-plugin.in.h:2
+msgid ""
+"Enable this if your utf-16 text files aren't importing cleanly into Gourmet. "
+"Disable this if you never use UTF16 and you're constantly being annoyed by "
+"the 'Encoding' dialog when you import files."
+msgstr ""
+
+#: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:26
+#: ../gourmet/recindex.py:42 ../gourmet/recindex.py:51
+#: ../gourmet/recindex.py:494
+msgid "anywhere"
+msgstr "kjerkoli"
+
+#: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:27
+#: ../gourmet/recindex.py:43 ../gourmet/recindex.py:52
+msgid "title"
+msgstr "ime"
+
+#: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:28
+#: ../gourmet/recindex.py:44 ../gourmet/recindex.py:53
+msgid "ingredient"
+msgstr "sestavina"
+
+#: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:29
+#: ../gourmet/recindex.py:45 ../gourmet/recindex.py:57
+msgid "instructions"
+msgstr "priprava"
+
+#: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:30
+#: ../gourmet/recindex.py:46 ../gourmet/recindex.py:58
+msgid "notes"
+msgstr "beležke"
+
+#: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:32
+#: ../gourmet/recindex.py:48 ../gourmet/recindex.py:55
+msgid "cuisine"
+msgstr "kuhinja"
+
+#: ../gourmet/plugins/web_plugin/gourmetweb/recview/views.py:33
+#: ../gourmet/recindex.py:49 ../gourmet/recindex.py:56
+msgid "source"
+msgstr "izvor"
+
+#. menus
+#: ../gourmet/reccard.py:218 ../gourmet/reccard.py:873
+msgid "_Recipe"
+msgstr "_Recept"
+
+#: ../gourmet/reccard.py:222
+msgid "Export recipe"
+msgstr "Izvozi recept"
+
+#: ../gourmet/reccard.py:223
+msgid "Export selected recipe (save to file)"
+msgstr "Izvozi izbran recept (shrani v datoteko)"
+
+#: ../gourmet/reccard.py:225
+msgid "_Delete recipe"
+msgstr "_Izbriši recept"
+
+#: ../gourmet/reccard.py:226
+msgid "Delete this recipe"
+msgstr "Izbriši ta recepti"
+
+#: ../gourmet/reccard.py:237
+msgid "Adjust units when multiplying"
+msgstr "Prilagodi enote pri pomnoževanju"
+
+#: ../gourmet/reccard.py:239
+msgid ""
+"Change units to make them more readable where possible when multiplying."
+msgstr ""
+"Kjer je mogoče, sremeni enote pri pomnoževanju, da postanejo lažje berljive."
+
+#. ('Email',None,_('E-_mail recipe'),
+#. None,None,self.email_cb),
+#: ../gourmet/reccard.py:247
+msgid "Print recipe"
+msgstr "Natisni recept"
+
+#: ../gourmet/reccard.py:250
+msgid "Forget remembered optional ingredients"
+msgstr "Ignoriraj shranjenje pomožne sestavine"
+
+#: ../gourmet/reccard.py:251
+msgid ""
+"Before adding to shopping list, ask about all optional ingredients, even "
+"ones you previously wanted remembered"
+msgstr ""
+"Preden dodaš na nakupovalni seznam, vprašaj za vse pomožne sestave, tudi "
+"tiste, ki si jih hotel prej shraniti."
+
+#: ../gourmet/reccard.py:253
+msgid "Export Recipe"
+msgstr "Izvozi Recept"
+
+#: ../gourmet/reccard.py:561
+#, python-format
+msgid "Recipe successfully exported to <a href=\"file:///%s\">%s</a>"
+msgstr ""
+
+#: ../gourmet/reccard.py:596
+msgid "You have unsaved changes."
+msgstr "Imete neshranjene spremembe."
+
+#: ../gourmet/reccard.py:597
+msgid "Apply changes before printing?"
+msgstr "Uporabim spremembe preden natisnem?"
+
+#: ../gourmet/reccard.py:711 ../gourmet/recipeIdentifier.py:95
+msgid "(Optional)"
+msgstr "(Po želji)"
+
+#: ../gourmet/reccard.py:766
+#, python-format
+msgid "Unable to find recipe %s in database."
+msgstr "Ne najdem recepta %s v bazi."
+
+#: ../gourmet/reccard.py:857
+msgid "Edit Recipe:"
+msgstr "Uredi Recept:"
+
+#: ../gourmet/reccard.py:878
+msgid "Save edits to database"
+msgstr "Shrani podatke v bazo"
+
+#. show_pref_dialog
+#: ../gourmet/reccard.py:887
+msgid "View Recipe Card"
+msgstr "Poglej Kartico Recepta"
+
+#: ../gourmet/reccard.py:949
+msgid "Edit"
+msgstr "Uredi"
+
+#: ../gourmet/reccard.py:1050 ../gourmet/reccard.py:1051
+#, python-format
+msgid "Save changes to %s"
+msgstr "Shrani spremembe v %s"
+
+#: ../gourmet/reccard.py:1143
+msgid "Add ingredient"
+msgstr "Dodaj sestavino"
+
+#: ../gourmet/reccard.py:1145
+msgid "Add group"
+msgstr "Dodaj skupino"
+
+#: ../gourmet/reccard.py:1147
+msgid "Paste ingredients"
+msgstr "Prilepi sestavine"
+
+#: ../gourmet/reccard.py:1149
+msgid "Import from file"
+msgstr "Uvozi iz datoteke"
+
+#: ../gourmet/reccard.py:1151
+msgid "Add _recipe"
+msgstr "Dodaj recept"
+
+#: ../gourmet/reccard.py:1152
+msgid "Add another recipe as an ingredient in this recipe"
+msgstr "Dodaj drug recept kot sestavino v ta recept"
+
+#: ../gourmet/reccard.py:1156
+msgid "Delete"
+msgstr "Izbriši"
+
+#: ../gourmet/reccard.py:1162
+msgid "Up"
+msgstr "Gor"
+
+#: ../gourmet/reccard.py:1164
+msgid "Down"
+msgstr "Dol"
+
+#: ../gourmet/reccard.py:1209
+msgid "Choose a file containing your ingredient list."
+msgstr "Izberite datoteko ki vsebuje seznam sestavin."
+
+#: ../gourmet/reccard.py:2164 ../gourmet/reccard.py:2194
+msgid "Amt"
+msgstr "Znesek"
+
+#: ../gourmet/reccard.py:2168 ../gourmet/reccard.py:2197
+msgid "Optional"
+msgstr "Po želji"
+
+#: ../gourmet/reccard.py:2309
+#, python-format
+msgid "The recipe %s (ID %s) is not in our database."
+msgstr "Recept %s (ID %s) ni v bazi."
+
+#: ../gourmet/reccard.py:2631
+#, python-format
+msgid "Converted: %(amt)s %(unit)s"
+msgstr "Pretvorjeno: %(amt)s %(unit)s"
+
+#: ../gourmet/reccard.py:2633
+#, python-format
+msgid "Not Converted: %(amt)s %(unit)s"
+msgstr "Nepretvorjeno: %(amt)s %(unit)s"
+
+#: ../gourmet/reccard.py:2637
+msgid "Changed unit."
+msgstr "Spremenjena enota."
+
+#: ../gourmet/reccard.py:2638
+#, python-format
+msgid ""
+"You have changed the unit for %(item)s from %(old)s to %(new)s. Would you "
+"like the amount converted or not?"
+msgstr ""
+"Spremenili ste enoto za %(item)s iz %(old)s v %(new)s. Želite količino "
+"spremeniti ali ne?"
+
+#: ../gourmet/reccard.py:2649
+#, python-format
+msgid "Converted %(old_amt)s %(old_unit)s to %(new_amt)s %(new_unit)s"
+msgstr "Spremenjene %(old_amt)s %(old_unit)s v %(new_amt)s %(new_unit)s"
+
+#: ../gourmet/reccard.py:2661
+#, python-format
+msgid "Unable to convert from %(old_unit)s to %(new_unit)s"
+msgstr "Ne morem spremeniti iz %(old_unit)s v %(new_unit)s"
+
+#: ../gourmet/reccard.py:2716
+msgid "Adding Ingredient Group"
+msgstr "Dodajanje skupine za sestavine"
+
+#: ../gourmet/reccard.py:2717
+msgid "Enter a name for new subgroup of ingredients"
+msgstr "Vpiši ime za novo podskupino sestavin"
+
+#: ../gourmet/reccard.py:2718
+msgid "Name of group:"
+msgstr "Ime skupine:"
+
+#: ../gourmet/reccard.py:2989
+msgid "Choose recipe"
+msgstr "Izberi recept"
+
+#: ../gourmet/reccard.py:3026
+msgid "Recipe cannot call itself as an ingredient!"
+msgstr "Recept ne more biti sestavina!"
+
+#: ../gourmet/reccard.py:3027 ../gourmet/shopping.py:331
+msgid "Infinite recursion is not allowed in recipes!"
+msgstr "Neskončno ponavljanje ni dovoljeno v receptih!"
+
+#: ../gourmet/reccard.py:3048
+msgid "You haven't selected any recipes!"
+msgstr "Niste izbrali nobenih receptov!"
+
+#: ../gourmet/reccard.py:3060
+#, python-format
+msgid "How much of %(title)s does your recipe call for?"
+msgstr "Koliko %(title)s zahteva tvoj recept?"
+
+#: ../gourmet/recindex.py:98
+msgid "Use regular expressions in search"
+msgstr "Uporabi običajne izraze pri iskanju"
+
+#: ../gourmet/recindex.py:99
+msgid "Use regular expressions (an advanced search language) in text search"
+msgstr "Uporabi običajne izraze (napredni jezik iskanja) v tekstovnem iskanju"
+
+#: ../gourmet/recindex.py:104
+msgid "Search as you type (turn off if search is too slow)."
+msgstr "Išči med tipkanjem (izklopi, čle je iskanje prepočasno)"
+
+#: ../gourmet/recindex.py:108
+msgid "Show Search _Options"
+msgstr "Pokaži možnosti _iskanja"
+
+#: ../gourmet/recindex.py:109
+msgid "Show advanced searching options"
+msgstr "Pokaži napredne možnosti iskanja"
+
+#: ../gourmet/recindex.py:284
+#, python-format
+msgid "%s recipe"
+msgid_plural "%s recipes"
+msgstr[0] "%s receptov"
+msgstr[1] "%recept"
+msgstr[2] "%s receptov"
+msgstr[3] "%s receptov"
+
+#. Do not translate bottom, top and total -- I use these fancy formatting
+#. strings in case your language needs the order changed!
+#: ../gourmet/recindex.py:292
+#, python-format
+msgid "Showing recipes %(bottom)s to %(top)s of %(total)s"
+msgstr "Prikazujem recepte %(bottom)s do %(top)s od %(total)s"
+
+#: ../gourmet/recindex.py:495
+#, python-format
+msgid "%s in %s"
+msgstr "%s v %s"
+
+#: ../gourmet/shopgui.py:122 ../gourmet/shopgui.py:129
+msgid "Change _Category"
+msgstr "Spremeni _kategorijo"
+
+#: ../gourmet/shopgui.py:123
+msgid "Create new category"
+msgstr "Ustvari novo kategorijo"
+
+#: ../gourmet/shopgui.py:131
+msgid "Change the category of the currently selected item"
+msgstr "Spremeni kategorijo trenutno izbrane postavke"
+
+#: ../gourmet/shopgui.py:137
+msgid "Pantry"
+msgstr "Shramba"
+
+#. name
+#. stock
+#: ../gourmet/shopgui.py:140
+msgid "Move to _Shopping List"
+msgstr "Premakni v _Nakupovalni seznam"
+
+#. text
+#: ../gourmet/shopgui.py:141
+msgid "<Ctrl>B"
+msgstr "<Ctrl>B"
+
+#. name
+#. stock
+#: ../gourmet/shopgui.py:150
+msgid "Move to _pantry"
+msgstr "Premakni v _skladišče"
+
+#. text
+#: ../gourmet/shopgui.py:151
+msgid "<Ctrl>D"
+msgstr "<Ctrl>D"
+
+#. key-command
+#: ../gourmet/shopgui.py:152
+msgid "Remove from shopping list"
+msgstr "Izbriši iz nakupovalnega seznama"
+
+#: ../gourmet/shopgui.py:173
+#, python-format
+msgid "Move selected items into %s"
+msgstr "Premakni izbrane postavke v %s"
+
+#: ../gourmet/shopgui.py:210
+msgid "_Shopping List"
+msgstr "_Nakupovalni Seznam"
+
+#: ../gourmet/shopgui.py:211
+msgid "Already Have (_Pantry Items)"
+msgstr "Že Imam (_Stvari v shrambi)"
+
+#: ../gourmet/shopgui.py:472
+msgid "Enter Category"
+msgstr "Vstavite Kategorijo"
+
+#: ../gourmet/shopgui.py:473
+#, python-format
+msgid "Category to add %s to"
+msgstr "Kategorija za dodati %s k"
+
+#: ../gourmet/shopgui.py:474
+msgid "Category:"
+msgstr "Kategorija:"
+
+#: ../gourmet/shopgui.py:589
+msgid "_Recipes"
+msgstr "_Recepti"
+
+#: ../gourmet/shopgui.py:612
+msgid "_Add items:"
+msgstr "_Dodaj podatke:"
+
+#: ../gourmet/shopgui.py:650
+msgid "Remove Recipes"
+msgstr "Odstrani Recepte"
+
+#: ../gourmet/shopgui.py:651
+msgid "Remove recipes from shopping list"
+msgstr "Odstrani recepte iz nakupovalnega seznama"
+
+#: ../gourmet/shopgui.py:685
+msgid "Add items"
+msgstr "Dodaj podatke"
+
+#: ../gourmet/shopgui.py:687
+msgid "Add arbitrary items to shopping list"
+msgstr "Dodaj arbitrarne podatke na nakupovalni seznam"
+
+#: ../gourmet/shopgui.py:753
+msgid "x"
+msgstr "x"
+
+#: ../gourmet/shopgui.py:838
+msgid "No recipes selected. Do you want to clear the entire list?"
+msgstr "Izbrani niso nobeni recepti. Želite izbrisati celotni seznam?"
+
+#: ../gourmet/shopgui.py:848
+msgid "Save Shopping List As..."
+msgstr "Shrani nakupovalni seznam kot..."
+
+#: ../gourmet/shopgui.py:902
+msgid "Select optional ingredients"
+msgstr "Izberi opcijske sestavine"
+
+#: ../gourmet/shopgui.py:903
+msgid ""
+"Please specify which of the following optional ingredients you'd like to "
+"include on your shopping list."
+msgstr ""
+"Prosim določite katero od sestavin, bi rdi dodali na nakupovalni seznam."
+
+#: ../gourmet/shopping.py:19
+msgid "flour, all purpose"
+msgstr "moka, večnamenska"
+
+#: ../gourmet/shopping.py:19
+msgid "sugar"
+msgstr "sladkor"
+
+#: ../gourmet/shopping.py:19
+msgid "salt"
+msgstr "sol"
+
+#: ../gourmet/shopping.py:20
+msgid "black pepper, ground"
+msgstr "Črni poper, celi"
+
+#: ../gourmet/shopping.py:21
+msgid "ice"
+msgstr "led"
+
+#: ../gourmet/shopping.py:21
+msgid "water"
+msgstr "voda"
+
+#: ../gourmet/shopping.py:22
+msgid "oil, vegetable"
+msgstr "olje, rastlinsko"
+
+#: ../gourmet/shopping.py:23
+msgid "oil, olive"
+msgstr "olje, olivno"
+
+#: ../gourmet/shopping.py:330
+msgid "Recipe calls for itself as an ingredient."
+msgstr "Recept je koz sestavina."
+
+#: ../gourmet/shopping.py:331
+#, python-format
+msgid "Ingredient %s will be ignored."
+msgstr "Sestavina %s ne bo upoštevana."
+
+#: ../gourmet/shopping.py:377 ../gourmet/shopping.py:391
+#, python-format
+msgid "Shopping list for %s"
+msgstr "Nakupovalni seznam za %s"
+
+#: ../gourmet/shopping.py:378
+#, fuzzy
+msgid "For the following recipes:\n"
+msgstr "Za sledeče recepte:"
+
+#: ../gourmet/shopping.py:383 ../gourmet/shopping.py:396
+#, python-format
+msgid " x%s"
+msgstr " x%s"
+
+#: ../gourmet/shopping.py:392
+msgid "For the following recipes:"
+msgstr "Za sledeče recepte:"
+
+#: ../gourmet/threadManager.py:235
+msgid "Paused"
+msgstr "Začasno ustavljeno"
+
+#: ../gourmet/threadManager.py:267
+msgid "Recipe successfully imported"
+msgid_plural "Recipes successfully imported"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: ../gourmet/threadManager.py:271
+msgid "Import Unsuccessful"
+msgstr ""
+
+#: ../gourmet/threadManager.py:294
+msgid "Pause"
+msgstr "Premor"
+
+#: ../gourmet/threadManager.py:334
+msgid "Done"
+msgstr "Končano"
+
+#: ../gourmet/threadManager.py:352
+#, python-format
+msgid "Error: %s"
+msgstr "Napaka: %s"
+
+#: ../gourmet/threadManager.py:391
+msgid "Error"
+msgstr "Napaka"
+
+#: ../gourmet/threadManager.py:392
+#, python-format
+msgid "Error %s: %s"
+msgstr "Napaka %s: %s"
+
+#: ../gourmet/threadManager.py:393
+msgid "Traceback"
+msgstr "Traceback"
+
+#: ../gourmet/timer.py:144 ../gourmet/timer.py:166
+msgid "Ringing Sound"
+msgstr "Zvok Zvonenja"
+
+#: ../gourmet/timer.py:145
+msgid "Warning Sound"
+msgstr "Zvok Opozorila"
+
+#: ../gourmet/timer.py:146
+msgid "Error Sound"
+msgstr "Zvok Napake"
+
+#: ../gourmet/timer.py:250
+msgid "Stop timer?"
+msgstr "Ustavim Odštevalnik?"
+
+#: ../gourmet/timer.py:252
+msgid "Stop _timer"
+msgstr "Zaustavi_odštevalnik"
+
+#: ../gourmet/timer.py:253
+msgid "_Keep timing"
+msgstr "_Nadaljuj z timingom"
+
+#: ../gourmet/version.py:5
+msgid "Copyright (c) 2004-2014 Thomas M. Hinkle. GNU GPL v2"
+msgstr ""
+
+#: ../gourmet/version.py:9
+#, fuzzy
+msgid ""
+"Gourmet Recipe Manager is an application to store, organize and search "
+"recipes.\n"
+"\n"
+"Features:\n"
+"* Makes it easy to create shopping lists from recipes.\n"
+"* Imports recipes from a number of sources, including MealMaster and "
+"MasterCook\n"
+"  archives and several popular websites.\n"
+"* Exports recipes as PDF files, plain text, MealMaster files, HTML web "
+"pages,\n"
+"  and a custom XML format for exchange with other Gourmet users.\n"
+"* Supports linking images with recipes.\n"
+"* Can calculate nutritional information for recipes based on the "
+"ingredients.\n"
+msgstr ""
+"Gurman Urejevalnik Receptov je pripomoček za shranjevanje, organizacijo in "
+"iskanje receptov. Gurman prav tako omogoča enostavno uporabo nakupovalnih "
+"seznamov iz receptov. Gurman uvaža recepte iz številnih virov in "
+"priljubljenih spletnih strani, vključno z arhivi MealMaster-ja in MasterCook-"
+"a. Gurman lahko izvaža recepte kot tekst, MealMaster datoteke, HTML spletne "
+"strali in po meri narejene XML formate za izmenjavo z drugimi uporabniki "
+"Gurmana. Gurman podpira povezavo slik z recepti. Gurman lahko prav tako "
+"izračuna hranilno vrednost za recepte, izhajajoč iz sestavin."
+
+#: ../gourmet/version.py:26
+msgid "Roland Duhaime (Windows porting assistance)"
+msgstr "Roland Duhaime (Windows porting assistance)"
+
+#: ../gourmet/version.py:27
+msgid "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
+msgstr "Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"
+
+#: ../gourmet/version.py:28
+msgid "Richard Ferguson (improvements to Unit Converter interface)"
+msgstr "Richard Ferguson (izboljšave vmesnika za Pretvornik enot)"
+
+#: ../gourmet/version.py:29
+msgid "R.S. Born (improvements to Mealmaster export)"
+msgstr "R.S. Born (izboljšave za izvoz v Mealmaster)"
+
+#: ../gourmet/version.py:30
+msgid "ixat <ixat.deviantart.com> (logo and splash screen)"
+msgstr "ixat <ixat.deviantart.com> (logo and splash screen)"
+
+#: ../gourmet/version.py:31
+msgid "Yula Zubritsky (nutrition and add-to-shopping list icons)"
+msgstr "Yula Zubritsky (nutrition and add-to-shopping list icons)"
+
+#: ../gourmet/version.py:32
+msgid ""
+"Simon Darlington <simon.darlington@gmx.net> (improvements to "
+"internationalization, assorted bugfixes)"
+msgstr ""
+"Simon Darlington <simon.darlington@gmx.net> (mednarodne izboljšave, "
+"odpravljanje različnih težav s hrošči)"
+
+#: ../gourmet/version.py:33
+#, fuzzy
+msgid ""
+"Bernhard Reiter <ockham@raz.or.at> (maintenance since 0.16.0, website re-"
+"design)"
+msgstr ""
+"Bernhard Reiter <ockham@raz.or.at> (vzdrževanje verzije za Windowa in "
+"oblikovanje spletne strani)"
+
+#: ../gourmet/version.py:35
+msgid "Nyall Dawson (cookie icon)"
+msgstr ""
+
+#: ../gourmet/version.py:36
+msgid "Kati Pregartner (splash screen image)"
+msgstr ""
+
+#~ msgid "Gourmet Recipe Manager starting up..."
+#~ msgstr "Gourmet Recipe Manager se zaganja..."
+
+#~ msgid "Starting gourmet..."
+#~ msgstr "Zaganjam gourmet..."
+
+#, fuzzy
+#~ msgid ""
+#~ "You just moved %s recipe to the trash. You can recover this recipe or "
+#~ "permanently                     delete it at any time by clicking Tools-"
+#~ ">Open Trash."
+#~ msgid_plural ""
+#~ "You just moved %s recipes to the trash. You can recover these recipes "
+#~ "or                                      permanently delete them at any "
+#~ "time by clicking Tools->Open Trash"
+#~ msgstr[0] ""
+#~ "Premaknili ste %s recept v koš. Ta recept lahko obnovite ali dokončno "
+#~ "izbrišete kadarkoli če kliknete Orodja->Odpri koš."
+#~ msgstr[1] ""
+#~ "Premaknili ste %s recepta v koš. Te recepta lahko obnovite ali dokončno "
+#~ "izbrišete kadarkoli če kliknete Orodja->Odpri koš"
+#~ msgstr[2] ""
+#~ "Premaknili ste %s recepte v koš. Te recepte lahko obnovite ali dokončno "
+#~ "izbrišete kadarkoli če kliknete Orodja->Odpri koš"
+#~ msgstr[3] ""
+#~ "Premaknili ste %s receptov v koš. Te recepta lahko obnovite ali dokončno "
+#~ "izbrišete kadarkoli če kliknete Orodja->Odpri koš"
+
+#~ msgid ""
+#~ "To print, activate a plugin that provides printing support, such as the "
+#~ "'Printing & PDF export' plugin."
+#~ msgstr ""
+#~ "Za tiskanje aktivirajte dodatek, ki omogoča podporo za tiskanje, kot je "
+#~ "na primer \"Printing & PDF export\" dodatek."
+
+#~ msgid "Well this is embarassing. Something went wrong printing your recipe."
+#~ msgstr "Oprostite, prišlo je do težav pri tiskanju vašega recepta."
+
+#~ msgid "Unable to open URL"
+#~ msgstr "Ne morem odpreti URL"
+
+#~ msgid "Unable to launch mail reader."
+#~ msgstr "Ne morem zagnadi preglednika E-pošte."
+
+#~ msgid "Unable to open website."
+#~ msgstr "Ne morem odpreti spletne strani."
+
+#~ msgid "Unable to open file."
+#~ msgstr "Ne morem odpreti datoteke."
+
+#~ msgid "There was an error launching the url: %s"
+#~ msgstr "Prišlo je do napake pri odpiranju url: %s"
+
+#~ msgid ""
+#~ "Time must begin with a number or fraction followed by a unit (minutes, "
+#~ "hours, etc.)."
+#~ msgstr ""
+#~ "Čas se mora začeti s številko ali ulomkom, ki jima sledi enota (minute, "
+#~ "ure, itd.)."
+
+#~ msgid "Time must be expressed in hours, minutes, seconds, etc."
+#~ msgstr "Čas mora biti izražen v urah, minutah, sekundah, itd. ."
+
+#~ msgid "Couldn't make sense of %s as number of yields"
+#~ msgstr "Ne razberem %s  kot število izvržkov"
+
+#~ msgid "cancelled"
+#~ msgstr "Preklicano"
+
+#~ msgid ""
+#~ "You've requested to close a window with an active timer. You can stop the "
+#~ "timer, or you can just close the window. If you close the window, it will "
+#~ "reappear when your timer goes off."
+#~ msgstr ""
+#~ "Poskušate zapreti okno z aktivnim odštevalnikom. Lahko zaustavite "
+#~ "odštevalnik, ali zaprete okno. Če boste zaprli okno, se bo spet pojavilo "
+#~ "ko se bo odštevalnik izklopil."
+
+#~ msgid "_Servings"
+#~ msgstr "_Obroki"
+
+#~ msgid "Select File_type"
+#~ msgstr "Izberi tip _datoteke"
+
+#~ msgid "A file named %s already exists."
+#~ msgstr "Datoteka z imenom %s že obstaja."
+
+#~ msgid "Do you want to replace it with the one you are saving?"
+#~ msgstr "Želite zamenjati obstoječo datoteko s trenutno?"
+
+#~ msgid "Importing old recipe data"
+#~ msgstr "Uvoz starih podatkov recepta"
+
+#~ msgid ""
+#~ "Importing recipe data from a previous version of Gourmet into new "
+#~ "database."
+#~ msgstr ""
+#~ "Uvoz receptov iz starejših verzij Gourmet-a v novo podatkovno zbirko."
+
+#~ msgid "Export succeeded"
+#~ msgstr "Izvoz je bil uspešen"
+
+#~ msgid "webpage"
+#~ msgstr "spletna stran"
+
+#~ msgid "Exported %s to %s"
+#~ msgstr "Izvoženi %s v %s"
+
+#~ msgid "%s stopped."
+#~ msgstr "%s zaustavljeno."
+
+#~ msgid "%s was interrupted by user request."
+#~ msgstr "%s je bil prekinjen na uporabnikovo željo."
+
+#~ msgid "%s interrupted"
+#~ msgstr "%s prekinjen"
+
+#~ msgid "There was an error during %s."
+#~ msgstr "Prišlo je do napake med %s."
+
+#~ msgid "Deleting recipes from database... (%s of %s deleted)"
+#~ msgstr "Brišem recepte iz baze... (%s od %s izbrisano)"
+
+#~ msgid "Deleted %s recipe"
+#~ msgid_plural "Deleted %s recipes"
+#~ msgstr[0] "Izbrisano %s receptov"
+#~ msgstr[1] "Izbrisan %s recept"
+#~ msgstr[2] "Izbrisano %s receptov"
+#~ msgstr[3] "Izbrisano %s receptov"
+
+#~ msgid "Export complete!"
+#~ msgstr "Izvoz končan!"
+
+#~ msgid "Recipe exported to %s"
+#~ msgstr "Recept je izvožen v %s"
+
+#~ msgid "Database format has changed"
+#~ msgstr "Oblika podatkovne baze se je spremenila"
+
+#~ msgid ""
+#~ "%(progname)s %(version)s has changed the format of its database. Your "
+#~ "database will no longer work with older versions of %(progname)s.  A "
+#~ "backup has been saved in %(backupfile)s"
+#~ msgstr ""
+#~ "%(progname)s %(version)s je spremenila format podatkovne baze. Vaša "
+#~ "podatkovna zbirka ne deluje več s starejšimi različicami %(progname)s. "
+#~ "Arhivska kopija je bila shranjena v %(backupfile)s"
+
+#~ msgid ""
+#~ "In case anything goes wrong, a backup copy of your recipe database is "
+#~ "being exported to %s"
+#~ msgstr ""
+#~ "V primeru težav, je arhivska kopija podatkovne baze vaših receptov "
+#~ "izvožena v %s"
+
+#~ msgid "Transferring data to new database format"
+#~ msgstr "Prenos podatkov v novo obliko podatkovne baze"
+
+#~ msgid "Gourmet Import/Export"
+#~ msgstr "Gurman Uvoz/Izvoz"

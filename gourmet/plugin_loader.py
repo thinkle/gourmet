@@ -25,7 +25,7 @@ class MasterLoader:
     # Singleton design pattern lifted from:
     # http://www.python.org/workshops/1997-10/proceedings/savikko.html
     # to get an instance, use the convenience function
-    # get_master_loader()
+    # MasterLoader.instance()
     __single = None
     default_active_plugin_sets = [
         # tools
@@ -234,10 +234,9 @@ class PluginSet:
 
     _loaded = False
 
-    def __init__ (self, plugin_info_path):
-        f = open(plugin_info_path,'r')
-        self.load_plugin_file_data(f)
-        f.close()
+    def __init__(self, plugin_info_path: str):
+        with open(plugin_info_path, 'r') as fin:
+            self.load_plugin_file_data(fin)
         self.curdir, plugin_info_file = os.path.split(plugin_info_path)
         plugin_modules_dir = os.path.join(gglobals.lib_dir,"plugins")
         self.plugin_modules_dir = plugin_modules_dir
@@ -319,7 +318,7 @@ class Pluggable:
                             # method name
         self.post_hooks = {} # stores hooks to be run after methods by
                              # method name
-        self.loader = get_master_loader()
+        self.loader = MasterLoader.instance()
         self.klasses = plugin_klasses
         self.plugins = []
         for klass in self.klasses:
