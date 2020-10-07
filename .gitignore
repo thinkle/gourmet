@@ -1,17 +1,14 @@
-*.pyc
-*.pyo
-*.gourmet-plugin
-*.desktop
-*~
-*#*
-.project
-.pydevproject
-.settings/
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+
+# Distribution / packaging
 *.egg-info/
-debian
-dist/
-build
-build-stamp
-configure-stamp
-MANIFEST
-gourmet/po/gourmet.pot
+*.gourmet-plugin
+/build/
+/dist/
+gourmet.pot
+
+
+# Virtual environments
+/env/
