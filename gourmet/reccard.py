@@ -1296,24 +1296,17 @@ class TextEditor:
             buf.cut_clipboard(self.cb,tv.get_editable())
 
     def do_paste(self, action: Gtk.Action):
-        if self.edit_widgets:
-            widget = self.edit_widgets[0]
-        else:
-            widget = self.edit_textviews[0]
+        # Get any widget to get a hold of the window
+        w = self.edit_widgets[0] if self.edit_widgets else self.edit_textviews[0]  # noqa
+        window = w.get_toplevel()
 
-        while True:
-            parent = widget.get_parent()
-            if widget.has_focus() or parent is None:
-                break
-            widget = parent
+        widget = window.get_focus()  # Get the widget under focus
 
         if isinstance(widget, Gtk.TextView):
             buf = widget.get_buffer()
             buf.paste_clipboard(self.cb, None, widget.get_editable())
-        elif isinstance(widget, Gtk.Editable):
+        if isinstance(widget, Gtk.Editable):
             widget.paste_clipboard()
-        else:
-            print('Attempting to paste to', widget)
 
 
 class DescriptionEditorModule (TextEditor, RecEditorModule):
