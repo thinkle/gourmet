@@ -1279,41 +1279,40 @@ class TextEditor:
                 )
         return True
 
-    def do_copy (self, *args):
-        for w in self.edit_widgets:
-            if w.has_focus():
-                w.copy_clipboard()
-                return
-        for tv in self.edit_textviews:
-            tv.get_buffer().copy_clipboard(self.cb)
+    def do_copy(self, action: Gtk.Action):
+        # Get any widget to get a hold of the window
+        w = self.edit_widgets[0] if self.edit_widgets else self.edit_textviews[0]  # noqa
+        window = w.get_toplevel()
+        widget = window.get_focus()  # Get the widget under focus
 
-    def do_cut (self, *args):
-        for w in self.edit_widgets:
-            if w.has_focus():
-                w.cut_clipboard()
-        for tv in self.edit_textviews:
-            buf  = tv.get_buffer()
-            buf.cut_clipboard(self.cb,tv.get_editable())
+        if isinstance(widget, Gtk.Editable):
+            widget.copy_clipboard()
+        if isinstance(widget, Gtk.TextView):
+            widget.get_buffer().copy_clipboard(self.cb)
+
+    def do_cut(self, action: Gtk.Action):
+        # Get any widget to get a hold of the window
+        w = self.edit_widgets[0] if self.edit_widgets else self.edit_textviews[0]  # noqa
+        window = w.get_toplevel()
+        widget = window.get_focus()  # Get the widget under focus
+
+        if isinstance(widget, Gtk.Editable):
+            widget.cut_clipboard()
+        if isinstance(widget, Gtk.TextView):
+            widget.get_buffer().cut_clipboard(self.cb, widget.get_editable())
 
     def do_paste(self, action: Gtk.Action):
-        if self.edit_widgets:
-            widget = self.edit_widgets[0]
-        else:
-            widget = self.edit_textviews[0]
+        # Get any widget to get a hold of the window
+        w = self.edit_widgets[0] if self.edit_widgets else self.edit_textviews[0]  # noqa
+        window = w.get_toplevel()
 
-        while True:
-            parent = widget.get_parent()
-            if widget.has_focus() or parent is None:
-                break
-            widget = parent
+        widget = window.get_focus()  # Get the widget under focus
 
         if isinstance(widget, Gtk.TextView):
             buf = widget.get_buffer()
             buf.paste_clipboard(self.cb, None, widget.get_editable())
         elif isinstance(widget, Gtk.Editable):
             widget.paste_clipboard()
-        else:
-            print('Attempting to paste to', widget)
 
 
 class DescriptionEditorModule (TextEditor, RecEditorModule):
