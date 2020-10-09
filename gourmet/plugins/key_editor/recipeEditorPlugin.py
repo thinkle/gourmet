@@ -80,7 +80,7 @@ class IngredientKeyEditor (RecEditorModule):
                                  lambda *args: self.tv.queue_draw())
 
     def setup_action_groups(self):
-        self.keyEditorActionGroup = Gtk.ActionGroup('RecKeyEditorActionGroup')
+        self.keyEditorActionGroup = Gtk.ActionGroup(name='RecKeyEditorActionGroup')  # noqa
         self.keyEditorActionGroup.add_actions([
             ('GuessKeys',None,_('Guess keys'),
              None,_('Guess best values for all ingredient keys based on values already in your database'),

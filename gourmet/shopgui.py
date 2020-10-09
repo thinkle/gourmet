@@ -115,9 +115,9 @@ class IngredientAndPantryList:
         self.ui_manager.add_ui_from_string(ui_string)
 
     def setup_actions (self):
-        self.pantryActions = Gtk.ActionGroup('PantryActions')
-        self.shoppingActions = Gtk.ActionGroup('ShoppingActions')
-        self.pantryOrShoppingActions = Gtk.ActionGroup('PantryOrShoppingActions')
+        self.pantryActions = Gtk.ActionGroup(name='PantryActions')
+        self.shoppingActions = Gtk.ActionGroup(name='ShoppingActions')
+        self.pantryOrShoppingActions = Gtk.ActionGroup(name='PantryOrShoppingActions')  # noqa
         self.pantryOrShoppingActions.add_actions([
             ('ChangeCategoryPop',None,_('Change _Category')),
             ('newCategory',None,_('Create new category'),None,None,
@@ -647,8 +647,8 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         self.cat_button.connect('clicked',self.category_changed)
 
     def setup_actions (self):
-        self.mainActionGroup = Gtk.ActionGroup('MainActions')
-        self.recipeListActions = Gtk.ActionGroup('RecipeListActions')
+        self.mainActionGroup = Gtk.ActionGroup(name='MainActions')
+        self.recipeListActions = Gtk.ActionGroup(name='RecipeListActions')
         self.recipeListActions.add_actions([
             ('RemoveRecipes',Gtk.STOCK_REMOVE,_('Remove Recipes'),
              '<Control>Delete',_('Remove recipes from shopping list'),

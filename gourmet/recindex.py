@@ -92,7 +92,7 @@ class RecIndex:
         self.search_typing_tbtn.connect('toggled',
                                         self.search_typing_toggle_callback)
 
-        self.search_actions = Gtk.ActionGroup('SearchActions')
+        self.search_actions = Gtk.ActionGroup(name='SearchActions')
         self.search_actions.add_toggle_actions([
              ('search_regex_toggle', None,
               _('Use regular expressions in search'), None,

@@ -60,7 +60,7 @@ class RecipeMergerPlugin (ToolPlugin):
         #gt.gtk_leave()
 
     def setup_action_groups (self):
-        self.action_group = Gtk.ActionGroup('RecipeMergerPluginActionGroup')
+        self.action_group = Gtk.ActionGroup(name='RecipeMergerPluginActionGroup')  # noqa
         self.action_group.add_actions([
             ('DuplicateMerger',None,_('Find _duplicate recipes'),
              None,_('Find and remove duplicate recipes'),self.show_duplicate_merger)

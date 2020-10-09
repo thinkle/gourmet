@@ -5,7 +5,7 @@ from pathlib import Path
 import webbrowser
 
 from gettext import gettext as _
-from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
+from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk, Pango
 from PIL import Image
 import xml.sax.saxutils
 
@@ -213,7 +213,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.rg.add_uimanager_to_manage(self.current_rec.id,self.ui_manager,'RecipeDisplayMenuBar')
 
     def setup_actions (self):
-        self.recipeDisplayActionGroup = Gtk.ActionGroup('RecipeDisplayActions')
+        self.recipeDisplayActionGroup = Gtk.ActionGroup(name='RecipeDisplayActions')
         self.recipeDisplayActionGroup.add_actions([
             ('Recipe',None,_('_Recipe')),
             ('Edit',None,_('_Edit')),
@@ -240,7 +240,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
              self.toggle_readable_units_cb),
             ]
                                                        )
-        self.recipeDisplayFuturePluginActionGroup = Gtk.ActionGroup('RecipeDisplayFuturePluginActions')
+        self.recipeDisplayFuturePluginActionGroup = Gtk.ActionGroup(name='RecipeDisplayFuturePluginActions')  # noqa
         self.recipeDisplayFuturePluginActionGroup.add_actions([
             #('Email',None,_('E-_mail recipe'),
             # None,None,self.email_cb),
@@ -865,8 +865,8 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         fix_action_group_importance(self.rg.toolActionGroup)
         self.ui_manager.insert_action_group(self.rg.toolActionGroup,1)
 
-    def setup_action_groups (self):
-        self.mainRecEditActionGroup = Gtk.ActionGroup('RecEditMain')
+    def setup_action_groups(self):
+        self.mainRecEditActionGroup = Gtk.ActionGroup(name='RecEditMain')
 
         self.mainRecEditActionGroup.add_actions([
             # menus
@@ -973,7 +973,7 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         def hackish_notebook_switcher_handler (*args):
             # because the switch page signal happens before switching...
             # we'll need to look for the switch with an idle call
-            GObject.idle_add(self.notebook_change_cb)
+            GLib.idle_add(self.notebook_change_cb)
         self.notebook.connect('switch-page',hackish_notebook_switcher_handler)
 
         self.notebook.set_tab_pos(Gtk.PositionType.LEFT)
@@ -1137,8 +1137,8 @@ class IngredientEditorModule (RecEditorModule):
         self.ingtree_ui.set_tree_for_rec(self.current_rec)
 
     def setup_action_groups (self):
-        self.ingredientEditorActionGroup = Gtk.ActionGroup('IngredientEditorActionGroup')
-        self.ingredientEditorOnRowActionGroup = Gtk.ActionGroup('IngredientEditorOnRowActionGroup')
+        self.ingredientEditorActionGroup = Gtk.ActionGroup(name='IngredientEditorActionGroup')  # noqa
+        self.ingredientEditorOnRowActionGroup = Gtk.ActionGroup(name='IngredientEditorOnRowActionGroup')  # noqa
         self.ingredientEditorActionGroup.add_actions([
             ('AddIngredient',Gtk.STOCK_ADD,_('Add ingredient'),
              None,None),
@@ -1243,14 +1243,14 @@ class TextEditor:
                                  # textviews
 
     def setup_action_groups (self):
-        self.copyPasteActionGroup = Gtk.ActionGroup('CopyPasteActionGroup')
+        self.copyPasteActionGroup = Gtk.ActionGroup(name='CopyPasteActionGroup')
         self.copyPasteActionGroup.add_actions([
             ('Copy',Gtk.STOCK_COPY,None,None,None,self.do_copy),
             ('Paste',Gtk.STOCK_PASTE,None,None,None,self.do_paste),
             ('Cut',Gtk.STOCK_CUT,None,None,None,self.do_cut),
             ])
         self.cb = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
-        GObject.timeout_add(500,self.do_sensitize)  # FIXME: make event-driven
+        GLib.timeout_add(500, self.do_sensitize)  # FIXME: make event-driven
         self.action_groups.append(self.copyPasteActionGroup)
 
     def do_sensitize (self):
@@ -1617,7 +1617,7 @@ class TextFieldEditor (TextEditor):
         # Create Formatting actions
         buffer = self.tv.get_buffer()
 
-        group = Gtk.ActionGroup('RichTextActionGroup')
+        group = Gtk.ActionGroup(name='RichTextActionGroup')
         group.add_actions([
             ('Bold', Gtk.STOCK_BOLD, None, '<Control>B', None, None),
             ('Italic', Gtk.STOCK_ITALIC, None, '<Control>I', None, None),

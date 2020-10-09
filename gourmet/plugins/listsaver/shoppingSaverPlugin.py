@@ -23,7 +23,7 @@ class ShoppingListSaver (ShoppingListPlugin):
     label = _('Shopping List Saver')
 
     def setup_action_groups (self):
-        self.shoppingListSaverActionGroup = Gtk.ActionGroup('ShoppingListSaverActionGroup')
+        self.shoppingListSaverActionGroup = Gtk.ActionGroup(name='ShoppingListSaverActionGroup')  # noqa
         self.shoppingListSaverActionGroup.add_actions([
             ('SaveAsRecipe',# name
              Gtk.STOCK_SAVE_AS,# stock

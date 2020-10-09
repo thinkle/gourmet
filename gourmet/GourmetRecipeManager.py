@@ -6,7 +6,7 @@ from typing import Set
 
 from gettext import gettext as _
 from gettext import ngettext
-from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
+from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk
 
 from gourmet import (
     batchEditor, convert, plugin, plugin_gui, plugin_loader, prefs, prefsGui,
@@ -162,7 +162,7 @@ class GourmetApplication:
             self.rd.save()
             return True
         AUTOSAVE_EACH_N_MINUTES = 2
-        GObject.timeout_add(1000*60*AUTOSAVE_EACH_N_MINUTES,autosave)
+        GLib.timeout_add(1000 * 60 * AUTOSAVE_EACH_N_MINUTES, autosave)
         # connect hooks to modify our view whenever and
         # whenceever our recipes are updated...
         self.rd.modify_hooks.append(self.update_attribute_models)
@@ -216,7 +216,7 @@ class GourmetApplication:
         return m
 
     def setup_go_menu (self):
-        self.goActionGroup = Gtk.ActionGroup('GoActions')
+        self.goActionGroup = Gtk.ActionGroup(name='GoActions')
         self.goActionGroup.add_actions([('Go',None,_('_Go'))])
         self.uimanagers = {}
         self.merged_go_menus = {}
@@ -1009,7 +1009,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         return True
 
     def setup_actions (self):
-        self.onSelectedActionGroup = Gtk.ActionGroup('IndexOnSelectedActions')
+        self.onSelectedActionGroup = Gtk.ActionGroup(name='IndexOnSelectedActions')  # noqa
         self.onSelectedActionGroup.add_actions([
             ('OpenRec','recipe-card',_('Open recipe'),
              '<Control>O',_('Open selected recipe'),self.rec_tree_select_rec),
@@ -1030,7 +1030,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ('ShopRec','add-to-shopping-list',None,None,None,self.shop_recs)
             ])
 
-        self.mainActionGroup = Gtk.ActionGroup('MainActions')
+        self.mainActionGroup = Gtk.ActionGroup(name='MainActions')
         self.mainActionGroup.add_actions([
             ('File',None,_('_File')),
             ('New',Gtk.STOCK_NEW,_('_New'),
@@ -1064,7 +1064,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
              None,None,self.show_help),
             ])
 
-        self.toolActionGroup = Gtk.ActionGroup('ToolActions')
+        self.toolActionGroup = Gtk.ActionGroup(name='ToolActions')
         self.toolActionGroup.add_actions([
             ('Tools',None,_('_Tools')),
             ('Timer',None,_('_Timer'),
@@ -1089,7 +1089,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
     def message (self, msg):
         debug("message (self, msg): %s"%msg,5)
         self.stat.push(self.contid,msg)
-        GObject.timeout_add(1500,self.flush_messages)
+        GLib.timeout_add(1500, self.flush_messages)
 
     def flush_messages (self, ret=False):
         debug("flush_messages (self):",5)
@@ -1312,7 +1312,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             debug('Suspending thread from pause_cb',0)
             self.thread.suspend()
             self.stat.push(self.pauseid, self.pause_message)
-            self.flusher = GObject.timeout_add(1000,lambda *args: self.flush_messages(True))
+            self.flusher = GLib.timeout_add(1000,lambda *args: self.flush_messages(True))
         else:
             self.stat.pop(self.pauseid)
             GObject.source_remove(self.flusher)

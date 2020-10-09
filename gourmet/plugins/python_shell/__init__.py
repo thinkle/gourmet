@@ -10,7 +10,7 @@ class ConsolePlugin (ToolPlugin):
     </placeholder>'''
 
     def setup_action_groups (self):
-        self.action_group = Gtk.ActionGroup('ConsolePluginActionGroup')
+        self.action_group = Gtk.ActionGroup(name='ConsolePluginActionGroup')
         self.action_group.add_actions([
             ('ShowConsole',None,_('_Python Console'),
              None,_('Show python console (provides access to current gourmet instance)'),self.show_console)

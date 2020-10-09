@@ -17,7 +17,7 @@ class EmailRecipePlugin (MainPlugin, UIPlugin):
     '''
 
     def setup_action_groups (self):
-        self.actionGroup = Gtk.ActionGroup('RecipeEmailerActionGroup')
+        self.actionGroup = Gtk.ActionGroup(name='RecipeEmailerActionGroup')
         self.actionGroup.add_actions([
                 ('EmailRecipes',None,_('Email recipes'),
                  None,_('Email all selected recipes (or all recipes if no recipes are selected'),self.email_selected),

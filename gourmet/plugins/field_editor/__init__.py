@@ -11,7 +11,7 @@ class FieldEditorPlugin (ToolPlugin):
     '''
 
     def setup_action_groups (self):
-        self.action_group = Gtk.ActionGroup('FieldEditorPluginActionGroup')
+        self.action_group = Gtk.ActionGroup(name='FieldEditorPluginActionGroup')
         self.action_group.add_actions([
             ('FieldEditor',None,_('Field Editor'),
              None,_('Edit fields across multiple recipes at a time.'),self.show_field_editor
