@@ -220,20 +220,20 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
     def label_callback (self, button, label):
         self.label_selection(label)
 
-    def label_selection (self, label):
+    def label_selection(self, label: str):
         cursel = self.tb.get_selection_bounds()
         if cursel:
-            st,end = cursel
+            start, end = cursel
         else:
             # Otherwise, there's no clear sane default... we'll just
             # select the current whole line
             cur_mark = self.tb.get_insert()
-            cur_pos=Gtk.TextBuffer.get_iter_at_mark(cur_mark)
-            cur_pos.backward_chars(
-                cur_pos.get_line_offset())
-            st = cur_pos
-            end = cur_pos.forward_line()
-        self.label_range(st,end,label)
+            cur_pos = self.tb.get_iter_at_mark(cur_mark)
+            cur_pos.backward_chars(cur_pos.get_line_offset())
+            start = cur_pos.copy()
+            cur_pos.forward_line()
+            end = cur_pos
+        self.label_range(start, end, label)
 
     def insert_with_label (self, st, text, label):
         start_offset = st.get_offset()
@@ -286,7 +286,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         smark = Gtk.TextMark.new(label+'-'+str(count)+'-start',True)
         emark = Gtk.TextMark.new(label+'-'+str(count)+'-end',False)
         self.tb.add_mark(smark,st)
-        self.tb.add_mark(emark,end)
+        self.tb.add_mark(emark, end)
         self.labelled.append((smark,emark))
         # Now we add the labels...
         start_txt = '['
@@ -302,7 +302,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         itr = self.tb.get_iter_at_mark(emark)
         anchor = self.insert_widget(itr,b)
         # Set up combo button...
-        labelbutton = Gtk.ComboBoxText()
+        labelbutton = Gtk.ComboBoxText.new()
         labelbutton.set_model(self.action_model)
         cb.cb_set_active_text(labelbutton,label)
         anchor2 = self.insert_widget(self.tb.get_iter_at_mark(smark),labelbutton)
