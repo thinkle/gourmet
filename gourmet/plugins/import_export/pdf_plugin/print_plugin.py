@@ -79,7 +79,7 @@ class PDFPrinter:
         po.run(Gtk.PrintOperationAction.PRINT_DIALOG, parent=parent)
 
     def set_document (self, filename, operation,context):
-        if not filename.startswith('file'):
+        if not filename.startswith('file'):  # TODO: check if filename is uri
             filename = 'file://' + os.path.realpath(filename)
         self.d = Poppler.Document.new_from_file(filename, None)
         operation.set_n_pages(self.d.get_n_pages())

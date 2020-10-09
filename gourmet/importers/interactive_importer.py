@@ -136,7 +136,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         sw = Gtk.ScrolledWindow(); sw.add(self.tv)
         sw.set_policy(Gtk.PolicyType.NEVER,Gtk.PolicyType.AUTOMATIC)
         self.hb.add(sw); sw.show(); self.tv.show()
-        self.hb.pack_end(self.action_area,expand=False); self.action_area.show()
+        self.hb.pack_end(self.action_area, expand=False, fill=False, padding=0)
+        self.action_area.show()
         self.tb = self.tv.get_buffer()
         self.setup_tags()
 
@@ -149,7 +150,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         # Set up ActionModel (used for drop-down menu version of these commands)
         self.action_model = Gtk.ListStore(str,str)
         action_table = Gtk.Table()
-        self.action_area.pack_start(action_table,expand=False)
+        self.action_area.pack_start(action_table, expand=False,
+                                    fill=False, padding=0)
         r = 0 #rownum
         # Get our UI layout from UI_TAG_ORDER
         for label,rows in UI_TAG_ORDER:
@@ -195,18 +197,21 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         self.import_button.connect('clicked',
                                       lambda *args: self.commit_changes())
         self.import_button.set_alignment(0.5,1.0)
-        self.action_area.pack_end(self.import_button,fill=False,expand=False)
+        self.action_area.pack_end(self.import_button, fill=False,
+                                  expand=False, padding=0)
         self.action_area.show_all()
 
     def setup_tags (self):
-        self.markup_tag = Gtk.TextTag('markup')
-        self.markup_tag.set_property('editable',False)
-        self.markup_tag.set_property('scale',Pango.SCALE_SMALL)
+        self.markup_tag = Gtk.TextTag.new('markup')
+        self.markup_tag.set_property('editable', False)
+        # see https://developer.gnome.org/pango/stable/pango-Text-Attributes.html#PANGO-SCALE-XX-SMALL:CAPS  # noqa
+        # for magic number meaning
+        self.markup_tag.set_property('scale', 0.8333333333333)
         self.markup_tag.set_property('rise',15)
         self.markup_tag.set_property('foreground',
                                      '#f00'
                                      )
-        self.ignore_tag = Gtk.TextTag('ignore')
+        self.ignore_tag = Gtk.TextTag.new('ignore')
         self.ignore_tag.set_property('invisible',True)
         self.ignore_tag.set_property('editable',False)
         self.tb.get_tag_table().add(self.markup_tag)
@@ -252,8 +257,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
 
         Return midno that can be used to unhide the range."""
         midno = self.midno; self.midno += 1
-        start_mark = Gtk.TextMark('start-markup-%s'%midno,False)
-        end_mark = Gtk.TextMark('end-markup-%s'%midno,True)
+        start_mark = Gtk.TextMark.new(f'start-markup-{midno}', False)
+        end_mark = Gtk.TextMark.new(f'end-markup-{midno}', True)
         self.tb.apply_tag(self.ignore_tag,
                        st,end)
         self.tb.add_mark(start_mark,st)
@@ -278,8 +283,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         else:
             self.label_counts[label] = 1
             count = 0
-        smark = Gtk.TextMark(label+'-'+str(count)+'-start',True)
-        emark = Gtk.TextMark(label+'-'+str(count)+'-end',False)
+        smark = Gtk.TextMark.new(label+'-'+str(count)+'-start',True)
+        emark = Gtk.TextMark.new(label+'-'+str(count)+'-end',False)
         self.tb.add_mark(smark,st)
         self.tb.add_mark(emark,end)
         self.labelled.append((smark,emark))
@@ -320,9 +325,9 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         def change_mark (cb):
             # copy marks for safekeeping...
             new_text = cb.get_active_text()
-            sm = Gtk.TextMark(None,True)
+            sm = Gtk.TextMark.new(None,True)
             self.tb.add_mark(sm,self.tb.get_iter_at_mark(smark))
-            em = Gtk.TextMark(None,False)
+            em = Gtk.TextMark.new(None,False)
             self.tb.add_mark(em,self.tb.get_iter_at_mark(emark))
             # remove old marks...
             remove_markup()
@@ -345,8 +350,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         way that we can remove it easily later.
         """
         midno = self.midno; self.midno += 1
-        start_mark = Gtk.TextMark('start-markup-%s'%midno,False)
-        end_mark = Gtk.TextMark('end-markup-%s'%midno,True)
+        start_mark = Gtk.TextMark.new('start-markup-%s'%midno,False)
+        end_mark = Gtk.TextMark.new('end-markup-%s'%midno,True)
         start_offset = itr.get_offset()
         if tags:
             self.tb.insert_with_tags(itr,text,*tags)

@@ -1,6 +1,9 @@
+from typing import Union
+
 from gourmet.plugin import ImporterPlugin, PluginPlugin
 from gourmet.plugin_loader import Pluggable
 from . import webpage_importer
+from gourmet.plugins.import_export.website_import_plugins.state import WebsiteTestState  # noqa
 from gettext import gettext as _
 
 class GenericWebImporter (ImporterPlugin, Pluggable):
@@ -35,15 +38,21 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
             if 'html' in content_type:
                 return -1 # We are the fallback option
 
-    def get_web_importer (self, url, data, content_type):
+    def get_web_importer (self,
+                          url: str,
+                          data: Union[bytes, str],
+                          content_type: str):
+        # FIXME: data needn't be bytes
+        if isinstance(data, bytes):
+            data = data.decode()
         highest = 0
         importer = webpage_importer.MenuAndAdStrippingWebParser
         for p in self.plugins:
             test_val = p.test_url(url, data)
-            if test_val and test_val > highest:
+            if test_val is not None and test_val.value > highest:
                 # pass the module as an arg... very awkward inheritance
                 importer = p.get_importer(webpage_importer)
-                highest = test_val
+                highest = test_val.value
         return importer(url,data,content_type)
 
     def get_importer (self, filename):
