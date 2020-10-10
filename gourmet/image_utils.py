@@ -65,7 +65,7 @@ def make_thumbnail(path: str, size=ThumbnailSize.LARGE) -> Optional[Pixbuf]:
         return
 
     image.thumbnail(size.value)
-    return bytes_to_pixbuf(image_to_bytes(image))
+    return image
 
 
 def bytes_to_pixbuf(raw: bytes) -> Pixbuf:
@@ -85,3 +85,15 @@ def image_to_bytes(image: Image.Image) -> bytes:
     image = image.convert('RGB')
     image.save(ofi, 'jpeg')
     return ofi.getvalue()
+
+
+def pixbuf_to_image(pixbuf: Pixbuf) -> Image.Image:
+    data = pixbuf.get_pixels()
+    width = pixbuf.props.width
+    height = pixbuf.props.height
+    stride = pixbuf.props.rowstride
+    mode = "RGB"
+    if pixbuf.props.has_alpha:
+        mode = "RGBA"
+    image = Image.frombytes(mode, (width, height), data, "raw", mode, stride)
+    return image
