@@ -8,6 +8,7 @@ from urllib.parse import unquote, urlparse
 from gi.repository import Gio, GLib
 from gi.repository.GdkPixbuf import Pixbuf
 from PIL import Image, UnidentifiedImageError
+import requests
 
 MAX_THUMBSIZE = 10000000  # The maximum size, in bytes, of thumbnails we allow
 
@@ -48,13 +49,19 @@ def make_thumbnail(path: str, size=ThumbnailSize.LARGE) -> Optional[Pixbuf]:
     The provided `path` is a str, provided by a Gtk.FileChooserDialog. As such,
     it is first converted to a Path object.
     """
-    path = Path(urlparse(unquote(path)).path)
-    if not path.is_file():
-        return
+
+    if path.startswith('http'):
+        response = requests.get(path)
+        path = io.BytesIO(response.content)
+
+    else:
+        path = Path(urlparse(unquote(path)).path)
+        if not path.is_file():
+            return
 
     try:
         image = Image.open(path)
-    except UnidentifiedImageError:
+    except (UnidentifiedImageError, ValueError):
         return
 
     image.thumbnail(size.value)
