@@ -460,31 +460,21 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                     print('UNKNOWN TAG',tag,text,label)
                 except UnicodeError:
                     print('UNKNOWN TAG (unprintable)')
-        if started: self.commit_rec()
-        if hasattr(self,'images') and self.images:
-            # This is ugly -- we run the dialog once per recipe. This
-            # should happen rarely in current use-case (I don't know
-            # of a usecase where many recipes will come from a single
-            # text document / website); if in fact this becomes a
-            # common usecase, we'll need to rework the UI here.
+        if started:
+            self.commit_rec()
+
+        if hasattr(self, 'images') and self.images:
             for rec in self.added_recs:
-                ibd = imageBrowser.ImageBrowserDialog(
-                    title=_('Select recipe image'),
-                    label=_('Select image for recipe "%s"')%escape(rec.title or _('Untitled')),
-                    sublabel=_("Below are all the images found for the page you are importing. Select any images that are of the recipe, or don't select anything if you don't want any of these images."),
-                    )
-                for i in self.images: ibd.add_image_from_uri(i)
-                ibd.run()
-                if ibd.ret:
-                    with open(imageBrowser.get_image_file(ibd.ret), 'rb') as ifi:
-                        image_str = ifi.read()
-                    image = bytes_to_image(image_str)
-                    # Adding image!
-                    thumb = image.copy()
+                browser = imageBrowser.ImageBrowser(self.w, self.images)
+                response = browser.run()
+                if response == Gtk.ResponseType.OK:
+                    thumb = browser.image.copy()
                     thumb.thumbnail((40, 40))
-                    self.rd.modify_rec(rec,{'image': image_to_bytes(image),
-                                            'thumb': image_to_bytes(thumb),
-                                            })
+                    self.rd.modify_rec(rec,
+                                       {'image': image_to_bytes(browser.image),
+                                        'thumb': image_to_bytes(thumb)})
+                browser.destroy()
+
         if self.modal:
             self.w.hide()
             Gtk.main_quit()

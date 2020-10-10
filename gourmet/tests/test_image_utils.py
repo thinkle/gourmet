@@ -15,12 +15,14 @@ def test_make_thumbnail():
     logo = path.parent.parent / 'data' / 'images' / 'splash.png'
 
     thumbnail = make_thumbnail(str(logo))
-    assert thumbnail.get_height() == 127
-    assert thumbnail.get_width() == 256
+    x, y = thumbnail.size
+    assert y == 127
+    assert x == 256
 
     thumbnail = make_thumbnail(str(logo), ThumbnailSize.SMALL)
-    assert thumbnail.get_height() == 63
-    assert thumbnail.get_width() == 128
+    x, y = thumbnail.size
+    assert y == 63
+    assert x == 128
 
 
 def test_image_utils():
