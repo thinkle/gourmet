@@ -57,7 +57,7 @@ class WebParser (InteractiveImporter):
                 src = i['src']
             except KeyError:
                 continue
-            img_url = urllib.basejoin(self.url,src)
+            img_url = urllib.parse.urljoin(self.url, src)
             if self.imageexcluders:
                 exclude = False
                 for exc in  self.imageexcluders:
