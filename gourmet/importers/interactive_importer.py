@@ -8,8 +8,8 @@ import gourmet.gglobals as gglobals
 from gourmet.image_utils import image_to_bytes, ImageBrowser
 from gourmet.recipeManager import get_recipe_manager
 from gourmet.threadManager import NotThreadSafe
-from . import importer
-from .generic_recipe_parser import RecipeParser
+from gourmet.importers import importer
+from gourmet.importers.generic_recipe_parser import RecipeParser
 
 # TODO
 # 1. Make this interface actually import recipes...
@@ -140,62 +140,55 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         self.tb = self.tv.get_buffer()
         self.setup_tags()
 
-    def setup_action_area (self):
+    def setup_action_area(self):
         # Set up hard-coded functional buttons...
-        self.new_recipe_button = Gtk.Button(_('_New Recipe'))
-        self.new_recipe_button.connect('clicked',self.new_recipe_cb)
-        self.remove_markup_button = Gtk.Button(_('Clear _Tags'))
-        self.remove_markup_button.connect('clicked',self.clear_tags)
-        # Set up ActionModel (used for drop-down menu version of these commands)
-        self.action_model = Gtk.ListStore(str,str)
+        self.new_recipe_button = Gtk.Button.new_with_mnemonic(_('_New Recipe'))
+        self.new_recipe_button.connect('clicked', self.new_recipe_cb)
+        self.remove_markup_button = Gtk.Button.new_with_mnemonic(_('Clear _Tags'))  # noqa
+        self.remove_markup_button.connect('clicked', self.clear_tags)
+        # Set up ActionModel (for drop-down menu version of these commands)
+        self.action_model = Gtk.ListStore(str, str)
         action_table = Gtk.Table()
         self.action_area.pack_start(action_table, expand=False,
                                     fill=False, padding=0)
-        r = 0 #rownum
         # Get our UI layout from UI_TAG_ORDER
-        for label,rows in UI_TAG_ORDER:
+        r = 0  # row number
+        for label, rows in UI_TAG_ORDER:
             if r != 0:
                 blank = Gtk.Label(label='')
-                action_table.attach(blank,0,2,r,r+1);blank.show()
+                action_table.attach(blank, 0, 2, r, r+1)
+                blank.show()
             r += 1
-            l = Gtk.Label(); l.set_markup('<b>'+label+'</b>')
-            l.set_alignment(0.0,0.5)
-            action_table.attach(l,0,2,r,r+1); l.show()
+            glabel = Gtk.Label()
+            glabel.set_markup('<b>'+label+'</b>')
+            glabel.set_alignment(0.0, 0.5)
+            action_table.attach(glabel, 0, 2, r, r+1)
+            glabel.show()
             r += 1
             for row in rows:
-                for c,t in enumerate(row): #column number, tag
+                for c, t in enumerate(row):  # column number, tag
                     if t == 'clear':
-                        tag_button = self.remove_markup_button
-                    elif t=='newrec':
-                        tag_button = self.new_recipe_button
+                        tag_btn = self.remove_markup_button
+                    elif t == 'newrec':
+                        tag_btn = self.new_recipe_button
                     else:
-                        tag_button = Gtk.Button('_'+self.labels_by_tag[t])
-                        self.action_model.append([self.labels_by_tag[t],t])
-                        tag_button.connect('clicked',
-                                           self.label_callback,
-                                           self.labels_by_tag[t])
-                    action_table.attach(
-                        tag_button,
-                        c,c+1,r,r+1,
-                        xpadding=12,
-                        )
+                        tag_btn = Gtk.Button.new_with_mnemonic('_' + self.labels_by_tag[t])
+                        self.action_model.append([self.labels_by_tag[t], t])
+                        tag_btn.connect('clicked',
+                                        self.label_callback,
+                                        self.labels_by_tag[t])
+                    action_table.attach(tag_btn, c, c+1, r, r+1, xpadding=12)
                 r += 1
-        action_table.set_row_spacings(3)
-        action_table.set_col_spacings(3)
-        #for t in self.tags:
-        #
-        #    self.action_model.append([self.labels_by_tag[t],t])
-        #    tag_button = Gtk.Button('_'+self.labels_by_tag[t])
-        #    tag_button.connect('clicked',
-        #                       self.label_callback,
-        #                       self.labels_by_tag[t])
-        #    self.action_area.pack_start(tag_button,expand=False,fill=False,padding=6)
-        #    tag_button.show()
-        #
-        self.import_button = Gtk.Button(_('Import Recipe'))
+
+        action_table.set_margin_top(3)
+        action_table.set_margin_bottom(3)
+        action_table.set_margin_start(3)
+        action_table.set_margin_end(3)
+
+        self.import_button = Gtk.Button(label=_('Import Recipe'))
         self.import_button.connect('clicked',
-                                      lambda *args: self.commit_changes())
-        self.import_button.set_alignment(0.5,1.0)
+                                   lambda *args: self.commit_changes())
+
         self.action_area.pack_end(self.import_button, fill=False,
                                   expand=False, padding=0)
         self.action_area.show_all()
@@ -214,7 +207,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         self.tb.get_tag_table().add(self.markup_tag)
         self.tb.get_tag_table().add(self.ignore_tag)
 
-    def label_callback (self, button, label):
+    def label_callback(self, button, label):
         self.label_selection(label)
 
     def label_selection(self, label: str):
@@ -232,15 +225,13 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             end = cur_pos
         self.label_range(start, end, label)
 
-    def insert_with_label (self, st, text, label):
+    def insert_with_label(self, st, text, label):
         start_offset = st.get_offset()
-        self.tb.insert(st,text)
+        self.tb.insert(st, text)
         end_offset = start_offset + len(text)
-        self.label_range(
-            self.tb.get_iter_at_offset(start_offset),
-            self.tb.get_iter_at_offset(end_offset),
-            label
-            )
+        self.label_range(self.tb.get_iter_at_offset(start_offset),
+                         self.tb.get_iter_at_offset(end_offset),
+                         label)
 
     def unhide_area (self, midno):
         st,end = self.markup_marks[midno]
@@ -266,7 +257,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
     def label_range (self, st, end, label):
         if self.tags_by_label.get(label,'')=='ignore':
             midno = self.hide_range(st,end)
-            b = Gtk.Button('Ignored text: Reveal hidden text')
+            b = Gtk.Button(label='Ignored text: Reveal hidden text')
             anchor = self.insert_widget(end,b)
             def unhide_text (*args):
                 self.unhide_area(midno)
@@ -294,8 +285,9 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         # Create a "Remove me" button
         #b = Gtk.Button('_Remove tag'); b.show)(
         b = Gtk.Button()
-        i = Gtk.Image(); i.set_from_stock(Gtk.STOCK_REMOVE,Gtk.IconSize.MENU)
-        b.add(i); i.show()
+        img = Gtk.Image.new_from_icon_name(Gtk.STOCK_REMOVE, Gtk.IconSize.MENU)
+        b.add(img)
+        img.show()
         itr = self.tb.get_iter_at_mark(emark)
         anchor = self.insert_widget(itr,b)
         # Set up combo button...
@@ -413,45 +405,55 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                 self.anchors.remove(anchor)
                 self.remove_widget(anchor)
 
-    def commit_changes (self):
-        self.labelled.sort(key=lambda x: self.tb.get_iter_at_mark(x[0]).get_offset())
-        if not self.labelled: return
+    def commit_changes(self):
+        self.labelled.sort(key=lambda x:
+                           self.tb.get_iter_at_mark(x[0]).get_offset())
+        if not self.labelled:
+            return
+
         self.start_rec()
         started = False
-        for smark,emark in self.labelled:
+        for smark, emark in self.labelled:
             siter = self.tb.get_iter_at_mark(smark)
             eiter = self.tb.get_iter_at_mark(emark)
             text = siter.get_text(eiter)
             name = smark.get_name()
             label = name.split('-')[0]
             tag = self.tags_by_label[label]
+
+            if not text:
+                continue
+
             if tag in gglobals.TEXT_ATTR_DIC:
-                self.add_text(tag,text); started=True
+                self.add_text(tag, text)
+                started = True
             elif tag in gglobals.REC_ATTR_DIC:
-                if text: self.add_attribute(tag,text)
+                self.add_attribute(tag, text)
             elif tag == 'ingredient':
-                if text: self.add_ing_from_text(text); started=True
+                self.add_ing_from_text(text)
+                started = True
             elif tag == 'ingredients':
-                if text: self.add_ings_from_text(text); started=True
+                self.add_ings_from_text(text)
+                started = True
             elif tag == 'inggroup':
-                if text: self.add_ing_group(text); started=True
-            elif tag=='newrec':
-                if not started: continue
+                self.add_ing_group(text)
+                started = True
+            elif tag == 'newrec':
+                if not started:
+                    continue
                 # Then we're starting a new recipe at this point...
                 # Commit old recipe...
-                self.commit_rec(); started=False
+                self.commit_rec()
+                started = False
                 # Start new one...
                 self.start_rec()
-            elif tag=='ignore':
+            elif tag == 'ignore':
                 continue
             elif tag == 'servings':
-                self.add_attribute('yields',text)
-                self.add_attribute('yield_unit','servings')
+                self.add_attribute('yields', text)
+                self.add_attribute('yield_unit', 'servings')
             else:
-                try:
-                    print('UNKNOWN TAG',tag,text,label)
-                except UnicodeError:
-                    print('UNKNOWN TAG (unprintable)')
+                print('UNKNOWN TAG', tag, text, label)
         if started:
             self.commit_rec()
 
