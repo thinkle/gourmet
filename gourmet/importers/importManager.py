@@ -113,7 +113,8 @@ class ImportManager (plugin_loader.Pluggable):
                 )
         else:
             print('Doing import of',reader.url,plugin)
-            self.do_import(plugin,'get_web_importer',reader.url,reader.data,reader.content_type)
+            self.do_import(plugin, 'get_web_importer', reader.url,
+                           reader.data.decode(), reader.content_type)
 
     def offer_import(self, parent: Optional[Gtk.Window] = None):
         """Offer to import a file or group of files.

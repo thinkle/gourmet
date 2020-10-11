@@ -1,4 +1,5 @@
-from bs4 import BeautifulSoup, CData, Comment, Declaration, ProcessingInstruction
+from bs4 import (BeautifulSoup, BeautifulStoneSoup, CData, Comment, Declaration,
+                 ProcessingInstruction)
 from gourmet.importers.generic_recipe_parser import RecipeParser
 from gourmet.importers.interactive_importer import InteractiveImporter
 import gourmet.importers.importer
@@ -26,14 +27,12 @@ class WebParser (InteractiveImporter):
     imageexcluders = None # This could be a list of compiled regexps which would
                          # be used to search image URL strings for
                          # potential ads, etc.
-    def __init__ (self, url, data, content_type):
+    def __init__(self, url: str, data: str, content_type: str):
         self.ignore_unparsed = False
         self.url = url
         #self.name = 'Web Parser'
-        self.soup = BeautifulSoup.BeautifulSoup(data,
-                                                convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
-                                                )
-        InteractiveImporter.__init__(self)
+        self.soup = BeautifulSoup(data, "lxml")
+        super().__init__()
         #self.generic_parser = RecipeParser()
         self.preparse()
         self.get_images()
@@ -58,7 +57,7 @@ class WebParser (InteractiveImporter):
                 src = i['src']
             except KeyError:
                 continue
-            img_url = urllib.basejoin(self.url,src)
+            img_url = urllib.parse.urljoin(self.url, src)
             if self.imageexcluders:
                 exclude = False
                 for exc in  self.imageexcluders:
@@ -141,14 +140,6 @@ class WebParser (InteractiveImporter):
             pre_add = self.cut_extra_whitespace(pre_add)
             to_add = to_add[lws:]
             self.parsed.append((pre_add,None))
-        # Do extra substitution of MS Characters -- shouldn't be necessary...
-        for char,tup in list(BeautifulSoup.UnicodeDammit.MS_CHARS.items()):
-            char = char.decode('iso-8859-1').encode('utf-8')
-            if to_add.find(char) >= 0:
-                try:
-                    to_add = to_add.replace(char,chr(int(tup[1],16)))
-                except ValueError:
-                    print("ValueError caught in add_buffer_to_parsed")
         self.parsed.append((to_add,self.last_label))
 
     def format_tag_whitespace (self, tag):
