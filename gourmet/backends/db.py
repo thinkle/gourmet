@@ -4,7 +4,6 @@ import re
 import time
 import shutil
 from typing import Mapping, Optional, List, Any, Tuple
-import io
 
 from gettext import gettext as _
 from gi.repository import Gtk
@@ -1745,15 +1744,16 @@ class RecData (Pluggable):
                 self.do_modify(self.keylookup_table,row,{'count':new_count})
             else:
                 self.delete_by_criteria(self.keylookup_table,{'item':item,'ingkey':key})
-        for w in item.split():
-            w=str(w.decode('utf8').lower())
-            row = self.fetch_one(self.keylookup_table,item=item,ingkey=key)
+        for word in item.split():
+            word = word.lower()
+            row = self.fetch_one(self.keylookup_table, item=item, ingkey=key)
             if row:
                 new_count = row.count - 1
                 if new_count:
-                    self.do_modify(self.keylookup_table,row,{'count':new_count})
+                    self.do_modify(self.keylookup_table, row, {'count':new_count})
                 else:
-                    self.delete_by_criteria(self.keylookup_table,{'word':w,'ingkey':key})
+                    self.delete_by_criteria(self.keylookup_table,{'word':word,
+                                                                  'ingkey':key})
 
     def ing_shopper (self, view):
         return DatabaseShopper(self.ingview_to_lst(view))
