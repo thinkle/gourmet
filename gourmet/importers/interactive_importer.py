@@ -1,15 +1,14 @@
-from gettext import gettext as _
 import re
-from xml.sax.saxutils import escape
 
-from gi.repository import Gtk, Pango
+from gettext import gettext as _
+from gi.repository import Gtk
 
 import gourmet.gtk_extras.cb_extras as cb
 import gourmet.gglobals as gglobals
-from gourmet.image_utils import bytes_to_image, image_to_bytes
+from gourmet.image_utils import image_to_bytes, ImageBrowser
 from gourmet.recipeManager import get_recipe_manager
 from gourmet.threadManager import NotThreadSafe
-from . import importer, imageBrowser
+from . import importer
 from .generic_recipe_parser import RecipeParser
 
 # TODO
@@ -201,19 +200,17 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
                                   expand=False, padding=0)
         self.action_area.show_all()
 
-    def setup_tags (self):
+    def setup_tags(self):
         self.markup_tag = Gtk.TextTag.new('markup')
         self.markup_tag.set_property('editable', False)
         # see https://developer.gnome.org/pango/stable/pango-Text-Attributes.html#PANGO-SCALE-XX-SMALL:CAPS  # noqa
         # for magic number meaning
         self.markup_tag.set_property('scale', 0.8333333333333)
-        self.markup_tag.set_property('rise',15)
-        self.markup_tag.set_property('foreground',
-                                     '#f00'
-                                     )
+        self.markup_tag.set_property('rise', 15)
+        self.markup_tag.set_property('foreground', '#f00')
         self.ignore_tag = Gtk.TextTag.new('ignore')
-        self.ignore_tag.set_property('invisible',True)
-        self.ignore_tag.set_property('editable',False)
+        self.ignore_tag.set_property('invisible', True)
+        self.ignore_tag.set_property('editable', False)
         self.tb.get_tag_table().add(self.markup_tag)
         self.tb.get_tag_table().add(self.ignore_tag)
 
@@ -283,8 +280,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         else:
             self.label_counts[label] = 1
             count = 0
-        smark = Gtk.TextMark.new(label+'-'+str(count)+'-start',True)
-        emark = Gtk.TextMark.new(label+'-'+str(count)+'-end',False)
+        smark = Gtk.TextMark.new(f'{label}-{count}-start', True)
+        emark = Gtk.TextMark.new(f'{label}-{count}-end', False)
         self.tb.add_mark(smark,st)
         self.tb.add_mark(emark, end)
         self.labelled.append((smark,emark))
@@ -350,8 +347,8 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         way that we can remove it easily later.
         """
         midno = self.midno; self.midno += 1
-        start_mark = Gtk.TextMark.new('start-markup-%s'%midno,False)
-        end_mark = Gtk.TextMark.new('end-markup-%s'%midno,True)
+        start_mark = Gtk.TextMark.new(f'start-markup-{midno}', False)
+        end_mark = Gtk.TextMark.new(f'end-markup-{midno}', True)
         start_offset = itr.get_offset()
         if tags:
             self.tb.insert_with_tags(itr,text,*tags)
@@ -363,11 +360,6 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
         self.tb.add_mark(end_mark,end_itr)
         self.markup_marks[midno] = (start_mark,end_mark)
         return midno
-
-    def change_mark (self, cb, smark, emark, start_id, end_id):
-
-        new_label = cb.get_active_text()
-
 
     def insert_widget (self, itr, widget):
         anchor = self.tb.create_child_anchor(itr)
@@ -465,7 +457,7 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
 
         if hasattr(self, 'images') and self.images:
             for rec in self.added_recs:
-                browser = imageBrowser.ImageBrowser(self.w, self.images)
+                browser = ImageBrowser(self.w, self.images)
                 response = browser.run()
                 if response == Gtk.ResponseType.OK:
                     thumb = browser.image.copy()

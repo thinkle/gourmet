@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Any, Union
 
 from gourmet.plugin import ImporterPlugin, PluginPlugin
 from gourmet.plugin_loader import Pluggable
@@ -38,13 +38,9 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
             if 'html' in content_type:
                 return -1 # We are the fallback option
 
-    def get_web_importer (self,
-                          url: str,
-                          data: Union[bytes, str],
-                          content_type: str):
-        # FIXME: data needn't be bytes
-        if isinstance(data, bytes):
-            data = data.decode()
+    def get_web_importer(self, url: str,
+                         data: Union[bytes, str], content_type: str) -> Any:
+        # Rank importers by most appropriate based on url
         highest = 0
         importer = webpage_importer.MenuAndAdStrippingWebParser
         for p in self.plugins:
@@ -53,7 +49,7 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
                 # pass the module as an arg... very awkward inheritance
                 importer = p.get_importer(webpage_importer)
                 highest = test_val.value
-        return importer(url,data,content_type)
+        return importer(url, data, content_type)
 
     def get_importer (self, filename):
         url = 'file://'+filename
