@@ -9,6 +9,7 @@ pyenchant
 pygobject
 pygtkspellcheck
 reportlab
+requests
 scrape-schema-recipe
 selenium
 setuptools

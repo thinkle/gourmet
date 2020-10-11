@@ -105,7 +105,7 @@ class ImageBrowser(Gtk.Dialog):
                             transient_for=parent, flags=0)
         self.set_default_size(600, 600)
 
-        self.pixbuf: GdkPixbuf.Pixbuf = None
+        self.image: Image.Image = None
 
         self.liststore = Gtk.ListStore(GdkPixbuf.Pixbuf)
         iconview = Gtk.IconView.new()
