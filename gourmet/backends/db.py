@@ -706,21 +706,20 @@ class RecData (Pluggable):
         existing = self.fetch_one(self.plugin_info_table,
                                   plugin=plugin.name)
         if existing:
-            sup,maj,minor,plugin_version = (existing.version_super,
-                                            existing.version_major,
-                                            existing.version_minor,
-                                            existing.plugin_version)
+            sup, maj, minor, plugin_version = (int(existing.version_super),
+                                               int(existing.version_major),
+                                               int(existing.version_minor),
+                                               int(existing.plugin_version))
         else:
             # Default to the version before our plugin system existed
-            sup,maj,minor = 0,13,9
+            sup, maj, minor = 0, 13, 9
             plugin_version = 0
         try:
             plugin.update_version(
-                gourmet_stored=(sup,maj,minor),
-                plugin_stored = plugin_version,
-                gourmet_current=(current_super,current_major,current_minor),
-                plugin_current = plugin.version,
-                )
+                gourmet_stored=(sup, maj, minor),
+                plugin_stored=plugin_version,
+                gourmet_current=(current_super, current_major, current_minor),
+                plugin_current=plugin.version)
         except:
             print('Problem updating plugin',plugin,plugin.name)
             raise
