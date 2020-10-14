@@ -1,6 +1,6 @@
 # Gourmet Recipe Manager
 ## Try it. It's good!
-![Tests](https://github.com/kirienko/gourmet/workflows/Tests/badge.svg) ![Build](https://github.com/kirienko/gourmet/workflows/Build/badge.svg)
+![Tests](https://github.com/thinkle/gourmet/workflows/Tests/badge.svg) ![Build](https://github.com/thinkle/gourmet/workflows/Build/badge.svg)
 
 # Introduction
 Gourmet Recipe Manager is a manager, editor, and organizer for recipes.  

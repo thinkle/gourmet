@@ -53,7 +53,7 @@ flatpak remove io.github.thinkle.Gourmet
 
 ## Python Wheel
 
-[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1-alpha1)  
+[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1-alpha1)
 Dependencies must be manually installed.
 
 ### Unbutu 20.04, Linux Mint 20

@@ -38,4 +38,4 @@ modules:
 
     sources:
       - type: git
-        url:  https://github.com/kirienko/gourmet
+        url:  https://github.com/thinkle/gourmet
