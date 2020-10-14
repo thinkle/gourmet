@@ -198,6 +198,3 @@ class ExportManager (plugin_loader.Pluggable):
             del self.plugins_by_name[name]
         else:
             print('WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name)
-
-def get_export_manager ():
-    return ExportManager.instance()
