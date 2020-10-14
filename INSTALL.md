@@ -20,12 +20,12 @@ sudo apt-get install flatpak
 ```
 
 As Gourmet is still under active development, the flatpak is not available from
-Flathub, and instead must be [downloaded and installed manually](https://github.com/kirienko/gourmet/releases/tag/v1-alpha1).
+Flathub, and instead must be [downloaded and installed manually](https://github.com/kirienko/gourmet/releases/tag/v1-alpha2).
 
 In a terminal, execute the following: 
 ```sh
 flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo flatpak install gourmet-5ad619be.flatpak
+sudo flatpak install gourmet-2db9db8f.flatpak
 ```
 
 You will be prompted with a message regarding the runtime:
@@ -53,7 +53,7 @@ flatpak remove io.github.thinkle.Gourmet
 
 ## Python Wheel
 
-[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1-alpha1)  
+[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1-alpha2)
 Dependencies must be manually installed.
 
 ### Unbutu 20.04, Linux Mint 20
@@ -72,7 +72,7 @@ sudo pip3 install scrape-schema-recipe
 Finally, install Gourmet:
 
 ```sh
-sudo pip3 install gourmet-5ad618be-py3-none-any.whl
+sudo pip3 install gourmet-2db9db8f-py3-none-any.whl
 ```
 
 You can now launch Gourmet from a terminal:

@@ -21,5 +21,8 @@ cp $HOME/.gourmet/recipes.db $HOME/.gourmet/recipes.db.bak
 
 Installation instruction are found in [INSTALL.md](INSTALL.md).
 
+*Note: pdf support is not enabled in Flatpak. PDF and Print exports are thus
+not available.*
+
 # Issues and Contributions
 See the [contribution guide](CONTRIBUTING.md).
