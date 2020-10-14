@@ -1,17 +1,23 @@
-from typing import List
-from gi.repository import GObject, Gtk, Pango
+from typing import List, Optional
 import os.path, fnmatch,  re
-from . import optionTable
-import xml.sax.saxutils
+from pathlib import Path
+
 from gettext import gettext as _
+from gi.repository import GObject, Gtk, Pango
+from gi.repository.GLib import get_user_special_dir, UserDirectory
+import xml.sax.saxutils
+
+from . import optionTable
 from gourmet.gdebug import debug
 from gourmet.image_utils import make_thumbnail
-from gi.repository.GLib import get_user_special_dir, UserDirectory
+
 H_PADDING=12
 Y_PADDING=12
 
-class UserCancelledError (Exception):
+
+class UserCancelledError(Exception):
     pass
+
 
 def is_markup (s):
     try:
@@ -858,37 +864,36 @@ def select_file (title,
                            buttons=buttons,parent=parent)
     return sfd.run()
 
-def saveas_file (title,
-                 filename=None,
-                 filters=[],
-                 action=Gtk.FileChooserAction.SAVE,
-                 set_filter=True,
-                 buttons=None,
-                 parent=None,
-                 show_filetype=True):
+
+def saveas_file(title: str,
+                filename: Optional[str] = None,
+                filters: Optional[List[str]] = None,
+                action: Gtk.FileChooserAction = Gtk.FileChooserAction.SAVE,
+                set_filter: bool = True,
+                buttons: List[Gtk.FileChooserButtonClass] = None,
+                parent: Gtk.Window = None,
+                show_filetype: bool = True):
     """Almost identical to select_file, except that we return a tuple containing
     the filename and the export type (the string the user selected)"""
-    sfd=FileSelectorDialog(title,filename=filename,filters=filters,
-                           action=action,set_filter=set_filter,buttons=buttons,
-                           show_filetype=show_filetype,parent=parent)
-    filenames = sfd.run()
-    qty = len(filenames)
-    if qty == 0:
+    sfd = FileSelectorDialog(title,
+                             filename=filename,
+                             filters=filters,
+                             action=action,
+                             set_filter=set_filter,
+                             buttons=buttons,
+                             show_filetype=show_filetype,
+                             parent=parent)
+    filename = sfd.run()
+    if not filename:
         return None, None
-    elif qty == 1:
-        fname, = filenames  # unpack the filename
-    else:
-        raise ValueError(f"Expected 1 filename, but got {qty}", qty)
+    filename, *_ = filename
 
-    exp_type = get_type_for_filters(fname, filters[:])
+    exp_type = get_type_for_filters(filename, filters[:])
     if not exp_type:
         # If we don't have a type based on our regexps... then lets
         # just see what the combobox was set to...
-        try:
-            exp_type = filters[sfd.saveas.get_active()][0]
-        except:
-            pass
-    return fname, exp_type
+        exp_type = filters[sfd.saveas.get_active()][0]
+    return filename, exp_type
 
 def get_type_for_filters (fname, filters):
     base,ext = os.path.splitext(fname)
@@ -1029,22 +1034,16 @@ class FileSelectorDialog:
                 self.internal_extension_change=False
         return True
 
-    def change_file_extension (self, fsd, data):
-        if self.internal_extension_change: return
-        fn = os.path.split(self.fsd.get_filename())[1]
-        # strip off the old extension if it was one of our
-        # filetypes and now we're changing
-        if self.is_extension_legal(fn):
-            base = os.path.splitext(fn)[0]
-        else:
-            base = fn
+    def change_file_extension (self, fsd, data: GObject.GParamSpec):
+        if self.internal_extension_change:
+            return
+        filename = Path(self.fsd.get_filename())
+        stem = filename.stem
         ext = self.name_to_ext[fsd.get_filter().get_name()]
         if self.show_filetype:
-            debug('changing file extension to %s'%(base + ext),3)
-            self.fsd.set_current_name(base + ext)
+            self.fsd.set_current_name(stem + ext)
         else:
-            debug('changing file extension for %s to %s'%(base, ext))
-            self.fsd.set_current_name(base)
+            self.fsd.set_current_name(stem)
 
     def is_extension_legal(self, filenames: List[str]) -> bool:
         if filenames:
